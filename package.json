@@ -1,0 +1,25 @@
+{
+  "name": "ja2",
+  "version": "0.1.0",
+  "description": "Jagged Alliance 2",
+  "main": "out/main.js",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^12.7.12",
+    "typescript": "^3.6.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexbatalov/ja2.git"
+  },
+  "author": {
+    "name": "Alexander Batalov",
+    "email": "alex.batalov@gmail.com"
+  },
+  "license": "SEE LICENSE IN SFI-SCLA",
+  "bugs": {
+    "url": "https://github.com/alexbatalov/ja2/issues"
+  },
+  "homepage": "https://github.com/alexbatalov/ja2#readme"
+}
