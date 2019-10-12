@@ -1555,86 +1555,86 @@ FontTranslationTable *CreateEnglishTransTable(  )
 	*temp = 1132;
 	temp++;
 	// END OF FUNKY RUSSIAN STUFF
-	*temp = 196; // ƒ 
+	*temp = 196; // –î 
 	temp++;
-	*temp = 192; // ¿ 
+	*temp = 192; // –ê 
 	temp++;
-	*temp = 193; // ¡ 
+	*temp = 193; // –ë 
 	temp++;
-	*temp = 194; // ¬
+	*temp = 194; // –í
 	temp++;
-	*temp = 199; // «
+	*temp = 199; // –ó
 	temp++;
-	*temp = 203; // À
+	*temp = 203; // –õ
 	temp++;
-	*temp = 200; // »
+	*temp = 200; // –ò
 	temp++;
-	*temp = 201; // …				140
+	*temp = 201; // –ô				140
 	temp++;
-	*temp = 202; //  
+	*temp = 202; // –ö
 	temp++;
-	*temp = 207; // œ
+	*temp = 207; // –ü
 	temp++;
-	*temp = 214; // ÷
+	*temp = 214; // –¶
 	temp++;
-	*temp = 210; // “
+	*temp = 210; // –¢
 	temp++;
-	*temp = 211; // ”
+	*temp = 211; // –£
 	temp++;
-	*temp = 212; // ‘
+	*temp = 212; // –§
 	temp++;
-	*temp = 220; // ‹
+	*temp = 220; // –¨
 	temp++;
-	*temp = 217; // Ÿ
+	*temp = 217; // –©
 	temp++;
-	*temp = 218; // ⁄
+	*temp = 218; // –™
 	temp++;
-	*temp = 219; // €				150
+	*temp = 219; // –´				150
 	temp++;
 
-	*temp = 228; // ‰
+	*temp = 228; // –¥
 	temp++;
-	*temp = 224; // ‡
+	*temp = 224; // –∞
 	temp++;
-	*temp = 225; // ·
+	*temp = 225; // –±
 	temp++;
-	*temp = 226; // ‚
+	*temp = 226; // –≤
 	temp++;
-	*temp = 231; // Á
+	*temp = 231; // –∑
 	temp++;
-	*temp = 235; // Î
+	*temp = 235; // –ª
 	temp++;
-	*temp = 232; // Ë
+	*temp = 232; // –∏
 	temp++;
-	*temp = 233; // È
+	*temp = 233; // –π
 	temp++;
-	*temp = 234; // Í
+	*temp = 234; // –∫
 	temp++;
-	*temp = 239; // Ô				160
+	*temp = 239; // –ø				160
 	temp++;
-	*temp = 246; // ˆ
+	*temp = 246; // —Ü
 	temp++;
-	*temp = 242; // Ú
+	*temp = 242; // —Ç
 	temp++;
-	*temp = 243; // Û
+	*temp = 243; // —É
 	temp++;
-	*temp = 244; // Ù
+	*temp = 244; // —Ñ
 	temp++;
-	*temp = 252; // ¸
+	*temp = 252; // —å
 	temp++;
-	*temp = 249; // ˘
+	*temp = 249; // —â
 	temp++;
-	*temp = 250; // ˙
+	*temp = 250; // —ä
 	temp++;
-	*temp = 251; // ˚
+	*temp = 251; // —ã
 	temp++;
-	*temp = 204; // Ã
+	*temp = 204; // –ú
 	temp++;
-	*temp = 206; // Œ				170
+	*temp = 206; // –û				170
 	temp++;
-	*temp = 236; // Ï
+	*temp = 236; // –º
 	temp++;
-	*temp = 238; // Ó
+	*temp = 238; // –æ
 	temp++;
 
 #else

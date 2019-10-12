@@ -182,7 +182,7 @@ UINT16 TeamTurnString[][STRING_LENGTH] =
 {
 	L"Tura gracza", // player's turn
 	L"Tura przeciwnika",
-	L"Tura stworzeñ",
+	L"Tura stworzeÅ„",
 	L"Tura samoobrony",
 	L"Tura cywili"
 	// planning turn
@@ -194,95 +194,95 @@ UINT16 Message[][STRING_LENGTH] =
 
 	// In the following 8 strings, the %s is the merc's name, and the %d (if any) is a number.
 
-	L"%s dosta³(a) w g³owê i traci 1 punkt inteligencji!",
-	L"%s dosta³(a) w ramiê i traci 1 punkt zrêcznoœci!",
-	L"%s dosta³(a) w klatkê piersiow¹ i traci 1 punkt si³y!",
-	L"%s dosta³(a) w nogi i traci 1 punkt zwinnoœci!",
-	L"%s dosta³(a) w g³owê i traci %d pkt. inteligencji!",
-	L"%s dosta³(a) w ramiê i traci %d pkt. zrêcznoœci!",
-	L"%s dosta³(a) w klatkê piersiow¹ i traci %d pkt. si³y!",
-	L"%s dosta³(a) w nogi i traci %d pkt. zwinnoœci!",
+	L"%s dostaÅ‚(a) w gÅ‚owÄ™ i traci 1 punkt inteligencji!",
+	L"%s dostaÅ‚(a) w ramiÄ™ i traci 1 punkt zrÄ™cznoÂœci!",
+	L"%s dostaÅ‚(a) w klatkÄ™ piersiowÅ¡ i traci 1 punkt siÅ‚y!",
+	L"%s dostaÅ‚(a) w nogi i traci 1 punkt zwinnoÂœci!",
+	L"%s dostaÅ‚(a) w gÅ‚owÄ™ i traci %d pkt. inteligencji!",
+	L"%s dostaÅ‚(a) w ramiÄ™ i traci %d pkt. zrÄ™cznoÂœci!",
+	L"%s dostaÅ‚(a) w klatkÄ™ piersiowÅ¡ i traci %d pkt. siÅ‚y!",
+	L"%s dostaÅ‚(a) w nogi i traci %d pkt. zwinnoÂœci!",
 	L"Przerwanie!",
 
 	// The first %s is a merc's name, the second is a string from pNoiseVolStr,
 	// the third is a string from pNoiseTypeStr, and the last is a string from pDirectionStr
 
 	L"", //OBSOLETE
-	L"Dotar³y twoje posi³ki!",
+	L"DotarÅ‚y twoje posiÅ‚ki!",
 
 	// In the following four lines, all %s's are merc names
 
-	L"%s prze³adowuje.",
-	L"%s posiada za ma³o Punktów Akcji!",
-	L"%s udziela pierwszej pomocy. (Naciœnij dowolny klawisz aby przerwaæ.)",
-	L"%s i %s udzielaj¹ pierwszej pomocy. (Naciœnij dowolny klawisz aby przerwaæ.)",
+	L"%s przeÅ‚adowuje.",
+	L"%s posiada za maÅ‚o PunktÃ³w Akcji!",
+	L"%s udziela pierwszej pomocy. (NaciÂœnij dowolny klawisz aby przerwaÄ‡.)",
+	L"%s i %s udzielajÅ¡ pierwszej pomocy. (NaciÂœnij dowolny klawisz aby przerwaÄ‡.)",
 	// the following 17 strings are used to create lists of gun advantages and disadvantages
 	// (separated by commas)
 	L"niezawodna",
 	L"zawodna",
-	L"³atwa w naprawie",
+	L"Å‚atwa w naprawie",
 	L"trudna do naprawy",
 	L"solidna",
 	L"niesolidna",
 	L"szybkostrzelna",
-	L"wolno strzelaj¹ca",
-	L"daleki zasiêg",
-	L"krótki zasiêg",
-	L"ma³a waga",
-	L"du¿a waga",
+	L"wolno strzelajÅ¡ca",
+	L"daleki zasiÄ™g",
+	L"krÃ³tki zasiÄ™g",
+	L"maÅ‚a waga",
+	L"duÅ¼a waga",
 	L"niewielkie rozmiary",
-	L"szybki ci¹g³y ogieñ",
-	L"brak ci¹g³ego ognia",
-	L"du¿y magazynek",
-	L"ma³y magazynek",
+	L"szybki ciÅ¡gÅ‚y ogieÅ„",
+	L"brak ciÅ¡gÅ‚ego ognia",
+	L"duÅ¼y magazynek",
+	L"maÅ‚y magazynek",
 
 	// In the following two lines, all %s's are merc names
 
-	L"%s: kamufla¿ siê star³.",
-	L"%s: kamufla¿ siê zmy³.",
+	L"%s: kamuflaÅ¼ siÄ™ starÅ‚.",
+	L"%s: kamuflaÅ¼ siÄ™ zmyÅ‚.",
 
 	// The first %s is a merc name and the second %s is an item name
 
 	L"Brak amunicji w dodatkowej broni!",
-	L"%s ukrad³(a): %s.",
+	L"%s ukradÅ‚(a): %s.",
 
 	// The %s is a merc name
 
-	L"%s ma broñ bez funkcji ci¹g³ego ognia.",
+	L"%s ma broÅ„ bez funkcji ciÅ¡gÅ‚ego ognia.",
 
-	L"Ju¿ masz coœ takiego do³¹czone.",
-	L"Po³¹czyæ przedmioty?",
+	L"JuÅ¼ masz coÂœ takiego doÅ‚Å¡czone.",
+	L"PoÅ‚Å¡czyÄ‡ przedmioty?",
 
 	// Both %s's are item names
 
-	L"%s i %s nie pasuj¹ do siebie.",
+	L"%s i %s nie pasujÅ¡ do siebie.",
 
 	L"Brak",
-	L"Wyjmij amunicjê",
+	L"Wyjmij amunicjÄ™",
 	L"Dodatki",
 	
 	//You cannot use "item(s)" and your "other item" at the same time.
 	//Ex:  You cannot use sun goggles and you gas mask at the same time.
-	L" %s i %s nie mog¹ byæ u¿ywane jednoczeœnie.",
+	L" %s i %s nie mogÅ¡ byÄ‡ uÅ¼ywane jednoczeÂœnie.",
 
-	L"Element, który masz na kursorze myszy mo¿e byæ do³¹czony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów.",
-	L"Element, który masz na kursorze myszy mo¿e byæ do³¹czony do pewnych przedmiotów, poprzez umieszczenie go w jednym z czterech slotów. (Jednak w tym przypadku, przedmioty do siebie nie pasuj¹.)",
-	L"Ten sektor nie zosta³ oczyszczony z wrogów!",
-	L"Wci¹¿ musisz daæ %s %s", 
-	L"%s dosta³(a) w g³owê!",
-	L"Przerwaæ walkê?",
-	L"Ta zmiana bêdzie trwa³a. Kontynuowaæ?",
-	L"%s ma wiêcej energii!",
-	L"%s poœlizgn¹³(nê³a) siê na kulkach!",
-	L"%s nie chwyci³(a) - %s!",
-	L"%s naprawi³(a) %s",
+	L"Element, ktÃ³ry masz na kursorze myszy moÅ¼e byÄ‡ doÅ‚Å¡czony do pewnych przedmiotÃ³w, poprzez umieszczenie go w jednym z czterech slotÃ³w.",
+	L"Element, ktÃ³ry masz na kursorze myszy moÅ¼e byÄ‡ doÅ‚Å¡czony do pewnych przedmiotÃ³w, poprzez umieszczenie go w jednym z czterech slotÃ³w. (Jednak w tym przypadku, przedmioty do siebie nie pasujÅ¡.)",
+	L"Ten sektor nie zostaÅ‚ oczyszczony z wrogÃ³w!",
+	L"WciÅ¡Å¼ musisz daÄ‡ %s %s", 
+	L"%s dostaÅ‚(a) w gÅ‚owÄ™!",
+	L"PrzerwaÄ‡ walkÄ™?",
+	L"Ta zmiana bÄ™dzie trwaÅ‚a. KontynuowaÄ‡?",
+	L"%s ma wiÄ™cej energii!",
+	L"%s poÂœlizgnÅ¡Å‚(nÄ™Å‚a) siÄ™ na kulkach!",
+	L"%s nie chwyciÅ‚(a) - %s!",
+	L"%s naprawiÅ‚(a) %s",
 	L"Przerwanie dla: ",
-	L"Poddaæ siê?",
+	L"PoddaÄ‡ siÄ™?",
 	L"Ta osoba nie chce twojej pomocy.",
-	L"NIE S¥DZÊ!",
-  	L"Aby podró¿owaæ helikopterem Skyridera, musisz najpierw zmieniæ przydzia³ najemników na POJAZD/HELIKOPTER.",
-	L"%s mia³(a) czas by prze³adowaæ tylko jedn¹ broñ",
-	L"Tura dzikich kotów",
+	L"NIE SÄ½DZÄ˜!",
+  	L"Aby podrÃ³Å¼owaÄ‡ helikopterem Skyridera, musisz najpierw zmieniÄ‡ przydziaÅ‚ najemnikÃ³w na POJAZD/HELIKOPTER.",
+	L"%s miaÅ‚(a) czas by przeÅ‚adowaÄ‡ tylko jednÅ¡ broÅ„",
+	L"Tura dzikich kotÃ³w",
 };
 
 
@@ -344,18 +344,18 @@ STR16 pAssignmentStrings[] =
 	L"Oddz. 18",
 	L"Oddz. 19",
 	L"Oddz. 20",
-	L"S³u¿ba", // on active duty
+	L"SÅ‚uÅ¼ba", // on active duty
 	L"Lekarz", // administering medical aid
 	L"Pacjent", // getting medical aid
 	L"Pojazd", // sitting around resting
-	L"Podró¿", // in transit - abbreviated form
+	L"PodrÃ³Å¼", // in transit - abbreviated form
 	L"Naprawa", // repairing
 	L"Praktyka", // training themselves  // ***************NEW******************** as of June 24. 1998
 	L"Samoobr.", // training a town to revolt // *************NEW******************** as of June 24, 1998
 	L"Instruk.", // training a teammate
-	L"Uczeñ", // being trained by someone else // *******************NEW************** as of June 24, 1998
-	L"Nie ¿yje", // dead
-	L"Obezw³.", // abbreviation for incapacitated
+	L"UczeÅ„", // being trained by someone else // *******************NEW************** as of June 24, 1998
+	L"Nie Å¼yje", // dead
+	L"ObezwÅ‚.", // abbreviation for incapacitated
 	L"Jeniec", // Prisoner of war - captured
 	L"Szpital", // patient in a hospital 
 	L"Pusty",	// Vehicle is empty
@@ -365,8 +365,8 @@ STR16 pAssignmentStrings[] =
 STR16 pMilitiaString[] =
 {
 	L"Samoobrona", // the title of the militia box
-	L"Bez przydzia³u", //the number of unassigned militia troops
-	L"Nie mo¿esz przemieszczaæ oddzia³ów samoobrony gdy nieprzyjaciel jest w sektorze!",
+	L"Bez przydziaÅ‚u", //the number of unassigned militia troops
+	L"Nie moÅ¼esz przemieszczaÄ‡ oddziaÅ‚Ã³w samoobrony gdy nieprzyjaciel jest w sektorze!",
 };
 
 
@@ -378,23 +378,23 @@ STR16 pMilitiaButtonString[] =
 
 STR16 pConditionStrings[] = 
 {
-	L"Doskona³y", //the state of a soldier .. excellent health
+	L"DoskonaÅ‚y", //the state of a soldier .. excellent health
 	L"Dobry", // good health
-	L"Doœæ dobry", // fair health
+	L"DoÂœÄ‡ dobry", // fair health
 	L"Ranny", // wounded health	
-	L"Zmêczony",//L"Wyczerpany", // tired
+	L"ZmÄ™czony",//L"Wyczerpany", // tired
 	L"Krwawi", // bleeding to death
 	L"Nieprzyt.", // knocked out 
-	L"Umieraj¹cy", // near death
-	L"Nie ¿yje", // dead
+	L"UmierajÅ¡cy", // near death
+	L"Nie Å¼yje", // dead
 };
 
 STR16 pEpcMenuStrings[] =
 {
-	L"S³u¿ba", // set merc on active duty
+	L"SÅ‚uÅ¼ba", // set merc on active duty
 	L"Pacjent", // set as a patient to receive medical aid
 	L"Pojazd", // tell merc to enter vehicle
-	L"Wypuœæ", // let the escorted character go off on their own
+	L"WypuÂœÄ‡", // let the escorted character go off on their own
 	L"Anuluj", // close this menu
 };
 
@@ -423,18 +423,18 @@ STR16 pPersonnelAssignmentStrings[] =
 	L"Oddz. 18",
 	L"Oddz. 19",
 	L"Oddz. 20",
-	L"S³u¿ba",
+	L"SÅ‚uÅ¼ba",
 	L"Lekarz",
 	L"Pacjent",
 	L"Pojazd",
-	L"Podró¿",
+	L"PodrÃ³Å¼",
 	L"Naprawa",
 	L"Praktyka",
-	L"Trenuje samoobronê",
+	L"Trenuje samoobronÄ™",
 	L"Instruktor",
-	L"Uczeñ",
-	L"Nie ¿yje",
-	L"Obezw³adniony",
+	L"UczeÅ„",
+	L"Nie Å¼yje",
+	L"ObezwÅ‚adniony",
 	L"Jeniec",
 	L"Szpital",
 	L"Pusty",	// Vehicle is empty
@@ -445,38 +445,38 @@ STR16 pPersonnelAssignmentStrings[] =
 
 STR16 pLongAssignmentStrings[] =
 {
-	L"Oddzia³ 1",
-	L"Oddzia³ 2",
-	L"Oddzia³ 3",
-	L"Oddzia³ 4",
-	L"Oddzia³ 5",
-	L"Oddzia³ 6",
-	L"Oddzia³ 7",
-	L"Oddzia³ 8",
-	L"Oddzia³ 9",
-	L"Oddzia³ 10",
-	L"Oddzia³ 11",
-	L"Oddzia³ 12",
-	L"Oddzia³ 13",
-	L"Oddzia³ 14",
-	L"Oddzia³ 15",
-	L"Oddzia³ 16",
-	L"Oddzia³ 17",
-	L"Oddzia³ 18",
-	L"Oddzia³ 19",
-	L"Oddzia³ 20",
-	L"S³u¿ba",
+	L"OddziaÅ‚ 1",
+	L"OddziaÅ‚ 2",
+	L"OddziaÅ‚ 3",
+	L"OddziaÅ‚ 4",
+	L"OddziaÅ‚ 5",
+	L"OddziaÅ‚ 6",
+	L"OddziaÅ‚ 7",
+	L"OddziaÅ‚ 8",
+	L"OddziaÅ‚ 9",
+	L"OddziaÅ‚ 10",
+	L"OddziaÅ‚ 11",
+	L"OddziaÅ‚ 12",
+	L"OddziaÅ‚ 13",
+	L"OddziaÅ‚ 14",
+	L"OddziaÅ‚ 15",
+	L"OddziaÅ‚ 16",
+	L"OddziaÅ‚ 17",
+	L"OddziaÅ‚ 18",
+	L"OddziaÅ‚ 19",
+	L"OddziaÅ‚ 20",
+	L"SÅ‚uÅ¼ba",
 	L"Lekarz",
 	L"Pacjent",
 	L"Pojazd",
-	L"W podró¿y",
+	L"W podrÃ³Å¼y",
 	L"Naprawa",
 	L"Praktyka",
-	L"Trenuj samoobronê",
-	L"Trenuj oddzia³",
-	L"Uczeñ",
-	L"Nie ¿yje",
-	L"Obezw³adniony",
+	L"Trenuj samoobronÄ™",
+	L"Trenuj oddziaÅ‚",
+	L"UczeÅ„",
+	L"Nie Å¼yje",
+	L"ObezwÅ‚adniony",
 	L"Jeniec",
 	L"W szpitalu",
 	L"Pusty",	// Vehicle is empty
@@ -489,8 +489,8 @@ STR16 pContractStrings[] =
 {
 	L"Opcje kontraktu:", 
 	L"", // a blank line, required
-	L"Zaproponuj 1 dzieñ", // offer merc a one day contract extension
-	L"Zaproponuj 1 tydzieñ", // 1 week
+	L"Zaproponuj 1 dzieÅ„", // offer merc a one day contract extension
+	L"Zaproponuj 1 tydzieÅ„", // 1 week
 	L"Zaproponuj 2 tygodnie", // 2 week
 	L"Zwolnij", // end merc's contract
 	L"Anuluj", // stop showing this menu
@@ -504,21 +504,21 @@ STR16 pPOWStrings[] =
 
 STR16 pLongAttributeStrings[] =
 {
-	L"SI£A", //The merc's strength attribute. Others below represent the other attributes.
-	L"ZRÊCZNOŒÆ",  
-	L"ZWINNOŒÆ", 
+	L"SIÅA", //The merc's strength attribute. Others below represent the other attributes.
+	L"ZRÄ˜CZNOÂŒÄ†",  
+	L"ZWINNOÂŒÄ†", 
 	L"INTELIGENCJA", 
-	L"UMIEJÊTNOŒCI STRZELECKIE",
+	L"UMIEJÄ˜TNOÂŒCI STRZELECKIE",
 	L"WIEDZA MEDYCZNA",
-	L"ZNAJOMOŒÆ MECHANIKI",
-	L"UMIEJÊTNOŒÆ DOWODZENIA",
-	L"ZNAJOMOŒÆ MATERIA£ÓW WYBUCHOWYCH",
-	L"POZIOM DOŒWIADCZENIA",
+	L"ZNAJOMOÂŒÄ† MECHANIKI",
+	L"UMIEJÄ˜TNOÂŒÄ† DOWODZENIA",
+	L"ZNAJOMOÂŒÄ† MATERIAÅÃ“W WYBUCHOWYCH",
+	L"POZIOM DOÂŒWIADCZENIA",
 };
 
 STR16 pInvPanelTitleStrings[] =
 {
-	L"Os³ona", // the armor rating of the merc
+	L"OsÅ‚ona", // the armor rating of the merc
 	L"Ekwip.", // the weight the merc is carrying
 	L"Kamuf.", // the merc's camouflage rating
 };
@@ -527,10 +527,10 @@ STR16 pShortAttributeStrings[] =
 {
 	L"Zwn", // the abbreviated version of : agility
 	L"Zrc", // dexterity
-	L"Si³", // strength
+	L"SiÅ‚", // strength
 	L"Dow", // leadership
 	L"Int", // wisdom
-	L"Doœ", // experience level
+	L"DoÂœ", // experience level
 	L"Str", // marksmanship skill
 	L"Wyb", // explosive skill
 	L"Mec", // mechanical skill
@@ -540,7 +540,7 @@ STR16 pShortAttributeStrings[] =
 
 STR16 pUpperLeftMapScreenStrings[] =
 {
-	L"Przydzia³", // the mercs current assignment // *********************NEW****************** as of June 24, 1998
+	L"PrzydziaÅ‚", // the mercs current assignment // *********************NEW****************** as of June 24, 1998
 	L"Kontrakt", // the contract info about the merc
 	L"Zdrowie", // the health level of the current merc
 	L"Morale", // the morale of the current merc
@@ -553,19 +553,19 @@ STR16 pTrainingStrings[] =
 	L"Praktyka", // tell merc to train self // ****************************NEW******************* as of June 24, 1998
 	L"Samoobrona", // tell merc to train town // *****************************NEW ****************** as of June 24, 1998
 	L"Instruktor", // tell merc to act as trainer
-	L"Uczeñ", // tell merc to be train by other // **********************NEW******************* as of June 24, 1998
+	L"UczeÅ„", // tell merc to be train by other // **********************NEW******************* as of June 24, 1998
 };
 
 STR16 pGuardMenuStrings[] =
 {
 	L"Limit ognia:", // the allowable rate of fire for a merc who is guarding
-	L" Agresywny ogieñ", // the merc can be aggressive in their choice of fire rates
-	L" Oszczêdzaj amunicjê", // conserve ammo 
-	L" Strzelaj w ostatecznoœci", // fire only when the merc needs to 
+	L" Agresywny ogieÅ„", // the merc can be aggressive in their choice of fire rates
+	L" OszczÄ™dzaj amunicjÄ™", // conserve ammo 
+	L" Strzelaj w ostatecznoÂœci", // fire only when the merc needs to 
 	L"Inne opcje:", // other options available to merc
-	L" Mo¿e siê wycofaæ", // merc can retreat
-	L" Mo¿e szukaæ schronienia",  // merc is allowed to seek cover
-	L" Mo¿e pomagaæ partnerom", // merc can assist teammates
+	L" MoÅ¼e siÄ™ wycofaÄ‡", // merc can retreat
+	L" MoÅ¼e szukaÄ‡ schronienia",  // merc is allowed to seek cover
+	L" MoÅ¼e pomagaÄ‡ partnerom", // merc can assist teammates
 	L"OK", // done with this menu
 	L"Anuluj", // cancel this menu
 };
@@ -575,20 +575,20 @@ STR16 pGuardMenuStrings[] =
 STR16 pOtherGuardMenuStrings[] =
 {
 	L"Limit ognia:",
-	L" *Agresywny ogieñ*",
-	L" *Oszczêdzaj amunicjê*",
-	L" *Strzelaj w ostatecznoœci*",
+	L" *Agresywny ogieÅ„*",
+	L" *OszczÄ™dzaj amunicjÄ™*",
+	L" *Strzelaj w ostatecznoÂœci*",
 	L"Inne opcje:",
-	L" *Mo¿e siê wycofaæ*",
-	L" *Mo¿e szukaæ schronienia*",
-	L" *Mo¿e pomagaæ partnerom*",
+	L" *MoÅ¼e siÄ™ wycofaÄ‡*",
+	L" *MoÅ¼e szukaÄ‡ schronienia*",
+	L" *MoÅ¼e pomagaÄ‡ partnerom*",
 	L"OK",
 	L"Anuluj",
 };
 
 STR16 pAssignMenuStrings[] =
 {
-	L"S³u¿ba", // merc is on active duty
+	L"SÅ‚uÅ¼ba", // merc is on active duty
 	L"Lekarz", // the merc is acting as a doctor
 	L"Pacjent", // the merc is receiving medical attention
 	L"Pojazd", // the merc is in a vehicle
@@ -599,15 +599,15 @@ STR16 pAssignMenuStrings[] =
 
 STR16 pRemoveMercStrings[] =
 {
-	L"Usuñ najemnika", // remove dead merc from current team
+	L"UsuÅ„ najemnika", // remove dead merc from current team
 	L"Anuluj",
 };
 
 STR16 pAttributeMenuStrings[] =
 {
-	L"Si³a",
-	L"Zrêcznoœæ",
-	L"Zwinnoœæ",
+	L"SiÅ‚a",
+	L"ZrÄ™cznoÂœÄ‡",
+	L"ZwinnoÂœÄ‡",
 	L"Zdrowie",
 	L"Um. strzeleckie",
 	L"Wiedza med.",
@@ -622,33 +622,33 @@ STR16 pTrainingMenuStrings[] =
  L"Praktyka", // train yourself //****************************NEW************************** as of June 24, 1998
  L"Samoobrona", // train the town // ****************************NEW ************************* as of June 24, 1998
  L"Instruktor", // train your teammates // *******************NEW************************** as of June 24, 1998
- L"Uczeñ",  // be trained by an instructor //***************NEW************************** as of June 24, 1998
+ L"UczeÅ„",  // be trained by an instructor //***************NEW************************** as of June 24, 1998
  L"Anuluj", // cancel this menu
 };
 
 
 STR16 pSquadMenuStrings[] =
 {
-	L"Oddzia³  1",
-	L"Oddzia³  2",
-	L"Oddzia³  3",
-	L"Oddzia³  4",
-	L"Oddzia³  5",
-	L"Oddzia³  6",
-	L"Oddzia³  7",
-	L"Oddzia³  8",
-	L"Oddzia³  9",
-	L"Oddzia³ 10",
-	L"Oddzia³ 11",
-	L"Oddzia³ 12",
-	L"Oddzia³ 13",
-	L"Oddzia³ 14",
-	L"Oddzia³ 15",
-	L"Oddzia³ 16",
-	L"Oddzia³ 17",
-	L"Oddzia³ 18",
-	L"Oddzia³ 19",
-	L"Oddzia³ 20",
+	L"OddziaÅ‚  1",
+	L"OddziaÅ‚  2",
+	L"OddziaÅ‚  3",
+	L"OddziaÅ‚  4",
+	L"OddziaÅ‚  5",
+	L"OddziaÅ‚  6",
+	L"OddziaÅ‚  7",
+	L"OddziaÅ‚  8",
+	L"OddziaÅ‚  9",
+	L"OddziaÅ‚ 10",
+	L"OddziaÅ‚ 11",
+	L"OddziaÅ‚ 12",
+	L"OddziaÅ‚ 13",
+	L"OddziaÅ‚ 14",
+	L"OddziaÅ‚ 15",
+	L"OddziaÅ‚ 16",
+	L"OddziaÅ‚ 17",
+	L"OddziaÅ‚ 18",
+	L"OddziaÅ‚ 19",
+	L"OddziaÅ‚ 20",
 	L"Anuluj",
 };
 
@@ -660,52 +660,52 @@ STR16 pPersonnelTitle[] =
 STR16 pPersonnelScreenStrings[] =
 {
 	L"Zdrowie: ", // health of merc
-	L"Zwinnoœæ: ", 
-	L"Zrêcznoœæ: ",
- 	L"Si³a: ",
+	L"ZwinnoÂœÄ‡: ", 
+	L"ZrÄ™cznoÂœÄ‡: ",
+ 	L"SiÅ‚a: ",
  	L"Um. dowodzenia: ",
  	L"Inteligencja: ",
- 	L"Poziom doœw.: ", // experience level
+ 	L"Poziom doÂœw.: ", // experience level
  	L"Um. strzeleckie: ", 
  	L"Zn. mechaniki: ",
  	L"Zn. mat. wybuchowych: ",
  	L"Wiedza medyczna: ",
- 	L"Zastaw na ¿ycie: ", // amount of medical deposit put down on the merc
- 	L"Bie¿¹cy kontrakt: ", // cost of current contract
- 	L"Liczba zabójstw: ", // number of kills by merc
+ 	L"Zastaw na Å¼ycie: ", // amount of medical deposit put down on the merc
+ 	L"BieÅ¼Å¡cy kontrakt: ", // cost of current contract
+ 	L"Liczba zabÃ³jstw: ", // number of kills by merc
  	L"Liczba asyst: ", // number of assists on kills by merc
  	L"Dzienny koszt:", // daily cost of merc
- 	L"Ogólny koszt:", // total cost of merc
- 	L"Wartoœæ kontraktu:", // cost of current contract
- 	L"Us³ugi ogó³em", // total service rendered by merc
- 	L"Zaleg³a kwota", // amount left on MERC merc to be paid
- 	L"Celnoœæ:", // percentage of shots that hit target
- 	L"Iloœæ walk:", // number of battles fought
+ 	L"OgÃ³lny koszt:", // total cost of merc
+ 	L"WartoÂœÄ‡ kontraktu:", // cost of current contract
+ 	L"UsÅ‚ugi ogÃ³Å‚em", // total service rendered by merc
+ 	L"ZalegÅ‚a kwota", // amount left on MERC merc to be paid
+ 	L"CelnoÂœÄ‡:", // percentage of shots that hit target
+ 	L"IloÂœÄ‡ walk:", // number of battles fought
  	L"Ranny(a):", // number of times merc has been wounded
- 	L"Umiejêtnoœci:",
- 	L"Brak umiêjêtnoœci",
+ 	L"UmiejÄ™tnoÂœci:",
+ 	L"Brak umiÄ™jÄ™tnoÂœci",
 };
 
 
 //These string correspond to enums used in by the SkillTrait enums in SoldierProfileType.h
 STR16 gzMercSkillText[] = 
 {
-	L"Brak umiejêtnoœci",
-	L"Otwieranie zamków",
-	L"Walka wrêcz",
+	L"Brak umiejÄ™tnoÂœci",
+	L"Otwieranie zamkÃ³w",
+	L"Walka wrÄ™cz",
 	L"Elektronika",
 	L"Nocne operacje",
 	L"Rzucanie",
 	L"Szkolenie",
-	L"Ciê¿ka broñ",
-	L"Broñ automatyczna",
-	L"Skradanie siê",
-	L"Oburêcznoœæ",
-	L"Kradzie¿e",
+	L"CiÄ™Å¼ka broÅ„",
+	L"BroÅ„ automatyczna",
+	L"Skradanie siÄ™",
+	L"OburÄ™cznoÂœÄ‡",
+	L"KradzieÅ¼e",
 	L"Sztuki walki",
-	L"Broñ bia³a",
+	L"BroÅ„ biaÅ‚a",
 	L"Snajper",
-	L"Kamufla¿",
+	L"KamuflaÅ¼",
 	L"(Eksp.)",
 };
 
@@ -714,25 +714,25 @@ STR16 gzMercSkillText[] =
 
 STR16 pTacticalPopupButtonStrings[] =
 {
-	L"W|stañ/IdŸ",
-	L"S|chyl siê/IdŸ",
-	L"Wstañ/Biegnij (|R)",
-	L"|Padnij/Czo³gaj siê",
+	L"W|staÅ„/IdÂŸ",
+	L"S|chyl siÄ™/IdÂŸ",
+	L"WstaÅ„/Biegnij (|R)",
+	L"|Padnij/CzoÅ‚gaj siÄ™",
 	L"Patrz (|L)",
 	L"Akcja",
 	L"Rozmawiaj",
 	L"Zbadaj (|C|t|r|l)",
 
 	// Pop up door menu
-	L"Otwórz",
-	L"Poszukaj pu³apek",
-	L"U¿yj wytrychów",
-	L"Wywa¿",
-	L"Usuñ pu³apki",
+	L"OtwÃ³rz",
+	L"Poszukaj puÅ‚apek",
+	L"UÅ¼yj wytrychÃ³w",
+	L"WywaÅ¼",
+	L"UsuÅ„ puÅ‚apki",
 	L"Zamknij na klucz",
-	L"Otwórz kluczem",
-	L"U¿yj ³adunku wybuchowego",
-	L"U¿yj ³omu",
+	L"OtwÃ³rz kluczem",
+	L"UÅ¼yj Å‚adunku wybuchowego",
+	L"UÅ¼yj Å‚omu",
 	L"Anuluj (|E|s|c)",
 	L"Zamknij"
 };
@@ -741,10 +741,10 @@ STR16 pTacticalPopupButtonStrings[] =
 
 STR16 pDoorTrapStrings[] =
 {
-	L"nie posiada ¿adnych pu³apek",
-	L"ma za³o¿ony ³adunek wybuchowy",
-	L"jest pod napiêciem",
-	L"posiada syrenê alarmow¹",
+	L"nie posiada Å¼adnych puÅ‚apek",
+	L"ma zaÅ‚oÅ¼ony Å‚adunek wybuchowy",
+	L"jest pod napiÄ™ciem",
+	L"posiada syrenÄ™ alarmowÅ¡",
 	L"posiada dyskretny alarm"
 };
 
@@ -752,8 +752,8 @@ STR16 pDoorTrapStrings[] =
 
 STR16 pContractExtendStrings[] =
 {
-	L"dzieñ",
-	L"tydzieñ",
+	L"dzieÅ„",
+	L"tydzieÅ„",
 	L"dwa tygodnie",
 };
 
@@ -761,12 +761,12 @@ STR16 pContractExtendStrings[] =
 
 STR16 pMapScreenMouseRegionHelpText[] =
 {
-	L"Wybór postaci",
-	L"Przydzia³ najemnika",
-	L"Nanieœ trasê podró¿y",
+	L"WybÃ³r postaci",
+	L"PrzydziaÅ‚ najemnika",
+	L"NanieÂœ trasÄ™ podrÃ³Å¼y",
 	L"Kontrakt najemnika",
-	L"Usuñ najemnika",
-	L"Œpij", // *****************************NEW********************* as of June 29, 1998
+	L"UsuÅ„ najemnika",
+	L"ÂŒpij", // *****************************NEW********************* as of June 29, 1998
 };
 
 // volumes of noises 
@@ -774,26 +774,26 @@ STR16 pMapScreenMouseRegionHelpText[] =
 STR16 pNoiseVolStr[] =
 {
 	L"CICHY",
-	L"WYRANY",
-	L"G£OŒNY",
-	L"BARDZO G£OŒNY"
+	L"WYRAÂNY",
+	L"GÅOÂŒNY",
+	L"BARDZO GÅOÂŒNY"
 };
 
 // types of noises 
 
 STR16 pNoiseTypeStr[] = // OBSOLETE
 {
-	L"NIEOKREŒLONY DWIÊK",
-	L"ODG£OS RUCHU",
-	L"ODG£OS SKRZYPNIÊCIA",
+	L"NIEOKREÂŒLONY DÂWIÄ˜K",
+	L"ODGÅOS RUCHU",
+	L"ODGÅOS SKRZYPNIÄ˜CIA",
 	L"PLUSK",
-	L"ODG£OS UDERZENIA",
-	L"STRZA£",
+	L"ODGÅOS UDERZENIA",
+	L"STRZAÅ",
 	L"WYBUCH",
 	L"KRZYK",
-	L"ODG£OS UDERZENIA",
-	L"ODG£OS UDERZENIA",
-	L"£OMOT",
+	L"ODGÅOS UDERZENIA",
+	L"ODGÅOS UDERZENIA",
+	L"ÅOMOT",
 	L"TRZASK"
 };
 
@@ -801,14 +801,14 @@ STR16 pNoiseTypeStr[] = // OBSOLETE
 
 STR16 pDirectionStr[] = 
 {
-	L"P£N-WSCH",
+	L"PÅN-WSCH",
 	L"WSCH",
-	L"P£D-WSCH",
-	L"P£D",
-	L"P£D-ZACH",
+	L"PÅD-WSCH",
+	L"PÅD",
+	L"PÅD-ZACH",
 	L"ZACH",
-	L"P£N-ZACH",
-	L"P£N"
+	L"PÅN-ZACH",
+	L"PÅN"
 };
 
 // These are the different terrain types. 
@@ -823,7 +823,7 @@ STR16 pLandTypeStrings[] =
 	L"Las",	 
 	L"Bagno",
 	L"Woda",	
-	L"Wzgórza",
+	L"WzgÃ³rza",
 	L"Teren nieprzejezdny",
 	L"Rzeka",	//river from north to south
 	L"Rzeka",	//river from east to west
@@ -836,9 +836,9 @@ STR16 pLandTypeStrings[] =
 	L"Las, droga",
 	L"Tropiki, droga",
 	L"Las, droga",
-	L"Wybrze¿e",
-	L"Góry, droga",
-	L"Wybrze¿e, droga",
+	L"WybrzeÅ¼e",
+	L"GÃ³ry, droga",
+	L"WybrzeÅ¼e, droga",
 	L"Pustynia, droga",
 	L"Bagno, droga",
 	L"Las, Rakiety Z-P",
@@ -851,9 +851,9 @@ STR16 pLandTypeStrings[] =
 	L"Lotnisko w Drassen",
 	L"Lotnisko w Medunie",
 	L"Rakiety Z-P",
-	L"Kryjówka rebeliantów", //The rebel base underground in sector A10
+	L"KryjÃ³wka rebeliantÃ³w", //The rebel base underground in sector A10
 	L"Tixa - Lochy",	//The basement of the Tixa Prison (J9)
-	L"Gniazdo stworzeñ",	//Any mine sector with creatures in it
+	L"Gniazdo stworzeÅ„",	//Any mine sector with creatures in it
 	L"Orta - Piwnica",	//The basement of Orta (K4)
 	L"Tunel",				//The tunnel access from the maze garden in Meduna 
 						//leading to the secret shelter underneath the palace
@@ -864,18 +864,18 @@ STR16 pLandTypeStrings[] =
 STR16 gpStrategicString[] =
 {
 	L"",	//Unused
-	L"%s wykryto w sektorze %c%d, a inny oddzia³ jest w drodze.",	//STR_DETECTED_SINGULAR
-	L"%s wykryto w sektorze %c%d, a inne oddzia³y s¹ w drodze.",	//STR_DETECTED_PLURAL
-	L"Chcesz skoordynowaæ jednoczesne przybycie?",			//STR_COORDINATE
+	L"%s wykryto w sektorze %c%d, a inny oddziaÅ‚ jest w drodze.",	//STR_DETECTED_SINGULAR
+	L"%s wykryto w sektorze %c%d, a inne oddziaÅ‚y sÅ¡ w drodze.",	//STR_DETECTED_PLURAL
+	L"Chcesz skoordynowaÄ‡ jednoczesne przybycie?",			//STR_COORDINATE
 
 	//Dialog strings for enemies.
 
-	L"Wróg daje ci szansê siê poddaæ.",			//STR_ENEMY_SURRENDER_OFFER
-	L"Wróg schwyta³ resztê twoich nieprzytomnych najemników.",	//STR_ENEMY_CAPTURED
+	L"WrÃ³g daje ci szansÄ™ siÄ™ poddaÄ‡.",			//STR_ENEMY_SURRENDER_OFFER
+	L"WrÃ³g schwytaÅ‚ resztÄ™ twoich nieprzytomnych najemnikÃ³w.",	//STR_ENEMY_CAPTURED
 
 	//The text that goes on the autoresolve buttons							
 
-	L"Odwrót", 		//The retreat button				//STR_AR_RETREAT_BUTTON
+	L"OdwrÃ³t", 		//The retreat button				//STR_AR_RETREAT_BUTTON
 	L"OK",		//The done button				//STR_AR_DONE_BUTTON
 
 	//The headers are for the autoresolve type (MUST BE UPPERCASE)
@@ -887,17 +887,17 @@ STR16 gpStrategicString[] =
 
 	//The battle ending conditions						
 
-	L"ZWYCIÊSTWO!",								//STR_AR_OVER_VICTORY
-	L"PORA¯KA!",								//STR_AR_OVER_DEFEAT
+	L"ZWYCIÄ˜STWO!",								//STR_AR_OVER_VICTORY
+	L"PORAÅ»KA!",								//STR_AR_OVER_DEFEAT
 	L"KAPITULACJA!",							//STR_AR_OVER_SURRENDERED
 	L"NIEWOLA!",								//STR_AR_OVER_CAPTURED
-	L"ODWRÓT!",								//STR_AR_OVER_RETREATED
+	L"ODWRÃ“T!",								//STR_AR_OVER_RETREATED
 
 	//These are the labels for the different types of enemies we fight in autoresolve.
 
 	L"Samoobrona",							//STR_AR_MILITIA_NAME,
 	L"Elity",								//STR_AR_ELITE_NAME,
-	L"¯o³nierze",								//STR_AR_TROOP_NAME,
+	L"Å»oÅ‚nierze",								//STR_AR_TROOP_NAME,
 	L"Administrator",							//STR_AR_ADMINISTRATOR_NAME,
 	L"Stworzenie",								//STR_AR_CREATURE_NAME,
 
@@ -907,9 +907,9 @@ STR16 gpStrategicString[] =
 
 	//Labels for status of merc if retreating.  (UPPERCASE)			
 
-	L"WYCOFA£(A) SIÊ",								//STR_AR_MERC_RETREATED,
-	L"WYCOFUJE SIÊ",								//STR_AR_MERC_RETREATING,
-	L"WYCOFAJ SIÊ",								//STR_AR_MERC_RETREAT,
+	L"WYCOFAÅ(A) SIÄ˜",								//STR_AR_MERC_RETREATED,
+	L"WYCOFUJE SIÄ˜",								//STR_AR_MERC_RETREATING,
+	L"WYCOFAJ SIÄ˜",								//STR_AR_MERC_RETREAT,
 
 	//PRE BATTLE INTERFACE STRINGS 
 	//Goes on the three buttons in the prebattle interface.  The Auto resolve button represents
@@ -917,22 +917,22 @@ STR16 gpStrategicString[] =
 	//These strings must be short (two lines -- 6-8 chars per line)
 
 	L"Rozst. autom.",							//STR_PB_AUTORESOLVE_BTN,
-	L"IdŸ do sektora",							//STR_PB_GOTOSECTOR_BTN,
+	L"IdÂŸ do sektora",							//STR_PB_GOTOSECTOR_BTN,
 	L"Wycof. ludzi",							//STR_PB_RETREATMERCS_BTN,
 
 	//The different headers(titles) for the prebattle interface.
 	L"STARCIE Z WROGIEM",							//STR_PB_ENEMYENCOUNTER_HEADER,
 	L"INWAZJA WROGA",							//STR_PB_ENEMYINVASION_HEADER, // 30
 	L"ZASADZKA WROGA",
-	L"WEJŒCIE DO WROGIEGO SEKTORA",				
-	L"ATAK STWORÓW",
-	L"ATAK DZIKICH KOTÓW",							//STR_PB_BLOODCATAMBUSH_HEADER
-	L"WEJŒCIE DO LEGOWISKA DZIKICH KOTÓW",			//STR_PB_ENTERINGBLOODCATLAIR_HEADER
+	L"WEJÂŒCIE DO WROGIEGO SEKTORA",				
+	L"ATAK STWORÃ“W",
+	L"ATAK DZIKICH KOTÃ“W",							//STR_PB_BLOODCATAMBUSH_HEADER
+	L"WEJÂŒCIE DO LEGOWISKA DZIKICH KOTÃ“W",			//STR_PB_ENTERINGBLOODCATLAIR_HEADER
 
 	//Various single words for direct translation.  The Civilians represent the civilian
 	//militia occupying the sector being attacked.  Limited to 9-10 chars
 
-	L"Po³o¿enie",
+	L"PoÅ‚oÅ¼enie",
 	L"Wrogowie",
 	L"Najemnicy",
 	L"Samoobrona",
@@ -947,62 +947,62 @@ STR16 gpStrategicString[] =
 	//TACTICAL PLACEMENT USER INTERFACE STRINGS
 	//The four buttons 
 
-	L"Wyczyœæ",
+	L"WyczyÂœÄ‡",
 	L"Rozprosz",
 	L"Zgrupuj",
 	L"OK",
 
 	//The help text for the four buttons.  Use \n to denote new line (just like enter).
 
-	L"Kasuje wszystkie pozy|cje najemników, \ni pozwala ponownie je wprowadziæ.", 
-	L"Po ka¿dym naciœniêciu rozmie|szcza\nlosowo twoich najemników.",
-	L"|Grupuje najemników w wybranym miejscu.",
-	L"Kliknij ten klawisz gdy ju¿ rozmieœcisz \nswoich najemników. (|E|n|t|e|r)",
-	L"Musisz rozmieœciæ wszystkich najemników \nzanim rozpoczniesz walkê.",
+	L"Kasuje wszystkie pozy|cje najemnikÃ³w, \ni pozwala ponownie je wprowadziÄ‡.", 
+	L"Po kaÅ¼dym naciÂœniÄ™ciu rozmie|szcza\nlosowo twoich najemnikÃ³w.",
+	L"|Grupuje najemnikÃ³w w wybranym miejscu.",
+	L"Kliknij ten klawisz gdy juÅ¼ rozmieÂœcisz \nswoich najemnikÃ³w. (|E|n|t|e|r)",
+	L"Musisz rozmieÂœciÄ‡ wszystkich najemnikÃ³w \nzanim rozpoczniesz walkÄ™.",
 
 	//Various strings (translate word for word)
 
 	L"Sektor",
-	L"Wybierz pocz¹tkowe pozycje",
+	L"Wybierz poczÅ¡tkowe pozycje",
 
 	//Strings used for various popup message boxes.  Can be as long as desired.
 
-	L"To miejsce nie jest zbyt dobre. Jest niedostêpne. Spróbuj gdzie indziej.",
-	L"Rozmieœæ swoich najemników na podœwietlonej czêœci mapy.",
+	L"To miejsce nie jest zbyt dobre. Jest niedostÄ™pne. SprÃ³buj gdzie indziej.",
+	L"RozmieÂœÄ‡ swoich najemnikÃ³w na podÂœwietlonej czÄ™Âœci mapy.",
 
 	//This message is for mercs arriving in sectors.  Ex:  Red has arrived in sector A9.
 	//Don't uppercase first character, or add spaces on either end.
 
-	L"przyby³(a) do sektora", 
+	L"przybyÅ‚(a) do sektora", 
 
 	//These entries are for button popup help text for the prebattle interface.  All popup help
 	//text supports the use of \n to denote new line.  Do not use spaces before or after the \n.
-	L"|Automatycznie prowadzi walkê za ciebie,\nnie ³aduj¹c planszy.",
-	L"Atakuj¹c sektor wroga nie mo¿na automatycznie rozstrzygn¹æ walki.",
-	L"Wejœcie do s|ektora by nawi¹zaæ walkê z wrogiem.",
-	L"Wycofuje oddzia³ do s¹siedniego sekto|ra.",				//singular version
-	L"Wycofuje wszystkie oddzia³y do s¹siedniego sekto|ra.", //multiple groups with same previous sector
+	L"|Automatycznie prowadzi walkÄ™ za ciebie,\nnie Å‚adujÅ¡c planszy.",
+	L"AtakujÅ¡c sektor wroga nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki.",
+	L"WejÂœcie do s|ektora by nawiÅ¡zaÄ‡ walkÄ™ z wrogiem.",
+	L"Wycofuje oddziaÅ‚ do sÅ¡siedniego sekto|ra.",				//singular version
+	L"Wycofuje wszystkie oddziaÅ‚y do sÅ¡siedniego sekto|ra.", //multiple groups with same previous sector
 
 	//various popup messages for battle conditions.  
 
 	//%c%d is the sector -- ex:  A9
-	L"Nieprzyjaciel zatakowa³ oddzia³y samoobrony w sektorze %c%d.",
+	L"Nieprzyjaciel zatakowaÅ‚ oddziaÅ‚y samoobrony w sektorze %c%d.",
 	//%c%d is the sector -- ex:  A9
-	L"Stworzenia zaatakowa³y oddzia³y samoobrony w sektorze %c%d.",
+	L"Stworzenia zaatakowaÅ‚y oddziaÅ‚y samoobrony w sektorze %c%d.",
 	//1st %d refers to the number of civilians eaten by monsters,  %c%d is the sector -- ex:  A9
 	//Note:  the minimum number of civilians eaten will be two.
-	L"Stworzenia zatakowa³y i zabi³y %d cywili w sektorze %s.",
+	L"Stworzenia zatakowaÅ‚y i zabiÅ‚y %d cywili w sektorze %s.",
 	//%c%d is the sector -- ex:  A9
-	L"Nieprzyjaciel zatakowa³ twoich najemników w sektorze %s.  ¯aden z twoich najemników nie mo¿e walczyæ!",
+	L"Nieprzyjaciel zatakowaÅ‚ twoich najemnikÃ³w w sektorze %s.  Å»aden z twoich najemnikÃ³w nie moÅ¼e walczyÄ‡!",
 	//%c%d is the sector -- ex:  A9
-	L"Stworzenia zatakowa³y twoich najemników w sektorze %s.  ¯aden z twoich najemników nie mo¿e walczyæ!",
+	L"Stworzenia zatakowaÅ‚y twoich najemnikÃ³w w sektorze %s.  Å»aden z twoich najemnikÃ³w nie moÅ¼e walczyÄ‡!",
 
 };
 
 STR16 gpGameClockString[] = 
 {
 	//This is the day represented in the game clock.  Must be very short, 4 characters max.
-	L"Dzieñ",	
+	L"DzieÅ„",	
 };
 
 //When the merc finds a key, they can get a description of it which 
@@ -1019,9 +1019,9 @@ INT16		gWeaponStatsDesc[][ 14 ] =
 {
 	L"Waga (%s):", // change kg to another weight unit if your standard is not kilograms, and TELL SIR-TECH!
 	L"Stan:",
-	L"Iloœæ:", 		// Number of bullets left in a magazine
+	L"IloÂœÄ‡:", 		// Number of bullets left in a magazine
 	L"Zas.:",		// Range
-	L"Si³a:",		// Damage
+	L"SiÅ‚a:",		// Damage
     L"PA:",                 // abbreviation for Action Points
 	L"",
 	L"=",
@@ -1033,14 +1033,14 @@ INT16		gWeaponStatsDesc[][ 14 ] =
 INT16 gMoneyStatsDesc[][ 13 ] =
 {
 	L"Kwota",
-	L"Pozosta³o:", //this is the overall balance
+	L"PozostaÅ‚o:", //this is the overall balance
 	L"Kwota",
-	L"Wydzieliæ:", // the amount he wants to separate from the overall balance to get two piles of money
+	L"WydzieliÄ‡:", // the amount he wants to separate from the overall balance to get two piles of money
 
-	L"Bie¿¹ce",
+	L"BieÅ¼Å¡ce",
 	L"Saldo",
 	L"Kwota do",
-	L"podjêcia",
+	L"podjÄ™cia",
 };
 
 //The health of various creatures, enemies, characters in the game. The numbers following each are for comment
@@ -1048,13 +1048,13 @@ INT16 gMoneyStatsDesc[][ 13 ] =
 
 UINT16 zHealthStr[][13] =
 {
-	L"UMIERAJ¥CY",		//	>= 0
+	L"UMIERAJÄ½CY",		//	>= 0
 	L"KRYTYCZNY", 		//	>= 15
 	L"KIEPSKI",		//	>= 30
 	L"RANNY",    	//	>= 45
 	L"ZDROWY",    	//	>= 60
 	L"SILNY",     	// 	>= 75
-	L"DOSKONA£Y",		// 	>= 90
+	L"DOSKONAÅY",		// 	>= 90
 };
 
 STR16	gzMoneyAmounts[6] = 
@@ -1081,10 +1081,10 @@ INT16		gzConsLabel[10] =
 //Conversation options a player has when encountering an NPC
 UINT16 zTalkMenuStrings[6][ SMALL_STRING_LENGTH ] =
 {
-	L"Powtórz", 	//meaning "Repeat yourself"
-	L"PrzyjaŸnie",		//approach in a friendly
-	L"Bezpoœrednio",		//approach directly - let's get down to business
-	L"GroŸnie",		//approach threateningly - talk now, or I'll blow your face off
+	L"PowtÃ³rz", 	//meaning "Repeat yourself"
+	L"PrzyjaÂŸnie",		//approach in a friendly
+	L"BezpoÂœrednio",		//approach directly - let's get down to business
+	L"GroÂŸnie",		//approach threateningly - talk now, or I'll blow your face off
 	L"Daj",		
 	L"Rekrutuj",
 };
@@ -1112,7 +1112,7 @@ STR16 pVehicleStrings[] =
  L"Hummer", // a hummer jeep/truck -- military vehicle
  L"Furgonetka z lodami",
  L"Jeep",
- L"Czo³g",
+ L"CzoÅ‚g",
  L"Helikopter",
 };
 
@@ -1122,7 +1122,7 @@ STR16 pShortVehicleStrings[] =
 	L"Hummer",			// the HMVV
 	L"Furg.",
 	L"Jeep",
-	L"Czo³g",
+	L"CzoÅ‚g",
 	L"Heli.", 				// the helicopter
 };
 
@@ -1132,7 +1132,7 @@ STR16	zVehicleName[] =
 	L"Hummer",		//a military jeep. This is a brand name.
 	L"Furg.",			// Ice cream truck
 	L"Jeep",
-	L"Czo³g",
+	L"CzoÅ‚g",
 	L"Heli.", 		//an abbreviation for Helicopter
 };
 
@@ -1142,11 +1142,11 @@ STR16	zVehicleName[] =
 UINT16 TacticalStr[][ MED_STRING_LENGTH ] =
 {
 	L"Nalot",
-	L"Udzieliæ automatycznie pierwszej pomocy?",
+	L"UdzieliÄ‡ automatycznie pierwszej pomocy?",
 	
 	// CAMFIELD NUKE THIS and add quote #66.
 	
-	L"%s zauwa¿y³(a) ¿e dostawa jest niekompletna.",
+	L"%s zauwaÅ¼yÅ‚(a) Å¼e dostawa jest niekompletna.",
 	
 	// The %s is a string from pDoorTrapStrings
 	
@@ -1156,183 +1156,183 @@ UINT16 TacticalStr[][ MED_STRING_LENGTH ] =
 	L"Niepowodzenie.",
 	L"Sukces!",
 	L"Niepowodzenie.",
-	L"Zamek nie ma pu³apek.",
+	L"Zamek nie ma puÅ‚apek.",
 	L"Sukces!",
 	// The %s is a merc name
 	L"%s nie posiada odpowiedniego klucza.",
-	L"Zamek zosta³ rozbrojony.",
-	L"Zamek nie ma pu³apek.",
-	L"Zamkniête.",
+	L"Zamek zostaÅ‚ rozbrojony.",
+	L"Zamek nie ma puÅ‚apek.",
+	L"ZamkniÄ™te.",
 	L"DRZWI",
 	L"ZABEZP.",
-	L"ZAMKNIÊTE",
+	L"ZAMKNIÄ˜TE",
 	L"OTWARTE",
 	L"ROZWALONE",
-	L"Tu jest prze³¹cznik. W³¹czyæ go?",
-	L"Rozbroiæ pu³apkê?",
+	L"Tu jest przeÅ‚Å¡cznik. WÅ‚Å¡czyÄ‡ go?",
+	L"RozbroiÄ‡ puÅ‚apkÄ™?",
 	L"Poprz...",
 	L"Nast...",
-	L"Wiêcej...",
+	L"WiÄ™cej...",
 
 	// In the next 2 strings, %s is an item name
 
-	L"%s - po³o¿ono na ziemi.",
+	L"%s - poÅ‚oÅ¼ono na ziemi.",
 	L"%s - przekazano do - %s.",
 
 	// In the next 2 strings, %s is a name
 
-	L"%s otrzyma³(a) ca³¹ zap³atê.",
-	L"%s - nale¿noœæ wobec niej/niego wynosi jeszcze %d.",
-	L"Wybierz czêstotliwoœæ sygna³u detonuj¹cego:",  	//in this case, frequency refers to a radio signal
+	L"%s otrzymaÅ‚(a) caÅ‚Å¡ zapÅ‚atÄ™.",
+	L"%s - naleÅ¼noÂœÄ‡ wobec niej/niego wynosi jeszcze %d.",
+	L"Wybierz czÄ™stotliwoÂœÄ‡ sygnaÅ‚u detonujÅ¡cego:",  	//in this case, frequency refers to a radio signal
 	L"Ile tur do eksplozji:",	//how much time, in turns, until the bomb blows
-	L"Ustaw czêstotliwoœæ zdalnego detonatora:", 	//in this case, frequency refers to a radio signal
-	L"Rozbroiæ pu³apkê?",
-	L"Usun¹æ niebiesk¹ flagê?",
-	L"Umieœciæ tutaj niebiesk¹ flagê?",
-	L"Koñcz¹ca tura",
+	L"Ustaw czÄ™stotliwoÂœÄ‡ zdalnego detonatora:", 	//in this case, frequency refers to a radio signal
+	L"RozbroiÄ‡ puÅ‚apkÄ™?",
+	L"UsunÅ¡Ä‡ niebieskÅ¡ flagÄ™?",
+	L"UmieÂœciÄ‡ tutaj niebieskÅ¡ flagÄ™?",
+	L"KoÅ„czÅ¡ca tura",
 
 	// In the next string, %s is a name. Stance refers to way they are standing.
 
-	L"Na pewno chcesz zaatakowaæ - %s?",
-	L"Pojazdy nie mog¹ zmieniaæ pozycji.",
-	L"Robot nie mo¿e zmieniaæ pozycji.",
+	L"Na pewno chcesz zaatakowaÄ‡ - %s?",
+	L"Pojazdy nie mogÅ¡ zmieniaÄ‡ pozycji.",
+	L"Robot nie moÅ¼e zmieniaÄ‡ pozycji.",
 
 	// In the next 3 strings, %s is a name
 
-	L"%s nie mo¿e zmieniæ pozycji w tym miejscu.",
-	L"%s nie mo¿e tu otrzymaæ pierwszej pomocy.",	
+	L"%s nie moÅ¼e zmieniÄ‡ pozycji w tym miejscu.",
+	L"%s nie moÅ¼e tu otrzymaÄ‡ pierwszej pomocy.",	
 	L"%s nie potrzebuje pierwszej pomocy.",
-	L"Nie mo¿na ruszyæ w to miejsce.",
-	L"Oddzia³ jest ju¿ kompletny. Nie ma miejsca dla nowych rekrutów.",	//there's no room for a recruit on the player's team
+	L"Nie moÅ¼na ruszyÄ‡ w to miejsce.",
+	L"OddziaÅ‚ jest juÅ¼ kompletny. Nie ma miejsca dla nowych rekrutÃ³w.",	//there's no room for a recruit on the player's team
 
 	// In the next string, %s is a name
 
-	L"%s pracuje ju¿ dla ciebie.",
+	L"%s pracuje juÅ¼ dla ciebie.",
 
 	// Here %s is a name and %d is a number
 
-	L"%s - nale¿noœæ wobec niej/niego wynosi %d$.",
+	L"%s - naleÅ¼noÂœÄ‡ wobec niej/niego wynosi %d$.",
 
 	// In the next string, %s is a name
 
-	L"%s - Eskortowaæ t¹ osobê?",
+	L"%s - EskortowaÄ‡ tÅ¡ osobÄ™?",
 
 	// In the next string, the first %s is a name and the second %s is an amount of money (including $ sign)
 
-	L"%s - Zatrudniæ t¹ osobê za %s dziennie?",
+	L"%s - ZatrudniÄ‡ tÅ¡ osobÄ™ za %s dziennie?",
 
 	// This line is used repeatedly to ask player if they wish to participate in a boxing match. 
 
-	L"Chcesz walczyæ?",
+	L"Chcesz walczyÄ‡?",
 
 	// In the next string, the first %s is an item name and the 
 	// second %s is an amount of money (including $ sign)
 
-	L"%s - Kupiæ to za %s?",
+	L"%s - KupiÄ‡ to za %s?",
 
 	// In the next string, %s is a name
 
-	L"%s jest pod eskort¹ oddzia³u %d.",
+	L"%s jest pod eskortÅ¡ oddziaÅ‚u %d.",
 
 	// These messages are displayed during play to alert the player to a particular situation
 
-	L"ZACIÊTA",					//weapon is jammed.
+	L"ZACIÄ˜TA",					//weapon is jammed.
 	L"Robot potrzebuje amunicji kaliber %s.",		//Robot is out of ammo
-	L"Rzuciæ tam? To niemo¿liwe.",		//Merc can't throw to the destination he selected
+	L"RzuciÄ‡ tam? To niemoÅ¼liwe.",		//Merc can't throw to the destination he selected
 
 	// These are different buttons that the player can turn on and off.
 
-	L"Skradanie siê (|Z)",
+	L"Skradanie siÄ™ (|Z)",
 	L"Ekran |Mapy",
 	L"Koniec tury (|D)",
 	L"Rozmowa",
 	L"Wycisz",
-	L"Pozycja do góry (|P|g|U|p)",
+	L"Pozycja do gÃ³ry (|P|g|U|p)",
 	L"Poziom kursora (|T|a|b)",
-	L"Wspinaj siê / Zeskocz",
-	L"Pozycja w dó³ (|P|g|D|n)",
-	L"Badaæ (|C|t|r|l)",
+	L"Wspinaj siÄ™ / Zeskocz",
+	L"Pozycja w dÃ³Å‚ (|P|g|D|n)",
+	L"BadaÄ‡ (|C|t|r|l)",
 	L"Poprzedni najemnik",
-	L"Nastêpny najemnik (|S|p|a|c|j|a)",
+	L"NastÄ™pny najemnik (|S|p|a|c|j|a)",
 	L"|Opcje",
-	L"Ci¹g³y ogieñ (|B)",
-	L"Spójrz/Obróæ siê (|L)",
+	L"CiÅ¡gÅ‚y ogieÅ„ (|B)",
+	L"SpÃ³jrz/ObrÃ³Ä‡ siÄ™ (|L)",
 	L"Zdrowie: %d/%d\nEnergia: %d/%d\nMorale: %s",
 	L"Co?",					//this means "what?"
 	L"Kont",					//an abbrieviation for "Continued"
-	L"%s ma w³¹czone potwierdzenia g³osowe.",
-	L"%s ma wy³¹czone potwierdzenia g³osowe.",
+	L"%s ma wÅ‚Å¡czone potwierdzenia gÅ‚osowe.",
+	L"%s ma wyÅ‚Å¡czone potwierdzenia gÅ‚osowe.",
 	L"Stan: %d/%d\nPaliwo: %d/%d",
-	L"Wysi¹dŸ z pojazdu" ,
-	L"Zmieñ oddzia³ ( |S|h|i|f|t |S|p|a|c|j|a )",
-	L"ProwadŸ",
+	L"WysiÅ¡dÂŸ z pojazdu" ,
+	L"ZmieÅ„ oddziaÅ‚ ( |S|h|i|f|t |S|p|a|c|j|a )",
+	L"ProwadÂŸ",
 	L"N/D",						//this is an acronym for "Not Applicable."
-	L"U¿yj ( Walka wrêcz )",
-	L"U¿yj ( Broni palnej )",
-	L"U¿yj ( Broni bia³ej )",
-	L"U¿yj ( Mat. wybuchowych )",
-	L"U¿yj ( Apteczki )",
-	L"(£ap)",
-	L"(Prze³aduj)",
+	L"UÅ¼yj ( Walka wrÄ™cz )",
+	L"UÅ¼yj ( Broni palnej )",
+	L"UÅ¼yj ( Broni biaÅ‚ej )",
+	L"UÅ¼yj ( Mat. wybuchowych )",
+	L"UÅ¼yj ( Apteczki )",
+	L"(Åap)",
+	L"(PrzeÅ‚aduj)",
 	L"(Daj)",
-	L"%s - pu³apka zosta³a uruchomiona.",
-	L"%s przyby³(a) na miejsce.",
-	L"%s straci³(a) wszystkie Punkty Akcji.",
-	L"%s jest nieosi¹galny(na).",
-	L"%s ma ju¿ za³o¿one opatrunki.",
-	L"%s nie ma banda¿y.",
-	L"Wróg w sektorze!",
-	L"Nie ma wroga w zasiêgu wzroku.",
-	L"Zbyt ma³o Punktów Akcji.",
-	L"Nikt nie u¿ywa zdalnego sterowania.",
-	L"Ci¹g³y ogieñ opró¿ni³ magazynek!",
-	L"¯O£NIERZ",
-	L"STWÓR",
+	L"%s - puÅ‚apka zostaÅ‚a uruchomiona.",
+	L"%s przybyÅ‚(a) na miejsce.",
+	L"%s straciÅ‚(a) wszystkie Punkty Akcji.",
+	L"%s jest nieosiÅ¡galny(na).",
+	L"%s ma juÅ¼ zaÅ‚oÅ¼one opatrunki.",
+	L"%s nie ma bandaÅ¼y.",
+	L"WrÃ³g w sektorze!",
+	L"Nie ma wroga w zasiÄ™gu wzroku.",
+	L"Zbyt maÅ‚o PunktÃ³w Akcji.",
+	L"Nikt nie uÅ¼ywa zdalnego sterowania.",
+	L"CiÅ¡gÅ‚y ogieÅ„ oprÃ³Å¼niÅ‚ magazynek!",
+	L"Å»OÅNIERZ",
+	L"STWÃ“R",
 	L"SAMOOBRONA",
 	L"CYWIL",
-	L"Wyjœcie z sektora",
+	L"WyjÂœcie z sektora",
 	L"OK",
 	L"Anuluj",
 	L"Wybrany najemnik",
 	L"Wszyscy najemnicy w oddziale",
-	L"IdŸ do sektora",
-	L"Otwórz mapê",
-	L"Nie mo¿na opuœciæ sektora z tej strony.",
+	L"IdÂŸ do sektora",
+	L"OtwÃ³rz mapÄ™",
+	L"Nie moÅ¼na opuÂœciÄ‡ sektora z tej strony.",
 	L"%s jest zbyt daleko.",
-	L"Usuñ korony drzew",
-	L"Poka¿ korony drzew",
+	L"UsuÅ„ korony drzew",
+	L"PokaÅ¼ korony drzew",
 	L"WRONA",				//Crow, as in the large black bird
 	L"SZYJA",
-	L"G£OWA",
-	L"TU£ÓW",
+	L"GÅOWA",
+	L"TUÅÃ“W",
 	L"NOGI",
-	L"Powiedzieæ królowej to, co chce wiedzieæ?",
-	L"Wzór odcisku palca pobrany",
-	L"Niew³aœciwy wzór odcisku palca. Broñ bezu¿yteczna.",
-	L"Cel osi¹gniêty",
+	L"PowiedzieÄ‡ krÃ³lowej to, co chce wiedzieÄ‡?",
+	L"WzÃ³r odcisku palca pobrany",
+	L"NiewÅ‚aÂœciwy wzÃ³r odcisku palca. BroÅ„ bezuÅ¼yteczna.",
+	L"Cel osiÅ¡gniÄ™ty",
 	L"Droga zablokowana",
-	L"Wp³ata/Podjêcie pieniêdzy",		//Help text over the $ button on the Single Merc Panel 
+	L"WpÅ‚ata/PodjÄ™cie pieniÄ™dzy",		//Help text over the $ button on the Single Merc Panel 
 	L"Nikt nie potrzebuje pierwszej pomocy.",
 	L"Zac.",						// Short form of JAMMED, for small inv slots
-	L"Nie mo¿na siê tam dostaæ.",					// used ( now ) for when we click on a cliff
-	L"Przejœcie zablokowane. Czy chcesz zamieniæ siê miejscami z t¹ osob¹?",
-	L"Osoba nie chce siê przesun¹æ.",
+	L"Nie moÅ¼na siÄ™ tam dostaÄ‡.",					// used ( now ) for when we click on a cliff
+	L"PrzejÂœcie zablokowane. Czy chcesz zamieniÄ‡ siÄ™ miejscami z tÅ¡ osobÅ¡?",
+	L"Osoba nie chce siÄ™ przesunÅ¡Ä‡.",
 	// In the following message, '%s' would be replaced with a quantity of money (e.g. $200)
-	L"Zgadzasz siê zap³aciæ %s?",
-	L"Zgadzasz siê na darmowe leczenie?",
-	L"Zgadasz siê na ma³¿eñstwo z Darylem?",
-	L"Kó³ko na klucze",
-	L"Nie mo¿esz tego zrobiæ z eskortowan¹ osob¹.",
-	L"Oszczêdziæ Krotta?",
-	L"Poza zasiêgiem broni",
-	L"Górnik",
-	L"Pojazdem mo¿na podró¿owaæ tylko pomiêdzy sektorami",
-	L"Teraz nie mo¿na automatycznie udzieliæ pierwszej pomocy",
-	L"Przejœcie zablokowane dla - %s",
-	L"Twoi najemnicy, schwytani przez ¿o³nierzy Deidranny, s¹ tutaj uwiêzieni!",
-	L"Zamek zosta³ trafiony",
-	L"Zamek zosta³ zniszczony",
-	L"Ktoœ inny majstruje przy tych drzwiach.",
+	L"Zgadzasz siÄ™ zapÅ‚aciÄ‡ %s?",
+	L"Zgadzasz siÄ™ na darmowe leczenie?",
+	L"Zgadasz siÄ™ na maÅ‚Å¼eÅ„stwo z Darylem?",
+	L"KÃ³Å‚ko na klucze",
+	L"Nie moÅ¼esz tego zrobiÄ‡ z eskortowanÅ¡ osobÅ¡.",
+	L"OszczÄ™dziÄ‡ Krotta?",
+	L"Poza zasiÄ™giem broni",
+	L"GÃ³rnik",
+	L"Pojazdem moÅ¼na podrÃ³Å¼owaÄ‡ tylko pomiÄ™dzy sektorami",
+	L"Teraz nie moÅ¼na automatycznie udzieliÄ‡ pierwszej pomocy",
+	L"PrzejÂœcie zablokowane dla - %s",
+	L"Twoi najemnicy, schwytani przez Å¼oÅ‚nierzy Deidranny, sÅ¡ tutaj uwiÄ™zieni!",
+	L"Zamek zostaÅ‚ trafiony",
+	L"Zamek zostaÅ‚ zniszczony",
+	L"KtoÂœ inny majstruje przy tych drzwiach.",
 	L"Stan: %d/%d\nPaliwo: %d/%d",
   L"%s nie widzi - %s.",  // Cannot see person trying to talk to
 };
@@ -1341,52 +1341,52 @@ UINT16 TacticalStr[][ MED_STRING_LENGTH ] =
 STR16 pExitingSectorHelpText[] =
 {
 	//Helptext for the "Go to Sector" checkbox button, that explains what will happen when the box is checked.
-	L"Jeœli zaznaczysz tê opcjê, to s¹siedni sektor zostanie natychmiast za³adowany.",
-	L"Jeœli zaznaczysz tê opcjê, to na czas podró¿y pojawi siê automatycznie ekran mapy.",
+	L"JeÂœli zaznaczysz tÄ™ opcjÄ™, to sÅ¡siedni sektor zostanie natychmiast zaÅ‚adowany.",
+	L"JeÂœli zaznaczysz tÄ™ opcjÄ™, to na czas podrÃ³Å¼y pojawi siÄ™ automatycznie ekran mapy.",
 
 	//If you attempt to leave a sector when you have multiple squads in a hostile sector.
-	L"Ten sektor jest okupowany przez wroga i nie mo¿esz tu zostawiæ najemników.\nMusisz uporaæ siê z t¹ sytuacj¹ zanim za³adujesz inny sektor.",
+	L"Ten sektor jest okupowany przez wroga i nie moÅ¼esz tu zostawiÄ‡ najemnikÃ³w.\nMusisz uporaÄ‡ siÄ™ z tÅ¡ sytuacjÅ¡ zanim zaÅ‚adujesz inny sektor.",
 
 	//Because you only have one squad in the sector, and the "move all" option is checked, the "go to sector" option is locked to on. 
 	//The helptext explains why it is locked.
-	L"Gdy wyprowadzisz swoich pozosta³ych najemników z tego sektora,\ns¹siedni sektor zostanie automatycznie za³adowany.",
-	L"Gdy wyprowadzisz swoich pozosta³ych najemników z tego sektora,\nto na czas podró¿y pojawi siê automatycznie ekran mapy.",
+	L"Gdy wyprowadzisz swoich pozostaÅ‚ych najemnikÃ³w z tego sektora,\nsÅ¡siedni sektor zostanie automatycznie zaÅ‚adowany.",
+	L"Gdy wyprowadzisz swoich pozostaÅ‚ych najemnikÃ³w z tego sektora,\nto na czas podrÃ³Å¼y pojawi siÄ™ automatycznie ekran mapy.",
 
 	//If an EPC is the selected merc, it won't allow the merc to leave alone as the merc is being escorted.  The "single" button is disabled.
-	L"%s jest pod eskort¹ twoich najemników i nie mo¿e bez nich opuœciæ tego sektora.",
+	L"%s jest pod eskortÅ¡ twoich najemnikÃ³w i nie moÅ¼e bez nich opuÂœciÄ‡ tego sektora.",
 
 	//If only one conscious merc is left and is selected, and there are EPCs in the squad, the merc will be prohibited from leaving alone.
 	//There are several strings depending on the gender of the merc and how many EPCs are in the squad.
 	//DO NOT USE THE NEWLINE HERE AS IT IS USED FOR BOTH HELPTEXT AND SCREEN MESSAGES!
-	L"%s nie mo¿e sam opuœciæ tego sektora, gdy¿ %s jest pod jego eskort¹.", //male singular
-	L"%s nie mo¿e sama opuœciæ tego sektora, gdy¿ %s jest pod jej eskort¹.", //female singular
-	L"%s nie mo¿e sam opuœciæ tego sektora, gdy¿ eskortuje inne osoby.", //male plural
-	L"%s nie mo¿e sama opuœciæ tego sektora, gdy¿ eskortuje inne osoby.", //female plural
+	L"%s nie moÅ¼e sam opuÂœciÄ‡ tego sektora, gdyÅ¼ %s jest pod jego eskortÅ¡.", //male singular
+	L"%s nie moÅ¼e sama opuÂœciÄ‡ tego sektora, gdyÅ¼ %s jest pod jej eskortÅ¡.", //female singular
+	L"%s nie moÅ¼e sam opuÂœciÄ‡ tego sektora, gdyÅ¼ eskortuje inne osoby.", //male plural
+	L"%s nie moÅ¼e sama opuÂœciÄ‡ tego sektora, gdyÅ¼ eskortuje inne osoby.", //female plural
 
 	//If one or more of your mercs in the selected squad aren't in range of the traversal area, then the  "move all" option is disabled,
 	//and this helptext explains why.
-	L"Wszyscy twoi najemnicy musz¹ byæ w pobli¿u,\naby oddzia³ móg³ siê przemieszczaæ.",
+	L"Wszyscy twoi najemnicy muszÅ¡ byÄ‡ w pobliÅ¼u,\naby oddziaÅ‚ mÃ³gÅ‚ siÄ™ przemieszczaÄ‡.",
 
 	L"", //UNUSED
 
 	//Standard helptext for single movement.  Explains what will happen (splitting the squad)
-	L"Jeœli zaznaczysz tê opcjê, %s bêdzie podró¿owaæ w pojedynkê\ni automatycznie znajdzie siê w osobnym oddziale.",
+	L"JeÂœli zaznaczysz tÄ™ opcjÄ™, %s bÄ™dzie podrÃ³Å¼owaÄ‡ w pojedynkÄ™\ni automatycznie znajdzie siÄ™ w osobnym oddziale.",
 
 	//Standard helptext for all movement.  Explains what will happen (moving the squad)
-	L"Jeœli zaznaczysz tê opcjê, aktualnie\nwybrany oddzia³ opuœci ten sektor.",
+	L"JeÂœli zaznaczysz tÄ™ opcjÄ™, aktualnie\nwybrany oddziaÅ‚ opuÂœci ten sektor.",
 
 	//This strings is used BEFORE the "exiting sector" interface is created.  If you have an EPC selected and you attempt to tactically
 	//traverse the EPC while the escorting mercs aren't near enough (or dead, dying, or unconscious), this message will appear and the
 	//"exiting sector" interface will not appear.  This is just like the situation where
 	//This string is special, as it is not used as helptext.  Do not use the special newline character (\n) for this string.
-	L"%s jest pod eskort¹ twoich najemników i nie mo¿e bez nich opuœciæ tego sektora. Aby opuœciæ sektor twoi najemnicy musz¹ byæ w pobli¿u.",
+	L"%s jest pod eskortÅ¡ twoich najemnikÃ³w i nie moÅ¼e bez nich opuÂœciÄ‡ tego sektora. Aby opuÂœciÄ‡ sektor twoi najemnicy muszÅ¡ byÄ‡ w pobliÅ¼u.",
 };
 
 
 
 STR16 pRepairStrings[] = 
 {
-	L"Wyposa¿enie", 		// tell merc to repair items in inventory
+	L"WyposaÅ¼enie", 		// tell merc to repair items in inventory
 	L"Baza rakiet Z-P", // tell merc to repair SAM site - SAM is an acronym for Surface to Air Missile
 	L"Anuluj", 		// cancel this menu
 	L"Robot", 		// repair the robot
@@ -1409,31 +1409,31 @@ STR16 sPreStatBuildString[] =
 STR16 sStatGainStrings[] =
 {
 	L"zdrowia.",
-	L"zwinnoœci.",
-	L"zrêcznoœci.",
+	L"zwinnoÂœci.",
+	L"zrÄ™cznoÂœci.",
 	L"inteligencji.",
-	L"umiejêtnoœci medycznych.",
-	L"umiejêtnoœci w dziedzinie materia³ów wybuchowych.",
-	L"umiejêtnoœci w dziedzinie mechaniki.",
-	L"umiejêtnoœci strzeleckich.",
-	L"doœwiadczenia.",
-	L"si³y.",
-	L"umiejêtnoœci dowodzenia.",
+	L"umiejÄ™tnoÂœci medycznych.",
+	L"umiejÄ™tnoÂœci w dziedzinie materiaÅ‚Ã³w wybuchowych.",
+	L"umiejÄ™tnoÂœci w dziedzinie mechaniki.",
+	L"umiejÄ™tnoÂœci strzeleckich.",
+	L"doÂœwiadczenia.",
+	L"siÅ‚y.",
+	L"umiejÄ™tnoÂœci dowodzenia.",
 };
 
 
 STR16 pHelicopterEtaStrings[] =
 {
-	L"Ca³kowita trasa:  ",// total distance for helicopter to travel
+	L"CaÅ‚kowita trasa:  ",// total distance for helicopter to travel
 	L" Bezp.:   ", 			// distance to travel to destination
 	L" Niebezp.:", 			// distance to return from destination to airport
-	L"Ca³kowity koszt: ", 		// total cost of trip by helicopter
+	L"CaÅ‚kowity koszt: ", 		// total cost of trip by helicopter
 	L"PCP:  ", 			// ETA is an acronym for "estimated time of arrival" 
-	L"Helikopter ma ma³o paliwa i musi wyl¹dowaæ na terenie wroga.",	// warning that the sector the helicopter is going to use for refueling is under enemy control -> 
-  L"Pasa¿erowie: ",
-  L"Wybór Skyridera lub pasa¿erów?",
+	L"Helikopter ma maÅ‚o paliwa i musi wylÅ¡dowaÄ‡ na terenie wroga.",	// warning that the sector the helicopter is going to use for refueling is under enemy control -> 
+  L"PasaÅ¼erowie: ",
+  L"WybÃ³r Skyridera lub pasaÅ¼erÃ³w?",
   L"Skyrider",
-  L"Pasa¿erowie",
+  L"PasaÅ¼erowie",
 };
 
 STR16 sMapLevelString[] =
@@ -1443,7 +1443,7 @@ STR16 sMapLevelString[] =
 
 STR16 gsLoyalString[] =
 {
-	L"Lojalnoœci", 			// the loyalty rating of a town ie : Loyal 53%
+	L"LojalnoÂœci", 			// the loyalty rating of a town ie : Loyal 53%
 };
 
 
@@ -1451,7 +1451,7 @@ STR16 gsLoyalString[] =
 
 STR16 gsUndergroundString[] =
 {
-	L"nie mo¿na wydawaæ rozkazów podró¿y pod ziemi¹.", 
+	L"nie moÅ¼na wydawaÄ‡ rozkazÃ³w podrÃ³Å¼y pod ziemiÅ¡.", 
 };
 
 STR16 gsTimeStrings[] =
@@ -1468,8 +1468,8 @@ STR16 sFacilitiesStrings[] =
 {
 	L"Brak", 		
 	L"Szpital",  		 
-	L"Przemys³",
-	L"Wiêzienie",
+	L"PrzemysÅ‚",
+	L"WiÄ™zienie",
 	L"Baza wojskowa",
 	L"Lotnisko",
 	L"Strzelnica",		// a field for soldiers to practise their shooting skills
@@ -1489,13 +1489,13 @@ STR16 pwTownInfoStrings[] =
 {
 	L"Rozmiar",					// 0 // size of the town in sectors
 	L"", 						// blank line, required
-	L"Pod kontrol¹", 					// how much of town is controlled
+	L"Pod kontrolÅ¡", 					// how much of town is controlled
 	L"Brak", 					// none of this town
-	L"Przynale¿na kopalnia", 				// mine associated with this town
-	L"Lojalnoœæ",					// 5 // the loyalty level of this town
+	L"PrzynaleÅ¼na kopalnia", 				// mine associated with this town
+	L"LojalnoÂœÄ‡",					// 5 // the loyalty level of this town
 	L"Wyszkolonych", 					// the forces in the town trained by the player
 	L"",
-	L"G³ówne obiekty", 				// main facilities in this town
+	L"GÅ‚Ã³wne obiekty", 				// main facilities in this town
 	L"Poziom", 					// the training level of civilians in this town
 	L"Szkolenie cywili",				// 10 // state of civilian training in town
 	L"Samoobrona", 					// the state of the trained civilians in the town
@@ -1507,30 +1507,30 @@ STR16 pwMineStrings[] =
 {
 	L"Kopalnia",						// 0
 	L"Srebro",
-	L"Z³oto",
+	L"ZÅ‚oto",
 	L"Dzienna produkcja",
-	L"Mo¿liwa produkcja",
+	L"MoÅ¼liwa produkcja",
 	L"Opuszczona",				// 5
-	L"Zamkniêta",
+	L"ZamkniÄ™ta",
 	L"Na wyczerpaniu",
 	L"Produkuje",
 	L"Stan",
 	L"Tempo produkcji",
-	L"Typ z³o¿a",				// 10
+	L"Typ zÅ‚oÅ¼a",				// 10
 	L"Kontrola miasta",
-	L"Lojalnoœæ miasta",
-//	L"Górnicy",
+	L"LojalnoÂœÄ‡ miasta",
+//	L"GÃ³rnicy",
 };
 
 // blank sector strings
 
 STR16 pwMiscSectorStrings[] =
 {
-	L"Si³y wroga",
+	L"SiÅ‚y wroga",
 	L"Sektor",
-	L"Przedmiotów",
+	L"PrzedmiotÃ³w",
 	L"Nieznane",
-	L"Pod kontrol¹",
+	L"Pod kontrolÅ¡",
 	L"Tak",
 	L"Nie",
 };
@@ -1540,17 +1540,17 @@ STR16 pwMiscSectorStrings[] =
 STR16 pMapInventoryErrorString[] =
 {
 	L"%s jest zbyt daleko.",	//Merc is in sector with item but not close enough
-	L"Nie mo¿na wybraæ tego najemnika.",  //MARK CARTER
-	L"%s nie mo¿e st¹d zabraæ tego przedmiotu, gdy¿ nie jest w tym sektorze.",
-	L"Podczas walki nie mo¿na korzystaæ z tego panelu.",
-	L"Podczas walki nie mo¿na korzystaæ z tego panelu.",
-	L"%s nie mo¿e tu zostawiæ tego przedmiotu, gdy¿ nie jest w tym sektorze.",
+	L"Nie moÅ¼na wybraÄ‡ tego najemnika.",  //MARK CARTER
+	L"%s nie moÅ¼e stÅ¡d zabraÄ‡ tego przedmiotu, gdyÅ¼ nie jest w tym sektorze.",
+	L"Podczas walki nie moÅ¼na korzystaÄ‡ z tego panelu.",
+	L"Podczas walki nie moÅ¼na korzystaÄ‡ z tego panelu.",
+	L"%s nie moÅ¼e tu zostawiÄ‡ tego przedmiotu, gdyÅ¼ nie jest w tym sektorze.",
 };
 
 STR16 pMapInventoryStrings[] =
 {
-	L"Po³o¿enie", 			// sector these items are in
-	L"Razem przedmiotów", 		// total number of items in sector
+	L"PoÅ‚oÅ¼enie", 			// sector these items are in
+	L"Razem przedmiotÃ³w", 		// total number of items in sector
 };
 
 
@@ -1558,24 +1558,24 @@ STR16 pMapInventoryStrings[] =
 
 STR16 pMapScreenFastHelpTextList[] =
 {
-	L"Kliknij w kolumnie 'Przydz.', aby przydzieliæ najemnika do innego oddzia³u lub wybranego zadania.",
-	L"Aby wyznaczyæ najemnikowi cel w innym sektorze, kliknij pole w kolumnie 'Cel'.",
-	L"Gdy najemnicy otrzymaj¹ ju¿ rozkaz przemieszczenia siê, kompresja czasu pozwala im szybciej dotrzeæ na miejsce.",
-	L"Kliknij lewym klawiszem aby wybraæ sektor. Kliknij ponownie aby wydaæ najemnikom rozkazy przemieszczenia, lub kliknij prawym klawiszem by uzyskaæ informacje o sektorze.",
-	L"Naciœnij w dowolnym momencie klawisz 'H' by wyœwietliæ okienko pomocy.",
-	L"Próbny tekst",
-	L"Próbny tekst",
-	L"Próbny tekst",
-	L"Próbny tekst",
-	L"Niewiele mo¿esz tu zrobiæ, dopóki najemnicy nie przylec¹ do Arulco. Gdy ju¿ zbierzesz swój oddzia³, kliknij przycisk Kompresji Czasu, w prawym dolnym rogu. W ten sposób twoi najemnicy szybciej dotr¹ na miejsce.",
+	L"Kliknij w kolumnie 'Przydz.', aby przydzieliÄ‡ najemnika do innego oddziaÅ‚u lub wybranego zadania.",
+	L"Aby wyznaczyÄ‡ najemnikowi cel w innym sektorze, kliknij pole w kolumnie 'Cel'.",
+	L"Gdy najemnicy otrzymajÅ¡ juÅ¼ rozkaz przemieszczenia siÄ™, kompresja czasu pozwala im szybciej dotrzeÄ‡ na miejsce.",
+	L"Kliknij lewym klawiszem aby wybraÄ‡ sektor. Kliknij ponownie aby wydaÄ‡ najemnikom rozkazy przemieszczenia, lub kliknij prawym klawiszem by uzyskaÄ‡ informacje o sektorze.",
+	L"NaciÂœnij w dowolnym momencie klawisz 'H' by wyÂœwietliÄ‡ okienko pomocy.",
+	L"PrÃ³bny tekst",
+	L"PrÃ³bny tekst",
+	L"PrÃ³bny tekst",
+	L"PrÃ³bny tekst",
+	L"Niewiele moÅ¼esz tu zrobiÄ‡, dopÃ³ki najemnicy nie przylecÅ¡ do Arulco. Gdy juÅ¼ zbierzesz swÃ³j oddziaÅ‚, kliknij przycisk Kompresji Czasu, w prawym dolnym rogu. W ten sposÃ³b twoi najemnicy szybciej dotrÅ¡ na miejsce.",
 };
 
 // movement menu text
 
 STR16 pMovementMenuStrings[] =
 {
-	L"Przemieœæ najemników", 	// title for movement box 
-	L"Nanieœ trasê podró¿y", 		// done with movement menu, start plotting movement
+	L"PrzemieÂœÄ‡ najemnikÃ³w", 	// title for movement box 
+	L"NanieÂœ trasÄ™ podrÃ³Å¼y", 		// done with movement menu, start plotting movement
 	L"Anuluj", 		// cancel this menu
 	L"Inni",		// title for group of mercs not on squads nor in vehicles
 };
@@ -1584,23 +1584,23 @@ STR16 pMovementMenuStrings[] =
 STR16 pUpdateMercStrings[] =
 {
 	L"Oj:", 			// an error has occured
-	L"Wygas³ kontrakt najemników:", 	// this pop up came up due to a merc contract ending
-	L"Najemnicy wype³nili zadanie:", // this pop up....due to more than one merc finishing assignments
-	L"Najemnicy wrócili do pracy:", // this pop up ....due to more than one merc waking up and returing to work
-	L"Odpoczywaj¹cy najemnicy:", // this pop up ....due to more than one merc being tired and going to sleep
-	L"Wkrótce wygasn¹ kontrakty:", 	// this pop up came up due to a merc contract ending
+	L"WygasÅ‚ kontrakt najemnikÃ³w:", 	// this pop up came up due to a merc contract ending
+	L"Najemnicy wypeÅ‚nili zadanie:", // this pop up....due to more than one merc finishing assignments
+	L"Najemnicy wrÃ³cili do pracy:", // this pop up ....due to more than one merc waking up and returing to work
+	L"OdpoczywajÅ¡cy najemnicy:", // this pop up ....due to more than one merc being tired and going to sleep
+	L"WkrÃ³tce wygasnÅ¡ kontrakty:", 	// this pop up came up due to a merc contract ending
 };
 
 // map screen map border buttons help text
 
 STR16 pMapScreenBorderButtonHelpText[] =
 {
-	L"Poka¿ miasta (|W)",
-	L"Poka¿ kopalnie (|M)",
-	L"Poka¿ oddzia³y i wrogów (|T)",
-	L"Poka¿ przestrzeñ powietrzn¹ (|A)",
-	L"Poka¿ przedmioty (|I)",
-	L"Poka¿ samoobronê i wrogów (|Z)",
+	L"PokaÅ¼ miasta (|W)",
+	L"PokaÅ¼ kopalnie (|M)",
+	L"PokaÅ¼ oddziaÅ‚y i wrogÃ³w (|T)",
+	L"PokaÅ¼ przestrzeÅ„ powietrznÅ¡ (|A)",
+	L"PokaÅ¼ przedmioty (|I)",
+	L"PokaÅ¼ samoobronÄ™ i wrogÃ³w (|Z)",
 };
 
 
@@ -1611,25 +1611,25 @@ STR16 pMapScreenBottomFastHelp[] =
 	L"|Opcje",
 	L"Kompresja czasu (|+)", 	// time compress more
 	L"Kompresja czasu (|-)", 	// time compress less
-	L"Poprzedni komunikat (|S|t|r|z|a|³|k|a |w |g|ó|r|ê)\nPoprzednia strona (|P|g|U|p)", 	// previous message in scrollable list
-	L"Nastêpny komunikat (|S|t|r|z|a|³|k|a |w |d|ó|³)\nNastêpna strona (|P|g|D|n)", 	// next message in the scrollable list
-	L"W³¹cz/Wy³¹cz kompresjê czasu (|S|p|a|c|j|a)",	// start/stop time compression
+	L"Poprzedni komunikat (|S|t|r|z|a|Å‚|k|a |w |g|Ã³|r|Ä™)\nPoprzednia strona (|P|g|U|p)", 	// previous message in scrollable list
+	L"NastÄ™pny komunikat (|S|t|r|z|a|Å‚|k|a |w |d|Ã³|Å‚)\nNastÄ™pna strona (|P|g|D|n)", 	// next message in the scrollable list
+	L"WÅ‚Å¡cz/WyÅ‚Å¡cz kompresjÄ™ czasu (|S|p|a|c|j|a)",	// start/stop time compression
 };
 
 STR16 pMapScreenBottomText[] =
 {
-	L"Saldo dostêpne", 	// current balance in player bank account
+	L"Saldo dostÄ™pne", 	// current balance in player bank account
 };
 
 STR16 pMercDeadString[] =
 {
-	L"%s nie ¿yje.",
+	L"%s nie Å¼yje.",
 };
 
 
 STR16 pDayStrings[] =
 {
-	L"Dzieñ",
+	L"DzieÅ„",
 };
 
 // the list of email sender names
@@ -1696,14 +1696,14 @@ STR16 pSenderNameList[] =
 STR16 pTraverseStrings[] =
 {
   L"Poprzedni",
-  L"Nastêpny",
+  L"NastÄ™pny",
 };
 
 // new mail notify string 
 
 STR16 pNewMailStrings[] =
 {
- L"Masz now¹ pocztê...",
+ L"Masz nowÅ¡ pocztÄ™...",
 };
 
 
@@ -1711,8 +1711,8 @@ STR16 pNewMailStrings[] =
 
 STR16 pDeleteMailStrings[] =
 {
- L"Usun¹æ wiadomoœæ?",
- L"Usun¹æ wiadomoœæ?",
+ L"UsunÅ¡Ä‡ wiadomoÂœÄ‡?",
+ L"UsunÅ¡Ä‡ wiadomoÂœÄ‡?",
 };
 
 
@@ -1722,7 +1722,7 @@ STR16 pEmailHeaders[] =
 {
  	L"Od:",
  	L"Temat:",
- 	L"Dzieñ:",
+ 	L"DzieÅ„:",
 };
 
 // email titlebar text
@@ -1736,22 +1736,22 @@ STR16 pEmailTitleText[] =
 // the financial screen strings
 STR16 pFinanceTitle[] =
 {
-	L"Ksiêgowy Plus",		//the name we made up for the financial program in the game
+	L"KsiÄ™gowy Plus",		//the name we made up for the financial program in the game
 };
 
 STR16 pFinanceSummary[] =
 {
-	L"Wyp³ata:", 				// credit (subtract from) to player's account
-	L"Wp³ata:", 				// debit (add to) to player's account
-	L"Wczorajsze wp³ywy:",
-	L"Wczorajsze dodatkowe wp³ywy:",
+	L"WypÅ‚ata:", 				// credit (subtract from) to player's account
+	L"WpÅ‚ata:", 				// debit (add to) to player's account
+	L"Wczorajsze wpÅ‚ywy:",
+	L"Wczorajsze dodatkowe wpÅ‚ywy:",
 	L"Wczorajsze wydatki:",
 	L"Saldo na koniec dnia:",
-	L"Dzisiejsze wp³ywy:",
-	L"Dzisiejsze dodatkowe wp³ywy:",
+	L"Dzisiejsze wpÅ‚ywy:",
+	L"Dzisiejsze dodatkowe wpÅ‚ywy:",
 	L"Dzisiejsze wydatki:",
-	L"Saldo dostêpne:",
-	L"Przewidywane wp³ywy:",
+	L"Saldo dostÄ™pne:",
+	L"Przewidywane wpÅ‚ywy:",
 	L"Przewidywane saldo:", 		// projected balance for player for tommorow
 };
 
@@ -1760,67 +1760,67 @@ STR16 pFinanceSummary[] =
 
 STR16 pFinanceHeaders[] =
 {
-	L"Dzieñ", 					// the day column
+	L"DzieÅ„", 					// the day column
 	L"Ma", 				// the credits column
 	L"Winien",				// the debits column
 	L"Transakcja", 			// transaction type - see TransactionText below
 	L"Saldo", 				// balance at this point in time
 	L"Strona", 				// page number
-	L"Dzieñ (dni)", 		// the day(s) of transactions this page displays 
+	L"DzieÅ„ (dni)", 		// the day(s) of transactions this page displays 
 };
 
 
 STR16 pTransactionText[] =
 {
-	L"Naros³e odsetki",			// interest the player has accumulated so far
-	L"Anonimowa wp³ata",
+	L"NarosÅ‚e odsetki",			// interest the player has accumulated so far
+	L"Anonimowa wpÅ‚ata",
 	L"Koszt transakcji", 
-	L"Wynajêto -", 				// Merc was hired
+	L"WynajÄ™to -", 				// Merc was hired
 	L"Zakupy u Bobby'ego Ray'a", 		// Bobby Ray is the name of an arms dealer
-	L"Uregulowanie rachunków w M.E.R.C.",
-	L"Zastaw na ¿ycie dla - %s", 		// medical deposit for merc
+	L"Uregulowanie rachunkÃ³w w M.E.R.C.",
+	L"Zastaw na Å¼ycie dla - %s", 		// medical deposit for merc
 	L"Analiza profilu w IMP", 		// IMP is the acronym for International Mercenary Profiling
 	L"Ubezpieczneie dla - %s", 
 	L"Redukcja ubezp. dla - %s",
-	L"Przed³. ubezp. dla - %s", 				// johnny contract extended
+	L"PrzedÅ‚. ubezp. dla - %s", 				// johnny contract extended
 	L"Anulowano ubezp. dla - %s", 
 	L"Odszkodowanie za - %s", 		// insurance claim for merc
-	L"1 dzieñ", 				// merc's contract extended for a day
-	L"1 tydzieñ", 				// merc's contract extended for a week
+	L"1 dzieÅ„", 				// merc's contract extended for a day
+	L"1 tydzieÅ„", 				// merc's contract extended for a week
 	L"2 tygodnie", 				// ... for 2 weeks
-	L"Przychód z kopalni", 
+	L"PrzychÃ³d z kopalni", 
 	L"", //String nuked
-	L"Zakup kwiatów",
-	L"Pe³ny zwrot zastawu za - %s",
-	L"Czêœciowy zwrot zastawu za - %s",
+	L"Zakup kwiatÃ³w",
+	L"PeÅ‚ny zwrot zastawu za - %s",
+	L"CzÄ™Âœciowy zwrot zastawu za - %s",
 	L"Brak zwrotu zastawu za - %s",
-	L"Zap³ata dla - %s",		// %s is the name of the npc being paid
+	L"ZapÅ‚ata dla - %s",		// %s is the name of the npc being paid
 	L"Transfer funduszy do - %s", 			// transfer funds to a merc
 	L"Transfer funduszy od - %s", 		// transfer funds from a merc
 	L"Samoobrona w - %s", // initial cost to equip a town's militia
 	L"Zakupy u - %s.",	//is used for the Shop keeper interface.  The dealers name will be appended to the end of the string.
-	L"%s wp³aci³(a) pieni¹dze.",
+	L"%s wpÅ‚aciÅ‚(a) pieniÅ¡dze.",
 };
 
 STR16 pTransactionAlternateText[] =
 {
 	L"Ubezpieczenie dla -", 				// insurance for a merc
-	L"Przed³. kontrakt z - %s o 1 dzieñ.", 				// entend mercs contract by a day
-	L"Przed³. kontrakt z - %s o 1 tydzieñ.",
-	L"Przed³. kontrakt z - %s o 2 tygodnie.",
+	L"PrzedÅ‚. kontrakt z - %s o 1 dzieÅ„.", 				// entend mercs contract by a day
+	L"PrzedÅ‚. kontrakt z - %s o 1 tydzieÅ„.",
+	L"PrzedÅ‚. kontrakt z - %s o 2 tygodnie.",
 };
 
 // helicopter pilot payment 
 
 STR16 pSkyriderText[] =
 {
-	L"Skyriderowi zap³acono %d$", 			// skyrider was paid an amount of money
-	L"Skyriderowi trzeba jeszcze zap³aciæ %d$", 		// skyrider is still owed an amount of money
-	L"Skyrider zatankowa³",	// skyrider has finished refueling
+	L"Skyriderowi zapÅ‚acono %d$", 			// skyrider was paid an amount of money
+	L"Skyriderowi trzeba jeszcze zapÅ‚aciÄ‡ %d$", 		// skyrider is still owed an amount of money
+	L"Skyrider zatankowaÅ‚",	// skyrider has finished refueling
 	L"",//unused
 	L"",//unused
-	L"Skyrider jest gotów do kolejnego lotu.", // Skyrider was grounded but has been freed
-	L"Skyrider nie ma pasa¿erów. Jeœli chcesz przetransportowaæ najemników, zmieñ ich przydzia³ na POJAZD/HELIKOPTER.",
+	L"Skyrider jest gotÃ³w do kolejnego lotu.", // Skyrider was grounded but has been freed
+	L"Skyrider nie ma pasaÅ¼erÃ³w. JeÂœli chcesz przetransportowaÄ‡ najemnikÃ³w, zmieÅ„ ich przydziaÅ‚ na POJAZD/HELIKOPTER.",
 };
 
 
@@ -1828,20 +1828,20 @@ STR16 pSkyriderText[] =
 
 STR16 pMoralStrings[] =
 {
- L"Œwietne", 
+ L"ÂŒwietne", 
  L"Dobre",
  L"Stabilne",
- L"S³abe",
+ L"SÅ‚abe",
  L"Panika",
- L"Z³e",
+ L"ZÅ‚e",
 };
 
 // Mercs equipment has now arrived and is now available in Omerta or Drassen.
 
 STR16 pLeftEquipmentString[] =
 { 
-	L"%s - jego/jej sprzêt jest ju¿ w Omercie( A9 ).", 
-	L"%s - jego/jej sprzêt jest ju¿ w Drassen( B13 ).",
+	L"%s - jego/jej sprzÄ™t jest juÅ¼ w Omercie( A9 ).", 
+	L"%s - jego/jej sprzÄ™t jest juÅ¼ w Drassen( B13 ).",
 };
 
 // Status that appears on the Map Screen
@@ -1858,8 +1858,8 @@ STR16 pMapScreenStatusStrings[] =
 
 STR16 pMapScreenPrevNextCharButtonHelpText[] =
 {
-	L"Poprzedni najemnik (|S|t|r|z|a|³|k|a |w |l|e|w|o)", 			// previous merc in the list
-	L"Nastêpny najemnik (|S|t|r|z|a|³|k|a |w |p|r|a|w|o)", 				// next merc in the list
+	L"Poprzedni najemnik (|S|t|r|z|a|Å‚|k|a |w |l|e|w|o)", 			// previous merc in the list
+	L"NastÄ™pny najemnik (|S|t|r|z|a|Å‚|k|a |w |p|r|a|w|o)", 				// next merc in the list
 };
 
 
@@ -1870,96 +1870,96 @@ STR16 pEtaString[] =
 
 STR16 pTrashItemText[] =
 {
-	L"Wiêcej tego nie zobaczysz. Czy na pewno chcesz to zrobiæ?", 	// do you want to continue and lose the item forever
-	L"To wygl¹da na coœ NAPRAWDÊ wa¿nego. Czy NA PEWNO chcesz to zniszczyæ?", // does the user REALLY want to trash this item
+	L"WiÄ™cej tego nie zobaczysz. Czy na pewno chcesz to zrobiÄ‡?", 	// do you want to continue and lose the item forever
+	L"To wyglÅ¡da na coÂœ NAPRAWDÄ˜ waÅ¼nego. Czy NA PEWNO chcesz to zniszczyÄ‡?", // does the user REALLY want to trash this item
 };
 
 
 STR16 pMapErrorString[] = 
 {
-	L"Oddzia³ nie mo¿e siê przemieszczaæ, jeœli któryœ z najemników œpi.",
+	L"OddziaÅ‚ nie moÅ¼e siÄ™ przemieszczaÄ‡, jeÂœli ktÃ³ryÂœ z najemnikÃ³w Âœpi.",
 
 //1-5
-	L"Najpierw wyprowadŸ oddzia³ na powierzchniê.",
+	L"Najpierw wyprowadÂŸ oddziaÅ‚ na powierzchniÄ™.",
 	L"Rozkazy przemieszczenia? To jest sektor wroga!",
-	L"Aby podró¿owaæ najemnicy musz¹ byæ przydzieleni do oddzia³u lub pojazdu.",
+	L"Aby podrÃ³Å¼owaÄ‡ najemnicy muszÅ¡ byÄ‡ przydzieleni do oddziaÅ‚u lub pojazdu.",
 	L"Nie masz jeszcze ludzi.", 		// you have no members, can't do anything 
-	L"Najemnik nie mo¿e wype³niæ tego rozkazu.",			 		// merc can't comply with your order
+	L"Najemnik nie moÅ¼e wypeÅ‚niÄ‡ tego rozkazu.",			 		// merc can't comply with your order
 //6-10
-	L"musi mieæ eskortê, aby siê przemieszczaæ. Umieœæ go w oddziale z eskort¹.", // merc can't move unescorted .. for a male
-	L"musi mieæ eskortê, aby siê przemieszczaæ. Umieœæ j¹ w oddziale z eskort¹.", // for a female
-	L"Najemnik nie przyby³ jeszcze do Arulco!",
-	L"Wygl¹da na to, ¿e trzeba wpierw uregulowaæ sprawy kontraktu.",
+	L"musi mieÄ‡ eskortÄ™, aby siÄ™ przemieszczaÄ‡. UmieÂœÄ‡ go w oddziale z eskortÅ¡.", // merc can't move unescorted .. for a male
+	L"musi mieÄ‡ eskortÄ™, aby siÄ™ przemieszczaÄ‡. UmieÂœÄ‡ jÅ¡ w oddziale z eskortÅ¡.", // for a female
+	L"Najemnik nie przybyÅ‚ jeszcze do Arulco!",
+	L"WyglÅ¡da na to, Å¼e trzeba wpierw uregulowaÄ‡ sprawy kontraktu.",
 	L"",
 //11-15
 	L"Rozkazy przemieszczenia? Trwa walka!",
-	L"Zaatakowa³y ciê dzikie koty, w sektorze %s!",
-	L"W sektorze I16 znajduje siê coœ, co wygl¹da na legowisko dzikich kotów!", 
+	L"ZaatakowaÅ‚y ciÄ™ dzikie koty, w sektorze %s!",
+	L"W sektorze I16 znajduje siÄ™ coÂœ, co wyglÅ¡da na legowisko dzikich kotÃ³w!", 
 	L"", 
-	L"Baza rakiet Ziemia-Powietrze zosta³a przejêta.",
+	L"Baza rakiet Ziemia-Powietrze zostaÅ‚a przejÄ™ta.",
 //16-20
-	L"%s - kopalnia zosta³a przejêta. Twój dzienny przychód zosta³ zredukowany do %s.",
-	L"Nieprzyjaciel bezkonfliktowo przej¹³ sektor %s.",
-	L"Przynajmniej jeden z twoich najemników nie zosta³ do tego przydzielony.",
-	L"%s nie mo¿e siê przy³¹czyæ, poniewa¿ %s jest pe³ny",
-	L"%s nie mo¿e siê przy³¹czyæ, poniewa¿ %s jest zbyt daleko.",
+	L"%s - kopalnia zostaÅ‚a przejÄ™ta. TwÃ³j dzienny przychÃ³d zostaÅ‚ zredukowany do %s.",
+	L"Nieprzyjaciel bezkonfliktowo przejÅ¡Å‚ sektor %s.",
+	L"Przynajmniej jeden z twoich najemnikÃ³w nie zostaÅ‚ do tego przydzielony.",
+	L"%s nie moÅ¼e siÄ™ przyÅ‚Å¡czyÄ‡, poniewaÅ¼ %s jest peÅ‚ny",
+	L"%s nie moÅ¼e siÄ™ przyÅ‚Å¡czyÄ‡, poniewaÅ¼ %s jest zbyt daleko.",
 //21-25
-	L"%s - kopalnia zosta³a przejêta przez si³y Deidranny!",
-	L"Si³y Deidranny w³aœnie zaatakowa³y bazê rakiet Ziemia-Powietrze w - %s.",
-	L"Si³y Deidranny w³aœnie zaatakowa³y - %s.",
-	L"W³aœnie zauwa¿ono si³y Deidranny w - %s.",
-	L"Si³y Deidranny w³aœnie przejê³y - %s.",
+	L"%s - kopalnia zostaÅ‚a przejÄ™ta przez siÅ‚y Deidranny!",
+	L"SiÅ‚y Deidranny wÅ‚aÂœnie zaatakowaÅ‚y bazÄ™ rakiet Ziemia-Powietrze w - %s.",
+	L"SiÅ‚y Deidranny wÅ‚aÂœnie zaatakowaÅ‚y - %s.",
+	L"WÅ‚aÂœnie zauwaÅ¼ono siÅ‚y Deidranny w - %s.",
+	L"SiÅ‚y Deidranny wÅ‚aÂœnie przejÄ™Å‚y - %s.",
 //26-30
-	L"Przynajmniej jeden z twoich najemników nie móg³ siê po³o¿yæ spaæ.",
-	L"Przynajmniej jeden z twoich najemników nie móg³ wstaæ.",
-	L"Oddzia³y samoobrony nie pojawi¹ siê dopóki nie zostan¹ wyszkolone.",
-	L"%s nie mo¿e siê w tej chwili przemieszczaæ.",
-	L"¯o³nierze samoobrony, którzy znajduj¹ siê poza granicami miasta, nie mog¹ byæ przeniesieni do innego sektora.",
+	L"Przynajmniej jeden z twoich najemnikÃ³w nie mÃ³gÅ‚ siÄ™ poÅ‚oÅ¼yÄ‡ spaÄ‡.",
+	L"Przynajmniej jeden z twoich najemnikÃ³w nie mÃ³gÅ‚ wstaÄ‡.",
+	L"OddziaÅ‚y samoobrony nie pojawiÅ¡ siÄ™ dopÃ³ki nie zostanÅ¡ wyszkolone.",
+	L"%s nie moÅ¼e siÄ™ w tej chwili przemieszczaÄ‡.",
+	L"Å»oÅ‚nierze samoobrony, ktÃ³rzy znajdujÅ¡ siÄ™ poza granicami miasta, nie mogÅ¡ byÄ‡ przeniesieni do innego sektora.",
 //31-35
-	L"Nie mo¿esz trenowaæ samoobrony w - %s.",
-	L"Pusty pojazd nie mo¿e siê poruszaæ!",
-	L"%s ma zbyt wiele ran by podró¿owaæ!",
-	L"Musisz wpierw opuœciæ muzeum!",
-	L"%s nie ¿yje!",
+	L"Nie moÅ¼esz trenowaÄ‡ samoobrony w - %s.",
+	L"Pusty pojazd nie moÅ¼e siÄ™ poruszaÄ‡!",
+	L"%s ma zbyt wiele ran by podrÃ³Å¼owaÄ‡!",
+	L"Musisz wpierw opuÂœciÄ‡ muzeum!",
+	L"%s nie Å¼yje!",
 //36-40
-	L"%s nie mo¿e siê zamieniæ z - %s, poniewa¿ siê porusza",
-	L"%s nie mo¿e w ten sposób wejœc do pojazdu",
-	L"%s nie mo¿e siê do³¹czyæ do - %s",
-	L"Nie mo¿esz kompresowaæ czasu dopóki nie zatrudnisz sobie kilku nowych najemników!",
-	L"Ten pojazd mo¿e siê poruszaæ tylko po drodze!",
+	L"%s nie moÅ¼e siÄ™ zamieniÄ‡ z - %s, poniewaÅ¼ siÄ™ porusza",
+	L"%s nie moÅ¼e w ten sposÃ³b wejÂœc do pojazdu",
+	L"%s nie moÅ¼e siÄ™ doÅ‚Å¡czyÄ‡ do - %s",
+	L"Nie moÅ¼esz kompresowaÄ‡ czasu dopÃ³ki nie zatrudnisz sobie kilku nowych najemnikÃ³w!",
+	L"Ten pojazd moÅ¼e siÄ™ poruszaÄ‡ tylko po drodze!",
 //41-45
-	L"Nie mo¿na zmieniaæ przydzia³u najemników, którzy s¹ w drodze",
+	L"Nie moÅ¼na zmieniaÄ‡ przydziaÅ‚u najemnikÃ³w, ktÃ³rzy sÅ¡ w drodze",
 	L"Pojazd nie ma paliwa!",
-	L"%s jest zbyt zmêczony(na) by podró¿owaæ.",
-	L"¯aden z pasa¿erów nie jest w stanie kierowaæ tym pojazdem.",
-	L"Jeden lub wiêcej cz³onków tego oddzia³u nie mo¿e siê w tej chwili przemieszczaæ.",
+	L"%s jest zbyt zmÄ™czony(na) by podrÃ³Å¼owaÄ‡.",
+	L"Å»aden z pasaÅ¼erÃ³w nie jest w stanie kierowaÄ‡ tym pojazdem.",
+	L"Jeden lub wiÄ™cej czÅ‚onkÃ³w tego oddziaÅ‚u nie moÅ¼e siÄ™ w tej chwili przemieszczaÄ‡.",
 //46-50
-	L"Jeden lub wiêcej INNYCH cz³onków tego oddzia³u nie mo¿e siê w tej chwili przemieszczaæ.",
+	L"Jeden lub wiÄ™cej INNYCH czÅ‚onkÃ³w tego oddziaÅ‚u nie moÅ¼e siÄ™ w tej chwili przemieszczaÄ‡.",
 	L"Pojazd jest uszkodzony!",
-	L"Pamiêtaj, ¿e w jednym sektorze tylko dwóch najemników mo¿e trenowaæ ¿o³nierzy samoobrony.",
-	L"Robot nie mo¿e siê poruszaæ bez operatora. Umieœæ ich razem w jednym oddziale.",
+	L"PamiÄ™taj, Å¼e w jednym sektorze tylko dwÃ³ch najemnikÃ³w moÅ¼e trenowaÄ‡ Å¼oÅ‚nierzy samoobrony.",
+	L"Robot nie moÅ¼e siÄ™ poruszaÄ‡ bez operatora. UmieÂœÄ‡ ich razem w jednym oddziale.",
 };
 
 
 // help text used during strategic route plotting
 STR16 pMapPlotStrings[] =
 {
-	L"Kliknij ponownie sektor docelowy, aby zatwierdziæ trasê podró¿y, lub kliknij inny sektor, aby j¹ wyd³u¿yæ.",
-	L"Trasa podró¿y zatwierdzona.",
-	L"Cel podró¿y nie zosta³ zmieniony.",
-	L"Trasa podró¿y zosta³a anulowana.",
-	L"Trasa podró¿y zosta³a skrócona.",
+	L"Kliknij ponownie sektor docelowy, aby zatwierdziÄ‡ trasÄ™ podrÃ³Å¼y, lub kliknij inny sektor, aby jÅ¡ wydÅ‚uÅ¼yÄ‡.",
+	L"Trasa podrÃ³Å¼y zatwierdzona.",
+	L"Cel podrÃ³Å¼y nie zostaÅ‚ zmieniony.",
+	L"Trasa podrÃ³Å¼y zostaÅ‚a anulowana.",
+	L"Trasa podrÃ³Å¼y zostaÅ‚a skrÃ³cona.",
 };
 
 
 // help text used when moving the merc arrival sector
 STR16 pBullseyeStrings[] =
 {
-	L"Kliknij sektor, do którego maj¹ przylatywaæ najemnicy.",
-	L"Dobrze. Przylatuj¹cy najemnicy bêd¹ zrzucani w %s",
-	L"Najemnicy nie mog¹ tu przylatywaæ. Przestrzeñ powietrzna nie jest zabezpieczona!",
-	L"Anulowano. Sektor zrzutu nie zosta³ zmieniony.",
-	L"Przestrzeñ powietrzna nad %s nie jest ju¿ bezpieczna! Sektor zrzutu zosta³ przesuniêty do %s.",
+	L"Kliknij sektor, do ktÃ³rego majÅ¡ przylatywaÄ‡ najemnicy.",
+	L"Dobrze. PrzylatujÅ¡cy najemnicy bÄ™dÅ¡ zrzucani w %s",
+	L"Najemnicy nie mogÅ¡ tu przylatywaÄ‡. PrzestrzeÅ„ powietrzna nie jest zabezpieczona!",
+	L"Anulowano. Sektor zrzutu nie zostaÅ‚ zmieniony.",
+	L"PrzestrzeÅ„ powietrzna nad %s nie jest juÅ¼ bezpieczna! Sektor zrzutu zostaÅ‚ przesuniÄ™ty do %s.",
 };
 
 
@@ -1967,9 +1967,9 @@ STR16 pBullseyeStrings[] =
 
 STR16 pMiscMapScreenMouseRegionHelpText[] =
 {
-	L"Otwórz wyposa¿enie (|E|n|t|e|r)",
+	L"OtwÃ³rz wyposaÅ¼enie (|E|n|t|e|r)",
 	L"Zniszcz przedmiot",
-	L"Zamknij wyposa¿enie (|E|n|t|e|r)",
+	L"Zamknij wyposaÅ¼enie (|E|n|t|e|r)",
 };
 
 
@@ -1977,45 +1977,45 @@ STR16 pMiscMapScreenMouseRegionHelpText[] =
 // male version of where equipment is left
 STR16 pMercHeLeaveString[] =
 {
-	L"Czy %s ma zostawiæ swój sprzêt w sektorze, w którym siê obecnie znajduje (%s), czy w Dressen (B13), sk¹d odlatuje? ",
-	L"Czy %s ma zostawiæ swój sprzêt w sektorze, w którym siê obecnie znajduje (%s), czy w Omercie (A9), sk¹d odlatuje?",
-	L"wkrótce odchodzi i zostawi swój sprzêt w Omercie (A9).",
-	L"wkrótce odchodzi i zostawi swój sprzêt w Drassen (B13).",
-	L"%s wkrótce odchodzi i zostawi swój sprzêt w %s.",
+	L"Czy %s ma zostawiÄ‡ swÃ³j sprzÄ™t w sektorze, w ktÃ³rym siÄ™ obecnie znajduje (%s), czy w Dressen (B13), skÅ¡d odlatuje? ",
+	L"Czy %s ma zostawiÄ‡ swÃ³j sprzÄ™t w sektorze, w ktÃ³rym siÄ™ obecnie znajduje (%s), czy w Omercie (A9), skÅ¡d odlatuje?",
+	L"wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w Omercie (A9).",
+	L"wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w Drassen (B13).",
+	L"%s wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w %s.",
 };
 
 
 // female version
 STR16 pMercSheLeaveString[] =
 {
-	L"Czy %s ma zostawiæ swój sprzêt w sektorze, w którym siê obecnie znajduje (%s), czy w Dressen (B13), sk¹d odlatuje? ",
-	L"Czy %s ma zostawiæ swój sprzêt w sektorze, w którym siê obecnie znajduje (%s), czy w Omercie (A9), sk¹d odlatuje?",
-	L"wkrótce odchodzi i zostawi swój sprzêt w Omercie (A9).",
-	L"wkrótce odchodzi i zostawi swój sprzêt w Drassen (B13).",
-	L"%s wkrótce odchodzi i zostawi swój sprzêt w %s.",
+	L"Czy %s ma zostawiÄ‡ swÃ³j sprzÄ™t w sektorze, w ktÃ³rym siÄ™ obecnie znajduje (%s), czy w Dressen (B13), skÅ¡d odlatuje? ",
+	L"Czy %s ma zostawiÄ‡ swÃ³j sprzÄ™t w sektorze, w ktÃ³rym siÄ™ obecnie znajduje (%s), czy w Omercie (A9), skÅ¡d odlatuje?",
+	L"wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w Omercie (A9).",
+	L"wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w Drassen (B13).",
+	L"%s wkrÃ³tce odchodzi i zostawi swÃ³j sprzÄ™t w %s.",
 };
 
 
 STR16 pMercContractOverStrings[] =
 {
-	L" zakoñczy³ kontrakt wiêc wyjecha³.", 		// merc's contract is over and has departed
-	L" zakoñczy³a kontrakt wiêc wyjecha³a.", 		// merc's contract is over and has departed
-	L" - jego kontrakt zosta³ zerwany wiêc odszed³.", 		// merc's contract has been terminated
-	L" - jej kontrakt zosta³ zerwany wiêc odesz³a.",		// merc's contract has been terminated
-	L"Masz za du¿y d³ug wobec M.E.R.C. wiêc %s odchodzi.", // Your M.E.R.C. account is invalid so merc left
+	L" zakoÅ„czyÅ‚ kontrakt wiÄ™c wyjechaÅ‚.", 		// merc's contract is over and has departed
+	L" zakoÅ„czyÅ‚a kontrakt wiÄ™c wyjechaÅ‚a.", 		// merc's contract is over and has departed
+	L" - jego kontrakt zostaÅ‚ zerwany wiÄ™c odszedÅ‚.", 		// merc's contract has been terminated
+	L" - jej kontrakt zostaÅ‚ zerwany wiÄ™c odeszÅ‚a.",		// merc's contract has been terminated
+	L"Masz za duÅ¼y dÅ‚ug wobec M.E.R.C. wiÄ™c %s odchodzi.", // Your M.E.R.C. account is invalid so merc left
 };
 
 // Text used on IMP Web Pages
 
 STR16 pImpPopUpStrings[] =
 {
-	L"Nieprawid³owy kod dostêpu",
-	L"Czy na pewno chcesz wznowiæ proces okreœlenia profilu?",
-	L"WprowadŸ nazwisko oraz p³eæ",
-	L"Wstêpna kontrola stanu twoich finansów wykaza³a, ¿e nie staæ ciê na analizê profilu.",
+	L"NieprawidÅ‚owy kod dostÄ™pu",
+	L"Czy na pewno chcesz wznowiÄ‡ proces okreÂœlenia profilu?",
+	L"WprowadÂŸ nazwisko oraz pÅ‚eÄ‡",
+	L"WstÄ™pna kontrola stanu twoich finansÃ³w wykazaÅ‚a, Å¼e nie staÄ‡ ciÄ™ na analizÄ™ profilu.",
 	L"Opcja tym razem nieaktywna.",
-	L"Aby wykonaæ profil, musisz mieæ miejsce dla przynajmniej jednego cz³onka za³ogi.",
-	L"Profil zosta³ ju¿ wykonany.",
+	L"Aby wykonaÄ‡ profil, musisz mieÄ‡ miejsce dla przynajmniej jednego czÅ‚onka zaÅ‚ogi.",
+	L"Profil zostaÅ‚ juÅ¼ wykonany.",
 };
 
 
@@ -2025,43 +2025,43 @@ STR16 pImpButtonText[] =
 {
 	L"O Nas", 			// about the IMP site
 	L"ZACZNIJ", 			// begin profiling
-	L"Osobowoœæ", 		// personality section
+	L"OsobowoÂœÄ‡", 		// personality section
 	L"Atrybuty", 		// personal stats/attributes section
 	L"Portret", 			// the personal portrait selection
-	L"G³os %d", 			// the voice selection
+	L"GÅ‚os %d", 			// the voice selection
 	L"Gotowe", 			// done profiling
-	L"Zacznij od pocz¹tku", 		// start over profiling
-	L"Tak, wybieram t¹ odpowiedŸ.", 
+	L"Zacznij od poczÅ¡tku", 		// start over profiling
+	L"Tak, wybieram tÅ¡ odpowiedÂŸ.", 
 	L"Tak", 
 	L"Nie",
-	L"Skoñczone", 			// finished answering questions
+	L"SkoÅ„czone", 			// finished answering questions
 	L"Poprz.", 			// previous question..abbreviated form
 	L"Nast.", 			// next question
 	L"TAK, JESTEM.", 		// yes, I am certain 
-	L"NIE, CHCÊ ZACZ¥Æ OD NOWA.", // no, I want to start over the profiling process
+	L"NIE, CHCÄ˜ ZACZÄ½Ä† OD NOWA.", // no, I want to start over the profiling process
 	L"TAK",
 	L"NIE",
 	L"Wstecz", 			// back one page
 	L"Anuluj", 			// cancel selection
 	L"Tak.",
-	L"Nie, Chcê spojrzeæ jeszcze raz.",
+	L"Nie, ChcÄ™ spojrzeÄ‡ jeszcze raz.",
 	L"Rejestr", 			// the IMP site registry..when name and gender is selected
-	L"Analizujê...", 			// analyzing your profile results
+	L"AnalizujÄ™...", 			// analyzing your profile results
 	L"OK",
-	L"G³os",
+	L"GÅ‚os",
 };
 
 STR16 pExtraIMPStrings[] =
 {
-	L"Aby zacz¹æ analizê profilu, wybierz osobowoœæ.",
-	L"Teraz okreœl swoje atrybuty.",
-	L"Teraz mo¿esz przyst¹piæ do wyboru portretu.",
-	L"Aby zakoñczyæ proces, wybierz próbkê g³osu, która ci najbardziej odpowiada."
+	L"Aby zaczÅ¡Ä‡ analizÄ™ profilu, wybierz osobowoÂœÄ‡.",
+	L"Teraz okreÂœl swoje atrybuty.",
+	L"Teraz moÅ¼esz przystÅ¡piÄ‡ do wyboru portretu.",
+	L"Aby zakoÅ„czyÄ‡ proces, wybierz prÃ³bkÄ™ gÅ‚osu, ktÃ³ra ci najbardziej odpowiada."
 };
 
 STR16 pFilesTitle[] =
 {
-	L"Przegl¹darka plików",
+	L"PrzeglÅ¡darka plikÃ³w",
 };
 
 STR16 pFilesSenderList[] =
@@ -2084,10 +2084,10 @@ STR16 pHistoryTitle[] =
 
 STR16 pHistoryHeaders[] =
 {
-	L"Dzieñ", 			// the day the history event occurred
+	L"DzieÅ„", 			// the day the history event occurred
 	L"Strona", 			// the current page in the history report we are in
-	L"Dzieñ", 			// the days the history report occurs over
-	L"Po³o¿enie", 			// location (in sector) the event occurred
+	L"DzieÅ„", 			// the days the history report occurs over
+	L"PoÅ‚oÅ¼enie", 			// location (in sector) the event occurred
 	L"Zdarzenie", 			// the event label
 };
 
@@ -2101,96 +2101,96 @@ STR16 pHistoryStrings[] =
 {
 	L"",																						// leave this line blank
 	//1-5
-	L"%s najêty(ta) w A.I.M.", 										// merc was hired from the aim site
-	L"%s najêty(ta) w M.E.R.C.", 									// merc was hired from the aim site
+	L"%s najÄ™ty(ta) w A.I.M.", 										// merc was hired from the aim site
+	L"%s najÄ™ty(ta) w M.E.R.C.", 									// merc was hired from the aim site
 	L"%s ginie.", 															// merc was killed
 	L"Uregulowano rachunki w M.E.R.C.",								// paid outstanding bills at MERC
-	L"Przyjêto zlecenie od Enrico Chivaldori",	
+	L"PrzyjÄ™to zlecenie od Enrico Chivaldori",	
 	//6-10
 	L"Profil IMP wygenerowany",
-	L"Podpisano umowê ubezpieczeniow¹ dla %s.", 				// insurance contract purchased
-	L"Anulowano umowê ubezpieczeniow¹ dla %s.", 				// insurance contract canceled
-	L"Wyp³ata ubezpieczenia za %s.", 							// insurance claim payout for merc
-	L"Przed³u¿ono kontrakt z: %s o 1 dzieñ.", 						// Extented "mercs name"'s for a day
+	L"Podpisano umowÄ™ ubezpieczeniowÅ¡ dla %s.", 				// insurance contract purchased
+	L"Anulowano umowÄ™ ubezpieczeniowÅ¡ dla %s.", 				// insurance contract canceled
+	L"WypÅ‚ata ubezpieczenia za %s.", 							// insurance claim payout for merc
+	L"PrzedÅ‚uÅ¼ono kontrakt z: %s o 1 dzieÅ„.", 						// Extented "mercs name"'s for a day
 	//11-15
-	L"Przed³u¿ono kontrakt z: %s o 1 tydzieñ.", 					// Extented "mercs name"'s for a week
-	L"Przed³u¿ono kontrakt z: %s o 2 tygodnie.", 					// Extented "mercs name"'s 2 weeks
+	L"PrzedÅ‚uÅ¼ono kontrakt z: %s o 1 tydzieÅ„.", 					// Extented "mercs name"'s for a week
+	L"PrzedÅ‚uÅ¼ono kontrakt z: %s o 2 tygodnie.", 					// Extented "mercs name"'s 2 weeks
 	L"%s zwolniony(na).", 													// "merc's name" was dismissed.
 	L"%s odchodzi.", 																		// "merc's name" quit.
-	L"przyjêto zadanie.", 															// a particular quest started
+	L"przyjÄ™to zadanie.", 															// a particular quest started
 	//16-20
 	L"zadanie wykonane.",
 	L"Rozmawiano szefem kopalni %s",									// talked to head miner of town
 	L"Wyzwolono - %s",
-	L"U¿yto kodu Cheat",
-	L"¯ywnoœæ powinna byæ jutro w Omercie",
+	L"UÅ¼yto kodu Cheat",
+	L"Å»ywnoÂœÄ‡ powinna byÄ‡ jutro w Omercie",
 	//21-25
-	L"%s odchodzi, aby wzi¹æ œlub z Darylem Hickiem",
-	L"Wygas³ kontrakt z - %s.",
+	L"%s odchodzi, aby wziÅ¡Ä‡ Âœlub z Darylem Hickiem",
+	L"WygasÅ‚ kontrakt z - %s.",
 	L"%s zrekrutowany(na).",
-	L"Enrico narzeka na brak postêpów",
+	L"Enrico narzeka na brak postÄ™pÃ³w",
 	L"Walka wygrana",
 	//26-30
-	L"%s - w kopalni koñczy siê ruda",
-	L"%s - w kopalni skoñczy³a siê ruda",
-	L"%s - kopalnia zosta³a zamkniêta",
-	L"%s - kopalnia zosta³a otwarta",
-	L"Informacja o wiêzieniu zwanym Tixa.",
+	L"%s - w kopalni koÅ„czy siÄ™ ruda",
+	L"%s - w kopalni skoÅ„czyÅ‚a siÄ™ ruda",
+	L"%s - kopalnia zostaÅ‚a zamkniÄ™ta",
+	L"%s - kopalnia zostaÅ‚a otwarta",
+	L"Informacja o wiÄ™zieniu zwanym Tixa.",
 	//31-35
 	L"Informacja o tajnej fabryce broni zwanej Orta.",
-	L"Naukowiec w Orcie ofiarowa³ kilka karabinów rakietowych.",
-	L"Królowa Deidranna robi u¿ytek ze zw³ok.",
-	L"Frank opowiedzia³ o walkach w San Monie.",
-	L"Pewien pacjent twierdzi, ¿e widzia³ coœ w kopalni.",
+	L"Naukowiec w Orcie ofiarowaÅ‚ kilka karabinÃ³w rakietowych.",
+	L"KrÃ³lowa Deidranna robi uÅ¼ytek ze zwÅ‚ok.",
+	L"Frank opowiedziaÅ‚ o walkach w San Monie.",
+	L"Pewien pacjent twierdzi, Å¼e widziaÅ‚ coÂœ w kopalni.",
 	//36-40
-	L"Goœæ o imieniu Devin sprzedaje materia³y wybuchowe.",
-	L"Spotkanie ze s³awynm eks-najemnikiem A.I.M. - Mike'iem!",
-	L"Tony handluje broni¹.",
-	L"Otrzymano karabin rakietowy od sier¿anta Krotta.",
-	L"Dano Kyle'owi akt w³asnoœci sklepu Angela.",
+	L"GoÂœÄ‡ o imieniu Devin sprzedaje materiaÅ‚y wybuchowe.",
+	L"Spotkanie ze sÅ‚awynm eks-najemnikiem A.I.M. - Mike'iem!",
+	L"Tony handluje broniÅ¡.",
+	L"Otrzymano karabin rakietowy od sierÅ¼anta Krotta.",
+	L"Dano Kyle'owi akt wÅ‚asnoÂœci sklepu Angela.",
 	//41-45
-	L"Madlab zaoferowa³ siê zbudowaæ robota.",
-	L"Gabby potrafi zrobiæ miksturê chroni¹c¹ przed robakami.",
-	L"Keith wypad³ z interesu.",
-	L"Howard dostarcza³ cyjanek królowej Deidrannie.",
+	L"Madlab zaoferowaÅ‚ siÄ™ zbudowaÄ‡ robota.",
+	L"Gabby potrafi zrobiÄ‡ miksturÄ™ chroniÅ¡cÅ¡ przed robakami.",
+	L"Keith wypadÅ‚ z interesu.",
+	L"Howard dostarczaÅ‚ cyjanek krÃ³lowej Deidrannie.",
 	L"Spotkanie z handlarzem Keithem w Cambrii.",
 	//46-50
 	L"Spotkanie z aptekarzem Howardem w Balime",
-	L"Spotkanie z Perko, prowadz¹cym ma³y warsztat.",
-	L"Spotkanie z Samem z Balime - prowadzi sklep z narzêdziami.",
-	L"Franz handluje sprzêtem elektronicznym.",
+	L"Spotkanie z Perko, prowadzÅ¡cym maÅ‚y warsztat.",
+	L"Spotkanie z Samem z Balime - prowadzi sklep z narzÄ™dziami.",
+	L"Franz handluje sprzÄ™tem elektronicznym.",
 	L"Arnold prowadzi warsztat w Grumm.",
 	//51-55
-	L"Fredo naprawia sprzêt elektroniczny w Grumm.",
-	L"Otrzymano darowiznê od bogatego goœcia w Balime.",
-	L"Spotkano Jake'a, który prowadzi z³omowisko.",
-	L"Jakiœ w³óczêga da³ nam elektroniczn¹ kartê dostêpu.",
-	L"Przekupiono Waltera, aby otworzy³ drzwi do piwnicy.",
+	L"Fredo naprawia sprzÄ™t elektroniczny w Grumm.",
+	L"Otrzymano darowiznÄ™ od bogatego goÂœcia w Balime.",
+	L"Spotkano Jake'a, ktÃ³ry prowadzi zÅ‚omowisko.",
+	L"JakiÂœ wÅ‚Ã³czÄ™ga daÅ‚ nam elektronicznÅ¡ kartÄ™ dostÄ™pu.",
+	L"Przekupiono Waltera, aby otworzyÅ‚ drzwi do piwnicy.",
 	//56-60
-	L"Dave oferuje darmowe tankowania, jeœli bêdzie mia³ paliwo.",
+	L"Dave oferuje darmowe tankowania, jeÂœli bÄ™dzie miaÅ‚ paliwo.",
 	L"Greased Pablo's palms.",
-	L"Kingpin trzyma pieni¹dze w kopalni w San Mona.",
-	L"%s wygra³(a) walkê",
-	L"%s przegra³(a) walkê",
+	L"Kingpin trzyma pieniÅ¡dze w kopalni w San Mona.",
+	L"%s wygraÅ‚(a) walkÄ™",
+	L"%s przegraÅ‚(a) walkÄ™",
 	//61-65
 	L"%s zdyskwalifikowany(na) podczas walki",
-	L"Znaleziono du¿o pieniêdzy w opuszczonej kopalni.",
-	L"Spotkano zabójcê nas³anego przez Kingpina.",
+	L"Znaleziono duÅ¼o pieniÄ™dzy w opuszczonej kopalni.",
+	L"Spotkano zabÃ³jcÄ™ nasÅ‚anego przez Kingpina.",
 	L"Utrata kontroli nad sektorem",				//ENEMY_INVASION_CODE
 	L"Sektor obroniony",
 	//66-70
 	L"Przegrana bitwa",							//ENEMY_ENCOUNTER_CODE
 	L"Fatalna zasadzka",						//ENEMY_AMBUSH_CODE
-	L"Usunieto zasadzkê wroga",
+	L"Usunieto zasadzkÄ™ wroga",
 	L"Nieudany atak",			//ENTERING_ENEMY_SECTOR_CODE
 	L"Udany atak!",
 	//71-75
-	L"Stworzenia zaatakowa³y",			//CREATURE_ATTACK_CODE
+	L"Stworzenia zaatakowaÅ‚y",			//CREATURE_ATTACK_CODE
 	L"Zabity(ta) przez dzikie koty",			//BLOODCAT_AMBUSH_CODE
-	L"Wyr¿niêto dzikie koty",
+	L"WyrÅ¼niÄ™to dzikie koty",
 	L"%s zabity(ta)",
-	L"Przekazano Carmenowi g³owê terrorysty",
-	L"Slay odszed³",
+	L"Przekazano Carmenowi gÅ‚owÄ™ terrorysty",
+	L"Slay odszedÅ‚",
 	L"Zabito: %s",
 };
 
@@ -2204,7 +2204,7 @@ STR16 pHistoryLocations[] =
 STR16 pLaptopIcons[] =
 {
 	L"E-mail",
-	L"Sieæ",
+	L"SieÄ‡",
 	L"Finanse",
 	L"Personel",
 	L"Historia",
@@ -2231,14 +2231,14 @@ STR16 pBookMarkStrings[] =
 STR16 pBookmarkTitle[] =
 {
 	L"Ulubione",
-	L"Aby w przysz³oœci otworzyæ to menu, kliknij prawym klawiszem myszy.",
+	L"Aby w przyszÅ‚oÂœci otworzyÄ‡ to menu, kliknij prawym klawiszem myszy.",
 };
 
 // When loading or download a web page
 
 STR16 pDownloadString[] =
 {
-	L"£adowanie strony...",
+	L"Åadowanie strony...",
 	L"Otwieranie strony...",
 };
 
@@ -2247,7 +2247,7 @@ STR16 pDownloadString[] =
 STR16 gsAtmSideButtonText[] =
 {
 	L"OK",
-	L"WeŸ", 			// take money from merc
+	L"WeÂŸ", 			// take money from merc
 	L"Daj", 			// give money to merc
 	L"Anuluj", 			// cancel transaction
 	L"Skasuj", 			// clear amount being displayed on the screen
@@ -2257,18 +2257,18 @@ STR16 gsAtmStartButtonText[] =
 {
 	L"Transfer $", 		// transfer money to merc -- short form
 	L"Atrybuty", 			// view stats of the merc
-	L"Wyposa¿enie", 			// view the inventory of the merc
+	L"WyposaÅ¼enie", 			// view the inventory of the merc
 	L"Zatrudnienie",
 };
 
 STR16 sATMText[ ]=
 {
-	L"Przes³aæ fundusze?", 		// transfer funds to merc?
+	L"PrzesÅ‚aÄ‡ fundusze?", 		// transfer funds to merc?
 	L"OK?", 			// are we certain?
-	L"WprowadŸ kwotê", 		// enter the amount you want to transfer to merc
+	L"WprowadÂŸ kwotÄ™", 		// enter the amount you want to transfer to merc
 	L"Wybierz typ", 		// select the type of transfer to merc
-	L"Brak œrodków", 	// not enough money to transfer to merc
-	L"Kwota musi byæ podzielna przez $10", // transfer amount must be a multiple of $10
+	L"Brak ÂœrodkÃ³w", 	// not enough money to transfer to merc
+	L"Kwota musi byÄ‡ podzielna przez $10", // transfer amount must be a multiple of $10
 };
 
 // Web error messages. Please use foreign language equivilant for these messages. 
@@ -2277,11 +2277,11 @@ STR16 sATMText[ ]=
 
 STR16 pErrorStrings[] =
 {
-	L"B³¹d",
+	L"BÅ‚Å¡d",
 	L"Serwer nie posiada DNS.",	
-	L"SprawdŸ adres URL i spróbuj ponownie.",
+	L"SprawdÂŸ adres URL i sprÃ³buj ponownie.",
 	L"OK",
-	L"Niestabilne po³¹czenie z Hostem. Transfer mo¿e trwaæ d³u¿ej.",
+	L"Niestabilne poÅ‚Å¡czenie z Hostem. Transfer moÅ¼e trwaÄ‡ dÅ‚uÅ¼ej.",
 };
 
 
@@ -2302,7 +2302,7 @@ STR16 pWebTitle[ ]=
 STR16 pWebPagesTitles[] =
 {
 	L"A.I.M.",
-	L"A.I.M. Cz³onkowie",
+	L"A.I.M. CzÅ‚onkowie",
 	L"A.I.M. Portrety",		// a mug shot is another name for a portrait
 	L"A.I.M. Lista",
 	L"A.I.M.",
@@ -2315,23 +2315,23 @@ STR16 pWebPagesTitles[] =
 	L"M.E.R.C. Rejestracja",
 	L"M.E.R.C. Indeks",
 	L"Bobby Ray's",
-	L"Bobby Ray's - Broñ",
+	L"Bobby Ray's - BroÅ„",
 	L"Bobby Ray's - Amunicja",
 	L"Bobby Ray's - Pancerz",
-	L"Bobby Ray's - Ró¿ne",							//misc is an abbreviation for miscellaneous				
-	L"Bobby Ray's - U¿ywane",
-	L"Bobby Ray's - Zamówienie pocztowe",
+	L"Bobby Ray's - RÃ³Å¼ne",							//misc is an abbreviation for miscellaneous				
+	L"Bobby Ray's - UÅ¼ywane",
+	L"Bobby Ray's - ZamÃ³wienie pocztowe",
 	L"I.M.P.",
 	L"I.M.P.",
 	L"United Floral Service",
 	L"United Floral Service - Galeria",
-	L"United Floral Service - Zamówienie",
+	L"United Floral Service - ZamÃ³wienie",
 	L"United Floral Service - Galeria kartek",
 	L"Malleus, Incus & Stapes - Brokerzy ubezpieczeniowi",
 	L"Informacja",
 	L"Kontrakt",
 	L"Uwagi",
-	L"McGillicutty - Zak³ad pogrzebowy",
+	L"McGillicutty - ZakÅ‚ad pogrzebowy",
 	L"",
 	L"Nie odnaleziono URL.",
 	L"Bobby Ray's - Ostatnie dostawy",
@@ -2342,25 +2342,25 @@ STR16 pWebPagesTitles[] =
 STR16 pShowBookmarkString[] =
 {
 	L"Sir-Pomoc",
-	L"Kliknij ponownie Sieæ by otworzyæ menu Ulubione.",
+	L"Kliknij ponownie SieÄ‡ by otworzyÄ‡ menu Ulubione.",
 };
 
 STR16 pLaptopTitles[] =
 {
 	L"Poczta",
-	L"Przegl¹darka plików",
+	L"PrzeglÅ¡darka plikÃ³w",
 	L"Personel",
-	L"Ksiêgowy Plus",
+	L"KsiÄ™gowy Plus",
 	L"Historia",
 };
 
 STR16 pPersonnelDepartedStateStrings[] =
 {
 	//reasons why a merc has left.
-	L"Œmieræ w akcji",
+	L"ÂŒmierÄ‡ w akcji",
 	L"Zwolnienie",
 	L"Inny",
-	L"Ma³¿eñstwo",
+	L"MaÅ‚Å¼eÅ„stwo",
 	L"Koniec kontraktu",
 	L"Rezygnacja",
 };
@@ -2368,12 +2368,12 @@ STR16 pPersonnelDepartedStateStrings[] =
 
 STR16 pPersonelTeamStrings[] =
 {
-	L"Bie¿¹cy oddzia³",
+	L"BieÅ¼Å¡cy oddziaÅ‚",
 	L"Wyjazdy",
 	L"Koszt dzienny:",
-	L"Najwy¿szy koszt:",
-	L"Najni¿szy koszt:",
-	L"Œmieræ w akcji:",
+	L"NajwyÅ¼szy koszt:",
+	L"NajniÅ¼szy koszt:",
+	L"ÂŒmierÄ‡ w akcji:",
 	L"Zwolnienie:",
 	L"Inny:",
 };
@@ -2381,9 +2381,9 @@ STR16 pPersonelTeamStrings[] =
 
 STR16 pPersonnelCurrentTeamStatsStrings[] =
 {
-	L"Najni¿szy",
-	L"Œredni",
-	L"Najwy¿szy",
+	L"NajniÅ¼szy",
+	L"ÂŒredni",
+	L"NajwyÅ¼szy",
 };
 
 
@@ -2392,10 +2392,10 @@ STR16 pPersonnelTeamStatsStrings[] =
 	L"ZDR",
 	L"ZWN",
 	L"ZRCZ",
-	L"SI£A",
+	L"SIÅA",
 	L"DOW",
 	L"INT",
-	L"DOŒW",
+	L"DOÂŒW",
 	L"STRZ",
 	L"MECH",
 	L"WYB",
@@ -2474,10 +2474,10 @@ STR16 pUpdatePanelButtons[] =
 
 UINT16 LargeTacticalStr[][ LARGE_STRING_LENGTH ] =
 {
-	L"Pokonano ciê w tym sektorze!",
-	L"Wróg nie zna litoœci i po¿era was wszystkich!",
-	L"Nieprzytomni cz³onkowie twojego oddzia³u zostali pojmani!",
-	L"Cz³onkowie twojego oddzia³u zostali uwiêzieni.",
+	L"Pokonano ciÄ™ w tym sektorze!",
+	L"WrÃ³g nie zna litoÂœci i poÅ¼era was wszystkich!",
+	L"Nieprzytomni czÅ‚onkowie twojego oddziaÅ‚u zostali pojmani!",
+	L"CzÅ‚onkowie twojego oddziaÅ‚u zostali uwiÄ™zieni.",
 };
 
 
@@ -2488,7 +2488,7 @@ STR16			InsContractText[] =
 { 
 	L"Wstecz",
 	L"Dalej",
-	//L"Akceptujê",
+	//L"AkceptujÄ™",
 	L"OK",
 	L"Skasuj",
 };
@@ -2512,14 +2512,14 @@ STR16			MercAccountText[] =
 {
 	// Text on the buttons on the bottom of the screen
 	L"Autoryzacja",
-	L"Strona g³ówna",
+	L"Strona gÅ‚Ã³wna",
 	L"Konto #:",
 	L"Najemnik",
 	L"Dni",
 	L"Stawka",	//5
-	L"Op³ata",
+	L"OpÅ‚ata",
 	L"Razem:",
-	L"Czy na pewno chcesz zatwierdziæ p³atnoœæ: %s?",		//the %s is a string that contains the dollar amount ( ex. "$150" )
+	L"Czy na pewno chcesz zatwierdziÄ‡ pÅ‚atnoÂœÄ‡: %s?",		//the %s is a string that contains the dollar amount ( ex. "$150" )
 };
 
 
@@ -2530,12 +2530,12 @@ STR16			MercAccountText[] =
 STR16			MercInfo[] =
 {
 	L"Zdrowie",
-	L"Zwinnoœæ",
-	L"Sprawnoœæ",
-	L"Si³a",
+	L"ZwinnoÂœÄ‡",
+	L"SprawnoÂœÄ‡",
+	L"SiÅ‚a",
 	L"Um. dowodz.",
 	L"Inteligencja",
-	L"Poz. doœwiadczenia",
+	L"Poz. doÂœwiadczenia",
 	L"Um. strzeleckie",
 	L"Zn. mechaniki",
 	L"Mat. wybuchowe",
@@ -2543,16 +2543,16 @@ STR16			MercInfo[] =
 
 	L"Poprzedni",
 	L"Najmij",
-	L"Nastêpny",
+	L"NastÄ™pny",
 	L"Dodatkowe informacje",
-	L"Strona g³ówna",
-	L"Najêty",
+	L"Strona gÅ‚Ã³wna",
+	L"NajÄ™ty",
 	L"Koszt:",
 	L"Dziennie",
-	L"Nie ¿yje",
+	L"Nie Å¼yje",
 
-	L"Wygl¹da na to, ¿e chcesz wynaj¹æ zbyt wielu najemników. Limit wynosi 18.",
-	L"Niedostêpny",
+	L"WyglÅ¡da na to, Å¼e chcesz wynajÅ¡Ä‡ zbyt wielu najemnikÃ³w. Limit wynosi 18.",
+	L"NiedostÄ™pny",
 };
 
 
@@ -2562,9 +2562,9 @@ STR16			MercInfo[] =
 STR16			MercNoAccountText[] =
 {
 	//Text on the buttons at the bottom of the screen
-	L"Otwórz konto",
+	L"OtwÃ³rz konto",
 	L"Anuluj",
-	L"Nie posiadasz konta. Czy chcesz sobie za³o¿yæ?"
+	L"Nie posiadasz konta. Czy chcesz sobie zaÅ‚oÅ¼yÄ‡?"
 };
 
 
@@ -2574,10 +2574,10 @@ STR16			MercNoAccountText[] =
 STR16			MercHomePageText[] =
 {
 	//Description of various parts on the MERC page
-	L"Speck T. Kline, za³o¿yciel i w³aœciciel",
-	L"Aby otworzyæ konto naciœnij tu",
-	L"Aby zobaczyæ konto naciœnij tu",
-	L"Aby obejrzeæ akta naciœnij tu",
+	L"Speck T. Kline, zaÅ‚oÅ¼yciel i wÅ‚aÂœciciel",
+	L"Aby otworzyÄ‡ konto naciÂœnij tu",
+	L"Aby zobaczyÄ‡ konto naciÂœnij tu",
+	L"Aby obejrzeÄ‡ akta naciÂœnij tu",
 	// The version number on the video conferencing system that pops up when Speck is talking
 	L"Speck Com v3.2",
 };
@@ -2586,22 +2586,22 @@ STR16			MercHomePageText[] =
 
 STR16			sFuneralString[] =
 {
-	L"Zak³ad pogrzebowy McGillicutty, pomaga rodzinom pogr¹¿onym w smutku od 1983.",
-	L"Kierownik, by³y najemnik A.I.M. Murray \'Pops\' McGillicutty jest doœwiadczonym pracownikiem zak³adu pogrzebowego.",
-	L"Przez ca³e ¿ycie obcowa³ ze œmierci¹, 'Pops' wie jak trudne s¹ te chwile.",
-	L"Zak³ad pogrzebowy McGillicutty oferuje szeroki zakres us³ug, od duchowego wsparcia po rekonstrukcjê silnie zniekszta³conych zw³ok.",
-	L"Pozwól by McGillicutty ci pomóg³ a twój ukochany bêdzie spoczywa³ w pokoju.",
+	L"ZakÅ‚ad pogrzebowy McGillicutty, pomaga rodzinom pogrÅ¡Å¼onym w smutku od 1983.",
+	L"Kierownik, byÅ‚y najemnik A.I.M. Murray \'Pops\' McGillicutty jest doÂœwiadczonym pracownikiem zakÅ‚adu pogrzebowego.",
+	L"Przez caÅ‚e Å¼ycie obcowaÅ‚ ze ÂœmierciÅ¡, 'Pops' wie jak trudne sÅ¡ te chwile.",
+	L"ZakÅ‚ad pogrzebowy McGillicutty oferuje szeroki zakres usÅ‚ug, od duchowego wsparcia po rekonstrukcjÄ™ silnie znieksztaÅ‚conych zwÅ‚ok.",
+	L"PozwÃ³l by McGillicutty ci pomÃ³gÅ‚ a twÃ³j ukochany bÄ™dzie spoczywaÅ‚ w pokoju.",
 
 	// Text for the various links available at the bottom of the page
-	L"WYŒLIJ KWIATY",
+	L"WYÂŒLIJ KWIATY",
 	L"KOLEKCJA TRUMIEN I URN",
-	L"US£UGI KREMA- CYJNE",
-	L"US£UGI PLANOWANIA POGRZEBU",
+	L"USÅUGI KREMA- CYJNE",
+	L"USÅUGI PLANOWANIA POGRZEBU",
 	L"KARTKI POGRZE- BOWE",
 
 	// The text that comes up when you click on any of the links ( except for send flowers ).
-	L"Niestety, z powodu œmierci w rodzinie, nie dzia³aj¹ jeszcze wszystkie elementy tej strony.",
-	L"Przepraszamy za powy¿sze uniedogodnienie."
+	L"Niestety, z powodu Âœmierci w rodzinie, nie dziaÅ‚ajÅ¡ jeszcze wszystkie elementy tej strony.",
+	L"Przepraszamy za powyÅ¼sze uniedogodnienie."
 };
 
 // Text for the florist Home page
@@ -2621,15 +2621,15 @@ STR16			sFloristText[] =
 
 	// detail of the florist page
 
-	L"Dzia³amy szybko i sprawnie!",	
-	L"Gwarantujemy dostawê w dowolny punkt na Ziemi, nastêpnego dnia po z³o¿eniu zamówienia!",
-	L"Oferujemy najni¿sze ceny na œwiecie!",	
-	L"Poka¿ nam ofertê z ni¿sz¹ cen¹, a dostaniesz w nagrodê tuzin ró¿, za darmo!",
-	L"Lataj¹ca flora, fauna i kwiaty od 1981.",
-	L"Nasz ozdobiony bombowiec zrzuci twój bukiet w promieniu co najwy¿ej dziesiêciu mil od ¿¹danego miejsca. Kiedy tylko zechcesz!",
-	L"Pozwól nam zaspokoiæ twoje kwieciste fantazje.",
-	L"Bruce, nasz œwiatowej renomy projektant bukietów, zerwie dla ciebie najœwie¿sze i najwspanialsze kwiaty z naszej szklarni.",
-	L"I pamiêtaj, jeœli czegoœ nie mamy, mo¿emy to szybko zasadziæ!"
+	L"DziaÅ‚amy szybko i sprawnie!",	
+	L"Gwarantujemy dostawÄ™ w dowolny punkt na Ziemi, nastÄ™pnego dnia po zÅ‚oÅ¼eniu zamÃ³wienia!",
+	L"Oferujemy najniÅ¼sze ceny na Âœwiecie!",	
+	L"PokaÅ¼ nam ofertÄ™ z niÅ¼szÅ¡ cenÅ¡, a dostaniesz w nagrodÄ™ tuzin rÃ³Å¼, za darmo!",
+	L"LatajÅ¡ca flora, fauna i kwiaty od 1981.",
+	L"Nasz ozdobiony bombowiec zrzuci twÃ³j bukiet w promieniu co najwyÅ¼ej dziesiÄ™ciu mil od Å¼Å¡danego miejsca. Kiedy tylko zechcesz!",
+	L"PozwÃ³l nam zaspokoiÄ‡ twoje kwieciste fantazje.",
+	L"Bruce, nasz Âœwiatowej renomy projektant bukietÃ³w, zerwie dla ciebie najÂœwieÅ¼sze i najwspanialsze kwiaty z naszej szklarni.",
+	L"I pamiÄ™taj, jeÂœli czegoÂœ nie mamy, moÅ¼emy to szybko zasadziÄ‡!"
 };
 
 
@@ -2640,26 +2640,26 @@ STR16			sOrderFormText[] =
 {
 	//Text on the buttons
 
-	L"Powrót",
-	L"Wyœlij",
+	L"PowrÃ³t",
+	L"WyÂœlij",
 	L"Skasuj",
 	L"Galeria",
 
 	L"Nazwa bukietu:",
 	L"Cena:",			//5
-	L"Zamówienie numer:",
+	L"ZamÃ³wienie numer:",
 	L"Czas dostawy",
 	L"nast. dnia",
-	L"dostawa gdy to bêdzie mo¿liwe",
+	L"dostawa gdy to bÄ™dzie moÅ¼liwe",
 	L"Miejsce dostawy",			//10
-	L"Dodatkowe us³ugi",
+	L"Dodatkowe usÅ‚ugi",
 	L"Zgnieciony bukiet($10)",
-	L"Czarne Ró¿e($20)",
-	L"Zwiêdniêty bukiet($10)",
-	L"Ciasto owocowe (je¿eli bêdzie)($10)",		//15
+	L"Czarne RÃ³Å¼e($20)",
+	L"ZwiÄ™dniÄ™ty bukiet($10)",
+	L"Ciasto owocowe (jeÅ¼eli bÄ™dzie)($10)",		//15
 	L"Osobiste kondolencje:",
-	L"Ze wzglêdu na rozmiar karteczek, tekst nie mo¿e zawieraæ wiêcej ni¿ 75 znaków.",
-	L"...mo¿esz te¿ przejrzeæ nasze",
+	L"Ze wzglÄ™du na rozmiar karteczek, tekst nie moÅ¼e zawieraÄ‡ wiÄ™cej niÅ¼ 75 znakÃ³w.",
+	L"...moÅ¼esz teÅ¼ przejrzeÄ‡ nasze",
 
 	L"STANDARDOWE KARTKI",	
 	L"Informacja o rachunku",//20
@@ -2681,19 +2681,19 @@ STR16		sFloristGalleryText[] =
 	L"Poprz.",	//abbreviation for previous
 	L"Nast.",	//abbreviation for next
 
-	L"Kliknij wybran¹ pozycjê aby z³o¿yæ zamówienie.",
-	L"Uwaga: $10 dodatkowej op³aty za zwiêdniêty lub zgnieciony bukiet.",
+	L"Kliknij wybranÅ¡ pozycjÄ™ aby zÅ‚oÅ¼yÄ‡ zamÃ³wienie.",
+	L"Uwaga: $10 dodatkowej opÅ‚aty za zwiÄ™dniÄ™ty lub zgnieciony bukiet.",
 
 	//text on the button
 
-	L"G³ówna",
+	L"GÅ‚Ã³wna",
 };
 
 //Florist Cards
 
 STR16			sFloristCards[] =
 {
-	L"Kliknij swój wybór",
+	L"Kliknij swÃ³j wybÃ³r",
 	L"Wstecz"
 };
 
@@ -2703,12 +2703,12 @@ STR16			sFloristCards[] =
 
 STR16			BobbyROrderFormText[] = 
 {
-	L"Formularz zamówienia",				//Title of the page
-	L"Iloœæ",					// The number of items ordered
+	L"Formularz zamÃ³wienia",				//Title of the page
+	L"IloÂœÄ‡",					// The number of items ordered
 	L"Waga (%s)",			// The weight of the item
 	L"Nazwa",				// The name of the item
 	L"Cena",				// the item's weight
-	L"Wartoœæ",				//5	// The total price of all of items of the same type
+	L"WartoÂœÄ‡",				//5	// The total price of all of items of the same type
 	L"W sumie",				// The sub total of all the item totals added
 	L"Transport",		// S&H is an acronym for Shipping and Handling 
 	L"Razem",			// The grand total of all item totals + the shipping and handling
@@ -2718,15 +2718,15 @@ STR16			BobbyROrderFormText[] =
 	L"Ekspres - 24h",			// Gets deliverd the next day
 	L"2 dni robocze",			// Gets delivered in 2 days
 	L"Standardowa dostawa",			// Gets delivered in 3 days
-	L" Wyczyœæ",//15			// Clears the order page
-	L" Akceptujê",			// Accept the order
+	L" WyczyÂœÄ‡",//15			// Clears the order page
+	L" AkceptujÄ™",			// Accept the order
 	L"Wstecz",				// text on the button that returns to the previous page
-	L"Strona g³ówna",				// Text on the button that returns to the home page
-	L"* oznacza u¿ywane rzeczy",		// Disclaimer stating that the item is used
-	L"Nie staæ ciê na to.",		//20	// A popup message that to warn of not enough money
+	L"Strona gÅ‚Ã³wna",				// Text on the button that returns to the home page
+	L"* oznacza uÅ¼ywane rzeczy",		// Disclaimer stating that the item is used
+	L"Nie staÄ‡ ciÄ™ na to.",		//20	// A popup message that to warn of not enough money
 	L"<BRAK>",				// Gets displayed when there is no valid city selected
-	L"Miejsce docelowe przesy³ki: %s. Potwierdzasz?",		// A popup that asks if the city selected is the correct one
-	L"Waga przesy³ki*",			// Displays the weight of the package
+	L"Miejsce docelowe przesyÅ‚ki: %s. Potwierdzasz?",		// A popup that asks if the city selected is the correct one
+	L"Waga przesyÅ‚ki*",			// Displays the weight of the package
 	L"* Min. Waga",				// Disclaimer states that there is a minimum weight for the package
 	L"Dostawy",
 };
@@ -2736,28 +2736,28 @@ STR16			BobbyROrderFormText[] =
 
 STR16			BobbyRText[] = 
 {
-	L"Zamów",				// Title
+	L"ZamÃ³w",				// Title
 	
-	L"Kliknij wybrane towary. Lewym klawiszem zwiêkszasz iloœæ towaru, a prawym zmniejszasz. Gdy ju¿ skompletujesz swoje zakupy przejdŸ do formularza zamówienia.",			// instructions on how to order
+	L"Kliknij wybrane towary. Lewym klawiszem zwiÄ™kszasz iloÂœÄ‡ towaru, a prawym zmniejszasz. Gdy juÅ¼ skompletujesz swoje zakupy przejdÂŸ do formularza zamÃ³wienia.",			// instructions on how to order
 
 	//Text on the buttons to go the various links
 
 	L"Poprzednia",		// 
-	L"Broñ", 			//3
+	L"BroÅ„", 			//3
 	L"Amunicja",			//4
 	L"Ochraniacze",			//5
-	L"Ró¿ne",			//6	//misc is an abbreviation for miscellaneous
-	L"U¿ywane",			//7
-	L"Nastêpna",
+	L"RÃ³Å¼ne",			//6	//misc is an abbreviation for miscellaneous
+	L"UÅ¼ywane",			//7
+	L"NastÄ™pna",
 	L"FORMULARZ",
-	L"Strona g³ówna",			//10
+	L"Strona gÅ‚Ã³wna",			//10
 
 	//The following 2 lines are used on the Ammunition page.  
 	//They are used for help text to display how many items the player's merc has
 	//that can use this type of ammo
 
-	L"Twój zespó³ posiada",//11
-	L"szt. broni do której pasuje amunicja tego typu", //12
+	L"TwÃ³j zespÃ³Å‚ posiada",//11
+	L"szt. broni do ktÃ³rej pasuje amunicja tego typu", //12
 
 	//The following lines provide information on the items
 
@@ -2765,11 +2765,11 @@ STR16			BobbyRText[] =
 	L"Kal:",			// the caliber of the gun
 	L"Mag:",			// number of rounds of ammo the Magazine can hold
 	L"Zas:",				// The range of the gun
-	L"Si³a:",				// Damage of the weapon	
+	L"SiÅ‚a:",				// Damage of the weapon	
 	L"CS:",			// Weapon's Rate Of Fire, acroymn ROF
 	L"Koszt:",			// Cost of the item
 	L"Na stanie:",			// The number of items still in the store's inventory
-	L"Iloœæ na zamów.:",		// The number of items on order
+	L"IloÂœÄ‡ na zamÃ³w.:",		// The number of items on order
 	L"Uszkodz.",			// If the item is damaged
 	L"Waga:",			// the Weight of the item
 	L"Razem:",			// The total cost of all items on order
@@ -2777,11 +2777,11 @@ STR16			BobbyRText[] =
 
 	//Popup that tells the player that they can only order 10 items at a time
 	
-	L"Przepraszamy za to utrudnienie, ale na jednym zamówieniu mo¿e siê znajdowaæ tylko 10 pozycji! Jeœli potrzebujesz wiêcej, z³ó¿ kolejne zamówienie.",
+	L"Przepraszamy za to utrudnienie, ale na jednym zamÃ³wieniu moÅ¼e siÄ™ znajdowaÄ‡ tylko 10 pozycji! JeÂœli potrzebujesz wiÄ™cej, zÅ‚Ã³Å¼ kolejne zamÃ³wienie.",
 
 	// A popup that tells the user that they are trying to order more items then the store has in stock
 
-	L"Przykro nam. Chwilowo nie mamy tego wiêcej na magazynie. Proszê spróbowaæ póŸniej.",
+	L"Przykro nam. Chwilowo nie mamy tego wiÄ™cej na magazynie. ProszÄ™ sprÃ³bowaÄ‡ pÃ³ÂŸniej.",
 
 	//A popup that tells the user that the store is temporarily sold out
 
@@ -2796,20 +2796,20 @@ STR16			BobbyRaysFrontText[] =
 {
 	//Details on the web site
 
-	L"Tu znajdziesz nowoœci z dziedziny broni i osprzêtu wojskowego",
-	L"Zaspokoimy wszystkie twoje potrzeby w dziedzinie materia³ów wybuchowych",
-	L"U¯YWANE RZECZY",
+	L"Tu znajdziesz nowoÂœci z dziedziny broni i osprzÄ™tu wojskowego",
+	L"Zaspokoimy wszystkie twoje potrzeby w dziedzinie materiaÅ‚Ã³w wybuchowych",
+	L"UÅ»YWANE RZECZY",
 
 	//Text for the various links to the sub pages
 
-	L"RÓ¯NE",
-	L"BROÑ",
+	L"RÃ“Å»NE",
+	L"BROÅƒ",
 	L"AMUNICJA",		//5
 	L"OCHRANIACZE",
 
 	//Details on the web site
 
-	L"Jeœli MY tego nie mamy, to znaczy, ¿e nigdzie tego nie dostaniesz!",
+	L"JeÂœli MY tego nie mamy, to znaczy, Å¼e nigdzie tego nie dostaniesz!",
 	L"W trakcie budowy",
 };
 
@@ -2820,14 +2820,14 @@ STR16			BobbyRaysFrontText[] =
 
 STR16			AimSortText[] =
 {
-	L"Cz³onkowie A.I.M.",				// Title
+	L"CzÅ‚onkowie A.I.M.",				// Title
 	
 	L"Sortuj wg:",					// Title for the way to sort
 
 	// sort by...
 
 	L"Ceny",											
-	L"Doœwiadczenia",
+	L"DoÂœwiadczenia",
 	L"Um. strzeleckich",
 	L"Um. med.",
 	L"Zn. mat. wyb.",
@@ -2835,14 +2835,14 @@ STR16			AimSortText[] =
 
 	//Text of the links to other AIM pages
 
-	L"Portrety najemników",
+	L"Portrety najemnikÃ³w",
 	L"Akta najemnika",
-	L"Poka¿ galeriê by³ych cz³onków A.I.M.",
+	L"PokaÅ¼ galeriÄ™ byÅ‚ych czÅ‚onkÃ³w A.I.M.",
 
 	// text to display how the entries will be sorted
 
-	L"Rosn¹co",
-	L"Malej¹co",
+	L"RosnÅ¡co",
+	L"MalejÅ¡co",
 };
 
 
@@ -2854,11 +2854,11 @@ STR16		AimPolicyText[] =
 	// The text on the buttons at the bottom of the page
 
 	L"Poprzednia str.",
-	L"Strona g³ówna", 
+	L"Strona gÅ‚Ã³wna", 
 	L"Przepisy",
-	L"Nastêpna str.",
-	L"Rezygnujê",
-	L"Akceptujê",
+	L"NastÄ™pna str.",
+	L"RezygnujÄ™",
+	L"AkceptujÄ™",
 };
 
 
@@ -2873,7 +2873,7 @@ STR16			AimMemberText[] =
 	L"Lewy klawisz myszy",
 	L"kontakt z najemnikiem",
 	L"Prawy klawisz myszy",
-	L"lista portretów",
+	L"lista portretÃ³w",
 };					
 
 //Aim Member.c
@@ -2884,12 +2884,12 @@ STR16			CharacterInfo[] =
 	// The various attributes of the merc
 
 	L"Zdrowie",										
-	L"Zwinnoœæ",										
-	L"Sprawnoœæ",									
-	L"Si³a",
+	L"ZwinnoÂœÄ‡",										
+	L"SprawnoÂœÄ‡",									
+	L"SiÅ‚a",
 	L"Um. dowodzenia",
 	L"Inteligencja",
-	L"Poziom doœw.",
+	L"Poziom doÂœw.",
 	L"Um. strzeleckie",
 	L"Zn. mechaniki",
 	L"Zn. mat. wyb.",
@@ -2897,10 +2897,10 @@ STR16			CharacterInfo[] =
 
 	// the contract expenses' area
 
-	L"Zap³ata",
+	L"ZapÅ‚ata",
 	L"Czas",				
-	L"1 dzieñ",					
-	L"1 tydzieñ",
+	L"1 dzieÅ„",					
+	L"1 tydzieÅ„",
 	L"2 tygodnie",
 
 	// text for the buttons that either go to the previous merc, 
@@ -2908,12 +2908,12 @@ STR16			CharacterInfo[] =
 
 	L"Poprzedni",
 	L"Kontakt",
-	L"Nastêpny",
+	L"NastÄ™pny",
 
 	L"Dodatkowe informacje",				// Title for the additional info for the merc's bio
-	L"Aktywni cz³onkowie",		//20		// Title of the page
-	L"Opcjonalne wyposa¿enie:",				// Displays the optional gear cost
-	L"Wymagany jest zastaw na ¿ycie",			// If the merc required a medical deposit, this is displayed
+	L"Aktywni czÅ‚onkowie",		//20		// Title of the page
+	L"Opcjonalne wyposaÅ¼enie:",				// Displays the optional gear cost
+	L"Wymagany jest zastaw na Å¼ycie",			// If the merc required a medical deposit, this is displayed
 };
 
 
@@ -2924,32 +2924,32 @@ STR16			CharacterInfo[] =
 
 STR16			VideoConfercingText[] =
 {
-	L"Wartoœæ kontraktu:",				//Title beside the cost of hiring the merc
+	L"WartoÂœÄ‡ kontraktu:",				//Title beside the cost of hiring the merc
 
 	//Text on the buttons to select the length of time the merc can be hired
 
-	L"Jeden dzieñ",										
-	L"Jeden tydzieñ",
+	L"Jeden dzieÅ„",										
+	L"Jeden tydzieÅ„",
 	L"Dwa tygodnie",
 
 	//Text on the buttons to determine if you want the merc to come with the equipment 
 
-	L"Bez sprzêtu",
-	L"WeŸ sprzêt",
+	L"Bez sprzÄ™tu",
+	L"WeÂŸ sprzÄ™t",
 
 	// Text on the Buttons
 
 	L"TRANSFER",			// to actually hire the merc
 	L"ANULUJ",				// go back to the previous menu
 	L"WYNAJMIJ",				// go to menu in which you can hire the merc
-	L"ROZ£¥CZ",				// stops talking with the merc
+	L"ROZÅÄ½CZ",				// stops talking with the merc
 	L"OK",									
-	L"NAGRAJ SIÊ",			// if the merc is not there, you can leave a message 
+	L"NAGRAJ SIÄ˜",			// if the merc is not there, you can leave a message 
 
 	//Text on the top of the video conference popup
 
 	L"Wideo konferencja z - ",		
-	L"£¹czê. . .",
+	L"ÅÅ¡czÄ™. . .",
 
 	L"z zastawem"			// Displays if you are hiring the merc with the medical deposit
 };
@@ -2963,22 +2963,22 @@ STR16			VideoConfercingText[] =
 
 STR16			AimPopUpText[] =
 {
-	L"TRANSFER ZAKOÑCZONY POMYŒLNIE",	// You hired the merc
-	L"PRZEPROWADZENIE TRANSFERU NIE MO¯LIWE",		// Player doesn't have enough money, message 1
-	L"BRAK ŒRODKÓW",				// Player doesn't have enough money, message 2
+	L"TRANSFER ZAKOÅƒCZONY POMYÂŒLNIE",	// You hired the merc
+	L"PRZEPROWADZENIE TRANSFERU NIE MOÅ»LIWE",		// Player doesn't have enough money, message 1
+	L"BRAK ÂŒRODKÃ“W",				// Player doesn't have enough money, message 2
 
 	// if the merc is not available, one of the following is displayed over the merc's face
 
-	L"Wynajêto",											
-	L"Proszê zostaw wiadomoœæ",
-	L"Nie ¿yje",
+	L"WynajÄ™to",											
+	L"ProszÄ™ zostaw wiadomoÂœÄ‡",
+	L"Nie Å¼yje",
 
 	//If you try to hire more mercs than game can support
 
-	L"Masz ju¿ pe³ny zespó³ 18 najemników.",
+	L"Masz juÅ¼ peÅ‚ny zespÃ³Å‚ 18 najemnikÃ³w.",
 
-	L"Nagrana wiadomoœæ",
-	L"Wiadomoœæ zapisana",
+	L"Nagrana wiadomoÂœÄ‡",
+	L"WiadomoÂœÄ‡ zapisana",
 };
 
 
@@ -3002,9 +3002,9 @@ STR16			AimHistoryText[] =
 	// Text on the buttons at the bottom of the page
 
 	L"Poprzednia str.",
-	L"Strona g³ówna", 
-	L"Byli cz³onkowie",
-	L"Nastêpna str."
+	L"Strona gÅ‚Ã³wna", 
+	L"Byli czÅ‚onkowie",
+	L"NastÄ™pna str."
 };
 
 
@@ -3017,29 +3017,29 @@ STR16			AimFiText[] =
 	// displays the way in which the mercs were sorted
 
 	L"ceny",
-	L"doœwiadczenia",
+	L"doÂœwiadczenia",
 	L"um. strzeleckich",
 	L"um. medycznych",
-	L"zn. materia³ów wyb.",
+	L"zn. materiaÅ‚Ã³w wyb.",
 	L"zn. mechaniki",
 
 	// The title of the page, the above text gets added at the end of this text
 
-	L"Cz³onkowie A.I.M. posortowani rosn¹co wg %s",
-	L"Cz³onkowie A.I.M. posortowani malej¹co wg %s",
+	L"CzÅ‚onkowie A.I.M. posortowani rosnÅ¡co wg %s",
+	L"CzÅ‚onkowie A.I.M. posortowani malejÅ¡co wg %s",
 
 	// Instructions to the players on what to do
 
 	L"Lewy klawisz",
-	L"Wybór najemnika",			//10
+	L"WybÃ³r najemnika",			//10
 	L"Prawy klawisz",
 	L"Opcje sortowania",
 
 	// Gets displayed on top of the merc's portrait if they are...
 
-	L"Wyjecha³(a)",
-	L"Nie ¿yje",						//14
-	L"Wynajêto",
+	L"WyjechaÅ‚(a)",
+	L"Nie Å¼yje",						//14
+	L"WynajÄ™to",
 };
 
 
@@ -3054,7 +3054,7 @@ STR16			AimAlumniText[] =
 	L"STRONA 2",
 	L"STRONA 3",
 
-	L"Byli cz³onkowie A.I.M.",	// Title of the page
+	L"Byli czÅ‚onkowie A.I.M.",	// Title of the page
 
 
 	L"OK"			// Stops displaying information on selected merc
@@ -3071,17 +3071,17 @@ STR16			AimScreenText[] =
 {
 	// AIM disclaimers
 	
-	L"Znaki A.I.M. i logo A.I.M. s¹ prawnie chronione w wiêkszoœci krajów.",
-	L"Wiêc nawet nie myœl o próbie ich podrobienia.",
+	L"Znaki A.I.M. i logo A.I.M. sÅ¡ prawnie chronione w wiÄ™kszoÂœci krajÃ³w.",
+	L"WiÄ™c nawet nie myÂœl o prÃ³bie ich podrobienia.",
 	L"Copyright 1998-1999 A.I.M., Ltd. All rights reserved.",
 
 	//Text for an advertisement that gets displayed on the AIM page
 
 	L"United Floral Service",
 	L"\"Zrzucamy gdziekolwiek\"",				//10
-	L"Zrób to jak nale¿y...",
+	L"ZrÃ³b to jak naleÅ¼y...",
 	L"...za pierwszym razem",
-	L"Broñ i akcesoria, jeœli czegoœ nie mamy, to tego nie potrzebujesz.",
+	L"BroÅ„ i akcesoria, jeÂœli czegoÂœ nie mamy, to tego nie potrzebujesz.",
 };
 
 
@@ -3090,9 +3090,9 @@ STR16			AimScreenText[] =
 STR16			AimBottomMenuText[] =
 {
 	//Text for the links at the bottom of all AIM pages
-	L"Strona g³ówna",
-	L"Cz³onkowie",
-	L"Byli cz³onkowie",
+	L"Strona gÅ‚Ã³wna",
+	L"CzÅ‚onkowie",
+	L"Byli czÅ‚onkowie",
 	L"Przepisy",
 	L"Historia",
 	L"Linki",
@@ -3108,8 +3108,8 @@ STR16 SKI_Text[ ] =
 {
 	L"TOWARY NA STANIE",		//Header for the merchandise available
 	L"STRONA",				//The current store inventory page being displayed
-	L"KOSZT OGÓ£EM",				//The total cost of the the items in the Dealer inventory area
-	L"WARTOŒÆ OGÓ£EM",			//The total value of items player wishes to sell
+	L"KOSZT OGÃ“ÅEM",				//The total cost of the the items in the Dealer inventory area
+	L"WARTOÂŒÄ† OGÃ“ÅEM",			//The total value of items player wishes to sell
 	L"WYCENA",				//Button text for dealer to evaluate items the player wants to sell
 	L"TRANSAKCJA",			//Button text which completes the deal. Makes the transaction.
 	L"OK",				//Text for the button which will leave the shopkeeper interface.
@@ -3117,9 +3117,9 @@ STR16 SKI_Text[ ] =
 	L"1 GODZINA",			// SINGULAR! The text underneath the inventory slot when an item is given to the dealer to be repaired
 	L"%d GODZIN(Y)",		// PLURAL!   The text underneath the inventory slot when an item is given to the dealer to be repaired
 	L"NAPRAWIONO",		// Text appearing over an item that has just been repaired by a NPC repairman dealer
-	L"Brak miejsca by zaoferowaæ wiêcej rzeczy.",	//Message box that tells the user there is no more room to put there stuff
+	L"Brak miejsca by zaoferowaÄ‡ wiÄ™cej rzeczy.",	//Message box that tells the user there is no more room to put there stuff
 	L"%d MINUT(Y)",		// The text underneath the inventory slot when an item is given to the dealer to be repaired
-	L"Upuœæ przedmiot na ziemiê.",
+	L"UpuÂœÄ‡ przedmiot na ziemiÄ™.",
 };
 
 //ShopKeeper Interface
@@ -3139,7 +3139,7 @@ STR16	SkiAtmText[] =
 	L"8",
 	L"9",
 	L"OK",						// Transfer the money
-	L"WeŸ",					// Take money from the player
+	L"WeÂŸ",					// Take money from the player
 	L"Daj",					// Give money to the player
 	L"Anuluj",					// Cancel the transfer
 	L"Skasuj",					// Clear the money display
@@ -3152,23 +3152,23 @@ STR16	gzSkiAtmText[] =
 
 	// Text on the bank machine panel that....
 	L"Wybierz",			// tells the user to select either to give or take from the merc
-	L"WprowadŸ kwotê",			// Enter the amount to transfer
-	L"Transfer gotówki do najemnika",		// Giving money to the merc
-	L"Transfer gotówki od najemnika",		// Taking money from the merc
-	L"Brak œrodków",			// Not enough money to transfer
+	L"WprowadÂŸ kwotÄ™",			// Enter the amount to transfer
+	L"Transfer gotÃ³wki do najemnika",		// Giving money to the merc
+	L"Transfer gotÃ³wki od najemnika",		// Taking money from the merc
+	L"Brak ÂœrodkÃ³w",			// Not enough money to transfer
 	L"Saldo",				// Display the amount of money the player currently has
 };
 
 
 STR16	SkiMessageBoxText[] =
 {
-	L"Czy chcesz do³o¿yæ %s ze swojego konta, aby pokryæ ró¿nicê?",
-	L"Brak œrodków. Brakuje ci %s",
-	L"Czy chcesz przeznaczyæ %s ze swojego konta, aby pokryæ koszty?",
-	L"Poproœ o rozpoczêcie transakscji",
-	L"Poproœ o naprawê wybranych przedmiotów",
-	L"Zakoñcz rozmowê",
-	L"Saldo dostêpne",
+	L"Czy chcesz doÅ‚oÅ¼yÄ‡ %s ze swojego konta, aby pokryÄ‡ rÃ³Å¼nicÄ™?",
+	L"Brak ÂœrodkÃ³w. Brakuje ci %s",
+	L"Czy chcesz przeznaczyÄ‡ %s ze swojego konta, aby pokryÄ‡ koszty?",
+	L"PoproÂœ o rozpoczÄ™cie transakscji",
+	L"PoproÂœ o naprawÄ™ wybranych przedmiotÃ³w",
+	L"ZakoÅ„cz rozmowÄ™",
+	L"Saldo dostÄ™pne",
 };
 
 
@@ -3177,9 +3177,9 @@ STR16	SkiMessageBoxText[] =
 STR16	zOptionsText[] = 
 {
 	//button Text
-	L"Zapisz grê",
-	L"Odczytaj grê",
-	L"Wyjœcie",
+	L"Zapisz grÄ™",
+	L"Odczytaj grÄ™",
+	L"WyjÂœcie",
 	L"OK",
 
 	//Text above the slider bars
@@ -3188,63 +3188,63 @@ STR16	zOptionsText[] =
 	L"Muzyka",
 
 	//Confirmation pop when the user selects..
-	L"Zakoñczyæ grê i wróciæ do g³ównego menu?",
+	L"ZakoÅ„czyÄ‡ grÄ™ i wrÃ³ciÄ‡ do gÅ‚Ã³wnego menu?",
 
-	L"Musisz w³¹czyæ opcjê dialogów lub napisów.",
+	L"Musisz wÅ‚Å¡czyÄ‡ opcjÄ™ dialogÃ³w lub napisÃ³w.",
 };
 
 
 //SaveLoadScreen 
 STR16			zSaveLoadText[] = 
 {
-	L"Zapisz grê",
-	L"Odczytaj grê",
+	L"Zapisz grÄ™",
+	L"Odczytaj grÄ™",
 	L"Anuluj",
-	L"Zapisz wybran¹",
-	L"Odczytaj wybran¹",
+	L"Zapisz wybranÅ¡",
+	L"Odczytaj wybranÅ¡",
 
-	L"Gra zosta³a pomyœlnie zapisana",
-	L"B£¥D podczas zapisu gry!",
-	L"Gra zosta³a pomyœlnie odczytana",
-	L"B£¥D podczas odczytu gry!",
+	L"Gra zostaÅ‚a pomyÂœlnie zapisana",
+	L"BÅÄ½D podczas zapisu gry!",
+	L"Gra zostaÅ‚a pomyÂœlnie odczytana",
+	L"BÅÄ½D podczas odczytu gry!",
 
-	L"Wersja gry w zapisanym pliku ró¿ni siê od bie¿¹cej. Prawdopodobnie mo¿na bezpiecznie kontynuowaæ. Kontynuowaæ?",
-	L"Zapisane pliki gier mog¹ byæ uszkodzone. Czy chcesz je usun¹æ?",
+	L"Wersja gry w zapisanym pliku rÃ³Å¼ni siÄ™ od bieÅ¼Å¡cej. Prawdopodobnie moÅ¼na bezpiecznie kontynuowaÄ‡. KontynuowaÄ‡?",
+	L"Zapisane pliki gier mogÅ¡ byÄ‡ uszkodzone. Czy chcesz je usunÅ¡Ä‡?",
 
 	//Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 	//is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 	//used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.	
 #ifdef JA2BETAVERSION
-	L"Nieprawid³owa wersja zapisu gry.  W razie problemów prosimy o raport.  Kontynuowaæ?",
+	L"NieprawidÅ‚owa wersja zapisu gry.  W razie problemÃ³w prosimy o raport.  KontynuowaÄ‡?",
 #else
-	L"Próba odczytu starszej wersji zapisu gry.  Zaktualizowaæ ten zapis i odczytaæ grê?",
+	L"PrÃ³ba odczytu starszej wersji zapisu gry.  ZaktualizowaÄ‡ ten zapis i odczytaÄ‡ grÄ™?",
 #endif
 
 	//Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 	//is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 	//used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
 #ifdef JA2BETAVERSION
-	L"Nieprawid³owa wersja zapisu gry.  W razie problemów prosimy o raport.  Kontynuowaæ?",
+	L"NieprawidÅ‚owa wersja zapisu gry.  W razie problemÃ³w prosimy o raport.  KontynuowaÄ‡?",
 #else
-	L"Próba odczytu starszej wersji zapisu gry.  Zaktualizowaæ ten zapis i odczytaæ grê?",
+	L"PrÃ³ba odczytu starszej wersji zapisu gry.  ZaktualizowaÄ‡ ten zapis i odczytaÄ‡ grÄ™?",
 #endif
 
-	L"Czy na pewno chcesz nadpisaæ grê na pozycji %d?",
-	L"Chcesz odczytaæ grê z pozycji",
+	L"Czy na pewno chcesz nadpisaÄ‡ grÄ™ na pozycji %d?",
+	L"Chcesz odczytaÄ‡ grÄ™ z pozycji",
 
 
 	//The first %d is a number that contains the amount of free space on the users hard drive,
 	//the second is the recommended amount of free space.
 	L"Brak miejsca na dysku twardym.  Na dysku wolne jest %d MB, a wymagane jest przynajmniej %d MB.",	
 
-	L"Zapisujê...",			//When saving a game, a message box with this string appears on the screen
+	L"ZapisujÄ™...",			//When saving a game, a message box with this string appears on the screen
 
 	L"Standardowe uzbrojenie",
-	L"Ca³e mnóstwo broni",
+	L"CaÅ‚e mnÃ³stwo broni",
 	L"Realistyczna gra",
 	L"Elementy S-F",
 
-	L"Stopieñ trudnoœci",
+	L"StopieÅ„ trudnoÂœci",
 };
 
 
@@ -3253,55 +3253,55 @@ STR16			zSaveLoadText[] =
 STR16		zMarksMapScreenText[] =
 {
 	L"Poziom mapy",
-	L"Nie masz jeszcze ¿o³nierzy samoobrony.  Musisz najpierw wytrenowaæ mieszkañców miast.",
-	L"Dzienny przychód",
-	L"Najmemnik ma polisê ubezpieczeniow¹", 
+	L"Nie masz jeszcze Å¼oÅ‚nierzy samoobrony.  Musisz najpierw wytrenowaÄ‡ mieszkaÅ„cÃ³w miast.",
+	L"Dzienny przychÃ³d",
+	L"Najmemnik ma polisÄ™ ubezpieczeniowÅ¡", 
     L"%s nie potrzebuje snu.", 
-	L"%s jest w drodze i nie mo¿e spaæ", 
-	L"%s jest zbyt zmêczony(na), spróbuj trochê póŸniej.",
+	L"%s jest w drodze i nie moÅ¼e spaÄ‡", 
+	L"%s jest zbyt zmÄ™czony(na), sprÃ³buj trochÄ™ pÃ³ÂŸniej.",
 	L"%s prowadzi.",
-	L"Oddzia³ nie mo¿e siê poruszaæ je¿eli jeden z najemników œpi.",
+	L"OddziaÅ‚ nie moÅ¼e siÄ™ poruszaÄ‡ jeÅ¼eli jeden z najemnikÃ³w Âœpi.",
 
 	// stuff for contracts
-	L"Mimo, ¿e mo¿esz op³aciæ kontrakt, to jednak nie masz gotówki by op³aciæ sk³adkê ubezpieczeniow¹ za najemnika.",
-	L"%s - sk³adka ubezpieczeniowa najemnika bêdzie kosztowaæ %s za %d dzieñ(dni). Czy chcesz j¹ op³aciæ?",
+	L"Mimo, Å¼e moÅ¼esz opÅ‚aciÄ‡ kontrakt, to jednak nie masz gotÃ³wki by opÅ‚aciÄ‡ skÅ‚adkÄ™ ubezpieczeniowÅ¡ za najemnika.",
+	L"%s - skÅ‚adka ubezpieczeniowa najemnika bÄ™dzie kosztowaÄ‡ %s za %d dzieÅ„(dni). Czy chcesz jÅ¡ opÅ‚aciÄ‡?",
 	L"Inwentarz sektora",
-	L"Najemnik posiada zastaw na ¿ycie.", 
+	L"Najemnik posiada zastaw na Å¼ycie.", 
 	
 	// other items
 	L"Lekarze", // people acting a field medics and bandaging wounded mercs // **************************************NEW******** as of July 09, 1998
 	L"Pacjenci", // people who are being bandaged by a medic // ****************************************************NEW******** as of July 10, 1998
 	L"Gotowe", // Continue on with the game after autobandage is complete 
 	L"Przerwij", // Stop autobandaging of patients by medics now 
-	L"Przykro nam, ale ta opcja jest wy³¹czona w wersji demo.", // informs player this option/button has been disabled in the demo 
-	L"%s nie ma zestawu narzêdzi.",
+	L"Przykro nam, ale ta opcja jest wyÅ‚Å¡czona w wersji demo.", // informs player this option/button has been disabled in the demo 
+	L"%s nie ma zestawu narzÄ™dzi.",
 	L"%s nie ma apteczki.",
-	L"Brak chêtnych ludzi do szkolenia, w tej chwili.",
-	L"%s posiada ju¿ maksymaln¹ liczbê oddzia³ów samoobrony.",
-	L"Najemnik ma kontrakt na okreœlony czas.",
+	L"Brak chÄ™tnych ludzi do szkolenia, w tej chwili.",
+	L"%s posiada juÅ¼ maksymalnÅ¡ liczbÄ™ oddziaÅ‚Ã³w samoobrony.",
+	L"Najemnik ma kontrakt na okreÂœlony czas.",
   L"Kontrakt najemnika nie jest ubezpieczony",
 };
 
 
 STR16 pLandMarkInSectorString[] =
 {
-	L"Oddzia³ %d zauwa¿y³ kogoœ w sektorze %s",
+	L"OddziaÅ‚ %d zauwaÅ¼yÅ‚ kogoÂœ w sektorze %s",
 };
 
 // confirm the player wants to pay X dollars to build a militia force in town
 STR16 pMilitiaConfirmStrings[] =
 {
-	L"Szkolenie oddzia³u samoobrony bêdzie kosztowa³o $", // telling player how much it will cost
+	L"Szkolenie oddziaÅ‚u samoobrony bÄ™dzie kosztowaÅ‚o $", // telling player how much it will cost
 	L"Zatwierdzasz wydatek?", // asking player if they wish to pay the amount requested
-	L"Nie staæ ciê na to.", // telling the player they can't afford to train this town
-	L"Kontynuowaæ szkolenie samoobrony w - %s (%s %d)?", // continue training this town?
+	L"Nie staÄ‡ ciÄ™ na to.", // telling the player they can't afford to train this town
+	L"KontynuowaÄ‡ szkolenie samoobrony w - %s (%s %d)?", // continue training this town?
 	L"Koszt $", // the cost in dollars to train militia
 	L"( T/N )",   // abbreviated yes/no
 	L"",	// unused
-	L"Szkolenie samoobrony w %d sektorach bêdzie kosztowa³o $ %d. %s", // cost to train sveral sectors at once
-	L"Nie masz %d$, aby wyszkoliæ samoobronê w tym mieœcie.",
-	L"%s musi mieæ %d% lojalnoœci, aby mo¿na by³o kontynuowaæ szkolenie samoobrony.",
-	L"Nie mo¿esz ju¿ d³u¿ej szkoliæ samoobrony w mieœcie %s.",
+	L"Szkolenie samoobrony w %d sektorach bÄ™dzie kosztowaÅ‚o $ %d. %s", // cost to train sveral sectors at once
+	L"Nie masz %d$, aby wyszkoliÄ‡ samoobronÄ™ w tym mieÂœcie.",
+	L"%s musi mieÄ‡ %d% lojalnoÂœci, aby moÅ¼na byÅ‚o kontynuowaÄ‡ szkolenie samoobrony.",
+	L"Nie moÅ¼esz juÅ¼ dÅ‚uÅ¼ej szkoliÄ‡ samoobrony w mieÂœcie %s.",
 };
 
 #ifdef JA2DEMOADS
@@ -3311,71 +3311,71 @@ STR16 gpDemoString[] =
 	L"NAJLEPSZA GRA STRATEGICZNA.",
 	L"NAJLEPSZA GRA ROLE-PLAYING.",
 	L"Nieliniowy scenariusz gry",
-	L"Absolutnie nowy pomys³",
-	L"Wspania³e strzelaniny",
-	L"Dynamiczne oœwietlenie",
+	L"Absolutnie nowy pomysÅ‚",
+	L"WspaniaÅ‚e strzelaniny",
+	L"Dynamiczne oÂœwietlenie",
 	L"Rozmowy z postaciami",
 	L"Nocne akcje",
-	L"Kreowanie w³asnego najemnika",
-	L"Ambitne i wci¹gaj¹ce misje",
+	L"Kreowanie wÅ‚asnego najemnika",
+	L"Ambitne i wciÅ¡gajÅ¡ce misje",
 	L"Sterowanie pojazdami",
 	//10-19
-	L"Ponad 150 ró¿nych postaci",
-	L"Setki ciekawych przedmiotów",
-	L"Ponad 250 ró¿nych plenerów",
+	L"Ponad 150 rÃ³Å¼nych postaci",
+	L"Setki ciekawych przedmiotÃ³w",
+	L"Ponad 250 rÃ³Å¼nych plenerÃ³w",
 	L"Efektowne eksplozje",
 	L"Nowe taktyczne manewry",
 	L"Tony animacji",
 	L"Ponad 9000 kwestii dialogowych",
-	L"Niesamowity podk³ad muzyczny Kevina Manthei",
+	L"Niesamowity podkÅ‚ad muzyczny Kevina Manthei",
 	L"Globalna strategia",
 	L"Naloty",
 	//20-29
-	L"Szkolenie oddzia³ów samoobrony",
-	L"Mo¿liwoœæ dostosowania scenariusza gry",
+	L"Szkolenie oddziaÅ‚Ã³w samoobrony",
+	L"MoÅ¼liwoÂœÄ‡ dostosowania scenariusza gry",
 	L"Realistyczne tereny",
 	L"Efektowna grafika high-color",
-	L"Kupno, sprzeda¿ i handel",
-	L"Bezwzglêdny przeciwnik AI",
-	L"Œwietna walka taktyczna",
+	L"Kupno, sprzedaÅ¼ i handel",
+	L"BezwzglÄ™dny przeciwnik AI",
+	L"ÂŒwietna walka taktyczna",
 	L"Opcjonalny element S-F",
 	L"24 godzinny zegar",
 	L"Minimum 60 godzin gry",
 	//30-34
-	L"Ró¿ne poziomy trudnoœci",
+	L"RÃ³Å¼ne poziomy trudnoÂœci",
 	L"Realistycznie opracowana balistyka",
 	L"Wierne odwzorowanie zasad fizyki",
-	L"W pe³ni interaktywny interfejs",
-	L"I wiele, wiele wiêcej...",
+	L"W peÅ‚ni interaktywny interfejs",
+	L"I wiele, wiele wiÄ™cej...",
 	//35 on are BOLD
 	L"",
 	L"",
-	L"Jedna z najbardziej pomys³owych gier 1998 roku",
+	L"Jedna z najbardziej pomysÅ‚owych gier 1998 roku",
 	L"PC Gamer",
-	L"Zamów ju¿ dzisiaj na stronie WWW.TOPWARE.PL !",
+	L"ZamÃ³w juÅ¼ dzisiaj na stronie WWW.TOPWARE.PL !",
 };
 
 STR16 gpDemoIntroString[] = 
 {
-	L"Za chwilê spróbujesz najlepszej strategii, role-playing i najwspanialszej walki taktycznej:",
+	L"Za chwilÄ™ sprÃ³bujesz najlepszej strategii, role-playing i najwspanialszej walki taktycznej:",
 	//Point 1 (uses one string)
-	L"Kontrola nad grup¹ najemników o bogatej osobowoœci   (¿adnych nudnych i zbêdnych postaci).",
+	L"Kontrola nad grupÅ¡ najemnikÃ³w o bogatej osobowoÂœci   (Å¼adnych nudnych i zbÄ™dnych postaci).",
 	//Point 2 (uses one string)
-	L"SprawdŸ wspania³e manewry taktyczne, pocz¹wszy od biegu do czo³gania siê, wspinania siê, skakania, walki wrêcz i wielu innych.",
+	L"SprawdÂŸ wspaniaÅ‚e manewry taktyczne, poczÅ¡wszy od biegu do czoÅ‚gania siÄ™, wspinania siÄ™, skakania, walki wrÄ™cz i wielu innych.",
 	//Point 3 (uses one string)
-	L"Igraj z ogniem! Fajne zabawki, œmiercionoœna broñ, efektowne eksplozje.",
+	L"Igraj z ogniem! Fajne zabawki, ÂœmiercionoÂœna broÅ„, efektowne eksplozje.",
 	//Additional comment
-	L"(a to dopiero pocz¹tek...)",
+	L"(a to dopiero poczÅ¡tek...)",
 	//Introduction/instructions
-	L"Witamy w Demoville... (naciœnij dowolny klawisz)",
+	L"Witamy w Demoville... (naciÂœnij dowolny klawisz)",
 };
 #endif
 
 //Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16	gzMoneyWithdrawMessageText[] = 
 {
-	L"Jednorazowo mo¿esz wyp³aciæ do 20,000$.",
-	L"Czy na pewno chcesz wp³aciæ %s na swoje konto?",
+	L"Jednorazowo moÅ¼esz wypÅ‚aciÄ‡ do 20,000$.",
+	L"Czy na pewno chcesz wpÅ‚aciÄ‡ %s na swoje konto?",
 };
 
 STR16	gzCopyrightText[] = 
@@ -3394,17 +3394,17 @@ STR16		zOptionsToggleText[] =
 	L"Drastyczne sceny",
 	L"Nigdy nie ruszaj mojej myszki!",
 	L"Stara metoda wyboru",
-	L"Pokazuj trasê ruchu",
-	L"Pokazuj chybione strza³y",
+	L"Pokazuj trasÄ™ ruchu",
+	L"Pokazuj chybione strzaÅ‚y",
 	L"Potwierdzenia w trybie Real-Time",
-	L"Informacja, ¿e najemnik œpi/budzi siê",
-	L"U¿ywaj systemu metrycznego",
-	L"Œwiat³o wokó³ najemników podczas ruchu",
-	L"Przyci¹gaj kursor do najemników",
-	L"Przyci¹gaj kursor do drzwi",
-	L"Pulsuj¹ce przedmioty",
+	L"Informacja, Å¼e najemnik Âœpi/budzi siÄ™",
+	L"UÅ¼ywaj systemu metrycznego",
+	L"ÂŒwiatÅ‚o wokÃ³Å‚ najemnikÃ³w podczas ruchu",
+	L"PrzyciÅ¡gaj kursor do najemnikÃ³w",
+	L"PrzyciÅ¡gaj kursor do drzwi",
+	L"PulsujÅ¡ce przedmioty",
 	L"Pokazuj korony drzew",
-	L"Pokazuj siatkê",
+	L"Pokazuj siatkÄ™",
 	L"Pokazuj kursor 3D",
 };
 
@@ -3412,86 +3412,86 @@ STR16		zOptionsToggleText[] =
 STR16	zOptionsScreenHelpText[] =
 {
 	//speech
-	L"W³¹cz tê opcjê, jeœli chcesz s³uchaæ dialogów.",
+	L"WÅ‚Å¡cz tÄ™ opcjÄ™, jeÂœli chcesz sÅ‚uchaÄ‡ dialogÃ³w.",
 
 	//Mute Confirmation
-	L"W³¹cza lub wy³¹cza g³osowe potwierzenia postaci.",
+	L"WÅ‚Å¡cza lub wyÅ‚Å¡cza gÅ‚osowe potwierzenia postaci.",
 
 		//Subtitles
-	L"W³¹cza lub wy³¹cza napisy podczas dialogów.",
+	L"WÅ‚Å¡cza lub wyÅ‚Å¡cza napisy podczas dialogÃ³w.",
 
 	//Key to advance speech
-	L"Jeœli napisy s¹ w³¹czone, opcja ta pozwoli ci spokojnie je przeczytaæ podczas dialogu.",
+	L"JeÂœli napisy sÅ¡ wÅ‚Å¡czone, opcja ta pozwoli ci spokojnie je przeczytaÄ‡ podczas dialogu.",
 
 	//Toggle smoke animation
-	L"Wy³¹cz tê opcjê, aby poprawiæ p³ynnoœæ dzia³ania gry.",
+	L"WyÅ‚Å¡cz tÄ™ opcjÄ™, aby poprawiÄ‡ pÅ‚ynnoÂœÄ‡ dziaÅ‚ania gry.",
 
 	//Blood n Gore
-	L"Wy³¹cz tê opcjê, jeœli nie lubisz widoku krwi.",
+	L"WyÅ‚Å¡cz tÄ™ opcjÄ™, jeÂœli nie lubisz widoku krwi.",
 
 	//Never move my mouse
-	L"Wy³¹cz tê opcjê, aby kursor myszki automatycznie ustawia³ siê nad pojawiaj¹cymi siê okienkami dialogowymi.",
+	L"WyÅ‚Å¡cz tÄ™ opcjÄ™, aby kursor myszki automatycznie ustawiaÅ‚ siÄ™ nad pojawiajÅ¡cymi siÄ™ okienkami dialogowymi.",
 
 	//Old selection method
-	L"W³¹cz tê opcjê, aby wybór postaci dzia³a³ tak jak w poprzedniej wersji gry.",
+	L"WÅ‚Å¡cz tÄ™ opcjÄ™, aby wybÃ³r postaci dziaÅ‚aÅ‚ tak jak w poprzedniej wersji gry.",
 
 	//Show movement path
-	L"W³¹cz tê opcjê jeœli chcesz widzieæ trasê ruchu w trybie Real-Time.",
+	L"WÅ‚Å¡cz tÄ™ opcjÄ™ jeÂœli chcesz widzieÄ‡ trasÄ™ ruchu w trybie Real-Time.",
 
 	//show misses
-	L"W³¹cz tê opcjê, aby zobaczyæ w co trafiaj¹ twoje kule gdy pud³ujesz.",
+	L"WÅ‚Å¡cz tÄ™ opcjÄ™, aby zobaczyÄ‡ w co trafiajÅ¡ twoje kule gdy pudÅ‚ujesz.",
 	
 	//Real Time Confirmation
-	L"Gdy opcja ta jest w³¹czona, ka¿dy ruch najemnika w trybie Real-Time bêdzie wymaga³ dodatkowego, potwierdzaj¹cego klikniêcia.",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, kaÅ¼dy ruch najemnika w trybie Real-Time bÄ™dzie wymagaÅ‚ dodatkowego, potwierdzajÅ¡cego klikniÄ™cia.",
 
 	//Sleep/Wake notification
-  	L"Gdy opcja ta jest w³¹czona, wyœwietlana bêdzie informacja, ¿e najemnik po³o¿y³ siê spaæ lub wsta³ i wróci³ do pracy.",
+  	L"Gdy opcja ta jest wÅ‚Å¡czona, wyÂœwietlana bÄ™dzie informacja, Å¼e najemnik poÅ‚oÅ¼yÅ‚ siÄ™ spaÄ‡ lub wstaÅ‚ i wrÃ³ciÅ‚ do pracy.",
 
 	//Use the metric system
-	L"Gdy opcja ta jest w³¹czona, gra u¿ywa systemu metrycznego.",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, gra uÅ¼ywa systemu metrycznego.",
 
 	//Merc Lighted movement
-	L"Gdy opcja ta jest w³¹czona, teren wokó³ najemnika bêdzie oœwietlony podczas ruchu. Wy³¹cz tê opcjê, jeœli obni¿a p³ynnoœæ gry.",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, teren wokÃ³Å‚ najemnika bÄ™dzie oÂœwietlony podczas ruchu. WyÅ‚Å¡cz tÄ™ opcjÄ™, jeÂœli obniÅ¼a pÅ‚ynnoÂœÄ‡ gry.",
 
 	//Smart cursor
-	L"Gdy opcja ta jest w³¹czona, kursor automatycznie ustawia siê na najemnikach gdy znajdzie siê w ich pobli¿u.",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, kursor automatycznie ustawia siÄ™ na najemnikach gdy znajdzie siÄ™ w ich pobliÅ¼u.",
 
 	//snap cursor to the door
-	L"Gdy opcja ta jest w³¹czona, kursor automatycznie ustawi siê na drzwiach gdy znajdzie siê w ich pobli¿u.",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, kursor automatycznie ustawi siÄ™ na drzwiach gdy znajdzie siÄ™ w ich pobliÅ¼u.",
 
 	//glow items 
-	L"Gdy opcja ta jest w³¹czona, przedmioty pulsuj¹. ( |I )",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, przedmioty pulsujÅ¡. ( |I )",
 
 	//toggle tree tops
-	L"Gdy opcja ta jest w³¹czona, wyœwietlane s¹ korony drzew. ( |T )",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, wyÂœwietlane sÅ¡ korony drzew. ( |T )",
 
 	//toggle wireframe
-	L"Gdy opcja ta jest w³¹czona, wyœwietlane s¹ zarysy niewidocznych œcian. ( |W )",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, wyÂœwietlane sÅ¡ zarysy niewidocznych Âœcian. ( |W )",
 
-	L"Gdy opcja ta jest w³¹czona, kursor ruchu wyœwietlany jest w 3D. ( |Home )",
+	L"Gdy opcja ta jest wÅ‚Å¡czona, kursor ruchu wyÂœwietlany jest w 3D. ( |Home )",
 
 };
 
 
 STR16	gzGIOScreenText[] =
 {
-	L"POCZ¥TKOWE USTAWIENIA GRY",
+	L"POCZÄ½TKOWE USTAWIENIA GRY",
 	L"Styl gry",
 	L"Realistyczny",
 	L"S-F",
 	L"Opcje broni",
-	L"Mnóstwo broni",
+	L"MnÃ³stwo broni",
 	L"Standardowe uzbrojenie",
-	L"Stopieñ trudnoœci",
+	L"StopieÅ„ trudnoÂœci",
 	L"Nowicjusz",
-	L"Doœwiadczony",
+	L"DoÂœwiadczony",
 	L"Ekspert",
 	L"Ok",
 	L"Anuluj",
 	L"Dodatkowe opcje",
 	L"Nielimitowany czas",
 	L"Tury limitowane czasowo",
-	L"Nie dzia³a w wersji demo",
+	L"Nie dziaÅ‚a w wersji demo",
 };
 
 STR16 pDeliveryLocationStrings[] =
@@ -3509,7 +3509,7 @@ STR16 pDeliveryLocationStrings[] =
 	L"Moskwa",			//Moscow, USSR
 	L"Nowy Jork",		//New York, New York, USA
 	L"Ottawa",			//Ottawa, Ontario, Canada -- where JA2 was made!
-	L"Pary¿",				//Paris, France
+	L"ParyÅ¼",				//Paris, France
 	L"Trypolis",			//Tripoli, Libya (eastern Mediterranean)
 	L"Tokio",				//Tokyo, Japan
 	L"Vancouver",		//Vancouver, British Columbia, Canada (west coast near US border)
@@ -3518,33 +3518,33 @@ STR16 pDeliveryLocationStrings[] =
 STR16 pSkillAtZeroWarning[] =
 { //This string is used in the IMP character generation.  It is possible to select 0 ability
 	//in a skill meaning you can't use it.  This text is confirmation to the player.
-	L"Na pewno? Wartoœæ zero oznacza brak jakichkolwiek umiejêtnoœci w tej dziedzinie.",
+	L"Na pewno? WartoÂœÄ‡ zero oznacza brak jakichkolwiek umiejÄ™tnoÂœci w tej dziedzinie.",
 };
 
 STR16 pIMPBeginScreenStrings[] =
 {
-	L"( Maks. 8 znaków )",
+	L"( Maks. 8 znakÃ³w )",
 };
 
 STR16 pIMPFinishButtonText[ 1 ]=
 {
-	L"Analizujê",
+	L"AnalizujÄ™",
 };
 
 STR16 pIMPFinishStrings[ ]=
 {
-	L"Dziêkujemy, %s", //%s is the name of the merc
+	L"DziÄ™kujemy, %s", //%s is the name of the merc
 };
 
 // the strings for imp voices screen
 STR16 pIMPVoicesStrings[] =
 {
-	L"G³os", 
+	L"GÅ‚os", 
 };
 
 STR16 pDepartedMercPortraitStrings[ ]=
 {
-	L"Œmieræ w akcji",
+	L"ÂŒmierÄ‡ w akcji",
 	L"Zwolnienie",
 	L"Inny",
 };
@@ -3559,14 +3559,14 @@ STR16 pPersTitleText[] =
 STR16 pPausedGameText[] =
 {
 	L"Gra wstrzymana",
-	L"Wznów grê (|P|a|u|s|e)",
-	L"Wstrzymaj grê (|P|a|u|s|e)",
+	L"WznÃ³w grÄ™ (|P|a|u|s|e)",
+	L"Wstrzymaj grÄ™ (|P|a|u|s|e)",
 };
 
 
 STR16 pMessageStrings[] =
 {
-	L"Zakoñczyæ grê?",
+	L"ZakoÅ„czyÄ‡ grÄ™?",
 	L"OK",
 	L"TAK",
 	L"NIE",
@@ -3580,7 +3580,7 @@ STR16 pMessageStrings[] =
 	L"SaveGame",	//The name of the normal savegame file, such as SaveGame01, SaveGame02, etc.
 	L"sav",				//The 3 character dos extension (represents sav)
 	L"..\\SavedGames", //The name of the directory where games are saved.
-	L"Dzieñ",
+	L"DzieÅ„",
 	L"Najemn.",
 	L"Wolna pozycja", //An empty save game slot
 	L"Demo",				//Demo of JA2
@@ -3592,98 +3592,98 @@ STR16 pMessageStrings[] =
 	L"kul",				//Abbreviation for rounds (# of bullets)
 	L"kg",					//Abbreviation for kilogram (metric weight measurement unit)
 	L"lb",					//Abbreviation for pounds (Imperial weight measurement unit)
-	L"Strona g³ówna",				//Home as in homepage on the internet.
+	L"Strona gÅ‚Ã³wna",				//Home as in homepage on the internet.
 	L"USD",					//Abbreviation to US dollars
 	L"N/D",					//Lowercase acronym for not applicable.
 	L"Tymczasem",		//Meanwhile
-	L"%s przyby³(a) do sektora %s%s", //Name/Squad has arrived in sector A9.  Order must not change without notifying
+	L"%s przybyÅ‚(a) do sektora %s%s", //Name/Squad has arrived in sector A9.  Order must not change without notifying
 																		//SirTech
 	L"Wersja",
 	L"Wolna pozycja na szybki zapis",
-	L"Ta pozycja zarezerwowana jest na szybkie zapisy wykonywane podczas gry kombinacj¹ klawiszy ALT+S.",
+	L"Ta pozycja zarezerwowana jest na szybkie zapisy wykonywane podczas gry kombinacjÅ¡ klawiszy ALT+S.",
 	L"Otw.",
 	L"Zamkn.",
 #ifdef JA2DEMO
-	L"Tu ju¿ wszystko za³atwione. Mo¿e czas spotkaæ siê z Gabby'm.",
-	L"Nie trzeba by³o go zabijaæ.",
+	L"Tu juÅ¼ wszystko zaÅ‚atwione. MoÅ¼e czas spotkaÄ‡ siÄ™ z Gabby'm.",
+	L"Nie trzeba byÅ‚o go zabijaÄ‡.",
 #endif
 	L"Brak miejsca na dysku twardym.  Na dysku wolne jest %s MB, a wymagane jest przynajmniej %s MB.",
-	L"Najêto - %s z A.I.M.", 
-	L"%s z³apa³(a) %s",		//'Merc name' has caught 'item' -- let SirTech know if name comes after item.
-	L"%s zaaplikowa³(a) sobie lekarstwo", //'Merc name' has taken the drug
+	L"NajÄ™to - %s z A.I.M.", 
+	L"%s zÅ‚apaÅ‚(a) %s",		//'Merc name' has caught 'item' -- let SirTech know if name comes after item.
+	L"%s zaaplikowaÅ‚(a) sobie lekarstwo", //'Merc name' has taken the drug
 	L"%s nie posiada wiedzy medycznej",//'Merc name' has no medical skill.
 
 	//CDRom errors (such as ejecting CD while attempting to read the CD)
-	L"Integralnoœæ gry zosta³a nara¿ona na szwank.",
-	L"B£¥D: Wyjêto p³ytê CD",
+	L"IntegralnoÂœÄ‡ gry zostaÅ‚a naraÅ¼ona na szwank.",
+	L"BÅÄ½D: WyjÄ™to pÅ‚ytÄ™ CD",
 
 	//When firing heavier weapons in close quarters, you may not have enough room to do so.
-	L"Nie ma miejsca, ¿eby st¹d oddaæ strza³.",
+	L"Nie ma miejsca, Å¼eby stÅ¡d oddaÄ‡ strzaÅ‚.",
 	
 	//Can't change stance due to objects in the way...
-	L"Nie mo¿na zmieniæ pozycji w tej chwili.",
+	L"Nie moÅ¼na zmieniÄ‡ pozycji w tej chwili.",
 
 	//Simple text indications that appear in the game, when the merc can do one of these things.
-	L"Upuœæ",
-	L"Rzuæ",
+	L"UpuÂœÄ‡",
+	L"RzuÄ‡",
 	L"Podaj",
 
 	L"%s przekazano do - %s.", //"Item" passed to "merc".  Please try to keep the item %s before the merc %s, otherwise,
 											 //must notify SirTech.
-	L"Brak wolnego miejsca, by przekazaæ %s do - %s.", //pass "item" to "merc".  Same instructions as above.
+	L"Brak wolnego miejsca, by przekazaÄ‡ %s do - %s.", //pass "item" to "merc".  Same instructions as above.
 
 	//A list of attachments appear after the items.  Ex:  Kevlar vest ( Ceramic Plate 'Attached )'
-	L" do³¹czono )",
+	L" doÅ‚Å¡czono )",
 
 	//Cheat modes
-	L"Pierwszy poziom lamerskich zagrywek osi¹gniêty",
-	L"Drugi poziom lamerskich zagrywek osi¹gniêty",
+	L"Pierwszy poziom lamerskich zagrywek osiÅ¡gniÄ™ty",
+	L"Drugi poziom lamerskich zagrywek osiÅ¡gniÄ™ty",
 
 	//Toggling various stealth modes
-	L"Oddzia³ ma w³¹czony tryb skradania siê.",
-	L"Oddzia³ ma wy³¹czony tryb skradania siê.",
-	L"%s ma w³¹czony tryb skradania siê.",
-	L"%s ma wy³¹czony tryb skradania siê.",
+	L"OddziaÅ‚ ma wÅ‚Å¡czony tryb skradania siÄ™.",
+	L"OddziaÅ‚ ma wyÅ‚Å¡czony tryb skradania siÄ™.",
+	L"%s ma wÅ‚Å¡czony tryb skradania siÄ™.",
+	L"%s ma wyÅ‚Å¡czony tryb skradania siÄ™.",
 
 	//Wireframes are shown through buildings to reveal doors and windows that can't otherwise be seen in 
 	//an isometric engine.  You can toggle this mode freely in the game.
-	L"Dodatkowe siatki w³¹czone.",
-	L"Dodatkowe siatki wy³¹czone.",
+	L"Dodatkowe siatki wÅ‚Å¡czone.",
+	L"Dodatkowe siatki wyÅ‚Å¡czone.",
 
 	//These are used in the cheat modes for changing levels in the game.  Going from a basement level to
 	//an upper level, etc.  
-	L"Nie mo¿na wyjœæ do góry z tego poziomu...",
-	L"Nie ma ju¿ ni¿szych poziomów...",
-	L"Wejœcie na %d poziom pod ziemi¹...",
-	L"Wyjœcie z podziemii...",
+	L"Nie moÅ¼na wyjÂœÄ‡ do gÃ³ry z tego poziomu...",
+	L"Nie ma juÅ¼ niÅ¼szych poziomÃ³w...",
+	L"WejÂœcie na %d poziom pod ziemiÅ¡...",
+	L"WyjÂœcie z podziemii...",
 
 	#ifdef JA2DEMO
 	
 	//For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
 	//has this feature disabled.  This string is fast help text that appears over "single" button.
-	L"W pe³nej wersji gry bêdzie mo¿na dzieliæ oddzia³y,\nale w wersji demo jest to niemo¿liwe.",
+	L"W peÅ‚nej wersji gry bÄ™dzie moÅ¼na dzieliÄ‡ oddziaÅ‚y,\nale w wersji demo jest to niemoÅ¼liwe.",
 
 	//The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-	L"Ogólna mapa sektora jest niedostêpna w wersji demo.",
+	L"OgÃ³lna mapa sektora jest niedostÄ™pna w wersji demo.",
 
 	#endif
 
 	L" - ",		// used in the shop keeper inteface to mark the ownership of the item eg Red's gun
-	L"Automatyczne centrowanie ekranu wy³¹czone.",
-	L"Automatyczne centrowanie ekranu w³¹czone.",
-	L"Kursor 3D wy³¹czony.",
-	L"Kursor 3D w³¹czony.",
-	L"Oddzia³ %d aktywny.",
-	L"%s - Nie staæ ciê by wyp³aciæ jej/jemu dzienn¹ pensjê w wysokoœci %s.",	//first %s is the mercs name, the seconds is a string containing the salary
-	L"Pomiñ",
-	L"%s nie mo¿e odejœæ sam(a).",
-	L"Utworzono zapis gry o nazwie SaveGame99.sav. W razie potrzeby zmieñ jego nazwê na SaveGame01..10. Wtedy bêdzie mo¿na go odczytaæ ze standardowego okna odczytu gry.",
-	L"%s wypi³(a) trochê - %s",
-	L"Przesy³ka dotar³a do Drassen.",
- 	L"%s przybêdzie do wyznaczonego punktu zrzutu (sektor %s) w dniu %d, oko³o godziny %s.",		//first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival	
+	L"Automatyczne centrowanie ekranu wyÅ‚Å¡czone.",
+	L"Automatyczne centrowanie ekranu wÅ‚Å¡czone.",
+	L"Kursor 3D wyÅ‚Å¡czony.",
+	L"Kursor 3D wÅ‚Å¡czony.",
+	L"OddziaÅ‚ %d aktywny.",
+	L"%s - Nie staÄ‡ ciÄ™ by wypÅ‚aciÄ‡ jej/jemu dziennÅ¡ pensjÄ™ w wysokoÂœci %s.",	//first %s is the mercs name, the seconds is a string containing the salary
+	L"PomiÅ„",
+	L"%s nie moÅ¼e odejÂœÄ‡ sam(a).",
+	L"Utworzono zapis gry o nazwie SaveGame99.sav. W razie potrzeby zmieÅ„ jego nazwÄ™ na SaveGame01..10. Wtedy bÄ™dzie moÅ¼na go odczytaÄ‡ ze standardowego okna odczytu gry.",
+	L"%s wypiÅ‚(a) trochÄ™ - %s",
+	L"PrzesyÅ‚ka dotarÅ‚a do Drassen.",
+ 	L"%s przybÄ™dzie do wyznaczonego punktu zrzutu (sektor %s) w dniu %d, okoÅ‚o godziny %s.",		//first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival	
 	L"Lista historii zaktualizowana.",
 #ifdef JA2BETAVERSION
-	L"Automatyczny zapis zosta³ pomyœlnie wykonany.",
+	L"Automatyczny zapis zostaÅ‚ pomyÂœlnie wykonany.",
 #endif
 };
 
@@ -3691,59 +3691,59 @@ STR16 pMessageStrings[] =
 UINT16 ItemPickupHelpPopup[][40] =
 {
 	L"OK",
-	L"W górê",
+	L"W gÃ³rÄ™",
 	L"Wybierz wszystko",
-	L"W dó³",
+	L"W dÃ³Å‚",
 	L"Anuluj",
 };
 
 STR16 pDoctorWarningString[] =
 {
-	L"%s jest za daleko, aby poddaæ siê leczeniu.",
-	L"Lekarze nie mogli opatrzyæ wszystkich rannych.",
+	L"%s jest za daleko, aby poddaÄ‡ siÄ™ leczeniu.",
+	L"Lekarze nie mogli opatrzyÄ‡ wszystkich rannych.",
 };
 
 STR16 pMilitiaButtonsHelpText[] =
 {
-	L"Podnieœ(Prawy klawisz myszy)/upuœæ(Lewy klawisz myszy) Zielonych ¿o³nierzy", // button help text informing player they can pick up or drop militia with this button
-	L"Podnieœ(Prawy klawisz myszy)/upuœæ(Lewy klawisz myszy) Doœwiadczonych ¿o³nierzy",
-	L"Podnieœ(Prawy klawisz myszy)/upuœæ(Lewy klawisz myszy) Weteranów",
-	L"Umieszcza jednakow¹ iloœæ ¿o³nierzy samoobrony w ka¿dym sektorze.",
+	L"PodnieÂœ(Prawy klawisz myszy)/upuÂœÄ‡(Lewy klawisz myszy) Zielonych Å¼oÅ‚nierzy", // button help text informing player they can pick up or drop militia with this button
+	L"PodnieÂœ(Prawy klawisz myszy)/upuÂœÄ‡(Lewy klawisz myszy) DoÂœwiadczonych Å¼oÅ‚nierzy",
+	L"PodnieÂœ(Prawy klawisz myszy)/upuÂœÄ‡(Lewy klawisz myszy) WeteranÃ³w",
+	L"Umieszcza jednakowÅ¡ iloÂœÄ‡ Å¼oÅ‚nierzy samoobrony w kaÅ¼dym sektorze.",
 };
 
 STR16 pMapScreenJustStartedHelpText[] =
 {
-	L"Zajrzyj do A.I.M. i zatrudnij kilku najemników (*Wskazówka* musisz otworzyæ laptopa)", // to inform the player to hired some mercs to get things going
-	L"Jeœli chcesz ju¿ udaæ siê do Arulco, kliknij przycisk kompresji czasu, w prawym dolnym rogu ekranu.", // to inform the player to hit time compression to get the game underway
+	L"Zajrzyj do A.I.M. i zatrudnij kilku najemnikÃ³w (*WskazÃ³wka* musisz otworzyÄ‡ laptopa)", // to inform the player to hired some mercs to get things going
+	L"JeÂœli chcesz juÅ¼ udaÄ‡ siÄ™ do Arulco, kliknij przycisk kompresji czasu, w prawym dolnym rogu ekranu.", // to inform the player to hit time compression to get the game underway
 };
 
 STR16 pAntiHackerString[] = 
 {
-	L"B³¹d. Brakuje pliku, lub jest on uszkodzony. Gra zostanie przerwana.",
+	L"BÅ‚Å¡d. Brakuje pliku, lub jest on uszkodzony. Gra zostanie przerwana.",
 };
 
 
 STR16 gzLaptopHelpText[] =
 {
 	//Buttons:
-	L"Przegl¹danie poczty",
-	L"Przegl¹danie stron internetowych",
-	L"Przegl¹danie plików i za³¹czników pocztowych",
-	L"Rejestr zdarzeñ",
-	L"Informacje o cz³onkach oddzia³u",
+	L"PrzeglÅ¡danie poczty",
+	L"PrzeglÅ¡danie stron internetowych",
+	L"PrzeglÅ¡danie plikÃ³w i zaÅ‚Å¡cznikÃ³w pocztowych",
+	L"Rejestr zdarzeÅ„",
+	L"Informacje o czÅ‚onkach oddziaÅ‚u",
 	L"Finanse i rejestr transakcji",
 	L"Koniec pracy z laptopem",
 
 	//Bottom task bar icons (if they exist):
-	L"Masz now¹ pocztê",
+	L"Masz nowÅ¡ pocztÄ™",
 	L"Masz nowe pliki",
 
 	//Bookmarks:
-	L"Miêdzynarodowe Stowarzyszenie Najemników",
-	L"Bobby Ray's - Internetowy sklep z broni¹",
-	L"Instytut Badañ Najemników",
+	L"MiÄ™dzynarodowe Stowarzyszenie NajemnikÃ³w",
+	L"Bobby Ray's - Internetowy sklep z broniÅ¡",
+	L"Instytut BadaÅ„ NajemnikÃ³w",
 	L"Bardziej Ekonomiczne Centrum Rekrutacyjne",
-	L"McGillicutty's - Zak³ad pogrzebowy",
+	L"McGillicutty's - ZakÅ‚ad pogrzebowy",
 	L"United Floral Service",
 	L"Brokerzy ubezpieczeniowi",
 };
@@ -3756,30 +3756,30 @@ STR16	gzHelpScreenText[] =
 
 STR16 gzNonPersistantPBIText[] =
 {
-	L"Trwa walka. Najemników mo¿na wycofaæ tylko na ekranie taktycznym.",
-	L"W|ejdŸ do sektora, aby kontynuowaæ walkê.",
-	L"|Automatycznie rozstrzyga walkê.",
-	L"Nie mo¿na automatycznie rozstrzygn¹æ walki, gdy atakujesz.",
-	L"Nie mo¿na automatycznie rozstrzygn¹æ walki, gdy wpadasz w pu³apkê.",
-	L"Nie mo¿na automatycznie rozstrzygn¹æ walki, gdy walczysz ze stworzeniami w kopalni.",
-	L"Nie mo¿na automatycznie rozstrzygn¹æ walki, gdy w sektorze s¹ wrodzy cywile.",
-	L"Nie mo¿na automatycznie rozstrzygn¹æ walki, gdy w sektorze s¹ dzikie koty.",
+	L"Trwa walka. NajemnikÃ³w moÅ¼na wycofaÄ‡ tylko na ekranie taktycznym.",
+	L"W|ejdÂŸ do sektora, aby kontynuowaÄ‡ walkÄ™.",
+	L"|Automatycznie rozstrzyga walkÄ™.",
+	L"Nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki, gdy atakujesz.",
+	L"Nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki, gdy wpadasz w puÅ‚apkÄ™.",
+	L"Nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki, gdy walczysz ze stworzeniami w kopalni.",
+	L"Nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki, gdy w sektorze sÅ¡ wrodzy cywile.",
+	L"Nie moÅ¼na automatycznie rozstrzygnÅ¡Ä‡ walki, gdy w sektorze sÅ¡ dzikie koty.",
 	L"TRWA WALKA",
-	L"W tym momencie nie mo¿esz siê wycofaæ.",
+	L"W tym momencie nie moÅ¼esz siÄ™ wycofaÄ‡.",
 };
 
 STR16 gzMiscString[] =
 {
-	L"¯o³nierze samoobrony kontynuuj¹ walkê bez pomocy twoich najemników...",
+	L"Å»oÅ‚nierze samoobrony kontynuujÅ¡ walkÄ™ bez pomocy twoich najemnikÃ³w...",
 	L"W tym momencie tankowanie nie jest konieczne.",
 	L"W baku jest %d%% paliwa.",
-	L"¯o³nierze Deidranny przejêli ca³kowit¹ kontrolê nad - %s.",
-	L"Nie masz ju¿ gdzie zatankowaæ.",
+	L"Å»oÅ‚nierze Deidranny przejÄ™li caÅ‚kowitÅ¡ kontrolÄ™ nad - %s.",
+	L"Nie masz juÅ¼ gdzie zatankowaÄ‡.",
 };
 
 STR16	gzIntroScreen[] = 
 {
-	L"Nie odnaleziono filmu wprowadzaj¹cego",
+	L"Nie odnaleziono filmu wprowadzajÅ¡cego",
 };
 
 // These strings are combined with a merc name, a volume string (from pNoiseVolStr),
@@ -3788,34 +3788,34 @@ STR16	gzIntroScreen[] =
 // e.g. "Sidney hears a loud sound of MOVEMENT coming from the SOUTH."
 STR16 pNewNoiseStr[] =
 {
-	L"%s s³yszy %s DWIÊK dochodz¹cy z %s.",
-	L"%s s³yszy %s ODG£OS RUCHU dochodz¹cy z %s.",
-	L"%s s³yszy %s ODG£OS SKRZYPNIÊCIA dochodz¹cy z %s.",
-	L"%s s³yszy %s PLUSK dochodz¹cy z %s.",
-	L"%s s³yszy %s ODG£OS UDERZENIA dochodz¹cy z %s.",
-	L"%s s³yszy %s WYBUCH dochodz¹cy z %s.",
-	L"%s s³yszy %s KRZYK dochodz¹cy z %s.",
-	L"%s s³yszy %s ODG£OS UDERZENIA dochodz¹cy z %s.",
-	L"%s s³yszy %s ODG£OS UDERZENIA dochodz¹cy z %s.",
-	L"%s s³yszy %s £OMOT dochodz¹cy z %s.",
-	L"%s s³yszy %s TRZASK dochodz¹cy z %s.",
+	L"%s sÅ‚yszy %s DÂWIÄ˜K dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ODGÅOS RUCHU dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ODGÅOS SKRZYPNIÄ˜CIA dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s PLUSK dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ODGÅOS UDERZENIA dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s WYBUCH dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s KRZYK dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ODGÅOS UDERZENIA dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ODGÅOS UDERZENIA dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s ÅOMOT dochodzÅ¡cy z %s.",
+	L"%s sÅ‚yszy %s TRZASK dochodzÅ¡cy z %s.",
 };
 
 STR16 wMapScreenSortButtonHelpText[] =
 {
-	L"Sortuj wed³ug kolumny Imiê (|F|1)",
-	L"Sortuj wed³ug kolumny Przydzia³ (|F|2)",
-	L"Sortuj wed³ug kolumny Sen (|F|3)",
-	L"Sortuj wed³ug kolumny Lokalizacja (|F|4)",
-	L"Sortuj wed³ug kolumny Cel podró¿y (|F|5)",
-	L"Sortuj wed³ug kolumny Wyjazd (|F|6)",
+	L"Sortuj wedÅ‚ug kolumny ImiÄ™ (|F|1)",
+	L"Sortuj wedÅ‚ug kolumny PrzydziaÅ‚ (|F|2)",
+	L"Sortuj wedÅ‚ug kolumny Sen (|F|3)",
+	L"Sortuj wedÅ‚ug kolumny Lokalizacja (|F|4)",
+	L"Sortuj wedÅ‚ug kolumny Cel podrÃ³Å¼y (|F|5)",
+	L"Sortuj wedÅ‚ug kolumny Wyjazd (|F|6)",
 };
 
 
 
 STR16		BrokenLinkText[] = 
 {
-	L"B³¹d 404",
+	L"BÅ‚Å¡d 404",
 	L"Nie odnaleziono strony.",
 };
 
@@ -3823,9 +3823,9 @@ STR16		BrokenLinkText[] =
 STR16 gzBobbyRShipmentText[] = 
 {
 	L"Ostatnie dostawy",
-	L"Zamówienie nr ",
-	L"Iloœæ przedmiotów",
-	L"Zamówiono:",
+	L"ZamÃ³wienie nr ",
+	L"IloÂœÄ‡ przedmiotÃ³w",
+	L"ZamÃ³wiono:",
 };
 
 
@@ -3833,7 +3833,7 @@ STR16	gzCreditNames[]=
 {
 	L"Chris Camfield",
 	L"Shaun Lyng",
-	L"Kris Märnes",
+	L"Kris MÃ¤rnes",
 	L"Ian Currie",
 	L"Linda Currie",
 	L"Eric \"WTF\" Cheng",
@@ -3889,18 +3889,18 @@ STR16	gzCreditNameFunny[]=
 
 STR16 sRepairsDoneString[] =
 {
-	L"%s skoñczy³(a) naprawiaæ w³asne wyposa¿enie",
-	L"%s skoñczy³(a) naprawiaæ broñ i ochraniacze wszystkich cz³onków oddzia³u",
-	L"%s skoñczy³(a) naprawiaæ wyposa¿enie wszystkich cz³onków oddzia³u",
-	L"%s skoñczy³(a) naprawiaæ ekwipunek wszystkich cz³onków oddzia³u",
+	L"%s skoÅ„czyÅ‚(a) naprawiaÄ‡ wÅ‚asne wyposaÅ¼enie",
+	L"%s skoÅ„czyÅ‚(a) naprawiaÄ‡ broÅ„ i ochraniacze wszystkich czÅ‚onkÃ³w oddziaÅ‚u",
+	L"%s skoÅ„czyÅ‚(a) naprawiaÄ‡ wyposaÅ¼enie wszystkich czÅ‚onkÃ³w oddziaÅ‚u",
+	L"%s skoÅ„czyÅ‚(a) naprawiaÄ‡ ekwipunek wszystkich czÅ‚onkÃ³w oddziaÅ‚u",
 };
 
 
 STR16 zGioDifConfirmText[]=
 {
-	L"Wybrano opcjê Nowicjusz. Opcja ta jest przeznaczona dla niedoœwiadczonych graczy, lub dla tych, którzy nie maj¹ ochoty na d³ugie i ciê¿kie walki. Pamiêtaj, ¿e opcja ta ma wp³yw na przebieg ca³ej gry. Czy na pewno chcesz graæ w trybie Nowicjusz?",
-	L"Wybrano opcjê Doœwiadczony. Opcja ta jest przenaczona dla graczy posiadaj¹cych ju¿ pewne doœwiadczenie w grach tego typu. Pamiêtaj, ¿e opcja ta ma wp³yw na przebieg ca³ej gry. Czy na pewno chcesz graæ w trybie Doœwiadczony?",
-	L"Wybrano opcjê Ekspert. Jakby co, to ostrzegaliœmy ciê. Nie obwiniaj nas, jeœli wrócisz w plastikowym worku. Pamiêtaj, ¿e opcja ta ma wp³yw na przebieg ca³ej gry. Czy na pewno chcesz graæ w trybie Ekspert?",
+	L"Wybrano opcjÄ™ Nowicjusz. Opcja ta jest przeznaczona dla niedoÂœwiadczonych graczy, lub dla tych, ktÃ³rzy nie majÅ¡ ochoty na dÅ‚ugie i ciÄ™Å¼kie walki. PamiÄ™taj, Å¼e opcja ta ma wpÅ‚yw na przebieg caÅ‚ej gry. Czy na pewno chcesz graÄ‡ w trybie Nowicjusz?",
+	L"Wybrano opcjÄ™ DoÂœwiadczony. Opcja ta jest przenaczona dla graczy posiadajÅ¡cych juÅ¼ pewne doÂœwiadczenie w grach tego typu. PamiÄ™taj, Å¼e opcja ta ma wpÅ‚yw na przebieg caÅ‚ej gry. Czy na pewno chcesz graÄ‡ w trybie DoÂœwiadczony?",
+	L"Wybrano opcjÄ™ Ekspert. Jakby co, to ostrzegaliÂœmy ciÄ™. Nie obwiniaj nas, jeÂœli wrÃ³cisz w plastikowym worku. PamiÄ™taj, Å¼e opcja ta ma wpÅ‚yw na przebieg caÅ‚ej gry. Czy na pewno chcesz graÄ‡ w trybie Ekspert?",
 };
 
 
@@ -3909,16 +3909,16 @@ STR16 gzLateLocalizedString[] =
 	L"%S - nie odnaleziono pliku...",
 
 	//1-5
-	L"Robot nie mo¿e opuœciæ sektora bez operatora.",
+	L"Robot nie moÅ¼e opuÂœciÄ‡ sektora bez operatora.",
 
 	//This message comes up if you have pending bombs waiting to explode in tactical.
-	L"Nie mo¿na teraz kompresowaæ czasu.  Poczekaj na fajerwerki!",  
+	L"Nie moÅ¼na teraz kompresowaÄ‡ czasu.  Poczekaj na fajerwerki!",  
 
 	//'Name' refuses to move.
-	L"%s nie chce siê przesun¹æ.",
+	L"%s nie chce siÄ™ przesunÅ¡Ä‡.",
 
 	//%s a merc name
-	L"%s ma zbyt ma³o energii, aby zmieniæ pozycjê.",
+	L"%s ma zbyt maÅ‚o energii, aby zmieniÄ‡ pozycjÄ™.",
 
 	//A message that pops up when a vehicle runs out of gas.
 	L"%s nie ma paliwa i stoi w sektorze %c%d.",
@@ -3927,16 +3927,16 @@ STR16 gzLateLocalizedString[] =
 
 	// the following two strings are combined with the pNewNoise[] strings above to report noises
 	// heard above or below the merc
-	L"GÓRY",
-	L"DO£U",
+	L"GÃ“RY",
+	L"DOÅU",
 
 	//The following strings are used in autoresolve for autobandaging related feedback.
-	L"¯aden z twoich najemników nie posiada wiedzy medycznej.",
-	L"Brak œrodków medycznych, aby za³o¿yæ rannym opatrunki.",
-	L"Zabrak³o œrodków medycznych, aby za³o¿yæ wszystkim rannym opatrunki.",
-	L"¯aden z twoich najemników nie potrzebuje pomocy medycznej.",
-	L"Automatyczne zak³adanie opatrunków rannym najemnikom.",
-	L"Wszystkim twoim najemnikom za³o¿ono opatrunki.",
+	L"Å»aden z twoich najemnikÃ³w nie posiada wiedzy medycznej.",
+	L"Brak ÂœrodkÃ³w medycznych, aby zaÅ‚oÅ¼yÄ‡ rannym opatrunki.",
+	L"ZabrakÅ‚o ÂœrodkÃ³w medycznych, aby zaÅ‚oÅ¼yÄ‡ wszystkim rannym opatrunki.",
+	L"Å»aden z twoich najemnikÃ³w nie potrzebuje pomocy medycznej.",
+	L"Automatyczne zakÅ‚adanie opatrunkÃ³w rannym najemnikom.",
+	L"Wszystkim twoim najemnikom zaÅ‚oÅ¼ono opatrunki.",
 
 	//14
 	L"Arulco",
@@ -3951,98 +3951,98 @@ STR16 gzLateLocalizedString[] =
 	
 	L"%s - brak wolnych miejsc!",  //(ex "The ice cream truck is full")
 
-  L"%s nie potrzebuje pierwszej pomocy lecz opieki lekarza lub d³u¿szego odpoczynku.",
+  L"%s nie potrzebuje pierwszej pomocy lecz opieki lekarza lub dÅ‚uÅ¼szego odpoczynku.",
 
 	//20
 	//Happens when you get shot in the legs, and you fall down.
-	L"%s dosta³(a) w nogi i upad³(a)!",
+	L"%s dostaÅ‚(a) w nogi i upadÅ‚(a)!",
 	//Name can't speak right now.
-	L"%s nie mo¿e teraz mówiæ.",
+	L"%s nie moÅ¼e teraz mÃ³wiÄ‡.",
 
 	//22-24 plural versions 
-	L"%d zielonych ¿o³nierzy samoobrony awansowa³o na weteranów.",
-	L"%d zielonych ¿o³nierzy samoobrony awansowa³o na regularnych ¿o³nierzy.",
-	L"%d regularnych ¿o³nierzy samoobrony awansowa³o na weteranów.",
+	L"%d zielonych Å¼oÅ‚nierzy samoobrony awansowaÅ‚o na weteranÃ³w.",
+	L"%d zielonych Å¼oÅ‚nierzy samoobrony awansowaÅ‚o na regularnych Å¼oÅ‚nierzy.",
+	L"%d regularnych Å¼oÅ‚nierzy samoobrony awansowaÅ‚o na weteranÃ³w.",
 
 	//25
-	L"Prze³¹cznik",
+	L"PrzeÅ‚Å¡cznik",
 
 	//26
 	//Name has gone psycho -- when the game forces the player into burstmode (certain unstable characters)
-	L"%s dostaje œwira!",
+	L"%s dostaje Âœwira!",
 
 	//27-28
 	//Messages why a player can't time compress.
-	L"Niebezpiecznie jest kompresowaæ teraz czas, gdy¿ masz najemników w sektorze %s.",
-	L"Niebezpiecznie jest kompresowaæ teraz czas, gdy¿ masz najemników w kopalni zaatakowanej przez robale.",
+	L"Niebezpiecznie jest kompresowaÄ‡ teraz czas, gdyÅ¼ masz najemnikÃ³w w sektorze %s.",
+	L"Niebezpiecznie jest kompresowaÄ‡ teraz czas, gdyÅ¼ masz najemnikÃ³w w kopalni zaatakowanej przez robale.",
 
 	//29-31 singular versions 
-	L"1 zielony ¿o³nierz samoobrony awansowa³ na weterana.",
-	L"1 zielony ¿o³nierz samoobrony awansowa³ na regularnego ¿o³nierza.",
-	L"1 regularny ¿o³nierz samoobrony awansowa³ na weterana.",
+	L"1 zielony Å¼oÅ‚nierz samoobrony awansowaÅ‚ na weterana.",
+	L"1 zielony Å¼oÅ‚nierz samoobrony awansowaÅ‚ na regularnego Å¼oÅ‚nierza.",
+	L"1 regularny Å¼oÅ‚nierz samoobrony awansowaÅ‚ na weterana.",
 
 	//32-34
-	L"%s nic nie mówi.",
-	L"Wyjœæ na powierzchniê?",
-	L"(Oddzia³ %d)",
+	L"%s nic nie mÃ³wi.",
+	L"WyjÂœÄ‡ na powierzchniÄ™?",
+	L"(OddziaÅ‚ %d)",
 
 	//35
 	//Ex: "Red has repaired Scope's MP5K".  Careful to maintain the proper order (Red before Scope, Scope before MP5K)
-	L"%s naprawi³(a) najemnikowi - %s, jego/jej - %s",
+	L"%s naprawiÅ‚(a) najemnikowi - %s, jego/jej - %s",
 
 	//36
 	L"DZIKI KOT",
 
 	//37-38 "Name trips and falls"
-	L"%s potyka siê i upada",
-	L"Nie mo¿na st¹d podnieœæ tego przedmiotu.",
+	L"%s potyka siÄ™ i upada",
+	L"Nie moÅ¼na stÅ¡d podnieÂœÄ‡ tego przedmiotu.",
 
 	//39
-	L"¯aden z twoich najemników nie jest w stanie walczyæ.  ¯o³nierze samoobrony sami bêd¹ walczyæ z robalami.",
+	L"Å»aden z twoich najemnikÃ³w nie jest w stanie walczyÄ‡.  Å»oÅ‚nierze samoobrony sami bÄ™dÅ¡ walczyÄ‡ z robalami.",
 
 	//40-43
 	//%s is the name of merc.
-	L"%s nie ma œrodków medycznych!",
-	L"%s nie posiada odpowiedniej wiedzy, aby kogokolwiek wyleczyæ!",
-	L"%s nie ma narzêdzi!",
-	L"%s nie posiada odpowiedniej wiedzy, aby cokolwiek naprawiæ!",
+	L"%s nie ma ÂœrodkÃ³w medycznych!",
+	L"%s nie posiada odpowiedniej wiedzy, aby kogokolwiek wyleczyÄ‡!",
+	L"%s nie ma narzÄ™dzi!",
+	L"%s nie posiada odpowiedniej wiedzy, aby cokolwiek naprawiÄ‡!",
 
 	//44-45
 	L"Czas naprawy",
 	L"%s nie widzi tej osoby.",
 
 	//46-48
-	L"%s - przed³u¿ka lufy jego/jej broni odpada!",
-	L"W jednym sektorze, szkolenie samoobrony mo¿e prowadziæ tylko %d instruktor(ów).",
+	L"%s - przedÅ‚uÅ¼ka lufy jego/jej broni odpada!",
+	L"W jednym sektorze, szkolenie samoobrony moÅ¼e prowadziÄ‡ tylko %d instruktor(Ã³w).",
   	L"Na pewno?",
 
 	//49-50
 	L"Kompresja czasu",
-	L"Pojazd ma pe³ny zbiornik paliwa.",
+	L"Pojazd ma peÅ‚ny zbiornik paliwa.",
 
 	//51-52 Fast help text in mapscreen.
-	L"Kontynuuj kompresjê czasu (|S|p|a|c|j|a)",
-	L"Zatrzymaj kompresjê czasu (|E|s|c)",
+	L"Kontynuuj kompresjÄ™ czasu (|S|p|a|c|j|a)",
+	L"Zatrzymaj kompresjÄ™ czasu (|E|s|c)",
 
 	//53-54 "Magic has unjammed the Glock 18" or "Magic has unjammed Raven's H&K G11" 
-	L"%s odblokowa³(a) - %s",
-	L"%s odblokowa³(a) najemnikowi - %s, jego/jej - %s",
+	L"%s odblokowaÅ‚(a) - %s",
+	L"%s odblokowaÅ‚(a) najemnikowi - %s, jego/jej - %s",
 
 	//55 
-	L"Nie mo¿na kompresowaæ czasu, gdy otwarty jest inwentarz sektora.",
+	L"Nie moÅ¼na kompresowaÄ‡ czasu, gdy otwarty jest inwentarz sektora.",
 
-	L"Nie odnaleziono p³yty nr 2 Jagged Alliance 2.",
+	L"Nie odnaleziono pÅ‚yty nr 2 Jagged Alliance 2.",
 
-	L"Przedmioty zosta³y pomyœlnie po³¹czone.",
+	L"Przedmioty zostaÅ‚y pomyÂœlnie poÅ‚Å¡czone.",
 	
 	//58
 	//Displayed with the version information when cheats are enabled.
-	L"Bie¿¹cy/Maks. postêp: %d%%/%d%%",
+	L"BieÅ¼Å¡cy/Maks. postÄ™p: %d%%/%d%%",
 
 	//59
-	L"Eskortowaæ Johna i Mary?",
+	L"EskortowaÄ‡ Johna i Mary?",
 	
-  L"Prze³¹cznik aktywowany.",
+  L"PrzeÅ‚Å¡cznik aktywowany.",
 };
 
 
