@@ -7,6 +7,6 @@ void ExitMercsAccount();
 void HandleMercsAccount();
 void RenderMercsAccount();
 
-UINT32	CalculateHowMuchPlayerOwesSpeck();
+UINT32 CalculateHowMuchPlayerOwesSpeck();
 
 #endif

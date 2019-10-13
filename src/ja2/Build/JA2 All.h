@@ -3,10 +3,10 @@
 
 #pragma message("GENERATED PCH FOR JA2 PROJECT.")
 
-#include <time.h> 
+#include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include "sgp.h" 
+#include "sgp.h"
 #include "gameloop.h"
 #include "himage.h"
 #include "vobject.h"
@@ -70,7 +70,7 @@
 #include "Tactical Placement GUI.h"
 #include "Air raid.h"
 #include "game init.h"
-//DEF: Test Code
+// DEF: Test Code
 #ifdef NETWORKED
 #include "Networking.h"
 #endif
@@ -107,7 +107,7 @@
 #include "tile cache.h"
 #include "Shade Table Util.h"
 #include "Exit Grids.h"
-#include "Summary Info.h" 
+#include "Summary Info.h"
 #include <time.h>
 #include "font.h"
 #include "timer.h"

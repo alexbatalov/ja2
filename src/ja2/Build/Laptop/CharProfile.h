@@ -7,8 +7,8 @@ void EnterCharProfile();
 void ExitCharProfile();
 void HandleCharProfile();
 void RenderCharProfile();
-void ResetCharacterStats( void );
-void InitIMPSubPageList( void );
+void ResetCharacterStats(void);
+void InitIMPSubPageList(void);
 
 extern BOOLEAN fButtonPendingFlag;
 extern BOOLEAN fReDrawCharProfile;
@@ -24,7 +24,7 @@ extern INT32 iHealth;
 
 // skills
 extern INT32 iMarksmanship;
-extern INT32 iMedical; 
+extern INT32 iMedical;
 extern INT32 iExplosives;
 extern INT32 iMechanical;
 
@@ -40,46 +40,46 @@ extern INT32 iSkillA;
 extern INT32 iSkillB;
 
 // persoanlity
-extern INT32 iPersonality; 
+extern INT32 iPersonality;
 
 // attitude
 extern INT32 iAttitude;
 
-//addtivies
+// addtivies
 extern INT32 iAddStrength;
 extern INT32 iAddDexterity;
 extern INT32 iAddAgility;
-extern INT32 iAddWisdom; 
-extern INT32 iAddHealth ;
-extern INT32 iAddLeadership ;
+extern INT32 iAddWisdom;
+extern INT32 iAddHealth;
+extern INT32 iAddLeadership;
 
-extern INT32 iAddMarksmanship ;
-extern INT32 iAddMedical ;
-extern INT32 iAddExplosives ;
-extern INT32 iAddMechanical ;
+extern INT32 iAddMarksmanship;
+extern INT32 iAddMedical;
+extern INT32 iAddExplosives;
+extern INT32 iAddMechanical;
 
 // pop up strings
 extern STR16 pImpPopUpStrings[];
 
-//extern BOOLEAN fIMPCompletedFlag;
+// extern BOOLEAN fIMPCompletedFlag;
 
-enum{
-	IMP_HOME_PAGE,
-	IMP_BEGIN,
+enum {
+  IMP_HOME_PAGE,
+  IMP_BEGIN,
   IMP_FINISH,
-	IMP_MAIN_PAGE,
-	IMP_PERSONALITY,
-	IMP_PERSONALITY_QUIZ,
-	IMP_PERSONALITY_FINISH,
-	IMP_ATTRIBUTE_ENTRANCE,
-	IMP_ATTRIBUTE_PAGE,
-	IMP_ATTRIBUTE_FINISH,
-	IMP_PORTRAIT,
-	IMP_VOICE,
-	IMP_ABOUT_US,
-	IMP_CONFIRM,
+  IMP_MAIN_PAGE,
+  IMP_PERSONALITY,
+  IMP_PERSONALITY_QUIZ,
+  IMP_PERSONALITY_FINISH,
+  IMP_ATTRIBUTE_ENTRANCE,
+  IMP_ATTRIBUTE_PAGE,
+  IMP_ATTRIBUTE_FINISH,
+  IMP_PORTRAIT,
+  IMP_VOICE,
+  IMP_ABOUT_US,
+  IMP_CONFIRM,
 
-	IMP_NUM_PAGES,
+  IMP_NUM_PAGES,
 };
 
 #define COST_OF_PROFILE 3000

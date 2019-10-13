@@ -3,17 +3,17 @@
 
 //#define VISIBLE_AUTO_BANDAGE
 
-void AutoBandage( BOOLEAN fStart );
-void BeginAutoBandage( );
+void AutoBandage(BOOLEAN fStart);
+void BeginAutoBandage();
 
-BOOLEAN HandleAutoBandage( );
+BOOLEAN HandleAutoBandage();
 
-void ShouldBeginAutoBandage( );
+void ShouldBeginAutoBandage();
 
-void SetAutoBandagePending( BOOLEAN fSet );
-void HandleAutoBandagePending( );
+void SetAutoBandagePending(BOOLEAN fSet);
+void HandleAutoBandagePending();
 
 // ste the autobandage as complete
-void SetAutoBandageComplete( void );
+void SetAutoBandageComplete(void);
 
 #endif

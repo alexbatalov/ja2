@@ -94,7 +94,7 @@
 #include "math.h"
 #include <stdlib.h>
 #include <errno.h>
-#include "input.h"  
+#include "input.h"
 #include "video.h"
 #include "vobject_blitters.h"
 #include "edit_sys.h"
@@ -146,7 +146,7 @@
 #include "screenids.h"
 #include "shading.h"
 #include "Soldier Init List.h"
-#include "Summary Info.h" 
+#include "Summary Info.h"
 #include "Animated ProgressBar.h"
 #include "EditorBuildings.h"
 #include "music control.h"

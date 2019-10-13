@@ -4,15 +4,14 @@
 #ifndef __CURSOR_MODES_H
 #define __CURSOR_MODES_H
 
-enum 
-{
-	SMALLSELECTION,		// 1x1
-	MEDIUMSELECTION,	// 3x3
-	LARGESELECTION,		// 5x5
-	XLARGESELECTION,	// 7x7
-	LINESELECTION,		// v or h line with a specified width
-	AREASELECTION,		// user controlled area
-	NUMSELECTIONTYPES
+enum {
+  SMALLSELECTION, // 1x1
+  MEDIUMSELECTION, // 3x3
+  LARGESELECTION, // 5x5
+  XLARGESELECTION, // 7x7
+  LINESELECTION, // v or h line with a specified width
+  AREASELECTION, // user controlled area
+  NUMSELECTIONTYPES,
 };
 
 extern UINT16 gusSelectionType;
@@ -23,7 +22,7 @@ extern UINT16 gusSavedSelectionType;
 extern UINT16 gusSavedBuildingSelectionType;
 
 BOOLEAN PerformDensityTest();
-void SetDrawingMode( INT32 iMode );
+void SetDrawingMode(INT32 iMode);
 void UpdateCursorAreas();
 void IncreaseSelectionDensity();
 void DecreaseSelectionDensity();

@@ -3,7 +3,7 @@
 
 // YOU MUST KEEP THIS VARIABLE UP TO DATE !!!!
 
-#define NUM_TOPIC_IDS               23
+#define NUM_TOPIC_IDS 23
 
 /* #define TOPIC_MEMORY_MANAGER        0
 #define TOPIC_FILE_MANAGER          1
@@ -63,4 +63,4 @@ extern UINT16 TOPIC_JA2AI;
 }
 #endif
 
-#endif	// NUM_TOPICS_IDS
+#endif // NUM_TOPICS_IDS

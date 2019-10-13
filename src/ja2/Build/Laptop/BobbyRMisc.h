@@ -7,6 +7,4 @@ void ExitBobbyRMisc();
 void HandleBobbyRMisc();
 void RenderBobbyRMisc();
 
-
-
 #endif

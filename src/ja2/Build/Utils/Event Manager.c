@@ -1,239 +1,202 @@
 #ifdef PRECOMPILEDHEADERS
-	#include "Utils All.h"
+#include "Utils All.h"
 #else
-	#include <stdio.h>
-	#include <stdarg.h>
-	#include <time.h>
-	#include "sgp.h"
-	#include "container.h"
-	#include "wcheck.h"
-	#include "Event Manager.h"
-	#include "Timer Control.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
+#include "sgp.h"
+#include "container.h"
+#include "wcheck.h"
+#include "Event Manager.h"
+#include "Timer Control.h"
 #endif
 
-HLIST		hEventQueue = NULL;
-HLIST		hDelayEventQueue = NULL;
-HLIST		hDemandEventQueue = NULL;
+HLIST hEventQueue = NULL;
+HLIST hDelayEventQueue = NULL;
+HLIST hDemandEventQueue = NULL;
 
-#define QUEUE_RESIZE		20
+#define QUEUE_RESIZE 20
 
 // LOCAL FUNCTIONS
-HLIST GetQueue( UINT8 ubQueueID );
-void SetQueue( UINT8 ubQueueID, HLIST hQueue );
+HLIST GetQueue(UINT8 ubQueueID);
+void SetQueue(UINT8 ubQueueID, HLIST hQueue);
 
+BOOLEAN InitializeEventManager() {
+  // Create Queue
+  hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-BOOLEAN InitializeEventManager( )
-{
-	// Create Queue
-	hEventQueue = CreateList( QUEUE_RESIZE, sizeof( PTR ) );
+  if (hEventQueue == NULL) {
+    return FALSE;
+  }
 
-	if ( hEventQueue == NULL )
-	{
-		return( FALSE );
-	}
+  // Create Delay Queue
+  hDelayEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-	// Create Delay Queue
-	hDelayEventQueue = CreateList( QUEUE_RESIZE, sizeof( PTR ) );
+  if (hDelayEventQueue == NULL) {
+    return FALSE;
+  }
 
-	if ( hDelayEventQueue == NULL )
-	{
-		return( FALSE );
-	}
+  // Create Demand Queue (events on this queue are only processed when specifically
+  // called for by code)
+  hDemandEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
-	// Create Demand Queue (events on this queue are only processed when specifically
-	// called for by code)
-	hDemandEventQueue = CreateList( QUEUE_RESIZE, sizeof( PTR ) );
+  if (hDemandEventQueue == NULL) {
+    return FALSE;
+  }
 
-	if ( hDemandEventQueue == NULL )
-	{
-		return( FALSE );
-	}
-
-	return( TRUE );
+  return TRUE;
 }
 
-BOOLEAN ShutdownEventManager( )
-{
-	if ( hEventQueue != NULL )
-	{
-			DeleteList( hEventQueue );
-	}
+BOOLEAN ShutdownEventManager() {
+  if (hEventQueue != NULL) {
+    DeleteList(hEventQueue);
+  }
 
-	if ( hDelayEventQueue != NULL )
-	{
-			DeleteList( hDelayEventQueue );
-	}
+  if (hDelayEventQueue != NULL) {
+    DeleteList(hDelayEventQueue);
+  }
 
-	if ( hDemandEventQueue != NULL )
-	{
-			DeleteList( hDemandEventQueue );
-	}
+  if (hDemandEventQueue != NULL) {
+    DeleteList(hDemandEventQueue);
+  }
 
-	return( TRUE );
+  return TRUE;
 }
 
+BOOLEAN AddEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSize, UINT8 ubQueueID) {
+  EVENT *pEvent;
+  UINT32 uiEventSize = sizeof(EVENT);
+  HLIST hQueue;
 
+  // Allocate new event
+  pEvent = MemAlloc(uiEventSize + uiDataSize);
 
-BOOLEAN AddEvent( UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSize, UINT8 ubQueueID )
-{
-	EVENT *pEvent;
-	UINT32 uiEventSize = sizeof( EVENT );
-	HLIST	hQueue;
+  CHECKF(pEvent != NULL);
 
-	// Allocate new event
-	pEvent = MemAlloc( uiEventSize + uiDataSize );
+  // Set values
+  pEvent->TimeStamp = GetJA2Clock();
+  pEvent->usDelay = usDelay;
+  pEvent->uiEvent = uiEvent;
+  pEvent->uiFlags = 0;
+  pEvent->uiDataSize = uiDataSize;
+  pEvent->pData = (BYTE *)pEvent;
+  pEvent->pData = pEvent->pData + uiEventSize;
 
-	CHECKF( pEvent != NULL );
+  memcpy(pEvent->pData, pEventData, uiDataSize);
 
-	// Set values
-	pEvent->TimeStamp  = GetJA2Clock( );
-	pEvent->usDelay		 = usDelay;
-	pEvent->uiEvent		 = uiEvent;
-	pEvent->uiFlags		 = 0;
-	pEvent->uiDataSize = uiDataSize;
-	pEvent->pData			 = (BYTE*)pEvent;
-	pEvent->pData			 = pEvent->pData + uiEventSize;
+  // Add event to queue
+  hQueue = GetQueue(ubQueueID);
+  hQueue = AddtoList(hQueue, &pEvent, ListSize(hQueue));
+  SetQueue(ubQueueID, hQueue);
 
-	memcpy( pEvent->pData, pEventData, uiDataSize );
-	
-	// Add event to queue
-	hQueue = GetQueue( ubQueueID );
-	hQueue = AddtoList( hQueue, &pEvent, ListSize( hQueue ) );
-	SetQueue( ubQueueID, hQueue );
-
-	return( TRUE );
-
+  return TRUE;
 }
 
+BOOLEAN RemoveEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
+  UINT32 uiQueueSize;
+  HLIST hQueue;
 
+  // Get an event from queue, if one exists
+  //
 
-BOOLEAN RemoveEvent( EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID )
-{
-	UINT32 uiQueueSize;
-	HLIST hQueue;
+  hQueue = GetQueue(ubQueueID);
 
-	// Get an event from queue, if one exists
-	//
+  // Get Size
+  uiQueueSize = ListSize(hQueue);
 
-	hQueue = GetQueue( ubQueueID );
+  if (uiQueueSize > 0) {
+    // Get
+    CHECKF(RemfromList(hQueue, ppEvent, uiIndex) != FALSE);
+  } else {
+    return FALSE;
+  }
 
-
-	// Get Size
-	uiQueueSize = ListSize( hQueue );
-
-	if ( uiQueueSize > 0 )
-	{
-		// Get
-		CHECKF( RemfromList( hQueue , ppEvent, uiIndex ) != FALSE );
-	}
-	else
-	{
-		return( FALSE );
-	}
-
-	return( TRUE );
+  return TRUE;
 }
 
+BOOLEAN PeekEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
+  UINT32 uiQueueSize;
+  HLIST hQueue;
 
-BOOLEAN PeekEvent( EVENT **ppEvent, UINT32 uiIndex , UINT8 ubQueueID )
-{
-	UINT32 uiQueueSize;
-	HLIST hQueue;
+  // Get an event from queue, if one exists
+  //
 
-	// Get an event from queue, if one exists
-	//
+  hQueue = GetQueue(ubQueueID);
 
-	hQueue = GetQueue( ubQueueID );
+  // Get Size
+  uiQueueSize = ListSize(hQueue);
 
+  if (uiQueueSize > 0) {
+    // Get
+    CHECKF(PeekList(hQueue, ppEvent, uiIndex) != FALSE);
+  } else {
+    return FALSE;
+  }
 
-	// Get Size
-	uiQueueSize = ListSize( hQueue );
-
-	if ( uiQueueSize > 0 )
-	{
-		// Get
-		CHECKF( PeekList( hQueue, ppEvent, uiIndex ) != FALSE );
-	}
-	else
-	{
-		return( FALSE );
-	}
-
-	return( TRUE );
+  return TRUE;
 }
 
+BOOLEAN FreeEvent(EVENT *pEvent) {
+  CHECKF(pEvent != NULL);
 
+  // Delete event
+  MemFree(pEvent);
 
-BOOLEAN FreeEvent( EVENT *pEvent )
-{
-	CHECKF( pEvent != NULL );
-
-	// Delete event
-	MemFree( pEvent );
-
-	return( TRUE );
+  return TRUE;
 }
 
+UINT32 EventQueueSize(UINT8 ubQueueID) {
+  UINT32 uiQueueSize;
+  HLIST hQueue;
 
-UINT32 EventQueueSize( UINT8 ubQueueID )
-{
-	UINT32 uiQueueSize;
-	HLIST hQueue;
+  // Get an event from queue, if one exists
+  //
 
-	// Get an event from queue, if one exists
-	//
+  hQueue = GetQueue(ubQueueID);
 
-	hQueue = GetQueue( ubQueueID );
+  // Get Size
+  uiQueueSize = ListSize(hQueue);
 
-	// Get Size
-	uiQueueSize = ListSize( hQueue );
-	
-	return( uiQueueSize );
+  return uiQueueSize;
 }
 
+HLIST GetQueue(UINT8 ubQueueID) {
+  switch (ubQueueID) {
+    case PRIMARY_EVENT_QUEUE:
+      return hEventQueue;
+      break;
 
-HLIST GetQueue( UINT8 ubQueueID )
-{
-	switch( ubQueueID )
-	{
-		case PRIMARY_EVENT_QUEUE:
-			return( hEventQueue );
-			break;
+    case SECONDARY_EVENT_QUEUE:
+      return hDelayEventQueue;
+      break;
 
-		case SECONDARY_EVENT_QUEUE:
-			return( hDelayEventQueue );
-			break;
+    case DEMAND_EVENT_QUEUE:
+      return hDemandEventQueue;
+      break;
 
-		case DEMAND_EVENT_QUEUE:
-			return( hDemandEventQueue );
-			break;
-
-		default:
-			Assert( FALSE );
-			return( 0 );
-			break;
-	}
-
+    default:
+      Assert(FALSE);
+      return 0;
+      break;
+  }
 }
 
-void SetQueue( UINT8 ubQueueID, HQUEUE hQueue )
-{
-	switch( ubQueueID )
-	{
-		case PRIMARY_EVENT_QUEUE:
-			hEventQueue = hQueue;
-			break;
+void SetQueue(UINT8 ubQueueID, HQUEUE hQueue) {
+  switch (ubQueueID) {
+    case PRIMARY_EVENT_QUEUE:
+      hEventQueue = hQueue;
+      break;
 
-		case SECONDARY_EVENT_QUEUE:
-			hDelayEventQueue = hQueue;
-			break;
+    case SECONDARY_EVENT_QUEUE:
+      hDelayEventQueue = hQueue;
+      break;
 
-		case DEMAND_EVENT_QUEUE:
-			hDemandEventQueue = hQueue;
-			break;
+    case DEMAND_EVENT_QUEUE:
+      hDemandEventQueue = hQueue;
+      break;
 
-		default:
-			Assert( FALSE );
-			break;
-	}
+    default:
+      Assert(FALSE);
+      break;
+  }
 }

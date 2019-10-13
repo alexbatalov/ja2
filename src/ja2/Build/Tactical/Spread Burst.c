@@ -1,207 +1,179 @@
 #ifdef PRECOMPILEDHEADERS
-	#include "Tactical All.h"
+#include "Tactical All.h"
 #else
-	#include <stdio.h>
-	#include <string.h>
-	#include "wcheck.h"
-	#include "stdlib.h"
-	#include "debug.h"
-	#include "soldier control.h"
-	#include "weapons.h"
-	#include "cursor control.h"
-	#include "cursors.h"
-	#include "soldier find.h"
-	#include "isometric utils.h"
-	#include "renderworld.h"
-	#include "render dirty.h"
-	#include "interface.h"
+#include <stdio.h>
+#include <string.h>
+#include "wcheck.h"
+#include "stdlib.h"
+#include "debug.h"
+#include "soldier control.h"
+#include "weapons.h"
+#include "cursor control.h"
+#include "cursors.h"
+#include "soldier find.h"
+#include "isometric utils.h"
+#include "renderworld.h"
+#include "render dirty.h"
+#include "interface.h"
 #endif
 
+#define MAX_BURST_LOCATIONS 50
 
-#define		MAX_BURST_LOCATIONS		50
-
-
-typedef struct
-{
-	INT16 sX;
-	INT16 sY;
-	INT16 sGridNo;
-
+typedef struct {
+  INT16 sX;
+  INT16 sY;
+  INT16 sGridNo;
 } BURST_LOCATIONS;
 
-
-
-BURST_LOCATIONS			gsBurstLocations[ MAX_BURST_LOCATIONS ];
-INT8								gbNumBurstLocations = 0;
+BURST_LOCATIONS gsBurstLocations[MAX_BURST_LOCATIONS];
+INT8 gbNumBurstLocations = 0;
 
 extern BOOLEAN gfBeginBurstSpreadTracking;
 
-
-void ResetBurstLocations( )
-{
-	gbNumBurstLocations = 0;
+void ResetBurstLocations() {
+  gbNumBurstLocations = 0;
 }
 
-void AccumulateBurstLocation( INT16 sGridNo )
-{
-	INT32 cnt;
+void AccumulateBurstLocation(INT16 sGridNo) {
+  INT32 cnt;
 
-	if ( gbNumBurstLocations < MAX_BURST_LOCATIONS )
-	{
-		// Check if it already exists!
-		for ( cnt = 0; cnt < gbNumBurstLocations; cnt++ )
-		{
-			if ( gsBurstLocations[ cnt ].sGridNo == sGridNo )
-			{
-				return;
-			}
-		}
+  if (gbNumBurstLocations < MAX_BURST_LOCATIONS) {
+    // Check if it already exists!
+    for (cnt = 0; cnt < gbNumBurstLocations; cnt++) {
+      if (gsBurstLocations[cnt].sGridNo == sGridNo) {
+        return;
+      }
+    }
 
-		gsBurstLocations[ gbNumBurstLocations ].sGridNo = sGridNo;
+    gsBurstLocations[gbNumBurstLocations].sGridNo = sGridNo;
 
-		// Get cell X, Y from mouse...
-		GetMouseWorldCoords( &( gsBurstLocations[ gbNumBurstLocations ].sX ), &( gsBurstLocations[ gbNumBurstLocations ].sY ) );
+    // Get cell X, Y from mouse...
+    GetMouseWorldCoords(&(gsBurstLocations[gbNumBurstLocations].sX), &(gsBurstLocations[gbNumBurstLocations].sY));
 
-		gbNumBurstLocations++;
-	}
+    gbNumBurstLocations++;
+  }
 }
 
+void PickBurstLocations(SOLDIERTYPE *pSoldier) {
+  UINT8 ubShotsPerBurst;
+  FLOAT dAccululator = 0;
+  FLOAT dStep = 0;
+  INT32 cnt;
+  UINT8 ubLocationNum;
 
+  // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
-void PickBurstLocations( SOLDIERTYPE *pSoldier )
-{
-	UINT8		ubShotsPerBurst;
-	FLOAT		dAccululator = 0;
-	FLOAT		dStep = 0;
-	INT32		cnt;
-	UINT8		ubLocationNum;
+  // Get shots per burst
+  ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
 
-	// OK, using the # of locations, spread them evenly between our current weapon shots per burst value
+  // Use # gridnos accululated and # burst shots to determine accululator
+  dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
 
-	// Get shots per burst
-	ubShotsPerBurst = Weapon[ pSoldier->inv[ HANDPOS ].usItem ].ubShotsPerBurst;
+  // Loop through our shots!
+  for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
+    // Get index into list
+    ubLocationNum = (UINT8)(dAccululator);
 
-	// Use # gridnos accululated and # burst shots to determine accululator
-	dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
+    // Add to merc location
+    pSoldier->sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
 
-	//Loop through our shots!
-	for ( cnt = 0; cnt < ubShotsPerBurst; cnt++ )
-	{
-		// Get index into list
-		ubLocationNum = (UINT8)( dAccululator );
+    // Acculuate index value
+    dAccululator += dStep;
+  }
 
-		// Add to merc location
-		pSoldier->sSpreadLocations[ cnt ] = gsBurstLocations[ ubLocationNum ].sGridNo;
-
-		// Acculuate index value
-		dAccululator += dStep;
-	}
-
-	// OK, they have been added
+  // OK, they have been added
 }
 
-void AIPickBurstLocations( SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTargets[5] )
-{
-	UINT8		ubShotsPerBurst;
-	FLOAT		dAccululator = 0;
-	FLOAT		dStep = 0;
-	INT32		cnt;
-	UINT8		ubLocationNum;
+void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTargets[5]) {
+  UINT8 ubShotsPerBurst;
+  FLOAT dAccululator = 0;
+  FLOAT dStep = 0;
+  INT32 cnt;
+  UINT8 ubLocationNum;
 
-	// OK, using the # of locations, spread them evenly between our current weapon shots per burst value
+  // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
-	// Get shots per burst
-	ubShotsPerBurst = Weapon[ pSoldier->inv[ HANDPOS ].usItem ].ubShotsPerBurst;
+  // Get shots per burst
+  ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
 
-	// Use # gridnos accululated and # burst shots to determine accululator
-	//dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
-	// CJC: tweak!
-	dStep = bTargets / (FLOAT)ubShotsPerBurst;
+  // Use # gridnos accululated and # burst shots to determine accululator
+  // dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
+  // CJC: tweak!
+  dStep = bTargets / (FLOAT)ubShotsPerBurst;
 
-	//Loop through our shots!
-	for ( cnt = 0; cnt < ubShotsPerBurst; cnt++ )
-	{
-		// Get index into list
-		ubLocationNum = (UINT8)( dAccululator );
+  // Loop through our shots!
+  for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
+    // Get index into list
+    ubLocationNum = (UINT8)(dAccululator);
 
-		// Add to merc location
-		pSoldier->sSpreadLocations[ cnt ] = pTargets[ubLocationNum]->sGridNo;
+    // Add to merc location
+    pSoldier->sSpreadLocations[cnt] = pTargets[ubLocationNum]->sGridNo;
 
-		// Acculuate index value
-		dAccululator += dStep;
-	}
+    // Acculuate index value
+    dAccululator += dStep;
+  }
 
-	// OK, they have been added
+  // OK, they have been added
 }
 
+extern HVOBJECT GetCursorFileVideoObject(UINT32 uiCursorFile);
 
-extern HVOBJECT GetCursorFileVideoObject( UINT32 uiCursorFile );
+void RenderAccumulatedBurstLocations() {
+  INT32 cnt;
+  INT16 sGridNo;
+  HVOBJECT hVObject;
 
+  if (!gfBeginBurstSpreadTracking) {
+    return;
+  }
 
-void RenderAccumulatedBurstLocations( )
-{
-	INT32			cnt;
-	INT16			sGridNo;
-	HVOBJECT	hVObject;
+  if (gbNumBurstLocations == 0) {
+    return;
+  }
 
-	if ( !gfBeginBurstSpreadTracking )
-	{
-		return;
-	}
+  // Loop through each location...
+  GetVideoObject(&hVObject, guiBURSTACCUM);
 
-	if ( gbNumBurstLocations == 0 )
-	{
-		return;
-	}
+  // If on screen, render
 
-	// Loop through each location...
-	GetVideoObject( &hVObject, guiBURSTACCUM );
+  // Check if it already exists!
+  for (cnt = 0; cnt < gbNumBurstLocations; cnt++) {
+    sGridNo = gsBurstLocations[cnt].sGridNo;
 
-	// If on screen, render
+    if (GridNoOnScreen(sGridNo)) {
+      FLOAT dOffsetX, dOffsetY;
+      FLOAT dTempX_S, dTempY_S;
+      INT16 sXPos, sYPos;
+      INT32 iBack;
 
-	// Check if it already exists!
-	for ( cnt = 0; cnt < gbNumBurstLocations; cnt++ )
-	{
-		sGridNo = gsBurstLocations[ cnt ].sGridNo;
+      dOffsetX = (FLOAT)(gsBurstLocations[cnt].sX - gsRenderCenterX);
+      dOffsetY = (FLOAT)(gsBurstLocations[cnt].sY - gsRenderCenterY);
 
-		if ( GridNoOnScreen( sGridNo ) )
-		{
-			FLOAT				dOffsetX, dOffsetY;
-			FLOAT				dTempX_S, dTempY_S;
-			INT16				sXPos, sYPos;
-			INT32				iBack;
+      // Calculate guy's position
+      FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-			dOffsetX = (FLOAT)( gsBurstLocations[ cnt ].sX - gsRenderCenterX );
-			dOffsetY = (FLOAT)( gsBurstLocations[ cnt ].sY - gsRenderCenterY );
+      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
+      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S - gpWorldLevelData[sGridNo].sHeight;
 
-			// Calculate guy's position
-			FloatFromCellToScreenCoordinates( dOffsetX, dOffsetY, &dTempX_S, &dTempY_S );
+      // Adjust for offset position on screen
+      sXPos -= gsRenderWorldOffsetX;
+      sYPos -= gsRenderWorldOffsetY;
 
-			sXPos = ( ( gsVIEWPORT_END_X - gsVIEWPORT_START_X ) /2 ) + (INT16)dTempX_S;
-			sYPos = ( ( gsVIEWPORT_END_Y - gsVIEWPORT_START_Y ) /2 ) + (INT16)dTempY_S - gpWorldLevelData[ sGridNo ].sHeight;
+      // Adjust for render height
+      sYPos += gsRenderHeight;
 
-			// Adjust for offset position on screen
-			sXPos -= gsRenderWorldOffsetX;
-			sYPos -= gsRenderWorldOffsetY;
+      // sScreenY -= gpWorldLevelData[ sGridNo ].sHeight;
 
-			// Adjust for render height
-			sYPos += gsRenderHeight;
+      // Center circle!
+      // sXPos -= 10;
+      // sYPos -= 10;
 
-			//sScreenY -= gpWorldLevelData[ sGridNo ].sHeight;
+      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 40), (INT16)(sYPos + 40));
+      if (iBack != -1) {
+        SetBackgroundRectFilled(iBack);
+      }
 
-			// Center circle!
-			//sXPos -= 10;
-			//sYPos -= 10;
-
-			iBack = RegisterBackgroundRect( BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos +40 ), (INT16)(sYPos + 40 ) ); 
-			if ( iBack != -1 )
-			{
-				SetBackgroundRectFilled( iBack );
-			}
-
-			BltVideoObject(  FRAME_BUFFER, hVObject, 1, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL );
-		}
-	}
+      BltVideoObject(FRAME_BUFFER, hVObject, 1, sXPos, sYPos, VO_BLT_SRCTRANSPARENCY, NULL);
+    }
+  }
 }
-
-

@@ -7,6 +7,4 @@ void ExitBobbyRArmour();
 void HandleBobbyRArmour();
 void RenderBobbyRArmour();
 
-
-
 #endif

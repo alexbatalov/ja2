@@ -1,7 +1,7 @@
 #ifndef __LANGUAGE_DEFINES_H
 #define __LANGUAGE_DEFINES_H
 
-//ONLY ONE OF THESE CAN BE DEFINED AT A TIME!
+// ONLY ONE OF THESE CAN BE DEFINED AT A TIME!
 
 #define ENGLISH
 //#define GERMAN
@@ -11,11 +11,9 @@
 
 #define BLOOD_N_GORE_ENABLED
 
-
-
-//if the language represents words as single chars
+// if the language represents words as single chars
 #ifdef TAIWAN
-	#define	SINGLE_CHAR_WORDS
+#define SINGLE_CHAR_WORDS
 #endif
 
 #endif

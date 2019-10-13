@@ -79,8 +79,8 @@
 #include "meanwhile.h"
 #include "Campaign Types.h"
 #ifdef JA2TESTVERSION
-	#include	"Quest Debug System.h"
-	#include	"QuestText.h"
+#include "Quest Debug System.h"
+#include "QuestText.h"
 #endif
 
 #include "stdarg.h"

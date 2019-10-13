@@ -1,31 +1,21 @@
 #ifdef PRECOMPILEDHEADERS
-	#include "Laptop All.h"
+#include "Laptop All.h"
 #else
-	#include "laptop.h"
-	#include "SirTech.h"
+#include "laptop.h"
+#include "SirTech.h"
 #endif
 
-void GameInitSirTech()
-{
-
+void GameInitSirTech() {
 }
 
-void EnterSirTech()
-{
-
+void EnterSirTech() {
 }
 
-void ExitSirTech()
-{
-
+void ExitSirTech() {
 }
 
-void HandleSirTech()
-{
-
+void HandleSirTech() {
 }
 
-void RenderSirTech()
-{
-
+void RenderSirTech() {
 }

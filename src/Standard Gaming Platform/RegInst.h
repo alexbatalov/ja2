@@ -46,7 +46,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
+
 // call once per execution of application:
 extern BOOLEAN InitializeRegistryKeys(STR strAppName, STR strRegistryKey);
 
@@ -62,8 +62,8 @@ extern HKEY GetAppRegistryKey();
 extern HKEY GetSectionKey(STR lpszSection);
 
 extern UINT GetProfileInteger(STR lpszSection, STR lpszEntry, int nDefault);
-extern BOOLEAN GetProfileChar(STR lpszSection, STR lpszEntry,	STR lpszDefault, STR lpszValue);
-extern BOOL GetProfileBinary(STR lpszSection, STR lpszEntry, BYTE** ppData, UINT* pBytes);
+extern BOOLEAN GetProfileChar(STR lpszSection, STR lpszEntry, STR lpszDefault, STR lpszValue);
+extern BOOL GetProfileBinary(STR lpszSection, STR lpszEntry, BYTE **ppData, UINT *pBytes);
 extern BOOL WriteProfileInt(STR lpszSection, STR lpszEntry, int nValue);
 extern BOOL WriteProfileChar(STR lpszSection, STR lpszEntry, STR lpszValue);
 extern BOOL WriteProfileBinary(STR lpszSection, STR lpszEntry, LPBYTE pData, UINT nBytes);

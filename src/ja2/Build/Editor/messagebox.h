@@ -4,23 +4,22 @@
 #ifndef __MESSAGEBOX_H
 #define __MESSAGEBOX_H
 
-enum
-{
-	MESSAGEBOX_NONE,
-	MESSAGEBOX_DONE,
-	MESSAGEBOX_WAIT
+enum {
+  MESSAGEBOX_NONE,
+  MESSAGEBOX_DONE,
+  MESSAGEBOX_WAIT,
 };
 
 extern UINT8 gubMessageBoxStatus;
 extern BOOLEAN gfMessageBoxResult;
 
-void CreateMessageBox( UINT16 *wzString );
+void CreateMessageBox(UINT16 *wzString);
 BOOLEAN MessageBoxHandled();
 void RemoveMessageBox();
 
-//NOTES:
-//Rewrote the damn thing.  It is better now because you have less management issues.
-//In your screen's main loop, instead of using the previous method, you would use the following syntax:
+// NOTES:
+// Rewrote the damn thing.  It is better now because you have less management issues.
+// In your screen's main loop, instead of using the previous method, you would use the following syntax:
 //
 //	if( gubMessageBoxState )
 //	{

@@ -7,7 +7,7 @@
 
 #pragma message("GENERATED PCH FOR EDITOR PROJECT.")
 
-//external
+// external
 #include "types.h"
 #include <stdio.h>
 #include <windows.h>
@@ -94,8 +94,7 @@
 #include "MessageBoxScreen.h"
 #include "GameSettings.h"
 
-
-//internal
+// internal
 #include "Cursor Modes.h"
 #include "edit_sys.h"
 #include "Editor Callback Prototypes.h"

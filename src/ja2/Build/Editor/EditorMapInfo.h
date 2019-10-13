@@ -16,13 +16,12 @@ extern BOOLEAN gfEditorForceShadeTableRebuild;
 
 void LocateNextExitGrid();
 
-enum
-{
-	PRIMETIME_LIGHT,
-	NIGHTTIME_LIGHT,
-	ALWAYSON_LIGHT
+enum {
+  PRIMETIME_LIGHT,
+  NIGHTTIME_LIGHT,
+  ALWAYSON_LIGHT,
 };
-void ChangeLightDefault( INT8 bLightType );
+void ChangeLightDefault(INT8 bLightType);
 INT8 gbDefaultLightType;
 
 #endif

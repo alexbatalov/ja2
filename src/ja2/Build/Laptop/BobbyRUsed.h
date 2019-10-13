@@ -7,6 +7,4 @@ void ExitBobbyRUsed();
 void HandleBobbyRUsed();
 void RenderBobbyRUsed();
 
-
-
 #endif

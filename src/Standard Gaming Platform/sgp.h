@@ -6,7 +6,7 @@
 #include "timer.h"
 #include "debug.h"
 
-#if defined( JA2 ) || defined( UTIL )
+#if defined(JA2) || defined(UTIL)
 #include "video.h"
 #else
 #include "video2.h"
@@ -33,17 +33,17 @@
 extern "C" {
 #endif
 
-extern BOOLEAN		gfProgramIsRunning; // Turn this to FALSE to exit program
-extern UINT32			giStartMem;
-extern CHAR8			gzCommandLine[100];	// Command line given
-extern UINT8			gbPixelDepth;				// GLOBAL RUN-TIME SETTINGS
-extern BOOLEAN		gfDontUseDDBlits;		// GLOBAL FOR USE OF DD BLITTING
+extern BOOLEAN gfProgramIsRunning; // Turn this to FALSE to exit program
+extern UINT32 giStartMem;
+extern CHAR8 gzCommandLine[100]; // Command line given
+extern UINT8 gbPixelDepth; // GLOBAL RUN-TIME SETTINGS
+extern BOOLEAN gfDontUseDDBlits; // GLOBAL FOR USE OF DD BLITTING
 
 #if !defined(JA2) && !defined(UTILS)
-extern BOOLEAN		gfLoadAtStartup;
-extern CHAR8		*gzStringDataOverride;
-extern BOOLEAN		gfUsingBoundsChecker;
-extern BOOLEAN		gfCapturingVideo;
+extern BOOLEAN gfLoadAtStartup;
+extern CHAR8 *gzStringDataOverride;
+extern BOOLEAN gfUsingBoundsChecker;
+extern BOOLEAN gfCapturingVideo;
 
 #endif
 

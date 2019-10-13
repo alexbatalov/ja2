@@ -178,17 +178,17 @@
 #include "Strategic Merc Handler.h"
 #include "Militia Control.h"
 #include "Queen Command.h"
-#include "editscreen.h"  
+#include "editscreen.h"
 #include "soldier tile.h"
-#ifdef  NETWORKED
-	#include "Networking.h"
-	#include "NetworkEvent.h"
+#ifdef NETWORKED
+#include "Networking.h"
+#include "NetworkEvent.h"
 #endif
 #include "Player Command.h"
 #include "Game Init.h"
 #include "Buildings.h"
 #include "rt time defines.h"
-#include	"GameSettings.h"
+#include "GameSettings.h"
 #include "Text Input.h"
 #include "ShopKeeper Quotes.h"
 #include "Personnel.h"
@@ -211,7 +211,7 @@
 #include "BobbyR.h"
 
 #ifdef JA2BETAVERSION
-	#include	"Quest Debug System.h"
+#include "Quest Debug System.h"
 #endif
 
 #include "GameVersion.h"

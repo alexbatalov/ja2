@@ -1,92 +1,84 @@
 #ifdef PRECOMPILEDHEADERS
-	#include "Laptop All.h"
+#include "Laptop All.h"
 #else
-	#include "laptop.h"
-	#include "BobbyRAmmo.h"
-	#include "BobbyRGuns.h"
-	#include "BobbyR.h"
-	#include "Utilities.h"
-	#include "WCheck.h"
-	#include "WordWrap.h"
-	#include "Cursors.h"
-	#include "interface items.h"
-	#include "Encrypted File.h"
-	#include "text.h"
+#include "laptop.h"
+#include "BobbyRAmmo.h"
+#include "BobbyRGuns.h"
+#include "BobbyR.h"
+#include "Utilities.h"
+#include "WCheck.h"
+#include "WordWrap.h"
+#include "Cursors.h"
+#include "interface items.h"
+#include "Encrypted File.h"
+#include "text.h"
 #endif
 
-UINT32		guiAmmoBackground;
-UINT32		guiAmmoGrid;
+UINT32 guiAmmoBackground;
+UINT32 guiAmmoGrid;
 
 BOOLEAN DisplayAmmoInfo();
 
-
-void GameInitBobbyRAmmo()
-{
+void GameInitBobbyRAmmo() {
 }
 
-BOOLEAN EnterBobbyRAmmo()
-{
-  VOBJECT_DESC    VObjectDesc;
+BOOLEAN EnterBobbyRAmmo() {
+  VOBJECT_DESC VObjectDesc;
 
-	// load the background graphic and add it
-	VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
-	FilenameForBPP("LAPTOP\\ammobackground.sti", VObjectDesc.ImageFile);
-	CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoBackground));
+  // load the background graphic and add it
+  VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
+  FilenameForBPP("LAPTOP\\ammobackground.sti", VObjectDesc.ImageFile);
+  CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoBackground));
 
-	// load the gunsgrid graphic and add it
-	VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
-	FilenameForBPP("LAPTOP\\ammogrid.sti", VObjectDesc.ImageFile);
-	CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoGrid));
+  // load the gunsgrid graphic and add it
+  VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
+  FilenameForBPP("LAPTOP\\ammogrid.sti", VObjectDesc.ImageFile);
+  CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoGrid));
 
-	InitBobbyBrTitle();
+  InitBobbyBrTitle();
 
+  SetFirstLastPagesForNew(IC_AMMO);
+  //	CalculateFirstAndLastIndexs();
 
-	SetFirstLastPagesForNew( IC_AMMO );
-//	CalculateFirstAndLastIndexs();
+  // Draw menu bar
+  InitBobbyMenuBar();
 
-	//Draw menu bar
-	InitBobbyMenuBar( );
+  RenderBobbyRAmmo();
 
-	RenderBobbyRAmmo( );
-
-	return(TRUE);
+  return TRUE;
 }
 
-void ExitBobbyRAmmo()
-{
-	DeleteVideoObjectFromIndex(guiAmmoBackground);
-	DeleteVideoObjectFromIndex(guiAmmoGrid);
-	DeleteBobbyMenuBar();
+void ExitBobbyRAmmo() {
+  DeleteVideoObjectFromIndex(guiAmmoBackground);
+  DeleteVideoObjectFromIndex(guiAmmoGrid);
+  DeleteBobbyMenuBar();
 
-	DeleteBobbyBrTitle();
-	DeleteMouseRegionForBigImage();
+  DeleteBobbyBrTitle();
+  DeleteMouseRegionForBigImage();
 
-	giCurrentSubPage = gusCurWeaponIndex;
-	guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_AMMO;
+  giCurrentSubPage = gusCurWeaponIndex;
+  guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_AMMO;
 }
 
-void HandleBobbyRAmmo()
-{
+void HandleBobbyRAmmo() {
 }
 
-void RenderBobbyRAmmo()
-{
+void RenderBobbyRAmmo() {
   HVOBJECT hPixHandle;
 
-	WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiAmmoBackground);
+  WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiAmmoBackground);
 
-	//Display title at top of page
-	DisplayBobbyRBrTitle();
+  // Display title at top of page
+  DisplayBobbyRBrTitle();
 
-	// GunForm
-	GetVideoObject(&hPixHandle, guiAmmoGrid);
-  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY,NULL);
+  // GunForm
+  GetVideoObject(&hPixHandle, guiAmmoGrid);
+  BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-	DisplayItemInfo(IC_AMMO);
+  DisplayItemInfo(IC_AMMO);
 
-	UpdateButtonText(guiCurrentLaptopMode);
-  MarkButtonsDirty( );
-	RenderWWWProgramTitleBar( );
-  InvalidateRegion(LAPTOP_SCREEN_UL_X,LAPTOP_SCREEN_WEB_UL_Y,LAPTOP_SCREEN_LR_X,LAPTOP_SCREEN_WEB_LR_Y);
+  UpdateButtonText(guiCurrentLaptopMode);
+  MarkButtonsDirty();
+  RenderWWWProgramTitleBar();
+  InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
-

@@ -7,6 +7,4 @@ void ExitBobbyRAmmo();
 void HandleBobbyRAmmo();
 void RenderBobbyRAmmo();
 
-
-
 #endif

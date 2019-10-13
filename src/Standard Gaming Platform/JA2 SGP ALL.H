@@ -7,15 +7,14 @@
 //	#define INITGUID
 //#endif
 
-
 #include "WordWrap.h"
 #include "video.h"
 #include "Button Sound Control.h"
 #include "Sound Control.h"
 #ifdef _JA2_RENDER_DIRTY
-	#include "\JA2\Build\utils\Font Control.h"
-	#include "Render Dirty.h"
-	#include "utilities.h"
+#include "\JA2\Build\utils\Font Control.h"
+#include "Render Dirty.h"
+#include "utilities.h"
 #endif
 #include "input.h"
 #include "memman.h"
@@ -28,8 +27,8 @@
 #include <stdarg.h>
 #include "debug.h"
 #ifndef NO_ZLIB_COMPRESSION
-	#include "zlib.h"
-	#include "Compression.h"
+#include "zlib.h"
+#include "Compression.h"
 #endif
 #include "types.h"
 #include <stdlib.h>
@@ -71,9 +70,9 @@
 #include <tchar.h>
 #include <assert.h>
 #include "Install.h"
-#include	"GameSettings.h"
+#include "GameSettings.h"
 #ifdef _DEBUG
-	#include <crtdbg.h>
+#include <crtdbg.h>
 #endif
 #include "mousesystem.h"
 #include "Mutex Manager.h"
@@ -91,6 +90,5 @@
 #include "vsurface.h"
 #include "vsurface_private.h"
 #include "Timer Control.h"
-
 
 #endif

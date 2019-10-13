@@ -42,8 +42,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	
-extern BOOLEAN InstallApplication( STR strAppname, STR strPath );
+
+extern BOOLEAN InstallApplication(STR strAppname, STR strPath);
 
 #ifdef __cplusplus
 }

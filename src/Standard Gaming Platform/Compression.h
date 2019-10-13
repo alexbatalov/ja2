@@ -1,4 +1,4 @@
-#if !defined( COMPRESSION_H )
+#if !defined(COMPRESSION_H)
 
 #define COMPRESSION_H
 
@@ -23,9 +23,9 @@
 //
 // 3) call DecompressFini() with the decompression pointer when you're done
 
-PTR DecompressInit( BYTE * pCompressedData, UINT32 uiDataSize );
-UINT32 Decompress( PTR pDecompPtr, BYTE * pBuffer, UINT32 uiBufferLen );
-void DecompressFini( PTR pDecompPtr );
+PTR DecompressInit(BYTE *pCompressedData, UINT32 uiDataSize);
+UINT32 Decompress(PTR pDecompPtr, BYTE *pBuffer, UINT32 uiBufferLen);
+void DecompressFini(PTR pDecompPtr);
 
 // To compress:
 //
@@ -37,16 +37,16 @@ void DecompressFini( PTR pDecompPtr );
 // buffer for compressed data, and the length of that buffer.  If the
 // buffer is not large enough to hold all of the compressed data,
 // Compress() will fill it completely, and you can call Compress() again
-// with a new or emptied buffer to continue your compression later.  You 
-// can call CompressedBufferSize() to determine the largest buffer size you 
-// should need for a certain number of bytes.  Ccompress() returns the number 
+// with a new or emptied buffer to continue your compression later.  You
+// can call CompressedBufferSize() to determine the largest buffer size you
+// should need for a certain number of bytes.  Ccompress() returns the number
 // of bytes of output.
 //
 // 3) call CompressFini() with the compression pointer when you're done
 
-UINT32 CompressedBufferSize( UINT32 uiDataSize );
-PTR CompressInit( BYTE * pUncompressedData, UINT32 uiDataSize );
-UINT32 Compress( PTR pCompPtr, BYTE * pBuffer, UINT32 uiBufferLen );
-void CompressFini( PTR pCompPtr );
+UINT32 CompressedBufferSize(UINT32 uiDataSize);
+PTR CompressInit(BYTE *pUncompressedData, UINT32 uiDataSize);
+UINT32 Compress(PTR pCompPtr, BYTE *pBuffer, UINT32 uiBufferLen);
+void CompressFini(PTR pCompPtr);
 
 #endif

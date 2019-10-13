@@ -1,53 +1,49 @@
 #ifdef PRECOMPILEDHEADERS
-	#include "TileEngine All.h"
+#include "TileEngine All.h"
 #else
-	#include <stdio.h>
-	#include <stdarg.h>
-	#include <time.h>
-	#include "sgp.h"
-	#include "himage.h"
-	#include "vsurface.h"
-	#include "vsurface_private.h"
-	#include "wcheck.h"
-	#include "sysutil.h"
-	#include "renderworld.h"
+#include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
+#include "sgp.h"
+#include "himage.h"
+#include "vsurface.h"
+#include "vsurface_private.h"
+#include "wcheck.h"
+#include "sysutil.h"
+#include "renderworld.h"
 #endif
 
-UINT32					guiBOTTOMPANEL = 0;
-UINT32					guiRIGHTPANEL = 0;
-UINT32					guiRENDERBUFFER = 0;
-UINT32					guiSAVEBUFFER = 0;
-UINT32					guiEXTRABUFFER = 0;
+UINT32 guiBOTTOMPANEL = 0;
+UINT32 guiRIGHTPANEL = 0;
+UINT32 guiRENDERBUFFER = 0;
+UINT32 guiSAVEBUFFER = 0;
+UINT32 guiEXTRABUFFER = 0;
 
 BOOLEAN gfExtraBuffer = FALSE;
 
-BOOLEAN	InitializeSystemVideoObjects( )
-{
-
-	return( TRUE );
+BOOLEAN InitializeSystemVideoObjects() {
+  return TRUE;
 }
 
-BOOLEAN	InitializeGameVideoObjects( )
-{
-	VSURFACE_DESC		vs_desc;
-	UINT16					usWidth;
-	UINT16					usHeight;
-	UINT8						ubBitDepth;
-      
-	// Create render buffer
-	GetCurrentVideoSettings( &usWidth, &usHeight, &ubBitDepth );
-	vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
-	vs_desc.usWidth = usWidth;
-	vs_desc.usHeight = usHeight;
-	vs_desc.ubBitDepth = ubBitDepth;
+BOOLEAN InitializeGameVideoObjects() {
+  VSURFACE_DESC vs_desc;
+  UINT16 usWidth;
+  UINT16 usHeight;
+  UINT8 ubBitDepth;
 
-	CHECKF( AddVideoSurface( &vs_desc, &guiSAVEBUFFER ) );
-	
-	CHECKF( AddVideoSurface( &vs_desc, &guiEXTRABUFFER ) );
-	gfExtraBuffer = TRUE;
+  // Create render buffer
+  GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+  vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
+  vs_desc.usWidth = usWidth;
+  vs_desc.usHeight = usHeight;
+  vs_desc.ubBitDepth = ubBitDepth;
 
-	guiRENDERBUFFER=FRAME_BUFFER;
+  CHECKF(AddVideoSurface(&vs_desc, &guiSAVEBUFFER));
 
-	return( TRUE );
+  CHECKF(AddVideoSurface(&vs_desc, &guiEXTRABUFFER));
+  gfExtraBuffer = TRUE;
 
+  guiRENDERBUFFER = FRAME_BUFFER;
+
+  return TRUE;
 }
