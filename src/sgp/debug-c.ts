@@ -17,36 +17,6 @@
 // use the code to write text, because the header switches on the define
 #define SGP_DEBUG
 
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "types.h"
-#include <windows.h>
-#include <ddeml.h>
-#include <stdio.h>
-#include "debug.h"
-#include "WCheck.h"
-#include "TopicIDs.h"
-#include "TopicOps.h"
-#include "WizShare.h"
-
-// Kris addition
-#ifdef JA2
-#include "screenids.h"
-#include "Sys Globals.h"
-#include "jascreens.h"
-#include "gameloop.h"
-#include "input.h"
-#endif
-
-// CJC added
-#ifndef _NO_DEBUG_TXT
-#include "fileman.h"
-#endif
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif

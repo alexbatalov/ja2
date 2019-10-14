@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#include "winfont.h"
-
-#else
-#include "math.h"
-#include <stdio.h>
-#include <errno.h>
-
-#include "worlddef.h"
-#include "renderworld.h"
-#include "vsurface.h"
-#include "Render Dirty.h"
-#include "sysutil.h"
-#include "container.h"
-#include "wcheck.h"
-#include "video.h"
-#include "vobject_blitters.h"
-#endif
-
-#ifdef JA2BETAVERSION
-#include "Message.h"
-#endif
-
 #define DIRTY_QUEUES 200
 #define BACKGROUND_BUFFERS 500
 #define VIDEO_OVERLAYS 100

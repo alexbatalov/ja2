@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "HelpScreen.h"
-#include "HelpScreenText.h"
-#include "Line.h"
-#else
-#include "sgp.h"
-#include "sys globals.h"
-#include "sysutil.h"
-#include "vobject_blitters.h"
-#include "wcheck.h"
-#include "cursors.h"
-#include "font control.h"
-#include "cursor control.h"
-#include "render dirty.h"
-#include "GameScreen.h"
-#include "Text.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Font Control.h"
-#include "text.h"
-#include "Multi Language Graphic Utils.h"
-#include "HelpScreen.h"
-#include "HelpScreenText.h"
-#include "Line.h"
-#endif
-
 extern INT16 gsVIEWPORT_END_Y;
 extern void PrintDate(void);
 extern void PrintNumberOnTeam(void);

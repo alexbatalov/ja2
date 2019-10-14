@@ -1,10 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef __ITEM_STATISTICS_H
 #define __ITEM_STATISTICS_H
-
-#include "item types.h"
 
 // Handles the dynamic changing of text input fields and button modes depending on the currently edited
 // item.  Both the merc's inventory panel, and the items tab use the same code to accomplish this.

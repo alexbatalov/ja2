@@ -1,32 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "items.h"
-#include "handle Items.h"
-#include "overhead.h"
-#include "weapons.h"
-#include "points.h"
-#include "tiledef.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "interface.h"
-#include "renderworld.h"
-#include "Animation Control.h"
-#include "font control.h"
-#include "render dirty.h"
-#include "World items.h"
-#include "debug.h"
-#include "Isometric utils.h"
-#include "sys globals.h"
-#include "Tactical Save.h"
-#include "strategicmap.h"
-#include "Campaign Types.h"
-#include "random.h"
-#include "Action Items.h"
-#include "pits.h"
-#include "GameSettings.h"
-#endif
-
 // Global dynamic array of all of the items in a loaded map.
 WORLDITEM *gWorldItems = NULL;
 UINT32 guiNumWorldItems = 0;

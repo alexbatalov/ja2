@@ -1,18 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "AimFacialIndex.h"
-#include "WordWrap.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "stdio.h"
-#include "Aim.h"
-#include "Soldier Profile.h"
-#include "email.h"
-#include "Text.h"
-#endif
-
 UINT8 gubCurrentSortMode;
 UINT8 gubCurrentListMode;
 extern UINT8 gbCurrentIndex;

@@ -2,8 +2,6 @@
 
 #define COMPRESSION_H
 
-#include "types.h"
-
 // Notes on how to use these functions without getting your hands dirty:
 
 // To decompress:

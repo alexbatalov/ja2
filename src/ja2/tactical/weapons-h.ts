@@ -1,8 +1,6 @@
 #ifndef __WEAPONS_H
 #define __WEAPONS_H
 
-#include "Soldier Control.h"
-
 #define MAXCHANCETOHIT 99
 #define BAD_DODGE_POSITION_PENALTY 20
 

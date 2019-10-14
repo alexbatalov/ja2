@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Attribute Selection.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "input.h"
-#include "Isometric Utils.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Text System.h"
-#include "IMP Compile Character.h"
-#include "text.h"
-#endif
-
 // width of the slider bar region
 #define BAR_WIDTH 423 - 197
 

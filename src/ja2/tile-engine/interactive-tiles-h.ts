@@ -1,8 +1,6 @@
 #ifndef __INTERACTIVE_TILES_H
 #define __INTERACTIVE_TILES_H
 
-#include "Soldier Control.h"
-
 #define INTTILE_DOOR_TILE_ONE 1
 
 #define INTTILE_DOOR_OPENSPEED 70

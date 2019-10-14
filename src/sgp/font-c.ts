@@ -1,33 +1,3 @@
-// font.c
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "types.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <malloc.h>
-#include <windows.h>
-#include <stdarg.h>
-#include <wchar.h>
-#include "sgp.h"
-#include "pcx.h"
-#include "memman.h"
-#include "fileman.h"
-#include "Font.h"
-#include "Debug.h"
-
-#if defined(JA2) || defined(UTIL)
-#include "video.h"
-#else
-#include "video2.h"
-#endif
-
-#include "himage.h"
-#include "vobject.h"
-#include "vobject_blitters.h"
-#endif
 //*******************************************************
 //
 //   Defines

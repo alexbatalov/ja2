@@ -1,10 +1,6 @@
 #ifndef _SHADING_H_
 #define _SHADING_H_
 
-#include "himage.h" // For SGPPaletteEntry
-#include "vobject.h" // For HVOBJECT_SHADE_TABLES
-#include "vsurface.h" // For
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,41 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <stdio.h>
-#include "types.h"
-#include "Sector Summary.h"
-#include "Timer Control.h"
-#include "vsurface.h"
-#include "Button System.h"
-#include "Font Control.h"
-#include "Simple Render Utils.h"
-#include "Editor Taskbar Utils.h"
-#include "line.h"
-#include "input.h"
-#include "vobject_blitters.h"
-#include "loadscreen.h"
-#include "Text Input.h"
-#include "mousesystem.h"
-#include "strategicmap.h"
-#include "Fileman.h"
-#include "Exit Grids.h"
-#include "Map Information.h"
-#include "Summary Info.h"
-#include "Animated ProgressBar.h"
-#include "worlddef.h"
-#include "worlddat.h"
-#include "EditorDefines.h"
-#include "editscreen.h"
-#include "english.h"
-#include "World Items.h"
-#include "text.h"
-#endif
 
 extern BOOLEAN gfOverheadMapDirty;
 
@@ -1536,8 +1499,6 @@ void SummaryToggleProgressCallback(GUI_BUTTON *btn, INT32 reason) {
     gfRenderMap = TRUE;
   }
 }
-
-#include "Tile Surface.h"
 
 void PerformTest() {
 }

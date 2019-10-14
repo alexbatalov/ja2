@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#include "Game Clock.h"
-#else
-#include "sgp.h"
-#include "font.h"
-#include "types.h"
-#include "Font Control.h"
-#include "message.h"
-#include "memory.h"
-#include "mbstring.h"
-#include "Timer Control.h"
-#include "render dirty.h"
-#include "renderworld.h"
-#include "Mutex Manager.h"
-#include "local.h"
-#include "interface.h"
-#include "Map Screen Interface Bottom.h"
-#include "WordWrap.h"
-#include "Sound Control.h"
-#include "Soundman.h"
-#include "BuildDefines.h"
-#include "Dialogue Control.h"
-#include <stdio.h>
-#include "Game Clock.h"
-#endif
-
 typedef struct {
   UINT32 uiFont;
   UINT32 uiTimeOfLastUpdate;

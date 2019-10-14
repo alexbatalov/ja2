@@ -1,9 +1,6 @@
 #ifndef _KEYS_H_
 #define _KEYS_H_
 
-#include "types.h"
-#include "FileMan.h"
-
 typedef struct {
   UINT16 usItem; // index in item table for key
   UINT8 fFlags; // flags...

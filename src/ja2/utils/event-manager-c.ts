@@ -1,16 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include <stdio.h>
-#include <stdarg.h>
-#include <time.h>
-#include "sgp.h"
-#include "container.h"
-#include "wcheck.h"
-#include "Event Manager.h"
-#include "Timer Control.h"
-#endif
-
 HLIST hEventQueue = NULL;
 HLIST hDelayEventQueue = NULL;
 HLIST hDemandEventQueue = NULL;

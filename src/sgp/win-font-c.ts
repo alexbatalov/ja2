@@ -1,24 +1,4 @@
 //#define UNICODE
-#include "types.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <malloc.h>
-#include <windows.h>
-#include <windowsx.h>
-#include <stdarg.h>
-#include <wchar.h>
-#include <string.h>
-#include "sgp.h"
-#include "memman.h"
-#include "fileman.h"
-#include "Font.h"
-#include "Debug.h"
-#include "vsurface.h"
-#include "vsurface_private.h"
-#include "DirectX Common.h"
-#include <ddraw.h>
-#include "winfont.h"
-#include "font.h"
 
 INT32 FindFreeWinFont(void);
 BOOLEAN gfEnumSucceed = FALSE;

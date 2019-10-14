@@ -1,8 +1,6 @@
 #ifndef __EXIT_GUI_H
 #define __EXIT_GUI_H
 
-#include "types.h"
-
 enum {
   LEAVE_SECTOR_TYPE_GOTO_SECTOR, // Uses "Go to Sector" text for check box button
   LEAVE_SECTOR_TYPE_GOTO_MAP, // Uses "Go to map" text for check box button

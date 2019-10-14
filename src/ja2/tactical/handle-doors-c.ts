@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "language defines.h"
-#else
-#include <stdio.h>
-#include <stdarg.h>
-#include <time.h>
-#include "sgp.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "renderworld.h"
-#include "structure.h"
-#include "Animation Control.h"
-#include "points.h"
-#include "overhead.h"
-#include "structure wrap.h"
-#include "tile animation.h"
-#include "Interactive Tiles.h"
-#include "handle doors.h"
-#include "sound control.h"
-#include "interface.h"
-#include "keys.h"
-#include "message.h"
-#include "text.h"
-#include "random.h"
-#endif
-
 BOOLEAN gfSetPerceivedDoorState = FALSE;
 
 BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure, BOOLEAN fNoAnimations);

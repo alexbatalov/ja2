@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Personality Quiz.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Compile Character.h"
-#include "soldier profile type.h"
-#include "IMP Text System.h"
-#include "input.h"
-#include "english.h"
-#endif
-
 extern struct POINT;
 
 UINT32 giIMPPersonalityQuizButton[2];

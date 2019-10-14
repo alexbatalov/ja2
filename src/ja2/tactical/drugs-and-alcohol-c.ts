@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "soldier control.h"
-#include "soldier profile.h"
-#include "drugs and alcohol.h"
-#include "items.h"
-#include "drugs and alcohol.h"
-#include "morale.h"
-#include "points.h"
-#include "message.h"
-#endif
-
 UINT8 ubDrugTravelRate[] = {
   4,
   2,

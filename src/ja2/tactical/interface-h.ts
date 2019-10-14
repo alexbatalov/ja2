@@ -1,10 +1,6 @@
 #ifndef _INTERFACE_H
 #define _INTERFACE_H
 
-#include "handle UI.h"
-#include "mousesystem.h"
-#include "structure.h"
-
 #define MAX_UICOMPOSITES 4
 
 #define INTERFACE_START_Y 360

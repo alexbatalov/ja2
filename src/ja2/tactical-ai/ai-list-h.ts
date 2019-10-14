@@ -1,5 +1,3 @@
-#include "Types.h"
-
 typedef struct AILIST {
   UINT8 ubID;
   INT8 bPriority;

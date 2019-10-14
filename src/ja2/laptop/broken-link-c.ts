@@ -1,10 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#include "BrokenLink.h"
-#else
-
-#endif
-
 #define BROKEN_LINK__FONT FONT12ARIAL
 #define BROKEN_LINK__COLOR FONT_MCOLOR_BLACK
 

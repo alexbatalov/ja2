@@ -1,10 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef __SUMMARY_INFO_H
 #define __SUMMARY_INFO_H
-
-#include "types.h"
 
 #define GLOBAL_SUMMARY_VERSION 14
 #define MINIMUMVERSION 7

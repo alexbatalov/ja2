@@ -1,9 +1,6 @@
 #ifndef __MAP_INTERFACE_BOTTOM
 #define __MAP_INTERFACE_BOTTOM
 
-#include "types.h"
-#include "Soldier Control.h"
-
 #define MAX_MESSAGES_ON_MAP_BOTTOM 9
 
 // exit to where defines

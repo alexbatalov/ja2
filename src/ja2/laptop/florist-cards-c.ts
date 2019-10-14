@@ -1,18 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "florist.h"
-#include "florist Cards.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Encrypted File.h"
-#include "Florist Gallery.h"
-#include "Text.h"
-#endif
-
 #define FLORIST_CARDS_SENTENCE_FONT FONT12ARIAL
 #define FLORIST_CARDS_SENTENCE_COLOR FONT_MCOLOR_WHITE
 

@@ -1,20 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-
-#include "types.h"
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "Animation Cache.h"
-#include "Animation Data.h"
-#include "Animation Control.h"
-#include "sys globals.h"
-#include "Debug Control.h"
-#endif
-
 #define EMPTY_CACHE_ENTRY 65000
 
 UINT32 guiCacheSize = MIN_CACHE_SIZE;

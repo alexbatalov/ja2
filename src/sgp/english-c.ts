@@ -1,11 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "english.h"
-#endif
-
 // The gsKeyTranslationTable is used to return KEY values on the basis of the virtual key code and
 // SHIFT/ALT/CTRL key states. Range 0-255 is for normal keys, 256-511 is when SHIFT is pressed
 // 512-767 is when ALT is pressed and 768-1023 is when CTRL is pressed. This table should be modified

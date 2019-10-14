@@ -1,23 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <stdlib.h>
-#include "worlddef.h" //for LEVELNODE def
-#include "worldman.h" //for RemoveXXXX()
-#include "Isometric Utils.h" //for GridNoOnVisibleWorldTile()
-#include "SmartMethod.h"
-#include "Smoothing Utils.h"
-#include "Editor Undo.h"
-#include "EditorDefines.h"
-#include "edit_sys.h"
-#include "environment.h"
-#endif
 
 extern UINT16 PickAWallPiece(UINT16 usWallPieceType);
 

@@ -1,10 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "tiledef.h"
-#include "worlddef.h"
-#endif
-
 INT16 gOpenDoorList[20] = {
   FIRSTDOOR1,
   SECONDDOOR1,

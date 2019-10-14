@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "WordWrap.h"
-#include "sgp.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "IMP Text System.h"
-#include "CharProfile.h"
-#include "laptop.h"
-#include "IMP Personality Quiz.h"
-#include "IMP Personality Finish.h"
-#include "IMP Attribute Selection.h"
-#include "IMP MainPage.h"
-#endif
-
 #define IMP_SEEK_AMOUNT 5 * 80 * 2
 
 #define IMP_LEFT_IDENT_TEXT_X 116

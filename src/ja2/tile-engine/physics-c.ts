@@ -1,38 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "physics.h"
-#include "wcheck.h"
-#include "timer control.h"
-#include "isometric utils.h"
-#include "los.h"
-#include "worldman.h"
-#include "event pump.h"
-#include "Sound Control.h"
-#include "soldier control.h"
-#include "interface.h"
-#include "interface items.h"
-#include "weapons.h"
-#include "explosion control.h"
-#include "Debug Control.h"
-#include "tile animation.h"
-#include "message.h"
-#include "weapons.h"
-#include "structure wrap.h"
-#include "physics.h"
-#include "overhead.h"
-#include "animation control.h"
-#include "text.h"
-#include "Random.h"
-#include "lighteffects.h"
-#include "opplist.h"
-#include "World Items.h"
-#include "environment.h"
-#endif
-
-#include "Campaign.h"
-#include "SkillCheck.h"
-
 #define NO_TEST_OBJECT 0
 #define TEST_OBJECT_NO_COLLISIONS 1
 #define TEST_OBJECT_ANY_COLLISION 2

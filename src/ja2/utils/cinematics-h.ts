@@ -1,8 +1,6 @@
 #ifndef _CINEMATICS_H_
 #define _CINEMATICS_H_
 
-#include "smack.h"
-
 typedef struct {
   CHAR8 *cFilename;
   //		HFILE										hFileHandle;

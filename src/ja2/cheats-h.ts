@@ -1,8 +1,6 @@
 #ifndef _CHEATS__H_
 #define _CHEATS__H_
 
-#include "Language Defines.h"
-
 extern UINT8 gubCheatLevel;
 
 // GLOBALS FOR CHEAT MODE......

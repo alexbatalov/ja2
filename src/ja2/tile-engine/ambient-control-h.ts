@@ -1,9 +1,6 @@
 #ifndef __AMBIENT_CONTROL
 #define __AMBIENT_CONTROL
 
-#include "sgp.h"
-#include "Ambient types.h"
-
 BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID);
 
 void HandleNewSectorAmbience(UINT8 ubAmbientID);

@@ -1,20 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include "debug.h"
-#include "wcheck.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "structure wrap.h"
-#include "isometric utils.h"
-#include "worldman.h"
-#include "overhead.h"
-#include "renderworld.h"
-#include "strategicmap.h"
-#include "rotting corpses.h"
-#endif
-
 extern BOOLEAN DoesSAMExistHere(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 sGridNo);
 
 BOOLEAN IsFencePresentAtGridno(INT16 sGridNo) {

@@ -1,28 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include "types.h"
-#include "Cursor Modes.h"
-#include "renderworld.h"
-#include "random.h"
-#include "worldman.h"
-#include "interface.h"
-#include "Isometric Utils.h"
-#include "editscreen.h"
-#include "EditorDefines.h"
-#include "input.h"
-#include "english.h"
-#include "Editor Taskbar Utils.h"
-#include "Overhead.h"
-#include "EditorMercs.h"
-#include "EditorBuildings.h"
-#endif
 
 BOOLEAN fValidCursor = FALSE;
 BOOLEAN fAnchored = FALSE;

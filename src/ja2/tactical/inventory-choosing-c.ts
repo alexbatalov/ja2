@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <memory.h>
-#include "Inventory Choosing.h"
-#include "animation data.h"
-#include "Items.h"
-#include "Random.h"
-#include "Weapons.h"
-#include "Strategic Status.h"
-#include "Campaign.h"
-#include "GameSettings.h"
-#endif
-
 #define ENEMYAMMODROPRATE 50 // % of time enemies drop ammunition
 #define ENEMYGRENADEDROPRATE 25 // % of time enemies drop grenades
 #define ENEMYEQUIPDROPRATE 15 // % of stuff enemies drop equipment

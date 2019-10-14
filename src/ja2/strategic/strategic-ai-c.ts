@@ -1,25 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <stdio.h>
-#include "types.h"
-#include "Strategic Movement.h"
-#include "Queen Command.h"
-#include "Strategic AI.h"
-#include "Game Event Hook.h"
-#include "GameSettings.h"
-#include "Campaign Types.h"
-#include "Random.h"
-#include "Strategic Pathing.h"
-#include "message.h"
-#include "Sound Control.h"
-#include "strategicmap.h"
-#include "Game Clock.h"
-#include "strategic.h"
-#include "Explosion Control.h"
-#include "Town Militia.h"
-#endif
-
 #define SAI_VERSION 29
 
 /*

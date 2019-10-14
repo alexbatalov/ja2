@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include <stdio.h>
-#include "laptop.h"
-#include "files.h"
-#include "Game clock.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "email.h"
-#include "text.h"
-#endif
-
 #define TOP_X 0 + LAPTOP_SCREEN_UL_X
 #define TOP_Y LAPTOP_SCREEN_UL_Y
 #define BLOCK_FILE_HEIGHT 10

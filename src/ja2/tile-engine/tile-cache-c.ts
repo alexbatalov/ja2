@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "tiledef.h"
-#include "Animation Cache.h"
-#include "Animation Data.h"
-#include "Animation Control.h"
-#include "sys globals.h"
-#include "Debug Control.h"
-#include "tile surface.h"
-#include "tile cache.h"
-#include "fileman.h"
-#endif
-
 UINT32 guiNumTileCacheStructs = 0;
 UINT32 guiMaxTileCacheSize = 50;
 UINT32 guiCurTileCacheSize = 0;

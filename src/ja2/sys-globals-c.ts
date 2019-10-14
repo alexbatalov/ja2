@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#else
-#include <stdarg.h>
-#include <stdio.h>
-#include <wchar.h>
-#include "types.h"
-#include "screenids.h"
-#include "Sys Globals.h"
-#include "gameloop.h"
-#endif
-
 // External globals
 UINT8 gubFilename[200];
 BOOLEAN gfEditMode = FALSE;

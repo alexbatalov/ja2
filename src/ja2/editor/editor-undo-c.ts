@@ -1,25 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include "worlddef.h"
-#include "worldman.h"
-#include "smooth.h"
-#include "input.h"
-#include "debug.h"
-#include "Isometric Utils.h"
-
-#include "editscreen.h"
-#include "Editor Undo.h"
-#include "Render Fun.h" //for access to gubWorldRoomInfo;
-#include "Cursor Modes.h"
-#include "Exit Grids.h"
-#endif
 
 /*
 Kris -- Notes on how the undo code works:

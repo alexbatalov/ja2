@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "PreBattle Interface.h"
-#else
-#include "Soldier Control.h"
-#include "Militia Control.h"
-#include "Town Militia.h"
-#include "Soldier Init List.h"
-#include "Campaign Types.h"
-#include "Overhead.h"
-#include "strategicmap.h"
-#include "PreBattle Interface.h"
-#endif
-
 BOOLEAN gfStrategicMilitiaChangesMade = FALSE;
 
 void ResetMilitia() {

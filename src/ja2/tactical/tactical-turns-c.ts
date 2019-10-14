@@ -1,35 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "Game Clock.h"
-#include "Font Control.h"
-#include "render dirty.h"
-#include "Timer Control.h"
-#include "overhead.h"
-#include "environment.h"
-#include "Game Clock.h"
-#include "message.h"
-#include "worlddef.h"
-#include "rotting corpses.h"
-#include "soldier create.h"
-#include "soldier add.h"
-#include "strategic turns.h"
-#include "isometric utils.h"
-#include "animation data.h"
-#include "animation control.h"
-#include "Tactical Turns.h"
-#include "points.h"
-#include "smell.h"
-#include "opplist.h"
-#include "Queen Command.h"
-#include "dialogue control.h"
-#include "smokeeffects.h"
-#include "lighteffects.h"
-#include "campaign.h"
-#include "Soldier macros.h"
-#endif
-
 extern void DecayPublicOpplist(INT8 bTeam);
 
 // not in overhead.h!

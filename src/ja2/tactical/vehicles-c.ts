@@ -1,36 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "Vehicles.h"
-#include "String.h"
-#include "Strategic Pathing.h"
-#include "Assignments.h"
-#include "Strategic Movement.h"
-#include "Squads.h"
-#include "Map Screen Helicopter.h"
-#include "Game Clock.h"
-#include "overhead.h"
-#include "soldier profile.h"
-#include "sound control.h"
-#include "soundman.h"
-#include "soldier add.h"
-#include "interface panels.h"
-#include "strategic.h"
-#include "worlddef.h"
-#include "tile animation.h"
-#include "Isometric Utils.h"
-#include "Mapscreen.h"
-#include "message.h"
-#include "interface.h"
-#include "Random.h"
-#include "text.h"
-#include "explosion control.h"
-#include "soldier create.h"
-#include "animation control.h"
-#include "strategicmap.h"
-#include "Interface Control.h"
-#endif
-
 INT8 gubVehicleMovementGroups[MAX_VEHICLES];
 
 // the list of vehicles

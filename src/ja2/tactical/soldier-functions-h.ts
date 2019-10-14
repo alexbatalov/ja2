@@ -1,8 +1,6 @@
 #ifndef _SOLDIER_FUNCTIONS_H
 #define _SOLDIER_FUNCTIONS_H
 
-#include "soldier control.h"
-
 void ContinueMercMovement(SOLDIERTYPE *pSoldier);
 
 BOOLEAN IsValidStance(SOLDIERTYPE *pSoldier, INT8 bNewStance);

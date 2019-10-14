@@ -1,12 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "Language Defines.h"
-#include "text.h"
-#include "Fileman.h"
-#include "JA2 Demo Ads.h"
-#endif
-
 BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString) {
   HWFILE hFile;
   UINT32 uiBytesRead;

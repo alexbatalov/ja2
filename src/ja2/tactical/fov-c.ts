@@ -1,31 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "Isometric Utils.h"
-#include "worlddef.h"
-#include "render fun.h"
-#include "renderworld.h"
-#include "dialogue control.h"
-#include "structure wrap.h"
-#include "font control.h"
-#include "pathai.h"
-#include "overhead.h"
-#include "smell.h"
-#include "fov.h"
-#include "rotting corpses.h"
-#include "keys.h"
-#include "english.h"
-#include "Random.h"
-#include "input.h"
-#include "exit grids.h"
-#include "environment.h"
-#include "worldman.h"
-#include "Fog Of War.h"
-#include "Strategicmap.h"
-#include "boxing.h"
-#endif
-
 /* view directions */
 #define DLEFT 0
 #define DRIGHT 1

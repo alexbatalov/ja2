@@ -1,9 +1,6 @@
 #ifndef __MAPSCREEN_H
 #define __MAPSCREEN_H
 
-#include "Types.h"
-#include "Soldier Control.h"
-
 #define MAP_WORLD_X 18
 #define MAP_WORLD_Y 18
 

@@ -1,33 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "worlddef.h"
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "time.h"
-#include "video.h"
-#include "debug.h"
-#include "smooth.h"
-#include "worldman.h"
-#include "lighting.h"
-#include "renderworld.h"
-#include "overhead.h"
-#include "ai.h"
-#include "Sound Control.h"
-#include "animation control.h"
-#include "isometric utils.h"
-#include "Font Control.h"
-#include "message.h"
-#include "tile animation.h"
-#include "tile cache.h"
-#include "explosion control.h"
-#include "weapons.h"
-#include "Keys.h"
-#include "bullets.h"
-#endif
-
 ANITILE *pAniTileHead = NULL;
 
 ANITILE *CreateAnimationTile(ANITILE_PARAMS *pAniParams) {

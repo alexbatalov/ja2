@@ -1,33 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "types.h"
-#include "fileman.h"
-#include "himage.h"
-#include "Creature Spreading.h"
-#include "Campaign Types.h"
-#include "Strategic Movement.h"
-#include "Game Event Hook.h"
-#include "GameSettings.h"
-#include "Random.h"
-#include "message.h"
-#include "Font Control.h"
-#include "Soldier Init List.h"
-#include "lighting.h"
-#include "strategicmap.h"
-#include "Game Clock.h"
-#include "Strategic Mines.h"
-#include "Music Control.h"
-#include "strategic.h"
-#include "jascreens.h"
-#include "Town Militia.h"
-#include "Strategic Town Loyalty.h"
-#include "PreBattle Interface.h"
-#include "Map Edgepoints.h"
-#include "Animation Data.h"
-#include "opplist.h"
-#endif
-
 #ifdef JA2BETAVERSION
 BOOLEAN gfClearCreatureQuest = FALSE;
 extern UINT32 uiMeanWhileFlags;

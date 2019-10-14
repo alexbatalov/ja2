@@ -1,16 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "AimPolicies.h"
-#include "aim.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Encrypted File.h"
-#include "Text.h"
-#endif
-
 #define NUM_AIM_POLICY_PAGES 11
 #define NUM_AIM_POLICY_TOC_BUTTONS 9
 #define AIMPOLICYFILE "BINARYDATA\\AimPol.edt"

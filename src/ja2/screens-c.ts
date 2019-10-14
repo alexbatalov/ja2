@@ -1,9 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#else
-#include "Screens.h"
-#endif
-
 Screens GameScreens[MAX_SCREENS] = {
   { EditScreenInit, EditScreenHandle, EditScreenShutdown },
   { SavingScreenInitialize, SavingScreenHandle, SavingScreenShutdown }, // Title Screen

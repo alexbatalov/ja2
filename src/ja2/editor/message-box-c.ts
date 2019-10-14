@@ -1,20 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include "vobject.h"
-#include "video.h"
-#include "font.h"
-#include "Font Control.h"
-#include "messagebox.h"
-#include "input.h"
-#include "english.h"
-#endif
 
 // internal variables.
 INT32 iMsgBoxNum;

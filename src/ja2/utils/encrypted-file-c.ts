@@ -1,13 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "Encrypted File.h"
-#include "FileMan.h"
-#include "Debug.h"
-#endif
-
-#include "Language Defines.h"
-
 BOOLEAN LoadEncryptedDataFromFile(STR pFileName, STR16 pDestString, UINT32 uiSeekFrom, UINT32 uiSeekAmount) {
   HWFILE hFile;
   UINT16 i;

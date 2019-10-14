@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <String.h>
-#include "Strategic Mines.h"
-#include "Finances.h"
-#include "Strategic Town Loyalty.h"
-#include "strategic.h"
-#include "Game Clock.h"
-#include "strategicmap.h"
-#include "Random.h"
-#include "Soldier Profile.h"
-#include "Dialogue Control.h"
-#include "Map Screen Interface.h"
-#include "Quests.h"
-#include "Creature Spreading.h"
-#include "message.h"
-#include "Text.h"
-#include "Game Event Hook.h"
-#endif
-
 // this .c file will handle the strategic level of mines and income from them
 
 #define REMOVAL_RATE_INCREMENT 250 // the smallest increment by which removal rate change during depletion (use round #s)

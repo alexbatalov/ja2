@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "Types.h"
-#include "SaveLoadMap.h"
-#include "OverHead.h"
-#include "FileMan.h"
-#include "Tactical Save.h"
-#include "Debug.h"
-#include "WorldMan.h"
-#include "StrategicMap.h"
-#include "Campaign Types.h"
-#include "RenderWorld.h"
-#include "Render Fun.h"
-#include "fov.h"
-#include "WorldDef.h"
-#include "Exit Grids.h"
-#include "Message.h"
-#include "GameSettings.h"
-#endif
-
 #define NUM_REVEALED_BYTES 3200
 
 extern BOOLEAN gfLoadingExitGrids;

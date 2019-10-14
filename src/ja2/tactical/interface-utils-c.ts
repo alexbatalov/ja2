@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <stdarg.h>
-#include "sgp.h"
-#include "himage.h"
-#include "vobject.h"
-#include "interface utils.h"
-#include "render dirty.h"
-#include "interface.h"
-#include "interface control.h"
-#include "sysutil.h"
-#include "faces.h"
-#include "render dirty.h"
-#include "weapons.h"
-#include "Overhead.h"
-#include "Soldier macros.h"
-#include "line.h"
-#endif
-
 #define LIFE_BAR_SHADOW FROMRGB(108, 12, 12)
 #define LIFE_BAR FROMRGB(200, 0, 0)
 #define BANDAGE_BAR_SHADOW FROMRGB(156, 60, 60)

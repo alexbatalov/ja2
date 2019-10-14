@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <memory.h>
-#include "Strategic Status.h"
-#include "Inventory Choosing.h"
-#include "FileMan.h"
-#include "Soldier Profile.h"
-#include "Campaign.h"
-#include "Strategic Mines.h"
-#include "email.h"
-#include "Game Clock.h"
-#endif
-
 STRATEGIC_STATUS gStrategicStatus;
 
 void InitStrategicStatus(void) {

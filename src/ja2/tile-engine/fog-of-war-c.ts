@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "types.h"
-#include "Fog Of War.h"
-#include "Isometric Utils.h"
-#include "worldman.h"
-#include "Simple Render Utils.h"
-#include "Renderworld.h"
-#include "lighting.h"
-#endif
-
 // When line of sight reaches a gridno, and there is a light there, it turns it on.
 // This is only done in the cave levels.
 void RemoveFogFromGridNo(UINT32 uiGridNo) {

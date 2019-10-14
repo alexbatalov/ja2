@@ -19,22 +19,6 @@
 //				 this crap.  DON'T USE THIS -- NO MATTER WHAT!!!
 //*****************************************************************************
 
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "types.h"
-#include <stdlib.h>
-#include <malloc.h>
-#include <stdio.h>
-#include "windows.h"
-#include "MemMan.h"
-#include "Debug.h"
-#include "Container.h"
-#include <iostream.h>
-#endif
-
 //*****************************************************************************
 //
 // Defines and typedefs

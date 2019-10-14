@@ -1,9 +1,6 @@
 #ifndef __PERSONNEL_H
 #define __PERSONNEL_H
 
-#include "Types.h"
-#include "Soldier Control.h"
-
 // delay for change in ATM mode
 #define DELAY_PER_MODE_CHANGE_IN_ATM 2000
 

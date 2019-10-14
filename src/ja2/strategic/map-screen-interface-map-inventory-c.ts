@@ -1,33 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Map Screen Interface Map Inventory.h"
-#include "Render Dirty.h"
-#include "vobject.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "sysutil.h"
-#include "Map Screen Interface Border.h"
-#include "Map Screen Interface.h"
-#include "Map Screen Interface Map.h"
-#include "Items.h"
-#include "Interface Items.h"
-#include "Cursor Control.h"
-#include "Interface Utils.h"
-#include "Text.h"
-#include "Font Control.h"
-#include "strategicmap.h"
-#include "World Items.h"
-#include "Tactical Save.h"
-#include "Soldier Control.h"
-#include "Overhead.h"
-#include "english.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
-#include "ShopKeeper Interface.h"
-#include "ArmsDealerInvInit.h"
-
 extern BOOLEAN SaveWorldItemsToTempItemFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems, WORLDITEM *pData);
 
 // status bar colors

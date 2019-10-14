@@ -1,8 +1,6 @@
 #ifndef __AIM_H
 #define __AIM_H
 
-#include "Cursors.h"
-
 //
 // AIM defines
 //

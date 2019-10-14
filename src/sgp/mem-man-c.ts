@@ -18,24 +18,6 @@
 //
 //**************************************************************************
 
-//#ifdef JA2_PRECOMPILED_HEADERS
-//	#include "JA2 SGP ALL.H"
-//#elif defined( WIZ8_PRECOMPILED_HEADERS )
-//	#include "WIZ8 SGP ALL.H"
-//#else
-#include "types.h"
-#include <windows.h>
-#include <malloc.h>
-#include <stdlib.h>
-#include <string.h>
-#include "MemMan.h"
-#include "Debug.h"
-#include <stdio.h>
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif
-//#endif
-
 //**************************************************************************
 //
 //				Variables
@@ -43,8 +25,6 @@
 //**************************************************************************
 
 #ifdef JA2
-#include "mousesystem.h"
-#include "MessageBoxScreen.h"
 STR16 gzJA2ScreenNames[] = {
   L"EDIT_SCREEN",
   L"SAVING_SCREEN",

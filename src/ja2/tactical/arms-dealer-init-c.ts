@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "Types.h"
-#include "stdlib.h"
-#include "Arms Dealer Init.h"
-#include "String.h"
-#include "Debug.h"
-#include "Random.h"
-#include "Weapons.h"
-#include "FileMan.h"
-#include "Game Clock.h"
-#include "ArmsDealerInvInit.h"
-#include "Message.h"
-#include "soldier profile.h"
-#include "Handle Items.h"
-#endif
-
 // To reduce memory fragmentation from frequent MemRealloc(), we allocate memory for more than one special slot each
 // time we run out of space.  Odds are that if we need one, we'll need another soon.
 #define SPECIAL_ITEMS_ALLOCED_AT_ONCE 3

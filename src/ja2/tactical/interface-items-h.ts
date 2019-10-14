@@ -1,9 +1,6 @@
 #ifndef __INTERFACE_ITEMS_H
 #define __INTERFACE_ITEMS_H
 
-#include "items.h"
-#include "Handle Items.h"
-
 // DEFINES FOR ITEM SLOT SIZES IN PIXELS
 #define BIG_INV_SLOT_WIDTH 61
 #define BIG_INV_SLOT_HEIGHT 22

@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include <wchar.h>
-#include "worlddat.h"
-#include "worlddef.h"
-#include "tiledef.h"
-#include "sys globals.h"
-#include "tile surface.h"
-#include "fileMan.h"
-#endif
-
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 
 void SetTilesetThreeTerrainValues();

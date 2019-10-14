@@ -1,29 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "sgp.h"
 #ifdef JA2EDITOR
-#include "Screens.h"
-#include "Maputility.h"
-#include "worlddef.h"
-#include "overhead.h"
-#include "fileman.h"
-#include "loadscreen.h"
-#include "overhead map.h"
-#include "radar screen.h"
-#include "vobject_blitters.h"
-#include "sticonvert.h"
-#include "font control.h"
-#include "worlddat.h"
-#include "english.h"
-#include "map information.h"
-#include "line.h"
-#endif
-#endif
-
-#ifdef JA2EDITOR
-
-#include "quantize wrap.h"
 
 #define MINIMAP_X_SIZE 88
 #define MINIMAP_Y_SIZE 44
@@ -309,9 +284,6 @@ UINT32 MapUtilScreenShutdown() {
 }
 
 #else // non-editor version
-
-#include "types.h"
-#include "screenids.h"
 
 UINT32 MapUtilScreenInit() {
   return TRUE;

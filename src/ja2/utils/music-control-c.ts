@@ -1,20 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "types.h"
-#include "Music Control.h"
-#include "soundman.h"
-#include "Random.h"
-#include "gamescreen.h"
-#include "jascreens.h"
-#include "Creature Spreading.h"
-#include "soldier control.h"
-#include "overhead.h"
-#include "timer control.h"
-#include "strategicmap.h"
-#include "fade screen.h"
-#endif
-
 UINT32 uiMusicHandle = NO_SAMPLE;
 UINT32 uiMusicVolume = 50;
 BOOLEAN fMusicPlaying = FALSE;

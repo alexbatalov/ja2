@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "aim.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "timer control.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Encrypted File.h"
-#include "email.h"
-#include "Game Clock.h"
-#include "Text.h"
-#include "LaptopSave.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
 UINT8 AimMercArray[MAX_NUMBER_MERCS];
 
 UINT8 gCurrentAimPage[NUM_AIM_SCREENS] = {

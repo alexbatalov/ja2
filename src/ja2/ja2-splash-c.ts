@@ -1,9 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#else
-// add includes here!
-#endif
-
 UINT32 guiSplashFrameFade = 10;
 UINT32 guiSplashStartTime = 0;
 extern HVSURFACE ghFrameBuffer;

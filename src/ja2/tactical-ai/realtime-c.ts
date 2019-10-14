@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "ai.h"
-#include "AIInternals.h"
-#include "Isometric utils.h"
-#include "Points.h"
-#include "overhead.h"
-#include "opplist.h"
-#include "rotting corpses.h"
-#include "soldier add.h"
-#include "Soldier Profile Type.h"
-#include "Items.h"
-#include "Weapons.h"
-#endif
-
 INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
   INT8 bAction = AI_ACTION_NONE;
 

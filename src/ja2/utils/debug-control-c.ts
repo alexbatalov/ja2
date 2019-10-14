@@ -1,11 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "types.h"
-#include "Debug Control.h"
-#include "stdio.h"
-#endif
-
 #ifdef _ANIMSUBSYSTEM_DEBUG
 
 void AnimDbgMessage(CHAR8 *strMessage) {

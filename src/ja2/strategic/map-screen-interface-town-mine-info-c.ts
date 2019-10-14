@@ -1,31 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#include "HelpScreen.h"
-#else
-#include "Map Screen Interface TownMine Info.h"
-#include "strategicmap.h"
-#include "popupbox.h"
-#include "Map Screen Interface.h"
-#include "Queen Command.h"
-#include "Player Command.h"
-#include "Font Control.h"
-#include "Font.h"
-#include "Text.h"
-#include "Map Screen Interface Map.h"
-#include "Map Screen Interface Border.h"
-#include "Handle UI.h"
-#include "NPC.h"
-#include "Strategic Town Loyalty.h"
-#include "Strategic Mines.h"
-#include "finances.h"
-#include "Map Screen Interface Map Inventory.h"
-#include "Strategic.h"
-#include "Utilities.h"
-#include "video.h"
-#include "Town Militia.h"
-#include "HelpScreen.h"
-#endif
-
 #define BOX_BUTTON_WIDTH 100
 #define BOX_BUTTON_HEIGHT 20
 

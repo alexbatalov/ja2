@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "edit_sys.h"
-#else
-#include <stdio.h>
-#include "fileMan.h"
-#include "types.h"
-#include "Map Information.h"
-#include "Soldier Init List.h"
-#include "Random.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "renderworld.h"
-#include "EditorMercs.h"
-#include "Exit Grids.h"
-#include "Isometric Utils.h"
-#include "ja2.h"
-#include "Animation Data.h"
-#include "Road Smoothing.h"
-#include "sys globals.h"
-#include "message.h"
-#include "weapons.h"
-#endif
-
 // Don't mess with this value, unless you want to force update all maps in the game!
 #ifdef RUSSIAN
 #define MAJOR_MAP_VERSION 6.00
@@ -255,8 +231,6 @@ void ValidateAndUpdateMapVersionIfNecessary() {
 }
 
 #ifdef JA2EDITOR
-#include "Exit Grids.h"
-#include "Summary Info.h"
 // This function is used to avoid conflicts between minor version updates and sector summary info.
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.

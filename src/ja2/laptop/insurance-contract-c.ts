@@ -1,31 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "insurance.h"
-#include "insurance Contract.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Insurance Text.h"
-#include "stdio.h"
-#include "Soldier Profile.h"
-#include "Overhead.h"
-#include "Text Input.h"
-#include "Soldier Add.h"
-#include "Game Clock.h"
-#include "finances.h"
-#include "History.h"
-#include "Game Event Hook.h"
-#include "LaptopSave.h"
-#include "english.h"
-#include "Text.h"
-#include "Random.h"
-#include "Strategic Status.h"
-#include "Assignments.h"
-#endif
-
 #define INS_CTRCT_ORDER_GRID_WIDTH 132
 #define INS_CTRCT_ORDER_GRID_HEIGHT 216
 #define INS_CTRCT_ORDER_GRID_OFFSET_X INS_CTRCT_ORDER_GRID_WIDTH + 2

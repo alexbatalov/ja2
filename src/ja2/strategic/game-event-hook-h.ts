@@ -1,8 +1,6 @@
 #ifndef __GAME_EVENT_HOOK_H
 #define __GAME_EVENT_HOOK_H
 
-#include "types.h"
-
 enum {
   EVENT_CHANGELIGHTVAL = 1,
   EVENT_WEATHERSTART,

@@ -1,35 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "HelpScreen.h"
-#include "Prebattle Interface.h"
-#else
-#include <stdio.h>
-#include "sgp.h"
-#include "Gameloop.h"
-#include "Screens.h"
-#include "Wcheck.h"
-#include "cursors.h"
-#include "init.h"
-#include "music control.h"
-#include "sys globals.h"
-#include "laptop.h"
-#include "mapscreen.h"
-#include "Game Clock.h"
-#include "Timer Control.h"
-#include "overhead.h"
-#include "LibraryDataBase.h"
-#include "Map Screen Interface.h"
-#include "Tactical Save.h"
-#include "Interface.h"
-#include "GameSettings.h"
-#include "mapscreen.h"
-#include "Interface Control.h"
-#include "fade screen.h"
-#include "JA2 Demo Ads.h"
-#include "text.h"
-#include "HelpScreen.h"
-#endif
-
 UINT32 guiCurrentScreen;
 UINT32 guiPendingScreen = NO_PENDING_SCREEN;
 UINT32 guiPreviousScreen = NO_PENDING_SCREEN;

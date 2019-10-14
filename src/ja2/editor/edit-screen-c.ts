@@ -1,78 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include "sgp.h"
-#include "vobject.h"
-#include "worlddef.h"
-#include "renderworld.h"
-#include "input.h"
-#include "smooth.h"
-#include "worldman.h"
-#include "edit_sys.h"
-#include "screenids.h"
-#include "editscreen.h"
-#include "sys globals.h"
-#include "SmartMethod.h"
-#include "selectwin.h"
-#include "Interface.h"
-#include "lighting.h"
-#include "Interactive Tiles.h"
-#include "overhead types.h"
-#include "Overhead.h"
-#include "Soldier Control.h"
-#include "Handle UI.h"
-#include "Event Pump.h"
-#include "world items.h"
-#include "loadscreen.h"
-#include "render dirty.h"
-#include "isometric utils.h"
-#include "message.h"
-#include "render fun.h"
-#include "popupmenu.h"
-#include "overhead map.h"
-#include "EditorDefines.h"
-#include "EditorTerrain.h"
-#include "EditorBuildings.h"
-#include "EditorItems.h"
-#include "EditorMercs.h"
-#include "EditorMapInfo.h"
-#include "newsmooth.h"
-#include "Smoothing Utils.h"
-#include "messagebox.h"
-#include "Soldier Create.h"
-#include "Soldier Init List.h"
-#include "Text Input.h"
-#include "Cursor Modes.h"
-#include "Editor Taskbar Utils.h"
-#include "Editor Modes.h"
-#include "Editor Undo.h"
-#include "Exit Grids.h"
-#include "Item Statistics.h"
-#include "Map Information.h"
-#include "Sector Summary.h"
-#include "Game Clock.h"
-#include "Game Init.h"
-#include "environment.h"
-#include "Simple Render Utils.h"
-#include "Map Edgepoints.h"
-#include "line.h"
-#include "english.h"
-#include "random.h"
-#include "scheduling.h"
-#include "Road Smoothing.h"
-#include "strategicmap.h"
-#include "message.h"
-#include "pits.h"
-#include "Inventory Choosing.h"
-#include "Music Control.h"
-#include "Soldier Profile.h"
-#endif
 
 extern CHAR8 *szMusicList[NUM_MUSIC];
 
@@ -3499,9 +3425,6 @@ void ReloadMap() {
 }
 
 #else // non-editor version
-
-#include "types.h"
-#include "screenids.h"
 
 UINT32 EditScreenInit() {
   return TRUE;

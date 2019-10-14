@@ -1,33 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <stdio.h>
-#include <stdarg.h>
-#include <time.h>
-#include "types.h"
-#include "worlddef.h"
-#include "sgp.h"
-#include "strategic.h"
-#include "mapscreen.h"
-#include "overhead.h"
-#include "interface panels.h"
-#include "worldman.h"
-#include "strategicmap.h"
-#include "Strategic Pathing.h"
-#include "Map Screen Interface Border.h"
-#include "Game Clock.h"
-#include "Strategic Movement.h"
-#include "Campaign Types.h"
-#include "Assignments.h"
-#include "Squads.h"
-#include "Vehicles.h"
-#include "Map Screen Helicopter.h"
-#include "input.h"
-#include "english.h"
-#include "Map Screen Interface.h"
-#include "Game Event Hook.h"
-#endif
-
 void AddSectorToFrontOfMercPath(PathStPtr *ppMercPath, UINT8 ubSectorX, UINT8 ubSectorY);
 
 // mvt modifier

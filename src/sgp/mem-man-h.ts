@@ -19,8 +19,6 @@
 //
 //**************************************************************************
 
-#include "types.h"
-
 //**************************************************************************
 //
 //				Defines
@@ -76,8 +74,6 @@ extern PTR MemAllocReal(UINT32 size, const char *, INT32);
 extern void MemFreeReal(PTR ptr, const char *, INT32);
 extern PTR MemReallocReal(PTR ptr, UINT32 size, const char *, INT32);
 #else
-// Release build verison
-#include <malloc.h>
 #define MemAlloc(size) malloc((size))
 #define MemFree(ptr) free((ptr))
 #define MemRealloc(ptr, size) realloc((ptr), (size))

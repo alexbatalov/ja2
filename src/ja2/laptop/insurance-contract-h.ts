@@ -1,8 +1,6 @@
 #ifndef __INSURANCE_CONTRACT_H
 #define __INSURANCE_CONTRACT_H
 
-#include "Soldier Control.h"
-
 void GameInitInsuranceContract();
 BOOLEAN EnterInsuranceContract();
 void ExitInsuranceContract();

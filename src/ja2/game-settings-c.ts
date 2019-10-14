@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "HelpScreen.h"
-#include "Campaign.h"
-#include "Cheats.h"
-#else
-#include "Types.h"
-#include "GameSettings.h"
-#include "FileMan.h"
-#include "String.h"
-#include "Sound Control.h"
-#include "SaveLoadScreen.h"
-#include "Music Control.h"
-#include "Options Screen.h"
-#include "Overhead.h"
-#include "GameVersion.h"
-#include "LibraryDataBase.h"
-#include "Debug.h"
-#include "Language Defines.h"
-#include "HelpScreen.h"
-#endif
-
-#include "Text.h"
-
 #define GAME_SETTINGS_FILE "..\\Ja2.set"
 
 #define GAME_INI_FILE "..\\Ja2.ini"

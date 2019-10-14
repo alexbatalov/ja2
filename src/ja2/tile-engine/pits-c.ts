@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "types.h"
-#include "pits.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "Simple Render Utils.h"
-#include "World Items.h"
-#include "SaveLoadMap.h"
-#include "Exit Grids.h"
-#include "Sys Globals.h"
-#include "strategicmap.h"
-#include "Isometric Utils.h"
-#include "overhead.h"
-#include "Sound Control.h"
-#include "animation control.h"
-#include "strategic.h"
-#include "Action Items.h"
-#endif
-
 // used by editor
 BOOLEAN gfShowPits = FALSE;
 

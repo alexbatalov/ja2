@@ -1,9 +1,6 @@
 #ifndef _QUEST_DEBUG_SYSTEM_H_
 #define _QUEST_DEBUG_SYSTEM_H_
 
-#include "Soldier Control.h"
-#include "NPC.h"
-
 extern BOOLEAN gfNpcLogButton;
 extern INT16 gsQdsEnteringGridNo;
 

@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "sgp.h"
-#include "Game Clock.h"
-#include "Font Control.h"
-#include "render dirty.h"
-#include "Timer Control.h"
-#include "overhead.h"
-#include "environment.h"
-#include "Game Clock.h"
-#include "message.h"
-#include "Game Events.h"
-#include "assignments.h"
-#include "MercTextBox.h"
-#include "Renderworld.h"
-#include "Lighting.h"
-#include "Map Screen Interface.h"
-#include "PreBattle Interface.h"
-#include "Event Pump.h"
-#include "Text.h"
-#include "Interface Control.h"
-#endif
-
 //#define DEBUG_GAME_CLOCK
 
 extern BOOLEAN gfFadeOut;

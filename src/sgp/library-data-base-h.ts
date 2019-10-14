@@ -1,10 +1,6 @@
 #ifndef _LIBRARY_DATABASE_H
 #define _LIBRARY_DATABASE_H
 
-#include "Types.h"
-#include "windows.h"
-#include "FileMan.h"
-
 #define FILENAME_SIZE 256
 
 //#define	FILENAME_SIZE									40 + PATH_SIZE
@@ -33,12 +29,10 @@ typedef struct {
 } LibraryInitHeader;
 
 #ifdef JA2
-#include "Ja2 Libs.h"
 #elif UTIL
 #define NUMBER_OF_LIBRARIES 0
 typedef FILETIME SGP_FILETIME;
 #else // wizardry
-#include "WizLibs.h"
 #endif
 
 extern LibraryInitHeader gGameLibaries[];

@@ -1,12 +1,6 @@
 #ifndef __TACTICAL_SAVE_H_
 #define __TACTICAL_SAVE_H_
 
-#include "World Items.h"
-#include "WorldDef.h"
-#include "rotting corpses.h"
-
-#include "Soldier Profile Type.h"
-
 #define MAPS_DIR "Temp\\"
 
 // Defines used for the bUseMercGridNoPlacement contained in the the merc profile struct

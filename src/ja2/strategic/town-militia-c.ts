@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Town Militia.h"
-#include "Militia Control.h"
-#include "Campaign Types.h"
-#include "strategic.h"
-#include "strategicmap.h"
-#include "Overhead.h"
-#include "Strategic Town Loyalty.h"
-#include "Utilities.h"
-#include "random.h"
-#include "text.h"
-#include "Map Screen Interface.h"
-#include "Interface.h"
-#include "Laptopsave.h"
-#include "finances.h"
-#include "Game Clock.h"
-#include "Assignments.h"
-#include "squads.h"
-#include "Soldier Create.h"
-#include "Dialogue Control.h"
-#endif
-
 #define SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST 50
 
 // temporary local global variables

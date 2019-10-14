@@ -3,11 +3,6 @@
 
 // header for assignment manipulation/updating for characters
 
-#include "Types.h"
-#include "Soldier Control.h"
-#include "mousesystem.h"
-#include "Strategic Movement.h"
-
 // this distinguishes whether we're only looking for patients healable THIS HOUR (those that have been on their assignment
 // long enough), or those that will be healable EVER (regardless of whether they're getting healed during this hour)
 #define HEALABLE_EVER 0

@@ -1,27 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#include "strategic status.h"
-#else
-#include "ai.h"
-#include "AIInternals.h"
-#include "Isometric utils.h"
-#include "Points.h"
-#include "overhead.h"
-#include "opplist.h"
-#include "items.h"
-#include "Weapons.h"
-#include "NPC.h"
-#include "Soldier Functions.h"
-#include "worldman.h"
-#include "Scheduling.h"
-#include "Message.h"
-#include "Structure Wrap.h"
-#include "Keys.h"
-#include "pathai.h"
-#include "Render Fun.h"
-#include "Boxing.h"
-#endif
-
 extern BOOLEAN InternalIsValidStance(SOLDIERTYPE *pSoldier, INT8 bDirection, INT8 bNewStance);
 extern BOOLEAN gfHiddenInterrupt;
 extern BOOLEAN gfUseAlternateQueenPosition;

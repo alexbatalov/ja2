@@ -1,10 +1,6 @@
 #ifndef __PHYS_MATH_H
 #define __PHYS_MATH_H
 
-// explicit dependencies
-#include <math.h> // for sqrt
-#include <float.h>
-
 typedef float real;
 
 #define REAL_MAX FLT_MAX

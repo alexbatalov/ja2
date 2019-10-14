@@ -1,23 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#include "resource.h"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "types.h"
-#include "Video.h"
-#include "vobject_blitters.h"
-#include "sgp.h"
-#include <stdio.h>
-#include "renderworld.h"
-#include "Render Dirty.h"
-#include "Isometric utils.h"
-#include "fade screen.h"
-#include "impTGA.h"
-#include "timer control.h"
-#include "Fileman.h"
-#endif
-
 #ifndef _MT
 #define _MT
 #endif

@@ -1,8 +1,6 @@
 #ifndef __MS_I_TOWNMINE_INFO_H
 #define __MS_I_TOWNMINE_INFO_H
 
-#include "Types.h"
-
 extern BOOLEAN fShowTownInfo;
 
 // display the box

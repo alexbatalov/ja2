@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "mercs No Account.h"
-#include "mercs.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "LaptopSave.h"
-#include "Random.h"
-#include "Text.h"
-#include "Speck Quotes.h"
-#endif
-
 #define MERC_NA_TEXT_FONT FONT12ARIAL
 #define MERC_NA_TEXT_COLOR FONT_MCOLOR_WHITE
 

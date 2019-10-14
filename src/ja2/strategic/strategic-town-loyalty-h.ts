@@ -1,10 +1,6 @@
 #ifndef __STRATEGIC_TOWN_LOYALTY_H
 #define __STRATEGIC_TOWN_LOYALTY_H
 
-#include "Types.h"
-#include "mapscreen.h"
-#include "Soldier Control.h"
-
 // gain pts per real loyalty pt
 #define GAIN_PTS_PER_LOYALTY_PT 500
 

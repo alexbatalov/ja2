@@ -1,11 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef __EDITORDEFINES_H
 #define __EDITORDEFINES_H
-
-#include "types.h"
-#include "Button Defines.h"
 
 enum {
   TBAR_MODE_NONE,

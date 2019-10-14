@@ -1,9 +1,6 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include "mapscreen.h"
-#include "FileMan.h"
-
 #define NUM_NPC_QUOTE_RECORDS 50
 
 //#define IRRELEVANT 255

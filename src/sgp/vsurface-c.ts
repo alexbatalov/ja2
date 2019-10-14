@@ -1,25 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "DirectDraw Calls.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "debug.h"
-#if defined(JA2) || defined(UTIL)
-#include "video.h"
-#else
-#include "video2.h"
-#endif
-#include "himage.h"
-#include "vsurface.h"
-#include "vsurface_private.h"
-#include "video_private.h"
-#include "wcheck.h"
-#include "vobject_blitters.h"
-#endif
-
 extern void SetClippingRect(SGPRect *clip);
 extern void GetClippingRect(SGPRect *clip);
 

@@ -1,48 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <stdio.h>
-#include "Font Control.h"
-#include "renderworld.h"
-#include "render dirty.h"
-#include "loadscreen.h"
-#include "selectwin.h"
-#include "EditorDefines.h"
-#include "messagebox.h"
-#include "Text Input.h"
-#include "Soldier Create.h"
-#include "Soldier Init List.h"
-#include "EditorBuildings.h"
-#include "Editor Taskbar Utils.h"
-#include "Editor Undo.h"
-#include "editscreen.h"
-#include "strategicmap.h"
-#include "Editor Modes.h"
-#include "Map Information.h"
-#include "Sys Globals.h"
-#include "Sector Summary.h"
-#include "newsmooth.h"
-#include "Simple Render Utils.h"
-#include "Animated ProgressBar.h"
-#include "EditorMercs.h"
-#include "lighting.h"
-#include "EditorMapInfo.h"
-#include "environment.h"
-#include "edit_sys.h"
-#include "EditorItems.h"
-#include "english.h"
-#include "gameloop.h"
-#include "message.h"
-#include "pits.h"
-#include "Item Statistics.h"
-#include "Scheduling.h"
-#endif
 
 //===========================================================================
 
@@ -1015,9 +971,6 @@ BOOLEAN ExternalSaveMap(UINT16 *szFilename) {
 }
 
 #else // non-editor version
-
-#include "types.h"
-#include "screenids.h"
 
 UINT32 LoadSaveScreenInit() {
   return TRUE;

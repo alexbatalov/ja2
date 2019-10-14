@@ -1,34 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "sgp.h"
-#include "message.h"
-#include "quests.h"
-#include "game clock.h"
-#include "StrategicMap.h"
-#include "soldier profile.h"
-#include "LaptopSave.h"
-#include "Handle Items.h"
-#include "overhead.h"
-#include "Interface Dialogue.h"
-#include "Soldier Profile.h"
-#include "Isometric Utils.h"
-#include "Render Fun.h"
-#include "History.h"
-#include "Map Screen Helicopter.h"
-#include "Overhead.h"
-#include "Strategic Mines.h"
-#include "Boxing.h"
-#include "Campaign Types.h"
-#include "Strategic Town Loyalty.h"
-#include "Queen Command.h"
-#include "Campaign.h"
-#include "GameSettings.h"
-#include "Arms Dealer Init.h"
-#endif
-
-#include "BobbyRMailOrder.h"
-
 #define TESTQUESTS
 
 extern SOLDIERTYPE *gpSrcSoldier;

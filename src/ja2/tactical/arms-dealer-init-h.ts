@@ -1,8 +1,6 @@
 #ifndef _ARMS_DEALERS_INIT__H_
 #define _ARMS_DEALERS_INIT__H_
 
-#include "Store Inventory.h"
-
 // enums for the various arms dealers
 enum {
   ARMS_DEALER_TONY,

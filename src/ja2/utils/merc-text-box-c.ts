@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "MercTextBox.h"
-#include "WCheck.h"
-#include "renderworld.h"
-#include "Font Control.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "vobject_blitters.h"
-#include "Render Dirty.h"
-#include "Message.h"
-#endif
-
 #define TEXT_POPUP_WINDOW_TEXT_OFFSET_X 8
 #define TEXT_POPUP_WINDOW_TEXT_OFFSET_Y 8
 #define TEXT_POPUP_STRING_WIDTH 296

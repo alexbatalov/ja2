@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Personality Finish.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Timer Control.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Text System.h"
-#include "IMP Compile Character.h"
-#endif
-
 // this is the amount of time, the player waits until booted back to main profileing screen
 
 UINT8 bPersonalityEndState = 0;

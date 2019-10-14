@@ -1,32 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "items.h"
-#include "weapons.h"
-#include "Interface Cursors.h"
-#include "Soldier Control.h"
-#include "overhead.h"
-#include "Handle UI.h"
-#include "Animation Control.h"
-#include "points.h"
-#include "Sound Control.h"
-#include "Sys globals.h"
-#include "Isometric Utils.h"
-#include "Animation Data.h"
-#include "worldman.h"
-#include "ui cursors.h"
-#include "los.h"
-#include "renderworld.h"
-#include "interface.h"
-#include "ui cursors.h"
-#include "cursors.h"
-#include "cursor control.h"
-#include "structure wrap.h"
-#include "physics.h"
-#include "soldier macros.h"
-#include "text.h"
-#endif
-
 // FUNCTIONS FOR ITEM CURSOR HANDLING
 UINT8 HandleActivatedTargetCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fShowAPs, BOOLEAN fRecalc, UINT32 uiCursorFlags);
 UINT8 HandleNonActivatedTargetCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fShowAPs, BOOLEAN fRecalc, UINT32 uiCursorFlags);

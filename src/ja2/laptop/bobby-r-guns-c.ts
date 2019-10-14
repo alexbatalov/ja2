@@ -1,25 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "BobbyRGuns.h"
-#include "BobbyR.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "interface items.h"
-#include "Encrypted File.h"
-#include "text.h"
-#include "Store Inventory.h"
-#include "LaptopSave.h"
-#include "Finances.h"
-#include "AimMembers.h"
-#include "Overhead.h"
-#include "Text.h"
-#include "Weapons.h"
-#endif
-
 #define BOBBYR_DEFAULT_MENU_COLOR 255
 
 #define BOBBYR_GRID_PIC_WIDTH 118

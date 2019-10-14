@@ -1,8 +1,6 @@
 #ifndef __ANIMATED_PROGRESSBAR_H
 #define __ANIMATED_PROGRESSBAR_H
 
-#include "types.h"
-
 #define MAX_PROGRESSBARS 4
 
 typedef struct PROGRESSBAR {

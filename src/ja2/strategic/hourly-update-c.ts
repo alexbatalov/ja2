@@ -1,16 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Assignments.h"
-#include "Strategic Town Loyalty.h"
-#include "Strategic Merc Handler.h"
-#include "Strategic Mines.h"
-#include "Campaign.h"
-#include "Morale.h"
-#include "Quests.h"
-#include "Game Clock.h"
-#endif
-
 void HourlyQuestUpdate(void);
 void HourlyLarryUpdate(void);
 

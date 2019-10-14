@@ -1,10 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef EDITSCREEN_H
 #define EDITSCREEN_H
-
-#include "Button System.h"
 
 #define EDITOR_LIGHT_MAX (SHADE_MIN + SHADE_MAX)
 #define EDITOR_LIGHT_FAKE (EDITOR_LIGHT_MAX - SHADE_MAX - 2)

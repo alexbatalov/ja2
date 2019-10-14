@@ -1,9 +1,6 @@
 #ifndef __TEXT_H
 #define __TEXT_H
 
-#include "items.h"
-#include "types.h"
-
 #define STRING_LENGTH 255
 
 extern UINT16 ShortItemNames[MAXITEMS][80];

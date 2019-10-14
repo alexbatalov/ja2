@@ -1,13 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "Types.h"
-#include "ArmsDealerInvInit.h"
-#include "Item Types.h"
-#include "Arms Dealer Init.h"
-#include "DEbug.h"
-#endif
-
 extern INT8 gbSelectedArmsDealerID;
 
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used

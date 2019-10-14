@@ -1,9 +1,6 @@
 #ifndef _SQUADS_H
 #define _SQUADS_H
 
-#include "Soldier Control.h"
-#include "FileMan.h"
-
 // header for squad management system
 #define NUMBER_OF_SOLDIERS_PER_SQUAD 6
 

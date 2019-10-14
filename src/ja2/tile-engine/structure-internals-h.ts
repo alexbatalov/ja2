@@ -6,9 +6,6 @@
 // structure_extern.h, not structure.h!
 //
 
-#include "types.h"
-#include "himage.h"
-
 // A few words about the overall structure scheme:
 //
 // Large structures are split into multiple sections,

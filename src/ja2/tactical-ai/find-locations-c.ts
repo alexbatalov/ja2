@@ -1,32 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include <stdlib.h>
-#include "Isometric Utils.h"
-#include "ai.h"
-#include "AIInternals.h"
-#include "los.h"
-#include "Weapons.h"
-#include "Opplist.h"
-#include "pathai.h"
-#include "items.h"
-#include "World Items.h"
-#include "Points.h"
-#include "message.h"
-#include "Map Edgepoints.h"
-#include "renderworld.h"
-#include "Render Fun.h"
-#include "Boxing.h"
-#include "Text.h"
-#include "Structure Wrap.h"
-#ifdef _DEBUG
-#include "renderworld.h"
-#include "video.h"
-#endif
-#endif
-
-#include "PathAIDebug.h"
-
 #ifdef _DEBUG
 INT16 gsCoverValue[WORLD_MAX];
 INT16 gsBestCover;

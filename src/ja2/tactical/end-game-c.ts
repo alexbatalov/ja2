@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "PreBattle Interface.h"
-#include "Intro.h"
-#else
-#include "Soldier Control.h"
-#include "Overhead.h"
-#include "Boxing.h"
-#include "Render Fun.h"
-#include "Random.h"
-#include "Worldman.h"
-#include "Soldier Profile.h"
-#include "NPC.h"
-#include "Opplist.h"
-#include "ai.h"
-#include "Dialogue Control.h"
-#include "Handle UI.h"
-#include "Points.h"
-#include "interface.h"
-#include "end game.h"
-#include "Intro.h"
-#endif
-
 INT16 sStatueGridNos[] = {
   13829,
   13830,

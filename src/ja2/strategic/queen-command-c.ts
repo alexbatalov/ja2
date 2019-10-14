@@ -1,31 +1,5 @@
 // Queen Command.c
 
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Queen Command.h"
-#include "Strategic Event Handler.h"
-#include "Overhead Types.h"
-#include "strategicmap.h"
-#include "Soldier Init List.h"
-#include "debug.h"
-#include "Random.h"
-#include "Strategic Movement.h"
-#include "Overhead.h"
-#include "Strategic Pathing.h"
-#include "strategic.h"
-#include "message.h"
-#include "Map Edgepoints.h"
-#include "PreBattle Interface.h"
-#include "strategic status.h"
-#include "squads.h"
-#include "assignments.h"
-#include "items.h"
-#include "tactical save.h"
-#include "Soldier Ani.h"
-#include "Strategic AI.h"
-#endif
-
 #ifdef JA2BETAVERSION
 extern BOOLEAN gfClearCreatureQuest;
 #endif

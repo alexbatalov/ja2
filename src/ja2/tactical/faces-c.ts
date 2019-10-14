@@ -1,39 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "math.h"
-#include <stdio.h>
-#include <errno.h>
-
-#include "worlddef.h"
-#include "renderworld.h"
-#include "vsurface.h"
-#include "Render Dirty.h"
-#include "sysutil.h"
-#include "container.h"
-#include "wcheck.h"
-#include "video.h"
-#include "vobject_blitters.h"
-#include "faces.h"
-#include "utilities.h"
-#include "overhead.h"
-#include "gap.h"
-#include "Soldier Profile.h"
-#include "sound control.h"
-#include "teamturns.h"
-#include "soldier macros.h"
-#include "dialogue control.h"
-#include "font control.h"
-#include "Assignments.h"
-#include "Random.h"
-#include "line.h"
-#include "GameSettings.h"
-#include "squads.h"
-#include "interface.h"
-#include "Quests.h"
-#include "animation control.h"
-#endif
-
 // Defines
 #define NUM_FACE_SLOTS 50
 

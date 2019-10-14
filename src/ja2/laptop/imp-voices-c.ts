@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Voices.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "input.h"
-#include "Isometric Utils.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "Sound Control.h"
-#include "IMP Text System.h"
-#include "text.h"
-#endif
-
 // current and last pages
 INT32 iCurrentVoices = 0;
 INT32 iLastVoice = 2;

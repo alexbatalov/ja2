@@ -1,8 +1,6 @@
 #ifndef _SOLDIER_ADD_H
 #define _SOLDIER_ADD_H
 
-#include "Soldier Control.h"
-
 // Finds a gridno given a sweet spot
 // Returns a good direction too!
 UINT16 FindGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection);

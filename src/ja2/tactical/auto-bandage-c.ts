@@ -1,35 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "overhead.h"
-#include "messageboxscreen.h"
-#include "screenids.h"
-#include "Handle UI.h"
-#include "message.h"
-#include "game clock.h"
-#include "items.h"
-#include "Text.h"
-#include "MercTextBox.h"
-#include "interface.h"
-#include "auto bandage.h"
-#include "renderworld.h"
-#include "strategic turns.h"
-#include "Event Pump.h"
-#include "music control.h"
-#include "dialogue control.h"
-#include "ai.h"
-#include "interface control.h"
-#include "strategicmap.h"
-#include "animation control.h"
-#include "Map Screen Interface.h"
-#include "Soldier Profile.h"
-#include "Assignments.h"
-#include "WordWrap.h"
-#include "cursors.h"
-#include "English.h"
-#endif
-
 // max number of merc faces per row in autobandage box
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
 

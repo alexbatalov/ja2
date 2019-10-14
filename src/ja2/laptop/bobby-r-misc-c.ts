@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "BobbyRMisc.h"
-#include "BobbyR.h"
-#include "BobbyRGuns.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Text.h"
-#endif
-
 UINT32 guiMiscBackground;
 UINT32 guiMiscGrid;
 

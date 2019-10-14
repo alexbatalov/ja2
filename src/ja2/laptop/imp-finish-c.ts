@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Finish.h"
-#include "IMP Portraits.h"
-#include "IMP HomePage.h"
-#include "IMP MainPage.h"
-#include "IMP Voices.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Timer Control.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Attribute Selection.h"
-#include "IMP Text System.h"
-#include "soundman.h"
-#include "IMP Compile Character.h"
-#include "text.h"
-#endif
-
 // min time btween frames of animation
 #define ANIMATE_MIN_TIME 200
 

@@ -1,8 +1,6 @@
 #ifndef __RADAR_SCREEN_H
 #define __RADAR_SCREEN_H
 
-#include "interface.h"
-
 // RADAR MOUSE REGION STUFF
 void RadarRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
 void RadarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);

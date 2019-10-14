@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <wchar.h>
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "MemMan.h"
-#include "Overhead Types.h"
-#include "Soldier Control.h"
-#include "random.h"
-#include "campaign.h"
-#include "dialogue control.h"
-#include "Map Screen Interface.h"
-#include "Message.h"
-#include "Game Clock.h"
-#include "Strategic Mines.h"
-#include "Strategic Status.h"
-#include "Sys Globals.h"
-#include "Text.h"
-#include "GameSettings.h"
-#endif
-
-#include "email.h"
-
 extern UINT8 gbPlayerNum;
 
 #ifdef STAT_CHANGE_DEBUG

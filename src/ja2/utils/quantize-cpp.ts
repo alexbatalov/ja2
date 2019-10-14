@@ -2,12 +2,6 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
-#include "types.h"
-#include <windows.h>
-#include "Quantize.h"
-#include "types.h"
-#include "himage.h"
-
 CQuantizer::CQuantizer(UINT nMaxColors, UINT nColorBits) {
   m_pTree = NULL;
   m_nLeafCount = 0;

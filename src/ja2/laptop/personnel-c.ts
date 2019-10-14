@@ -1,37 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "personnel.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "Overhead.h"
-#include "Soldier Profile.h"
-#include "Text.h"
-#include "mapscreen.h"
-#include "Game Clock.h"
-#include "finances.h"
-#include "LaptopSave.h"
-#include "AimMembers.h"
-#include "Map Screen Interface Map.h"
-#include "input.h"
-#include "english.h"
-#include "random.h"
-#include "line.h"
-#include "Assignments.h"
-#include "gameloop.h"
-#include "Soldier Add.h"
-#include "Interface Items.h"
-#include "Weapons.h"
-#endif
-
-#include "Soldier Macros.h"
-
 extern struct POINT;
 
 #define NUM_BACKGROUND_REPS 40

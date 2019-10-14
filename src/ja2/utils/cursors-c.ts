@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#include "interface items.h"
-#else
-#include <wchar.h>
-#include "sgp.h"
-#include "cursors.h"
-#include "Timer Control.h"
-#include "jascreens.h"
-#include "font.h"
-#include "Font Control.h"
-#include "Sys Globals.h"
-#include "Handle UI.h"
-#include "interface.h"
-#include "overhead.h"
-#include "Cursor Control.h"
-#endif
-
 #define NUM_MOUSE_LEVELS 2
 
 INT16 gsMouseGlobalYOffsets[NUM_MOUSE_LEVELS] = {

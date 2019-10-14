@@ -1,9 +1,6 @@
 #ifndef __MAP_SCREEN_HELICOPTER_H
 #define __MAP_SCREEN_HELICOPTER_H
 
-#include "Types.h"
-#include "Soldier Control.h"
-
 // costs of flying through sectors
 #define COST_AIRSPACE_SAFE 100
 #define COST_AIRSPACE_UNSAFE 1000 // VERY dangerous

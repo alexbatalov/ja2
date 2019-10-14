@@ -1,39 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <stdio.h>
-#include "PreBattle Interface.h"
-#include "Button System.h"
-#include "mousesystem.h"
-#include "Map Screen Interface.h"
-#include "jascreens.h"
-#include "gamescreen.h"
-#include "strategicmap.h"
-#include "Game Clock.h"
-#include "Music Control.h"
-#include "sysutil.h"
-#include "Font Control.h"
-#include "Queen Command.h"
-#include "Strategic Movement.h"
-#include "Strategic Pathing.h"
-#include "text.h"
-#include "PopUpBox.h"
-#include "Player Command.h"
-#include "Cursors.h"
-#include "Auto Resolve.h"
-#include "Sound Control.h"
-#include "english.h"
-#include "Map Screen Interface Bottom.h"
-#include "overhead.h"
-#include "Tactical Placement GUI.h"
-#include "Town Militia.h"
-#include "campaign.h"
-#include "GameSettings.h"
-#include "Random.h"
-#include "Creature Spreading.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
 extern void InitializeTacticalStatusAtBattleStart();
 extern BOOLEAN gfDelayAutoResolveStart;
 extern BOOLEAN gfTransitionMapscreenToAutoResolve;

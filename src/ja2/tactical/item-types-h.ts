@@ -1,8 +1,6 @@
 #ifndef ITEM_TYPES_H
 #define ITEM_TYPES_H
 
-#include "types.h"
-
 #define INVALIDCURS 0
 #define QUESTCURS 1
 #define PUNCHCURS 2

@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP Portraits.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "input.h"
-#include "Isometric Utils.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Text System.h"
-#include "IMP Voices.h"
-#include "IMP Compile Character.h"
-#endif
-
 // current and last pages
 INT32 iCurrentPortrait = 0;
 INT32 iLastPicture = 7;

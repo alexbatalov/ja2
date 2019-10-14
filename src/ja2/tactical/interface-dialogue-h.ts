@@ -1,9 +1,6 @@
 #ifndef __INTERFACE_DIALOGUE_H
 #define __INTERFACE_DIALOGUE_H
 
-#include "mousesystem.h"
-#include "npc.h"
-
 extern UINT8 gubSrcSoldierProfile;
 
 // Structure used in Tactical display of NPC dialogue

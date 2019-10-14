@@ -1,10 +1,6 @@
 #ifndef WORLD_DAT_H
 #define WORLD_DAT_H
 
-#include "types.h"
-#include "tiledat.h"
-#include "World Tileset Enums.h"
-
 typedef void (*TILESET_CALLBACK)(void);
 
 typedef struct {

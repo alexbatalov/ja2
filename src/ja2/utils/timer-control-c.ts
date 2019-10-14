@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#include "interface control.h"
-#else
-#include <windows.h>
-#include <mmsystem.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "Soldier Control.h"
-#include "Timer Control.h"
-#include "overhead.h"
-#include "handle items.h"
-#include "worlddef.h"
-#include "renderworld.h"
-#endif
-
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif

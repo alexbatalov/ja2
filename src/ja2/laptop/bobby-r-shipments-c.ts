@@ -1,11 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#include "BobbyRShipments.h"
-#else
-#include "laptop.h"
-#include "BobbyRShipments.h"
-#endif
-
 #define BOBBYR_SHIPMENT_TITLE_TEXT_FONT FONT14ARIAL
 #define BOBBYR_SHIPMENT_TITLE_TEXT_COLOR 157
 

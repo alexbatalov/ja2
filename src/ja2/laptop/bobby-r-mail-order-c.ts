@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "BobbyRMailOrder.h"
-#include "BobbyR.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Encrypted File.h"
-#include "BobbyRGuns.h"
-#include "finances.h"
-#include "Game Clock.h"
-#include "Game Event Hook.h"
-#include "Random.h"
-#include "LaptopSave.h"
-#include "Soldier Profile.h"
-#include "input.h"
-#include "line.h"
-#include "Text.h"
-#include "Strategic.h"
-#include "Campaign Types.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
 typedef struct {
   STR16 *psCityLoc;
   UINT16 usOverNightExpress;

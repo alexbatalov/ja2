@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "History.h"
-#include "Game clock.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "Soldier Profile.h"
-#include "strategicmap.h"
-#include "QuestText.h"
-#include "text.h"
-#endif
-
 #define TOP_X 0 + LAPTOP_SCREEN_UL_X
 #define TOP_Y LAPTOP_SCREEN_UL_Y
 #define BLOCK_HIST_HEIGHT 10

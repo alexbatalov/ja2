@@ -1,20 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "Handle UI Plan.h"
-#include "overhead.h"
-#include "Isometric Utils.h"
-#include "pathai.h"
-#include "Handle UI.h"
-#include "points.h"
-#include "weapons.h"
-#include "renderworld.h"
-#include "Animation Control.h"
-#include "message.h"
-#include "soldier create.h"
-#include "interface.h"
-#endif
-
 UINT8 gubNumUIPlannedMoves = 0;
 SOLDIERTYPE *gpUIPlannedSoldier = NULL;
 SOLDIERTYPE *gpUIStartPlannedSoldier = NULL;

@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "types.h"
-#include "Campaign Init.h"
-#include "Random.h"
-#include "Campaign Types.h"
-#include "Queen Command.h"
-#include "overhead.h"
-#include "Strategic Movement.h"
-#include "Strategic Status.h"
-#include "GameSettings.h"
-#include "Creature Spreading.h"
-#include "Strategic AI.h"
-#endif
-
 extern void InitStrategicMovementCosts();
 void InitKnowFacilitiesFlags();
 

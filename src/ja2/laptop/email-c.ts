@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "email.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "soldier profile.h"
-#include "IMP Compile Character.h"
-#include "IMP Voices.h"
-#include "IMP Portraits.h"
-#include "Game Clock.h"
-#include "environment.h"
-#include "AimMembers.h"
-#include "Random.h"
-#include "Text.h"
-#endif
-
 // static EmailPtr pEmailList;
 EmailPtr pEmailList;
 static PagePtr pPageList;

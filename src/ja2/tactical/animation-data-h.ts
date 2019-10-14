@@ -1,12 +1,6 @@
 #ifndef ANIMATION_DATA_H_
 #define ANIMATION_DATA_H_
 
-#include "vobject.h"
-
-#include "Soldier Control.h"
-#include "Overhead.h"
-#include "Structure Internals.h"
-
 // DEFINES FOR ANIMATION PROFILES
 #define TILE_FLAG_FEET 0x0001
 #define TILE_FLAG_MID 0x0002

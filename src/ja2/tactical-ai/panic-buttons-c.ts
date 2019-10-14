@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "AIInternals.h"
-#include "ai.h"
-#include "pathai.h"
-#include "items.h"
-#include "World Items.h"
-#endif
-
-#include "Queen Command.h"
-
 void MakeClosestEnemyChosenOne() {
   UINT32 cnt;
   INT16 sPathCost, sShortestPath = 1000;

@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#include "_Ja25Englishtext.h"
-#else
-#include "Language Defines.h"
-#ifdef ENGLISH
-#include "text.h"
-#include "Fileman.h"
-#include "JA2 Demo Ads.h"
-#endif
-#endif
-
 #ifdef ENGLISH
 
 // VERY TRUNCATED FILE COPIED FROM JA2.5 FOR ITS FEATURES FOR JA2 GOLD

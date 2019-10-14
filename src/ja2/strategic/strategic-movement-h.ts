@@ -1,10 +1,6 @@
 #ifndef __STRATEGIC_MOVEMENT_H
 #define __STRATEGIC_MOVEMENT_H
 
-#include "types.h"
-#include "Soldier Control.h"
-#include "FileMan.h"
-
 // enemy intentions,
 enum {
   NO_INTENTIONS, // enemy intentions are undefined.

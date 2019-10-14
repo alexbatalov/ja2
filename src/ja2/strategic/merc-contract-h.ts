@@ -1,8 +1,6 @@
 #ifndef _MERC_CONTRACT_H_
 #define _MERC_CONTRACT_H_
 
-#include "Soldier Control.h"
-
 // enums used for extending contract, etc.
 enum {
   CONTRACT_EXTEND_1_DAY,

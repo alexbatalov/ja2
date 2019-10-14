@@ -1,8 +1,6 @@
 #ifndef _SAVE_LOAD_SCREEN__H_
 #define _SAVE_LOAD_SCREEN__H_
 
-#include "MessageBoxScreen.h"
-
 #define NUM_SAVE_GAMES 11
 
 // This flag is used to diferentiate between loading a game and saveing a game.

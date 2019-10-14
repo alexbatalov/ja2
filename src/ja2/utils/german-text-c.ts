@@ -1,14 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "Language Defines.h"
-#ifdef GERMAN
-#include "text.h"
-#include "Fileman.h"
-#include "JA2 Demo Ads.h"
-#endif
-#endif
-
 #ifdef GERMAN
 
 /*

@@ -8,43 +8,6 @@
         Date            :       1997-NOV
 */
 
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "MemMan.h"
-#include "Overhead Types.h"
-#include "Soldier Control.h"
-#include "Animation Cache.h"
-#include "Animation Data.h"
-#include "Animation Control.h"
-#include "container.h"
-#include "interface.h"
-#include <math.h>
-
-#include "input.h"
-#include "english.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "renderworld.h"
-#include "pathai.h"
-#include "PathAIDebug.h"
-#include "Points.h"
-#include "ai.h"
-#include "Random.h"
-#include "message.h"
-#include "structure wrap.h"
-#include "keys.h"
-#include "gamesettings.h"
-#include "Buildings.h"
-#endif
-
-#include "PathAIDebug.h"
-
 extern UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
 
 // extern UINT8 gubDiagCost[20];
@@ -56,7 +19,6 @@ extern UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
 //#define PATHAI_SKIPLIST_DEBUG
 
 #ifdef PATHAI_VISIBLE_DEBUG
-#include "video.h"
 
 extern INT16 gsCoverValue[WORLD_MAX];
 BOOLEAN gfDisplayCoverValues = TRUE;

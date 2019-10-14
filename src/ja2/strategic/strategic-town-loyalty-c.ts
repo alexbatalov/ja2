@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Strategic Town Loyalty.h"
-#include "strategicmap.h"
-#include "Overhead.h"
-#include "Assignments.h"
-#include "strategic.h"
-#include "Queen Command.h"
-#include "Animation Data.h"
-#include "Quests.h"
-#include "Font.h"
-#include "Message.h"
-#include "LOS.h"
-#include "World Items.h"
-#include "Tactical Save.h"
-#include "Soldier Profile.h"
-#include "Handle Items.h"
-#include "random.h"
-#include "strategic movement.h"
-#include "Strategic Pathing.h"
-#include "vehicles.h"
-#include "Game Clock.h"
-#include "Game Event Hook.h"
-#endif
-
 // the max loyalty rating for any given town
 #define MAX_LOYALTY_VALUE 100
 

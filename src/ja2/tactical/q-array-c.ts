@@ -1,10 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "qarray.h"
-#endif
-
 BOOLEAN QuoteExp_HeadShotOnly[75] = {
   // this is for quote 33 (0=generic grossout, 1=headshot specific)
   /* 0	Barry  	*/ 1,

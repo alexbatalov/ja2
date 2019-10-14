@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "Intro.h"
-#include "Cinematics.h"
-#else
-#include "sgp.h"
-#include "sys globals.h"
-#include "sysutil.h"
-#include "vobject_blitters.h"
-#include "wcheck.h"
-#include "cursors.h"
-#include "font control.h"
-#include "cursor control.h"
-#include "render dirty.h"
-#include "GameScreen.h"
-#include "Text.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Font Control.h"
-#include "text.h"
-#include "Multi Language Graphic Utils.h"
-#include "Line.h"
-#include "Intro.h"
-#include "Cinematics.h"
-#endif
-
 extern STR16 gzIntroScreen[];
 extern HVSURFACE ghFrameBuffer;
 

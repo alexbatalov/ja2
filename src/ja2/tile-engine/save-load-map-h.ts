@@ -1,9 +1,6 @@
 #ifndef _SAVELOADMAP__H_
 #define _SAVELOADMAP__H_
 
-#include "WorldDef.h"
-#include "Exit Grids.h"
-
 // Used for the ubType in the MODIFY_MAP struct
 enum {
   SLM_NONE,

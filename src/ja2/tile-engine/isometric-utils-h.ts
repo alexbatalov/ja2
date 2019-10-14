@@ -1,8 +1,6 @@
 #ifndef __ISOMETRIC_UTILSH
 #define __ISOMETRIC_UTILSH
 
-#include "worlddef.h"
-
 // DEFINES
 #define MAXCOL WORLD_COLS
 #define MAXROW WORLD_ROWS

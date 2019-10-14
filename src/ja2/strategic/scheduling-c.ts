@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include <memory.h>
-#include "Fileman.h"
-#include "types.h"
-#include "Scheduling.h"
-#include "Soldier Control.h"
-#include "message.h"
-#include "overhead.h"
-#include "Game Clock.h"
-#include "Game Event Hook.h"
-#include "worlddef.h"
-#include "Soldier Init List.h"
-#include "Isometric Utils.h"
-#include "ai.h"
-#include "debug.h"
-#include "Random.h"
-#include "Animation Data.h"
-#include "Map Information.h"
-#include "Keys.h"
-#include "Structure Wrap.h"
-#include "jascreens.h"
-#include "strategicmap.h"
-#endif
-
 #ifdef JA2EDITOR
 extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
 #endif

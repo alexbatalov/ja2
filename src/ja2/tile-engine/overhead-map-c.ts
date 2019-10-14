@@ -1,40 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "stdio.h"
-#include "sgp.h"
-#include "vobject.h"
-#include "tiledef.h"
-#include "wcheck.h"
-#include "utilities.h"
-#include "worlddef.h"
-#include "isometric utils.h"
-#include "renderworld.h"
-#include "worlddat.h"
-#include "vobject_blitters.h"
-#include "overhead map.h"
-#include "interface.h"
-#include "interface control.h"
-#include "overhead.h"
-#include "radar screen.h"
-#include "cursors.h"
-#include "Sys Globals.h"
-#include "render dirty.h"
-#include "soldier find.h"
-#include "font control.h"
-#include "Game Clock.h"
-#include "interface panels.h"
-#include "english.h"
-#include "line.h"
-#include "map information.h"
-#include "Tactical Placement GUI.h"
-#include "world items.h"
-#include "environment.h"
-#include "message.h"
-#endif
-
 #ifdef JA2EDITOR
-#include "Soldier Init List.h"
 extern SOLDIERINITNODE *gpSelected;
 #endif
 

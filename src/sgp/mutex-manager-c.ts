@@ -1,11 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "Mutex Manager.h"
-#include "debug.h"
-#endif
 //#define __MUTEX_TYPE
 
 #ifdef __MUTEX_TYPE

@@ -1,9 +1,5 @@
 #ifndef __STRATEGIC_H
 #define __STRATEGIC_H
-// header for strategic structure
-#include "Types.h"
-#include "mapscreen.h"
-#include "soldier control.h"
 
 struct strategicmapelement {
   UINT8 UNUSEDuiFootEta[4]; // eta/mvt costs for feet

@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "AimSort.h"
-#include "Aim.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Soldier Profile.h"
-#include "stdlib.h"
-#include "Game Clock.h"
-#include "Text.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
 //#define
 
 #define AIM_SORT_FONT_TITLE FONT14ARIAL

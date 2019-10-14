@@ -1,11 +1,6 @@
 #ifndef SOLDIER_MACROS_H
 #define SOLDIER_MACROS_H
 
-// MACROS FOR EASIER SOLDIER CONTROL
-#include "teamturns.h"
-#include "soldier profile.h"
-#include "assignments.h"
-
 // MACROS
 #define RPC_RECRUITED(p) ((p->ubProfile == NO_PROFILE) ? FALSE : (gMercProfiles[p->ubProfile].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED))
 

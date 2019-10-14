@@ -1,9 +1,6 @@
 #ifndef __TILE_CACHE_H
 #define __TILE_CACHE_H
 
-#include "tiledef.h"
-#include "structure.h"
-
 #define TILE_CACHE_START_INDEX 36000
 
 typedef struct {

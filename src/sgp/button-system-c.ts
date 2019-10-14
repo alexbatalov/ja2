@@ -4,39 +4,6 @@
         Rewritten mostly by Kris Morness
 ***********************************************************************************************/
 
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "types.h"
-#include <windows.h>
-#include <stdio.h>
-#include <memory.h>
-#include "debug.h"
-#include "input.h"
-#include "memman.h"
-#include "english.h"
-#include "vobject.h"
-#include "vobject_blitters.h"
-#include "soundman.h"
-#include "Button System.h"
-#include "line.h"
-#include <stdarg.h>
-#if defined(JA2) || defined(UTIL)
-#include "WordWrap.h"
-#include "video.h"
-#include "Button Sound Control.h"
-#ifdef _JA2_RENDER_DIRTY
-#include "\JA2\Build\utils\Font Control.h"
-#include "Render Dirty.h"
-#include "utilities.h"
-#endif
-#else
-#include "video2.h"
-#endif
-#endif
-
 // ATE: Added to let Wiz default creating mouse regions with no cursor, JA2 default to a cursor ( first one )
 #ifdef JA2
 #define MSYS_STARTING_CURSORVAL 0

@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "Intro.h"
-#else
-#include "Types.h"
-#include "GameInitOptionsScreen.h"
-#include "GameSettings.h"
-#include "Utilities.h"
-#include "wCheck.h"
-#include "Font Control.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Input.h"
-#include "Options Screen.h"
-#include "English.h"
-#include "Sysutil.h"
-#include "Fade Screen.h"
-#include "Cursor Control.h"
-#include "Music Control.h"
-#include "cursors.h"
-#include "Intro.h"
-#endif
-
 ////////////////////////////////////////////
 //
 //	Global Defines

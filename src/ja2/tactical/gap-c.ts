@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "debug.h"
-#include "types.h"
-//#include "mssw.h"
-#include "gap.h"
-#include "Sound Control.h"
-#include "soundman.h"
-#include "Timer Control.h"
-#include <stdio.h>
-#include "FileMan.h"
-#endif
-
 void AudioGapListInit(CHAR8 *zSoundFile, AudioGapList *pGapList) {
   // This procedure will load in the appropriate .gap file, corresponding
   // to the .wav file in szSoundEffects indexed by uiSampleNum

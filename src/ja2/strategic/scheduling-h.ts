@@ -1,9 +1,6 @@
 #ifndef __SCHEDULING_H
 #define __SCHEDULING_H
 
-#include "BuildDefines.h"
-#include "Soldier Init List.h"
-
 // Merc scheduling actions
 // NOTE:  Any modifications to this enumeration also require updating the text in EditorMercs.c used
 //			 in the editor for merc schedule purposes.

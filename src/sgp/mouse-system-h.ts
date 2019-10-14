@@ -16,8 +16,6 @@
 //
 // *****************************************************************************
 
-#include "mousesystem_macros.h"
-
 #ifndef _MOUSE_SYSTEM_H_
 #define _MOUSE_SYSTEM_H_
 

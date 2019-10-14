@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#else
-#include "sgp.h"
-#include "screenids.h"
-#include "Timer Control.h"
-#include "sys globals.h"
-#include "fade screen.h"
-#include "sysutil.h"
-#include "vobject_blitters.h"
-#include "MercTextBox.h"
-#include "wcheck.h"
-#include "cursors.h"
-#include "messageboxscreen.h"
-#include "font control.h"
-#include "Game Clock.h"
-#include "Map Screen Interface.h"
-#include "renderworld.h"
-#include "gameloop.h"
-#include "english.h"
-#include "GameSettings.h"
-#include "Interface Control.h"
-#include "cursor control.h"
-#include "laptop.h"
-#include "text.h"
-#endif
-
 #define MSGBOX_DEFAULT_WIDTH 300
 
 #define MSGBOX_BUTTON_WIDTH 61

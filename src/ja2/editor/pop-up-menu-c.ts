@@ -8,34 +8,7 @@
 // supported.  Just remove the commented line of code (search for UNCOMMENT), and it's fixed -- it is
 // currently disabled.
 
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include "tiledef.h"
-#include "sysutil.h"
-#include "font.h"
-#include "Font Control.h"
-#include "line.h"
-#include "worlddat.h"
-#include "selectwin.h"
-#include "popupmenu.h"
-#include "EditorDefines.h"
-#include "render dirty.h"
-#include "debug.h"
-#include "mousesystem.h"
-#include "cursors.h"
-#include "overhead types.h"
-#include "EditorMercs.h"
-#include "Scheduling.h"
-#include "english.h"
-#include "Item Statistics.h"
-#endif
 
 CurrentPopupMenuInformation gPopup;
 

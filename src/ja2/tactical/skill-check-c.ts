@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "SkillCheck.h"
-#include "Soldier Profile.h"
-#include "Random.h"
-#include "Items.h"
-#include "Dialogue Control.h"
-#include "Overhead.h"
-#include "Soldier macros.h"
-#include "Isometric Utils.h"
-#include "Morale.h"
-#include "drugs and alcohol.h"
-#include "strategicmap.h"
-#endif
-
 INT8 EffectiveStrength(SOLDIERTYPE *pSoldier) {
   INT8 bBandaged;
   INT32 iEffStrength;

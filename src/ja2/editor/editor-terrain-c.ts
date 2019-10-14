@@ -1,38 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <windows.h>
-#include "tiledef.h"
-#include "edit_sys.h"
-#include "vsurface.h"
-#include "vobject.h"
-#include "mousesystem.h"
-#include "Button System.h"
-#include "wcheck.h"
-#include "vsurface.h"
-#include "input.h"
-#include "sysutil.h"
-#include "font.h"
-#include "Font Control.h"
-#include "editscreen.h"
-#include "selectwin.h"
-#include "video.h"
-#include "vobject_blitters.h"
-#include "interface panels.h"
-#include "utilities.h"
-#include "World Items.h"
-#include "EditorDefines.h"
-#include "EditorTerrain.h"
-#include "Editor Taskbar Utils.h"
-#include "Cursor Modes.h"
-#include "english.h"
-#endif
 
 BOOLEAN gfShowTerrainTileButtons;
 UINT8 ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];

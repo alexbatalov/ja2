@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "Types.h"
-#include "Store Inventory.h"
-#include "Random.h"
-#include "Weapons.h"
-#include "Debug.h"
-#include "LaptopSave.h"
-#include "ShopKeeper Interface.h"
-#endif
-
 UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS] = {
   //
   // The first column is for Bobby Rays new inventory,					BOBBY_RAY_NEW,

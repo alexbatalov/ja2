@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "soldier control.h"
-#include "weapons.h"
-#include "handle items.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "animation control.h"
-#include "tile animation.h"
-#include "handle items.h"
-#include "lighteffects.h"
-#include "message.h"
-#include "isometric utils.h"
-#include "renderworld.h"
-#include "explosion control.h"
-#include "Random.h"
-#include "lighting.h"
-#endif
-
-#include "SaveLoadGame.h"
-
 #define NUM_LIGHT_EFFECT_SLOTS 25
 
 // GLOBAL FOR LIGHT LISTING

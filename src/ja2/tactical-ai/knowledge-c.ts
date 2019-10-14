@@ -1,11 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "ai.h"
-#include "AIInternals.h"
-#include "opplist.h"
-#endif
-
 void CallAvailableEnemiesTo(INT16 sGridNo) {
   INT32 iLoop;
   INT32 iLoop2;

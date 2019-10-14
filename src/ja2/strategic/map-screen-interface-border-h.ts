@@ -1,8 +1,6 @@
 #ifndef __MAP_INTERFACE_BORDER_H
 #define __MAP_INTERFACE_BORDER_H
 
-#include "Types.h"
-
 #define MAP_BORDER_START_X 261
 #define MAP_BORDER_START_Y 0
 

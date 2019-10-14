@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "insurance Info.h"
-#include "insurance.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Insurance Text.h"
-#include "Text.h"
-#endif
-
 #define INS_INFO_FRAUD_TEXT_COLOR FONT_MCOLOR_RED
 
 #define INS_INFO_SUBTITLE_X 86 + LAPTOP_SCREEN_UL_X

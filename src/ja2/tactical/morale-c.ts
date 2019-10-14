@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdlib.h>
-#include "Morale.h"
-#include "Overhead.h"
-#include "Soldier Profile.h"
-#include "dialogue control.h"
-#include "Map Screen Interface.h"
-#include "message.h"
-#include "assignments.h"
-#include "Strategic Movement.h"
-#include "Strategic Status.h"
-#include "SkillCheck.h"
-#include "drugs and alcohol.h"
-#include "StrategicMap.h"
-#include "Debug.h"
-#endif
-
 #define MORALE_MOD_MAX 50 // morale *mod* range is -50 to 50, if you change this, check the decay formulas!
 
 #define DRUG_EFFECT_MORALE_MOD 150

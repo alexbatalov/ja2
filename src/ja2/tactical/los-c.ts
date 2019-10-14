@@ -1,39 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-
-#include <memory.h>
-#include <math.h>
-#include "wcheck.h"
-#include "Isometric Utils.h"
-#include "debug.h"
-#include "los.h"
-#include "animation control.h"
-#include "Random.h"
-#include "soldier control.h"
-#include "Event Pump.h"
-#include "overhead.h"
-#include "weapons.h"
-
-#include "opplist.h"
-#include "soldier control.h"
-#include "bullets.h"
-
-#include "phys math.h"
-#include "items.h"
-#include "Soldier Profile.h"
-#include "worldman.h"
-#include "rotting corpses.h"
-#include "GameSettings.h"
-#include "keys.h"
-#include "message.h"
-#include "Structure Wrap.h"
-#include "campaign.h"
-#include "environment.h"
-#include "Pathai.h"
-#endif
-
 #define STEPS_FOR_BULLET_MOVE_TRAILS 10
 #define STEPS_FOR_BULLET_MOVE_SMALL_TRAILS 5
 #define STEPS_FOR_BULLET_MOVE_FIRE_TRAILS 5

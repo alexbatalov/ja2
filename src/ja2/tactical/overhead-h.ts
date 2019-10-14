@@ -1,12 +1,6 @@
 #ifndef __OVERHEAD_H
 #define __OVERHEAD_H
 
-#include <string.h>
-#include <stdio.h>
-//#include "container.h"
-#include "Soldier Control.h"
-#include "overhead types.h"
-#include "soldier find.h"
 #define ADD_SOLDIER_NO_PROFILE_ID 200
 
 #define MAX_REALTIME_SPEED_VAL 10

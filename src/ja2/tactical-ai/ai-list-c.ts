@@ -10,15 +10,6 @@
  *
  */
 
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "AIList.h"
-#include "Overhead.h"
-#include "debug.h"
-#include "AIInternals.h"
-#endif
-
 #define AI_LIST_SIZE TOTAL_SOLDIERS
 
 AILIST gAIList[AI_LIST_SIZE];

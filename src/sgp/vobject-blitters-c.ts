@@ -1,26 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "DirectDraw Calls.h"
-#include <stdio.h>
-#include "debug.h"
-#if defined(JA2) || defined(UTIL)
-#include "video.h" // JA2
-#else
-#include "video2.h" // Wiz8
-#endif
-#include "himage.h"
-#include "vobject.h"
-#include "vobject_private.h"
-#include "video_private.h"
-#include "wcheck.h"
-#include "vobject.h"
-#include "vobject_blitters.h"
-#include "shading.h"
-#endif
-
 SGPRect ClippingRect = { 0, 0, 640, 480 };
 // 555      565
 UINT32 guiTranslucentMask = 0x3def; // 0x7bef;		// mask for halving 5,6,5

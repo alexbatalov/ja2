@@ -1,6 +1,3 @@
-#include "Utils All.h"
-#include "Language Defines.h"
-
 BOOLEAN GetMLGFilename(SGPFILENAME filename, UINT16 usMLGGraphicID) {
 #if defined(ENGLISH) || defined(TAIWANESE) || defined(FRENCH)
   switch (usMLGGraphicID) {

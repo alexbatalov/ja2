@@ -1,25 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "mercs Account.h"
-#include "mercs.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Soldier Profile.h"
-#include "finances.h"
-#include "Game Clock.h"
-#include "Soldier Add.h"
-#include "Overhead.h"
-#include "History.h"
-#include "Email.h"
-#include "LaptopSave.h"
-#include "Text.h"
-#include "Speck Quotes.h"
-#endif
-
 #define MERC_ACCOUNT_TEXT_FONT FONT14ARIAL
 #define MERC_ACCOUNT_TEXT_COLOR FONT_MCOLOR_WHITE
 

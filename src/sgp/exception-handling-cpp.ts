@@ -1,20 +1,3 @@
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "Types.h"
-#include <stdlib.h>
-#include <malloc.h>
-#include <stdio.h>
-#endif
-
-#include "ExceptionHandling.h"
-
-#ifdef JA2
-#include "GameVersion.h"
-#endif
-
 // If we are to use exception handling
 #ifdef ENABLE_EXCEPTION_HANDLING
 

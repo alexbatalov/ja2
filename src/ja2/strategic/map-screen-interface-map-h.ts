@@ -1,8 +1,6 @@
 #ifndef _MAP_SCREEN_INTERFACE_MAP_H
 #define _MAP_SCREEN_INTERFACE_MAP_H
 
-#include "Vehicles.h"
-
 // functions
 void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow);
 // void DrawMapIndexSmallMap( BOOLEAN fSelectedCursorIsYellow );

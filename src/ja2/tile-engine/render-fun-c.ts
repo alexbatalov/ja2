@@ -1,28 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "math.h"
-#include <stdio.h>
-#include <errno.h>
-
-#include "Render Fun.h"
-#include "worlddef.h"
-#include "input.h"
-#include "sysutil.h"
-#include "debug.h"
-#include "wcheck.h"
-#include "worldman.h"
-#include "jascreens.h"
-#include "Isometric Utils.h"
-#include "Timer Control.h"
-#include "renderworld.h"
-#include "fov.h"
-#include "Fog Of War.h"
-#include "environment.h"
-#include "dialogue control.h"
-#include "Random.h"
-#endif
-
 // Room Information
 UINT8 gubWorldRoomInfo[WORLD_MAX];
 UINT8 gubWorldRoomHidden[MAX_ROOMS];

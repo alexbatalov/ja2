@@ -1,34 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <stdio.h>
-#include <stdarg.h>
-#include <time.h>
-#include "sgp.h"
-#include "Radar Screen.h"
-#include "line.h"
-#include "renderworld.h"
-#include "Isometric Utils.h"
-#include "Interface.h"
-#include "overhead.h"
-#include "Soldier Control.h"
-#include "lighting.h"
-#include "wcheck.h"
-#include "sysutil.h"
-#include "render dirty.h"
-#include "overhead map.h"
-#include "Squads.h"
-#include "mousesystem.h"
-#include "Text.h"
-#include "Font Control.h"
-#include "vobject.h"
-#include "Utilities.h"
-#include "Interface Control.h"
-#include "Game Clock.h"
-#include "Map Screen Interface Map Inventory.h"
-#include "environment.h"
-#endif
-
 extern INT32 iCurrentMapSectorZ;
 
 void AdjustWorldCenterFromRadarCoords(INT16 sRadarX, INT16 sRadarY);

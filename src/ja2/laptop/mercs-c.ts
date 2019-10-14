@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "mercs.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Overhead.h"
-#include "Soldier Add.h"
-#include "Email.h"
-#include "Game Clock.h"
-#include "Faces.h"
-#include "dialogue control.h"
-#include "MercTextBox.h"
-#include "Merc Hiring.h"
-#include "Random.h"
-#include "LaptopSave.h"
-#include "GameSettings.h"
-#include "Text.h"
-#include "Speck Quotes.h"
-#include "mercs Account.h"
-#include "Soldier Profile.h"
-#endif
-
 #define MERC_TEXT_FONT FONT12ARIAL
 #define MERC_TEXT_COLOR FONT_MCOLOR_WHITE
 

@@ -1,5 +1,3 @@
-#include "soldier control.h"
-
 #define HUMAN 0
 #define CREATURE_ON_FLOOR 0x01
 #define CREATURE_ON_ROOF 0x02

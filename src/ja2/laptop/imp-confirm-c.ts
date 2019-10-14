@@ -1,38 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "CharProfile.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "laptop.h"
-#include "IMP Compile Character.h"
-#include "soldier profile type.h"
-#include "IMP Text System.h"
-#include "IMP Confirm.h"
-#include "finances.h"
-#include "Soldier Profile.h"
-#include "Soldier Profile Type.h"
-#include "Soldier Control.h"
-#include "IMP Portraits.h"
-#include "IMP Voices.h"
-#include "Overhead.h"
-#include "finances.h"
-#include "history.h"
-#include "Game Clock.h"
-#include "email.h"
-#include "Game Event Hook.h"
-#include "LaptopSave.h"
-#include "strategic.h"
-#endif
-
 #define IMP_MERC_FILE "IMP.dat"
 
 UINT32 giIMPConfirmButton[2];

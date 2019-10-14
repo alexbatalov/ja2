@@ -1,6 +1,5 @@
 #ifndef __IMP_MAINPAGE_H
 #define __IMP_MAINPAGE_H
-#include "types.h"
 
 void RenderIMPMainPage(void);
 void ExitIMPMainPage(void);

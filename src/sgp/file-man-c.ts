@@ -21,32 +21,6 @@
 
 //**************************************************************************
 //
-//				Includes
-//
-//**************************************************************************
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include "Types.h"
-#include <stdlib.h>
-#include <malloc.h>
-#include <stdio.h>
-#include <direct.h>
-
-#include "windows.h"
-#include "FileMan.h"
-#include "MemMan.h"
-#include "DbMan.h"
-#include "Debug.h"
-#include "RegInst.h"
-#include "Container.h"
-#include "LibraryDataBase.h"
-#include "io.h"
-#endif
-//**************************************************************************
-//
 //				Defines
 //
 //**************************************************************************
@@ -550,7 +524,6 @@ void FileClose(HWFILE hFile) {
 #ifdef JA2TESTVERSION
 extern UINT32 uiTotalFileReadTime;
 extern UINT32 uiTotalFileReadCalls;
-#include "Timer Control.h"
 #endif
 
 BOOLEAN FileRead(HWFILE hFile, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytesRead) {

@@ -8,41 +8,6 @@
 //----------------------------------------------------------------------------------
 //#include "LocalCodeAll.h"
 
-#include "Types.h"
-#include <stdio.h>
-#include <io.h>
-#include <string.h>
-#include <fcntl.h>
-#include <share.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <malloc.h>
-#include <stdlib.h>
-
-#include "DEBUG.H"
-#include "FileMan.h"
-#include "smack.h"
-#include "ddraw.h"
-#include "mss.h"
-#include "DirectX Common.h"
-#include "DirectDraw Calls.h"
-#include "Cinematics.h"
-#include "soundman.h"
-
-#ifdef JA2
-#include "video.h"
-#else
-#include "video2.h"
-#endif
-
-#include "vsurface_private.h"
-
-#include "Intro.h"
-
-#include "radmalw.i"
-
-#include <crtdbg.h>
-
 //-Structures----------------------------------------------------------------------
 
 //-Flags-and-Symbols---------------------------------------------------------------

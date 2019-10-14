@@ -1,48 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <windows.h>
-#include "tiledef.h"
-#include "edit_sys.h"
-#include "vsurface.h"
-#include "vobject.h"
-#include "mousesystem.h"
-#include "Button System.h"
-#include "wcheck.h"
-#include "vsurface.h"
-#include "input.h"
-#include "sysutil.h"
-#include "font.h"
-#include "Font Control.h"
-#include "editscreen.h"
-#include "selectwin.h"
-#include "video.h"
-#include "vobject_blitters.h"
-#include "interface panels.h"
-#include "interface items.h"
-#include "text.h"
-#include "utilities.h"
-#include "Action Items.h"
-#include "World Items.h"
-#include "EditorDefines.h"
-#include "EditorItems.h"
-#include "EditorMercs.h"
-#include "weapons.h"
-#include "Editor Taskbar Utils.h"
-#include "wordwrap.h"
-#include "Item Statistics.h"
-#include "Simple Render Utils.h"
-#include "worldman.h"
-#include "random.h"
-#include "Pits.h"
-#include "keys.h"
-#endif
 
 #define NUMBER_TRIGGERS 27
 #define PRESSURE_ACTION_ID (NUMBER_TRIGGERS - 1)

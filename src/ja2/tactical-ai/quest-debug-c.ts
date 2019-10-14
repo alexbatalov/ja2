@@ -1,14 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "FileMan.h"
-#include "QuestDebug.h"
-#include "stdarg.h"
-#include "stdio.h"
-#include "Debug.h"
-#include "Message.h"
-#endif
-
 #define QUEST_DEBUG_FILE "QuestDebug.txt"
 
 // enums used for the current output level flags

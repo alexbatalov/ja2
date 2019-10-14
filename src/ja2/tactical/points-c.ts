@@ -1,31 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include "sgp.h"
-#include "worlddef.h"
-#include "points.h"
-#include "overhead.h"
-#include "Font control.h"
-#include "interface.h"
-#include "Isometric utils.h"
-#include "pathai.h"
-#include "interface.h"
-#include "message.h"
-#include "Animation Control.h"
-#include "Weapons.h"
-
-#include "structure wrap.h"
-#include "dialogue control.h"
-#include "items.h"
-#include "rt time defines.h"
-#include "ai.h"
-#include "handle ui.h"
-#include "text.h"
-#include "SkillCheck.h"
-#include "wcheck.h"
-#include "Soldier Profile.h"
-#endif
-
 extern BOOLEAN IsValidSecondHandShot(SOLDIERTYPE *pSoldier);
 
 INT16 GetBreathPerAP(SOLDIERTYPE *pSoldier, UINT16 usAnimState);

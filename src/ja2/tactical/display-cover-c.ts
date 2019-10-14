@@ -1,11 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#include "DisplayCover.h"
-#include "Interface.h"
-#include "_Ja25Englishtext.h"
-//#include "Ja25 Strategic Ai.h"
-#endif
-
 //*******  Local Defines **************************************************
 
 #define DC_MAX_COVER_RANGE 31

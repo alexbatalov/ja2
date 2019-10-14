@@ -1,10 +1,6 @@
 #ifndef __MUTEX_
 #define __MUTEX_
 
-#include <process.h>
-#include "Types.h"
-#include "Local.h"
-
 extern BOOLEAN InitializeMutexManager(void);
 extern void ShutdownMutexManager(void);
 extern BOOLEAN InitializeMutex(UINT32 uiMutexIndex, UINT8 *ubMutexName);

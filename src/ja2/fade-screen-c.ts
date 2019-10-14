@@ -1,19 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#else
-#include "sgp.h"
-#include "screenids.h"
-#include "Timer Control.h"
-#include "sys globals.h"
-#include "fade screen.h"
-#include "sysutil.h"
-#include "vobject_blitters.h"
-#include "cursor control.h"
-#include "music control.h"
-#include "Render Dirty.h"
-#include "gameloop.h"
-#endif
-
 #define SQUARE_STEP 8
 
 UINT32 guiExitScreen;

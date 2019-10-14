@@ -1,10 +1,6 @@
 #ifndef MAP_SCREEN_INTERFACE_H
 #define MAP_SCREEN_INTERFACE_H
 
-#include "Types.h"
-#include "Soldier Control.h"
-#include "MessageBoxScreen.h"
-
 typedef struct FASTHELPREGION {
   // the string
   CHAR16 FastHelpText[256];

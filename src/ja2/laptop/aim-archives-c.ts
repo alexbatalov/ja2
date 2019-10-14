@@ -1,16 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "AimArchives.h"
-#include "aim.h"
-#include "WordWrap.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Encrypted File.h"
-#include "Text.h"
-#endif
-
 #define AIM_ALUMNI_NAME_FILE "BINARYDATA\\AlumName.edt"
 #define AIM_ALUMNI_FILE "BINARYDATA\\Alumni.edt"
 

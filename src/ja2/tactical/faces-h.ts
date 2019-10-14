@@ -5,8 +5,6 @@
 #define ANGRY 2
 #define SURPRISED 3
 
-#include "soldier control.h"
-
 // Defines
 #define NUM_FACE_SLOTS 50
 

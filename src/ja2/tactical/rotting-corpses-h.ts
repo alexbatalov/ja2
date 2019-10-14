@@ -1,8 +1,6 @@
 #ifndef _ROTTING_CORPSES_H
 #define _ROTTING_CORPSES_H
 
-#include "tile animation.h"
-
 #define NUM_CORPSE_SHADES 17
 
 enum {

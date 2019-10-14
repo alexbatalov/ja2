@@ -1,9 +1,6 @@
 #ifndef __MAP_EDGEPOINTS_H
 #define __MAP_EDGEPOINTS_H
 
-#include "types.h"
-#include "Fileman.h"
-
 typedef struct MAPEDGEPOINTINFO {
   UINT8 ubNumPoints;
   UINT8 ubStrategicInsertionCode;

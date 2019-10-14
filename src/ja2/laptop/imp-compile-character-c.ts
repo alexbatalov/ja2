@@ -1,36 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "CharProfile.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "IMP AboutUs.h"
-#include "IMP MainPage.h"
-#include "IMP Begin Screen.h"
-#include "IMP Personality Entrance.h"
-#include "IMP Personality Quiz.h"
-#include "IMP Personality Finish.h"
-#include "IMP Attribute Entrance.h"
-#include "IMP Attribute Selection.h"
-#include "IMP Attribute Finish.h"
-#include "IMP Portraits.h"
-#include "IMP Compile Character.h"
-#include "IMP Voices.h"
-#include "IMP Finish.h"
-#include "Soldier Profile Type.h"
-#include "Soldier Profile.h"
-#include "Animation Data.h"
-#include "random.h"
-#endif
-
 // how many times should a 'die' be rolled for skills of the same type?
 
 #define HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK 20

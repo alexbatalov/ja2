@@ -1,13 +1,6 @@
 #ifndef _SOLDIER_CREATE_H
 #define _SOLDIER_CREATE_H
 
-#include "Animation Cache.h"
-#include "Timer Control.h"
-#include "vobject.h"
-#include "Overhead Types.h"
-#include "Item Types.h"
-#include "soldier control.h"
-
 #define SOLDIER_CREATE_AUTO_TEAM -1
 
 // Kris:

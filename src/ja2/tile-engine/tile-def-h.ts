@@ -1,11 +1,6 @@
 #ifndef __TILEDEF_H
 #define __TILEDEF_H
 
-#include "vobject.h"
-#include "timer.h"
-#include "TileDat.h"
-#include "structure.h"
-
 // CATEGORY TYPES
 #define NO_TILE 64000
 #define ERASE_TILE 65000

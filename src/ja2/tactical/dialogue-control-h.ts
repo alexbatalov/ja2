@@ -1,9 +1,6 @@
 #ifndef _DIALOG_CONTROL_H
 #define _DIALOG_CONTROL_H
 
-#include "faces.h"
-#include "gamescreen.h"
-
 // An enumeration for dialog quotes
 enum {
   // 0

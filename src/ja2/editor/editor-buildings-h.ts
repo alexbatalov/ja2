@@ -1,11 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef __EDITORBUILDINGS_H
 #define __EDITORBUILDINGS_H
-
-#include "video.h"
-#include "vobject_blitters.h"
 
 extern BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
 extern UINT8 gubCurrRoomNumber;

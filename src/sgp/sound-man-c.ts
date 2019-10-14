@@ -5,20 +5,6 @@
  *
  * Derek Beland, May 28, 1997
  *********************************************************************************/
-#ifdef JA2_PRECOMPILED_HEADERS
-#include "JA2 SGP ALL.H"
-#elif defined(WIZ8_PRECOMPILED_HEADERS)
-#include "WIZ8 SGP ALL.H"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "soundman.h"
-#include "FileMan.h"
-#include "debug.h"
-#include "MemMan.h"
-#include "mss.h"
-#include "random.h"
-#endif
 
 // Uncomment this to disable the startup of sound hardware
 //#define SOUND_DISABLE

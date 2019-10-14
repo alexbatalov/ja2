@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "mercs Files.h"
-#include "mercs.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Soldier Profile.h"
-#include "stdio.h"
-#include "Encrypted File.h"
-#include "AimMembers.h"
-#include "Game Clock.h"
-#include "Soldier Add.h"
-#include "OverHead.h"
-#include "Game Clock.h"
-#include "message.h"
-#include "Font.h"
-#include "LaptopSave.h"
-#include "Text.h"
-#include "Speck Quotes.h"
-#endif
-
-#include "Cheats.h"
-
 #define MERCBIOFILE "BINARYDATA\\MercBios.edt"
 
 #define MERC_BIO_FONT FONT14ARIAL // FONT12ARIAL

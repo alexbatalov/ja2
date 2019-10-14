@@ -1,49 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "PreBattle Interface.h"
-#include "saveloadgame.h"
-#else
-#include "sgp.h"
-#include "Soldier Create.h"
-#include "overhead.h"
-#include "wcheck.h"
-#include "soldier profile.h"
-#include "animation control.h"
-#include "animation data.h"
-#include "sound control.h"
-#include "overhead types.h"
-#include "faces.h"
-#include "isometric utils.h"
-#include "worldman.h"
-#include "items.h"
-#include "weapons.h"
-#include "opplist.h"
-#include "random.h"
-#include "Assignments.h"
-#include "Soldier Init List.h"
-#include "EditorMercs.h"
-#include "Smell.h"
-#include "Squads.h"
-#include "Interface Panels.h"
-#include "Strategicmap.h"
-#include "Inventory Choosing.h"
-#include "Queen Command.h"
-#include "Soldier Add.h"
-#include "SaveLoadGame.h"
-#include "Quests.h"
-#include "Sys Globals.h"
-#include "Scheduling.h"
-#include "Rotting Corpses.h"
-#include "vehicles.h"
-#include "handle ui.h"
-#include "text.h"
-#include "Campaign.h"
-#include "GameSettings.h"
-#include "PreBattle Interface.h"
-#include "Auto Resolve.h"
-#include "Morale.h"
-#endif
-
 // THESE 3 DIFFICULTY FACTORS MUST ALWAYS ADD UP TO 100% EXACTLY!!!
 #define DIFF_FACTOR_PLAYER_PROGRESS 50
 #define DIFF_FACTOR_PALACE_DISTANCE 30
@@ -1562,7 +1516,6 @@ void CreateStaticDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *
   }
 }
 
-#include "Font Control.h"
 // When you are ready to generate a soldier with a static detailed placement slot, this function will generate
 // the proper detailed placement slot given the static detailed placement and it's accompanying basic placement.
 // For the purposes of merc editing, the static detailed placement is preserved.

@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "Insurance Text.h"
-#include "insurance.h"
-#include "insurance Comments.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "Text.h"
-#endif
-
 #define INS_CMNT_TITLE_Y 52 + LAPTOP_SCREEN_WEB_UL_Y
 
 #define INS_CMNT_FIRST_BULLET_X 82 + LAPTOP_SCREEN_UL_X

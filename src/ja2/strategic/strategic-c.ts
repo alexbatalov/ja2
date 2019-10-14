@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Strategic.h"
-#include "Types.h"
-#include "Squads.h"
-#include "jascreens.h"
-#include "Assignments.h"
-#include "Interface Control.h"
-#include "Overhead.h"
-#include "Music Control.h"
-#include "Soldier Profile.h"
-#include "Dialogue Control.h"
-#include "personnel.h"
-#include "Tactical Save.h"
-#include "Isometric Utils.h"
-#endif
-
 StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
 
 extern BOOLEAN fReDrawFace;

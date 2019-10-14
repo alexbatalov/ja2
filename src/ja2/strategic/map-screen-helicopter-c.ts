@@ -1,35 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Map Screen Helicopter.h"
-#include "LaptopSave.h"
-#include "Vehicles.h"
-#include "Finances.h"
-#include "Quests.h"
-#include "Game Clock.h"
-#include "strategic.h"
-#include "Queen Command.h"
-#include "Strategic Pathing.h"
-#include "Random.h"
-#include "Game Event Hook.h"
-#include "String.h"
-#include "Dialogue Control.h"
-#include "Message.h"
-#include "Strategic Movement.h"
-#include "Soldier Profile.h"
-#include "Assignments.h"
-#include "PreBattle Interface.h"
-#include "strategicmap.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "tiledat.h"
-#include "Map Screen Interface.h"
-#include "Text.h"
-#include "Squads.h"
-#include "Player Command.h"
-#include "Sound Control.h"
-#endif
-
 // the amounts of time to wait for hover stuff
 #define TIME_DELAY_FOR_HOVER_WAIT 10 // minutes
 #define TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG 20 // mintues

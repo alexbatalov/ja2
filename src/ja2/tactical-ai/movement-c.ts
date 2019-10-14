@@ -1,21 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "ai.h"
-#include "AIInternals.h"
-#include "Isometric Utils.h"
-#include "overhead.h"
-#include "worldman.h"
-#include "pathai.h"
-#include "points.h"
-#include "message.h"
-#include "Smell.h"
-#include "mapscreen.h"
-#include "strategic.h"
-#include "Strategic Pathing.h"
-#include "Soldier Control.h"
-#endif
-
 // from strategic
 extern INT16 DirXIncrementer[8];
 extern INT16 DirYIncrementer[8];

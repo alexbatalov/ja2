@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Player Command.h"
-#include "Queen Command.h"
-#include "Campaign Types.h"
-#include "Strategic.h"
-#include "Strategic Town Loyalty.h"
-#include "Strategic Mines.h"
-#include "text.h"
-#include "laptopsave.h"
-#include "quests.h"
-#include "Morale.h"
-#include "Overhead.h"
-#include "strategicmap.h"
-#include "Map Screen Helicopter.h"
-#include "Game Clock.h"
-#endif
-
 extern BOOLEAN fMapScreenBottomDirty;
 
 void GetSectorFacilitiesFlags(INT16 sMapX, INT16 sMapY, STR16 sFacilitiesString) {

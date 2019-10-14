@@ -1,10 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "Loading Screen.h"
-#else
-//???
-#endif
-
 extern HVSURFACE ghFrameBuffer;
 
 UINT8 gubLastLoadingScreenID = LOADINGSCREEN_NOTHING;

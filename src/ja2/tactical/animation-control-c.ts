@@ -1,23 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "Animation Control.h"
-#include "Animation Data.h"
-#include "FileMan.h"
-#include "weapons.h"
-#include "message.h"
-#include "structure.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "rotting corpses.h"
-#include "points.h"
-#endif
-
 // Defines for Anim inst reading, taken from orig Jagged
 #define ANIMFILENAME "BINARYDATA\\ja2bin.dat"
 

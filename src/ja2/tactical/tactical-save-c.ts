@@ -1,38 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "Enemy Soldier Save.h"
-#else
-#include "Types.h"
-#include "MemMan.h"
-#include "message.h"
-#include "Item Types.h"
-#include "Items.h"
-#include "Handle Items.h"
-#include "StrategicMap.h"
-#include "Tactical Save.h"
-#include <stdio.h>
-#include "Campaign Types.h"
-#include "SaveLoadGame.h"
-#include "WorldDef.h"
-#include "rotting corpses.h"
-#include "OverHead.h"
-#include "Keys.h"
-#include "Soldier Create.h"
-#include "Soldier Profile.h"
-#include "Isometric Utils.h"
-#include "Soldier Add.h"
-#include "Npc.h"
-#include "Ai.h"
-#include "Game Clock.h"
-#include "Animation Control.h"
-#include "Map Information.h"
-//#include "pathai.h"
-#include "SaveLoadMap.h"
-#include "debug.h"
-#include "Random.h"
-#include "quests.h"
-#endif
-
 BOOLEAN gfWasInMeanwhile = FALSE;
 
 ///////////////////////////////////////////////////////////////

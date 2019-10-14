@@ -1,26 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "florist.h"
-#include "florist Order Form.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "florist Gallery.h"
-#include "stdio.h"
-#include "Encrypted File.h"
-#include "florist Cards.h"
-#include "Text Input.h"
-#include "Finances.h"
-#include "Game clock.h"
-#include "english.h"
-#include "Text.h"
-#endif
-
-#include "meanwhile.h"
-
 #define FLOWER_ORDEER_TINY_FONT FONT10ARIAL
 #define FLOWER_ORDEER_SMALL_FONT FONT12ARIAL
 #define FLOWER_ORDEER_BIG_FONT FONT12ARIAL

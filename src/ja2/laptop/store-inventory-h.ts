@@ -1,8 +1,6 @@
 #ifndef __STORE_INVENTORY_H_
 #define __STORE_INVENTORY_H_
 
-#include "Items.h"
-
 typedef struct {
   UINT16 usItemIndex; // Index into the item table
   UINT8 ubQtyOnHand;

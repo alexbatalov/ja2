@@ -1,10 +1,3 @@
-#include "types.h"
-#include "Isometric Utils.h"
-#include "Animation Control.h"
-#include "Overhead.h"
-#include "random.h"
-#include "Points.h"
-
 extern BOOLEAN gfTurnBasedAI;
 
 // THIS IS AN ITEM #  - AND FOR NOW JUST COMPLETELY FAKE...

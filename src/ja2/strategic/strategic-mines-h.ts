@@ -3,8 +3,6 @@
 
 // the .h to the mine management system
 
-#include "Types.h"
-
 // the mines
 enum {
   MINE_SAN_MONA = 0,

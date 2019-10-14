@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "finances.h"
-#include "Game clock.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "Debug.h"
-#include "WordWrap.h"
-#include "Render Dirty.h"
-#include "Encrypted File.h"
-#include "cursors.h"
-#include "Soldier Profile.h"
-#include "Text.h"
-#include "Strategic Mines.h"
-#include "LaptopSave.h"
-#endif
-
 // the global defines
 
 // graphical positions

@@ -1,10 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Types.h"
-#include "Quests.h"
-#endif
-
 STR16 QuestDescText[] = {
   L"Deliver Letter",
   L"Food Route",

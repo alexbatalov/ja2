@@ -1,8 +1,6 @@
 #ifndef __TEXT_INPUT_H
 #define __TEXT_INPUT_H
 
-#include "input.h"
-
 // AUTHOR:  Kris Morness
 // Intended for inclusion with SGP.
 

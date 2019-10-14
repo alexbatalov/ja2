@@ -1,8 +1,6 @@
 #ifndef _SHOPKEEPER_INTERFACE__H_
 #define _SHOPKEEPER_INTERFACE__H_
 
-#include "Store Inventory.h"
-
 #define SKI_NUM_TRADING_INV_SLOTS 12
 #define SKI_NUM_TRADING_INV_ROWS 2
 #define SKI_NUM_TRADING_INV_COLS 6

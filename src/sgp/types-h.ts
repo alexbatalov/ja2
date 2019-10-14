@@ -4,11 +4,6 @@
 #ifndef _SIRTECH_TYPES_
 #define _SIRTECH_TYPES_
 
-// build defines header....
-#include "builddefines.h"
-
-#include <wchar.h> // for wide-character strings
-
 // *** SIR-TECH TYPE DEFINITIONS ***
 
 // These two types are defined by VC6 and were causing redefinition

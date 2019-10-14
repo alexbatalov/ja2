@@ -1,27 +1,4 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Editor All.h"
-#else
-#include "builddefines.h"
-#endif
-
 #ifdef JA2EDITOR
-
-#ifndef PRECOMPILEDHEADERS
-#include <stdlib.h>
-#include "tiledef.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "newsmooth.h"
-#include "Isometric Utils.h"
-#include "EditorBuildings.h"
-#include "edit_sys.h"
-#include "Smoothing Utils.h"
-#include "Editor Undo.h"
-#include "Structure Internals.h"
-#include "environment.h"
-#include "Random.h"
-#include "Render Fun.h"
-#endif
 
 BOOLEAN CaveAtGridNo(INT32 iMapIndex);
 UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal);

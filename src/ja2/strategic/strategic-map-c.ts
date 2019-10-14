@@ -1,94 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#include "Loading Screen.h"
-#include "Enemy Soldier Save.h"
-#else
-#include "strategicmap.h"
-#include "strategic.h"
-#include "Strategic Mines.h"
-#include "types.h"
-#include "memory.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <math.h>
-#include <time.h>
-#include "jascreens.h"
-#include "worlddef.h"
-#include "Soldier Control.h"
-#include "overhead.h"
-#include "interface panels.h"
-#include "isometric utils.h"
-#include "Ambient Control.h"
-#include "worlddef.h"
-#include "worlddat.h"
-#include "text.h"
-#include "Soldier add.h"
-#include "soldier macros.h"
-#include "Strategic Pathing.h"
-#include "soldier create.h"
-#include "handle UI.h"
-#include "faces.h"
-#include "renderworld.h"
-#include "gamescreen.h"
-#include "game clock.h"
-#include "Soldier Init List.h"
-#include "strategic turns.h"
-#include "merc entering.h"
-#include "Map Information.h"
-#include "Assignments.h"
-#include "message.h"
-#include "Font Control.h"
-#include "environment.h"
-#include "Game Events.h"
-#include "quests.h"
-#include "FileMan.h"
-#include "animated progressbar.h"
-#include "music control.h"
-#include "fade screen.h"
-#include "Strategic Movement.h"
-#include "Campaign Types.h"
-#include "sys globals.h"
-#include "Exit Grids.h"
-#include "Tactical Save.h"
-#include "pathai.h"
-#include "animation control.h"
-#include "squads.h"
-#include "worldman.h"
-#include "Overhead.h"
-#include "Strategic Town Loyalty.h"
-#include "Queen Command.h"
-#include "cursor control.h"
-#include "PreBattle Interface.h"
-#include "Shade Table Util.h"
-#include "Scheduling.h"
-#include "gameloop.h"
-#include "Random.h"
-#include "ai.h"
-#include "opplist.h"
-#include "keys.h"
-#include "Tactical Placement GUI.h"
-#include "Map Screen Helicopter.h"
-#include "map edgepoints.h"
-#include "Player Command.h"
-#include "Event Pump.h"
-#include "meanwhile.h"
-#include "air raid.h"
-#include "Strategic Mines.h"
-#include "Creature Spreading.h"
-#include "SaveLoadMap.h"
-#include "Militia Control.h"
-#include "gamesettings.h"
-#include "dialogue control.h"
-#include "Town Militia.h"
-#include "sysutil.h"
-#include "sound control.h"
-#include "points.h"
-#include "JA2 Demo Ads.h"
-#include "render dirty.h"
-#endif
-
-#include "SaveLoadGame.h"
-
 // Used by PickGridNoToWalkIn
 #define MAX_ATTEMPTS 200
 
@@ -328,8 +237,6 @@ UINT32 uiBuildShadeTableTime;
 UINT32 uiNumTablesSaved;
 UINT32 uiNumTablesLoaded;
 UINT32 uiNumImagesReloaded;
-#include "render dirty.h"
-#include "tiledat.h"
 #endif
 
 UINT32 UndergroundTacticalTraversalTime(INT8 bExitDirection) {

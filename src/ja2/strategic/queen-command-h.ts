@@ -1,12 +1,6 @@
 #ifndef __QUEEN_COMMAND_H
 #define __QUEEN_COMMAND_H
 
-#include "types.h"
-#include "Campaign Types.h"
-#include "Soldier Control.h"
-#include "FileMan.h"
-#include "Strategic Movement.h"
-
 extern BOOLEAN gfPendingEnemies;
 
 UINT8 NumFreeEnemySlots();

@@ -1,22 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <memory.h>
-#include "Map Edgepoints.h"
-#include "Soldier Control.h"
-#include "pathai.h"
-#include "ai.h"
-#include "Map Information.h"
-#include "renderworld.h"
-#include "Isometric Utils.h"
-#include "debug.h"
-#include "Random.h"
-#include "strategic.h"
-#include "Animation Control.h"
-#include "Render Fun.h"
-#include "strategicmap.h"
-#endif
-
 // dynamic arrays that contain the valid gridno's for each edge
 INT16 *gps1stNorthEdgepointArray = NULL;
 INT16 *gps1stEastEdgepointArray = NULL;
@@ -1486,8 +1467,6 @@ UINT8 CalcMapEdgepointClassInsertionCode(INT16 sGridNo) {
 }
 
 #ifdef JA2BETAVERSION
-#include "worldman.h"
-#include "message.h"
 void ShowMapEdgepoints() {
   INT32 i, usIllegal1 = 0, usIllegal2 = 0;
   for (i = 0; i < gus1stNorthEdgepointArraySize; i++) {

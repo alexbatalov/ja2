@@ -1,12 +1,6 @@
 #ifndef __MESSAGE_H
 #define __MESSAGE_H
 
-//#include "sgp.h"
-#include "font.h"
-#include "Font Control.h"
-#include "types.h"
-#include "Fileman.h"
-
 struct stringstruct {
   STR16 pString16;
   INT32 iVideoOverlay;

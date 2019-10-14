@@ -1,33 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <memory.h>
-
-#include "types.h"
-
-#include "strategicmap.h"
-#include "overhead.h"
-#include "isometric utils.h"
-
-#include "soldier add.h"
-#include "soldier create.h"
-#include "Soldier Init List.h"
-#include "debug.h"
-#include "Random.h"
-#include "items.h"
-
-#include "cursors.h"
-
-#include "Map Information.h"
-#include "soldier profile.h"
-#include "Sys Globals.h"
-#include "EditorMercs.h"
-#include "Animation Data.h"
-#include "message.h"
-#include "Font Control.h"
-#endif
-
 BOOLEAN gfOriginalList = TRUE;
 
 SOLDIERINITNODE *gSoldierInitHead = NULL;

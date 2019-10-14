@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include <stdio.h>
-#include "types.h"
-#include "lighting.h"
-#include "Shade Table Util.h"
-#include "video.h"
-#include "WorldDat.h"
-#include "Fileman.h"
-#endif
-
 #define SHADE_TABLE_DIR "ShadeTables"
 
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];

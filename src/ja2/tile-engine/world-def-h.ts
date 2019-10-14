@@ -1,12 +1,6 @@
 #ifndef __WORLDDEF_H
 #define __WORLDDEF_H
 
-#include "vobject.h"
-#include "tiledef.h"
-#include "Soldier Control.h"
-#include "structure.h"
-#include "Handle Items.h"
-
 #define WORLD_TILE_X 40
 #define WORLD_TILE_Y 20
 #define WORLD_COLS 160
@@ -23,7 +17,6 @@
 // A macro that actually memcpy's over data and increments the pointer automatically
 // based on the size.  Works like a FileRead except with a buffer instead of a file pointer.
 // Used by LoadWorld() and child functions.
-#include <memory.h>
 #define LOADDATA(dst, src, size) \
   memcpy(dst, src, size); \
   src += size

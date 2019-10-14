@@ -1,14 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef _SELECTION_WIN_H_
 #define _SELECTION_WIN_H_
-
-#include "types.h"
-#include "vobject.h"
-
-#include "mousesystem.h"
-#include "Button System.h"
 
 #define CANCEL_ICON 0
 #define UP_ICON 1

@@ -1,38 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "JA2 All.h"
-#include "Encrypted File.h"
-#else
-#include "sgp.h"
-#include "screenids.h"
-#include "Timer Control.h"
-#include "sys globals.h"
-#include "fade screen.h"
-#include "sysutil.h"
-#include "vobject_blitters.h"
-#include "MercTextBox.h"
-#include "wcheck.h"
-#include "cursors.h"
-#include "font control.h"
-#include "mainmenuscreen.h"
-#include "cursor control.h"
-#include "render dirty.h"
-#include "music control.h"
-#include "GameSettings.h"
-#include "GameScreen.h"
-#include "SaveLoadScreen.h"
-#include "SaveLoadGame.h"
-#include "Options Screen.h"
-#include "English.h"
-#include "Gameloop.h"
-#include "Game Init.h"
-#include "Utilities.h"
-#include "WordWrap.h"
-#include "Font Control.h"
-#include "text.h"
-#include "Multi Language Graphic Utils.h"
-#include "Encrypted File.h"
-#endif
-
 #define MAINMENU_TEXT_FILE "LoadScreens\\MainMenu.edt"
 #define MAINMENU_RECORD_SIZE 80 * 2
 

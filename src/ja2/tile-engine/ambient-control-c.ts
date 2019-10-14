@@ -1,15 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "stdio.h"
-#include "sgp.h"
-#include "Ambient types.h"
-#include "fileman.h"
-#include "environment.h"
-#include "Sound Control.h"
-#include "Game Events.h"
-#endif
-
 AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
 INT16 gsNumAmbData = 0;
 

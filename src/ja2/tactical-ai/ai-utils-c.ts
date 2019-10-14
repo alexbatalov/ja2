@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "AI All.h"
-#else
-#include "ai.h"
-#include "Weapons.h"
-#include "opplist.h"
-#include "Points.h"
-#include "PathAI.h"
-#include "WorldMan.h"
-#include "AIInternals.h"
-#include "Items.h"
-#include "wcheck.h"
-#include "message.h"
-#include "los.h"
-#include "assignments.h"
-#include "Soldier Functions.h"
-#include "Points.h"
-#include "GameSettings.h"
-#include "Buildings.h"
-#endif
-
 //
 // CJC's DG->JA2 conversion notes
 //

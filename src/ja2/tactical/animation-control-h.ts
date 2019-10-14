@@ -1,10 +1,6 @@
 #ifndef __ANIMATION_CONTROL_H
 #define __ANIMATION_CONTROL_H
 
-// Header file for merc animation control
-#include "Soldier Control.h"
-#include "Animation Data.h"
-
 // Defines
 // #######################################################
 #define MAX_ANIMATIONS 320

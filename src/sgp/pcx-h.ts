@@ -1,9 +1,6 @@
 #ifndef __PCX_
 #define __PCX_
 
-#include "types.h"
-#include "himage.h"
-
 typedef struct {
   UINT8 ubManufacturer;
   UINT8 ubVersion;

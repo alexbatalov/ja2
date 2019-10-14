@@ -1,8 +1,6 @@
 #ifndef __AUTO_RESOLVE_H
 #define __AUTO_RESOLVE_H
 
-#include "types.h"
-
 void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY);
 
 // is the autoresolve active?

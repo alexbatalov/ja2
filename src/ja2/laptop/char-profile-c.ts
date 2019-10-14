@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "cursors.h"
-#include "CharProfile.h"
-#include "IMP AboutUs.h"
-#include "IMP Attribute Entrance.h"
-#include "IMP Attribute Finish.h"
-#include "IMP MainPage.h"
-#include "IMP HomePage.h"
-#include "IMPVideoObjects.h"
-#include "IMP Text System.h"
-#include "IMP Finish.h"
-#include "IMP Portraits.h"
-#include "IMP Voices.h"
-#include "IMP Personality Entrance.h"
-#include "IMP Attribute Selection.h"
-#include "IMP Personality Quiz.h"
-#include "IMP Begin Screen.h"
-#include "IMP Personality Finish.h"
-#include "IMPVideoObjects.h"
-#include "IMP Confirm.h"
-#include "messageboxscreen.h"
-#endif
-
 // BOOLEAN fIMPCompletedFlag = FALSE;
 BOOLEAN fReDrawCharProfile = FALSE;
 BOOLEAN fButtonPendingFlag = FALSE;

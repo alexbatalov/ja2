@@ -1,29 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Map Screen Interface Border.h"
-#include "Types.h"
-#include "vsurface.h"
-#include "mousesystem.h"
-#include "Button System.h"
-#include "sgp.h"
-#include "WCheck.h"
-#include "Utilities.h"
-#include "message.h"
-#include "sysutil.h"
-#include "mapscreen.h"
-#include "Render Dirty.h"
-#include "Map Screen Interface Map.h"
-#include "Map Screen Interface Border.h"
-#include "Map Screen Interface.h"
-#include "Map Screen Interface Map Inventory.h"
-#include "Map Screen Helicopter.h"
-#include "Text.h"
-#include "Campaign Types.h"
-#include "Strategic Town Loyalty.h"
-#include "strategicmap.h"
-#endif
-
 #define MAP_BORDER_X 261
 #define MAP_BORDER_Y 0
 

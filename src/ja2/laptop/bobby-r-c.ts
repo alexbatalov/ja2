@@ -1,24 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Laptop All.h"
-#else
-#include "laptop.h"
-#include "BobbyR.h"
-#include "BobbyRGuns.h"
-#include "Utilities.h"
-#include "WCheck.h"
-#include "WordWrap.h"
-#include "Cursors.h"
-#include "interface items.h"
-#include "Weapons.h"
-#include "Store Inventory.h"
-#include "Game Event Hook.h"
-#include "Game Clock.h"
-#include "LaptopSave.h"
-#include "Random.h"
-#include "Text.h"
-#include "Multi Language Graphic Utils.h"
-#endif
-
 #ifdef JA2TESTVERSION
 #define BR_INVENTORY_TURNOVER_DEBUG
 #endif

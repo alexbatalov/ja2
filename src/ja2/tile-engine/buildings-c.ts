@@ -1,18 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "Types.h"
-#include "Buildings.h"
-#include "Isometric Utils.h"
-#include "Pathai.h"
-#include "Structure Wrap.h"
-#include "Random.h"
-#include "Overhead.h"
-#include "Render Fun.h"
-#include "Strategicmap.h"
-#include "Sys Globals.h"
-#endif
-
 #define ROOF_LOCATION_CHANCE 8
 
 UINT8 gubBuildingInfo[WORLD_MAX];

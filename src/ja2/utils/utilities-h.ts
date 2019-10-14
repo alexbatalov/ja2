@@ -1,9 +1,6 @@
 #ifndef _UTILITIES_H_
 #define _UTILITIES_H_
 
-#include "Overhead types.h"
-#include "sgp.h"
-
 #define GETPIXELDEPTH() (gbPixelDepth)
 
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pPalette, SGPFILENAME ColFile);

@@ -1,9 +1,6 @@
 #ifndef __EXIT_GRIDS_H
 #define __EXIT_GRIDS_H
 
-#include "Fileman.h"
-#include "Worlddef.h"
-
 // for exit grids (object level)
 typedef struct {
   // if an item pool is also in same gridno, then this would be a separate levelnode

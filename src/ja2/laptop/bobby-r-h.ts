@@ -1,9 +1,6 @@
 #ifndef __BOBBYR_H
 #define __BOBBYR_H
 
-#include "Item Types.h"
-#include "Store Inventory.h"
-
 void GameInitBobbyR();
 BOOLEAN EnterBobbyR();
 void ExitBobbyR();

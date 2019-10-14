@@ -1,10 +1,6 @@
 #ifndef __AI_H
 #define __AI_H
 
-#include "types.h"
-#include "worlddef.h"
-#include "Soldier Control.h"
-
 #define TESTAICONTROL
 
 extern INT8 gubAIPathCosts[19][19];

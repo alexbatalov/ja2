@@ -29,12 +29,6 @@ CREATED:	Feb 16, 1999
 
 #ifdef _DEBUG
 
-#include <stdio.h>
-#include "types.h"
-#include "Language Defines.h"
-#include "debug.h"
-#include "Fileman.h"
-
 // Currently in JA2's _EnglishText, these tokens make up all of the
 // format specifiers that are actually used.  Feel free to add more,
 // but make sure you change NUM_TOKENS accordingly.  These tokens assume

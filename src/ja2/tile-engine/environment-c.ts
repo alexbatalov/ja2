@@ -1,30 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "sgp.h"
-#include "lighting.h"
-#include "environment.h"
-#include "renderworld.h"
-#include "sound control.h"
-#include "overhead.h"
-#include "Game Clock.h"
-#include "quests.h"
-#include "Ambient Control.h"
-#include "AimMembers.h"
-#include "Strategic Event Handler.h"
-#include "BobbyR.h"
-#include "mercs.h"
-#include "email.h"
-#include "Merc Hiring.h"
-#include "insurance Contract.h"
-#include "Strategic Merc Handler.h"
-#include "Game Events.h"
-#include "message.h"
-#include "opplist.h"
-#include "Random.h"
-#include "strategicmap.h"
-#endif
-
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
 BOOLEAN gfBasement = FALSE;

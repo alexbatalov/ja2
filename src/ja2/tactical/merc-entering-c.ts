@@ -1,36 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#else
-#include <stdio.h>
-#include <string.h>
-#include "wcheck.h"
-#include "stdlib.h"
-#include "debug.h"
-#include "soldier control.h"
-#include "weapons.h"
-#include "handle items.h"
-#include "worlddef.h"
-#include "worldman.h"
-#include "rotting corpses.h"
-#include "tile cache.h"
-#include "isometric utils.h"
-#include "animation control.h"
-#include "utilities.h"
-#include "game clock.h"
-#include "soldier create.h"
-#include "renderworld.h"
-#include "tile animation.h"
-#include "merc entering.h"
-#include "sound control.h"
-#include "strategic.h"
-#include "strategicmap.h"
-#include "Handle UI.h"
-#include "squads.h"
-#include "english.h"
-#include "cursors.h"
-#include "cursor control.h"
-#endif
-
 #define MAX_MERC_IN_HELI 20
 #define MAX_HELI_SCRIPT 30
 #define ME_SCRIPT_DELAY 100

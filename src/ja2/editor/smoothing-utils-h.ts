@@ -1,10 +1,6 @@
-#include "BuildDefines.h"
-
 #ifdef JA2EDITOR
 #ifndef __SMOOTHING_UTILS_H
 #define __SMOOTHING_UTILS_H
-
-#include "worlddef.h"
 
 // Use these values when specifically replacing a wall with new type.
 // Wall tile types

@@ -14,46 +14,6 @@
  * Written by Derek Beland, April 14, 1997
  *
  ***************************************************************************************/
-#ifdef PRECOMPILEDHEADERS
-#include "TileEngine All.h"
-#else
-#include "math.h"
-#include <stdio.h>
-#include <errno.h>
-
-#include "worlddef.h"
-#include "renderworld.h"
-#include "vsurface.h"
-#include "input.h"
-#include "sysutil.h"
-#include "wchar.h"
-#include "video.h"
-#include "vobject_blitters.h"
-#include "debug.h"
-#include "wcheck.h"
-#include "worldman.h"
-#include "jascreens.h"
-#include "edit_sys.h"
-#include "Isometric Utils.h"
-#include "line.h"
-#include "Animation Control.h"
-#include "Animation Data.h"
-#include "Timer Control.h"
-#include "Radar Screen.h"
-#include "Render Dirty.h"
-#include "Font Control.h"
-#include "Sys Globals.h"
-#include "Render Dirty.h"
-#include "tiledef.h"
-#include "lighting.h"
-#include "Structure Internals.h"
-#include "structure wrap.h"
-#include "Shade Table Util.h"
-#include "rotting corpses.h"
-#include "Fileman.h"
-#include "environment.h"
-#endif
-
 #define LVL1_L1_PER (50)
 #define LVL1_L2_PER (50)
 

@@ -1,38 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Tactical All.h"
-#include "PreBattle Interface.h"
-#else
-#include "sgp.h"
-#include "air raid.h"
-#include "game event hook.h"
-#include "game clock.h"
-#include "auto bandage.h"
-#include "strategicmap.h"
-#include "PreBattle Interface.h"
-#include "screenids.h"
-#include "jascreens.h"
-#include "random.h"
-#include "overhead types.h"
-#include "sound control.h"
-#include "timer control.h"
-#include "dialogue control.h"
-#include "overhead.h"
-#include "message.h"
-#include "isometric utils.h"
-#include "soldier macros.h"
-#include "worldman.h"
-#include "los.h"
-#include "math.h"
-#include "explosion control.h"
-#include "interface.h"
-#include "music control.h"
-#include "Campaign Types.h"
-#include "GameSettings.h"
-#include "text.h"
-#include "Morale.h"
-#include "Map screen helicopter.h"
-#endif
-
 #define SCRIPT_DELAY 10
 #define AIR_RAID_SAY_QUOTE_TIME 3000
 #define AIR_RAID_DIVE_INTERVAL 10000

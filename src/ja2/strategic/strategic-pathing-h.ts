@@ -1,8 +1,6 @@
 #ifndef __STRATPATH_H
 #define __STRATPATH_H
 
-#include "Map Screen Interface Map.h"
-
 // directions of movement for badsector determination ( blocking off of a sector exit from foot or vehicle travel)
 
 // Shortest Path Defines

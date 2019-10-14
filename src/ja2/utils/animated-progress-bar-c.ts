@@ -1,17 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Utils All.h"
-#else
-#include "types.h"
-#include "Animated ProgressBar.h"
-#include "MemMan.h"
-#include "debug.h"
-#include "Font Control.h"
-#include "vsurface.h"
-#include "video.h"
-#include "Render Dirty.h"
-#include "music control.h"
-#endif
-
 double rStart, rEnd;
 double rActual;
 

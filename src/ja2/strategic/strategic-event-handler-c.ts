@@ -1,35 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "Strategic Event Handler.h"
-#include "MemMan.h"
-#include "message.h"
-#include "Item Types.h"
-#include "Items.h"
-#include "Handle Items.h"
-#include "LaptopSave.h"
-#include "Tactical Save.h"
-#include "StrategicMap.h"
-#include "Quests.h"
-#include "Soldier Profile.h"
-#include "Game Event Hook.h"
-#include "Game Clock.h"
-#include "Interface Dialogue.h"
-#include "Random.h"
-#include "Overhead.h"
-#include "Strategic Town Loyalty.h"
-#include "Soldier Init List.h"
-#include "SaveLoadMap.h"
-#include "Worldman.h"
-#include "Soldier Create.h"
-#include "Soldier Add.h"
-#include "Opplist.h"
-#include "Renderworld.h"
-#include "Soldier Profile.h"
-#include "email.h"
-#endif
-#include "BobbyRMailOrder.h"
-
 #define MEDUNA_ITEM_DROP_OFF_GRIDNO 10959
 #define MEDUNA_ITEM_DROP_OFF_SECTOR_X 3
 #define MEDUNA_ITEM_DROP_OFF_SECTOR_Y 14

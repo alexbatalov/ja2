@@ -1,28 +1,3 @@
-#ifdef PRECOMPILEDHEADERS
-#include "Strategic All.h"
-#else
-#include "sgp.h"
-#include "meanwhile.h"
-#include "PreBattle Interface.h"
-#include "messageboxscreen.h"
-#include "strategicmap.h"
-#include "fade screen.h"
-#include "screenids.h"
-#include "jascreens.h"
-#include "npc.h"
-#include "game event hook.h"
-#include "game clock.h"
-#include "tactical save.h"
-#include "soldier profile.h"
-#include "overhead.h"
-#include "dialogue control.h"
-#include "gameloop.h"
-#include "npc.h"
-#include "assignments.h"
-#include "strategic.h"
-#include "text.h"
-#endif
-
 #define MAX_MEANWHILE_PROFILES 10
 
 INT8 gzMeanwhileStr[][30] = {

@@ -1,8 +1,6 @@
 #ifndef __TIMER_
 #define __TIMER_
 
-#include "types.h"
-
 typedef UINT32 TIMER;
 
 #define MAIN_TIMER_ID 1
