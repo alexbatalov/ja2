@@ -23,8 +23,6 @@
 // Uncomment this to disable the startup of sound hardware
 //#define SOUND_DISABLE
 
-#pragma pack(push, 1)
-
 // WAV file chunk definitions
 typedef struct {
   // General chunk header
@@ -58,8 +56,6 @@ typedef struct {
   UINT32 uiChunkSize; // Chunk length
 } WAVDATA;
 
-#pragma pack(pop)
-
 #define WAV_CHUNK_RIFF 0
 #define WAV_CHUNK_FMT 1
 #define WAV_CHUNK_DATA 2
@@ -80,8 +76,6 @@ CHAR8 *cWAVChunks[3] = {
 #else
 #define SOUND_MAX_CHANNELS 32 // number of mixer channels
 #endif
-
-#pragma message("TEMP!")
 
 #define SOUND_DEFAULT_MEMORY (8048 * 1024) // default memory limit
 #define SOUND_DEFAULT_THRESH (256 * 8024) // size for sample to be double-buffered

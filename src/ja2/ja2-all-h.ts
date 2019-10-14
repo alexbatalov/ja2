@@ -1,8 +1,6 @@
 #ifndef __JA2_ALL_H
 #define __JA2_ALL_H
 
-#pragma message("GENERATED PCH FOR JA2 PROJECT.")
-
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>

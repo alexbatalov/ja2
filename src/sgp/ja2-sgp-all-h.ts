@@ -1,8 +1,6 @@
 #ifndef __JA2_SGP_ALL_H
 #define __JA2_SGP_ALL_H
 
-#pragma message("GENERATED PCH FOR JA2 SGP PROJECT.")
-
 //#ifndef INITGUID
 //	#define INITGUID
 //#endif

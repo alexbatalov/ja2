@@ -4,16 +4,6 @@
 #ifndef _SIRTECH_TYPES_
 #define _SIRTECH_TYPES_
 
-#ifdef JA2
-#ifdef RELEASE_WITH_DEBUG_INFO
-
-// For JA2 Release with debug info build, disable these warnigs messages
-#pragma warning(disable : 4201 4214 4057 4100 4514 4115 4711 4244)
-
-#endif
-
-#endif
-
 // build defines header....
 #include "builddefines.h"
 

@@ -1,8 +1,6 @@
 #ifndef __UTILS_ALL_H
 #define __UTILS_ALL_H
 
-#pragma message("GENERATED PCH FOR UTILS PROJECT.")
-
 #include "types.h"
 #include "Animated ProgressBar.h"
 #include "MemMan.h"

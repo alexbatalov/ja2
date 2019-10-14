@@ -1,8 +1,6 @@
 #ifndef __STRATEGIC_ALL_H
 #define __STRATEGIC_ALL_H
 
-#pragma message("GENERATED PCH FOR STRATEGIC PROJECT.")
-
 #include <stdio.h>
 #include "types.h"
 #include "english.h"

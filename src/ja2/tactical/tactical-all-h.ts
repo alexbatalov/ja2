@@ -1,8 +1,6 @@
 #ifndef __TACTICAL_ALL_H
 #define __TACTICAL_ALL_H
 
-#pragma message("GENERATED PCH FOR TACTICAL PROJECT.")
-
 #include "sgp.h"
 #include "air raid.h"
 #include "game event hook.h"

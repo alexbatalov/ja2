@@ -1,8 +1,6 @@
 #ifndef __AI_ALL_H
 #define __AI_ALL_H
 
-#pragma message("GENERATED PCH FOR TACTICAL AI PROJECT.")
-
 #include "AIList.h"
 #include "Overhead.h"
 #include "debug.h"

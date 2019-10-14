@@ -2524,8 +2524,6 @@ void FatalError(UINT8 *pError, ...) {
  *
  *********************************************************************************/
 
-#pragma pack(push, 1)
-
 typedef struct {
   UINT8 ubIDLength;
   UINT8 ubColorMapType;
@@ -2540,8 +2538,6 @@ typedef struct {
   UINT8 ubBitsPerPixel;
   UINT8 ubImageDescriptor;
 } TARGA_HEADER;
-
-#pragma pack(pop)
 
 void SnapshotSmall(void) {
   INT32 iCountX, iCountY;

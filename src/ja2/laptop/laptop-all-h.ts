@@ -1,8 +1,6 @@
 #ifndef __LAPTOP_ALL_H
 #define __LAPTOP_ALL_H
 
-#pragma message("GENERATED PCH FOR LAPTOP PROJECT.")
-
 #include "Types.h"
 #include "laptop.h"
 #include "aim.h"

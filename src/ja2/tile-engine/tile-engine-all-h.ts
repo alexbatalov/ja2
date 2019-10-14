@@ -1,8 +1,6 @@
 #ifndef __TILEENGINE_ALL_H
 #define __TILEENGINE_ALL_H
 
-#pragma message("GENERATED PCH FOR TILEENGINE PROJECT.")
-
 #include <stdio.h>
 #include "sgp.h"
 #include "Ambient types.h"

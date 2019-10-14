@@ -5,8 +5,6 @@
 
 #ifdef JA2EDITOR
 
-#pragma message("GENERATED PCH FOR EDITOR PROJECT.")
-
 // external
 #include "types.h"
 #include <stdio.h>
