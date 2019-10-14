@@ -623,16 +623,8 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
 
     // NumMessage("Threat Range = ",iThreatRange);
 
-#ifdef DEBUGCOVER
-//		DebugAI( String( "FBNC: Opponent %d believed to be at gridno %d (mine %d, public %d)\n",iLoop,sThreatLoc,*pusLastLoc,PublicLastKnownOppLoc[pSoldier->bTeam][iLoop] ) );
-#endif
-
     // if this opponent is believed to be too far away to really be a threat
     if (iThreatRange > iMaxThreatRange) {
-#ifdef DEBUGCOVER
-//			AINameMessage(pOpponent,"is too far away to be a threat",1000);
-#endif
-
       continue; // check next opponent
     }
 
@@ -689,10 +681,6 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
   }
 
   iCurrentCoverValue -= (iCurrentCoverValue / 10) * NumberOfTeamMatesAdjacent(pSoldier, pSoldier->sGridNo);
-
-#ifdef DEBUGCOVER
-//	AINumMessage("Search Range = ",iSearchRange);
-#endif
 
   // determine maximum horizontal limits
   sMaxLeft = min(iSearchRange, (pSoldier->sGridNo % MAXCOL));

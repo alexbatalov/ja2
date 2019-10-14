@@ -82,12 +82,6 @@ HIMAGE CreateImage(SGPFILENAME ImageFile, UINT16 fContents) {
 
   // Determine if resource exists before creating image structure
   if (!FileExists(ImageFile)) {
-    // If in debig, make fatal!
-#ifdef JA2
-#ifdef _DEBUG
-    // FatalError( "Resource file %s does not exist.", ImageFile );
-#endif
-#endif
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_2, String("Resource file %s does not exist.", ImageFile));
     return NULL;
   }

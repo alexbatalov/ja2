@@ -1345,21 +1345,6 @@ void HandleCriticalHitForVehicleInLocation(UINT8 ubID, INT16 sDmg, INT16 sGridNo
   BOOLEAN fDestroyVehicle = FALSE;
   BOOLEAN fMadeCorpse = FALSE;
 
-#if 0
-		{
-			// injure someone inside
-			iRand = Random( iSeatingCapacities[ pVehicleList[ ubID ].ubVehicleType ] );
-			if( pVehicleList[ ubID ].pPassengers[ iRand ] )
-			{
-				// hurt this person
-				InjurePersonInVehicle( ( INT16 )ubID, pVehicleList[ ubID ].pPassengers[ iRand ], ( UINT8 )( sDmg / 2 ) );
-			}
-		}
-
-		ScreenMsg( FONT_BLACK, MSG_INTERFACE, sCritLocationStrings[ iCrit ] );
-	}
-#endif
-
   pSoldier = GetSoldierStructureForVehicle(ubID);
 
   if (sDmg > pSoldier->bLife) {

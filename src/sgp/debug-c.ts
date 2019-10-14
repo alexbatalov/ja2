@@ -467,17 +467,6 @@ void _FailMessage(UINT8 *pString, UINT32 uiLineNum, UINT8 *pSourceFile) {
     }
   }
 
-#if 0
-	if( !FontObjs[0] )
-	{
-  //Font manager hasn't yet been initialized so use the windows error system
-		sprintf( gubErrorText, "Assertion Failure -- Line %d in %s", uiLineNum, pSourceFile );
-		MessageBox( NULL, gubErrorText, "Jagged Alliance 2", MB_OK );
-		gfProgramIsRunning = FALSE;
-		return;
-	}
-#endif
-
   // Kris:
   // NASTY HACK, THE GAME IS GOING TO DIE ANYWAY, SO WHO CARES WHAT WE DO.
   // This will actually bring up a screen that prints out the assert message

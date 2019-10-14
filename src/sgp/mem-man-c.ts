@@ -36,10 +36,6 @@
 #endif
 //#endif
 
-#ifdef _DEBUG
-//#define DEBUG_MEM_LEAKS // turns on tracking of every MemAlloc and MemFree!
-#endif
-
 //**************************************************************************
 //
 //				Variables

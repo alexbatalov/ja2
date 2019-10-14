@@ -646,28 +646,6 @@ BOOLEAN HandleTextInput(InputAtom *Event) {
     PlayJA2Sample(REMOVING_TEXT, RATE_11025, BTNVOLUME, 1, MIDDLEPAN);
     return FALSE;
   }
-  // For any number of reasons, these ALT and CTRL combination key presses
-  // will be processed externally
-#if 0
-	if( Event->usKeyState & CTRL_DOWN  )
-	{
-		if( Event->usParam == 'c' || Event->usParam == 'C' )
-		{
-			ExecuteCopyCommand();
-			return TRUE;
-		}
-		else if( Event->usParam == 'x' || Event->usParam == 'X' )
-		{
-			ExecuteCutCommand();
-			return TRUE;
-		}
-		else if( Event->usParam == 'v' || Event->usParam == 'V' )
-		{
-			ExecutePasteCommand();
-			return TRUE;
-		}
-	}
-#endif
   if (Event->usKeyState & ALT_DOWN || Event->usKeyState & CTRL_DOWN && Event->usParam != DEL)
     return FALSE;
   // F1-F12 regardless of state are processed externally as well.

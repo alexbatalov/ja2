@@ -6,10 +6,6 @@
 //#define		_PHYSICSSUBSYSTEM_DEBUG
 //#define		_AISUBSYSTEM_DEBUG
 
-#ifdef JA2BETAVERSION
-//  #define			_ANIMSUBSYSTEM_DEBUG
-#endif
-
 void LiveMessage(CHAR8 *strMessage);
 
 #ifdef _ANIMSUBSYSTEM_DEBUG

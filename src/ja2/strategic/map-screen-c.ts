@@ -8891,23 +8891,6 @@ void MapScreenDefaultOkBoxCallback(UINT8 bExitValue) {
   return;
 }
 
-#ifdef JA2DEMO
-/*
-void MapScreenDemoOkBoxCallback( UINT8 bExitValue )
-{
-        // yes, load the game
-  if( ( bExitValue == MSG_BOX_RETURN_OK ) || ( bExitValue == MSG_BOX_RETURN_NO ) )
-        {
-
-                fShowingMapDisableBox = FALSE;
-                //SetPendingNewScreen( GAME_SCREEN );
-        }
-
-        return;
-}
-*/
-#endif
-
 void MapSortBtnCallback(GUI_BUTTON *btn, INT32 reason) {
   INT32 iValue = 0;
 

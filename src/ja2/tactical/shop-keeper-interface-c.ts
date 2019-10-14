@@ -1349,11 +1349,6 @@ void GetShopKeeperInterfaceUserInput() {
         case ESC:
           // clean exits - does quotes, shuts up shopkeeper, etc.
           ExitSKIRequested();
-
-#ifdef JA2TESTVERSION
-          // Instant exit - doesn't clean up much
-//					gfSKIScreenExit = TRUE;
-#endif
           break;
 
         case 'x':

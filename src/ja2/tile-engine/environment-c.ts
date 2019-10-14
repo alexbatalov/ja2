@@ -197,30 +197,6 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
     // Polled weather stuff...
     // ONly do indooors
     if (!gfBasement && !gfCaves) {
-#if 0
-			if ( guiEnvWeather & ( WEATHER_FORECAST_THUNDERSHOWERS | WEATHER_FORECAST_SHOWERS ) )
-			{
-				if ( guiRainLoop == NO_SAMPLE )
-				{
-					guiRainLoop	= PlayJA2Ambient( RAIN_1, MIDVOLUME, 0 );
-				}
-
-				// Do lightning if we want...
-				if ( guiEnvWeather & ( WEATHER_FORECAST_THUNDERSHOWERS ) )
-				{
-					EnvDoLightning( );
-				}
-
-			}
-			else
-			{
-				if ( guiRainLoop != NO_SAMPLE )
-				{
-					SoundStop( guiRainLoop );
-					guiRainLoop = NO_SAMPLE;
-				}
-			}
-#endif
     }
 
     if (gfDoLighting && fCheckForLights) {
@@ -229,21 +205,6 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
 
       // ONly do indooors
       if (!gfBasement && !gfCaves) {
-        // Rain storms....
-#if 0
-				if ( guiEnvWeather & ( WEATHER_FORECAST_THUNDERSHOWERS | WEATHER_FORECAST_SHOWERS ) )
-				{
-					// Thunder showers.. make darker
-					if ( guiEnvWeather & ( WEATHER_FORECAST_THUNDERSHOWERS ) )
-					{
-						ubLightAdjustFromWeather = (UINT8)(__min( gubEnvLightValue+2, NORMAL_LIGHTLEVEL_NIGHT ));
-					}
-					else
-					{
-						ubLightAdjustFromWeather = (UINT8)(__min( gubEnvLightValue+1, NORMAL_LIGHTLEVEL_NIGHT ));
-					}
-				}
-#endif
       }
 
       LightSetBaseLevel(ubLightAdjustFromWeather);

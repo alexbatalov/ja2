@@ -1187,52 +1187,6 @@ ROTTING_CORPSE *FindCorpseBasedOnStructure(INT16 sGridNo, STRUCTURE *pStructure)
 }
 
 void CorpseHit(INT16 sGridNo, UINT16 usStructureID) {
-#if 0
-	STRUCTURE				*pStructure, *pBaseStructure;
-	ROTTING_CORPSE	*pCorpse = NULL;
-	INT16						sBaseGridNo;
-	
-	pStructure = FindStructureByID( sGridNo, usStructureID );
-	
-	// Get base....
-	pBaseStructure = FindBaseStructure( pStructure );
-
-	// Find base gridno...
-	sBaseGridNo = pBaseStructure->sGridNo;
-
-	// Get corpse ID.....
-	pCorpse = FindCorpseBasedOnStructure( sBaseGridNo, pBaseStructure );
-
-	if ( pCorpse == NULL )
-	{
-#ifdef JA2TESTVERSION
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Bullet hit corpse but corpse cannot be found at: %d", sBaseGridNo );
-#endif
-		return;
-	}
-
-	// Twitch the bugger...
-#ifdef JA2BETAVERSION
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Corpse hit" );
-#endif
-
-	if ( GridNoOnScreen( sBaseGridNo ) )
-	{
-		// Twitch....
-		// Set frame...
-		SetAniTileFrame( 	pCorpse->pAniTile, 1 );
-
-		// Go reverse...
-		pCorpse->pAniTile->uiFlags |= ( ANITILE_BACKWARD | ANITILE_PAUSE_AFTER_LOOP );
-
-		// Turn off pause...
-		pCorpse->pAniTile->uiFlags &= (~ANITILE_PAUSED);
-	}
-
-	// PLay a sound....
-	PlayJA2Sample( (UINT32)( BULLET_IMPACT_2 ), RATE_11025, SoundVolume( MIDVOLUME, sGridNo ), 1, SoundDir( sGridNo ) );
-
-#endif
 }
 
 void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {

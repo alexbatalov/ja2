@@ -1755,18 +1755,6 @@ BOOLEAN EVENT_InitNewSoldierAnim(SOLDIERTYPE *pSoldier, UINT16 usNewState, UINT1
 
   CheckForFreeupFromHit(pSoldier, uiOldAnimFlags, uiNewAnimFlags, pSoldier->usOldAniState, usNewState);
 
-  // CHECK IF WE ARE AT AN IDLE ACTION
-#if 0
-	if ( gAnimControl[ usNewState ].uiFlags & ANIM_IDLE )
-	{
-		pSoldier->bAction = ACTION_DONE;
-	}
-	else
-	{
-		pSoldier->bAction = ACTION_BUSY;
-	}
-#endif
-
   // Set current frame
   pSoldier->usAniCode = usStartingAniCode;
 
@@ -4306,33 +4294,6 @@ UINT8 gRedGlowR[] = {
   225,
 };
 
-#if 0
-UINT8	gOrangeGlowR[]=
-{
-	0,			// Normal shades
-	20,
-	40,
-	60,
-	80,
-	100,
-	120,
-	140,
-	160,
-	180,
-
-	0,		// For gray palettes
-	20,
-	40,
-	60,
-	80,
-	100,
-	120,
-	140,
-	160,
-	180,
-};
-#endif
-
 UINT8 gOrangeGlowR[] = {
   0, // Normal shades
   25,
@@ -4356,33 +4317,6 @@ UINT8 gOrangeGlowR[] = {
   200,
   225,
 };
-
-#if 0
-UINT8	gOrangeGlowG[]=
-{
-	0,			// Normal shades
-	5,
-	10,
-	25,
-	30,
-	35,
-	40,
-	45,
-	50,
-	55,
-
-	0,		// For gray palettes
-	5,
-	10,
-	25,
-	30,
-	35,
-	40,
-	45,
-	50,
-	55,
-};
-#endif
 
 UINT8 gOrangeGlowG[] = {
   0, // Normal shades
@@ -5385,10 +5319,6 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *pSoldier, INT8 bHeight, INT16 sLifeDeduct, 
       sChanceToDrop -= 30;
     }
 
-#ifdef JA2TESTVERSION
-    // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Chance To Drop Weapon: str: %d Dam: %d Chance: %d", sTestOne, sTestTwo, sChanceToDrop );
-#endif
-
     if (Random(100) < (UINT16)sChanceToDrop) {
       // OK, drop item in main hand...
       if (pSoldier->inv[HANDPOS].usItem != NOTHING) {
@@ -6060,29 +5990,6 @@ INT16 GetDirectionFromXY(INT16 sXPos, INT16 sYPos, SOLDIERTYPE *pSoldier) {
   return atan8(sXPos2, sYPos2, sXPos, sYPos);
 }
 
-#if 0
-UINT8  atan8( INT16 x1, INT16 y1, INT16 x2, INT16 y2 )
-{
-static int trig[8] = { 2, 3, 4, 5, 6, 7, 8, 1 };
-// returned values are N=1, NE=2, E=3, SE=4, S=5, SW=6, W=7, NW=8
-	double dx=(x2-x1);
-	double dy=(y2-y1);
-	double a;
-	int i,k;
-	if (dx==0)
-		dx=0.00390625; // 1/256th
-#define PISLICES (8)
-	a=(atan2(dy,dx) + PI/PISLICES)/(PI/(PISLICES/2));
-	i=(int)a;
-	if (a>0)
-		k=i; else
-	if (a<0)
-		k=i+(PISLICES-1); else
-		k=0;
-	return(trig[k]);
-}
-#endif
-
 //#if 0
 UINT8 atan8(INT16 sXPos, INT16 sYPos, INT16 sXPos2, INT16 sYPos2) {
   DOUBLE test_x = sXPos2 - sXPos;
@@ -6362,23 +6269,6 @@ void SendGetNewSoldierPathEvent(SOLDIERTYPE *pSoldier, UINT16 sDestGridNo, UINT1
 }
 
 void SendChangeSoldierStanceEvent(SOLDIERTYPE *pSoldier, UINT8 ubNewStance) {
-#if 0
-	EV_S_CHANGESTANCE			SChangeStance;
-
-#ifdef NETWORKED
-	if( !IsTheSolderUnderMyControl( pSoldier->ubID) )
-		return;
-#endif
-
-	SChangeStance.ubNewStance   = ubNewStance;
-	SChangeStance.usSoldierID  = pSoldier->ubID;
-	SChangeStance.sXPos				= pSoldier->sX;
-	SChangeStance.sYPos				= pSoldier->sY;
-	SChangeStance.uiUniqueId = pSoldier -> uiUniqueSoldierIdValue;
-
-	AddGameEvent( S_CHANGESTANCE, 0, &SChangeStance );
-#endif
-
   ChangeSoldierStance(pSoldier, ubNewStance);
 }
 

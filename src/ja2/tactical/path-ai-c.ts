@@ -787,33 +787,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
     }
 #endif
 
-#ifdef VEHICLE
-    /*
-    if (fTurnSlow)
-    {
-            if (pCurrPtr->pNext[0] == 0)
-            {
-                    if (fReverse)
-                    {
-                            iLastDir = gOppositeDirection[s->bDirection];
-                    }
-                    else
-                    {
-                            iLastDir = s->bDirection;
-                    }
-                    // start prev-to-last dir at same as current (could cause a problem)
-                    iPrevToLastDir = iLastDir;
-            }
-            else
-            {
-                    iPrevToLastDir = trailTree[trailTree[pCurrPtr->sPathNdx].nextLink].dirDelta;
-                    iLastDir = trailTree[pCurrPtr->sPathNdx].dirDelta;
-            }
-
-    }
-    */
-#endif
-
     if (gubNPCAPBudget) {
       ubCurAPCost = pCurrPtr->ubTotalAPCost;
     }

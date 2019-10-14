@@ -2483,37 +2483,6 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
     iChance -= 25 * ((MIN_TANK_RANGE - iRange) / CELL_X_SIZE);
   }
 
-  // add camo effects
-
-#if 0
-	if ((victim = WhoIsThere(sGridNo)) < NOBODY)
-	 {
-		// if victim is 5 or more tiles away and camouflaged, reduce
-		// chance to hit by 5%  (ALREADY HAVE THIS INFO)
-		if (range > 75 && vicpSoldier->camouflage)
-		 {
-			switch(vicpSoldier->terrtype)
-			{
-			 case GROUNDTYPE:
-			 case SANDTYPE  :
-			 case GRASSTYPE :
-			 case TGRASSTYPE:
-			 case DGRASSTYPE:
-			 case ROUGHTYPE : iChance += CAMOUFLAGE_TO_HIT_PENALTY;
-						break;
-
-			 case FLOORTYPE :
-			 case LAKETYPE  :
-			 case OCEANTYPE : break;
-
-#ifdef BETAVERSION
-			 default        : NumMessage("CHANCE TO HIT ERROR: Unknown camo terrtype ",vicpSoldier->terrtype);
-#endif
-			}
-		 }
-	 }
-#endif
-
   // IF CHANCE EXISTS, BUT SHOOTER IS INJURED
   if ((iChance > 0) && (pSoldier->bLife < pSoldier->bLifeMax)) {
     // if bandaged, give 1/2 of the bandaged life points back into equation

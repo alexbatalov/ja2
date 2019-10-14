@@ -178,24 +178,15 @@ void ProcessTacticalSchedule(UINT8 ubScheduleID) {
   // Now, determine which time in this schedule that we are processing.
   fAutoProcess = FALSE;
   if (guiCurrentScreen != GAME_SCREEN) {
-#ifdef JA2TESTVERSION
-    // ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Schedule callback occurred outside of tactical -- Auto processing!" );
-#endif
     fAutoProcess = TRUE;
   } else {
     for (iScheduleIndex = 0; iScheduleIndex < MAX_SCHEDULE_ACTIONS; iScheduleIndex++) {
       if (pSchedule->usTime[iScheduleIndex] == GetWorldMinutesInDay()) {
-#ifdef JA2TESTVERSION
-        // ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Processing schedule on time -- AI processing!" );
-#endif
         break;
       }
     }
     if (iScheduleIndex == MAX_SCHEDULE_ACTIONS) {
       fAutoProcess = TRUE;
-#ifdef JA2TESTVERSION
-      // ScreenMsg( FONT_RED, MSG_TESTVERSION, L"Possible timewarp causing schedule callback to occur late -- Auto processing!" );
-#endif
     }
   }
   if (fAutoProcess) {

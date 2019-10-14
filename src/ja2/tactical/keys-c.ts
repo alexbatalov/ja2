@@ -922,9 +922,6 @@ BOOLEAN ModifyDoorStatus(INT16 sGridNo, BOOLEAN fOpen, BOOLEAN fPerceivedOpen) {
   }
 
   if (pBaseStructure == NULL) {
-#if 0
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Door structure data at %d was not found", sGridNo );
-#endif
     return FALSE;
   }
 
@@ -1025,9 +1022,6 @@ BOOLEAN IsDoorOpen(INT16 sGridNo) {
   }
 
   if (pBaseStructure == NULL) {
-#if 0
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Door structure data at %d was not found", sGridNo );
-#endif
     return FALSE;
   }
 
@@ -1238,9 +1232,6 @@ void SyncronizeDoorStatusToStructureData(DOOR_STATUS *pDoorStatus) {
   }
 
   if (pBaseStructure == NULL) {
-#if 0
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Door structure data at %d was not found", pDoorStatus->sGridNo );
-#endif
     return;
   }
 
@@ -1308,9 +1299,6 @@ void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fUseP
   }
 
   if (pBaseStructure == NULL) {
-#if 0
-		ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Door structure data at %d was not found", pDoorStatus->sGridNo );
-#endif
     return;
   }
 

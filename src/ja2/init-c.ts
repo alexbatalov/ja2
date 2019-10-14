@@ -59,10 +59,6 @@ extern BOOLEAN GetCDromDriveLetter(STR8 pString);
 extern BOOLEAN gfUseConsecutiveQuickSaveSlots;
 #endif
 
-#if defined(GERMAN) && !defined(_DEBUG)
-//#define LASERLOCK_ENABLED
-#endif
-
 #ifdef LASERLOCK_ENABLED
 int LASERLOK_Init(HINSTANCE hInstance);
 int LASERLOK_Run();

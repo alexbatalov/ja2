@@ -2434,58 +2434,6 @@ void CreateTopMessage(UINT32 uiSurface, UINT8 ubType, UINT16 *psString) {
       break;
   }
 
-    // Update progress bar!
-#if 0
-	if ( ubType == COMPUTER_TURN_MESSAGE )
-	{
-		INT32		cnt1, iLength;
-		INT16		usNumStepsPerEnemy;
-
-		if ( gfProgBarActive )
-		{				
-			//usNumStepsPerEnemy = ( PROG_BAR_LENGTH / gubProgNumEnemies );
-
-			// Alrighty, do some fun stuff!
-
-			// Render end peice
-			sBarX = PROG_BAR_START_X;
-			BltVideoObjectFromIndex( uiSurface, uiBAR, 3, sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL );
-
-			// Determine Length
-		//	iLength   = (gubProgCurEnemy ) * usNumStepsPerEnemy;
-
-			cnt1 = 0;
-			cnt2 = 0;
-
-			while( cnt1 < iLength )
-			{
-				sBarX++;
-
-				// Check sBarX, ( just as a precaution )
-				if ( sBarX > 640 )
-				{
-					break;
-				}
-
-				BltVideoObjectFromIndex( uiSurface, uiBAR, (INT16)( 4 + cnt2 ), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL );
-
-				cnt1++;
-				cnt2++;
-
-				if ( cnt2 == 10 )
-				{
-					cnt2 = 0;
-				}
-			}
-
-			//gubProgNumEnemies = ubNum;
-			//gubProgCurEnemy		= 0;
-
-
-		}
-	}
-#endif
-
   if (gGameOptions.fTurnTimeLimit) {
     if (ubType == PLAYER_TURN_MESSAGE || ubType == PLAYER_INTERRUPT_MESSAGE) {
       fDoLimitBar = TRUE;

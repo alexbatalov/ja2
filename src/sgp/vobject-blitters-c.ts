@@ -8275,52 +8275,6 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransShadowZNB(UINT16 *pBuffer, UINT32 uiDestPit
   return TRUE;
 }
 
-#if 0
-
-BlitNTL4:
-
-		// TEST FOR Z FIRST!
-		mov		ax, [ebx]
-		cmp		ax, usZValue
-		ja		BlitNTL8
-
-		// Write it NOW!
-		jmp		BlitNTL7
-
-BlitNTL8:
-
-		test	uiLineFlag, 1
-		jz		BlitNTL6
-
-		test	edi, 2
-		jz		BlitNTL5
-		jmp		BlitNTL9
-
-BlitNTL6:
-		test	edi, 2
-		jnz		BlitNTL5
-
-BlitNTL7:
-
-		// Write normal z value
-		mov		ax, usZValue
-		mov		[ebx], ax
-		jmp   BlitNTL10
-
-BlitNTL9:
-
-		// Write high z
-		mov		ax, 32767
-		mov		[ebx], ax
-
-BlitNTL10:
-
-		xor		eax, eax
-		mov		al, [esi]
-		mov		ax, [edx+eax*2]
-		mov		[edi], ax
-#endif
-
 /**********************************************************************************************
  Blt8BPPDataTo16BPPBufferTransShadowZNBObscured
 

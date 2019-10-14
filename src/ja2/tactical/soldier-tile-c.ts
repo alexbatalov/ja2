@@ -295,18 +295,6 @@ INT8 TileIsClear(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT8 bLe
       pSoldier->fBlockedByAnotherMerc = FALSE;
       return MOVE_TILE_STATIONARY_BLOCKED;
     } else {
-#if 0
-				// Check if there is a reserved marker here at least....
-				sNewGridNo = NewGridNo( sGridNo, DirectionInc( bDirection ) );
-
-				if ( ( gpWorldLevelData[ sNewGridNo ].uiFlags & MAPELEMENT_MOVEMENT_RESERVED ) )
-				{
-					if ( gpWorldLevelData[ sNewGridNo ].ubReservedSoldierID != pSoldier->ubID )
-					{
-						return( MOVE_TILE_TEMP_BLOCKED );
-					}
-				}
-#endif
     }
   }
 

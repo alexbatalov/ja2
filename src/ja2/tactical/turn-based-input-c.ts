@@ -2246,29 +2246,9 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             if (gubCheatLevel == 4) {
               fGoodCheatLevelKey = TRUE;
               gubCheatLevel++;
-#if 0
-							// ATE: Level one reached.....
-							ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[ MSG_CHEAT_LEVEL_ONE ] );
-#endif
             } else {
               RESET_CHEAT_LEVEL();
             }
-#endif
-
-#if 0
-						if ( INFORMATION_CHEAT_LEVEL( ) )
-						{
-							if( gfUIShowCurIntTile ^= TRUE )
-							{
-								ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Turning Enhanced mouse detection ON." );
-								gubIntTileCheckFlags	  = INTILE_CHECK_FULL;
-							}
-							else
-							{
-								ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Turning Enhanced mouse detection OFF." );
-								gubIntTileCheckFlags	  = INTILE_CHECK_SELECTIVE;
-							}
-						}
 #endif
           } else if (!CycleSoldierFindStack(usMapPos)) // Are we over a merc stack?
             CycleIntTileFindStack(usMapPos); // If not, now check if we are over a struct stack

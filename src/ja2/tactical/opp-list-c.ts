@@ -2655,10 +2655,6 @@ void RadioSightings(SOLDIERTYPE *pSoldier, UINT8 ubAbout, UINT8 ubTeamToRadioTo)
 
     // if we personally don't know a thing about this opponent
     if (*pPersOL == NOT_HEARD_OR_SEEN) {
-#ifdef RECORDOPPLIST
-      // fprintf(OpplistFile,"not heard or seen\n");
-#endif
-
 #ifdef TESTOPPLIST
       DebugMsg(TOPIC_JA2OPPLIST, DBG_LEVEL_3, String("RS: not heard or seen"));
 #endif
@@ -2668,20 +2664,12 @@ void RadioSightings(SOLDIERTYPE *pSoldier, UINT8 ubAbout, UINT8 ubTeamToRadioTo)
 
     // if personal knowledge is NOT more up to date and NOT the same as public
     if ((!gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][*pPersOL - OLDEST_HEARD_VALUE]) && (*pbPublOL != *pPersOL)) {
-#ifdef RECORDOPPLIST
-      // fprintf(OpplistFile,"no new knowledge (per %d, pub %d)\n",*pPersOL,*pbPublOL);
-#endif
-
 #ifdef TESTOPPLIST
       DebugMsg(TOPIC_JA2OPPLIST, DBG_LEVEL_3, String("RS: no new knowledge per %d pub %d", *pPersOL, *pbPublOL));
 #endif
 
       continue; // skip to the next opponent
     }
-
-#ifdef RECORDOPPLIST
-    // fprintf(OpplistFile,"made it!\n");
-#endif
 
 #ifdef TESTOPPLIST
     DebugMsg(TOPIC_JA2OPPLIST, DBG_LEVEL_3, String("RS: made it!"));
@@ -5560,14 +5548,6 @@ INT8 GetWatchedLocPoints(UINT8 ubID, INT16 sGridNo, INT8 bLevel) {
 
   bLoc = FindWatchedLoc(ubID, sGridNo, bLevel);
   if (bLoc != -1) {
-#ifdef JA2BETAVERSION
-    /*
-    if (gubWatchedLocPoints[ ubID ][ bLoc ] > 1)
-    {
-            ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Soldier %d getting %d points for interrupt in watched location", ubID, gubWatchedLocPoints[ ubID ][ bLoc ] - 1 );
-    }
-    */
-#endif
     // one loc point is worth nothing, so return number minus 1
 
     // experiment with 1 loc point being worth 1 point

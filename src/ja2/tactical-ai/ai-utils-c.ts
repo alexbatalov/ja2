@@ -446,9 +446,6 @@ BOOLEAN IsActionAffordable(SOLDIERTYPE *pSoldier) {
       break;
 
     default:
-#ifdef BETAVERSION
-      // NumMessage("AffordableAction - Illegal action type = ",pSoldier->bAction);
-#endif
       break;
   }
 
