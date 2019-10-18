@@ -1,6 +1,3 @@
-#ifndef SOLDIER_MACROS_H
-#define SOLDIER_MACROS_H
-
 // MACROS
 #define RPC_RECRUITED(p) ((p->ubProfile == NO_PROFILE) ? FALSE : (gMercProfiles[p->ubProfile].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED))
 
@@ -24,5 +21,3 @@
 #define TANK(p) (p->ubBodyType == TANK_NE || p->ubBodyType == TANK_NW)
 
 #define OK_ENTERABLE_VEHICLE(p) ((p->uiStatusFlags & SOLDIER_VEHICLE) && !TANK(p) && p->bLife >= OKLIFE)
-
-#endif

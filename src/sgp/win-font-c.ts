@@ -153,11 +153,7 @@ void PrintWinFont(UINT32 uiDestBuf, INT32 iFont, INT32 x, INT32 y, UINT16 *pFont
   len = vswprintf(string2, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-#ifdef TAIWANESE
-  Convert16BitStringTo8BitChineseBig5String(string, string2);
-#else
   sprintf(string, "%S", string2);
-#endif
 
   // Get surface...
   GetVideoSurface(&hVSurface, uiDestBuf);
@@ -189,11 +185,7 @@ INT16 WinFontStringPixLength(UINT16 *string2, INT32 iFont) {
     return 0;
   }
 
-#ifdef TAIWANESE
-  Convert16BitStringTo8BitChineseBig5String(string, string2);
-#else
   sprintf(string, "%S", string2);
-#endif
 
   hdc = GetDC(NULL);
   SelectObject(hdc, pWinFont->hFont);
@@ -215,11 +207,7 @@ INT16 GetWinFontHeight(UINT16 *string2, INT32 iFont) {
     return 0;
   }
 
-#ifdef TAIWANESE
-  Convert16BitStringTo8BitChineseBig5String(string, string2);
-#else
   sprintf(string, "%S", string2);
-#endif
 
   hdc = GetDC(NULL);
   SelectObject(hdc, pWinFont->hFont);

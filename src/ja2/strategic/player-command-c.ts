@@ -305,21 +305,6 @@ BOOLEAN SetThisSectorAsEnemyControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOO
   return fWasPlayerControlled;
 }
 
-#ifdef JA2TESTVERSION
-void ClearMapControlledFlags(void) {
-  INT32 iCounterA = 0, iCounterB = 0;
-  UINT16 usMapSector = 0;
-
-  for (iCounterA = 1; iCounterA < MAP_WORLD_X - 1; iCounterA++) {
-    for (iCounterB = 1; iCounterB < MAP_WORLD_Y - 1; iCounterB++) {
-      usMapSector = iCounterA + (iCounterB * MAP_WORLD_X);
-      StrategicMap[usMapSector].fEnemyControlled = FALSE;
-      SectorInfo[SECTOR(iCounterA, iCounterB)].fPlayer[0] = TRUE;
-    }
-  }
-}
-#endif
-
 /*
 BOOLEAN IsTheSectorPerceivedToBeUnderEnemyControl( INT16 sMapX, INT16 sMapY, INT8 bMapZ )
 {

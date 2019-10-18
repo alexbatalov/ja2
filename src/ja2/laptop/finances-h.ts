@@ -1,6 +1,3 @@
-#ifndef __FINANCES_H
-#define __FINANCES_H
-
 void GameInitFinances();
 void EnterFinances();
 void ExitFinances();
@@ -61,5 +58,3 @@ void InsertDollarSignInToString(STR16 pString);
 void InsertCommasForDollarFigure(STR16 pString);
 INT32 GetTodaysDaysIncome(void);
 INT32 GetProjectedTotalDailyIncome(void);
-
-#endif

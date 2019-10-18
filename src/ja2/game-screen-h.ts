@@ -1,6 +1,3 @@
-#ifndef _GAMESCREEN_H
-#define _GAMESCREEN_H
-
 #define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
 
 void FadeInGameScreen();
@@ -28,5 +25,3 @@ void EndModalTactical();
 void InitHelicopterEntranceByMercs(void);
 
 void InternalLeaveTacticalScreen(UINT32 uiNewScreen);
-
-#endif

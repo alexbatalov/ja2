@@ -1,6 +1,3 @@
-#ifndef AIR_RAID_H
-#define AIR_RAID_H
-
 #define AIR_RAID_BEGINNING_GAME 0x00000001
 #define AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES 0x00000002
 
@@ -48,5 +45,3 @@ BOOLEAN SaveAirRaidInfoToSaveGameFile(HWFILE hFile);
 BOOLEAN LoadAirRaidInfoFromSaveGameFile(HWFILE hFile);
 
 void EndAirRaid();
-
-#endif

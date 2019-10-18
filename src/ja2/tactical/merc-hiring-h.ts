@@ -1,6 +1,3 @@
-#ifndef _MERC_HIRING_H_
-#define _MERC_HIRING_H_
-
 //
 // Used with the HireMerc function
 //
@@ -43,5 +40,3 @@ void HandleMercArrivesQuotes(SOLDIERTYPE *pSoldier);
 void UpdateAnyInTransitMercsWithGlobalArrivalSector();
 
 UINT32 GetMercArrivalTimeOfDay();
-
-#endif

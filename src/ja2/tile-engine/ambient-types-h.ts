@@ -1,6 +1,3 @@
-#ifndef _AMBIENT_TYPES_H
-#define _AMBIENT_TYPES_H
-
 #define MAX_AMBIENT_SOUNDS 100
 
 #define AMB_TOD_DAWN 0
@@ -15,5 +12,3 @@ typedef struct {
   SGPFILENAME zFilename;
   UINT32 uiVol;
 } AMBIENTDATA_STRUCT;
-
-#endif

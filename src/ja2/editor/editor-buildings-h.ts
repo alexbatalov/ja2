@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDITORBUILDINGS_H
-#define __EDITORBUILDINGS_H
-
 extern BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
 extern UINT8 gubCurrRoomNumber;
 extern UINT8 gubMaxRoomNumber;
@@ -48,7 +44,3 @@ void FindNextLockedDoor();
 extern BOOLEAN gfEditingDoor;
 
 extern UINT16 usCurrentMode;
-
-#endif
-
-#endif

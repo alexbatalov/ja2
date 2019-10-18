@@ -1640,9 +1640,6 @@ void CalculateLaunchItemParamsForThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UIN
     }
 
     // Adjust position, force, angle
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Throw miss by: %d", bMissBy);
-#endif
 
     // Default to max radius...
     bMaxRadius = 5;
@@ -1816,10 +1813,6 @@ BOOLEAN AttemptToCatchObject(REAL_OBJECT *pObject) {
   // base it on...? CC? Dexterity?
   ubChanceToCatch = 50 + EffectiveDexterity(pSoldier) / 2;
 
-#ifdef JA2TESTVERSION
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Chance To Catch: %d", ubChanceToCatch);
-#endif
-
   pObject->fCatchCheckDone = TRUE;
 
   if (PreRandom(100) > ubChanceToCatch) {
@@ -1912,20 +1905,12 @@ void HandleArmedObjectImpact(REAL_OBJECT *pObject) {
 
   if (fCheckForDuds) {
     // If we landed on anything other than the floor, always! go off...
-#ifdef TESTDUDEXPLOSIVES
-    if (sZ != 0 || pObject->fInWater)
-#else
     if (sZ != 0 || pObject->fInWater || (pObj->bStatus[0] >= USABLE && (PreRandom(100) < (UINT32)pObj->bStatus[0] + PreRandom(50))))
-#endif
     {
       fDoImpact = TRUE;
     } else // didn't go off!
     {
-#ifdef TESTDUDEXPLOSIVES
-      if (1)
-#else
       if (pObj->bStatus[0] >= USABLE && PreRandom(100) < (UINT32)pObj->bStatus[0] + PreRandom(50))
-#endif
       {
         iTrapped = PreRandom(4) + 2;
       }

@@ -1,6 +1,3 @@
-#ifndef __HISTORY_H
-#define __HISTORY_H
-
 void GameInitHistory();
 void EnterHistory();
 void ExitHistory();
@@ -116,5 +113,3 @@ UINT32 SetHistoryFact(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSe
 
 UINT32 AddHistoryToPlayersLog(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSectorX, INT16 sSectorY);
 UINT32 GetTimeQuestWasStarted(UINT8 ubCode);
-
-#endif

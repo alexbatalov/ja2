@@ -1,10 +1,3 @@
-#ifdef COUNT_PATHS
-extern UINT32 guiSuccessfulPathChecks;
-extern UINT32 guiTotalPathChecks;
-extern UINT32 guiFailedPathChecks;
-extern UINT32 guiUnsuccessfulPathChecks;
-#endif
-
 /*
  * NB:  STRUCTURE_SPECIAL
  *
@@ -728,14 +721,12 @@ STRUCTURE *InternalAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCT
     }
     ppStructure[ubLoop]->sGridNo = sBaseGridNo + ppTile[ubLoop]->sPosRelToBase;
     if (ubLoop != BASE_TILE) {
-#ifdef JA2EDITOR
       // Kris:
       // Added this undo code if in the editor.
       // It is important to save tiles effected by multitiles.  If the structure placement
       // fails below, it doesn't matter, because it won't hurt the undo code.
       if (gfEditMode)
         AddToUndoList(ppStructure[ubLoop]->sGridNo);
-#endif
 
       ppStructure[ubLoop]->sBaseGridNo = sBaseGridNo;
     }
@@ -1430,9 +1421,7 @@ void DebugStructurePage1(void) {
       gprintf(0, LINE_HEIGHT * 3, L"Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure->pDBStructureRef->pDBStructure->ubDensity);
     }
 
-#ifndef LOS_DEBUG
     gprintf(0, LINE_HEIGHT * 4, L"Structure ID %d", pStructure->usStructureID);
-#endif
 
     pStructure = gpWorldLevelData[sGridNo].pStructureHead;
     for (bStructures = 0; pStructure != NULL; pStructure = pStructure->pNext) {
@@ -1440,37 +1429,11 @@ void DebugStructurePage1(void) {
     }
     gprintf(0, LINE_HEIGHT * 12, L"Number of structures = %d", bStructures);
   }
-#ifdef LOS_DEBUG
-  if (gLOSTestResults.fLOSTestPerformed) {
-    gprintf(0, LINE_HEIGHT * 4, L"LOS from (%7d,%7d,%7d)", gLOSTestResults.iStartX, gLOSTestResults.iStartY, gLOSTestResults.iStartZ);
-    gprintf(0, LINE_HEIGHT * 5, L"to (%7d,%7d,%7d)", gLOSTestResults.iEndX, gLOSTestResults.iEndY, gLOSTestResults.iEndZ);
-    if (gLOSTestResults.fOutOfRange) {
-      gprintf(0, LINE_HEIGHT * 6, L"is out of range");
-    } else if (gLOSTestResults.fLOSClear) {
-      gprintf(0, LINE_HEIGHT * 6, L"is clear!");
-    } else {
-      gprintf(0, LINE_HEIGHT * 6, L"is blocked at (%7d,%7d,%7d)!", gLOSTestResults.iStoppedX, gLOSTestResults.iStoppedY, gLOSTestResults.iStoppedZ);
-      gprintf(0, LINE_HEIGHT * 10, L"Blocked at cube level %d", gLOSTestResults.iCurrCubesZ);
-    }
-    gprintf(0, LINE_HEIGHT * 7, L"Passed through %d tree bits!", gLOSTestResults.ubTreeSpotsHit);
-    gprintf(0, LINE_HEIGHT * 8, L"Maximum range was %7d", gLOSTestResults.iMaxDistance);
-    gprintf(0, LINE_HEIGHT * 9, L"actual range was %7d", gLOSTestResults.iDistance);
-    if (gLOSTestResults.ubChanceToGetThrough <= 100) {
-      gprintf(0, LINE_HEIGHT * 11, L"Chance to get through was %d", gLOSTestResults.ubChanceToGetThrough);
-    }
-  }
-#endif
   gprintf(0, LINE_HEIGHT * 13, L"N %d NE %d E %d SE %d", gubWorldMovementCosts[sGridNo][NORTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHEAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][EAST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHEAST][gsInterfaceLevel]);
   gprintf(0, LINE_HEIGHT * 14, L"S %d SW %d W %d NW %d", gubWorldMovementCosts[sGridNo][SOUTH][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][SOUTHWEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][WEST][gsInterfaceLevel], gubWorldMovementCosts[sGridNo][NORTHWEST][gsInterfaceLevel]);
   gprintf(0, LINE_HEIGHT * 15, L"Ground smell %d strength %d", SMELL_TYPE(gpWorldLevelData[sGridNo].ubSmellInfo), SMELL_STRENGTH(gpWorldLevelData[sGridNo].ubSmellInfo));
 
-#ifdef COUNT_PATHS
-  if (guiTotalPathChecks > 0) {
-    gprintf(0, LINE_HEIGHT * 16, L"Total %ld, %%succ %3ld | %%failed %3ld | %%unsucc %3ld", guiTotalPathChecks, 100 * guiSuccessfulPathChecks / guiTotalPathChecks, 100 * guiFailedPathChecks / guiTotalPathChecks, 100 * guiUnsuccessfulPathChecks / guiTotalPathChecks);
-  }
-#else
   gprintf(0, LINE_HEIGHT * 16, L"Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
-#endif
 }
 
 BOOLEAN AddZStripInfoToVObject(HVOBJECT hVObject, STRUCTURE_FILE_REF *pStructureFileRef, BOOLEAN fFromAnimation, INT16 sSTIStartIndex) {

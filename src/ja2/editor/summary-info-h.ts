@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __SUMMARY_INFO_H
-#define __SUMMARY_INFO_H
-
 #define GLOBAL_SUMMARY_VERSION 14
 #define MINIMUMVERSION 7
 
@@ -96,6 +92,3 @@ extern void WriteSectorSummaryUpdate(UINT8 *puiFilename, UINT8 ubLevel, SUMMARYF
 extern BOOLEAN gfMustForceUpdateAllMaps;
 extern BOOLEAN gfMajorUpdate;
 void ApologizeOverrideAndForceUpdateEverything();
-
-#endif
-#endif

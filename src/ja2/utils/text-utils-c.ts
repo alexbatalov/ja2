@@ -29,66 +29,67 @@ BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString) {
   for (i = 0; (i < SIZE_ITEM_NAME) && (pNameString[i] != 0); i++) {
     if (pNameString[i] > 33)
       pNameString[i] -= 1;
-#ifdef POLISH
-    switch (pNameString[i]) {
-      case 260:
-        pNameString[i] = 165;
-        break;
-      case 262:
-        pNameString[i] = 198;
-        break;
-      case 280:
-        pNameString[i] = 202;
-        break;
-      case 321:
-        pNameString[i] = 163;
-        break;
-      case 323:
-        pNameString[i] = 209;
-        break;
-      case 211:
-        pNameString[i] = 211;
-        break;
-
-      case 346:
-        pNameString[i] = 338;
-        break;
-      case 379:
-        pNameString[i] = 175;
-        break;
-      case 377:
-        pNameString[i] = 143;
-        break;
-      case 261:
-        pNameString[i] = 185;
-        break;
-      case 263:
-        pNameString[i] = 230;
-        break;
-      case 281:
-        pNameString[i] = 234;
-        break;
-
-      case 322:
-        pNameString[i] = 179;
-        break;
-      case 324:
-        pNameString[i] = 241;
-        break;
-      case 243:
-        pNameString[i] = 243;
-        break;
-      case 347:
-        pNameString[i] = 339;
-        break;
-      case 380:
-        pNameString[i] = 191;
-        break;
-      case 378:
-        pNameString[i] = 376;
-        break;
-    }
-#endif
+// FIXME: Language-specific code
+// #ifdef POLISH
+//     switch (pNameString[i]) {
+//       case 260:
+//         pNameString[i] = 165;
+//         break;
+//       case 262:
+//         pNameString[i] = 198;
+//         break;
+//       case 280:
+//         pNameString[i] = 202;
+//         break;
+//       case 321:
+//         pNameString[i] = 163;
+//         break;
+//       case 323:
+//         pNameString[i] = 209;
+//         break;
+//       case 211:
+//         pNameString[i] = 211;
+//         break;
+//
+//       case 346:
+//         pNameString[i] = 338;
+//         break;
+//       case 379:
+//         pNameString[i] = 175;
+//         break;
+//       case 377:
+//         pNameString[i] = 143;
+//         break;
+//       case 261:
+//         pNameString[i] = 185;
+//         break;
+//       case 263:
+//         pNameString[i] = 230;
+//         break;
+//       case 281:
+//         pNameString[i] = 234;
+//         break;
+//
+//       case 322:
+//         pNameString[i] = 179;
+//         break;
+//       case 324:
+//         pNameString[i] = 241;
+//         break;
+//       case 243:
+//         pNameString[i] = 243;
+//         break;
+//       case 347:
+//         pNameString[i] = 339;
+//         break;
+//       case 380:
+//         pNameString[i] = 191;
+//         break;
+//       case 378:
+//         pNameString[i] = 376;
+//         break;
+//     }
+// #endif
   }
 
   // condition added by Chris - so we can get the name without the item info
@@ -111,66 +112,67 @@ BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString) {
     for (i = 0; (i < SIZE_ITEM_INFO) && (pInfoString[i] != 0); i++) {
       if (pInfoString[i] > 33)
         pInfoString[i] -= 1;
-#ifdef POLISH
-      switch (pInfoString[i]) {
-        case 260:
-          pInfoString[i] = 165;
-          break;
-        case 262:
-          pInfoString[i] = 198;
-          break;
-        case 280:
-          pInfoString[i] = 202;
-          break;
-        case 321:
-          pInfoString[i] = 163;
-          break;
-        case 323:
-          pInfoString[i] = 209;
-          break;
-        case 211:
-          pInfoString[i] = 211;
-          break;
-
-        case 346:
-          pInfoString[i] = 338;
-          break;
-        case 379:
-          pInfoString[i] = 175;
-          break;
-        case 377:
-          pInfoString[i] = 143;
-          break;
-        case 261:
-          pInfoString[i] = 185;
-          break;
-        case 263:
-          pInfoString[i] = 230;
-          break;
-        case 281:
-          pInfoString[i] = 234;
-          break;
-
-        case 322:
-          pInfoString[i] = 179;
-          break;
-        case 324:
-          pInfoString[i] = 241;
-          break;
-        case 243:
-          pInfoString[i] = 243;
-          break;
-        case 347:
-          pInfoString[i] = 339;
-          break;
-        case 380:
-          pInfoString[i] = 191;
-          break;
-        case 378:
-          pInfoString[i] = 376;
-          break;
-      }
-#endif
+// FIXME: Language-specific code
+// #ifdef POLISH
+//       switch (pInfoString[i]) {
+//         case 260:
+//           pInfoString[i] = 165;
+//           break;
+//         case 262:
+//           pInfoString[i] = 198;
+//           break;
+//         case 280:
+//           pInfoString[i] = 202;
+//           break;
+//         case 321:
+//           pInfoString[i] = 163;
+//           break;
+//         case 323:
+//           pInfoString[i] = 209;
+//           break;
+//         case 211:
+//           pInfoString[i] = 211;
+//           break;
+//
+//         case 346:
+//           pInfoString[i] = 338;
+//           break;
+//         case 379:
+//           pInfoString[i] = 175;
+//           break;
+//         case 377:
+//           pInfoString[i] = 143;
+//           break;
+//         case 261:
+//           pInfoString[i] = 185;
+//           break;
+//         case 263:
+//           pInfoString[i] = 230;
+//           break;
+//         case 281:
+//           pInfoString[i] = 234;
+//           break;
+//
+//         case 322:
+//           pInfoString[i] = 179;
+//           break;
+//         case 324:
+//           pInfoString[i] = 241;
+//           break;
+//         case 243:
+//           pInfoString[i] = 243;
+//           break;
+//         case 347:
+//           pInfoString[i] = 339;
+//           break;
+//         case 380:
+//           pInfoString[i] = 191;
+//           break;
+//         case 378:
+//           pInfoString[i] = 376;
+//           break;
+//       }
+// #endif
     }
   }
 
@@ -207,66 +209,67 @@ BOOLEAN LoadShortNameItemInfo(UINT16 ubIndex, STR16 pNameString) {
   for (i = 0; (i < SIZE_ITEM_NAME) && (pNameString[i] != 0); i++) {
     if (pNameString[i] > 33)
       pNameString[i] -= 1;
-#ifdef POLISH
-    switch (pNameString[i]) {
-      case 260:
-        pNameString[i] = 165;
-        break;
-      case 262:
-        pNameString[i] = 198;
-        break;
-      case 280:
-        pNameString[i] = 202;
-        break;
-      case 321:
-        pNameString[i] = 163;
-        break;
-      case 323:
-        pNameString[i] = 209;
-        break;
-      case 211:
-        pNameString[i] = 211;
-        break;
-
-      case 346:
-        pNameString[i] = 338;
-        break;
-      case 379:
-        pNameString[i] = 175;
-        break;
-      case 377:
-        pNameString[i] = 143;
-        break;
-      case 261:
-        pNameString[i] = 185;
-        break;
-      case 263:
-        pNameString[i] = 230;
-        break;
-      case 281:
-        pNameString[i] = 234;
-        break;
-
-      case 322:
-        pNameString[i] = 179;
-        break;
-      case 324:
-        pNameString[i] = 241;
-        break;
-      case 243:
-        pNameString[i] = 243;
-        break;
-      case 347:
-        pNameString[i] = 339;
-        break;
-      case 380:
-        pNameString[i] = 191;
-        break;
-      case 378:
-        pNameString[i] = 376;
-        break;
-    }
-#endif
+// FIXME: Language-specific code
+// #ifdef POLISH
+//     switch (pNameString[i]) {
+//       case 260:
+//         pNameString[i] = 165;
+//         break;
+//       case 262:
+//         pNameString[i] = 198;
+//         break;
+//       case 280:
+//         pNameString[i] = 202;
+//         break;
+//       case 321:
+//         pNameString[i] = 163;
+//         break;
+//       case 323:
+//         pNameString[i] = 209;
+//         break;
+//       case 211:
+//         pNameString[i] = 211;
+//         break;
+//
+//       case 346:
+//         pNameString[i] = 338;
+//         break;
+//       case 379:
+//         pNameString[i] = 175;
+//         break;
+//       case 377:
+//         pNameString[i] = 143;
+//         break;
+//       case 261:
+//         pNameString[i] = 185;
+//         break;
+//       case 263:
+//         pNameString[i] = 230;
+//         break;
+//       case 281:
+//         pNameString[i] = 234;
+//         break;
+//
+//       case 322:
+//         pNameString[i] = 179;
+//         break;
+//       case 324:
+//         pNameString[i] = 241;
+//         break;
+//       case 243:
+//         pNameString[i] = 243;
+//         break;
+//       case 347:
+//         pNameString[i] = 339;
+//         break;
+//       case 380:
+//         pNameString[i] = 191;
+//         break;
+//       case 378:
+//         pNameString[i] = 376;
+//         break;
+//     }
+// #endif
   }
 
   FileClose(hFile);

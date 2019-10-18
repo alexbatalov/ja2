@@ -50,11 +50,6 @@ extern BOOLEAN gfSurrendered;
 
 INT8 gDebugStr[128];
 
-#ifdef NETWORKED
-extern BYTE gfAmIHost;
-extern BOOLEAN gfAmINetworked;
-#endif
-
 #define NEW_FADE_DELAY 60
 
 // ATE: GLOBALS FOR E3
@@ -403,11 +398,6 @@ BOOLEAN InitTacticalEngine() {
   if (!InitOverhead()) {
     return FALSE;
   }
-
-#ifdef NETWORKED
-  if (!gfAmINetworked)
-    gfAmIHost = TRUE;
-#endif
 
   return TRUE;
 }
@@ -849,18 +839,8 @@ BOOLEAN ExecuteOverhead() {
 
         // Handle animation update counters
         // ATE: Added additional check here for special value of anispeed that pauses all updates
-#ifndef BOUNDS_CHECKER
         if (TIMECOUNTERDONE(pSoldier->UpdateCounter, pSoldier->sAniDelay) && pSoldier->sAniDelay != 10000)
-#endif
         {
-#ifdef NETWORKED
-          // DEF:
-          // Check for TIMING delay here only if in Realtime
-          if (gTacticalStatus.uiFlags & REALTIME)
-            if (pSoldier->fIsSoldierMoving)
-              CheckForSlowSoldier(pSoldier);
-#endif
-
           // Check if we need to look for items
           if (pSoldier->uiStatusFlags & SOLDIER_LOOKFOR_ITEMS) {
             RevealRoofsAndItems(pSoldier, TRUE, FALSE, pSoldier->bLevel, FALSE);
@@ -876,12 +856,6 @@ BOOLEAN ExecuteOverhead() {
           RESETTIMECOUNTER(pSoldier->UpdateCounter, pSoldier->sAniDelay);
 
           fNoAPsForPendingAction = FALSE;
-
-#ifdef NETWORKED
-          // Get the path update, if there is 1
-          if (pSoldier->fSoldierUpdatedFromNetwork)
-            UpdateSoldierFromNetwork(pSoldier);
-#endif
 
           // Check if we are moving and we deduct points and we have no points
           if (!((gAnimControl[pSoldier->usAnimState].uiFlags & (ANIM_MOVING | ANIM_SPECIALMOVE)) && pSoldier->fNoAPToFinishMove) && !pSoldier->fPauseAllAnimation) {
@@ -950,10 +924,6 @@ BOOLEAN ExecuteOverhead() {
                   dXPos = pSoldier->sDestXPos;
                   dYPos = pSoldier->sDestYPos;
                   EVENT_SetSoldierPosition(pSoldier, dXPos, dYPos);
-#ifdef NETWORKED
-                  // DEF: Test Code
-                  StopSoldierMovementTime(pSoldier);
-#endif
 
                   // Handle New sight
                   // HandleSight(pSoldier,SIGHT_LOOK | SIGHT_RADIO );
@@ -1005,9 +975,6 @@ BOOLEAN ExecuteOverhead() {
                       pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 
                       if (pStructure == NULL) {
-#ifdef JA2BETAVERSION
-                        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Told to open struct at %d and none was found", sGridNo);
-#endif
                         fKeepMoving = FALSE;
                       } else {
                         CalcInteractiveObjectAPs(sGridNo, pStructure, &sAPCost, &sBPCost);
@@ -1148,9 +1115,6 @@ BOOLEAN ExecuteOverhead() {
                   if (pSoldier->usPathIndex == pSoldier->usPathDataSize) {
                     // ATE: Pop up warning....
                     if (pSoldier->usPathDataSize != MAX_PATH_LIST_SIZE) {
-#ifdef JA2BETAVERSION
-                      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Path for %s ( %d ) did not make merc get to dest .", pSoldier->name, pSoldier->ubID);
-#endif
                     }
 
                     // In case this is an AI person with the path-stored flag set,
@@ -1227,13 +1191,6 @@ BOOLEAN ExecuteOverhead() {
               TurnSoldier(pSoldier);
             }
           }
-
-#ifdef NETWORKED
-          if (!pSoldier->fNoAPToFinishMove)
-            pSoldier->usLastUpdateTime = GetJA2Clock();
-          if (pSoldier->fSoldierUpdatedFromNetwork)
-            UpdateSoldierFromNetwork(pSoldier);
-#endif
         }
 
         if (!gfPauseAllAI && (((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) || (fHandleAI && guiAISlotToHandle == cnt) || (pSoldier->fAIFlags & AI_HANDLE_EVERY_FRAME) || gTacticalStatus.fAutoBandageMode)) {
@@ -1278,9 +1235,6 @@ BOOLEAN ExecuteOverhead() {
       // Check if we have gone past our time...
       if ((GetJA2Clock() - guiWaitingForAllMercsToExitTimer) > 2500) {
 // OK, set num waiting to 0
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_DEBUG, L"Waiting too long for Mercs to exit...forcing entry.");
-#endif
         gbNumMercsUntilWaitingOver = 0;
 
         // Reset all waitng codes
@@ -1481,9 +1435,6 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEA
     } else if (bDirection == SOUTH || bDirection == EAST) {
       sDoorGridNo = pSoldier->sGridNo;
     } else {
-#ifdef JA2TESTVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"ERROR: Invalid Direction to approach door. (Soldier loc: %d, dir: %d).", pSoldier->sGridNo, bDirection);
-#endif
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Open door - invalid approach direction"));
 
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
@@ -1496,9 +1447,6 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEA
     pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
 
     if (pStructure == NULL) {
-#ifdef JA2TESTVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"ERROR: Told to open door that does not exist at %d.", sDoorGridNo);
-#endif
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("HandleGotoNewGridNo() Failed: Door does not exist"));
       HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier);
       pSoldier->bEndDoorOpenCode = FALSE;
@@ -4442,11 +4390,9 @@ void SetEnemyPresence() {
 
   // Check if we previously had no enemys present and we are in a virgin secotr ( no enemys spotted yet )
   if (!gTacticalStatus.fEnemyInSector && gTacticalStatus.fVirginSector) {
-#ifndef JA2DEMO
     // If we have a guy selected, say quote!
     // For now, display ono status message
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[ENEMY_IN_SECTOR_STR]);
-#endif
 
     // Change music modes..
 
@@ -4712,11 +4658,6 @@ BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated) {
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
     if (!(gTacticalStatus.fEnemyInSector)) {
       // ATE: For demo, we may be dead....
-#ifdef JA2DEMO
-      if (CheckForLosingEndOfBattle()) {
-        SetMusicMode(MUSIC_TACTICAL_DEATH);
-      }
-#endif
 
       return FALSE;
     }
@@ -4839,14 +4780,6 @@ BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated) {
       // Exit mode!
       ExitCombatMode();
     }
-
-#ifdef JA2DEMO
-    if (gbWorldSectorZ == 0) {
-      SetFactTrue(FACT_TOP_LEVEL_CLEARED);
-    } else if (gbWorldSectorZ == 1) {
-      SetFactTrue(FACT_BOTTOM_LEVEL_CLEARED);
-    }
-#endif
 
     if (gTacticalStatus.bBoxingState == NOT_BOXING) // if boxing don't do any of this stuff
     {
@@ -5692,11 +5625,6 @@ BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE *pSoldier, SOLDIERTYPE **ppTar
     }
 
     if (pTarget->ubCivilianGroup && ((pTarget->bTeam == gbPlayerNum) || pTarget->bNeutral)) {
-#ifdef JA2TESTVERSION
-      if (pTarget->uiStatusFlags & SOLDIER_PC) {
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%s is changing teams", pTarget->name);
-      }
-#endif
       // member of a civ group, either recruited or neutral, so should
       // change sides individually or all together
 
@@ -5790,9 +5718,6 @@ SOLDIERTYPE *InternalReduceAttackBusyCount(UINT8 ubID, BOOLEAN fCalledByAttacker
     // But for all means.... DON'T wrap!
     if ((gTacticalStatus.uiFlags & INCOMBAT)) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! &&&&&&& Problem with attacker busy count decrementing past 0.... preventing wrap-around."));
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Attack busy problem. Save, exit and send debug.txt + save file to Sir-Tech.");
-#endif
     }
   } else {
     gTacticalStatus.ubAttackBusyCount--;
@@ -6143,9 +6068,6 @@ void RemoveManFromTeam(INT8 bTeam) {
     if (gTacticalStatus.Team[bTeam].bMenInSector == 0) {
       gTacticalStatus.Team[bTeam].bTeamActive = FALSE;
     } else if (gTacticalStatus.Team[bTeam].bMenInSector < 0) {
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Number of people on team %d dropped to %d", bTeam, gTacticalStatus.Team[bTeam].bMenInSector);
-#endif
       // reset!
       gTacticalStatus.Team[bTeam].bMenInSector = 0;
     }
@@ -6208,14 +6130,7 @@ void DoneFadeOutDueToDeath(void) {
 
 void EndBattleWithUnconsciousGuysCallback(UINT8 bExitValue) {
   // Enter mapscreen.....
-#ifdef JA2DEMO
-
-  // Fade screen
-  gFadeOutDoneCallback = DoneFadeOutDueToDeath;
-  FadeOutGameScreen();
-#else
   CheckAndHandleUnloadingOfCurrentWorld();
-#endif
 }
 
 void InitializeTacticalStatusAtBattleStart(void) {
@@ -6264,31 +6179,9 @@ void DoneFadeOutDemoCreatureLevel(void) {
 }
 
 void DemoEndOKCallback(INT8 bExitCode) {
-#ifdef JA2DEMO
-  // Check if gabby is alive...
-  if (gMercProfiles[GABBY].bLife == 0) {
-    // Bring up dialogue box...
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_TOO_BAD_YOU_KILLED_GABBY], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
-  }
-#endif
 }
 
 void HandleEndDemoInCreatureLevel() {
-#ifdef JA2DEMO
-
-  if (gbWorldSectorZ == 1) {
-    // Is dynamo recruited?
-    if (FindSoldierByProfileID(DYNAMO, TRUE) && NumCapableEnemyInSector() == 0) {
-      // Bring up dialogue box...
-      DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_GO_SEE_GABBY], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, DemoEndOKCallback, NULL);
-    }
-  } else if (gbWorldSectorZ == 2) {
-    if (NumCapableEnemyInSector() == 0) {
-      // Bring up dialogue box...
-      DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_GO_SEE_GABBY], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, DemoEndOKCallback, NULL);
-    }
-  }
-#endif JA2DEMO
 }
 
 void DeathTimerCallback(void) {

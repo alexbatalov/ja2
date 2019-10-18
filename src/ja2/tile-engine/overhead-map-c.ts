@@ -1,6 +1,4 @@
-#ifdef JA2EDITOR
 extern SOLDIERINITNODE *gpSelected;
-#endif
 
 // OK, these are values that are calculated in InitRenderParams( ) with normal view settings.
 // These would be different if we change ANYTHING about the game worlkd map sizes...
@@ -412,15 +410,6 @@ BOOLEAN InOverheadMap() {
 void GoIntoOverheadMap() {
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hVObject;
-
-#ifdef JA2DEMO
-
-  if (gfCaves) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_OVERHEAD_MAP_DISABLED]);
-    return;
-  }
-
-#endif
 
   gfInOverheadMap = TRUE;
 
@@ -953,12 +942,10 @@ void RenderOverheadOverlays() {
         SetObjectShade(hVObject, 2);
       }
     }
-#ifdef JA2EDITOR
     if (gfEditMode && gpSelected && gpSelected->pSoldier == pSoldier) {
       // editor:  show the selected edited merc as the yellow one.
       Blt8BPPDataTo16BPPBufferTransparent((UINT16 *)pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, 0);
     } else
-#endif
         if (!gfTacticalPlacementGUIActive) {
           // normal
       Blt8BPPDataTo16BPPBufferTransparent((UINT16 *)pDestBuf, uiDestPitchBYTES, hVObject, sX, sY, pSoldier->bTeam);

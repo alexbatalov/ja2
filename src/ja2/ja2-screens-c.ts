@@ -1,10 +1,4 @@
 #define _UNICODE
-// Networking Stuff
-#ifdef NETWORKED
-
-extern ClientReadyType gMsgClientReady;
-extern BOOLEAN gfAmINetworked;
-#endif
 
 #define MAX_DEBUG_PAGES 4
 
@@ -110,35 +104,6 @@ void DisplayFrameRate() {
     // gprintfdirty( 0, 0, L"DEMO MODE" );
     // mprintf( 0, 0, L"DEMO MODE" );
   }
-
-#ifdef _DEBUG
-
-  SetFont(SMALLFONT1);
-  SetFontBackground(FONT_MCOLOR_BLACK);
-  SetFontForeground(FONT_MCOLOR_DKGRAY);
-
-  if (gbFPSDisplay == SHOW_FULL_FPS) {
-    // Debug
-    if (gDebugStr[0] != '\0') {
-      // gprintfdirty( 0, 345, L"DEBUG: %S",gDebugStr);
-      // mprintf( 0,345,L"DEBUG: %S",gDebugStr);
-    }
-
-    if (gSystemDebugStr[0] != '\0') {
-      // gprintfdirty( 0, 345, L"%S",gSystemDebugStr);
-      // mprintf( 0,345,L"%S",gSystemDebugStr);
-      gSystemDebugStr[0] = '\0';
-    }
-
-    // Print Num tiles
-    // gprintfdirty( 0, 280, L"%d Tiles", gTileDatabaseSize );
-    // mprintf( 0, 280, L"%d Tiles", gTileDatabaseSize );
-
-    // Print tile mem usage
-    // gprintfdirty( 0, 300, L"%d kB", guiMemTotal / 1024 );
-    // mprintf( 0, 300, L"%d kB", guiMemTotal / 1024 );
-  }
-#endif
 }
 
 // USELESS!!!!!!!!!!!!!!!!!!
@@ -169,9 +134,6 @@ UINT32 ErrorScreenInitialize(void) {
 UINT32 ErrorScreenHandle(void) {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = FALSE;
-#ifdef JA2BETAVERSION
-  UINT16 str[256];
-#endif
 
   // For quick setting of new video stuff / to be changed
   StartFrameBufferRender();
@@ -189,14 +151,6 @@ UINT32 ErrorScreenHandle(void) {
   SetFontShadow(60); // 60 is near black
   mprintf(50, 255, L"%S", gubErrorText);
   SetFontForeground(FONT_LTRED);
-
-#ifdef JA2BETAVERSION
-
-  if (gubAssertString[0]) {
-    swprintf(str, L"%S", gubAssertString);
-    DisplayWrappedString(50, 270, 560, 2, FONT12ARIAL, FONT_RED, str, FONT_BLACK, TRUE, LEFT_JUSTIFIED);
-  }
-#endif
 
   if (!fFirstTime) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
@@ -237,16 +191,17 @@ UINT32 InitScreenHandle(void) {
   static UINT8 ubCurrentScreen = 255;
 
   if (ubCurrentScreen == 255) {
-#ifdef ENGLISH
+// FIXME: Language-specific code
+// #ifdef ENGLISH
     if (gfDoneWithSplashScreen) {
       ubCurrentScreen = 0;
     } else {
       SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
       return INTRO_SCREEN;
     }
-#else
-    ubCurrentScreen = 0;
-#endif
+// #else
+//     ubCurrentScreen = 0;
+// #endif
   }
 
   if (ubCurrentScreen == 0) {
@@ -278,32 +233,10 @@ UINT32 InitScreenHandle(void) {
 
     // mprintf( 10, 420, zVersionLabel );
 
-#ifdef _DEBUG
-    mprintf(10, 430, L"%s: %s (Debug %S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
-#else
     mprintf(10, 430, L"%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
-#endif
-
-#ifdef CRIPPLED_VERSION
-
-    mprintf(10, 420, L"(LIMITED PRESS PREVIEW VERSION)");
-
-#elif defined JA2BETAVERSION
-
-    mprintf(10, 420, L"(Beta version error reporting enabled)");
-
-#endif
-
-#ifdef _DEBUG
-    mprintf(10, 440, L"SOLDIERTYPE: %d bytes", sizeof(SOLDIERTYPE));
-#endif
 
     if (gfDontUseDDBlits) {
-#ifdef _DEBUG
-      mprintf(10, 450, L"SOLDIERTYPE: %d bytes", sizeof(SOLDIERTYPE));
-#else
       mprintf(10, 440, L"Using software blitters");
-#endif
     }
 
     InvalidateScreen();
@@ -743,717 +676,49 @@ void DoneFadeOutForDemoExitScreen(void) {
   gfProgramIsRunning = FALSE;
 }
 
-#ifdef JA2DEMOADS
-extern STR16 gpDemoString[];
-extern STR16 gpDemoIntroString[];
-BOOLEAN gfDemoIntro = FALSE;
-#endif
-
-#ifdef JA2DEMOADS
-void DoDemoIntroduction() {
-  MSG Message;
-  VOBJECT_DESC vo_desc;
-  UINT32 uiTempID;
-  UINT16 yp, height;
-  UINT32 uiStartTime = 0xffffffff;
-  UINT16 usFadeLimit = 8;
-
-  // If we haven't played the demo intro yet, do so now...
-  if (gfDemoIntro)
-    return;
-  gfDemoIntro = TRUE;
-
-  SetCurrentCursorFromDatabase(0);
-
-  // Load the background image.
-  vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(vo_desc.ImageFile, "DemoAds\\DemoScreen1.sti");
-  if (!AddVideoObject(&vo_desc, &uiTempID)) {
-    AssertMsg(0, "Failed to load DemoAds\\DemoScreen1.sti");
-    return;
-  }
-  BltVideoObjectFromIndex(FRAME_BUFFER, uiTempID, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
-  DeleteVideoObjectFromIndex(uiTempID);
-  InvalidateScreen();
-
-  // print out the information
-  SetFont(FONT14HUMANIST);
-  SetFontForeground(FONT_YELLOW);
-  SetFontShadow(FONT_NEARBLACK);
-
-  yp = 50;
-  height = DisplayWrappedString(20, yp, 400, 3, FONT14ARIAL, FONT_YELLOW, gpDemoIntroString[0], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-  yp = (UINT16)(yp + 25 + height);
-  SetFontForeground(FONT_GRAY2);
-  mprintf(35, yp, L"-");
-  height = DisplayWrappedString(45, yp, 385, 3, FONT14ARIAL, FONT_GRAY2, gpDemoIntroString[1], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-  yp = (UINT16)(yp + 25 + height);
-  mprintf(35, yp, L"-");
-  height = DisplayWrappedString(45, yp, 385, 3, FONT14ARIAL, FONT_GRAY2, gpDemoIntroString[2], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-  yp = (UINT16)(yp + 25 + height);
-  mprintf(35, yp, L"-");
-  height = DisplayWrappedString(45, yp, 385, 3, FONT14ARIAL, FONT_GRAY2, gpDemoIntroString[3], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-  yp = (UINT16)(yp + 30 + height);
-  height = DisplayWrappedString(35, yp, 385, 3, FONT14ARIAL, FONT_GRAY3, gpDemoIntroString[4], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-  yp = (UINT16)(yp + 35 + height);
-  height = DisplayWrappedString(20, yp, 400, 3, FONT14ARIAL, FONT_LTKHAKI, gpDemoIntroString[5], FONT_BLACK, FALSE, LEFT_JUSTIFIED);
-
-  RefreshScreen(NULL);
-  while (gfProgramIsRunning) {
-    if (PeekMessage(&Message, NULL, 0, 0, PM_NOREMOVE)) {
-      // We have a message on the WIN95 queue, let's get it
-      if (!GetMessage(&Message, NULL, 0, 0)) {
-        // It's quitting time
-        continue;
-      }
-      // Ok, now that we have the message, let's handle it
-      TranslateMessage(&Message);
-      DispatchMessage(&Message);
-    } else {
-      // Windows hasn't processed any messages, therefore we handle the rest
-      InputAtom InputEvent;
-      POINT MousePos;
-
-      GetCursorPos(&MousePos);
-      // Hook into mouse stuff for MOVEMENT MESSAGES
-      MouseSystemHook(MOUSE_POS, (UINT16)MousePos.x, (UINT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
-      MusicPoll(FALSE);
-      if (uiStartTime != 0xffffffff) {
-        if (GetJA2Clock() > uiStartTime) {
-          if (usFadeLimit) {
-            usFadeLimit--;
-            ShadowVideoSurfaceRectUsingLowPercentTable(FRAME_BUFFER, 0, 0, 640, 480);
-            InvalidateScreen();
-          } else {
-            ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
-            InvalidateScreen();
-            RefreshScreen(NULL);
-            return;
-          }
-        }
-      }
-      if (gfLeftButtonState || gfRightButtonState) {
-        if (uiStartTime == 0xffffffff) {
-          uiStartTime = GetJA2Clock();
-        }
-      }
-      while (DequeueEvent(&InputEvent)) {
-        if (InputEvent.usEvent == KEY_DOWN) {
-          if (InputEvent.usParam == ESC) {
-            return;
-          } else if (uiStartTime == 0xffffffff) {
-            uiStartTime = GetJA2Clock();
-          }
-        }
-      }
-      gfSGPInputReceived = FALSE;
-      RefreshScreen(NULL);
-    }
-  }
-}
-#endif
-
 extern INT8 gbFadeSpeed;
 
-#ifdef GERMAN
-void DisplayTopwareGermanyAddress() {
-  VOBJECT_DESC vo_desc;
-  UINT32 uiTempID;
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  SGPRect ClipRect;
-
-  // bring up the Topware address screen
-  vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  sprintf(vo_desc.ImageFile, "German\\topware_germany.sti");
-  if (!AddVideoObject(&vo_desc, &uiTempID)) {
-    AssertMsg(0, "Failed to load German\\topware_germany.sti");
-    return;
-  }
-
-  // Shade out a background piece to emphasize the German address.
-  ClipRect.iLeft = 208;
-  ClipRect.iRight = 431;
-  ClipRect.iTop = 390;
-  ClipRect.iBottom = 475;
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-  Blt16BPPBufferShadowRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &ClipRect);
-  UnLockVideoSurface(FRAME_BUFFER);
-
-  // Draw the anti-aliased address now.
-  BltVideoObjectFromIndex(FRAME_BUFFER, uiTempID, 0, 218, 400, VO_BLT_SRCTRANSPARENCY, NULL);
-  BltVideoObjectFromIndex(FRAME_BUFFER, uiTempID, 0, 218, 400, VO_BLT_SRCTRANSPARENCY, NULL);
-  InvalidateRegion(208, 390, 431, 475);
-  DeleteVideoObjectFromIndex(uiTempID);
-  ExecuteBaseDirtyRectQueue();
-  EndFrameBufferRender();
-}
-#endif
+// FIXME: Language-specific code
+// #ifdef GERMAN
+// void DisplayTopwareGermanyAddress() {
+//   VOBJECT_DESC vo_desc;
+//   UINT32 uiTempID;
+//   UINT8 *pDestBuf;
+//   UINT32 uiDestPitchBYTES;
+//   SGPRect ClipRect;
+//
+//   // bring up the Topware address screen
+//   vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
+//   sprintf(vo_desc.ImageFile, "German\\topware_germany.sti");
+//   if (!AddVideoObject(&vo_desc, &uiTempID)) {
+//     AssertMsg(0, "Failed to load German\\topware_germany.sti");
+//     return;
+//   }
+//
+//   // Shade out a background piece to emphasize the German address.
+//   ClipRect.iLeft = 208;
+//   ClipRect.iRight = 431;
+//   ClipRect.iTop = 390;
+//   ClipRect.iBottom = 475;
+//   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+//   Blt16BPPBufferShadowRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &ClipRect);
+//   UnLockVideoSurface(FRAME_BUFFER);
+//
+//   // Draw the anti-aliased address now.
+//   BltVideoObjectFromIndex(FRAME_BUFFER, uiTempID, 0, 218, 400, VO_BLT_SRCTRANSPARENCY, NULL);
+//   BltVideoObjectFromIndex(FRAME_BUFFER, uiTempID, 0, 218, 400, VO_BLT_SRCTRANSPARENCY, NULL);
+//   InvalidateRegion(208, 390, 431, 475);
+//   DeleteVideoObjectFromIndex(uiTempID);
+//   ExecuteBaseDirtyRectQueue();
+//   EndFrameBufferRender();
+// }
+// #endif
 
 UINT32 DemoExitScreenHandle(void) {
-#ifdef JA2DEMOADS
-  static UINT8 ubCurrentScreen = 0;
-  static UINT8 ubPreviousScreen = 0;
-  static INT8 bCurFrame = 0;
-  static UINT32 uiTimeOfLastUpdate = 0;
-  static UINT32 uiStartTime = 0;
-  UINT32 uiTime;
-  static UINT32 uiCharsPrinted = 0;
-  static UINT32 uiWidthString = 0;
-  UINT32 uiCharsToPrint;
-  INT32 iPercentage;
-  static INT32 iPrevPercentage = 0;
-  SGPRect SrcRect, DstRect;
-  INT32 iFactor;
-  static BOOLEAN fSetMusicToFade = FALSE;
-  UINT16 str[150];
-  static UINT16 usCenter = 320;
-  static UINT32 uiCollageID = 0;
-  HVSURFACE hVSurface;
-  VSURFACE_DESC VSurfaceDesc;
-  static BOOLEAN gfFastAnim = FALSE;
-  static BOOLEAN gfPrevFastAnim = FALSE;
-
-  static MOUSE_REGION BackRegion;
-  InputAtom InputEvent;
-
-  gfPrevFastAnim = gfFastAnim;
-  if (gfLeftButtonState || gfRightButtonState || _KeyDown(SPACE)) {
-    gfFastAnim = TRUE;
-  } else {
-    gfFastAnim = FALSE;
-  }
-
-  while (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN) {
-      if (InputEvent.usParam == ESC) {
-        gfProgramIsRunning = FALSE;
-      }
-    }
-  }
-
-  if (HandleBeginFadeOut(DEMO_EXIT_SCREEN)) {
-    return DEMO_EXIT_SCREEN;
-  }
-
-  if (ubCurrentScreen == 0) {
-    // bring up the collage screen
-    VSurfaceDesc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
-    GetMLGFilename(VSurfaceDesc.ImageFile, MLG_COLLAGE);
-    if (!AddVideoSurface(&VSurfaceDesc, &uiCollageID)) {
-      AssertMsg(0, "Failed to load DemoAds\\collage.sti");
-      ubCurrentScreen = 8;
-      return DEMO_EXIT_SCREEN;
-    }
-
-    SetMusicMode(MUSIC_NONE);
-
-    GetVideoSurface(&hVSurface, uiCollageID);
-    BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, NULL);
-    DeleteVideoSurfaceFromIndex(uiCollageID);
-
-    InvalidateScreen();
-
-    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-    MSYS_DefineRegion(&BackRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-
-    // Init screen
-    bCurFrame = 0;
-
-    ubCurrentScreen = 1;
-
-    uiTimeOfLastUpdate = GetJA2Clock();
-
-    FadeInNextFrame();
-
-    HandleBeginFadeIn(DEMO_EXIT_SCREEN);
-
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // Update frame
-  uiTime = GetJA2Clock();
-  if (!uiStartTime) {
-    uiStartTime = uiTime;
-    usCenter = (UINT16)(320 - (StringPixLength(gpDemoString[0], FONT14ARIAL) + 10) + (StringPixLength(gpDemoString[0], FONT14ARIAL) + 10));
-    uiWidthString = StringPixLength(gpDemoString[0], FONT14ARIAL);
-    SetFont(FONT14ARIAL);
-    SetFontForeground(FONT_YELLOW);
-    SetFontShadow(FONT_NEARBLACK);
-  }
-
-  // type out the title message, "The best of Strategy. The best of Role-playing."
-  if (ubCurrentScreen == 1) {
-    iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage, 1);
-      else
-        iPercentage += 1;
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - (iPrevPercentage + 1) * 16;
-      iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    }
-    if (iPercentage > 160 && uiCharsPrinted == wcslen(gpDemoString[0])) {
-      uiStartTime = GetJA2Clock();
-      uiWidthString = StringPixLength(gpDemoString[1], FONT14ARIAL);
-      ubCurrentScreen = 2;
-      ubPreviousScreen = 1;
-      uiCharsPrinted = 0;
-      iPrevPercentage = 0;
-      return DEMO_EXIT_SCREEN;
-    }
-    iPercentage = min(iPercentage, 100);
-
-    uiCharsToPrint = wcslen(gpDemoString[0]) * iPercentage / 100;
-
-    if (uiCharsToPrint > uiCharsPrinted) {
-      uiCharsPrinted = uiCharsToPrint;
-      PlayJA2Sample(ENTERING_TEXT, RATE_11025, MIDVOLUME, 1, 39 + iPercentage / 2);
-      wcscpy(str, gpDemoString[0]);
-      str[uiCharsToPrint] = L'\0';
-      mprintf(usCenter - 10 - uiWidthString, 5, str);
-      InvalidateRegion(usCenter - 10 - uiWidthString, 5, usCenter - 10, 19);
-      ExecuteBaseDirtyRectQueue();
-      EndFrameBufferRender();
-    }
-
-    ubPreviousScreen = 1;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // type out the title message, "The best of Strategy. The best of Role-playing."
-  if (ubCurrentScreen == 2) {
-    iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage, 1);
-      else
-        iPercentage += 1;
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - (iPrevPercentage + 1) * 16;
-      iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    }
-    if (iPercentage > 160 && uiCharsPrinted == wcslen(gpDemoString[1])) {
-      ubCurrentScreen = 3;
-      ubPreviousScreen = 2;
-      iPrevPercentage = 0;
-      return DEMO_EXIT_SCREEN;
-    }
-    iPercentage = min(iPercentage, 100);
-    uiCharsToPrint = wcslen(gpDemoString[1]) * iPercentage / 100;
-
-    if (uiCharsToPrint > uiCharsPrinted) {
-      uiCharsPrinted = uiCharsToPrint;
-      PlayJA2Sample(ENTERING_TEXT, RATE_11025, MIDVOLUME, 1, 39 + iPercentage / 2);
-      wcscpy(str, gpDemoString[1]);
-      str[uiCharsToPrint] = L'\0';
-      mprintf(usCenter + 10, 5, str);
-      InvalidateRegion(usCenter + 10, 5, usCenter + 10 + uiWidthString, 19);
-      ExecuteBaseDirtyRectQueue();
-      EndFrameBufferRender();
-    }
-
-    ubPreviousScreen = 2;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // drop the ja2 logo into the screen playing a metal stamp sound.
-  if (ubCurrentScreen == 3) {
-    uiTime = GetJA2Clock();
-    if (ubPreviousScreen == 2) {
-      VSURFACE_DESC vs_desc;
-      VOBJECT_DESC vo_desc;
-      UINT8 ubBitDepth;
-      UINT32 uiTempID;
-      UINT16 usWidth, usHeight;
-
-      // Create render buffer
-      GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
-      vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
-      vs_desc.usWidth = 263;
-      vs_desc.usHeight = 210;
-      vs_desc.ubBitDepth = ubBitDepth;
-      CHECKF(AddVideoSurface(&vs_desc, &uiCollageID));
-
-      // bring up the collage screen
-      vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      sprintf(vo_desc.ImageFile, "Interface\\ja2logo.sti");
-      if (!AddVideoObject(&vo_desc, &uiTempID)) {
-        AssertMsg(0, "Failed to load Interface\\ja2logo.sti");
-        ubCurrentScreen = 8;
-        ubPreviousScreen = 3;
-        return DEMO_EXIT_SCREEN;
-      }
-      uiStartTime = uiTime;
-      BltVideoObjectFromIndex(uiCollageID, uiTempID, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
-      DeleteVideoObjectFromIndex(uiTempID);
-      BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
-      PlayJA2SampleFromFile("DemoAds\\Swoosh.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-    }
-
-    iPercentage = (uiTime - uiStartTime) * 100 / 1200;
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage * 1, 1);
-      else
-        iPercentage += 1;
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - (iPrevPercentage + 1) * 12;
-      iPercentage = (uiTime - uiStartTime) * 100 / 1200;
-    }
-    iPercentage = min(iPercentage, 100);
-
-    // Factor the percentage so that it is modified by a gravity falling acceleration effect.
-    iFactor = (iPercentage - 50) * 2;
-    if (iPercentage < 50)
-      iPercentage = (UINT32)(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
-    else
-      iPercentage = (UINT32)(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
-
-    if (iPercentage < 50) {
-      // do the logo entrance section
-      SrcRect.iLeft = 131 - 131 * iPercentage / 50;
-      SrcRect.iRight = 132 + 131 * iPercentage / 50;
-      SrcRect.iTop = 48 - 48 * iPercentage / 50;
-      SrcRect.iBottom = 49 + 161 * iPercentage / 50;
-      // SrcRect.iLeft = 145 - 145 * iPercentage / 50;
-      // SrcRect.iRight = 146 + 117 * iPercentage / 50;
-      // SrcRect.iTop = 117 - 117 * iPercentage / 50;
-      // SrcRect.iBottom = 118 + 92 * iPercentage / 50;
-      DstRect.iLeft = 0;
-      DstRect.iRight = 640;
-      DstRect.iTop = 0;
-      DstRect.iBottom = 480;
-      BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 640, 480);
-      BltStretchVideoSurface(FRAME_BUFFER, uiCollageID, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DstRect);
-      InvalidateScreen();
-    } else {
-      // scale down the logo and stamp it.
-      SrcRect.iLeft = 0;
-      SrcRect.iRight = 263;
-      SrcRect.iTop = 0;
-      SrcRect.iBottom = 210;
-      DstRect.iLeft = 189 * (iPercentage - 50) / 50;
-      DstRect.iRight = 640 - 188 * (iPercentage - 50) / 50;
-      DstRect.iTop = 20 * (iPercentage - 50) / 50;
-      DstRect.iBottom = 480 - 250 * (iPercentage - 50) / 50;
-      BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 640, 480);
-      BltStretchVideoSurface(FRAME_BUFFER, uiCollageID, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DstRect);
-      InvalidateScreen();
-    }
-    if (iPercentage == 100) {
-      SetMusicMode(MUSIC_MAIN_MENU);
-      PlayJA2SampleFromFile("DemoAds\\Hit.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-      gbFadeSpeed = (INT8)50;
-      BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
-      ubCurrentScreen = 4;
-      SetFontDestBuffer(FRAME_BUFFER, 0, 230, 640, 480, FALSE);
-      SetFont(FONT10ARIAL);
-      SetFontForeground(FONT_GRAY2);
-      uiStartTime = GetJA2Clock();
-      DeleteVideoSurfaceFromIndex(uiCollageID);
-      iPrevPercentage = 0;
-    }
-    ubPreviousScreen = 3;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // Do the feature scrolling.
-  if (ubCurrentScreen == 4) {
-    INT32 i, width, yp;
-    UINT16 usFont;
-    uiTime = GetJA2Clock();
-    // percentage is at 100 times higher resolution.
-    iPercentage = (uiTime - uiStartTime);
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage, 150);
-      else
-        iPercentage += 150;
-      if (iPercentage < iPrevPercentage) {
-        iPercentage = iPrevPercentage;
-      }
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - (iPrevPercentage + 150);
-      iPercentage = (uiTime - uiStartTime);
-    }
-    iPercentage = min(iPercentage, 45000);
-
-    BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 100, 230, 440, 250);
-    InvalidateRegion(100, 230, 540, 640);
-    yp = 480 - iPercentage / 40; // 500 (0%) to -500 (100%)
-    yp = max(yp, -400);
-    for (i = 2; i < 40; i++) {
-      if (i < 36)
-        usFont = (UINT16)FONT14ARIAL;
-      else
-        usFont = (UINT16)FONT14HUMANIST;
-
-      switch (i) {
-        case 38:
-          SetFontForeground(FONT_LTKHAKI);
-          swprintf(str, L"%s", gpDemoString[i]);
-          break;
-        case 39:
-          SetFontForeground(FONT_LTKHAKI);
-          wcscpy(str, gpDemoString[i]);
-          break;
-        default:
-          SetFontForeground(FONT_GRAY2);
-          wcscpy(str, gpDemoString[i]);
-          break;
-      }
-      width = StringPixLength(str, usFont);
-      SetFont(usFont);
-
-      mprintf(320 - width / 2, yp + i * 17, str);
-    }
-    if (!fSetMusicToFade && iPercentage > 43000) {
-      fSetMusicToFade = TRUE;
-      SetMusicMode(MUSIC_NONE);
-    }
-    if (yp == -400) {
-      ubCurrentScreen = 5;
-      iPrevPercentage = 0;
-    }
-
-    ubPreviousScreen = 4;
-    ExecuteBaseDirtyRectQueue();
-    EndFrameBufferRender();
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // drop the available Oct 1998 label into the screen playing a metal stamp sound.
-  if (ubCurrentScreen == 5) {
-    uiTime = GetJA2Clock();
-    if (ubPreviousScreen == 4) {
-      VSURFACE_DESC vs_desc;
-      VOBJECT_DESC vo_desc;
-      UINT8 ubBitDepth;
-      UINT32 uiTempID;
-      UINT16 usWidth, usHeight;
-
-      // Create render buffer
-      GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
-      vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
-      vs_desc.usWidth = 331;
-      vs_desc.usHeight = 148;
-      vs_desc.ubBitDepth = ubBitDepth;
-      CHECKF(AddVideoSurface(&vs_desc, &uiCollageID));
-
-      // bring up the collage screen
-      vo_desc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-      GetMLGFilename(vo_desc.ImageFile, MLG_AVAILABLE);
-      if (!AddVideoObject(&vo_desc, &uiTempID)) {
-        AssertMsg(0, "Failed to load DemoAds\\available.sti");
-        ubCurrentScreen = 8;
-        ubPreviousScreen = 4;
-        return DEMO_EXIT_SCREEN;
-      }
-      uiStartTime = uiTime;
-      BltVideoObjectFromIndex(uiCollageID, uiTempID, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
-      DeleteVideoObjectFromIndex(uiTempID);
-      BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
-      PlayJA2SampleFromFile("DemoAds\\Swoosh.wav", RATE_11025, MIDVOLUME, 1, MIDDLEPAN);
-    }
-
-    iPercentage = (uiTime - uiStartTime) * 100 / 1200;
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage, 1);
-      else
-        iPercentage += 1;
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - iPrevPercentage * 12;
-      iPercentage = (uiTime - uiStartTime) * 100 / 1200;
-    }
-    iPercentage = min(iPercentage, 100);
-
-    // Factor the percentage so that it is modified by a gravity falling acceleration effect.
-    iFactor = (iPercentage - 50) * 2;
-    if (iPercentage < 50)
-      iPercentage = (UINT32)(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
-    else
-      iPercentage = (UINT32)(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
-
-    if (iPercentage < 50) {
-      // do the logo entrance section
-      SrcRect.iLeft = 165 - 165 * iPercentage / 50;
-      SrcRect.iRight = 166 + 165 * iPercentage / 50;
-      SrcRect.iTop = 74 - 74 * iPercentage / 50;
-      SrcRect.iBottom = 75 + 73 * iPercentage / 50;
-      DstRect.iLeft = 0;
-      DstRect.iRight = 640;
-      DstRect.iTop = 0;
-      DstRect.iBottom = 480;
-      BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 640, 480);
-      BltStretchVideoSurface(FRAME_BUFFER, uiCollageID, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DstRect);
-      InvalidateScreen();
-    } else {
-      // scale down the logo and stamp it.
-      SrcRect.iLeft = 0;
-      SrcRect.iRight = 331;
-      SrcRect.iTop = 0;
-      SrcRect.iBottom = 148;
-      DstRect.iLeft = 155 * (iPercentage - 50) / 50;
-      DstRect.iRight = 640 - 154 * (iPercentage - 50) / 50;
-      DstRect.iTop = 246 * (iPercentage - 50) / 50;
-      DstRect.iBottom = 480 - 86 * (iPercentage - 50) / 50;
-#ifdef GERMAN
-      DstRect.iTop -= (iPercentage - 50);
-      DstRect.iBottom -= (iPercentage - 50);
-#endif
-      BlitBufferToBuffer(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 640, 480);
-      BltStretchVideoSurface(FRAME_BUFFER, uiCollageID, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DstRect);
-      InvalidateScreen();
-    }
-    if (iPercentage == 100) {
-      PlayJA2SampleFromFile("DemoAds\\Hit.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-      BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
-      ubCurrentScreen = 6;
-      DeleteVideoSurfaceFromIndex(uiCollageID);
-      iPrevPercentage = 0;
-    }
-    ubPreviousScreen = 5;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  // type out the final purchase address information."
-  if (ubCurrentScreen == 6) {
-    if (ubPreviousScreen != 6) {
-      uiStartTime = GetJA2Clock();
-      uiCharsPrinted = 0;
-      uiWidthString = StringPixLength(gpDemoString[40], FONT14ARIAL);
-      SetFont(FONT14ARIAL);
-      SetFontForeground(FONT_YELLOW);
-      SetFontShadow(FONT_NEARBLACK);
-    }
-    iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    if (gfFastAnim) {
-      if (gfPrevFastAnim)
-        iPercentage += max(iPercentage - iPrevPercentage, 1);
-      else
-        iPercentage += 1;
-      iPrevPercentage = iPercentage;
-    }
-    if (gfPrevFastAnim) {
-      uiStartTime = uiTime - (iPrevPercentage + 1) * 16;
-      iPercentage = (uiTime - uiStartTime) * 100 / 1600;
-    }
-    if (iPercentage > 160 && uiCharsPrinted == wcslen(gpDemoString[40])) {
-#ifdef GERMAN
-      DisplayTopwareGermanyAddress();
-#endif
-      ubCurrentScreen = 7;
-      ubPreviousScreen = 6;
-      iPrevPercentage = 0;
-      return DEMO_EXIT_SCREEN;
-    }
-    iPercentage = min(iPercentage, 100);
-    uiCharsToPrint = wcslen(gpDemoString[40]) * iPercentage / 100;
-
-    if (uiCharsToPrint > uiCharsPrinted) {
-      uiCharsPrinted = uiCharsToPrint;
-      PlayJA2Sample(ENTERING_TEXT, RATE_11025, MIDVOLUME, 1, 39 + iPercentage / 2);
-      wcscpy(str, gpDemoString[40]);
-      str[uiCharsToPrint] = L'\0';
-#ifdef GERMAN
-      mprintf(320 - uiWidthString / 2, 370, str);
-      InvalidateRegion(320 - uiWidthString / 2, 370, 320 + (uiWidthString + 1) / 2, 383);
-#else
-      mprintf(320 - uiWidthString / 2, 420, str);
-      InvalidateRegion(320 - uiWidthString / 2, 420, 320 + (uiWidthString + 1) / 2, 433);
-#endif
-      ExecuteBaseDirtyRectQueue();
-      EndFrameBufferRender();
-    }
-
-    ubPreviousScreen = 6;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  if (ubCurrentScreen == 7) {
-    if (ubPreviousScreen == 6) {
-      uiStartTime = GetJA2Clock();
-#ifdef GERMAN
-      uiStartTime = 4000000000; // you could break the system by playing the game for 46 real-time days or longer.
-#endif
-    }
-    uiTime = GetJA2Clock();
-    if (!fSetMusicToFade && gfLeftButtonState) {
-      fSetMusicToFade = TRUE;
-      SetMusicMode(MUSIC_NONE);
-      uiStartTime = uiTime - 6000;
-    }
-#ifndef GERMAN
-    if (uiStartTime + 6000 < uiTime && !fSetMusicToFade) {
-      fSetMusicToFade = TRUE;
-      SetMusicMode(MUSIC_NONE);
-    }
-#endif
-    if (uiStartTime + 7000 < uiTime) {
-      ubCurrentScreen = 8;
-
-      gFadeOutDoneCallback = DoneFadeOutForDemoExitScreen;
-
-      FadeOutNextFrame();
-
-      MSYS_RemoveRegion(&BackRegion);
-    }
-    ubPreviousScreen = 7;
-    return DEMO_EXIT_SCREEN;
-  }
-
-  if (HandleFadeOutCallback()) {
-    return DEMO_EXIT_SCREEN;
-  }
-
-  return DEMO_EXIT_SCREEN;
-#else
   gfProgramIsRunning = FALSE;
   return DEMO_EXIT_SCREEN;
-#endif
 }
 
 UINT32 DemoExitScreenShutdown(void) {
   return TRUE;
 }
-
-#ifndef JA2EDITOR
-
-UINT32 LoadSaveScreenInit() {
-  return TRUE;
-}
-
-UINT32 LoadSaveScreenHandle() {
-  return TRUE;
-}
-
-UINT32 LoadSaveScreenShutdown() {
-  return TRUE;
-}
-
-UINT32 EditScreenInit() {
-  return TRUE;
-}
-
-UINT32 EditScreenHandle() {
-  return TRUE;
-}
-
-UINT32 EditScreenShutdown() {
-  return TRUE;
-}
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef NPC_H
-#define NPC_H
-
 #define NUM_NPC_QUOTE_RECORDS 50
 
 //#define IRRELEVANT 255
@@ -31,9 +28,10 @@
 #define ANY_RIFLE 1001
 
 typedef struct {
-#if defined(CRIPPLED_VERSION) || defined(RUSSIAN)
-  UINT8 ubIdentifier[4];
-#endif
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+//   UINT8 ubIdentifier[4];
+// #endif
 
   UINT16 fFlags;
 
@@ -65,9 +63,10 @@ typedef struct {
   UINT16 usGoToGridno;
   INT16 sActionData; // special action value
 
-#if !defined(CRIPPLED_VERSION) && !defined(RUSSIAN)
+// FIXME: Language-specific code
+// #ifndef RUSSIAN
   UINT8 ubUnused[4];
-#endif
+// #endif
 } NPCQuoteInfo; // 32 bytes
 
 typedef enum {
@@ -179,10 +178,6 @@ BOOLEAN NPCWillingToAcceptItem(UINT8 ubNPC, UINT8 ubMerc, OBJECTTYPE *pObj);
 BOOLEAN SaveBackupNPCInfoToSaveGameFile(HWFILE hFile);
 BOOLEAN LoadBackupNPCInfoFromSavedGameFile(HWFILE hFile, UINT32 uiSaveGameVersion);
 
-#ifdef JA2BETAVERSION
-void ToggleNPCRecordDisplay(void);
-#endif
-
 void UpdateDarrelScriptToGoTo(SOLDIERTYPE *pSoldier);
 
 #define WALTER_BRIBE_AMOUNT 20000
@@ -200,5 +195,3 @@ void HandleNPCChangesForTacticalTraversal(SOLDIERTYPE *pSoldier);
 BOOLEAN NPCHasUnusedHostileRecord(UINT8 ubNPC, UINT8 ubApproach);
 
 void ResetOncePerConvoRecordsForAllNPCsInLoadedSector(void);
-
-#endif

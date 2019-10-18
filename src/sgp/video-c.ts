@@ -1,7 +1,3 @@
-#ifndef _MT
-#define _MT
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Local Defines
@@ -78,14 +74,6 @@ static LPDIRECTDRAWSURFACE2 gpBackBuffer = NULL;
 
 static LPDIRECTDRAWSURFACE _gpFrameBuffer = NULL;
 static LPDIRECTDRAWSURFACE2 gpFrameBuffer = NULL;
-
-#ifdef WINDOWED_MODE
-
-static LPDIRECTDRAWSURFACE _gpBackBuffer = NULL;
-
-extern RECT rcWindow;
-
-#endif
 
 //
 // Globals for mouse cursor
@@ -189,9 +177,7 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
   DDCOLORKEY ColorKey;
   PTR pTmpPointer;
 
-#ifndef WINDOWED_MODE
   DDSCAPS SurfaceCaps;
-#endif
 
   //
   // Register debug topics
@@ -225,11 +211,7 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
   // Get a window handle for our application (gotta have on of those)
   // Don't change this
   //
-#ifdef WINDOWED_MODE
-  hWindow = CreateWindowEx(0, ClassName, "Windowed JA2 !!", WS_POPUP, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, NULL, NULL, hInstance, NULL);
-#else
   hWindow = CreateWindowEx(WS_EX_TOPMOST, ClassName, ClassName, WS_POPUP | WS_VISIBLE, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), NULL, NULL, hInstance, NULL);
-#endif
   if (hWindow == NULL) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create window frame for Direct Draw");
     return FALSE;
@@ -277,11 +259,7 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
   //
   // Set the exclusive mode
   //
-#ifdef WINDOWED_MODE
-  ReturnCode = IDirectDraw2_SetCooperativeLevel(gpDirectDrawObject, ghWindow, DDSCL_NORMAL);
-#else
   ReturnCode = IDirectDraw2_SetCooperativeLevel(gpDirectDrawObject, ghWindow, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
-#endif
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -290,13 +268,11 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
   //
   // Set the display mode
   //
-#ifndef WINDOWED_MODE
   ReturnCode = IDirectDraw2_SetDisplayMode(gpDirectDrawObject, SCREEN_WIDTH, SCREEN_HEIGHT, gbPixelDepth, 0, 0);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
-#endif
 
   gusScreenWidth = SCREEN_WIDTH;
   gusScreenHeight = SCREEN_HEIGHT;
@@ -313,45 +289,6 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
   //
 
   ZEROMEM(SurfaceDescription);
-#ifdef WINDOWED_MODE
-
-  // Create a primary surface and a backbuffer in system memory
-  SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  SurfaceDescription.dwFlags = DDSD_CAPS;
-  SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpPrimarySurface, NULL);
-  if (ReturnCode != DD_OK) {
-    DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
-  }
-
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpPrimarySurface, &IID_IDirectDrawSurface2, &gpPrimarySurface);
-  if (ReturnCode != DD_OK) {
-    DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
-  }
-
-  // Backbuffer
-  ZEROMEM(SurfaceDescription);
-  SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  SurfaceDescription.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT;
-  SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
-  SurfaceDescription.dwWidth = SCREEN_WIDTH;
-  SurfaceDescription.dwHeight = SCREEN_HEIGHT;
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpBackBuffer, NULL);
-  if (ReturnCode != DD_OK) {
-    DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
-  }
-
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpBackBuffer, &IID_IDirectDrawSurface2, &gpBackBuffer);
-  if (ReturnCode != DD_OK) {
-    DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-    return FALSE;
-  }
-
-#else
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
   SurfaceDescription.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
   SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
@@ -375,8 +312,6 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
-
-#endif
 
   //
   // Initialize the frame buffer
@@ -1190,16 +1125,6 @@ void ScrollJA2Background(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScr
 
   if (fRenderStrip) {
     // Memset to 0
-#ifdef SCROLL_TEST
-    {
-      DDBLTFX BlitterFX;
-
-      BlitterFX.dwSize = sizeof(DDBLTFX);
-      BlitterFX.dwFillColor = 0;
-
-      DDBltSurface((LPDIRECTDRAWSURFACE2)pDest, NULL, NULL, NULL, DDBLT_COLORFILL, &BlitterFX);
-    }
-#endif
 
     for (cnt = 0; cnt < usNumStrips; cnt++) {
       RenderStaticWorldRect((INT16)StripRegions[cnt].left, (INT16)StripRegions[cnt].top, (INT16)StripRegions[cnt].right, (INT16)StripRegions[cnt].bottom, TRUE);
@@ -1787,25 +1712,6 @@ void RefreshScreen(void *DummyVariable) {
   //
   // Step (1) - Flip pages
   //
-#ifdef WINDOWED_MODE
-
-  do {
-    ReturnCode = IDirectDrawSurface_Blt(gpPrimarySurface, // dest surface
-                                        &rcWindow, // dest rect
-                                        gpBackBuffer, // src surface
-                                        NULL, // src rect (all of it)
-                                        DDBLT_WAIT, NULL);
-
-    if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
-      DirectXAttempt(ReturnCode, __LINE__, __FILE__);
-
-      if (ReturnCode == DDERR_SURFACELOST) {
-        goto ENDOFLOOP;
-      }
-    }
-  } while (ReturnCode != DD_OK);
-
-#else
 
   do {
     ReturnCode = IDirectDrawSurface_Flip(_gpPrimarySurface, NULL, DDFLIP_WAIT);
@@ -1818,8 +1724,6 @@ void RefreshScreen(void *DummyVariable) {
       }
     }
   } while (ReturnCode != DD_OK);
-
-#endif
 
   //
   // Step (2) - Copy Primary Surface to the Back Buffer
@@ -2587,9 +2491,6 @@ void SnapshotSmall(void) {
 }
 
 void VideoCaptureToggle(void) {
-#ifdef JA2TESTVERSION
-  VideoMovieCapture((BOOLEAN)!gfVideoCapture);
-#endif
 }
 
 void VideoMovieCapture(BOOLEAN fEnable) {

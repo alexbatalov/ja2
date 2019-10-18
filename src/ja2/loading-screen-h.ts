@@ -1,6 +1,3 @@
-#ifndef __LOADING_SCREEN_H
-#define __LOADING_SCREEN_H
-
 enum UINT8 {
   LOADINGSCREEN_NOTHING,
   LOADINGSCREEN_DAYGENERIC,
@@ -56,5 +53,3 @@ UINT8 GetLoadScreenID(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 // sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
 // and refreshing the screen with it.
 void DisplayLoadScreenWithID(UINT8 ubLoadScreenID);
-
-#endif

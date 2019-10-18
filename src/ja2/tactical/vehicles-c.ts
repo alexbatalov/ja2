@@ -1114,12 +1114,6 @@ void SetDriver(INT32 iID, UINT8 ubID) {
   pVehicleList[iID].ubDriver = ubID;
 }
 
-#ifdef JA2TESTVERSION
-void VehicleTest(void) {
-  SetUpHelicopterForPlayer(9, 1);
-}
-#endif
-
 BOOLEAN IsEnoughSpaceInVehicle(INT32 iID) {
   // find if vehicle is valid
   if (VehicleIdIsValid(iID) == FALSE) {
@@ -2048,9 +2042,6 @@ BOOLEAN DoesVehicleGroupHaveAnyPassengers(GROUP *pGroup) {
 
   iVehicleID = GivenMvtGroupIdFindVehicleId(pGroup->ubGroupID);
   if (iVehicleID == -1) {
-#ifdef JA2BETAVERSION
-    AssertMsg(iVehicleID != -1, "DoesVehicleGroupHaveAnyPassengers() for vehicle group.  Invalid iVehicleID.");
-#endif
     return FALSE;
   }
 

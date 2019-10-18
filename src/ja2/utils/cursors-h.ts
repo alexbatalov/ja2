@@ -1,6 +1,3 @@
-#ifndef __CURSORS_H
-#define __CURSORS_H
-
 // INDIVIDUAL CURSORS
 
 typedef enum {
@@ -246,5 +243,3 @@ void SetCursorSpecialFrame(UINT32 uiCursor, UINT8 ubFrame);
 void SetCursorFlags(UINT32 uiCursor, UINT8 ubFlags);
 
 void RemoveCursorFlags(UINT32 uiCursor, UINT8 ubFlags);
-
-#endif

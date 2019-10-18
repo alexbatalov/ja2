@@ -1,6 +1,3 @@
-#ifndef __SOLDIER_FIND_H
-#define __SOLDIER_FIND_H
-
 #define FIND_SOLDIER_FULL 0x000000002
 #define FIND_SOLDIER_GRIDNO 0x000000004
 #define FIND_SOLDIER_SAMELEVEL 0x000000008
@@ -42,5 +39,3 @@ BOOLEAN FindRelativeSoldierPosition(SOLDIERTYPE *pSoldier, UINT16 *usFlags, INT1
 
 UINT8 QuickFindSoldier(INT16 sGridNo);
 void GetGridNoScreenPos(INT16 sGridNo, UINT8 ubLevel, INT16 *psScreenX, INT16 *psScreenY);
-
-#endif

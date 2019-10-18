@@ -13,10 +13,6 @@ extern INT16 DirIncrementer[8];
 UINT8 gubGridNoMarkers[WORLD_MAX];
 UINT8 gubGridNoValue = 254;
 
-#ifdef _DEBUG
-UINT8 gubFOVDebugInfoInfo[WORLD_MAX];
-#endif
-
 UINT8 ViewPath[MAXVIEWPATHS][VIEWPATHLENGTH] = {
   { NOVIEW, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP },
   { UP, UP, UP, UP, DRIGHT, UP, UP, UP, UP, UP, UP, UP, UP },
@@ -129,10 +125,6 @@ void BuildSightDir(UINT32 dir, UINT32 *One, UINT32 *Two, UINT32 *Three, UINT32 *
       *Four = SOUTHWEST;
       *Five = NORTHEAST;
       break;
-#ifdef BETAVERSION
-    default:
-      NumMessage("BuildSightDir:  Invalid 'dir' value, = ", dir);
-#endif
   }
 }
 
@@ -327,15 +319,6 @@ void RevealRoofsAndItems(SOLDIERTYPE *pSoldier, UINT32 itemsToo, BOOLEAN fShowLo
     fRevealItems = TRUE;
     fStopRevealingItemsAfterThisTile = FALSE;
 
-#ifdef _DEBUG
-    if (_KeyDown(NUM_LOCK)) {
-      memset(gubFOVDebugInfoInfo, 0, sizeof(gubFOVDebugInfoInfo));
-
-      SetRenderFlags(RENDER_FLAG_FULL);
-      RenderWorld();
-    }
-#endif
-
     for (markercnt = 0; markercnt < range; markercnt++) {
       // fGoneThroughDoor = FALSE;
       // fThroughWindow		= FALSE;
@@ -396,32 +379,6 @@ void RevealRoofsAndItems(SOLDIERTYPE *pSoldier, UINT32 itemsToo, BOOLEAN fShowLo
       if (markerDir == NOVIEW && markercnt != 0) {
         break;
       }
-
-#ifdef _DEBUG
-      if (_KeyDown(NUM_LOCK)) {
-        int cnt = GetJA2Clock();
-
-        gubFOVDebugInfoInfo[marker] = (UINT8)markercnt;
-
-        StartFrameBufferRender();
-
-        RenderFOVDebug();
-
-        SetFont(LARGEFONT1);
-        SetFontBackground(FONT_MCOLOR_BLACK);
-        SetFontForeground(FONT_MCOLOR_WHITE);
-        mprintf(10, 10, L"%d", maincnt);
-        // mprintf( 10,  20 , L"%d", marker  );
-        // mprintf( 50,  20 , L"%d", pSoldier->sGridNo  );
-
-        InvalidateScreen();
-        EndFrameBufferRender();
-        RefreshScreen(NULL);
-
-        do {
-        } while ((GetJA2Clock() - cnt) < 250);
-      }
-#endif
 
       // Check if we can get to this gridno from our direction in
       ubMovementCost = gubWorldMovementCosts[marker][Dir[markerDir]][ubLevel];

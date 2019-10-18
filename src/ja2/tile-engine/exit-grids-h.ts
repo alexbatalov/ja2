@@ -1,6 +1,3 @@
-#ifndef __EXIT_GRIDS_H
-#define __EXIT_GRIDS_H
-
 // for exit grids (object level)
 typedef struct {
   // if an item pool is also in same gridno, then this would be a separate levelnode
@@ -31,5 +28,3 @@ extern BOOLEAN gfOverrideInsertionWithExitGrid;
 UINT16 FindGridNoFromSweetSpotCloseToExitGrid(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection);
 
 UINT16 FindClosestExitGrid(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 ubRadius);
-
-#endif

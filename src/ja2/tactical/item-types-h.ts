@@ -1,6 +1,3 @@
-#ifndef ITEM_TYPES_H
-#define ITEM_TYPES_H
-
 #define INVALIDCURS 0
 #define QUESTCURS 1
 #define PUNCHCURS 2
@@ -648,5 +645,3 @@ typedef enum {
 #define LAST_HEAD_ITEM SUNGOGGLES
 
 extern INVTYPE Item[MAXITEMS];
-
-#endif

@@ -8,8 +8,6 @@
 // supported.  Just remove the commented line of code (search for UNCOMMENT), and it's fixed -- it is
 // currently disabled.
 
-#ifdef JA2EDITOR
-
 CurrentPopupMenuInformation gPopup;
 
 MOUSE_REGION popupRegion;
@@ -412,5 +410,3 @@ BOOLEAN ProcessPopupMenuIfActive() {
   EndFrameBufferRender();
   return TRUE;
 }
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _MERC_CONTRACT_H_
-#define _MERC_CONTRACT_H_
-
 // enums used for extending contract, etc.
 enum {
   CONTRACT_EXTEND_1_DAY,
@@ -70,5 +67,3 @@ extern SOLDIERTYPE *pContractReHireSoldier;
 extern SOLDIERTYPE *pLeaveSoldier;
 extern UINT8 ubQuitType;
 extern BOOLEAN gfFirstMercSayQuote;
-
-#endif

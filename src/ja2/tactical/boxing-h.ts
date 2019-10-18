@@ -1,7 +1,3 @@
-#ifndef BOXING_H
-
-#define BOXING_H
-
 #define BOXING_SECTOR_X 5
 #define BOXING_SECTOR_Y 4
 #define BOXING_SECTOR_Z 0
@@ -41,5 +37,3 @@ extern void SetBoxingState(INT8 bNewState);
 extern BOOLEAN BoxerExists(void);
 extern UINT8 CountPeopleInBoxingRing(void);
 extern void ClearAllBoxerFlags(void);
-
-#endif

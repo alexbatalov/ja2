@@ -1,6 +1,3 @@
-#ifndef __TILEDEF_H
-#define __TILEDEF_H
-
 // CATEGORY TYPES
 #define NO_TILE 64000
 #define ERASE_TILE 65000
@@ -165,5 +162,3 @@ void SetSpecificDatabaseValues(UINT16 usType, UINT16 uiDatabaseElem, TILE_ELEMEN
 BOOLEAN AllocateAnimTileData(TILE_ELEMENT *pTileElem, UINT8 ubNumFrames);
 void FreeAnimTileData(TILE_ELEMENT *pTileElem);
 void DeallocateTileDatabase();
-
-#endif

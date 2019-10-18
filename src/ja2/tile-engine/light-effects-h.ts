@@ -1,6 +1,3 @@
-#ifndef __LIGHT_EFFECTS
-#define __LIGHT_EFFECTS
-
 // Light effect types
 enum {
   NO_LIGHT_EFFECT,
@@ -36,5 +33,3 @@ BOOLEAN LoadLightEffectsFromLoadGameFile(HWFILE hFile);
 BOOLEAN SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 BOOLEAN LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void ResetLightEffects();
-
-#endif

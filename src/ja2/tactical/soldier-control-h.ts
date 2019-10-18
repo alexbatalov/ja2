@@ -1,6 +1,3 @@
-#ifndef __SOLDER_CONTROL_H
-#define __SOLDER_CONTROL_H
-
 // Kris:  November 10, 1997
 // Please don't change this value from 10.  It will invalidate all of the maps and soldiers.
 #define MAXPATROLGRIDS 10 // *** THIS IS A DUPLICATION - MUST BE MOVED !
@@ -1118,5 +1115,3 @@ void BeginTyingToFall(SOLDIERTYPE *pSoldier);
 
 void SetSoldierAsUnderAiControl(SOLDIERTYPE *pSoldier);
 void HandlePlayerTogglingLightEffects(BOOLEAN fToggleValue);
-
-#endif

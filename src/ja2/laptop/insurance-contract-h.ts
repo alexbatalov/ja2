@@ -1,6 +1,3 @@
-#ifndef __INSURANCE_CONTRACT_H
-#define __INSURANCE_CONTRACT_H
-
 void GameInitInsuranceContract();
 BOOLEAN EnterInsuranceContract();
 void ExitInsuranceContract();
@@ -24,5 +21,3 @@ INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID);
 void InsuranceContractEndGameShutDown();
 
 void PurchaseOrExtendInsuranceForSoldier(SOLDIERTYPE *pSoldier, UINT32 uiInsuranceLength);
-
-#endif

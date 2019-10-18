@@ -1,6 +1,4 @@
-#ifdef JA2EDITOR
 extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
-#endif
 
 BOOLEAN GetEarliestMorningScheduleEvent(SCHEDULENODE *pSchedule, UINT32 *puiTime);
 INT8 GetEmptyScheduleEntry(SCHEDULENODE *pSchedule);
@@ -122,16 +120,10 @@ void ProcessTacticalSchedule(UINT8 ubScheduleID) {
   // Attempt to locate the schedule.
   pSchedule = GetSchedule(ubScheduleID);
   if (!pSchedule) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Schedule ID of %d not found.", ubScheduleID);
-#endif
     return;
   }
   // Attempt to access the soldier involved
   if (pSchedule->ubSoldierID >= TOTAL_SOLDIERS) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Illegal soldier ID of %d.", pSchedule->ubSoldierID);
-#endif
     return;
   }
 
@@ -143,9 +135,6 @@ void ProcessTacticalSchedule(UINT8 ubScheduleID) {
   }
 
   if (!pSoldier->bActive) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Schedule callback:  Soldier isn't active.  Name is %s.", pSoldier->name);
-#endif
   }
 
   // Okay, now we have good pointers to the soldier and the schedule.
@@ -544,13 +533,11 @@ void AutoProcessSchedule(SCHEDULENODE *pSchedule, INT32 index) {
 
   pSoldier = MercPtrs[pSchedule->ubSoldierID];
 
-#ifdef JA2EDITOR
   if (pSoldier->ubProfile != NO_PROFILE) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for %S (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule->ubAction[index]], pSoldier->name, pSoldier->ubID, GetWorldHour(), guiMin, pSchedule->usTime[index] / 60, pSchedule->usTime[index] % 60, pSchedule->usData1[index]));
   } else {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Autoprocessing schedule action %S for civ (%d) at time %02ld:%02ld (set for %02d:%02d), data1 = %d", gszScheduleActions[pSchedule->ubAction[index]], pSoldier->ubID, GetWorldHour(), guiMin, pSchedule->usTime[index] / 60, pSchedule->usTime[index] % 60, pSchedule->usData1[index]));
   }
-#endif
 
   // always assume the merc is going to wake, unless the event is a sleep
   pSoldier->fAIFlags &= ~(AI_ASLEEP);
@@ -829,11 +816,6 @@ void PostSchedules() {
   SOLDIERINITNODE *curr;
   BOOLEAN fDefaultSchedulesPossible = FALSE;
 
-#if defined(DISABLESCHEDULES) || defined(JA2DEMO) // definition found at top of this .c file.
-
-  return;
-
-#endif
   // If no way to leave the map, then don't post default schedules.
   if (gMapInformation.sNorthGridNo != -1 || gMapInformation.sEastGridNo != -1 || gMapInformation.sSouthGridNo != -1 || gMapInformation.sWestGridNo != -1) {
     fDefaultSchedulesPossible = TRUE;

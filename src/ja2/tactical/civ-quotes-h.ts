@@ -1,6 +1,3 @@
-#ifndef __CIV_QUOTES_H
-#define __CIV_QUOTES_H
-
 #define CIV_TYPE_NA 0
 #define CIV_TYPE_ADULT 1
 #define CIV_TYPE_KID 2
@@ -80,5 +77,3 @@ BOOLEAN LoadCivQuotesFromLoadGameFile(HWFILE hFile);
 BOOLEAN ShutDownQuoteBoxIfActive();
 
 void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 sX, INT16 sY);
-
-#endif

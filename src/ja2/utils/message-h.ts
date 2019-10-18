@@ -1,6 +1,3 @@
-#ifndef __MESSAGE_H
-#define __MESSAGE_H
-
 struct stringstruct {
   STR16 pString16;
   INT32 iVideoOverlay;
@@ -91,5 +88,3 @@ BOOLEAN IsThisTheLastMessageInTheList( void );
 BOOLEAN IsThisTheFirstMessageInTheList( void );
 void DisplayLastMessage( void );
 */
-
-#endif

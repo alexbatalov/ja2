@@ -1,6 +1,3 @@
-#ifndef _DOORS_H
-#define _DOORS_H
-
 #define HANDLE_DOOR_OPEN 1
 #define HANDLE_DOOR_EXAMINE 2
 #define HANDLE_DOOR_LOCKPICK 3
@@ -22,5 +19,3 @@ void InteractWithClosedDoor(SOLDIERTYPE *pSoldier, UINT8 ubHandleCode);
 void SetDoorString(INT16 sGridNo);
 
 void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fNoAnimations);
-
-#endif

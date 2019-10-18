@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
 UINT16 usCurrentMode;
 UINT8 gubCurrRoomNumber;
@@ -632,5 +630,3 @@ void ExtractAndUpdateBuildingInfo() {
   SetInputFieldStringWith16BitString(1, str);
   SetActiveField(0);
 }
-
-#endif

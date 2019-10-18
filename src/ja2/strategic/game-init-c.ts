@@ -38,9 +38,6 @@ void InitNPCs(void) {
       break;
   }
 
-#ifdef JA2TESTVERSION
-  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Skyrider in %c %d", 'A' + pProfile->sSectorY - 1, pProfile->sSectorX);
-#endif
   // use alternate map, with Skyrider's shack, in this sector
   SectorInfo[SECTOR(pProfile->sSectorX, pProfile->sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
 
@@ -93,10 +90,6 @@ void InitNPCs(void) {
       break;
   }
 
-#ifdef JA2TESTVERSION
-  ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s in %c %d", pProfile->zNickname, 'A' + pProfile->sSectorY - 1, pProfile->sSectorX);
-#endif
-
   // use alternate map in this sector
   // SectorInfo[ SECTOR( pProfile->sSectorX, pProfile->sSectorY ) ].uiFlags |= SF_USE_ALTERNATE_MAP;
 
@@ -123,10 +116,6 @@ void InitNPCs(void) {
         pProfile->bSectorZ = 0;
         break;
     }
-
-#ifdef JA2TESTVERSION
-    ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s in %c %d", pProfile->zNickname, 'A' + pProfile->sSectorY - 1, pProfile->sSectorX);
-#endif
 
     // use alternate map in this sector
     SectorInfo[SECTOR(pProfile->sSectorX, pProfile->sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
@@ -296,32 +285,6 @@ BOOLEAN InitNewGame(BOOLEAN fReset) {
   // clear mapscreen messages
   FreeGlobalMessageList();
 
-#ifdef JA2DEMO
-
-  // IF our first time, go into laptop!
-  InitStrategicLayer();
-
-  // Hire demo mercs....
-#if defined(JA2TESTVERSION) || defined(JA2DEMO)
-  DemoHiringOfMercs();
-#endif
-
-  // Setup initial money
-  AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), 20500);
-#ifdef GERMAN
-  // The different mercs are slightly more expensive.  This adds that difference.
-  AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), 1075);
-#endif
-
-  if (!SetCurrentWorldSector(1, 16, 0)) {
-  }
-
-  SetLaptopExitScreen(MAP_SCREEN);
-  FadeInGameScreen();
-  EnterTacticalScreen();
-
-#else
-
   // IF our first time, go into laptop!
   if (gubScreenCount == 0) {
     // Init the laptop here
@@ -374,21 +337,6 @@ BOOLEAN InitNewGame(BOOLEAN fReset) {
       // schedule email for message from spec at 7am 3 days in the future
       AddFutureDayStrategicEvent(EVENT_DAY3_ADD_EMAIL_FROM_SPECK, 60 * 7, 0, uiDaysTimeMercSiteAvailable);
     }
-
-#ifdef CRIPPLED_VERSION
-    {
-      UINT32 cnt;
-
-      // loop through the first 20 AIM mercs and set them to be away
-      for (cnt = 0; cnt < 20; cnt++) {
-        gMercProfiles[cnt].bMercStatus = MERC_WORKING_ELSEWHERE;
-        gMercProfiles[cnt].uiDayBecomesAvailable = 14; // 14 days should be ok considering crippled version only goes to day 7
-      }
-    }
-
-    // Add an event to check for the end of the crippled version
-    AddEveryDayStrategicEvent(EVENT_CRIPPLED_VERSION_END_GAME_CHECK, 0, 0);
-#endif
 
     SetLaptopExitScreen(INIT_SCREEN);
     SetPendingNewScreen(LAPTOP_SCREEN);
@@ -445,7 +393,6 @@ BOOLEAN InitNewGame(BOOLEAN fReset) {
         }
 
         */
-#endif
 
   return TRUE;
 }
@@ -692,11 +639,6 @@ void ReStartingGame() {
   if (InAirRaid()) {
     EndAirRaid();
   }
-
-#ifdef JA2TESTVERSION
-  // Reset so we can use the 'cheat key' to start with mercs
-  TempHiringOfMercs(0, TRUE);
-#endif
 
   // Make sure the game starts in the TEAM panel ( it wasnt being reset )
   gsCurInterfacePanel = TEAM_PANEL;

@@ -1,6 +1,3 @@
-#ifndef __MAP_INTERFACE_BOTTOM
-#define __MAP_INTERFACE_BOTTOM
-
 #define MAX_MESSAGES_ON_MAP_BOTTOM 9
 
 // exit to where defines
@@ -55,10 +52,3 @@ void MapScreenMsgScrollUp(UINT8 ubLinesUp);
 
 void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex);
 void MoveToEndOfMapScreenMessageList(void);
-
-#ifdef JA2DEMO
-// handle leaving during the demo
-void HandleLeavingOfMapScreenDuringDemo(void);
-#endif
-
-#endif

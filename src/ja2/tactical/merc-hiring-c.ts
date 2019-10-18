@@ -1,10 +1,5 @@
 #define MIN_FLIGHT_PREP_TIME 6
 
-#ifdef JA2TESTVERSION
-BOOLEAN gForceHireMerc = FALSE;
-void SetFlagToForceHireMerc(BOOLEAN fForceHire);
-#endif
-
 extern BOOLEAN gfTacticalDoHeliRun;
 extern BOOLEAN gfFirstHeliRun;
 
@@ -27,9 +22,6 @@ INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
   pMerc = &gMercProfiles[ubCurrentSoldier];
 
 // If we are to disregard the ststus of the merc
-#ifdef JA2TESTVERSION
-  if (!gForceHireMerc)
-#endif
     // If the merc is away, Dont hire him, or if the merc is only slightly annoyed at the player
     if ((pMerc->bMercStatus != 0) && (pMerc->bMercStatus != MERC_ANNOYED_BUT_CAN_STILL_CONTACT) && (pMerc->bMercStatus != MERC_HIRED_BUT_NOT_ARRIVED_YET))
       return MERC_HIRE_FAILED;
@@ -62,7 +54,6 @@ INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
 
   if (DidGameJustStart()) {
 // OK, CHECK FOR FIRST GUY, GIVE HIM SPECIAL ITEM!
-#ifndef JA2DEMO
     if (iNewIndex == 0) {
       // OK, give this item to our merc!
       OBJECTTYPE Object;
@@ -81,7 +72,6 @@ INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
 
     // ATE: Insert for demo , not using the heli sequence....
     pHireMerc->ubInsertionCode = INSERTION_CODE_CHOPPER;
-#endif
   }
 
   // record how long the merc will be gone for
@@ -122,10 +112,8 @@ INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
     pHireMerc->uiTimeTillMercArrives = (STARTING_TIME + FIRST_ARRIVAL_DELAY) / NUM_SEC_IN_MIN;
 
 // ATE: Insert for demo , not using the heli sequence....
-#ifndef JA2DEMO
     // Set insertion for first time in chopper
     pHireMerc->ubInsertionCode = INSERTION_CODE_CHOPPER;
-#endif
 
     // set when the merc's contract is finished
     pSoldier->iEndofContractTime = GetMidnightOfFutureDayInMinutes(pSoldier->iTotalContractLength) + (GetHourWhenContractDone(pSoldier) * 60);
@@ -257,7 +245,6 @@ void MercArrivesCallback(UINT8 ubSoldierID) {
     pSoldier->ubStrategicInsertionCode = INSERTION_CODE_NORTH;
   }
 
-#ifndef JA2DEMO
   if (pSoldier->ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
     ScreenMsg(FONT_MCOLOR_WHITE, MSG_INTERFACE, TacticalStr[MERC_HAS_ARRIVED_STR], pSoldier->name);
 
@@ -275,7 +262,6 @@ void MercArrivesCallback(UINT8 ubSoldierID) {
       TacticalCharacterDialogueWithSpecialEventEx(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_UNSET_ARRIVES_FLAG, 0, 0, 0);
     }
   }
-#endif
 
   // record how long the merc will be gone for
   pMerc->bMercStatus = (UINT8)pSoldier->iTotalContractLength;
@@ -392,12 +378,6 @@ void HandleMercArrivesQuotes(SOLDIERTYPE *pSoldier) {
     }
   }
 }
-
-#ifdef JA2TESTVERSION
-void SetFlagToForceHireMerc(BOOLEAN fForceHire) {
-  gForceHireMerc = fForceHire;
-}
-#endif
 
 UINT32 GetMercArrivalTimeOfDay() {
   UINT32 uiCurrHour;

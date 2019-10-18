@@ -1,6 +1,3 @@
-#ifndef _SOLDIER_ADD_H
-#define _SOLDIER_ADD_H
-
 // Finds a gridno given a sweet spot
 // Returns a good direction too!
 UINT16 FindGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection);
@@ -52,5 +49,3 @@ void SoldierInSectorDoctor(SOLDIERTYPE *pSoldier, INT16 sGridNo);
 void SoldierInSectorRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo);
 
 BOOLEAN CanSoldierReachGridNoInGivenTileLimit(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT16 sMaxTiles, INT8 bLevel);
-
-#endif

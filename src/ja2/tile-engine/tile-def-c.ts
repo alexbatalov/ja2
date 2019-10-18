@@ -159,10 +159,8 @@ void CreateTileDatabase() {
 
       // Check for overflow
       if (NumRegions > gNumTilesPerType[cnt1]) {
-#ifdef JA2EDITOR
         // Display warning
         gfWarning = (UINT8)cnt1;
-#endif
 
         // Cutof
         NumRegions = gNumTilesPerType[cnt1];
@@ -254,10 +252,8 @@ void CreateTileDatabase() {
 
       // Check if data matches what should be there
       if (NumRegions < gNumTilesPerType[cnt1]) {
-#ifdef JA2EDITOR
         // Display warning here
         gfWarning = (UINT8)cnt1;
-#endif
 
         // Do underflows here
         for (cnt2 = NumRegions; cnt2 < gNumTilesPerType[cnt1]; cnt2++) {

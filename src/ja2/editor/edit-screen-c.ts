@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 extern CHAR8 *szMusicList[NUM_MUSIC];
 
 BOOLEAN gfCorruptMap = FALSE;
@@ -3423,20 +3421,3 @@ void ReloadMap() {
   swprintf(szFilename, L"%S", gubFilename);
   ExternalLoadMap(szFilename);
 }
-
-#else // non-editor version
-
-UINT32 EditScreenInit() {
-  return TRUE;
-}
-
-UINT32 EditScreenHandle() {
-  // If this screen ever gets set, then this is a bad thing -- endless loop
-  return ERROR_SCREEN;
-}
-
-UINT32 EditScreenShutdown() {
-  return TRUE;
-}
-
-#endif

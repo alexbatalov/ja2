@@ -1,6 +1,3 @@
-#ifndef __MULTI_LANGUAGE_GRAPHIC_UTILS_H
-#define __MULTI_LANGUAGE_GRAPHIC_UTILS_H
-
 enum {
   MLG_AIMSYMBOL,
   MLG_BOBBYNAME,
@@ -39,5 +36,3 @@ enum {
 };
 
 BOOLEAN GetMLGFilename(SGPFILENAME filename, UINT16 usMLGGraphicID);
-
-#endif

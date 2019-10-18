@@ -491,8 +491,6 @@ void HandleMercsAboutToLeave( SOLDIERTYPE *pMercList )
 void MercsContractIsFinished(UINT8 ubID) {
   SOLDIERTYPE *pSoldier;
 
-#ifndef JA2DEMO
-
   pSoldier = &Menptr[ubID];
 
   // if the soldier was removed before getting into this function, return
@@ -533,15 +531,11 @@ void MercsContractIsFinished(UINT8 ubID) {
 
     pSoldier->ubLeaveHistoryCode = HISTORY_MERC_QUIT;
   }
-
-#endif
 }
 
 // ATE: Called for RPCs who should now complain about no pay...
 void RPCWhineAboutNoPay(UINT8 ubID) {
   SOLDIERTYPE *pSoldier;
-
-#ifndef JA2DEMO
 
   pSoldier = &Menptr[ubID];
 
@@ -553,8 +547,6 @@ void RPCWhineAboutNoPay(UINT8 ubID) {
     // Say quote for needing pay!
     TacticalCharacterDialogue(pSoldier, QUOTE_NOT_GETTING_PAID);
   }
-
-#endif
 }
 
 // OK loop through and check!

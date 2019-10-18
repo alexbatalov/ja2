@@ -326,12 +326,6 @@ void BeginTeamTurn(UINT8 ubTeam) {
       }
       break;
     } else {
-#ifdef NETWORKED
-      // Only the host should do this
-      if (!gfAmIHost)
-        break;
-#endif
-
       // Set First enemy merc to AI control
       if (BuildAIListForTeam(ubTeam)) {
         ubID = RemoveFirstAIListEntry();
@@ -626,10 +620,6 @@ void StartInterrupt(void) {
 
     gTacticalStatus.ubCurrentTeam = pSoldier->bTeam;
 
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Interrupt ( could be hidden )");
-#endif
-
     StartNPCAI(pSoldier);
   }
 
@@ -884,10 +874,6 @@ BOOLEAN StandardInterruptConditionsMet(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID
   {
     // ALEX
     if (gsWhoThrewRock >= NOBODY) {
-#ifdef BETAVERSION
-      NumMessage("StandardInterruptConditions: ERROR - ubOpponentID is NOBODY, don't know who threw rock, guynum = ", pSoldier->guynum);
-#endif
-
       return FALSE;
     }
 
@@ -1064,17 +1050,8 @@ BOOLEAN StandardInterruptConditionsMet(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID
 
   // soldier passed on the chance to react during previous interrupt this turn
   if (pSoldier->bPassedLastInterrupt) {
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "\tStandardInterruptConditionsMet: FAILING because PassedLastInterrupt %d(%s)\n", pSoldier->guynum, ExtMen[pSoldier->guynum].name);
-#endif
-
     return FALSE;
   }
-
-#ifdef RECORDINTERRUPT
-  // this usually starts a new series of logs, so that's why the blank line
-  fprintf(InterruptFile, "\nStandardInterruptConditionsMet by %d vs. %d\n", pSoldier->guynum, ubOpponentID);
-#endif
 
   return TRUE;
 }
@@ -1204,15 +1181,8 @@ INT8 CalcInterruptDuelPts(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, BOOLEAN fUs
   }
 
   if (bPoints >= AUTOMATIC_INTERRUPT) {
-#ifdef BETAVERSION
-    NumMessage("CalcInterruptDuelPts: ERROR - Invalid bInterruptDuelPts calculated for soldier ", pSoldier->guynum);
-#endif
     bPoints = AUTOMATIC_INTERRUPT - 1; // hack it to one less than max so its legal
   }
-
-#ifdef DEBUG_INTERRUPTS
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Calculating int pts for %d vs %d, number is %d", pSoldier->ubID, ubOpponentID, bPoints));
-#endif
 
   return bPoints;
 }
@@ -1248,9 +1218,6 @@ void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate) {
   // remember who we're getting rid of
   ubID = gubOutOfTurnOrder[ubIndex];
 
-#ifdef DEBUG_INTERRUPTS
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: removing ID %d", ubID));
-#endif
   //	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%d removed from int list", ubID );
   // if we're NOT deleting the LAST entry in the int list
   if (ubIndex < gubOutOfTurnPersons) {
@@ -1446,16 +1413,10 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
               // don't grant noise interrupts at greater than max. visible distance
               if (PythSpacesAway(pSoldier->sGridNo, pOpponent->sGridNo) > MaxDistanceVisible()) {
                 pOpponent->bInterruptDuelPts = NO_INTERRUPT;
-#ifdef DEBUG_INTERRUPTS
-                DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Resetting int pts for %d - NOISE BEYOND SIGHT DISTANCE!?", pOpponent->ubID));
-#endif
                 continue;
               }
             } else if (pOpponent->bOppList[pSoldier->ubID] != SEEN_CURRENTLY) {
               pOpponent->bInterruptDuelPts = NO_INTERRUPT;
-#ifdef DEBUG_INTERRUPTS
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Resetting int pts for %d - DOESN'T SEE ON SIGHT INTERRUPT!?", pOpponent->ubID));
-#endif
 
               continue;
             }
@@ -1468,20 +1429,12 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
               case AUTOMATIC_INTERRUPT: // interrupts occurs automatically
                 pSoldier->bInterruptDuelPts = 0; // just to have a valid intDiff later
                 fIntOccurs = TRUE;
-#ifdef DEBUG_INTERRUPTS
-                DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: automatic interrupt on %d by %d", pSoldier->ubID, pOpponent->ubID));
-#endif
                 break;
 
               default: // interrupt is possible, run a duel
                 DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Calculating int duel pts for onlooker in ResolveInterruptsVs");
                 pSoldier->bInterruptDuelPts = CalcInterruptDuelPts(pSoldier, pOpponent->ubID, TRUE);
                 fIntOccurs = InterruptDuel(pOpponent, pSoldier);
-#ifdef DEBUG_INTERRUPTS
-                if (fIntOccurs) {
-                  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: standard interrupt on %d (%d pts) by %d (%d pts)", pSoldier->ubID, pSoldier->bInterruptDuelPts, pOpponent->ubID, pOpponent->bInterruptDuelPts));
-                }
-#endif
 
                 break;
             }
@@ -1505,19 +1458,9 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
             }
 
 // either way, clear out both sides' bInterruptDuelPts field to prepare next one
-#ifdef DEBUG_INTERRUPTS
-            if (pSoldier->bInterruptDuelPts != NO_INTERRUPT) {
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Resetting int pts for %d", pSoldier->ubID));
-            }
-#endif
 
             pSoldier->bInterruptDuelPts = NO_INTERRUPT;
 
-#ifdef DEBUG_INTERRUPTS
-            if (pOpponent->bInterruptDuelPts != NO_INTERRUPT) {
-              DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Resetting int pts for %d", pOpponent->ubID));
-            }
-#endif
             pOpponent->bInterruptDuelPts = NO_INTERRUPT;
           }
         }

@@ -1,6 +1,3 @@
-#ifndef __INPUT_
-#define __INPUT_
-
 #define SCAN_CODE_MASK 0xff0000
 #define EXT_CODE_MASK 0x01000000
 #define TRANSITION_MASK 0x80000000
@@ -52,10 +49,6 @@ typedef struct StringInput {
   struct StringInput *pPreviousString;
   struct StringInput *pNextString;
 } StringInput;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern BOOLEAN InitializeInputManager(void);
 extern void ShutdownInputManager(void);
@@ -122,9 +115,3 @@ extern BOOLEAN gfSGPInputReceived;
 #define _EvShiftDown(a) (((InputAtom *)(a))->usKeyState & SHIFT_DOWN)
 #define _EvCtrlDown(a) (((InputAtom *)(a))->usKeyState & CTRL_DOWN)
 #define _EvAltDown(a) (((InputAtom *)(a))->usKeyState & ALT_DOWN)
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

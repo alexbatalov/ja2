@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef _SELECTION_WIN_H_
-#define _SELECTION_WIN_H_
-
 #define CANCEL_ICON 0
 #define UP_ICON 1
 #define DOWN_ICON 2
@@ -154,6 +150,3 @@ extern DisplayList *TrashList(DisplayList *pNode);
 extern BOOLEAN BuildDisplayWindow(DisplaySpec *pDisplaySpecs, UINT16 usNumSpecs, DisplayList **pDisplayList, SGPPoint *pUpperLeft, SGPPoint *pBottomRight, SGPPoint *pSpacing, UINT16 fFlags);
 
 extern BOOLEAN DisplayWindowFunc(DisplayList *pNode, INT16 iTopCutOff, INT16 iBottomCutOff, SGPPoint *pUpperLeft, UINT16 fFlags);
-
-#endif
-#endif

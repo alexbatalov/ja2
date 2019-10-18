@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 INT32 giBothCheckboxButton = -1;
 INT32 giRealisticCheckboxButton = -1;
 INT32 giSciFiCheckboxButton = -1;
@@ -1394,5 +1392,3 @@ void ReEvaluateAttachmentStatii() {
     }
   }
 }
-
-#endif

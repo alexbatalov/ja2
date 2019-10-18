@@ -503,11 +503,7 @@ BOOLEAN CheckForGunJam(SOLDIERTYPE *pSoldier) {
           iChance -= PreRandom(100);
         }
 
-#ifdef TESTGUNJAM
-        if (1)
-#else
         if ((INT32)PreRandom(100) < iChance || gfNextFireJam)
-#endif
         {
           gfNextFireJam = FALSE;
 
@@ -815,12 +811,6 @@ BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
 
   // ROLL DICE
   uiDiceRoll = PreRandom(100);
-
-#ifdef JA2BETAVERSION
-  if (gfReportHitChances) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Hit chance was %ld, roll %ld (range %d)", uiHitChance, uiDiceRoll, PythSpacesAway(pSoldier->sGridNo, pSoldier->sTargetGridNo));
-  }
-#endif
 
   fGonnaHit = uiDiceRoll <= uiHitChance;
 
@@ -1226,12 +1216,6 @@ BOOLEAN UseHandToHand(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, BOOLEAN fSteal
     iDiceRoll = (INT32)PreRandom(100);
     // sprintf( gDebugStr, "Hit Chance: %d %d", (int)uiHitChance, uiDiceRoll );
 
-#ifdef JA2BETAVERSION
-    if (gfReportHitChances) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Hit chance was %ld, roll %ld", iHitChance, iDiceRoll);
-    }
-#endif
-
     // GET TARGET XY VALUES
     ConvertGridNoToCenterCellXY(sTargetGridNo, &sXMapPos, &sYMapPos);
 
@@ -1290,9 +1274,6 @@ BOOLEAN UseHandToHand(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, BOOLEAN fSteal
         }
       }
 
-#ifdef JA2BETAVERSION
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - steal"));
-#endif
       FreeUpAttacker((UINT8)pSoldier->ubID);
     } else {
       // ATE/CC: if doing ninja spin kick (only), automatically make it a hit
@@ -1376,12 +1357,6 @@ BOOLEAN UseThrown(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier->bAimTime, AIM_SHOT_TORSO);
 
   uiDiceRoll = PreRandom(100);
-
-#ifdef JA2BETAVERSION
-  if (gfReportHitChances) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Hit chance was %ld, roll %ld (range %d)", uiHitChance, uiDiceRoll, PythSpacesAway(pSoldier->sGridNo, sTargetGridNo));
-  }
-#endif
 
   if (pSoldier->bTeam == gbPlayerNum && gTacticalStatus.uiFlags & INCOMBAT) {
     // check target gridno
@@ -1497,12 +1472,6 @@ BOOLEAN UseLauncher(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier->bAimTime, AIM_SHOT_TORSO);
 
   uiDiceRoll = PreRandom(100);
-
-#ifdef JA2BETAVERSION
-  if (gfReportHitChances) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Hit chance was %ld, roll %ld (range %d)", uiHitChance, uiDiceRoll, PythSpacesAway(pSoldier->sGridNo, sTargetGridNo));
-  }
-#endif
 
   if (Item[usItemNum].usItemClass == IC_LAUNCHER) {
     // Preserve gridno!
@@ -2633,12 +2602,13 @@ INT32 TotalArmourProtection(SOLDIERTYPE *pFirer, SOLDIERTYPE *pTarget, UINT8 ubH
             pArmour->usAttachItem[bPlatePos] = NOTHING;
             pArmour->bAttachStatus[bPlatePos] = 0;
             DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
-#ifdef ENGLISH
+// FIXME: Language-specific code
+// #ifdef ENGLISH
             if (pTarget->bTeam == gbPlayerNum) {
               // report plates destroyed!
               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, gzLateLocalizedString[61], pTarget->name);
             }
-#endif
+// #endif
           }
         }
       }
@@ -3070,9 +3040,6 @@ UINT32 CalcChanceHTH(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAim
   if (ubMode == HTH_MODE_STAB) {
     // safety check
     if (Weapon[usInHand].ubWeaponClass != KNIFECLASS) {
-#ifdef BETAVERSION
-      NumMessage("CalcChanceToStab: ERROR - Attacker isn't holding a knife, usInHand = ", usInHand);
-#endif
       return 0;
     }
   } else {

@@ -1,6 +1,3 @@
-#ifndef __STRATPATH_H
-#define __STRATPATH_H
-
 // directions of movement for badsector determination ( blocking off of a sector exit from foot or vehicle travel)
 
 // Shortest Path Defines
@@ -114,5 +111,3 @@ void ClearMercPathsAndWaypointsForAllInGroup(GROUP *pGroup);
 void ClearPathForSoldier(SOLDIERTYPE *pSoldier);
 
 void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY);
-
-#endif

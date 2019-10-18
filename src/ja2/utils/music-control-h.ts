@@ -1,6 +1,3 @@
-#ifndef _MUSIC_CONTROL_H_
-#define _MUSIC_CONTROL_H_
-
 enum MusicList {
   MARIMBAD2_MUSIC,
   MENUMIX_MUSIC,
@@ -49,5 +46,3 @@ BOOLEAN MusicPoll(BOOLEAN fForce);
 void SetMusicFadeSpeed(INT8 bFadeSpeed);
 
 void FadeMusicForXSeconds(UINT32 uiDelay);
-
-#endif

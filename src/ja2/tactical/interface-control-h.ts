@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_CONTROL_H
-#define __INTERFACE_CONTROL_H
-
 #define INTERFACE_MAPSCREEN 0x00000001
 #define INTERFACE_NORENDERBUTTONS 0x00000002
 #define INTERFACE_LOCKEDLEVEL1 0x00000004
@@ -36,5 +33,3 @@ BOOLEAN AreWeInAUIMenu();
 void HandleTacticalPanelSwitch();
 
 BOOLEAN InterfaceOKForMeanwhilePopup();
-
-#endif

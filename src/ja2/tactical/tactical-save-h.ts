@@ -1,6 +1,3 @@
-#ifndef __TACTICAL_SAVE_H_
-#define __TACTICAL_SAVE_H_
-
 #define MAPS_DIR "Temp\\"
 
 // Defines used for the bUseMercGridNoPlacement contained in the the merc profile struct
@@ -95,5 +92,3 @@ void SetNumberOfVisibleWorldItemsInSectorStructureForSector(INT16 sMapX, INT16 s
 
 #define NEW_ROTATION_ARRAY_SIZE 49
 #define BASE_NUMBER_OF_ROTATION_ARRAYS 19
-
-#endif

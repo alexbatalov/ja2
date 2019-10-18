@@ -1,6 +1,3 @@
-#ifndef _LIBRARY_DATABASE_H
-#define _LIBRARY_DATABASE_H
-
 #define FILENAME_SIZE 256
 
 //#define	FILENAME_SIZE									40 + PATH_SIZE
@@ -27,13 +24,6 @@ typedef struct {
   BOOLEAN fOnCDrom; // A flag specifying if its a cdrom library ( not implemented yet )
   BOOLEAN fInitOnStart; // Flag specifying if the library is to Initialized at the begining of the game
 } LibraryInitHeader;
-
-#ifdef JA2
-#elif UTIL
-#define NUMBER_OF_LIBRARIES 0
-typedef FILETIME SGP_FILETIME;
-#else // wizardry
-#endif
 
 extern LibraryInitHeader gGameLibaries[];
 extern CHAR8 gzCdDirectory[SGPFILENAME_LEN];
@@ -69,13 +59,6 @@ typedef struct {
   INT32 iSizeOfOpenFileArray;
   FileHeaderStruct *pFileHeader;
   FileOpenStruct *pOpenFiles;
-
-  //
-  //	Temp:	Total memory used for each library ( all memory allocated
-  //
-#ifdef JA2TESTVERSION
-  UINT32 uiTotalMemoryAllocatedForLibrary;
-#endif
 } LibraryHeaderStruct;
 
 typedef struct {
@@ -126,10 +109,6 @@ typedef struct {
   UINT16 usReserved2;
 } DIRENTRY;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // The FileDatabaseHeader
 extern DatabaseManagerHeaderStruct gFileDataBase;
 
@@ -157,9 +136,3 @@ BOOLEAN OpenLibrary(INT16 sLibraryID);
 BOOLEAN IsLibraryOpened(INT16 sLibraryID);
 
 BOOLEAN GetLibraryFileTime(INT16 sLibraryID, UINT32 uiFileNum, SGP_FILETIME *pLastWriteTime);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

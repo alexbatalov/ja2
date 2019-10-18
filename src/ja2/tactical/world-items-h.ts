@@ -1,6 +1,3 @@
-#ifndef __WORLD_ITEMS
-#define __WORLD_ITEMS
-
 #define WORLD_ITEM_DONTRENDER 0x0001
 #define WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO 0x0002
 #define WORLD_ITEM_ARMED_BOMB 0x0040
@@ -52,5 +49,3 @@ extern void FindPanicBombsAndTriggers(void);
 extern INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel);
 
 void RefreshWorldItemsIntoItemPools(WORLDITEM *pItemList, INT32 iNumberOfItems);
-
-#endif

@@ -197,9 +197,6 @@ void CalcFirstIndexForPage(STORE_INVENTORY *pInv, UINT32 uiItemClass);
 void OutOfStockMessageBoxCallBack(UINT8 bExitValue);
 UINT8 CheckPlayersInventoryForGunMatchingGivenAmmoID(INT16 sItemID);
 void BobbyrRGunsHelpTextDoneCallBack(void);
-#ifdef JA2BETAVERSION
-void ReportBobbyROrderError(UINT16 usItemNumber, UINT8 ubPurchaseNum, UINT8 ubQtyOnHand, UINT8 ubNumPurchasing);
-#endif
 
 // ppp
 
@@ -1210,10 +1207,6 @@ void PurchaseBobbyRayItem(UINT16 usItemNumber) {
       }
     } else {
       DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, BobbyRText[BOBBYR_MORE_NO_MORE_IN_STOCK], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
-
-#ifdef JA2BETAVERSION
-      ReportBobbyROrderError(usItemNumber, ubPurchaseNumber, LaptopSaveInfo.BobbyRayUsedInventory[usItemNumber].ubQtyOnHand, BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased);
-#endif
     }
   }
   // else the player is on a any other page except the used page
@@ -1242,10 +1235,6 @@ void PurchaseBobbyRayItem(UINT16 usItemNumber) {
       }
     } else {
       DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, BobbyRText[BOBBYR_MORE_NO_MORE_IN_STOCK], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
-
-#ifdef JA2BETAVERSION
-      ReportBobbyROrderError(usItemNumber, ubPurchaseNumber, LaptopSaveInfo.BobbyRayInventory[usItemNumber].ubQtyOnHand, BobbyRayPurchases[ubPurchaseNumber].ubNumberPurchased);
-#endif
     }
   }
 }
@@ -1481,13 +1470,3 @@ void BobbyrRGunsHelpTextDoneCallBack(void) {
   fReDrawScreenFlag = TRUE;
   fPausedReDrawScreenFlag = TRUE;
 }
-
-#ifdef JA2BETAVERSION
-void ReportBobbyROrderError(UINT16 usItemNumber, UINT8 ubPurchaseNum, UINT8 ubQtyOnHand, UINT8 ubNumPurchasing) {
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("**** Bobby Rays Ordering Error ****"));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("usItemNumber = %d", usItemNumber));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ubPurchaseNum = %d", ubPurchaseNum));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ubQtyOnHand = %d", ubQtyOnHand));
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ubNumPurchasing = %d", ubNumPurchasing));
-}
-#endif

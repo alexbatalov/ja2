@@ -18,13 +18,6 @@ extern UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
 
 //#define PATHAI_SKIPLIST_DEBUG
 
-#ifdef PATHAI_VISIBLE_DEBUG
-
-extern INT16 gsCoverValue[WORLD_MAX];
-BOOLEAN gfDisplayCoverValues = TRUE;
-BOOLEAN gfDrawPathPoints = FALSE;
-#endif
-
 BOOLEAN gfPlotPathToExitGrid = FALSE;
 BOOLEAN gfRecalculatingExistingPathCost = FALSE;
 UINT8 gubGlobalPathFlags = 0;
@@ -54,8 +47,6 @@ INT32 iMaxTrailTree = MAX_TRAIL_TREE;
 INT32 iMaxPathQ = MAX_PATHQ;
 
 extern BOOLEAN gfGeneratingMapEdgepoints;
-
-#define VEHICLE
 
 #define TRAILCELLTYPE UINT16
 
@@ -365,13 +356,6 @@ static INT32 dirDelta[8] = {
 #define LOOPING_COUNTERCLOCKWISE 1
 #define LOOPING_REVERSE 2
 
-#ifdef COUNT_PATHS
-UINT32 guiSuccessfulPathChecks = 0;
-UINT32 guiTotalPathChecks = 0;
-UINT32 guiFailedPathChecks = 0;
-UINT32 guiUnsuccessfulPathChecks = 0;
-#endif
-
 INT8 RandomSkipListLevel(void) {
   INT8 bLevel = 1;
 
@@ -445,7 +429,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   INT32 iWaterToWater;
   UINT8 ubCurAPCost, ubAPCost;
   UINT8 ubNewAPCost = 0;
-#ifdef VEHICLE
   // BOOLEAN fTurnSlow = FALSE;
   // BOOLEAN fReverse = FALSE; // stuff for vehicles turning
   BOOLEAN fMultiTile, fVehicle;
@@ -455,7 +438,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   STRUCTURE_FILE_REF *pStructureFileRef = NULL;
   UINT16 usAnimSurface;
   // INT32 iCnt2, iCnt3;
-#endif
 
   INT32 iLastDir = 0;
 
@@ -495,27 +477,13 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   UINT16 usMovementModeToUseForAPs;
   INT16 sClosePathLimit;
 
-#ifdef PATHAI_SKIPLIST_DEBUG
-  CHAR8 zTempString[1000], zTS[50];
-#endif
-
-#ifdef PATHAI_VISIBLE_DEBUG
-  UINT16 usCounter = 0;
-#endif
-
   fVehicle = FALSE;
   iOriginationX = iOriginationY = 0;
   iOrigination = (INT32)s->sGridNo;
 
   if (iOrigination < 0 || iOrigination > WORLD_MAX) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, L"ERROR!  Trying to calculate path from off-world gridno %d to %d", iOrigination, sDestination);
-#endif
     return 0;
   } else if (!GridNoOnVisibleWorldTile((INT16)iOrigination)) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, L"ERROR!  Trying to calculate path from non-visible gridno %d to %d", iOrigination, sDestination);
-#endif
     return 0;
   } else if (s->bLevel != ubLevel) {
     // pathing to a different level... bzzzt!
@@ -604,12 +572,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
     }
   }
 
-#ifdef COUNT_PATHS
-  guiTotalPathChecks++;
-#endif
-
-#ifdef VEHICLE
-
   fMultiTile = ((s->uiStatusFlags & SOLDIER_MULTITILE) != 0);
   if (fMultiTile) {
     // Get animation surface...
@@ -651,8 +613,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
     fContinuousTurnNeeded = FALSE;
   }
 
-#endif
-
   if (!fContinuousTurnNeeded) {
     iLoopStart = 0;
     iLoopEnd = 0;
@@ -665,12 +625,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   // initialize the path data structures
   memset(pathQ, 0, iMaxPathQ * sizeof(path_t));
   memset(trailTree, 0, iMaxTrailTree * sizeof(trail_t));
-
-#if defined(PATHAI_VISIBLE_DEBUG)
-  if (gfDisplayCoverValues && gfDrawPathPoints) {
-    memset(gsCoverValue, 0x7F, sizeof(INT16) * WORLD_MAX);
-  }
-#endif
 
   bSkipListLevel = 1;
   iSkipListSize = 0;
@@ -741,14 +695,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
     // remember the cost used to get here...
     prevCost = gubWorldMovementCosts[trailTree[sCurPathNdx].sGridNo][trailTree[sCurPathNdx].stepDir][ubLevel];
 
-#if defined(PATHAI_VISIBLE_DEBUG)
-    if (gfDisplayCoverValues && gfDrawPathPoints) {
-      if (gsCoverValue[curLoc] > 0) {
-        gsCoverValue[curLoc] *= -1;
-      }
-    }
-#endif
-
     if (gubNPCAPBudget) {
       ubCurAPCost = pCurrPtr->ubTotalAPCost;
     }
@@ -783,7 +729,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
     // contemplate a new path in each direction
     // for ( iCnt = iLoopStart; iCnt != iLoopEnd; iCnt = (iCnt + iLoopIncrement) % MAXDIR )
     for (iCnt = iLoopStart;;) {
-#ifdef VEHICLE
       /*
       if (fTurnSlow)
       {
@@ -848,8 +793,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
           }
         }
       }
-
-#endif
 
       newLoc = curLoc + dirDelta[iCnt];
 
@@ -1110,7 +1053,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
         }
       }
 
-#ifdef VEHICLE
       if (fMultiTile) {
         // vehicle test for obstacles: prevent movement to next tile if
         // a tile covered by the vehicle in that position & direction
@@ -1147,7 +1089,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
         }
         */
       }
-#endif
 
       // NEW Apr 21 by Ian: abort if cost exceeds budget
       if (gubNPCAPBudget) {
@@ -1403,25 +1344,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
       // have we found a path to the current location that
       // costs less than the best so far to the same location?
       if (trailCostUsed[newLoc] != gubGlobalPathCount || newTotCost < trailCost[newLoc]) {
-#if defined(PATHAI_VISIBLE_DEBUG)
-
-        if (gfDisplayCoverValues && gfDrawPathPoints) {
-          if (gsCoverValue[newLoc] == 0x7F7F) {
-            gsCoverValue[newLoc] = usCounter++;
-          }
-          /*
-          else if (gsCoverValue[newLoc] >= 0)
-          {
-                  gsCoverValue[newLoc]++;
-          }
-          else
-          {
-                  gsCoverValue[newLoc]--;
-          }
-          */
-        }
-#endif
-
         // NEWQUENODE;
         {
           if (queRequests < QPOOLNDX) {
@@ -1442,9 +1364,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
         }
 
         if (pNewPtr == NULL) {
-#ifdef COUNT_PATHS
-          guiFailedPathChecks++;
-#endif
           gubNPCAPBudget = 0;
           gubNPCDistLimit = 0;
           return 0;
@@ -1463,9 +1382,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
         trailTreeNdx++;
 
         if (trailTreeNdx >= iMaxTrailTree) {
-#ifdef COUNT_PATHS
-          guiFailedPathChecks++;
-#endif
           gubNPCAPBudget = 0;
           gubNPCDistLimit = 0;
           return 0;
@@ -1543,65 +1459,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
             bSkipListLevel++;
           }
         }
-
-#ifdef PATHAI_SKIPLIST_DEBUG
-        // print out contents of queue
-        {
-          INT32 iLoop;
-          INT8 bTemp;
-
-          zTempString[0] = '\0';
-          pCurr = pQueueHead;
-          iLoop = 0;
-          while (pCurr) {
-            sprintf(zTS, "\t%ld", pCurr->sPathNdx);
-            if (pCurr == pNewPtr) {
-              strcat(zTS, "*");
-            }
-            strcat(zTempString, zTS);
-            pCurr = pCurr->pNext[0];
-            iLoop++;
-            if (iLoop > 50) {
-              break;
-            }
-          }
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zTempString);
-
-          zTempString[0] = '\0';
-          pCurr = pQueueHead;
-          iLoop = 0;
-          while (pCurr) {
-            sprintf(zTS, "\t%d", pCurr->bLevel);
-            strcat(zTempString, zTS);
-            pCurr = pCurr->pNext[0];
-            iLoop++;
-            if (iLoop > 50) {
-              break;
-            }
-          }
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zTempString);
-
-          zTempString[0] = '\0';
-          bTemp = pQueueHead->bLevel;
-          pCurr = pQueueHead;
-          iLoop = 0;
-          while (pCurr) {
-            bTemp = pQueueHead->bLevel;
-            while (pCurr->pNext[bTemp - 1] == NULL) {
-              bTemp--;
-            }
-            sprintf(zTS, "\t%d", bTemp);
-            strcat(zTempString, zTS);
-            pCurr = pCurr->pNext[0];
-            iLoop++;
-            if (iLoop > 50) {
-              break;
-            }
-          }
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zTempString);
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "------");
-        }
-#endif
       }
 
     NEXTDIR:
@@ -1619,19 +1476,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
       }
     }
   } while (pathQNotEmpty && pathNotYetFound);
-
-#if defined(PATHAI_VISIBLE_DEBUG)
-  if (gfDisplayCoverValues && gfDrawPathPoints) {
-    SetRenderFlags(RENDER_FLAG_FULL);
-    if (guiCurrentScreen == GAME_SCREEN) {
-      RenderWorld();
-      RenderCoverDebug();
-      InvalidateScreen();
-      EndFrameBufferRender();
-      RefreshScreen(NULL);
-    }
-  }
-#endif
 
   // work finished. Did we find a path?
   if (pathQNotEmpty && pathFound) {
@@ -1673,21 +1517,7 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
       giPathDataSize = (UINT16)iCnt;
     }
 
-#if defined(PATHAI_VISIBLE_DEBUG)
-    if (gfDisplayCoverValues && gfDrawPathPoints) {
-      SetRenderFlags(RENDER_FLAG_FULL);
-      RenderWorld();
-      RenderCoverDebug();
-      InvalidateScreen();
-      EndFrameBufferRender();
-      RefreshScreen(NULL);
-    }
-#endif
-
 // return path length : serves as a "successful" flag and a path length counter
-#ifdef COUNT_PATHS
-    guiSuccessfulPathChecks++;
-#endif
     gubNPCAPBudget = 0;
     gubNPCDistLimit = 0;
 
@@ -1699,15 +1529,6 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
 
     return iCnt;
   }
-
-#ifdef COUNT_PATHS
-  if (fCopyReachable) {
-    // actually this is a success
-    guiSuccessfulPathChecks++;
-  } else {
-    guiUnsuccessfulPathChecks++;
-  }
-#endif
 
   // failed miserably, report...
   gubNPCAPBudget = 0;

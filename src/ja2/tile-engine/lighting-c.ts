@@ -2620,9 +2620,7 @@ UINT8 LightGetColors(SGPPaletteEntry *pPal) {
         Sets the number of light colors, and the RGB value for each.
 
 ***************************************************************************************/
-#ifdef JA2EDITOR
 BOOLEAN gfEditorForceRebuildAllColors = FALSE;
-#endif
 
 extern void SetAllNewTileSurfacesLoaded(BOOLEAN fNew);
 
@@ -3004,9 +3002,6 @@ BOOLEAN CreateSoldierShadedPalette(SOLDIERTYPE *pSoldier, UINT32 uiBase, SGPPale
         adjust automagically.
 
 **********************************************************************************************/
-#ifdef JA2TESTVERSION
-extern UINT32 uiNumTablesSaved;
-#endif
 
 UINT16 CreateTilePaletteTables(HVOBJECT pObj, UINT32 uiTileIndex, BOOLEAN fForce) {
   UINT32 uiCount;
@@ -3040,10 +3035,6 @@ UINT16 CreateTilePaletteTables(HVOBJECT pObj, UINT32 uiTileIndex, BOOLEAN fForce
     if (!gfForceBuildShadeTables && !gpLightColors[0].peRed && !gpLightColors[0].peGreen && !gpLightColors[0].peBlue) {
       SaveShadeTable(pObj, uiTileIndex);
     }
-#ifdef JA2TESTVERSION
-    else
-      uiNumTablesSaved++;
-#endif
   }
 
   // if two lights are active

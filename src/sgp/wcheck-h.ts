@@ -1,6 +1,3 @@
-#ifndef __WCHECK_
-#define __WCHECK_
-
 #define CHECKF(exp) \
   if (!(exp)) { \
     return (FALSE); \
@@ -38,5 +35,3 @@
     ASSERT(0); \
     return (-1); \
   }
-
-#endif

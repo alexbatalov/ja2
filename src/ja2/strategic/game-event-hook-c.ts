@@ -1,7 +1,3 @@
-#ifdef JA2BETAVERSION
-extern BOOLEAN gfMercsNeverQuit;
-#endif
-
 extern void ValidateGameEvents();
 extern void HandleHourlyUpdate();
 extern void HandleQuarterHourUpdate();
@@ -9,11 +5,6 @@ extern void HandleMinuteUpdate();
 extern BOOLEAN gfProcessingGameEvents;
 extern UINT32 guiTimeStampOfCurrentlyExecutingEvent;
 extern BOOLEAN gfPreventDeletionOfAnyEvent;
-
-#ifdef CRIPPLED_VERSION
-void CrippledVersionEndGameCheckCallBack(UINT8 bExitValue);
-void CrippledVersionEndGameCheck();
-#endif
 
 BOOLEAN DelayEventIfBattleInProgress(STRATEGICEVENT *pEvent) {
   STRATEGICEVENT *pNewEvent;
@@ -40,24 +31,6 @@ BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent) {
     return FALSE;
   }
 
-#ifdef JA2BETAVERSION
-  // If we are currently in the AIViewer, only process the events that we want to process.
-  // The rest of the events will be delayed until AFTER we leave the viewer.
-  if (guiCurrentScreen == AIVIEWER_SCREEN) {
-    if (pEvent->ubCallbackID != EVENT_BEGIN_CREATURE_QUEST && pEvent->ubCallbackID != EVENT_CREATURE_SPREAD && pEvent->ubCallbackID != EVENT_DELAYED_HIRING_OF_MERC && pEvent->ubCallbackID != EVENT_GROUP_ARRIVAL && pEvent->ubCallbackID != EVENT_EVALUATE_QUEEN_SITUATION && pEvent->ubCallbackID != EVENT_CHECK_ENEMY_CONTROLLED_SECTOR) {
-      gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
-      return FALSE;
-    }
-  }
-#endif
-#ifdef JA2BETAVERSION
-  if (gfMercsNeverQuit) {
-    if (pEvent->ubCallbackID == EVENT_MERC_ABOUT_TO_LEAVE_COMMENT || pEvent->ubCallbackID == EVENT_MERC_CONTRACT_OVER) {
-      gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
-      return FALSE;
-    }
-  }
-#endif
   // Look at the ID of event and do stuff according to that!
   switch (pEvent->ubCallbackID) {
     case EVENT_CHANGELIGHTVAL:
@@ -325,47 +298,7 @@ BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent) {
     case EVENT_MERC_SITE_NEW_MERC_AVAILABLE:
       NewMercsAvailableAtMercSiteCallBack();
       break;
-
-#ifdef CRIPPLED_VERSION
-    case EVENT_CRIPPLED_VERSION_END_GAME_CHECK:
-      CrippledVersionEndGameCheck();
-      break;
-#endif
   }
   gfPreventDeletionOfAnyEvent = fOrigPreventFlag;
   return TRUE;
 }
-
-#ifdef CRIPPLED_VERSION
-void CrippledVersionEndGameCheck() {
-  CHAR16 zString[512];
-
-  // Dont want this to appear before we arrive
-  if (guiDay == 1)
-    return;
-
-  if (guiDay >= 8) {
-    swprintf(zString, L"Game Over.  We hope you have enjoyed playing the limited version of Jagged Alliance 2.");
-  } else {
-    swprintf(zString, L"You have %d game days left in this limited version of Jagged Alliance 2.", (8 - guiDay));
-  }
-
-  DoScreenIndependantMessageBox(zString, MSG_BOX_FLAG_OK, CrippledVersionEndGameCheckCallBack);
-}
-
-void CrippledVersionEndGameCheckCallBack(UINT8 bExitValue) {
-  // if we should restart the game
-  if (guiDay >= 8) {
-    // clean up the code
-    ReStartingGame();
-
-    // go to the main menu
-    if (guiCurrentScreen == MAP_SCREEN) {
-      SetPendingNewScreen(MAINMENU_SCREEN);
-    } else {
-      InternalLeaveTacticalScreen(MAINMENU_SCREEN);
-    }
-  }
-}
-
-#endif

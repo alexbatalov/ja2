@@ -1,5 +1,3 @@
-#ifdef FRENCH
-
 /*
 
 ******************************************************************************************************
@@ -2934,20 +2932,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"La version de la sauvegarde a changé. Désirez-vous continuer ?",
-#else
   L"Tentative de chargement d'une sauvegarde de version précédente. Voulez-vous effectuer une mise à jour ?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"La version de la sauvegarde a changé. Désirez-vous continuer?",
-#else
   L"Tentative de chargement d'une sauvegarde de version précédente. Voulez-vous effectuer une mise à jour ?",
-#endif
 
   L"Etes-vous sûr de vouloir écraser la sauvegarde #%d ?",
   L"Voulez-vous charger la sauvegarde #%d ?",
@@ -3016,71 +3006,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"Vous ne pouvez poursuivre l'entraînement de la milice à %s que si cette ville est à niveau de loyauté de %d pour-cent.",
   L"Vous ne pouvez plus entraîner de milice à %s.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"LE MEILLEUR DE LA STRATEGIE.",
-  L"LE MEILLEUR DU JEU DE ROLES.",
-  L"Une intrigue évolutive",
-  L"Un scénario complexe",
-  L"Des combats dantesques",
-  L"Eclairage dynamique",
-  L"Interaction avec les autres personnages",
-  L"Des tactiques évoluées (attaque de nuit, furtivité)",
-  L"Créez votre propre mercenaire",
-  L"Des quêtes passionnantes",
-  L"Des véhicules à conduire",
-  // 10-19
-  L"Plus de 150 personnages",
-  L"Des centaines d'objets",
-  L"Plus de 250 secteurs différents",
-  L"Des explosions ébouriffantes",
-  L"De nouvelles manuvres tactiques",
-  L"Des tonnes d'animation",
-  L"Plus de 9000 lignes de dialogue",
-  L"Une superbe bande originale de Kevin Manthei",
-  L"Une stratégie globale",
-  L"Des raids aériens",
-  // 20-29
-  L"Entraînez votre propre milice",
-  L"Plusieurs types de jeu disponibles",
-  L"Des champs de vision réalistes",
-  L"Des graphismes de haut niveau",
-  L"Achetez, vendez et échangez",
-  L"Une IA sans pitié",
-  L"Le meilleur du combat tactique",
-  L"Option SF",
-  L"Une horloge de 24 heures",
-  L"Bien plus de 60 heures de jeu",
-  // 30-34
-  L"Plusieurs niveaux de difficulté",
-  L"Des modèles balistiques étudiés",
-  L"Un moteur puissant",
-  L"Un environnement interactif",
-  L"Et tellement plus...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"L'un des jeux les plus prenants de cette fin de siècle\"",
-  L"PC Gamer",
-  L"Commandez-le dès maintenant sur WWW.JAGGEDALLIANCE2.COM !",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"Vous êtes sur le point de goûter au meilleur de la stratégie, du jeu de rôles et du combat tactique :",
-  // Point 1 (uses one string)
-  L"Contrôlez une équipe de mercenaires possédant tous leur personnalité (ici, pas d'unités identiques à l'infini).",
-  // Point 2 (uses one string)
-  L"Utilisez toutes les ficelles du combat tactique, faites-les courir, ramper, grimper et sauter, se battre au corps-à-corps et bien plus encore.",
-  // Point 3 (uses one string)
-  L"Jouez avec le feu ! Des gadgets cools, des armes dévastatrices, des explosions ébouriffantes.",
-  // Additional comment
-  L"(et ce n'est qu'un début)",
-  // Introduction/instructions
-  L"Bienvenue à Demoville... (appuyez sur une touche)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3297,10 +3222,6 @@ STR16 pMessageStrings[] = {
   L"Cet emplacement est réservé aux sauvegardes rapides effectuées depuis l'écran tactique (ALT+S).",
   L"Ouverte",
   L"Fermée",
-#ifdef JA2DEMO
-  L"Il n'y a plus rien à faire ici. Allez donc voir Gabby.",
-  L"Dommage de l'avoir tué...",
-#endif
   L"Espace disque insuffisant. Il ne vous reste que %s Mo de libre et Jagged Alliance 2 nécessite %s Mo.",
   L"%s embauché(e) sur le site AIM",
   L"%s prend %s.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3351,17 +3272,6 @@ STR16 pMessageStrings[] = {
   L"Entrée dans le sous-sol %d...",
   L"Sortie du sous-sol...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"Impossible de séparer l'équipe dans la démo.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Carte désactivée dans la démo.",
-
-#endif
-
   L"'s", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Mode poursuite désactivé.",
   L"Mode poursuite activé.",
@@ -3376,9 +3286,6 @@ STR16 pMessageStrings[] = {
   L"Un colis vient d'arriver à Drassen.",
   L"%s devrait arriver au point d'entrée (secteur %s) en jour %d vers %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
   L"Historique mis à jour.",
-#ifdef JA2BETAVERSION
-  L"Partie enregistrée dans l'emplacement de sauvegarde automatique.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3708,5 +3615,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Interrupteur activé.",
 };
-
-#endif // FRENCH

@@ -1,8 +1,3 @@
-#ifdef JA2EDITOR
-
-#ifndef _JA2_LOAD_SCREEN_
-#define _JA2_LOAD_SCREEN_
-
 typedef struct _FDLG_LIST_TAG {
   GETFILESTRUCT FileInfo;
   struct _FDLG_LIST_TAG *pNext;
@@ -37,6 +32,3 @@ BOOLEAN ExternalSaveMap(UINT16 *szFilename);
 
 extern BOOLEAN gfErrorCatch;
 extern UINT16 gzErrorCatchString[256];
-
-#endif
-#endif

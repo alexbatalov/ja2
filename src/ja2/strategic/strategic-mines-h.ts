@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_MINES_H
-#define __STRATEGIC_MINES_H
-
 // the .h to the mine management system
 
 // the mines
@@ -187,5 +184,3 @@ BOOLEAN AreThereMinersInsideThisMine(UINT8 ubMineIndex);
 
 // use this to determine whether or not the player has spoken to a head miner
 BOOLEAN SpokenToHeadMiner(UINT8 ubMineIndex);
-
-#endif

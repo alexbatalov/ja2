@@ -1,6 +1,3 @@
-#ifndef ITEMS_H
-#define ITEMS_H
-
 extern UINT8 SlotToPocket[7];
 
 extern BOOLEAN WeaponInHand(SOLDIERTYPE *pSoldier);
@@ -171,5 +168,3 @@ void CheckEquipmentForFragileItemDamage(SOLDIERTYPE *pSoldier, INT32 iDamage);
 extern void ActivateXRayDevice(SOLDIERTYPE *pSoldier);
 extern void TurnOffXRayEffects(SOLDIERTYPE *pSoldier);
 extern INT8 FindLaunchableAttachment(OBJECTTYPE *pObj, UINT16 usWeapon);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __AMBIENT_CONTROL
-#define __AMBIENT_CONTROL
-
 BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID);
 
 void HandleNewSectorAmbience(UINT8 ubAmbientID);
@@ -35,5 +32,3 @@ enum {
 typedef struct {
   CHAR8 zSoundNames[NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE];
 } STEADY_STATE_AMBIENCE;
-
-#endif

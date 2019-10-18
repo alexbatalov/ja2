@@ -1,6 +1,3 @@
-#ifndef _SOLDIER_CREATE_H
-#define _SOLDIER_CREATE_H
-
 #define SOLDIER_CREATE_AUTO_TEAM -1
 
 // Kris:
@@ -215,5 +212,3 @@ BOOLEAN InternalTacticalRemoveSoldier(UINT16 usSoldierIndex, BOOLEAN fRemoveVehi
 // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
 void OkayToUpgradeEliteToSpecialProfiledEnemy(SOLDIERCREATE_STRUCT *pp);
 extern BOOLEAN gfProfiledEnemyAdded; // needs to be saved (used by the above function)
-
-#endif

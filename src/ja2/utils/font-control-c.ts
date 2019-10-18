@@ -65,10 +65,11 @@ HVOBJECT gvoBlockFontNarrow;
 INT32 gp14PointHumanist;
 HVOBJECT gvo14PointHumanist;
 
-#if defined(JA2EDITOR) && defined(ENGLISH)
+// FIXME: Language-specific code
+// #ifdef ENGLISH
 INT32 gpHugeFont;
 HVOBJECT gvoHugeFont;
-#endif
+// #endif
 
 INT32 giSubTitleWinFont;
 
@@ -185,11 +186,12 @@ BOOLEAN InitializeFonts() {
   gvo14PointHumanist = GetFontObject(gp14PointHumanist);
   CHECKF(CreateFontPaletteTables(gvo14PointHumanist));
 
-#if defined(JA2EDITOR) && defined(ENGLISH)
+// FIXME: Language-specific code
+// #ifdef ENGLISH
   gpHugeFont = LoadFontFile("FONTS\\HUGEFONT.sti");
   gvoHugeFont = GetFontObject(gpHugeFont);
   CHECKF(CreateFontPaletteTables(gvoHugeFont));
-#endif
+// #endif
 
   // Set default for font system
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -197,23 +199,6 @@ BOOLEAN InitializeFonts() {
   gfFontsInit = TRUE;
 
   // ATE: Init WinFont System and any winfonts we wish...
-#ifdef WINFONTS
-
-  InitWinFonts();
-
-  // giSubTitleWinFont = CreateWinFont( -16, 0, 0,  0, FALSE, FALSE, FALSE, L"標楷體", CHINESEBIG5_CHARSET );
-  giSubTitleWinFont = CreateWinFont(-16, 0, 0, 0, FALSE, FALSE, FALSE, L"新細明體", CHINESEBIG5_CHARSET);
-
-  SET_USE_WINFONTS(TRUE);
-  SET_WINFONT(giSubTitleWinFont);
-  Color = FROMRGB(255, 255, 255);
-  SetWinFontForeColor(giSubTitleWinFont, &Color);
-  PrintWinFont(FRAME_BUFFER, giSubTitleWinFont, 10, 100, L"Font %s initialized", gzFontName);
-  InvalidateScreen();
-  RefreshScreen(NULL);
-  SET_USE_WINFONTS(FALSE);
-
-#endif
 
   return TRUE;
 }
@@ -235,14 +220,12 @@ void ShutdownFonts() {
   UnloadFont(gp14PointArial);
   UnloadFont(gpBlockyFont);
   UnloadFont(gp12PointArialFixedFont);
-#if defined(JA2EDITOR) && defined(ENGLISH)
+// FIXME: Language-specific code
+// #ifdef ENGLISH
   UnloadFont(gpHugeFont);
-#endif
+// #endif
 
   // ATE: Shutdown any win fonts
-#ifdef WINFONTS
-  DeleteWinFont(giSubTitleWinFont);
-#endif
 }
 
 // Set shades for fonts

@@ -3024,30 +3024,6 @@ UINT16 UseKitPoints(OBJECTTYPE *pObj, UINT16 usPoints, SOLDIERTYPE *pSoldier) {
   return usOriginalPoints - usPoints;
 }
 
-#ifdef PATHAI_VISIBLE_DEBUG
-
-extern BOOLEAN gfDrawPathPoints;
-
-void DoChrisTest(SOLDIERTYPE *pSoldier) {
-  //	GenerateMapEdgepoints();
-
-  // gfDrawPathPoints = !gfDrawPathPoints;
-
-  // gfDrawPathPoints = TRUE;
-  // GlobalReachableTest( pSoldier->sGridNo );
-  // gfDrawPathPoints = FALSE;
-}
-
-#else
-
-#ifdef AI_TIMING_TESTS
-extern UINT32 guiGreenTimeTotal, guiYellowTimeTotal, guiRedTimeTotal, guiBlackTimeTotal;
-extern UINT32 guiGreenCounter, guiYellowCounter, guiRedCounter, guiBlackCounter;
-extern UINT32 guiRedSeekTimeTotal, guiRedHelpTimeTotal, guiRedHideTimeTotal;
-extern UINT32 guiRedSeekCounter, guiRedHelpCounter;
-guiRedHideCounter;
-#endif
-
 void DoChrisTest(SOLDIERTYPE *pSoldier) {
   /*
   UINT32 uiLoop;
@@ -3174,7 +3150,6 @@ void DoChrisTest(SOLDIERTYPE *pSoldier) {
           }
           */
 }
-#endif
 
 UINT16 MagazineClassIndexToItemType(UINT16 usMagIndex) {
   UINT16 usLoop;
@@ -4238,33 +4213,3 @@ void TurnOffXRayEffects(SOLDIERTYPE *pSoldier) {
   }
   pSoldier->uiXRayActivatedTime = 0;
 }
-
-#ifdef JA2TESTVERSION
-void DumpItemsList(void) {
-  CHAR8 zPrintFileName[60];
-  FILE *FDump;
-  UINT16 usItem;
-  INVTYPE *pItem;
-
-  // open output file
-  strcpy(zPrintFileName, "ItemDump.txt");
-  FDump = fopen(zPrintFileName, "wt");
-
-  if (FDump == NULL)
-    return;
-
-  // print headings
-  fprintf(FDump, "            ITEM              COOLNESS  VALUE\n");
-  fprintf(FDump, "============================  ========  =====\n");
-
-  for (usItem = 0; usItem < MAXITEMS; usItem++) {
-    pItem = &(Item[usItem]);
-
-    if (pItem->ubCoolness > 0) {
-      fprintf(FDump, "%28ls     %2d     $%4d\n", ItemNames[usItem], pItem->ubCoolness, pItem->usPrice);
-    }
-  }
-
-  fclose(FDump);
-}
-#endif // JA2TESTVERSION

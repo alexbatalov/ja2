@@ -1,5 +1,3 @@
-#ifdef DUTCH
-
 /*
 
 ******************************************************************************************************
@@ -2948,20 +2946,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Save version has changed.  Please report if there any problems.  Continue?",
-#else
   L"Attempting to load an older version save.  Automatically update and load the save?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Save version and game version have changed.  Please report if there are any problems.  Continue?",
-#else
   L"Attempting to load an older version save.  Automatically update and load the save?",
-#endif
 
   L"Weet je zeker dat je het spel in slot #%d wil overschrijven?",
   L"Wil je het spel laden van slot #",
@@ -3030,71 +3020,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s heeft een loyaliteit nodig van %d procent om door te gaan met milities trainen.",
   L"Je kunt de militie in %s niet meer trainen.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"HET BESTE VAN STRATEGIESPELEN.",
-  L"HET BESTE VAN ROLLENSPELEN.",
-  L"Volledig niet-lineair spel",
-  L"Geweldig nieuw verhaal",
-  L"Verzengende vuurgevechten",
-  L"Dynamische verlichting",
-  L"NPC interactie",
-  L"Geheime en nachtstrategieën",
-  L"Maak eigen huurlingen",
-  L"Uitdagende en creatieve missies",
-  L"Bestuurbare voertuigen",
-  // 10-19
-  L"Meer dan 150 personen",
-  L"Honderden gave items",
-  L"Meer dan 250 unieke locaties",
-  L"Geweldige explosies",
-  L"Nieuwe tactische manoeuvres",
-  L"Stapels animaties",
-  L"Meer dan 9000 dialoogregels",
-  L"Verbazingwekkende muziek door Kevin Manthei",
-  L"Allesomvattende strategie",
-  L"Worstel je door luchtaanvallen",
-  // 20-29
-  L"Train je eigen milities",
-  L"Aanpasbaar spelelement",
-  L"Realistische kijkhoeken",
-  L"Spectaculaire high-color afbeeldingen",
-  L"Koop, verkoop en handel",
-  L"Meedogenloze AI-vijanden",
-  L"Ultramoderne tactische gevechten",
-  L"Optioneel SF-element",
-  L"24-uurs klok",
-  L"Meer dan 60 uur spelen",
-  // 30-34
-  L"Meerdere moeilijkheidsgraden",
-  L"Realistische ballistische modellen",
-  L"Echte natuurkundige besturing",
-  L"Volledig interactieve omgeving",
-  L"En veel meer...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"One of 1998's most imaginative games\"",
-  L"PC Gamer",
-  L"Plaats vandaag nog je bestelling op WWW.JAGGEDALLIANCE2.COM !",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"Je gaat een idee krijgen van het beste op het gebied van strategie, rollenspelen, en tactische gevechten:",
-  // Point 1 (uses one string)
-  L"Bestuur een team van huurlingen met echte persoonlijkheden     (geen saaie teamleden dus).",
-  // Point 2 (uses one string)
-  L"Kijk eens naar de gave tactische manoeuvres, rennen, kruipen, klimmen, springen, man-tot-man-gevechten en veel meer.",
-  // Point 3 (uses one string)
-  L"Speel met vuur! Gave speeltjes, killerwapens, geweldige explosies.",
-  // Additional comment
-  L"(en dit is nog maar het begin)",
-  // Introduction/instructions
-  L"Welkom in Demoville... (druk op een toets om door te gaan)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3311,10 +3236,6 @@ STR16 pMessageStrings[] = {
   L"Dit slot is gereserveerd voor SnelBewaren tijdens tactische en kaartoverzichten m.b.v. ALT+S.",
   L"Geopend",
   L"Gesloten",
-#ifdef JA2DEMO
-  L"Je bent hier klaar. Misschien moet je eens naar Gabby gaan.",
-  L"Jammer dat je hem gedood hebt.",
-#endif
   L"Schijfruimte raakt op. Er is slects %s MB vrij en Jagged Alliance 2 heeft %s MB nodig.",
   L"%s ingehuurd van AIM",
   L"%s heeft %s gevangen.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3365,17 +3286,6 @@ STR16 pMessageStrings[] = {
   L"Betreden basisniveau %d...",
   L"Verlaten basisniveau...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"In het volledige spel is het mogelijk je\nteam te splitsen, echter niet in de demo.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Overzichtkaart niet mogelijk in demo.",
-
-#endif
-
   L"'s", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Volgmodus UIT.",
   L"Volgmodus AAN.",
@@ -3390,9 +3300,6 @@ STR16 pMessageStrings[] = {
   L"Een pakket is in Drassen gearriveerd.",
   L"%s zou moeten arriveren op het aangewezen punt (sector %s) op dag %d, om ongeveer %s.",
   L"Geschiedenisverslag bijgewerkt.",
-#ifdef JA2BETAVERSION
-  L"Spel succesvol bewaard in de Einde Beurt Auto Bewaar Slot.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3730,5 +3637,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Schakelaar geactiveerd.",
 };
-
-#endif // DUTCH

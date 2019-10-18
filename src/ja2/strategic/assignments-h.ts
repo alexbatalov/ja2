@@ -1,6 +1,3 @@
-#ifndef _ASSIGNMENTS_H
-#define _ASSIGNMENTS_H
-
 // header for assignment manipulation/updating for characters
 
 // this distinguishes whether we're only looking for patients healable THIS HOUR (those that have been on their assignment
@@ -305,5 +302,3 @@ void ChangeSoldiersAssignment(SOLDIERTYPE *pSoldier, INT8 bAssignment);
 void UnEscortEPC(SOLDIERTYPE *pSoldier);
 
 SOLDIERTYPE *AnyDoctorWhoCanHealThisPatient(SOLDIERTYPE *pPatient, BOOLEAN fThisHour);
-
-#endif

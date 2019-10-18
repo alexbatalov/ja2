@@ -493,14 +493,6 @@ void InternetRainDelayMessageBoxCallBack(UINT8 bExitValue);
 
 extern void ClearHistoryList(void);
 
-// TEMP CHEAT
-#ifdef JA2TESTVERSION
-extern void CheatToGetAll5Merc();
-#endif
-#if defined(JA2TESTVERSION) || defined(JA2DEMO)
-extern void DemoHiringOfMercs();
-#endif
-
 void SetLaptopExitScreen(UINT32 uiExitScreen) {
   guiExitScreen = uiExitScreen;
 }
@@ -4503,15 +4495,6 @@ void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usK
     fTabHandled = TRUE;
   }
 
-#ifdef JA2TESTVERSION
-
-  else if ((usEvent == KEY_DOWN) && (usParam == 'm')) {
-    if ((usKeyState & ALT_DOWN)) {
-      CheatToGetAll5Merc();
-    }
-  }
-#endif
-
   else if ((usEvent == KEY_DOWN) && (usParam == 'b')) {
     if (CHEATER_CHEAT_LEVEL()) {
       if ((usKeyState & ALT_DOWN))
@@ -4528,51 +4511,9 @@ void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usK
     }
     // LeaveLapTopScreen( );
   }
-#ifdef JA2TESTVERSION
-  else if ((usEvent == KEY_DOWN) && (usParam == 'q')) {
-    // if we dont currently have mercs on the team, hire some
-    if (NumberOfMercsOnPlayerTeam() == 0) {
-      UINT8 ubRand = (UINT8)Random(2) + 2;
-      TempHiringOfMercs(ubRand, FALSE);
-      //	QuickStartGame( );
-    }
-    MarkButtonsDirty();
-    fExitingLaptopFlag = TRUE;
-  } else if ((usEvent == KEY_DOWN) && (usParam == 's')) {
-    if ((usKeyState & ALT_DOWN)) {
-      SetBookMark(AIM_BOOKMARK);
-      SetBookMark(BOBBYR_BOOKMARK);
-      SetBookMark(IMP_BOOKMARK);
-      SetBookMark(MERC_BOOKMARK);
-      SetBookMark(FUNERAL_BOOKMARK);
-      SetBookMark(FLORIST_BOOKMARK);
-      SetBookMark(INSURANCE_BOOKMARK);
-    }
-  }
-
-  // help screen stuff
-  else
-#endif
       if ((usEvent == KEY_DOWN) && ((usParam == 'h') || (usParam == 'H'))) {
     ShouldTheHelpScreenComeUp(HELP_SCREEN_LAPTOP, TRUE);
   }
-
-#if defined(JA2TESTVERSION) || defined(JA2DEMO)
-  else if ((usEvent == KEY_DOWN) && (usParam == 'w')) {
-    DemoHiringOfMercs();
-  }
-#endif
-
-#ifdef JA2BETAVERSION
-  // adding all emails
-  else if ((usEvent == KEY_DOWN) && (usParam == 'e')) {
-    if (CHEATER_CHEAT_LEVEL()) {
-      if ((usKeyState & ALT_DOWN)) {
-        AddAllEmails();
-      }
-    }
-  }
-#endif
 
   // adding money
   else if ((usEvent == KEY_DOWN) && (usParam == '=')) {
@@ -4589,86 +4530,6 @@ void HandleKeyBoardShortCutsForLapTop(UINT16 usEvent, UINT32 usParam, UINT16 usK
       MarkButtonsDirty();
     }
   }
-
-#ifdef JA2TESTVERSION
-  else if ((usEvent == KEY_DOWN) && (usParam == 'd')) {
-    if (gfTemporaryDisablingOfLoadPendingFlag)
-      gfTemporaryDisablingOfLoadPendingFlag = FALSE;
-    else
-      gfTemporaryDisablingOfLoadPendingFlag = TRUE;
-  } else if ((usEvent == KEY_DOWN) && (usParam == '+')) {
-    if (usKeyState & ALT_DOWN) {
-      gStrategicStatus.ubHighestProgress += 10;
-      if (gStrategicStatus.ubHighestProgress > 100)
-        gStrategicStatus.ubHighestProgress = 100;
-
-      InitAllArmsDealers();
-      InitBobbyRayInventory();
-    }
-  } else if ((usEvent == KEY_DOWN) && (usParam == '-')) {
-    if (usKeyState & ALT_DOWN) {
-      if (gStrategicStatus.ubHighestProgress >= 10)
-        gStrategicStatus.ubHighestProgress -= 10;
-      else
-        gStrategicStatus.ubHighestProgress = 0;
-
-      InitAllArmsDealers();
-      InitBobbyRayInventory();
-    }
-  } else if ((usEvent == KEY_DOWN) && (usParam == '*')) {
-    if (usKeyState & ALT_DOWN) {
-      DeleteAllStrategicEventsOfType(EVENT_EVALUATE_QUEEN_SITUATION);
-      AdvanceToNextDay();
-    }
-  } else if (usEvent == KEY_DOWN && usParam == 'v' && usKeyState & CTRL_DOWN) {
-#ifdef SGP_VIDEO_DEBUGGING
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VObjects:  %d", guiVObjectSize);
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VSurfaces:  %d", guiVSurfaceSize);
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"SGPVideoDump.txt updated...");
-    PerformVideoInfoDumpIntoFile("SGPVideoDump.txt", TRUE);
-#endif
-  } else {
-    if ((usEvent == KEY_DOWN) && (usParam == '1')) {
-      TempHiringOfMercs(1, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '2')) {
-      TempHiringOfMercs(2, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '3')) {
-      TempHiringOfMercs(3, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '4')) {
-      TempHiringOfMercs(4, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '5')) {
-      TempHiringOfMercs(5, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '6')) {
-      TempHiringOfMercs(6, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '7')) {
-      TempHiringOfMercs(7, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '8')) {
-      TempHiringOfMercs(8, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '9')) {
-      TempHiringOfMercs(9, FALSE);
-    }
-
-    if ((usEvent == KEY_DOWN) && (usParam == '0')) {
-      TempHiringOfMercs(10, FALSE);
-    }
-  }
-#endif
 
   return;
 }

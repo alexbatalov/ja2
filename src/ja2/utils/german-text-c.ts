@@ -1,5 +1,3 @@
-#ifdef GERMAN
-
 /*
 ******************************************************************************************************
 **																	IMPORTANT TRANSLATION NOTES																			**
@@ -2838,20 +2836,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing. The first one is for beta version releases and the second one
 // is used for the final version. Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed. It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Gespeicherte Version wurde geändert. Bitte melden Sie etwaige Probleme. Weiter?",
-#else
   L"Versuche, älteren Spielstand zu laden. Laden und automatisch aktualisieren?",
-#endif
 
 // Translators, the next two strings are for the same thing. The first one is for beta version releases and the second one
 // is used for the final version. Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed. It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Spielstand und Spieleversion wurden geändert. Bitte melden Sie etwaige Probleme. Weiter?",
-#else
   L"Versuche, älteren Spielstand zu laden. Laden und automatisch aktualisieren?",
-#endif
 
   L"Gespeichertes Spiel in Slot #%d wirklich überschreiben?",
   L"Wollen Sie das Spiel aus Slot # speichern?",
@@ -2922,71 +2912,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s benötigt eine Loyalität von %d Prozent, um mit dem Milizen-Training fortzufahren.",
   L"Sie können die Miliz in %s nicht mehr trainieren.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"UNÜBERTROFFENE STRATEGIE.",
-  L"UNÜBERTROFFENES ROLLENSPIEL.",
-  L"Nicht-lineare Spielhandlung",
-  L"Umfassende neue Story",
-  L"Heiße Gefechte",
-  L"Dynamisches Lighting",
-  L"NPC-Interaktion",
-  L"Geheimstrategien und Nachtmanöver",
-  L"Kreieren Sie Ihre eigenen Söldner",
-  L"Herausfordernde und kreative Einsätze",
-  L"Steuerbare Fahrzeuge",
-  // 10-19
-  L"Über 150 Charaktere",
-  L"Hunderte von abgefahrenen Gegenständen",
-  L"Über 250 einzigartige Locations",
-  L"Furchterregende Explosionen",
-  L"Brandneue taktische Manöver",
-  L"Tonnenweise Animationen",
-  L"Über 9000 Zeilen Dialoge",
-  L"Fantastische Musik von Kevin Manthei",
-  L"Globale Strategie",
-  L"Kämpfe unter Luftangriffen",
-  // 20-29
-  L"Bilden Sie Ihre eigene Miliz aus",
-  L"Individuell einstellbares Gameplay",
-  L"Realistische Line-of-sight",
-  L"Spektakuläre High-color Grafiken",
-  L"Kaufen, verkaufen, tauschen...",
-  L"Gegner mit gnadenloser AI",
-  L"Modernste Kampftechniken",
-  L"Optionales Sci-Fi-Element",
-  L"Realistische Tagesabläufe",
-  L"Über 60 Stunden Spiel unter Hochspannung",
-  // 30-34
-  L"Auswählbare Schwierigkeitsgrade",
-  L"Realistische Ballistik",
-  L"Einzigartige physikalische Engine",
-  L"Komplett interaktives Spielumfeld",
-  L"Und vieles mehr...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"Eines der besten Spiele des Jahres\"",
-  L"PC Gamer",
-  L"Bestellen Sie noch heute unter WWW.JA2.DE!",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"Gleich werden Sie noch nie dagewesene Strategien, unübertroffenes Rollenspiel und überwältigende Kampftechniken erleben:",
-  // Point 1 (uses one string)
-  L"Führen Sie ein Team von Söldnern mit einzigartigen Persönlichkeiten (hier gibt's keine langweiligen stereotypen Einheiten).",
-  // Point 2 (uses one string)
-  L"Testen Sie die Vielfalt der taktischen Manöver, rennen Sie, kriechen Sie, klettern Sie, springen Sie, führen Sie Nahkämpfe und, und, und...",
-  // Point 3 (uses one string)
-  L"Spielen Sie mit dem Feuer! Cooles Spielzeug, tödliche Waffen, atemberaubende Explosionen.",
-  // Additional comment
-  L"(und das ist nur der Anfang)",
-  // Introduction/instructions
-  L"Willkommen in Demoville... (weiter mit beliebiger Taste)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3202,10 +3127,6 @@ STR16 pMessageStrings[] = {
   L"Dieser Slot ist nur für Quick-Saves aus den Map Screens und dem Taktik-Bildschirm. Speichern mit ALT+S",
   L"offen",
   L"zu",
-#ifdef JA2DEMO
-  L"Hier unten sind Sie fertig. Vielleicht sollten Sie mit Gabby reden.",
-  L"Vielleicht hätten Sie ihn besser nicht getötet.",
-#endif
   L"Ihr Festplattenspeicher ist knapp. Sie haben lediglich %sMB frei und Jagged Alliance 2 benötigt %sMB.",
   L"%s von AIM angeheuert",
   L"%s hat %s gefangen.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3257,17 +3178,6 @@ STR16 pMessageStrings[] = {
   L"Gewölbeebene %d betreten...",
   L"Gewölbe verlassen...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled. This string is fast help text that appears over "single" button.
-  L"In der Vollversion können Sie Ihr Team\naufteilen, aber nicht in der Demo.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Overhead-Karte steht in der Demo nicht zur Verfügung.",
-
-#endif
-
   L"s", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Autoscrolling AUS.",
   L"Autoscrolling AN.",
@@ -3282,9 +3192,6 @@ STR16 pMessageStrings[] = {
   L"Paket in Drassen angekommen.",
   L"%s kommt am %d. um ca. %s am Zielort an (Sektor %s).", // first %s is mercs name(OK), next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival       !!!7 It should be like this: first one is merc (OK), next is day of arrival (OK) , next is time of the day for ex. 07:00 (not OK, now it is still sector), next should be sector (not OK, now it is still time of the day)
   L"Logbuch aktualisiert.",
-#ifdef JA2BETAVERSION
-  L"Spiel erfolgreich in Slot End Turn Auto Save gespeichert.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3613,5 +3520,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Switch Activated.",
 };
-
-#endif // GERMAN

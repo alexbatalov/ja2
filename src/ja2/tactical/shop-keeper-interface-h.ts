@@ -1,6 +1,3 @@
-#ifndef _SHOPKEEPER_INTERFACE__H_
-#define _SHOPKEEPER_INTERFACE__H_
-
 #define SKI_NUM_TRADING_INV_SLOTS 12
 #define SKI_NUM_TRADING_INV_ROWS 2
 #define SKI_NUM_TRADING_INV_COLS 6
@@ -83,10 +80,4 @@ BOOLEAN CanMercInteractWithSelectedShopkeeper(SOLDIERTYPE *pSoldier);
 
 void DealerGetsBribed(UINT8 ubProfileId, UINT32 uiMoneyAmount);
 
-#ifdef JA2TESTVERSION
-void AddShopkeeperToGridNo(UINT8 ubProfile, INT16 sGridNo);
-#endif
-
 void RestrictSkiMouseCursor();
-
-#endif

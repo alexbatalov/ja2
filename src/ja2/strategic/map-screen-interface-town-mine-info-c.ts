@@ -403,17 +403,6 @@ void AddTextToMineBox(void) {
     AddMonoString(&hStringHandle, wString);
     AddSecondColumnMonoString(&hStringHandle, (gMineStatus[ubMineIndex].ubMineType == SILVER_MINE) ? pwMineStrings[1] : pwMineStrings[2]);
   }
-
-#ifdef _DEBUG
-  // dollar amount remaining in mine
-  wcscpy(wString, L"Remaining (DEBUG):");
-  AddMonoString(&hStringHandle, wString);
-
-  swprintf(wString, L"%d", GetTotalLeftInMine(ubMineIndex));
-  InsertCommasForDollarFigure(wString);
-  InsertDollarSignInToString(wString);
-  AddSecondColumnMonoString(&hStringHandle, wString);
-#endif
 }
 
 void AddTextToBlankSectorBox(void) {

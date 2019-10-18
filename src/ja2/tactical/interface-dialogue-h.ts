@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_DIALOGUE_H
-#define __INTERFACE_DIALOGUE_H
-
 extern UINT8 gubSrcSoldierProfile;
 
 // Structure used in Tactical display of NPC dialogue
@@ -353,5 +350,3 @@ extern UINT32 CalcPatientMedicalCost(SOLDIERTYPE *pSoldier);
 extern UINT32 CalcMedicalCost(UINT8 ubId);
 
 BOOLEAN gfInTalkPanel;
-
-#endif

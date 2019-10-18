@@ -62,82 +62,6 @@ void PickUpMercPiece(INT32 iPlacement);
 void SetCursorMerc(INT8 bPlacementID);
 void SelectNextUnplacedUnit();
 
-#ifdef JA2BETAVERSION
-
-BOOLEAN gfNorthValid, gfEastValid, gfSouthValid, gfWestValid;
-BOOLEAN gfChangedEntrySide = FALSE;
-
-void FindValidInsertionCode(UINT8 *pubStrategicInsertionCode) {
-  if (gMapInformation.sNorthGridNo == -1 && gMapInformation.sEastGridNo == -1 && gMapInformation.sSouthGridNo == -1 && gMapInformation.sWestGridNo == -1) {
-    AssertMsg(0, "Map has no entry points at all.  Can't generate edge points.  LC:1");
-  }
-  if (gMapInformation.sNorthGridNo != -1 && !gps1stNorthEdgepointArray || gMapInformation.sEastGridNo != -1 && !gps1stEastEdgepointArray || gMapInformation.sSouthGridNo != -1 && !gps1stSouthEdgepointArray || gMapInformation.sWestGridNo != -1 && !gps1stWestEdgepointArray) {
-    InvalidateScreen();
-    DrawTextToScreen(L"Map doesn't has entrypoints without corresponding edgepoints. LC:1", 30, 150, 600, FONT10ARIALBOLD, FONT_RED, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
-    DrawTextToScreen(L"GENERATING MAP EDGEPOINTS!  Please wait...", 30, 160, 600, FONT10ARIALBOLD, FONT_YELLOW, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
-
-    RefreshScreen(NULL);
-    GenerateMapEdgepoints();
-    switch (*pubStrategicInsertionCode) {
-      case INSERTION_CODE_NORTH:
-        if (!gps1stNorthEdgepointArray)
-          AssertMsg(0, "Map Edgepoint generation failed.  KM : 0 -- send map");
-        break;
-      case INSERTION_CODE_EAST:
-        if (!gps1stEastEdgepointArray)
-          AssertMsg(0, "Map Edgepoint generation failed.  KM : 0 -- send map");
-        break;
-      case INSERTION_CODE_SOUTH:
-        if (!gps1stSouthEdgepointArray)
-          AssertMsg(0, "Map Edgepoint generation failed.  KM : 0 -- send map");
-        break;
-      case INSERTION_CODE_WEST:
-        if (!gps1stWestEdgepointArray)
-          AssertMsg(0, "Map Edgepoint generation failed.  KM : 0 -- send map");
-        break;
-    }
-    return;
-  }
-  if (gMapInformation.sNorthGridNo != -1) {
-    *pubStrategicInsertionCode = INSERTION_CODE_NORTH;
-    gfChangedEntrySide = TRUE;
-  } else if (gMapInformation.sEastGridNo != -1) {
-    *pubStrategicInsertionCode = INSERTION_CODE_EAST;
-    gfChangedEntrySide = TRUE;
-  } else if (gMapInformation.sSouthGridNo != -1) {
-    *pubStrategicInsertionCode = INSERTION_CODE_SOUTH;
-    gfChangedEntrySide = TRUE;
-  } else if (gMapInformation.sWestGridNo != -1) {
-    *pubStrategicInsertionCode = INSERTION_CODE_WEST;
-    gfChangedEntrySide = TRUE;
-  } else {
-    AssertMsg(0, "No maps edgepoints at all! KM, LC : 1");
-  }
-}
-
-void CheckForValidMapEdge(UINT8 *pubStrategicInsertionCode) {
-  switch (*pubStrategicInsertionCode) {
-    case INSERTION_CODE_NORTH:
-      if (!gps1stNorthEdgepointArray)
-        FindValidInsertionCode(pubStrategicInsertionCode);
-      break;
-    case INSERTION_CODE_EAST:
-      if (!gps1stEastEdgepointArray)
-        FindValidInsertionCode(pubStrategicInsertionCode);
-      break;
-    case INSERTION_CODE_SOUTH:
-      if (!gps1stSouthEdgepointArray)
-        FindValidInsertionCode(pubStrategicInsertionCode);
-      break;
-    case INSERTION_CODE_WEST:
-      if (!gps1stWestEdgepointArray)
-        FindValidInsertionCode(pubStrategicInsertionCode);
-      break;
-  }
-}
-
-#endif
-
 void InitTacticalPlacementGUI() {
   VOBJECT_DESC VObjectDesc;
   INT32 i, xp, yp;
@@ -147,10 +71,6 @@ void InitTacticalPlacementGUI() {
   gfValidLocationsChanged = TRUE;
   gfTacticalPlacementFirstTime = TRUE;
   gfNorth = gfEast = gfSouth = gfWest = FALSE;
-#ifdef JA2BETAVERSION
-  gfNorthValid = gfEastValid = gfSouthValid = gfWestValid = FALSE;
-  gfChangedEntrySide = FALSE;
-#endif
 
   // Enter overhead map
   GoIntoOverheadMap();
@@ -227,9 +147,6 @@ void InitTacticalPlacementGUI() {
       gMercPlacement[giPlacements].pSoldier = MercPtrs[i];
       gMercPlacement[giPlacements].ubStrategicInsertionCode = MercPtrs[i]->ubStrategicInsertionCode;
       gMercPlacement[giPlacements].fPlaced = FALSE;
-#ifdef JA2BETAVERSION
-      CheckForValidMapEdge(&MercPtrs[i]->ubStrategicInsertionCode);
-#endif
       switch (MercPtrs[i]->ubStrategicInsertionCode) {
         case INSERTION_CODE_NORTH:
           gfNorth = TRUE;
@@ -479,11 +396,6 @@ void TacticalPlacementHandle() {
   while (DequeueEvent(&InputEvent)) {
     if (InputEvent.usEvent == KEY_DOWN) {
       switch (InputEvent.usParam) {
-#ifdef JA2TESTVERSION
-        case ESC:
-          KillTacticalPlacementGUI();
-          break;
-#endif
         case ENTER:
           if (ButtonList[iTPButtons[DONE_BUTTON]]->uiFlags & BUTTON_ENABLED) {
             KillTacticalPlacementGUI();
@@ -596,12 +508,6 @@ void KillTacticalPlacementGUI() {
 
   PrepareLoadedSector();
   EnableScrollMessages();
-
-#ifdef JA2BETAVERSION
-  if (gfChangedEntrySide) {
-    ScreenMsg(FONT_RED, MSG_ERROR, L"Substituted different entry side due to invalid entry points or map edgepoints.  KM, LC : 1");
-  }
-#endif
 }
 
 void ChooseRandomEdgepoints() {

@@ -1,6 +1,3 @@
-#ifndef _LIGHTING_H_
-#define _LIGHTING_H_
-
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -191,5 +188,3 @@ extern SGPPaletteEntry gpLightColors[3];
 #define LightSpriteGetType(x) (LightSprites[x].uiLightType)
 #define LightSpriteGetTypeName(x) (pLightNames[LightSprites[x].iTemplate])
 #define LightGetAmbient() (ubAmbientLightLevel)
-
-#endif

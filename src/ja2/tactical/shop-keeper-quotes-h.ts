@@ -1,6 +1,3 @@
-#ifndef _SHOPKEEPER_QUOTES_H_
-#define _SHOPKEEPER_QUOTES_H_
-
 // COMMON shop keeper quote enums
 enum {
   // Quotes 0-9 are generic NPC quotes common to everyone and controlled by the normal NPC Dialogue system.
@@ -42,5 +39,3 @@ enum {
 #define FREDO_PERKO_SORRY_REPAIR_DELAYED 29
 
 #define ARNIE_QUOTE_NOT_REPAIRED_YET 33
-
-#endif

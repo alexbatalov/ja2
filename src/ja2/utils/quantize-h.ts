@@ -1,6 +1,3 @@
-#ifndef __QUANTIZE_H_
-#define __QUANTIZE_H_
-
 typedef struct _NODE {
   BOOL bIsLeaf; // TRUE if node has no children
   UINT nPixelCount; // Number of pixels represented by this leaf
@@ -35,5 +32,3 @@ protected:
   void DeleteTree(NODE **ppNode);
   void GetPaletteColors(NODE *pTree, RGBQUAD *prgb, UINT *pIndex);
 };
-
-#endif

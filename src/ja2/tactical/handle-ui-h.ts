@@ -1,6 +1,3 @@
-#ifndef _HANDLE_UI_
-#define _HANDLE_UI_
-
 // DEFINES
 #define UIEVENT_SINGLEEVENT 0x00000002
 #define UIEVENT_SNAPMOUSE 0x00000008
@@ -317,5 +314,3 @@ void GotoHeigherStance(SOLDIERTYPE *pSoldier);
 BOOLEAN IsValidJumpLocation(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckForPath);
 
 void PopupAssignmentMenuInTactical(SOLDIERTYPE *pSoldier);
-
-#endif

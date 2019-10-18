@@ -1,6 +1,3 @@
-#ifndef __HANDLE_ITEMS_H
-#define __HANDLE_ITEMS_H
-
 #define ITEM_HANDLE_OK 1
 #define ITEM_HANDLE_RELOADING -1
 #define ITEM_HANDLE_UNCONSCIOUS -2
@@ -152,5 +149,3 @@ INT16 FindNearestAvailableGridNoForItem(INT16 sSweetGridNo, INT8 ubRadius);
 BOOLEAN CanPlayerUseRocketRifle(SOLDIERTYPE *pSoldier, BOOLEAN fDisplay);
 
 void MakeNPCGrumpyForMinorOffense(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOffendingSoldier);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _SAVE_LOAD_SCREEN__H_
-#define _SAVE_LOAD_SCREEN__H_
-
 #define NUM_SAVE_GAMES 11
 
 // This flag is used to diferentiate between loading a game and saveing a game.
@@ -32,5 +29,3 @@ BOOLEAN DoQuickLoad();
 BOOLEAN IsThereAnySavedGameFiles();
 
 void DeleteSaveGameNumber(UINT8 ubSaveGameSlotID);
-
-#endif

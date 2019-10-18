@@ -363,15 +363,6 @@ BOOLEAN AttemptToNoticeEmptySectorSucceeds();
 void EliminateSurplusTroopsForGarrison(GROUP *pGroup, SECTORINFO *pSector);
 void ReinitializeUnvisitedGarrisons();
 
-// Records any decisions that I deem important enough into an automatically appending AI log file called
-//"Strategic Decisions.txt" in the JA2\Data directory.  This also records the time that each log entry
-// was made.
-#ifdef JA2BETAVERSION
-void LogStrategicEvent(UINT8 *str, ...); // adds a timestamp.
-void LogStrategicMsg(UINT8 *str, ...); // doesn't use the time stamp
-void ClearStrategicLog();
-#endif
-
 // Recalculates a group's weight based on any changes.
 //@@@Alex, this is possibly missing in some areas.  It is hard to ensure it is
 // everywhere with all the changes I've made.  I'm sure you could probably find some missing calls.
@@ -414,11 +405,7 @@ void MassFortifyTowns();
 
 void UpgradeAdminsToTroops();
 
-#ifdef JA2BETAVERSION
-void SAIReportError(STR16 wErrorString);
-#else
 #define SAIReportError(a) // define it out
-#endif
 
 enum SAIMOVECODE {
   DIRECT,
@@ -506,9 +493,6 @@ void RequestAttackOnSector(UINT8 ubSectorID, UINT16 usDefencePoints) {
   INT32 i;
   for (i = 0; i < giGarrisonArraySize; i++) {
     if (gGarrisonGroup[i].ubSectorID == ubSectorID && !gGarrisonGroup[i].ubPendingGroupID) {
-#ifdef JA2BETAVERSION
-      LogStrategicEvent("An attack has been requested in sector %c%d.", SECTORY(ubSectorID) + 'A' - 1, SECTORX(ubSectorID));
-#endif
       SendReinforcementsForGarrison(i, usDefencePoints, NULL);
       return;
     }
@@ -540,80 +524,14 @@ BOOLEAN AdjacentSectorIsImportantAndUndefended(UINT8 ubSectorID) {
 }
 
 void ValidatePendingGroups() {
-#ifdef JA2BETAVERSION
-  GROUP *pGroup;
-  INT32 i, iErrorsForInvalidPendingGroup = 0;
-  UINT8 ubGroupID;
-  for (i = 0; i < giPatrolArraySize; i++) {
-    ubGroupID = gPatrolGroup[i].ubPendingGroupID;
-    if (ubGroupID) {
-      pGroup = GetGroup(ubGroupID);
-      if (!pGroup || pGroup->fPlayer) {
-        iErrorsForInvalidPendingGroup++;
-        gPatrolGroup[i].ubPendingGroupID = 0;
-      }
-    }
-  }
-  for (i = 0; i < giGarrisonArraySize; i++) {
-    ubGroupID = gGarrisonGroup[i].ubPendingGroupID;
-    if (ubGroupID) {
-      pGroup = GetGroup(ubGroupID);
-      if (!pGroup || pGroup->fPlayer) {
-        iErrorsForInvalidPendingGroup++;
-        gGarrisonGroup[i].ubPendingGroupID = 0;
-      }
-    }
-  }
-  if (iErrorsForInvalidPendingGroup) {
-    UINT16 str[256];
-    swprintf(str,
-             L"Strategic AI:  Internal error -- %d pending groups were discovered to be invalid.  Please report error and send save."
-             L"You can continue playing, as this has been auto-corrected.  No need to send any debug files.",
-             iErrorsForInvalidPendingGroup);
-    SAIReportError(str);
-  }
-#endif
 }
 
 void ValidateWeights(INT32 iID) {
-#ifdef JA2BETAVERSION
-  INT32 i;
-  INT32 iSumRequestPoints = 0;
-  INT32 iSumReinforcementPoints = 0;
-  for (i = 0; i < giPatrolArraySize; i++) {
-    iSumRequestPoints += gPatrolGroup[i].bWeight;
-  }
-  for (i = 0; i < giGarrisonArraySize; i++) {
-    if (gGarrisonGroup[i].bWeight > 0) {
-      iSumRequestPoints += gGarrisonGroup[i].bWeight;
-    } else if (gGarrisonGroup[i].bWeight < 0) {
-      iSumReinforcementPoints -= gGarrisonGroup[i].bWeight; // double negative is positive!
-    }
-  }
-  if (giReinforcementPoints != iSumReinforcementPoints || giRequestPoints != iSumRequestPoints) {
-    UINT16 str[256];
-    swprintf(str,
-             L"Strategic AI:  Internal error #%02d (total request/reinforcement points).  Please report error including error#.  "
-             L"You can continue playing, as the points have been auto-corrected.  No need to send any save/debug files.",
-             iID);
-    // Correct the misalignment.
-    giReinforcementPoints = iSumReinforcementPoints;
-    giRequestPoints = iSumRequestPoints;
-    SAIReportError(str);
-  }
-#endif
 }
 
 void ValidateGroup(GROUP *pGroup) {
   if (!pGroup->ubSectorX || !pGroup->ubSectorY || pGroup->ubSectorX > 16 || pGroup->ubSectorY > 16) {
     if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
-#ifdef JA2BETAVERSION
-      {
-        UINT16 str[256];
-        swprintf(str, L"Strategic AI:  Internal error (invalid enemy group #%d location at %c%d, destination %c%d).  Please send PRIOR save file and Strategic Decisions.txt.", pGroup->ubGroupID, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, pGroup->ubNextY + 'A' - 1, pGroup->ubNextX);
-        SAIReportError(str);
-      }
-#endif
       ClearPreviousAIGroupAssignment(pGroup);
       RemovePGroup(pGroup);
       return;
@@ -621,9 +539,6 @@ void ValidateGroup(GROUP *pGroup) {
   }
   if (!pGroup->ubNextX || !pGroup->ubNextY) {
     if (!pGroup->fPlayer && pGroup->pEnemyGroup->ubIntention != STAGING && pGroup->pEnemyGroup->ubIntention != REINFORCEMENTS) {
-#ifdef JA2BETAVERSION
-      SAIReportError(L"Strategic AI:  Internal error (floating group).  Please send PRIOR save file and Strategic Decisions.txt.");
-#endif
       if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
         ClearPreviousAIGroupAssignment(pGroup);
         ReassignAIGroup(&pGroup);
@@ -631,257 +546,10 @@ void ValidateGroup(GROUP *pGroup) {
       }
     }
   }
-#ifdef JA2BETAVERSION
-  if (pGroup->pEnemyGroup->ubNumAdmins + pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites != pGroup->ubGroupSize || pGroup->ubGroupSize > MAX_STRATEGIC_TEAM_SIZE) {
-    SAIReportError(L"Strategic AI:  Internal error (bad group populations).  Please send PRIOR save file and Strategic Decisions.txt.");
-  }
-#endif
 }
 
 void ValidateLargeGroup(GROUP *pGroup) {
-#ifdef JA2BETAVERSION
-  if (pGroup->ubGroupSize > 25) {
-    UINT16 str[512];
-    swprintf(str,
-             L"Strategic AI warning:  Enemy group containing %d soldiers "
-             L"(%d admins, %d troops, %d elites) in sector %c%d.  This message is a temporary test message "
-             L"to evaluate a potential problems with very large enemy groups.",
-             pGroup->ubGroupSize, pGroup->pEnemyGroup->ubNumAdmins, pGroup->pEnemyGroup->ubNumTroops, pGroup->pEnemyGroup->ubNumElites, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
-    SAIReportError(str);
-  }
-#endif
 }
-
-#ifdef JA2BETAVERSION
-void RemovePlayersFromAllMismatchGroups(SOLDIERTYPE *pSoldier) {
-  GROUP *pGroup, *pTempGroup = NULL;
-  PLAYERGROUP *pPlayer;
-  BOOLEAN fRemoveSoldierFromThisGroup = FALSE;
-  pGroup = gpGroupList;
-  while (pGroup) {
-    if (pGroup->fPlayer) {
-      pPlayer = pGroup->pPlayerList;
-      while (pPlayer) {
-        if (pPlayer->pSoldier == pSoldier) {
-          if (pSoldier->ubGroupID != pGroup->ubGroupID) {
-            fRemoveSoldierFromThisGroup = TRUE;
-            pTempGroup = pGroup;
-          }
-          break;
-        }
-        pPlayer = pPlayer->next;
-      }
-    }
-    pGroup = pGroup->next;
-    if (fRemoveSoldierFromThisGroup) {
-      fRemoveSoldierFromThisGroup = FALSE;
-      RemovePlayerFromPGroup(pTempGroup, pSoldier);
-    }
-  }
-}
-#endif
-
-#ifdef JA2BETAVERSION
-void ValidatePlayersAreInOneGroupOnly() {
-  INT32 i;
-  INT32 iGroups;
-  INT32 iMismatches;
-  INT32 iNumErrors;
-  GROUP *pGroup, *pOtherGroup;
-  PLAYERGROUP *pPlayer;
-  SOLDIERTYPE *pSoldier;
-  UINT16 str[1024];
-  UINT8 ubGroupID;
-  // Go through each merc slot in the player team
-  iNumErrors = 0;
-  for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
-    // check to see if the merc has a group ID
-
-    pSoldier = MercPtrs[i];
-
-    if (!pSoldier->bActive || !pSoldier->bLife || !pSoldier->ubGroupID) {
-      // non-existant, dead, or in no group (don't care, skip to next merc)
-      continue;
-    }
-
-    // Record the merc's group ID, as we may have to restore this later if the merc is found to exist
-    // in multiple groups.
-    ubGroupID = pSoldier->ubGroupID;
-
-    iGroups = 0;
-    iMismatches = 0;
-    // Go through each group and determine if the player exists in multiple groups
-    // iGroups ------ counts the number of groups the merc is in.
-    // iMismatches -- counts the cases where the merc's ubGroupID doesn't match the ubGroupID of the group
-    //               the merc exists in.
-    pGroup = gpGroupList;
-    while (pGroup) {
-      if (pGroup->fPlayer) {
-        pPlayer = pGroup->pPlayerList;
-        while (pPlayer) {
-          if (pPlayer->pSoldier == pSoldier) {
-            if (pSoldier->ubGroupID != pGroup->ubGroupID) {
-              iMismatches++;
-            }
-            iGroups++;
-            break;
-          }
-          pPlayer = pPlayer->next;
-        }
-      }
-      pGroup = pGroup->next;
-    }
-
-    if (iMismatches || !iGroups) {
-      // If we have any mismatches or a merc not in a group, then there is definately an error.
-      // We need to record and report the "first" error in detail
-      iNumErrors++; // keeps track of the total errors (this number will be reported)
-
-      if (iNumErrors == 1) {
-        // This is the first error, so we will provide detailed debug information to help fix the bug(s).
-        if (iGroups == 1 && iMismatches == 1) {
-          // We have a very serious problem, as we have no way to know which group this merc is supposed to be in.
-          // This problem cannot be corrected (so we will assign the merc to his own unique squad) and definately report it.
-
-          // Get a pointer to the group that contains the merc
-          iMismatches = 0;
-          iGroups = 0;
-          pGroup = gpGroupList;
-          pOtherGroup = NULL;
-          while (pGroup) {
-            if (pGroup->fPlayer) {
-              pPlayer = pGroup->pPlayerList;
-              while (pPlayer) {
-                if (pPlayer->pSoldier == pSoldier) {
-                  if (pSoldier->ubGroupID != pGroup->ubGroupID) {
-                    pOtherGroup = pGroup;
-                    iMismatches++;
-                  }
-                  iGroups++;
-                  break;
-                }
-                pPlayer = pPlayer->next;
-              }
-            }
-            if (iMismatches == 1) {
-              break;
-            }
-            pGroup = pGroup->next;
-          }
-          pGroup = GetGroup(pSoldier->ubGroupID);
-          Assert(pGroup);
-          Assert(pOtherGroup);
-          swprintf(str,
-                   L"%s in %c%d thinks he/she is in group %d in %c%d but isn't.  "
-                   L"Group %d in %c%d thinks %s is in the group but isn't.  %s will be assigned to a unique squad.  "
-                   L"Please send screenshot, PRIOR save (corrected by time you read this), and any theories.",
-                   pSoldier->name, pSoldier->sSectorY + 'A' - 1, pSoldier->sSectorX, pSoldier->ubGroupID, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, pOtherGroup->ubGroupID, pOtherGroup->ubSectorY + 'A' - 1, pOtherGroup->ubSectorX, pSoldier->name, pSoldier->name);
-        } else if (iGroups > 1 && iMismatches == iGroups - 1) {
-          // This is the error that is being targetted.  This means that the merc exists in multiple groups though the merc
-          // knows what group he is supposed to be in.  This error can be corrected, by manually removing the merc from all
-          // mismatch groups.  This is indicative of a merc being reassigned to another group without removing him first.
-
-          // Get a pointer to the first mismatch group that contains the merc
-          iMismatches = 0;
-          iGroups = 0;
-          pGroup = gpGroupList;
-          pOtherGroup = NULL;
-          while (pGroup) {
-            if (pGroup->fPlayer) {
-              pPlayer = pGroup->pPlayerList;
-              while (pPlayer) {
-                if (pPlayer->pSoldier == pSoldier) {
-                  if (pSoldier->ubGroupID != pGroup->ubGroupID) {
-                    pOtherGroup = pGroup;
-                    iMismatches++;
-                  }
-                  iGroups++;
-                  break;
-                }
-                pPlayer = pPlayer->next;
-              }
-            }
-            pGroup = pGroup->next;
-          }
-          pGroup = GetGroup(pSoldier->ubGroupID);
-          Assert(pGroup);
-          Assert(pOtherGroup);
-
-          swprintf(str,
-                   L"%s in %c%d has been found in multiple groups.  The group he/she is supposed "
-                   L"to be in is group %d in %c%d, but %s was also found to be in group %d in %c%d.  %s was found in %d groups "
-                   L"total.  Please send screenshot, PRIOR save (corrected by time you read this), and any theories.",
-                   pSoldier->name, pSoldier->sSectorY + 'A' - 1, pSoldier->sSectorX, pGroup->ubGroupID, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, pSoldier->name, pOtherGroup->ubGroupID, pOtherGroup->ubSectorY + 'A' - 1, pOtherGroup->ubSectorX, pSoldier->name, iGroups);
-        } else if (!iGroups) {
-          // The merc cannot be found in any group!  This should never happen!  We will assign the merc into his
-          // own unique squad as a correction.
-          swprintf(str,
-                   L"%s in %c%d cannot be found in any group.  %s will be assigned to a unique group/squad.  "
-                   L"Please provide details on how you think this may have happened.  Send screenshot and PRIOR save.  Do not send a save "
-                   L"you create after this point as the info will have been corrected by then.",
-                   pSoldier->name, pSoldier->sSectorY + 'A' - 1, pSoldier->sSectorX, pSoldier->name);
-        }
-      }
-
-      // CORRECT THE ERRORS NOW
-      if (iGroups == 1 && iMismatches == 1) {
-        // We have a very serious problem, as we have no way to know which group this merc is supposed to be in.
-        // This problem cannot be corrected (so we will assign the merc to his own unique squad).
-        RemovePlayersFromAllMismatchGroups(pSoldier);
-        AddCharacterToUniqueSquad(pSoldier);
-      } else if (iGroups > 1 && iMismatches == iGroups - 1) {
-        // This is the error that is being targetted.  This means that the merc exists in multiple groups though the merc
-        // knows what group he is supposed to be in.  This error can be corrected, by manually removing the merc from all
-        // mismatch groups.  This is indicative of a merc being reassigned to another group without removing him first.
-        RemovePlayersFromAllMismatchGroups(pSoldier);
-        pSoldier->ubGroupID = ubGroupID;
-      } else if (!iGroups) {
-        // The merc cannot be found in any group!  This should never happen!  We will assign the merc into his
-        // own unique squad as a correction.
-        AddCharacterToUniqueSquad(pSoldier);
-      }
-    }
-  }
-  if (iNumErrors) {
-    // The first error to be detected is the one responsible for building the strings.  We will simply append another string containing
-    // the total number of detected errors.
-    UINT16 tempstr[128];
-    swprintf(tempstr, L"  A total of %d related errors have been detected.", iNumErrors);
-    wcscat(str, tempstr);
-    SAIReportError(str);
-  }
-}
-#endif
-
-#ifdef JA2BETAVERSION
-void SAIReportError(STR16 wErrorString) {
-// runtime static only, don't save
-#ifdef JA2TESTVERSION
-  static BOOLEAN fReportedAlready = FALSE;
-#else
-  BOOLEAN fReportedAlready = FALSE; // so it can loop
-#endif
-
-  if (!fReportedAlready) {
-    StopTimeCompression();
-
-    // report the error
-    if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
-      DoScreenIndependantMessageBox(wErrorString, MSG_BOX_FLAG_OK, NULL);
-    } else {
-      ScreenMsg(FONT_LTBLUE, MSG_BETAVERSION, wErrorString);
-    }
-    if (guiCurrentScreen == AIVIEWER_SCREEN) {
-      UINT8 str[512];
-      sprintf(str, "%S\n", wErrorString);
-      OutputDebugString(str);
-    }
-
-    // this should keep it from repeating endlessly and allow player to save/bail
-    fReportedAlready = TRUE;
-  }
-}
-#endif
 
 void InitStrategicAI() {
   INT32 i, cnt, iRandom;
@@ -916,9 +584,6 @@ void InitStrategicAI() {
   gusPlayerBattleVictories = 0;
   gfUseAlternateQueenPosition = FALSE;
 
-#ifdef JA2BETAVERSION
-  ClearStrategicLog();
-#endif
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
       giReinforcementPool = EASY_QUEENS_POOL_OF_TROOPS;
@@ -1300,16 +965,8 @@ BOOLEAN HandlePlayerGroupNoticedByPatrolGroup(GROUP *pPlayerGroup, GROUP *pEnemy
   // For now, automatically attack.
   if (pPlayerGroup->ubNextX) {
     MoveSAIGroupToSector(&pEnemyGroup, (UINT8)SECTOR(pPlayerGroup->ubNextX, pPlayerGroup->ubNextY), DIRECT, PURSUIT);
-
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("Enemy group at %c%d detected player group at %c%d and is moving to intercept them at %c%d.", pEnemyGroup->ubSectorY + 'A' - 1, pEnemyGroup->ubSectorX, pPlayerGroup->ubSectorY + 'A' - 1, pPlayerGroup->ubSectorX, pPlayerGroup->ubNextY + 'A' - 1, pPlayerGroup->ubNextX);
-#endif
   } else {
     MoveSAIGroupToSector(&pEnemyGroup, (UINT8)SECTOR(pPlayerGroup->ubSectorX, pPlayerGroup->ubSectorY), DIRECT, PURSUIT);
-
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("Enemy group at %c%d detected player group at %c%d and is moving to intercept them at %c%d.", pEnemyGroup->ubSectorY + 'A' - 1, pEnemyGroup->ubSectorX, pPlayerGroup->ubSectorY + 'A' - 1, pPlayerGroup->ubSectorX, pPlayerGroup->ubSectorY + 'A' - 1, pPlayerGroup->ubSectorX);
-#endif
   }
   return TRUE;
 }
@@ -1346,14 +1003,7 @@ void HandlePlayerGroupNoticedByGarrison(GROUP *pPlayerGroup, UINT8 ubSectorID) {
       RemoveSoldiersFromGarrisonBasedOnComposition(pSector->ubGarrisonID, pGroup->ubGroupSize);
 
       if (pSector->ubNumTroops + pSector->ubNumElites + pSector->ubNumAdmins > MAX_STRATEGIC_TEAM_SIZE) {
-#ifdef JA2BETAVERSION
-        LogStrategicEvent("ERROR:  Sector %c%d now has %d enemies (max %d).", gGarrisonGroup[pSector->ubGarrisonID].ubSectorID / 16 + 'A', gGarrisonGroup[pSector->ubGarrisonID].ubSectorID % 16, pSector->ubNumTroops + pSector->ubNumElites + pSector->ubNumAdmins, MAX_STRATEGIC_TEAM_SIZE);
-#endif
       }
-
-#ifdef JA2BETAVERSION
-      LogStrategicEvent("Enemy garrison at %c%d detected stopped player group at %c%d and is sending %d troops to attack.", gGarrisonGroup[pSector->ubGarrisonID].ubSectorID / 16 + 'A', gGarrisonGroup[pSector->ubGarrisonID].ubSectorID % 16, pPlayerGroup->ubSectorY + 'A' - 1, pPlayerGroup->ubSectorX, pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumTroops);
-#endif
     }
   }
 }
@@ -1371,9 +1021,6 @@ BOOLEAN HandleMilitiaNoticedByPatrolGroup(UINT8 ubSectorID, GROUP *pEnemyGroup) 
 
   MoveSAIGroupToSector(&pEnemyGroup, (UINT8)SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
 
-#ifdef JA2BETAVERSION
-  LogStrategicEvent("Enemy group at %c%d detected militia at %c%d and is moving to attack them.", pEnemyGroup->ubSectorY + 'A' - 1, pEnemyGroup->ubSectorX, ubSectorY + 'A' - 1, ubSectorX);
-#endif
   return FALSE;
 }
 
@@ -1459,10 +1106,6 @@ BOOLEAN HandleEmptySectorNoticedByPatrolGroup(GROUP *pGroup, UINT8 ubEmptySector
   gGarrisonGroup[ubGarrisonID].ubPendingGroupID = pGroup->ubGroupID;
   MoveSAIGroupToSector(&pGroup, (UINT8)SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
 
-#ifdef JA2BETAVERSION
-  LogStrategicEvent("Enemy group at %c%d detected undefended sector at %c%d and is moving to retake it.", pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, ubSectorY + 'A' - 1, ubSectorX);
-#endif
-
   return TRUE;
 }
 
@@ -1521,9 +1164,6 @@ BOOLEAN ReinforcementsApproved(INT32 iGarrisonID, UINT16 *pusDefencePoints) {
   // Before returning false, determine if reinforcements have been denied repeatedly.  If so, then
   // we might send an augmented force to take it back.
   if (gubGarrisonReinforcementsDenied[iGarrisonID] + usOffensePoints > *pusDefencePoints) {
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("Sector %c%d will now recieve an %d extra troops due to multiple denials for reinforcements in the past for strong player presence.", ubSectorY + 'A' - 1, ubSectorX, gubGarrisonReinforcementsDenied[iGarrisonID] / 3);
-#endif
     return TRUE;
   }
   // Reinforcements will have to wait.  For now, increase the reinforcements denied.  The amount increase is 20 percent
@@ -1566,9 +1206,6 @@ BOOLEAN EvaluateGroupSituation(GROUP *pGroup) {
           pSector->ubNumTroops = (UINT8)(pSector->ubNumTroops + pGroup->pEnemyGroup->ubNumTroops);
           pSector->ubNumElites = (UINT8)(pSector->ubNumElites + pGroup->pEnemyGroup->ubNumElites);
 
-#ifdef JA2BETAVERSION
-          LogStrategicEvent("%d reinforcements have arrived to garrison sector %c%d", pGroup->pEnemyGroup->ubNumAdmins + pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
-#endif
           if (IsThisSectorASAMSector(pGroup->ubSectorX, pGroup->ubSectorY, 0)) {
             StrategicMap[pGroup->ubSectorX + pGroup->ubSectorY * MAP_WORLD_X].bSAMCondition = 100;
             UpdateSAMDoneRepair(pGroup->ubSectorX, pGroup->ubSectorY, 0);
@@ -1583,22 +1220,13 @@ BOOLEAN EvaluateGroupSituation(GROUP *pGroup) {
               // Fill up the queen's guards, then apply the rest to the reinforcement pool
               giReinforcementPool += MAX_STRATEGIC_TEAM_SIZE - pSector->ubNumElites;
               pSector->ubNumElites = MAX_STRATEGIC_TEAM_SIZE;
-#ifdef JA2BETAVERSION
-              LogStrategicEvent("%d reinforcements have arrived to garrison queen's sector.  The excess troops will be relocated to the reinforcement pool.", pGroup->ubGroupSize);
-#endif
             } else {
               // Add all the troops to the queen's guard.
               pSector->ubNumElites += pGroup->ubGroupSize;
-#ifdef JA2BETAVERSION
-              LogStrategicEvent("%d reinforcements have arrived to garrison queen's sector.", pGroup->ubGroupSize, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
-#endif
             }
           } else {
             // Add all the troops to the reinforcement pool as the queen's guard is at full strength.
             giReinforcementPool += pGroup->ubGroupSize;
-#ifdef JA2BETAVERSION
-            LogStrategicEvent("%d reinforcements have arrived at queen's sector and have been added to the reinforcement pool.", pGroup->ubGroupSize, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
-#endif
           }
         }
 
@@ -1620,19 +1248,8 @@ BOOLEAN EvaluateGroupSituation(GROUP *pGroup) {
           pPatrolGroup->pEnemyGroup->ubNumElites += pGroup->pEnemyGroup->ubNumElites;
           pPatrolGroup->pEnemyGroup->ubNumAdmins += pGroup->pEnemyGroup->ubNumAdmins;
           pPatrolGroup->ubGroupSize += (UINT8)(pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins);
-#ifdef JA2BETAVERSION
-          LogStrategicEvent("%d reinforcements have joined patrol group at sector %c%d (new size: %d)", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, pPatrolGroup->ubSectorY + 'A' - 1, pPatrolGroup->ubSectorX, pPatrolGroup->ubGroupSize);
-#endif
           if (pPatrolGroup->ubGroupSize > MAX_STRATEGIC_TEAM_SIZE) {
             UINT8 ubCut;
-#ifdef JA2BETAVERSION
-            UINT16 str[512];
-            swprintf(str,
-                     L"Patrol group #%d in %c%d received too many reinforcements from group #%d that was created in %c%d.  Size truncated from %d to %d."
-                     L"Please send Strategic Decisions.txt and PRIOR save.",
-                     pPatrolGroup->ubGroupID, pPatrolGroup->ubSectorY + 'A' - 1, pPatrolGroup->ubSectorX, pGroup->ubGroupID, SECTORY(pGroup->ubCreatedSectorID) + 'A' - 1, SECTORX(pGroup->ubCreatedSectorID), pPatrolGroup->ubGroupSize, MAX_STRATEGIC_TEAM_SIZE);
-            SAIReportError(str);
-#endif
             // truncate the group size.
             ubCut = pPatrolGroup->ubGroupSize - MAX_STRATEGIC_TEAM_SIZE;
             while (ubCut--) {
@@ -1671,9 +1288,6 @@ BOOLEAN EvaluateGroupSituation(GROUP *pGroup) {
           // Otherwise, the engine assumes they are being deployed.
           // pGroup->fWaypointsCancelled = FALSE;
 
-#ifdef JA2BETAVERSION
-          LogStrategicEvent("%d soldiers have arrived to patrol area near sector %c%d", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX);
-#endif
           RecalculatePatrolWeight(i);
         }
         return TRUE;
@@ -2221,10 +1835,6 @@ void SendReinforcementsForGarrison(INT32 iDstGarrisonID, UINT16 usDefencePoints,
     // This group will provide the reinforcements
     pGroup = *pOptionalGroup;
 
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("%d troops have been reassigned from %c%d to garrison sector %c%d", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
     gGarrisonGroup[iDstGarrisonID].ubPendingGroupID = pGroup->ubGroupID;
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[iDstGarrisonID].ubComposition);
     MoveSAIGroupToSector(pOptionalGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
@@ -2282,16 +1892,8 @@ void SendReinforcementsForGarrison(INT32 iDstGarrisonID, UINT16 usDefencePoints,
     ubGroupSize = (UINT8)(pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins);
 
     if (ubNumExtraReinforcements) {
-#ifdef JA2BETAVERSION
-      LogStrategicEvent("%d troops have been sent from palace to stage assault near sector %c%d", ubGroupSize, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
       MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
     } else {
-#ifdef JA2BETAVERSION
-      LogStrategicEvent("%d troops have been sent from palace to garrison sector %c%d", ubGroupSize, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
       MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
     }
     ValidateWeights(14);
@@ -2349,22 +1951,10 @@ void SendReinforcementsForGarrison(INT32 iDstGarrisonID, UINT16 usDefencePoints,
       if (ubNumExtraReinforcements) {
         pGroup->pEnemyGroup->ubPendingReinforcements = ubNumExtraReinforcements;
 
-#ifdef JA2BETAVERSION
-        LogStrategicEvent("%d troops have been sent from sector %c%d to stage assault near sector %c%d", ubGroupSize, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
         MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
       } else {
-#ifdef JA2BETAVERSION
-        LogStrategicEvent("%d troops have been sent from sector %c%d to garrison sector %c%d", ubGroupSize, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
         MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
       }
-
-#ifdef JA2BETAVERSION
-      LogStrategicEvent("%d troops have been sent from garrison sector %c%d to patrol area near sector %c%d", ubGroupSize, ubSrcSectorY + 'A' - 1, ubSrcSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
 
       ValidateWeights(19);
       return;
@@ -2396,10 +1986,6 @@ void SendReinforcementsForPatrol(INT32 iPatrolID, GROUP **pOptionalGroup) {
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup->ubGroupID;
 
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("%d troops have been reassigned from %c%d to reinforce patrol group covering sector %c%d", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, pGroup->ubSectorY + 'A' - 1, pGroup->ubSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
-
     MoveSAIGroupToSector(pOptionalGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
 
     ValidateWeights(22);
@@ -2417,10 +2003,6 @@ void SendReinforcementsForPatrol(INT32 iPatrolID, GROUP **pOptionalGroup) {
     giReinforcementPool -= iReinforcementsApproved;
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup->ubGroupID;
-
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("%d troops have been sent from palace to patrol area near sector %c%d", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
 
     MoveSAIGroupToSector(&pGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
 
@@ -2448,10 +2030,6 @@ void SendReinforcementsForPatrol(INT32 iPatrolID, GROUP **pOptionalGroup) {
             gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup->ubGroupID;
 
             RemoveSoldiersFromGarrisonBasedOnComposition(iSrcGarrisonID, pGroup->ubGroupSize);
-
-#ifdef JA2BETAVERSION
-            LogStrategicEvent("%d troops have been sent from garrison sector %c%d to patrol area near sector %c%d", pGroup->pEnemyGroup->ubNumTroops + pGroup->pEnemyGroup->ubNumElites + pGroup->pEnemyGroup->ubNumAdmins, ubSrcSectorY + 'A' - 1, ubSrcSectorX, ubDstSectorY + 'A' - 1, ubDstSectorX);
-#endif
 
             MoveSAIGroupToSector(&pGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
 
@@ -2545,9 +2123,6 @@ void EvaluateQueenSituation() {
         if (ReinforcementsApproved(i, &usDefencePoints)) {
           SendReinforcementsForGarrison(i, usDefencePoints, NULL);
         } else {
-#ifdef JA2BETAVERSION
-          LogStrategicEvent("Reinforcements were denied to go to %c%d because player forces too strong.", SECTORY(gGarrisonGroup[i].ubSectorID) + 'A' - 1, SECTORX(gGarrisonGroup[i].ubSectorID));
-#endif
         }
         return;
       }
@@ -2689,10 +2264,6 @@ BOOLEAN SaveStrategicAI(HWFILE hFile) {
     return FALSE;
   }
 
-#ifdef JA2BETAVERSION
-  ValidatePlayersAreInOneGroupOnly();
-#endif
-
   return TRUE;
 }
 
@@ -2833,10 +2404,6 @@ BOOLEAN LoadStrategicAI(HWFILE hFile) {
   if (uiNumBytesRead != (UINT32)giGarrisonArraySize) {
     return FALSE;
   }
-
-#ifdef JA2BETAVERSION
-  InitStrategicMovementCosts();
-#endif
 
   if (ubSAIVersion < 6) {
     // Reinitialize the costs since they have changed.
@@ -3122,22 +2689,11 @@ BOOLEAN LoadStrategicAI(HWFILE hFile) {
     pGroup = next; // advance the node
   }
 
-#ifdef JA2BETAVERSION
-  LogStrategicMsg("");
-  LogStrategicMsg("-------------------------------------------------");
-  LogStrategicMsg("Restoring saved game at Day %02d, %02d:%02d ", GetWorldDay(), GetWorldHour(), GetWorldMinutesInDay() % 60);
-  LogStrategicMsg("-------------------------------------------------");
-  LogStrategicMsg("");
-#endif
-
   // Update the version number to the most current.
   gubSAIVersion = SAI_VERSION;
 
   ValidateWeights(28);
   ValidatePendingGroups();
-#ifdef JA2BETAVERSION
-  ValidatePlayersAreInOneGroupOnly();
-#endif
 
   return TRUE;
 }
@@ -3156,17 +2712,8 @@ void EvolveQueenPriorityPhase(BOOLEAN fForceChange) {
   }
 
   if (gubQueenPriorityPhase > ubNewPhase) {
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("The queen's defence priority has decreased from %d0%% to %d0%%.", gubQueenPriorityPhase, ubNewPhase);
-#endif
   } else if (gubQueenPriorityPhase < ubNewPhase) {
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("The queen's defence priority has increased from %d0%% to %d0%%.", gubQueenPriorityPhase, ubNewPhase);
-#endif
   } else {
-#ifdef JA2BETAVERSION
-    LogStrategicEvent("The queen's defence priority is the same (%d0%%), but has been forced to update.", gubQueenPriorityPhase);
-#endif
   }
 
   gubQueenPriorityPhase = ubNewPhase;
@@ -3454,73 +3001,6 @@ void ExecuteStrategicAIAction(UINT16 usActionCode, INT16 sSectorX, INT16 sSector
       break;
   }
 }
-
-#ifdef JA2BETAVERSION
-
-void LogStrategicMsg(UINT8 *str, ...) {
-  va_list argptr;
-  UINT8 string[512];
-
-  FILE *fp;
-
-  fp = fopen("Strategic Decisions.txt", "a");
-  if (!fp)
-    return;
-
-  va_start(argptr, str);
-  vsprintf(string, str, argptr);
-  va_end(argptr);
-
-  fprintf(fp, "%s\n", string);
-
-  if (gfDisplayStrategicAILogs) {
-    ScreenMsg(FONT_LTKHAKI, MSG_DIALOG, L"%S", string);
-  }
-  if (guiCurrentScreen == AIVIEWER_SCREEN) {
-    OutputDebugString(String("%s\n", string));
-  }
-
-  fclose(fp);
-}
-
-void LogStrategicEvent(UINT8 *str, ...) {
-  va_list argptr;
-  UINT8 string[512];
-
-  FILE *fp;
-
-  fp = fopen("Strategic Decisions.txt", "a");
-  if (!fp)
-    return;
-
-  va_start(argptr, str);
-  vsprintf(string, str, argptr);
-  va_end(argptr);
-
-  fprintf(fp, "\n%S:\n", WORLDTIMESTR);
-  fprintf(fp, "%s\n", string);
-
-  if (gfDisplayStrategicAILogs) {
-    ScreenMsg(FONT_LTKHAKI, MSG_DIALOG, L"%S", string);
-  }
-  if (guiCurrentScreen == AIVIEWER_SCREEN) {
-    OutputDebugString(String("%s\n", string));
-  }
-
-  fclose(fp);
-}
-
-void ClearStrategicLog() {
-  FILE *fp;
-  fp = fopen("Strategic Decisions.txt", "w");
-  if (!fp)
-    return;
-
-  fprintf(fp, "STRATEGIC LOG\n");
-
-  fclose(fp);
-}
-#endif
 
 void InvestigateSector(UINT8 ubSectorID) {
   /*

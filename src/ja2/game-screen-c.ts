@@ -259,11 +259,6 @@ void InternalLeaveTacticalScreen(UINT32 uiNewScreen) {
 
 extern INT32 iInterfaceDialogueBox;
 
-#ifdef JA2BETAVERSION
-extern BOOLEAN ValidateSoldierInitLinks(UINT8 ubCode);
-extern BOOLEAN gfDoDialogOnceGameScreenFadesIn;
-#endif
-
 UINT32 MainGameScreenHandle(void) {
   UINT32 uiNewScreen = GAME_SCREEN;
   BOOLEAN fEnterDemoMode = FALSE;
@@ -277,14 +272,8 @@ UINT32 MainGameScreenHandle(void) {
     return GAME_SCREEN;
   }
 
-#ifdef JA2BETAVERSION
-  DebugValidateSoldierData();
-#endif
-
   if (HandleAutoBandage()) {
-#ifndef VISIBLE_AUTO_BANDAGE
     return GAME_SCREEN;
-#endif
   }
 
   if (gfBeginEndTurn) {
@@ -292,9 +281,6 @@ UINT32 MainGameScreenHandle(void) {
     gfBeginEndTurn = FALSE;
   }
 
-#ifdef JA2DEMO
-  SetGameTimeCompressionLevel(TIME_COMPRESS_X1);
-#endif
   /*
           if ( gfExitToNewSector )
           {
@@ -436,10 +422,6 @@ UINT32 MainGameScreenHandle(void) {
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     // Unset
     guiTacticalInterfaceFlags &= (~INTERFACE_MAPSCREEN);
-
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"MAPSCREEN_INTERFACE flag set: Please remember how you entered Tactical.");
-#endif
   }
 
   if (HandleFadeOutCallback()) {
@@ -451,12 +433,6 @@ UINT32 MainGameScreenHandle(void) {
       return GAME_SCREEN;
     }
   }
-
-#ifdef JA2BETAVERSION
-  if (gfDoDialogOnceGameScreenFadesIn) {
-    ValidateSoldierInitLinks(4);
-  }
-#endif
 
   HandleHeliDrop();
 
@@ -495,13 +471,11 @@ UINT32 MainGameScreenHandle(void) {
 
       HandleTalkingAutoFaces();
     }
-#ifdef JA2EDITOR
     else if (gfIntendOnEnteringEditor) {
       OutputDebugString("Aborting normal game mode and entering editor mode...\n");
       SetPendingNewScreen(0xffff); // NO_SCREEN
       return EDIT_SCREEN;
     }
-#endif
     else if (!gfEnteringMapScreen) {
       gfEnteringMapScreen = TRUE;
     }
@@ -546,59 +520,8 @@ UINT32 MainGameScreenHandle(void) {
     // RenderTacticalInterface( );
   }
 
-#ifdef NETWORKED
-  // DEF:  Test Code
-  PrintNetworkInfo();
-#endif
-
   // Render Interface
   RenderTopmostTacticalInterface();
-
-#ifdef JA2TESTVERSION
-  if (gTacticalStatus.uiFlags & ENGAGED_IN_CONV) {
-    SetFont(MILITARYFONT1);
-    SetFontBackground(FONT_MCOLOR_BLACK);
-    SetFontForeground(FONT_MCOLOR_LTGREEN);
-
-    mprintf(0, 0, L"IN CONVERSATION %d", giNPCReferenceCount);
-    gprintfdirty(0, 0, L"IN CONVERSATION %d", giNPCReferenceCount);
-  }
-
-#ifdef JA2BETAVERSION
-
-  if (GamePaused() == TRUE) {
-    SetFont(MILITARYFONT1);
-    SetFontBackground(FONT_MCOLOR_BLACK);
-    SetFontForeground(FONT_MCOLOR_LTGREEN);
-
-    mprintf(0, 10, L"Game Clock Paused");
-    gprintfdirty(0, 10, L"Game Clock Paused");
-  }
-
-#endif
-
-  if (gTacticalStatus.uiFlags & SHOW_ALL_MERCS) {
-    INT32 iSchedules;
-    SCHEDULENODE *curr;
-
-    SetFont(MILITARYFONT1);
-    SetFontBackground(FONT_MCOLOR_BLACK);
-    SetFontForeground(FONT_MCOLOR_LTGREEN);
-
-    mprintf(0, 15, L"Attacker Busy Count: %d", gTacticalStatus.ubAttackBusyCount);
-    gprintfdirty(0, 15, L"Attacker Busy Count: %d", gTacticalStatus.ubAttackBusyCount);
-
-    curr = gpScheduleList;
-    iSchedules = 0;
-    while (curr) {
-      iSchedules++;
-      curr = curr->next;
-    }
-
-    mprintf(0, 25, L"Schedules: %d", iSchedules);
-    gprintfdirty(0, 25, L"Schedules: %d", iSchedules);
-  }
-#endif
 
   // Render view window
   RenderRadarScreen();

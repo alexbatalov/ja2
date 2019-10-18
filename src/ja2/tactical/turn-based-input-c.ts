@@ -89,16 +89,6 @@ void HandleSelectMercSlot(UINT8 ubPanelSlot, INT8 bCode);
 void EscapeUILock();
 void TestCapture();
 
-#ifdef JA2BETAVERSION
-void ToggleMapEdgepoints();
-#endif
-#ifdef JA2TESTVERSION
-void ToggleMercsNeverQuit();
-#endif
-#ifdef JA2TESTVERSION
-void DumpSectorDifficultyInfo(void);
-#endif
-
 void HandleStealthChangeFromUIKeys();
 
 UINT8 gubCheatLevel = STARTING_CHEAT_LEVEL;
@@ -1197,11 +1187,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
     // CHECK ESC KEYS HERE....
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
       // EscapeUILock( );
-#ifdef JA2TESTVERSION
-      if (InAirRaid()) {
-        EndAirRaid();
-      }
-#endif
 
       // Cancel out of spread burst...
       gfBeginBurstSpreadTracking = FALSE;
@@ -1274,49 +1259,12 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
           SetRenderFlags(RENDER_FLAG_FULL);
         }
       } else if (InputEvent.usKeyState & CTRL_DOWN) {
-#ifdef JA2BETAVERSION
-        if (CHEATER_CHEAT_LEVEL()) {
-          LeaveTacticalScreen(ANIEDIT_SCREEN);
-        }
-#endif
       } else {
         if (INFORMATION_CHEAT_LEVEL()) {
           *puiNewEvent = I_SOLDIERDEBUG;
         }
       }
     }
-
-#ifdef JA2TESTVERSION
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == '0') && (InputEvent.usKeyState & ALT_DOWN)) {
-      INT32 i = 0;
-      INT16 sGridNo;
-      INT32 iTime = GetJA2Clock();
-      UINT8 ubLevel;
-
-      for (i = 0; i < 1000; i++) {
-        CalculateLaunchItemChanceToGetThrough(MercPtrs[gusSelectedSoldier], &(MercPtrs[gusSelectedSoldier]->inv[HANDPOS]), usMapPos, 0, 0, &sGridNo, TRUE, &ubLevel, TRUE);
-      }
-
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Physics 100 times: %d", (GetJA2Clock() - iTime));
-    }
-#endif
-
-#ifdef NETWORKED
-    // DEF: Test Networking
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == '0') && (InputEvent.usKeyState & ALT_DOWN)) {
-      DisplayMultiPlayerInfo();
-    }
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == '9') && (InputEvent.usKeyState & ALT_DOWN)) {
-      DisplayDirectPlayInfo();
-    }
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == '8') && (InputEvent.usKeyState & ALT_DOWN)) {
-      DisplayDirectPlayPlayerInfo();
-    }
-
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == '7') && (InputEvent.usKeyState & ALT_DOWN)) {
-      SetDisplayFlag();
-    }
-#endif
 
     if (InputEvent.usEvent == KEY_DOWN) {
       BOOLEAN fAlt, fCtrl, fShift;
@@ -1384,134 +1332,43 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
           if (fShift) {
             HandleSelectMercSlot(0, LOCATE_MERC_ONCE);
           }
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(15);
-          } else if (fCtrl) {
-            TestMeanWhile(10);
-          }
-#endif
           else
             HandleSelectMercSlot(0, LOCATEANDSELECT_MERC);
           break;
         case F2:
           if (fShift)
             HandleSelectMercSlot(1, LOCATE_MERC_ONCE);
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(1);
-          } else if (fCtrl) {
-            TestMeanWhile(11);
-          }
-#endif
           else
             HandleSelectMercSlot(1, LOCATEANDSELECT_MERC);
           break;
         case F3:
           if (fShift)
             HandleSelectMercSlot(2, LOCATE_MERC_ONCE);
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(2);
-          } else if (fCtrl) {
-            TestMeanWhile(12);
-          }
-#endif
           else
             HandleSelectMercSlot(2, LOCATEANDSELECT_MERC);
           break;
         case F4:
           if (fShift)
             HandleSelectMercSlot(3, LOCATE_MERC_ONCE);
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(3);
-          } else if (fCtrl) {
-            TestMeanWhile(13);
-          }
-#endif
           else
             HandleSelectMercSlot(3, LOCATEANDSELECT_MERC);
           break;
         case F5:
           if (fShift)
             HandleSelectMercSlot(4, LOCATE_MERC_ONCE);
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(4);
-          } else if (fCtrl) {
-            TestMeanWhile(14);
-          }
-#endif
           else
             HandleSelectMercSlot(4, LOCATEANDSELECT_MERC);
           break;
         case F6:
           if (fShift)
             HandleSelectMercSlot(5, LOCATE_MERC_ONCE);
-#ifdef JA2TESTVERSION
-          else if (fAlt) {
-            TestMeanWhile(5);
-          } else if (fCtrl) {
-            TestMeanWhile(15);
-          }
-#endif
           else
             HandleSelectMercSlot(5, LOCATEANDSELECT_MERC);
           break;
 
-#ifdef JA2TESTVERSION
-        case F7:
-          if (fAlt) {
-            TestMeanWhile(16);
-          }
-          break;
-        case F8:
-
-          if (fAlt) {
-            TestMeanWhile(7);
-          }
-          break;
-
-        case F9:
-
-          if (fCtrl) {
-            TestMeanWhile(8);
-          } else {
-#ifdef JA2EDITOR
-            *puiNewEvent = I_ENTER_EDIT_MODE;
-            gfMercResetUponEditorEntry = !fAlt;
-#endif
-          }
-          break;
-        case F10:
-
-          if (fAlt) {
-            TestMeanWhile(9);
-          }
-          break;
-#endif
-
         case F11:
 
           if (fAlt) {
-#ifdef JA2TESTVERSION
-            SOLDIERTYPE *pSoldier;
-
-            // Get selected soldier
-            if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
-              if (pSoldier->ubID == 46) {
-                // Change guy to drunk larry
-                ForceSoldierProfileID(pSoldier, 47);
-              } else {
-                // Change guy to normal larry
-                ForceSoldierProfileID(pSoldier, 46);
-              }
-
-              // Dirty interface
-              DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
-            }
-#endif
           }
 
           else {
@@ -1524,15 +1381,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
 
         case F12:
 
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            UINT8 ubProfile = TONY;
-
-            GetMouseMapPos(&gsQdsEnteringGridNo);
-            AddShopkeeperToGridNo(ubProfile, gsQdsEnteringGridNo);
-            EnterShopKeeperInterfaceScreen(ubProfile);
-          }
-#endif
           // clear tactical of messages
           if (fCtrl) {
             ClearTacticalMessageQueue();
@@ -1674,40 +1522,28 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
         case 'a':
 
           if (fCtrl) {
-#ifdef GERMAN
-            if (gubCheatLevel == 3) {
-              gubCheatLevel++;
-              fGoodCheatLevelKey = TRUE;
-            } else if (gubCheatLevel == 5) {
-              gubCheatLevel++;
-              // ATE; We're done.... start cheat mode....
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_CHEAT_LEVEL_TWO]);
-              SetHistoryFact(HISTORY_CHEAT_ENABLED, 0, GetWorldTotalMin(), -1, -1);
-            } else {
-              RESET_CHEAT_LEVEL();
-            }
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//             if (gubCheatLevel == 3) {
+//               gubCheatLevel++;
+//               fGoodCheatLevelKey = TRUE;
+//             } else if (gubCheatLevel == 5) {
+//               gubCheatLevel++;
+//               // ATE; We're done.... start cheat mode....
+//               ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_CHEAT_LEVEL_TWO]);
+//               SetHistoryFact(HISTORY_CHEAT_ENABLED, 0, GetWorldTotalMin(), -1, -1);
+//             } else {
+//               RESET_CHEAT_LEVEL();
+//             }
+// #else
             if (gubCheatLevel == 1) {
               gubCheatLevel++;
               fGoodCheatLevelKey = TRUE;
             } else {
               RESET_CHEAT_LEVEL();
             }
-#endif
+// #endif
           } else if (fAlt) {
-#ifdef JA2TESTVERSION
-            //	ToggleMercsNeverQuit();
-            static UINT8 ubAmbientSound = 0;
-
-            ubAmbientSound++;
-
-            if (ubAmbientSound >= NUM_STEADY_STATE_AMBIENCES) {
-              ubAmbientSound = 1;
-            }
-
-            SetSteadyStateAmbience(ubAmbientSound);
-
-#endif
           } else {
             BeginAutoBandage();
           }
@@ -1720,11 +1556,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               gfNextFireJam = TRUE;
             }
           } else if (fCtrl) {
-#ifdef JA2BETAVERSION
-            if (CHEATER_CHEAT_LEVEL()) {
-              ToggleNPCRecordDisplay();
-            }
-#endif
           }
           break;
 
@@ -1735,7 +1566,8 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               *puiNewEvent = I_NEW_BADMERC;
             }
           } else if (fCtrl) {
-#ifndef GERMAN
+// FIXME: Language-specific code
+// #ifndef GERMAN
             if (gubCheatLevel == 2) {
               gubCheatLevel++;
               fGoodCheatLevelKey = TRUE;
@@ -1748,14 +1580,14 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             } else {
               RESET_CHEAT_LEVEL();
             }
-#else
-            if (gubCheatLevel == 6) {
-              gubCheatLevel++;
-              fGoodCheatLevelKey = TRUE;
-            } else {
-              RESET_CHEAT_LEVEL();
-            }
-#endif
+// #else
+//             if (gubCheatLevel == 6) {
+//               gubCheatLevel++;
+//               fGoodCheatLevelKey = TRUE;
+//             } else {
+//               RESET_CHEAT_LEVEL();
+//             }
+// #endif
             // gGameSettings.fOptions[ TOPTION_HIDE_BULLETS ] ^= TRUE;
           } else {
             // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
@@ -1803,10 +1635,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               }
             }
           }
-#ifdef JA2TESTVERSION
-          else if (fCtrl)
-            AdvanceToNextDay();
-#endif
           break;
 
         case 'e':
@@ -1817,11 +1645,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               ToggleViewAllItems();
             }
           }
-#ifdef JA2BETAVERSION
-          else if (fCtrl) {
-            ToggleMapEdgepoints();
-          }
-#endif
           else {
             SOLDIERTYPE *pSoldier;
 
@@ -1880,21 +1703,22 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
         case 'g':
 
           if (fCtrl) {
-#ifdef GERMAN
-            if (gubCheatLevel == 1) {
-              gubCheatLevel++;
-              fGoodCheatLevelKey = TRUE;
-            } else {
-              RESET_CHEAT_LEVEL();
-            }
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//             if (gubCheatLevel == 1) {
+//               gubCheatLevel++;
+//               fGoodCheatLevelKey = TRUE;
+//             } else {
+//               RESET_CHEAT_LEVEL();
+//             }
+// #else
             if (gubCheatLevel == 0) {
               gubCheatLevel++;
               fGoodCheatLevelKey = TRUE;
             } else {
               RESET_CHEAT_LEVEL();
             }
-#endif
+// #endif
           } else if (fAlt) {
             if (CHEATER_CHEAT_LEVEL()) {
               *puiNewEvent = I_NEW_MERC;
@@ -1929,12 +1753,13 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               CreateRandomItem();
             }
           } else if (fCtrl) {
-#ifdef GERMAN
-            if (gubCheatLevel == 0) {
-              fGoodCheatLevelKey = TRUE;
-              gubCheatLevel++;
-            }
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//             if (gubCheatLevel == 0) {
+//               fGoodCheatLevelKey = TRUE;
+//               gubCheatLevel++;
+//             }
+// #else
             if (gubCheatLevel == 4) {
               gubCheatLevel++;
               fGoodCheatLevelKey = TRUE;
@@ -1944,7 +1769,7 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             } else {
               RESET_CHEAT_LEVEL();
             }
-#endif
+// #endif
           } else {
             if (gGameSettings.fOptions[TOPTION_GLOW_ITEMS]) {
               gGameSettings.fOptions[TOPTION_GLOW_ITEMS] = FALSE;
@@ -2013,17 +1838,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, pMessageStrings[MSG_3DCURSOR_ON]);
           }
           break;
-
-#ifdef JA2BETAVERSION
-        case 'L':
-          gfDisplayStrategicAILogs ^= TRUE;
-          if (gfDisplayStrategicAILogs) {
-            ScreenMsg(FONT_LTKHAKI, MSG_INTERFACE, L"Strategic AI Log visually enabled.");
-          } else {
-            ScreenMsg(FONT_LTKHAKI, MSG_INTERFACE, L"Strategic AI Log visually disabled.");
-          }
-          break;
-#endif
 
         case 'l':
 
@@ -2133,14 +1947,15 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               }
             }
           } else if (fCtrl) {
-#ifdef GERMAN
-            if (gubCheatLevel == 4) {
-              fGoodCheatLevelKey = TRUE;
-              gubCheatLevel++;
-            } else {
-              RESET_CHEAT_LEVEL();
-            }
-#endif
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//             if (gubCheatLevel == 4) {
+//               fGoodCheatLevelKey = TRUE;
+//               gubCheatLevel++;
+//             } else {
+//               RESET_CHEAT_LEVEL();
+//             }
+// #endif
           } else if (!CycleSoldierFindStack(usMapPos)) // Are we over a merc stack?
             CycleIntTileFindStack(usMapPos); // If not, now check if we are over a struct stack
           break;
@@ -2170,20 +1985,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
 
         case 'p':
 
-#ifdef JA2BETAVERSION
-          if (fAlt)
-            ToggleRealTimeConfirm();
-          else
-#endif
-
-#ifdef JA2TESTVERSION
-#ifndef JA2DEMO
-              if (fCtrl) {
-            // CTRL-P: Display player's highest progress percentage
-            DumpSectorDifficultyInfo();
-          } else
-#endif
-#endif
             HandleStanceChangeFromUIKeys(ANIM_PRONE);
           break;
 
@@ -2272,13 +2073,6 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             if (_KeyDown(END))
               ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS + 1);
           } else {
-#ifdef JA2TESTVERSION
-            if (fAlt) {
-              WarpGameTime(60, TRUE);
-              break;
-            }
-#endif
-
             // ATE: This key will select everybody in the sector
             if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
               SOLDIERTYPE *pSoldier;
@@ -2306,14 +2100,15 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
             INT32 cnt;
             SOLDIERTYPE *pSoldier;
 
-#ifdef GERMAN
-            if (gubCheatLevel == 2) {
-              fGoodCheatLevelKey = TRUE;
-              gubCheatLevel++;
-            } else {
-              RESET_CHEAT_LEVEL();
-            }
-#endif
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//             if (gubCheatLevel == 2) {
+//               fGoodCheatLevelKey = TRUE;
+//               gubCheatLevel++;
+//             } else {
+//               RESET_CHEAT_LEVEL();
+//             }
+// #endif
 
             if (CHEATER_CHEAT_LEVEL() && gusSelectedSoldier != NOBODY) {
               for (pSoldier = MercPtrs[gbPlayerNum], cnt = 0; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
@@ -2337,19 +2132,7 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
 
         case 'v':
           if (fAlt) {
-#ifdef JA2TESTVERSION
-            if (gfDoVideoScroll ^= TRUE)
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Video Scroll ON");
-            else
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Video Scroll OFF");
-#endif
           } else if (fCtrl) {
-#ifdef SGP_VIDEO_DEBUGGING
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VObjects:  %d", guiVObjectSize);
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VSurfaces:  %d", guiVSurfaceSize);
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"SGPVideoDump.txt updated...");
-            PerformVideoInfoDumpIntoFile("SGPVideoDump.txt", TRUE);
-#endif
           } else
             DisplayGameSettings();
 
@@ -2468,34 +2251,12 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
               else
                 MusicSetVolume(0);
             } else if (fCtrl) {
-#ifdef JA2TESTVERSION
-              gTacticalStatus.bRealtimeSpeed = max(1, gTacticalStatus.bRealtimeSpeed - 1);
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Decreasing Realtime speed to %d", gTacticalStatus.bRealtimeSpeed);
-#endif
             } else {
-#ifdef JA2TESTVERSION
-              ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Using Normal Scroll Speed");
-              gubCurScrollSpeedID = 1;
-#endif
             }
           }
           break;
         case '+':
 
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            if (MusicGetVolume() <= 107)
-              MusicSetVolume(MusicGetVolume() + 20);
-            else
-              MusicSetVolume(127);
-          } else if (fCtrl) {
-            gTacticalStatus.bRealtimeSpeed = min(MAX_REALTIME_SPEED_VAL, gTacticalStatus.bRealtimeSpeed + 1);
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Increasing Realtime speed to %d", gTacticalStatus.bRealtimeSpeed);
-          } else {
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Using Higher Scroll Speed");
-            gubCurScrollSpeedID = 2;
-          }
-#endif
           break;
         case '`':
 
@@ -2510,15 +2271,16 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
           break;
       }
 
-#ifdef GERMAN
-      if (!fGoodCheatLevelKey && gubCheatLevel < 5) {
-        RESET_CHEAT_LEVEL();
-      }
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//       if (!fGoodCheatLevelKey && gubCheatLevel < 5) {
+//         RESET_CHEAT_LEVEL();
+//       }
+// #else
       if (!fGoodCheatLevelKey && gubCheatLevel < 4) {
         RESET_CHEAT_LEVEL();
       }
-#endif
+// #endif
     }
   }
 }
@@ -2987,10 +2749,6 @@ void ObliterateSector() {
 
   // Kill everybody!
   cnt = gTacticalStatus.Team[gbPlayerNum].bLastID + 1;
-
-#ifdef JA2BETAVERSION
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Obliterating Sector!");
-#endif
 
   for (pTSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; pTSoldier++, cnt++) {
     if (pTSoldier->bActive && !pTSoldier->bNeutral && (pTSoldier->bSide != gbPlayerNum)) {
@@ -3600,9 +3358,7 @@ void TestMeanWhile(INT32 iID) {
     }
   }
 
-#ifndef JA2DEMO
   ScheduleMeanwhileEvent(&MeanwhileDef, 10);
-#endif
 }
 
 void EscapeUILock() {
@@ -3615,35 +3371,6 @@ void EscapeUILock() {
   guiPendingOverrideEvent = LU_ENDUILOCK;
   UIHandleLUIEndLock(NULL);
 }
-
-#ifdef JA2BETAVERSION
-void ToggleMapEdgepoints() {
-#ifdef JA2EDITOR
-  static BOOLEAN fToggleEdgepointDisplay = FALSE;
-  if (fToggleEdgepointDisplay ^= TRUE) {
-    // Show edgepoints
-    ShowMapEdgepoints();
-  } else {
-    // Hide edgepoints
-    HideMapEdgepoints();
-  }
-  SetRenderFlags(RENDER_FLAG_FULL);
-#endif
-}
-#endif
-
-#ifdef JA2BETAVERSION
-BOOLEAN gfMercsNeverQuit = FALSE;
-void ToggleMercsNeverQuit() {
-  if (gfMercsNeverQuit) {
-    gfMercsNeverQuit = FALSE;
-    ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Merc contract expiring enabled.");
-  } else {
-    gfMercsNeverQuit ^= TRUE;
-    ScreenMsg(FONT_RED, MSG_BETAVERSION, L"Merc contract expiring disabled.");
-  }
-}
-#endif
 
 void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight) {
   // If we have multiple guys selected, make all change stance!
@@ -3746,7 +3473,6 @@ void TestCapture() {
 }
 
 void PopupAssignmentMenuInTactical(SOLDIERTYPE *pSoldier) {
-#ifndef JA2DEMO
   // do something
   fShowAssignmentMenu = TRUE;
   CreateDestroyAssignmentPopUpBoxes();
@@ -3755,5 +3481,4 @@ void PopupAssignmentMenuInTactical(SOLDIERTYPE *pSoldier) {
   DetermineWhichAssignmentMenusCanBeShown();
   fFirstClickInAssignmentScreenMask = TRUE;
   gfIgnoreScrolling = TRUE;
-#endif
 }

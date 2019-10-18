@@ -1,6 +1,3 @@
-#ifndef __ENEMY_SOLDIER_SAVE_H
-#define __ENEMY_SOLDIER_SAVE_H
-
 // This funciton load both the enemies AND the civilians, now only used to load old saves
 BOOLEAN LoadEnemySoldiersFromTempFile();
 
@@ -15,5 +12,3 @@ BOOLEAN NewWayOfSavingEnemyAndCivliansToTempFile(INT16 sSectorX, INT16 sSectorY,
 BOOLEAN SaveEnemySoldiersToTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT8 ubFirstIdTeam, UINT8 ubLastIdTeam, BOOLEAN fAppendToFile);
 
 extern BOOLEAN gfRestoringEnemySoldiersFromTempFile;
-
-#endif

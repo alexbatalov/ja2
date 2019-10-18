@@ -457,29 +457,18 @@ void ScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
 
   if (ubPriority == MSG_DEBUG) {
     usColor = DEBUG_COLOR;
-#ifndef _DEBUG
     return;
-#endif
-#ifdef JA2DEMO
-    return;
-#endif
   }
 
   if (ubPriority == MSG_BETAVERSION) {
     usColor = BETAVERSION_COLOR;
-#ifndef JA2BETAVERSION
-#ifndef JA2TESTVERSION
     return;
-#endif
-#endif
   }
 
   if (ubPriority == MSG_TESTVERSION) {
     usColor = TESTVERSION_COLOR;
 
-#ifndef JA2TESTVERSION
     return;
-#endif
   }
 
   va_start(argptr, pStringA);
@@ -567,20 +556,14 @@ void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
 
   if (ubPriority == MSG_BETAVERSION) {
     usColor = BETAVERSION_COLOR;
-#ifndef JA2BETAVERSION
-#ifndef JA2TESTVERSION
     return;
-#endif
-#endif
     WriteMessageToFile(DestString);
   }
 
   if (ubPriority == MSG_TESTVERSION) {
     usColor = TESTVERSION_COLOR;
 
-#ifndef JA2TESTVERSION
     return;
-#endif
 
     WriteMessageToFile(DestString);
   }
@@ -602,12 +585,7 @@ void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
   va_end(argptr);
 
   if (ubPriority == MSG_DEBUG) {
-#ifndef _DEBUG
     return;
-#endif
-#ifdef JA2DEMO
-    return;
-#endif
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
     swprintf(DestString, L"Debug: %s", DestStringA);
@@ -698,11 +676,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
 
   if (ubPriority == MSG_BETAVERSION) {
     usColor = BETAVERSION_COLOR;
-#ifndef JA2BETAVERSION
-#ifndef JA2TESTVERSION
     return;
-#endif
-#endif
 
     WriteMessageToFile(DestString);
   }
@@ -710,9 +684,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
   if (ubPriority == MSG_TESTVERSION) {
     usColor = TESTVERSION_COLOR;
 
-#ifndef JA2TESTVERSION
     return;
-#endif
     WriteMessageToFile(DestString);
   }
   // OK, check if we are ani imeediate feedback message, if so, do something else!
@@ -775,12 +747,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
   va_end(argptr);
 
   if (ubPriority == MSG_DEBUG) {
-#ifndef _DEBUG
     return;
-#endif
-#ifdef JA2DEMO
-    return;
-#endif
     usColor = DEBUG_COLOR;
     wcscpy(DestStringA, DestString);
     swprintf(DestString, L"Debug: %s", DestStringA);
@@ -1161,20 +1128,6 @@ void ClearTacticalMessageQueue(void) {
 }
 
 void WriteMessageToFile(STR16 pString) {
-#ifdef JA2BETAVERSION
-
-  FILE *fp;
-
-  fp = fopen("DebugMessage.txt", "a");
-
-  if (fp == NULL) {
-    return;
-  }
-
-  fprintf(fp, "%S\n", pString);
-  fclose(fp);
-
-#endif
 }
 
 void InitGlobalMessageList(void) {

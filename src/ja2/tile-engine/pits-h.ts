@@ -1,6 +1,3 @@
-#ifndef __PITS_H
-#define __PITS_H
-
 void Add3X3Pit(INT32 iMapIndex);
 void Add5X5Pit(INT32 iMapIndex);
 void Remove3X3Pit(INT32 iMapIndex);
@@ -15,5 +12,3 @@ BOOLEAN gfShowPits;
 BOOLEAN gfLoadPitsWithoutArming;
 
 void HandleFallIntoPitFromAnimation(UINT8 ubID);
-
-#endif

@@ -57,11 +57,7 @@ CHAR8 *cWAVChunks[3] = {
 // global settings
 #define SOUND_MAX_CACHED 128 // number of cache slots
 
-#ifdef JA2
 #define SOUND_MAX_CHANNELS 16 // number of mixer channels
-#else
-#define SOUND_MAX_CHANNELS 32 // number of mixer channels
-#endif
 
 #define SOUND_DEFAULT_MEMORY (8048 * 1024) // default memory limit
 #define SOUND_DEFAULT_THRESH (256 * 8024) // size for sample to be double-buffered
@@ -186,10 +182,8 @@ BOOLEAN InitializeSoundManager(void) {
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
     memset(&pSoundList[uiCount], 0, sizeof(SOUNDTAG));
 
-#ifndef SOUND_DISABLE
   if (gfEnableStartup && SoundInitHardware())
     fSoundSystemInit = TRUE;
-#endif
 
   SoundInitCache();
 

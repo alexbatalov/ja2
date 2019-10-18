@@ -7,10 +7,6 @@ INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
     bAction = DecideAction(pSoldier);
   }
 
-#ifdef DEBUGDECISIONS
-  DebugAI(String("DecideAction: selected action %d, actionData %d\n\n", action, pSoldier->usActionData));
-#endif
-
   return bAction;
 }
 
@@ -55,16 +51,9 @@ UINT16 RealtimeDelay(SOLDIERTYPE *pSoldier) {
 }
 
 void RTHandleAI(SOLDIERTYPE *pSoldier) {
-#ifdef AI_PROFILING
-  INT32 iLoop;
-#endif
-
   if ((pSoldier->bAction != AI_ACTION_NONE) && pSoldier->bActionInProgress) {
     // if action should remain in progress
     if (ActionInProgress(pSoldier)) {
-#ifdef DEBUGBUSY
-      AINumMessage("Busy with action, skipping guy#", pSoldier->ubID);
-#endif
       // let it continue
       return;
     }
@@ -98,9 +87,6 @@ void RTHandleAI(SOLDIERTYPE *pSoldier) {
     pSoldier->bPathStored = FALSE;
 
     // decide on the next action
-#ifdef AI_PROFILING
-    for (iLoop = 0; iLoop < 1000; iLoop++)
-#endif
     {
       if (pSoldier->bNextAction != AI_ACTION_NONE) {
         if (pSoldier->bNextAction == AI_ACTION_END_COWER_AND_MOVE) {
@@ -150,10 +136,6 @@ void RTHandleAI(SOLDIERTYPE *pSoldier) {
     }
     // if he chose to continue doing nothing
     if (pSoldier->bAction == AI_ACTION_NONE) {
-#ifdef RECORDNET
-      fprintf(NetDebugFile, "\tMOVED BECOMING TRUE: Chose to do nothing, guynum %d\n", pSoldier->ubID);
-#endif
-
       // do a standard wait before doing anything else!
       pSoldier->bAction = AI_ACTION_WAIT;
       // if (PTR_CIVILIAN && pSoldier->bAlertStatus != STATUS_BLACK)

@@ -1,6 +1,3 @@
-#ifndef _TopicOps_h
-#define _TopicOps_h
-
 // debug levels
 
 #define DBG_LEVEL_0 0 // for registering and unregistering topics only
@@ -21,5 +18,3 @@
 #define SYSTEM_SHUTDOWN 0
 #define MODULE_RESET 1
 #define SET_DEBUG_LEVEL 2
-
-#endif

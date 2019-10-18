@@ -1,5 +1,3 @@
-#if defined(ENGLISH) || defined(TAIWANESE)
-
 /*
 
 ******************************************************************************************************
@@ -2934,20 +2932,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Save version has changed.  Please report if there any problems.  Continue?",
-#else
   L"Attempting to load an older version save.  Automatically update and load the save?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Save version and game version have changed.  Please report if there are any problems.  Continue?",
-#else
   L"Attempting to load an older version save.  Automatically update and load the save?",
-#endif
 
   L"Are you sure you want to overwrite the saved game in slot #%d?",
   L"Do you want to load the game from slot #",
@@ -3016,71 +3006,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s needs a loyalty of %d percent for you to be able to continue training militia.",
   L"You cannot train the militia in %s any further.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"THE BEST OF STRATEGY.",
-  L"THE BEST OF ROLE-PLAYING.",
-  L"Totally nonlinear gameplay",
-  L"Vast new story",
-  L"Blistering firefights",
-  L"Dynamic lighting",
-  L"NPC interaction",
-  L"Stealth and night tactics",
-  L"Create a custom merc",
-  L"Challenging and creative quests",
-  L"Controllable vehicles",
-  // 10-19
-  L"Over 150 personalities",
-  L"Hundreds of cool items",
-  L"Over 250 unique locations",
-  L"Awesome explosions",
-  L"New tactical maneuvers",
-  L"Tons of animation",
-  L"Over 9000 lines of dialogue",
-  L"Amazing musical score by Kevin Manthei",
-  L"Global strategy",
-  L"Battle through air strikes",
-  // 20-29
-  L"Train your own militia",
-  L"Customizable gameplay",
-  L"Realistic line-of-sight",
-  L"Spectacular high-color graphics",
-  L"Buy, sell, and trade",
-  L"Ruthless enemy AI",
-  L"State of the art tactical combat",
-  L"Optional Sci-Fi element",
-  L"24 hour clock",
-  L"Well over 60 hours of gameplay",
-  // 30-34
-  L"Multiple difficulty settings",
-  L"Realistic ballistics modeling",
-  L"Genuine physics engine",
-  L"Fully interactive environment",
-  L"And much more...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"One of 1998's most imaginative games\"",
-  L"PC Gamer",
-  L"Place your order at WWW.JAGGEDALLIANCE2.COM today!",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"You're about to get a taste of the best of strategy, the best of role-playing, and the best of tactical combat:",
-  // Point 1 (uses one string)
-  L"Control a team of mercs rich with personality           (no boring expendable units here).",
-  // Point 2 (uses one string)
-  L"Check out the cool array of tactical maneuvers, from running to crawling, climbing to jumping, hand to hand combat and more.",
-  // Point 3 (uses one string)
-  L"Play with fire!  Cool toys, killer weapons, awesome explosions.",
-  // Additional comment
-  L"(and this is just the beginning)",
-  // Introduction/instructions
-  L"Welcome to Demoville... (press a key to continue)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3297,10 +3222,6 @@ STR16 pMessageStrings[] = {
   L"This slot is reserved for Quick Saves made from the tactical and map screens using ALT+S.",
   L"Opened",
   L"Closed",
-#ifdef JA2DEMO
-  L"You're all done down here. Maybe you should go see Gabby.",
-  L"Too bad you killed him.",
-#endif
   L"You are running low on disk space.  You only have %sMB free and Jagged Alliance 2 requires %sMB.",
   L"Hired %s from AIM",
   L"%s has caught %s.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3351,17 +3272,6 @@ STR16 pMessageStrings[] = {
   L"Entering basement level %d...",
   L"Leaving basement...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"In the full game, you'll be able to separate\nyour team, but not in the demo.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Overhead map disabled for Demo.",
-
-#endif
-
   L"'s", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Follow mode OFF.",
   L"Follow mode ON.",
@@ -3376,9 +3286,6 @@ STR16 pMessageStrings[] = {
   L"A package has arrived in Drassen.",
   L"%s should arrive at the designated drop-off point (sector %s) on day %d, at approximately %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
   L"History log updated.",
-#ifdef JA2BETAVERSION
-  L"Successfully Saved the Game into the End Turn Auto Save slot.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3710,5 +3617,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"%s's ceramic plates have been smashed!",
 };
-
-#endif // ENGLISH

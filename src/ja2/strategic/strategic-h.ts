@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_H
-#define __STRATEGIC_H
-
 struct strategicmapelement {
   UINT8 UNUSEDuiFootEta[4]; // eta/mvt costs for feet
   UINT8 UNUSEDuiVehicleEta[4]; // eta/mvt costs for vehicles
@@ -38,5 +35,3 @@ BOOLEAN InitStrategicEngine();
 void HandleSoldierDeadComments(SOLDIERTYPE *pSoldier);
 
 BOOLEAN HandleStrategicDeath(SOLDIERTYPE *pSoldier);
-
-#endif

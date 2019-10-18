@@ -1,100 +1,3 @@
-#ifdef JA2TESTVERSION
-
-UINT16 gEventName[NUMBER_OF_EVENT_TYPES_PLUS_ONE][40] = {
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"Null",
-  L"ChangeLightValue",
-  L"WeatherStart",
-  L"WeatherEnd",
-  L"CheckForQuests",
-  L"Ambient",
-  L"AIMResetMercAnnoyance",
-  L"BobbyRayPurchase",
-  L"DailyUpdateBobbyRayInventory",
-  L"UpdateBobbyRayInventory",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"DailyUpdateOfMercSite",
-  L"Day3AddEMailFromSpeck",
-  L"DelayedHiringOfMerc",
-  L"HandleInsuredMercs",
-  L"PayLifeInsuranceForDeadMerc",
-  L"MercDailyUpdate",
-  L"MercAboutToLeaveComment",
-  L"MercContractOver",
-  L"GroupArrival",
-  L"Day2AddEMailFromIMP",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"MercComplainEquipment",
-  L"HourlyUpdate",
-  L"HandleMineIncome",
-  L"SetupMineIncome",
-  L"QueuedBattle",
-  L"LeavingMercArriveInDrassen",
-  L"LeavingMercArriveInOmerta",
-  L"SetByNPCSystem",
-  L"SecondAirportAttendantArrived",
-  L"HelicopterHoverTooLong",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"HelicopterHoverWayTooLong",
-  L"HelicopterDoneRefuelling",
-  L"MercLeaveEquipInOmerta",
-  L"MercLeaveEquipInDrassen",
-  L"DailyEarlyMorningEvents",
-  L"GroupAboutToArrive",
-  L"ProcessTacticalSchedule",
-  L"BeginRainStorm",
-  L"EndRainStorm",
-  L"HandleTownOpinion",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"SetupTownOpinion",
-  L"DelayedDeathHandling",
-  L"BeginAirRaid",
-  L"TownLoyaltyUpdate",
-  L"Meanwhile",
-  L"BeginCreatureQuest",
-  L"CreatureSpread",
-  L"DecayCreatures",
-  L"CreatureNightPlanning",
-  L"CreatureAttack",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"EvaluateQueenSituation",
-  L"CheckEnemyControlledSector",
-  L"TurnOnNightLights",
-  L"TurnOffNightLights",
-  L"TurnOnPrimeLights",
-  L"TurnOffPrimeLights",
-  L"MercAboutToLeaveComment",
-  L"ForceTimeInterupt",
-  L"EnricoEmailEvent",
-  L"InsuranceInvestigationStarted",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"InsuranceInvestigationOver",
-  L"HandleMinuteUpdate",
-  L"TemperatureUpdate",
-  L"Keith going out of business",
-  L"MERC site back online",
-  L"Investigate Sector",
-  L"CheckIfMineCleared",
-  L"RemoveAssassin",
-  L"BandageBleedingMercs",
-  L"ShowUpdateMenu",
-  // 1234567890123456789012345678901234567890 (increase size of array if necessary)
-  L"SetMenuReason",
-  L"AddSoldierToUpdateBox",
-  L"BeginContractRenewalSequence",
-  L"RPC_WHINE_ABOUT_PAY",
-  L"HaventMadeImpCharacterEmail",
-  L"Rainstorm",
-  L"Quarter Hour Update",
-  L"MERC Merc went up level email delay",
-  L".",
-#ifdef CRIPPLED_VERSION
-  L"Crippled version end game check",
-#endif
-};
-
-#endif
-
 void ValidateGameEvents();
 
 STRATEGICEVENT *gpEventList = NULL;
@@ -110,11 +13,6 @@ UINT32 guiTimeStampOfCurrentlyExecutingEvent = 0;
 // Determines if there are any events that will be processed between the current global time,
 // and the beginning of the next global time.
 BOOLEAN GameEventsPending(UINT32 uiAdjustment) {
-#ifdef CRIPPLED_VERSION
-  if (guiDay >= 8) {
-    return FALSE;
-  }
-#endif
   if (!gpEventList)
     return FALSE;
   if (gpEventList->uiTimeStamp <= GetWorldTotalSeconds() + uiAdjustment)
@@ -172,16 +70,6 @@ void AdjustClockToEventStamp(STRATEGICEVENT *pEvent, UINT32 *puiAdjustment) {
   guiHour = (guiGameClock - (guiDay * NUM_SEC_IN_DAY)) / NUM_SEC_IN_HOUR;
   guiMin = (guiGameClock - ((guiDay * NUM_SEC_IN_DAY) + (guiHour * NUM_SEC_IN_HOUR))) / NUM_SEC_IN_MIN;
 
-#ifdef CRIPPLED_VERSION
-  if (guiDay >= 8) {
-    guiDay = 8;
-    guiHour = 0;
-    guiMin = 0;
-    return;
-  }
-
-#endif
-
   swprintf(WORLDTIMESTR, L"%s %d, %02d:%02d", gpGameClockString[STR_GAMECLOCK_DAY_NAME], guiDay, guiHour, guiMin);
 }
 
@@ -190,12 +78,6 @@ void AdjustClockToEventStamp(STRATEGICEVENT *pEvent, UINT32 *puiAdjustment) {
 void ProcessPendingGameEvents(UINT32 uiAdjustment, UINT8 ubWarpCode) {
   STRATEGICEVENT *curr, *pEvent, *prev, *temp;
   BOOLEAN fDeleteEvent = FALSE, fDeleteQueuedEvent = FALSE;
-
-#ifdef CRIPPLED_VERSION
-  if (guiDay >= 8) {
-    return;
-  }
-#endif
 
   gfTimeInterrupt = FALSE;
   gfProcessingGameEvents = TRUE;
@@ -310,14 +192,6 @@ STRATEGICEVENT *AddAdvancedStrategicEvent(UINT8 ubEventType, UINT8 ubCallbackID,
   if (gfProcessingGameEvents && uiTimeStamp <= guiTimeStampOfCurrentlyExecutingEvent) {
     // Prevents infinite loops of posting events that are the same time or earlier than the event
 // currently being processed.
-#ifdef JA2TESTVERSION
-                                                                                        // if( ubCallbackID == EVENT_PROCESS_TACTICAL_SCHEDULE )
-    { ScreenMsg(FONT_RED, MSG_DEBUG, L"%s Event Rejected:  Can't post events <= time while inside an event callback.  This is a special case situation that isn't a bug.", gEventName[ubCallbackID]); }
-    // else
-    //{
-    //	AssertMsg( 0, String( "%S Event Rejected:  Can't post events <= time while inside an event callback.", gEventName[ ubCallbackID ] ) );
-    //}
-#endif
     return NULL;
   }
 

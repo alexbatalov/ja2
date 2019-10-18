@@ -42,10 +42,6 @@ BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
   FakeSoldier.bLevel = 1;
   FakeSoldier.bTeam = 1;
 
-#ifdef ROOF_DEBUG
-  memset(gsCoverValue, 0x7F, sizeof(INT16) * WORLD_MAX);
-#endif
-
   // Set reachable
   RoofReachableTest(sDesiredSpot, ubBuildingID);
 
@@ -135,16 +131,6 @@ BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
     sCurrGridNo = sTempGridNo;
     sRightGridNo = NewGridNo(sCurrGridNo, DirectionInc(gTwoCDirection[bDirection]));
 
-#ifdef ROOF_DEBUG
-    if (gsCoverValue[sCurrGridNo] == 0x7F7F) {
-      gsCoverValue[sCurrGridNo] = 1;
-    } else if (gsCoverValue[sCurrGridNo] >= 0) {
-      gsCoverValue[sCurrGridNo]++;
-    }
-
-    DebugAI(String("Roof code visits %d", sCurrGridNo));
-#endif
-
     if (sCurrGridNo == sStartGridNo) {
       // done
       break;
@@ -210,9 +196,6 @@ BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
 
             // if location is added as a spot, reset uiChanceIn
             uiChanceIn = ROOF_LOCATION_CHANCE;
-#ifdef ROOF_DEBUG
-            gsCoverValue[sCurrGridNo] = 99;
-#endif
             // skip the next spot
             bSkipSpots = 1;
           } else {
@@ -235,10 +218,6 @@ BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
             pBuilding->ubNumClimbSpots--;
             // overwrote a selected spot so go into automatic selection for later
             uiChanceIn = 1;
-#ifdef ROOF_DEBUG
-            // reset marker
-            gsCoverValue[sPrevGridNo] = 1;
-#endif
           }
         }
 

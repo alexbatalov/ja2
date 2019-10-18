@@ -1,6 +1,3 @@
-#ifndef __QUEEN_COMMAND_H
-#define __QUEEN_COMMAND_H
-
 extern BOOLEAN gfPendingEnemies;
 
 UINT8 NumFreeEnemySlots();
@@ -45,5 +42,3 @@ BOOLEAN PlayerSectorDefended(UINT8 ubSectorID);
 BOOLEAN OnlyHostileCivsInSector();
 
 extern INT16 gsInterrogationGridNo[3];
-
-#endif

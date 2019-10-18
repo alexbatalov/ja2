@@ -1,7 +1,6 @@
 void SpecifyButtonSoundScheme(INT32 iButtonID, INT8 bSoundScheme) {
   ButtonList[iButtonID]->ubSoundSchemeID = (UINT8)bSoundScheme;
   if (bSoundScheme == BUTTON_SOUND_SCHEME_GENERIC) {
-#ifdef JA2
     switch (guiCurrentScreen) {
       case MAINMENU_SCREEN:
       case OPTIONS_SCREEN:
@@ -37,7 +36,6 @@ void SpecifyButtonSoundScheme(INT32 iButtonID, INT8 bSoundScheme) {
         // DEBUG_SCREEN,
         // SEX_SCREEN,
     }
-#endif
     if (bSoundScheme == BUTTON_SOUND_SCHEME_GENERIC)
       bSoundScheme = BUTTON_SOUND_SCHEME_NONE;
   }
@@ -52,8 +50,6 @@ void PlayButtonSound(INT32 iButtonID, INT32 iSoundType) {
     case BUTTON_SOUND_SCHEME_NONE:
     case BUTTON_SOUND_SCHEME_GENERIC:
       break;
-
-#ifdef JA2
 
     case BUTTON_SOUND_SCHEME_VERYSMALLSWITCH1:
       switch (iSoundType) {
@@ -159,7 +155,5 @@ void PlayButtonSound(INT32 iButtonID, INT32 iSoundType) {
           break;
       }
       break;
-
-#endif
   }
 }

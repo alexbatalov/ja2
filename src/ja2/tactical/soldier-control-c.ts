@@ -185,12 +185,6 @@ INT32 CheckBleeding(SOLDIERTYPE *pSoldier);
 
 void EVENT_InternalSetSoldierDesiredDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection, BOOLEAN fInitalMove, UINT16 usAnimState);
 
-#ifdef JA2BETAVERSION
-extern void ValidatePlayersAreInOneGroupOnly();
-extern void MapScreenDefaultOkBoxCallback(UINT8 bExitValue);
-void SAIReportError(STR16 wErrorString);
-#endif
-
 UINT32 SleepDartSuccumbChance(SOLDIERTYPE *pSoldier);
 
 void EnableDisableSoldierLightEffects(BOOLEAN fEnableLights);
@@ -7825,10 +7819,6 @@ void SoldierCollapse(SOLDIERTYPE *pSoldier) {
     }
 
     if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && (pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
-#ifdef TESTAICONTROL
-      DebugAI(String("Ending turn for %d because of error from HandleItem", pSoldier->ubID));
-#endif
-
       EndAIGuysTurn(pSoldier);
     }
   }
@@ -8737,71 +8727,6 @@ void CrowsFlyAway(UINT8 ubTeam) {
     }
   }
 }
-
-#ifdef JA2BETAVERSION
-void DebugValidateSoldierData() {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  CHAR16 sString[1024];
-  BOOLEAN fProblemDetected = FALSE;
-  static uiFrameCount = 0;
-
-  // this function is too slow to run every frame, so do the check only every 50 frames
-  if (uiFrameCount++ < 50) {
-    return;
-  }
-
-  // reset frame counter
-  uiFrameCount = 0;
-
-  // Loop through our team...
-  cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
-    if (pSoldier->bActive) {
-      // OK, first check for alive people
-      // Don't do this check if we are a vehicle...
-      if (pSoldier->bLife > 0 && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
-        // Alive -- now check for proper group IDs
-        if (pSoldier->ubGroupID == 0 && pSoldier->bAssignment != IN_TRANSIT && pSoldier->bAssignment != ASSIGNMENT_POW && !(pSoldier->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER))) {
-          // This is bad!
-          swprintf(sString, L"Soldier Data Error: Soldier %d is alive but has a zero group ID.", cnt);
-          fProblemDetected = TRUE;
-        } else if ((pSoldier->ubGroupID != 0) && (GetGroup(pSoldier->ubGroupID) == NULL)) {
-          // This is bad!
-          swprintf(sString, L"Soldier Data Error: Soldier %d has an invalid group ID of %d.", cnt, pSoldier->ubGroupID);
-          fProblemDetected = TRUE;
-        }
-      } else {
-        if (pSoldier->ubGroupID != 0 && (pSoldier->uiStatusFlags & SOLDIER_DEAD)) {
-          // Dead guys should have 0 group IDs
-          // swprintf( sString, L"GroupID Error: Soldier %d is dead but has a non-zero group ID.", cnt );
-          // fProblemDetected = TRUE;
-        }
-      }
-
-      // check for invalid sector data
-      if ((pSoldier->bAssignment != IN_TRANSIT) && ((pSoldier->sSectorX <= 0) || (pSoldier->sSectorX >= 17) || (pSoldier->sSectorY <= 0) || (pSoldier->sSectorY >= 17) || (pSoldier->bSectorZ < 0) || (pSoldier->bSectorZ > 3))) {
-        swprintf(sString, L"Soldier Data Error: Soldier %d is located at %d/%d/%d.", cnt, pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ);
-        fProblemDetected = TRUE;
-      }
-    }
-
-    if (fProblemDetected) {
-      SAIReportError(sString);
-      /*
-                              if ( guiCurrentScreen == MAP_SCREEN )
-                                      DoMapMessageBox( MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback );
-                              else
-                                      DoMessageBox( MSG_BOX_BASIC_STYLE, sString, GAME_SCREEN, ( UINT8 )MSG_BOX_FLAG_OK, NULL, NULL );
-      */
-      break;
-    }
-  }
-
-  // also do this
-  ValidatePlayersAreInOneGroupOnly();
-}
-#endif
 
 void BeginTyingToFall(SOLDIERTYPE *pSoldier) {
   pSoldier->bStartFallDir = pSoldier->bDirection;

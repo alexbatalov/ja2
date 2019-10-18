@@ -1,6 +1,3 @@
-#ifndef __AIMSORT_H_
-#define __AIMSORT_H_
-
 UINT8 gubCurrentSortMode;
 UINT8 gubCurrentListMode;
 
@@ -12,5 +9,3 @@ BOOLEAN EnterAimSort();
 void ExitAimSort();
 void HandleAimSort();
 void RenderAimSort();
-
-#endif

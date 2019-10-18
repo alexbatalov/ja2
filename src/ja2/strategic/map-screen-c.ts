@@ -226,10 +226,6 @@ enum {
   MAP_EVENT_CLICK_SECTOR,
   MAP_EVENT_PLOT_PATH,
   MAP_EVENT_CANCEL_PATH,
-
-#ifdef JA2BETAVERSION
-  MAP_EVENT_VIEWAI,
-#endif
 };
 
 // STRUCTURES / TYPEDEFS
@@ -572,11 +568,6 @@ extern CHAR16 gzUserDefinedButton2[128];
 
 extern BOOLEAN gfMilitiaPopupCreated;
 
-#ifdef JA2TESTVERSION
-extern INT16 MSYS_CurrentMX;
-extern INT16 MSYS_CurrentMY;
-#endif
-
 // PROTOTYPES
 
 // basic input
@@ -877,17 +868,6 @@ void MapscreenMarkButtonsDirty();
 extern BOOLEAN CanRedistributeMilitiaInSector(INT16 sClickedSectorX, INT16 sClickedSectorY, INT8 bClickedTownId);
 
 extern INT32 GetNumberOfMercsInUpdateList(void);
-
-#ifdef JA2TESTVERSION
-void TestDumpStatChanges(void);
-void DumpSectorDifficultyInfo(void);
-void DumpItemsList(void);
-#endif
-
-#ifdef JA2DEMO
-// void MapScreenDemoOkBoxCallback( UINT8 bExitValue );
-void DisplayExitToTacticalGlowDuringDemo(void);
-#endif
 
 // the tries to select a mapscreen character by his soldier ID
 BOOLEAN SetInfoChar(UINT8 ubID) {
@@ -2571,20 +2551,16 @@ UINT32 MapScreenHandle(void) {
       vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
       // Grab the Map image
 
-#ifndef JA2DEMO
       strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
       CHECKF(AddVideoSurface(&vs_desc, &guiBIGMAP));
-#endif
 
       strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
       CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
 
-#ifndef JA2DEMO
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\SAM.sti", VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &guiSAMICON));
 
-#endif
       // VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       // FilenameForBPP("INTERFACE\\s_map.sti", VObjectDesc.ImageFile);
       // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
@@ -2592,7 +2568,6 @@ UINT32 MapScreenHandle(void) {
       FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &guiMAPCURSORS));
 
-#ifndef JA2DEMO
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Mine_1.sti", VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel1));
@@ -2604,7 +2579,6 @@ UINT32 MapScreenHandle(void) {
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Mine_3.sti", VObjectDesc.ImageFile);
       CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel3));
-#endif
       // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
       // FilenameForBPP("INTERFACE\\addonslcp.sti", VObjectDesc.ImageFile);
       // CHECKF(AddVideoObject(&VObjectDesc, &guiCORNERADDONS));
@@ -3194,23 +3168,6 @@ UINT32 MapScreenHandle(void) {
   // render clock
   RenderClock(CLOCK_X, CLOCK_Y + 1);
 
-#ifdef JA2TESTVERSION
-  if (!gfWorldLoaded) {
-    SetFont(FONT10ARIAL);
-    if (GetJA2Clock() % 1000 < 500)
-      SetFontForeground(FONT_DKRED);
-    else
-      SetFontForeground(FONT_RED);
-    mprintf(530, 2, L"TESTVERSION MSG");
-    if (GetJA2Clock() % 1000 < 500)
-      SetFontForeground(FONT_DKYELLOW);
-    else
-      SetFontForeground(FONT_YELLOW);
-    mprintf(530, 12, L"NO WORLD LOADED");
-    InvalidateRegion(530, 2, 640, 23);
-  }
-#endif
-
   if (fEndShowInventoryFlag == TRUE) {
     if (InKeyRingPopup() == TRUE) {
       DeleteKeyRingPopup();
@@ -3314,10 +3271,6 @@ UINT32 MapScreenHandle(void) {
     GlowItem();
   }
 
-#ifdef JA2DEMO
-  DisplayExitToTacticalGlowDuringDemo();
-#endif
-
   if (fShowMapScreenHelpText) {
     // display map screen fast help
     DisplayMapScreenFastHelpList();
@@ -3377,10 +3330,6 @@ UINT32 MapScreenHandle(void) {
     gfHotKeyEnterSector = FALSE;
     ActivatePreBattleEnterSectorAction();
   }
-
-#ifdef JA2BETAVERSION
-  DebugValidateSoldierData();
-#endif
 
   if (gfRequestGiveSkyriderNewDestination) {
     RequestGiveSkyriderNewDestination();
@@ -4019,14 +3968,6 @@ UINT32 HandleMapUI() {
         }
       }
       break;
-
-// Kris -- added hook so I can access AIView in non-release mode.
-#ifdef JA2BETAVERSION
-    case MAP_EVENT_VIEWAI:
-      SetPendingNewScreen(AIVIEWER_SCREEN);
-      CreateDestroyMapInvButton();
-      break;
-#endif
   }
 
   // if we pressed something that will cause a screen change
@@ -4044,9 +3985,7 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
   UINT8 ubGroupId = 0;
   BOOLEAN fCtrl, fAlt;
 
-#ifndef JA2DEMO
   INT16 sMapX, sMapY;
-#endif
 
   fCtrl = _KeyDown(CTRL);
   fAlt = _KeyDown(ALT);
@@ -4106,11 +4045,6 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
             gpBattleGroup = NULL;
             return;
           }
-
-#ifdef JA2DEMO
-          HandleLeavingOfMapScreenDuringDemo();
-          return;
-#else
 
           if (gfInChangeArrivalSectorMode) {
             CancelChangeArrivalSectorMode();
@@ -4265,57 +4199,15 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           break;
 
         case F7:
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            if (bSelectedInfoChar != -1) {
-              SOLDIERTYPE *pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
-              if (pSoldier->inv[HANDPOS].usItem != 0) {
-                pSoldier->inv[HANDPOS].bStatus[0] = 2;
-              }
-            }
-          }
-          if (fCtrl) {
-            if (bSelectedInfoChar != -1) {
-              SOLDIERTYPE *pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
-              if (pSoldier->inv[HANDPOS].usItem != 0) {
-                pSoldier->inv[HANDPOS].usItem = GUN_BARREL_EXTENDER;
-              }
-            }
-          }
-#endif
           break;
 
         case F8:
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            // reduce balance to $500
-            AddTransactionToPlayersBook(PAYMENT_TO_NPC, SKYRIDER, GetWorldTotalMin(), -(LaptopSaveInfo.iCurrentBalance - 500));
-          }
-#endif
           break;
 
         case F9:
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            UINT8 ubSamIndex;
-
-            // ALT-F9: Reveal all SAM sites
-            for (ubSamIndex = 0; ubSamIndex < NUMBER_OF_SAM_SITES; ubSamIndex++) {
-              SetSAMSiteAsFound(ubSamIndex);
-            }
-          }
-#endif
           break;
 
         case F10:
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            if (bSelectedInfoChar != -1) {
-              // ALT-F10: force selected character asleep (ignores breathmax)
-              PutMercInAsleepState(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID]);
-            }
-          }
-#endif
           break;
 
           /*
@@ -4332,9 +4224,6 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           */
 
         case F12:
-#ifdef JA2BETAVERSION
-          *puiNewEvent = MAP_EVENT_VIEWAI;
-#endif
           break;
 
         case '+':
@@ -4360,48 +4249,18 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           break;
 
         case '`':
-#ifdef JA2TESTVERSION
-          if (fCtrl) {
-            if (bSelectedInfoChar != -1) {
-              TownMilitiaTrainingCompleted(&Menptr[gCharactersList[bSelectedInfoChar].usSolID], sSelMapX, sSelMapY);
-            }
-          }
-#endif
           break;
 
         case '\\':
-#ifdef JA2TESTVERSION
-          if (fCtrl) {
-            DumpItemsList();
-          }
-#endif
           break;
 
         case '>':
-#ifdef JA2TESTVERSION
-          if (fCtrl) {
-            // free
-          }
-#endif
           break;
 
         case '?':
-#ifdef JA2TESTVERSION
-          if (fCtrl)
-            MapScreenMessage(0, MSG_DEBUG, L"JA2Clock = %d", GetJA2Clock());
-          else
-            MapScreenMessage(0, MSG_DEBUG, L"Mouse X,Y = %d,%d", MSYS_CurrentMX, MSYS_CurrentMY);
-#endif
           break;
 
         case '/':
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            if (bSelectedInfoChar != -1) {
-              StatChange(&Menptr[gCharactersList[bSelectedInfoChar].usSolID], EXPERAMT, 1000, FROM_SUCCESS);
-            }
-          }
-#endif
           break;
 
         case '1':
@@ -4512,12 +4371,6 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           break;
 
         case 'd':
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            // prints out a text file in C:\TEMP telling you how many stat change chances/successes each profile merc got
-            TestDumpStatChanges();
-          }
-#endif
           break;
 
         case 'e':
@@ -4527,21 +4380,6 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           }
           break;
         case 'f':
-#ifdef JA2TESTVERSION
-          // CTRL-F: Refuel vehicle
-          if ((fCtrl) && (bSelectedInfoChar != -1)) {
-            SOLDIERTYPE *pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
-
-            if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
-              pSoldier->sBreathRed = 10000;
-              pSoldier->bBreath = 100;
-              ScreenMsg(FONT_MCOLOR_RED, MSG_TESTVERSION, L"Vehicle refueled");
-
-              fTeamPanelDirty = TRUE;
-              fCharacterInfoPanelDirty = TRUE;
-            }
-          }
-#endif
           if (fAlt) {
             if (INFORMATION_CHEAT_LEVEL()) {
               // Toggle Frame Rate Display
@@ -4550,19 +4388,7 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
             }
           }
           break;
-#endif
         case 'h':
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            // set up the helicopter over Omerta (if it's not already set up)
-            SetUpHelicopterForPlayer(9, 1);
-            // raise Drassen loyalty to minimum that will allow Skyrider to fly
-            if (gTownLoyalty[DRASSEN].fStarted && (gTownLoyalty[DRASSEN].ubRating < LOYALTY_LOW_THRESHOLD)) {
-              SetTownLoyalty(DRASSEN, LOYALTY_LOW_THRESHOLD);
-            }
-            TurnOnAirSpaceMode();
-          } else
-#endif
           {
             // ARM: Feb01/98 - Cancel out of mapscreen movement plotting if Help subscreen is coming up
             if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
@@ -4575,31 +4401,11 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           //					fShowMapScreenHelpText = TRUE;
           break;
 
-#ifndef JA2DEMO
         case 'i':
-#ifdef JA2TESTVERSION
-          /*
-                                                          if( fAlt )
-                                                          {
-                                                                  InitializeMines();
-                                                                  fMapPanelDirty = TRUE;
-                                                          }
-                                                          else
-          */
-          if (fCtrl) {
-            fDisableJustForIan = !fDisableJustForIan;
-          } else {
-            // only handle border button keyboard equivalents if the button is visible!
-            if (!fShowMapInventoryPool) {
-              ToggleItemsFilter();
-            }
-          }
-#else
           // only handle border button keyboard equivalents if the button is visible!
           if (!fShowMapInventoryPool) {
             ToggleItemsFilter();
           }
-#endif
 
           break;
         case 'l':
@@ -4626,30 +4432,10 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
 
           break;
         case 'n':
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            static UINT16 gQuoteNum = 0;
-            // Get Soldier
-            TacticalCharacterDialogue(MercPtrs[gCharactersList[bSelectedInfoChar].usSolID], gQuoteNum);
-            gQuoteNum++;
-          } else if (fCtrl) {
-            static UINT16 gQuoteNum = 0;
-            // Get Soldier
-            if (giHighLine != -1) {
-              TacticalCharacterDialogue(MercPtrs[gCharactersList[giHighLine].usSolID], gQuoteNum);
-              gQuoteNum++;
-            }
-          }
-#endif
           break;
         case 'o':
           if (fAlt) {
             // toggle if Orta & Tixa have been found
-#ifdef JA2TESTVERSION
-            fFoundOrta = !fFoundOrta;
-            fFoundTixa = !fFoundTixa;
-            fMapPanelDirty = TRUE;
-#endif
           } else {
             // go to OPTIONS screen
             RequestTriggerExitFromMapscreen(MAP_EXIT_TO_OPTIONS);
@@ -4657,42 +4443,10 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           break;
 
         case 'p':
-#ifdef JA2TESTVERSION
-#ifndef JA2DEMO
-          if (fCtrl) {
-            // CTRL-P: Display player's highest progress percentage
-            DumpSectorDifficultyInfo();
-          }
-#endif
-#endif
 
-#ifdef JA2TESTVERSION
-          // ALT-P: Make the selected character a POW!
-          if ((fAlt) && (bSelectedInfoChar != -1)) {
-            SOLDIERTYPE *pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
-
-            EnemyCapturesPlayerSoldier(pSoldier);
-
-            if (pSoldier->bInSector) {
-              RemoveSoldierFromTacticalSector(pSoldier, TRUE);
-            }
-
-            fTeamPanelDirty = TRUE;
-            fCharacterInfoPanelDirty = TRUE;
-            fMapPanelDirty = TRUE;
-          }
-#endif
           break;
 
         case 'q':
-#ifdef JA2TESTVERSION
-          if (fAlt) {
-            // initialize miners if not already done so (fakes entering Drassen mine first)
-            HandleQuestCodeOnSectorEntry(13, 4, 0);
-            // test miner quote system
-            IssueHeadMinerQuote((INT8)(1 + Random(MAX_NUMBER_OF_MINES - 1)), (UINT8)(1 + Random(2)));
-          }
-#endif
           break;
         case 'r':
           if (gfPreBattleInterfaceActive) {
@@ -4803,33 +4557,13 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
           }
           break;
         case 'u':
-#ifdef JA2TESTVERSION
-        {
-          if (fAlt) {
-            UINT32 uiCnt;
-            // initialize miners if not already done so (fakes entering Drassen mine first)
-            HandleQuestCodeOnSectorEntry(13, 4, 0);
-            // test running out
-            for (uiCnt = 0; uiCnt < 10; uiCnt++) {
-              HandleIncomeFromMines();
-            }
-          }
-        }
-#endif
         break;
         case 'v':
           if (fCtrl) {
-#ifdef SGP_VIDEO_DEBUGGING
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VObjects:  %d", guiVObjectSize);
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"VSurfaces:  %d", guiVSurfaceSize);
-            ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"SGPVideoDump.txt updated...");
-            PerformVideoInfoDumpIntoFile("SGPVideoDump.txt", TRUE);
-#endif
           } else {
             DisplayGameSettings();
           }
           break;
-#endif
         case 'w':
           // only handle border button keyboard equivalents if the button is visible!
           if (!fShowMapInventoryPool) {
@@ -4846,9 +4580,6 @@ void GetMapKeyboardInput(UINT32 *puiNewEvent) {
         case 'y':
           // ALT-Y: toggles SAM sites disable
           if (fAlt) {
-#ifdef JA2TESTVERSION
-            fSAMSitesDisabledFromAttackingPlayer = !fSAMSitesDisabledFromAttackingPlayer;
-#endif
           }
           break;
 
@@ -5026,11 +4757,9 @@ void EndMapScreen(BOOLEAN fDuringFade) {
   if (fPreLoadedMapGraphics == FALSE) {
     DeleteMapBottomGraphics();
 
-#ifndef JA2DEMO
     DeleteVideoObjectFromIndex(guiSubLevel1);
     DeleteVideoObjectFromIndex(guiSubLevel2);
     DeleteVideoObjectFromIndex(guiSubLevel3);
-#endif
     DeleteVideoObjectFromIndex(guiSleepIcon);
     DeleteVideoObjectFromIndex(guiMAPCURSORS);
     // DeleteVideoObjectFromIndex(guiMAPBORDER);
@@ -5041,11 +4770,9 @@ void EndMapScreen(BOOLEAN fDuringFade) {
     DeleteVideoObjectFromIndex(guiCHARINFO);
     DeleteVideoObjectFromIndex(guiCHARICONS);
     DeleteVideoObjectFromIndex(guiCROSS);
-#ifndef JA2DEMO
     DeleteVideoSurfaceFromIndex(guiBIGMAP);
     //	DeleteVideoSurfaceFromIndex(guiPOPUPTEX);
     DeleteVideoObjectFromIndex(guiSAMICON);
-#endif
     DeleteVideoObjectFromIndex(guiMAPINV);
     DeleteVideoObjectFromIndex(guiMapInvSecondHandBlockout);
     DeleteVideoObjectFromIndex(guiULICONS);
@@ -5129,7 +4856,6 @@ void EndMapScreen(BOOLEAN fDuringFade) {
   UpdatePausedStatesDueToTimeCompression();
 
   if (!gfDontStartTransitionFromLaptop) {
-#ifndef JA2DEMO
     VOBJECT_DESC VObjectDesc;
     UINT32 uiLaptopOn;
 
@@ -5145,7 +4871,6 @@ void EndMapScreen(BOOLEAN fDuringFade) {
     EndFrameBufferRender();
     DeleteVideoObjectFromIndex(uiLaptopOn);
     RefreshScreen(NULL);
-#endif
   }
 
   // Kris:  Removes the pre battle interface, but only if it exists.
@@ -5212,7 +4937,6 @@ BOOLEAN GetMapXY(INT16 sX, INT16 sY, INT16 *psMapWorldX, INT16 *psMapWorldY) {
 }
 
 void RenderMapHighlight(INT16 sMapX, INT16 sMapY, UINT16 usLineColor, BOOLEAN fStationary) {
-#ifndef JA2DEMO
   INT16 sScreenX, sScreenY;
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
@@ -5275,8 +4999,6 @@ void RenderMapHighlight(INT16 sMapX, INT16 sMapY, UINT16 usLineColor, BOOLEAN fS
 
   RestoreClipRegionToFullScreenForRectangle(uiDestPitchBYTES);
   UnLockVideoSurface(FRAME_BUFFER);
-
-#endif
 }
 
 void PollLeftButtonInMapView(UINT32 *puiNewEvent) {
@@ -6254,13 +5976,8 @@ void CreateMouseRegionsForTeamList(void) {
       sYAdd = 0;
     }
 
-#ifdef JA2DEMO
-    // name region across the whole width of the team panel at HIGHEST priority, thus overriding the others
-    MSYS_DefineRegion(&gTeamListNameRegion[sCounter], NAME_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), 236, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
-#else
     // name region
     MSYS_DefineRegion(&gTeamListNameRegion[sCounter], NAME_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
-#endif
 
     // assignment region
     MSYS_DefineRegion(&gTeamListAssignmentRegion[sCounter], ASSIGN_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
@@ -6424,8 +6141,6 @@ void TeamListInfoRegionBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
     }
   }
 
-#ifndef JA2DEMO
-
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     if (IsMapScreenHelpTextUp()) {
       // stop mapscreen text
@@ -6468,7 +6183,6 @@ void TeamListInfoRegionBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
       gfRenderPBInterface = TRUE;
     }
   }
-#endif
 }
 
 void TeamListInfoRegionMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
@@ -7143,15 +6857,6 @@ void RenderTeamRegionBackground(void) {
 
   // restore background for area
   RestoreExternBackgroundRect(0, 107, 261 - 0, 359 - 107);
-
-#ifdef JA2DEMO
-  if ((fShowingMapDisableBox == FALSE) && (IsMapScreenHelpTextUp() == FALSE)) {
-    //	fShowingMapDisableBox = TRUE;
-    // restore background for area
-
-    // DoMapMessageBox( MSG_BOX_BASIC_STYLE, pMapErrorString[ 14 ], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDemoOkBoxCallback );
-  }
-#endif
 
   MapscreenMarkButtonsDirty();
 
@@ -8546,7 +8251,6 @@ void HandleRemovalOfPreLoadedMapGraphics(void) {
     DeleteVideoObjectFromIndex(guiCHARINFO);
     DeleteVideoObjectFromIndex(guiCHARICONS);
     DeleteVideoObjectFromIndex(guiCROSS);
-#ifndef JA2DEMO
     DeleteVideoSurfaceFromIndex(guiBIGMAP);
     DeleteVideoObjectFromIndex(guiSubLevel1);
     DeleteVideoObjectFromIndex(guiSubLevel2);
@@ -8554,7 +8258,6 @@ void HandleRemovalOfPreLoadedMapGraphics(void) {
 
     //	DeleteVideoSurfaceFromIndex(guiPOPUPTEX);
     DeleteVideoObjectFromIndex(guiSAMICON);
-#endif
     DeleteVideoObjectFromIndex(guiMAPINV);
     DeleteVideoObjectFromIndex(guiMapInvSecondHandBlockout);
     DeleteVideoObjectFromIndex(guiULICONS);
@@ -8690,28 +8393,13 @@ void CreateDestroyMapCharacterScrollButtons(void) {
     // set the button image
     giCharInfoButtonImage[0] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 11, 4, -1, 6, -1);
 
-#ifndef JA2DEMO
-
     // set the button value
     giCharInfoButton[0] = QuickCreateButton(giCharInfoButtonImage[0], 67, 69, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)PrevInventoryMapBtnCallback);
-#else
-
-    // set the button value
-    giCharInfoButton[0] = QuickCreateButton(giCharInfoButtonImage[0], 67, 69, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)PrevInventoryMapBtnCallback);
-
-#endif
     // set the button image
     giCharInfoButtonImage[1] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 12, 5, -1, 7, -1);
 
-#ifndef JA2DEMO
     // set the button value
     giCharInfoButton[1] = QuickCreateButton(giCharInfoButtonImage[1], 67, 87, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)NextInventoryMapBtnCallback);
-
-#else
-    // set the button value
-    giCharInfoButton[1] = QuickCreateButton(giCharInfoButtonImage[1], 67, 87, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)NextInventoryMapBtnCallback);
-
-#endif
 
     SetButtonFastHelpText(giCharInfoButton[0], pMapScreenPrevNextCharButtonHelpText[0]);
     SetButtonFastHelpText(giCharInfoButton[1], pMapScreenPrevNextCharButtonHelpText[1]);
@@ -8730,10 +8418,6 @@ void CreateDestroyMapCharacterScrollButtons(void) {
 void TellPlayerWhyHeCantCompressTime(void) {
   // if we're locked into paused time compression by some event that enforces that
   if (PauseStateLocked()) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time, pause state locked (reason %d). OK unless permanent.", guiLockPauseStateLastReasonId);
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) If permanent, take screenshot now, send with *previous* save & describe what happened since.");
-#endif
   } else if (gfAtLeastOneMercWasHired == FALSE) {
     // no mercs hired, ever
     DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapScreenJustStartedHelpText[0], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -8744,21 +8428,9 @@ void TellPlayerWhyHeCantCompressTime(void) {
     // can't time compress when a bomb is about to go off!
     DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[2], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   } else if (gfContractRenewalSquenceOn) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while contract renewal sequence is on.");
-#endif
   } else if (fDisableMapInterfaceDueToBattle) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while disabled due to battle.");
-#endif
   } else if (fDisableDueToBattleRoster) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while in battle roster.");
-#endif
   } else if (fMapInventoryItem) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_BETAVERSION, L"(BETA) Can't compress time while still holding an inventory item.");
-#endif
   } else if (fShowMapInventoryPool) {
     DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[55], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
@@ -9150,40 +8822,6 @@ void DisplayIconsForMercsAsleep(void) {
   }
   return;
 }
-
-#ifdef JA2DEMO
-
-void DisplayExitToTacticalGlowDuringDemo(void) {
-  static INT32 iColorNum = 10;
-  static BOOLEAN fDelta = FALSE;
-  UINT16 usColor = 0;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-
-  // if not ready to change glow phase yet, leave
-  if (!gfGlowTimerExpired)
-    return;
-
-  // change direction of glow?
-  if ((iColorNum == 0) || (iColorNum == 10)) {
-    fDelta = !fDelta;
-  }
-
-  // increment color
-  if (!fDelta)
-    iColorNum++;
-  else
-    iColorNum--;
-
-  usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-  SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
-  RectangleDraw(TRUE, 496, 409, 528, 442, usColor, pDestBuf);
-  InvalidateRegion(495, 408, 529 + 1, 442 + 1);
-  UnLockVideoSurface(FRAME_BUFFER);
-}
-
-#endif
 
 // Kris:  Added this function to blink the email icon on top of the laptop button whenever we are in
 //       mapscreen and we have new email to read.
@@ -10004,29 +9642,6 @@ void HandleMilitiaRedistributionClick(void) {
     }
   }
 }
-
-#ifdef JA2TESTVERSION
-void DumpSectorDifficultyInfo(void) {
-  // NOTE: This operates on the selected map sector!
-  CHAR16 wSectorName[128];
-
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Playing Difficulty: %s", gzGIOScreenText[GIO_DIF_LEVEL_TEXT + gGameOptions.ubDifficultyLevel]);
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Highest Progress (0-100) = %d%%", HighestPlayerProgressPercentage());
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Player Kills = %d", gStrategicStatus.usPlayerKills);
-
-  GetSectorIDString(sSelMapX, sSelMapY, (INT8)iCurrentMapSectorZ, wSectorName, TRUE);
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"SECTOR: %s", wSectorName);
-
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Pyth. Distance From Meduna (0-20) = %d", GetPythDistanceFromPalace(sSelMapX, sSelMapY));
-
-  if ((gWorldSectorX == sSelMapX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == iCurrentMapSectorZ)) {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Enemy Difficulty Factor (0 to 100) = %d%%", CalcDifficultyModifier(SOLDIER_CLASS_ARMY));
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Avg Regular Enemy Exp. Level (2-6) = %d", 2 + (CalcDifficultyModifier(SOLDIER_CLASS_ARMY) / 20));
-  } else {
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"--Must load sector to calculate difficulty--");
-  }
-}
-#endif
 
 void StartChangeSectorArrivalMode(void) {
   // "put him in change arrival sector" mode

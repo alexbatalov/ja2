@@ -1,6 +1,3 @@
-#ifndef __MUTEX_
-#define __MUTEX_
-
 extern BOOLEAN InitializeMutexManager(void);
 extern void ShutdownMutexManager(void);
 extern BOOLEAN InitializeMutex(UINT32 uiMutexIndex, UINT8 *ubMutexName);
@@ -12,5 +9,3 @@ extern BOOLEAN LeaveMutex(UINT32 uiMutexIndex, INT32 nLine, char *szFilename);
 //
 // Use defines to allocate slots in the mutex manager. Put these defines in LOCAL.H
 //
-
-#endif

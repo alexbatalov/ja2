@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_TOWN_LOYALTY_H
-#define __STRATEGIC_TOWN_LOYALTY_H
-
 // gain pts per real loyalty pt
 #define GAIN_PTS_PER_LOYALTY_PT 500
 
@@ -116,19 +113,6 @@ INT32 GetTownDistances(UINT8 ubTown, UINT8 ubTownA);
 // build list of town sectors
 void BuildListOfTownSectors(void);
 
-#ifdef JA2TESTVERSION
-
-// calculate shortest distances between towns
-void CalcDistancesBetweenTowns(void);
-
-// write out distances between towns to a data file
-void WriteOutDistancesBetweenTowns(void);
-
-// dumps the calc'ed distances into a text file table for easy verification
-void DumpDistancesBetweenTowns(void);
-
-#endif // JA2TESTVERSION
-
 // read in distances between towns
 void ReadInDistancesBetweenTowns(void);
 
@@ -181,5 +165,3 @@ INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude);
 void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
 
 void MaximizeLoyaltyForDeidrannaKilled(void);
-
-#endif

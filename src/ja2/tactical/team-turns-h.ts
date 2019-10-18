@@ -1,6 +1,3 @@
-#ifndef TEAMTURNS_H
-#define TEAMTURNS_H
-
 extern UINT8 gubOutOfTurnPersons;
 extern BOOLEAN gfHiddenInterrupt;
 extern BOOLEAN gfHiddenTurnbased;
@@ -24,5 +21,3 @@ BOOLEAN LoadTeamTurnsFromTheSavedGameFile(HWFILE hFile);
 void EndAllAITurns(void);
 
 BOOLEAN NPCFirstDraw(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier);
-
-#endif

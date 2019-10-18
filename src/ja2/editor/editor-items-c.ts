@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 #define NUMBER_TRIGGERS 27
 #define PRESSURE_ACTION_ID (NUMBER_TRIGGERS - 1)
 
@@ -1358,5 +1356,3 @@ void DisplayItemStatistics() {
   mprintf(2, 440, L"Status Info Line 4");
   mprintf(2, 450, L"Status Info Line 5");
 }
-
-#endif

@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 /*
 Kris -- Notes on how the undo code works:
 
@@ -870,5 +868,3 @@ void DetermineUndoState() {
     }
   }
 }
-
-#endif

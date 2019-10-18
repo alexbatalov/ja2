@@ -1,10 +1,6 @@
-#ifdef JA2EDITOR
 // popupmenu.h
 // Author:  Kris Morness
 // Created:  Sept 4, 1997
-
-#ifndef __POPUPMENU_H
-#define __POPUPMENU_H
 
 /*
 POPUP MENU
@@ -91,6 +87,3 @@ BOOLEAN ProcessPopupMenuIfActive();
 void RenderPopupMenu();
 void PopupMenuHandle();
 void ProcessPopupMenuSelection();
-
-#endif
-#endif

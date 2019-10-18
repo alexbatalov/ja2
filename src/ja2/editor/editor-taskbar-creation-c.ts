@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 // Category tabs of the editor buttons
 void InitEditorTerrainToolbar();
 void InitEditorBuildingsToolbar();
@@ -471,5 +469,3 @@ void CreateEditorTaskbarInternal() {
   InitEditorOptionsToolbar();
   InitEditorItemStatsButtons();
 }
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __LOCAL_DEFINES_
-#define __LOCAL_DEFINES_
-
 //
 // Make sure the application has a name
 //
@@ -10,14 +7,6 @@
 //
 // Basic defines for the video manager. These represent the starting values
 //
-
-#ifdef BOUNDS_CHECKER
-#define WINDOWED_MODE
-#endif
-
-#ifdef _DEBUG
-#define WINDOWED_MODE
-#endif
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
@@ -34,5 +23,3 @@
 #define MOUSE_BUFFER_MUTEX 2
 #define DIRTY_BUFFER_MUTEX 3
 #define SCROLL_MESSAGE_MUTEX 4
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _TILE_ANIMATION_H
-#define _TILE_ANIMATION_H
-
 #define ANITILE_DOOR 0x00000001
 #define ANITILE_BACKWARD 0x00000020
 #define ANITILE_FORWARD 0x00000040
@@ -119,5 +116,3 @@ void PauseAniTile(ANITILE *pAniTile, BOOLEAN fPause);
 ANITILE *GetCachedAniTileOfType(INT16 sGridNo, UINT8 ubLevelID, UINT32 uiFlags);
 
 void PauseAllAniTilesOfType(UINT32 uiType, BOOLEAN fPause);
-
-#endif

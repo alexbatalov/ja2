@@ -1,6 +1,3 @@
-#ifndef _ENVIRONMENT_H_
-#define _ENVIRONMENT_H_
-
 #define ENV_TIME_00 0
 #define ENV_TIME_01 1
 #define ENV_TIME_02 2
@@ -76,5 +73,3 @@ extern BOOLEAN gfBasement;
 extern INT8 SectorTemperature(UINT32 uiTime, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 extern void UpdateTemperature(UINT8 ubTemperatureCode);
-
-#endif

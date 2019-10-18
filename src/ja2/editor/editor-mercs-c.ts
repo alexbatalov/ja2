@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 extern void GetSoldierAboveGuyPositions(SOLDIERTYPE *pSoldier, INT16 *psX, INT16 *psY, BOOLEAN fRadio);
 
 //--------------------------------------------------
@@ -273,9 +271,6 @@ UINT16 *EditMercAttitudes[6] = {
 };
 
 // information for bodytypes.
-#ifdef RANDOM
-#undef RANDOM
-#endif
 #define RANDOM -1
 #define MAX_ENEMYTYPES 7
 //#define MAX_ENEMYRANDOMTYPES	5
@@ -3508,5 +3503,3 @@ void PasteMercPlacement(INT32 iMapIndex) {
     }
   }
 }
-
-#endif

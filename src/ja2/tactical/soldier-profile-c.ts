@@ -1,6 +1,4 @@
-#ifdef JA2EDITOR
 extern BOOLEAN gfProfileDataLoaded;
-#endif
 
 BOOLEAN gfPotentialTeamChangeDuringDeath = FALSE;
 
@@ -184,7 +182,6 @@ BOOLEAN LoadMercProfiles(void) {
     // Default is the ubCharNum
     gMercProfiles[uiLoop].ubFaceIndex = (UINT8)uiLoop;
 
-#ifndef JA2DEMO
     if (!gGameOptions.fGunNut) {
       // CJC: replace guns in profile if they aren't available
       for (uiLoop2 = 0; uiLoop2 < NUM_INV_SLOTS; uiLoop2++) {
@@ -212,7 +209,6 @@ BOOLEAN LoadMercProfiles(void) {
         }
       }
     } // end of if not gun nut
-#endif
 
     // ATE: Calculate some inital attractiveness values for buddy's inital equipment...
     // Look for gun and armour
@@ -265,9 +261,7 @@ BOOLEAN LoadMercProfiles(void) {
   FileClose(fptr);
 
 // decide which terrorists are active
-#ifndef JA2DEMO
   DecideActiveTerrorists();
-#endif
 
   // initialize mercs' status
   StartSomeMercsOnAssignment();
@@ -275,9 +269,7 @@ BOOLEAN LoadMercProfiles(void) {
   // initial recruitable mercs' reputation in each town
   InitializeProfilesForTownReputation();
 
-#ifdef JA2EDITOR
   gfProfileDataLoaded = TRUE;
-#endif
 
   // no better place..heh?.. will load faces for profiles that are 'extern'.....won't have soldiertype instances
   InitalizeStaticExternalNPCFaces();
@@ -302,10 +294,6 @@ void DecideActiveTerrorists(void) {
     { 0, 0 },
     { 0, 0 },
   };
-
-#ifdef CRIPPLED_VERSION
-  return;
-#endif
 
   // one terrorist will always be Elgin
   // determine how many more terrorists - 2 to 4 more
@@ -332,11 +320,6 @@ void DecideActiveTerrorists(void) {
       ubNumAdditionalTerrorists++;
     }
   }
-
-// ifdefs added by CJC
-#ifdef JA2TESTVERSION
-  ubNumAdditionalTerrorists = 4;
-#endif
 
   while (ubNumTerroristsAdded < ubNumAdditionalTerrorists) {
     ubLoop = 1; // start at beginning of array (well, after Elgin)
@@ -475,10 +458,6 @@ void DecideOnAssassin(void) {
   UINT8 ubAssassinsPossible = 0;
   UINT8 ubLoop, ubLoop2;
   UINT8 ubTown;
-
-#ifdef CRIPPLED_VERSION
-  return;
-#endif
 
   ubTown = GetTownIdForSector(gWorldSectorX, gWorldSectorY);
 
@@ -829,10 +808,6 @@ BOOLEAN RecruitRPC(UINT8 ubCharNum) {
       SwapObjs(&(pNewSoldier->inv[bSlot]), &(pNewSoldier->inv[HANDPOS]));
     }
   }
-
-#ifdef JA2DEMO
-  HandleEndDemoInCreatureLevel();
-#endif
 
   if (ubCharNum == IRA) {
     // trigger 0th PCscript line

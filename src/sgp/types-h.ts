@@ -1,9 +1,3 @@
-#ifndef __TYPES_
-#define __TYPES_
-
-#ifndef _SIRTECH_TYPES_
-#define _SIRTECH_TYPES_
-
 // *** SIR-TECH TYPE DEFINITIONS ***
 
 // These two types are defined by VC6 and were causing redefinition
@@ -11,13 +5,8 @@
 
 // HEY WIZARDRY DUDES, JA2 ISN'T THE ONLY PROGRAM WE COMPILE! :-)
 
-#if defined(JA2) || defined(UTILS)
 typedef unsigned int UINT32;
 typedef signed int INT32;
-#else
-typedef unsigned int UINT32;
-typedef int INT32;
-#endif
 
 // integers
 typedef unsigned char UINT8;
@@ -50,15 +39,9 @@ typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
 
 // *** SIR-TECH TYPE DEFINITIONS ***
 
-#endif
-
-#ifndef TRUE
 #define TRUE 1
-#endif
 
-#ifndef FALSE
 #define FALSE 0
-#endif
 
 #define BAD_INDEX -1
 
@@ -68,9 +51,7 @@ typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
 
 #define ST_EPSILON 0.00001 // define a sir-tech epsilon value
 
-#ifndef NULL
 #define NULL 0
-#endif
 
 typedef struct {
   INT32 iLeft;
@@ -102,5 +83,3 @@ typedef VECTOR4 MATRIX4[4]; // 4x4 matrix
 
 typedef VECTOR3 ANGLE; // angle return array
 typedef VECTOR4 COLOR; // rgba color array
-
-#endif

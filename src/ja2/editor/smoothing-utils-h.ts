@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __SMOOTHING_UTILS_H
-#define __SMOOTHING_UTILS_H
-
 // Use these values when specifically replacing a wall with new type.
 // Wall tile types
 enum {
@@ -57,6 +53,3 @@ UINT16 GetWallClass(LEVELNODE *pWall);
 UINT16 GetVerticalWallClass(UINT16 iMapIndex);
 UINT16 GetHorizontalWallClass(UINT16 iMapIndex);
 BOOLEAN ValidDecalPlacement(UINT32 iMapIndex);
-
-#endif
-#endif

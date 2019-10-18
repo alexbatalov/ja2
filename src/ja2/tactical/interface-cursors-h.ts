@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_CURSORS_H
-#define __INTERFACE_CURSORS_H
-
 #define UICURSOR_FREEFLOWING 0x00000002
 #define UICURSOR_SNAPPING 0x00000004
 #define UICURSOR_SHOWTILE 0x00000008
@@ -201,5 +198,3 @@ BOOLEAN HideUICursor();
 UINT16 gusCurMousePos;
 
 UINT16 GetSnapCursorIndex(UINT16 usAdditionalData);
-
-#endif

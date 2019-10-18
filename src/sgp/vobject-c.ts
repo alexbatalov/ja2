@@ -42,11 +42,6 @@ typedef struct VOBJECT_NODE {
   HVOBJECT hVObject;
   UINT32 uiIndex;
   struct VOBJECT_NODE *next, *prev;
-
-#ifdef SGP_VIDEO_DEBUGGING
-  UINT8 *pName;
-  UINT8 *pCode;
-#endif
 } VOBJECT_NODE;
 
 VOBJECT_NODE *gpVObjectHead = NULL;
@@ -54,27 +49,6 @@ VOBJECT_NODE *gpVObjectTail = NULL;
 UINT32 guiVObjectIndex = 1;
 UINT32 guiVObjectSize = 0;
 UINT32 guiVObjectTotalAdded = 0;
-
-#ifdef _DEBUG
-enum {
-  DEBUGSTR_NONE,
-  DEBUGSTR_SETVIDEOOBJECTTRANSPARENCY,
-  DEBUGSTR_BLTVIDEOOBJECTFROMINDEX,
-  DEBUGSTR_SETOBJECTHANDLESHADE,
-  DEBUGSTR_GETVIDEOOBJECTETRLESUBREGIONPROPERTIES,
-  DEBUGSTR_GETVIDEOOBJECTETRLEPROPERTIESFROMINDEX,
-  DEBUGSTR_SETVIDEOOBJECTPALETTE8BPP,
-  DEBUGSTR_GETVIDEOOBJECTPALETTE16BPP,
-  DEBUGSTR_COPYVIDEOOBJECTPALETTE16BPP,
-  DEBUGSTR_BLTVIDEOOBJECTOUTLINEFROMINDEX,
-  DEBUGSTR_BLTVIDEOOBJECTOUTLINESHADOWFROMINDEX,
-  DEBUGSTR_DELETEVIDEOOBJECTFROMINDEX,
-};
-
-UINT8 gubVODebugCode = 0;
-
-void CheckValidVObjectIndex(UINT32 uiIndex);
-#endif
 
 // **************************************************************
 //
@@ -99,12 +73,6 @@ BOOLEAN ShutdownVideoObjectManager() {
     curr = gpVObjectHead;
     gpVObjectHead = gpVObjectHead->next;
     DeleteVideoObject(curr->hVObject);
-#ifdef SGP_VIDEO_DEBUGGING
-    if (curr->pName)
-      MemFree(curr->pName);
-    if (curr->pCode)
-      MemFree(curr->pCode);
-#endif
     MemFree(curr);
   }
   gpVObjectHead = NULL;
@@ -161,10 +129,6 @@ BOOLEAN AddStandardVideoObject(VOBJECT_DESC *pVObjectDesc, UINT32 *puiIndex) {
     gpVObjectHead->prev = gpVObjectHead->next = NULL;
     gpVObjectTail = gpVObjectHead;
   }
-#ifdef SGP_VIDEO_DEBUGGING
-  gpVObjectTail->pName = NULL;
-  gpVObjectTail->pCode = NULL;
-#endif
   // Set the hVObject into the node.
   gpVObjectTail->hVObject = hVObject;
   gpVObjectTail->uiIndex = guiVObjectIndex += 2;
@@ -174,12 +138,6 @@ BOOLEAN AddStandardVideoObject(VOBJECT_DESC *pVObjectDesc, UINT32 *puiIndex) {
   guiVObjectSize++;
   guiVObjectTotalAdded++;
 
-#ifdef JA2TESTVERSION
-  if (CountVideoObjectNodes() != guiVObjectSize) {
-    guiVObjectSize = guiVObjectSize;
-  }
-#endif
-
   return TRUE;
 }
 
@@ -187,9 +145,6 @@ BOOLEAN SetVideoObjectTransparency(UINT32 uiIndex, COLORVAL TransColor) {
   HVOBJECT hVObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_SETVIDEOOBJECTTRANSPARENCY;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiIndex));
 
   // Set transparency
@@ -200,10 +155,6 @@ BOOLEAN SetVideoObjectTransparency(UINT32 uiIndex, COLORVAL TransColor) {
 
 BOOLEAN GetVideoObject(HVOBJECT *hVObject, UINT32 uiIndex) {
   VOBJECT_NODE *curr;
-
-#ifdef _DEBUG
-  CheckValidVObjectIndex(uiIndex);
-#endif
 
   curr = gpVObjectHead;
   while (curr) {
@@ -229,9 +180,6 @@ BOOLEAN BltVideoObjectFromIndex(UINT32 uiDestVSurface, UINT32 uiSrcVObject, UINT
   }
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_BLTVIDEOOBJECTFROMINDEX;
-#endif
   if (!GetVideoObject(&hSrcVObject, uiSrcVObject)) {
     UnLockVideoSurface(uiDestVSurface);
     return FALSE;
@@ -250,11 +198,6 @@ BOOLEAN BltVideoObjectFromIndex(UINT32 uiDestVSurface, UINT32 uiSrcVObject, UINT
 
 BOOLEAN DeleteVideoObjectFromIndex(UINT32 uiVObject) {
   VOBJECT_NODE *curr;
-
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_DELETEVIDEOOBJECTFROMINDEX;
-  CheckValidVObjectIndex(uiVObject);
-#endif
 
   curr = gpVObjectHead;
   while (curr) {
@@ -282,20 +225,9 @@ BOOLEAN DeleteVideoObjectFromIndex(UINT32 uiVObject) {
         curr->prev->next = curr->next;
       }
 // The node is now detached.  Now deallocate it.
-#ifdef SGP_VIDEO_DEBUGGING
-      if (curr->pName)
-        MemFree(curr->pName);
-      if (curr->pCode)
-        MemFree(curr->pCode);
-#endif
       MemFree(curr);
       curr = NULL;
       guiVObjectSize--;
-#ifdef JA2TESTVERSION
-      if (CountVideoObjectNodes() != guiVObjectSize) {
-        guiVObjectSize = guiVObjectSize;
-      }
-#endif
       return TRUE;
     }
     curr = curr->next;
@@ -620,15 +552,6 @@ BOOLEAN BltVideoObjectToBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HVOBJEC
       // Switch based on flags given
       do {
         if (gbPixelDepth == 16) {
-#ifndef JA2
-          if (fBltFlags & VO_BLT_MIRROR_Y) {
-            if (!BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect))
-              Blt8BPPDataTo16BPPBufferTransMirror(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex);
-            // CLipping version not done -- DB
-            //								Blt8BPPDataTo16BPPBufferTransMirrorClip( pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
-            break;
-          } else
-#endif
               if (fBltFlags & VO_BLT_SRCTRANSPARENCY) {
             if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect))
               Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer, uiDestPitchBYTES, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
@@ -768,9 +691,6 @@ UINT16 SetObjectShade(HVOBJECT pObj, UINT32 uiShade) {
 UINT16 SetObjectHandleShade(UINT32 uiHandle, UINT32 uiShade) {
   HVOBJECT hObj;
 
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_SETOBJECTHANDLESHADE;
-#endif
   if (!GetVideoObject(&hObj, uiHandle)) {
     DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Invalid object handle for setting shade level"));
     return FALSE;
@@ -882,9 +802,6 @@ BOOLEAN GetVideoObjectETRLESubregionProperties(UINT32 uiVideoObject, UINT16 usIn
   ETRLEObject ETRLEObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_GETVIDEOOBJECTETRLESUBREGIONPROPERTIES;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
   CHECKF(GetVideoObjectETRLEProperties(hVObject, &ETRLEObject, usIndex));
@@ -899,9 +816,6 @@ BOOLEAN GetVideoObjectETRLEPropertiesFromIndex(UINT32 uiVideoObject, ETRLEObject
   HVOBJECT hVObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_GETVIDEOOBJECTETRLEPROPERTIESFROMINDEX;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
   CHECKF(GetVideoObjectETRLEProperties(hVObject, pETRLEObject, usIndex));
@@ -913,9 +827,6 @@ BOOLEAN SetVideoObjectPalette8BPP(INT32 uiVideoObject, SGPPaletteEntry *pPal8) {
   HVOBJECT hVObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_SETVIDEOOBJECTPALETTE8BPP;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
   return SetVideoObjectPalette(hVObject, pPal8);
@@ -925,9 +836,6 @@ BOOLEAN GetVideoObjectPalette16BPP(INT32 uiVideoObject, UINT16 **ppPal16) {
   HVOBJECT hVObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_GETVIDEOOBJECTPALETTE16BPP;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
   *ppPal16 = hVObject->p16BPPPalette;
@@ -939,9 +847,6 @@ BOOLEAN CopyVideoObjectPalette16BPP(INT32 uiVideoObject, UINT16 *ppPal16) {
   HVOBJECT hVObject;
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_COPYVIDEOOBJECTPALETTE16BPP;
-#endif
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
 
   memcpy(ppPal16, hVObject->p16BPPPalette, 256 * 2);
@@ -1103,9 +1008,6 @@ BOOLEAN BltVideoObjectOutlineFromIndex(UINT32 uiDestVSurface, UINT32 uiSrcVObjec
   }
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_BLTVIDEOOBJECTOUTLINEFROMINDEX;
-#endif
   CHECKF(GetVideoObject(&hSrcVObject, uiSrcVObject));
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
@@ -1155,9 +1057,6 @@ BOOLEAN BltVideoObjectOutlineShadowFromIndex(UINT32 uiDestVSurface, UINT32 uiSrc
   }
 
 // Get video object
-#ifdef _DEBUG
-  gubVODebugCode = DEBUGSTR_BLTVIDEOOBJECTOUTLINESHADOWFROMINDEX;
-#endif
   CHECKF(GetVideoObject(&hSrcVObject, uiSrcVObject));
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
@@ -1193,171 +1092,3 @@ BOOLEAN BltVideoObjectOutlineShadow(UINT32 uiDestVSurface, HVOBJECT hSrcVObject,
   UnLockVideoSurface(uiDestVSurface);
   return TRUE;
 }
-
-#ifdef _DEBUG
-void CheckValidVObjectIndex(UINT32 uiIndex) {
-  BOOLEAN fAssertError = FALSE;
-  if (uiIndex == 0xffffffff) {
-    //-1 index -- deleted
-    fAssertError = TRUE;
-  }
-  if (!(uiIndex % 2) && uiIndex < 0xfffffff0 || uiIndex >= 0xfffffff0) {
-    // even numbers are reserved for vsurfaces as well as the 0xfffffff0+ values
-    fAssertError = TRUE;
-  }
-
-  if (fAssertError) {
-    UINT8 str[60];
-    switch (gubVODebugCode) {
-      case DEBUGSTR_SETVIDEOOBJECTTRANSPARENCY:
-        sprintf(str, "SetVideoObjectTransparency");
-        break;
-      case DEBUGSTR_BLTVIDEOOBJECTFROMINDEX:
-        sprintf(str, "BltVideoObjectFromIndex");
-        break;
-      case DEBUGSTR_SETOBJECTHANDLESHADE:
-        sprintf(str, "SetObjectHandleShade");
-        break;
-      case DEBUGSTR_GETVIDEOOBJECTETRLESUBREGIONPROPERTIES:
-        sprintf(str, "GetVideoObjectETRLESubRegionProperties");
-        break;
-      case DEBUGSTR_GETVIDEOOBJECTETRLEPROPERTIESFROMINDEX:
-        sprintf(str, "GetVideoObjectETRLEPropertiesFromIndex");
-        break;
-      case DEBUGSTR_SETVIDEOOBJECTPALETTE8BPP:
-        sprintf(str, "SetVideoObjectPalette8BPP");
-        break;
-      case DEBUGSTR_GETVIDEOOBJECTPALETTE16BPP:
-        sprintf(str, "GetVideoObjectPalette16BPP");
-        break;
-      case DEBUGSTR_COPYVIDEOOBJECTPALETTE16BPP:
-        sprintf(str, "CopyVideoObjectPalette16BPP");
-        break;
-      case DEBUGSTR_BLTVIDEOOBJECTOUTLINEFROMINDEX:
-        sprintf(str, "BltVideoObjectOutlineFromIndex");
-        break;
-      case DEBUGSTR_BLTVIDEOOBJECTOUTLINESHADOWFROMINDEX:
-        sprintf(str, "BltVideoObjectOutlineShadowFromIndex");
-        break;
-      case DEBUGSTR_DELETEVIDEOOBJECTFROMINDEX:
-        sprintf(str, "DeleteVideoObjectFromIndex");
-        break;
-      case DEBUGSTR_NONE:
-      default:
-        sprintf(str, "GetVideoObject");
-        break;
-    }
-    if (uiIndex == 0xffffffff) {
-      AssertMsg(0, String("Trying to %s with deleted index -1.", str));
-    } else {
-      AssertMsg(0, String("Trying to %s using a VSURFACE ID %d!", str, uiIndex));
-    }
-  }
-}
-#endif
-
-#ifdef SGP_VIDEO_DEBUGGING
-
-typedef struct DUMPFILENAME {
-  UINT8 str[256];
-} DUMPFILENAME;
-
-void DumpVObjectInfoIntoFile(UINT8 *filename, BOOLEAN fAppend) {
-  VOBJECT_NODE *curr;
-  FILE *fp;
-  DUMPFILENAME *pName, *pCode;
-  UINT32 *puiCounter;
-  UINT8 tempName[256];
-  UINT8 tempCode[256];
-  UINT32 i, uiUniqueID;
-  BOOLEAN fFound;
-  if (!guiVObjectSize) {
-    return;
-  }
-
-  if (fAppend) {
-    fp = fopen(filename, "a");
-  } else {
-    fp = fopen(filename, "w");
-  }
-  Assert(fp);
-
-  // Allocate enough strings and counters for each node.
-  pName = (DUMPFILENAME *)MemAlloc(sizeof(DUMPFILENAME) * guiVObjectSize);
-  pCode = (DUMPFILENAME *)MemAlloc(sizeof(DUMPFILENAME) * guiVObjectSize);
-  memset(pName, 0, sizeof(DUMPFILENAME) * guiVObjectSize);
-  memset(pCode, 0, sizeof(DUMPFILENAME) * guiVObjectSize);
-  puiCounter = (UINT32 *)MemAlloc(4 * guiVObjectSize);
-  memset(puiCounter, 0, 4 * guiVObjectSize);
-
-  // Loop through the list and record every unique filename and count them
-  uiUniqueID = 0;
-  curr = gpVObjectHead;
-  while (curr) {
-    strcpy(tempName, curr->pName);
-    strcpy(tempCode, curr->pCode);
-    fFound = FALSE;
-    for (i = 0; i < uiUniqueID; i++) {
-      if (!_stricmp(tempName, pName[i].str) && !_stricmp(tempCode, pCode[i].str)) {
-        // same string
-        fFound = TRUE;
-        (puiCounter[i])++;
-        break;
-      }
-    }
-    if (!fFound) {
-      strcpy(pName[i].str, tempName);
-      strcpy(pCode[i].str, tempCode);
-      (puiCounter[i])++;
-      uiUniqueID++;
-    }
-    curr = curr->next;
-  }
-
-  // Now dump the info.
-  fprintf(fp, "-----------------------------------------------\n");
-  fprintf(fp, "%d unique vObject names exist in %d VObjects\n", uiUniqueID, guiVObjectSize);
-  fprintf(fp, "-----------------------------------------------\n\n");
-  for (i = 0; i < uiUniqueID; i++) {
-    fprintf(fp, "%d occurrences of %s\n", puiCounter[i], pName[i].str);
-    fprintf(fp, "%s\n\n", pCode[i].str);
-  }
-  fprintf(fp, "\n-----------------------------------------------\n\n");
-
-  // Free all memory associated with this operation.
-  MemFree(pName);
-  MemFree(pCode);
-  MemFree(puiCounter);
-  fclose(fp);
-}
-
-// Debug wrapper for adding vObjects
-BOOLEAN _AddAndRecordVObject(VOBJECT_DESC *VObjectDesc, UINT32 *uiIndex, UINT32 uiLineNum, UINT8 *pSourceFile) {
-  UINT16 usLength;
-  UINT8 str[256];
-  if (!AddStandardVideoObject(VObjectDesc, uiIndex)) {
-    return FALSE;
-  }
-
-  // record the filename of the vObject (some are created via memory though)
-  usLength = strlen(VObjectDesc->ImageFile) + 1;
-  gpVObjectTail->pName = (UINT8 *)MemAlloc(usLength);
-  memset(gpVObjectTail->pName, 0, usLength);
-  strcpy(gpVObjectTail->pName, VObjectDesc->ImageFile);
-
-  // record the code location of the calling creating function.
-  sprintf(str, "%s -- line(%d)", pSourceFile, uiLineNum);
-  usLength = strlen(str) + 1;
-  gpVObjectTail->pCode = (UINT8 *)MemAlloc(usLength);
-  memset(gpVObjectTail->pCode, 0, usLength);
-  strcpy(gpVObjectTail->pCode, str);
-
-  return TRUE;
-}
-
-void PerformVideoInfoDumpIntoFile(UINT8 *filename, BOOLEAN fAppend) {
-  DumpVObjectInfoIntoFile(filename, fAppend);
-  DumpVSurfaceInfoIntoFile(filename, TRUE);
-}
-
-#endif

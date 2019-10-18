@@ -1,6 +1,3 @@
-#ifndef _CINEMATICS_H_
-#define _CINEMATICS_H_
-
 typedef struct {
   CHAR8 *cFilename;
   //		HFILE										hFileHandle;
@@ -59,4 +56,3 @@ void SmackShowNextFrame(void);
 void CloseSmackFlic(void);
 void InitPal(HWND wh);
 */
-#endif

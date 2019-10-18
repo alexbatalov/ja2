@@ -1,6 +1,3 @@
-#ifndef _OPPLIST_H
-#define _OPPLIST_H
-
 #define EVERYBODY MAXMERCS
 
 #define MAX_MISC_NOISE_DURATION 12 // max dur for VERY loud NOBODY noises
@@ -141,5 +138,3 @@ UINT8 DoorOpeningNoise(SOLDIERTYPE *pSoldier);
 void AddToShouldBecomeHostileOrSayQuoteList(UINT8 ubID);
 
 extern INT8 gbLightSighting[1][16];
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _MAP_INTERFACE_MAP_INVEN_H
-#define _MAP_INTERFACE_MAP_INVEN_H
-
 // this is how close one has to be in the loaded sector to pickup an item
 #define MAX_DISTANCE_TO_PICKUP_ITEM 5
 
@@ -52,5 +49,3 @@ extern BOOLEAN fMapInventoryItemCompatable[];
 
 BOOLEAN IsMapScreenWorldItemInvisibleInMapInventory(WORLDITEM *pWorldItem);
 BOOLEAN IsMapScreenWorldItemVisibleInMapInventory(WORLDITEM *pWorldItem);
-
-#endif

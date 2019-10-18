@@ -1,10 +1,3 @@
-#ifndef __SOUNDMAN_
-#define __SOUNDMAN_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // Sample status flags
 #define SAMPLE_ALLOCATED 0x00000001
 #define SAMPLE_LOCKED 0x00000002
@@ -241,9 +234,3 @@ extern UINT32 Sound3DChannelsInUse(void);
 extern UINT32 SoundStreamsInUse(void);
 extern UINT32 Sound2DChannelsInUse(void);
 extern UINT32 SoundTotalChannelsInUse(void);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

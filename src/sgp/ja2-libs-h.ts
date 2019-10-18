@@ -1,6 +1,3 @@
-#ifndef _JA2_LIBS_H_
-#define _JA2_LIBS_H_
-
 // enums used for accessing the libraries
 enum {
   LIBRARY_DATA,
@@ -26,31 +23,27 @@ enum {
   LIBRARY_TILESETS,
   LIBRARY_LOADSCREENS,
   LIBRARY_INTRO,
-#ifdef JA2DEMO
-  LIBRARY_DEMO_ADS,
-#endif
 
-#ifdef GERMAN
-  LIBRARY_GERMAN_DATA,
-#endif
-
-#ifdef DUTCH
-  LIBRARY_DUTCH_DATA,
-#endif
-
-#ifdef POLISH
-  LIBRARY_POLISH_DATA,
-#endif
-
-#ifdef ITALIAN
-  LIBRARY_ITALIAN_DATA,
-#endif
-
-#ifdef RUSSIAN
-  LIBRARY_RUSSIAN_DATA,
-#endif
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//   LIBRARY_GERMAN_DATA,
+// #endif
+//
+// #ifdef DUTCH
+//   LIBRARY_DUTCH_DATA,
+// #endif
+//
+// #ifdef POLISH
+//   LIBRARY_POLISH_DATA,
+// #endif
+//
+// #ifdef ITALIAN
+//   LIBRARY_ITALIAN_DATA,
+// #endif
+//
+// #ifdef RUSSIAN
+//   LIBRARY_RUSSIAN_DATA,
+// #endif
 
   NUMBER_OF_LIBRARIES,
 };
-
-#endif

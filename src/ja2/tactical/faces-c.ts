@@ -1012,11 +1012,7 @@ void HandleRenderFaceAdjustments(FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLEA
     } else {
       HandleFaceHilights(pFace, uiRenderBuffer, sFaceX, sFaceY);
 
-#ifdef JA2BETAVERSION
-      if (pSoldier->bOppCnt != 0)
-#else
       if (pSoldier->bOppCnt > 0)
-#endif
       {
         SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
 

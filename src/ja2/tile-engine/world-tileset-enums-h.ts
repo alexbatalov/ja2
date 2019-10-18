@@ -1,6 +1,3 @@
-#ifndef WORLD_TILESET_NUMS_H
-#define WORLD_TILESET_NUMS_H
-
 enum {
   GENERIC_1,
   CAVES_1,
@@ -59,5 +56,3 @@ enum {
 
   NUM_TILESETS,
 };
-
-#endif

@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef EDITSCREEN_H
-#define EDITSCREEN_H
-
 #define EDITOR_LIGHT_MAX (SHADE_MIN + SHADE_MAX)
 #define EDITOR_LIGHT_FAKE (EDITOR_LIGHT_MAX - SHADE_MAX - 2)
 
@@ -68,6 +64,3 @@ void HideEntryPoints();
 extern BOOLEAN gfConfirmExitFirst;
 extern BOOLEAN gfConfirmExitPending;
 extern BOOLEAN gfIntendOnEnteringEditor;
-
-#endif
-#endif

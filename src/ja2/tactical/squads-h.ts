@@ -1,6 +1,3 @@
-#ifndef _SQUADS_H
-#define _SQUADS_H
-
 // header for squad management system
 #define NUMBER_OF_SOLDIERS_PER_SQUAD 6
 
@@ -155,5 +152,3 @@ BOOLEAN DoesVehicleExistInSquad(INT8 bSquadValue);
 
 // re-create any trashed squad movement groups
 void CheckSquadMovementGroups(void);
-
-#endif

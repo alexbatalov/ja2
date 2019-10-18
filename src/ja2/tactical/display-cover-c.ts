@@ -85,15 +85,7 @@ void DisplayCoverOfSelectedGridNo() {
         // if it is the first time in here
 
         // pop up a message to say we are in the display cover routine
-#ifdef JA2TESTVERSION
-        {
-          CHAR16 zString[512];
-          swprintf(zString, L"%s, (%d)", zNewTacticalMessages[TCTL_MSG__DISPLAY_COVER], gGameSettings.ubSizeOfDisplayCover);
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zString);
-        }
-#else
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__DISPLAY_COVER]);
-#endif
 
         // increment the display cover counter ( just seeing how many times people use it )
         // gJa25SaveStruct.uiDisplayCoverCounter++;
@@ -527,16 +519,8 @@ void DisplayGridNoVisibleToSoldierGrid() {
         // remove the gridnos
         RemoveVisibleGridNoAtSelectedGridNo();
       } else {
-#ifdef JA2TESTVERSION
-        {
-          CHAR16 zString[512];
-          swprintf(zString, L"%s, (%d)", zNewTacticalMessages[TCTL_MSG__LOS], gGameSettings.ubSizeOfLOS);
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zString);
-        }
-#else
         // pop up a message to say we are in the display cover routine
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, zNewTacticalMessages[TCTL_MSG__LOS]);
-#endif
         // increment the display LOS counter ( just seeing how many times people use it )
         // gJa25SaveStruct.uiDisplayLosCounter++;
       }

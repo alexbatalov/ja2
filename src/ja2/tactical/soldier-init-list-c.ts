@@ -6,11 +6,6 @@ SOLDIERINITNODE *gSoldierInitTail = NULL;
 SOLDIERINITNODE *gOriginalSoldierInitListHead = NULL;
 SOLDIERINITNODE *gAlternateSoldierInitListHead = NULL;
 
-#ifdef JA2BETAVERSION
-BOOLEAN ValidateSoldierInitLinks(UINT8 ubCode);
-BOOLEAN gfDoDialogOnceGameScreenFadesIn = FALSE;
-#endif
-
 UINT32 CountNumberOfNodesWithSoldiers() {
   SOLDIERINITNODE *curr;
   UINT32 num = 0;
@@ -146,10 +141,8 @@ BOOLEAN SaveSoldiersToMap(HWFILE fp) {
 // mode, and kill them all, while replacing them with the proper ones.  Not only that, the alternate
 // editing mode is turned off, and if intentions are to play the game, the user will be facing many
 // enemies!
-#ifdef JA2EDITOR
   if (!gfOriginalList)
     ResetAllMercPositions();
-#endif
 
   curr = gSoldierInitHead;
   for (i = 0; i < gMapInformation.ubNumIndividuals; i++) {
@@ -1230,9 +1223,6 @@ void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumI
       curr = curr->next;
     }
     if (!fQueen) {
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_RED, MSG_ERROR, L"Couldn't place the queen.");
-#endif
     }
   }
 
@@ -1525,11 +1515,6 @@ void AddSoldierInitListBloodcats() {
       curr = curr->next;
     }
     if (bBloodCatPlacements != pSector->bBloodCatPlacements && ubSectorID != SEC_I16 && ubSectorID != SEC_N5) {
-#ifdef JA2BETAVERSION
-      UINT16 str[200];
-      swprintf(str, L"Table specifies that there are %d bloodcat placements in sector %c%d, but the map actually has %d bloodcat placements. Map value takes precedence. KM,LC:1", pSector->bBloodCatPlacements, gWorldSectorY + 'A' - 1, gWorldSectorX, bBloodCatPlacements);
-      DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, NULL);
-#endif
       pSector->bBloodCatPlacements = bBloodCatPlacements;
       pSector->bBloodCats = -1;
       if (!bBloodCatPlacements) {
@@ -1715,56 +1700,6 @@ void AddProfilesNotUsingProfileInsertionData() {
     curr = curr->next;
   }
 }
-
-#ifdef JA2BETAVERSION
-extern void ErrorDetectedInSaveCallback(UINT8 bValue);
-
-BOOLEAN ValidateSoldierInitLinks(UINT8 ubCode) {
-  SOLDIERINITNODE *curr;
-  UINT32 uiNumInvalids = 0;
-  UINT16 str[512];
-  curr = gSoldierInitHead;
-  while (curr) {
-    if (curr->pSoldier) {
-      if (curr->pSoldier->ubID < 20 && !MercPtrs[curr->pSoldier->ubID]->bActive) {
-        uiNumInvalids++;
-      }
-    }
-    curr = curr->next;
-  }
-  if (uiNumInvalids || ubCode == 4) {
-    switch (ubCode) {
-      case 1: // loading save
-        swprintf(str, L"Error detected in save file WHILE LOADING.  Please send save and text files associated with save to Kris and Dave."
-                      L"  After doing so, go back into the game and immediately resave the game which will fix the problem."
-                      L"  This is the bug responsible for mercs disappearing.  Be prepared to answer lots of questions...");
-        DoSaveLoadMessageBox(MSG_BOX_BASIC_STYLE, str, SAVE_LOAD_SCREEN, MSG_BOX_FLAG_OK, ErrorDetectedInSaveCallback);
-        break;
-      case 2: // saving game
-        // swprintf( str, L"Error detected WHILE SAVING file.  Please send save and text files associated with save to Kris and Dave."
-        //							 L"  After doing so, go back into the game and try reloading the new save and saving it again which *could* fix the problem."
-        //							 L"  This is the bug responsible for mercs disappearing.  Be prepared to answer lots of questions..." );
-        // if( guiPreviousOptionScreen == MAP_SCREEN )
-        //	DoMapMessageBox( MSG_BOX_BASIC_STYLE, str, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL );
-        // else
-        //	DoMessageBox( MSG_BOX_BASIC_STYLE, str, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL );
-        break;
-      case 3: // entering sector using temp files (before fade in)
-        gfDoDialogOnceGameScreenFadesIn = TRUE;
-        break;
-      case 4: // after fade in
-        gfDoDialogOnceGameScreenFadesIn = FALSE;
-        swprintf(str, L"Error detected while entering sector USING TEMP FILES.  Please send previous save and text files associated with save to Kris and Dave."
-                      L"  After doing so, go back into the game and saving the game, reloading it, and saving it again *could* fix it."
-                      L"  This is the bug responsible for mercs disappearing.  Be prepared to answer lots of questions...");
-        DoMessageBox(MSG_BOX_BASIC_STYLE, str, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
-        break;
-    }
-    return FALSE;
-  }
-  return TRUE;
-}
-#endif // betaversion error checking functions
 
 BOOLEAN NewWayOfLoadingEnemySoldierInitListLinks(HWFILE hfile) {
   UINT32 uiNumBytesRead;

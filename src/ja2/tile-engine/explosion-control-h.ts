@@ -1,6 +1,3 @@
-#ifndef _EXPLOSION_CONTROL_H
-#define _EXPLOSION_CONTROL_H
-
 #define MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES 2
 
 #define EXPLOSION_FLAG_USEABSPOS 0x00000001
@@ -95,5 +92,3 @@ void RemoveAllActiveTimedBombs(void);
 #define GASMASK_MIN_STATUS 70
 
 BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE *pExplosive, INT16 sSubsequent, BOOLEAN fRecompileMovementCosts, INT16 sWoundAmt, INT16 sBreathAmt, UINT8 ubOwner);
-
-#endif

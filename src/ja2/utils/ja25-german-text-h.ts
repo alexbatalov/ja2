@@ -1,6 +1,3 @@
-#ifndef _JA25GERMANTEXT__H_
-#define _JA25GERMANTEXT__H_
-
 enum {
   TCTL_MSG__RANGE_TO_TARGET,
   TCTL_MSG__ATTACH_TRANSMITTER_TO_LAPTOP,
@@ -32,5 +29,3 @@ enum {
   IMM__IRON_MAN_MODE_WARNING_TEXT,
 };
 extern STR16 gzIronManModeWarningText[];
-
-#endif

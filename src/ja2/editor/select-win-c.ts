@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 extern BOOLEAN gfOverheadMapDirty;
 
 extern void SetClippingRect(SGPRect *clip);
@@ -1438,5 +1436,3 @@ BOOLEAN DisplayWindowFunc(DisplayList *pNode, INT16 iTopCutOff, INT16 iBottomCut
 
   return fReturnVal;
 }
-
-#endif

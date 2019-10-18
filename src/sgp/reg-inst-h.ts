@@ -10,9 +10,6 @@
 //
 //**************************************************************************
 
-#ifndef _RegInst_h
-#define _RegInst_h
-
 //**************************************************************************
 //
 //				Includes
@@ -37,10 +34,6 @@
 //
 //**************************************************************************
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // call once per execution of application:
 extern BOOLEAN InitializeRegistryKeys(STR strAppName, STR strRegistryKey);
 
@@ -61,9 +54,3 @@ extern BOOL GetProfileBinary(STR lpszSection, STR lpszEntry, BYTE **ppData, UINT
 extern BOOL WriteProfileInt(STR lpszSection, STR lpszEntry, int nValue);
 extern BOOL WriteProfileChar(STR lpszSection, STR lpszEntry, STR lpszValue);
 extern BOOL WriteProfileBinary(STR lpszSection, STR lpszEntry, LPBYTE pData, UINT nBytes);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

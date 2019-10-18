@@ -1,6 +1,3 @@
-#ifndef _STRATEGIC_EVENT_HANDLER_H_
-#define _STRATEGIC_EVENT_HANDLER_H_
-
 #define KINGPIN_MONEY_SECTOR_X 5
 #define KINGPIN_MONEY_SECTOR_Y MAP_ROW_D
 #define KINGPIN_MONEY_SECTOR_Z 1
@@ -27,5 +24,3 @@ void HandleEarlyMorningEvents(void);
 void MakeCivGroupHostileOnNextSectorEntrance(UINT8 ubCivGroup);
 
 void RemoveAssassin(UINT8 ubProfile);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef MEANWHILE_H
-#define MEANWHILE_H
-
 enum {
   END_OF_PLAYERS_FIRST_BATTLE,
   DRASSEN_LIBERATED,
@@ -87,5 +84,3 @@ extern BOOLEAN gfMeanwhileScheduled;
 extern BOOLEAN gfMeanwhileTryingToStart;
 extern BOOLEAN gfInMeanwhile;
 extern UINT32 uiMeanWhileFlags;
-
-#endif

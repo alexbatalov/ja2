@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __CURSOR_MODES_H
-#define __CURSOR_MODES_H
-
 enum {
   SMALLSELECTION, // 1x1
   MEDIUMSELECTION, // 3x3
@@ -29,7 +25,3 @@ void RemoveCursors();
 extern UINT16 *wszSelType[6];
 
 extern BOOLEAN gfCurrentSelectionWithRightButton;
-
-#endif
-
-#endif

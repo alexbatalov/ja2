@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __ITEM_STATISTICS_H
-#define __ITEM_STATISTICS_H
-
 // Handles the dynamic changing of text input fields and button modes depending on the currently edited
 // item.  Both the merc's inventory panel, and the items tab use the same code to accomplish this.
 
@@ -86,6 +82,3 @@ extern INT8 gbActionItemIndex;
 extern INT8 gbDefaultBombTrapLevel;
 
 extern void SetOwnershipGroup(UINT8 ubNewGroup);
-
-#endif
-#endif

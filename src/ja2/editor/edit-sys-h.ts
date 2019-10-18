@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDIT_SYS_H
-#define __EDIT_SYS_H
-
 #define SMALLBRUSH 0
 #define MEDIUMBRUSH 1
 #define LARGEBRUSH 2
@@ -66,6 +62,3 @@ void PasteHigherTexture(UINT32 iMapIndex, UINT32 fNewType);
 void RaiseWorldLand();
 
 void EliminateObjectLayerRedundancy();
-
-#endif
-#endif

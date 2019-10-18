@@ -1,6 +1,3 @@
-#ifndef MAP_SCREEN_INTERFACE_H
-#define MAP_SCREEN_INTERFACE_H
-
 typedef struct FASTHELPREGION {
   // the string
   CHAR16 FastHelpText[256];
@@ -566,5 +563,3 @@ void EndUpdateBox(BOOLEAN fContinueTimeCompression);
 
 extern BOOLEAN CanCharacterMoveInStrategic(SOLDIERTYPE *pSoldier, INT8 *pbErrorNumber);
 extern BOOLEAN MapscreenCanPassItemToCharNum(INT32 iNewCharSlot);
-
-#endif

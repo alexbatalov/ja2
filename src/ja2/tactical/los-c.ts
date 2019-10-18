@@ -166,10 +166,6 @@ BOOLEAN CalculateLOSNormal(STRUCTURE *pStructure, INT8 bLOSX, INT8 bLOSY, INT8 b
 
 extern UINT8 gubMaterialArmour[];
 
-#ifdef LOS_DEBUG
-LOSResults gLOSTestResults = { 0 };
-#endif
-
 FIXEDPT FloatToFixed(FLOAT dN) {
   FIXEDPT qN;
   // verify that dN is within the range storable by FIXEDPT?
@@ -202,19 +198,7 @@ FLOAT Distance2D(FLOAT dDeltaX, FLOAT dDeltaY) {
 
 //#define DEBUGLOS
 
-#if defined(JA2BETAVERSION) && defined(DEBUGLOS)
-void DebugLOS(STR szOutput) {
-  FILE *DebugFile;
-
-  if ((DebugFile = fopen("losdebug.txt", "a+t")) != NULL) {
-    fputs(szOutput, DebugFile);
-    fputs("\n", DebugFile);
-    fclose(DebugFile);
-  }
-}
-#else
 #define DebugLOS(a)
-#endif
 
 enum {
   LOC_OTHER,
@@ -637,19 +621,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
 
   ddHorizAngle = atan2(dDeltaY, dDeltaX);
 
-#ifdef LOS_DEBUG
-  memset(&gLOSTestResults, 0, sizeof(LOSResults));
-  gLOSTestResults.fLOSTestPerformed = TRUE;
-  gLOSTestResults.iStartX = (INT32)dStartX;
-  gLOSTestResults.iStartY = (INT32)dStartY;
-  gLOSTestResults.iStartZ = (INT32)dStartZ;
-  gLOSTestResults.iEndX = (INT32)dEndX;
-  gLOSTestResults.iEndY = (INT32)dEndY;
-  gLOSTestResults.iEndZ = (INT32)dEndZ;
-  gLOSTestResults.iMaxDistance = (INT32)iSightLimit;
-  gLOSTestResults.iDistance = (INT32)dDistance;
-#endif
-
   qIncrX = FloatToFixed(dDeltaX / (FLOAT)iDistance);
   qIncrY = FloatToFixed(dDeltaY / (FLOAT)iDistance);
   qIncrZ = FloatToFixed(dDeltaZ / (FLOAT)iDistance);
@@ -768,13 +739,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
       iCurrAboveLevelZ = FIXEDPT_TO_INT32(qCurrZ - qLandHeight);
       if (iCurrAboveLevelZ < 0) {
 // ground is in the way!
-#ifdef LOS_DEBUG
-        gLOSTestResults.iStoppedX = FIXEDPT_TO_INT32(qCurrX);
-        gLOSTestResults.iStoppedY = FIXEDPT_TO_INT32(qCurrY);
-        gLOSTestResults.iStoppedZ = FIXEDPT_TO_INT32(qCurrZ);
-        // subtract one to compensate for rounding up when negative
-        gLOSTestResults.iCurrCubesZ = 0;
-#endif
         return 0;
       }
       // check for the existence of structures
@@ -859,13 +823,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
         // check for ground collision
         if (qCurrZ < qLandHeight && iLoop < iDistance) {
 // ground is in the way!
-#ifdef LOS_DEBUG
-          gLOSTestResults.iStoppedX = FIXEDPT_TO_INT32(qCurrX);
-          gLOSTestResults.iStoppedY = FIXEDPT_TO_INT32(qCurrY);
-          gLOSTestResults.iStoppedZ = FIXEDPT_TO_INT32(qCurrZ);
-          // subtract one to compensate for rounding up when negative
-          gLOSTestResults.iCurrCubesZ = CONVERT_HEIGHTUNITS_TO_INDEX(iCurrCubesAboveLevelZ) - 1;
-#endif
           return 0;
         }
 
@@ -941,10 +898,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
                         iAdjSightLimit -= SMELL_REDUCTION_FOR_NEARBY_OBSTACLE;
                         if (iLoop > 100 || iDistance > iAdjSightLimit) {
 // out of visual range
-#ifdef LOS_DEBUG
-                          gLOSTestResults.fOutOfRange = TRUE;
-                          gLOSTestResults.iCurrCubesZ = iCurrCubesZ;
-#endif
                           return 0;
                         }
 
@@ -971,16 +924,8 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
                           // use standard value
                           iAdjSightLimit -= ubTreeSightReduction;
                         }
-#ifdef LOS_DEBUG
-                        gLOSTestResults.ubTreeSpotsHit++;
-                        gLOSTestResults.iMaxDistance = iSightLimit;
-#endif
                         if (iDistance > iAdjSightLimit) {
 // out of visual range
-#ifdef LOS_DEBUG
-                          gLOSTestResults.fOutOfRange = TRUE;
-                          gLOSTestResults.iCurrCubesZ = iCurrCubesZ;
-#endif
                           return 0;
                         }
                       }
@@ -1026,12 +971,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
                       }
                       if (fResolveHit) {
 // hit the obstacle!
-#ifdef LOS_DEBUG
-                        gLOSTestResults.iStoppedX = FIXEDPT_TO_INT32(qCurrX);
-                        gLOSTestResults.iStoppedY = FIXEDPT_TO_INT32(qCurrY);
-                        gLOSTestResults.iStoppedZ = FIXEDPT_TO_INT32(qCurrZ);
-                        gLOSTestResults.iCurrCubesZ = iCurrCubesAboveLevelZ;
-#endif
                         return 0;
                       }
                     }
@@ -1109,9 +1048,6 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
 // unless the distance is integral, after the loop there will be a
 // fractional amount of distance remaining which is unchecked
 // but we shouldn't(?) need to check it because the target is there!
-#ifdef LOS_DEBUG
-  gLOSTestResults.fLOSClear = TRUE;
-#endif
   // this somewhat complicated formula does the following:
   // it starts with the distance to the target
   // it adds the difference between the original and adjusted sight limit, = the amount of cover
@@ -1411,9 +1347,6 @@ BOOLEAN SoldierToSoldierLineOfSightTimingTest(SOLDIERTYPE *pStartSoldier, SOLDIE
   }
   uiEndTime = GetJA2Clock();
   if ((OutFile = fopen("Timing.txt", "a+t")) != NULL) {
-#ifdef _DEBUG
-    fprintf(OutFile, "DEBUG: ");
-#endif
     fprintf(OutFile, String("Time for %d calls is %d milliseconds\n", uiLoopLimit, uiEndTime - uiStartTime));
     fclose(OutFile);
   }

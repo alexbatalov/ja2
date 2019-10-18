@@ -1,6 +1,3 @@
-#ifndef _SPECK_QUOTES_H_
-#define _SPECK_QUOTES_H_
-
 // Enum,s for all of specks quotes
 enum {
   SPECK_QUOTE_FIRST_TIME_IN_0, // 0
@@ -105,5 +102,3 @@ enum {
           SPECK_QUOTE_,
   */
 };
-
-#endif

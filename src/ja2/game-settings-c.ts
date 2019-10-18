@@ -92,10 +92,6 @@ BOOLEAN LoadGameSettings() {
   SetSpeechVolume(gGameSettings.ubSpeechVolume);
   MusicSetVolume(gGameSettings.ubMusicVolumeSetting);
 
-#ifndef BLOOD_N_GORE_ENABLED
-  gGameSettings.fOptions[TOPTION_BLOOD_N_GORE] = FALSE;
-#endif
-
   // if the user doesnt want the help screens present
   if (gGameSettings.fHideHelpInAllScreens) {
     gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen = 0;
@@ -170,10 +166,6 @@ void InitGameSettings() {
   gGameSettings.fOptions[TOPTION_SLEEPWAKE_NOTIFICATION] = TRUE;
 
   gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM] = FALSE;
-
-#ifndef BLOOD_N_GORE_ENABLED
-  gGameSettings.fOptions[TOPTION_BLOOD_N_GORE] = FALSE;
-#endif
 
   gGameSettings.fOptions[TOPTION_MERC_ALWAYS_LIGHT_UP] = FALSE;
   gGameSettings.fOptions[TOPTION_SMART_CURSOR] = FALSE;
@@ -446,10 +438,6 @@ BOOLEAN IsDriveLetterACDromDrive(STR pDriveLetter) {
   uiDriveType = GetDriveType(zRootName);
   switch (uiDriveType) {
     // The drive is a CD-ROM drive.
-#ifdef JA2BETAVERSION
-    case DRIVE_NO_ROOT_DIR:
-    case DRIVE_REMOTE:
-#endif
     case DRIVE_CDROM:
       return TRUE;
       break;

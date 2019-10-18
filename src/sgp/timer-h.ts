@@ -1,6 +1,3 @@
-#ifndef __TIMER_
-#define __TIMER_
-
 typedef UINT32 TIMER;
 
 #define MAIN_TIMER_ID 1
@@ -11,18 +8,8 @@ typedef UINT32 TIMER;
 #define HOURS(a) (MINUTES((a)) / 60)
 #define DAYS(a) (HOURS((a)) / 24)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 BOOLEAN InitializeClockManager(void);
 void ShutdownClockManager(void);
 TIMER GetClock(void);
 TIMER SetCountdownClock(UINT32 TimeToElapse);
 UINT32 ClockIsTicking(TIMER uiTimer);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

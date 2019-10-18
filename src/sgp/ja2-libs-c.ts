@@ -25,27 +25,24 @@ LibraryInitHeader gGameLibaries[] = {
   { "LoadScreens.slf", TRUE, TRUE },
   { "Intro.slf", TRUE, TRUE },
 
-#ifdef JA2DEMO
-  { "DemoAds.slf", FALSE, TRUE },
-#endif
-
-#ifdef GERMAN
-  { "German.slf", FALSE, TRUE },
-#endif
-
-#ifdef POLISH
-  { "Polish.slf", FALSE, TRUE },
-#endif
-
-#ifdef DUTCH
-  { "Dutch.slf", FALSE, TRUE },
-#endif
-
-#ifdef ITALIAN
-  { "Italian.slf", FALSE, TRUE },
-#endif
-
-#ifdef RUSSIAN
-  { "Russian.slf", FALSE, TRUE },
-#endif
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//   { "German.slf", FALSE, TRUE },
+// #endif
+//
+// #ifdef POLISH
+//   { "Polish.slf", FALSE, TRUE },
+// #endif
+//
+// #ifdef DUTCH
+//   { "Dutch.slf", FALSE, TRUE },
+// #endif
+//
+// #ifdef ITALIAN
+//   { "Italian.slf", FALSE, TRUE },
+// #endif
+//
+// #ifdef RUSSIAN
+//   { "Russian.slf", FALSE, TRUE },
+// #endif
 };

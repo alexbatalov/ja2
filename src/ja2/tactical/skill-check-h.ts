@@ -1,6 +1,3 @@
-#ifndef __SKILL_CHECK_H
-#define __SKILL_CHECK_H
-
 extern void ReducePointsForFatigue(SOLDIERTYPE *pSoldier, UINT16 *pusPoints);
 extern INT32 GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, INT32 iSkill);
 extern INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bDifficulty);
@@ -35,5 +32,3 @@ enum {
   ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK,
   DISARM_ELECTRONIC_TRAP_CHECK,
 } SkillChecks;
-
-#endif

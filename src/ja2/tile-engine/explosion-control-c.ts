@@ -641,16 +641,10 @@ BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNext
                     ApplyMapChangesToMapTempFile(FALSE);
                   } else {
 // error!
-#ifdef JA2BETAVERSION
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                     break;
                   }
                 } else {
 // error!
-#ifdef JA2BETAVERSION
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                   break;
                 }
                 // search for another, from the start of the list
@@ -670,16 +664,10 @@ BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNext
                     ApplyMapChangesToMapTempFile(FALSE);
                   } else {
 // error!
-#ifdef JA2BETAVERSION
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                     break;
                   }
                 } else {
 // error!
-#ifdef JA2BETAVERSION
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                   break;
                 }
                 // search for another, from the start of the list
@@ -755,16 +743,10 @@ BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNext
                     ApplyMapChangesToMapTempFile(FALSE);
                   } else {
 // error!
-#ifdef JA2BETAVERSION
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                     break;
                   }
                 } else {
 // error!
-#ifdef JA2BETAVERSION
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                   break;
                 }
                 // search for another, from the start of the list
@@ -784,16 +766,10 @@ BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNext
                     ApplyMapChangesToMapTempFile(FALSE);
                   } else {
 // error!
-#ifdef JA2BETAVERSION
-                    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                     break;
                   }
                 } else {
 // error!
-#ifdef JA2BETAVERSION
-                  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Problems removing structure attached to wall at %d", sNewGridNo);
-#endif
                   break;
                 }
                 // search for another, from the start of the list
@@ -1971,9 +1947,6 @@ void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
         }
       } else {
 // error message here
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Action item to open door in gridno %d but there is none!", sGridNo);
-#endif
       }
       break;
     case ACTION_ITEM_CLOSE_DOOR:
@@ -1992,9 +1965,6 @@ void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
         }
       } else {
 // error message here
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Action item to close door in gridno %d but there is none!", sGridNo);
-#endif
       }
       break;
     case ACTION_ITEM_TOGGLE_DOOR:
@@ -2008,9 +1978,6 @@ void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
         gfExplosionQueueMayHaveChangedSight = TRUE;
       } else {
 // error message here
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Action item to toggle door in gridno %d but there is none!", sGridNo);
-#endif
       }
       break;
     case ACTION_ITEM_UNLOCK_DOOR: {
@@ -2293,9 +2260,6 @@ void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
       break;
     default:
 // error message here
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Action item with invalid action in gridno %d!", sGridNo);
-#endif
       break;
   }
 }

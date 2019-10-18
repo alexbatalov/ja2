@@ -1,11 +1,4 @@
 // NUMBER_OF_LIBRARIES
-#ifdef JA2
-#elif defined(UTIL)
-LibraryInitHeader gGameLibaries[] = { 0 };
-#else
-// We link it as an .obj file
-//	#include "WizLibs.c"
-#endif
 
 // used when doing the binary search of the libraries
 INT16 gsCurrentLibrary = -1;
@@ -35,11 +28,7 @@ BOOLEAN InitializeFileDatabase() {
   UINT32 uiSize;
   BOOLEAN fLibraryInited = FALSE;
 
-#ifdef JA2
   GetCDLocation();
-#else
-  gzCdDirectory[0] = '.';
-#endif
 
   // if all the libraries exist, set them up
   gFileDataBase.usNumberOfLibraries = NUMBER_OF_LIBRARIES;
@@ -227,10 +216,6 @@ BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOO
   // Allocate enough memory for the library header
   pLibHeader->pFileHeader = MemAlloc(sizeof(FileHeaderStruct) * usNumEntries);
 
-#ifdef JA2TESTVERSION
-  pLibHeader->uiTotalMemoryAllocatedForLibrary = sizeof(FileHeaderStruct) * usNumEntries;
-#endif
-
   // place the file pointer at the begining of the file headers ( they are at the end of the file )
   SetFilePointer(hFile, -(LibFileHeader.iEntries * (INT32)sizeof(DIRENTRY)), NULL, FILE_END);
 
@@ -254,10 +239,6 @@ BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOO
         // report an error
         return FALSE;
       }
-
-#ifdef JA2TESTVERSION
-      pLibHeader->uiTotalMemoryAllocatedForLibrary += strlen(DirEntry.sFileName) + 1;
-#endif
 
       // copy the file name, offset and length into the header
       strcpy(pLibHeader->pFileHeader[uiCount].pFileName, DirEntry.sFileName);
@@ -287,10 +268,6 @@ BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOO
     pLibHeader->sLibraryPath[0] = '\0';
   }
 
-#ifdef JA2TESTVERSION
-  pLibHeader->uiTotalMemoryAllocatedForLibrary += strlen(LibFileHeader.sPathToLibrary) + 1;
-#endif
-
   // allocate space for the open files array
   pLibHeader->pOpenFiles = MemAlloc(INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
   if (!pLibHeader->pOpenFiles) {
@@ -299,10 +276,6 @@ BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOO
   }
 
   memset(pLibHeader->pOpenFiles, 0, INITIAL_NUM_HANDLES * sizeof(FileOpenStruct));
-
-#ifdef JA2TESTVERSION
-  pLibHeader->uiTotalMemoryAllocatedForLibrary += INITIAL_NUM_HANDLES * sizeof(FileOpenStruct);
-#endif
 
   pLibHeader->hLibraryHandle = hFile;
   pLibHeader->usNumberOfEntries = usNumEntries;
@@ -743,11 +716,6 @@ BOOLEAN CloseLibrary(INT16 sLibraryID) {
   // if the library isnt loaded, dont close it
   if (!IsLibraryOpened(sLibraryID))
     return FALSE;
-
-#ifdef JA2TESTVERSION
-  FastDebugMsg(String("ShutDownFileDatabase( ): %d bytes of ram used for the Library #%3d, path '%s',  in the File Database System\n", gFileDataBase.pLibraries[sLibraryID].uiTotalMemoryAllocatedForLibrary, sLibraryID, gFileDataBase.pLibraries[sLibraryID].sLibraryPath));
-  gFileDataBase.pLibraries[sLibraryID].uiTotalMemoryAllocatedForLibrary = 0;
-#endif
 
   // if there are any open files, loop through the library and close down whatever file is still open
   if (gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen) {

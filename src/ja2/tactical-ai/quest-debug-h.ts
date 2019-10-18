@@ -1,6 +1,3 @@
-#ifndef QUEST_DEBUG_H
-#define QUEST_DEBUG_H
-
 // Type of quote
 enum {
   QD_NPC_MSG,
@@ -18,5 +15,3 @@ enum {
 
 void ToggleQuestDebugModes(UINT8 ubType);
 void QuestDebugFileMsg(UINT8 ubQuoteType, UINT8 ubPriority, STR pStringA, ...);
-
-#endif

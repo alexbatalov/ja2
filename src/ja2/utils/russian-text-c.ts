@@ -1,5 +1,3 @@
-#ifdef RUSSIAN
-
 /*
 
 ******************************************************************************************************
@@ -2934,20 +2932,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Сохр.версия была изменена.Сообщите о проблемах.Продолжить?",
-#else
   L"Попытка загрузки старой версии. Обновить автоматически и загрузить?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Сохр.версии и версии игры были изменены. Сообщите о проблемах. Продолжить?",
-#else
   L"Попытка загрузки старой версии. Обновить автоматически и загрузить?",
-#endif
 
   L"Вы уверены,что хотите записать сох.игру поверх #%d?",
   L"Вы хотите загрузить игру из ячейки #",
@@ -3016,71 +3006,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s:нужно %d процентов верности тебе,чтобы продолжить тренировку ополчения.",
   L"В %s больше нельзя тренировать ополчение.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"ЛУЧШАЯ СТРАТЕГИЯ",
-  L"ЛУЧШАЯ РПГ.",
-  L"Многомерная игра",
-  L"Абсолютно новая история",
-  L"Кровопролитнейшие бои",
-  L"Динамическое освещение",
-  L"Взаимодействие с NPC",
-  L"Тайные и ночные бои",
-  L"Создай собственного наемника",
-  L"Захватывающий и необычный квест",
-  L"Управляемые машины",
-  // 10-19
-  L"Больше 150 персонажей",
-  L"Сотни крутых фишек",
-  L"Больше 250 уник.мест",
-  L"Ошеломляющие взрывы",
-  L"Новые тактич.маневры",
-  L"Масса анимации",
-  L"Более 9000 строк диалогов",
-  L"Потрясающая музыка Кейвина Мантея",
-  L"Глобальная стратегия",
-  L"Прекрасно выдержанный игровой баланс",
-  // 20-29
-  L"Подготовка собств.ополчения",
-  L"Гибкий сценарий",
-  L"Реалистичное взаимодействие с героями",
-  L"Красочная многоцветная графика",
-  L"Покупки,продажи,торговля",
-  L"Безжалостный рузум противников",
-  L"Искуство ведения боя",
-  L"Элементы фантастики",
-  L"24-часовой режим",
-  L"Более 60 часов игры",
-  // 30-34
-  L"Множество уровней сложности",
-  L"Реалистичное моделирование баллистики",
-  L"Гениальные физические модели",
-  L"Полное интерактивное обеспечение",
-  L"И более того...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"Одна из самых....игр 1999 года\"",
-  L"PC Gamer",
-  L"Закажите игру в Буке Сегодня! buka@dol.ru",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"Сейчас вы узнаете,что такое настоящая стратегия,игра и битва:",
-  // Point 1 (uses one string)
-  L"Вы вашем распоряжении команда наемников с характером(никакой скуки и занудства).",
-  // Point 2 (uses one string)
-  L"Посмотрите, какой широкий спектр маневров,от бега до ползания,прыжки,карабкание,бой плечом к плечу и еще...",
-  // Point 3 (uses one string)
-  L"Игра с огнем!Крутые игрушки,оружие убийства,взрывы.",
-  // Additional comment
-  L"(and this is just the beginning)",
-  // Introduction/instructions
-  L"Добро пожаловать в Демовилль(нажмите,чтобы продолжить)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3297,10 +3222,6 @@ STR16 pMessageStrings[] = {
   L"Эта ячейка-для быстрого сохранения экранов игры (ALT+S).",
   L"Открыто",
   L"Закрыто",
-#ifdef JA2DEMO
-  L"Вас всех разгромили. Может стоит повидаться с Габби?",
-  L"Очень плохо,что ты убил его.",
-#endif
   L"У вас кончается дисковое пространство. У вас осталось %sМБ свободных,а для АЛЬЯНСА 2 требуется %sMБ.",
   L"Нанят %s из AIM",
   L"%s поймал %s.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3351,17 +3272,6 @@ STR16 pMessageStrings[] = {
   L"Входим в подвальный уровень %d...",
   L"Уходим из подвала...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"В полной игре вы сможете разделять\nкоманду, но не в демо версии.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Общая карта в демо-версии отсутствует.",
-
-#endif
-
   L".", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"ВЫКЛЮЧЕНО.",
   L"ВКЛЮЧЕНО.",
@@ -3376,9 +3286,6 @@ STR16 pMessageStrings[] = {
   L"Багаж прибыл в Драссен.",
   L"%s должен прибыть в указанное место высадки (сектор %s) в день %d,примерно в %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
   L"История обновлена.",
-#ifdef JA2BETAVERSION
-  L"Игра сохранена в ячейку авто-сохранения.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3708,5 +3615,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Выключатель нажат.",
 };
-
-#endif // RUSSIAN

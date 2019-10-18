@@ -1,6 +1,3 @@
-#ifndef _INTRO__C_
-#define _INTRO__C_
-
 UINT32 IntroScreenShutdown(void);
 UINT32 IntroScreenHandle(void);
 UINT32 IntroScreenInit(void);
@@ -16,5 +13,3 @@ enum {
 extern UINT32 guiSmackerSurface;
 
 void SetIntroType(INT8 bIntroType);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __LAPTOP_H
-#define __LAPTOP_H
-
 INT32 EnterLaptop();
 void ExitLaptop();
 void RenderLaptop();
@@ -165,5 +162,3 @@ extern UINT32 guiLaptopBACKGROUND;
 #define DEAD_MERC_COLOR_RED 255
 #define DEAD_MERC_COLOR_GREEN 55
 #define DEAD_MERC_COLOR_BLUE 55
-
-#endif

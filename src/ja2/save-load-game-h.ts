@@ -1,6 +1,3 @@
-#ifndef _SAVE_LOAD_GAME_H_
-#define _SAVE_LOAD_GAME_H_
-
 #define BYTESINMEGABYTE 1048576 // 1024*1024
 #define REQUIRED_FREE_SPACE (20 * BYTESINMEGABYTE)
 
@@ -18,10 +15,6 @@ typedef struct {
   CHAR16 sSavedGameDesc[SIZE_OF_SAVE_GAME_DESC];
 
   UINT32 uiFlags;
-
-#ifdef CRIPPLED_VERSION
-  UINT8 ubCrippleFiller[20];
-#endif
 
   // The following will be used to quickly access info to display in the save/load screen
   UINT32 uiDay;
@@ -67,5 +60,3 @@ void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pb
 
 UINT32 guiLastSaveGameNum;
 INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave);
-
-#endif

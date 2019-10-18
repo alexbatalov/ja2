@@ -1,8 +1,3 @@
-#ifndef __AI_H
-#define __AI_H
-
-#define TESTAICONTROL
-
 extern INT8 gubAIPathCosts[19][19];
 #define AI_PATHCOST_RADIUS 9
 
@@ -224,5 +219,3 @@ BOOLEAN ValidCreatureTurn(SOLDIERTYPE *pCreature, INT8 bNewDirection);
 
 BOOLEAN WearGasMaskIfAvailable(SOLDIERTYPE *pSoldier);
 INT16 WhatIKnowThatPublicDont(SOLDIERTYPE *pSoldier, UINT8 ubInSightOnly);
-
-#endif

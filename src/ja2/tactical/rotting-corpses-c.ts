@@ -1169,9 +1169,6 @@ void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
   pCorpse = FindCorpseBasedOnStructure(sBaseGridNo, pBaseStructure);
 
   if (pCorpse == NULL) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Vaporize corpse but corpse cannot be found at: %d", sBaseGridNo);
-#endif
     return;
   }
 

@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __SMOOTH_H
-#define __SMOOTH_H
-
 #define ONELEVELTYPEONEROOF 1
 #define ONELEVELTYPETWOROOF 2
 
@@ -19,6 +15,3 @@ void SmoothAllTerrainTypeRadius(UINT32 iMapIndex, UINT8 ubRadius, BOOLEAN fForce
 
 void SmoothExitGrid(int gridno, UINT16 *piNewTile, BOOLEAN fForceSmooth);
 void SmoothExitGridRadius(INT16 sMapIndex, UINT8 ubRadius);
-
-#endif
-#endif

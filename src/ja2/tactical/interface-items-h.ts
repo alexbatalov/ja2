@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_ITEMS_H
-#define __INTERFACE_ITEMS_H
-
 // DEFINES FOR ITEM SLOT SIZES IN PIXELS
 #define BIG_INV_SLOT_WIDTH 61
 #define BIG_INV_SLOT_HEIGHT 22
@@ -135,5 +132,3 @@ BOOLEAN HandleCompatibleAmmoUIForMapInventory(SOLDIERTYPE *pSoldier, INT32 bInvP
 void ResetCompatibleItemArray();
 
 void CycleItemDescriptionItem();
-
-#endif

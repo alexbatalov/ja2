@@ -475,10 +475,6 @@ void ShowSAMSitesOnStrategicMap(void);
 // UINT8 NumActiveCharactersInSector( INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ );
 // UINT8 NumFriendlyInSector( INT16 sX, INT16 sY, INT8 bZ );
 
-#ifdef JA2DEMO
-BOOLEAN DrawMapForDemo(void);
-#endif
-
 // callbacks
 void MilitiaBoxMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
 
@@ -618,7 +614,6 @@ void HandleShowingOfEnemiesWithMilitiaOn(void) {
 }
 
 UINT32 DrawMap(void) {
-#ifndef JA2DEMO
   HVSURFACE hSrcVSurface;
   UINT32 uiDestPitchBYTES;
   UINT32 uiSrcPitchBYTES;
@@ -627,12 +622,6 @@ UINT32 DrawMap(void) {
   SGPRect clip;
   INT16 cnt, cnt2;
   INT32 iCounter = 0;
-#else
-  DrawMapForDemo();
-  return TRUE;
-#endif
-
-#ifndef JA2DEMO
 
   if (!iCurrentMapSectorZ) {
     pDestBuf = (UINT16 *)LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
@@ -798,8 +787,6 @@ UINT32 DrawMap(void) {
   DisplayLevelString();
 
   // RestoreClipRegionToFullScreen( );
-
-#endif // !JA2DEMO
 
   return TRUE;
 }
@@ -5305,25 +5292,6 @@ INT32 GetNumberOfMilitiaInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) 
 
   return iNumberInSector;
 }
-
-#ifdef JA2DEMO
-
-BOOLEAN DrawMapForDemo(void) {
-  VOBJECT_DESC VObjectDesc;
-  UINT32 uiTempObject;
-  HVOBJECT hHandle;
-
-  VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
-  FilenameForBPP("INTERFACE\\map_1.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &uiTempObject));
-
-  GetVideoObject(&hHandle, uiTempObject);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, 290, 26, VO_BLT_SRCTRANSPARENCY, NULL);
-  DeleteVideoObjectFromIndex(uiTempObject);
-
-  return TRUE;
-}
-#endif
 
 // There is a special case flag used when players encounter enemies in a sector, then retreat.  The number of enemies
 // will display on mapscreen until time is compressed.  When time is compressed, the flag is cleared, and

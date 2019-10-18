@@ -13,14 +13,6 @@ int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, 
   BOOLEAN fSkipTilesWithMercs;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "LegalNPC->sDestination: ERROR - rcvd invalid gridno %d", gridno);
-#endif
-
-#ifdef BETAVERSION
-    NumMessage("LegalNPC->sDestination: ERROR - rcvd invalid gridno ", gridno);
-#endif
-
     return FALSE;
   }
 
@@ -76,9 +68,6 @@ int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, 
         return PlotPath(pSoldier, sGridno, FALSE, FALSE, FALSE, WALKING, FALSE, FALSE, 0);
 
       default:
-#ifdef BETAVERSION
-        NumMessage("LegalNPC->sDestination: ERROR - illegal pathMode = ", ubPathMode);
-#endif
         return FALSE;
     }
   } else // something failed - didn't even have to test path
@@ -92,10 +81,6 @@ int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
   // have to make sure the old destination is still legal (somebody may
   // have occupied the destination gridno in the meantime!)
   if (LegalNPCDestination(pSoldier, sGridno, ENSURE_PATH, WATEROK, 0)) {
-#ifdef DEBUGDECISIONS
-    DebugAI(String("%d CONTINUES MOVEMENT to gridno %d...\n", pSoldier->ubID, gridno));
-#endif
-
     pSoldier->bPathStored = TRUE; // optimization - Ian
 
     // make him go to it (needed to continue movement across multiple turns)
@@ -107,36 +92,12 @@ int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
     if (pSoldier->sDestination == sGridno) {
       ubSuccess = TRUE;
     } else {
-#ifdef BETAVERSION
-      sprintf(tempstr, "TryToResumeMovement: ERROR - NewDest failed for %s, action CANCELED", pSoldier->name);
-
-#ifdef RECORDNET
-      fprintf(NetDebugFile, "\n\t%s\n", tempstr);
-#endif
-
-      PopMessage(tempstr);
-      SaveGame(ERROR_SAVE);
-#endif
-
       // must work even for escorted civs, can't just set the flag
       CancelAIAction(pSoldier, FORCE);
     }
   } else {
     // don't black-list anything here, this situation can come up quite
     // legally if another soldier gets in the way between turns
-
-#ifdef BETAVERSION
-    sprintf(tempstr, "TryToResumeMovement: %d can't continue to gridno %d, no longer legal!", pSoldier->ubID, gridno);
-
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "\n\t%s\n", tempstr);
-#endif
-
-#ifdef DEBUGDECISIONS
-    AIPopMessage(tempstr);
-#endif
-
-#endif
 
     if (!pSoldier->bUnderEscort) {
       CancelAIAction(pSoldier, DONTFORCE); // no need to force this
@@ -180,11 +141,6 @@ int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
 INT16 NextPatrolPoint(SOLDIERTYPE *pSoldier) {
   // patrol slot 0 is UNUSED, so max patrolCnt is actually only 9
   if ((pSoldier->bPatrolCnt < 1) || (pSoldier->bPatrolCnt >= MAXPATROLGRIDS)) {
-#ifdef BETAVERSION
-    sprintf(tempstr, "NextPatrolPoint: ERROR: Invalid patrol count = %d for %s", pSoldier->bPatrolCnt, pSoldier->name);
-    PopMessage(tempstr);
-#endif
-
     return NOWHERE;
   }
 
@@ -212,9 +168,6 @@ INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
 
     // if we're back where we started, then ALL other patrol points are junk!
     if (pSoldier->sGridNo == sPatrolPoint) {
-#ifdef BETAVERSION
-      NumMessage("PROBLEM WITH SCENARIO: All other patrol points are invalid for guynum ", pSoldier->ubID);
-#endif
       // force change of orders & an abort
       sPatrolPoint = NOWHERE;
     }
@@ -222,10 +175,6 @@ INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
 
   // if we don't have a legal patrol point
   if (sPatrolPoint == NOWHERE) {
-#ifdef BETAVERSION
-    NumMessage("PointPatrolAI: ERROR - no legal patrol point for %d", pSoldier->ubID);
-#endif
-
     // over-ride orders to something safer
     pSoldier->bOrders = FARPATROL;
     return FALSE;
@@ -252,10 +201,6 @@ INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
   }
 
   // passed all tests - start moving towards next patrol point
-#ifdef DEBUGDECISIONS
-  sprintf(tempstr, "%s - POINT PATROL to grid %d", pSoldier->name, pSoldier->usActionData);
-  AIPopMessage(tempstr);
-#endif
 
   return TRUE;
 }
@@ -296,10 +241,6 @@ INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
 
   // if we don't have a legal patrol point
   if (sPatrolPoint == NOWHERE) {
-#ifdef BETAVERSION
-    NumMessage("PointPatrolAI: ERROR - no legal patrol point for %d", pSoldier->ubID);
-#endif
-
     // over-ride orders to something safer
     pSoldier->bOrders = FARPATROL;
     return FALSE;
@@ -326,10 +267,6 @@ INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
   }
 
   // passed all tests - start moving towards next patrol point
-#ifdef DEBUGDECISIONS
-  sprintf(tempstr, "%s - POINT PATROL to grid %d", pSoldier->name, pSoldier->usActionData);
-  AIPopMessage(tempstr);
-#endif
 
   return TRUE;
 }
@@ -371,11 +308,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
     pSoldier->usUIMovementMode = WALKING;
   }
 
-#ifdef DEBUGDECISIONS
-  sprintf(tempstr, "%s wants to go towards %d (has range %d)", pSoldier->name, sDesGrid, usMaxDist);
-  AIPopMessage(tempstr);
-#endif
-
   // if soldier is ALREADY at the desired destination, quit right away
   if (sDesGrid == pSoldier->sGridNo) {
     return NOWHERE;
@@ -414,9 +346,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
 
   // first step: try to find an OK destination at or near the desired gridno
   if (!LegalNPCDestination(pSoldier, sDesGrid, ENSURE_PATH, NOWATER, fPathFlags)) {
-#ifdef DEBUGDECISIONS
-    AIPopMessage("destination Grid # itself not valid, looking around it");
-#endif
     if (CREATURE_OR_BLOODCAT(pSoldier)) {
       // we tried to get close, failed; abort!
       return NOWHERE;
@@ -452,19 +381,11 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
         if (LegalNPCDestination(pSoldier, sTempDest, ENSURE_PATH, NOWATER, 0)) {
           fFound = TRUE; // found a spot
 
-#ifdef DEBUGDECISIONS
-          AINumMessage("Found a spot!  ubDirection = ", ubDirection + 1);
-#endif
-
           break; // stop checking in other directions
         }
       }
 
       if (!fFound) {
-#ifdef DEBUGDECISIONS
-        AINumMessage("Couldn't find OK destination around grid #", sDesGrid);
-#endif
-
         return NOWHERE;
       }
 
@@ -474,11 +395,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
   }
 
   // HAVE FOUND AN OK destination AND PLOTTED A VALID BEST PATH TO IT
-
-#ifdef DEBUGDECISIONS
-  AINumMessage("Chosen legal destination is gridno ", sDesGrid);
-  AINumMessage("Tracing along path, pathRouteToGo = ", pSoldier->pathRouteToGo);
-#endif
 
   sGoToGrid = pSoldier->sGridNo; // start back where soldier is standing now
   sAPCost = 0; // initialize path cost counter
@@ -495,17 +411,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
 
     // this should NEVER be out of bounds
     if (sTempDest == sGoToGrid) {
-#ifdef BETAVERSION
-      sprintf(tempstr, "GoAsFarAsPossibleTowards: ERROR - gridno along valid route is invalid!  guynum %d, sTempDest = %d", pSoldier->ubID, sTempDest);
-
-#ifdef RECORDNET
-      fprintf(NetDebugFile, "\n\t%s\n", tempstr);
-#endif
-
-      PopMessage(tempstr);
-      SaveGame(ERROR_SAVE);
-#endif
-
       break; // quit here, sGoToGrid is where we are going
     }
 
@@ -592,11 +497,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
 
   // if it turned out we couldn't go even 1 tile towards the desired gridno
   if (sGoToGrid == pSoldier->sGridNo) {
-#ifdef DEBUGDECISIONS
-    sprintf(tempstr, "%s will go NOWHERE, path doesn't meet criteria", pSoldier->name);
-    AIPopMessage(tempstr);
-#endif
-
     return (NOWHERE); // then go nowhere
   } else {
     // possible optimization - stored path IS good if we're going all the way
@@ -609,10 +509,6 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
       pSoldier->sFinalDestination = sGoToGrid;
       pSoldier->usPathDataSize = sLoop + 1;
     }
-
-#ifdef DEBUGDECISIONS
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%d to %d with %d APs left", pSoldier->ubID, sGoToGrid, pSoldier->bActionPoints);
-#endif
 
     return sGoToGrid;
   }
@@ -657,9 +553,6 @@ void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
     }
   } else {
     CancelAIAction(pSoldier, DONTFORCE);
-#ifdef TESTAI
-    DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String("Soldier (%d) HAS NOT ENOUGH AP to continue along path", pSoldier->ubID));
-#endif
   }
 
   usNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)pSoldier->usPathingData[pSoldier->usPathIndex]));
@@ -672,14 +565,8 @@ void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
     NewDest(pSoldier, usNewGridNo);
     // maybe we didn't actually start the action last turn...
     pSoldier->bActionInProgress = TRUE;
-#ifdef TESTAI
-    DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String("Soldier (%d) continues along path", pSoldier->ubID));
-#endif
   } else {
     CancelAIAction(pSoldier, DONTFORCE);
-#ifdef TESTAI
-    DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String("Soldier (%d) HAS NOT ENOUGH AP to continue along path", pSoldier->ubID));
-#endif
   }
 }
 
@@ -697,10 +584,6 @@ void HaltMoveForSoldierOutOfPoints(SOLDIERTYPE *pSoldier) {
 
   // if this dude is under AI right now, then pass the baton to someone else
   if (pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL) {
-#ifdef TESTAICONTROL
-    DebugAI(String("Ending turn for %d because out of APs for movement", pSoldier->ubID));
-#endif
-
     EndAIGuysTurn(pSoldier);
   }
 }

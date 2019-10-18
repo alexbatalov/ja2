@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN gfShowTerrainTileButtons;
 UINT8 ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];
 UINT16 usTotalWeight;
@@ -197,5 +195,3 @@ void TerrainFill(UINT32 iMapIndex) {
 
   Fill(sX, sY);
 }
-
-#endif

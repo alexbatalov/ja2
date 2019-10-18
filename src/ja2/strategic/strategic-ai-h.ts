@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_AI_H
-#define __STRATEGIC_AI_H
-
 void InitStrategicAI();
 void KillStrategicAI();
 
@@ -121,5 +118,3 @@ typedef struct GARRISON_GROUP {
   UINT8 ubPendingGroupID;
   INT8 bPadding[10];
 } GARRISON_GROUP;
-
-#endif

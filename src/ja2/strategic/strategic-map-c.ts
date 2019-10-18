@@ -207,38 +207,6 @@ extern STR16 pBullseyeStrings[];
 
 extern void HandleRPCDescription();
 
-#ifdef CRIPPLED_VERSION
-void CrippledVersionFailureToLoadMapCallBack(UINT8 bExitValue);
-void CrippledVersionFailureToLoadMapCheck();
-#endif
-
-// temp timer stuff -- to measure the time it takes to load a map.
-#ifdef JA2TESTVERSION
-extern INT16 gsAINumAdmins;
-extern INT16 gsAINumTroops;
-extern INT16 gsAINumElites;
-extern INT16 gsAINumCreatures;
-// The wrapper time for EnterSector
-BOOLEAN fStartNewFile = TRUE;
-UINT32 uiEnterSectorStartTime;
-UINT32 uiEnterSectorEndTime;
-// The grand total time for loading a map
-UINT32 uiLoadWorldStartTime;
-UINT32 uiLoadWorldEndTime;
-// The time spent in FileRead
-UINT32 uiTotalFileReadTime;
-UINT32 uiTotalFileReadCalls;
-// LoadWorld and parts
-UINT32 uiLoadWorldTime;
-UINT32 uiTrashWorldTime;
-UINT32 uiLoadMapTilesetTime;
-UINT32 uiLoadMapLightsTime;
-UINT32 uiBuildShadeTableTime;
-UINT32 uiNumTablesSaved;
-UINT32 uiNumTablesLoaded;
-UINT32 uiNumImagesReloaded;
-#endif
-
 UINT32 UndergroundTacticalTraversalTime(INT8 bExitDirection) {
   // We are attempting to traverse in an underground environment.  We need to use a complete different
   // method.  When underground, all sectors are instantly adjacent.
@@ -263,11 +231,6 @@ UINT32 UndergroundTacticalTraversalTime(INT8 bExitDirection) {
   return 0xffffffff;
 }
 
-#ifdef JA2DEMOADS
-extern void DoDemoIntroduction();
-extern BOOLEAN gfDemoIntro;
-#endif
-
 void BeginLoadScreen() {
   SGPRect SrcRect, DstRect;
   UINT32 uiStartTime, uiCurrTime;
@@ -275,14 +238,6 @@ void BeginLoadScreen() {
   UINT32 uiTimeRange;
   INT32 iLastShadePercentage;
   UINT8 ubLoadScreenID;
-
-#ifdef JA2DEMOADS
-  if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
-    DoDemoIntroduction();
-  } else {
-    gfDemoIntro = TRUE;
-  }
-#endif
 
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
@@ -348,112 +303,9 @@ void BeginLoadScreen() {
       DisplayLoadScreenWithID(ubLoadScreenID);
     }
   }
-
-#ifdef JA2TESTVERSION
-  uiEnterSectorStartTime = 0;
-  uiEnterSectorEndTime = 0;
-  // The grand total time for loading a map
-  uiLoadWorldStartTime = 0;
-  uiLoadWorldEndTime = 0;
-  // The time spent in FileRead
-  uiTotalFileReadTime = 0;
-  uiTotalFileReadCalls = 0;
-  // Sections of LoadWorld
-  uiLoadWorldTime = 0;
-  uiTrashWorldTime = 0;
-  uiLoadMapTilesetTime = 0;
-  uiLoadMapLightsTime = 0;
-  uiBuildShadeTableTime = 0;
-  uiEnterSectorStartTime = GetJA2Clock();
-#endif
 }
 
 void EndLoadScreen() {
-#ifdef JA2TESTVERSION
-  // Report the time it took to load the map.  This is temporary until we are satisfied with the time
-  // it takes to load the map.
-  UINT16 str[60];
-  FILE *fp;
-  UINT32 uiSeconds;
-  UINT32 uiHundreths;
-  UINT32 uiUnaccounted;
-  UINT32 uiPercentage;
-  uiEnterSectorEndTime = GetJA2Clock();
-  uiSeconds = (uiEnterSectorEndTime - uiEnterSectorStartTime) / 1000;
-  uiHundreths = ((uiEnterSectorEndTime - uiEnterSectorStartTime) / 10) % 100;
-  SetFont(FONT10ARIAL);
-  SetFontForeground(FONT_YELLOW);
-  SetFontBackground(FONT_NEARBLACK);
-  if (!gbWorldSectorZ) {
-    swprintf(str, L"%c%d ENTER SECTOR TIME:  %d.%02d seconds.", 'A' + gWorldSectorY - 1, gWorldSectorX, uiSeconds, uiHundreths);
-  } else {
-    swprintf(str, L"%c%d_b%d ENTER SECTOR TIME:  %d.%02d seconds.", 'A' + gWorldSectorY - 1, gWorldSectorX, gbWorldSectorZ, uiSeconds, uiHundreths);
-  }
-  ScreenMsg(FONT_YELLOW, MSG_TESTVERSION, str);
-  if (fStartNewFile) {
-    // start new file
-    fp = fopen("TimeResults.txt", "w");
-    ScreenMsg(FONT_YELLOW, MSG_TESTVERSION, L"See JA2\\Data\\TimeResults.txt for more detailed timings.");
-    fStartNewFile = FALSE;
-  } else {
-    // append to end of file
-    fp = fopen("TimeResults.txt", "a");
-
-    if (fp) {
-      fprintf(fp, "\n\n--------------------------------------------------------------------\n\n");
-    }
-  }
-  if (fp) {
-    // Record all of the timings.
-    fprintf(fp, "%S\n", str);
-    fprintf(fp, "EnterSector() supersets LoadWorld().  This includes other external sections.\n");
-    // FileRead()
-    fprintf(fp, "\n\nVARIOUS FUNCTION TIMINGS (exclusive of actual function timings in second heading)\n");
-    uiSeconds = uiTotalFileReadTime / 1000;
-    uiHundreths = (uiTotalFileReadTime / 10) % 100;
-    fprintf(fp, "FileRead:  %d.%02d (called %d times)\n", uiSeconds, uiHundreths, uiTotalFileReadCalls);
-
-    fprintf(fp, "\n\nSECTIONS OF LOADWORLD (all parts should add up to 100%)\n");
-    // TrashWorld()
-    uiSeconds = uiTrashWorldTime / 1000;
-    uiHundreths = (uiTrashWorldTime / 10) % 100;
-    fprintf(fp, "TrashWorld: %d.%02d\n", uiSeconds, uiHundreths);
-    // LoadMapTilesets()
-    uiSeconds = uiLoadMapTilesetTime / 1000;
-    uiHundreths = (uiLoadMapTilesetTime / 10) % 100;
-    fprintf(fp, "LoadMapTileset: %d.%02d\n", uiSeconds, uiHundreths);
-    // LoadMapLights()
-    uiSeconds = uiLoadMapLightsTime / 1000;
-    uiHundreths = (uiLoadMapLightsTime / 10) % 100;
-    fprintf(fp, "LoadMapLights: %d.%02d\n", uiSeconds, uiHundreths);
-    uiSeconds = uiBuildShadeTableTime / 1000;
-    uiHundreths = (uiBuildShadeTableTime / 10) % 100;
-    fprintf(fp, "  1)  BuildShadeTables: %d.%02d\n", uiSeconds, uiHundreths);
-
-    uiPercentage = uiNumImagesReloaded * 100 / NUMBEROFTILETYPES;
-    fprintf(fp, "  2)  %d%% of the tileset images were actually reloaded.\n", uiPercentage);
-    if ((uiNumTablesSaved + uiNumTablesLoaded) != 0) {
-      uiPercentage = uiNumTablesSaved * 100 / (uiNumTablesSaved + uiNumTablesLoaded);
-    } else {
-      uiPercentage = 0;
-    }
-    fprintf(fp, "  3)  Of that, %d%% of the shade tables were generated (not loaded).\n", uiPercentage);
-    if (gfForceBuildShadeTables)
-      fprintf(fp, "  NOTE:  Force building of shadetables enabled on this local computer.\n");
-
-    // Unaccounted
-    uiUnaccounted = uiLoadWorldTime - uiTrashWorldTime - uiLoadMapTilesetTime - uiLoadMapLightsTime;
-    uiSeconds = uiUnaccounted / 1000;
-    uiHundreths = (uiUnaccounted / 10) % 100;
-    fprintf(fp, "Unaccounted: %d.%02d\n", uiSeconds, uiHundreths);
-    // LoadWorld()
-    uiSeconds = uiLoadWorldTime / 1000;
-    uiHundreths = (uiLoadWorldTime / 10) % 100;
-    fprintf(fp, "\nTotal: %d.%02d\n", uiSeconds, uiHundreths);
-
-    fclose(fp);
-  }
-#endif
 }
 
 BOOLEAN InitStrategicEngine() {
@@ -469,11 +321,6 @@ BOOLEAN InitStrategicEngine() {
   // since it takes quite a while to plot strategic paths between all pairs of town sectors...
 
 //#define RECALC_TOWN_DISTANCES
-#ifdef RECALC_TOWN_DISTANCES
-  CalcDistancesBetweenTowns();
-  WriteOutDistancesBetweenTowns();
-  DumpDistancesBetweenTowns();
-#endif
 
   ReadInDistancesBetweenTowns();
 
@@ -695,24 +542,11 @@ BOOLEAN SetCurrentWorldSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   UNDERGROUND_SECTORINFO *pUnderWorld = NULL;
   BOOLEAN fChangeMusic = TRUE;
 
-#ifdef CRIPPLED_VERSION
-  if (sMapY >= 5 && sMapY != 16) {
-    CrippledVersionFailureToLoadMapCheck();
-    return FALSE;
-  }
-#endif
-
   // ATE: Zero out accounting functions
   memset(gbMercIsNewInThisSector, 0, sizeof(gbMercIsNewInThisSector));
 
   SyncStrategicTurnTimes();
 
-#ifdef JA2BETAVERSION
-  if (gfOverrideSector) {
-    // skip the cancel, and force load the sector.  This is used by the AIViewer to "reset" a level with
-    // different numbers of various types of enemies.
-  } else
-#endif
       // is the sector already loaded?
       if ((gWorldSectorX == sMapX) && (sMapY == gWorldSectorY) && (bMapZ == gbWorldSectorZ)) {
     // Inserts the enemies into the newly loaded map based on the strategic information.
@@ -973,27 +807,6 @@ void PrepareLoadedSector() {
     // Creatures are only added if there are actually some of them.  It has to go through some
     // additional checking.
 
-#ifdef JA2TESTVERSION
-    // Override the sector with the populations specified in the AIViewer
-    if (gfOverrideSector) {
-      if (gbWorldSectorZ > 0) {
-        UNDERGROUND_SECTORINFO *pSector;
-        pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-        pSector->ubNumAdmins = (UINT8)(gsAINumAdmins > 0 ? gsAINumAdmins : 0);
-        pSector->ubNumTroops = (UINT8)(gsAINumTroops > 0 ? gsAINumTroops : 0);
-        pSector->ubNumElites = (UINT8)(gsAINumElites > 0 ? gsAINumElites : 0);
-        pSector->ubNumCreatures = (UINT8)(gsAINumCreatures > 0 ? gsAINumCreatures : 0);
-      } else if (!gbWorldSectorZ) {
-        SECTORINFO *pSector;
-        pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
-        pSector->ubNumAdmins = (UINT8)(gsAINumAdmins > 0 ? gsAINumAdmins : 0);
-        pSector->ubNumTroops = (UINT8)(gsAINumTroops > 0 ? gsAINumTroops : 0);
-        pSector->ubNumElites = (UINT8)(gsAINumElites > 0 ? gsAINumElites : 0);
-        pSector->ubNumCreatures = (UINT8)(gsAINumCreatures > 0 ? gsAINumCreatures : 0);
-      }
-    }
-#endif
-
     PrepareCreaturesForBattle();
 
     PrepareMilitiaForTactical();
@@ -1039,9 +852,6 @@ void PrepareLoadedSector() {
     if (gMapInformation.sCenterGridNo != -1) {
       CallAvailableEnemiesTo(gMapInformation.sCenterGridNo);
     } else {
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_RED, MSG_ERROR, L"Ambush aborted in sector %c%d -- no center point in map.  LC:1", gWorldSectorY + 'A' - 1, gWorldSectorX);
-#endif
     }
   }
 
@@ -1161,19 +971,6 @@ void HandleQuestCodeOnSectorEntry(INT16 sNewSectorX, INT16 sNewSectorY, INT8 bNe
     }
   }
 
-#ifdef JA2DEMO
-  // special stuff to make NPCs talk as if the next day, after going down
-  // into mines
-  if (bNewSectorZ > 0) {
-    if (gMercProfiles[GABBY].ubLastDateSpokenTo != 0) {
-      gMercProfiles[GABBY].ubLastDateSpokenTo = 199;
-    }
-    if (gMercProfiles[JAKE].ubLastDateSpokenTo != 0) {
-      gMercProfiles[JAKE].ubLastDateSpokenTo = 199;
-    }
-  }
-#endif
-
   if ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, 0) && (GetTownIdForSector(sNewSectorX, sNewSectorY) != BLANK_SECTOR) && Random(10 + GetNumberOfMilitiaInSector(sNewSectorX, sNewSectorY, bNewSectorZ)) < 3) {
     DecideOnAssassin();
   }
@@ -1275,13 +1072,6 @@ BOOLEAN EnterSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
   }
 
   CreateLoadingScreenProgressBar();
-#ifdef JA2BETAVERSION
-  // set the font
-  SetProgressBarMsgAttributes(0, FONT12ARIAL, FONT_MCOLOR_WHITE, 0);
-
-  // Set the tile so we don see the text come up
-  SetProgressBarTextDisplayFlag(0, TRUE, TRUE, TRUE);
-#endif
 
   // CreateProgressBar( 0, 160, 380, 480, 400 );
   //#ifdef JA2TESTVERSION
@@ -1493,13 +1283,6 @@ void UpdateMercInSector(SOLDIERTYPE *pSoldier, INT16 sSectorX, INT16 sSectorY, I
 
         case INSERTION_CODE_PRIMARY_EDGEINDEX:
           pSoldier->sInsertionGridNo = SearchForClosestPrimaryMapEdgepoint(pSoldier->sPendingActionData2, (UINT8)pSoldier->usStrategicInsertionData);
-#ifdef JA2BETAVERSION
-          {
-            UINT8 str[256];
-            sprintf(str, "%S's primary insertion gridno is %d using %d as initial search gridno and %d insertion code.", pSoldier->name, pSoldier->sInsertionGridNo, pSoldier->sPendingActionData2, pSoldier->usStrategicInsertionData);
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, str);
-          }
-#endif
           if (pSoldier->sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, L"Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier->name);
             pSoldier->ubStrategicInsertionCode = (UINT8)pSoldier->usStrategicInsertionData;
@@ -1508,13 +1291,6 @@ void UpdateMercInSector(SOLDIERTYPE *pSoldier, INT16 sSectorX, INT16 sSectorY, I
           break;
         case INSERTION_CODE_SECONDARY_EDGEINDEX:
           pSoldier->sInsertionGridNo = SearchForClosestSecondaryMapEdgepoint(pSoldier->sPendingActionData2, (UINT8)pSoldier->usStrategicInsertionData);
-#ifdef JA2BETAVERSION
-          {
-            UINT8 str[256];
-            sprintf(str, "%S's isolated insertion gridno is %d using %d as initial search gridno and %d insertion code.", pSoldier->name, pSoldier->sInsertionGridNo, pSoldier->sPendingActionData2, pSoldier->usStrategicInsertionData);
-            DebugMsg(TOPIC_JA2, DBG_LEVEL_3, str);
-          }
-#endif
           if (pSoldier->sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, L"Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier->name);
             pSoldier->ubStrategicInsertionCode = (UINT8)pSoldier->usStrategicInsertionData;
@@ -1622,11 +1398,6 @@ void InitializeStrategicMapSectorTownNames(void) {
 
 // Get sector ID string makes a string like 'A9 - OMERTA', or just J11 if no town....
 void GetSectorIDString(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, CHAR16 *zString, BOOLEAN fDetailed) {
-#ifdef JA2DEMO
-
-  swprintf(zString, L"Demoville");
-
-#else
   SECTORINFO *pSector = NULL;
   UNDERGROUND_SECTORINFO *pUnderground;
   INT8 bTownNameID;
@@ -1767,7 +1538,6 @@ void GetSectorIDString(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, CHAR16 *zS
       }
     }
   }
-#endif
 }
 
 UINT8 SetInsertionDataFromAdjacentMoveDirection(SOLDIERTYPE *pSoldier, UINT8 ubTacticalDirection, INT16 sAdditionalData) {
@@ -1806,10 +1576,6 @@ UINT8 SetInsertionDataFromAdjacentMoveDirection(SOLDIERTYPE *pSoldier, UINT8 ubT
       break;
     default:
 // Wrong direction given!
-#ifdef JA2BETAVERSION
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Improper insertion direction %d given to SetInsertionDataFromAdjacentMoveDirection", ubTacticalDirection));
-      ScreenMsg(FONT_RED, MSG_ERROR, L"Improper insertion direction %d given to SetInsertionDataFromAdjacentMoveDirection", ubTacticalDirection);
-#endif
       ubDirection = EAST_STRATEGIC_MOVE;
       pSoldier->ubStrategicInsertionCode = INSERTION_CODE_WEST;
   }
@@ -1843,10 +1609,6 @@ UINT8 GetInsertionDataFromAdjacentMoveDirection(UINT8 ubTacticalDirection, INT16
       break;
     default:
 // Wrong direction given!
-#ifdef JA2BETAVERSION
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Improper insertion direction %d given to GetInsertionDataFromAdjacentMoveDirection", ubTacticalDirection));
-      ScreenMsg(FONT_RED, MSG_ERROR, L"Improper insertion direction %d given to GetInsertionDataFromAdjacentMoveDirection", ubTacticalDirection);
-#endif
       ubDirection = EAST_STRATEGIC_MOVE;
   }
 
@@ -1879,10 +1641,6 @@ UINT8 GetStrategicInsertionDataFromAdjacentMoveDirection(UINT8 ubTacticalDirecti
       break;
     default:
 // Wrong direction given!
-#ifdef JA2BETAVERSION
-      DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Improper insertion direction %d given to SetInsertionDataFromAdjacentMoveDirection", ubTacticalDirection));
-      ScreenMsg(FONT_RED, MSG_ERROR, L"Improper insertion direction %d given to GetStrategicInsertionDataFromAdjacentMoveDirection", ubTacticalDirection);
-#endif
       ubDirection = EAST_STRATEGIC_MOVE;
   }
 
@@ -2607,11 +2365,6 @@ void DoneFadeOutAdjacentSector() {
             ubNum++;
           }
         } else {
-#ifdef JA2BETAVERSION
-          UINT8 str[256];
-          sprintf(str, "%S's gridno is NOWHERE, and is attempting to walk into sector.", curr->pSoldier->name);
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_3, str);
-#endif
         }
       }
       curr = curr->next;
@@ -2919,10 +2672,6 @@ void SetupNewStrategicGame() {
   // Hourly update of all sorts of things
   AddPeriodStrategicEvent(EVENT_HOURLY_UPDATE, 60, 0);
   AddPeriodStrategicEvent(EVENT_QUARTER_HOUR_UPDATE, 15, 0);
-
-#ifdef JA2DEMO
-  AddPeriodStrategicEventWithOffset(EVENT_MINUTE_UPDATE, 60, 475, 0);
-#endif
 
   // Clear any possible battle locator
   gfBlitBattleSectorLocator = FALSE;
@@ -4088,25 +3837,3 @@ void HandlePotentialMoraleHitForSkimmingSectors(GROUP *pGroup) {
     }
   }
 }
-
-#ifdef CRIPPLED_VERSION
-void CrippledVersionFailureToLoadMapCheck() {
-  CHAR16 zString[512];
-
-  swprintf(zString, L"Error! Sorry, you must stay between sectors A and E in this limited press version.");
-
-  DoScreenIndependantMessageBox(zString, MSG_BOX_FLAG_OK, CrippledVersionFailureToLoadMapCallBack);
-}
-
-void CrippledVersionFailureToLoadMapCallBack(UINT8 bExitValue) {
-  // clean up the code
-  ReStartingGame();
-
-  // go to the main menu
-  if (guiCurrentScreen == MAP_SCREEN) {
-    SetPendingNewScreen(MAINMENU_SCREEN);
-  } else {
-    InternalLeaveTacticalScreen(MAINMENU_SCREEN);
-  }
-}
-#endif

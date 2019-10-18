@@ -1,5 +1,3 @@
-#ifndef __TALKING_H_
-#define __TALKING_H_
 #define NO_EXPRESSION 0
 #define BLINKING 1
 #define ANGRY 2
@@ -224,5 +222,3 @@ void SetAutoFaceActiveFromSoldier(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer
 void SetAutoFaceInActiveFromSoldier(UINT8 ubSoldierID);
 BOOLEAN RenderAutoFaceFromSoldier(UINT8 ubSoldierID);
 BOOLEAN ExternRenderFaceFromSoldier(UINT32 uiBuffer, UINT8 ubSoldierID, INT16 sX, INT16 sY);
-
-#endif

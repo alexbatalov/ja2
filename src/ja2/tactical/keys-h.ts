@@ -1,6 +1,3 @@
-#ifndef _KEYS_H_
-#define _KEYS_H_
-
 typedef struct {
   UINT16 usItem; // index in item table for key
   UINT8 fFlags; // flags...
@@ -230,5 +227,3 @@ void HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded();
 void AttachStringToDoor(INT16 sGridNo);
 
 void DropKeysInKeyRing(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, INT8 bVisible, BOOLEAN fAddToDropList, INT32 iDropListSlot, BOOLEAN fUseUnLoaded);
-
-#endif

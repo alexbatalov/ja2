@@ -145,9 +145,6 @@ void HandleStructChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 
   if (pStructure == NULL) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"ERROR: Told to handle struct that does not exist at %d.", sGridNo);
-#endif
     return;
   }
 

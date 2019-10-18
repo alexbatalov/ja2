@@ -1303,33 +1303,6 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath )
 }
 */
 
-#ifdef BETA_VERSION
-void VerifyAllMercsInGroupAreOnSameSquad(GROUP *pGroup) {
-  PLAYERGROUP *pPlayer;
-  SOLDIERTYPE *pSoldier;
-  INT8 bSquad = -1;
-
-  // Let's choose somebody in group.....
-  pPlayer = pGroup->pPlayerList;
-
-  while (pPlayer != NULL) {
-    pSoldier = pPlayer->pSoldier;
-    Assert(pSoldier);
-
-    if (pSoldier->bAssignment < ON_DUTY) {
-      if (bSquad == -1) {
-        bSquad = pSoldier->bAssignment;
-      } else {
-        // better be the same squad!
-        Assert(pSoldier->bAssignment == bSquad);
-      }
-    }
-
-    pPlayer = pPlayer->next;
-  }
-}
-#endif
-
 void RebuildWayPointsForGroupPath(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
   INT32 iDelta = 0;
   INT32 iOldDelta = 0;
@@ -1352,10 +1325,6 @@ void RebuildWayPointsForGroupPath(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
   RemoveGroupWaypoints((UINT8)sMvtGroup);
 
   if (pGroup->fPlayer) {
-#ifdef BETA_VERSION
-    VerifyAllMercsInGroupAreOnSameSquad(pGroup);
-#endif
-
     // update the destination(s) in the team list
     fTeamPanelDirty = TRUE;
 

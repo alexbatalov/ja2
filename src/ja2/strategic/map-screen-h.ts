@@ -1,6 +1,3 @@
-#ifndef __MAPSCREEN_H
-#define __MAPSCREEN_H
-
 #define MAP_WORLD_X 18
 #define MAP_WORLD_Y 18
 
@@ -67,5 +64,3 @@ BOOLEAN CanChangeSleepStatusForCharSlot(INT8 bCharNumber);
 BOOLEAN CanChangeSleepStatusForSoldier(SOLDIERTYPE *pSoldier);
 
 BOOLEAN MapCharacterHasAccessibleInventory(INT8 bCharNumber);
-
-#endif

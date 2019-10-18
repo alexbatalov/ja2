@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_MOVEMENT_H
-#define __STRATEGIC_MOVEMENT_H
-
 // enemy intentions,
 enum {
   NO_INTENTIONS, // enemy intentions are undefined.
@@ -283,5 +280,3 @@ void PlayerGroupArrivedSafelyInSector(GROUP *pGroup, BOOLEAN fCheckForNPCs);
 BOOLEAN DoesPlayerExistInPGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier);
 
 BOOLEAN GroupHasInTransitDeadOrPOWMercs(GROUP *pGroup);
-
-#endif

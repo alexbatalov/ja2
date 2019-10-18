@@ -1,6 +1,3 @@
-#ifndef __VOBJECT_H
-#define __VOBJECT_H
-
 // ************************************************************************************
 //
 // Video Object SGP Module
@@ -112,10 +109,6 @@ typedef struct {
 //
 // **********************************************************************************
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // Creates a list to contain video objects
 BOOLEAN InitializeVideoObjectManager();
 
@@ -123,14 +116,7 @@ BOOLEAN InitializeVideoObjectManager();
 BOOLEAN ShutdownVideoObjectManager();
 
 // Creates and adds a video object to list
-#ifdef SGP_VIDEO_DEBUGGING
-void PerformVideoInfoDumpIntoFile(UINT8 *filename, BOOLEAN fAppend);
-void DumpVObjectInfoIntoFile(UINT8 *filename, BOOLEAN fAppend);
-BOOLEAN _AddAndRecordVObject(VOBJECT_DESC *VObjectDesc, UINT32 *uiIndex, UINT32 uiLineNum, UINT8 *pSourceFile);
-#define AddVideoObject(a, b) _AddAndRecordVObject(a, b, __LINE__, __FILE__)
-#else
 #define AddVideoObject(a, b) AddStandardVideoObject(a, b)
-#endif
 
 BOOLEAN AddStandardVideoObject(VOBJECT_DESC *VObjectDesc, UINT32 *uiIndex);
 
@@ -230,9 +216,3 @@ BOOLEAN BltVideoObjectOutline(UINT32 uiDestVSurface, HVOBJECT hSrcVObject, UINT1
 BOOLEAN BltVideoObjectOutlineShadowFromIndex(UINT32 uiDestVSurface, UINT32 uiSrcVObject, UINT16 usIndex, INT32 iDestX, INT32 iDestY);
 BOOLEAN BltVideoObjectOutlineShadow(UINT32 uiDestVSurface, HVOBJECT hSrcVObject, UINT16 usIndex, INT32 iDestX, INT32 iDestY);
 BOOLEAN PixelateVideoObjectRect(UINT32 uiDestVSurface, INT32 X1, INT32 Y1, INT32 X2, INT32 Y2);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

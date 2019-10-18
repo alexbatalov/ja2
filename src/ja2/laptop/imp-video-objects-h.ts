@@ -1,6 +1,3 @@
-#ifndef __IMP_VIDEO_H
-#define __IMP_VIDEO_H
-
 // the functions
 
 // metal background
@@ -159,5 +156,3 @@ extern UINT32 guiATTRIBUTEFRAME;
 extern UINT32 guiATTRIBUTESCREENINDENT1;
 extern UINT32 guiATTRIBUTESCREENINDENT2;
 extern UINT32 guiSLIDERBAR;
-
-#endif

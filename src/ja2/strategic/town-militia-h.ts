@@ -1,6 +1,3 @@
-#ifndef _TOWN_MILITIA_H
-#define _TOWN_MILITIA_H
-
 // header for town militia strategic control module
 
 // how many militia of all ranks can be in any one sector at once
@@ -70,5 +67,3 @@ void ClearSectorListForCompletedTrainingOfMilitia(void);
 
 BOOLEAN MilitiaTrainingAllowedInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 BOOLEAN MilitiaTrainingAllowedInTown(INT8 bTownId);
-
-#endif

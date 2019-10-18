@@ -282,9 +282,7 @@ INT32 LoadFontFile(UINT8 *filename) {
 
   if ((LoadIndex = FindFreeFont()) == (-1)) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Out of font slots (%s)", filename));
-#ifdef JA2
     FatalError("Cannot init FONT file %s", filename);
-#endif
     return -1;
   }
 
@@ -293,9 +291,7 @@ INT32 LoadFontFile(UINT8 *filename) {
 
   if ((FontObjs[LoadIndex] = CreateVideoObject(&vo_desc)) == NULL) {
     DbgMessage(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error creating VOBJECT (%s)", filename));
-#ifdef JA2
     FatalError("Cannot init FONT file %s", filename);
-#endif
     return -1;
   }
 
@@ -808,11 +804,7 @@ UINT32 gprintfDirty(INT32 x, INT32 y, UINT16 *pFontString, ...) {
   // Unlock buffer
   UnLockVideoSurface(FontDestBuffer);
 
-#if defined(JA2) || defined(UTIL)
   InvalidateRegion(x, y, x + StringPixLength(string, FontDefault), y + GetFontHeight(FontDefault));
-#else
-  InvalidateRegion(x, y, x + StringPixLength(string, FontDefault), y + GetFontHeight(FontDefault), INVAL_SRC_TRANS);
-#endif
 
   return 0;
 }
@@ -1105,12 +1097,8 @@ FontTranslationTable *CreateEnglishTransTable() {
   UINT16 *temp;
 
   pTable = (FontTranslationTable *)MemAlloc(sizeof(FontTranslationTable));
-#ifdef JA2
   // ha ha, we have more than Wizardry now (again)
   pTable->usNumberOfSymbols = 172;
-#else
-  pTable->usNumberOfSymbols = 155;
-#endif
   pTable->DynamicArrayOf16BitValues = (UINT16 *)MemAlloc(pTable->usNumberOfSymbols * 2);
   temp = pTable->DynamicArrayOf16BitValues;
 
@@ -1301,7 +1289,6 @@ FontTranslationTable *CreateEnglishTransTable() {
   *temp = ' '; // 93
   temp++;
 
-#ifdef JA2
   *temp = 196; // "A" umlaut
   temp++;
   *temp = 214; // "O" umlaut
@@ -1463,137 +1450,6 @@ FontTranslationTable *CreateEnglishTransTable() {
   temp++;
   *temp = 238; // о
   temp++;
-
-#else
-  // Windows Code Page 1252 Western Standard Character Set
-
-  *temp = 193; // "A" acute
-  temp++;
-  *temp = 192; // "A" grave
-  temp++;
-  *temp = 193; // "A" circumflex
-  temp++;
-  *temp = 196; // "A" umlaut
-  temp++;
-  *temp = 195; // "A" tilde
-  temp++;
-  *temp = 197; // "A" ring
-  temp++;
-  *temp = 199; // "C" cedile
-  temp++;
-  *temp = 201; // "E" acute
-  temp++;
-  *temp = 200; // "E" grave
-  temp++;
-  *temp = 202; // "E" circumflex
-  temp++;
-  *temp = 203; // "E" umlaut
-  temp++;
-  *temp = 205; // "I" acute
-  temp++;
-  *temp = 204; // "I" grave
-  temp++;
-  *temp = 206; // "I" circumflex
-  temp++;
-  *temp = 207; // "I" umlaut
-  temp++;
-  *temp = 209; // "N" tilde
-  temp++;
-  *temp = 211; // "O" acute
-  temp++;
-  *temp = 210; // "O" grave
-  temp++;
-  *temp = 212; // "O" circumflex
-  temp++;
-  *temp = 214; // "O" umlaut
-  temp++;
-  *temp = 213; // "O" tilde
-  temp++;
-  *temp = 216; // "0" O strike-through
-  temp++;
-  *temp = 218; // "U" acute
-  temp++;
-  *temp = 217; // "U" grave
-  temp++;
-  *temp = 219; // "U" circumflex
-  temp++;
-  *temp = 220; // "U" umlaut
-  temp++;
-  *temp = 221; // "Y" acute
-  temp++;
-  *temp = 225; // "a" acute
-  temp++;
-  *temp = 224; // "a" grave
-  temp++;
-  *temp = 226; // "a" circumflex
-  temp++;
-  *temp = 228; // "a" umlaut
-  temp++;
-  *temp = 227; // "a" tilde
-  temp++;
-  *temp = 229; // "a" ring
-  temp++;
-  *temp = 231; // "c" cedile
-  temp++;
-  *temp = 233; // "e" acute
-  temp++;
-  *temp = 232; // "e" grave
-  temp++;
-  *temp = 234; // "e" circumflex
-  temp++;
-  *temp = 235; // "e" umlaut
-  temp++;
-  *temp = 237; // "i" acute
-  temp++;
-  *temp = 236; // "i" grave
-  temp++;
-  *temp = 238; // "i" circumflex
-  temp++;
-  *temp = 239; // "i" umlaut
-  temp++;
-  *temp = 241; // "n" tilde
-  temp++;
-  *temp = 243; // "o" acute
-  temp++;
-  *temp = 242; // "o" grave
-  temp++;
-  *temp = 244; // "o" circumflex
-  temp++;
-  *temp = 246; // "o" umlaut
-  temp++;
-  *temp = 245; // "o" tilde
-  temp++;
-  *temp = 248; // "o" strike-through
-  temp++;
-  *temp = 250; // "u" acute
-  temp++;
-  *temp = 249; // "u" grave
-  temp++;
-  *temp = 251; // "u" circumflex
-  temp++;
-  *temp = 252; // "u" umlaut
-  temp++;
-  *temp = 254; // "y" acute
-  temp++;
-  *temp = 255; // "y" umlaut
-  temp++;
-  *temp = 223; // beta
-
-  // Font glyphs for spell targeting icons
-  // ATE: IMPORTANT! INcreate the array above if you add any new items here...
-  temp++;
-  *temp = FONT_GLYPH_TARGET_POINT;
-  temp++;
-  *temp = FONT_GLYPH_TARGET_CONE;
-  temp++;
-  *temp = FONT_GLYPH_TARGET_SINGLE;
-  temp++;
-  *temp = FONT_GLYPH_TARGET_GROUP;
-  temp++;
-  *temp = FONT_GLYPH_TARGET_NONE;
-
-// 154
-#endif
 
   return pTable;
 }

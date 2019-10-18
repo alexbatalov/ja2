@@ -296,17 +296,9 @@ BOOLEAN BeginMeanwhile(UINT8 ubMeanwhileID) {
 void BringupMeanwhileBox() {
   INT16 zStr[256];
 
-#ifdef JA2TESTVERSION
-  swprintf(zStr, L"Meanwhile..... ( %S : Remember to make sure towns are controlled if required by script )", gzMeanwhileStr[gCurrentMeanwhileDef.ubMeanwhileID]);
-#else
   swprintf(zStr, L"%s.....", pMessageStrings[MSG_MEANWHILE]);
-#endif
 
-#ifdef JA2TESTVERSION
-  if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION)
-#else
   if (gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION && MeanwhileSceneSeen(gCurrentMeanwhileDef.ubMeanwhileID))
-#endif
   {
     DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, NULL);
   } else {

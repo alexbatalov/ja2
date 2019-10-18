@@ -10,9 +10,6 @@
 //
 //**************************************************************************
 
-#ifndef _FILEMAN_H
-#define _FILEMAN_H
-
 //**************************************************************************
 //
 //				Includes
@@ -69,10 +66,6 @@ typedef FILETIME SGP_FILETIME;
 //				Function Prototypes
 //
 //**************************************************************************
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern BOOLEAN InitializeFileManager(STR strIndexFilename);
 extern void ShutdownFileManager(void);
@@ -153,9 +146,3 @@ UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
 // Gets the free hard drive space from the drive letter passed in.  It has to be the root dir.  ( eg. c:\ )
 UINT32 GetFreeSpaceOnHardDrive(STR pzDriveLetter);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

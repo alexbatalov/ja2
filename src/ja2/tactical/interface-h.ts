@@ -1,6 +1,3 @@
-#ifndef _INTERFACE_H
-#define _INTERFACE_H
-
 #define MAX_UICOMPOSITES 4
 
 #define INTERFACE_START_Y 360
@@ -210,5 +207,3 @@ void DirtyTopMessage();
 void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel, BOOLEAN fSlideTo);
 void HandleMultiPurposeLocator();
 void RenderTopmostMultiPurposeLocator();
-
-#endif

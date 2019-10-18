@@ -1,6 +1,3 @@
-#ifndef __SOLDER_PROFILE_TYPE_H
-#define __SOLDER_PROFILE_TYPE_H
-
 #define NUM_PROFILES 170
 #define FIRST_RPC 57
 #define FIRST_NPC 75
@@ -346,5 +343,3 @@ typedef struct {
 
 #define SUSPICIOUS_DEATH 1
 #define VERY_SUSPICIOUS_DEATH 2
-
-#endif

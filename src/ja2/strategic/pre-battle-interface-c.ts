@@ -2,10 +2,6 @@ extern void InitializeTacticalStatusAtBattleStart();
 extern BOOLEAN gfDelayAutoResolveStart;
 extern BOOLEAN gfTransitionMapscreenToAutoResolve;
 
-#ifdef JA2BETAVERSION
-extern BOOLEAN gfExitViewer;
-#endif
-
 // zoom flag
 extern BOOLEAN fZoomFlag;
 extern BOOLEAN fMapScreenBottomDirty;
@@ -136,52 +132,6 @@ extern void GetMapscreenMercLocationString(SOLDIERTYPE *pSoldier, wchar_t sStrin
 extern void GetMapscreenMercDestinationString(SOLDIERTYPE *pSoldier, wchar_t sString[]);
 extern void GetMapscreenMercDepartureString(SOLDIERTYPE *pSoldier, wchar_t sString[], UINT8 *pubFontColor);
 
-#ifdef JA2BETAVERSION
-// The group is passed so we can extract the sector location
-void ValidateAndCorrectInBattleCounters(GROUP *pLocGroup) {
-  SECTORINFO *pSector;
-  GROUP *pGroup;
-  UINT8 ubSectorID;
-  UINT8 ubInvalidGroups = 0;
-
-  if (!pLocGroup->ubSectorZ) {
-    pGroup = gpGroupList;
-    while (pGroup) {
-      if (!pGroup->fPlayer) {
-        if (pGroup->ubSectorX == pLocGroup->ubSectorX && pGroup->ubSectorY == pLocGroup->ubSectorY) {
-          if (pGroup->pEnemyGroup->ubAdminsInBattle || pGroup->pEnemyGroup->ubTroopsInBattle || pGroup->pEnemyGroup->ubElitesInBattle) {
-            ubInvalidGroups++;
-            pGroup->pEnemyGroup->ubAdminsInBattle = 0;
-            pGroup->pEnemyGroup->ubTroopsInBattle = 0;
-            pGroup->pEnemyGroup->ubElitesInBattle = 0;
-          }
-        }
-      }
-      pGroup = pGroup->next;
-    }
-  }
-
-  ubSectorID = (UINT8)SECTOR(pLocGroup->ubSectorX, pLocGroup->ubSectorY);
-  pSector = &SectorInfo[ubSectorID];
-
-  if (ubInvalidGroups || pSector->ubAdminsInBattle || pSector->ubTroopsInBattle || pSector->ubElitesInBattle || pSector->ubCreaturesInBattle) {
-    UINT16 str[512];
-    swprintf(str,
-             L"Strategic info warning:  Sector 'in battle' counters are not clear when they should be.  "
-             L"If you can provide information on how a previous battle was resolved here or nearby patrol "
-             L"(auto resolve, tactical battle, cheat keys, or retreat),"
-             L"please forward that info (no data files necessary) as well as the following code (very important):  "
-             L"G(%02d:%c%d_b%d) A(%02d:%02d) T(%02d:%02d) E(%02d:%02d) C(%02d:%02d)",
-             ubInvalidGroups, pLocGroup->ubSectorY + 'A' - 1, pLocGroup->ubSectorX, pLocGroup->ubSectorZ, pSector->ubNumAdmins, pSector->ubAdminsInBattle, pSector->ubNumTroops, pSector->ubTroopsInBattle, pSector->ubNumElites, pSector->ubElitesInBattle, pSector->ubNumCreatures, pSector->ubCreaturesInBattle);
-    DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, NULL);
-    pSector->ubAdminsInBattle = 0;
-    pSector->ubTroopsInBattle = 0;
-    pSector->ubElitesInBattle = 0;
-    pSector->ubCreaturesInBattle = 0;
-  }
-}
-#endif
-
 void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
   VOBJECT_DESC VObjectDesc;
   INT32 i;
@@ -208,12 +158,6 @@ void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
     gfBlitBattleSectorLocator = TRUE;
     gfBlinkHeader = FALSE;
 
-#ifdef JA2BETAVERSION
-    if (pBattleGroup) {
-      ValidateAndCorrectInBattleCounters(pBattleGroup);
-    }
-#endif
-
     //	InitializeTacticalStatusAtBattleStart();
     // CJC, Oct 5 98: this is all we should need from InitializeTacticalStatusAtBattleStart()
     if (gubEnemyEncounterCode != BLOODCAT_AMBUSH_CODE && gubEnemyEncounterCode != ENTERING_BLOODCAT_LAIR_CODE) {
@@ -221,19 +165,6 @@ void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
         SetFactTrue(FACT_FIRST_BATTLE_BEING_FOUGHT);
       }
     }
-
-// If we are currently in the AI Viewer development utility, then remove it first.  It automatically
-// returns to the mapscreen upon removal, which is where we want to go.
-#ifdef JA2BETAVERSION
-    if (guiCurrentScreen == AIVIEWER_SCREEN) {
-      gfExitViewer = TRUE;
-      gpBattleGroup = pBattleGroup;
-      gfEnteringMapScreen = TRUE;
-      gfEnteringMapScreenToEnterPreBattleInterface = TRUE;
-      gfUsePersistantPBI = TRUE;
-      return;
-    }
-#endif
 
     // ATE: Added check for fPersistantPBI = TRUE if pBattleGroup == NULL
     // Searched code and saw that this condition only happens for creatures
@@ -295,9 +226,6 @@ void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
       // use same code
       gubExplicitEnemyEncounterCode = gubEnemyEncounterCode;
     } else {
-#ifdef JA2BETAVERSION
-      DoScreenIndependantMessageBox(L"Can't determine valid reason for battle indicator.  Please try to provide information as to when and why this indicator first appeared and send whatever files that may help.", MSG_BOX_FLAG_OK, NULL);
-#endif
       gfBlitBattleSectorLocator = FALSE;
       return;
     }
@@ -1048,11 +976,7 @@ void RenderPreBattleInterface() {
 void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-#ifdef JA2TESTVERSION
-      if (_KeyDown(ALT))
-#else
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
-#endif
       {
         if (!gfPersistantPBI) {
           return;
@@ -1080,11 +1004,7 @@ void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
 void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason) {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-#ifdef JA2TESTVERSION
-      if (_KeyDown(ALT))
-#else
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
-#endif
       {
         if (!gfPersistantPBI) {
           return;

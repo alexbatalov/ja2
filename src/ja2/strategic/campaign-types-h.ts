@@ -1,6 +1,3 @@
-#ifndef __CAMPAIGN_TYPES_H
-#define __CAMPAIGN_TYPES_H
-
 // Macro to convert sector coordinates (1-16,1-16) to 0-255
 #define SECTOR(x, y) ((y - 1) * 16 + x - 1)
 #define SECTORX(SectorID) ((SectorID % 16) + 1)
@@ -493,5 +490,3 @@ typedef struct UNDERGROUND_SECTORINFO {
 // as well as intentions, etc.
 extern SECTORINFO SectorInfo[256];
 extern UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoHead;
-
-#endif

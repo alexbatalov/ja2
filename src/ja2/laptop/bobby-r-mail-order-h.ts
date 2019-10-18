@@ -1,6 +1,3 @@
-#ifndef __BOBBYRMAILORDER_H
-#define __BOBBYRMAILORDER_H
-
 // enums for the various destinations that are available in the bobbyR dest drop down box
 enum {
   BR_AUSTIN,
@@ -62,5 +59,3 @@ UINT16 CountNumberOfBobbyPurchasesThatAreInTransit();
 
 BOOLEAN NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(HWFILE hFile);
 BOOLEAN NewWayOfSavingBobbyRMailOrdersToSaveGameFile(HWFILE hFile);
-
-#endif

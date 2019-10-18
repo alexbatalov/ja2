@@ -288,11 +288,7 @@ void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16
     return;
   }
 
-#ifdef TAIWANESE
-  swprintf(gzCivQuote, L"%s", zQuote);
-#else
   swprintf(gzCivQuote, L"\"%s\"", zQuote);
-#endif
 
   if (ubCivQuoteID == CIV_QUOTE_HINT) {
     MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", gzCivQuote);

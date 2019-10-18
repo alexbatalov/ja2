@@ -18,28 +18,6 @@ INT8 bBattleModeSong;
 
 INT8 gbFadeSpeed = 1;
 
-#ifdef JA2DEMO
-
-CHAR8 *szMusicList[NUM_MUSIC] = {
-  "MUSIC\\marimbad 2.wav",
-  "MUSIC\\menumix1.wav",
-  "MUSIC\\nothing A.wav",
-  "MUSIC\\nothing B.wav",
-  "MUSIC\\nothing A.wav",
-  "MUSIC\\nothing B.wav",
-  "MUSIC\\tensor B.wav",
-  "MUSIC\\tensor B.wav",
-  "MUSIC\\tensor B.wav",
-  "MUSIC\\triumph.wav",
-  "MUSIC\\death.wav",
-  "MUSIC\\battle A.wav",
-  "MUSIC\\tensor B.wav",
-  "MUSIC\\creepy.wav",
-  "MUSIC\\creature battle.wav",
-};
-
-#else
-
 CHAR8 *szMusicList[NUM_MUSIC] = {
   "MUSIC\\marimbad 2.wav",
   "MUSIC\\menumix1.wav",
@@ -57,8 +35,6 @@ CHAR8 *szMusicList[NUM_MUSIC] = {
   "MUSIC\\creepy.wav",
   "MUSIC\\creature battle.wav",
 };
-
-#endif
 
 BOOLEAN gfForceMusicToTense = FALSE;
 BOOLEAN gfDontRestartSong = FALSE;
@@ -98,8 +74,6 @@ void MusicStopCallback(void *pData);
 //
 //********************************************************************************
 BOOLEAN MusicPlay(UINT32 uiNum) {
-#ifndef WINDOWED_MODE
-
   SOUNDPARMS spParms;
 
   if (fMusicPlaying)
@@ -124,8 +98,6 @@ BOOLEAN MusicPlay(UINT32 uiNum) {
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));
 
-#endif
-
   return FALSE;
 }
 
@@ -139,8 +111,6 @@ BOOLEAN MusicPlay(UINT32 uiNum) {
 //********************************************************************************
 BOOLEAN MusicSetVolume(UINT32 uiVolume) {
   INT32 uiOldMusicVolume = uiMusicVolume;
-
-#ifndef WINDOWED_MODE
 
   uiMusicVolume = __min(uiVolume, 127);
 
@@ -162,8 +132,6 @@ BOOLEAN MusicSetVolume(UINT32 uiVolume) {
   if (uiMusicVolume > 0 && uiOldMusicVolume == 0) {
     StartMusicBasedOnMode();
   }
-
-#endif
 
   return FALSE;
 }
@@ -189,8 +157,6 @@ UINT32 MusicGetVolume(void) {
 //
 //********************************************************************************
 BOOLEAN MusicStop(void) {
-#ifndef WINDOWED_MODE
-
   if (uiMusicHandle != NO_SAMPLE) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
@@ -201,8 +167,6 @@ BOOLEAN MusicStop(void) {
   }
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
-
-#endif
 
   return FALSE;
 }
@@ -249,7 +213,6 @@ BOOLEAN MusicFadeIn(void) {
 //
 //********************************************************************************
 BOOLEAN MusicPoll(BOOLEAN fForce) {
-#ifndef WINDOWED_MODE
   INT32 iVol;
 
   SoundServiceStreams();
@@ -295,26 +258,12 @@ BOOLEAN MusicPoll(BOOLEAN fForce) {
       // If we were in victory mode, change!
       if (gbVictorySongCount == 1 || gbDeathSongCount == 1) {
         if (gbDeathSongCount == 1 && guiCurrentScreen == GAME_SCREEN) {
-#ifdef JA2DEMO
-          gFadeOutDoneCallback = DoneFadeOutDueToEndMusic;
-          FadeOutGameScreen();
-#else
           CheckAndHandleUnloadingOfCurrentWorld();
-#endif
         }
 
-#ifdef JA2DEMO
-        if (gbVictorySongCount == 1 && guiCurrentScreen == GAME_SCREEN) {
-          // Bring up dialogue...
-          HandleEndDemoInCreatureLevel();
-
-          SetMusicMode(MUSIC_TACTICAL_NOTHING);
-        }
-#else
         if (gbVictorySongCount == 1) {
           SetMusicMode(MUSIC_TACTICAL_NOTHING);
         }
-#endif
       } else {
         if (!gfDontRestartSong) {
           StartMusicBasedOnMode();
@@ -325,7 +274,6 @@ BOOLEAN MusicPoll(BOOLEAN fForce) {
       gfDontRestartSong = FALSE;
     }
   }
-#endif
 
   return TRUE;
 }
@@ -344,19 +292,6 @@ BOOLEAN SetMusicMode(UINT8 ubMusicMode) {
     // Save previous mode...
     bPreviousMode = gubOldMusicMode;
   }
-
-#ifdef JA2DEMO
-  // ATE: Short circuit normal music modes and
-  // If we a\were told to play tense mode,
-  // change to nothing until we have set
-  // the flag indicating that we can....
-  if (ubMusicMode == MUSIC_TACTICAL_ENEMYPRESENT && !gfForceMusicToTense) {
-    ubMusicMode = MUSIC_TACTICAL_NOTHING;
-  }
-
-  gfForceMusicToTense = FALSE;
-
-#endif
 
   // if different, start a new music song
   if (gubOldMusicMode != ubMusicMode) {

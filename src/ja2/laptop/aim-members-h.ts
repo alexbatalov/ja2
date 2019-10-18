@@ -1,6 +1,3 @@
-#ifndef __AIMMEMBERS_H_
-#define __AIMMEMBERS_H_
-
 void GameInitAIMMembers();
 BOOLEAN EnterAIMMembers();
 void ExitAIMMembers();
@@ -22,12 +19,3 @@ void DisplayPopUpBoxExplainingMercArrivalLocationAndTime();
 extern UINT8 gubVideoConferencingMode;
 
 // TEMP!!!
-#ifdef JA2TESTVERSION
-void TempHiringOfMercs(UINT8 ubNumberOfMercs, BOOLEAN fReset);
-#endif
-
-#if defined(JA2TESTVERSION) || defined(JA2DEMO)
-void DemoHiringOfMercs();
-#endif
-
-#endif

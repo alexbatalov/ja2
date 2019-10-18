@@ -1766,9 +1766,6 @@ BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
             }
           }
 // IF we are here - something is wrong - we should have a death animation here
-#ifdef JA2BETAVERSION
-          ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"Soldier Ani: GOTO Stance not chained properly: %d %d %d", ubDesiredHeight, ubCurrentHeight, pSoldier->usAnimState);
-#endif
 
           SoldierGotoStationaryStance(pSoldier);
           return TRUE;
@@ -2923,13 +2920,7 @@ void CheckForAndHandleSoldierIncompacitated(SOLDIERTYPE *pSoldier) {
       BOOLEAN fDoFallback = FALSE;
 
       // TRY FALLING BACKWARDS, ( ONLY IF WE ARE A MERC! )
-#ifdef TESTFALLBACK
-      if (IS_MERC_BODY_TYPE(pSoldier))
-#elif defined(TESTFALLFORWARD)
-      if (0)
-#else
       if (Random(100) > 40 && IS_MERC_BODY_TYPE(pSoldier) && !IsProfileATerrorist(pSoldier->ubProfile))
-#endif
       {
         // CHECK IF WE HAVE AN ATTACKER, TAKE OPPOSITE DIRECTION!
         if (pSoldier->ubAttackerID != NOBODY) {

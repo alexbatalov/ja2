@@ -1,6 +1,3 @@
-#ifndef __STRATMAP_H
-#define __STRATMAP_H
-
 // The maximum size for any team strategically speaking.  For example, we can't have more than 20 enemies, militia, or creatures at a time.
 #define MAX_STRATEGIC_TEAM_SIZE 20
 
@@ -165,5 +162,3 @@ extern INT8 gbGreenToElitePromotions;
 extern INT8 gbGreenToRegPromotions;
 extern INT8 gbRegToElitePromotions;
 extern INT8 gbMilitiaPromotions;
-
-#endif

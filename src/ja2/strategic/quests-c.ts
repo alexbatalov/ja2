@@ -1,5 +1,3 @@
-#define TESTQUESTS
-
 extern SOLDIERTYPE *gpSrcSoldier;
 extern SOLDIERTYPE *gpDestSoldier;
 
@@ -1082,9 +1080,7 @@ void InitQuestEngine() {
 void CheckForQuests(UINT32 uiDay) {
   // This function gets called at 8:00 AM time of the day
 
-#ifdef TESTQUESTS
   ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Checking For Quests, Day %d", uiDay);
-#endif
 
   // -------------------------------------------------------------------------------
   // QUEST 0 : DELIVER LETTER
@@ -1093,9 +1089,7 @@ void CheckForQuests(UINT32 uiDay) {
   // already started
   if (gubQuest[QUEST_DELIVER_LETTER] == QUESTNOTSTARTED) {
     StartQuest(QUEST_DELIVER_LETTER, -1, -1);
-#ifdef TESTQUESTS
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Started DELIVER LETTER quest");
-#endif
   }
 
   // This quest gets turned OFF through conversation with Miguel - when user hands

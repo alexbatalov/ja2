@@ -1,6 +1,3 @@
-#ifndef __DRUGS_AND_ALCOHOL_H
-#define __DRUGS_AND_ALCOHOL_H
-
 #define DRUG_TYPE_ADRENALINE 0
 #define DRUG_TYPE_ALCOHOL 1
 #define NO_DRUG 2
@@ -28,5 +25,3 @@ INT8 GetDrugSideEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType);
 INT8 GetDrunkLevel(SOLDIERTYPE *pSoldier);
 INT32 EffectStatForBeingDrunk(SOLDIERTYPE *pSoldier, INT32 iStat);
 BOOLEAN MercUnderTheInfluence(SOLDIERTYPE *pSoldier);
-
-#endif

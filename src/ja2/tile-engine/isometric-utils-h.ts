@@ -1,6 +1,3 @@
-#ifndef __ISOMETRIC_UTILSH
-#define __ISOMETRIC_UTILSH
-
 // DEFINES
 #define MAXCOL WORLD_COLS
 #define MAXROW WORLD_ROWS
@@ -98,5 +95,3 @@ BOOLEAN FindFenceJumpDirection(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bStart
 INT16 RandomGridNo();
 
 extern UINT32 guiForceRefreshMousePositionCalculation;
-
-#endif

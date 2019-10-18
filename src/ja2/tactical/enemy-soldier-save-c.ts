@@ -51,9 +51,6 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
   INT16 sSectorX, sSectorY;
   UINT16 usCheckSum, usFileCheckSum;
   CHAR8 zMapName[128];
-#ifdef JA2TESTVERSION
-  CHAR8 zReason[256];
-#endif
   INT8 bSectorZ;
   UINT8 ubSectorID;
   UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
@@ -83,15 +80,9 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading sSectorY.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorY != sSectorY) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- sSectorY mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -101,39 +92,24 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading sSectorX.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorX != sSectorX) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- sSectorX mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &slots, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading slots.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading uiTimeStamp.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading bSectorZ.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -146,9 +122,6 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
   }
 
   if (gbWorldSectorZ != bSectorZ) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- bSectorZ mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -160,9 +133,6 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
   }
   if (slots < 0 || slots >= 64) {
     // bad IO!
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- illegal slot value of %d.  KM", slots);
-#endif
     goto FAIL_LOAD;
   }
 
@@ -183,9 +153,6 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
     UNDERGROUND_SECTORINFO *pSector;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- Couldn't find underground sector info for (%d,%d,%d)  KM", sSectorX, sSectorY, bSectorZ);
-#endif
       goto FAIL_LOAD;
     }
     ubStrategicElites = pSector->ubNumElites;
@@ -202,9 +169,6 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
   for (i = 0; i < slots; i++) {
     FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- EOF while reading tempDetailedPlacment %d.  KM", i);
-#endif
       goto FAIL_LOAD;
     }
     curr = gSoldierInitHead;
@@ -236,18 +200,12 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
 
             FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
             if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-              sprintf(zReason, "EnemySoldier -- EOF while reading usCheckSum %d.  KM", i);
-#endif
               goto FAIL_LOAD;
             }
             // verify the checksum equation (anti-hack) -- see save
             usFileCheckSum = curr->pDetailedPlacement->bLife * 7 + curr->pDetailedPlacement->bLifeMax * 8 - curr->pDetailedPlacement->bAgility * 2 + curr->pDetailedPlacement->bDexterity * 1 + curr->pDetailedPlacement->bExpLevel * 5 - curr->pDetailedPlacement->bMarksmanship * 9 + curr->pDetailedPlacement->bMedical * 10 + curr->pDetailedPlacement->bMechanical * 3 + curr->pDetailedPlacement->bExplosive * 4 + curr->pDetailedPlacement->bLeadership * 5 + curr->pDetailedPlacement->bStrength * 7 + curr->pDetailedPlacement->bWisdom * 11 + curr->pDetailedPlacement->bMorale * 7 + curr->pDetailedPlacement->bAIMorale * 3 - curr->pDetailedPlacement->bBodyType * 7 + 4 * 6 + curr->pDetailedPlacement->sSectorX * 7 - curr->pDetailedPlacement->ubSoldierClass * 4 + curr->pDetailedPlacement->bTeam * 7 + curr->pDetailedPlacement->bDirection * 5 + curr->pDetailedPlacement->fOnRoof * 17 + curr->pDetailedPlacement->sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
               // Hacker has modified the stats on the enemy placements.
-#ifdef JA2TESTVERSION
-              sprintf(zReason, "EnemySoldier -- checksum for placement %d failed.  KM", i);
-#endif
               goto FAIL_LOAD;
             }
 
@@ -293,15 +251,9 @@ BOOLEAN LoadEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading ubSectorID.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- ubSectorID mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -325,9 +277,6 @@ FAIL_LOAD:
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-#ifdef JA2TESTVERSION
-  AssertMsg(0, zReason);
-#endif
   return FALSE;
 }
 
@@ -610,9 +559,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
   INT16 sSectorX, sSectorY;
   UINT16 usCheckSum, usFileCheckSum;
   CHAR8 zMapName[128];
-#ifdef JA2TESTVERSION
-  CHAR8 zReason[256];
-#endif
   INT8 bSectorZ;
   UINT8 ubSectorID;
   UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
@@ -636,10 +582,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
     UNDERGROUND_SECTORINFO *pSector;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- Couldn't find underground sector info for (%d,%d,%d)  KM", gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
-#endif
-
       goto FAIL_LOAD;
     }
   } else {
@@ -679,15 +621,9 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading sSectorY.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorY != sSectorY) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- sSectorY mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -698,45 +634,27 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading sSectorX.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorX != sSectorX) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- sSectorX mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &slots, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading slots.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading uiTimeStamp.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading bSectorZ.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gbWorldSectorZ != bSectorZ) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- bSectorZ mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -757,9 +675,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
 
   if (slots < 0 || slots >= 64) {
     // bad IO!
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- illegal slot value of %d.  KM", slots);
-#endif
     goto FAIL_LOAD;
   }
 
@@ -780,9 +695,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
     UNDERGROUND_SECTORINFO *pSector;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- Couldn't find underground sector info for (%d,%d,%d)  KM", sSectorX, sSectorY, bSectorZ);
-#endif
       goto FAIL_LOAD;
     }
     ubStrategicElites = pSector->ubNumElites;
@@ -799,9 +711,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
   for (i = 0; i < slots; i++) {
     FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- EOF while reading tempDetailedPlacment %d.  KM", i);
-#endif
       goto FAIL_LOAD;
     }
     curr = gSoldierInitHead;
@@ -832,18 +741,12 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
 
           FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
           if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-            sprintf(zReason, "EnemySoldier -- EOF while reading usCheckSum %d.  KM", i);
-#endif
             goto FAIL_LOAD;
           }
           // verify the checksum equation (anti-hack) -- see save
           usFileCheckSum = curr->pDetailedPlacement->bLife * 7 + curr->pDetailedPlacement->bLifeMax * 8 - curr->pDetailedPlacement->bAgility * 2 + curr->pDetailedPlacement->bDexterity * 1 + curr->pDetailedPlacement->bExpLevel * 5 - curr->pDetailedPlacement->bMarksmanship * 9 + curr->pDetailedPlacement->bMedical * 10 + curr->pDetailedPlacement->bMechanical * 3 + curr->pDetailedPlacement->bExplosive * 4 + curr->pDetailedPlacement->bLeadership * 5 + curr->pDetailedPlacement->bStrength * 7 + curr->pDetailedPlacement->bWisdom * 11 + curr->pDetailedPlacement->bMorale * 7 + curr->pDetailedPlacement->bAIMorale * 3 - curr->pDetailedPlacement->bBodyType * 7 + 4 * 6 + curr->pDetailedPlacement->sSectorX * 7 - curr->pDetailedPlacement->ubSoldierClass * 4 + curr->pDetailedPlacement->bTeam * 7 + curr->pDetailedPlacement->bDirection * 5 + curr->pDetailedPlacement->fOnRoof * 17 + curr->pDetailedPlacement->sInsertionGridNo * 1 + 3;
           if (usCheckSum != usFileCheckSum) {
             // Hacker has modified the stats on the enemy placements.
-#ifdef JA2TESTVERSION
-            sprintf(zReason, "EnemySoldier -- checksum for placement %d failed.  KM", i);
-#endif
             goto FAIL_LOAD;
           }
 
@@ -883,15 +786,9 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
 
   FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- EOF while reading ubSectorID.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "EnemySoldier -- ubSectorID mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -911,9 +808,6 @@ BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
     UNDERGROUND_SECTORINFO *pSector;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "EnemySoldier -- Couldn't find underground sector info for (%d,%d,%d)  KM", sSectorX, sSectorY, bSectorZ);
-#endif
       goto FAIL_LOAD;
 
       /*
@@ -945,9 +839,6 @@ FAIL_LOAD:
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-#ifdef JA2TESTVERSION
-  AssertMsg(0, zReason);
-#endif
   return FALSE;
 }
 
@@ -964,9 +855,6 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
   UINT16 usCheckSum, usFileCheckSum;
   //	CHAR8		zTempName[ 128 ];
   CHAR8 zMapName[128];
-#ifdef JA2TESTVERSION
-  CHAR8 zReason[256];
-#endif
   INT8 bSectorZ;
   UINT8 ubSectorID;
   UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
@@ -996,15 +884,9 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
 
   FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading sSectorY.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorY != sSectorY) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- sSectorY mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1014,31 +896,19 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
   // STEP THREE:  read the data
   FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading sSectorX.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorX != sSectorX) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- sSectorX mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &slots, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading slots.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading uiTimeStamp.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1046,15 +916,9 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
 
   FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading bSectorZ.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gbWorldSectorZ != bSectorZ) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- bSectorZ mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1066,9 +930,6 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
   }
   if (slots < 0 || slots >= 64) {
 // bad IO!
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- illegal slot value of %d.  KM", slots);
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1087,9 +948,6 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
   for (i = 0; i < slots; i++) {
     FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "Civilian -- EOF while reading tempDetailedPlacment %d.  KM", i);
-#endif
       goto FAIL_LOAD;
     }
     curr = gSoldierInitHead;
@@ -1122,18 +980,12 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
 
             FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
             if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-              sprintf(zReason, "Civilian -- EOF while reading usCheckSum %d.  KM", i);
-#endif
               goto FAIL_LOAD;
             }
             // verify the checksum equation (anti-hack) -- see save
             usFileCheckSum = curr->pDetailedPlacement->bLife * 7 + curr->pDetailedPlacement->bLifeMax * 8 - curr->pDetailedPlacement->bAgility * 2 + curr->pDetailedPlacement->bDexterity * 1 + curr->pDetailedPlacement->bExpLevel * 5 - curr->pDetailedPlacement->bMarksmanship * 9 + curr->pDetailedPlacement->bMedical * 10 + curr->pDetailedPlacement->bMechanical * 3 + curr->pDetailedPlacement->bExplosive * 4 + curr->pDetailedPlacement->bLeadership * 5 + curr->pDetailedPlacement->bStrength * 7 + curr->pDetailedPlacement->bWisdom * 11 + curr->pDetailedPlacement->bMorale * 7 + curr->pDetailedPlacement->bAIMorale * 3 - curr->pDetailedPlacement->bBodyType * 7 + 4 * 6 + curr->pDetailedPlacement->sSectorX * 7 - curr->pDetailedPlacement->ubSoldierClass * 4 + curr->pDetailedPlacement->bTeam * 7 + curr->pDetailedPlacement->bDirection * 5 + curr->pDetailedPlacement->fOnRoof * 17 + curr->pDetailedPlacement->sInsertionGridNo * 1 + 3;
             if (usCheckSum != usFileCheckSum) {
 // Hacker has modified the stats on the enemy placements.
-#ifdef JA2TESTVERSION
-              sprintf(zReason, "Civilian -- checksum for placement %d failed.  KM", i);
-#endif
               goto FAIL_LOAD;
             }
 
@@ -1182,9 +1034,6 @@ BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
 
   FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Civilian -- EOF while reading ubSectorID.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1207,9 +1056,6 @@ FAIL_LOAD:
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-#ifdef JA2TESTVERSION
-  AssertMsg(0, zReason);
-#endif
   return FALSE;
 }
 
@@ -1480,9 +1326,6 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
   INT16 sSectorX, sSectorY;
   UINT16 usCheckSum;
   CHAR8 zMapName[128];
-#ifdef JA2TESTVERSION
-  CHAR8 zReason[256];
-#endif
   INT8 bSectorZ;
   UINT8 ubSectorID;
   //	UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
@@ -1516,15 +1359,9 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
 
   FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading sSectorY.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorY != sSectorY) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- sSectorY mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1535,46 +1372,28 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
 
   FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
   if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading sSectorX.  KM");
-#endif
     goto FAIL_LOAD;
   }
   if (gWorldSectorX != sSectorX) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- sSectorX mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &slots, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading slots.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
   if (uiNumBytesRead != 4) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading uiTimeStamp.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading bSectorZ.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   if (gbWorldSectorZ != bSectorZ) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- bSectorZ mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1586,9 +1405,6 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
 
   if (slots < 0 || slots >= 64) {
     // bad IO!
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- illegal slot value of %d.  KM", slots);
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1622,9 +1438,6 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
   for (i = 0; i < slots; i++) {
     FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "Check EnemySoldier -- EOF while reading tempDetailedPlacment %d.  KM", i);
-#endif
       goto FAIL_LOAD;
     }
 
@@ -1646,9 +1459,6 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
 
     FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
     if (uiNumBytesRead != 2) {
-#ifdef JA2TESTVERSION
-      sprintf(zReason, "Check EnemySoldier -- EOF while reading usCheckSum %d.  KM", i);
-#endif
       goto FAIL_LOAD;
     }
     /*
@@ -1764,16 +1574,10 @@ BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(U
 
   FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
   if (uiNumBytesRead != 1) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- EOF while reading ubSectorID.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
   if (ubSectorID != SECTOR(sSectorX, sSectorY)) {
-#ifdef JA2TESTVERSION
-    sprintf(zReason, "Check EnemySoldier -- ubSectorID mismatch.  KM");
-#endif
     goto FAIL_LOAD;
   }
 
@@ -1786,8 +1590,5 @@ FAIL_LOAD:
   // various checks failed for hacker validation.  If we reach this point, the "error: exit game"
   // dialog would appear in a non-testversion.
   FileClose(hfile);
-#ifdef JA2TESTVERSION
-  AssertMsg(0, zReason);
-#endif
   return FALSE;
 }

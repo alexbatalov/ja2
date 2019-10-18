@@ -1,5 +1,3 @@
-#ifdef ITALIAN
-
 /*
 
 ******************************************************************************************************
@@ -2935,20 +2933,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"La versionbe salvata è cambiata. Fateci avere un report, se incontrate problemi. Continuate?",
-#else
   L"Tentativo di caricare una versione salvata più vecchia. Aggiornate e caricate automaticamente quella salvata?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"La versione salvata e la versione della partita sono cambiate. Fateci avere un report, se incontrate problemi. Continuate?",
-#else
   L"Tentativo di caricare una vecchia versione salvata. Aggiornate e caricate automaticamente quella salvata?",
-#endif
 
   L"Siete sicuri di volere sovrascrivere la partita salvata nello slot #%d?",
   L"Volete caricare la partita dallo slot #",
@@ -3017,71 +3007,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s ha bisogno di una percentuale di %d affinché possiate continuare ad addestrare i soldati.",
   L"Non potete più addestrare i soldati a %s.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"IL MEGLIO DELLA STRATEGIA.",
-  L"IL MEGLIO DEI GIOCHI DI RUOLO.",
-  L"Gioco non completamente lineare",
-  L"Nuova trama estrema",
-  L"Incendi estremamente realistici",
-  L"Luci dinamiche",
-  L"Interazione NPC",
-  L"Tattiche di furto e notturne",
-  L"Personalizzate il vostro mercenario",
-  L"Sfide e avventure creative",
-  L"Veicoli controllabili",
-  // 10-19
-  L"Più di 150 personalità",
-  L"Centinaia di oggetti fantastici",
-  L"Più di 250 locazioni uniche",
-  L"Paurose esplosioni",
-  L"Nuove manovre tattiche",
-  L"Gran quantità di animazione",
-  L"Più di 9000 righe di dialogo",
-  L"Stupendo tema musicale di Kevin Manthei",
-  L"Strategia globale",
-  L"Battaglia e attacchi aerei",
-  // 20-29
-  L"Allenate il vostro esercito",
-  L"Gioco personalizzabile",
-  L"Linea di vista realistica",
-  L"Sorprendente grafica a colori",
-  L"Comprare, vendere e commerciare",
-  L"Nemico crudele AI",
-  L"Tattiche di combattimento allo stato dell'arte",
-  L"Elementi opzionali di fantascienza",
-  L"24 ore",
-  L"Ben più di 60 ore di gioco",
-  // 30-34
-  L"Ambientazioni di varie difficoltà",
-  L"Modelli balistici realistici",
-  L"Accurato studio della fisica",
-  L"Ambiente completamente interattivo",
-  L"E altro ancora...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"\"Uno dei giochi più creativi del 1998\"",
-  L"Giocatore PC",
-  L"Fate subito il vostro ordine al sito WWW.JAGGEDALLIANCE2.COM!",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"State per sperimentare il meglio della strategia, dei giochi di ruolo e del combattimento tattico:",
-  // Point 1 (uses one string)
-  L"Controllate una squadra di mercenari con una spiccata personalità (nessuno di loro vi annoierà).",
-  // Point 2 (uses one string)
-  L"Controllate lo strabiliante schieramento di manovre tattiche: correre, strisciare, scalare, saltare, combattimenti corpo a corpo e altro ancora.",
-  // Point 3 (uses one string)
-  L"Scherzate col fuoco! Giochi fantastici, armi assassine, esplosioni paurose.",
-  // Additional comment
-  L"(e questo è solo l'inizio)",
-  // Introduction/instructions
-  L"Benvenuti a Demoville... (premete un tasto per continuare)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3298,10 +3223,6 @@ STR16 pMessageStrings[] = {
   L"Questo slot è riservato ai salvataggi rapidi fatti dalle schermate tattiche e dalla mappa utilizzando ALT+S.",
   L"Aperto",
   L"Chiuso",
-#ifdef JA2DEMO
-  L"Siete tutti finiti qui. Forse dovreste andare a trovare Gabby.",
-  L"Troppo crudele per averlo ucciso.",
-#endif
   L"Lo spazio su disco si sta esaurendo. Avete liberi solo %s MB e Jagged Alliance 2 ne richiede %s.",
   L"Arruolato %s dall'A.I.M.",
   L"%s ha preso %s.", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3352,17 +3273,6 @@ STR16 pMessageStrings[] = {
   L"Entra nel seminterrato %d...",
   L"Abbandona il seminterrato...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"In pieno gioco, potrete separare\nla vostra squadra, ma non in modalità demo.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Mappa generale non attiva nella demo.",
-
-#endif
-
   L"di", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Modalità segui disattiva.",
   L"Modalità segui attiva.",
@@ -3377,9 +3287,6 @@ STR16 pMessageStrings[] = {
   L"Un pacco è arivato a Drassen.",
   L"%s dovrebbe arrivare al punto designato di partenza (settore %s) nel giorno %d, approssimativamente alle ore %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
   L"Registro aggiornato.",
-#ifdef JA2BETAVERSION
-  L"Salvataggio riuscito della partita nello slot End Turn Auto Save.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3714,5 +3621,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Interruttore attivato.",
 };
-
-#endif // ITALIAN

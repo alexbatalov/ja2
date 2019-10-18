@@ -1,6 +1,3 @@
-#ifndef __AIM_H
-#define __AIM_H
-
 //
 // AIM defines
 //
@@ -95,5 +92,3 @@ BOOLEAN DisplayAimCopyright();
 
 void ResetAimButtons(UINT32 *Buttons, UINT16 uNumberOfButtons);
 void DisableAimButton();
-
-#endif

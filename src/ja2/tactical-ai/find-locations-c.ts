@@ -1,13 +1,3 @@
-#ifdef _DEBUG
-INT16 gsCoverValue[WORLD_MAX];
-INT16 gsBestCover;
-#ifndef PATHAI_VISIBLE_DEBUG
-// NB Change this to true to get visible cover debug -- CJC
-BOOLEAN gfDisplayCoverValues = FALSE;
-#endif
-extern void RenderCoverDebug(void);
-#endif
-
 INT8 gubAIPathCosts[19][19];
 
 // FindBestNearbyCover - "Net" related stuff commented out
@@ -22,16 +12,6 @@ INT32 CalcPercentBetter(INT32 iOldValue, INT32 iNewValue, INT32 iOldScale, INT32
 
   // here, the change in cover HAS to be an improvement over current cover
   if (iValueChange <= 0) {
-#ifdef BETAVERSION
-    sprintf(tempstr, "CalcPercentBetter: ERROR - invalid valueChange = %d", valueChange);
-
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "\n\t%s\n\n", tempstr);
-#endif
-
-    PopMessage(tempstr);
-#endif
-
     return NOWHERE;
   }
 
@@ -39,24 +19,10 @@ INT32 CalcPercentBetter(INT32 iOldValue, INT32 iNewValue, INT32 iOldScale, INT32
 
   // here, the change in cover HAS to be an improvement over current cover
   if (iScaleSum <= 0) {
-#ifdef BETAVERSION
-    sprintf(tempstr, "CalcPercentBetter: ERROR - invalid scaleSum = %d", iScaleSum);
-
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "\n\t%s\n\n", tempstr);
-#endif
-
-    PopMessage(tempstr);
-#endif
-
     return NOWHERE;
   }
 
   iPercentBetter = (iValueChange * 100) / iScaleSum;
-
-#ifdef DEBUGCOVER
-  DebugAI(String("CalcPercentBetter: %%Better %ld, old %ld, new %ld, change %ld\n\t\toldScale %ld, newScale %ld, scaleSum %ld\n", iPercentBetter, iOldValue, iNewValue, iValueChange, iOldScale, iNewScale, iScaleSum));
-#endif
 
   return iPercentBetter;
 }
@@ -358,10 +324,6 @@ INT32 CalcCoverValue(SOLDIERTYPE *pMe, INT16 sMyGridNo, INT32 iMyThreat, INT32 i
         // iRangeFactor = (iRangeChange * (morale - 1)) / 4;
         iRangeFactor = (iRangeChange * iRangeFactorMultiplier) / 2;
 
-#ifdef DEBUGCOVER
-        DebugAI(String("CalcCoverValue: iRangeChange %d, iRangeFactor %d\n", iRangeChange, iRangeFactor));
-#endif
-
         // aggression booster for stupider enemies
         iMyPosValue += 100 * iRangeFactor * (5 - SoldierDifficultyLevel(pMe)) / 5;
 
@@ -393,15 +355,6 @@ INT32 CalcCoverValue(SOLDIERTYPE *pMe, INT16 sMyGridNo, INT32 iMyThreat, INT32 i
   // divide by a 100 to make the numbers more managable and avoid 32-bit limit
   iCoverValue = (iMyPosValue - iHisPosValue) / 100;
   iCoverValue = (iCoverValue * iReductionFactor) / 100;
-
-#ifdef DEBUGCOVER
-  DebugAI(String("CalcCoverValue: iCoverValue %d, sMyGridNo %d, sHisGrid %d, iRange %d, morale %d\n", iCoverValue, sMyGridNo, sHisGridNo, iRange, morale));
-  DebugAI(String("CalcCoverValue: iCertainty %d, his bOppCnt %d, my bOppCnt %d\n", Threat[uiThreatIndex].iCertainty, pHim->bOppCnt, pMe->bOppCnt));
-  DebugAI(String("CalcCoverValue: bHisCTGT = %d, hisThreat = %d, hisFullAPs = %d\n", bHisCTGT, Threat[uiThreatIndex].iValue, Threat[uiThreatIndex].iAPs));
-  DebugAI(String("CalcCoverValue: bMyCTGT = %d,  iMyThreat = %d,  iMyAPsLeft = %d\n", bMyCTGT, iMyThreat, iMyAPsLeft));
-  DebugAI(String("CalcCoverValue: hisPosValue = %d, myPosValue = %d\n", iHisPosValue, iMyPosValue));
-  DebugAI(String("CalcCoverValue: iThisScale = %d, iTotalScale = %d, iReductionFactor %d\n\n", iThisScale, *iTotalScale, iReductionFactor));
-#endif
 
   return iCoverValue;
 }
@@ -480,12 +433,6 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
   }
 
   iBestCoverValue = -1;
-
-#if defined(_DEBUG) && !defined(PATHAI_VISIBLE_DEBUG)
-  if (gfDisplayCoverValues) {
-    memset(gsCoverValue, 0x7F, sizeof(INT16) * WORLD_MAX);
-  }
-#endif
 
   // NameMessage(pSoldier,"looking for some cover...");
 
@@ -676,16 +623,8 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
     iDistFromOrigin = -1;
   }
 
-#ifdef DEBUGCOVER
-  DebugAI(String("FBNC: iRoamRange %d, sMaxLeft %d, sMaxRight %d, sMaxUp %d, sMaxDown %d\n", iRoamRange, sMaxLeft, sMaxRight, sMaxUp, sMaxDown));
-#endif
-
   // the initial cover value to beat is our current cover value
   iBestCoverValue = iCurrentCoverValue;
-
-#ifdef DEBUGDECISIONS
-  DebugAI(String("FBNC: CURRENT iCoverValue = %d\n", iCurrentCoverValue));
-#endif
 
   if (pSoldier->bAlertStatus >= STATUS_RED) // if already in battle
   {
@@ -829,19 +768,6 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
         }
       }
 
-#ifdef DEBUGCOVER
-      // if there ARE multiple opponents
-      if (uiThreatCnt > 1) {
-        DebugAI(String("FBNC: Total iCoverValue at gridno %d is %d\n\n", sGridNo, iCoverValue));
-      }
-#endif
-
-#if defined(_DEBUG) && !defined(PATHAI_VISIBLE_DEBUG)
-      if (gfDisplayCoverValues) {
-        gsCoverValue[sGridNo] = (INT16)(iCoverValue / 100);
-      }
-#endif
-
       // if this is better than the best place found so far
 
       if (iCoverValue > iBestCoverValue) {
@@ -860,9 +786,6 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
         }
         */
 
-#ifdef DEBUGDECISIONS
-        DebugAI(String("FBNC: NEW BEST iCoverValue at gridno %d is %d\n", sGridNo, iCoverValue));
-#endif
         // remember it instead
         sBestCover = sGridNo;
         iBestCoverValue = iCoverValue;
@@ -874,32 +797,8 @@ INT16 FindBestNearbyCover(SOLDIERTYPE *pSoldier, INT32 morale, INT32 *piPercentB
   gubNPCAPBudget = 0;
   gubNPCDistLimit = 0;
 
-#if defined(_DEBUG) && !defined(PATHAI_VISIBLE_DEBUG)
-  if (gfDisplayCoverValues) {
-    // do a locate?
-    LocateSoldier(pSoldier->ubID, SETLOCATORFAST);
-    gsBestCover = sBestCover;
-    SetRenderFlags(RENDER_FLAG_FULL);
-    RenderWorld();
-    RenderCoverDebug();
-    InvalidateScreen();
-    EndFrameBufferRender();
-    RefreshScreen(NULL);
-    /*
-iLoop = GetJA2Clock();
-do
-{
-
-} while( ( GetJA2Clock( ) - iLoop ) < 2000 );
-*/
-  }
-#endif
-
   // if a better cover location was found
   if (sBestCover != NOWHERE) {
-#if defined(_DEBUG) && !defined(PATHAI_VISIBLE_DEBUG)
-    gsBestCover = sBestCover;
-#endif
     // cover values already take the AP cost of getting there into account in
     // a BIG way, so no need to worry about that here, even small improvements
     // are actually very significant once we get our APs back (if we live!)
@@ -907,14 +806,6 @@ do
 
     // if best cover value found was at least 5% better than our current cover
     if (*piPercentBetter >= MIN_PERCENT_BETTER) {
-#ifdef DEBUGDECISIONS
-      DebugAI(String("Found Cover: current %ld, best %ld, %%%%Better %ld\n", iCurrentCoverValue, iBestCoverValue, *piPercentBetter));
-#endif
-
-#ifdef BETAVERSION
-      SnuggleDebug(pSoldier, "Found Cover");
-#endif
-
       return ((INT16)sBestCover); // return the gridno of that cover
     }
   }

@@ -478,12 +478,6 @@ void DisplayAimMemberClickOnFaceHelpText();
 
 UINT8 GetStatColor(INT8 bStat);
 
-#ifdef JA2TESTVERSION
-BOOLEAN QuickHireMerc();
-void TempHandleAimMemberKeyBoardInput();
-extern void SetFlagToForceHireMerc(BOOLEAN fForceHire);
-#endif
-
 void WaitForMercToFinishTalkingOrUserToClick();
 
 //*******************************************
@@ -755,10 +749,6 @@ void HandleAIMMembers() {
     gfRedrawScreen = FALSE;
   }
 
-#ifdef JA2TESTVERSION
-  TempHandleAimMemberKeyBoardInput();
-#endif
-
   MarkButtonsDirty();
 }
 
@@ -969,66 +959,67 @@ BOOLEAN LoadMercBioInfo(UINT8 ubIndex, STR16 pInfoString, STR16 pAddInfo) {
   for (i = 0; (i < SIZE_MERC_BIO_INFO) && (pInfoString[i] != 0); i++) {
     if (pInfoString[i] > 33)
       pInfoString[i] -= 1;
-#ifdef POLISH
-    switch (pInfoString[i]) {
-      case 260:
-        pInfoString[i] = 165;
-        break;
-      case 262:
-        pInfoString[i] = 198;
-        break;
-      case 280:
-        pInfoString[i] = 202;
-        break;
-      case 321:
-        pInfoString[i] = 163;
-        break;
-      case 323:
-        pInfoString[i] = 209;
-        break;
-      case 211:
-        pInfoString[i] = 211;
-        break;
-
-      case 346:
-        pInfoString[i] = 338;
-        break;
-      case 379:
-        pInfoString[i] = 175;
-        break;
-      case 377:
-        pInfoString[i] = 143;
-        break;
-      case 261:
-        pInfoString[i] = 185;
-        break;
-      case 263:
-        pInfoString[i] = 230;
-        break;
-      case 281:
-        pInfoString[i] = 234;
-        break;
-
-      case 322:
-        pInfoString[i] = 179;
-        break;
-      case 324:
-        pInfoString[i] = 241;
-        break;
-      case 243:
-        pInfoString[i] = 243;
-        break;
-      case 347:
-        pInfoString[i] = 339;
-        break;
-      case 380:
-        pInfoString[i] = 191;
-        break;
-      case 378:
-        pInfoString[i] = 376;
-        break;
-    }
-#endif
+// FIXME: Language-specific code
+// #ifdef POLISH
+//     switch (pInfoString[i]) {
+//       case 260:
+//         pInfoString[i] = 165;
+//         break;
+//       case 262:
+//         pInfoString[i] = 198;
+//         break;
+//       case 280:
+//         pInfoString[i] = 202;
+//         break;
+//       case 321:
+//         pInfoString[i] = 163;
+//         break;
+//       case 323:
+//         pInfoString[i] = 209;
+//         break;
+//       case 211:
+//         pInfoString[i] = 211;
+//         break;
+//
+//       case 346:
+//         pInfoString[i] = 338;
+//         break;
+//       case 379:
+//         pInfoString[i] = 175;
+//         break;
+//       case 377:
+//         pInfoString[i] = 143;
+//         break;
+//       case 261:
+//         pInfoString[i] = 185;
+//         break;
+//       case 263:
+//         pInfoString[i] = 230;
+//         break;
+//       case 281:
+//         pInfoString[i] = 234;
+//         break;
+//
+//       case 322:
+//         pInfoString[i] = 179;
+//         break;
+//       case 324:
+//         pInfoString[i] = 241;
+//         break;
+//       case 243:
+//         pInfoString[i] = 243;
+//         break;
+//       case 347:
+//         pInfoString[i] = 339;
+//         break;
+//       case 380:
+//         pInfoString[i] = 191;
+//         break;
+//       case 378:
+//         pInfoString[i] = 376;
+//         break;
+//     }
+// #endif
   }
 
   // Get the additional info
@@ -1045,66 +1036,67 @@ BOOLEAN LoadMercBioInfo(UINT8 ubIndex, STR16 pInfoString, STR16 pAddInfo) {
   for (i = 0; (i < SIZE_MERC_BIO_INFO) && (pAddInfo[i] != 0); i++) {
     if (pAddInfo[i] > 33)
       pAddInfo[i] -= 1;
-#ifdef POLISH
-    switch (pAddInfo[i]) {
-      case 260:
-        pAddInfo[i] = 165;
-        break;
-      case 262:
-        pAddInfo[i] = 198;
-        break;
-      case 280:
-        pAddInfo[i] = 202;
-        break;
-      case 321:
-        pAddInfo[i] = 163;
-        break;
-      case 323:
-        pAddInfo[i] = 209;
-        break;
-      case 211:
-        pAddInfo[i] = 211;
-        break;
-
-      case 346:
-        pAddInfo[i] = 338;
-        break;
-      case 379:
-        pAddInfo[i] = 175;
-        break;
-      case 377:
-        pAddInfo[i] = 143;
-        break;
-      case 261:
-        pAddInfo[i] = 185;
-        break;
-      case 263:
-        pAddInfo[i] = 230;
-        break;
-      case 281:
-        pAddInfo[i] = 234;
-        break;
-
-      case 322:
-        pAddInfo[i] = 179;
-        break;
-      case 324:
-        pAddInfo[i] = 241;
-        break;
-      case 243:
-        pAddInfo[i] = 243;
-        break;
-      case 347:
-        pAddInfo[i] = 339;
-        break;
-      case 380:
-        pAddInfo[i] = 191;
-        break;
-      case 378:
-        pAddInfo[i] = 376;
-        break;
-    }
-#endif
+// FIXME: Language-specific code
+// #ifdef POLISH
+//     switch (pAddInfo[i]) {
+//       case 260:
+//         pAddInfo[i] = 165;
+//         break;
+//       case 262:
+//         pAddInfo[i] = 198;
+//         break;
+//       case 280:
+//         pAddInfo[i] = 202;
+//         break;
+//       case 321:
+//         pAddInfo[i] = 163;
+//         break;
+//       case 323:
+//         pAddInfo[i] = 209;
+//         break;
+//       case 211:
+//         pAddInfo[i] = 211;
+//         break;
+//
+//       case 346:
+//         pAddInfo[i] = 338;
+//         break;
+//       case 379:
+//         pAddInfo[i] = 175;
+//         break;
+//       case 377:
+//         pAddInfo[i] = 143;
+//         break;
+//       case 261:
+//         pAddInfo[i] = 185;
+//         break;
+//       case 263:
+//         pAddInfo[i] = 230;
+//         break;
+//       case 281:
+//         pAddInfo[i] = 234;
+//         break;
+//
+//       case 322:
+//         pAddInfo[i] = 179;
+//         break;
+//       case 324:
+//         pAddInfo[i] = 241;
+//         break;
+//       case 243:
+//         pAddInfo[i] = 243;
+//         break;
+//       case 347:
+//         pAddInfo[i] = 339;
+//         break;
+//       case 380:
+//         pAddInfo[i] = 191;
+//         break;
+//       case 378:
+//         pAddInfo[i] = 376;
+//         break;
+//     }
+// #endif
   }
 
   FileClose(hFile);
@@ -2160,11 +2152,7 @@ BOOLEAN DisplayTalkingMercFaceForVideoPopUp(INT32 iFaceIndex) {
 }
 
 void DisplayTextForMercFaceVideoPopUp(STR16 pString) {
-#ifdef TAIWANESE
-  swprintf(gsTalkingMercText, L"%s", pString);
-#else
   swprintf(gsTalkingMercText, L"\"%s\"", pString);
-#endif
 
   // Set the minimum time for the dialogue text to be present
   usAimMercSpeechDuration = wcslen(gsTalkingMercText) * AIM_TEXT_SPEECH_MODIFIER;
@@ -3409,101 +3397,6 @@ BOOLEAN DisplayMovingTitleBar(BOOLEAN fForward, BOOLEAN fInit) {
   }
 }
 
-#ifdef JA2TESTVERSION
-// TEMP:
-void TempHiringOfMercs(UINT8 ubNumberOfMercs, BOOLEAN fReset) {
-  INT16 i;
-  UINT8 MercID[] = {
-    11,
-    16,
-    29,
-    36,
-    2,
-    10,
-    17,
-    6,
-    7,
-    12,
-    0,
-    1,
-    3,
-    4,
-    5,
-    8,
-    9,
-    13,
-    14,
-    15,
-    18,
-    19,
-  };
-  MERC_HIRE_STRUCT HireMercStruct;
-  static BOOLEAN fHaveCalledBefore = FALSE;
-
-  // if we should reset the global variable
-  if (fReset) {
-    fHaveCalledBefore = FALSE;
-    return;
-  }
-
-  if (fHaveCalledBefore)
-    return;
-
-  if (guiCurrentLaptopMode != LAPTOP_MODE_NONE)
-    return;
-
-  fHaveCalledBefore = TRUE;
-
-  for (i = 0; i < ubNumberOfMercs; i++) {
-    memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
-
-    if (!IsMercHireable(MercID[i])) {
-      ubNumberOfMercs++;
-      continue;
-    }
-
-    HireMercStruct.ubProfileID = MercID[i];
-
-    // DEF: temp
-    HireMercStruct.sSectorX = gsMercArriveSectorX;
-    HireMercStruct.sSectorY = gsMercArriveSectorY;
-    HireMercStruct.fUseLandingZoneForArrival = TRUE;
-    HireMercStruct.ubInsertionCode = INSERTION_CODE_ARRIVING_GAME;
-
-    HireMercStruct.fCopyProfileItemsOver = TRUE;
-    gMercProfiles[MercID[i]].ubMiscFlags |= PROFILE_MISC_FLAG_ALREADY_USED_ITEMS;
-
-    if (gfKeyState[ALT])
-      HireMercStruct.iTotalContractLength = 14;
-    else if (gfKeyState[CTRL])
-      HireMercStruct.iTotalContractLength = 7;
-    else
-      HireMercStruct.iTotalContractLength = 1;
-
-    // specify when the merc should arrive
-    HireMercStruct.uiTimeTillMercArrives = GetMercArrivalTimeOfDay(); // + MercID[i];
-
-    // since this is only a testing function, make the merc available
-    gMercProfiles[MercID[i]].bMercStatus = 0;
-
-    // if we succesfully hired the merc
-    HireMerc(&HireMercStruct);
-
-    // add an entry in the finacial page for the hiring of the merc
-    AddTransactionToPlayersBook(HIRED_MERC, MercID[i], GetWorldTotalMin(), -(INT32)(gMercProfiles[MercID[i]].sSalary));
-
-    if (gMercProfiles[MercID[i]].bMedicalDeposit) {
-      // add an entry in the finacial page for the medical deposit
-      AddTransactionToPlayersBook(MEDICAL_DEPOSIT, MercID[i], GetWorldTotalMin(), -(gMercProfiles[MercID[i]].sMedicalDepositAmount));
-    }
-
-    // add an entry in the history page for the hiring of the merc
-    AddHistoryToPlayersLog(HISTORY_HIRED_MERC_FROM_AIM, MercID[i], GetWorldTotalMin(), -1, -1);
-  }
-}
-
-#endif
-
 void DelayMercSpeech(UINT8 ubMercID, UINT16 usQuoteNum, UINT16 usDelay, BOOLEAN fNewQuote, BOOLEAN fReset) {
   static UINT32 uiLastTime = 0;
   UINT32 uiCurTime;
@@ -3546,103 +3439,6 @@ void DelayMercSpeech(UINT8 ubMercID, UINT16 usQuoteNum, UINT16 usDelay, BOOLEAN 
     }
   }
 }
-
-#ifdef JA2TESTVERSION
-
-// TEMP!!!
-BOOLEAN QuickHireMerc() {
-  INT8 bReturnCode;
-  MERC_HIRE_STRUCT HireMercStruct;
-  UINT8 ubCurrentSoldier = AimMercArray[gbCurrentIndex];
-
-  giContractAmount = 0;
-
-  //	if( !IsMercHireable( ubCurrentSoldier ) )
-  //		return( FALSE );
-  if (FindSoldierByProfileID(ubCurrentSoldier, TRUE) != NULL)
-    return FALSE;
-
-  HireMercStruct.ubProfileID = ubCurrentSoldier;
-
-  // DEF: temp
-  HireMercStruct.sSectorX = gsMercArriveSectorX;
-  HireMercStruct.sSectorY = gsMercArriveSectorY;
-  HireMercStruct.bSectorZ = 0;
-  HireMercStruct.fUseLandingZoneForArrival = TRUE;
-  HireMercStruct.ubInsertionCode = INSERTION_CODE_ARRIVING_GAME;
-
-  HireMercStruct.fCopyProfileItemsOver = TRUE;
-  gMercProfiles[ubCurrentSoldier].ubMiscFlags |= PROFILE_MISC_FLAG_ALREADY_USED_ITEMS;
-
-  if (gfKeyState[ALT])
-    HireMercStruct.iTotalContractLength = 14;
-  else if (gfKeyState[CTRL])
-    HireMercStruct.iTotalContractLength = 7;
-  else
-    HireMercStruct.iTotalContractLength = 1;
-
-  // specify when the merc should arrive
-  HireMercStruct.uiTimeTillMercArrives = GetMercArrivalTimeOfDay(); // + ubCurrentSoldier;
-
-  SetFlagToForceHireMerc(TRUE);
-  bReturnCode = HireMerc(&HireMercStruct);
-  SetFlagToForceHireMerc(FALSE);
-  if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
-    // display a warning saying u cant hire more then 20 mercs
-    DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[AIM_MEMBER_ALREADY_HAVE_20_MERCS], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
-    return FALSE;
-  } else if (bReturnCode == MERC_HIRE_FAILED) {
-    return FALSE;
-  }
-
-  // add an entry in the finacial page for the hiring of the merc
-  giContractAmount = gMercProfiles[gbCurrentSoldier].sSalary;
-
-  AddTransactionToPlayersBook(HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(), -(giContractAmount)); //- gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount
-
-  if (gMercProfiles[gbCurrentSoldier].bMedicalDeposit) {
-    // add an entry in the finacial page for the medical deposit
-    AddTransactionToPlayersBook(MEDICAL_DEPOSIT, ubCurrentSoldier, GetWorldTotalMin(), -(gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount));
-  }
-
-  // add an entry in the history page for the hiring of the merc
-  AddHistoryToPlayersLog(HISTORY_HIRED_MERC_FROM_AIM, ubCurrentSoldier, GetWorldTotalMin(), -1, -1);
-
-  gfRedrawScreen = TRUE;
-
-  return TRUE;
-}
-
-void TempHandleAimMemberKeyBoardInput() {
-  InputAtom InputEvent;
-
-  while (DequeueEvent(&InputEvent) == TRUE) {
-    //! HandleTextInput( &InputEvent ) &&
-    if (InputEvent.usEvent == KEY_DOWN) {
-      switch (InputEvent.usParam) {
-#ifdef JA2TESTVERSION
-        case SPACE:
-          QuickHireMerc();
-          break;
-
-        case '~':
-          // to test going on other assignments, unhired merc improvements & deaths
-          if (guiDay == 1)
-            guiDay++;
-          MercDailyUpdate();
-          gfRedrawScreen = TRUE;
-          break;
-#endif
-
-        default:
-          HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam, InputEvent.usKeyState);
-          break;
-      }
-    }
-  }
-}
-
-#endif
 
 void WaitForMercToFinishTalkingOrUserToClick() {
   // if the region is not active
@@ -3689,79 +3485,6 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 }
 */
 
-#if defined(JA2TESTVERSION) || defined(JA2DEMO)
-
-void DemoHiringOfMercs() {
-  INT16 i;
-#ifdef GERMAN
-  UINT8 MercID[] = {
-    7,
-    10,
-    4,
-    14,
-    50,
-  };
-#else
-  UINT8 MercID[] = {
-    7,
-    10,
-    4,
-    42,
-    33,
-  };
-#endif
-  MERC_HIRE_STRUCT HireMercStruct;
-#ifndef JA2DEMO
-  static BOOLEAN fHaveCalledBefore = FALSE;
-
-  if (fHaveCalledBefore)
-    return;
-
-  fHaveCalledBefore = TRUE;
-
-  if (guiCurrentLaptopMode != LAPTOP_MODE_NONE)
-    return;
-#endif
-
-  for (i = 0; i < 5; i++) {
-    memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
-
-    HireMercStruct.ubProfileID = MercID[i];
-
-    // DEF: temp
-    HireMercStruct.sSectorX = 1;
-    HireMercStruct.sSectorY = 16;
-    HireMercStruct.ubInsertionCode = INSERTION_CODE_ARRIVING_GAME;
-
-    HireMercStruct.fCopyProfileItemsOver = TRUE;
-    gMercProfiles[MercID[i]].ubMiscFlags |= PROFILE_MISC_FLAG_ALREADY_USED_ITEMS;
-
-    HireMercStruct.iTotalContractLength = 60;
-
-    // specify when the merc should arrive
-    HireMercStruct.uiTimeTillMercArrives = GetMercArrivalTimeOfDay(); // + MercID[i];
-
-    // since this is only a testing function, make the merc available
-    gMercProfiles[MercID[i]].bMercStatus = 0;
-
-    // if we succesfully hired the merc
-    HireMerc(&HireMercStruct);
-
-    // add an entry in the finacial page for the hiring of the merc
-    AddTransactionToPlayersBook(HIRED_MERC, MercID[i], GetWorldTotalMin(), -(INT32)(gMercProfiles[MercID[i]].sSalary));
-
-    if (gMercProfiles[MercID[i]].bMedicalDeposit) {
-      // add an entry in the finacial page for the medical deposit
-      AddTransactionToPlayersBook(MEDICAL_DEPOSIT, MercID[i], GetWorldTotalMin(), -(gMercProfiles[MercID[i]].sMedicalDepositAmount));
-    }
-
-    // add an entry in the history page for the hiring of the merc
-    AddHistoryToPlayersLog(HISTORY_HIRED_MERC_FROM_AIM, MercID[i], GetWorldTotalMin(), -1, -1);
-  }
-}
-
-#endif
-
 void DisplayPopUpBoxExplainingMercArrivalLocationAndTime() {
   CHAR16 szLocAndTime[512];
   SOLDIERTYPE *pSoldier = NULL;
@@ -3794,12 +3517,13 @@ void DisplayPopUpBoxExplainingMercArrivalLocationAndTime() {
   // create the string to display to the user, looks like....
   //	L"%s should arrive at the designated drop-off point ( sector %d:%d %s ) on day %d, at approximately %s.",		//first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
 
-#ifdef GERMAN
-  // Germans version has a different argument order
-  swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString, zSectorIDString);
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//   // Germans version has a different argument order
+//   swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString, zSectorIDString);
+// #else
   swprintf(szLocAndTime, pMessageStrings[MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP], gMercProfiles[pSoldier->ubProfile].zNickname, zSectorIDString, LaptopSaveInfo.sLastHiredMerc.uiArrivalTime / 1440, zTimeString);
-#endif
+// #endif
 
   // display the message box
   DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, szLocAndTime, LAPTOP_SCREEN, MSG_BOX_FLAG_OK, DisplayPopUpBoxExplainingMercArrivalLocationAndTimeCallBack);

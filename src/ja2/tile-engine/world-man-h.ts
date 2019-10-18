@@ -1,6 +1,3 @@
-#ifndef __WORLDMAN_H_
-#define __WORLDMAN_H_
-
 // memory-accounting function
 void CountLevelNodes(void);
 
@@ -141,5 +138,3 @@ BOOLEAN IsTileRedundent(UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
 extern UINT32 gCurrentBackground;
 
 void SetTreeTopStateForMap();
-
-#endif

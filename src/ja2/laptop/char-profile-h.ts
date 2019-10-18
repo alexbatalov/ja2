@@ -1,6 +1,3 @@
-#ifndef __CHARPROFILE_H
-#define __CHARPROFILE_H
-
 void GameInitCharProfile();
 void EnterCharProfile();
 void ExitCharProfile();
@@ -82,5 +79,3 @@ enum {
 };
 
 #define COST_OF_PROFILE 3000
-
-#endif

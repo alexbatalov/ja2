@@ -1,6 +1,3 @@
-#ifndef __CAMPAIGN_H
-#define __CAMPAIGN_H
-
 #define SALARYAMT 0
 #define HEALTHAMT 1
 #define AGILAMT 2
@@ -79,5 +76,3 @@ void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType);
 void BuildStatChangeString(STR16 wString, STR16 wName, BOOLEAN fIncrease, INT16 sPtsChanged, UINT8 ubStat);
 
 void MERCMercWentUpALevelSendEmail(UINT8 ubMercMercIdValue);
-
-#endif

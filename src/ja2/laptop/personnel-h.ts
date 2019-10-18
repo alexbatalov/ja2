@@ -1,6 +1,3 @@
-#ifndef __PERSONNEL_H
-#define __PERSONNEL_H
-
 // delay for change in ATM mode
 #define DELAY_PER_MODE_CHANGE_IN_ATM 2000
 
@@ -28,5 +25,3 @@ BOOLEAN TransferFundsFromMercToBank(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance
 BOOLEAN TransferFundsFromBankToMerc(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance);
 
 BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile);
-
-#endif

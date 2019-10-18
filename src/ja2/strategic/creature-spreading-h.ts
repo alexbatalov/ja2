@@ -1,6 +1,3 @@
-#ifndef __CREATURE_SPREADING_H
-#define __CREATURE_SPREADING_H
-
 void InitCreatureQuest();
 void SpreadCreatures();
 void DecayCreatures();
@@ -49,5 +46,3 @@ void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMa
 void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales);
 
 BOOLEAN PlayerGroupIsInACreatureInfestedMine();
-
-#endif

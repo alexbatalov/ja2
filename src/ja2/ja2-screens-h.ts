@@ -1,6 +1,3 @@
-#ifndef __JASCREENS_H_
-#define __JASCREENS_H_
-
 extern UINT32 EditScreenInit(void);
 extern UINT32 EditScreenHandle(void);
 extern UINT32 EditScreenShutdown(void);
@@ -28,12 +25,6 @@ extern UINT32 InitScreenShutdown(void);
 extern UINT32 MainGameScreenInit(void);
 extern UINT32 MainGameScreenHandle(void);
 extern UINT32 MainGameScreenShutdown(void);
-
-#ifdef JA2BETAVERSION
-extern UINT32 AIViewerScreenInit(void);
-extern UINT32 AIViewerScreenHandle(void);
-extern UINT32 AIViewerScreenShutdown(void);
-#endif
 
 extern UINT32 QuestDebugScreenInit(void);
 extern UINT32 QuestDebugScreenHandle(void);
@@ -130,5 +121,3 @@ void DisableFPSOverlay(BOOLEAN fEnable);
 
 void EnterTacticalScreen();
 void LeaveTacticalScreen();
-
-#endif

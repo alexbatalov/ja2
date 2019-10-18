@@ -1,6 +1,3 @@
-#ifndef STRUCURE_WRAP_H
-#define STRUCURE_WRAP_H
-
 BOOLEAN IsTreePresentAtGridno(INT16 sGridNo);
 BOOLEAN IsFencePresentAtGridno(INT16 sGridNo);
 BOOLEAN IsJumpableFencePresentAtGridno(INT16 sGridNo);
@@ -45,5 +42,3 @@ INT16 FindDoorAtGridNoOrAdjacent(INT16 sGridNo);
 BOOLEAN IsCorpseAtGridNo(INT16 sGridNo, UINT8 ubLevel);
 
 BOOLEAN SetOpenableStructureToClosed(INT16 sGridNo, UINT8 ubLevel);
-
-#endif

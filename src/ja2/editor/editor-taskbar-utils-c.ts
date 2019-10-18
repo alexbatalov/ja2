@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 void RenderEditorInfo();
 
 extern ITEM_POOL *gpItemPool;
@@ -873,5 +871,3 @@ void ProcessEditorRendering() {
 
   RenderButtonsFastHelp();
 }
-
-#endif

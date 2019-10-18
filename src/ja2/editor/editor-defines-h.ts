@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDITORDEFINES_H
-#define __EDITORDEFINES_H
-
 enum {
   TBAR_MODE_NONE,
   TBAR_MODE_DRAW,
@@ -244,6 +240,3 @@ extern BOOLEAN gfShowItemStatsPanel;
 
 #define MERCPANEL_X 177
 #define MERCPANEL_Y 361
-
-#endif
-#endif

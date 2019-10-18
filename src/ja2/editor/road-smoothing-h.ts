@@ -1,8 +1,3 @@
-#ifdef JA2EDITOR
-
-#ifndef __ROAD_SMOOTHING_H
-#define __ROAD_SMOOTHING_H
-
 // There are the 32 macro definitions that make up all of the road pieces.  These enumerations
 // match up exactly to the previous road system order of graphics (FIRSTROAD1 - FIRSTROAD32)
 enum {
@@ -54,7 +49,3 @@ void ReplaceObsoleteRoads();
 void PlaceRoadMacroAtGridNo(INT32 iMapIndex, INT32 iMacroID);
 
 void InitializeRoadMacros();
-
-#endif
-
-#endif

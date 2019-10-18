@@ -1,6 +1,3 @@
-#ifndef _HELP_SCREEN__H_
-#define _HELP_SCREEN__H_
-
 // enum used for the different help screens that can come up
 enum {
   HELP_SCREEN_LAPTOP,
@@ -58,5 +55,3 @@ void HelpScreenHandler();
 void InitHelpScreenSystem();
 void NewScreenSoResetHelpScreen();
 INT8 HelpScreenDetermineWhichMapScreenHelpToShow();
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_UTILS_H
-#define __INTERFACE_UTILS_H
-
 #define DRAW_ITEM_STATUS_ATTACHMENT1 200
 #define DRAW_ITEM_STATUS_ATTACHMENT2 201
 #define DRAW_ITEM_STATUS_ATTACHMENT3 202
@@ -19,5 +16,3 @@ BOOLEAN LoadCarPortraitValues(void);
 
 // get rid of the loaded portraits for cars
 void UnLoadCarPortraits(void);
-
-#endif

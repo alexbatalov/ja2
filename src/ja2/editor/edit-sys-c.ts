@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN PasteHigherTextureFromRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubRadius);
 BOOLEAN PasteExistingTexture(UINT32 iMapIndex, UINT16 usIndex);
 BOOLEAN PasteExistingTextureFromRadius(INT32 iMapIndex, UINT16 usIndex, UINT8 ubRadius);
@@ -1180,5 +1178,3 @@ void EliminateObjectLayerRedundancy() {
     }
   }
 }
-
-#endif // JA2EDITOR

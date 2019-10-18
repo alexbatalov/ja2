@@ -1405,13 +1405,6 @@ void HandleSoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGri
         // override the item index passed in with the one for the bomb in this
         // tile
         iItemIndex = FindWorldItemForBombInGridNo(sGridNo, pSoldier->bLevel);
-#ifdef JA2TESTVERSION
-        if (iItemIndex == -1) {
-          // WTF????
-          ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Cannot find bomb item in gridno %d", sGridNo);
-          return;
-        }
-#endif
 
         gpBoobyTrapItemPool = GetItemPoolForIndex(sGridNo, iItemIndex, pSoldier->bLevel);
         gpBoobyTrapSoldier = pSoldier;
@@ -3164,19 +3157,6 @@ void StartBombMessageBox(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   if (pSoldier->inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
     DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_BOMB_FREQUENCY_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   } else if (pSoldier->inv[HANDPOS].usItem == REMOTETRIGGER) {
-#ifdef JA2DEMO
-    {
-      UINT8 ubRoom;
-
-      if (InARoom(pSoldier->sGridNo, &ubRoom) && ubRoom == 31) {
-        SetOffBombsByFrequency(pSoldier->ubID, FIRST_MAP_PLACED_FREQUENCY + 4);
-
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
-      } else {
-        DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
-      }
-    }
-#else
     // ATE ignore the commented-out code and add stuff to open the secret passage here
     /*
     switch( pSoldier->inv[HANDPOS].ubLocationID )
@@ -3202,8 +3182,6 @@ void StartBombMessageBox(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
     } else {
       DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
     }
-
-#endif
   } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
     DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_TIMER_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {

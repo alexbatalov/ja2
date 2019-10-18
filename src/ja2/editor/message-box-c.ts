@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 // internal variables.
 INT32 iMsgBoxNum;
 INT32 iMsgBoxOkImg, iMsgBoxCancelImg;
@@ -116,5 +114,3 @@ void MsgBoxCnclClkCallback(GUI_BUTTON *butn, INT32 reason) {
 //----------------------------------------------------------------------------------------------
 //	End of the quick message box callback functions
 //----------------------------------------------------------------------------------------------
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __GAMELOOP_
-#define __GAMELOOP_
-
 // main game loop systems
 #define INIT_SYSTEM 0
 
@@ -14,5 +11,3 @@ extern void GameLoop(void);
 void HandleShortCutExitState(void);
 
 void SetPendingNewScreen(UINT32 uiNewScreen);
-
-#endif

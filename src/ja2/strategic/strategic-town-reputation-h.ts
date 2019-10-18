@@ -1,6 +1,3 @@
-#ifndef _STRATEGIC_TOWN_REPUTATION_H
-#define _STRATEGIC_TOWN_REPUTATION_H
-
 // header to contain functions to handle strategic town reputation
 
 // initialize profiles for the town reputation system
@@ -29,5 +26,3 @@ void HandleOpinionOfTownsAboutSoldier(INT8 bTownA, INT8 bTownB, INT32 iDistanceB
 void HandleSpreadOfTownsOpinionForCurrentMercs( void );
 void HandleSpreadOfTownOpinionForMercForSoldier( SOLDIERTYPE *pSoldier );
 */
-
-#endif

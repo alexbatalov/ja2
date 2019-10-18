@@ -54,10 +54,6 @@ INT32 iTotalAccumulatedCostByPlayer = 0;
 // whether or not skyrider is alive and well? and on our side yet?
 BOOLEAN fSkyRiderAvailable = FALSE;
 
-#ifdef JA2TESTVERSION
-BOOLEAN fSAMSitesDisabledFromAttackingPlayer = FALSE;
-#endif
-
 // helicopter destroyed
 BOOLEAN fHelicopterDestroyed = FALSE;
 
@@ -1494,11 +1490,6 @@ BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSectorY) 
     return FALSE;
   }
 
-#ifdef JA2TESTVERSION
-  if (fSAMSitesDisabledFromAttackingPlayer == TRUE) {
-    return FALSE;
-  }
-#endif
   // Hostile airspace controlled by a working SAM site, so SAM site fires a SAM at Skyrider!!!
 
   // calc chance that chopper will be shot down

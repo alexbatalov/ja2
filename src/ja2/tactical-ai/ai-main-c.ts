@@ -58,41 +58,16 @@ INT8 gbDiff[MAX_DIFF_PARMS][5] = {
 void EndAIGuysTurn(SOLDIERTYPE *pSoldier);
 
 void DebugAI(STR szOutput) {
-#ifdef JA2BETAVERSION
-  // Send regular debug msg AND AI debug message
-  FILE *DebugFile;
-
-  DebugMsg(TOPIC_JA2, DBG_LEVEL_3, szOutput);
-  if ((DebugFile = fopen("aidebug.txt", "a+t")) != NULL) {
-    fputs(szOutput, DebugFile);
-    fputs("\n", DebugFile);
-    fclose(DebugFile);
-  }
-#endif
 }
 
 BOOLEAN InitAI(void) {
   FILE *DebugFile;
-
-#ifdef _DEBUG
-  if (gfDisplayCoverValues) {
-    memset(gsCoverValue, 0x7F, sizeof(INT16) * WORLD_MAX);
-  }
-#endif
 
   // If we are not loading a saved game ( if we are, this has already been called )
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // init the panic system
     InitPanicSystem();
   }
-
-#ifdef JA2TESTVERSION
-  // Clear the AI debug txt file to prevent it from getting huge
-  if ((DebugFile = fopen("aidebug.txt", "w")) != NULL) {
-    fputs("\n", DebugFile);
-    fclose(DebugFile);
-  }
-#endif
 
   return TRUE;
 }
@@ -162,18 +137,10 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
     }
 
     if (pSoldier->bTeam != gTacticalStatus.ubCurrentTeam) {
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Turning off AI flag for %d because trying to act out of turn", pSoldier->ubID);
-#endif
       pSoldier->uiStatusFlags &= ~SOLDIER_UNDERAICONTROL;
       return;
     }
     if (pSoldier->bMoved) {
-#ifdef TESTAICONTROL
-      if (gfTurnBasedAI) {
-        DebugAI(String("Ending turn for %d because set to moved", pSoldier->ubID));
-      }
-#endif
       // this guy doesn't get to act!
       EndAIGuysTurn(pSoldier);
       return;
@@ -209,11 +176,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
   if (gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING || gTacticalStatus.bBoxingState == WON_ROUND || gTacticalStatus.bBoxingState == LOST_ROUND) {
     if (!(pSoldier->uiStatusFlags & SOLDIER_BOXER)) {
 // do nothing!
-#ifdef TESTAICONTROL
-      if (gfTurnBasedAI) {
-        DebugAI(String("Ending turn for %d because not a boxer", pSoldier->ubID));
-      }
-#endif
       EndAIGuysTurn(pSoldier);
       return;
     }
@@ -224,11 +186,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
     if (pSoldier->bActive && pSoldier->fMuzzleFlash) {
       EndMuzzleFlash(pSoldier);
     }
-#ifdef TESTAICONTROL
-    if (gfTurnBasedAI) {
-      DebugAI(String("Ending turn for %d because bad life/inactive", pSoldier->ubID));
-    }
-#endif
 
     EndAIGuysTurn(pSoldier);
     return;
@@ -241,11 +198,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
       pSoldier->fAIFlags &= ~AI_ASLEEP;
     } else if (!(pSoldier->fAIFlags & AI_CHECK_SCHEDULE)) {
 // don't do anything!
-#ifdef TESTAICONTROL
-      if (gfTurnBasedAI) {
-        DebugAI(String("Ending turn for %d because asleep and no scheduled action", pSoldier->ubID));
-      }
-#endif
 
       EndAIGuysTurn(pSoldier);
       return;
@@ -254,11 +206,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
 
   if (pSoldier->bInSector == FALSE && !(pSoldier->fAIFlags & AI_CHECK_SCHEDULE)) {
 // don't do anything!
-#ifdef TESTAICONTROL
-    if (gfTurnBasedAI) {
-      DebugAI(String("Ending turn for %d because out of sector and no scheduled action", pSoldier->ubID));
-    }
-#endif
 
     EndAIGuysTurn(pSoldier);
     return;
@@ -266,11 +213,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
 
   if (((pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !TANK(pSoldier)) || AM_A_ROBOT(pSoldier)) {
 // bail out!
-#ifdef TESTAICONTROL
-    if (gfTurnBasedAI) {
-      DebugAI(String("Ending turn for %d because is vehicle or robot", pSoldier->ubID));
-    }
-#endif
 
     EndAIGuysTurn(pSoldier);
     return;
@@ -281,12 +223,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
     if (pSoldier->fMuzzleFlash) {
       EndMuzzleFlash(pSoldier);
     }
-
-#ifdef TESTAICONTROL
-    if (gfTurnBasedAI) {
-      DebugAI(String("Ending turn for %d because unconscious", pSoldier->ubID));
-    }
-#endif
 
     // stunned/collapsed!
     CancelAIAction(pSoldier, FORCE);
@@ -354,10 +290,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
     pSoldier->bNewSituation = NOT_NEW_SITUATION;
   }
 
-#ifdef TESTAI
-  DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String(".... HANDLING AI FOR %d", pSoldier->ubID));
-#endif
-
   /*********
           Start of new overall AI system
           ********/
@@ -367,23 +299,11 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
       // ATE: Display message that deadlock occured...
       LiveMessage("Breaking Deadlock");
 
-#ifdef JA2TESTVERSION
-      // display deadlock message
-      gfUIInDeadlock = TRUE;
-      gUIDeadlockedSoldier = pSoldier->ubID;
-      DebugAI(String("DEADLOCK soldier %d action %s ABC %d", pSoldier->ubID, gzActionStr[pSoldier->bAction], gTacticalStatus.ubAttackBusyCount));
-#else
-
-      // If we are in beta version, also report message!
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"Aborting AI deadlock for %d. Please sent DEBUG.TXT file and SAVE.", pSoldier->ubID);
-#endif
       // just abort
       EndAIDeadlock();
       if (!(pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL)) {
         return;
       }
-#endif
     }
   }
 
@@ -444,9 +364,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
         }
 
 // reached destination
-#ifdef TESTAI
-        DebugMsg(TOPIC_JA2AI, DBG_LEVEL_0, String("OPPONENT %d REACHES DEST - ACTION DONE", pSoldier->ubID));
-#endif
 
         if (pSoldier->sGridNo == pSoldier->sFinalDestination) {
           if (pSoldier->bAction == AI_ACTION_MOVE_TO_CLIMB) {
@@ -480,9 +397,6 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
             // Don't do anything, we're waiting on a pending animation....
           } else {
 // OK, we have a move to finish...
-#ifdef TESTAI
-            DebugMsg(TOPIC_JA2AI, DBG_LEVEL_0, String("GONNA TRY TO CONTINUE PATH FOR %d", pSoldier->ubID));
-#endif
 
             SoldierTriesToContinueAlongPath(pSoldier);
           }
@@ -547,11 +461,6 @@ void EndAIGuysTurn(SOLDIERTYPE *pSoldier) {
     pSoldier->bMoved = TRUE;
     pSoldier->bBypassToGreen = FALSE;
 
-#ifdef TESTAICONTROL
-    if (!(gTacticalStatus.uiFlags & DEMOMODE))
-      DebugAI(String("Ending control for %d", pSoldier->ubID));
-#endif
-
     // find the next AI guy
     ubID = RemoveFirstAIListEntry();
     if (ubID != NOBODY) {
@@ -579,11 +488,6 @@ void EndAIDeadlock(void) {
     if (pSoldier->bActive && pSoldier->bInSector) {
       if (pSoldier->uiStatusFlags & SOLDIER_UNDERAICONTROL) {
         CancelAIAction(pSoldier, FORCE);
-#ifdef TESTAICONTROL
-        if (gfTurnBasedAI) {
-          DebugAI(String("Ending turn for %d because breaking deadlock", pSoldier->ubID));
-        }
-#endif
 
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Number of bullets in the air is %ld", guiNumBullets));
 
@@ -605,12 +509,6 @@ void EndAIDeadlock(void) {
 void StartNPCAI(SOLDIERTYPE *pSoldier) {
   BOOLEAN fInValidSoldier = FALSE;
 
-  // Only the host should do this
-#ifdef NETWORKED
-  if (!gfAmIHost)
-    return;
-#endif
-
   // pSoldier->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
   SetSoldierAsUnderAiControl(pSoldier);
 
@@ -620,11 +518,6 @@ void StartNPCAI(SOLDIERTYPE *pSoldier) {
   pSoldier->sLastTwoLocations[1] = NOWHERE;
 
   RefreshAI(pSoldier);
-
-#ifdef TESTAICONTROL
-  if (!(gTacticalStatus.uiFlags & DEMOMODE))
-    DebugAI(String("Giving control to %d", pSoldier->ubID));
-#endif
 
   gTacticalStatus.uiTimeSinceMercAIStart = GetJA2Clock();
 
@@ -852,10 +745,6 @@ void FreeUpNPCFromLoweringGun(SOLDIERTYPE *pSoldier) {
 void FreeUpNPCFromTurning(SOLDIERTYPE *pSoldier, INT8 bLook) {
   // if NPC is in the process of changing facing, mark him as being done!
   if ((pSoldier->bAction == AI_ACTION_CHANGE_FACING) && pSoldier->bActionInProgress) {
-#ifdef TESTAI
-    DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String("FREEUPNPCFROMTURNING: our action %d, desdir %d dir %d", pSoldier->bAction, pSoldier->bDesiredDirection, pSoldier->bDirection));
-#endif
-
     ActionDone(pSoldier);
 
     if (bLook) {
@@ -893,9 +782,6 @@ void ActionDone(SOLDIERTYPE *pSoldier) {
   // if an action is currently selected
   if (pSoldier->bAction != AI_ACTION_NONE) {
     if (pSoldier->uiStatusFlags & SOLDIER_MONSTER) {
-#ifdef TESTAI
-      DebugMsg(TOPIC_JA2AI, DBG_LEVEL_3, String("Cancelling actiondone: our action %d, desdir %d dir %d", pSoldier->bAction, pSoldier->bDesiredDirection, pSoldier->bDirection));
-#endif
     }
 
     // If doing an attack, reset attack busy count and # of bullets
@@ -1001,23 +887,12 @@ void NPCDoesNothing(SOLDIERTYPE *pSoldier) {
   // NPC, for whatever reason, did/could not start an action, so end his turn
   // pSoldier->moved = TRUE;
 
-#ifdef TESTAICONTROL
-  if (gfTurnBasedAI) {
-    DebugAI(String("Ending turn for %d because doing no-action", pSoldier->ubID));
-  }
-#endif
-
   EndAIGuysTurn(pSoldier);
 
   // *** IAN deleted lots of interrupt related code here to simplify JA2	development
 }
 
 void CancelAIAction(SOLDIERTYPE *pSoldier, UINT8 ubForce) {
-#ifdef DEBUGDECISIONS
-  if (SkipCoverCheck)
-    DebugAI(String("CancelAIAction: SkipCoverCheck turned OFF\n"));
-#endif
-
   // re-enable cover checking, something is new or something strange happened
   SkipCoverCheck = FALSE;
 
@@ -1171,10 +1046,6 @@ INT16 ActionInProgress(SOLDIERTYPE *pSoldier) {
 
   // this here should never happen, but it seems to (turns sometimes hang!)
   if ((pSoldier->bAction == AI_ACTION_CHANGE_FACING) && (pSoldier->bDesiredDirection != pSoldier->usActionData)) {
-#ifdef TESTVERSION
-    PopMessage("ActionInProgress: WARNING - CONTINUING FACING CHANGE...");
-#endif
-
     // don't try to pay any more APs for this, it was paid for once already!
     pSoldier->bDesiredDirection = (INT8)pSoldier->usActionData; // turn to face direction in actionData
     return TRUE;
@@ -1437,18 +1308,10 @@ void TurnBasedHandleNPCAI(SOLDIERTYPE *pSoldier) {
 
     // if action should remain in progress
     if (ActionInProgress(pSoldier)) {
-#ifdef DEBUGBUSY
-      AINumMessage("Busy with action, skipping guy#", pSoldier->ubID);
-#endif
-
       // let it continue
       return;
     }
   }
-
-#ifdef DEBUGDECISIONS
-  DebugAI(String("HandleManAI - DECIDING for guynum %d(%s) at gridno %d, APs %d\n", pSoldier->ubID, pSoldier->name, pSoldier->sGridNo, pSoldier->bActionPoints));
-#endif
 
   // if man has nothing to do
   if (pSoldier->bAction == AI_ACTION_NONE) {
@@ -1531,10 +1394,6 @@ void TurnBasedHandleNPCAI(SOLDIERTYPE *pSoldier) {
 
     // if he chose to continue doing nothing
     if (pSoldier->bAction == AI_ACTION_NONE) {
-#ifdef RECORDNET
-      fprintf(NetDebugFile, "\tMOVED BECOMING TRUE: Chose to do nothing, guynum %d\n", pSoldier->ubID);
-#endif
-
       NPCDoesNothing(pSoldier); // sets pSoldier->moved to TRUE
       return;
     }
@@ -1566,9 +1425,6 @@ void TurnBasedHandleNPCAI(SOLDIERTYPE *pSoldier) {
         EndAIGuysTurn(pSoldier);
       }
     } else {
-#ifdef DEBUGDECISIONS
-      AINumMessage("HandleManAI - Not enough APs, skipping guy#", pSoldier->ubID);
-#endif
       HaltMoveForSoldierOutOfPoints(pSoldier);
       return;
     }
@@ -1651,12 +1507,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
   // reset this field, too
   pSoldier->bLastAttackHit = FALSE;
 
-#ifdef TESTAICONTROL
-  if (gfTurnBasedAI || gTacticalStatus.fAutoBandageMode) {
-    DebugAI(String("%d does %s (a.d. %d) in %d with %d APs left", pSoldier->ubID, gzActionStr[pSoldier->bAction], pSoldier->usActionData, pSoldier->sGridNo, pSoldier->bActionPoints));
-  }
-#endif
-
   DebugAI(String("%d does %s (a.d. %d) at time %ld", pSoldier->ubID, gzActionStr[pSoldier->bAction], pSoldier->usActionData, GetJA2Clock()));
 
   switch (pSoldier->bAction) {
@@ -1681,10 +1531,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
       // as long as we don't see anyone new, cover won't have changed
       // if we see someone new, it will cause a new situation & remove this
       SkipCoverCheck = TRUE;
-
-#ifdef DEBUGDECISIONS
-      DebugAI(String("ExecuteAction: SkipCoverCheck ON\n"));
-#endif
 
       //			pSoldier->bDesiredDirection = (UINT8) ;   // turn to face direction in actionData
       SendSoldierSetDesiredDirectionEvent(pSoldier, pSoldier->usActionData);
@@ -1864,21 +1710,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
 
       // make sure it worked (check that pSoldier->sDestination == pSoldier->usActionData)
       if (pSoldier->sFinalDestination != pSoldier->usActionData) {
-#ifdef BETAVERSION
-        // this should NEVER happen, indicates AI picked an illegal spot!
-        sprintf(tempstr, "ExecuteAction: ERROR - %s tried MOVE to gridno %d, NewDest failed, action %d CANCELED", pSoldier->name, pSoldier->usActionData, pSoldier->bAction);
-
-#ifdef RECORDNET
-        fprintf(NetDebugFile, "\n%s\n\n", tempstr);
-#endif
-
-        PopMessage(tempstr);
-
-        sprintf(tempstr, "BLACK-LISTING gridno %d for %s", pSoldier->usActionData, pSoldier->name);
-        PopMessage(tempstr);
-
-        SaveGame(ERROR_SAVE);
-#endif
         // temporarily black list this gridno to stop enemy from going there
         pSoldier->sBlackList = (INT16)pSoldier->usActionData;
 
@@ -1928,17 +1759,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
           }
         }
       }
-#ifdef RECORDNET
-      fprintf(NetDebugFile, "\tExecuteAction: %d calling HandleItem(), inHand %d, actionData %d, anitype %d, oldani %d\n", pSoldier->ubID, pSoldier->inv[HANDPOS].item, pSoldier->usActionData, pSoldier->anitype[pSoldier->anim], pSoldier->oldani);
-#endif
 
-#ifdef TESTVERSION
-      if (pSoldier->bAction == AI_ACTION_KNIFE_MOVE) {
-        sprintf(tempstr, "TEST MSG: %s is about to go stab %s. MAKE SURE HE DOES!", pSoldier->name, ExtMen[WhoIsThere(pSoldier->usActionData)].name);
-
-        SimulMessage(tempstr, 3000, NODECRYPT);
-      }
-#endif
       iRetCode = HandleItem(pSoldier, pSoldier->usActionData, pSoldier->bTargetLevel, pSoldier->inv[HANDPOS].usItem, FALSE);
       if (iRetCode != ITEM_HANDLE_OK) {
         if (iRetCode != ITEM_HANDLE_BROKEN) // if the item broke, this is 'legal' and doesn't need reporting
@@ -1947,11 +1768,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"AI %d got error code %ld from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
         }
         CancelAIAction(pSoldier, FORCE);
-#ifdef TESTAICONTROL
-        if (gfTurnBasedAI) {
-          DebugAI(String("Ending turn for %d because of error from HandleItem", pSoldier->ubID));
-        }
-#endif
         EndAIGuysTurn(pSoldier);
       }
       break;
@@ -2030,9 +1846,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
 
       SkipCoverCheck = TRUE;
 
-#ifdef DEBUGDECISIONS
-      DebugAI(String("ExecuteAction: SkipCoverCheck ON\n"));
-#endif
       SendChangeSoldierStanceEvent(pSoldier, (UINT8)pSoldier->usActionData);
       break;
 
@@ -2064,15 +1877,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
       // pSoldier->usUIMovementMode = RUNNING;
       iRetCode = HandleItem(pSoldier, pSoldier->usActionData, 0, pSoldier->inv[HANDPOS].usItem, FALSE);
       if (iRetCode != ITEM_HANDLE_OK) {
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"AI %d got error code %ld from HandleItem, doing action %d... aborting deadlock!", pSoldier->ubID, iRetCode, pSoldier->bAction);
-#endif
         CancelAIAction(pSoldier, FORCE);
-#ifdef TESTAICONTROL
-        if (gfTurnBasedAI) {
-          DebugAI(String("Ending turn for %d because of error from HandleItem", pSoldier->ubID));
-        }
-#endif
         EndAIGuysTurn(pSoldier);
       }
       break;
@@ -2093,15 +1898,7 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
 
       pStructure = FindStructure(sDoorGridNo, STRUCTURE_ANYDOOR);
       if (pStructure == NULL) {
-#ifdef JA2TESTVERSION
-        ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_ERROR, L"AI %d tried to open door it could not then find in %d", pSoldier->ubID, sDoorGridNo);
-#endif
         CancelAIAction(pSoldier, FORCE);
-#ifdef TESTAICONTROL
-        if (gfTurnBasedAI) {
-          DebugAI(String("Ending turn for %d because of error opening door", pSoldier->ubID));
-        }
-#endif
         EndAIGuysTurn(pSoldier);
       }
 
@@ -2148,9 +1945,6 @@ INT8 ExecuteAction(SOLDIERTYPE *pSoldier) {
       break;
 
     default:
-#ifdef BETAVERSION
-      NumMessage("ExecuteAction - Illegal action type = ", pSoldier->bAction);
-#endif
       return FALSE;
   }
 
@@ -2219,9 +2013,6 @@ void HandleInitialRedAlert(INT8 bTeam, UINT8 ubCommunicate) {
     }*/
 
   if (gTacticalStatus.Team[bTeam].bAwareOfOpposition == FALSE) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_RED, MSG_ERROR, L"Enemies on team %d prompted to go on RED ALERT!", bTeam);
-#endif
   }
 
   // if there is a stealth mission in progress here, and a panic trigger exists
@@ -2284,11 +2075,6 @@ void ManChecksOnFriends(SOLDIERTYPE *pSoldier) {
       if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, (UINT8)sDistVisible, TRUE)) {
         // if my friend is in battle or something is clearly happening there
         if ((pFriend->bAlertStatus >= STATUS_RED) || pFriend->bUnderFire || (pFriend->bLife < OKLIFE)) {
-#ifdef DEBUGDECISIONS
-          sprintf(tempstr, "%s sees %s on alert, goes to RED ALERT!", pSoldier->name, ExtMen[pFriend->ubID].name);
-          AIPopMessage(tempstr);
-#endif
-
           pSoldier->bAlertStatus = STATUS_RED;
           CheckForChangingOrders(pSoldier);
           SetNewSituation(pSoldier);
@@ -2297,10 +2083,6 @@ void ManChecksOnFriends(SOLDIERTYPE *pSoldier) {
           // if he seems suspicious or acts like he thought he heard something
           // and I'm still on status GREEN
           if ((pFriend->bAlertStatus == STATUS_YELLOW) && (pSoldier->bAlertStatus < STATUS_YELLOW)) {
-#ifdef TESTVERSION
-            sprintf(tempstr, "TEST MSG: %s sees %s listening, goes to YELLOW ALERT!", pSoldier->name, ExtMen[pFriend->ubID].name);
-            PopMessage(tempstr);
-#endif
             pSoldier->bAlertStatus = STATUS_YELLOW; // also get suspicious
             SetNewSituation(pSoldier);
             pSoldier->sNoiseGridno = pFriend->sGridNo; // pretend FRIEND made noise
@@ -2339,12 +2121,6 @@ void HandleAITacticalTraversal(SOLDIERTYPE *pSoldier) {
   } else {
     pSoldier->ubQuoteActionID = 0;
   }
-
-#ifdef TESTAICONTROL
-  if (gfTurnBasedAI) {
-    DebugAI(String("Ending turn for %d because traversing out", pSoldier->ubID));
-  }
-#endif
 
   EndAIGuysTurn(pSoldier);
   RemoveManAsTarget(pSoldier);

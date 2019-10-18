@@ -1,11 +1,6 @@
-#ifndef __FONT_H_
-#define __FONT_H_
-
 #define DEFAULT_SHADOW 2
 #define MILITARY_SHADOW 67
 #define NO_SHADOW 0
-
-#ifdef JA2
 
 // these are bogus! No palette is set yet!
 // font foreground color symbols
@@ -29,47 +24,12 @@
 #define FONT_BCOLOR_ORANGE 76
 #define FONT_BCOLOR_PURPLE 160
 
-#else
-
-// font foreground color symbols
-#define FONT_FCOLOR_WHITE 0x0000
-#define FONT_FCOLOR_RED 0x0000
-#define FONT_FCOLOR_BLUE 0x0000
-#define FONT_FCOLOR_GREEN 0x0000
-#define FONT_FCOLOR_YELLOW 0x0000
-#define FONT_FCOLOR_BROWN 0x0000
-#define FONT_FCOLOR_ORANGE 0x0000
-#define FONT_FCOLOR_PURPLE 0x0000
-
-// font background color symbols
-#define FONT_BCOLOR_WHITE 0x0000
-#define FONT_BCOLOR_RED 0x0000
-#define FONT_BCOLOR_BLUE 0x0000
-#define FONT_BCOLOR_GREEN 0x0000
-#define FONT_BCOLOR_YELLOW 0x0000
-#define FONT_BCOLOR_BROWN 0x0000
-#define FONT_BCOLOR_ORANGE 0x0000
-#define FONT_BCOLOR_PURPLE 0x0000
-
-// font glyphs for spell targeting types
-#define FONT_GLYPH_TARGET_POINT 0xFFF0
-#define FONT_GLYPH_TARGET_CONE 0xFFF1
-#define FONT_GLYPH_TARGET_SINGLE 0xFFF2
-#define FONT_GLYPH_TARGET_GROUP 0xFFF3
-#define FONT_GLYPH_TARGET_NONE 0xFFF4
-
-#endif
-
 // typedefs
 
 typedef struct {
   UINT16 usNumberOfSymbols;
   UINT16 *DynamicArrayOf16BitValues;
 } FontTranslationTable;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern INT32 FontDefault;
 extern UINT32 FontDestBuffer;
@@ -149,9 +109,3 @@ void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHei
 // make sure the pFontString is terminated by 0
 // extern BOOLEAN   PrintFontString(UINT16 *pFontString, UINT8 *pDestBuffer, UINT16 siDestWidth, UINT16 siDestPixelDepth, UINT16 siDestPitch, UINT16 siDestHeight, UINT16 siX, UINT16 siY, UINT16 siTotalWidth, UINT16 siTotalHeight, BOOLEAN MultiLine, FontBase *pFontBase);
 // extern BOOLEAN   SetFont16BitData(FontBase *pFontBase, UINT16 *pData16);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

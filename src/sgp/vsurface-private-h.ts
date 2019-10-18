@@ -1,6 +1,3 @@
-#ifndef __VSURFACE_PRIVATE_
-#define __VSURFACE_PRIVATE_
-
 // ***********************************************************************
 //
 // PRIVATE, INTERNAL Header used by other SGP Internal modules
@@ -14,5 +11,3 @@ LPDIRECTDRAWSURFACE GetVideoSurfaceDDSurfaceOne(HVSURFACE hVSurface);
 LPDIRECTDRAWPALETTE GetVideoSurfaceDDPalette(HVSURFACE hVSurface);
 
 HVSURFACE CreateVideoSurfaceFromDDSurface(LPDIRECTDRAWSURFACE2 lpDDSurface);
-
-#endif

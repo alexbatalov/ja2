@@ -1,6 +1,3 @@
-#ifndef WORLD_DAT_H
-#define WORLD_DAT_H
-
 typedef void (*TILESET_CALLBACK)(void);
 
 typedef struct {
@@ -17,5 +14,3 @@ void InitEngineTilesets();
 // THESE FUNCTIONS WILL SET TERRAIN VALUES - CALL ONE FOR EACH TILESET
 void SetTilesetOneTerrainValues();
 void SetTilesetTwoTerrainValues();
-
-#endif

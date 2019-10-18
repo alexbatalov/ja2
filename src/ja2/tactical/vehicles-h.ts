@@ -1,6 +1,3 @@
-#ifndef _VEHICLES_H
-#define _VEHICLES_H
-
 #define MAX_VEHICLES 10
 
 // type of vehicles
@@ -135,11 +132,6 @@ BOOLEAN KillPersonInVehicle(INT32 iId, SOLDIERTYPE *pSoldier);
 // kill everyone in vehicle
 BOOLEAN KillAllInVehicle(INT32 iId);
 
-#ifdef JA2TESTVERSION
-// test vehicle stuff
-void VehicleTest(void);
-#endif
-
 // grab number of occupants in vehicles
 INT32 GetNumberInVehicle(INT32 iId);
 
@@ -219,5 +211,3 @@ BOOLEAN DoesVehicleHaveAnyPassengers(INT32 iVehicleID);
 BOOLEAN DoesVehicleGroupHaveAnyPassengers(GROUP *pGroup);
 
 void SetSoldierExitVehicleInsertionData(SOLDIERTYPE *pSoldier, INT32 iId);
-
-#endif

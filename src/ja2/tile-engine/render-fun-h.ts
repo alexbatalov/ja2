@@ -1,6 +1,3 @@
-#ifndef __RENDER_FUN_H
-#define __RENDER_FUN_H
-
 #define NO_ROOM 0
 #define MAX_ROOMS 250
 
@@ -22,5 +19,3 @@ void SetGridNoRevealedFlag(UINT16 sGridNo);
 void ExamineGridNoForSlantRoofExtraGraphic(UINT16 sCheckGridNo);
 
 void SetRecalculateWireFrameFlagRadius(INT16 sX, INT16 sY, INT16 sRadius);
-
-#endif

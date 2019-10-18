@@ -1,6 +1,3 @@
-#ifndef _SAVELOADMAP__H_
-#define _SAVELOADMAP__H_
-
 // Used for the ubType in the MODIFY_MAP struct
 enum {
   SLM_NONE,
@@ -93,5 +90,3 @@ void AddOpenableStructStatusToMapTempFile(UINT32 uiMapIndex, BOOLEAN fOpened);
 void AddWindowHitToMapTempFile(UINT32 uiMapIndex);
 
 BOOLEAN ChangeStatusOfOpenableStructInUnloadedSector(UINT16 usSectorX, UINT16 usSectorY, INT8 bSectorZ, UINT16 usGridNo, BOOLEAN fChangeToOpen);
-
-#endif

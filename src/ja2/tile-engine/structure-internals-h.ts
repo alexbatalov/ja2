@@ -1,6 +1,3 @@
-#ifndef __STRUCTURE_INTERNAL_H
-#define __STRUCTURE_INTERNAL_H
-
 //
 // If you wish to use the structure database functions, include
 // structure_extern.h, not structure.h!
@@ -226,5 +223,3 @@ typedef struct TAG_STRUCTURE_FILE_HEADER {
 
 #define STRUCTURE_FILE_CONTAINS_AUXIMAGEDATA 0x01
 #define STRUCTURE_FILE_CONTAINS_STRUCTUREDATA 0x02
-
-#endif

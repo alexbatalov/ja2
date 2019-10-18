@@ -384,10 +384,6 @@ BOOLEAN IsSoldierCloseEnoughToSAMControlPanel( SOLDIERTYPE *pSoldier );
 BOOLEAN IsSoldierCloseEnoughToADoctor( SOLDIERTYPE *pPatient );
 */
 
-#ifdef JA2BETAVERSION
-void VerifyTownTrainingIsPaidFor(void);
-#endif
-
 void InitSectorsWithSoldiersList(void) {
   // init list of sectors
   memset(&fSectorsWithSoldiers, 0, sizeof(fSectorsWithSoldiers));
@@ -486,11 +482,6 @@ BOOLEAN CanCharacterDoctorButDoesntHaveMedKit(SOLDIERTYPE *pSoldier) {
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
   }
-
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
 
   // make sure character is alive and conscious
   if (pSoldier->bLife < OKLIFE) {
@@ -762,11 +753,6 @@ BOOLEAN CanCharacterRepair(SOLDIERTYPE *pSoldier) {
     return FALSE;
   }
 
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
-
   if (BasicCanCharacterRepair(pSoldier) == FALSE) {
     return FALSE;
   }
@@ -790,11 +776,6 @@ BOOLEAN CanCharacterRepair(SOLDIERTYPE *pSoldier) {
 
 // can character be set to patient?
 BOOLEAN CanCharacterPatient(SOLDIERTYPE *pSoldier) {
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
-
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
   }
@@ -842,11 +823,6 @@ BOOLEAN BasicCanCharacterTrainMilitia(SOLDIERTYPE *pSoldier) {
   // is the character capable of training a town?
   // they must be alive/conscious and in the sector with the town
   BOOLEAN fSamSitePresent = FALSE;
-
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
 
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
@@ -1018,11 +994,6 @@ BOOLEAN IsMilitiaTrainableFromSoldiersSectorMaxed(SOLDIERTYPE *pSoldier) {
 
 BOOLEAN CanCharacterTrainStat(SOLDIERTYPE *pSoldier, INT8 bStat, BOOLEAN fTrainSelf, BOOLEAN fTrainTeammate) {
 // is the character capable of training this stat? either self or as trainer
-
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
 
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
@@ -1201,11 +1172,6 @@ BOOLEAN CanCharacterOnDuty(SOLDIERTYPE *pSoldier) {
 BOOLEAN CanCharacterPractise(SOLDIERTYPE *pSoldier) {
 // can character practise right now?
 
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
-
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
   }
@@ -1289,11 +1255,6 @@ BOOLEAN CanCharacterBeTrainedByOther(SOLDIERTYPE *pSoldier) {
 // can character sleep right now?
 BOOLEAN CanCharacterSleep(SOLDIERTYPE *pSoldier, BOOLEAN fExplainWhyNot) {
   CHAR16 sString[128];
-
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
 
   // dead or dying?
   if (pSoldier->bLife < OKLIFE) {
@@ -1404,11 +1365,6 @@ BOOLEAN CanCharacterBeAwakened(SOLDIERTYPE *pSoldier, BOOLEAN fExplainWhyNot) {
 
 BOOLEAN CanCharacterVehicle(SOLDIERTYPE *pSoldier) {
 // can character enter/leave vehicle?
-
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return FALSE;
-#endif
 
   if (!BasicCanCharacterAssignment(pSoldier, TRUE)) {
     return FALSE;
@@ -1553,11 +1509,6 @@ BOOLEAN IsCharacterInTransit(SOLDIERTYPE *pSoldier) {
 void UpdateAssignments() {
   INT8 sX, sY, bZ;
 
-// this assignment is no go in the demo
-#ifdef JA2DEMO
-  return;
-#endif
-
   // init sectors with soldiers list
   InitSectorsWithSoldiersList();
 
@@ -1579,11 +1530,6 @@ void UpdateAssignments() {
   // rest resting mercs, fatigue active mercs,
   // check for mercs tired enough go to sleep, and wake up well-rested mercs
   HandleRestFatigueAndSleepStatus();
-
-#ifdef JA2BETAVERSION
-  // put this BEFORE training gets handled to avoid detecting an error everytime a sector completes training
-  VerifyTownTrainingIsPaidFor();
-#endif
 
   // run through sectors and handle each type in sector
   for (sX = 0; sX < MAP_WORLD_X; sX++) {
@@ -1623,37 +1569,6 @@ void UpdateAssignments() {
   fTeamPanelDirty = TRUE;
   fMapScreenBottomDirty = TRUE;
 }
-
-#ifdef JA2BETAVERSION
-void VerifyTownTrainingIsPaidFor(void) {
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-
-  for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
-    // valid character?
-    if (gCharactersList[iCounter].fValid == FALSE) {
-      // nope
-      continue;
-    }
-
-    pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
-
-    if (pSoldier->bActive && (pSoldier->bAssignment == TRAIN_TOWN)) {
-      // make sure that sector is paid up!
-      if (SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)].fMilitiaTrainingPaid == FALSE) {
-        // NOPE!  We've got a bug somewhere
-        StopTimeCompression();
-
-        // report the error
-        DoScreenIndependantMessageBox(L"ERROR: Unpaid militia training. Describe *how* you're re-assigning mercs, how many/where/when! Send *prior* save!", MSG_BOX_FLAG_OK, NULL);
-
-        // avoid repeating this
-        break;
-      }
-    }
-  }
-}
-#endif
 
 UINT8 FindNumberInSectorWithAssignment(INT16 sX, INT16 sY, INT8 bAssignment) {
   // run thought list of characters find number with this assignment
@@ -3065,10 +2980,6 @@ INT16 GetBonusTrainingPtsDueToInstructor(SOLDIERTYPE *pInstructor, SOLDIERTYPE *
       break;
     // NOTE: Wisdom can't be trained!
     default:
-// BETA message
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"GetBonusTrainingPtsDueToInstructor: ERROR - Unknown bTrainStat %d", bTrainStat);
-#endif
       return 0;
   }
 
@@ -3115,10 +3026,6 @@ INT16 GetBonusTrainingPtsDueToInstructor(SOLDIERTYPE *pInstructor, SOLDIERTYPE *
         break;
       // NOTE: Wisdom can't be trained!
       default:
-// BETA message
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"GetBonusTrainingPtsDueToInstructor: ERROR - Unknown bTrainStat %d", bTrainStat);
-#endif
         return 0;
     }
 
@@ -3217,10 +3124,6 @@ INT16 GetSoldierTrainingPts(SOLDIERTYPE *pSoldier, INT8 bTrainStat, BOOLEAN fAtG
       break;
     // NOTE: Wisdom can't be trained!
     default:
-// BETA message
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"GetSoldierTrainingPts: ERROR - Unknown bTrainStat %d", bTrainStat);
-#endif
       return 0;
   }
 
@@ -3293,10 +3196,6 @@ INT16 GetSoldierStudentPts(SOLDIERTYPE *pSoldier, INT8 bTrainStat, BOOLEAN fAtGu
       break;
     // NOTE: Wisdom can't be trained!
     default:
-// BETA message
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"GetSoldierTrainingPts: ERROR - Unknown bTrainStat %d", bTrainStat);
-#endif
       return 0;
   }
 
@@ -3392,10 +3291,6 @@ void TrainSoldierWithPts(SOLDIERTYPE *pSoldier, INT16 sTrainPts) {
       break;
     // NOTE: Wisdom can't be trained!
     default:
-// BETA message
-#ifdef JA2BETAVERSION
-      ScreenMsg(FONT_ORANGE, MSG_BETAVERSION, L"TrainSoldierWithPts: ERROR - Unknown bTrainStat %d", pSoldier->bTrainStat);
-#endif
       return;
   }
 

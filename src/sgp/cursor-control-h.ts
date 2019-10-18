@@ -1,10 +1,3 @@
-#ifndef __CURSOR_DATABASE_
-#define __CURSOR_DATABASE_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern UINT32 GetCursorHandle(UINT32 uiCursorIndex);
 extern void UnloadCursorData(UINT32 uiCursorIndex);
 extern BOOLEAN LoadCursorData(UINT32 uiCursorIndex);
@@ -89,9 +82,3 @@ void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);
 
 void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex);
 void RemoveExternVOData(UINT32 uiCursorIndex);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

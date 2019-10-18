@@ -1,6 +1,3 @@
-#ifndef __BOBBYRGUNS_H
-#define __BOBBYRGUNS_H
-
 //#include "LaptopSave.h"
 
 #define BOBBYRDESCFILE "BINARYDATA\\BrayDesc.edt"
@@ -46,5 +43,3 @@ UINT16 CalcBobbyRayCost(UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed);
 // void CalculateFirstAndLastIndexs();
 void SetFirstLastPagesForUsed();
 void SetFirstLastPagesForNew(UINT32 uiClass);
-
-#endif

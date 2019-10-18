@@ -1,6 +1,3 @@
-#ifndef __INTERFACE_PANELS
-#define __INTERFACE_PANELS
-
 typedef enum {
   STANCEUP_BUTTON = 0,
   UPDOWN_BUTTON,
@@ -109,5 +106,3 @@ void HandleTacticalEffectsOfEquipmentChange(SOLDIERTYPE *pSoldier, UINT32 uiInvP
 void FinishAnySkullPanelAnimations();
 
 UINT8 FindNextMercInTeamPanel(SOLDIERTYPE *pSoldier, BOOLEAN fGoodForLessOKLife, BOOLEAN fOnlyRegularMercs);
-
-#endif

@@ -100,12 +100,6 @@ INT32 GetFreeBackgroundBuffer(void) {
 
   if (guiNumBackSaves < BACKGROUND_BUFFERS)
     return (INT32)guiNumBackSaves++;
-#ifdef JA2BETAVERSION
-  else {
-    // else display an error message
-    DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ERROR! GetFreeBackgroundBuffer(): Trying to allocate more saves then there is room:  guiCurrentScreen = %d", guiCurrentScreen));
-  }
-#endif
 
   return -1;
 }

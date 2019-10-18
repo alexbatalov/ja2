@@ -1,7 +1,3 @@
-#ifdef JA2TESTVERSION
-#define BR_INVENTORY_TURNOVER_DEBUG
-#endif
-
 #define BOBBIES_SIGN_FONT FONT14ARIAL
 #define BOBBIES_SIGN_COLOR 2
 #define BOBBIES_SIGN_BACKCOLOR FONT_MCOLOR_BLACK
@@ -578,11 +574,6 @@ void DailyUpdateOfBobbyRaysNewInventory() {
             AddFreshBobbyRayInventory(usItemIndex);
           } else {
             OrderBobbyRItem(usItemIndex);
-
-#ifdef BR_INVENTORY_TURNOVER_DEBUG
-            if (usItemIndex == ROCKET_LAUNCHER)
-              MapScreenMessage(0, MSG_DEBUG, L"%s: BR Ordered %d, Has %d", WORLDTIMESTR, LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnOrder, LaptopSaveInfo.BobbyRayInventory[i].ubQtyOnHand);
-#endif
           }
         }
       }
@@ -695,11 +686,6 @@ void AddFreshBobbyRayInventory(UINT16 usItemIndex) {
   pInventoryArray[sInventorySlot].ubQtyOnHand += pInventoryArray[sInventorySlot].ubQtyOnOrder;
   pInventoryArray[sInventorySlot].ubItemQuality = ubItemQuality;
 
-#ifdef BR_INVENTORY_TURNOVER_DEBUG
-  if (usItemIndex == ROCKET_LAUNCHER && !fUsed)
-    MapScreenMessage(0, MSG_DEBUG, L"%s: BR Bought %d, Has %d", WORLDTIMESTR, pInventoryArray[sInventorySlot].ubQtyOnOrder, pInventoryArray[sInventorySlot].ubQtyOnHand);
-#endif
-
   // cancel order
   pInventoryArray[sInventorySlot].ubQtyOnOrder = 0;
 }
@@ -728,13 +714,6 @@ void SimulateBobbyRayCustomer(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed) {
     if (pInventoryArray[i].ubQtyOnHand > 0) {
       ubItemsSold = HowManyItemsAreSold(-1, pInventoryArray[i].usItemIndex, pInventoryArray[i].ubQtyOnHand, fUsed);
       pInventoryArray[i].ubQtyOnHand -= ubItemsSold;
-
-#ifdef BR_INVENTORY_TURNOVER_DEBUG
-      if (ubItemsSold > 0) {
-        if (i == ROCKET_LAUNCHER && !fUsed)
-          MapScreenMessage(0, MSG_DEBUG, L"%s: BR Sold %d, Has %d", WORLDTIMESTR, ubItemsSold, pInventoryArray[i].ubQtyOnHand);
-      }
-#endif
     }
   }
 }

@@ -1399,11 +1399,12 @@ INT8 *GetDialogueDataFilename(UINT8 ubCharacterNum, UINT16 usQuoteNum, BOOLEAN f
   if (gfUseAlternateDialogueFile) {
     if (fWavFile) {
 // build name of wav file (characternum + quotenum)
-#ifdef RUSSIAN
-      sprintf(zFileName, "NPC_SPEECH\\g_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
-#else
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+//       sprintf(zFileName, "NPC_SPEECH\\g_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+// #else
       sprintf(zFileName, "NPC_SPEECH\\d_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
-#endif
+// #endif
     } else {
       // assume EDT files are in EDT directory on HARD DRIVE
       sprintf(zFileName, "NPCDATA\\d_%03d.EDT", ubCharacterNum);
@@ -1429,11 +1430,12 @@ INT8 *GetDialogueDataFilename(UINT8 ubCharacterNum, UINT16 usQuoteNum, BOOLEAN f
     }
   } else {
     if (fWavFile) {
-#ifdef RUSSIAN
-      if (ubCharacterNum >= FIRST_RPC && gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) {
-        sprintf(zFileName, "SPEECH\\r_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
-      } else
-#endif
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+//       if (ubCharacterNum >= FIRST_RPC && gMercProfiles[ubCharacterNum].ubMiscFlags & PROFILE_MISC_FLAG_RECRUITED) {
+//         sprintf(zFileName, "SPEECH\\r_%03d_%03d.wav", ubCharacterNum, usQuoteNum);
+//       } else
+// #endif
       {
         // build name of wav file (characternum + quotenum)
         sprintf(zFileName, "SPEECH\\%03d_%03d.wav", ubCharacterNum, usQuoteNum);
@@ -1471,16 +1473,12 @@ BOOLEAN GetDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, UINT32 iDataSize, U
       if (zDialogueText[0] == 0) {
         swprintf(zDialogueText, L"I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
 
-#ifndef JA2BETAVERSION
         return FALSE;
-#endif
       }
     } else {
       swprintf(zDialogueText, L"I have no text in the file ( %d ) %S", usQuoteNum, pFilename);
 
-#ifndef JA2BETAVERSION
       return FALSE;
-#endif
     }
   }
 
@@ -1528,13 +1526,9 @@ void HandleTacticalNPCTextUI(UINT8 ubCharacterNum, INT16 *zQuoteStr) {
   }
 
   // post message to mapscreen message system
-#ifdef TAIWANESE
-  swprintf(gTalkPanel.zQuoteStr, L"%s", zQuoteStr);
-#else
   swprintf(gTalkPanel.zQuoteStr, L"\"%s\"", zQuoteStr);
   swprintf(zText, L"%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
-#endif
 }
 
 // Handlers for tactical UI stuff
@@ -1549,13 +1543,9 @@ void DisplayTextForExternalNPC(UINT8 ubCharacterNum, STR16 zQuoteStr) {
   }
 
   // post message to mapscreen message system
-#ifdef TAIWANESE
-  swprintf(gTalkPanel.zQuoteStr, L"%s", zQuoteStr);
-#else
   swprintf(gTalkPanel.zQuoteStr, L"\"%s\"", zQuoteStr);
   swprintf(zText, L"%s: \"%s\"", gMercProfiles[ubCharacterNum].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
-#endif
 
   if (guiCurrentScreen == MAP_SCREEN) {
     sLeft = (gsExternPanelXPosition + 97);
@@ -1576,11 +1566,7 @@ void HandleTacticalTextUI(INT32 iFaceIndex, SOLDIERTYPE *pSoldier, INT16 *zQuote
   // BUild text
   // How do we do this with defines?
   // swprintf( zText, L"\xb4\xa2 %s: \xb5 \"%s\"", gMercProfiles[ ubCharacterNum ].zNickname, zQuoteStr );
-#ifdef TAIWANESE
-  swprintf(zText, L"%s", zQuoteStr);
-#else
   swprintf(zText, L"\"%s\"", zQuoteStr);
-#endif
   sLeft = 110;
 
   // previous version
@@ -1588,10 +1574,8 @@ void HandleTacticalTextUI(INT32 iFaceIndex, SOLDIERTYPE *pSoldier, INT16 *zQuote
 
   ExecuteTacticalTextBox(sLeft, zText);
 
-#ifndef TAIWANESE
   swprintf(zText, L"%s: \"%s\"", gMercProfiles[pSoldier->ubProfile].zNickname, zQuoteStr);
   MapScreenMessage(FONT_MCOLOR_WHITE, MSG_DIALOG, L"%s", zText);
-#endif
 }
 
 void ExecuteTacticalTextBoxForLastQuote(INT16 sLeftPosition, STR16 pString) {

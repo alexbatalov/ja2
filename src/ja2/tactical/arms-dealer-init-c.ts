@@ -114,12 +114,6 @@ void InitializeOneArmsDealer(UINT8 ubArmsDealer) {
   UINT16 usItemIndex;
   UINT8 ubNumItems = 0;
 
-#ifdef JA2DEMO
-  if (ubArmsDealer != ARMS_DEALER_JAKE) {
-    return;
-  }
-#endif
-
   memset(&(gArmsDealerStatus[ubArmsDealer]), 0, sizeof(ARMS_DEALER_STATUS));
   memset(&(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * MAXITEMS);
 
@@ -152,12 +146,6 @@ void ShutDownArmsDealers() {
 
   // loop through all the dealers
   for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
-#ifdef JA2DEMO
-    if (ubArmsDealer != ARMS_DEALER_JAKE) {
-      continue;
-    }
-#endif
-
     // loop through all the item types
     for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
@@ -437,22 +425,6 @@ BOOLEAN AdjustCertainDealersInventory() {
   if (!(gArmsDealerStatus[ARMS_DEALER_FRANZ].ubSpecificDealerFlags & ARMS_DEALER_FLAG__FRANZ_HAS_SOLD_VIDEO_CAMERA_TO_PLAYER)) {
     GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_FRANZ, VIDEO_CAMERA, 1);
   }
-
-#ifdef JA2DEMO
-  {
-    // Adjust Jake's inventory (for demo only)
-    SPECIAL_ITEM_INFO SpclItemInfo;
-
-    // create item info describing a perfect item
-    SetSpecialItemInfoToDefaults(&SpclItemInfo);
-
-    // These items are to be in perfect working order (even though he's a junk dealer)
-    AddItemToArmsDealerInventory(ARMS_DEALER_JAKE, SILENCER, &SpclItemInfo, (UINT8)(2 + Random(2)));
-    AddItemToArmsDealerInventory(ARMS_DEALER_JAKE, LOCKSMITHKIT, &SpclItemInfo, 1);
-    //	ArmsDealerGetsFreshStock( ARMS_DEALER_JAKE, SILENCER, (UINT8)( 2 + Random( 2 ) ) );
-    //	ArmsDealerGetsFreshStock( ARMS_DEALER_JAKE, LOCKSMITHKIT, 1);
-  }
-#endif
 
   return TRUE;
 }
@@ -813,11 +785,6 @@ UINT32 GetArmsDealerItemTypeFromItemNumber(UINT16 usItem) {
 BOOLEAN IsMercADealer(UINT8 ubMercID) {
   UINT8 cnt;
 
-#ifdef JA2DEMO // Gabby is not a dealer in the demo, but is one in the game
-  if (ubMercID == GABBY)
-    return FALSE;
-#endif
-
   // Manny is not actually a valid dealer unless a particular event sets that fact
   if ((ubMercID == MANNY) && !CheckFact(FACT_MANNY_IS_BARTENDER, 0)) {
     return FALSE;
@@ -833,11 +800,6 @@ BOOLEAN IsMercADealer(UINT8 ubMercID) {
 
 INT8 GetArmsDealerIDFromMercID(UINT8 ubMercID) {
   INT8 cnt;
-
-#ifdef JA2DEMO // Gabby is not a dealer in the demo, but is one in the game
-  if (ubMercID == GABBY)
-    return -1;
-#endif
 
   // loop through the list of arms dealers
   for (cnt = 0; cnt < NUM_ARMS_DEALERS; cnt++) {
@@ -2127,13 +2089,11 @@ UINT16 CalcValueOfItemToDealer(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN f
     }
   }
 
-#ifndef JA2DEMO // don't halve the gun/silencer prices in the demo...
   // Tony specializes in guns, weapons, and ammo, so make others pay much less for that kind of stuff
   if (DoesItemAppearInDealerInventoryList(ARMS_DEALER_TONY, usItemIndex, TRUE)) {
     // others pay only 1/2 of that value!
     usValueToThisDealer /= 2;
   }
-#endif
 
   // minimum bet $1 !
   if (usValueToThisDealer == 0) {

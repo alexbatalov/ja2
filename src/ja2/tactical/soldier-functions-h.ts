@@ -1,6 +1,3 @@
-#ifndef _SOLDIER_FUNCTIONS_H
-#define _SOLDIER_FUNCTIONS_H
-
 void ContinueMercMovement(SOLDIERTYPE *pSoldier);
 
 BOOLEAN IsValidStance(SOLDIERTYPE *pSoldier, INT8 bNewStance);
@@ -19,5 +16,3 @@ void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo,
 void MercStealFromMerc(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget);
 
 void HandleCrowShadowVisibility(SOLDIERTYPE *pSoldier);
-
-#endif

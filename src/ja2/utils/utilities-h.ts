@@ -1,6 +1,3 @@
-#ifndef _UTILITIES_H_
-#define _UTILITIES_H_
-
 #define GETPIXELDEPTH() (gbPixelDepth)
 
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pPalette, SGPFILENAME ColFile);
@@ -17,5 +14,3 @@ void HandleLimitedNumExecutions();
 
 BOOLEAN HandleJA2CDCheck();
 BOOLEAN HandleJA2CDCheckTwo();
-
-#endif

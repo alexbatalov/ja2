@@ -10,9 +10,6 @@ void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fN
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
   if (pStructure == NULL) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"ERROR: Told to handle door that does not exist at %d.", sGridNo);
-#endif
     return;
   }
 
@@ -24,9 +21,6 @@ void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fN
   // set door busy
   pDoorStatus = GetDoorStatus(sGridNo);
   if (pDoorStatus == NULL) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"ERROR: Told to set door busy but can't get door status at %d!", sGridNo);
-#endif
     return;
   }
 
@@ -1039,40 +1033,41 @@ void SetDoorString(INT16 sGridNo) {
 
   // ATE: If here, we try to say, opened or closed...
   if (gfUIIntTileLocation2 == FALSE) {
-#ifdef GERMAN
-
-    wcscpy(gzIntTileLocation2, TacticalStr[DOOR_DOOR_MOUSE_DESCRIPTION]);
-    gfUIIntTileLocation2 = TRUE;
-
-    // Try to get doors status here...
-    pDoorStatus = GetDoorStatus(sGridNo);
-    if (pDoorStatus == NULL || (pDoorStatus != NULL && pDoorStatus->ubFlags & DOOR_PERCEIVED_NOTSET)) {
-      // OK, get status based on graphic.....
-      pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
-      if (pStructure) {
-        if (pStructure->fFlags & STRUCTURE_OPEN) {
-          // Door is opened....
-          wcscpy(gzIntTileLocation, pMessageStrings[MSG_OPENED]);
-          gfUIIntTileLocation = TRUE;
-        } else {
-          // Door is closed
-          wcscpy(gzIntTileLocation, pMessageStrings[MSG_CLOSED]);
-          gfUIIntTileLocation = TRUE;
-        }
-      }
-    } else {
-      // Use percived value
-      if (pDoorStatus->ubFlags & DOOR_PERCEIVED_OPEN) {
-        // Door is opened....
-        wcscpy(gzIntTileLocation, pMessageStrings[MSG_OPENED]);
-        gfUIIntTileLocation = TRUE;
-      } else {
-        // Door is closed
-        wcscpy(gzIntTileLocation, pMessageStrings[MSG_CLOSED]);
-        gfUIIntTileLocation = TRUE;
-      }
-    }
-#else
+// FIXME: Language-specific code
+// #ifdef GERMAN
+//
+//     wcscpy(gzIntTileLocation2, TacticalStr[DOOR_DOOR_MOUSE_DESCRIPTION]);
+//     gfUIIntTileLocation2 = TRUE;
+//
+//     // Try to get doors status here...
+//     pDoorStatus = GetDoorStatus(sGridNo);
+//     if (pDoorStatus == NULL || (pDoorStatus != NULL && pDoorStatus->ubFlags & DOOR_PERCEIVED_NOTSET)) {
+//       // OK, get status based on graphic.....
+//       pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
+//       if (pStructure) {
+//         if (pStructure->fFlags & STRUCTURE_OPEN) {
+//           // Door is opened....
+//           wcscpy(gzIntTileLocation, pMessageStrings[MSG_OPENED]);
+//           gfUIIntTileLocation = TRUE;
+//         } else {
+//           // Door is closed
+//           wcscpy(gzIntTileLocation, pMessageStrings[MSG_CLOSED]);
+//           gfUIIntTileLocation = TRUE;
+//         }
+//       }
+//     } else {
+//       // Use percived value
+//       if (pDoorStatus->ubFlags & DOOR_PERCEIVED_OPEN) {
+//         // Door is opened....
+//         wcscpy(gzIntTileLocation, pMessageStrings[MSG_OPENED]);
+//         gfUIIntTileLocation = TRUE;
+//       } else {
+//         // Door is closed
+//         wcscpy(gzIntTileLocation, pMessageStrings[MSG_CLOSED]);
+//         gfUIIntTileLocation = TRUE;
+//       }
+//     }
+// #else
 
     // Try to get doors status here...
     pDoorStatus = GetDoorStatus(sGridNo);
@@ -1103,6 +1098,6 @@ void SetDoorString(INT16 sGridNo) {
       }
     }
 
-#endif
+// #endif
   }
 }

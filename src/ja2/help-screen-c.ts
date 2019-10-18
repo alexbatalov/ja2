@@ -812,11 +812,7 @@ void SetSizeAndPropertiesOfHelpScreen() {
       break;
 
     default:
-#ifdef JA2BETAVERSION
-      AssertMsg(0, "Error in help screen.  DF 0");
-#else
       break;
-#endif
   }
 
   // if there are buttons
@@ -933,21 +929,6 @@ void GetHelpScreenUserInput() {
                                           }
                                                   break;
           */
-
-#ifdef JA2TESTVERSION
-        // rerender the hepl screen
-        case 'r':
-          gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_ALL;
-          break;
-
-        case 'i':
-          InvalidateRegion(0, 0, 640, 480);
-          break;
-
-        case 'd':
-          InvalidateRegion(gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth, gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight);
-          break;
-#endif
       }
     }
 
@@ -1001,11 +982,7 @@ void HelpScreenSpecialExitCode() {
       break;
 
     default:
-#ifdef JA2BETAVERSION
-      AssertMsg(0, "Error in help screen.  DF 0");
-#else
       break;
-#endif
   }
 }
 
@@ -1040,11 +1017,7 @@ void SpecialHandlerCode() {
       break;
 
     default:
-#ifdef JA2BETAVERSION
-      AssertMsg(0, "Error in help screen:  SpecialHandlerCode().  DF 0");
-#else
       break;
-#endif
   }
 }
 
@@ -1083,12 +1056,7 @@ UINT16 RenderSpecificHelpScreen() {
       break;
 
     default:
-#ifdef JA2BETAVERSION
-      SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
-      AssertMsg(0, "Error in help screen:  RenderSpecificHelpScreen().  DF 0");
-#else
       break;
-#endif
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -1144,11 +1112,7 @@ void DisplayCurrentScreenTitleAndFooter() {
       break;
 
     default:
-#ifdef JA2BETAVERSION
-      AssertMsg(0, "Error in help screen:  DisplayCurrentScreenTitleAndFooter().  DF 0");
-#else
       break;
-#endif
   }
 
   //	GetHelpScreenTextPositions( NULL, NULL, &usWidth );

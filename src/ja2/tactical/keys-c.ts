@@ -1002,10 +1002,6 @@ BOOLEAN IsDoorOpen(INT16 sGridNo) {
     }
   }
 
-#ifdef JA2TESTVERSION
-  ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"WARNING! Failed to find the Door Open Status on Gridno %s", sGridNo);
-#endif
-
   return FALSE;
 }
 
@@ -1200,9 +1196,6 @@ void SyncronizeDoorStatusToStructureData(DOOR_STATUS *pDoorStatus) {
 
   pNode = FindLevelNodeBasedOnStructure(sBaseGridNo, pBaseStructure);
   if (!pNode) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Could not find levelnode from door structure at %d", pDoorStatus->sGridNo);
-#endif
     return;
   }
 
@@ -1267,9 +1260,6 @@ void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fUseP
 
   pNode = FindLevelNodeBasedOnStructure(sBaseGridNo, pBaseStructure);
   if (!pNode) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Could not find levelnode from door structure at %d", pDoorStatus->sGridNo);
-#endif
     return;
   }
 
@@ -1431,12 +1421,6 @@ BOOLEAN IsDoorPerceivedOpen(INT16 sGridNo) {
   if (pDoorStatus && pDoorStatus->ubFlags & DOOR_PERCEIVED_OPEN) {
     return TRUE;
   } else {
-#ifdef JA2TESTVERSION
-    if (!pDoorStatus) {
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"WARNING! Failed to find the Perceived Open Door Status on Gridno %s", sGridNo);
-    }
-#endif
-
     return FALSE;
   }
 }

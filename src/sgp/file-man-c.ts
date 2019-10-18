@@ -521,21 +521,12 @@ void FileClose(HWFILE hFile) {
 //
 //**************************************************************************
 
-#ifdef JA2TESTVERSION
-extern UINT32 uiTotalFileReadTime;
-extern UINT32 uiTotalFileReadCalls;
-#endif
-
 BOOLEAN FileRead(HWFILE hFile, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytesRead) {
   HANDLE hRealFile;
   DWORD dwNumBytesToRead, dwNumBytesRead;
   BOOLEAN fRet = FALSE;
   INT16 sLibraryID;
   UINT32 uiFileNum;
-
-#ifdef JA2TESTVERSION
-  UINT32 uiStartTime = GetJA2Clock();
-#endif
 
   // init the variables
   dwNumBytesToRead = dwNumBytesRead = 0;
@@ -578,11 +569,6 @@ BOOLEAN FileRead(HWFILE hFile, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytes
       }
     }
   }
-#ifdef JA2TESTVERSION
-  // Add the time that we spent in this function to the total.
-  uiTotalFileReadTime += GetJA2Clock() - uiStartTime;
-  uiTotalFileReadCalls++;
-#endif
 
   return fRet;
 }

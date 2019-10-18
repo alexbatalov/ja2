@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 INT8 gbDefaultLightType = PRIMETIME_LIGHT;
 
 SGPPaletteEntry gEditorLightColor;
@@ -214,5 +212,3 @@ void ChangeLightDefault(INT8 bLightType) {
   gbDefaultLightType = bLightType;
   ClickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
 }
-
-#endif

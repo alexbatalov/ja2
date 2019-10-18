@@ -1,6 +1,3 @@
-#ifndef __SCREEN_IDS
-#define __SCREEN_IDS
-
 typedef enum ScreenTypes {
   EDIT_SCREEN,
   SAVING_SCREEN,
@@ -28,15 +25,9 @@ typedef enum ScreenTypes {
   INTRO_SCREEN,
   CREDIT_SCREEN,
 
-#ifdef JA2BETAVERSION
-  AIVIEWER_SCREEN,
-#endif
-
   //#ifdef JA2BETAVERSION
   QUEST_DEBUG_SCREEN,
   //#endif
 
   MAX_SCREENS,
 };
-
-#endif

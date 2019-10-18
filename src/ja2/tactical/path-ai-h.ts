@@ -6,9 +6,6 @@
         Copyright (C) 1993 HixoxiH Software
 */
 
-#ifndef _PATHAI_H
-#define _PATHAI_H
-
 BOOLEAN InitPathAI(void);
 void ShutDownPathAI(void);
 INT16 PlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot, INT8 bStayOn, UINT16 usMovementMode, INT8 bStealth, INT8 bReverse, INT16 sAPBudget);
@@ -118,5 +115,3 @@ extern UINT8 gubGlobalPathFlags;
 #define PATH_CLOSE_RADIUS 5
 
 // ------------------------------------------
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _SLIDER__H_
-#define _SLIDER__H_
-
 #define SLIDER_VERTICAL 0x00000001
 #define SLIDER_HORIZONTAL 0x00000002
 
@@ -38,5 +35,3 @@ void RenderAllSliderBars();
 void RemoveSliderBar(UINT32 uiSliderID);
 
 void SetSliderValue(UINT32 uiSliderID, UINT32 uiNewValue);
-
-#endif

@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 //===========================================================================
 
 BOOLEAN gfErrorCatch = FALSE;
@@ -969,20 +967,3 @@ BOOLEAN ExternalSaveMap(UINT16 *szFilename) {
     return TRUE;
   return FALSE;
 }
-
-#else // non-editor version
-
-UINT32 LoadSaveScreenInit() {
-  return TRUE;
-}
-
-UINT32 LoadSaveScreenHandle() {
-  // If this screen ever gets set, then this is a bad thing -- endless loop
-  return ERROR_SCREEN;
-}
-
-UINT32 LoadSaveScreenShutdown() {
-  return TRUE;
-}
-
-#endif

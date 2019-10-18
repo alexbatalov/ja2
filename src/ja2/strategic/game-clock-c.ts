@@ -227,17 +227,6 @@ void RenderClock(INT16 sX, INT16 sY) {
   SetFont(CLOCK_FONT);
   SetFontBackground(FONT_MCOLOR_BLACK);
 
-#ifdef CRIPPLED_VERSION
-  if (guiDay >= 8) {
-    SetFontForeground(FONT_FCOLOR_NICERED);
-    // Erase first!
-    RestoreExternBackgroundRect(sX, sY, CLOCK_STRING_WIDTH, CLOCK_STRING_HEIGHT);
-    swprintf(gswzWorldTimeStr, L"GAME OVER");
-    mprintf(sX + (CLOCK_STRING_WIDTH - StringPixLength(WORLDTIMESTR, CLOCK_FONT)) / 2, sY, WORLDTIMESTR);
-    return;
-  }
-#endif
-
   // Are we in combat?
   if (gTacticalStatus.uiFlags & INCOMBAT) {
     SetFontForeground(FONT_FCOLOR_NICERED);
@@ -564,22 +553,10 @@ void UpdateClock() {
   static UINT8 ubLastResolution = 1;
   static UINT32 uiLastSecondTime = 0;
   static UINT32 uiLastTimeProcessed = 0;
-#ifdef DEBUG_GAME_CLOCK
-  UINT32 uiOrigNewTime;
-  UINT32 uiOrigLastSecondTime;
-  UINT32 uiOrigThousandthsOfThisSecondProcessed;
-  UINT8 ubOrigClockResolution;
-  UINT32 uiOrigTimesThisSecondProcessed;
-  UINT8 ubOrigLastResolution;
-#endif
   // check game state for pause screen masks
   CreateDestroyScreenMaskForPauseGame();
 
-#ifdef JA2BETAVERSION
-  if (guiCurrentScreen != GAME_SCREEN && guiCurrentScreen != MAP_SCREEN && guiCurrentScreen != AIVIEWER_SCREEN && guiCurrentScreen != GAME_SCREEN)
-#else
   if (guiCurrentScreen != GAME_SCREEN && guiCurrentScreen != MAP_SCREEN && guiCurrentScreen != GAME_SCREEN)
-#endif
   {
     uiLastSecondTime = GetJA2Clock();
     gfTimeInterruptPause = FALSE;
@@ -596,15 +573,6 @@ void UpdateClock() {
     return; // time is currently stopped!
 
   uiNewTime = GetJA2Clock();
-
-#ifdef DEBUG_GAME_CLOCK
-  uiOrigNewTime = uiNewTime;
-  uiOrigLastSecondTime = uiLastSecondTime;
-  uiOrigThousandthsOfThisSecondProcessed = uiThousandthsOfThisSecondProcessed;
-  ubOrigClockResolution = gubClockResolution;
-  uiOrigTimesThisSecondProcessed = guiTimesThisSecondProcessed;
-  ubOrigLastResolution = ubLastResolution;
-#endif
 
   // Because we debug so much, breakpoints tend to break the game, and cause unnecessary headaches.
   // This line ensures that no more than 1 real-second passes between frames.  This otherwise has
@@ -633,12 +601,6 @@ void UpdateClock() {
       uiNewTimeProcessed = max(uiNewTimeProcessed, uiLastTimeProcessed);
 
       uiAmountToAdvanceTime = uiNewTimeProcessed - uiLastTimeProcessed;
-
-#ifdef DEBUG_GAME_CLOCK
-      if (uiAmountToAdvanceTime > 0x80000000 || guiGameClock + uiAmountToAdvanceTime < guiPreviousGameClock) {
-        uiNewTimeProcessed = uiNewTimeProcessed;
-      }
-#endif
 
       WarpGameTime(uiNewTimeProcessed - uiLastTimeProcessed, WARPTIME_PROCESS_EVENTS_NORMALLY);
       if (uiNewTimeProcessed < guiGameSecondsPerRealSecond) {

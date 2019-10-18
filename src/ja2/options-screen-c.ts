@@ -263,21 +263,6 @@ BOOLEAN EnterOptionsScreen() {
   // Default this to off
   gfHideBloodAndGoreOption = FALSE;
 
-#ifndef BLOOD_N_GORE_ENABLED
-  // This will hide blood and gore option
-  gfHideBloodAndGoreOption = TRUE;
-
-  /*
-  Uncomment this to enable the check for files to activate the blood and gore option for the german build
-          if( !FileExists( "Germany.dat" ) && FileExists( "Lecken.dat" ) )
-          {
-                  gfHideBloodAndGoreOption = FALSE;
-          }
-          else
-  */
-  { gGameSettings.fOptions[TOPTION_BLOOD_N_GORE] = FALSE; }
-#endif
-
   // if we are coming from mapscreen
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
     guiTacticalInterfaceFlags &= ~INTERFACE_MAPSCREEN;
@@ -665,61 +650,6 @@ void GetOptionsScreenUserInput() {
           SetOptionsExitScreen(SAVE_LOAD_SCREEN);
           gfSaveGame = FALSE;
           break;
-
-#ifdef JA2TESTVERSION
-
-        case 'r':
-          gfRedrawOptionsScreen = TRUE;
-          break;
-
-        case 'i':
-          InvalidateRegion(0, 0, 640, 480);
-          break;
-
-          // Test keys
-
-        case 'y': {
-          static UINT32 uiTest2 = NO_SAMPLE;
-          if (!SoundIsPlaying(uiTest2))
-            uiTest2 = PlayJA2SampleFromFile("Sounds\\RAID Dive.wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
-        } break;
-        case 't': {
-          /*
-                                                  {
-                                                          CHAR8		zCdromRootDrive[512];
-                                                          HWFILE	hFile;
-
-                                                          if( !GetCdromLocationFromIniFile( zCdromRootDrive ) )
-                                                                  return;
-
-                                                          //Check if a file exists on the cdrom
-                                                          sprintf( zCdromRootDrive, "%sData\\NPC_Speech.slf", zCdromRootDrive );
-
-                                          //		if( FileExistsNoDB( zCdromRootDrive ) )
-                                                          hFile = FileOpen( zCdromRootDrive, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE );
-                                                          if( hFile != 0 )
-                                                          {
-                                                                  FileClose( hFile );
-                                                                  sprintf( zCdromRootDrive, "%sData\\NPC_Speech.slf", zCdromRootDrive );
-                                                          }
-                                                          else
-                                                          {
-                                                                  sprintf( zCdromRootDrive, "%sData\\NPC_Speech.slf", zCdromRootDrive );
-                                                          }
-
-                                                          uiLastTimeToCheckCDromDrive = GetJA2Clock();
-                                                  }
-          */
-        } break;
-
-        case 'z':
-          SetErrorMode(SEM_FAILCRITICALERRORS);
-          break;
-
-        case 'q':
-          //					ShouldMercSayPrecedentToRepeatOneSelf( 11, 99 );
-          break;
-#endif
       }
     }
   }

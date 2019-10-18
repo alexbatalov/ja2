@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN gfShowExitGrids = FALSE;
 
 void SetEditorItemsTaskbarMode(UINT16 usNewMode) {
@@ -340,5 +338,3 @@ void SetEditorSmoothingMode(UINT8 ubNewMode) {
   }
   gMapInformation.ubEditorSmoothingType = ubNewMode;
 }
-
-#endif

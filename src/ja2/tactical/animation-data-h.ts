@@ -1,6 +1,3 @@
-#ifndef ANIMATION_DATA_H_
-#define ANIMATION_DATA_H_
-
 // DEFINES FOR ANIMATION PROFILES
 #define TILE_FLAG_FEET 0x0001
 #define TILE_FLAG_MID 0x0002
@@ -545,5 +542,3 @@ ANIM_PROF *gpAnimProfiles;
 UINT8 gubNumAnimProfiles;
 
 void ZeroAnimSurfaceCounts();
-
-#endif

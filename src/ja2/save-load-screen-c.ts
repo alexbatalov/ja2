@@ -145,9 +145,6 @@ BOOLEAN gfHadToMakeBasementLevels = FALSE;
 
 BOOLEAN gfGettingNameFromSaveLoadScreen = FALSE;
 
-#ifdef JA2BETAVERSION
-extern BOOLEAN gfDisplaySaveGamesNowInvalidatedMsg;
-#endif
 // ggg
 
 //
@@ -1222,9 +1219,6 @@ BOOLEAN LoadSavedGameHeader(INT8 bEntry, SAVED_GAME_HEADER *pSaveGameHeader) {
     }
   } else {
     memset(&pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
-#ifdef JA2BETAVERSION
-    wcscpy(pSaveGameHeader->sSavedGameDesc, L"ERROR loading saved game header, file doesn't exist!!");
-#endif
   }
 
   return TRUE;
@@ -1710,10 +1704,6 @@ void DisplayOnScreenNumber(BOOLEAN fErase) {
   }
 }
 
-#ifdef JA2BETAVERSION
-extern BOOLEAN ValidateSoldierInitLinks(UINT8 ubCode);
-#endif
-
 void DoneFadeOutForSaveLoadScreen(void) {
   // Make sure we DONT reset the levels if we are loading a game
   gfHadToMakeBasementLevels = FALSE;
@@ -1736,11 +1726,6 @@ void DoneFadeOutForSaveLoadScreen(void) {
     }
   } else {
   SUCCESSFULLY_CORRECTED_SAVE:
-#ifdef JA2BETAVERSION
-    //		if( ValidateSoldierInitLinks( 1 ) )
-    ValidateSoldierInitLinks(1);
-    {
-#endif
       // If we are to go to map screen after loading the game
       if (guiScreenToGotoAfterLoadingSavedGame == MAP_SCREEN) {
         gFadeInDoneCallback = DoneFadeInForSaveLoadScreen;
@@ -1763,9 +1748,6 @@ void DoneFadeOutForSaveLoadScreen(void) {
         //			EnterTacticalScreen( );
         FadeInGameScreen();
       }
-#ifdef JA2BETAVERSION
-    }
-#endif
   }
   gfStartedFadingOut = FALSE;
 }
@@ -1835,23 +1817,6 @@ void ConfirmLoadSavedGameMessageBoxCallBack(UINT8 bExitValue) {
     gfExitAfterMessageBox = FALSE;
   }
 }
-
-#ifdef JA2BETAVERSION
-void ErrorDetectedInSaveCallback(UINT8 bValue) {
-  // If we are to go to map screen after loading the game
-  if (guiScreenToGotoAfterLoadingSavedGame == MAP_SCREEN) {
-    gFadeInDoneCallback = DoneFadeInForSaveLoadScreen;
-    SetSaveLoadExitScreen(guiScreenToGotoAfterLoadingSavedGame);
-    FadeInNextFrame();
-  } else {
-    // if we are to go to the Tactical screen after loading
-    gFadeInDoneCallback = DoneFadeInForSaveLoadScreen;
-    SetSaveLoadExitScreen(guiScreenToGotoAfterLoadingSavedGame);
-    FadeInGameScreen();
-  }
-  gfStartedFadingOut = TRUE;
-}
-#endif
 
 void FailedLoadingGameCallBack(UINT8 bExitValue) {
   // yes

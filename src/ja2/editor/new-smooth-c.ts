@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN CaveAtGridNo(INT32 iMapIndex);
 UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal);
 UINT8 CalcNewCavePerimeterValue(INT32 iMapIndex);
@@ -1274,5 +1272,3 @@ void AnalyseCaveMapForStructureInfo() {
     }
   }
 }
-
-#endif

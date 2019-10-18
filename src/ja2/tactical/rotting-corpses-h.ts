@@ -1,6 +1,3 @@
-#ifndef _ROTTING_CORPSES_H
-#define _ROTTING_CORPSES_H
-
 #define NUM_CORPSE_SHADES 17
 
 enum {
@@ -169,5 +166,3 @@ INT16 GetGridNoOfCorpseGivenProfileID(UINT8 ubProfileID);
 
 void DecayRottingCorpseAIWarnings(void);
 UINT8 GetNearestRottingCorpseAIWarning(INT16 sGridNo);
-
-#endif

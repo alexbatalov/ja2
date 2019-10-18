@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 INT16 gbSmoothStruct[] = {
   3, 2, 12, 27, 12, 0,
   5, 2, 15, 30, 39, 0,
@@ -580,5 +578,3 @@ void SmoothWaterTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fFo
   GetTileIndexFromTypeSubIndex(origType, land, &usTileIndex);
   *piNewTile = usTileIndex;
 }
-
-#endif

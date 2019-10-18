@@ -1,6 +1,3 @@
-#ifndef __WEAPONS_H
-#define __WEAPONS_H
-
 #define MAXCHANCETOHIT 99
 #define BAD_DODGE_POSITION_PENALTY 20
 
@@ -252,5 +249,3 @@ void DishoutQueenSwipeDamage(SOLDIERTYPE *pQueenSoldier);
 INT32 HTHImpact(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget, INT32 iHitBy, BOOLEAN fBladeAttack);
 
 UINT16 GunRange(OBJECTTYPE *pObj);
-
-#endif

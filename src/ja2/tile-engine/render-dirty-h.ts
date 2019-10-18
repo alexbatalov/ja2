@@ -1,6 +1,3 @@
-#ifndef __RENDER_DIRTY_H
-#define __RENDER_DIRTY_H
-
 // DEFINES
 #define BGND_FLAG_PERMANENT 0x80000000
 #define BGND_FLAG_SINGLE 0x40000000
@@ -131,5 +128,3 @@ void EnableVideoOverlay(BOOLEAN fEnable, INT32 iOverlayIndex);
 void BlitMFont(VIDEO_OVERLAY *pBlitter);
 
 BOOLEAN BlitBufferToBuffer(UINT32 uiSrcBuffer, UINT32 uiDestBuffer, UINT16 usSrcX, UINT16 usSrcY, UINT16 usWidth, UINT16 usHeight);
-
-#endif

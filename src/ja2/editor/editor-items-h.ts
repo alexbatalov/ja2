@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDITORITEMS_H
-#define __EDITORITEMS_H
-
 typedef struct {
   BOOLEAN fGameInit; // Used for initializing save variables the first time.
                      // This flag is initialize at
@@ -51,6 +47,3 @@ void SetEditorItemsTaskbarMode(UINT16 usNewMode);
 void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent);
 
 extern INT32 giDefaultExistChance;
-
-#endif
-#endif

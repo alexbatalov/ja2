@@ -383,7 +383,6 @@ DEALER_POSSIBLE_INV gJakeInventory[] = {
 
   { LOCKSMITHKIT, 1 },
 
-#ifndef JA2DEMO
   // "new" items, presumed unsafe for demo
   { TSHIRT_DEIDRANNA, 2 },
   { XRAY_BULB, 1 },
@@ -414,8 +413,6 @@ DEALER_POSSIBLE_INV gJakeInventory[] = {
   // stuff a real pawn shop wouldn't have, but it does make him a bit more useful
   { COMPOUND18, 1 },
   { CERAMIC_PLATES, 1 },
-
-#endif
 
   { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
 };

@@ -1,6 +1,3 @@
-#ifndef __STRATEGIC_STATUS_H
-#define __STRATEGIC_STATUS_H
-
 // Enemy is allowed to capture the player after certain day
 #define STARTDAY_ALLOW_PLAYER_CAPTURE_FOR_RESCUE 4
 
@@ -116,5 +113,3 @@ INT8 SoldierClassToRankIndex(UINT8 ubSoldierClass);
 UINT8 RankIndexToSoldierClass(UINT8 ubRankIndex);
 
 void UpdateLastDayOfPlayerActivity(UINT16 usDay);
-
-#endif

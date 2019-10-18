@@ -1,6 +1,3 @@
-#ifndef __SOLDER_PROFILE_H
-#define __SOLDER_PROFILE_H
-
 extern INT8 gbSkillTraitBonus[NUM_SKILLTRAITS];
 extern UINT8 gubTerrorists[];
 extern INT16 gsTerroristSector[][5][2];
@@ -186,5 +183,3 @@ void MakeRemainingAssassinsTougher(void);
 SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *pSoldier);
 
 BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, INT16 sGridNo);
-
-#endif

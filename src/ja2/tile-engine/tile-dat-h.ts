@@ -1,6 +1,3 @@
-#ifndef __TILEDAT_H
-#define __TILEDAT_H
-
 enum TileDefines {
   FIRSTTEXTURE1 = 0,
   FIRSTTEXTURE2,
@@ -3510,5 +3507,3 @@ extern INT16 gOpenDoorList[20];
 extern INT16 gOpenDoorShadowList[20];
 extern INT16 gClosedDoorList[20];
 extern INT16 gClosedDoorShadowList[20];
-
-#endif

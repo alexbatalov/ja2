@@ -1,6 +1,3 @@
-#ifndef __INSURANCE_H
-#define __INSURANCE_H
-
 #define INS_FONT_COLOR 2
 #define INS_FONT_COLOR_RED FONT_MCOLOR_RED
 #define INS_FONT_BIG FONT14ARIAL
@@ -31,5 +28,3 @@ void DisplayInsuranceDefaults();
 void RemoveInsuranceDefaults();
 void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY);
 void GetInsuranceText(UINT8 ubNumber, STR16 pString);
-
-#endif

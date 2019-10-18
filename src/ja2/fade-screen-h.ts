@@ -1,6 +1,3 @@
-#ifndef FADE_SCREEN_H
-#define FADE_SCREEN_H
-
 #define FADE_OUT_VERSION_ONE 1
 #define FADE_OUT_VERSION_FASTER 2
 #define FADE_OUT_VERSION_SIDE 3
@@ -34,5 +31,3 @@ BOOLEAN HandleFadeInCallback();
 
 void FadeInNextFrame();
 void FadeOutNextFrame();
-
-#endif

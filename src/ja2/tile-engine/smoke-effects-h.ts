@@ -1,6 +1,3 @@
-#ifndef __SMOKE_EFFECTS
-#define __SMOKE_EFFECTS
-
 // Smoke effect types
 enum {
   NO_SMOKE_EFFECT,
@@ -52,5 +49,3 @@ BOOLEAN LoadSmokeEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void ResetSmokeEffects();
 
 void UpdateSmokeEffectGraphics();
-
-#endif

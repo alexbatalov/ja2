@@ -144,27 +144,15 @@ BOOLEAN ExecuteGameEvent(EVENT *pEvent);
 BOOLEAN AddGameEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData) {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
-#ifdef NETWORKED
-    if (gfAmINetworked)
-      SendEventToNetwork(uiEvent, usDelay, pEventData);
-#endif
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
   } else if (uiEvent < EVENTS_LOCAL_AND_NETWORK) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
-#ifdef NETWORKED
-    if (gfAmINetworked)
-      SendEventToNetwork(uiEvent, usDelay, pEventData);
-#endif
     return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
   } else if (uiEvent < EVENTS_ONLY_USED_LOCALLY) {
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
   } else if (uiEvent < EVENTS_ONLY_SENT_OVER_NETWORK) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending network #%d", uiEvent));
-#ifdef NETWORKED
-    if (gfAmINetworked)
-      SendEventToNetwork(uiEvent, usDelay, pEventData);
-#endif
     return TRUE;
   }
   // There is an error with the event

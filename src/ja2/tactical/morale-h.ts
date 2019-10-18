@@ -1,6 +1,3 @@
-#ifndef _MORALE_H
-#define _MORALE_H
-
 #define DEFAULT_MORALE 50
 
 typedef enum {
@@ -60,5 +57,3 @@ void HourlyMoraleUpdate(void);
 void DailyMoraleUpdate(SOLDIERTYPE *pSoldier);
 
 void DecayTacticalMoraleModifiers(void);
-
-#endif

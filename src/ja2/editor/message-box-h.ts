@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __MESSAGEBOX_H
-#define __MESSAGEBOX_H
-
 enum {
   MESSAGEBOX_NONE,
   MESSAGEBOX_DONE,
@@ -37,6 +33,3 @@ void RemoveMessageBox();
 //		else //user selected no
 //		...
 //	}
-
-#endif
-#endif

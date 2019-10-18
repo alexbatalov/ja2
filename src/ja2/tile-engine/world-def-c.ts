@@ -14,10 +14,8 @@
 #define MAP_AMBIENTLIGHTLEVEL_SAVED 0x00000080
 #define MAP_NPCSCHEDULES_SAVED 0x00000100
 
-#ifdef JA2EDITOR
 extern BOOLEAN gfErrorCatch;
 extern UINT16 gzErrorCatchString[256];
-#endif
 
 // TEMP
 BOOLEAN gfForceLoadPlayers = FALSE;
@@ -69,16 +67,6 @@ INT16 gsRecompileAreaRight = 0;
 INT16 gsRecompileAreaBottom = 0;
 
 // TIMER TESTING STUFF
-#ifdef JA2TESTVERSION
-extern UINT32 uiLoadWorldTime;
-extern UINT32 uiTrashWorldTime;
-extern UINT32 uiLoadMapTilesetTime;
-extern UINT32 uiLoadMapLightsTime;
-extern UINT32 uiBuildShadeTableTime;
-extern UINT32 uiNumTablesLoaded;
-extern UINT32 uiNumTablesSaved;
-extern UINT32 uiNumImagesReloaded;
-#endif
 
 BOOLEAN DoorAtGridNo(UINT32 iMapIndex) {
   STRUCTURE *pStruct;
@@ -377,17 +365,7 @@ void BuildTileShadeTables() {
   CHAR8 cRootFile[128];
   BOOLEAN fForceRebuildForSlot = FALSE;
 
-#ifdef JA2TESTVERSION
-  UINT32 uiStartTime;
-#endif
   static UINT8 ubLastRed = 255, ubLastGreen = 255, ubLastBlue = 255;
-
-#ifdef JA2TESTVERSION
-  uiNumTablesLoaded = 0;
-  uiNumTablesSaved = 0;
-  uiNumImagesReloaded = 0;
-  uiStartTime = GetJA2Clock();
-#endif
 
   // Set the directory to the shadetable directory
   GetFileManCurrentDirectory(DataDir);
@@ -424,11 +402,7 @@ void BuildTileShadeTables() {
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     if (gTileSurfaceArray[uiLoop] != NULL) {
 // Don't Create shade tables if default were already used once!
-#ifdef JA2EDITOR
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild)
-#else
-      if (gbNewTileSurfaceLoaded[uiLoop])
-#endif
       {
         fForceRebuildForSlot = FALSE;
 
@@ -438,9 +412,6 @@ void BuildTileShadeTables() {
           fForceRebuildForSlot = TRUE;
         }
 
-#ifdef JA2TESTVERSION
-        uiNumImagesReloaded++;
-#endif
         RenderProgressBar(0, uiLoop * 100 / NUMBEROFTILETYPES);
         CreateTilePaletteTables(gTileSurfaceArray[uiLoop]->vo, uiLoop, fForceRebuildForSlot);
       }
@@ -453,10 +424,6 @@ void BuildTileShadeTables() {
   ubLastRed = gpLightColors[0].peRed;
   ubLastGreen = gpLightColors[0].peGreen;
   ubLastBlue = gpLightColors[0].peBlue;
-
-#ifdef JA2TESTVERSION
-  uiBuildShadeTableTime = GetJA2Clock() - uiStartTime;
-#endif
 }
 
 void DestroyTileShadeTables() {
@@ -465,15 +432,9 @@ void DestroyTileShadeTables() {
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     if (gTileSurfaceArray[uiLoop] != NULL) {
 // Don't Delete shade tables if default are still being used...
-#ifdef JA2EDITOR
       if (gbNewTileSurfaceLoaded[uiLoop] || gfEditorForceShadeTableRebuild) {
         DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop]->vo);
       }
-#else
-      if (gbNewTileSurfaceLoaded[uiLoop]) {
-        DestroyObjectPaletteTables(gTileSurfaceArray[uiLoop]->vo);
-      }
-#endif
     }
   }
 }
@@ -1319,7 +1280,6 @@ void CompileWorldMovementCosts() {
 
 // SAVING CODE
 BOOLEAN SaveWorld(UINT8 *puiFilename) {
-#ifdef JA2EDITOR
   INT32 cnt;
   UINT32 uiSoldierSize;
   UINT32 uiType;
@@ -1736,7 +1696,6 @@ BOOLEAN SaveWorld(UINT8 *puiFilename) {
   FileClose(hfile);
 
   sprintf(gubFilename, puiFilename);
-#endif // JA2EDITOR
 
   return TRUE;
 }
@@ -1817,7 +1776,6 @@ void InitLoadedWorld() {
   SetBlueFlagFlags();
 }
 
-#ifdef JA2EDITOR
 // This is a specialty function that is very similar to LoadWorld, except that it
 // doesn't actually load the world, it instead evaluates the map and generates summary
 // information for use within the summary editor.  The header is defined in Summary Info.h,
@@ -2201,7 +2159,6 @@ BOOLEAN EvaluateWorld(UINT8 *pSector, UINT8 ubLevel) {
   WriteSectorSummaryUpdate(szFilename, ubLevel, pSummary);
   return TRUE;
 }
-#endif
 
 extern UINT8 GetCurrentSummaryVersion();
 extern void LoadShadeTablesFromTextFile();
@@ -2214,10 +2171,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   UINT32 uiSoldierSize;
   UINT32 uiFileSize;
   UINT32 fp, offset;
-#ifdef JA2TESTVERSION
-  UINT32 uiStartTime;
-  UINT32 uiLoadWorldStartTime;
-#endif
   INT32 cnt, cnt2;
   INT32 iTilesetID;
   UINT16 usTileIndex;
@@ -2231,9 +2184,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   INT8 *pBufferHead;
   BOOLEAN fGenerateEdgePoints = FALSE;
   UINT8 ubMinorMapVersion;
-#ifdef JA2TESTVERSION
-  uiLoadWorldStartTime = GetJA2Clock();
-#endif
 
   LoadShadeTablesFromTextFile();
 
@@ -2257,15 +2207,8 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   }
 
   SetRelativeStartAndEndPercentage(0, 0, 1, L"Trashing world...");
-#ifdef JA2TESTVERSION
-  uiStartTime = GetJA2Clock();
-#endif
 
   TrashWorld();
-
-#ifdef JA2TESTVERSION
-  uiTrashWorldTime = GetJA2Clock() - uiStartTime;
-#endif
 
   LightReset();
 
@@ -2280,11 +2223,12 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   // Read JA2 Version ID
   LOADDATA(&dMajorMapVersion, pBuffer, sizeof(FLOAT));
 
-#ifdef RUSSIAN
-  if (dMajorMapVersion != 6.00) {
-    return FALSE;
-  }
-#endif
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+//   if (dMajorMapVersion != 6.00) {
+//     return FALSE;
+//   }
+// #endif
 
   LOADDATA(&ubMinorMapVersion, pBuffer, sizeof(UINT8));
 
@@ -2302,13 +2246,7 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
 
   LOADDATA(&iTilesetID, pBuffer, sizeof(INT32));
 
-#ifdef JA2TESTVERSION
-  uiStartTime = GetJA2Clock();
-#endif
   CHECKF(LoadMapTileset(iTilesetID) != FALSE);
-#ifdef JA2TESTVERSION
-  uiLoadMapTilesetTime = GetJA2Clock() - uiStartTime;
-#endif
 
   // Load soldier size
   LOADDATA(&uiSoldierSize, pBuffer, sizeof(INT32));
@@ -2534,17 +2472,17 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   fp += offset;
   offset = 0;
 
-#ifdef RUSSIAN
-  {
-    UINT32 uiNums[37];
-    LOADDATA(uiNums, pBuffer, 37 * sizeof(INT32));
-  }
-#endif
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+//   {
+//     UINT32 uiNums[37];
+//     LOADDATA(uiNums, pBuffer, 37 * sizeof(INT32));
+//   }
+// #endif
 
   SetRelativeStartAndEndPercentage(0, 58, 59, L"Loading room information...");
   RenderProgressBar(0, 100);
 
-#ifdef JA2EDITOR
   gubMaxRoomNumber = 0;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Read room information
@@ -2555,9 +2493,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
   }
   if (gubMaxRoomNumber < 255)
     gubMaxRoomNumber++;
-#else
-  LOADDATA(gubWorldRoomInfo, pBuffer, sizeof(INT8) * WORLD_MAX);
-#endif
 
   // ATE; Memset this array!
   if (0) {
@@ -2595,9 +2530,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
       ubAmbientLightLevel = 4;
     }
   }
-#ifdef JA2TESTVERSION
-  uiStartTime = GetJA2Clock();
-#endif
   if (uiFlags & MAP_WORLDLIGHTS_SAVED) {
     LoadMapLights(&pBuffer);
   } else {
@@ -2605,9 +2537,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
     SetDefaultWorldLightingColors();
   }
   LightSetBaseLevel(ubAmbientLightLevel);
-#ifdef JA2TESTVERSION
-  uiLoadMapLightsTime = GetJA2Clock() - uiStartTime;
-#endif
 
   SetRelativeStartAndEndPercentage(0, 85, 86, L"Loading map information...");
   RenderProgressBar(0, 0);
@@ -2701,19 +2630,6 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
 
   // Remove this rather large chunk of memory from the system now!
   MemFree(pBufferHead);
-
-#ifdef JA2TESTVERSION
-  uiLoadWorldTime = GetJA2Clock() - uiLoadWorldStartTime;
-#endif
-
-#ifdef JA2TESTVERSION
-
-  // ATE: Not while updating maps!
-  if (guiCurrentScreen != MAPUTILITY_SCREEN) {
-    GenerateBuildings();
-  }
-
-#endif
 
   RenderProgressBar(0, 100);
 

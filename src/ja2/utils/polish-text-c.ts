@@ -1,5 +1,3 @@
-#ifdef POLISH
-
 /*
 
 ******************************************************************************************************
@@ -2933,20 +2931,12 @@ STR16 zSaveLoadText[] = {
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Nieprawidłowa wersja zapisu gry.  W razie problemów prosimy o raport.  Kontynuować?",
-#else
   L"Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
-#endif
 
 // Translators, the next two strings are for the same thing.  The first one is for beta version releases and the second one
 // is used for the final version.  Please don't modify the "#ifdef JA2BETAVERSION" or the "#else" or the "#endif" as they are
 // used by the compiler and will cause program errors if modified/removed.  It's okay to translate the strings though.
-#ifdef JA2BETAVERSION
-  L"Nieprawidłowa wersja zapisu gry.  W razie problemów prosimy o raport.  Kontynuować?",
-#else
   L"Próba odczytu starszej wersji zapisu gry.  Zaktualizować ten zapis i odczytać grę?",
-#endif
 
   L"Czy na pewno chcesz nadpisać grę na pozycji %d?",
   L"Chcesz odczytać grę z pozycji",
@@ -3015,71 +3005,6 @@ STR16 pMilitiaConfirmStrings[] = {
   L"%s musi mieć %d% lojalnoci, aby można było kontynuować szkolenie samoobrony.",
   L"Nie możesz już dłużej szkolić samoobrony w miecie %s.",
 };
-
-#ifdef JA2DEMOADS
-STR16 gpDemoString[] = {
-  // 0-9
-  L"NAJLEPSZA GRA STRATEGICZNA.",
-  L"NAJLEPSZA GRA ROLE-PLAYING.",
-  L"Nieliniowy scenariusz gry",
-  L"Absolutnie nowy pomysł",
-  L"Wspaniałe strzelaniny",
-  L"Dynamiczne owietlenie",
-  L"Rozmowy z postaciami",
-  L"Nocne akcje",
-  L"Kreowanie własnego najemnika",
-  L"Ambitne i wcišgajšce misje",
-  L"Sterowanie pojazdami",
-  // 10-19
-  L"Ponad 150 różnych postaci",
-  L"Setki ciekawych przedmiotów",
-  L"Ponad 250 różnych plenerów",
-  L"Efektowne eksplozje",
-  L"Nowe taktyczne manewry",
-  L"Tony animacji",
-  L"Ponad 9000 kwestii dialogowych",
-  L"Niesamowity podkład muzyczny Kevina Manthei",
-  L"Globalna strategia",
-  L"Naloty",
-  // 20-29
-  L"Szkolenie oddziałów samoobrony",
-  L"Możliwoć dostosowania scenariusza gry",
-  L"Realistyczne tereny",
-  L"Efektowna grafika high-color",
-  L"Kupno, sprzedaż i handel",
-  L"Bezwzględny przeciwnik AI",
-  L"wietna walka taktyczna",
-  L"Opcjonalny element S-F",
-  L"24 godzinny zegar",
-  L"Minimum 60 godzin gry",
-  // 30-34
-  L"Różne poziomy trudnoci",
-  L"Realistycznie opracowana balistyka",
-  L"Wierne odwzorowanie zasad fizyki",
-  L"W pełni interaktywny interfejs",
-  L"I wiele, wiele więcej...",
-  // 35 on are BOLD
-  L"",
-  L"",
-  L"Jedna z najbardziej pomysłowych gier 1998 roku",
-  L"PC Gamer",
-  L"Zamów już dzisiaj na stronie WWW.TOPWARE.PL !",
-};
-
-STR16 gpDemoIntroString[] = {
-  L"Za chwilę spróbujesz najlepszej strategii, role-playing i najwspanialszej walki taktycznej:",
-  // Point 1 (uses one string)
-  L"Kontrola nad grupš najemników o bogatej osobowoci   (żadnych nudnych i zbędnych postaci).",
-  // Point 2 (uses one string)
-  L"Sprawd wspaniałe manewry taktyczne, poczšwszy od biegu do czołgania się, wspinania się, skakania, walki wręcz i wielu innych.",
-  // Point 3 (uses one string)
-  L"Igraj z ogniem! Fajne zabawki, miercionona broń, efektowne eksplozje.",
-  // Additional comment
-  L"(a to dopiero poczštek...)",
-  // Introduction/instructions
-  L"Witamy w Demoville... (nacinij dowolny klawisz)",
-};
-#endif
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
 STR16 gzMoneyWithdrawMessageText[] = {
@@ -3296,10 +3221,6 @@ STR16 pMessageStrings[] = {
   L"Ta pozycja zarezerwowana jest na szybkie zapisy wykonywane podczas gry kombinacjš klawiszy ALT+S.",
   L"Otw.",
   L"Zamkn.",
-#ifdef JA2DEMO
-  L"Tu już wszystko załatwione. Może czas spotkać się z Gabby'm.",
-  L"Nie trzeba było go zabijać.",
-#endif
   L"Brak miejsca na dysku twardym.  Na dysku wolne jest %s MB, a wymagane jest przynajmniej %s MB.",
   L"Najęto - %s z A.I.M.",
   L"%s złapał(a) %s", //'Merc name' has caught 'item' -- let SirTech know if name comes after item.
@@ -3350,17 +3271,6 @@ STR16 pMessageStrings[] = {
   L"Wejcie na %d poziom pod ziemiš...",
   L"Wyjcie z podziemii...",
 
-#ifdef JA2DEMO
-
-  // For the demo, the sector exit interface, you'll be able to split your teams up, but the demo
-  // has this feature disabled.  This string is fast help text that appears over "single" button.
-  L"W pełnej wersji gry będzie można dzielić oddziały,\nale w wersji demo jest to niemożliwe.",
-
-  // The overhead map is a map of the entire sector, which you can go into anytime, except in the demo.
-  L"Ogólna mapa sektora jest niedostępna w wersji demo.",
-
-#endif
-
   L" - ", // used in the shop keeper inteface to mark the ownership of the item eg Red's gun
   L"Automatyczne centrowanie ekranu wyłšczone.",
   L"Automatyczne centrowanie ekranu włšczone.",
@@ -3375,9 +3285,6 @@ STR16 pMessageStrings[] = {
   L"Przesyłka dotarła do Drassen.",
   L"%s przybędzie do wyznaczonego punktu zrzutu (sektor %s) w dniu %d, około godziny %s.", // first %s is mercs name, next is the sector location and name where they will be arriving in, lastely is the day an the time of arrival
   L"Lista historii zaktualizowana.",
-#ifdef JA2BETAVERSION
-  L"Automatyczny zapis został pomylnie wykonany.",
-#endif
 };
 
 UINT16 ItemPickupHelpPopup[][40] = {
@@ -3707,5 +3614,3 @@ STR16 gzLateLocalizedString[] = {
 
   L"Przełšcznik aktywowany.",
 };
-
-#endif // POLISH

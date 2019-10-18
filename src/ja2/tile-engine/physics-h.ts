@@ -1,6 +1,3 @@
-#ifndef __PHYSICS_H
-#define __PHYSICS_H
-
 extern UINT32 guiNumObjectSlots;
 
 typedef struct {
@@ -84,5 +81,3 @@ void SimulateWorld();
 BOOLEAN SavePhysicsTableToSaveGameFile(HWFILE hFile);
 
 BOOLEAN LoadPhysicsTableFromSavedGameFile(HWFILE hFile);
-
-#endif

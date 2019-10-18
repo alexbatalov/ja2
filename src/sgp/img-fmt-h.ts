@@ -1,7 +1,3 @@
-#if !defined(STCI_H)
-
-#define STCI_H
-
 // Sir-Tech's Crazy Image (STCI) file format specifications.  Each file is composed of:
 // 1		ImageFileHeader, uncompressed
 // *		Palette (STCI_INDEXED, size = uiNumberOfColours * PALETTE_ELEMENT_SIZE), uncompressed
@@ -81,5 +77,3 @@ typedef struct {
 
 #define STCI_PALETTE_ELEMENT_SIZE 3
 #define STCI_8BIT_PALETTE_SIZE 768
-
-#endif

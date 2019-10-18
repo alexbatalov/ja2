@@ -1,5 +1,3 @@
-#ifndef __OVERHEAD_TYPES_H
-#define __OVERHEAD_TYPES_H
 // GLOBAL HEADER FOR DATA, TYPES FOR TACTICAL ENGINE
 
 #define REFINE_AIM_1 0
@@ -288,9 +286,7 @@ enum {
 // NOTE:  The editor uses these enumerations, so please update the text as well if you modify or
 //			 add new groups.  Try to abbreviate the team name as much as possible.  The text is in
 //			 EditorMercs.c
-#ifdef JA2EDITOR
 extern UINT16 gszCivGroupNames[NUM_CIV_GROUPS][20];
-#endif
 //
 //-----------------------------------------------
 
@@ -316,5 +312,3 @@ typedef struct {
 #define SET_PALETTEREP_ID(a, b) (strcpy(a, b))
 // strcmp returns 0 if true!
 #define COMPARE_PALETTEREP_ID(a, b) (strcmp(a, b) ? FALSE : TRUE)
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __BOBBYR_H
-#define __BOBBYR_H
-
 void GameInitBobbyR();
 BOOLEAN EnterBobbyR();
 void ExitBobbyR();
@@ -53,5 +50,3 @@ BOOLEAN InitBobbyRayUsedInventory();
 UINT8 HowManyBRItemsToOrder(UINT16 usItemIndex, UINT8 ubCurrentlyOnHand, UINT8 ubBobbyRayNewUsed);
 void CancelAllPendingBRPurchaseOrders(void);
 INT16 GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, UINT16 usItemIndex, BOOLEAN fUsed);
-
-#endif

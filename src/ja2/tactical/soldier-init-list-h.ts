@@ -1,6 +1,3 @@
-#ifndef __SOLDIER_INIT_LIST_H
-#define __SOLDIER_INIT_LIST_H
-
 typedef struct SOLDIERINITNODE {
   UINT8 ubNodeID;
   UINT8 ubSoldierID;
@@ -51,5 +48,3 @@ void RemoveDetailedPlacementInfo(UINT8 ubNodeID);
 
 void AddProfilesUsingProfileInsertionData();
 void AddProfilesNotUsingProfileInsertionData();
-
-#endif

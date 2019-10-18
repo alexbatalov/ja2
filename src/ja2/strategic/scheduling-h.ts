@@ -1,6 +1,3 @@
-#ifndef __SCHEDULING_H
-#define __SCHEDULING_H
-
 // Merc scheduling actions
 // NOTE:  Any modifications to this enumeration also require updating the text in EditorMercs.c used
 //			 in the editor for merc schedule purposes.
@@ -96,5 +93,3 @@ void ReconnectSchedules(void);
 void SecureSleepSpot(SOLDIERTYPE *pSoldier, UINT16 usSleepSpot);
 
 BOOLEAN BumpAnyExistingMerc(INT16 sGridNo);
-
-#endif

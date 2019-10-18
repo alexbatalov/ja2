@@ -1,7 +1,3 @@
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-
 CQuantizer::CQuantizer(UINT nMaxColors, UINT nColorBits) {
   m_pTree = NULL;
   m_nLeafCount = 0;

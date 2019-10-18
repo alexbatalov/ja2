@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDITOR_CALLBACK_PROTOTYPES_H
-#define __EDITOR_CALLBACK_PROTOTYPES_H
-
 // Editor Tabs
 void TaskTerrainCallback(GUI_BUTTON *btn, INT32 reason);
 void TaskBuildingCallback(GUI_BUTTON *btn, INT32 reason);
@@ -147,6 +143,3 @@ void ItemStatsDeleteCallback(GUI_BUTTON *btn, INT32 reason);
 // Various Callbacks
 void BtnUndoCallback(GUI_BUTTON *btn, INT32 reason);
 void BtnEraseCallback(GUI_BUTTON *btn, INT32 reason);
-
-#endif
-#endif

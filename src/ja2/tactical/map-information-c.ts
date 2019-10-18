@@ -1,9 +1,10 @@
 // Don't mess with this value, unless you want to force update all maps in the game!
-#ifdef RUSSIAN
-#define MAJOR_MAP_VERSION 6.00
-#else
+// FIXME: Language-specific code
+// #ifdef RUSSIAN
+// #define MAJOR_MAP_VERSION 6.00
+// #else
 #define MAJOR_MAP_VERSION 5.00
-#endif
+// #endif
 
 FLOAT gdMajorMapVersion = MAJOR_MAP_VERSION;
 
@@ -230,7 +231,6 @@ void ValidateAndUpdateMapVersionIfNecessary() {
   AutoCalculateItemNoOverwriteStatus();
 }
 
-#ifdef JA2EDITOR
 // This function is used to avoid conflicts between minor version updates and sector summary info.
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.
@@ -248,4 +248,3 @@ void UpdateSummaryInfo(SUMMARYFILE *pSummary) {
     pSummary->MapInfo.sIsolatedGridNo = -1;
   }
 }
-#endif

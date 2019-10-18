@@ -1,7 +1,3 @@
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-
 INT32 giClockTimer = -1;
 INT32 giTimerDiag = 0;
 
@@ -106,8 +102,6 @@ void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) 
         UPDATETIMECOUNTER(giTimerCustomizable);
       }
 
-#ifndef BOUNDS_CHECKER
-
       // If mapscreen...
       if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
         // IN Mapscreen, loop through player's team.....
@@ -136,7 +130,6 @@ void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) 
           }
         }
       }
-#endif
     }
 
     fInFunction = FALSE;
@@ -144,8 +137,6 @@ void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) 
 }
 
 BOOLEAN InitializeJA2Clock(void) {
-#ifdef CALLBACKTIMER
-
   MMRESULT mmResult;
   TIMECAPS tc;
   INT32 cnt;
@@ -169,18 +160,13 @@ BOOLEAN InitializeJA2Clock(void) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
   }
 
-#endif
-
   return TRUE;
 }
 
 void ShutdownJA2Clock(void) {
   // Make sure we kill the timer
-#ifdef CALLBACKTIMER
 
   timeKillEvent(gTimerID);
-
-#endif
 }
 
 UINT32 InitializeJA2TimerCallback(UINT32 uiDelay, LPTIMECALLBACK TimerProc, UINT32 uiUser) {

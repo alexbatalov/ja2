@@ -1,6 +1,3 @@
-#ifndef EVENT_PROCESSOR_H
-#define EVENT_PROCESSOR_H
-
 #define NETWORK_PATH_DATA_SIZE 6
 // Enumerate all events for JA2
 enum {
@@ -208,5 +205,3 @@ BOOLEAN DequeueAllDemandGameEvents(BOOLEAN fExecute);
 
 // clean out the evetn queue
 BOOLEAN ClearEventQueue(void);
-
-#endif

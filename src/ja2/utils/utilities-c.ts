@@ -240,136 +240,18 @@ UINT32 gCheckFileMinSizes[] = {
   236000000,
 };
 
-#if defined(JA2TESTVERSION) || defined(_DEBUG)
-#define NOCDCHECK
-#endif
-
-#if defined(RUSSIANGOLD)
-// CD check enabled
-#else
-#define NOCDCHECK
-#endif
-
 BOOLEAN HandleJA2CDCheck() {
-#ifdef TIME_LIMITED_VERSION
-  if (!PerformTimeLimitedCheck()) {
-    return FALSE;
-  }
-#endif
-
-#ifdef NOCDCHECK
-
   return TRUE;
-
-#else
-  BOOLEAN fFailed = FALSE;
-  CHAR8 zCdLocation[SGPFILENAME_LEN];
-  CHAR8 zCdFile[SGPFILENAME_LEN];
-  INT32 cnt;
-  HWFILE hFile;
-
-  // Check for a file on CD....
-  if (GetCDromDriveLetter(zCdLocation)) {
-    for (cnt = 0; cnt < 5; cnt++) {
-      // OK, build filename
-      sprintf(zCdFile, "%s%s", zCdLocation, gCheckFilenames[cnt]);
-
-      hFile = FileOpen(zCdFile, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
-
-      // Check if it exists...
-      if (!hFile) {
-        fFailed = TRUE;
-        FileClose(hFile);
-        break;
-      }
-
-      // Check min size
-      //#ifndef GERMAN
-      //      if ( FileGetSize( hFile ) < gCheckFileMinSizes[ cnt ] )
-      //      {
-      //			  fFailed = TRUE;
-      //				FileClose( hFile );
-      //        break;
-      //      }
-      //#endif
-
-      FileClose(hFile);
-    }
-  } else {
-    fFailed = TRUE;
-  }
-
-  if (fFailed) {
-    CHAR8 zErrorMessage[256];
-
-    sprintf(zErrorMessage, "%S", gzLateLocalizedString[56]);
-    // Pop up message boc and get answer....
-    if (MessageBox(NULL, zErrorMessage, "Jagged Alliance 2", MB_OK) == IDOK) {
-      return FALSE;
-    }
-  }
-
-  return TRUE;
-
-#endif
 }
 
 BOOLEAN HandleJA2CDCheckTwo() {
-#ifdef NOCDCHECK
-
   return TRUE;
-
-#else
-  BOOLEAN fFailed = TRUE;
-  CHAR8 zCdLocation[SGPFILENAME_LEN];
-  CHAR8 zCdFile[SGPFILENAME_LEN];
-
-  // Check for a file on CD....
-  if (GetCDromDriveLetter(zCdLocation)) {
-    // OK, build filename
-    sprintf(zCdFile, "%s%s", zCdLocation, gCheckFilenames[Random(2)]);
-
-    // Check if it exists...
-    if (FileExists(zCdFile)) {
-      fFailed = FALSE;
-    }
-  }
-
-  if (fFailed) {
-    CHAR8 zErrorMessage[256];
-
-    sprintf(zErrorMessage, "%S", gzLateLocalizedString[56]);
-    // Pop up message boc and get answer....
-    if (MessageBox(NULL, zErrorMessage, "Jagged Alliance 2", MB_OK) == IDOK) {
-      return FALSE;
-    }
-  } else {
-    return TRUE;
-  }
-
-#endif
 
   return FALSE;
 }
 
 BOOLEAN PerformTimeLimitedCheck() {
-#ifndef TIME_LIMITED_VERSION
   return TRUE;
-
-#else
-  SYSTEMTIME sSystemTime;
-
-  GetSystemTime(&sSystemTime);
-
-  // if according to the system clock, we are past july 1999, quit the game
-  if (sSystemTime.wYear > 1999 || sSystemTime.wMonth > 7) {
-    // spit out an error message
-    MessageBox(NULL, "This time limited version of Jagged Alliance 2 has expired.", "Ja2 Error!", MB_OK);
-    return FALSE;
-  }
-
-  return TRUE;
-#endif
 }
 
 BOOLEAN DoJA2FilesExistsOnDrive(CHAR8 *zCdLocation) {

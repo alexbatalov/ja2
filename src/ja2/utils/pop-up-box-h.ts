@@ -1,6 +1,3 @@
-#ifndef __POPUP_BOX
-#define __POPUP_BOX
-
 #define MAX_POPUP_BOX_COUNT 20
 #define MAX_POPUP_BOX_STRING_COUNT 50 // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
 
@@ -154,5 +151,3 @@ void SetBoxSecondaryShade(INT32 iBox, UINT8 ubColor);
 
 // min width for box
 void SpecifyBoxMinWidth(INT32 hBoxHandle, INT32 iMinWidth);
-
-#endif

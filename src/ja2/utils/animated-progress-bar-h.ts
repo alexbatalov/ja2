@@ -1,6 +1,3 @@
-#ifndef __ANIMATED_PROGRESSBAR_H
-#define __ANIMATED_PROGRESSBAR_H
-
 #define MAX_PROGRESSBARS 4
 
 typedef struct PROGRESSBAR {
@@ -67,5 +64,3 @@ void SetProgressBarColor(UINT8 ubID, UINT8 ubColorFillRed, UINT8 ubColorFillGree
 
 // Pass in TRUE to display the strings.
 void SetProgressBarTextDisplayFlag(UINT8 ubID, BOOLEAN fDisplayText, BOOLEAN fUseSaveBuffer, BOOLEAN fSaveScreenToFrameBuffer);
-
-#endif

@@ -8,10 +8,6 @@ void MakeClosestEnemyChosenOne() {
   INT16 sPanicTriggerGridNo;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE)) {
-#ifdef BETAVERSION
-    PopMessage("MakeClosestEnemyChosenOne: ERROR - Panic Trigger is NOWHERE");
-#endif
-
     return;
   }
 
@@ -121,10 +117,6 @@ void MakeClosestEnemyChosenOne() {
   if (ubClosestEnemy < NOBODY) {
     gTacticalStatus.ubTheChosenOne = ubClosestEnemy; // flag him as the chosen one
 
-#ifdef TESTVERSION
-    NumMessage("TEST MSG: The chosen one is ", TheChosenOne);
-#endif
-
     pSoldier = MercPtrs[gTacticalStatus.ubTheChosenOne];
     if (pSoldier->bAlertStatus < STATUS_RED) {
       pSoldier->bAlertStatus = STATUS_RED;
@@ -134,10 +126,6 @@ void MakeClosestEnemyChosenOne() {
     pSoldier->bHasKeys = (pSoldier->bHasKeys << 1) | 1; // cheat and give him keys to every door
     // pSoldier->bHasKeys = TRUE;
   }
-#ifdef TESTVERSION
-  else
-    PopMessage("TEST MSG: Couldn't find anyone eligible to become TheChosenOne!");
-#endif
 }
 
 void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
@@ -212,10 +200,6 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
 
       // if we have enough APs to activate it now
       if (pSoldier->bActionPoints >= AP_USE_REMOTE) {
-#ifdef TESTVERSION
-        sprintf(tempstr, "TEST MSG: %s - ACTIVATING his DETONATOR!", pSoldier->name);
-        PopMessage(tempstr);
-#endif
         // blow up all the PANIC bombs!
         return AI_ACTION_USE_DETONATOR;
       } else // otherwise, wait a turn
@@ -278,11 +262,6 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
             // blow up the all the PANIC bombs (or just the journal)
             pSoldier->usActionData = sPanicTriggerGridNo;
 
-#ifdef TESTVERSION
-            sprintf(tempstr, "TEST MSG: %s - PULLS PANIC TRIGGER at grid %d", pSoldier->name, pSoldier->usActionData);
-            PopMessage(tempstr);
-#endif
-
             return AI_ACTION_PULL_TRIGGER;
           } else // otherwise, wait a turn
           {
@@ -299,17 +278,9 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
               pSoldier->usActionData = sPanicTriggerGridNo;
               pSoldier->bPathStored = TRUE;
 
-#ifdef DEBUGDECISIONS
-              sprintf(tempstr, "%s - GETTING CLOSER to PANIC TRIGGER at grid %d (Trigger at %d)", pSoldier->name, pSoldier->usActionData, PanicTriggerGridno);
-              AIPopMessage(tempstr);
-#endif
-
               return AI_ACTION_GET_CLOSER;
             } else // Oh oh, the chosen one can't get to the trigger!
             {
-#ifdef TESTVERSION
-              PopMessage("TEST MSG: Oh oh!  !legalDest - ChosenOne can't get to the trigger!");
-#endif
               gTacticalStatus.ubTheChosenOne = NOBODY; // strip him of his Chosen One status
               MakeClosestEnemyChosenOne(); // and replace him!
             }
@@ -321,9 +292,6 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
         }
       } else // Oh oh, the chosen one can't get to the trigger!
       {
-#ifdef TESTVERSION
-        PopMessage("TEST MSG: Oh oh!  !adjacentFound - ChosenOne can't get to the trigger!");
-#endif
         gTacticalStatus.ubTheChosenOne = NOBODY; // strip him of his Chosen One status
         MakeClosestEnemyChosenOne(); // and replace him!
       }

@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 UINT8 gubDoorUIValue = 0;
 UINT8 gubWindowUIValue = 0;
 UINT8 gubWallUIValue = FIRSTWALL;
@@ -534,5 +532,3 @@ void PasteSmartBrokenWall(UINT32 iMapIndex) {
     // Calculate the new graphic for the window type selected.
   }
 }
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __GAME_EVENTS_H
-#define __GAME_EVENTS_H
-
 #define SEF_PREVENT_DELETION 0x01
 #define SEF_DELETION_PENDING 0x02
 
@@ -40,5 +37,3 @@ extern BOOLEAN gfEventDeletionPending;
 BOOLEAN DeleteEventsWithDeletionPending();
 
 extern STRATEGICEVENT *gpEventList;
-
-#endif

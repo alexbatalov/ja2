@@ -1,6 +1,3 @@
-#ifndef __MAP_SCREEN_HELICOPTER_H
-#define __MAP_SCREEN_HELICOPTER_H
-
 // costs of flying through sectors
 #define COST_AIRSPACE_SAFE 100
 #define COST_AIRSPACE_UNSAFE 1000 // VERY dangerous
@@ -120,10 +117,6 @@ extern UINT8 gubPlayerProgressSkyriderLastCommentedOn;
 // add and remove grunts from the helicopter
 BOOLEAN AddSoldierToHelicopter(SOLDIERTYPE *pSoldier);
 BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier);
-
-#ifdef JA2TESTVERSION
-extern BOOLEAN fSAMSitesDisabledFromAttackingPlayer;
-#endif
 
 /* ARM: Max. fuel range system removed
 // add another sector to how far helictoper has travelled
@@ -254,5 +247,3 @@ INT16 GetNumUnSafeSectorsInPath(void);
 BOOLEAN SoldierAboardAirborneHeli(SOLDIERTYPE *pSoldier);
 
 UINT8 MoveAllInHelicopterToFootMovementGroup(void);
-
-#endif

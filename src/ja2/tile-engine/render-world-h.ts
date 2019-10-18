@@ -1,6 +1,3 @@
-#ifndef __RENDERWORLD_H
-#define __RENDERWORLD_H
-
 // TEMP SELECT STUFF
 #define NO_SELECT 0
 #define FULL_SELECT 1
@@ -169,9 +166,3 @@ void SetMercGlowFast();
 void SetMercGlowNormal();
 
 void SetRenderCenter(INT16 sNewX, INT16 sNewY);
-
-#ifdef _DEBUG
-void RenderFOVDebug();
-#endif
-
-#endif

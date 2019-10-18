@@ -3,11 +3,6 @@
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
 BOOLEAN gfForceBuildShadeTables = FALSE;
 
-#ifdef JA2TESTVERSION
-extern UINT32 uiNumTablesSaved;
-extern UINT32 uiNumTablesLoaded;
-#endif
-
 void DetermineRGBDistributionSettings() {
   STRING512 DataDir;
   STRING512 ExecDir;
@@ -130,9 +125,6 @@ BOOLEAN LoadShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
 
   // The file exists, now make sure the
   FileClose(hfile);
-#ifdef JA2TESTVERSION
-  uiNumTablesLoaded++;
-#endif
   return TRUE;
 }
 
@@ -142,9 +134,6 @@ BOOLEAN SaveShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
   UINT32 uiNumBytesWritten;
   UINT8 ShadeFileName[100];
   UINT8 *ptr;
-#ifdef JA2TESTVERSION
-  uiNumTablesSaved++;
-#endif
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem

@@ -1,6 +1,3 @@
-#ifndef __MERCS_H
-#define __MERCS_H
-
 #define MERC_BUTTON_UP_COLOR FONT_MCOLOR_WHITE
 #define MERC_BUTTON_DOWN_COLOR FONT_MCOLOR_DKWHITE
 
@@ -82,5 +79,3 @@ void InitializeNumDaysMercArrive();
 void NewMercsAvailableAtMercSiteCallBack();
 
 void CalcAproximateAmountPaidToSpeck();
-
-#endif

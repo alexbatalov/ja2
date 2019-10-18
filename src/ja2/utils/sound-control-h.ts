@@ -1,6 +1,3 @@
-#ifndef SOUND_CONTROL_H
-#define SOUND_CONTROL_H
-
 #define FARLEFT 0
 #define LEFTSIDE 48
 #define MIDDLE 64
@@ -430,5 +427,3 @@ void SetPositionSndsActive();
 void SetPositionSndsInActive();
 void SetPositionSndsVolumeAndPanning();
 void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __VIDEO_PRIVATE_
-#define __VIDEO_PRIVATE_
-
 // ***********************************************************************
 //
 // PRIVATE, INTERNAL Header used by other SGP Internal modules
@@ -16,5 +13,3 @@ LPDIRECTDRAWSURFACE2 GetBackbufferInterface();
 BOOLEAN SetDirectDraw2Object(LPDIRECTDRAW2 pDirectDraw);
 BOOLEAN SetPrimarySurfaceInterface(LPDIRECTDRAWSURFACE2 pSurface);
 BOOLEAN SetBackbufferInterface(LPDIRECTDRAWSURFACE2 pSurface);
-
-#endif

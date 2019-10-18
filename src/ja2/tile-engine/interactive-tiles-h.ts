@@ -1,6 +1,3 @@
-#ifndef __INTERACTIVE_TILES_H
-#define __INTERACTIVE_TILES_H
-
 #define INTTILE_DOOR_TILE_ONE 1
 
 #define INTTILE_DOOR_OPENSPEED 70
@@ -37,5 +34,3 @@ LEVELNODE *GetCurInteractiveTile();
 LEVELNODE *GetCurInteractiveTileGridNo(INT16 *psGridNo);
 LEVELNODE *GetCurInteractiveTileGridNoAndStructure(INT16 *psGridNo, STRUCTURE **ppStructure);
 LEVELNODE *ConditionalGetCurInteractiveTileGridNoAndStructure(INT16 *psGridNo, STRUCTURE **ppStructure, BOOLEAN fRejectOnTopItems);
-
-#endif

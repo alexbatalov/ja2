@@ -1,7 +1,3 @@
-#if !defined(COMPRESSION_H)
-
-#define COMPRESSION_H
-
 // Notes on how to use these functions without getting your hands dirty:
 
 // To decompress:
@@ -46,5 +42,3 @@ UINT32 CompressedBufferSize(UINT32 uiDataSize);
 PTR CompressInit(BYTE *pUncompressedData, UINT32 uiDataSize);
 UINT32 Compress(PTR pCompPtr, BYTE *pBuffer, UINT32 uiBufferLen);
 void CompressFini(PTR pCompPtr);
-
-#endif

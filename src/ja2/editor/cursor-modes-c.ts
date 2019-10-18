@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 BOOLEAN fValidCursor = FALSE;
 BOOLEAN fAnchored = FALSE;
 BOOLEAN gfBrushEnabled = TRUE;
@@ -379,5 +377,3 @@ void RemoveBuildingLayout() {
     curr = curr->next;
   }
 }
-
-#endif

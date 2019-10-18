@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 extern BOOLEAN gfOverheadMapDirty;
 
 #define MAP_SIZE 208
@@ -2663,5 +2661,3 @@ UINT8 GetCurrentSummaryVersion() {
   }
   return 0;
 }
-
-#endif

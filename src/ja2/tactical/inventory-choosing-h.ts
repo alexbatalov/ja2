@@ -1,6 +1,3 @@
-#ifndef __INVENTORY_CHOOSING_H
-#define __INVENTORY_CHOOSING_H
-
 #define MORTAR_GRENADE_CLASS 100
 
 typedef struct ARMY_GUN_CHOICE_TYPE {
@@ -70,5 +67,3 @@ INT8 GetWeaponClass(UINT16 usGun);
 void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon);
 
 void ResetMortarsOnTeamCount(void);
-
-#endif

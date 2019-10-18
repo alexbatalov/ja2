@@ -1,6 +1,3 @@
-#ifndef LOS_H
-#define LOS_H
-
 //#define LOS_DEBUG
 
 // fixed-point arithmetic definitions start here
@@ -132,32 +129,5 @@ enum {
 #define CLOSE_TO_FIRER 25
 #define VERY_CLOSE_TO_FIRER 21
 
-#ifdef LOS_DEBUG
-typedef struct LOSResults {
-  BOOLEAN fLOSTestPerformed;
-  BOOLEAN fLOSClear;
-  BOOLEAN fOutOfRange;
-  INT32 iDistance;
-  INT32 iMaxDistance;
-  UINT8 ubTreeSpotsHit;
-  INT32 iStartX;
-  INT32 iStartY;
-  INT32 iStartZ;
-  INT32 iEndX;
-  INT32 iEndY;
-  INT32 iEndZ;
-  INT32 iStoppedX;
-  INT32 iStoppedY;
-  INT32 iStoppedZ;
-  INT32 iCurrCubesZ;
-  UINT8 ubChanceToGetThrough;
-} LOSResults;
-
-extern LOSResults gLOSTestResults;
-
-#endif
-
 void MoveBullet(INT32 iBullet);
 // BOOLEAN FireBullet2( SOLDIERTYPE * pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ, INT16 sHitBy );
-
-#endif

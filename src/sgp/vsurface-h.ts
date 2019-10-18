@@ -1,6 +1,3 @@
-#ifndef __VSURFACE_H
-#define __VSURFACE_H
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Video Surface SGP Module
@@ -111,10 +108,6 @@ typedef struct {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern INT32 giMemUsedInSurfaces;
 
 // Creates a list to contain video Surfaces
@@ -127,13 +120,7 @@ BOOLEAN ShutdownVideoSurfaceManager();
 BOOLEAN RestoreVideoSurfaces();
 
 // Creates and adds a video Surface to list
-#ifdef SGP_VIDEO_DEBUGGING
-void DumpVSurfaceInfoIntoFile(UINT8 *filename, BOOLEAN fAppend);
-extern BOOLEAN _AddAndRecordVSurface(VSURFACE_DESC *VSurfaceDesc, UINT32 *uiIndex, UINT32 uiLineNum, UINT8 *pSourceFile);
-#define AddVideoSurface(a, b) _AddAndRecordVSurface(a, b, __LINE__, __FILE__)
-#else
 #define AddVideoSurface(a, b) AddStandardVideoSurface(a, b)
-#endif
 
 BOOLEAN AddStandardVideoSurface(VSURFACE_DESC *VSurfaceDesc, UINT32 *uiIndex);
 
@@ -251,9 +238,3 @@ BOOLEAN BltStretchVideoSurface(UINT32 uiDestVSurface, UINT32 uiSrcVSurface, INT3
 BOOLEAN MakeVSurfaceFromVObject(UINT32 uiVObject, UINT16 usSubIndex, UINT32 *puiVSurface);
 
 BOOLEAN ShadowVideoSurfaceRectUsingLowPercentTable(UINT32 uiDestVSurface, INT32 X1, INT32 Y1, INT32 X2, INT32 Y2);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

@@ -77,10 +77,6 @@ extern void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE *pSoldier, INT32 iI
 
 extern void StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated();
 
-#ifdef JA2BETAVERSION
-extern BOOLEAN ValidateSoldierInitLinks(UINT8 ubCode);
-#endif
-
 void SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOOLEAN fLoadingGame);
 UINT32 UpdateLoadedSectorsItemInventory(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems);
 
@@ -967,9 +963,6 @@ void SetLastTimePlayerWasInSector() {
       }
       pTempNode = pTempNode->next;
     }
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Failed to Set the 'uiTimeCurrentSectorWasLastLoaded' for an underground sector");
-#endif
   }
 }
 
@@ -989,10 +982,6 @@ UINT32 GetLastTimePlayerWasInSector() {
       }
       pTempNode = pTempNode->next;
     }
-
-#ifdef JA2TESTVERSION
-    ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Failed to Get the 'uiTimeCurrentSectorWasLastLoaded' from an underground sector");
-#endif
 
     return 0;
   }
@@ -2564,15 +2553,6 @@ void SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(INT16 sMapX, INT1
     MemFree(pTotalSectorList);
     pTotalSectorList = NULL;
   }
-
-#ifdef JA2BETAVERSION
-  if (fLoadingGame && guiSaveGameVersion >= 86) {
-    UINT32 uiReported = GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX, sMapY, bMapZ);
-
-    if (uiItemCount != uiReported)
-      ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"SynchronizeItemTempFile()  Error!  Reported %d, should be %d", uiReported, uiItemCount);
-  }
-#endif
 
   // record the number of items
   SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX, sMapY, bMapZ, uiItemCount);

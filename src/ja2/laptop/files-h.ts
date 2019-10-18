@@ -1,6 +1,3 @@
-#ifndef __FILES_H
-#define __FILES_H
-
 #define FILES_DAT_FILE "TEMP\\files.dat"
 
 void GameInitFiles();
@@ -66,5 +63,3 @@ UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pF
 
 // add a file about this terrorist
 BOOLEAN AddFileAboutTerrorist(INT32 iProfileId);
-
-#endif

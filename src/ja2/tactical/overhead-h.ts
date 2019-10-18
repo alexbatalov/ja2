@@ -1,6 +1,3 @@
-#ifndef __OVERHEAD_H
-#define __OVERHEAD_H
-
 #define ADD_SOLDIER_NO_PROFILE_ID 200
 
 #define MAX_REALTIME_SPEED_VAL 10
@@ -329,5 +326,3 @@ UINT8 NumPCsInSector(void);
 
 void SetSoldierNonNeutral(SOLDIERTYPE *pSoldier);
 void SetSoldierNeutral(SOLDIERTYPE *pSoldier);
-
-#endif

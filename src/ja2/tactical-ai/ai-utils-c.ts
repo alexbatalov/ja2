@@ -374,15 +374,6 @@ BOOLEAN IsActionAffordable(SOLDIERTYPE *pSoldier) {
       // only FIRE_GUN currently actually pays extra turning costs!
       bMinPointsNeeded = MinAPsToAttack(pSoldier, pSoldier->usActionData, ADDTURNCOST);
 
-#ifdef BETAVERSION
-      if (ptsNeeded > pSoldier->bActionPoints) {
-        /*
-                sprintf(tempstr,"AI ERROR: %s has insufficient points for attack action %d at grid %d",
-                                        pSoldier->name,pSoldier->bAction,pSoldier->usActionData);
-                PopMessage(tempstr);
-                */
-      }
-#endif
       break;
 
     case AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
@@ -463,9 +454,6 @@ INT16 RandomFriendWithin(SOLDIERTYPE *pSoldier) {
 
   // if range is restricted, make sure origin is a legal gridno!
   if (fRangeRestricted && ((usOrigin < 0) || (usOrigin >= GRIDSIZE))) {
-#ifdef BETAVERSION
-    NameMessage(pSoldier, "has illegal origin, but his roaming range is restricted!", 1000);
-#endif
     return FALSE;
   }
 
@@ -644,13 +632,6 @@ INT16 RandDestWithinRange(SOLDIERTYPE *pSoldier) {
         sYOffset = ((INT16)Random(sYRange)) - sMaxUp;
 
         sRandDest = usOrigin + sXOffset + (MAXCOL * sYOffset);
-
-#ifdef BETAVERSION
-        if ((sRandDest < 0) || (sRandDest >= GRIDSIZE)) {
-          NumMessage("RandDestWithinRange: ERROR - Gridno out of range! = ", sRandDest);
-          sRandDest = random(GRIDSIZE);
-        }
-#endif
       } else {
         sRandDest = (INT16)PreRandom(GRIDSIZE);
       }
@@ -840,12 +821,6 @@ INT16 ClosestReachableDisturbance(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK, 
     }
   }
 
-#ifdef DEBUGDECISIONS
-  if (sClosestDisturbance != NOWHERE) {
-    AINumMessage("CLOSEST DISTURBANCE is at gridno ", sClosestDisturbance);
-  }
-#endif
-
   *pfChangeLevel = fClosestClimbingNecessary;
   return sClosestDisturbance;
 }
@@ -929,12 +904,6 @@ INT16 ClosestKnownOpponent(SOLDIERTYPE *pSoldier, INT16 *psGridNo, INT8 *pbLevel
     }
   }
 
-#ifdef DEBUGDECISIONS
-  if (sClosestOpponent != NOWHERE) {
-    AINumMessage("CLOSEST OPPONENT is at gridno ", sClosestOpponent);
-  }
-#endif
-
   if (psGridNo) {
     *psGridNo = sClosestOpponent;
   }
@@ -1006,12 +975,6 @@ INT16 ClosestSeenOpponent(SOLDIERTYPE *pSoldier, INT16 *psGridNo, INT8 *pbLevel)
       bClosestLevel = bLevel;
     }
   }
-
-#ifdef DEBUGDECISIONS
-  if (sClosestOpponent != NOWHERE) {
-    AINumMessage("CLOSEST OPPONENT is at gridno ", sClosestOpponent);
-  }
-#endif
 
   if (psGridNo) {
     *psGridNo = sClosestOpponent;
@@ -1291,12 +1254,6 @@ INT16 ClosestReachableFriendInTrouble(SOLDIERTYPE *pSoldier, BOOLEAN *pfClimbing
       }
     }
   }
-
-#ifdef DEBUGDECISIONS
-  if (sClosestFriend != NOWHERE) {
-    AINumMessage("CLOSEST FRIEND is at gridno ", sClosestFriend);
-  }
-#endif
 
   *pfClimbingNecessary = fClosestClimbingNecessary;
   return sClosestFriend;
@@ -1686,10 +1643,6 @@ INT8 CalcMorale(SOLDIERTYPE *pSoldier) {
   if (bMoraleCategory == MORALE_HOPELESS && (pSoldier->bAttitude == BRAVESOLO || pSoldier->bAttitude == BRAVEAID))
     bMoraleCategory = MORALE_WORRIED;
 
-#ifdef DEBUGDECISIONS
-  DebugAI(String("Morale = %d (category %d), sOutTotalThreat %d, sTheirTotalThreat %d\n", morale, bMoraleCategory, sOutTotalThreat, sTheirTotalThreat));
-#endif
-
   return bMoraleCategory;
 }
 
@@ -1791,21 +1744,6 @@ INT32 CalcManThreatValue(SOLDIERTYPE *pEnemy, INT16 sMyGrid, UINT8 ubReduceForCo
   // sprintf(tempstr,"%s's iThreatValue = ",pEnemy->name);
   // NumMessage(tempstr,iThreatValue);
 
-#ifdef BETAVERSION // unnecessary for real release
-  // NOTE: maximum is about 200 for a healthy Mike type with a mortar!
-  if (iThreatValue > 250) {
-    sprintf(tempstr, "CalcManThreatValue: WARNING - %d has a very high threat value of %d", pEnemy->ubID, iThreatValue);
-
-#ifdef RECORDNET
-    fprintf(NetDebugFile, "\t%s\n", tempstr);
-#endif
-
-#ifdef TESTVERSION
-    PopMessage(tempstr);
-#endif
-  }
-#endif
-
   return iThreatValue;
 }
 
@@ -1856,10 +1794,6 @@ INT16 RoamingRange(SOLDIERTYPE *pSoldier, INT16 *pusFromGridNo) {
       *pusFromGridNo = pSoldier->sGridNo; // from current position!
       return MAX_ROAMING_RANGE;
     default:
-#ifdef BETAVERSION
-      sprintf(tempstr, "%s has invalid orders = %d", pSoldier->name, pSoldier->bOrders);
-      PopMessage(tempstr);
-#endif
       return 0;
   }
 }

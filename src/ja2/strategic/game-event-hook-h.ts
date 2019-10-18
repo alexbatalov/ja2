@@ -1,6 +1,3 @@
-#ifndef __GAME_EVENT_HOOK_H
-#define __GAME_EVENT_HOOK_H
-
 enum {
   EVENT_CHANGELIGHTVAL = 1,
   EVENT_WEATHERSTART,
@@ -81,9 +78,6 @@ enum {
   EVENT_MERC_MERC_WENT_UP_LEVEL_EMAIL_DELAY,
   EVENT_MERC_SITE_NEW_MERC_AVAILABLE,
 
-#ifdef CRIPPLED_VERSION
-  EVENT_CRIPPLED_VERSION_END_GAME_CHECK,
-#endif
   /*
   HEY, YOU GUYS AREN'T DOING THIS!!!!!!  (see below)
 
@@ -155,5 +149,3 @@ BOOLEAN AddPeriodStrategicEventUsingSecondsWithOffset(UINT8 ubCallbackID, UINT32
 BOOLEAN DeleteStrategicEvent(UINT8 ubCallbackID, UINT32 uiParam);
 void DeleteAllStrategicEventsOfType(UINT8 ubCallbackID);
 void DeleteAllStrategicEvents();
-
-#endif

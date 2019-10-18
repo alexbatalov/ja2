@@ -1,17 +1,10 @@
-#ifndef __FONT_CONTROL_H
-#define __FONT_CONTROL_H
-
 extern BOOLEAN gfUseWinFonts;
 extern INT32 giCurWinFont;
 
 // ATE: Use this define to enable winfonts in JA2
 // #define     WINFONTS
 
-#ifdef WINFONTS
-#define USE_WINFONTS() (gfUseWinFonts)
-#else
 #define USE_WINFONTS() (FALSE)
-#endif
 
 #define GET_WINFONT() (giCurWinFont)
 #define SET_USE_WINFONTS(fSet) (gfUseWinFonts = fSet);
@@ -85,10 +78,8 @@ HVOBJECT gvoBlockFontNarrow;
 INT32 gp14PointHumanist;
 HVOBJECT gvo14PointHumanist;
 
-#ifdef JA2EDITOR
 INT32 gpHugeFont;
 HVOBJECT gvoHugeFont;
-#endif
 
 INT32 giSubTitleWinFont;
 
@@ -117,11 +108,12 @@ BOOLEAN gfFontsInit;
 #define BLOCKFONTNARROW gpBlockFontNarrow
 #define FONT14HUMANIST gp14PointHumanist
 
-#if defined(JA2EDITOR) && defined(ENGLISH)
+// FIXME: Language-specific code
+// #ifdef ENGLISH
 #define HUGEFONT gpHugeFont
-#else
-#define HUGEFONT gp16PointArial
-#endif
+// #else
+// #define HUGEFONT gp16PointArial
+// #endif
 
 #define FONT_SHADE_RED 6
 #define FONT_SHADE_BLUE 1
@@ -181,5 +173,3 @@ BOOLEAN InitializeFonts();
 void ShutdownFonts();
 
 BOOLEAN SetFontShade(UINT32 uiFontID, INT8 bColorID);
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef __UI_CURSORS_H
-#define __UI_CURSORS_H
-
 #define REFINE_PUNCH_1 0
 #define REFINE_PUNCH_2 6
 
@@ -21,5 +18,3 @@ void HandleUICursorRTFeedback(SOLDIERTYPE *pSoldier);
 void HandleEndConfirmCursor(SOLDIERTYPE *pSoldier);
 
 BOOLEAN GetMouseRecalcAndShowAPFlags(UINT32 *puiCursorFlags, BOOLEAN *pfShowAPs);
-
-#endif

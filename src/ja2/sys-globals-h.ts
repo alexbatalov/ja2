@@ -1,6 +1,3 @@
-#ifndef __SYS_GLOBALS_H
-#define __SYS_GLOBALS_H
-
 #define SHOW_MIN_FPS 0
 #define SHOW_FULL_FPS 1
 
@@ -25,5 +22,3 @@ INT32 giFPSOverlay;
 INT32 giCounterPeriodOverlay;
 
 extern BOOLEAN SET_ERROR(const char *String, ...);
-
-#endif

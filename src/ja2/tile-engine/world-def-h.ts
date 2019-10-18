@@ -1,6 +1,3 @@
-#ifndef __WORLDDEF_H
-#define __WORLDDEF_H
-
 #define WORLD_TILE_X 40
 #define WORLD_TILE_Y 20
 #define WORLD_COLS 160
@@ -254,5 +251,3 @@ BOOLEAN OpenableAtGridNo(UINT32 iMapIndex);
 
 void RecompileLocalMovementCostsInAreaWithFlags(void);
 void AddTileToRecompileArea(INT16 sGridNo);
-
-#endif

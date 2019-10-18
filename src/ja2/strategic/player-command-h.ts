@@ -1,6 +1,3 @@
-#ifndef _PLAYER_COMMAND_H
-#define _PLAYER_COMMAND_H
-
 // build main facilities strings for sector
 void GetSectorFacilitiesFlags(INT16 sMapX, INT16 sMapY, STR16 sFacilitiesString);
 
@@ -9,10 +6,6 @@ BOOLEAN SetThisSectorAsEnemyControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOO
 
 // set sector as player controlled
 BOOLEAN SetThisSectorAsPlayerControlled(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOOLEAN fContested);
-
-#ifdef JA2TESTVERSION
-void ClearMapControlledFlags(void);
-#endif
 
 /*
 // is this sector under player control
@@ -23,5 +16,3 @@ void MakePlayerPerceptionOfSectorControlCorrect( INT16 sMapX, INT16 sMapY, INT8 
 */
 
 void ReplaceSoldierProfileInPlayerGroup(UINT8 ubGroupID, UINT8 ubOldProfile, UINT8 ubNewProfile);
-
-#endif

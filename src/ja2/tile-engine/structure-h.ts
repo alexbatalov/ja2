@@ -1,6 +1,3 @@
-#ifndef STRUCTURE_H
-#define STRUCTURE_H
-
 #define NOTHING_BLOCKING 0
 #define BLOCKING_REDUCE_RANGE 1
 #define BLOCKING_NEXT_TILE 10
@@ -117,5 +114,3 @@ UINT32 StructureTypeToFlag(UINT8 ubType);
 UINT8 StructureFlagToType(UINT32 uiFlag);
 
 UINT32 GetStructureOpenSound(STRUCTURE *pStructure, BOOLEAN fClose);
-
-#endif

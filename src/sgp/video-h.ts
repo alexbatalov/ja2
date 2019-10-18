@@ -1,6 +1,3 @@
-#ifndef __VIDEO_
-#define __VIDEO_
-
 #define BUFFER_READY 0x00
 #define BUFFER_BUSY 0x01
 #define BUFFER_DIRTY 0x02
@@ -12,10 +9,6 @@
 
 extern HWND ghWindow;
 extern UINT32 guiMouseBufferState; // BUFFER_READY, BUFFER_DIRTY, BUFFER_DISABLED
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *WindowProc);
 extern void ShutdownVideoManager(void);
@@ -71,9 +64,3 @@ void FatalError(UINT8 *pError, ...);
 
 extern SGPPaletteEntry gSgpPalette[256];
 extern LPDIRECTDRAWPALETTE gpDirectDrawPalette;
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

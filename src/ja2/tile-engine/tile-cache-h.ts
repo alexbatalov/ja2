@@ -1,6 +1,3 @@
-#ifndef __TILE_CACHE_H
-#define __TILE_CACHE_H
-
 #define TILE_CACHE_START_INDEX 36000
 
 typedef struct {
@@ -37,5 +34,3 @@ void GetRootName(INT8 *pDestStr, INT8 *pSrcStr);
 // OF COURSE, FOR SPEED, WE EXPORT OUR ARRAY
 // ACCESS FUNCTIONS IN RENDERER IS NOT TOO NICE
 // ATE
-
-#endif

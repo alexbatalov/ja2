@@ -1,6 +1,3 @@
-#ifndef _IMP_ATTRIBUTE_SELECTION_H
-#define _IMP_ATTRIBUTE_SELECTION_H
-
 void EnterIMPAttributeSelection(void);
 void RenderIMPAttributeSelection(void);
 void ExitIMPAttributeSelection(void);
@@ -19,5 +16,3 @@ extern BOOLEAN fReturnStatus;
 
 #define SKILL_SLIDE_START_Y 100
 #define SKILL_SLIDE_HEIGHT 20
-
-#endif

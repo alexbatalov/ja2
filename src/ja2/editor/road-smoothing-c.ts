@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 typedef struct MACROSTRUCT {
   INT16 sMacroID;
   INT16 sOffset;
@@ -418,5 +416,3 @@ void ReplaceObsoleteRoads() {
     }
   }
 }
-
-#endif

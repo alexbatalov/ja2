@@ -1,6 +1,3 @@
-#ifndef __WINFONT_
-#define __WINFONT_
-
 void InitWinFonts();
 void ShutdownWinFonts();
 
@@ -17,5 +14,3 @@ INT16 GetWinFontHeight(UINT16 *string, INT32 iFont);
 UINT32 WinFont_mprintf(INT32 iFont, INT32 x, INT32 y, UINT16 *pFontString, ...);
 
 BOOLEAN DoesWinFontExistOnSystem(STR16 pTypeFaceName, INT32 iCharSet);
-
-#endif

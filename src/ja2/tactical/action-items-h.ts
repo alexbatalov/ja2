@@ -1,7 +1,3 @@
-#ifndef ACTION_ITEMS_H
-
-#define ACTION_ITEMS_H
-
 typedef enum {
   ACTION_ITEM_OPEN_DOOR = 1,
   ACTION_ITEM_CLOSE_DOOR,
@@ -28,5 +24,3 @@ typedef enum {
   ACTION_ITEM_MUSEUM_ALARM,
   ACTION_ITEM_BLOODCAT_ALARM,
 } ItemActionType;
-
-#endif

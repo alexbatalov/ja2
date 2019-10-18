@@ -1,6 +1,3 @@
-#ifndef HELP_SCREEN_TEXT__H_
-#define HELP_SCREEN_TEXT__H_
-
 #define HELPSCREEN_FILE "BINARYDATA\\Help.edt"
 
 #define HELPSCREEN_RECORD_SIZE 80 * 8 * 2
@@ -158,5 +155,3 @@ enum {
 
   //	HLP_TXT_,
 };
-
-#endif

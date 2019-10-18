@@ -1,6 +1,3 @@
-#ifndef __PREBATTLE_INTERFACE_H
-#define __PREBATTLE_INTERFACE_H
-
 void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI);
 void KillPreBattleInterface();
 void RenderPreBattleInterface();
@@ -92,5 +89,3 @@ enum {
   LOG_VICTORY,
 };
 void LogBattleResults(UINT8 ubVictoryCode);
-
-#endif

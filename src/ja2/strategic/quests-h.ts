@@ -1,6 +1,3 @@
-#ifndef __QUESTS_H
-#define __QUESTS_H
-
 //  Quest.ubStatus values
 #define QUESTNOTSTARTED 0
 #define QUESTINPROGRESS 1
@@ -548,5 +545,3 @@ void InitQuestEngine();
 
 BOOLEAN LoadQuestInfoFromSavedGameFile(HWFILE hFile);
 BOOLEAN SaveQuestInfoToSavedGameFile(HWFILE hFile);
-
-#endif

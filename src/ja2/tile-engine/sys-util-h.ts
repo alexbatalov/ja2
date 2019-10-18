@@ -1,6 +1,3 @@
-#ifndef __SYSTEM_UTILS
-#define __SYSTEM_UTILS
-
 // Global variables for video objects
 extern UINT32 guiBOTTOMPANEL;
 extern UINT32 guiRIGHTPANEL;
@@ -12,5 +9,3 @@ extern BOOLEAN gfExtraBuffer;
 
 BOOLEAN InitializeSystemVideoObjects();
 BOOLEAN InitializeGameVideoObjects();
-
-#endif

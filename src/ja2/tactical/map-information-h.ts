@@ -1,6 +1,3 @@
-#ifndef __MAP_INFORMATION_H
-#define __MAP_INFORMATION_H
-
 extern FLOAT gdMajorMapVersion;
 extern UINT8 gubMinorMapVersion;
 
@@ -40,5 +37,3 @@ void ValidateAndUpdateMapVersionIfNecessary();
 BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo);
 
 extern BOOLEAN gfWorldLoaded;
-
-#endif

@@ -1,6 +1,3 @@
-#ifndef _LAPTOP_SAVE_H_
-#define _LAPTOP_SAVE_H_
-
 #define MAX_BOOKMARKS 20
 
 #define MAX_PURCHASE_AMOUNT 10
@@ -91,10 +88,6 @@ typedef struct {
   BOOLEAN fSpeckSaidFloMarriedCousinQuote;
   BOOLEAN fHasAMercDiedAtMercSite;
 
-#ifdef CRIPPLED_VERSION
-  UINT8 ubCrippleFiller[20];
-#endif
-
   INT8 gbNumDaysTillFirstMercArrives;
   INT8 gbNumDaysTillSecondMercArrives;
   INT8 gbNumDaysTillThirdMercArrives;
@@ -135,5 +128,3 @@ extern BobbyRayPurchaseStruct BobbyRayPurchases[MAX_PURCHASE_AMOUNT];
 void LaptopSaveVariablesInit();
 BOOLEAN LoadLaptopInfoFromSavedGame(HWFILE hFile);
 BOOLEAN SaveLaptopInfoToSavedGame(HWFILE hFile);
-
-#endif

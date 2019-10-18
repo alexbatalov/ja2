@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 extern UINT16 PickAWallPiece(UINT16 usWallPieceType);
 
 // This method isn't foolproof, but because erasing large areas of buildings could result in
@@ -381,5 +379,3 @@ UINT16 GetHorizontalWallClass(UINT16 iMapIndex) {
     return GetWallClass(pWall);
   return 0xffff;
 }
-
-#endif

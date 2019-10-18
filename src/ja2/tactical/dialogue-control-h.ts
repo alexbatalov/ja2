@@ -1,6 +1,3 @@
-#ifndef _DIALOG_CONTROL_H
-#define _DIALOG_CONTROL_H
-
 // An enumeration for dialog quotes
 enum {
   // 0
@@ -322,5 +319,3 @@ void PauseDialogueQueue(void);
 void UnPauseDialogueQueue(void);
 
 void SetExternMapscreenSpeechPanelXY(INT16 sXPos, INT16 sYPos);
-
-#endif

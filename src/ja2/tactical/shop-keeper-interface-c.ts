@@ -571,11 +571,6 @@ void HatchOutInvSlot(UINT16 usPosX, UINT16 usPosY);
 
 extern BOOLEAN ItemIsARocketRifle(INT16 sItemIndex);
 
-#ifdef JA2TESTVERSION
-BOOLEAN gfTestDisplayDealerCash = FALSE;
-void DisplayAllDealersCash();
-#endif;
-
 // ppp
 
 //
@@ -694,10 +689,6 @@ BOOLEAN EnterShopKeeperInterface() {
   vs_desc.usHeight = SKI_TACTICAL_BACKGROUND_START_HEIGHT;
   vs_desc.ubBitDepth = 16;
   if (!AddVideoSurface(&vs_desc, &guiCornerWhereTacticalIsStillSeenImage)) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to create Surface where tactical map shows through");
-#endif
-
     return FALSE;
   }
 
@@ -721,10 +712,6 @@ BOOLEAN EnterShopKeeperInterface() {
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("InterFace\\TradeScreen.sti", VObjectDesc.ImageFile);
   if (!AddVideoObject(&VObjectDesc, &guiMainTradeScreenImage)) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to load TradeScreen.sti");
-#endif
-
     return FALSE;
   }
 
@@ -732,9 +719,6 @@ BOOLEAN EnterShopKeeperInterface() {
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("InterFace\\itemcrossout.sti", VObjectDesc.ImageFile);
   if (!AddVideoObject(&VObjectDesc, &guiItemCrossOut)) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to load itemcrossout.sti");
-#endif
     return FALSE;
   }
 
@@ -763,9 +747,6 @@ BOOLEAN EnterShopKeeperInterface() {
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(zTemp, VObjectDesc.ImageFile);
       if (!AddVideoObject(&VObjectDesc, &guiSmallSoldiersFace[gubNumberMercsInArray])) {
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to load %s", zTemp);
-#endif
         return FALSE;
       }
 
@@ -945,12 +926,7 @@ BOOLEAN InitShopKeepersFace(UINT8 ubMercID) {
   SOLDIERTYPE *pSoldier = FindSoldierByProfileID(ArmsDealerInfo[gbSelectedArmsDealerID].ubShopKeeperID, FALSE);
 
   if (pSoldier == NULL) {
-#ifdef JA2TESTVERSION
-    // Create the facial index
-    giShopKeeperFaceIndex = InitFace(ubMercID, NOBODY, FACE_BIGFACE);
-#else
     return FALSE;
-#endif
   } else {
     // Create the facial index
     giShopKeeperFaceIndex = InitFace(ubMercID, pSoldier->ubID, FACE_BIGFACE);
@@ -1138,11 +1114,6 @@ void HandleShopKeeperInterface() {
     gfAlreadySaidTooMuchToRepair = FALSE;
   }
 
-#ifdef JA2TESTVERSION
-  if (gfTestDisplayDealerCash)
-    DisplayAllDealersCash();
-#endif
-
   // if the Ski dirty flag was changed to a lower value, make sure it is set properly
   if (ubStatusOfSkiRenderDirtyFlag > gubSkiDirtyLevel)
     gubSkiDirtyLevel = ubStatusOfSkiRenderDirtyFlag;
@@ -1321,50 +1292,10 @@ void GetShopKeeperInterfaceUserInput() {
           // refresh background for player slots (in case item values change due to Flo's discount)
           gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
         } break;
-
-#ifdef JA2TESTVERSION
-
-        case 'r':
-          gubSkiDirtyLevel = SKI_DIRTY_LEVEL2;
-          break;
-        case 'i':
-          InvalidateRegion(0, 0, 640, 480);
-          break;
-
-        case 'd':
-          // Test key to toggle the display of the money each dealer has on hand
-          gfTestDisplayDealerCash ^= 1;
-          break;
-
-#endif
       }
     }
   }
 }
-
-#ifdef JA2TESTVERSION
-void DisplayAllDealersCash() {
-  INT8 bArmsDealer;
-  UINT16 usPosY = 0;
-  CHAR16 zTemp[512];
-  UINT8 ubForeColor;
-
-  // loop through all the shopkeeper's and display their money
-  for (bArmsDealer = 0; bArmsDealer < NUM_ARMS_DEALERS; bArmsDealer++) {
-    // Display the shopkeeper's name
-    DrawTextToScreen(gMercProfiles[ArmsDealerInfo[bArmsDealer].ubShopKeeperID].zNickname, 540, usPosY, 0, FONT10ARIAL, SKI_TITLE_COLOR, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
-
-    // Display the arms dealer cash on hand
-    swprintf(zTemp, L"%d", gArmsDealerStatus[bArmsDealer].uiArmsDealersCash);
-
-    InsertCommasForDollarFigure(zTemp);
-    InsertDollarSignInToString(zTemp);
-    ubForeColor = (UINT8)((bArmsDealer == gbSelectedArmsDealerID) ? SKI_BUTTON_COLOR : SKI_TITLE_COLOR);
-    DrawTextToScreen(zTemp, 590, usPosY, 0, FONT10ARIAL, ubForeColor, FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED);
-    usPosY += 17;
-  }
-}
-#endif
 
 void BtnSKI_InvPageUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -1961,9 +1892,6 @@ void EnterShopKeeperInterfaceScreen(UINT8 ubArmsDealer) {
   gbSelectedArmsDealerID = GetArmsDealerIDFromMercID(ubArmsDealer);
 
   if (gbSelectedArmsDealerID == -1) {
-#ifdef JA2BETAVERSION
-    ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to find Arms Dealer ID From Merc ID #%d", ubArmsDealer);
-#endif
     gfSKIScreenExit = TRUE;
   }
 
@@ -3897,11 +3825,7 @@ void InitShopKeeperSubTitledText(STR16 pString) {
   // Clear the contents of the subtitle text
   memset(gsShopKeeperTalkingText, 0, SKI_SUBTITLE_TEXT_SIZE);
 
-#ifdef TAIWANESE
-  swprintf(gsShopKeeperTalkingText, L"%s", pString);
-#else
   swprintf(gsShopKeeperTalkingText, L"\"%s\"", pString);
-#endif
 
   // Now setup the popup box
   if (gGameSettings.fOptions[TOPTION_SUBTITLES]) {
@@ -4882,9 +4806,6 @@ void EvaluateItemAddedToPlayersOfferArea(INT8 bSlotID, BOOLEAN fFirstOne) {
             }
           }
         } else {
-#ifdef JA2BETAVERSION
-          ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Failed to add repair item to ArmsDealerOfferArea.  AM-0");
-#endif
           return;
         }
       } else {
@@ -4966,9 +4887,6 @@ void EvaluateItemAddedToPlayersOfferArea(INT8 bSlotID, BOOLEAN fFirstOne) {
         break;
 
       default:
-#ifdef JA2BETAVERSION
-        ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Invalid evaluation result of %d.  AM-0", uiEvalResult);
-#endif
         break;
     }
 
@@ -5825,33 +5743,6 @@ BOOLEAN CanMercInteractWithSelectedShopkeeper(SOLDIERTYPE *pSoldier) {
 
   return FALSE;
 }
-
-#ifdef JA2TESTVERSION
-
-void AddShopkeeperToGridNo(UINT8 ubProfile, INT16 sGridNo) {
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  INT16 sSectorX, sSectorY;
-  UINT8 ubID;
-
-  GetCurrentWorldSector(&sSectorX, &sSectorY);
-
-  memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
-  MercCreateStruct.bTeam = CIV_TEAM;
-  MercCreateStruct.ubProfile = ubProfile;
-  MercCreateStruct.sSectorX = sSectorX;
-  MercCreateStruct.sSectorY = sSectorY;
-  MercCreateStruct.bSectorZ = gbWorldSectorZ;
-  MercCreateStruct.sInsertionGridNo = sGridNo;
-
-  if (TacticalCreateSoldier(&MercCreateStruct, &ubID)) {
-    AddSoldierToSector(ubID);
-
-    // So we can see them!
-    AllTeamsLookForAll(NO_INTERRUPTS);
-  }
-}
-
-#endif
 
 void ExitSKIRequested() {
   BOOLEAN fPlayerOwnedStuffOnTable = FALSE;

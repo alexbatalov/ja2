@@ -402,12 +402,6 @@ BOOLEAN EnoughPoints(SOLDIERTYPE *pSoldier, INT16 sAPCost, INT16 sBPCost, BOOLEA
     sAPCost = 0;
   }
 
-#ifdef NETWORKED
-  if (!IsTheSolderUnderMyControl(pSoldier->ubID)) {
-    return TRUE;
-  }
-#endif
-
   // Get New points
   sNewAP = pSoldier->bActionPoints - sAPCost;
 
@@ -1611,9 +1605,6 @@ INT16 MinAPsToThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAddTurningCost
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
   if ((!Item[usInHand].usItemClass & IC_GRENADE)) {
-#ifdef JA2TESTVERSION
-    ScreenMsg(MSG_FONT_YELLOW, MSG_DEBUG, L"MinAPsToThrow - Called when in-hand item is %s", usInHand);
-#endif
     return 0;
   }
 

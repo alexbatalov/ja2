@@ -248,8 +248,6 @@ void CursorDatabaseClear(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
-#ifdef JA2
-
   BOOLEAN ReturnValue = TRUE;
   UINT16 usSubIndex;
   CursorData *pCurData;
@@ -322,11 +320,7 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
           gMouseBltOverride();
         }
 
-#ifdef JA2
         SetMouseCursorProperties((INT16)(usEffWidth / 2), (INT16)(usEffHeight / 2), (UINT16)(usEffHeight), (UINT16)(usEffWidth));
-#else
-        SetMouseCursorProperties(sCenterValY, (INT16)(sCenterValY + gsGlobalCursorYOffset), MAX_CURSOR_HEIGHT, MAX_CURSOR_WIDTH);
-#endif
         DirtyCursor();
       } else {
         pCurData = &(gpCursorDatabase[uiCursorIndex]);
@@ -433,11 +427,7 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
         sCenterValX = pCurData->sOffsetX;
         sCenterValY = pCurData->sOffsetY;
 
-#ifdef JA2
         SetMouseCursorProperties(sCenterValX, (INT16)(sCenterValY + gsGlobalCursorYOffset), pCurData->usHeight, pCurData->usWidth);
-#else
-        SetMouseCursorProperties(sCenterValY, (INT16)(sCenterValY + gsGlobalCursorYOffset), MAX_CURSOR_HEIGHT, MAX_CURSOR_WIDTH);
-#endif
         DirtyCursor();
       }
     }
@@ -456,9 +446,6 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
   }
 
   return ReturnValue;
-#else
-  return 0;
-#endif
 }
 
 void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) {

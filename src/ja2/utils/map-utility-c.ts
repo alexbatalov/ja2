@@ -1,5 +1,3 @@
-#ifdef JA2EDITOR
-
 #define MINIMAP_X_SIZE 88
 #define MINIMAP_Y_SIZE 44
 
@@ -282,20 +280,3 @@ UINT32 MapUtilScreenHandle() {
 UINT32 MapUtilScreenShutdown() {
   return TRUE;
 }
-
-#else // non-editor version
-
-UINT32 MapUtilScreenInit() {
-  return TRUE;
-}
-
-UINT32 MapUtilScreenHandle() {
-  // If this screen ever gets set, then this is a bad thing -- endless loop
-  return ERROR_SCREEN;
-}
-
-UINT32 MapUtilScreenShutdown() {
-  return TRUE;
-}
-
-#endif

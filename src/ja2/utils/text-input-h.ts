@@ -1,6 +1,3 @@
-#ifndef __TEXT_INPUT_H
-#define __TEXT_INPUT_H
-
 // AUTHOR:  Kris Morness
 // Intended for inclusion with SGP.
 
@@ -186,5 +183,3 @@ void InitClipboard();
 void KillClipboard();
 
 BOOLEAN gfNoScroll;
-
-#endif

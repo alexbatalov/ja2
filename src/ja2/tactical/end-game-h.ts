@@ -1,6 +1,3 @@
-#ifndef __ENDGAME_H
-#define __ENDGAME_H
-
 BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo);
 void ChangeO3SectorStatue(BOOLEAN fFromExplosion);
 
@@ -16,5 +13,3 @@ void HandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLev
 void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
 
 void HandleDoneLastEndGameQuote();
-
-#endif

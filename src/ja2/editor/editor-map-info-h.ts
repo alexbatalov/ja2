@@ -1,7 +1,3 @@
-#ifdef JA2EDITOR
-#ifndef __EDITORMAPINFO_H
-#define __EDITORMAPINFO_H
-
 void SetupTextInputForMapInfo();
 void UpdateMapInfo();
 void ExtractAndUpdateMapInfo();
@@ -21,6 +17,3 @@ enum {
 };
 void ChangeLightDefault(INT8 bLightType);
 INT8 gbDefaultLightType;
-
-#endif
-#endif

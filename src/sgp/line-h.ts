@@ -8,9 +8,6 @@
 //
 // *****************************************************************************
 
-#ifndef ___LINE___H
-#define ___LINE___H
-
 // *****************************************************************************
 //
 //				Includes
@@ -36,10 +33,6 @@
 //
 // *****************************************************************************
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 // *****************************************************************************
 
 void SetClippingRegionAndImageWidth(int iImageWidth, int iClipStartX, int iClipStartY, int iClipWidth, int iClipHeight);
@@ -55,11 +48,5 @@ void RectangleDraw(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short
 void RectangleDraw8(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Color, char *ScreenPtr);
 
 // *****************************************************************************
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif
 
 // EOF *************************************************************************

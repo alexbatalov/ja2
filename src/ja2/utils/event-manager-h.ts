@@ -1,6 +1,3 @@
-#ifndef __EVENT_MANAGER_H
-#define __EVENT_MANAGER_H
-
 typedef struct {
   TIMER TimeStamp;
   UINT32 uiFlags;
@@ -25,5 +22,3 @@ BOOLEAN RemoveEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID);
 BOOLEAN PeekEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID);
 BOOLEAN FreeEvent(EVENT *pEvent);
 UINT32 EventQueueSize(UINT8 ubQueueID);
-
-#endif

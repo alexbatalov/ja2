@@ -10,9 +10,6 @@
 //
 //**************************************************************************
 
-#ifndef _Install_h
-#define _Install_h
-
 //**************************************************************************
 //
 //				Includes
@@ -37,14 +34,4 @@
 //
 //**************************************************************************
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern BOOLEAN InstallApplication(STR strAppname, STR strPath);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

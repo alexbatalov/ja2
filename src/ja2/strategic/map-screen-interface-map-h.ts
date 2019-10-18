@@ -1,6 +1,3 @@
-#ifndef _MAP_SCREEN_INTERFACE_MAP_H
-#define _MAP_SCREEN_INTERFACE_MAP_H
-
 // functions
 void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow);
 // void DrawMapIndexSmallMap( BOOLEAN fSelectedCursorIsYellow );
@@ -250,5 +247,3 @@ extern UINT16 sSelMapY;
 extern BOOLEAN fFoundTixa;
 
 extern UINT32 guiSubLevel1, guiSubLevel2, guiSubLevel3;
-
-#endif
