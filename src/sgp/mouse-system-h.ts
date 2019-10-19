@@ -22,8 +22,8 @@
 //
 // *****************************************************************************
 
-typedef void (*MOUSE_CALLBACK)(struct _MOUSE_REGION *, INT32); // Define MOUSE_CALLBACK type as pointer to void
-typedef void (*MOUSE_HELPTEXT_DONE_CALLBACK)(); // the help is done callback
+type MOUSE_CALLBACK = (a: Pointer<MOUSE_REGION>, b: INT32) => void; // Define MOUSE_CALLBACK type as pointer to void
+type MOUSE_HELPTEXT_DONE_CALLBACK = () => void; // the help is done callback
 
 interface MOUSE_REGION {
   IDNumber: UINT16; // Region's ID number, set by mouse system

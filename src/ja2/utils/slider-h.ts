@@ -10,7 +10,7 @@ const enum Enum329 {
   NUM_SLIDER_STYLES,
 }
 
-typedef void (*SLIDER_CHANGE_CALLBACK)(INT32);
+type SLIDER_CHANGE_CALLBACK = (a: INT32) => void;
 
 /*
 

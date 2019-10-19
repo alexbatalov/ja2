@@ -50,7 +50,7 @@ const enum Enum206 {
   JUMPOVER_MODE,
 }
 
-typedef UINT32 (*UI_HANDLEFNC)(struct TAG_UI_EVENT *);
+type UI_HANDLEFNC = (a: Pointer<UI_EVENT>) => UINT32;
 
 interface UI_EVENT {
   uiFlags: UINT32;
@@ -149,7 +149,7 @@ const enum Enum207 {
   NUM_UI_EVENTS,
 }
 
-typedef BOOLEAN (*UIKEYBOARD_HOOK)(InputAtom *pInputEvent);
+type UIKEYBOARD_HOOK = (pInputEvent: Pointer<InputAtom>) => BOOLEAN;
 
 // GLOBAL EVENT STRUCT
 UI_EVENT gEvents[NUM_UI_EVENTS];

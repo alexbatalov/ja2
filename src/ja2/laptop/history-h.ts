@@ -100,7 +100,7 @@ const enum Enum83 {
   HISTORY_MERC_KILLED_CHARACTER,
 }
 
-typedef HistoryUnit *HistoryUnitPtr;
+type HistoryUnitPtr = Pointer<HistoryUnit>;
 
 extern HistoryUnitPtr pHistoryListHead;
 

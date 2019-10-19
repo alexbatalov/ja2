@@ -1,4 +1,4 @@
-typedef float real;
+type real = float;
 
 const REAL_MAX = FLT_MAX;
 const REAL_MIN = FLT_MIN;

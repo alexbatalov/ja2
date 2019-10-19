@@ -30,7 +30,7 @@ const enum Enum24 {
   MSG_BOX_LAPTOP_DEFAULT,
 }
 
-typedef void (*MSGBOX_CALLBACK)(UINT8 bExitValue);
+type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 interface MESSAGE_BOX_STRUCT {
   usFlags: UINT16;

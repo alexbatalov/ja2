@@ -1,4 +1,4 @@
-typedef void (*TILESET_CALLBACK)(void);
+type TILESET_CALLBACK = () => void;
 
 interface TILESET {
   zName: INT16[] /* [32] */;

@@ -380,7 +380,7 @@ const enum Enum331 {
   NUM_AMBIENTS,
 }
 
-typedef void (*SOUND_STOP_CALLBACK)(void *pData);
+type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
 
 extern UINT8 AmbientVols[NUM_AMBIENTS];
 

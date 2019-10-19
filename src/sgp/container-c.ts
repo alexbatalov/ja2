@@ -40,7 +40,7 @@ interface QueueHeader {
   uiTail: UINT32;
 }
 
-typedef QueueHeader ListHeader;
+type ListHeader = QueueHeader;
 
 interface OrdListHeader {
   uiTotal_items: UINT32;

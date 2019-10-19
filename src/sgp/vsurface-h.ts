@@ -90,7 +90,7 @@ interface SGPVSurface {
   RegionList: HLIST; // A List of regions within the video Surface
 }
 
-typedef SGPVSurface *HVSURFACE;
+type HVSURFACE = Pointer<SGPVSurface>;
 
 //
 // This structure describes the creation parameters for a Video Surface

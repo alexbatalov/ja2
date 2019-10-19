@@ -1,5 +1,5 @@
-typedef UINT8 AudioSample8;
-typedef INT16 AudioSample16;
+type AudioSample8 = UINT8;
+type AudioSample16 = INT16;
 
 void AudioGapListInit(CHAR8 *zSoundFile, AudioGapList *pGapList);
 void AudioGapListDone(AudioGapList *pGapList);

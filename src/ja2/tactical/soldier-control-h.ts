@@ -218,7 +218,7 @@ interface PathSt {
   pPrev: Pointer<PathSt>;
 }
 
-typedef PathSt *PathStPtr;
+type PathStPtr = Pointer<PathSt>;
 const enum Enum261 {
   HELMETPOS = 0,
   VESTPOS,

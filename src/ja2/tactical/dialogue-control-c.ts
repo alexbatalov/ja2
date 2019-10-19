@@ -31,7 +31,7 @@ interface DIALOGUE_Q_STRUCT {
   fPauseTime: BOOLEAN;
 }
 
-typedef DIALOGUE_Q_STRUCT *DIALOGUE_Q_STRUCT_PTR;
+type DIALOGUE_Q_STRUCT_PTR = Pointer<DIALOGUE_Q_STRUCT>;
 
 extern INT32 giMapInvPrev;
 extern INT32 giMapInvNext;

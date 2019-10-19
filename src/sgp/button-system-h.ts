@@ -78,7 +78,7 @@ const GUI_SND_DMOV = BUTTON_SOUND_DISABLED_MOVED_ONTO;
 extern UINT32 ButtonDestBuffer;
 
 // GUI_BUTTON callback function type
-typedef void (*GUI_CALLBACK)(struct _GUI_BUTTON *, INT32);
+type GUI_CALLBACK = (a: Pointer<GUI_BUTTON>, b: INT32) => void;
 
 // GUI_BUTTON structure definitions.
 interface GUI_BUTTON {

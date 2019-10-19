@@ -29,7 +29,7 @@ const MSG_FONT_RED = FONT_MCOLOR_RED;
 const MSG_FONT_YELLOW = FONT_MCOLOR_LTYELLOW;
 const MSG_FONT_WHITE = FONT_MCOLOR_WHITE;
 
-typedef ScrollStringSt *ScrollStringStPtr;
+type ScrollStringStPtr = Pointer<ScrollStringSt>;
 
 extern ScrollStringStPtr pStringS;
 extern UINT32 StringCount;

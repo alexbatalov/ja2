@@ -242,7 +242,7 @@ interface LineText {
   pNext: Pointer<LineText>;
 }
 
-typedef LineText *LineTextPtr;
+type LineTextPtr = Pointer<LineText>;
 
 interface PopUpBox {
   usTopX: UINT16;
@@ -253,7 +253,7 @@ interface PopUpBox {
   pNext: Pointer<PopUpBox>;
 }
 
-typedef PopUpBox *PopUpBoxPtr;
+type PopUpBoxPtr = Pointer<PopUpBox>;
 
 // TABLES
 

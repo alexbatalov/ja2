@@ -1,8 +1,8 @@
-typedef INT32 TIMECOUNTER;
+type TIMECOUNTER = INT32;
 
 // typedef void (__stdcall *JA2_TIMERPROC)( UINT32 uiID, UINT32 uiMsg, UINT32 uiUser, UINT32 uiDw1, UINT32 uiDw2 );
 
-typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)(void);
+type CUSTOMIZABLE_TIMER_CALLBACK = () => void;
 
 // CALLBACK TIMER DEFINES
 const enum Enum385 {

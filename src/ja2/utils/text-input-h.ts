@@ -92,7 +92,7 @@ void AddTextInputField(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight, INT
 // would be used to jump to the file starting with that letter, and setting the field in the text input
 // field.  Pressing TAB again would place you back in the text input field.  All of that stuff would be handled
 // externally, except for the TAB keys.
-typedef void (*INPUT_CALLBACK)(UINT8, BOOLEAN);
+type INPUT_CALLBACK = (a: UINT8, b: BOOLEAN) => void;
 void AddUserInputField(INPUT_CALLBACK userFunction);
 // INPUT_CALLBACK explanation:
 // The function must use this signature:  void FunctionName( UINT8 ubFieldID, BOOLEAN fEntering );

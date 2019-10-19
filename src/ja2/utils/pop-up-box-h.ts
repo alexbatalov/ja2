@@ -20,7 +20,7 @@ interface POPUPSTRING {
   fSecondaryShadeFlag: BOOLEAN;
 }
 
-typedef POPUPSTRING *POPUPSTRINGPTR;
+type POPUPSTRINGPTR = Pointer<POPUPSTRING>;
 
 interface PopUpBo {
   Dimensions: SGPRect;
@@ -44,7 +44,7 @@ interface PopUpBo {
   pSecondColumnString: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
 }
 
-typedef PopUpBo *PopUpBoxPt;
+type PopUpBoxPt = Pointer<PopUpBo>;
 
 static PopUpBoxPt PopUpBoxList[MAX_POPUP_BOX_COUNT];
 static UINT32 guiCurrentBox;

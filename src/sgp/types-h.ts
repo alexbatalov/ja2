@@ -5,37 +5,37 @@
 
 // HEY WIZARDRY DUDES, JA2 ISN'T THE ONLY PROGRAM WE COMPILE! :-)
 
-typedef unsigned int UINT32;
-typedef signed int INT32;
+type UINT32 = unsigned_int;
+type INT32 = signed_int;
 
 // integers
-typedef unsigned char UINT8;
-typedef signed char INT8;
-typedef unsigned short UINT16;
-typedef signed short INT16;
+type UINT8 = unsigned_char;
+type INT8 = signed_char;
+type UINT16 = unsigned_short;
+type INT16 = signed_short;
 // floats
-typedef float FLOAT;
-typedef double DOUBLE;
+type FLOAT = float;
+type DOUBLE = double;
 // strings
-typedef char CHAR8;
-typedef wchar_t CHAR16;
-typedef char *STR;
-typedef char *STR8;
-typedef wchar_t *STR16;
+type CHAR8 = char;
+type CHAR16 = wchar_t;
+type STR = Pointer<char>;
+type STR8 = Pointer<char>;
+type STR16 = Pointer<wchar_t>;
 // flags (individual bits used)
-typedef unsigned char FLAGS8;
-typedef unsigned short FLAGS16;
-typedef unsigned long FLAGS32;
+type FLAGS8 = unsigned_char;
+type FLAGS16 = unsigned_short;
+type FLAGS32 = unsigned_long;
 // other
-typedef unsigned char BOOLEAN;
-typedef void *PTR;
-typedef unsigned short HNDL;
-typedef UINT8 BYTE;
-typedef CHAR8 STRING512[512];
-typedef UINT32 HWFILE;
+type BOOLEAN = unsigned_char;
+type PTR = Pointer<void>;
+type HNDL = unsigned_short;
+type BYTE = UINT8;
+type STRING512 = CHAR8[] /* [512] */;
+type HWFILE = UINT32;
 
 const SGPFILENAME_LEN = 100;
-typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
+type SGPFILENAME = CHAR8[] /* [SGPFILENAME_LEN] */;
 
 // *** SIR-TECH TYPE DEFINITIONS ***
 
@@ -70,16 +70,16 @@ interface SGPRange {
   Max: INT32;
 }
 
-typedef FLOAT VECTOR2[2]; // 2d vector (2x1 matrix)
-typedef FLOAT VECTOR3[3]; // 3d vector (3x1 matrix)
-typedef FLOAT VECTOR4[4]; // 4d vector (4x1 matrix)
+type VECTOR2 = FLOAT[] /* [2] */; // 2d vector (2x1 matrix)
+type VECTOR3 = FLOAT[] /* [3] */; // 3d vector (3x1 matrix)
+type VECTOR4 = FLOAT[] /* [4] */; // 4d vector (4x1 matrix)
 
-typedef INT32 IVECTOR2[2]; // 2d vector (2x1 matrix)
-typedef INT32 IVECTOR3[3]; // 3d vector (3x1 matrix)
-typedef INT32 IVECTOR4[4]; // 4d vector (4x1 matrix)
+type IVECTOR2 = INT32[] /* [2] */; // 2d vector (2x1 matrix)
+type IVECTOR3 = INT32[] /* [3] */; // 3d vector (3x1 matrix)
+type IVECTOR4 = INT32[] /* [4] */; // 4d vector (4x1 matrix)
 
-typedef VECTOR3 MATRIX3[3]; // 3x3 matrix
-typedef VECTOR4 MATRIX4[4]; // 4x4 matrix
+type MATRIX3 = VECTOR3[] /* [3] */; // 3x3 matrix
+type MATRIX4 = VECTOR4[] /* [4] */; // 4x4 matrix
 
-typedef VECTOR3 ANGLE; // angle return array
-typedef VECTOR4 COLOR; // rgba color array
+type ANGLE = VECTOR3; // angle return array
+type COLOR = VECTOR4; // rgba color array

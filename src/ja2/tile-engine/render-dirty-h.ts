@@ -17,7 +17,7 @@ const VOVERLAY_DESC_POSITION = 0x00004000;
 // STRUCTURES
 
 // Callback for topmost blitters
-typedef void (*OVERLAY_CALLBACK)(struct _VIDEO_OVERLAY *);
+type OVERLAY_CALLBACK = (a: Pointer<VIDEO_OVERLAY>) => void;
 
 // Struct for backgrounds
 interface BACKGROUND_SAVE {

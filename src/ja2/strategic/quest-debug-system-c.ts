@@ -6,8 +6,8 @@
 //
 //*******************************
 
-typedef void (*DROP_DOWN_DISPLAY_CALLBACK)(STR16);
-typedef void (*DROP_DOWN_SELECT_CALLBACK)(STR16);
+type DROP_DOWN_DISPLAY_CALLBACK = (a: STR16) => void;
+type DROP_DOWN_SELECT_CALLBACK = (a: STR16) => void;
 
 const QUEST_DEBUG_FILE = "QuestDebugRecordLog.txt";
 
@@ -300,8 +300,8 @@ STR16 PocketText[] = {
 extern UINT32 guiGameClock;
 extern UINT32 guiBrownBackgroundForTeamPanel;
 
-typedef void (*LISTBOX_DISPLAY_FNCTN)(); // Define Display Callback function
-typedef void (*TEXT_ENTRY_CALLBACK)(INT32); // Callback for when the text entry field is finished
+type LISTBOX_DISPLAY_FNCTN = () => void; // Define Display Callback function
+type TEXT_ENTRY_CALLBACK = (a: INT32) => void; // Callback for when the text entry field is finished
 
 interface SCROLL_BOX {
   DisplayFunction: LISTBOX_DISPLAY_FNCTN; //	The array of items

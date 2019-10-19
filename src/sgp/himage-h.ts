@@ -109,7 +109,7 @@ interface image_type {
   /* } */
 }
 
-typedef image_type *HIMAGE;
+type HIMAGE = Pointer<image_type>;
 
 const SGPGetRValue = (rgb) => ((BYTE)(rgb));
 const SGPGetBValue = (rgb) => ((BYTE)((rgb) >> 16));

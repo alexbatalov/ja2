@@ -7,7 +7,7 @@ const MSGBOX_BUTTON_X_SEP = 15;
 const MSGBOX_SMALL_BUTTON_WIDTH = 31;
 const MSGBOX_SMALL_BUTTON_X_SEP = 8;
 
-typedef void (*MSGBOX_CALLBACK)(UINT8 bExitValue);
+type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 // old mouse x and y positions
 SGPPoint pOldMousePosition;

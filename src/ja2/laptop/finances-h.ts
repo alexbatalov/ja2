@@ -48,7 +48,7 @@ const enum Enum80 {
   MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT,
 }
 
-typedef FinanceUnit *FinanceUnitPtr;
+type FinanceUnitPtr = Pointer<FinanceUnit>;
 
 extern FinanceUnitPtr pFinanceListHead;
 // extern INT32 iCurrentBalance;

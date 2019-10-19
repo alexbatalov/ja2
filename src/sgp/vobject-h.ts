@@ -5,7 +5,7 @@
 // ************************************************************************************
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
-typedef UINT32 COLORVAL;
+type COLORVAL = UINT32;
 
 // Defines for blitting
 const VO_BLT_SRCTRANSPARENCY = 0x000000002;
@@ -89,7 +89,7 @@ interface SGPVObject {
   bReserved: BYTE[] /* [1] */;
 }
 
-typedef SGPVObject *HVOBJECT;
+type HVOBJECT = Pointer<SGPVObject>;
 
 // This structure describes the creation parameters for a Video Object
 interface VOBJECT_DESC {

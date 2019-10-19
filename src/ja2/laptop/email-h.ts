@@ -134,7 +134,7 @@ interface EmailMessage {
   Prev: Pointer<EmailMessage>;
 }
 
-typedef EmailMessage *MessagePtr;
+type MessagePtr = Pointer<EmailMessage>;
 
 interface Email {
   pSubject: STR16;
@@ -157,7 +157,7 @@ interface Email {
   Prev: Pointer<Email>;
 }
 
-typedef Email *EmailPtr;
+type EmailPtr = Pointer<Email>;
 
 // This used when saving the emails to disk.
 interface SavedEmailStruct {
@@ -185,7 +185,7 @@ interface Page {
   Prev: Pointer<Page>;
 }
 
-typedef Page *PagePtr;
+type PagePtr = Pointer<Page>;
 
 interface Record {
   //  CHAR16 pRecord[ 320 ];
@@ -193,7 +193,7 @@ interface Record {
   Next: Pointer<Record>;
 }
 
-typedef Record *RecordPtr;
+type RecordPtr = Pointer<Record>;
 
 interface EmailPageInfoStruct {
   pFirstRecord: RecordPtr;

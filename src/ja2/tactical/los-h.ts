@@ -2,7 +2,7 @@
 
 // fixed-point arithmetic definitions start here
 
-typedef INT32 FIXEDPT;
+type FIXEDPT = INT32;
 // rem 1 signed bit at the top
 const FIXEDPT_WHOLE_BITS = 11;
 const FIXEDPT_FRACTIONAL_BITS = 20;

@@ -22,7 +22,7 @@ interface FileString {
   Next: Pointer<FileString>;
 }
 
-typedef FileString *FileStringPtr;
+type FileStringPtr = Pointer<FileString>;
 
 // files codes
 const enum Enum77 {
@@ -43,7 +43,7 @@ extern UINT8 ubFileRecordsLength[];
 extern BOOLEAN fEnteredFileViewerFromNewFileIcon;
 extern BOOLEAN fNewFilesInFileViewer;
 
-typedef FilesUnit *FilesUnitPtr;
+type FilesUnitPtr = Pointer<FilesUnit>;
 
 extern FilesUnitPtr pFilesListHead;
 
@@ -55,7 +55,7 @@ interface FileRecordWidth {
   Next: Pointer<FileRecordWidth>;
 }
 
-typedef FileRecordWidth *FileRecordWidthPtr;
+type FileRecordWidthPtr = Pointer<FileRecordWidth>;
 UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile);
 
 // add a file about this terrorist

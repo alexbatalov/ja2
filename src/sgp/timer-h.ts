@@ -1,4 +1,4 @@
-typedef UINT32 TIMER;
+type TIMER = UINT32;
 
 const MAIN_TIMER_ID = 1;
 

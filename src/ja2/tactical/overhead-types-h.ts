@@ -296,7 +296,7 @@ interface PaletteSubRangeType {
   ubEnd: UINT8;
 }
 
-typedef CHAR8 PaletteRepID[30];
+type PaletteRepID = CHAR8[] /* [30] */;
 
 interface PaletteReplacementType {
   ubType: UINT8;

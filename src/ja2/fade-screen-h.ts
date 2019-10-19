@@ -8,12 +8,12 @@ const FADE_IN_VERSION_ONE = 10;
 const FADE_IN_SQUARE = 11;
 const FADE_IN_REALFADE = 12;
 
-typedef void (*FADE_HOOK)(void);
+type FADE_HOOK = () => void;
 
 extern FADE_HOOK gFadeInDoneCallback;
 extern FADE_HOOK gFadeOutDoneCallback;
 
-typedef void (*FADE_FUNCTION)(void);
+type FADE_FUNCTION = () => void;
 
 BOOLEAN gfFadeInitialized;
 BOOLEAN gfFadeIn;

@@ -3,7 +3,7 @@ const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 void FadeInGameScreen();
 void FadeOutGameScreen();
 
-typedef void (*MODAL_HOOK)(void);
+type MODAL_HOOK = () => void;
 
 BOOLEAN gfGameScreenLocateToSoldier;
 BOOLEAN gfEnteringMapScreen;

@@ -25,11 +25,11 @@ const ORDLIST_EQUAL = 0;
 const ORDLIST_LEFT_LESS = 1;
 const ORDLIST_RIGHT_LESS = 2;
 
-typedef void *HCONTAINER;
-typedef HCONTAINER HSTACK;
-typedef HCONTAINER HQUEUE;
-typedef HCONTAINER HLIST;
-typedef HCONTAINER HORDLIST;
+type HCONTAINER = Pointer<void>;
+type HSTACK = HCONTAINER;
+type HQUEUE = HCONTAINER;
+type HLIST = HCONTAINER;
+type HORDLIST = HCONTAINER;
 
 //***********************************************
 //

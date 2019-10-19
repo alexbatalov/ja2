@@ -69,7 +69,7 @@ interface TILE_IMAGERY {
   bReserved: BYTE[] /* [2] */;
 }
 
-typedef TILE_IMAGERY *PTILE_IMAGERY;
+type PTILE_IMAGERY = Pointer<TILE_IMAGERY>;
 
 interface TILE_ANIMATION_DATA {
   pusFrames: Pointer<UINT16>;
@@ -106,7 +106,7 @@ interface TILE_ELEMENT {
   bReserved: BYTE[] /* [3] */;
 }
 
-typedef TILE_ELEMENT *PTILE_ELEMENT;
+type PTILE_ELEMENT = Pointer<TILE_ELEMENT>;
 
 interface land_undo_struct {
   iMapIndex: INT32;

@@ -34,7 +34,7 @@ const ITEM_LOCATOR_LOCKED = 0x02;
 // MACRO FOR DEFINING OF ITEM IS VISIBLE
 const ITEMPOOL_VISIBLE = (pItemPool) => ((pItemPool->bVisible >= 1) || (gTacticalStatus.uiFlags & SHOW_ALL_ITEMS));
 
-typedef void (*ITEM_POOL_LOCATOR_HOOK)(void);
+type ITEM_POOL_LOCATOR_HOOK = () => void;
 
 interface ITEM_POOL {
   pNext: Pointer<ITEM_POOL>;

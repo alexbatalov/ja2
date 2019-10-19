@@ -75,7 +75,7 @@ extern UINT32 guiExtern2Vo;
 extern UINT16 gusExtern2VoSubIndex;
 extern BOOLEAN gfExternUse2nd;
 
-typedef void (*MOUSEBLT_HOOK)(void);
+type MOUSEBLT_HOOK = () => void;
 
 void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData, UINT16 suNumDataFiles);
 void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);

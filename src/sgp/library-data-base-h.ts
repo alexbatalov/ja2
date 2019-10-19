@@ -17,7 +17,7 @@ const DB_EXTRACT_FILE_ID = (exp) => (exp & 0x3FFFFF);
 const DB_ADD_LIBRARY_ID = (exp) => (exp << DB_BITS_FOR_FILE_ID);
 const DB_ADD_FILE_ID = (exp) => (exp & 0xC00000);
 
-typedef UINT32 HWFILE;
+type HWFILE = UINT32;
 
 interface LibraryInitHeader {
   sLibraryName: CHAR8[] /* [FILENAME_SIZE] */; // The name of the library file on the disk
