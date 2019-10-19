@@ -26,35 +26,37 @@
 //
 //*****************************************************************************
 
-typedef struct StackHeaderTag {
-  UINT32 uiTotal_items;
-  UINT32 uiSiz_of_elem;
-  UINT32 uiMax_size;
-} StackHeader;
+interface StackHeader {
+  uiTotal_items: UINT32;
+  uiSiz_of_elem: UINT32;
+  uiMax_size: UINT32;
+}
 
-typedef struct HeaderTag {
-  UINT32 uiTotal_items;
-  UINT32 uiSiz_of_elem;
-  UINT32 uiMax_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-} QueueHeader, ListHeader;
+interface QueueHeader {
+  uiTotal_items: UINT32;
+  uiSiz_of_elem: UINT32;
+  uiMax_size: UINT32;
+  uiHead: UINT32;
+  uiTail: UINT32;
+}
 
-typedef struct OrdHeaderTag {
-  UINT32 uiTotal_items;
-  UINT32 uiSiz_of_elem;
-  UINT32 uiMax_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  INT8 (*pCompare)(void *, void *, UINT32);
-} OrdListHeader;
+typedef QueueHeader ListHeader;
 
-typedef struct test {
-  UINT32 me;
-  long you;
-  char *k;
-  char *p;
-} TEST;
+interface OrdListHeader {
+  uiTotal_items: UINT32;
+  uiSiz_of_elem: UINT32;
+  uiMax_size: UINT32;
+  uiHead: UINT32;
+  uiTail: UINT32;
+  pCompare: (a: Pointer<void>, b: Pointer<void>, c: UINT32) => INT8;
+}
+
+interface TEST {
+  me: UINT32;
+  you: long;
+  k: Pointer<char>;
+  p: Pointer<char>;
+}
 
 //*****************************************************************************
 //

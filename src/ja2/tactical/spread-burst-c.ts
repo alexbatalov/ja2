@@ -1,10 +1,10 @@
 const MAX_BURST_LOCATIONS = 50;
 
-typedef struct {
-  INT16 sX;
-  INT16 sY;
-  INT16 sGridNo;
-} BURST_LOCATIONS;
+interface BURST_LOCATIONS {
+  sX: INT16;
+  sY: INT16;
+  sGridNo: INT16;
+}
 
 BURST_LOCATIONS gsBurstLocations[MAX_BURST_LOCATIONS];
 INT8 gbNumBurstLocations = 0;

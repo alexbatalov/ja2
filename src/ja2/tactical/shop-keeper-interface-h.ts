@@ -19,20 +19,20 @@ const ARMS_INV_ITEM_REPAIRED = 0x00000020; // The item is repaired
 const ARMS_INV_JUST_PURCHASED = 0x00000040; // The item was just purchased
 const ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED = 0x00000080; // The Players item has been evaluated
 
-typedef struct {
-  BOOLEAN fActive;
-  INT16 sItemIndex;
-  UINT32 uiFlags;
-  OBJECTTYPE ItemObject;
-  UINT8 ubLocationOfObject; // An enum value for the location of the item ( either in the arms dealers inventory, one of the offer areas or in the users inventory)
-  INT8 bSlotIdInOtherLocation;
+interface INVENTORY_IN_SLOT {
+  fActive: BOOLEAN;
+  sItemIndex: INT16;
+  uiFlags: UINT32;
+  ItemObject: OBJECTTYPE;
+  ubLocationOfObject: UINT8; // An enum value for the location of the item ( either in the arms dealers inventory, one of the offer areas or in the users inventory)
+  bSlotIdInOtherLocation: INT8;
 
-  UINT8 ubIdOfMercWhoOwnsTheItem;
-  UINT32 uiItemPrice; // Only used for the players item that have been evaluated
+  ubIdOfMercWhoOwnsTheItem: UINT8;
+  uiItemPrice: UINT32; // Only used for the players item that have been evaluated
 
-  INT16 sSpecialItemElement; // refers to which special item element an item in a dealer's inventory area
-                             // occupies.  -1 Means the item is "perfect" and has no associated special item.
-} INVENTORY_IN_SLOT;
+  sSpecialItemElement: INT16; // refers to which special item element an item in a dealer's inventory area
+                              // occupies.  -1 Means the item is "perfect" and has no associated special item.
+}
 
 extern INVENTORY_IN_SLOT PlayersOfferArea[SKI_NUM_TRADING_INV_SLOTS];
 extern INT32 giShopKeepDialogueEventinProgress;

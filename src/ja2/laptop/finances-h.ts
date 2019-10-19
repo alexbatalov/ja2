@@ -7,15 +7,15 @@ void RenderFinances();
 const FINANCES_DATA_FILE = "TEMP\\finances.dat";
 
 // the financial structure
-struct finance {
-  UINT8 ubCode; // the code index in the finance code table
-  UINT32 uiIdNumber; // unique id number
-  UINT8 ubSecondCode; // secondary code
-  UINT32 uiDate; // time in the world in global time
-  INT32 iAmount; // the amount of the transaction
-  INT32 iBalanceToDate;
-  struct finance *Next; // next unit in the list
-};
+interface FinanceUnit {
+  ubCode: UINT8; // the code index in the finance code table
+  uiIdNumber: UINT32; // unique id number
+  ubSecondCode: UINT8; // secondary code
+  uiDate: UINT32; // time in the world in global time
+  iAmount: INT32; // the amount of the transaction
+  iBalanceToDate: INT32;
+  Next: Pointer<FinanceUnit>; // next unit in the list
+}
 
 const enum Enum80 {
   ACCRUED_INTEREST,
@@ -48,8 +48,7 @@ const enum Enum80 {
   MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT,
 }
 
-typedef struct finance FinanceUnit;
-typedef struct finance *FinanceUnitPtr;
+typedef FinanceUnit *FinanceUnitPtr;
 
 extern FinanceUnitPtr pFinanceListHead;
 // extern INT32 iCurrentBalance;

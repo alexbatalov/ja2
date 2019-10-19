@@ -37,165 +37,160 @@ const enum Enum319 {
 const DEMAND_EVENT_DELAY = 0xFFFF;
 
 // Enumerate all structures for events
-typedef struct {
-  UINT16 usIndex;
-  UINT16 usRate;
-  UINT8 ubVolume;
-  UINT8 ubLoops;
-  UINT32 uiPan;
-} EV_E_PLAYSOUND;
+interface EV_E_PLAYSOUND {
+  usIndex: UINT16;
+  usRate: UINT16;
+  ubVolume: UINT8;
+  ubLoops: UINT8;
+  uiPan: UINT32;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usNewState;
-  INT16 sXPos;
-  INT16 sYPos;
-  UINT16 usStartingAniCode;
-  BOOLEAN fForce;
-} EV_S_CHANGESTATE;
+interface EV_S_CHANGESTATE {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  usNewState: UINT16;
+  sXPos: INT16;
+  sYPos: INT16;
+  usStartingAniCode: UINT16;
+  fForce: BOOLEAN;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usNewDestination;
-} EV_S_CHANGEDEST;
+interface EV_S_CHANGEDEST {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  usNewDestination: UINT16;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  FLOAT dNewXPos;
-  FLOAT dNewYPos;
-} EV_S_SETPOSITION;
+interface EV_S_SETPOSITION {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  dNewXPos: FLOAT;
+  dNewYPos: FLOAT;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sDestGridNo;
-  UINT16 usMovementAnim;
-} EV_S_GETNEWPATH;
+interface EV_S_GETNEWPATH {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  sDestGridNo: INT16;
+  usMovementAnim: UINT16;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-} EV_S_BEGINTURN;
+interface EV_S_BEGINTURN {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT8 ubNewStance;
-  INT16 sXPos;
-  INT16 sYPos;
-} EV_S_CHANGESTANCE;
+interface EV_S_CHANGESTANCE {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  ubNewStance: UINT8;
+  sXPos: INT16;
+  sYPos: INT16;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usNewDirection;
-} EV_S_SETDIRECTION;
+interface EV_S_SETDIRECTION {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  usNewDirection: UINT16;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usDesiredDirection;
-} EV_S_SETDESIREDDIRECTION;
+interface EV_S_SETDESIREDDIRECTION {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  usDesiredDirection: UINT16;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sTargetGridNo;
-  INT8 bTargetLevel;
-  INT8 bTargetCubeLevel;
-} EV_S_BEGINFIREWEAPON;
+interface EV_S_BEGINFIREWEAPON {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  sTargetGridNo: INT16;
+  bTargetLevel: INT8;
+  bTargetCubeLevel: INT8;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sTargetGridNo;
-  INT8 bTargetLevel;
-  INT8 bTargetCubeLevel;
-} EV_S_FIREWEAPON;
+interface EV_S_FIREWEAPON {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  sTargetGridNo: INT16;
+  bTargetLevel: INT8;
+  bTargetCubeLevel: INT8;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT16 usWeaponIndex;
-  INT16 sDamage;
-  INT16 sBreathLoss;
-  UINT16 usDirection;
-  INT16 sXPos;
-  INT16 sYPos;
-  INT16 sZPos;
-  INT16 sRange;
-  UINT8 ubAttackerID;
-  BOOLEAN fHit;
-  UINT8 ubSpecial;
-  UINT8 ubLocation;
-} EV_S_WEAPONHIT;
+interface EV_S_WEAPONHIT {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  usWeaponIndex: UINT16;
+  sDamage: INT16;
+  sBreathLoss: INT16;
+  usDirection: UINT16;
+  sXPos: INT16;
+  sYPos: INT16;
+  sZPos: INT16;
+  sRange: INT16;
+  ubAttackerID: UINT8;
+  fHit: BOOLEAN;
+  ubSpecial: UINT8;
+  ubLocation: UINT8;
+}
 
-typedef struct {
-  INT16 sXPos;
-  INT16 sYPos;
-  INT16 sZPos;
-  UINT16 usWeaponIndex;
-  INT8 bWeaponStatus;
-  UINT8 ubAttackerID;
-  UINT16 usStructureID;
-  INT32 iImpact;
-  INT32 iBullet;
-} EV_S_STRUCTUREHIT;
+interface EV_S_STRUCTUREHIT {
+  sXPos: INT16;
+  sYPos: INT16;
+  sZPos: INT16;
+  usWeaponIndex: UINT16;
+  bWeaponStatus: INT8;
+  ubAttackerID: UINT8;
+  usStructureID: UINT16;
+  iImpact: INT32;
+  iBullet: INT32;
+}
 
-typedef struct {
-  INT16 sGridNo;
-  UINT16 usStructureID;
-  BOOLEAN fBlowWindowSouth;
-  BOOLEAN fLargeForce;
-} EV_S_WINDOWHIT;
+interface EV_S_WINDOWHIT {
+  sGridNo: INT16;
+  usStructureID: UINT16;
+  fBlowWindowSouth: BOOLEAN;
+  fLargeForce: BOOLEAN;
+}
 
-typedef struct {
-  UINT8 ubAttackerID;
-} EV_S_MISS;
+interface EV_S_MISS {
+  ubAttackerID: UINT8;
+}
 
-typedef struct {
-  UINT8 ubNoiseMaker;
-  INT16 sGridNo;
-  UINT8 bLevel;
-  UINT8 ubTerrType;
-  UINT8 ubVolume;
-  UINT8 ubNoiseType;
-} EV_S_NOISE;
+interface EV_S_NOISE {
+  ubNoiseMaker: UINT8;
+  sGridNo: INT16;
+  bLevel: UINT8;
+  ubTerrType: UINT8;
+  ubVolume: UINT8;
+  ubNoiseType: UINT8;
+}
 
-typedef struct {
-  UINT16 usSoldierID;
-  UINT32 uiUniqueId;
-  INT8 bDirection;
-  INT16 sGridNo;
-  INT16 sXPos;
-  INT16 sYPos;
-} EV_S_STOP_MERC;
+interface EV_S_STOP_MERC {
+  usSoldierID: UINT16;
+  uiUniqueId: UINT32;
+  bDirection: INT8;
+  sGridNo: INT16;
+  sXPos: INT16;
+  sYPos: INT16;
+}
 
-typedef struct {
-  UINT8 usSoldierID;
-  UINT32 uiUniqueId;
-  UINT8 usPathDataSize; // Size of Path
-  INT16 sAtGridNo; // Owner merc is at this tile when sending packet
-  UINT8 usCurrentPathIndex; // Index the owner of the merc is at when sending packet
-  UINT8 usPathData[NETWORK_PATH_DATA_SIZE]; // make define  // Next X tile to go to
-  UINT8 ubNewState; // new movment Anim
-  //	INT8		bActionPoints;
-  //	INT8		bBreath;			// current breath value
-  //	INT8		bDesiredDirection;
+interface EV_S_SENDPATHTONETWORK {
+  usSoldierID: UINT8;
+  uiUniqueId: UINT32;
+  usPathDataSize: UINT8; // Size of Path
+  sAtGridNo: INT16; // Owner merc is at this tile when sending packet
+  usCurrentPathIndex: UINT8; // Index the owner of the merc is at when sending packet
+  usPathData: UINT8[] /* [NETWORK_PATH_DATA_SIZE] */; // make define  // Next X tile to go to
+  ubNewState: UINT8; // new movment Anim
+}
 
-  // maybe send current action & breath points
-} EV_S_SENDPATHTONETWORK;
-
-typedef struct {
-  UINT8 usSoldierID;
-  UINT32 uiUniqueId;
-  INT16 sAtGridNo; // Owner merc is at this tile when sending packet
-  INT8 bActionPoints; // current A.P. value
-  INT8 bBreath; // current breath value
-} EV_S_UPDATENETWORKSOLDIER;
+interface EV_S_UPDATENETWORKSOLDIER {
+  usSoldierID: UINT8;
+  uiUniqueId: UINT32;
+  sAtGridNo: INT16; // Owner merc is at this tile when sending packet
+  bActionPoints: INT8; // current A.P. value
+  bBreath: INT8; // current breath value
+}
 
 // FUNCTIONS
 BOOLEAN AddGameEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData);

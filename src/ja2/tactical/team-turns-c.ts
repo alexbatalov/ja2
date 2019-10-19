@@ -23,17 +23,17 @@ UINT8 gubLastInterruptedGuy = 0;
 extern INT16 gsWhoThrewRock;
 extern UINT8 gubSightFlags;
 
-typedef struct {
-  UINT8 ubOutOfTurnPersons;
+interface TEAM_TURN_SAVE_STRUCT {
+  ubOutOfTurnPersons: UINT8;
 
-  INT16 InterruptOnlyGuynum;
-  INT16 sWhoThrewRock;
-  BOOLEAN InterruptsAllowed;
-  BOOLEAN fHiddenInterrupt;
-  UINT8 ubLastInterruptedGuy;
+  InterruptOnlyGuynum: INT16;
+  sWhoThrewRock: INT16;
+  InterruptsAllowed: BOOLEAN;
+  fHiddenInterrupt: BOOLEAN;
+  ubLastInterruptedGuy: UINT8;
 
-  UINT8 ubFiller[16];
-} TEAM_TURN_SAVE_STRUCT;
+  ubFiller: UINT8[] /* [16] */;
+}
 
 const MIN_APS_TO_INTERRUPT = 4;
 

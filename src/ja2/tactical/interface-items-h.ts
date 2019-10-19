@@ -11,21 +11,21 @@ const HEAD_INV_SLOT_WIDTH = 43;
 const HEAD_INV_SLOT_HEIGHT = 24;
 
 // A STRUCT USED INTERNALLY FOR INV SLOT REGIONS
-typedef struct {
-  BOOLEAN fBigPocket;
-  INT16 sBarDx;
-  INT16 sBarDy;
-  INT16 sWidth;
-  INT16 sHeight;
-  INT16 sX; // starts at 0, gets set via InitInvSlotInterface()
-  INT16 sY; // starts at 0, gets set via InitInvSlotInterface()
-} INV_REGIONS;
+interface INV_REGIONS {
+  fBigPocket: BOOLEAN;
+  sBarDx: INT16;
+  sBarDy: INT16;
+  sWidth: INT16;
+  sHeight: INT16;
+  sX: INT16; // starts at 0, gets set via InitInvSlotInterface()
+  sY: INT16; // starts at 0, gets set via InitInvSlotInterface()
+}
 
 // USED TO SETUP REGION POSITIONS, ETC
-typedef struct {
-  INT16 sX;
-  INT16 sY;
-} INV_REGION_DESC;
+interface INV_REGION_DESC {
+  sX: INT16;
+  sY: INT16;
+}
 
 // Itempickup stuff
 BOOLEAN InitializeItemPickupMenu(SOLDIERTYPE *pSoldier, INT16 sGridNo, ITEM_POOL *pItemPool, INT16 sScreenX, INT16 sScreenY, INT8 bZLevel);

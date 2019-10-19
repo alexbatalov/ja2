@@ -1,8 +1,8 @@
-typedef struct {
-  UINT8 r;
-  UINT8 g;
-  UINT8 b;
-} RGBValues;
+interface RGBValues {
+  r: UINT8;
+  g: UINT8;
+  b: UINT8;
+}
 
 BOOLEAN QuantizeImage(UINT8 *pDest, UINT8 *pSrc, INT16 sWidth, INT16 sHeight, SGPPaletteEntry *pPalette) {
   INT16 sNumColors;

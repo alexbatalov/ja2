@@ -132,10 +132,10 @@ void BuildSightDir(UINT32 dir, UINT32 *One, UINT32 *Two, UINT32 *Three, UINT32 *
 
 const NUM_SLANT_ROOF_SLOTS = 200;
 
-typedef struct {
-  INT16 sGridNo;
-  BOOLEAN fAllocated;
-} SLANT_ROOF_FOV_TYPE;
+interface SLANT_ROOF_FOV_TYPE {
+  sGridNo: INT16;
+  fAllocated: BOOLEAN;
+}
 
 SLANT_ROOF_FOV_TYPE gSlantRoofData[NUM_SLANT_ROOF_SLOTS];
 UINT32 guiNumSlantRoofs = 0;

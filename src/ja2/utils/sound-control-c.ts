@@ -644,15 +644,15 @@ void DelayedSoundTimerCallback(void) {
 /////////////////////////////////////////////////////////
 const NUM_POSITION_SOUND_EFFECT_SLOTS = 10;
 
-typedef struct {
-  UINT32 uiFlags;
-  INT16 sGridNo;
-  INT32 iSoundSampleID;
-  INT32 iSoundToPlay;
-  UINT32 uiData;
-  BOOLEAN fAllocated;
-  BOOLEAN fInActive;
-} POSITIONSND;
+interface POSITIONSND {
+  uiFlags: UINT32;
+  sGridNo: INT16;
+  iSoundSampleID: INT32;
+  iSoundToPlay: INT32;
+  uiData: UINT32;
+  fAllocated: BOOLEAN;
+  fInActive: BOOLEAN;
+}
 
 // GLOBAL FOR SMOKE LISTING
 POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];

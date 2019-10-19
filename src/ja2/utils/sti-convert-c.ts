@@ -44,13 +44,15 @@ const BLUE_MASK_24 = 0x000000FF;
 //#define JA2_OBJECT_DATA_SIZE	16
 
 // this funky union is used for fast 16-bit pixel format conversions
-typedef union {
-  struct {
-    UINT16 usLower;
-    UINT16 usHigher;
-  };
-  UINT32 uiValue;
-} SplitUINT32;
+interface SplitUINT32 {
+  /* union { */
+  /*   struct { */
+  usLower: UINT16;
+  usHigher: UINT16;
+  /*   } */
+  uiValue: UINT32;
+  /* } */
+}
 
 void ConvertRGBDistribution555To565(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
   UINT16 *pPixel;

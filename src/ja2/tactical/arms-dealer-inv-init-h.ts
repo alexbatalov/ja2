@@ -11,16 +11,16 @@ const ITEM_SUITABILITY_ALWAYS = 4;
 const DEALER_BUYING = 0;
 const DEALER_SELLING = 1;
 
-typedef struct {
-  INT16 sItemIndex;
-  UINT8 ubOptimalNumber;
-} DEALER_POSSIBLE_INV;
+interface DEALER_POSSIBLE_INV {
+  sItemIndex: INT16;
+  ubOptimalNumber: UINT8;
+}
 
-typedef struct {
-  UINT32 uiItemClass;
-  UINT8 ubWeaponClass;
-  BOOLEAN fAllowUsed;
-} ITEM_SORT_ENTRY;
+interface ITEM_SORT_ENTRY {
+  uiItemClass: UINT32;
+  ubWeaponClass: UINT8;
+  fAllowUsed: BOOLEAN;
+}
 
 INT8 GetDealersMaxItemAmount(UINT8 ubDealerID, UINT16 usItemIndex);
 

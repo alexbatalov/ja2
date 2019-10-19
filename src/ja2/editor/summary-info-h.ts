@@ -1,88 +1,97 @@
 const GLOBAL_SUMMARY_VERSION = 14;
 const MINIMUMVERSION = 7;
 
-typedef struct TEAMSUMMARY {
-  UINT8 ubTotal;
-  UINT8 ubDetailed;
-  UINT8 ubProfile;
-  UINT8 ubExistance;
-  UINT8 ubNumAnimals;
-  UINT8 ubBadA, ubPoorA, ubAvgA, ubGoodA, ubGreatA; // attributes
-  UINT8 ubBadE, ubPoorE, ubAvgE, ubGoodE, ubGreatE; // equipment
-} TEAMSUMMARY; // 15 bytes
+interface TEAMSUMMARY {
+  ubTotal: UINT8;
+  ubDetailed: UINT8;
+  ubProfile: UINT8;
+  ubExistance: UINT8;
+  ubNumAnimals: UINT8;
 
-typedef struct SUMMARYFILE {
+  // attributes
+  ubBadA: UINT8;
+  ubPoorA: UINT8;
+  ubAvgA: UINT8;
+  ubGoodA: UINT8;
+  ubGreatA: UINT8;
+
+  // equipment
+  ubBadE: UINT8;
+  ubPoorE: UINT8;
+  ubAvgE: UINT8;
+  ubGoodE: UINT8;
+  ubGreatE: UINT8;
+} // 15 bytes
+
+interface SUMMARYFILE {
   // start version 1
-  UINT8 ubSummaryVersion;
-  UINT8 ubSpecial;
-  UINT16 usNumItems;
-  UINT16 usNumLights;
-  MAPCREATE_STRUCT MapInfo;
-  TEAMSUMMARY EnemyTeam;
-  TEAMSUMMARY CreatureTeam;
-  TEAMSUMMARY RebelTeam;
-  TEAMSUMMARY CivTeam;
-  UINT8 ubNumDoors;
-  UINT8 ubNumDoorsLocked;
-  UINT8 ubNumDoorsTrapped;
-  UINT8 ubNumDoorsLockedAndTrapped;
+  ubSummaryVersion: UINT8;
+  ubSpecial: UINT8;
+  usNumItems: UINT16;
+  usNumLights: UINT16;
+  MapInfo: MAPCREATE_STRUCT;
+  EnemyTeam: TEAMSUMMARY;
+  CreatureTeam: TEAMSUMMARY;
+  RebelTeam: TEAMSUMMARY;
+  CivTeam: TEAMSUMMARY;
+  ubNumDoors: UINT8;
+  ubNumDoorsLocked: UINT8;
+  ubNumDoorsTrapped: UINT8;
+  ubNumDoorsLockedAndTrapped: UINT8;
   // start version 2
-  UINT8 ubTilesetID;
-  UINT8 ubNumRooms;
+  ubTilesetID: UINT8;
+  ubNumRooms: UINT8;
   // start version	3
-  UINT8 ubNumElites;
-  UINT8 ubNumAdmins;
-  UINT8 ubNumTroops;
+  ubNumElites: UINT8;
+  ubNumAdmins: UINT8;
+  ubNumTroops: UINT8;
   // start version 4
-  UINT8 ubEliteDetailed;
-  UINT8 ubAdminDetailed;
-  UINT8 ubTroopDetailed;
+  ubEliteDetailed: UINT8;
+  ubAdminDetailed: UINT8;
+  ubTroopDetailed: UINT8;
   // start version 5
-  UINT8 ubEliteProfile;
-  UINT8 ubAdminProfile;
-  UINT8 ubTroopProfile;
+  ubEliteProfile: UINT8;
+  ubAdminProfile: UINT8;
+  ubTroopProfile: UINT8;
   // start version 6
-  UINT8 ubEliteExistance;
-  UINT8 ubAdminExistance;
-  UINT8 ubTroopExistance;
+  ubEliteExistance: UINT8;
+  ubAdminExistance: UINT8;
+  ubTroopExistance: UINT8;
   // start version 7
-  FLOAT dMajorMapVersion;
+  dMajorMapVersion: FLOAT;
   // start version 8
-  UINT8 ubCivSchedules;
+  ubCivSchedules: UINT8;
   // start version 9
-  UINT8 ubCivCows;
-  UINT8 ubCivBloodcats;
+  ubCivCows: UINT8;
+  ubCivBloodcats: UINT8;
   //																//-----
   //	190
   // start version 10
-  EXITGRID ExitGrid[4]; // 5*4 //	 20
-  UINT16 usExitGridSize[4]; // 2*4 //    8
-  BOOLEAN fInvalidDest[4]; //    4
-  UINT8 ubNumExitGridDests; //		1
-  BOOLEAN fTooManyExitGridDests; //		1
+  ExitGrid: EXITGRID[] /* [4] */; // 5*4 //	 20
+  usExitGridSize: UINT16[] /* [4] */; // 2*4 //    8
+  fInvalidDest: BOOLEAN[] /* [4] */; //    4
+  ubNumExitGridDests: UINT8; //		1
+  fTooManyExitGridDests: BOOLEAN; //		1
   //																//-----
   //																//	224
   // start version 11
-  UINT8 ubEnemiesReqWaypoints; //		1
+  ubEnemiesReqWaypoints: UINT8; //		1
   //																//-----
   //																		225
   // start version 12
-  UINT16 usWarningRoomNums; //    2
-                            //	227
+  usWarningRoomNums: UINT16; //    2
+                             //	227
   // start version 13
-  UINT8 ubEnemiesHaveWaypoints; //		1
-  UINT32 uiNumItemsPosition; //		4
-                             //-----
-                             //	232
+  ubEnemiesHaveWaypoints: UINT8; //		1
+  uiNumItemsPosition: UINT32; //		4
+                              //-----
+                              //	232
   // start version 14
-  UINT32 uiEnemyPlacementPosition; //		4
-                                   //-----
-                                   //	236
-
-  UINT8 ubPadding[164]; //	164
-  //																//-----
-  //																		400 total bytes
-} SUMMARYFILE;
+  uiEnemyPlacementPosition: UINT32; //		4
+                                    //-----
+                                    //	236
+  ubPadding: UINT8[] /* [164] */; //	164
+}
 
 extern BOOLEAN gfAutoLoadA9;
 

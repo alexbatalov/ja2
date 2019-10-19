@@ -1,10 +1,10 @@
-typedef struct MERCPLACEMENT {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiVObjectID;
-  MOUSE_REGION region;
-  UINT8 ubStrategicInsertionCode;
-  BOOLEAN fPlaced;
-} MERCPLACEMENT;
+interface MERCPLACEMENT {
+  pSoldier: Pointer<SOLDIERTYPE>;
+  uiVObjectID: UINT32;
+  region: MOUSE_REGION;
+  ubStrategicInsertionCode: UINT8;
+  fPlaced: BOOLEAN;
+}
 
 MERCPLACEMENT *gMercPlacement = NULL;
 

@@ -56,62 +56,63 @@ const enum Enum315 {
 }
 
 // These structures are placed in a list and used for all tile imagery
-typedef struct {
-  HVOBJECT vo;
-  UINT32 fType;
-  AuxObjectData *pAuxData;
-  RelTileLoc *pTileLocData;
-  STRUCTURE_FILE_REF *pStructureFileRef;
-  UINT8 ubTerrainID;
-  BYTE bRaisedObjectType;
+interface TILE_IMAGERY {
+  vo: HVOBJECT;
+  fType: UINT32;
+  pAuxData: Pointer<AuxObjectData>;
+  pTileLocData: Pointer<RelTileLoc>;
+  pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  ubTerrainID: UINT8;
+  bRaisedObjectType: BYTE;
 
   // Reserved for added room and 32-byte boundaries
-  BYTE bReserved[2];
-} TILE_IMAGERY, *PTILE_IMAGERY;
+  bReserved: BYTE[] /* [2] */;
+}
 
-typedef struct {
-  UINT16 *pusFrames;
-  INT8 bCurrentFrame;
-  UINT8 ubNumFrames;
-} TILE_ANIMATION_DATA;
+typedef TILE_IMAGERY *PTILE_IMAGERY;
+
+interface TILE_ANIMATION_DATA {
+  pusFrames: Pointer<UINT16>;
+  bCurrentFrame: INT8;
+  ubNumFrames: UINT8;
+}
 
 // Tile data element
-typedef struct {
-  UINT16 fType;
-  HVOBJECT hTileSurface;
-  DB_STRUCTURE_REF *pDBStructureRef;
-  UINT32 uiFlags;
-  RelTileLoc *pTileLocData;
-  UINT16 usRegionIndex;
-  INT16 sBuddyNum;
-  UINT8 ubTerrainID;
-  UINT8 ubNumberOfTiles;
+interface TILE_ELEMENT {
+  fType: UINT16;
+  hTileSurface: HVOBJECT;
+  pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  uiFlags: UINT32;
+  pTileLocData: Pointer<RelTileLoc>;
+  usRegionIndex: UINT16;
+  sBuddyNum: INT16;
+  ubTerrainID: UINT8;
+  ubNumberOfTiles: UINT8;
 
-  UINT8 bZOffsetX;
-  UINT8 bZOffsetY;
+  bZOffsetX: UINT8;
+  bZOffsetY: UINT8;
 
-  // This union contains different data based on tile type
-  union {
-    // Land and overlay type
-    struct {
-      INT16 sOffsetHeight;
-      UINT16 usWallOrientation;
-      UINT8 ubFullTile;
+  /* union { */
+  /*   struct { */
+  sOffsetHeight: INT16;
+  usWallOrientation: UINT16;
+  ubFullTile: UINT8;
 
-      // For animated tiles
-      TILE_ANIMATION_DATA *pAnimData;
-    };
-  };
-
+  // For animated tiles
+  pAnimData: Pointer<TILE_ANIMATION_DATA>;
+  /*   } */
+  /* } */
   // Reserved for added room and 32-byte boundaries
-  BYTE bReserved[3];
-} TILE_ELEMENT, *PTILE_ELEMENT;
+  bReserved: BYTE[] /* [3] */;
+}
 
-typedef struct {
-  INT32 iMapIndex;
-  UINT8 ubNumLayers;
-  UINT16 *pIndexValues;
-} land_undo_struct;
+typedef TILE_ELEMENT *PTILE_ELEMENT;
+
+interface land_undo_struct {
+  iMapIndex: INT32;
+  ubNumLayers: UINT8;
+  pIndexValues: Pointer<UINT16>;
+}
 
 // Globals used
 TILE_ELEMENT gTileDatabase[NUMBEROFTILES];

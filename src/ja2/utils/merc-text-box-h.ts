@@ -22,18 +22,18 @@ BOOLEAN RenderMercPopUpBoxFromIndex(INT32 iBoxId, INT16 sDestX, INT16 sDestY, UI
 
 void RemoveTextMercPopupImages();
 
-typedef struct {
-  UINT32 uiSourceBufferIndex;
-  UINT16 sWidth;
-  UINT16 sHeight;
-  UINT8 ubBackgroundIndex;
-  UINT8 ubBorderIndex;
-  UINT32 uiMercTextPopUpBackground;
-  UINT32 uiMercTextPopUpBorder;
-  BOOLEAN fMercTextPopupInitialized;
-  BOOLEAN fMercTextPopupSurfaceInitialized;
-  UINT32 uiFlags;
-} MercPopUpBox;
+interface MercPopUpBox {
+  uiSourceBufferIndex: UINT32;
+  sWidth: UINT16;
+  sHeight: UINT16;
+  ubBackgroundIndex: UINT8;
+  ubBorderIndex: UINT8;
+  uiMercTextPopUpBackground: UINT32;
+  uiMercTextPopUpBorder: UINT32;
+  fMercTextPopupInitialized: BOOLEAN;
+  fMercTextPopupSurfaceInitialized: BOOLEAN;
+  uiFlags: UINT32;
+}
 
 BOOLEAN OverrideMercPopupBox(MercPopUpBox *pMercBox);
 BOOLEAN ResetOverrideMercPopupBox();

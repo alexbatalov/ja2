@@ -29,34 +29,34 @@ const enum Enum186 {
 // This structure contains all of the information about a group moving in the strategic
 // layer.  This includes all troops, equipment, and waypoints, and location.
 // NOTE:  This is used for groups that are initiating a movement to another sector.
-typedef struct WAYPOINT {
-  UINT8 x; // sector x position of waypoint
-  UINT8 y; // sector y position of waypoint
-  struct WAYPOINT *next; // next waypoint in list
-} WAYPOINT;
+interface WAYPOINT {
+  x: UINT8; // sector x position of waypoint
+  y: UINT8; // sector y position of waypoint
+  next: Pointer<WAYPOINT>; // next waypoint in list
+}
 
 const PG_INDIVIDUAL_MERGED = 0x01;
 
-typedef struct PLAYERGROUP {
-  UINT8 ubProfileID; // SAVE THIS VALUE ONLY.  The others are temp (for quick access)
-  UINT8 ubID; // index in the Menptr array
-  SOLDIERTYPE *pSoldier; // direct access to the soldier pointer
-  UINT8 bFlags; // flags referring to individual player soldiers
-  struct PLAYERGROUP *next; // next player in list
-} PLAYERGROUP;
+interface PLAYERGROUP {
+  ubProfileID: UINT8; // SAVE THIS VALUE ONLY.  The others are temp (for quick access)
+  ubID: UINT8; // index in the Menptr array
+  pSoldier: Pointer<SOLDIERTYPE>; // direct access to the soldier pointer
+  bFlags: UINT8; // flags referring to individual player soldiers
+  next: Pointer<PLAYERGROUP>; // next player in list
+}
 
-typedef struct ENEMYGROUP {
-  UINT8 ubNumTroops; // number of regular troops in the group
-  UINT8 ubNumElites; // number of elite troops in the group
-  UINT8 ubNumAdmins; // number of administrators in the group
-  UINT8 ubLeaderProfileID; // could be Mike, maybe the warden... someone new, but likely nobody.
-  UINT8 ubPendingReinforcements; // This group is waiting for reinforcements before attacking or attempting to fortify newly aquired sector.
-  UINT8 ubAdminsInBattle; // number of administrators in currently in battle.
-  UINT8 ubIntention; // the type of group this is:  patrol, assault, spies, etc.
-  UINT8 ubTroopsInBattle; // number of soldiers currently in battle.
-  UINT8 ubElitesInBattle; // number of elite soldiers currently in battle.
-  INT8 bPadding[20];
-} ENEMYGROUP;
+interface ENEMYGROUP {
+  ubNumTroops: UINT8; // number of regular troops in the group
+  ubNumElites: UINT8; // number of elite troops in the group
+  ubNumAdmins: UINT8; // number of administrators in the group
+  ubLeaderProfileID: UINT8; // could be Mike, maybe the warden... someone new, but likely nobody.
+  ubPendingReinforcements: UINT8; // This group is waiting for reinforcements before attacking or attempting to fortify newly aquired sector.
+  ubAdminsInBattle: UINT8; // number of administrators in currently in battle.
+  ubIntention: UINT8; // the type of group this is:  patrol, assault, spies, etc.
+  ubTroopsInBattle: UINT8; // number of soldiers currently in battle.
+  ubElitesInBattle: UINT8; // number of elite soldiers currently in battle.
+  bPadding: INT8[] /* [20] */;
+}
 
 // NOTE:  ALL FLAGS ARE CLEARED WHENEVER A GROUP ARRIVES IN A SECTOR, OR ITS WAYPOINTS ARE
 //       DELETED!!!
@@ -73,41 +73,52 @@ const GROUPFLAG_JUST_RETREATED_FROM_BATTLE = 0x00000008;
 const GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH = 0x00000010;
 const GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY = 0x00000020;
 
-typedef struct GROUP {
-  BOOLEAN fDebugGroup; // for testing purposes -- handled differently in certain cases.
-  BOOLEAN fPlayer; // set if this is a player controlled group.
-  BOOLEAN fVehicle; // vehicle controlled group?
-  BOOLEAN fPersistant; // This flag when set prevents the group from being automatically deleted when it becomes empty.
-  UINT8 ubGroupID; // the unique ID of the group (used for hooking into events and SOLDIERTYPE)
-  UINT8 ubGroupSize; // total number of individuals in the group.
-  UINT8 ubSectorX, ubSectorY; // last/curr sector occupied
-  UINT8 ubSectorZ;
-  UINT8 ubNextX, ubNextY; // next sector destination
-  UINT8 ubPrevX, ubPrevY; // prev sector occupied (could be same as ubSectorX/Y)
-  UINT8 ubOriginalSector; // sector where group was created.
-  BOOLEAN fBetweenSectors; // set only if a group is between sector.
-  UINT8 ubMoveType; // determines the type of movement (ONE_WAY, CIRCULAR, ENDTOEND, etc.)
-  UINT8 ubNextWaypointID; // the ID of the next waypoint
-  UINT8 ubFatigueLevel; // the fatigue level of the weakest member in group
-  UINT8 ubRestAtFatigueLevel; // when the group's fatigue level <= this level, they will rest upon arrival at next sector.
-  UINT8 ubRestToFatigueLevel; // when resting, the group will rest until the fatigue level reaches this level.
-  UINT32 uiArrivalTime; // the arrival time in world minutes that the group will arrive at the next sector.
-  UINT32 uiTraverseTime; // the total traversal time from the previous sector to the next sector.
-  BOOLEAN fRestAtNight; // set when the group is permitted to rest between 2200 and 0600 when moving
-  BOOLEAN fWaypointsCancelled; // set when groups waypoints have been removed.
-  WAYPOINT *pWaypoints; // a list of all of the waypoints in the groups movement.
-  UINT8 ubTransportationMask; // the mask combining all of the groups transportation methods.
-  UINT32 uiFlags; // various conditions that apply to the group
-  UINT8 ubCreatedSectorID; // used for debugging strategic AI for keeping track of the sector ID a group was created in.
-  UINT8 ubSectorIDOfLastReassignment; // used for debuggin strategic AI.  Records location of any reassignments.
-  INT8 bPadding[29]; //***********************************************//
+interface GROUP {
+  fDebugGroup: BOOLEAN; // for testing purposes -- handled differently in certain cases.
+  fPlayer: BOOLEAN; // set if this is a player controlled group.
+  fVehicle: BOOLEAN; // vehicle controlled group?
+  fPersistant: BOOLEAN; // This flag when set prevents the group from being automatically deleted when it becomes empty.
+  ubGroupID: UINT8; // the unique ID of the group (used for hooking into events and SOLDIERTYPE)
+  ubGroupSize: UINT8; // total number of individuals in the group.
 
-  union {
-    PLAYERGROUP *pPlayerList; // list of players in the group
-    ENEMYGROUP *pEnemyGroup; // a structure containing general enemy info
-  };
-  struct GROUP *next; // next group
-} GROUP;
+  // last/curr sector occupied
+  ubSectorX: UINT8;
+  ubSectorY: UINT8;
+
+  ubSectorZ: UINT8;
+
+  // next sector destination
+  ubNextX: UINT8;
+  ubNextY: UINT8;
+
+  // prev sector occupied (could be same as ubSectorX/Y)
+  ubPrevX: UINT8;
+  ubPrevY: UINT8;
+
+  ubOriginalSector: UINT8; // sector where group was created.
+  fBetweenSectors: BOOLEAN; // set only if a group is between sector.
+  ubMoveType: UINT8; // determines the type of movement (ONE_WAY, CIRCULAR, ENDTOEND, etc.)
+  ubNextWaypointID: UINT8; // the ID of the next waypoint
+  ubFatigueLevel: UINT8; // the fatigue level of the weakest member in group
+  ubRestAtFatigueLevel: UINT8; // when the group's fatigue level <= this level, they will rest upon arrival at next sector.
+  ubRestToFatigueLevel: UINT8; // when resting, the group will rest until the fatigue level reaches this level.
+  uiArrivalTime: UINT32; // the arrival time in world minutes that the group will arrive at the next sector.
+  uiTraverseTime: UINT32; // the total traversal time from the previous sector to the next sector.
+  fRestAtNight: BOOLEAN; // set when the group is permitted to rest between 2200 and 0600 when moving
+  fWaypointsCancelled: BOOLEAN; // set when groups waypoints have been removed.
+  pWaypoints: Pointer<WAYPOINT>; // a list of all of the waypoints in the groups movement.
+  ubTransportationMask: UINT8; // the mask combining all of the groups transportation methods.
+  uiFlags: UINT32; // various conditions that apply to the group
+  ubCreatedSectorID: UINT8; // used for debugging strategic AI for keeping track of the sector ID a group was created in.
+  ubSectorIDOfLastReassignment: UINT8; // used for debuggin strategic AI.  Records location of any reassignments.
+  bPadding: INT8[] /* [29] */; //***********************************************//
+
+  /* union { */
+  pPlayerList: Pointer<PLAYERGROUP>; // list of players in the group
+  pEnemyGroup: Pointer<ENEMYGROUP>; // a structure containing general enemy info
+  /* } */
+  next: Pointer<GROUP>; // next group
+}
 
 extern GROUP *gpGroupList;
 

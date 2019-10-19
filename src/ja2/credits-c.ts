@@ -8,30 +8,30 @@ const enum Enum1 {
 }
 
 // nnn
-typedef struct _CRDT_NODE {
-  UINT32 uiType; // the type of node
+interface CRDT_NODE {
+  uiType: UINT32; // the type of node
 
-  CHAR16 *pString; // string for the node if the node contains a string
+  pString: Pointer<CHAR16>; // string for the node if the node contains a string
 
-  UINT32 uiFlags; // various flags
+  uiFlags: UINT32; // various flags
 
-  INT16 sPosX; // position of the node on the screen if the node is displaying stuff
-  INT16 sPosY;
+  sPosX: INT16; // position of the node on the screen if the node is displaying stuff
+  sPosY: INT16;
 
-  INT16 sOldPosX; // position of the node on the screen if the node is displaying stuff
-  INT16 sOldPosY;
+  sOldPosX: INT16; // position of the node on the screen if the node is displaying stuff
+  sOldPosY: INT16;
 
-  INT16 sHeightOfString; // The height of the displayed string
+  sHeightOfString: INT16; // The height of the displayed string
 
-  BOOLEAN fDelete; // Delete this loop
+  fDelete: BOOLEAN; // Delete this loop
 
-  UINT32 uiLastTime; // The last time the node was udated
+  uiLastTime: UINT32; // The last time the node was udated
 
-  UINT32 uiVideoSurfaceImage;
+  uiVideoSurfaceImage: UINT32;
 
-  struct _CRDT_NODE *pPrev;
-  struct _CRDT_NODE *pNext;
-} CRDT_NODE;
+  pPrev: Pointer<CRDT_NODE>;
+  pNext: Pointer<CRDT_NODE>;
+}
 
 // type of credits
 const enum Enum2 {
@@ -114,22 +114,22 @@ const CRDT_EYE_HEIGHT = 12;
 const CRDT_EYES_CLOSED_TIME = 150;
 // ddd
 
-typedef struct {
-  INT16 sX;
-  INT16 sY;
-  INT16 sWidth;
-  INT16 sHeight;
+interface CDRT_FACE {
+  sX: INT16;
+  sY: INT16;
+  sWidth: INT16;
+  sHeight: INT16;
 
-  INT16 sEyeX;
-  INT16 sEyeY;
+  sEyeX: INT16;
+  sEyeY: INT16;
 
-  INT16 sMouthX;
-  INT16 sMouthY;
+  sMouthX: INT16;
+  sMouthY: INT16;
 
-  INT16 sBlinkFreq;
-  UINT32 uiLastBlinkTime;
-  UINT32 uiEyesClosedTime;
-} CDRT_FACE;
+  sBlinkFreq: INT16;
+  uiLastBlinkTime: UINT32;
+  uiEyesClosedTime: UINT32;
+}
 
 CDRT_FACE gCreditFaces[] = {
   //  x		y				w		h

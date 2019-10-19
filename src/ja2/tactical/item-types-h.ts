@@ -60,98 +60,97 @@ const OBJECT_DISABLED_BOMB = 0x20;
 const OBJECT_ALARM_TRIGGER = 0x40;
 const OBJECT_NO_OVERWRITE = 0x80;
 
-typedef struct {
-  UINT16 usItem;
-  UINT8 ubNumberOfObjects;
-  union {
-    struct {
-      INT8 bGunStatus; // status % of gun
-      UINT8 ubGunAmmoType; // ammo type, as per weapons.h
-      UINT8 ubGunShotsLeft; // duh, amount of ammo left
-      UINT16 usGunAmmoItem; // the item # for the item table
-      INT8 bGunAmmoStatus; // only for "attached ammo" - grenades, mortar shells
-      UINT8 ubGunUnused[MAX_OBJECTS_PER_SLOT - 6];
-    };
-    struct {
-      UINT8 ubShotsLeft[MAX_OBJECTS_PER_SLOT];
-    };
-    struct {
-      INT8 bStatus[MAX_OBJECTS_PER_SLOT];
-    };
-    struct {
-      INT8 bMoneyStatus;
-      UINT32 uiMoneyAmount;
-      UINT8 ubMoneyUnused[MAX_OBJECTS_PER_SLOT - 5];
-    };
-    struct {
-      // this is used by placed bombs, switches, and the action item
-      INT8 bBombStatus; // % status
-      INT8 bDetonatorType; // timed, remote, or pressure-activated
-      UINT16 usBombItem; // the usItem of the bomb.
-      union {
-        struct {
-          INT8 bDelay; // >=0 values used only
-        };
-        struct {
-          INT8 bFrequency; // >=0 values used only
-        };
-      };
-      UINT8 ubBombOwner; // side which placed the bomb
-      UINT8 bActionValue; // this is used by the ACTION_ITEM fake item
-      union {
-        struct {
-          UINT8 ubTolerance; // tolerance value for panic triggers
-        };
-        struct {
-          UINT8 ubLocationID; // location value for remote non-bomb (special!) triggers
-        };
-      };
-    };
-    struct {
-      INT8 bKeyStatus[6];
-      UINT8 ubKeyID;
-      UINT8 ubKeyUnused[1];
-    };
-    struct {
-      UINT8 ubOwnerProfile;
-      UINT8 ubOwnerCivGroup;
-      UINT8 ubOwnershipUnused[6];
-    };
-  };
+interface OBJECTTYPE {
+  usItem: UINT16;
+  ubNumberOfObjects: UINT8;
+  /* union { */
+  /*   struct { */
+  bGunStatus: INT8; // status % of gun
+  ubGunAmmoType: UINT8; // ammo type, as per weapons.h
+  ubGunShotsLeft: UINT8; // duh, amount of ammo left
+  usGunAmmoItem: UINT16; // the item # for the item table
+  bGunAmmoStatus: INT8; // only for "attached ammo" - grenades, mortar shells
+  ubGunUnused: UINT8[] /* [MAX_OBJECTS_PER_SLOT-6] */;
+  /*   } */
+  /*   struct { */
+  ubShotsLeft: UINT8[] /* [MAX_OBJECTS_PER_SLOT] */;
+  /*   } */
+  /*   struct { */
+  bStatus: INT8[] /* [MAX_OBJECTS_PER_SLOT] */;
+  /*   } */
+  /*   struct { */
+  bMoneyStatus: INT8;
+  uiMoneyAmount: UINT32;
+  ubMoneyUnused: UINT8[] /* [MAX_OBJECTS_PER_SLOT-5] */;
+  /*   } */
+  /*   struct { */
+  // this is used by placed bombs, switches, and the action item
+  bBombStatus: INT8; // % status
+  bDetonatorType: INT8; // timed, remote, or pressure-activated
+  usBombItem: UINT16; // the usItem of the bomb.
+  /*     union { */
+  /*       struct { */
+  bDelay: INT8; // >=0 values used only
+  /*       } */
+  /*       struct { */
+  bFrequency: INT8; // >=0 values used only
+  /*       } */
+  /*     } */
+  ubBombOwner: UINT8; // side which placed the bomb
+  bActionValue: UINT8; // this is used by the ACTION_ITEM fake item
+  /*     union { */
+  /*       struct { */
+  ubTolerance: UINT8; // tolerance value for panic triggers
+  /*       } */
+  /*       struct { */
+  ubLocationID: UINT8; // location value for remote non-bomb (special!) triggers
+  /*       } */
+  /*     } */
+  /*   } */
+  /*   struct { */
+  bKeyStatus: INT8[] /* [6] */;
+  ubKeyID: UINT8;
+  ubKeyUnused: UINT8[] /* [1] */;
+  /*   } */
+  /*   struct { */
+  ubOwnerProfile: UINT8;
+  ubOwnerCivGroup: UINT8;
+  ubOwnershipUnused: UINT8[] /* [6] */;
+  /*   } */
+  /* } */
   // attached objects
-  UINT16 usAttachItem[MAX_ATTACHMENTS];
-  INT8 bAttachStatus[MAX_ATTACHMENTS];
+  usAttachItem: UINT16[] /* [MAX_ATTACHMENTS] */;
+  bAttachStatus: INT8[] /* [MAX_ATTACHMENTS] */;
 
-  INT8 fFlags;
-  UINT8 ubMission;
-  INT8 bTrap; // 1-10 exp_lvl to detect
-  UINT8 ubImprintID; // ID of merc that item is imprinted on
-  UINT8 ubWeight;
-  UINT8 fUsed; // flags for whether the item is used or not
-} OBJECTTYPE;
+  fFlags: INT8;
+  ubMission: UINT8;
+  bTrap: INT8; // 1-10 exp_lvl to detect
+  ubImprintID: UINT8; // ID of merc that item is imprinted on
+  ubWeight: UINT8;
+  fUsed: UINT8; // flags for whether the item is used or not
+}
 
 /*
-typedef struct
-{
-        UINT8		ubCursor;
-        INT8		bSoundType;
-        UINT8		ubGraphicNum;
-        INT8		bMaxLoad;
+interface INVTYPE {
+  ubCursor: UINT8;
+  bSoundType: INT8;
+  ubGraphicNum: UINT8;
+  bMaxLoad: INT8;
 
-        UINT8		ubPerPocket;
-        UINT8		ubCanDamage;
-        UINT8		ubWaterDamage;
-        UINT8		ubCanRepair;
+  ubPerPocket: UINT8;
+  ubCanDamage: UINT8;
+  ubWaterDamage: UINT8;
+  ubCanRepair: UINT8;
 
-        UINT8		ubSeeMeter;
-        UINT8		ubRange;
-        UINT8		ubMetal;
-        UINT8		ubSinkable;
+  ubSeeMeter: UINT8;
+  ubRange: UINT8;
+  ubMetal: UINT8;
+  ubSinkable: UINT8;
 
-        UINT16	ubPrice;
-        UINT8		ubMission;
-        UINT8		ubCoolness;
-} INVTYPE;
+  ubPrice: UINT16;
+  ubMission: UINT8;
+  ubCoolness: UINT8;
+}
 
 */
 
@@ -233,21 +232,21 @@ const IF_STANDARD_CLIP = ITEM_SINKS | ITEM_METAL;
 
 const EXPLOSIVE_GUN = (x) => (x == ROCKET_LAUNCHER || x == TANK_CANNON);
 
-typedef struct {
-  UINT32 usItemClass;
-  UINT8 ubClassIndex;
-  UINT8 ubCursor;
-  INT8 bSoundType;
-  UINT8 ubGraphicType;
-  UINT8 ubGraphicNum;
-  UINT8 ubWeight; // 2 units per kilogram; roughly 1 unit per pound
-  UINT8 ubPerPocket;
-  UINT16 usPrice;
-  UINT8 ubCoolness;
-  INT8 bReliability;
-  INT8 bRepairEase;
-  UINT16 fFlags;
-} INVTYPE;
+interface INVTYPE {
+  usItemClass: UINT32;
+  ubClassIndex: UINT8;
+  ubCursor: UINT8;
+  bSoundType: INT8;
+  ubGraphicType: UINT8;
+  ubGraphicNum: UINT8;
+  ubWeight: UINT8; // 2 units per kilogram; roughly 1 unit per pound
+  ubPerPocket: UINT8;
+  usPrice: UINT16;
+  ubCoolness: UINT8;
+  bReliability: INT8;
+  bRepairEase: INT8;
+  fFlags: UINT16;
+}
 
 const FIRST_WEAPON = 1;
 const FIRST_AMMO = 71;

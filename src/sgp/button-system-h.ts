@@ -81,52 +81,52 @@ extern UINT32 ButtonDestBuffer;
 typedef void (*GUI_CALLBACK)(struct _GUI_BUTTON *, INT32);
 
 // GUI_BUTTON structure definitions.
-typedef struct _GUI_BUTTON {
-  INT32 IDNum; // ID Number, contains it's own button number
-  UINT32 ImageNum; // Image number to use (see DOCs for details)
-  MOUSE_REGION Area; // Mouse System's mouse region to use for this button
-  GUI_CALLBACK ClickCallback; // Button Callback when button is clicked
-  GUI_CALLBACK MoveCallback; // Button Callback when mouse moved on this region
-  INT16 Cursor; // Cursor to use for this button
-  UINT32 uiFlags; // Button state flags etc.( 32-bit )
-  UINT32 uiOldFlags; // Old flags from previous render loop
-  INT16 XLoc; // Coordinates where button is on the screen
-  INT16 YLoc;
-  INT32 UserData[4]; // Place holder for user data etc.
-  INT16 Group; // Group this button belongs to (see DOCs)
-  INT8 bDefaultStatus;
+interface GUI_BUTTON {
+  IDNum: INT32; // ID Number, contains it's own button number
+  ImageNum: UINT32; // Image number to use (see DOCs for details)
+  Area: MOUSE_REGION; // Mouse System's mouse region to use for this button
+  ClickCallback: GUI_CALLBACK; // Button Callback when button is clicked
+  MoveCallback: GUI_CALLBACK; // Button Callback when mouse moved on this region
+  Cursor: INT16; // Cursor to use for this button
+  uiFlags: UINT32; // Button state flags etc.( 32-bit )
+  uiOldFlags: UINT32; // Old flags from previous render loop
+  XLoc: INT16; // Coordinates where button is on the screen
+  YLoc: INT16;
+  UserData: INT32[] /* [4] */; // Place holder for user data etc.
+  Group: INT16; // Group this button belongs to (see DOCs)
+  bDefaultStatus: INT8;
   // Button disabled style
-  INT8 bDisabledStyle;
+  bDisabledStyle: INT8;
   // For buttons with text
-  UINT16 *string; // the string
-  UINT16 usFont; // font for text
-  BOOLEAN fMultiColor; // font is a multi-color font
-  INT16 sForeColor; // text colors if there is text
-  INT16 sShadowColor;
-  INT16 sForeColorDown; // text colors when button is down (optional)
-  INT16 sShadowColorDown;
-  INT16 sForeColorHilited; // text colors when button is down (optional)
-  INT16 sShadowColorHilited;
-  INT8 bJustification; // BUTTON_TEXT_LEFT, BUTTON_TEXT_CENTER, BUTTON_TEXT_RIGHT
-  INT8 bTextXOffset;
-  INT8 bTextYOffset;
-  INT8 bTextXSubOffSet;
-  INT8 bTextYSubOffSet;
-  BOOLEAN fShiftText;
-  INT16 sWrappedWidth;
+  string: Pointer<UINT16>; // the string
+  usFont: UINT16; // font for text
+  fMultiColor: BOOLEAN; // font is a multi-color font
+  sForeColor: INT16; // text colors if there is text
+  sShadowColor: INT16;
+  sForeColorDown: INT16; // text colors when button is down (optional)
+  sShadowColorDown: INT16;
+  sForeColorHilited: INT16; // text colors when button is down (optional)
+  sShadowColorHilited: INT16;
+  bJustification: INT8; // BUTTON_TEXT_LEFT, BUTTON_TEXT_CENTER, BUTTON_TEXT_RIGHT
+  bTextXOffset: INT8;
+  bTextYOffset: INT8;
+  bTextXSubOffSet: INT8;
+  bTextYSubOffSet: INT8;
+  fShiftText: BOOLEAN;
+  sWrappedWidth: INT16;
   // For buttons with icons (don't confuse this with quickbuttons which have up to 5 states )
-  INT32 iIconID;
-  INT16 usIconIndex;
-  INT8 bIconXOffset; //-1 means horizontally centered
-  INT8 bIconYOffset; //-1 means vertically centered
-  BOOLEAN fShiftImage; // if true, icon is shifted +1,+1 when button state is down.
+  iIconID: INT32;
+  usIconIndex: INT16;
+  bIconXOffset: INT8; //-1 means horizontally centered
+  bIconYOffset: INT8; //-1 means vertically centered
+  fShiftImage: BOOLEAN; // if true, icon is shifted +1,+1 when button state is down.
 
-  UINT8 ubToggleButtonOldState; // Varibles for new toggle buttons that work
-  UINT8 ubToggleButtonActivated;
+  ubToggleButtonOldState: UINT8; // Varibles for new toggle buttons that work
+  ubToggleButtonActivated: UINT8;
 
-  INT32 BackRect; // Handle to a Background Rectangle
-  UINT8 ubSoundSchemeID;
-} GUI_BUTTON;
+  BackRect: INT32; // Handle to a Background Rectangle
+  ubSoundSchemeID: UINT8;
+}
 
 const MAX_BUTTONS = 400;
 
@@ -135,17 +135,17 @@ extern GUI_BUTTON *ButtonList[MAX_BUTTONS]; // Button System's Main Button List
 const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : NULL);
 
 // Struct definition for the QuickButton pictures.
-typedef struct {
-  HVOBJECT vobj; // The Image itself
-  INT32 Grayed; // Index to use for a "Grayed-out" button
-  INT32 OffNormal; // Index to use when button is OFF
-  INT32 OffHilite; // Index to use when button is OFF w/ hilite on it
-  INT32 OnNormal; // Index to use when button is ON
-  INT32 OnHilite; // Index to use when button is ON w/ hilite on it
-  UINT32 MaxWidth; // Width of largest image in use
-  UINT32 MaxHeight; // Height of largest image in use
-  UINT32 fFlags; // Special image flags
-} BUTTON_PICS;
+interface BUTTON_PICS {
+  vobj: HVOBJECT; // The Image itself
+  Grayed: INT32; // Index to use for a "Grayed-out" button
+  OffNormal: INT32; // Index to use when button is OFF
+  OffHilite: INT32; // Index to use when button is OFF w/ hilite on it
+  OnNormal: INT32; // Index to use when button is ON
+  OnHilite: INT32; // Index to use when button is ON w/ hilite on it
+  MaxWidth: UINT32; // Width of largest image in use
+  MaxHeight: UINT32; // Height of largest image in use
+  fFlags: UINT32; // Special image flags
+}
 
 const MAX_BUTTON_PICS = 256;
 

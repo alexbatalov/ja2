@@ -58,38 +58,38 @@ const enum Enum59 {
   SELWIN_OSTRUCTS2,
 }
 
-typedef struct {
-  UINT8 ubType;
-  union {
-    struct {
-      HVOBJECT hVObject;
-      UINT16 usStart;
-      UINT16 usEnd;
-      UINT32 uiObjIndx;
-    };
-    struct {
-      UINT16 *pString;
-    };
-  };
-} DisplaySpec;
+interface DisplaySpec {
+  ubType: UINT8;
+  /* union { */
+  /*   struct { */
+  hVObject: HVOBJECT;
+  usStart: UINT16;
+  usEnd: UINT16;
+  uiObjIndx: UINT32;
+  /*   } */
+  /*   struct { */
+  pString: Pointer<UINT16>;
+  /*   } */
+  /* } */
+}
 
-typedef struct _DisplayList {
-  HVOBJECT hObj;
-  UINT16 uiIndex;
-  INT16 iX;
-  INT16 iY;
-  INT16 iWidth;
-  INT16 iHeight;
-  UINT32 uiObjIndx;
-  BOOLEAN fChosen;
-  struct _DisplayList *pNext;
-} DisplayList;
+interface DisplayList {
+  hObj: HVOBJECT;
+  uiIndex: UINT16;
+  iX: INT16;
+  iY: INT16;
+  iWidth: INT16;
+  iHeight: INT16;
+  uiObjIndx: UINT32;
+  fChosen: BOOLEAN;
+  pNext: Pointer<DisplayList>;
+}
 
-typedef struct _Selections {
-  UINT32 uiObject;
-  UINT16 usIndex;
-  INT16 sCount;
-} Selections;
+interface Selections {
+  uiObject: UINT32;
+  usIndex: UINT16;
+  sCount: INT16;
+}
 
 INT32 FindInSelectionList(DisplayList *pNode);
 BOOLEAN IsInSelectionList(DisplayList *pNode);

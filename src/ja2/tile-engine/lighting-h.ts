@@ -68,21 +68,27 @@ const COLOR_WHITE = 208;
 const COLOR_BLACK = 72;
 
 // stucture of node in linked list for lights
-typedef struct light_p {
-  INT16 iDX, iDY;
-  UINT8 uiFlags;
-  UINT8 ubLight;
-} LIGHT_NODE;
+interface LIGHT_NODE {
+  iDX: INT16;
+  iDY: INT16;
+
+  uiFlags: UINT8;
+  ubLight: UINT8;
+}
 
 // structure of light instance, or sprite (a copy of the template)
-typedef struct {
-  INT16 iX, iY;
-  INT16 iOldX, iOldY;
-  INT16 iAnimSpeed;
-  INT32 iTemplate;
-  UINT32 uiFlags;
-  UINT32 uiLightType;
-} LIGHT_SPRITE;
+interface LIGHT_SPRITE {
+  iX: INT16;
+  iY: INT16;
+
+  iOldX: INT16;
+  iOldY: INT16;
+
+  iAnimSpeed: INT16;
+  iTemplate: INT32;
+  uiFlags: UINT32;
+  uiLightType: UINT32;
+}
 
 // Initializes the lighting system
 BOOLEAN InitLightingSystem(void);

@@ -36,31 +36,31 @@ const ITEMPOOL_VISIBLE = (pItemPool) => ((pItemPool->bVisible >= 1) || (gTactica
 
 typedef void (*ITEM_POOL_LOCATOR_HOOK)(void);
 
-typedef struct TAG_ITEM_POOL {
-  struct TAG_ITEM_POOL *pNext;
-  struct TAG_ITEM_POOL *pPrev;
+interface ITEM_POOL {
+  pNext: Pointer<ITEM_POOL>;
+  pPrev: Pointer<ITEM_POOL>;
 
-  INT32 iItemIndex;
-  INT8 bVisible;
-  INT8 bFlashColor;
-  UINT32 uiTimerID;
-  INT16 sGridNo;
-  UINT8 ubLevel;
-  UINT16 usFlags;
-  INT8 bRenderZHeightAboveLevel;
-  struct TAG_level_node *pLevelNode;
-} ITEM_POOL;
+  iItemIndex: INT32;
+  bVisible: INT8;
+  bFlashColor: INT8;
+  uiTimerID: UINT32;
+  sGridNo: INT16;
+  ubLevel: UINT8;
+  usFlags: UINT16;
+  bRenderZHeightAboveLevel: INT8;
+  pLevelNode: Pointer<LEVELNODE>;
+}
 
-typedef struct {
-  ITEM_POOL *pItemPool;
+interface ITEM_POOL_LOCATOR {
+  pItemPool: Pointer<ITEM_POOL>;
 
   // Additional info for locators
-  INT8 bRadioFrame;
-  UINT32 uiLastFrameUpdate;
-  ITEM_POOL_LOCATOR_HOOK Callback;
-  BOOLEAN fAllocated;
-  UINT8 ubFlags;
-} ITEM_POOL_LOCATOR;
+  bRadioFrame: INT8;
+  uiLastFrameUpdate: UINT32;
+  Callback: ITEM_POOL_LOCATOR_HOOK;
+  fAllocated: BOOLEAN;
+  ubFlags: UINT8;
+}
 
 INT32 HandleItem(SOLDIERTYPE *pSoldier, UINT16 usGridNo, INT8 bLevel, UINT16 usHandItem, BOOLEAN fFromUI);
 void SoldierPickupItem(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel);

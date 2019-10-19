@@ -35,20 +35,20 @@ void DrawBobbyROrderTitle();
 
 void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 usGridY, BobbyRayPurchaseStruct *pBobbyRayPurchase, BOOLEAN fJustDisplayTitles, INT32 iOrderNum);
 
-typedef struct {
-  BOOLEAN fActive;
-  UINT8 ubDeliveryLoc; // the city the shipment is going to
-  UINT8 ubDeliveryMethod; // type of delivery: next day, 2 days ...
-  BobbyRayPurchaseStruct BobbyRayPurchase[MAX_PURCHASE_AMOUNT];
-  UINT8 ubNumberPurchases;
+interface NewBobbyRayOrderStruct {
+  fActive: BOOLEAN;
+  ubDeliveryLoc: UINT8; // the city the shipment is going to
+  ubDeliveryMethod: UINT8; // type of delivery: next day, 2 days ...
+  BobbyRayPurchase: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
+  ubNumberPurchases: UINT8;
 
-  UINT32 uiPackageWeight;
-  UINT32 uiOrderedOnDayNum;
+  uiPackageWeight: UINT32;
+  uiOrderedOnDayNum: UINT32;
 
-  BOOLEAN fDisplayedInShipmentPage;
+  fDisplayedInShipmentPage: BOOLEAN;
 
-  UINT8 ubFiller[7];
-} NewBobbyRayOrderStruct;
+  ubFiller: UINT8[] /* [7] */;
+}
 
 extern NewBobbyRayOrderStruct *gpNewBobbyrShipments;
 extern INT32 giNumberOfNewBobbyRShipment;

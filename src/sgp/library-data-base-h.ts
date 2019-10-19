@@ -19,61 +19,61 @@ const DB_ADD_FILE_ID = (exp) => (exp & 0xC00000);
 
 typedef UINT32 HWFILE;
 
-typedef struct {
-  CHAR8 sLibraryName[FILENAME_SIZE]; // The name of the library file on the disk
-  BOOLEAN fOnCDrom; // A flag specifying if its a cdrom library ( not implemented yet )
-  BOOLEAN fInitOnStart; // Flag specifying if the library is to Initialized at the begining of the game
-} LibraryInitHeader;
+interface LibraryInitHeader {
+  sLibraryName: CHAR8[] /* [FILENAME_SIZE] */; // The name of the library file on the disk
+  fOnCDrom: BOOLEAN; // A flag specifying if its a cdrom library ( not implemented yet )
+  fInitOnStart: BOOLEAN; // Flag specifying if the library is to Initialized at the begining of the game
+}
 
 extern LibraryInitHeader gGameLibaries[];
 extern CHAR8 gzCdDirectory[SGPFILENAME_LEN];
 
 const REAL_LIBRARY_FILE = "RealFiles.slf";
 
-typedef struct {
-  UINT32 uiFileID; // id of the file ( they start at 1 )
-  HANDLE hRealFileHandle; // if the file is a Real File, this its handle
-} RealFileOpenStruct;
+interface RealFileOpenStruct {
+  uiFileID: UINT32; // id of the file ( they start at 1 )
+  hRealFileHandle: HANDLE; // if the file is a Real File, this its handle
+}
 
-typedef struct {
-  STR pFileName;
-  UINT32 uiFileLength;
-  UINT32 uiFileOffset;
-} FileHeaderStruct;
+interface FileHeaderStruct {
+  pFileName: STR;
+  uiFileLength: UINT32;
+  uiFileOffset: UINT32;
+}
 
-typedef struct {
-  UINT32 uiFileID; // id of the file ( they start at 1 )
-  UINT32 uiFilePosInFile; // current position in the file
-  UINT32 uiActualPositionInLibrary; // Current File pointer position in actuall library
-  FileHeaderStruct *pFileHeader;
-} FileOpenStruct;
+interface FileOpenStruct {
+  uiFileID: UINT32; // id of the file ( they start at 1 )
+  uiFilePosInFile: UINT32; // current position in the file
+  uiActualPositionInLibrary: UINT32; // Current File pointer position in actuall library
+  pFileHeader: Pointer<FileHeaderStruct>;
+}
 
-typedef struct {
-  STR sLibraryPath;
-  HANDLE hLibraryHandle;
-  UINT16 usNumberOfEntries;
-  BOOLEAN fLibraryOpen;
+interface LibraryHeaderStruct {
+  sLibraryPath: STR;
+  hLibraryHandle: HANDLE;
+  usNumberOfEntries: UINT16;
+  fLibraryOpen: BOOLEAN;
   //	BOOLEAN	fAnotherFileAlreadyOpenedLibrary;				//this variable is set when a file is opened from the library and reset when the file is close.  No 2 files can have access to the library at 1 time.
-  UINT32 uiIdOfOtherFileAlreadyOpenedLibrary; // this variable is set when a file is opened from the library and reset when the file is close.  No 2 files can have access to the library at 1 time.
-  INT32 iNumFilesOpen;
-  INT32 iSizeOfOpenFileArray;
-  FileHeaderStruct *pFileHeader;
-  FileOpenStruct *pOpenFiles;
-} LibraryHeaderStruct;
+  uiIdOfOtherFileAlreadyOpenedLibrary: UINT32; // this variable is set when a file is opened from the library and reset when the file is close.  No 2 files can have access to the library at 1 time.
+  iNumFilesOpen: INT32;
+  iSizeOfOpenFileArray: INT32;
+  pFileHeader: Pointer<FileHeaderStruct>;
+  pOpenFiles: Pointer<FileOpenStruct>;
+}
 
-typedef struct {
-  INT32 iNumFilesOpen;
-  INT32 iSizeOfOpenFileArray;
-  RealFileOpenStruct *pRealFilesOpen;
-} RealFileHeaderStruct;
+interface RealFileHeaderStruct {
+  iNumFilesOpen: INT32;
+  iSizeOfOpenFileArray: INT32;
+  pRealFilesOpen: Pointer<RealFileOpenStruct>;
+}
 
-typedef struct {
-  STR sManagerName;
-  LibraryHeaderStruct *pLibraries;
-  UINT16 usNumberOfLibraries;
-  BOOLEAN fInitialized;
-  RealFileHeaderStruct RealFiles;
-} DatabaseManagerHeaderStruct;
+interface DatabaseManagerHeaderStruct {
+  sManagerName: STR;
+  pLibraries: Pointer<LibraryHeaderStruct>;
+  usNumberOfLibraries: UINT16;
+  fInitialized: BOOLEAN;
+  RealFiles: RealFileHeaderStruct;
+}
 
 // typedef UINT32	HLIBFILE;
 
@@ -88,26 +88,26 @@ const FILE_DELETED = 0xff;
 const FILE_OLD = 1;
 const FILE_DOESNT_EXIST = 0xfe;
 
-typedef struct {
-  CHAR8 sLibName[FILENAME_SIZE];
-  CHAR8 sPathToLibrary[FILENAME_SIZE];
-  INT32 iEntries;
-  INT32 iUsed;
-  UINT16 iSort;
-  UINT16 iVersion;
-  BOOLEAN fContainsSubDirectories;
-  INT32 iReserved;
-} LIBHEADER;
+interface LIBHEADER {
+  sLibName: CHAR8[] /* [FILENAME_SIZE] */;
+  sPathToLibrary: CHAR8[] /* [FILENAME_SIZE] */;
+  iEntries: INT32;
+  iUsed: INT32;
+  iSort: UINT16;
+  iVersion: UINT16;
+  fContainsSubDirectories: BOOLEAN;
+  iReserved: INT32;
+}
 
-typedef struct {
-  CHAR8 sFileName[FILENAME_SIZE];
-  UINT32 uiOffset;
-  UINT32 uiLength;
-  UINT8 ubState;
-  UINT8 ubReserved;
-  FILETIME sFileTime;
-  UINT16 usReserved2;
-} DIRENTRY;
+interface DIRENTRY {
+  sFileName: CHAR8[] /* [FILENAME_SIZE] */;
+  uiOffset: UINT32;
+  uiLength: UINT32;
+  ubState: UINT8;
+  ubReserved: UINT8;
+  sFileTime: FILETIME;
+  usReserved2: UINT16;
+}
 
 // The FileDatabaseHeader
 extern DatabaseManagerHeaderStruct gFileDataBase;

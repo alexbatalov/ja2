@@ -410,12 +410,12 @@ INVTYPE Item[MAXITEMS] = {
   { IC_NONE, 0, INVALIDCURS, 0, 0, 0, 0, 0, 0, 0, /* nothing! */ 0, 0, 0 },
 };
 
-typedef struct {
-  UINT16 usItem;
-  UINT32 uiItemClass;
-  INT8 bAttachmentSkillCheck;
-  INT8 bAttachmentSkillCheckMod;
-} AttachmentInfoStruct;
+interface AttachmentInfoStruct {
+  usItem: UINT16;
+  uiItemClass: UINT32;
+  bAttachmentSkillCheck: INT8;
+  bAttachmentSkillCheckMod: INT8;
+}
 
 // NB hack:  if an item appears in this array with an item class of IC_MISC,
 // it is a slot used for noting the skill check required for a merge or multi-item attachment
@@ -777,11 +777,11 @@ UINT16 Merge[][4] = {
   { 0, 0, 0, 0 }
 };
 
-typedef struct {
-  UINT16 usItem;
-  UINT16 usAttachment[2];
-  UINT16 usResult;
-} ComboMergeInfoStruct;
+interface ComboMergeInfoStruct {
+  usItem: UINT16;
+  usAttachment: UINT16[] /* [2] */;
+  usResult: UINT16;
+}
 
 ComboMergeInfoStruct AttachmentComboMerge[] = {
   // base item							attach 1								attach 2						 result

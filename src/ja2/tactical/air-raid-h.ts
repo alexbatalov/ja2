@@ -1,15 +1,15 @@
 const AIR_RAID_BEGINNING_GAME = 0x00000001;
 const AIR_RAID_CAN_RANDOMIZE_TEASE_DIVES = 0x00000002;
 
-typedef struct {
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT16 sSectorZ;
-  INT8 bIntensity;
-  UINT32 uiFlags;
-  UINT8 ubNumMinsFromCurrentTime;
-  UINT8 ubFiller[8];
-} AIR_RAID_DEFINITION;
+interface AIR_RAID_DEFINITION {
+  sSectorX: INT16;
+  sSectorY: INT16;
+  sSectorZ: INT16;
+  bIntensity: INT8;
+  uiFlags: UINT32;
+  ubNumMinsFromCurrentTime: UINT8;
+  ubFiller: UINT8[] /* [8] */;
+}
 
 extern BOOLEAN gfInAirRaid;
 

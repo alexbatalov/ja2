@@ -1,19 +1,17 @@
-typedef struct {
-  CHAR8 *cFilename;
+interface SMKFLIC {
+  cFilename: Pointer<CHAR8>;
   //		HFILE										hFileHandle;
-  HWFILE hFileHandle;
-  Smack *SmackHandle;
-  SmackBuf *SmackBuffer;
-  UINT32 uiFlags;
-  LPDIRECTDRAWSURFACE2 lpDDS;
-  HWND hWindow;
-  UINT32 uiFrame;
-  UINT32 uiLeft, uiTop;
-  //		LPDIRECTDRAW2						lpDD;
-  //		UINT32									uiNumFrames;
-  //		UINT8										*pAudioData;
-  //		UINT8										*pCueData;
-} SMKFLIC;
+  hFileHandle: HWFILE;
+  SmackHandle: Pointer<Smack>;
+  SmackBuffer: Pointer<SmackBuf>;
+  uiFlags: UINT32;
+  lpDDS: LPDIRECTDRAWSURFACE2;
+  hWindow: HWND;
+  uiFrame: UINT32;
+
+  uiLeft: UINT32;
+  uiTop: UINT32;
+}
 
 void SmkInitialize(HWND hWindow, UINT32 uiWidth, UINT32 uiHeight);
 void SmkShutdown(void);
@@ -32,10 +30,14 @@ SMKFLIC *SmkGetFreeFlic(void);
 
 #define FLICSOUNDID		"BLAH"	// ID for smack flic w/ sound :)
 
-typedef struct {
-        unsigned long offset;
-        unsigned long length;
-} SMPLARRAY;
+interface SMPLARRAY {
+
+  long: unsigned;
+  offset: unsigned;
+
+  long: unsigned;
+  length: unsigned;
+}
 
 extern SmackBuf *sbuf;
 extern Smack *smk;

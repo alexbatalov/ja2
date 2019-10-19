@@ -5,32 +5,32 @@ const MAX_PURCHASE_AMOUNT = 10;
 const SPECK_QUOTE__ALREADY_TOLD_PLAYER_THAT_LARRY_RELAPSED = 0x00000001;
 const SPECK_QUOTE__SENT_EMAIL_ABOUT_LACK_OF_PAYMENT = 0x00000002;
 
-typedef struct {
-  BOOLEAN fActive;
-  UINT8 ubSoldierID;
-  UINT8 ubMercID;
-  INT32 iPayOutPrice;
-} LIFE_INSURANCE_PAYOUT;
+interface LIFE_INSURANCE_PAYOUT {
+  fActive: BOOLEAN;
+  ubSoldierID: UINT8;
+  ubMercID: UINT8;
+  iPayOutPrice: INT32;
+}
 
-typedef struct {
-  BOOLEAN fHaveDisplayedPopUpInLaptop; // Is set when the popup gets displayed, reset when entering laptop again.
-  INT32 iIdOfMerc;
-  UINT32 uiArrivalTime;
-} LAST_HIRED_MERC_STRUCT;
+interface LAST_HIRED_MERC_STRUCT {
+  fHaveDisplayedPopUpInLaptop: BOOLEAN; // Is set when the popup gets displayed, reset when entering laptop again.
+  iIdOfMerc: INT32;
+  uiArrivalTime: UINT32;
+}
 
-typedef struct {
-  UINT16 usItemIndex;
-  UINT8 ubNumberPurchased;
-  INT8 bItemQuality;
-  UINT16 usBobbyItemIndex; // Item number in the BobbyRayInventory structure
-  BOOLEAN fUsed; // Indicates wether or not the item is from the used inventory or the regular inventory
-} BobbyRayPurchaseStruct;
+interface BobbyRayPurchaseStruct {
+  usItemIndex: UINT16;
+  ubNumberPurchased: UINT8;
+  bItemQuality: INT8;
+  usBobbyItemIndex: UINT16; // Item number in the BobbyRayInventory structure
+  fUsed: BOOLEAN; // Indicates wether or not the item is from the used inventory or the regular inventory
+}
 
-typedef struct {
-  BOOLEAN fActive;
-  BobbyRayPurchaseStruct BobbyRayPurchase[MAX_PURCHASE_AMOUNT];
-  UINT8 ubNumberPurchases;
-} BobbyRayOrderStruct;
+interface BobbyRayOrderStruct {
+  fActive: BOOLEAN;
+  BobbyRayPurchase: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
+  ubNumberPurchases: UINT8;
+}
 
 // used when the player goes to bobby rays when it is still down
 const enum Enum99 {
@@ -39,87 +39,82 @@ const enum Enum99 {
   BOBBYR_ALREADY_SENT_EMAIL,
 }
 
-typedef struct {
+interface LaptopSaveInfoStruct {
   // General Laptop Info
-  BOOLEAN gfNewGameLaptop; // Is it the firs time in Laptop
-  BOOLEAN fVisitedBookmarkAlready[20]; // have we visitied this site already?
-  INT32 iBookMarkList[MAX_BOOKMARKS];
+  gfNewGameLaptop: BOOLEAN; // Is it the firs time in Laptop
+  fVisitedBookmarkAlready: BOOLEAN[] /* [20] */; // have we visitied this site already?
+  iBookMarkList: INT32[] /* [MAX_BOOKMARKS] */;
 
-  INT32 iCurrentBalance; // current players balance
+  iCurrentBalance: INT32; // current players balance
 
   // IMP Information
-  BOOLEAN fIMPCompletedFlag; // Has the player Completed the IMP process
-  BOOLEAN fSentImpWarningAlready; // Has the Imp email warning already been sent
+  fIMPCompletedFlag: BOOLEAN; // Has the player Completed the IMP process
+  fSentImpWarningAlready: BOOLEAN; // Has the Imp email warning already been sent
 
   // Personnel Info
-  INT16 ubDeadCharactersList[256];
-  INT16 ubLeftCharactersList[256];
-  INT16 ubOtherCharactersList[256];
+  ubDeadCharactersList: INT16[] /* [256] */;
+  ubLeftCharactersList: INT16[] /* [256] */;
+  ubOtherCharactersList: INT16[] /* [256] */;
 
   // MERC site info
-  UINT8 gubPlayersMercAccountStatus;
-  UINT32 guiPlayersMercAccountNumber;
-  UINT8 gubLastMercIndex;
-
-  // Aim Site
+  gubPlayersMercAccountStatus: UINT8;
+  guiPlayersMercAccountNumber: UINT32;
+  gubLastMercIndex: UINT8;
 
   // BobbyRay Site
-  STORE_INVENTORY BobbyRayInventory[MAXITEMS];
-  STORE_INVENTORY BobbyRayUsedInventory[MAXITEMS];
+  BobbyRayInventory: STORE_INVENTORY[] /* [MAXITEMS] */;
+  BobbyRayUsedInventory: STORE_INVENTORY[] /* [MAXITEMS] */;
 
-  BobbyRayOrderStruct *BobbyRayOrdersOnDeliveryArray;
-  UINT8 usNumberOfBobbyRayOrderItems; // The number of elements in the array
-  UINT8 usNumberOfBobbyRayOrderUsed; // The number of items in the array that are used
-
-  // Flower Site
-  // NONE
+  BobbyRayOrdersOnDeliveryArray: Pointer<BobbyRayOrderStruct>;
+  usNumberOfBobbyRayOrderItems: UINT8; // The number of elements in the array
+  usNumberOfBobbyRayOrderUsed: UINT8; // The number of items in the array that are used
 
   // Insurance Site
-  LIFE_INSURANCE_PAYOUT *pLifeInsurancePayouts;
-  UINT8 ubNumberLifeInsurancePayouts; // The number of elements in the array
-  UINT8 ubNumberLifeInsurancePayoutUsed; // The number of items in the array that are used
+  pLifeInsurancePayouts: Pointer<LIFE_INSURANCE_PAYOUT>;
+  ubNumberLifeInsurancePayouts: UINT8; // The number of elements in the array
+  ubNumberLifeInsurancePayoutUsed: UINT8; // The number of items in the array that are used
 
-  BOOLEAN fBobbyRSiteCanBeAccessed;
+  fBobbyRSiteCanBeAccessed: BOOLEAN;
 
-  UINT8 ubPlayerBeenToMercSiteStatus;
-  BOOLEAN fFirstVisitSinceServerWentDown;
-  BOOLEAN fNewMercsAvailableAtMercSite;
-  BOOLEAN fSaidGenericOpeningInMercSite;
-  BOOLEAN fSpeckSaidFloMarriedCousinQuote;
-  BOOLEAN fHasAMercDiedAtMercSite;
+  ubPlayerBeenToMercSiteStatus: UINT8;
+  fFirstVisitSinceServerWentDown: BOOLEAN;
+  fNewMercsAvailableAtMercSite: BOOLEAN;
+  fSaidGenericOpeningInMercSite: BOOLEAN;
+  fSpeckSaidFloMarriedCousinQuote: BOOLEAN;
+  fHasAMercDiedAtMercSite: BOOLEAN;
 
-  INT8 gbNumDaysTillFirstMercArrives;
-  INT8 gbNumDaysTillSecondMercArrives;
-  INT8 gbNumDaysTillThirdMercArrives;
-  INT8 gbNumDaysTillFourthMercArrives;
+  gbNumDaysTillFirstMercArrives: INT8;
+  gbNumDaysTillSecondMercArrives: INT8;
+  gbNumDaysTillThirdMercArrives: INT8;
+  gbNumDaysTillFourthMercArrives: INT8;
 
-  UINT32 guiNumberOfMercPaymentsInDays; // Keeps track of each day of payment the MERC site gets
+  guiNumberOfMercPaymentsInDays: UINT32; // Keeps track of each day of payment the MERC site gets
 
-  UINT16 usInventoryListLength[BOBBY_RAY_LISTS];
+  usInventoryListLength: UINT16[] /* [BOBBY_RAY_LISTS] */;
 
-  INT32 iVoiceId;
+  iVoiceId: INT32;
 
-  UINT8 ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction;
+  ubHaveBeenToBobbyRaysAtLeastOnceWhileUnderConstruction: UINT8;
 
-  BOOLEAN fMercSiteHasGoneDownYet;
+  fMercSiteHasGoneDownYet: BOOLEAN;
 
-  UINT8 ubSpeckCanSayPlayersLostQuote;
+  ubSpeckCanSayPlayersLostQuote: UINT8;
 
-  LAST_HIRED_MERC_STRUCT sLastHiredMerc;
+  sLastHiredMerc: LAST_HIRED_MERC_STRUCT;
 
-  INT32 iCurrentHistoryPage;
-  INT32 iCurrentFinancesPage;
-  INT32 iCurrentEmailPage;
+  iCurrentHistoryPage: INT32;
+  iCurrentFinancesPage: INT32;
+  iCurrentEmailPage: INT32;
 
-  UINT32 uiSpeckQuoteFlags;
+  uiSpeckQuoteFlags: UINT32;
 
-  UINT32 uiFlowerOrderNumber;
+  uiFlowerOrderNumber: UINT32;
 
-  UINT32 uiTotalMoneyPaidToSpeck;
+  uiTotalMoneyPaidToSpeck: UINT32;
 
-  UINT8 ubLastMercAvailableId;
-  UINT8 bPadding[86];
-} LaptopSaveInfoStruct;
+  ubLastMercAvailableId: UINT8;
+  bPadding: UINT8[] /* [86] */;
+}
 
 extern LaptopSaveInfoStruct LaptopSaveInfo;
 

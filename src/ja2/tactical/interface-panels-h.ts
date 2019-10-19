@@ -79,10 +79,10 @@ UINT32 guiSecItemHiddenVO;
 
 extern BOOLEAN gfDisableTacticalPanelButtons;
 
-typedef struct {
-  UINT8 ubID;
-  BOOLEAN fOccupied;
-} TEAM_PANEL_SLOTS_TYPE;
+interface TEAM_PANEL_SLOTS_TYPE {
+  ubID: UINT8;
+  fOccupied: BOOLEAN;
+}
 
 TEAM_PANEL_SLOTS_TYPE gTeamPanel[NUM_TEAM_SLOTS];
 

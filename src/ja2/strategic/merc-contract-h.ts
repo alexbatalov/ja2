@@ -5,10 +5,10 @@ const enum Enum161 {
   CONTRACT_EXTEND_2_WEEK,
 }
 
-typedef struct {
-  UINT8 ubProfileID;
-  UINT8 ubFiller[3];
-} CONTRACT_NEWAL_LIST_NODE;
+interface CONTRACT_NEWAL_LIST_NODE {
+  ubProfileID: UINT8;
+  ubFiller: UINT8[] /* [3] */;
+}
 
 extern CONTRACT_NEWAL_LIST_NODE ContractRenewalList[20];
 extern UINT8 ubNumContractRenewals;

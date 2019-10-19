@@ -41,32 +41,32 @@ const enum Enum281 {
 extern INT16 sVehicleOrigArmorValues[NUMBER_OF_TYPES_OF_VEHICLES][NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE];
 
 // struct for vehicles
-typedef struct {
-  PathStPtr pMercPath; // vehicle's stategic path list
-  UINT8 ubMovementGroup; // the movement group this vehicle belongs to
-  UINT8 ubVehicleType; // type of vehicle
-  INT16 sSectorX; // X position on the Stategic Map
-  INT16 sSectorY; // Y position on the Stategic Map
-  INT16 sSectorZ;
-  BOOLEAN fBetweenSectors; // between sectors?
-  INT16 sGridNo; // location in tactical
-  SOLDIERTYPE *pPassengers[10];
-  UINT8 ubDriver;
-  INT16 sInternalHitLocations[NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE];
-  INT16 sArmourType;
-  INT16 sExternalArmorLocationsStatus[NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE];
-  INT16 sCriticalHits[NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE];
-  INT32 iOnSound;
-  INT32 iOffSound;
-  INT32 iMoveSound;
-  INT32 iOutOfSound;
-  BOOLEAN fFunctional;
-  BOOLEAN fDestroyed;
-  INT32 iMovementSoundID;
-  UINT8 ubProfileID;
+interface VEHICLETYPE {
+  pMercPath: PathStPtr; // vehicle's stategic path list
+  ubMovementGroup: UINT8; // the movement group this vehicle belongs to
+  ubVehicleType: UINT8; // type of vehicle
+  sSectorX: INT16; // X position on the Stategic Map
+  sSectorY: INT16; // Y position on the Stategic Map
+  sSectorZ: INT16;
+  fBetweenSectors: BOOLEAN; // between sectors?
+  sGridNo: INT16; // location in tactical
+  pPassengers: Pointer<SOLDIERTYPE>[] /* [10] */;
+  ubDriver: UINT8;
+  sInternalHitLocations: INT16[] /* [NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE] */;
+  sArmourType: INT16;
+  sExternalArmorLocationsStatus: INT16[] /* [NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE] */;
+  sCriticalHits: INT16[] /* [NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE] */;
+  iOnSound: INT32;
+  iOffSound: INT32;
+  iMoveSound: INT32;
+  iOutOfSound: INT32;
+  fFunctional: BOOLEAN;
+  fDestroyed: BOOLEAN;
+  iMovementSoundID: INT32;
+  ubProfileID: UINT8;
 
-  BOOLEAN fValid;
-} VEHICLETYPE;
+  fValid: BOOLEAN;
+}
 
 // the list of vehicles
 extern VEHICLETYPE *pVehicleList;

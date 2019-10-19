@@ -6,24 +6,23 @@ void ExitFiles();
 void HandleFiles();
 void RenderFiles();
 
-struct files {
-  UINT8 ubCode; // the code index in the files code table
-  UINT8 ubFormat; // layout format
-  UINT32 uiIdNumber; // unique id number
-  UINT32 uiDate; // time in the world in global time (resolution, minutes)
-  BOOLEAN fRead;
-  STR8 pPicFileNameList[2];
+interface FilesUnit {
+  ubCode: UINT8; // the code index in the files code table
+  ubFormat: UINT8; // layout format
+  uiIdNumber: UINT32; // unique id number
+  uiDate: UINT32; // time in the world in global time (resolution, minutes)
+  fRead: BOOLEAN;
+  pPicFileNameList: STR8[] /* [2] */;
 
-  struct files *Next; // next unit in the list
-};
+  Next: Pointer<FilesUnit>; // next unit in the list
+}
 
-struct filestring {
-  STR16 pString;
-  struct filestring *Next;
-};
+interface FileString {
+  pString: STR16;
+  Next: Pointer<FileString>;
+}
 
-typedef struct filestring FileString;
-typedef struct filestring *FileStringPtr;
+typedef FileString *FileStringPtr;
 
 // files codes
 const enum Enum77 {
@@ -44,21 +43,19 @@ extern UINT8 ubFileRecordsLength[];
 extern BOOLEAN fEnteredFileViewerFromNewFileIcon;
 extern BOOLEAN fNewFilesInFileViewer;
 
-typedef struct files FilesUnit;
-typedef struct files *FilesUnitPtr;
+typedef FilesUnit *FilesUnitPtr;
 
 extern FilesUnitPtr pFilesListHead;
 
-struct filerecordwidth {
-  INT32 iRecordNumber;
-  INT32 iRecordWidth;
-  INT32 iRecordHeightAdjustment;
-  UINT8 ubFlags;
-  struct filerecordwidth *Next;
-};
+interface FileRecordWidth {
+  iRecordNumber: INT32;
+  iRecordWidth: INT32;
+  iRecordHeightAdjustment: INT32;
+  ubFlags: UINT8;
+  Next: Pointer<FileRecordWidth>;
+}
 
-typedef struct filerecordwidth FileRecordWidth;
-typedef struct filerecordwidth *FileRecordWidthPtr;
+typedef FileRecordWidth *FileRecordWidthPtr;
 UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile);
 
 // add a file about this terrorist

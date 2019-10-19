@@ -4,17 +4,17 @@ const enum Enum305 {
   LIGHT_FLARE_MARK_1,
 }
 
-typedef struct {
-  INT16 sGridNo; // gridno at which the tear gas cloud is centered
+interface LIGHTEFFECT {
+  sGridNo: INT16; // gridno at which the tear gas cloud is centered
 
-  UINT8 ubDuration; // the number of turns will remain effective
-  UINT8 bRadius; // the current radius
-  INT8 bAge; // the number of turns light has been around
-  BOOLEAN fAllocated;
-  INT8 bType;
-  INT32 iLight;
-  UINT32 uiTimeOfLastUpdate;
-} LIGHTEFFECT;
+  ubDuration: UINT8; // the number of turns will remain effective
+  bRadius: UINT8; // the current radius
+  bAge: INT8; // the number of turns light has been around
+  fAllocated: BOOLEAN;
+  bType: INT8;
+  iLight: INT32;
+  uiTimeOfLastUpdate: UINT32;
+}
 
 // Decays all light effects...
 void DecayLightEffects(UINT32 uiTime);

@@ -1,15 +1,15 @@
-struct stringstruct {
-  STR16 pString16;
-  INT32 iVideoOverlay;
-  UINT32 uiFont;
-  UINT16 usColor;
-  UINT32 uiFlags;
-  BOOLEAN fBeginningOfNewString;
-  UINT32 uiTimeOfLastUpdate;
-  UINT32 uiPadding[5];
-  struct stringstruct *pNext;
-  struct stringstruct *pPrev;
-};
+interface ScrollStringSt {
+  pString16: STR16;
+  iVideoOverlay: INT32;
+  uiFont: UINT32;
+  usColor: UINT16;
+  uiFlags: UINT32;
+  fBeginningOfNewString: BOOLEAN;
+  uiTimeOfLastUpdate: UINT32;
+  uiPadding: UINT32[] /* [5] */;
+  pNext: Pointer<ScrollStringSt>;
+  pPrev: Pointer<ScrollStringSt>;
+}
 
 const MSG_INTERFACE = 0;
 const MSG_DIALOG = 1;
@@ -29,7 +29,6 @@ const MSG_FONT_RED = FONT_MCOLOR_RED;
 const MSG_FONT_YELLOW = FONT_MCOLOR_LTYELLOW;
 const MSG_FONT_WHITE = FONT_MCOLOR_WHITE;
 
-typedef struct stringstruct ScrollStringSt;
 typedef ScrollStringSt *ScrollStringStPtr;
 
 extern ScrollStringStPtr pStringS;

@@ -303,29 +303,29 @@ extern UINT32 guiBrownBackgroundForTeamPanel;
 typedef void (*LISTBOX_DISPLAY_FNCTN)(); // Define Display Callback function
 typedef void (*TEXT_ENTRY_CALLBACK)(INT32); // Callback for when the text entry field is finished
 
-typedef struct {
-  LISTBOX_DISPLAY_FNCTN DisplayFunction; //	The array of items
+interface SCROLL_BOX {
+  DisplayFunction: LISTBOX_DISPLAY_FNCTN; //	The array of items
 
-  UINT16 usScrollPosX; //	Top Left Pos of list box
-  UINT16 usScrollPosY; //	Top Left Pos of list box
-  UINT16 usScrollHeight; //	Height of list box
-  UINT16 usScrollWidth; //	Width of list box
+  usScrollPosX: UINT16; //	Top Left Pos of list box
+  usScrollPosY: UINT16; //	Top Left Pos of list box
+  usScrollHeight: UINT16; //	Height of list box
+  usScrollWidth: UINT16; //	Width of list box
 
-  UINT16 usScrollBarHeight; //	Height of Scroll box
-  UINT16 usScrollBarWidth; //	Width of Scroll box
-  UINT16 usScrollBoxY; //	Current Vertical location of the scroll box
-  UINT16 usScrollBoxEndY; //	Bottom position on the scroll box
-  UINT16 usScrollArrowHeight; //	Scroll Arrow height
+  usScrollBarHeight: UINT16; //	Height of Scroll box
+  usScrollBarWidth: UINT16; //	Width of Scroll box
+  usScrollBoxY: UINT16; //	Current Vertical location of the scroll box
+  usScrollBoxEndY: UINT16; //	Bottom position on the scroll box
+  usScrollArrowHeight: UINT16; //	Scroll Arrow height
 
-  INT16 sCurSelectedItem; //	Currently selected item
-  UINT16 usItemDisplayedOnTopOfList; //	item at the top of displayed list
-  UINT16 usStartIndex; //	index to start at for the array of elements
-  UINT16 usMaxArrayIndex; //	Max Size of the array
-  UINT16 usNumDisplayedItems; //	Num of displayed item
-  UINT16 usMaxNumDisplayedItems; //  Max number of Displayed items
+  sCurSelectedItem: INT16; //	Currently selected item
+  usItemDisplayedOnTopOfList: UINT16; //	item at the top of displayed list
+  usStartIndex: UINT16; //	index to start at for the array of elements
+  usMaxArrayIndex: UINT16; //	Max Size of the array
+  usNumDisplayedItems: UINT16; //	Num of displayed item
+  usMaxNumDisplayedItems: UINT16; //  Max number of Displayed items
 
-  UINT8 ubCurScrollBoxAction; //	Holds the status of the current action ( create; destroy... )
-} SCROLL_BOX;
+  ubCurScrollBoxAction: UINT8; //	Holds the status of the current action ( create; destroy... )
+}
 
 // Enums for the possible panels the mercs can use
 const enum Enum168 {

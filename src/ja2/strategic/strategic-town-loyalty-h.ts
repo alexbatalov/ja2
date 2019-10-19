@@ -52,14 +52,14 @@ const enum Enum190 {
   GLOBAL_LOYALTY_QUEEN_BATTLE_WON,
 }
 
-typedef struct TOWN_LOYALTY {
-  UINT8 ubRating;
-  INT16 sChange;
-  BOOLEAN fStarted; // starting loyalty of each town is initialized only when player first enters that town
-  UINT8 UNUSEDubRebelSentiment; // current rebel sentiment.  Events could change the starting value...
-  BOOLEAN fLiberatedAlready;
-  BYTE filler[19]; // reserved for expansion
-} TOWN_LOYALTY;
+interface TOWN_LOYALTY {
+  ubRating: UINT8;
+  sChange: INT16;
+  fStarted: BOOLEAN; // starting loyalty of each town is initialized only when player first enters that town
+  UNUSEDubRebelSentiment: UINT8; // current rebel sentiment.  Events could change the starting value...
+  fLiberatedAlready: BOOLEAN;
+  filler: BYTE[] /* [19] */; // reserved for expansion
+}
 
 // the loyalty variables for each town
 extern TOWN_LOYALTY gTownLoyalty[NUM_TOWNS];

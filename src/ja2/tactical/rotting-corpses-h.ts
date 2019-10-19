@@ -72,52 +72,52 @@ const ROTTING_CORPSE_USE_WEST_ENTRY_POINT = 0x10; // Find the spot closest to th
 const ROTTING_CORPSE_USE_CAMMO_PALETTE = 0x20; // We use cammo palette here....
 const ROTTING_CORPSE_VEHICLE = 0x40; // Vehicle Corpse
 
-typedef struct {
-  UINT8 ubType;
-  UINT8 ubBodyType;
-  INT16 sGridNo;
-  FLOAT dXPos;
-  FLOAT dYPos;
-  INT16 sHeightAdjustment;
+interface ROTTING_CORPSE_DEFINITION {
+  ubType: UINT8;
+  ubBodyType: UINT8;
+  sGridNo: INT16;
+  dXPos: FLOAT;
+  dYPos: FLOAT;
+  sHeightAdjustment: INT16;
 
-  PaletteRepID HeadPal; // Palette reps
-  PaletteRepID PantsPal;
-  PaletteRepID VestPal;
-  PaletteRepID SkinPal;
+  HeadPal: PaletteRepID; // Palette reps
+  PantsPal: PaletteRepID;
+  VestPal: PaletteRepID;
+  SkinPal: PaletteRepID;
 
-  INT8 bDirection;
-  UINT32 uiTimeOfDeath;
+  bDirection: INT8;
+  uiTimeOfDeath: UINT32;
 
-  UINT16 usFlags;
+  usFlags: UINT16;
 
-  INT8 bLevel;
+  bLevel: INT8;
 
-  INT8 bVisible;
-  INT8 bNumServicingCrows;
-  UINT8 ubProfile;
-  BOOLEAN fHeadTaken;
-  UINT8 ubAIWarningValue;
+  bVisible: INT8;
+  bNumServicingCrows: INT8;
+  ubProfile: UINT8;
+  fHeadTaken: BOOLEAN;
+  ubAIWarningValue: UINT8;
 
-  UINT8 ubFiller[12];
-} ROTTING_CORPSE_DEFINITION;
+  ubFiller: UINT8[] /* [12] */;
+}
 
-typedef struct {
-  ROTTING_CORPSE_DEFINITION def;
-  BOOLEAN fActivated;
+interface ROTTING_CORPSE {
+  def: ROTTING_CORPSE_DEFINITION;
+  fActivated: BOOLEAN;
 
-  ANITILE *pAniTile;
+  pAniTile: Pointer<ANITILE>;
 
-  SGPPaletteEntry *p8BPPPalette;
-  UINT16 *p16BPPPalette;
-  UINT16 *pShades[NUM_CORPSE_SHADES];
-  INT16 sGraphicNum;
-  INT32 iCachedTileID;
-  FLOAT dXPos;
-  FLOAT dYPos;
+  p8BPPPalette: Pointer<SGPPaletteEntry>;
+  p16BPPPalette: Pointer<UINT16>;
+  pShades: Pointer<UINT16>[] /* [NUM_CORPSE_SHADES] */;
+  sGraphicNum: INT16;
+  iCachedTileID: INT32;
+  dXPos: FLOAT;
+  dYPos: FLOAT;
 
-  BOOLEAN fAttractCrowsOnlyWhenOnScreen;
-  INT32 iID;
-} ROTTING_CORPSE;
+  fAttractCrowsOnlyWhenOnScreen: BOOLEAN;
+  iID: INT32;
+}
 
 INT32 AddRottingCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef);
 

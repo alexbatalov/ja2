@@ -12,13 +12,15 @@ INT16 gusBlueShift = 0;
 INT16 gusGreenShift = 0;
 
 // this funky union is used for fast 16-bit pixel format conversions
-typedef union {
-  struct {
-    UINT16 usLower;
-    UINT16 usHigher;
-  };
-  UINT32 uiValue;
-} SplitUINT32;
+interface SplitUINT32 {
+  /* union { */
+  /*   struct { */
+  usLower: UINT16;
+  usHigher: UINT16;
+  /*   } */
+  uiValue: UINT32;
+  /* } */
+}
 
 HIMAGE CreateImage(SGPFILENAME ImageFile, UINT16 fContents) {
   HIMAGE hImage = NULL;

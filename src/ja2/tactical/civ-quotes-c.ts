@@ -3,10 +3,10 @@ const EXTREAMLY_LOW_TOWN_LOYALTY = 20;
 const HIGH_TOWN_LOYALTY = 80;
 const CIV_QUOTE_HINT = 99;
 
-typedef struct {
-  UINT8 ubNumEntries;
-  UINT8 ubUnusedCurrentEntry;
-} CIV_QUOTE;
+interface CIV_QUOTE {
+  ubNumEntries: UINT8;
+  ubUnusedCurrentEntry: UINT8;
+}
 
 extern void CaptureTimerCallback(void);
 
@@ -71,15 +71,15 @@ UINT8 gubNumEntries[NUM_CIV_QUOTES] = {
   3,
 };
 
-typedef struct {
-  BOOLEAN bActive;
-  MOUSE_REGION MouseRegion;
-  INT32 iVideoOverlay;
-  INT32 iDialogueBox;
-  UINT32 uiTimeOfCreation;
-  UINT32 uiDelayTime;
-  SOLDIERTYPE *pCiv;
-} QUOTE_SYSTEM_STRUCT;
+interface QUOTE_SYSTEM_STRUCT {
+  bActive: BOOLEAN;
+  MouseRegion: MOUSE_REGION;
+  iVideoOverlay: INT32;
+  iDialogueBox: INT32;
+  uiTimeOfCreation: UINT32;
+  uiDelayTime: UINT32;
+  pCiv: Pointer<SOLDIERTYPE>;
+}
 
 QUOTE_SYSTEM_STRUCT gCivQuoteData;
 

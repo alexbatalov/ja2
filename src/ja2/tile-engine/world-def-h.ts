@@ -91,62 +91,50 @@ const SECOND_LEVEL = 1;
 
 const ANY_SMOKE_EFFECT = (MAPELEMENT_EXT_CREATUREGAS | MAPELEMENT_EXT_SMOKE | MAPELEMENT_EXT_TEARGAS | MAPELEMENT_EXT_MUSTARDGAS);
 
-typedef struct TAG_level_node {
-  struct TAG_level_node *pNext;
-  UINT32 uiFlags; // flags struct
+interface LEVELNODE {
+  pNext: Pointer<LEVELNODE>;
+  uiFlags: UINT32; // flags struct
 
-  UINT8 ubSumLights; // LIGHTING INFO
-  UINT8 ubMaxLights; // MAX LIGHTING INFO
+  ubSumLights: UINT8; // LIGHTING INFO
+  ubMaxLights: UINT8; // MAX LIGHTING INFO
 
-  union {
-    struct TAG_level_node *pPrevNode; // FOR LAND, GOING BACKWARDS POINTER
-    STRUCTURE *pStructureData; // STRUCTURE DATA
-    INT32 iPhysicsObjectID; // ID FOR PHYSICS ITEM
-    INT32 uiAPCost; // FOR AP DISPLAY
-    INT32 iExitGridInfo;
-  }; // ( 4 byte union )
-
-  union {
-    struct {
-      UINT16 usIndex; // TILE DATABASE INDEX
-      INT16 sCurrentFrame; // Stuff for animated tiles for a given tile location ( doors, etc )
-    };
-
-    SOLDIERTYPE *pSoldier; // POINTER TO SOLDIER
-  }; // ( 4 byte union )
-
-  union {
-    // Some levelnodes can specify relative X and Y values!
-    struct {
-      INT16 sRelativeX; // Relative position values
-      INT16 sRelativeY; // Relative position values
-    };
-
-    // Some can contains index values into dead corpses
-    struct {
-      INT32 iCorpseID; // Index into corpse ID
-    };
-
-    struct {
-      UINT32 uiAnimHitLocationFlags; // Animation profile flags for soldier placeholders ( prone merc hit location values )
-    };
-
-    // Some can contains index values into animated tile data
-    struct {
-      struct TAG_anitile *pAniTile;
-    };
-
-    // Can be an item pool as well...
-    struct {
-      ITEM_POOL *pItemPool; // ITEM POOLS
-    };
-  };
-
-  INT16 sRelativeZ; // Relative position values
-  UINT8 ubShadeLevel; // LIGHTING INFO
-  UINT8 ubNaturalShadeLevel; // LIGHTING INFO
-  UINT8 ubFakeShadeLevel; // LIGHTING INFO
-} LEVELNODE;
+  /* union { */
+  pPrevNode: Pointer<LEVELNODE>; // FOR LAND, GOING BACKWARDS POINTER
+  pStructureData: Pointer<STRUCTURE>; // STRUCTURE DATA
+  iPhysicsObjectID: INT32; // ID FOR PHYSICS ITEM
+  uiAPCost: INT32; // FOR AP DISPLAY
+  iExitGridInfo: INT32;
+  /* } */
+  /* union { */
+  /*   struct { */
+  usIndex: UINT16; // TILE DATABASE INDEX
+  sCurrentFrame: INT16; // Stuff for animated tiles for a given tile location ( doors, etc )
+  /*   } */
+  pSoldier: Pointer<SOLDIERTYPE>; // POINTER TO SOLDIER
+  /* } */
+  /* union { */
+  /*   struct { */
+  sRelativeX: INT16; // Relative position values
+  sRelativeY: INT16; // Relative position values
+  /*   } */
+  /*   struct { */
+  iCorpseID: INT32; // Index into corpse ID
+  /*   } */
+  /*   struct { */
+  uiAnimHitLocationFlags: UINT32; // Animation profile flags for soldier placeholders ( prone merc hit location values )
+  /*   } */
+  /*   struct { */
+  pAniTile: Pointer<ANITILE>;
+  /*   } */
+  /*   struct { */
+  pItemPool: Pointer<ITEM_POOL>; // ITEM POOLS
+  /*   } */
+  /* } */
+  sRelativeZ: INT16; // Relative position values
+  ubShadeLevel: UINT8; // LIGHTING INFO
+  ubNaturalShadeLevel: UINT8; // LIGHTING INFO
+  ubFakeShadeLevel: UINT8; // LIGHTING INFO
+}
 
 const LAND_START_INDEX = 1;
 const OBJECT_START_INDEX = 2;
@@ -157,44 +145,42 @@ const ROOF_START_INDEX = 6;
 const ONROOF_START_INDEX = 7;
 const TOPMOST_START_INDEX = 8;
 
-typedef struct {
-  union {
-    struct {
-      LEVELNODE *pLandHead; // 0
-      LEVELNODE *pLandStart; // 1
+interface MAP_ELEMENT {
+  /* union { */
+  /*   struct { */
+  pLandHead: Pointer<LEVELNODE>; // 0
+  pLandStart: Pointer<LEVELNODE>; // 1
 
-      LEVELNODE *pObjectHead; // 2
+  pObjectHead: Pointer<LEVELNODE>; // 2
 
-      LEVELNODE *pStructHead; // 3
+  pStructHead: Pointer<LEVELNODE>; // 3
 
-      LEVELNODE *pShadowHead; // 4
+  pShadowHead: Pointer<LEVELNODE>; // 4
 
-      LEVELNODE *pMercHead; // 5
+  pMercHead: Pointer<LEVELNODE>; // 5
 
-      LEVELNODE *pRoofHead; // 6
+  pRoofHead: Pointer<LEVELNODE>; // 6
 
-      LEVELNODE *pOnRoofHead; // 7
+  pOnRoofHead: Pointer<LEVELNODE>; // 7
 
-      LEVELNODE *pTopmostHead; // 8
-    };
+  pTopmostHead: Pointer<LEVELNODE>; // 8
+  /*   } */
+  pLevelNodes: Pointer<LEVELNODE>[] /* [9] */;
+  /* } */
+  pStructureHead: Pointer<STRUCTURE>;
+  pStructureTail: Pointer<STRUCTURE>;
 
-    LEVELNODE *pLevelNodes[9];
-  };
+  uiFlags: UINT16;
+  ubExtFlags: UINT8[] /* [2] */;
+  sSumRealLights: UINT16[] /* [1] */;
+  sHeight: UINT8;
+  ubAdjacentSoldierCnt: UINT8;
+  ubTerrainID: UINT8;
 
-  STRUCTURE *pStructureHead;
-  STRUCTURE *pStructureTail;
-
-  UINT16 uiFlags;
-  UINT8 ubExtFlags[2];
-  UINT16 sSumRealLights[1];
-  UINT8 sHeight;
-  UINT8 ubAdjacentSoldierCnt;
-  UINT8 ubTerrainID;
-
-  UINT8 ubReservedSoldierID;
-  UINT8 ubBloodInfo;
-  UINT8 ubSmellInfo;
-} MAP_ELEMENT;
+  ubReservedSoldierID: UINT8;
+  ubBloodInfo: UINT8;
+  ubSmellInfo: UINT8;
+}
 
 // World Data
 MAP_ELEMENT *gpWorldLevelData;

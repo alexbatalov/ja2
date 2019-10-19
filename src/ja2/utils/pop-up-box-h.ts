@@ -6,46 +6,44 @@ const POPUP_BOX_FLAG_CLIP_TEXT = 1;
 const POPUP_BOX_FLAG_CENTER_TEXT = 2;
 const POPUP_BOX_FLAG_RESIZE = 4;
 const POPUP_BOX_FLAG_CAN_HIGHLIGHT_SHADED_LINES = 8;
-struct popupstring {
-  STR16 pString;
-  UINT8 ubForegroundColor;
-  UINT8 ubBackgroundColor;
-  UINT8 ubHighLight;
-  UINT8 ubShade;
-  UINT8 ubSecondaryShade;
-  UINT32 uiFont;
-  BOOLEAN fColorFlag;
-  BOOLEAN fHighLightFlag;
-  BOOLEAN fShadeFlag;
-  BOOLEAN fSecondaryShadeFlag;
-} popupstring;
+interface POPUPSTRING {
+  pString: STR16;
+  ubForegroundColor: UINT8;
+  ubBackgroundColor: UINT8;
+  ubHighLight: UINT8;
+  ubShade: UINT8;
+  ubSecondaryShade: UINT8;
+  uiFont: UINT32;
+  fColorFlag: BOOLEAN;
+  fHighLightFlag: BOOLEAN;
+  fShadeFlag: BOOLEAN;
+  fSecondaryShadeFlag: BOOLEAN;
+}
 
-typedef struct popupstring POPUPSTRING;
 typedef POPUPSTRING *POPUPSTRINGPTR;
 
-struct popupbox {
-  SGPRect Dimensions;
-  SGPPoint Position;
-  UINT32 uiLeftMargin;
-  UINT32 uiRightMargin;
-  UINT32 uiBottomMargin;
-  UINT32 uiTopMargin;
-  UINT32 uiLineSpace;
-  INT32 iBorderObjectIndex;
-  INT32 iBackGroundSurface;
-  UINT32 uiFlags;
-  UINT32 uiBuffer;
-  UINT32 uiSecondColumnMinimunOffset;
-  UINT32 uiSecondColumnCurrentOffset;
-  UINT32 uiBoxMinWidth;
-  BOOLEAN fUpdated;
-  BOOLEAN fShowBox;
+interface PopUpBo {
+  Dimensions: SGPRect;
+  Position: SGPPoint;
+  uiLeftMargin: UINT32;
+  uiRightMargin: UINT32;
+  uiBottomMargin: UINT32;
+  uiTopMargin: UINT32;
+  uiLineSpace: UINT32;
+  iBorderObjectIndex: INT32;
+  iBackGroundSurface: INT32;
+  uiFlags: UINT32;
+  uiBuffer: UINT32;
+  uiSecondColumnMinimunOffset: UINT32;
+  uiSecondColumnCurrentOffset: UINT32;
+  uiBoxMinWidth: UINT32;
+  fUpdated: BOOLEAN;
+  fShowBox: BOOLEAN;
 
-  POPUPSTRINGPTR Text[MAX_POPUP_BOX_STRING_COUNT];
-  POPUPSTRINGPTR pSecondColumnString[MAX_POPUP_BOX_STRING_COUNT];
-};
+  Text: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
+  pSecondColumnString: POPUPSTRINGPTR[] /* [MAX_POPUP_BOX_STRING_COUNT] */;
+}
 
-typedef struct popupbox PopUpBo;
 typedef PopUpBo *PopUpBoxPt;
 
 static PopUpBoxPt PopUpBoxList[MAX_POPUP_BOX_COUNT];

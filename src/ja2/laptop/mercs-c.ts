@@ -88,11 +88,11 @@ const enum Enum100 {
   NUM_MERC_ARRIVALS,
 }
 
-typedef struct {
-  UINT16 usMoneyPaid;
-  UINT16 usDay;
-  UINT8 ubMercArrayID;
-} CONTITION_FOR_MERC_AVAILABLE;
+interface CONTITION_FOR_MERC_AVAILABLE {
+  usMoneyPaid: UINT16;
+  usDay: UINT16;
+  ubMercArrayID: UINT8;
+}
 
 CONTITION_FOR_MERC_AVAILABLE gConditionsForMercAvailability[NUM_MERC_ARRIVALS] = {
   { 5000, 8, 6 }, // BUBBA
@@ -166,10 +166,10 @@ BOOLEAN gfRedrawMercSite = FALSE;
 BOOLEAN gfFirstTimeIntoMERCSiteSinceEnteringLaptop = FALSE;
 
 // used for the random quotes to try to balance the ones that are said
-typedef struct {
-  UINT8 ubQuoteID;
-  UINT32 uiNumberOfTimesQuoteSaid;
-} NUMBER_TIMES_QUOTE_SAID;
+interface NUMBER_TIMES_QUOTE_SAID {
+  ubQuoteID: UINT8;
+  uiNumberOfTimesQuoteSaid: UINT32;
+}
 NUMBER_TIMES_QUOTE_SAID gNumberOfTimesQuoteSaid[MERC_NUMBER_OF_RANDOM_QUOTES] = {
   { SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_BIFF, 0 },
   { SPECK_QUOTE_PLAYER_NOT_DOING_ANYTHING_SPECK_SELLS_HAYWIRE, 0 },

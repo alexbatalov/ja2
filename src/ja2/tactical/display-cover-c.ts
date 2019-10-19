@@ -7,17 +7,16 @@ const DC__SOLDIER_VISIBLE_RANGE = 31;
 const DC__MIN_SIZE = 4;
 const DC__MAX_SIZE = 11;
 
-typedef struct {
-  INT16 sGridNo;
-  INT8 bCover; //% chance that the gridno is fully covered.  ie 100 if safe, 0  is has no cover
-  //	BOOLEAN fRoof;
-} BEST_COVER_STRUCT;
+interface BEST_COVER_STRUCT {
+  sGridNo: INT16;
+  bCover: INT8; //% chance that the gridno is fully covered.  ie 100 if safe, 0  is has no cover
+}
 
-typedef struct {
-  INT16 sGridNo;
-  INT8 bVisibleToSoldier;
-  BOOLEAN fRoof;
-} VISIBLE_TO_SOLDIER_STRUCT;
+interface VISIBLE_TO_SOLDIER_STRUCT {
+  sGridNo: INT16;
+  bVisibleToSoldier: INT8;
+  fRoof: BOOLEAN;
+}
 
 /*
 #define	DC__PRONE				(INT8)( 0x01 )

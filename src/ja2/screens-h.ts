@@ -2,11 +2,11 @@
 // function (which loads up the screen if necessary), a Handler function which is called while the screen is showing and
 // a shutdown function which is called when the screen is getting ready to make another screen active.
 
-typedef struct Screens {
-  UINT32 (*InitializeScreen)(void);
-  UINT32 (*HandleScreen)(void);
-  UINT32 (*ShutdownScreen)(void);
-} Screens;
+interface Screens {
+  InitializeScreen: () => UINT32;
+  HandleScreen: () => UINT32;
+  ShutdownScreen: () => UINT32;
+}
 
 // These defines are used as flags for each screen state. The only legal transition of states is
 // SCR_INACTIVE -> SCR_INITIALIZING -> SCR_ACTIVE -> SCR_SHUTTING_DOWN -> SCR_INACTIVE ... Anything else

@@ -40,206 +40,206 @@ BOOLEAN DoesAutoSaveFileExist(BOOLEAN fLatestAutoSave);
 UINT32 guiJA2EncryptionSet = 0;
 UINT32 CalcJA2EncryptionSet(SAVED_GAME_HEADER *pSaveGameHeader);
 
-typedef struct {
+interface GENERAL_SAVE_INFO {
   // The screen that the gaem was saved from
-  UINT32 uiCurrentScreen;
+  uiCurrentScreen: UINT32;
 
-  UINT32 uiCurrentUniqueSoldierId;
+  uiCurrentUniqueSoldierId: UINT32;
 
   // The music that was playing when the game was saved
-  UINT8 ubMusicMode;
+  ubMusicMode: UINT8;
 
   // Flag indicating that we have purchased something from Tony
-  BOOLEAN fHavePurchasedItemsFromTony;
+  fHavePurchasedItemsFromTony: BOOLEAN;
 
   // The selected soldier in tactical
-  UINT16 usSelectedSoldier;
+  usSelectedSoldier: UINT16;
 
   // The x and y scroll position
-  INT16 sRenderCenterX;
-  INT16 sRenderCenterY;
+  sRenderCenterX: INT16;
+  sRenderCenterY: INT16;
 
-  BOOLEAN fAtLeastOneMercWasHired;
+  fAtLeastOneMercWasHired: BOOLEAN;
 
   // General Map screen state flags
-  BOOLEAN fShowItemsFlag;
-  BOOLEAN fShowTownFlag;
-  BOOLEAN fShowTeamFlag;
-  BOOLEAN fShowMineFlag;
-  BOOLEAN fShowAircraftFlag;
+  fShowItemsFlag: BOOLEAN;
+  fShowTownFlag: BOOLEAN;
+  fShowTeamFlag: BOOLEAN;
+  fShowMineFlag: BOOLEAN;
+  fShowAircraftFlag: BOOLEAN;
 
   // is the helicopter available to player?
-  BOOLEAN fHelicopterAvailable;
+  fHelicopterAvailable: BOOLEAN;
 
   // helicopter vehicle id
-  INT32 iHelicopterVehicleId;
+  iHelicopterVehicleId: INT32;
 
   // total distance travelled
-  INT32 UNUSEDiTotalHeliDistanceSinceRefuel;
+  UNUSEDiTotalHeliDistanceSinceRefuel: INT32;
 
   // total owed to player
-  INT32 iTotalAccumulatedCostByPlayer;
+  iTotalAccumulatedCostByPlayer: INT32;
 
   // whether or not skyrider is alive and well? and on our side yet?
-  BOOLEAN fSkyRiderAvailable;
+  fSkyRiderAvailable: BOOLEAN;
 
   // skyrider engaging in a monologue
-  BOOLEAN UNUSEDfSkyriderMonologue;
+  UNUSEDfSkyriderMonologue: BOOLEAN;
 
   // list of sector locations
-  INT16 UNUSED[2][2];
+  UNUSED: INT16[][] /* [2][2] */;
 
   // is the heli in the air?
-  BOOLEAN fHelicopterIsAirBorne;
+  fHelicopterIsAirBorne: BOOLEAN;
 
   // is the pilot returning straight to base?
-  BOOLEAN fHeliReturnStraightToBase;
+  fHeliReturnStraightToBase: BOOLEAN;
 
   // heli hovering
-  BOOLEAN fHoveringHelicopter;
+  fHoveringHelicopter: BOOLEAN;
 
   // time started hovering
-  UINT32 uiStartHoverTime;
+  uiStartHoverTime: UINT32;
 
   // what state is skyrider's dialogue in in?
-  UINT32 uiHelicopterSkyriderTalkState;
+  uiHelicopterSkyriderTalkState: UINT32;
 
   // the flags for skyrider events
-  BOOLEAN fShowEstoniRefuelHighLight;
-  BOOLEAN fShowOtherSAMHighLight;
-  BOOLEAN fShowDrassenSAMHighLight;
+  fShowEstoniRefuelHighLight: BOOLEAN;
+  fShowOtherSAMHighLight: BOOLEAN;
+  fShowDrassenSAMHighLight: BOOLEAN;
 
-  UINT32 uiEnvWeather;
+  uiEnvWeather: UINT32;
 
-  UINT8 ubDefaultButton;
+  ubDefaultButton: UINT8;
 
-  BOOLEAN fSkyriderEmptyHelpGiven;
-  BOOLEAN fEnterMapDueToContract;
-  UINT8 ubHelicopterHitsTaken;
-  UINT8 ubQuitType;
-  BOOLEAN fSkyriderSaidCongratsOnTakingSAM;
-  INT16 sContractRehireSoldierID;
+  fSkyriderEmptyHelpGiven: BOOLEAN;
+  fEnterMapDueToContract: BOOLEAN;
+  ubHelicopterHitsTaken: UINT8;
+  ubQuitType: UINT8;
+  fSkyriderSaidCongratsOnTakingSAM: BOOLEAN;
+  sContractRehireSoldierID: INT16;
 
-  GAME_OPTIONS GameOptions;
+  GameOptions: GAME_OPTIONS;
 
-  UINT32 uiSeedNumber;
+  uiSeedNumber: UINT32;
 
   // The GetJA2Clock() value
-  UINT32 uiBaseJA2Clock;
+  uiBaseJA2Clock: UINT32;
 
-  INT16 sCurInterfacePanel;
+  sCurInterfacePanel: INT16;
 
-  UINT8 ubSMCurrentMercID;
+  ubSMCurrentMercID: UINT8;
 
-  BOOLEAN fFirstTimeInMapScreen;
+  fFirstTimeInMapScreen: BOOLEAN;
 
-  BOOLEAN fDisableDueToBattleRoster;
+  fDisableDueToBattleRoster: BOOLEAN;
 
-  BOOLEAN fDisableMapInterfaceDueToBattle;
+  fDisableMapInterfaceDueToBattle: BOOLEAN;
 
-  INT16 sBoxerGridNo[NUM_BOXERS];
-  UINT8 ubBoxerID[NUM_BOXERS];
-  BOOLEAN fBoxerFought[NUM_BOXERS];
+  sBoxerGridNo: INT16[] /* [NUM_BOXERS] */;
+  ubBoxerID: UINT8[] /* [NUM_BOXERS] */;
+  fBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */;
 
-  BOOLEAN fHelicopterDestroyed; // if the chopper is destroyed
-  BOOLEAN fShowMapScreenHelpText; // If true, displays help in mapscreen
+  fHelicopterDestroyed: BOOLEAN; // if the chopper is destroyed
+  fShowMapScreenHelpText: BOOLEAN; // If true, displays help in mapscreen
 
-  INT32 iSortStateForMapScreenList;
-  BOOLEAN fFoundTixa;
+  iSortStateForMapScreenList: INT32;
+  fFoundTixa: BOOLEAN;
 
-  UINT32 uiTimeOfLastSkyriderMonologue;
-  BOOLEAN fShowCambriaHospitalHighLight;
-  BOOLEAN fSkyRiderSetUp;
-  BOOLEAN fRefuelingSiteAvailable[NUMBER_OF_REFUEL_SITES];
+  uiTimeOfLastSkyriderMonologue: UINT32;
+  fShowCambriaHospitalHighLight: BOOLEAN;
+  fSkyRiderSetUp: BOOLEAN;
+  fRefuelingSiteAvailable: BOOLEAN[] /* [NUMBER_OF_REFUEL_SITES] */;
 
   // Meanwhile stuff
-  MEANWHILE_DEFINITION gCurrentMeanwhileDef;
+  gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
 
-  BOOLEAN ubPlayerProgressSkyriderLastCommentedOn;
+  ubPlayerProgressSkyriderLastCommentedOn: BOOLEAN;
 
-  BOOLEAN gfMeanwhileTryingToStart;
-  BOOLEAN gfInMeanwhile;
+  gfMeanwhileTryingToStart: BOOLEAN;
+  gfInMeanwhile: BOOLEAN;
 
   // list of dead guys for squads...in id values -> -1 means no one home
-  INT16 sDeadMercs[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
+  sDeadMercs: INT16[][] /* [NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD] */;
 
   // levels of publicly known noises
-  INT8 gbPublicNoiseLevel[MAXTEAMS];
+  gbPublicNoiseLevel: INT8[] /* [MAXTEAMS] */;
 
-  UINT8 gubScreenCount;
+  gubScreenCount: UINT8;
 
-  UINT16 usOldMeanWhileFlags;
+  usOldMeanWhileFlags: UINT16;
 
-  INT32 iPortraitNumber;
+  iPortraitNumber: INT32;
 
-  INT16 sWorldSectorLocationOfFirstBattle;
+  sWorldSectorLocationOfFirstBattle: INT16;
 
-  BOOLEAN fUnReadMailFlag;
-  BOOLEAN fNewMailFlag;
-  BOOLEAN fOldUnReadFlag;
-  BOOLEAN fOldNewMailFlag;
+  fUnReadMailFlag: BOOLEAN;
+  fNewMailFlag: BOOLEAN;
+  fOldUnReadFlag: BOOLEAN;
+  fOldNewMailFlag: BOOLEAN;
 
-  BOOLEAN fShowMilitia;
+  fShowMilitia: BOOLEAN;
 
-  BOOLEAN fNewFilesInFileViewer;
+  fNewFilesInFileViewer: BOOLEAN;
 
-  BOOLEAN fLastBoxingMatchWonByPlayer;
+  fLastBoxingMatchWonByPlayer: BOOLEAN;
 
-  UINT32 uiUNUSED;
+  uiUNUSED: UINT32;
 
-  BOOLEAN fSamSiteFound[NUMBER_OF_SAMS];
+  fSamSiteFound: BOOLEAN[] /* [NUMBER_OF_SAMS] */;
 
-  UINT8 ubNumTerrorists;
-  UINT8 ubCambriaMedicalObjects;
+  ubNumTerrorists: UINT8;
+  ubCambriaMedicalObjects: UINT8;
 
-  BOOLEAN fDisableTacticalPanelButtons;
+  fDisableTacticalPanelButtons: BOOLEAN;
 
-  INT16 sSelMapX;
-  INT16 sSelMapY;
-  INT32 iCurrentMapSectorZ;
+  sSelMapX: INT16;
+  sSelMapY: INT16;
+  iCurrentMapSectorZ: INT32;
 
-  UINT16 usHasPlayerSeenHelpScreenInCurrentScreen;
-  BOOLEAN fHideHelpInAllScreens;
-  UINT8 ubBoxingMatchesWon;
+  usHasPlayerSeenHelpScreenInCurrentScreen: UINT16;
+  fHideHelpInAllScreens: BOOLEAN;
+  ubBoxingMatchesWon: UINT8;
 
-  UINT8 ubBoxersRests;
-  BOOLEAN fBoxersResting;
-  UINT8 ubDesertTemperature;
-  UINT8 ubGlobalTemperature;
+  ubBoxersRests: UINT8;
+  fBoxersResting: BOOLEAN;
+  ubDesertTemperature: UINT8;
+  ubGlobalTemperature: UINT8;
 
-  INT16 sMercArriveSectorX;
-  INT16 sMercArriveSectorY;
+  sMercArriveSectorX: INT16;
+  sMercArriveSectorY: INT16;
 
-  BOOLEAN fCreatureMeanwhileScenePlayed;
-  UINT8 ubPlayerNum;
+  fCreatureMeanwhileScenePlayed: BOOLEAN;
+  ubPlayerNum: UINT8;
   // New stuff for the Prebattle interface / autoresolve
-  BOOLEAN fPersistantPBI;
-  UINT8 ubEnemyEncounterCode;
+  fPersistantPBI: BOOLEAN;
+  ubEnemyEncounterCode: UINT8;
 
-  BOOLEAN ubExplicitEnemyEncounterCode;
-  BOOLEAN fBlitBattleSectorLocator;
-  UINT8 ubPBSectorX;
-  UINT8 ubPBSectorY;
+  ubExplicitEnemyEncounterCode: BOOLEAN;
+  fBlitBattleSectorLocator: BOOLEAN;
+  ubPBSectorX: UINT8;
+  ubPBSectorY: UINT8;
 
-  UINT8 ubPBSectorZ;
-  BOOLEAN fCantRetreatInPBI;
-  BOOLEAN fExplosionQueueActive;
-  UINT8 ubUnused[1];
+  ubPBSectorZ: UINT8;
+  fCantRetreatInPBI: BOOLEAN;
+  fExplosionQueueActive: BOOLEAN;
+  ubUnused: UINT8[] /* [1] */;
 
-  UINT32 uiMeanWhileFlags;
+  uiMeanWhileFlags: UINT32;
 
-  INT8 bSelectedInfoChar;
-  INT8 bHospitalPriceModifier;
-  INT8 bUnused2[2];
+  bSelectedInfoChar: INT8;
+  bHospitalPriceModifier: INT8;
+  bUnused2: INT8[] /* [2] */;
 
-  INT32 iHospitalTempBalance;
-  INT32 iHospitalRefund;
+  iHospitalTempBalance: INT32;
+  iHospitalRefund: INT32;
 
-  INT8 fPlayerTeamSawJoey;
-  INT8 fMikeShouldSayHi;
+  fPlayerTeamSawJoey: INT8;
+  fMikeShouldSayHi: INT8;
 
-  UINT8 ubFiller[550]; // This structure should be 1024 bytes
-} GENERAL_SAVE_INFO;
+  ubFiller: UINT8[] /* [550] */; // This structure should be 1024 bytes
+}
 
 UINT32 guiSaveGameVersion = 0;
 

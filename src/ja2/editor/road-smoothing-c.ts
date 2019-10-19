@@ -1,7 +1,7 @@
-typedef struct MACROSTRUCT {
-  INT16 sMacroID;
-  INT16 sOffset;
-} MACROSTRUCT;
+interface MACROSTRUCT {
+  sMacroID: INT16;
+  sOffset: INT16;
+}
 // road macros
 
 // These define the macros for the 32 road pieces.  The column contains the macro ID and

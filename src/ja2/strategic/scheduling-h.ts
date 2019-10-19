@@ -33,16 +33,16 @@ const SCHEDULE_FLAGS_ACTIVE_ALL = 0x00F0;
 
 const MAX_SCHEDULE_ACTIONS = 4;
 
-typedef struct SCHEDULENODE {
-  struct SCHEDULENODE *next;
-  UINT16 usTime[MAX_SCHEDULE_ACTIONS]; // converted to minutes 12:30PM would be 12*60 + 30 = 750
-  UINT16 usData1[MAX_SCHEDULE_ACTIONS]; // typically the gridno, but depends on the action
-  UINT16 usData2[MAX_SCHEDULE_ACTIONS]; // secondary information, not used by most actions
-  UINT8 ubAction[MAX_SCHEDULE_ACTIONS];
-  UINT8 ubScheduleID;
-  UINT8 ubSoldierID;
-  UINT16 usFlags;
-} SCHEDULENODE;
+interface SCHEDULENODE {
+  next: Pointer<SCHEDULENODE>;
+  usTime: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // converted to minutes 12:30PM would be 12*60 + 30 = 750
+  usData1: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // typically the gridno, but depends on the action
+  usData2: UINT16[] /* [MAX_SCHEDULE_ACTIONS] */; // secondary information, not used by most actions
+  ubAction: UINT8[] /* [MAX_SCHEDULE_ACTIONS] */;
+  ubScheduleID: UINT8;
+  ubSoldierID: UINT8;
+  usFlags: UINT16;
+}
 
 extern UINT8 gubScheduleID;
 extern SCHEDULENODE *gpScheduleList;

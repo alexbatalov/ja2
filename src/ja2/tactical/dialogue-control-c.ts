@@ -15,21 +15,23 @@ const TALK_MENU_HEIGHT = 16;
 const DIALOGUE_DEFAULT_SUBTITLE_WIDTH = 200;
 const TEXT_DELAY_MODIFIER = 60;
 
-typedef struct {
-  UINT16 usQuoteNum;
-  UINT8 ubCharacterNum;
-  INT8 bUIHandlerID;
-  INT32 iFaceIndex;
-  INT32 iTimeStamp;
-  UINT32 uiSpecialEventFlag;
-  UINT32 uiSpecialEventData;
-  UINT32 uiSpecialEventData2;
-  UINT32 uiSpecialEventData3;
-  UINT32 uiSpecialEventData4;
-  BOOLEAN fFromSoldier;
-  BOOLEAN fDelayed;
-  BOOLEAN fPauseTime;
-} DIALOGUE_Q_STRUCT, *DIALOGUE_Q_STRUCT_PTR;
+interface DIALOGUE_Q_STRUCT {
+  usQuoteNum: UINT16;
+  ubCharacterNum: UINT8;
+  bUIHandlerID: INT8;
+  iFaceIndex: INT32;
+  iTimeStamp: INT32;
+  uiSpecialEventFlag: UINT32;
+  uiSpecialEventData: UINT32;
+  uiSpecialEventData2: UINT32;
+  uiSpecialEventData3: UINT32;
+  uiSpecialEventData4: UINT32;
+  fFromSoldier: BOOLEAN;
+  fDelayed: BOOLEAN;
+  fPauseTime: BOOLEAN;
+}
+
+typedef DIALOGUE_Q_STRUCT *DIALOGUE_Q_STRUCT_PTR;
 
 extern INT32 giMapInvPrev;
 extern INT32 giMapInvNext;

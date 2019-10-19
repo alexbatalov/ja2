@@ -17,10 +17,10 @@ const MAX_FONTS = 25;
 
 SGPPaletteEntry gSgpPalette[256];
 
-typedef struct {
-  UINT16 usDefaultPixelDepth;
-  FontTranslationTable *pTranslationTable;
-} FontManager;
+interface FontManager {
+  usDefaultPixelDepth: UINT16;
+  pTranslationTable: Pointer<FontTranslationTable>;
+}
 
 FontManager *pFManager;
 HVOBJECT FontObjs[MAX_FONTS];

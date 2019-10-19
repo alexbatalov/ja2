@@ -41,13 +41,13 @@ UINT16 gusMeanWhileGridNo[] = {
   12248,
 };
 
-typedef struct {
-  UINT8 ubProfile;
-  INT16 sX;
-  INT16 sY;
-  INT16 sZ;
-  INT16 sGridNo;
-} NPC_SAVE_INFO;
+interface NPC_SAVE_INFO {
+  ubProfile: UINT8;
+  sX: INT16;
+  sY: INT16;
+  sZ: INT16;
+  sGridNo: INT16;
+}
 
 // BEGIN SERALIZATION
 MEANWHILE_DEFINITION gCurrentMeanwhileDef;

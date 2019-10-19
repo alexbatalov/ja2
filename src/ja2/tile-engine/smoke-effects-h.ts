@@ -11,20 +11,20 @@ const SMOKE_EFFECT_INDOORS = 0x01;
 const SMOKE_EFFECT_ON_ROOF = 0x02;
 const SMOKE_EFFECT_MARK_FOR_UPDATE = 0x04;
 
-typedef struct TAG_SMOKE_EFFECT {
-  INT16 sGridNo; // gridno at which the tear gas cloud is centered
+interface SMOKEEFFECT {
+  sGridNo: INT16; // gridno at which the tear gas cloud is centered
 
-  UINT8 ubDuration; // the number of turns gas will remain effective
-  UINT8 ubRadius; // the current radius of the cloud in map tiles
-  UINT8 bFlags; // 0 - outdoors (fast spread), 1 - indoors (slow)
-  INT8 bAge; // the number of turns gas has been around
-  BOOLEAN fAllocated;
-  INT8 bType;
-  UINT16 usItem;
-  UINT8 ubOwner;
-  UINT8 ubPadding;
-  UINT32 uiTimeOfLastUpdate;
-} SMOKEEFFECT;
+  ubDuration: UINT8; // the number of turns gas will remain effective
+  ubRadius: UINT8; // the current radius of the cloud in map tiles
+  bFlags: UINT8; // 0 - outdoors (fast spread), 1 - indoors (slow)
+  bAge: INT8; // the number of turns gas has been around
+  fAllocated: BOOLEAN;
+  bType: INT8;
+  usItem: UINT16;
+  ubOwner: UINT8;
+  ubPadding: UINT8;
+  uiTimeOfLastUpdate: UINT32;
+}
 
 // Returns NO_SMOKE_EFFECT if none there...
 INT8 GetSmokeEffectOnTile(INT16 sGridNo, INT8 bLevel);

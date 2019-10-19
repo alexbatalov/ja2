@@ -44,10 +44,10 @@ const enum Enum235 {
   STRATEGIC_MORALE_EVENT,
 }
 
-typedef struct MoraleEvent {
-  UINT8 ubType;
-  INT8 bChange;
-} MoraleEvent;
+interface MoraleEvent {
+  ubType: UINT8;
+  bChange: INT8;
+}
 
 extern void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 extern void RefreshSoldierMorale(SOLDIERTYPE *pSoldier);

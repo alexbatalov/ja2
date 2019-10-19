@@ -15,46 +15,57 @@ void DoublePercentileCharacterFromStringIntoString(UINT16 *pSrcString, UINT16 *p
 // All exclusive input types are handled in this function.
 void HandleExclusiveInput(UINT32 uiKey);
 
-typedef struct TextInputColors {
+interface TextInputColors {
   // internal values that contain all of the colors for the text editing fields.
-  UINT16 usFont;
-  UINT16 usTextFieldColor;
-  UINT8 ubForeColor, ubShadowColor;
-  UINT8 ubHiForeColor, ubHiShadowColor, ubHiBackColor;
+  usFont: UINT16;
+  usTextFieldColor: UINT16;
+
+  ubForeColor: UINT8;
+  ubShadowColor: UINT8;
+
+  ubHiForeColor: UINT8;
+  ubHiShadowColor: UINT8;
+  ubHiBackColor: UINT8;
+
   // optional -- no bevelling by default
-  BOOLEAN fBevelling;
-  UINT16 usBrighterColor, usDarkerColor;
+  fBevelling: BOOLEAN;
+
+  usBrighterColor: UINT16;
+  usDarkerColor: UINT16;
+
   // optional -- cursor color defaults to black
-  UINT16 usCursorColor;
+  usCursorColor: UINT16;
   // optional colors for disabled fields (defaults to 25% darker shading)
-  BOOLEAN fUseDisabledAutoShade;
-  UINT8 ubDisabledForeColor;
-  UINT8 ubDisabledShadowColor;
-  UINT16 usDisabledTextFieldColor;
-} TextInputColors;
+  fUseDisabledAutoShade: BOOLEAN;
+  ubDisabledForeColor: UINT8;
+  ubDisabledShadowColor: UINT8;
+  usDisabledTextFieldColor: UINT16;
+}
 
 TextInputColors *pColors = NULL;
 
 // Internal nodes for keeping track of the text and user defined fields.
-typedef struct TEXTINPUTNODE {
-  UINT8 ubID;
-  UINT16 usInputType;
-  UINT8 ubMaxChars;
-  UINT16 *szString;
-  UINT8 ubStrLen;
-  BOOLEAN fEnabled;
-  BOOLEAN fUserField;
-  MOUSE_REGION region;
-  INPUT_CALLBACK InputCallback;
-  struct TEXTINPUTNODE *next, *prev;
-} TEXTINPUTNODE;
+interface TEXTINPUTNODE {
+  ubID: UINT8;
+  usInputType: UINT16;
+  ubMaxChars: UINT8;
+  szString: Pointer<UINT16>;
+  ubStrLen: UINT8;
+  fEnabled: BOOLEAN;
+  fUserField: BOOLEAN;
+  region: MOUSE_REGION;
+  InputCallback: INPUT_CALLBACK;
+
+  next: Pointer<TEXTINPUTNODE>;
+  prev: Pointer<TEXTINPUTNODE>;
+}
 
 // Stack list containing the head nodes of each level.  Only the top level is the active level.
-typedef struct STACKTEXTINPUTNODE {
-  TEXTINPUTNODE *head;
-  TextInputColors *pColors;
-  struct STACKTEXTINPUTNODE *next;
-} STACKTEXTINPUTNODE;
+interface STACKTEXTINPUTNODE {
+  head: Pointer<TEXTINPUTNODE>;
+  pColors: Pointer<TextInputColors>;
+  next: Pointer<STACKTEXTINPUTNODE>;
+}
 
 STACKTEXTINPUTNODE *pInputStack = NULL;
 

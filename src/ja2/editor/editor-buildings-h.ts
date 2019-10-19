@@ -14,10 +14,10 @@ void InitEditorBuildingsToolbar();
 void UpdateBuildingsInfo();
 void KillBuilding(UINT32 iMapIndex);
 
-typedef struct BUILDINGLAYOUTNODE {
-  struct BUILDINGLAYOUTNODE *next;
-  INT16 sGridNo;
-} BUILDINGLAYOUTNODE;
+interface BUILDINGLAYOUTNODE {
+  next: Pointer<BUILDINGLAYOUTNODE>;
+  sGridNo: INT16;
+}
 
 extern BUILDINGLAYOUTNODE *gpBuildingLayoutList;
 extern INT16 gsBuildingLayoutAnchorGridNo;

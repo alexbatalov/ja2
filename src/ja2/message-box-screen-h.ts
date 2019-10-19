@@ -32,32 +32,32 @@ const enum Enum24 {
 
 typedef void (*MSGBOX_CALLBACK)(UINT8 bExitValue);
 
-typedef struct {
-  UINT16 usFlags;
-  UINT32 uiExitScreen;
-  MSGBOX_CALLBACK ExitCallback;
-  INT16 sX;
-  INT16 sY;
-  UINT32 uiSaveBuffer;
-  MOUSE_REGION BackRegion;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  INT32 iButtonImages;
-  union {
-    struct {
-      UINT32 uiOKButton;
-      UINT32 uiYESButton;
-      UINT32 uiNOButton;
-      UINT32 uiUnusedButton;
-    };
-    struct {
-      UINT32 uiButton[4];
-    };
-  };
-  BOOLEAN fRenderBox;
-  INT8 bHandled;
-  INT32 iBoxId;
-} MESSAGE_BOX_STRUCT;
+interface MESSAGE_BOX_STRUCT {
+  usFlags: UINT16;
+  uiExitScreen: UINT32;
+  ExitCallback: MSGBOX_CALLBACK;
+  sX: INT16;
+  sY: INT16;
+  uiSaveBuffer: UINT32;
+  BackRegion: MOUSE_REGION;
+  usWidth: UINT16;
+  usHeight: UINT16;
+  iButtonImages: INT32;
+  /* union { */
+  /*   struct { */
+  uiOKButton: UINT32;
+  uiYESButton: UINT32;
+  uiNOButton: UINT32;
+  uiUnusedButton: UINT32;
+  /*   } */
+  /*   struct { */
+  uiButton: UINT32[] /* [4] */;
+  /*   } */
+  /* } */
+  fRenderBox: BOOLEAN;
+  bHandled: INT8;
+  iBoxId: INT32;
+}
 
 extern MESSAGE_BOX_STRUCT gMsgBox;
 extern BOOLEAN fRestoreBackgroundForMessageBox;

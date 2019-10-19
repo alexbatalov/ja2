@@ -112,11 +112,11 @@ const FLOWER_ORDER_DROP_DOWN_CITY_START_Y = FLOWER_ORDER_DROP_DOWN_LOCATION_Y + 
 const FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS = 75;
 const FLOWER_ORDER_NAME_FIELD_NUM_CHARS = 35;
 
-typedef struct {
-  STR16 *psCityLoc;
-  UINT8 ubNextDayDeliveryCost;
-  UINT8 ubWhenItGetsThereCost;
-} FlowerOrderLocationStruct;
+interface FlowerOrderLocationStruct {
+  psCityLoc: Pointer<STR16>;
+  ubNextDayDeliveryCost: UINT8;
+  ubWhenItGetsThereCost: UINT8;
+}
 
 const FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS = 17;
 

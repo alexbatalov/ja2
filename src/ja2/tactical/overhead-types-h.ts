@@ -291,21 +291,21 @@ extern UINT16 gszCivGroupNames[NUM_CIV_GROUPS][20];
 //-----------------------------------------------
 
 // PALETTE SUBSITUTION TYPES
-typedef struct {
-  UINT8 ubStart;
-  UINT8 ubEnd;
-} PaletteSubRangeType;
+interface PaletteSubRangeType {
+  ubStart: UINT8;
+  ubEnd: UINT8;
+}
 
 typedef CHAR8 PaletteRepID[30];
 
-typedef struct {
-  UINT8 ubType;
-  PaletteRepID ID;
-  UINT8 ubPaletteSize;
-  UINT8 *r;
-  UINT8 *g;
-  UINT8 *b;
-} PaletteReplacementType;
+interface PaletteReplacementType {
+  ubType: UINT8;
+  ID: PaletteRepID;
+  ubPaletteSize: UINT8;
+  r: Pointer<UINT8>;
+  g: Pointer<UINT8>;
+  b: Pointer<UINT8>;
+}
 
 // MACROS
 // This will set an animation ID

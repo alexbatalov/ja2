@@ -52,15 +52,15 @@ const enum Enum206 {
 
 typedef UINT32 (*UI_HANDLEFNC)(struct TAG_UI_EVENT *);
 
-typedef struct TAG_UI_EVENT {
-  UINT32 uiFlags;
-  UI_MODE ChangeToUIMode;
-  UI_HANDLEFNC HandleEvent;
-  BOOLEAN fFirstTime;
-  BOOLEAN fDoneMenu;
-  UINT32 uiMenuPreviousMode;
-  UINT32 uiParams[3];
-} UI_EVENT;
+interface UI_EVENT {
+  uiFlags: UINT32;
+  ChangeToUIMode: UI_MODE;
+  HandleEvent: UI_HANDLEFNC;
+  fFirstTime: BOOLEAN;
+  fDoneMenu: BOOLEAN;
+  uiMenuPreviousMode: UINT32;
+  uiParams: UINT32[] /* [3] */;
+}
 
 // EVENT ENUMERATION
 const enum Enum207 {

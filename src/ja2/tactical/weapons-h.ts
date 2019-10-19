@@ -160,50 +160,50 @@ const AIM_PENALTY_TARGET_PRONE = 40;
 const AIM_PENALTY_BLIND = 80;
 const AIM_PENALTY_FIRING_UP = 25;
 
-typedef struct {
-  UINT8 ubWeaponClass; // handgun/shotgun/rifle/knife
-  UINT8 ubWeaponType; // exact type (for display purposes)
-  UINT8 ubCalibre; // type of ammunition needed
-  UINT8 ubReadyTime; // APs to ready/unready weapon
-  UINT8 ubShotsPer4Turns; // maximum (mechanical) firing rate
-  UINT8 ubShotsPerBurst;
-  UINT8 ubBurstPenalty; // % penalty per shot after first
-  UINT8 ubBulletSpeed; // bullet's travelling speed
-  UINT8 ubImpact; // weapon's max damage impact (size & speed)
-  UINT8 ubDeadliness; // comparative ratings of guns
-  INT8 bAccuracy; // accuracy or penalty
-  UINT8 ubMagSize;
-  UINT16 usRange;
-  UINT16 usReloadDelay;
-  UINT8 ubAttackVolume;
-  UINT8 ubHitVolume;
-  UINT16 sSound;
-  UINT16 sBurstSound;
-  UINT16 sReloadSound;
-  UINT16 sLocknLoadSound;
-} WEAPONTYPE;
+interface WEAPONTYPE {
+  ubWeaponClass: UINT8; // handgun/shotgun/rifle/knife
+  ubWeaponType: UINT8; // exact type (for display purposes)
+  ubCalibre: UINT8; // type of ammunition needed
+  ubReadyTime: UINT8; // APs to ready/unready weapon
+  ubShotsPer4Turns: UINT8; // maximum (mechanical) firing rate
+  ubShotsPerBurst: UINT8;
+  ubBurstPenalty: UINT8; // % penalty per shot after first
+  ubBulletSpeed: UINT8; // bullet's travelling speed
+  ubImpact: UINT8; // weapon's max damage impact (size & speed)
+  ubDeadliness: UINT8; // comparative ratings of guns
+  bAccuracy: INT8; // accuracy or penalty
+  ubMagSize: UINT8;
+  usRange: UINT16;
+  usReloadDelay: UINT16;
+  ubAttackVolume: UINT8;
+  ubHitVolume: UINT8;
+  sSound: UINT16;
+  sBurstSound: UINT16;
+  sReloadSound: UINT16;
+  sLocknLoadSound: UINT16;
+}
 
-typedef struct {
-  UINT8 ubCalibre;
-  UINT8 ubMagSize;
-  UINT8 ubAmmoType;
-} MAGTYPE;
+interface MAGTYPE {
+  ubCalibre: UINT8;
+  ubMagSize: UINT8;
+  ubAmmoType: UINT8;
+}
 
-typedef struct {
-  UINT8 ubArmourClass;
-  UINT8 ubProtection;
-  UINT8 ubDegradePercent;
-} ARMOURTYPE;
+interface ARMOURTYPE {
+  ubArmourClass: UINT8;
+  ubProtection: UINT8;
+  ubDegradePercent: UINT8;
+}
 
-typedef struct {
-  UINT8 ubType; // type of explosive
-  UINT8 ubDamage; // damage value
-  UINT8 ubStunDamage; // stun amount / 100
-  UINT8 ubRadius; // radius of effect
-  UINT8 ubVolume; // sound radius of explosion
-  UINT8 ubVolatility; // maximum chance of accidental explosion
-  UINT8 ubAnimationID; // Animation enum to use
-} EXPLOSIVETYPE;
+interface EXPLOSIVETYPE {
+  ubType: UINT8; // type of explosive
+  ubDamage: UINT8; // damage value
+  ubStunDamage: UINT8; // stun amount / 100
+  ubRadius: UINT8; // radius of effect
+  ubVolume: UINT8; // sound radius of explosion
+  ubVolatility: UINT8; // maximum chance of accidental explosion
+  ubAnimationID: UINT8; // Animation enum to use
+}
 
 // GLOBALS
 

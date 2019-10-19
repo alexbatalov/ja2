@@ -7,16 +7,15 @@ BOOLEAN gfWasInMeanwhile = FALSE;
 ///////////////////////////////////////////////////////////////
 
 // This struct is used to save info from the NPCQuoteInfo struct that can change.
-typedef struct {
-  UINT16 usFlags;
+interface TempNPCQuoteInfoSave {
+  usFlags: UINT16;
 
-  union {
-    INT16 sRequiredItem; // item NPC must have to say quote
-    INT16 sRequiredGridno; // location for NPC req'd to say quote
-  };
-
-  UINT16 usGoToGridno;
-} TempNPCQuoteInfoSave;
+  /* union { */
+  sRequiredItem: INT16; // item NPC must have to say quote
+  sRequiredGridno: INT16; // location for NPC req'd to say quote
+  /* } */
+  usGoToGridno: UINT16;
+}
 
 const NPC_TEMP_QUOTE_FILE = "Temp\\NpcQuote.tmp";
 

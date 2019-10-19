@@ -12,41 +12,41 @@ const enum Enum17 {
   HELP_SCREEN_NUMBER_OF_HELP_SCREENS,
 }
 
-typedef struct {
-  INT8 bCurrentHelpScreen;
-  UINT32 uiFlags;
+interface HELP_SCREEN_STRUCT {
+  bCurrentHelpScreen: INT8;
+  uiFlags: UINT32;
 
-  UINT16 usHasPlayerSeenHelpScreenInCurrentScreen;
+  usHasPlayerSeenHelpScreenInCurrentScreen: UINT16;
 
-  UINT8 ubHelpScreenDirty;
+  ubHelpScreenDirty: UINT8;
 
-  UINT16 usScreenLocX;
-  UINT16 usScreenLocY;
-  UINT16 usScreenWidth;
-  UINT16 usScreenHeight;
+  usScreenLocX: UINT16;
+  usScreenLocY: UINT16;
+  usScreenWidth: UINT16;
+  usScreenHeight: UINT16;
 
-  INT32 iLastMouseClickY; // last position the mouse was clicked ( if != -1 )
+  iLastMouseClickY: INT32; // last position the mouse was clicked ( if != -1 )
 
-  INT8 bCurrentHelpScreenActiveSubPage; // used to keep track of the current page being displayed
+  bCurrentHelpScreenActiveSubPage: INT8; // used to keep track of the current page being displayed
 
-  INT8 bNumberOfButtons;
+  bNumberOfButtons: INT8;
 
   // used so if the user checked the box to show the help, it doesnt automatically come up every frame
-  BOOLEAN fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen;
+  fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen: BOOLEAN;
 
-  INT8 bDelayEnteringHelpScreenBy1FrameCount;
-  UINT16 usLeftMarginPosX;
+  bDelayEnteringHelpScreenBy1FrameCount: INT8;
+  usLeftMarginPosX: UINT16;
 
-  UINT16 usCursor;
+  usCursor: UINT16;
 
-  BOOLEAN fWasTheGamePausedPriorToEnteringHelpScreen;
+  fWasTheGamePausedPriorToEnteringHelpScreen: BOOLEAN;
 
   // scroll variables
-  UINT16 usTotalNumberOfPixelsInBuffer;
-  INT32 iLineAtTopOfTextBuffer;
-  UINT16 usTotalNumberOfLinesInBuffer;
-  BOOLEAN fForceHelpScreenToComeUp;
-} HELP_SCREEN_STRUCT;
+  usTotalNumberOfPixelsInBuffer: UINT16;
+  iLineAtTopOfTextBuffer: INT32;
+  usTotalNumberOfLinesInBuffer: UINT16;
+  fForceHelpScreenToComeUp: BOOLEAN;
+}
 
 extern HELP_SCREEN_STRUCT gHelpScreen;
 

@@ -210,10 +210,10 @@ UINT8 gbOriginalAttachStatus[MAX_ATTACHMENTS];
 SOLDIERTYPE *gpAttachSoldier;
 extern BOOLEAN gfSMDisableForItems;
 
-typedef struct {
-  UINT16 x;
-  UINT16 y;
-} MoneyLoc;
+interface MoneyLoc {
+  x: UINT16;
+  y: UINT16;
+}
 
 MoneyLoc gMoneyButtonLoc = { 343, 351 };
 MoneyLoc gMoneyButtonOffsets[] = {
@@ -311,30 +311,30 @@ UINT8 ubRGBItemCyclePlacedItemColors[] = {
   25, 25, 25,
 };
 
-typedef struct {
-  INT16 sX;
-  INT16 sY;
-  INT16 sValDx;
-} INV_DESC_STATS;
+interface INV_DESC_STATS {
+  sX: INT16;
+  sY: INT16;
+  sValDx: INT16;
+}
 
-typedef struct {
-  INT16 sX;
-  INT16 sY;
-  INT16 sHeight;
-  INT16 sWidth;
-  INT16 sBarDx;
-  INT16 sBarDy;
-} INV_ATTACHXY;
+interface INV_ATTACHXY {
+  sX: INT16;
+  sY: INT16;
+  sHeight: INT16;
+  sWidth: INT16;
+  sBarDx: INT16;
+  sBarDy: INT16;
+}
 
 const NUM_INV_HELPTEXT_ENTRIES = 1;
 
-typedef struct {
-  INT32 iXPosition[NUM_INV_HELPTEXT_ENTRIES];
-  INT32 iYPosition[NUM_INV_HELPTEXT_ENTRIES];
-  INT32 iWidth[NUM_INV_HELPTEXT_ENTRIES];
-  STR16 sString1[NUM_INV_HELPTEXT_ENTRIES];
-  STR16 sString2[NUM_INV_HELPTEXT_ENTRIES];
-} INV_HELPTEXT;
+interface INV_HELPTEXT {
+  iXPosition: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+  iYPosition: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+  iWidth: INT32[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+  sString1: STR16[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+  sString2: STR16[] /* [NUM_INV_HELPTEXT_ENTRIES] */;
+}
 
 INV_DESC_STATS gWeaponStats[] = {
   { 202, 25, 83 },
@@ -434,11 +434,11 @@ INV_REGIONS gSMInvData[] = {
   { FALSE, INV_BAR_DX, INV_BAR_DY, SM_INV_SLOT_WIDTH, SM_INV_SLOT_HEIGHT, 0, 0 }, // SMALLPOCK8
 };
 
-typedef struct {
-  UINT32 uiTotalAmount;
-  UINT32 uiMoneyRemaining;
-  UINT32 uiMoneyRemoving;
-} REMOVE_MONEY;
+interface REMOVE_MONEY {
+  uiTotalAmount: UINT32;
+  uiMoneyRemaining: UINT32;
+  uiMoneyRemoving: UINT32;
+}
 REMOVE_MONEY gRemoveMoney;
 
 MOUSE_REGION gSMInvRegion[NUM_INV_SLOTS];
@@ -4630,46 +4630,46 @@ void ItemPopupFullRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 
 const NUM_PICKUP_SLOTS = 6;
 
-typedef struct {
-  ITEM_POOL *pItemPool;
-  INT16 sX;
-  INT16 sY;
-  INT16 sWidth;
-  INT16 sHeight;
-  INT8 bScrollPage;
-  INT32 ubScrollAnchor;
-  INT32 ubTotalItems;
-  INT32 bCurSelect;
-  UINT8 bNumSlotsPerPage;
-  UINT32 uiPanelVo;
-  INT32 iUpButtonImages;
-  INT32 iDownButtonImages;
-  INT32 iAllButtonImages;
-  INT32 iCancelButtonImages;
-  INT32 iOKButtonImages;
-  INT32 iUpButton;
-  INT32 iDownButton;
-  INT32 iAllButton;
-  INT32 iOKButton;
-  INT32 iCancelButton;
-  BOOLEAN fCanScrollUp;
-  BOOLEAN fCanScrollDown;
-  BOOLEAN fDirtyLevel;
-  INT32 iDirtyRect;
-  BOOLEAN fHandled;
-  INT16 sGridNo;
-  INT8 bZLevel;
-  INT16 sButtomPanelStartY;
-  SOLDIERTYPE *pSoldier;
-  ITEM_POOL *ItemPoolSlots[NUM_PICKUP_SLOTS];
-  MOUSE_REGION Regions[NUM_PICKUP_SLOTS];
-  MOUSE_REGION BackRegions;
-  MOUSE_REGION BackRegion;
-  BOOLEAN *pfSelectedArray;
-  BOOLEAN fAtLeastOneSelected;
-  OBJECTTYPE CompAmmoObject;
-  BOOLEAN fAllSelected;
-} ITEM_PICKUP_MENU_STRUCT;
+interface ITEM_PICKUP_MENU_STRUCT {
+  pItemPool: Pointer<ITEM_POOL>;
+  sX: INT16;
+  sY: INT16;
+  sWidth: INT16;
+  sHeight: INT16;
+  bScrollPage: INT8;
+  ubScrollAnchor: INT32;
+  ubTotalItems: INT32;
+  bCurSelect: INT32;
+  bNumSlotsPerPage: UINT8;
+  uiPanelVo: UINT32;
+  iUpButtonImages: INT32;
+  iDownButtonImages: INT32;
+  iAllButtonImages: INT32;
+  iCancelButtonImages: INT32;
+  iOKButtonImages: INT32;
+  iUpButton: INT32;
+  iDownButton: INT32;
+  iAllButton: INT32;
+  iOKButton: INT32;
+  iCancelButton: INT32;
+  fCanScrollUp: BOOLEAN;
+  fCanScrollDown: BOOLEAN;
+  fDirtyLevel: BOOLEAN;
+  iDirtyRect: INT32;
+  fHandled: BOOLEAN;
+  sGridNo: INT16;
+  bZLevel: INT8;
+  sButtomPanelStartY: INT16;
+  pSoldier: Pointer<SOLDIERTYPE>;
+  ItemPoolSlots: Pointer<ITEM_POOL>[] /* [NUM_PICKUP_SLOTS] */;
+  Regions: MOUSE_REGION[] /* [NUM_PICKUP_SLOTS] */;
+  BackRegions: MOUSE_REGION;
+  BackRegion: MOUSE_REGION;
+  pfSelectedArray: Pointer<BOOLEAN>;
+  fAtLeastOneSelected: BOOLEAN;
+  CompAmmoObject: OBJECTTYPE;
+  fAllSelected: BOOLEAN;
+}
 
 const ITEMPICK_UP_X = 55;
 const ITEMPICK_UP_Y = 5;
@@ -5745,13 +5745,13 @@ void CancelItemPointer() {
   }
 }
 
-typedef struct {
-  OBJECTTYPE ItemPointerInfo;
-  UINT8 ubSoldierID;
-  UINT8 ubInvSlot;
-  BOOLEAN fCursorActive;
-  INT8 bPadding[5];
-} ITEM_CURSOR_SAVE_INFO;
+interface ITEM_CURSOR_SAVE_INFO {
+  ItemPointerInfo: OBJECTTYPE;
+  ubSoldierID: UINT8;
+  ubInvSlot: UINT8;
+  fCursorActive: BOOLEAN;
+  bPadding: INT8[] /* [5] */;
+}
 
 BOOLEAN LoadItemCursorFromSavedGame(HWFILE hFile) {
   UINT32 uiLoadSize = 0;

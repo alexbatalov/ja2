@@ -230,33 +230,29 @@ const enum Enum134 {
 
 // STRUCTURES / TYPEDEFS
 
-struct rgbcolor {
-  UINT8 ubRed;
-  UINT8 ubGreen;
-  UINT8 ubBlue;
-};
+interface RGBCOLOR {
+  ubRed: UINT8;
+  ubGreen: UINT8;
+  ubBlue: UINT8;
+}
 
-typedef struct rgbcolor RGBCOLOR;
+interface LineText {
+  pLineText: STR16;
+  uiFont: UINT32;
+  pNext: Pointer<LineText>;
+}
 
-struct lineoftext {
-  STR16 pLineText;
-  UINT32 uiFont;
-  struct lineoftext *pNext;
-};
-
-typedef struct lineoftext LineText;
 typedef LineText *LineTextPtr;
 
-struct popbox {
-  UINT16 usTopX;
-  UINT16 usTopY;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  LineTextPtr pBoxText;
-  struct popbox *pNext;
-};
+interface PopUpBox {
+  usTopX: UINT16;
+  usTopY: UINT16;
+  usWidth: UINT16;
+  usHeight: UINT16;
+  pBoxText: LineTextPtr;
+  pNext: Pointer<PopUpBox>;
+}
 
-typedef struct popbox PopUpBox;
 typedef PopUpBox *PopUpBoxPtr;
 
 // TABLES

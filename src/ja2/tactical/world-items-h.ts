@@ -6,23 +6,23 @@ const WORLD_ITEM_REALISTIC_ONLY = 0x0100;
 const WORLD_ITEM_REACHABLE = 0x0200;
 const WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT = 0x0400;
 
-typedef struct {
-  BOOLEAN fExists;
-  INT16 sGridNo;
-  UINT8 ubLevel;
-  OBJECTTYPE o;
-  UINT16 usFlags;
-  INT8 bRenderZHeightAboveLevel;
+interface WORLDITEM {
+  fExists: BOOLEAN;
+  sGridNo: INT16;
+  ubLevel: UINT8;
+  o: OBJECTTYPE;
+  usFlags: UINT16;
+  bRenderZHeightAboveLevel: INT8;
 
-  INT8 bVisible;
+  bVisible: INT8;
 
   // This is the chance associated with an item or a trap not-existing in the world.  The reason why
   // this is reversed (10 meaning item has 90% chance of appearing, is because the order that the map
   // is saved, we don't know if the version is older or not until after the items are loaded and added.
   // Because this value is zero in the saved maps, we can't change it to 100, hence the reversal method.
   // This check is only performed the first time a map is loaded.  Later, it is entirely skipped.
-  UINT8 ubNonExistChance;
-} WORLDITEM;
+  ubNonExistChance: UINT8;
+}
 
 extern WORLDITEM *gWorldItems;
 extern UINT32 guiNumWorldItems;
@@ -36,10 +36,10 @@ void SaveWorldItemsToMap(HWFILE fp);
 
 void TrashWorldItems();
 
-typedef struct {
-  BOOLEAN fExists;
-  INT32 iItemIndex;
-} WORLDBOMB;
+interface WORLDBOMB {
+  fExists: BOOLEAN;
+  iItemIndex: INT32;
+}
 
 extern WORLDBOMB *gWorldBombs;
 extern UINT32 guiNumWorldBombs;

@@ -25,28 +25,28 @@ const HVOBJECT_GLOW_YELLOW = 2;
 const HVOBJECT_GLOW_RED = 3;
 
 // Effects structure for specialized blitting
-typedef struct {
-  UINT32 uiShadowLevel;
-  SGPRect ClipRect;
-} blt_fx;
+interface blt_fx {
+  uiShadowLevel: UINT32;
+  ClipRect: SGPRect;
+}
 
 // Z-buffer info structure for properly assigning Z values
-typedef struct {
-  INT8 bInitialZChange; // difference in Z value between the leftmost and base strips
-  UINT8 ubFirstZStripWidth; // # of pixels in the leftmost strip
-  UINT8 ubNumberOfZChanges; // number of strips (after the first)
-  INT8 *pbZChange; // change to the Z value in each strip (after the first)
-} ZStripInfo;
+interface ZStripInfo {
+  bInitialZChange: INT8; // difference in Z value between the leftmost and base strips
+  ubFirstZStripWidth: UINT8; // # of pixels in the leftmost strip
+  ubNumberOfZChanges: UINT8; // number of strips (after the first)
+  pbZChange: Pointer<INT8>; // change to the Z value in each strip (after the first)
+}
 
-typedef struct {
-  UINT16 *p16BPPData;
-  UINT16 usRegionIndex;
-  UINT8 ubShadeLevel;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-} SixteenBPPObjectInfo;
+interface SixteenBPPObjectInfo {
+  p16BPPData: Pointer<UINT16>;
+  usRegionIndex: UINT16;
+  ubShadeLevel: UINT8;
+  usWidth: UINT16;
+  usHeight: UINT16;
+  sOffsetX: INT16;
+  sOffsetY: INT16;
+}
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
 // From RGB to COLORVAL
@@ -64,44 +64,46 @@ const VOBJECT_FLAG_SHADETABLE_SHARED = 0x00000100;
 
 // This structure is a video object.
 // The video object contains different data based on it's type, compressed or not
-typedef struct TAG_HVOBJECT {
-  UINT32 fFlags; // Special flags
-  UINT32 uiSizePixData; // ETRLE data size
-  SGPPaletteEntry *pPaletteEntry; // 8BPP Palette
-  COLORVAL TransparentColor; // Defaults to 0,0,0
-  UINT16 *p16BPPPalette; // A 16BPP palette used for 8->16 blits
+interface SGPVObject {
+  fFlags: UINT32; // Special flags
+  uiSizePixData: UINT32; // ETRLE data size
+  pPaletteEntry: Pointer<SGPPaletteEntry>; // 8BPP Palette
+  TransparentColor: COLORVAL; // Defaults to 0,0,0
+  p16BPPPalette: Pointer<UINT16>; // A 16BPP palette used for 8->16 blits
 
-  PTR pPixData; // ETRLE pixel data
-  ETRLEObject *pETRLEObject; // Object offset data etc
-  SixteenBPPObjectInfo *p16BPPObject;
-  UINT16 *pShades[HVOBJECT_SHADE_TABLES]; // Shading tables
-  UINT16 *pShadeCurrent;
-  UINT16 *pGlow; // glow highlight table
-  UINT8 *pShade8; // 8-bit shading index table
-  UINT8 *pGlow8; // 8-bit glow table
-  ZStripInfo **ppZStripInfo; // Z-value strip info arrays
+  pPixData: PTR; // ETRLE pixel data
+  pETRLEObject: Pointer<ETRLEObject>; // Object offset data etc
+  p16BPPObject: Pointer<SixteenBPPObjectInfo>;
+  pShades: Pointer<UINT16>[] /* [HVOBJECT_SHADE_TABLES] */; // Shading tables
+  pShadeCurrent: Pointer<UINT16>;
+  pGlow: Pointer<UINT16>; // glow highlight table
+  pShade8: Pointer<UINT8>; // 8-bit shading index table
+  pGlow8: Pointer<UINT8>; // 8-bit glow table
+  ppZStripInfo: Pointer<Pointer<ZStripInfo>>; // Z-value strip info arrays
 
-  UINT16 usNumberOf16BPPObjects;
-  UINT16 usNumberOfObjects; // Total number of objects
-  UINT8 ubBitDepth; // BPP
+  usNumberOf16BPPObjects: UINT16;
+  usNumberOfObjects: UINT16; // Total number of objects
+  ubBitDepth: UINT8; // BPP
 
   // Reserved for added room and 32-byte boundaries
-  BYTE bReserved[1];
-} SGPVObject, *HVOBJECT;
+  bReserved: BYTE[] /* [1] */;
+}
+
+typedef SGPVObject *HVOBJECT;
 
 // This structure describes the creation parameters for a Video Object
-typedef struct {
-  UINT32 fCreateFlags; // Specifies creation flags like from file or not
-  union {
-    struct {
-      SGPFILENAME ImageFile; // Filename of image data to use
-    };
-    struct {
-      HIMAGE hImage;
-    };
-  };
-  UINT8 ubBitDepth; // BPP, ignored if given from file
-} VOBJECT_DESC;
+interface VOBJECT_DESC {
+  fCreateFlags: UINT32; // Specifies creation flags like from file or not
+  /* union { */
+  /*   struct { */
+  ImageFile: SGPFILENAME; // Filename of image data to use
+  /*   } */
+  /*   struct { */
+  hImage: HIMAGE;
+  /*   } */
+  /* } */
+  ubBitDepth: UINT8; // BPP, ignored if given from file
+}
 
 // **********************************************************************************
 //

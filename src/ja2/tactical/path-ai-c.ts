@@ -52,27 +52,24 @@ const TRAILCELLTYPE = UINT16;
 
 // OLD PATHAI STUFF
 /////////////////////////////////////////////////
-struct path_s {
-  INT32 iLocation; // 4
-  struct path_s *pNext[ABSMAX_SKIPLIST_LEVEL]; // 4 * MAX_SKIPLIST_LEVEL (5) = 20
-  INT16 sPathNdx; // 2
-  TRAILCELLTYPE usCostSoFar; // 2
-  TRAILCELLTYPE usCostToGo; // 2
-  TRAILCELLTYPE usTotalCost; // 2
-  INT8 bLevel; // 1
-  UINT8 ubTotalAPCost; // 1
-  UINT8 ubLegDistance; // 1
-};
+interface path_t {
+  iLocation: INT32; // 4
+  pNext: Pointer<path_t>[] /* [ABSMAX_SKIPLIST_LEVEL] */; // 4 * MAX_SKIPLIST_LEVEL (5) = 20
+  sPathNdx: INT16; // 2
+  usCostSoFar: TRAILCELLTYPE; // 2
+  usCostToGo: TRAILCELLTYPE; // 2
+  usTotalCost: TRAILCELLTYPE; // 2
+  bLevel: INT8; // 1
+  ubTotalAPCost: UINT8; // 1
+  ubLegDistance: UINT8; // 1
+}
 
-typedef struct path_s path_t;
-
-struct trail_s {
-  INT16 nextLink;
-  INT8 stepDir;
-  INT8 fFlags;
-  INT16 sGridNo;
-};
-typedef struct trail_s trail_t;
+interface trail_ts {
+  nextLink: INT16;
+  stepDir: INT8;
+  fFlags: INT8;
+  sGridNo: INT16;
+}
 
 const enum Enum248 {
   STEP_BACKWARDS = 0x01,

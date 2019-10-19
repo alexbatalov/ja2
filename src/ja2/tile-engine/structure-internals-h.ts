@@ -117,74 +117,74 @@ const STRUCTURE_ROOF = 0x07000000;
 const TILE_ON_ROOF = 0x01;
 const TILE_PASSABLE = 0x02;
 
-typedef struct TAG_STRUCTURE_TILE {
-  INT16 sPosRelToBase; // "single-axis"
-  INT8 bXPosRelToBase;
-  INT8 bYPosRelToBase;
-  PROFILE Shape; // 25 bytes
-  UINT8 fFlags;
-  UINT8 ubVehicleHitLocation;
-  BYTE bUnused[1];
-} DB_STRUCTURE_TILE; // 32 bytes
+interface DB_STRUCTURE_TILE {
+  sPosRelToBase: INT16; // "single-axis"
+  bXPosRelToBase: INT8;
+  bYPosRelToBase: INT8;
+  Shape: PROFILE; // 25 bytes
+  fFlags: UINT8;
+  ubVehicleHitLocation: UINT8;
+  bUnused: BYTE[] /* [1] */;
+} // 32 bytes
 
 const BASE_TILE = 0;
 
 const NO_PARTNER_STRUCTURE = 0;
 
-typedef struct TAG_DB_STRUCTURE {
-  UINT8 ubArmour;
-  UINT8 ubHitPoints;
-  UINT8 ubDensity;
-  UINT8 ubNumberOfTiles;
-  UINT32 fFlags;
-  UINT16 usStructureNumber;
-  UINT8 ubWallOrientation;
-  INT8 bDestructionPartner; // >0 = debris number (bDP - 1), <0 = partner graphic
-  INT8 bPartnerDelta; // opened/closed version, etc... 0 for unused
-  INT8 bZTileOffsetX;
-  INT8 bZTileOffsetY;
-  BYTE bUnused[1];
-} DB_STRUCTURE; // 16 bytes
+interface DB_STRUCTURE {
+  ubArmour: UINT8;
+  ubHitPoints: UINT8;
+  ubDensity: UINT8;
+  ubNumberOfTiles: UINT8;
+  fFlags: UINT32;
+  usStructureNumber: UINT16;
+  ubWallOrientation: UINT8;
+  bDestructionPartner: INT8; // >0 = debris number (bDP - 1), <0 = partner graphic
+  bPartnerDelta: INT8; // opened/closed version, etc... 0 for unused
+  bZTileOffsetX: INT8;
+  bZTileOffsetY: INT8;
+  bUnused: BYTE[] /* [1] */;
+} // 16 bytes
 
-typedef struct TAG_DB_STRUCTURE_REF {
-  DB_STRUCTURE *pDBStructure;
-  DB_STRUCTURE_TILE **ppTile; // dynamic array
-} DB_STRUCTURE_REF; // 8 bytes
+interface DB_STRUCTURE_REF {
+  pDBStructure: Pointer<DB_STRUCTURE>;
+  ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>; // dynamic array
+} // 8 bytes
 
-typedef struct TAG_STRUCTURE {
-  struct TAG_STRUCTURE *pPrev;
-  struct TAG_STRUCTURE *pNext;
-  INT16 sGridNo;
-  UINT16 usStructureID;
-  DB_STRUCTURE_REF *pDBStructureRef;
-  union {
-    struct {
-      UINT8 ubHitPoints;
-      UINT8 ubLockStrength;
-    };
-    struct {
-      INT16 sBaseGridNo;
-    };
-  }; // 2 bytes
-  INT16 sCubeOffset; // height of bottom of object in profile "cubes"
-  UINT32 fFlags; // need to have something to indicate base tile/not
-  PROFILE *pShape;
-  UINT8 ubWallOrientation;
-  UINT8 ubVehicleHitLocation;
-  UINT8 ubStructureHeight; // if 0, then unset; otherwise stores height of structure when last calculated
-  UINT8 ubUnused[1];
-} STRUCTURE; // 32 bytes
+interface STRUCTURE {
+  pPrev: Pointer<STRUCTURE>;
+  pNext: Pointer<STRUCTURE>;
+  sGridNo: INT16;
+  usStructureID: UINT16;
+  pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  /* union { */
+  /*   struct { */
+  ubHitPoints: UINT8;
+  ubLockStrength: UINT8;
+  /*   } */
+  /*   struct { */
+  sBaseGridNo: INT16;
+  /*   } */
+  /* } */
+  sCubeOffset: INT16; // height of bottom of object in profile "cubes"
+  fFlags: UINT32; // need to have something to indicate base tile/not
+  pShape: Pointer<PROFILE>;
+  ubWallOrientation: UINT8;
+  ubVehicleHitLocation: UINT8;
+  ubStructureHeight: UINT8; // if 0, then unset; otherwise stores height of structure when last calculated
+  ubUnused: UINT8[] /* [1] */;
+} // 32 bytes
 
-typedef struct TAG_STRUCTURE_FILE_REF {
-  struct TAG_STRUCTURE_FILE_REF *pPrev;
-  struct TAG_STRUCTURE_FILE_REF *pNext;
-  AuxObjectData *pAuxData;
-  RelTileLoc *pTileLocData;
-  UINT8 *pubStructureData;
-  DB_STRUCTURE_REF *pDBStructureRef; // dynamic array
-  UINT16 usNumberOfStructures;
-  UINT16 usNumberOfStructuresStored;
-} STRUCTURE_FILE_REF; // 24 bytes
+interface STRUCTURE_FILE_REF {
+  pPrev: Pointer<STRUCTURE_FILE_REF>;
+  pNext: Pointer<STRUCTURE_FILE_REF>;
+  pAuxData: Pointer<AuxObjectData>;
+  pTileLocData: Pointer<RelTileLoc>;
+  pubStructureData: Pointer<UINT8>;
+  pDBStructureRef: Pointer<DB_STRUCTURE_REF>; // dynamic array
+  usNumberOfStructures: UINT16;
+  usNumberOfStructuresStored: UINT16;
+} // 24 bytes
 
 // IMPORTANT THING TO REMEMBER
 //
@@ -197,22 +197,22 @@ typedef struct TAG_STRUCTURE_FILE_REF {
 // For image information, however, an array is stored with every entry
 // filled regardless of whether there is non-zero data defined for
 // that graphic!
-typedef struct TAG_STRUCTURE_FILE_HEADER {
-  CHAR8 szId[4];
-  union {
-    struct {
-      UINT16 usNumberOfStructures;
-    };
-    struct {
-      UINT16 usNumberOfImages;
-    };
-  };
-  UINT16 usNumberOfStructuresStored;
-  UINT16 usStructureDataSize;
-  UINT8 fFlags;
-  UINT8 bUnused[3];
-  UINT16 usNumberOfImageTileLocsStored;
-} STRUCTURE_FILE_HEADER; // 16 bytes
+interface STRUCTURE_FILE_HEADER {
+  szId: CHAR8[] /* [4] */;
+  /* union { */
+  /*   struct { */
+  usNumberOfStructures: UINT16;
+  /*   } */
+  /*   struct { */
+  usNumberOfImages: UINT16;
+  /*   } */
+  /* } */
+  usNumberOfStructuresStored: UINT16;
+  usStructureDataSize: UINT16;
+  fFlags: UINT8;
+  bUnused: UINT8[] /* [3] */;
+  usNumberOfImageTileLocsStored: UINT16;
+} // 16 bytes
 
 // "J2SD" = Jagged 2 Structure Data
 const STRUCTURE_FILE_ID = "J2SD";

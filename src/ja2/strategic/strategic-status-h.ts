@@ -59,35 +59,35 @@ const enum Enum189 {
   NUM_WAYS_ENEMIES_KILLED,
 }
 
-typedef struct STRATEGIC_STATUS {
-  UINT32 uiFlags;
-  UINT8 ubNumCapturedForRescue;
+interface STRATEGIC_STATUS {
+  uiFlags: UINT32;
+  ubNumCapturedForRescue: UINT8;
 
-  UINT8 ubHighestProgress; // the highest level of progress player has attained thus far in the game (0-100)
+  ubHighestProgress: UINT8; // the highest level of progress player has attained thus far in the game (0-100)
 
-  UINT8 ubStandardArmyGunIndex[ARMY_GUN_LEVELS]; // type of gun in each group that Queen's army is using this game
-  BOOLEAN fWeaponDroppedAlready[MAX_WEAPONS]; // flag that tracks whether this weapon type has been dropped before
+  ubStandardArmyGunIndex: UINT8[] /* [ARMY_GUN_LEVELS] */; // type of gun in each group that Queen's army is using this game
+  fWeaponDroppedAlready: BOOLEAN[] /* [MAX_WEAPONS] */; // flag that tracks whether this weapon type has been dropped before
 
-  UINT8 ubMercDeaths; // how many soldiers have bit it while in the player's employ (0-100)
-  UINT32 uiManDaysPlayed; // once per day, # living mercs on player's team is added to this running total
+  ubMercDeaths: UINT8; // how many soldiers have bit it while in the player's employ (0-100)
+  uiManDaysPlayed: UINT32; // once per day, # living mercs on player's team is added to this running total
 
-  UINT8 ubBadReputation; // how bad a reputation player has earned through his actions, performance, etc. (0-100)
+  ubBadReputation: UINT8; // how bad a reputation player has earned through his actions, performance, etc. (0-100)
 
-  UINT16 usEnricoEmailFlags; // bit flags that control progress-related E-mails from Enrico
+  usEnricoEmailFlags: UINT16; // bit flags that control progress-related E-mails from Enrico
 
-  UINT8 ubInsuranceInvestigationsCnt; // how many times merc has been investigated for possible insurance fraud
+  ubInsuranceInvestigationsCnt: UINT8; // how many times merc has been investigated for possible insurance fraud
 
-  UINT8 ubUnhiredMercDeaths; // how many mercs have died while NOT working for the player
+  ubUnhiredMercDeaths: UINT8; // how many mercs have died while NOT working for the player
 
-  UINT16 usPlayerKills; // kills achieved by all mercs controlled by player together.  *Excludes* militia kills!
+  usPlayerKills: UINT16; // kills achieved by all mercs controlled by player together.  *Excludes* militia kills!
 
-  UINT16 usEnemiesKilled[NUM_WAYS_ENEMIES_KILLED][NUM_ENEMY_RANKS]; // admin/troop/elite.  Includes kills by militia, too
-  UINT16 usLastDayOfPlayerActivity;
-  UINT8 ubNumNewSectorsVisitedToday;
-  UINT8 ubNumberOfDaysOfInactivity;
+  usEnemiesKilled: UINT16[][] /* [NUM_WAYS_ENEMIES_KILLED][NUM_ENEMY_RANKS] */; // admin/troop/elite.  Includes kills by militia, too
+  usLastDayOfPlayerActivity: UINT16;
+  ubNumNewSectorsVisitedToday: UINT8;
+  ubNumberOfDaysOfInactivity: UINT8;
 
-  INT8 bPadding[70];
-} STRATEGIC_STATUS;
+  bPadding: INT8[] /* [70] */;
+}
 
 void InitStrategicStatus();
 

@@ -20,61 +20,61 @@ const VOVERLAY_DESC_POSITION = 0x00004000;
 typedef void (*OVERLAY_CALLBACK)(struct _VIDEO_OVERLAY *);
 
 // Struct for backgrounds
-typedef struct {
-  BOOLEAN fAllocated;
-  BOOLEAN fFilled;
-  BOOLEAN fFreeMemory;
-  BOOLEAN fZBuffer;
-  UINT32 uiFlags;
-  INT16 *pSaveArea;
-  INT16 *pZSaveArea;
-  INT16 sLeft;
-  INT16 sTop;
-  INT16 sRight;
-  INT16 sBottom;
-  INT16 sWidth;
-  INT16 sHeight;
-  BOOLEAN fPendingDelete;
-  BOOLEAN fDisabled;
-} BACKGROUND_SAVE;
+interface BACKGROUND_SAVE {
+  fAllocated: BOOLEAN;
+  fFilled: BOOLEAN;
+  fFreeMemory: BOOLEAN;
+  fZBuffer: BOOLEAN;
+  uiFlags: UINT32;
+  pSaveArea: Pointer<INT16>;
+  pZSaveArea: Pointer<INT16>;
+  sLeft: INT16;
+  sTop: INT16;
+  sRight: INT16;
+  sBottom: INT16;
+  sWidth: INT16;
+  sHeight: INT16;
+  fPendingDelete: BOOLEAN;
+  fDisabled: BOOLEAN;
+}
 
 // Struct for topmost blitters
-typedef struct _VIDEO_OVERLAY {
-  UINT32 uiFlags;
-  BOOLEAN fAllocated;
-  BOOLEAN fDisabled;
-  BOOLEAN fActivelySaving;
-  BOOLEAN fDeletionPending;
-  INT32 uiBackground;
-  BACKGROUND_SAVE *pBackground;
-  INT16 *pSaveArea;
-  UINT32 uiUserData[5];
-  UINT32 uiFontID;
-  INT16 sX;
-  INT16 sY;
-  UINT8 ubFontBack;
-  UINT8 ubFontFore;
-  INT16 zText[200];
-  UINT32 uiDestBuff;
-  OVERLAY_CALLBACK BltCallback;
-} VIDEO_OVERLAY;
+interface VIDEO_OVERLAY {
+  uiFlags: UINT32;
+  fAllocated: BOOLEAN;
+  fDisabled: BOOLEAN;
+  fActivelySaving: BOOLEAN;
+  fDeletionPending: BOOLEAN;
+  uiBackground: INT32;
+  pBackground: Pointer<BACKGROUND_SAVE>;
+  pSaveArea: Pointer<INT16>;
+  uiUserData: UINT32[] /* [5] */;
+  uiFontID: UINT32;
+  sX: INT16;
+  sY: INT16;
+  ubFontBack: UINT8;
+  ubFontFore: UINT8;
+  zText: INT16[] /* [200] */;
+  uiDestBuff: UINT32;
+  BltCallback: OVERLAY_CALLBACK;
+}
 
 // Struct for init topmost blitter
-typedef struct {
-  UINT32 uiFlags;
-  BOOLEAN fDisabled;
-  INT16 sLeft;
-  INT16 sTop;
-  INT16 sRight;
-  INT16 sBottom;
-  UINT32 uiFontID;
-  INT16 sX;
-  INT16 sY;
-  UINT8 ubFontBack;
-  UINT8 ubFontFore;
-  INT16 pzText[200];
-  OVERLAY_CALLBACK BltCallback;
-} VIDEO_OVERLAY_DESC;
+interface VIDEO_OVERLAY_DESC {
+  uiFlags: UINT32;
+  fDisabled: BOOLEAN;
+  sLeft: INT16;
+  sTop: INT16;
+  sRight: INT16;
+  sBottom: INT16;
+  uiFontID: UINT32;
+  sX: INT16;
+  sY: INT16;
+  ubFontBack: UINT8;
+  ubFontFore: UINT8;
+  pzText: INT16[] /* [200] */;
+  BltCallback: OVERLAY_CALLBACK;
+}
 
 // GLOBAL VARIABLES
 SGPRect gDirtyClipRect;

@@ -10,16 +10,16 @@ const NORMAL_MAP_SCREEN_TY = 860;
 
 const FASTMAPROWCOLTOPOS = (r, c) => ((r) * WORLD_COLS + (c));
 
-typedef struct {
-  HVOBJECT vo;
-  UINT32 fType;
-} SMALL_TILE_SURF;
+interface SMALL_TILE_SURF {
+  vo: HVOBJECT;
+  fType: UINT32;
+}
 
-typedef struct {
-  HVOBJECT vo;
-  UINT16 usSubIndex;
-  UINT32 fType;
-} SMALL_TILE_DB;
+interface SMALL_TILE_DB {
+  vo: HVOBJECT;
+  usSubIndex: UINT16;
+  fType: UINT32;
+}
 
 SMALL_TILE_SURF gSmTileSurf[NUMBEROFTILETYPES];
 SMALL_TILE_DB gSmTileDB[NUMBEROFTILES];

@@ -22,58 +22,58 @@ const COMPRESS_RUN_LIMIT = 0x7F;
 // NB if you're going to change the header definition:
 // - make sure that everything in this header is nicely aligned
 // - don't exceed the 64-byte maximum
-typedef struct {
-  UINT8 cID[STCI_ID_LEN];
-  UINT32 uiOriginalSize;
-  UINT32 uiStoredSize; // equal to uiOriginalSize if data uncompressed
-  UINT32 uiTransparentValue;
-  UINT32 fFlags;
-  UINT16 usHeight;
-  UINT16 usWidth;
-  union {
-    struct {
-      UINT32 uiRedMask;
-      UINT32 uiGreenMask;
-      UINT32 uiBlueMask;
-      UINT32 uiAlphaMask;
-      UINT8 ubRedDepth;
-      UINT8 ubGreenDepth;
-      UINT8 ubBlueDepth;
-      UINT8 ubAlphaDepth;
-    } RGB;
-    struct {
-      // For indexed files, the palette will contain 3 separate bytes for red, green, and blue
-      UINT32 uiNumberOfColours;
-      UINT16 usNumberOfSubImages;
-      UINT8 ubRedDepth;
-      UINT8 ubGreenDepth;
-      UINT8 ubBlueDepth;
-      UINT8 cIndexedUnused[11];
-    } Indexed;
+interface STCIHeader {
+  cID: UINT8[] /* [STCI_ID_LEN] */;
+  uiOriginalSize: UINT32;
+  uiStoredSize: UINT32; // equal to uiOriginalSize if data uncompressed
+  uiTransparentValue: UINT32;
+  fFlags: UINT32;
+  usHeight: UINT16;
+  usWidth: UINT16;
+  /* union { */
+  RGB: {
+    uiRedMask: UINT32;
+    uiGreenMask: UINT32;
+    uiBlueMask: UINT32;
+    uiAlphaMask: UINT32;
+    ubRedDepth: UINT8;
+    ubGreenDepth: UINT8;
+    ubBlueDepth: UINT8;
+    ubAlphaDepth: UINT8;
   };
-  UINT8 ubDepth; // size in bits of one pixel as stored in the file
-  UINT32 uiAppDataSize;
-  UINT8 cUnused[15];
-} STCIHeader;
+  Indexed: {
+    // For indexed files, the palette will contain 3 separate bytes for red, green, and blue
+    uiNumberOfColours: UINT32;
+    usNumberOfSubImages: UINT16;
+    ubRedDepth: UINT8;
+    ubGreenDepth: UINT8;
+    ubBlueDepth: UINT8;
+    cIndexedUnused: UINT8[] /* [11] */;
+  };
+  /* } */
+  ubDepth: UINT8; // size in bits of one pixel as stored in the file
+  uiAppDataSize: UINT32;
+  cUnused: UINT8[] /* [15] */;
+}
 
 const STCI_HEADER_SIZE = 64;
 
-typedef struct {
-  UINT32 uiDataOffset;
-  UINT32 uiDataLength;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
-} STCISubImage;
+interface STCISubImage {
+  uiDataOffset: UINT32;
+  uiDataLength: UINT32;
+  sOffsetX: INT16;
+  sOffsetY: INT16;
+  usHeight: UINT16;
+  usWidth: UINT16;
+}
 
 const STCI_SUBIMAGE_SIZE = 16;
 
-typedef struct {
-  UINT8 ubRed;
-  UINT8 ubGreen;
-  UINT8 ubBlue;
-} STCIPaletteElement;
+interface STCIPaletteElement {
+  ubRed: UINT8;
+  ubGreen: UINT8;
+  ubBlue: UINT8;
+}
 
 const STCI_PALETTE_ELEMENT_SIZE = 3;
 const STCI_8BIT_PALETTE_SIZE = 768;

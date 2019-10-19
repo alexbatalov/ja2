@@ -71,10 +71,10 @@ const enum Enum118 {
   // NOTE: Wisdom isn't trainable!
 }
 
-typedef struct TOWN_TRAINER_TYPE {
-  SOLDIERTYPE *pSoldier;
-  INT16 sTrainingPts;
-} TOWN_TRAINER_TYPE;
+interface TOWN_TRAINER_TYPE {
+  pSoldier: Pointer<SOLDIERTYPE>;
+  sTrainingPts: INT16;
+}
 
 // can character do this assignment?
 // BOOLEAN CanSoldierAssignment( SOLDIERTYPE *pSoldier, INT8 bAssignment );

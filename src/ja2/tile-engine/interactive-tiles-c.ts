@@ -1,23 +1,23 @@
 const MAX_INTTILE_STACK = 10;
 
-typedef struct {
-  INT16 sGridNo;
-  UINT8 ubFlags;
-  INT16 sTileIndex;
-  INT16 sMaxScreenY;
-  INT16 sHeighestScreenY;
-  BOOLEAN fFound;
-  LEVELNODE *pFoundNode;
-  INT16 sFoundGridNo;
-  UINT16 usStructureID;
-  BOOLEAN fStructure;
-} CUR_INTERACTIVE_TILE;
+interface CUR_INTERACTIVE_TILE {
+  sGridNo: INT16;
+  ubFlags: UINT8;
+  sTileIndex: INT16;
+  sMaxScreenY: INT16;
+  sHeighestScreenY: INT16;
+  fFound: BOOLEAN;
+  pFoundNode: Pointer<LEVELNODE>;
+  sFoundGridNo: INT16;
+  usStructureID: UINT16;
+  fStructure: BOOLEAN;
+}
 
-typedef struct {
-  INT8 bNum;
-  CUR_INTERACTIVE_TILE bTiles[MAX_INTTILE_STACK];
-  INT8 bCur;
-} INTERACTIVE_TILE_STACK_TYPE;
+interface INTERACTIVE_TILE_STACK_TYPE {
+  bNum: INT8;
+  bTiles: CUR_INTERACTIVE_TILE[] /* [MAX_INTTILE_STACK] */;
+  bCur: INT8;
+}
 
 INTERACTIVE_TILE_STACK_TYPE gCurIntTileStack;
 BOOLEAN gfCycleIntTile = FALSE;

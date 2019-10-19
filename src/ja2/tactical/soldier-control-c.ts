@@ -79,14 +79,14 @@ UINT8 gExtOneCDirection[EX_NUM_WORLD_DIRECTIONS] = {
   3,
 };
 
-typedef struct {
-  CHAR8 zName[20];
-  UINT8 ubRandomVal;
-  BOOLEAN fPreload;
-  BOOLEAN fBadGuy;
-  BOOLEAN fDontAllowTwoInRow;
-  BOOLEAN fStopDialogue;
-} BATTLESNDS_STRUCT;
+interface BATTLESNDS_STRUCT {
+  zName: CHAR8[] /* [20] */;
+  ubRandomVal: UINT8;
+  fPreload: BOOLEAN;
+  fBadGuy: BOOLEAN;
+  fDontAllowTwoInRow: BOOLEAN;
+  fStopDialogue: BOOLEAN;
+}
 
 BATTLESNDS_STRUCT gBattleSndsData[] = {
   { "ok1", 2, 1, 1, 1, 2 },

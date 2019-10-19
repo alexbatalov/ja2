@@ -28,12 +28,12 @@ const IMAGE_ALLIMAGEDATA = 0x000C;
 const IMAGE_ALLDATA = 0x001C;
 
 // Palette structure, mimics that of Win32
-typedef struct tagSGPPaletteEntry {
-  UINT8 peRed;
-  UINT8 peGreen;
-  UINT8 peBlue;
-  UINT8 peFlags;
-} SGPPaletteEntry;
+interface SGPPaletteEntry {
+  peRed: UINT8;
+  peGreen: UINT8;
+  peBlue: UINT8;
+  peFlags: UINT8;
+}
 
 const AUX_FULL_TILE = 0x01;
 const AUX_ANIMATED_TILE = 0x02;
@@ -42,74 +42,74 @@ const AUX_INTERACTIVE_TILE = 0x08;
 const AUX_IGNORES_HEIGHT = 0x10;
 const AUX_USES_LAND_Z = 0x20;
 
-typedef struct {
-  UINT8 ubWallOrientation;
-  UINT8 ubNumberOfTiles;
-  UINT16 usTileLocIndex;
-  UINT8 ubUnused1[3];
-  UINT8 ubCurrentFrame;
-  UINT8 ubNumberOfFrames;
-  UINT8 fFlags;
-  UINT8 ubUnused[6];
-} AuxObjectData;
+interface AuxObjectData {
+  ubWallOrientation: UINT8;
+  ubNumberOfTiles: UINT8;
+  usTileLocIndex: UINT16;
+  ubUnused1: UINT8[] /* [3] */;
+  ubCurrentFrame: UINT8;
+  ubNumberOfFrames: UINT8;
+  fFlags: UINT8;
+  ubUnused: UINT8[] /* [6] */;
+}
 
-typedef struct {
-  INT8 bTileOffsetX;
-  INT8 bTileOffsetY;
-} RelTileLoc; // relative tile location
+interface RelTileLoc {
+  bTileOffsetX: INT8;
+  bTileOffsetY: INT8;
+} // relative tile location
 
 // TRLE subimage structure, mirroring that of ST(C)I
-typedef struct tagETRLEObject {
-  UINT32 uiDataOffset;
-  UINT32 uiDataLength;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
-} ETRLEObject;
+interface ETRLEObject {
+  uiDataOffset: UINT32;
+  uiDataLength: UINT32;
+  sOffsetX: INT16;
+  sOffsetY: INT16;
+  usHeight: UINT16;
+  usWidth: UINT16;
+}
 
-typedef struct tagETRLEData {
-  PTR pPixData;
-  UINT32 uiSizePixData;
-  ETRLEObject *pETRLEObject;
-  UINT16 usNumberOfObjects;
-} ETRLEData;
+interface ETRLEData {
+  pPixData: PTR;
+  uiSizePixData: UINT32;
+  pETRLEObject: Pointer<ETRLEObject>;
+  usNumberOfObjects: UINT16;
+}
 
 // Image header structure
-typedef struct {
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT8 ubBitDepth;
-  UINT16 fFlags;
-  SGPFILENAME ImageFile;
-  UINT32 iFileLoader;
-  SGPPaletteEntry *pPalette;
-  UINT16 *pui16BPPPalette;
-  UINT8 *pAppData;
-  UINT32 uiAppDataSize;
-  // This union is used to describe each data type and is flexible to include the
-  // data strucutre of the compresssed format, once developed.
-  union {
-    struct {
-      PTR pImageData;
-    };
-    struct {
-      PTR pCompressedImageData;
-    };
-    struct {
-      UINT8 *p8BPPData;
-    };
-    struct {
-      UINT16 *p16BPPData;
-    };
-    struct {
-      UINT8 *pPixData8;
-      UINT32 uiSizePixData;
-      ETRLEObject *pETRLEObject;
-      UINT16 usNumberOfObjects;
-    };
-  };
-} image_type, *HIMAGE;
+interface image_type {
+  usWidth: UINT16;
+  usHeight: UINT16;
+  ubBitDepth: UINT8;
+  fFlags: UINT16;
+  ImageFile: SGPFILENAME;
+  iFileLoader: UINT32;
+  pPalette: Pointer<SGPPaletteEntry>;
+  pui16BPPPalette: Pointer<UINT16>;
+  pAppData: Pointer<UINT8>;
+  uiAppDataSize: UINT32;
+  /* union { */
+  /*   struct { */
+  pImageData: PTR;
+  /*   } */
+  /*   struct { */
+  pCompressedImageData: PTR;
+  /*   } */
+  /*   struct { */
+  p8BPPData: Pointer<UINT8>;
+  /*   } */
+  /*   struct { */
+  p16BPPData: Pointer<UINT16>;
+  /*   } */
+  /*   struct { */
+  pPixData8: Pointer<UINT8>;
+  uiSizePixData: UINT32;
+  pETRLEObject: Pointer<ETRLEObject>;
+  usNumberOfObjects: UINT16;
+  /*   } */
+  /* } */
+}
+
+typedef image_type *HIMAGE;
 
 const SGPGetRValue = (rgb) => ((BYTE)(rgb));
 const SGPGetBValue = (rgb) => ((BYTE)((rgb) >> 16));

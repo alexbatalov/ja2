@@ -7,11 +7,11 @@ const MAX_WIN_FONTS = 10;
 
 // Private struct not to be exported
 // to other modules
-typedef struct {
-  HFONT hFont;
-  COLORVAL ForeColor;
-  COLORVAL BackColor;
-} HWINFONT;
+interface HWINFONT {
+  hFont: HFONT;
+  ForeColor: COLORVAL;
+  BackColor: COLORVAL;
+}
 
 LOGFONT gLogFont;
 

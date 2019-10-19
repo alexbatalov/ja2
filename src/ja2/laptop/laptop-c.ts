@@ -19,13 +19,11 @@ const enum Enum92 {
   FILES_REGION,
 }
 
-struct rgbcolor {
-  UINT8 ubRed;
-  UINT8 ubGreen;
-  UINT8 ubBlue;
-};
-
-typedef struct rgbcolor RGBCOLOR;
+interface RGBCOLOR {
+  ubRed: UINT8;
+  ubGreen: UINT8;
+  ubBlue: UINT8;
+}
 
 RGBCOLOR GlowColors[] = {
   { 0, 0, 0 },

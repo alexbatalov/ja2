@@ -484,18 +484,18 @@ SGPRect gSelectRegion;
 UINT32 fSelectMode = NO_SELECT;
 SGPPoint gSelectAnchor;
 
-typedef struct {
-  BOOLEAN fDynamic;
-  BOOLEAN fZWrite;
-  BOOLEAN fZBlitter;
-  BOOLEAN fShadowBlitter;
-  BOOLEAN fLinkedListDirection;
-  BOOLEAN fMerc;
-  BOOLEAN fCheckForRedundency;
-  BOOLEAN fMultiZBlitter;
-  BOOLEAN fConvertTo16;
-  BOOLEAN fObscured;
-} RenderFXType;
+interface RenderFXType {
+  fDynamic: BOOLEAN;
+  fZWrite: BOOLEAN;
+  fZBlitter: BOOLEAN;
+  fShadowBlitter: BOOLEAN;
+  fLinkedListDirection: BOOLEAN;
+  fMerc: BOOLEAN;
+  fCheckForRedundency: BOOLEAN;
+  fMultiZBlitter: BOOLEAN;
+  fConvertTo16: BOOLEAN;
+  fObscured: BOOLEAN;
+}
 
 RenderFXType RenderFX[] = {
   { FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE }, // STATIC LAND

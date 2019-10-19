@@ -1,37 +1,37 @@
 extern UINT8 gubSrcSoldierProfile;
 
 // Structure used in Tactical display of NPC dialogue
-typedef struct {
-  INT32 iFaceIndex;
-  INT16 sX;
-  INT16 sY;
-  INT16 sPopupX;
-  INT16 sPopupY;
-  UINT8 ubPopupOrientation;
-  UINT8 ubCharNum;
-  UINT32 uiPanelVO;
-  INT32 iButtonImages;
-  UINT32 uiCancelButton;
-  INT8 bCurSelect;
-  INT8 bOldCurSelect;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  MOUSE_REGION Regions[6];
-  MOUSE_REGION BackRegion;
-  MOUSE_REGION NameRegion;
-  MOUSE_REGION ScreenRegion;
-  MOUSE_REGION TextRegion;
-  BOOLEAN fTextRegionOn;
-  BOOLEAN fOnName;
-  BOOLEAN fDirtyLevel;
-  UINT32 uiSaveBuffer;
-  BOOLEAN fHandled;
-  BOOLEAN fHandledTalkingVal;
-  BOOLEAN fHandledCanDeleteVal;
-  BOOLEAN fRenderSubTitlesNow;
-  BOOLEAN fSetupSubTitles;
-  INT16 zQuoteStr[480]; // QIALOGUE_SIZE is in dialog control which includes this file...
-} NPC_DIALOGUE_TYPE;
+interface NPC_DIALOGUE_TYPE {
+  iFaceIndex: INT32;
+  sX: INT16;
+  sY: INT16;
+  sPopupX: INT16;
+  sPopupY: INT16;
+  ubPopupOrientation: UINT8;
+  ubCharNum: UINT8;
+  uiPanelVO: UINT32;
+  iButtonImages: INT32;
+  uiCancelButton: UINT32;
+  bCurSelect: INT8;
+  bOldCurSelect: INT8;
+  usWidth: UINT16;
+  usHeight: UINT16;
+  Regions: MOUSE_REGION[] /* [6] */;
+  BackRegion: MOUSE_REGION;
+  NameRegion: MOUSE_REGION;
+  ScreenRegion: MOUSE_REGION;
+  TextRegion: MOUSE_REGION;
+  fTextRegionOn: BOOLEAN;
+  fOnName: BOOLEAN;
+  fDirtyLevel: BOOLEAN;
+  uiSaveBuffer: UINT32;
+  fHandled: BOOLEAN;
+  fHandledTalkingVal: BOOLEAN;
+  fHandledCanDeleteVal: BOOLEAN;
+  fRenderSubTitlesNow: BOOLEAN;
+  fSetupSubTitles: BOOLEAN;
+  zQuoteStr: INT16[] /* [480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
+}
 
 // GLOBAL NPC STRUCT
 NPC_DIALOGUE_TYPE gTalkPanel;

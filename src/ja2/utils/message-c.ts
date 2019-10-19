@@ -1,11 +1,11 @@
-typedef struct {
-  UINT32 uiFont;
-  UINT32 uiTimeOfLastUpdate;
-  UINT32 uiFlags;
-  UINT32 uiPadding[3];
-  UINT16 usColor;
-  BOOLEAN fBeginningOfNewString;
-} StringSaveStruct;
+interface StringSaveStruct {
+  uiFont: UINT32;
+  uiTimeOfLastUpdate: UINT32;
+  uiFlags: UINT32;
+  uiPadding: UINT32[] /* [3] */;
+  usColor: UINT16;
+  fBeginningOfNewString: BOOLEAN;
+}
 
 const MAX_LINE_COUNT = 6;
 const X_START = 2;

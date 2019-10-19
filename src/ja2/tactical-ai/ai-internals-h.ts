@@ -90,29 +90,29 @@ const min = (a, b) => ((a) < (b) ? (a) : (b));
 
 const max = (a, b) => ((a) > (b) ? (a) : (b));
 
-typedef struct {
-  SOLDIERTYPE *pOpponent;
-  INT16 sGridNo;
-  INT32 iValue;
-  INT32 iAPs;
-  INT32 iCertainty;
-  INT32 iOrigRange;
-} THREATTYPE;
+interface THREATTYPE {
+  pOpponent: Pointer<SOLDIERTYPE>;
+  sGridNo: INT16;
+  iValue: INT32;
+  iAPs: INT32;
+  iCertainty: INT32;
+  iOrigRange: INT32;
+}
 
 // define for bAimTime for bursting
 const BURSTING = 5;
 
-typedef struct {
-  UINT8 ubPossible; // is this attack form possible?  T/F
-  UINT8 ubOpponent; // which soldier is the victim?
-  UINT8 ubAimTime; // how many extra APs to spend on aiming
-  UINT8 ubChanceToReallyHit; // chance to hit * chance to get through cover
-  INT32 iAttackValue; // relative worthiness of this type of attack
-  INT16 sTarget; // target gridno of this attack
-  INT8 bTargetLevel; // target level of this attack
-  UINT8 ubAPCost; // how many APs the attack will use up
-  INT8 bWeaponIn; // the inv slot of the weapon in question
-} ATTACKTYPE;
+interface ATTACKTYPE {
+  ubPossible: UINT8; // is this attack form possible?  T/F
+  ubOpponent: UINT8; // which soldier is the victim?
+  ubAimTime: UINT8; // how many extra APs to spend on aiming
+  ubChanceToReallyHit: UINT8; // chance to hit * chance to get through cover
+  iAttackValue: INT32; // relative worthiness of this type of attack
+  sTarget: INT16; // target gridno of this attack
+  bTargetLevel: INT8; // target level of this attack
+  ubAPCost: UINT8; // how many APs the attack will use up
+  bWeaponIn: INT8; // the inv slot of the weapon in question
+}
 
 extern THREATTYPE Threat[MAXMERCS];
 extern int ThreatPercent[10];

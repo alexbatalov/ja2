@@ -38,15 +38,15 @@ const enum Enum307 {
   SLM_WINDOW_HIT,
 }
 
-typedef struct {
-  UINT16 usGridNo; // The gridno the graphic will be applied to
-  UINT16 usImageType; // graphic index
-  UINT16 usSubImageIndex; //
+interface MODIFY_MAP {
+  usGridNo: UINT16; // The gridno the graphic will be applied to
+  usImageType: UINT16; // graphic index
+  usSubImageIndex: UINT16; //
   //	UINT16	usIndex;
-  UINT8 ubType; // the layer it will be applied to
+  ubType: UINT8; // the layer it will be applied to
 
-  UINT8 ubExtra; // Misc. variable used to strore arbritary values
-} MODIFY_MAP;
+  ubExtra: UINT8; // Misc. variable used to strore arbritary values
+}
 
 // Call this function, to set whether the map changes will be added to the  map temp file
 void ApplyMapChangesToMapTempFile(BOOLEAN fAddToMap);

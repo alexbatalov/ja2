@@ -163,9 +163,9 @@ const enum Enum16 {
 
 HELP_SCREEN_STRUCT gHelpScreen;
 
-typedef struct {
-  INT32 iButtonTextNum[HELP_SCREEN_NUM_BTNS];
-} HELP_SCREEN_BTN_TEXT_RECORD;
+interface HELP_SCREEN_BTN_TEXT_RECORD {
+  iButtonTextNum: INT32[] /* [HELP_SCREEN_NUM_BTNS] */;
+}
 
 // An array of record nums for the text on the help buttons
 HELP_SCREEN_BTN_TEXT_RECORD gHelpScreenBtnTextRecordNum[HELP_SCREEN_NUMBER_OF_HELP_SCREENS] = {

@@ -1,11 +1,11 @@
-typedef struct {
-  TIMER TimeStamp;
-  UINT32 uiFlags;
-  UINT16 usDelay;
-  UINT32 uiEvent;
-  UINT32 uiDataSize;
-  BYTE *pData;
-} EVENT;
+interface EVENT {
+  TimeStamp: TIMER;
+  uiFlags: UINT32;
+  usDelay: UINT16;
+  uiEvent: UINT32;
+  uiDataSize: UINT32;
+  pData: Pointer<BYTE>;
+}
 
 const PRIMARY_EVENT_QUEUE = 0;
 const SECONDARY_EVENT_QUEUE = 1;

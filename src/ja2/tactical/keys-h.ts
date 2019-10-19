@@ -1,9 +1,9 @@
-typedef struct {
-  UINT16 usItem; // index in item table for key
-  UINT8 fFlags; // flags...
-  UINT16 usSectorFound; // where and
-  UINT16 usDateFound; // when the key was found
-} KEY;
+interface KEY {
+  usItem: UINT16; // index in item table for key
+  fFlags: UINT8; // flags...
+  usSectorFound: UINT16; // where and
+  usDateFound: UINT16; // when the key was found
+}
 
 const KEY_USED = 0x01;
 
@@ -29,14 +29,14 @@ typedef struct
 */
 
 const MAXLOCKDESCLENGTH = 40;
-typedef struct {
-  UINT8 ubEditorName[MAXLOCKDESCLENGTH]; // name to display in editor
-  UINT16 usKeyItem; // key for this door uses which graphic (item #)?
-  UINT8 ubLockType; // regular, padlock, electronic, etc
-  UINT8 ubPickDifficulty; // difficulty to pick such a lock
-  UINT8 ubSmashDifficulty; // difficulty to smash such a lock
-  UINT8 ubFiller;
-} LOCK;
+interface LOCK {
+  ubEditorName: UINT8[] /* [MAXLOCKDESCLENGTH] */; // name to display in editor
+  usKeyItem: UINT16; // key for this door uses which graphic (item #)?
+  ubLockType: UINT8; // regular, padlock, electronic, etc
+  ubPickDifficulty: UINT8; // difficulty to pick such a lock
+  ubSmashDifficulty: UINT8; // difficulty to smash such a lock
+  ubFiller: UINT8;
+}
 
 // Defines below for the perceived value of the door
 const DOOR_PERCEIVED_UNKNOWN = 0;
@@ -47,19 +47,19 @@ const DOOR_PERCEIVED_BROKEN = 3;
 const DOOR_PERCEIVED_TRAPPED = 1;
 const DOOR_PERCEIVED_UNTRAPPED = 2;
 
-typedef struct {
-  INT16 sGridNo;
-  BOOLEAN fLocked; // is the door locked
-  UINT8 ubTrapLevel; // difficulty of finding the trap, 0-10
-  UINT8 ubTrapID; // the trap type (0 is no trap)
-  UINT8 ubLockID; // the lock (0 is no lock)
-  INT8 bPerceivedLocked; // The perceived lock value can be different than the fLocked.
-                         // Values for this include the fact that we don't know the status of
-                         // the door, etc
-  INT8 bPerceivedTrapped; // See above, but with respect to traps rather than locked status
-  INT8 bLockDamage; // Damage to the lock
-  INT8 bPadding[4]; // extra bytes
-} DOOR;
+interface DOOR {
+  sGridNo: INT16;
+  fLocked: BOOLEAN; // is the door locked
+  ubTrapLevel: UINT8; // difficulty of finding the trap, 0-10
+  ubTrapID: UINT8; // the trap type (0 is no trap)
+  ubLockID: UINT8; // the lock (0 is no lock)
+  bPerceivedLocked: INT8; // The perceived lock value can be different than the fLocked.
+                          // Values for this include the fact that we don't know the status of
+                          // the door, etc
+  bPerceivedTrapped: INT8; // See above, but with respect to traps rather than locked status
+  bLockDamage: INT8; // Damage to the lock
+  bPadding: INT8[] /* [4] */; // extra bytes
+}
 
 const enum Enum227 {
   NO_TRAP = 0,
@@ -76,9 +76,9 @@ const DOOR_TRAP_STOPS_ACTION = 0x01;
 const DOOR_TRAP_RECURRING = 0x02;
 const DOOR_TRAP_SILENT = 0x04;
 
-typedef struct {
-  UINT8 fFlags; // stops action?  recurring trap?
-} DOORTRAP;
+interface DOORTRAP {
+  fFlags: UINT8; // stops action?  recurring trap?
+}
 
 // The status of the door, either open or closed
 const DOOR_OPEN = 0x01;
@@ -89,10 +89,10 @@ const DOOR_HAS_TIN_CAN = 0x10;
 
 const DONTSETDOORSTATUS = 2;
 
-typedef struct {
-  INT16 sGridNo;
-  UINT8 ubFlags;
-} DOOR_STATUS;
+interface DOOR_STATUS {
+  sGridNo: INT16;
+  ubFlags: UINT8;
+}
 
 // This is the number of different types of doors we can have
 // in one map at a time...

@@ -3124,52 +3124,52 @@ void DrawGenericButton(GUI_BUTTON *b) {
 //=======================================================================================================
 //=======================================================================================================
 
-typedef struct _CreateDlgInfo {
-  INT32 iFlags; // Holds the creation flags
+interface CreateDlgInfo {
+  iFlags: INT32; // Holds the creation flags
 
-  INT32 iPosX; // Screen position of dialog box
-  INT32 iPosY;
-  INT32 iWidth; // Dimensions of dialog box (if needed)
-  INT32 iHeight;
+  iPosX: INT32; // Screen position of dialog box
+  iPosY: INT32;
+  iWidth: INT32; // Dimensions of dialog box (if needed)
+  iHeight: INT32;
 
-  INT32 iAreaWidth; // Dimensions of area the dialog box will be
-  INT32 iAreaHeight; // placed (for auto-sizing and auto-placement
-  INT32 iAreaOffsetX; // only)
-  INT32 iAreaOffsetY;
+  iAreaWidth: INT32; // Dimensions of area the dialog box will be
+  iAreaHeight: INT32; // placed (for auto-sizing and auto-placement
+  iAreaOffsetX: INT32; // only)
+  iAreaOffsetY: INT32;
 
-  UINT16 *zDlgText; // Text to be displayed (if any)
-  INT32 iTextFont; // Font to be used for text (if any)
-  UINT16 usTextCols; // Font colors (for mono fonts only)
+  zDlgText: Pointer<UINT16>; // Text to be displayed (if any)
+  iTextFont: INT32; // Font to be used for text (if any)
+  usTextCols: UINT16; // Font colors (for mono fonts only)
 
-  INT32 iTextAreaX; // Area in dialog box where text is to be
-  INT32 iTextAreaY; // put (for non-auto placed text)
-  INT32 iTextAreaWidth;
-  INT32 iTextAreaHeight;
+  iTextAreaX: INT32; // Area in dialog box where text is to be
+  iTextAreaY: INT32; // put (for non-auto placed text)
+  iTextAreaWidth: INT32;
+  iTextAreaHeight: INT32;
 
-  HVOBJECT hBackImg; // Background pic for dialog box (if any)
-  INT32 iBackImgIndex; // Sub-image index to use for image
-  INT32 iBackOffsetX; // Offset on dialog box where to put image
-  INT32 iBackOffsetY;
+  hBackImg: HVOBJECT; // Background pic for dialog box (if any)
+  iBackImgIndex: INT32; // Sub-image index to use for image
+  iBackOffsetX: INT32; // Offset on dialog box where to put image
+  iBackOffsetY: INT32;
 
-  HVOBJECT hIconImg; // Icon image pic and index.
-  INT32 iIconImgIndex;
-  INT32 iIconPosX;
-  INT32 iIconPosY;
+  hIconImg: HVOBJECT; // Icon image pic and index.
+  iIconImgIndex: INT32;
+  iIconPosX: INT32;
+  iIconPosY: INT32;
 
-  INT32 iBtnTypes;
+  iBtnTypes: INT32;
 
-  INT32 iOkPosX; // Ok button info
-  INT32 iOkPosY;
-  INT32 iOkWidth;
-  INT32 iOkHeight;
-  INT32 iOkImg;
+  iOkPosX: INT32; // Ok button info
+  iOkPosY: INT32;
+  iOkWidth: INT32;
+  iOkHeight: INT32;
+  iOkImg: INT32;
 
-  INT32 iCnclPosX; // Cancel button info
-  INT32 iCnclPosY;
-  INT32 iCnclWidth;
-  INT32 iCnclHeight;
-  INT32 iCnclImg;
-} CreateDlgInfo;
+  iCnclPosX: INT32; // Cancel button info
+  iCnclPosY: INT32;
+  iCnclWidth: INT32;
+  iCnclHeight: INT32;
+  iCnclImg: INT32;
+}
 
 const DLG_RESTRICT_MOUSE = 1;
 const DLG_OK_BUTTON = 2;

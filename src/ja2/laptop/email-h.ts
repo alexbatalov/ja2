@@ -128,82 +128,78 @@ const AIM_MEDICAL_DEPOSIT_NO_REFUND_LENGTH = 3;
 const BOBBY_R_MEDUNA_SHIPMENT = (AIM_MEDICAL_DEPOSIT_NO_REFUND + AIM_MEDICAL_DEPOSIT_NO_REFUND_LENGTH);
 const BOBBY_R_MEDUNA_SHIPMENT_LENGTH = 4;
 
-struct message {
-  STR16 pString;
-  struct message *Next;
-  struct message *Prev;
-};
+interface EmailMessage {
+  pString: STR16;
+  Next: Pointer<EmailMessage>;
+  Prev: Pointer<EmailMessage>;
+}
 
-typedef struct message EmailMessage;
 typedef EmailMessage *MessagePtr;
 
-struct email {
-  STR16 pSubject;
-  UINT16 usOffset;
-  UINT16 usLength;
-  UINT8 ubSender;
-  UINT32 iDate;
-  INT32 iId;
-  INT32 iFirstData;
-  UINT32 uiSecondData;
-  BOOLEAN fRead;
-  BOOLEAN fNew;
+interface Email {
+  pSubject: STR16;
+  usOffset: UINT16;
+  usLength: UINT16;
+  ubSender: UINT8;
+  iDate: UINT32;
+  iId: INT32;
+  iFirstData: INT32;
+  uiSecondData: UINT32;
+  fRead: BOOLEAN;
+  fNew: BOOLEAN;
 
-  INT32 iThirdData;
-  INT32 iFourthData;
-  UINT32 uiFifthData;
-  UINT32 uiSixData;
+  iThirdData: INT32;
+  iFourthData: INT32;
+  uiFifthData: UINT32;
+  uiSixData: UINT32;
 
-  struct email *Next;
-  struct email *Prev;
-};
+  Next: Pointer<Email>;
+  Prev: Pointer<Email>;
+}
 
-typedef struct email Email;
 typedef Email *EmailPtr;
 
 // This used when saving the emails to disk.
-typedef struct {
-  UINT16 usOffset;
-  UINT16 usLength;
-  UINT8 ubSender;
-  UINT32 iDate;
-  INT32 iId;
-  INT32 iFirstData;
-  UINT32 uiSecondData;
+interface SavedEmailStruct {
+  usOffset: UINT16;
+  usLength: UINT16;
+  ubSender: UINT8;
+  iDate: UINT32;
+  iId: INT32;
+  iFirstData: INT32;
+  uiSecondData: UINT32;
 
-  INT32 iThirdData;
-  INT32 iFourthData;
-  UINT32 uiFifthData;
-  UINT32 uiSixData;
+  iThirdData: INT32;
+  iFourthData: INT32;
+  uiFifthData: UINT32;
+  uiSixData: UINT32;
 
-  BOOLEAN fRead;
-  BOOLEAN fNew;
-} SavedEmailStruct;
+  fRead: BOOLEAN;
+  fNew: BOOLEAN;
+}
 
-struct pagemessages {
-  INT32 iIds[MAX_MESSAGES_PAGE];
-  INT32 iPageId;
-  struct pagemessages *Next;
-  struct pagemessages *Prev;
-};
+interface Page {
+  iIds: INT32[] /* [MAX_MESSAGES_PAGE] */;
+  iPageId: INT32;
+  Next: Pointer<Page>;
+  Prev: Pointer<Page>;
+}
 
-typedef struct pagemessages Page;
 typedef Page *PagePtr;
 
-struct messagerecord {
+interface Record {
   //  CHAR16 pRecord[ 320 ];
-  CHAR16 pRecord[640];
-  struct messagerecord *Next;
-};
+  pRecord: CHAR16[] /* [640] */;
+  Next: Pointer<Record>;
+}
 
-typedef struct messagerecord Record;
 typedef Record *RecordPtr;
 
-typedef struct {
-  RecordPtr pFirstRecord;
-  RecordPtr pLastRecord;
-  INT32 iPageNumber;
-} EmailPageInfoStruct;
+interface EmailPageInfoStruct {
+  pFirstRecord: RecordPtr;
+  pLastRecord: RecordPtr;
+  iPageNumber: INT32;
+}
 
 const enum Enum74 {
   SENDER = 0,

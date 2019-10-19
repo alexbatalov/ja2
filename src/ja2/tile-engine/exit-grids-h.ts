@@ -1,12 +1,12 @@
 // for exit grids (object level)
-typedef struct {
+interface EXITGRID {
   // if an item pool is also in same gridno, then this would be a separate levelnode
   // in the object level list
-  UINT16 usGridNo; // sweet spot for placing mercs in new sector.
-  UINT8 ubGotoSectorX;
-  UINT8 ubGotoSectorY;
-  UINT8 ubGotoSectorZ;
-} EXITGRID;
+  usGridNo: UINT16; // sweet spot for placing mercs in new sector.
+  ubGotoSectorX: UINT8;
+  ubGotoSectorY: UINT8;
+  ubGotoSectorZ: UINT8;
+}
 
 BOOLEAN ExitGridAtGridNo(UINT16 usMapIndex);
 BOOLEAN GetExitGridLevelNode(UINT16 usMapIndex, LEVELNODE **ppLevelNode);

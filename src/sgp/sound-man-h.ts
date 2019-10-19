@@ -15,119 +15,156 @@ const PRIORITY_RANDOM = PRIORITY_MAX - 1;
 
 // Structure definition for 3D sound positional information used by
 // various other structs and functions
-typedef struct {
-  FLOAT flX, flY, flZ;
-  FLOAT flVelX, flVelY, flVelZ;
-  FLOAT flFaceX, flFaceY, flFaceZ;
-  FLOAT flUpX, flUpY, flUpZ;
-  FLOAT flFalloffMin, flFalloffMax;
-  UINT32 uiVolume;
-} SOUND3DPOS;
+interface SOUND3DPOS {
+  flX: FLOAT;
+  flY: FLOAT;
+  flZ: FLOAT;
+
+  flVelX: FLOAT;
+  flVelY: FLOAT;
+  flVelZ: FLOAT;
+
+  flFaceX: FLOAT;
+  flFaceY: FLOAT;
+  flFaceZ: FLOAT;
+
+  flUpX: FLOAT;
+  flUpY: FLOAT;
+  flUpZ: FLOAT;
+
+  flFalloffMin: FLOAT;
+  flFalloffMax: FLOAT;
+
+  uiVolume: UINT32;
+}
 
 // Struct definition for sample slots in the cache
 //		Holds the regular sample data, as well as the
 //		data for the random samples
 
-typedef struct {
-  CHAR8 pName[128]; // Path to sample data
-  UINT32 uiSize; // Size of sample data
-  UINT32 uiSoundSize; // Playable sound size
-  UINT32 uiFlags; // Status flags
-  UINT32 uiSpeed; // Playback frequency
-  BOOLEAN fStereo; // Stereo/Mono
-  UINT8 ubBits; // 8/16 bits
-  PTR pData; // pointer to sample data memory
-  PTR pSoundStart; // pointer to start of sound data
-  UINT32 uiCacheHits;
+interface SAMPLETAG {
+  pName: CHAR8[] /* [128] */; // Path to sample data
+  uiSize: UINT32; // Size of sample data
+  uiSoundSize: UINT32; // Playable sound size
+  uiFlags: UINT32; // Status flags
+  uiSpeed: UINT32; // Playback frequency
+  fStereo: BOOLEAN; // Stereo/Mono
+  ubBits: UINT8; // 8/16 bits
+  pData: PTR; // pointer to sample data memory
+  pSoundStart: PTR; // pointer to start of sound data
+  uiCacheHits: UINT32;
 
-  UINT32 uiTimeNext; // Random sound data
-  UINT32 uiTimeMin, uiTimeMax;
-  UINT32 uiSpeedMin, uiSpeedMax;
-  UINT32 uiVolMin, uiVolMax;
-  UINT32 uiPanMin, uiPanMax;
-  UINT32 uiPriority;
-  UINT32 uiInstances;
-  UINT32 uiMaxInstances;
+  uiTimeNext: UINT32; // Random sound data
 
-  UINT32 uiAilWaveFormat; // AIL wave sample type
-  UINT32 uiADPCMBlockSize; // Block size for compressed files
-} SAMPLETAG;
+  uiTimeMin: UINT32;
+  uiTimeMax: UINT32;
+
+  uiSpeedMin: UINT32;
+  uiSpeedMax: UINT32;
+
+  uiVolMin: UINT32;
+  uiVolMax: UINT32;
+
+  uiPanMin: UINT32;
+  uiPanMax: UINT32;
+
+  uiPriority: UINT32;
+  uiInstances: UINT32;
+  uiMaxInstances: UINT32;
+
+  uiAilWaveFormat: UINT32; // AIL wave sample type
+  uiADPCMBlockSize: UINT32; // Block size for compressed files
+}
 
 // Structure definition for slots in the sound output
 //		These are used for both the cached and double-buffered
 //		streams
-typedef struct {
-  SAMPLETAG *pSample;
-  UINT32 uiSample;
-  HSAMPLE hMSS;
-  HSTREAM hMSSStream;
-  H3DSAMPLE hM3D;
-  UINT32 uiFlags;
-  UINT32 uiSoundID;
-  UINT32 uiPriority;
-  void (*pCallback)(UINT8 *, UINT32, UINT32, UINT32, void *);
-  void *pData;
-  void (*EOSCallback)(void *);
-  void *pCallbackData;
-  UINT32 uiTimeStamp;
-  BOOLEAN fLooping;
-  HWFILE hFile;
-  BOOLEAN fMusic;
-  BOOLEAN fStopAtZero;
-  UINT32 uiFadeVolume;
-  UINT32 uiFadeRate;
-  UINT32 uiFadeTime;
-} SOUNDTAG;
+interface SOUNDTAG {
+  pSample: Pointer<SAMPLETAG>;
+  uiSample: UINT32;
+  hMSS: HSAMPLE;
+  hMSSStream: HSTREAM;
+  hM3D: H3DSAMPLE;
+  uiFlags: UINT32;
+  uiSoundID: UINT32;
+  uiPriority: UINT32;
+  pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void;
+  pData: Pointer<void>;
+  EOSCallback: (a: Pointer<void>) => void;
+  pCallbackData: Pointer<void>;
+  uiTimeStamp: UINT32;
+  fLooping: BOOLEAN;
+  hFile: HWFILE;
+  fMusic: BOOLEAN;
+  fStopAtZero: BOOLEAN;
+  uiFadeVolume: UINT32;
+  uiFadeRate: UINT32;
+  uiFadeTime: UINT32;
+}
 
 // Structure definition for sound parameters being passed down to
 //		the sample playing function
-typedef struct {
-  UINT32 uiSpeed;
-  UINT32 uiPitchBend; // Random pitch bend range +/-
-  UINT32 uiVolume;
-  UINT32 uiPan;
-  UINT32 uiLoop;
-  UINT32 uiPriority;
-  void (*EOSCallback)(void *);
-  void *pCallbackData;
-} SOUNDPARMS;
+interface SOUNDPARMS {
+  uiSpeed: UINT32;
+  uiPitchBend: UINT32; // Random pitch bend range +/-
+  uiVolume: UINT32;
+  uiPan: UINT32;
+  uiLoop: UINT32;
+  uiPriority: UINT32;
+  EOSCallback: (a: Pointer<void>) => void;
+  pCallbackData: Pointer<void>;
+}
 
 // Structure definition for 3D sound parameters being passed down to
 //		the sample playing function
-typedef struct {
-  UINT32 uiSpeed;
-  UINT32 uiPitchBend; // Random pitch bend range +/-
-  UINT32 uiVolume; // volume at distance zero
-  UINT32 uiLoop;
-  UINT32 uiPriority;
-  void (*EOSCallback)(void *);
-  void *pCallbackData;
+interface SOUND3DPARMS {
+  uiSpeed: UINT32;
+  uiPitchBend: UINT32; // Random pitch bend range +/-
+  uiVolume: UINT32; // volume at distance zero
+  uiLoop: UINT32;
+  uiPriority: UINT32;
+  EOSCallback: (a: Pointer<void>) => void;
+  pCallbackData: Pointer<void>;
 
-  SOUND3DPOS Pos; // NOT optional, MUST be set
-} SOUND3DPARMS;
+  Pos: SOUND3DPOS; // NOT optional, MUST be set
+}
 
 // Structure definition for parameters to the random sample playing
 //		function
-typedef struct {
-  UINT32 uiTimeMin, uiTimeMax;
-  UINT32 uiSpeedMin, uiSpeedMax;
-  UINT32 uiVolMin, uiVolMax;
-  UINT32 uiPanMin, uiPanMax;
-  UINT32 uiPriority;
-  UINT32 uiMaxInstances;
-} RANDOMPARMS;
+interface RANDOMPARMS {
+  uiTimeMin: UINT32;
+  uiTimeMax: UINT32;
+
+  uiSpeedMin: UINT32;
+  uiSpeedMax: UINT32;
+
+  uiVolMin: UINT32;
+  uiVolMax: UINT32;
+
+  uiPanMin: UINT32;
+  uiPanMax: UINT32;
+
+  uiPriority: UINT32;
+  uiMaxInstances: UINT32;
+}
 
 // Structure definition for parameters to the random 3D sample playing
 //		function
-typedef struct {
-  UINT32 uiTimeMin, uiTimeMax;
-  UINT32 uiSpeedMin, uiSpeedMax;
-  UINT32 uiVolMin, uiVolMax;
-  UINT32 uiPriority;
-  UINT32 uiMaxInstances;
+interface RANDOM3DPARMS {
+  uiTimeMin: UINT32;
+  uiTimeMax: UINT32;
 
-  SOUND3DPOS Pos; // NOT optional, MUST be set
-} RANDOM3DPARMS;
+  uiSpeedMin: UINT32;
+  uiSpeedMax: UINT32;
+
+  uiVolMin: UINT32;
+  uiVolMax: UINT32;
+
+  uiPriority: UINT32;
+  uiMaxInstances: UINT32;
+
+  Pos: SOUND3DPOS; // NOT optional, MUST be set
+}
 
 const enum Enum31 {
   EAXROOMTYPE_NONE = 0,

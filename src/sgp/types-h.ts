@@ -53,22 +53,22 @@ const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
 const NULL = 0;
 
-typedef struct {
-  INT32 iLeft;
-  INT32 iTop;
-  INT32 iRight;
-  INT32 iBottom;
-} SGPRect;
+interface SGPRect {
+  iLeft: INT32;
+  iTop: INT32;
+  iRight: INT32;
+  iBottom: INT32;
+}
 
-typedef struct {
-  INT32 iX;
-  INT32 iY;
-} SGPPoint;
+interface SGPPoint {
+  iX: INT32;
+  iY: INT32;
+}
 
-typedef struct {
-  INT32 Min;
-  INT32 Max;
-} SGPRange;
+interface SGPRange {
+  Min: INT32;
+  Max: INT32;
+}
 
 typedef FLOAT VECTOR2[2]; // 2d vector (2x1 matrix)
 typedef FLOAT VECTOR3[3]; // 3d vector (3x1 matrix)

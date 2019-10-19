@@ -1,11 +1,11 @@
 typedef void (*TILESET_CALLBACK)(void);
 
-typedef struct {
-  INT16 zName[32];
-  CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
-  UINT8 ubAmbientID;
-  TILESET_CALLBACK MovementCostFnc;
-} TILESET;
+interface TILESET {
+  zName: INT16[] /* [32] */;
+  TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+  ubAmbientID: UINT8;
+  MovementCostFnc: TILESET_CALLBACK;
+}
 
 extern TILESET gTilesets[NUM_TILESETS];
 

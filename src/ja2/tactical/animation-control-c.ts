@@ -5,10 +5,10 @@ const EMPTY_INDEX = 999;
 
 const NUM_INJURED_SUBS = 1;
 
-typedef struct {
-  UINT16 usAnimState;
-  UINT16 usAnimationSurfaces[4];
-} ANIMSUBTYPE;
+interface ANIMSUBTYPE {
+  usAnimState: UINT16;
+  usAnimationSurfaces: UINT16[] /* [4] */;
+}
 
 // Block for anim file
 UINT16 gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];

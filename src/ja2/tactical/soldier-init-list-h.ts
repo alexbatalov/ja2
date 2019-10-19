@@ -1,12 +1,12 @@
-typedef struct SOLDIERINITNODE {
-  UINT8 ubNodeID;
-  UINT8 ubSoldierID;
-  BASIC_SOLDIERCREATE_STRUCT *pBasicPlacement;
-  SOLDIERCREATE_STRUCT *pDetailedPlacement;
-  SOLDIERTYPE *pSoldier;
-  struct SOLDIERINITNODE *prev;
-  struct SOLDIERINITNODE *next;
-} SOLDIERINITNODE;
+interface SOLDIERINITNODE {
+  ubNodeID: UINT8;
+  ubSoldierID: UINT8;
+  pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>;
+  pDetailedPlacement: Pointer<SOLDIERCREATE_STRUCT>;
+  pSoldier: Pointer<SOLDIERTYPE>;
+  prev: Pointer<SOLDIERINITNODE>;
+  next: Pointer<SOLDIERINITNODE>;
+}
 
 extern SOLDIERINITNODE *gSoldierInitHead;
 extern SOLDIERINITNODE *gSoldierInitTail;

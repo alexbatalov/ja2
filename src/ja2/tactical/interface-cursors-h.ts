@@ -182,12 +182,12 @@ const enum Enum210 {
   NUM_UI_CURSORS,
 }
 
-typedef struct {
-  UINT32 uiCursorID;
-  UINT32 uiFlags;
-  UINT16 usFreeCursorName;
-  UINT16 usAdditionalData;
-} UICursor;
+interface UICursor {
+  uiCursorID: UINT32;
+  uiFlags: UINT32;
+  usFreeCursorName: UINT16;
+  usAdditionalData: UINT16;
+}
 
 UICursor gUICursors[NUM_UI_CURSORS];
 

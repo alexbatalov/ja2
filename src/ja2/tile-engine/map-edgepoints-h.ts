@@ -1,8 +1,8 @@
-typedef struct MAPEDGEPOINTINFO {
-  UINT8 ubNumPoints;
-  UINT8 ubStrategicInsertionCode;
-  UINT16 sGridNo[32];
-} MAPEDGEPOINTINFO;
+interface MAPEDGEPOINTINFO {
+  ubNumPoints: UINT8;
+  ubStrategicInsertionCode: UINT8;
+  sGridNo: UINT16[] /* [32] */;
+}
 
 UINT16 ChooseMapEdgepoint(UINT8 ubStrategicInsertionCode);
 void ChooseMapEdgepoints(MAPEDGEPOINTINFO *pMapEdgepointInfo, UINT8 ubStrategicInsertionCode, UINT8 ubNumDesiredPoints);

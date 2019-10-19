@@ -56,23 +56,23 @@ const PRINT_DEBUG_INFO = () => FileDebugPrint();
 //
 //**************************************************************************
 
-typedef struct FMFileInfoTag {
-  CHAR strFilename[FILENAME_LENGTH];
-  UINT8 uiFileAccess;
-  UINT32 uiFilePosition;
-  HANDLE hFileHandle;
-  HDBFILE hDBFile;
-} FMFileInfo; // for 'File Manager File Information'
+interface FMFileInfo {
+  strFilename: CHAR[] /* [FILENAME_LENGTH] */;
+  uiFileAccess: UINT8;
+  uiFilePosition: UINT32;
+  hFileHandle: HANDLE;
+  hDBFile: HDBFILE;
+} // for 'File Manager File Information'
 
-typedef struct FileSystemTag {
-  FMFileInfo *pFileInfo;
-  UINT32 uiNumHandles;
-  BOOLEAN fDebug;
-  BOOLEAN fDBInitialized;
+interface FileSystem {
+  pFileInfo: Pointer<FMFileInfo>;
+  uiNumHandles: UINT32;
+  fDebug: BOOLEAN;
+  fDBInitialized: BOOLEAN;
 
-  CHAR *pcFileNames;
-  UINT32 uiNumFilesInDirectory;
-} FileSystem;
+  pcFileNames: Pointer<CHAR>;
+  uiNumFilesInDirectory: UINT32;
+}
 
 //**************************************************************************
 //

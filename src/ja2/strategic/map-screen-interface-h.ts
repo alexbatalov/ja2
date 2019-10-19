@@ -1,12 +1,12 @@
-typedef struct FASTHELPREGION {
+interface FASTHELPREGION {
   // the string
-  CHAR16 FastHelpText[256];
+  FastHelpText: CHAR16[] /* [256] */;
 
   // the x and y position values
-  INT32 iX;
-  INT32 iY;
-  INT32 iW;
-} FASTHELPREGION;
+  iX: INT32;
+  iY: INT32;
+  iW: INT32;
+}
 
 // String Lengths Defines
 const MAX_NAME_LENGTH = 10;
@@ -177,10 +177,10 @@ const TACT_UPDATE_MERC_X_OFFSET = 4;
 // the first vehicle slot int he list
 const FIRST_VEHICLE = 18;
 
-typedef struct MERC_LEAVE_ITEM {
-  OBJECTTYPE o;
-  struct MERC_LEAVE_ITEM *pNext;
-} MERC_LEAVE_ITEM;
+interface MERC_LEAVE_ITEM {
+  o: OBJECTTYPE;
+  pNext: Pointer<MERC_LEAVE_ITEM>;
+}
 
 extern BOOLEAN fShowAssignmentMenu;
 extern BOOLEAN fShowTrainingMenu;
@@ -193,10 +193,10 @@ extern BOOLEAN fFirstTimeInMapScreen;
 extern BOOLEAN fLockOutMapScreenInterface;
 
 // The character data structure
-typedef struct {
-  UINT16 usSolID; // soldier ID in MenPtrs
-  BOOLEAN fValid; // is the current soldier a valid soldier
-} MapScreenCharacterSt;
+interface MapScreenCharacterSt {
+  usSolID: UINT16; // soldier ID in MenPtrs
+  fValid: BOOLEAN; // is the current soldier a valid soldier
+}
 
 // map screen character structure list, contrains soldier ids into menptr
 extern MapScreenCharacterSt gCharactersList[];

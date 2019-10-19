@@ -105,85 +105,76 @@ const ARMS_DEALER_FLAG__FREDO_HAS_SAID_ROCKET_RIFLE_QUOTE = 0x00000001; // Alex 
 const ARMS_DEALER_FLAG__FRANZ_HAS_SOLD_VIDEO_CAMERA_TO_PLAYER = 0x00000001; // Franz Hinkle has sold the video camera to the player
 
 // THIS STRUCTURE HAS UNCHANGING INFO THAT DOESN'T GET SAVED/RESTORED/RESET
-typedef struct {
-  union {
-    struct {
-      FLOAT dBuyModifier; // The price modifier used when this dealer is BUYING something.
-      FLOAT dSellModifier; // The price modifier used when this dealer is SELLING something.
-    };
-    struct {
-      FLOAT dRepairSpeed; // Modifier to the speed at which a repairman repairs things
-      FLOAT dRepairCost; // Modifier to the price a repairman charges for repairs
-    };
-  };
-
-  UINT8 ubShopKeeperID; // Merc Id for the dealer
-  UINT8 ubTypeOfArmsDealer; // Whether he buys/sells, sells, buys, or repairs
-  INT32 iInitialCash; // How much cash dealer starts with (we now reset to this amount once / day)
-  UINT32 uiFlags; // various flags which control the dealer's operations
-} ARMS_DEALER_INFO;
+interface ARMS_DEALER_INFO {
+  /* union { */
+  /*   struct { */
+  dBuyModifier: FLOAT; // The price modifier used when this dealer is BUYING something.
+  dSellModifier: FLOAT; // The price modifier used when this dealer is SELLING something.
+  /*   } */
+  /*   struct { */
+  dRepairSpeed: FLOAT; // Modifier to the speed at which a repairman repairs things
+  dRepairCost: FLOAT; // Modifier to the price a repairman charges for repairs
+  /*   } */
+  /* } */
+  ubShopKeeperID: UINT8; // Merc Id for the dealer
+  ubTypeOfArmsDealer: UINT8; // Whether he buys/sells, sells, buys, or repairs
+  iInitialCash: INT32; // How much cash dealer starts with (we now reset to this amount once / day)
+  uiFlags: UINT32; // various flags which control the dealer's operations
+}
 
 // THIS STRUCTURE GETS SAVED/RESTORED/RESET
-typedef struct {
-  UINT32 uiArmsDealersCash; // How much money the arms dealer currently has
+interface ARMS_DEALER_STATUS {
+  uiArmsDealersCash: UINT32; // How much money the arms dealer currently has
 
-  UINT8 ubSpecificDealerFlags; // Misc state flags for specific dealers
-  BOOLEAN fOutOfBusiness; // Set when a dealer has been killed, etc.
-  BOOLEAN fRepairDelayBeenUsed; // Set when a repairman has missed his repair time estimate & given his excuse for it
-  BOOLEAN fUnusedKnowsPlayer; // Set if the shopkeeper has met with the player before [UNUSED]
+  ubSpecificDealerFlags: UINT8; // Misc state flags for specific dealers
+  fOutOfBusiness: BOOLEAN; // Set when a dealer has been killed, etc.
+  fRepairDelayBeenUsed: BOOLEAN; // Set when a repairman has missed his repair time estimate & given his excuse for it
+  fUnusedKnowsPlayer: BOOLEAN; // Set if the shopkeeper has met with the player before [UNUSED]
 
-  UINT32 uiTimePlayerLastInSKI; // game time (in total world minutes) when player last talked to this dealer in SKI
+  uiTimePlayerLastInSKI: UINT32; // game time (in total world minutes) when player last talked to this dealer in SKI
 
-  UINT8 ubPadding[8];
-} ARMS_DEALER_STATUS;
+  ubPadding: UINT8[] /* [8] */;
+}
 
-typedef struct {
-  UINT16 usAttachment[MAX_ATTACHMENTS]; // item index of any attachments on the item
+interface SPECIAL_ITEM_INFO {
+  usAttachment: UINT16[] /* [MAX_ATTACHMENTS] */; // item index of any attachments on the item
 
-  INT8 bItemCondition; // if 0, no item is stored
-                       // from 1 to 100 indicates an item with that status
-                       // -1 to -100 means the item is in for repairs, flip sign for the actual status
+  bItemCondition: INT8; // if 0, no item is stored
+                        // from 1 to 100 indicates an item with that status
+                        // -1 to -100 means the item is in for repairs, flip sign for the actual status
+  ubImprintID: UINT8; // imprint ID for imprinted items (during repair!)
 
-  UINT8 ubImprintID; // imprint ID for imprinted items (during repair!)
+  bAttachmentStatus: INT8[] /* [MAX_ATTACHMENTS] */; // status of any attachments on the item
 
-  INT8 bAttachmentStatus[MAX_ATTACHMENTS]; // status of any attachments on the item
+  ubPadding: UINT8[] /* [2] */; // filler
+}
 
-  UINT8 ubPadding[2]; // filler
-} SPECIAL_ITEM_INFO;
+interface DEALER_SPECIAL_ITEM {
+  Info: SPECIAL_ITEM_INFO;
 
-typedef struct {
-  // Individual "special" items are stored here as needed, *one* per slot
-  // An item is special if it is used (status < 100), has been imprinted, or has a permanent attachment
+  uiRepairDoneTime: UINT32; // If the item is in for repairs, this holds the time when it will be repaired (in min)
 
-  SPECIAL_ITEM_INFO Info;
+  fActive: BOOLEAN; // TRUE means an item is stored here (empty elements may not always be freed immediately)
 
-  UINT32 uiRepairDoneTime; // If the item is in for repairs, this holds the time when it will be repaired (in min)
+  ubOwnerProfileId: UINT8; // stores which merc previously owned an item being repaired
 
-  BOOLEAN fActive; // TRUE means an item is stored here (empty elements may not always be freed immediately)
+  ubPadding: UINT8[] /* [6] */; // filler
+}
 
-  UINT8 ubOwnerProfileId; // stores which merc previously owned an item being repaired
+interface DEALER_ITEM_HEADER {
+  ubTotalItems: UINT8; // sum of all the items (all perfect ones + all special ones)
+  ubPerfectItems: UINT8; // non-special (perfect) items held by dealer
+  ubStrayAmmo: UINT8; // partially-depleted ammo mags are stored here as #bullets, and can be converted to full packs
 
-  UINT8 ubPadding[6]; // filler
-} DEALER_SPECIAL_ITEM;
+  ubElementsAlloced: UINT8; // number of DEALER_SPECIAL_ITEM array elements alloced for the special item array
+  SpecialItem: Pointer<DEALER_SPECIAL_ITEM>; // dynamic array of special items with this same item index
 
-typedef struct {
-  // Non-special items are all the identical and are totaled inside ubPerfectItems.
-  // Items being repaired are also stored here, with a negative condition.
-  // NOTE: special item elements may remain allocated long after item has been removed, to reduce memory fragmentation!!!
+  uiOrderArrivalTime: UINT32; // Day the items ordered will arrive on.  It's UINT32 in case we change this to minutes.
+  ubQtyOnOrder: UINT8; // The number of items currently on order
+  fPreviouslyEligible: BOOLEAN; // whether or not dealer has been eligible to sell this item in days prior to today
 
-  UINT8 ubTotalItems; // sum of all the items (all perfect ones + all special ones)
-  UINT8 ubPerfectItems; // non-special (perfect) items held by dealer
-  UINT8 ubStrayAmmo; // partially-depleted ammo mags are stored here as #bullets, and can be converted to full packs
-
-  UINT8 ubElementsAlloced; // number of DEALER_SPECIAL_ITEM array elements alloced for the special item array
-  DEALER_SPECIAL_ITEM *SpecialItem; // dynamic array of special items with this same item index
-
-  UINT32 uiOrderArrivalTime; // Day the items ordered will arrive on.  It's UINT32 in case we change this to minutes.
-  UINT8 ubQtyOnOrder; // The number of items currently on order
-  BOOLEAN fPreviouslyEligible; // whether or not dealer has been eligible to sell this item in days prior to today
-
-  UINT8 ubPadding[2]; // filler
-} DEALER_ITEM_HEADER;
+  ubPadding: UINT8[] /* [2] */; // filler
+}
 
 extern ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS];
 extern ARMS_DEALER_STATUS gArmsDealerStatus[NUM_ARMS_DEALERS];

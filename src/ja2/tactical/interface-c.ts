@@ -18,17 +18,17 @@ BOOLEAN gfProgBarActive = FALSE;
 UINT8 gubProgNumEnemies = 0;
 UINT8 gubProgCurEnemy = 0;
 
-typedef struct {
-  UINT32 uiSurface;
-  INT8 bCurrentMessage;
-  UINT32 uiTimeOfLastUpdate;
-  UINT32 uiTimeSinceLastBeep;
-  INT8 bAnimate;
-  INT8 bYPos;
-  BOOLEAN fCreated;
-  INT16 sWorldRenderX;
-  INT16 sWorldRenderY;
-} TOP_MESSAGE;
+interface TOP_MESSAGE {
+  uiSurface: UINT32;
+  bCurrentMessage: INT8;
+  uiTimeOfLastUpdate: UINT32;
+  uiTimeSinceLastBeep: UINT32;
+  bAnimate: INT8;
+  bYPos: INT8;
+  fCreated: BOOLEAN;
+  sWorldRenderX: INT16;
+  sWorldRenderY: INT16;
+}
 
 TOP_MESSAGE gTopMessage;
 BOOLEAN gfTopMessageDirty = FALSE;
@@ -1649,15 +1649,15 @@ void DirtyMercPanelInterface(SOLDIERTYPE *pSoldier, UINT8 ubDirtyLevel) {
   }
 }
 
-typedef struct {
-  SOLDIERTYPE *pSoldier;
-  STRUCTURE *pStructure;
-  UINT8 ubDirection;
-  INT16 sX;
-  INT16 sY;
-  BOOLEAN fMenuHandled;
-  BOOLEAN fClosingDoor;
-} OPENDOOR_MENU;
+interface OPENDOOR_MENU {
+  pSoldier: Pointer<SOLDIERTYPE>;
+  pStructure: Pointer<STRUCTURE>;
+  ubDirection: UINT8;
+  sX: INT16;
+  sY: INT16;
+  fMenuHandled: BOOLEAN;
+  fClosingDoor: BOOLEAN;
+}
 
 OPENDOOR_MENU gOpenDoorMenu;
 BOOLEAN gfInOpenDoorMenu = FALSE;
@@ -2760,24 +2760,24 @@ UINT16 *GetSoldierHealthString(SOLDIERTYPE *pSoldier) {
   return zHealthStr[cnt];
 }
 
-typedef struct {
-  INT8 bHeight;
-  INT8 bPower;
-  INT16 sGridNo;
-  UINT8 ubLevel;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fShowHeight;
-  BOOLEAN fShowPower;
-  BOOLEAN fActiveHeightBar;
-  BOOLEAN fActivePowerBar;
-  BOOLEAN fAtEndHeight;
-  INT16 sTargetGridNo;
-  FLOAT dInitialForce;
-  FLOAT dForce;
-  FLOAT dDegrees;
-  FLOAT dMaxForce;
-  UINT8 ubPowerIndex;
-} AIMCUBE_UI_DATA;
+interface AIMCUBE_UI_DATA {
+  bHeight: INT8;
+  bPower: INT8;
+  sGridNo: INT16;
+  ubLevel: UINT8;
+  pSoldier: Pointer<SOLDIERTYPE>;
+  fShowHeight: BOOLEAN;
+  fShowPower: BOOLEAN;
+  fActiveHeightBar: BOOLEAN;
+  fActivePowerBar: BOOLEAN;
+  fAtEndHeight: BOOLEAN;
+  sTargetGridNo: INT16;
+  dInitialForce: FLOAT;
+  dForce: FLOAT;
+  dDegrees: FLOAT;
+  dMaxForce: FLOAT;
+  ubPowerIndex: UINT8;
+}
 
 static BOOLEAN gfInAimCubeUI = FALSE;
 static AIMCUBE_UI_DATA gCubeUIData;

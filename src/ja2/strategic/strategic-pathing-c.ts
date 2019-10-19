@@ -18,22 +18,19 @@ UINT8 ubFromMapDirToInsertionCode[] = {
 };
 
 // Globals
-struct path_s {
-  INT16 nextLink; // 2
-  INT16 prevLink; // 2
-  INT16 location; // 2
-  INT32 costSoFar; // 4
-  INT32 costToGo; // 4
-  INT16 pathNdx; // 2
-};
+interface path_t {
+  nextLink: INT16; // 2
+  prevLink: INT16; // 2
+  location: INT16; // 2
+  costSoFar: INT32; // 4
+  costToGo: INT32; // 4
+  pathNdx: INT16; // 2
+}
 
-typedef struct path_s path_t;
-
-struct trail_s {
-  short nextLink;
-  short diStratDelta;
-};
-typedef struct trail_s trail_t;
+interface trail_t {
+  nextLink: short;
+  diStratDelta: short;
+}
 
 const MAXTRAILTREE = (4096);
 const MAXpathQ = (512);

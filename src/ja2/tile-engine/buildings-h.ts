@@ -7,11 +7,11 @@ const MAX_CLIMBSPOTS_PER_BUILDING = 21;
 const NO_BUILDING = 0;
 const MAX_BUILDINGS = 31;
 
-typedef struct BUILDING {
-  INT16 sUpClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
-  INT16 sDownClimbSpots[MAX_CLIMBSPOTS_PER_BUILDING];
-  UINT8 ubNumClimbSpots;
-} BUILDING;
+interface BUILDING {
+  sUpClimbSpots: INT16[] /* [MAX_CLIMBSPOTS_PER_BUILDING] */;
+  sDownClimbSpots: INT16[] /* [MAX_CLIMBSPOTS_PER_BUILDING] */;
+  ubNumClimbSpots: UINT8;
+}
 
 extern UINT8 gubBuildingInfo[WORLD_MAX];
 

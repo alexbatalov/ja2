@@ -503,23 +503,23 @@ const enum Enum196 {
 }
 
 // Struct for animation 'surface' information
-typedef struct {
-  UINT16 ubName;
-  CHAR8 Filename[50];
-  CHAR8 bStructDataType;
-  UINT8 ubFlags;
-  UINT32 uiNumDirections;
-  UINT32 uiNumFramesPerDir;
-  HVOBJECT hVideoObject;
-  void *Unused;
-  INT8 bUsageCount;
-  INT8 bProfile;
-} AnimationSurfaceType;
+interface AnimationSurfaceType {
+  ubName: UINT16;
+  Filename: CHAR8[] /* [50] */;
+  bStructDataType: CHAR8;
+  ubFlags: UINT8;
+  uiNumDirections: UINT32;
+  uiNumFramesPerDir: UINT32;
+  hVideoObject: HVOBJECT;
+  Unused: Pointer<void>;
+  bUsageCount: INT8;
+  bProfile: INT8;
+}
 
-typedef struct {
-  CHAR8 Filename[50];
-  STRUCTURE_FILE_REF *pStructureFileRef;
-} AnimationStructureType;
+interface AnimationStructureType {
+  Filename: CHAR8[] /* [50] */;
+  pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+}
 
 AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES];
 AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS];

@@ -1,19 +1,19 @@
 const TILE_CACHE_START_INDEX = 36000;
 
-typedef struct {
-  CHAR8 zName[128]; // Name of tile ( filename and directory here )
-  CHAR8 zRootName[30]; // Root name
-  TILE_IMAGERY *pImagery; // Tile imagery
-  INT16 sHits;
-  UINT8 ubNumFrames;
-  INT16 sStructRefID;
-} TILE_CACHE_ELEMENT;
+interface TILE_CACHE_ELEMENT {
+  zName: CHAR8[] /* [128] */; // Name of tile ( filename and directory here )
+  zRootName: CHAR8[] /* [30] */; // Root name
+  pImagery: Pointer<TILE_IMAGERY>; // Tile imagery
+  sHits: INT16;
+  ubNumFrames: UINT8;
+  sStructRefID: INT16;
+}
 
-typedef struct {
-  CHAR8 Filename[150];
-  CHAR8 zRootName[30]; // Root name
-  STRUCTURE_FILE_REF *pStructureFileRef;
-} TILE_CACHE_STRUCT;
+interface TILE_CACHE_STRUCT {
+  Filename: CHAR8[] /* [150] */;
+  zRootName: CHAR8[] /* [30] */; // Root name
+  pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+}
 
 TILE_CACHE_ELEMENT *gpTileCache;
 

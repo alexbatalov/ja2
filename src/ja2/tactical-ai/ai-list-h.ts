@@ -1,9 +1,9 @@
-typedef struct AILIST {
-  UINT8 ubID;
-  INT8 bPriority;
-  UINT8 ubUnused;
-  struct AILIST *pNext;
-} AILIST;
+interface AILIST {
+  ubID: UINT8;
+  bPriority: INT8;
+  ubUnused: UINT8;
+  pNext: Pointer<AILIST>;
+}
 
 const MAX_AI_PRIORITY = 100;
 

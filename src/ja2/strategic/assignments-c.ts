@@ -34,10 +34,10 @@ const enum Enum116 {
 
 const FINAL_REPAIR_PASS = REPAIR_POCKETS;
 
-typedef struct REPAIR_PASS_SLOTS_TYPE {
-  UINT8 ubChoices; // how many valid choices there are in this pass
-  INT8 bSlot[12]; // list of slots to be repaired in this pass
-} REPAIR_PASS_SLOTS_TYPE;
+interface REPAIR_PASS_SLOTS_TYPE {
+  ubChoices: UINT8; // how many valid choices there are in this pass
+  bSlot: INT8[] /* [12] */; // list of slots to be repaired in this pass
+}
 
 REPAIR_PASS_SLOTS_TYPE gRepairPassSlotList[NUM_REPAIR_PASS_TYPES] = {
   // pass					# choices												slots repaired in this pass

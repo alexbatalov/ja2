@@ -60,20 +60,27 @@ const MAX_COLUMNS = 8;
 
 // This structure contains all the required information for rendering
 // the popup menu while in
-typedef struct currentPopupMenuInformation {
-  UINT8 ubPopupMenuID;
-  UINT8 ubSelectedIndex; // current popup menu index hilited.
-  UINT8 ubNumEntries;
-  UINT8 ubColumns;
-  UINT8 ubMaxEntriesPerColumn;
-  UINT8 ubColumnWidth[MAX_COLUMNS];
-  UINT8 ubActiveType;
-  UINT16 usFont;
-  BOOLEAN fActive;
-  BOOLEAN fUseKeyboardInfoUntilMouseMoves;
-  UINT16 usLeft, usTop, usRight, usBottom; // popup region coords.
-  UINT16 usLastMouseX, usLastMouseY;
-} CurrentPopupMenuInformation;
+interface CurrentPopupMenuInformation {
+  ubPopupMenuID: UINT8;
+  ubSelectedIndex: UINT8; // current popup menu index hilited.
+  ubNumEntries: UINT8;
+  ubColumns: UINT8;
+  ubMaxEntriesPerColumn: UINT8;
+  ubColumnWidth: UINT8[] /* [MAX_COLUMNS] */;
+  ubActiveType: UINT8;
+  usFont: UINT16;
+  fActive: BOOLEAN;
+  fUseKeyboardInfoUntilMouseMoves: BOOLEAN;
+
+  // popup region coords.
+  usLeft: UINT16;
+  usTop: UINT16;
+  usRight: UINT16;
+  usBottom: UINT16;
+
+  usLastMouseX: UINT16;
+  usLastMouseY: UINT16;
+}
 
 // A global var that keeps the popup menu information.
 extern CurrentPopupMenuInformation gPopup;

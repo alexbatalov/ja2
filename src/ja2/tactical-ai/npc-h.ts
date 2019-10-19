@@ -27,47 +27,38 @@ const LARGE_AMOUNT_MONEY = 1000;
 const ACCEPT_ANY_ITEM = 1000;
 const ANY_RIFLE = 1001;
 
-typedef struct {
-// FIXME: Language-specific code
-// #ifdef RUSSIAN
-//   UINT8 ubIdentifier[4];
-// #endif
+interface NPCQuoteInfo {
+  fFlags: UINT16;
 
-  UINT16 fFlags;
-
-  // conditions
-  union {
-    INT16 sRequiredItem; // item NPC must have to say quote
-    INT16 sRequiredGridno; // location for NPC req'd to say quote
-  };
-  UINT16 usFactMustBeTrue; // ...before saying quote
-  UINT16 usFactMustBeFalse; // ...before saying quote
-  UINT8 ubQuest; // quest must be current to say quote
-  UINT8 ubFirstDay; // first day quote can be said
-  UINT8 ubLastDay; // last day quote can be said
-  UINT8 ubApproachRequired; // must use this approach to generate quote
-  UINT8 ubOpinionRequired; // opinion needed for this quote     13 bytes
+  /* union { */
+  sRequiredItem: INT16; // item NPC must have to say quote
+  sRequiredGridno: INT16; // location for NPC req'd to say quote
+  /* } */
+  usFactMustBeTrue: UINT16; // ...before saying quote
+  usFactMustBeFalse: UINT16; // ...before saying quote
+  ubQuest: UINT8; // quest must be current to say quote
+  ubFirstDay: UINT8; // first day quote can be said
+  ubLastDay: UINT8; // last day quote can be said
+  ubApproachRequired: UINT8; // must use this approach to generate quote
+  ubOpinionRequired: UINT8; // opinion needed for this quote     13 bytes
 
   // quote to say (if any)
-  UINT8 ubQuoteNum; // this is the quote to say
-  UINT8 ubNumQuotes; // total # of quotes to say          15 bytes
+  ubQuoteNum: UINT8; // this is the quote to say
+  ubNumQuotes: UINT8; // total # of quotes to say          15 bytes
 
   // actions
-  UINT8 ubStartQuest;
-  UINT8 ubEndQuest;
-  UINT8 ubTriggerNPC;
-  UINT8 ubTriggerNPCRec;
-  UINT8 ubFiller; //                                       20 bytes
-  UINT16 usSetFactTrue;
-  UINT16 usGiftItem; // item NPC gives to merc after saying quote
-  UINT16 usGoToGridno;
-  INT16 sActionData; // special action value
+  ubStartQuest: UINT8;
+  ubEndQuest: UINT8;
+  ubTriggerNPC: UINT8;
+  ubTriggerNPCRec: UINT8;
+  ubFiller: UINT8; //                                       20 bytes
+  usSetFactTrue: UINT16;
+  usGiftItem: UINT16; // item NPC gives to merc after saying quote
+  usGoToGridno: UINT16;
+  sActionData: INT16; // special action value
 
-// FIXME: Language-specific code
-// #ifndef RUSSIAN
-  UINT8 ubUnused[4];
-// #endif
-} NPCQuoteInfo; // 32 bytes
+  ubUnused: UINT8[] /* [4] */;
+} // 32 bytes
 
 const enum Enum296 {
   APPROACH_FRIENDLY = 1,

@@ -48,42 +48,42 @@ const enum Enum183 {
 }
 
 // the strategic mine structures
-typedef struct MINE_LOCATION_TYPE {
-  INT16 sSectorX; // x value of sector mine is in
-  INT16 sSectorY; // y value of sector mine is in
-  INT8 bAssociatedTown; // associated town of this mine
-} MINE_LOCATION_TYPE;
+interface MINE_LOCATION_TYPE {
+  sSectorX: INT16; // x value of sector mine is in
+  sSectorY: INT16; // y value of sector mine is in
+  bAssociatedTown: INT8; // associated town of this mine
+}
 
-typedef struct MINE_STATUS_TYPE {
-  UINT8 ubMineType; // type of mine (silver or gold)
-  BYTE filler1[3];
-  UINT32 uiMaxRemovalRate; // fastest rate we can move ore from this mine in period
+interface MINE_STATUS_TYPE {
+  ubMineType: UINT8; // type of mine (silver or gold)
+  filler1: BYTE[] /* [3] */;
+  uiMaxRemovalRate: UINT32; // fastest rate we can move ore from this mine in period
 
-  UINT32 uiRemainingOreSupply; // the total value left to this mine (-1 means unlimited)
-  UINT32 uiOreRunningOutPoint; // when supply drop below this, workers tell player the mine is running out of ore
+  uiRemainingOreSupply: UINT32; // the total value left to this mine (-1 means unlimited)
+  uiOreRunningOutPoint: UINT32; // when supply drop below this, workers tell player the mine is running out of ore
 
-  BOOLEAN fEmpty; // whether no longer minable
-  BOOLEAN fRunningOut; // whether mine is beginning to run out
-  BOOLEAN fWarnedOfRunningOut; // whether mine foreman has already told player the mine's running out
-  BOOLEAN fShutDownIsPermanent; // means will never produce again in the game (head miner was attacked & died/quit)
-  BOOLEAN fShutDown; // TRUE means mine production has been shut off
-  BOOLEAN fPrevInvadedByMonsters; // whether or not mine has been previously invaded by monsters
-  BOOLEAN fSpokeToHeadMiner; // player doesn't receive income from mine without speaking to the head miner first
-  BOOLEAN fMineHasProducedForPlayer; // player has earned income from this mine at least once
+  fEmpty: BOOLEAN; // whether no longer minable
+  fRunningOut: BOOLEAN; // whether mine is beginning to run out
+  fWarnedOfRunningOut: BOOLEAN; // whether mine foreman has already told player the mine's running out
+  fShutDownIsPermanent: BOOLEAN; // means will never produce again in the game (head miner was attacked & died/quit)
+  fShutDown: BOOLEAN; // TRUE means mine production has been shut off
+  fPrevInvadedByMonsters: BOOLEAN; // whether or not mine has been previously invaded by monsters
+  fSpokeToHeadMiner: BOOLEAN; // player doesn't receive income from mine without speaking to the head miner first
+  fMineHasProducedForPlayer: BOOLEAN; // player has earned income from this mine at least once
 
-  BOOLEAN fQueenRetookProducingMine; // whether or not queen ever retook a mine after a player had produced from it
-  BOOLEAN fAttackedHeadMiner; // player has attacked the head miner, shutting down mine & decreasing loyalty
-  UINT16 usValidDayCreaturesCanInfest; // Creatures will be permitted to spread if the game day is greater than this value.
-  UINT32 uiTimePlayerProductionStarted; // time in minutes when 'fMineHasProducedForPlayer' was first set
+  fQueenRetookProducingMine: BOOLEAN; // whether or not queen ever retook a mine after a player had produced from it
+  fAttackedHeadMiner: BOOLEAN; // player has attacked the head miner, shutting down mine & decreasing loyalty
+  usValidDayCreaturesCanInfest: UINT16; // Creatures will be permitted to spread if the game day is greater than this value.
+  uiTimePlayerProductionStarted: UINT32; // time in minutes when 'fMineHasProducedForPlayer' was first set
 
-  BYTE filler[11]; // reserved for expansion
-} MINE_STATUS_TYPE;
+  filler: BYTE[] /* [11] */; // reserved for expansion
+}
 
-typedef struct HEAD_MINER_TYPE {
-  UINT16 usProfileId;
-  INT8 bQuoteNum[NUM_HEAD_MINER_STRATEGIC_QUOTES];
-  UINT8 ubExternalFace;
-} HEAD_MINER_TYPE;
+interface HEAD_MINER_TYPE {
+  usProfileId: UINT16;
+  bQuoteNum: INT8[] /* [NUM_HEAD_MINER_STRATEGIC_QUOTES] */;
+  ubExternalFace: UINT8;
+}
 
 // init mines
 void InitializeMines(void);

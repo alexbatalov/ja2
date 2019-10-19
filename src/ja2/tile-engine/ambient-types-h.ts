@@ -5,10 +5,10 @@ const AMB_TOD_DAY = 1;
 const AMB_TOD_DUSK = 2;
 const AMB_TOD_NIGHT = 3;
 
-typedef struct {
-  UINT32 uiMinTime;
-  UINT32 uiMaxTime;
-  UINT8 ubTimeCatagory;
-  SGPFILENAME zFilename;
-  UINT32 uiVol;
-} AMBIENTDATA_STRUCT;
+interface AMBIENTDATA_STRUCT {
+  uiMinTime: UINT32;
+  uiMaxTime: UINT32;
+  ubTimeCatagory: UINT8;
+  zFilename: SGPFILENAME;
+  uiVol: UINT32;
+}

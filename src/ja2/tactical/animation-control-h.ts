@@ -73,31 +73,31 @@ const MAX_ANIM_STR_SIZE = 30;
 // STRUCTURES
 // ###################################################################
 
-typedef struct {
-  CHAR8 zAnimStr[MAX_ANIM_STR_SIZE];
-  INT16 sAP;
-  INT16 sSpeed;
-  FLOAT dMovementChange;
-  UINT32 uiFlags;
-  UINT8 ubHeight;
-  UINT8 ubEndHeight;
-  INT8 bProfile;
-} ANIMCONTROLTYPE;
+interface ANIMCONTROLTYPE {
+  zAnimStr: CHAR8[] /* [MAX_ANIM_STR_SIZE] */;
+  sAP: INT16;
+  sSpeed: INT16;
+  dMovementChange: FLOAT;
+  uiFlags: UINT32;
+  ubHeight: UINT8;
+  ubEndHeight: UINT8;
+  bProfile: INT8;
+}
 
-typedef struct {
-  INT16 sSpeed;
-  FLOAT dMovementChange;
-} ANI_SPEED_DEF;
+interface ANI_SPEED_DEF {
+  sSpeed: INT16;
+  dMovementChange: FLOAT;
+}
 
-typedef struct {
-  UINT8 ubHandRestriction;
-  INT16 sAnimID;
-  UINT8 ubStartRoll;
-  UINT8 ubEndRoll;
-  UINT8 ubFlags;
-  UINT8 ubAnimHeight;
-  INT8 zSoundFile[30];
-} RANDOM_ANI_DEF;
+interface RANDOM_ANI_DEF {
+  ubHandRestriction: UINT8;
+  sAnimID: INT16;
+  ubStartRoll: UINT8;
+  ubEndRoll: UINT8;
+  ubFlags: UINT8;
+  ubAnimHeight: UINT8;
+  zSoundFile: INT8[] /* [30] */;
+}
 
 // Enumeration of animation states
 const enum Enum193 {

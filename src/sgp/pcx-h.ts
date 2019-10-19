@@ -1,26 +1,36 @@
-typedef struct {
-  UINT8 ubManufacturer;
-  UINT8 ubVersion;
-  UINT8 ubEncoding;
-  UINT8 ubBitsPerPixel;
-  UINT16 usLeft, usTop;
-  UINT16 usRight, usBottom;
-  UINT16 usHorRez, usVerRez;
-  UINT8 ubEgaPalette[48];
-  UINT8 ubReserved;
-  UINT8 ubColorPlanes;
-  UINT16 usBytesPerLine;
-  UINT16 usPaletteType;
-  UINT8 ubFiller[58];
-} PcxHeader;
+interface PcxHeader {
+  ubManufacturer: UINT8;
+  ubVersion: UINT8;
+  ubEncoding: UINT8;
+  ubBitsPerPixel: UINT8;
 
-typedef struct {
-  UINT8 *pPcxBuffer;
-  UINT8 ubPalette[768];
-  UINT16 usWidth, usHeight;
-  UINT32 uiBufferSize;
-  UINT16 usPcxFlags;
-} PcxObject;
+  usLeft: UINT16;
+  usTop: UINT16;
+
+  usRight: UINT16;
+  usBottom: UINT16;
+
+  usHorRez: UINT16;
+  usVerRez: UINT16;
+
+  ubEgaPalette: UINT8[] /* [48] */;
+  ubReserved: UINT8;
+  ubColorPlanes: UINT8;
+  usBytesPerLine: UINT16;
+  usPaletteType: UINT16;
+  ubFiller: UINT8[] /* [58] */;
+}
+
+interface PcxObject {
+  pPcxBuffer: Pointer<UINT8>;
+  ubPalette: UINT8[] /* [768] */;
+
+  usWidth: UINT16;
+  usHeight: UINT16;
+
+  uiBufferSize: UINT32;
+  usPcxFlags: UINT16;
+}
 
 BOOLEAN LoadPCXFileToImage(HIMAGE hImage, UINT16 fContents);
 PcxObject *LoadPcx(UINT8 *pFilename);

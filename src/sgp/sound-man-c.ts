@@ -10,37 +10,37 @@
 //#define SOUND_DISABLE
 
 // WAV file chunk definitions
-typedef struct {
+interface WAVCHUNK {
   // General chunk header
-  CHAR8 cTag[4];
-  UINT32 uiChunkSize;
-} WAVCHUNK;
+  cTag: CHAR8[] /* [4] */;
+  uiChunkSize: UINT32;
+}
 
-typedef struct {
+interface WAVRIFF {
   // WAV header
-  CHAR8 cRiff[4]; // "RIFF"
-  UINT32 uiChunkSize; // Chunk length
-  CHAR8 cFileType[4]; // "WAVE"
-} WAVRIFF;
+  cRiff: CHAR8[] /* [4] */; // "RIFF"
+  uiChunkSize: UINT32; // Chunk length
+  cFileType: CHAR8[] /* [4] */; // "WAVE"
+}
 
-typedef struct {
+interface WAVFMT {
   // FMT chunk
-  CHAR8 cFormat[4]; // "FMT "
-  UINT32 uiChunkSize; // Chunk length
-  UINT16 uiStereo; // 1 if stereo, 0 if mono (Not reliable, use channels instead)
-  UINT16 uiChannels; // number of channels used 1=mono, 2=stereo, etc.
-  UINT32 uiSpeed; // Sampling Rate (speed)
-  UINT32 uiBytesSec; // Number of bytes per sec
-  UINT16 uiBytesSample; // Number of bytes per sample (1 = 8 bit mono,
-                        // 2 = 8 bit stereo or 16 bit mono, 4 = 16 bit stereo
-  UINT16 uiBitsSample; // bits per sample
-} WAVFMT;
+  cFormat: CHAR8[] /* [4] */; // "FMT "
+  uiChunkSize: UINT32; // Chunk length
+  uiStereo: UINT16; // 1 if stereo, 0 if mono (Not reliable, use channels instead)
+  uiChannels: UINT16; // number of channels used 1=mono, 2=stereo, etc.
+  uiSpeed: UINT32; // Sampling Rate (speed)
+  uiBytesSec: UINT32; // Number of bytes per sec
+  uiBytesSample: UINT16; // Number of bytes per sample (1 = 8 bit mono,
+                         // 2 = 8 bit stereo or 16 bit mono, 4 = 16 bit stereo
+  uiBitsSample: UINT16; // bits per sample
+}
 
-typedef struct {
+interface WAVDATA {
   // Data chunk
-  CHAR8 cName[4]; // "DATA"
-  UINT32 uiChunkSize; // Chunk length
-} WAVDATA;
+  cName: CHAR8[] /* [4] */; // "DATA"
+  uiChunkSize: UINT32; // Chunk length
+}
 
 const WAV_CHUNK_RIFF = 0;
 const WAV_CHUNK_FMT = 1;

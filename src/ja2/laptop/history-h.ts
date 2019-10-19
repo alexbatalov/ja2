@@ -7,17 +7,17 @@ void RenderHistory();
 const HISTORY_DATA_FILE = "TEMP\\History.dat";
 
 // the financial structure
-struct history {
-  UINT8 ubCode; // the code index in the finance code table
-  UINT32 uiIdNumber; // unique id number
-  UINT8 ubSecondCode; // secondary code
-  UINT32 uiDate; // time in the world in global time
-  INT16 sSectorX; // sector X this took place in
-  INT16 sSectorY; // sector Y this took place in
-  INT8 bSectorZ;
-  UINT8 ubColor;
-  struct history *Next; // next unit in the list
-};
+interface HistoryUnit {
+  ubCode: UINT8; // the code index in the finance code table
+  uiIdNumber: UINT32; // unique id number
+  ubSecondCode: UINT8; // secondary code
+  uiDate: UINT32; // time in the world in global time
+  sSectorX: INT16; // sector X this took place in
+  sSectorY: INT16; // sector Y this took place in
+  bSectorZ: INT8;
+  ubColor: UINT8;
+  Next: Pointer<HistoryUnit>; // next unit in the list
+}
 
 const enum Enum83 {
   HISTORY_ENTERED_HISTORY_MODE = 0,
@@ -100,8 +100,7 @@ const enum Enum83 {
   HISTORY_MERC_KILLED_CHARACTER,
 }
 
-typedef struct history HistoryUnit;
-typedef struct history *HistoryUnitPtr;
+typedef HistoryUnit *HistoryUnitPtr;
 
 extern HistoryUnitPtr pHistoryListHead;
 

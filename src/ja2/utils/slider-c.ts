@@ -9,36 +9,36 @@ const DEFUALT_SLIDER_SIZE = 7;
 const STEEL_SLIDER_WIDTH = 42;
 const STEEL_SLIDER_HEIGHT = 25;
 
-typedef struct TAG_SLIDER {
-  UINT32 uiSliderID;
+interface SLIDER {
+  uiSliderID: UINT32;
 
-  UINT8 ubStyle;
-  UINT16 usPosX;
-  UINT16 usPosY;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT16 usNumberOfIncrements;
-  SLIDER_CHANGE_CALLBACK SliderChangeCallback;
+  ubStyle: UINT8;
+  usPosX: UINT16;
+  usPosY: UINT16;
+  usWidth: UINT16;
+  usHeight: UINT16;
+  usNumberOfIncrements: UINT16;
+  SliderChangeCallback: SLIDER_CHANGE_CALLBACK;
 
-  UINT16 usCurrentIncrement;
+  usCurrentIncrement: UINT16;
 
-  UINT16 usBackGroundColor;
+  usBackGroundColor: UINT16;
 
-  MOUSE_REGION ScrollAreaMouseRegion;
+  ScrollAreaMouseRegion: MOUSE_REGION;
 
-  UINT32 uiSliderBoxImage;
-  UINT16 usCurrentSliderBoxPosition;
+  uiSliderBoxImage: UINT32;
+  usCurrentSliderBoxPosition: UINT16;
 
-  SGPRect LastRect;
+  LastRect: SGPRect;
 
-  UINT32 uiFlags;
+  uiFlags: UINT32;
 
-  UINT8 ubSliderWidth;
-  UINT8 ubSliderHeight;
+  ubSliderWidth: UINT8;
+  ubSliderHeight: UINT8;
 
-  struct TAG_SLIDER *pNext;
-  struct TAG_SLIDER *pPrev;
-} SLIDER;
+  pNext: Pointer<SLIDER>;
+  pPrev: Pointer<SLIDER>;
+}
 
 // ddd
 

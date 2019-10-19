@@ -24,14 +24,21 @@ const PREVIOUS_MOUSE_DATA = 1;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct {
-  BOOLEAN fRestore;
-  UINT16 usMouseXPos, usMouseYPos;
-  UINT16 usLeft, usTop, usRight, usBottom;
-  RECT Region;
-  LPDIRECTDRAWSURFACE _pSurface;
-  LPDIRECTDRAWSURFACE2 pSurface;
-} MouseCursorBackground;
+interface MouseCursorBackground {
+  fRestore: BOOLEAN;
+
+  usMouseXPos: UINT16;
+  usMouseYPos: UINT16;
+
+  usLeft: UINT16;
+  usTop: UINT16;
+  usRight: UINT16;
+  usBottom: UINT16;
+
+  Region: RECT;
+  _pSurface: LPDIRECTDRAWSURFACE;
+  pSurface: LPDIRECTDRAWSURFACE2;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2408,20 +2415,20 @@ void FatalError(UINT8 *pError, ...) {
  *
  *********************************************************************************/
 
-typedef struct {
-  UINT8 ubIDLength;
-  UINT8 ubColorMapType;
-  UINT8 ubTargaType;
-  UINT16 usColorMapOrigin;
-  UINT16 usColorMapLength;
-  UINT8 ubColorMapEntrySize;
-  UINT16 usOriginX;
-  UINT16 usOriginY;
-  UINT16 usImageWidth;
-  UINT16 usImageHeight;
-  UINT8 ubBitsPerPixel;
-  UINT8 ubImageDescriptor;
-} TARGA_HEADER;
+interface TARGA_HEADER {
+  ubIDLength: UINT8;
+  ubColorMapType: UINT8;
+  ubTargaType: UINT8;
+  usColorMapOrigin: UINT16;
+  usColorMapLength: UINT16;
+  ubColorMapEntrySize: UINT8;
+  usOriginX: UINT16;
+  usOriginY: UINT16;
+  usImageWidth: UINT16;
+  usImageHeight: UINT16;
+  ubBitsPerPixel: UINT8;
+  ubImageDescriptor: UINT8;
+}
 
 void SnapshotSmall(void) {
   INT32 iCountX, iCountY;

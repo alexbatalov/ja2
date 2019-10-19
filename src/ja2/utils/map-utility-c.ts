@@ -13,11 +13,11 @@ extern BOOLEAN gfOverheadMapDirty;
 // Loops though our maps directory and reads all .map files, subsamples an area, color
 // quantizes it into an 8-bit image ans writes it to an sti file in radarmaps.
 
-typedef struct {
-  INT8 r;
-  INT8 g;
-  INT8 b;
-} RGBValues;
+interface RGBValues {
+  r: INT8;
+  g: INT8;
+  b: INT8;
+}
 
 UINT32 MapUtilScreenInit() {
   return TRUE;

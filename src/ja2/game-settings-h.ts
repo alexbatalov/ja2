@@ -44,29 +44,29 @@ const enum Enum8 {
   NUM_ALL_GAME_OPTIONS,
 }
 
-typedef struct {
-  INT8 bLastSavedGameSlot; // The last saved game number goes in here
+interface GAME_SETTINGS {
+  bLastSavedGameSlot: INT8; // The last saved game number goes in here
 
-  UINT8 ubMusicVolumeSetting;
-  UINT8 ubSoundEffectsVolume;
-  UINT8 ubSpeechVolume;
+  ubMusicVolumeSetting: UINT8;
+  ubSoundEffectsVolume: UINT8;
+  ubSpeechVolume: UINT8;
 
   // The following are set from the status of the toggle boxes in the Options Screen
-  UINT8 fOptions[NUM_ALL_GAME_OPTIONS];
+  fOptions: UINT8[] /* [NUM_ALL_GAME_OPTIONS] */;
 
-  CHAR8 zVersionNumber[14];
+  zVersionNumber: CHAR8[] /* [14] */;
 
-  UINT32 uiSettingsVersionNumber;
-  UINT32 uiMeanwhileScenesSeenFlags;
+  uiSettingsVersionNumber: UINT32;
+  uiMeanwhileScenesSeenFlags: UINT32;
 
-  BOOLEAN fHideHelpInAllScreens;
+  fHideHelpInAllScreens: BOOLEAN;
 
-  BOOLEAN fUNUSEDPlayerFinishedTheGame; // JA2Gold: for UB compatibility
-  UINT8 ubSizeOfDisplayCover;
-  UINT8 ubSizeOfLOS;
+  fUNUSEDPlayerFinishedTheGame: BOOLEAN; // JA2Gold: for UB compatibility
+  ubSizeOfDisplayCover: UINT8;
+  ubSizeOfLOS: UINT8;
 
-  UINT8 ubFiller[17];
-} GAME_SETTINGS;
+  ubFiller: UINT8[] /* [17] */;
+}
 
 // Enums for the difficulty levels
 const enum Enum9 {
@@ -77,15 +77,15 @@ const enum Enum9 {
   DIF_LEVEL_FOUR,
 }
 
-typedef struct {
-  BOOLEAN fGunNut;
-  BOOLEAN fSciFi;
-  UINT8 ubDifficultyLevel;
-  BOOLEAN fTurnTimeLimit;
-  BOOLEAN fIronManMode;
+interface GAME_OPTIONS {
+  fGunNut: BOOLEAN;
+  fSciFi: BOOLEAN;
+  ubDifficultyLevel: UINT8;
+  fTurnTimeLimit: BOOLEAN;
+  fIronManMode: BOOLEAN;
 
-  UINT8 ubFiller[7];
-} GAME_OPTIONS;
+  ubFiller: UINT8[] /* [7] */;
+}
 
 // This structure will contain general Ja2 settings  NOT individual game settings.
 GAME_SETTINGS gGameSettings;

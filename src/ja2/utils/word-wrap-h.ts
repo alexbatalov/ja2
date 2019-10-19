@@ -22,10 +22,10 @@ const IAN_WRAP_NO_SHADOW = 32;
 
 const NEWLINE_CHAR = 177;
 
-typedef struct _WRAPPEDSTRING {
-  STR16 sString;
-  struct _WRAPPEDSTRING *pNextWrappedString;
-} WRAPPED_STRING;
+interface WRAPPED_STRING {
+  sString: STR16;
+  pNextWrappedString: Pointer<WRAPPED_STRING>;
+}
 
 WRAPPED_STRING *LineWrap(UINT32 ulFont, UINT16 usLineWidthPixels, UINT16 *pusLineWidthIfWordIsWiderThenWidth, STR16 pString, ...);
 UINT16 DisplayWrappedString(UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT8 ubGap, UINT32 uiFont, UINT8 ubColor, STR16 pString, UINT8 ubBackGroundColor, BOOLEAN fDirty, UINT32 ulFlags);

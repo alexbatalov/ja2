@@ -13,18 +13,18 @@ const MERC_ARRIVE_TIME_SLOT_3 = (19 * 60 + 30); // 7:30 pm
 // we pick the most appropriate time of day to use...
 //#define		MERC_ARRIVAL_TIME_OF_DAY				 (7 * 60 + 30)		// 7:30 am
 
-typedef struct {
-  UINT8 ubProfileID;
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bSectorZ;
-  INT16 iTotalContractLength;
-  BOOLEAN fCopyProfileItemsOver;
-  UINT32 uiTimeTillMercArrives;
-  UINT8 ubInsertionCode;
-  UINT16 usInsertionData;
-  BOOLEAN fUseLandingZoneForArrival;
-} MERC_HIRE_STRUCT;
+interface MERC_HIRE_STRUCT {
+  ubProfileID: UINT8;
+  sSectorX: INT16;
+  sSectorY: INT16;
+  bSectorZ: INT8;
+  iTotalContractLength: INT16;
+  fCopyProfileItemsOver: BOOLEAN;
+  uiTimeTillMercArrives: UINT32;
+  ubInsertionCode: UINT8;
+  usInsertionData: UINT16;
+  fUseLandingZoneForArrival: BOOLEAN;
+}
 
 // ATE: Globals that dictate where the mercs will land once being hired
 extern INT16 gsMercArriveSectorX;

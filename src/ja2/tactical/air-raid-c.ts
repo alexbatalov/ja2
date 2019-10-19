@@ -40,60 +40,60 @@ INT32 giNumFrames;
 
 AIR_RAID_DEFINITION gAirRaidDef;
 
-typedef struct {
-  BOOLEAN fInAirRaid;
-  BOOLEAN fAirRaidScheduled;
-  UINT8 ubAirRaidMode;
-  UINT32 uiSoundSample;
-  UINT32 uiRaidLastUpdate;
-  BOOLEAN fFadingRaidIn;
-  BOOLEAN fQuoteSaid;
-  INT8 bNumDives;
-  INT8 bMaxDives;
-  BOOLEAN fFadingRaidOut;
-  INT16 sDiveX;
-  INT16 sDiveY;
-  INT16 sDiveTargetLocation;
-  UINT8 ubDiveDirection;
-  INT16 sNumGridNosMoved;
-  INT32 iNumTurnsSinceLastDive;
-  INT32 iNumTurnsSinceDiveStarted;
-  INT32 iNumGridNosMovedThisTurn;
-  BOOLEAN fAirRaidHasHadTurn;
-  UINT8 ubBeginTeamTurn;
-  BOOLEAN fHaveTBBatton;
-  AIR_RAID_DEFINITION AirRaidDef;
-  INT16 sRaidSoldierID;
+interface AIR_RAID_SAVE_STRUCT {
+  fInAirRaid: BOOLEAN;
+  fAirRaidScheduled: BOOLEAN;
+  ubAirRaidMode: UINT8;
+  uiSoundSample: UINT32;
+  uiRaidLastUpdate: UINT32;
+  fFadingRaidIn: BOOLEAN;
+  fQuoteSaid: BOOLEAN;
+  bNumDives: INT8;
+  bMaxDives: INT8;
+  fFadingRaidOut: BOOLEAN;
+  sDiveX: INT16;
+  sDiveY: INT16;
+  sDiveTargetLocation: INT16;
+  ubDiveDirection: UINT8;
+  sNumGridNosMoved: INT16;
+  iNumTurnsSinceLastDive: INT32;
+  iNumTurnsSinceDiveStarted: INT32;
+  iNumGridNosMovedThisTurn: INT32;
+  fAirRaidHasHadTurn: BOOLEAN;
+  ubBeginTeamTurn: UINT8;
+  fHaveTBBatton: BOOLEAN;
+  AirRaidDef: AIR_RAID_DEFINITION;
+  sRaidSoldierID: INT16;
 
-  INT16 sNotLocatedYet;
-  INT32 iNumFrames;
+  sNotLocatedYet: INT16;
+  iNumFrames: INT32;
 
-  INT8 bLevel;
-  INT8 bTeam;
-  INT8 bSide;
-  UINT8 ubAttackerID;
-  UINT16 usAttackingWeapon;
-  FLOAT dXPos;
-  FLOAT dYPos;
-  INT16 sX;
-  INT16 sY;
-  INT16 sGridNo;
+  bLevel: INT8;
+  bTeam: INT8;
+  bSide: INT8;
+  ubAttackerID: UINT8;
+  usAttackingWeapon: UINT16;
+  dXPos: FLOAT;
+  dYPos: FLOAT;
+  sX: INT16;
+  sY: INT16;
+  sGridNo: INT16;
 
-  UINT8 ubFiller[32];
-} AIR_RAID_SAVE_STRUCT;
+  ubFiller: UINT8[] /* [32] */;
+}
 
 // END SERIALIZATION
 SOLDIERTYPE *gpRaidSoldier;
 
-typedef struct {
-  INT8 bDir1;
-  INT8 bDir2;
-} AIR_RAID_DIR;
+interface AIR_RAID_DIR {
+  bDir1: INT8;
+  bDir2: INT8;
+}
 
-typedef struct {
-  INT8 bX;
-  INT8 bY;
-} AIR_RAID_POS;
+interface AIR_RAID_POS {
+  bX: INT8;
+  bY: INT8;
+}
 
 AIR_RAID_DIR ubPerpDirections[] = {
   { 2, 6 },

@@ -1,15 +1,15 @@
-struct strategicmapelement {
-  UINT8 UNUSEDuiFootEta[4]; // eta/mvt costs for feet
-  UINT8 UNUSEDuiVehicleEta[4]; // eta/mvt costs for vehicles
-  UINT8 uiBadFootSector[4]; // blocking mvt for foot
-  UINT8 uiBadVehicleSector[4]; // blocking mvt from vehicles
-  INT8 bNameId;
-  BOOLEAN fEnemyControlled; // enemy controlled or not
-  BOOLEAN fEnemyAirControlled;
-  BOOLEAN UNUSEDfLostControlAtSomeTime;
-  INT8 bSAMCondition; // SAM Condition .. 0 - 100, just like an item's status
-  INT8 bPadding[20];
-};
+interface StrategicMapElement {
+  UNUSEDuiFootEta: UINT8[] /* [4] */; // eta/mvt costs for feet
+  UNUSEDuiVehicleEta: UINT8[] /* [4] */; // eta/mvt costs for vehicles
+  uiBadFootSector: UINT8[] /* [4] */; // blocking mvt for foot
+  uiBadVehicleSector: UINT8[] /* [4] */; // blocking mvt from vehicles
+  bNameId: INT8;
+  fEnemyControlled: BOOLEAN; // enemy controlled or not
+  fEnemyAirControlled: BOOLEAN;
+  UNUSEDfLostControlAtSomeTime: BOOLEAN;
+  bSAMCondition: INT8; // SAM Condition .. 0 - 100, just like an item's status
+  bPadding: INT8[] /* [20] */;
+}
 
 const enum Enum175 {
   INSERTION_CODE_NORTH,
@@ -27,7 +27,6 @@ const enum Enum175 {
 // PLEASE USE CALCULATE_STRATEGIC_INDEX() macro instead (they're identical).
 //#define			GETWORLDMAPNO( x, y )		( x+(MAP_WORLD_X*y) )
 
-typedef struct strategicmapelement StrategicMapElement;
 extern StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
 
 BOOLEAN InitStrategicEngine();

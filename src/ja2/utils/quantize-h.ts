@@ -1,12 +1,12 @@
-typedef struct _NODE {
-  BOOL bIsLeaf; // TRUE if node has no children
-  UINT nPixelCount; // Number of pixels represented by this leaf
-  UINT nRedSum; // Sum of red components
-  UINT nGreenSum; // Sum of green components
-  UINT nBlueSum; // Sum of blue components
-  struct _NODE *pChild[8]; // Pointers to child nodes
-  struct _NODE *pNext; // Pointer to next reducible node
-} NODE;
+interface NODE {
+  bIsLeaf: BOOL; // TRUE if node has no children
+  nPixelCount: UINT; // Number of pixels represented by this leaf
+  nRedSum: UINT; // Sum of red components
+  nGreenSum: UINT; // Sum of green components
+  nBlueSum: UINT; // Sum of blue components
+  pChild: Pointer<NODE>[] /* [8] */; // Pointers to child nodes
+  pNext: Pointer<NODE>; // Pointer to next reducible node
+}
 
 class CQuantizer {
 protected:

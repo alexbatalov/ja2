@@ -4,31 +4,31 @@ const EXPLOSION_FLAG_USEABSPOS = 0x00000001;
 const EXPLOSION_FLAG_DISPLAYONLY = 0x00000002;
 
 // Explosion Data
-typedef struct {
-  UINT32 uiFlags;
+interface EXPLOSION_PARAMS {
+  uiFlags: UINT32;
 
-  UINT8 ubOwner;
-  UINT8 ubTypeID;
+  ubOwner: UINT8;
+  ubTypeID: UINT8;
 
-  UINT16 usItem;
+  usItem: UINT16;
 
-  INT16 sX; // World X ( optional )
-  INT16 sY; // World Y ( optional )
-  INT16 sZ; // World Z ( optional )
-  INT16 sGridNo; // World GridNo
-  BOOLEAN fLocate;
-  INT8 bLevel; // World level
-  UINT8 ubUnsed[1];
-} EXPLOSION_PARAMS;
+  sX: INT16; // World X ( optional )
+  sY: INT16; // World Y ( optional )
+  sZ: INT16; // World Z ( optional )
+  sGridNo: INT16; // World GridNo
+  fLocate: BOOLEAN;
+  bLevel: INT8; // World level
+  ubUnsed: UINT8[] /* [1] */;
+}
 
-typedef struct {
-  EXPLOSION_PARAMS Params;
-  BOOLEAN fAllocated;
-  INT16 sCurrentFrame;
-  INT32 iID;
-  INT32 iLightID;
-  UINT8 ubUnsed[2];
-} EXPLOSIONTYPE;
+interface EXPLOSIONTYPE {
+  Params: EXPLOSION_PARAMS;
+  fAllocated: BOOLEAN;
+  sCurrentFrame: INT16;
+  iID: INT32;
+  iLightID: INT32;
+  ubUnsed: UINT8[] /* [2] */;
+}
 
 const enum Enum304 {
   NO_BLAST,
@@ -44,11 +44,11 @@ const enum Enum304 {
   NUM_EXP_TYPES,
 }
 
-typedef struct {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  UINT8 fExists;
-} ExplosionQueueElement;
+interface ExplosionQueueElement {
+  uiWorldBombIndex: UINT32;
+  uiTimeStamp: UINT32;
+  fExists: UINT8;
+}
 
 const ERASE_SPREAD_EFFECT = 2;
 const BLOOD_SPREAD_EFFECT = 3;

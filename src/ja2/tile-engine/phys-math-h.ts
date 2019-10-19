@@ -6,13 +6,15 @@ const REAL_MIN = FLT_MIN;
 const PI2 = 3.14159265358979323846;
 const Epsilon2 = 0.00001;
 
-typedef struct {
-  real x, y, z;
-} vector_3;
+interface vector_3 {
+  x: real;
+  y: real;
+  z: real;
+}
 
-typedef struct {
-  real aElements[3][3];
-} matrix_3x3;
+interface matrix_3x3 {
+  aElements: real[][] /* [3][3] */;
+}
 
 // DEFINES
 const RADIANS_FROM = (d) => ((d * PI2) / 180);

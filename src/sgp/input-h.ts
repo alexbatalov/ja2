@@ -24,31 +24,31 @@ const DBL_CLK_TIME = 300; // Increased by Alex, Jun-10-97, 200 felt too short
 const BUTTON_REPEAT_TIMEOUT = 250;
 const BUTTON_REPEAT_TIME = 50;
 
-typedef struct {
-  UINT32 uiTimeStamp;
-  UINT16 usKeyState;
-  UINT16 usEvent;
-  UINT32 usParam;
-  UINT32 uiParam;
-} InputAtom;
+interface InputAtom {
+  uiTimeStamp: UINT32;
+  usKeyState: UINT16;
+  usEvent: UINT16;
+  usParam: UINT32;
+  uiParam: UINT32;
+}
 
 // Mouse pos extracting macros from InputAtom
 const GETYPOS = (a) => HIWORD(((a)->uiParam));
 const GETXPOS = (a) => LOWORD(((a)->uiParam));
 
-typedef struct StringInput {
-  UINT16 *pString;
-  UINT16 *pOriginalString;
-  UINT16 *pFilter;
-  UINT16 usMaxStringLength;
-  UINT16 usCurrentStringLength;
-  UINT16 usStringOffset;
-  UINT16 usLastCharacter;
-  BOOLEAN fInsertMode;
-  BOOLEAN fFocus;
-  struct StringInput *pPreviousString;
-  struct StringInput *pNextString;
-} StringInput;
+interface StringInput {
+  pString: Pointer<UINT16>;
+  pOriginalString: Pointer<UINT16>;
+  pFilter: Pointer<UINT16>;
+  usMaxStringLength: UINT16;
+  usCurrentStringLength: UINT16;
+  usStringOffset: UINT16;
+  usLastCharacter: UINT16;
+  fInsertMode: BOOLEAN;
+  fFocus: BOOLEAN;
+  pPreviousString: Pointer<StringInput>;
+  pNextString: Pointer<StringInput>;
+}
 
 extern BOOLEAN InitializeInputManager(void);
 extern void ShutdownInputManager(void);

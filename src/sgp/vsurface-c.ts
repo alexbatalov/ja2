@@ -45,11 +45,13 @@ void DeletePrimaryVideoSurfaces();
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct VSURFACE_NODE {
-  HVSURFACE hVSurface;
-  UINT32 uiIndex;
-  struct VSURFACE_NODE *next, *prev;
-} VSURFACE_NODE;
+interface VSURFACE_NODE {
+  hVSurface: HVSURFACE;
+  uiIndex: UINT32;
+
+  next: Pointer<VSURFACE_NODE>;
+  prev: Pointer<VSURFACE_NODE>;
+}
 
 VSURFACE_NODE *gpVSurfaceHead = NULL;
 VSURFACE_NODE *gpVSurfaceTail = NULL;

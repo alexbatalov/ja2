@@ -1,8 +1,8 @@
-typedef struct _FDLG_LIST_TAG {
-  GETFILESTRUCT FileInfo;
-  struct _FDLG_LIST_TAG *pNext;
-  struct _FDLG_LIST_TAG *pPrev;
-} FDLG_LIST;
+interface FDLG_LIST {
+  FileInfo: GETFILESTRUCT;
+  pNext: Pointer<FDLG_LIST>;
+  pPrev: Pointer<FDLG_LIST>;
+}
 
 extern FDLG_LIST *AddToFDlgList(FDLG_LIST *pList, GETFILESTRUCT *pInfo);
 

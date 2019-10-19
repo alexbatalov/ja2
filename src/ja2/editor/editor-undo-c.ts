@@ -45,22 +45,22 @@ void DisableUndo() {
 }
 
 // undo node data element
-typedef struct {
-  INT32 iMapIndex;
-  MAP_ELEMENT *pMapTile;
-  BOOLEAN fLightSaved; // determines that a light has been saved
-  UINT8 ubLightRadius; // the radius of the light to build if undo is called
-  UINT8 ubLightID; // only applies if a light was saved.
-  UINT8 ubRoomNum;
-} undo_struct;
+interface undo_struct {
+  iMapIndex: INT32;
+  pMapTile: Pointer<MAP_ELEMENT>;
+  fLightSaved: BOOLEAN; // determines that a light has been saved
+  ubLightRadius: UINT8; // the radius of the light to build if undo is called
+  ubLightID: UINT8; // only applies if a light was saved.
+  ubRoomNum: UINT8;
+}
 
 // Undo stack node
-typedef struct TAG_undo_stack {
-  INT32 iCmdCount;
-  undo_struct *pData;
-  struct TAG_undo_stack *pNext;
-  INT32 iUndoType;
-} undo_stack;
+interface undo_stack {
+  iCmdCount: INT32;
+  pData: Pointer<undo_struct>;
+  pNext: Pointer<undo_stack>;
+  iUndoType: INT32;
+}
 undo_stack *gpTileUndoStack = NULL;
 
 // Map tile element manipulation functions
@@ -81,10 +81,12 @@ BOOLEAN gfIgnoreUndoCmdsForLights = FALSE;
 // New pre-undo binary tree stuff
 // With this, new undo commands will not duplicate saves in the same command.  This will
 // increase speed, and save memory.
-typedef struct MapIndexBinaryTree {
-  struct MapIndexBinaryTree *left, *right;
-  UINT16 usMapIndex;
-} MapIndexBinaryTree;
+interface MapIndexBinaryTree {
+  left: Pointer<MapIndexBinaryTree>;
+  right: Pointer<MapIndexBinaryTree>;
+
+  usMapIndex: UINT16;
+}
 
 MapIndexBinaryTree *top = NULL;
 void ClearUndoMapIndexTree();

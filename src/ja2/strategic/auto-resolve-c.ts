@@ -21,89 +21,124 @@ const enum Enum119 {
   NUM_AR_BUTTONS,
 }
 
-typedef struct SOLDIERCELL {
-  SOLDIERTYPE *pSoldier;
-  MOUSE_REGION *pRegion; // only used for player mercs.
-  UINT32 uiVObjectID;
-  UINT16 usIndex;
-  UINT32 uiFlags;
-  UINT16 usFrame;
-  INT16 xp, yp;
-  UINT16 usAttack, usDefence;
-  UINT16 usNextAttack;
-  UINT16 usNextHit[3];
-  UINT16 usHitDamage[3];
-  struct SOLDIERCELL *pAttacker[3];
-  UINT32 uiFlashTime;
-  INT8 bWeaponSlot;
-} SOLDIERCELL;
+interface SOLDIERCELL {
+  pSoldier: Pointer<SOLDIERTYPE>;
+  pRegion: Pointer<MOUSE_REGION>; // only used for player mercs.
+  uiVObjectID: UINT32;
+  usIndex: UINT16;
+  uiFlags: UINT32;
+  usFrame: UINT16;
 
-typedef struct AUTORESOLVE_STRUCT {
-  SOLDIERCELL *pRobotCell;
+  xp: INT16;
+  yp: INT16;
+
+  usAttack: UINT16;
+  usDefence: UINT16;
+
+  usNextAttack: UINT16;
+  usNextHit: UINT16[] /* [3] */;
+  usHitDamage: UINT16[] /* [3] */;
+  pAttacker: Pointer<SOLDIERCELL>[] /* [3] */;
+  uiFlashTime: UINT32;
+  bWeaponSlot: INT8;
+}
+
+interface AUTORESOLVE_STRUCT {
+  pRobotCell: Pointer<SOLDIERCELL>;
 
   // IDs into the graphic images
-  INT32 iPanelImages;
-  INT32 iButton[NUM_AR_BUTTONS];
-  INT32 iButtonImage[NUM_AR_BUTTONS];
-  INT32 iFaces; // for generic civs and enemies
-  INT32 iMercFaces[20]; // for each merc face
-  INT32 iIndent;
-  INT32 iInterfaceBuffer;
-  INT32 iNumMercFaces;
-  INT32 iActualMercFaces; // this represents the real number of merc faces.  Because
-                          // my debug mode allows to freely add and subtract mercs, we
-                          // can add/remove temp mercs, but we don't want to remove the
-                          // actual mercs.
-  UINT32 uiTimeSlice;
-  UINT32 uiTotalElapsedBattleTimeInMilliseconds;
-  UINT32 uiPrevTime, uiCurrTime;
-  UINT32 uiStartExpanding;
-  UINT32 uiEndExpanding;
-  UINT32 uiPreRandomIndex;
+  iPanelImages: INT32;
+  iButton: INT32[] /* [NUM_AR_BUTTONS] */;
+  iButtonImage: INT32[] /* [NUM_AR_BUTTONS] */;
+  iFaces: INT32; // for generic civs and enemies
+  iMercFaces: INT32[] /* [20] */; // for each merc face
+  iIndent: INT32;
+  iInterfaceBuffer: INT32;
+  iNumMercFaces: INT32;
+  iActualMercFaces: INT32; // this represents the real number of merc faces.  Because
+                           // my debug mode allows to freely add and subtract mercs, we
+                           // can add/remove temp mercs, but we don't want to remove the
+                           // actual mercs.
+  uiTimeSlice: UINT32;
+  uiTotalElapsedBattleTimeInMilliseconds: UINT32;
 
-  SGPRect Rect, ExRect;
+  uiPrevTime: UINT32;
+  uiCurrTime: UINT32;
 
-  UINT16 usPlayerAttack;
-  UINT16 usPlayerDefence;
-  UINT16 usEnemyAttack;
-  UINT16 usEnemyDefence;
-  INT16 sWidth, sHeight;
-  INT16 sCenterStartX;
+  uiStartExpanding: UINT32;
+  uiEndExpanding: UINT32;
+  uiPreRandomIndex: UINT32;
 
-  UINT8 ubEnemyLeadership;
-  UINT8 ubPlayerLeadership;
-  UINT8 ubMercs, ubCivs, ubEnemies;
-  UINT8 ubAdmins, ubTroops, ubElites;
-  UINT8 ubYMCreatures, ubYFCreatures, ubAMCreatures, ubAFCreatures;
-  UINT8 ubAliveMercs, ubAliveCivs, ubAliveEnemies;
-  UINT8 ubMercCols, ubMercRows;
-  UINT8 ubEnemyCols, ubEnemyRows;
-  UINT8 ubCivCols, ubCivRows;
-  UINT8 ubTimeModifierPercentage;
-  UINT8 ubSectorX, ubSectorY;
-  INT8 bVerticalOffset;
+  Rect: SGPRect;
+  ExRect: SGPRect;
 
-  BOOLEAN fRenderAutoResolve;
-  BOOLEAN fExitAutoResolve;
-  BOOLEAN fPaused;
-  BOOLEAN fDebugInfo;
-  BOOLEAN ubBattleStatus;
-  BOOLEAN fUnlimitedAmmo;
-  BOOLEAN fSound;
-  BOOLEAN ubPlayerDefenceAdvantage;
-  BOOLEAN ubEnemyDefenceAdvantage;
-  BOOLEAN fInstantFinish;
-  BOOLEAN fAllowCapture;
-  BOOLEAN fPlayerRejectedSurrenderOffer;
-  BOOLEAN fPendingSurrender;
-  BOOLEAN fExpanding;
-  BOOLEAN fShowInterface;
-  BOOLEAN fEnteringAutoResolve;
-  BOOLEAN fMoraleEventsHandled;
-  BOOLEAN fCaptureNotPermittedDueToEPCs;
+  usPlayerAttack: UINT16;
+  usPlayerDefence: UINT16;
+  usEnemyAttack: UINT16;
+  usEnemyDefence: UINT16;
 
-  MOUSE_REGION AutoResolveRegion;
-} AUTORESOLVE_STRUCT;
+  sWidth: INT16;
+  sHeight: INT16;
+
+  sCenterStartX: INT16;
+
+  ubEnemyLeadership: UINT8;
+  ubPlayerLeadership: UINT8;
+
+  ubMercs: UINT8;
+  ubCivs: UINT8;
+  ubEnemies: UINT8;
+
+  ubAdmins: UINT8;
+  ubTroops: UINT8;
+  ubElites: UINT8;
+
+  ubYMCreatures: UINT8;
+  ubYFCreatures: UINT8;
+  ubAMCreatures: UINT8;
+  ubAFCreatures: UINT8;
+
+  ubAliveMercs: UINT8;
+  ubAliveCivs: UINT8;
+  ubAliveEnemies: UINT8;
+
+  ubMercCols: UINT8;
+  ubMercRows: UINT8;
+
+  ubEnemyCols: UINT8;
+  ubEnemyRows: UINT8;
+
+  ubCivCols: UINT8;
+  ubCivRows: UINT8;
+
+  ubTimeModifierPercentage: UINT8;
+
+  ubSectorX: UINT8;
+  ubSectorY: UINT8;
+
+  bVerticalOffset: INT8;
+
+  fRenderAutoResolve: BOOLEAN;
+  fExitAutoResolve: BOOLEAN;
+  fPaused: BOOLEAN;
+  fDebugInfo: BOOLEAN;
+  ubBattleStatus: BOOLEAN;
+  fUnlimitedAmmo: BOOLEAN;
+  fSound: BOOLEAN;
+  ubPlayerDefenceAdvantage: BOOLEAN;
+  ubEnemyDefenceAdvantage: BOOLEAN;
+  fInstantFinish: BOOLEAN;
+  fAllowCapture: BOOLEAN;
+  fPlayerRejectedSurrenderOffer: BOOLEAN;
+  fPendingSurrender: BOOLEAN;
+  fExpanding: BOOLEAN;
+  fShowInterface: BOOLEAN;
+  fEnteringAutoResolve: BOOLEAN;
+  fMoraleEventsHandled: BOOLEAN;
+  fCaptureNotPermittedDueToEPCs: BOOLEAN;
+
+  AutoResolveRegion: MOUSE_REGION;
+}
 
 // Classifies the type of soldier the soldier cell is
 const CELL_MERC = 0x00000001;

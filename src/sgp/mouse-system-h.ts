@@ -25,33 +25,33 @@
 typedef void (*MOUSE_CALLBACK)(struct _MOUSE_REGION *, INT32); // Define MOUSE_CALLBACK type as pointer to void
 typedef void (*MOUSE_HELPTEXT_DONE_CALLBACK)(); // the help is done callback
 
-typedef struct _MOUSE_REGION {
-  UINT16 IDNumber; // Region's ID number, set by mouse system
-  INT8 PriorityLevel; // Region's Priority, set by system and/or caller
-  UINT32 uiFlags; // Region's state flags
-  INT16 RegionTopLeftX; // Screen area affected by this region (absolute coordinates)
-  INT16 RegionTopLeftY;
-  INT16 RegionBottomRightX;
-  INT16 RegionBottomRightY;
-  INT16 MouseXPos; // Mouse's Coordinates in absolute screen coordinates
-  INT16 MouseYPos;
-  INT16 RelativeXPos; // Mouse's Coordinates relative to the Top-Left corner of the region
-  INT16 RelativeYPos;
-  UINT16 ButtonState; // Current state of the mouse buttons
-  UINT16 Cursor; // Cursor to use when mouse in this region (see flags)
-  MOUSE_CALLBACK MovementCallback; // Pointer to callback function if movement occured in this region
-  MOUSE_CALLBACK ButtonCallback; // Pointer to callback function if button action occured in this region
-  INT32 UserData[4]; // User Data, can be set to anything!
+interface MOUSE_REGION {
+  IDNumber: UINT16; // Region's ID number, set by mouse system
+  PriorityLevel: INT8; // Region's Priority, set by system and/or caller
+  uiFlags: UINT32; // Region's state flags
+  RegionTopLeftX: INT16; // Screen area affected by this region (absolute coordinates)
+  RegionTopLeftY: INT16;
+  RegionBottomRightX: INT16;
+  RegionBottomRightY: INT16;
+  MouseXPos: INT16; // Mouse's Coordinates in absolute screen coordinates
+  MouseYPos: INT16;
+  RelativeXPos: INT16; // Mouse's Coordinates relative to the Top-Left corner of the region
+  RelativeYPos: INT16;
+  ButtonState: UINT16; // Current state of the mouse buttons
+  Cursor: UINT16; // Cursor to use when mouse in this region (see flags)
+  MovementCallback: MOUSE_CALLBACK; // Pointer to callback function if movement occured in this region
+  ButtonCallback: MOUSE_CALLBACK; // Pointer to callback function if button action occured in this region
+  UserData: INT32[] /* [4] */; // User Data, can be set to anything!
 
   // Fast help vars.
-  INT16 FastHelpTimer; // Countdown timer for FastHelp text
-  UINT16 *FastHelpText; // Text string for the FastHelp (describes buttons if left there a while)
-  INT32 FastHelpRect;
-  MOUSE_HELPTEXT_DONE_CALLBACK HelpDoneCallback;
+  FastHelpTimer: INT16; // Countdown timer for FastHelp text
+  FastHelpText: Pointer<UINT16>; // Text string for the FastHelp (describes buttons if left there a while)
+  FastHelpRect: INT32;
+  HelpDoneCallback: MOUSE_HELPTEXT_DONE_CALLBACK;
 
-  struct _MOUSE_REGION *next; // List maintenance, do NOT touch these entries
-  struct _MOUSE_REGION *prev;
-} MOUSE_REGION;
+  next: Pointer<MOUSE_REGION>; // List maintenance, do NOT touch these entries
+  prev: Pointer<MOUSE_REGION>;
+}
 
 // *****************************************************************************
 //

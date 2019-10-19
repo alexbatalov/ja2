@@ -1,8 +1,7 @@
-typedef struct {
-  INT16 uiID; // The soldiers ID
-  INT16 sPadding[5];
-  //	INT8	bSquadValue;		// The squad id
-} SAVE_SQUAD_INFO_STRUCT;
+interface SAVE_SQUAD_INFO_STRUCT {
+  uiID: INT16; // The soldiers ID
+  sPadding: INT16[] /* [5] */;
+}
 
 // squad array
 SOLDIERTYPE *Squad[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];

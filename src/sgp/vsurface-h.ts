@@ -32,12 +32,12 @@ const VS_BLT_MIRROR_Y = 0x000001000;
 // Effects structure for specialized blitting
 //
 
-typedef struct {
-  COLORVAL ColorFill; // Used for fill effect
-  SGPRect SrcRect; // Given SRC subrect instead of srcregion
-  SGPRect FillRect; // Given SRC subrect instead of srcregion
-  UINT16 DestRegion; // Given a DEST region for dest positions within the VO
-} blt_vs_fx;
+interface blt_vs_fx {
+  ColorFill: COLORVAL; // Used for fill effect
+  SrcRect: SGPRect; // Given SRC subrect instead of srcregion
+  FillRect: SGPRect; // Given SRC subrect instead of srcregion
+  DestRegion: UINT16; // Given a DEST region for dest positions within the VO
+}
 
 //
 // Video Surface Flags
@@ -62,45 +62,47 @@ const VSURFACE_CREATE_FROMFILE = 0x00000040; // Creates a video Surface from a f
 // These regions are stored via a HLIST
 //
 
-typedef struct {
-  SGPRect RegionCoords; // Rectangle describing coordinates of region
-  SGPPoint Origin; // Origin used for hot spots, etc
-  UINT8 ubHitMask; // Byte flags for hit detection
-} VSURFACE_REGION;
+interface VSURFACE_REGION {
+  RegionCoords: SGPRect; // Rectangle describing coordinates of region
+  Origin: SGPPoint; // Origin used for hot spots, etc
+  ubHitMask: UINT8; // Byte flags for hit detection
+}
 
 //
 // This structure is a video Surface. Contains a HLIST of regions
 //
 
-typedef struct {
-  UINT16 usHeight; // Height of Video Surface
-  UINT16 usWidth; // Width of Video Surface
-  UINT8 ubBitDepth; // BPP ALWAYS 16!
-  PTR pSurfaceData; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
-  PTR pSurfaceData1; // Direct Draw One Interface
-  PTR pSavedSurfaceData1; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+interface SGPVSurface {
+  usHeight: UINT16; // Height of Video Surface
+  usWidth: UINT16; // Width of Video Surface
+  ubBitDepth: UINT8; // BPP ALWAYS 16!
+  pSurfaceData: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+  pSurfaceData1: PTR; // Direct Draw One Interface
+  pSavedSurfaceData1: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
+                           // pSavedSurfaceData is used to hold all video memory Surfaces so that they my be restored
+  pSavedSurfaceData: PTR; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
                           // pSavedSurfaceData is used to hold all video memory Surfaces so that they my be restored
-  PTR pSavedSurfaceData; // A void pointer, but for this implementation, is really a lpDirectDrawSurface;
-                         // pSavedSurfaceData is used to hold all video memory Surfaces so that they my be restored
-  UINT32 fFlags; // Used to describe memory usage, etc
-  PTR pPalette; // A void pointer, but for this implementation a DDPalette
-  UINT16 *p16BPPPalette; // A 16BPP palette used for 8->16 blits
-  COLORVAL TransparentColor; // Defaults to 0,0,0
-  PTR pClipper; // A void pointer encapsolated as a clipper Surface
-  HLIST RegionList; // A List of regions within the video Surface
-} SGPVSurface, *HVSURFACE;
+  fFlags: UINT32; // Used to describe memory usage, etc
+  pPalette: PTR; // A void pointer, but for this implementation a DDPalette
+  p16BPPPalette: Pointer<UINT16>; // A 16BPP palette used for 8->16 blits
+  TransparentColor: COLORVAL; // Defaults to 0,0,0
+  pClipper: PTR; // A void pointer encapsolated as a clipper Surface
+  RegionList: HLIST; // A List of regions within the video Surface
+}
+
+typedef SGPVSurface *HVSURFACE;
 
 //
 // This structure describes the creation parameters for a Video Surface
 //
 
-typedef struct {
-  UINT32 fCreateFlags; // Specifies creation flags like from file or not
-  SGPFILENAME ImageFile; // Filename of image data to use
-  UINT16 usWidth; // Width, ignored if given from file
-  UINT16 usHeight; // Height, ignored if given from file
-  UINT8 ubBitDepth; // BPP, ignored if given from file
-} VSURFACE_DESC;
+interface VSURFACE_DESC {
+  fCreateFlags: UINT32; // Specifies creation flags like from file or not
+  ImageFile: SGPFILENAME; // Filename of image data to use
+  usWidth: UINT16; // Width, ignored if given from file
+  usHeight: UINT16; // Height, ignored if given from file
+  ubBitDepth: UINT8; // BPP, ignored if given from file
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

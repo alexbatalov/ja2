@@ -336,10 +336,10 @@ void PasteBuilding(INT32 iMapIndex) {
   MarkWorldDirty();
 }
 
-typedef struct ROOFNODE {
-  INT32 iMapIndex;
-  struct ROOFNODE *next;
-} ROOFNODE;
+interface ROOFNODE {
+  iMapIndex: INT32;
+  next: Pointer<ROOFNODE>;
+}
 
 ROOFNODE *gpRoofList = NULL;
 

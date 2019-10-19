@@ -16,12 +16,12 @@ void HandleRenderFaceAdjustments(FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLEA
 
 extern BOOLEAN gfInItemPickupMenu;
 
-typedef struct {
-  INT8 bEyesX;
-  INT8 bEyesY;
-  INT8 bMouthX;
-  INT8 bMouthY;
-} RPC_SMALL_FACE_VALUES;
+interface RPC_SMALL_FACE_VALUES {
+  bEyesX: INT8;
+  bEyesY: INT8;
+  bMouthX: INT8;
+  bMouthY: INT8;
+}
 
 RPC_SMALL_FACE_VALUES gRPCSmallFaceValues[] = {
   { 9, 8, 8, 24 }, // MIGUEL		( 57 )

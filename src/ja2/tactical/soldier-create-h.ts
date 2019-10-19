@@ -20,104 +20,104 @@ const MAX_INDIVIDUALS = 148;
 // These are the placement slots used by the editor to define where characters are in a map, what
 // they are, what team they are on, personality traits, etc.  The Merc section of the editor is
 // what is used to define these values.
-typedef struct {
-  BOOLEAN fDetailedPlacement; // Specialized information.  Has a counterpart containing all info.
-  UINT16 usStartingGridNo; // Where the placement position is.
-  INT8 bTeam; // The team this individual is part of.
-  INT8 bRelativeAttributeLevel;
-  INT8 bRelativeEquipmentLevel;
-  INT8 bDirection; // 1 of 8 values (always mandatory)
-  INT8 bOrders;
-  INT8 bAttitude;
-  INT8 bBodyType; // up to 128 body types, -1 means random
-  INT16 sPatrolGrid[MAXPATROLGRIDS]; // possible locations to visit, patrol, etc.
-  INT8 bPatrolCnt;
-  BOOLEAN fOnRoof;
-  UINT8 ubSoldierClass; // army, administrator, elite
-  UINT8 ubCivilianGroup;
-  BOOLEAN fPriorityExistance; // These slots are used first
-  BOOLEAN fHasKeys;
-  INT8 PADDINGSLOTS[14];
-} BASIC_SOLDIERCREATE_STRUCT; // 50 bytes
+interface BASIC_SOLDIERCREATE_STRUCT {
+  fDetailedPlacement: BOOLEAN; // Specialized information.  Has a counterpart containing all info.
+  usStartingGridNo: UINT16; // Where the placement position is.
+  bTeam: INT8; // The team this individual is part of.
+  bRelativeAttributeLevel: INT8;
+  bRelativeEquipmentLevel: INT8;
+  bDirection: INT8; // 1 of 8 values (always mandatory)
+  bOrders: INT8;
+  bAttitude: INT8;
+  bBodyType: INT8; // up to 128 body types, -1 means random
+  sPatrolGrid: INT16[] /* [MAXPATROLGRIDS] */; // possible locations to visit, patrol, etc.
+  bPatrolCnt: INT8;
+  fOnRoof: BOOLEAN;
+  ubSoldierClass: UINT8; // army, administrator, elite
+  ubCivilianGroup: UINT8;
+  fPriorityExistance: BOOLEAN; // These slots are used first
+  fHasKeys: BOOLEAN;
+  PADDINGSLOTS: INT8[] /* [14] */;
+} // 50 bytes
 
-typedef struct {
+interface SOLDIERCREATE_STRUCT {
   // Bulletproofing so static detailed placements aren't used to tactically create soldiers.
   // Used by editor for validation purposes.
-  BOOLEAN fStatic;
+  fStatic: BOOLEAN;
 
   // Profile information used for special NPCs and player mercs.
-  UINT8 ubProfile;
-  BOOLEAN fPlayerMerc;
-  BOOLEAN fPlayerPlan;
-  BOOLEAN fCopyProfileItemsOver;
+  ubProfile: UINT8;
+  fPlayerMerc: BOOLEAN;
+  fPlayerPlan: BOOLEAN;
+  fCopyProfileItemsOver: BOOLEAN;
 
   // Location information
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bDirection;
-  INT16 sInsertionGridNo;
+  sSectorX: INT16;
+  sSectorY: INT16;
+  bDirection: INT8;
+  sInsertionGridNo: INT16;
 
   // Can force a team, but needs flag set
-  INT8 bTeam;
-  INT8 bBodyType;
+  bTeam: INT8;
+  bBodyType: INT8;
 
   // Orders and attitude settings
-  INT8 bAttitude;
-  INT8 bOrders;
+  bAttitude: INT8;
+  bOrders: INT8;
 
   // Attributes
-  INT8 bLifeMax;
-  INT8 bLife;
-  INT8 bAgility;
-  INT8 bDexterity;
-  INT8 bExpLevel;
-  INT8 bMarksmanship;
-  INT8 bMedical;
-  INT8 bMechanical;
-  INT8 bExplosive;
-  INT8 bLeadership;
-  INT8 bStrength;
-  INT8 bWisdom;
-  INT8 bMorale;
-  INT8 bAIMorale;
+  bLifeMax: INT8;
+  bLife: INT8;
+  bAgility: INT8;
+  bDexterity: INT8;
+  bExpLevel: INT8;
+  bMarksmanship: INT8;
+  bMedical: INT8;
+  bMechanical: INT8;
+  bExplosive: INT8;
+  bLeadership: INT8;
+  bStrength: INT8;
+  bWisdom: INT8;
+  bMorale: INT8;
+  bAIMorale: INT8;
 
   // Inventory
-  OBJECTTYPE Inv[NUM_INV_SLOTS];
+  Inv: OBJECTTYPE[] /* [NUM_INV_SLOTS] */;
 
   // Palette information for soldiers.
-  PaletteRepID HeadPal;
-  PaletteRepID PantsPal;
-  PaletteRepID VestPal;
-  PaletteRepID SkinPal;
-  PaletteRepID MiscPal;
+  HeadPal: PaletteRepID;
+  PantsPal: PaletteRepID;
+  VestPal: PaletteRepID;
+  SkinPal: PaletteRepID;
+  MiscPal: PaletteRepID;
 
   // Waypoint information for patrolling
-  INT16 sPatrolGrid[MAXPATROLGRIDS];
-  INT8 bPatrolCnt;
+  sPatrolGrid: INT16[] /* [MAXPATROLGRIDS] */;
+  bPatrolCnt: INT8;
 
   // Kris:  Additions November 16, 1997 (padding down to 129 from 150)
-  BOOLEAN fVisible;
-  UINT16 name[10];
+  fVisible: BOOLEAN;
+  name: UINT16[] /* [10] */;
 
-  UINT8 ubSoldierClass; // army, administrator, elite
+  ubSoldierClass: UINT8; // army, administrator, elite
 
-  BOOLEAN fOnRoof;
+  fOnRoof: BOOLEAN;
 
-  INT8 bSectorZ;
+  bSectorZ: INT8;
 
-  SOLDIERTYPE *pExistingSoldier;
-  BOOLEAN fUseExistingSoldier;
-  UINT8 ubCivilianGroup;
+  pExistingSoldier: Pointer<SOLDIERTYPE>;
+  fUseExistingSoldier: BOOLEAN;
+  ubCivilianGroup: UINT8;
 
-  BOOLEAN fKillSlotIfOwnerDies;
-  UINT8 ubScheduleID;
+  fKillSlotIfOwnerDies: BOOLEAN;
+  ubScheduleID: UINT8;
 
-  BOOLEAN fUseGivenVehicle;
-  INT8 bUseGivenVehicleID;
-  BOOLEAN fHasKeys;
+  fUseGivenVehicle: BOOLEAN;
+  bUseGivenVehicleID: INT8;
+  fHasKeys: BOOLEAN;
 
-  INT8 bPadding[115];
-} SOLDIERCREATE_STRUCT;
+  bPadding: INT8[] /* [115] */;
+}
 
 // Original functions currently used throughout the game.
 BOOLEAN TacticalRemoveSoldier(UINT16 usSoldierIndex);

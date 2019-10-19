@@ -33,33 +33,33 @@ const CURSOR_TO_PLAY_SOUND = 0x10;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct {
-  UINT8 ubFilename[MAX_FILENAME_LEN];
-  BOOLEAN fLoaded;
-  UINT32 uiIndex;
-  UINT8 ubFlags;
-  UINT8 ubNumberOfFrames;
-  HVOBJECT hVObject;
-} CursorFileData;
+interface CursorFileData {
+  ubFilename: UINT8[] /* [MAX_FILENAME_LEN] */;
+  fLoaded: BOOLEAN;
+  uiIndex: UINT32;
+  ubFlags: UINT8;
+  ubNumberOfFrames: UINT8;
+  hVObject: HVOBJECT;
+}
 
-typedef struct {
-  UINT32 uiFileIndex;
-  UINT16 uiSubIndex;
-  UINT32 uiCurrentFrame;
-  INT16 usPosX;
-  INT16 usPosY;
-} CursorImage;
+interface CursorImage {
+  uiFileIndex: UINT32;
+  uiSubIndex: UINT16;
+  uiCurrentFrame: UINT32;
+  usPosX: INT16;
+  usPosY: INT16;
+}
 
-typedef struct {
-  CursorImage Composites[MAX_COMPOSITES];
-  UINT16 usNumComposites;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usHeight;
-  UINT16 usWidth;
-  UINT8 bFlags;
-  UINT8 bFlashIndex;
-} CursorData;
+interface CursorData {
+  Composites: CursorImage[] /* [MAX_COMPOSITES] */;
+  usNumComposites: UINT16;
+  sOffsetX: INT16;
+  sOffsetY: INT16;
+  usHeight: UINT16;
+  usWidth: UINT16;
+  bFlags: UINT8;
+  bFlashIndex: UINT8;
+}
 
 extern INT16 gsGlobalCursorYOffset;
 

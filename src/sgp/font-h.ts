@@ -26,10 +26,10 @@ const FONT_BCOLOR_PURPLE = 160;
 
 // typedefs
 
-typedef struct {
-  UINT16 usNumberOfSymbols;
-  UINT16 *DynamicArrayOf16BitValues;
-} FontTranslationTable;
+interface FontTranslationTable {
+  usNumberOfSymbols: UINT16;
+  DynamicArrayOf16BitValues: Pointer<UINT16>;
+}
 
 extern INT32 FontDefault;
 extern UINT32 FontDestBuffer;

@@ -20,10 +20,10 @@ void SelectNextKeyOfType(UINT8 ubKeyID);
 
 INT32 giDefaultExistChance = 100;
 
-typedef struct IPListNode {
-  INT16 sGridNo;
-  struct IPListNode *next;
-} IPListNode;
+interface IPListNode {
+  sGridNo: INT16;
+  next: Pointer<IPListNode>;
+}
 
 IPListNode *pIPHead = NULL;
 

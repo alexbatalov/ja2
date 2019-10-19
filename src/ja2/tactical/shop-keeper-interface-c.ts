@@ -1,10 +1,9 @@
 // temp
-struct skirgbcolor {
-  UINT8 ubRed;
-  UINT8 ubGreen;
-  UINT8 ubBlue;
-};
-typedef struct skirgbcolor SKIRGBCOLOR;
+interface SKIRGBCOLOR {
+  ubRed: UINT8;
+  ubGreen: UINT8;
+  ubBlue: UINT8;
+}
 
 SKIRGBCOLOR SkiGlowColorsA[] = {
   { 0, 0, 0 },
@@ -240,13 +239,13 @@ OBJECTTYPE *gpHighLightedItemObject = NULL;
 BOOLEAN gfResetShopKeepIdleQuote = FALSE;
 BOOLEAN gfDoEvaluationAfterOpening = FALSE;
 
-typedef struct {
-  UINT32 uiNumDistinctInventoryItems;
-  UINT8 ubCurrentPage;
-  UINT8 ubNumberOfPages;
+interface SELECTED_ARMS_DEALERS_STATS {
+  uiNumDistinctInventoryItems: UINT32;
+  ubCurrentPage: UINT8;
+  ubNumberOfPages: UINT8;
 
-  UINT8 ubFirstItemIndexOnPage;
-} SELECTED_ARMS_DEALERS_STATS;
+  ubFirstItemIndexOnPage: UINT8;
+}
 
 SELECTED_ARMS_DEALERS_STATS gSelectArmsDealerInfo;
 
@@ -351,11 +350,11 @@ UINT32 guiLastTimeDealerSaidNormalEvaluationQuote = 0;
 
 BOOLEAN gfSkiDisplayDropItemToGroundText = FALSE;
 
-typedef struct {
-  BOOLEAN fActive;
-  OBJECTTYPE ItemObject;
-  INT8 bPreviousInvPos;
-} ITEM_TO_ADD_AFTER_SKI_OPEN;
+interface ITEM_TO_ADD_AFTER_SKI_OPEN {
+  fActive: BOOLEAN;
+  ItemObject: OBJECTTYPE;
+  bPreviousInvPos: INT8;
+}
 ITEM_TO_ADD_AFTER_SKI_OPEN gItemToAdd;
 
 // Page up buttons for the merchants

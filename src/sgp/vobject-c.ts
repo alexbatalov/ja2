@@ -38,11 +38,13 @@ const COMPRESS_RUN_MASK = 0x7F;
 HLIST ghVideoObjects = NULL;
 BOOLEAN gfVideoObjectsInit = FALSE;
 
-typedef struct VOBJECT_NODE {
-  HVOBJECT hVObject;
-  UINT32 uiIndex;
-  struct VOBJECT_NODE *next, *prev;
-} VOBJECT_NODE;
+interface VOBJECT_NODE {
+  hVObject: HVOBJECT;
+  uiIndex: UINT32;
+
+  next: Pointer<VOBJECT_NODE>;
+  prev: Pointer<VOBJECT_NODE>;
+}
 
 VOBJECT_NODE *gpVObjectHead = NULL;
 VOBJECT_NODE *gpVObjectTail = NULL;

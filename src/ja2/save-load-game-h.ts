@@ -8,38 +8,38 @@ const GAME_VERSION_LENGTH = 16;
 const SAVE__ERROR_NUM = 99;
 const SAVE__END_TURN_NUM = 98;
 
-typedef struct {
-  UINT32 uiSavedGameVersion;
-  INT8 zGameVersionNumber[GAME_VERSION_LENGTH];
+interface SAVED_GAME_HEADER {
+  uiSavedGameVersion: UINT32;
+  zGameVersionNumber: INT8[] /* [GAME_VERSION_LENGTH] */;
 
-  CHAR16 sSavedGameDesc[SIZE_OF_SAVE_GAME_DESC];
+  sSavedGameDesc: CHAR16[] /* [SIZE_OF_SAVE_GAME_DESC] */;
 
-  UINT32 uiFlags;
+  uiFlags: UINT32;
 
   // The following will be used to quickly access info to display in the save/load screen
-  UINT32 uiDay;
-  UINT8 ubHour;
-  UINT8 ubMin;
-  INT16 sSectorX;
-  INT16 sSectorY;
-  INT8 bSectorZ;
-  UINT8 ubNumOfMercsOnPlayersTeam;
-  INT32 iCurrentBalance;
+  uiDay: UINT32;
+  ubHour: UINT8;
+  ubMin: UINT8;
+  sSectorX: INT16;
+  sSectorY: INT16;
+  bSectorZ: INT8;
+  ubNumOfMercsOnPlayersTeam: UINT8;
+  iCurrentBalance: INT32;
 
-  UINT32 uiCurrentScreen;
+  uiCurrentScreen: UINT32;
 
-  BOOLEAN fAlternateSector;
+  fAlternateSector: BOOLEAN;
 
-  BOOLEAN fWorldLoaded;
+  fWorldLoaded: BOOLEAN;
 
-  UINT8 ubLoadScreenID; // The load screen that should be used when loading the saved game
+  ubLoadScreenID: UINT8; // The load screen that should be used when loading the saved game
 
-  GAME_OPTIONS sInitialGameOptions; // need these in the header so we can get the info from it on the save load screen.
+  sInitialGameOptions: GAME_OPTIONS; // need these in the header so we can get the info from it on the save load screen.
 
-  UINT32 uiRandom;
+  uiRandom: UINT32;
 
-  UINT8 ubFiller[110];
-} SAVED_GAME_HEADER;
+  ubFiller: UINT8[] /* [110] */;
+}
 
 extern UINT32 guiScreenToGotoAfterLoadingSavedGame;
 extern UINT32 guiSaveGameVersion;

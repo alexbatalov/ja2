@@ -19,14 +19,14 @@ const enum Enum160 {
   NUM_MEANWHILES,
 }
 
-typedef struct {
-  INT16 sSectorX;
-  INT16 sSectorY;
-  UINT16 usTriggerEvent;
+interface MEANWHILE_DEFINITION {
+  sSectorX: INT16;
+  sSectorY: INT16;
+  usTriggerEvent: UINT16;
 
-  UINT8 ubMeanwhileID;
-  UINT8 ubNPCNumber;
-} MEANWHILE_DEFINITION;
+  ubMeanwhileID: UINT8;
+  ubNPCNumber: UINT8;
+}
 
 void ScheduleMeanwhileEvent(MEANWHILE_DEFINITION *pMeanwhileDef, UINT32 uiTime);
 void HandleFirstBattleVictory(void);

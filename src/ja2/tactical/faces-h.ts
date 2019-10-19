@@ -6,11 +6,11 @@ const SURPRISED = 3;
 // Defines
 const NUM_FACE_SLOTS = 50;
 
-struct audio_gap {
-  UINT32 uiStart;
-  UINT32 uiEnd;
-  struct audio_gap *pNext;
-};
+interface AUDIO_GAP {
+  uiStart: UINT32;
+  uiEnd: UINT32;
+  pNext: Pointer<AUDIO_GAP>;
+}
 
 const FACE_AUTO_DISPLAY_BUFFER = 0xFFFFF000;
 const FACE_AUTO_RESTORE_BUFFER = 0xFFFFFF00;
@@ -38,110 +38,105 @@ const FACE_NO_TEXT_OVER = 0;
 // duration for talking
 const FINAL_TALKING_DURATION = 2000;
 
-typedef struct audio_gap AUDIO_GAP;
-
-typedef struct {
-  // This is a structure that will contain data about the gaps in a particular
-  // wave file
-
-  UINT32 size; /* the number of entries in the list of AUDIO_GAPs itself*/
-  UINT32 current_time;
+interface AudioGapList {
+  size: UINT32;
+  current_time: UINT32;
   // Pointer to head and current entry of gap list
-  AUDIO_GAP *pHead;
-  AUDIO_GAP *pCurrent;
+  pHead: Pointer<AUDIO_GAP>;
+  pCurrent: Pointer<AUDIO_GAP>;
 
-  BOOLEAN audio_gap_active;
-} AudioGapList;
+  audio_gap_active: BOOLEAN;
+}
 
-typedef struct {
-  UINT32 uiFlags; // Basic flags
-  INT32 iID;
-  BOOLEAN fAllocated; // Allocated or not
-  BOOLEAN fTalking; // Set to true if face is talking ( can be sitting for user input to esc )
-  BOOLEAN fAnimatingTalking; // Set if the face is animating right now
-  BOOLEAN fDisabled; // Not active
-  BOOLEAN fValidSpeech;
-  BOOLEAN fStartFrame; // Flag for the first start frame
-  BOOLEAN fInvalidAnim;
+interface FACETYPE {
+  uiFlags: UINT32; // Basic flags
+  iID: INT32;
+  fAllocated: BOOLEAN; // Allocated or not
+  fTalking: BOOLEAN; // Set to true if face is talking ( can be sitting for user input to esc )
+  fAnimatingTalking: BOOLEAN; // Set if the face is animating right now
+  fDisabled: BOOLEAN; // Not active
+  fValidSpeech: BOOLEAN;
+  fStartFrame: BOOLEAN; // Flag for the first start frame
+  fInvalidAnim: BOOLEAN;
 
-  UINT32 uiTalkingDuration; // A delay based on text length for how long to talk if no speech
-  UINT32 uiTalkingTimer; // A timer to handle delay when no speech file
-  UINT32 uiTalkingFromVeryBeginningTimer; // Timer from very beginning of talking...
+  uiTalkingDuration: UINT32; // A delay based on text length for how long to talk if no speech
+  uiTalkingTimer: UINT32; // A timer to handle delay when no speech file
+  uiTalkingFromVeryBeginningTimer: UINT32; // Timer from very beginning of talking...
 
-  BOOLEAN fFinishTalking; // A flag to indicate we want to delay after speech done
+  fFinishTalking: BOOLEAN; // A flag to indicate we want to delay after speech done
 
-  INT32 iVideoOverlay; // Value for video overlay ( not used too much )
+  iVideoOverlay: INT32; // Value for video overlay ( not used too much )
 
-  UINT32 uiSoundID; // Sound ID if one being played
-  UINT8 ubSoldierID; // SoldierID if one specified
-  UINT8 ubCharacterNum; // Profile ID num
+  uiSoundID: UINT32; // Sound ID if one being played
+  ubSoldierID: UINT8; // SoldierID if one specified
+  ubCharacterNum: UINT8; // Profile ID num
 
-  UINT16 usFaceX; // X location to render face
-  UINT16 usFaceY; // Y location to render face
-  UINT16 usFaceWidth;
-  UINT16 usFaceHeight;
-  UINT32 uiAutoDisplayBuffer; // Display buffer for face
-  UINT32 uiAutoRestoreBuffer; // Restore buffer
-  BOOLEAN fAutoRestoreBuffer; // Flag to indicate our own restorebuffer or not
-  BOOLEAN fAutoDisplayBuffer; // Flag to indicate our own display buffer or not
-  BOOLEAN fDisplayTextOver; // Boolean indicating to display text on face
-  BOOLEAN fOldDisplayTextOver; // OLD Boolean indicating to display text on face
-  BOOLEAN fCanHandleInactiveNow;
-  INT16 zDisplayText[30]; // String of text that can be displayed
+  usFaceX: UINT16; // X location to render face
+  usFaceY: UINT16; // Y location to render face
+  usFaceWidth: UINT16;
+  usFaceHeight: UINT16;
+  uiAutoDisplayBuffer: UINT32; // Display buffer for face
+  uiAutoRestoreBuffer: UINT32; // Restore buffer
+  fAutoRestoreBuffer: BOOLEAN; // Flag to indicate our own restorebuffer or not
+  fAutoDisplayBuffer: BOOLEAN; // Flag to indicate our own display buffer or not
+  fDisplayTextOver: BOOLEAN; // Boolean indicating to display text on face
+  fOldDisplayTextOver: BOOLEAN; // OLD Boolean indicating to display text on face
+  fCanHandleInactiveNow: BOOLEAN;
+  zDisplayText: INT16[] /* [30] */; // String of text that can be displayed
 
-  UINT16 usEyesX;
-  UINT16 usEyesY;
-  UINT16 usEyesOffsetX;
-  UINT16 usEyesOffsetY;
+  usEyesX: UINT16;
+  usEyesY: UINT16;
+  usEyesOffsetX: UINT16;
+  usEyesOffsetY: UINT16;
 
-  UINT16 usEyesWidth;
-  UINT16 usEyesHeight;
+  usEyesWidth: UINT16;
+  usEyesHeight: UINT16;
 
-  UINT16 usMouthX;
-  UINT16 usMouthY;
-  UINT16 usMouthOffsetX;
-  UINT16 usMouthOffsetY;
-  UINT16 usMouthWidth;
-  UINT16 usMouthHeight;
+  usMouthX: UINT16;
+  usMouthY: UINT16;
+  usMouthOffsetX: UINT16;
+  usMouthOffsetY: UINT16;
+  usMouthWidth: UINT16;
+  usMouthHeight: UINT16;
 
-  UINT16 sEyeFrame;
-  INT8 ubEyeWait;
-  UINT32 uiEyelast;
-  UINT32 uiEyeDelay;
-  UINT32 uiBlinkFrequency;
-  UINT32 uiExpressionFrequency;
-  UINT32 uiStopOverlayTimer;
+  sEyeFrame: UINT16;
+  ubEyeWait: INT8;
+  uiEyelast: UINT32;
+  uiEyeDelay: UINT32;
+  uiBlinkFrequency: UINT32;
+  uiExpressionFrequency: UINT32;
+  uiStopOverlayTimer: UINT32;
 
-  UINT8 ubExpression;
+  ubExpression: UINT8;
 
-  INT8 bOldSoldierLife;
-  INT8 bOldActionPoints;
-  BOOLEAN fOldHandleUIHatch;
-  BOOLEAN fOldShowHighlight;
-  INT8 bOldAssignment;
-  INT8 ubOldServiceCount;
-  UINT8 ubOldServicePartner;
-  BOOLEAN fOldShowMoveHilight;
+  bOldSoldierLife: INT8;
+  bOldActionPoints: INT8;
+  fOldHandleUIHatch: BOOLEAN;
+  fOldShowHighlight: BOOLEAN;
+  bOldAssignment: INT8;
+  ubOldServiceCount: INT8;
+  ubOldServicePartner: UINT8;
+  fOldShowMoveHilight: BOOLEAN;
 
-  UINT16 sMouthFrame;
-  UINT32 uiMouthlast;
-  UINT32 uiMouthDelay;
+  sMouthFrame: UINT16;
+  uiMouthlast: UINT32;
+  uiMouthDelay: UINT32;
 
-  UINT32 uiLastBlink;
-  UINT32 uiLastExpression;
+  uiLastBlink: UINT32;
+  uiLastExpression: UINT32;
 
-  UINT32 uiVideoObject;
+  uiVideoObject: UINT32;
 
-  UINT32 uiUserData1;
-  UINT32 uiUserData2;
+  uiUserData1: UINT32;
+  uiUserData2: UINT32;
 
-  BOOLEAN fCompatibleItems;
-  BOOLEAN fOldCompatibleItems;
-  BOOLEAN bOldStealthMode;
-  INT8 bOldOppCnt;
+  fCompatibleItems: BOOLEAN;
+  fOldCompatibleItems: BOOLEAN;
+  bOldStealthMode: BOOLEAN;
+  bOldOppCnt: INT8;
 
-  AudioGapList GapList;
-} FACETYPE;
+  GapList: AudioGapList;
+}
 
 // GLOBAL FOR FACES LISTING
 FACETYPE gFacesData[NUM_FACE_SLOTS];

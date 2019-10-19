@@ -1,9 +1,9 @@
-typedef struct {
-  STR16 *psCityLoc;
-  UINT16 usOverNightExpress;
-  UINT16 us2DaysService;
-  UINT16 usStandardService;
-} BobbyROrderLocationStruct;
+interface BobbyROrderLocationStruct {
+  psCityLoc: Pointer<STR16>;
+  usOverNightExpress: UINT16;
+  us2DaysService: UINT16;
+  usStandardService: UINT16;
+}
 
 BobbyROrderLocationStruct BobbyROrderLocations[] = {
   { &pDeliveryLocationStrings[0], 20, 15, 10 },
