@@ -1,5 +1,5 @@
-#define CLOCK_X 554
-#define CLOCK_Y 459
+const CLOCK_X = 554;
+const CLOCK_Y = 459;
 SGPRect gOldClippingRect, gOldDirtyClippingRect;
 
 UINT32 guiTacticalInterfaceFlags;

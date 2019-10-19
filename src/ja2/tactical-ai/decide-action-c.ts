@@ -4,7 +4,7 @@ extern BOOLEAN gfUseAlternateQueenPosition;
 
 // global status time counters to determine what takes the most time
 
-#define CENTER_OF_RING 11237
+const CENTER_OF_RING = 11237;
 
 void DoneScheduleAction(SOLDIERTYPE *pSoldier) {
   pSoldier->fAIFlags &= (~AI_CHECK_SCHEDULE);

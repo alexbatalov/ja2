@@ -25,26 +25,30 @@
 //
 //**************************************************************************
 
-#define FILENAME_LENGTH 600
+const FILENAME_LENGTH = 600;
 
-#define CHECKF(exp) \
-  if (!(exp)) { \
-    return (FALSE); \
+const CHECKF = (exp) => {
+  if (!(exp)) {
+    return (FALSE);
   }
-#define CHECKV(exp) \
-  if (!(exp)) { \
-    return; \
+};
+const CHECKV = (exp) => {
+  if (!(exp)) {
+    return;
   }
-#define CHECKN(exp) \
-  if (!(exp)) { \
-    return (NULL); \
+};
+const CHECKN = (exp) => {
+  if (!(exp)) {
+    return (NULL);
   }
-#define CHECKBI(exp) \
-  if (!(exp)) { \
-    return (-1); \
+};
+const CHECKBI = (exp) => {
+  if (!(exp)) {
+    return (-1);
   }
+};
 
-#define PRINT_DEBUG_INFO FileDebugPrint();
+const PRINT_DEBUG_INFO = () => FileDebugPrint();
 
 //**************************************************************************
 //

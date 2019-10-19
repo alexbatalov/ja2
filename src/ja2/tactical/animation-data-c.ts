@@ -1,7 +1,7 @@
-#define EMPTY_SLOT -1
-#define TO_INIT 0
+const EMPTY_SLOT = -1;
+const TO_INIT = 0;
 
-#define ANIMPROFILEFILENAME "BINARYDATA\\JA2PROF.DAT"
+const ANIMPROFILEFILENAME = "BINARYDATA\\JA2PROF.DAT";
 
 ANIM_PROF *gpAnimProfiles = NULL;
 UINT8 gubNumAnimProfiles = 0;

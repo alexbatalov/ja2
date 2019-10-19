@@ -1,8 +1,8 @@
 // this is how close one has to be in the loaded sector to pickup an item
-#define MAX_DISTANCE_TO_PICKUP_ITEM 5
+const MAX_DISTANCE_TO_PICKUP_ITEM = 5;
 
 // number of inventory slots
-#define MAP_INVENTORY_POOL_SLOT_COUNT 45
+const MAP_INVENTORY_POOL_SLOT_COUNT = 45;
 
 // whether we are showing the inventory pool graphic
 extern BOOLEAN fShowMapInventoryPool;

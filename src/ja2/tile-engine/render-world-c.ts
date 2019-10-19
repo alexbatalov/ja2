@@ -24,22 +24,22 @@ extern BOOLEAN gfTopMessageDirty;
 // VIEWPORT OFFSET VALUES
 // NOTE:
 // THESE VALUES MUST BE MULTIPLES OF TILE SIZES!
-#define VIEWPORT_XOFFSET_S WORLD_TILE_X * 1
-#define VIEWPORT_YOFFSET_S WORLD_TILE_Y * 2
-#define LARGER_VIEWPORT_XOFFSET_S (VIEWPORT_XOFFSET_S * 3)
-#define LARGER_VIEWPORT_YOFFSET_S (VIEWPORT_YOFFSET_S * 5)
+const VIEWPORT_XOFFSET_S = WORLD_TILE_X * 1;
+const VIEWPORT_YOFFSET_S = WORLD_TILE_Y * 2;
+const LARGER_VIEWPORT_XOFFSET_S = (VIEWPORT_XOFFSET_S * 3);
+const LARGER_VIEWPORT_YOFFSET_S = (VIEWPORT_YOFFSET_S * 5);
 
-#define TILES_TYPE_BITMASK 0x00040000
+const TILES_TYPE_BITMASK = 0x00040000;
 
-#define TILES_TYPE_MASK 0x07ffffff
+const TILES_TYPE_MASK = 0x07ffffff;
 
-#define TILES_DIRTY 0x80000000
-#define TILES_DYNAMIC 0x40000000
-#define TILES_NOZWRITE 0x20000000
-#define TILES_MARKED 0x10000000
-#define TILES_NOZ 0x04000000
-#define TILES_DOALL 0x02000000
-#define TILES_OBSCURED 0x01000000
+const TILES_DIRTY = 0x80000000;
+const TILES_DYNAMIC = 0x40000000;
+const TILES_NOZWRITE = 0x20000000;
+const TILES_MARKED = 0x10000000;
+const TILES_NOZ = 0x04000000;
+const TILES_DOALL = 0x02000000;
+const TILES_OBSCURED = 0x01000000;
 
 //#define TILES_MERC								0x00000400
 //#define TILES_Z_BLITTER						0x00000200
@@ -47,7 +47,7 @@ extern BOOLEAN gfTopMessageDirty;
 //#define TILES_SHADOW							0x00000080
 //#define TILES_BACKWARDS						0x00000040
 
-#define MAX_RENDERED_ITEMS 3
+const MAX_RENDERED_ITEMS = 3;
 
 // RENDERER FLAGS FOR DIFFERENT RENDER LEVELS
 typedef enum {
@@ -71,13 +71,13 @@ typedef enum {
   NUM_RENDER_FX_TYPES,
 };
 
-#define SCROLL_INTERTIA_STEP1 6
-#define SCROLL_INTERTIA_STEP2 8
+const SCROLL_INTERTIA_STEP1 = 6;
+const SCROLL_INTERTIA_STEP2 = 8;
 
 //#define SHORT_ROUND( x ) ( (INT16)( ( x * 1000 ) / 1000 ) )
-#define SHORT_ROUND(x) (x)
+const SHORT_ROUND = (x) => (x);
 
-#define NUM_ITEM_CYCLE_COLORS 60
+const NUM_ITEM_CYCLE_COLORS = 60;
 
 UINT16 us16BPPItemCycleWhiteColors[NUM_ITEM_CYCLE_COLORS];
 UINT16 us16BPPItemCycleRedColors[NUM_ITEM_CYCLE_COLORS];
@@ -299,7 +299,7 @@ UINT8 ubRGBItemCycleYellowColors[] = {
   25, 25, 0,
 };
 
-#define NUMSPEEDS 5
+const NUMSPEEDS = 5;
 
 UINT8 gubNewScrollXSpeeds[2][NUMSPEEDS] = {
   { 40, 80, 100, 180, 200 }, // Non-video mode scroll
@@ -334,7 +334,7 @@ UINT32 uiLayerUsedFlags = 0xffffffff;
 UINT32 uiAdditiveLayerUsedFlags = 0xffffffff;
 
 // Array of shade values to use.....
-#define NUM_GLOW_FRAMES 30
+const NUM_GLOW_FRAMES = 30;
 
 INT16 gsGlowFrames[] = {
   0,
@@ -450,7 +450,7 @@ INT16 gsBLX, gsBLY, gsBRX, gsBRY;
 INT16 gsCX, gsCY;
 DOUBLE gdScaleX, gdScaleY;
 
-#define FASTMAPROWCOLTOPOS(r, c) ((r)*WORLD_COLS + (c))
+const FASTMAPROWCOLTOPOS = (r, c) => ((r) * WORLD_COLS + (c));
 
 BOOLEAN gfScrollInertia = FALSE;
 
@@ -3381,7 +3381,7 @@ void InvalidateWorldRedundency() {
     gpWorldLevelData[uiCount].uiFlags |= MAPELEMENT_REEVALUATE_REDUNDENCY;
 }
 
-#define Z_STRIP_DELTA_Y (Z_SUBLAYERS * 10)
+const Z_STRIP_DELTA_Y = (Z_SUBLAYERS * 10);
 
 /**********************************************************************************************
  Blt8BPPDataTo16BPPBufferTransZIncClip

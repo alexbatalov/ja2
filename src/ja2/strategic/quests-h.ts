@@ -1,28 +1,28 @@
 //  Quest.ubStatus values
-#define QUESTNOTSTARTED 0
-#define QUESTINPROGRESS 1
-#define QUESTDONE 2
+const QUESTNOTSTARTED = 0;
+const QUESTINPROGRESS = 1;
+const QUESTDONE = 2;
 
-#define MAX_QUESTS 30
-#define MAX_FACTS 65536
-#define NUM_FACTS 500 // If you increase this number, add entries to the fact text list in QuestText.c
+const MAX_QUESTS = 30;
+const MAX_FACTS = 65536;
+const NUM_FACTS = 500; // If you increase this number, add entries to the fact text list in QuestText.c
 
-#define MAP_ROW_A 1
-#define MAP_ROW_B 2
-#define MAP_ROW_C 3
-#define MAP_ROW_D 4
-#define MAP_ROW_E 5
-#define MAP_ROW_F 6
-#define MAP_ROW_G 7
-#define MAP_ROW_H 8
-#define MAP_ROW_I 9
-#define MAP_ROW_J 10
-#define MAP_ROW_K 11
-#define MAP_ROW_L 12
-#define MAP_ROW_M 13
-#define MAP_ROW_N 14
-#define MAP_ROW_O 15
-#define MAP_ROW_P 16
+const MAP_ROW_A = 1;
+const MAP_ROW_B = 2;
+const MAP_ROW_C = 3;
+const MAP_ROW_D = 4;
+const MAP_ROW_E = 5;
+const MAP_ROW_F = 6;
+const MAP_ROW_G = 7;
+const MAP_ROW_H = 8;
+const MAP_ROW_I = 9;
+const MAP_ROW_J = 10;
+const MAP_ROW_K = 11;
+const MAP_ROW_L = 12;
+const MAP_ROW_M = 13;
+const MAP_ROW_N = 14;
+const MAP_ROW_O = 15;
+const MAP_ROW_P = 16;
 
 // --------------------------------------------------------------------------------------
 //  Q U E S T     D E F I N E S
@@ -503,28 +503,28 @@ enum {
 } Facts;
 //**  END FACTS *************************
 
-#define BOBBYR_SHIPPING_DEST_SECTOR_X 13
-#define BOBBYR_SHIPPING_DEST_SECTOR_Y 2
-#define BOBBYR_SHIPPING_DEST_SECTOR_Z 0
-#define BOBBYR_SHIPPING_DEST_GRIDNO 10112
-#define PABLOS_STOLEN_DEST_GRIDNO 1
-#define LOST_SHIPMENT_GRIDNO 2
+const BOBBYR_SHIPPING_DEST_SECTOR_X = 13;
+const BOBBYR_SHIPPING_DEST_SECTOR_Y = 2;
+const BOBBYR_SHIPPING_DEST_SECTOR_Z = 0;
+const BOBBYR_SHIPPING_DEST_GRIDNO = 10112;
+const PABLOS_STOLEN_DEST_GRIDNO = 1;
+const LOST_SHIPMENT_GRIDNO = 2;
 
 // omerta positions
-#define OMERTA_LEAVE_EQUIP_SECTOR_X 9
-#define OMERTA_LEAVE_EQUIP_SECTOR_Y 1
-#define OMERTA_LEAVE_EQUIP_SECTOR_Z 0
-#define OMERTA_LEAVE_EQUIP_GRIDNO 4868
+const OMERTA_LEAVE_EQUIP_SECTOR_X = 9;
+const OMERTA_LEAVE_EQUIP_SECTOR_Y = 1;
+const OMERTA_LEAVE_EQUIP_SECTOR_Z = 0;
+const OMERTA_LEAVE_EQUIP_GRIDNO = 4868;
 
 // NB brothel rooms 88-90 removed because they are the antechamber
-#define IN_BROTHEL(room) (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119)
-#define IN_BROTHEL_GUARD_ROOM(room) (room == 110)
+const IN_BROTHEL = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && (room) >= 91 && (room) <= 119);
+const IN_BROTHEL_GUARD_ROOM = (room) => (room == 110);
 
-#define IN_KINGPIN_HOUSE(room) (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39)
+const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && (room) >= 30 && (room) <= 39);
 
-#define LOYALTY_LOW_THRESHOLD 30
-#define LOYALTY_OK_THRESHOLD 50
-#define LOYALTY_HIGH_THRESHOLD 80
+const LOYALTY_LOW_THRESHOLD = 30;
+const LOYALTY_OK_THRESHOLD = 50;
+const LOYALTY_HIGH_THRESHOLD = 80;
 
 extern UINT8 gubQuest[MAX_QUESTS];
 extern UINT8 gubFact[NUM_FACTS];

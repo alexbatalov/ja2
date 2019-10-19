@@ -1,5 +1,5 @@
-#define MAX_CACHE_SIZE 20
-#define MIN_CACHE_SIZE 2
+const MAX_CACHE_SIZE = 20;
+const MIN_CACHE_SIZE = 2;
 
 typedef struct {
   UINT16 *usCachedSurfaces;

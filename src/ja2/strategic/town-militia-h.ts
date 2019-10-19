@@ -1,16 +1,16 @@
 // header for town militia strategic control module
 
 // how many militia of all ranks can be in any one sector at once
-#define MAX_ALLOWABLE_MILITIA_PER_SECTOR 20
+const MAX_ALLOWABLE_MILITIA_PER_SECTOR = 20;
 
 // how many new green militia civilians are trained at a time
-#define MILITIA_TRAINING_SQUAD_SIZE 10 // was 6
+const MILITIA_TRAINING_SQUAD_SIZE = 10; // was 6
 
 // cost of starting a new militia training assignment
-#define MILITIA_TRAINING_COST 750
+const MILITIA_TRAINING_COST = 750;
 
 // minimum loyalty rating before training is allowed in a town
-#define MIN_RATING_TO_TRAIN_TOWN 20
+const MIN_RATING_TO_TRAIN_TOWN = 20;
 
 // this handles what happens when a new militia unit is finishes getting trained
 void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMapY);

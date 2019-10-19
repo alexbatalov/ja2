@@ -16,4 +16,4 @@ extern UINT16 White16BPPPalette[256];
 extern FLOAT guiShadePercent;
 extern FLOAT guiBrightPercent;
 
-#define DEFAULT_SHADE_LEVEL 4
+const DEFAULT_SHADE_LEVEL = 4;

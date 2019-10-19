@@ -1,7 +1,7 @@
-#define NO_JUMP 0
-#define MAX_ANIFRAMES_PER_FLASH 2
+const NO_JUMP = 0;
+const MAX_ANIFRAMES_PER_FLASH = 2;
 //#define		TIME_FOR_RANDOM_ANIM_CHECK	10
-#define TIME_FOR_RANDOM_ANIM_CHECK 2
+const TIME_FOR_RANDOM_ANIM_CHECK = 2;
 
 BOOLEAN gfLastMercTalkedAboutKillingID = NOBODY;
 
@@ -2396,7 +2396,7 @@ BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-#define MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE 20
+const MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE = 20;
 
 BOOLEAN ShouldMercSayHappyWithGunQuote(SOLDIERTYPE *pSoldier) {
   // How do we do this....

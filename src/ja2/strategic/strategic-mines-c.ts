@@ -1,14 +1,14 @@
 // this .c file will handle the strategic level of mines and income from them
 
-#define REMOVAL_RATE_INCREMENT 250 // the smallest increment by which removal rate change during depletion (use round #s)
+const REMOVAL_RATE_INCREMENT = 250; // the smallest increment by which removal rate change during depletion (use round #s)
 
-#define LOW_MINE_LOYALTY_THRESHOLD 50 // below this the head miner considers his town's population disloyal
+const LOW_MINE_LOYALTY_THRESHOLD = 50; // below this the head miner considers his town's population disloyal
 
 // Mine production is being processed 4x daily: 9am ,noon, 3pm, and 6pm.
 // This is loosely based on a 6am-6pm working day of 4 "shifts".
-#define MINE_PRODUCTION_NUMBER_OF_PERIODS 4 // how many times a day mine production is processed
-#define MINE_PRODUCTION_START_TIME (9 * 60) // hour of first daily mine production event (in minutes)
-#define MINE_PRODUCTION_PERIOD (3 * 60) // time seperating daily mine production events (in minutes)
+const MINE_PRODUCTION_NUMBER_OF_PERIODS = 4; // how many times a day mine production is processed
+const MINE_PRODUCTION_START_TIME = (9 * 60); // hour of first daily mine production event (in minutes)
+const MINE_PRODUCTION_PERIOD = (3 * 60); // time seperating daily mine production events (in minutes)
 
 // PRIVATE PROTOTYPES
 

@@ -27,8 +27,8 @@ INT32 giDrunkModifier[] = {
   100, // HungOver
 };
 
-#define HANGOVER_AP_REDUCE 5
-#define HANGOVER_BP_REDUCE 200
+const HANGOVER_AP_REDUCE = 5;
+const HANGOVER_BP_REDUCE = 200;
 
 UINT8 GetDrugType(UINT16 usItem) {
   if (usItem == ADRENALINE_BOOSTER) {

@@ -1,10 +1,10 @@
 typedef float real;
 
-#define REAL_MAX FLT_MAX
-#define REAL_MIN FLT_MIN
+const REAL_MAX = FLT_MAX;
+const REAL_MIN = FLT_MIN;
 
-#define PI2 3.14159265358979323846
-#define Epsilon2 0.00001
+const PI2 = 3.14159265358979323846;
+const Epsilon2 = 0.00001;
 
 typedef struct {
   real x, y, z;
@@ -15,8 +15,8 @@ typedef struct {
 } matrix_3x3;
 
 // DEFINES
-#define RADIANS_FROM(d) ((d * PI2) / 180)
-#define DEGREES_FROM(r) ((r * 180) / PI2)
+const RADIANS_FROM = (d) => ((d * PI2) / 180);
+const DEGREES_FROM = (r) => ((r * 180) / PI2);
 
 vector_3 VSetEqual(vector_3 *a);
 vector_3 VSubtract(vector_3 *a, vector_3 *b);

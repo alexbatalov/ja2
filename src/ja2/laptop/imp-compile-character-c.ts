@@ -1,6 +1,6 @@
 // how many times should a 'die' be rolled for skills of the same type?
 
-#define HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK 20
+const HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK = 20;
 
 INT32 AttitudeList[ATTITUDE_LIST_SIZE];
 INT32 iLastElementInAttitudeList = 0;

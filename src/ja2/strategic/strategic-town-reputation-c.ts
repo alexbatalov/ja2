@@ -1,20 +1,20 @@
 // init for town reputation at game start
-#define INITIAL_TOWN_REPUTATION 0
+const INITIAL_TOWN_REPUTATION = 0;
 
 // the max and min town opinion of an individual merc can be
-#define MAX_TOWN_OPINION 50
-#define MIN_TOWN_OPINION -50
+const MAX_TOWN_OPINION = 50;
+const MIN_TOWN_OPINION = -50;
 
 // town reputation is currently updated 4x per day: at 9am, noon, 3pm, and 6pm
 
 // the number of events per day
-#define TOWN_OPINION_NUMBER_OF_PERIODS 4
+const TOWN_OPINION_NUMBER_OF_PERIODS = 4;
 
 // the start time after midnight that first town reputation event takes place .. in minutes
-#define TOWN_OPINION_START_TIME (9 * 60)
+const TOWN_OPINION_START_TIME = (9 * 60);
 
 // how often the town opinion events occur...right now every 3 hours
-#define TOWN_OPINION_PERIOD (3 * 60)
+const TOWN_OPINION_PERIOD = (3 * 60);
 
 void InitializeProfilesForTownReputation(void) {
   UINT32 uiProfileId = 0;

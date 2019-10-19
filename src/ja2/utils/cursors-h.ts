@@ -225,8 +225,8 @@ typedef enum {
   NUM_CURSOR_FILES,
 } CursorSurfaceDefines;
 
-#define MOUSE_LEVEL_GROUND 0
-#define MOUSE_LEVEL_ROOF 1
+const MOUSE_LEVEL_GROUND = 0;
+const MOUSE_LEVEL_ROOF = 1;
 
 void RaiseMouseToLevel(INT8 bLevel);
 

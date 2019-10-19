@@ -3,7 +3,7 @@
 INT32 FindFreeWinFont(void);
 BOOLEAN gfEnumSucceed = FALSE;
 
-#define MAX_WIN_FONTS 10
+const MAX_WIN_FONTS = 10;
 
 // Private struct not to be exported
 // to other modules

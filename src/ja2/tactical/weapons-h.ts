@@ -1,32 +1,32 @@
-#define MAXCHANCETOHIT 99
-#define BAD_DODGE_POSITION_PENALTY 20
+const MAXCHANCETOHIT = 99;
+const BAD_DODGE_POSITION_PENALTY = 20;
 
-#define GUN_BARREL_RANGE_BONUS 100
+const GUN_BARREL_RANGE_BONUS = 100;
 
 // Special deaths can only occur within a limited distance to the target
-#define MAX_DISTANCE_FOR_MESSY_DEATH 7
+const MAX_DISTANCE_FOR_MESSY_DEATH = 7;
 // If you do a lot of damage with a close-range shot, instant kill
-#define MIN_DAMAGE_FOR_INSTANT_KILL 55
+const MIN_DAMAGE_FOR_INSTANT_KILL = 55;
 // If you happen to kill someone with a close-range shot doing a lot of damage to the head, head explosion
-#define MIN_DAMAGE_FOR_HEAD_EXPLOSION 45
+const MIN_DAMAGE_FOR_HEAD_EXPLOSION = 45;
 // If you happen to kill someone with a close-range shot doing a lot of damage to the chest, chest explosion
 // This value is lower than head because of the damage bonus for shooting the head
-#define MIN_DAMAGE_FOR_BLOWN_AWAY 30
+const MIN_DAMAGE_FOR_BLOWN_AWAY = 30;
 // If you happen to hit someone in the legs for enough damage, REGARDLESS of distance, person falls down
 // Leg damage is halved for these purposes
-#define MIN_DAMAGE_FOR_AUTO_FALL_OVER 20
+const MIN_DAMAGE_FOR_AUTO_FALL_OVER = 20;
 
 // short range at which being prone provides to hit penalty when shooting standing people
-#define MIN_PRONE_RANGE 50
+const MIN_PRONE_RANGE = 50;
 
 // can't miss at this range?
-#define POINT_BLANK_RANGE 16
+const POINT_BLANK_RANGE = 16;
 
-#define BODY_IMPACT_ABSORPTION 20
+const BODY_IMPACT_ABSORPTION = 20;
 
-#define BUCKSHOT_SHOTS 9
+const BUCKSHOT_SHOTS = 9;
 
-#define MIN_MORTAR_RANGE 150 // minimum range of a mortar
+const MIN_MORTAR_RANGE = 150; // minimum range of a mortar
 
 // WEAPON CLASSES
 enum {
@@ -113,52 +113,52 @@ enum {
   EXPLOSV_CREATUREGAS,
 };
 
-#define AMMO_DAMAGE_ADJUSTMENT_BUCKSHOT(x) (x / 4)
-#define NUM_BUCKSHOT_PELLETS 9
+const AMMO_DAMAGE_ADJUSTMENT_BUCKSHOT = (x) => (x / 4);
+const NUM_BUCKSHOT_PELLETS = 9;
 
 // hollow point bullets do lots of damage to people
-#define AMMO_DAMAGE_ADJUSTMENT_HP(x) ((x * 17) / 10)
+const AMMO_DAMAGE_ADJUSTMENT_HP = (x) => ((x * 17) / 10);
 // but they SUCK at penetrating armour
-#define AMMO_ARMOUR_ADJUSTMENT_HP(x) ((x * 3) / 2)
+const AMMO_ARMOUR_ADJUSTMENT_HP = (x) => ((x * 3) / 2);
 // armour piercing bullets are good at penetrating armour
-#define AMMO_ARMOUR_ADJUSTMENT_AP(x) ((x * 3) / 4)
+const AMMO_ARMOUR_ADJUSTMENT_AP = (x) => ((x * 3) / 4);
 // "super" AP bullets are great at penetrating armour
-#define AMMO_ARMOUR_ADJUSTMENT_SAP(x) (x / 2)
+const AMMO_ARMOUR_ADJUSTMENT_SAP = (x) => (x / 2);
 
 // high explosive damage value (PRIOR to armour subtraction)
-#define AMMO_DAMAGE_ADJUSTMENT_HE(x) ((x * 4) / 3)
+const AMMO_DAMAGE_ADJUSTMENT_HE = (x) => ((x * 4) / 3);
 
 // but they SUCK at penetrating armour
-#define AMMO_STRUCTURE_ADJUSTMENT_HP(x) (x * 2)
+const AMMO_STRUCTURE_ADJUSTMENT_HP = (x) => (x * 2);
 // armour piercing bullets are good at penetrating structure
-#define AMMO_STRUCTURE_ADJUSTMENT_AP(x) ((x * 3) / 4)
+const AMMO_STRUCTURE_ADJUSTMENT_AP = (x) => ((x * 3) / 4);
 // "super" AP bullets are great at penetrating structures
-#define AMMO_STRUCTURE_ADJUSTMENT_SAP(x) (x / 2)
+const AMMO_STRUCTURE_ADJUSTMENT_SAP = (x) => (x / 2);
 
 // one quarter of punching damage is "real" rather than breath damage
-#define PUNCH_REAL_DAMAGE_PORTION 4
+const PUNCH_REAL_DAMAGE_PORTION = 4;
 
-#define AIM_BONUS_SAME_TARGET 10 // chance-to-hit bonus (in %)
-#define AIM_BONUS_PER_AP 10 // chance-to-hit bonus (in %) for aim
-#define AIM_BONUS_CROUCHING 10
-#define AIM_BONUS_PRONE 20
-#define AIM_BONUS_TWO_HANDED_PISTOL 5
-#define AIM_BONUS_FIRING_DOWN 15
-#define AIM_PENALTY_ONE_HANDED_PISTOL 5
-#define AIM_PENALTY_DUAL_PISTOLS 20
-#define AIM_PENALTY_SMG 5
-#define AIM_PENALTY_GASSED 50
-#define AIM_PENALTY_GETTINGAID 20
-#define AIM_PENALTY_PER_SHOCK 5 // 5% penalty per point of shock
-#define AIM_BONUS_TARGET_HATED 20
-#define AIM_BONUS_PSYCHO 15
-#define AIM_PENALTY_TARGET_BUDDY 20
-#define AIM_PENALTY_BURSTING 10
-#define AIM_PENALTY_GENTLEMAN 15
-#define AIM_PENALTY_TARGET_CROUCHED 20
-#define AIM_PENALTY_TARGET_PRONE 40
-#define AIM_PENALTY_BLIND 80
-#define AIM_PENALTY_FIRING_UP 25
+const AIM_BONUS_SAME_TARGET = 10; // chance-to-hit bonus (in %)
+const AIM_BONUS_PER_AP = 10; // chance-to-hit bonus (in %) for aim
+const AIM_BONUS_CROUCHING = 10;
+const AIM_BONUS_PRONE = 20;
+const AIM_BONUS_TWO_HANDED_PISTOL = 5;
+const AIM_BONUS_FIRING_DOWN = 15;
+const AIM_PENALTY_ONE_HANDED_PISTOL = 5;
+const AIM_PENALTY_DUAL_PISTOLS = 20;
+const AIM_PENALTY_SMG = 5;
+const AIM_PENALTY_GASSED = 50;
+const AIM_PENALTY_GETTINGAID = 20;
+const AIM_PENALTY_PER_SHOCK = 5; // 5% penalty per point of shock
+const AIM_BONUS_TARGET_HATED = 20;
+const AIM_BONUS_PSYCHO = 15;
+const AIM_PENALTY_TARGET_BUDDY = 20;
+const AIM_PENALTY_BURSTING = 10;
+const AIM_PENALTY_GENTLEMAN = 15;
+const AIM_PENALTY_TARGET_CROUCHED = 20;
+const AIM_PENALTY_TARGET_PRONE = 40;
+const AIM_PENALTY_BLIND = 80;
+const AIM_PENALTY_FIRING_UP = 25;
 
 typedef struct {
   UINT8 ubWeaponClass; // handgun/shotgun/rifle/knife

@@ -633,7 +633,7 @@ void SetCivilianDestination(UINT8 ubWho, INT16 sGridno) {
   */
 }
 
-#define RADIUS 3
+const RADIUS = 3;
 
 INT16 TrackScent(SOLDIERTYPE *pSoldier) {
   // This function returns the best gridno to go to based on the scent being followed,

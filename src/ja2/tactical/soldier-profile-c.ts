@@ -2,10 +2,10 @@ extern BOOLEAN gfProfileDataLoaded;
 
 BOOLEAN gfPotentialTeamChangeDuringDeath = FALSE;
 
-#define MIN_BLINK_FREQ 3000
-#define MIN_EXPRESSION_FREQ 2000
+const MIN_BLINK_FREQ = 3000;
+const MIN_EXPRESSION_FREQ = 2000;
 
-#define SET_PROFILE_GAINS2 500, 500, 500, 500, 500, 500, 500, 500, 500
+const SET_PROFILE_GAINS2 = 500, 500, 500, 500, 500, 500, 500, 500, 500;
 
 MERCPROFILESTRUCT gMercProfiles[NUM_PROFILES];
 
@@ -39,7 +39,7 @@ UINT8 gubBasicInventoryPositions[] = {
   BIGPOCK4POS,
 };
 
-#define NUM_TERRORISTS 6
+const NUM_TERRORISTS = 6;
 
 UINT8 gubTerrorists[NUM_TERRORISTS + 1] = {
   DRUGGIST,
@@ -53,7 +53,7 @@ UINT8 gubTerrorists[NUM_TERRORISTS + 1] = {
 
 UINT8 gubNumTerrorists = 0;
 
-#define NUM_TERRORIST_POSSIBLE_LOCATIONS 5
+const NUM_TERRORIST_POSSIBLE_LOCATIONS = 5;
 
 INT16 gsTerroristSector[NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] = {
   // Elgin... preplaced
@@ -108,7 +108,7 @@ INT16 gsTerroristSector[NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] = {
 
 INT16 gsRobotGridNo;
 
-#define NUM_ASSASSINS 6
+const NUM_ASSASSINS = 6;
 
 UINT8 gubAssassins[NUM_ASSASSINS] = {
   JIM,
@@ -119,7 +119,7 @@ UINT8 gubAssassins[NUM_ASSASSINS] = {
   TYRONE,
 };
 
-#define NUM_ASSASSIN_POSSIBLE_TOWNS 5
+const NUM_ASSASSIN_POSSIBLE_TOWNS = 5;
 
 INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
   // Jim
@@ -280,7 +280,7 @@ BOOLEAN LoadMercProfiles(void) {
   return TRUE;
 }
 
-#define MAX_ADDITIONAL_TERRORISTS 4
+const MAX_ADDITIONAL_TERRORISTS = 4;
 
 void DecideActiveTerrorists(void) {
   UINT8 ubLoop, ubLoop2;

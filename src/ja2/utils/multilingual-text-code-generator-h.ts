@@ -1,2 +1,2 @@
 // macro function out
-#define ProcessIfMultilingualCmdLineArgDetected(a) 0
+const ProcessIfMultilingualCmdLineArgDetected = (a) => 0;

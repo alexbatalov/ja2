@@ -5,18 +5,18 @@ typedef struct {
   UINT16 usDateFound; // when the key was found
 } KEY;
 
-#define KEY_USED 0x01
+const KEY_USED = 0x01;
 
-#define LOCK_UNOPENABLE 255
-#define NO_KEY 255
+const LOCK_UNOPENABLE = 255;
+const NO_KEY = 255;
 
-#define MAX_KEYS_PER_LOCK 4
+const MAX_KEYS_PER_LOCK = 4;
 
-#define LOCK_REGULAR 1
-#define LOCK_PADLOCK 2
-#define LOCK_CARD 3
-#define LOCK_ELECTRONIC 4
-#define LOCK_SPECIAL 5
+const LOCK_REGULAR = 1;
+const LOCK_PADLOCK = 2;
+const LOCK_CARD = 3;
+const LOCK_ELECTRONIC = 4;
+const LOCK_SPECIAL = 5;
 
 /*
 typedef struct
@@ -28,7 +28,7 @@ typedef struct
 } LOCK;
 */
 
-#define MAXLOCKDESCLENGTH 40
+const MAXLOCKDESCLENGTH = 40;
 typedef struct {
   UINT8 ubEditorName[MAXLOCKDESCLENGTH]; // name to display in editor
   UINT16 usKeyItem; // key for this door uses which graphic (item #)?
@@ -39,13 +39,13 @@ typedef struct {
 } LOCK;
 
 // Defines below for the perceived value of the door
-#define DOOR_PERCEIVED_UNKNOWN 0
-#define DOOR_PERCEIVED_LOCKED 1
-#define DOOR_PERCEIVED_UNLOCKED 2
-#define DOOR_PERCEIVED_BROKEN 3
+const DOOR_PERCEIVED_UNKNOWN = 0;
+const DOOR_PERCEIVED_LOCKED = 1;
+const DOOR_PERCEIVED_UNLOCKED = 2;
+const DOOR_PERCEIVED_BROKEN = 3;
 
-#define DOOR_PERCEIVED_TRAPPED 1
-#define DOOR_PERCEIVED_UNTRAPPED 2
+const DOOR_PERCEIVED_TRAPPED = 1;
+const DOOR_PERCEIVED_UNTRAPPED = 2;
 
 typedef struct {
   INT16 sGridNo;
@@ -72,22 +72,22 @@ typedef enum {
   NUM_DOOR_TRAPS,
 } DoorTrapTypes;
 
-#define DOOR_TRAP_STOPS_ACTION 0x01
-#define DOOR_TRAP_RECURRING 0x02
-#define DOOR_TRAP_SILENT 0x04
+const DOOR_TRAP_STOPS_ACTION = 0x01;
+const DOOR_TRAP_RECURRING = 0x02;
+const DOOR_TRAP_SILENT = 0x04;
 
 typedef struct {
   UINT8 fFlags; // stops action?  recurring trap?
 } DOORTRAP;
 
 // The status of the door, either open or closed
-#define DOOR_OPEN 0x01
-#define DOOR_PERCEIVED_OPEN 0x02
-#define DOOR_PERCEIVED_NOTSET 0x04
-#define DOOR_BUSY 0x08
-#define DOOR_HAS_TIN_CAN 0x10
+const DOOR_OPEN = 0x01;
+const DOOR_PERCEIVED_OPEN = 0x02;
+const DOOR_PERCEIVED_NOTSET = 0x04;
+const DOOR_BUSY = 0x08;
+const DOOR_HAS_TIN_CAN = 0x10;
 
-#define DONTSETDOORSTATUS 2
+const DONTSETDOORSTATUS = 2;
 
 typedef struct {
   INT16 sGridNo;
@@ -97,13 +97,13 @@ typedef struct {
 // This is the number of different types of doors we can have
 // in one map at a time...
 
-#define NUM_KEYS 64
-#define NUM_LOCKS 64
-#define INVALID_KEY_NUMBER 255
+const NUM_KEYS = 64;
+const NUM_LOCKS = 64;
+const INVALID_KEY_NUMBER = 255;
 
-#define ANYKEY 252
-#define AUTOUNLOCK 253
-#define OPENING_NOT_POSSIBLE 254
+const ANYKEY = 252;
+const AUTOUNLOCK = 253;
+const OPENING_NOT_POSSIBLE = 254;
 
 extern KEY KeyTable[NUM_KEYS];
 extern LOCK LockTable[NUM_LOCKS];

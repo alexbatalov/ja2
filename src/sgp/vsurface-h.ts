@@ -8,25 +8,25 @@
 // Defines for special video object handles given to blit function
 //
 
-#define PRIMARY_SURFACE 0xFFFFFFF0
-#define BACKBUFFER 0xFFFFFFF1
-#define FRAME_BUFFER 0xFFFFFFF2
-#define MOUSE_BUFFER 0xFFFFFFF3
+const PRIMARY_SURFACE = 0xFFFFFFF0;
+const BACKBUFFER = 0xFFFFFFF1;
+const FRAME_BUFFER = 0xFFFFFFF2;
+const MOUSE_BUFFER = 0xFFFFFFF3;
 
 //
 // Defines for blitting
 //
 
-#define VS_BLT_COLORFILL 0x000000020
-#define VS_BLT_USECOLORKEY 0x000000002
-#define VS_BLT_USEDESTCOLORKEY 0x000000200
-#define VS_BLT_FAST 0x000000004
-#define VS_BLT_CLIPPED 0x000000008
-#define VS_BLT_SRCREGION 0x000000010
-#define VS_BLT_DESTREGION 0x000000080
-#define VS_BLT_SRCSUBRECT 0x000000040
-#define VS_BLT_COLORFILLRECT 0x000000100
-#define VS_BLT_MIRROR_Y 0x000001000
+const VS_BLT_COLORFILL = 0x000000020;
+const VS_BLT_USECOLORKEY = 0x000000002;
+const VS_BLT_USEDESTCOLORKEY = 0x000000200;
+const VS_BLT_FAST = 0x000000004;
+const VS_BLT_CLIPPED = 0x000000008;
+const VS_BLT_SRCREGION = 0x000000010;
+const VS_BLT_DESTREGION = 0x000000080;
+const VS_BLT_SRCSUBRECT = 0x000000040;
+const VS_BLT_COLORFILLRECT = 0x000000100;
+const VS_BLT_MIRROR_Y = 0x000001000;
 
 //
 // Effects structure for specialized blitting
@@ -44,18 +44,18 @@ typedef struct {
 // Used to describe the memory usage of a video Surface
 //
 
-#define VSURFACE_DEFAULT_MEM_USAGE 0x00000001 // Default mem usage is same as DD, try video and then try system. Will usually work
-#define VSURFACE_VIDEO_MEM_USAGE 0x00000002 // Will force surface into video memory and will fail if it can't
-#define VSURFACE_SYSTEM_MEM_USAGE 0x00000004 // Will force surface into system memory and will fail if it can't
-#define VSURFACE_RESERVED_SURFACE 0x00000100 // Reserved for special purposes, like a primary surface
+const VSURFACE_DEFAULT_MEM_USAGE = 0x00000001; // Default mem usage is same as DD, try video and then try system. Will usually work
+const VSURFACE_VIDEO_MEM_USAGE = 0x00000002; // Will force surface into video memory and will fail if it can't
+const VSURFACE_SYSTEM_MEM_USAGE = 0x00000004; // Will force surface into system memory and will fail if it can't
+const VSURFACE_RESERVED_SURFACE = 0x00000100; // Reserved for special purposes, like a primary surface
 
 //
 // Video Surface creation flags
 // Used in the VSurface_DESC structure to describe creation flags
 //
 
-#define VSURFACE_CREATE_DEFAULT 0x00000020 // Creates and empty Surface of given width, height and BPP
-#define VSURFACE_CREATE_FROMFILE 0x00000040 // Creates a video Surface from a file ( using HIMAGE )
+const VSURFACE_CREATE_DEFAULT = 0x00000020; // Creates and empty Surface of given width, height and BPP
+const VSURFACE_CREATE_FROMFILE = 0x00000040; // Creates a video Surface from a file ( using HIMAGE )
 
 //
 // The following structure is used to define a region of the video Surface
@@ -120,7 +120,7 @@ BOOLEAN ShutdownVideoSurfaceManager();
 BOOLEAN RestoreVideoSurfaces();
 
 // Creates and adds a video Surface to list
-#define AddVideoSurface(a, b) AddStandardVideoSurface(a, b)
+const AddVideoSurface = (a, b) => AddStandardVideoSurface(a, b);
 
 BOOLEAN AddStandardVideoSurface(VSURFACE_DESC *VSurfaceDesc, UINT32 *uiIndex);
 

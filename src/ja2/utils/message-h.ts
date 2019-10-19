@@ -11,23 +11,23 @@ struct stringstruct {
   struct stringstruct *pPrev;
 };
 
-#define MSG_INTERFACE 0
-#define MSG_DIALOG 1
-#define MSG_CHAT 2
-#define MSG_DEBUG 3
-#define MSG_UI_FEEDBACK 4
-#define MSG_ERROR 5
-#define MSG_BETAVERSION 6
-#define MSG_TESTVERSION 7
-#define MSG_MAP_UI_POSITION_MIDDLE 8
-#define MSG_MAP_UI_POSITION_UPPER 9
-#define MSG_MAP_UI_POSITION_LOWER 10
-#define MSG_SKULL_UI_FEEDBACK 11
+const MSG_INTERFACE = 0;
+const MSG_DIALOG = 1;
+const MSG_CHAT = 2;
+const MSG_DEBUG = 3;
+const MSG_UI_FEEDBACK = 4;
+const MSG_ERROR = 5;
+const MSG_BETAVERSION = 6;
+const MSG_TESTVERSION = 7;
+const MSG_MAP_UI_POSITION_MIDDLE = 8;
+const MSG_MAP_UI_POSITION_UPPER = 9;
+const MSG_MAP_UI_POSITION_LOWER = 10;
+const MSG_SKULL_UI_FEEDBACK = 11;
 
 // These defines correlate to defines in font.h
-#define MSG_FONT_RED FONT_MCOLOR_RED
-#define MSG_FONT_YELLOW FONT_MCOLOR_LTYELLOW
-#define MSG_FONT_WHITE FONT_MCOLOR_WHITE
+const MSG_FONT_RED = FONT_MCOLOR_RED;
+const MSG_FONT_YELLOW = FONT_MCOLOR_LTYELLOW;
+const MSG_FONT_WHITE = FONT_MCOLOR_WHITE;
 
 typedef struct stringstruct ScrollStringSt;
 typedef ScrollStringSt *ScrollStringStPtr;

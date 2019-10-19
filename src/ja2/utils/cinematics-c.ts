@@ -12,13 +12,13 @@
 
 //-Flags-and-Symbols---------------------------------------------------------------
 
-#define SMK_NUM_FLICS 4 // Maximum number of flics open
+const SMK_NUM_FLICS = 4; // Maximum number of flics open
 
 // SMKFLIC uiFlags
-#define SMK_FLIC_OPEN 0x00000001 // Flic is open
-#define SMK_FLIC_PLAYING 0x00000002 // Flic is playing
-#define SMK_FLIC_LOOP 0x00000004 // Play flic in a loop
-#define SMK_FLIC_AUTOCLOSE 0x00000008 // Close when done
+const SMK_FLIC_OPEN = 0x00000001; // Flic is open
+const SMK_FLIC_PLAYING = 0x00000002; // Flic is playing
+const SMK_FLIC_LOOP = 0x00000004; // Play flic in a loop
+const SMK_FLIC_AUTOCLOSE = 0x00000008; // Close when done
 
 //-Globals-------------------------------------------------------------------------
 SMKFLIC SmkList[SMK_NUM_FLICS];

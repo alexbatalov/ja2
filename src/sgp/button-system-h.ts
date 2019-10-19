@@ -6,74 +6,74 @@
 
 // Moved here from Button System.c by DB 99/01/07
 // Names of the default generic button image files.
-#define DEFAULT_GENERIC_BUTTON_OFF "GENBUTN.STI"
-#define DEFAULT_GENERIC_BUTTON_ON "GENBUTN2.STI"
-#define DEFAULT_GENERIC_BUTTON_OFF_HI "GENBUTN3.STI"
-#define DEFAULT_GENERIC_BUTTON_ON_HI "GENBUTN4.STI"
+const DEFAULT_GENERIC_BUTTON_OFF = "GENBUTN.STI";
+const DEFAULT_GENERIC_BUTTON_ON = "GENBUTN2.STI";
+const DEFAULT_GENERIC_BUTTON_OFF_HI = "GENBUTN3.STI";
+const DEFAULT_GENERIC_BUTTON_ON_HI = "GENBUTN4.STI";
 
-#define BUTTON_TEXT_LEFT -1
-#define BUTTON_TEXT_CENTER 0
-#define BUTTON_TEXT_RIGHT 1
+const BUTTON_TEXT_LEFT = -1;
+const BUTTON_TEXT_CENTER = 0;
+const BUTTON_TEXT_RIGHT = 1;
 
-#define TEXT_LJUSTIFIED BUTTON_TEXT_LEFT
-#define TEXT_CJUSTIFIED BUTTON_TEXT_CENTER
-#define TEXT_RJUSTIFIED BUTTON_TEXT_RIGHT
+const TEXT_LJUSTIFIED = BUTTON_TEXT_LEFT;
+const TEXT_CJUSTIFIED = BUTTON_TEXT_CENTER;
+const TEXT_RJUSTIFIED = BUTTON_TEXT_RIGHT;
 
 // Some GUI_BUTTON system defines
-#define BUTTON_USE_DEFAULT -1
-#define BUTTON_NO_FILENAME NULL
-#define BUTTON_NO_CALLBACK NULL
-#define BUTTON_NO_IMAGE -1
-#define BUTTON_NO_SLOT -1
+const BUTTON_USE_DEFAULT = -1;
+const BUTTON_NO_FILENAME = NULL;
+const BUTTON_NO_CALLBACK = NULL;
+const BUTTON_NO_IMAGE = -1;
+const BUTTON_NO_SLOT = -1;
 
-#define BUTTON_INIT 1
-#define BUTTON_WAS_CLICKED 2
+const BUTTON_INIT = 1;
+const BUTTON_WAS_CLICKED = 2;
 
 // effects how the button is rendered.
-#define BUTTON_TYPES (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX)
+const BUTTON_TYPES = (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX);
 // effects how the button is processed
-#define BUTTON_TYPE_MASK (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS)
+const BUTTON_TYPE_MASK = (BUTTON_NO_TOGGLE | BUTTON_ALLOW_DISABLED_CALLBACK | BUTTON_CHECKBOX | BUTTON_IGNORE_CLICKS);
 
 // button flags
-#define BUTTON_TOGGLE 0x00000000
-#define BUTTON_QUICK 0x00000000
-#define BUTTON_ENABLED 0x00000001
-#define BUTTON_CLICKED_ON 0x00000002
-#define BUTTON_NO_TOGGLE 0x00000004
-#define BUTTON_CLICK_CALLBACK 0x00000008
-#define BUTTON_MOVE_CALLBACK 0x00000010
-#define BUTTON_GENERIC 0x00000020
-#define BUTTON_HOT_SPOT 0x00000040
-#define BUTTON_SELFDELETE_IMAGE 0x00000080
-#define BUTTON_DELETION_PENDING 0x00000100
-#define BUTTON_ALLOW_DISABLED_CALLBACK 0x00000200
-#define BUTTON_DIRTY 0x00000400
-#define BUTTON_SAVEBACKGROUND 0x00000800
-#define BUTTON_CHECKBOX 0x00001000
-#define BUTTON_NEWTOGGLE 0x00002000
-#define BUTTON_FORCE_UNDIRTY 0x00004000 // no matter what happens this buttons does NOT get marked dirty
-#define BUTTON_IGNORE_CLICKS 0x00008000 // Ignore any clicks on this button
-#define BUTTON_DISABLED_CALLBACK 0x80000000
+const BUTTON_TOGGLE = 0x00000000;
+const BUTTON_QUICK = 0x00000000;
+const BUTTON_ENABLED = 0x00000001;
+const BUTTON_CLICKED_ON = 0x00000002;
+const BUTTON_NO_TOGGLE = 0x00000004;
+const BUTTON_CLICK_CALLBACK = 0x00000008;
+const BUTTON_MOVE_CALLBACK = 0x00000010;
+const BUTTON_GENERIC = 0x00000020;
+const BUTTON_HOT_SPOT = 0x00000040;
+const BUTTON_SELFDELETE_IMAGE = 0x00000080;
+const BUTTON_DELETION_PENDING = 0x00000100;
+const BUTTON_ALLOW_DISABLED_CALLBACK = 0x00000200;
+const BUTTON_DIRTY = 0x00000400;
+const BUTTON_SAVEBACKGROUND = 0x00000800;
+const BUTTON_CHECKBOX = 0x00001000;
+const BUTTON_NEWTOGGLE = 0x00002000;
+const BUTTON_FORCE_UNDIRTY = 0x00004000; // no matter what happens this buttons does NOT get marked dirty
+const BUTTON_IGNORE_CLICKS = 0x00008000; // Ignore any clicks on this button
+const BUTTON_DISABLED_CALLBACK = 0x80000000;
 
-#define BUTTON_SOUND_NONE 0x00
-#define BUTTON_SOUND_CLICKED_ON 0x01
-#define BUTTON_SOUND_CLICKED_OFF 0x02
-#define BUTTON_SOUND_MOVED_ONTO 0x04
-#define BUTTON_SOUND_MOVED_OFF_OF 0x08
-#define BUTTON_SOUND_DISABLED_CLICK 0x10
-#define BUTTON_SOUND_DISABLED_MOVED_ONTO 0x20
-#define BUTTON_SOUND_DISABLED_MOVED_OFF_OF 0x40
-#define BUTTON_SOUND_ALREADY_PLAYED 0X80
+const BUTTON_SOUND_NONE = 0x00;
+const BUTTON_SOUND_CLICKED_ON = 0x01;
+const BUTTON_SOUND_CLICKED_OFF = 0x02;
+const BUTTON_SOUND_MOVED_ONTO = 0x04;
+const BUTTON_SOUND_MOVED_OFF_OF = 0x08;
+const BUTTON_SOUND_DISABLED_CLICK = 0x10;
+const BUTTON_SOUND_DISABLED_MOVED_ONTO = 0x20;
+const BUTTON_SOUND_DISABLED_MOVED_OFF_OF = 0x40;
+const BUTTON_SOUND_ALREADY_PLAYED = 0X80;
 
-#define BUTTON_SOUND_ALL_EVENTS 0xff
+const BUTTON_SOUND_ALL_EVENTS = 0xff;
 
 // Internal use!
-#define GUI_SND_CLK_ON BUTTON_SOUND_CLICKED_ON
-#define GUI_SND_CLK_OFF BUTTON_SOUND_CLICKED_OFF
-#define GUI_SND_MOV_ON BUTTON_SOUND_MOVED_ONTO
-#define GUI_SND_MOV_OFF BUTTON_SOUND_MOVED_OFF_OF
-#define GUI_SND_DCLK BUTTON_SOUND_DISABLED_CLICK
-#define GUI_SND_DMOV BUTTON_SOUND_DISABLED_MOVED_ONTO
+const GUI_SND_CLK_ON = BUTTON_SOUND_CLICKED_ON;
+const GUI_SND_CLK_OFF = BUTTON_SOUND_CLICKED_OFF;
+const GUI_SND_MOV_ON = BUTTON_SOUND_MOVED_ONTO;
+const GUI_SND_MOV_OFF = BUTTON_SOUND_MOVED_OFF_OF;
+const GUI_SND_DCLK = BUTTON_SOUND_DISABLED_CLICK;
+const GUI_SND_DMOV = BUTTON_SOUND_DISABLED_MOVED_ONTO;
 
 extern UINT32 ButtonDestBuffer;
 
@@ -128,11 +128,11 @@ typedef struct _GUI_BUTTON {
   UINT8 ubSoundSchemeID;
 } GUI_BUTTON;
 
-#define MAX_BUTTONS 400
+const MAX_BUTTONS = 400;
 
 extern GUI_BUTTON *ButtonList[MAX_BUTTONS]; // Button System's Main Button List
 
-#define GetButtonPtr(x) (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : NULL)
+const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : NULL);
 
 // Struct definition for the QuickButton pictures.
 typedef struct {
@@ -147,7 +147,7 @@ typedef struct {
   UINT32 fFlags; // Special image flags
 } BUTTON_PICS;
 
-#define MAX_BUTTON_PICS 256
+const MAX_BUTTON_PICS = 256;
 
 extern BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
 
@@ -170,7 +170,7 @@ void SetBtnHelpEndCallback(INT32 iButton, MOUSE_HELPTEXT_DONE_CALLBACK CallbackF
 // void DisplayFastHelp(GUI_BUTTON *b);
 void RenderButtonsFastHelp(void);
 
-#define RenderButtonsFastHelp() RenderFastHelp()
+const RenderButtonsFastHelp = () => RenderFastHelp();
 
 BOOLEAN SetButtonSavedRect(INT32 iButton);
 void FreeButtonSavedRect(INT32 iButton);
@@ -206,8 +206,8 @@ void DrawIconOnButton(GUI_BUTTON *b);
 void DrawTextOnButton(GUI_BUTTON *b);
 
 extern BOOLEAN gfRenderHilights;
-#define EnableHilightsAndHelpText() gfRenderHilights = TRUE;
-#define DisableHilightsAndHelpText() gfRenderHilights = FALSE;
+const EnableHilightsAndHelpText = () => gfRenderHilights = TRUE;
+const DisableHilightsAndHelpText = () => gfRenderHilights = FALSE;
 
 // Providing you have allocated your own image, this is a somewhat simplified function.
 INT32 QuickCreateButton(UINT32 Image, INT16 xloc, INT16 yloc, INT32 Type, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback);
@@ -304,7 +304,7 @@ INT32 GetButtonX(INT32 iButtonID);
 INT32 GetButtonY(INT32 iButtonID);
 
 void BtnGenericMouseMoveButtonCallback(GUI_BUTTON *btn, INT32 reason);
-#define DEFAULT_MOVE_CALLBACK BtnGenericMouseMoveButtonCallback
+const DEFAULT_MOVE_CALLBACK = () => BtnGenericMouseMoveButtonCallback;
 
 void DrawCheckBoxButtonOn(INT32 iButtonID);
 

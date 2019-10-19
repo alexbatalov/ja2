@@ -1,4 +1,4 @@
-#define MAIN_PAGE_BUTTON_TEXT_WIDTH 95
+const MAIN_PAGE_BUTTON_TEXT_WIDTH = 95;
 
 // main page buttons
 INT32 giIMPMainPageButton[6];

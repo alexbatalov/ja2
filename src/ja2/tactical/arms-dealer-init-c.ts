@@ -1,16 +1,16 @@
 // To reduce memory fragmentation from frequent MemRealloc(), we allocate memory for more than one special slot each
 // time we run out of space.  Odds are that if we need one, we'll need another soon.
-#define SPECIAL_ITEMS_ALLOCED_AT_ONCE 3
+const SPECIAL_ITEMS_ALLOCED_AT_ONCE = 3;
 // Once allocated, the special item slots remain allocated for the duration of the game, or until the dealer dies.
 // This is a little bit wasteful, but saves an awful lot of hassles, and avoid unnecessary memory fragmentation
 
-#define MIN_REPAIR_TIME_IN_MINUTES 15 // minutes
-#define MIN_REPAIR_COST 10 // dollars
+const MIN_REPAIR_TIME_IN_MINUTES = 15; // minutes
+const MIN_REPAIR_COST = 10; // dollars
 
 // price classes
-#define PRICE_CLASS_JUNK 0
-#define PRICE_CLASS_CHEAP 1
-#define PRICE_CLASS_EXPENSIVE 2
+const PRICE_CLASS_JUNK = 0;
+const PRICE_CLASS_CHEAP = 1;
+const PRICE_CLASS_EXPENSIVE = 2;
 
 void ConvertCreatureBloodToElixir(void);
 

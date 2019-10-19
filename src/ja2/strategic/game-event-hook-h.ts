@@ -96,7 +96,7 @@ enum {
 
 // This value is added to the param value for NPC-system-created events which are based on an
 // action rather than a fact:
-#define NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS 10000
+const NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS = 10000;
 
 // One Time Events
 // These events are scheduled to happen, and when their time is up, they are processed

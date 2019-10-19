@@ -15,7 +15,7 @@ UINT8 AtHeight[PROFILE_Z_SIZE] = {
   0x08,
 };
 
-#define FIRST_AVAILABLE_STRUCTURE_ID (INVALID_STRUCTURE_ID + 2)
+const FIRST_AVAILABLE_STRUCTURE_ID = (INVALID_STRUCTURE_ID + 2);
 
 UINT16 gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
 
@@ -1343,7 +1343,7 @@ BOOLEAN DamageStructure(STRUCTURE *pStructure, UINT8 ubDamage, UINT8 ubReason, I
   }
 }
 
-#define LINE_HEIGHT 20
+const LINE_HEIGHT = 20;
 void DebugStructurePage1(void) {
   STRUCTURE *pStructure;
   STRUCTURE *pBase;

@@ -1,6 +1,4 @@
-#define _UNICODE
-
-#define MAX_DEBUG_PAGES 4
+const MAX_DEBUG_PAGES = 4;
 
 // GLOBAL FOR PAL EDITOR
 UINT8 CurrentPalette = 0;
@@ -573,8 +571,8 @@ UINT32 SexScreenInit(void) {
   return TRUE;
 }
 
-#define SMILY_DELAY 100
-#define SMILY_END_DELAY 1000
+const SMILY_DELAY = 100;
+const SMILY_END_DELAY = 1000;
 
 UINT32 SexScreenHandle(void) {
   static UINT8 ubCurrentScreen = 0;

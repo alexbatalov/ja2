@@ -7,11 +7,11 @@ typedef struct {
   BYTE *pData;
 } EVENT;
 
-#define PRIMARY_EVENT_QUEUE 0
-#define SECONDARY_EVENT_QUEUE 1
-#define DEMAND_EVENT_QUEUE 2
+const PRIMARY_EVENT_QUEUE = 0;
+const SECONDARY_EVENT_QUEUE = 1;
+const DEMAND_EVENT_QUEUE = 2;
 
-#define EVENT_EXPIRED 0x00000002
+const EVENT_EXPIRED = 0x00000002;
 
 // Management fucntions
 BOOLEAN InitializeEventManager();

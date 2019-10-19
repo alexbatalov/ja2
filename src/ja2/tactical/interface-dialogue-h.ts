@@ -340,7 +340,7 @@ enum {
   NPC_ACTION_LAST_TURN_TO_FACE_PROFILE = 650,
 };
 
-#define HOSPITAL_PATIENT_DISTANCE 9
+const HOSPITAL_PATIENT_DISTANCE = 9;
 
 extern INT32 giHospitalTempBalance;
 extern INT32 giHospitalRefund;

@@ -1,4 +1,4 @@
-#define SHADE_TABLE_DIR "ShadeTables"
+const SHADE_TABLE_DIR = "ShadeTables";
 
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
 BOOLEAN gfForceBuildShadeTables = FALSE;

@@ -11,6 +11,6 @@ extern BOOLEAN PreChance(UINT32 uiChance);
 
 // IMPORTANT:  Changing this define will invalidate the JA2 save.  If this
 //						is necessary, please ifdef your own value.
-#define MAX_PREGENERATED_NUMS 256
+const MAX_PREGENERATED_NUMS = 256;
 extern UINT32 guiPreRandomIndex;
 extern UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];

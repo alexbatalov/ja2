@@ -10,7 +10,7 @@
  *
  */
 
-#define AI_LIST_SIZE TOTAL_SOLDIERS
+const AI_LIST_SIZE = TOTAL_SOLDIERS;
 
 AILIST gAIList[AI_LIST_SIZE];
 AILIST *gpFirstAIListEntry = NULL;

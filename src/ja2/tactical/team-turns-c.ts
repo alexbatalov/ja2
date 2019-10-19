@@ -3,7 +3,7 @@ extern void VerifyAndDecayOpplist(SOLDIERTYPE *pSoldier);
 void EndInterrupt(BOOLEAN fMarkInterruptOccurred);
 void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate);
 
-#define END_OF_INTERRUPTS 255
+const END_OF_INTERRUPTS = 255;
 
 UINT8 gubOutOfTurnOrder[MAXMERCS] = {
   END_OF_INTERRUPTS,
@@ -11,9 +11,9 @@ UINT8 gubOutOfTurnOrder[MAXMERCS] = {
 };
 UINT8 gubOutOfTurnPersons = 0;
 
-#define LATEST_INTERRUPT_GUY (gubOutOfTurnOrder[gubOutOfTurnPersons])
-#define REMOVE_LATEST_INTERRUPT_GUY() (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE))
-#define INTERRUPTS_OVER (gubOutOfTurnPersons == 1)
+const LATEST_INTERRUPT_GUY = () => (gubOutOfTurnOrder[gubOutOfTurnPersons]);
+const REMOVE_LATEST_INTERRUPT_GUY = () => (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE));
+const INTERRUPTS_OVER = () => (gubOutOfTurnPersons == 1);
 
 INT16 InterruptOnlyGuynum = NOBODY;
 BOOLEAN InterruptsAllowed = TRUE;
@@ -35,7 +35,7 @@ typedef struct {
   UINT8 ubFiller[16];
 } TEAM_TURN_SAVE_STRUCT;
 
-#define MIN_APS_TO_INTERRUPT 4
+const MIN_APS_TO_INTERRUPT = 4;
 
 void ClearIntList(void) {
   memset(&gubOutOfTurnOrder, 0, MAXMERCS);

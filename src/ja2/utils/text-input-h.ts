@@ -21,20 +21,20 @@
 // NOTE:  Uppercase/lowercase filters ensures that all input is either all uppercase or lowercase
 // NOTE:  Feel free to expand this to your needs, though you also need to support it in the filter
 //			 section.
-#define INPUTTYPE_NUMERICSTRICT 0x0001 // 0-9 only, no minus signs.
-#define INPUTTYPE_ALPHA 0x0002 // a-z A-Z
-#define INPUTTYPE_SPACES 0x0004 // allows spaces in input
-#define INPUTTYPE_SPECIAL 0x0008 //  !@#$%^&*()_+`|\[]{};':"<>,./? (spaces not included)
-#define INPUTTYPE_UPPERCASE 0x0010 // converts all lowercase to uppercase
-#define INPUTTYPE_LOWERCASE 0x0020 // converts all uppercase to lowercase
-#define INPUTTYPE_FIRSTPOSMINUS 0x0002 // allows '-' at beginning of field only
-#define INPUTTYPE_NUMERIC (INPUTTYPE_NUMERIC | INPUTTYPE_FIRSTPOSMINUS)
-#define INPUTTYPE_SPECIALCHARS (INPUTTYPE_SPECIAL | INPUTTYPE_SPACES)
-#define INPUTTYPE_ALPHANUMERIC (INPUTTYPE_ALPHA | INPUTTYPE_NUMERICSTRICT)
-#define INPUTTYPE_ASCII (INPUTTYPE_ALPHANUMERIC | INPUTTYPE_SPECIALCHARS)
+const INPUTTYPE_NUMERICSTRICT = 0x0001; // 0-9 only, no minus signs.
+const INPUTTYPE_ALPHA = 0x0002; // a-z A-Z
+const INPUTTYPE_SPACES = 0x0004; // allows spaces in input
+const INPUTTYPE_SPECIAL = 0x0008; //  !@#$%^&*()_+`|\[]{};':"<>,./? (spaces not included)
+const INPUTTYPE_UPPERCASE = 0x0010; // converts all lowercase to uppercase
+const INPUTTYPE_LOWERCASE = 0x0020; // converts all uppercase to lowercase
+const INPUTTYPE_FIRSTPOSMINUS = 0x0002; // allows '-' at beginning of field only
+const INPUTTYPE_NUMERIC = (INPUTTYPE_NUMERIC | INPUTTYPE_FIRSTPOSMINUS);
+const INPUTTYPE_SPECIALCHARS = (INPUTTYPE_SPECIAL | INPUTTYPE_SPACES);
+const INPUTTYPE_ALPHANUMERIC = (INPUTTYPE_ALPHA | INPUTTYPE_NUMERICSTRICT);
+const INPUTTYPE_ASCII = (INPUTTYPE_ALPHANUMERIC | INPUTTYPE_SPECIALCHARS);
 
 // DON'T GO ABOVE INPUTTYPE_EXCLUSIVE_BASEVALUE FOR INPUTTYPE MASKED VALUES LISTED ABOVE!!!
-#define INPUTTYPE_EXCLUSIVE_BASEVALUE 0x1000 // increase this value if necessary
+const INPUTTYPE_EXCLUSIVE_BASEVALUE = 0x1000; // increase this value if necessary
 
 // Exclusive handlers
 // The dosfilename inputtype is a perfect example of what is a exclusive handler.

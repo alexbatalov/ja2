@@ -1,4 +1,4 @@
-#define MAPS_DIR "Temp\\"
+const MAPS_DIR = "Temp\\";
 
 // Defines used for the bUseMercGridNoPlacement contained in the the merc profile struct
 enum {
@@ -50,10 +50,10 @@ void ChangeNpcToDifferentSector(UINT8 ubNpcId, INT16 sSectorX, INT16 sSectorY, I
 BOOLEAN AddRottingCorpseToUnloadedSectorsRottingCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, ROTTING_CORPSE_DEFINITION *pRottingCorpseDef);
 
 // Flags used for the AddDeadSoldierToUnLoadedSector() function
-#define ADD_DEAD_SOLDIER_USE_GRIDNO 0x00000001 // just place the items and corpse on the gridno location
-#define ADD_DEAD_SOLDIER_TO_SWEETSPOT 0x00000002 // Finds the closet free gridno
+const ADD_DEAD_SOLDIER_USE_GRIDNO = 0x00000001; // just place the items and corpse on the gridno location
+const ADD_DEAD_SOLDIER_TO_SWEETSPOT = 0x00000002; // Finds the closet free gridno
 
-#define ADD_DEAD_SOLDIER__USE_JFK_HEADSHOT_CORPSE 0x00000040 // Will ue the JFK headshot
+const ADD_DEAD_SOLDIER__USE_JFK_HEADSHOT_CORPSE = 0x00000040; // Will ue the JFK headshot
 
 // Pass in the sector to add the dead soldier to.
 // The gridno if you are passing in either of the flags ADD_DEAD_SOLDIER_USE_GRIDNO, or the ADD_DEAD_SOLDIER_TO_SWEETSPOT
@@ -90,5 +90,5 @@ void GetMapTempFileName(UINT32 uiType, STR pMapName, INT16 sMapX, INT16 sMapY, I
 UINT32 GetNumberOfVisibleWorldItemsFromSectorStructureForSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 void SetNumberOfVisibleWorldItemsInSectorStructureForSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems);
 
-#define NEW_ROTATION_ARRAY_SIZE 49
-#define BASE_NUMBER_OF_ROTATION_ARRAYS 19
+const NEW_ROTATION_ARRAY_SIZE = 49;
+const BASE_NUMBER_OF_ROTATION_ARRAYS = 19;

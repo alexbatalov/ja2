@@ -24,13 +24,13 @@ INT32 giMaxPersonalityQuizQuestion = 0;
 // start over flag
 BOOLEAN fStartOverFlag = FALSE;
 
-#define BTN_FIRST_COLUMN_X 15
-#define BTN_SECOND_COLUMN_X 256
+const BTN_FIRST_COLUMN_X = 15;
+const BTN_SECOND_COLUMN_X = 256;
 
-#define INDENT_OFFSET 55
+const INDENT_OFFSET = 55;
 
 // number of IMP questions
-#define MAX_NUMBER_OF_IMP_QUESTIONS 16
+const MAX_NUMBER_OF_IMP_QUESTIONS = 16;
 
 // answer list
 INT32 iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];

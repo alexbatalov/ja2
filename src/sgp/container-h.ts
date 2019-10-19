@@ -20,10 +20,10 @@
 //  Defines and typedefs
 //
 //***********************************************
-#define ORDLIST_ERROR -1
-#define ORDLIST_EQUAL 0
-#define ORDLIST_LEFT_LESS 1
-#define ORDLIST_RIGHT_LESS 2
+const ORDLIST_ERROR = -1;
+const ORDLIST_EQUAL = 0;
+const ORDLIST_LEFT_LESS = 1;
+const ORDLIST_RIGHT_LESS = 2;
 
 typedef void *HCONTAINER;
 typedef HCONTAINER HSTACK;

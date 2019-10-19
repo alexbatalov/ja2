@@ -1,6 +1,6 @@
-#define SKI_NUM_TRADING_INV_SLOTS 12
-#define SKI_NUM_TRADING_INV_ROWS 2
-#define SKI_NUM_TRADING_INV_COLS 6
+const SKI_NUM_TRADING_INV_SLOTS = 12;
+const SKI_NUM_TRADING_INV_ROWS = 2;
+const SKI_NUM_TRADING_INV_COLS = 6;
 
 // Enums used for when the user clicks on an item and the item goes to..
 enum {
@@ -10,14 +10,14 @@ enum {
   PLAYERS_INVENTORY,
 };
 
-#define ARMS_INV_ITEM_SELECTED 0x00000001 // The item has been placed into the offer area
+const ARMS_INV_ITEM_SELECTED = 0x00000001; // The item has been placed into the offer area
 //#define	ARMS_INV_PLAYERS_ITEM_SELECTED						0x00000002			// The source location for the item has been selected
-#define ARMS_INV_PLAYERS_ITEM_HAS_VALUE 0x00000004 // The Players item is worth something to this dealer
+const ARMS_INV_PLAYERS_ITEM_HAS_VALUE = 0x00000004; // The Players item is worth something to this dealer
 //#define	ARMS_INV_ITEM_HIGHLIGHTED									0x00000008			// If the items is highlighted
-#define ARMS_INV_ITEM_NOT_REPAIRED_YET 0x00000010 // The item is in for repairs but not repaired yet
-#define ARMS_INV_ITEM_REPAIRED 0x00000020 // The item is repaired
-#define ARMS_INV_JUST_PURCHASED 0x00000040 // The item was just purchased
-#define ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED 0x00000080 // The Players item has been evaluated
+const ARMS_INV_ITEM_NOT_REPAIRED_YET = 0x00000010; // The item is in for repairs but not repaired yet
+const ARMS_INV_ITEM_REPAIRED = 0x00000020; // The item is repaired
+const ARMS_INV_JUST_PURCHASED = 0x00000040; // The item was just purchased
+const ARMS_INV_PLAYERS_ITEM_HAS_BEEN_EVALUATED = 0x00000080; // The Players item has been evaluated
 
 typedef struct {
   BOOLEAN fActive;

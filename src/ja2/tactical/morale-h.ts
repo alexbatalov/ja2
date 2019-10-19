@@ -1,4 +1,4 @@
-#define DEFAULT_MORALE 50
+const DEFAULT_MORALE = 50;
 
 typedef enum {
   MORALE_KILLED_ENEMY = 0,

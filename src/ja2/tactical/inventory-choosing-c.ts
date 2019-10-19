@@ -1,13 +1,13 @@
-#define ENEMYAMMODROPRATE 50 // % of time enemies drop ammunition
-#define ENEMYGRENADEDROPRATE 25 // % of time enemies drop grenades
-#define ENEMYEQUIPDROPRATE 15 // % of stuff enemies drop equipment
+const ENEMYAMMODROPRATE = 50; // % of time enemies drop ammunition
+const ENEMYGRENADEDROPRATE = 25; // % of time enemies drop grenades
+const ENEMYEQUIPDROPRATE = 15; // % of stuff enemies drop equipment
 
 // only 1/10th of what enemies drop...
-#define MILITIAAMMODROPRATE 5 // % of time enemies drop ammunition
-#define MILITIAGRENADEDROPRATE 3 // % of time enemies drop grenades
-#define MILITIAEQUIPDROPRATE 2 // % of stuff enemies drop equipment
+const MILITIAAMMODROPRATE = 5; // % of time enemies drop ammunition
+const MILITIAGRENADEDROPRATE = 3; // % of time enemies drop grenades
+const MILITIAEQUIPDROPRATE = 2; // % of stuff enemies drop equipment
 
-#define MAX_MORTARS_PER_TEAM 1 // one team can't randomly roll more than this many mortars per sector
+const MAX_MORTARS_PER_TEAM = 1; // one team can't randomly roll more than this many mortars per sector
 
 UINT32 guiMortarsRolledByTeam = 0;
 

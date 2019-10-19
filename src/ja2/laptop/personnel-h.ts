@@ -1,5 +1,5 @@
 // delay for change in ATM mode
-#define DELAY_PER_MODE_CHANGE_IN_ATM 2000
+const DELAY_PER_MODE_CHANGE_IN_ATM = 2000;
 
 void GameInitPersonnel();
 void EnterPersonnel();

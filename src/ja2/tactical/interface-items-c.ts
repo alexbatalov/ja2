@@ -1,143 +1,143 @@
-#define ITEMDESC_FONT BLOCKFONT2
-#define ITEMDESC_FONTSHADOW1 MILITARY_SHADOW
-#define ITEMDESC_FONTSHADOW2 32
-#define ITEMDESC_FONTSHADOW3 34
-#define ITEMDESC_FONTFORE1 33
-#define ITEMDESC_FONTFORE2 32
+const ITEMDESC_FONT = () => BLOCKFONT2();
+const ITEMDESC_FONTSHADOW1 = MILITARY_SHADOW;
+const ITEMDESC_FONTSHADOW2 = 32;
+const ITEMDESC_FONTSHADOW3 = 34;
+const ITEMDESC_FONTFORE1 = 33;
+const ITEMDESC_FONTFORE2 = 32;
 
-#define ITEMDESC_FONTAPFORE 218
-#define ITEMDESC_FONTHPFORE 24
-#define ITEMDESC_FONTBSFORE 125
-#define ITEMDESC_FONTHEFORE 75
-#define ITEMDESC_FONTHEAPFORE 76
+const ITEMDESC_FONTAPFORE = 218;
+const ITEMDESC_FONTHPFORE = 24;
+const ITEMDESC_FONTBSFORE = 125;
+const ITEMDESC_FONTHEFORE = 75;
+const ITEMDESC_FONTHEAPFORE = 76;
 
-#define ITEMDESC_AMMO_FORE 209
+const ITEMDESC_AMMO_FORE = 209;
 
-#define ITEMDESC_FONTHIGHLIGHT FONT_MCOLOR_WHITE
+const ITEMDESC_FONTHIGHLIGHT = FONT_MCOLOR_WHITE;
 
-#define STATUS_BAR_SHADOW FROMRGB(140, 136, 119)
-#define STATUS_BAR FROMRGB(201, 172, 133)
-#define DESC_STATUS_BAR_SHADOW STATUS_BAR_SHADOW
-#define DESC_STATUS_BAR STATUS_BAR
+const STATUS_BAR_SHADOW = () => FROMRGB(140, 136, 119);
+const STATUS_BAR = () => FROMRGB(201, 172, 133);
+const DESC_STATUS_BAR_SHADOW = () => STATUS_BAR_SHADOW();
+const DESC_STATUS_BAR = () => STATUS_BAR();
 
-#define MIN_LOB_RANGE 4
+const MIN_LOB_RANGE = 4;
 
-#define INV_BAR_DX 5
-#define INV_BAR_DY 21
+const INV_BAR_DX = 5;
+const INV_BAR_DY = 21;
 
-#define RENDER_ITEM_NOSTATUS 20
-#define RENDER_ITEM_ATTACHMENT1 200
+const RENDER_ITEM_NOSTATUS = 20;
+const RENDER_ITEM_ATTACHMENT1 = 200;
 
-#define ITEM_STATS_WIDTH 26
-#define ITEM_STATS_HEIGHT 8
+const ITEM_STATS_WIDTH = 26;
+const ITEM_STATS_HEIGHT = 8;
 
-#define ITEMDESC_START_X 214
-#define ITEMDESC_START_Y 1 + INV_INTERFACE_START_Y
-#define ITEMDESC_HEIGHT 133
-#define ITEMDESC_WIDTH 320
-#define MAP_ITEMDESC_HEIGHT 268
-#define MAP_ITEMDESC_WIDTH 272
-#define ITEMDESC_NAME_X (16 + gsInvDescX)
-#define ITEMDESC_NAME_Y (67 + gsInvDescY)
-#define ITEMDESC_CALIBER_X (162 + gsInvDescX)
-#define ITEMDESC_CALIBER_Y (67 + gsInvDescY)
-#define ITEMDESC_CALIBER_WIDTH 142
-#define MAP_ITEMDESC_CALIBER_X (105 + gsInvDescX)
-#define MAP_ITEMDESC_CALIBER_Y (66 + gsInvDescY)
-#define MAP_ITEMDESC_CALIBER_WIDTH 149
-#define ITEMDESC_ITEM_X (8 + gsInvDescX)
-#define ITEMDESC_ITEM_Y (11 + gsInvDescY)
+const ITEMDESC_START_X = 214;
+const ITEMDESC_START_Y = 1 + INV_INTERFACE_START_Y;
+const ITEMDESC_HEIGHT = 133;
+const ITEMDESC_WIDTH = 320;
+const MAP_ITEMDESC_HEIGHT = 268;
+const MAP_ITEMDESC_WIDTH = 272;
+const ITEMDESC_NAME_X = () => (16 + gsInvDescX);
+const ITEMDESC_NAME_Y = () => (67 + gsInvDescY);
+const ITEMDESC_CALIBER_X = () => (162 + gsInvDescX);
+const ITEMDESC_CALIBER_Y = () => (67 + gsInvDescY);
+const ITEMDESC_CALIBER_WIDTH = 142;
+const MAP_ITEMDESC_CALIBER_X = () => (105 + gsInvDescX);
+const MAP_ITEMDESC_CALIBER_Y = () => (66 + gsInvDescY);
+const MAP_ITEMDESC_CALIBER_WIDTH = 149;
+const ITEMDESC_ITEM_X = () => (8 + gsInvDescX);
+const ITEMDESC_ITEM_Y = () => (11 + gsInvDescY);
 
-#define CAMO_REGION_HEIGHT 75
-#define CAMO_REGION_WIDTH 75
+const CAMO_REGION_HEIGHT = 75;
+const CAMO_REGION_WIDTH = 75;
 
-#define BULLET_SING_X (222 + gsInvDescX)
-#define BULLET_SING_Y (49 + gsInvDescY)
-#define BULLET_BURST_X (263 + gsInvDescX)
-#define BULLET_BURST_Y (49 + gsInvDescY)
-#define BULLET_WIDTH 3
-#define BULLET_GAP 5
+const BULLET_SING_X = () => (222 + gsInvDescX);
+const BULLET_SING_Y = () => (49 + gsInvDescY);
+const BULLET_BURST_X = () => (263 + gsInvDescX);
+const BULLET_BURST_Y = () => (49 + gsInvDescY);
+const BULLET_WIDTH = 3;
+const BULLET_GAP = 5;
 
-#define MAP_BULLET_SING_X (77 + gsInvDescX)
-#define MAP_BULLET_SING_Y (135 + gsInvDescY)
-#define MAP_BULLET_BURST_X (117 + gsInvDescX)
-#define MAP_BULLET_BURST_Y (135 + gsInvDescY)
+const MAP_BULLET_SING_X = () => (77 + gsInvDescX);
+const MAP_BULLET_SING_Y = () => (135 + gsInvDescY);
+const MAP_BULLET_BURST_X = () => (117 + gsInvDescX);
+const MAP_BULLET_BURST_Y = () => (135 + gsInvDescY);
 
-#define MAP_ITEMDESC_NAME_X (7 + gsInvDescX)
-#define MAP_ITEMDESC_NAME_Y (65 + gsInvDescY)
-#define MAP_ITEMDESC_ITEM_X (25 + gsInvDescX)
-#define MAP_ITEMDESC_ITEM_Y (6 + gsInvDescY)
+const MAP_ITEMDESC_NAME_X = () => (7 + gsInvDescX);
+const MAP_ITEMDESC_NAME_Y = () => (65 + gsInvDescY);
+const MAP_ITEMDESC_ITEM_X = () => (25 + gsInvDescX);
+const MAP_ITEMDESC_ITEM_Y = () => (6 + gsInvDescY);
 
-#define ITEMDESC_DESC_START_X (11 + gsInvDescX)
-#define ITEMDESC_DESC_START_Y (80 + gsInvDescY)
-#define ITEMDESC_PROS_START_X (11 + gsInvDescX)
-#define ITEMDESC_PROS_START_Y (110 + gsInvDescY)
-#define ITEMDESC_CONS_START_X (11 + gsInvDescX)
-#define ITEMDESC_CONS_START_Y (120 + gsInvDescY)
-#define ITEMDESC_ITEM_STATUS_X (6 + gsInvDescX)
-#define ITEMDESC_ITEM_STATUS_Y (60 + gsInvDescY)
-#define DOTDOTDOT L"..."
-#define COMMA_AND_SPACE L", "
+const ITEMDESC_DESC_START_X = () => (11 + gsInvDescX);
+const ITEMDESC_DESC_START_Y = () => (80 + gsInvDescY);
+const ITEMDESC_PROS_START_X = () => (11 + gsInvDescX);
+const ITEMDESC_PROS_START_Y = () => (110 + gsInvDescY);
+const ITEMDESC_CONS_START_X = () => (11 + gsInvDescX);
+const ITEMDESC_CONS_START_Y = () => (120 + gsInvDescY);
+const ITEMDESC_ITEM_STATUS_X = () => (6 + gsInvDescX);
+const ITEMDESC_ITEM_STATUS_Y = () => (60 + gsInvDescY);
+const DOTDOTDOT = L"...";
+const COMMA_AND_SPACE = L", ";
 
-#define ITEM_PROS_AND_CONS(usItem) ((Item[usItem].usItemClass & IC_GUN))
+const ITEM_PROS_AND_CONS = (usItem) => ((Item[usItem].usItemClass & IC_GUN));
 
-#define MAP_ITEMDESC_DESC_START_X (23 + gsInvDescX)
-#define MAP_ITEMDESC_DESC_START_Y (170 + gsInvDescY)
-#define MAP_ITEMDESC_PROS_START_X (23 + gsInvDescX)
-#define MAP_ITEMDESC_PROS_START_Y (230 + gsInvDescY)
-#define MAP_ITEMDESC_CONS_START_X (23 + gsInvDescX)
-#define MAP_ITEMDESC_CONS_START_Y (240 + gsInvDescY)
-#define MAP_ITEMDESC_ITEM_STATUS_X (18 + gsInvDescX)
-#define MAP_ITEMDESC_ITEM_STATUS_Y (53 + gsInvDescY)
+const MAP_ITEMDESC_DESC_START_X = () => (23 + gsInvDescX);
+const MAP_ITEMDESC_DESC_START_Y = () => (170 + gsInvDescY);
+const MAP_ITEMDESC_PROS_START_X = () => (23 + gsInvDescX);
+const MAP_ITEMDESC_PROS_START_Y = () => (230 + gsInvDescY);
+const MAP_ITEMDESC_CONS_START_X = () => (23 + gsInvDescX);
+const MAP_ITEMDESC_CONS_START_Y = () => (240 + gsInvDescY);
+const MAP_ITEMDESC_ITEM_STATUS_X = () => (18 + gsInvDescX);
+const MAP_ITEMDESC_ITEM_STATUS_Y = () => (53 + gsInvDescY);
 
-#define ITEMDESC_ITEM_STATUS_WIDTH 2
-#define ITEMDESC_ITEM_STATUS_HEIGHT 50
-#define ITEMDESC_ITEM_STATUS_HEIGHT_MAP 40
-#define ITEMDESC_DESC_WIDTH 301
-#define MAP_ITEMDESC_DESC_WIDTH 220
-#define ITEMDESC_ITEM_WIDTH 117
-#define ITEMDESC_ITEM_HEIGHT 54
+const ITEMDESC_ITEM_STATUS_WIDTH = 2;
+const ITEMDESC_ITEM_STATUS_HEIGHT = 50;
+const ITEMDESC_ITEM_STATUS_HEIGHT_MAP = 40;
+const ITEMDESC_DESC_WIDTH = 301;
+const MAP_ITEMDESC_DESC_WIDTH = 220;
+const ITEMDESC_ITEM_WIDTH = 117;
+const ITEMDESC_ITEM_HEIGHT = 54;
 
-#define ITEMDESC_AMMO_X (10 + gsInvDescX)
-#define ITEMDESC_AMMO_Y (50 + gsInvDescY)
-#define MAP_ITEMDESC_AMMO_X (28 + gsInvDescX)
-#define MAP_ITEMDESC_AMMO_Y (45 + gsInvDescY)
+const ITEMDESC_AMMO_X = () => (10 + gsInvDescX);
+const ITEMDESC_AMMO_Y = () => (50 + gsInvDescY);
+const MAP_ITEMDESC_AMMO_X = () => (28 + gsInvDescX);
+const MAP_ITEMDESC_AMMO_Y = () => (45 + gsInvDescY);
 
-#define ITEMDESC_AMMO_TEXT_X 3
-#define ITEMDESC_AMMO_TEXT_Y 1
-#define ITEMDESC_AMMO_TEXT_WIDTH 31
+const ITEMDESC_AMMO_TEXT_X = 3;
+const ITEMDESC_AMMO_TEXT_Y = 1;
+const ITEMDESC_AMMO_TEXT_WIDTH = 31;
 
-#define WORD_WRAP_INV_WIDTH 58
+const WORD_WRAP_INV_WIDTH = 58;
 
-#define ITEM_BAR_WIDTH 2
-#define ITEM_BAR_HEIGHT 20
+const ITEM_BAR_WIDTH = 2;
+const ITEM_BAR_HEIGHT = 20;
 
-#define ITEM_FONT TINYFONT1
+const ITEM_FONT = () => TINYFONT1();
 
-#define EXCEPTIONAL_DAMAGE 30
-#define EXCEPTIONAL_WEIGHT 20
-#define EXCEPTIONAL_RANGE 300
-#define EXCEPTIONAL_MAGAZINE 30
-#define EXCEPTIONAL_AP_COST 7
-#define EXCEPTIONAL_BURST_SIZE 5
-#define EXCEPTIONAL_RELIABILITY 2
-#define EXCEPTIONAL_REPAIR_EASE 2
+const EXCEPTIONAL_DAMAGE = 30;
+const EXCEPTIONAL_WEIGHT = 20;
+const EXCEPTIONAL_RANGE = 300;
+const EXCEPTIONAL_MAGAZINE = 30;
+const EXCEPTIONAL_AP_COST = 7;
+const EXCEPTIONAL_BURST_SIZE = 5;
+const EXCEPTIONAL_RELIABILITY = 2;
+const EXCEPTIONAL_REPAIR_EASE = 2;
 
-#define BAD_DAMAGE 23
-#define BAD_WEIGHT 45
-#define BAD_RANGE 150
-#define BAD_MAGAZINE 10
-#define BAD_AP_COST 11
-#define BAD_RELIABILITY -2
-#define BAD_REPAIR_EASE -2
+const BAD_DAMAGE = 23;
+const BAD_WEIGHT = 45;
+const BAD_RANGE = 150;
+const BAD_MAGAZINE = 10;
+const BAD_AP_COST = 11;
+const BAD_RELIABILITY = -2;
+const BAD_REPAIR_EASE = -2;
 
-#define KEYRING_X 487
-#define KEYRING_Y 445
-#define MAP_KEYRING_X 217
-#define MAP_KEYRING_Y 271
-#define KEYRING_WIDTH 517 - 487
-#define KEYRING_HEIGHT 469 - 445
-#define TACTICAL_INVENTORY_KEYRING_GRAPHIC_OFFSET_X 215
+const KEYRING_X = 487;
+const KEYRING_Y = 445;
+const MAP_KEYRING_X = 217;
+const MAP_KEYRING_Y = 271;
+const KEYRING_WIDTH = 517 - 487;
+const KEYRING_HEIGHT = 469 - 445;
+const TACTICAL_INVENTORY_KEYRING_GRAPHIC_OFFSET_X = 215;
 // enum used for the money buttons
 enum {
   M_1000,
@@ -233,9 +233,9 @@ void ItemDescAttachmentsCallback(MOUSE_REGION *pRegion, INT32 iReason);
 void ItemDescAmmoCallback(GUI_BUTTON *btn, INT32 reason);
 
 // number of keys on keyring, temp for now
-#define NUMBER_KEYS_ON_KEYRING 28
-#define KEY_RING_ROW_WIDTH 7
-#define MAP_KEY_RING_ROW_WIDTH 4
+const NUMBER_KEYS_ON_KEYRING = 28;
+const KEY_RING_ROW_WIDTH = 7;
+const MAP_KEY_RING_ROW_WIDTH = 4;
 
 // ITEM STACK POPUP STUFF
 BOOLEAN gfInItemStackPopup = FALSE;
@@ -326,7 +326,7 @@ typedef struct {
   INT16 sBarDy;
 } INV_ATTACHXY;
 
-#define NUM_INV_HELPTEXT_ENTRIES 1
+const NUM_INV_HELPTEXT_ENTRIES = 1;
 
 typedef struct {
   INT32 iXPosition[NUM_INV_HELPTEXT_ENTRIES];
@@ -4628,7 +4628,7 @@ void ItemPopupFullRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-#define NUM_PICKUP_SLOTS 6
+const NUM_PICKUP_SLOTS = 6;
 
 typedef struct {
   ITEM_POOL *pItemPool;
@@ -4671,29 +4671,29 @@ typedef struct {
   BOOLEAN fAllSelected;
 } ITEM_PICKUP_MENU_STRUCT;
 
-#define ITEMPICK_UP_X 55
-#define ITEMPICK_UP_Y 5
-#define ITEMPICK_DOWN_X 111
-#define ITEMPICK_DOWN_Y 5
-#define ITEMPICK_ALL_X 79
-#define ITEMPICK_ALL_Y 6
-#define ITEMPICK_OK_X 16
-#define ITEMPICK_OK_Y 6
-#define ITEMPICK_CANCEL_X 141
-#define ITEMPICK_CANCEL_Y 6
+const ITEMPICK_UP_X = 55;
+const ITEMPICK_UP_Y = 5;
+const ITEMPICK_DOWN_X = 111;
+const ITEMPICK_DOWN_Y = 5;
+const ITEMPICK_ALL_X = 79;
+const ITEMPICK_ALL_Y = 6;
+const ITEMPICK_OK_X = 16;
+const ITEMPICK_OK_Y = 6;
+const ITEMPICK_CANCEL_X = 141;
+const ITEMPICK_CANCEL_Y = 6;
 
-#define ITEMPICK_START_X_OFFSET 10
-#define ITEMPICK_START_Y_OFFSET 20
+const ITEMPICK_START_X_OFFSET = 10;
+const ITEMPICK_START_Y_OFFSET = 20;
 
-#define ITEMPICK_GRAPHIC_X 10
-#define ITEMPICK_GRAPHIC_Y 12
-#define ITEMPICK_GRAPHIC_YSPACE 26
+const ITEMPICK_GRAPHIC_X = 10;
+const ITEMPICK_GRAPHIC_Y = 12;
+const ITEMPICK_GRAPHIC_YSPACE = 26;
 
-#define ITEMPICK_TEXT_X 56
-#define ITEMPICK_TEXT_Y 22
-#define ITEMPICK_TEXT_YSPACE 26
-#define ITEMPICK_TEXT_WIDTH 109
-#define ITEMPICK_TEXT_HEIGHT 17
+const ITEMPICK_TEXT_X = 56;
+const ITEMPICK_TEXT_Y = 22;
+const ITEMPICK_TEXT_YSPACE = 26;
+const ITEMPICK_TEXT_WIDTH = 109;
+const ITEMPICK_TEXT_HEIGHT = 17;
 
 ITEM_PICKUP_MENU_STRUCT gItemPickupMenu;
 BOOLEAN gfInItemPickupMenu = FALSE;

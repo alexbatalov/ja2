@@ -8,24 +8,24 @@
 //   image header.
 
 // Defines for type of file readers
-#define PCX_FILE_READER 0x1
-#define TGA_FILE_READER 0x2
-#define STCI_FILE_READER 0x4
-#define TRLE_FILE_READER 0x8
-#define UNKNOWN_FILE_READER 0x200
+const PCX_FILE_READER = 0x1;
+const TGA_FILE_READER = 0x2;
+const STCI_FILE_READER = 0x4;
+const TRLE_FILE_READER = 0x8;
+const UNKNOWN_FILE_READER = 0x200;
 
 // Defines for buffer bit depth
-#define BUFFER_8BPP 0x1
-#define BUFFER_16BPP 0x2
+const BUFFER_8BPP = 0x1;
+const BUFFER_16BPP = 0x2;
 
 // Defines for image charactoristics
-#define IMAGE_COMPRESSED 0x0001
-#define IMAGE_TRLECOMPRESSED 0x0002
-#define IMAGE_PALETTE 0x0004
-#define IMAGE_BITMAPDATA 0x0008
-#define IMAGE_APPDATA 0x0010
-#define IMAGE_ALLIMAGEDATA 0x000C
-#define IMAGE_ALLDATA 0x001C
+const IMAGE_COMPRESSED = 0x0001;
+const IMAGE_TRLECOMPRESSED = 0x0002;
+const IMAGE_PALETTE = 0x0004;
+const IMAGE_BITMAPDATA = 0x0008;
+const IMAGE_APPDATA = 0x0010;
+const IMAGE_ALLIMAGEDATA = 0x000C;
+const IMAGE_ALLDATA = 0x001C;
 
 // Palette structure, mimics that of Win32
 typedef struct tagSGPPaletteEntry {
@@ -35,12 +35,12 @@ typedef struct tagSGPPaletteEntry {
   UINT8 peFlags;
 } SGPPaletteEntry;
 
-#define AUX_FULL_TILE 0x01
-#define AUX_ANIMATED_TILE 0x02
-#define AUX_DYNAMIC_TILE 0x04
-#define AUX_INTERACTIVE_TILE 0x08
-#define AUX_IGNORES_HEIGHT 0x10
-#define AUX_USES_LAND_Z 0x20
+const AUX_FULL_TILE = 0x01;
+const AUX_ANIMATED_TILE = 0x02;
+const AUX_DYNAMIC_TILE = 0x04;
+const AUX_INTERACTIVE_TILE = 0x08;
+const AUX_IGNORES_HEIGHT = 0x10;
+const AUX_USES_LAND_Z = 0x20;
 
 typedef struct {
   UINT8 ubWallOrientation;
@@ -111,9 +111,9 @@ typedef struct {
   };
 } image_type, *HIMAGE;
 
-#define SGPGetRValue(rgb) ((BYTE)(rgb))
-#define SGPGetBValue(rgb) ((BYTE)((rgb) >> 16))
-#define SGPGetGValue(rgb) ((BYTE)(((UINT16)(rgb)) >> 8))
+const SGPGetRValue = (rgb) => ((BYTE)(rgb));
+const SGPGetBValue = (rgb) => ((BYTE)((rgb) >> 16));
+const SGPGetGValue = (rgb) => ((BYTE)(((UINT16)(rgb)) >> 8));
 
 // *****************************************************************************
 //

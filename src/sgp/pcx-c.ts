@@ -1,19 +1,19 @@
 // Local typedefs
 
-#define PCX_NORMAL 1
-#define PCX_RLE 2
-#define PCX_256COLOR 4
-#define PCX_TRANSPARENT 8
-#define PCX_CLIPPED 16
-#define PCX_REALIZEPALETTE 32
-#define PCX_X_CLIPPING 64
-#define PCX_Y_CLIPPING 128
-#define PCX_NOTLOADED 256
+const PCX_NORMAL = 1;
+const PCX_RLE = 2;
+const PCX_256COLOR = 4;
+const PCX_TRANSPARENT = 8;
+const PCX_CLIPPED = 16;
+const PCX_REALIZEPALETTE = 32;
+const PCX_X_CLIPPING = 64;
+const PCX_Y_CLIPPING = 128;
+const PCX_NOTLOADED = 256;
 
-#define PCX_ERROROPENING 1
-#define PCX_INVALIDFORMAT 2
-#define PCX_INVALIDLEN 4
-#define PCX_OUTOFMEMORY 8
+const PCX_ERROROPENING = 1;
+const PCX_INVALIDFORMAT = 2;
+const PCX_INVALIDLEN = 4;
+const PCX_OUTOFMEMORY = 8;
 
 BOOLEAN SetPcxPalette(PcxObject *pCurrentPcxObject, HIMAGE hImage);
 BOOLEAN BlitPcxToBuffer(PcxObject *pCurrentPcxObject, UINT8 *pBuffer, UINT16 usBufferWidth, UINT16 usBufferHeight, UINT16 usX, UINT16 usY, BOOLEAN fTransp);

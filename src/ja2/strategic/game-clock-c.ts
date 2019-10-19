@@ -32,12 +32,12 @@ void AdvanceClock(UINT8 ubWarpCode);
 
 extern BOOLEAN fMapScreenBottomDirty;
 
-#define SECONDS_PER_COMPRESSION 1 // 1/2 minute passes every 1 second of real time
-#define SECONDS_PER_COMPRESSION_IN_RTCOMBAT 10
-#define SECONDS_PER_COMPRESSION_IN_TBCOMBAT 10
-#define CLOCK_STRING_HEIGHT 13
-#define CLOCK_STRING_WIDTH 66
-#define CLOCK_FONT COMPFONT
+const SECONDS_PER_COMPRESSION = 1; // 1/2 minute passes every 1 second of real time
+const SECONDS_PER_COMPRESSION_IN_RTCOMBAT = 10;
+const SECONDS_PER_COMPRESSION_IN_TBCOMBAT = 10;
+const CLOCK_STRING_HEIGHT = 13;
+const CLOCK_STRING_WIDTH = 66;
+const CLOCK_FONT = () => COMPFONT();
 
 // These contain all of the information about the game time, rate of time, etc.
 // All of these get saved and loaded.
@@ -73,7 +73,7 @@ BOOLEAN gfTimeCompressionOn = FALSE;
 UINT32 guiLockPauseStateLastReasonId = 0;
 //***When adding new saved time variables, make sure you remove the appropriate amount from the paddingbytes and
 //   more IMPORTANTLY, add appropriate code in Save/LoadGameClock()!
-#define TIME_PADDINGBYTES 20
+const TIME_PADDINGBYTES = 20;
 UINT8 gubUnusedTimePadding[TIME_PADDINGBYTES];
 
 extern UINT32 guiEnvTime;

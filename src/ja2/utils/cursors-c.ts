@@ -1,4 +1,4 @@
-#define NUM_MOUSE_LEVELS 2
+const NUM_MOUSE_LEVELS = 2;
 
 INT16 gsMouseGlobalYOffsets[NUM_MOUSE_LEVELS] = {
   0,

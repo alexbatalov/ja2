@@ -18,18 +18,18 @@ void HandleManNoLongerSeen(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, INT8 *
 //#define TESTOPPLIST
 
 // for ManSeesMan()
-#define MANLOOKSFORMAN 0
-#define HEARNOISE 1
-#define NOTICEUNSEENATTACKER 2
+const MANLOOKSFORMAN = 0;
+const HEARNOISE = 1;
+const NOTICEUNSEENATTACKER = 2;
 
 // for ManLooksForMan()
-#define MANLOOKSFOROTHERTEAMS 0
-#define OTHERTEAMSLOOKFORMAN 1
-#define VERIFYANDDECAYOPPLIST 2
-#define HANDLESTEPPEDLOOKAT 3
-#define LOOKANDLISTEN 4
-#define UPDATEPUBLIC 5
-#define CALLER_UNKNOWN 6
+const MANLOOKSFOROTHERTEAMS = 0;
+const OTHERTEAMSLOOKFORMAN = 1;
+const VERIFYANDDECAYOPPLIST = 2;
+const HANDLESTEPPEDLOOKAT = 3;
+const LOOKANDLISTEN = 4;
+const UPDATEPUBLIC = 5;
+const CALLER_UNKNOWN = 6;
 
 // this variable is a flag used in HandleSight to determine whether (while in non-combat RT)
 // someone has just been seen, EITHER THE MOVER OR SOMEONE THE MOVER SEES
@@ -43,7 +43,7 @@ UINT8 gubBestToMakeSightingSize = 0;
 
 BOOLEAN gfDelayResolvingBestSightingDueToDoor = FALSE;
 
-#define SHOULD_BECOME_HOSTILE_SIZE 32
+const SHOULD_BECOME_HOSTILE_SIZE = 32;
 
 UINT8 gubShouldBecomeHostileOrSayQuote[SHOULD_BECOME_HOSTILE_SIZE];
 UINT8 gubNumShouldBecomeHostileOrSayQuote;
@@ -89,8 +89,8 @@ UINT8 gubKnowledgeValue[10][10] = {
            */
 };
 
-#define MAX_WATCHED_LOC_POINTS 4
-#define WATCHED_LOC_RADIUS 1
+const MAX_WATCHED_LOC_POINTS = 4;
+const WATCHED_LOC_RADIUS = 1;
 
 INT16 gsWatchedLoc[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 INT8 gbWatchedLocLevel[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
@@ -128,8 +128,8 @@ INT8 gbSmellStrength[3] = {
 
 UINT16 gsWhoThrewRock = NOBODY;
 
-#define NIGHTSIGHTGOGGLES_BONUS 2
-#define UVGOGGLES_BONUS 4
+const NIGHTSIGHTGOGGLES_BONUS = 2;
+const UVGOGGLES_BONUS = 4;
 
 // % values of sighting distance at various light levels
 
@@ -179,22 +179,21 @@ INT8 gbLightSighting[1][16] = {
 
 UINT8 gubSightFlags = 0;
 
-#define DECAY_OPPLIST_VALUE(value) \
-  { \
-    if ((value) >= SEEN_THIS_TURN) { \
-      (value)++; \
-      if ((value) > OLDEST_SEEN_VALUE) { \
-        (value) = NOT_HEARD_OR_SEEN; \
-      } \
-    } else { \
-      if ((value) <= HEARD_THIS_TURN) { \
-        (value)--; \
-        if ((value) < OLDEST_HEARD_VALUE) { \
-          (value) = NOT_HEARD_OR_SEEN; \
-        } \
-      } \
-    } \
+const DECAY_OPPLIST_VALUE = (value) => {
+  if ((value) >= SEEN_THIS_TURN) {
+    (value)++;
+    if ((value) > OLDEST_SEEN_VALUE) {
+      (value) = NOT_HEARD_OR_SEEN;
+    }
+  } else {
+    if ((value) <= HEARD_THIS_TURN) {
+      (value)--;
+      if ((value) < OLDEST_HEARD_VALUE) {
+        (value) = NOT_HEARD_OR_SEEN;
+      }
+    }
   }
+};
 
 INT16 AdjustMaxSightRangeForEnvEffects(SOLDIERTYPE *pSoldier, INT8 bLightLevel, INT16 sDistVisible) {
   INT16 sNewDist = 0;
@@ -2600,10 +2599,10 @@ void RadioSightings(SOLDIERTYPE *pSoldier, UINT8 ubAbout, UINT8 ubTeamToRadioTo)
   }
 }
 
-#define COLOR1 FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGREEN
-#define COLOR2 FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGRAY2
+const COLOR1 = FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGREEN;
+const COLOR2 = FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGRAY2;
 
-#define LINE_HEIGHT 15
+const LINE_HEIGHT = 15;
 
 extern UINT32 guiNumBackSaves;
 
@@ -3645,7 +3644,7 @@ void DebugSoldierPage4() {
 // Noise stuff
 //
 
-#define MAX_MOVEMENT_NOISE 9
+const MAX_MOVEMENT_NOISE = 9;
 
 UINT8 MovementNoise(SOLDIERTYPE *pSoldier) {
   INT32 iStealthSkill, iRoll;

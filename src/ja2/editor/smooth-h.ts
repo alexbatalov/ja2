@@ -1,9 +1,9 @@
-#define ONELEVELTYPEONEROOF 1
-#define ONELEVELTYPETWOROOF 2
+const ONELEVELTYPEONEROOF = 1;
+const ONELEVELTYPETWOROOF = 2;
 
 //   Area (pointer to SGP rect) +
 //      Location to check-+--|  |       |---- Check left and right edges -----|    |---- Check top and bottom edges -----|
-#define IsLocationInArea(x, y, r) (((x) >= r->iLeft) && ((x) <= r->iRight) && ((y) >= r->iTop) && ((y) <= r->iBottom))
+const IsLocationInArea = (x, y, r) => (((x) >= r->iLeft) && ((x) <= r->iRight) && ((y) >= r->iTop) && ((y) <= r->iBottom));
 
 void SmoothAllTerrainWorld(void);
 void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSmooth);

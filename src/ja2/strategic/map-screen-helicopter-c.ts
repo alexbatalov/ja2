@@ -1,17 +1,17 @@
 // the amounts of time to wait for hover stuff
-#define TIME_DELAY_FOR_HOVER_WAIT 10 // minutes
-#define TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG 20 // mintues
+const TIME_DELAY_FOR_HOVER_WAIT = 10; // minutes
+const TIME_DELAY_FOR_HOVER_WAIT_TOO_LONG = 20; // mintues
 
-#define MIN_DAYS_BETWEEN_SKYRIDER_MONOLOGUES 1
+const MIN_DAYS_BETWEEN_SKYRIDER_MONOLOGUES = 1;
 
 // refuel delay
-#define REFUEL_HELICOPTER_DELAY 30 // minutes
+const REFUEL_HELICOPTER_DELAY = 30; // minutes
 
 // total number of sectors one can go
 //#define MAX_HELICOPTER_DISTANCE 25
 
 // maximum chance out of a hundred per unsafe sector that a SAM site in decent working condition will hit Skyrider
-#define MAX_SAM_SITE_ACCURACY 33
+const MAX_SAM_SITE_ACCURACY = 33;
 
 extern FACETYPE *gpCurrentTalkingFace;
 extern UINT8 gubCurrentTalkingID;

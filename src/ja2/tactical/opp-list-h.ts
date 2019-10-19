@@ -1,29 +1,29 @@
-#define EVERYBODY MAXMERCS
+const EVERYBODY = MAXMERCS;
 
-#define MAX_MISC_NOISE_DURATION 12 // max dur for VERY loud NOBODY noises
+const MAX_MISC_NOISE_DURATION = 12; // max dur for VERY loud NOBODY noises
 
-#define DOOR_NOISE_VOLUME 2
-#define WINDOW_CRACK_VOLUME 4
-#define WINDOW_SMASH_VOLUME 8
-#define MACHETE_VOLUME 9
-#define TRIMMER_VOLUME 18
-#define CHAINSAW_VOLUME 30
-#define SMASHING_DOOR_VOLUME 6
-#define CROWBAR_DOOR_VOLUME 4
-#define ITEM_THROWN_VOLUME 2
+const DOOR_NOISE_VOLUME = 2;
+const WINDOW_CRACK_VOLUME = 4;
+const WINDOW_SMASH_VOLUME = 8;
+const MACHETE_VOLUME = 9;
+const TRIMMER_VOLUME = 18;
+const CHAINSAW_VOLUME = 30;
+const SMASHING_DOOR_VOLUME = 6;
+const CROWBAR_DOOR_VOLUME = 4;
+const ITEM_THROWN_VOLUME = 2;
 
-#define TIME_BETWEEN_RT_OPPLIST_DECAYS 20
+const TIME_BETWEEN_RT_OPPLIST_DECAYS = 20;
 
 // this is a fake "level" value (0 on ground, 1 on roof) for
 // HearNoise to ignore the effects of lighting(?)
-#define LIGHT_IRRELEVANT 127
+const LIGHT_IRRELEVANT = 127;
 
-#define AUTOMATIC_INTERRUPT 100
-#define NO_INTERRUPT 127
+const AUTOMATIC_INTERRUPT = 100;
+const NO_INTERRUPT = 127;
 
-#define MOVEINTERRUPT 0
-#define SIGHTINTERRUPT 1
-#define NOISEINTERRUPT 2
+const MOVEINTERRUPT = 0;
+const SIGHTINTERRUPT = 1;
+const NOISEINTERRUPT = 2;
 
 // noise type constants
 enum {
@@ -49,7 +49,7 @@ enum {
   UNEXPECTED, // other nodes are NOT expecting this noise
 };
 
-#define NUM_WATCHED_LOCS 3
+const NUM_WATCHED_LOCS = 3;
 
 extern INT8 gbPublicOpplist[MAXTEAMS][TOTAL_SOLDIERS];
 extern INT8 gbSeenOpponents[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
@@ -72,10 +72,10 @@ extern INT8 gbWatchedLocLevel[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 extern UINT8 gubWatchedLocPoints[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 extern BOOLEAN gfWatchedLocReset[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
 
-#define BEST_SIGHTING_ARRAY_SIZE 6
-#define BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL 6
-#define BEST_SIGHTING_ARRAY_SIZE_NONCOMBAT 3
-#define BEST_SIGHTING_ARRAY_SIZE_INCOMBAT 0
+const BEST_SIGHTING_ARRAY_SIZE = 6;
+const BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL = 6;
+const BEST_SIGHTING_ARRAY_SIZE_NONCOMBAT = 3;
+const BEST_SIGHTING_ARRAY_SIZE_INCOMBAT = 0;
 extern UINT8 gubBestToMakeSightingSize;
 
 INT16 AdjustMaxSightRangeForEnvEffects(SOLDIERTYPE *pSoldier, INT8 bLightLevel, INT16 sDistVisible);

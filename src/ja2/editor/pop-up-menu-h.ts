@@ -43,20 +43,20 @@ enum popupMenuIDs {
 // The direction of the popup menu relative to the button
 // pressed to activate it or mouse position.  In editor mode,
 // this will attempt to go up and to the right of the button.
-#define UPMASK 0x00
-#define DNMASK 0x10
-#define RTMASK 0x00
-#define LTMASK 0x01
-#define DIR_UPRIGHT (UPMASK + RTMASK)
-#define DIR_UPLEFT (UPMASK + LTMASK)
-#define DIR_DOWNRIGHT (DNMASK + RTMASK)
-#define DIR_DOWNLEFT (DNMASK + LTMASK)
+const UPMASK = 0x00;
+const DNMASK = 0x10;
+const RTMASK = 0x00;
+const LTMASK = 0x01;
+const DIR_UPRIGHT = (UPMASK + RTMASK);
+const DIR_UPLEFT = (UPMASK + LTMASK);
+const DIR_DOWNRIGHT = (DNMASK + RTMASK);
+const DIR_DOWNLEFT = (DNMASK + LTMASK);
 
-#define POPUP_ACTIVETYPE_NOT_YET_DETERMINED 0
-#define POPUP_ACTIVETYPE_PERSISTANT 1
-#define POPUP_ACTIVETYPE_NONPERSISTANT 2
+const POPUP_ACTIVETYPE_NOT_YET_DETERMINED = 0;
+const POPUP_ACTIVETYPE_PERSISTANT = 1;
+const POPUP_ACTIVETYPE_NONPERSISTANT = 2;
 
-#define MAX_COLUMNS 8
+const MAX_COLUMNS = 8;
 
 // This structure contains all the required information for rendering
 // the popup menu while in

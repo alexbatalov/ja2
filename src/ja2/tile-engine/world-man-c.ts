@@ -68,7 +68,7 @@ void CountLevelNodes(void) {
   }
 }
 
-#define LINE_HEIGHT 20
+const LINE_HEIGHT = 20;
 void DebugLevelNodePage(void) {
   UINT32 uiLoop;
 

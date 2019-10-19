@@ -1,7 +1,7 @@
-#define MAX_MERC_IN_HELI 20
-#define MAX_HELI_SCRIPT 30
-#define ME_SCRIPT_DELAY 100
-#define NUM_PER_HELI_RUN 6
+const MAX_MERC_IN_HELI = 20;
+const MAX_HELI_SCRIPT = 30;
+const ME_SCRIPT_DELAY = 100;
+const NUM_PER_HELI_RUN = 6;
 
 enum {
   HELI_APPROACH,

@@ -2,7 +2,7 @@ extern UINT8 gubOutOfTurnPersons;
 extern BOOLEAN gfHiddenInterrupt;
 extern BOOLEAN gfHiddenTurnbased;
 
-#define INTERRUPT_QUEUED (gubOutOfTurnPersons > 0)
+const INTERRUPT_QUEUED = () => (gubOutOfTurnPersons > 0);
 
 extern BOOLEAN StandardInterruptConditionsMet(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, INT8 bOldOppList);
 extern INT8 CalcInterruptDuelPts(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, BOOLEAN fUseWatchSpots);

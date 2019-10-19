@@ -1,18 +1,18 @@
-#define SET_MOVEMENTCOST(a, b, c, d) ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
-#define FORCE_SET_MOVEMENTCOST(a, b, c, d) (gubWorldMovementCosts[a][b][c] = d)
-#define SET_CURRMOVEMENTCOST(a, b) SET_MOVEMENTCOST(usGridNo, a, 0, b)
+const SET_MOVEMENTCOST = (a, b, c, d) => ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
+const FORCE_SET_MOVEMENTCOST = (a, b, c, d) => (gubWorldMovementCosts[a][b][c] = d);
+const SET_CURRMOVEMENTCOST = (a, b) => SET_MOVEMENTCOST(usGridNo, a, 0, b);
 
-#define TEMP_FILE_FOR_TILESET_CHANGE "jatileS34.dat"
+const TEMP_FILE_FOR_TILESET_CHANGE = "jatileS34.dat";
 
-#define MAP_FULLSOLDIER_SAVED 0x00000001
-#define MAP_WORLDONLY_SAVED 0x00000002
-#define MAP_WORLDLIGHTS_SAVED 0x00000004
-#define MAP_WORLDITEMS_SAVED 0x00000008
-#define MAP_EXITGRIDS_SAVED 0x00000010
-#define MAP_DOORTABLE_SAVED 0x00000020
-#define MAP_EDGEPOINTS_SAVED 0x00000040
-#define MAP_AMBIENTLIGHTLEVEL_SAVED 0x00000080
-#define MAP_NPCSCHEDULES_SAVED 0x00000100
+const MAP_FULLSOLDIER_SAVED = 0x00000001;
+const MAP_WORLDONLY_SAVED = 0x00000002;
+const MAP_WORLDLIGHTS_SAVED = 0x00000004;
+const MAP_WORLDITEMS_SAVED = 0x00000008;
+const MAP_EXITGRIDS_SAVED = 0x00000010;
+const MAP_DOORTABLE_SAVED = 0x00000020;
+const MAP_EDGEPOINTS_SAVED = 0x00000040;
+const MAP_AMBIENTLIGHTLEVEL_SAVED = 0x00000080;
+const MAP_NPCSCHEDULES_SAVED = 0x00000100;
 
 extern BOOLEAN gfErrorCatch;
 extern UINT16 gzErrorCatchString[256];
@@ -1087,7 +1087,7 @@ void CompileTileMovementCosts(UINT16 usGridNo) {
   }
 }
 
-#define LOCAL_RADIUS 4
+const LOCAL_RADIUS = 4;
 
 void RecompileLocalMovementCosts(INT16 sCentreGridNo) {
   INT16 usGridNo;
@@ -1700,7 +1700,7 @@ BOOLEAN SaveWorld(UINT8 *puiFilename) {
   return TRUE;
 }
 
-#define NUM_DIR_SEARCHES 5
+const NUM_DIR_SEARCHES = 5;
 INT8 bDirectionsForShadowSearch[NUM_DIR_SEARCHES] = {
   WEST,
   SOUTHWEST,

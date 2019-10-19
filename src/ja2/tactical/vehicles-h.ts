@@ -1,4 +1,4 @@
-#define MAX_VEHICLES 10
+const MAX_VEHICLES = 10;
 
 // type of vehicles
 enum {

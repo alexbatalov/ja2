@@ -1,22 +1,22 @@
-#define FARLEFT 0
-#define LEFTSIDE 48
-#define MIDDLE 64
-#define MIDDLEPAN 64
-#define RIGHTSIDE 80
-#define FARRIGHT 127
+const FARLEFT = 0;
+const LEFTSIDE = 48;
+const MIDDLE = 64;
+const MIDDLEPAN = 64;
+const RIGHTSIDE = 80;
+const FARRIGHT = 127;
 
-#define LOWVOLUME 25
-#define BTNVOLUME 40
-#define MIDVOLUME 65
-#define HIGHVOLUME 127
+const LOWVOLUME = 25;
+const BTNVOLUME = 40;
+const MIDVOLUME = 65;
+const HIGHVOLUME = 127;
 
-#define RATE_11025 0xffffffff
+const RATE_11025 = 0xffffffff;
 
-#define LOOPING 0
+const LOOPING = 0;
 
 // sound group priorities (higher = more important)
-#define GROUP_PLAYER 1000
-#define GROUP_AMBIENT 0
+const GROUP_PLAYER = 1000;
+const GROUP_AMBIENT = 0;
 
 // SOUNDS ENUMERATION
 enum SoundDefines {
@@ -419,7 +419,7 @@ INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo);
 // timer, again, of which can only be one
 void PlayDelayedJA2Sample(UINT32 uiDelay, UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
 
-#define POSITION_SOUND_FROM_SOLDIER 0x00000001
+const POSITION_SOUND_FROM_SOLDIER = 0x00000001;
 
 INT32 NewPositionSnd(INT16 sGridNo, UINT32 uiFlags, UINT32 uiData, UINT32 iSoundToPlay);
 void DeletePositionSnd(INT32 iPositionSndIndex);

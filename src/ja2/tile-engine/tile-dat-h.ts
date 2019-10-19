@@ -3265,7 +3265,7 @@ enum TileDefines {
   NUMBEROFTILES,
 };
 
-#define BLUEFLAG_GRAPHIC FIRSTSWITCHES21
+const BLUEFLAG_GRAPHIC = FIRSTSWITCHES21;
 
 // Defines for tile type identification
 enum TileTypeDefines {
@@ -3468,40 +3468,40 @@ enum TileTypeDefines {
 
 //==========================================================================
 // Quick defines for finding last type entry in tile types
-#define LASTTEXTURE (DEEPWATERTEXTURE - 1)
-#define LASTBANKS (FIRSTCLIFFSHADOW - 1)
-#define LASTCLIFFHANG (FIRSTCLIFF - 1)
-#define LASTCLIFFSHADOW (FIRSTOSTRUCT - 1)
-#define LASTOSTRUCT (THIRDFULLSTRUCT - 1)
-#define LASTSHADOW (FIRSTWALL - 1)
-#define LASTWALL (FIRSTDOOR - 1)
-#define LASTDOOR (FIRSTDOORSHADOW - 1)
-#define LASTDOORSHADOW (SLANTROOFCEILING - 1)
-#define LASTDECORATIONS (FIRSTWALLDECAL - 1)
-#define LASTWALLDECAL (FIRSTFLOOR - 1)
-#define LASTFLOOR (FIRSTROOF - 1)
-#define LASTROOF (FIRSTSLANTROOF - 1)
-#define LASTSLANTROOF (FIRSTONROOF - 1)
-#define LASTMOCKFLOOR (FIRSTISTRUCT - 1)
-#define LASTISTRUCT (FIRSTROAD - 1)
-#define LASTROAD (DEBRISROCKS - 1)
-#define LASTDEBRIS (ANIOSTRUCT - 1)
-#define LASTITEM (WINDOWSHATTER - 1)
+const LASTTEXTURE = (DEEPWATERTEXTURE - 1);
+const LASTBANKS = (FIRSTCLIFFSHADOW - 1);
+const LASTCLIFFHANG = (FIRSTCLIFF - 1);
+const LASTCLIFFSHADOW = (FIRSTOSTRUCT - 1);
+const LASTOSTRUCT = (THIRDFULLSTRUCT - 1);
+const LASTSHADOW = (FIRSTWALL - 1);
+const LASTWALL = (FIRSTDOOR - 1);
+const LASTDOOR = (FIRSTDOORSHADOW - 1);
+const LASTDOORSHADOW = (SLANTROOFCEILING - 1);
+const LASTDECORATIONS = (FIRSTWALLDECAL - 1);
+const LASTWALLDECAL = (FIRSTFLOOR - 1);
+const LASTFLOOR = (FIRSTROOF - 1);
+const LASTROOF = (FIRSTSLANTROOF - 1);
+const LASTSLANTROOF = (FIRSTONROOF - 1);
+const LASTMOCKFLOOR = (FIRSTISTRUCT - 1);
+const LASTISTRUCT = (FIRSTROAD - 1);
+const LASTROAD = (DEBRISROCKS - 1);
+const LASTDEBRIS = (ANIOSTRUCT - 1);
+const LASTITEM = (WINDOWSHATTER - 1);
 //#define LASTDEBRIS				(FOOTPRINTS - 1)
-#define LASTFOOTPRINTS (FIRSTPOINTERS - 1)
-#define LASTPOINTERS (SELRING - 1)
-#define LASTUIELEM (WIREFRAMES - 1) // Change this entry if adding new types to the end
-#define LASTTIELSETELEM (GUNS - 1)
+const LASTFOOTPRINTS = (FIRSTPOINTERS - 1);
+const LASTPOINTERS = (SELRING - 1);
+const LASTUIELEM = (WIREFRAMES - 1); // Change this entry if adding new types to the end
+const LASTTIELSETELEM = (GUNS - 1);
 
 //===========================================================================
 
 // DEFINES FOR SPECIFIC SPECIAL TILE SLOTS
-#define WALL_AFRAME_START 31
-#define WALL_AFRAME_END 34
-#define WALL_AFRAME1 31
-#define WALL_AFRAME2 32
-#define WALL_AFRAME3 33
-#define WALL_AFRAME4 34
+const WALL_AFRAME_START = 31;
+const WALL_AFRAME_END = 34;
+const WALL_AFRAME1 = 31;
+const WALL_AFRAME2 = 32;
+const WALL_AFRAME3 = 33;
+const WALL_AFRAME4 = 34;
 
 extern INT16 gOpenDoorList[20];
 extern INT16 gOpenDoorShadowList[20];

@@ -1,33 +1,33 @@
-#define MINCHANCETOHIT 1
-#define MAXCHANCETOHIT 99
+const MINCHANCETOHIT = 1;
+const MAXCHANCETOHIT = 99;
 
 // NB this is arbitrary, chances in DG ranged from 1 in 6 to 1 in 20
-#define BASIC_DEPRECIATE_CHANCE 15
+const BASIC_DEPRECIATE_CHANCE = 15;
 
-#define NORMAL_RANGE 90 // # world units considered an 'avg' shot
-#define MIN_SCOPE_RANGE 60 // # world units after which scope's useful
+const NORMAL_RANGE = 90; // # world units considered an 'avg' shot
+const MIN_SCOPE_RANGE = 60; // # world units after which scope's useful
 
-#define MIN_TANK_RANGE 120 // range at which tank starts really having trouble aiming
+const MIN_TANK_RANGE = 120; // range at which tank starts really having trouble aiming
 
 // percent reduction in sight range per point of aiming
-#define SNIPERSCOPE_AIM_BONUS 20
+const SNIPERSCOPE_AIM_BONUS = 20;
 // bonus to hit with working laser scope
-#define LASERSCOPE_BONUS 20
+const LASERSCOPE_BONUS = 20;
 
-#define MANDATORY_WEAPON_DELAY 1200
-#define NO_WEAPON_SOUND 0
+const MANDATORY_WEAPON_DELAY = 1200;
+const NO_WEAPON_SOUND = 0;
 
-#define HEAD_DAMAGE_ADJUSTMENT(x) ((x * 3) / 2)
-#define LEGS_DAMAGE_ADJUSTMENT(x) (x / 2)
+const HEAD_DAMAGE_ADJUSTMENT = (x) => ((x * 3) / 2);
+const LEGS_DAMAGE_ADJUSTMENT = (x) => (x / 2);
 
-#define CRITICAL_HIT_THRESHOLD 30
+const CRITICAL_HIT_THRESHOLD = 30;
 
-#define HTH_MODE_PUNCH 1
-#define HTH_MODE_STAB 2
-#define HTH_MODE_STEAL 3
+const HTH_MODE_PUNCH = 1;
+const HTH_MODE_STAB = 2;
+const HTH_MODE_STEAL = 3;
 
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
-#define WEAPON_STATUS_MOD(x) ((x) >= 85 ? 100 : (((x)*100) / 85))
+const WEAPON_STATUS_MOD = (x) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
 
 extern void TeamChangesSides(UINT8 ubTeam, INT8 bSide);
 
@@ -49,36 +49,36 @@ BOOLEAN gfReportHitChances = FALSE;
 
 // TODO: Move strings to extern file
 
-#define PISTOL(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { HANDGUNCLASS, GUN_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL }
-#define M_PISTOL(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { HANDGUNCLASS, GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL }
-#define SMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { SMGCLASS, GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SMG, S_LNL_SMG }
-#define SN_RIFLE(ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { RIFLECLASS, GUN_SN_RIFLE, ammo, rt, rof, burstrof, 0, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE }
-#define RIFLE(ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { RIFLECLASS, GUN_RIFLE, ammo, rt, rof, burstrof, 0, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE }
-#define ASRIFLE(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { RIFLECLASS, GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE }
-#define SHOTGUN(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { SHOTGUNCLASS, GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SHOTGUN, S_LNL_SHOTGUN }
-#define LMG(ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) \
-  { MGCLASS, GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_LMG, S_LNL_LMG }
-#define BLADE(impact, rof, deadl, range, av, sd) \
-  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define THROWINGBLADE(impact, rof, deadl, range, av, sd) \
-  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define PUNCHWEAPON(impact, rof, deadl, av, sd) \
-  { KNIFECLASS, NOT_GUN, 0, 0, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, 10, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define LAUNCHER(update, rt, rof, deadl, acc, range, av, hv, sd) \
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 1, deadl, acc, 0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define LAW(update, rt, rof, deadl, acc, range, av, hv, sd) \
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define CANNON(update, rt, rof, deadl, acc, range, av, hv, sd) \
-  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
-#define MONSTSPIT(impact, rof, deadl, clip, range, av, hv, sd) \
-  { MONSTERCLASS, NOT_GUN, AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, (UINT8)(impact), deadl, 0, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND }
+const PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { HANDGUNCLASS, GUN_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL };
+const M_PISTOL = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { HANDGUNCLASS, GUN_M_PISTOL, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_PISTOL, S_LNL_PISTOL };
+const SMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { SMGCLASS, GUN_SMG, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SMG, S_LNL_SMG };
+const SN_RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { RIFLECLASS, GUN_SN_RIFLE, ammo, rt, rof, burstrof, 0, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+const RIFLE = (ammo, update, impact, rt, rof, burstrof, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { RIFLECLASS, GUN_RIFLE, ammo, rt, rof, burstrof, 0, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+const ASRIFLE = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { RIFLECLASS, GUN_AS_RIFLE, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_RIFLE, S_LNL_RIFLE };
+const SHOTGUN = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { SHOTGUNCLASS, GUN_SHOTGUN, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_SHOTGUN, S_LNL_SHOTGUN };
+const LMG = (ammo, update, impact, rt, rof, burstrof, burstpenal, deadl, acc, clip, range, av, hv, sd, bsd) =>
+  { MGCLASS, GUN_LMG, ammo, rt, rof, burstrof, burstpenal, update, (UINT8)(impact), deadl, acc, clip, range, 200, av, hv, sd, bsd, S_RELOAD_LMG, S_LNL_LMG };
+const BLADE = (impact, rof, deadl, range, av, sd) =>
+  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const THROWINGBLADE = (impact, rof, deadl, range, av, sd) =>
+  { KNIFECLASS, NOT_GUN, 0, AP_READY_KNIFE, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, range, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const PUNCHWEAPON = (impact, rof, deadl, av, sd) =>
+  { KNIFECLASS, NOT_GUN, 0, 0, rof, 0, 0, 0, (UINT8)(impact), deadl, 0, 0, 10, 200, av, 0, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const LAUNCHER = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
+  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 1, deadl, acc, 0, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const LAW = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
+  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const CANNON = (update, rt, rof, deadl, acc, range, av, hv, sd) =>
+  { RIFLECLASS, NOT_GUN, NOAMMO, rt, rof, 0, 0, update, 80, deadl, acc, 1, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
+const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
+  { MONSTERCLASS, NOT_GUN, AMMOMONST, AP_READY_KNIFE, rof, 0, 0, 250, (UINT8)(impact), deadl, 0, clip, range, 200, av, hv, sd, NO_WEAPON_SOUND, NO_WEAPON_SOUND, NO_WEAPON_SOUND };
 
 // ranges are in world units, calculated by:
 // 100 + real-range-in-metres/10

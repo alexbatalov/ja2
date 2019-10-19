@@ -1,11 +1,11 @@
-#define MAX_POPUP_BOX_COUNT 20
-#define MAX_POPUP_BOX_STRING_COUNT 50 // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
+const MAX_POPUP_BOX_COUNT = 20;
+const MAX_POPUP_BOX_STRING_COUNT = 50; // worst case = 45: move menu with 20 soldiers, each on different squad + overhead
 
 // PopUpBox Flags
-#define POPUP_BOX_FLAG_CLIP_TEXT 1
-#define POPUP_BOX_FLAG_CENTER_TEXT 2
-#define POPUP_BOX_FLAG_RESIZE 4
-#define POPUP_BOX_FLAG_CAN_HIGHLIGHT_SHADED_LINES 8
+const POPUP_BOX_FLAG_CLIP_TEXT = 1;
+const POPUP_BOX_FLAG_CENTER_TEXT = 2;
+const POPUP_BOX_FLAG_RESIZE = 4;
+const POPUP_BOX_FLAG_CAN_HIGHLIGHT_SHADED_LINES = 8;
 struct popupstring {
   STR16 pString;
   UINT8 ubForegroundColor;

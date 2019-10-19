@@ -1,4 +1,4 @@
-#define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
+const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
 void FadeInGameScreen();
 void FadeOutGameScreen();
@@ -13,8 +13,8 @@ void EnterMapScreen();
 
 void UpdateTeamPanelAssignments();
 
-#define TACTICAL_MODAL_NOMOUSE 1
-#define TACTICAL_MODAL_WITHMOUSE 2
+const TACTICAL_MODAL_NOMOUSE = 1;
+const TACTICAL_MODAL_WITHMOUSE = 2;
 
 extern MODAL_HOOK gModalDoneCallback;
 

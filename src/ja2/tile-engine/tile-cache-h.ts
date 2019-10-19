@@ -1,4 +1,4 @@
-#define TILE_CACHE_START_INDEX 36000
+const TILE_CACHE_START_INDEX = 36000;
 
 typedef struct {
   CHAR8 zName[128]; // Name of tile ( filename and directory here )

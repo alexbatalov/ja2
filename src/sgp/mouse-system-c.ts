@@ -10,12 +10,12 @@
 //
 //=================================================================================================
 
-#define BASE_REGION_FLAGS (MSYS_REGION_ENABLED | MSYS_SET_CURSOR)
+const BASE_REGION_FLAGS = (MSYS_REGION_ENABLED | MSYS_SET_CURSOR);
 
 // Kris:	Nov 31, 1999 -- Added support for double clicking
 //
 // Max double click delay (in milliseconds) to be considered a double click
-#define MSYS_DOUBLECLICK_DELAY 400
+const MSYS_DOUBLECLICK_DELAY = 400;
 //
 // Records and stores the last place the user clicked.  These values are compared to the current
 // click to determine if a double click event has been detected.

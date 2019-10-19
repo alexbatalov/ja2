@@ -40,8 +40,8 @@ BOOLEAN gfContractRenewalSquenceOn = FALSE;
 BOOLEAN gfInContractMenuFromRenewSequence = FALSE;
 
 // the airport sector
-#define AIRPORT_X 13
-#define AIRPORT_Y 2
+const AIRPORT_X = 13;
+const AIRPORT_Y = 2;
 
 BOOLEAN SaveContractRenewalDataToSaveGameFile(HWFILE hFile) {
   UINT32 uiNumBytesWritten;

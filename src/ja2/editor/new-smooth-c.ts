@@ -441,8 +441,8 @@ void AddCave(INT32 iMapIndex, UINT16 usIndex) {
 }
 
 // These walls have shadows associated with them, and are draw when the wall is drawn.
-#define EXTERIOR_L_SHADOW_INDEX 30
-#define INTERIOR_BOTTOMEND_SHADOW_INDEX 31
+const EXTERIOR_L_SHADOW_INDEX = 30;
+const INTERIOR_BOTTOMEND_SHADOW_INDEX = 31;
 
 // Wall Look Up Table containing variants and indices with each row being a different walltype.
 INT8 gbWallTileLUT[NUM_WALL_TYPES][7] = {
@@ -465,32 +465,32 @@ INT8 gbWallTileLUT[NUM_WALL_TYPES][7] = {
 };
 
 // Roof table -- such a small table, using definitions instead.
-#define TOP_ROOF_INDEX 2
-#define BOTTOM_ROOF_INDEX 4
-#define LEFT_ROOF_INDEX 1
-#define RIGHT_ROOF_INDEX 5
-#define TOPLEFT_ROOF_INDEX 3
-#define TOPRIGHT_ROOF_INDEX 7
-#define BOTTOMLEFT_ROOF_INDEX 8
-#define BOTTOMRIGHT_ROOF_INDEX 6
-#define CENTER_ROOF_BASE_INDEX 9
-#define CENTER_ROOF_VARIANTS 3
+const TOP_ROOF_INDEX = 2;
+const BOTTOM_ROOF_INDEX = 4;
+const LEFT_ROOF_INDEX = 1;
+const RIGHT_ROOF_INDEX = 5;
+const TOPLEFT_ROOF_INDEX = 3;
+const TOPRIGHT_ROOF_INDEX = 7;
+const BOTTOMLEFT_ROOF_INDEX = 8;
+const BOTTOMRIGHT_ROOF_INDEX = 6;
+const CENTER_ROOF_BASE_INDEX = 9;
+const CENTER_ROOF_VARIANTS = 3;
 
 // slant roof table
-#define THIN_BOTTOM 1
-#define THIN_TOP 2
-#define THIN_LEFT 5
-#define THIN_RIGHT 6
-#define THICK_BOTTOM 3
-#define THICK_TOP 4
-#define THICK_LEFT 7
-#define THICK_RIGHT 8
-#define VWALL_LEFT 32
-#define VWALL_RIGHT 33
-#define HWALL_LEFT 35
-#define HWALL_RIGHT 34
+const THIN_BOTTOM = 1;
+const THIN_TOP = 2;
+const THIN_LEFT = 5;
+const THIN_RIGHT = 6;
+const THICK_BOTTOM = 3;
+const THICK_TOP = 4;
+const THICK_LEFT = 7;
+const THICK_RIGHT = 8;
+const VWALL_LEFT = 32;
+const VWALL_RIGHT = 33;
+const HWALL_LEFT = 35;
+const HWALL_RIGHT = 34;
 
-#define FLOOR_VARIANTS 8
+const FLOOR_VARIANTS = 8;
 
 // PRIVATELY "ENCAPSULATED" FUNCTIONS
 

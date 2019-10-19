@@ -161,9 +161,9 @@ UINT32 MoneySlotLimit(INT8 bSlot);
 void CheckEquipmentForFragileItemDamage(SOLDIERTYPE *pSoldier, INT32 iDamage);
 
 // Range of Xray device
-#define XRAY_RANGE 40
+const XRAY_RANGE = 40;
 // Seconds that Xray lasts
-#define XRAY_TIME 5
+const XRAY_TIME = 5;
 
 extern void ActivateXRayDevice(SOLDIERTYPE *pSoldier);
 extern void TurnOffXRayEffects(SOLDIERTYPE *pSoldier);

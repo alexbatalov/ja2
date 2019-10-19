@@ -1,7 +1,7 @@
 double rStart, rEnd;
 double rActual;
 
-#define MAX_PROGRESSBARS 4
+const MAX_PROGRESSBARS = 4;
 
 PROGRESSBAR *pBar[MAX_PROGRESSBARS];
 

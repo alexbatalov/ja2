@@ -1,7 +1,7 @@
 // Macro to convert sector coordinates (1-16,1-16) to 0-255
-#define SECTOR(x, y) ((y - 1) * 16 + x - 1)
-#define SECTORX(SectorID) ((SectorID % 16) + 1)
-#define SECTORY(SectorID) ((SectorID / 16) + 1)
+const SECTOR = (x, y) => ((y - 1) * 16 + x - 1);
+const SECTORX = (SectorID) => ((SectorID % 16) + 1);
+const SECTORY = (SectorID) => ((SectorID / 16) + 1);
 
 // Sector enumerations
 //
@@ -286,35 +286,35 @@ enum {
 
 // Various flag definitions
 
-#define SF_USE_MAP_SETTINGS 0x00000001
-#define SF_ENEMY_AMBUSH_LOCATION 0x00000002
+const SF_USE_MAP_SETTINGS = 0x00000001;
+const SF_ENEMY_AMBUSH_LOCATION = 0x00000002;
 
 // Special case flag used when players encounter enemies in a sector, then retreat.  The number of enemies
 // will display on mapscreen until time is compressed.  When time is compressed, the flag is cleared, and
 // a question mark is displayed to reflect that the player no longer knows.
-#define SF_PLAYER_KNOWS_ENEMIES_ARE_HERE 0x00000004
+const SF_PLAYER_KNOWS_ENEMIES_ARE_HERE = 0x00000004;
 
-#define SF_SAM_SITE 0x00000008
-#define SF_MINING_SITE 0x00000010
-#define SF_ALREADY_VISITED 0x00000020
-#define SF_USE_ALTERNATE_MAP 0x00000040
-#define SF_PENDING_ALTERNATE_MAP 0x00000080
-#define SF_ALREADY_LOADED 0x00000100
-#define SF_HAS_ENTERED_TACTICAL 0x00000200
-#define SF_SKYRIDER_NOTICED_ENEMIES_HERE 0x00000400
-#define SF_HAVE_USED_GUIDE_QUOTE 0x00000800
+const SF_SAM_SITE = 0x00000008;
+const SF_MINING_SITE = 0x00000010;
+const SF_ALREADY_VISITED = 0x00000020;
+const SF_USE_ALTERNATE_MAP = 0x00000040;
+const SF_PENDING_ALTERNATE_MAP = 0x00000080;
+const SF_ALREADY_LOADED = 0x00000100;
+const SF_HAS_ENTERED_TACTICAL = 0x00000200;
+const SF_SKYRIDER_NOTICED_ENEMIES_HERE = 0x00000400;
+const SF_HAVE_USED_GUIDE_QUOTE = 0x00000800;
 
-#define SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS 0x00100000 // Temp File starts with sm_
-#define SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS 0x00200000 // Temp File starts with l_
+const SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS = 0x00100000; // Temp File starts with sm_
+const SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS = 0x00200000; // Temp File starts with l_
 
-#define SF_REVEALED_STATUS_TEMP_FILE_EXISTS 0x01000000 // Temp File starts with v_
-#define SF_DOOR_STATUS_TEMP_FILE_EXISTS 0x02000000 // Temp File starts with ds_
-#define SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS 0x04000000 // Temp File starts with e_
-#define SF_CIV_PRESERVED_TEMP_FILE_EXISTS 0x08000000 // Temp File starts with c_
-#define SF_ITEM_TEMP_FILE_EXISTS 0x10000000 // Temp File starts with i_
-#define SF_ROTTING_CORPSE_TEMP_FILE_EXISTS 0x20000000 // Temp File starts with r_
-#define SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS 0x40000000 // Temp File starts with m_
-#define SF_DOOR_TABLE_TEMP_FILES_EXISTS 0x80000000 // Temp File starts with d_
+const SF_REVEALED_STATUS_TEMP_FILE_EXISTS = 0x01000000; // Temp File starts with v_
+const SF_DOOR_STATUS_TEMP_FILE_EXISTS = 0x02000000; // Temp File starts with ds_
+const SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS = 0x04000000; // Temp File starts with e_
+const SF_CIV_PRESERVED_TEMP_FILE_EXISTS = 0x08000000; // Temp File starts with c_
+const SF_ITEM_TEMP_FILE_EXISTS = 0x10000000; // Temp File starts with i_
+const SF_ROTTING_CORPSE_TEMP_FILE_EXISTS = 0x20000000; // Temp File starts with r_
+const SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS = 0x40000000; // Temp File starts with m_
+const SF_DOOR_TABLE_TEMP_FILES_EXISTS = 0x80000000; // Temp File starts with d_
 
 // town militia experience categories
 enum {
@@ -325,24 +325,24 @@ enum {
 };
 
 // facilities flags
-#define SFCF_HOSPITAL 0x00000001
-#define SFCF_INDUSTRY 0x00000002
-#define SFCF_PRISON 0x00000004
-#define SFCF_MILITARY 0x00000008
-#define SFCF_AIRPORT 0x00000010
-#define SFCF_GUN_RANGE 0x00000020
+const SFCF_HOSPITAL = 0x00000001;
+const SFCF_INDUSTRY = 0x00000002;
+const SFCF_PRISON = 0x00000004;
+const SFCF_MILITARY = 0x00000008;
+const SFCF_AIRPORT = 0x00000010;
+const SFCF_GUN_RANGE = 0x00000020;
 
 // coordinates of shooting range sector
-#define GUN_RANGE_X 13
-#define GUN_RANGE_Y MAP_ROW_H
-#define GUN_RANGE_Z 0
+const GUN_RANGE_X = 13;
+const GUN_RANGE_Y = MAP_ROW_H;
+const GUN_RANGE_Z = 0;
 
 // Vehicle types
-#define FOOT 0x01 // anywhere
-#define CAR 0x02 // roads
-#define TRUCK 0x04 // roads, plains, sparse
-#define TRACKED 0x08 // roads, plains, sand, sparse
-#define AIR 0x10 // can traverse all terrains at 100%
+const FOOT = 0x01; // anywhere
+const CAR = 0x02; // roads
+const TRUCK = 0x04; // roads, plains, sparse
+const TRACKED = 0x08; // roads, plains, sand, sparse
+const AIR = 0x10; // can traverse all terrains at 100%
 
 // Traversability ratings
 enum {
@@ -394,14 +394,14 @@ enum {
 };
 extern UINT8 gszTerrain[NUM_TRAVTERRAIN_TYPES][15];
 
-#define TRAVELRATING_NONE 0
-#define TRAVELRATING_LOW 25
-#define TRAVELRATING_NORMAL 50
-#define TRAVELRATING_HIGH 75
-#define TRAVELRATING_EXTREME 100
+const TRAVELRATING_NONE = 0;
+const TRAVELRATING_LOW = 25;
+const TRAVELRATING_NORMAL = 50;
+const TRAVELRATING_HIGH = 75;
+const TRAVELRATING_EXTREME = 100;
 
 // Used by ubGarrisonID when a sector doesn't point to a garrison.  Used by strategic AI only.
-#define NO_GARRISON 255
+const NO_GARRISON = 255;
 
 typedef struct SECTORINFO {
   // information pertaining to this sector
@@ -460,11 +460,11 @@ typedef struct SECTORINFO {
   INT8 bPadding[41];
 } SECTORINFO;
 
-#define NO_ADJACENT_SECTOR 0x00
-#define NORTH_ADJACENT_SECTOR 0x01
-#define EAST_ADJACENT_SECTOR 0x02
-#define SOUTH_ADJACENT_SECTOR 0x04
-#define WEST_ADJACENT_SECTOR 0x08
+const NO_ADJACENT_SECTOR = 0x00;
+const NORTH_ADJACENT_SECTOR = 0x01;
+const EAST_ADJACENT_SECTOR = 0x02;
+const SOUTH_ADJACENT_SECTOR = 0x04;
+const WEST_ADJACENT_SECTOR = 0x08;
 
 typedef struct UNDERGROUND_SECTORINFO {
   UINT32 uiFlags;

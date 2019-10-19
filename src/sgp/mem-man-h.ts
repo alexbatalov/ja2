@@ -44,9 +44,9 @@ extern void MemDebug(BOOLEAN f);
 extern void ShutdownMemoryManager(void);
 
 // Creates and adds a video object to list
-#define MemAlloc(size) malloc((size))
-#define MemFree(ptr) free((ptr))
-#define MemRealloc(ptr, size) realloc((ptr), (size))
+const MemAlloc = (size) => malloc((size));
+const MemFree = (ptr) => free((ptr));
+const MemRealloc = (ptr, size) => realloc((ptr), (size));
 
 extern PTR *MemAllocLocked(UINT32 size);
 extern void MemFreeLocked(PTR, UINT32 size);

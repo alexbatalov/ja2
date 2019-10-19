@@ -1,26 +1,26 @@
 // Flags for DrawTextToScreen()
 
 // Defines for coded text For use with IanDisplayWrappedString()
-#define TEXT_SPACE 32
-#define TEXT_CODE_NEWLINE 177
-#define TEXT_CODE_BOLD 178
-#define TEXT_CODE_CENTER 179
-#define TEXT_CODE_NEWCOLOR 180
-#define TEXT_CODE_DEFCOLOR 181
+const TEXT_SPACE = 32;
+const TEXT_CODE_NEWLINE = 177;
+const TEXT_CODE_BOLD = 178;
+const TEXT_CODE_CENTER = 179;
+const TEXT_CODE_NEWCOLOR = 180;
+const TEXT_CODE_DEFCOLOR = 181;
 
 UINT16 IanDisplayWrappedString(UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT8 ubGap, UINT32 uiFont, UINT8 ubColor, STR16 pString, UINT8 ubBackGroundColor, BOOLEAN fDirty, UINT32 uiFlags);
 
-#define LEFT_JUSTIFIED 0x00000001
-#define CENTER_JUSTIFIED 0x00000002
-#define RIGHT_JUSTIFIED 0x00000004
-#define TEXT_SHADOWED 0x00000008
+const LEFT_JUSTIFIED = 0x00000001;
+const CENTER_JUSTIFIED = 0x00000002;
+const RIGHT_JUSTIFIED = 0x00000004;
+const TEXT_SHADOWED = 0x00000008;
 
-#define INVALIDATE_TEXT 0x00000010
-#define DONT_DISPLAY_TEXT 0x00000020 // Wont display the text.  Used if you just want to get how many lines will be displayed
+const INVALIDATE_TEXT = 0x00000010;
+const DONT_DISPLAY_TEXT = 0x00000020; // Wont display the text.  Used if you just want to get how many lines will be displayed
 
-#define IAN_WRAP_NO_SHADOW 32
+const IAN_WRAP_NO_SHADOW = 32;
 
-#define NEWLINE_CHAR 177
+const NEWLINE_CHAR = 177;
 
 typedef struct _WRAPPEDSTRING {
   STR16 sString;

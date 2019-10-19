@@ -9,35 +9,35 @@ typedef struct FASTHELPREGION {
 } FASTHELPREGION;
 
 // String Lengths Defines
-#define MAX_NAME_LENGTH 10
-#define MAX_LOCATION_SIZE 8
-#define MAX_DESTETA_SIZE 8
-#define MAX_ASSIGN_SIZE 10
-#define MAX_TIME_REMAINING_SIZE 8
+const MAX_NAME_LENGTH = 10;
+const MAX_LOCATION_SIZE = 8;
+const MAX_DESTETA_SIZE = 8;
+const MAX_ASSIGN_SIZE = 10;
+const MAX_TIME_REMAINING_SIZE = 8;
 
 // char breath and life position
-#define BAR_INFO_X 66
-#define BAR_INFO_Y 61
+const BAR_INFO_X = 66;
+const BAR_INFO_Y = 61;
 
 // merc icon position
-#define CHAR_ICON_CONTRACT_Y 64
-#define CHAR_ICON_X 187
-#define CHAR_ICON_WIDTH 10
-#define CHAR_ICON_HEIGHT 10
-#define CHAR_ICON_SPACING 13
+const CHAR_ICON_CONTRACT_Y = 64;
+const CHAR_ICON_X = 187;
+const CHAR_ICON_WIDTH = 10;
+const CHAR_ICON_HEIGHT = 10;
+const CHAR_ICON_SPACING = 13;
 
 // max number of characters and vehicles
 // Character List Length
-#define MAX_CHARACTER_COUNT 20
-#define MAX_VEHICLE_COUNT 20
+const MAX_CHARACTER_COUNT = 20;
+const MAX_VEHICLE_COUNT = 20;
 
 // map screen font
-#define MAP_SCREEN_FONT BLOCKFONT2
+const MAP_SCREEN_FONT = () => BLOCKFONT2();
 
 // characterlist regions
-#define Y_START 146
-#define MAP_START_KEYRING_Y 107
-#define Y_SIZE GetFontHeight(MAP_SCREEN_FONT)
+const Y_START = 146;
+const MAP_START_KEYRING_Y = 107;
+const Y_SIZE = () => GetFontHeight(MAP_SCREEN_FONT());
 
 // attribute menu defines (must match NUM_TRAINABLE_STATS defines, and pAttributeMenuStrings )
 enum {
@@ -155,27 +155,27 @@ enum {
 };
 
 // dimensions and offset for merc update box
-#define UPDATE_MERC_FACE_X_WIDTH 50
-#define UPDATE_MERC_FACE_X_HEIGHT 50
-#define UPDATE_MERC_FACE_X_OFFSET 2
-#define UPDATE_MERC_FACE_Y_OFFSET 2
-#define WIDTH_OF_UPDATE_PANEL_BLOCKS 50
-#define HEIGHT_OF_UPDATE_PANEL_BLOCKS 50
-#define UPDATE_MERC_Y_OFFSET 4
-#define UPDATE_MERC_X_OFFSET 4
+const UPDATE_MERC_FACE_X_WIDTH = 50;
+const UPDATE_MERC_FACE_X_HEIGHT = 50;
+const UPDATE_MERC_FACE_X_OFFSET = 2;
+const UPDATE_MERC_FACE_Y_OFFSET = 2;
+const WIDTH_OF_UPDATE_PANEL_BLOCKS = 50;
+const HEIGHT_OF_UPDATE_PANEL_BLOCKS = 50;
+const UPDATE_MERC_Y_OFFSET = 4;
+const UPDATE_MERC_X_OFFSET = 4;
 
 // dimensions and offset for merc update box
-#define TACT_UPDATE_MERC_FACE_X_WIDTH 70
-#define TACT_UPDATE_MERC_FACE_X_HEIGHT 49
-#define TACT_UPDATE_MERC_FACE_X_OFFSET 8
-#define TACT_UPDATE_MERC_FACE_Y_OFFSET 6
-#define TACT_WIDTH_OF_UPDATE_PANEL_BLOCKS 70
-#define TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS 49
-#define TACT_UPDATE_MERC_Y_OFFSET 4
-#define TACT_UPDATE_MERC_X_OFFSET 4
+const TACT_UPDATE_MERC_FACE_X_WIDTH = 70;
+const TACT_UPDATE_MERC_FACE_X_HEIGHT = 49;
+const TACT_UPDATE_MERC_FACE_X_OFFSET = 8;
+const TACT_UPDATE_MERC_FACE_Y_OFFSET = 6;
+const TACT_WIDTH_OF_UPDATE_PANEL_BLOCKS = 70;
+const TACT_HEIGHT_OF_UPDATE_PANEL_BLOCKS = 49;
+const TACT_UPDATE_MERC_Y_OFFSET = 4;
+const TACT_UPDATE_MERC_X_OFFSET = 4;
 
 // the first vehicle slot int he list
-#define FIRST_VEHICLE 18
+const FIRST_VEHICLE = 18;
 
 typedef struct MERC_LEAVE_ITEM {
   OBJECTTYPE o;

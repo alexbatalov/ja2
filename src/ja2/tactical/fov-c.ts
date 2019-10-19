@@ -1,12 +1,12 @@
 /* view directions */
-#define DLEFT 0
-#define DRIGHT 1
-#define UP 2
-#define LEFT 3
-#define RIGHT 4
-#define NOVIEW 5
-#define MAXVIEWPATHS 17
-#define VIEWPATHLENGTH 13
+const DLEFT = 0;
+const DRIGHT = 1;
+const UP = 2;
+const LEFT = 3;
+const RIGHT = 4;
+const NOVIEW = 5;
+const MAXVIEWPATHS = 17;
+const VIEWPATHLENGTH = 13;
 
 extern INT16 DirIncrementer[8];
 
@@ -130,7 +130,7 @@ void BuildSightDir(UINT32 dir, UINT32 *One, UINT32 *Two, UINT32 *Three, UINT32 *
 
 //#if 0
 
-#define NUM_SLANT_ROOF_SLOTS 200
+const NUM_SLANT_ROOF_SLOTS = 200;
 
 typedef struct {
   INT16 sGridNo;

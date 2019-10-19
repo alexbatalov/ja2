@@ -4,10 +4,10 @@
 //
 ///////////////////////////////////////////////////
 
-#define DEFUALT_SLIDER_SIZE 7
+const DEFUALT_SLIDER_SIZE = 7;
 
-#define STEEL_SLIDER_WIDTH 42
-#define STEEL_SLIDER_HEIGHT 25
+const STEEL_SLIDER_WIDTH = 42;
+const STEEL_SLIDER_HEIGHT = 25;
 
 typedef struct TAG_SLIDER {
   UINT32 uiSliderID;

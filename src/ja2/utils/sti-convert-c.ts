@@ -1,45 +1,45 @@
 // CONVERT_TO_16_BIT
 BOOLEAN ConvertToETRLE(UINT8 **ppDest, UINT32 *puiDestLen, UINT8 **ppSubImageBuffer, UINT16 *pusNumberOfSubImages, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, UINT32 fFlags);
 
-#define CONVERT_ADD_APPDATA 0x0001
-#define CONVERT_ADD_JA2DATA 0x0003
-#define CONVERT_ZLIB_COMPRESS 0x0010
-#define CONVERT_ETRLE_COMPRESS 0x0020
-#define CONVERT_ETRLE_COMPRESS_SINGLE 0x0040
-#define CONVERT_ETRLE_NO_SUBIMAGE_SHRINKING 0x0080
-#define CONVERT_ETRLE_DONT_SKIP_BLANKS 0x0100
-#define CONVERT_ETRLE_FLIC 0x0200
-#define CONVERT_ETRLE_FLIC_TRIM 0x0400
-#define CONVERT_ETRLE_FLIC_NAME 0x0800
-#define CONVERT_TO_8_BIT 0x1000
-#define CONVERT_TO_16_BIT 0x2000
+const CONVERT_ADD_APPDATA = 0x0001;
+const CONVERT_ADD_JA2DATA = 0x0003;
+const CONVERT_ZLIB_COMPRESS = 0x0010;
+const CONVERT_ETRLE_COMPRESS = 0x0020;
+const CONVERT_ETRLE_COMPRESS_SINGLE = 0x0040;
+const CONVERT_ETRLE_NO_SUBIMAGE_SHRINKING = 0x0080;
+const CONVERT_ETRLE_DONT_SKIP_BLANKS = 0x0100;
+const CONVERT_ETRLE_FLIC = 0x0200;
+const CONVERT_ETRLE_FLIC_TRIM = 0x0400;
+const CONVERT_ETRLE_FLIC_NAME = 0x0800;
+const CONVERT_TO_8_BIT = 0x1000;
+const CONVERT_TO_16_BIT = 0x2000;
 // NB 18-bit is actually 24 bit but with only 6 bits used in each byte.  I implemented
 // it to see how well such images would compress with ZLIB.
-#define CONVERT_TO_18_BIT 0x4000
+const CONVERT_TO_18_BIT = 0x4000;
 
 // Defines for inserting red/green/blue values into a 16-bit pixel.
 // MASK is the mask to use to get the proper bits out of a byte (part of a 24-bit pixel)
 // use SHIFT_RIGHT to move the masked bits to the lowest bits of the byte
 // use SHIFT_LEFT to put the bits in their proper place in the 16-bit pixel
-#define RED_DEPTH_16 5
-#define GREEN_DEPTH_16 6
-#define BLUE_DEPTH_16 5
-#define RED_MASK_16 0xF8
-#define RED_SHIFT_RIGHT_16 3
-#define RED_SHIFT_LEFT_16 11
-#define GREEN_MASK_16 0xFC
-#define GREEN_SHIFT_RIGHT_16 2
-#define GREEN_SHIFT_LEFT_16 5
-#define BLUE_MASK_16 0xF8
-#define BLUE_SHIFT_RIGHT_16 3
-#define BLUE_SHIFT_LEFT_16 0
+const RED_DEPTH_16 = 5;
+const GREEN_DEPTH_16 = 6;
+const BLUE_DEPTH_16 = 5;
+const RED_MASK_16 = 0xF8;
+const RED_SHIFT_RIGHT_16 = 3;
+const RED_SHIFT_LEFT_16 = 11;
+const GREEN_MASK_16 = 0xFC;
+const GREEN_SHIFT_RIGHT_16 = 2;
+const GREEN_SHIFT_LEFT_16 = 5;
+const BLUE_MASK_16 = 0xF8;
+const BLUE_SHIFT_RIGHT_16 = 3;
+const BLUE_SHIFT_LEFT_16 = 0;
 
-#define RED_DEPTH_24 8
-#define GREEN_DEPTH_24 8
-#define BLUE_DEPTH_24 8
-#define RED_MASK_24 0x00FF0000
-#define GREEN_MASK_24 0x0000FF00
-#define BLUE_MASK_24 0x000000FF
+const RED_DEPTH_24 = 8;
+const GREEN_DEPTH_24 = 8;
+const BLUE_DEPTH_24 = 8;
+const RED_MASK_24 = 0x00FF0000;
+const GREEN_MASK_24 = 0x0000FF00;
+const BLUE_MASK_24 = 0x000000FF;
 
 //#define JA2_OBJECT_DATA_SIZE	16
 
@@ -182,12 +182,12 @@ void WriteSTIFile(INT8 *pData, SGPPaletteEntry *pPalette, INT16 sWidth, INT16 sH
   }
 }
 
-#define COMPRESS_TRANSPARENT 0x80
-#define COMPRESS_NON_TRANSPARENT 0x00
-#define COMPRESS_RUN_LIMIT 0x7F
+const COMPRESS_TRANSPARENT = 0x80;
+const COMPRESS_NON_TRANSPARENT = 0x00;
+const COMPRESS_RUN_LIMIT = 0x7F;
 
-#define TCI 0x00
-#define WI 0xFF
+const TCI = 0x00;
+const WI = 0xFF;
 
 UINT32 ETRLECompressSubImage(UINT8 *pDest, UINT32 uiDestLen, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
 UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource, UINT32 uiSourceLen);

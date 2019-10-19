@@ -35,17 +35,17 @@ struct trail_s {
 };
 typedef struct trail_s trail_t;
 
-#define MAXTRAILTREE (4096)
-#define MAXpathQ (512)
-#define MAP_WIDTH 18
-#define MAP_LENGTH MAP_WIDTH *MAP_WIDTH
+const MAXTRAILTREE = (4096);
+const MAXpathQ = (512);
+const MAP_WIDTH = 18;
+const MAP_LENGTH = MAP_WIDTH *MAP_WIDTH;
 
 //#define EASYWATERCOST	TRAVELCOST_FLAT / 2
 //#define ISWATER(t)	(((t)==TRAVELCOST_KNEEDEEP) || ((t)==TRAVELCOST_DEEPWATER))
 //#define NOPASS (TRAVELCOST_OBSTACLE)
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
-#define TRAILCELLTYPE UINT32
+const TRAILCELLTYPE = UINT32;
 
 static path_t pathQB[MAXpathQ];
 static UINT16 totAPCostB[MAXpathQ];
@@ -55,76 +55,72 @@ static TRAILCELLTYPE trailCostB[MAP_LENGTH];
 static trail_t trailStratTreeB[MAXTRAILTREE];
 short trailStratTreedxB = 0;
 
-#define QHEADNDX (0)
-#define QPOOLNDX (MAXpathQ - 1)
+const QHEADNDX = (0);
+const QPOOLNDX = () => (MAXpathQ - 1);
 
-#define pathQNotEmpty (pathQB[QHEADNDX].nextLink != QHEADNDX)
-#define pathFound (pathQB[pathQB[QHEADNDX].nextLink].location == sDestination)
-#define pathNotYetFound (!pathFound)
+const pathQNotEmpty = () => (pathQB[QHEADNDX].nextLink != QHEADNDX);
+const pathFound = () => (pathQB[pathQB[QHEADNDX].nextLink].location == sDestination);
+const pathNotYetFound = () => (!pathFound());
 
-#define REMQUENODE(ndx) \
-  { \
-    pathQB[pathQB[ndx].prevLink].nextLink = pathQB[ndx].nextLink; \
-    pathQB[pathQB[ndx].nextLink].prevLink = pathQB[ndx].prevLink; \
+const REMQUENODE = (ndx) => {
+  pathQB[pathQB[ndx].prevLink].nextLink = pathQB[ndx].nextLink;
+  pathQB[pathQB[ndx].nextLink].prevLink = pathQB[ndx].prevLink;
+};
+
+const INSQUENODEPREV = (newNode, curNode) => {
+  pathQB[newNode].nextLink = curNode;
+  pathQB[newNode].prevLink = pathQB[curNode].prevLink;
+  pathQB[pathQB[curNode].prevLink].nextLink = newNode;
+  pathQB[curNode].prevLink = newNode;
+};
+
+const INSQUENODE = (newNode, curNode) => {
+  pathQB[newNode].prevLink = curNode;
+  pathQB[newNode].NextLink = pathQB[curNode].nextLink;
+  pathQB[pathQB[curNode].nextLink].prevLink = newNode;
+  pathQB[curNode].nextLink = newNode;
+};
+
+const DELQUENODE = (ndx) => {
+  REMQUENODE(ndx);
+  INSQUENODEPREV(ndx, QPOOLNDX);
+  pathQB[ndx].location = -1;
+};
+
+const NEWQUENODE = () => {
+  if (queRequests < QPOOLNDX)
+    qNewNdx = queRequests++;
+  else {
+    qNewNdx = pathQB[QPOOLNDX].nextLink;
+    REMQUENODE(qNewNdx);
   }
+};
 
-#define INSQUENODEPREV(newNode, curNode) \
-  { \
-    pathQB[newNode].nextLink = curNode; \
-    pathQB[newNode].prevLink = pathQB[curNode].prevLink; \
-    pathQB[pathQB[curNode].prevLink].nextLink = newNode; \
-    pathQB[curNode].prevLink = newNode; \
-  }
+const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
+const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATEn = () => ((int)(FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATE = () => ESTIMATE1();
 
-#define INSQUENODE(newNode, curNode) \
-  { \
-    pathQB[newNode].prevLink = curNode; \
-    pathQB[newNode].NextLink = pathQB[curNode].nextLink; \
-    pathQB[pathQB[curNode].nextLink].prevLink = newNode; \
-    pathQB[curNode].nextLink = newNode; \
-  }
+const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE);
 
-#define DELQUENODE(ndx) \
-  { \
-    REMQUENODE(ndx); \
-    INSQUENODEPREV(ndx, QPOOLNDX); \
-    pathQB[ndx].location = -1; \
-  }
+const MAXCOST = (99900);
+const TOTALCOST = (ndx) => (pathQB[ndx].costSoFar + pathQB[ndx].costToGo);
+const XLOC = (a) => (a % MAP_WIDTH);
+const YLOC = (a) => (a / MAP_WIDTH);
+const LEGDISTANCE = (a, b) => (abs(XLOC(b) - XLOC(a)) + abs(YLOC(b) - YLOC(a)));
+const FARTHER = (ndx, NDX) => (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination));
 
-#define NEWQUENODE \
-  if (queRequests < QPOOLNDX) \
-    qNewNdx = queRequests++; \
-  else { \
-    qNewNdx = pathQB[QPOOLNDX].nextLink; \
-    REMQUENODE(qNewNdx); \
-  }
+const FLAT_STRATEGIC_TRAVEL_TIME = 60;
 
-#define ESTIMATE0 ((dx > dy) ? (dx) : (dy))
-#define ESTIMATE1 ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx))
-#define ESTIMATE2 FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx))
-#define ESTIMATEn ((int)(FLATCOST * sqrt(dx * dx + dy * dy)))
-#define ESTIMATE ESTIMATE1
-
-#define REMAININGCOST(ndx) ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE)
-
-#define MAXCOST (99900)
-#define TOTALCOST(ndx) (pathQB[ndx].costSoFar + pathQB[ndx].costToGo)
-#define XLOC(a) (a % MAP_WIDTH)
-#define YLOC(a) (a / MAP_WIDTH)
-#define LEGDISTANCE(a, b) (abs(XLOC(b) - XLOC(a)) + abs(YLOC(b) - YLOC(a)))
-#define FARTHER(ndx, NDX) (LEGDISTANCE(pathQB[ndx].location, sDestination) > LEGDISTANCE(pathQB[NDX].location, sDestination))
-
-#define FLAT_STRATEGIC_TRAVEL_TIME 60
-
-#define QUESEARCH(ndx, NDX) \
-  { \
-    INT32 k = TOTALCOST(ndx); \
-    NDX = pathQB[QHEADNDX].nextLink; \
-    while (NDX && (k > TOTALCOST(NDX))) \
-      NDX = pathQB[NDX].nextLink; \
-    while (NDX && (k == TOTALCOST(NDX)) && FARTHER(ndx, NDX)) \
-      NDX = pathQB[NDX].nextLink; \
-  }
+const QUESEARCH = (ndx, NDX) => {
+  INT32 k = TOTALCOST(ndx);
+  NDX = pathQB[QHEADNDX].nextLink;
+  while (NDX && (k > TOTALCOST(NDX)))
+    NDX = pathQB[NDX].nextLink;
+  while (NDX && (k == TOTALCOST(NDX)) && FARTHER(ndx, NDX))
+    NDX = pathQB[NDX].nextLink;
+};
 
 INT32 queRequests;
 

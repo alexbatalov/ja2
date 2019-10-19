@@ -3,10 +3,10 @@
 BOOLEAN gfBasement = FALSE;
 BOOLEAN gfCaves = FALSE;
 
-#define ENV_TOD_FLAGS_DAY 0x00000001
-#define ENV_TOD_FLAGS_DAWN 0x00000002
-#define ENV_TOD_FLAGS_DUSK 0x00000004
-#define ENV_TOD_FLAGS_NIGHT 0x00000008
+const ENV_TOD_FLAGS_DAY = 0x00000001;
+const ENV_TOD_FLAGS_DAWN = 0x00000002;
+const ENV_TOD_FLAGS_DUSK = 0x00000004;
+const ENV_TOD_FLAGS_NIGHT = 0x00000008;
 
 /*
 #define		DAWNLIGHT_START											( 5 * 60 )
@@ -16,15 +16,15 @@ BOOLEAN gfCaves = FALSE;
 #define		DUSK_START													( 20 * 60 )
 #define   NIGHT_START													( 22 * 60 )
 */
-#define DAWN_START (6 * 60 + 47) // 6:47AM
-#define DAY_START (7 * 60 + 5) // 7:05AM
-#define DUSK_START (20 * 60 + 57) // 8:57PM
-#define NIGHT_START (21 * 60 + 15) // 9:15PM
+const DAWN_START = (6 * 60 + 47); // 6:47AM
+const DAY_START = (7 * 60 + 5); // 7:05AM
+const DUSK_START = (20 * 60 + 57); // 8:57PM
+const NIGHT_START = (21 * 60 + 15); // 9:15PM
 
-#define DAWN_TO_DAY (DAY_START - DAWN_START)
-#define DAY_TO_DUSK (DUSK_START - DAY_START)
-#define DUSK_TO_NIGHT (NIGHT_START - DUSK_START)
-#define NIGHT_TO_DAWN (24 * 60 - NIGHT_START + DAWN_START)
+const DAWN_TO_DAY = (DAY_START - DAWN_START);
+const DAY_TO_DUSK = (DUSK_START - DAY_START);
+const DUSK_TO_NIGHT = (NIGHT_START - DUSK_START);
+const NIGHT_TO_DAWN = (24 * 60 - NIGHT_START + DAWN_START);
 
 UINT32 guiEnvWeather = 0;
 UINT32 guiRainLoop = NO_SAMPLE;
@@ -114,17 +114,17 @@ typedef enum {
   TEMPERATURE_GLOBAL_HOT,
 } TemperatureEvents;
 
-#define DESERT_WARM_START (8 * 60)
-#define DESERT_HOT_START (9 * 60)
-#define DESERT_HOT_END (17 * 60)
-#define DESERT_WARM_END (19 * 60)
+const DESERT_WARM_START = (8 * 60);
+const DESERT_HOT_START = (9 * 60);
+const DESERT_HOT_END = (17 * 60);
+const DESERT_WARM_END = (19 * 60);
 
-#define GLOBAL_WARM_START (9 * 60)
-#define GLOBAL_HOT_START (12 * 60)
-#define GLOBAL_HOT_END (14 * 60)
-#define GLOBAL_WARM_END (17 * 60)
+const GLOBAL_WARM_START = (9 * 60);
+const GLOBAL_HOT_START = (12 * 60);
+const GLOBAL_HOT_END = (14 * 60);
+const GLOBAL_WARM_END = (17 * 60);
 
-#define HOT_DAY_LIGHTLEVEL 2
+const HOT_DAY_LIGHTLEVEL = 2;
 
 BOOLEAN fTimeOfDayControls = TRUE;
 UINT32 guiEnvTime = 0;

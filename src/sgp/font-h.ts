@@ -1,28 +1,28 @@
-#define DEFAULT_SHADOW 2
-#define MILITARY_SHADOW 67
-#define NO_SHADOW 0
+const DEFAULT_SHADOW = 2;
+const MILITARY_SHADOW = 67;
+const NO_SHADOW = 0;
 
 // these are bogus! No palette is set yet!
 // font foreground color symbols
-#define FONT_FCOLOR_WHITE 208
-#define FONT_FCOLOR_RED 162
-#define FONT_FCOLOR_NICERED 164
-#define FONT_FCOLOR_BLUE 203
-#define FONT_FCOLOR_GREEN 184
-#define FONT_FCOLOR_YELLOW 144
-#define FONT_FCOLOR_BROWN 184
-#define FONT_FCOLOR_ORANGE 76
-#define FONT_FCOLOR_PURPLE 160
+const FONT_FCOLOR_WHITE = 208;
+const FONT_FCOLOR_RED = 162;
+const FONT_FCOLOR_NICERED = 164;
+const FONT_FCOLOR_BLUE = 203;
+const FONT_FCOLOR_GREEN = 184;
+const FONT_FCOLOR_YELLOW = 144;
+const FONT_FCOLOR_BROWN = 184;
+const FONT_FCOLOR_ORANGE = 76;
+const FONT_FCOLOR_PURPLE = 160;
 
 // font background color symbols
-#define FONT_BCOLOR_WHITE 208
-#define FONT_BCOLOR_RED 162
-#define FONT_BCOLOR_BLUE 203
-#define FONT_BCOLOR_GREEN 184
-#define FONT_BCOLOR_YELLOW 144
-#define FONT_BCOLOR_BROWN 80
-#define FONT_BCOLOR_ORANGE 76
-#define FONT_BCOLOR_PURPLE 160
+const FONT_BCOLOR_WHITE = 208;
+const FONT_BCOLOR_RED = 162;
+const FONT_BCOLOR_BLUE = 203;
+const FONT_BCOLOR_GREEN = 184;
+const FONT_BCOLOR_YELLOW = 144;
+const FONT_BCOLOR_BROWN = 80;
+const FONT_BCOLOR_ORANGE = 76;
+const FONT_BCOLOR_PURPLE = 160;
 
 // typedefs
 
@@ -38,10 +38,10 @@ extern UINT32 FontDestBPP;
 extern SGPRect FontDestRegion;
 extern BOOLEAN FontDestWrap;
 
-#define SetFontDestObject(x) (SetFontDestBuffer(x, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, FontDestWrap))
+const SetFontDestObject = (x) => (SetFontDestBuffer(x, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, FontDestWrap));
 
-#define SetFontDestClip(x1, y1, x2, y2) (SetFontDestBuffer(FontDestBuffer, x1, y1, x2, y2, FontDestWrap))
-#define SetFontDestWrap(x) (SetFontDestBuffer(FontDestBuffer, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, x))
+const SetFontDestClip = (x1, y1, x2, y2) => (SetFontDestBuffer(FontDestBuffer, x1, y1, x2, y2, FontDestWrap));
+const SetFontDestWrap = (x) => (SetFontDestBuffer(FontDestBuffer, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, x));
 // functions
 
 void SetFontColors(UINT16 usColors);
@@ -69,8 +69,8 @@ extern UINT32 gprintf_buffer(UINT8 *pDestBuf, UINT32 uiDestPitchBYTES, UINT32 Fo
 extern UINT32 mprintf_buffer(UINT8 *pDestBuf, UINT32 uiDestPitchBYTES, UINT32 FontType, INT32 x, INT32 y, UINT16 *pFontString, ...);
 
 // Function for displaying coded test. Since it's slower to do this, it's separate from  the normal fuctions
-#define FONT_CODE_BEGINCOLOR 180
-#define FONT_CODE_RESETCOLOR 181
+const FONT_CODE_BEGINCOLOR = 180;
+const FONT_CODE_RESETCOLOR = 181;
 
 UINT32 mprintf_buffer_coded(UINT8 *pDestBuf, UINT32 uiDestPitchBYTES, UINT32 FontType, INT32 x, INT32 y, UINT16 *pFontString, ...);
 UINT32 mprintf_coded(INT32 x, INT32 y, UINT16 *pFontString, ...);

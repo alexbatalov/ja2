@@ -33,7 +33,7 @@ void DisableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID)
 void EnableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID);
 
 // Region Utils
-#define NUM_TERRAIN_TILE_REGIONS 9
+const NUM_TERRAIN_TILE_REGIONS = 9;
 enum {
   BASE_TERRAIN_TILE_REGION_ID,
   ITEM_REGION_ID = NUM_TERRAIN_TILE_REGIONS,

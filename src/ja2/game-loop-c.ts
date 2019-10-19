@@ -4,7 +4,7 @@ UINT32 guiPreviousScreen = NO_PENDING_SCREEN;
 
 INT32 giStartingMemValue = 0;
 
-#define DONT_CHECK_FOR_FREE_SPACE 255
+const DONT_CHECK_FOR_FREE_SPACE = 255;
 UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 
 extern BOOLEAN DoSkiMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT8 ubFlags, MSGBOX_CALLBACK ReturnCallback);

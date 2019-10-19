@@ -1,5 +1,5 @@
-#define MAP_WORLD_X 18
-#define MAP_WORLD_Y 18
+const MAP_WORLD_X = 18;
+const MAP_WORLD_Y = 18;
 
 // Sector name identifiers
 enum {
@@ -19,7 +19,7 @@ enum {
   NUM_TOWNS,
 } Towns;
 
-#define FIRST_TOWN OMERTA
+const FIRST_TOWN = OMERTA;
 //#define PALACE			NUM_TOWNS
 
 extern BOOLEAN fCharacterInfoPanelDirty;

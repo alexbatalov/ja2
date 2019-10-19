@@ -1,4 +1,4 @@
-#define MAX_BURST_LOCATIONS 50
+const MAX_BURST_LOCATIONS = 50;
 
 typedef struct {
   INT16 sX;

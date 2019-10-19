@@ -26,9 +26,9 @@ UINT8 gubBuildingInfoToSet;
 
 // ABSOLUTE maximums
 //#ifdef JA2EDITOR
-#define ABSMAX_SKIPLIST_LEVEL 5
-#define ABSMAX_TRAIL_TREE (16384)
-#define ABSMAX_PATHQ (512)
+const ABSMAX_SKIPLIST_LEVEL = 5;
+const ABSMAX_TRAIL_TREE = (16384);
+const ABSMAX_PATHQ = (512);
 /*
 #else
         #define ABSMAX_SKIPLIST_LEVEL 5
@@ -38,9 +38,9 @@ UINT8 gubBuildingInfoToSet;
 */
 
 // STANDARD maximums... configurable!
-#define MAX_SKIPLIST_LEVEL 5
-#define MAX_TRAIL_TREE (4096)
-#define MAX_PATHQ (512)
+const MAX_SKIPLIST_LEVEL = 5;
+const MAX_TRAIL_TREE = (4096);
+const MAX_PATHQ = (512);
 
 INT32 iMaxSkipListLevel = MAX_SKIPLIST_LEVEL;
 INT32 iMaxTrailTree = MAX_TRAIL_TREE;
@@ -48,7 +48,7 @@ INT32 iMaxPathQ = MAX_PATHQ;
 
 extern BOOLEAN gfGeneratingMapEdgepoints;
 
-#define TRAILCELLTYPE UINT16
+const TRAILCELLTYPE = UINT16;
 
 // OLD PATHAI STUFF
 /////////////////////////////////////////////////
@@ -78,9 +78,9 @@ enum {
   STEP_BACKWARDS = 0x01,
 } TrailFlags;
 
-#define EASYWATERCOST TRAVELCOST_FLAT / 2
-#define ISWATER(t) (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER))
-#define NOPASS (TRAVELCOST_BLOCKED)
+const EASYWATERCOST = TRAVELCOST_FLAT / 2;
+const ISWATER = (t) => (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER));
+const NOPASS = (TRAVELCOST_BLOCKED);
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 
@@ -101,27 +101,28 @@ static INT32 iSkipListLevelLimit[8] = {
   16384,
 };
 
-#define ESTIMATE0 ((dx > dy) ? (dx) : (dy))
-#define ESTIMATE1 ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx))
-#define ESTIMATE2 FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx))
-#define ESTIMATEn ((int)(FLATCOST * sqrt(dx * dx + dy * dy)))
-#define ESTIMATEC (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)))
+const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
+const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
+const ESTIMATEn = () => ((int)(FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATEC = () => (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)));
 //#define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) : (TRAVELCOST_FLAT * dy * 14 ) / 10 + dx) ) )
-#define ESTIMATE ESTIMATEC
+const ESTIMATE = () => ESTIMATEC();
 
-#define MAXCOST (9990)
+const MAXCOST = (9990);
 //#define MAXCOST (255)
 //#define TOTALCOST( pCurrPtr ) (pCurrPtr->usCostSoFar + pCurrPtr->usCostToGo)
-#define TOTALCOST(ptr) (ptr->usTotalCost)
-#define XLOC(a) (a % MAPWIDTH)
-#define YLOC(a) (a / MAPWIDTH)
+const TOTALCOST = (ptr) => (ptr->usTotalCost);
+const XLOC = (a) => (a % MAPWIDTH);
+const YLOC = (a) => (a / MAPWIDTH);
 //#define LEGDISTANCE(a,b) ( abs( XLOC(b)-XLOC(a) ) + abs( YLOC(b)-YLOC(a) ) )
-#define LEGDISTANCE(x1, y1, x2, y2) (abs(x2 - x1) + abs(y2 - y1))
+const LEGDISTANCE = (x1, y1, x2, y2) => (abs(x2 - x1) + abs(y2 - y1));
 //#define FARTHER(ndx,NDX) ( LEGDISTANCE( ndx->sLocation,sDestination) > LEGDISTANCE(NDX->sLocation,sDestination) )
-#define FARTHER(ndx, NDX) (ndx->ubLegDistance > NDX->ubLegDistance)
+const FARTHER = (ndx, NDX) => (ndx->ubLegDistance > NDX->ubLegDistance);
 
-#define SETLOC(str, loc) \
-  { (str).iLocation = loc; }
+const SETLOC = (str, loc) => {
+  (str).iLocation = loc;
+};
 
 static TRAILCELLTYPE *trailCost;
 static UINT8 *trailCostUsed;
@@ -130,15 +131,15 @@ static trail_t *trailTree;
 
 static short trailTreeNdx = 0;
 
-#define QHEADNDX (0)
-#define QPOOLNDX (iMaxPathQ - 1)
+const QHEADNDX = (0);
+const QPOOLNDX = () => (iMaxPathQ - 1);
 
 static path_t *pQueueHead;
 static path_t *pClosedHead;
 
-#define pathQNotEmpty (pQueueHead->pNext[0] != NULL)
-#define pathFound (pQueueHead->pNext[0]->iLocation == iDestination)
-#define pathNotYetFound (!pathFound)
+const pathQNotEmpty = () => (pQueueHead->pNext[0] != NULL);
+const pathFound = () => (pQueueHead->pNext[0]->iLocation == iDestination);
+const pathNotYetFound = () => (!pathFound());
 
 // Note, the closed list is maintained as a doubly-linked list;
 // it's a regular queue, essentially, as we always add to the end
@@ -185,31 +186,29 @@ static path_t *pClosedHead;
 */
 
 // experiment 1, seemed to fail
-#define ClosedListAdd(pNew) \
-  { \
-    pNew->pNext[0] = pClosedHead->pNext[0]; \
-    pClosedHead->pNext[0] = pNew; \
-    pNew->iLocation = -1; \
-    iClosedListSize++; \
-  }
+const ClosedListAdd = (pNew) => {
+  pNew->pNext[0] = pClosedHead->pNext[0];
+  pClosedHead->pNext[0] = pNew;
+  pNew->iLocation = -1;
+  iClosedListSize++;
+};
 
-#define ClosedListGet(pNew) \
-  { \
-    if (queRequests < QPOOLNDX) { \
-      pNew = pathQ + (queRequests); \
-      queRequests++; \
-      pNew->bLevel = RandomSkipListLevel(); \
-    } else if (iClosedListSize > 0) { \
-      pNew = pClosedHead->pNext[0]; \
-      pClosedHead->pNext[0] = pNew->pNext[0]; \
-      iClosedListSize--; \
-      queRequests++; \
-      memset(pNew->pNext, 0, sizeof(path_t *) * ABSMAX_SKIPLIST_LEVEL); \
-      pNew->bLevel = RandomSkipListLevel(); \
-    } else { \
-      pNew = NULL; \
-    } \
+const ClosedListGet = (pNew) => {
+  if (queRequests < QPOOLNDX) {
+    pNew = pathQ + (queRequests);
+    queRequests++;
+    pNew->bLevel = RandomSkipListLevel();
+  } else if (iClosedListSize > 0) {
+    pNew = pClosedHead->pNext[0];
+    pClosedHead->pNext[0] = pNew->pNext[0];
+    iClosedListSize--;
+    queRequests++;
+    memset(pNew->pNext, 0, sizeof(path_t *) * ABSMAX_SKIPLIST_LEVEL);
+    pNew->bLevel = RandomSkipListLevel();
+  } else {
+    pNew = NULL;
   }
+};
 
 /*
 #define ClosedListAdd( pNew ) \
@@ -248,62 +247,60 @@ static path_t *pClosedHead;
 }
 */
 
-#define SkipListRemoveHead() \
-  { \
-    pDel = pQueueHead->pNext[0]; \
-    for (iLoop = 0; iLoop < __min(bSkipListLevel, pDel->bLevel); iLoop++) { \
-      pQueueHead->pNext[iLoop] = pDel->pNext[iLoop]; \
-    } \
-    iSkipListSize--; \
-    ClosedListAdd(pDel); \
+const SkipListRemoveHead = () => {
+  pDel = pQueueHead->pNext[0];
+  for (iLoop = 0; iLoop < __min(bSkipListLevel, pDel->bLevel); iLoop++) {
+    pQueueHead->pNext[iLoop] = pDel->pNext[iLoop];
   }
+  iSkipListSize--;
+  ClosedListAdd(pDel);
+};
 
-#define SkipListInsert(pNew) \
-  { \
-    pCurr = pQueueHead; \
-    uiCost = TOTALCOST(pNew); \
-    memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t *)); \
-    for (iCurrLevel = bSkipListLevel - 1; iCurrLevel >= 0; iCurrLevel--) { \
-      pNext = pCurr->pNext[iCurrLevel]; \
-      while (pNext) { \
-        if (uiCost > TOTALCOST(pNext) || (uiCost == TOTALCOST(pNext) && FARTHER(pNew, pNext))) { \
-          pCurr = pNext; \
-          pNext = pCurr->pNext[iCurrLevel]; \
-        } else { \
-          break; \
-        } \
-      } \
-      pUpdate[iCurrLevel] = pCurr; \
-    } \
-    pCurr = pCurr->pNext[0]; \
-    for (iCurrLevel = 0; iCurrLevel < pNew->bLevel; iCurrLevel++) { \
-      if (!(pUpdate[iCurrLevel])) { \
-        break; \
-      } \
-      pNew->pNext[iCurrLevel] = pUpdate[iCurrLevel]->pNext[iCurrLevel]; \
-      pUpdate[iCurrLevel]->pNext[iCurrLevel] = pNew; \
-    } \
-    iSkipListSize++; \
-    if (iSkipListSize > iSkipListLevelLimit[bSkipListLevel]) { \
-      pCurr = pQueueHead; \
-      pNext = pQueueHead->pNext[bSkipListLevel - 1]; \
-      while (pNext) { \
-        if (pNext->bLevel > bSkipListLevel) { \
-          pCurr->pNext[bSkipListLevel] = pNext; \
-          pCurr = pNext; \
-        } \
-        pNext = pNext->pNext[bSkipListLevel - 1]; \
-      } \
-      pCurr->pNext[bSkipListLevel] = pNext; \
-      bSkipListLevel++; \
-    } \
+const SkipListInsert = (pNew) => {
+  pCurr = pQueueHead;
+  uiCost = TOTALCOST(pNew);
+  memset(pUpdate, 0, MAX_SKIPLIST_LEVEL * sizeof(path_t *));
+  for (iCurrLevel = bSkipListLevel - 1; iCurrLevel >= 0; iCurrLevel--) {
+    pNext = pCurr->pNext[iCurrLevel];
+    while (pNext) {
+      if (uiCost > TOTALCOST(pNext) || (uiCost == TOTALCOST(pNext) && FARTHER(pNew, pNext))) {
+        pCurr = pNext;
+        pNext = pCurr->pNext[iCurrLevel];
+      } else {
+        break;
+      }
+    }
+    pUpdate[iCurrLevel] = pCurr;
   }
+  pCurr = pCurr->pNext[0];
+  for (iCurrLevel = 0; iCurrLevel < pNew->bLevel; iCurrLevel++) {
+    if (!(pUpdate[iCurrLevel])) {
+      break;
+    }
+    pNew->pNext[iCurrLevel] = pUpdate[iCurrLevel]->pNext[iCurrLevel];
+    pUpdate[iCurrLevel]->pNext[iCurrLevel] = pNew;
+  }
+  iSkipListSize++;
+  if (iSkipListSize > iSkipListLevelLimit[bSkipListLevel]) {
+    pCurr = pQueueHead;
+    pNext = pQueueHead->pNext[bSkipListLevel - 1];
+    while (pNext) {
+      if (pNext->bLevel > bSkipListLevel) {
+        pCurr->pNext[bSkipListLevel] = pNext;
+        pCurr = pNext;
+      }
+      pNext = pNext->pNext[bSkipListLevel - 1];
+    }
+    pCurr->pNext[bSkipListLevel] = pNext;
+    bSkipListLevel++;
+  }
+};
 
-#define REMQUEHEADNODE() SkipListRemoveHead();
+const REMQUEHEADNODE = () => SkipListRemoveHead();
 
-#define DELQUENODE(ndx) SkipListRemoveHead()
+const DELQUENODE = (ndx) => SkipListRemoveHead();
 
-#define REMAININGCOST(ptr) ((dy = abs(iDestY - iLocY)), (dx = abs(iDestX - iLocX)), ESTIMATE)
+const REMAININGCOST = (ptr) => ((dy = abs(iDestY - iLocY)), (dx = abs(iDestX - iLocX)), ESTIMATE);
 /*
 #define REMAININGCOST(ptr)					\
 (								\
@@ -315,15 +312,15 @@ static path_t *pClosedHead;
 )
 */
 
-#define NEWQUENODE ClosedListGet(pNewPtr)
+const NEWQUENODE = () => ClosedListGet(pNewPtr);
 
-#define QUEINSERT(ndx) SkipListInsert(ndx)
+const QUEINSERT = (ndx) => SkipListInsert(ndx);
 
-#define GREENSTEPSTART 0
-#define REDSTEPSTART 16
-#define PURPLESTEPSTART 32
-#define BLUESTEPSTART 48
-#define ORANGESTEPSTART 64
+const GREENSTEPSTART = 0;
+const REDSTEPSTART = 16;
+const PURPLESTEPSTART = 32;
+const BLUESTEPSTART = 48;
+const ORANGESTEPSTART = 64;
 
 UINT8 gubNPCAPBudget = 0;
 UINT16 gusNPCMovementMode;
@@ -352,9 +349,9 @@ static INT32 dirDelta[8] = {
   -MAPWIDTH - 1, // NW
 };
 
-#define LOOPING_CLOCKWISE 0
-#define LOOPING_COUNTERCLOCKWISE 1
-#define LOOPING_REVERSE 2
+const LOOPING_CLOCKWISE = 0;
+const LOOPING_COUNTERCLOCKWISE = 1;
+const LOOPING_REVERSE = 2;
 
 INT8 RandomSkipListLevel(void) {
   INT8 bLevel = 1;

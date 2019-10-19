@@ -4,20 +4,20 @@
 // *		SubRectInfo's (usNumberOfRects > 0, size = usNumberOfSubRects * sizeof(SubRectInfo) ), uncompressed
 // *		Bytes of image data, possibly compressed
 
-#define STCI_ID_STRING "STCI"
-#define STCI_ID_LEN 4
+const STCI_ID_STRING = "STCI";
+const STCI_ID_LEN = 4;
 
-#define STCI_ETRLE_COMPRESSED 0x0020
-#define STCI_ZLIB_COMPRESSED 0x0010
-#define STCI_INDEXED 0x0008
-#define STCI_RGB 0x0004
-#define STCI_ALPHA 0x0002
-#define STCI_TRANSPARENT 0x0001
+const STCI_ETRLE_COMPRESSED = 0x0020;
+const STCI_ZLIB_COMPRESSED = 0x0010;
+const STCI_INDEXED = 0x0008;
+const STCI_RGB = 0x0004;
+const STCI_ALPHA = 0x0002;
+const STCI_TRANSPARENT = 0x0001;
 
 // ETRLE defines
-#define COMPRESS_TRANSPARENT 0x80
-#define COMPRESS_NON_TRANSPARENT 0x00
-#define COMPRESS_RUN_LIMIT 0x7F
+const COMPRESS_TRANSPARENT = 0x80;
+const COMPRESS_NON_TRANSPARENT = 0x00;
+const COMPRESS_RUN_LIMIT = 0x7F;
 
 // NB if you're going to change the header definition:
 // - make sure that everything in this header is nicely aligned
@@ -56,7 +56,7 @@ typedef struct {
   UINT8 cUnused[15];
 } STCIHeader;
 
-#define STCI_HEADER_SIZE 64
+const STCI_HEADER_SIZE = 64;
 
 typedef struct {
   UINT32 uiDataOffset;
@@ -67,7 +67,7 @@ typedef struct {
   UINT16 usWidth;
 } STCISubImage;
 
-#define STCI_SUBIMAGE_SIZE 16
+const STCI_SUBIMAGE_SIZE = 16;
 
 typedef struct {
   UINT8 ubRed;
@@ -75,5 +75,5 @@ typedef struct {
   UINT8 ubBlue;
 } STCIPaletteElement;
 
-#define STCI_PALETTE_ELEMENT_SIZE 3
-#define STCI_8BIT_PALETTE_SIZE 768
+const STCI_PALETTE_ELEMENT_SIZE = 3;
+const STCI_8BIT_PALETTE_SIZE = 768;

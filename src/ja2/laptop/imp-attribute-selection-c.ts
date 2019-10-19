@@ -1,11 +1,11 @@
 // width of the slider bar region
-#define BAR_WIDTH 423 - 197
+const BAR_WIDTH = 423 - 197;
 
 // width of the slider bar itself
-#define SLIDER_BAR_WIDTH 37
+const SLIDER_BAR_WIDTH = 37;
 
 // the sizeof one skill unit on the sliding bar in pixels
-#define BASE_SKILL_PIXEL_UNIT_SIZE ((423 - 230))
+const BASE_SKILL_PIXEL_UNIT_SIZE = ((423 - 230));
 
 enum {
   HEALTH_ATTRIBUTE,

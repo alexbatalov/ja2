@@ -1,20 +1,20 @@
 // where the time string itself is rendered
-#define CLOCK_X 554
-#define CLOCK_Y 459
+const CLOCK_X = 554;
+const CLOCK_Y = 459;
 
 // the mouse region around the clock (bigger)
-#define CLOCK_REGION_START_X 552
-#define CLOCK_REGION_START_Y 456
-#define CLOCK_REGION_WIDTH (620 - CLOCK_REGION_START_X)
-#define CLOCK_REGION_HEIGHT (468 - CLOCK_REGION_START_Y)
+const CLOCK_REGION_START_X = 552;
+const CLOCK_REGION_START_Y = 456;
+const CLOCK_REGION_WIDTH = (620 - CLOCK_REGION_START_X);
+const CLOCK_REGION_HEIGHT = (468 - CLOCK_REGION_START_Y);
 
-#define NUM_SEC_IN_DAY 86400
-#define NUM_SEC_IN_HOUR 3600
-#define NUM_SEC_IN_MIN 60
-#define ROUNDTO_MIN 5
+const NUM_SEC_IN_DAY = 86400;
+const NUM_SEC_IN_HOUR = 3600;
+const NUM_SEC_IN_MIN = 60;
+const ROUNDTO_MIN = 5;
 
-#define NUM_MIN_IN_DAY 1440
-#define NUM_MIN_IN_HOUR 60
+const NUM_MIN_IN_DAY = 1440;
+const NUM_MIN_IN_HOUR = 60;
 
 // Kris:
 // This is the plan for game time...
@@ -86,10 +86,10 @@ enum {
 // dereferenced with the above enumerations to provide the actual time compression rate.
 extern INT32 giTimeCompressSpeeds[NUM_TIME_COMPRESS_SPEEDS];
 
-#define STARTING_TIME ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY) // 1am
-#define FIRST_ARRIVAL_DELAY ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)) // 7am ( 6hours later)
+const STARTING_TIME = ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY); // 1am
+const FIRST_ARRIVAL_DELAY = ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)); // 7am ( 6hours later)
 
-#define WORLDTIMESTR gswzWorldTimeStr
+const WORLDTIMESTR = () => gswzWorldTimeStr;
 
 // compress mode now in use
 INT32 giTimeCompressMode;

@@ -1,6 +1,6 @@
-#define ADD_SOLDIER_NO_PROFILE_ID 200
+const ADD_SOLDIER_NO_PROFILE_ID = 200;
 
-#define MAX_REALTIME_SPEED_VAL 10
+const MAX_REALTIME_SPEED_VAL = 10;
 
 /*
 enum
@@ -58,12 +58,12 @@ enum {
   RETREAT_WEST,
 };
 
-#define PANIC_BOMBS_HERE 0x01
-#define PANIC_TRIGGERS_HERE 0x02
+const PANIC_BOMBS_HERE = 0x01;
+const PANIC_TRIGGERS_HERE = 0x02;
 
-#define NUM_PANIC_TRIGGERS 3
+const NUM_PANIC_TRIGGERS = 3;
 
-#define ENEMY_OFFERED_SURRENDER 0x01
+const ENEMY_OFFERED_SURRENDER = 0x01;
 
 typedef struct {
   UINT32 uiFlags;
@@ -300,8 +300,8 @@ void RemoveSoldierFromTacticalSector(SOLDIERTYPE *pSoldier, BOOLEAN fAdjustSelec
 
 void MakeCivHostile(SOLDIERTYPE *pSoldier, INT8 bNewSide);
 
-#define REASON_NORMAL_ATTACK 1
-#define REASON_EXPLOSION 2
+const REASON_NORMAL_ATTACK = 1;
+const REASON_EXPLOSION = 2;
 
 BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE *pSoldier, SOLDIERTYPE **ppTarget, INT8 bReason);
 

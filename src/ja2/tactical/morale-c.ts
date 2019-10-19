@@ -1,14 +1,14 @@
-#define MORALE_MOD_MAX 50 // morale *mod* range is -50 to 50, if you change this, check the decay formulas!
+const MORALE_MOD_MAX = 50; // morale *mod* range is -50 to 50, if you change this, check the decay formulas!
 
-#define DRUG_EFFECT_MORALE_MOD 150
-#define ALCOHOL_EFFECT_MORALE_MOD 160
+const DRUG_EFFECT_MORALE_MOD = 150;
+const ALCOHOL_EFFECT_MORALE_MOD = 160;
 
-#define HOURS_BETWEEN_STRATEGIC_DECAY 3
+const HOURS_BETWEEN_STRATEGIC_DECAY = 3;
 
-#define PHOBIC_LIMIT -20
+const PHOBIC_LIMIT = -20;
 
 // macros
-#define SOLDIER_IN_SECTOR(pSoldier, sX, sY, bZ) (!pSoldier->fBetweenSectors && (pSoldier->sSectorX == sX) && (pSoldier->sSectorY == sY) && (pSoldier->bSectorZ == bZ))
+const SOLDIER_IN_SECTOR = (pSoldier, sX, sY, bZ) => (!pSoldier->fBetweenSectors && (pSoldier->sSectorX == sX) && (pSoldier->sSectorY == sY) && (pSoldier->bSectorZ == bZ));
 
 MoraleEvent gbMoraleEvent[NUM_MORALE_EVENTS] = {
   // TACTICAL = Short Term Effect, STRATEGIC = Long Term Effect

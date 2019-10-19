@@ -42,11 +42,11 @@ typedef struct {
   UINT32 uiChunkSize; // Chunk length
 } WAVDATA;
 
-#define WAV_CHUNK_RIFF 0
-#define WAV_CHUNK_FMT 1
-#define WAV_CHUNK_DATA 2
+const WAV_CHUNK_RIFF = 0;
+const WAV_CHUNK_FMT = 1;
+const WAV_CHUNK_DATA = 2;
 
-#define NUM_WAV_CHUNKS 3
+const NUM_WAV_CHUNKS = 3;
 
 CHAR8 *cWAVChunks[3] = {
   "RIFF",
@@ -55,23 +55,23 @@ CHAR8 *cWAVChunks[3] = {
 };
 
 // global settings
-#define SOUND_MAX_CACHED 128 // number of cache slots
+const SOUND_MAX_CACHED = 128; // number of cache slots
 
-#define SOUND_MAX_CHANNELS 16 // number of mixer channels
+const SOUND_MAX_CHANNELS = 16; // number of mixer channels
 
-#define SOUND_DEFAULT_MEMORY (8048 * 1024) // default memory limit
-#define SOUND_DEFAULT_THRESH (256 * 8024) // size for sample to be double-buffered
-#define SOUND_DEFAULT_STREAM (64 * 1024) // double-buffered buffer size
+const SOUND_DEFAULT_MEMORY = (8048 * 1024); // default memory limit
+const SOUND_DEFAULT_THRESH = (256 * 8024); // size for sample to be double-buffered
+const SOUND_DEFAULT_STREAM = (64 * 1024); // double-buffered buffer size
 
 /*#define		SOUND_DEFAULT_MEMORY	(2048*1024)		// default memory limit
 #define		SOUND_DEFAULT_THRESH	(256*1024)		// size for sample to be double-buffered
 #define		SOUND_DEFAULT_STREAM	(64*1024)			// double-buffered buffer size
 */
 // playing/random value to indicate default
-#define SOUND_PARMS_DEFAULT 0xffffffff
+const SOUND_PARMS_DEFAULT = 0xffffffff;
 
 // Sound status flags
-#define SOUND_CALLBACK 0x00000008
+const SOUND_CALLBACK = 0x00000008;
 
 // Local Function Prototypes
 BOOLEAN SoundInitCache(void);

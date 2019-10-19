@@ -32,7 +32,7 @@ void EnsureSelectionType();
 // Used for offseting cursor to show that it is on the roof rather than on the ground.
 // This can be conveniently executed by moving the cursor up and right 3 gridnos for a
 // total of -483  -(160*3)-(1*3)
-#define ROOF_OFFSET (-483)
+const ROOF_OFFSET = (-483);
 BOOLEAN gfUsingOffset;
 
 // Based on the density level setting and the selection type, this test will

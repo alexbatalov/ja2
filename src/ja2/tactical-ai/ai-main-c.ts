@@ -17,7 +17,7 @@ UINT8 gubAICounter;
 // lots of other stuff, I think
 //
 
-#define DEADLOCK_DELAY 15000
+const DEADLOCK_DELAY = 15000;
 
 // Very representing if this computer is the host, therefore controlling the ai
 extern BYTE gfAmIHost;
@@ -41,7 +41,7 @@ INT8 GameOption[MAXGAMEOPTIONS] = {
   0,
 };
 
-#define AI_LIMIT_PER_UPDATE 1
+const AI_LIMIT_PER_UPDATE = 1;
 
 BOOLEAN gfTurnBasedAI;
 
@@ -410,7 +410,7 @@ void HandleSoldierAI(SOLDIERTYPE *pSoldier) {
           ********/
 }
 
-#define NOSCORE 99
+const NOSCORE = 99;
 
 void EndAIGuysTurn(SOLDIERTYPE *pSoldier) {
   UINT8 ubID;

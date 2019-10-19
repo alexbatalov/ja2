@@ -5,15 +5,15 @@
 ***********************************************************************************************/
 
 // ATE: Added to let Wiz default creating mouse regions with no cursor, JA2 default to a cursor ( first one )
-#define MSYS_STARTING_CURSORVAL 0
-#define COLOR_DKGREY 136
+const MSYS_STARTING_CURSORVAL = 0;
+const COLOR_DKGREY = 136;
 
-#define MAX_GENERIC_PICS 40
-#define MAX_BUTTON_ICONS 40
+const MAX_GENERIC_PICS = 40;
+const MAX_BUTTON_ICONS = 40;
 
-#define GUI_BTN_NONE 0
-#define GUI_BTN_DUPLICATE_VOBJ 1
-#define GUI_BTN_EXTERNAL_VOBJ 2
+const GUI_BTN_NONE = 0;
+const GUI_BTN_DUPLICATE_VOBJ = 1;
+const GUI_BTN_EXTERNAL_VOBJ = 2;
 
 UINT8 str[128];
 
@@ -3171,43 +3171,43 @@ typedef struct _CreateDlgInfo {
   INT32 iCnclImg;
 } CreateDlgInfo;
 
-#define DLG_RESTRICT_MOUSE 1
-#define DLG_OK_BUTTON 2
-#define DLG_CANCEL_BUTTON 4
-#define DLG_AUTOSIZE 8
-#define DLG_RECREATE 16
-#define DLG_AUTOPOSITION 32
-#define DLG_TEXT_IN_AREA 64
-#define DLG_USE_BKGRND_IMAGE 128
-#define DLG_USE_BORDERS 256
-#define DLG_USE_BTN_HOTSPOTS 512
-#define DLG_USE_MONO_FONTS 1024
-#define DLG_IS_ACTIVE 2048
+const DLG_RESTRICT_MOUSE = 1;
+const DLG_OK_BUTTON = 2;
+const DLG_CANCEL_BUTTON = 4;
+const DLG_AUTOSIZE = 8;
+const DLG_RECREATE = 16;
+const DLG_AUTOPOSITION = 32;
+const DLG_TEXT_IN_AREA = 64;
+const DLG_USE_BKGRND_IMAGE = 128;
+const DLG_USE_BORDERS = 256;
+const DLG_USE_BTN_HOTSPOTS = 512;
+const DLG_USE_MONO_FONTS = 1024;
+const DLG_IS_ACTIVE = 2048;
 
-#define DLG_MANUAL_RENDER 0
-#define DLG_START_RENDER 1
-#define DLG_STOP_RENDER 2
-#define DLG_AUTO_RENDER 3
+const DLG_MANUAL_RENDER = 0;
+const DLG_START_RENDER = 1;
+const DLG_STOP_RENDER = 2;
+const DLG_AUTO_RENDER = 3;
 
-#define DLG_GET_STATUS 0
-#define DLG_WAIT_FOR_RESPONSE 1
+const DLG_GET_STATUS = 0;
+const DLG_WAIT_FOR_RESPONSE = 1;
 
-#define DLG_STATUS_NONE 0
-#define DLG_STATUS_OK 1
-#define DLG_STATUS_CANCEL 2
-#define DLG_STATUS_PENDING 3
+const DLG_STATUS_NONE = 0;
+const DLG_STATUS_OK = 1;
+const DLG_STATUS_CANCEL = 2;
+const DLG_STATUS_PENDING = 3;
 
-#define DLG_CLEARALL 0
-#define DLG_POSITION 1
-#define DLG_AREA 2
-#define DLG_TEXT 3
-#define DLG_TEXTAREA 4
-#define DLG_BACKPIC 5
-#define DLG_ICON 6
-#define DLG_OKBUTTON 7
-#define DLG_CANCELBUTTON 8
-#define DLG_OPTIONS 9
-#define DLG_SIZE 10
+const DLG_CLEARALL = 0;
+const DLG_POSITION = 1;
+const DLG_AREA = 2;
+const DLG_TEXT = 3;
+const DLG_TEXTAREA = 4;
+const DLG_BACKPIC = 5;
+const DLG_ICON = 6;
+const DLG_OKBUTTON = 7;
+const DLG_CANCELBUTTON = 8;
+const DLG_OPTIONS = 9;
+const DLG_SIZE = 10;
 
 BOOLEAN SetDialogAttributes(CreateDlgInfo *pDlgInfo, INT32 iAttrib, ...) {
   va_list arg;

@@ -11,8 +11,8 @@ extern INT16 gsNumAmbData;
 
 BOOLEAN SetSteadyStateAmbience(UINT8 ubAmbience);
 
-#define SOUND_NAME_SIZE 256
-#define NUM_SOUNDS_PER_TIMEFRAME 8
+const SOUND_NAME_SIZE = 256;
+const NUM_SOUNDS_PER_TIMEFRAME = 8;
 
 enum {
   SSA_NONE,

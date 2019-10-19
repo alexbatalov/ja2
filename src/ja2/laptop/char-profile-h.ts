@@ -78,4 +78,4 @@ enum {
   IMP_NUM_PAGES,
 };
 
-#define COST_OF_PROFILE 3000
+const COST_OF_PROFILE = 3000;

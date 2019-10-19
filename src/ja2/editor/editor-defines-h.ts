@@ -238,5 +238,5 @@ extern BOOLEAN gfMercGetItem;
 // When actually editing item statistics, this value will be set, for the purposes of rendering, input, etc.
 extern BOOLEAN gfShowItemStatsPanel;
 
-#define MERCPANEL_X 177
-#define MERCPANEL_Y 361
+const MERCPANEL_X = 177;
+const MERCPANEL_Y = 361;

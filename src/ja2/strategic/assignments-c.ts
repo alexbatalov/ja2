@@ -32,7 +32,7 @@ enum {
   NUM_REPAIR_PASS_TYPES,
 };
 
-#define FINAL_REPAIR_PASS REPAIR_POCKETS
+const FINAL_REPAIR_PASS = REPAIR_POCKETS;
 
 typedef struct REPAIR_PASS_SLOTS_TYPE {
   UINT8 ubChoices; // how many valid choices there are in this pass
@@ -120,59 +120,59 @@ SOLDIERTYPE *gpDismissSoldier = NULL;
 BOOLEAN gfReEvaluateEveryonesNothingToDo = FALSE;
 
 // the amount time must be on assignment before it can have any effect
-#define MINUTES_FOR_ASSIGNMENT_TO_COUNT 45
+const MINUTES_FOR_ASSIGNMENT_TO_COUNT = 45;
 
 // number we divide the total pts accumlated per day by for each assignment period
-#define ASSIGNMENT_UNITS_PER_DAY 24
+const ASSIGNMENT_UNITS_PER_DAY = 24;
 
 // base skill to deal with an emergency
-#define BASE_MEDICAL_SKILL_TO_DEAL_WITH_EMERGENCY 20
+const BASE_MEDICAL_SKILL_TO_DEAL_WITH_EMERGENCY = 20;
 
 // multiplier for skill needed for each point below OKLIFE
-#define MULTIPLIER_FOR_DIFFERENCE_IN_LIFE_VALUE_FOR_EMERGENCY 4
+const MULTIPLIER_FOR_DIFFERENCE_IN_LIFE_VALUE_FOR_EMERGENCY = 4;
 
 // number of pts needed for each point below OKLIFE
-#define POINT_COST_PER_HEALTH_BELOW_OKLIFE 2
+const POINT_COST_PER_HEALTH_BELOW_OKLIFE = 2;
 
 // how many points of healing each hospital patients gains per hour in the hospital
-#define HOSPITAL_HEALING_RATE 5 // a top merc doctor can heal about 4 pts/hour maximum, but that's spread among patients!
+const HOSPITAL_HEALING_RATE = 5; // a top merc doctor can heal about 4 pts/hour maximum, but that's spread among patients!
 
 // increase to reduce repair pts, or vice versa
-#define REPAIR_RATE_DIVISOR 2500
+const REPAIR_RATE_DIVISOR = 2500;
 // increase to reduce doctoring pts, or vice versa
-#define DOCTORING_RATE_DIVISOR 2400 // at 2400, the theoretical maximum is 150 full healing pts/day
+const DOCTORING_RATE_DIVISOR = 2400; // at 2400, the theoretical maximum is 150 full healing pts/day
 
 // cost to unjam a weapon in repair pts
-#define REPAIR_COST_PER_JAM 2
+const REPAIR_COST_PER_JAM = 2;
 
 // divisor for rate of self-training
-#define SELF_TRAINING_DIVISOR 1000
+const SELF_TRAINING_DIVISOR = 1000;
 // the divisor for rate of training bonus due to instructors influence
-#define INSTRUCTED_TRAINING_DIVISOR 3000
+const INSTRUCTED_TRAINING_DIVISOR = 3000;
 
 // this controls how fast town militia gets trained
-#define TOWN_TRAINING_RATE 4
+const TOWN_TRAINING_RATE = 4;
 
-#define MAX_MILITIA_TRAINERS_PER_SECTOR 2
+const MAX_MILITIA_TRAINERS_PER_SECTOR = 2;
 
 // militia training bonus for EACH level of teaching skill (percentage points)
-#define TEACH_BONUS_TO_TRAIN 30
+const TEACH_BONUS_TO_TRAIN = 30;
 // militia training bonus for RPC (percentage points)
-#define RPC_BONUS_TO_TRAIN 10
+const RPC_BONUS_TO_TRAIN = 10;
 
 // the bonus to training in marksmanship in the Alma gun range sector
-#define GUN_RANGE_TRAINING_BONUS 25
+const GUN_RANGE_TRAINING_BONUS = 25;
 
 // breath bonus divider
-#define BREATH_BONUS_DIVIDER 10
+const BREATH_BONUS_DIVIDER = 10;
 
 // the min rating that is need to teach a fellow teammate
-#define MIN_RATING_TO_TEACH 25
+const MIN_RATING_TO_TEACH = 25;
 
 // activity levels for natural healing ( the higher the number, the slower the natural recover rate
-#define LOW_ACTIVITY_LEVEL 1
-#define MEDIUM_ACTIVITY_LEVEL 4
-#define HIGH_ACTIVITY_LEVEL 12
+const LOW_ACTIVITY_LEVEL = 1;
+const MEDIUM_ACTIVITY_LEVEL = 4;
+const HIGH_ACTIVITY_LEVEL = 12;
 
 /*
 // the min breath to stay awake

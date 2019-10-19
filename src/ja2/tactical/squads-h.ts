@@ -1,5 +1,5 @@
 // header for squad management system
-#define NUMBER_OF_SOLDIERS_PER_SQUAD 6
+const NUMBER_OF_SOLDIERS_PER_SQUAD = 6;
 
 // enums for squads
 enum {
@@ -28,7 +28,7 @@ enum {
 
 // ATE: Added so we can have no current squad
 // happens in we move off sector via tactical, but nobody is left!
-#define NO_CURRENT_SQUAD NUMBER_OF_SQUADS
+const NO_CURRENT_SQUAD = NUMBER_OF_SQUADS;
 
 // ptrs to soldier types of squads and their members
 

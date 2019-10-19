@@ -110,8 +110,8 @@ INT16 sVehicleInternalOrigArmorValues[ NUMBER_OF_TYPES_OF_VEHICLES ][ NUMBER_OF_
 */
 
 // ap cost per crit
-#define COST_PER_ENGINE_CRIT 15
-#define COST_PER_TIRE_HIT 5
+const COST_PER_ENGINE_CRIT = 15;
+const COST_PER_TIRE_HIT = 5;
 //#define VEHICLE_MAX_INTERNAL 250
 
 // set the driver of the vehicle

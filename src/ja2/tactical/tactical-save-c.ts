@@ -18,7 +18,7 @@ typedef struct {
   UINT16 usGoToGridno;
 } TempNPCQuoteInfoSave;
 
-#define NPC_TEMP_QUOTE_FILE "Temp\\NpcQuote.tmp"
+const NPC_TEMP_QUOTE_FILE = "Temp\\NpcQuote.tmp";
 
 ///////////////////////////////////////////////////////////////
 //
@@ -2284,7 +2284,7 @@ BOOLEAN NewJA2EncryptedFileWrite(HWFILE hFile, PTR pDest, UINT32 uiBytesToWrite,
   return fRet;
 }
 
-#define ROTATION_ARRAY_SIZE 46
+const ROTATION_ARRAY_SIZE = 46;
 UINT8 ubRotationArray[46] = {
   132,
   235,

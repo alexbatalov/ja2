@@ -1,7 +1,7 @@
-#define MINIMAP_X_SIZE 88
-#define MINIMAP_Y_SIZE 44
+const MINIMAP_X_SIZE = 88;
+const MINIMAP_Y_SIZE = 44;
 
-#define WINDOW_SIZE 2
+const WINDOW_SIZE = 2;
 
 FLOAT gdXStep, gdYStep;
 INT32 giMiniMap, gi8BitMiniMap;

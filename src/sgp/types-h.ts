@@ -34,24 +34,24 @@ typedef UINT8 BYTE;
 typedef CHAR8 STRING512[512];
 typedef UINT32 HWFILE;
 
-#define SGPFILENAME_LEN 100
+const SGPFILENAME_LEN = 100;
 typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
 
 // *** SIR-TECH TYPE DEFINITIONS ***
 
-#define TRUE 1
+const TRUE = 1;
 
-#define FALSE 0
+const FALSE = 0;
 
-#define BAD_INDEX -1
+const BAD_INDEX = -1;
 
-#define NULL_HANDLE 65535
+const NULL_HANDLE = 65535;
 
-#define PI 3.1415926
+const PI = 3.1415926;
 
-#define ST_EPSILON 0.00001 // define a sir-tech epsilon value
+const ST_EPSILON = 0.00001; // define a sir-tech epsilon value
 
-#define NULL 0
+const NULL = 0;
 
 typedef struct {
   INT32 iLeft;

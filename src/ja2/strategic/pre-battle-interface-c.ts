@@ -28,15 +28,15 @@ enum {
 };
 
 // The start of the black space
-#define TOP_Y 113
+const TOP_Y = 113;
 // The end of the black space
-#define BOTTOM_Y 349
+const BOTTOM_Y = 349;
 // The internal height of the uninvolved panel
-#define INTERNAL_HEIGHT 27
+const INTERNAL_HEIGHT = 27;
 // The actual height of the uninvolved panel
-#define ACTUAL_HEIGHT 34
+const ACTUAL_HEIGHT = 34;
 // The height of each row
-#define ROW_HEIGHT 10
+const ROW_HEIGHT = 10;
 
 BOOLEAN gfDisplayPotentialRetreatPaths = FALSE;
 UINT16 gusRetreatButtonLeft, gusRetreatButtonTop, gusRetreatButtonRight, gusRetreatButtonBottom;

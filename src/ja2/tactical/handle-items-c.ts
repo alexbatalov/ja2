@@ -1,6 +1,6 @@
-#define NUM_ITEMS_LISTED 8
-#define NUM_ITEM_FLASH_SLOTS 50
-#define MIN_LOB_RANGE 6
+const NUM_ITEMS_LISTED = 8;
+const NUM_ITEM_FLASH_SLOTS = 50;
+const MIN_LOB_RANGE = 6;
 
 ITEM_POOL_LOCATOR FlashItemSlots[NUM_ITEM_FLASH_SLOTS];
 UINT32 guiNumFlashItemSlots = 0;

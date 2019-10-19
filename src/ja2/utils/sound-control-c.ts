@@ -1,6 +1,6 @@
 // MODULE FOR SOUND SYSTEM
 
-#define SOUND_FAR_VOLUME_MOD 25
+const SOUND_FAR_VOLUME_MOD = 25;
 
 /*
 UINT32 LOWVOLUME								START_LOWVOLUME;
@@ -642,7 +642,7 @@ void DelayedSoundTimerCallback(void) {
 /////////////////////////////////////////////////////////
 // Positional Ambients
 /////////////////////////////////////////////////////////
-#define NUM_POSITION_SOUND_EFFECT_SLOTS 10
+const NUM_POSITION_SOUND_EFFECT_SLOTS = 10;
 
 typedef struct {
   UINT32 uiFlags;

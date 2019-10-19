@@ -3,7 +3,7 @@ BOOLEAN IsPointInScreenRect(INT16 sXPos, INT16 sYPos, SGPRect *pRect);
 void GetSoldierScreenRect(SOLDIERTYPE *pSoldier, SGPRect *pRect);
 
 // This value is used to keep a small static array of uBID's which are stacked
-#define MAX_STACKED_MERCS 10
+const MAX_STACKED_MERCS = 10;
 
 UINT32 gScrollSlideInertiaDirection[NUM_WORLD_DIRECTIONS] = {
   3,

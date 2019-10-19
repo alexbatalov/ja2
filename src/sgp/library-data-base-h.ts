@@ -1,21 +1,21 @@
-#define FILENAME_SIZE 256
+const FILENAME_SIZE = 256;
 
 //#define	FILENAME_SIZE									40 + PATH_SIZE
-#define PATH_SIZE 80
+const PATH_SIZE = 80;
 
-#define NUM_FILES_TO_ADD_AT_A_TIME 20
-#define INITIAL_NUM_HANDLES 20
+const NUM_FILES_TO_ADD_AT_A_TIME = 20;
+const INITIAL_NUM_HANDLES = 20;
 
-#define REAL_FILE_LIBRARY_ID 1022
+const REAL_FILE_LIBRARY_ID = 1022;
 
-#define DB_BITS_FOR_LIBRARY 10
-#define DB_BITS_FOR_FILE_ID 22
+const DB_BITS_FOR_LIBRARY = 10;
+const DB_BITS_FOR_FILE_ID = 22;
 
-#define DB_EXTRACT_LIBRARY(exp) (exp >> DB_BITS_FOR_FILE_ID)
-#define DB_EXTRACT_FILE_ID(exp) (exp & 0x3FFFFF)
+const DB_EXTRACT_LIBRARY = (exp) => (exp >> DB_BITS_FOR_FILE_ID);
+const DB_EXTRACT_FILE_ID = (exp) => (exp & 0x3FFFFF);
 
-#define DB_ADD_LIBRARY_ID(exp) (exp << DB_BITS_FOR_FILE_ID)
-#define DB_ADD_FILE_ID(exp) (exp & 0xC00000)
+const DB_ADD_LIBRARY_ID = (exp) => (exp << DB_BITS_FOR_FILE_ID);
+const DB_ADD_FILE_ID = (exp) => (exp & 0xC00000);
 
 typedef UINT32 HWFILE;
 
@@ -28,7 +28,7 @@ typedef struct {
 extern LibraryInitHeader gGameLibaries[];
 extern CHAR8 gzCdDirectory[SGPFILENAME_LEN];
 
-#define REAL_LIBRARY_FILE "RealFiles.slf"
+const REAL_LIBRARY_FILE = "RealFiles.slf";
 
 typedef struct {
   UINT32 uiFileID; // id of the file ( they start at 1 )
@@ -83,10 +83,10 @@ typedef struct {
 //
 //*************************************************************************
 
-#define FILE_OK 0
-#define FILE_DELETED 0xff
-#define FILE_OLD 1
-#define FILE_DOESNT_EXIST 0xfe
+const FILE_OK = 0;
+const FILE_DELETED = 0xff;
+const FILE_OLD = 1;
+const FILE_DOESNT_EXIST = 0xfe;
 
 typedef struct {
   CHAR8 sLibName[FILENAME_SIZE];

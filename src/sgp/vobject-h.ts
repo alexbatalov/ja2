@@ -8,21 +8,21 @@
 typedef UINT32 COLORVAL;
 
 // Defines for blitting
-#define VO_BLT_SRCTRANSPARENCY 0x000000002
-#define VO_BLT_DESTTRANSPARENCY 0x000000120
-#define VO_BLT_SHADOW 0x000000200
-#define VO_BLT_TRANSSHADOW 0x000000003
-#define VO_BLT_UNCOMPRESSED 0x000004000
-#define VO_BLT_CLIP 0x000000001
-#define VO_BLT_MIRROR_Y 0x000001000 // must be the same as VS_BLT_MIRROR_Y for Wiz!!!
+const VO_BLT_SRCTRANSPARENCY = 0x000000002;
+const VO_BLT_DESTTRANSPARENCY = 0x000000120;
+const VO_BLT_SHADOW = 0x000000200;
+const VO_BLT_TRANSSHADOW = 0x000000003;
+const VO_BLT_UNCOMPRESSED = 0x000004000;
+const VO_BLT_CLIP = 0x000000001;
+const VO_BLT_MIRROR_Y = 0x000001000; // must be the same as VS_BLT_MIRROR_Y for Wiz!!!
 
 // Defines for HVOBJECT limits
-#define HVOBJECT_SHADE_TABLES 48
+const HVOBJECT_SHADE_TABLES = 48;
 
-#define HVOBJECT_GLOW_GREEN 0
-#define HVOBJECT_GLOW_BLUE 1
-#define HVOBJECT_GLOW_YELLOW 2
-#define HVOBJECT_GLOW_RED 3
+const HVOBJECT_GLOW_GREEN = 0;
+const HVOBJECT_GLOW_BLUE = 1;
+const HVOBJECT_GLOW_YELLOW = 2;
+const HVOBJECT_GLOW_RED = 3;
 
 // Effects structure for specialized blitting
 typedef struct {
@@ -50,17 +50,17 @@ typedef struct {
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
 // From RGB to COLORVAL
-#define FROMRGB(r, g, b) ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)))
+const FROMRGB = (r, g, b) => ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)));
 
 // Video object creation flags
 // Used in the VOBJECT_DESC structure to describe creation flags
 
-#define VOBJECT_CREATE_DEFAULT 0x00000020 // Creates and empty object of given width, height and BPP
-#define VOBJECT_CREATE_FROMFILE 0x00000040 // Creates a video object from a file ( using HIMAGE )
-#define VOBJECT_CREATE_FROMHIMAGE 0x00000080 // Creates a video object from a pre-loaded hImage
+const VOBJECT_CREATE_DEFAULT = 0x00000020; // Creates and empty object of given width, height and BPP
+const VOBJECT_CREATE_FROMFILE = 0x00000040; // Creates a video object from a file ( using HIMAGE )
+const VOBJECT_CREATE_FROMHIMAGE = 0x00000080; // Creates a video object from a pre-loaded hImage
 
 // VOBJECT FLAGS
-#define VOBJECT_FLAG_SHADETABLE_SHARED 0x00000100
+const VOBJECT_FLAG_SHADETABLE_SHARED = 0x00000100;
 
 // This structure is a video object.
 // The video object contains different data based on it's type, compressed or not
@@ -116,7 +116,7 @@ BOOLEAN InitializeVideoObjectManager();
 BOOLEAN ShutdownVideoObjectManager();
 
 // Creates and adds a video object to list
-#define AddVideoObject(a, b) AddStandardVideoObject(a, b)
+const AddVideoObject = (a, b) => AddStandardVideoObject(a, b);
 
 BOOLEAN AddStandardVideoObject(VOBJECT_DESC *VObjectDesc, UINT32 *uiIndex);
 
@@ -183,7 +183,7 @@ extern HLIST ghVideoObjects;
 // ****************************************************************************
 
 extern BOOLEAN gfVideoObjectsInit;
-#define VideoObjectsInitialized() (gfVideoObjectsInit)
+const VideoObjectsInitialized = () => (gfVideoObjectsInit);
 
 // ****************************************************************************
 //

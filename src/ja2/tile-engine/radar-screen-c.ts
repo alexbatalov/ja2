@@ -10,13 +10,13 @@ void TacticalSquadListMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
 void TacticalSquadListBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // the squad list font
-#define SQUAD_FONT COMPFONT
+const SQUAD_FONT = () => COMPFONT();
 
-#define SQUAD_REGION_HEIGHT 2 * RADAR_WINDOW_HEIGHT
-#define SQUAD_WINDOW_TM_Y RADAR_WINDOW_TM_Y + GetFontHeight(SQUAD_FONT)
+const SQUAD_REGION_HEIGHT = 2 * RADAR_WINDOW_HEIGHT;
+const SQUAD_WINDOW_TM_Y = () => RADAR_WINDOW_TM_Y + GetFontHeight(SQUAD_FONT());
 
 // subtractor for squad list from size of radar view region height
-#define SUBTRACTOR_FOR_SQUAD_LIST 0
+const SUBTRACTOR_FOR_SQUAD_LIST = 0;
 
 INT16 gsRadarX;
 INT16 gsRadarY;

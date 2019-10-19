@@ -1,12 +1,12 @@
-#define BORDER_WIDTH 16
-#define BORDER_HEIGHT 8
-#define TOP_LEFT_CORNER 0
-#define TOP_EDGE 4
-#define TOP_RIGHT_CORNER 1
-#define SIDE_EDGE 5
-#define BOTTOM_LEFT_CORNER 2
-#define BOTTOM_EDGE 4
-#define BOTTOM_RIGHT_CORNER 3
+const BORDER_WIDTH = 16;
+const BORDER_HEIGHT = 8;
+const TOP_LEFT_CORNER = 0;
+const TOP_EDGE = 4;
+const TOP_RIGHT_CORNER = 1;
+const SIDE_EDGE = 5;
+const BOTTOM_LEFT_CORNER = 2;
+const BOTTOM_EDGE = 4;
+const BOTTOM_RIGHT_CORNER = 3;
 
 BOOLEAN DrawBox(UINT32 uiCounter);
 BOOLEAN DrawBoxText(UINT32 uiCounter);

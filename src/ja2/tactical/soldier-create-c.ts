@@ -1,17 +1,17 @@
 // THESE 3 DIFFICULTY FACTORS MUST ALWAYS ADD UP TO 100% EXACTLY!!!
-#define DIFF_FACTOR_PLAYER_PROGRESS 50
-#define DIFF_FACTOR_PALACE_DISTANCE 30
-#define DIFF_FACTOR_GAME_DIFFICULTY 20
+const DIFF_FACTOR_PLAYER_PROGRESS = 50;
+const DIFF_FACTOR_PALACE_DISTANCE = 30;
+const DIFF_FACTOR_GAME_DIFFICULTY = 20;
 
 // additional difficulty modifiers
-#define DIFF_MODIFIER_SOME_PROGRESS +5
-#define DIFF_MODIFIER_NO_INCOME -5
-#define DIFF_MODIFIER_DRASSEN_MILITIA +10
+const DIFF_MODIFIER_SOME_PROGRESS = +5;
+const DIFF_MODIFIER_NO_INCOME = -5;
+const DIFF_MODIFIER_DRASSEN_MILITIA = +10;
 
-#define PALACE_SECTOR_X 3
-#define PALACE_SECTOR_Y 16
+const PALACE_SECTOR_X = 3;
+const PALACE_SECTOR_Y = 16;
 
-#define MAX_PALACE_DISTANCE 20
+const MAX_PALACE_DISTANCE = 20;
 
 // Private functions used within TacticalCreateStruct()
 void InitSoldierStruct(SOLDIERTYPE *pSoldier);
@@ -1782,8 +1782,8 @@ void ForceSoldierProfileID(SOLDIERTYPE *pSoldier, UINT8 ubProfileID) {
   CreateSoldierPalettes(pSoldier);
 }
 
-#define CENTRAL_GRIDNO 13202
-#define CENTRAL_RADIUS 30
+const CENTRAL_GRIDNO = 13202;
+const CENTRAL_RADIUS = 30;
 
 SOLDIERTYPE *ReserveTacticalSoldierForAutoresolve(UINT8 ubSoldierClass) {
   INT32 i, iStart, iEnd;

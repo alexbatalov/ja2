@@ -1,15 +1,15 @@
-#define SMALLBRUSH 0
-#define MEDIUMBRUSH 1
-#define LARGEBRUSH 2
+const SMALLBRUSH = 0;
+const MEDIUMBRUSH = 1;
+const LARGEBRUSH = 2;
 
-#define NO_BANKS 0
-#define DRAW_BANKS 1
-#define DRAW_BANK_WATER 2
-#define DRAW_ERASE 3
+const NO_BANKS = 0;
+const DRAW_BANKS = 1;
+const DRAW_BANK_WATER = 2;
+const DRAW_ERASE = 3;
 
-#define NO_CLIFFS 0
-#define DRAW_CLIFFS 1
-#define DRAW_CLIFF_LAND 2
+const NO_CLIFFS = 0;
+const DRAW_CLIFFS = 1;
+const DRAW_CLIFF_LAND = 2;
 
 BOOLEAN gfWarning;
 

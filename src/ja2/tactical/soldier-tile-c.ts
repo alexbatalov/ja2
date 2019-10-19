@@ -1,7 +1,7 @@
 extern INT8 gbNumMercsUntilWaitingOver;
 extern UINT8 gubWaitingForAllMercsToExitCode;
 
-#define NEXT_TILE_CHECK_DELAY 700
+const NEXT_TILE_CHECK_DELAY = 700;
 
 void SetDelayedTileWaiting(SOLDIERTYPE *pSoldier, INT16 sCauseGridNo, INT8 bValue) {
   UINT8 ubPerson;

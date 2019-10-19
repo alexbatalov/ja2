@@ -1,4 +1,4 @@
-#define NUM_SEC_PER_STRATEGIC_TURN (NUM_SEC_IN_MIN * 15) // Every fifteen minutes
+const NUM_SEC_PER_STRATEGIC_TURN = (NUM_SEC_IN_MIN * 15); // Every fifteen minutes
 
 UINT32 guiLastStrategicTime = 0;
 UINT32 guiLastTacticalRealTime = 0;

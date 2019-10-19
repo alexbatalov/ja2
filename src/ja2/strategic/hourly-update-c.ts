@@ -117,8 +117,8 @@ void HourlyQuestUpdate(void) {
   }
 }
 
-#define BAR_TEMPTATION 4
-#define NUM_LARRY_ITEMS 6
+const BAR_TEMPTATION = 4;
+const NUM_LARRY_ITEMS = 6;
 UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
   { ADRENALINE_BOOSTER, 5, 100 },
   { ALCOHOL, BAR_TEMPTATION, 25 },
@@ -128,7 +128,7 @@ UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
   { BEER, 2, 100 },
 };
 
-#define LARRY_FALLS_OFF_WAGON 8
+const LARRY_FALLS_OFF_WAGON = 8;
 
 void HourlyLarryUpdate(void) {
   SOLDIERTYPE *pSoldier;

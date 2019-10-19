@@ -1,31 +1,31 @@
-#define NUM_NPC_QUOTE_RECORDS 50
+const NUM_NPC_QUOTE_RECORDS = 50;
 
 //#define IRRELEVANT 255
 //#define NO_QUEST 255
 //#define NO_FACT 255
 //#define NO_QUOTE 255
-#define MUST_BE_NEW_DAY 254
-#define INITIATING_FACTOR 30
+const MUST_BE_NEW_DAY = 254;
+const INITIATING_FACTOR = 30;
 
-#define TURN_FLAG_ON(a, b) (a |= b)
-#define TURN_FLAG_OFF(a, b) (a &= ~(b))
-#define CHECK_FLAG(a, b) (a & b)
+const TURN_FLAG_ON = (a, b) => (a |= b);
+const TURN_FLAG_OFF = (a, b) => (a &= ~(b));
+const CHECK_FLAG = (a, b) => (a & b);
 
-#define QUOTE_FLAG_SAID 0x0001
-#define QUOTE_FLAG_ERASE_ONCE_SAID 0x0002
-#define QUOTE_FLAG_SAY_ONCE_PER_CONVO 0x0004
+const QUOTE_FLAG_SAID = 0x0001;
+const QUOTE_FLAG_ERASE_ONCE_SAID = 0x0002;
+const QUOTE_FLAG_SAY_ONCE_PER_CONVO = 0x0004;
 
-#define NPC_TALK_RADIUS 4
+const NPC_TALK_RADIUS = 4;
 
-#define TURN_UI_OFF 65000
-#define TURN_UI_ON 65001
-#define SPECIAL_TURN_UI_OFF 65002
-#define SPECIAL_TURN_UI_ON 65003
+const TURN_UI_OFF = 65000;
+const TURN_UI_ON = 65001;
+const SPECIAL_TURN_UI_OFF = 65002;
+const SPECIAL_TURN_UI_ON = 65003;
 
-#define LARGE_AMOUNT_MONEY 1000
+const LARGE_AMOUNT_MONEY = 1000;
 
-#define ACCEPT_ANY_ITEM 1000
-#define ANY_RIFLE 1001
+const ACCEPT_ANY_ITEM = 1000;
+const ANY_RIFLE = 1001;
 
 typedef struct {
 // FIXME: Language-specific code
@@ -120,9 +120,9 @@ typedef enum {
   QUOTE_GETLOST,
 } StandardQuoteIDs;
 
-#define NUM_REAL_APPROACHES APPROACH_RECRUIT
+const NUM_REAL_APPROACHES = APPROACH_RECRUIT;
 
-#define CONVO_DIST 5
+const CONVO_DIST = 5;
 
 extern INT8 gbFirstApproachFlags[4];
 
@@ -180,7 +180,7 @@ BOOLEAN LoadBackupNPCInfoFromSavedGameFile(HWFILE hFile, UINT32 uiSaveGameVersio
 
 void UpdateDarrelScriptToGoTo(SOLDIERTYPE *pSoldier);
 
-#define WALTER_BRIBE_AMOUNT 20000
+const WALTER_BRIBE_AMOUNT = 20000;
 
 BOOLEAN GetInfoForAbandoningEPC(UINT8 ubNPC, UINT16 *pusQuoteNum, UINT16 *pusFactToSetTrue);
 

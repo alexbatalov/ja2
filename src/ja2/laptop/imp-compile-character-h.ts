@@ -1,6 +1,6 @@
-#define PLAYER_GENERATED_CHARACTER_ID 51
-#define ATTITUDE_LIST_SIZE 20
-#define NUMBER_OF_PLAYER_PORTRAITS 16
+const PLAYER_GENERATED_CHARACTER_ID = 51;
+const ATTITUDE_LIST_SIZE = 20;
+const NUMBER_OF_PLAYER_PORTRAITS = 16;
 
 void AddAnAttitudeToAttitudeList(INT8 bAttitude);
 void CreatePlayerAttitude(void);

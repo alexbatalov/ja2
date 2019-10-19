@@ -1,4 +1,4 @@
-#define GETPIXELDEPTH() (gbPixelDepth)
+const GETPIXELDEPTH = () => (gbPixelDepth);
 
 BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pPalette, SGPFILENAME ColFile);
 BOOLEAN DisplayPaletteRep(PaletteRepID aPalRep, UINT8 ubXPos, UINT8 ubYPos, UINT32 uiDestSurface);

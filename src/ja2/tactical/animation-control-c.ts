@@ -1,9 +1,9 @@
 // Defines for Anim inst reading, taken from orig Jagged
-#define ANIMFILENAME "BINARYDATA\\ja2bin.dat"
+const ANIMFILENAME = "BINARYDATA\\ja2bin.dat";
 
-#define EMPTY_INDEX 999
+const EMPTY_INDEX = 999;
 
-#define NUM_INJURED_SUBS 1
+const NUM_INJURED_SUBS = 1;
 
 typedef struct {
   UINT16 usAnimState;

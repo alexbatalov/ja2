@@ -3,207 +3,207 @@ INT32 iZoomX = 0;
 INT32 iZoomY = 0;
 
 // Scroll region width
-#define SCROLL_REGION 4
+const SCROLL_REGION = 4;
 
 // The Map/Mouse Scroll defines
-#define EAST_DIR 0
-#define WEST_DIR 1
-#define NORTH_DIR 2
-#define SOUTH_DIR 3
-#define TOP_NORTH 2
-#define TOP_SOUTH 13
-#define RIGHT_WEST 250
-#define RIGHT_EAST 260
-#define LEFT_EAST 640
-#define LEFT_WEST 630
-#define BOTTOM_NORTH 320
-#define BOTTOM_SOUTH 330
+const EAST_DIR = 0;
+const WEST_DIR = 1;
+const NORTH_DIR = 2;
+const SOUTH_DIR = 3;
+const TOP_NORTH = 2;
+const TOP_SOUTH = 13;
+const RIGHT_WEST = 250;
+const RIGHT_EAST = 260;
+const LEFT_EAST = 640;
+const LEFT_WEST = 630;
+const BOTTOM_NORTH = 320;
+const BOTTOM_SOUTH = 330;
 
 // Map Scroll Defines
-#define SCROLL_EAST 0
-#define SCROLL_WEST 1
-#define SCROLL_NORTH 2
-#define SCROLL_SOUTH 3
-#define SCROLL_DELAY 50
-#define HORT_SCROLL 14
-#define VERT_SCROLL 10
+const SCROLL_EAST = 0;
+const SCROLL_WEST = 1;
+const SCROLL_NORTH = 2;
+const SCROLL_SOUTH = 3;
+const SCROLL_DELAY = 50;
+const HORT_SCROLL = 14;
+const VERT_SCROLL = 10;
 
 // the pop up for helicopter stuff
-#define MAP_HELICOPTER_ETA_POPUP_X 400
-#define MAP_HELICOPTER_ETA_POPUP_Y 250
-#define MAP_HELICOPTER_UPPER_ETA_POPUP_Y 50
-#define MAP_HELICOPTER_ETA_POPUP_WIDTH 120
-#define MAP_HELICOPTER_ETA_POPUP_HEIGHT 68
+const MAP_HELICOPTER_ETA_POPUP_X = 400;
+const MAP_HELICOPTER_ETA_POPUP_Y = 250;
+const MAP_HELICOPTER_UPPER_ETA_POPUP_Y = 50;
+const MAP_HELICOPTER_ETA_POPUP_WIDTH = 120;
+const MAP_HELICOPTER_ETA_POPUP_HEIGHT = 68;
 
-#define MAP_LEVEL_STRING_X 432
-#define MAP_LEVEL_STRING_Y 305
+const MAP_LEVEL_STRING_X = 432;
+const MAP_LEVEL_STRING_Y = 305;
 
 // font
-#define MAP_FONT BLOCKFONT2
+const MAP_FONT = () => BLOCKFONT2();
 
 // index color
-#define MAP_INDEX_COLOR 32 * 4 - 9
+const MAP_INDEX_COLOR = 32 * 4 - 9;
 
 // max number of sectors viewable
-#define MAX_VIEW_SECTORS 16
+const MAX_VIEW_SECTORS = 16;
 
 // Map Location index regions
 
 // x start of hort index
-#define MAP_HORT_INDEX_X 292
+const MAP_HORT_INDEX_X = 292;
 
 // y position of hort index
-#define MAP_HORT_INDEX_Y 10
+const MAP_HORT_INDEX_Y = 10;
 
 // height of hort index
-#define MAP_HORT_HEIGHT GetFontHeight(MAP_FONT)
+const MAP_HORT_HEIGHT = () => GetFontHeight(MAP_FONT());
 
 // vert index start x
-#define MAP_VERT_INDEX_X 273
+const MAP_VERT_INDEX_X = 273;
 
 // vert index start y
-#define MAP_VERT_INDEX_Y 31
+const MAP_VERT_INDEX_Y = 31;
 
 // vert width
-#define MAP_VERT_WIDTH GetFontHeight(MAP_FONT)
+const MAP_VERT_WIDTH = () => GetFontHeight(MAP_FONT());
 
 // "Boxes" Icons
-#define SMALL_YELLOW_BOX 0
-#define BIG_YELLOW_BOX 1
-#define SMALL_DULL_YELLOW_BOX 2
-#define BIG_DULL_YELLOW_BOX 3
-#define SMALL_WHITE_BOX 4
-#define BIG_WHITE_BOX 5
-#define SMALL_RED_BOX 6
-#define BIG_RED_BOX 7
-#define SMALL_QUESTION_MARK 8
-#define BIG_QUESTION_MARK 9
+const SMALL_YELLOW_BOX = 0;
+const BIG_YELLOW_BOX = 1;
+const SMALL_DULL_YELLOW_BOX = 2;
+const BIG_DULL_YELLOW_BOX = 3;
+const SMALL_WHITE_BOX = 4;
+const BIG_WHITE_BOX = 5;
+const SMALL_RED_BOX = 6;
+const BIG_RED_BOX = 7;
+const SMALL_QUESTION_MARK = 8;
+const BIG_QUESTION_MARK = 9;
 
-#define MERC_ICONS_PER_LINE 6
-#define ROWS_PER_SECTOR 5
+const MERC_ICONS_PER_LINE = 6;
+const ROWS_PER_SECTOR = 5;
 
-#define MAP_X_ICON_OFFSET 2
-#define MAP_Y_ICON_OFFSET 1
+const MAP_X_ICON_OFFSET = 2;
+const MAP_Y_ICON_OFFSET = 1;
 
 // Arrow Offsets
-#define UP_X 13
-#define UP_Y 7
-#define DOWN_X 0
-#define DOWN_Y -2
-#define RIGHT_X -2
-#define RIGHT_Y 11
-#define LEFT_X 2
-#define LEFT_Y 5
+const UP_X = 13;
+const UP_Y = 7;
+const DOWN_X = 0;
+const DOWN_Y = -2;
+const RIGHT_X = -2;
+const RIGHT_Y = 11;
+const LEFT_X = 2;
+const LEFT_Y = 5;
 
 // The Path Lines
-#define NORTH_LINE 1
-#define SOUTH_LINE 0
-#define WEST_LINE 3
-#define EAST_LINE 2
-#define N_TO_E_LINE 4
-#define E_TO_S_LINE 5
-#define W_TO_N_LINE 6
-#define S_TO_W_LINE 7
-#define W_TO_S_LINE 8
-#define N_TO_W_LINE 9
-#define S_TO_E_LINE 10
-#define E_TO_N_LINE 11
-#define W_TO_E_LINE 12
-#define N_TO_S_LINE 13
-#define E_TO_W_LINE 14
-#define S_TO_N_LINE 15
-#define W_TO_E_PART1_LINE 16
-#define W_TO_E_PART2_LINE 17
-#define E_TO_W_PART1_LINE 18
-#define E_TO_W_PART2_LINE 19
-#define N_TO_S_PART1_LINE 20
-#define N_TO_S_PART2_LINE 21
-#define S_TO_N_PART1_LINE 22
-#define S_TO_N_PART2_LINE 23
-#define GREEN_X_WEST 36
-#define GREEN_X_EAST 37
-#define GREEN_X_NORTH 38
-#define GREEN_X_SOUTH 39
-#define RED_X_WEST 40
-#define RED_X_EAST 41
-#define RED_X_NORTH 42
-#define RED_X_SOUTH 43
+const NORTH_LINE = 1;
+const SOUTH_LINE = 0;
+const WEST_LINE = 3;
+const EAST_LINE = 2;
+const N_TO_E_LINE = 4;
+const E_TO_S_LINE = 5;
+const W_TO_N_LINE = 6;
+const S_TO_W_LINE = 7;
+const W_TO_S_LINE = 8;
+const N_TO_W_LINE = 9;
+const S_TO_E_LINE = 10;
+const E_TO_N_LINE = 11;
+const W_TO_E_LINE = 12;
+const N_TO_S_LINE = 13;
+const E_TO_W_LINE = 14;
+const S_TO_N_LINE = 15;
+const W_TO_E_PART1_LINE = 16;
+const W_TO_E_PART2_LINE = 17;
+const E_TO_W_PART1_LINE = 18;
+const E_TO_W_PART2_LINE = 19;
+const N_TO_S_PART1_LINE = 20;
+const N_TO_S_PART2_LINE = 21;
+const S_TO_N_PART1_LINE = 22;
+const S_TO_N_PART2_LINE = 23;
+const GREEN_X_WEST = 36;
+const GREEN_X_EAST = 37;
+const GREEN_X_NORTH = 38;
+const GREEN_X_SOUTH = 39;
+const RED_X_WEST = 40;
+const RED_X_EAST = 41;
+const RED_X_NORTH = 42;
+const RED_X_SOUTH = 43;
 
 // The arrows
-#define Y_NORTH_ARROW 24
-#define Y_SOUTH_ARROW 25
-#define Y_EAST_ARROW 26
-#define Y_WEST_ARROW 27
-#define W_NORTH_ARROW 28
-#define W_SOUTH_ARROW 29
-#define W_EAST_ARROW 30
-#define W_WEST_ARROW 31
-#define NORTH_ARROW 32
-#define SOUTH_ARROW 33
-#define EAST_ARROW 34
-#define WEST_ARROW 35
+const Y_NORTH_ARROW = 24;
+const Y_SOUTH_ARROW = 25;
+const Y_EAST_ARROW = 26;
+const Y_WEST_ARROW = 27;
+const W_NORTH_ARROW = 28;
+const W_SOUTH_ARROW = 29;
+const W_EAST_ARROW = 30;
+const W_WEST_ARROW = 31;
+const NORTH_ARROW = 32;
+const SOUTH_ARROW = 33;
+const EAST_ARROW = 34;
+const WEST_ARROW = 35;
 
-#define ZOOM_Y_NORTH_ARROW 68
-#define ZOOM_Y_SOUTH_ARROW 69
-#define ZOOM_Y_EAST_ARROW 70
-#define ZOOM_Y_WEST_ARROW 71
-#define ZOOM_W_NORTH_ARROW 72
-#define ZOOM_W_SOUTH_ARROW 73
-#define ZOOM_W_EAST_ARROW 74
-#define ZOOM_W_WEST_ARROW 75
-#define ZOOM_NORTH_ARROW 76
-#define ZOOM_SOUTH_ARROW 77
-#define ZOOM_EAST_ARROW 78
-#define ZOOM_WEST_ARROW 79
-#define ARROW_DELAY 20
-#define PAUSE_DELAY 1000
+const ZOOM_Y_NORTH_ARROW = 68;
+const ZOOM_Y_SOUTH_ARROW = 69;
+const ZOOM_Y_EAST_ARROW = 70;
+const ZOOM_Y_WEST_ARROW = 71;
+const ZOOM_W_NORTH_ARROW = 72;
+const ZOOM_W_SOUTH_ARROW = 73;
+const ZOOM_W_EAST_ARROW = 74;
+const ZOOM_W_WEST_ARROW = 75;
+const ZOOM_NORTH_ARROW = 76;
+const ZOOM_SOUTH_ARROW = 77;
+const ZOOM_EAST_ARROW = 78;
+const ZOOM_WEST_ARROW = 79;
+const ARROW_DELAY = 20;
+const PAUSE_DELAY = 1000;
 
 // The zoomed in path lines
-#define SOUTH_ZOOM_LINE 44
-#define NORTH_ZOOM_LINE 45
-#define EAST_ZOOM_LINE 46
-#define WEST_ZOOM_LINE 47
-#define N_TO_E_ZOOM_LINE 48
-#define E_TO_S_ZOOM_LINE 49
-#define W_TO_N_ZOOM_LINE 50
-#define S_TO_W_ZOOM_LINE 51
-#define W_TO_S_ZOOM_LINE 52
-#define N_TO_W_ZOOM_LINE 53
-#define S_TO_E_ZOOM_LINE 54
-#define E_TO_N_ZOOM_LINE 55
-#define W_TO_E_ZOOM_LINE 56
-#define N_TO_S_ZOOM_LINE 57
-#define E_TO_W_ZOOM_LINE 58
-#define S_TO_N_ZOOM_LINE 59
-#define ZOOM_GREEN_X_WEST 80
-#define ZOOM_GREEN_X_EAST 81
-#define ZOOM_GREEN_X_NORTH 82
-#define ZOOM_GREEN_X_SOUTH 83
-#define ZOOM_RED_X_WEST 84
-#define ZOOM_RED_X_EAST 85
-#define ZOOM_RED_X_NORTH 86
-#define ZOOM_RED_X_SOUTH 87
+const SOUTH_ZOOM_LINE = 44;
+const NORTH_ZOOM_LINE = 45;
+const EAST_ZOOM_LINE = 46;
+const WEST_ZOOM_LINE = 47;
+const N_TO_E_ZOOM_LINE = 48;
+const E_TO_S_ZOOM_LINE = 49;
+const W_TO_N_ZOOM_LINE = 50;
+const S_TO_W_ZOOM_LINE = 51;
+const W_TO_S_ZOOM_LINE = 52;
+const N_TO_W_ZOOM_LINE = 53;
+const S_TO_E_ZOOM_LINE = 54;
+const E_TO_N_ZOOM_LINE = 55;
+const W_TO_E_ZOOM_LINE = 56;
+const N_TO_S_ZOOM_LINE = 57;
+const E_TO_W_ZOOM_LINE = 58;
+const S_TO_N_ZOOM_LINE = 59;
+const ZOOM_GREEN_X_WEST = 80;
+const ZOOM_GREEN_X_EAST = 81;
+const ZOOM_GREEN_X_NORTH = 82;
+const ZOOM_GREEN_X_SOUTH = 83;
+const ZOOM_RED_X_WEST = 84;
+const ZOOM_RED_X_EAST = 85;
+const ZOOM_RED_X_NORTH = 86;
+const ZOOM_RED_X_SOUTH = 87;
 
-#define CHAR_FONT_COLOR 32 * 4 - 9
+const CHAR_FONT_COLOR = 32 * 4 - 9;
 
 // Arrow Offsets
-#define EAST_OFFSET_X 11
-#define EAST_OFFSET_Y 0
-#define NORTH_OFFSET_X 9
-#define NORTH_OFFSET_Y -9
-#define SOUTH_OFFSET_X -9
-#define SOUTH_OFFSET_Y 9
-#define WEST_OFFSET_X -11
-#define WEST_OFFSET_Y 0
-#define WEST_TO_SOUTH_OFFSET_Y 0
-#define EAST_TO_NORTH_OFFSET_Y 0
-#define RED_WEST_OFF_X -MAP_GRID_X
-#define RED_EAST_OFF_X MAP_GRID_X
-#define RED_NORTH_OFF_Y -21
-#define RED_SOUTH_OFF_Y 21
+const EAST_OFFSET_X = 11;
+const EAST_OFFSET_Y = 0;
+const NORTH_OFFSET_X = 9;
+const NORTH_OFFSET_Y = -9;
+const SOUTH_OFFSET_X = -9;
+const SOUTH_OFFSET_Y = 9;
+const WEST_OFFSET_X = -11;
+const WEST_OFFSET_Y = 0;
+const WEST_TO_SOUTH_OFFSET_Y = 0;
+const EAST_TO_NORTH_OFFSET_Y = 0;
+const RED_WEST_OFF_X = -MAP_GRID_X;
+const RED_EAST_OFF_X = MAP_GRID_X;
+const RED_NORTH_OFF_Y = -21;
+const RED_SOUTH_OFF_Y = 21;
 
 // the font use on the mvt icons for mapscreen
-#define MAP_MVT_ICON_FONT SMALLCOMPFONT
+const MAP_MVT_ICON_FONT = () => SMALLCOMPFONT();
 
 // map shading colors
 
@@ -228,38 +228,38 @@ UINT32 guiCHARICONS;
 UINT32 guiBULLSEYE;
 
 // the max allowable towns militia in a sector
-#define MAP_MILITIA_MAP_X 4
-#define MAP_MILITIA_MAP_Y 20
-#define MAP_MILITIA_LOWER_ROW_Y 142
-#define NUMBER_OF_MILITIA_ICONS_PER_LOWER_ROW 25
-#define MILITIA_BOX_ROWS 3
-#define MILITIA_BOX_BOX_HEIGHT 36
-#define MILITIA_BOX_BOX_WIDTH 42
-#define MAP_MILITIA_BOX_POS_X 400
-#define MAP_MILITIA_BOX_POS_Y 125
+const MAP_MILITIA_MAP_X = 4;
+const MAP_MILITIA_MAP_Y = 20;
+const MAP_MILITIA_LOWER_ROW_Y = 142;
+const NUMBER_OF_MILITIA_ICONS_PER_LOWER_ROW = 25;
+const MILITIA_BOX_ROWS = 3;
+const MILITIA_BOX_BOX_HEIGHT = 36;
+const MILITIA_BOX_BOX_WIDTH = 42;
+const MAP_MILITIA_BOX_POS_X = 400;
+const MAP_MILITIA_BOX_POS_Y = 125;
 
-#define POPUP_MILITIA_ICONS_PER_ROW 5 // max 6 rows gives the limit of 30 militia
-#define MEDIUM_MILITIA_ICON_SPACING 5
-#define LARGE_MILITIA_ICON_SPACING 6
+const POPUP_MILITIA_ICONS_PER_ROW = 5; // max 6 rows gives the limit of 30 militia
+const MEDIUM_MILITIA_ICON_SPACING = 5;
+const LARGE_MILITIA_ICON_SPACING = 6;
 
-#define MILITIA_BTN_OFFSET_X 26
-#define MILITIA_BTN_HEIGHT 11
-#define MILITIA_BOX_WIDTH 133
-#define MILITIA_BOX_TEXT_OFFSET_Y 4
-#define MILITIA_BOX_UNASSIGNED_TEXT_OFFSET_Y 132
-#define MILITIA_BOX_TEXT_TITLE_HEIGHT 13
+const MILITIA_BTN_OFFSET_X = 26;
+const MILITIA_BTN_HEIGHT = 11;
+const MILITIA_BOX_WIDTH = 133;
+const MILITIA_BOX_TEXT_OFFSET_Y = 4;
+const MILITIA_BOX_UNASSIGNED_TEXT_OFFSET_Y = 132;
+const MILITIA_BOX_TEXT_TITLE_HEIGHT = 13;
 
-#define MAP_MILITIA_BOX_AUTO_BOX_X 4
-#define MAP_MILITIA_BOX_AUTO_BOX_Y 167
-#define MAP_MILITIA_BOX_DONE_BOX_X 67
+const MAP_MILITIA_BOX_AUTO_BOX_X = 4;
+const MAP_MILITIA_BOX_AUTO_BOX_Y = 167;
+const MAP_MILITIA_BOX_DONE_BOX_X = 67;
 
-#define HELI_ICON 0
-#define HELI_SHADOW_ICON 1
+const HELI_ICON = 0;
+const HELI_SHADOW_ICON = 1;
 
-#define HELI_ICON_WIDTH 20
-#define HELI_ICON_HEIGHT 10
-#define HELI_SHADOW_ICON_WIDTH 19
-#define HELI_SHADOW_ICON_HEIGHT 11
+const HELI_ICON_WIDTH = 20;
+const HELI_ICON_HEIGHT = 10;
+const HELI_SHADOW_ICON_WIDTH = 19;
+const HELI_SHADOW_ICON_HEIGHT = 11;
 
 // the militia box buttons and images
 INT32 giMapMilitiaButtonImage[5];
@@ -3283,41 +3283,41 @@ void RestoreClipRegionToFullScreenForRectangle(UINT32 uiDestPitchBYTES) {
 }
 
 // mvt icon offset defines
-#define SOUTH_Y_MVT_OFFSET +10
-#define SOUTH_X_MVT_OFFSET 0
-#define NORTH_Y_MVT_OFFSET -10
-#define NORTH_X_MVT_OFFSET +10
-#define NORTH_SOUTH_CENTER_OFFSET +5
+const SOUTH_Y_MVT_OFFSET = +10;
+const SOUTH_X_MVT_OFFSET = 0;
+const NORTH_Y_MVT_OFFSET = -10;
+const NORTH_X_MVT_OFFSET = +10;
+const NORTH_SOUTH_CENTER_OFFSET = +5;
 
-#define SOUTH_Y_MVT_OFFSET_ZOOM +30
-#define SOUTH_X_MVT_OFFSET_ZOOM +5
-#define NORTH_Y_MVT_OFFSET_ZOOM -8
-#define NORTH_X_MVT_OFFSET_ZOOM +25
-#define NORTH_SOUTH_CENTER_OFFSET_ZOOM +15
+const SOUTH_Y_MVT_OFFSET_ZOOM = +30;
+const SOUTH_X_MVT_OFFSET_ZOOM = +5;
+const NORTH_Y_MVT_OFFSET_ZOOM = -8;
+const NORTH_X_MVT_OFFSET_ZOOM = +25;
+const NORTH_SOUTH_CENTER_OFFSET_ZOOM = +15;
 
-#define EAST_Y_MVT_OFFSET +8
-#define EAST_X_MVT_OFFSET 15
-#define WEST_Y_MVT_OFFSET -2
-#define WEST_X_MVT_OFFSET -8
-#define EAST_WEST_CENTER_OFFSET +2
+const EAST_Y_MVT_OFFSET = +8;
+const EAST_X_MVT_OFFSET = 15;
+const WEST_Y_MVT_OFFSET = -2;
+const WEST_X_MVT_OFFSET = -8;
+const EAST_WEST_CENTER_OFFSET = +2;
 
-#define EAST_Y_MVT_OFFSET_ZOOM +24
-#define EAST_X_MVT_OFFSET_ZOOM +36
-#define WEST_Y_MVT_OFFSET_ZOOM +5
-#define WEST_X_MVT_OFFSET_ZOOM -10
-#define EAST_WEST_CENTER_OFFSET_ZOOM +12
+const EAST_Y_MVT_OFFSET_ZOOM = +24;
+const EAST_X_MVT_OFFSET_ZOOM = +36;
+const WEST_Y_MVT_OFFSET_ZOOM = +5;
+const WEST_X_MVT_OFFSET_ZOOM = -10;
+const EAST_WEST_CENTER_OFFSET_ZOOM = +12;
 
-#define NORTH_TEXT_X_OFFSET +1
-#define NORTH_TEXT_Y_OFFSET +4
-#define SOUTH_TEXT_X_OFFSET +1
-#define SOUTH_TEXT_Y_OFFSET +2
+const NORTH_TEXT_X_OFFSET = +1;
+const NORTH_TEXT_Y_OFFSET = +4;
+const SOUTH_TEXT_X_OFFSET = +1;
+const SOUTH_TEXT_Y_OFFSET = +2;
 
-#define EAST_TEXT_X_OFFSET +2
-#define EAST_TEXT_Y_OFFSET 0
-#define WEST_TEXT_X_OFFSET +4
-#define WEST_TEXT_Y_OFFSET 0
+const EAST_TEXT_X_OFFSET = +2;
+const EAST_TEXT_Y_OFFSET = 0;
+const WEST_TEXT_X_OFFSET = +4;
+const WEST_TEXT_Y_OFFSET = 0;
 
-#define ICON_WIDTH 8
+const ICON_WIDTH = 8;
 
 void ShowPeopleInMotion(INT16 sX, INT16 sY) {
   INT32 sExiting = 0;

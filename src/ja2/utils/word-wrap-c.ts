@@ -1,5 +1,3 @@
-#define SINGLE_CHARACTER_WORD_FOR_WORDWRAP
-
 BOOLEAN gfUseSingleCharWordsForWordWrap = FALSE;
 
 void UseSingleCharWordsForWordWrap(BOOLEAN fUseSingleCharWords) {

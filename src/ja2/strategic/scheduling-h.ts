@@ -16,22 +16,22 @@ enum {
   NUM_SCHEDULE_ACTIONS,
 };
 
-#define SCHEDULE_FLAGS_VARIANCE1 0x0001
-#define SCHEDULE_FLAGS_VARIANCE2 0x0002
-#define SCHEDULE_FLAGS_VARIANCE3 0x0004
-#define SCHEDULE_FLAGS_VARIANCE4 0x0008
-#define SCHEDULE_FLAGS_ACTIVE1 0x0010
-#define SCHEDULE_FLAGS_ACTIVE2 0x0020
-#define SCHEDULE_FLAGS_ACTIVE3 0x0040
-#define SCHEDULE_FLAGS_ACTIVE4 0x0080
-#define SCHEDULE_FLAGS_TEMPORARY 0x0100 // for default schedules -- not saved.
-#define SCHEDULE_FLAGS_SLEEP_CONVERTED 0x0200 // converted (needs to be uncoverted before saving)
-#define SCHEDULE_FLAGS_NPC_SLEEPING 0x0400 // if processing a sleep command, this flag will be set.
+const SCHEDULE_FLAGS_VARIANCE1 = 0x0001;
+const SCHEDULE_FLAGS_VARIANCE2 = 0x0002;
+const SCHEDULE_FLAGS_VARIANCE3 = 0x0004;
+const SCHEDULE_FLAGS_VARIANCE4 = 0x0008;
+const SCHEDULE_FLAGS_ACTIVE1 = 0x0010;
+const SCHEDULE_FLAGS_ACTIVE2 = 0x0020;
+const SCHEDULE_FLAGS_ACTIVE3 = 0x0040;
+const SCHEDULE_FLAGS_ACTIVE4 = 0x0080;
+const SCHEDULE_FLAGS_TEMPORARY = 0x0100; // for default schedules -- not saved.
+const SCHEDULE_FLAGS_SLEEP_CONVERTED = 0x0200; // converted (needs to be uncoverted before saving)
+const SCHEDULE_FLAGS_NPC_SLEEPING = 0x0400; // if processing a sleep command, this flag will be set.
 
 // combo flag for turning active flags off
-#define SCHEDULE_FLAGS_ACTIVE_ALL 0x00F0
+const SCHEDULE_FLAGS_ACTIVE_ALL = 0x00F0;
 
-#define MAX_SCHEDULE_ACTIONS 4
+const MAX_SCHEDULE_ACTIONS = 4;
 
 typedef struct SCHEDULENODE {
   struct SCHEDULENODE *next;

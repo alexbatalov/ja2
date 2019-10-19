@@ -1,8 +1,8 @@
-#define MAP_BORDER_X 261
-#define MAP_BORDER_Y 0
+const MAP_BORDER_X = 261;
+const MAP_BORDER_Y = 0;
 
-#define MAP_BORDER_CORNER_X 584
-#define MAP_BORDER_CORNER_Y 279
+const MAP_BORDER_CORNER_X = 584;
+const MAP_BORDER_CORNER_Y = 279;
 
 // extern to anchored button in winbart97
 extern GUI_BUTTON *gpAnchoredButton;

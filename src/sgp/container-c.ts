@@ -25,7 +25,6 @@
 //
 //
 //*****************************************************************************
-#define STRICT
 
 typedef struct StackHeaderTag {
   UINT32 uiTotal_items;

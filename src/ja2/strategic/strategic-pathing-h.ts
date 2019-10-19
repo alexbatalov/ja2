@@ -1,14 +1,14 @@
 // directions of movement for badsector determination ( blocking off of a sector exit from foot or vehicle travel)
 
 // Shortest Path Defines
-#define NORTH_MOVE -18
-#define EAST_MOVE 1
-#define WEST_MOVE -1
-#define SOUTH_MOVE 18
+const NORTH_MOVE = -18;
+const EAST_MOVE = 1;
+const WEST_MOVE = -1;
+const SOUTH_MOVE = 18;
 
 // Movement speed defines
-#define NORMAL_MVT 1
-#define SLOW_MVT 0
+const NORMAL_MVT = 1;
+const SLOW_MVT = 0;
 
 // movment modes
 enum {

@@ -1,7 +1,7 @@
-#define CANCEL_ICON 0
-#define UP_ICON 1
-#define DOWN_ICON 2
-#define OK_ICON 3
+const CANCEL_ICON = 0;
+const UP_ICON = 1;
+const DOWN_ICON = 2;
+const OK_ICON = 3;
 
 extern INT32 iButtonIcons[4];
 extern INT32 iSelectWin, iCancelWin, iScrollUp, iScrollDown;
@@ -26,16 +26,16 @@ extern void ScrollSelWinDown(void);
 
 // defines for DisplaySpec.ubType
 
-#define DISPLAY_TEXT 1
-#define DISPLAY_GRAPHIC 2
+const DISPLAY_TEXT = 1;
+const DISPLAY_GRAPHIC = 2;
 
-#define ONE_COLUMN 0x0001
-#define ONE_ROW 0x0002
-#define CLEAR_BACKGROUND 0x0004
+const ONE_COLUMN = 0x0001;
+const ONE_ROW = 0x0002;
+const CLEAR_BACKGROUND = 0x0004;
 
-#define DISPLAY_ALL_OBJECTS 0xffff
+const DISPLAY_ALL_OBJECTS = 0xffff;
 
-#define MAX_SELECTIONS 120
+const MAX_SELECTIONS = 120;
 
 enum {
   SELWIN_SINGLEWALL,

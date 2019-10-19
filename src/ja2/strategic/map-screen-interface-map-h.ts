@@ -130,48 +130,48 @@ enum {
 };
 
 // size of squares on the map
-#define MAP_GRID_X 21
-#define MAP_GRID_Y 18
+const MAP_GRID_X = 21;
+const MAP_GRID_Y = 18;
 
 // scroll bounds
-#define EAST_ZOOM_BOUND 378
-#define WEST_ZOOM_BOUND 42
-#define SOUTH_ZOOM_BOUND 324
-#define NORTH_ZOOM_BOUND 36
+const EAST_ZOOM_BOUND = 378;
+const WEST_ZOOM_BOUND = 42;
+const SOUTH_ZOOM_BOUND = 324;
+const NORTH_ZOOM_BOUND = 36;
 
 // map view region
-#define MAP_VIEW_START_X 270
-#define MAP_VIEW_START_Y 10
-#define MAP_VIEW_WIDTH 336
-#define MAP_VIEW_HEIGHT 298
+const MAP_VIEW_START_X = 270;
+const MAP_VIEW_START_Y = 10;
+const MAP_VIEW_WIDTH = 336;
+const MAP_VIEW_HEIGHT = 298;
 
 // zoomed in grid sizes
-#define MAP_GRID_ZOOM_X MAP_GRID_X * 2
-#define MAP_GRID_ZOOM_Y MAP_GRID_Y * 2
+const MAP_GRID_ZOOM_X = MAP_GRID_X * 2;
+const MAP_GRID_ZOOM_Y = MAP_GRID_Y * 2;
 
 // number of units wide
-#define WORLD_MAP_X 18
+const WORLD_MAP_X = 18;
 
 // dirty regions for the map
-#define DMAP_GRID_X (MAP_GRID_X + 1)
-#define DMAP_GRID_Y (MAP_GRID_Y + 1)
-#define DMAP_GRID_ZOOM_X (MAP_GRID_ZOOM_X + 1)
-#define DMAP_GRID_ZOOM_Y (MAP_GRID_ZOOM_Y + 1)
+const DMAP_GRID_X = (MAP_GRID_X + 1);
+const DMAP_GRID_Y = (MAP_GRID_Y + 1);
+const DMAP_GRID_ZOOM_X = (MAP_GRID_ZOOM_X + 1);
+const DMAP_GRID_ZOOM_Y = (MAP_GRID_ZOOM_Y + 1);
 
 // Orta position on the map
-#define ORTA_SECTOR_X 4
-#define ORTA_SECTOR_Y 11
+const ORTA_SECTOR_X = 4;
+const ORTA_SECTOR_Y = 11;
 
-#define TIXA_SECTOR_X 9
-#define TIXA_SECTOR_Y 10
+const TIXA_SECTOR_X = 9;
+const TIXA_SECTOR_Y = 10;
 
 // what are we showing?..teams/vehicles
 // Show values
-#define SHOW_TEAMMATES 1
-#define SHOW_VEHICLES 2
+const SHOW_TEAMMATES = 1;
+const SHOW_VEHICLES = 2;
 
 // wait time until temp path is drawn, from placing cursor on a map grid
-#define MIN_WAIT_TIME_FOR_TEMP_PATH 200
+const MIN_WAIT_TIME_FOR_TEMP_PATH = 200;
 
 // zoom UL coords
 extern INT32 iZoomX;

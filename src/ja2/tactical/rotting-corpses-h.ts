@@ -1,4 +1,4 @@
-#define NUM_CORPSE_SHADES 17
+const NUM_CORPSE_SHADES = 17;
 
 enum {
   NO_CORPSE,
@@ -64,13 +64,13 @@ enum {
   NUM_CORPSES,
 } RottingCorpseDefines;
 
-#define ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO 0x01 // Find the closest spot to the given gridno
-#define ROTTING_CORPSE_USE_NORTH_ENTRY_POINT 0x02 // Find the spot closest to the north entry grid
-#define ROTTING_CORPSE_USE_SOUTH_ENTRY_POINT 0x04 // Find the spot closest to the south entry grid
-#define ROTTING_CORPSE_USE_EAST_ENTRY_POINT 0x08 // Find the spot closest to the east entry grid
-#define ROTTING_CORPSE_USE_WEST_ENTRY_POINT 0x10 // Find the spot closest to the west entry grid
-#define ROTTING_CORPSE_USE_CAMMO_PALETTE 0x20 // We use cammo palette here....
-#define ROTTING_CORPSE_VEHICLE 0x40 // Vehicle Corpse
+const ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO = 0x01; // Find the closest spot to the given gridno
+const ROTTING_CORPSE_USE_NORTH_ENTRY_POINT = 0x02; // Find the spot closest to the north entry grid
+const ROTTING_CORPSE_USE_SOUTH_ENTRY_POINT = 0x04; // Find the spot closest to the south entry grid
+const ROTTING_CORPSE_USE_EAST_ENTRY_POINT = 0x08; // Find the spot closest to the east entry grid
+const ROTTING_CORPSE_USE_WEST_ENTRY_POINT = 0x10; // Find the spot closest to the west entry grid
+const ROTTING_CORPSE_USE_CAMMO_PALETTE = 0x20; // We use cammo palette here....
+const ROTTING_CORPSE_VEHICLE = 0x40; // Vehicle Corpse
 
 typedef struct {
   UINT8 ubType;
@@ -146,7 +146,7 @@ void HandleCrowLeave(SOLDIERTYPE *pSoldier);
 
 void HandleCrowFlyAway(SOLDIERTYPE *pSoldier);
 
-#define MAX_ROTTING_CORPSES 100
+const MAX_ROTTING_CORPSES = 100;
 
 extern ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
 extern INT32 giNumRottingCorpse;

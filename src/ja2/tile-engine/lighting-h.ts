@@ -15,57 +15,57 @@
  *
  ***************************************************************************************/
 
-#define DISTANCE_SCALE 4
-#define LIGHT_DUSK_CUTOFF 8
-#define LIGHT_DECAY 0.9 // shade level decay per tile distance
+const DISTANCE_SCALE = 4;
+const LIGHT_DUSK_CUTOFF = 8;
+const LIGHT_DECAY = 0.9; // shade level decay per tile distance
 
 // lightlist node flags
-#define LIGHT_NODE_DRAWN 0x00000001 // light node duplicate marker
-#define LIGHT_ROOF_ONLY 0x00001000 // light only rooftops
-#define LIGHT_IGNORE_WALLS 0x00002000 // doesn't take walls into account
-#define LIGHT_BACKLIGHT 0x00004000 // light does not light objs, trees
-#define LIGHT_NEW_RAY 0x00008000 // start of new ray in linked list
-#define LIGHT_EVERYTHING 0x00010000 // light up everything
-#define LIGHT_FAKE 0x10000000 // "fake" light	for display only
+const LIGHT_NODE_DRAWN = 0x00000001; // light node duplicate marker
+const LIGHT_ROOF_ONLY = 0x00001000; // light only rooftops
+const LIGHT_IGNORE_WALLS = 0x00002000; // doesn't take walls into account
+const LIGHT_BACKLIGHT = 0x00004000; // light does not light objs, trees
+const LIGHT_NEW_RAY = 0x00008000; // start of new ray in linked list
+const LIGHT_EVERYTHING = 0x00010000; // light up everything
+const LIGHT_FAKE = 0x10000000; // "fake" light	for display only
 
 // standard light file symbols
 
-#define LIGHT_OMNI_R1 "LTO1.LHT"
-#define LIGHT_OMNI_R2 "LTO2.LHT"
-#define LIGHT_OMNI_R3 "LTO3.LHT"
-#define LIGHT_OMNI_R4 "LTO4.LHT"
-#define LIGHT_OMNI_R5 "LTO5.LHT"
-#define LIGHT_OMNI_R6 "LTO6.LHT"
-#define LIGHT_OMNI_R7 "LTO7.LHT"
-#define LIGHT_OMNI_R8 "LTO8.LHT"
+const LIGHT_OMNI_R1 = "LTO1.LHT";
+const LIGHT_OMNI_R2 = "LTO2.LHT";
+const LIGHT_OMNI_R3 = "LTO3.LHT";
+const LIGHT_OMNI_R4 = "LTO4.LHT";
+const LIGHT_OMNI_R5 = "LTO5.LHT";
+const LIGHT_OMNI_R6 = "LTO6.LHT";
+const LIGHT_OMNI_R7 = "LTO7.LHT";
+const LIGHT_OMNI_R8 = "LTO8.LHT";
 
-#define MAX_LIGHT_TEMPLATES 32 // maximum number of light types
-#define MAX_LIGHT_SPRITES 256 // maximum number of light types
-#define SHADE_MIN 15 // DARKEST shade value
-#define SHADE_MAX 1 // LIGHTEST shade value
+const MAX_LIGHT_TEMPLATES = 32; // maximum number of light types
+const MAX_LIGHT_SPRITES = 256; // maximum number of light types
+const SHADE_MIN = 15; // DARKEST shade value
+const SHADE_MAX = 1; // LIGHTEST shade value
 
 // light sprite flags
-#define LIGHT_SPR_ACTIVE 0x0001
-#define LIGHT_SPR_ON 0x0002
-#define LIGHT_SPR_ANIMATE 0x0004
-#define LIGHT_SPR_ERASE 0x0008
-#define LIGHT_SPR_REDRAW 0x0010
-#define LIGHT_SPR_ONROOF 0x0020
-#define MERC_LIGHT 0x0040
-#define LIGHT_PRIMETIME 0x0080 // light turns goes on in evening, turns off at bedtime.
-#define LIGHT_NIGHTTIME 0x0100 // light stays on when dark outside
+const LIGHT_SPR_ACTIVE = 0x0001;
+const LIGHT_SPR_ON = 0x0002;
+const LIGHT_SPR_ANIMATE = 0x0004;
+const LIGHT_SPR_ERASE = 0x0008;
+const LIGHT_SPR_REDRAW = 0x0010;
+const LIGHT_SPR_ONROOF = 0x0020;
+const MERC_LIGHT = 0x0040;
+const LIGHT_PRIMETIME = 0x0080; // light turns goes on in evening, turns off at bedtime.
+const LIGHT_NIGHTTIME = 0x0100; // light stays on when dark outside
 
-#define COLOR_RED 162
-#define COLOR_BLUE 203
-#define COLOR_YELLOW 144
-#define COLOR_GREEN 184
-#define COLOR_LTGREY 134
-#define COLOR_DKGREY 136
-#define COLOR_BROWN 80
-#define COLOR_PURPLE 160
-#define COLOR_ORANGE 76
-#define COLOR_WHITE 208
-#define COLOR_BLACK 72
+const COLOR_RED = 162;
+const COLOR_BLUE = 203;
+const COLOR_YELLOW = 144;
+const COLOR_GREEN = 184;
+const COLOR_LTGREY = 134;
+const COLOR_DKGREY = 136;
+const COLOR_BROWN = 80;
+const COLOR_PURPLE = 160;
+const COLOR_ORANGE = 76;
+const COLOR_WHITE = 208;
+const COLOR_BLACK = 72;
 
 // stucture of node in linked list for lights
 typedef struct light_p {
@@ -185,6 +185,6 @@ extern UINT8 gubNumLightColors;
 extern SGPPaletteEntry gpLightColors[3];
 
 // macros
-#define LightSpriteGetType(x) (LightSprites[x].uiLightType)
-#define LightSpriteGetTypeName(x) (pLightNames[LightSprites[x].iTemplate])
-#define LightGetAmbient() (ubAmbientLightLevel)
+const LightSpriteGetType = (x) => (LightSprites[x].uiLightType);
+const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);
+const LightGetAmbient = () => (ubAmbientLightLevel);

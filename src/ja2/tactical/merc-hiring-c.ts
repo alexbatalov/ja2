@@ -1,4 +1,4 @@
-#define MIN_FLIGHT_PREP_TIME 6
+const MIN_FLIGHT_PREP_TIME = 6;
 
 extern BOOLEAN gfTacticalDoHeliRun;
 extern BOOLEAN gfFirstHeliRun;

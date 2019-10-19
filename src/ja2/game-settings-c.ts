@@ -1,8 +1,8 @@
-#define GAME_SETTINGS_FILE "..\\Ja2.set"
+const GAME_SETTINGS_FILE = "..\\Ja2.set";
 
-#define GAME_INI_FILE "..\\Ja2.ini"
+const GAME_INI_FILE = "..\\Ja2.ini";
 
-#define CD_ROOT_DIR "DATA\\"
+const CD_ROOT_DIR = "DATA\\";
 
 GAME_SETTINGS gGameSettings;
 GAME_OPTIONS gGameOptions;
@@ -21,7 +21,7 @@ BOOLEAN IsDriveLetterACDromDrive(STR pDriveLetter);
 void CDromEjectionErrorMessageBoxCallBack(UINT8 bExitValue);
 
 // Change this number when we want any who gets the new build to reset the options
-#define GAME_SETTING_CURRENT_VERSION 522
+const GAME_SETTING_CURRENT_VERSION = 522;
 
 BOOLEAN LoadGameSettings() {
   HWFILE hFile;

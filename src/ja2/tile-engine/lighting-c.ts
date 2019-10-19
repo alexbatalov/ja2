@@ -14,13 +14,13 @@
  * Written by Derek Beland, April 14, 1997
  *
  ***************************************************************************************/
-#define LVL1_L1_PER (50)
-#define LVL1_L2_PER (50)
+const LVL1_L1_PER = (50);
+const LVL1_L2_PER = (50);
 
-#define LVL2_L1_PER (30)
-#define LVL2_L2_PER (70)
+const LVL2_L1_PER = (30);
+const LVL2_L2_PER = (70);
 
-#define LIGHT_TREE_REVEAL 5 // width of rect
+const LIGHT_TREE_REVEAL = 5; // width of rect
 
 // Local-use only prototypes
 

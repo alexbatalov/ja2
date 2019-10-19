@@ -1,11 +1,11 @@
 // Used by PickGridNoToWalkIn
-#define MAX_ATTEMPTS 200
+const MAX_ATTEMPTS = 200;
 
-#define QUEST_CHECK_EVENT_TIME (8 * 60)
-#define BOBBYRAY_UPDATE_TIME (9 * 60)
-#define INSURANCE_UPDATE_TIME 0
-#define EARLY_MORNING_TIME (4 * 60)
-#define ENRICO_MAIL_TIME (7 * 60)
+const QUEST_CHECK_EVENT_TIME = (8 * 60);
+const BOBBYRAY_UPDATE_TIME = (9 * 60);
+const INSURANCE_UPDATE_TIME = 0;
+const EARLY_MORNING_TIME = (4 * 60);
+const ENRICO_MAIL_TIME = (7 * 60);
 
 enum {
   ABOUT_TO_LOAD_NEW_MAP,
@@ -96,7 +96,7 @@ INT8 gbSAMGraphicList[NUMBER_OF_SAMS] = {
 INT8 gbMercIsNewInThisSector[MAX_NUM_SOLDIERS];
 
 // the amount of time that a soldier will wait to return to desired/old squad
-#define DESIRE_SQUAD_RESET_DELAY 12 * 60
+const DESIRE_SQUAD_RESET_DELAY = 12 * 60;
 
 UINT8 ubSAMControlledSectors[MAP_WORLD_Y][MAP_WORLD_X] = {
   //   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
@@ -873,7 +873,7 @@ void PrepareLoadedSector() {
   AllTeamsLookForAll(TRUE);
 }
 
-#define RANDOM_HEAD_MINERS 4
+const RANDOM_HEAD_MINERS = 4;
 void HandleQuestCodeOnSectorEntry(INT16 sNewSectorX, INT16 sNewSectorY, INT8 bNewSectorZ) {
   UINT8 ubRandomMiner[RANDOM_HEAD_MINERS] = {
     106,

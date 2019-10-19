@@ -3,8 +3,8 @@
 
 void LiveMessage(CHAR8 *strMessage);
 
-#define AnimDebugMsg(c)
+const AnimDebugMsg = (c) => {};
 
-#define PhysicsDebugMsg(c)
+const PhysicsDebugMsg = (c) => {};
 
-#define AiDebugMsg(c)
+const AiDebugMsg = (c) => {};

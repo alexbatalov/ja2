@@ -1,5 +1,5 @@
 // min time btween frames of animation
-#define ANIMATE_MIN_TIME 200
+const ANIMATE_MIN_TIME = 200;
 
 // buttons
 INT32 giIMPFinishButton[6];

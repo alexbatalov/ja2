@@ -1,5 +1,5 @@
-#define MAINMENU_TEXT_FILE "LoadScreens\\MainMenu.edt"
-#define MAINMENU_RECORD_SIZE 80 * 2
+const MAINMENU_TEXT_FILE = "LoadScreens\\MainMenu.edt";
+const MAINMENU_RECORD_SIZE = 80 * 2;
 
 //#define TESTFOREIGNFONTS
 
@@ -14,10 +14,10 @@ enum {
   NUM_MENU_ITEMS,
 };
 
-#define MAINMENU_X ((640 - 214) / 2)
-#define MAINMENU_TITLE_Y 75
-#define MAINMENU_Y 277 // 200
-#define MAINMENU_Y_SPACE 37
+const MAINMENU_X = ((640 - 214) / 2);
+const MAINMENU_TITLE_Y = 75;
+const MAINMENU_Y = 277; // 200
+const MAINMENU_Y_SPACE = 37;
 
 INT32 iMenuImages[NUM_MENU_ITEMS];
 INT32 iMenuButtons[NUM_MENU_ITEMS];

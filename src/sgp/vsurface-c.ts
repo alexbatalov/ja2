@@ -20,8 +20,8 @@ extern void GetClippingRect(SGPRect *clip);
 // the list gets larger
 //
 
-#define DEFAULT_NUM_REGIONS 5
-#define DEFAULT_VIDEO_SURFACE_LIST_SIZE 10
+const DEFAULT_NUM_REGIONS = 5;
+const DEFAULT_VIDEO_SURFACE_LIST_SIZE = 10;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //

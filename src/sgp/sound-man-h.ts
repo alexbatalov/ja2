@@ -1,17 +1,17 @@
 // Sample status flags
-#define SAMPLE_ALLOCATED 0x00000001
-#define SAMPLE_LOCKED 0x00000002
-#define SAMPLE_RANDOM 0x00000004
-#define SAMPLE_RANDOM_MANUAL 0x00000008
-#define SAMPLE_3D 0x00000010
+const SAMPLE_ALLOCATED = 0x00000001;
+const SAMPLE_LOCKED = 0x00000002;
+const SAMPLE_RANDOM = 0x00000004;
+const SAMPLE_RANDOM_MANUAL = 0x00000008;
+const SAMPLE_3D = 0x00000010;
 
 // Sound error values (they're all the same)
-#define NO_SAMPLE 0xffffffff
-#define SOUND_ERROR 0xffffffff
+const NO_SAMPLE = 0xffffffff;
+const SOUND_ERROR = 0xffffffff;
 
 // Maximum allowable priority value
-#define PRIORITY_MAX 0xfffffffe
-#define PRIORITY_RANDOM PRIORITY_MAX - 1
+const PRIORITY_MAX = 0xfffffffe;
+const PRIORITY_RANDOM = PRIORITY_MAX - 1;
 
 // Structure definition for 3D sound positional information used by
 // various other structs and functions

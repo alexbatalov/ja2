@@ -1,7 +1,7 @@
 // This is the color substituted to keep a 24bpp -> 16bpp color
 // from going transparent (0x0000) -- DB
 
-#define BLACK_SUBSTITUTE 0x0001
+const BLACK_SUBSTITUTE = 0x0001;
 
 UINT16 gusAlphaMask = 0;
 UINT16 gusRedMask = 0;

@@ -1,7 +1,7 @@
-#define MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES 2
+const MAX_DISTANCE_EXPLOSIVE_CAN_DESTROY_STRUCTURES = 2;
 
-#define EXPLOSION_FLAG_USEABSPOS 0x00000001
-#define EXPLOSION_FLAG_DISPLAYONLY 0x00000002
+const EXPLOSION_FLAG_USEABSPOS = 0x00000001;
+const EXPLOSION_FLAG_DISPLAYONLY = 0x00000002;
 
 // Explosion Data
 typedef struct {
@@ -50,11 +50,11 @@ typedef struct {
   UINT8 fExists;
 } ExplosionQueueElement;
 
-#define ERASE_SPREAD_EFFECT 2
-#define BLOOD_SPREAD_EFFECT 3
-#define REDO_SPREAD_EFFECT 4
+const ERASE_SPREAD_EFFECT = 2;
+const BLOOD_SPREAD_EFFECT = 3;
+const REDO_SPREAD_EFFECT = 4;
 
-#define NUM_EXPLOSION_SLOTS 100
+const NUM_EXPLOSION_SLOTS = 100;
 extern EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
 
 extern UINT8 gubElementsOnExplosionQueue;
@@ -89,6 +89,6 @@ INT32 FindActiveTimedBomb(void);
 BOOLEAN ActiveTimedBombExists(void);
 void RemoveAllActiveTimedBombs(void);
 
-#define GASMASK_MIN_STATUS 70
+const GASMASK_MIN_STATUS = 70;
 
 BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE *pExplosive, INT16 sSubsequent, BOOLEAN fRecompileMovementCosts, INT16 sWoundAmt, INT16 sBreathAmt, UINT8 ubOwner);

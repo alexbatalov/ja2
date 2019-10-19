@@ -42,7 +42,7 @@ enum {
 };
 
 // Base resultion of callback timer
-#define BASETIMESLICE 10
+const BASETIMESLICE = 10;
 
 // TIMER INTERVALS
 INT32 giTimerIntervals[NUMTIMERS];
@@ -60,7 +60,7 @@ INT32 giTimerTeamTurnUpdate;
 BOOLEAN InitializeJA2Clock(void);
 void ShutdownJA2Clock(void);
 
-#define GetJA2Clock() guiBaseJA2Clock
+const GetJA2Clock = () => guiBaseJA2Clock;
 
 UINT32 GetPauseJA2Clock();
 
@@ -79,14 +79,14 @@ extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 // MACROS
 //																CHeck if new counter < 0														 | set to 0 |										 Decrement
 
-#define UPDATECOUNTER(c) ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE)
-#define RESETCOUNTER(c) (giTimerCounters[c] = giTimerIntervals[c])
-#define COUNTERDONE(c) (giTimerCounters[c] == 0) ? TRUE : FALSE
+const UPDATECOUNTER = (c) => ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) : (giTimerCounters[c] -= BASETIMESLICE);
+const RESETCOUNTER = (c) => (giTimerCounters[c] = giTimerIntervals[c]);
+const COUNTERDONE = (c) => (giTimerCounters[c] == 0) ? TRUE : FALSE;
 
-#define UPDATETIMECOUNTER(c) ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE)
-#define RESETTIMECOUNTER(c, d) (c = d)
+const UPDATETIMECOUNTER = (c) => ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE);
+const RESETTIMECOUNTER = (c, d) => (c = d);
 
-#define TIMECOUNTERDONE(c, d) (c == 0) ? TRUE : FALSE
+const TIMECOUNTERDONE = (c, d) => (c == 0) ? TRUE : FALSE;
 
-#define SYNCTIMECOUNTER()
-#define ZEROTIMECOUNTER(c) (c = 0)
+const SYNCTIMECOUNTER = () => {};
+const ZEROTIMECOUNTER = (c) => (c = 0);

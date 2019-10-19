@@ -68,9 +68,9 @@ CHAR8 sBlastSpeeds[] = {
   80,
 };
 
-#define BOMB_QUEUE_DELAY (1000 + Random(500))
+const BOMB_QUEUE_DELAY = () => (1000 + Random(500));
 
-#define MAX_BOMB_QUEUE 40
+const MAX_BOMB_QUEUE = 40;
 ExplosionQueueElement gExplosionQueue[MAX_BOMB_QUEUE];
 UINT8 gubElementsOnExplosionQueue = 0;
 BOOLEAN gfExplosionQueueActive = FALSE;
@@ -82,7 +82,7 @@ INT16 gsTempActionGridNo = NOWHERE;
 
 extern UINT8 gubInterruptProvoker;
 
-#define NUM_EXPLOSION_SLOTS 100
+const NUM_EXPLOSION_SLOTS = 100;
 
 // GLOBAL FOR SMOKE LISTING
 EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];

@@ -1,15 +1,15 @@
 extern UINT8 gubAICounter;
 
-#define RT_DELAY_BETWEEN_AI_HANDLING 50
-#define RT_AI_TIMESLICE 10
+const RT_DELAY_BETWEEN_AI_HANDLING = 50;
+const RT_AI_TIMESLICE = 10;
 
 INT32 giRTAILastUpdateTime = 0;
 UINT32 guiAISlotToHandle = 0;
-#define HANDLE_OFF_MAP_MERC 0xFFFF
-#define RESET_HANDLE_OF_OFF_MAP_MERCS 0xFFFF
+const HANDLE_OFF_MAP_MERC = 0xFFFF;
+const RESET_HANDLE_OF_OFF_MAP_MERCS = 0xFFFF;
 UINT32 guiAIAwaySlotToHandle = RESET_HANDLE_OF_OFF_MAP_MERCS;
 
-#define PAUSE_ALL_AI_DELAY 1500
+const PAUSE_ALL_AI_DELAY = 1500;
 
 BOOLEAN gfPauseAllAI = FALSE;
 INT32 giPauseAllAITimer = 0;
@@ -45,12 +45,12 @@ extern void PlayStealthySoldierFootstepSound(SOLDIERTYPE *pSoldier);
 extern BOOLEAN gfSurrendered;
 
 // GLOBALS
-#define START_DEMO_SCENE 3
-#define NUM_RANDOM_SCENES 4
+const START_DEMO_SCENE = 3;
+const NUM_RANDOM_SCENES = 4;
 
 INT8 gDebugStr[128];
 
-#define NEW_FADE_DELAY 60
+const NEW_FADE_DELAY = 60;
 
 // ATE: GLOBALS FOR E3
 UINT8 gubCurrentScene = 0;
@@ -5404,7 +5404,7 @@ INT8 CalcSuppressionTolerance(SOLDIERTYPE *pSoldier) {
   return bTolerance;
 }
 
-#define MAX_APS_SUPPRESSED 8
+const MAX_APS_SUPPRESSED = 8;
 void HandleSuppressionFire(UINT8 ubTargetedMerc, UINT8 ubCausedAttacker) {
   INT8 bTolerance;
   INT16 sClosestOpponent, sClosestOppLoc;

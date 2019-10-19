@@ -1,4 +1,4 @@
-#define MAX_PROGRESSBARS 4
+const MAX_PROGRESSBARS = 4;
 
 typedef struct PROGRESSBAR {
   UINT8 ubProgressBarID;

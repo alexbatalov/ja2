@@ -18,10 +18,10 @@
 
 // This define is sent to CreateList SGP function. It dynamically re-sizes if
 // the list gets larger
-#define DEFAULT_VIDEO_OBJECT_LIST_SIZE 10
+const DEFAULT_VIDEO_OBJECT_LIST_SIZE = 10;
 
-#define COMPRESS_TRANSPARENT 0x80
-#define COMPRESS_RUN_MASK 0x7F
+const COMPRESS_TRANSPARENT = 0x80;
+const COMPRESS_RUN_MASK = 0x7F;
 
 // *******************************************************************************
 // External Functions and variables

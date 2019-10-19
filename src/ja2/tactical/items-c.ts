@@ -1,4 +1,4 @@
-#define ANY_MAGSIZE 255
+const ANY_MAGSIZE = 255;
 
 void RemoveObjs(OBJECTTYPE *pObj, UINT8 ubNumberToRemove);
 void SetNewItem(SOLDIERTYPE *pSoldier, UINT8 ubInvPos, BOOLEAN fNewItem);
@@ -1764,11 +1764,11 @@ BOOLEAN PlaceObjectAtObjectIndex(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj,
   }
 }
 
-#define RELOAD_NONE 0
-#define RELOAD_PLACE 1
-#define RELOAD_SWAP 2
-#define RELOAD_TOPOFF 3
-#define RELOAD_AUTOPLACE_OLD 4
+const RELOAD_NONE = 0;
+const RELOAD_PLACE = 1;
+const RELOAD_SWAP = 2;
+const RELOAD_TOPOFF = 3;
+const RELOAD_AUTOPLACE_OLD = 4;
 
 BOOLEAN ReloadGun(SOLDIERTYPE *pSoldier, OBJECTTYPE *pGun, OBJECTTYPE *pAmmo) {
   OBJECTTYPE OldAmmo;
@@ -3222,7 +3222,7 @@ UINT16 FindReplacementMagazineIfNecessary(UINT16 usOldGun, UINT16 usOldAmmo, UIN
 }
 
 // increase this if any gun can have more types that this
-#define MAX_AMMO_TYPES_PER_GUN 3
+const MAX_AMMO_TYPES_PER_GUN = 3;
 
 UINT16 RandomMagazine(UINT16 usItem, UINT8 ubPercentStandard) {
   // Note: if any ammo items in the item table are separated from the main group,
@@ -4088,7 +4088,7 @@ BOOLEAN ApplyCanteen(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs
   return TRUE;
 }
 
-#define MAX_HUMAN_CREATURE_SMELL (NORMAL_HUMAN_SMELL_STRENGTH - 1)
+const MAX_HUMAN_CREATURE_SMELL = (NORMAL_HUMAN_SMELL_STRENGTH - 1);
 
 BOOLEAN ApplyElixir(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs) {
   INT16 sPointsToUse;

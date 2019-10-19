@@ -1,4 +1,4 @@
-#define FILES_DAT_FILE "TEMP\\files.dat"
+const FILES_DAT_FILE = "TEMP\\files.dat";
 
 void GameInitFiles();
 void EnterFiles();

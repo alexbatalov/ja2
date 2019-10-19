@@ -11,34 +11,36 @@
 //
 //**************************************************************************
 
-#define INVALID_TOPIC 0xffff
-#define MAX_TOPICS_ALLOTED 1024
+const INVALID_TOPIC = 0xffff;
+const MAX_TOPICS_ALLOTED = 1024;
 
 extern BOOLEAN gfRecordToFile;
 extern BOOLEAN gfRecordToDebugger;
 extern UINT32 guiProfileStart, guiExecutions, guiProfileTime;
 extern INT32 giProfileCount;
 
-#define PROFILE(x) \
-  guiProfileStart = GetTickCount(); \
-  guiExecutions = x; \
-  for (giProfileCount = 0; giProfileCount < x; giProfileCount++)
+const PROFILE = (x) => {
+  guiProfileStart = GetTickCount();
+  guiExecutions = x;
+  for (giProfileCount = 0; giProfileCount < x; giProfileCount++);
+};
 
-#define PROFILE_REPORT() \
-  guiProfileTime = (GetTickCount() - guiProfileStart); \
+const PROFILE_REPORT = () => {
+  guiProfileTime = (GetTickCount() - guiProfileStart);
   _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, (FLOAT)guiProfileTime / guiExecutions);
+};
 
 extern void _Null(void);
 extern UINT8 *String(const char *String, ...);
 
-#define Assert(a)
-#define AssertMsg(a, b)
+const Assert = (a) => {};
+const AssertMsg = (a, b) => {};
 
 //*******************************************************************************************
 
 // Moved these out of the defines - debug mgr always initialized
-#define InitializeDebugManager() DbgInitialize()
-#define ShutdownDebugManager() DbgShutdown()
+const InitializeDebugManager = () => DbgInitialize();
+const ShutdownDebugManager = () => DbgShutdown();
 
 extern BOOLEAN DbgInitialize(void);
 extern void DbgShutdown(void);
@@ -46,19 +48,19 @@ extern void DbgShutdown(void);
 //*******************************************************************************************
 // Release Mode
 //*******************************************************************************************
-#define DebugBreakpoint()
+const DebugBreakpoint = () => {};
 
-#define RegisterDebugTopic(a, b)
-#define UnRegisterDebugTopic(a, b)
-#define ClearAllDebugTopics()
+const RegisterDebugTopic = (a, b) => {};
+const UnRegisterDebugTopic = (a, b) => {};
+const ClearAllDebugTopics = () => {};
 
-#define FastDebugMsg(a)
-#define ErrorMsg(a)
+const FastDebugMsg = (a) => {};
+const ErrorMsg = (a) => {};
 
-#define DbgTopicRegistration(a, b, c) ;
-#define DbgMessage(a, b, c)
+const DbgTopicRegistration = (a, b, c) => {};
+const DbgMessage = (a, b, c) => {};
 
-#define RegisterJA2DebugTopic(a, b)
-#define DebugMsg(a, b, c)
+const RegisterJA2DebugTopic = (a, b) => {};
+const DebugMsg = (a, b, c) => {};
 
 //*******************************************************************************************

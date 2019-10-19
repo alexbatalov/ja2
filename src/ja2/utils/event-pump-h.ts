@@ -1,4 +1,4 @@
-#define NETWORK_PATH_DATA_SIZE 6
+const NETWORK_PATH_DATA_SIZE = 6;
 // Enumerate all events for JA2
 enum {
   E_PLAYSOUND,
@@ -34,7 +34,7 @@ enum {
 // This definition is used to denote events with a special delay value;
 // it indicates that these events will not be processed until specifically
 // called for in a special loop.
-#define DEMAND_EVENT_DELAY 0xFFFF
+const DEMAND_EVENT_DELAY = 0xFFFF;
 
 // Enumerate all structures for events
 typedef struct {

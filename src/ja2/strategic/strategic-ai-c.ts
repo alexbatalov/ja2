@@ -1,4 +1,4 @@
-#define SAI_VERSION 29
+const SAI_VERSION = 29;
 
 /*
 STRATEGIC AI -- UNDERLYING PHILOSOPHY
@@ -55,59 +55,59 @@ of the group.  If the priority of the group is high, they
 // 16 sectors that are LEVEL 1, 2, or 3 garrison groups.  The lower the level, the more
 // troops stay in that sector, and the rest will also be used as a secondary pool when
 // the primary pool runs dry.  So basically, this number is only part of the equation.
-#define EASY_QUEENS_POOL_OF_TROOPS 150
-#define NORMAL_QUEENS_POOL_OF_TROOPS 200
-#define HARD_QUEENS_POOL_OF_TROOPS 400
+const EASY_QUEENS_POOL_OF_TROOPS = 150;
+const NORMAL_QUEENS_POOL_OF_TROOPS = 200;
+const HARD_QUEENS_POOL_OF_TROOPS = 400;
 
 // Modifies the starting values as well as the desired values for all of the garrisons.
-#define EASY_INITIAL_GARRISON_PERCENTAGES 70
-#define NORMAL_INITIAL_GARRISON_PERCENTAGES 100
-#define HARD_INITIAL_GARRISON_PERCENTAGES 125
+const EASY_INITIAL_GARRISON_PERCENTAGES = 70;
+const NORMAL_INITIAL_GARRISON_PERCENTAGES = 100;
+const HARD_INITIAL_GARRISON_PERCENTAGES = 125;
 
-#define EASY_MIN_ENEMY_GROUP_SIZE 3
-#define NORMAL_MIN_ENEMY_GROUP_SIZE 4
-#define HARD_MIN_ENEMY_GROUP_SIZE 6
+const EASY_MIN_ENEMY_GROUP_SIZE = 3;
+const NORMAL_MIN_ENEMY_GROUP_SIZE = 4;
+const HARD_MIN_ENEMY_GROUP_SIZE = 6;
 
 // Sets the starting alert chances.  Everytime an enemy arrives in a new sector, or the player,
 // this is the chance the enemy will detect the player in adjacent sectors.  This chance is associated
 // with each side checked.  Stationary groups do this check periodically.
-#define EASY_ENEMY_STARTING_ALERT_LEVEL 5
-#define NORMAL_ENEMY_STARTING_ALERT_LEVEL 20
-#define HARD_ENEMY_STARTING_ALERT_LEVEL 60
+const EASY_ENEMY_STARTING_ALERT_LEVEL = 5;
+const NORMAL_ENEMY_STARTING_ALERT_LEVEL = 20;
+const HARD_ENEMY_STARTING_ALERT_LEVEL = 60;
 
 // When an enemy spots and chases a player group, the alertness value decrements by this value.  The
 // higher the value, the less of a chance the enemy will spot and attack subsequent groups.  This
 // minimizes the aggressiveness of the enemy.  Ranges from 1-100 (but recommend 20-60).
-#define EASY_ENEMY_STARTING_ALERT_DECAY 75
-#define NORMAL_ENEMY_STARTING_ALERT_DECAY 50
-#define HARD_ENEMY_STARTING_ALERT_DECAY 25
+const EASY_ENEMY_STARTING_ALERT_DECAY = 75;
+const NORMAL_ENEMY_STARTING_ALERT_DECAY = 50;
+const HARD_ENEMY_STARTING_ALERT_DECAY = 25;
 // The base time that the queen can think about reinforcements for refilling lost patrol groups,
 // town garrisons, etc. She only is allowed one action per 'turn'.
-#define EASY_TIME_EVALUATE_IN_MINUTES 480
-#define NORMAL_TIME_EVALUATE_IN_MINUTES 360
-#define HARD_TIME_EVALUATE_IN_MINUTES 180
+const EASY_TIME_EVALUATE_IN_MINUTES = 480;
+const NORMAL_TIME_EVALUATE_IN_MINUTES = 360;
+const HARD_TIME_EVALUATE_IN_MINUTES = 180;
 // The variance added on.
-#define EASY_TIME_EVALUATE_VARIANCE 240
-#define NORMAL_TIME_EVALUATE_VARIANCE 180
-#define HARD_TIME_EVALUATE_VARIANCE 120
+const EASY_TIME_EVALUATE_VARIANCE = 240;
+const NORMAL_TIME_EVALUATE_VARIANCE = 180;
+const HARD_TIME_EVALUATE_VARIANCE = 120;
 
 // When a player takes control of a sector, don't allow any enemy reinforcements to enter the sector for a
 // limited amount of time.  This essentially dumbs down the AI, making it less aggressive.
-#define EASY_GRACE_PERIOD_IN_HOURS 144 // 6 days
-#define NORMAL_GRACE_PERIOD_IN_HOURS 96 // 4 days
-#define HARD_GRACE_PERIOD_IN_HOURS 48 // 2 days
+const EASY_GRACE_PERIOD_IN_HOURS = 144; // 6 days
+const NORMAL_GRACE_PERIOD_IN_HOURS = 96; // 4 days
+const HARD_GRACE_PERIOD_IN_HOURS = 48; // 2 days
 
 // Defines how many days must pass before the queen is willing to refill a defeated patrol group.
-#define EASY_PATROL_GRACE_PERIOD_IN_DAYS 16
-#define NORMAL_PATROL_GRACE_PERIOD_IN_DAYS 12
-#define HARD_PATROL_GRACE_PERIOD_IN_DAYS 8
+const EASY_PATROL_GRACE_PERIOD_IN_DAYS = 16;
+const NORMAL_PATROL_GRACE_PERIOD_IN_DAYS = 12;
+const HARD_PATROL_GRACE_PERIOD_IN_DAYS = 8;
 
 // Certain conditions can cause the queen to go into a "full alert" mode.  This means that temporarily, the queen's
 // forces will automatically succeed adjacent checks until x number of enemy initiated battles occur.  The same variable
 // is what is used to determine the free checks.
-#define EASY_NUM_AWARE_BATTLES 1
-#define NORMAL_NUM_AWARE_BATTLES 2
-#define HARD_NUM_AWARE_BATTLES 3
+const EASY_NUM_AWARE_BATTLES = 1;
+const NORMAL_NUM_AWARE_BATTLES = 2;
+const HARD_NUM_AWARE_BATTLES = 3;
 
 BOOLEAN gfAutoAIAware = FALSE;
 
@@ -150,16 +150,16 @@ UINT16 gusPlayerBattleVictories = 0;
 BOOLEAN gfUseAlternateQueenPosition = FALSE;
 
 // padding for generic globals
-#define SAI_PADDING_BYTES 97
+const SAI_PADDING_BYTES = 97;
 INT8 gbPadding[SAI_PADDING_BYTES];
 // patrol group info plus padding
-#define SAVED_PATROL_GROUPS 50
+const SAVED_PATROL_GROUPS = 50;
 PATROL_GROUP *gPatrolGroup = NULL;
 // army composition info plus padding
-#define SAVED_ARMY_COMPOSITIONS 60
+const SAVED_ARMY_COMPOSITIONS = 60;
 ARMY_COMPOSITION gArmyComp[NUM_ARMY_COMPOSITIONS];
 // garrison info plus padding
-#define SAVED_GARRISON_GROUPS 100
+const SAVED_GARRISON_GROUPS = 100;
 GARRISON_GROUP *gGarrisonGroup = NULL;
 
 extern UINT8 gubNumGroupsArrivedSimultaneously;
@@ -266,7 +266,7 @@ PATROL_GROUP gOrigPatrolGroup[] = {
   { 12, 30, { SEC_L13, SEC_M13, SEC_M14, SEC_L14 }, -1, 0, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   // 29
 };
-#define PATROL_GROUPS 29
+const PATROL_GROUPS = 29;
 
 GARRISON_GROUP gOrigGarrisonGroup[] = {
   // SECTOR	MILITARY								WEIGHT	UNUSED
@@ -405,7 +405,7 @@ void MassFortifyTowns();
 
 void UpgradeAdminsToTroops();
 
-#define SAIReportError(a) // define it out
+const SAIReportError = (a) => {}; // define it out
 
 enum SAIMOVECODE {
   DIRECT,

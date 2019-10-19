@@ -1,4 +1,4 @@
-#define STRING_LENGTH 255
+const STRING_LENGTH = 255;
 
 extern UINT16 ShortItemNames[MAXITEMS][80];
 extern UINT16 ItemNames[MAXITEMS][80];
@@ -304,9 +304,9 @@ enum {
   STR_BLOODCATS_TURN,
 };
 
-#define LARGE_STRING_LENGTH 200
-#define MED_STRING_LENGTH 80
-#define SMALL_STRING_LENGTH 20
+const LARGE_STRING_LENGTH = 200;
+const MED_STRING_LENGTH = 80;
+const SMALL_STRING_LENGTH = 20;
 
 extern UINT16 TacticalStr[][MED_STRING_LENGTH];
 extern UINT16 LargeTacticalStr[][LARGE_STRING_LENGTH];
@@ -923,12 +923,12 @@ enum {
 extern STR16 zMarksMapScreenText[];
 
 // Weapon Name and Description size
-#define ITEMSTRINGFILENAME "BINARYDATA\\ITEMDESC.EDT"
-#define SIZE_ITEM_NAME 160
-#define SIZE_SHORT_ITEM_NAME 160
-#define SIZE_ITEM_INFO 480
-#define SIZE_ITEM_PROS 160
-#define SIZE_ITEM_CONS 160
+const ITEMSTRINGFILENAME = "BINARYDATA\\ITEMDESC.EDT";
+const SIZE_ITEM_NAME = 160;
+const SIZE_SHORT_ITEM_NAME = 160;
+const SIZE_ITEM_INFO = 480;
+const SIZE_ITEM_PROS = 160;
+const SIZE_ITEM_CONS = 160;
 
 BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString);
 extern void LoadAllExternalText(void);

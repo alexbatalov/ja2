@@ -381,8 +381,8 @@ BOOLEAN NeedToRadioAboutPanicTrigger(void) {
   return FALSE;
 }
 
-#define STAIRCASE_GRIDNO 12067
-#define STAIRCASE_DIRECTION 0
+const STAIRCASE_GRIDNO = 12067;
+const STAIRCASE_DIRECTION = 0;
 
 INT8 HeadForTheStairCase(SOLDIERTYPE *pSoldier) {
   UNDERGROUND_SECTORINFO *pBasementInfo;
@@ -403,6 +403,6 @@ INT8 HeadForTheStairCase(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-#define WARDEN_ALARM_GRIDNO 9376
-#define WARDEN_GAS_GRIDNO 9216
+const WARDEN_ALARM_GRIDNO = 9376;
+const WARDEN_GAS_GRIDNO = 9216;
 // in both cases, direction 6

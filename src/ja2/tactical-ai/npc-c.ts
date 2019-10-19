@@ -1,5 +1,5 @@
-#define NUM_CIVQUOTE_SECTORS 20
-#define MINERS_CIV_QUOTE_INDEX 16
+const NUM_CIVQUOTE_SECTORS = 20;
+const MINERS_CIV_QUOTE_INDEX = 16;
 
 INT16 gsCivQuoteSector[NUM_CIVQUOTE_SECTORS][2] = {
   { 2, MAP_ROW_A },
@@ -25,13 +25,13 @@ INT16 gsCivQuoteSector[NUM_CIVQUOTE_SECTORS][2] = {
   { 0, 0 },
 };
 
-#define NO_FACT (MAX_FACTS - 1)
-#define NO_QUEST 255
-#define QUEST_NOT_STARTED_NUM 100
-#define QUEST_DONE_NUM 200
-#define NO_QUOTE 255
-#define IRRELEVANT 255
-#define NO_MOVE 65535
+const NO_FACT = (MAX_FACTS - 1);
+const NO_QUEST = 255;
+const QUEST_NOT_STARTED_NUM = 100;
+const QUEST_DONE_NUM = 200;
+const NO_QUOTE = 255;
+const IRRELEVANT = 255;
+const NO_MOVE = 65535;
 
 NPCQuoteInfo *gpNPCQuoteInfoArray[NUM_PROFILES] = { NULL };
 NPCQuoteInfo *gpBackupNPCQuoteInfoArray[NUM_PROFILES] = { NULL };

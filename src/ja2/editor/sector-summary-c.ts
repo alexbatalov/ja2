@@ -1,10 +1,10 @@
 extern BOOLEAN gfOverheadMapDirty;
 
-#define MAP_SIZE 208
-#define MAP_LEFT 417
-#define MAP_TOP 15
-#define MAP_RIGHT (MAP_LEFT + MAP_SIZE)
-#define MAP_BOTTOM (MAP_TOP + MAP_SIZE)
+const MAP_SIZE = 208;
+const MAP_LEFT = 417;
+const MAP_TOP = 15;
+const MAP_RIGHT = (MAP_LEFT + MAP_SIZE);
+const MAP_BOTTOM = (MAP_TOP + MAP_SIZE);
 
 enum {
   PRE_ALPHA,
@@ -20,20 +20,20 @@ UINT16 gszVersionType[5][10] = {
   L"Beta",
   L"Release",
 };
-#define GLOBAL_SUMMARY_STATE RELEASE
+const GLOBAL_SUMMARY_STATE = RELEASE;
 
 // Regular masks
-#define GROUND_LEVEL_MASK 0x01
-#define BASEMENT1_LEVEL_MASK 0x02
-#define BASEMENT2_LEVEL_MASK 0x04
-#define BASEMENT3_LEVEL_MASK 0x08
-#define ALL_LEVELS_MASK 0x0f
+const GROUND_LEVEL_MASK = 0x01;
+const BASEMENT1_LEVEL_MASK = 0x02;
+const BASEMENT2_LEVEL_MASK = 0x04;
+const BASEMENT3_LEVEL_MASK = 0x08;
+const ALL_LEVELS_MASK = 0x0f;
 // Alternate masks
-#define ALTERNATE_GROUND_MASK 0x10
-#define ALTERNATE_B1_MASK 0x20
-#define ALTERNATE_B2_MASK 0x40
-#define ALTERNATE_B3_MASK 0x80
-#define ALTERNATE_LEVELS_MASK 0xf0
+const ALTERNATE_GROUND_MASK = 0x10;
+const ALTERNATE_B1_MASK = 0x20;
+const ALTERNATE_B2_MASK = 0x40;
+const ALTERNATE_B3_MASK = 0x80;
+const ALTERNATE_LEVELS_MASK = 0xf0;
 
 void ExtractTempFilename();
 

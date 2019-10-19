@@ -53,69 +53,73 @@ UINT8 ubBloodGraphicLUT[] = {
   0,
 };
 
-#define SMELL_STRENGTH_MAX 63
-#define BLOOD_STRENGTH_MAX 7
-#define BLOOD_DELAY_MAX 3
+const SMELL_STRENGTH_MAX = 63;
+const BLOOD_STRENGTH_MAX = 7;
+const BLOOD_DELAY_MAX = 3;
 
-#define SMELL_TYPE_BITS(s) (s & 0x03)
+const SMELL_TYPE_BITS = (s) => (s & 0x03);
 
-#define BLOOD_ROOF_TYPE(s) (s & 0x02)
-#define BLOOD_FLOOR_TYPE(s) (s & 0x01)
+const BLOOD_ROOF_TYPE = (s) => (s & 0x02);
+const BLOOD_FLOOR_TYPE = (s) => (s & 0x01);
 
-#define BLOOD_ROOF_STRENGTH(b) (b & 0xE0)
-#define BLOOD_FLOOR_STRENGTH(b) ((b & 0x1C) >> 2)
-#define BLOOD_DELAY_TIME(b) (b & 0x03)
-#define NO_BLOOD_STRENGTH(b) ((b & 0xFC) == 0)
+const BLOOD_ROOF_STRENGTH = (b) => (b & 0xE0);
+const BLOOD_FLOOR_STRENGTH = (b) => ((b & 0x1C) >> 2);
+const BLOOD_DELAY_TIME = (b) => (b & 0x03);
+const NO_BLOOD_STRENGTH = (b) => ((b & 0xFC) == 0);
 
-#define DECAY_SMELL_STRENGTH(s) \
-  { \
-    UINT8 ubStrength = SMELL_STRENGTH((s)); \
-    ubStrength--; \
-    ubStrength = ubStrength << SMELL_TYPE_NUM_BITS; \
-    (s) = SMELL_TYPE_BITS((s)) | ubStrength; \
-  }
+const DECAY_SMELL_STRENGTH = (s) => {
+  UINT8 ubStrength = SMELL_STRENGTH((s));
+  ubStrength--;
+  ubStrength = ubStrength << SMELL_TYPE_NUM_BITS;
+  (s) = SMELL_TYPE_BITS((s)) | ubStrength;
+};
 
 // s = smell byte
 // ns = new strength
 // ntf = new type on floor
 // Note that the first part of the macro is designed to
 // preserve the type value for the blood on the roof
-#define SET_SMELL(s, ns, ntf) \
-  { (s) = (BLOOD_ROOF_TYPE(s)) | SMELL_TYPE(ntf) | (ns << SMELL_TYPE_NUM_BITS); }
+const SET_SMELL = (s, ns, ntf) => {
+  (s) = (BLOOD_ROOF_TYPE(s)) | SMELL_TYPE(ntf) | (ns << SMELL_TYPE_NUM_BITS);
+};
 
-#define DECAY_BLOOD_DELAY_TIME(b) \
-  { (b)--; }
+const DECAY_BLOOD_DELAY_TIME = (b) => {
+  (b)--;
+};
 
-#define SET_BLOOD_FLOOR_STRENGTH(b, nb) \
-  { (b) = ((nb) << 2) | ((b)&0xE3); }
+const SET_BLOOD_FLOOR_STRENGTH = (b, nb) => {
+  (b) = ((nb) << 2) | ((b) & 0xE3);
+};
 
-#define SET_BLOOD_ROOF_STRENGTH(b, nb) \
-  { (b) = BLOOD_FLOOR_STRENGTH((nb)) << 5 | ((b)&0x1F); }
+const SET_BLOOD_ROOF_STRENGTH = (b, nb) => {
+  (b) = BLOOD_FLOOR_STRENGTH((nb)) << 5 | ((b) & 0x1F);
+};
 
-#define DECAY_BLOOD_FLOOR_STRENGTH(b) \
-  { \
-    UINT8 ubFloorStrength; \
-    ubFloorStrength = BLOOD_FLOOR_STRENGTH((b)); \
-    ubFloorStrength--; \
-    SET_BLOOD_FLOOR_STRENGTH(b, ubFloorStrength); \
-  }
+const DECAY_BLOOD_FLOOR_STRENGTH = (b) => {
+  UINT8 ubFloorStrength;
+  ubFloorStrength = BLOOD_FLOOR_STRENGTH((b));
+  ubFloorStrength--;
+  SET_BLOOD_FLOOR_STRENGTH(b, ubFloorStrength);
+};
 
-#define DECAY_BLOOD_ROOF_STRENGTH(b) \
-  { \
-    UINT8 ubRoofStrength; \
-    ubRoofStrength = BLOOD_ROOF_STRENGTH((b)); \
-    ubRoofStrength--; \
-    SET_BLOOD_FLOOR_STRENGTH(b, ubRoofStrength); \
-  }
+const DECAY_BLOOD_ROOF_STRENGTH = (b) => {
+  UINT8 ubRoofStrength;
+  ubRoofStrength = BLOOD_ROOF_STRENGTH((b));
+  ubRoofStrength--;
+  SET_BLOOD_FLOOR_STRENGTH(b, ubRoofStrength);
+};
 
-#define SET_BLOOD_DELAY_TIME(b) \
-  { (b) = BLOOD_DELAY_TIME((UINT8)Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC); }
+const SET_BLOOD_DELAY_TIME = (b) => {
+  (b) = BLOOD_DELAY_TIME((UINT8)Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC);
+};
 
-#define SET_BLOOD_FLOOR_TYPE(s, ntg) \
-  { (s) = BLOOD_FLOOR_TYPE(ntg) | (s & 0xFE); }
+const SET_BLOOD_FLOOR_TYPE = (s, ntg) => {
+  (s) = BLOOD_FLOOR_TYPE(ntg) | (s & 0xFE);
+};
 
-#define SET_BLOOD_ROOF_TYPE(s, ntr) \
-  { (s) = BLOOD_ROOF_TYPE(ntr) | (s & 0xFD); }
+const SET_BLOOD_ROOF_TYPE = (s, ntr) => {
+  (s) = BLOOD_ROOF_TYPE(ntr) | (s & 0xFD);
+};
 
 void RemoveBlood(INT16 sGridNo, INT8 bLevel) {
   gpWorldLevelData[sGridNo].ubBloodInfo = 0;

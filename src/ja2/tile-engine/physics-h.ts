@@ -60,7 +60,7 @@ typedef struct {
   UINT8 ubPadding[1];
 } REAL_OBJECT;
 
-#define NUM_OBJECT_SLOTS 50
+const NUM_OBJECT_SLOTS = 50;
 
 extern REAL_OBJECT ObjectSlots[NUM_OBJECT_SLOTS];
 

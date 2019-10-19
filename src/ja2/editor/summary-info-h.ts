@@ -1,5 +1,5 @@
-#define GLOBAL_SUMMARY_VERSION 14
-#define MINIMUMVERSION 7
+const GLOBAL_SUMMARY_VERSION = 14;
+const MINIMUMVERSION = 7;
 
 typedef struct TEAMSUMMARY {
   UINT8 ubTotal;

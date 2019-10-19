@@ -12,10 +12,10 @@ typedef struct Screens {
 // SCR_INACTIVE -> SCR_INITIALIZING -> SCR_ACTIVE -> SCR_SHUTTING_DOWN -> SCR_INACTIVE ... Anything else
 // will cause the system to yak.
 
-#define SCR_INACTIVE 0x00
-#define SCR_INITIALIZING 0x01
-#define SCR_ACTIVE 0x02
-#define SCR_SHUTTING_DOWN 0x04
+const SCR_INACTIVE = 0x00;
+const SCR_INITIALIZING = 0x01;
+const SCR_ACTIVE = 0x02;
+const SCR_SHUTTING_DOWN = 0x04;
 
 // This extern is made available to make sure that external modules will have access to the screen information
 

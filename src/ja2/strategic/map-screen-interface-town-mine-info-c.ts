@@ -1,5 +1,5 @@
-#define BOX_BUTTON_WIDTH 100
-#define BOX_BUTTON_HEIGHT 20
+const BOX_BUTTON_WIDTH = 100;
+const BOX_BUTTON_HEIGHT = 20;
 
 // flag to say if we are showing town/mine box at all
 BOOLEAN fShowTownInfo = FALSE;

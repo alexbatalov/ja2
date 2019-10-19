@@ -1,7 +1,7 @@
 // main game loop systems
-#define INIT_SYSTEM 0
+const INIT_SYSTEM = 0;
 
-#define NO_PENDING_SCREEN 0xFFFF
+const NO_PENDING_SCREEN = 0xFFFF;
 
 extern BOOLEAN InitializeGame(void);
 extern void ShutdownGame(void);

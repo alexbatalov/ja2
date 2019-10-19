@@ -4,19 +4,19 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#define MAX_DIRTY_REGIONS 128
+const MAX_DIRTY_REGIONS = 128;
 
-#define VIDEO_OFF 0x00
-#define VIDEO_ON 0x01
-#define VIDEO_SHUTTING_DOWN 0x02
-#define VIDEO_SUSPENDED 0x04
+const VIDEO_OFF = 0x00;
+const VIDEO_ON = 0x01;
+const VIDEO_SHUTTING_DOWN = 0x02;
+const VIDEO_SUSPENDED = 0x04;
 
-#define THREAD_OFF 0x00
-#define THREAD_ON 0x01
-#define THREAD_SUSPENDED 0x02
+const THREAD_OFF = 0x00;
+const THREAD_ON = 0x01;
+const THREAD_SUSPENDED = 0x02;
 
-#define CURRENT_MOUSE_DATA 0
-#define PREVIOUS_MOUSE_DATA 1
+const CURRENT_MOUSE_DATA = 0;
+const PREVIOUS_MOUSE_DATA = 1;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -49,7 +49,7 @@ static UINT8 gubScreenPixelDepth;
 
 static RECT gScrollRegion;
 
-#define MAX_NUM_FRAMES 25
+const MAX_NUM_FRAMES = 25;
 
 BOOLEAN gfVideoCapture = FALSE;
 UINT32 guiFramePeriod = (1000 / 15);

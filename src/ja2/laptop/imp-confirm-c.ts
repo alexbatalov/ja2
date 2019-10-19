@@ -1,4 +1,4 @@
-#define IMP_MERC_FILE "IMP.dat"
+const IMP_MERC_FILE = "IMP.dat";
 
 UINT32 giIMPConfirmButton[2];
 UINT32 giIMPConfirmButtonImage[2];
@@ -303,7 +303,7 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 }
 */
 
-#define PROFILE_HAS_SKILL_TRAIT(p, t) ((p->bSkillTrait == t) || (p->bSkillTrait2 == t))
+const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p->bSkillTrait == t) || (p->bSkillTrait2 == t));
 
 void GiveItemsToPC(UINT8 ubProfileId) {
   MERCPROFILESTRUCT *pProfile;

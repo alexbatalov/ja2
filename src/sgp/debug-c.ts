@@ -26,7 +26,7 @@ INT32 giProfileCount;
 
 UINT8 gubAssertString[128];
 
-#define MAX_MSG_LENGTH2 512
+const MAX_MSG_LENGTH2 = 512;
 UINT8 gbTmpDebugString[8][MAX_MSG_LENGTH2];
 UINT8 gubStringIndex = 0;
 

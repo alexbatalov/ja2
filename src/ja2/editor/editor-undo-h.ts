@@ -10,4 +10,4 @@ void DisableUndo();
 void DetermineUndoState();
 
 // Undo command flags
-#define MAX_UNDO_COMMAND_LENGTH 10
+const MAX_UNDO_COMMAND_LENGTH = 10;

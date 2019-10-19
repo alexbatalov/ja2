@@ -1,222 +1,222 @@
 // DEFINES
 
-#define MAX_SORT_METHODS 6
+const MAX_SORT_METHODS = 6;
 
 // Cursors
-#define SCREEN_CURSOR CURSOR_NORMAL
+const SCREEN_CURSOR = CURSOR_NORMAL;
 
 // Fonts
-#define CHAR_FONT BLOCKFONT2 // COMPFONT
-#define ETA_FONT BLOCKFONT2
+const CHAR_FONT = () => BLOCKFONT2(); // COMPFONT
+const ETA_FONT = () => BLOCKFONT2();
 
 // Colors
-#define CHAR_INFO_PANEL_BLOCK_COLOR 60
+const CHAR_INFO_PANEL_BLOCK_COLOR = 60;
 
-#define FONT_MAP_DKYELLOW 170
+const FONT_MAP_DKYELLOW = 170;
 
-#define CHAR_TITLE_FONT_COLOR 6
-#define CHAR_TEXT_FONT_COLOR 5
+const CHAR_TITLE_FONT_COLOR = 6;
+const CHAR_TEXT_FONT_COLOR = 5;
 
-#define STARTING_COLOR_NUM 5
+const STARTING_COLOR_NUM = 5;
 
-#define MAP_TIME_UNDER_THIS_DISPLAY_AS_HOURS (3 * 24 * 60)
+const MAP_TIME_UNDER_THIS_DISPLAY_AS_HOURS = (3 * 24 * 60);
 
-#define MIN_KB_TO_DO_PRE_LOAD (32 * 1024)
+const MIN_KB_TO_DO_PRE_LOAD = (32 * 1024);
 
-#define DELAY_PER_FLASH_FOR_DEPARTING_PERSONNEL 500
-#define GLOW_DELAY 70
-#define ASSIGNMENT_DONE_FLASH_TIME 500
+const DELAY_PER_FLASH_FOR_DEPARTING_PERSONNEL = 500;
+const GLOW_DELAY = 70;
+const ASSIGNMENT_DONE_FLASH_TIME = 500;
 
-#define MINS_TO_FLASH_CONTRACT_TIME (4 * 60)
+const MINS_TO_FLASH_CONTRACT_TIME = (4 * 60);
 
 // Coordinate defines
 
-#define TOWN_INFO_X 0
-#define TOWN_INFO_Y 1
+const TOWN_INFO_X = 0;
+const TOWN_INFO_Y = 1;
 
-#define PLAYER_INFO_X 0
-#define PLAYER_INFO_Y 107
+const PLAYER_INFO_X = 0;
+const PLAYER_INFO_Y = 107;
 
 // item description
-#define MAP_ITEMDESC_START_X 0
-#define MAP_ITEMDESC_START_Y PLAYER_INFO_Y
+const MAP_ITEMDESC_START_X = 0;
+const MAP_ITEMDESC_START_Y = PLAYER_INFO_Y;
 
-#define INV_REGION_X PLAYER_INFO_X
-#define INV_REGION_Y PLAYER_INFO_Y
-#define INV_REGION_WIDTH 261
-#define INV_REGION_HEIGHT 359 - 94
-#define INV_BTN_X PLAYER_INFO_X + 217
-#define INV_BTN_Y PLAYER_INFO_Y + 210
+const INV_REGION_X = PLAYER_INFO_X;
+const INV_REGION_Y = PLAYER_INFO_Y;
+const INV_REGION_WIDTH = 261;
+const INV_REGION_HEIGHT = 359 - 94;
+const INV_BTN_X = PLAYER_INFO_X + 217;
+const INV_BTN_Y = PLAYER_INFO_Y + 210;
 
-#define MAP_ARMOR_LABEL_X 208
-#define MAP_ARMOR_LABEL_Y 180
-#define MAP_ARMOR_X 209
-#define MAP_ARMOR_Y 189
-#define MAP_ARMOR_PERCENT_X 229
-#define MAP_ARMOR_PERCENT_Y 190
+const MAP_ARMOR_LABEL_X = 208;
+const MAP_ARMOR_LABEL_Y = 180;
+const MAP_ARMOR_X = 209;
+const MAP_ARMOR_Y = 189;
+const MAP_ARMOR_PERCENT_X = 229;
+const MAP_ARMOR_PERCENT_Y = 190;
 
-#define MAP_WEIGHT_LABEL_X 173
-#define MAP_WEIGHT_LABEL_Y 256
-#define MAP_WEIGHT_X 176
-#define MAP_WEIGHT_Y 266
-#define MAP_WEIGHT_PERCENT_X 196
-#define MAP_WEIGHT_PERCENT_Y 266
+const MAP_WEIGHT_LABEL_X = 173;
+const MAP_WEIGHT_LABEL_Y = 256;
+const MAP_WEIGHT_X = 176;
+const MAP_WEIGHT_Y = 266;
+const MAP_WEIGHT_PERCENT_X = 196;
+const MAP_WEIGHT_PERCENT_Y = 266;
 
-#define MAP_CAMMO_LABEL_X 178
-#define MAP_CAMMO_LABEL_Y 283
-#define MAP_CAMMO_X 176
-#define MAP_CAMMO_Y 292
-#define MAP_CAMMO_PERCENT_X 196
-#define MAP_CAMMO_PERCENT_Y 293
+const MAP_CAMMO_LABEL_X = 178;
+const MAP_CAMMO_LABEL_Y = 283;
+const MAP_CAMMO_X = 176;
+const MAP_CAMMO_Y = 292;
+const MAP_CAMMO_PERCENT_X = 196;
+const MAP_CAMMO_PERCENT_Y = 293;
 
-#define MAP_PERCENT_WIDTH 20
-#define MAP_PERCENT_HEIGHT 10
+const MAP_PERCENT_WIDTH = 20;
+const MAP_PERCENT_HEIGHT = 10;
 
-#define MAP_INV_STATS_TITLE_FONT_COLOR 6
-#define MAP_INV_STATS_TEXT_FONT_COLOR 5
+const MAP_INV_STATS_TITLE_FONT_COLOR = 6;
+const MAP_INV_STATS_TEXT_FONT_COLOR = 5;
 
-#define PLAYER_INFO_FACE_START_X 9
-#define PLAYER_INFO_FACE_START_Y 17
-#define PLAYER_INFO_FACE_END_X 60
-#define PLAYER_INFO_FACE_END_Y 76
+const PLAYER_INFO_FACE_START_X = 9;
+const PLAYER_INFO_FACE_START_Y = 17;
+const PLAYER_INFO_FACE_END_X = 60;
+const PLAYER_INFO_FACE_END_Y = 76;
 
-#define INV_BODY_X 71
-#define INV_BODY_Y 116
+const INV_BODY_X = 71;
+const INV_BODY_Y = 116;
 
-#define NAME_X 11
-#define NAME_WIDTH 62 - NAME_X
-#define ASSIGN_X 67
-#define ASSIGN_WIDTH 118 - ASSIGN_X
-#define SLEEP_X 123
-#define SLEEP_WIDTH 142 - SLEEP_X
-#define LOC_X 147
-#define LOC_WIDTH 179 - LOC_X
-#define DEST_ETA_X 184
-#define DEST_ETA_WIDTH 217 - DEST_ETA_X
-#define TIME_REMAINING_X 222
-#define TIME_REMAINING_WIDTH 250 - TIME_REMAINING_X
-#define CLOCK_X_START 463 - 18
-#define CLOCK_Y_START 298
-#define DEST_PLOT_X 463
-#define DEST_PLOT_Y 345
-#define CLOCK_ETA_X 463 - 15 + 6 + 30
-#define CLOCK_HOUR_X_START 463 + 25 + 30
-#define CLOCK_MIN_X_START 463 + 45 + 30
+const NAME_X = 11;
+const NAME_WIDTH = 62 - NAME_X;
+const ASSIGN_X = 67;
+const ASSIGN_WIDTH = 118 - ASSIGN_X;
+const SLEEP_X = 123;
+const SLEEP_WIDTH = 142 - SLEEP_X;
+const LOC_X = 147;
+const LOC_WIDTH = 179 - LOC_X;
+const DEST_ETA_X = 184;
+const DEST_ETA_WIDTH = 217 - DEST_ETA_X;
+const TIME_REMAINING_X = 222;
+const TIME_REMAINING_WIDTH = 250 - TIME_REMAINING_X;
+const CLOCK_X_START = 463 - 18;
+const CLOCK_Y_START = 298;
+const DEST_PLOT_X = 463;
+const DEST_PLOT_Y = 345;
+const CLOCK_ETA_X = 463 - 15 + 6 + 30;
+const CLOCK_HOUR_X_START = 463 + 25 + 30;
+const CLOCK_MIN_X_START = 463 + 45 + 30;
 
 // contract
-#define CONTRACT_X 185
-#define CONTRACT_Y 50
+const CONTRACT_X = 185;
+const CONTRACT_Y = 50;
 //#define CONTRACT_WIDTH  63
 //#define CONTRACT_HEIGHT 10
 
 // trash can
-#define TRASH_CAN_X 176
-#define TRASH_CAN_Y 211 + PLAYER_INFO_Y
-#define TRASH_CAN_WIDTH 193 - 165
-#define TRASH_CAN_HEIGHT 239 - 217
+const TRASH_CAN_X = 176;
+const TRASH_CAN_Y = 211 + PLAYER_INFO_Y;
+const TRASH_CAN_WIDTH = 193 - 165;
+const TRASH_CAN_HEIGHT = 239 - 217;
 
 // Text offsets
-#define Y_OFFSET 2
+const Y_OFFSET = 2;
 
 // The boxes defines
-#define TRAIN_Y_OFFSET 53
-#define TRAIN_X_OFF 65
-#define TRAIN_WID 80
-#define TRAIN_HEIG 47
-#define STRING_X_OFFSET 10
-#define STRING_Y_OFFSET 5
-#define POP_UP_BOX_X 120
-#define POP_UP_BOX_Y 0
-#define POP_UP_BOX_WIDTH 60
-#define POP_UP_BOX_HEIGHT 100
-#define MOUSE_PTR_Y_OFFSET 3
-#define POP_UP_Y_OFFSET 3
-#define TRAIN_TEXT_Y_OFFSET 4
+const TRAIN_Y_OFFSET = 53;
+const TRAIN_X_OFF = 65;
+const TRAIN_WID = 80;
+const TRAIN_HEIG = 47;
+const STRING_X_OFFSET = 10;
+const STRING_Y_OFFSET = 5;
+const POP_UP_BOX_X = 120;
+const POP_UP_BOX_Y = 0;
+const POP_UP_BOX_WIDTH = 60;
+const POP_UP_BOX_HEIGHT = 100;
+const MOUSE_PTR_Y_OFFSET = 3;
+const POP_UP_Y_OFFSET = 3;
+const TRAIN_TEXT_Y_OFFSET = 4;
 
 // char stat positions
-#define STR_X (112)
-#define STR_Y 42
-#define DEX_X STR_X
-#define DEX_Y 32
-#define AGL_X STR_X
-#define AGL_Y 22
-#define LDR_X STR_X
-#define LDR_Y 52
-#define WIS_X STR_X
-#define WIS_Y 62
-#define LVL_X (159)
-#define LVL_Y AGL_Y
-#define MRK_X LVL_X
-#define MRK_Y DEX_Y
-#define EXP_X LVL_X
-#define EXP_Y STR_Y
-#define MEC_X LVL_X
-#define MEC_Y LDR_Y
-#define MED_X LVL_X
-#define MED_Y WIS_Y
+const STR_X = (112);
+const STR_Y = 42;
+const DEX_X = STR_X;
+const DEX_Y = 32;
+const AGL_X = STR_X;
+const AGL_Y = 22;
+const LDR_X = STR_X;
+const LDR_Y = 52;
+const WIS_X = STR_X;
+const WIS_Y = 62;
+const LVL_X = (159);
+const LVL_Y = AGL_Y;
+const MRK_X = LVL_X;
+const MRK_Y = DEX_Y;
+const EXP_X = LVL_X;
+const EXP_Y = STR_Y;
+const MEC_X = LVL_X;
+const MEC_Y = LDR_Y;
+const MED_X = LVL_X;
+const MED_Y = WIS_Y;
 
-#define STAT_WID 15
-#define STAT_HEI GetFontHeight(CHAR_FONT)
+const STAT_WID = 15;
+const STAT_HEI = () => GetFontHeight(CHAR_FONT());
 
-#define PIC_NAME_X 8
-#define PIC_NAME_Y (66 + 3)
-#define PIC_NAME_WID 60 - PIC_NAME_X
-#define PIC_NAME_HEI 75 - PIC_NAME_Y
-#define CHAR_NAME_X 14
-#define CHAR_NAME_Y (2 + 3)
-#define CHAR_NAME_WID 164 - CHAR_NAME_X
-#define CHAR_NAME_HEI 11 - CHAR_NAME_Y
-#define CHAR_LOC_X 76
-#define CHAR_LOC_Y 84
-#define CHAR_LOC_WID 16
-#define CHAR_LOC_HEI 9
-#define CHAR_TIME_REMAINING_X 207
-#define CHAR_TIME_REMAINING_Y 65
-#define CHAR_TIME_REMAINING_WID 258 - CHAR_TIME_REMAINING_X
-#define CHAR_TIME_REMAINING_HEI GetFontHeight(CHAR_FONT)
-#define CHAR_SALARY_X CHAR_TIME_REMAINING_X
-#define CHAR_SALARY_Y 79
-#define CHAR_SALARY_WID CHAR_TIME_REMAINING_WID - 8 // for right justify
-#define CHAR_SALARY_HEI CHAR_TIME_REMAINING_HEI
-#define CHAR_MEDICAL_X CHAR_TIME_REMAINING_X
-#define CHAR_MEDICAL_Y 93
-#define CHAR_MEDICAL_WID CHAR_TIME_REMAINING_WID - 8 // for right justify
-#define CHAR_MEDICAL_HEI CHAR_TIME_REMAINING_HEI
-#define CHAR_ASSIGN_X 182
-#define CHAR_ASSIGN1_Y 18
-#define CHAR_ASSIGN2_Y 31
-#define CHAR_ASSIGN_WID 257 - 178
-#define CHAR_ASSIGN_HEI 39 - 29
-#define CHAR_HP_X 133
-#define CHAR_HP_Y 77 + 3
-#define CHAR_HP_WID 175 - CHAR_HP_X
-#define CHAR_HP_HEI 90 - CHAR_HP_Y
-#define CHAR_MORALE_X 133
-#define CHAR_MORALE_Y 91 + 3
-#define CHAR_MORALE_WID 175 - CHAR_MORALE_X
-#define CHAR_MORALE_HEI 101 - CHAR_MORALE_Y
+const PIC_NAME_X = 8;
+const PIC_NAME_Y = (66 + 3);
+const PIC_NAME_WID = 60 - PIC_NAME_X;
+const PIC_NAME_HEI = 75 - PIC_NAME_Y;
+const CHAR_NAME_X = 14;
+const CHAR_NAME_Y = (2 + 3);
+const CHAR_NAME_WID = 164 - CHAR_NAME_X;
+const CHAR_NAME_HEI = 11 - CHAR_NAME_Y;
+const CHAR_LOC_X = 76;
+const CHAR_LOC_Y = 84;
+const CHAR_LOC_WID = 16;
+const CHAR_LOC_HEI = 9;
+const CHAR_TIME_REMAINING_X = 207;
+const CHAR_TIME_REMAINING_Y = 65;
+const CHAR_TIME_REMAINING_WID = 258 - CHAR_TIME_REMAINING_X;
+const CHAR_TIME_REMAINING_HEI = () => GetFontHeight(CHAR_FONT());
+const CHAR_SALARY_X = CHAR_TIME_REMAINING_X;
+const CHAR_SALARY_Y = 79;
+const CHAR_SALARY_WID = CHAR_TIME_REMAINING_WID - 8; // for right justify
+const CHAR_SALARY_HEI = () => CHAR_TIME_REMAINING_HEI();
+const CHAR_MEDICAL_X = CHAR_TIME_REMAINING_X;
+const CHAR_MEDICAL_Y = 93;
+const CHAR_MEDICAL_WID = CHAR_TIME_REMAINING_WID - 8; // for right justify
+const CHAR_MEDICAL_HEI = () => CHAR_TIME_REMAINING_HEI();
+const CHAR_ASSIGN_X = 182;
+const CHAR_ASSIGN1_Y = 18;
+const CHAR_ASSIGN2_Y = 31;
+const CHAR_ASSIGN_WID = 257 - 178;
+const CHAR_ASSIGN_HEI = 39 - 29;
+const CHAR_HP_X = 133;
+const CHAR_HP_Y = 77 + 3;
+const CHAR_HP_WID = 175 - CHAR_HP_X;
+const CHAR_HP_HEI = 90 - CHAR_HP_Y;
+const CHAR_MORALE_X = 133;
+const CHAR_MORALE_Y = 91 + 3;
+const CHAR_MORALE_WID = 175 - CHAR_MORALE_X;
+const CHAR_MORALE_HEI = 101 - CHAR_MORALE_Y;
 
-#define CROSS_X 195
-#define CROSS_Y 83
-#define CROSS_HEIGHT 20
-#define CROSS_WIDTH 20
-#define CHAR_PAY_X 150
-#define CHAR_PAY_Y 80 + 4
-#define CHAR_PAY_HEI GetFontHeight(CHAR_FONT)
-#define CHAR_PAY_WID CROSS_X - CHAR_PAY_X
-#define SOLDIER_PIC_X 9
-#define SOLDIER_PIC_Y 20
-#define SOLDIER_HAND_X 6
-#define SOLDIER_HAND_Y 81
+const CROSS_X = 195;
+const CROSS_Y = 83;
+const CROSS_HEIGHT = 20;
+const CROSS_WIDTH = 20;
+const CHAR_PAY_X = 150;
+const CHAR_PAY_Y = 80 + 4;
+const CHAR_PAY_HEI = () => GetFontHeight(CHAR_FONT());
+const CHAR_PAY_WID = CROSS_X - CHAR_PAY_X;
+const SOLDIER_PIC_X = 9;
+const SOLDIER_PIC_Y = 20;
+const SOLDIER_HAND_X = 6;
+const SOLDIER_HAND_Y = 81;
 //#define	TM_INV_WIDTH								58
 //#define	TM_INV_HEIGHT								23
 
-#define CLOCK_X 554
-#define CLOCK_Y 459
+const CLOCK_X = 554;
+const CLOCK_Y = 459;
 
-#define RGB_WHITE (FROMRGB(255, 255, 255))
-#define RGB_YELLOW (FROMRGB(255, 255, 0))
-#define RGB_NEAR_BLACK (FROMRGB(0, 0, 1))
+const RGB_WHITE = () => (FROMRGB(255, 255, 255));
+const RGB_YELLOW = () => (FROMRGB(255, 255, 0));
+const RGB_NEAR_BLACK = () => (FROMRGB(0, 0, 1));
 
 // ENUMS
 

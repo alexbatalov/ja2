@@ -1246,7 +1246,7 @@ INT16 SearchForClosestSecondaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode
   return NOWHERE;
 }
 
-#define EDGE_OF_MAP_SEARCH 5
+const EDGE_OF_MAP_SEARCH = 5;
 BOOLEAN VerifyEdgepoint(SOLDIERTYPE *pSoldier, INT16 sEdgepoint) {
   INT32 iSearchRange;
   INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;

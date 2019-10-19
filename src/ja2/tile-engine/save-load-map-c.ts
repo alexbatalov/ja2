@@ -1,4 +1,4 @@
-#define NUM_REVEALED_BYTES 3200
+const NUM_REVEALED_BYTES = 3200;
 
 extern BOOLEAN gfLoadingExitGrids;
 

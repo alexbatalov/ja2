@@ -7,9 +7,9 @@ enum {
   CREATURE_SMOKE_EFFECT,
 };
 
-#define SMOKE_EFFECT_INDOORS 0x01
-#define SMOKE_EFFECT_ON_ROOF 0x02
-#define SMOKE_EFFECT_MARK_FOR_UPDATE 0x04
+const SMOKE_EFFECT_INDOORS = 0x01;
+const SMOKE_EFFECT_ON_ROOF = 0x02;
+const SMOKE_EFFECT_MARK_FOR_UPDATE = 0x04;
 
 typedef struct TAG_SMOKE_EFFECT {
   INT16 sGridNo; // gridno at which the tear gas cloud is centered

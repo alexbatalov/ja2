@@ -1,6 +1,6 @@
 // YOU MUST KEEP THIS VARIABLE UP TO DATE !!!!
 
-#define NUM_TOPIC_IDS 23
+const NUM_TOPIC_IDS = 23;
 
 /* #define TOPIC_MEMORY_MANAGER        0
 #define TOPIC_FILE_MANAGER          1

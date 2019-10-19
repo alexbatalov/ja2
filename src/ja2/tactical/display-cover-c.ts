@@ -1,11 +1,11 @@
 //*******  Local Defines **************************************************
 
-#define DC_MAX_COVER_RANGE 31
+const DC_MAX_COVER_RANGE = 31;
 
-#define DC__SOLDIER_VISIBLE_RANGE 31
+const DC__SOLDIER_VISIBLE_RANGE = 31;
 
-#define DC__MIN_SIZE 4
-#define DC__MAX_SIZE 11
+const DC__MIN_SIZE = 4;
+const DC__MAX_SIZE = 11;
 
 typedef struct {
   INT16 sGridNo;

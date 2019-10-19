@@ -35,7 +35,7 @@ typedef struct WAYPOINT {
   struct WAYPOINT *next; // next waypoint in list
 } WAYPOINT;
 
-#define PG_INDIVIDUAL_MERGED 0x01
+const PG_INDIVIDUAL_MERGED = 0x01;
 
 typedef struct PLAYERGROUP {
   UINT8 ubProfileID; // SAVE THIS VALUE ONLY.  The others are temp (for quick access)
@@ -60,18 +60,18 @@ typedef struct ENEMYGROUP {
 
 // NOTE:  ALL FLAGS ARE CLEARED WHENEVER A GROUP ARRIVES IN A SECTOR, OR ITS WAYPOINTS ARE
 //       DELETED!!!
-#define GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED 0x00000001
-#define GROUPFLAG_SIMULTANEOUSARRIVAL_CHECKED 0x00000002
+const GROUPFLAG_SIMULTANEOUSARRIVAL_APPROVED = 0x00000001;
+const GROUPFLAG_SIMULTANEOUSARRIVAL_CHECKED = 0x00000002;
 // I use this flag when traversing through a list to determine which groups meet whatever conditions,
 // then add this marker flag.  The second time I traverse the list, I simply check for this flag,
 // apply my modifications to the group, and remove the flag.  If you decide to use it, make sure the
 // flag is cleared.
-#define GROUPFLAG_MARKER 0x00000004
+const GROUPFLAG_MARKER = 0x00000004;
 // Set whenever a group retreats from battle.  If the group arrives in the next sector and enemies are there
 // retreat will not be an option.
-#define GROUPFLAG_JUST_RETREATED_FROM_BATTLE 0x00000008
-#define GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH 0x00000010
-#define GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY 0x00000020
+const GROUPFLAG_JUST_RETREATED_FROM_BATTLE = 0x00000008;
+const GROUPFLAG_HIGH_POTENTIAL_FOR_AMBUSH = 0x00000010;
+const GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY = 0x00000020;
 
 typedef struct GROUP {
   BOOLEAN fDebugGroup; // for testing purposes -- handled differently in certain cases.

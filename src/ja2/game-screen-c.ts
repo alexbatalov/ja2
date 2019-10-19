@@ -1,4 +1,4 @@
-#define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
+const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
 BOOLEAN fDirtyRectangleMode = FALSE;
 UINT16 *gpFPSBuffer = NULL;
@@ -36,9 +36,9 @@ extern BOOLEAN gfRenderFullThisFrame;
 // tasks which will run the game
 RENDER_HOOK gRenderOverride = NULL;
 
-#define NOINPUT_DELAY 60000
-#define DEMOPLAY_DELAY 40000
-#define RESTART_DELAY 6000
+const NOINPUT_DELAY = 60000;
+const DEMOPLAY_DELAY = 40000;
+const RESTART_DELAY = 6000;
 
 void TacticalScreenLocateToSoldier();
 

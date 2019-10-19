@@ -4,7 +4,7 @@ void ExitHistory();
 void HandleHistory();
 void RenderHistory();
 
-#define HISTORY_DATA_FILE "TEMP\\History.dat"
+const HISTORY_DATA_FILE = "TEMP\\History.dat";
 
 // the financial structure
 struct history {

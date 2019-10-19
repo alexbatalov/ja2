@@ -1,4 +1,4 @@
-#define MAX_MESSAGES_ON_MAP_BOTTOM 9
+const MAX_MESSAGES_ON_MAP_BOTTOM = 9;
 
 // exit to where defines
 enum {

@@ -1,5 +1,5 @@
 // the delay for a group about to arrive
-#define ABOUT_TO_ARRIVE_DELAY 5
+const ABOUT_TO_ARRIVE_DELAY = 5;
 
 GROUP *gpGroupList;
 
@@ -2239,11 +2239,11 @@ INT32 FindTravelTimeBetweenWaypoints(WAYPOINT *pSource, WAYPOINT *pDest, GROUP *
   return iCurrentCostInTime;
 }
 
-#define FOOT_TRAVEL_TIME 89
-#define CAR_TRAVEL_TIME 30
-#define TRUCK_TRAVEL_TIME 32
-#define TRACKED_TRAVEL_TIME 46
-#define AIR_TRAVEL_TIME 10
+const FOOT_TRAVEL_TIME = 89;
+const CAR_TRAVEL_TIME = 30;
+const TRUCK_TRAVEL_TIME = 32;
+const TRACKED_TRAVEL_TIME = 46;
+const AIR_TRAVEL_TIME = 10;
 
 // CHANGES:  ubDirection contains the strategic move value, not the delta value.
 INT32 GetSectorMvtTimeForGroup(UINT8 ubSector, UINT8 ubDirection, GROUP *pGroup) {

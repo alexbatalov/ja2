@@ -1,5 +1,5 @@
 // max number of merc faces per row in autobandage box
-#define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
+const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
 STR16 sAutoBandageString = NULL;
 INT32 giBoxId = -1;

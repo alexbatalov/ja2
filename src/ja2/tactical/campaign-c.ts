@@ -1027,9 +1027,9 @@ void HandleUnhiredMercDeaths(INT32 iProfileID) {
 }
 
 // These HAVE to total 100% at all times!!!
-#define PROGRESS_PORTION_KILLS 25
-#define PROGRESS_PORTION_CONTROL 25
-#define PROGRESS_PORTION_INCOME 50
+const PROGRESS_PORTION_KILLS = 25;
+const PROGRESS_PORTION_CONTROL = 25;
+const PROGRESS_PORTION_INCOME = 50;
 
 // returns a number between 0-100, this is an estimate of how far a player has progressed through the game
 UINT8 CurrentPlayerProgressPercentage(void) {

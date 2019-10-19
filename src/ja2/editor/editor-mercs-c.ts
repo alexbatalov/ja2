@@ -117,8 +117,8 @@ INT8 gbMercSlotTypes[9] = {
   BIGPOCK4POS,
 };
 // returns the usItem index of specified slot in the currently selected merc.
-#define GetSelectedMercSlotItemIndex(x) (gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]].usItem)
-#define GetSelectedMercSlot(x) (&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]])
+const GetSelectedMercSlotItemIndex = (x) => (gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]].usItem);
+const GetSelectedMercSlot = (x) => (&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]]);
 // values indicating which merc inventory slot is hilited and which slot is selected.
 INT8 gbCurrHilite = -1;
 INT8 gbCurrSelect = -1;
@@ -204,11 +204,11 @@ BOOLEAN gfShowCreatures = TRUE;
 BOOLEAN gfShowRebels = TRUE;
 BOOLEAN gfShowCivilians = TRUE;
 
-#define BASE_STAT_DEVIATION 7
-#define BASE_EXPLVL_DEVIATION 1
-#define BASE_PROTLVL_DEVIATION 0
-#define BASE_GUNTYPE_DEVIATION 4
-#define DEFAULT_DIFF 2
+const BASE_STAT_DEVIATION = 7;
+const BASE_EXPLVL_DEVIATION = 1;
+const BASE_PROTLVL_DEVIATION = 0;
+const BASE_GUNTYPE_DEVIATION = 4;
+const DEFAULT_DIFF = 2;
 
 INT16 sCurBaseDiff = DEFAULT_DIFF;
 BOOLEAN fAskForBaseDifficulty = TRUE;
@@ -249,7 +249,7 @@ UINT16 *EditMercStat[12] = {
   L"Exp Level",
 };
 
-#define NUM_MERC_ORDERS 8
+const NUM_MERC_ORDERS = 8;
 UINT16 *EditMercOrders[8] = {
   L"Stationary",
   L"On Guard",
@@ -271,12 +271,12 @@ UINT16 *EditMercAttitudes[6] = {
 };
 
 // information for bodytypes.
-#define RANDOM -1
-#define MAX_ENEMYTYPES 7
+const RANDOM = -1;
+const MAX_ENEMYTYPES = 7;
 //#define MAX_ENEMYRANDOMTYPES	5
-#define MAX_CREATURETYPES 8
-#define MAX_REBELTYPES 7
-#define MAX_CIVTYPES 18
+const MAX_CREATURETYPES = 8;
+const MAX_REBELTYPES = 7;
+const MAX_CIVTYPES = 18;
 //#define MAX_CIVRANDOMTYPES		11
 INT8 bEnemyArray[MAX_ENEMYTYPES] = {
   RANDOM,

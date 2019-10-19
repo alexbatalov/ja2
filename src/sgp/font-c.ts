@@ -4,10 +4,10 @@
 //
 //*******************************************************
 
-#define PALETTE_SIZE 768
-#define STRING_DELIMITER 0
-#define ID_BLACK 0
-#define MAX_FONTS 25
+const PALETTE_SIZE = 768;
+const STRING_DELIMITER = 0;
+const ID_BLACK = 0;
+const MAX_FONTS = 25;
 
 //*******************************************************
 //

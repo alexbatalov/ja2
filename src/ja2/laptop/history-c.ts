@@ -1,36 +1,36 @@
-#define TOP_X 0 + LAPTOP_SCREEN_UL_X
-#define TOP_Y LAPTOP_SCREEN_UL_Y
-#define BLOCK_HIST_HEIGHT 10
-#define BOX_HEIGHT 14
-#define TOP_DIVLINE_Y 101
-#define DIVLINE_X 130
-#define MID_DIVLINE_Y 155
-#define BOT_DIVLINE_Y 204
-#define TITLE_X 140
-#define TITLE_Y 33
-#define TEXT_X 140
-#define PAGE_SIZE 22
-#define RECORD_Y TOP_DIVLINE_Y
-#define RECORD_HISTORY_WIDTH 200
-#define PAGE_NUMBER_X TOP_X + 20
-#define PAGE_NUMBER_Y TOP_Y + 33
-#define HISTORY_DATE_X PAGE_NUMBER_X + 85
-#define HISTORY_DATE_Y PAGE_NUMBER_Y
-#define RECORD_LOCATION_WIDTH 142 // 95
+const TOP_X = 0 + LAPTOP_SCREEN_UL_X;
+const TOP_Y = LAPTOP_SCREEN_UL_Y;
+const BLOCK_HIST_HEIGHT = 10;
+const BOX_HEIGHT = 14;
+const TOP_DIVLINE_Y = 101;
+const DIVLINE_X = 130;
+const MID_DIVLINE_Y = 155;
+const BOT_DIVLINE_Y = 204;
+const TITLE_X = 140;
+const TITLE_Y = 33;
+const TEXT_X = 140;
+const PAGE_SIZE = 22;
+const RECORD_Y = TOP_DIVLINE_Y;
+const RECORD_HISTORY_WIDTH = 200;
+const PAGE_NUMBER_X = TOP_X + 20;
+const PAGE_NUMBER_Y = TOP_Y + 33;
+const HISTORY_DATE_X = PAGE_NUMBER_X + 85;
+const HISTORY_DATE_Y = PAGE_NUMBER_Y;
+const RECORD_LOCATION_WIDTH = 142; // 95
 
-#define HISTORY_HEADER_FONT FONT14ARIAL
-#define HISTORY_TEXT_FONT FONT12ARIAL
-#define RECORD_DATE_X TOP_X + 10
-#define RECORD_DATE_WIDTH 31 // 68
-#define RECORD_HEADER_Y 90
+const HISTORY_HEADER_FONT = () => FONT14ARIAL();
+const HISTORY_TEXT_FONT = () => FONT12ARIAL();
+const RECORD_DATE_X = TOP_X + 10;
+const RECORD_DATE_WIDTH = 31; // 68
+const RECORD_HEADER_Y = 90;
 
-#define NUM_RECORDS_PER_PAGE PAGE_SIZE
-#define SIZE_OF_HISTORY_FILE_RECORD (sizeof(UINT8) + sizeof(UINT8) + sizeof(UINT32) + sizeof(UINT16) + sizeof(UINT16) + sizeof(UINT8) + sizeof(UINT8))
+const NUM_RECORDS_PER_PAGE = PAGE_SIZE;
+const SIZE_OF_HISTORY_FILE_RECORD = () => (sizeof(UINT8) + sizeof(UINT8) + sizeof(UINT32) + sizeof(UINT16) + sizeof(UINT16) + sizeof(UINT8) + sizeof(UINT8));
 
 // button positions
-#define NEXT_BTN_X 577
-#define PREV_BTN_X 553
-#define BTN_Y 53
+const NEXT_BTN_X = 577;
+const PREV_BTN_X = 553;
+const BTN_Y = 53;
 
 // graphics handles
 UINT32 guiTITLE;

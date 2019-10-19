@@ -1,5 +1,5 @@
-#define CAN_CALL(s) (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER && s->ubBodyType != INFANT_MONSTER)
-#define CAN_LISTEN_TO_CALL(s) (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER)
+const CAN_CALL = (s) => (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER && s->ubBodyType != INFANT_MONSTER);
+const CAN_LISTEN_TO_CALL = (s) => (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER);
 
 enum {
   CALLER_FEMALE = 0,
@@ -15,8 +15,8 @@ enum {
   CREATURE_IMMOBILE,
 } CreatureMobility;
 
-#define FRENZY_THRESHOLD 8
-#define MAX_EAT_DIST 5
+const FRENZY_THRESHOLD = 8;
+const MAX_EAT_DIST = 5;
 
 INT8 gbCallPriority[NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] = {
   { 0, 0, 0 }, // CALL_NONE
@@ -33,10 +33,10 @@ INT8 gbHuntCallPriority[NUM_CREATURE_CALLS] = {
   8, // CALL_CRIPPLED
 };
 
-#define PRIORITY_DECR_DISTANCE 30
+const PRIORITY_DECR_DISTANCE = 30;
 
-#define CALL_1_OPPONENT CALL_1_PREY
-#define CALL_MULTIPLE_OPPONENT CALL_MULTIPLE_PREY
+const CALL_1_OPPONENT = CALL_1_PREY;
+const CALL_MULTIPLE_OPPONENT = CALL_MULTIPLE_PREY;
 
 void CreatureCall(SOLDIERTYPE *pCaller) {
   UINT8 ubCallerType = 0;

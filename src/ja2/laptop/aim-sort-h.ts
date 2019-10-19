@@ -1,8 +1,8 @@
 UINT8 gubCurrentSortMode;
 UINT8 gubCurrentListMode;
 
-#define AIM_ASCEND 6
-#define AIM_DESCEND 7
+const AIM_ASCEND = 6;
+const AIM_DESCEND = 7;
 
 void GameInitAimSort();
 BOOLEAN EnterAimSort();

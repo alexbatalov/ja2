@@ -1,4 +1,4 @@
-#define MAX_INTTILE_STACK 10
+const MAX_INTTILE_STACK = 10;
 
 typedef struct {
   INT16 sGridNo;

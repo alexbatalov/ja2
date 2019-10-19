@@ -1,39 +1,39 @@
 // gain pts per real loyalty pt
-#define GAIN_PTS_PER_LOYALTY_PT 500
+const GAIN_PTS_PER_LOYALTY_PT = 500;
 
 // --- LOYALTY BONUSES ---
 // Omerta
-#define LOYALTY_BONUS_MIGUEL_READS_LETTER (10 * GAIN_PTS_PER_LOYALTY_PT) // multiplied by 4.5 due to Omerta's high seniment, so it's 45%
+const LOYALTY_BONUS_MIGUEL_READS_LETTER = (10 * GAIN_PTS_PER_LOYALTY_PT); // multiplied by 4.5 due to Omerta's high seniment, so it's 45%
 // Drassen
-#define LOYALTY_BONUS_CHILDREN_FREED_DOREEN_KILLED (10 * GAIN_PTS_PER_LOYALTY_PT) // +50% bonus for Drassen
-#define LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED (20 * GAIN_PTS_PER_LOYALTY_PT) // +50% bonus for Drassen
+const LOYALTY_BONUS_CHILDREN_FREED_DOREEN_KILLED = (10 * GAIN_PTS_PER_LOYALTY_PT); // +50% bonus for Drassen
+const LOYALTY_BONUS_CHILDREN_FREED_DOREEN_SPARED = (20 * GAIN_PTS_PER_LOYALTY_PT); // +50% bonus for Drassen
 // Cambria
-#define LOYALTY_BONUS_MARTHA_WHEN_JOEY_RESCUED (15 * GAIN_PTS_PER_LOYALTY_PT) // -25% for low Cambria sentiment
-#define LOYALTY_BONUS_KEITH_WHEN_HILLBILLY_SOLVED (15 * GAIN_PTS_PER_LOYALTY_PT) // -25% for low Cambria sentiment
+const LOYALTY_BONUS_MARTHA_WHEN_JOEY_RESCUED = (15 * GAIN_PTS_PER_LOYALTY_PT); // -25% for low Cambria sentiment
+const LOYALTY_BONUS_KEITH_WHEN_HILLBILLY_SOLVED = (15 * GAIN_PTS_PER_LOYALTY_PT); // -25% for low Cambria sentiment
 // Chitzena
-#define LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_LOCAL (20 * GAIN_PTS_PER_LOYALTY_PT) // +75% higher in Chitzena
-#define LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_GLOBAL (10 * GAIN_PTS_PER_LOYALTY_PT) // for ALL towns!
+const LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_LOCAL = (20 * GAIN_PTS_PER_LOYALTY_PT); // +75% higher in Chitzena
+const LOYALTY_BONUS_YANNI_WHEN_CHALICE_RETURNED_GLOBAL = (10 * GAIN_PTS_PER_LOYALTY_PT); // for ALL towns!
 // Alma
-#define LOYALTY_BONUS_AUNTIE_WHEN_BLOODCATS_KILLED (20 * GAIN_PTS_PER_LOYALTY_PT) // Alma's increases reduced by half due to low rebel sentiment
-#define LOYALTY_BONUS_MATT_WHEN_DYNAMO_FREED (20 * GAIN_PTS_PER_LOYALTY_PT) // Alma's increases reduced by half due to low rebel sentiment
-#define LOYALTY_BONUS_FOR_SERGEANT_KROTT (20 * GAIN_PTS_PER_LOYALTY_PT) // Alma's increases reduced by half due to low rebel sentiment
+const LOYALTY_BONUS_AUNTIE_WHEN_BLOODCATS_KILLED = (20 * GAIN_PTS_PER_LOYALTY_PT); // Alma's increases reduced by half due to low rebel sentiment
+const LOYALTY_BONUS_MATT_WHEN_DYNAMO_FREED = (20 * GAIN_PTS_PER_LOYALTY_PT); // Alma's increases reduced by half due to low rebel sentiment
+const LOYALTY_BONUS_FOR_SERGEANT_KROTT = (20 * GAIN_PTS_PER_LOYALTY_PT); // Alma's increases reduced by half due to low rebel sentiment
 // Everywhere
-#define LOYALTY_BONUS_TERRORISTS_DEALT_WITH (5 * GAIN_PTS_PER_LOYALTY_PT)
-#define LOYALTY_BONUS_KILL_QUEEN_MONSTER (10 * GAIN_PTS_PER_LOYALTY_PT)
+const LOYALTY_BONUS_TERRORISTS_DEALT_WITH = (5 * GAIN_PTS_PER_LOYALTY_PT);
+const LOYALTY_BONUS_KILL_QUEEN_MONSTER = (10 * GAIN_PTS_PER_LOYALTY_PT);
 // Anywhere
 // loyalty bonus for completing town training
-#define LOYALTY_BONUS_FOR_TOWN_TRAINING (2 * GAIN_PTS_PER_LOYALTY_PT) // 2%
+const LOYALTY_BONUS_FOR_TOWN_TRAINING = (2 * GAIN_PTS_PER_LOYALTY_PT); // 2%
 
 // --- LOYALTY PENALTIES ---
 // Cambria
-#define LOYALTY_PENALTY_MARTHA_HEART_ATTACK (20 * GAIN_PTS_PER_LOYALTY_PT)
-#define LOYALTY_PENALTY_JOEY_KILLED (10 * GAIN_PTS_PER_LOYALTY_PT)
+const LOYALTY_PENALTY_MARTHA_HEART_ATTACK = (20 * GAIN_PTS_PER_LOYALTY_PT);
+const LOYALTY_PENALTY_JOEY_KILLED = (10 * GAIN_PTS_PER_LOYALTY_PT);
 // Balime
-#define LOYALTY_PENALTY_ELDIN_KILLED (20 * GAIN_PTS_PER_LOYALTY_PT) // effect is double that!
+const LOYALTY_PENALTY_ELDIN_KILLED = (20 * GAIN_PTS_PER_LOYALTY_PT); // effect is double that!
 // Any mine
-#define LOYALTY_PENALTY_HEAD_MINER_ATTACKED (20 * GAIN_PTS_PER_LOYALTY_PT) // exact impact depends on rebel sentiment in that town
+const LOYALTY_PENALTY_HEAD_MINER_ATTACKED = (20 * GAIN_PTS_PER_LOYALTY_PT); // exact impact depends on rebel sentiment in that town
 // Loyalty penalty for being inactive, per day after the third
-#define LOYALTY_PENALTY_INACTIVE (10 * GAIN_PTS_PER_LOYALTY_PT)
+const LOYALTY_PENALTY_INACTIVE = (10 * GAIN_PTS_PER_LOYALTY_PT);
 
 typedef enum {
   // There are only for distance-adjusted global loyalty effects.  Others go into list above instead!
@@ -159,9 +159,9 @@ INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude);
 // which slightly demoralizes the mercs, the other handles abandonment of militia forces which poses
 // as a serious loyalty penalty.
 
-#define RETREAT_TACTICAL_TRAVERSAL 0
-#define RETREAT_PBI 1
-#define RETREAT_AUTORESOLVE 2
+const RETREAT_TACTICAL_TRAVERSAL = 0;
+const RETREAT_PBI = 1;
+const RETREAT_AUTORESOLVE = 2;
 void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
 
 void MaximizeLoyaltyForDeidrannaKilled(void);

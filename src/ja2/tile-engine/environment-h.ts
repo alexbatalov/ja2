@@ -1,47 +1,47 @@
-#define ENV_TIME_00 0
-#define ENV_TIME_01 1
-#define ENV_TIME_02 2
-#define ENV_TIME_03 3
-#define ENV_TIME_04 4
-#define ENV_TIME_05 5
-#define ENV_TIME_06 6
-#define ENV_TIME_07 7
-#define ENV_TIME_08 8
-#define ENV_TIME_09 9
-#define ENV_TIME_10 10
-#define ENV_TIME_11 11
-#define ENV_TIME_12 12
-#define ENV_TIME_13 13
-#define ENV_TIME_14 14
-#define ENV_TIME_15 15
-#define ENV_TIME_16 16
-#define ENV_TIME_17 17
-#define ENV_TIME_18 18
-#define ENV_TIME_19 19
-#define ENV_TIME_20 20
-#define ENV_TIME_21 21
-#define ENV_TIME_22 22
-#define ENV_TIME_23 23
+const ENV_TIME_00 = 0;
+const ENV_TIME_01 = 1;
+const ENV_TIME_02 = 2;
+const ENV_TIME_03 = 3;
+const ENV_TIME_04 = 4;
+const ENV_TIME_05 = 5;
+const ENV_TIME_06 = 6;
+const ENV_TIME_07 = 7;
+const ENV_TIME_08 = 8;
+const ENV_TIME_09 = 9;
+const ENV_TIME_10 = 10;
+const ENV_TIME_11 = 11;
+const ENV_TIME_12 = 12;
+const ENV_TIME_13 = 13;
+const ENV_TIME_14 = 14;
+const ENV_TIME_15 = 15;
+const ENV_TIME_16 = 16;
+const ENV_TIME_17 = 17;
+const ENV_TIME_18 = 18;
+const ENV_TIME_19 = 19;
+const ENV_TIME_20 = 20;
+const ENV_TIME_21 = 21;
+const ENV_TIME_22 = 22;
+const ENV_TIME_23 = 23;
 
-#define ENV_NUM_TIMES 24
+const ENV_NUM_TIMES = 24;
 
 // Make sure you use 24 for end time hours and 0 for start time hours if
 // midnight is the hour you wish to use.
-#define NIGHT_TIME_LIGHT_START_HOUR 21
-#define NIGHT_TIME_LIGHT_END_HOUR 7
-#define PRIME_TIME_LIGHT_START_HOUR 21
-#define PRIME_TIME_LIGHT_END_HOUR 24
+const NIGHT_TIME_LIGHT_START_HOUR = 21;
+const NIGHT_TIME_LIGHT_END_HOUR = 7;
+const PRIME_TIME_LIGHT_START_HOUR = 21;
+const PRIME_TIME_LIGHT_END_HOUR = 24;
 
-#define WEATHER_FORECAST_SUNNY 0x00000001
-#define WEATHER_FORECAST_OVERCAST 0x00000002
-#define WEATHER_FORECAST_PARTLYSUNNY 0x00000004
-#define WEATHER_FORECAST_DRIZZLE 0x00000008
-#define WEATHER_FORECAST_SHOWERS 0x00000010
-#define WEATHER_FORECAST_THUNDERSHOWERS 0x00000020
+const WEATHER_FORECAST_SUNNY = 0x00000001;
+const WEATHER_FORECAST_OVERCAST = 0x00000002;
+const WEATHER_FORECAST_PARTLYSUNNY = 0x00000004;
+const WEATHER_FORECAST_DRIZZLE = 0x00000008;
+const WEATHER_FORECAST_SHOWERS = 0x00000010;
+const WEATHER_FORECAST_THUNDERSHOWERS = 0x00000020;
 
 // higher is darker, remember
-#define NORMAL_LIGHTLEVEL_NIGHT 12
-#define NORMAL_LIGHTLEVEL_DAY 3
+const NORMAL_LIGHTLEVEL_NIGHT = 12;
+const NORMAL_LIGHTLEVEL_DAY = 3;
 
 void ForecastDayEvents();
 

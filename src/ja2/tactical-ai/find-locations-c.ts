@@ -1285,7 +1285,7 @@ INT16 FindNearbyDarkerSpot(SOLDIERTYPE *pSoldier) {
   return sClosestSpot;
 }
 
-#define MINIMUM_REQUIRED_STATUS 70
+const MINIMUM_REQUIRED_STATUS = 70;
 
 INT8 SearchForItems(SOLDIERTYPE *pSoldier, INT8 bReason, UINT16 usItem) {
   INT32 iSearchRange;
@@ -1704,7 +1704,7 @@ INT16 FindNearestEdgePoint(INT16 sGridNo) {
   return sClosestSpot;
 }
 
-#define EDGE_OF_MAP_SEARCH 5
+const EDGE_OF_MAP_SEARCH = 5;
 
 INT16 FindNearbyPointOnEdgeOfMap(SOLDIERTYPE *pSoldier, INT8 *pbDirection) {
   INT32 iSearchRange;

@@ -1,29 +1,29 @@
-#define NO_TEST_OBJECT 0
-#define TEST_OBJECT_NO_COLLISIONS 1
-#define TEST_OBJECT_ANY_COLLISION 2
-#define TEST_OBJECT_NOTWALLROOF_COLLISIONS 3
+const NO_TEST_OBJECT = 0;
+const TEST_OBJECT_NO_COLLISIONS = 1;
+const TEST_OBJECT_ANY_COLLISION = 2;
+const TEST_OBJECT_NOTWALLROOF_COLLISIONS = 3;
 
-#define OUTDOORS_START_ANGLE (FLOAT)(PI / 4)
-#define INDOORS_START_ANGLE (FLOAT)(PI / 30)
+const OUTDOORS_START_ANGLE = (FLOAT)(PI / 4);
+const INDOORS_START_ANGLE = (FLOAT)(PI / 30);
 //#define INDOORS_START_ANGLE									(FLOAT)( 0 )
-#define GLAUNCHER_START_ANGLE (FLOAT)(PI / 8)
-#define GLAUNCHER_HIGHER_LEVEL_START_ANGLE (FLOAT)(PI / 6)
+const GLAUNCHER_START_ANGLE = (FLOAT)(PI / 8);
+const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (FLOAT)(PI / 6);
 
-#define GET_THROW_HEIGHT(l) (INT16)((l * 256))
-#define GET_SOLDIER_THROW_HEIGHT(l) (INT16)((l * 256) + STANDING_HEIGHT)
+const GET_THROW_HEIGHT = (l) => (INT16)((l * 256));
+const GET_SOLDIER_THROW_HEIGHT = (l) => (INT16)((l * 256) + STANDING_HEIGHT);
 
-#define GET_OBJECT_LEVEL(z) ((INT8)((z + 10) / HEIGHT_UNITS))
-#define OBJECT_DETONATE_ON_IMPACT(o) ((o->Obj.usItem == MORTAR_SHELL)) // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
+const GET_OBJECT_LEVEL = (z) => ((INT8)((z + 10) / HEIGHT_UNITS));
+const OBJECT_DETONATE_ON_IMPACT = (o) => ((o->Obj.usItem == MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
 
-#define MAX_INTEGRATIONS 8
+const MAX_INTEGRATIONS = 8;
 
-#define TIME_MULTI 1.8
+const TIME_MULTI = 1.8;
 
 //#define					TIME_MULTI			2.2
 
-#define DELTA_T (1.0 * TIME_MULTI)
+const DELTA_T = (1.0 * TIME_MULTI);
 
-#define GRAVITY (9.8 * 2.5)
+const GRAVITY = (9.8 * 2.5);
 //#define					GRAVITY						( 9.8 * 2.8 )
 
 REAL_OBJECT ObjectSlots[NUM_OBJECT_SLOTS];
@@ -32,13 +32,13 @@ BOOLEAN fDampingActive = FALSE;
 // real						Kdl	= (float)0.5;					// LINEAR DAMPENING ( WIND RESISTANCE )
 real Kdl = (float)(0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
 
-#define EPSILONV 0.5
-#define EPSILONP (real)0.01
-#define EPSILONPZ 3
+const EPSILONV = 0.5;
+const EPSILONP = () => (real)0.01;
+const EPSILONPZ = 3;
 
-#define CALCULATE_OBJECT_MASS(m) ((float)(m * 2))
-#define SCALE_VERT_VAL_TO_HORZ(f) ((f / HEIGHT_UNITS) * CELL_X_SIZE)
-#define SCALE_HORZ_VAL_TO_VERT(f) ((f / CELL_X_SIZE) * HEIGHT_UNITS)
+const CALCULATE_OBJECT_MASS = (m) => ((float)(m * 2));
+const SCALE_VERT_VAL_TO_HORZ = (f) => ((f / HEIGHT_UNITS) * CELL_X_SIZE);
+const SCALE_HORZ_VAL_TO_VERT = (f) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
 
 void SimulateObject(REAL_OBJECT *pObject, real deltaT);
 
@@ -1600,9 +1600,9 @@ FLOAT CalculateSoldierMaxForce(SOLDIERTYPE *pSoldier, FLOAT dDegrees, OBJECTTYPE
   return dMagForce;
 }
 
-#define MAX_MISS_BY 30
-#define MIN_MISS_BY 1
-#define MAX_MISS_RADIUS 5
+const MAX_MISS_BY = 30;
+const MIN_MISS_BY = 1;
+const MAX_MISS_RADIUS = 5;
 
 void CalculateLaunchItemParamsForThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubLevel, INT16 sEndZ, OBJECTTYPE *pItem, INT8 bMissBy, UINT8 ubActionCode, UINT32 uiActionData) {
   FLOAT dForce, dDegrees;

@@ -1,4 +1,4 @@
-#define MAX_ON_DUTY_SOLDIERS 6
+const MAX_ON_DUTY_SOLDIERS = 6;
 
 /////////////////////////////////////////////////////////////////////////////////////
 //											UI SYSTEM DESCRIPTION
@@ -30,9 +30,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // LOCAL DEFINES
-#define GO_MOVE_ONE 40
-#define GO_MOVE_TWO 80
-#define GO_MOVE_THREE 100
+const GO_MOVE_ONE = 40;
+const GO_MOVE_TWO = 80;
+const GO_MOVE_THREE = 100;
 
 // CALLBACKS FOR EVENTS
 UINT32 UIHandleIDoNothing(UI_EVENT *pUIEvent);

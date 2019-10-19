@@ -1,8 +1,8 @@
-#define IMP_SEEK_AMOUNT 5 * 80 * 2
+const IMP_SEEK_AMOUNT = 5 * 80 * 2;
 
-#define IMP_LEFT_IDENT_TEXT_X 116
-#define IMP_RIGHT_IDENT_TEXT_X 509
-#define IMP_IDENT_WIDTH 96
+const IMP_LEFT_IDENT_TEXT_X = 116;
+const IMP_RIGHT_IDENT_TEXT_X = 509;
+const IMP_IDENT_WIDTH = 96;
 
 BOOLEAN fInitialized = FALSE;
 
@@ -41,8 +41,8 @@ INT32 iIMPQuestionLengths[25] = {
 void PrintIMPPersonalityQuizQuestionAndAnsers(void);
 void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset);
 
-#define QTN_FIRST_COLUMN_X 80
-#define QTN_SECOND_COLUMN_X 320
+const QTN_FIRST_COLUMN_X = 80;
+const QTN_SECOND_COLUMN_X = 320;
 
 void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLength, INT16 sIMPTextRecordNumber, UINT32 uiFont, UINT8 ubColor, BOOLEAN fShadow, UINT32 uiFlags) {
   // this procedure will load and display to the screen starting at postion X, Y relative to the start of the laptop screen

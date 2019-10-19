@@ -1,4 +1,4 @@
-#define QUEST_DEBUG_FILE "QuestDebug.txt"
+const QUEST_DEBUG_FILE = "QuestDebug.txt";
 
 // enums used for the current output level flags
 enum {

@@ -1,39 +1,39 @@
 // inventory pool position on screen
-#define MAP_INVEN_POOL_X 300
-#define MAP_INVEN_POOL_Y 300
+const MAP_INVEN_POOL_X = 300;
+const MAP_INVEN_POOL_Y = 300;
 
 // the number of help region messages
-#define NUMBER_OF_MAPSCREEN_HELP_MESSAGES 5
+const NUMBER_OF_MAPSCREEN_HELP_MESSAGES = 5;
 
 // number of LINKED LISTS for sets of leave items (each slot holds an unlimited # of items)
-#define NUM_LEAVE_LIST_SLOTS 20
+const NUM_LEAVE_LIST_SLOTS = 20;
 
-#define SELECTED_CHAR_ARROW_X 8
+const SELECTED_CHAR_ARROW_X = 8;
 
-#define SIZE_OF_UPDATE_BOX 20
+const SIZE_OF_UPDATE_BOX = 20;
 
 // as deep as the map goes
-#define MAX_DEPTH_OF_MAP 3
+const MAX_DEPTH_OF_MAP = 3;
 
 // number of merc columns for four wide mode
-#define NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE 4
+const NUMBER_OF_MERC_COLUMNS_FOR_FOUR_WIDE_MODE = 4;
 
 // number of merc columns for 2 wide mode
-#define NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE 2
+const NUMBER_OF_MERC_COLUMNS_FOR_TWO_WIDE_MODE = 2;
 
 // number needed for 4 wide mode to activate
-#define NUMBER_OF_MERCS_FOR_FOUR_WIDTH_UPDATE_PANEL 4
+const NUMBER_OF_MERCS_FOR_FOUR_WIDTH_UPDATE_PANEL = 4;
 
-#define DBL_CLICK_DELAY_FOR_MOVE_MENU 200
+const DBL_CLICK_DELAY_FOR_MOVE_MENU = 200;
 
-#define TIMER_FOR_SHOW_EXIT_TO_TACTICAL_MESSAGE 15000
+const TIMER_FOR_SHOW_EXIT_TO_TACTICAL_MESSAGE = 15000;
 
-#define REASON_FOR_SOLDIER_UPDATE_OFFSET_Y (14)
+const REASON_FOR_SOLDIER_UPDATE_OFFSET_Y = (14);
 
-#define MAX_MAPSCREEN_FAST_HELP 100
+const MAX_MAPSCREEN_FAST_HELP = 100;
 
-#define VEHICLE_ONLY FALSE
-#define AND_ALL_ON_BOARD TRUE
+const VEHICLE_ONLY = FALSE;
+const AND_ALL_ON_BOARD = TRUE;
 
 // the regions int he movemenu
 enum {
@@ -77,8 +77,8 @@ INT16 gsSectorLocatorY;
 UINT8 gubBlitSectorLocatorCode; // color
 UINT32 guiSectorLocatorGraphicID; // icon graphic ID
 // the animate time per frame in milliseconds
-#define ANIMATED_BATTLEICON_FRAME_TIME 80
-#define MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON 12
+const ANIMATED_BATTLEICON_FRAME_TIME = 80;
+const MAX_FRAME_COUNT_FOR_ANIMATED_BATTLE_ICON = 12;
 
 SGPPoint pMapScreenFastHelpLocationList[] = {
   { 25, 200 },

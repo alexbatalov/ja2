@@ -1,4 +1,4 @@
-#define SQUARE_STEP 8
+const SQUARE_STEP = 8;
 
 UINT32 guiExitScreen;
 BOOLEAN gfFadeInitialized = FALSE;

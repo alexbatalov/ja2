@@ -1,7 +1,7 @@
 INT8 FromWorldFlagsToSmokeType(UINT8 ubWorldFlags);
 UINT8 FromSmokeTypeToWorldFlags(INT8 bType);
 
-#define NUM_SMOKE_EFFECT_SLOTS 25
+const NUM_SMOKE_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR SMOKE LISTING
 SMOKEEFFECT gSmokeEffectData[NUM_SMOKE_EFFECT_SLOTS];

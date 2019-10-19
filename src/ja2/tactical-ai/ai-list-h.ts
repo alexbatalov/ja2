@@ -5,7 +5,7 @@ typedef struct AILIST {
   struct AILIST *pNext;
 } AILIST;
 
-#define MAX_AI_PRIORITY 100
+const MAX_AI_PRIORITY = 100;
 
 extern void ClearAIList(void);
 extern AILIST *CreateNewAIListEntry(UINT8 ubNewEntry, UINT8 ubID, INT8 bAlertStatus);

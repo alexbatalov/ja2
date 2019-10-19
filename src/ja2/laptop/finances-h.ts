@@ -4,7 +4,7 @@ void ExitFinances();
 void HandleFinances();
 void RenderFinances();
 
-#define FINANCES_DATA_FILE "TEMP\\finances.dat"
+const FINANCES_DATA_FILE = "TEMP\\finances.dat";
 
 // the financial structure
 struct finance {

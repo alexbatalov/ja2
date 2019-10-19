@@ -1,4 +1,4 @@
-#define SOLDIER_CREATE_AUTO_TEAM -1
+const SOLDIER_CREATE_AUTO_TEAM = -1;
 
 // Kris:
 // This value is the total maximum number of slots in a map.
@@ -8,7 +8,7 @@
 // Rebels		32
 // Civilians 32
 // Total			148
-#define MAX_INDIVIDUALS 148
+const MAX_INDIVIDUALS = 148;
 
 // Kris:  SERIALIZING INFORMATION
 // All maps must have:

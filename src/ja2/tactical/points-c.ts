@@ -1588,9 +1588,9 @@ INT8 GetAPsToRefuelVehicle(SOLDIERTYPE *pSoldier) {
   return GetAPsToChangeStance(pSoldier, ANIM_CROUCH) + AP_REFUEL_VEHICLE;
 }
 
-#define TOSSES_PER_10TURNS 18 // max # of grenades tossable in 10 turns
-#define AP_MIN_AIM_ATTACK 0 // minimum permitted extra aiming
-#define AP_MAX_AIM_ATTACK 4 // maximum permitted extra aiming
+const TOSSES_PER_10TURNS = 18; // max # of grenades tossable in 10 turns
+const AP_MIN_AIM_ATTACK = 0; // minimum permitted extra aiming
+const AP_MAX_AIM_ATTACK = 4; // maximum permitted extra aiming
 
 INT16 MinAPsToThrow(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAddTurningCost) {
   INT32 iTop, iBottom;

@@ -1,35 +1,35 @@
 // the max loyalty rating for any given town
-#define MAX_LOYALTY_VALUE 100
+const MAX_LOYALTY_VALUE = 100;
 
 // loyalty Omerta drops to and maxes out at if the player betrays the rebels
-#define HOSTILE_OMERTA_LOYALTY_RATING 10
+const HOSTILE_OMERTA_LOYALTY_RATING = 10;
 
 // the loyalty threshold below which theft of unsupervised items in a town sector can occur
-#define THRESHOLD_FOR_TOWN_THEFT 50
+const THRESHOLD_FOR_TOWN_THEFT = 50;
 
-#define LOYALTY_EVENT_DISTANCE_THRESHOLD 3 // in sectors
+const LOYALTY_EVENT_DISTANCE_THRESHOLD = 3; // in sectors
 
 // effect of unintentional killing /100 vs intentional murder
-#define REDUCTION_FOR_UNINTENTIONAL_KILLING 50
+const REDUCTION_FOR_UNINTENTIONAL_KILLING = 50;
 // the effect of a murder by rebel / 100 vs player murdering a civ
-#define REDUCTION_FOR_MURDER_BY_REBEL 70
+const REDUCTION_FOR_MURDER_BY_REBEL = 70;
 // reduction % for being falsely blamed for a murder we didn't do, out of 100
-#define REDUCTION_FOR_MURDER_NOT_OUR_FAULT 50
+const REDUCTION_FOR_MURDER_NOT_OUR_FAULT = 50;
 // reduction % if enemies kills civs in our sector / 100
-#define REDUCTION_FOR_MURDER_OF_INNOCENT_BY_ENEMY_IN_OUR_SECTOR 25
+const REDUCTION_FOR_MURDER_OF_INNOCENT_BY_ENEMY_IN_OUR_SECTOR = 25;
 // how much worse loyalty hit is for trauma of someone killed by a monster
-#define MULTIPLIER_FOR_MURDER_BY_MONSTER 2
+const MULTIPLIER_FOR_MURDER_BY_MONSTER = 2;
 
 // gain for hiring an NPC from a particular town (represents max. at 100% town attachment)
-#define MULTIPLIER_LOCAL_RPC_HIRED 25 // 5%
+const MULTIPLIER_LOCAL_RPC_HIRED = 25; // 5%
 
 // multiplier for causing pts of damage directly done to a building
-#define MULTIPLIER_FOR_DAMAGING_A_BUILDING 10 // 50 pts = 1%
+const MULTIPLIER_FOR_DAMAGING_A_BUILDING = 10; // 50 pts = 1%
 // multiplier for not preventing pts of damage to a building
-#define MULTIPLIER_FOR_NOT_PREVENTING_BUILDING_DAMAGE 3 // 167 pts = 1%
+const MULTIPLIER_FOR_NOT_PREVENTING_BUILDING_DAMAGE = 3; // 167 pts = 1%
 
 // divisor for dmg to a building by allied rebel
-#define DIVISOR_FOR_REBEL_BUILDING_DMG 2
+const DIVISOR_FOR_REBEL_BUILDING_DMG = 2;
 
 /*
 // max number of soldiers counted towards town loyalty gain
@@ -77,7 +77,7 @@ INT32 pTownLocationsList[40];
 
 INT32 iTownDistances[NUM_TOWNS][NUM_TOWNS];
 
-#define BASIC_COST_FOR_CIV_MURDER (10 * GAIN_PTS_PER_LOYALTY_PT)
+const BASIC_COST_FOR_CIV_MURDER = (10 * GAIN_PTS_PER_LOYALTY_PT);
 
 UINT32 uiPercentLoyaltyDecreaseForCivMurder[] = {
   // These get multiplied by GAIN_PTS_PER_LOYALTY_PT so they're in % of loyalty decrease (for an average town)

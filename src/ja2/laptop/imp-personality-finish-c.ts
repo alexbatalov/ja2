@@ -2,7 +2,7 @@
 
 UINT8 bPersonalityEndState = 0;
 
-#define PERSONALITY_CONFIRM_FINISH_DELAY 2500
+const PERSONALITY_CONFIRM_FINISH_DELAY = 2500;
 
 // flag set when player hits  YES/NO button
 BOOLEAN fConfirmHasBeenSelectedFlag = FALSE;

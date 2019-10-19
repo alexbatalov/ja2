@@ -17,29 +17,29 @@ enum {
 
 extern UINT8 gubCurrMercMode, gubPrevMercMode;
 
-#define EDIT_NUM_COLORS 4
-#define EDIT_COLOR_HEAD 0
-#define EDIT_COLOR_PANTS 1
-#define EDIT_COLOR_SKIN 2
-#define EDIT_COLOR_VEST 3
-#define EDIT_MERC_NONE 0
-#define EDIT_MERC_DEC_STAT 1
-#define EDIT_MERC_INC_STAT 2
-#define EDIT_MERC_PREV_ORDER 3
-#define EDIT_MERC_NEXT_ORDER 4
-#define EDIT_MERC_PREV_ATT 5
-#define EDIT_MERC_NEXT_ATT 6
-#define EDIT_MERC_SET_DIR 7
-#define EDIT_MERC_FIND 8
-#define EDIT_MERC_DONE 9
-#define EDIT_MERC_TO_COLOR 10
-#define EDIT_MERC_TO_STATS 11
-#define EDIT_MERC_PREV_COLOR 12
-#define EDIT_MERC_NEXT_COLOR 13
+const EDIT_NUM_COLORS = 4;
+const EDIT_COLOR_HEAD = 0;
+const EDIT_COLOR_PANTS = 1;
+const EDIT_COLOR_SKIN = 2;
+const EDIT_COLOR_VEST = 3;
+const EDIT_MERC_NONE = 0;
+const EDIT_MERC_DEC_STAT = 1;
+const EDIT_MERC_INC_STAT = 2;
+const EDIT_MERC_PREV_ORDER = 3;
+const EDIT_MERC_NEXT_ORDER = 4;
+const EDIT_MERC_PREV_ATT = 5;
+const EDIT_MERC_NEXT_ATT = 6;
+const EDIT_MERC_SET_DIR = 7;
+const EDIT_MERC_FIND = 8;
+const EDIT_MERC_DONE = 9;
+const EDIT_MERC_TO_COLOR = 10;
+const EDIT_MERC_TO_STATS = 11;
+const EDIT_MERC_PREV_COLOR = 12;
+const EDIT_MERC_NEXT_COLOR = 13;
 
-#define NUM_MERC_BUTTONS 40
+const NUM_MERC_BUTTONS = 40;
 
-#define NUM_DIFF_LVLS 5
+const NUM_DIFF_LVLS = 5;
 
 extern UINT16 *zDiffNames[NUM_DIFF_LVLS];
 extern INT16 sCurBaseDiff;
@@ -103,9 +103,9 @@ extern BOOLEAN gfRenderMercInfo;
 
 void ChangeCivGroup(UINT8 ubNewCivGroup);
 
-#define MERCINV_LGSLOT_WIDTH 48
-#define MERCINV_SMSLOT_WIDTH 24
-#define MERCINV_SLOT_HEIGHT 18
+const MERCINV_LGSLOT_WIDTH = 48;
+const MERCINV_SMSLOT_WIDTH = 24;
+const MERCINV_SLOT_HEIGHT = 18;
 
 extern BOOLEAN gfRoofPlacement;
 

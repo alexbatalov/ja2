@@ -1,5 +1,5 @@
-#define SHOW_MIN_FPS 0
-#define SHOW_FULL_FPS 1
+const SHOW_MIN_FPS = 0;
+const SHOW_FULL_FPS = 1;
 
 UINT8 gubErrorText[200];
 BOOLEAN gfAniEditMode;
