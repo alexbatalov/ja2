@@ -101,14 +101,14 @@ const ATM_UL_Y = LAPTOP_SCREEN_UL_Y + 27;
 const ATM_FONT = () => PERS_FONT();
 
 // departed states
-enum {
+const enum Enum106 {
   DEPARTED_DEAD = 0,
   DEPARTED_FIRED,
   DEPARTED_OTHER,
   DEPARTED_MARRIED,
   DEPARTED_CONTRACT_EXPIRED,
   DEPARTED_QUIT,
-};
+}
 
 // atm button positions
 const ATM_BUTTONS_START_Y = 110;
@@ -129,34 +129,34 @@ const X_OF_PERSONNEL_SCROLL_REGION = 573;
 const SIZE_OF_PERSONNEL_CURSOR = 19;
 
 // number buttons
-enum {
+const enum Enum107 {
   OK_ATM = 0,
   DEPOSIT_ATM,
   WIDTHDRAWL_ATM,
   CANCEL_ATM,
   CLEAR_ATM,
   NUMBER_ATM_BUTTONS,
-};
+}
 
 // enums for the buttons in the information side bar ( used with giPersonnelATMStartButton[] )
-enum {
+const enum Enum108 {
   PERSONNEL_STAT_BTN,
   PERSONNEL_EMPLOYMENT_BTN,
   PERSONNEL_INV_BTN,
 
   PERSONNEL_NUM_BTN,
-};
+}
 
 // enums for the current state of the information side bar ( stat panel )
-enum {
+const enum Enum109 {
   PRSNL_STATS,
   PRSNL_EMPLOYMENT,
   PRSNL_INV,
-};
+}
 UINT8 gubPersonnelInfoState = PRSNL_STATS;
 
 // enums for the pPersonnelScreenStrings[]
-enum {
+const enum Enum110 {
   PRSNL_TXT_HEALTH, // HEALTH OF MERC
   PRSNL_TXT_AGILITY,
   PRSNL_TXT_DEXTERITY,
@@ -182,7 +182,7 @@ enum {
   PRSNL_TXT_TIMES_WOUNDED, // NUMBER OF TIMES MERC HAS BEEN WOUNDED
   PRSNL_TXT_SKILLS,
   PRSNL_TXT_NOSKILLS,
-};
+}
 
 extern BOOLEAN gfTemporaryDisablingOfLoadPendingFlag;
 extern BOOLEAN fExitingLaptopFlag;

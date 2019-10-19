@@ -7,7 +7,7 @@ const SLIDER_BAR_WIDTH = 37;
 // the sizeof one skill unit on the sliding bar in pixels
 const BASE_SKILL_PIXEL_UNIT_SIZE = ((423 - 230));
 
-enum {
+const enum Enum84 {
   HEALTH_ATTRIBUTE,
   DEXTERITY_ATTRIBUTE,
   AGILITY_ATTRIBUTE,
@@ -18,13 +18,13 @@ enum {
   EXPLOSIVE_SKILL,
   MEDICAL_SKILL,
   MECHANICAL_SKILL,
-};
+}
 
-enum {
+const enum Enum85 {
   SLIDER_ERROR,
   SLIDER_OK,
   SLIDER_OUT_OF_RANGE,
-};
+}
 
 // the skills as they stand
 INT32 iCurrentStrength = 55;

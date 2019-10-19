@@ -1,4 +1,4 @@
-enum TileDefines {
+const enum Enum312 {
   FIRSTTEXTURE1 = 0,
   FIRSTTEXTURE2,
   FIRSTTEXTURE3,
@@ -3263,12 +3263,12 @@ enum TileDefines {
   WIREFRAMES15,
 
   NUMBEROFTILES,
-};
+}
 
 const BLUEFLAG_GRAPHIC = FIRSTSWITCHES21;
 
 // Defines for tile type identification
-enum TileTypeDefines {
+const enum Enum313 {
   FIRSTTEXTURE = 0,
   SECONDTEXTURE,
   THIRDTEXTURE,
@@ -3464,7 +3464,7 @@ enum TileTypeDefines {
   WIREFRAMES,
 
   NUMBEROFTILETYPES,
-};
+}
 
 //==========================================================================
 // Quick defines for finding last type entry in tile types

@@ -29,7 +29,7 @@ const BUCKSHOT_SHOTS = 9;
 const MIN_MORTAR_RANGE = 150; // minimum range of a mortar
 
 // WEAPON CLASSES
-enum {
+const enum Enum282 {
   NOGUNCLASS,
   HANDGUNCLASS,
   SMGCLASS,
@@ -39,10 +39,10 @@ enum {
   KNIFECLASS,
   MONSTERCLASS,
   NUM_WEAPON_CLASSES,
-};
+}
 
 // exact gun types
-enum {
+const enum Enum283 {
   NOT_GUN = 0,
   GUN_PISTOL,
   GUN_M_PISTOL,
@@ -52,21 +52,21 @@ enum {
   GUN_AS_RIFLE,
   GUN_LMG,
   GUN_SHOTGUN,
-};
+}
 
 // ARMOUR CLASSES
-enum {
+const enum Enum284 {
   ARMOURCLASS_HELMET,
   ARMOURCLASS_VEST,
   ARMOURCLASS_LEGGINGS,
   ARMOURCLASS_PLATE,
   ARMOURCLASS_MONST,
   ARMOURCLASS_VEHICLE,
-};
+}
 
 // Warning: There is a table in weapons.c that indexes using these enumberations...
 // BurstSndStrings[]....
-enum {
+const enum Enum285 {
   NOAMMO = 0,
   AMMO38,
   AMMO9,
@@ -84,9 +84,9 @@ enum {
   AMMOROCKET,
   AMMODART,
   AMMOFLAME,
-};
+}
 
-enum {
+const enum Enum286 {
   AMMO_REGULAR = 0,
   AMMO_HP,
   AMMO_AP,
@@ -100,9 +100,9 @@ enum {
   AMMO_HEAT,
   AMMO_SLEEP_DART,
   AMMO_FLAME,
-};
+}
 
-enum {
+const enum Enum287 {
   EXPLOSV_NORMAL,
   EXPLOSV_STUN,
   EXPLOSV_TEARGAS,
@@ -111,7 +111,7 @@ enum {
   EXPLOSV_NOISE,
   EXPLOSV_SMOKE,
   EXPLOSV_CREATUREGAS,
-};
+}
 
 const AMMO_DAMAGE_ADJUSTMENT_BUCKSHOT = (x) => (x / 4);
 const NUM_BUCKSHOT_PELLETS = 9;

@@ -116,18 +116,18 @@ void CopyPathToCharactersSquadIfInOne(SOLDIERTYPE *pCharacter);
 
 void InitMapSecrets(void);
 
-enum {
+const enum Enum158 {
   ABORT_PLOTTING = 0,
   PATH_CLEARED,
   PATH_SHORTENED,
-};
+}
 
 // what the player knows about the enemies in a given sector
-enum {
+const enum Enum159 {
   KNOWS_NOTHING = 0,
   KNOWS_THEYRE_THERE,
   KNOWS_HOW_MANY,
-};
+}
 
 // size of squares on the map
 const MAP_GRID_X = 21;

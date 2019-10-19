@@ -59,7 +59,7 @@ extern STR16 pImpPopUpStrings[];
 
 // extern BOOLEAN fIMPCompletedFlag;
 
-enum {
+const enum Enum71 {
   IMP_HOME_PAGE,
   IMP_BEGIN,
   IMP_FINISH,
@@ -76,6 +76,6 @@ enum {
   IMP_CONFIRM,
 
   IMP_NUM_PAGES,
-};
+}
 
 const COST_OF_PROFILE = 3000;

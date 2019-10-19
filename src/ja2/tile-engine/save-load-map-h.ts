@@ -1,5 +1,5 @@
 // Used for the ubType in the MODIFY_MAP struct
-enum {
+const enum Enum307 {
   SLM_NONE,
 
   // Adding a map graphic
@@ -36,7 +36,7 @@ enum {
 
   // Modify window graphic & structure
   SLM_WINDOW_HIT,
-};
+}
 
 typedef struct {
   UINT16 usGridNo; // The gridno the graphic will be applied to

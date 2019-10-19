@@ -102,10 +102,10 @@ UINT32 giFilesPageButtonsImage[2];
 
 // the previous and next pages buttons
 
-enum {
+const enum Enum76 {
   PREVIOUS_FILES_PAGE_BUTTON = 0,
   NEXT_FILES_PAGE_BUTTON,
-};
+}
 // mouse regions
 MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
 

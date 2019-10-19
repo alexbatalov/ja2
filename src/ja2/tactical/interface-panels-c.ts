@@ -174,7 +174,7 @@ const TM_BARS_REGION_WIDTH = 26;
 const INDICATOR_BOX_WIDTH = 12;
 const INDICATOR_BOX_HEIGHT = 10;
 
-typedef enum {
+const enum Enum218 {
   STANCEUP_IMAGES = 0,
   UPDOWN_IMAGES,
   CLIMB_IMAGES,
@@ -191,14 +191,14 @@ typedef enum {
   DONE_IMAGES,
   MAPSCREEN_IMAGES,
   NUM_SM_BUTTON_IMAGES,
-};
+}
 
-typedef enum {
+const enum Enum219 {
   ENDTURN_IMAGES = 0,
   ROSTERMODE_IMAGES,
   DISK_IMAGES,
   NUM_TEAM_BUTTON_IMAGES,
-};
+}
 
 INT32 iSMPanelImages[NUM_SM_BUTTON_IMAGES];
 INT32 iBurstButtonImages[NUM_WEAPON_MODES];

@@ -58,7 +58,7 @@ extern BOOLEAN gfShowBookmarks;
 extern BOOLEAN fShowBookmarkInfo;
 extern BOOLEAN fReDrawBookMarkInfo;
 
-enum {
+const enum Enum95 {
   LAPTOP_MODE_NONE = 0,
   LAPTOP_MODE_FINANCES,
   LAPTOP_MODE_PERSONNEL,
@@ -104,20 +104,20 @@ enum {
   LAPTOP_MODE_SIRTECH,
   LAPTOP_MODE_BROKEN_LINK,
   LAPTOP_MODE_BOBBYR_SHIPMENTS,
-};
+}
 
 // bookamrks for WWW bookmark list
 
-enum {
+const enum Enum96 {
   FIRST_SIDE_PANEL = 1,
   SECOND_SIDE_PANEL,
-};
-enum {
+}
+const enum Enum97 {
   LAPTOP_NO_CURSOR = 0,
   LAPTOP_PANEL_CURSOR,
   LAPTOP_SCREEN_CURSOR,
   LAPTOP_WWW_CURSOR,
-};
+}
 
 const LAPTOP_SIDE_PANEL_X = 0;
 const LAPTOP_SIDE_PANEL_Y = 0;
@@ -146,7 +146,7 @@ const ON_Y = 445;
 
 // the bookmark values, move cancel down as bookmarks added
 
-enum {
+const enum Enum98 {
   AIM_BOOKMARK = 0,
   BOBBYR_BOOKMARK,
   IMP_BOOKMARK,
@@ -155,7 +155,7 @@ enum {
   FLORIST_BOOKMARK,
   INSURANCE_BOOKMARK,
   CANCEL_STRING,
-};
+}
 
 extern UINT32 guiLaptopBACKGROUND;
 

@@ -78,12 +78,12 @@ const SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER = 2;
 const SLG_DOUBLE_CLICK_DELAY = 500;
 
 // defines for saved game version status
-enum {
+const enum Enum25 {
   SLS_HEADER_OK,
   SLS_SAVED_GAME_VERSION_OUT_OF_DATE,
   SLS_GAME_VERSION_OUT_OF_DATE,
   SLS_BOTH_SAVE_GAME_AND_GAME_VERSION_OUT_OF_DATE,
-};
+}
 
 // ddd
 

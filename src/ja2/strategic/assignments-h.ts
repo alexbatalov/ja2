@@ -16,7 +16,7 @@ const BREATHMAX_FULLY_RESTED = 95;
 const VEHICLE_REPAIR_POINTS_DIVISOR = 10;
 
 // Assignments Defines
-enum {
+const enum Enum117 {
   SQUAD_1 = 0,
   SQUAD_2,
   SQUAD_3,
@@ -52,12 +52,12 @@ enum {
   ASSIGNMENT_POW,
   ASSIGNMENT_HOSPITAL,
   ASSIGNMENT_EMPTY,
-};
+}
 
 const NO_ASSIGNMENT = 127; // used when no pSoldier->ubDesiredSquad
 
 // Train stats defines (must match ATTRIB_MENU_ defines, and pAttributeMenuStrings )
-enum {
+const enum Enum118 {
   STRENGTH = 0,
   DEXTERITY,
   AGILITY,
@@ -69,7 +69,7 @@ enum {
   EXPLOSIVE_ASSIGN,
   NUM_TRAINABLE_STATS,
   // NOTE: Wisdom isn't trainable!
-};
+}
 
 typedef struct TOWN_TRAINER_TYPE {
   SOLDIERTYPE *pSoldier;

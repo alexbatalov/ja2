@@ -2,12 +2,12 @@
 // compile time of the SGP dependencies, while allowing the other editor files to hook into it
 // without paying, so to speak.
 
-enum {
+const enum Enum44 {
   GUI_CLEAR_EVENT,
   GUI_LCLICK_EVENT,
   GUI_RCLICK_EVENT,
   GUI_MOVE_EVENT,
-};
+}
 
 // Taskbar manipulation functions
 void DoTaskbar(void);
@@ -34,11 +34,11 @@ void EnableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID);
 
 // Region Utils
 const NUM_TERRAIN_TILE_REGIONS = 9;
-enum {
+const enum Enum45 {
   BASE_TERRAIN_TILE_REGION_ID,
   ITEM_REGION_ID = NUM_TERRAIN_TILE_REGIONS,
   MERC_REGION_ID,
-};
+}
 
 void EnableEditorRegion(INT8 bRegionID);
 void DisableEditorRegion(INT8 bRegionID);

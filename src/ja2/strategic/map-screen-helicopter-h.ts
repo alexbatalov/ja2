@@ -35,27 +35,27 @@ const HELI_TOOK_MAJOR_DAMAGE = 53;
 const HELI_GOING_DOWN = 54;
 
 // enums for skyrider monologue
-enum {
+const enum Enum136 {
   SKYRIDER_MONOLOGUE_EVENT_DRASSEN_SAM_SITE = 0,
   SKYRIDER_MONOLOGUE_EVENT_OTHER_SAM_SITES,
   SKYRIDER_MONOLOGUE_EVENT_ESTONI_REFUEL,
   SKYRIDER_MONOLOGUE_EVENT_CAMBRIA_HOSPITAL,
-};
+}
 
-enum {
+const enum Enum137 {
   DRASSEN_REFUELING_SITE = 0,
   ESTONI_REFUELING_SITE,
   NUMBER_OF_REFUEL_SITES,
-};
+}
 
 // the sam site enums
-enum {
+const enum Enum138 {
   SAM_SITE_ONE = 0, // near Chitzena
   SAM_SITE_TWO, // near Drassen
   SAM_SITE_THREE, // near Cambria
   SAM_SITE_FOUR, // near Meduna
   NUMBER_OF_SAM_SITES,
-};
+}
 
 // list of refueling site's sector locations
 extern UINT8 ubRefuelList[NUMBER_OF_REFUEL_SITES][2];

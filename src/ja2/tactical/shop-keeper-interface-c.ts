@@ -321,19 +321,19 @@ extern BOOLEAN BltVSurfaceUsingDD(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurfac
 extern UINT8 gubLastSpecialItemAddedAtElement;
 
 // Enums for the various Atm modes
-enum {
+const enum Enum250 {
   SKI_ATM_DISABLED_MODE,
   SKI_ATM_TAKE_MODE,
   SKI_ATM_GIVE_MODE,
   SKI_ATM_ERR_TAKE_MODE,
   SKI_ATM_ERR_GIVE_MODE,
   SKI_ATM_DISPLAY_PLAYERS_BALANCE,
-};
+}
 
 UINT8 gubCurrentSkiAtmMode = SKI_ATM_DISABLED_MODE;
 
 // Enums for possible evaluation results
-enum {
+const enum Enum251 {
   EVAL_RESULT_NORMAL,
   EVAL_RESULT_OK_BUT_REALLY_DAMAGED,
   EVAL_RESULT_DONT_HANDLE,
@@ -343,7 +343,7 @@ enum {
   EVAL_RESULT_ROCKET_RIFLE,
 
   NUM_EVAL_RESULTS,
-};
+}
 
 BOOLEAN gfEvalResultQuoteSaid[NUM_EVAL_RESULTS];
 

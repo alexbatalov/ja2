@@ -205,14 +205,14 @@ typedef struct {
   INT32 iPageNumber;
 } EmailPageInfoStruct;
 
-enum {
+const enum Enum74 {
   SENDER = 0,
   RECEIVED,
   SUBJECT,
   READ,
-};
+}
 
-enum {
+const enum Enum75 {
   MAIL_ENRICO = 0,
   CHAR_PROFILE_SITE,
   GAME_HELP,
@@ -226,7 +226,7 @@ enum {
   KING_PIN,
   JOHN_KULBA,
   AIM_SITE,
-};
+}
 
 // the length of the subject in char
 const EMAIL_SUBJECT_LENGTH = 128;

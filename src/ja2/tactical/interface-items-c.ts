@@ -139,12 +139,12 @@ const KEYRING_WIDTH = 517 - 487;
 const KEYRING_HEIGHT = 469 - 445;
 const TACTICAL_INVENTORY_KEYRING_GRAPHIC_OFFSET_X = 215;
 // enum used for the money buttons
-enum {
+const enum Enum217 {
   M_1000,
   M_100,
   M_10,
   M_DONE,
-};
+}
 
 // AN ARRAY OF MOUSE REGIONS, ONE FOR EACH OBJECT POSITION ON BUDDY
 MOUSE_REGION gInvRegions[NUM_INV_SLOTS];

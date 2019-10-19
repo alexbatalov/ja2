@@ -154,13 +154,13 @@ const QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT = 80;
 //
 // drop down list box
 //
-enum {
+const enum Enum166 {
   QD_DROP_DOWN_NO_ACTION = 0,
   QD_DROP_DOWN_CREATE,
   QD_DROP_DOWN_DESTROY,
   QD_DROP_DOWN_DISPLAY,
   QD_DROP_DOWN_CANCEL,
-};
+}
 
 STR16 QuestStates[] = {
   L"N.S.",
@@ -220,7 +220,7 @@ STR16 QuestDebugText[] = {
 };
 
 // enums for above strings
-enum {
+const enum Enum167 {
   QUEST_DBS_TITLE = 0,
   QUEST_DBS_QUESTS,
   QUEST_DBS_QUEST_NUMBER,
@@ -267,7 +267,7 @@ enum {
   QUEST_DBS_LEFT_ARROW_PREVIOUS_QUOTE,
   QUEST_DBS_RIGHT_ARROW_NEXT_QUOTE,
   QUEST_DBS_ESC_TOP_STOP_TALKING,
-};
+}
 
 STR16 PocketText[] = {
   L"Helmet",
@@ -328,11 +328,11 @@ typedef struct {
 } SCROLL_BOX;
 
 // Enums for the possible panels the mercs can use
-enum {
+const enum Enum168 {
   QDS_REGULAR_PANEL,
   QDS_NPC_PANEL,
   QDS_NO_PANEL,
-};
+}
 
 // image identifiers
 UINT32 guiQdScrollArrowImage;

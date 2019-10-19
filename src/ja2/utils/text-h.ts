@@ -150,12 +150,12 @@ extern STR16 wMapScreenSortButtonHelpText[];
 extern STR16 pNewNoiseStr[];
 extern STR16 gzLateLocalizedString[];
 
-enum {
+const enum Enum332 {
   ANTIHACKERSTR_EXITGAME,
-};
+}
 extern STR16 pAntiHackerString[];
 
-enum {
+const enum Enum333 {
   MSG_EXITGAME,
   MSG_OK,
   MSG_YES,
@@ -233,12 +233,12 @@ enum {
   MSG_PACKAGE_ARRIVES,
   MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP,
   MSG_HISTORY_UPDATED,
-};
+}
 extern STR16 pMessageStrings[];
 
 extern UINT16 ItemPickupHelpPopup[][40];
 
-enum {
+const enum Enum334 {
   STR_EMPTY,
   STR_LOSES_1_WISDOM,
   STR_LOSES_1_DEX,
@@ -302,7 +302,7 @@ enum {
   STR_HOW_TO_USE_SKYRIDDER,
   STR_RELOAD_ONLY_ONE_GUN,
   STR_BLOODCATS_TURN,
-};
+}
 
 const LARGE_STRING_LENGTH = 200;
 const MED_STRING_LENGTH = 80;
@@ -323,7 +323,7 @@ extern STR16 sKeyDescriptionStrings[2];
 extern UINT16 zHealthStr[][13];
 extern STR16 zVehicleName[6];
 
-enum {
+const enum Enum335 {
   AIR_RAID_TURN_STR,
   BEGIN_AUTOBANDAGE_PROMPT_STR,
   NOTICING_MISSING_ITEMS_FROM_SHIPMENT_STR,
@@ -472,9 +472,9 @@ enum {
   DOOR_IS_BUSY,
   VEHICLE_VITAL_STATS_POPUPTEXT,
   NO_LOS_TO_TALK_TARGET,
-};
+}
 
-enum {
+const enum Enum336 {
   EXIT_GUI_LOAD_ADJACENT_SECTOR_HELPTEXT,
   EXIT_GUI_GOTO_MAPSCREEN_HELPTEXT,
   EXIT_GUI_CANT_LEAVE_HOSTILE_SECTOR_HELPTEXT,
@@ -490,33 +490,33 @@ enum {
   EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT,
   EXIT_GUI_ALL_TRAVERSAL_WILL_MOVE_CURRENT_SQUAD_HELPTEXT,
   EXIT_GUI_ESCORTED_CHARACTERS_CANT_LEAVE_SECTOR_ALONE_STR,
-};
+}
 extern STR16 pExitingSectorHelpText[];
 
-enum {
+const enum Enum337 {
   LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR,
   LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR,
   LARGESTR_HAVE_BEEN_CAPTURED,
-};
+}
 
 // Insurance Contract.c
-enum {
+const enum Enum338 {
   INS_CONTRACT_PREVIOUS,
   INS_CONTRACT_NEXT,
   INS_CONTRACT_ACCEPT,
   INS_CONTRACT_CLEAR,
-};
+}
 extern STR16 InsContractText[];
 
 // Insurance Info
-enum {
+const enum Enum339 {
   INS_INFO_PREVIOUS,
   INS_INFO_NEXT,
-};
+}
 extern STR16 InsInfoText[];
 
 // Merc Account.c
-enum {
+const enum Enum340 {
   MERC_ACCOUNT_AUTHORIZE,
   MERC_ACCOUNT_HOME,
   MERC_ACCOUNT_ACCOUNT,
@@ -527,11 +527,11 @@ enum {
   MERC_ACCOUNT_TOTAL,
   MERC_ACCOUNT_AUTHORIZE_CONFIRMATION,
   MERC_ACCOUNT_NOT_ENOUGH_MONEY,
-};
+}
 extern STR16 MercAccountText[];
 
 // MercFile.c
-enum {
+const enum Enum341 {
   MERC_FILES_HEALTH,
   MERC_FILES_AGILITY,
   MERC_FILES_DEXTERITY,
@@ -557,29 +557,29 @@ enum {
   MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING,
 
   MERC_FILES_MERC_UNAVAILABLE,
-};
+}
 extern STR16 MercInfo[];
 
 // MercNoAccount.c
-enum {
+const enum Enum342 {
   MERC_NO_ACC_OPEN_ACCOUNT,
   MERC_NO_ACC_CANCEL,
   MERC_NO_ACC_NO_ACCOUNT_OPEN_ONE,
-};
+}
 extern STR16 MercNoAccountText[];
 
 // Merc HomePage
-enum {
+const enum Enum343 {
   MERC_SPECK_OWNER,
   MERC_OPEN_ACCOUNT,
   MERC_VIEW_ACCOUNT,
   MERC_VIEW_FILES,
   MERC_SPECK_COM,
-};
+}
 extern STR16 MercHomePageText[];
 
 // Funerl.c
-enum {
+const enum Enum344 {
   FUNERAL_INTRO_1,
   FUNERAL_INTRO_2,
   FUNERAL_INTRO_3,
@@ -592,11 +592,11 @@ enum {
   FUNERAL_FUNERAL_ETTIQUETTE,
   FUNERAL_OUR_CONDOLENCES, // 10
   FUNERAL_OUR_SYMPATHIES,
-};
+}
 extern STR16 sFuneralString[];
 
 // Florist.c
-enum {
+const enum Enum345 {
   FLORIST_GALLERY,
   FLORIST_DROP_ANYWHERE,
   FLORIST_PHONE_NUMBER,
@@ -610,11 +610,11 @@ enum {
   FLORIST_ADVERTISEMENT_6,
   FLORIST_ADVERTISEMENT_7,
   FLORIST_ADVERTISEMENT_8,
-};
+}
 extern STR16 sFloristText[];
 
 // Florist Order Form
-enum {
+const enum Enum346 {
   FLORIST_ORDER_BACK,
   FLORIST_ORDER_SEND,
   FLORIST_ORDER_CLEAR,
@@ -637,28 +637,28 @@ enum {
   FLORIST_ORDER_STANDARDIZED_CARDS,
   FLORIST_ORDER_BILLING_INFO, // 20
   FLORIST_ORDER_NAME,
-};
+}
 extern STR16 sOrderFormText[];
 
 // Florist Gallery.c
-enum {
+const enum Enum347 {
   FLORIST_GALLERY_PREV,
   FLORIST_GALLERY_NEXT,
   FLORIST_GALLERY_CLICK_TO_ORDER,
   FLORIST_GALLERY_ADDIFTIONAL_FEE,
   FLORIST_GALLERY_HOME,
-};
+}
 extern STR16 sFloristGalleryText[];
 
 // Florist Cards
-enum {
+const enum Enum348 {
   FLORIST_CARDS_CLICK_SELECTION,
   FLORIST_CARDS_BACK,
-};
+}
 extern STR16 sFloristCards[];
 
 // Bobbyr Mail Order.c
-enum {
+const enum Enum349 {
   BOBBYR_ORDER_FORM,
   BOBBYR_QTY,
   BOBBYR_WEIGHT,
@@ -685,11 +685,11 @@ enum {
   BOBBYR_PACKAGE_WEIGHT,
   BOBBYR_MINIMUM_WEIGHT,
   BOBBYR_GOTOSHIPMENT_PAGE,
-};
+}
 extern STR16 BobbyROrderFormText[];
 
 // BobbyRGuns.c
-enum {
+const enum Enum350 {
   BOBBYR_GUNS_TO_ORDER,
   BOBBYR_GUNS_CLICK_ON_ITEMS,
   BOBBYR_GUNS_PREVIOUS_ITEMS,
@@ -721,12 +721,12 @@ enum {
   BOBBYR_MORE_THEN_10_PURCHASES,
   BOBBYR_MORE_NO_MORE_IN_STOCK,
   BOBBYR_NO_MORE_STOCK,
-};
+}
 
 extern STR16 BobbyRText[];
 
 // BobbyR.c
-enum {
+const enum Enum351 {
   BOBBYR_ADVERTISMENT_1,
   BOBBYR_ADVERTISMENT_2,
   BOBBYR_USED,
@@ -736,11 +736,11 @@ enum {
   BOBBYR_ARMOR,
   BOBBYR_ADVERTISMENT_3,
   BOBBYR_UNDER_CONSTRUCTION,
-};
+}
 extern STR16 BobbyRaysFrontText[];
 
 // Aim Sort.c
-enum {
+const enum Enum352 {
   AIM_AIMMEMBERS,
   SORT_BY,
   PRICE,
@@ -754,28 +754,28 @@ enum {
   ALUMNI_GALLERY,
   ASCENDING,
   DESCENDING,
-};
+}
 extern STR16 AimSortText[];
 
 // Aim Policies.c
-enum {
+const enum Enum353 {
   AIM_POLICIES_PREVIOUS,
   AIM_POLICIES_HOMEPAGE,
   AIM_POLICIES_POLICY,
   AIM_POLICIES_NEXT_PAGE,
   AIM_POLICIES_DISAGREE,
   AIM_POLICIES_AGREE,
-};
+}
 extern STR16 AimPolicyText[];
 
 // Aim Member.c
-enum {
+const enum Enum354 {
   AIM_MEMBER_CLICK_INSTRUCTIONS,
-};
+}
 extern STR16 AimMemberText[];
 
 // Aim Member.c
-enum {
+const enum Enum355 {
   AIM_MEMBER_HEALTH,
   AIM_MEMBER_AGILITY,
   AIM_MEMBER_DEXTERITY,
@@ -799,11 +799,11 @@ enum {
   AIM_MEMBER_ACTIVE_MEMBERS, // 20
   AIM_MEMBER_OPTIONAL_GEAR,
   AIM_MEMBER_MEDICAL_DEPOSIT_REQ,
-};
+}
 extern STR16 CharacterInfo[];
 
 // Aim Member.c
-enum {
+const enum Enum356 {
   AIM_MEMBER_CONTRACT_CHARGE,
   AIM_MEMBER_ONE_DAY,
   AIM_MEMBER_ONE_WEEK,
@@ -819,11 +819,11 @@ enum {
   AIM_MEMBER_VIDEO_CONF_WITH,
   AIM_MEMBER_CONNECTING,
   AIM_MEMBER_WITH_MEDICAL, // 14
-};
+}
 extern STR16 VideoConfercingText[];
 
 // Aim Member.c
-enum {
+const enum Enum357 {
   AIM_MEMBER_FUNDS_TRANSFER_SUCCESFUL,
   AIM_MEMBER_FUNDS_TRANSFER_FAILED,
   AIM_MEMBER_NOT_ENOUGH_FUNDS,
@@ -836,27 +836,27 @@ enum {
 
   AIM_MEMBER_PRERECORDED_MESSAGE,
   AIM_MEMBER_MESSAGE_RECORDED,
-};
+}
 extern STR16 AimPopUpText[];
 
 // AIM Link.c
-enum {
+const enum Enum358 {
   AIM_LINK_TITLE,
-};
+}
 extern STR16 AimLinkText[];
 
 // Aim History
-enum {
+const enum Enum359 {
   AIM_HISTORY_TITLE,
   AIM_HISTORY_PREVIOUS,
   AIM_HISTORY_HOME,
   AIM_HISTORY_AIM_ALUMNI,
   AIM_HISTORY_NEXT,
-};
+}
 extern STR16 AimHistoryText[];
 
 // Aim Facial Index
-enum {
+const enum Enum360 {
   AIM_FI_PRICE,
   AIM_FI_EXP,
   AIM_FI_MARKSMANSHIP,
@@ -871,21 +871,21 @@ enum {
   AIM_FI_TO_ENTER_SORT_PAGE,
   AIM_FI_AWAY,
   AIM_FI_DEAD,
-};
+}
 extern STR16 AimFiText[];
 
 // AimArchives.
-enum {
+const enum Enum361 {
   AIM_ALUMNI_PAGE_1,
   AIM_ALUMNI_PAGE_2,
   AIM_ALUMNI_PAGE_3,
   AIM_ALUMNI_ALUMNI,
   AIM_ALUMNI_DONE,
-};
+}
 extern STR16 AimAlumniText[];
 
 // Aim Home Page
-enum {
+const enum Enum362 {
   //	AIM_INFO_1,
   //	AIM_INFO_2,
   //	AIM_POLICIES,
@@ -899,27 +899,27 @@ enum {
   AIM_BOBBYR_ADD1,
   AIM_BOBBYR_ADD2,
   AIM_BOBBYR_ADD3,
-};
+}
 
 extern STR16 AimScreenText[];
 
 // Aim Home Page
-enum {
+const enum Enum363 {
   AIM_HOME,
   AIM_MEMBERS,
   AIM_ALUMNI,
   AIM_POLICIES,
   AIM_HISTORY,
   AIM_LINKS,
-};
+}
 
 extern STR16 AimBottomMenuText[];
 
 // MapScreen
-enum {
+const enum Enum364 {
   MAP_SCREEN_MAP_LEVEL,
   MAP_SCREEN_NO_MILITIA_TEXT,
-};
+}
 extern STR16 zMarksMapScreenText[];
 
 // Weapon Name and Description size
@@ -935,7 +935,7 @@ extern void LoadAllExternalText(void);
 BOOLEAN LoadShortNameItemInfo(UINT16 ubIndex, STR16 pNameString);
 BOOLEAN LoadItemProsAndCons(UINT16 usIndex, STR16 pProsString, STR16 pConsString);
 
-enum {
+const enum Enum365 {
   // Coordinating simultaneous arrival dialog strings
   STR_DETECTED_SIMULTANEOUS_ARRIVAL,
   STR_DETECTED_SINGULAR,
@@ -1018,18 +1018,18 @@ enum {
   STR_DIALOG_CREATURES_KILL_CIVILIANS,
   STR_DIALOG_ENEMIES_ATTACK_UNCONCIOUSMERCS,
   STR_DIALOG_CREATURES_ATTACK_UNCONCIOUSMERCS,
-};
+}
 
 // Strings used in conjunction with above enumerations
 extern STR16 gpStrategicString[];
 
-enum {
+const enum Enum366 {
   STR_GAMECLOCK_DAY_NAME,
-};
+}
 extern STR16 gpGameClockString[];
 
 // enums for the Shopkeeper Interface
-enum {
+const enum Enum367 {
   SKI_TEXT_MERCHADISE_IN_STOCK,
   SKI_TEXT_PAGE,
   SKI_TEXT_TOTAL_COST,
@@ -1044,11 +1044,11 @@ enum {
   SKI_TEXT_NO_MORE_ROOM_IN_PLAYER_OFFER_AREA,
   SKI_TEXT_MINUTES,
   SKI_TEXT_DROP_ITEM_TO_GROUND,
-};
+}
 extern STR16 SKI_Text[];
 
 // ShopKeeper Interface
-enum {
+const enum Enum368 {
   SKI_ATM_0,
   SKI_ATM_1,
   SKI_ATM_2,
@@ -1066,22 +1066,22 @@ enum {
   SKI_ATM_CLEAR,
 
   NUM_SKI_ATM_BUTTONS,
-};
+}
 extern STR16 SkiAtmText[];
 
 // ShopKeeper Interface
-enum {
+const enum Enum369 {
   SKI_ATM_MODE_TEXT_SELECT_MODE,
   SKI_ATM_MODE_TEXT_ENTER_AMOUNT,
   SKI_ATM_MODE_TEXT_SELECT_TO_MERC,
   SKI_ATM_MODE_TEXT_SELECT_FROM_MERC,
   SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS,
   SKI_ATM_MODE_TEXT_BALANCE,
-};
+}
 extern STR16 gzSkiAtmText[];
 
 // ShopKeeperInterface Message Box defines
-enum {
+const enum Enum370 {
   SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_DIFFERENCE,
   SKI_SHORT_FUNDS_TEXT,
   SKI_QUESTION_TO_DEDUCT_MONEY_FROM_PLAYERS_ACCOUNT_TO_COVER_COST,
@@ -1091,12 +1091,12 @@ enum {
   SKI_DONE_BUTTON_HELP_TEXT,
 
   SKI_PLAYERS_CURRENT_BALANCE,
-};
+}
 
 extern STR16 SkiMessageBoxText[];
 
 // enums for the above text
-enum {
+const enum Enum371 {
   SLG_SAVE_GAME,
   SLG_LOAD_GAME,
   SLG_CANCEL,
@@ -1120,12 +1120,12 @@ enum {
   SLG_SCIFI, // 20
 
   SLG_DIFF,
-};
+}
 extern STR16 zSaveLoadText[];
 
 // OptionScreen.h
 // defines used for the zOptionsText
-enum {
+const enum Enum372 {
   OPT_SAVE_GAME,
   OPT_LOAD_GAME,
   OPT_MAIN_MENU,
@@ -1135,12 +1135,12 @@ enum {
   OPT_MUSIC,
   OPT_RETURN_TO_MAIN,
   OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON,
-};
+}
 
 extern STR16 zOptionsText[];
 
 // used with the gMoneyStatsDesc[]
-enum {
+const enum Enum373 {
   MONEY_DESC_AMOUNT,
   MONEY_DESC_REMAINING,
   MONEY_DESC_AMOUNT_2_SPLIT,
@@ -1150,16 +1150,16 @@ enum {
   MONEY_DESC_BALANCE,
   MONEY_DESC_AMOUNT_2_WITHDRAW,
   MONEY_DESC_TO_WITHDRAW,
-};
+}
 
 // used with gzMoneyWithdrawMessageText
-enum {
+const enum Enum374 {
   MONEY_TEXT_WITHDRAW_MORE_THEN_MAXIMUM,
   CONFIRMATION_TO_DEPOSIT_MONEY_TO_ACCOUNT,
-};
+}
 
 // Game init option screen
-enum {
+const enum Enum375 {
   GIO_INITIAL_GAME_SETTINGS,
 
   GIO_GAME_STYLE_TEXT,
@@ -1182,10 +1182,10 @@ enum {
   GIO_SAVE_ANYWHERE_TEXT,
   GIO_IRON_MAN_TEXT,
   GIO_DISABLED_FOR_THE_DEMO_TEXT,
-};
+}
 extern STR16 gzGIOScreenText[];
 
-enum {
+const enum Enum376 {
   LAPTOP_BN_HLP_TXT_VIEW_EMAIL,
   LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES,
   LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS,
@@ -1204,12 +1204,12 @@ enum {
   BOOKMARK_TEXT_MCGILLICUTTY_MORTUARY,
   BOOKMARK_TEXT_UNITED_FLORAL_SERVICE,
   BOOKMARK_TEXT_INSURANCE_BROKERS_FOR_AIM_CONTRACTS,
-};
+}
 
 // enums for the help screen
-enum {
+const enum Enum377 {
   HLP_SCRN_TXT__EXIT_SCREEN,
-};
+}
 extern STR16 gzHelpScreenText[];
 
 extern STR16 gzLaptopHelpText[];
@@ -1218,40 +1218,40 @@ extern STR16 gzMoneyWithdrawMessageText[];
 extern STR16 gzCopyrightText[];
 
 // enums used for the mapscreen inventory messages
-enum {
+const enum Enum378 {
   MAPINV_MERC_ISNT_CLOSE_ENOUGH,
   MAPINV_CANT_SELECT_MERC,
   MAPINV_NOT_IN_SECTOR_TO_TAKE,
   MAPINV_CANT_PICKUP_IN_COMBAT,
   MAPINV_CANT_DROP_IN_COMBAT,
   MAPINV_NOT_IN_SECTOR_TO_DROP,
-};
+}
 
 // the laptop broken link site
-enum {
+const enum Enum379 {
   BROKEN_LINK_TXT_ERROR_404,
   BROKEN_LINK_TXT_SITE_NOT_FOUND,
-};
+}
 extern STR16 BrokenLinkText[];
 
 // Bobby rays page for recent shipments
-enum {
+const enum Enum380 {
   BOBBYR_SHIPMENT__TITLE,
   BOBBYR_SHIPMENT__ORDER_NUM,
   BOBBYR_SHIPMENT__NUM_ITEMS,
   BOBBYR_SHIPMENT__ORDERED_ON,
-};
+}
 
 extern STR16 gzBobbyRShipmentText[];
 
-enum {
+const enum Enum381 {
   GIO_CFS_NOVICE,
   GIO_CFS_EXPERIENCED,
   GIO_CFS_EXPERT,
-};
+}
 extern STR16 zGioDifConfirmText[];
 
-enum {
+const enum Enum382 {
   CRDT_CAMFIELD,
   CRDT_SHAWN,
   CRDT_KRIS,
@@ -1269,7 +1269,7 @@ enum {
   CRDT_JOEY,
 
   NUM_PEOPLE_IN_CREDITS,
-};
+}
 
 STR16 gzCreditNames[];
 STR16 gzCreditNameTitle[];

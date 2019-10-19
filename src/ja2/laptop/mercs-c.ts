@@ -79,14 +79,14 @@ const MERC_NUM_DAYS_TILL_FOURTH_MERC_AVAILABLE = 30;
 const MERC__AMOUNT_OF_MONEY_FOR_BUBBA = 6000;
 const MERC__DAY_WHEN_BUBBA_CAN_BECOME_AVAILABLE = 10;
 
-enum {
+const enum Enum100 {
   MERC_ARRIVES_BUBBA,
   MERC_ARRIVES_LARRY,
   MERC_ARRIVES_NUMB,
   MERC_ARRIVES_COUGAR,
 
   NUM_MERC_ARRIVALS,
-};
+}
 
 typedef struct {
   UINT16 usMoneyPaid;
@@ -101,19 +101,19 @@ CONTITION_FOR_MERC_AVAILABLE gConditionsForMercAvailability[NUM_MERC_ARRIVALS] =
   { 20000, 25, 10 }, // Cougar
 };
 
-enum {
+const enum Enum101 {
   MERC_DISTORTION_NO_DISTORTION,
   MERC_DISTORTION_PIXELATE_UP,
   MERC_DISTORTION_PIXELATE_DOWN,
   MERC_DISRTORTION_DISTORT_IMAGE,
-};
+}
 
-enum {
+const enum Enum102 {
   MERC_SITE_NEVER_VISITED,
   MERC_SITE_FIRST_VISIT,
   MERC_SITE_SECOND_VISIT,
   MERC_SITE_THIRD_OR_MORE_VISITS,
-};
+}
 
 // Image Indetifiers
 
@@ -139,12 +139,12 @@ UINT16 gusSpeckDialogueActualWidth;
 BOOLEAN gfInMercSite = FALSE; // this flag is set when inide of the merc site
 
 // Merc Video Conferencing Mode
-enum {
+const enum Enum103 {
   MERC_VIDEO_NO_VIDEO_MODE,
   MERC_VIDEO_INIT_VIDEO_MODE,
   MERC_VIDEO_VIDEO_MODE,
   MERC_VIDEO_EXIT_VIDEO_MODE,
-};
+}
 
 UINT8 gubCurrentMercVideoMode;
 BOOLEAN gfMercVideoIsBeingDisplayed;

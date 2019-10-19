@@ -567,21 +567,21 @@ BOOLEAN TacticalCopySoldierFromProfile(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRU
   return TRUE;
 }
 
-enum {
+const enum Enum266 {
   PINKSKIN,
   TANSKIN,
   DARKSKIN,
   BLACKSKIN,
   NUMSKINS,
-};
-enum {
+}
+const enum Enum267 {
   WHITEHEAD,
   BLACKHEAD, // black skin (only this line )
   BROWNHEAD, // dark skin (this line plus all above)
   BLONDEHEAD,
   REDHEAD, // pink/tan skin (this line plus all above )
   NUMHEADS,
-};
+}
 
 INT32 ChooseHairColor(SOLDIERTYPE *pSoldier, INT32 skin) {
   INT32 iRandom;

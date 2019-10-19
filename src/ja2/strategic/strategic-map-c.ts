@@ -7,10 +7,10 @@ const INSURANCE_UPDATE_TIME = 0;
 const EARLY_MORNING_TIME = (4 * 60);
 const ENRICO_MAIL_TIME = (7 * 60);
 
-enum {
+const enum Enum176 {
   ABOUT_TO_LOAD_NEW_MAP,
   ABOUT_TO_TRASH_WORLD,
-};
+}
 BOOLEAN HandleDefiniteUnloadingOfWorld(UINT8 ubUnloadCode);
 
 extern INT16 gsRobotGridNo;

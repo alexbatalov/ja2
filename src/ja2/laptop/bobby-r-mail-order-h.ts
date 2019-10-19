@@ -1,5 +1,5 @@
 // enums for the various destinations that are available in the bobbyR dest drop down box
-enum {
+const enum Enum70 {
   BR_AUSTIN,
   BR_BAGHDAD,
   BR_DRASSEN,
@@ -17,7 +17,7 @@ enum {
   BR_TRIPOLI,
   BR_TOKYO,
   BR_VANCOUVER,
-};
+}
 
 void GameInitBobbyRMailOrder();
 BOOLEAN EnterBobbyRMailOrder();

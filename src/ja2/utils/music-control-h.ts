@@ -1,4 +1,4 @@
-enum MusicList {
+const enum Enum327 {
   MARIMBAD2_MUSIC,
   MENUMIX_MUSIC,
   NOTHING_A_MUSIC,
@@ -15,9 +15,9 @@ enum MusicList {
   CREEPY_MUSIC,
   CREATURE_BATTLE_MUSIC,
   NUM_MUSIC,
-};
+}
 
-enum MusicMode {
+const enum Enum328 {
   MUSIC_NONE,
   MUSIC_RESTORE,
   MUSIC_MAIN_MENU,
@@ -27,7 +27,7 @@ enum MusicMode {
   MUSIC_TACTICAL_VICTORY,
   MUSIC_TACTICAL_DEATH,
   MUSIC_LAPTOP,
-};
+}
 
 extern UINT32 uiMusicHandle;
 extern BOOLEAN fMusicPlaying;

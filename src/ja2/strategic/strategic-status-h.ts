@@ -44,20 +44,20 @@ const MAJOR_SETBACK_THRESHOLD = 15;
 const NEW_SECTORS_EQUAL_TO_ACTIVITY = 4;
 
 // enemy ranks
-enum {
+const enum Enum188 {
   ENEMY_RANK_ADMIN,
   ENEMY_RANK_TROOP,
   ENEMY_RANK_ELITE,
   NUM_ENEMY_RANKS,
-};
+}
 
 // ways enemies can be killed
-enum {
+const enum Enum189 {
   ENEMY_KILLED_IN_TACTICAL,
   ENEMY_KILLED_IN_AUTO_RESOLVE,
   ENEMY_KILLED_TOTAL,
   NUM_WAYS_ENEMIES_KILLED,
-};
+}
 
 typedef struct STRATEGIC_STATUS {
   UINT32 uiFlags;

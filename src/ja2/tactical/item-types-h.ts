@@ -39,12 +39,12 @@ const MAX_OBJECTS_PER_SLOT = 8;
 const MAX_ATTACHMENTS = 4;
 const MAX_MONEY_PER_SLOT = 20000;
 
-typedef enum {
+const enum Enum224 {
   BOMB_TIMED = 1,
   BOMB_REMOTE,
   BOMB_PRESSURE,
   BOMB_SWITCH,
-} DetonatorType;
+}
 
 const FIRST_MAP_PLACED_FREQUENCY = 50;
 const PANIC_FREQUENCY = 127;
@@ -257,7 +257,7 @@ const FIRST_MISC = 201;
 const FIRST_KEY = 271;
 
 const NOTHING = NONE;
-typedef enum {
+const enum Enum225 {
   NONE = 0,
 
   // weapons
@@ -630,7 +630,7 @@ typedef enum {
   UNUSED_48, // 350
 
   MAXITEMS,
-} ITEMDEFINE;
+}
 
 const FIRST_HELMET = STEEL_HELMET;
 const LAST_HELMET = SPECTRA_HELMET_Y;

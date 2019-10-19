@@ -1,4 +1,4 @@
-typedef enum {
+const enum Enum220 {
   STANCEUP_BUTTON = 0,
   UPDOWN_BUTTON,
   CLIMB_BUTTON,
@@ -14,14 +14,14 @@ typedef enum {
   SM_DONE_BUTTON,
   SM_MAP_SCREEN_BUTTON,
   NUM_SM_BUTTONS,
-};
+}
 
-typedef enum {
+const enum Enum221 {
   TEAM_DONE_BUTTON = 0,
   TEAM_MAP_SCREEN_BUTTON,
   CHANGE_SQUAD_BUTTON,
   NUM_TEAM_BUTTONS,
-};
+}
 
 const NEW_ITEM_CYCLE_COUNT = 19;
 const NEW_ITEM_CYCLES = 4;

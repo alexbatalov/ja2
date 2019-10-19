@@ -1,4 +1,4 @@
-enum {
+const enum Enum33 {
   SMALLSELECTION, // 1x1
   MEDIUMSELECTION, // 3x3
   LARGESELECTION, // 5x5
@@ -6,7 +6,7 @@ enum {
   LINESELECTION, // v or h line with a specified width
   AREASELECTION, // user controlled area
   NUMSELECTIONTYPES,
-};
+}
 
 extern UINT16 gusSelectionType;
 extern UINT16 gusSelectionWidth;

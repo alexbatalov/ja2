@@ -26,12 +26,12 @@ BobbyROrderLocationStruct BobbyROrderLocations[] = {
 };
 
 // drop down menu
-enum {
+const enum Enum69 {
   BR_DROP_DOWN_NO_ACTION,
   BR_DROP_DOWN_CREATE,
   BR_DROP_DOWN_DESTROY,
   BR_DROP_DOWN_DISPLAY,
-};
+}
 
 const BOBBYR_ORDER_NUM_SHIPPING_CITIES = 17;
 const BOBBYR_NUM_DISPLAYED_CITIES = 10;

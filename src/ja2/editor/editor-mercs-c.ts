@@ -58,14 +58,14 @@ UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20] = {
   L"Ignore this!",
 };
 
-enum {
+const enum Enum40 {
   SCHEDULE_INSTRUCTIONS_NONE,
   SCHEDULE_INSTRUCTIONS_DOOR1,
   SCHEDULE_INSTRUCTIONS_DOOR2,
   SCHEDULE_INSTRUCTIONS_GRIDNO,
   SCHEDULE_INSTRUCTIONS_SLEEP,
   NUM_SCHEDULE_INSTRUCTIONS,
-};
+}
 
 extern BOOLEAN gfSingleAction = FALSE;
 BOOLEAN gfUseScheduleData2 = FALSE;
@@ -367,12 +367,12 @@ void EntryInitEditorMercsInfo() {
   gfCanEditMercs = TRUE;
 }
 
-enum {
+const enum Enum41 {
   HAIR_PAL,
   SKIN_PAL,
   VEST_PAL,
   PANTS_PAL,
-};
+}
 
 void ProcessMercEditing() {
   UINT8 ubType, ubPaletteRep;

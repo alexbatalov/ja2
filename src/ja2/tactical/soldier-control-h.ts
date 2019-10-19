@@ -144,7 +144,7 @@ const NO_DESIRED_HEIGHT = 255;
 const MAX_FULLTILE_DIRECTIONS = 3;
 
 // ENUMERATIONS FOR ACTIONS
-enum {
+const enum Enum257 {
   MERC_OPENDOOR,
   MERC_OPENSTRUCT,
   MERC_PICKUPITEM,
@@ -163,17 +163,17 @@ enum {
   MERC_TAKEBLOOD,
   MERC_ATTACH_CAN,
   MERC_FUEL_VEHICLE,
-};
+}
 
 // ENUMERATIONS FOR THROW ACTIONS
-enum {
+const enum Enum258 {
   NO_THROW_ACTION,
   THROW_ARM_ITEM,
   THROW_TARGET_MERC_CATCH,
-};
+}
 
 // An enumeration for playing battle sounds
-enum {
+const enum Enum259 {
   BATTLE_SOUND_OK1,
   BATTLE_SOUND_OK2,
   BATTLE_SOUND_COOL1,
@@ -192,10 +192,10 @@ enum {
   BATTLE_SOUND_LOCKED,
   BATTLE_SOUND_ENEMY,
   NUM_MERC_BATTLE_SOUNDS,
-};
+}
 
 // different kinds of merc
-enum {
+const enum Enum260 {
   MERC_TYPE__PLAYER_CHARACTER,
   MERC_TYPE__AIM_MERC,
   MERC_TYPE__MERC,
@@ -203,7 +203,7 @@ enum {
   MERC_TYPE__EPC,
   MERC_TYPE__NPC_WITH_UNEXTENDABLE_CONTRACT,
   MERC_TYPE__VEHICLE,
-};
+}
 
 // I don't care if this isn't intuitive!  The hand positions go right
 // before the big pockets so we can loop through them that way. --CJC
@@ -220,7 +220,7 @@ struct path {
 
 typedef struct path PathSt;
 typedef PathSt *PathStPtr;
-enum {
+const enum Enum261 {
   HELMETPOS = 0,
   VESTPOS,
   LEGPOS,
@@ -242,10 +242,10 @@ enum {
   SMALLPOCK8POS, // = 18, so 19 pockets needed
 
   NUM_INV_SLOTS,
-};
+}
 
 // used for color codes, but also shows the enemy type for debugging purposes
-enum {
+const enum Enum262 {
   SOLDIER_CLASS_NONE,
   SOLDIER_CLASS_ADMINISTRATOR,
   SOLDIER_CLASS_ELITE,
@@ -255,7 +255,7 @@ enum {
   SOLDIER_CLASS_ELITE_MILITIA,
   SOLDIER_CLASS_CREATURE,
   SOLDIER_CLASS_MINER,
-};
+}
 
 const SOLDIER_CLASS_ENEMY = (bSoldierClass) => ((bSoldierClass >= SOLDIER_CLASS_ADMINISTRATOR) && (bSoldierClass <= SOLDIER_CLASS_ARMY));
 const SOLDIER_CLASS_MILITIA = (bSoldierClass) => ((bSoldierClass >= SOLDIER_CLASS_GREEN_MILITIA) && (bSoldierClass <= SOLDIER_CLASS_ELITE_MILITIA));
@@ -285,16 +285,16 @@ typedef struct {
 const DELAYED_MOVEMENT_FLAG_PATH_THROUGH_PEOPLE = 0x01;
 
 // reasons for being unable to continue movement
-enum {
+const enum Enum263 {
   REASON_STOPPED_NO_APS,
   REASON_STOPPED_SIGHT,
-};
+}
 
-enum {
+const enum Enum264 {
   HIT_BY_TEARGAS = 0x01,
   HIT_BY_MUSTARDGAS = 0x02,
   HIT_BY_CREATUREGAS = 0x04,
-};
+}
 
 typedef struct {
   // ID
@@ -899,12 +899,12 @@ const MECH_INCREASE = 0x0200;
 
 const LVL_INCREASE = 0x0400;
 
-enum {
+const enum Enum265 {
   WM_NORMAL = 0,
   WM_BURST,
   WM_ATTACHED,
   NUM_WEAPON_MODES,
-} WeaponModes;
+}
 
 // TYPEDEFS FOR ANIMATION PROFILES
 typedef struct {

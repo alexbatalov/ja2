@@ -1,4 +1,4 @@
-enum {
+const enum Enum132 {
   EVENT_CHANGELIGHTVAL = 1,
   EVENT_WEATHERSTART,
   EVENT_WEATHEREND,
@@ -92,7 +92,7 @@ enum {
 
   NUMBER_OF_EVENT_TYPES_PLUS_ONE,
   NUMBER_OF_EVENT_TYPES = NUMBER_OF_EVENT_TYPES_PLUS_ONE - 1,
-};
+}
 
 // This value is added to the param value for NPC-system-created events which are based on an
 // action rather than a fact:

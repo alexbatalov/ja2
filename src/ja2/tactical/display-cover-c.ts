@@ -24,12 +24,12 @@ typedef struct {
 #define DC__CROUCH			(INT8)( 0x02 )
 #define DC__STAND				(INT8)( 0x04 )
 */
-enum {
+const enum Enum205 {
   DC__SEE_NO_STANCES,
   DC__SEE_1_STANCE,
   DC__SEE_2_STANCE,
   DC__SEE_3_STANCE,
-};
+}
 
 //******  Global Variables  *****************************************
 

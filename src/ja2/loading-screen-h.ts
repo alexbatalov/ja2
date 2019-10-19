@@ -1,4 +1,4 @@
-enum UINT8 {
+const enum Enum22 {
   LOADINGSCREEN_NOTHING,
   LOADINGSCREEN_DAYGENERIC,
   LOADINGSCREEN_DAYTOWN1,
@@ -42,7 +42,7 @@ enum UINT8 {
   LOADINGSCREEN_NIGHTMINE,
   LOADINGSCREEN_DAYBALIME,
   LOADINGSCREEN_NIGHTBALIME,
-};
+}
 
 // For use by the game loader, before it can possibly know the situation.
 extern UINT8 gubLastLoadingScreenID;

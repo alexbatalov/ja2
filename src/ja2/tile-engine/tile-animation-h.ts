@@ -92,13 +92,13 @@ typedef struct TAG_anitile_params {
   UINT32 uiUserData3;
 } ANITILE_PARAMS;
 
-enum {
+const enum Enum311 {
   ANI_KEYFRAME_NO_CODE,
   ANI_KEYFRAME_BEGIN_TRANSLUCENCY,
   ANI_KEYFRAME_BEGIN_DAMAGE,
   ANI_KEYFRAME_CHAIN_WATER_EXPLOSION,
   ANI_KEYFRAME_DO_SOUND,
-} KeyFrameEnums;
+}
 
 // ANimation tile data
 ANITILE *pAniTileHead;

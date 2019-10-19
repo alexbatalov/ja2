@@ -3,7 +3,7 @@ const HELPSCREEN_FILE = "BINARYDATA\\Help.edt";
 const HELPSCREEN_RECORD_SIZE = 80 * 8 * 2;
 
 // enum for the help text paragrphs
-enum {
+const enum Enum18 {
   HLP_TXT_CONSTANT_SUBTITLE, // 0
   HLP_TXT_CONSTANT_FOOTER,
   HLP_TXT_LAPTOP_TITLE,
@@ -154,4 +154,4 @@ enum {
   HLP_TXT_SECTOR_INVTRY_OVERVIEW_P2,
 
   //	HLP_TXT_,
-};
+}

@@ -24,13 +24,13 @@ extern UINT32 guiGoldBackgroundForTeamPanel;
 extern UINT16 gusSelectedSoldier;
 
 // car portraits
-enum {
+const enum Enum222 {
   ELDORADO_PORTRAIT = 0,
   HUMMER_PORTRAIT,
   ICE_CREAM_TRUCT_PORTRAIT,
   JEEP_PORTRAIT,
   NUMBER_CAR_PORTRAITS,
-};
+}
 
 // the ids for the car portraits
 INT32 giCarPortraits[4] = {

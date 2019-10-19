@@ -40,14 +40,14 @@ const FROM_TRAINING = 1;
 const FROM_FAILURE = 2;
 
 // types of experience bonus awards
-enum {
+const enum Enum200 {
   EXP_BONUS_MINIMUM,
   EXP_BONUS_SMALL,
   EXP_BONUS_AVERAGE,
   EXP_BONUS_LARGE,
   EXP_BONUS_MAXIMUM,
   NUM_EXP_BONUS_TYPES,
-};
+}
 
 void StatChange(SOLDIERTYPE *pSoldier, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason);
 void ProfileStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason);

@@ -1,5 +1,5 @@
 // enums used for accessing the libraries
-enum {
+const enum Enum30 {
   LIBRARY_DATA,
   LIBRARY_AMBIENT,
   LIBRARY_ANIMS,
@@ -46,4 +46,4 @@ enum {
 // #endif
 
   NUMBER_OF_LIBRARIES,
-};
+}

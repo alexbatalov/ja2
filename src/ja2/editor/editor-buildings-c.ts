@@ -410,13 +410,13 @@ void ReplaceBuildingWithNewRoof(INT32 iMapIndex) {
 
 // internal door editing vars.
 INT32 iDoorMapIndex = 0;
-enum {
+const enum Enum34 {
   DOOR_BACKGROUND,
   DOOR_OKAY,
   DOOR_CANCEL,
   DOOR_LOCKED,
   NUM_DOOR_BUTTONS,
-};
+}
 INT32 iDoorButton[NUM_DOOR_BUTTONS];
 MOUSE_REGION DoorRegion;
 void DoorOkayCallback(GUI_BUTTON *btn, INT32 reason);

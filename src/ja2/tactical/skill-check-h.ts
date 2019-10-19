@@ -14,7 +14,7 @@ extern INT8 EffectiveDexterity(SOLDIERTYPE *pSoldier);
 extern INT8 EffectiveExpLevel(SOLDIERTYPE *pSoldier);
 extern INT8 EffectiveMedical(SOLDIERTYPE *pSoldier);
 
-enum {
+const enum Enum255 {
   NO_CHECK = 0,
   LOCKPICKING_CHECK,
   ELECTRONIC_LOCKPICKING_CHECK,
@@ -31,4 +31,4 @@ enum {
   ATTACHING_SPECIAL_ITEM_CHECK,
   ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK,
   DISARM_ELECTRONIC_TRAP_CHECK,
-} SkillChecks;
+}

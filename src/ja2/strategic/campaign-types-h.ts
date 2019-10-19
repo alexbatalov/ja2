@@ -7,7 +7,7 @@ const SECTORY = (SectorID) => ((SectorID / 16) + 1);
 //
 // NOTE: These use the 0-255 SectorInfo[] numbering system, and CAN'T be used as indexes into the StrategicMap[] array
 // Use SECTOR_INFO_TO_STRATEGIC_INDEX() macro to convert...
-enum {
+const enum Enum123 {
   SEC_A1,
   SEC_A2,
   SEC_A3,
@@ -264,17 +264,17 @@ enum {
   SEC_P14,
   SEC_P15,
   SEC_P16,
-};
+}
 
 // group types
-enum {
+const enum Enum124 {
   NOGROUP,
   MOBILE,
   DEFENCE,
-};
+}
 
 // strategic values for each sector
-enum {
+const enum Enum125 {
   NO_VALUE,
   LOW_VALUE,
   FAIR_VALUE,
@@ -282,7 +282,7 @@ enum {
   GOOD_VALUE,
   HI_VALUE,
   GREAT_VALUE,
-};
+}
 
 // Various flag definitions
 
@@ -317,12 +317,12 @@ const SF_MAP_MODIFICATIONS_TEMP_FILE_EXISTS = 0x40000000; // Temp File starts wi
 const SF_DOOR_TABLE_TEMP_FILES_EXISTS = 0x80000000; // Temp File starts with d_
 
 // town militia experience categories
-enum {
+const enum Enum126 {
   GREEN_MILITIA = 0,
   REGULAR_MILITIA,
   ELITE_MILITIA,
   MAX_MILITIA_LEVELS,
-};
+}
 
 // facilities flags
 const SFCF_HOSPITAL = 0x00000001;
@@ -345,7 +345,7 @@ const TRACKED = 0x08; // roads, plains, sand, sparse
 const AIR = 0x10; // can traverse all terrains at 100%
 
 // Traversability ratings
-enum {
+const enum Enum127 {
   TOWN, // instant
   ROAD, // everything travels at 100%
   PLAINS, // foot 90%, truck 75%, tracked 100%
@@ -391,7 +391,7 @@ enum {
   ABANDONED_MINE,
 
   NUM_TRAVTERRAIN_TYPES,
-};
+}
 extern UINT8 gszTerrain[NUM_TRAVTERRAIN_TYPES][15];
 
 const TRAVELRATING_NONE = 0;

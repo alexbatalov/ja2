@@ -1,5 +1,5 @@
 // enums for the various arms dealers
-enum {
+const enum Enum197 {
   ARMS_DEALER_TONY,
   ARMS_DEALER_FRANZ,
   ARMS_DEALER_KEITH,
@@ -29,15 +29,15 @@ enum {
   ARMS_DEALER_MANNY,
 
   NUM_ARMS_DEALERS,
-};
+}
 
 // the enums for the different kinds of arms dealers
-enum {
+const enum Enum198 {
   ARMS_DEALER_BUYS_SELLS,
   ARMS_DEALER_SELLS_ONLY,
   ARMS_DEALER_BUYS_ONLY,
   ARMS_DEALER_REPAIRS,
-};
+}
 
 // The following defines indicate what items can be sold by the arms dealer
 const ARMS_DEALER_HANDGUNCLASS = 0x00000001;

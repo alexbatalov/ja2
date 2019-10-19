@@ -2,7 +2,7 @@ const MAP_WORLD_X = 18;
 const MAP_WORLD_Y = 18;
 
 // Sector name identifiers
-enum {
+const enum Enum135 {
   BLANK_SECTOR = 0,
   OMERTA,
   DRASSEN,
@@ -17,7 +17,7 @@ enum {
   MEDUNA,
   CHITZENA,
   NUM_TOWNS,
-} Towns;
+}
 
 const FIRST_TOWN = OMERTA;
 //#define PALACE			NUM_TOWNS

@@ -26,7 +26,7 @@ const SIGHTINTERRUPT = 1;
 const NOISEINTERRUPT = 2;
 
 // noise type constants
-enum {
+const enum Enum236 {
   NOISE_UNKNOWN = 0,
   NOISE_MOVEMENT,
   NOISE_CREAKING,
@@ -41,13 +41,13 @@ enum {
   NOISE_DOOR_SMASHING,
   NOISE_SILENT_ALARM, // only heard by enemies
   MAX_NOISES,
-};
+}
 
-enum {
+const enum Enum237 {
   EXPECTED_NOSEND, // other nodes expecting noise & have all info
   EXPECTED_SEND, // other nodes expecting noise, but need info
   UNEXPECTED, // other nodes are NOT expecting this noise
-};
+}
 
 const NUM_WATCHED_LOCS = 3;
 

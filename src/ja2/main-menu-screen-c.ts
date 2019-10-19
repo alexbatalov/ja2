@@ -4,7 +4,7 @@ const MAINMENU_RECORD_SIZE = 80 * 2;
 //#define TESTFOREIGNFONTS
 
 // MENU ITEMS
-enum {
+const enum Enum23 {
   //	TITLE,
   NEW_GAME,
   LOAD_GAME,
@@ -12,7 +12,7 @@ enum {
   CREDITS,
   QUIT,
   NUM_MENU_ITEMS,
-};
+}
 
 const MAINMENU_X = ((640 - 214) / 2);
 const MAINMENU_TITLE_Y = 75;

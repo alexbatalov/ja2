@@ -124,7 +124,7 @@ UINT16 *GetActionItemName(OBJECTTYPE *pItem) {
     }
 }
 
-enum {
+const enum Enum46 {
   SILENCER_ATTACHMENT_BUTTON,
   SNIPERSCOPE_ATTACHMENT_BUTTON,
   LASERSCOPE_ATTACHMENT_BUTTON,
@@ -132,7 +132,7 @@ enum {
   DUCKBILL_ATTACHMENT_BUTTON,
   GLAUNCHER_ATTACHMENT_BUTTON,
   NUM_ATTACHMENT_BUTTONS,
-};
+}
 UINT32 guiAttachmentButton[NUM_ATTACHMENT_BUTTONS];
 BOOLEAN gfAttachment[NUM_ATTACHMENT_BUTTONS];
 void ToggleAttachment(GUI_BUTTON *btn, INT32 reason);
@@ -152,7 +152,7 @@ INT8 gbDefaultBombTrapLevel = 9;
 
 void RemoveBombFromWorldByItemIndex(INT32 iItemIndex);
 
-enum {
+const enum Enum47 {
   EDITING_NOTHING,
   EDITING_NOT_YET_IMPLEMENTED,
   EDITING_DROPPABLE,
@@ -166,7 +166,7 @@ enum {
   EDITING_TRIGGERS,
   EDITING_KEYS,
   EDITING_OWNERSHIP,
-};
+}
 
 INT8 gbEditingMode = EDITING_NOTHING;
 

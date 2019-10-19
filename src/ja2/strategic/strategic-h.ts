@@ -11,7 +11,7 @@ struct strategicmapelement {
   INT8 bPadding[20];
 };
 
-enum {
+const enum Enum175 {
   INSERTION_CODE_NORTH,
   INSERTION_CODE_SOUTH,
   INSERTION_CODE_EAST,
@@ -22,7 +22,7 @@ enum {
   INSERTION_CODE_PRIMARY_EDGEINDEX,
   INSERTION_CODE_SECONDARY_EDGEINDEX,
   INSERTION_CODE_CENTER,
-};
+}
 
 // PLEASE USE CALCULATE_STRATEGIC_INDEX() macro instead (they're identical).
 //#define			GETWORLDMAPNO( x, y )		( x+(MAP_WORLD_X*y) )

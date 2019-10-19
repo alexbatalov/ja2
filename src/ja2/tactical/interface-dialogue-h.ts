@@ -81,7 +81,7 @@ BOOLEAN InternalInitTalkingMenu(UINT8 ubCharacterNum, INT16 sX, INT16 sY);
 
 void HandleFactForNPCUnescorted(UINT8 ubNPC);
 
-enum {
+const enum Enum213 {
   NPC_ACTION_NONE = 0,
   NPC_ACTION_DONT_ACCEPT_ITEM,
   NPC_ACTION_FACE_CLOSEST_PLAYER,
@@ -338,7 +338,7 @@ enum {
   NPC_ACTION_TURN_TO_FACE_PROFILE_ID_0,
 
   NPC_ACTION_LAST_TURN_TO_FACE_PROFILE = 650,
-};
+}
 
 const HOSPITAL_PATIENT_DISTANCE = 9;
 

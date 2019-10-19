@@ -221,12 +221,12 @@ const RGB_NEAR_BLACK = () => (FROMRGB(0, 0, 1));
 // ENUMS
 
 // ARM: NOTE that these map "events" are never actually saved in a player's game in any way
-enum {
+const enum Enum134 {
   MAP_EVENT_NONE,
   MAP_EVENT_CLICK_SECTOR,
   MAP_EVENT_PLOT_PATH,
   MAP_EVENT_CANCEL_PATH,
-};
+}
 
 // STRUCTURES / TYPEDEFS
 

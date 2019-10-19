@@ -2,17 +2,17 @@
 const MAX_STRATEGIC_TEAM_SIZE = 20;
 
 // Codes for jumoing into adjacent sectors..
-enum {
+const enum Enum177 {
   JUMP_ALL_LOAD_NEW,
   JUMP_ALL_NO_LOAD,
   JUMP_SINGLE_LOAD_NEW,
   JUMP_SINGLE_NO_LOAD,
-};
+}
 
-enum {
+const enum Enum178 {
   CONTROLLED = 0,
   UNCONTROLLED,
-};
+}
 
 // For speed, etc lets make these globals, forget the functions if you want
 INT16 gWorldSectorX;

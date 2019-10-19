@@ -23,7 +23,7 @@ const IS_CIV_BODY_TYPE = (p) => ((p->ubBodyType >= FATCIV) && (p->ubBodyType <= 
 
 const NUMSOLDIERBODYTYPES = 4;
 
-enum {
+const enum Enum194 {
   REGMALE = 0,
   BIGMALE,
   STOCKYMALE,
@@ -57,7 +57,7 @@ enum {
   JEEP,
 
   TOTALBODYTYPES,
-} SoldierBodyTypes;
+}
 
 // Enumerations
 // This enumeration defines the graphic image file per animation
@@ -65,7 +65,7 @@ enum {
 // RGM = Regular Male
 // (RG) = Body desc ( Regular - RG, Short Stocky ( SS ), etc
 // (M) = Sex, Male, female
-typedef enum {
+const enum Enum195 {
   RGMBASICWALKING = 0,
   RGMSTANDING,
   RGMCROUCHING,
@@ -488,10 +488,10 @@ typedef enum {
   BODYEXPLODE,
 
   NUMANIMATIONSURFACETYPES,
-} AnimationSurfaceTypes;
+}
 
 // Enumerations for struct data
-typedef enum {
+const enum Enum196 {
   S_STRUCT,
   C_STRUCT,
   P_STRUCT,
@@ -500,7 +500,7 @@ typedef enum {
   DEFAULT_STRUCT,
   NUM_STRUCT_IDS,
   NO_STRUCT = 120,
-};
+}
 
 // Struct for animation 'surface' information
 typedef struct {

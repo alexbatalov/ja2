@@ -152,10 +152,10 @@ const SUBJECT_LINE_WIDTH = 278 - 47;
 
 // maximum size of a email message page, so not to overrun the bottom of the screen
 const MAX_EMAIL_MESSAGE_PAGE_SIZE = () => (GetFontHeight(MESSAGE_FONT()) + MESSAGE_GAP) * 20;
-enum {
+const enum Enum72 {
   PREVIOUS_BUTTON = 0,
   NEXT_BUTTON,
-};
+}
 
 // X button position
 const BUTTON_X = VIEWER_X + 396;
@@ -209,11 +209,11 @@ UINT32 guiEmailMessage;
 UINT32 guiMAILDIVIDER;
 
 // the enumeration of headers
-enum {
+const enum Enum73 {
   FROM_HEADER = 0,
   SUBJECT_HEADER,
   RECD_HEADER,
-};
+}
 
 // position of header text on the email list
 const FROM_X = 205;

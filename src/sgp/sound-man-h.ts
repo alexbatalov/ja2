@@ -129,7 +129,7 @@ typedef struct {
   SOUND3DPOS Pos; // NOT optional, MUST be set
 } RANDOM3DPARMS;
 
-enum e_EAXRoomTypes {
+const enum Enum31 {
   EAXROOMTYPE_NONE = 0,
   EAXROOMTYPE_SMALL_CAVE,
   EAXROOMTYPE_MEDIUM_CAVE,
@@ -142,7 +142,7 @@ enum e_EAXRoomTypes {
   EAXROOMTYPE_UNDERWATER,
 
   EAXROOMTYPE_NUM_TYPES,
-};
+}
 
 // Global startup/shutdown functions
 extern BOOLEAN InitializeSoundManager(void);

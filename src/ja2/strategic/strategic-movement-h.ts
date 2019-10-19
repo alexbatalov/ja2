@@ -1,5 +1,5 @@
 // enemy intentions,
-enum {
+const enum Enum184 {
   NO_INTENTIONS, // enemy intentions are undefined.
   PURSUIT, // enemy group has spotted a player group and is pursuing them.  If they lose the player group, they
            // will get reassigned.
@@ -8,23 +8,23 @@ enum {
   REINFORCEMENTS, // enemy group has intentions to fortify position at final destination.
   ASSAULT, // enemy is ready to fight anything they encounter.
   NUM_ENEMY_INTENTIONS,
-};
+}
 
 // move types
-enum {
+const enum Enum185 {
   ONE_WAY, // from first waypoint to last, deleting each waypoint as they are reached.
   CIRCULAR, // from first to last, recycling forever.
   ENDTOEND_FORWARDS, // from first to last -- when reaching last, change to backwards.
   ENDTOEND_BACKWARDS, // from last to first -- when reaching first, change to forwards.
-};
+}
 
-enum {
+const enum Enum186 {
   NORTH_STRATEGIC_MOVE,
   EAST_STRATEGIC_MOVE,
   SOUTH_STRATEGIC_MOVE,
   WEST_STRATEGIC_MOVE,
   THROUGH_STRATEGIC_MOVE,
-};
+}
 
 // This structure contains all of the information about a group moving in the strategic
 // layer.  This includes all troops, equipment, and waypoints, and location.

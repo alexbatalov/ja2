@@ -1,4 +1,4 @@
-enum {
+const enum Enum326 {
   MLG_AIMSYMBOL,
   MLG_BOBBYNAME,
   MLG_BOBBYRAYAD21,
@@ -33,6 +33,6 @@ enum {
   MLG_TOSTATS,
   MLG_WARNING,
   MLG_YOURAD13,
-};
+}
 
 BOOLEAN GetMLGFilename(SGPFILENAME filename, UINT16 usMLGGraphicID);

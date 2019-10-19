@@ -1,8 +1,8 @@
 // Light effect types
-enum {
+const enum Enum305 {
   NO_LIGHT_EFFECT,
   LIGHT_FLARE_MARK_1,
-};
+}
 
 typedef struct {
   INT16 sGridNo; // gridno at which the tear gas cloud is centered

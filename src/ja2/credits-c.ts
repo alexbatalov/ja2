@@ -2,10 +2,10 @@
 extern HVSURFACE ghFrameBuffer;
 
 // local Defines
-enum {
+const enum Enum1 {
   CRDT_RENDER_NONE,
   CRDT_RENDER_ALL,
-};
+}
 
 // nnn
 typedef struct _CRDT_NODE {
@@ -34,10 +34,10 @@ typedef struct _CRDT_NODE {
 } CRDT_NODE;
 
 // type of credits
-enum {
+const enum Enum2 {
   CRDT_NODE_NONE,
   CRDT_NODE_DEFAULT, // scrolls up and off the screen
-};
+}
 
 // flags for the credits
 // Flags:

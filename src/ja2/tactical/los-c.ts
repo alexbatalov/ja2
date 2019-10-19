@@ -200,14 +200,14 @@ FLOAT Distance2D(FLOAT dDeltaX, FLOAT dDeltaY) {
 
 const DebugLOS = (a) => {};
 
-enum {
+const enum Enum228 {
   LOC_OTHER,
   LOC_0_4,
   LOC_3_4,
   LOC_4_0,
   LOC_4_3,
   LOC_4_4,
-} LocationCode;
+}
 
 BOOLEAN ResolveHitOnWall(STRUCTURE *pStructure, INT32 iGridNo, INT8 bLOSIndexX, INT8 bLOSIndexY, DOUBLE ddHorizAngle) {
   BOOLEAN fNorthSouth, fEastWest;

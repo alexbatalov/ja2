@@ -1,4 +1,4 @@
-enum {
+const enum Enum160 {
   END_OF_PLAYERS_FIRST_BATTLE,
   DRASSEN_LIBERATED,
   CAMBRIA_LIBERATED,
@@ -17,7 +17,7 @@ enum {
   OUTSKIRTS_MEDUNA,
   BALIME_LIBERATED,
   NUM_MEANWHILES,
-};
+}
 
 typedef struct {
   INT16 sSectorX;

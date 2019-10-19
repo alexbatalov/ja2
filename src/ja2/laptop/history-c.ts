@@ -44,10 +44,10 @@ UINT32 guiSHADELINE;
 // UINT32 guiVERTLINE;
 // UINT32 guiBIGBOX;
 
-enum {
+const enum Enum82 {
   PREV_PAGE_BUTTON = 0,
   NEXT_PAGE_BUTTON,
-};
+}
 
 // the page flipping buttons
 INT32 giHistoryButton[2];

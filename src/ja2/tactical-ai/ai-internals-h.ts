@@ -27,12 +27,12 @@ const WATEROK = 1;
 const DONTADDTURNCOST = 0;
 const ADDTURNCOST = 1;
 
-enum {
+const enum Enum292 {
   URGENCY_LOW = 0,
   URGENCY_MED,
   URGENCY_HIGH,
   NUM_URGENCY_STATES,
-};
+}
 
 const NOWATER = 0;
 const WATEROK = 1;
@@ -119,11 +119,11 @@ extern int ThreatPercent[10];
 extern UINT8 SkipCoverCheck;
 extern INT8 GameOption[MAXGAMEOPTIONS];
 
-typedef enum {
+const enum Enum293 {
   SEARCH_GENERAL_ITEMS,
   SEARCH_AMMO,
   SEARCH_WEAPONS,
-} ItemSearchReasons;
+}
 
 // go as far as possible flags
 const FLAG_CAUTIOUS = 0x01;

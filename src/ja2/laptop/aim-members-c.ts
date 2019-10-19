@@ -263,7 +263,7 @@ const AIM_TEXT_SPEECH_MODIFIER = 80;
 const AIM_WEAPONBOX_NAME_WIDTH = 93;
 
 // enumerated types used for the Video Conferencing Display
-enum {
+const enum Enum65 {
   AIM_VIDEO_NOT_DISPLAYED_MODE, // The video popup is not displayed
   AIM_VIDEO_POPUP_MODE, // The title bar pops up out of the Contact button
   AIM_VIDEO_INIT_MODE, // When the player first tries to contact the merc, it will be snowy for a bit
@@ -272,18 +272,18 @@ enum {
   AIM_VIDEO_MERC_ANSWERING_MACHINE_MODE, // The popup which will be instread of the AIM_VIDEO_FIRST_CONTACT_MERC_MODE if the merc is not there
   AIM_VIDEO_MERC_UNAVAILABLE_MODE, // The popup which will be instread of the AIM_VIDEO_FIRST_CONTACT_MERC_MODE if the merc is unavailable
   AIM_VIDEO_POPDOWN_MODE, // The title bars pops down to the contact button
-};
+}
 
 // Enumerated types used for the Pop Up Box
-enum {
+const enum Enum66 {
   AIM_POPUP_NOTHING,
   AIM_POPUP_CREATE,
   AIM_POPUP_DISPLAY,
   AIM_POPUP_DELETE,
-};
+}
 
 // Enumerated Types used for the different types of video distortion applied to the video face
-enum {
+const enum Enum67 {
   VC_NO_STATIC,
   VC_FUZZY_LINE,
   VC_STRAIGHTLINE,
@@ -292,7 +292,7 @@ enum {
   VC_PIXELATE,
   VC_TRANS_SNOW_IN, // fade from clear to snowy
   VC_TRANS_SNOW_OUT, // fade from snowy to clear
-};
+}
 
 // Image Identifiers
 UINT32 guiStats;

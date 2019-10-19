@@ -18,14 +18,14 @@ void DisableItemStatsPanel();
 // called from the taskbar renderer.
 void UpdateItemStatsPanel();
 
-enum {
+const enum Enum48 {
   ITEMSTATS_APPLY,
   ITEMSTATS_CANCEL,
   ITEMSTATS_DEFAULT,
   ITEMSTATS_DELETE,
   ITEMSTATS_HIDE,
   ITEMSTATS_SHOW,
-};
+}
 void ExecuteItemStatsCmd(UINT8 ubAction);
 
 extern OBJECTTYPE *gpItem;
@@ -34,7 +34,7 @@ extern INT16 gsItemGridNo;
 // enumerations for all of the different action items.  Used by the popup menu for
 // changing the type of action item.  When modified, an equivalent text array must be
 // changed as well.
-enum {
+const enum Enum49 {
   ACTIONITEM_TRIP_KLAXON,
   ACTIONITEM_FLARE,
   ACTIONITEM_TEARGAS,
@@ -70,7 +70,7 @@ enum {
   ACTIONITEM_BLOODCAT_ALARM,
   ACTIONITEM_BIG_TEAR_GAS,
   NUM_ACTIONITEMS,
-};
+}
 extern UINT16 gszActionItemDesc[NUM_ACTIONITEMS][30];
 // Returns a pointer to one of the above string array.
 extern UINT16 *GetActionItemName(OBJECTTYPE *pItem);

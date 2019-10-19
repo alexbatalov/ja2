@@ -18,13 +18,13 @@ const MERC_LARRY_ROACHBURN = 7;
 const DAYS_TIL_M_E_R_C_AVAIL = 3;
 
 // The players account information for the MERC site
-enum {
+const enum Enum104 {
   MERC_NO_ACCOUNT,
   MERC_ACCOUNT_SUSPENDED,
   MERC_ACCOUNT_INVALID,
   MERC_ACCOUNT_VALID_FIRST_WARNING,
   MERC_ACCOUNT_VALID,
-};
+}
 // extern	UINT8			gubPlayersMercAccountStatus;
 // extern	UINT32		guiPlayersMercAccountNumber;
 
@@ -33,11 +33,11 @@ const MERC_VIDEO_SPECK_SPEECH_NOT_TALKING = 65535;
 const MERC_VIDEO_SPECK_HAS_TO_TALK_BUT_QUOTE_NOT_CHOSEN_YET = 65534;
 
 // used with the gubArrivedFromMercSubSite variable to signify whcih page the player came from
-enum {
+const enum Enum105 {
   MERC_CAME_FROM_OTHER_PAGE,
   MERC_CAME_FROM_ACCOUNTS_PAGE,
   MERC_CAME_FROM_HIRE_PAGE,
-};
+}
 
 void GameInitMercs();
 BOOLEAN EnterMercs();

@@ -96,7 +96,7 @@ const AIM_AD_BOBBYR_AD_NUM_DUCK_SUBIMAGES = 6;
 
 //#define
 
-enum {
+const enum Enum62 {
   AIM_AD_NOT_DONE,
   AIM_AD_DONE,
   AIM_AD_WARNING_BOX,
@@ -106,7 +106,7 @@ enum {
   AIM_AD_FLOWER_SHOP,
   AIM_AD_INSURANCE_AD,
   AIM_AD_LAST_AD,
-};
+}
 
 // Aim Screen Handle
 UINT32 guiAimSymbol;

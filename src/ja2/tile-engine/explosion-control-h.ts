@@ -30,7 +30,7 @@ typedef struct {
   UINT8 ubUnsed[2];
 } EXPLOSIONTYPE;
 
-enum {
+const enum Enum304 {
   NO_BLAST,
   BLAST_1,
   BLAST_2,
@@ -42,7 +42,7 @@ enum {
   MUSTARD_EXP,
 
   NUM_EXP_TYPES,
-} EXPLOSION_TYPES;
+}
 
 typedef struct {
   UINT32 uiWorldBombIndex;

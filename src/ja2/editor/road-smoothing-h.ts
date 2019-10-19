@@ -1,6 +1,6 @@
 // There are the 32 macro definitions that make up all of the road pieces.  These enumerations
 // match up exactly to the previous road system order of graphics (FIRSTROAD1 - FIRSTROAD32)
-enum {
+const enum Enum54 {
   L1, // left 1 -- this is a left straight-away edge
   R1, // right 1
   B1, // bottom 1
@@ -34,7 +34,7 @@ enum {
   BE, // bottom edge
   TE, // top edge
   NUM_ROAD_MACROS,
-};
+}
 
 // The old road system used multi-tiled roads as a single image.  The new road system has taken these large
 // pieces and chopped them up into single tiled images (to mitigate lighting problems).  Some of the larger

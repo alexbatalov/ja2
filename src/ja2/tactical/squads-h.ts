@@ -2,7 +2,7 @@
 const NUMBER_OF_SOLDIERS_PER_SQUAD = 6;
 
 // enums for squads
-enum {
+const enum Enum275 {
   FIRST_SQUAD = 0,
   SECOND_SQUAD,
   THIRD_SQUAD,
@@ -24,7 +24,7 @@ enum {
   NINTEENTH_SQUAD,
   TWENTYTH_SQUAD,
   NUMBER_OF_SQUADS,
-};
+}
 
 // ATE: Added so we can have no current squad
 // happens in we move off sector via tactical, but nobody is left!

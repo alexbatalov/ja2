@@ -21,12 +21,12 @@ enum
 */
 
 // Enums for waiting for mercs to finish codes
-enum {
+const enum Enum238 {
   NO_WAIT_EVENT = 0,
   WAIT_FOR_MERCS_TO_WALKOFF_SCREEN,
   WAIT_FOR_MERCS_TO_WALKON_SCREEN,
   WAIT_FOR_MERCS_TO_WALK_TO_GRIDNO,
-};
+}
 
 // TACTICAL ENGINE STATUS FLAGS
 typedef struct {
@@ -42,21 +42,21 @@ typedef struct {
 } TacticalTeamType;
 
 // for use with TacticalStatusType.ubEnemyIntention
-enum {
+const enum Enum239 {
   INTENTION_SCOUTING,
   INTENTION_PATROLLING,
   INTENTION_ATTACKING,
   INTENTION_DEFENDING,
   INTENTION_RETREATING,
-};
+}
 
 // for use with TacticalStatusType.ubEnemyIntendedRetreatDirection
-enum {
+const enum Enum240 {
   RETREAT_NORTH,
   RETREAT_EAST,
   RETREAT_SOUTH,
   RETREAT_WEST,
-};
+}
 
 const PANIC_BOMBS_HERE = 0x01;
 const PANIC_TRIGGERS_HERE = 0x02;

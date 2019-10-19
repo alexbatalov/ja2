@@ -26,12 +26,12 @@ typedef struct filestring FileString;
 typedef struct filestring *FileStringPtr;
 
 // files codes
-enum {
+const enum Enum77 {
   FILES_WELCOME_NOTICE,
-};
+}
 
 // special codes for special files
-enum {
+const enum Enum78 {
   ENRICO_BACKGROUND = 0,
   SLAY_BACKGROUND,
   MATRON_BACKGROUND,
@@ -39,7 +39,7 @@ enum {
   TIFFANY_BACKGROUND,
   REXALL_BACKGROUND,
   ELGIN_BACKGROUND,
-};
+}
 extern UINT8 ubFileRecordsLength[];
 extern BOOLEAN fEnteredFileViewerFromNewFileIcon;
 extern BOOLEAN fNewFilesInFileViewer;

@@ -16,7 +16,7 @@ extern SOLDIERTYPE *gpTacticalTraversalChosenSoldier;
 extern BOOLEAN gfGotoSectorTransition;
 extern BOOLEAN gfEnteringMapScreenToEnterPreBattleInterface;
 
-enum {
+const enum Enum164 {
   // General encounter codes (gubEnemyEncounterCode)
   NO_ENCOUNTER_CODE, // when there is no encounter
   ENEMY_INVASION_CODE,
@@ -32,7 +32,7 @@ enum {
   FIGHTING_CREATURES_CODE,
   HOSTILE_CIVILIANS_CODE,
   HOSTILE_BLOODCATS_CODE,
-};
+}
 
 extern BOOLEAN gfAutoAmbush;
 extern BOOLEAN gfHighPotentialForAmbush;
@@ -84,8 +84,8 @@ BOOLEAN PlayerMercInvolvedInThisCombat(SOLDIERTYPE *pSoldier);
 
 BOOLEAN CurrentBattleSectorIs(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
 
-enum {
+const enum Enum165 {
   LOG_DEFEAT,
   LOG_VICTORY,
-};
+}
 void LogBattleResults(UINT8 ubVictoryCode);

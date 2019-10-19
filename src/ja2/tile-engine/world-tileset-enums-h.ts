@@ -1,4 +1,4 @@
-enum {
+const enum Enum316 {
   GENERIC_1,
   CAVES_1,
   DESERT_1,
@@ -55,4 +55,4 @@ enum {
   TEMP_30,
 
   NUM_TILESETS,
-};
+}

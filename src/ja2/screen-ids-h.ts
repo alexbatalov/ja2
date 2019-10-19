@@ -1,4 +1,4 @@
-typedef enum ScreenTypes {
+const enum Enum26 {
   EDIT_SCREEN,
   SAVING_SCREEN,
   LOADING_SCREEN,
@@ -30,4 +30,4 @@ typedef enum ScreenTypes {
   //#endif
 
   MAX_SCREENS,
-};
+}

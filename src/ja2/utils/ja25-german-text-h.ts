@@ -1,4 +1,4 @@
-enum {
+const enum Enum322 {
   TCTL_MSG__RANGE_TO_TARGET,
   TCTL_MSG__ATTACH_TRANSMITTER_TO_LAPTOP,
   TACT_MSG__CANNOT_AFFORD_MERC,
@@ -22,10 +22,10 @@ enum {
   TCTL_MSG__CAMPAIGN_LABEL,
   TCTL_MSG__NEW_CAMPAIGN_CONFIRM,
   TCTL_MSG__CANT_EDIT_DEFAULT,
-};
+}
 extern STR16 zNewTacticalMessages[];
 
-enum {
+const enum Enum323 {
   IMM__IRON_MAN_MODE_WARNING_TEXT,
-};
+}
 extern STR16 gzIronManModeWarningText[];

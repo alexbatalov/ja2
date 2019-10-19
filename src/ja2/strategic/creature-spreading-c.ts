@@ -58,7 +58,7 @@ const HARD_QUEEN_REPRODUCTION_BONUS = 3;
 // inside the function PrepareCreaturesForBattle() in this module.
 BOOLEAN gfUseCreatureMusic = FALSE;
 BOOLEAN gfCreatureMeanwhileScenePlayed = FALSE;
-enum {
+const enum Enum128 {
   QUEEN_LAIR, // where the queen lives.  Highly protected
   LAIR, // part of the queen's lair -- lots of babies and defending mothers
   LAIR_ENTRANCE, // where the creatures access the mine.
@@ -66,7 +66,7 @@ enum {
   OUTER_MINE, // area's where miners work, close to towns, creatures love to eat :)
   FEEDING_GROUNDS, // creatures love to populate these sectors :)
   MINE_EXIT, // the area that creatures can initiate town attacks if lots of monsters.
-};
+}
 
 typedef struct CREATURE_DIRECTIVE {
   struct CREATURE_DIRECTIVE *next;

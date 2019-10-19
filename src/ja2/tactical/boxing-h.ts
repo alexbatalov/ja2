@@ -8,11 +8,11 @@ const BOXING_AI_START_POSITION = 11235;
 
 const NUM_BOXERS = 3;
 
-enum {
+const enum Enum199 {
   BOXER_OUT_OF_RING,
   NON_BOXER_IN_RING,
   BAD_ATTACK,
-} DisqualificationReasons;
+}
 
 extern INT16 gsBoxerGridNo[NUM_BOXERS];
 extern UINT8 gubBoxerID[NUM_BOXERS];

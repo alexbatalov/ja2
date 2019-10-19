@@ -1,6 +1,6 @@
 const DEFAULT_MORALE = 50;
 
-typedef enum {
+const enum Enum234 {
   MORALE_KILLED_ENEMY = 0,
   MORALE_SQUADMATE_DIED,
   MORALE_SUPPRESSED,
@@ -37,12 +37,12 @@ typedef enum {
   MORALE_QUEEN_BATTLE_WON,
   MORALE_SEX,
   NUM_MORALE_EVENTS,
-} MoraleEventNames;
+}
 
-typedef enum {
+const enum Enum235 {
   TACTICAL_MORALE_EVENT = 0,
   STRATEGIC_MORALE_EVENT,
-} MoraleEventType;
+}
 
 typedef struct MoraleEvent {
   UINT8 ubType;

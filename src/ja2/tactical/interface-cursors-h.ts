@@ -6,7 +6,7 @@ const UICURSOR_CENTERAPS = 0x00000040;
 const UICURSOR_SHOWTILEAPDEPENDENT = 0x00000080;
 const UICURSOR_DONTSHOW2NDLEVEL = 0x00000100;
 
-typedef enum {
+const enum Enum210 {
   NO_UICURSOR,
   NORMAL_FREEUICURSOR,
   NORMAL_SNAPUICURSOR,
@@ -180,7 +180,7 @@ typedef enum {
   REFUEL_RED_UICURSOR,
 
   NUM_UI_CURSORS,
-} UICursorDefines;
+}
 
 typedef struct {
   UINT32 uiCursorID;

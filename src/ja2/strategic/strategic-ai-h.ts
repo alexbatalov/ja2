@@ -5,11 +5,11 @@ BOOLEAN SaveStrategicAI(HWFILE hFile);
 BOOLEAN LoadStrategicAI(HWFILE hFile);
 
 // NPC ACTION TRIGGERS SPECIAL CASE AI
-enum {
+const enum Enum173 {
   STRATEGIC_AI_ACTION_WAKE_QUEEN = 1,
   STRATEGIC_AI_ACTION_KINGPIN_DEAD,
   STRATEGIC_AI_ACTION_QUEEN_DEAD,
-};
+}
 
 void ExecuteStrategicAIAction(UINT16 usActionCode, INT16 sSectorX, INT16 sSectorY);
 
@@ -56,7 +56,7 @@ extern UINT8 gubSAIVersion;
 
 // These enumerations define all of the various types of stationary garrison
 // groups, and index their compositions for forces, etc.
-enum {
+const enum Enum174 {
   QUEEN_DEFENCE, // The most important sector, the queen's palace.
   MEDUNA_DEFENCE, // The town surrounding the queen's palace.
   MEDUNA_SAMSITE, // A sam site within Meduna (higher priority)
@@ -85,7 +85,7 @@ enum {
   ROADBLOCK, // General outside city roadblocks -- enhance chance of ambush?
   SANMONA_SMALL,
   NUM_ARMY_COMPOSITIONS,
-};
+}
 
 typedef struct ARMY_COMPOSITION {
   INT32 iReadability; // contains the enumeration which is useless, but helps readability.

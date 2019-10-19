@@ -101,10 +101,10 @@ UINT8 ubTalkMenuApproachIDs[] = {
   APPROACH_RECRUIT,
 };
 
-enum {
+const enum Enum211 {
   DIALOG_DONE,
   DIALOG_BUY_SELL,
-};
+}
 
 // GLOBAL NPC STRUCT
 NPC_DIALOGUE_TYPE gTalkPanel;
@@ -134,14 +134,14 @@ INT32 giHospitalTempBalance; // stores amount of money for current doctoring
 INT32 giHospitalRefund; // stores amount of money given to hospital for doctoring that wasn't used
 INT8 gbHospitalPriceModifier; // stores discount being offered
 
-enum {
+const enum Enum212 {
   HOSPITAL_UNSET = 0,
   HOSPITAL_NORMAL,
   HOSPITAL_BREAK,
   HOSPITAL_COST,
   HOSPITAL_FREEBIE,
   HOSPITAL_RANDOM_FREEBIE,
-};
+}
 
 BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, INT8 bApproach, UINT32 uiApproachData) {
   // ATE: OK, let's check the status of the Q

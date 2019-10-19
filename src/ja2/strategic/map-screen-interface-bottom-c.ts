@@ -29,15 +29,15 @@ const MAP_BOTTOM_FONT_COLOR = (32 * 4 - 9);
 */
 
 // button enums
-enum {
+const enum Enum142 {
   MAP_SCROLL_MESSAGE_UP = 0,
   MAP_SCROLL_MESSAGE_DOWN,
-};
+}
 
-enum {
+const enum Enum143 {
   MAP_TIME_COMPRESS_MORE = 0,
   MAP_TIME_COMPRESS_LESS,
-};
+}
 
 // GLOBALS
 

@@ -1,6 +1,6 @@
 // Use these values when specifically replacing a wall with new type.
 // Wall tile types
-enum {
+const enum Enum60 {
   INTERIOR_L, // interior wall with a top left orientation
   INTERIOR_R, // interior wall with a top right orientation
   EXTERIOR_L, // exterior wall with a top left orientation
@@ -14,10 +14,10 @@ enum {
   INTERIOR_EXTENDED_BOTTOMEND, // extended interior wall for both top and bottom corners.
   EXTERIOR_EXTENDED_BOTTOMEND, // extended exterior wall for both top and bottom corners.
   NUM_WALL_TYPES,
-};
+}
 
 // Use these values when passing a ubWallPiece to BuildWallPieces.
-enum {
+const enum Enum61 {
   NO_WALLS,
   INTERIOR_TOP,
   INTERIOR_BOTTOM,
@@ -27,7 +27,7 @@ enum {
   EXTERIOR_BOTTOM,
   EXTERIOR_LEFT,
   EXTERIOR_RIGHT,
-};
+}
 
 // in newsmooth.c
 extern INT8 gbWallTileLUT[NUM_WALL_TYPES][7];

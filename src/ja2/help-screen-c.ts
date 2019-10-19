@@ -94,20 +94,20 @@ const HLP_SCRN__SCROLL_DWN_ARROW_X = HLP_SCRN__SCROLL_UP_ARROW_X;
 const HLP_SCRN__SCROLL_DWN_ARROW_Y = HLP_SCRN__SCROLL_UP_ARROW_Y + 202;
 
 // enums for the different dirty levels
-enum {
+const enum Enum10 {
   HLP_SCRN_DRTY_LVL_NOT_DIRTY,
   HLP_SCRN_DRTY_LVL_REFRESH_TEXT,
   HLP_SCRN_DRTY_LVL_REFRESH_ALL,
-};
+}
 
 // new screen:
 
-enum {
+const enum Enum11 {
   HLP_SCRN_MPSCRN_SCTR_OVERVIEW,
-};
+}
 
 // mapscreen, welcome to arulco
-enum {
+const enum Enum12 {
   HLP_SCRN_MPSCRN_OVERVIEW,
   HLP_SCRN_MPSCRN_ASSIGNMENTS,
   HLP_SCRN_MPSCRN_DESTINATIONS,
@@ -118,9 +118,9 @@ enum {
   HLP_SCRN_MPSCRN_KEYBOARD,
 
   HLP_SCRN_NUM_MPSCRN_BTNS,
-};
+}
 // laptop sub pages
-enum {
+const enum Enum13 {
   HLP_SCRN_LPTP_OVERVIEW,
   HLP_SCRN_LPTP_EMAIL,
   HLP_SCRN_LPTP_WEB,
@@ -131,24 +131,24 @@ enum {
   HLP_SCRN_LPTP_MERC_STATS,
 
   HLP_SCRN_LPTP_NUM_PAGES,
-};
+}
 
 // Mapscreen no one hired yet pages
-enum {
+const enum Enum14 {
   HLP_SCRN_NO_ONE_HIRED,
 
   HLP_SCRN_NUM_MAPSCREEN_NO_1_HIRED_YET_PAGES,
-};
+}
 
 // mapscreen no 1 hired yet pages
-enum {
+const enum Enum15 {
   HLP_SCRN_NOT_IN_ARULCO,
 
   HLP_SCRN_NUM_NOT_IN_ARULCO_PAGES,
-};
+}
 
 // Tactical
-enum {
+const enum Enum16 {
   HLP_SCRN_TACTICAL_OVERVIEW,
   HLP_SCRN_TACTICAL_MOVEMENT,
   HLP_SCRN_TACTICAL_SIGHT,
@@ -157,7 +157,7 @@ enum {
   HLP_SCRN_TACTICAL_KEYBOARD,
 
   HLP_SCRN_NUM_TACTICAL_PAGES,
-};
+}
 
 // ddd
 

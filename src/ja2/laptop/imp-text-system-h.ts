@@ -9,7 +9,7 @@ extern STR16 pImpButtonText[];
 // extra strings not found in IMP Text Document
 extern STR16 pExtraIMPStrings[];
 
-enum {
+const enum Enum88 {
   IMP_HOME_1,
   IMP_HOME_2,
   IMP_HOME_3,
@@ -132,4 +132,4 @@ enum {
   IMP_CON_1 = IMP_FIN_10 - 1,
   IMP_CON_2,
   IMP_CON_3,
-};
+}

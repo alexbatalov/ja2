@@ -1,5 +1,5 @@
 // Merc editing modes.  These are used to determine which buttons to show and hide.
-enum {
+const enum Enum42 {
   MERC_NOMODE, // used for shutting down mercs tab, to extract any changed information
 
   MERC_GETITEMMODE, // when selecting a specific piece of inventory from inventorymode
@@ -13,7 +13,7 @@ enum {
   MERC_APPEARANCEMODE, // detailed placement mode for specifying appearance
   MERC_PROFILEMODE, // specifying a valid profile index will generate the merc automatically.
   MERC_SCHEDULEMODE, // specifying a schedule for that particular individual
-};
+}
 
 extern UINT8 gubCurrMercMode, gubPrevMercMode;
 
@@ -47,7 +47,7 @@ extern INT16 gsSelectedMercID;
 extern INT16 gsSelectedMercGridNo;
 extern UINT8 gubCurrMercMode;
 
-enum _ForUseWithIndicateSelectedMerc {
+const enum Enum43 {
   SELECT_NEXT_CREATURE = -7,
   SELECT_NEXT_REBEL = -6,
   SELECT_NEXT_CIV = -5,
@@ -56,7 +56,7 @@ enum _ForUseWithIndicateSelectedMerc {
   SELECT_NEXT_MERC = -2,
   SELECT_NO_MERC = -1,
   // >= 0 select merc with matching ID
-};
+}
 
 void IndicateSelectedMerc(INT16 sID);
 

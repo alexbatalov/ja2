@@ -158,12 +158,12 @@ BOOLEAN gfFLoristCheckBox5Down = FALSE;
 UINT32 guiFlowerPrice;
 
 // drop down menu
-enum {
+const enum Enum81 {
   FLOWER_ORDER_DROP_DOWN_NO_ACTION,
   FLOWER_ORDER_DROP_DOWN_CREATE,
   FLOWER_ORDER_DROP_DOWN_DESTROY,
   FLOWER_ORDER_DROP_DOWN_DISPLAY,
-};
+}
 // the current mode of the drop down display
 UINT8 gubFlowerDestDropDownMode;
 UINT8 gubCurrentlySelectedFlowerLocation;

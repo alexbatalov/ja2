@@ -65,7 +65,7 @@ extern BOOLEAN gfUserTurnRegionActive;
 extern UINT8 gubSelectSMPanelToMerc;
 extern BOOLEAN gfIgnoreOnSelectedGuy;
 
-typedef enum {
+const enum Enum208 {
   WALK_IMAGES = 0,
   SNEAK_IMAGES,
   RUN_IMAGES,
@@ -94,11 +94,11 @@ typedef enum {
   WIRECUTACTIONC_IMAGES,
 
   NUM_ICON_IMAGES,
-};
+}
 
 INT32 iIconImages[NUM_ICON_IMAGES];
 
-typedef enum {
+const enum Enum209 {
   WALK_ICON,
   SNEAK_ICON,
   RUN_ICON,
@@ -120,7 +120,7 @@ typedef enum {
 
   CANCEL_ICON,
   NUM_ICONS,
-};
+}
 
 INT32 iActionIcons[NUM_ICONS];
 

@@ -28,7 +28,7 @@ const MAP_ROW_P = 16;
 //  Q U E S T     D E F I N E S
 // --------------------------------------------------------------------------------------
 
-enum {
+const enum Enum169 {
   QUEST_DELIVER_LETTER = 0,
   QUEST_FOOD_ROUTE,
   QUEST_KILL_TERRORISTS,
@@ -55,7 +55,7 @@ enum {
   QUEST_LEATHER_SHOP_DREAM,
 
   QUEST_KILL_DEIDRANNA = 25,
-} Quests;
+}
 /*
 // The first quest is mandatory. Player must find Miguel and deliver letter to him. The tough
 // part is finding him. Miguel is UNDERGROUND in EAST OMERTA. Only by talking to Miguel's right
@@ -182,7 +182,7 @@ enum {
 
 // FACTS
 
-enum {
+const enum Enum170 {
   // city liberations
   FACT_OMERTA_LIBERATED = 0,
   FACT_DRASSEN_LIBERATED, //																1
@@ -500,7 +500,7 @@ enum {
 
   FACT_CONRAD_SHOULD_GO = 367,
   FACT_PLAYER_KILLED_BOXERS = 368,
-} Facts;
+}
 //**  END FACTS *************************
 
 const BOBBYR_SHIPPING_DEST_SECTOR_X = 13;

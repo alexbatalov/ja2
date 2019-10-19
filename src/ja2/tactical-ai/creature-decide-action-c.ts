@@ -1,19 +1,19 @@
 const CAN_CALL = (s) => (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER && s->ubBodyType != INFANT_MONSTER);
 const CAN_LISTEN_TO_CALL = (s) => (s->ubBodyType != BLOODCAT && s->ubBodyType != LARVAE_MONSTER);
 
-enum {
+const enum Enum294 {
   CALLER_FEMALE = 0,
   CALLER_MALE,
   CALLER_INFANT,
   CALLER_QUEEN,
   NUM_CREATURE_CALLERS,
-} CreatureCaller;
+}
 
-enum {
+const enum Enum295 {
   CREATURE_MOBILE = 0,
   CREATURE_CRAWLER,
   CREATURE_IMMOBILE,
-} CreatureMobility;
+}
 
 const FRENZY_THRESHOLD = 8;
 const MAX_EAT_DIST = 5;

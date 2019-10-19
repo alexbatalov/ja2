@@ -11,11 +11,11 @@ const NORMAL_MVT = 1;
 const SLOW_MVT = 0;
 
 // movment modes
-enum {
+const enum Enum187 {
   MVT_MODE_AIR,
   MVT_MODE_VEHICLE,
   MVT_MODE_FOOT,
-};
+}
 
 INT32 FindStratPath(INT16 sStart, INT16 sDestination, INT16 sMvtGroupNumber, BOOLEAN fTacticalTraversal);
 

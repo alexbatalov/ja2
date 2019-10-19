@@ -12,14 +12,14 @@ typedef struct STRATEGICEVENT {
   INT8 bPadding[6];
 } STRATEGICEVENT;
 
-enum {
+const enum Enum133 {
   ONETIME_EVENT,
   RANGED_EVENT,
   ENDRANGED_EVENT,
   EVERYDAY_EVENT,
   PERIODIC_EVENT,
   QUEUED_EVENT,
-};
+}
 
 void LockStrategicEventFromDeletion(STRATEGICEVENT *pEvent);
 void UnlockStrategicEventFromDeletion(STRATEGICEVENT *pEvent);

@@ -1,6 +1,6 @@
 const NUM_CORPSE_SHADES = 17;
 
-enum {
+const enum Enum249 {
   NO_CORPSE,
   SMERC_JFK,
   SMERC_BCK,
@@ -62,7 +62,7 @@ enum {
   EXPLODE_DEAD,
 
   NUM_CORPSES,
-} RottingCorpseDefines;
+}
 
 const ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO = 0x01; // Find the closest spot to the given gridno
 const ROTTING_CORPSE_USE_NORTH_ENTRY_POINT = 0x02; // Find the spot closest to the north entry grid

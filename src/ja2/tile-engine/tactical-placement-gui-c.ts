@@ -8,13 +8,13 @@ typedef struct MERCPLACEMENT {
 
 MERCPLACEMENT *gMercPlacement = NULL;
 
-enum {
+const enum Enum310 {
   DONE_BUTTON,
   SPREAD_BUTTON,
   GROUP_BUTTON,
   CLEAR_BUTTON,
   NUM_TP_BUTTONS,
-};
+}
 UINT32 iTPButtons[NUM_TP_BUTTONS];
 
 extern BOOLEAN gfOverheadMapDirty;

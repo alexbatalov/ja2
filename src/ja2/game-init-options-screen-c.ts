@@ -49,29 +49,29 @@ const GIO_IRON_MAN_SETTING_Y = GIO_GAME_SETTINGS_Y;
 const GIO_IRON_MAN_SETTING_WIDTH = GIO_DIF_SETTINGS_WIDTH;
 
 // Difficulty settings
-enum {
+const enum Enum3 {
   GIO_DIFF_EASY,
   GIO_DIFF_MED,
   GIO_DIFF_HARD,
 
   NUM_DIFF_SETTINGS,
-};
+}
 
 // Game Settings options
-enum {
+const enum Enum4 {
   GIO_REALISTIC,
   GIO_SCI_FI,
 
   NUM_GAME_STYLES,
-};
+}
 
 // Gun options
-enum {
+const enum Enum5 {
   GIO_REDUCED_GUNS,
   GIO_GUN_NUT,
 
   NUM_GUN_OPTIONS,
-};
+}
 
 // JA2Gold: no more timed turns setting
 
@@ -87,20 +87,20 @@ enum
 */
 
 // Iron man mode
-enum {
+const enum Enum6 {
   GIO_CAN_SAVE,
   GIO_IRON_MAN,
 
   NUM_SAVE_OPTIONS,
-};
+}
 
 // enum for different states of game
-enum {
+const enum Enum7 {
   GIO_NOTHING,
   GIO_CANCEL,
   GIO_EXIT,
   GIO_IRON_MAN_MODE,
-};
+}
 
 ////////////////////////////////////////////
 //

@@ -30,14 +30,14 @@ const INS_INFO_LINK_TO_CONTRACT_TEXT_Y = 355 + LAPTOP_SCREEN_WEB_UL_Y;
 UINT32 guiBulletImage;
 
 // The list of Info sub pages
-enum {
+const enum Enum89 {
   INS_INFO_INFO_TOC,
   INS_INFO_SUBMIT_CLAIM,
   INS_INFO_PREMIUMS,
   INS_INFO_RENEWL,
   INS_INFO_CANCELATION,
   INS_INFO_LAST_PAGE,
-};
+}
 UINT8 gubCurrentInsInfoSubPage = 0;
 
 BOOLEAN InsuranceInfoSubPagesVisitedFlag[INS_INFO_LAST_PAGE - 1];

@@ -1,14 +1,14 @@
 const QUEST_DEBUG_FILE = "QuestDebug.txt";
 
 // enums used for the current output level flags
-enum {
+const enum Enum298 {
   QD_OUTPUT_NONE, // no output
   QD_OUTPUT_LEVEL_1, // Highest level
   QD_OUTPUT_LEVEL_2,
   QD_OUTPUT_LEVEL_3,
   QD_OUTPUT_LEVEL_4,
   QD_OUTPUT_LEVEL_ALL, // any message
-};
+}
 
 // Mode and priority for the Quest Debug Messages
 UINT8 gubQuestDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;

@@ -48,12 +48,12 @@ const PAGE_NUMBER_X = TOP_X + 297; // 345
 const PAGE_NUMBER_Y = TOP_Y + 33;
 
 // BUTTON defines
-enum {
+const enum Enum79 {
   PREV_PAGE_BUTTON = 0,
   NEXT_PAGE_BUTTON,
   FIRST_PAGE_BUTTON,
   LAST_PAGE_BUTTON,
-};
+}
 
 // button positions
 

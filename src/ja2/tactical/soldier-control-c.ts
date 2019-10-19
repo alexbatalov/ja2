@@ -12,7 +12,7 @@ const TURNING_FROM_PRONE_ENDING_UP_FROM_MOVE = 3;
 const MIN_SUBSEQUENT_SNDS_DELAY = 2000;
 
 // Enumerate extended directions
-enum {
+const enum Enum256 {
   EX_NORTH = 0,
   EX_NORTHEAST = 4,
   EX_EAST = 8,
@@ -23,7 +23,7 @@ enum {
   EX_NORTHWEST = 28,
   EX_NUM_WORLD_DIRECTIONS = 32,
   EX_DIRECTION_IRRELEVANT,
-} ExtendedWorldDirections;
+}
 
 // LUT for conversion from 8-direction to extended direction
 UINT8 ubExtDirection[] = {

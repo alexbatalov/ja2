@@ -19,13 +19,13 @@ BOOLEAN gfEnteringMapScreenToEnterPreBattleInterface = FALSE;
 BOOLEAN gfIgnoreAllInput = TRUE;
 
 // GraphicIDs for the panel
-enum {
+const enum Enum162 {
   MAINPANEL,
   TITLE_BAR_PIECE,
   TOP_COLUMN,
   BOTTOM_COLUMN,
   UNINVOLVED_HEADER,
-};
+}
 
 // The start of the black space
 const TOP_Y = 113;
@@ -1092,7 +1092,7 @@ void RetreatMercsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-enum {
+const enum Enum163 {
   COND_EXCELLENT,
   COND_GOOD,
   COND_FAIR,
@@ -1102,7 +1102,7 @@ enum {
   COND_UNCONCIOUS,
   COND_DYING,
   COND_DEAD,
-};
+}
 
 void GetSoldierConditionInfo(SOLDIERTYPE *pSoldier, UINT16 *szCondition, UINT8 *pubHPPercent, UINT8 *pubBPPercent) {
   Assert(pSoldier);

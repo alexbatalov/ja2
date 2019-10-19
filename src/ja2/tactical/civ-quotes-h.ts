@@ -4,7 +4,7 @@ const CIV_TYPE_KID = 2;
 const CIV_TYPE_MARRIED_PC = 3;
 const CIV_TYPE_ENEMY = 4;
 
-enum {
+const enum Enum201 {
   CIV_QUOTE_ADULTS_BEGGING,
   CIV_QUOTE_KIDS_BEGGING,
   CIV_QUOTE_ADULTS_RECENT_BUG_ATTACK,
@@ -61,7 +61,7 @@ enum {
   CIV_QUOTE_49,
 
   NUM_CIV_QUOTES,
-};
+}
 
 void InitCivQuoteSystem();
 

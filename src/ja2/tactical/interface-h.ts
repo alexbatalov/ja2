@@ -45,11 +45,11 @@ const LOCATEANDSELECT_MERC = 1;
 const LOCATE_MERC_ONCE = 2;
 
 // Interface level enums
-enum {
+const enum Enum214 {
   I_GROUND_LEVEL,
   I_ROOF_LEVEL,
   I_NUMLEVELS,
-};
+}
 
 const DRAW_RED_BAR = 1;
 const DRAW_BLUE_BAR = 2;
@@ -94,11 +94,11 @@ const DIRTYLEVEL0 = 0;
 const DIRTYLEVEL1 = 1;
 const DIRTYLEVEL2 = 2;
 
-typedef enum {
+const enum Enum215 {
   SM_PANEL,
   TEAM_PANEL,
   NUM_UI_PANELS,
-} InterfacePanelDefines;
+}
 
 BOOLEAN InitializeTacticalInterface();
 BOOLEAN ShutdownTacticalInterface();
@@ -163,7 +163,7 @@ UINT16 gusUIOldSelectedSoldier;
 INT32 giUIMessageOverlay;
 UINT32 guiUIMessageTime;
 
-enum {
+const enum Enum216 {
   NO_MESSAGE,
   COMPUTER_TURN_MESSAGE,
   COMPUTER_INTERRUPT_MESSAGE,
@@ -171,7 +171,7 @@ enum {
   MILITIA_INTERRUPT_MESSAGE,
   AIR_RAID_TURN_MESSAGE,
   PLAYER_TURN_MESSAGE,
-} MESSAGE_TYPES;
+}
 
 void HandleTopMessages();
 BOOLEAN AddTopMessage(UINT8 ubType, UINT16 *pzString);

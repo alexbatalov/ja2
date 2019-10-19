@@ -29,7 +29,7 @@ const WALL_HEIGHT = 50;
 // UINT8 CalculateWallOrientationsAtGridNo( INT32 iMapIndex ) that will look at all
 // of the walls and return the last two wall orientations for tiles with two proper
 // wall pieces.
-enum WallOrientationDefines {
+const enum Enum314 {
   NO_ORIENTATION,
   INSIDE_TOP_LEFT,
   INSIDE_TOP_RIGHT,
@@ -37,10 +37,10 @@ enum WallOrientationDefines {
   OUTSIDE_TOP_RIGHT,
   INSIDE_BOTTOM_CORNER,
   OUTSIDE_BOTTOM_CORNER,
-};
+}
 
 // TERRAIN ID VALUES.
-enum {
+const enum Enum315 {
   NO_TERRAIN,
   FLAT_GROUND,
   FLAT_FLOOR,
@@ -53,7 +53,7 @@ enum {
   MED_WATER,
   DEEP_WATER,
   NUM_TERRAIN_TYPES,
-} TerrainTypeDefines;
+}
 
 // These structures are placed in a list and used for all tile imagery
 typedef struct {

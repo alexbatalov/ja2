@@ -1,7 +1,7 @@
 // the .h to the mine management system
 
 // the mines
-enum {
+const enum Enum179 {
   MINE_SAN_MONA = 0,
   MINE_DRASSEN,
   MINE_ALMA,
@@ -9,26 +9,26 @@ enum {
   MINE_CHITZENA,
   MINE_GRUMM,
   MAX_NUMBER_OF_MINES,
-};
+}
 
-enum {
+const enum Enum180 {
   MINER_FRED = 0,
   MINER_MATT,
   MINER_OSWALD,
   MINER_CALVIN,
   MINER_CARL,
   NUM_HEAD_MINERS,
-};
+}
 
 // different types of mines
-enum {
+const enum Enum181 {
   SILVER_MINE = 0,
   GOLD_MINE,
   NUM_MINE_TYPES,
-};
+}
 
 // monster infestatation level, as percieved by the villagers
-enum {
+const enum Enum182 {
   MINES_NO_MONSTERS = 0, // nothing there at all
   MINES_TRACE_MONSTERS, // monsters leave traces behind, but no one has seen them yet
   MINES_SOME_MONSTERS, // there have been sightings but no one believes the witnesses
@@ -36,16 +36,16 @@ enum {
   MINES_HIGH_MONSTERS, // workers know they are there and all but a few refuse to work
   MINES_RAMPANT_MONSTERS, // the few that go down don't seem to return, no one wants to work period
   MINES_MONSTERS_SURFACE, // monsters are coming out of the mines into the town looking for any edibles
-};
+}
 
 // head miner quote types
-enum {
+const enum Enum183 {
   HEAD_MINER_STRATEGIC_QUOTE_RUNNING_OUT = 0,
   HEAD_MINER_STRATEGIC_QUOTE_CREATURES_ATTACK,
   HEAD_MINER_STRATEGIC_QUOTE_CREATURES_GONE,
   HEAD_MINER_STRATEGIC_QUOTE_CREATURES_AGAIN,
   NUM_HEAD_MINER_STRATEGIC_QUOTES,
-};
+}
 
 // the strategic mine structures
 typedef struct MINE_LOCATION_TYPE {

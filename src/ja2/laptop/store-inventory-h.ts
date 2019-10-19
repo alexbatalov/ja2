@@ -9,12 +9,12 @@ typedef struct {
 } STORE_INVENTORY;
 
 // Enums used for the access the MAX dealers array
-enum {
+const enum Enum112 {
   BOBBY_RAY_NEW,
   BOBBY_RAY_USED,
 
   BOBBY_RAY_LISTS,
-};
+}
 
 extern UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS];
 extern INT16 WeaponROF[MAX_WEAPONS];

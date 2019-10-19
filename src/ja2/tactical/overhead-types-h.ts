@@ -104,7 +104,7 @@ const NOUPDATE = 0;
 const UPDATE = 1;
 
 // ORDERS
-enum {
+const enum Enum241 {
   STATIONARY = 0, // moves max 1 sq., no matter what's going on
   ONGUARD, // moves max 2 sqs. until alerted by something
   CLOSEPATROL, // patrols within 5 spaces until alerted
@@ -114,10 +114,10 @@ enum {
   SEEKENEMY, // not tied down to any one particular spot
   RNDPTPATROL, // patrols randomly using patrolGrids
   MAXORDERS,
-};
+}
 
 // ATTITUDES
-enum {
+const enum Enum242 {
   DEFENSIVE = 0,
   BRAVESOLO,
   BRAVEAID,
@@ -126,25 +126,25 @@ enum {
   AGGRESSIVE,
   MAXATTITUDES,
   ATTACKSLAYONLY, // special hyperaggressive vs Slay only value for Carmen the bounty hunter
-};
+}
 
 // alert status types
-enum {
+const enum Enum243 {
   STATUS_GREEN = 0, // everything's OK, no suspicion
   STATUS_YELLOW, // he or his friend heard something
   STATUS_RED, // has definite evidence of opponent
   STATUS_BLACK, // currently sees an active opponent
   NUM_STATUS_STATES,
-};
+}
 
-enum {
+const enum Enum244 {
   MORALE_HOPELESS = 0,
   MORALE_WORRIED,
   MORALE_NORMAL,
   MORALE_CONFIDENT,
   MORALE_FEARLESS,
   NUM_MORALE_STATES,
-};
+}
 
 // DEFINES FOR WEAPON HIT EVENT SPECIAL PARAM
 const FIRE_WEAPON_NO_SPECIAL = 0;
@@ -211,7 +211,7 @@ const SUB_ANIM_BIGGUYSHOOT2 = 0x00000001;
 const SUB_ANIM_BIGGUYTHREATENSTANCE = 0x00000002;
 
 // Enumerate directions
-enum {
+const enum Enum245 {
   NORTH = 0,
   NORTHEAST,
   EAST,
@@ -223,7 +223,7 @@ enum {
   NUM_WORLD_DIRECTIONS,
   DIRECTION_IRRELEVANT,
   DIRECTION_EXITGRID = 255,
-} WorldDirections;
+}
 
 // ENUMERATION OF SOLDIER POSIITONS IN GLOBAL SOLDIER LIST
 const MAX_NUM_SOLDIERS = 148;
@@ -242,7 +242,7 @@ const PLAYER_PLAN = 5;
 //-----------------------------------------------
 //
 // civilian "sub teams":
-enum {
+const enum Enum246 {
   NON_CIV_GROUP = 0,
   REBEL_CIV_GROUP,
   KINGPIN_CIV_GROUP,
@@ -265,7 +265,7 @@ enum {
   UNNAMED_CIV_GROUP_19,
 
   NUM_CIV_GROUPS,
-};
+}
 
 const CIV_GROUP_NEUTRAL = 0;
 const CIV_GROUP_WILL_EVENTUALLY_BECOME_HOSTILE = 1;
@@ -273,7 +273,7 @@ const CIV_GROUP_WILL_BECOME_HOSTILE = 2;
 const CIV_GROUP_HOSTILE = 3;
 
 // boxing state
-enum {
+const enum Enum247 {
   NOT_BOXING = 0,
   BOXING_WAITING_FOR_PLAYER,
   PRE_BOXING,
@@ -281,7 +281,7 @@ enum {
   DISQUALIFIED,
   WON_ROUND,
   LOST_ROUND,
-} BoxingStates;
+}
 
 // NOTE:  The editor uses these enumerations, so please update the text as well if you modify or
 //			 add new groups.  Try to abbreviate the team name as much as possible.  The text is in

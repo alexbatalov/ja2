@@ -100,7 +100,7 @@ typedef struct {
 } RANDOM_ANI_DEF;
 
 // Enumeration of animation states
-enum {
+const enum Enum193 {
   WALKING = 0,
   STANDING,
   KNEEL_DOWN,
@@ -505,7 +505,7 @@ enum {
   LOCKPICK_CROUCHED,
 
   NUMANIMATIONSTATES,
-} AnimationStates;
+}
 
 UINT16 gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];
 ANIMCONTROLTYPE gAnimControl[NUMANIMATIONSTATES];

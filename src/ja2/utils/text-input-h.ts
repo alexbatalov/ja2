@@ -41,12 +41,12 @@ const INPUTTYPE_EXCLUSIVE_BASEVALUE = 0x1000; // increase this value if necessar
 // In this method, the input accepts only alphas and an underscore as the first character,
 // then alphanumerics afterwards.  For further support, chances are you'll want to treat it
 // as an exclusive handler, and you'll have to process it in the filter input function.
-enum {
+const enum Enum383 {
   INPUTTYPE_EXCLUSIVE_DOSFILENAME = INPUTTYPE_EXCLUSIVE_BASEVALUE,
   INPUTTYPE_EXCLUSIVE_COORDINATE,
   INPUTTYPE_EXCLUSIVE_24HOURCLOCK,
   // INPUTTYPE_EXCLUSIVE_NEWNEWNEW, etc...
-};
+}
 
 // Simply initiates that you wish to begin inputting text.  This should only apply to screen
 // initializations that contain fields that edit text.  It also verifies and clears any existing
@@ -58,9 +58,9 @@ void InitTextInputMode();
 
 // A hybrid version of InitTextInput() which uses a specific scheme.  JA2's editor uses scheme 1, so
 // feel free to add new color/font schemes.
-enum {
+const enum Enum384 {
   DEFAULT_SCHEME,
-};
+}
 void InitTextInputModeWithScheme(UINT8 ubSchemeID);
 
 // Clears any existing fields, and ends text input mode.

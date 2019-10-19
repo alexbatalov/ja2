@@ -20,7 +20,7 @@ const MSG_BOX_RETURN_CONTRACT = 4; // contract button
 const MSG_BOX_RETURN_LIE = 5; // LIE BUTTON
 
 // message box style flags
-enum {
+const enum Enum24 {
   MSG_BOX_BASIC_STYLE = 0, // We'll have other styles, like in laptop, etc
                            // Graphics are all that are required here...
   MSG_BOX_RED_ON_WHITE,
@@ -28,7 +28,7 @@ enum {
   MSG_BOX_BASIC_SMALL_BUTTONS,
   MSG_BOX_IMP_STYLE,
   MSG_BOX_LAPTOP_DEFAULT,
-};
+}
 
 typedef void (*MSGBOX_CALLBACK)(UINT8 bExitValue);
 

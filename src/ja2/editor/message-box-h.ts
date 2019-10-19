@@ -1,8 +1,8 @@
-enum {
+const enum Enum52 {
   MESSAGEBOX_NONE,
   MESSAGEBOX_DONE,
   MESSAGEBOX_WAIT,
-};
+}
 
 extern UINT8 gubMessageBoxStatus;
 extern BOOLEAN gfMessageBoxResult;

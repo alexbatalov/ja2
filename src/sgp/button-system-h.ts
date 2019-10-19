@@ -251,22 +251,22 @@ void PlayButtonSound(INT32 iButtonID, INT32 iSoundType);
 
 void AllowDisabledButtonFastHelp(INT32 iButtonID, BOOLEAN fAllow);
 
-enum {
+const enum Enum28 {
   DEFAULT_STATUS_NONE,
   DEFAULT_STATUS_DARKBORDER, // shades the borders 2 pixels deep
   DEFAULT_STATUS_DOTTEDINTERIOR, // draws the familiar dotted line in the interior portion of the button.
   DEFAULT_STATUS_WINDOWS95, // both DARKBORDER and DOTTEDINTERIOR
-};
+}
 void GiveButtonDefaultStatus(INT32 iButtonID, INT32 iDefaultStatus);
 void RemoveButtonDefaultStatus(INT32 iButtonID);
 
 // for use with SpecifyDisabledButtonStyle
-enum {
+const enum Enum29 {
   DISABLED_STYLE_NONE, // for dummy buttons, panels, etc.  Always displays normal state.
   DISABLED_STYLE_DEFAULT, // if button has text then shade, else hatch
   DISABLED_STYLE_HATCHED, // always hatches the disabled button
   DISABLED_STYLE_SHADED, // always shades the disabled button 25% darker
-};
+}
 void SpecifyDisabledButtonStyle(INT32 iButtonID, INT8 bStyle);
 
 void RemoveTextFromButton(INT32 iButtonID);

@@ -40,7 +40,7 @@ const MAP_START_KEYRING_Y = 107;
 const Y_SIZE = () => GetFontHeight(MAP_SCREEN_FONT());
 
 // attribute menu defines (must match NUM_TRAINABLE_STATS defines, and pAttributeMenuStrings )
-enum {
+const enum Enum146 {
   ATTRIB_MENU_STR = 0,
   ATTRIB_MENU_DEX,
   ATTRIB_MENU_AGI,
@@ -52,20 +52,20 @@ enum {
   ATTRIB_MENU_EXPLOS,
   ATTRIB_MENU_CANCEL,
   MAX_ATTRIBUTE_STRING_COUNT,
-};
+}
 
 // the epc assignment menu
-enum {
+const enum Enum147 {
   EPC_MENU_ON_DUTY = 0,
   EPC_MENU_PATIENT,
   EPC_MENU_VEHICLE,
   EPC_MENU_REMOVE,
   EPC_MENU_CANCEL,
   MAX_EPC_MENU_STRING_COUNT,
-};
+}
 
 // assignment menu defines
-enum {
+const enum Enum148 {
   ASSIGN_MENU_ON_DUTY = 0,
   ASSIGN_MENU_DOCTOR,
   ASSIGN_MENU_PATIENT,
@@ -74,27 +74,27 @@ enum {
   ASSIGN_MENU_TRAIN,
   ASSIGN_MENU_CANCEL,
   MAX_ASSIGN_STRING_COUNT,
-};
+}
 
 // training assignment menu defines
-enum {
+const enum Enum149 {
   TRAIN_MENU_SELF,
   TRAIN_MENU_TOWN,
   TRAIN_MENU_TEAMMATES,
   TRAIN_MENU_TRAIN_BY_OTHER,
   TRAIN_MENU_CANCEL,
   MAX_TRAIN_STRING_COUNT,
-};
+}
 
 // the remove merc from team pop up box strings
-enum {
+const enum Enum150 {
   REMOVE_MERC = 0,
   REMOVE_MERC_CANCEL,
   MAX_REMOVE_MERC_COUNT,
-};
+}
 
 // squad menu defines
-enum {
+const enum Enum151 {
   SQUAD_MENU_1,
   SQUAD_MENU_2,
   SQUAD_MENU_3,
@@ -117,10 +117,10 @@ enum {
   SQUAD_MENU_20,
   SQUAD_MENU_CANCEL,
   MAX_SQUAD_MENU_STRING_COUNT,
-};
+}
 
 // contract menu defines
-enum {
+const enum Enum152 {
   CONTRACT_MENU_CURRENT_FUNDS = 0,
   CONTRACT_MENU_SPACE,
   CONTRACT_MENU_DAY,
@@ -129,30 +129,30 @@ enum {
   CONTRACT_MENU_TERMINATE,
   CONTRACT_MENU_CANCEL,
   MAX_CONTRACT_MENU_STRING_COUNT,
-};
+}
 
 // enums for pre battle interface pop ups
-enum {
+const enum Enum153 {
   ASSIGNMENT_POPUP,
   DESTINATION_POPUP,
   CONTRACT_POPUP,
-};
+}
 
-enum {
+const enum Enum154 {
   NO_REASON_FOR_UPDATE = 0,
   CONTRACT_FINISHED_FOR_UPDATE,
   ASSIGNMENT_FINISHED_FOR_UPDATE,
   ASSIGNMENT_RETURNING_FOR_UPDATE,
   ASLEEP_GOING_AUTO_FOR_UPDATE,
   CONTRACT_EXPIRE_WARNING_REASON,
-};
+}
 
-enum {
+const enum Enum155 {
   START_RED_SECTOR_LOCATOR = 0,
   STOP_RED_SECTOR_LOCATOR,
   START_YELLOW_SECTOR_LOCATOR,
   STOP_YELLOW_SECTOR_LOCATOR,
-};
+}
 
 // dimensions and offset for merc update box
 const UPDATE_MERC_FACE_X_WIDTH = 50;
@@ -440,11 +440,11 @@ extern INT16 gsSectorLocatorX;
 extern INT16 gsSectorLocatorY;
 extern UINT8 gubBlitSectorLocatorCode;
 
-enum {
+const enum Enum156 {
   LOCATOR_COLOR_NONE,
   LOCATOR_COLOR_RED,
   LOCATOR_COLOR_YELLOW,
-};
+}
 
 extern UINT32 guiSectorLocatorGraphicID;
 void HandleBlitOfSectorLocatorIcon(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 ubLocatorID);

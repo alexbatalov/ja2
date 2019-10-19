@@ -1,7 +1,7 @@
 const MAX_VEHICLES = 10;
 
 // type of vehicles
-enum {
+const enum Enum279 {
   ELDORADO_CAR = 0,
   HUMMER,
   ICE_CREAM_TRUCK,
@@ -9,10 +9,10 @@ enum {
   TANK_CAR,
   HELICOPTER,
   NUMBER_OF_TYPES_OF_VEHICLES,
-};
+}
 
 // external armor hit locations
-enum {
+const enum Enum280 {
   FRONT_EXTERNAL_HIT_LOCATION,
   LEFT_EXTERNAL_HIT_LOCATION,
   RIGHT_EXTERNAL_HIT_LOCATION,
@@ -20,10 +20,10 @@ enum {
   BOTTOM_EXTERNAL_HIT_LOCATION,
   TOP_EXTERNAL_HIT_LOCATION,
   NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE,
-};
+}
 
 // internal critical hit locations
-enum {
+const enum Enum281 {
   ENGINE_HIT_LOCATION,
   CREW_COMPARTMENT_HIT_LOCATION,
   RF_TIRE_HIT_LOCATION,
@@ -32,7 +32,7 @@ enum {
   LR_TIRE_HIT_LOCATION,
   GAS_TANK_HIT_LOCATION,
   NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE,
-};
+}
 
 // extern STR16 sCritLocationStrings[];
 

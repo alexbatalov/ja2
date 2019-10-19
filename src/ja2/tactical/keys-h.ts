@@ -61,7 +61,7 @@ typedef struct {
   INT8 bPadding[4]; // extra bytes
 } DOOR;
 
-typedef enum {
+const enum Enum227 {
   NO_TRAP = 0,
   EXPLOSION,
   ELECTRIC,
@@ -70,7 +70,7 @@ typedef enum {
   BROTHEL_SIREN,
   SUPER_ELECTRIC,
   NUM_DOOR_TRAPS,
-} DoorTrapTypes;
+}
 
 const DOOR_TRAP_STOPS_ACTION = 0x01;
 const DOOR_TRAP_RECURRING = 0x02;

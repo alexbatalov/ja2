@@ -11,18 +11,18 @@ const FULL_NAME_REGION_WIDTH = 230;
 const NICK_NAME_REGION_WIDTH = 100;
 
 // genders
-enum {
+const enum Enum86 {
   IMP_FEMALE = 0,
   IMP_MALE,
-};
+}
 
 // TextEnterMode .. whether user is entering full name or nick name, or gender selection
-enum {
+const enum Enum87 {
   FULL_NAME_MODE,
   NICK_NAME_MODE,
   MALE_GENDER_SELECT,
   FEMALE_GENDER_SELECT,
-};
+}
 
 // beginning character stats
 CHAR16 pFullNameString[128];

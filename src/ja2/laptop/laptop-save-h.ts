@@ -33,11 +33,11 @@ typedef struct {
 } BobbyRayOrderStruct;
 
 // used when the player goes to bobby rays when it is still down
-enum {
+const enum Enum99 {
   BOBBYR_NEVER_BEEN_TO_SITE,
   BOBBYR_BEEN_TO_SITE_ONCE,
   BOBBYR_ALREADY_SENT_EMAIL,
-};
+}
 
 typedef struct {
   // General Laptop Info

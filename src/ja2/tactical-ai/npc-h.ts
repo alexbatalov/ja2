@@ -69,7 +69,7 @@ typedef struct {
 // #endif
 } NPCQuoteInfo; // 32 bytes
 
-typedef enum {
+const enum Enum296 {
   APPROACH_FRIENDLY = 1,
   APPROACH_DIRECT,
   APPROACH_THREATEN,
@@ -105,9 +105,9 @@ typedef enum {
   APPROACH_BUYSELL,
   APPROACH_ONE_OF_FOUR_STANDARD,
   APPROACH_FRIENDLY_DIRECT_OR_RECRUIT, // 30
-} Approaches;
+}
 
-typedef enum {
+const enum Enum297 {
   QUOTE_INTRO = 0,
   QUOTE_SUBS_INTRO,
   QUOTE_FRIENDLY_DEFAULT1,
@@ -118,7 +118,7 @@ typedef enum {
   QUOTE_RECRUIT_NO,
   QUOTE_BYE,
   QUOTE_GETLOST,
-} StandardQuoteIDs;
+}
 
 const NUM_REAL_APPROACHES = APPROACH_RECRUIT;
 

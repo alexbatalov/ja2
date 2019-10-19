@@ -1,5 +1,5 @@
 // Enum,s for all of specks quotes
-enum {
+const enum Enum111 {
   SPECK_QUOTE_FIRST_TIME_IN_0, // 0
   SPECK_QUOTE_FIRST_TIME_IN_1,
   SPECK_QUOTE_FIRST_TIME_IN_2,
@@ -101,4 +101,4 @@ enum {
           SPECK_QUOTE_,
           SPECK_QUOTE_,
   */
-};
+}

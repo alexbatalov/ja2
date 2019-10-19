@@ -1,6 +1,6 @@
 // INDIVIDUAL CURSORS
 
-typedef enum {
+const enum Enum317 {
   CURSOR_NORMAL,
   CURSOR_TARGET,
   CURSOR_TARGETON1,
@@ -150,9 +150,9 @@ typedef enum {
   CURSOR_JUMP_OVER,
   CURSOR_FUEL,
   CURSOR_FUEL_RED,
-} CursorTypeDefines;
+}
 
-typedef enum {
+const enum Enum318 {
   C_MISC,
   C_ACTIONMODE,
   C_ACTIONMODERED,
@@ -223,7 +223,7 @@ typedef enum {
   C_FUEL_RED,
 
   NUM_CURSOR_FILES,
-} CursorSurfaceDefines;
+}
 
 const MOUSE_LEVEL_GROUND = 0;
 const MOUSE_LEVEL_ROOF = 1;

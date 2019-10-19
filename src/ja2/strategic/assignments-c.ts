@@ -1,14 +1,14 @@
 // various reason an assignment can be aborted before completion
-enum {
+const enum Enum113 {
   NO_MORE_MED_KITS = 40,
   INSUF_DOCTOR_SKILL,
   NO_MORE_TOOL_KITS,
   INSUF_REPAIR_SKILL,
 
   NUM_ASSIGN_ABORT_REASONS,
-};
+}
 
-enum {
+const enum Enum114 {
   REPAIR_MENU_VEHICLE1 = 0,
   REPAIR_MENU_VEHICLE2,
   REPAIR_MENU_VEHICLE3,
@@ -16,21 +16,21 @@ enum {
   REPAIR_MENU_ROBOT,
   REPAIR_MENU_ITEMS,
   REPAIR_MENU_CANCEL,
-};
+}
 
-enum {
+const enum Enum115 {
   VEHICLE_MENU_VEHICLE1 = 0,
   VEHICLE_MENU_VEHICLE2,
   VEHICLE_MENU_VEHICLE3,
   VEHICLE_MENU_CANCEL,
-};
+}
 
-enum {
+const enum Enum116 {
   REPAIR_HANDS_AND_ARMOR = 0,
   REPAIR_HEADGEAR,
   REPAIR_POCKETS,
   NUM_REPAIR_PASS_TYPES,
-};
+}
 
 const FINAL_REPAIR_PASS = REPAIR_POCKETS;
 

@@ -1,4 +1,4 @@
-enum {
+const enum Enum35 {
   TBAR_MODE_NONE,
   TBAR_MODE_DRAW,
   TBAR_MODE_ERASE,
@@ -70,9 +70,9 @@ enum {
   TBAR_MODE_ITEM_EQUIPMENT3,
   TBAR_MODE_ITEM_TRIGGERS,
   TBAR_MODE_ITEM_KEYS,
-};
+}
 
-enum {
+const enum Enum36 {
   TASK_NONE,
   TASK_TERRAIN,
   TASK_BUILDINGS,
@@ -80,9 +80,9 @@ enum {
   TASK_MERCS,
   TASK_MAPINFO,
   TASK_OPTIONS,
-};
+}
 
-enum {
+const enum Enum37 {
   ACTION_NULL,
   ACTION_SUB_INDEX_UP,
   ACTION_SUB_INDEX_DWN,
@@ -145,9 +145,9 @@ enum {
 
   ACTION_COPY_MERC_PLACEMENT,
   ACTION_PASTE_MERC_PLACEMENT,
-};
+}
 
-enum {
+const enum Enum38 {
   DRAW_MODE_NOTHING,
   // Terrain
   DRAW_MODE_GROUND,
@@ -209,7 +209,7 @@ enum {
   DRAW_MODE_FILL_AREA,
   DRAW_MODE_UNDO,
   DRAW_MODE_ERASE = 1000,
-};
+}
 
 extern INT32 iEditorButton[NUMBER_EDITOR_BUTTONS];
 extern INT32 iEditorToolbarState;

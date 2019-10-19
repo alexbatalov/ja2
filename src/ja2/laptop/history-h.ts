@@ -19,7 +19,7 @@ struct history {
   struct history *Next; // next unit in the list
 };
 
-enum {
+const enum Enum83 {
   HISTORY_ENTERED_HISTORY_MODE = 0,
   HISTORY_HIRED_MERC_FROM_AIM,
   HISTORY_HIRED_MERC_FROM_MERC,
@@ -98,7 +98,7 @@ enum {
   HISTORY_GAVE_CARMEN_HEAD,
   HISTORY_SLAY_MYSTERIOUSLY_LEFT,
   HISTORY_MERC_KILLED_CHARACTER,
-};
+}
 
 typedef struct history HistoryUnit;
 typedef struct history *HistoryUnitPtr;

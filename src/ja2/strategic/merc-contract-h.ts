@@ -1,9 +1,9 @@
 // enums used for extending contract, etc.
-enum {
+const enum Enum161 {
   CONTRACT_EXTEND_1_DAY,
   CONTRACT_EXTEND_1_WEEK,
   CONTRACT_EXTEND_2_WEEK,
-};
+}
 
 typedef struct {
   UINT8 ubProfileID;

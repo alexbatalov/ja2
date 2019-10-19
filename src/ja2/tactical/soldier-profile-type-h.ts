@@ -70,7 +70,7 @@ const SUPER_SKILL_VALUE = 80;
 const NEEDS_TRAINING_SKILL_VALUE = 50;
 const NO_CHANCE_IN_HELL_SKILL_VALUE = 0;
 
-typedef enum {
+const enum Enum269 {
   NO_SKILLTRAIT = 0,
   LOCKPICKING,
   HANDTOHAND,
@@ -88,9 +88,9 @@ typedef enum {
   ONROOF,
   CAMOUFLAGED,
   NUM_SKILLTRAITS,
-} SkillTrait;
+}
 
-typedef enum {
+const enum Enum270 {
   NO_PERSONALITYTRAIT = 0,
   HEAT_INTOLERANT,
   NERVOUS,
@@ -99,11 +99,11 @@ typedef enum {
   FEAR_OF_INSECTS,
   FORGETFUL,
   PSYCHO,
-} PersonalityTrait;
+}
 
 const NERVOUS_RADIUS = 10;
 
-typedef enum {
+const enum Enum271 {
   ATT_NORMAL = 0,
   ATT_FRIENDLY,
   ATT_LONER,
@@ -115,26 +115,26 @@ typedef enum {
   ATT_ASSHOLE,
   ATT_COWARD,
   NUM_ATTITUDES,
-} Attitudes;
+}
 
-typedef enum {
+const enum Enum272 {
   MALE = 0,
   FEMALE,
-} Sexes;
+}
 
-typedef enum {
+const enum Enum273 {
   NOT_SEXIST = 0,
   SOMEWHAT_SEXIST,
   VERY_SEXIST,
   GENTLEMAN,
-} SexistLevels;
+}
 
 // training defines for evolution, no stat increase, stat decrease( de-evolve )
-typedef enum {
+const enum Enum274 {
   NORMAL_EVOLUTION = 0,
   NO_EVOLUTION,
   DEVOLVE,
-} CharacterEvolution;
+}
 
 const BUDDY_MERC = (prof, bud) => ((prof)->bBuddy[0] == (bud) || (prof)->bBuddy[1] == (bud) || (prof)->bBuddy[2] == (bud));
 const HATED_MERC = (prof, hat) => ((prof)->bHated[0] == (hat) || (prof)->bHated[1] == (hat) || (prof)->bHated[2] == (hat));

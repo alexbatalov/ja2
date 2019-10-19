@@ -705,14 +705,14 @@ UINT16 CompatibleFaceItems[][2] = {
   { 0, 0 },
 };
 
-typedef enum {
+const enum Enum226 {
   DESTRUCTION,
   COMBINE_POINTS,
   TREAT_ARMOUR,
   EXPLOSIVE,
   EASY_MERGE,
   ELECTRONIC_MERGE,
-} MergeType;
+}
 
 UINT16 Merge[][4] = {
   // first item			second item						resulting item,					merge type

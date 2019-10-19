@@ -74,7 +74,7 @@ INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLev
 BOOLEAN DamageStructure(STRUCTURE *pStructure, UINT8 ubDamage, UINT8 ubReason, INT16 sGridNo, INT16 sX, INT16 sY, UINT8 ubOwner);
 
 // Material armour type enumeration
-enum {
+const enum Enum309 {
   MATERIAL_NOTHING,
   MATERIAL_WOOD_WALL,
   MATERIAL_PLYWOOD_WALL,
@@ -105,7 +105,7 @@ enum {
   MATERIAL_INDESTRUCTABLE_METAL,
   MATERIAL_THICKER_METAL_WITH_SCREEN_WINDOWS,
   NUM_MATERIAL_TYPES,
-};
+}
 
 extern INT32 guiMaterialHitSound[NUM_MATERIAL_TYPES];
 

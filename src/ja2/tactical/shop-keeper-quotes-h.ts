@@ -1,5 +1,5 @@
 // COMMON shop keeper quote enums
-enum {
+const enum Enum254 {
   // Quotes 0-9 are generic NPC quotes common to everyone and controlled by the normal NPC Dialogue system.
   // 10
   SK_QUOTES_DEALER_OFFERED_MONEY_AS_A_GIFT = 10,
@@ -27,7 +27,7 @@ enum {
   NUM_COMMON_SK_QUOTES,
 
   // Quotes 28+ are NPC Specific, and are not under direct control of the SKI system.  The get used by .COD files
-};
+}
 
 // Common quotes needed by SKI
 const SK_QUOTES_NOT_INTERESTED_IN_THIS_ITEM = 4;

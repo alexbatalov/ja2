@@ -536,14 +536,14 @@ void SelectMercFace(void) {
 }
 
 void SetMercSkinAndHairColors(void) {
-  enum {
+  const enum Enum387 {
     PINKSKIN,
     TANSKIN,
     DARKSKIN,
     BLACKSKIN,
     NUMSKINS,
   };
-  enum {
+  const enum Enum388 {
     BROWNHEAD,
     BLACKHEAD, // black skin (only this line )
     WHITEHEAD, // dark skin (this line plus all above)

@@ -407,11 +407,11 @@ void UpgradeAdminsToTroops();
 
 const SAIReportError = (a) => {}; // define it out
 
-enum SAIMOVECODE {
+const enum Enum172 {
   DIRECT,
   EVASIVE,
   STAGE,
-};
+}
 void MoveSAIGroupToSector(GROUP **pGroup, UINT8 ubSectorID, UINT32 uiMoveCode, UINT8 ubIntention);
 
 // returns the number of reinforcements permitted to be sent.  Will increased if the denied counter is non-zero.

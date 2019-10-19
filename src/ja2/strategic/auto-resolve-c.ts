@@ -7,7 +7,7 @@ extern HVSURFACE ghFrameBuffer;
 BOOLEAN gfTransferTacticalOppositionToAutoResolve = FALSE;
 
 // button images
-enum {
+const enum Enum119 {
   PAUSE_BUTTON,
   PLAY_BUTTON,
   FAST_BUTTON,
@@ -19,7 +19,7 @@ enum {
   DONEWIN_BUTTON,
   DONELOSE_BUTTON,
   NUM_AR_BUTTONS,
-};
+}
 
 typedef struct SOLDIERCELL {
   SOLDIERTYPE *pSoldier;
@@ -142,17 +142,17 @@ const CELL_MALECREATURE = (CELL_AM_CREATURE | CELL_YM_CREATURE);
 const CELL_YOUNGCREATURE = (CELL_YF_CREATURE | CELL_YM_CREATURE);
 const CELL_INVOLVEDINCOMBAT = (CELL_FIREDATTARGET | CELL_DODGEDATTACK | CELL_HITBYATTACKER);
 
-enum {
+const enum Enum120 {
   BATTLE_IN_PROGRESS,
   BATTLE_VICTORY,
   BATTLE_DEFEAT,
   BATTLE_RETREAT,
   BATTLE_SURRENDERED,
   BATTLE_CAPTURED,
-};
+}
 
 // panel pieces
-enum {
+const enum Enum121 {
   TL_BORDER,
   T_BORDER,
   TR_BORDER,
@@ -167,10 +167,10 @@ enum {
   BOT_MIDDLE,
   MERC_PANEL,
   OTHER_PANEL,
-};
+}
 
 // generic face images
-enum {
+const enum Enum122 {
   ADMIN_FACE,
   TROOP_FACE,
   ELITE_FACE,
@@ -187,7 +187,7 @@ enum {
   MILITIA1F_FACE,
   MILITIA2F_FACE,
   MILITIA3F_FACE,
-};
+}
 
 extern void CreateDestroyMapInvButton();
 

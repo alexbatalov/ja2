@@ -99,20 +99,20 @@ UINT8 guiTODFlags[ENV_NUM_TIMES] = {
   ENV_TOD_FLAGS_NIGHT, // 23
 };
 
-typedef enum {
+const enum Enum302 {
   COOL,
   WARM,
   HOT,
-} Temperatures;
+}
 
-typedef enum {
+const enum Enum303 {
   TEMPERATURE_DESERT_COOL,
   TEMPERATURE_DESERT_WARM,
   TEMPERATURE_DESERT_HOT,
   TEMPERATURE_GLOBAL_COOL,
   TEMPERATURE_GLOBAL_WARM,
   TEMPERATURE_GLOBAL_HOT,
-} TemperatureEvents;
+}
 
 const DESERT_WARM_START = (8 * 60);
 const DESERT_HOT_START = (9 * 60);

@@ -59,7 +59,7 @@ const AIM_POLICY_LAST_PAGE = 10;
 const AIM_POLICY_AGREE_PAGE = 0;
 
 // These enums represent which paragraph they are located in the AimPol.edt file
-enum {
+const enum Enum68 {
   AIM_STATEMENT_OF_POLICY,
   AIM_STATEMENT_OF_POLICY_1,
   AIM_STATEMENT_OF_POLICY_2,
@@ -117,7 +117,7 @@ enum {
   POLICY_MEDICAL_4,
 
   NUM_AIM_POLICY_LOCATIONS,
-} AimPolicyTextLocatoins;
+}
 
 // Toc menu mouse regions
 MOUSE_REGION gSelectedPolicyTocMenuRegion[NUM_AIM_POLICY_TOC_BUTTONS];

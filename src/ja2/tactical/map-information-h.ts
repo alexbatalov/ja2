@@ -2,11 +2,11 @@ extern FLOAT gdMajorMapVersion;
 extern UINT8 gubMinorMapVersion;
 
 // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
-enum {
+const enum Enum231 {
   SMOOTHING_NORMAL,
   SMOOTHING_BASEMENT,
   SMOOTHING_CAVES,
-};
+}
 
 typedef struct {
   // These are the mandatory entry points for a map.  If any of the values are -1, then that means that

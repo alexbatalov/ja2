@@ -1,7 +1,7 @@
 // Merc scheduling actions
 // NOTE:  Any modifications to this enumeration also require updating the text in EditorMercs.c used
 //			 in the editor for merc schedule purposes.
-enum {
+const enum Enum171 {
   SCHEDULE_ACTION_NONE,
   SCHEDULE_ACTION_LOCKDOOR,
   SCHEDULE_ACTION_UNLOCKDOOR,
@@ -14,7 +14,7 @@ enum {
   SCHEDULE_ACTION_SLEEP,
   SCHEDULE_ACTION_WAKE,
   NUM_SCHEDULE_ACTIONS,
-};
+}
 
 const SCHEDULE_FLAGS_VARIANCE1 = 0x0001;
 const SCHEDULE_FLAGS_VARIANCE2 = 0x0002;

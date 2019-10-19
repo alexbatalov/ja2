@@ -1,5 +1,5 @@
 // icons text id's
-enum {
+const enum Enum91 {
   MAIL = 0,
   WWW,
   FINANCIAL,
@@ -7,9 +7,9 @@ enum {
   HISTORY,
   FILES,
   MAX_ICON_COUNT,
-};
+}
 
-enum {
+const enum Enum92 {
   NO_REGION = 0,
   EMAIL_REGION,
   WWW_REGION,
@@ -17,7 +17,7 @@ enum {
   PERSONNEL_REGION,
   HISTORY_REGION,
   FILES_REGION,
-};
+}
 
 struct rgbcolor {
   UINT8 ubRed;
@@ -42,20 +42,20 @@ RGBCOLOR GlowColors[] = {
 };
 
 // laptop programs
-enum {
+const enum Enum93 {
   LAPTOP_PROGRAM_MAILER,
   LAPTOP_PROGRAM_WEB_BROWSER,
   LAPTOP_PROGRAM_FILES,
   LAPTOP_PROGRAM_PERSONNEL,
   LAPTOP_PROGRAM_FINANCES,
   LAPTOP_PROGRAM_HISTORY,
-};
+}
 
 // laptop program states
-enum {
+const enum Enum94 {
   LAPTOP_PROGRAM_MINIMIZED,
   LAPTOP_PROGRAM_OPEN,
-};
+}
 const LAPTOP_ICONS_X = 33;
 const LAPTOP_ICONS_MAIL_Y = 35 - 5;
 const LAPTOP_ICONS_WWW_Y = 102 - 10 - 5;

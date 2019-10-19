@@ -19,7 +19,7 @@ const GROUP_PLAYER = 1000;
 const GROUP_AMBIENT = 0;
 
 // SOUNDS ENUMERATION
-enum SoundDefines {
+const enum Enum330 {
   MISS_1 = 0,
   MISS_2,
   MISS_3,
@@ -359,9 +359,9 @@ enum SoundDefines {
   FENCE_OPEN,
 
   NUM_SAMPLES,
-};
+}
 
-enum AmbientDefines {
+const enum Enum331 {
   LIGHTNING_1 = 0,
   LIGHTNING_2,
   RAIN_1,
@@ -378,7 +378,7 @@ enum AmbientDefines {
   NIGHT_BIRD_2,
 
   NUM_AMBIENTS,
-};
+}
 
 typedef void (*SOUND_STOP_CALLBACK)(void *pData);
 

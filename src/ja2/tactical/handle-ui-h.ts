@@ -26,7 +26,7 @@ const MOVEUI_TARGET_REFUEL = 12;
 
 const MOVEUI_RETURN_ON_TARGET_MERC = 1;
 
-typedef enum {
+const enum Enum206 {
   DONT_CHANGEMODE,
   IDLE_MODE,
   MOVE_MODE,
@@ -48,7 +48,7 @@ typedef enum {
   EXITSECTORMENU_MODE,
   RUBBERBAND_MODE,
   JUMPOVER_MODE,
-} UI_MODE;
+}
 
 typedef UINT32 (*UI_HANDLEFNC)(struct TAG_UI_EVENT *);
 
@@ -63,7 +63,7 @@ typedef struct TAG_UI_EVENT {
 } UI_EVENT;
 
 // EVENT ENUMERATION
-typedef enum {
+const enum Enum207 {
   I_DO_NOTHING,
   I_EXIT,
   I_NEW_MERC,
@@ -147,7 +147,7 @@ typedef enum {
   JP_JUMP,
 
   NUM_UI_EVENTS,
-} UI_EVENT_DEFINES;
+}
 
 typedef BOOLEAN (*UIKEYBOARD_HOOK)(InputAtom *pInputEvent);
 

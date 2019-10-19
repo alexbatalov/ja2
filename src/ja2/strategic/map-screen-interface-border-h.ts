@@ -2,27 +2,27 @@ const MAP_BORDER_START_X = 261;
 const MAP_BORDER_START_Y = 0;
 
 // scroll directions
-enum {
+const enum Enum139 {
   ZOOM_MAP_SCROLL_UP = 0,
   ZOOM_MAP_SCROLL_DWN,
   ZOOM_MAP_SCROLL_RIGHT,
   ZOOM_MAP_SCROLL_LEFT,
-};
+}
 
-enum {
+const enum Enum140 {
   EAST_DIR = 0,
   WEST_DIR,
   NORTH_DIR,
   SOUTH_DIR,
-};
-enum {
+}
+const enum Enum141 {
   MAP_BORDER_TOWN_BTN = 0,
   MAP_BORDER_MINE_BTN,
   MAP_BORDER_TEAMS_BTN,
   MAP_BORDER_AIRSPACE_BTN,
   MAP_BORDER_ITEM_BTN,
   MAP_BORDER_MILITIA_BTN,
-};
+}
 
 /*
 enum{

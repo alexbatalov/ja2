@@ -6,13 +6,13 @@ const MAP_TOP = 15;
 const MAP_RIGHT = (MAP_LEFT + MAP_SIZE);
 const MAP_BOTTOM = (MAP_TOP + MAP_SIZE);
 
-enum {
+const enum Enum55 {
   PRE_ALPHA,
   ALPHA,
   DEMO,
   BETA,
   RELEASE,
-};
+}
 UINT16 gszVersionType[5][10] = {
   L"Pre-Alpha",
   L"Alpha",
@@ -125,11 +125,11 @@ BOOLEAN gfTempFile;
 // that particular map is chosen, then the alternate map will be used.
 BOOLEAN gfAlternateMaps = FALSE;
 
-enum {
+const enum Enum56 {
   ITEMMODE_SCIFI,
   ITEMMODE_REAL,
   ITEMMODE_ENEMY,
-};
+}
 UINT8 gubSummaryItemMode = ITEMMODE_SCIFI;
 
 BOOLEAN gfItemDetailsMode = FALSE;
@@ -153,11 +153,11 @@ BOOLEAN gfMapFileDirty;
 // readonly status file, so that you can write to it, and overwrite, when checked, allows you to save,
 // replacing the existing file.  These states are not persistant, which forces the user to check the
 // box before saving.
-enum {
+const enum Enum57 {
   INACTIVE,
   READONLY,
   OVERWRITE,
-};
+}
 UINT8 gubOverrideStatus;
 // Set when the a new sector/level is selected, forcing the user to reselect the override status.
 BOOLEAN gfOverrideDirty;
@@ -183,7 +183,7 @@ UINT16 gszDisplayName[21];
 
 void CalculateOverrideStatus();
 
-enum {
+const enum Enum58 {
   SUMMARY_BACKGROUND,
   SUMMARY_OKAY,
   SUMMARY_GRIDCHECKBOX,
@@ -202,7 +202,7 @@ enum {
   SUMMARY_REAL,
   SUMMARY_ENEMY,
   NUM_SUMMARY_BUTTONS,
-};
+}
 INT32 iSummaryButton[NUM_SUMMARY_BUTTONS];
 
 void CreateSummaryWindow() {

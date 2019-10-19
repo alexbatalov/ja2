@@ -1,5 +1,5 @@
 // If you add any options, MAKE sure you add the corresponding string to the Options Screen string array
-enum {
+const enum Enum8 {
   TOPTION_SPEECH,
   TOPTION_MUTE_CONFIRMATIONS,
   TOPTION_SUBTITLES,
@@ -42,7 +42,7 @@ enum {
   TOPTION_TRACKING_MODE,
 
   NUM_ALL_GAME_OPTIONS,
-};
+}
 
 typedef struct {
   INT8 bLastSavedGameSlot; // The last saved game number goes in here
@@ -69,13 +69,13 @@ typedef struct {
 } GAME_SETTINGS;
 
 // Enums for the difficulty levels
-enum {
+const enum Enum9 {
   DIF_LEVEL_ZERO,
   DIF_LEVEL_EASY,
   DIF_LEVEL_MEDIUM,
   DIF_LEVEL_HARD,
   DIF_LEVEL_FOUR,
-};
+}
 
 typedef struct {
   BOOLEAN fGunNut;

@@ -66,7 +66,7 @@ BOOLEAN ExitTocMenu();
 void ChangingAimHistorySubPage(UINT8 ubSubPageNumber);
 
 // These enums represent which paragraph they are located in the AimHist.edt file
-enum {
+const enum Enum64 {
   IN_THE_BEGINNING = 6,
   IN_THE_BEGINNING_1,
   IN_THE_BEGINNING_2,
@@ -88,7 +88,7 @@ enum {
   INCORPORATION_2,
   DUNN_AND_BRADROAD,
   INCORPORATION_3,
-} AimHistoryTextLocatoins;
+}
 
 void GameInitAimHistory() {
 }

@@ -40,20 +40,20 @@ BOOLEAN ResetOverrideMercPopupBox();
 BOOLEAN SetPrepareMercPopupFlags(UINT32 uiFlags);
 
 // background enumeration
-enum {
+const enum Enum324 {
   BASIC_MERC_POPUP_BACKGROUND = 0,
   WHITE_MERC_POPUP_BACKGROUND,
   GREY_MERC_POPUP_BACKGROUND,
   DIALOG_MERC_POPUP_BACKGROUND,
   LAPTOP_POPUP_BACKGROUND,
   IMP_POPUP_BACKGROUND,
-};
+}
 
 // border enumeration
-enum {
+const enum Enum325 {
   BASIC_MERC_POPUP_BORDER = 0,
   RED_MERC_POPUP_BORDER,
   BLUE_MERC_POPUP_BORDER,
   DIALOG_MERC_POPUP_BORDER,
   LAPTOP_POP_BORDER,
-};
+}

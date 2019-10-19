@@ -72,7 +72,7 @@ void SetClockResolutionPerSecond(UINT8 ubNumTimesPerSecond);
 UINT8 ClockResolution();
 
 // time compression defines
-enum {
+const enum Enum130 {
   NOT_USING_TIME_COMPRESSION = -1,
   TIME_COMPRESS_X0,
   TIME_COMPRESS_X1,
@@ -81,7 +81,7 @@ enum {
   TIME_COMPRESS_60MINS,
   TIME_SUPER_COMPRESS,
   NUM_TIME_COMPRESS_SPEEDS,
-};
+}
 
 // dereferenced with the above enumerations to provide the actual time compression rate.
 extern INT32 giTimeCompressSpeeds[NUM_TIME_COMPRESS_SPEEDS];
@@ -94,11 +94,11 @@ const WORLDTIMESTR = () => gswzWorldTimeStr;
 // compress mode now in use
 INT32 giTimeCompressMode;
 
-enum {
+const enum Enum131 {
   WARPTIME_NO_PROCESSING_OF_EVENTS,
   WARPTIME_PROCESS_EVENTS_NORMALLY,
   WARPTIME_PROCESS_TARGET_TIME_FIRST,
-};
+}
 void WarpGameTime(UINT32 uiAdjustment, UINT8 ubWarpCode);
 
 void AdvanceToNextDay();

@@ -5,13 +5,13 @@ typedef INT32 TIMECOUNTER;
 typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)(void);
 
 // CALLBACK TIMER DEFINES
-enum {
+const enum Enum385 {
   ITEM_LOCATOR_CALLBACK,
   NUM_TIMER_CALLBACKS,
-};
+}
 
 // TIMER DEFINES
-enum {
+const enum Enum386 {
   TOVERHEAD = 0, // Overhead time slice
   NEXTSCROLL, // Scroll Speed timer
   STARTSCROLL, // Scroll Start timer
@@ -39,7 +39,7 @@ enum {
   MUSICOVERHEAD, // MUSIC TIMER
   RUBBER_BAND_START_DELAY,
   NUMTIMERS,
-};
+}
 
 // Base resultion of callback timer
 const BASETIMESLICE = 10;

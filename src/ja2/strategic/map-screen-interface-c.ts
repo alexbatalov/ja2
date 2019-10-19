@@ -36,14 +36,14 @@ const VEHICLE_ONLY = FALSE;
 const AND_ALL_ON_BOARD = TRUE;
 
 // the regions int he movemenu
-enum {
+const enum Enum145 {
   SQUAD_REGION = 0,
   VEHICLE_REGION,
   SOLDIER_REGION,
   DONE_REGION,
   CANCEL_REGION,
   OTHER_REGION,
-};
+}
 
 // waiting list for update box
 INT32 iUpdateBoxWaitingList[MAX_CHARACTER_COUNT];

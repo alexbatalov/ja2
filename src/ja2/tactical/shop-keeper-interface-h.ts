@@ -3,12 +3,12 @@ const SKI_NUM_TRADING_INV_ROWS = 2;
 const SKI_NUM_TRADING_INV_COLS = 6;
 
 // Enums used for when the user clicks on an item and the item goes to..
-enum {
+const enum Enum252 {
   ARMS_DEALER_INVENTORY,
   ARMS_DEALER_OFFER_AREA,
   PLAYERS_OFFER_AREA,
   PLAYERS_INVENTORY,
-};
+}
 
 const ARMS_INV_ITEM_SELECTED = 0x00000001; // The item has been placed into the offer area
 //#define	ARMS_INV_PLAYERS_ITEM_SELECTED						0x00000002			// The source location for the item has been selected
@@ -39,11 +39,11 @@ extern INT32 giShopKeepDialogueEventinProgress;
 
 // extern	BOOLEAN		gfRedrawSkiScreen;
 
-enum {
+const enum Enum253 {
   SKI_DIRTY_LEVEL0, // no redraw
   SKI_DIRTY_LEVEL1, // redraw only items
   SKI_DIRTY_LEVEL2, // redraw everything
-};
+}
 
 extern UINT8 gubSkiDirtyLevel;
 

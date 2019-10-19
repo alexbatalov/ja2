@@ -6,14 +6,14 @@ extern INT16 gsCoverValue[WORLD_MAX];
 
 // AI actions
 
-enum {
+const enum Enum288 {
   CALL_NONE = 0,
   CALL_1_PREY,
   CALL_MULTIPLE_PREY,
   CALL_ATTACKED,
   CALL_CRIPPLED,
   NUM_CREATURE_CALLS,
-} CreatureCalls;
+}
 
 const DONTFORCE = 0;
 const FORCE = 1;
@@ -21,7 +21,7 @@ const FORCE = 1;
 // ANY NEW ACTIONS ADDED - UPDATE OVERHEAD.C ARRAY WITH ACTION'S STRING VALUE
 const FIRST_MOVEMENT_ACTION = AI_ACTION_RANDOM_PATROL;
 const LAST_MOVEMENT_ACTION = AI_ACTION_MOVE_TO_CLIMB;
-typedef enum {
+const enum Enum289 {
   AI_ACTION_NONE = 0, // maintain current position & facing
 
   // actions that involve a move to another tile
@@ -81,9 +81,9 @@ typedef enum {
   AI_ACTION_END_COWER_AND_MOVE, // sort of dummy value, special for civilians who are to go somewhere at end of battle
   AI_ACTION_TRAVERSE_DOWN, // move down a level
   AI_ACTION_OFFER_SURRENDER, // offer surrender to the player
-} ActionType;
+}
 
-enum {
+const enum Enum290 {
   QUOTE_ACTION_ID_CHECKFORDEST = 1,
   QUOTE_ACTION_ID_TURNTOWARDSPLAYER,
   QUOTE_ACTION_ID_DRAWGUN,
@@ -92,7 +92,7 @@ enum {
   QUOTE_ACTION_ID_TRAVERSE_SOUTH,
   QUOTE_ACTION_ID_TRAVERSE_WEST,
   QUOTE_ACTION_ID_TRAVERSE_NORTH,
-} QuoteActionType;
+}
 
 const RTP_COMBAT_AGGRESSIVE = 1;
 const RTP_COMBAT_CONSERVE = 2;
@@ -162,12 +162,12 @@ INT16 FindNearbyPointOnEdgeOfMap(SOLDIERTYPE *pSoldier, INT8 *pbDirection);
 INT16 FindNearestEdgePoint(INT16 sGridNo);
 
 // Kris:  Added these as I need specific searches on certain sides.
-enum {
+const enum Enum291 {
   NORTH_EDGEPOINT_SEARCH,
   EAST_EDGEPOINT_SEARCH,
   SOUTH_EDGEPOINT_SEARCH,
   WEST_EDGEPOINT_SEARCH,
-};
+}
 INT16 FindNearestEdgepointOnSpecifiedEdge(INT16 sGridNo, INT8 bEdgeCode);
 
 INT16 FindNearestUngassedLand(SOLDIERTYPE *pSoldier);

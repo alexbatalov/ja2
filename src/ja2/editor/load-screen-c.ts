@@ -6,13 +6,13 @@ INT32 giErrorCatchMessageBox = 0;
 
 extern void RemoveMercsInSector();
 
-enum {
+const enum Enum50 {
   DIALOG_NONE,
   DIALOG_SAVE,
   DIALOG_LOAD,
   DIALOG_CANCEL,
   DIALOG_DELETE,
-};
+}
 
 extern UINT16 Counter;
 
@@ -64,13 +64,13 @@ MOUSE_REGION BlanketRegion;
 
 CHAR8 gszCurrFilename[80];
 
-enum {
+const enum Enum51 {
   IOSTATUS_NONE,
   INITIATE_MAP_SAVE,
   SAVING_MAP,
   INITIATE_MAP_LOAD,
   LOADING_MAP,
-};
+}
 INT8 gbCurrentFileIOStatus; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 UINT32 ProcessFileIO();
 

@@ -1,9 +1,9 @@
 extern STR16 gzIntroScreen[];
 extern HVSURFACE ghFrameBuffer;
 
-enum {
+const enum Enum19 {
   INTRO_TXT__CANT_FIND_INTRO,
-};
+}
 
 // ddd
 
@@ -21,7 +21,7 @@ const SMKINTRO_FIRST_VIDEO = 255;
 const SMKINTRO_NO_VIDEO = -1;
 
 // enums for the various smacker files
-enum {
+const enum Enum20 {
   SMKINTRO_REBEL_CRDT,
   SMKINTRO_OMERTA,
   SMKINTRO_PRAGUE_CRDT,
@@ -40,7 +40,7 @@ enum {
 
   // there are no more videos shown for the endgame
   SMKINTRO_LAST_END_GAME,
-};
+}
 
 INT32 giCurrentIntroBeingPlayed = SMKINTRO_NO_VIDEO;
 

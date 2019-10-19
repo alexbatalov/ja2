@@ -14,7 +14,7 @@ BOOLEAN SetSteadyStateAmbience(UINT8 ubAmbience);
 const SOUND_NAME_SIZE = 256;
 const NUM_SOUNDS_PER_TIMEFRAME = 8;
 
-enum {
+const enum Enum301 {
   SSA_NONE,
   SSA_COUNTRYSIZE,
   SSA_NEAR_WATER,
@@ -27,7 +27,7 @@ enum {
   SSA_UNDERGROUND,
   SSA_OCEAN,
   NUM_STEADY_STATE_AMBIENCES,
-};
+}
 
 typedef struct {
   CHAR8 zSoundNames[NUM_SOUNDS_PER_TIMEFRAME][SOUND_NAME_SIZE];

@@ -18,7 +18,7 @@ const FIXEDPT_TO_LOS_INDEX = (n) => (CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT3
 
 const OK_CHANCE_TO_GET_THROUGH = 10;
 
-enum {
+const enum Enum229 {
   COLLISION_NONE,
   COLLISION_GROUND,
   COLLISION_MERC,
@@ -36,7 +36,7 @@ enum {
   COLLISION_INTERIOR_ROOF,
   COLLISION_STRUCTURE_Z,
   COLLISION_WATER,
-} CollisionEnums;
+}
 
 INT32 CheckForCollision(FLOAT dX, FLOAT dY, FLOAT dZ, FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ, INT16 *pusStructureID, FLOAT *pdNormalX, FLOAT *pdNormalY, FLOAT *pdNormalZ);
 
@@ -79,7 +79,7 @@ const CONVERT_INDEX_TO_PIXELS = (n) => ((n) * MAX_STRUCTURE_HEIGHT * HEIGHT_UNIT
 const TREE_SIGHT_REDUCTION = 6;
 const NORMAL_TREES = 10;
 
-enum {
+const enum Enum230 {
   LOS_POS,
   FIRING_POS,
   TARGET_POS,
@@ -87,7 +87,7 @@ enum {
   TORSO_TARGET_POS,
   LEGS_TARGET_POS,
   HEIGHT,
-};
+}
 
 // 191 is 6' (structures of height 3)
 // 127 is 4' (structures of height 2)

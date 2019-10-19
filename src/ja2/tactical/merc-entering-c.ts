@@ -3,7 +3,7 @@ const MAX_HELI_SCRIPT = 30;
 const ME_SCRIPT_DELAY = 100;
 const NUM_PER_HELI_RUN = 6;
 
-enum {
+const enum Enum232 {
   HELI_APPROACH,
   HELI_MOVETO,
   HELI_BEGINDROP,
@@ -12,9 +12,9 @@ enum {
   HELI_MOVEAWAY,
   HELI_EXIT,
   NUM_HELI_STATES,
-} HeliStateEnums;
+}
 
-enum {
+const enum Enum233 {
   HELI_REST,
   HELI_MOVE_DOWN,
   HELI_MOVE_UP,
@@ -31,7 +31,7 @@ enum {
   HELI_GOTO_MOVETO,
   HELI_GOTO_MOVEAWAY,
   HELI_DONE,
-} HeliCodes;
+}
 
 UINT8 ubHeliScripts[NUM_HELI_STATES][MAX_HELI_SCRIPT] = {
   // HELI_APPROACH

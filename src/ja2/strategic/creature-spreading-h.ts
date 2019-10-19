@@ -32,13 +32,13 @@ extern UINT8 gubYoungFemalesAttackingTown;
 extern UINT8 gubAdultMalesAttackingTown;
 extern UINT8 gubAdultFemalesAttackingTown;
 extern UINT8 gubSectorIDOfCreatureAttack;
-enum {
+const enum Enum129 {
   CREATURE_BATTLE_CODE_NONE,
   CREATURE_BATTLE_CODE_TACTICALLYADD,
   CREATURE_BATTLE_CODE_TACTICALLYADD_WITHFOV,
   CREATURE_BATTLE_CODE_PREBATTLEINTERFACE,
   CREATURE_BATTLE_CODE_AUTORESOLVE,
-};
+}
 extern UINT8 gubCreatureBattleCode;
 
 void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales);

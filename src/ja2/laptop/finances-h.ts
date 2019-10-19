@@ -17,7 +17,7 @@ struct finance {
   struct finance *Next; // next unit in the list
 };
 
-enum {
+const enum Enum80 {
   ACCRUED_INTEREST,
   ANONYMOUS_DEPOSIT,
   TRANSACTION_FEE,
@@ -46,7 +46,7 @@ enum {
   TRAIN_TOWN_MILITIA,
   PURCHASED_ITEM_FROM_DEALER,
   MERC_DEPOSITED_MONEY_TO_PLAYER_ACCOUNT,
-};
+}
 
 typedef struct finance FinanceUnit;
 typedef struct finance *FinanceUnitPtr;

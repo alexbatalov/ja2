@@ -1,5 +1,5 @@
 // enum used for the different help screens that can come up
-enum {
+const enum Enum17 {
   HELP_SCREEN_LAPTOP,
   HELP_SCREEN_MAPSCREEN,
   HELP_SCREEN_MAPSCREEN_NO_ONE_HIRED,
@@ -10,7 +10,7 @@ enum {
   HELP_SCREEN_LOAD_GAME,
 
   HELP_SCREEN_NUMBER_OF_HELP_SCREENS,
-};
+}
 
 typedef struct {
   INT8 bCurrentHelpScreen;

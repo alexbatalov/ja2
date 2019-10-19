@@ -207,13 +207,13 @@ const MAP_MVT_ICON_FONT = () => SMALLCOMPFONT();
 
 // map shading colors
 
-enum {
+const enum Enum157 {
   MAP_SHADE_BLACK = 0,
   MAP_SHADE_LT_GREEN,
   MAP_SHADE_DK_GREEN,
   MAP_SHADE_LT_RED,
   MAP_SHADE_DK_RED,
-};
+}
 // the big map .pcx
 UINT32 guiBIGMAP;
 

@@ -37,7 +37,7 @@ const DISPLAY_ALL_OBJECTS = 0xffff;
 
 const MAX_SELECTIONS = 120;
 
-enum {
+const enum Enum59 {
   SELWIN_SINGLEWALL,
   SELWIN_SINGLEDOOR,
   SELWIN_SINGLEWINDOW,
@@ -56,7 +56,7 @@ enum {
   SELWIN_OSTRUCTS,
   SELWIN_OSTRUCTS1,
   SELWIN_OSTRUCTS2,
-};
+}
 
 typedef struct {
   UINT8 ubType;

@@ -74,9 +74,9 @@ struct trail_s {
 };
 typedef struct trail_s trail_t;
 
-enum {
+const enum Enum248 {
   STEP_BACKWARDS = 0x01,
-} TrailFlags;
+}
 
 const EASYWATERCOST = TRAVELCOST_FLAT / 2;
 const ISWATER = (t) => (((t) == TRAVELCOST_KNEEDEEP) || ((t) == TRAVELCOST_DEEPWATER));

@@ -32,13 +32,13 @@ will choose a selection in one of three ways:
                  region doesn't kill the menu, but in MacOS, it does.
 */
 
-enum popupMenuIDs {
+const enum Enum53 {
   CHANGETSET_POPUP,
   CHANGECIVGROUP_POPUP,
   SCHEDULEACTION_POPUP,
   ACTIONITEM_POPUP,
   OWNERSHIPGROUP_POPUP,
-};
+}
 
 // The direction of the popup menu relative to the button
 // pressed to activate it or mouse position.  In editor mode,

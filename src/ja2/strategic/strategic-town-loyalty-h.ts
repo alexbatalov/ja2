@@ -35,7 +35,7 @@ const LOYALTY_PENALTY_HEAD_MINER_ATTACKED = (20 * GAIN_PTS_PER_LOYALTY_PT); // e
 // Loyalty penalty for being inactive, per day after the third
 const LOYALTY_PENALTY_INACTIVE = (10 * GAIN_PTS_PER_LOYALTY_PT);
 
-typedef enum {
+const enum Enum190 {
   // There are only for distance-adjusted global loyalty effects.  Others go into list above instead!
   GLOBAL_LOYALTY_BATTLE_WON,
   GLOBAL_LOYALTY_BATTLE_LOST,
@@ -50,7 +50,7 @@ typedef enum {
   GLOBAL_LOYALTY_GAIN_SAM,
   GLOBAL_LOYALTY_LOSE_SAM,
   GLOBAL_LOYALTY_QUEEN_BATTLE_WON,
-} GlobalLoyaltyEventTypes;
+}
 
 typedef struct TOWN_LOYALTY {
   UINT8 ubRating;

@@ -1,6 +1,6 @@
 const NETWORK_PATH_DATA_SIZE = 6;
 // Enumerate all events for JA2
-enum {
+const enum Enum319 {
   E_PLAYSOUND,
   S_CHANGEDEST,
   //	S_GETNEWPATH,
@@ -29,7 +29,7 @@ enum {
   EVENTS_ONLY_SENT_OVER_NETWORK, // Events above are only sent to the network
 
   NUM_EVENTS,
-} eJA2Events;
+}
 
 // This definition is used to denote events with a special delay value;
 // it indicates that these events will not be processed until specifically
