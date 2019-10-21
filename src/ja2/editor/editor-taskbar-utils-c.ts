@@ -16,7 +16,7 @@ MOUSE_REGION ItemsRegion;
 MOUSE_REGION MercRegion;
 MOUSE_REGION EditorRegion;
 
-void EnableEditorRegion(INT8 bRegionID) {
+function EnableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
     case BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -38,7 +38,7 @@ void EnableEditorRegion(INT8 bRegionID) {
   }
 }
 
-void DisableEditorRegion(INT8 bRegionID) {
+function DisableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
     case BASE_TERRAIN_TILE_REGION_ID:
     case 1:
@@ -59,7 +59,7 @@ void DisableEditorRegion(INT8 bRegionID) {
   }
 }
 
-void RemoveEditorRegions() {
+function RemoveEditorRegions(): void {
   INT32 x;
   MSYS_RemoveRegion(&EditorRegion);
   for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -69,7 +69,7 @@ void RemoveEditorRegions() {
   MSYS_RemoveRegion(&MercRegion);
 }
 
-void InitEditorRegions() {
+function InitEditorRegions(): void {
   INT32 x;
 
   // By doing this, all of the buttons underneath are blanketed and can't be used anymore.
@@ -94,7 +94,7 @@ void InitEditorRegions() {
   MSYS_DisableRegion(&MercRegion);
 }
 
-void LoadEditorImages() {
+function LoadEditorImages(): void {
   VOBJECT_DESC VObjectDesc;
 
   // Set up the merc inventory panel
@@ -121,7 +121,7 @@ void LoadEditorImages() {
     AssertMsg(0, "Failed to load data\\editor\\KeyImage.sti");
 }
 
-void DeleteEditorImages() {
+function DeleteEditorImages(): void {
   // The merc inventory panel
   DeleteVideoObjectFromIndex(guiMercInventoryPanel);
   DeleteVideoObjectFromIndex(guiOmertaMap);
@@ -133,7 +133,7 @@ void DeleteEditorImages() {
   UnloadButtonImage(giEditMercImage[1]);
 }
 
-void CreateEditorBuffers() {
+function CreateEditorBuffers(): void {
   INT32 i;
   VSURFACE_DESC vs_desc;
   UINT16 usUselessWidth, usUselessHeight;
@@ -159,7 +159,7 @@ void CreateEditorBuffers() {
   }
 }
 
-void DeleteEditorBuffers() {
+function DeleteEditorBuffers(): void {
   INT32 i;
   DeleteVideoSurfaceFromIndex(guiMercTempBuffer);
   for (i = 0; i < 9; i++) {
@@ -167,7 +167,7 @@ void DeleteEditorBuffers() {
   }
 }
 
-void ShowEditorToolbar(INT32 iNewTaskMode) {
+function ShowEditorToolbar(iNewTaskMode: INT32): void {
   switch (iNewTaskMode) {
     case TASK_TERRAIN:
       ShowEditorButtons(FIRST_TERRAIN_BUTTON, LAST_TERRAIN_BUTTON);
@@ -192,7 +192,7 @@ void ShowEditorToolbar(INT32 iNewTaskMode) {
   }
 }
 
-void HideEditorToolbar(INT32 iOldTaskMode) {
+function HideEditorToolbar(iOldTaskMode: INT32): void {
   INT32 i, iStart, iEnd;
   switch (iOldTaskMode) {
     case TASK_TERRAIN:
@@ -228,7 +228,7 @@ void HideEditorToolbar(INT32 iOldTaskMode) {
   }
 }
 
-void CreateEditorTaskbar() {
+function CreateEditorTaskbar(): void {
   InitEditorRegions();
   LoadEditorImages();
   CreateEditorBuffers();
@@ -236,7 +236,7 @@ void CreateEditorTaskbar() {
   HideItemStatsPanel();
 }
 
-void DeleteEditorTaskbar() {
+function DeleteEditorTaskbar(): void {
   INT32 x;
 
   iOldTaskMode = iCurrentTaskbar;
@@ -249,7 +249,7 @@ void DeleteEditorTaskbar() {
   DeleteEditorBuffers();
 }
 
-void DoTaskbar(void) {
+function DoTaskbar(): void {
   if (!iTaskMode || iTaskMode == iCurrentTaskbar) {
     return;
   }
@@ -360,13 +360,13 @@ void DoTaskbar(void) {
 }
 
 // Disables the task bar, but leaves it on screen. Used when a selection window is up.
-void DisableEditorTaskbar(void) {
+function DisableEditorTaskbar(): void {
   INT32 x;
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
     DisableButton(iEditorButton[x]);
 }
 
-void EnableEditorTaskbar(void) {
+function EnableEditorTaskbar(): void {
   INT32 x;
 
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
@@ -385,7 +385,7 @@ void EnableEditorTaskbar(void) {
 // A specialized mprint function that'll restore the editor panel underneath the
 // string before rendering the string.  This is obviously only useful for drawing text
 // in the editor taskbar.
-void mprintfEditor(INT16 x, INT16 y, UINT16 *pFontString, ...) {
+function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   wchar_t string[512];
   UINT16 uiStringLength, uiStringHeight;
@@ -403,7 +403,7 @@ void mprintfEditor(INT16 x, INT16 y, UINT16 *pFontString, ...) {
   mprintf(x, y, string);
 }
 
-void ClearTaskbarRegion(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
+function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): void {
   ColorFillVideoSurfaceArea(ButtonDestBuffer, sLeft, sTop, sRight, sBottom, gusEditorTaskbarColor);
 
   if (!sLeft) {
@@ -426,7 +426,7 @@ void ClearTaskbarRegion(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
 // This is a new function which duplicates the older "yellow info boxes" that
 // are common throughout the editor.  This draws the yellow box with the indentation
 // look.
-void DrawEditorInfoBox(UINT16 *str, UINT32 uiFont, UINT16 x, UINT16 y, UINT16 w, UINT16 h) {
+function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
   UINT16 usFillColorDark, usFillColorLight, usFillColorBack;
   UINT16 x2, y2;
   UINT16 usStrWidth;
@@ -459,7 +459,7 @@ void DrawEditorInfoBox(UINT16 *str, UINT32 uiFont, UINT16 x, UINT16 y, UINT16 w,
   InvalidateRegion(x, y, x2, y2);
 }
 
-void ClickEditorButton(INT32 iEditorButtonID) {
+function ClickEditorButton(iEditorButtonID: INT32): void {
   GUI_BUTTON *butn;
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
     return;
@@ -470,7 +470,7 @@ void ClickEditorButton(INT32 iEditorButtonID) {
   }
 }
 
-void UnclickEditorButton(INT32 iEditorButtonID) {
+function UnclickEditorButton(iEditorButtonID: INT32): void {
   GUI_BUTTON *butn;
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
     return;
@@ -481,23 +481,23 @@ void UnclickEditorButton(INT32 iEditorButtonID) {
   }
 }
 
-void HideEditorButton(INT32 iEditorButtonID) {
+function HideEditorButton(iEditorButtonID: INT32): void {
   HideButton(iEditorButton[iEditorButtonID]);
 }
 
-void ShowEditorButton(INT32 iEditorButtonID) {
+function ShowEditorButton(iEditorButtonID: INT32): void {
   ShowButton(iEditorButton[iEditorButtonID]);
 }
 
-void DisableEditorButton(INT32 iEditorButtonID) {
+function DisableEditorButton(iEditorButtonID: INT32): void {
   DisableButton(iEditorButton[iEditorButtonID]);
 }
 
-void EnableEditorButton(INT32 iEditorButtonID) {
+function EnableEditorButton(iEditorButtonID: INT32): void {
   EnableButton(iEditorButton[iEditorButtonID]);
 }
 
-void ClickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   GUI_BUTTON *b;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
@@ -508,7 +508,7 @@ void ClickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
   }
 }
 
-void UnclickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   GUI_BUTTON *b;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
@@ -519,31 +519,31 @@ void UnclickEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID)
   }
 }
 
-void HideEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function HideEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     HideButton(iEditorButton[i]);
 }
 
-void ShowEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function ShowEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     ShowButton(iEditorButton[i]);
 }
 
-void DisableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function DisableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     DisableButton(iEditorButton[i]);
 }
 
-void EnableEditorButtons(INT32 iFirstEditorButtonID, INT32 iLastEditorButtonID) {
+function EnableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
   INT32 i;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     EnableButton(iEditorButton[i]);
 }
 
-void RenderMapEntryPointsAndLights() {
+function RenderMapEntryPointsAndLights(): void {
   INT16 sGridNo;
   INT16 sScreenX, sScreenY;
   INT32 i;
@@ -611,7 +611,7 @@ void RenderMapEntryPointsAndLights() {
   }
 }
 
-void BuildTriggerName(OBJECTTYPE *pItem, UINT16 *szItemName) {
+function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16>): void {
   if (pItem->usItem == SWITCH) {
     if (pItem->bFrequency == PANIC_FREQUENCY)
       swprintf(szItemName, L"Panic Trigger1");
@@ -636,7 +636,7 @@ void BuildTriggerName(OBJECTTYPE *pItem, UINT16 *szItemName) {
   }
 }
 
-void RenderDoorLockInfo() {
+function RenderDoorLockInfo(): void {
   INT16 i, xp, yp;
   INT16 sScreenX, sScreenY;
   UINT16 str[50];
@@ -682,7 +682,7 @@ void RenderDoorLockInfo() {
   }
 }
 
-void RenderSelectedItemBlownUp() {
+function RenderSelectedItemBlownUp(): void {
   UINT32 uiVideoObjectIndex;
   HVOBJECT hVObject;
   INT16 sScreenX, sScreenY, xp, yp;
@@ -759,7 +759,7 @@ void RenderSelectedItemBlownUp() {
   }
 }
 
-void RenderEditorInfo() {
+function RenderEditorInfo(): void {
   wchar_t FPSText[50];
   static INT32 iSpewWarning = 0;
   INT16 iMapIndex;
@@ -816,7 +816,7 @@ void RenderEditorInfo() {
 // always true in ButtonSystem.c, so it won't effect anything else.
 extern BOOLEAN gfGotoGridNoUI;
 
-void ProcessEditorRendering() {
+function ProcessEditorRendering(): void {
   BOOLEAN fSaveBuffer = FALSE;
   if (gfRenderTaskbar) // do a full taskbar render.
   {

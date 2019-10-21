@@ -132,7 +132,7 @@ INT16 diStratDelta[8] = {
 
 // this will find if a shortest strategic path
 
-INT32 FindStratPath(INT16 sStart, INT16 sDestination, INT16 sMvtGroupNumber, BOOLEAN fTacticalTraversal) {
+function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: BOOLEAN): INT32 {
   INT32 iCnt, ndx, insertNdx, qNewNdx;
   INT32 iDestX, iDestY, locX, locY, dx, dy;
   INT16 sSectorX, sSectorY;
@@ -364,7 +364,7 @@ INT32 FindStratPath(INT16 sStart, INT16 sDestination, INT16 sMvtGroupNumber, BOO
   return 0;
 }
 
-PathStPtr BuildAStrategicPath(PathStPtr pPath, INT16 iStartSectorNum, INT16 iEndSectorNum, INT16 sMvtGroupNumber, BOOLEAN fTacticalTraversal /*, BOOLEAN fTempPath */) {
+function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSectorNum: INT16, sMvtGroupNumber: INT16, fTacticalTraversal: BOOLEAN): PathStPtr {
   INT32 iCurrentSectorNum;
   INT32 iDelta = 0;
   INT32 iPathLength;
@@ -486,7 +486,7 @@ PathStPtr BuildAStrategicPath(PathStPtr pPath, INT16 iStartSectorNum, INT16 iEnd
   return pPath;
 }
 
-BOOLEAN AddSectorToPathList(PathStPtr pPath, UINT16 uiSectorNum) {
+function AddSectorToPathList(pPath: PathStPtr, uiSectorNum: UINT16): BOOLEAN {
   PathStPtr pNode = NULL;
   PathStPtr pTempNode = NULL;
   PathStPtr pHeadOfList = pPath;
@@ -672,7 +672,7 @@ void SetThisMercsSectorXYToTheseValues( SOLDIERTYPE *pSoldier ,INT16 sX, INT16 s
 }
 */
 
-PathStPtr AppendStrategicPath(PathStPtr pNewSection, PathStPtr pHeadOfPathList) {
+function AppendStrategicPath(pNewSection: PathStPtr, pHeadOfPathList: PathStPtr): PathStPtr {
   // will append a new section onto the end of the head of list, then return the head of the new list
 
   PathStPtr pNode = pHeadOfPathList;
@@ -710,7 +710,7 @@ PathStPtr AppendStrategicPath(PathStPtr pNewSection, PathStPtr pHeadOfPathList) 
   return pHeadOfPathList;
 }
 
-PathStPtr ClearStrategicPathList(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
+function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathStPtr {
   // will clear out a strategic path and return head of list as NULL
   PathStPtr pNode = pHeadOfPath;
   PathStPtr pDeleteNode = pHeadOfPath;
@@ -747,7 +747,7 @@ PathStPtr ClearStrategicPathList(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
   return pNode;
 }
 
-PathStPtr ClearStrategicPathListAfterThisSector(PathStPtr pHeadOfPath, INT16 sX, INT16 sY, INT16 sMvtGroup) {
+function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16, sY: INT16, sMvtGroup: INT16): PathStPtr {
   // will clear out a strategic path and return head of list as NULL
   PathStPtr pNode = pHeadOfPath;
   PathStPtr pDeleteNode = pHeadOfPath;
@@ -832,7 +832,7 @@ PathStPtr ClearStrategicPathListAfterThisSector(PathStPtr pHeadOfPath, INT16 sX,
   return pHeadOfPath;
 }
 
-PathStPtr MoveToBeginningOfPathList(PathStPtr pList) {
+function MoveToBeginningOfPathList(pList: PathStPtr): PathStPtr {
   // move to beginning of this list
 
   // no list, return
@@ -848,7 +848,7 @@ PathStPtr MoveToBeginningOfPathList(PathStPtr pList) {
   return pList;
 }
 
-PathStPtr MoveToEndOfPathList(PathStPtr pList) {
+function MoveToEndOfPathList(pList: PathStPtr): PathStPtr {
   // move to end of list
 
   // no list, return
@@ -864,7 +864,7 @@ PathStPtr MoveToEndOfPathList(PathStPtr pList) {
   return pList;
 }
 
-PathStPtr RemoveTailFromStrategicPath(PathStPtr pHeadOfList) {
+function RemoveTailFromStrategicPath(pHeadOfList: PathStPtr): PathStPtr {
   // remove the tail section from the strategic path
   PathStPtr pNode = pHeadOfList;
   PathStPtr pLastNode = pHeadOfList;
@@ -891,7 +891,7 @@ PathStPtr RemoveTailFromStrategicPath(PathStPtr pHeadOfList) {
   return pHeadOfList;
 }
 
-PathStPtr RemoveHeadFromStrategicPath(PathStPtr pList) {
+function RemoveHeadFromStrategicPath(pList: PathStPtr): PathStPtr {
   // move to head of list
   PathStPtr pNode = pList;
   PathStPtr pNewHead = pList;
@@ -923,7 +923,7 @@ PathStPtr RemoveHeadFromStrategicPath(PathStPtr pList) {
   return pNewHead;
 }
 
-PathStPtr RemoveSectorFromStrategicPathList(PathStPtr pList, INT16 sX, INT16 sY) {
+function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT16): PathStPtr {
   // find sector sX, sY ...then remove it
   INT16 sSector = 0;
   INT16 sCurrentSector = -1;
@@ -975,7 +975,7 @@ PathStPtr RemoveSectorFromStrategicPathList(PathStPtr pList, INT16 sX, INT16 sY)
   return pPastNode;
 }
 
-INT16 GetLastSectorIdInCharactersPath(SOLDIERTYPE *pCharacter) {
+function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT16 {
   // will return the last sector of the current path, or the current sector if there's no path
   INT16 sLastSector = (pCharacter->sSectorX) + (pCharacter->sSectorY) * (MAP_WORLD_X);
   PathStPtr pNode = NULL;
@@ -991,7 +991,7 @@ INT16 GetLastSectorIdInCharactersPath(SOLDIERTYPE *pCharacter) {
 }
 
 // get id of last sector in vehicle path list
-INT16 GetLastSectorIdInVehiclePath(INT32 iId) {
+function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   INT16 sLastSector = -1;
   PathStPtr pNode = NULL;
 
@@ -1016,7 +1016,7 @@ INT16 GetLastSectorIdInVehiclePath(INT32 iId) {
   return sLastSector;
 }
 
-PathStPtr CopyPaths(PathStPtr pSourcePath, PathStPtr pDestPath) {
+function CopyPaths(pSourcePath: PathStPtr, pDestPath: PathStPtr): PathStPtr {
   PathStPtr pDestNode = pDestPath;
   PathStPtr pCurNode = pSourcePath;
   // copies path from source to dest
@@ -1068,7 +1068,7 @@ PathStPtr CopyPaths(PathStPtr pSourcePath, PathStPtr pDestPath) {
   return pDestNode;
 }
 
-INT32 GetStrategicMvtSpeed(SOLDIERTYPE *pCharacter) {
+function GetStrategicMvtSpeed(pCharacter: Pointer<SOLDIERTYPE>): INT32 {
   // will return the strategic speed of the character
   INT32 iSpeed;
 
@@ -1292,7 +1292,7 @@ UINT32 GetEtaGivenRoute( PathStPtr pPath )
 }
 */
 
-void RebuildWayPointsForGroupPath(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
+function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16): void {
   INT32 iDelta = 0;
   INT32 iOldDelta = 0;
   BOOLEAN fFirstNode = TRUE;
@@ -1382,7 +1382,7 @@ void RebuildWayPointsForGroupPath(PathStPtr pHeadOfPath, INT16 sMvtGroup) {
 }
 
 // clear strategic movement (mercpaths and waypoints) for this soldier, and his group (including its vehicles)
-void ClearMvtForThisSoldierAndGang(SOLDIERTYPE *pSoldier) {
+function ClearMvtForThisSoldierAndGang(pSoldier: Pointer<SOLDIERTYPE>): void {
   GROUP *pGroup = NULL;
 
   // check if valid grunt
@@ -1395,7 +1395,7 @@ void ClearMvtForThisSoldierAndGang(SOLDIERTYPE *pSoldier) {
   ClearMercPathsAndWaypointsForAllInGroup(pGroup);
 }
 
-BOOLEAN MoveGroupFromSectorToSector(UINT8 ubGroupID, INT16 sStartX, INT16 sStartY, INT16 sDestX, INT16 sDestY) {
+function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
   PathStPtr pNode = NULL;
 
   // build the path
@@ -1416,7 +1416,7 @@ BOOLEAN MoveGroupFromSectorToSector(UINT8 ubGroupID, INT16 sStartX, INT16 sStart
   return TRUE;
 }
 
-BOOLEAN MoveGroupFromSectorToSectorButAvoidLastSector(UINT8 ubGroupID, INT16 sStartX, INT16 sStartY, INT16 sDestX, INT16 sDestY) {
+function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
   PathStPtr pNode = NULL;
 
   // build the path
@@ -1440,7 +1440,7 @@ BOOLEAN MoveGroupFromSectorToSectorButAvoidLastSector(UINT8 ubGroupID, INT16 sSt
   return TRUE;
 }
 
-BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(UINT8 ubGroupID, INT16 sStartX, INT16 sStartY, INT16 sDestX, INT16 sDestY) {
+function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
   PathStPtr pNode = NULL;
 
   // init sectors with soldiers in them
@@ -1477,7 +1477,7 @@ BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(UINT8 ubGroup
   return TRUE;
 }
 
-BOOLEAN MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(UINT8 ubGroupID, INT16 sStartX, INT16 sStartY, INT16 sDestX, INT16 sDestY) {
+function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSectorBeforeEnd(ubGroupID: UINT8, sStartX: INT16, sStartY: INT16, sDestX: INT16, sDestY: INT16): BOOLEAN {
   PathStPtr pNode = NULL;
 
   // init sectors with soldiers in them
@@ -1531,7 +1531,7 @@ BOOLEAN MoveGroupToOriginalSector( UINT8 ubGroupID )
 }
 */
 
-INT32 GetLengthOfPath(PathStPtr pHeadPath) {
+function GetLengthOfPath(pHeadPath: PathStPtr): INT32 {
   INT32 iLength = 0;
   PathStPtr pNode = pHeadPath;
 
@@ -1543,7 +1543,7 @@ INT32 GetLengthOfPath(PathStPtr pHeadPath) {
   return iLength;
 }
 
-INT32 GetLengthOfMercPath(SOLDIERTYPE *pSoldier) {
+function GetLengthOfMercPath(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   PathStPtr pNode = NULL;
   INT32 iLength = 0;
 
@@ -1552,7 +1552,7 @@ INT32 GetLengthOfMercPath(SOLDIERTYPE *pSoldier) {
   return iLength;
 }
 
-BOOLEAN CheckIfPathIsEmpty(PathStPtr pHeadPath) {
+function CheckIfPathIsEmpty(pHeadPath: PathStPtr): BOOLEAN {
   // no path
   if (pHeadPath == NULL) {
     return TRUE;
@@ -1566,7 +1566,7 @@ BOOLEAN CheckIfPathIsEmpty(PathStPtr pHeadPath) {
   return FALSE;
 }
 
-PathStPtr GetSoldierMercPathPtr(SOLDIERTYPE *pSoldier) {
+function GetSoldierMercPathPtr(pSoldier: Pointer<SOLDIERTYPE>): PathStPtr {
   PathStPtr pMercPath = NULL;
 
   Assert(pSoldier);
@@ -1586,7 +1586,7 @@ PathStPtr GetSoldierMercPathPtr(SOLDIERTYPE *pSoldier) {
   return pMercPath;
 }
 
-PathStPtr GetGroupMercPathPtr(GROUP *pGroup) {
+function GetGroupMercPathPtr(pGroup: Pointer<GROUP>): PathStPtr {
   PathStPtr pMercPath = NULL;
   INT32 iVehicledId = -1;
 
@@ -1610,7 +1610,7 @@ PathStPtr GetGroupMercPathPtr(GROUP *pGroup) {
   return pMercPath;
 }
 
-UINT8 GetSoldierGroupId(SOLDIERTYPE *pSoldier) {
+function GetSoldierGroupId(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   UINT8 ubGroupId = 0;
 
   // IN a vehicle?
@@ -1629,7 +1629,7 @@ UINT8 GetSoldierGroupId(SOLDIERTYPE *pSoldier) {
 }
 
 // clears this groups strategic movement (mercpaths and waypoints), include those in the vehicle structs(!)
-void ClearMercPathsAndWaypointsForAllInGroup(GROUP *pGroup) {
+function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>): void {
   PLAYERGROUP *pPlayer = NULL;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -1665,7 +1665,7 @@ void ClearMercPathsAndWaypointsForAllInGroup(GROUP *pGroup) {
 }
 
 // clears the contents of the soldier's mercpPath, as well as his vehicle path if he is a / or is in a vehicle
-void ClearPathForSoldier(SOLDIERTYPE *pSoldier) {
+function ClearPathForSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   VEHICLETYPE *pVehicle = NULL;
 
   // clear the soldier's mercpath
@@ -1687,7 +1687,7 @@ void ClearPathForSoldier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY) {
+function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): void {
   PLAYERGROUP *pPlayer = NULL;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -1717,7 +1717,7 @@ void AddSectorToFrontOfMercPathForAllSoldiersInGroup(GROUP *pGroup, UINT8 ubSect
   }
 }
 
-void AddSectorToFrontOfMercPath(PathStPtr *ppMercPath, UINT8 ubSectorX, UINT8 ubSectorY) {
+function AddSectorToFrontOfMercPath(ppMercPath: Pointer<PathStPtr>, ubSectorX: UINT8, ubSectorY: UINT8): void {
   PathStPtr pNode = NULL;
 
   // allocate and hang a new node at the front of the path list

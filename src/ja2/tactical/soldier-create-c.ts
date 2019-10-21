@@ -41,7 +41,7 @@ UINT8 gubItemDroppableFlag[NUM_INV_SLOTS] = {
   0,
 };
 
-void RandomizeNewSoldierStats(SOLDIERCREATE_STRUCT *pCreateStruct) {
+function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
   pCreateStruct->bLifeMax = (UINT8)Random(50) + 50;
   pCreateStruct->bLife = pCreateStruct->bLifeMax;
   pCreateStruct->bAgility = (UINT8)Random(50) + 50;
@@ -62,7 +62,7 @@ void RandomizeNewSoldierStats(SOLDIERCREATE_STRUCT *pCreateStruct) {
   pCreateStruct->bAIMorale = MORALE_FEARLESS;
 }
 
-SOLDIERTYPE *TacticalCreateSoldier(SOLDIERCREATE_STRUCT *pCreateStruct, UINT8 *pubID) {
+function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
   SOLDIERTYPE Soldier;
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
@@ -502,7 +502,7 @@ SOLDIERTYPE *TacticalCreateSoldier(SOLDIERCREATE_STRUCT *pCreateStruct, UINT8 *p
   }
 }
 
-BOOLEAN TacticalCopySoldierFromProfile(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct) {
+function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): BOOLEAN {
   UINT8 ubProfileIndex;
   MERCPROFILESTRUCT *pProfile;
 
@@ -575,7 +575,7 @@ const enum Enum267 {
   NUMHEADS,
 }
 
-INT32 ChooseHairColor(SOLDIERTYPE *pSoldier, INT32 skin) {
+function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
   INT32 iRandom;
   INT32 hair = 0;
   iRandom = Random(100);
@@ -632,7 +632,7 @@ INT32 ChooseHairColor(SOLDIERTYPE *pSoldier, INT32 skin) {
   return hair;
 }
 
-void GeneratePaletteForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubSoldierClass) {
+function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClass: UINT8): void {
   INT32 skin, hair;
   BOOLEAN fMercClothingScheme;
   hair = -1;
@@ -843,7 +843,7 @@ void GeneratePaletteForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubSoldierClass) {
   }
 }
 
-BOOLEAN TacticalCopySoldierFromCreateStruct(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct) {
+function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): BOOLEAN {
   pSoldier->ubProfile = NO_PROFILE;
 
   // Randomize attributes
@@ -965,7 +965,7 @@ BOOLEAN TacticalCopySoldierFromCreateStruct(SOLDIERTYPE *pSoldier, SOLDIERCREATE
   return TRUE;
 }
 
-void InitSoldierStruct(SOLDIERTYPE *pSoldier) {
+function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Memset values
   memset(pSoldier, 0, sizeof(SOLDIERTYPE));
 
@@ -1023,7 +1023,7 @@ void InitSoldierStruct(SOLDIERTYPE *pSoldier) {
   pSoldier->bVehicleUnderRepairID = -1;
 }
 
-BOOLEAN InternalTacticalRemoveSoldier(UINT16 usSoldierIndex, BOOLEAN fRemoveVehicle) {
+function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: BOOLEAN): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   // Check range of index given
@@ -1047,7 +1047,7 @@ BOOLEAN InternalTacticalRemoveSoldier(UINT16 usSoldierIndex, BOOLEAN fRemoveVehi
   return TacticalRemoveSoldierPointer(pSoldier, fRemoveVehicle);
 }
 
-BOOLEAN TacticalRemoveSoldierPointer(SOLDIERTYPE *pSoldier, BOOLEAN fRemoveVehicle) {
+function TacticalRemoveSoldierPointer(pSoldier: Pointer<SOLDIERTYPE>, fRemoveVehicle: BOOLEAN): BOOLEAN {
   if (!pSoldier->bActive)
     return FALSE;
 
@@ -1103,13 +1103,13 @@ BOOLEAN TacticalRemoveSoldierPointer(SOLDIERTYPE *pSoldier, BOOLEAN fRemoveVehic
   return TRUE;
 }
 
-BOOLEAN TacticalRemoveSoldier(UINT16 usSoldierIndex) {
+function TacticalRemoveSoldier(usSoldierIndex: UINT16): BOOLEAN {
   return InternalTacticalRemoveSoldier(usSoldierIndex, TRUE);
 }
 
 // returns a soldier difficulty modifier from 0 to 100 based on player's progress, distance from the Palace, mining income, and
 // playing difficulty level.  Used for generating soldier stats, equipment, and AI skill level.
-INT8 CalcDifficultyModifier(UINT8 ubSoldierClass) {
+function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
   INT8 bDiffModifier = 0;
   UINT8 ubProgress;
   UINT8 ubProgressModifier;
@@ -1183,7 +1183,7 @@ INT8 CalcDifficultyModifier(UINT8 ubSoldierClass) {
 // Used to generate a detailed placement from a basic placement.  This assumes that the detailed placement
 // doesn't exist, meaning there are no static attributes.  This is called when you wish to convert a basic
 // placement into a detailed placement just before creating a soldier.
-void CreateDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *pp, BASIC_SOLDIERCREATE_STRUCT *bp) {
+function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   INT8 bBaseAttribute;
   UINT8 ubSoldierClass;
   UINT8 ubDiffFactor;
@@ -1444,7 +1444,7 @@ void CreateDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *pp, BA
 // are defaulted to -1.  When an attribute is made to be static, that value in replaced by the new static value.
 // This information is NOT compatible with TacticalCreateSoldier.  Before doing so, you must first convert the
 // static detailed placement to a regular detailed placement.
-void CreateStaticDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *spp, BASIC_SOLDIERCREATE_STRUCT *bp) {
+function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   INT32 i;
   if (!spp || !bp)
     return;
@@ -1511,7 +1511,7 @@ void CreateStaticDetailedPlacementGivenBasicPlacementInfo(SOLDIERCREATE_STRUCT *
 // When you are ready to generate a soldier with a static detailed placement slot, this function will generate
 // the proper detailed placement slot given the static detailed placement and it's accompanying basic placement.
 // For the purposes of merc editing, the static detailed placement is preserved.
-void CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(SOLDIERCREATE_STRUCT *pp, SOLDIERCREATE_STRUCT *spp, BASIC_SOLDIERCREATE_STRUCT *bp) {
+function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
   INT32 i;
 
   memset(pp, 0, sizeof(SOLDIERCREATE_STRUCT));
@@ -1604,7 +1604,7 @@ void CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(SO
 // by the editor upon exiting the editor into the game, to update the existing soldiers with new information.
 // This gives flexibility of testing mercs.  Upon entering the editor again, this call will reset all the
 // mercs to their original states.
-void UpdateSoldierWithStaticDetailedInformation(SOLDIERTYPE *s, SOLDIERCREATE_STRUCT *spp) {
+function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp: Pointer<SOLDIERCREATE_STRUCT>): void {
   // First, check to see if the soldier has a profile.  If so, then it'll extract the information
   // and update the soldier with the profile information instead.  This has complete override
   // authority.
@@ -1685,7 +1685,7 @@ void UpdateSoldierWithStaticDetailedInformation(SOLDIERTYPE *s, SOLDIERCREATE_ST
 
 // In the case of setting a profile ID in order to extract a soldier from the profile array, we
 // also want to copy that information to the static detailed placement, for editor viewing purposes.
-void UpdateStaticDetailedPlacementWithProfileInformation(SOLDIERCREATE_STRUCT *spp, UINT8 ubProfile) {
+function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIERCREATE_STRUCT>, ubProfile: UINT8): void {
   UINT32 cnt;
   MERCPROFILESTRUCT *pProfile;
 
@@ -1723,7 +1723,7 @@ void UpdateStaticDetailedPlacementWithProfileInformation(SOLDIERCREATE_STRUCT *s
 
 // When the editor modifies the soldier's relative attribute level,
 // this function is called to update that information.
-void ModifySoldierAttributesWithNewRelativeLevel(SOLDIERTYPE *s, INT8 bRelativeAttributeLevel) {
+function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bRelativeAttributeLevel: INT8): void {
   INT8 bBaseAttribute;
   // Set the experience level based on the relative attribute level
   // NOTE OF WARNING: THIS CURRENTLY IGNORES THE ENEMY CLASS (ADMIN/REG/ELITE) FOR CALCULATING LEVEL & ATTRIBUTES
@@ -1753,7 +1753,7 @@ void ModifySoldierAttributesWithNewRelativeLevel(SOLDIERTYPE *s, INT8 bRelativeA
   s->bMorale = (INT8)(bBaseAttribute + Random(9) + Random(8));
 }
 
-void ForceSoldierProfileID(SOLDIERTYPE *pSoldier, UINT8 ubProfileID) {
+function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
   SOLDIERCREATE_STRUCT CreateStruct;
 
   memset(&CreateStruct, 0, sizeof(CreateStruct));
@@ -1777,7 +1777,7 @@ void ForceSoldierProfileID(SOLDIERTYPE *pSoldier, UINT8 ubProfileID) {
 const CENTRAL_GRIDNO = 13202;
 const CENTRAL_RADIUS = 30;
 
-SOLDIERTYPE *ReserveTacticalSoldierForAutoresolve(UINT8 ubSoldierClass) {
+function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SOLDIERTYPE> {
   INT32 i, iStart, iEnd;
   SOLDIERTYPE *pSoldier;
   // This code looks for a soldier of specified type that currently exists in tactical and
@@ -1815,7 +1815,7 @@ SOLDIERTYPE *ReserveTacticalSoldierForAutoresolve(UINT8 ubSoldierClass) {
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-SOLDIERTYPE *TacticalCreateAdministrator() {
+function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
   BASIC_SOLDIERCREATE_STRUCT bp;
   SOLDIERCREATE_STRUCT pp;
   UINT8 ubID;
@@ -1845,7 +1845,7 @@ SOLDIERTYPE *TacticalCreateAdministrator() {
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-SOLDIERTYPE *TacticalCreateArmyTroop() {
+function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
   BASIC_SOLDIERCREATE_STRUCT bp;
   SOLDIERCREATE_STRUCT pp;
   UINT8 ubID;
@@ -1875,7 +1875,7 @@ SOLDIERTYPE *TacticalCreateArmyTroop() {
 }
 
 // USED BY STRATEGIC AI and AUTORESOLVE
-SOLDIERTYPE *TacticalCreateEliteEnemy() {
+function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   BASIC_SOLDIERCREATE_STRUCT bp;
   SOLDIERCREATE_STRUCT pp;
   UINT8 ubID;
@@ -1913,7 +1913,7 @@ SOLDIERTYPE *TacticalCreateEliteEnemy() {
   return pSoldier;
 }
 
-SOLDIERTYPE *TacticalCreateMilitia(UINT8 ubMilitiaClass) {
+function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   BASIC_SOLDIERCREATE_STRUCT bp;
   SOLDIERCREATE_STRUCT pp;
   UINT8 ubID;
@@ -1932,7 +1932,7 @@ SOLDIERTYPE *TacticalCreateMilitia(UINT8 ubMilitiaClass) {
   return TacticalCreateSoldier(&pp, &ubID);
 }
 
-SOLDIERTYPE *TacticalCreateCreature(INT8 bCreatureBodyType) {
+function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
   BASIC_SOLDIERCREATE_STRUCT bp;
   SOLDIERCREATE_STRUCT pp;
   UINT8 ubID;
@@ -1954,7 +1954,7 @@ SOLDIERTYPE *TacticalCreateCreature(INT8 bCreatureBodyType) {
   return TacticalCreateSoldier(&pp, &ubID);
 }
 
-void RandomizeRelativeLevel(INT8 *pbRelLevel, UINT8 ubSoldierClass) {
+function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
   UINT8 ubLocationModifier;
   INT8 bRollModifier;
   INT8 bRoll, bAdjustedRoll;
@@ -2044,7 +2044,7 @@ void RandomizeRelativeLevel(INT8 *pbRelLevel, UINT8 ubSoldierClass) {
 }
 
 // This function shouldn't be called outside of tactical
-void QuickCreateProfileMerc(INT8 bTeam, UINT8 ubProfileID) {
+function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   // Create guy # X
   SOLDIERCREATE_STRUCT MercCreateStruct;
   INT16 sWorldX, sWorldY, sSectorX, sSectorY, sGridX, sGridY;
@@ -2077,7 +2077,7 @@ void QuickCreateProfileMerc(INT8 bTeam, UINT8 ubProfileID) {
   }
 }
 
-void CopyProfileItems(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct) {
+function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
   UINT32 cnt, cnt2;
   MERCPROFILESTRUCT *pProfile;
   OBJECTTYPE Obj;
@@ -2195,7 +2195,7 @@ void CopyProfileItems(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct
 // the associated facts are done elsewhere.  The function will set the profile for the SOLDIERCREATE_STRUCT
 // and the rest will be handled automatically so long the ubProfile field doesn't get changed.
 // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
-void OkayToUpgradeEliteToSpecialProfiledEnemy(SOLDIERCREATE_STRUCT *pp) {
+function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   if (!gfProfiledEnemyAdded && gubEnemyEncounterCode != ENEMY_ENCOUNTER_CODE && gubEnemyEncounterCode != ENEMY_INVASION_CODE) {
     if (gubFact[FACT_MIKE_AVAILABLE_TO_ARMY] == 1 && !pp->fOnRoof) {
       gubFact[FACT_MIKE_AVAILABLE_TO_ARMY] = 2; // so it fails all subsequent checks
@@ -2209,7 +2209,7 @@ void OkayToUpgradeEliteToSpecialProfiledEnemy(SOLDIERCREATE_STRUCT *pp) {
   }
 }
 
-void TrashAllSoldiers() {
+function TrashAllSoldiers(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -2223,7 +2223,7 @@ void TrashAllSoldiers() {
   }
 }
 
-UINT8 GetLocationModifier(UINT8 ubSoldierClass) {
+function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
   UINT8 ubLocationModifier;
   UINT8 ubPalaceDistance;
   INT16 sSectorX, sSectorY, sSectorZ;
@@ -2265,7 +2265,7 @@ UINT8 GetLocationModifier(UINT8 ubSoldierClass) {
 }
 
 // grab the distance from the palace
-UINT8 GetPythDistanceFromPalace(INT16 sSectorX, INT16 sSectorY) {
+function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   UINT8 ubDistance = 0;
   INT16 sRows = 0, sCols = 0;
   float fValue = 0.0;
@@ -2287,7 +2287,7 @@ UINT8 GetPythDistanceFromPalace(INT16 sSectorX, INT16 sSectorY) {
   return ubDistance;
 }
 
-void ReduceHighExpLevels(INT8 *pbExpLevel) {
+function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
   UINT8 ubRoll;
   // important: must reset these to 0 by default for logic to work!
   UINT8 ubChanceLvl8 = 0;

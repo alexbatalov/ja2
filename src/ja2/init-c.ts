@@ -3,7 +3,7 @@
 
 extern HINSTANCE ghInstance;
 
-UINT32 InitializeJA2(void) {
+function InitializeJA2(): UINT32 {
   HandleJA2CDCheck();
 
   gfWorldLoaded = FALSE;
@@ -75,7 +75,7 @@ UINT32 InitializeJA2(void) {
   return INIT_SCREEN;
 }
 
-void ShutdownJA2(void) {
+function ShutdownJA2(): void {
   UINT32 uiIndex;
 
   // Clear screen....

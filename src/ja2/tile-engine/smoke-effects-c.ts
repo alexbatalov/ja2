@@ -4,7 +4,7 @@ const NUM_SMOKE_EFFECT_SLOTS = 25;
 SMOKEEFFECT gSmokeEffectData[NUM_SMOKE_EFFECT_SLOTS];
 UINT32 guiNumSmokeEffects = 0;
 
-INT32 GetFreeSmokeEffect(void) {
+function GetFreeSmokeEffect(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSmokeEffects; uiCount++) {
@@ -18,7 +18,7 @@ INT32 GetFreeSmokeEffect(void) {
   return -1;
 }
 
-void RecountSmokeEffects(void) {
+function RecountSmokeEffects(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumSmokeEffects - 1; (uiCount >= 0); uiCount--) {
@@ -30,7 +30,7 @@ void RecountSmokeEffects(void) {
 }
 
 // Returns NO_SMOKE_EFFECT if none there...
-INT8 GetSmokeEffectOnTile(INT16 sGridNo, INT8 bLevel) {
+function GetSmokeEffectOnTile(sGridNo: INT16, bLevel: INT8): INT8 {
   UINT8 ubExtFlags;
 
   ubExtFlags = gpWorldLevelData[sGridNo].ubExtFlags[bLevel];
@@ -44,7 +44,7 @@ INT8 GetSmokeEffectOnTile(INT16 sGridNo, INT8 bLevel) {
   return NO_SMOKE_EFFECT;
 }
 
-INT8 FromWorldFlagsToSmokeType(UINT8 ubWorldFlags) {
+function FromWorldFlagsToSmokeType(ubWorldFlags: UINT8): INT8 {
   if (ubWorldFlags & MAPELEMENT_EXT_SMOKE) {
     return NORMAL_SMOKE_EFFECT;
   } else if (ubWorldFlags & MAPELEMENT_EXT_TEARGAS) {
@@ -58,7 +58,7 @@ INT8 FromWorldFlagsToSmokeType(UINT8 ubWorldFlags) {
   }
 }
 
-UINT8 FromSmokeTypeToWorldFlags(INT8 bType) {
+function FromSmokeTypeToWorldFlags(bType: INT8): UINT8 {
   switch (bType) {
     case NORMAL_SMOKE_EFFECT:
 
@@ -86,7 +86,7 @@ UINT8 FromSmokeTypeToWorldFlags(INT8 bType) {
   }
 }
 
-INT32 NewSmokeEffect(INT16 sGridNo, UINT16 usItem, INT8 bLevel, UINT8 ubOwner) {
+function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: UINT8): INT32 {
   SMOKEEFFECT *pSmoke;
   INT32 iSmokeIndex;
   INT8 bSmokeEffectType = 0;
@@ -183,7 +183,7 @@ INT32 NewSmokeEffect(INT16 sGridNo, UINT16 usItem, INT8 bLevel, UINT8 ubOwner) {
 
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
-void AddSmokeEffectToTile(INT32 iSmokeEffectID, INT8 bType, INT16 sGridNo, INT8 bLevel) {
+function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
   ANITILE_PARAMS AniParams;
   ANITILE *pAniTile;
   SMOKEEFFECT *pSmoke;
@@ -301,7 +301,7 @@ void AddSmokeEffectToTile(INT32 iSmokeEffectID, INT8 bType, INT16 sGridNo, INT8 
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void RemoveSmokeEffectFromTile(INT16 sGridNo, INT8 bLevel) {
+function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
   ANITILE *pAniTile;
   UINT8 ubLevelID;
 
@@ -327,7 +327,7 @@ void RemoveSmokeEffectFromTile(INT16 sGridNo, INT8 bLevel) {
   }
 }
 
-void DecaySmokeEffects(UINT32 uiTime) {
+function DecaySmokeEffects(uiTime: UINT32): void {
   SMOKEEFFECT *pSmoke;
   UINT32 cnt, cnt2;
   BOOLEAN fUpdate = FALSE;
@@ -436,7 +436,7 @@ void DecaySmokeEffects(UINT32 uiTime) {
   AllTeamsLookForAll(TRUE);
 }
 
-BOOLEAN SaveSmokeEffectsToSaveGameFile(HWFILE hFile) {
+function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   /*
           UINT32	uiNumBytesWritten;
           UINT32	uiCnt=0;
@@ -480,7 +480,7 @@ BOOLEAN SaveSmokeEffectsToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadSmokeEffectsFromLoadGameFile(HWFILE hFile) {
+function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiCount;
   UINT32 uiCnt = 0;
@@ -536,7 +536,7 @@ BOOLEAN LoadSmokeEffectsFromLoadGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveSmokeEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   UINT32 uiNumSmokeEffects = 0;
   HWFILE hFile;
   UINT32 uiNumBytesWritten = 0;
@@ -602,7 +602,7 @@ BOOLEAN SaveSmokeEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return TRUE;
 }
 
-BOOLEAN LoadSmokeEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiCount;
   UINT32 uiCnt = 0;
@@ -659,13 +659,13 @@ BOOLEAN LoadSmokeEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return TRUE;
 }
 
-void ResetSmokeEffects() {
+function ResetSmokeEffects(): void {
   // Clear out the old list
   memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
   guiNumSmokeEffects = 0;
 }
 
-void UpdateSmokeEffectGraphics() {
+function UpdateSmokeEffectGraphics(): void {
   UINT32 uiCnt;
   SMOKEEFFECT *pSmoke;
   INT8 bLevel;

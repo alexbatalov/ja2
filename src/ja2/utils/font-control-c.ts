@@ -77,7 +77,7 @@ BOOLEAN gfFontsInit = FALSE;
 
 extern UINT16 gzFontName[32];
 
-BOOLEAN InitializeFonts() {
+function InitializeFonts(): BOOLEAN {
   INT16 zWinFontName[128];
   COLORVAL Color;
 
@@ -201,7 +201,7 @@ BOOLEAN InitializeFonts() {
   return TRUE;
 }
 
-void ShutdownFonts() {
+function ShutdownFonts(): void {
   UnloadFont(gpLargeFontType1);
   UnloadFont(gpSmallFontType1);
   UnloadFont(gpTinyFontType1);
@@ -227,7 +227,7 @@ void ShutdownFonts() {
 }
 
 // Set shades for fonts
-BOOLEAN SetFontShade(UINT32 uiFontID, INT8 bColorID) {
+function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
   HVOBJECT pFont;
 
   CHECKF(bColorID > 0);
@@ -240,7 +240,7 @@ BOOLEAN SetFontShade(UINT32 uiFontID, INT8 bColorID) {
   return TRUE;
 }
 
-UINT16 CreateFontPaletteTables(HVOBJECT pObj) {
+function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
   UINT32 count;
   SGPPaletteEntry Pal[256];
 
@@ -291,7 +291,7 @@ UINT16 CreateFontPaletteTables(HVOBJECT pObj) {
   return TRUE;
 }
 
-UINT16 WFGetFontHeight(INT32 FontNum) {
+function WFGetFontHeight(FontNum: INT32): UINT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
     return GetWinFontHeight(L"a\0", GET_WINFONT());
@@ -301,7 +301,7 @@ UINT16 WFGetFontHeight(INT32 FontNum) {
   }
 }
 
-INT16 WFStringPixLength(UINT16 *string, INT32 UseFont) {
+function WFStringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
   if (USE_WINFONTS()) {
     // return how many Y pixels we used
     return WinFontStringPixLength(string, GET_WINFONT());

@@ -1,9 +1,9 @@
-void MarkMapIndexDirty(INT32 iMapIndex) {
+function MarkMapIndexDirty(iMapIndex: INT32): void {
   gpWorldLevelData[iMapIndex].uiFlags |= MAPELEMENT_REDRAW;
   SetRenderFlags(RENDER_FLAG_MARKED);
 }
 
-void CenterScreenAtMapIndex(INT32 iMapIndex) {
+function CenterScreenAtMapIndex(iMapIndex: INT32): void {
   INT16 sWorldX, sWorldY;
   INT16 sCellX, sCellY;
 
@@ -22,6 +22,6 @@ void CenterScreenAtMapIndex(INT32 iMapIndex) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void MarkWorldDirty() {
+function MarkWorldDirty(): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 }

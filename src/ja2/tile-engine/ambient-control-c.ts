@@ -160,7 +160,7 @@ STEADY_STATE_AMBIENCE gSteadyStateAmbientTable[NUM_STEADY_STATE_AMBIENCES] = {
   },
 };
 
-BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID) {
+function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
   SGPFILENAME zFilename;
   HWFILE hFile;
   INT32 cnt;
@@ -194,16 +194,16 @@ BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID) {
   return TRUE;
 }
 
-void GetAmbientDataPtr(AMBIENTDATA_STRUCT **ppAmbData, UINT16 *pusNumData) {
+function GetAmbientDataPtr(ppAmbData: Pointer<Pointer<AMBIENTDATA_STRUCT>>, pusNumData: Pointer<UINT16>): void {
   *ppAmbData = gAmbData;
   *pusNumData = gsNumAmbData;
 }
 
-void StopAmbients() {
+function StopAmbients(): void {
   SoundStopAllRandom();
 }
 
-void HandleNewSectorAmbience(UINT8 ubAmbientID) {
+function HandleNewSectorAmbience(ubAmbientID: UINT8): void {
   // OK, we could have just loaded a sector, erase all ambient sounds from queue, shutdown all ambient groupings
   SoundStopAllRandom();
 
@@ -219,13 +219,13 @@ void HandleNewSectorAmbience(UINT8 ubAmbientID) {
   }
 }
 
-void DeleteAllAmbients() {
+function DeleteAllAmbients(): void {
   // JA2Gold: it seems that ambient sounds don't get unloaded when we exit a sector!?
   SoundStopAllRandom();
   DeleteAllStrategicEventsOfType(EVENT_AMBIENT);
 }
 
-UINT32 SetupNewAmbientSound(UINT32 uiAmbientID) {
+function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
   RANDOMPARMS rpParms;
 
   memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
@@ -239,7 +239,7 @@ UINT32 SetupNewAmbientSound(UINT32 uiAmbientID) {
   return SoundPlayRandom(gAmbData[uiAmbientID].zFilename, &rpParms);
 }
 
-UINT32 StartSteadyStateAmbient(UINT32 ubVolume, UINT32 ubLoops) {
+function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   SOUNDPARMS spParms;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
@@ -251,7 +251,7 @@ UINT32 StartSteadyStateAmbient(UINT32 ubVolume, UINT32 ubLoops) {
   return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], &spParms);
 }
 
-BOOLEAN SetSteadyStateAmbience(UINT8 ubAmbience) {
+function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
   BOOLEAN fInNight = FALSE;
   INT32 cnt;
   UINT8 ubNumSounds = 0;

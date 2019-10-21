@@ -8,7 +8,7 @@ extern BOOLEAN gfAutoBandageFailed;
 const NOT_GOING_TO_DIE = -1;
 const NOT_GOING_TO_COLLAPSE = -1;
 
-BOOLEAN FindAutobandageClimbPoint(INT16 sDesiredGridNo, BOOLEAN fClimbUp) {
+function FindAutobandageClimbPoint(sDesiredGridNo: INT16, fClimbUp: BOOLEAN): BOOLEAN {
   // checks for existance of location to climb up to building, not occupied by a medic
   BUILDING *pBuilding;
   UINT8 ubNumClimbSpots;
@@ -37,7 +37,7 @@ BOOLEAN FindAutobandageClimbPoint(INT16 sDesiredGridNo, BOOLEAN fClimbUp) {
   return FALSE;
 }
 
-BOOLEAN FullPatientCheck(SOLDIERTYPE *pPatient) {
+function FullPatientCheck(pPatient: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT8 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -73,7 +73,7 @@ BOOLEAN FullPatientCheck(SOLDIERTYPE *pPatient) {
   return FALSE;
 }
 
-BOOLEAN CanAutoBandage(BOOLEAN fDoFullCheck) {
+function CanAutoBandage(fDoFullCheck: BOOLEAN): BOOLEAN {
   // returns false if we should stop being in auto-bandage mode
   UINT8 cnt;
   UINT8 ubMedics = 0, ubPatients = 0;
@@ -130,7 +130,7 @@ BOOLEAN CanAutoBandage(BOOLEAN fDoFullCheck) {
   }
 }
 
-BOOLEAN CanCharacterAutoBandageTeammate(SOLDIERTYPE *pSoldier)
+function CanCharacterAutoBandageTeammate(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
 // can this soldier autobandage others in sector
 {
   // if the soldier isn't active or in sector, we have problems..leave
@@ -147,7 +147,7 @@ BOOLEAN CanCharacterAutoBandageTeammate(SOLDIERTYPE *pSoldier)
 }
 
 // can this soldier autobandage others in sector
-BOOLEAN CanCharacterBeAutoBandagedByTeammate(SOLDIERTYPE *pSoldier) {
+function CanCharacterBeAutoBandagedByTeammate(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if the soldier isn't active or in sector, we have problems..leave
   if (!(pSoldier->bActive) || !(pSoldier->bInSector) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier->bAssignment == VEHICLE)) {
     return FALSE;
@@ -161,7 +161,7 @@ BOOLEAN CanCharacterBeAutoBandagedByTeammate(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
+function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOLEAN>): INT8 {
   UINT8 cnt, cnt2;
   INT16 bBestPriority = 0, sBestAdjGridNo;
   INT16 sPatientGridNo, sBestPatientGridNo;
@@ -293,7 +293,7 @@ INT8 FindBestPatient(SOLDIERTYPE *pSoldier, BOOLEAN *pfDoClimb) {
   }
 }
 
-INT8 DecideAutoBandage(SOLDIERTYPE *pSoldier) {
+function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bSlot;
   BOOLEAN fDoClimb;
 

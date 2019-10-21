@@ -161,11 +161,11 @@ UINT32 guiGameSaveToggles[NUM_SAVE_OPTIONS];
 
 // ppp
 
-UINT32 GameInitOptionsScreenInit(void) {
+function GameInitOptionsScreenInit(): UINT32 {
   return 1;
 }
 
-UINT32 GameInitOptionsScreenHandle(void) {
+function GameInitOptionsScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfGIOScreenEntry) {
@@ -216,11 +216,11 @@ UINT32 GameInitOptionsScreenHandle(void) {
   return gubGIOExitScreen;
 }
 
-UINT32 GameInitOptionsScreenShutdown(void) {
+function GameInitOptionsScreenShutdown(): UINT32 {
   return 1;
 }
 
-BOOLEAN EnterGIOScreen() {
+function EnterGIOScreen(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 cnt;
   UINT16 usPosY;
@@ -350,7 +350,7 @@ BOOLEAN EnterGIOScreen() {
   return TRUE;
 }
 
-BOOLEAN ExitGIOScreen() {
+function ExitGIOScreen(): BOOLEAN {
   UINT16 cnt;
 
   if (!gfGIOButtonsAllocated)
@@ -399,7 +399,7 @@ BOOLEAN ExitGIOScreen() {
   return TRUE;
 }
 
-void HandleGIOScreen() {
+function HandleGIOScreen(): void {
   if (gubGameOptionScreenHandler != GIO_NOTHING) {
     switch (gubGameOptionScreenHandler) {
       case GIO_CANCEL:
@@ -436,7 +436,7 @@ void HandleGIOScreen() {
   RestoreGIOButtonBackGrounds();
 }
 
-BOOLEAN RenderGIOScreen() {
+function RenderGIOScreen(): BOOLEAN {
   HVOBJECT hPixHandle;
   UINT16 usPosY;
 
@@ -517,7 +517,7 @@ BOOLEAN RenderGIOScreen() {
   return TRUE;
 }
 
-void GetGIOScreenUserInput() {
+function GetGIOScreenUserInput(): void {
   InputAtom Event;
   //	POINT  MousePos;
 
@@ -539,7 +539,7 @@ void GetGIOScreenUserInput() {
   }
 }
 
-void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
@@ -569,7 +569,7 @@ void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
@@ -599,7 +599,7 @@ void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     //		UINT8	ubButton = (UINT8)MSYS_GetBtnUserData( btn, 0 );
 
@@ -629,7 +629,7 @@ void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
@@ -700,7 +700,7 @@ void BtnTimedTurnsTogglesCallback( GUI_BUTTON *btn, INT32 reason )
 }
 */
 
-void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGIODoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -718,7 +718,7 @@ void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGIOCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -732,7 +732,7 @@ void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-UINT8 GetCurrentDifficultyButtonSetting() {
+function GetCurrentDifficultyButtonSetting(): UINT8 {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
@@ -744,7 +744,7 @@ UINT8 GetCurrentDifficultyButtonSetting() {
   return 0;
 }
 
-UINT8 GetCurrentGameStyleButtonSetting() {
+function GetCurrentGameStyleButtonSetting(): UINT8 {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
@@ -755,7 +755,7 @@ UINT8 GetCurrentGameStyleButtonSetting() {
   return 0;
 }
 
-UINT8 GetCurrentGunButtonSetting() {
+function GetCurrentGunButtonSetting(): UINT8 {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
@@ -783,7 +783,7 @@ UINT8	GetCurrentTimedTurnsButtonSetting()
 }
 */
 
-UINT8 GetCurrentGameSaveButtonSetting() {
+function GetCurrentGameSaveButtonSetting(): UINT8 {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
@@ -794,7 +794,7 @@ UINT8 GetCurrentGameSaveButtonSetting() {
   return 0;
 }
 
-void RestoreGIOButtonBackGrounds() {
+function RestoreGIOButtonBackGrounds(): void {
   UINT8 cnt;
   UINT16 usPosY;
 
@@ -839,7 +839,7 @@ void RestoreGIOButtonBackGrounds() {
   }
 }
 
-void DoneFadeOutForExitGameInitOptionScreen(void) {
+function DoneFadeOutForExitGameInitOptionScreen(): void {
   // loop through and get the status of all the buttons
   gGameOptions.fGunNut = GetCurrentGunButtonSetting();
   gGameOptions.fSciFi = GetCurrentGameStyleButtonSetting();
@@ -863,11 +863,11 @@ void DoneFadeOutForExitGameInitOptionScreen(void) {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 }
 
-void DoneFadeInForExitGameInitOptionScreen(void) {
+function DoneFadeInForExitGameInitOptionScreen(): void {
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 }
 
-BOOLEAN DoGioMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
   SGPRect CenteringRect = { 0, 0, 639, 479 };
 
   // reset exit mode
@@ -880,7 +880,7 @@ BOOLEAN DoGioMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT
   return giGioMessageBox != -1;
 }
 
-void DisplayMessageToUserAboutGameDifficulty() {
+function DisplayMessageToUserAboutGameDifficulty(): void {
   UINT8 ubDiffLevel = GetCurrentDifficultyButtonSetting();
 
   switch (ubDiffLevel) {
@@ -896,13 +896,13 @@ void DisplayMessageToUserAboutGameDifficulty() {
   }
 }
 
-void ConfirmGioDifSettingMessageBoxCallBack(UINT8 bExitValue) {
+function ConfirmGioDifSettingMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gubGameOptionScreenHandler = GIO_EXIT;
   }
 }
 
-BOOLEAN DisplayMessageToUserAboutIronManMode() {
+function DisplayMessageToUserAboutIronManMode(): BOOLEAN {
   UINT8 ubIronManMode = GetCurrentGameSaveButtonSetting();
 
   // if the user has selected IRON MAN mode
@@ -915,7 +915,7 @@ BOOLEAN DisplayMessageToUserAboutIronManMode() {
   return FALSE;
 }
 
-void ConfirmGioIronManMessageBoxCallBack(UINT8 bExitValue) {
+function ConfirmGioIronManMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gubGameOptionScreenHandler = GIO_IRON_MAN_MODE;
   } else {

@@ -334,11 +334,11 @@ BOOLEAN gfIngagedInDrop = FALSE;
 ANITILE *gpHeli;
 BOOLEAN gfFirstHeliRun;
 
-void ResetHeliSeats() {
+function ResetHeliSeats(): void {
   gbNumHeliSeatsOccupied = 0;
 }
 
-void AddMercToHeli(UINT8 ubID) {
+function AddMercToHeli(ubID: UINT8): void {
   INT32 cnt;
 
   if (gbNumHeliSeatsOccupied < MAX_MERC_IN_HELI) {
@@ -354,7 +354,7 @@ void AddMercToHeli(UINT8 ubID) {
   }
 }
 
-void StartHelicopterRun(INT16 sGridNoSweetSpot) {
+function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   INT16 sX, sY;
 
   gsGridNoSweetSpot = sGridNoSweetSpot;
@@ -393,7 +393,7 @@ void StartHelicopterRun(INT16 sGridNoSweetSpot) {
   guiPendingOverrideEvent = LU_BEGINUILOCK;
 }
 
-void HandleHeliDrop() {
+function HandleHeliDrop(): void {
   UINT8 ubScriptCode;
   UINT32 uiClock;
   // INT16 sWorldX, sWorldY;
@@ -687,7 +687,7 @@ void HandleHeliDrop() {
   }
 }
 
-void BeginMercEntering(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function BeginMercEntering(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   ResetHeliSeats();
 
   AddMercToHeli(pSoldier->ubID);
@@ -698,7 +698,7 @@ void BeginMercEntering(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   PauseAIUntilManuallyUnpaused();
 }
 
-void HandleFirstHeliDropOfGame() {
+function HandleFirstHeliDropOfGame(): void {
   // Are we in the first heli drop?
   if (gfFirstHeliRun) {
     SyncStrategicTurnTimes();

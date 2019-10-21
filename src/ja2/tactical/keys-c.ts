@@ -88,7 +88,7 @@ DOORTRAP DoorTrapTable[NUM_DOOR_TRAPS] = {
 // the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
 DOOR *DoorTable = NULL;
 
-BOOLEAN LoadLockTable(void) {
+function LoadLockTable(): BOOLEAN {
   UINT32 uiNumBytesRead = 0;
   UINT32 uiBytesToRead;
   CHAR8 *pFileName = "BINARYDATA\\Locks.bin";
@@ -114,7 +114,7 @@ BOOLEAN LoadLockTable(void) {
   return TRUE;
 }
 
-BOOLEAN SoldierHasKey(SOLDIERTYPE *pSoldier, UINT8 ubKeyID) {
+function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): BOOLEAN {
   if (KeyExistsInKeyRing(pSoldier, ubKeyID, NULL) || KeyExistsInInventory(pSoldier, ubKeyID)) {
     return TRUE;
   }
@@ -122,7 +122,7 @@ BOOLEAN SoldierHasKey(SOLDIERTYPE *pSoldier, UINT8 ubKeyID) {
   return FALSE;
 }
 
-BOOLEAN KeyExistsInKeyRing(SOLDIERTYPE *pSoldier, UINT8 ubKeyID, UINT8 *pubPos) {
+function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubPos: Pointer<UINT8>): BOOLEAN {
   // returns the index into the key ring where the key can be found
   UINT8 ubLoop;
 
@@ -146,7 +146,7 @@ BOOLEAN KeyExistsInKeyRing(SOLDIERTYPE *pSoldier, UINT8 ubKeyID, UINT8 *pubPos) 
   return FALSE;
 }
 
-BOOLEAN KeyExistsInInventory(SOLDIERTYPE *pSoldier, UINT8 ubKeyID) {
+function KeyExistsInInventory(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): BOOLEAN {
   UINT8 ubLoop;
 
   for (ubLoop = 0; ubLoop < NUM_INV_SLOTS; ubLoop++) {
@@ -160,11 +160,11 @@ BOOLEAN KeyExistsInInventory(SOLDIERTYPE *pSoldier, UINT8 ubKeyID) {
   return FALSE;
 }
 
-BOOLEAN ValidKey(DOOR *pDoor, UINT8 ubKeyID) {
+function ValidKey(pDoor: Pointer<DOOR>, ubKeyID: UINT8): BOOLEAN {
   return pDoor->ubLockID == ubKeyID;
 }
 
-BOOLEAN DoLockDoor(DOOR *pDoor, UINT8 ubKeyID) {
+function DoLockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): BOOLEAN {
   // if the door is unlocked and this is the right key, lock the door and
   // return true, otherwise return false
   if (!(pDoor->fLocked) && ValidKey(pDoor, ubKeyID)) {
@@ -175,7 +175,7 @@ BOOLEAN DoLockDoor(DOOR *pDoor, UINT8 ubKeyID) {
   }
 }
 
-BOOLEAN DoUnlockDoor(DOOR *pDoor, UINT8 ubKeyID) {
+function DoUnlockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): BOOLEAN {
   // if the door is locked and this is the right key, unlock the door and
   // return true, otherwise return false
   if ((pDoor->fLocked) && ValidKey(pDoor, ubKeyID)) {
@@ -189,7 +189,7 @@ BOOLEAN DoUnlockDoor(DOOR *pDoor, UINT8 ubKeyID) {
   }
 }
 
-BOOLEAN AttemptToUnlockDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   UINT8 ubLoop;
   UINT8 ubKeyID;
 
@@ -212,7 +212,7 @@ BOOLEAN AttemptToUnlockDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   return FALSE;
 }
 
-BOOLEAN AttemptToLockDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   UINT8 ubLoop;
   UINT8 ubKeyID;
 
@@ -232,7 +232,7 @@ BOOLEAN AttemptToLockDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   return FALSE;
 }
 
-BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT32 iResult;
   INT8 bStress, bSlot;
 
@@ -305,7 +305,7 @@ BOOLEAN AttemptToCrowbarLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   }
 }
 
-BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT32 iResult;
 
   LOCK *pLock;
@@ -368,7 +368,7 @@ BOOLEAN AttemptToSmashDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   }
 }
 
-BOOLEAN AttemptToPickLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT32 iResult;
   INT8 bReason;
   LOCK *pLock;
@@ -418,7 +418,7 @@ BOOLEAN AttemptToPickLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   }
 }
 
-BOOLEAN AttemptToUntrapDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT32 iResult;
 
   // See if we measure up to the task.
@@ -439,7 +439,7 @@ BOOLEAN AttemptToUntrapDoor(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   }
 }
 
-BOOLEAN ExamineDoorForTraps(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   // Check to see if there is a trap or not on this door
   INT8 bDetectLevel;
 
@@ -462,7 +462,7 @@ BOOLEAN ExamineDoorForTraps(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   return FALSE;
 }
 
-BOOLEAN HasDoorTrapGoneOff(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   // Check to see if the soldier causes the trap to go off
   INT8 bDetectLevel;
 
@@ -477,7 +477,7 @@ BOOLEAN HasDoorTrapGoneOff(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   return FALSE;
 }
 
-void HandleDoorTrap(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): void {
   if (!(DoorTrapTable[pDoor->ubTrapID].fFlags & DOOR_TRAP_SILENT)) {
     switch (pDoor->ubTrapID) {
       case BROTHEL_SIREN:
@@ -549,7 +549,7 @@ void HandleDoorTrap(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   }
 }
 
-BOOLEAN AttemptToBlowUpLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT32 iResult;
   INT8 bSlot = NO_SLOT;
 
@@ -623,7 +623,7 @@ BOOLEAN AttemptToBlowUpLock(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
 
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.
-void LoadDoorTableFromMap(INT8 **hBuffer) {
+function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   INT32 cnt;
 
   TrashDoorTable();
@@ -644,7 +644,7 @@ void LoadDoorTableFromMap(INT8 **hBuffer) {
 // Saves the existing door information to the map.  Before it actually saves, it'll verify that the
 // door still exists.  Otherwise, it'll ignore it.  It is possible in the editor to delete doors in
 // many different ways, so I opted to put it in the saving routine.
-void SaveDoorTableToMap(HWFILE fp) {
+function SaveDoorTableToMap(fp: HWFILE): void {
   INT32 i = 0;
   UINT32 uiBytesWritten;
 
@@ -660,7 +660,7 @@ void SaveDoorTableToMap(HWFILE fp) {
 
 // The editor adds locks to the world.  If the gridno already exists, then the currently existing door
 // information is overwritten.
-void AddDoorInfoToTable(DOOR *pDoor) {
+function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
   INT32 i;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == pDoor->sGridNo) {
@@ -694,7 +694,7 @@ void AddDoorInfoToTable(DOOR *pDoor) {
 // When the editor removes a door from the world, this function looks for and removes accompanying door
 // information.  If the entry is not the last entry, the last entry is move to it's current slot, to keep
 // everything contiguous.
-void RemoveDoorInfoFromTable(INT32 iMapIndex) {
+function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
   INT32 i;
   INT32 iNumDoorsToCopy;
   for (i = 0; i < gubNumDoors; i++) {
@@ -710,7 +710,7 @@ void RemoveDoorInfoFromTable(INT32 iMapIndex) {
 }
 
 // This is the link to see if a door exists at a gridno.
-DOOR *FindDoorInfoAtGridNo(INT32 iMapIndex) {
+function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
   INT32 i;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex)
@@ -721,7 +721,7 @@ DOOR *FindDoorInfoAtGridNo(INT32 iMapIndex) {
 
 // Upon world deallocation, the door table needs to be deallocated.  Remember, this function
 // resets the values, so make sure you do this before you change gubNumDoors or gubMaxDoors.
-void TrashDoorTable() {
+function TrashDoorTable(): void {
   if (DoorTable)
     MemFree(DoorTable);
   DoorTable = NULL;
@@ -729,7 +729,7 @@ void TrashDoorTable() {
   gubMaxDoors = 0;
 }
 
-void UpdateDoorPerceivedValue(DOOR *pDoor) {
+function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
   if (pDoor->fLocked) {
     pDoor->bPerceivedLocked = DOOR_PERCEIVED_LOCKED;
   } else if (!pDoor->fLocked) {
@@ -743,7 +743,7 @@ void UpdateDoorPerceivedValue(DOOR *pDoor) {
   }
 }
 
-BOOLEAN SaveDoorTableToDoorTableTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT32 uiSizeToSave = 0;
   CHAR8 zMapName[128];
@@ -801,7 +801,7 @@ BOOLEAN SaveDoorTableToDoorTableTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bS
   return TRUE;
 }
 
-BOOLEAN LoadDoorTableFromDoorTableTempFile() {
+function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
   UINT32 uiNumBytesRead;
   HWFILE hFile;
   CHAR8 zMapName[128];
@@ -864,7 +864,7 @@ BOOLEAN LoadDoorTableFromDoorTableTempFile() {
 }
 
 // fOpen is True if the door is open, false if it is closed
-BOOLEAN ModifyDoorStatus(INT16 sGridNo, BOOLEAN fOpen, BOOLEAN fPerceivedOpen) {
+function ModifyDoorStatus(sGridNo: INT16, fOpen: BOOLEAN, fPerceivedOpen: BOOLEAN): BOOLEAN {
   UINT8 ubCnt;
   STRUCTURE *pStructure;
   STRUCTURE *pBaseStructure;
@@ -957,7 +957,7 @@ BOOLEAN ModifyDoorStatus(INT16 sGridNo, BOOLEAN fOpen, BOOLEAN fPerceivedOpen) {
   return TRUE;
 }
 
-void TrashDoorStatusArray() {
+function TrashDoorStatusArray(): void {
   if (gpDoorStatus) {
     MemFree(gpDoorStatus);
     gpDoorStatus = NULL;
@@ -966,7 +966,7 @@ void TrashDoorStatusArray() {
   gubNumDoorStatus = 0;
 }
 
-BOOLEAN IsDoorOpen(INT16 sGridNo) {
+function IsDoorOpen(sGridNo: INT16): BOOLEAN {
   UINT8 ubCnt;
   STRUCTURE *pStructure;
   STRUCTURE *pBaseStructure;
@@ -1001,7 +1001,7 @@ BOOLEAN IsDoorOpen(INT16 sGridNo) {
 }
 
 // Returns a doors status value, NULL if not found
-DOOR_STATUS *GetDoorStatus(INT16 sGridNo) {
+function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
   UINT8 ubCnt;
   STRUCTURE *pStructure;
   STRUCTURE *pBaseStructure;
@@ -1032,7 +1032,7 @@ DOOR_STATUS *GetDoorStatus(INT16 sGridNo) {
   return NULL;
 }
 
-BOOLEAN AllMercsLookForDoor(INT16 sGridNo, BOOLEAN fUpdateValue) {
+function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
   INT32 cnt, cnt2;
   INT8 bDirs[8] = {
     NORTH,
@@ -1101,7 +1101,7 @@ BOOLEAN AllMercsLookForDoor(INT16 sGridNo, BOOLEAN fUpdateValue) {
   return FALSE;
 }
 
-BOOLEAN MercLooksForDoors(SOLDIERTYPE *pSoldier, BOOLEAN fUpdateValue) {
+function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN): BOOLEAN {
   INT32 cnt, cnt2;
   INT16 sDistVisible;
   INT16 sGridNo;
@@ -1170,7 +1170,7 @@ BOOLEAN MercLooksForDoors(SOLDIERTYPE *pSoldier, BOOLEAN fUpdateValue) {
   return FALSE;
 }
 
-void SyncronizeDoorStatusToStructureData(DOOR_STATUS *pDoorStatus) {
+function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>): void {
   STRUCTURE *pStructure, *pBaseStructure;
   LEVELNODE *pNode;
   INT16 sBaseGridNo = NOWHERE;
@@ -1215,7 +1215,7 @@ void SyncronizeDoorStatusToStructureData(DOOR_STATUS *pDoorStatus) {
   }
 }
 
-void UpdateDoorGraphicsFromStatus(BOOLEAN fUsePerceivedStatus, BOOLEAN fDirty) {
+function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: BOOLEAN, fDirty: BOOLEAN): void {
   INT32 cnt;
   DOOR_STATUS *pDoorStatus;
 
@@ -1229,7 +1229,7 @@ void UpdateDoorGraphicsFromStatus(BOOLEAN fUsePerceivedStatus, BOOLEAN fDirty) {
   }
 }
 
-void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fUsePerceivedStatus, BOOLEAN fDirty) {
+function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, fUsePerceivedStatus: BOOLEAN, fDirty: BOOLEAN): void {
   STRUCTURE *pStructure, *pBaseStructure;
   INT32 cnt;
   BOOLEAN fOpenedGraphic = FALSE;
@@ -1375,7 +1375,7 @@ void InternalUpdateDoorGraphicFromStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fUseP
   }
 }
 
-BOOLEAN InternalIsPerceivedDifferentThanReality(DOOR_STATUS *pDoorStatus) {
+function InternalIsPerceivedDifferentThanReality(pDoorStatus: Pointer<DOOR_STATUS>): BOOLEAN {
   if ((pDoorStatus->ubFlags & DOOR_PERCEIVED_NOTSET)) {
     return TRUE;
   }
@@ -1388,7 +1388,7 @@ BOOLEAN InternalIsPerceivedDifferentThanReality(DOOR_STATUS *pDoorStatus) {
   return TRUE;
 }
 
-void InternalUpdateDoorsPerceivedValue(DOOR_STATUS *pDoorStatus) {
+function InternalUpdateDoorsPerceivedValue(pDoorStatus: Pointer<DOOR_STATUS>): void {
   // OK, look at door, set perceived value the same as actual....
   if (pDoorStatus->ubFlags & DOOR_OPEN) {
     InternalSetDoorPerceivedOpenStatus(pDoorStatus, TRUE);
@@ -1397,7 +1397,7 @@ void InternalUpdateDoorsPerceivedValue(DOOR_STATUS *pDoorStatus) {
   }
 }
 
-BOOLEAN UpdateDoorStatusPerceivedValue(INT16 sGridNo) {
+function UpdateDoorStatusPerceivedValue(sGridNo: INT16): BOOLEAN {
   DOOR_STATUS *pDoorStatus = NULL;
 
   pDoorStatus = GetDoorStatus(sGridNo);
@@ -1408,7 +1408,7 @@ BOOLEAN UpdateDoorStatusPerceivedValue(INT16 sGridNo) {
   return TRUE;
 }
 
-BOOLEAN IsDoorPerceivedOpen(INT16 sGridNo) {
+function IsDoorPerceivedOpen(sGridNo: INT16): BOOLEAN {
   DOOR_STATUS *pDoorStatus;
 
   pDoorStatus = GetDoorStatus(sGridNo);
@@ -1420,7 +1420,7 @@ BOOLEAN IsDoorPerceivedOpen(INT16 sGridNo) {
   }
 }
 
-BOOLEAN InternalSetDoorPerceivedOpenStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fPerceivedOpen) {
+function InternalSetDoorPerceivedOpenStatus(pDoorStatus: Pointer<DOOR_STATUS>, fPerceivedOpen: BOOLEAN): BOOLEAN {
   if (fPerceivedOpen)
     pDoorStatus->ubFlags |= DOOR_PERCEIVED_OPEN;
   else
@@ -1432,7 +1432,7 @@ BOOLEAN InternalSetDoorPerceivedOpenStatus(DOOR_STATUS *pDoorStatus, BOOLEAN fPe
   return TRUE;
 }
 
-BOOLEAN SetDoorPerceivedOpenStatus(INT16 sGridNo, BOOLEAN fPerceivedOpen) {
+function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: BOOLEAN): BOOLEAN {
   DOOR_STATUS *pDoorStatus = NULL;
 
   pDoorStatus = GetDoorStatus(sGridNo);
@@ -1442,7 +1442,7 @@ BOOLEAN SetDoorPerceivedOpenStatus(INT16 sGridNo, BOOLEAN fPerceivedOpen) {
   return InternalSetDoorPerceivedOpenStatus(pDoorStatus, fPerceivedOpen);
 }
 
-BOOLEAN SetDoorOpenStatus(INT16 sGridNo, BOOLEAN fOpen) {
+function SetDoorOpenStatus(sGridNo: INT16, fOpen: BOOLEAN): BOOLEAN {
   DOOR_STATUS *pDoorStatus;
 
   pDoorStatus = GetDoorStatus(sGridNo);
@@ -1459,7 +1459,7 @@ BOOLEAN SetDoorOpenStatus(INT16 sGridNo, BOOLEAN fOpen) {
   }
 }
 
-BOOLEAN SaveDoorStatusArrayToDoorStatusTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   CHAR8 zMapName[128];
   HWFILE hFile;
   UINT32 uiNumBytesWritten;
@@ -1512,7 +1512,7 @@ BOOLEAN SaveDoorStatusArrayToDoorStatusTempFile(INT16 sSectorX, INT16 sSectorY, 
   return TRUE;
 }
 
-BOOLEAN LoadDoorStatusArrayFromDoorStatusTempFile() {
+function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
   CHAR8 zMapName[128];
   HWFILE hFile;
   UINT32 uiNumBytesRead;
@@ -1575,7 +1575,7 @@ BOOLEAN LoadDoorStatusArrayFromDoorStatusTempFile() {
   return TRUE;
 }
 
-BOOLEAN SaveKeyTableToSaveGameFile(HWFILE hFile) {
+function SaveKeyTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten = 0;
 
   // Save the KeyTable
@@ -1587,7 +1587,7 @@ BOOLEAN SaveKeyTableToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadKeyTableFromSaveedGameFile(HWFILE hFile) {
+function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead = 0;
 
   // Load the KeyTable
@@ -1599,7 +1599,7 @@ BOOLEAN LoadKeyTableFromSaveedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void ExamineDoorsOnEnteringSector() {
+function ExamineDoorsOnEnteringSector(): void {
   INT32 cnt;
   DOOR_STATUS *pDoorStatus;
   SOLDIERTYPE *pSoldier;
@@ -1646,7 +1646,7 @@ void ExamineDoorsOnEnteringSector() {
   }
 }
 
-void HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded() {
+function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   INT32 cnt;
   DOOR_STATUS *pDoorStatus;
   SOLDIERTYPE *pSoldier;
@@ -1715,7 +1715,7 @@ void HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded() {
   }
 }
 
-void DropKeysInKeyRing(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, INT8 bVisible, BOOLEAN fAddToDropList, INT32 iDropListSlot, BOOLEAN fUseUnLoaded) {
+function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: BOOLEAN, iDropListSlot: INT32, fUseUnLoaded: BOOLEAN): void {
   UINT8 ubLoop;
   UINT8 ubItem;
   OBJECTTYPE Object;

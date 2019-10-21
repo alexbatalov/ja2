@@ -93,7 +93,7 @@ UINT8 gubSectorIDOfCreatureAttack = 0;
 
 extern MINE_STATUS_TYPE gMineStatus[MAX_NUMBER_OF_MINES];
 
-CREATURE_DIRECTIVE *NewDirective(UINT8 ubSectorID, UINT8 ubSectorZ, UINT8 ubCreatureHabitat) {
+function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
   CREATURE_DIRECTIVE *curr;
   UINT8 ubSectorX, ubSectorY;
   curr = (CREATURE_DIRECTIVE *)MemAlloc(sizeof(CREATURE_DIRECTIVE));
@@ -112,7 +112,7 @@ CREATURE_DIRECTIVE *NewDirective(UINT8 ubSectorID, UINT8 ubSectorZ, UINT8 ubCrea
   return curr;
 }
 
-void InitLairDrassen() {
+function InitLairDrassen(): void {
   CREATURE_DIRECTIVE *curr;
   giLairID = 1;
   // initialize the linked list of lairs
@@ -134,7 +134,7 @@ void InitLairDrassen() {
   curr->next = NewDirective(SEC_D13, 1, MINE_EXIT);
 }
 
-void InitLairCambria() {
+function InitLairCambria(): void {
   CREATURE_DIRECTIVE *curr;
   giLairID = 2;
   // initialize the linked list of lairs
@@ -156,7 +156,7 @@ void InitLairCambria() {
   curr->next = NewDirective(SEC_H8, 1, MINE_EXIT);
 }
 
-void InitLairAlma() {
+function InitLairAlma(): void {
   CREATURE_DIRECTIVE *curr;
   giLairID = 3;
   // initialize the linked list of lairs
@@ -176,7 +176,7 @@ void InitLairAlma() {
   curr->next = NewDirective(SEC_I14, 1, MINE_EXIT);
 }
 
-void InitLairGrumm() {
+function InitLairGrumm(): void {
   CREATURE_DIRECTIVE *curr;
   giLairID = 4;
   // initialize the linked list of lairs
@@ -198,7 +198,7 @@ void InitLairGrumm() {
   curr->next = NewDirective(SEC_H3, 1, MINE_EXIT);
 }
 
-void InitCreatureQuest() {
+function InitCreatureQuest(): void {
   UNDERGROUND_SECTORINFO *curr;
   BOOLEAN fPlayMeanwhile = FALSE;
   INT32 i = -1;
@@ -330,7 +330,7 @@ void InitCreatureQuest() {
   }
 }
 
-void AddCreatureToNode(CREATURE_DIRECTIVE *node) {
+function AddCreatureToNode(node: Pointer<CREATURE_DIRECTIVE>): void {
   node->pLevel->ubNumCreatures++;
 
   if (node->pLevel->uiFlags & SF_PENDING_ALTERNATE_MAP) {
@@ -341,7 +341,7 @@ void AddCreatureToNode(CREATURE_DIRECTIVE *node) {
   }
 }
 
-BOOLEAN PlaceNewCreature(CREATURE_DIRECTIVE *node, INT32 iDistance) {
+function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): BOOLEAN {
   if (!node)
     return FALSE;
   // check to see if the creatures are permitted to spread into certain areas.  There are 4 mines (human perspective), and
@@ -440,7 +440,7 @@ BOOLEAN PlaceNewCreature(CREATURE_DIRECTIVE *node, INT32 iDistance) {
   return FALSE;
 }
 
-void SpreadCreatures() {
+function SpreadCreatures(): void {
   UINT16 usNewCreatures = 0;
 
   if (giLairID == -1) {
@@ -469,11 +469,11 @@ void SpreadCreatures() {
   }
 }
 
-void DecayCreatures() {
+function DecayCreatures(): void {
   // when the queen dies, we need to kill off the creatures over a period of time.
 }
 
-void AddCreaturesToBattle(UINT8 ubNumYoungMales, UINT8 ubNumYoungFemales, UINT8 ubNumAdultMales, UINT8 ubNumAdultFemales) {
+function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   INT32 iRandom;
   SOLDIERTYPE *pSoldier;
   MAPEDGEPOINTINFO MapEdgepointInfo;
@@ -562,7 +562,7 @@ void AddCreaturesToBattle(UINT8 ubNumYoungMales, UINT8 ubNumYoungFemales, UINT8 
   AllTeamsLookForAll(FALSE);
 }
 
-void ChooseTownSectorToAttack(UINT8 ubSectorID, BOOLEAN fOverrideTest) {
+function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   INT32 iRandom;
   UINT8 ubSectorX, ubSectorY;
   ubSectorX = (UINT8)((ubSectorID % 16) + 1);
@@ -680,7 +680,7 @@ void ChooseTownSectorToAttack(UINT8 ubSectorID, BOOLEAN fOverrideTest) {
   gubSectorIDOfCreatureAttack = ubSectorID;
 }
 
-void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest) {
+function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   // This is the launching point of the creature attack.
   UNDERGROUND_SECTORINFO *pSector;
   UINT8 ubSectorX, ubSectorY;
@@ -767,7 +767,7 @@ void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest) {
 }
 
 // Called by campaign init.
-void ChooseCreatureQuestStartDay() {
+function ChooseCreatureQuestStartDay(): void {
   //	INT32 iRandom, iDay;
   if (!gGameOptions.fSciFi)
     return; // only available in science fiction mode.
@@ -786,7 +786,7 @@ void ChooseCreatureQuestStartDay() {
   }
 }
 
-void DeleteDirectiveNode(CREATURE_DIRECTIVE **node) {
+function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
   if ((*node)->next)
     DeleteDirectiveNode(&((*node)->next));
   MemFree(*node);
@@ -794,13 +794,13 @@ void DeleteDirectiveNode(CREATURE_DIRECTIVE **node) {
 }
 
 // Recursively delete all nodes (from the top down).
-void DeleteCreatureDirectives() {
+function DeleteCreatureDirectives(): void {
   if (lair)
     DeleteDirectiveNode(&lair);
   giLairID = 0;
 }
 
-void ClearCreatureQuest() {
+function ClearCreatureQuest(): void {
   // This will remove all of the underground sector information and reinitialize it.
   // The only part that doesn't get added are the queen's lair.
   BuildUndergroundSectorInfoList();
@@ -808,7 +808,7 @@ void ClearCreatureQuest() {
   DeleteCreatureDirectives();
 }
 
-void EndCreatureQuest() {
+function EndCreatureQuest(): void {
   CREATURE_DIRECTIVE *curr;
   UNDERGROUND_SECTORINFO *pSector;
   INT32 i;
@@ -844,7 +844,7 @@ void EndCreatureQuest() {
   }
 }
 
-UINT8 CreaturesInUndergroundSector(UINT8 ubSectorID, UINT8 ubSectorZ) {
+function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT8 {
   UNDERGROUND_SECTORINFO *pSector;
   UINT8 ubSectorX, ubSectorY;
   ubSectorX = (UINT8)SECTORX(ubSectorID);
@@ -855,7 +855,7 @@ UINT8 CreaturesInUndergroundSector(UINT8 ubSectorID, UINT8 ubSectorZ) {
   return 0;
 }
 
-BOOLEAN MineClearOfMonsters(UINT8 ubMineIndex) {
+function MineClearOfMonsters(ubMineIndex: UINT8): BOOLEAN {
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 
   if (!gMineStatus[ubMineIndex].fPrevInvadedByMonsters) {
@@ -907,7 +907,7 @@ BOOLEAN MineClearOfMonsters(UINT8 ubMineIndex) {
   return TRUE;
 }
 
-void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales) {
+function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
   INT32 i, iRandom;
   UINT8 ubYoungMalePercentage = 10;
   UINT8 ubYoungFemalePercentage = 65;
@@ -936,7 +936,7 @@ void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMa
   }
 }
 
-void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales) {
+function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatures: Pointer<UINT8>, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
   SECTORINFO *pSector;
   INT32 i;
   SOLDIERTYPE *pSoldier;
@@ -970,7 +970,7 @@ void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCre
   }
 }
 
-BOOLEAN PrepareCreaturesForBattle() {
+function PrepareCreaturesForBattle(): BOOLEAN {
   UNDERGROUND_SECTORINFO *pSector;
   INT32 i, iRandom;
   SGPPaletteEntry LColors[3];
@@ -1136,7 +1136,7 @@ BOOLEAN PrepareCreaturesForBattle() {
   return TRUE;
 }
 
-void CreatureNightPlanning() {
+function CreatureNightPlanning(): void {
   // Check the populations of the mine exits, and factor a chance for them to attack at night.
   UINT8 ubNumCreatures;
   ubNumCreatures = CreaturesInUndergroundSector(SEC_H3, 1);
@@ -1161,7 +1161,7 @@ void CreatureNightPlanning() {
   }
 }
 
-void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   UINT8 ubValidMines = 0;
   if (!gGameOptions.fSciFi)
     return; // No scifi, no creatures...
@@ -1187,7 +1187,7 @@ void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, I
   }
 }
 
-BOOLEAN SaveCreatureDirectives(HWFILE hFile) {
+function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   FileWrite(hFile, &giHabitatedDistance, 4, &uiNumBytesWritten);
@@ -1215,7 +1215,7 @@ BOOLEAN SaveCreatureDirectives(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadCreatureDirectives(HWFILE hFile, UINT32 uiSavedGameVersion) {
+function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOLEAN {
   UINT32 uiNumBytesRead;
   FileRead(hFile, &giHabitatedDistance, 4, &uiNumBytesRead);
   if (uiNumBytesRead != sizeof(INT32)) {
@@ -1269,11 +1269,11 @@ BOOLEAN LoadCreatureDirectives(HWFILE hFile, UINT32 uiSavedGameVersion) {
   return TRUE;
 }
 
-void ForceCreaturesToAvoidMineTemporarily(UINT8 ubMineIndex) {
+function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
   gMineStatus[MINE_GRUMM].usValidDayCreaturesCanInfest = (UINT16)(GetWorldDay() + 2);
 }
 
-BOOLEAN PlayerGroupIsInACreatureInfestedMine() {
+function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
   CREATURE_DIRECTIVE *curr;
   SOLDIERTYPE *pSoldier;
   INT32 i;
@@ -1308,7 +1308,7 @@ BOOLEAN PlayerGroupIsInACreatureInfestedMine() {
 }
 
 // Returns TRUE if valid and creature quest over, FALSE if creature quest active or not yet started
-BOOLEAN GetWarpOutOfMineCodes(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ, INT16 *psInsertionGridNo) {
+function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): BOOLEAN {
   INT32 iSwitchValue;
 
   if (!gfWorldLoaded) {

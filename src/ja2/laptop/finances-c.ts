@@ -102,7 +102,7 @@ UINT32 guiLastPageInRecordsList = 0;
 INT32 giFinanceButton[4];
 INT32 giFinanceButtonImage[4];
 
-UINT32 AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT32 iAmount) {
+function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, iAmount: INT32): UINT32 {
   // adds transaction to player's book(Financial List), returns unique id number of it
   // outside of the financial system(the code in this .c file), this is the only function you'll ever need
 
@@ -156,7 +156,7 @@ UINT32 AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDa
   return uiId;
 }
 
-FinanceUnitPtr GetFinance(UINT32 uiId) {
+function GetFinance(uiId: UINT32): FinanceUnitPtr {
   FinanceUnitPtr pFinance = pFinanceListHead;
 
   // get a finance object and return a pointer to it, the obtaining of the
@@ -179,7 +179,7 @@ FinanceUnitPtr GetFinance(UINT32 uiId) {
   return pFinance;
 }
 
-UINT32 GetTotalDebits() {
+function GetTotalDebits(): UINT32 {
   // returns the total of the debits
   UINT32 uiDebits = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
@@ -197,7 +197,7 @@ UINT32 GetTotalDebits() {
   return uiDebits;
 }
 
-UINT32 GetTotalCredits() {
+function GetTotalCredits(): UINT32 {
   // returns the total of the credits
   UINT32 uiCredits = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
@@ -215,7 +215,7 @@ UINT32 GetTotalCredits() {
   return uiCredits;
 }
 
-UINT32 GetDayCredits(UINT32 usDayNumber) {
+function GetDayCredits(usDayNumber: UINT32): UINT32 {
   // returns the total of the credits for day( note resolution of usDayNumber is days)
   UINT32 uiCredits = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
@@ -232,7 +232,7 @@ UINT32 GetDayCredits(UINT32 usDayNumber) {
   return uiCredits;
 }
 
-UINT32 GetDayDebits(UINT32 usDayNumber) {
+function GetDayDebits(usDayNumber: UINT32): UINT32 {
   // returns the total of the debits
   UINT32 uiDebits = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
@@ -248,7 +248,7 @@ UINT32 GetDayDebits(UINT32 usDayNumber) {
   return uiDebits;
 }
 
-INT32 GetTotalToDay(INT32 sTimeInMins) {
+function GetTotalToDay(sTimeInMins: INT32): INT32 {
   // gets the total amount to this day
   UINT32 uiTotal = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
@@ -263,24 +263,24 @@ INT32 GetTotalToDay(INT32 sTimeInMins) {
 
   return uiTotal;
 }
-INT32 GetYesterdaysIncome(void) {
+function GetYesterdaysIncome(): INT32 {
   // get income for yesterday
   return GetDayDebits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(((UINT32)(GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
 }
 
-INT32 GetCurrentBalance(void) {
+function GetCurrentBalance(): INT32 {
   // get balance to this minute
   return LaptopSaveInfo.iCurrentBalance;
 
   // return(GetTotalDebits((GetWorldTotalMin()))+GetTotalCredits((GetWorldTotalMin())));
 }
 
-INT32 GetTodaysIncome(void) {
+function GetTodaysIncome(): INT32 {
   // get income
   return GetCurrentBalance() - GetTotalToDay(GetWorldTotalMin() - (24 * 60));
 }
 
-INT32 GetProjectedTotalDailyIncome(void) {
+function GetProjectedTotalDailyIncome(): INT32 {
   // return total  projected income, including what is earned today already
 
   // CJC: I DON'T THINK SO!
@@ -300,17 +300,17 @@ if (GetWorldMinutesInDay() <= 0)
   return PredictIncomeFromPlayerMines();
 }
 
-INT32 GetProjectedBalance(void) {
+function GetProjectedBalance(): INT32 {
   // return the projected balance for tommorow - total for today plus the total income, projected.
   return GetProjectedTotalDailyIncome() + GetCurrentBalance();
 }
 
-INT32 GetConfidenceValue() {
+function GetConfidenceValue(): INT32 {
   // return confidence that the projected income is infact correct
   return (GetWorldMinutesInDay() * 100) / (60 * 24);
 }
 
-void GameInitFinances() {
+function GameInitFinances(): void {
   // initialize finances on game start up
   // unlink Finances data file
   if ((FileExists(FINANCES_DATA_FILE))) {
@@ -320,7 +320,7 @@ void GameInitFinances() {
   GetBalanceFromDisk();
 }
 
-void EnterFinances() {
+function EnterFinances(): void {
   // entry into finanacial system, load graphics, set variables..draw screen once
   // set the fact we are in the financial display system
 
@@ -364,7 +364,7 @@ void EnterFinances() {
   return;
 }
 
-void ExitFinances(void) {
+function ExitFinances(): void {
   LaptopSaveInfo.iCurrentFinancesPage = iCurrentPage;
 
   // not in finance system anymore
@@ -381,10 +381,10 @@ void ExitFinances(void) {
   return;
 }
 
-void HandleFinances(void) {
+function HandleFinances(): void {
 }
 
-void RenderFinances(void) {
+function RenderFinances(): void {
   HVOBJECT hHandle;
 
   // draw background
@@ -412,7 +412,7 @@ void RenderFinances(void) {
   return;
 }
 
-BOOLEAN LoadFinances(void) {
+function LoadFinances(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   // load Finance video objects into memory
 
@@ -444,7 +444,7 @@ BOOLEAN LoadFinances(void) {
   return TRUE;
 }
 
-void RemoveFinances(void) {
+function RemoveFinances(): void {
   // delete Finance video objects from memory
   DeleteVideoObjectFromIndex(guiLONGLINE);
   DeleteVideoObjectFromIndex(guiLINE);
@@ -455,7 +455,7 @@ void RemoveFinances(void) {
   return;
 }
 
-void RenderBackGround(void) {
+function RenderBackGround(): void {
   // render generic background for Finance system
   HVOBJECT hHandle;
   INT32 iCounter = 0;
@@ -471,7 +471,7 @@ void RenderBackGround(void) {
   return;
 }
 
-void DrawSummary(void) {
+function DrawSummary(): void {
   // draw day's summary to screen
   DrawSummaryLines();
   DrawSummaryText();
@@ -479,7 +479,7 @@ void DrawSummary(void) {
   return;
 }
 
-void DrawSummaryLines(void) {
+function DrawSummaryLines(): void {
   // draw divider lines on screen
   HVOBJECT hHandle;
 
@@ -497,7 +497,7 @@ void DrawSummaryLines(void) {
   return;
 }
 
-void DrawAPageOfRecords(void) {
+function DrawAPageOfRecords(): void {
   // this procedure will draw a series of financial records to the screen
   INT32 iCurPage = 1;
   INT32 iCount = 0;
@@ -516,7 +516,7 @@ void DrawAPageOfRecords(void) {
   return;
 }
 
-void DrawRecordsBackGround(void) {
+function DrawRecordsBackGround(): void {
   // proceudre will draw the background for the list of financial records
   INT32 iCounter = 6;
   HVOBJECT hHandle;
@@ -545,7 +545,7 @@ void DrawRecordsBackGround(void) {
   return;
 }
 
-void DrawRecordsColumnHeadersText(void) {
+function DrawRecordsColumnHeadersText(): void {
   // write the headers text for each column
   UINT16 usX, usY;
 
@@ -579,7 +579,7 @@ void DrawRecordsColumnHeadersText(void) {
   return;
 }
 
-void DrawRecordsText(void) {
+function DrawRecordsText(): void {
   // draws the text of the records
   FinanceUnitPtr pCurFinance = pCurrentFinance;
   FinanceUnitPtr pTempFinance = pFinanceListHead;
@@ -690,7 +690,7 @@ void DrawRecordsText(void) {
   SetFontShadow(DEFAULT_SHADOW);
   return;
 }
-void DrawFinanceTitleText(void) {
+function DrawFinanceTitleText(): void {
   // setup the font stuff
   SetFont(FINANCE_HEADER_FONT);
   SetFontForeground(FONT_WHITE);
@@ -704,7 +704,7 @@ void DrawFinanceTitleText(void) {
   return;
 }
 
-void InvalidateLapTopScreen(void) {
+function InvalidateLapTopScreen(): void {
   // invalidates blit region to force refresh of screen
 
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y);
@@ -712,7 +712,7 @@ void InvalidateLapTopScreen(void) {
   return;
 }
 
-void DrawSummaryText(void) {
+function DrawSummaryText(): void {
   INT16 usX, usY;
   wchar_t pString[100];
   INT32 iBalance = 0;
@@ -901,7 +901,7 @@ void DrawSummaryText(void) {
   return;
 }
 
-void OpenAndReadFinancesFile(void) {
+function OpenAndReadFinancesFile(): void {
   // this procedure will open and read in data to the finance list
   HWFILE hFileHandle;
   UINT8 ubCode, ubSecondCode;
@@ -966,7 +966,7 @@ void OpenAndReadFinancesFile(void) {
   return;
 }
 
-void ClearFinanceList(void) {
+function ClearFinanceList(): void {
   // remove each element from list of transactions
   FinanceUnitPtr pFinanceList = pFinanceListHead;
   FinanceUnitPtr pFinanceNode = pFinanceList;
@@ -987,7 +987,7 @@ void ClearFinanceList(void) {
   return;
 }
 
-UINT32 ProcessAndEnterAFinacialRecord(UINT8 ubCode, UINT32 uiDate, INT32 iAmount, UINT8 ubSecondCode, INT32 iBalanceToDate) {
+function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: INT32, ubSecondCode: UINT8, iBalanceToDate: INT32): UINT32 {
   UINT32 uiId = 0;
   FinanceUnitPtr pFinance = pFinanceListHead;
 
@@ -1032,7 +1032,7 @@ UINT32 ProcessAndEnterAFinacialRecord(UINT8 ubCode, UINT32 uiDate, INT32 iAmount
   return uiId;
 }
 
-void CreateFinanceButtons(void) {
+function CreateFinanceButtons(): void {
   giFinanceButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
   giFinanceButton[PREV_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnFinanceDisplayPrevPageCallBack);
 
@@ -1057,7 +1057,7 @@ void CreateFinanceButtons(void) {
   return;
 }
 
-void DestroyFinanceButtons(void) {
+function DestroyFinanceButtons(): void {
   UINT32 uiCnt;
 
   for (uiCnt = 0; uiCnt < 4; uiCnt++) {
@@ -1065,7 +1065,7 @@ void DestroyFinanceButtons(void) {
     UnloadButtonImage(giFinanceButtonImage[uiCnt]);
   }
 }
-void BtnFinanceDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnFinanceDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags &= ~(BUTTON_CLICKED_ON);
 
@@ -1079,7 +1079,7 @@ void BtnFinanceDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFinanceDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags &= ~(BUTTON_CLICKED_ON);
     // increment currentPage
@@ -1095,7 +1095,7 @@ void BtnFinanceDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFinanceFirstLastPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiButton = MSYS_GetBtnUserData(btn, 0);
 
@@ -1123,7 +1123,7 @@ void BtnFinanceFirstLastPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void IncrementCurrentPageFinancialDisplay(void) {
+function IncrementCurrentPageFinancialDisplay(): void {
   // run through list, from pCurrentFinance, to NUM_RECORDS_PER_PAGE +1 FinancialUnits
   FinanceUnitPtr pTempFinance = pCurrentFinance;
   BOOLEAN fOkToIncrementPage = FALSE;
@@ -1164,7 +1164,7 @@ void IncrementCurrentPageFinancialDisplay(void) {
   return;
 }
 
-void ProcessTransactionString(STR16 pString, FinanceUnitPtr pFinance) {
+function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): void {
   switch (pFinance->ubCode) {
     case ACCRUED_INTEREST:
       swprintf(pString, L"%s", pTransactionText[ACCRUED_INTEREST]);
@@ -1280,7 +1280,7 @@ void ProcessTransactionString(STR16 pString, FinanceUnitPtr pFinance) {
   }
 }
 
-void DisplayFinancePageNumberAndDateRange(void) {
+function DisplayFinancePageNumberAndDateRange(): void {
   // this function will go through the list of 'histories' starting at current until end or
   // MAX_PER_PAGE...it will get the date range and the page number
   INT32 iLastPage = 0;
@@ -1320,7 +1320,7 @@ void DisplayFinancePageNumberAndDateRange(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-BOOLEAN WriteBalanceToDisk(void) {
+function WriteBalanceToDisk(): BOOLEAN {
   // will write the current balance to disk
   HWFILE hFileHandle;
   INT32 iBytesWritten = 0;
@@ -1338,7 +1338,7 @@ BOOLEAN WriteBalanceToDisk(void) {
   return TRUE;
 }
 
-void GetBalanceFromDisk(void) {
+function GetBalanceFromDisk(): void {
   // will grab the current blanace from disk
   // assuming file already openned
   // this procedure will open and read in data to the finance list
@@ -1370,7 +1370,7 @@ void GetBalanceFromDisk(void) {
   return;
 }
 
-BOOLEAN AppendFinanceToEndOfFile(FinanceUnitPtr pFinance) {
+function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
   // will write the current finance to disk
   HWFILE hFileHandle;
   INT32 iBytesWritten = 0;
@@ -1408,7 +1408,7 @@ BOOLEAN AppendFinanceToEndOfFile(FinanceUnitPtr pFinance) {
   return TRUE;
 }
 
-UINT32 ReadInLastElementOfFinanceListAndReturnIdNumber(void) {
+function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
   // this function will read in the last unit in the finance list, to grab it's id number
 
   HWFILE hFileHandle;
@@ -1446,7 +1446,7 @@ UINT32 ReadInLastElementOfFinanceListAndReturnIdNumber(void) {
   return (iFileSize - 1) / (sizeof(INT32) + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT8) + sizeof(INT32));
 }
 
-void SetLastPageInRecords(void) {
+function SetLastPageInRecords(): void {
   // grabs the size of the file and interprets number of pages it will take up
   HWFILE hFileHandle;
   INT32 iBytesRead = 0;
@@ -1480,7 +1480,7 @@ void SetLastPageInRecords(void) {
   return;
 }
 
-BOOLEAN LoadPreviousPage(void) {
+function LoadPreviousPage(): BOOLEAN {
   // clear out old list of records, and load in previous page worth of records
   ClearFinanceList();
 
@@ -1500,7 +1500,7 @@ BOOLEAN LoadPreviousPage(void) {
   }
 }
 
-BOOLEAN LoadNextPage(void) {
+function LoadNextPage(): BOOLEAN {
   // clear out old list of records, and load in previous page worth of records
   ClearFinanceList();
 
@@ -1514,7 +1514,7 @@ BOOLEAN LoadNextPage(void) {
   }
 }
 
-BOOLEAN LoadInRecords(UINT32 uiPage) {
+function LoadInRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
   BOOLEAN fOkToContinue = TRUE;
@@ -1603,7 +1603,7 @@ BOOLEAN LoadInRecords(UINT32 uiPage) {
   return TRUE;
 }
 
-void InsertCommasForDollarFigure(STR16 pString) {
+function InsertCommasForDollarFigure(pString: STR16): void {
   INT16 sCounter = 0;
   INT16 sZeroCount = 0;
   INT16 sTempCounter = 0;
@@ -1658,7 +1658,7 @@ void InsertCommasForDollarFigure(STR16 pString) {
   return;
 }
 
-void InsertDollarSignInToString(STR16 pString) {
+function InsertDollarSignInToString(pString: STR16): void {
   // run to end of string, copy everything in string 2 places right, insert a space at pString[ 1 ] and a L'$' at pString[ 0 ]
 
   INT32 iCounter = 0;
@@ -1679,7 +1679,7 @@ void InsertDollarSignInToString(STR16 pString) {
   return;
 }
 
-INT32 GetPreviousBalanceToDate(void) {
+function GetPreviousBalanceToDate(): INT32 {
   // will grab balance to date of previous record
   // grabs the size of the file and interprets number of pages it will take up
   HWFILE hFileHandle;
@@ -1716,7 +1716,7 @@ INT32 GetPreviousBalanceToDate(void) {
   return iBalanceToDate;
 }
 
-INT32 GetPreviousDaysBalance(void) {
+function GetPreviousDaysBalance(): INT32 {
   // find out what today is, then go back 2 days, get balance for that day
   INT32 iPreviousDaysBalance = 0;
   HWFILE hFileHandle;
@@ -1796,7 +1796,7 @@ INT32 GetPreviousDaysBalance(void) {
   return iBalanceToDate;
 }
 
-INT32 GetTodaysBalance(void) {
+function GetTodaysBalance(): INT32 {
   // find out what today is, then go back 2 days, get balance for that day
   INT32 iPreviousDaysBalance = 0;
   HWFILE hFileHandle;
@@ -1867,7 +1867,7 @@ INT32 GetTodaysBalance(void) {
   return iBalanceToDate;
 }
 
-INT32 GetPreviousDaysIncome(void) {
+function GetPreviousDaysIncome(): INT32 {
   // will return the income from the previous day
   // which is todays starting balance - yesterdays starting balance
   INT32 iPreviousDaysBalance = 0;
@@ -1957,7 +1957,7 @@ INT32 GetPreviousDaysIncome(void) {
   return iTotalPreviousIncome;
 }
 
-INT32 GetTodaysDaysIncome(void) {
+function GetTodaysDaysIncome(): INT32 {
   // will return the income from the previous day
   // which is todays starting balance - yesterdays starting balance
   INT32 iPreviousDaysBalance = 0;
@@ -2045,7 +2045,7 @@ INT32 GetTodaysDaysIncome(void) {
   return iTotalIncome;
 }
 
-void SetFinanceButtonStates(void) {
+function SetFinanceButtonStates(): void {
   // this function will look at what page we are viewing, enable and disable buttons as needed
 
   if (iCurrentPage == 0) {
@@ -2071,7 +2071,7 @@ void SetFinanceButtonStates(void) {
   }
 }
 
-INT32 GetTodaysOtherDeposits(void) {
+function GetTodaysOtherDeposits(): INT32 {
   // grab todays other deposits
 
   INT32 iPreviousDaysBalance = 0;
@@ -2161,7 +2161,7 @@ INT32 GetTodaysOtherDeposits(void) {
   return iTotalIncome;
 }
 
-INT32 GetYesterdaysOtherDeposits(void) {
+function GetYesterdaysOtherDeposits(): INT32 {
   INT32 iPreviousDaysBalance = 0;
   HWFILE hFileHandle;
   INT32 iBytesRead = 0;
@@ -2245,7 +2245,7 @@ INT32 GetYesterdaysOtherDeposits(void) {
   return iTotalPreviousIncome;
 }
 
-INT32 GetTodaysDebits(void) {
+function GetTodaysDebits(): INT32 {
   // return the expenses for today
 
   // currentbalance - todays balance - Todays income - other deposits
@@ -2253,13 +2253,13 @@ INT32 GetTodaysDebits(void) {
   return GetCurrentBalance() - GetTodaysBalance() - GetTodaysDaysIncome() - GetTodaysOtherDeposits();
 }
 
-INT32 GetYesterdaysDebits(void) {
+function GetYesterdaysDebits(): INT32 {
   // return the expenses for yesterday
 
   return GetTodaysBalance() - GetPreviousDaysBalance() - GetPreviousDaysIncome() - GetYesterdaysOtherDeposits();
 }
 
-void LoadCurrentBalance(void) {
+function LoadCurrentBalance(): void {
   // will load the current balance from finances.dat file
   HWFILE hFileHandle;
   INT32 iBytesRead = 0;

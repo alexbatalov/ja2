@@ -67,18 +67,18 @@ INT8 gbIntroScreenMode = -1;
 
 // ppp
 
-UINT32 IntroScreenInit(void) {
+function IntroScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfIntroScreenEntry = TRUE;
 
   return 1;
 }
 
-UINT32 IntroScreenShutdown(void) {
+function IntroScreenShutdown(): UINT32 {
   return 1;
 }
 
-UINT32 IntroScreenHandle(void) {
+function IntroScreenHandle(): UINT32 {
   if (gfIntroScreenEntry) {
     EnterIntroScreen();
     gfIntroScreenEntry = FALSE;
@@ -105,7 +105,7 @@ UINT32 IntroScreenHandle(void) {
   return guiIntroExitScreen;
 }
 
-BOOLEAN EnterIntroScreen() {
+function EnterIntroScreen(): BOOLEAN {
   INT32 iFirstVideoID = -1;
 
   ClearMainMenu();
@@ -141,15 +141,15 @@ BOOLEAN EnterIntroScreen() {
   return TRUE;
 }
 
-void RenderIntroScreen() {
+function RenderIntroScreen(): void {
 }
 
-void ExitIntroScreen() {
+function ExitIntroScreen(): void {
   // shutdown smaker
   SmkShutdown();
 }
 
-void HandleIntroScreen() {
+function HandleIntroScreen(): void {
   BOOLEAN fFlicStillPlaying = FALSE;
 
   // if we are exiting this screen, this frame, dont update the screen
@@ -176,7 +176,7 @@ void HandleIntroScreen() {
   InvalidateScreen();
 }
 
-void GetIntroScreenUserInput() {
+function GetIntroScreenUserInput(): void {
   InputAtom Event;
   POINT MousePos;
 
@@ -224,7 +224,7 @@ void GetIntroScreenUserInput() {
   }
 }
 
-void PrepareToExitIntroScreen() {
+function PrepareToExitIntroScreen(): void {
   // if its the intro at the begining of the game
   if (gbIntroScreenMode == INTRO_BEGINING) {
     // go to the init screen
@@ -246,7 +246,7 @@ void PrepareToExitIntroScreen() {
   gfIntroScreenExit = TRUE;
 }
 
-INT32 GetNextIntroVideo(UINT32 uiCurrentVideo) {
+function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
   INT32 iStringToUse = -1;
 
   // switch on whether it is the beginging or the end game video
@@ -316,7 +316,7 @@ INT32 GetNextIntroVideo(UINT32 uiCurrentVideo) {
   return iStringToUse;
 }
 
-void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay) {
+function StartPlayingIntroFlic(iIndexOfFlicToPlay: INT32): void {
   if (iIndexOfFlicToPlay != -1) {
     // start playing a flic
     gpSmackFlic = SmkPlayFlic(gpzSmackerFileNames[iIndexOfFlicToPlay], 0, 0, TRUE);
@@ -331,7 +331,7 @@ void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay) {
   }
 }
 
-void SetIntroType(INT8 bIntroType) {
+function SetIntroType(bIntroType: INT8): void {
   if (bIntroType == INTRO_BEGINING) {
     gbIntroScreenMode = INTRO_BEGINING;
   } else if (bIntroType == INTRO_ENDING) {
@@ -341,7 +341,7 @@ void SetIntroType(INT8 bIntroType) {
   }
 }
 
-void DisplaySirtechSplashScreen() {
+function DisplaySirtechSplashScreen(): void {
   HVOBJECT hPixHandle;
   VOBJECT_DESC VObjectDesc;
   UINT32 uiLogoID;

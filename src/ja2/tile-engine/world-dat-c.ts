@@ -2,7 +2,7 @@
 
 TILESET gTilesets[NUM_TILESETS];
 
-void InitEngineTilesets() {
+function InitEngineTilesets(): void {
   UINT8 ubNumSets;
   UINT32 cnt, cnt2, uiNumFiles;
   //	FILE					*hfile;
@@ -82,7 +82,7 @@ void InitEngineTilesets() {
   gTilesets[TEMP_20].MovementCostFnc = (TILESET_CALLBACK)SetTilesetFourTerrainValues;
 }
 
-void SetTilesetOneTerrainValues() {
+function SetTilesetOneTerrainValues(): void {
   // FIRST TEXUTRES
   gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
   gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
@@ -107,7 +107,7 @@ void SetTilesetOneTerrainValues() {
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
-void SetTilesetTwoTerrainValues() {
+function SetTilesetTwoTerrainValues(): void {
   // FIRST TEXUTRES
   gTileSurfaceArray[FIRSTTEXTURE]->ubTerrainID = FLAT_GROUND;
   gTileSurfaceArray[SECONDTEXTURE]->ubTerrainID = FLAT_GROUND;
@@ -130,7 +130,7 @@ void SetTilesetTwoTerrainValues() {
   gTileSurfaceArray[FOURTHFLOOR]->ubTerrainID = FLAT_GROUND;
 }
 
-void SetTilesetThreeTerrainValues() {
+function SetTilesetThreeTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT ROADS ARE PAVED
 
   // FIRST TEXUTRES
@@ -157,7 +157,7 @@ void SetTilesetThreeTerrainValues() {
   // NOW ANY TERRAIN MODIFYING DEBRIS
 }
 
-void SetTilesetFourTerrainValues() {
+function SetTilesetFourTerrainValues(): void {
   // DIFFERENCE FROM #1 IS THAT FLOOR2 IS NOT FLAT_FLOOR BUT FLAT_GROUND
 
   // FIRST TEXUTRES

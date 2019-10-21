@@ -82,10 +82,10 @@ MOUSE_REGION gSelectedFuneralLinkRegion[FUNERAL_NUMBER_OF_LINKS];
 // Clicking on rip sign to make it disappear
 MOUSE_REGION gSelectedRipSignRegion;
 
-void GameInitFuneral() {
+function GameInitFuneral(): void {
 }
 
-BOOLEAN EnterFuneral() {
+function EnterFuneral(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX, i;
 
@@ -144,7 +144,7 @@ BOOLEAN EnterFuneral() {
   return TRUE;
 }
 
-void ExitFuneral() {
+function ExitFuneral(): void {
   UINT8 i;
 
   DeleteVideoObjectFromIndex(guiClosedSign);
@@ -162,10 +162,10 @@ void ExitFuneral() {
   MSYS_RemoveRegion(&gSelectedRipSignRegion);
 }
 
-void HandleFuneral() {
+function HandleFuneral(): void {
 }
 
-void RenderFuneral() {
+function RenderFuneral(): void {
   HVOBJECT hPixHandle;
   UINT16 i, usPosX, usStringHeight;
 
@@ -227,7 +227,7 @@ void RenderFuneral() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void DisplayFuneralRipTombStone() {
+function DisplayFuneralRipTombStone(): void {
   HVOBJECT hPixHandle;
 
   // rip tombstone
@@ -251,7 +251,7 @@ void DisplayFuneralRipTombStone() {
   MSYS_EnableRegion(&gSelectedRipSignRegion);
 }
 
-void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiUserData;
@@ -268,7 +268,7 @@ void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectRipSignRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     MSYS_DisableRegion(&gSelectedRipSignRegion);

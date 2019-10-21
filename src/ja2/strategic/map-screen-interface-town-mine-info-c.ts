@@ -23,7 +23,7 @@ extern MINE_STATUS_TYPE gMineStatus[];
 extern BOOLEAN fMapScreenBottomDirty;
 // extern UINT8 gubMonsterMineInfestation[];
 
-void DisplayTownInfo(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   // will display town info for a particular town
 
   // set current sector
@@ -37,7 +37,7 @@ void DisplayTownInfo(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   CreateDestroyTownInfoBox();
 }
 
-void CreateDestroyTownInfoBox(void) {
+function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
   static BOOLEAN fCreated = FALSE;
   SGPRect pDimensions;
@@ -154,7 +154,7 @@ void CreateDestroyTownInfoBox(void) {
   return;
 }
 
-void CreateTownInfoBox(void) {
+function CreateTownInfoBox(): void {
   // create basic box
   CreatePopUpBox(&ghTownMineBox, TownMineDimensions, TownMinePosition, (POPUP_BOX_FLAG_CLIP_TEXT));
 
@@ -180,7 +180,7 @@ void CreateTownInfoBox(void) {
 }
 
 // adds text to town info box
-void AddTextToTownBox(void) {
+function AddTextToTownBox(): void {
   UINT32 hStringHandle = 0;
   CHAR16 wString[64];
   UINT8 ubTownId = 0;
@@ -275,7 +275,7 @@ void AddTextToTownBox(void) {
 }
 
 // adds text to mine info box
-void AddTextToMineBox(void) {
+function AddTextToMineBox(): void {
   UINT8 ubMineIndex;
   UINT8 ubTown;
   UINT32 hStringHandle;
@@ -372,7 +372,7 @@ void AddTextToMineBox(void) {
   }
 }
 
-void AddTextToBlankSectorBox(void) {
+function AddTextToBlankSectorBox(): void {
   UINT32 hStringHandle;
   UINT16 usSectorValue = 0;
 
@@ -412,7 +412,7 @@ void AddTextToBlankSectorBox(void) {
   AddSectorToBox();
 }
 
-void AddSectorToBox(void) {
+function AddSectorToBox(): void {
   CHAR16 wString[64];
   CHAR16 wString2[10];
   UINT32 hStringHandle = 0;
@@ -430,7 +430,7 @@ void AddSectorToBox(void) {
   AddSecondColumnMonoString(&hStringHandle, wString);
 }
 
-void AddCommonInfoToBox(void) {
+function AddCommonInfoToBox(): void {
   CHAR16 wString[64];
   UINT32 hStringHandle = 0;
   BOOLEAN fUnknownSAMSite = FALSE;
@@ -521,7 +521,7 @@ void AddCommonInfoToBox(void) {
   AddSecondColumnMonoString(&hStringHandle, wString);
 }
 
-void AddItemsInSectorToBox(void) {
+function AddItemsInSectorToBox(): void {
   CHAR16 wString[64];
   UINT32 hStringHandle = 0;
 
@@ -535,7 +535,7 @@ void AddItemsInSectorToBox(void) {
   AddSecondColumnMonoString(&hStringHandle, wString);
 }
 
-void PositionTownMineInfoBox(void) {
+function PositionTownMineInfoBox(): void {
   // position town mine info box
   SGPRect pDimensions;
   SGPPoint pPosition;
@@ -587,7 +587,7 @@ void PositionTownMineInfoBox(void) {
   return;
 }
 
-void AddInventoryButtonForMapPopUpBox(void) {
+function AddInventoryButtonForMapPopUpBox(): void {
   INT16 sX, sY;
   SGPRect pDimensions;
   SGPPoint pPosition;
@@ -644,7 +644,7 @@ void AddInventoryButtonForMapPopUpBox(void) {
   return;
 }
 
-void RemoveInventoryButtonForMapPopUpBox(void) {
+function RemoveInventoryButtonForMapPopUpBox(): void {
   // get rid of button
   RemoveButton(guiMapButtonInventory[0]);
   UnloadButtonImage(guiMapButtonInventoryImage[0]);
@@ -655,7 +655,7 @@ void RemoveInventoryButtonForMapPopUpBox(void) {
   return;
 }
 
-void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function MapTownMineInventoryButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -677,7 +677,7 @@ void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -693,7 +693,7 @@ void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // get the min width of the town mine info pop up box
-void MinWidthOfTownMineInfoBox(void) {
+function MinWidthOfTownMineInfoBox(): void {
   HVOBJECT hHandle;
   VOBJECT_DESC VObjectDesc;
   INT16 sWidthA = 0, sWidthB = 0, sTotalBoxWidth = 0;

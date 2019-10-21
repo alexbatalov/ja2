@@ -136,7 +136,7 @@ UINT8 gubDesertTemperature = 0;
 UINT8 gubGlobalTemperature = 0;
 
 // polled by the game to handle time/atmosphere changes from gamescreen
-void EnvironmentController(BOOLEAN fCheckForLights) {
+function EnvironmentController(fCheckForLights: BOOLEAN): void {
   UINT32 uiOldWorldHour;
   UINT8 ubLightAdjustFromWeather = 0;
 
@@ -192,7 +192,7 @@ void EnvironmentController(BOOLEAN fCheckForLights) {
   }
 }
 
-void BuildDayLightLevels() {
+function BuildDayLightLevels(): void {
   UINT32 uiLoop, uiHour;
 
   /*
@@ -249,7 +249,7 @@ void BuildDayLightLevels() {
   AddEveryDayStrategicEvent(EVENT_TURN_OFF_PRIME_LIGHTS, uiHour * 60, 0);
 }
 
-void BuildDayAmbientSounds() {
+function BuildDayAmbientSounds(): void {
   INT32 cnt;
 
   // Add events!
@@ -273,7 +273,7 @@ void BuildDayAmbientSounds() {
   guiRainLoop = NO_SAMPLE;
 }
 
-void ForecastDayEvents() {
+function ForecastDayEvents(): void {
   UINT32 uiOldDay;
   UINT32 uiStartTime, uiEndTime;
   UINT8 ubStormIntensity;
@@ -319,15 +319,15 @@ void ForecastDayEvents() {
   }
 }
 
-void EnvEnableTOD(void) {
+function EnvEnableTOD(): void {
   fTimeOfDayControls = TRUE;
 }
 
-void EnvDisableTOD(void) {
+function EnvDisableTOD(): void {
   fTimeOfDayControls = FALSE;
 }
 
-void EnvDoLightning(void) {
+function EnvDoLightning(): void {
   static UINT32 uiCount = 0, uiIndex = 0, uiStrike = 0, uiFrameNext = 1000;
   static UINT8 ubLevel = 0, ubLastLevel = 0;
 
@@ -375,7 +375,7 @@ void EnvDoLightning(void) {
   }
 }
 
-UINT8 GetTimeOfDayAmbientLightLevel() {
+function GetTimeOfDayAmbientLightLevel(): UINT8 {
   if (SectorTemperature(GetWorldMinutesInDay(), gWorldSectorX, gWorldSectorY, gbWorldSectorZ) == HOT) {
     return HOT_DAY_LIGHTLEVEL;
   } else {
@@ -383,7 +383,7 @@ UINT8 GetTimeOfDayAmbientLightLevel() {
   }
 }
 
-void EnvBeginRainStorm(UINT8 ubIntensity) {
+function EnvBeginRainStorm(ubIntensity: UINT8): void {
   if (!gfBasement && !gfCaves) {
     gfDoLighting = TRUE;
 
@@ -396,14 +396,14 @@ void EnvBeginRainStorm(UINT8 ubIntensity) {
   }
 }
 
-void EnvEndRainStorm() {
+function EnvEndRainStorm(): void {
   gfDoLighting = TRUE;
 
   guiEnvWeather &= (~WEATHER_FORECAST_THUNDERSHOWERS);
   guiEnvWeather &= (~WEATHER_FORECAST_SHOWERS);
 }
 
-void TurnOnNightLights() {
+function TurnOnNightLights(): void {
   INT32 i;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
@@ -412,7 +412,7 @@ void TurnOnNightLights() {
   }
 }
 
-void TurnOffNightLights() {
+function TurnOffNightLights(): void {
   INT32 i;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
@@ -421,7 +421,7 @@ void TurnOffNightLights() {
   }
 }
 
-void TurnOnPrimeLights() {
+function TurnOnPrimeLights(): void {
   INT32 i;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
@@ -430,7 +430,7 @@ void TurnOnPrimeLights() {
   }
 }
 
-void TurnOffPrimeLights() {
+function TurnOffPrimeLights(): void {
   INT32 i;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
@@ -439,7 +439,7 @@ void TurnOffPrimeLights() {
   }
 }
 
-void UpdateTemperature(UINT8 ubTemperatureCode) {
+function UpdateTemperature(ubTemperatureCode: UINT8): void {
   switch (ubTemperatureCode) {
     case TEMPERATURE_DESERT_COOL:
       gubDesertTemperature = 0;
@@ -463,7 +463,7 @@ void UpdateTemperature(UINT8 ubTemperatureCode) {
   gfDoLighting = TRUE;
 }
 
-INT8 SectorTemperature(UINT32 uiTime, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function SectorTemperature(uiTime: UINT32, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
   if (bSectorZ > 0) {
     // cool underground
     return 0;

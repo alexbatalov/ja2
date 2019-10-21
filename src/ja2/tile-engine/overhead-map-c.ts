@@ -36,7 +36,7 @@ INT16 gsStartRestrictedX, gsStartRestrictedY;
 BOOLEAN gfOverItemPool = FALSE;
 INT16 gsOveritemPoolGridNo;
 
-void InitNewOverheadDB(UINT8 ubTilesetID) {
+function InitNewOverheadDB(ubTilesetID: UINT8): void {
   UINT32 uiLoop;
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hVObject;
@@ -131,7 +131,7 @@ void InitNewOverheadDB(UINT8 ubTilesetID) {
   CopyOverheadDBShadetablesFromTileset();
 }
 
-void DeleteOverheadDB() {
+function DeleteOverheadDB(): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < NUMBEROFTILETYPES; cnt++) {
@@ -139,7 +139,7 @@ void DeleteOverheadDB() {
   }
 }
 
-BOOLEAN GetClosestItemPool(INT16 sSweetGridNo, ITEM_POOL **ppReturnedItemPool, UINT8 ubRadius, INT8 bLevel) {
+function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Pointer<ITEM_POOL>>, ubRadius: UINT8, bLevel: INT8): BOOLEAN {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -182,7 +182,7 @@ BOOLEAN GetClosestItemPool(INT16 sSweetGridNo, ITEM_POOL **ppReturnedItemPool, U
   return fFound;
 }
 
-BOOLEAN GetClosestMercInOverheadMap(INT16 sSweetGridNo, SOLDIERTYPE **ppReturnedSoldier, UINT8 ubRadius) {
+function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<Pointer<SOLDIERTYPE>>, ubRadius: UINT8): BOOLEAN {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -224,7 +224,7 @@ BOOLEAN GetClosestMercInOverheadMap(INT16 sSweetGridNo, SOLDIERTYPE **ppReturned
   return fFound;
 }
 
-void DisplayMercNameInOverhead(SOLDIERTYPE *pSoldier) {
+function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sWorldScreenX, sX;
   INT16 sWorldScreenY, sY;
 
@@ -249,7 +249,7 @@ void DisplayMercNameInOverhead(SOLDIERTYPE *pSoldier) {
   mprintf(sX, sY, pSoldier->name);
 }
 
-void HandleOverheadMap() {
+function HandleOverheadMap(): void {
   static BOOLEAN fFirst = TRUE;
   SOLDIERTYPE *pSoldier;
 
@@ -387,11 +387,11 @@ void HandleOverheadMap() {
   fInterfacePanelDirty = FALSE;
 }
 
-BOOLEAN InOverheadMap() {
+function InOverheadMap(): BOOLEAN {
   return gfInOverheadMap;
 }
 
-void GoIntoOverheadMap() {
+function GoIntoOverheadMap(): void {
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hVObject;
 
@@ -443,7 +443,7 @@ void GoIntoOverheadMap() {
   }
 }
 
-void HandleOverheadUI() {
+function HandleOverheadUI(): void {
   InputAtom InputEvent;
   INT16 sMousePos = 0;
   UINT8 ubID;
@@ -479,7 +479,7 @@ void HandleOverheadUI() {
   }
 }
 
-void KillOverheadMap() {
+function KillOverheadMap(): void {
   gfInOverheadMap = FALSE;
   SetRenderFlags(RENDER_FLAG_FULL);
   RenderWorld();
@@ -494,7 +494,7 @@ void KillOverheadMap() {
   DisableTacticalTeamPanelButtons(FALSE);
 }
 
-INT16 GetOffsetLandHeight(INT32 sGridNo) {
+function GetOffsetLandHeight(sGridNo: INT32): INT16 {
   INT16 sTileHeight;
 
   sTileHeight = gpWorldLevelData[sGridNo].sHeight;
@@ -502,7 +502,7 @@ INT16 GetOffsetLandHeight(INT32 sGridNo) {
   return sTileHeight;
 }
 
-INT16 GetModifiedOffsetLandHeight(INT32 sGridNo) {
+function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
   INT16 sTileHeight;
   INT16 sModifiedTileHeight;
 
@@ -517,7 +517,7 @@ INT16 GetModifiedOffsetLandHeight(INT32 sGridNo) {
   return sModifiedTileHeight;
 }
 
-void RenderOverheadMap(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS, BOOLEAN fFromMapUtility) {
+function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: BOOLEAN): void {
   INT8 bXOddFlag = 0;
   INT16 sModifiedHeight = 0;
   INT16 sAnchorPosX_M, sAnchorPosY_M;
@@ -861,7 +861,7 @@ void RenderOverheadMap(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartP
   }
 }
 
-void RenderOverheadOverlays() {
+function RenderOverheadOverlays(): void {
   UINT32 uiDestPitchBYTES;
   WORLDITEM *pWorldItem;
   UINT32 i;
@@ -1196,11 +1196,11 @@ void RenderOverheadOverlays( INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 s
 }
 */
 
-void MoveInOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+function MoveInOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   // Calculate the cursor...
 }
 
-void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   UINT32 uiCellX, uiCellY;
   INT16 sWorldScreenX, sWorldScreenY;
 
@@ -1230,10 +1230,10 @@ void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void MoveOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+function MoveOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
 }
 
-void GetOverheadScreenXYFromGridNo(INT16 sGridNo, INT16 *psScreenX, INT16 *psScreenY) {
+function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
   GetWorldXYAbsoluteScreenXY((INT16)(CenterX(sGridNo) / CELL_X_SIZE), (INT16)(CenterY(sGridNo) / CELL_Y_SIZE), psScreenX, psScreenY);
   *psScreenX /= 5;
   *psScreenY /= 5;
@@ -1245,7 +1245,7 @@ void GetOverheadScreenXYFromGridNo(INT16 sGridNo, INT16 *psScreenX, INT16 *psScr
   //*psScreenY -= gpWorldLevelData[ sGridNo ].sHeight / 5;
 }
 
-BOOLEAN GetOverheadMouseGridNo(INT16 *psGridNo) {
+function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
   UINT32 uiCellX, uiCellY;
   INT16 sWorldScreenX, sWorldScreenY;
 
@@ -1274,7 +1274,7 @@ BOOLEAN GetOverheadMouseGridNo(INT16 *psGridNo) {
   }
 }
 
-BOOLEAN GetOverheadMouseGridNoForFullSoldiersGridNo(INT16 *psGridNo) {
+function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
   UINT32 uiCellX, uiCellY;
   INT16 sWorldScreenX, sWorldScreenY;
 
@@ -1303,7 +1303,7 @@ BOOLEAN GetOverheadMouseGridNoForFullSoldiersGridNo(INT16 *psGridNo) {
   }
 }
 
-void CalculateRestrictedMapCoords(INT8 bDirection, INT16 *psX1, INT16 *psY1, INT16 *psX2, INT16 *psY2, INT16 sEndXS, INT16 sEndYS) {
+function CalculateRestrictedMapCoords(bDirection: INT8, psX1: Pointer<INT16>, psY1: Pointer<INT16>, psX2: Pointer<INT16>, psY2: Pointer<INT16>, sEndXS: INT16, sEndYS: INT16): void {
   switch (bDirection) {
     case NORTH:
 
@@ -1339,10 +1339,10 @@ void CalculateRestrictedMapCoords(INT8 bDirection, INT16 *psX1, INT16 *psY1, INT
   }
 }
 
-void CalculateRestrictedScaleFactors(INT16 *pScaleX, INT16 *pScaleY) {
+function CalculateRestrictedScaleFactors(pScaleX: Pointer<INT16>, pScaleY: Pointer<INT16>): void {
 }
 
-void CopyOverheadDBShadetablesFromTileset() {
+function CopyOverheadDBShadetablesFromTileset(): void {
   UINT32 uiLoop, uiLoop2;
   PTILE_IMAGERY pTileSurf;
 
@@ -1358,7 +1358,7 @@ void CopyOverheadDBShadetablesFromTileset() {
   }
 }
 
-void TrashOverheadMap() {
+function TrashOverheadMap(): void {
   // If loaded, unload!
   if (gfSmTileLoaded) {
     // Unload

@@ -18,7 +18,7 @@ UINT8 gubBoxingMatchesWon = 0;
 UINT8 gubBoxersRests = 0;
 BOOLEAN gfBoxersResting = FALSE;
 
-void ExitBoxing(void) {
+function ExitBoxing(): void {
   UINT8 ubRoom;
   SOLDIERTYPE *pSoldier;
   UINT32 uiLoop;
@@ -84,7 +84,7 @@ void ExitBoxing(void) {
 
 // in both these cases we're going to want the AI to take over and move the boxers
 // out of the ring!
-void EndBoxingMatch(SOLDIERTYPE *pLoser) {
+function EndBoxingMatch(pLoser: Pointer<SOLDIERTYPE>): void {
   if (pLoser->bTeam == gbPlayerNum) {
     SetBoxingState(LOST_ROUND);
   } else {
@@ -95,7 +95,7 @@ void EndBoxingMatch(SOLDIERTYPE *pLoser) {
   TriggerNPCRecord(DARREN, 22);
 }
 
-void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, INT8 bReason) {
+function BoxingPlayerDisqualified(pOffender: Pointer<SOLDIERTYPE>, bReason: INT8): void {
   if (bReason == BOXER_OUT_OF_RING || bReason == NON_BOXER_IN_RING) {
     EVENT_StopMerc(pOffender, pOffender->sGridNo, pOffender->bDirection);
   }
@@ -104,7 +104,7 @@ void BoxingPlayerDisqualified(SOLDIERTYPE *pOffender, INT8 bReason) {
   // ExitBoxing();
 }
 
-void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSoldier) {
+function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
   // unlock UI
   guiPendingOverrideEvent = LU_ENDUILOCK;
 
@@ -128,7 +128,7 @@ void TriggerEndOfBoxingRecord(SOLDIERTYPE *pSoldier) {
   SetBoxingState(NOT_BOXING);
 }
 
-UINT8 CountPeopleInBoxingRing(void) {
+function CountPeopleInBoxingRing(): UINT8 {
   SOLDIERTYPE *pSoldier;
   UINT32 uiLoop;
   UINT8 ubRoom;
@@ -147,7 +147,7 @@ UINT8 CountPeopleInBoxingRing(void) {
   return ubTotalInRing;
 }
 
-void CountPeopleInBoxingRingAndDoActions(void) {
+function CountPeopleInBoxingRingAndDoActions(): void {
   UINT32 uiLoop;
   UINT8 ubTotalInRing = 0;
   UINT8 ubRoom;
@@ -232,7 +232,7 @@ void CountPeopleInBoxingRingAndDoActions(void) {
   */
 }
 
-BOOLEAN CheckOnBoxers(void) {
+function CheckOnBoxers(): BOOLEAN {
   UINT32 uiLoop;
   UINT8 ubID;
 
@@ -255,7 +255,7 @@ BOOLEAN CheckOnBoxers(void) {
   return TRUE;
 }
 
-BOOLEAN BoxerExists(void) {
+function BoxerExists(): BOOLEAN {
   UINT32 uiLoop;
 
   for (uiLoop = 0; uiLoop < NUM_BOXERS; uiLoop++) {
@@ -266,7 +266,7 @@ BOOLEAN BoxerExists(void) {
   return FALSE;
 }
 
-BOOLEAN PickABoxer(void) {
+function PickABoxer(): BOOLEAN {
   UINT32 uiLoop;
   SOLDIERTYPE *pBoxer;
 
@@ -303,7 +303,7 @@ BOOLEAN PickABoxer(void) {
   return FALSE;
 }
 
-BOOLEAN BoxerAvailable(void) {
+function BoxerAvailable(): BOOLEAN {
   UINT8 ubLoop;
 
   // No way around this, BoxerAvailable will have to go find boxer IDs if they aren't set.
@@ -322,7 +322,7 @@ BOOLEAN BoxerAvailable(void) {
 
 // NOTE THIS IS NOW BROKEN BECAUSE NPC.C ASSUMES THAT BOXERSAVAILABLE < 3 IS A
 // SEQUEL FIGHT.   Maybe we could check Kingpin's location instead!
-UINT8 BoxersAvailable(void) {
+function BoxersAvailable(): UINT8 {
   UINT8 ubLoop;
   UINT8 ubCount = 0;
 
@@ -335,7 +335,7 @@ UINT8 BoxersAvailable(void) {
   return ubCount;
 }
 
-BOOLEAN AnotherFightPossible(void) {
+function AnotherFightPossible(): BOOLEAN {
   // Check that and a boxer is still available and
   // a player has at least OKLIFE + 5 life
 
@@ -362,7 +362,7 @@ BOOLEAN AnotherFightPossible(void) {
   return FALSE;
 }
 
-void BoxingMovementCheck(SOLDIERTYPE *pSoldier) {
+function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT8 ubRoom;
 
   if (InARoom(pSoldier->sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
@@ -379,7 +379,7 @@ void BoxingMovementCheck(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SetBoxingState(INT8 bNewState) {
+function SetBoxingState(bNewState: INT8): void {
   if (gTacticalStatus.bBoxingState == NOT_BOXING) {
     if (bNewState != NOT_BOXING) {
       // pause time
@@ -400,7 +400,7 @@ void SetBoxingState(INT8 bNewState) {
   gTacticalStatus.bBoxingState = bNewState;
 }
 
-void ClearAllBoxerFlags(void) {
+function ClearAllBoxerFlags(): void {
   UINT32 uiSlot;
 
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {

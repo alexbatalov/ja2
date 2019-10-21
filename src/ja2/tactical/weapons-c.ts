@@ -318,7 +318,7 @@ UINT8 BodyImpactReduction[4] = {
   23,
 };
 
-UINT16 GunRange(OBJECTTYPE *pObj) {
+function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
   INT8 bAttachPos;
 
   if (Item[pObj->usItem].usItemClass & IC_WEAPON) {
@@ -335,7 +335,7 @@ UINT16 GunRange(OBJECTTYPE *pObj) {
   }
 }
 
-INT8 EffectiveArmour(OBJECTTYPE *pObj) {
+function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   INT32 iValue;
   INT8 bPlate;
 
@@ -357,7 +357,7 @@ INT8 EffectiveArmour(OBJECTTYPE *pObj) {
   return (INT8)iValue;
 }
 
-INT8 ArmourPercent(SOLDIERTYPE *pSoldier) {
+function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iVest, iHelmet, iLeg;
 
   if (pSoldier->inv[VESTPOS].usItem) {
@@ -386,7 +386,7 @@ INT8 ArmourPercent(SOLDIERTYPE *pSoldier) {
   return (INT8)(iHelmet + iVest + iLeg);
 }
 
-INT8 ExplosiveEffectiveArmour(OBJECTTYPE *pObj) {
+function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
   INT32 iValue;
   INT8 bPlate;
 
@@ -412,7 +412,7 @@ INT8 ExplosiveEffectiveArmour(OBJECTTYPE *pObj) {
   return (INT8)iValue;
 }
 
-INT8 ArmourVersusExplosivesPercent(SOLDIERTYPE *pSoldier) {
+function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // returns the % damage reduction from grenades
   INT32 iVest, iHelmet, iLeg;
 
@@ -442,7 +442,7 @@ INT8 ArmourVersusExplosivesPercent(SOLDIERTYPE *pSoldier) {
   return (INT8)(iHelmet + iVest + iLeg);
 }
 
-void AdjustImpactByHitLocation(INT32 iImpact, UINT8 ubHitLocation, INT32 *piNewImpact, INT32 *piImpactForCrits) {
+function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewImpact: Pointer<INT32>, piImpactForCrits: Pointer<INT32>): void {
   switch (ubHitLocation) {
     case AIM_SHOT_HEAD:
       // 1.5x damage from successful hits to the head!
@@ -464,7 +464,7 @@ void AdjustImpactByHitLocation(INT32 iImpact, UINT8 ubHitLocation, INT32 *piNewI
 
 // #define	TESTGUNJAM
 
-BOOLEAN CheckForGunJam(SOLDIERTYPE *pSoldier) {
+function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   OBJECTTYPE *pObj;
   INT32 iChance, iResult;
 
@@ -529,7 +529,7 @@ BOOLEAN CheckForGunJam(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN OKFireWeapon(SOLDIERTYPE *pSoldier) {
+function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   BOOLEAN bGunJamVal;
 
   // 1) Are we attacking with our second hand?
@@ -555,7 +555,7 @@ BOOLEAN OKFireWeapon(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN FireWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   // ignore passed in target gridno for now
 
   // If realtime and we are reloading - do not fire until counter is done!
@@ -620,7 +620,7 @@ BOOLEAN FireWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   return TRUE;
 }
 
-void GetTargetWorldPositions(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, FLOAT *pdXPos, FLOAT *pdYPos, FLOAT *pdZPos) {
+function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
   FLOAT dTargetX;
   FLOAT dTargetY;
   FLOAT dTargetZ;
@@ -704,7 +704,7 @@ void GetTargetWorldPositions(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, FLOAT *
   *pdZPos = dTargetZ;
 }
 
-BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   UINT32 uiHitChance, uiDiceRoll;
   INT16 sXMapPos, sYMapPos;
   INT16 sAPCost;
@@ -1006,7 +1006,7 @@ BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   return TRUE;
 }
 
-BOOLEAN UseBlade(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   SOLDIERTYPE *pTargetSoldier;
   INT32 iHitChance, iDiceRoll;
   INT16 sXMapPos, sYMapPos;
@@ -1152,7 +1152,7 @@ BOOLEAN UseBlade(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   return TRUE;
 }
 
-BOOLEAN UseHandToHand(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, BOOLEAN fStealing) {
+function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fStealing: BOOLEAN): BOOLEAN {
   SOLDIERTYPE *pTargetSoldier;
   INT32 iHitChance, iDiceRoll;
   INT16 sXMapPos, sYMapPos;
@@ -1336,7 +1336,7 @@ BOOLEAN UseHandToHand(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, BOOLEAN fSteal
   return TRUE;
 }
 
-BOOLEAN UseThrown(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   UINT32 uiHitChance, uiDiceRoll;
   INT16 sAPCost = 0;
   INT8 bLoop;
@@ -1398,7 +1398,7 @@ BOOLEAN UseThrown(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   return TRUE;
 }
 
-BOOLEAN UseLauncher(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   UINT32 uiHitChance, uiDiceRoll;
   INT16 sAPCost = 0;
   INT8 bAttachPos;
@@ -1490,7 +1490,7 @@ BOOLEAN UseLauncher(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
   return TRUE;
 }
 
-BOOLEAN DoSpecialEffectAmmoMiss(UINT8 ubAttackerID, INT16 sGridNo, INT16 sXPos, INT16 sYPos, INT16 sZPos, BOOLEAN fSoundOnly, BOOLEAN fFreeupAttacker, INT32 iBullet) {
+function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, fSoundOnly: BOOLEAN, fFreeupAttacker: BOOLEAN, iBullet: INT32): BOOLEAN {
   ANITILE_PARAMS AniParams;
   UINT8 ubAmmoType;
   UINT16 usItem;
@@ -1557,7 +1557,7 @@ BOOLEAN DoSpecialEffectAmmoMiss(UINT8 ubAttackerID, INT16 sGridNo, INT16 sXPos, 
   return FALSE;
 }
 
-void WeaponHit(UINT16 usSoldierID, UINT16 usWeaponIndex, INT16 sDamage, INT16 sBreathLoss, UINT16 usDirection, INT16 sXPos, INT16 sYPos, INT16 sZPos, INT16 sRange, UINT8 ubAttackerID, BOOLEAN fHit, UINT8 ubSpecial, UINT8 ubHitLocation) {
+function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, usDirection: UINT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, sRange: INT16, ubAttackerID: UINT8, fHit: BOOLEAN, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   SOLDIERTYPE *pTargetSoldier, *pSoldier;
 
   // Get attacker
@@ -1596,7 +1596,7 @@ void WeaponHit(UINT16 usSoldierID, UINT16 usWeaponIndex, INT16 sDamage, INT16 sB
   }
 }
 
-void StructureHit(INT32 iBullet, UINT16 usWeaponIndex, INT8 bWeaponStatus, UINT8 ubAttackerID, UINT16 sXPos, INT16 sYPos, INT16 sZPos, UINT16 usStructureID, INT32 iImpact, BOOLEAN fStopped) {
+function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8, ubAttackerID: UINT8, sXPos: UINT16, sYPos: INT16, sZPos: INT16, usStructureID: UINT16, iImpact: INT32, fStopped: BOOLEAN): void {
   BOOLEAN fDoMissForGun = FALSE;
   ANITILE *pNode;
   INT16 sGridNo;
@@ -1832,7 +1832,7 @@ void StructureHit(INT32 iBullet, UINT16 usWeaponIndex, INT8 bWeaponStatus, UINT8
   }
 }
 
-void WindowHit(INT16 sGridNo, UINT16 usStructureID, BOOLEAN fBlowWindowSouth, BOOLEAN fLargeForce) {
+function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOLEAN, fLargeForce: BOOLEAN): void {
   STRUCTURE *pWallAndWindow;
   DB_STRUCTURE *pWallAndWindowInDB;
   INT16 sShatterGridNo;
@@ -1938,7 +1938,7 @@ void WindowHit(INT16 sGridNo, UINT16 usStructureID, BOOLEAN fBlowWindowSouth, BO
   PlayJA2Sample(GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
 }
 
-BOOLEAN InRange(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
   INT16 sRange;
   UINT16 usInHand;
 
@@ -1963,7 +1963,7 @@ BOOLEAN InRange(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   return FALSE;
 }
 
-UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime, UINT8 ubAimPos) {
+function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   // SOLDIERTYPE *vicpSoldier;
   SOLDIERTYPE *pTarget;
   INT32 iChance, iRange, iSightRange, iMaxRange, iScopeBonus, iBonus; //, minRange;
@@ -2451,7 +2451,7 @@ UINT32 CalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime
   return iChance;
 }
 
-UINT32 AICalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTime, UINT8 ubAimPos) {
+function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   UINT16 usTrueState;
   UINT32 uiChance;
 
@@ -2463,7 +2463,7 @@ UINT32 AICalcChanceToHitGun(SOLDIERTYPE *pSoldier, UINT16 sGridNo, UINT8 ubAimTi
   return uiChance;
 }
 
-INT32 CalcBodyImpactReduction(UINT8 ubAmmoType, UINT8 ubHitLocation) {
+function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32 {
   // calculate how much bullets are slowed by passing through someone
   INT32 iReduction = BodyImpactReduction[ubHitLocation];
 
@@ -2484,7 +2484,7 @@ INT32 CalcBodyImpactReduction(UINT8 ubAmmoType, UINT8 ubHitLocation) {
   return iReduction;
 }
 
-INT32 ArmourProtection(SOLDIERTYPE *pTarget, UINT8 ubArmourType, INT8 *pbStatus, INT32 iImpact, UINT8 ubAmmoType) {
+function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pbStatus: Pointer<INT8>, iImpact: INT32, ubAmmoType: UINT8): INT32 {
   INT32 iProtection, iAppliedProtection, iFailure;
 
   iProtection = Armour[ubArmourType].ubProtection;
@@ -2548,7 +2548,7 @@ INT32 ArmourProtection(SOLDIERTYPE *pTarget, UINT8 ubArmourType, INT8 *pbStatus,
   return iProtection;
 }
 
-INT32 TotalArmourProtection(SOLDIERTYPE *pFirer, SOLDIERTYPE *pTarget, UINT8 ubHitLocation, INT32 iImpact, UINT8 ubAmmoType) {
+function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
   INT32 iTotalProtection = 0, iSlot;
   OBJECTTYPE *pArmour;
   INT8 bPlatePos = -1;
@@ -2615,7 +2615,7 @@ INT32 TotalArmourProtection(SOLDIERTYPE *pFirer, SOLDIERTYPE *pTarget, UINT8 ubH
   return iTotalProtection;
 }
 
-INT32 BulletImpact(SOLDIERTYPE *pFirer, SOLDIERTYPE *pTarget, UINT8 ubHitLocation, INT32 iOrigImpact, INT16 sHitBy, UINT8 *pubSpecial) {
+function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
   INT32 iImpact, iFluke, iBonus, iImpactForCrits = 0;
   INT8 bStatLoss;
   UINT8 ubAmmoType;
@@ -2898,7 +2898,7 @@ INT32 BulletImpact(SOLDIERTYPE *pFirer, SOLDIERTYPE *pTarget, UINT8 ubHitLocatio
   return iImpact;
 }
 
-INT32 HTHImpact(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget, INT32 iHitBy, BOOLEAN fBladeAttack) {
+function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, iHitBy: INT32, fBladeAttack: BOOLEAN): INT32 {
   INT32 iImpact, iFluke, iBonus;
 
   if (fBladeAttack) {
@@ -2952,7 +2952,7 @@ INT32 HTHImpact(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget, INT32 iHitBy, BOOLE
   return iImpact;
 }
 
-void ShotMiss(UINT8 ubAttackerID, INT32 iBullet) {
+function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
   BOOLEAN fDoMissForGun = FALSE;
   SOLDIERTYPE *pAttacker;
   BULLET *pBullet;
@@ -3013,7 +3013,7 @@ void ShotMiss(UINT8 ubAttackerID, INT32 iBullet) {
   FreeUpAttacker(ubAttackerID);
 }
 
-UINT32 CalcChanceHTH(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAimTime, UINT8 ubMode) {
+function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8, ubMode: UINT8): UINT32 {
   UINT16 usInHand;
   UINT8 ubBandaged;
   INT32 iAttRating, iDefRating;
@@ -3274,19 +3274,19 @@ UINT32 CalcChanceHTH(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAim
   return iChance;
 }
 
-UINT32 CalcChanceToStab(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAimTime) {
+function CalcChanceToStab(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STAB);
 }
 
-UINT32 CalcChanceToPunch(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAimTime) {
+function CalcChanceToPunch(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_PUNCH);
 }
 
-UINT32 CalcChanceToSteal(SOLDIERTYPE *pAttacker, SOLDIERTYPE *pDefender, UINT8 ubAimTime) {
+function CalcChanceToSteal(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8): UINT32 {
   return CalcChanceHTH(pAttacker, pDefender, ubAimTime, HTH_MODE_STEAL);
 }
 
-void ReloadWeapon(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
+function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   // NB this is a cheat function, don't award experience
 
   if (pSoldier->inv[ubHandPos].usItem != NOTHING) {
@@ -3296,7 +3296,7 @@ void ReloadWeapon(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
   }
 }
 
-BOOLEAN IsGunBurstCapable(SOLDIERTYPE *pSoldier, UINT8 ubHandPos, BOOLEAN fNotify) {
+function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNotify: BOOLEAN): BOOLEAN {
   BOOLEAN fCapable = FALSE;
 
   if (pSoldier->inv[ubHandPos].usItem != NOTHING) {
@@ -3315,7 +3315,7 @@ BOOLEAN IsGunBurstCapable(SOLDIERTYPE *pSoldier, UINT8 ubHandPos, BOOLEAN fNotif
   return fCapable;
 }
 
-INT32 CalcMaxTossRange(SOLDIERTYPE *pSoldier, UINT16 usItem, BOOLEAN fArmed) {
+function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed: BOOLEAN): INT32 {
   INT32 iRange;
   UINT16 usSubItem;
 
@@ -3365,7 +3365,7 @@ INT32 CalcMaxTossRange(SOLDIERTYPE *pSoldier, UINT16 usItem, BOOLEAN fArmed) {
   return iRange;
 }
 
-UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTime, UINT8 ubAimPos) {
+function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   INT32 iChance, iMaxRange, iRange;
   UINT16 usHandItem;
   INT8 bPenalty, bBandaged;
@@ -3525,7 +3525,7 @@ UINT32 CalcThrownChanceToHit(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubAimTi
   return iChance;
 }
 
-void ChangeWeaponMode(SOLDIERTYPE *pSoldier) {
+function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   // ATE: Don't do this if in a fire amimation.....
   if (gAnimControl[pSoldier->usAnimState].uiFlags & ANIM_FIRE) {
     return;
@@ -3568,7 +3568,7 @@ void ChangeWeaponMode(SOLDIERTYPE *pSoldier) {
   gfUIForceReExamineCursorData = TRUE;
 }
 
-void DishoutQueenSwipeDamage(SOLDIERTYPE *pQueenSoldier) {
+function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bValidDishoutDirs[3][3] = {
     { NORTH, NORTHEAST, -1 },
     { EAST, SOUTHEAST, -1 },
@@ -3619,7 +3619,7 @@ void DishoutQueenSwipeDamage(SOLDIERTYPE *pQueenSoldier) {
   pQueenSoldier->uiPendingActionData1++;
 }
 
-BOOLEAN WillExplosiveWeaponFail(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj) {
+function WillExplosiveWeaponFail(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   if (pSoldier->bTeam == gbPlayerNum || pSoldier->bVisible == 1) {
     if ((INT8)(PreRandom(40) + PreRandom(40)) > pObj->bStatus[0]) {
       // Do second dice roll

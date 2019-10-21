@@ -3,7 +3,7 @@ const SHADE_TABLE_DIR = "ShadeTables";
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
 BOOLEAN gfForceBuildShadeTables = FALSE;
 
-void DetermineRGBDistributionSettings() {
+function DetermineRGBDistributionSettings(): void {
   STRING512 DataDir;
   STRING512 ExecDir;
   STRING512 ShadeTableDir;
@@ -90,7 +90,7 @@ void DetermineRGBDistributionSettings() {
   SetFileManCurrentDirectory(DataDir);
 }
 
-BOOLEAN LoadShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
+function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   HWFILE hfile;
   INT32 i;
   UINT32 uiNumBytesRead;
@@ -128,7 +128,7 @@ BOOLEAN LoadShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
   return TRUE;
 }
 
-BOOLEAN SaveShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
+function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   HWFILE hfile;
   INT32 i;
   UINT32 uiNumBytesWritten;
@@ -160,6 +160,6 @@ BOOLEAN SaveShadeTable(HVOBJECT pObj, UINT32 uiTileTypeIndex) {
   return TRUE;
 }
 
-BOOLEAN DeleteShadeTableDir() {
+function DeleteShadeTableDir(): BOOLEAN {
   return RemoveFileManDirectory(SHADE_TABLE_DIR, TRUE);
 }

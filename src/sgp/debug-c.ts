@@ -32,7 +32,7 @@ UINT8 gubStringIndex = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in
 // release mode builds. -- DB
-UINT8 *String(const char *String, ...) {
+function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
   va_list ArgPtr;
   UINT8 usIndex;
 

@@ -6,14 +6,14 @@ BOOLEAN fUseTerrainWeights = FALSE;
 INT32 TerrainTileSelected = 0, TerrainForegroundTile, TerrainBackgroundTile;
 INT32 TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
 
-void EntryInitEditorTerrainInfo() {
+function EntryInitEditorTerrainInfo(): void {
   // ResetTerrainTileWeights();
   if (!fUseTerrainWeights) {
     ResetTerrainTileWeights();
   }
 }
 
-void ResetTerrainTileWeights() {
+function ResetTerrainTileWeights(): void {
   INT8 x;
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     ubTerrainTileButtonWeight[x] = 0;
@@ -23,7 +23,7 @@ void ResetTerrainTileWeights() {
   gfRenderTaskbar = TRUE;
 }
 
-void HideTerrainTileButtons() {
+function HideTerrainTileButtons(): void {
   INT8 x;
   if (gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -33,7 +33,7 @@ void HideTerrainTileButtons() {
   }
 }
 
-void ShowTerrainTileButtons() {
+function ShowTerrainTileButtons(): void {
   INT8 x;
   if (!gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
@@ -43,7 +43,7 @@ void ShowTerrainTileButtons() {
   }
 }
 
-void RenderTerrainTileButtons() {
+function RenderTerrainTileButtons(): void {
   // If needed, display the ground tile images
   if (gfShowTerrainTileButtons) {
     UINT16 usFillColorDark, usFillColorLight, usFillColorRed;
@@ -83,7 +83,7 @@ void RenderTerrainTileButtons() {
 
 // This callback is used for each of the terrain tile buttons.  The userData[0] field
 // contains the terrain button's index value.
-void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
+function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfRenderTaskbar = TRUE;
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
@@ -124,7 +124,7 @@ void TerrainTileButtonRegionCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void ChooseWeightedTerrainTile() {
+function ChooseWeightedTerrainTile(): void {
   UINT16 x, usWeight;
   INT16 sRandomNum;
   if (!usTotalWeight) {
@@ -146,7 +146,7 @@ void ChooseWeightedTerrainTile() {
 UINT32 guiSearchType;
 UINT32 count, maxCount = 0, calls = 0;
 
-void Fill(INT32 x, INT32 y) {
+function Fill(x: INT32, y: INT32): void {
   INT32 iMapIndex;
   UINT32 uiCheckType;
 
@@ -180,7 +180,7 @@ void Fill(INT32 x, INT32 y) {
   count--;
 }
 
-void TerrainFill(UINT32 iMapIndex) {
+function TerrainFill(iMapIndex: UINT32): void {
   INT16 sX, sY;
   // determine what we should be looking for to replace...
   GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex, &guiSearchType);

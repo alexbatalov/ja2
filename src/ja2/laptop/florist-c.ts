@@ -55,10 +55,10 @@ UINT32 guiGalleryButton;
 // link to the flower home page by clicking on the flower title
 MOUSE_REGION gSelectedFloristTitleHomeLinkRegion;
 
-void GameInitFlorist() {
+function GameInitFlorist(): void {
 }
 
-BOOLEAN EnterFlorist() {
+function EnterFlorist(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   SetBookMark(FLORIST_BOOKMARK);
@@ -93,7 +93,7 @@ BOOLEAN EnterFlorist() {
   return TRUE;
 }
 
-void ExitFlorist() {
+function ExitFlorist(): void {
   DeleteVideoObjectFromIndex(guiHandBullet);
 
   RemoveFloristDefaults();
@@ -103,10 +103,10 @@ void ExitFlorist() {
   RemoveButton(guiGalleryButton);
 }
 
-void HandleFlorist() {
+function HandleFlorist(): void {
 }
 
-void RenderFlorist() {
+function RenderFlorist(): void {
   HVOBJECT hPixHandle;
   UINT16 i, usPosY;
   UINT8 ubTextCounter;
@@ -140,7 +140,7 @@ void RenderFlorist() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_UL_Y);
 }
 
-BOOLEAN InitFloristDefaults() {
+function InitFloristDefaults(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the Florist background graphic and add it
@@ -168,7 +168,7 @@ BOOLEAN InitFloristDefaults() {
   return TRUE;
 }
 
-void DisplayFloristDefaults() {
+function DisplayFloristDefaults(): void {
   HVOBJECT hPixHandle;
 
   WebPageTileBackground(4, 4, FLORIST_BACKGROUND_WIDTH, FLORIST_BACKGROUND_HEIGHT, guiFloristBackground);
@@ -185,7 +185,7 @@ void DisplayFloristDefaults() {
   }
 }
 
-void RemoveFloristDefaults() {
+function RemoveFloristDefaults(): void {
   DeleteVideoObjectFromIndex(guiFloristBackground);
 
   // if its the first page
@@ -200,7 +200,7 @@ void RemoveFloristDefaults() {
   }
 }
 
-void BtnGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -220,7 +220,7 @@ void BtnGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SelectFloristTitleHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristTitleHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST;

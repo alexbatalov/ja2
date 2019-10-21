@@ -15,7 +15,7 @@ IPListNode *pIPHead = NULL;
 IPListNode *gpCurrItemPoolNode = NULL;
 ITEM_POOL *gpItemPool = NULL;
 
-void BuildItemPoolList() {
+function BuildItemPoolList(): void {
   ITEM_POOL *temp;
   IPListNode *tail;
   UINT16 i;
@@ -40,7 +40,7 @@ void BuildItemPoolList() {
   SpecifyItemToEdit(NULL, -1);
 }
 
-void KillItemPoolList() {
+function KillItemPoolList(): void {
   IPListNode *pIPCurr;
   pIPCurr = pIPHead;
   while (pIPCurr) {
@@ -58,7 +58,7 @@ EditorItemsInfo eInfo;
 
 // Does some precalculations regarding the number of each item type, so that it
 // isn't calculated every time a player changes categories.
-void EntryInitEditorItemsInfo() {
+function EntryInitEditorItemsInfo(): void {
   INT32 i;
   INVTYPE *item;
   eInfo.uiBuffer = 0;
@@ -128,7 +128,7 @@ void EntryInitEditorItemsInfo() {
   }
 }
 
-void InitEditorItemsInfo(UINT32 uiItemType) {
+function InitEditorItemsInfo(uiItemType: UINT32): void {
   VSURFACE_DESC vs_desc;
   UINT8 *pDestBuf, *pSrcBuf;
   UINT32 uiSrcPitchBYTES, uiDestPitchBYTES;
@@ -414,7 +414,7 @@ void InitEditorItemsInfo(UINT32 uiItemType) {
   gfRenderTaskbar = TRUE;
 }
 
-void DetermineItemsScrolling() {
+function DetermineItemsScrolling(): void {
   if (!eInfo.sScrollIndex)
     DisableEditorButton(ITEMS_LEFTSCROLL);
   else
@@ -428,7 +428,7 @@ void DetermineItemsScrolling() {
     EnableEditorButton(ITEMS_RIGHTSCROLL);
 }
 
-void RenderEditorItemsInfo() {
+function RenderEditorItemsInfo(): void {
   UINT8 *pDestBuf, *pSrcBuf;
   UINT32 uiSrcPitchBYTES, uiDestPitchBYTES;
   INVTYPE *item;
@@ -511,7 +511,7 @@ void RenderEditorItemsInfo() {
   }
 }
 
-void ClearEditorItemsInfo() {
+function ClearEditorItemsInfo(): void {
   if (eInfo.uiBuffer) {
     DeleteVideoSurfaceFromIndex(eInfo.uiBuffer);
     eInfo.uiBuffer = 0;
@@ -567,7 +567,7 @@ void ClearEditorItemsInfo() {
   }
 }
 
-void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent) {
+function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): void {
   INT16 sIndex;
   UINT16 usQuantity;
   // Calc base index from scrolling index
@@ -618,7 +618,7 @@ void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent) {
   }
 }
 
-void ShowItemCursor(INT32 iMapIndex) {
+function ShowItemCursor(iMapIndex: INT32): void {
   LEVELNODE *pNode;
   pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
   while (pNode) {
@@ -629,11 +629,11 @@ void ShowItemCursor(INT32 iMapIndex) {
   AddTopmostToTail(iMapIndex, SELRING1);
 }
 
-void HideItemCursor(INT32 iMapIndex) {
+function HideItemCursor(iMapIndex: INT32): void {
   RemoveTopmost(iMapIndex, SELRING1);
 }
 
-BOOLEAN TriggerAtGridNo(INT16 sGridNo) {
+function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
   ITEM_POOL *pItemPool;
   if (!GetItemPool(sGridNo, &pItemPool, 0)) {
     return FALSE;
@@ -647,7 +647,7 @@ BOOLEAN TriggerAtGridNo(INT16 sGridNo) {
   return FALSE;
 }
 
-void AddSelectedItemToWorld(INT16 sGridNo) {
+function AddSelectedItemToWorld(sGridNo: INT16): void {
   OBJECTTYPE tempObject;
   OBJECTTYPE *pObject;
   INVTYPE *pItem;
@@ -803,7 +803,7 @@ void AddSelectedItemToWorld(INT16 sGridNo) {
   }
 }
 
-void HandleRightClickOnItem(INT16 sGridNo) {
+function HandleRightClickOnItem(sGridNo: INT16): void {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
 
@@ -836,7 +836,7 @@ void HandleRightClickOnItem(INT16 sGridNo) {
   SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
 }
 
-void DeleteSelectedItem() {
+function DeleteSelectedItem(): void {
   SpecifyItemToEdit(NULL, -1);
   // First, check to see if there even is a currently selected item.
   if (iCurrentTaskbar == TASK_MERCS) {
@@ -896,21 +896,21 @@ void DeleteSelectedItem() {
   }
 }
 
-void ShowSelectedItem() {
+function ShowSelectedItem(): void {
   if (gpItemPool) {
     gpItemPool->bVisible = INVISIBLE;
     gWorldItems[gpItemPool->iItemIndex].bVisible = INVISIBLE;
   }
 }
 
-void HideSelectedItem() {
+function HideSelectedItem(): void {
   if (gpItemPool) {
     gpItemPool->bVisible = HIDDEN_ITEM;
     gWorldItems[gpItemPool->iItemIndex].bVisible = HIDDEN_ITEM;
   }
 }
 
-void SelectNextItemPool() {
+function SelectNextItemPool(): void {
   if (!gpCurrItemPoolNode)
     return;
   // remove the current hilight.
@@ -932,7 +932,7 @@ void SelectNextItemPool() {
   }
 }
 
-void SelectNextItemInPool() {
+function SelectNextItemInPool(): void {
   if (gpItemPool) {
     if (gpItemPool->pNext) {
       gpItemPool = gpItemPool->pNext;
@@ -944,7 +944,7 @@ void SelectNextItemInPool() {
   }
 }
 
-void SelectPrevItemInPool() {
+function SelectPrevItemInPool(): void {
   if (gpItemPool) {
     if (gpItemPool->pPrev) {
       gpItemPool = gpItemPool->pPrev;
@@ -959,7 +959,7 @@ void SelectPrevItemInPool() {
   }
 }
 
-void FindNextItemOfSelectedType() {
+function FindNextItemOfSelectedType(): void {
   UINT16 usItem;
   usItem = eInfo.pusItemIndex[eInfo.sSelItemIndex];
   if (usItem == ACTION_ITEM || usItem == SWITCH) {
@@ -984,7 +984,7 @@ void FindNextItemOfSelectedType() {
   }
 }
 
-void SelectNextItemOfType(UINT16 usItem) {
+function SelectNextItemOfType(usItem: UINT16): void {
   IPListNode *curr;
   OBJECTTYPE *pObject;
   if (gpItemPool) {
@@ -1039,7 +1039,7 @@ void SelectNextItemOfType(UINT16 usItem) {
   }
 }
 
-void SelectNextKeyOfType(UINT8 ubKeyID) {
+function SelectNextKeyOfType(ubKeyID: UINT8): void {
   IPListNode *curr;
   OBJECTTYPE *pObject;
   if (gpItemPool) {
@@ -1094,7 +1094,7 @@ void SelectNextKeyOfType(UINT8 ubKeyID) {
   }
 }
 
-void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency) {
+function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void {
   IPListNode *curr;
   OBJECTTYPE *pObject;
   if (gpItemPool) {
@@ -1149,7 +1149,7 @@ void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency) {
   }
 }
 
-void SelectNextPressureAction() {
+function SelectNextPressureAction(): void {
   IPListNode *curr;
   OBJECTTYPE *pObject;
   if (gpItemPool) {
@@ -1204,7 +1204,7 @@ void SelectNextPressureAction() {
   }
 }
 
-UINT16 CountNumberOfItemPlacementsInWorld(UINT16 usItem, UINT16 *pusQuantity) {
+function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
   INT16 num = 0;
@@ -1224,7 +1224,7 @@ UINT16 CountNumberOfItemPlacementsInWorld(UINT16 usItem, UINT16 *pusQuantity) {
   return num;
 }
 
-UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency) {
+function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT16 {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
   UINT16 num = 0;
@@ -1242,7 +1242,7 @@ UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency) {
   return num;
 }
 
-UINT16 CountNumberOfPressureActionsInWorld() {
+function CountNumberOfPressureActionsInWorld(): UINT16 {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
   UINT16 num = 0;
@@ -1260,7 +1260,7 @@ UINT16 CountNumberOfPressureActionsInWorld() {
   return num;
 }
 
-UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *pusQuantity) {
+function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
   UINT16 usNumPlacements;
   if (eInfo.uiItemType == TBAR_MODE_ITEM_TRIGGERS) {
     // find identical items with same frequency
@@ -1289,7 +1289,7 @@ UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *pusQuan
   return usNumPlacements;
 }
 
-UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID) {
+function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
   ITEM_POOL *pItemPool;
   IPListNode *pIPCurr;
   INT16 num = 0;
@@ -1309,7 +1309,7 @@ UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID) {
   return num;
 }
 
-void DisplayItemStatistics() {
+function DisplayItemStatistics(): void {
   BOOLEAN fUseSelectedItem;
   INT16 usItemIndex;
   UINT16 pItemName[SIZE_ITEM_NAME];

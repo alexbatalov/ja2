@@ -1,14 +1,14 @@
-void GameInitSirTech() {
+function GameInitSirTech(): void {
 }
 
-void EnterSirTech() {
+function EnterSirTech(): void {
 }
 
-void ExitSirTech() {
+function ExitSirTech(): void {
 }
 
-void HandleSirTech() {
+function HandleSirTech(): void {
 }
 
-void RenderSirTech() {
+function RenderSirTech(): void {
 }

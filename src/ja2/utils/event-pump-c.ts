@@ -138,7 +138,7 @@ EV_S_SENDPATHTONETWORK SUpdateNetworkSoldier;
 
 extern BOOLEAN gfAmINetworked;
 
-BOOLEAN AddGameEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData) {
+function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));
     return AddGameEventToQueue(uiEvent, 0, pEventData, DEMAND_EVENT_QUEUE);
@@ -157,11 +157,11 @@ BOOLEAN AddGameEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData) {
     return FALSE;
 }
 
-BOOLEAN AddGameEventFromNetwork(UINT32 uiEvent, UINT16 usDelay, PTR pEventData) {
+function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
   return AddGameEventToQueue(uiEvent, usDelay, pEventData, PRIMARY_EVENT_QUEUE);
 }
 
-BOOLEAN AddGameEventToQueue(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT8 ubQueueID) {
+function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, ubQueueID: UINT8): BOOLEAN {
   UINT32 uiDataSize;
 
   // Check range of Event ui
@@ -275,7 +275,7 @@ BOOLEAN AddGameEventToQueue(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT
   return TRUE;
 }
 
-BOOLEAN DequeAllGameEvents(BOOLEAN fExecute) {
+function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
   EVENT *pEvent;
   UINT32 uiQueueSize, cnt;
   BOOLEAN fCompleteLoop = FALSE;
@@ -345,7 +345,7 @@ BOOLEAN DequeAllGameEvents(BOOLEAN fExecute) {
   return TRUE;
 }
 
-BOOLEAN DequeueAllDemandGameEvents(BOOLEAN fExecute) {
+function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
   EVENT *pEvent;
   BOOLEAN fCompleteLoop = FALSE;
 
@@ -373,7 +373,7 @@ BOOLEAN DequeueAllDemandGameEvents(BOOLEAN fExecute) {
   return TRUE;
 }
 
-BOOLEAN ExecuteGameEvent(EVENT *pEvent) {
+function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   // Switch on event type
@@ -664,7 +664,7 @@ BOOLEAN ExecuteGameEvent(EVENT *pEvent) {
   return TRUE;
 }
 
-BOOLEAN ClearEventQueue(void) {
+function ClearEventQueue(): BOOLEAN {
   // clear out the event queue
   EVENT *pEvent;
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {

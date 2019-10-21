@@ -23,7 +23,7 @@ int giClipXMax = 0;
 int giClipYMin = 0;
 int giClipYMax = 0;
 
-void SetClippingRegionAndImageWidth(int iImageWidth, int iClipStartX, int iClipStartY, int iClipWidth, int iClipHeight) {
+function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iClipStartY: int, iClipWidth: int, iClipHeight: int): void {
   giImageWidth = iImageWidth;
   giClipXMin = iClipStartX;
   giClipXMax = iClipStartX + iClipWidth - 1;
@@ -31,7 +31,7 @@ void SetClippingRegionAndImageWidth(int iImageWidth, int iClipStartX, int iClipS
   giClipYMax = iClipStartY + iClipHeight - 1;
 }
 
-BOOL Clipt(FLOAT denom, FLOAT num, FLOAT *tE, FLOAT *tL) {
+function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>): BOOL {
   FLOAT t;
   BOOL accept;
 
@@ -55,11 +55,11 @@ BOOL Clipt(FLOAT denom, FLOAT num, FLOAT *tE, FLOAT *tL) {
   return accept;
 }
 
-BOOL ClipPoint(int x, int y) {
+function ClipPoint(x: int, y: int): BOOL {
   return x <= giClipXMax && x >= giClipXMin && y <= giClipYMax && y >= giClipYMin;
 }
 
-BOOL Clip2D(int *ix0, int *iy0, int *ix1, int *iy1) {
+function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Pointer<int>): BOOL {
   BOOL visible;
   FLOAT te, tl;
   FLOAT dx, dy;
@@ -107,7 +107,7 @@ BOOL Clip2D(int *ix0, int *iy0, int *ix1, int *iy1) {
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-void LineDraw(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Color, char *ScreenPtr) {
+function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
   int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
   int ScreenWidth = giImageWidth / 2;
@@ -288,7 +288,7 @@ void LineDraw(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Colo
 }
 
 // Draws a pixel in the specified color
-void PixelDraw(BOOLEAN fClip, INT32 xp, INT32 yp, INT16 sColor, INT8 *pScreen) {
+function PixelDraw(fClip: BOOLEAN, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
   INT8 col2 = sColor >> 8;
   INT8 col1 = sColor & 0x00ff;
 
@@ -306,7 +306,7 @@ void PixelDraw(BOOLEAN fClip, INT32 xp, INT32 yp, INT16 sColor, INT8 *pScreen) {
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-void DrawHorizontalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth) {
+function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   int i;
   char *WorkingScreenPtr = *ScreenPtr;
   char col2 = Color >> 8;
@@ -324,7 +324,7 @@ void DrawHorizontalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color,
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-void DrawVerticalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth) {
+function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   int i;
   char *WorkingScreenPtr = *ScreenPtr;
   char col2 = Color >> 8;
@@ -341,7 +341,7 @@ void DrawVerticalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color, i
 }
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-void RectangleDraw(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Color, char *ScreenPtr) {
+function RectangleDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -357,7 +357,7 @@ void RectangleDraw(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short
  ***********************************************************************************/
 
 /* Draws a rectangle between the specified endpoints in color Color. */
-void RectangleDraw8(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Color, char *ScreenPtr) {
+function RectangleDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   LineDraw8(fClip, XStart, YStart, XEnd, YStart, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YEnd, XEnd, YEnd, Color, ScreenPtr);
   LineDraw8(fClip, XStart, YStart, XStart, YEnd, Color, ScreenPtr);
@@ -365,7 +365,7 @@ void RectangleDraw8(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, shor
 }
 
 /* Draws a line between the specified endpoints in color Color. */
-void LineDraw8(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Color, char *ScreenPtr) {
+function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
   int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
   int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
   int ScreenWidth = giImageWidth;
@@ -544,7 +544,7 @@ void LineDraw8(BOOL fClip, int XStart, int YStart, int XEnd, int YEnd, short Col
 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-void DrawHorizontalRun8(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth) {
+function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   int i;
   char *WorkingScreenPtr = *ScreenPtr;
   char col2 = Color >> 8;
@@ -561,7 +561,7 @@ void DrawHorizontalRun8(char **ScreenPtr, int XAdvance, int RunLength, int Color
 
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
-void DrawVerticalRun8(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth) {
+function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
   int i;
   char *WorkingScreenPtr = *ScreenPtr;
   char col2 = Color >> 8;

@@ -107,11 +107,11 @@ UINT32 guiInsuranceAcceptClearForm3Button;
 
 // ppp
 
-void GameInitInsuranceContract() {
+function GameInitInsuranceContract(): void {
   gsCurrentInsuranceMercIndex = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 }
 
-void EnterLaptopInitInsuranceContract() {
+function EnterLaptopInitInsuranceContract(): void {
   wchar_t zTextField[14];
 
   swprintf(zTextField, L"%d", 0);
@@ -120,7 +120,7 @@ void EnterLaptopInitInsuranceContract() {
   SetInputFieldStringWith16BitString(3, zTextField);
 }
 
-BOOLEAN EnterInsuranceContract() {
+function EnterInsuranceContract(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX, i;
 
@@ -171,7 +171,7 @@ BOOLEAN EnterInsuranceContract() {
   return TRUE;
 }
 
-void ExitInsuranceContract() {
+function ExitInsuranceContract(): void {
   UINT8 i;
 
   RemoveInsuranceDefaults();
@@ -194,7 +194,7 @@ void ExitInsuranceContract() {
   CreateDestroyInsuranceContractFormButtons(FALSE);
 }
 
-void HandleInsuranceContract() {
+function HandleInsuranceContract(): void {
   if (gfChangeInsuranceFormButtons) {
     // remove the old buttons from the page
     CreateDestroyInsuranceContractFormButtons(FALSE);
@@ -220,7 +220,7 @@ void HandleInsuranceContract() {
   EnableDisableInsuranceContractAcceptButtons();
 }
 
-void RenderInsuranceContract() {
+function RenderInsuranceContract(): void {
   HVOBJECT hPixHandle;
   wchar_t sText[800];
   UINT8 ubCount = 0;
@@ -308,7 +308,7 @@ void RenderInsuranceContract() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsContractPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -332,7 +332,7 @@ void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsContractNextButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -355,7 +355,7 @@ void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN DisplayOrderGrid(UINT8 ubGridNumber, UINT8 ubMercID) {
+function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hPixHandle;
   UINT16 usPosX, usPosY;
@@ -559,7 +559,7 @@ BOOLEAN DisplayOrderGrid(UINT8 ubGridNumber, UINT8 ubMercID) {
   return TRUE;
 }
 
-void BtnInsuranceAcceptClearForm1ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsuranceAcceptClearForm1ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -595,7 +595,7 @@ void BtnInsuranceAcceptClearForm1ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnInsuranceAcceptClearForm2ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsuranceAcceptClearForm2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -631,7 +631,7 @@ void BtnInsuranceAcceptClearForm2ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnInsuranceAcceptClearForm3ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsuranceAcceptClearForm3ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -667,7 +667,7 @@ void BtnInsuranceAcceptClearForm3ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-INT8 GetNumberOfHireMercsStartingFromID(UINT8 ubStartMercID) {
+function GetNumberOfHireMercsStartingFromID(ubStartMercID: UINT8): INT8 {
   UINT8 i;
   UINT8 ubCount = 0;
 
@@ -712,7 +712,7 @@ INT32 CalculateInsuranceCost( SOLDIERTYPE *pSoldier, BOOLEAN fHaveInsurance )
 }
 */
 
-void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceContractRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
@@ -725,7 +725,7 @@ void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason)
   }
 }
 
-INT8 CountInsurableMercs() {
+function CountInsurableMercs(): INT8 {
   INT16 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 bLastTeamID;
@@ -744,7 +744,7 @@ INT8 CountInsurableMercs() {
   return bCount;
 }
 
-void DisableInsuranceContractNextPreviousbuttons() {
+function DisableInsuranceContractNextPreviousbuttons(): void {
   // disable the next button if there is no more mercs to display
   if ((gsCurrentInsuranceMercIndex + gubNumberofDisplayedInsuranceGrids) < CountInsurableMercs()) {
     EnableButton(guiInsContractNextBackButton);
@@ -758,7 +758,7 @@ void DisableInsuranceContractNextPreviousbuttons() {
     EnableButton(guiInsContractPrevBackButton);
 }
 
-void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate) {
+function CreateDestroyInsuranceContractFormButtons(fCreate: BOOLEAN): void {
   static BOOLEAN fButtonsCreated = FALSE;
 
   if (fCreate && !fButtonsCreated) {
@@ -814,7 +814,7 @@ void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate) {
   }
 }
 
-void HandleAcceptButton(UINT8 ubSoldierID, UINT8 ubFormID) {
+function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
   INT32 iAmountOfMoneyTransfer = -1;
 
   // passed in either 1,2,3 should be 0,1,2
@@ -826,7 +826,7 @@ void HandleAcceptButton(UINT8 ubSoldierID, UINT8 ubFormID) {
 }
 
 // determines if a merc will run out of their insurance contract
-void DailyUpdateOfInsuredMercs() {
+function DailyUpdateOfInsuredMercs(): void {
   INT16 cnt;
   INT16 bLastTeamID;
   SOLDIERTYPE *pSoldier;
@@ -859,7 +859,7 @@ void DailyUpdateOfInsuredMercs() {
 const MIN_INSURANCE_RATIO = 0.1f;
 const MAX_INSURANCE_RATIO = 10.0f;
 
-INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
+function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
   MERCPROFILESTRUCT *pProfile;
   INT16 sTotalSkill = 0;
   FLOAT flSkillFactor, flFitnessFactor, flExpFactor, flSurvivalFactor;
@@ -924,7 +924,7 @@ INT32 CalculateInsuranceContractCost(INT32 iLength, UINT8 ubMercID) {
 }
 
 // values passed in must be such that exceeding the normal value REDUCES insurance premiums
-FLOAT DiffFromNormRatio(INT16 sThisValue, INT16 sNormalValue) {
+function DiffFromNormRatio(sThisValue: INT16, sNormalValue: INT16): FLOAT {
   FLOAT flRatio;
 
   if (sThisValue > 0) {
@@ -944,7 +944,7 @@ FLOAT DiffFromNormRatio(INT16 sThisValue, INT16 sNormalValue) {
   return flRatio;
 }
 
-void InsContractNoMercsPopupCallBack(UINT8 bExitValue) {
+function InsContractNoMercsPopupCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_OK) {
     guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -953,7 +953,7 @@ void InsContractNoMercsPopupCallBack(UINT8 bExitValue) {
   return;
 }
 
-void BuildInsuranceArray() {
+function BuildInsuranceArray(): void {
   INT16 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 bLastTeamID;
@@ -971,7 +971,7 @@ void BuildInsuranceArray() {
   }
 }
 
-BOOLEAN AddLifeInsurancePayout(SOLDIERTYPE *pSoldier) {
+function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT8 ubPayoutID;
   UINT32 uiTimeInMinutes;
   MERCPROFILESTRUCT *pProfile;
@@ -1048,7 +1048,7 @@ BOOLEAN AddLifeInsurancePayout(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-void StartInsuranceInvestigation(UINT8 ubPayoutID) {
+function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
   UINT8 ubDays;
 
   // send an email telling player an investigation is taking place
@@ -1075,7 +1075,7 @@ void StartInsuranceInvestigation(UINT8 ubPayoutID) {
   gStrategicStatus.ubInsuranceInvestigationsCnt++;
 }
 
-void EndInsuranceInvestigation(UINT8 ubPayoutID) {
+function EndInsuranceInvestigation(ubPayoutID: UINT8): void {
   // send an email telling player the investigation is over
   if (gMercProfiles[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubMercID].ubSuspiciousDeath == VERY_SUSPICIOUS_DEATH) {
     // fraud, no payout!
@@ -1089,7 +1089,7 @@ void EndInsuranceInvestigation(UINT8 ubPayoutID) {
 }
 
 // void InsuranceContractPayLifeInsuranceForDeadMerc( LIFE_INSURANCE_PAYOUT *pPayoutStruct )
-void InsuranceContractPayLifeInsuranceForDeadMerc(UINT8 ubPayoutID) {
+function InsuranceContractPayLifeInsuranceForDeadMerc(ubPayoutID: UINT8): void {
   // if the mercs id number is the same what is in the soldier array
   if (LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID == Menptr[LaptopSaveInfo.pLifeInsurancePayouts[ubPayoutID].ubSoldierID].ubID) {
     // and if the soldier is still active ( player hasn't removed carcass yet ), reset insurance flag
@@ -1115,7 +1115,7 @@ void InsuranceContractPayLifeInsuranceForDeadMerc(UINT8 ubPayoutID) {
 }
 
 // Gets called at the very end of the game
-void InsuranceContractEndGameShutDown() {
+function InsuranceContractEndGameShutDown(): void {
   // Free up the memory allocated to the insurance payouts
   if (LaptopSaveInfo.pLifeInsurancePayouts) {
     MemFree(LaptopSaveInfo.pLifeInsurancePayouts);
@@ -1123,7 +1123,7 @@ void InsuranceContractEndGameShutDown() {
   }
 }
 
-BOOLEAN MercIsInsurable(SOLDIERTYPE *pSoldier) {
+function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // only A.I.M. mercs currently on player's team
   if ((pSoldier->bActive) && (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC)) {
     // with more than one day left on their employment contract are eligible for insurance
@@ -1141,7 +1141,7 @@ BOOLEAN MercIsInsurable(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-void EnableDisableInsuranceContractAcceptButtons() {
+function EnableDisableInsuranceContractAcceptButtons(): void {
   // If it is the first grid
   if (gubNumberofDisplayedInsuranceGrids >= 1) {
     EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm1, &guiInsuranceAcceptClearForm1Button);
@@ -1158,7 +1158,7 @@ void EnableDisableInsuranceContractAcceptButtons() {
   }
 }
 
-void EnableDisableIndividualInsuranceContractButton(UINT8 ubMercIDForMercInForm, UINT32 *puiAcceptButton) {
+function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: UINT8, puiAcceptButton: Pointer<UINT32>): void {
   INT16 sSoldierID = 0;
 
   sSoldierID = GetSoldierIDFromMercID(ubMercIDForMercInForm);
@@ -1207,7 +1207,7 @@ UINT32	GetContractLengthForFormNumber( UINT8 ubFormID )
 }
 */
 
-UINT32 GetTimeRemainingOnSoldiersInsuranceContract(SOLDIERTYPE *pSoldier) {
+function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   // if the soldier has life insurance
   if (pSoldier->usLifeInsurance) {
     // if the insurance contract hasnt started yet
@@ -1219,7 +1219,7 @@ UINT32 GetTimeRemainingOnSoldiersInsuranceContract(SOLDIERTYPE *pSoldier) {
     return 0;
 }
 
-UINT32 GetTimeRemainingOnSoldiersContract(SOLDIERTYPE *pSoldier) {
+function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   INT32 iDayMercLeaves = (pSoldier->iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time left would be different if we did the calc
@@ -1237,7 +1237,7 @@ UINT32 GetTimeRemainingOnSoldiersContract(SOLDIERTYPE *pSoldier) {
   //	return( ( pSoldier->iEndofContractTime - (INT32)GetWorldTotalMin( ) ) / 1440 );
 }
 
-void PurchaseOrExtendInsuranceForSoldier(SOLDIERTYPE *pSoldier, UINT32 uiInsuranceLength) {
+function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
   INT32 iAmountOfMoneyTransfer = -1;
 
   if (pSoldier == NULL)
@@ -1299,14 +1299,14 @@ void PurchaseOrExtendInsuranceForSoldier(SOLDIERTYPE *pSoldier, UINT32 uiInsuran
   }
 }
 
-BOOLEAN CanSoldierExtendInsuranceContract(SOLDIERTYPE *pSoldier) {
+function CanSoldierExtendInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (CalculateSoldiersInsuranceContractLength(pSoldier) != 0)
     return TRUE;
   else
     return FALSE;
 }
 
-INT32 CalculateSoldiersInsuranceContractLength(SOLDIERTYPE *pSoldier) {
+function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iInsuranceContractLength = 0;
   UINT32 uiTimeRemainingOnSoldiersContract = GetTimeRemainingOnSoldiersContract(pSoldier);
 
@@ -1347,7 +1347,7 @@ INT32 CalculateSoldiersInsuranceContractLength(SOLDIERTYPE *pSoldier) {
   return iInsuranceContractLength;
 }
 
-INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier) {
+function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   UINT32 uiDayToStartInsurance = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
@@ -1361,7 +1361,7 @@ INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier) {
   return uiDayToStartInsurance;
 }
 
-BOOLEAN AreAnyAimMercsOnTeam() {
+function AreAnyAimMercsOnTeam(): BOOLEAN {
   INT16 sNextMercID = 0;
   BOOLEAN fIsThereAnyAimMercs = FALSE;
   SOLDIERTYPE *pSoldier = NULL;

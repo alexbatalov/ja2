@@ -20,7 +20,7 @@ BOOLEAN gfRadarCurrentGuyFlash = FALSE;
 
 MOUSE_REGION gRadarRegionSquadList[NUMBER_OF_SQUADS];
 
-BOOLEAN InitRadarScreen() {
+function InitRadarScreen(): BOOLEAN {
   // Add region for radar
   MSYS_DefineRegion(&gRadarRegion, RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
@@ -36,7 +36,7 @@ BOOLEAN InitRadarScreen() {
   return TRUE;
 }
 
-BOOLEAN LoadRadarScreenBitmap(CHAR8 *aFilename) {
+function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   CHAR8 zFilename[260];
   INT32 cnt;
@@ -84,7 +84,7 @@ BOOLEAN LoadRadarScreenBitmap(CHAR8 *aFilename) {
   return TRUE;
 }
 
-void ClearOutRadarMapImage(void) {
+function ClearOutRadarMapImage(): void {
   // If we have loaded, remove old one
   if (fImageLoaded) {
     DeleteVideoObjectFromIndex(gusRadarImage);
@@ -92,7 +92,7 @@ void ClearOutRadarMapImage(void) {
   }
 }
 
-void MoveRadarScreen() {
+function MoveRadarScreen(): void {
   // check if we are allowed to do anything?
   if (fRenderRadarScreen == FALSE) {
     return;
@@ -117,7 +117,7 @@ void MoveRadarScreen() {
   MSYS_AddRegion(&gRadarRegion);
 }
 
-void RadarRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT16 sRadarX, sRadarY;
 
   // check if we are allowed to do anything?
@@ -138,7 +138,7 @@ void RadarRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void RadarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT16 sRadarX, sRadarY;
 
   // check if we are allowed to do anything?
@@ -165,7 +165,7 @@ void RadarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void RenderRadarScreen() {
+function RenderRadarScreen(): void {
   INT16 sRadarTLX, sRadarTLY;
   INT16 sRadarBRX, sRadarBRY;
   INT16 sRadarCX, sRadarCY;
@@ -416,7 +416,7 @@ void RenderRadarScreen() {
   return;
 }
 
-void AdjustWorldCenterFromRadarCoords(INT16 sRadarX, INT16 sRadarY) {
+function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void {
   INT16 sScreenX, sScreenY;
   INT16 sTempX_W, sTempY_W;
   INT16 sNewCenterWorldX, sNewCenterWorldY;
@@ -455,22 +455,22 @@ void AdjustWorldCenterFromRadarCoords(INT16 sRadarX, INT16 sRadarY) {
   SetRenderCenter(sNewCenterWorldX, sNewCenterWorldY);
 }
 
-void DisableRadarScreenRender(void) {
+function DisableRadarScreenRender(): void {
   fRenderRadarScreen = FALSE;
   return;
 }
 
-void EnableRadarScreenRender(void) {
+function EnableRadarScreenRender(): void {
   fRenderRadarScreen = TRUE;
   return;
 }
 
-void ToggleRadarScreenRender(void) {
+function ToggleRadarScreenRender(): void {
   fRenderRadarScreen = !fRenderRadarScreen;
   return;
 }
 
-BOOLEAN CreateDestroyMouseRegionsForSquadList(void) {
+function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
   static BOOLEAN fCreated = FALSE;
   INT16 sCounter = 0;
@@ -540,7 +540,7 @@ BOOLEAN CreateDestroyMouseRegionsForSquadList(void) {
   return TRUE;
 }
 
-void RenderSquadList(void) {
+function RenderSquadList(): void {
   // show list of squads
   INT16 sCounter = 0;
   INT16 sX, sY;
@@ -588,7 +588,7 @@ void RenderSquadList(void) {
   }
 }
 
-void TacticalSquadListMvtCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iValue = -1;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
@@ -605,7 +605,7 @@ void TacticalSquadListMvtCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   return;
 }
 
-void TacticalSquadListBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function TacticalSquadListBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for team list info region
   INT32 iValue = 0;
 

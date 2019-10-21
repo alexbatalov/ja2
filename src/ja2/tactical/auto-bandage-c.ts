@@ -32,7 +32,7 @@ INT32 giAutoBandagesSoldierFaces[2 * MAX_CHARACTER_COUNT];
 // has the button for autobandage end been setup yet
 BOOLEAN fAutoEndBandageButtonCreated = FALSE;
 
-void BeginAutoBandage() {
+function BeginAutoBandage(): void {
   INT32 cnt;
   BOOLEAN fFoundAGuy = FALSE;
   SOLDIERTYPE *pSoldier;
@@ -81,7 +81,7 @@ void BeginAutoBandage() {
   }
 }
 
-void HandleAutoBandagePending() {
+function HandleAutoBandagePending(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -123,12 +123,12 @@ void HandleAutoBandagePending() {
   }
 }
 
-void SetAutoBandagePending(BOOLEAN fSet) {
+function SetAutoBandagePending(fSet: BOOLEAN): void {
   gTacticalStatus.fAutoBandagePending = fSet;
 }
 
 // Should we ask buddy ti auto bandage...?
-void ShouldBeginAutoBandage() {
+function ShouldBeginAutoBandage(): void {
   // If we are in combat, we con't...
   if (gTacticalStatus.uiFlags & INCOMBAT) {
     return;
@@ -145,7 +145,7 @@ void ShouldBeginAutoBandage() {
   }
 }
 
-BOOLEAN HandleAutoBandage() {
+function HandleAutoBandage(): BOOLEAN {
   InputAtom InputEvent;
 
   if (gTacticalStatus.fAutoBandageMode) {
@@ -200,7 +200,7 @@ BOOLEAN HandleAutoBandage() {
   return FALSE;
 }
 
-BOOLEAN CreateAutoBandageString(void) {
+function CreateAutoBandageString(): BOOLEAN {
   INT32 cnt;
   UINT8 ubDoctor[20], ubDoctors = 0;
   UINT32 uiDoctorNameStringLength = 1; // for end-of-string character
@@ -258,14 +258,14 @@ BOOLEAN CreateAutoBandageString(void) {
   return TRUE;
 }
 
-void SetAutoBandageComplete(void) {
+function SetAutoBandageComplete(): void {
   // this will set the fact autobandage is complete
   fAutoBandageComplete = TRUE;
 
   return;
 }
 
-void AutoBandage(BOOLEAN fStart) {
+function AutoBandage(fStart: BOOLEAN): void {
   SGPRect aRect;
   UINT8 ubLoop;
   INT32 cnt;
@@ -386,14 +386,14 @@ void AutoBandage(BOOLEAN fStart) {
   ResetAllMercSpeeds();
 }
 
-void BeginAutoBandageCallBack(UINT8 bExitValue) {
+function BeginAutoBandageCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     fRestoreBackgroundForMessageBox = TRUE;
     AutoBandage(TRUE);
   }
 }
 
-void SetUpAutoBandageUpdatePanel(void) {
+function SetUpAutoBandageUpdatePanel(): void {
   INT32 iNumberDoctoring = 0;
   INT32 iNumberPatienting = 0;
   INT32 iNumberOnTeam = 0;
@@ -439,7 +439,7 @@ void SetUpAutoBandageUpdatePanel(void) {
   return;
 }
 
-void DisplayAutoBandageUpdatePanel(void) {
+function DisplayAutoBandageUpdatePanel(): void {
   INT32 iNumberDoctors = 0, iNumberPatients = 0;
   INT32 iNumberDoctorsHigh = 0, iNumberPatientsHigh = 0;
   INT32 iNumberDoctorsWide = 0, iNumberPatientsWide = 0;
@@ -717,7 +717,7 @@ void DisplayAutoBandageUpdatePanel(void) {
   return;
 }
 
-void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY) {
+function CreateTerminateAutoBandageButton(sX: INT16, sY: INT16): void {
   // create the kill autobandage button
   if (fAutoEndBandageButtonCreated) {
     // button created, leave
@@ -754,7 +754,7 @@ void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY) {
   return;
 }
 
-void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function StopAutoBandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -767,7 +767,7 @@ void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   return;
 }
 
-void DestroyTerminateAutoBandageButton(void) {
+function DestroyTerminateAutoBandageButton(): void {
   // destroy the kill autobandage button
   if (fAutoEndBandageButtonCreated == FALSE) {
     // not around, don't destroy what ain't there
@@ -787,7 +787,7 @@ void DestroyTerminateAutoBandageButton(void) {
   return;
 }
 
-BOOLEAN AddFacesToAutoBandageBox(void) {
+function AddFacesToAutoBandageBox(): BOOLEAN {
   INT32 iCounter = 0;
   INT32 iNumberOfDoctors = 0;
   VOBJECT_DESC VObjectDesc;
@@ -840,7 +840,7 @@ BOOLEAN AddFacesToAutoBandageBox(void) {
   return TRUE;
 }
 
-BOOLEAN RemoveFacesForAutoBandage(void) {
+function RemoveFacesForAutoBandage(): BOOLEAN {
   INT32 iCounter = 0, iNumberOfDoctors = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -865,7 +865,7 @@ BOOLEAN RemoveFacesForAutoBandage(void) {
   return TRUE;
 }
 
-BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(INT32 iIndex, INT16 sCurrentXPosition, INT16 sCurrentYPosition) {
+function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): BOOLEAN {
   INT32 iStartY = 0;
   SOLDIERTYPE *pSoldier = NULL;
   INT32 iCounter = 0, iIndexCount = 0;

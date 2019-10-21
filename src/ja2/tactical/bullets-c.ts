@@ -5,7 +5,7 @@ const NUM_BULLET_SLOTS = 50;
 BULLET gBullets[NUM_BULLET_SLOTS];
 UINT32 guiNumBullets = 0;
 
-INT32 GetFreeBullet(void) {
+function GetFreeBullet(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
@@ -19,7 +19,7 @@ INT32 GetFreeBullet(void) {
   return -1;
 }
 
-void RecountBullets(void) {
+function RecountBullets(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumBullets - 1; (uiCount >= 0); uiCount--) {
@@ -31,7 +31,7 @@ void RecountBullets(void) {
   guiNumBullets = 0;
 }
 
-INT32 CreateBullet(UINT8 ubFirerID, BOOLEAN fFake, UINT16 usFlags) {
+function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 {
   INT32 iBulletIndex;
   BULLET *pBullet;
 
@@ -58,7 +58,7 @@ INT32 CreateBullet(UINT8 ubFirerID, BOOLEAN fFake, UINT16 usFlags) {
   return iBulletIndex;
 }
 
-void HandleBulletSpecialFlags(INT32 iBulletIndex) {
+function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
   BULLET *pBullet;
   ANITILE_PARAMS AniParams;
   FLOAT dX, dY;
@@ -107,7 +107,7 @@ void HandleBulletSpecialFlags(INT32 iBulletIndex) {
   }
 }
 
-void RemoveBullet(INT32 iBullet) {
+function RemoveBullet(iBullet: INT32): void {
   CHECKV(iBullet < NUM_BULLET_SLOTS);
 
   // decrease soldier's bullet count
@@ -142,7 +142,7 @@ void RemoveBullet(INT32 iBullet) {
   }
 }
 
-void LocateBullet(INT32 iBulletIndex) {
+function LocateBullet(iBulletIndex: INT32): void {
   if (gGameSettings.fOptions[TOPTION_SHOW_MISSES]) {
     // Check if a bad guy fired!
     if (gBullets[iBulletIndex].ubFirerID != NOBODY) {
@@ -160,7 +160,7 @@ void LocateBullet(INT32 iBulletIndex) {
   }
 }
 
-void UpdateBullets() {
+function UpdateBullets(): void {
   UINT32 uiCount;
   LEVELNODE *pNode;
   BOOLEAN fDeletedSome = FALSE;
@@ -250,7 +250,7 @@ void UpdateBullets() {
   }
 }
 
-BULLET *GetBulletPtr(INT32 iBullet) {
+function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
   BULLET *pBullet;
 
   CHECKN(iBullet < NUM_BULLET_SLOTS);
@@ -260,7 +260,7 @@ BULLET *GetBulletPtr(INT32 iBullet) {
   return pBullet;
 }
 
-void AddMissileTrail(BULLET *pBullet, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qCurrZ) {
+function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT): void {
   ANITILE_PARAMS AniParams;
 
   // If we are a small missle, don't show
@@ -302,7 +302,7 @@ void AddMissileTrail(BULLET *pBullet, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qC
   CreateAnimationTile(&AniParams);
 }
 
-BOOLEAN SaveBulletStructureToSaveGameFile(HWFILE hFile) {
+function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT16 usCnt;
   UINT32 uiBulletCount = 0;
@@ -337,7 +337,7 @@ BOOLEAN SaveBulletStructureToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadBulletStructureFromSavedGameFile(HWFILE hFile) {
+function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT16 usCnt;
 
@@ -374,14 +374,14 @@ BOOLEAN LoadBulletStructureFromSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void StopBullet(INT32 iBullet) {
+function StopBullet(iBullet: INT32): void {
   gBullets[iBullet].usFlags |= BULLET_STOPPED;
 
   RemoveStruct(gBullets[iBullet].sGridNo, BULLETTILE1);
   RemoveStruct(gBullets[iBullet].sGridNo, BULLETTILE2);
 }
 
-void DeleteAllBullets() {
+function DeleteAllBullets(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {

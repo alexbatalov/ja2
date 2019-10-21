@@ -1,13 +1,13 @@
 STRATEGIC_STATUS gStrategicStatus;
 
-void InitStrategicStatus(void) {
+function InitStrategicStatus(): void {
   memset(&gStrategicStatus, 0, sizeof(STRATEGIC_STATUS));
   // Add special non-zero start conditions here...
 
   InitArmyGunTypes();
 }
 
-BOOLEAN SaveStrategicStatusToSaveGameFile(HWFILE hFile) {
+function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // Save the Strategic Status structure to the saved game file
@@ -19,7 +19,7 @@ BOOLEAN SaveStrategicStatusToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadStrategicStatusFromSaveGameFile(HWFILE hFile) {
+function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   // Load the Strategic Status structure from the saved game file
@@ -33,7 +33,7 @@ BOOLEAN LoadStrategicStatusFromSaveGameFile(HWFILE hFile) {
 
 const DEATH_RATE_SEVERITY = 1.0f; // increase to make death rates higher for same # of deaths/time
 
-UINT8 CalcDeathRate(void) {
+function CalcDeathRate(): UINT8 {
   UINT32 uiDeathRate = 0;
 
   // give the player a grace period of 1 day
@@ -45,7 +45,7 @@ UINT8 CalcDeathRate(void) {
   return (UINT8)uiDeathRate;
 }
 
-void ModifyPlayerReputation(INT8 bRepChange) {
+function ModifyPlayerReputation(bRepChange: INT8): void {
   INT32 iNewBadRep;
 
   // subtract, so that a negative reputation change results in an increase in bad reputation
@@ -58,7 +58,7 @@ void ModifyPlayerReputation(INT8 bRepChange) {
   gStrategicStatus.ubBadReputation = (UINT8)iNewBadRep;
 }
 
-BOOLEAN MercThinksDeathRateTooHigh(UINT8 ubProfileID) {
+function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
   INT8 bDeathRateTolerance;
 
   bDeathRateTolerance = gMercProfiles[ubProfileID].bDeathRate;
@@ -78,7 +78,7 @@ BOOLEAN MercThinksDeathRateTooHigh(UINT8 ubProfileID) {
   }
 }
 
-BOOLEAN MercThinksBadReputationTooHigh(UINT8 ubProfileID) {
+function MercThinksBadReputationTooHigh(ubProfileID: UINT8): BOOLEAN {
   INT8 bRepTolerance;
 
   bRepTolerance = gMercProfiles[ubProfileID].bReputationTolerance;
@@ -99,7 +99,7 @@ BOOLEAN MercThinksBadReputationTooHigh(UINT8 ubProfileID) {
 }
 
 // only meaningful for already hired mercs
-BOOLEAN MercThinksHisMoraleIsTooLow(SOLDIERTYPE *pSoldier) {
+function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT8 bRepTolerance;
   INT8 bMoraleTolerance;
 
@@ -124,14 +124,14 @@ BOOLEAN MercThinksHisMoraleIsTooLow(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void UpdateLastDayOfPlayerActivity(UINT16 usDay) {
+function UpdateLastDayOfPlayerActivity(usDay: UINT16): void {
   if (usDay > gStrategicStatus.usLastDayOfPlayerActivity) {
     gStrategicStatus.usLastDayOfPlayerActivity = usDay;
     gStrategicStatus.ubNumberOfDaysOfInactivity = 0;
   }
 }
 
-UINT8 LackOfProgressTolerance(void) {
+function LackOfProgressTolerance(): UINT8 {
   if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
     // give an EXTRA day over normal
     return 7 - DIF_LEVEL_MEDIUM + gStrategicStatus.ubHighestProgress / 42;
@@ -141,7 +141,7 @@ UINT8 LackOfProgressTolerance(void) {
 }
 
 // called once per day in the morning, decides whether Enrico should send any new E-mails to the player
-void HandleEnricoEmail(void) {
+function HandleEnricoEmail(): void {
   UINT8 ubCurrentProgress = CurrentPlayerProgressPercentage();
   UINT8 ubHighestProgress = HighestPlayerProgressPercentage();
 
@@ -250,7 +250,7 @@ void HandleEnricoEmail(void) {
   gStrategicStatus.ubNumNewSectorsVisitedToday = __min(gStrategicStatus.ubNumNewSectorsVisitedToday, NEW_SECTORS_EQUAL_TO_ACTIVITY) / 3;
 }
 
-void TrackEnemiesKilled(UINT8 ubKilledHow, UINT8 ubSoldierClass) {
+function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
   INT8 bRankIndex;
 
   bRankIndex = SoldierClassToRankIndex(ubSoldierClass);
@@ -268,7 +268,7 @@ void TrackEnemiesKilled(UINT8 ubKilledHow, UINT8 ubSoldierClass) {
   }
 }
 
-INT8 SoldierClassToRankIndex(UINT8 ubSoldierClass) {
+function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
   INT8 bRankIndex = -1;
 
   // the soldier class defines are not in natural ascending order, elite comes before army!
@@ -291,7 +291,7 @@ INT8 SoldierClassToRankIndex(UINT8 ubSoldierClass) {
   return bRankIndex;
 }
 
-UINT8 RankIndexToSoldierClass(UINT8 ubRankIndex) {
+function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
   UINT8 ubSoldierClass = 0;
 
   Assert(ubRankIndex < NUM_ENEMY_RANKS);

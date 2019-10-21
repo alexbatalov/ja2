@@ -39,7 +39,7 @@ CHAR8 *szMusicList[NUM_MUSIC] = {
 BOOLEAN gfForceMusicToTense = FALSE;
 BOOLEAN gfDontRestartSong = FALSE;
 
-BOOLEAN NoEnemiesInSight() {
+function NoEnemiesInSight(): BOOLEAN {
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
 
@@ -67,7 +67,7 @@ BOOLEAN NoEnemiesInSight() {
 //	Returns:	TRUE if the music was started, FALSE if an error occurred
 //
 //********************************************************************************
-BOOLEAN MusicPlay(UINT32 uiNum) {
+function MusicPlay(uiNum: UINT32): BOOLEAN {
   SOUNDPARMS spParms;
 
   if (fMusicPlaying)
@@ -103,7 +103,7 @@ BOOLEAN MusicPlay(UINT32 uiNum) {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-BOOLEAN MusicSetVolume(UINT32 uiVolume) {
+function MusicSetVolume(uiVolume: UINT32): BOOLEAN {
   INT32 uiOldMusicVolume = uiMusicVolume;
 
   uiMusicVolume = __min(uiVolume, 127);
@@ -138,7 +138,7 @@ BOOLEAN MusicSetVolume(UINT32 uiVolume) {
 //	Returns:	TRUE if the volume was set, FALSE if an error occurred
 //
 //********************************************************************************
-UINT32 MusicGetVolume(void) {
+function MusicGetVolume(): UINT32 {
   return uiMusicVolume;
 }
 
@@ -150,7 +150,7 @@ UINT32 MusicGetVolume(void) {
 //	Returns:	TRUE if the music was stopped, FALSE if an error occurred
 //
 //********************************************************************************
-BOOLEAN MusicStop(void) {
+function MusicStop(): BOOLEAN {
   if (uiMusicHandle != NO_SAMPLE) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music Stop %d %d", uiMusicHandle, gubMusicMode));
 
@@ -173,7 +173,7 @@ BOOLEAN MusicStop(void) {
 //	Returns:	TRUE if the music has begun fading, FALSE if an error occurred
 //
 //********************************************************************************
-BOOLEAN MusicFadeOut(void) {
+function MusicFadeOut(): BOOLEAN {
   if (uiMusicHandle != NO_SAMPLE) {
     fMusicFadingOut = TRUE;
     return TRUE;
@@ -189,7 +189,7 @@ BOOLEAN MusicFadeOut(void) {
 //	Returns:	TRUE if the music has begun fading in, FALSE if an error occurred
 //
 //********************************************************************************
-BOOLEAN MusicFadeIn(void) {
+function MusicFadeIn(): BOOLEAN {
   if (uiMusicHandle != NO_SAMPLE) {
     fMusicFadingIn = TRUE;
     return TRUE;
@@ -206,7 +206,7 @@ BOOLEAN MusicFadeIn(void) {
 //	Returns:	TRUE always
 //
 //********************************************************************************
-BOOLEAN MusicPoll(BOOLEAN fForce) {
+function MusicPoll(fForce: BOOLEAN): BOOLEAN {
   INT32 iVol;
 
   SoundServiceStreams();
@@ -272,7 +272,7 @@ BOOLEAN MusicPoll(BOOLEAN fForce) {
   return TRUE;
 }
 
-BOOLEAN SetMusicMode(UINT8 ubMusicMode) {
+function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
   static INT8 bPreviousMode = 0;
 
   // OK, check if we want to restore
@@ -310,7 +310,7 @@ BOOLEAN SetMusicMode(UINT8 ubMusicMode) {
   return TRUE;
 }
 
-BOOLEAN StartMusicBasedOnMode() {
+function StartMusicBasedOnMode(): BOOLEAN {
   static BOOLEAN fFirstTime = TRUE;
 
   if (fFirstTime) {
@@ -400,18 +400,18 @@ BOOLEAN StartMusicBasedOnMode() {
   return TRUE;
 }
 
-void MusicStopCallback(void *pData) {
+function MusicStopCallback(pData: Pointer<void>): void {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music EndCallback %d %d", uiMusicHandle, gubMusicMode));
 
   gfMusicEnded = TRUE;
   uiMusicHandle = NO_SAMPLE;
 }
 
-void SetMusicFadeSpeed(INT8 bFadeSpeed) {
+function SetMusicFadeSpeed(bFadeSpeed: INT8): void {
   gbFadeSpeed = bFadeSpeed;
 }
 
-void FadeMusicForXSeconds(UINT32 uiDelay) {
+function FadeMusicForXSeconds(uiDelay: UINT32): void {
   INT16 sNumTimeSteps, sNumVolumeSteps;
 
   // get # time steps in delay....
@@ -424,7 +424,7 @@ void FadeMusicForXSeconds(UINT32 uiDelay) {
   SetMusicFadeSpeed((INT8)sNumVolumeSteps);
 }
 
-void DoneFadeOutDueToEndMusic(void) {
+function DoneFadeOutDueToEndMusic(): void {
   // Quit game....
   InternalLeaveTacticalScreen(MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );

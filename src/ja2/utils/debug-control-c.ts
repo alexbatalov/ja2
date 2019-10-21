@@ -1,4 +1,4 @@
-void LiveMessage(CHAR8 *strMessage) {
+function LiveMessage(strMessage: Pointer<CHAR8>): void {
   FILE *OutFile;
 
   if ((OutFile = fopen("Log.txt", "a+t")) != NULL) {

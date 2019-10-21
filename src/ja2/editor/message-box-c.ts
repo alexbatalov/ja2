@@ -7,7 +7,7 @@ SGPRect MsgBoxRect;
 BOOLEAN gfMessageBoxResult = FALSE;
 UINT8 gubMessageBoxStatus = MESSAGEBOX_NONE;
 
-void CreateMessageBox(UINT16 *wzString) {
+function CreateMessageBox(wzString: Pointer<UINT16>): void {
   INT16 sPixLen;
   INT16 sStartX, sStartY;
 
@@ -42,7 +42,7 @@ void CreateMessageBox(UINT16 *wzString) {
   gubMessageBoxStatus = MESSAGEBOX_WAIT;
 }
 
-BOOLEAN MessageBoxHandled() {
+function MessageBoxHandled(): BOOLEAN {
   InputAtom DummyEvent;
 
   while (DequeueEvent(&DummyEvent)) {
@@ -76,7 +76,7 @@ BOOLEAN MessageBoxHandled() {
   return gubMessageBoxStatus == MESSAGEBOX_DONE;
 }
 
-void RemoveMessageBox() {
+function RemoveMessageBox(): void {
   FreeMouseCursor();
   RemoveButton(iMsgBoxCancel);
   RemoveButton(iMsgBoxOk);
@@ -90,7 +90,7 @@ void RemoveMessageBox() {
 //	Quick Message Box button callback functions.
 //----------------------------------------------------------------------------------------------
 
-void MsgBoxOkClkCallback(GUI_BUTTON *butn, INT32 reason) {
+function MsgBoxOkClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     butn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -99,7 +99,7 @@ void MsgBoxOkClkCallback(GUI_BUTTON *butn, INT32 reason) {
   }
 }
 
-void MsgBoxCnclClkCallback(GUI_BUTTON *butn, INT32 reason) {
+function MsgBoxCnclClkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     butn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

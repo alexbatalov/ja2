@@ -3,7 +3,7 @@ extern UINT8 gubWaitingForAllMercsToExitCode;
 
 const NEXT_TILE_CHECK_DELAY = 700;
 
-void SetDelayedTileWaiting(SOLDIERTYPE *pSoldier, INT16 sCauseGridNo, INT8 bValue) {
+function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {
   UINT8 ubPerson;
 
   // Cancel AI Action
@@ -34,7 +34,7 @@ void SetDelayedTileWaiting(SOLDIERTYPE *pSoldier, INT16 sCauseGridNo, INT8 bValu
   }
 }
 
-void SetFinalTile(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fGivenUp) {
+function SetFinalTile(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fGivenUp: BOOLEAN): void {
   // OK, If we were waiting for stuff, do it here...
 
   // ATE: Disabled stuff below, made obsolete by timeout...
@@ -52,7 +52,7 @@ void SetFinalTile(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fGivenUp) {
   EVENT_StopMerc(pSoldier, pSoldier->sGridNo, pSoldier->bDirection);
 }
 
-void MarkMovementReserved(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function MarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   // Check if we have one reserrved already, and free it first!
   if (pSoldier->sReservedMovementGridNo != NOWHERE) {
     UnMarkMovementReserved(pSoldier);
@@ -67,7 +67,7 @@ void MarkMovementReserved(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   pSoldier->sReservedMovementGridNo = sGridNo;
 }
 
-void UnMarkMovementReserved(SOLDIERTYPE *pSoldier) {
+function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sNewGridNo;
 
   sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(pSoldier->dYPos, pSoldier->dXPos);
@@ -86,7 +86,7 @@ void UnMarkMovementReserved(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 TileIsClear(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT8 bLevel) {
+function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, bLevel: INT8): INT8 {
   UINT8 ubPerson;
   INT16 sTempDestGridNo;
   INT16 sNewGridNo;
@@ -211,7 +211,7 @@ INT8 TileIsClear(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT8 bLe
   return MOVE_TILE_CLEAR;
 }
 
-BOOLEAN HandleNextTile(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, INT16 sFinalDestTile) {
+function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): BOOLEAN {
   INT8 bBlocked;
   INT16 bOverTerrainType;
 
@@ -305,7 +305,7 @@ BOOLEAN HandleNextTile(SOLDIERTYPE *pSoldier, INT8 bDirection, INT16 sGridNo, IN
   return TRUE;
 }
 
-BOOLEAN HandleNextTileWaiting(SOLDIERTYPE *pSoldier) {
+function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Buddy is waiting to continue his path
   INT8 bBlocked, bPathBlocked;
   INT16 sCost;
@@ -512,7 +512,7 @@ BOOLEAN HandleNextTileWaiting(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN TeleportSoldier(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fForce) {
+function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: BOOLEAN): BOOLEAN {
   INT16 sX, sY;
 
   // Check dest...
@@ -548,7 +548,7 @@ BOOLEAN TeleportSoldier(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fForce) {
 }
 
 // Swaps 2 soldier positions...
-void SwapMercPositions(SOLDIERTYPE *pSoldier1, SOLDIERTYPE *pSoldier2) {
+function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>): void {
   INT16 sGridNo1, sGridNo2;
 
   // OK, save positions...
@@ -571,7 +571,7 @@ void SwapMercPositions(SOLDIERTYPE *pSoldier1, SOLDIERTYPE *pSoldier2) {
   }
 }
 
-BOOLEAN CanExchangePlaces(SOLDIERTYPE *pSoldier1, SOLDIERTYPE *pSoldier2, BOOLEAN fShow) {
+function CanExchangePlaces(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>, fShow: BOOLEAN): BOOLEAN {
   // NB checks outside of this function
   if (EnoughPoints(pSoldier1, AP_EXCHANGE_PLACES, 0, fShow)) {
     if (EnoughPoints(pSoldier2, AP_EXCHANGE_PLACES, 0, fShow)) {

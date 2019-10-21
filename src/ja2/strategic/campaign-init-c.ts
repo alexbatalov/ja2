@@ -1,6 +1,6 @@
 UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoTail = NULL;
 
-UNDERGROUND_SECTORINFO *NewUndergroundNode(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
+function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
   UNDERGROUND_SECTORINFO *curr;
   curr = (UNDERGROUND_SECTORINFO *)MemAlloc(sizeof(UNDERGROUND_SECTORINFO));
   AssertMsg(curr, "Failed to create an underground sector info node.");
@@ -21,7 +21,7 @@ UNDERGROUND_SECTORINFO *NewUndergroundNode(UINT8 ubSectorX, UINT8 ubSectorY, UIN
 }
 
 // setup which know facilities are in which cities
-void InitKnowFacilitiesFlags() {
+function InitKnowFacilitiesFlags(): void {
   SECTORINFO *pSector;
 
   // Cambria hospital
@@ -57,7 +57,7 @@ void InitKnowFacilitiesFlags() {
   return;
 }
 
-void InitMiningLocations() {
+function InitMiningLocations(): void {
   SECTORINFO *pSector;
   // Set up mining sites
 
@@ -88,7 +88,7 @@ void InitMiningLocations() {
 }
 
 // Mobile groups are handled separately from sectors, because they are on the move.
-void GeneratePatrolGroups() {
+function GeneratePatrolGroups(): void {
   GROUP *pGroup;
   UINT8 ubNumTroops;
   ubNumTroops = (UINT8)(3 + gGameOptions.ubDifficultyLevel + Random(3));
@@ -133,7 +133,7 @@ void GeneratePatrolGroups() {
   pGroup->ubTransportationMask = CAR;
 }
 
-void TrashUndergroundSectorInfo() {
+function TrashUndergroundSectorInfo(): void {
   UNDERGROUND_SECTORINFO *curr;
   while (gpUndergroundSectorInfoHead) {
     curr = gpUndergroundSectorInfoHead;
@@ -148,7 +148,7 @@ void TrashUndergroundSectorInfo() {
 // contains the network of cave connections critical for strategic creature spreading, as we can't
 // know how the levels connect without loading the maps.  This is completely hardcoded, and any
 // changes to the maps, require changes accordingly.
-void BuildUndergroundSectorInfoList() {
+function BuildUndergroundSectorInfoList(): void {
   UNDERGROUND_SECTORINFO *curr;
   SECTORINFO *pSector = NULL;
 
@@ -307,7 +307,7 @@ void BuildUndergroundSectorInfoList() {
 // This is the function that is called only once, when the player begins a new game.  This will calculate
 // starting numbers of the queen's army in various parts of the map, which will vary from campaign to campaign.
 // This is also highly effected by the game's difficulty setting.
-void InitNewCampaign() {
+function InitNewCampaign(): void {
   // First clear all the sector information of all enemy existance.  Conveniently, the
   // ubGroupType is also cleared, which is perceived to be an empty group.
   memset(&SectorInfo, 0, sizeof(SECTORINFO) * 256);

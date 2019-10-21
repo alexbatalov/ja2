@@ -2,7 +2,7 @@
 INT32 giIMPAttributeFinishButtonImage[2];
 INT32 giIMPAttributeFinishButton[2];
 
-void EnterIMPAttributeFinish(void) {
+function EnterIMPAttributeFinish(): void {
   // create the needed buttons
   CreateAttributeFinishButtons();
 
@@ -12,7 +12,7 @@ void EnterIMPAttributeFinish(void) {
   return;
 }
 
-void RenderIMPAttributeFinish(void) {
+function RenderIMPAttributeFinish(): void {
   // render background
   RenderProfileBackGround();
 
@@ -22,18 +22,18 @@ void RenderIMPAttributeFinish(void) {
   return;
 }
 
-void ExitIMPAttributeFinish(void) {
+function ExitIMPAttributeFinish(): void {
   // destroy the buttons for this screen
   DestroyAttributeFinishButtons();
 
   return;
 }
 
-void HandleIMPAttributeFinish(void) {
+function HandleIMPAttributeFinish(): void {
   return;
 }
 
-void CreateAttributeFinishButtons(void) {
+function CreateAttributeFinishButtons(): void {
   // this procedure will create the buttons needed for the attribute finish screen
 
   // the yes button
@@ -59,7 +59,7 @@ void CreateAttributeFinishButtons(void) {
   return;
 }
 
-void DestroyAttributeFinishButtons(void) {
+function DestroyAttributeFinishButtons(): void {
   // this procedure will destroy the buttons for the attribute finish screen
 
   // the yes  button
@@ -73,7 +73,7 @@ void DestroyAttributeFinishButtons(void) {
   return;
 }
 
-void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -100,7 +100,7 @@ void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

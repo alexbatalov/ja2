@@ -12,7 +12,7 @@ extern INT16 DirIncrementer[8];
 
 // this define should go in soldier control.h
 
-void LoadWeaponIfNeeded(SOLDIERTYPE *pSoldier) {
+function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT16 usInHand;
   INT8 bPayloadPocket;
 
@@ -58,7 +58,7 @@ void LoadWeaponIfNeeded(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
+function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKTYPE>): void {
   UINT32 uiLoop;
   INT32 iAttackValue;
   INT32 iThreatValue;
@@ -270,7 +270,7 @@ void CalcBestShot(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestShot) {
 }
 
 // JA2Gold: added
-BOOLEAN CloseEnoughForGrenadeToss(INT16 sGridNo, INT16 sGridNo2) {
+function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
   INT16 sTempGridNo;
   INT8 bDirection;
   INT16 sXPos, sYPos, sXPos2, sYPos2;
@@ -322,7 +322,7 @@ BOOLEAN CloseEnoughForGrenadeToss(INT16 sGridNo, INT16 sGridNo2) {
   return TRUE;
 }
 
-void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
+function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
   // September 9, 1998: added code for LAWs (CJC)
   UINT8 ubLoop, ubLoop2;
   INT32 iAttackValue;
@@ -875,7 +875,7 @@ void CalcBestThrow(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   }
 }
 
-void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAttack) {
+function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: BOOLEAN): void {
   UINT32 uiLoop;
   INT32 iAttackValue;
   INT32 iThreatValue, iHitRate, iBestHitRate, iPercentBetter, iEstDamage;
@@ -1060,7 +1060,7 @@ void CalcBestStab(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab, BOOLEAN fBladeAt
   pSoldier->usUIMovementMode = usTrueMovementMode;
 }
 
-void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab) {
+function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>): void {
   UINT32 uiLoop;
   INT32 iAttackValue;
   INT32 iThreatValue, iHitRate, iBestHitRate, iEstDamage;
@@ -1191,7 +1191,7 @@ void CalcTentacleAttack(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestStab) {
   }
 }
 
-UINT8 NumMercsCloseTo(INT16 sGridNo, UINT8 ubMaxDist) {
+function NumMercsCloseTo(sGridNo: INT16, ubMaxDist: UINT8): UINT8 {
   INT8 bNumber = 0;
   UINT32 uiLoop;
   SOLDIERTYPE *pSoldier;
@@ -1209,7 +1209,7 @@ UINT8 NumMercsCloseTo(INT16 sGridNo, UINT8 ubMaxDist) {
   return bNumber;
 }
 
-INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ubChanceToHit) {
+function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8): INT32 {
   INT32 iRange, iMaxRange, iPowerLost;
   INT32 iDamage;
   UINT8 ubBonus;
@@ -1323,7 +1323,7 @@ INT32 EstimateShotDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ub
   return iDamage;
 }
 
-INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIERTYPE *pOpponent, INT16 sGridno) {
+function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, pOpponent: Pointer<SOLDIERTYPE>, sGridno: INT16): INT32 {
   UINT8 ubExplosiveIndex;
   INT32 iExplosDamage, iBreathDamage, iArmourAmount, iDamage = 0;
   INT8 bSlot;
@@ -1398,7 +1398,7 @@ INT32 EstimateThrowDamage(SOLDIERTYPE *pSoldier, UINT8 ubItemPos, SOLDIERTYPE *p
   return iDamage;
 }
 
-INT32 EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ubChanceToHit, BOOLEAN fBladeAttack) {
+function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8, fBladeAttack: BOOLEAN): INT32 {
   INT32 iImpact, iFluke, iBonus;
 
   UINT16 usItem;
@@ -1446,7 +1446,7 @@ INT32 EstimateStabDamage(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, UINT8 ub
   return iImpact;
 }
 
-INT8 TryToReload(SOLDIERTYPE *pSoldier) {
+function TryToReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bSlot;
   WEAPONTYPE *pWeapon;
 
@@ -1484,7 +1484,7 @@ INT8 TryToReloadLauncher( SOLDIERTYPE * pSoldier )
 }
 */
 
-INT8 CanNPCAttack(SOLDIERTYPE *pSoldier) {
+function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bCanAttack;
   INT8 bWeaponIn;
 
@@ -1524,7 +1524,7 @@ INT8 CanNPCAttack(SOLDIERTYPE *pSoldier) {
   return bCanAttack;
 }
 
-void CheckIfTossPossible(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
+function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
   UINT8 ubMinAPcost;
 
   if (TANK(pSoldier)) {
@@ -1570,7 +1570,7 @@ void CheckIfTossPossible(SOLDIERTYPE *pSoldier, ATTACKTYPE *pBestThrow) {
   }
 }
 
-INT8 CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLevel) {
+function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT8 {
   // return the number of people next to this guy for burst-spread purposes
 
   INT8 bDirLoop, bDir, bCheckDir, bTargetIndex, bTargets;
@@ -1685,7 +1685,7 @@ INT8 CountAdjacentSpreadTargets(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 
   return bTargets - 1;
 }
 
-INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLevel) {
+function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT16 {
   INT8 bDirLoop, bDir, bCheckDir, bTargetIndex = 0, bLoop, bTargets;
   INT16 sTarget;
   SOLDIERTYPE *pTarget, *pTargets[5] = { NULL };
@@ -1835,7 +1835,7 @@ INT16 CalcSpreadBurst(SOLDIERTYPE *pSoldier, INT16 sFirstTarget, INT8 bTargetLev
   return sFirstTarget;
 }
 
-INT16 AdvanceToFiringRange(SOLDIERTYPE *pSoldier, INT16 sClosestOpponent) {
+function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpponent: INT16): INT16 {
   // see how far we can go down a path and still shoot
 
   INT8 bAttackCost, bTrueActionPoints;

@@ -384,7 +384,7 @@ UINT8 AmbientVols[NUM_AMBIENTS] = {
 SOUNDPARMS gDelayedSoundParms;
 UINT32 guiDelayedSoundNum;
 
-BOOLEAN InitJA2Sound() {
+function InitJA2Sound(): BOOLEAN {
   // UINT32 uiCount;
 
   // for(uiCount=0; uiCount < NUM_SAMPLES; uiCount++)
@@ -395,7 +395,7 @@ BOOLEAN InitJA2Sound() {
   return TRUE;
 }
 
-BOOLEAN ShutdownJA2Sound() {
+function ShutdownJA2Sound(): BOOLEAN {
   // UINT32 uiCount;
 
   SoundStopAll();
@@ -409,7 +409,7 @@ BOOLEAN ShutdownJA2Sound() {
   return TRUE;
 }
 
-UINT32 PlayJA2Sample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   SOUNDPARMS spParms;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
@@ -423,7 +423,7 @@ UINT32 PlayJA2Sample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoop
   return SoundPlay(szSoundEffects[usNum], &spParms);
 }
 
-UINT32 PlayJA2StreamingSample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   SOUNDPARMS spParms;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
@@ -437,7 +437,7 @@ UINT32 PlayJA2StreamingSample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT
   return SoundPlayStreamedFile(szSoundEffects[usNum], &spParms);
 }
 
-UINT32 PlayJA2SampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   SOUNDPARMS spParms;
@@ -453,7 +453,7 @@ UINT32 PlayJA2SampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UI
   return SoundPlay(szFileName, &spParms);
 }
 
-UINT32 PlayJA2StreamingSampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan, SOUND_STOP_CALLBACK EndsCallback) {
+function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
   SOUNDPARMS spParms;
@@ -470,7 +470,7 @@ UINT32 PlayJA2StreamingSampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubV
   return SoundPlayStreamedFile(szFileName, &spParms);
 }
 
-UINT32 PlayJA2Ambient(UINT32 usNum, UINT32 ubVolume, UINT32 ubLoops) {
+function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   SOUNDPARMS spParms;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
@@ -482,7 +482,7 @@ UINT32 PlayJA2Ambient(UINT32 usNum, UINT32 ubVolume, UINT32 ubLoops) {
   return SoundPlay(szAmbientEffects[usNum], &spParms);
 }
 
-UINT32 PlayJA2AmbientRandom(UINT32 usNum, UINT32 uiTimeMin, UINT32 uiTimeMax) {
+function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT32): UINT32 {
   RANDOMPARMS rpParms;
 
   memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
@@ -496,7 +496,7 @@ UINT32 PlayJA2AmbientRandom(UINT32 usNum, UINT32 uiTimeMin, UINT32 uiTimeMax) {
   return SoundPlayRandom(szAmbientEffects[usNum], &rpParms);
 }
 
-UINT32 PlaySoldierJA2Sample(UINT16 usID, UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan, BOOLEAN fCheck) {
+function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: BOOLEAN): UINT32 {
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // CHECK IF GUY IS ON SCREEN BEFORE PLAYING!
     if ((MercPtrs[usID]->bVisible != -1) || !fCheck) {
@@ -507,31 +507,31 @@ UINT32 PlaySoldierJA2Sample(UINT16 usID, UINT32 usNum, UINT32 usRate, UINT32 ubV
   return 0;
 }
 
-void SetSpeechVolume(UINT32 uiNewVolume) {
+function SetSpeechVolume(uiNewVolume: UINT32): void {
   guiSpeechVolume = __min(uiNewVolume, 127);
 }
 
-UINT32 GetSpeechVolume() {
+function GetSpeechVolume(): UINT32 {
   return guiSpeechVolume;
 }
 
-void SetSoundEffectsVolume(UINT32 uiNewVolume) {
+function SetSoundEffectsVolume(uiNewVolume: UINT32): void {
   guiSoundEffectsVolume = __min(uiNewVolume, 127);
 }
 
-UINT32 GetSoundEffectsVolume() {
+function GetSoundEffectsVolume(): UINT32 {
   return guiSoundEffectsVolume;
 }
 
-UINT32 CalculateSpeechVolume(UINT32 uiVolume) {
+function CalculateSpeechVolume(uiVolume: UINT32): UINT32 {
   return (UINT32)((uiVolume / (FLOAT)HIGHVOLUME) * guiSpeechVolume + .5);
 }
 
-UINT32 CalculateSoundEffectsVolume(UINT32 uiVolume) {
+function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
   return (UINT32)((uiVolume / (FLOAT)HIGHVOLUME) * guiSoundEffectsVolume + .5);
 }
 
-INT8 SoundDir(INT16 sGridNo) {
+function SoundDir(sGridNo: INT16): INT8 {
   INT16 sWorldX, sWorldY;
   INT16 sScreenX, sScreenY;
   INT16 sMiddleX;
@@ -575,7 +575,7 @@ INT8 SoundDir(INT16 sGridNo) {
     return MIDDLE;
 }
 
-INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
+function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   INT16 sWorldX, sWorldY;
   INT16 sScreenX, sScreenY;
   INT16 sMiddleX, sMiddleY;
@@ -614,7 +614,7 @@ INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
   return bInitialVolume;
 }
 
-void PlayDelayedJA2Sample(UINT32 uiDelay, UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
   memset(&gDelayedSoundParms, 0xff, sizeof(SOUNDPARMS));
 
   gDelayedSoundParms.uiSpeed = usRate;
@@ -631,7 +631,7 @@ void PlayDelayedJA2Sample(UINT32 uiDelay, UINT32 usNum, UINT32 usRate, UINT32 ub
   SetCustomizableTimerCallbackAndDelay(uiDelay, DelayedSoundTimerCallback, FALSE);
 }
 
-void DelayedSoundTimerCallback(void) {
+function DelayedSoundTimerCallback(): void {
   SoundPlay(szSoundEffects[guiDelayedSoundNum], &gDelayedSoundParms);
 }
 
@@ -658,7 +658,7 @@ POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];
 UINT32 guiNumPositionSnds = 0;
 BOOLEAN gfPositionSoundsActive = FALSE;
 
-INT32 GetFreePositionSnd(void) {
+function GetFreePositionSnd(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumPositionSnds; uiCount++) {
@@ -672,7 +672,7 @@ INT32 GetFreePositionSnd(void) {
   return -1;
 }
 
-void RecountPositionSnds(void) {
+function RecountPositionSnds(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumPositionSnds - 1; (uiCount >= 0); uiCount--) {
@@ -683,7 +683,7 @@ void RecountPositionSnds(void) {
   }
 }
 
-INT32 NewPositionSnd(INT16 sGridNo, UINT32 uiFlags, UINT32 uiData, UINT32 iSoundToPlay) {
+function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundToPlay: UINT32): INT32 {
   POSITIONSND *pPositionSnd;
   INT32 iPositionSndIndex;
 
@@ -713,7 +713,7 @@ INT32 NewPositionSnd(INT16 sGridNo, UINT32 uiFlags, UINT32 uiData, UINT32 iSound
   return iPositionSndIndex;
 }
 
-void DeletePositionSnd(INT32 iPositionSndIndex) {
+function DeletePositionSnd(iPositionSndIndex: INT32): void {
   POSITIONSND *pPositionSnd;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
@@ -733,7 +733,7 @@ void DeletePositionSnd(INT32 iPositionSndIndex) {
   }
 }
 
-void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo) {
+function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
   POSITIONSND *pPositionSnd;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
@@ -745,7 +745,7 @@ void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo) {
   }
 }
 
-void SetPositionSndsActive() {
+function SetPositionSndsActive(): void {
   UINT32 cnt;
   POSITIONSND *pPositionSnd;
 
@@ -766,7 +766,7 @@ void SetPositionSndsActive() {
   }
 }
 
-void SetPositionSndsInActive() {
+function SetPositionSndsInActive(): void {
   UINT32 cnt;
   POSITIONSND *pPositionSnd;
 
@@ -787,7 +787,7 @@ void SetPositionSndsInActive() {
   }
 }
 
-INT8 PositionSoundDir(INT16 sGridNo) {
+function PositionSoundDir(sGridNo: INT16): INT8 {
   INT16 sWorldX, sWorldY;
   INT16 sScreenX, sScreenY;
   INT16 sMiddleX;
@@ -831,7 +831,7 @@ INT8 PositionSoundDir(INT16 sGridNo) {
     return MIDDLE;
 }
 
-INT8 PositionSoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
+function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   INT16 sWorldX, sWorldY;
   INT16 sScreenX, sScreenY;
   INT16 sMiddleX, sMiddleY;
@@ -878,7 +878,7 @@ INT8 PositionSoundVolume(INT8 bInitialVolume, INT16 sGridNo) {
   return (INT8)(bInitialVolume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
-void SetPositionSndsVolumeAndPanning() {
+function SetPositionSndsVolumeAndPanning(): void {
   UINT32 cnt;
   POSITIONSND *pPositionSnd;
   INT8 bVolume, bPan;

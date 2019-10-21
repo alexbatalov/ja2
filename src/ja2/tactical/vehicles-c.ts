@@ -117,7 +117,7 @@ const COST_PER_TIRE_HIT = 5;
 // void RemoveSoldierFromVehicleBetweenSectors( pSoldier, iId );
 
 // Loop through and create a few soldier squad ID's for vehicles ( max # 3 )
-void InitVehicles() {
+function InitVehicles(): void {
   INT32 cnt;
   GROUP *pGroup = NULL;
 
@@ -131,7 +131,7 @@ void InitVehicles() {
   }
 }
 
-void SetVehicleValuesIntoSoldierType(SOLDIERTYPE *pVehicle) {
+function SetVehicleValuesIntoSoldierType(pVehicle: Pointer<SOLDIERTYPE>): void {
   wcscpy(pVehicle->name, zVehicleName[pVehicleList[pVehicle->bVehicleID].ubVehicleType]);
 
   pVehicle->ubProfile = pVehicleList[pVehicle->bVehicleID].ubProfileID;
@@ -143,7 +143,7 @@ void SetVehicleValuesIntoSoldierType(SOLDIERTYPE *pVehicle) {
   pVehicle->ubWhatKindOfMercAmI = MERC_TYPE__VEHICLE;
 }
 
-INT32 AddVehicleToList(INT16 sMapX, INT16 sMapY, INT16 sGridNo, UINT8 ubType) {
+function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UINT8): INT32 {
   // insert this vehicle into the list
   // how many vehicles are there?
   INT32 iVehicleIdValue = -1;
@@ -247,7 +247,7 @@ INT32 AddVehicleToList(INT16 sMapX, INT16 sMapY, INT16 sGridNo, UINT8 ubType) {
   return iVehicleIdValue;
 }
 
-BOOLEAN RemoveVehicleFromList(INT32 iId) {
+function RemoveVehicleFromList(iId: INT32): BOOLEAN {
   // remove this vehicle from the list
 
   // error check
@@ -266,7 +266,7 @@ BOOLEAN RemoveVehicleFromList(INT32 iId) {
   return TRUE;
 }
 
-void ClearOutVehicleList(void) {
+function ClearOutVehicleList(): void {
   INT32 iCounter;
 
   // empty out the vehicle list
@@ -298,7 +298,7 @@ void ClearOutVehicleList(void) {
   */
 }
 
-BOOLEAN IsThisVehicleAccessibleToSoldier(SOLDIERTYPE *pSoldier, INT32 iId) {
+function IsThisVehicleAccessibleToSoldier(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEAN {
   if (pSoldier == NULL) {
     return FALSE;
   }
@@ -330,7 +330,7 @@ BOOLEAN IsThisVehicleAccessibleToSoldier(SOLDIERTYPE *pSoldier, INT32 iId) {
   return TRUE;
 }
 
-BOOLEAN AddSoldierToVehicle(SOLDIERTYPE *pSoldier, INT32 iId) {
+function AddSoldierToVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEAN {
   INT32 iCounter = 0;
   SOLDIERTYPE *pVehicleSoldier = NULL;
 
@@ -466,7 +466,7 @@ BOOLEAN AddSoldierToVehicle(SOLDIERTYPE *pSoldier, INT32 iId) {
   return FALSE;
 }
 
-void SetSoldierExitVehicleInsertionData(SOLDIERTYPE *pSoldier, INT32 iId) {
+function SetSoldierExitVehicleInsertionData(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): void {
   if (iId == iHelicopterVehicleId && !pSoldier->bInSector) {
     if (pSoldier->sSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || pSoldier->sSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || pSoldier->bSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // Not anything different here - just use center gridno......
@@ -479,7 +479,7 @@ void SetSoldierExitVehicleInsertionData(SOLDIERTYPE *pSoldier, INT32 iId) {
   }
 }
 
-BOOLEAN RemoveSoldierFromVehicle(SOLDIERTYPE *pSoldier, INT32 iId) {
+function RemoveSoldierFromVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): BOOLEAN {
   // remove soldier from vehicle
   INT32 iCounter = 0;
   BOOLEAN fSoldierLeft = FALSE;
@@ -697,7 +697,7 @@ void RemoveSoldierFromVehicleBetweenSectors( pSoldier, iId )
 }
 */
 
-BOOLEAN MoveCharactersPathToVehicle(SOLDIERTYPE *pSoldier) {
+function MoveCharactersPathToVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 iId;
   // valid soldier?
   if (pSoldier == NULL) {
@@ -753,7 +753,7 @@ BOOLEAN MoveCharactersPathToVehicle(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN CopyVehiclePathToSoldier(SOLDIERTYPE *pSoldier) {
+function CopyVehiclePathToSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 iId;
 
   // valid soldier?
@@ -807,7 +807,7 @@ BOOLEAN CopyVehiclePathToSoldier(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN SetUpMvtGroupForVehicle(SOLDIERTYPE *pSoldier) {
+function SetUpMvtGroupForVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // given this grunt, find out if asscoiated vehicle has a mvt group, if so, set this grunts mvt group tho the vehicle
   // for pathing purposes, will be reset to zero in copying of path
   INT32 iId = 0;
@@ -856,7 +856,7 @@ BOOLEAN SetUpMvtGroupForVehicle(SOLDIERTYPE *pSoldier) {
 
   return TRUE;
 }
-BOOLEAN VehicleIdIsValid(INT32 iId) {
+function VehicleIdIsValid(iId: INT32): BOOLEAN {
   // check if vehicle has mvt group, if not, get one for it
   if ((iId >= ubNumberOfVehicles) || (iId < 0)) {
     return FALSE;
@@ -870,7 +870,7 @@ BOOLEAN VehicleIdIsValid(INT32 iId) {
 }
 
 // get travel time of vehicle
-INT32 GetTravelTimeOfVehicle(INT32 iId) {
+function GetTravelTimeOfVehicle(iId: INT32): INT32 {
   GROUP *pGroup;
 
   // valid vehicle?
@@ -893,7 +893,7 @@ INT32 GetTravelTimeOfVehicle(INT32 iId) {
   return CalculateTravelTimeOfGroupId(pVehicleList[iId].ubMovementGroup);
 }
 
-void UpdatePositionOfMercsInVehicle(INT32 iId) {
+function UpdatePositionOfMercsInVehicle(iId: INT32): void {
   INT32 iCounter = 0;
 
   // update the position of all the grunts in the vehicle
@@ -913,7 +913,7 @@ void UpdatePositionOfMercsInVehicle(INT32 iId) {
   return;
 }
 
-INT32 GivenMvtGroupIdFindVehicleId(UINT8 ubGroupId) {
+function GivenMvtGroupIdFindVehicleId(ubGroupId: UINT8): INT32 {
   INT32 iCounter = 0;
 
   // given the id of a mvt group, find a vehicle in this group
@@ -934,7 +934,7 @@ INT32 GivenMvtGroupIdFindVehicleId(UINT8 ubGroupId) {
 }
 
 // add all people in this vehicle to the mvt group for benifit of prebattle interface
-BOOLEAN AddVehicleMembersToMvtGroup(INT32 iId) {
+function AddVehicleMembersToMvtGroup(iId: INT32): BOOLEAN {
   INT32 iCounter = 0;
 
   if (VehicleIdIsValid(iId) == FALSE) {
@@ -954,7 +954,7 @@ BOOLEAN AddVehicleMembersToMvtGroup(INT32 iId) {
   return TRUE;
 }
 
-BOOLEAN InjurePersonInVehicle(INT32 iId, SOLDIERTYPE *pSoldier, UINT8 ubPointsOfDmg) {
+function InjurePersonInVehicle(iId: INT32, pSoldier: Pointer<SOLDIERTYPE>, ubPointsOfDmg: UINT8): BOOLEAN {
   // find this person, see if they have this many pts left, if not, kill them
 
   // find if vehicle is valid
@@ -986,7 +986,7 @@ BOOLEAN InjurePersonInVehicle(INT32 iId, SOLDIERTYPE *pSoldier, UINT8 ubPointsOf
   return TRUE;
 }
 
-BOOLEAN KillPersonInVehicle(INT32 iId, SOLDIERTYPE *pSoldier) {
+function KillPersonInVehicle(iId: INT32, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // find if vehicle is valid
   if (VehicleIdIsValid(iId) == FALSE) {
     return FALSE;
@@ -1009,7 +1009,7 @@ BOOLEAN KillPersonInVehicle(INT32 iId, SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN KillAllInVehicle(INT32 iId) {
+function KillAllInVehicle(iId: INT32): BOOLEAN {
   INT32 iCounter = 0;
 
   // find if vehicle is valid
@@ -1029,7 +1029,7 @@ BOOLEAN KillAllInVehicle(INT32 iId) {
   return TRUE;
 }
 
-INT32 GetNumberInVehicle(INT32 iId) {
+function GetNumberInVehicle(iId: INT32): INT32 {
   // go through list of occupants in vehicles and count them
   INT32 iCounter = 0;
   INT32 iCount = 0;
@@ -1048,7 +1048,7 @@ INT32 GetNumberInVehicle(INT32 iId) {
   return iCount;
 }
 
-INT32 GetNumberOfNonEPCsInVehicle(INT32 iId) {
+function GetNumberOfNonEPCsInVehicle(iId: INT32): INT32 {
   // go through list of occupants in vehicles and count them
   INT32 iCounter = 0;
   INT32 iCount = 0;
@@ -1067,7 +1067,7 @@ INT32 GetNumberOfNonEPCsInVehicle(INT32 iId) {
   return iCount;
 }
 
-BOOLEAN IsRobotControllerInVehicle(INT32 iId) {
+function IsRobotControllerInVehicle(iId: INT32): BOOLEAN {
   // go through list of occupants in vehicles and count them
   INT32 iCounter = 0;
   SOLDIERTYPE *pSoldier;
@@ -1087,7 +1087,7 @@ BOOLEAN IsRobotControllerInVehicle(INT32 iId) {
   return FALSE;
 }
 
-BOOLEAN AnyAccessibleVehiclesInSoldiersSector(SOLDIERTYPE *pSoldier) {
+function AnyAccessibleVehiclesInSoldiersSector(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
@@ -1101,15 +1101,15 @@ BOOLEAN AnyAccessibleVehiclesInSoldiersSector(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-SOLDIERTYPE *GetDriver(INT32 iID) {
+function GetDriver(iID: INT32): Pointer<SOLDIERTYPE> {
   return MercPtrs[pVehicleList[iID].ubDriver];
 }
 
-void SetDriver(INT32 iID, UINT8 ubID) {
+function SetDriver(iID: INT32, ubID: UINT8): void {
   pVehicleList[iID].ubDriver = ubID;
 }
 
-BOOLEAN IsEnoughSpaceInVehicle(INT32 iID) {
+function IsEnoughSpaceInVehicle(iID: INT32): BOOLEAN {
   // find if vehicle is valid
   if (VehicleIdIsValid(iID) == FALSE) {
     return FALSE;
@@ -1122,7 +1122,7 @@ BOOLEAN IsEnoughSpaceInVehicle(INT32 iID) {
   return TRUE;
 }
 
-BOOLEAN PutSoldierInVehicle(SOLDIERTYPE *pSoldier, INT8 bVehicleId) {
+function PutSoldierInVehicle(pSoldier: Pointer<SOLDIERTYPE>, bVehicleId: INT8): BOOLEAN {
   SOLDIERTYPE *pVehicleSoldier = NULL;
 
   if ((pSoldier->sSectorX != gWorldSectorX) || (pSoldier->sSectorY != gWorldSectorY) || (pSoldier->bSectorZ != 0) || (bVehicleId == iHelicopterVehicleId)) {
@@ -1137,7 +1137,7 @@ BOOLEAN PutSoldierInVehicle(SOLDIERTYPE *pSoldier, INT8 bVehicleId) {
   }
 }
 
-BOOLEAN TakeSoldierOutOfVehicle(SOLDIERTYPE *pSoldier) {
+function TakeSoldierOutOfVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if not in vehicle, don't take out, not much point, now is there?
   if (pSoldier->bAssignment != VEHICLE) {
     return FALSE;
@@ -1157,7 +1157,7 @@ BOOLEAN TakeSoldierOutOfVehicle(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN EnterVehicle(SOLDIERTYPE *pVehicle, SOLDIERTYPE *pSoldier) {
+function EnterVehicle(pVehicle: Pointer<SOLDIERTYPE>, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT16 sOldGridNo = 0;
 
   // TEST IF IT'S VALID...
@@ -1179,7 +1179,7 @@ BOOLEAN EnterVehicle(SOLDIERTYPE *pVehicle, SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-SOLDIERTYPE *GetVehicleSoldierPointerFromPassenger(SOLDIERTYPE *pSrcSoldier) {
+function GetVehicleSoldierPointerFromPassenger(pSrcSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -1199,7 +1199,7 @@ SOLDIERTYPE *GetVehicleSoldierPointerFromPassenger(SOLDIERTYPE *pSrcSoldier) {
   return NULL;
 }
 
-BOOLEAN ExitVehicle(SOLDIERTYPE *pSoldier) {
+function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   SOLDIERTYPE *pVehicle;
   UINT8 ubDirection;
   INT16 sGridNo;
@@ -1255,7 +1255,7 @@ BOOLEAN ExitVehicle(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-void AddPassangersToTeamPanel(INT32 iId) {
+function AddPassangersToTeamPanel(iId: INT32): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < iSeatingCapacities[pVehicleList[iId].ubVehicleType]; cnt++) {
@@ -1266,7 +1266,7 @@ void AddPassangersToTeamPanel(INT32 iId) {
   }
 }
 
-void VehicleTakeDamage(UINT8 ubID, UINT8 ubReason, INT16 sDamage, INT16 sGridNo, UINT8 ubAttackerID) {
+function VehicleTakeDamage(ubID: UINT8, ubReason: UINT8, sDamage: INT16, sGridNo: INT16, ubAttackerID: UINT8): void {
   INT16 sOldDmgValue = 0;
 
   if (ubReason != TAKE_DAMAGE_GAS) {
@@ -1291,7 +1291,7 @@ void VehicleTakeDamage(UINT8 ubID, UINT8 ubReason, INT16 sDamage, INT16 sGridNo,
   }
 }
 
-void HandleCriticalHitForVehicleInLocation(UINT8 ubID, INT16 sDmg, INT16 sGridNo, UINT8 ubAttackerID) {
+function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo: INT16, ubAttackerID: UINT8): void {
   // check state the armor was s'posed to be in vs. the current state..the difference / orig state is % chance
   // that a critical hit will occur
   INT16 sOrigValue = 0, sCurrValue = 0;
@@ -1355,7 +1355,7 @@ void HandleCriticalHitForVehicleInLocation(UINT8 ubID, INT16 sDmg, INT16 sGridNo
   return;
 }
 
-BOOLEAN DoesVehicleNeedAnyRepairs(INT32 iVehicleId) {
+function DoesVehicleNeedAnyRepairs(iVehicleId: INT32): BOOLEAN {
   SOLDIERTYPE *pVehicleSoldier = NULL;
 
   // is the vehicle in fact a valid vehicle
@@ -1380,7 +1380,7 @@ BOOLEAN DoesVehicleNeedAnyRepairs(INT32 iVehicleId) {
   return FALSE;
 }
 
-INT8 RepairVehicle(INT32 iVehicleId, INT8 bRepairPtsLeft, BOOLEAN *pfNothingToRepair) {
+function RepairVehicle(iVehicleId: INT32, bRepairPtsLeft: INT8, pfNothingToRepair: Pointer<BOOLEAN>): INT8 {
   SOLDIERTYPE *pVehicleSoldier = NULL;
   INT8 bRepairPtsUsed = 0;
   INT8 bOldLife;
@@ -1434,7 +1434,7 @@ INT16 GetOrigInternalArmorValueForVehicleInLocation( UINT8 ubID, UINT8 ubLocatio
 }
 */
 
-SOLDIERTYPE *GetSoldierStructureForVehicle(INT32 iId) {
+function GetSoldierStructureForVehicle(iId: INT32): Pointer<SOLDIERTYPE> {
   SOLDIERTYPE *pSoldier = NULL, *pFoundSoldier = NULL;
   INT32 iCounter = 0, iNumberOnTeam = 0;
 
@@ -1457,7 +1457,7 @@ SOLDIERTYPE *GetSoldierStructureForVehicle(INT32 iId) {
   return pFoundSoldier;
 }
 
-void SetUpArmorForVehicle(UINT8 ubID) {
+function SetUpArmorForVehicle(ubID: UINT8): void {
   INT32 iCounter = 0;
 
   /*
@@ -1480,7 +1480,7 @@ void SetUpArmorForVehicle(UINT8 ubID) {
   return;
 }
 
-void AdjustVehicleAPs(SOLDIERTYPE *pSoldier, UINT8 *pubPoints) {
+function AdjustVehicleAPs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
   UINT8 pubDeducations = 0;
   INT32 iCounter = 0;
 
@@ -1507,7 +1507,7 @@ void AdjustVehicleAPs(SOLDIERTYPE *pSoldier, UINT8 *pubPoints) {
   (*pubPoints) -= pubDeducations;
 }
 
-BOOLEAN SaveVehicleInformationToSaveGameFile(HWFILE hFile) {
+function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   PathStPtr pTempPathPtr;
   UINT32 uiNodeCount = 0;
@@ -1585,7 +1585,7 @@ BOOLEAN SaveVehicleInformationToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadVehicleInformationFromSavedGameFile(HWFILE hFile, UINT32 uiSavedGameVersion) {
+function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiTotalNodeCount = 0;
   UINT8 cnt;
@@ -1701,7 +1701,7 @@ BOOLEAN LoadVehicleInformationFromSavedGameFile(HWFILE hFile, UINT32 uiSavedGame
   return TRUE;
 }
 
-void SetVehicleSectorValues(INT32 iVehId, UINT8 ubSectorX, UINT8 ubSectorY) {
+function SetVehicleSectorValues(iVehId: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
   pVehicleList[iVehId].sSectorX = ubSectorX;
   pVehicleList[iVehId].sSectorY = ubSectorY;
 
@@ -1709,7 +1709,7 @@ void SetVehicleSectorValues(INT32 iVehId, UINT8 ubSectorX, UINT8 ubSectorY) {
   gMercProfiles[pVehicleList[iVehId].ubProfileID].sSectorY = ubSectorY;
 }
 
-void UpdateAllVehiclePassengersGridNo(SOLDIERTYPE *pSoldier) {
+function UpdateAllVehiclePassengersGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iCounter, iId;
   SOLDIERTYPE *pPassenger;
 
@@ -1731,7 +1731,7 @@ void UpdateAllVehiclePassengersGridNo(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN SaveVehicleMovementInfoToSavedGameFile(HWFILE hFile) {
+function SaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten = 0;
   UINT32 uiSaveSize = 0;
 
@@ -1744,7 +1744,7 @@ BOOLEAN SaveVehicleMovementInfoToSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadVehicleMovementInfoFromSavedGameFile(HWFILE hFile) {
+function LoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   INT32 cnt;
   GROUP *pGroup = NULL;
   UINT32 uiNumBytesRead = 0;
@@ -1768,7 +1768,7 @@ BOOLEAN LoadVehicleMovementInfoFromSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN NewSaveVehicleMovementInfoToSavedGameFile(HWFILE hFile) {
+function NewSaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten = 0;
   UINT32 uiSaveSize = 0;
 
@@ -1781,7 +1781,7 @@ BOOLEAN NewSaveVehicleMovementInfoToSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN NewLoadVehicleMovementInfoFromSavedGameFile(HWFILE hFile) {
+function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead = 0;
   UINT32 uiSaveSize = 0;
 
@@ -1794,7 +1794,7 @@ BOOLEAN NewLoadVehicleMovementInfoFromSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN OKUseVehicle(UINT8 ubProfile) {
+function OKUseVehicle(ubProfile: UINT8): BOOLEAN {
   if (ubProfile == PROF_HUMMER) {
     return CheckFact(FACT_OK_USE_HUMMER, NO_PROFILE);
   } else if (ubProfile == PROF_ICECREAM) {
@@ -1807,7 +1807,7 @@ BOOLEAN OKUseVehicle(UINT8 ubProfile) {
   }
 }
 
-void TeleportVehicleToItsClosestSector(INT32 iVehicleId, UINT8 ubGroupID) {
+function TeleportVehicleToItsClosestSector(iVehicleId: INT32, ubGroupID: UINT8): void {
   GROUP *pGroup = NULL;
   UINT32 uiTimeToNextSector;
   UINT32 uiTimeToLastSector;
@@ -1848,7 +1848,7 @@ void TeleportVehicleToItsClosestSector(INT32 iVehicleId, UINT8 ubGroupID) {
   PlaceGroupInSector(ubGroupID, sPrevX, sPrevY, sNextX, sNextY, 0, FALSE);
 }
 
-void AddVehicleFuelToSave() {
+function AddVehicleFuelToSave(): void {
   INT32 iCounter;
   SOLDIERTYPE *pVehicleSoldier = NULL;
 
@@ -1867,7 +1867,7 @@ void AddVehicleFuelToSave() {
   }
 }
 
-BOOLEAN CanSoldierDriveVehicle(SOLDIERTYPE *pSoldier, INT32 iVehicleId, BOOLEAN fIgnoreAsleep) {
+function CanSoldierDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32, fIgnoreAsleep: BOOLEAN): BOOLEAN {
   Assert(pSoldier);
 
   if (pSoldier->bAssignment != VEHICLE) {
@@ -1909,7 +1909,7 @@ BOOLEAN CanSoldierDriveVehicle(SOLDIERTYPE *pSoldier, INT32 iVehicleId, BOOLEAN 
   return TRUE;
 }
 
-BOOLEAN SoldierMustDriveVehicle(SOLDIERTYPE *pSoldier, INT32 iVehicleId, BOOLEAN fTryingToTravel) {
+function SoldierMustDriveVehicle(pSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32, fTryingToTravel: BOOLEAN): BOOLEAN {
   Assert(pSoldier);
 
   // error check
@@ -1935,7 +1935,7 @@ BOOLEAN SoldierMustDriveVehicle(SOLDIERTYPE *pSoldier, INT32 iVehicleId, BOOLEAN
   return FALSE;
 }
 
-BOOLEAN OnlyThisSoldierCanDriveVehicle(SOLDIERTYPE *pThisSoldier, INT32 iVehicleId) {
+function OnlyThisSoldierCanDriveVehicle(pThisSoldier: Pointer<SOLDIERTYPE>, iVehicleId: INT32): BOOLEAN {
   INT32 iCounter = 0;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -1961,7 +1961,7 @@ BOOLEAN OnlyThisSoldierCanDriveVehicle(SOLDIERTYPE *pThisSoldier, INT32 iVehicle
   return TRUE;
 }
 
-BOOLEAN IsSoldierInThisVehicleSquad(SOLDIERTYPE *pSoldier, INT8 bSquadNumber) {
+function IsSoldierInThisVehicleSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadNumber: INT8): BOOLEAN {
   INT32 iVehicleId;
   SOLDIERTYPE *pVehicleSoldier;
 
@@ -1994,7 +1994,7 @@ BOOLEAN IsSoldierInThisVehicleSquad(SOLDIERTYPE *pSoldier, INT8 bSquadNumber) {
   return TRUE;
 }
 
-SOLDIERTYPE *PickRandomPassengerFromVehicle(SOLDIERTYPE *pSoldier) {
+function PickRandomPassengerFromVehicle(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;
   UINT8 ubChosenMerc;
@@ -2025,14 +2025,14 @@ SOLDIERTYPE *PickRandomPassengerFromVehicle(SOLDIERTYPE *pSoldier) {
   return NULL;
 }
 
-BOOLEAN DoesVehicleHaveAnyPassengers(INT32 iVehicleID) {
+function DoesVehicleHaveAnyPassengers(iVehicleID: INT32): BOOLEAN {
   if (!GetNumberInVehicle(iVehicleID)) {
     return FALSE;
   }
   return TRUE;
 }
 
-BOOLEAN DoesVehicleGroupHaveAnyPassengers(GROUP *pGroup) {
+function DoesVehicleGroupHaveAnyPassengers(pGroup: Pointer<GROUP>): BOOLEAN {
   INT32 iVehicleID;
 
   iVehicleID = GivenMvtGroupIdFindVehicleId(pGroup->ubGroupID);

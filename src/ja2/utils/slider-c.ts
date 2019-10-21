@@ -73,7 +73,7 @@ UINT32 guiSliderBoxImage = 0;
 //
 ///////////////////////////////////////////////////
 
-BOOLEAN InitSlider() {
+function InitSlider(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load Slider Box Graphic graphic and add it
@@ -86,7 +86,7 @@ BOOLEAN InitSlider() {
   return TRUE;
 }
 
-void ShutDownSlider() {
+function ShutDownSlider(): void {
   SLIDER *pRemove = NULL;
   SLIDER *pTemp = NULL;
 
@@ -107,7 +107,7 @@ void ShutDownSlider() {
   DeleteVideoObjectFromIndex(guiSliderBoxImage);
 }
 
-INT32 AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT16 usNumberOfIncrements, INT8 sPriority, SLIDER_CHANGE_CALLBACK SliderChangeCallback, UINT32 uiFlags) {
+function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usNumberOfIncrements: UINT16, sPriority: INT8, SliderChangeCallback: SLIDER_CHANGE_CALLBACK, uiFlags: UINT32): INT32 {
   SLIDER *pTemp = NULL;
   SLIDER *pNewSlider = NULL;
   INT32 iNewID = 0;
@@ -204,7 +204,7 @@ INT32 AddSlider(UINT8 ubStyle, UINT16 usCursor, UINT16 usPosX, UINT16 usPosY, UI
   return pNewSlider->uiSliderID;
 }
 
-void RenderAllSliderBars() {
+function RenderAllSliderBars(): void {
   SLIDER *pTemp = NULL;
 
   // set the currently selectd slider bar
@@ -231,7 +231,7 @@ void RenderAllSliderBars() {
   }
 }
 
-void RenderSelectedSliderBar(SLIDER *pSlider) {
+function RenderSelectedSliderBar(pSlider: Pointer<SLIDER>): void {
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
   } else {
     // display the background ( the bar )
@@ -246,7 +246,7 @@ void RenderSelectedSliderBar(SLIDER *pSlider) {
   RenderSliderBox(pSlider);
 }
 
-void RenderSliderBox(SLIDER *pSlider) {
+function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
   HVOBJECT hPixHandle;
   SGPRect SrcRect;
   SGPRect DestRect;
@@ -316,7 +316,7 @@ void RenderSliderBox(SLIDER *pSlider) {
   }
 }
 
-void RemoveSliderBar(UINT32 uiSliderID) {
+function RemoveSliderBar(uiSliderID: UINT32): void {
   SLIDER *pTemp = NULL;
   SLIDER *pNodeToRemove = NULL;
   //	UINT32	cnt;
@@ -357,7 +357,7 @@ void RemoveSliderBar(UINT32 uiSliderID) {
   pNodeToRemove = NULL;
 }
 
-void SelectedSliderMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   UINT32 uiSelectedSlider;
   SLIDER *pSlider = NULL;
 
@@ -426,7 +426,7 @@ void SelectedSliderMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
   }
 }
 
-void SelectedSliderButtonCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiSelectedSlider;
   SLIDER *pSlider = NULL;
 
@@ -479,7 +479,7 @@ void SelectedSliderButtonCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void CalculateNewSliderIncrement(UINT32 uiSliderID, UINT16 usPos) {
+function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   FLOAT dNewIncrement = 0.0;
   SLIDER *pSlider;
   UINT16 usOldIncrement;
@@ -526,7 +526,7 @@ void CalculateNewSliderIncrement(UINT32 uiSliderID, UINT16 usPos) {
   }
 }
 
-void OptDisplayLine(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY, INT16 iColor) {
+function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16, iColor: INT16): void {
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
 
@@ -541,7 +541,7 @@ void OptDisplayLine(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY, 
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void CalculateNewSliderBoxPosition(SLIDER *pSlider) {
+function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
   UINT16 usMaxPos;
 
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
@@ -577,7 +577,7 @@ void CalculateNewSliderBoxPosition(SLIDER *pSlider) {
   }
 }
 
-SLIDER *GetSliderFromID(UINT32 uiSliderID) {
+function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
   SLIDER *pTemp = NULL;
 
   pTemp = pSliderHead;
@@ -594,7 +594,7 @@ SLIDER *GetSliderFromID(UINT32 uiSliderID) {
   return pTemp;
 }
 
-void SetSliderValue(UINT32 uiSliderID, UINT32 uiNewValue) {
+function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
   SLIDER *pSlider = NULL;
 
   pSlider = GetSliderFromID(uiSliderID);

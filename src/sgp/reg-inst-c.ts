@@ -43,7 +43,7 @@ static CHAR gszProfileName[REG_KEY_SIZE];
 //
 //**************************************************************************
 
-BOOLEAN InitializeRegistryKeys(STR lpszAppName, STR lpszRegistryKey) {
+function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): BOOLEAN {
   CHECKF(lpszAppName != NULL);
   CHECKF(lpszRegistryKey != NULL);
   // CHECKF(gpszRegistryKey == NULL);
@@ -64,7 +64,7 @@ BOOLEAN InitializeRegistryKeys(STR lpszAppName, STR lpszRegistryKey) {
 // returns key for HKEY_CURRENT_USER\"Software"\RegistryKey\ProfileName
 // creating it if it doesn't exist
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
-HKEY GetAppRegistryKey() {
+function GetAppRegistryKey(): HKEY {
   HKEY hAppKey = NULL;
   HKEY hSoftKey = NULL;
   HKEY hCompanyKey = NULL;
@@ -90,7 +90,7 @@ HKEY GetAppRegistryKey() {
 //      HKEY_CURRENT_USER\"Software"\RegistryKey\AppName\lpszSection
 // creating it if it doesn't exist.
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
-HKEY GetSectionKey(STR lpszSection) {
+function GetSectionKey(lpszSection: STR): HKEY {
   HKEY hSectionKey = NULL;
   HKEY hAppKey = GetAppRegistryKey();
   DWORD dw;
@@ -105,7 +105,7 @@ HKEY GetSectionKey(STR lpszSection) {
   return hSectionKey;
 }
 
-UINT GetProfileInteger(STR lpszSection, STR lpszEntry, int nDefault) {
+function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UINT {
   DWORD dwValue;
   DWORD dwType;
   DWORD dwCount = sizeof(DWORD);
@@ -133,7 +133,7 @@ UINT GetProfileInteger(STR lpszSection, STR lpszEntry, int nDefault) {
   }
 }
 
-BOOLEAN GetProfileChar(STR lpszSection, STR lpszEntry, STR lpszDefault, STR lpszValue) {
+function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpszValue: STR): BOOLEAN {
   DWORD dwType, dwCount;
   LONG lResult;
   BOOLEAN fRet = TRUE;
@@ -179,7 +179,7 @@ BOOLEAN GetProfileChar(STR lpszSection, STR lpszEntry, STR lpszDefault, STR lpsz
   return fRet;
 }
 
-BOOL GetProfileBinary(STR lpszSection, STR lpszEntry, BYTE **ppData, UINT *pBytes) {
+function GetProfileBinary(lpszSection: STR, lpszEntry: STR, ppData: Pointer<Pointer<BYTE>>, pBytes: Pointer<UINT>): BOOL {
   //	DWORD dwType, dwCount;
   //	LONG lResult;
   //
@@ -241,7 +241,7 @@ BOOL GetProfileBinary(STR lpszSection, STR lpszEntry, BYTE **ppData, UINT *pByte
   return TRUE;
 }
 
-BOOL WriteProfileInt(STR lpszSection, STR lpszEntry, int nValue) {
+function WriteProfileInt(lpszSection: STR, lpszEntry: STR, nValue: int): BOOL {
   //	LONG lResult;
   //	TCHAR szT[16];
   //
@@ -269,7 +269,7 @@ BOOL WriteProfileInt(STR lpszSection, STR lpszEntry, int nValue) {
   return TRUE;
 }
 
-BOOL WriteProfileChar(STR lpszSection, STR lpszEntry, STR lpszValue) {
+function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOOL {
   assert(lpszSection != NULL);
 
   if (gszRegistryKey[0] != '\0') {
@@ -307,7 +307,7 @@ BOOL WriteProfileChar(STR lpszSection, STR lpszEntry, STR lpszValue) {
   return TRUE;
 }
 
-BOOL WriteProfileBinary(STR lpszSection, STR lpszEntry, LPBYTE pData, UINT nBytes) {
+function WriteProfileBinary(lpszSection: STR, lpszEntry: STR, pData: LPBYTE, nBytes: UINT): BOOL {
   //	assert(lpszSection != NULL);
   //
   //	if (gpszRegistryKey != NULL)

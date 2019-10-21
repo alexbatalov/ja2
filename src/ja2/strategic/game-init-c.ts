@@ -4,7 +4,7 @@ extern BOOLEAN gfGamePaused;
 
 UINT8 gubScreenCount = 0;
 
-void InitNPCs(void) {
+function InitNPCs(): void {
   MERCPROFILESTRUCT *pProfile;
 
   // add the pilot at a random location!
@@ -131,7 +131,7 @@ void InitNPCs(void) {
   gMercProfiles[DEVIN].bNPCData = 3;
 }
 
-void InitBloodCatSectors() {
+function InitBloodCatSectors(): void {
   INT32 i;
   // Hard coded table of bloodcat populations.  We don't have
   // access to the real population (if different) until we physically
@@ -190,7 +190,7 @@ void InitBloodCatSectors() {
   }
 }
 
-void InitStrategicLayer(void) {
+function InitStrategicLayer(): void {
   // Clear starategic layer!
   SetupNewStrategicGame();
   InitQuestEngine();
@@ -237,7 +237,7 @@ void InitStrategicLayer(void) {
   fDisableMapInterfaceDueToBattle = FALSE;
 }
 
-void ShutdownStrategicLayer() {
+function ShutdownStrategicLayer(): void {
   DeleteAllStrategicEvents();
   RemoveAllGroups();
   TrashUndergroundSectorInfo();
@@ -245,7 +245,7 @@ void ShutdownStrategicLayer() {
   KillStrategicAI();
 }
 
-BOOLEAN InitNewGame(BOOLEAN fReset) {
+function InitNewGame(fReset: BOOLEAN): BOOLEAN {
   INT32 iStartingCash;
 
   //	static fScreenCount = 0;
@@ -391,7 +391,7 @@ BOOLEAN InitNewGame(BOOLEAN fReset) {
   return TRUE;
 }
 
-BOOLEAN AnyMercsHired() {
+function AnyMercsHired(): BOOLEAN {
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
   INT16 bLastTeamID;
@@ -411,7 +411,7 @@ BOOLEAN AnyMercsHired() {
   return FALSE;
 }
 
-void QuickStartGame() {
+function QuickStartGame(): void {
   INT32 cnt;
   UINT16 usVal;
   UINT8 ub1 = 0, ub2 = 0;
@@ -441,7 +441,7 @@ void QuickStartGame() {
 }
 
 // TEMP FUNCTION!
-void QuickSetupOfMercProfileItems(UINT32 uiCount, UINT8 ubProfileIndex) {
+function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): void {
   // Quickly give some guys we hire some items
 
   if (uiCount == 0) {
@@ -541,7 +541,7 @@ void QuickSetupOfMercProfileItems(UINT32 uiCount, UINT8 ubProfileIndex) {
   // gMercProfiles[ 78 ].bInvNumber[ SMALLPOCK4POS ] = 1;
 }
 
-BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier) {
+function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   MERC_HIRE_STRUCT HireMercStruct;
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
@@ -580,7 +580,7 @@ BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier) {
 }
 
 // This function is called when the game is REstarted.  Things that need to be reinited are placed in here
-void ReStartingGame() {
+function ReStartingGame(): void {
   UINT16 cnt;
 
   // Pause the game

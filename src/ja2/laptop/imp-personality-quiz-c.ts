@@ -37,7 +37,7 @@ INT32 iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];
 // current number of buttons being shown
 INT32 iNumberOfPersonaButtons = 0;
 
-void EnterIMPPersonalityQuiz(void) {
+function EnterIMPPersonalityQuiz(): void {
   // void answers out the quiz
   memset(&iQuizAnswerList, -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
 
@@ -63,7 +63,7 @@ void EnterIMPPersonalityQuiz(void) {
   return;
 }
 
-void RenderIMPPersonalityQuiz(void) {
+function RenderIMPPersonalityQuiz(): void {
   // the background
   RenderProfileBackGround();
 
@@ -79,7 +79,7 @@ void RenderIMPPersonalityQuiz(void) {
   return;
 }
 
-void ExitIMPPersonalityQuiz(void) {
+function ExitIMPPersonalityQuiz(): void {
   // set previous to current, we want it's buttons gone!
   giPreviousPersonalityQuizQuestion = giCurrentPersonalityQuizQuestion;
 
@@ -96,7 +96,7 @@ void ExitIMPPersonalityQuiz(void) {
   return;
 }
 
-void HandleIMPPersonalityQuiz(void) {
+function HandleIMPPersonalityQuiz(): void {
   // create/destroy buttons for  questions, if needed
   CreateIMPPersonalityQuizAnswerButtons();
 
@@ -110,7 +110,7 @@ void HandleIMPPersonalityQuiz(void) {
   return;
 }
 
-void CreateIMPPersonalityQuizButtons(void) {
+function CreateIMPPersonalityQuizButtons(): void {
   // this function will create the buttons needed for the IMP personality quiz Page
 
   // ths Done button
@@ -152,7 +152,7 @@ void CreateIMPPersonalityQuizButtons(void) {
   return;
 }
 
-void DestroyIMPersonalityQuizButtons(void) {
+function DestroyIMPersonalityQuizButtons(): void {
   // this function will destroy the buttons needed for the IMP personality quiz page
 
   // the done button
@@ -174,7 +174,7 @@ void DestroyIMPersonalityQuizButtons(void) {
   return;
 }
 
-void CreateIMPPersonalityQuizAnswerButtons(void) {
+function CreateIMPPersonalityQuizAnswerButtons(): void {
   // this function will create the buttons for the personality quiz answer selections
 
   if (IMP_PERSONALITY_QUIZ != iCurrentImpPage) {
@@ -241,7 +241,7 @@ void CreateIMPPersonalityQuizAnswerButtons(void) {
   return;
 }
 
-void DestroyPersonalityQuizButtons(void) {
+function DestroyPersonalityQuizButtons(): void {
   // this function will destroy the buttons used in the previous personality question
   // destroy old buttons
   switch (giPreviousPersonalityQuizQuestion) {
@@ -277,7 +277,7 @@ void DestroyPersonalityQuizButtons(void) {
   return;
 }
 
-void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
+function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
   // will add iNumberofbuttons to the answer button list
   INT32 iCounter = 0;
   CHAR16 sString[32];
@@ -349,7 +349,7 @@ void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
   return;
 }
 
-void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
+function DestroyIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
   INT32 iCounter = 0;
   for (iCounter = 0; iCounter < iNumberOfButtons; iCounter++) {
     RemoveButton(giIMPPersonalityQuizAnswerButton[iCounter]);
@@ -360,7 +360,7 @@ void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons) {
   return;
 }
 
-void BtnIMPPersonalityQuizAnswer0Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer0Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -390,7 +390,7 @@ void BtnIMPPersonalityQuizAnswer0Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer1Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer1Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -421,7 +421,7 @@ void BtnIMPPersonalityQuizAnswer1Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer2Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer2Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -452,7 +452,7 @@ void BtnIMPPersonalityQuizAnswer2Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer3Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer3Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -483,7 +483,7 @@ void BtnIMPPersonalityQuizAnswer3Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer4Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer4Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -514,7 +514,7 @@ void BtnIMPPersonalityQuizAnswer4Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer5Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer5Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -545,7 +545,7 @@ void BtnIMPPersonalityQuizAnswer5Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer6Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer6Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -576,7 +576,7 @@ void BtnIMPPersonalityQuizAnswer6Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer7Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer7Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -607,7 +607,7 @@ void BtnIMPPersonalityQuizAnswer7Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer8Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer8Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -637,7 +637,7 @@ void BtnIMPPersonalityQuizAnswer8Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswer9Callback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswer9Callback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -666,7 +666,7 @@ void BtnIMPPersonalityQuizAnswer9Callback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizAnswerConfirmCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -706,7 +706,7 @@ void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityQuizStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -727,7 +727,7 @@ void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ResetQuizAnswerButtons(void) {
+function ResetQuizAnswerButtons(): void {
   INT32 iCounter = 0;
   INT32 iCnt = 0;
 
@@ -771,7 +771,7 @@ void ResetQuizAnswerButtons(void) {
   return;
 }
 
-void CompileQuestionsInStatsAndWhatNot(void) {
+function CompileQuestionsInStatsAndWhatNot(): void {
   // one BIG case/switch statement to determine what values are added where
   INT32 iCurrentQuestion = 0;
 
@@ -1122,7 +1122,7 @@ void CompileQuestionsInStatsAndWhatNot(void) {
   }
 }
 
-void BltAnswerIndents(INT32 iNumberOfIndents) {
+function BltAnswerIndents(iNumberOfIndents: INT32): void {
   INT32 iCounter = 0;
 
   // the question indent
@@ -1267,7 +1267,7 @@ void BltAnswerIndents(INT32 iNumberOfIndents) {
   }
 }
 
-void PrintQuizQuestionNumber(void) {
+function PrintQuizQuestionNumber(): void {
   // this function will print the number of the current question and the numebr of questions
 
   CHAR16 sString[10];
@@ -1288,7 +1288,7 @@ void PrintQuizQuestionNumber(void) {
   return;
 }
 
-void CheckStateOfTheConfirmButton(void) {
+function CheckStateOfTheConfirmButton(): void {
   // will check the state of the confirm button, should it be enabled or disabled?
   if (iCurrentAnswer == -1) {
     // was disabled, enable
@@ -1298,7 +1298,7 @@ void CheckStateOfTheConfirmButton(void) {
   return;
 }
 
-void HandleIMPQuizKeyBoard(void) {
+function HandleIMPQuizKeyBoard(): void {
   InputAtom InputEvent;
   POINT MousePos;
   BOOLEAN fSkipFrame = FALSE;
@@ -1408,7 +1408,7 @@ void HandleIMPQuizKeyBoard(void) {
   return;
 }
 
-void CheckAndUpdateNextPreviousIMPQuestionButtonStates(void) {
+function CheckAndUpdateNextPreviousIMPQuestionButtonStates(): void {
   if (giCurrentPersonalityQuizQuestion >= giMaxPersonalityQuizQuestion) {
     DisableButton(giNextQuestionButton);
   } else {
@@ -1422,7 +1422,7 @@ void CheckAndUpdateNextPreviousIMPQuestionButtonStates(void) {
   }
 }
 
-void MoveAheadAQuestion(void) {
+function MoveAheadAQuestion(): void {
   // move ahead a question in the personality question list
   if (giCurrentPersonalityQuizQuestion < giMaxPersonalityQuizQuestion) {
     giCurrentPersonalityQuizQuestion++;
@@ -1451,7 +1451,7 @@ void MoveAheadAQuestion(void) {
   return;
 }
 
-void MoveBackAQuestion(void) {
+function MoveBackAQuestion(): void {
   if (giCurrentPersonalityQuizQuestion > 0) {
     giCurrentPersonalityQuizQuestion--;
 
@@ -1477,7 +1477,7 @@ void MoveBackAQuestion(void) {
   return;
 }
 
-void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber) {
+function ToggleQuestionNumberButtonOn(iAnswerNumber: INT32): void {
   if ((giCurrentPersonalityQuizQuestion <= giMaxPersonalityQuizQuestion) && (iAnswerNumber != -1)) {
     // reset buttons
     ResetQuizAnswerButtons();
@@ -1490,7 +1490,7 @@ void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber) {
   return;
 }
 
-void PreviousQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason) {
+function PreviousQuestionButtonCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1505,7 +1505,7 @@ void PreviousQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason) {
   return;
 }
 
-void NextQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason) {
+function NextQuestionButtonCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 

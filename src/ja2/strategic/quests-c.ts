@@ -7,7 +7,7 @@ UINT8 gubFact[NUM_FACTS]; // this has to be updated when we figure out how many 
 INT16 gsFoodQuestSectorX;
 INT16 gsFoodQuestSectorY;
 
-void SetFactTrue(UINT16 usFact) {
+function SetFactTrue(usFact: UINT16): void {
   // This function is here just for control flow purposes (debug breakpoints)
   // and code is more readable that way
 
@@ -20,11 +20,11 @@ void SetFactTrue(UINT16 usFact) {
   gubFact[usFact] = TRUE;
 }
 
-void SetFactFalse(UINT16 usFact) {
+function SetFactFalse(usFact: UINT16): void {
   gubFact[usFact] = FALSE;
 }
 
-BOOLEAN CheckForNewShipment(void) {
+function CheckForNewShipment(): BOOLEAN {
   ITEM_POOL *pItemPool;
 
   if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
@@ -35,7 +35,7 @@ BOOLEAN CheckForNewShipment(void) {
   return FALSE;
 }
 
-BOOLEAN CheckNPCWounded(UINT8 ubProfileID, BOOLEAN fByPlayerOnly) {
+function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: BOOLEAN): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   // is the NPC is wounded at all?
@@ -55,7 +55,7 @@ BOOLEAN CheckNPCWounded(UINT8 ubProfileID, BOOLEAN fByPlayerOnly) {
   }
 }
 
-BOOLEAN CheckNPCInOkayHealth(UINT8 ubProfileID) {
+function CheckNPCInOkayHealth(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   // is the NPC at better than half health?
@@ -67,7 +67,7 @@ BOOLEAN CheckNPCInOkayHealth(UINT8 ubProfileID) {
   }
 }
 
-BOOLEAN CheckNPCBleeding(UINT8 ubProfileID) {
+function CheckNPCBleeding(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   // the NPC is wounded...
@@ -79,7 +79,7 @@ BOOLEAN CheckNPCBleeding(UINT8 ubProfileID) {
   }
 }
 
-BOOLEAN CheckNPCWithin(UINT8 ubFirstNPC, UINT8 ubSecondNPC, UINT8 ubMaxDistance) {
+function CheckNPCWithin(ubFirstNPC: UINT8, ubSecondNPC: UINT8, ubMaxDistance: UINT8): BOOLEAN {
   SOLDIERTYPE *pFirstNPC, *pSecondNPC;
 
   pFirstNPC = FindSoldierByProfileID(ubFirstNPC, FALSE);
@@ -90,7 +90,7 @@ BOOLEAN CheckNPCWithin(UINT8 ubFirstNPC, UINT8 ubSecondNPC, UINT8 ubMaxDistance)
   return PythSpacesAway(pFirstNPC->sGridNo, pSecondNPC->sGridNo) <= ubMaxDistance;
 }
 
-BOOLEAN CheckGuyVisible(UINT8 ubNPC, UINT8 ubGuy) {
+function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): BOOLEAN {
   // NB ONLY WORKS IF ON DIFFERENT TEAMS
   SOLDIERTYPE *pNPC, *pGuy;
 
@@ -106,7 +106,7 @@ BOOLEAN CheckGuyVisible(UINT8 ubNPC, UINT8 ubGuy) {
   }
 }
 
-BOOLEAN CheckNPCAt(UINT8 ubNPC, INT16 sGridNo) {
+function CheckNPCAt(ubNPC: UINT8, sGridNo: INT16): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubNPC, FALSE);
@@ -116,7 +116,7 @@ BOOLEAN CheckNPCAt(UINT8 ubNPC, INT16 sGridNo) {
   return pNPC->sGridNo == sGridNo;
 }
 
-BOOLEAN CheckNPCIsEnemy(UINT8 ubProfileID) {
+function CheckNPCIsEnemy(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -135,7 +135,7 @@ BOOLEAN CheckNPCIsEnemy(UINT8 ubProfileID) {
   }
 }
 
-BOOLEAN CheckIfMercIsNearNPC(SOLDIERTYPE *pMerc, UINT8 ubProfileId) {
+function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
   INT16 sGridNo;
 
@@ -158,7 +158,7 @@ BOOLEAN CheckIfMercIsNearNPC(SOLDIERTYPE *pMerc, UINT8 ubProfileId) {
   return FALSE;
 }
 
-INT8 NumWoundedMercsNearby(UINT8 ubProfileID) {
+function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
   INT8 bNumber = 0;
   UINT32 uiLoop;
   SOLDIERTYPE *pNPC;
@@ -184,7 +184,7 @@ INT8 NumWoundedMercsNearby(UINT8 ubProfileID) {
   return bNumber;
 }
 
-INT8 NumMercsNear(UINT8 ubProfileID, UINT8 ubMaxDist) {
+function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
   INT8 bNumber = 0;
   UINT32 uiLoop;
   SOLDIERTYPE *pNPC;
@@ -210,7 +210,7 @@ INT8 NumMercsNear(UINT8 ubProfileID, UINT8 ubMaxDist) {
   return bNumber;
 }
 
-BOOLEAN CheckNPCIsEPC(UINT8 ubProfileID) {
+function CheckNPCIsEPC(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   if (gMercProfiles[ubProfileID].bMercStatus == MERC_IS_DEAD) {
@@ -224,7 +224,7 @@ BOOLEAN CheckNPCIsEPC(UINT8 ubProfileID) {
   return pNPC->ubWhatKindOfMercAmI == MERC_TYPE__EPC;
 }
 
-BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID) {
+function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -234,7 +234,7 @@ BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID) {
   return TRUE;
 }
 
-BOOLEAN NPCInRoomRange(UINT8 ubProfileID, UINT8 ubRoomID1, UINT8 ubRoomID2) {
+function NPCInRoomRange(ubProfileID: UINT8, ubRoomID1: UINT8, ubRoomID2: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -244,7 +244,7 @@ BOOLEAN NPCInRoomRange(UINT8 ubProfileID, UINT8 ubRoomID1, UINT8 ubRoomID2) {
   return TRUE;
 }
 
-BOOLEAN PCInSameRoom(UINT8 ubProfileID) {
+function PCInSameRoom(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
   UINT8 ubRoom;
   INT8 bLoop;
@@ -268,7 +268,7 @@ BOOLEAN PCInSameRoom(UINT8 ubProfileID) {
   return FALSE;
 }
 
-BOOLEAN CheckTalkerStrong(void) {
+function CheckTalkerStrong(): BOOLEAN {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum) {
     return gpSrcSoldier->bStrength >= 84;
   } else if (gpDestSoldier && gpDestSoldier->bTeam == gbPlayerNum) {
@@ -277,7 +277,7 @@ BOOLEAN CheckTalkerStrong(void) {
   return FALSE;
 }
 
-BOOLEAN CheckTalkerFemale(void) {
+function CheckTalkerFemale(): BOOLEAN {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum && gpSrcSoldier->ubProfile != NO_PROFILE) {
     return gMercProfiles[gpSrcSoldier->ubProfile].bSex == FEMALE;
   } else if (gpDestSoldier && gpDestSoldier->bTeam == gbPlayerNum && gpDestSoldier->ubProfile != NO_PROFILE) {
@@ -286,7 +286,7 @@ BOOLEAN CheckTalkerFemale(void) {
   return FALSE;
 }
 
-BOOLEAN CheckTalkerUnpropositionedFemale(void) {
+function CheckTalkerUnpropositionedFemale(): BOOLEAN {
   if (gpSrcSoldier && gpSrcSoldier->bTeam == gbPlayerNum && gpSrcSoldier->ubProfile != NO_PROFILE) {
     if (!(gMercProfiles[gpSrcSoldier->ubProfile].ubMiscFlags2 & PROFILE_MISC_FLAG2_ASKED_BY_HICKS)) {
       return gMercProfiles[gpSrcSoldier->ubProfile].bSex == FEMALE;
@@ -299,7 +299,7 @@ BOOLEAN CheckTalkerUnpropositionedFemale(void) {
   return FALSE;
 }
 
-INT8 NumMalesPresent(UINT8 ubProfileID) {
+function NumMalesPresent(ubProfileID: UINT8): INT8 {
   INT8 bNumber = 0;
   UINT32 uiLoop;
   SOLDIERTYPE *pNPC;
@@ -327,7 +327,7 @@ INT8 NumMalesPresent(UINT8 ubProfileID) {
   return bNumber;
 }
 
-BOOLEAN FemalePresent(UINT8 ubProfileID) {
+function FemalePresent(ubProfileID: UINT8): BOOLEAN {
   UINT32 uiLoop;
   SOLDIERTYPE *pNPC;
   SOLDIERTYPE *pSoldier;
@@ -354,7 +354,7 @@ BOOLEAN FemalePresent(UINT8 ubProfileID) {
   return FALSE;
 }
 
-BOOLEAN CheckPlayerHasHead(void) {
+function CheckPlayerHasHead(): BOOLEAN {
   INT8 bLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -371,7 +371,7 @@ BOOLEAN CheckPlayerHasHead(void) {
   return FALSE;
 }
 
-BOOLEAN CheckNPCSector(UINT8 ubProfileID, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = FindSoldierByProfileID(ubProfileID, TRUE);
@@ -387,7 +387,7 @@ BOOLEAN CheckNPCSector(UINT8 ubProfileID, INT16 sSectorX, INT16 sSectorY, INT8 b
   return FALSE;
 }
 
-BOOLEAN AIMMercWithin(INT16 sGridNo, INT16 sDistance) {
+function AIMMercWithin(sGridNo: INT16, sDistance: INT16): BOOLEAN {
   UINT32 uiLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -404,7 +404,7 @@ BOOLEAN AIMMercWithin(INT16 sGridNo, INT16 sDistance) {
   return FALSE;
 }
 
-BOOLEAN CheckNPCCowering(UINT8 ubProfileID) {
+function CheckNPCCowering(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -414,7 +414,7 @@ BOOLEAN CheckNPCCowering(UINT8 ubProfileID) {
   return (pNPC->uiStatusFlags & SOLDIER_COWERING) != 0;
 }
 
-UINT8 CountBartenders(void) {
+function CountBartenders(): UINT8 {
   UINT8 ubLoop;
   UINT8 ubBartenders = 0;
 
@@ -426,7 +426,7 @@ UINT8 CountBartenders(void) {
   return ubBartenders;
 }
 
-BOOLEAN CheckNPCIsUnderFire(UINT8 ubProfileID) {
+function CheckNPCIsUnderFire(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -436,7 +436,7 @@ BOOLEAN CheckNPCIsUnderFire(UINT8 ubProfileID) {
   return pNPC->bUnderFire != 0;
 }
 
-BOOLEAN NPCHeardShot(UINT8 ubProfileID) {
+function NPCHeardShot(ubProfileID: UINT8): BOOLEAN {
   SOLDIERTYPE *pNPC;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -446,7 +446,7 @@ BOOLEAN NPCHeardShot(UINT8 ubProfileID) {
   return pNPC->ubMiscSoldierFlags & SOLDIER_MISC_HEARD_GUNSHOT;
 }
 
-BOOLEAN InTownSectorWithTrainingLoyalty(INT16 sSectorX, INT16 sSectorY) {
+function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
   UINT8 ubTown;
 
   ubTown = GetTownIdForSector(sSectorX, sSectorY);
@@ -457,7 +457,7 @@ BOOLEAN InTownSectorWithTrainingLoyalty(INT16 sSectorX, INT16 sSectorY) {
   }
 }
 
-BOOLEAN CheckFact(UINT16 usFact, UINT8 ubProfileID) {
+function CheckFact(usFact: UINT16, ubProfileID: UINT8): BOOLEAN {
   INT8 bTown = -1;
 
   switch (usFact) {
@@ -1017,11 +1017,11 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
   return gubFact[usFact];
 }
 
-void StartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY) {
+function StartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   InternalStartQuest(ubQuest, sSectorX, sSectorY, TRUE);
 }
 
-void InternalStartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUpdateHistory) {
+function InternalStartQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: BOOLEAN): void {
   if (gubQuest[ubQuest] == QUESTNOTSTARTED) {
     gubQuest[ubQuest] = QUESTINPROGRESS;
 
@@ -1033,11 +1033,11 @@ void InternalStartQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN f
   }
 }
 
-void EndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY) {
+function EndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   InternalEndQuest(ubQuest, sSectorX, sSectorY, TRUE);
 }
 
-void InternalEndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUpdateHistory) {
+function InternalEndQuest(ubQuest: UINT8, sSectorX: INT16, sSectorY: INT16, fUpdateHistory: BOOLEAN): void {
   if (gubQuest[ubQuest] == QUESTINPROGRESS) {
     gubQuest[ubQuest] = QUESTDONE;
 
@@ -1056,7 +1056,7 @@ void InternalEndQuest(UINT8 ubQuest, INT16 sSectorX, INT16 sSectorY, BOOLEAN fUp
   }
 };
 
-void InitQuestEngine() {
+function InitQuestEngine(): void {
   memset(gubQuest, 0, sizeof(gubQuest));
   memset(gubFact, 0, sizeof(gubFact));
 
@@ -1075,7 +1075,7 @@ void InitQuestEngine() {
   gfBoxersResting = FALSE;
 }
 
-void CheckForQuests(UINT32 uiDay) {
+function CheckForQuests(uiDay: UINT32): void {
   // This function gets called at 8:00 AM time of the day
 
   ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"Checking For Quests, Day %d", uiDay);
@@ -1094,7 +1094,7 @@ void CheckForQuests(UINT32 uiDay) {
   // Miguel the letter
 }
 
-BOOLEAN SaveQuestInfoToSavedGameFile(HWFILE hFile) {
+function SaveQuestInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // Save all the states if the Quests
@@ -1112,7 +1112,7 @@ BOOLEAN SaveQuestInfoToSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadQuestInfoFromSavedGameFile(HWFILE hFile) {
+function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   // Save all the states if the Quests

@@ -1,4 +1,4 @@
-BOOLEAN GetMLGFilename(SGPFILENAME filename, UINT16 usMLGGraphicID) {
+function GetMLGFilename(filename: SGPFILENAME, usMLGGraphicID: UINT16): BOOLEAN {
 // FIXME: Language-specific code
 // #if defined(ENGLISH) || defined(FRENCH)
   switch (usMLGGraphicID) {

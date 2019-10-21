@@ -1,4 +1,4 @@
-BOOLEAN LoadEncryptedDataFromFile(STR pFileName, STR16 pDestString, UINT32 uiSeekFrom, UINT32 uiSeekAmount) {
+function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFrom: UINT32, uiSeekAmount: UINT32): BOOLEAN {
   HWFILE hFile;
   UINT16 i;
   UINT32 uiBytesRead;

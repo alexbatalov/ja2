@@ -54,7 +54,7 @@ INT16 gsWarpGridNo;
 
 // KM:  New method is coded for more sophistocated rules.  All the information is stored within the gExitDialog struct
 //		 and calculated upon entry to this function instead of passing in multiple arguments and calculating it prior.
-BOOLEAN InternalInitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData) {
+function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN {
   UINT32 uiTraverseTimeInMinutes;
   SOLDIERTYPE *pSoldier;
   INT32 i;
@@ -265,10 +265,10 @@ BOOLEAN InternalInitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData) {
   return TRUE;
 }
 
-void DoneFadeInWarp(void) {
+function DoneFadeInWarp(): void {
 }
 
-void DoneFadeOutWarpCallback(void) {
+function DoneFadeOutWarpCallback(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -310,7 +310,7 @@ void DoneFadeOutWarpCallback(void) {
   FadeInGameScreen();
 }
 
-void WarpToSurfaceCallback(UINT8 bExitValue) {
+function WarpToSurfaceCallback(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gFadeOutDoneCallback = DoneFadeOutWarpCallback;
 
@@ -320,7 +320,7 @@ void WarpToSurfaceCallback(UINT8 bExitValue) {
   }
 }
 
-BOOLEAN InitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData) {
+function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN {
   gubExitGUIDirection = ubDirection;
   gsExitGUIAdditionalData = sAdditionalData;
 
@@ -336,7 +336,7 @@ BOOLEAN InitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData) {
   return InternalInitSectorExitMenu(ubDirection, sAdditionalData);
 }
 
-void UpdateSectorExitMenu() {
+function UpdateSectorExitMenu(): void {
   if (gExitDialog.fGotoSector) {
     ButtonList[gExitDialog.uiLoadCheckButton]->uiFlags |= BUTTON_CLICKED_ON;
   } else {
@@ -446,7 +446,7 @@ void UpdateSectorExitMenu() {
   }
 }
 
-void RenderSectorExitMenu() {
+function RenderSectorExitMenu(): void {
   InputAtom Event;
 
   RestoreBackgroundRects();
@@ -519,11 +519,11 @@ void RenderSectorExitMenu() {
   MarkAButtonDirty(gExitDialog.uiCancelButton);
 }
 
-BOOLEAN HandleSectorExitMenu() {
+function HandleSectorExitMenu(): BOOLEAN {
   return (FALSE); // Why???
 }
 
-void RemoveSectorExitMenu(BOOLEAN fOk) {
+function RemoveSectorExitMenu(fOk: BOOLEAN): void {
   INT16 Str[50];
 
   if (gfInSectorExitMenu) {
@@ -601,13 +601,13 @@ void RemoveSectorExitMenu(BOOLEAN fOk) {
   }
 }
 
-void CheckLoadMapCallback(GUI_BUTTON *btn, INT32 reason) {
+function CheckLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gExitDialog.fGotoSector = !gExitDialog.fGotoSector;
   }
 }
 
-void SingleMoveAction() {
+function SingleMoveAction(): void {
   // KM: New logic Mar2 '99
   if (!gExitDialog.fMultipleSquadsInSector) {
     if (gTacticalStatus.fEnemyInSector) {
@@ -633,7 +633,7 @@ void SingleMoveAction() {
   */
 }
 
-void AllMoveAction() {
+function AllMoveAction(): void {
   // KM: New logic Mar2 '99
   if (!gExitDialog.fMultipleSquadsInSector) {
     gExitDialog.fGotoSectorDisabled = TRUE;
@@ -650,19 +650,19 @@ void AllMoveAction() {
   */
 }
 
-void SingleMoveCallback(GUI_BUTTON *btn, INT32 reason) {
+function SingleMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SingleMoveAction();
   }
 }
 
-void AllMoveCallback(GUI_BUTTON *btn, INT32 reason) {
+function AllMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     AllMoveAction();
   }
 }
 
-void OKCallback(GUI_BUTTON *btn, INT32 reason) {
+function OKCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -673,7 +673,7 @@ void OKCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void CancelCallback(GUI_BUTTON *btn, INT32 reason) {
+function CancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -684,31 +684,31 @@ void CancelCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SectorExitBackgroundCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function SectorExitBackgroundCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // gMsgBox.bHandled = MSG_BOX_RETURN_NO;
   }
 }
 
-void SingleRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function SingleRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     SingleMoveAction();
   }
 }
 
-void AllRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function AllRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     AllMoveAction();
   }
 }
 
-void LoadRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function LoadRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gExitDialog.fGotoSector = !gExitDialog.fGotoSector;
   }
 }
 
-void SingleRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function SingleRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     gExitDialog.fSingleMoveHilighted = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -716,7 +716,7 @@ void SingleRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void AllRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function AllRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     gExitDialog.fAllMoveHilighted = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -724,7 +724,7 @@ void AllRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void LoadRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function LoadRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     gExitDialog.fGotoSectorHilighted = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {

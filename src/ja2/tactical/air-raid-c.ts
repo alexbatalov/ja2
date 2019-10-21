@@ -117,7 +117,7 @@ AIR_RAID_POS ubXYTragetInvFromDirection[] = {
   { -1, -1 },
 };
 
-void ScheduleAirRaid(AIR_RAID_DEFINITION *pAirRaidDef) {
+function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
   // Make sure only one is cheduled...
   if (gfAirRaidScheduled) {
     return;
@@ -131,7 +131,7 @@ void ScheduleAirRaid(AIR_RAID_DEFINITION *pAirRaidDef) {
   gfAirRaidScheduled = TRUE;
 }
 
-BOOLEAN BeginAirRaid() {
+function BeginAirRaid(): BOOLEAN {
   INT32 cnt;
   BOOLEAN fOK = FALSE;
   SOLDIERTYPE *pSoldier;
@@ -212,7 +212,7 @@ BOOLEAN BeginAirRaid() {
   return TRUE;
 }
 
-INT16 PickLocationNearAnyMercInSector() {
+function PickLocationNearAnyMercInSector(): INT16 {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;
   UINT8 ubChosenMerc;
@@ -243,7 +243,7 @@ INT16 PickLocationNearAnyMercInSector() {
   return NOWHERE;
 }
 
-INT16 PickRandomLocationAtMinSpacesAway(INT16 sGridNo, INT16 sMinValue, INT16 sRandomVar) {
+function PickRandomLocationAtMinSpacesAway(sGridNo: INT16, sMinValue: INT16, sRandomVar: INT16): INT16 {
   INT16 sNewGridNo = NOWHERE;
 
   INT16 sX, sY, sNewX, sNewY;
@@ -275,7 +275,7 @@ INT16 PickRandomLocationAtMinSpacesAway(INT16 sGridNo, INT16 sMinValue, INT16 sR
   return sNewGridNo;
 }
 
-void TryToStartRaid() {
+function TryToStartRaid(): void {
   // OK, check conditions,
 
   // Some are:
@@ -298,7 +298,7 @@ void TryToStartRaid() {
   gubAirRaidMode = AIR_RAID_START;
 }
 
-void AirRaidStart() {
+function AirRaidStart(): void {
   // Begin ambient sound....
   guiSoundSample = PlayJA2Sample(S_RAID_AMBIENT, RATE_11025, 0, 10000, MIDDLEPAN);
 
@@ -315,7 +315,7 @@ void AirRaidStart() {
   }
 }
 
-void AirRaidLookForDive() {
+function AirRaidLookForDive(): void {
   BOOLEAN fDoDive = FALSE;
   BOOLEAN fDoQuote = FALSE;
 
@@ -402,12 +402,12 @@ void AirRaidLookForDive() {
   }
 }
 
-void AirRaidStartEnding() {
+function AirRaidStartEnding(): void {
   // Fade out sound.....
   gfFadingRaidOut = TRUE;
 }
 
-void BeginBombing() {
+function BeginBombing(): void {
   INT16 sGridNo;
   UINT32 iSoundStartDelay;
 
@@ -450,7 +450,7 @@ void BeginBombing() {
   gsNotLocatedYet = TRUE;
 }
 
-void BeginDive() {
+function BeginDive(): void {
   INT16 sGridNo;
   UINT32 iSoundStartDelay;
 
@@ -494,7 +494,7 @@ void BeginDive() {
   gsNotLocatedYet = TRUE;
 }
 
-void MoveDiveAirplane(FLOAT dAngle) {
+function MoveDiveAirplane(dAngle: FLOAT): void {
   FLOAT dDeltaPos;
 
   // Find delta Movement for X pos
@@ -510,7 +510,7 @@ void MoveDiveAirplane(FLOAT dAngle) {
   gsDiveY = (INT16)(gsDiveY + dDeltaPos);
 }
 
-void DoDive() {
+function DoDive(): void {
   INT16 sRange;
   INT16 sGridNo, sOldGridNo;
 
@@ -658,7 +658,7 @@ void DoDive() {
   }
 }
 
-void DoBombing() {
+function DoBombing(): void {
   INT16 sRange;
   INT16 sGridNo, sOldGridNo, sBombGridNo;
 
@@ -776,7 +776,7 @@ void DoBombing() {
   }
 }
 
-void HandleAirRaid() {
+function HandleAirRaid(): void {
   INT32 iVol;
   UINT32 uiClock;
 
@@ -926,11 +926,11 @@ void HandleAirRaid() {
   }
 }
 
-BOOLEAN InAirRaid() {
+function InAirRaid(): BOOLEAN {
   return gfInAirRaid;
 }
 
-BOOLEAN HandleAirRaidEndTurn(UINT8 ubTeam) {
+function HandleAirRaidEndTurn(ubTeam: UINT8): BOOLEAN {
   if (!gfInAirRaid) {
     return TRUE;
   }
@@ -974,7 +974,7 @@ BOOLEAN HandleAirRaidEndTurn(UINT8 ubTeam) {
   return FALSE;
 }
 
-BOOLEAN SaveAirRaidInfoToSaveGameFile(HWFILE hFile) {
+function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   AIR_RAID_SAVE_STRUCT sAirRaidSaveStruct;
 
@@ -1032,7 +1032,7 @@ BOOLEAN SaveAirRaidInfoToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadAirRaidInfoFromSaveGameFile(HWFILE hFile) {
+function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   AIR_RAID_SAVE_STRUCT sAirRaidSaveStruct;
   UINT32 uiNumBytesRead;
 
@@ -1089,7 +1089,7 @@ BOOLEAN LoadAirRaidInfoFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void EndAirRaid() {
+function EndAirRaid(): void {
   gfInAirRaid = FALSE;
 
   // Stop sound

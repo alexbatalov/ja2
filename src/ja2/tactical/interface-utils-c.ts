@@ -49,7 +49,7 @@ STR pbCarPortraitFileNames[] = {
 };
 
 // load int he portraits for the car faces that will be use in mapscreen
-BOOLEAN LoadCarPortraitValues(void) {
+function LoadCarPortraitValues(): BOOLEAN {
   INT32 iCounter = 0;
   VOBJECT_DESC VObjectDesc;
 
@@ -65,7 +65,7 @@ BOOLEAN LoadCarPortraitValues(void) {
 }
 
 // get rid of the images we loaded for the mapscreen car portraits
-void UnLoadCarPortraits(void) {
+function UnLoadCarPortraits(): void {
   INT32 iCounter = 0;
 
   // car protraits loaded?
@@ -79,7 +79,7 @@ void UnLoadCarPortraits(void) {
   return;
 }
 
-void DrawLifeUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight, BOOLEAN fErase, UINT32 uiBuffer) {
+function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
   FLOAT dStart, dEnd, dPercentage;
   // UINT16										 usLineColor;
 
@@ -154,7 +154,7 @@ void DrawLifeUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWid
   UnLockVideoSurface(uiBuffer);
 }
 
-void DrawBreathUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight, BOOLEAN fErase, UINT32 uiBuffer) {
+function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
   FLOAT dStart, dEnd, dPercentage;
   // UINT16										 usLineColor;
 
@@ -244,7 +244,7 @@ void DrawBreathUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sW
   UnLockVideoSurface(uiBuffer);
 }
 
-void DrawMoraleUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight, BOOLEAN fErase, UINT32 uiBuffer) {
+function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
   FLOAT dStart, dEnd, dPercentage;
   // UINT16										 usLineColor;
 
@@ -282,7 +282,7 @@ void DrawMoraleUIBarEx(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sW
   UnLockVideoSurface(uiBuffer);
 }
 
-void DrawItemUIBarEx(OBJECTTYPE *pObject, UINT8 ubStatus, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight, INT16 sColor1, INT16 sColor2, BOOLEAN fErase, UINT32 uiBuffer) {
+function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
   FLOAT dStart, dEnd, dPercentage;
   // UINT16										 usLineColor;
 
@@ -344,7 +344,7 @@ void DrawItemUIBarEx(OBJECTTYPE *pObject, UINT8 ubStatus, INT16 sXPos, INT16 sYP
   }
 }
 
-void RenderSoldierFace(SOLDIERTYPE *pSoldier, INT16 sFaceX, INT16 sFaceY, BOOLEAN fAutoFace) {
+function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: BOOLEAN): void {
   BOOLEAN fDoFace = FALSE;
   INT32 iFaceIndex = -1;
   UINT8 ubVehicleType = 0;

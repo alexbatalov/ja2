@@ -10,7 +10,7 @@ INT16 gsGridNo;
 INT8 gbLevel;
 
 // This function checks if our statue exists in the current sector at given gridno
-BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo) {
+function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
   INT32 cnt;
   EXITGRID ExitGrid;
 
@@ -31,7 +31,7 @@ BOOLEAN DoesO3SectorStatueExistHere(INT16 sGridNo) {
 }
 
 // This function changes the graphic of the statue and adds the exit grid...
-void ChangeO3SectorStatue(BOOLEAN fFromExplosion) {
+function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   EXITGRID ExitGrid;
   UINT16 usTileIndex;
   INT16 sX, sY;
@@ -79,11 +79,11 @@ void ChangeO3SectorStatue(BOOLEAN fFromExplosion) {
   RecompileLocalMovementCostsFromRadius(13830, 5);
 }
 
-void DeidrannaTimerCallback(void) {
+function DeidrannaTimerCallback(): void {
   HandleDeidrannaDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
   gbLevel = bLevel;
@@ -98,7 +98,7 @@ void BeginHandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 
   SetCustomizableTimerCallbackAndDelay(2000, DeidrannaTimerCallback, FALSE);
 }
 
-void HandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt;
   INT16 sDistVisible = FALSE;
@@ -141,7 +141,7 @@ void HandleDeidrannaDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLeve
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_MULTIPURPOSE, MULTIPURPOSE_SPECIAL_EVENT_DONE_KILLING_DEIDRANNA, 0, 0, 0, 0);
 }
 
-void DoneFadeInKilledQueen(void) {
+function DoneFadeInKilledQueen(): void {
   SOLDIERTYPE *pNPCSoldier;
 
   // Locate gridno.....
@@ -157,7 +157,7 @@ void DoneFadeInKilledQueen(void) {
   TriggerNPCRecordImmediately(pNPCSoldier->ubProfile, 6);
 }
 
-void DoneFadeOutKilledQueen(void) {
+function DoneFadeOutKilledQueen(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier, *pTeamSoldier;
 
@@ -246,13 +246,13 @@ void DoneFadeOutKilledQueen(void) {
 }
 
 // Called after all player quotes are done....
-void HandleDoneLastKilledQueenQuote() {
+function HandleDoneLastKilledQueenQuote(): void {
   gFadeOutDoneCallback = DoneFadeOutKilledQueen;
 
   FadeOutGameScreen();
 }
 
-void EndQueenDeathEndgameBeginEndCimenatic() {
+function EndQueenDeathEndgameBeginEndCimenatic(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -274,7 +274,7 @@ void EndQueenDeathEndgameBeginEndCimenatic() {
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_MULTIPURPOSE, MULTIPURPOSE_SPECIAL_EVENT_TEAM_MEMBERS_DONE_TALKING, 0, 0, 0, 0);
 }
 
-void EndQueenDeathEndgame() {
+function EndQueenDeathEndgame(): void {
   // Unset flags...
   gTacticalStatus.uiFlags &= (~ENGAGED_IN_CONV);
   // Increment refrence count...
@@ -283,7 +283,7 @@ void EndQueenDeathEndgame() {
   gTacticalStatus.uiFlags &= (~IN_DEIDRANNA_ENDGAME);
 }
 
-void DoneFadeOutEndCinematic(void) {
+function DoneFadeOutEndCinematic(): void {
   // DAVE PUT SMAKER STUFF HERE!!!!!!!!!!!!
   // :)
   gTacticalStatus.uiFlags &= (~IN_ENDGAME_SEQUENCE);
@@ -298,7 +298,7 @@ void DoneFadeOutEndCinematic(void) {
 }
 
 // OK, end death UI - fade to smaker....
-void HandleDoneLastEndGameQuote() {
+function HandleDoneLastEndGameQuote(): void {
   EndQueenDeathEndgame();
 
   gFadeOutDoneCallback = DoneFadeOutEndCinematic;
@@ -306,11 +306,11 @@ void HandleDoneLastEndGameQuote() {
   FadeOutGameScreen();
 }
 
-void QueenBitchTimerCallback(void) {
+function QueenBitchTimerCallback(): void {
   HandleQueenBitchDeath(gpKillerSoldier, gsGridNo, gbLevel);
 }
 
-void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt;
 
@@ -348,7 +348,7 @@ void BeginHandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8
   }
 }
 
-void HandleQueenBitchDeath(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt;
   INT16 sDistVisible = FALSE;

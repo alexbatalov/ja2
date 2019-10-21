@@ -114,7 +114,7 @@ UINT8 gubEncryptionArray3[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY
   { 146, 29, 30, 194, 190, 208, 94, 195, 8, 67, 217, 18, 255, 127, 64, 188, 106, 114, 153, 172, 177, 98, 54, 195, 32, 99, 153, 14, 221, 5, 133, 140, 46, 33, 255, 187, 212, 29, 98, 102, 47, 125, 80, 232, 235, 19, 180, 106, 219 },
 };
 
-void InitStrategicRowA() {
+function InitStrategicRowA(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_A1];
@@ -246,7 +246,7 @@ void InitStrategicRowA() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowB() {
+function InitStrategicRowB(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_B1];
@@ -378,7 +378,7 @@ void InitStrategicRowB() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 }
 
-void InitStrategicRowC() {
+function InitStrategicRowC(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_C1];
@@ -510,7 +510,7 @@ void InitStrategicRowC() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 }
 
-void InitStrategicRowD() {
+function InitStrategicRowD(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_D1];
@@ -642,7 +642,7 @@ void InitStrategicRowD() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 }
 
-void InitStrategicRowE() {
+function InitStrategicRowE(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_E1];
@@ -774,7 +774,7 @@ void InitStrategicRowE() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowF() {
+function InitStrategicRowF(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_F1];
@@ -906,7 +906,7 @@ void InitStrategicRowF() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowG() {
+function InitStrategicRowG(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_G1];
@@ -1038,7 +1038,7 @@ void InitStrategicRowG() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 }
 
-void InitStrategicRowH() {
+function InitStrategicRowH(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_H1];
@@ -1170,7 +1170,7 @@ void InitStrategicRowH() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 }
 
-void InitStrategicRowI() {
+function InitStrategicRowI(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_I1];
@@ -1302,7 +1302,7 @@ void InitStrategicRowI() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 }
 
-void InitStrategicRowJ() {
+function InitStrategicRowJ(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_J1];
@@ -1434,7 +1434,7 @@ void InitStrategicRowJ() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowK() {
+function InitStrategicRowK(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_K1];
@@ -1566,7 +1566,7 @@ void InitStrategicRowK() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowL() {
+function InitStrategicRowL(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_L1];
@@ -1698,7 +1698,7 @@ void InitStrategicRowL() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowM() {
+function InitStrategicRowM(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_M1];
@@ -1830,7 +1830,7 @@ void InitStrategicRowM() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowN() {
+function InitStrategicRowN(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_N1];
@@ -1962,7 +1962,7 @@ void InitStrategicRowN() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowO() {
+function InitStrategicRowO(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_O1];
@@ -2094,7 +2094,7 @@ void InitStrategicRowO() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicRowP() {
+function InitStrategicRowP(): void {
   SECTORINFO *pSector;
 
   pSector = &SectorInfo[SEC_P1];
@@ -2227,7 +2227,7 @@ void InitStrategicRowP() {
   pSector->ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 }
 
-void InitStrategicMovementCosts() {
+function InitStrategicMovementCosts(): void {
   InitStrategicRowA();
   InitStrategicRowB();
   InitStrategicRowC();
@@ -2246,7 +2246,7 @@ void InitStrategicMovementCosts() {
   InitStrategicRowP();
 }
 
-UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector) {
+function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
   UINT8 ubDirection = 0;
   INT16 sDifference = 0;
 
@@ -2266,7 +2266,7 @@ UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector) {
   return SectorInfo[sStartSector].ubTraversability[ubDirection];
 }
 
-BOOLEAN SectorIsImpassable(INT16 sSector) {
+function SectorIsImpassable(sSector: INT16): BOOLEAN {
   // returns true if the sector is impassable in all directions
   return SectorInfo[sSector].ubTraversability[THROUGH_STRATEGIC_MOVE] == GROUNDBARRIER || SectorInfo[sSector].ubTraversability[THROUGH_STRATEGIC_MOVE] == EDGEOFWORLD;
 }

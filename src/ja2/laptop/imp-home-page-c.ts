@@ -32,7 +32,7 @@ UINT16 uiCursorPosition = IMP_PLAYER_ACTIVATION_STRING_X;
 // has a new char been added or deleted?
 BOOLEAN fNewCharInActivationString = FALSE;
 
-void EnterImpHomePage(void) {
+function EnterImpHomePage(): void {
   // upon entry to Imp home page
   memset(pPlayerActivationString, 0, sizeof(pPlayerActivationString));
 
@@ -53,7 +53,7 @@ void EnterImpHomePage(void) {
   return;
 }
 
-void RenderImpHomePage(void) {
+function RenderImpHomePage(): void {
   // the background
   RenderProfileBackGround();
 
@@ -78,14 +78,14 @@ void RenderImpHomePage(void) {
   return;
 }
 
-void ExitImpHomePage(void) {
+function ExitImpHomePage(): void {
   // remove buttons
   RemoveIMPHomePageButtons();
 
   return;
 }
 
-void HandleImpHomePage(void) {
+function HandleImpHomePage(): void {
   // handle keyboard input for this screen
   GetPlayerKeyBoardInputForIMPHomePage();
 
@@ -101,7 +101,7 @@ void HandleImpHomePage(void) {
   return;
 }
 
-void DisplayPlayerActivationString(void) {
+function DisplayPlayerActivationString(): void {
   // this function will grab the string that the player will enter for activation
   INT32 iCounter = 0;
 
@@ -127,7 +127,7 @@ void DisplayPlayerActivationString(void) {
   return;
 }
 
-void DisplayActivationStringCursor(void) {
+function DisplayActivationStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   UINT32 uiDestPitchBYTES;
   static UINT32 uiBaseTime = 0;
@@ -178,7 +178,7 @@ void DisplayActivationStringCursor(void) {
   return;
 }
 
-void GetPlayerKeyBoardInputForIMPHomePage(void) {
+function GetPlayerKeyBoardInputForIMPHomePage(): void {
   InputAtom InputEvent;
   POINT MousePos;
 
@@ -228,7 +228,7 @@ void GetPlayerKeyBoardInputForIMPHomePage(void) {
   return;
 }
 
-void HandleTextEvent(UINT32 uiKey) {
+function HandleTextEvent(uiKey: UINT32): void {
   // this function checks to see if a letter or a backspace was pressed, if so, either put char to screen
   // or delete it
 
@@ -285,7 +285,7 @@ void HandleTextEvent(UINT32 uiKey) {
   return;
 }
 
-void ProcessPlayerInputActivationString(void) {
+function ProcessPlayerInputActivationString(): void {
   // prcess string to see if it matches activation string
   if (((wcscmp(pPlayerActivationString, L"XEP624") == 0) || (wcscmp(pPlayerActivationString, L"xep624") == 0)) && (LaptopSaveInfo.fIMPCompletedFlag == FALSE) && (LaptopSaveInfo.gfNewGameLaptop < 2)) {
     iCurrentImpPage = IMP_MAIN_PAGE;
@@ -306,7 +306,7 @@ void ProcessPlayerInputActivationString(void) {
   return;
 }
 
-void CreateIMPHomePageButtons(void) {
+function CreateIMPHomePageButtons(): void {
   // this procedure will create the buttons needed for the IMP homepage
 
   // ths about us button
@@ -323,7 +323,7 @@ void CreateIMPHomePageButtons(void) {
   return;
 }
 
-void RemoveIMPHomePageButtons(void) {
+function RemoveIMPHomePageButtons(): void {
   // this procedure will destroy the already created buttosn for the IMP homepage
 
   // the about us button
@@ -333,7 +333,7 @@ void RemoveIMPHomePageButtons(void) {
   return;
 }
 
-void BtnIMPAboutUsCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAboutUsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

@@ -40,7 +40,7 @@ INT32 iIMPQuestionLengths[25] = {
 const QTN_FIRST_COLUMN_X = 80;
 const QTN_SECOND_COLUMN_X = 320;
 
-void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLength, INT16 sIMPTextRecordNumber, UINT32 uiFont, UINT8 ubColor, BOOLEAN fShadow, UINT32 uiFlags) {
+function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT16, sIMPTextRecordNumber: INT16, uiFont: UINT32, ubColor: UINT8, fShadow: BOOLEAN, uiFlags: UINT32): void {
   // this procedure will load and display to the screen starting at postion X, Y relative to the start of the laptop screen
   // it will access record sIMPTextRecordNumber and go until all records following it but before the next IMP record are displayed in font uiFont
   CHAR16 sString[1024];
@@ -69,13 +69,13 @@ void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLength, INT1
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-void InitializeImpRecordLengthList(void) {
+function InitializeImpRecordLengthList(): void {
   // this procedure will setup the IMP records length list with the appropriate values
 
   return;
 }
 
-void PrintImpText(void) {
+function PrintImpText(): void {
   INT16 sWidth = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
 
   // looks at current page and prints text needed
@@ -252,7 +252,7 @@ void PrintImpText(void) {
   }
 }
 
-void PrintImpTextPostButtonRender(void) {
+function PrintImpTextPostButtonRender(): void {
   // prints any text after IMP buttons have been rendered
   switch (iCurrentImpPage) {
     case (IMP_HOME_PAGE):
@@ -261,7 +261,7 @@ void PrintImpTextPostButtonRender(void) {
   }
 }
 
-void PrintIMPPersonalityQuizQuestionAndAnsers(void) {
+function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
   INT32 iCounter = 0;
   INT32 iOffset = 0;
 
@@ -350,7 +350,7 @@ void PrintIMPPersonalityQuizQuestionAndAnsers(void) {
   return;
 }
 
-void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset) {
+function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>): void {
   INT32 iExtraOffSet = 0;
   BOOLEAN fOffSet = TRUE;
   INT32 iCounter = 0;

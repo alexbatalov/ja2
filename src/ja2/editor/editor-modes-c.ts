@@ -1,6 +1,6 @@
 BOOLEAN gfShowExitGrids = FALSE;
 
-void SetEditorItemsTaskbarMode(UINT16 usNewMode) {
+function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButtons(ITEMS_WEAPONS, ITEMS_KEYS);
   switch (usNewMode) {
     case ITEMS_WEAPONS:
@@ -44,7 +44,7 @@ void SetEditorItemsTaskbarMode(UINT16 usNewMode) {
 
 const NO_EFFECT = 2;
 
-void SetEditorBuildingTaskbarMode(UINT16 usNewMode) {
+function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
   BOOLEAN fNewGroup = FALSE;
   BOOLEAN fNewRoofs, fNewWalls, fNewRoomInfo;
   if (usNewMode == usCurrentMode) {
@@ -152,7 +152,7 @@ void SetEditorBuildingTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-void SetEditorTerrainTaskbarMode(UINT16 usNewMode) {
+function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButton(TERRAIN_FGROUND_TEXTURES);
   UnclickEditorButton(TERRAIN_BGROUND_TEXTURES);
   UnclickEditorButton(TERRAIN_PLACE_CLIFFS);
@@ -213,7 +213,7 @@ void SetEditorTerrainTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-void ShowExitGrids() {
+function ShowExitGrids(): void {
   UINT16 i;
   LEVELNODE *pLevelNode;
   if (gfShowExitGrids)
@@ -226,7 +226,7 @@ void ShowExitGrids() {
   }
 }
 
-void HideExitGrids() {
+function HideExitGrids(): void {
   UINT16 i;
   LEVELNODE *pLevelNode;
   if (!gfShowExitGrids)
@@ -246,7 +246,7 @@ void HideExitGrids() {
   }
 }
 
-void SetEditorMapInfoTaskbarMode(UINT16 usNewMode) {
+function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
   BOOLEAN fShowExitGrids = FALSE;
   UnclickEditorButton(MAPINFO_ADD_LIGHT1_SOURCE);
   UnclickEditorButton(MAPINFO_DRAW_EXITGRIDS);
@@ -304,7 +304,7 @@ void SetEditorMapInfoTaskbarMode(UINT16 usNewMode) {
   }
 }
 
-void SetEditorSmoothingMode(UINT8 ubNewMode) {
+function SetEditorSmoothingMode(ubNewMode: UINT8): void {
   UnclickEditorButtons(MAPINFO_RADIO_NORMAL, MAPINFO_RADIO_CAVES);
   if (iCurrentTaskbar == TASK_BUILDINGS)
     HideEditorButtons(BUILDING_NEW_ROOM, BUILDING_CAVE_DRAWING);

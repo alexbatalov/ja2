@@ -1,10 +1,10 @@
 UINT32 guiUsedBackground;
 UINT32 guiUsedGrid;
 
-void GameInitBobbyRUsed() {
+function GameInitBobbyRUsed(): void {
 }
 
-BOOLEAN EnterBobbyRUsed() {
+function EnterBobbyRUsed(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the background graphic and add it
@@ -30,7 +30,7 @@ BOOLEAN EnterBobbyRUsed() {
   return TRUE;
 }
 
-void ExitBobbyRUsed() {
+function ExitBobbyRUsed(): void {
   DeleteVideoObjectFromIndex(guiUsedBackground);
   DeleteVideoObjectFromIndex(guiUsedGrid);
   DeleteBobbyMenuBar();
@@ -41,10 +41,10 @@ void ExitBobbyRUsed() {
   guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_USED;
 }
 
-void HandleBobbyRUsed() {
+function HandleBobbyRUsed(): void {
 }
 
-void RenderBobbyRUsed() {
+function RenderBobbyRUsed(): void {
   HVOBJECT hPixHandle;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiUsedBackground);

@@ -6,7 +6,7 @@ SOLDIERINITNODE *gSoldierInitTail = NULL;
 SOLDIERINITNODE *gOriginalSoldierInitListHead = NULL;
 SOLDIERINITNODE *gAlternateSoldierInitListHead = NULL;
 
-UINT32 CountNumberOfNodesWithSoldiers() {
+function CountNumberOfNodesWithSoldiers(): UINT32 {
   SOLDIERINITNODE *curr;
   UINT32 num = 0;
   curr = gSoldierInitHead;
@@ -19,14 +19,14 @@ UINT32 CountNumberOfNodesWithSoldiers() {
   return num;
 }
 
-void InitSoldierInitList() {
+function InitSoldierInitList(): void {
   if (gSoldierInitHead)
     KillSoldierInitList();
   gSoldierInitHead = NULL;
   gSoldierInitTail = NULL;
 }
 
-void KillSoldierInitList() {
+function KillSoldierInitList(): void {
   while (gSoldierInitHead)
     RemoveSoldierNodeFromInitList(gSoldierInitTail);
   if (gfOriginalList)
@@ -35,7 +35,7 @@ void KillSoldierInitList() {
     gAlternateSoldierInitListHead = NULL;
 }
 
-SOLDIERINITNODE *AddBasicPlacementToSoldierInitList(BASIC_SOLDIERCREATE_STRUCT *pBasicPlacement) {
+function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>): Pointer<SOLDIERINITNODE> {
   SOLDIERINITNODE *curr;
   // Allocate memory for node
   curr = (SOLDIERINITNODE *)MemAlloc(sizeof(SOLDIERINITNODE));
@@ -80,7 +80,7 @@ SOLDIERINITNODE *AddBasicPlacementToSoldierInitList(BASIC_SOLDIERCREATE_STRUCT *
   return curr;
 }
 
-void RemoveSoldierNodeFromInitList(SOLDIERINITNODE *pNode) {
+function RemoveSoldierNodeFromInitList(pNode: Pointer<SOLDIERINITNODE>): void {
   if (!pNode)
     return;
   if (gfOriginalList)
@@ -121,7 +121,7 @@ void RemoveSoldierNodeFromInitList(SOLDIERINITNODE *pNode) {
 // These serialization functions are assuming the passing of a valid file
 // pointer to the beginning of the save/load area, which is not necessarily at
 // the beginning of the file.  This is just a part of the whole map serialization.
-BOOLEAN SaveSoldiersToMap(HWFILE fp) {
+function SaveSoldiersToMap(fp: HWFILE): BOOLEAN {
   UINT32 i;
   UINT32 uiBytesWritten;
   SOLDIERINITNODE *curr;
@@ -159,7 +159,7 @@ BOOLEAN SaveSoldiersToMap(HWFILE fp) {
   return TRUE;
 }
 
-BOOLEAN LoadSoldiersFromMap(INT8 **hBuffer) {
+function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   UINT32 i;
   UINT8 ubNumIndividuals;
   BASIC_SOLDIERCREATE_STRUCT tempBasicPlacement;
@@ -242,7 +242,7 @@ BOOLEAN LoadSoldiersFromMap(INT8 **hBuffer) {
 //								these, they are randomly filled based on the number needed.
 // NOTE:  This function is called by AddSoldierInitListTeamToWorld().  There is no other place it needs to
 //			 be called.
-void SortSoldierInitList() {
+function SortSoldierInitList(): void {
   SOLDIERINITNODE *temp, *curr;
 
   BOOLEAN fFredoAtStart = FALSE;
@@ -404,7 +404,7 @@ void SortSoldierInitList() {
   }
 }
 
-BOOLEAN AddPlacementToWorld(SOLDIERINITNODE *curr) {
+function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
   UINT8 ubProfile;
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
   SOLDIERTYPE *pSoldier;
@@ -538,7 +538,7 @@ BOOLEAN AddPlacementToWorld(SOLDIERINITNODE *curr) {
   return FALSE;
 }
 
-void AddPlacementToWorldByProfileID(UINT8 ubProfile) {
+function AddPlacementToWorldByProfileID(ubProfile: UINT8): void {
   SOLDIERINITNODE *curr;
 
   curr = gSoldierInitHead;
@@ -552,7 +552,7 @@ void AddPlacementToWorldByProfileID(UINT8 ubProfile) {
   }
 }
 
-UINT8 AddSoldierInitListTeamToWorld(INT8 bTeam, UINT8 ubMaxNum) {
+function AddSoldierInitListTeamToWorld(bTeam: INT8, ubMaxNum: UINT8): UINT8 {
   UINT8 ubNumAdded = 0;
   SOLDIERINITNODE *mark;
   UINT8 ubSlotsToFill;
@@ -646,7 +646,7 @@ UINT8 AddSoldierInitListTeamToWorld(INT8 bTeam, UINT8 ubMaxNum) {
   return ubNumAdded;
 }
 
-void AddSoldierInitListEnemyDefenceSoldiers(UINT8 ubTotalAdmin, UINT8 ubTotalTroops, UINT8 ubTotalElite) {
+function AddSoldierInitListEnemyDefenceSoldiers(ubTotalAdmin: UINT8, ubTotalTroops: UINT8, ubTotalElite: UINT8): void {
   SOLDIERINITNODE *mark;
   SOLDIERINITNODE *curr;
   INT32 iRandom;
@@ -997,7 +997,7 @@ void AddSoldierInitListEnemyDefenceSoldiers(UINT8 ubTotalAdmin, UINT8 ubTotalTro
 // sector, then they get to use the enemy placements.  However, we remove any orders from
 // placements containing RNDPTPATROL or POINTPATROL orders, as well as remove any detailed
 // placement information.
-void AddSoldierInitListMilitia(UINT8 ubNumGreen, UINT8 ubNumRegs, UINT8 ubNumElites) {
+function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumElites: UINT8): void {
   SOLDIERINITNODE *mark;
   SOLDIERINITNODE *curr;
   INT32 iRandom;
@@ -1197,7 +1197,7 @@ void AddSoldierInitListMilitia(UINT8 ubNumGreen, UINT8 ubNumRegs, UINT8 ubNumEli
   }
 }
 
-void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumInfants, UINT8 ubNumYoungMales, UINT8 ubNumYoungFemales, UINT8 ubNumAdultMales, UINT8 ubNumAdultFemales) {
+function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumInfants: UINT8, ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
   SOLDIERINITNODE *curr;
   INT32 iRandom;
   UINT8 ubFreeSlots;
@@ -1316,7 +1316,7 @@ void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumI
   }
 }
 
-SOLDIERINITNODE *FindSoldierInitNodeWithProfileID(UINT16 usProfile) {
+function FindSoldierInitNodeWithProfileID(usProfile: UINT16): Pointer<SOLDIERINITNODE> {
   SOLDIERINITNODE *curr;
   curr = gSoldierInitHead;
   while (curr) {
@@ -1327,7 +1327,7 @@ SOLDIERINITNODE *FindSoldierInitNodeWithProfileID(UINT16 usProfile) {
   return NULL;
 }
 
-SOLDIERINITNODE *FindSoldierInitNodeWithID(UINT16 usID) {
+function FindSoldierInitNodeWithID(usID: UINT16): Pointer<SOLDIERINITNODE> {
   SOLDIERINITNODE *curr;
   curr = gSoldierInitHead;
   while (curr) {
@@ -1338,7 +1338,7 @@ SOLDIERINITNODE *FindSoldierInitNodeWithID(UINT16 usID) {
   return NULL;
 }
 
-void UseEditorOriginalList() {
+function UseEditorOriginalList(): void {
   SOLDIERINITNODE *curr;
   gfOriginalList = TRUE;
   gSoldierInitHead = gOriginalSoldierInitListHead;
@@ -1351,7 +1351,7 @@ void UseEditorOriginalList() {
     gSoldierInitTail = curr;
 }
 
-void UseEditorAlternateList() {
+function UseEditorAlternateList(): void {
   SOLDIERINITNODE *curr;
   gfOriginalList = FALSE;
   gSoldierInitHead = gAlternateSoldierInitListHead;
@@ -1367,7 +1367,7 @@ void UseEditorAlternateList() {
 // Any killed people that used detailed placement information must prevent that from occurring
 // again in the future.  Otherwise, the sniper guy with 99 marksmanship could appear again
 // if the map was loaded again!
-void EvaluateDeathEffectsToSoldierInitList(SOLDIERTYPE *pSoldier) {
+function EvaluateDeathEffectsToSoldierInitList(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERINITNODE *curr;
   UINT8 ubNodeID;
   curr = gSoldierInitHead;
@@ -1394,7 +1394,7 @@ void EvaluateDeathEffectsToSoldierInitList(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void RemoveDetailedPlacementInfo(UINT8 ubNodeID) {
+function RemoveDetailedPlacementInfo(ubNodeID: UINT8): void {
   SOLDIERINITNODE *curr;
   curr = gSoldierInitHead;
   while (curr) {
@@ -1412,7 +1412,7 @@ void RemoveDetailedPlacementInfo(UINT8 ubNodeID) {
 // For the purpose of keeping track of which soldier belongs to which placement within the game,
 // the only way we can do this properly is to save the soldier ID from the list and reconnect the
 // soldier pointer whenever we load the game.
-BOOLEAN SaveSoldierInitListLinks(HWFILE hfile) {
+function SaveSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   SOLDIERINITNODE *curr;
   UINT32 uiNumBytesWritten;
   UINT8 ubSlots = 0;
@@ -1447,7 +1447,7 @@ BOOLEAN SaveSoldierInitListLinks(HWFILE hfile) {
   return TRUE;
 }
 
-BOOLEAN LoadSoldierInitListLinks(HWFILE hfile) {
+function LoadSoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   SOLDIERINITNODE *curr;
   UINT8 ubSlots, ubSoldierID, ubNodeID;
@@ -1483,7 +1483,7 @@ BOOLEAN LoadSoldierInitListLinks(HWFILE hfile) {
   return TRUE;
 }
 
-void AddSoldierInitListBloodcats() {
+function AddSoldierInitListBloodcats(): void {
   SECTORINFO *pSector;
   SOLDIERINITNODE *curr;
   UINT8 ubSectorID;
@@ -1603,7 +1603,7 @@ void AddSoldierInitListBloodcats() {
   }
 }
 
-SOLDIERINITNODE *FindSoldierInitListNodeByProfile(UINT8 ubProfile) {
+function FindSoldierInitListNodeByProfile(ubProfile: UINT8): Pointer<SOLDIERINITNODE> {
   SOLDIERINITNODE *curr;
 
   curr = gSoldierInitHead;
@@ -1619,7 +1619,7 @@ SOLDIERINITNODE *FindSoldierInitListNodeByProfile(UINT8 ubProfile) {
 
 // This is the code that loops through the profiles starting at the RPCs, and adds them using strategic insertion
 // information, and not editor placements.  The key flag involved for doing it this way is the gMercProfiles[i].fUseProfileInsertionInfo.
-void AddProfilesUsingProfileInsertionData() {
+function AddProfilesUsingProfileInsertionData(): void {
   INT32 i;
   SOLDIERTYPE *pSoldier;
   SOLDIERINITNODE *curr;
@@ -1686,7 +1686,7 @@ void AddProfilesUsingProfileInsertionData() {
   }
 }
 
-void AddProfilesNotUsingProfileInsertionData() {
+function AddProfilesNotUsingProfileInsertionData(): void {
   SOLDIERINITNODE *curr;
   // Count the current number of soldiers of the specified team
   curr = gSoldierInitHead;
@@ -1698,7 +1698,7 @@ void AddProfilesNotUsingProfileInsertionData() {
   }
 }
 
-BOOLEAN NewWayOfLoadingEnemySoldierInitListLinks(HWFILE hfile) {
+function NewWayOfLoadingEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   SOLDIERINITNODE *curr;
   UINT8 ubSlots, ubSoldierID, ubNodeID;
@@ -1734,7 +1734,7 @@ BOOLEAN NewWayOfLoadingEnemySoldierInitListLinks(HWFILE hfile) {
   return TRUE;
 }
 
-BOOLEAN NewWayOfLoadingCivilianInitListLinks(HWFILE hfile) {
+function NewWayOfLoadingCivilianInitListLinks(hfile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   SOLDIERINITNODE *curr;
   UINT8 ubSlots, ubSoldierID, ubNodeID;
@@ -1770,7 +1770,7 @@ BOOLEAN NewWayOfLoadingCivilianInitListLinks(HWFILE hfile) {
   return TRUE;
 }
 
-BOOLEAN LookAtButDontProcessEnemySoldierInitListLinks(HWFILE hfile) {
+function LookAtButDontProcessEnemySoldierInitListLinks(hfile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   SOLDIERINITNODE *curr;
   UINT8 ubSlots, ubSoldierID, ubNodeID;
@@ -1806,7 +1806,7 @@ BOOLEAN LookAtButDontProcessEnemySoldierInitListLinks(HWFILE hfile) {
   return TRUE;
 }
 
-void StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated() {
+function StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated(): void {
   SECTORINFO *pSector;
   SOLDIERINITNODE *curr;
 

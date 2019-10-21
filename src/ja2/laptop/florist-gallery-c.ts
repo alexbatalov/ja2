@@ -60,14 +60,14 @@ UINT32 guiGalleryButton[FLOR_GALLERY_NUMBER_FLORAL_BUTTONS];
 INT32 guiFloralGalleryButtonImage;
 UINT32 guiFloralGalleryButton[2];
 
-void GameInitFloristGallery() {
+function GameInitFloristGallery(): void {
 }
 
-void EnterInitFloristGallery() {
+function EnterInitFloristGallery(): void {
   memset(&FloristGallerySubPagesVisitedFlag, 0, 4);
 }
 
-BOOLEAN EnterFloristGallery() {
+function EnterFloristGallery(): BOOLEAN {
   InitFloristDefaults();
 
   // the next previous buttons
@@ -86,7 +86,7 @@ BOOLEAN EnterFloristGallery() {
   return TRUE;
 }
 
-void ExitFloristGallery() {
+function ExitFloristGallery(): void {
   UINT16 i;
 
   RemoveFloristDefaults();
@@ -99,7 +99,7 @@ void ExitFloristGallery() {
   DeleteFlowerButtons();
 }
 
-void HandleFloristGallery() {
+function HandleFloristGallery(): void {
   if (gfRedrawFloristGallery) {
     gfRedrawFloristGallery = FALSE;
 
@@ -111,7 +111,7 @@ void HandleFloristGallery() {
   }
 }
 
-void RenderFloristGallery() {
+function RenderFloristGallery(): void {
   DisplayFloristDefaults();
 
   DrawTextToScreen(sFloristGalleryText[FLORIST_GALLERY_CLICK_TO_ORDER], FLOR_GALLERY_TITLE_TEXT_X, FLOR_GALLERY_TITLE_TEXT_Y, FLOR_GALLERY_TITLE_TEXT_WIDTH, FLOR_GALLERY_TITLE_FONT, FLOR_GALLERY_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
@@ -124,7 +124,7 @@ void RenderFloristGallery() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFloralGalleryNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -149,7 +149,7 @@ void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFloralGalleryBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -180,7 +180,7 @@ void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -203,7 +203,7 @@ void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN InitFlowerButtons() {
+function InitFlowerButtons(): BOOLEAN {
   UINT16 i, j, count;
   UINT16 usPosY;
   char sTemp[40];
@@ -257,7 +257,7 @@ BOOLEAN InitFlowerButtons() {
   return TRUE;
 }
 
-void DeleteFlowerButtons() {
+function DeleteFlowerButtons(): void {
   UINT16 i;
 
   for (i = 0; i < gubPrevNumberOfFlowers; i++) {
@@ -271,7 +271,7 @@ void DeleteFlowerButtons() {
   }
 }
 
-BOOLEAN DisplayFloralDescriptions() {
+function DisplayFloralDescriptions(): BOOLEAN {
   wchar_t sTemp[640];
   UINT32 uiStartLoc = 0, i;
   UINT16 usPosY, usPrice;
@@ -306,7 +306,7 @@ BOOLEAN DisplayFloralDescriptions() {
   return TRUE;
 }
 
-void ChangingFloristGallerySubPage(UINT8 ubSubPageNumber) {
+function ChangingFloristGallerySubPage(ubSubPageNumber: UINT8): void {
   fLoadPendingFlag = TRUE;
 
   // there are 3 flowers per page

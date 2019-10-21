@@ -15,7 +15,7 @@ CHAR8 gzCdDirectory[SGPFILENAME_LEN];
 //	will be initialized and game start.
 //
 //************************************************************************
-BOOLEAN InitializeFileDatabase() {
+function InitializeFileDatabase(): BOOLEAN {
   INT16 i;
   UINT32 uiSize;
   BOOLEAN fLibraryInited = FALSE;
@@ -78,7 +78,7 @@ BOOLEAN InitializeFileDatabase() {
 //
 // Created:  3/21/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN ReopenCDLibraries(void) {
+function ReopenCDLibraries(): BOOLEAN {
   INT16 i;
 
   // Load up each library
@@ -100,7 +100,7 @@ BOOLEAN ReopenCDLibraries(void) {
 //
 //************************************************************************
 
-BOOLEAN ShutDownFileDatabase() {
+function ShutDownFileDatabase(): BOOLEAN {
   UINT16 sLoop1;
 
   // Free up the memory used for each library
@@ -128,7 +128,7 @@ BOOLEAN ShutDownFileDatabase() {
   return TRUE;
 }
 
-BOOLEAN CheckForLibraryExistence(STR pLibraryName) {
+function CheckForLibraryExistence(pLibraryName: STR): BOOLEAN {
   BOOLEAN fRetVal = FALSE;
   HANDLE hFile;
 
@@ -147,7 +147,7 @@ BOOLEAN CheckForLibraryExistence(STR pLibraryName) {
   return fRetVal;
 }
 
-BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOOLEAN fCanBeOnCDrom) {
+function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderStruct>, fCanBeOnCDrom: BOOLEAN): BOOLEAN {
   HANDLE hFile;
   UINT16 usNumEntries = 0;
   UINT32 uiNumBytesRead;
@@ -278,7 +278,7 @@ BOOLEAN InitializeLibrary(STR pLibraryName, LibraryHeaderStruct *pLibHeader, BOO
   return TRUE;
 }
 
-BOOLEAN LoadDataFromLibrary(INT16 sLibraryID, UINT32 uiFileNum, PTR pData, UINT32 uiBytesToRead, UINT32 *pBytesRead) {
+function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32, pBytesRead: Pointer<UINT32>): BOOLEAN {
   UINT32 uiOffsetInLibrary, uiLength;
   HANDLE hLibraryFile;
   UINT32 uiNumBytesRead;
@@ -327,7 +327,7 @@ BOOLEAN LoadDataFromLibrary(INT16 sLibraryID, UINT32 uiFileNum, PTR pData, UINT3
 //
 //************************************************************************
 
-BOOLEAN CheckIfFileExistInLibrary(STR pFileName) {
+function CheckIfFileExistInLibrary(pFileName: STR): BOOLEAN {
   INT16 sLibraryID;
   FileHeaderStruct *pFileHeader;
 
@@ -351,7 +351,7 @@ BOOLEAN CheckIfFileExistInLibrary(STR pFileName) {
 //	( eg. File is  Laptop\Test.sti, if the Laptop\ library is open, it returns true
 //
 //************************************************************************
-INT16 GetLibraryIDFromFileName(STR pFileName) {
+function GetLibraryIDFromFileName(pFileName: STR): INT16 {
   INT16 sLoop1, sBestMatch = -1;
 
   // loop through all the libraries to check which library the file is in
@@ -392,7 +392,7 @@ INT16 GetLibraryIDFromFileName(STR pFileName) {
 //
 //************************************************************************
 
-BOOLEAN GetFileHeaderFromLibrary(INT16 sLibraryID, STR pstrFileName, FileHeaderStruct **pFileHeader) {
+function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHeader: Pointer<Pointer<FileHeaderStruct>>): BOOLEAN {
   FileHeaderStruct **ppFileHeader;
   CHAR8 sFileNameWithPath[FILENAME_SIZE];
 
@@ -419,7 +419,7 @@ BOOLEAN GetFileHeaderFromLibrary(INT16 sLibraryID, STR pstrFileName, FileHeaderS
 //
 //************************************************************************
 
-INT CompareFileNames(CHAR8 *arg1[], FileHeaderStruct **arg2) {
+function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT {
   CHAR8 sSearchKey[FILENAME_SIZE];
   CHAR8 sFileNameWithPath[FILENAME_SIZE];
   FileHeaderStruct *TempFileHeader;
@@ -434,7 +434,7 @@ INT CompareFileNames(CHAR8 *arg1[], FileHeaderStruct **arg2) {
   return _stricmp(sSearchKey, sFileNameWithPath);
 }
 
-void AddSlashToPath(STR pName) {
+function AddSlashToPath(pName: STR): void {
   UINT32 uiLoop, uiCounter;
   BOOLEAN fDone = FALSE;
   BOOLEAN fFound = FALSE;
@@ -465,7 +465,7 @@ void AddSlashToPath(STR pName) {
 //
 //************************************************************************
 
-HWFILE OpenFileFromLibrary(STR pName) {
+function OpenFileFromLibrary(pName: STR): HWFILE {
   FileHeaderStruct *pFileHeader;
   HWFILE hLibFile;
   INT16 sLibraryID;
@@ -556,7 +556,7 @@ HWFILE OpenFileFromLibrary(STR pName) {
   return hLibFile;
 }
 
-HWFILE CreateLibraryFileHandle(INT16 sLibraryID, UINT32 uiFileNum) {
+function CreateLibraryFileHandle(sLibraryID: INT16, uiFileNum: UINT32): HWFILE {
   HWFILE hLibFile;
 
   hLibFile = uiFileNum;
@@ -565,7 +565,7 @@ HWFILE CreateLibraryFileHandle(INT16 sLibraryID, UINT32 uiFileNum) {
   return hLibFile;
 }
 
-HWFILE CreateRealFileHandle(HANDLE hFile) {
+function CreateRealFileHandle(hFile: HANDLE): HWFILE {
   HWFILE hLibFile;
   INT32 iLoop1;
   UINT32 uiFileNum = 0;
@@ -608,7 +608,7 @@ HWFILE CreateRealFileHandle(HANDLE hFile) {
   return hLibFile;
 }
 
-BOOLEAN GetLibraryAndFileIDFromLibraryFileHandle(HWFILE hlibFile, INT16 *pLibraryID, UINT32 *pFileNum) {
+function GetLibraryAndFileIDFromLibraryFileHandle(hlibFile: HWFILE, pLibraryID: Pointer<INT16>, pFileNum: Pointer<UINT32>): BOOLEAN {
   *pFileNum = DB_EXTRACT_FILE_ID(hlibFile);
   *pLibraryID = (UINT16)DB_EXTRACT_LIBRARY(hlibFile);
 
@@ -627,7 +627,7 @@ BOOLEAN GetLibraryAndFileIDFromLibraryFileHandle(HWFILE hlibFile, INT16 *pLibrar
 //
 //************************************************************************
 
-BOOLEAN CloseLibraryFile(INT16 sLibraryID, UINT32 uiFileID) {
+function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): BOOLEAN {
   if (IsLibraryOpened(sLibraryID)) {
     // if the uiFileID is invalid
     if ((uiFileID >= (UINT32)gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray))
@@ -655,7 +655,7 @@ BOOLEAN CloseLibraryFile(INT16 sLibraryID, UINT32 uiFileID) {
   return TRUE;
 }
 
-BOOLEAN LibraryFileSeek(INT16 sLibraryID, UINT32 uiFileNum, UINT32 uiDistance, UINT8 uiHowToSeek) {
+function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance: UINT32, uiHowToSeek: UINT8): BOOLEAN {
   UINT32 uiCurPos, uiSize;
 
   // if the library is not open, return an error
@@ -686,7 +686,7 @@ BOOLEAN LibraryFileSeek(INT16 sLibraryID, UINT32 uiFileNum, UINT32 uiDistance, U
 //
 //************************************************************************
 
-BOOLEAN OpenLibrary(INT16 sLibraryID) {
+function OpenLibrary(sLibraryID: INT16): BOOLEAN {
   // if the library is already opened, report an error
   if (gFileDataBase.pLibraries[sLibraryID].fLibraryOpen)
     return FALSE;
@@ -702,7 +702,7 @@ BOOLEAN OpenLibrary(INT16 sLibraryID) {
   return TRUE;
 }
 
-BOOLEAN CloseLibrary(INT16 sLibraryID) {
+function CloseLibrary(sLibraryID: INT16): BOOLEAN {
   UINT32 uiLoop1;
 
   // if the library isnt loaded, dont close it
@@ -756,7 +756,7 @@ BOOLEAN CloseLibrary(INT16 sLibraryID) {
   return TRUE;
 }
 
-BOOLEAN IsLibraryOpened(INT16 sLibraryID) {
+function IsLibraryOpened(sLibraryID: INT16): BOOLEAN {
   // if the database is not initialized
   if (!gFileDataBase.fInitialized)
     return FALSE;
@@ -772,7 +772,7 @@ BOOLEAN IsLibraryOpened(INT16 sLibraryID) {
     return FALSE;
 }
 
-BOOLEAN CheckIfFileIsAlreadyOpen(STR pFileName, INT16 sLibraryID) {
+function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): BOOLEAN {
   UINT16 usLoop1 = 0;
 
   CHAR8 sName[60];
@@ -799,7 +799,7 @@ BOOLEAN CheckIfFileIsAlreadyOpen(STR pFileName, INT16 sLibraryID) {
   return FALSE;
 }
 
-BOOLEAN GetLibraryFileTime(INT16 sLibraryID, UINT32 uiFileNum, SGP_FILETIME *pLastWriteTime) {
+function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: Pointer<SGP_FILETIME>): BOOLEAN {
   UINT16 usNumEntries = 0;
   UINT32 uiNumBytesRead;
   DIRENTRY *pDirEntry;
@@ -869,7 +869,7 @@ BOOLEAN GetLibraryFileTime(INT16 sLibraryID, UINT32 uiFileNum, SGP_FILETIME *pLa
 //
 //************************************************************************
 
-INT32 CompareDirEntryFileNames(CHAR8 *arg1[], DIRENTRY **arg2) {
+function CompareDirEntryFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<DIRENTRY>>): INT32 {
   CHAR8 sSearchKey[FILENAME_SIZE];
   CHAR8 sFileNameWithPath[FILENAME_SIZE];
   DIRENTRY *TempDirEntry;

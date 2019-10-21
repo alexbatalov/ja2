@@ -510,7 +510,7 @@ INT16 WeaponROF[MAX_WEAPONS] = {
 };
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items
-void SetupStoreInventory(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed) {
+function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: BOOLEAN): void {
   UINT16 i;
   UINT16 usItemIndex;
   UINT8 ubNumBought;
@@ -540,7 +540,7 @@ void SetupStoreInventory(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed) {
   }
 }
 
-BOOLEAN DoesGunOfSameClassExistInInventory(UINT8 ubItemIndex, UINT8 ubDealerID) {
+function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT8): BOOLEAN {
   UINT16 i;
 
   STORE_INVENTORY *pInventoryArray;
@@ -570,7 +570,7 @@ BOOLEAN DoesGunOfSameClassExistInInventory(UINT8 ubItemIndex, UINT8 ubDealerID) 
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 
-STORE_INVENTORY *GetPtrToStoreInventory(UINT8 ubDealerID) {
+function GetPtrToStoreInventory(ubDealerID: UINT8): Pointer<STORE_INVENTORY> {
   if (ubDealerID >= BOBBY_RAY_LISTS)
     return NULL;
 

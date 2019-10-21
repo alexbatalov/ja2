@@ -15,7 +15,7 @@ extern BOOLEAN gfInMsgBox;
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
-BOOLEAN InitializeGame(void) {
+function InitializeGame(): BOOLEAN {
   UINT32 uiIndex;
 
   giStartingMemValue = MemGetFree();
@@ -67,7 +67,7 @@ BOOLEAN InitializeGame(void) {
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-void ShutdownGame(void) {
+function ShutdownGame(): void {
   // handle shutdown of game with respect to preloaded mapscreen graphics
   HandleRemovalOfPreLoadedMapGraphics();
 
@@ -87,7 +87,7 @@ void ShutdownGame(void) {
 // the state of the game (i.e. Main Menu, PC Generation, Combat loop, etc....)
 // This function exits constantly and reenters constantly
 
-void GameLoop(void) {
+function GameLoop(): void {
   InputAtom InputEvent;
   POINT MousePos;
   UINT32 uiOldScreen = guiCurrentScreen;
@@ -204,17 +204,17 @@ void GameLoop(void) {
   UpdateClock();
 }
 
-void SetCurrentScreen(UINT32 uiNewScreen) {
+function SetCurrentScreen(uiNewScreen: UINT32): void {
   guiCurrentScreen = uiNewScreen;
   (*(GameScreens[guiCurrentScreen].HandleScreen))();
 }
 
-void SetPendingNewScreen(UINT32 uiNewScreen) {
+function SetPendingNewScreen(uiNewScreen: UINT32): void {
   guiPendingScreen = uiNewScreen;
 }
 
 // Gets called when the screen changes, place any needed in code in here
-void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {
+function HandleNewScreenChange(uiNewScreen: UINT32, uiOldScreen: UINT32): void {
   // if we are not going into the message box screen, and we didnt just come from it
   if ((uiNewScreen != MSG_BOX_SCREEN && uiOldScreen != MSG_BOX_SCREEN)) {
     // reset the help screen
@@ -222,7 +222,7 @@ void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {
   }
 }
 
-void HandleShortCutExitState(void) {
+function HandleShortCutExitState(): void {
   // look at the state of fGameIsRunning, if set false, then prompt user for confirmation
 
   // use YES/NO Pop up box, settup for particular screen
@@ -262,7 +262,7 @@ void HandleShortCutExitState(void) {
   }
 }
 
-void EndGameMessageBoxCallBack(UINT8 bExitValue) {
+function EndGameMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gfProgramIsRunning = FALSE;
@@ -277,6 +277,6 @@ void EndGameMessageBoxCallBack(UINT8 bExitValue) {
   return;
 }
 
-void NextLoopCheckForEnoughFreeHardDriveSpace() {
+function NextLoopCheckForEnoughFreeHardDriveSpace(): void {
   gubCheckForFreeSpaceOnHardDriveCount = 0;
 }

@@ -68,7 +68,7 @@ INT16 gbSmoothWaterStruct[] = {
   -1,
 };
 
-void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSmooth) {
+function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
   int temp = 0, type = 0;
   int FullTile = FALSE;
   UINT16 usOldIndex;
@@ -190,7 +190,7 @@ void SmoothTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSm
   *piNewTile = usTileIndex;
 }
 
-void SmoothExitGridRadius(INT16 sMapIndex, UINT8 ubRadius) {
+function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
   LEVELNODE *pShadow;
   INT16 x, y;
   INT16 centerX, centerY;
@@ -214,7 +214,7 @@ void SmoothExitGridRadius(INT16 sMapIndex, UINT8 ubRadius) {
   }
 }
 
-void SmoothExitGrid(int gridno, UINT16 *piNewTile, BOOLEAN fForceSmooth) {
+function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
   int temp = 0, type = 0;
   int FullTile = FALSE;
   UINT16 usOldIndex;
@@ -328,7 +328,7 @@ void SmoothExitGrid(int gridno, UINT16 *piNewTile, BOOLEAN fForceSmooth) {
   *piNewTile = usTileIndex;
 }
 
-void SmoothTerrainWorld(UINT32 uiCheckType) {
+function SmoothTerrainWorld(uiCheckType: UINT32): void {
   int cnt;
   UINT16 usIndex;
   UINT16 NewTile;
@@ -345,7 +345,7 @@ void SmoothTerrainWorld(UINT32 uiCheckType) {
   }
 }
 
-void SmoothAllTerrainWorld(void) {
+function SmoothAllTerrainWorld(): void {
   int cnt;
   UINT16 usIndex;
   UINT16 NewTile;
@@ -365,7 +365,7 @@ void SmoothAllTerrainWorld(void) {
   }
 }
 
-void SmoothTerrainRadius(UINT32 iMapIndex, UINT32 uiCheckType, UINT8 ubRadius, BOOLEAN fForceSmooth) {
+function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -400,7 +400,7 @@ void SmoothTerrainRadius(UINT32 iMapIndex, UINT32 uiCheckType, UINT8 ubRadius, B
   }
 }
 
-void SmoothAllTerrainTypeRadius(UINT32 iMapIndex, UINT8 ubRadius, BOOLEAN fForceSmooth) {
+function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2, cnt3;
@@ -432,7 +432,7 @@ void SmoothAllTerrainTypeRadius(UINT32 iMapIndex, UINT8 ubRadius, BOOLEAN fForce
   }
 }
 
-void SmoothWaterTerrain(int gridno, int origType, UINT16 *piNewTile, BOOLEAN fForceSmooth) {
+function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
   // This procedure will calculate the approriate smooth texture for a water texture
   // based on the surrounding water textures. This is done via masking bits within
   // a temp variable, then searching for the right texture and inserting it

@@ -1,7 +1,7 @@
 extern UINT8 gbPlayerNum;
 
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
-void StatChange(SOLDIERTYPE *pSoldier, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason) {
+function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   Assert(pSoldier != NULL);
   Assert(pSoldier->bActive);
 
@@ -34,7 +34,7 @@ void StatChange(SOLDIERTYPE *pSoldier, UINT8 ubStat, UINT16 usNumChances, UINT8 
 
 // this is the equivalent of StatChange(), but for use with mercs not currently on player's team
 // give pProfile usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
-void ProfileStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason) {
+function ProfileStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   // dead guys don't do nuthin' !
   if (pProfile->bMercStatus == MERC_IS_DEAD)
     return;
@@ -48,7 +48,7 @@ void ProfileStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumCh
   ProfileUpdateStats(pProfile);
 }
 
-void ProcessStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason) {
+function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   UINT32 uiCnt, uiEffLevel;
   INT16 sSubPointChange = 0;
   UINT16 usChance = 0;
@@ -281,16 +281,16 @@ void ProcessStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumCh
 }
 
 // convert hired mercs' stats subpoint changes into actual point changes where warranted
-void UpdateStats(SOLDIERTYPE *pSoldier) {
+function UpdateStats(pSoldier: Pointer<SOLDIERTYPE>): void {
   ProcessUpdateStats(&(gMercProfiles[pSoldier->ubProfile]), pSoldier);
 }
 
 // UpdateStats version for mercs not currently on player's team
-void ProfileUpdateStats(MERCPROFILESTRUCT *pProfile) {
+function ProfileUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>): void {
   ProcessUpdateStats(pProfile, NULL);
 }
 
-void ChangeStat(MERCPROFILESTRUCT *pProfile, SOLDIERTYPE *pSoldier, UINT8 ubStat, INT16 sPtsChanged) {
+function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, sPtsChanged: INT16): void {
   // this function changes the stat a given amount...
   INT16 *psStatGainPtr = NULL;
   INT8 *pbStatPtr = NULL;
@@ -597,7 +597,7 @@ void ChangeStat(MERCPROFILESTRUCT *pProfile, SOLDIERTYPE *pSoldier, UINT8 ubStat
 }
 
 // pSoldier may be NULL!
-void ProcessUpdateStats(MERCPROFILESTRUCT *pProfile, SOLDIERTYPE *pSoldier) {
+function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>): void {
   // this function will run through the soldier's profile and update their stats based on any accumulated gain pts.
   UINT8 ubStat = 0;
   INT16 *psStatGainPtr = NULL;
@@ -798,7 +798,7 @@ void ProcessUpdateStats(MERCPROFILESTRUCT *pProfile, SOLDIERTYPE *pSoldier) {
   return;
 }
 
-void HandleAnyStatChangesAfterAttack(void) {
+function HandleAnyStatChangesAfterAttack(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -810,7 +810,7 @@ void HandleAnyStatChangesAfterAttack(void) {
   }
 }
 
-UINT32 CalcNewSalary(UINT32 uiOldSalary, BOOLEAN fIncrease, UINT32 uiMaxLimit) {
+function CalcNewSalary(uiOldSalary: UINT32, fIncrease: BOOLEAN, uiMaxLimit: UINT32): UINT32 {
   UINT32 uiNewSalary;
 
   // if he was working for free, it's still free!
@@ -837,7 +837,7 @@ UINT32 CalcNewSalary(UINT32 uiOldSalary, BOOLEAN fIncrease, UINT32 uiMaxLimit) {
   return uiNewSalary;
 }
 
-UINT32 RoundOffSalary(UINT32 uiSalary) {
+function RoundOffSalary(uiSalary: UINT32): UINT32 {
   UINT32 uiMultiple;
 
   // determine what multiple value the salary should be rounded off to
@@ -870,7 +870,7 @@ UINT32 RoundOffSalary(UINT32 uiSalary) {
   return uiSalary;
 }
 
-UINT16 SubpointsPerPoint(UINT8 ubStat, INT8 bExpLevel) {
+function SubpointsPerPoint(ubStat: UINT8, bExpLevel: INT8): UINT16 {
   UINT16 usSubpointsPerPoint;
 
   // figure out how many subpoints this type of stat needs to change
@@ -907,7 +907,7 @@ UINT16 SubpointsPerPoint(UINT8 ubStat, INT8 bExpLevel) {
 }
 
 // handles stat changes for mercs not currently working for the player
-void HandleUnhiredMercImprovement(MERCPROFILESTRUCT *pProfile) {
+function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): void {
   UINT8 ubNumStats;
   UINT8 ubStat;
   UINT16 usNumChances;
@@ -954,7 +954,7 @@ void HandleUnhiredMercImprovement(MERCPROFILESTRUCT *pProfile) {
 }
 
 // handles possible death of mercs not currently working for the player
-void HandleUnhiredMercDeaths(INT32 iProfileID) {
+function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   UINT8 ubMaxDeaths;
   INT16 sChance;
   MERCPROFILESTRUCT *pProfile = &(gMercProfiles[iProfileID]);
@@ -1029,7 +1029,7 @@ const PROGRESS_PORTION_CONTROL = 25;
 const PROGRESS_PORTION_INCOME = 50;
 
 // returns a number between 0-100, this is an estimate of how far a player has progressed through the game
-UINT8 CurrentPlayerProgressPercentage(void) {
+function CurrentPlayerProgressPercentage(): UINT8 {
   UINT32 uiCurrentIncome;
   UINT32 uiPossibleIncome;
   UINT8 ubCurrentProgress;
@@ -1097,7 +1097,7 @@ UINT8 CurrentPlayerProgressPercentage(void) {
   return ubCurrentProgress;
 }
 
-UINT8 HighestPlayerProgressPercentage(void) {
+function HighestPlayerProgressPercentage(): UINT8 {
   if (gfEditMode)
     return 0;
 
@@ -1106,7 +1106,7 @@ UINT8 HighestPlayerProgressPercentage(void) {
 
 // monitors the highest level of progress that player has achieved so far (checking hourly),
 // as opposed to his immediate situation (which may be worse if he's suffered a setback).
-void HourlyProgressUpdate(void) {
+function HourlyProgressUpdate(): void {
   UINT8 ubCurrentProgress;
 
   ubCurrentProgress = CurrentPlayerProgressPercentage();
@@ -1138,7 +1138,7 @@ void HourlyProgressUpdate(void) {
   }
 }
 
-void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType) {
+function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
   UINT16 usXPs = 0;
   UINT8 ubGuynum;
   SOLDIERTYPE *pSoldier;
@@ -1171,7 +1171,7 @@ void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType) {
   }
 }
 
-void BuildStatChangeString(STR16 wString, STR16 wName, BOOLEAN fIncrease, INT16 sPtsChanged, UINT8 ubStat) {
+function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: BOOLEAN, sPtsChanged: INT16, ubStat: UINT8): void {
   UINT8 ubStringIndex;
 
   Assert(sPtsChanged != 0);
@@ -1195,7 +1195,7 @@ void BuildStatChangeString(STR16 wString, STR16 wName, BOOLEAN fIncrease, INT16 
   swprintf(wString, L"%s %s %d %s %s", wName, sPreStatBuildString[fIncrease ? 1 : 0], abs(sPtsChanged), sPreStatBuildString[ubStringIndex], sStatGainStrings[ubStat - FIRST_CHANGEABLE_STAT]);
 }
 
-UINT8 CalcImportantSectorControl(void) {
+function CalcImportantSectorControl(): UINT8 {
   UINT8 ubMapX, ubMapY;
   UINT8 ubSectorControlPts = 0;
 
@@ -1219,7 +1219,7 @@ UINT8 CalcImportantSectorControl(void) {
   return ubSectorControlPts;
 }
 
-void MERCMercWentUpALevelSendEmail(UINT8 ubMercMercIdValue) {
+function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
   UINT8 ubEmailOffset = 0;
 
   ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * (ubMercMercIdValue);

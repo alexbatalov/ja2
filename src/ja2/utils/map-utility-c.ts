@@ -19,11 +19,11 @@ interface RGBValues {
   b: INT8;
 }
 
-UINT32 MapUtilScreenInit() {
+function MapUtilScreenInit(): UINT32 {
   return TRUE;
 }
 
-UINT32 MapUtilScreenHandle() {
+function MapUtilScreenHandle(): UINT32 {
   static INT16 fNewMap = TRUE;
   static INT16 sFileNum = 0;
   InputAtom InputEvent;
@@ -277,6 +277,6 @@ UINT32 MapUtilScreenHandle() {
   return MAPUTILITY_SCREEN;
 }
 
-UINT32 MapUtilScreenShutdown() {
+function MapUtilScreenShutdown(): UINT32 {
   return TRUE;
 }

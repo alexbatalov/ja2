@@ -3,7 +3,7 @@ SOLDIERTYPE *gpUIPlannedSoldier = NULL;
 SOLDIERTYPE *gpUIStartPlannedSoldier = NULL;
 BOOLEAN gfInUIPlanMode = FALSE;
 
-BOOLEAN BeginUIPlan(SOLDIERTYPE *pSoldier) {
+function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   gubNumUIPlannedMoves = 0;
   gpUIPlannedSoldier = pSoldier;
   gpUIStartPlannedSoldier = pSoldier;
@@ -16,7 +16,7 @@ BOOLEAN BeginUIPlan(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN AddUIPlan(UINT16 sGridNo, UINT8 ubPlanID) {
+function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
   SOLDIERTYPE *pPlanSoldier;
   INT16 sXPos, sYPos;
   INT16 sAPCost = 0;
@@ -190,7 +190,7 @@ BOOLEAN AddUIPlan(UINT16 sGridNo, UINT8 ubPlanID) {
   return TRUE;
 }
 
-void EndUIPlan() {
+function EndUIPlan(): void {
   int cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -213,11 +213,11 @@ void EndUIPlan() {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Leaving Planning Mode");
 }
 
-BOOLEAN InUIPlanMode() {
+function InUIPlanMode(): BOOLEAN {
   return gfInUIPlanMode;
 }
 
-void SelectPausedFireAnimation(SOLDIERTYPE *pSoldier) {
+function SelectPausedFireAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Determine which animation to do...depending on stance and gun in hand...
 
   switch (gAnimControl[pSoldier->usAnimState].ubEndHeight) {

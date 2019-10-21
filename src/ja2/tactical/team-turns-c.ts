@@ -32,13 +32,13 @@ interface TEAM_TURN_SAVE_STRUCT {
 
 const MIN_APS_TO_INTERRUPT = 4;
 
-void ClearIntList(void) {
+function ClearIntList(): void {
   memset(&gubOutOfTurnOrder, 0, MAXMERCS);
   gubOutOfTurnOrder[0] = END_OF_INTERRUPTS;
   gubOutOfTurnPersons = 0;
 }
 
-BOOLEAN BloodcatsPresent(void) {
+function BloodcatsPresent(): BOOLEAN {
   INT32 iLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -57,7 +57,7 @@ BOOLEAN BloodcatsPresent(void) {
   return FALSE;
 }
 
-void StartPlayerTeamTurn(BOOLEAN fDoBattleSnd, BOOLEAN fEnteringCombatMode) {
+function StartPlayerTeamTurn(fDoBattleSnd: BOOLEAN, fEnteringCombatMode: BOOLEAN): void {
   INT32 cnt;
   //	SOLDIERTYPE		*pSoldier;
   //	EV_S_BEGINTURN	SBeginTurn;
@@ -143,7 +143,7 @@ void StartPlayerTeamTurn(BOOLEAN fDoBattleSnd, BOOLEAN fEnteringCombatMode) {
   HandleTacticalUI();
 }
 
-void FreezeInterfaceForEnemyTurn(void) {
+function FreezeInterfaceForEnemyTurn(): void {
   // Reset flags
   gfPlotNewMovement = TRUE;
 
@@ -159,7 +159,7 @@ void FreezeInterfaceForEnemyTurn(void) {
   }
 }
 
-void EndTurn(UINT8 ubNextTeam) {
+function EndTurn(ubNextTeam: UINT8): void {
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
 
@@ -200,7 +200,7 @@ void EndTurn(UINT8 ubNextTeam) {
   }
 }
 
-void EndAITurn(void) {
+function EndAITurn(): void {
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
 
@@ -224,7 +224,7 @@ void EndAITurn(void) {
   }
 }
 
-void EndAllAITurns(void) {
+function EndAllAITurns(): void {
   // warp turn to the player's turn
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
@@ -252,7 +252,7 @@ void EndAllAITurns(void) {
   }
 }
 
-void EndTurnEvents(void) {
+function EndTurnEvents(): void {
   // HANDLE END OF TURN EVENTS
   // handle team services like healing
   HandleTeamServices(gbPlayerNum);
@@ -268,7 +268,7 @@ void EndTurnEvents(void) {
   DecayRottingCorpseAIWarnings();
 }
 
-void BeginTeamTurn(UINT8 ubTeam) {
+function BeginTeamTurn(ubTeam: UINT8): void {
   INT32 cnt;
   UINT8 ubID;
   SOLDIERTYPE *pSoldier;
@@ -345,7 +345,7 @@ void BeginTeamTurn(UINT8 ubTeam) {
   }
 }
 
-void DisplayHiddenInterrupt(SOLDIERTYPE *pSoldier) {
+function DisplayHiddenInterrupt(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If the AI got an interrupt but this has been hidden from the player until this point,
   // this code will display the interrupt
 
@@ -384,7 +384,7 @@ void DisplayHiddenInterrupt(SOLDIERTYPE *pSoldier) {
   gfHiddenInterrupt = FALSE;
 }
 
-void DisplayHiddenTurnbased(SOLDIERTYPE *pActingSoldier) {
+function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
   // This code should put the game in turn-based and give control to the AI-controlled soldier
   // whose pointer has been passed in as an argument (we were in non-combat and the AI is doing
   // something visible, i.e. making an attack)
@@ -424,7 +424,7 @@ void DisplayHiddenTurnbased(SOLDIERTYPE *pActingSoldier) {
   FreezeInterfaceForEnemyTurn();
 }
 
-BOOLEAN EveryoneInInterruptListOnSameTeam(void) {
+function EveryoneInInterruptListOnSameTeam(): BOOLEAN {
   UINT8 ubLoop;
   UINT8 ubTeam = 255;
 
@@ -440,7 +440,7 @@ BOOLEAN EveryoneInInterruptListOnSameTeam(void) {
   return TRUE;
 }
 
-void StartInterrupt(void) {
+function StartInterrupt(): void {
   UINT8 ubFirstInterrupter;
   INT8 bTeam;
   SOLDIERTYPE *pSoldier;
@@ -625,7 +625,7 @@ void StartInterrupt(void) {
   }
 }
 
-void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
+function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
   UINT8 ubInterruptedSoldier;
   SOLDIERTYPE *pSoldier;
   SOLDIERTYPE *pTempSoldier;
@@ -835,7 +835,7 @@ void EndInterrupt(BOOLEAN fMarkInterruptOccurred) {
   }
 }
 
-BOOLEAN StandardInterruptConditionsMet(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, INT8 bOldOppList) {
+function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, bOldOppList: INT8): BOOLEAN {
   //	UINT8 ubAniType;
   UINT8 ubMinPtsNeeded;
   INT8 bDir;
@@ -1051,7 +1051,7 @@ BOOLEAN StandardInterruptConditionsMet(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID
   return TRUE;
 }
 
-INT8 CalcInterruptDuelPts(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, BOOLEAN fUseWatchSpots) {
+function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, fUseWatchSpots: BOOLEAN): INT8 {
   INT8 bPoints;
   INT8 bLightLevel;
   UINT8 ubDistance;
@@ -1182,7 +1182,7 @@ INT8 CalcInterruptDuelPts(SOLDIERTYPE *pSoldier, UINT8 ubOpponentID, BOOLEAN fUs
   return bPoints;
 }
 
-BOOLEAN InterruptDuel(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent) {
+function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>): BOOLEAN {
   BOOLEAN fResult = FALSE;
 
   // if opponent can't currently see us and we can see them
@@ -1202,7 +1202,7 @@ BOOLEAN InterruptDuel(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent) {
   return fResult;
 }
 
-void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate) {
+function DeleteFromIntList(ubIndex: UINT8, fCommunicate: BOOLEAN): void {
   UINT8 ubLoop;
   UINT8 ubID;
 
@@ -1236,7 +1236,7 @@ void DeleteFromIntList(UINT8 ubIndex, BOOLEAN fCommunicate) {
   */
 }
 
-void AddToIntList(UINT8 ubID, BOOLEAN fGainControl, BOOLEAN fCommunicate) {
+function AddToIntList(ubID: UINT8, fGainControl: BOOLEAN, fCommunicate: BOOLEAN): void {
   UINT8 ubLoop;
 
   //	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%d added to int list", ubID );
@@ -1286,7 +1286,7 @@ void AddToIntList(UINT8 ubID, BOOLEAN fGainControl, BOOLEAN fCommunicate) {
   }
 }
 
-void VerifyOutOfTurnOrderArray() {
+function VerifyOutOfTurnOrderArray(): void {
   UINT8 ubTeamHighest[MAXTEAMS] = { 0 };
   UINT8 ubTeamsInList;
   UINT8 ubNextInArrayOnTeam, ubNextIndex;
@@ -1373,7 +1373,7 @@ void VerifyOutOfTurnOrderArray() {
   }
 }
 
-void DoneAddingToIntList(SOLDIERTYPE *pSoldier, BOOLEAN fChange, UINT8 ubInterruptType) {
+function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: BOOLEAN, ubInterruptType: UINT8): void {
   if (fChange) {
     VerifyOutOfTurnOrderArray();
     if (EveryoneInInterruptListOnSameTeam()) {
@@ -1384,7 +1384,7 @@ void DoneAddingToIntList(SOLDIERTYPE *pSoldier, BOOLEAN fChange, UINT8 ubInterru
   }
 }
 
-void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
+function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UINT8): void {
   UINT8 ubTeam, ubOpp;
   UINT8 ubIntCnt;
   UINT8 ubIntList[MAXMERCS];
@@ -1521,7 +1521,7 @@ void ResolveInterruptsVs(SOLDIERTYPE *pSoldier, UINT8 ubInterruptType) {
   }
 }
 
-BOOLEAN SaveTeamTurnsToTheSaveGameFile(HWFILE hFile) {
+function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   TEAM_TURN_SAVE_STRUCT TeamTurnStruct;
 
@@ -1548,7 +1548,7 @@ BOOLEAN SaveTeamTurnsToTheSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadTeamTurnsFromTheSavedGameFile(HWFILE hFile) {
+function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   TEAM_TURN_SAVE_STRUCT TeamTurnStruct;
 
@@ -1575,7 +1575,7 @@ BOOLEAN LoadTeamTurnsFromTheSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN NPCFirstDraw(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier) {
+function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // if attacking an NPC check to see who draws first!
 
   if (pTargetSoldier->ubProfile != NO_PROFILE && pTargetSoldier->ubProfile != SLAY && pTargetSoldier->bNeutral && pTargetSoldier->bOppList[pSoldier->ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {

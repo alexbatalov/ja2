@@ -49,7 +49,7 @@ GUI_BUTTON *ButtonList[MAX_BUTTONS];
 
 INT32 ButtonsInList = 0;
 
-UINT16 GetWidthOfButtonPic(UINT16 usButtonPicID, INT32 iSlot) {
+function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16 {
   return ButtonPictures[usButtonPicID].vobj->pETRLEObject[iSlot].usWidth;
 }
 
@@ -81,7 +81,7 @@ extern MOUSE_REGION *MSYS_CurrRegion;
 //
 //	Finds an available slot for loading button pictures
 //
-INT32 FindFreeButtonSlot(void) {
+function FindFreeButtonSlot(): INT32 {
   int slot;
 
   // Are there any slots available?
@@ -102,7 +102,7 @@ INT32 FindFreeButtonSlot(void) {
 //
 //	Load images for use with QuickButtons.
 //
-INT32 LoadButtonImage(UINT8 *filename, INT32 Grayed, INT32 OffNormal, INT32 OffHilite, INT32 OnNormal, INT32 OnHilite) {
+function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   VOBJECT_DESC vo_desc;
   UINT32 UseSlot;
   ETRLEObject *pTrav;
@@ -216,7 +216,7 @@ INT32 LoadButtonImage(UINT8 *filename, INT32 Grayed, INT32 OffNormal, INT32 OffH
 //	Uses a previously loaded quick button image for use with QuickButtons.
 //	The function simply duplicates the vobj!
 //
-INT32 UseLoadedButtonImage(INT32 LoadedImg, INT32 Grayed, INT32 OffNormal, INT32 OffHilite, INT32 OnNormal, INT32 OnHilite) {
+function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   UINT32 UseSlot;
   ETRLEObject *pTrav;
   UINT32 MaxHeight, MaxWidth, ThisHeight, ThisWidth;
@@ -331,7 +331,7 @@ INT32 UseLoadedButtonImage(INT32 LoadedImg, INT32 Grayed, INT32 OffNormal, INT32
 //			structures are simply removed from the button image list. It's up to
 //			the user to actually unload the image.
 //
-INT32 UseVObjAsButtonImage(HVOBJECT hVObject, INT32 Grayed, INT32 OffNormal, INT32 OffHilite, INT32 OnNormal, INT32 OnHilite) {
+function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
   UINT32 UseSlot;
   ETRLEObject *pTrav;
   UINT32 MaxHeight, MaxWidth, ThisHeight, ThisWidth;
@@ -434,7 +434,7 @@ INT32 UseVObjAsButtonImage(HVOBJECT hVObject, INT32 Grayed, INT32 OffNormal, INT
 //
 //	Sets the destination buffer for all button blits.
 //
-BOOLEAN SetButtonDestBuffer(UINT32 DestBuffer) {
+function SetButtonDestBuffer(DestBuffer: UINT32): BOOLEAN {
   if (DestBuffer != BUTTON_USE_DEFAULT)
     ButtonDestBuffer = DestBuffer;
 
@@ -442,7 +442,7 @@ BOOLEAN SetButtonDestBuffer(UINT32 DestBuffer) {
 }
 
 // Removes a QuickButton image from the system.
-void UnloadButtonImage(INT32 Index) {
+function UnloadButtonImage(Index: INT32): void {
   INT32 x;
   BOOLEAN fDone;
 
@@ -495,7 +495,7 @@ void UnloadButtonImage(INT32 Index) {
 //
 //	Enables an already created button.
 //
-BOOLEAN EnableButton(INT32 iButtonID) {
+function EnableButton(iButtonID: INT32): BOOLEAN {
   GUI_BUTTON *b;
   UINT32 OldState;
 
@@ -526,7 +526,7 @@ BOOLEAN EnableButton(INT32 iButtonID) {
 //	Diabled buttons will appear "grayed out" on the screen (unless the
 //	graphics for such are not available).
 //
-BOOLEAN DisableButton(INT32 iButtonID) {
+function DisableButton(iButtonID: INT32): BOOLEAN {
   GUI_BUTTON *b;
   UINT32 OldState;
 
@@ -555,7 +555,7 @@ BOOLEAN DisableButton(INT32 iButtonID) {
 //	Initializes the button image sub-system. This function is called by
 //	InitButtonSystem.
 //
-BOOLEAN InitializeButtonImageManager(INT32 DefaultBuffer, INT32 DefaultPitch, INT32 DefaultBPP) {
+function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32, DefaultBPP: INT32): BOOLEAN {
   VOBJECT_DESC vo_desc;
   UINT8 Pix;
   int x;
@@ -653,7 +653,7 @@ BOOLEAN InitializeButtonImageManager(INT32 DefaultBuffer, INT32 DefaultPitch, IN
 //
 //	Finds the next available slot for generic (TEXT and/or ICONIC) buttons.
 //
-INT16 FindFreeGenericSlot(void) {
+function FindFreeGenericSlot(): INT16 {
   INT16 slot, x;
 
   slot = BUTTON_NO_SLOT;
@@ -670,7 +670,7 @@ INT16 FindFreeGenericSlot(void) {
 //
 //	Finds the next available slot for button icon images.
 //
-INT16 FindFreeIconSlot(void) {
+function FindFreeIconSlot(): INT16 {
   INT16 slot, x;
 
   slot = BUTTON_NO_SLOT;
@@ -687,7 +687,7 @@ INT16 FindFreeIconSlot(void) {
 //
 //	Loads an image file for use as a button icon.
 //
-INT16 LoadGenericButtonIcon(UINT8 *filename) {
+function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
   INT16 ImgSlot;
   VOBJECT_DESC vo_desc;
 
@@ -717,7 +717,7 @@ INT16 LoadGenericButtonIcon(UINT8 *filename) {
 //
 //	Removes a button icon graphic from the system
 //
-BOOLEAN UnloadGenericButtonIcon(INT16 GenImg) {
+function UnloadGenericButtonIcon(GenImg: INT16): BOOLEAN {
   if (GenImg < 0 || GenImg >= MAX_BUTTON_ICONS) {
     sprintf(str, "Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg);
     AssertMsg(0, str);
@@ -739,7 +739,7 @@ BOOLEAN UnloadGenericButtonIcon(INT16 GenImg) {
 //	Removes the images associated with a generic button. Except the icon
 //	image of iconic buttons. See above.
 //
-BOOLEAN UnloadGenericButtonImage(INT16 GenImg) {
+function UnloadGenericButtonImage(GenImg: INT16): BOOLEAN {
   BOOLEAN fDeletedSomething = FALSE;
   if (GenImg < 0 || GenImg >= MAX_GENERIC_PICS) {
     sprintf(str, "Attempting to UnloadGenericButtonImage with out of range index %d.", GenImg);
@@ -798,7 +798,7 @@ BOOLEAN UnloadGenericButtonImage(INT16 GenImg) {
 //
 //	Loads the image files required for displaying a generic button.
 //
-INT16 LoadGenericButtonImages(UINT8 *GrayName, UINT8 *OffNormName, UINT8 *OffHiliteName, UINT8 *OnNormName, UINT8 *OnHiliteName, UINT8 *BkGrndName, INT16 Index, INT16 OffsetX, INT16 OffsetY) {
+function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<UINT8>, OffHiliteName: Pointer<UINT8>, OnNormName: Pointer<UINT8>, OnHiliteName: Pointer<UINT8>, BkGrndName: Pointer<UINT8>, Index: INT16, OffsetX: INT16, OffsetY: INT16): INT16 {
   INT16 ImgSlot;
   VOBJECT_DESC vo_desc;
   UINT8 Pix;
@@ -907,7 +907,7 @@ INT16 LoadGenericButtonImages(UINT8 *GrayName, UINT8 *OffNormName, UINT8 *OffHil
 //
 //	This function is called by ShutdownButtonSystem.
 //
-void ShutdownButtonImageManager(void) {
+function ShutdownButtonImageManager(): void {
   int x;
 
   // Remove all QuickButton images
@@ -965,7 +965,7 @@ void ShutdownButtonImageManager(void) {
 //	Initializes the GUI button system for use. Must be called before using
 //	any other button functions.
 //
-BOOLEAN InitButtonSystem(void) {
+function InitButtonSystem(): BOOLEAN {
   INT32 x;
 
   RegisterDebugTopic(TOPIC_BUTTON_HANDLER, "Button System & Button Image Manager");
@@ -993,7 +993,7 @@ BOOLEAN InitButtonSystem(void) {
 //	exiting the program. Button functions should not be used after calling
 //	this function.
 //
-void ShutdownButtonSystem(void) {
+function ShutdownButtonSystem(): void {
   int x;
 
   // Kill off all buttons in the system
@@ -1007,7 +1007,7 @@ void ShutdownButtonSystem(void) {
   UnRegisterDebugTopic(TOPIC_BUTTON_HANDLER, "Button System & Button Image Manager");
 }
 
-void RemoveButtonsMarkedForDeletion() {
+function RemoveButtonsMarkedForDeletion(): void {
   INT32 i;
   for (i = 0; i < MAX_BUTTONS; i++) {
     if (ButtonList[i] && ButtonList[i]->uiFlags & BUTTON_DELETION_PENDING) {
@@ -1022,7 +1022,7 @@ void RemoveButtonsMarkedForDeletion() {
 //	Removes a button from the system's list. All memory associated with the
 //	button is released.
 //
-void RemoveButton(INT32 iButtonID) {
+function RemoveButton(iButtonID: INT32): void {
   GUI_BUTTON *b;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
@@ -1082,7 +1082,7 @@ void RemoveButton(INT32 iButtonID) {
 //
 //	Finds the next available button slot.
 //
-INT32 GetNextButtonNumber(void) {
+function GetNextButtonNumber(): INT32 {
   INT32 x;
 
   for (x = 0; x < MAX_BUTTONS; x++) {
@@ -1101,7 +1101,7 @@ INT32 GetNextButtonNumber(void) {
 //	QuickButtons cannot be resized, therefore this function ignores the
 //	call if a QuickButton is given.
 //
-void ResizeButton(INT32 iButtonID, INT16 w, INT16 h) {
+function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
   GUI_BUTTON *b;
   INT32 xloc, yloc;
 
@@ -1150,7 +1150,7 @@ void ResizeButton(INT32 iButtonID, INT16 w, INT16 h) {
 //	Sets the position of a button on the screen. The position is relative
 //	to the top left corner of the button.
 //
-void SetButtonPosition(INT32 iButtonID, INT16 x, INT16 y) {
+function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
   GUI_BUTTON *b;
   INT32 xloc, yloc, w, h;
 
@@ -1196,7 +1196,7 @@ void SetButtonPosition(INT32 iButtonID, INT16 x, INT16 y) {
 //
 //	Calling this function with a button type other than Iconic has no effect.
 //
-INT32 SetButtonIcon(INT32 iButtonID, INT16 Icon, INT16 IconIndex) {
+function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
   GUI_BUTTON *b;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
@@ -1235,7 +1235,7 @@ INT32 SetButtonIcon(INT32 iButtonID, INT16 Icon, INT16 IconIndex) {
 //
 //	Creates an Iconic type button.
 //
-INT32 CreateIconButton(INT16 Icon, INT16 IconIndex, INT16 GenImg, INT16 xloc, INT16 yloc, INT16 w, INT16 h, INT32 Type, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback) {
+function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 ButtonNum;
   INT32 BType, x;
@@ -1347,7 +1347,7 @@ INT32 CreateIconButton(INT16 Icon, INT16 IconIndex, INT16 GenImg, INT16 xloc, IN
 }
 
 // Creates a generic button with text on it.
-INT32 CreateTextButton(UINT16 *string, UINT32 uiFont, INT16 sForeColor, INT16 sShadowColor, INT16 GenImg, INT16 xloc, INT16 yloc, INT16 w, INT16 h, INT32 Type, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback) {
+function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 ButtonNum;
   INT32 BType, x;
@@ -1470,7 +1470,7 @@ INT32 CreateTextButton(UINT16 *string, UINT32 uiFont, INT16 sForeColor, INT16 sS
 //	Creates a button like HotSpot. HotSpots have no graphics associated with
 //	them.
 //
-INT32 CreateHotSpot(INT16 xloc, INT16 yloc, INT16 Width, INT16 Height, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback) {
+function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 ButtonNum;
   INT16 BType, x;
@@ -1544,7 +1544,7 @@ INT32 CreateHotSpot(INT16 xloc, INT16 yloc, INT16 Width, INT16 Height, INT16 Pri
 // Addition Oct15/97, Carter
 // SetButtonCursor
 // will simply set the cursor for the mouse region the button occupies
-BOOLEAN SetButtonCursor(INT32 iBtnId, UINT16 crsr) {
+function SetButtonCursor(iBtnId: INT32, crsr: UINT16): BOOLEAN {
   GUI_BUTTON *b;
   b = ButtonList[iBtnId];
   if (!b)
@@ -1559,7 +1559,7 @@ BOOLEAN SetButtonCursor(INT32 iBtnId, UINT16 crsr) {
 //	Creates a QuickButton. QuickButtons only have graphics associated with
 //	them. They cannot be re-sized, nor can the graphic be changed.
 //
-INT32 QuickCreateButton(UINT32 Image, INT16 xloc, INT16 yloc, INT32 Type, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback) {
+function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 ButtonNum;
   INT32 BType, x;
@@ -1681,25 +1681,25 @@ INT32 QuickCreateButton(UINT32 Image, INT16 xloc, INT16 yloc, INT32 Type, INT16 
 // loading, and deleting of the image.  The size of the image determines the size of the button.  It also uses
 // the default move callback which emulates Win95.  Finally, it sets the priority to normal.  The function you
 // choose also determines the type of button (toggle, notoggle, or newtoggle)
-INT32 CreateEasyNoToggleButton(INT32 x, INT32 y, UINT8 *filename, GUI_CALLBACK ClickCallback) {
+function CreateEasyNoToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-INT32 CreateEasyToggleButton(INT32 x, INT32 y, UINT8 *filename, GUI_CALLBACK ClickCallback) {
+function CreateEasyToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
-INT32 CreateEasyNewToggleButton(INT32 x, INT32 y, UINT8 *filename, GUI_CALLBACK ClickCallback) {
+function CreateEasyNewToggleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, BUTTON_NEWTOGGLE, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts specify toggle type
-INT32 CreateEasyButton(INT32 x, INT32 y, UINT8 *filename, INT32 Type, GUI_CALLBACK ClickCallback) {
+function CreateEasyButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, ClickCallback: GUI_CALLBACK): INT32 {
   return CreateSimpleButton(x, y, filename, Type, MSYS_PRIORITY_NORMAL, ClickCallback);
 }
 
 // Same as above, but accepts priority specification.
-INT32 CreateSimpleButton(INT32 x, INT32 y, UINT8 *filename, INT32 Type, INT16 Priority, GUI_CALLBACK ClickCallback) {
+function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   INT32 ButPic, ButNum;
 
   if (!filename || !strlen(filename))
@@ -1721,7 +1721,7 @@ INT32 CreateSimpleButton(INT32 x, INT32 y, UINT8 *filename, INT32 Type, INT16 Pr
   return ButNum;
 }
 
-INT32 CreateIconAndTextButton(INT32 Image, UINT16 *string, UINT32 uiFont, INT16 sForeColor, INT16 sShadowColor, INT16 sForeColorDown, INT16 sShadowColorDown, INT8 bJustification, INT16 xloc, INT16 yloc, INT32 Type, INT16 Priority, GUI_CALLBACK MoveCallback, GUI_CALLBACK ClickCallback) {
+function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 iButtonID;
   INT32 BType, x;
@@ -1831,7 +1831,7 @@ INT32 CreateIconAndTextButton(INT32 Image, UINT16 *string, UINT32 uiFont, INT16 
 }
 
 // New functions
-void SpecifyButtonText(INT32 iButtonID, UINT16 *string) {
+function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -1854,7 +1854,7 @@ void SpecifyButtonText(INT32 iButtonID, UINT16 *string) {
   }
 }
 
-void SpecifyButtonMultiColorFont(INT32 iButtonID, BOOLEAN fMultiColor) {
+function SpecifyButtonMultiColorFont(iButtonID: INT32, fMultiColor: BOOLEAN): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1864,7 +1864,7 @@ void SpecifyButtonMultiColorFont(INT32 iButtonID, BOOLEAN fMultiColor) {
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonFont(INT32 iButtonID, UINT32 uiFont) {
+function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1874,7 +1874,7 @@ void SpecifyButtonFont(INT32 iButtonID, UINT32 uiFont) {
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonUpTextColors(INT32 iButtonID, INT16 sForeColor, INT16 sShadowColor) {
+function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowColor: INT16): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1885,7 +1885,7 @@ void SpecifyButtonUpTextColors(INT32 iButtonID, INT16 sForeColor, INT16 sShadowC
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonDownTextColors(INT32 iButtonID, INT16 sForeColorDown, INT16 sShadowColorDown) {
+function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sShadowColorDown: INT16): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1896,7 +1896,7 @@ void SpecifyButtonDownTextColors(INT32 iButtonID, INT16 sForeColorDown, INT16 sS
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonHilitedTextColors(INT32 iButtonID, INT16 sForeColorHilited, INT16 sShadowColorHilited) {
+function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT16, sShadowColorHilited: INT16): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1907,7 +1907,7 @@ void SpecifyButtonHilitedTextColors(INT32 iButtonID, INT16 sForeColorHilited, IN
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonTextJustification(INT32 iButtonID, INT8 bJustification) {
+function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1920,7 +1920,7 @@ void SpecifyButtonTextJustification(INT32 iButtonID, INT8 bJustification) {
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyFullButtonTextAttributes(INT32 iButtonID, UINT16 *string, INT32 uiFont, INT16 sForeColor, INT16 sShadowColor, INT16 sForeColorDown, INT16 sShadowColorDown, INT8 bJustification) {
+function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1940,7 +1940,7 @@ void SpecifyFullButtonTextAttributes(INT32 iButtonID, UINT16 *string, INT32 uiFo
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyGeneralButtonTextAttributes(INT32 iButtonID, UINT16 *string, INT32 uiFont, INT16 sForeColor, INT16 sShadowColor) {
+function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1954,7 +1954,7 @@ void SpecifyGeneralButtonTextAttributes(INT32 iButtonID, UINT16 *string, INT32 u
   b->uiFlags |= BUTTON_DIRTY;
 }
 
-void SpecifyButtonTextOffsets(INT32 iButtonID, INT8 bTextXOffset, INT8 bTextYOffset, BOOLEAN fShiftText) {
+function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: BOOLEAN): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1966,7 +1966,7 @@ void SpecifyButtonTextOffsets(INT32 iButtonID, INT8 bTextXOffset, INT8 bTextYOff
   b->fShiftText = fShiftText;
 }
 
-void SpecifyButtonTextSubOffsets(INT32 iButtonID, INT8 bTextXOffset, INT8 bTextYOffset, BOOLEAN fShiftText) {
+function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: BOOLEAN): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1978,7 +1978,7 @@ void SpecifyButtonTextSubOffsets(INT32 iButtonID, INT8 bTextXOffset, INT8 bTextY
   b->fShiftText = fShiftText;
 }
 
-void SpecifyButtonTextWrappedWidth(INT32 iButtonID, INT16 sWrappedWidth) {
+function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1988,7 +1988,7 @@ void SpecifyButtonTextWrappedWidth(INT32 iButtonID, INT16 sWrappedWidth) {
   b->sWrappedWidth = sWrappedWidth;
 }
 
-void SpecifyDisabledButtonStyle(INT32 iButtonID, INT8 bStyle) {
+function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2003,7 +2003,7 @@ void SpecifyDisabledButtonStyle(INT32 iButtonID, INT8 bStyle) {
 // Note:  Text is always on top
 // If fShiftImage is true, then the image will shift down one pixel and right one pixel
 // just like the text does.
-BOOLEAN SpecifyButtonIcon(INT32 iButtonID, INT32 iVideoObjectID, UINT16 usVideoObjectIndex, INT8 bXOffset, INT8 bYOffset, BOOLEAN fShiftImage) {
+function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjectIndex: UINT16, bXOffset: INT8, bYOffset: INT8, fShiftImage: BOOLEAN): BOOLEAN {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -2026,7 +2026,7 @@ BOOLEAN SpecifyButtonIcon(INT32 iButtonID, INT32 iVideoObjectID, UINT16 usVideoO
   return TRUE;
 }
 
-void RemoveTextFromButton(INT32 iButtonID) {
+function RemoveTextFromButton(iButtonID: INT32): void {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -2053,7 +2053,7 @@ void RemoveTextFromButton(INT32 iButtonID) {
   b->fShiftText = TRUE;
 }
 
-void RemoveIconFromButton(INT32 iButtonID) {
+function RemoveIconFromButton(iButtonID: INT32): void {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -2068,7 +2068,7 @@ void RemoveIconFromButton(INT32 iButtonID) {
   b->fShiftImage = TRUE;
 }
 
-void AllowDisabledButtonFastHelp(INT32 iButtonID, BOOLEAN fAllow) {
+function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: BOOLEAN): void {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -2084,7 +2084,7 @@ void AllowDisabledButtonFastHelp(INT32 iButtonID, BOOLEAN fAllow) {
 //
 //	Set the text that will be displayed as the FastHelp
 //
-void SetButtonFastHelpText(INT32 iButton, UINT16 *Text) {
+function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
   GUI_BUTTON *b;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
@@ -2093,7 +2093,7 @@ void SetButtonFastHelpText(INT32 iButton, UINT16 *Text) {
   SetRegionFastHelpText(&b->Area, Text);
 }
 
-void SetBtnHelpEndCallback(INT32 iButton, MOUSE_HELPTEXT_DONE_CALLBACK CallbackFxn) {
+function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
   GUI_BUTTON *b;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
@@ -2109,7 +2109,7 @@ void SetBtnHelpEndCallback(INT32 iButton, MOUSE_HELPTEXT_DONE_CALLBACK CallbackF
 //	Dispatches all button callbacks for mouse movement. This function gets
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
-void QuickButtonCallbackMMove(MOUSE_REGION *reg, INT32 reason) {
+function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   GUI_BUTTON *b;
   INT32 iButtonID;
 
@@ -2185,7 +2185,7 @@ void QuickButtonCallbackMMove(MOUSE_REGION *reg, INT32 reason) {
 //	Dispatches all button callbacks for button presses. This function is
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
-void QuickButtonCallbackMButn(MOUSE_REGION *reg, INT32 reason) {
+function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   GUI_BUTTON *b;
   INT32 iButtonID;
   BOOLEAN MouseBtnDown;
@@ -2324,7 +2324,7 @@ void QuickButtonCallbackMButn(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void RenderButtons(void) {
+function RenderButtons(): void {
   INT32 iButtonID;
   BOOLEAN fOldButtonDown, fOldEnabled;
   GUI_BUTTON *b;
@@ -2389,7 +2389,7 @@ void RenderButtons(void) {
 //*****************************************************************************
 // MarkAButtonDirty
 //
-void MarkAButtonDirty(INT32 iButtonNum) {
+function MarkAButtonDirty(iButtonNum: INT32): void {
   // surgical dirtying -> marks a user specified button dirty, without dirty the whole lot of them
 
   // If the button exists, and it's not owned by another object, draw it
@@ -2402,7 +2402,7 @@ void MarkAButtonDirty(INT32 iButtonNum) {
 //=============================================================================
 //	MarkButtonsDirty
 //
-void MarkButtonsDirty(void) {
+function MarkButtonsDirty(): void {
   INT32 x;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
@@ -2413,13 +2413,13 @@ void MarkButtonsDirty(void) {
   }
 }
 
-void UnMarkButtonDirty(INT32 iButtonIndex) {
+function UnMarkButtonDirty(iButtonIndex: INT32): void {
   if (ButtonList[iButtonIndex]) {
     ButtonList[iButtonIndex]->uiFlags &= ~(BUTTON_DIRTY);
   }
 }
 
-void UnmarkButtonsDirty(void) {
+function UnmarkButtonsDirty(): void {
   INT32 x;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
@@ -2429,7 +2429,7 @@ void UnmarkButtonsDirty(void) {
   }
 }
 
-void ForceButtonUnDirty(INT32 iButtonIndex) {
+function ForceButtonUnDirty(iButtonIndex: INT32): void {
   ButtonList[iButtonIndex]->uiFlags &= ~(BUTTON_DIRTY);
   ButtonList[iButtonIndex]->uiFlags |= BUTTON_FORCE_UNDIRTY;
 }
@@ -2438,7 +2438,7 @@ void ForceButtonUnDirty(INT32 iButtonIndex) {
 // PauseMarkButtonsDirty
 //
 
-void PausedMarkButtonsDirty(void) {
+function PausedMarkButtonsDirty(): void {
   // set flag for frame after the next rendering of buttons
   fPausedMarkButtonsDirtyFlag = TRUE;
 
@@ -2450,7 +2450,7 @@ void PausedMarkButtonsDirty(void) {
 //
 //	Draws a single button on the screen.
 //
-BOOLEAN DrawButton(INT32 iButtonID) {
+function DrawButton(iButtonID: INT32): BOOLEAN {
   // Fail if button handle out of range
   if (iButtonID < 0 || iButtonID > MAX_BUTTONS)
     return FALSE;
@@ -2477,7 +2477,7 @@ BOOLEAN DrawButton(INT32 iButtonID) {
 //	Given a pointer to a GUI_BUTTON structure, draws the button on the
 //	screen.
 //
-void DrawButtonFromPtr(GUI_BUTTON *b) {
+function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
   Assert(b);
   // Draw the appropriate button according to button type
   gbDisabledButtonStyle = DISABLED_STYLE_NONE;
@@ -2522,7 +2522,7 @@ void DrawButtonFromPtr(GUI_BUTTON *b) {
 //
 //	Draws a QuickButton type button on the screen.
 //
-void DrawQuickButton(GUI_BUTTON *b) {
+function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
   INT32 UseImage;
   UseImage = 0;
   // Is button Enabled, or diabled but no "Grayed" image associated with this QuickButton?
@@ -2561,7 +2561,7 @@ void DrawQuickButton(GUI_BUTTON *b) {
   BltVideoObject(ButtonDestBuffer, ButtonPictures[b->ImageNum].vobj, (UINT16)UseImage, b->XLoc, b->YLoc, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void DrawHatchOnButton(GUI_BUTTON *b) {
+function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
   SGPRect ClipRect;
@@ -2574,7 +2574,7 @@ void DrawHatchOnButton(GUI_BUTTON *b) {
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-void DrawShadeOnButton(GUI_BUTTON *b) {
+function DrawShadeOnButton(b: Pointer<GUI_BUTTON>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
   SGPRect ClipRect;
@@ -2587,7 +2587,7 @@ void DrawShadeOnButton(GUI_BUTTON *b) {
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-void DrawDefaultOnButton(GUI_BUTTON *b) {
+function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, &uiDestPitchBYTES);
@@ -2611,7 +2611,7 @@ void DrawDefaultOnButton(GUI_BUTTON *b) {
   UnLockVideoSurface(ButtonDestBuffer);
 }
 
-void DrawCheckBoxButtonOn(INT32 iButtonID) {
+function DrawCheckBoxButtonOn(iButtonID: INT32): void {
   GUI_BUTTON *b;
   BOOLEAN fLeftButtonState = gfLeftButtonState;
 
@@ -2628,7 +2628,7 @@ void DrawCheckBoxButtonOn(INT32 iButtonID) {
   gfLeftButtonState = fLeftButtonState;
 }
 
-void DrawCheckBoxButtonOff(INT32 iButtonID) {
+function DrawCheckBoxButtonOff(iButtonID: INT32): void {
   GUI_BUTTON *b;
   BOOLEAN fLeftButtonState = gfLeftButtonState;
 
@@ -2645,7 +2645,7 @@ void DrawCheckBoxButtonOff(INT32 iButtonID) {
   gfLeftButtonState = fLeftButtonState;
 }
 
-void DrawCheckBoxButton(GUI_BUTTON *b) {
+function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
   INT32 UseImage;
 
   UseImage = 0;
@@ -2689,7 +2689,7 @@ void DrawCheckBoxButton(GUI_BUTTON *b) {
   BltVideoObject(ButtonDestBuffer, ButtonPictures[b->ImageNum].vobj, (UINT16)UseImage, b->XLoc, b->YLoc, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void DrawIconOnButton(GUI_BUTTON *b) {
+function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
   INT32 xp, yp, width, height, IconX, IconY;
   INT32 IconW, IconH;
   SGPRect NewClip, OldClip;
@@ -2789,7 +2789,7 @@ void DrawIconOnButton(GUI_BUTTON *b) {
 }
 
 // If a button has text attached to it, then it'll draw it last.
-void DrawTextOnButton(GUI_BUTTON *b) {
+function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
   INT32 xp, yp, width, height, TextX, TextY;
   SGPRect NewClip, OldClip;
   INT16 sForeColor;
@@ -2956,7 +2956,7 @@ void DrawTextOnButton(GUI_BUTTON *b) {
 //	This function is called by the DrawIconicButton and DrawTextButton
 //	routines to draw the borders and background of the buttons.
 //
-void DrawGenericButton(GUI_BUTTON *b) {
+function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
   INT32 NumChunksWide, NumChunksHigh, cx, cy, width, height, hremain, wremain;
   INT32 q, ImgNum, ox, oy;
   INT32 iBorderHeight, iBorderWidth;
@@ -3204,7 +3204,7 @@ const DLG_CANCELBUTTON = 8;
 const DLG_OPTIONS = 9;
 const DLG_SIZE = 10;
 
-BOOLEAN SetDialogAttributes(CreateDlgInfo *pDlgInfo, INT32 iAttrib, ...) {
+function SetDialogAttributes(pDlgInfo: Pointer<CreateDlgInfo>, iAttrib: INT32, ...args: any[]): BOOLEAN {
   va_list arg;
   INT32 iFont, iFontOptions;
   UINT16 *zString;
@@ -3331,19 +3331,19 @@ BOOLEAN SetDialogAttributes(CreateDlgInfo *pDlgInfo, INT32 iAttrib, ...) {
   return TRUE;
 }
 
-INT32 CreateDialogBox(CreateDlgInfo *pDlgInfo) {
+function CreateDialogBox(pDlgInfo: Pointer<CreateDlgInfo>): INT32 {
   return -1;
 }
 
-void RemoveDialogBox(void) {
+function RemoveDialogBox(): void {
 }
 
-void DrawDialogBox(INT32 iDlgBox) {
+function DrawDialogBox(iDlgBox: INT32): void {
 }
 
 //------------------------------------------------------------------------------------------------------
 
-INT32 CreateCheckBoxButton(INT16 x, INT16 y, UINT8 *filename, INT16 Priority, GUI_CALLBACK ClickCallback) {
+function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
   GUI_BUTTON *b;
   INT32 ButPic, iButtonID;
   Assert(filename != NULL);
@@ -3367,7 +3367,7 @@ INT32 CreateCheckBoxButton(INT16 x, INT16 y, UINT8 *filename, INT16 Priority, GU
 }
 
 // Added Oct17, 97 Carter - kind of mindless, but might as well have it
-void MSYS_SetBtnUserData(INT32 iButtonNum, INT32 index, INT32 userdata) {
+function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): void {
   GUI_BUTTON *b;
   b = ButtonList[iButtonNum];
   if (index < 0 || index > 3)
@@ -3375,7 +3375,7 @@ void MSYS_SetBtnUserData(INT32 iButtonNum, INT32 index, INT32 userdata) {
   b->UserData[index] = userdata;
 }
 
-INT32 MSYS_GetBtnUserData(GUI_BUTTON *b, INT32 index) {
+function MSYS_GetBtnUserData(b: Pointer<GUI_BUTTON>, index: INT32): INT32 {
   if (index < 0 || index > 3)
     return 0;
 
@@ -3384,7 +3384,7 @@ INT32 MSYS_GetBtnUserData(GUI_BUTTON *b, INT32 index) {
 
 // Generic Button Movement Callback to reset the mouse button if the mouse is no longer
 // in the button region.
-void BtnGenericMouseMoveButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnGenericMouseMoveButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // If the button isn't the anchored button, then we don't want to modify the button state.
   if (btn != gpAnchoredButton)
     return;
@@ -3405,7 +3405,7 @@ void BtnGenericMouseMoveButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ReleaseAnchorMode() {
+function ReleaseAnchorMode(): void {
   if (!gpAnchoredButton)
     return;
 
@@ -3422,7 +3422,7 @@ void ReleaseAnchorMode() {
 }
 
 // Used to setup a dirtysaved region for buttons
-BOOLEAN SetButtonSavedRect(INT32 iButton) {
+function SetButtonSavedRect(iButton: INT32): BOOLEAN {
   GUI_BUTTON *b;
   INT32 xloc, yloc, w, h;
 
@@ -3445,7 +3445,7 @@ BOOLEAN SetButtonSavedRect(INT32 iButton) {
   return TRUE;
 }
 
-void FreeButtonSavedRect(INT32 iButton) {
+function FreeButtonSavedRect(iButton: INT32): void {
   GUI_BUTTON *b;
 
   Assert(iButton >= 0);
@@ -3461,7 +3461,7 @@ void FreeButtonSavedRect(INT32 iButton) {
 
 // Kris:
 // Yet new logical additions to the winbart library.
-void HideButton(INT32 iButtonNum) {
+function HideButton(iButtonNum: INT32): void {
   GUI_BUTTON *b;
 
   Assert(iButtonNum >= 0);
@@ -3476,7 +3476,7 @@ void HideButton(INT32 iButtonNum) {
   InvalidateRegion(b->Area.RegionTopLeftX, b->Area.RegionTopLeftY, b->Area.RegionBottomRightX, b->Area.RegionBottomRightY);
 }
 
-void ShowButton(INT32 iButtonNum) {
+function ShowButton(iButtonNum: INT32): void {
   GUI_BUTTON *b;
 
   Assert(iButtonNum >= 0);
@@ -3491,15 +3491,15 @@ void ShowButton(INT32 iButtonNum) {
   InvalidateRegion(b->Area.RegionTopLeftX, b->Area.RegionTopLeftY, b->Area.RegionBottomRightX, b->Area.RegionBottomRightY);
 }
 
-void DisableButtonHelpTextRestore(void) {
+function DisableButtonHelpTextRestore(): void {
   fDisableHelpTextRestoreFlag = TRUE;
 }
 
-void EnableButtonHelpTextRestore(void) {
+function EnableButtonHelpTextRestore(): void {
   fDisableHelpTextRestoreFlag = TRUE;
 }
 
-void GiveButtonDefaultStatus(INT32 iButtonID, INT32 iDefaultStatus) {
+function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3514,7 +3514,7 @@ void GiveButtonDefaultStatus(INT32 iButtonID, INT32 iDefaultStatus) {
   }
 }
 
-void RemoveButtonDefaultStatus(INT32 iButtonID) {
+function RemoveButtonDefaultStatus(iButtonID: INT32): void {
   GUI_BUTTON *b;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3527,7 +3527,7 @@ void RemoveButtonDefaultStatus(INT32 iButtonID) {
   }
 }
 
-BOOLEAN GetButtonArea(INT32 iButtonID, SGPRect *pRect) {
+function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -3548,7 +3548,7 @@ BOOLEAN GetButtonArea(INT32 iButtonID, SGPRect *pRect) {
   return TRUE;
 }
 
-INT32 GetButtonWidth(INT32 iButtonID) {
+function GetButtonWidth(iButtonID: INT32): INT32 {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -3563,7 +3563,7 @@ INT32 GetButtonWidth(INT32 iButtonID) {
   return b->Area.RegionBottomRightX - b->Area.RegionTopLeftX;
 }
 
-INT32 GetButtonHeight(INT32 iButtonID) {
+function GetButtonHeight(iButtonID: INT32): INT32 {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -3578,7 +3578,7 @@ INT32 GetButtonHeight(INT32 iButtonID) {
   return b->Area.RegionBottomRightY - b->Area.RegionTopLeftY;
 }
 
-INT32 GetButtonX(INT32 iButtonID) {
+function GetButtonX(iButtonID: INT32): INT32 {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);
@@ -3593,7 +3593,7 @@ INT32 GetButtonX(INT32 iButtonID) {
   return b->Area.RegionTopLeftX;
 }
 
-INT32 GetButtonY(INT32 iButtonID) {
+function GetButtonY(iButtonID: INT32): INT32 {
   GUI_BUTTON *b;
 
   Assert(iButtonID >= 0);

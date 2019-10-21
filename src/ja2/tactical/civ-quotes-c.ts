@@ -85,7 +85,7 @@ INT16 gzCivQuote[320];
 UINT16 gusCivQuoteBoxWidth;
 UINT16 gusCivQuoteBoxHeight;
 
-void CopyNumEntriesIntoQuoteStruct() {
+function CopyNumEntriesIntoQuoteStruct(): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < NUM_CIV_QUOTES; cnt++) {
@@ -93,7 +93,7 @@ void CopyNumEntriesIntoQuoteStruct() {
   }
 }
 
-BOOLEAN GetCivQuoteText(UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 *zQuote) {
+function GetCivQuoteText(ubCivQuoteID: UINT8, ubEntryID: UINT8, zQuote: Pointer<INT16>): BOOLEAN {
   UINT8 zFileName[164];
 
   // Build filename....
@@ -120,7 +120,7 @@ BOOLEAN GetCivQuoteText(UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 *zQuote) {
   return TRUE;
 }
 
-void SurrenderMessageBoxCallBack(UINT8 ubExitValue) {
+function SurrenderMessageBoxCallBack(ubExitValue: UINT8): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
 
@@ -153,7 +153,7 @@ void SurrenderMessageBoxCallBack(UINT8 ubExitValue) {
   }
 }
 
-void ShutDownQuoteBox(BOOLEAN fForce) {
+function ShutDownQuoteBox(fForce: BOOLEAN): void {
   if (!gCivQuoteData.bActive) {
     return;
   }
@@ -177,7 +177,7 @@ void ShutDownQuoteBox(BOOLEAN fForce) {
   }
 }
 
-BOOLEAN ShutDownQuoteBoxIfActive() {
+function ShutDownQuoteBoxIfActive(): BOOLEAN {
   if (gCivQuoteData.bActive) {
     ShutDownQuoteBox(TRUE);
 
@@ -187,7 +187,7 @@ BOOLEAN ShutDownQuoteBoxIfActive() {
   return FALSE;
 }
 
-INT8 GetCivType(SOLDIERTYPE *pCiv) {
+function GetCivType(pCiv: Pointer<SOLDIERTYPE>): INT8 {
   if (pCiv->ubProfile != NO_PROFILE) {
     return CIV_TYPE_NA;
   }
@@ -248,7 +248,7 @@ INT8 GetCivType(SOLDIERTYPE *pCiv) {
   return CIV_TYPE_NA;
 }
 
-void RenderCivQuoteBoxOverlay(VIDEO_OVERLAY *pBlitter) {
+function RenderCivQuoteBoxOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   if (gCivQuoteData.iVideoOverlay != -1) {
     RenderMercPopUpBoxFromIndex(gCivQuoteData.iDialogueBox, pBlitter->sX, pBlitter->sY, pBlitter->uiDestBuff);
 
@@ -256,7 +256,7 @@ void RenderCivQuoteBoxOverlay(VIDEO_OVERLAY *pBlitter) {
   }
 }
 
-void QuoteOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function QuoteOverlayClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -271,7 +271,7 @@ void QuoteOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 sX, INT16 sY) {
+function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryID: UINT8, sX: INT16, sY: INT16): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
   INT16 zQuote[320];
 
@@ -351,7 +351,7 @@ void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16
   gCivQuoteData.pCiv = pCiv;
 }
 
-UINT8 DetermineCivQuoteEntry(SOLDIERTYPE *pCiv, UINT8 *pubCivHintToUse, BOOLEAN fCanUseHints) {
+function DetermineCivQuoteEntry(pCiv: Pointer<SOLDIERTYPE>, pubCivHintToUse: Pointer<UINT8>, fCanUseHints: BOOLEAN): UINT8 {
   UINT8 ubCivType;
   INT8 bTownId;
   BOOLEAN bCivLowLoyalty = FALSE;
@@ -571,7 +571,7 @@ UINT8 DetermineCivQuoteEntry(SOLDIERTYPE *pCiv, UINT8 *pubCivHintToUse, BOOLEAN 
   }
 }
 
-void HandleCivQuote() {
+function HandleCivQuote(): void {
   if (gCivQuoteData.bActive) {
     // Check for min time....
     if ((GetJA2Clock() - gCivQuoteData.uiTimeOfCreation) > gCivQuoteData.uiDelayTime) {
@@ -581,7 +581,7 @@ void HandleCivQuote() {
   }
 }
 
-void StartCivQuote(SOLDIERTYPE *pCiv) {
+function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
   UINT8 ubCivQuoteID;
   INT16 sX, sY;
   UINT8 ubEntryID = 0;
@@ -638,7 +638,7 @@ void StartCivQuote(SOLDIERTYPE *pCiv) {
   }
 }
 
-void InitCivQuoteSystem() {
+function InitCivQuoteSystem(): void {
   memset(&gCivQuotes, 0, sizeof(gCivQuotes));
   CopyNumEntriesIntoQuoteStruct();
 
@@ -648,7 +648,7 @@ void InitCivQuoteSystem() {
   gCivQuoteData.iDialogueBox = -1;
 }
 
-BOOLEAN SaveCivQuotesToSaveGameFile(HWFILE hFile) {
+function SaveCivQuotesToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   FileWrite(hFile, &gCivQuotes, sizeof(gCivQuotes), &uiNumBytesWritten);
@@ -659,7 +659,7 @@ BOOLEAN SaveCivQuotesToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadCivQuotesFromLoadGameFile(HWFILE hFile) {
+function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   FileRead(hFile, &gCivQuotes, sizeof(gCivQuotes), &uiNumBytesRead);

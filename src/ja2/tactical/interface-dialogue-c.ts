@@ -112,7 +112,7 @@ const enum Enum212 {
   HOSPITAL_RANDOM_FREEBIE,
 }
 
-BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, INT8 bApproach, UINT32 uiApproachData) {
+function InitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): BOOLEAN {
   // ATE: OK, let's check the status of the Q
   // If it has something in it....delay this until after....
   if (DialogueQueueIsEmptyOrSomebodyTalkingNow()) {
@@ -144,14 +144,14 @@ BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier
   }
 }
 
-void HandlePendingInitConv() {
+function HandlePendingInitConv(): void {
   if (gfConversationPending) {
     // OK, if pending, remove and now call........
     InternalInitiateConversation(gpPendingDestSoldier, gpPendingSrcSoldier, gbPendingApproach, guiPendingApproachData);
   }
 }
 
-BOOLEAN InternalInitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, INT8 bApproach, UINT32 uiApproachData) {
+function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): BOOLEAN {
   // OK, init talking menu
   BOOLEAN fFromPending;
 
@@ -215,7 +215,7 @@ BOOLEAN InternalInitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSr
   return TRUE;
 }
 
-BOOLEAN InitTalkingMenu(UINT8 ubCharacterNum, INT16 sGridNo) {
+function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
   INT16 sXMapPos, sYMapPos, sScreenX, sScreenY;
   INT16 sX, sY;
 
@@ -236,7 +236,7 @@ BOOLEAN InitTalkingMenu(UINT8 ubCharacterNum, INT16 sGridNo) {
   }
 }
 
-BOOLEAN InternalInitTalkingMenu(UINT8 ubCharacterNum, INT16 sX, INT16 sY) {
+function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): BOOLEAN {
   INT32 iFaceIndex, cnt;
   VSURFACE_DESC vs_desc;
   FACETYPE *pFace;
@@ -387,7 +387,7 @@ BOOLEAN InternalInitTalkingMenu(UINT8 ubCharacterNum, INT16 sX, INT16 sY) {
   return TRUE;
 }
 
-void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -400,7 +400,7 @@ void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DeleteTalkingMenu() {
+function DeleteTalkingMenu(): void {
   INT32 cnt;
 
   if (!gfInTalkPanel)
@@ -504,7 +504,7 @@ void DeleteTalkingMenu() {
   gTacticalStatus.uiTimeCounterForGiveItemSrc = GetJA2Clock();
 }
 
-void RenderTalkingMenu() {
+function RenderTalkingMenu(): void {
   INT32 cnt;
   FACETYPE *pFace;
   INT16 sFontX, sFontY, sX, sY;
@@ -693,7 +693,7 @@ void RenderTalkingMenu() {
   gTalkPanel.fDirtyLevel = 0;
 }
 
-void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -708,7 +708,7 @@ void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
   BOOLEAN fDoConverse = TRUE;
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -770,7 +770,7 @@ void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TalkPanelBaseRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -790,7 +790,7 @@ void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TalkPanelNameRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Donot do this if we are talking already
     if (!gFacesData[gTalkPanel.iFaceIndex].fTalking) {
@@ -801,7 +801,7 @@ void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TalkPanelNameRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // Donot do this if we are talking already
   if (gFacesData[gTalkPanel.iFaceIndex].fTalking) {
     return;
@@ -816,11 +816,11 @@ void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
 }
 
 // Dirty menu
-void SetTalkingMenuDirty(BOOLEAN fDirtyLevel) {
+function SetTalkingMenuDirty(fDirtyLevel: BOOLEAN): void {
   gTalkPanel.fDirtyLevel = fDirtyLevel;
 }
 
-BOOLEAN HandleTalkingMenu() {
+function HandleTalkingMenu(): BOOLEAN {
   if (!gfInTalkPanel) {
     return FALSE;
   }
@@ -832,7 +832,7 @@ BOOLEAN HandleTalkingMenu() {
   return FALSE;
 }
 
-BOOLEAN TalkingMenuDialogue(UINT16 usQuoteNum) {
+function TalkingMenuDialogue(usQuoteNum: UINT16): BOOLEAN {
   // Set back current select....
   gTalkPanel.bCurSelect = -1;
   gTalkPanel.fOnName = FALSE;
@@ -842,7 +842,7 @@ BOOLEAN TalkingMenuDialogue(UINT16 usQuoteNum) {
   return TRUE;
 }
 
-BOOLEAN ProfileCurrentlyTalkingInDialoguePanel(UINT8 ubProfile) {
+function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): BOOLEAN {
   if (gfInTalkPanel) {
     if (gpDestSoldier != NULL) {
       if (gpDestSoldier->ubProfile == ubProfile) {
@@ -854,7 +854,7 @@ BOOLEAN ProfileCurrentlyTalkingInDialoguePanel(UINT8 ubProfile) {
   return FALSE;
 }
 
-BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey) {
+function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOOLEAN {
   FACETYPE *pFace;
   BOOLEAN fTalking = FALSE;
 
@@ -901,7 +901,7 @@ BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey) {
   return FALSE;
 }
 
-void HandleTalkingMenuBackspace(void) {
+function HandleTalkingMenuBackspace(): void {
   FACETYPE *pFace;
   BOOLEAN fTalking = FALSE;
 
@@ -934,7 +934,7 @@ void HandleTalkingMenuBackspace(void) {
   }
 }
 
-void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight) {
+function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
   BOOLEAN fOKLeft = FALSE, fOKTop = FALSE, fOKBottom = FALSE, fOK = FALSE;
   INT16 sX, sY;
 
@@ -997,7 +997,7 @@ void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight) {
   // DebugMsg
 }
 
-void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight) {
+function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
   switch (gTalkPanel.ubPopupOrientation) {
     case TALK_PANEL_POPUP_LEFT:
 
@@ -1030,38 +1030,38 @@ void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight) {
   }
 }
 
-BOOLEAN TalkingMenuGiveItem(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
+function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): BOOLEAN {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, (UINT32)ubNPC, (UINT32)pObject, (UINT32)bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
 
-BOOLEAN NPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, UINT8 ubTargetApproach, BOOLEAN fShowDialogueMenu) {
+function NPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, ubTargetApproach: UINT8, fShowDialogueMenu: BOOLEAN): BOOLEAN {
   // CHECKF( SpecialCharacterDialogueEvent( DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI ) != FALSE );
   CHECKF(SpecialCharacterDialogueEventWithExtraParam(DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC, ubTargetNPC, ubTargetRecord, fShowDialogueMenu, ubTargetApproach, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
 
-BOOLEAN NPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubRecordNum) {
+function NPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubRecordNum: UINT8): BOOLEAN {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO, ubTargetNPC, usGridNo, ubRecordNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
 
-BOOLEAN NPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum) {
+function NPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): BOOLEAN {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_DO_ACTION, ubTargetNPC, usActionCode, ubQuoteNum, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
 
-BOOLEAN NPCClosePanel() {
+function NPCClosePanel(): BOOLEAN {
   CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL, 0, 0, 0, 0, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
 
-BOOLEAN SourceSoldierPointerIsValidAndReachableForGive(SOLDIERTYPE *pGiver) {
+function SourceSoldierPointerIsValidAndReachableForGive(pGiver: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT16 sAdjGridNo;
 
   if (!gpSrcSoldier) {
@@ -1091,7 +1091,7 @@ BOOLEAN SourceSoldierPointerIsValidAndReachableForGive(SOLDIERTYPE *pGiver) {
   return TRUE;
 }
 
-void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
+function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): void {
   // Give it to the NPC soldier
   //	AutoPlaceObject( gpDestSoldier, pObject, FALSE );
 
@@ -1117,7 +1117,7 @@ void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos) {
   }
 }
 
-void HandleNPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, BOOLEAN fShowDialogueMenu, UINT8 ubTargetApproach) {
+function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: BOOLEAN, ubTargetApproach: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
@@ -1179,7 +1179,7 @@ void HandleNPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, BOOLEAN fShowD
   }
 }
 
-void HandleNPCTrigger() {
+function HandleNPCTrigger(): void {
   SOLDIERTYPE *pSoldier;
   INT16 sPlayerGridNo;
   UINT8 ubPlayerID;
@@ -1226,7 +1226,7 @@ void HandleNPCTrigger() {
   }
 }
 
-void HandleWaitTimerForNPCTrigger() {
+function HandleWaitTimerForNPCTrigger(): void {
   if (gfWaitingForTriggerTimer) {
     if ((GetJA2Clock() - guiWaitingForTriggerTime) > 500) {
       guiPendingOverrideEvent = LU_ENDUILOCK;
@@ -1240,7 +1240,7 @@ void HandleWaitTimerForNPCTrigger() {
   }
 }
 
-void HandleNPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum) {
+function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: UINT8): void {
   SOLDIERTYPE *pSoldier;
   // OK, Move to gridNo!
 
@@ -1289,12 +1289,12 @@ void HandleNPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum) {
   pSoldier->fAIFlags |= AI_HANDLE_EVERY_FRAME;
 }
 
-void HandleNPCClosePanel() {
+function HandleNPCClosePanel(): void {
   // Remove dialogue!
   DeleteTalkingMenu();
 }
 
-void HandleStuffForNPCEscorted(UINT8 ubNPC) {
+function HandleStuffForNPCEscorted(ubNPC: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   switch (ubNPC) {
@@ -1337,7 +1337,7 @@ void HandleStuffForNPCEscorted(UINT8 ubNPC) {
   }
 }
 
-void HandleFactForNPCUnescorted(UINT8 ubNPC) {
+function HandleFactForNPCUnescorted(ubNPC: UINT8): void {
   // obsolete!
   /*
   switch( ubNPC )
@@ -1361,7 +1361,7 @@ void HandleFactForNPCUnescorted(UINT8 ubNPC) {
   */
 }
 
-void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum) {
+function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier, *pSoldier2;
   INT8 bNumDone = 0;
@@ -3518,7 +3518,7 @@ void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum)
   }
 }
 
-UINT32 CalcPatientMedicalCost(SOLDIERTYPE *pSoldier) {
+function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   UINT32 uiCost;
 
   if (!pSoldier) {
@@ -3559,7 +3559,7 @@ UINT32 CalcPatientMedicalCost(SOLDIERTYPE *pSoldier) {
   return uiCost;
 }
 
-UINT32 CalcMedicalCost(UINT8 ubId) {
+function CalcMedicalCost(ubId: UINT8): UINT32 {
   INT32 cnt;
   UINT32 uiCostSoFar;
   INT16 sGridNo = 0;
@@ -3596,7 +3596,7 @@ UINT32 CalcMedicalCost(UINT8 ubId) {
   return uiCostSoFar;
 }
 
-BOOLEAN PlayerTeamHasTwoSpotsLeft() {
+function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
   UINT32 cnt, uiCount = 0;
   SOLDIERTYPE *pSoldier;
 
@@ -3613,7 +3613,7 @@ BOOLEAN PlayerTeamHasTwoSpotsLeft() {
   }
 }
 
-void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType) {
+function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): void {
   INT32 iTemp;
   UINT16 zTemp[256], zTemp2[256];
 
@@ -3685,7 +3685,7 @@ void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType) {
   }
 }
 
-void DialogueMessageBoxCallBack(UINT8 ubExitValue) {
+function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
   UINT8 ubProfile;
   SOLDIERTYPE *pSoldier;
 
@@ -3886,7 +3886,7 @@ void DialogueMessageBoxCallBack(UINT8 ubExitValue) {
   }
 }
 
-void DoneFadeOutActionBasement() {
+function DoneFadeOutActionBasement(): void {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(10, 1, 1);
 
@@ -3908,11 +3908,11 @@ void DoneFadeOutActionBasement() {
   FadeInGameScreen();
 }
 
-void DoneFadeOutActionSex() {
+function DoneFadeOutActionSex(): void {
   SetPendingNewScreen(SEX_SCREEN);
 }
 
-void DoneFadeInActionBasement() {
+function DoneFadeInActionBasement(): void {
   // Start conversation, etc
   SOLDIERTYPE *pSoldier, *pNPCSoldier;
   INT32 cnt;
@@ -3938,7 +3938,7 @@ void DoneFadeInActionBasement() {
   TriggerNPCRecordImmediately(pNPCSoldier->ubProfile, 1);
 }
 
-void DoneFadeOutActionLeaveBasement() {
+function DoneFadeOutActionLeaveBasement(): void {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(10, 1, 0);
 
@@ -3951,11 +3951,11 @@ void DoneFadeOutActionLeaveBasement() {
   FadeInGameScreen();
 }
 
-void DoneFadeInActionLeaveBasement() {
+function DoneFadeInActionLeaveBasement(): void {
   // Start conversation, etc
 }
 
-BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor) {
+function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
   STRUCTURE *pStructure;
   INT16 sStructGridNo;
   INT16 sActionGridNo;
@@ -4026,7 +4026,7 @@ BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor) {
   return TRUE;
 }
 
-void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function TextRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -4040,7 +4040,7 @@ void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void CarmenLeavesSectorCallback(void) {
+function CarmenLeavesSectorCallback(): void {
   if (gWorldSectorX == 13 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
     TriggerNPCRecord(78, 34);
   } else if (gWorldSectorX == 9 && gWorldSectorY == MAP_ROW_G && gbWorldSectorZ == 0) {

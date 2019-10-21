@@ -2,7 +2,7 @@ const DATA_8_BIT_DIR = "8-Bit\\";
 
 //#define	TIME_LIMITED_VERSION
 
-void FilenameForBPP(STR pFilename, STR pDestination) {
+function FilenameForBPP(pFilename: STR, pDestination: STR): void {
   UINT8 Drive[128], Dir[128], Name[128], Ext[128];
 
   if (GETPIXELDEPTH() == 16) {
@@ -21,7 +21,7 @@ void FilenameForBPP(STR pFilename, STR pDestination) {
   }
 }
 
-BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pPalette, SGPFILENAME ColFile) {
+function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): BOOLEAN {
   HWFILE hFileHandle;
   BYTE bColHeader[8];
   UINT32 cnt;
@@ -56,7 +56,7 @@ BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *pPalette, SGPFILENAME ColFi
   return TRUE;
 }
 
-BOOLEAN DisplayPaletteRep(PaletteRepID aPalRep, UINT8 ubXPos, UINT8 ubYPos, UINT32 uiDestSurface) {
+function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): BOOLEAN {
   UINT16 us16BPPColor;
   UINT32 cnt1;
   UINT8 ubSize, ubType;
@@ -87,7 +87,7 @@ BOOLEAN DisplayPaletteRep(PaletteRepID aPalRep, UINT8 ubXPos, UINT8 ubYPos, UINT
   return TRUE;
 }
 
-BOOLEAN WrapString(INT16 *pStr, INT16 *pStr2, UINT16 usWidth, INT32 uiFont) {
+function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): BOOLEAN {
   UINT32 Cur, uiLet, uiNewLet, uiHyphenLet;
   UINT16 *curletter, transletter;
   BOOLEAN fLineSplit = FALSE;
@@ -146,7 +146,7 @@ BOOLEAN WrapString(INT16 *pStr, INT16 *pStr2, UINT16 usWidth, INT32 uiFont) {
   return fLineSplit;
 }
 
-BOOLEAN IfWinNT(void) {
+function IfWinNT(): BOOLEAN {
   OSVERSIONINFO OsVerInfo;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -159,7 +159,7 @@ BOOLEAN IfWinNT(void) {
     return FALSE;
 }
 
-BOOLEAN IfWin95(void) {
+function IfWin95(): BOOLEAN {
   OSVERSIONINFO OsVerInfo;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -172,7 +172,7 @@ BOOLEAN IfWin95(void) {
     return FALSE;
 }
 
-void HandleLimitedNumExecutions() {
+function HandleLimitedNumExecutions(): void {
   // Get system directory
   HWFILE hFileHandle;
   UINT8 ubSysDir[512];
@@ -236,21 +236,21 @@ UINT32 gCheckFileMinSizes[] = {
   236000000,
 };
 
-BOOLEAN HandleJA2CDCheck() {
+function HandleJA2CDCheck(): BOOLEAN {
   return TRUE;
 }
 
-BOOLEAN HandleJA2CDCheckTwo() {
+function HandleJA2CDCheckTwo(): BOOLEAN {
   return TRUE;
 
   return FALSE;
 }
 
-BOOLEAN PerformTimeLimitedCheck() {
+function PerformTimeLimitedCheck(): BOOLEAN {
   return TRUE;
 }
 
-BOOLEAN DoJA2FilesExistsOnDrive(CHAR8 *zCdLocation) {
+function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): BOOLEAN {
   BOOLEAN fFailed = FALSE;
   CHAR8 zCdFile[SGPFILENAME_LEN];
   INT32 cnt;

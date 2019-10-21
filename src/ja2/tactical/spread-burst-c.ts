@@ -11,11 +11,11 @@ INT8 gbNumBurstLocations = 0;
 
 extern BOOLEAN gfBeginBurstSpreadTracking;
 
-void ResetBurstLocations() {
+function ResetBurstLocations(): void {
   gbNumBurstLocations = 0;
 }
 
-void AccumulateBurstLocation(INT16 sGridNo) {
+function AccumulateBurstLocation(sGridNo: INT16): void {
   INT32 cnt;
 
   if (gbNumBurstLocations < MAX_BURST_LOCATIONS) {
@@ -35,7 +35,7 @@ void AccumulateBurstLocation(INT16 sGridNo) {
   }
 }
 
-void PickBurstLocations(SOLDIERTYPE *pSoldier) {
+function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT8 ubShotsPerBurst;
   FLOAT dAccululator = 0;
   FLOAT dStep = 0;
@@ -65,7 +65,7 @@ void PickBurstLocations(SOLDIERTYPE *pSoldier) {
   // OK, they have been added
 }
 
-void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTargets[5]) {
+function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pTargets: Pointer<SOLDIERTYPE>[] /* [5] */): void {
   UINT8 ubShotsPerBurst;
   FLOAT dAccululator = 0;
   FLOAT dStep = 0;
@@ -97,7 +97,7 @@ void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTa
   // OK, they have been added
 }
 
-void RenderAccumulatedBurstLocations() {
+function RenderAccumulatedBurstLocations(): void {
   INT32 cnt;
   INT16 sGridNo;
   HVOBJECT hVObject;

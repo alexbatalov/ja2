@@ -3,22 +3,22 @@ UINT8 gubWindowUIValue = 0;
 UINT8 gubWallUIValue = FIRSTWALL;
 UINT8 gubBrokenWallUIValue = 0;
 
-void CalcSmartWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   *pusUseIndex = 0;
   *pusObjIndex = gubWallUIValue;
 }
 
-void CalcSmartDoorDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+function CalcSmartDoorDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   *pusUseIndex = 4 * (gubDoorUIValue % 2); // open or closed -- odd or even
   *pusObjIndex = FIRSTDOOR + gubDoorUIValue / 2;
 }
 
-void CalcSmartWindowDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+function CalcSmartWindowDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   *pusUseIndex = 44 + gubWindowUIValue; // first exterior top right oriented window
   *pusObjIndex = FIRSTWALL;
 }
 
-void CalcSmartBrokenWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
+function CalcSmartBrokenWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   switch (gubBrokenWallUIValue) {
     case 0:
     case 1:
@@ -34,11 +34,11 @@ void CalcSmartBrokenWallDefault(UINT16 *pusObjIndex, UINT16 *pusUseIndex) {
   *pusObjIndex = FIRSTWALL;
 }
 
-UINT16 CalcSmartWindowIndex(UINT16 usWallOrientation) {
+function CalcSmartWindowIndex(usWallOrientation: UINT16): UINT16 {
   return (UINT16)(33 + usWallOrientation * 3 + gubWindowUIValue);
 }
 
-UINT16 CalcSmartDoorIndex(UINT16 usWallOrientation) {
+function CalcSmartDoorIndex(usWallOrientation: UINT16): UINT16 {
   // convert the orientation values as the graphics are in reverse order
   // orientation values:   INSIDE_TOP_LEFT=1,  INSIDE_TOP_RIGHT=2,  OUTSIDE_TOP_LEFT=3, OUTSIDE_TOP_RIGHT=4
   // door graphics order:	INSIDE_TOP_LEFT=15, INSIDE_TOP_RIGHT=10, OUTSIDE_TOP_LEFT=5, OUTSIDE_TOP_RIGHT=0
@@ -47,11 +47,11 @@ UINT16 CalcSmartDoorIndex(UINT16 usWallOrientation) {
   return (UINT16)(1 + usWallOrientation + 4 * (gubDoorUIValue % 2));
 }
 
-UINT16 CalcSmartDoorType() {
+function CalcSmartDoorType(): UINT16 {
   return (UINT16)(FIRSTDOOR + gubDoorUIValue / 2);
 }
 
-UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
+function CalcSmartBrokenWallIndex(usWallOrientation: UINT16): UINT16 {
   if (gubBrokenWallUIValue == 2) // the hole in the wall
     return 0xffff;
   if (gubBrokenWallUIValue < 2) // broken walls
@@ -75,43 +75,43 @@ UINT16 CalcSmartBrokenWallIndex(UINT16 usWallOrientation) {
   return (UINT16)(usWallOrientation + 57);
 }
 
-void IncSmartWallUIValue() {
+function IncSmartWallUIValue(): void {
   gubWallUIValue += gubWallUIValue < LASTWALL ? 1 : -3;
 }
 
-void DecSmartWallUIValue() {
+function DecSmartWallUIValue(): void {
   gubWallUIValue -= gubWallUIValue > FIRSTWALL ? 1 : -3;
 }
 
-void IncSmartDoorUIValue() {
+function IncSmartDoorUIValue(): void {
   gubDoorUIValue += gubDoorUIValue < 7 ? 1 : -7;
 }
 
-void DecSmartDoorUIValue() {
+function DecSmartDoorUIValue(): void {
   gubDoorUIValue -= gubDoorUIValue > 0 ? 1 : -7;
 }
 
-void IncSmartWindowUIValue() {
+function IncSmartWindowUIValue(): void {
   gubWindowUIValue += gubWindowUIValue < 2 ? 1 : -2;
 }
 
-void DecSmartWindowUIValue() {
+function DecSmartWindowUIValue(): void {
   gubWindowUIValue -= gubWindowUIValue > 0 ? 1 : -2;
 }
 
-void IncSmartBrokenWallUIValue() {
+function IncSmartBrokenWallUIValue(): void {
   gubBrokenWallUIValue += gubBrokenWallUIValue < 4 ? 1 : -4;
 }
 
-void DecSmartBrokenWallUIValue() {
+function DecSmartBrokenWallUIValue(): void {
   gubBrokenWallUIValue -= gubBrokenWallUIValue > 0 ? 1 : -4;
 }
 
-BOOLEAN CalcWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UINT16 *pusIndex) {
+function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
   return FALSE;
 }
 
-BOOLEAN CalcDoorInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusDoorType, UINT16 *pusIndex) {
+function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
   LEVELNODE *pWall = NULL;
   UINT16 usWallOrientation;
   pWall = GetVerticalWall(iMapIndex);
@@ -131,7 +131,7 @@ BOOLEAN CalcDoorInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusDoorType, UINT
   return FALSE;
 }
 
-BOOLEAN CalcWindowInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UINT16 *pusIndex) {
+function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
   LEVELNODE *pWall = NULL;
   UINT32 uiTileType;
   UINT16 usWallOrientation;
@@ -165,7 +165,7 @@ BOOLEAN CalcWindowInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UI
   return FALSE;
 }
 
-BOOLEAN CalcBrokenWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType, UINT16 *pusIndex) {
+function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
   LEVELNODE *pWall = NULL;
   UINT32 uiTileType;
   UINT16 usWallOrientation;
@@ -226,7 +226,7 @@ BOOLEAN CalcBrokenWallInfoUsingSmartMethod(UINT32 iMapIndex, UINT16 *pusWallType
 //		type, there are two more cases.  When there is a bottom wall in the y+1 position or a right wall in
 //		the x+1 position.  If there are matching walls, there, then we draw two pieces to connect the current
 //		gridno with the respective position.
-void PasteSmartWall(UINT32 iMapIndex) {
+function PasteSmartWall(iMapIndex: UINT32): void {
   static BOOLEAN fWallAlone = FALSE;
   static UINT32 iAloneMapIndex = 0x8000;
   UINT16 usWallType;
@@ -414,7 +414,7 @@ void PasteSmartWall(UINT32 iMapIndex) {
   // Check for the highest weight value.
 }
 
-void PasteSmartDoor(UINT32 iMapIndex) {
+function PasteSmartDoor(iMapIndex: UINT32): void {
   LEVELNODE *pWall = NULL;
   UINT16 usTileIndex;
   UINT16 usDoorType;
@@ -439,7 +439,7 @@ void PasteSmartDoor(UINT32 iMapIndex) {
   }
 }
 
-void PasteSmartWindow(UINT32 iMapIndex) {
+function PasteSmartWindow(iMapIndex: UINT32): void {
   UINT16 usNewWallIndex;
 
   LEVELNODE *pWall = NULL;
@@ -483,7 +483,7 @@ void PasteSmartWindow(UINT32 iMapIndex) {
   }
 }
 
-void PasteSmartBrokenWall(UINT32 iMapIndex) {
+function PasteSmartBrokenWall(iMapIndex: UINT32): void {
   UINT16 usNewWallIndex;
 
   LEVELNODE *pWall;

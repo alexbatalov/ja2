@@ -34,7 +34,7 @@ extern STR16 pUpdatePanelButtons[];
 CHAR16 gzUserDefinedButton1[128];
 CHAR16 gzUserDefinedButton2[128];
 
-INT32 DoMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback, SGPRect *pCenteringRect) {
+function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
   VSURFACE_DESC vs_desc;
   UINT16 usTextBoxWidth;
   UINT16 usTextBoxHeight;
@@ -423,7 +423,7 @@ INT32 DoMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 us
   return iId;
 }
 
-void MsgBoxClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function MsgBoxClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   /// if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP)
   //{
   //	gMsgBox.bHandled = MSG_BOX_RETURN_NO;
@@ -431,7 +431,7 @@ void MsgBoxClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   //
 }
 
-void OKMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -447,7 +447,7 @@ void OKMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void YESMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -463,7 +463,7 @@ void YESMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void NOMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -479,7 +479,7 @@ void NOMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ContractMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -495,7 +495,7 @@ void ContractMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void LieMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fLButtonDown = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -511,7 +511,7 @@ void LieMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void NumberedMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
+function NumberedMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -522,7 +522,7 @@ void NumberedMsgBoxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-UINT32 ExitMsgBox(INT8 ubExitCode) {
+function ExitMsgBox(ubExitCode: INT8): UINT32 {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
   SGPPoint pPosition;
@@ -661,11 +661,11 @@ UINT32 ExitMsgBox(INT8 ubExitCode) {
   return gMsgBox.uiExitScreen;
 }
 
-UINT32 MessageBoxScreenInit() {
+function MessageBoxScreenInit(): UINT32 {
   return TRUE;
 }
 
-UINT32 MessageBoxScreenHandle() {
+function MessageBoxScreenHandle(): UINT32 {
   InputAtom InputEvent;
 
   if (gfNewMessageBox) {
@@ -846,29 +846,29 @@ UINT32 MessageBoxScreenHandle() {
   return MSG_BOX_SCREEN;
 }
 
-UINT32 MessageBoxScreenShutdown() {
+function MessageBoxScreenShutdown(): UINT32 {
   return FALSE;
 }
 
 // a basic box that don't care what screen we came from
-void DoScreenIndependantMessageBox(INT16 *zString, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   SGPRect CenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
-void DoUpperScreenIndependantMessageBox(INT16 *zString, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   SGPRect CenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y / 2 };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
-void DoLowerScreenIndependantMessageBox(INT16 *zString, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   SGPRect CenteringRect = { 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
-void DoScreenIndependantMessageBoxWithRect(INT16 *zString, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback, SGPRect *pCenteringRect) {
+function DoScreenIndependantMessageBoxWithRect(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): void {
   /// which screen are we in?
 
   // Map Screen (excluding AI Viewer)
@@ -905,6 +905,6 @@ void DoScreenIndependantMessageBoxWithRect(INT16 *zString, UINT16 usFlags, MSGBO
   }
 }
 
-UINT16 GetMSgBoxButtonWidth(INT32 iButtonImage) {
+function GetMSgBoxButtonWidth(iButtonImage: INT32): UINT16 {
   return GetWidthOfButtonPic((UINT16)iButtonImage, ButtonPictures[iButtonImage].OnNormal);
 }

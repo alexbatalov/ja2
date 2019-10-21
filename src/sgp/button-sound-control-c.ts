@@ -1,4 +1,4 @@
-void SpecifyButtonSoundScheme(INT32 iButtonID, INT8 bSoundScheme) {
+function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
   ButtonList[iButtonID]->ubSoundSchemeID = (UINT8)bSoundScheme;
   if (bSoundScheme == BUTTON_SOUND_SCHEME_GENERIC) {
     switch (guiCurrentScreen) {
@@ -41,7 +41,7 @@ void SpecifyButtonSoundScheme(INT32 iButtonID, INT8 bSoundScheme) {
   }
 }
 
-void PlayButtonSound(INT32 iButtonID, INT32 iSoundType) {
+function PlayButtonSound(iButtonID: INT32, iSoundType: INT32): void {
   if (ButtonList[iButtonID] == NULL) {
     return;
   }

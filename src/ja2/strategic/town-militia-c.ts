@@ -18,7 +18,7 @@ INT16 gsUnpaidStrategicSector[MAX_CHARACTER_COUNT];
 // the selected list of mercs
 extern BOOLEAN fSelectedListOfMercsForMapScreen[MAX_CHARACTER_COUNT];
 
-void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMapY) {
+function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16): void {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
   UINT8 ubMilitiaTrained = 0;
   BOOLEAN fFoundOne;
@@ -125,7 +125,7 @@ void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMap
 }
 
 // feed this a SOLDIER_CLASS_, it will return you a _MITILIA rank, or -1 if the guy's not militia
-INT8 SoldierClassToMilitiaRank(UINT8 ubSoldierClass) {
+function SoldierClassToMilitiaRank(ubSoldierClass: UINT8): INT8 {
   INT8 bRank = -1;
 
   switch (ubSoldierClass) {
@@ -144,7 +144,7 @@ INT8 SoldierClassToMilitiaRank(UINT8 ubSoldierClass) {
 }
 
 // feed this a _MITILIA rank, it will return you a SOLDIER_CLASS_, or -1 if the guy's not militia
-INT8 MilitiaRankToSoldierClass(UINT8 ubRank) {
+function MilitiaRankToSoldierClass(ubRank: UINT8): INT8 {
   INT8 bSoldierClass = -1;
 
   switch (ubRank) {
@@ -162,7 +162,7 @@ INT8 MilitiaRankToSoldierClass(UINT8 ubRank) {
   return bSoldierClass;
 }
 
-void StrategicAddMilitiaToSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 ubHowMany) {
+function StrategicAddMilitiaToSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   pSectorInfo->ubNumberOfCivsAtLevel[ubRank] += ubHowMany;
@@ -171,7 +171,7 @@ void StrategicAddMilitiaToSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 u
   fMapPanelDirty = TRUE;
 }
 
-void StrategicPromoteMilitiaInSector(INT16 sMapX, INT16 sMapY, UINT8 ubCurrentRank, UINT8 ubHowMany) {
+function StrategicPromoteMilitiaInSector(sMapX: INT16, sMapY: INT16, ubCurrentRank: UINT8, ubHowMany: UINT8): void {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   // damn well better have that many around to promote!
@@ -189,7 +189,7 @@ void StrategicPromoteMilitiaInSector(INT16 sMapX, INT16 sMapY, UINT8 ubCurrentRa
   fMapPanelDirty = TRUE;
 }
 
-void StrategicRemoveMilitiaFromSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UINT8 ubHowMany) {
+function StrategicRemoveMilitiaFromSector(sMapX: INT16, sMapY: INT16, ubRank: UINT8, ubHowMany: UINT8): void {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
 
   // damn well better have that many around to remove!
@@ -207,7 +207,7 @@ void StrategicRemoveMilitiaFromSector(INT16 sMapX, INT16 sMapY, UINT8 ubRank, UI
 }
 
 // kill pts are (2 * kills) + assists
-UINT8 CheckOneMilitiaForPromotion(INT16 sMapX, INT16 sMapY, UINT8 ubCurrentRank, UINT8 ubRecentKillPts) {
+function CheckOneMilitiaForPromotion(sMapX: INT16, sMapY: INT16, ubCurrentRank: UINT8, ubRecentKillPts: UINT8): UINT8 {
   UINT32 uiChanceToLevel = 0;
 
   switch (ubCurrentRank) {
@@ -247,7 +247,7 @@ UINT8 CheckOneMilitiaForPromotion(INT16 sMapX, INT16 sMapY, UINT8 ubCurrentRank,
 }
 
 // call this if the player attacks his own militia
-void HandleMilitiaDefections(INT16 sMapX, INT16 sMapY) {
+function HandleMilitiaDefections(sMapX: INT16, sMapY: INT16): void {
   UINT8 ubRank;
   UINT8 ubMilitiaCnt;
   UINT8 ubCount;
@@ -282,7 +282,7 @@ void HandleMilitiaDefections(INT16 sMapX, INT16 sMapY) {
   }
 }
 
-UINT8 CountAllMilitiaInSector(INT16 sMapX, INT16 sMapY) {
+function CountAllMilitiaInSector(sMapX: INT16, sMapY: INT16): UINT8 {
   UINT8 ubMilitiaTotal = 0;
   UINT8 ubRank;
 
@@ -294,11 +294,11 @@ UINT8 CountAllMilitiaInSector(INT16 sMapX, INT16 sMapY) {
   return ubMilitiaTotal;
 }
 
-UINT8 MilitiaInSectorOfRank(INT16 sMapX, INT16 sMapY, UINT8 ubRank) {
+function MilitiaInSectorOfRank(sMapX: INT16, sMapY: INT16, ubRank: UINT8): UINT8 {
   return SectorInfo[SECTOR(sMapX, sMapY)].ubNumberOfCivsAtLevel[ubRank];
 }
 
-BOOLEAN SectorOursAndPeaceful(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function SectorOursAndPeaceful(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   // if this sector is currently loaded
   if ((sMapX == gWorldSectorX) && (sMapY == gWorldSectorY) && (bMapZ == gbWorldSectorZ)) {
     // and either there are enemies prowling this sector, or combat is in progress
@@ -320,7 +320,7 @@ BOOLEAN SectorOursAndPeaceful(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return TRUE;
 }
 
-void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT16 sSkipSectorY) {
+function InitFriendlyTownSectorServer(ubTownId: UINT8, sSkipSectorX: INT16, sSkipSectorY: INT16): void {
   // reset globals
   gubTownSectorServerTownId = ubTownId;
   gsTownSectorServerSkipX = sSkipSectorX;
@@ -332,7 +332,7 @@ void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT16 sSki
 // this feeds the X,Y of the next town sector on the town list for the town specified at initialization
 // it will skip an entry that matches the skip X/Y value if one was specified at initialization
 // MUST CALL InitFriendlyTownSectorServer() before using!!!
-BOOLEAN ServeNextFriendlySectorInTown(INT16 *sNeighbourX, INT16 *sNeighbourY) {
+function ServeNextFriendlySectorInTown(sNeighbourX: Pointer<INT16>, sNeighbourY: Pointer<INT16>): BOOLEAN {
   INT32 iTownSector;
   INT16 sMapX, sMapY;
   BOOLEAN fStopLooking = FALSE;
@@ -373,7 +373,7 @@ BOOLEAN ServeNextFriendlySectorInTown(INT16 *sNeighbourX, INT16 *sNeighbourY) {
   return TRUE;
 }
 
-void HandleInterfaceMessageForCostOfTrainingMilitia(SOLDIERTYPE *pSoldier) {
+function HandleInterfaceMessageForCostOfTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
   CHAR16 sString[128];
   SGPRect pCenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y };
   INT32 iNumberOfSectors = 0;
@@ -414,7 +414,7 @@ void HandleInterfaceMessageForCostOfTrainingMilitia(SOLDIERTYPE *pSoldier) {
   return;
 }
 
-void DoContinueMilitiaTrainingMessageBox(INT16 sSectorX, INT16 sSectorY, UINT16 *str, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoContinueMilitiaTrainingMessageBox(sSectorX: INT16, sSectorY: INT16, str: Pointer<UINT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   if (sSectorX <= 10 && sSectorY >= 6 && sSectorY <= 11) {
     DoLowerScreenIndependantMessageBox(str, usFlags, ReturnCallback);
   } else {
@@ -422,7 +422,7 @@ void DoContinueMilitiaTrainingMessageBox(INT16 sSectorX, INT16 sSectorY, UINT16 
   }
 }
 
-void HandleInterfaceMessageForContinuingTrainingMilitia(SOLDIERTYPE *pSoldier) {
+function HandleInterfaceMessageForContinuingTrainingMilitia(pSoldier: Pointer<SOLDIERTYPE>): void {
   CHAR16 sString[128];
   INT16 sSectorX = 0, sSectorY = 0;
   CHAR16 sStringB[128];
@@ -483,7 +483,7 @@ void HandleInterfaceMessageForContinuingTrainingMilitia(SOLDIERTYPE *pSoldier) {
 
 // IMPORTANT: This same callback is used both for initial training and for continue training prompt
 // use 'gfYesNoPromptIsForContinue' flag to tell them apart
-void PayMilitiaTrainingYesNoBoxCallback(UINT8 bExitValue) {
+function PayMilitiaTrainingYesNoBoxCallback(bExitValue: UINT8): void {
   CHAR16 sString[128];
 
   Assert(giTotalCostOfTraining > 0);
@@ -516,14 +516,14 @@ void PayMilitiaTrainingYesNoBoxCallback(UINT8 bExitValue) {
   return;
 }
 
-void CantTrainMilitiaOkBoxCallback(UINT8 bExitValue) {
+function CantTrainMilitiaOkBoxCallback(bExitValue: UINT8): void {
   MilitiaTrainingRejected();
   return;
 }
 
 // IMPORTANT: This same callback is used both for initial training and for continue training prompt
 // use 'gfYesNoPromptIsForContinue' flag to tell them apart
-void MilitiaTrainingRejected(void) {
+function MilitiaTrainingRejected(): void {
   if (gfYesNoPromptIsForContinue) {
     // take all mercs in that sector off militia training
     ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(pMilitiaTrainerSoldier->sSectorX, pMilitiaTrainerSoldier->sSectorY);
@@ -536,7 +536,7 @@ void MilitiaTrainingRejected(void) {
   pMilitiaTrainerSoldier = NULL;
 }
 
-void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(void) {
+function HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(): void {
   if (gTacticalStatus.Team[MILITIA_TEAM].bSide != 0) {
     // handle militia defections and reset team to friendly
     HandleMilitiaDefections(gWorldSectorX, gWorldSectorY);
@@ -547,7 +547,7 @@ void HandleMilitiaStatusInCurrentMapBeforeLoadingNewMap(void) {
   }
 }
 
-BOOLEAN CanNearbyMilitiaScoutThisSector(INT16 sSectorX, INT16 sSectorY) {
+function CanNearbyMilitiaScoutThisSector(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
   INT16 sSectorValue = 0, sSector = 0;
   INT16 sCounterA = 0, sCounterB = 0;
   UINT8 ubScoutingRange = 1;
@@ -578,7 +578,7 @@ BOOLEAN CanNearbyMilitiaScoutThisSector(INT16 sSectorX, INT16 sSectorY) {
   return FALSE;
 }
 
-BOOLEAN IsTownFullMilitia(INT8 bTownId) {
+function IsTownFullMilitia(bTownId: INT8): BOOLEAN {
   INT32 iCounter = 0;
   INT16 sSectorX = 0, sSectorY = 0;
   INT32 iNumberOfMilitia = 0;
@@ -610,7 +610,7 @@ BOOLEAN IsTownFullMilitia(INT8 bTownId) {
   return TRUE;
 }
 
-BOOLEAN IsSAMSiteFullOfMilitia(INT16 sSectorX, INT16 sSectorY) {
+function IsSAMSiteFullOfMilitia(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
   BOOLEAN fSamSitePresent = FALSE;
   INT32 iNumberOfMilitia = 0;
   INT32 iMaxNumber = 0;
@@ -637,7 +637,7 @@ BOOLEAN IsSAMSiteFullOfMilitia(INT16 sSectorX, INT16 sSectorY) {
   return TRUE;
 }
 
-void HandleCompletionOfTownTrainingByGroupWithTrainer(SOLDIERTYPE *pTrainer) {
+function HandleCompletionOfTownTrainingByGroupWithTrainer(pTrainer: Pointer<SOLDIERTYPE>): void {
   INT16 sSectorX = 0, sSectorY = 0;
   INT8 bSectorZ = 0;
   SOLDIERTYPE *pSoldier = NULL;
@@ -671,7 +671,7 @@ void HandleCompletionOfTownTrainingByGroupWithTrainer(SOLDIERTYPE *pTrainer) {
   return;
 }
 
-void AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(SOLDIERTYPE *pSoldier) {
+function AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iCounter = 0;
   INT16 sSector = 0, sCurrentSector = 0;
   SOLDIERTYPE *pCurrentSoldier = NULL;
@@ -704,7 +704,7 @@ void AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(SOLDIERTYPE 
 }
 
 // clear out the list of training sectors...should be done once the list is posted
-void ClearSectorListForCompletedTrainingOfMilitia(void) {
+function ClearSectorListForCompletedTrainingOfMilitia(): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST; iCounter++) {
@@ -714,7 +714,7 @@ void ClearSectorListForCompletedTrainingOfMilitia(void) {
   return;
 }
 
-void HandleContinueOfTownTraining(void) {
+function HandleContinueOfTownTraining(): void {
   SOLDIERTYPE *pSoldier = NULL;
   INT32 iCounter = 0;
   BOOLEAN fContinueEventPosted = FALSE;
@@ -753,7 +753,7 @@ void HandleContinueOfTownTraining(void) {
   return;
 }
 
-void BuildListOfUnpaidTrainableSectors(void) {
+function BuildListOfUnpaidTrainableSectors(): void {
   INT32 iCounter = 0, iCounterB = 0;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -801,7 +801,7 @@ void BuildListOfUnpaidTrainableSectors(void) {
   }
 }
 
-INT32 GetNumberOfUnpaidTrainableSectors(void) {
+function GetNumberOfUnpaidTrainableSectors(): INT32 {
   INT32 iCounter = 0;
   INT32 iNumberOfSectors = 0;
 
@@ -818,7 +818,7 @@ INT32 GetNumberOfUnpaidTrainableSectors(void) {
   return iNumberOfSectors;
 }
 
-void StartTrainingInAllUnpaidTrainableSectors() {
+function StartTrainingInAllUnpaidTrainableSectors(): void {
   INT32 iCounter = 0;
   UINT8 ubSector;
 
@@ -836,7 +836,7 @@ void StartTrainingInAllUnpaidTrainableSectors() {
   }
 }
 
-void ContinueTrainingInThisSector(void) {
+function ContinueTrainingInThisSector(): void {
   UINT8 ubSector;
 
   Assert(pMilitiaTrainerSoldier);
@@ -846,7 +846,7 @@ void ContinueTrainingInThisSector(void) {
   PayForTrainingInSector(ubSector);
 }
 
-void PayForTrainingInSector(UINT8 ubSector) {
+function PayForTrainingInSector(ubSector: UINT8): void {
   Assert(SectorInfo[ubSector].fMilitiaTrainingPaid == FALSE);
 
   // spend the money
@@ -859,7 +859,7 @@ void PayForTrainingInSector(UINT8 ubSector) {
   ResetDoneFlagForAllMilitiaTrainersInSector(ubSector);
 }
 
-void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector) {
+function ResetDoneFlagForAllMilitiaTrainersInSector(ubSector: UINT8): void {
   INT32 iCounter = 0;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -877,7 +877,7 @@ void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector) {
   }
 }
 
-BOOLEAN MilitiaTrainingAllowedInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function MilitiaTrainingAllowedInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   INT8 bTownId;
   BOOLEAN fSamSitePresent = FALSE;
 
@@ -897,7 +897,7 @@ BOOLEAN MilitiaTrainingAllowedInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSec
   return MilitiaTrainingAllowedInTown(bTownId);
 }
 
-BOOLEAN MilitiaTrainingAllowedInTown(INT8 bTownId) {
+function MilitiaTrainingAllowedInTown(bTownId: INT8): BOOLEAN {
   switch (bTownId) {
     case DRASSEN:
     case ALMA:
@@ -923,7 +923,7 @@ BOOLEAN MilitiaTrainingAllowedInTown(INT8 bTownId) {
   }
 }
 
-void BuildMilitiaPromotionsString(UINT16 *str) {
+function BuildMilitiaPromotionsString(str: Pointer<UINT16>): void {
   UINT16 pStr[256];
   BOOLEAN fAddSpace = FALSE;
   swprintf(str, L"");

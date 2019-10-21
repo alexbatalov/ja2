@@ -92,7 +92,7 @@ const INTERROGATION_FLAG = 0x00008000;
 const BALIME_LIBERATED_FLAG = 0x00010000;
 
 // set flag for this event
-void SetMeanWhileFlag(UINT8 ubMeanwhileID) {
+function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
   switch (ubMeanwhileID) {
     case END_OF_PLAYERS_FIRST_BATTLE:
       uiMeanWhileFlags |= END_OF_PLAYERS_FIRST_BATTLE_FLAG;
@@ -149,7 +149,7 @@ void SetMeanWhileFlag(UINT8 ubMeanwhileID) {
 }
 
 // is this flag set?
-BOOLEAN GetMeanWhileFlag(UINT8 ubMeanwhileID) {
+function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
   UINT32 uiTrue = FALSE;
   switch (ubMeanwhileID) {
     case END_OF_PLAYERS_FIRST_BATTLE:
@@ -212,7 +212,7 @@ BOOLEAN GetMeanWhileFlag(UINT8 ubMeanwhileID) {
   }
 }
 
-INT32 GetFreeNPCSave(void) {
+function GetFreeNPCSave(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumNPCSaves; uiCount++) {
@@ -226,7 +226,7 @@ INT32 GetFreeNPCSave(void) {
   return -1;
 }
 
-void RecountNPCSaves(void) {
+function RecountNPCSaves(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumNPCSaves - 1; (uiCount >= 0); uiCount--) {
@@ -237,7 +237,7 @@ void RecountNPCSaves(void) {
   }
 }
 
-void ScheduleMeanwhileEvent(MEANWHILE_DEFINITION *pMeanwhileDef, UINT32 uiTime) {
+function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, uiTime: UINT32): void {
   // event scheduled to happen before, ignore
   if (GetMeanWhileFlag(pMeanwhileDef->ubMeanwhileID) == TRUE) {
     return;
@@ -263,7 +263,7 @@ void ScheduleMeanwhileEvent(MEANWHILE_DEFINITION *pMeanwhileDef, UINT32 uiTime) 
   AddStrategicEvent(EVENT_MEANWHILE, uiTime, pMeanwhileDef->ubMeanwhileID);
 }
 
-BOOLEAN BeginMeanwhile(UINT8 ubMeanwhileID) {
+function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
   INT32 cnt;
 
   // copy meanwhile data from array to structure for current
@@ -282,7 +282,7 @@ BOOLEAN BeginMeanwhile(UINT8 ubMeanwhileID) {
   return TRUE;
 }
 
-void BringupMeanwhileBox() {
+function BringupMeanwhileBox(): void {
   INT16 zStr[256];
 
   swprintf(zStr, L"%s.....", pMessageStrings[MSG_MEANWHILE]);
@@ -295,7 +295,7 @@ void BringupMeanwhileBox() {
   }
 }
 
-void CheckForMeanwhileOKStart() {
+function CheckForMeanwhileOKStart(): void {
   if (gfMeanwhileTryingToStart) {
     // Are we in prebattle interface?
     if (gfPreBattleInterfaceActive) {
@@ -326,7 +326,7 @@ void CheckForMeanwhileOKStart() {
   }
 }
 
-void StartMeanwhile() {
+function StartMeanwhile(): void {
   INT32 iIndex;
   INT8 bNumDone = 0;
 
@@ -476,7 +476,7 @@ void StartMeanwhile() {
   gFadeOutDoneCallback = DoneFadeOutMeanwhile;
 }
 
-void DoneFadeOutMeanwhile() {
+function DoneFadeOutMeanwhile(): void {
   // OK, insertion data found, enter sector!
 
   SetCurrentWorldSector(gCurrentMeanwhileDef.sSectorX, gCurrentMeanwhileDef.sSectorY, 0);
@@ -489,7 +489,7 @@ void DoneFadeOutMeanwhile() {
   FadeInNextFrame();
 }
 
-void DoneFadeInMeanwhile() {
+function DoneFadeInMeanwhile(): void {
   // ATE: double check that we are in meanwhile
   // this is if we cancel right away.....
   if (gfInMeanwhile) {
@@ -503,7 +503,7 @@ void DoneFadeInMeanwhile() {
   }
 }
 
-void BeginMeanwhileCallBack(UINT8 bExitValue) {
+function BeginMeanwhileCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_OK || bExitValue == MSG_BOX_RETURN_YES) {
     gTacticalStatus.uiFlags |= ENGAGED_IN_CONV;
     // Increment reference count...
@@ -518,7 +518,7 @@ void BeginMeanwhileCallBack(UINT8 bExitValue) {
   }
 }
 
-BOOLEAN AreInMeanwhile() {
+function AreInMeanwhile(): BOOLEAN {
   STRATEGICEVENT *curr;
 
   // KM:  April 6, 1999
@@ -548,7 +548,7 @@ BOOLEAN AreInMeanwhile() {
   return FALSE;
 }
 
-void ProcessImplicationsOfMeanwhile(void) {
+function ProcessImplicationsOfMeanwhile(): void {
   switch (gCurrentMeanwhileDef.ubMeanwhileID) {
     case END_OF_PLAYERS_FIRST_BATTLE:
       if (gGameOptions.ubDifficultyLevel == DIF_LEVEL_HARD) {
@@ -615,7 +615,7 @@ void ProcessImplicationsOfMeanwhile(void) {
   }
 }
 
-void EndMeanwhile() {
+function EndMeanwhile(): void {
   UINT32 cnt;
   UINT8 ubProfile;
 
@@ -665,7 +665,7 @@ void EndMeanwhile() {
   }
 }
 
-void DoneFadeOutMeanwhileOnceDone() {
+function DoneFadeOutMeanwhileOnceDone(): void {
   UINT32 cnt;
   UINT8 ubProfile;
 
@@ -721,10 +721,10 @@ void DoneFadeOutMeanwhileOnceDone() {
   FadeInNextFrame();
 }
 
-void DoneFadeInMeanwhileOnceDone() {
+function DoneFadeInMeanwhileOnceDone(): void {
 }
 
-void LocateMeanWhileGrid(void) {
+function LocateMeanWhileGrid(): void {
   INT16 sGridNo = 0;
 
   // go to the approp. gridno
@@ -735,7 +735,7 @@ void LocateMeanWhileGrid(void) {
   return;
 }
 
-void LocateToMeanwhileCharacter() {
+function LocateToMeanwhileCharacter(): void {
   SOLDIERTYPE *pSoldier;
 
   if (gfInMeanwhile) {
@@ -747,15 +747,15 @@ void LocateToMeanwhileCharacter() {
   }
 }
 
-BOOLEAN AreReloadingFromMeanwhile() {
+function AreReloadingFromMeanwhile(): BOOLEAN {
   return gfReloadingScreenFromMeanwhile;
 }
 
-UINT8 GetMeanwhileID() {
+function GetMeanwhileID(): UINT8 {
   return gCurrentMeanwhileDef.ubMeanwhileID;
 }
 
-void HandleCreatureRelease(void) {
+function HandleCreatureRelease(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
 
@@ -772,7 +772,7 @@ void HandleCreatureRelease(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId) {
+function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   // post event for meanwhile whithin the next 6 hours if it still will be daylight, otherwise the next morning
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
@@ -822,7 +822,7 @@ void HandleMeanWhileEventPostingForTownLiberation(UINT8 bTownId) {
   }
 }
 
-void HandleMeanWhileEventPostingForTownLoss(UINT8 bTownId) {
+function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
 
@@ -844,7 +844,7 @@ void HandleMeanWhileEventPostingForTownLoss(UINT8 bTownId) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleMeanWhileEventPostingForSAMLiberation(INT8 bSamId) {
+function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -892,7 +892,7 @@ void HandleMeanWhileEventPostingForSAMLiberation(INT8 bSamId) {
   }
 }
 
-void HandleFlowersMeanwhileScene(INT8 bTimeCode) {
+function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -922,7 +922,7 @@ void HandleFlowersMeanwhileScene(INT8 bTimeCode) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleOutskirtsOfMedunaMeanwhileScene(void) {
+function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -945,7 +945,7 @@ void HandleOutskirtsOfMedunaMeanwhileScene(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleKillChopperMeanwhileScene(void) {
+function HandleKillChopperMeanwhileScene(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -968,7 +968,7 @@ void HandleKillChopperMeanwhileScene(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleScientistAWOLMeanwhileScene(void) {
+function HandleScientistAWOLMeanwhileScene(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -991,7 +991,7 @@ void HandleScientistAWOLMeanwhileScene(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleInterrogationMeanwhileScene(void) {
+function HandleInterrogationMeanwhileScene(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -1014,7 +1014,7 @@ void HandleInterrogationMeanwhileScene(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleFirstBattleVictory(void) {
+function HandleFirstBattleVictory(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -1038,7 +1038,7 @@ void HandleFirstBattleVictory(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleDelayedFirstBattleVictory(void) {
+function HandleDelayedFirstBattleVictory(): void {
   UINT32 uiTime = 0;
   MEANWHILE_DEFINITION MeanwhileDef;
   UINT8 ubId = 0;
@@ -1067,7 +1067,7 @@ void HandleDelayedFirstBattleVictory(void) {
   ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
 }
 
-void HandleFirstBattleEndingWhileInTown(INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ, BOOLEAN fFromAutoResolve) {
+function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: BOOLEAN): void {
   INT8 bTownId = 0;
   INT16 sSector = 0;
 
@@ -1099,7 +1099,7 @@ void HandleFirstBattleEndingWhileInTown(INT16 sSectorX, INT16 sSectorY, INT16 bS
   return;
 }
 
-void HandleFirstMeanWhileSetUpWithTrashWorld(void) {
+function HandleFirstMeanWhileSetUpWithTrashWorld(): void {
   // exiting sector after first battle fought
   if (gfFirstBattleMeanwhileScenePending) {
     HandleFirstBattleVictory();

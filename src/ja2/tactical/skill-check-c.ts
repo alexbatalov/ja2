@@ -1,4 +1,4 @@
-INT8 EffectiveStrength(SOLDIERTYPE *pSoldier) {
+function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bBandaged;
   INT32 iEffStrength;
 
@@ -15,7 +15,7 @@ INT8 EffectiveStrength(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffStrength;
 }
 
-INT8 EffectiveWisdom(SOLDIERTYPE *pSoldier) {
+function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffWisdom;
 
   iEffWisdom = pSoldier->bWisdom;
@@ -25,7 +25,7 @@ INT8 EffectiveWisdom(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffWisdom;
 }
 
-INT8 EffectiveAgility(SOLDIERTYPE *pSoldier) {
+function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffAgility;
 
   iEffAgility = pSoldier->bAgility;
@@ -39,7 +39,7 @@ INT8 EffectiveAgility(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffAgility;
 }
 
-INT8 EffectiveMechanical(SOLDIERTYPE *pSoldier) {
+function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffMechanical;
 
   iEffMechanical = pSoldier->bMechanical;
@@ -49,7 +49,7 @@ INT8 EffectiveMechanical(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffMechanical;
 }
 
-INT8 EffectiveExplosive(SOLDIERTYPE *pSoldier) {
+function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffExplosive;
 
   iEffExplosive = pSoldier->bExplosive;
@@ -59,7 +59,7 @@ INT8 EffectiveExplosive(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffExplosive;
 }
 
-INT8 EffectiveMedical(SOLDIERTYPE *pSoldier) {
+function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffMedical;
 
   iEffMedical = pSoldier->bMedical;
@@ -69,7 +69,7 @@ INT8 EffectiveMedical(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffMedical;
 }
 
-INT8 EffectiveLeadership(SOLDIERTYPE *pSoldier) {
+function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffLeadership;
   INT8 bDrunkLevel;
 
@@ -85,7 +85,7 @@ INT8 EffectiveLeadership(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffLeadership;
 }
 
-INT8 EffectiveExpLevel(SOLDIERTYPE *pSoldier) {
+function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffExpLevel;
   INT8 bDrunkLevel;
   INT32 iExpModifier[] = {
@@ -117,7 +117,7 @@ INT8 EffectiveExpLevel(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 EffectiveMarksmanship(SOLDIERTYPE *pSoldier) {
+function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffMarksmanship;
 
   iEffMarksmanship = pSoldier->bMarksmanship;
@@ -127,7 +127,7 @@ INT8 EffectiveMarksmanship(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffMarksmanship;
 }
 
-INT8 EffectiveDexterity(SOLDIERTYPE *pSoldier) {
+function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iEffDexterity;
 
   iEffDexterity = pSoldier->bDexterity;
@@ -137,7 +137,7 @@ INT8 EffectiveDexterity(SOLDIERTYPE *pSoldier) {
   return (INT8)iEffDexterity;
 }
 
-UINT8 GetPenaltyForFatigue(SOLDIERTYPE *pSoldier) {
+function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   UINT8 ubPercentPenalty;
 
   if (pSoldier->bBreathMax >= 85)
@@ -158,16 +158,16 @@ UINT8 GetPenaltyForFatigue(SOLDIERTYPE *pSoldier) {
   return ubPercentPenalty;
 }
 
-void ReducePointsForFatigue(SOLDIERTYPE *pSoldier, UINT16 *pusPoints) {
+function ReducePointsForFatigue(pSoldier: Pointer<SOLDIERTYPE>, pusPoints: Pointer<UINT16>): void {
   *pusPoints -= (*pusPoints * GetPenaltyForFatigue(pSoldier)) / 100;
 }
 
-INT32 GetSkillCheckPenaltyForFatigue(SOLDIERTYPE *pSoldier, INT32 iSkill) {
+function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: INT32): INT32 {
   // use only half the full effect of fatigue for skill checks
   return ((iSkill * GetPenaltyForFatigue(pSoldier)) / 100) / 2;
 }
 
-INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
+function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: INT8): INT32 {
   INT32 iSkill;
   INT32 iChance, iReportChance;
   INT32 iRoll, iMadeItBy;
@@ -417,7 +417,7 @@ INT32 SkillCheck(SOLDIERTYPE *pSoldier, INT8 bReason, INT8 bChanceMod) {
   return iMadeItBy;
 }
 
-INT8 CalcTrapDetectLevel(SOLDIERTYPE *pSoldier, BOOLEAN fExamining) {
+function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: BOOLEAN): INT8 {
   // return the level of trap which the guy is able to detect
 
   INT8 bDetectLevel;

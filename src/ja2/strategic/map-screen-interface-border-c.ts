@@ -73,7 +73,7 @@ void BtnLowerLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
-BOOLEAN LoadMapBorderGraphics(void) {
+function LoadMapBorderGraphics(): BOOLEAN {
   // this procedure will load the graphics needed for the map border
   VOBJECT_DESC VObjectDesc;
 
@@ -94,7 +94,7 @@ BOOLEAN LoadMapBorderGraphics(void) {
   return TRUE;
 }
 
-void DeleteMapBorderGraphics(void) {
+function DeleteMapBorderGraphics(): void {
   // procedure will delete graphics loaded for map border
 
   DeleteVideoObjectFromIndex(guiMapBorder);
@@ -103,7 +103,7 @@ void DeleteMapBorderGraphics(void) {
   return;
 }
 
-void RenderMapBorder(void) {
+function RenderMapBorder(): void {
   // renders the actual border to the guiSAVEBUFFER
   HVOBJECT hHandle;
 
@@ -157,7 +157,7 @@ void RenderMapBorderCorner( void )
 }
 */
 
-void RenderMapBorderEtaPopUp(void) {
+function RenderMapBorderEtaPopUp(): void {
   // renders map border corner to the FRAME_BUFFER
   HVOBJECT hHandle;
 
@@ -186,7 +186,7 @@ void RenderMapBorderEtaPopUp(void) {
   return;
 }
 
-BOOLEAN CreateButtonsForMapBorder(void) {
+function CreateButtonsForMapBorder(): BOOLEAN {
   // will create the buttons needed for the map screen border region
 
   /*
@@ -287,7 +287,7 @@ BOOLEAN CreateButtonsForMapBorder(void) {
   return TRUE;
 }
 
-void DeleteMapBorderButtons(void) {
+function DeleteMapBorderButtons(): void {
   UINT8 ubCnt;
 
   /*
@@ -391,7 +391,7 @@ void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-void BtnMilitiaCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMilitiaCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowMilitiaMode();
@@ -400,7 +400,7 @@ void BtnMilitiaCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnTeamCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnTeamCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowTeamsMode();
@@ -409,7 +409,7 @@ void BtnTeamCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnTownCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnTownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowTownsMode();
@@ -418,7 +418,7 @@ void BtnTownCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnMineCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMineCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
     ToggleShowMinesMode();
@@ -427,7 +427,7 @@ void BtnMineCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnAircraftCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnAircraftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
 
@@ -437,7 +437,7 @@ void BtnAircraftCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnItemCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     CommonBtnCallbackBtnDownChecks();
 
@@ -496,7 +496,7 @@ void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason)
 }
 */
 
-void ToggleShowTownsMode(void) {
+function ToggleShowTownsMode(): void {
   if (fShowTownFlag == TRUE) {
     fShowTownFlag = FALSE;
     MapBorderButtonOff(MAP_BORDER_TOWN_BTN);
@@ -523,7 +523,7 @@ void ToggleShowTownsMode(void) {
   fMapPanelDirty = TRUE;
 }
 
-void ToggleShowMinesMode(void) {
+function ToggleShowMinesMode(): void {
   if (fShowMineFlag == TRUE) {
     fShowMineFlag = FALSE;
     MapBorderButtonOff(MAP_BORDER_MINE_BTN);
@@ -550,7 +550,7 @@ void ToggleShowMinesMode(void) {
   fMapPanelDirty = TRUE;
 }
 
-void ToggleShowMilitiaMode(void) {
+function ToggleShowMilitiaMode(): void {
   if (fShowMilitia == TRUE) {
     fShowMilitia = FALSE;
     MapBorderButtonOff(MAP_BORDER_MILITIA_BTN);
@@ -601,7 +601,7 @@ void ToggleShowMilitiaMode(void) {
   fMapPanelDirty = TRUE;
 }
 
-void ToggleShowTeamsMode(void) {
+function ToggleShowTeamsMode(): void {
   if (fShowTeamFlag == TRUE) {
     // turn show teams OFF
     fShowTeamFlag = FALSE;
@@ -617,7 +617,7 @@ void ToggleShowTeamsMode(void) {
   }
 }
 
-void ToggleAirspaceMode(void) {
+function ToggleAirspaceMode(): void {
   if (fShowAircraftFlag == TRUE) {
     // turn airspace OFF
     fShowAircraftFlag = FALSE;
@@ -637,7 +637,7 @@ void ToggleAirspaceMode(void) {
   }
 }
 
-void ToggleItemsFilter(void) {
+function ToggleItemsFilter(): void {
   if (fShowItemsFlag == TRUE) {
     // turn items OFF
     fShowItemsFlag = FALSE;
@@ -902,7 +902,7 @@ void HandleMapScrollButtonStates( void )
 */
 
 // generic button mvt callback for mapscreen map border
-void BtnGenericMouseMoveButtonCallbackForMapBorder(GUI_BUTTON *btn, INT32 reason) {
+function BtnGenericMouseMoveButtonCallbackForMapBorder(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // If the button isn't the anchored button, then we don't want to modify the button state.
 
   if (btn != gpAnchoredButton) {
@@ -942,7 +942,7 @@ BOOLEAN ScrollButtonsDisplayingHelpMessage( void )
 }
 */
 
-void DisplayCurrentLevelMarker(void) {
+function DisplayCurrentLevelMarker(): void {
   // display the current level marker on the map border
 
   HVOBJECT hHandle;
@@ -961,7 +961,7 @@ void DisplayCurrentLevelMarker(void) {
   return;
 }
 
-void CreateMouseRegionsForLevelMarkers(void) {
+function CreateMouseRegionsForLevelMarkers(): void {
   INT16 sCounter = 0;
   CHAR16 sString[64];
 
@@ -975,7 +975,7 @@ void CreateMouseRegionsForLevelMarkers(void) {
   }
 }
 
-void DeleteMouseRegionsForLevelMarkers(void) {
+function DeleteMouseRegionsForLevelMarkers(): void {
   INT16 sCounter = 0;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
@@ -983,7 +983,7 @@ void DeleteMouseRegionsForLevelMarkers(void) {
   }
 }
 
-void LevelMarkerBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function LevelMarkerBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
   INT32 iCounter = 0;
 
@@ -1030,7 +1030,7 @@ void EnableMapBorderRegion( void )
 }
 */
 
-void TurnOnShowTeamsMode(void) {
+function TurnOnShowTeamsMode(): void {
   // if mode already on, leave, else set and redraw
 
   if (fShowTeamFlag == FALSE) {
@@ -1062,7 +1062,7 @@ void TurnOnShowTeamsMode(void) {
   }
 }
 
-void TurnOnAirSpaceMode(void) {
+function TurnOnAirSpaceMode(): void {
   // if mode already on, leave, else set and redraw
 
   if (fShowAircraftFlag == FALSE) {
@@ -1118,7 +1118,7 @@ void TurnOnAirSpaceMode(void) {
   }
 }
 
-void TurnOnItemFilterMode(void) {
+function TurnOnItemFilterMode(): void {
   // if mode already on, leave, else set and redraw
 
   if (fShowItemsFlag == FALSE) {
@@ -1218,7 +1218,7 @@ void UpdateScrollButtonStatesWhileScrolling( void )
 }
 */
 
-void InitializeMapBorderButtonStates(void) {
+function InitializeMapBorderButtonStates(): void {
   if (fShowItemsFlag) {
     MapBorderButtonOn(MAP_BORDER_ITEM_BTN);
   } else {
@@ -1256,7 +1256,7 @@ void InitializeMapBorderButtonStates(void) {
   }
 }
 
-BOOLEAN DoesPlayerHaveAnyMilitia(void) {
+function DoesPlayerHaveAnyMilitia(): BOOLEAN {
   INT16 sX, sY;
 
   // run through list of towns that might have militia..if any return TRUE..else return FALSE
@@ -1273,7 +1273,7 @@ BOOLEAN DoesPlayerHaveAnyMilitia(void) {
   return FALSE;
 }
 
-void CommonBtnCallbackBtnDownChecks(void) {
+function CommonBtnCallbackBtnDownChecks(): void {
   if (IsMapScreenHelpTextUp()) {
     // stop mapscreen text
     StopMapScreenHelpText();
@@ -1285,7 +1285,7 @@ void CommonBtnCallbackBtnDownChecks(void) {
   }
 }
 
-void InitMapScreenFlags(void) {
+function InitMapScreenFlags(): void {
   fShowTownFlag = TRUE;
   fShowMineFlag = FALSE;
 
@@ -1296,7 +1296,7 @@ void InitMapScreenFlags(void) {
   fShowItemsFlag = FALSE;
 }
 
-void MapBorderButtonOff(UINT8 ubBorderButtonIndex) {
+function MapBorderButtonOff(ubBorderButtonIndex: UINT8): void {
   Assert(ubBorderButtonIndex < 6);
 
   if (fShowMapInventoryPool) {
@@ -1313,7 +1313,7 @@ void MapBorderButtonOff(UINT8 ubBorderButtonIndex) {
   ButtonList[giMapBorderButtons[ubBorderButtonIndex]]->uiFlags &= ~(BUTTON_CLICKED_ON);
 }
 
-void MapBorderButtonOn(UINT8 ubBorderButtonIndex) {
+function MapBorderButtonOn(ubBorderButtonIndex: UINT8): void {
   Assert(ubBorderButtonIndex < 6);
 
   if (fShowMapInventoryPool) {

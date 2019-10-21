@@ -3,7 +3,7 @@ INT32 giIMPAboutUsButton[1];
 INT32 giIMPAboutUsButtonImage[1];
 ;
 
-void EnterIMPAboutUs(void) {
+function EnterIMPAboutUs(): void {
   // create buttons
   CreateIMPAboutUsButtons();
 
@@ -13,7 +13,7 @@ void EnterIMPAboutUs(void) {
   return;
 }
 
-void ExitIMPAboutUs(void) {
+function ExitIMPAboutUs(): void {
   // exit from IMP About us page
 
   // delete Buttons
@@ -22,7 +22,7 @@ void ExitIMPAboutUs(void) {
   return;
 }
 
-void RenderIMPAboutUs(void) {
+function RenderIMPAboutUs(): void {
   // rneders the IMP about us page
 
   // the background
@@ -39,13 +39,13 @@ void RenderIMPAboutUs(void) {
   return;
 }
 
-void HandleIMPAboutUs(void) {
+function HandleIMPAboutUs(): void {
   // handles the IMP about us page
 
   return;
 }
 
-void CreateIMPAboutUsButtons(void) {
+function CreateIMPAboutUsButtons(): void {
   // this function will create the buttons needed for th IMP about us page
   // the back button button
   giIMPAboutUsButtonImage[0] = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
@@ -60,7 +60,7 @@ void CreateIMPAboutUsButtons(void) {
   return;
 }
 
-void DeleteIMPAboutUsButtons(void) {
+function DeleteIMPAboutUsButtons(): void {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the about back button
@@ -70,7 +70,7 @@ void DeleteIMPAboutUsButtons(void) {
   return;
 }
 
-void BtnIMPBackCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

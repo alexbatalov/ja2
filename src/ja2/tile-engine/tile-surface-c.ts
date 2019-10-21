@@ -2,7 +2,7 @@ TILE_IMAGERY *gTileSurfaceArray[NUMBEROFTILETYPES];
 UINT8 gbDefaultSurfaceUsed[NUMBEROFTILETYPES];
 UINT8 gbSameAsDefaultSurfaceUsed[NUMBEROFTILETYPES];
 
-TILE_IMAGERY *LoadTileSurface(char *cFilename) {
+function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   // Add tile surface
   PTILE_IMAGERY pTileSurf = NULL;
   VOBJECT_DESC VObjectDesc;
@@ -95,7 +95,7 @@ TILE_IMAGERY *LoadTileSurface(char *cFilename) {
   return pTileSurf;
 }
 
-void DeleteTileSurface(PTILE_IMAGERY pTileSurf) {
+function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
   if (pTileSurf->pStructureFileRef != NULL) {
     FreeStructureFile(pTileSurf->pStructureFileRef);
   } else {
@@ -111,7 +111,7 @@ void DeleteTileSurface(PTILE_IMAGERY pTileSurf) {
   MemFree(pTileSurf);
 }
 
-void SetRaisedObjectFlag(char *cFilename, TILE_IMAGERY *pTileSurf) {
+function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_IMAGERY>): void {
   INT32 cnt = 0;
   CHAR8 cRootFile[128];
   UINT8 ubRaisedObjectFiles[][80] = {

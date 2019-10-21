@@ -158,14 +158,14 @@ MOUSE_REGION gSelectedToggleBoxAreaRegion;
 //
 /////////////////////////////////
 
-UINT32 OptionsScreenInit() {
+function OptionsScreenInit(): UINT32 {
   // Set so next time we come in, we can set up
   gfOptionsScreenEntry = TRUE;
 
   return TRUE;
 }
 
-UINT32 OptionsScreenHandle() {
+function OptionsScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfOptionsScreenEntry) {
@@ -219,11 +219,11 @@ UINT32 OptionsScreenHandle() {
   return guiOptionsScreen;
 }
 
-UINT32 OptionsScreenShutdown() {
+function OptionsScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-BOOLEAN EnterOptionsScreen() {
+function EnterOptionsScreen(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosY;
   UINT8 cnt;
@@ -413,7 +413,7 @@ BOOLEAN EnterOptionsScreen() {
   return TRUE;
 }
 
-void ExitOptionsScreen() {
+function ExitOptionsScreen(): void {
   UINT8 cnt;
 
   if (gfExitOptionsDueToMessageBox) {
@@ -492,13 +492,13 @@ void ExitOptionsScreen() {
   }
 }
 
-void HandleOptionsScreen() {
+function HandleOptionsScreen(): void {
   HandleSliderBarMovementSounds();
 
   HandleHighLightedText(TRUE);
 }
 
-void RenderOptionsScreen() {
+function RenderOptionsScreen(): void {
   HVOBJECT hPixHandle;
   UINT16 usPosY;
   UINT8 cnt;
@@ -568,7 +568,7 @@ void RenderOptionsScreen() {
   InvalidateRegion(OPTIONS__TOP_LEFT_X, OPTIONS__TOP_LEFT_Y, OPTIONS__BOTTOM_RIGHT_X, OPTIONS__BOTTOM_RIGHT_Y);
 }
 
-void GetOptionsScreenUserInput() {
+function GetOptionsScreenUserInput(): void {
   InputAtom Event;
   POINT MousePos;
 
@@ -624,12 +624,12 @@ void GetOptionsScreenUserInput() {
   }
 }
 
-void SetOptionsExitScreen(UINT32 uiExitScreen) {
+function SetOptionsExitScreen(uiExitScreen: UINT32): void {
   guiOptionsScreen = uiExitScreen;
   gfOptionsScreenExit = TRUE;
 }
 
-void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnOptGotoSaveGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -648,7 +648,7 @@ void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnOptGotoLoadGameCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -667,7 +667,7 @@ void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnOptQuitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -688,7 +688,7 @@ void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -706,7 +706,7 @@ void BtnDoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -733,7 +733,7 @@ void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void HandleOptionToggle(UINT8 ubButton, BOOLEAN fState, BOOLEAN fDown, BOOLEAN fPlaySound) {
+function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fPlaySound: BOOLEAN): void {
   static UINT32 uiOptionToggleSound = NO_SAMPLE;
   UINT32 uiSideToPlaySoundOn = MIDDLEPAN;
   //	static	BOOLEAN	fCheckBoxDrawnDownLastTime = FALSE;
@@ -784,23 +784,23 @@ void HandleOptionToggle(UINT8 ubButton, BOOLEAN fState, BOOLEAN fDown, BOOLEAN f
   }
 }
 
-void SoundFXSliderChangeCallBack(INT32 iNewValue) {
+function SoundFXSliderChangeCallBack(iNewValue: INT32): void {
   SetSoundEffectsVolume(iNewValue);
 
   guiSoundFxSliderMoving = GetJA2Clock();
 }
 
-void SpeechSliderChangeCallBack(INT32 iNewValue) {
+function SpeechSliderChangeCallBack(iNewValue: INT32): void {
   SetSpeechVolume(iNewValue);
 
   guiSpeechSliderMoving = GetJA2Clock();
 }
 
-void MusicSliderChangeCallBack(INT32 iNewValue) {
+function MusicSliderChangeCallBack(iNewValue: INT32): void {
   MusicSetVolume(iNewValue);
 }
 
-BOOLEAN DoOptionsMessageBoxWithRect(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback, SGPRect *pCenteringRect) {
+function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): BOOLEAN {
   // reset exit mode
   gfExitOptionsDueToMessageBox = TRUE;
 
@@ -811,7 +811,7 @@ BOOLEAN DoOptionsMessageBoxWithRect(UINT8 ubStyle, INT16 *zString, UINT32 uiExit
   return giOptionsMessageBox != -1;
 }
 
-BOOLEAN DoOptionsMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback) {
+function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
   SGPRect CenteringRect = { 0, 0, 639, 479 };
 
   // reset exit mode
@@ -824,7 +824,7 @@ BOOLEAN DoOptionsMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, 
   return giOptionsMessageBox != -1;
 }
 
-void ConfirmQuitToMainMenuMessageBoxCallBack(UINT8 bExitValue) {
+function ConfirmQuitToMainMenuMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, Quit to main menu
   if (bExitValue == MSG_BOX_RETURN_YES) {
     gfEnteredFromMapScreen = FALSE;
@@ -839,7 +839,7 @@ void ConfirmQuitToMainMenuMessageBoxCallBack(UINT8 bExitValue) {
   }
 }
 
-void SetOptionsScreenToggleBoxes() {
+function SetOptionsScreenToggleBoxes(): void {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
@@ -850,7 +850,7 @@ void SetOptionsScreenToggleBoxes() {
   }
 }
 
-void GetOptionsScreenToggleBoxes() {
+function GetOptionsScreenToggleBoxes(): void {
   UINT8 cnt;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
@@ -861,7 +861,7 @@ void GetOptionsScreenToggleBoxes() {
   }
 }
 
-void HandleSliderBarMovementSounds() {
+function HandleSliderBarMovementSounds(): void {
   static UINT32 uiLastSoundFxTime = 0;
   static UINT32 uiLastSpeechTime = 0;
   UINT32 uiCurTime = GetJA2Clock();
@@ -889,7 +889,7 @@ void HandleSliderBarMovementSounds() {
     uiLastSpeechTime = GetJA2Clock();
 }
 
-void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT8 ubButton = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -908,7 +908,7 @@ void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   INT8 bButton = (INT8)MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -924,7 +924,7 @@ void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reaso
   }
 }
 
-void HandleHighLightedText(BOOLEAN fHighLight) {
+function HandleHighLightedText(fHighLight: BOOLEAN): void {
   UINT16 usPosX = 0;
   UINT16 usPosY = 0;
   UINT8 ubCnt;
@@ -1002,7 +1002,7 @@ void HandleHighLightedText(BOOLEAN fHighLight) {
   }
 }
 
-void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     UINT8 ubCnt;

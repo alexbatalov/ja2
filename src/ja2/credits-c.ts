@@ -286,12 +286,12 @@ HWFILE ghFile;
 //	VSURFACE_DESC		vs_desc;
 //	HVSURFACE hVSurface;
 
-UINT32 CreditScreenInit(void) {
+function CreditScreenInit(): UINT32 {
   gfCreditsScreenEntry = TRUE;
   return 1;
 }
 
-UINT32 CreditScreenHandle(void) {
+function CreditScreenHandle(): UINT32 {
   StartFrameBufferRender();
 
   if (gfCreditsScreenEntry) {
@@ -329,12 +329,12 @@ UINT32 CreditScreenHandle(void) {
   return guiCreditsExitScreen;
 }
 
-UINT32 CreditScreenShutdown(void) {
+function CreditScreenShutdown(): UINT32 {
   return 1;
 }
 
 // eee
-BOOLEAN EnterCreditsScreen() {
+function EnterCreditsScreen(): BOOLEAN {
   UINT32 uiCnt;
   VOBJECT_DESC VObjectDesc;
   /*
@@ -416,7 +416,7 @@ BOOLEAN EnterCreditsScreen() {
   return TRUE;
 }
 
-BOOLEAN ExitCreditScreen() {
+function ExitCreditScreen(): BOOLEAN {
   UINT32 uiCnt;
 
   // Blit the background image
@@ -442,7 +442,7 @@ BOOLEAN ExitCreditScreen() {
 }
 
 // hhh
-void HandleCreditScreen() {
+function HandleCreditScreen(): void {
   //	UINT32	uiTime = GetJA2Clock();
 
   if (gubCreditScreenRenderFlags == CRDT_RENDER_ALL) {
@@ -474,7 +474,7 @@ void HandleCreditScreen() {
 }
 
 // rrr
-BOOLEAN RenderCreditScreen() {
+function RenderCreditScreen(): BOOLEAN {
   HVOBJECT hPixHandle;
 
   GetVideoObject(&hPixHandle, guiCreditBackGroundImage);
@@ -498,7 +498,7 @@ BOOLEAN RenderCreditScreen() {
   return TRUE;
 }
 
-void GetCreditScreenUserInput() {
+function GetCreditScreenUserInput(): void {
   InputAtom Event;
 
   while (DequeueEvent(&Event)) {
@@ -513,13 +513,13 @@ void GetCreditScreenUserInput() {
   }
 }
 
-void SetCreditsExitScreen(UINT32 uiScreenToGoTo) {
+function SetCreditsExitScreen(uiScreenToGoTo: UINT32): void {
   gfCreditsScreenExit = TRUE;
 
   guiCreditsExitScreen = uiScreenToGoTo;
 }
 
-BOOLEAN InitCreditNode() {
+function InitCreditNode(): BOOLEAN {
   if (gCrdtRootNode != NULL)
     Assert(0);
 
@@ -528,7 +528,7 @@ BOOLEAN InitCreditNode() {
   return TRUE;
 }
 
-BOOLEAN ShutDownCreditList() {
+function ShutDownCreditList(): BOOLEAN {
   CRDT_NODE *pNodeToDelete = NULL;
   CRDT_NODE *pTemp = NULL;
 
@@ -546,7 +546,7 @@ BOOLEAN ShutDownCreditList() {
   return TRUE;
 }
 
-BOOLEAN DeleteNode(CRDT_NODE *pNodeToDelete) {
+function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
   CRDT_NODE *pTempNode;
 
   pTempNode = pNodeToDelete;
@@ -593,7 +593,7 @@ BOOLEAN DeleteNode(CRDT_NODE *pNodeToDelete) {
 }
 
 // aaa
-BOOLEAN AddCreditNode(UINT32 uiType, UINT32 uiFlags, STR16 pString) {
+function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN {
   CRDT_NODE *pNodeToAdd = NULL;
   CRDT_NODE *pTemp = NULL;
   UINT32 uiSizeOfString = (wcslen(pString) + 2) * 2;
@@ -723,7 +723,7 @@ BOOLEAN AddCreditNode(UINT32 uiType, UINT32 uiFlags, STR16 pString) {
   return TRUE;
 }
 
-void HandleCreditNodes() {
+function HandleCreditNodes(): void {
   UINT32 uiCurrentTime = GetJA2Clock();
   CRDT_NODE *pCurrent = NULL;
   CRDT_NODE *pTemp = NULL;
@@ -761,7 +761,7 @@ void HandleCreditNodes() {
   guiCrdtLastTimeUpdatingNode = GetJA2Clock();
 }
 
-void HandleCurrentCreditNode(CRDT_NODE *pCurrent) {
+function HandleCurrentCreditNode(pCurrent: Pointer<CRDT_NODE>): void {
   // switch on the type of node
   switch (pCurrent->uiType) {
       // new codes:
@@ -775,7 +775,7 @@ void HandleCurrentCreditNode(CRDT_NODE *pCurrent) {
   }
 }
 
-void HandleNode_Default(CRDT_NODE *pCurrent) {
+function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
   UINT32 uiCurrentTime = GetJA2Clock();
 
   // if it is time to update the current node
@@ -806,7 +806,7 @@ void HandleNode_Default(CRDT_NODE *pCurrent) {
   }
 }
 
-BOOLEAN DisplayCreditNode(CRDT_NODE *pCurrent) {
+function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
   HVSURFACE hVSurface;
 
   // Currently, we have no need to display a node that doesnt have a string
@@ -847,7 +847,7 @@ BOOLEAN DisplayCreditNode(CRDT_NODE *pCurrent) {
 }
 
 // return false from this function when there are no more items in the text file
-BOOLEAN GetNextCreditFromTextFile() {
+function GetNextCreditFromTextFile(): BOOLEAN {
   BOOLEAN fDone = FALSE;
   UINT32 uiStringWidth = 20;
   CHAR16 zOriginalString[512];
@@ -945,7 +945,7 @@ BOOLEAN GetNextCreditFromTextFile() {
 }
 
 // return any flags that need to be set in the node
-UINT32 GetAndHandleCreditCodeFromCodeString(STR16 pzCode) {
+function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
   // new codes:
 
   // if the code is to change the delay between strings
@@ -1046,7 +1046,7 @@ UINT32 GetAndHandleCreditCodeFromCodeString(STR16 pzCode) {
   return CRDT_NODE_NONE;
 }
 
-UINT32 CountNumberOfCreditNodes() {
+function CountNumberOfCreditNodes(): UINT32 {
   UINT32 uiNumNodes = 0;
   CRDT_NODE *pTempNode = gCrdtRootNode;
 
@@ -1059,7 +1059,7 @@ UINT32 CountNumberOfCreditNodes() {
   return uiNumNodes;
 }
 
-STR16 GetNextCreditCode(STR16 pString, UINT32 *pSizeOfCode) {
+function GetNextCreditCode(pString: STR16, pSizeOfCode: Pointer<UINT32>): STR16 {
   STR16 pzNewCode = NULL;
   UINT32 uiSizeOfCode = 0;
 
@@ -1085,7 +1085,7 @@ STR16 GetNextCreditCode(STR16 pString, UINT32 *pSizeOfCode) {
 }
 
 // Flags:
-void HandleCreditFlags(UINT32 uiFlags) {
+function HandleCreditFlags(uiFlags: UINT32): void {
   if (uiFlags & CRDT_FLAG__TITLE) {
   }
 
@@ -1100,14 +1100,14 @@ void HandleCreditFlags(UINT32 uiFlags) {
   }
 }
 
-void SelectCreditFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectCreditFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }
 }
 
-void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectCreditFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     giCurrentlySelectedFace = -1;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -1116,7 +1116,7 @@ void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-void InitCreditEyeBlinking() {
+function InitCreditEyeBlinking(): void {
   UINT8 ubCnt;
 
   for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
@@ -1124,7 +1124,7 @@ void InitCreditEyeBlinking() {
   }
 }
 
-void HandleCreditEyeBlinking() {
+function HandleCreditEyeBlinking(): void {
   HVOBJECT hPixHandle;
   UINT8 ubCnt;
 

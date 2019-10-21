@@ -64,7 +64,7 @@ StringInput *gpCurrentStringDescriptor;
 
 // These are the hook functions for both keyboard and mouse
 
-LRESULT CALLBACK KeyboardHandler(int Code, WPARAM wParam, LPARAM lParam) {
+function KeyboardHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
   if (Code < 0)
   {
     // Do not handle this message, pass it on to another window
@@ -84,7 +84,7 @@ LRESULT CALLBACK KeyboardHandler(int Code, WPARAM wParam, LPARAM lParam) {
   return TRUE;
 }
 
-LRESULT CALLBACK MouseHandler(int Code, WPARAM wParam, LPARAM lParam) {
+function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
   UINT32 uiParam;
 
   if (Code < 0)
@@ -163,7 +163,7 @@ LRESULT CALLBACK MouseHandler(int Code, WPARAM wParam, LPARAM lParam) {
   return TRUE;
 }
 
-BOOLEAN InitializeInputManager(void) {
+function InitializeInputManager(): BOOLEAN {
   // Link to debugger
   RegisterDebugTopic(TOPIC_INPUT, "Input Manager");
   // Initialize the gfKeyState table to FALSE everywhere
@@ -204,7 +204,7 @@ BOOLEAN InitializeInputManager(void) {
   return TRUE;
 }
 
-void ShutdownInputManager(void) {
+function ShutdownInputManager(): void {
   // There's very little to do when shutting down the input manager. In the future, this is where the keyboard and
   // mouse hooks will be destroyed
   UnRegisterDebugTopic(TOPIC_INPUT, "Input Manager");
@@ -212,7 +212,7 @@ void ShutdownInputManager(void) {
   UnhookWindowsHookEx(ghMouseHook);
 }
 
-void QueuePureEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam) {
+function QueuePureEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
   UINT32 uiTimer;
   UINT16 usKeyState;
 
@@ -245,7 +245,7 @@ void QueuePureEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam) {
   }
 }
 
-void QueueEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam) {
+function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
   UINT32 uiTimer;
   UINT16 usKeyState;
 
@@ -344,7 +344,7 @@ void QueueEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam) {
   }
 }
 
-BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
+function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): BOOLEAN {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     memcpy(Event, &(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
@@ -358,7 +358,7 @@ BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
   return FALSE;
 }
 
-BOOLEAN DequeueEvent(InputAtom *Event) {
+function DequeueEvent(Event: Pointer<InputAtom>): BOOLEAN {
   HandleSingleClicksAndButtonRepeats();
 
   // Is there an event to dequeue
@@ -383,7 +383,7 @@ BOOLEAN DequeueEvent(InputAtom *Event) {
   }
 }
 
-void KeyChange(UINT32 usParam, UINT32 uiParam, UINT8 ufKeyState) {
+function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
   UINT32 ubKey;
   UINT16 ubChar;
   POINT MousePos;
@@ -751,7 +751,7 @@ void KeyChange(UINT32 usParam, UINT32 uiParam, UINT8 ufKeyState) {
   }
 }
 
-void KeyDown(UINT32 usParam, UINT32 uiParam) {
+function KeyDown(usParam: UINT32, uiParam: UINT32): void {
   // Are we PRESSING down one of SHIFT, ALT or CTRL ???
   if (usParam == 16) {
     // SHIFT key is PRESSED
@@ -783,7 +783,7 @@ void KeyDown(UINT32 usParam, UINT32 uiParam) {
   }
 }
 
-void KeyUp(UINT32 usParam, UINT32 uiParam) {
+function KeyUp(usParam: UINT32, uiParam: UINT32): void {
   // Are we RELEASING one of SHIFT, ALT or CTRL ???
   if (usParam == 16) {
     // SHIFT key is RELEASED
@@ -819,15 +819,15 @@ void KeyUp(UINT32 usParam, UINT32 uiParam) {
   }
 }
 
-void EnableDoubleClk(void) {
+function EnableDoubleClk(): void {
   // Obsolete
 }
 
-void DisableDoubleClk(void) {
+function DisableDoubleClk(): void {
   // Obsolete
 }
 
-void GetMousePos(SGPPoint *Point) {
+function GetMousePos(Point: Pointer<SGPPoint>): void {
   POINT MousePos;
 
   GetCursorPos(&MousePos);
@@ -850,7 +850,7 @@ void GetMousePos(SGPPoint *Point) {
 // at the same time. Use the SetStringFocus() function to manager the focus for multiple
 // string inputs
 
-StringInput *InitStringInput(UINT16 *pInputString, UINT16 usLength, UINT16 *pFilter) {
+function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilter: Pointer<UINT16>): Pointer<StringInput> {
   StringInput *pStringDescriptor;
 
   if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == NULL) {
@@ -907,7 +907,7 @@ StringInput *InitStringInput(UINT16 *pInputString, UINT16 usLength, UINT16 *pFil
   }
 }
 
-void LinkPreviousString(StringInput *pCurrentString, StringInput *pPreviousString) {
+function LinkPreviousString(pCurrentString: Pointer<StringInput>, pPreviousString: Pointer<StringInput>): void {
   if (pCurrentString != NULL) {
     if (pCurrentString->pPreviousString != NULL) {
       pCurrentString->pPreviousString->pNextString = NULL;
@@ -921,7 +921,7 @@ void LinkPreviousString(StringInput *pCurrentString, StringInput *pPreviousStrin
   }
 }
 
-void LinkNextString(StringInput *pCurrentString, StringInput *pNextString) {
+function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Pointer<StringInput>): void {
   if (pCurrentString != NULL) {
     if (pCurrentString->pNextString != NULL) {
       pCurrentString->pNextString->pPreviousString = NULL;
@@ -935,7 +935,7 @@ void LinkNextString(StringInput *pCurrentString, StringInput *pNextString) {
   }
 }
 
-BOOLEAN CharacterIsValid(UINT16 usCharacter, UINT16 *pFilter) {
+function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEAN {
   UINT32 uiIndex, uiEndIndex;
 
   if (pFilter != NULL) {
@@ -951,7 +951,7 @@ BOOLEAN CharacterIsValid(UINT16 usCharacter, UINT16 *pFilter) {
   return TRUE;
 }
 
-void RedirectToString(UINT16 usInputCharacter) {
+function RedirectToString(usInputCharacter: UINT16): void {
   UINT16 usIndex;
 
   if (gpCurrentStringDescriptor != NULL) {
@@ -1098,7 +1098,7 @@ void RedirectToString(UINT16 usInputCharacter) {
   }
 }
 
-UINT16 GetStringInputState(void) {
+function GetStringInputState(): UINT16 {
   if (gpCurrentStringDescriptor != NULL) {
     return gpCurrentStringDescriptor->usLastCharacter;
   } else {
@@ -1106,11 +1106,11 @@ UINT16 GetStringInputState(void) {
   }
 }
 
-BOOLEAN StringInputHasFocus(void) {
+function StringInputHasFocus(): BOOLEAN {
   return gfCurrentStringInputState;
 }
 
-BOOLEAN SetStringFocus(StringInput *pStringDescriptor) {
+function SetStringFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
   if (pStringDescriptor != NULL) {
     if (gpCurrentStringDescriptor != NULL) {
       gpCurrentStringDescriptor->fFocus = FALSE;
@@ -1132,11 +1132,11 @@ BOOLEAN SetStringFocus(StringInput *pStringDescriptor) {
   }
 }
 
-UINT16 GetCursorPositionInString(StringInput *pStringDescriptor) {
+function GetCursorPositionInString(pStringDescriptor: Pointer<StringInput>): UINT16 {
   return pStringDescriptor->usStringOffset;
 }
 
-BOOLEAN StringHasFocus(StringInput *pStringDescriptor) {
+function StringHasFocus(pStringDescriptor: Pointer<StringInput>): BOOLEAN {
   if (pStringDescriptor != NULL) {
     return pStringDescriptor->fFocus;
   } else {
@@ -1144,7 +1144,7 @@ BOOLEAN StringHasFocus(StringInput *pStringDescriptor) {
   }
 }
 
-void RestoreString(StringInput *pStringDescriptor) {
+function RestoreString(pStringDescriptor: Pointer<StringInput>): void {
   memcpy(pStringDescriptor->pString, pStringDescriptor->pOriginalString, pStringDescriptor->usMaxStringLength * 2);
 
   pStringDescriptor->usStringOffset = 0;
@@ -1171,7 +1171,7 @@ void RestoreString(StringInput *pStringDescriptor) {
   pStringDescriptor->fInsertMode = FALSE;
 }
 
-void EndStringInput(StringInput *pStringDescriptor) {
+function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
   // Make sure we have a valid pStringDescriptor
   if (pStringDescriptor != NULL) {
     // make sure the gpCurrentStringDescriptor is NULL if necessary
@@ -1193,7 +1193,7 @@ void EndStringInput(StringInput *pStringDescriptor) {
 // Miscellaneous input-related utility functions:
 //
 
-void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2) {
+function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UINT16): void {
   SGPRect TempRect;
 
   TempRect.iLeft = usX1;
@@ -1204,33 +1204,33 @@ void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2) {
   RestrictMouseCursor(&TempRect);
 }
 
-void RestrictMouseCursor(SGPRect *pRectangle) {
+function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
   // Make a copy of our rect....
   memcpy(&gCursorClipRect, pRectangle, sizeof(gCursorClipRect));
   ClipCursor((RECT *)pRectangle);
   fCursorWasClipped = TRUE;
 }
 
-void FreeMouseCursor(void) {
+function FreeMouseCursor(): void {
   ClipCursor(NULL);
   fCursorWasClipped = FALSE;
 }
 
-void RestoreCursorClipRect(void) {
+function RestoreCursorClipRect(): void {
   if (fCursorWasClipped) {
     ClipCursor(&gCursorClipRect);
   }
 }
 
-void GetRestrictedClipCursor(SGPRect *pRectangle) {
+function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
   GetClipCursor((RECT *)pRectangle);
 }
 
-BOOLEAN IsCursorRestricted(void) {
+function IsCursorRestricted(): BOOLEAN {
   return fCursorWasClipped;
 }
 
-void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos) {
+function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
   FLOAT flNewXPos, flNewYPos;
 
   // Wizardry NOTE: This function currently doesn't quite work right for in any Windows resolution other than 640x480.
@@ -1250,7 +1250,7 @@ void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos) {
   mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, (UINT32)flNewXPos, (UINT32)flNewYPos, 0, 0);
 }
 
-BOOLEAN InputEventInside(InputAtom *Event, UINT32 uiX1, UINT32 uiY1, UINT32 uiX2, UINT32 uiY2) {
+function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): BOOLEAN {
   UINT32 uiEventX, uiEventY;
 
   uiEventX = _EvMouseX(Event);
@@ -1259,7 +1259,7 @@ BOOLEAN InputEventInside(InputAtom *Event, UINT32 uiX1, UINT32 uiY1, UINT32 uiX2
   return (uiEventX >= uiX1) && (uiEventX <= uiX2) && (uiEventY >= uiY1) && (uiEventY <= uiY2);
 }
 
-void DequeueAllKeyBoardEvents() {
+function DequeueAllKeyBoardEvents(): void {
   InputAtom InputEvent;
   MSG KeyMessage;
 
@@ -1273,7 +1273,7 @@ void DequeueAllKeyBoardEvents() {
   }
 }
 
-void HandleSingleClicksAndButtonRepeats(void) {
+function HandleSingleClicksAndButtonRepeats(): void {
   UINT32 uiTimer;
 
   uiTimer = GetTickCount();
@@ -1309,7 +1309,7 @@ void HandleSingleClicksAndButtonRepeats(void) {
   }
 }
 
-INT16 GetMouseWheelDeltaValue(UINT32 wParam) {
+function GetMouseWheelDeltaValue(wParam: UINT32): INT16 {
   INT16 sDelta = HIWORD(wParam);
 
   return sDelta / WHEEL_DELTA;

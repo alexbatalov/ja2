@@ -59,15 +59,15 @@ extern BOOLEAN fDialogueBoxDueToLastMessage;
 
 // functions
 
-void SetStringFont(ScrollStringStPtr pStringSt, UINT32 uiFont) {
+function SetStringFont(pStringSt: ScrollStringStPtr, uiFont: UINT32): void {
   pStringSt->uiFont = uiFont;
 }
 
-UINT32 GetStringFont(ScrollStringStPtr pStringSt) {
+function GetStringFont(pStringSt: ScrollStringStPtr): UINT32 {
   return pStringSt->uiFont;
 }
 
-ScrollStringStPtr AddString(STR16 pString, UINT16 usColor, UINT32 uiFont, BOOLEAN fStartOfNewString, UINT8 ubPriority) {
+function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): ScrollStringStPtr {
   // add a new string to the list of strings
   ScrollStringStPtr pStringSt = NULL;
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
@@ -88,22 +88,22 @@ ScrollStringStPtr AddString(STR16 pString, UINT16 usColor, UINT32 uiFont, BOOLEA
   return pStringSt;
 }
 
-void SetString(ScrollStringStPtr pStringSt, STR16 pString) {
+function SetString(pStringSt: ScrollStringStPtr, pString: STR16): void {
   // ARM: Why x2 + 4 ???
   pStringSt->pString16 = MemAlloc((wcslen(pString) * 2) + 4);
   wcsncpy(pStringSt->pString16, pString, wcslen(pString));
   pStringSt->pString16[wcslen(pString)] = 0;
 }
 
-void SetStringPosition(ScrollStringStPtr pStringSt, UINT16 usX, UINT16 usY) {
+function SetStringPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
   SetStringVideoOverlayPosition(pStringSt, usX, usY);
 }
 
-void SetStringColor(ScrollStringStPtr pStringSt, UINT16 usColor) {
+function SetStringColor(pStringSt: ScrollStringStPtr, usColor: UINT16): void {
   pStringSt->usColor = usColor;
 }
 
-ScrollStringStPtr GetNextString(ScrollStringStPtr pStringSt) {
+function GetNextString(pStringSt: ScrollStringStPtr): ScrollStringStPtr {
   // returns pointer to next string line
   if (pStringSt == NULL)
     return NULL;
@@ -111,7 +111,7 @@ ScrollStringStPtr GetNextString(ScrollStringStPtr pStringSt) {
     return pStringSt->pNext;
 }
 
-ScrollStringStPtr GetPrevString(ScrollStringStPtr pStringSt) {
+function GetPrevString(pStringSt: ScrollStringStPtr): ScrollStringStPtr {
   // returns pointer to previous string line
   if (pStringSt == NULL)
     return NULL;
@@ -119,17 +119,17 @@ ScrollStringStPtr GetPrevString(ScrollStringStPtr pStringSt) {
     return pStringSt->pPrev;
 }
 
-ScrollStringStPtr SetStringNext(ScrollStringStPtr pStringSt, ScrollStringStPtr pNext) {
+function SetStringNext(pStringSt: ScrollStringStPtr, pNext: ScrollStringStPtr): ScrollStringStPtr {
   pStringSt->pNext = pNext;
   return pStringSt;
 }
 
-ScrollStringStPtr SetStringPrev(ScrollStringStPtr pStringSt, ScrollStringStPtr pPrev) {
+function SetStringPrev(pStringSt: ScrollStringStPtr, pPrev: ScrollStringStPtr): ScrollStringStPtr {
   pStringSt->pPrev = pPrev;
   return pStringSt;
 }
 
-BOOLEAN CreateStringVideoOverlay(ScrollStringStPtr pStringSt, UINT16 usX, UINT16 usY) {
+function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): BOOLEAN {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   // SET VIDEO OVERLAY
@@ -151,7 +151,7 @@ BOOLEAN CreateStringVideoOverlay(ScrollStringStPtr pStringSt, UINT16 usX, UINT16
   return TRUE;
 }
 
-void RemoveStringVideoOverlay(ScrollStringStPtr pStringSt) {
+function RemoveStringVideoOverlay(pStringSt: ScrollStringStPtr): void {
   // error check, remove one not there
   if (pStringSt->iVideoOverlay == -1) {
     return;
@@ -161,7 +161,7 @@ void RemoveStringVideoOverlay(ScrollStringStPtr pStringSt) {
   pStringSt->iVideoOverlay = -1;
 }
 
-void SetStringVideoOverlayPosition(ScrollStringStPtr pStringSt, UINT16 usX, UINT16 usY) {
+function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
@@ -177,7 +177,7 @@ void SetStringVideoOverlayPosition(ScrollStringStPtr pStringSt, UINT16 usX, UINT
   }
 }
 
-void BlitString(VIDEO_OVERLAY *pBlitter) {
+function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
 
@@ -198,7 +198,7 @@ void BlitString(VIDEO_OVERLAY *pBlitter) {
   UnLockVideoSurface(pBlitter->uiDestBuff);
 }
 
-void EnableStringVideoOverlay(ScrollStringStPtr pStringSt, BOOLEAN fEnable) {
+function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: BOOLEAN): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
@@ -210,7 +210,7 @@ void EnableStringVideoOverlay(ScrollStringStPtr pStringSt, BOOLEAN fEnable) {
   }
 }
 
-void ClearDisplayedListOfTacticalStrings(void) {
+function ClearDisplayedListOfTacticalStrings(): void {
   // this function will go through list of display strings and clear them all out
   UINT32 cnt;
 
@@ -231,7 +231,7 @@ void ClearDisplayedListOfTacticalStrings(void) {
   return;
 }
 
-void ScrollString() {
+function ScrollString(): void {
   ScrollStringStPtr pStringSt = pStringS;
   UINT32 suiTimer = 0;
   UINT32 cnt;
@@ -348,19 +348,19 @@ void ScrollString() {
   }
 }
 
-void DisableScrollMessages(void) {
+function DisableScrollMessages(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
   // disble video overlay for tatcitcal scroll messages
   EnableDisableScrollStringVideoOverlay(FALSE);
   return;
 }
 
-void EnableScrollMessages(void) {
+function EnableScrollMessages(): void {
   EnableDisableScrollStringVideoOverlay(TRUE);
   return;
 }
 
-void HideMessagesDuringNPCDialogue(void) {
+function HideMessagesDuringNPCDialogue(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
   INT32 cnt;
 
@@ -384,7 +384,7 @@ void HideMessagesDuringNPCDialogue(void) {
   return;
 }
 
-void UnHideMessagesDuringNPCDialogue(void) {
+function UnHideMessagesDuringNPCDialogue(): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
   INT32 cnt = 0;
 
@@ -405,7 +405,7 @@ void UnHideMessagesDuringNPCDialogue(void) {
 }
 
 // new screen message
-void ScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
+function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   wchar_t DestString[512];
   va_list argptr;
 
@@ -454,7 +454,7 @@ void ScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
   return;
 }
 
-void ClearWrappedStrings(WRAPPED_STRING *pStringWrapperHead) {
+function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void {
   WRAPPED_STRING *pNode = pStringWrapperHead;
   WRAPPED_STRING *pDeleteNode = NULL;
   // clear out a link list of wrapped string structures
@@ -487,7 +487,7 @@ void ClearWrappedStrings(WRAPPED_STRING *pStringWrapperHead) {
 }
 
 // new tactical and mapscreen message system
-void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
+function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
   ScrollStringStPtr pStringSt;
@@ -607,7 +607,7 @@ void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
   return;
 }
 
-void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
+function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
   ScrollStringStPtr pStringSt;
@@ -753,7 +753,7 @@ void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...) {
 }
 
 // add string to the map screen message list
-void AddStringToMapScreenMessageList(STR16 pString, UINT16 usColor, UINT32 uiFont, BOOLEAN fStartOfNewString, UINT8 ubPriority) {
+function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): void {
   UINT8 ubSlotIndex = 0;
   ScrollStringStPtr pStringSt = NULL;
 
@@ -795,7 +795,7 @@ void AddStringToMapScreenMessageList(STR16 pString, UINT16 usColor, UINT32 uiFon
   }
 }
 
-void DisplayStringsInMapScreenMessageList(void) {
+function DisplayStringsInMapScreenMessageList(): void {
   UINT8 ubCurrentStringIndex;
   UINT8 ubLinesPrinted;
   INT16 sY;
@@ -838,7 +838,7 @@ void DisplayStringsInMapScreenMessageList(void) {
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 }
 
-void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable) {
+function EnableDisableScrollStringVideoOverlay(fEnable: BOOLEAN): void {
   // will go through the list of video overlays for the tactical scroll message system, and enable/disable
   // video overlays depending on fEnable
   INT8 bCounter = 0;
@@ -853,7 +853,7 @@ void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable) {
   return;
 }
 
-void PlayNewMessageSound(void) {
+function PlayNewMessageSound(): void {
   // play a new message sound, if there is one playing, do nothing
   static UINT32 uiSoundId = NO_SAMPLE;
 
@@ -870,7 +870,7 @@ void PlayNewMessageSound(void) {
   return;
 }
 
-BOOLEAN SaveMapScreenMessagesToSaveGameFile(HWFILE hFile) {
+function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT32 uiCount;
   UINT32 uiSizeOfString;
@@ -932,7 +932,7 @@ BOOLEAN SaveMapScreenMessagesToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadMapScreenMessagesFromSaveGameFile(HWFILE hFile) {
+function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiCount;
   UINT32 uiSizeOfString;
@@ -1031,7 +1031,7 @@ BOOLEAN LoadMapScreenMessagesFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void HandleLastQuotePopUpTimer(void) {
+function HandleLastQuotePopUpTimer(): void {
   if ((fTextBoxMouseRegionCreated == FALSE) || (fDialogueBoxDueToLastMessage == FALSE)) {
     return;
   }
@@ -1045,7 +1045,7 @@ void HandleLastQuotePopUpTimer(void) {
   }
 }
 
-ScrollStringStPtr MoveToBeginningOfMessageQueue(void) {
+function MoveToBeginningOfMessageQueue(): ScrollStringStPtr {
   ScrollStringStPtr pStringSt = pStringS;
 
   if (pStringSt == NULL) {
@@ -1059,7 +1059,7 @@ ScrollStringStPtr MoveToBeginningOfMessageQueue(void) {
   return pStringSt;
 }
 
-INT32 GetMessageQueueSize(void) {
+function GetMessageQueueSize(): INT32 {
   ScrollStringStPtr pStringSt = pStringS;
   INT32 iCounter = 0;
 
@@ -1073,7 +1073,7 @@ INT32 GetMessageQueueSize(void) {
   return iCounter;
 }
 
-void ClearTacticalMessageQueue(void) {
+function ClearTacticalMessageQueue(): void {
   ScrollStringStPtr pStringSt = pStringS, pOtherStringSt = pStringS;
 
   ClearDisplayedListOfTacticalStrings();
@@ -1091,10 +1091,10 @@ void ClearTacticalMessageQueue(void) {
   return;
 }
 
-void WriteMessageToFile(STR16 pString) {
+function WriteMessageToFile(pString: STR16): void {
 }
 
-void InitGlobalMessageList(void) {
+function InitGlobalMessageList(): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -1109,7 +1109,7 @@ void InitGlobalMessageList(void) {
   return;
 }
 
-void FreeGlobalMessageList(void) {
+function FreeGlobalMessageList(): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -1125,7 +1125,7 @@ void FreeGlobalMessageList(void) {
   return;
 }
 
-UINT8 GetRangeOfMapScreenMessages(void) {
+function GetRangeOfMapScreenMessages(): UINT8 {
   UINT8 ubRange = 0;
 
   // NOTE: End is non-inclusive, so start/end 0/0 means no messages, 0/1 means 1 message, etc.

@@ -66,7 +66,7 @@ HistoryUnitPtr pCurrentHistory = NULL;
 // last page in list
 UINT32 guiLastPageInHistoryRecordsList = 0;
 
-UINT32 SetHistoryFact(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSectorX, INT16 sSectorY) {
+function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   UINT32 uiId = 0;
@@ -103,7 +103,7 @@ UINT32 SetHistoryFact(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSe
   return uiId;
 }
 
-UINT32 AddHistoryToPlayersLog(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSectorX, INT16 sSectorY) {
+function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
   UINT32 uiId = 0;
@@ -134,7 +134,7 @@ UINT32 AddHistoryToPlayersLog(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, I
   return uiId;
 }
 
-void GameInitHistory() {
+function GameInitHistory(): void {
   if ((FileExists(HISTORY_DATA_FILE))) {
     // unlink history file
     FileClearAttributes(HISTORY_DATA_FILE);
@@ -144,7 +144,7 @@ void GameInitHistory() {
   AddHistoryToPlayersLog(HISTORY_ACCEPTED_ASSIGNMENT_FROM_ENRICO, 0, GetWorldTotalMin(), -1, -1);
 }
 
-void EnterHistory() {
+function EnterHistory(): void {
   // load the graphics
   LoadHistory();
 
@@ -178,7 +178,7 @@ void EnterHistory() {
   return;
 }
 
-void ExitHistory() {
+function ExitHistory(): void {
   LaptopSaveInfo.iCurrentHistoryPage = iCurrentHistoryPage;
 
   // not in History system anymore
@@ -198,13 +198,13 @@ void ExitHistory() {
   return;
 }
 
-void HandleHistory() {
+function HandleHistory(): void {
   // DEF 2/5/99 Dont need to update EVERY FRAME!!!!
   // check and update status of buttons
   //  SetHistoryButtonStates( );
 }
 
-void RenderHistory(void) {
+function RenderHistory(): void {
   // render the background to the display
   RenderHistoryBackGround();
 
@@ -229,7 +229,7 @@ void RenderHistory(void) {
   return;
 }
 
-BOOLEAN LoadHistory(void) {
+function LoadHistory(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   // load History video objects into memory
 
@@ -263,7 +263,7 @@ BOOLEAN LoadHistory(void) {
   return TRUE;
 }
 
-void RemoveHistory(void) {
+function RemoveHistory(): void {
   // delete history video objects from memory
   DeleteVideoObjectFromIndex(guiLONGLINE);
   DeleteVideoObjectFromIndex(guiTOP);
@@ -273,7 +273,7 @@ void RemoveHistory(void) {
   return;
 }
 
-void RenderHistoryBackGround(void) {
+function RenderHistoryBackGround(): void {
   // render generic background for history system
   HVOBJECT hHandle;
   INT32 iCounter = 0;
@@ -293,7 +293,7 @@ void RenderHistoryBackGround(void) {
   return;
 }
 
-void DrawHistoryTitleText(void) {
+function DrawHistoryTitleText(): void {
   // setup the font stuff
   SetFont(HISTORY_HEADER_FONT);
   SetFontForeground(FONT_WHITE);
@@ -306,7 +306,7 @@ void DrawHistoryTitleText(void) {
   return;
 }
 
-void CreateHistoryButtons(void) {
+function CreateHistoryButtons(): void {
   // the prev page button
   giHistoryButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
   giHistoryButton[PREV_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnHistoryDisplayPrevPageCallBack);
@@ -322,7 +322,7 @@ void CreateHistoryButtons(void) {
   return;
 }
 
-void DestroyHistoryButtons(void) {
+function DestroyHistoryButtons(): void {
   // remove History buttons and images from memory
 
   // next page button
@@ -336,7 +336,7 @@ void DestroyHistoryButtons(void) {
   return;
 }
 
-void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnHistoryDisplayPrevPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // force redraw
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
@@ -359,7 +359,7 @@ void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
+function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fReDrawScreenFlag = TRUE;
   }
@@ -375,7 +375,7 @@ void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN IncrementCurrentPageHistoryDisplay(void) {
+function IncrementCurrentPageHistoryDisplay(): BOOLEAN {
   // run through list, from pCurrentHistory, to NUM_RECORDS_PER_PAGE +1 HistoryUnits
   HistoryUnitPtr pTempHistory = pCurrentHistory;
   BOOLEAN fOkToIncrementPage = FALSE;
@@ -436,7 +436,7 @@ iCounter++;
   return TRUE;
 }
 
-UINT32 ProcessAndEnterAHistoryRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubSecondCode, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT8 ubColor) {
+function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCode: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubColor: UINT8): UINT32 {
   UINT32 uiId = 0;
   HistoryUnitPtr pHistory = pHistoryListHead;
 
@@ -483,7 +483,7 @@ UINT32 ProcessAndEnterAHistoryRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubSecond
   return uiId;
 }
 
-void OpenAndReadHistoryFile(void) {
+function OpenAndReadHistoryFile(): void {
   // this procedure will open and read in data to the History list
 
   HWFILE hFileHandle;
@@ -540,7 +540,7 @@ void OpenAndReadHistoryFile(void) {
   return;
 }
 
-BOOLEAN OpenAndWriteHistoryFile(void) {
+function OpenAndWriteHistoryFile(): BOOLEAN {
   // this procedure will open and write out data from the History list
 
   HWFILE hFileHandle;
@@ -577,7 +577,7 @@ BOOLEAN OpenAndWriteHistoryFile(void) {
   return TRUE;
 }
 
-void ClearHistoryList(void) {
+function ClearHistoryList(): void {
   // remove each element from list of transactions
 
   HistoryUnitPtr pHistoryList = pHistoryListHead;
@@ -599,7 +599,7 @@ void ClearHistoryList(void) {
   return;
 }
 
-void DisplayHistoryListHeaders(void) {
+function DisplayHistoryListHeaders(): void {
   // this procedure will display the headers to each column in History
   UINT16 usX, usY;
 
@@ -625,7 +625,7 @@ void DisplayHistoryListHeaders(void) {
   return;
 }
 
-void DisplayHistoryListBackground(void) {
+function DisplayHistoryListBackground(): void {
   // this function will display the History list display background
   HVOBJECT hHandle;
   INT32 iCounter = 0;
@@ -645,7 +645,7 @@ void DisplayHistoryListBackground(void) {
   return;
 }
 
-void DrawHistoryRecordsText(void) {
+function DrawHistoryRecordsText(): void {
   // draws the text of the records
   HistoryUnitPtr pCurHistory = pHistoryListHead;
   HistoryUnitPtr pTempHistory = pHistoryListHead;
@@ -715,7 +715,7 @@ void DrawHistoryRecordsText(void) {
   return;
 }
 
-void DrawAPageofHistoryRecords(void) {
+function DrawAPageofHistoryRecords(): void {
   // this procedure will draw a series of history records to the screen
   INT32 iCurPage = 1;
   INT32 iCount = 0;
@@ -746,7 +746,7 @@ void DrawAPageofHistoryRecords(void) {
   return;
 }
 
-void DisplayPageNumberAndDateRange(void) {
+function DisplayPageNumberAndDateRange(): void {
   // this function will go through the list of 'histories' starting at current until end or
   // MAX_PER_PAGE...it will get the date range and the page number
   INT32 iLastPage = 0;
@@ -818,7 +818,7 @@ void DisplayPageNumberAndDateRange(void) {
   return;
 }
 
-void ProcessHistoryTransactionString(STR16 pString, HistoryUnitPtr pHistory) {
+function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPtr): void {
   CHAR16 sString[128];
 
   switch (pHistory->ubCode) {
@@ -978,13 +978,13 @@ void ProcessHistoryTransactionString(STR16 pString, HistoryUnitPtr pHistory) {
   }
 }
 
-void DrawHistoryLocation(INT16 sSectorX, INT16 sSectorY) {
+function DrawHistoryLocation(sSectorX: INT16, sSectorY: INT16): void {
   // will draw the location of the history event
 
   return;
 }
 
-void SetHistoryButtonStates(void) {
+function SetHistoryButtonStates(): void {
   // this function will look at what page we are viewing, enable and disable buttons as needed
 
   if (iCurrentHistoryPage == 1) {
@@ -1007,7 +1007,7 @@ void SetHistoryButtonStates(void) {
   }
 }
 
-BOOLEAN LoadInHistoryRecords(UINT32 uiPage) {
+function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
   BOOLEAN fOkToContinue = TRUE;
@@ -1094,7 +1094,7 @@ BOOLEAN LoadInHistoryRecords(UINT32 uiPage) {
   return TRUE;
 }
 
-BOOLEAN WriteOutHistoryRecords(UINT32 uiPage) {
+function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
   BOOLEAN fOkToContinue = TRUE;
@@ -1171,7 +1171,7 @@ BOOLEAN WriteOutHistoryRecords(UINT32 uiPage) {
   return TRUE;
 }
 
-BOOLEAN LoadNextHistoryPage(void) {
+function LoadNextHistoryPage(): BOOLEAN {
   // clear out old list of records, and load in previous page worth of records
   ClearHistoryList();
 
@@ -1185,7 +1185,7 @@ BOOLEAN LoadNextHistoryPage(void) {
   }
 }
 
-BOOLEAN LoadPreviousHistoryPage(void) {
+function LoadPreviousHistoryPage(): BOOLEAN {
   // clear out old list of records, and load in previous page worth of records
   ClearHistoryList();
 
@@ -1204,7 +1204,7 @@ BOOLEAN LoadPreviousHistoryPage(void) {
   }
 }
 
-void SetLastPageInHistoryRecords(void) {
+function SetLastPageInHistoryRecords(): void {
   // grabs the size of the file and interprets number of pages it will take up
   HWFILE hFileHandle;
   INT32 iBytesRead = 0;
@@ -1237,7 +1237,7 @@ void SetLastPageInHistoryRecords(void) {
   return;
 }
 
-UINT32 ReadInLastElementOfHistoryListAndReturnIdNumber(void) {
+function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   // this function will read in the last unit in the history list, to grab it's id number
 
   HWFILE hFileHandle;
@@ -1272,7 +1272,7 @@ UINT32 ReadInLastElementOfHistoryListAndReturnIdNumber(void) {
   return (iFileSize) / (SIZE_OF_HISTORY_FILE_RECORD);
 }
 
-BOOLEAN AppendHistoryToEndOfFile(HistoryUnitPtr pHistory) {
+function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   // will write the current finance to disk
   HWFILE hFileHandle;
   INT32 iBytesWritten = 0;
@@ -1308,7 +1308,7 @@ BOOLEAN AppendHistoryToEndOfFile(HistoryUnitPtr pHistory) {
   return TRUE;
 }
 
-void ResetHistoryFact(UINT8 ubCode, INT16 sSectorX, INT16 sSectorY) {
+function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   // run through history list
   INT32 iOldHistoryPage = iCurrentHistoryPage;
   HistoryUnitPtr pList = pHistoryListHead;
@@ -1350,7 +1350,7 @@ void ResetHistoryFact(UINT8 ubCode, INT16 sSectorX, INT16 sSectorY) {
   return;
 }
 
-UINT32 GetTimeQuestWasStarted(UINT8 ubCode) {
+function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   // run through history list
   INT32 iOldHistoryPage = iCurrentHistoryPage;
   HistoryUnitPtr pList = pHistoryListHead;
@@ -1389,17 +1389,17 @@ UINT32 GetTimeQuestWasStarted(UINT8 ubCode) {
   return uiTime;
 }
 
-void GetQuestStartedString(UINT8 ubQuestValue, STR16 sQuestString) {
+function GetQuestStartedString(ubQuestValue: UINT8, sQuestString: STR16): void {
   // open the file and copy the string
   LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * (ubQuestValue * 2), 160);
 }
 
-void GetQuestEndedString(UINT8 ubQuestValue, STR16 sQuestString) {
+function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: STR16): void {
   // open the file and copy the string
   LoadEncryptedDataFromFile("BINARYDATA\\quests.edt", sQuestString, 160 * ((ubQuestValue * 2) + 1), 160);
 }
 
-INT32 GetNumberOfHistoryPages() {
+function GetNumberOfHistoryPages(): INT32 {
   HWFILE hFileHandle;
   UINT32 uiFileSize = 0;
   UINT32 uiSizeOfRecordsOnEachPage = 0;

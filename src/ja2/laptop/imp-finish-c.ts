@@ -20,7 +20,7 @@ UINT32 guiCHARACTERPORTRAIT;
 extern INT32 iCurrentPortrait;
 extern INT32 iCurrentVoices;
 
-void EnterIMPFinish(void) {
+function EnterIMPFinish(): void {
   // load graphic for portrait
   LoadCharacterPortrait();
 
@@ -37,7 +37,7 @@ void EnterIMPFinish(void) {
   return;
 }
 
-void RenderIMPFinish(void) {
+function RenderIMPFinish(): void {
   // the background
   RenderProfileBackGround();
 
@@ -50,7 +50,7 @@ void RenderIMPFinish(void) {
   return;
 }
 
-void ExitIMPFinish(void) {
+function ExitIMPFinish(): void {
   // remove buttons for IMP finish screen
   DeleteIMPFinishButtons();
 
@@ -60,11 +60,11 @@ void ExitIMPFinish(void) {
   return;
 }
 
-void HandleIMPFinish(void) {
+function HandleIMPFinish(): void {
   return;
 }
 
-void CreateIMPFinishButtons(void) {
+function CreateIMPFinishButtons(): void {
   CHAR16 sString[128];
 
   // this function will create the buttons needed for th IMP about us page
@@ -137,7 +137,7 @@ void CreateIMPFinishButtons(void) {
   return;
 }
 
-void DeleteIMPFinishButtons(void) {
+function DeleteIMPFinishButtons(): void {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the back  button
@@ -167,7 +167,7 @@ void DeleteIMPFinishButtons(void) {
   return;
 }
 
-void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishStartOverCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -182,7 +182,7 @@ void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -203,7 +203,7 @@ void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
   static BOOLEAN fAnimateFlag = FALSE;
   static UINT32 uiBaseTime = 0;
@@ -247,7 +247,7 @@ void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -270,7 +270,7 @@ void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPFinishPortraitCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishPortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -295,7 +295,7 @@ void BtnIMPFinishPortraitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPFinishVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -321,7 +321,7 @@ void BtnIMPFinishVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN RenderCharProfileFinishFace(void) {
+function RenderCharProfileFinishFace(): BOOLEAN {
   // render the portrait of the current picture
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hHandle;
@@ -441,7 +441,7 @@ BOOLEAN RenderCharProfileFinishFace(void) {
   return TRUE;
 }
 
-void RenderCharFullName(void) {
+function RenderCharFullName(): void {
   CHAR16 sString[64];
   INT16 sX, sY;
 
@@ -457,7 +457,7 @@ void RenderCharFullName(void) {
   return;
 }
 
-BOOLEAN LoadCharacterPortrait(void) {
+function LoadCharacterPortrait(): BOOLEAN {
   // this function will load the character's portrait, to be used on portrait button
   VOBJECT_DESC VObjectDesc;
 
@@ -469,14 +469,14 @@ BOOLEAN LoadCharacterPortrait(void) {
   return TRUE;
 }
 
-void DestroyCharacterPortrait(void) {
+function DestroyCharacterPortrait(): void {
   // remove the portrait that was loaded by loadcharacterportrait
   DeleteVideoObjectFromIndex(guiCHARACTERPORTRAIT);
 
   return;
 }
 
-void FinishMessageBoxCallBack(UINT8 bExitValue) {
+function FinishMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     iCurrentImpPage = IMP_HOME_PAGE;

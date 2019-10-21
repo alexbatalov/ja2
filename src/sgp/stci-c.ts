@@ -1,4 +1,4 @@
-BOOLEAN LoadSTCIFileToImage(HIMAGE hImage, UINT16 fContents) {
+function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   HWFILE hFile;
   STCIHeader Header;
   UINT32 uiBytesRead;
@@ -57,7 +57,7 @@ BOOLEAN LoadSTCIFileToImage(HIMAGE hImage, UINT16 fContents) {
   return TRUE;
 }
 
-BOOLEAN STCILoadRGB(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeader *pHeader) {
+function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
   UINT32 uiBytesRead;
 
   if (fContents & IMAGE_PALETTE && !(fContents & IMAGE_ALLIMAGEDATA)) {
@@ -112,7 +112,7 @@ BOOLEAN STCILoadRGB(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeader *p
   return TRUE;
 }
 
-BOOLEAN STCILoadIndexed(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeader *pHeader) {
+function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
   UINT32 uiFileSectionSize;
   UINT32 uiBytesRead;
   PTR pSTCIPalette;
@@ -263,7 +263,7 @@ BOOLEAN STCILoadIndexed(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeade
   return TRUE;
 }
 
-BOOLEAN STCISetPalette(PTR pSTCIPalette, HIMAGE hImage) {
+function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
   UINT16 usIndex;
   STCIPaletteElement *pubPalette;
 
@@ -288,7 +288,7 @@ BOOLEAN STCISetPalette(PTR pSTCIPalette, HIMAGE hImage) {
   return TRUE;
 }
 
-BOOLEAN IsSTCIETRLEFile(CHAR8 *ImageFile) {
+function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): BOOLEAN {
   HWFILE hFile;
   STCIHeader Header;
   UINT32 uiBytesRead;

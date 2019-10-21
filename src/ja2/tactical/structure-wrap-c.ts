@@ -1,4 +1,4 @@
-BOOLEAN IsFencePresentAtGridno(INT16 sGridNo) {
+function IsFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
   if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != NULL) {
     return TRUE;
   }
@@ -6,7 +6,7 @@ BOOLEAN IsFencePresentAtGridno(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN IsRoofPresentAtGridno(INT16 sGridNo) {
+function IsRoofPresentAtGridno(sGridNo: INT16): BOOLEAN {
   if (FindStructure(sGridNo, STRUCTURE_ROOF) != NULL) {
     return TRUE;
   }
@@ -14,7 +14,7 @@ BOOLEAN IsRoofPresentAtGridno(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN IsJumpableFencePresentAtGridno(INT16 sGridNo) {
+function IsJumpableFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
@@ -31,7 +31,7 @@ BOOLEAN IsJumpableFencePresentAtGridno(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN IsDoorPresentAtGridno(INT16 sGridNo) {
+function IsDoorPresentAtGridno(sGridNo: INT16): BOOLEAN {
   if (FindStructure(sGridNo, STRUCTURE_ANYDOOR) != NULL) {
     return TRUE;
   }
@@ -39,7 +39,7 @@ BOOLEAN IsDoorPresentAtGridno(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN IsTreePresentAtGridno(INT16 sGridNo) {
+function IsTreePresentAtGridno(sGridNo: INT16): BOOLEAN {
   if (FindStructure(sGridNo, STRUCTURE_TREE) != NULL) {
     return TRUE;
   }
@@ -47,7 +47,7 @@ BOOLEAN IsTreePresentAtGridno(INT16 sGridNo) {
   return FALSE;
 }
 
-LEVELNODE *IsWallPresentAtGridno(INT16 sGridNo) {
+function IsWallPresentAtGridno(sGridNo: INT16): Pointer<LEVELNODE> {
   LEVELNODE *pNode = NULL;
   STRUCTURE *pStructure;
 
@@ -60,7 +60,7 @@ LEVELNODE *IsWallPresentAtGridno(INT16 sGridNo) {
   return pNode;
 }
 
-LEVELNODE *GetWallLevelNodeOfSameOrientationAtGridno(INT16 sGridNo, INT8 ubOrientation) {
+function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8): Pointer<LEVELNODE> {
   LEVELNODE *pNode = NULL;
   STRUCTURE *pStructure;
 
@@ -78,7 +78,7 @@ LEVELNODE *GetWallLevelNodeOfSameOrientationAtGridno(INT16 sGridNo, INT8 ubOrien
   return NULL;
 }
 
-LEVELNODE *GetWallLevelNodeAndStructOfSameOrientationAtGridno(INT16 sGridNo, INT8 ubOrientation, STRUCTURE **ppStructure) {
+function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
   LEVELNODE *pNode = NULL;
   STRUCTURE *pStructure, *pBaseStructure;
 
@@ -102,7 +102,7 @@ LEVELNODE *GetWallLevelNodeAndStructOfSameOrientationAtGridno(INT16 sGridNo, INT
   return NULL;
 }
 
-BOOLEAN IsDoorVisibleAtGridNo(INT16 sGridNo) {
+function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
   INT16 sNewGridNo;
 
@@ -149,7 +149,7 @@ BOOLEAN IsDoorVisibleAtGridNo(INT16 sGridNo) {
   return TRUE;
 }
 
-BOOLEAN DoesGridnoContainHiddenStruct(INT16 sGridNo, BOOLEAN *pfVisible) {
+function DoesGridnoContainHiddenStruct(sGridNo: INT16, pfVisible: Pointer<BOOLEAN>): BOOLEAN {
   // ATE: These are ignored now - always return false
 
   // STRUCTURE *pStructure;
@@ -173,7 +173,7 @@ BOOLEAN DoesGridnoContainHiddenStruct(INT16 sGridNo, BOOLEAN *pfVisible) {
   return FALSE;
 }
 
-BOOLEAN IsHiddenStructureVisible(INT16 sGridNo, UINT16 usIndex) {
+function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): BOOLEAN {
   // Check if it's a hidden struct and we have not revealed anything!
   if (gTileDatabase[usIndex].uiFlags & HIDDEN_TILE) {
     if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
@@ -185,7 +185,7 @@ BOOLEAN IsHiddenStructureVisible(INT16 sGridNo, UINT16 usIndex) {
   return TRUE;
 }
 
-BOOLEAN WallExistsOfTopLeftOrientation(INT16 sGridNo) {
+function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
   // CJC: changing to search only for normal walls, July 16, 1998
   STRUCTURE *pStructure;
 
@@ -203,7 +203,7 @@ BOOLEAN WallExistsOfTopLeftOrientation(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN WallExistsOfTopRightOrientation(INT16 sGridNo) {
+function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
   // CJC: changing to search only for normal walls, July 16, 1998
   STRUCTURE *pStructure;
 
@@ -221,7 +221,7 @@ BOOLEAN WallExistsOfTopRightOrientation(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation(INT16 sGridNo) {
+function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -241,7 +241,7 @@ BOOLEAN WallOrClosedDoorExistsOfTopLeftOrientation(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation(INT16 sGridNo) {
+function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
@@ -261,7 +261,7 @@ BOOLEAN WallOrClosedDoorExistsOfTopRightOrientation(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(INT16 sGridNo) {
+function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -280,7 +280,7 @@ BOOLEAN OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(INT16 sGridNo) {
+function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -299,7 +299,7 @@ BOOLEAN OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(INT16 sGridNo) {
   return FALSE;
 }
 
-STRUCTURE *FindCuttableWireFenceAtGridNo(INT16 sGridNo) {
+function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
@@ -309,7 +309,7 @@ STRUCTURE *FindCuttableWireFenceAtGridNo(INT16 sGridNo) {
   return NULL;
 }
 
-BOOLEAN CutWireFence(INT16 sGridNo) {
+function CutWireFence(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindCuttableWireFenceAtGridNo(sGridNo);
@@ -324,11 +324,11 @@ BOOLEAN CutWireFence(INT16 sGridNo) {
   return FALSE;
 }
 
-BOOLEAN IsCuttableWireFenceAtGridNo(INT16 sGridNo) {
+function IsCuttableWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
   return FindCuttableWireFenceAtGridNo(sGridNo) != NULL;
 }
 
-BOOLEAN IsRepairableStructAtGridNo(INT16 sGridNo, UINT8 *pubID) {
+function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
   UINT8 ubMerc;
 
   // OK, first look for a vehicle....
@@ -353,7 +353,7 @@ BOOLEAN IsRepairableStructAtGridNo(INT16 sGridNo, UINT8 *pubID) {
   return FALSE;
 }
 
-BOOLEAN IsRefuelableStructAtGridNo(INT16 sGridNo, UINT8 *pubID) {
+function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
   UINT8 ubMerc;
 
   // OK, first look for a vehicle....
@@ -371,7 +371,7 @@ BOOLEAN IsRefuelableStructAtGridNo(INT16 sGridNo, UINT8 *pubID) {
   return FALSE;
 }
 
-BOOLEAN IsCutWireFenceAtGridNo(INT16 sGridNo) {
+function IsCutWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
@@ -381,7 +381,7 @@ BOOLEAN IsCutWireFenceAtGridNo(INT16 sGridNo) {
   return FALSE;
 }
 
-INT16 FindDoorAtGridNoOrAdjacent(INT16 sGridNo) {
+function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
   STRUCTURE *pStructure;
   STRUCTURE *pBaseStructure;
   INT16 sTestGridNo;
@@ -410,7 +410,7 @@ INT16 FindDoorAtGridNoOrAdjacent(INT16 sGridNo) {
   return NOWHERE;
 }
 
-BOOLEAN IsCorpseAtGridNo(INT16 sGridNo, UINT8 ubLevel) {
+function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
   if (GetCorpseAtGridNo(sGridNo, ubLevel) != NULL) {
     return TRUE;
   } else {
@@ -418,7 +418,7 @@ BOOLEAN IsCorpseAtGridNo(INT16 sGridNo, UINT8 ubLevel) {
   }
 }
 
-BOOLEAN SetOpenableStructureToClosed(INT16 sGridNo, UINT8 ubLevel) {
+function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
   STRUCTURE *pStructure;
   STRUCTURE *pNewStructure;
 

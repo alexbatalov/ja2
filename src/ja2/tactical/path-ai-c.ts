@@ -350,7 +350,7 @@ const LOOPING_CLOCKWISE = 0;
 const LOOPING_COUNTERCLOCKWISE = 1;
 const LOOPING_REVERSE = 2;
 
-INT8 RandomSkipListLevel(void) {
+function RandomSkipListLevel(): INT8 {
   INT8 bLevel = 1;
 
   while (Random(4) == 0 && bLevel < iMaxSkipListLevel - 1) {
@@ -359,7 +359,7 @@ INT8 RandomSkipListLevel(void) {
   return bLevel;
 }
 
-BOOLEAN InitPathAI(void) {
+function InitPathAI(): BOOLEAN {
   pathQ = MemAlloc(ABSMAX_PATHQ * sizeof(path_t));
   trailCost = MemAlloc(MAPLENGTH * sizeof(TRAILCELLTYPE));
   trailCostUsed = MemAlloc(MAPLENGTH);
@@ -373,14 +373,14 @@ BOOLEAN InitPathAI(void) {
   return TRUE;
 }
 
-void ShutDownPathAI(void) {
+function ShutDownPathAI(): void {
   MemFree(pathQ);
   MemFree(trailCostUsed);
   MemFree(trailCost);
   MemFree(trailTree);
 }
 
-void ReconfigurePathAI(INT32 iNewMaxSkipListLevel, INT32 iNewMaxTrailTree, INT32 iNewMaxPathQ) {
+function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32, iNewMaxPathQ: INT32): void {
   // make sure the specified parameters are reasonable
   iNewMaxSkipListLevel = __max(iNewMaxSkipListLevel, ABSMAX_SKIPLIST_LEVEL);
   iNewMaxTrailTree = __max(iNewMaxTrailTree, ABSMAX_TRAIL_TREE);
@@ -394,7 +394,7 @@ void ReconfigurePathAI(INT32 iNewMaxSkipListLevel, INT32 iNewMaxTrailTree, INT32
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
-void RestorePathAIToDefaults(void) {
+function RestorePathAIToDefaults(): void {
   iMaxSkipListLevel = MAX_SKIPLIST_LEVEL;
   iMaxTrailTree = MAX_TRAIL_TREE;
   iMaxPathQ = MAX_PATHQ;
@@ -406,7 +406,7 @@ void RestorePathAIToDefaults(void) {
 ///////////////////////////////////////////////////////////////////////
 //	FINDBESTPATH                                                   /
 ////////////////////////////////////////////////////////////////////////
-INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMovementMode, INT8 bCopy, UINT8 fFlags) {
+function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
   INT32 iDestination = sDestination, iOrigination;
   INT32 iCnt = -1, iStructIndex;
   INT32 iLoopStart = 0, iLoopEnd = 0;
@@ -1530,7 +1530,7 @@ INT32 FindBestPath(SOLDIERTYPE *s, INT16 sDestination, INT8 ubLevel, INT16 usMov
   return 0;
 }
 
-void GlobalReachableTest(INT16 sStartGridNo) {
+function GlobalReachableTest(sStartGridNo: INT16): void {
   SOLDIERTYPE s;
   INT32 iCurrentGridNo = 0;
 
@@ -1549,7 +1549,7 @@ void GlobalReachableTest(INT16 sStartGridNo) {
   RestorePathAIToDefaults();
 }
 
-void LocalReachableTest(INT16 sStartGridNo, INT8 bRadius) {
+function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   SOLDIERTYPE s;
   INT32 iCurrentGridNo = 0;
   INT32 iX, iY;
@@ -1584,7 +1584,7 @@ void LocalReachableTest(INT16 sStartGridNo, INT8 bRadius) {
   gubNPCDistLimit = 0;
 }
 
-void GlobalItemsReachableTest(INT16 sStartGridNo1, INT16 sStartGridNo2) {
+function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): void {
   SOLDIERTYPE s;
   INT32 iCurrentGridNo = 0;
 
@@ -1607,7 +1607,7 @@ void GlobalItemsReachableTest(INT16 sStartGridNo1, INT16 sStartGridNo2) {
   RestorePathAIToDefaults();
 }
 
-void RoofReachableTest(INT16 sStartGridNo, UINT8 ubBuildingID) {
+function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   SOLDIERTYPE s;
 
   memset(&s, 0, sizeof(SOLDIERTYPE));
@@ -1628,7 +1628,7 @@ void RoofReachableTest(INT16 sStartGridNo, UINT8 ubBuildingID) {
   gubBuildingInfoToSet = 0;
 }
 
-void ErasePath(char bEraseOldOne) {
+function ErasePath(bEraseOldOne: char): void {
   INT16 iCnt;
 
   // NOTE: This routine must be called BEFORE anything happens that changes
@@ -1678,7 +1678,7 @@ void ErasePath(char bEraseOldOne) {
   memset(guiPlottedPath, 0, 256 * sizeof(UINT32));
 }
 
-INT16 PlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot, INT8 bStayOn, UINT16 usMovementMode, INT8 bStealth, INT8 bReverse, INT16 sAPBudget) {
+function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   INT16 sTileCost, sPoints = 0, sTempGrid, sAnimCost = 0;
   INT16 sPointsWalk = 0, sPointsCrawl = 0, sPointsRun = 0, sPointsSwat = 0;
   INT16 sExtraCostStand, sExtraCostSwat, sExtraCostCrawl;
@@ -2009,7 +2009,7 @@ INT16 PlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlo
   return sPoints;
 }
 
-INT16 UIPlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot, INT8 bStayOn, UINT16 usMovementMode, INT8 bStealth, INT8 bReverse, INT16 sAPBudget) {
+function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for UI calls to the pathing routine, to
   // check whether the shift key is pressed, etc.
   INT16 sRet;
@@ -2032,7 +2032,7 @@ INT16 UIPlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bP
   return sRet;
 }
 
-INT16 RecalculatePathCost(SOLDIERTYPE *pSoldier, UINT16 usMovementMode) {
+function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT16 {
   // AI function for a soldier already with a path; this will return the cost of that path using the given movement mode
   INT16 sRet;
 
@@ -2046,7 +2046,7 @@ INT16 RecalculatePathCost(SOLDIERTYPE *pSoldier, UINT16 usMovementMode) {
   return sRet;
 }
 
-INT16 EstimatePlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, INT8 bPlot, INT8 bStayOn, UINT16 usMovementMode, INT8 bStealth, INT8 bReverse, INT16 sAPBudget) {
+function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for AI calls to estimate path cost to a location
   // It sets stuff up to ignore all people
   INT16 sRet;
@@ -2060,7 +2060,7 @@ INT16 EstimatePlotPath(SOLDIERTYPE *pSold, INT16 sDestGridno, INT8 bCopyRoute, I
   return sRet;
 }
 
-UINT8 InternalDoorTravelCost(SOLDIERTYPE *pSoldier, INT32 iGridNo, UINT8 ubMovementCost, BOOLEAN fReturnPerceivedValue, INT32 *piDoorGridNo, BOOLEAN fReturnDoorCost) {
+function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: BOOLEAN, piDoorGridNo: Pointer<INT32>, fReturnDoorCost: BOOLEAN): UINT8 {
   // This function will return either TRAVELCOST_DOOR (in place of closed door cost),
   // TRAVELCOST_OBSTACLE, or the base ground terrain
   // travel cost, depending on whether or not the door is open or closed etc.
@@ -2220,6 +2220,6 @@ UINT8 InternalDoorTravelCost(SOLDIERTYPE *pSoldier, INT32 iGridNo, UINT8 ubMovem
   return ubMovementCost;
 }
 
-UINT8 DoorTravelCost(SOLDIERTYPE *pSoldier, INT32 iGridNo, UINT8 ubMovementCost, BOOLEAN fReturnPerceivedValue, INT32 *piDoorGridNo) {
+function DoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, ubMovementCost: UINT8, fReturnPerceivedValue: BOOLEAN, piDoorGridNo: Pointer<INT32>): UINT8 {
   return InternalDoorTravelCost(pSoldier, iGridNo, ubMovementCost, fReturnPerceivedValue, piDoorGridNo, FALSE);
 }

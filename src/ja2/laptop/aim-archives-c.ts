@@ -116,10 +116,10 @@ MOUSE_REGION gDoneRegion;
 UINT32 guiAlumniPageButton[3];
 INT32 guiAlumniPageButtonImage;
 
-void GameInitAimArchives() {
+function GameInitAimArchives(): void {
 }
 
-void EnterInitAimArchives() {
+function EnterInitAimArchives(): void {
   gfDrawPopUpBox = FALSE;
   gfDestroyPopUpBox = FALSE;
 
@@ -127,7 +127,7 @@ void EnterInitAimArchives() {
   AimArchivesSubPagesVisitedFlag[0] = TRUE;
 }
 
-BOOLEAN EnterAimArchives() {
+function EnterAimArchives(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX, i;
 
@@ -190,7 +190,7 @@ BOOLEAN EnterAimArchives() {
   return TRUE;
 }
 
-void ExitAimArchives() {
+function ExitAimArchives(): void {
   UINT16 i;
 
   gfExitingAimArchives = TRUE;
@@ -216,7 +216,7 @@ void ExitAimArchives() {
   gfDrawPopUpBox = FALSE;
 }
 
-void HandleAimArchives() {
+function HandleAimArchives(): void {
   if (gfReDrawScreen) {
     //		RenderAimArchives();
     fPausedReDrawScreenFlag = TRUE;
@@ -232,7 +232,7 @@ void HandleAimArchives() {
   }
 }
 
-void RenderAimArchives() {
+function RenderAimArchives(): void {
   HVOBJECT hFrameHandle;
   HVOBJECT hFaceHandle;
   //  HVOBJECT	hBottomButtonHandle;
@@ -322,7 +322,7 @@ void RenderAimArchives() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectAlumniFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectAlumniFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfDrawPopUpBox = TRUE;
@@ -333,7 +333,7 @@ void SelectAlumniFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -372,7 +372,7 @@ void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ResetAimArchiveButtons() {
+function ResetAimArchiveButtons(): void {
   int i = 0;
 
   for (i = 0; i < 3; i++) {
@@ -380,7 +380,7 @@ void ResetAimArchiveButtons() {
   }
 }
 
-void DisableAimArchiveButton() {
+function DisableAimArchiveButton(): void {
   if (gfExitingAimArchives == TRUE)
     return;
 
@@ -393,7 +393,7 @@ void DisableAimArchiveButton() {
   }
 }
 
-void DisplayAlumniOldMercPopUp() {
+function DisplayAlumniOldMercPopUp(): void {
   UINT8 i, ubNumLines = 11; // 17
   UINT16 usPosY, usTextPosY;
   UINT8 ubFontHeight, ubNumDescLines;
@@ -463,12 +463,12 @@ void DisplayAlumniOldMercPopUp() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void DestroyPopUpBox() {
+function DestroyPopUpBox(): void {
   gfDestroyPopUpBox = FALSE;
   RenderAimArchives();
 }
 
-void InitAlumniFaceRegions() {
+function InitAlumniFaceRegions(): void {
   UINT16 usPosX, usPosY, i, x, y, usNumRows;
 
   if (gfFaceMouseRegionsActive)
@@ -507,7 +507,7 @@ void InitAlumniFaceRegions() {
   gfFaceMouseRegionsActive = TRUE;
 }
 
-void RemoveAimAlumniFaceRegion() {
+function RemoveAimAlumniFaceRegion(): void {
   UINT16 i;
   UINT16 usNumber = 0;
 
@@ -534,7 +534,7 @@ void RemoveAimAlumniFaceRegion() {
   gfFaceMouseRegionsActive = FALSE;
 }
 
-void CreateDestroyDoneMouseRegion(UINT16 usPosY) {
+function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
   static BOOLEAN DoneRegionCreated = FALSE;
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
@@ -552,7 +552,7 @@ void CreateDestroyDoneMouseRegion(UINT16 usPosY) {
   }
 }
 
-void SelectAlumniDoneRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectAlumniDoneRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfDestroyPopUpBox = TRUE;
@@ -562,7 +562,7 @@ void SelectAlumniDoneRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void ChangingAimArchiveSubPage(UINT8 ubSubPageNumber) {
+function ChangingAimArchiveSubPage(ubSubPageNumber: UINT8): void {
   fLoadPendingFlag = TRUE;
 
   if (AimArchivesSubPagesVisitedFlag[ubSubPageNumber] == FALSE) {

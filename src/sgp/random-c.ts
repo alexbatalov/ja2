@@ -1,7 +1,7 @@
 UINT32 guiPreRandomIndex = 0;
 UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
 
-void InitializeRandom() {
+function InitializeRandom(): void {
   // Seed the random-number generator with current time so that
   // the numbers will be different every time we run.
   srand((unsigned)time(NULL));
@@ -13,7 +13,7 @@ void InitializeRandom() {
 }
 
 // Returns a pseudo-random integer between 0 and uiRange
-UINT32 Random(UINT32 uiRange) {
+function Random(uiRange: UINT32): UINT32 {
 // Always return 0, if no range given (it's not an error)
 
   if (uiRange == 0)
@@ -21,11 +21,11 @@ UINT32 Random(UINT32 uiRange) {
   return rand() * uiRange / RAND_MAX % uiRange;
 }
 
-BOOLEAN Chance(UINT32 uiChance) {
+function Chance(uiChance: UINT32): BOOLEAN {
   return (BOOLEAN)(Random(100) < uiChance);
 }
 
-UINT32 PreRandom(UINT32 uiRange) {
+function PreRandom(uiRange: UINT32): UINT32 {
   UINT32 uiNum;
   if (!uiRange)
     return 0;
@@ -43,6 +43,6 @@ UINT32 PreRandom(UINT32 uiRange) {
   return uiNum;
 }
 
-BOOLEAN PreChance(UINT32 uiChance) {
+function PreChance(uiChance: UINT32): BOOLEAN {
   return (BOOLEAN)(PreRandom(100) < uiChance);
 }

@@ -1,4 +1,4 @@
-BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString) {
+function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): BOOLEAN {
   HWFILE hFile;
   UINT32 uiBytesRead;
   UINT16 i;
@@ -180,7 +180,7 @@ BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString) {
   return TRUE;
 }
 
-BOOLEAN LoadShortNameItemInfo(UINT16 ubIndex, STR16 pNameString) {
+function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
   HWFILE hFile;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
   UINT32 uiBytesRead;
@@ -276,7 +276,7 @@ BOOLEAN LoadShortNameItemInfo(UINT16 ubIndex, STR16 pNameString) {
   return TRUE;
 }
 
-void LoadAllItemNames(void) {
+function LoadAllItemNames(): void {
   UINT16 usLoop;
 
   for (usLoop = 0; usLoop < MAXITEMS; usLoop++) {
@@ -287,11 +287,11 @@ void LoadAllItemNames(void) {
   }
 }
 
-void LoadAllExternalText(void) {
+function LoadAllExternalText(): void {
   LoadAllItemNames();
 }
 
-INT16 *GetWeightUnitString(void) {
+function GetWeightUnitString(): Pointer<INT16> {
   if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric
   {
     return pMessageStrings[MSG_KILOGRAM_ABBREVIATION];
@@ -300,7 +300,7 @@ INT16 *GetWeightUnitString(void) {
   }
 }
 
-FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight) {
+function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
   FLOAT fWeight = 0.0f;
 
   // if the user is smart and wants things displayed in 'metric'

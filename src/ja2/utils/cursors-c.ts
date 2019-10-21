@@ -84,7 +84,7 @@ CursorFileData CursorFileDatabase[] = {
   { "CURSORS\\can_02.sti", FALSE, 0, 0, 0, NULL },
 };
 
-void RaiseMouseToLevel(INT8 bLevel) {
+function RaiseMouseToLevel(bLevel: INT8): void {
   gsGlobalCursorYOffset = gsMouseGlobalYOffsets[bLevel];
 }
 
@@ -377,13 +377,13 @@ CursorData CursorDatabase[] = {
   { { C_TRINGS, 6, 0, HIDE_SUBCURSOR, HIDE_SUBCURSOR }, { C_FUEL_RED, 0, 0, CENTER_SUBCURSOR, CENTER_SUBCURSOR }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, 2, CENTER_CURSOR, CENTER_CURSOR, 0, 0, 0, 0 },
 };
 
-void InitCursors() {
+function InitCursors(): void {
   InitCursorDatabase(CursorFileDatabase, CursorDatabase, NUM_CURSOR_FILES);
 
   SetMouseBltHook((MOUSEBLT_HOOK)BltJA2CursorData);
 }
 
-void HandleAnimatedCursors() {
+function HandleAnimatedCursors(): void {
   if (COUNTERDONE(CURSORCOUNTER)) {
     RESETCOUNTER(CURSORCOUNTER);
 
@@ -413,13 +413,13 @@ void HandleAnimatedCursors() {
   }
 }
 
-void BltJA2CursorData() {
+function BltJA2CursorData(): void {
   if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
     DrawMouseText();
   }
 }
 
-void DrawMouseText() {
+function DrawMouseText(): void {
   INT16 pStr[512];
   INT16 sX, sY;
   static BOOLEAN fShow = FALSE;
@@ -544,7 +544,7 @@ void DrawMouseText() {
   }
 }
 
-void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex) {
+function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
   CursorData *pCurData;
   CursorImage *pCurImage;
   UINT32 cnt;
@@ -566,7 +566,7 @@ void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex) {
   }
 }
 
-void UpdateFlashingCursorFrames(UINT32 uiCursorIndex) {
+function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
   CursorData *pCurData;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
@@ -585,21 +585,21 @@ void UpdateFlashingCursorFrames(UINT32 uiCursorIndex) {
   }
 }
 
-void SetCursorSpecialFrame(UINT32 uiCursor, UINT8 ubFrame) {
+function SetCursorSpecialFrame(uiCursor: UINT32, ubFrame: UINT8): void {
   CursorDatabase[uiCursor].bFlashIndex = ubFrame;
 }
 
-void SetCursorFlags(UINT32 uiCursor, UINT8 ubFlags) {
+function SetCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
   CursorDatabase[uiCursor].bFlags |= ubFlags;
 }
 
-void RemoveCursorFlags(UINT32 uiCursor, UINT8 ubFlags) {
+function RemoveCursorFlags(uiCursor: UINT32, ubFlags: UINT8): void {
   CursorDatabase[uiCursor].bFlags &= (~ubFlags);
 }
 
-HVOBJECT GetCursorFileVideoObject(UINT32 uiCursorFile) {
+function GetCursorFileVideoObject(uiCursorFile: UINT32): HVOBJECT {
   return CursorFileDatabase[uiCursorFile].hVObject;
 }
 
-void SyncPairedCursorFrames(UINT32 uiSrcIndex, UINT32 uiDestIndex) {
+function SyncPairedCursorFrames(uiSrcIndex: UINT32, uiDestIndex: UINT32): void {
 }

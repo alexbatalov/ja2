@@ -1,14 +1,14 @@
 // mem allocation functions for ZLIB's purposes
 
-voidpf ZAlloc(voidpf opaque, uInt items, uInt size) {
+function ZAlloc(opaque: voidpf, items: uInt, size: uInt): voidpf {
   return MemAlloc(items * size);
 }
 
-void ZFree(voidpf opaque, voidpf address) {
+function ZFree(opaque: voidpf, address: voidpf): void {
   MemFree(address);
 }
 
-PTR DecompressInit(BYTE *pCompressedData, UINT32 uiDataSize) {
+function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
   z_stream *pZStream;
   int iZRetCode;
 
@@ -38,7 +38,7 @@ PTR DecompressInit(BYTE *pCompressedData, UINT32 uiDataSize) {
   return (PTR)pZStream;
 }
 
-UINT32 Decompress(PTR pDecompPtr, BYTE *pBuffer, UINT32 uiBufferLen) {
+function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
   int iZRetCode;
   z_stream *pZStream = (z_stream *)pDecompPtr;
 
@@ -62,7 +62,7 @@ UINT32 Decompress(PTR pDecompPtr, BYTE *pBuffer, UINT32 uiBufferLen) {
   return uiBufferLen - pZStream->avail_out;
 }
 
-void DecompressFini(PTR pDecompPtr) {
+function DecompressFini(pDecompPtr: PTR): void {
   z_stream *pZStream = (z_stream *)pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
@@ -73,14 +73,14 @@ void DecompressFini(PTR pDecompPtr) {
   MemFree(pZStream);
 }
 
-UINT32 CompressedBufferSize(UINT32 uiDataSize) {
+function CompressedBufferSize(uiDataSize: UINT32): UINT32 {
   // Function that calculates the worst-case buffer size needed to
   // hold uiDataSize bytes compressed
 
   return uiDataSize + uiDataSize / 10 + 13;
 }
 
-PTR CompressInit(BYTE *pUncompressedData, UINT32 uiDataSize) {
+function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
   z_stream *pZStream;
   int iZRetCode;
 
@@ -110,7 +110,7 @@ PTR CompressInit(BYTE *pUncompressedData, UINT32 uiDataSize) {
   return (PTR)pZStream;
 }
 
-UINT32 Compress(PTR pCompPtr, BYTE *pBuffer, UINT32 uiBufferLen) {
+function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
   int iZRetCode;
   z_stream *pZStream = (z_stream *)pCompPtr;
 
@@ -134,7 +134,7 @@ UINT32 Compress(PTR pCompPtr, BYTE *pBuffer, UINT32 uiBufferLen) {
   return uiBufferLen - pZStream->avail_out;
 }
 
-void CompressFini(PTR pCompPtr) {
+function CompressFini(pCompPtr: PTR): void {
   z_stream *pZStream = (z_stream *)pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer

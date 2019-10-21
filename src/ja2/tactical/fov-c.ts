@@ -67,7 +67,7 @@ UINT8 ViewPath2[MAXVIEWPATHS][VIEWPATHLENGTH] = {
   { RIGHT, RIGHT, DRIGHT, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW },
 };
 
-void BuildSightDir(UINT32 dir, UINT32 *One, UINT32 *Two, UINT32 *Three, UINT32 *Four, UINT32 *Five) {
+function BuildSightDir(dir: UINT32, One: Pointer<UINT32>, Two: Pointer<UINT32>, Three: Pointer<UINT32>, Four: Pointer<UINT32>, Five: Pointer<UINT32>): void {
   switch (dir) {
     case NORTH:
       *One = NORTHWEST;
@@ -140,7 +140,7 @@ interface SLANT_ROOF_FOV_TYPE {
 SLANT_ROOF_FOV_TYPE gSlantRoofData[NUM_SLANT_ROOF_SLOTS];
 UINT32 guiNumSlantRoofs = 0;
 
-INT32 GetFreeSlantRoof(void) {
+function GetFreeSlantRoof(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -154,7 +154,7 @@ INT32 GetFreeSlantRoof(void) {
   return -1;
 }
 
-void RecountSlantRoofs(void) {
+function RecountSlantRoofs(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumSlantRoofs - 1; (uiCount >= 0); uiCount--) {
@@ -165,7 +165,7 @@ void RecountSlantRoofs(void) {
   }
 }
 
-void ClearSlantRoofs(void) {
+function ClearSlantRoofs(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -177,7 +177,7 @@ void ClearSlantRoofs(void) {
   guiNumSlantRoofs = 0;
 }
 
-BOOLEAN FindSlantRoofSlot(INT16 sGridNo) {
+function FindSlantRoofSlot(sGridNo: INT16): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -191,7 +191,7 @@ BOOLEAN FindSlantRoofSlot(INT16 sGridNo) {
   return FALSE;
 }
 
-void AddSlantRoofFOVSlot(INT16 sGridNo) {
+function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   INT32 iSlantRoofSlot;
   SLANT_ROOF_FOV_TYPE *pSlantRoof;
 
@@ -209,7 +209,7 @@ void AddSlantRoofFOVSlot(INT16 sGridNo) {
   }
 }
 
-void ExamineSlantRoofFOVSlots() {
+function ExamineSlantRoofFOVSlots(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
@@ -221,7 +221,7 @@ void ExamineSlantRoofFOVSlots() {
   ClearSlantRoofs();
 }
 
-void RevealRoofsAndItems(SOLDIERTYPE *pSoldier, UINT32 itemsToo, BOOLEAN fShowLocators, UINT8 ubLevel, BOOLEAN fForce) {
+function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, fShowLocators: BOOLEAN, ubLevel: UINT8, fForce: BOOLEAN): void {
   UINT32 maincnt, markercnt, marker, tilesLeftToSee, cnt, prevmarker;
   INT32 Inc[6], Dir[6];
   INT8 itemVisible = FALSE;

@@ -545,7 +545,7 @@ UINT8 RenderFXStartIndex[] = {
 // void TempRenderTiles(UINT32 uiFlags, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS );
 // void TempRenderTiles(UINT32 uiFlags, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS, UINT8 ubNumLevels, UINT32 *puiLevels );
 
-BOOLEAN RevealWalls(INT16 sX, INT16 sY, INT16 sRadius) {
+function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): BOOLEAN {
   LEVELNODE *pStruct;
   INT16 sCountX, sCountY;
   UINT32 uiTile;
@@ -591,7 +591,7 @@ BOOLEAN RevealWalls(INT16 sX, INT16 sY, INT16 sRadius) {
   return TRUE;
 }
 
-BOOLEAN ConcealWalls(INT16 sX, INT16 sY, INT16 sRadius) {
+function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): BOOLEAN {
   LEVELNODE *pStruct;
   INT16 sCountX, sCountY;
   UINT32 uiTile;
@@ -637,7 +637,7 @@ BOOLEAN ConcealWalls(INT16 sX, INT16 sY, INT16 sRadius) {
   return TRUE;
 }
 
-void ConcealAllWalls(void) {
+function ConcealAllWalls(): void {
   LEVELNODE *pStruct;
   UINT32 uiCount;
 
@@ -650,39 +650,39 @@ void ConcealAllWalls(void) {
   }
 }
 
-void ResetLayerOptimizing(void) {
+function ResetLayerOptimizing(): void {
   uiLayerUsedFlags = 0xffffffff;
   uiAdditiveLayerUsedFlags = 0;
 }
 
-void ResetSpecificLayerOptimizing(UINT32 uiRowFlag) {
+function ResetSpecificLayerOptimizing(uiRowFlag: UINT32): void {
   uiLayerUsedFlags |= uiRowFlag;
 }
 
-void SumAddiviveLayerOptimization(void) {
+function SumAddiviveLayerOptimization(): void {
   uiLayerUsedFlags = uiAdditiveLayerUsedFlags;
 }
 
-void SetRenderFlags(UINT32 uiFlags) {
+function SetRenderFlags(uiFlags: UINT32): void {
   gRenderFlags |= uiFlags;
 }
 
-void ClearRenderFlags(UINT32 uiFlags) {
+function ClearRenderFlags(uiFlags: UINT32): void {
   gRenderFlags &= (~uiFlags);
 }
 
-UINT32 GetRenderFlags(void) {
+function GetRenderFlags(): UINT32 {
   return gRenderFlags;
 }
 
-void RenderSetShadows(BOOLEAN fShadows) {
+function RenderSetShadows(fShadows: BOOLEAN): void {
   if (fShadows)
     gRenderFlags |= RENDER_FLAG_SHADOWS;
   else
     gRenderFlags &= (~RENDER_FLAG_SHADOWS);
 }
 
-void RenderTiles(UINT32 uiFlags, INT32 iStartPointX_M, INT32 iStartPointY_M, INT32 iStartPointX_S, INT32 iStartPointY_S, INT32 iEndXS, INT32 iEndYS, UINT8 ubNumLevels, UINT32 *puiLevels, UINT16 *psLevelIDs) {
+function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT32, iStartPointX_S: INT32, iStartPointY_S: INT32, iEndXS: INT32, iEndYS: INT32, ubNumLevels: UINT8, puiLevels: Pointer<UINT32>, psLevelIDs: Pointer<UINT16>): void {
   //#if 0
 
   LEVELNODE *pNode; //, *pLand, *pStruct; //*pObject, *pTopmost, *pMerc;
@@ -2031,7 +2031,7 @@ void RenderTiles(UINT32 uiFlags, INT32 iStartPointX_M, INT32 iStartPointY_M, INT
   }
 }
 
-void DeleteFromWorld(UINT16 usTileIndex, UINT32 uiRenderTiles, UINT16 usIndex) {
+function DeleteFromWorld(usTileIndex: UINT16, uiRenderTiles: UINT32, usIndex: UINT16): void {
   switch (uiRenderTiles) {
     case TILES_DYNAMIC_LAND:
     case TILES_STATIC_LAND:
@@ -2063,7 +2063,7 @@ void DeleteFromWorld(UINT16 usTileIndex, UINT32 uiRenderTiles, UINT16 usIndex) {
 // memcpy's the background to the new scroll position, and renders the missing strip
 // via the RenderStaticWorldRect. Dynamic stuff will be updated on the next frame
 // by the normal render cycle
-void ScrollBackground(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScrollYIncrement) {
+function ScrollBackground(uiDirection: UINT32, sScrollXIncrement: INT16, sScrollYIncrement: INT16): void {
   // RestoreBackgroundRects();
 
   if (!gfDoVideoScroll) {
@@ -2094,7 +2094,7 @@ void ScrollBackground(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScroll
 // Coordinates for the window from that using the following functions
 // For coordinate transformations
 
-void RenderWorld() {
+function RenderWorld(): void {
   TILE_ELEMENT *TileElem;
   TILE_ANIMATION_DATA *pAnimData;
   UINT32 cnt = 0;
@@ -2230,7 +2230,7 @@ void RenderWorld() {
 // Start with a center X,Y,Z world coordinate and render direction
 // Determine WorldIntersectionPoint and the starting block from these
 // Then render away!
-void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom, BOOLEAN fDynamicsToo) {
+function RenderStaticWorldRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, fDynamicsToo: BOOLEAN): void {
   UINT32 uiLevelFlags[10];
   UINT16 sLevelIDs[10];
 
@@ -2321,7 +2321,7 @@ void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
   //#endif
 }
 
-void RenderStaticWorld() {
+function RenderStaticWorld(): void {
   UINT32 uiLevelFlags[9];
   UINT16 sLevelIDs[9];
 
@@ -2374,7 +2374,7 @@ void RenderStaticWorld() {
   ResetRenderParameters();
 }
 
-void RenderMarkedWorld(void) {
+function RenderMarkedWorld(): void {
   UINT32 uiLevelFlags[4];
   UINT16 sLevelIDs[4];
 
@@ -2419,7 +2419,7 @@ void RenderMarkedWorld(void) {
   ResetRenderParameters();
 }
 
-void RenderDynamicWorld() {
+function RenderDynamicWorld(): void {
   UINT8 ubNumLevels;
   UINT32 uiLevelFlags[10];
   UINT16 sLevelIDs[10];
@@ -2523,7 +2523,7 @@ void RenderDynamicWorld() {
   ResetRenderParameters();
 }
 
-BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, INT16 sScrollYStep, INT16 *psTempRenderCenterX, INT16 *psTempRenderCenterY, BOOLEAN fCheckOnly) {
+function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrollYStep: INT16, psTempRenderCenterX: Pointer<INT16>, psTempRenderCenterY: Pointer<INT16>, fCheckOnly: BOOLEAN): BOOLEAN {
   BOOLEAN fAGoodMove = FALSE, fMovedPos = FALSE;
   INT16 sTempX_W, sTempY_W;
   BOOLEAN fUpOK, fLeftOK;
@@ -2772,7 +2772,7 @@ BOOLEAN HandleScrollDirections(UINT32 ScrollFlags, INT16 sScrollXStep, INT16 sSc
   return fAGoodMove;
 }
 
-void ScrollWorld() {
+function ScrollWorld(): void {
   UINT32 ScrollFlags = 0;
   BOOLEAN fDoScroll = FALSE, fMovedPos = FALSE, fAGoodMove = FALSE;
   INT16 sTempRenderCenterX, sTempRenderCenterY;
@@ -2996,7 +2996,7 @@ void ScrollWorld() {
   }
 }
 
-void InitRenderParams(UINT8 ubRestrictionID) {
+function InitRenderParams(ubRestrictionID: UINT8): void {
   INT16 gsTilesX, gsTilesY;
   UINT32 cnt, cnt2;
   DOUBLE dWorldX, dWorldY;
@@ -3082,7 +3082,7 @@ void InitRenderParams(UINT8 ubRestrictionID) {
 }
 
 // Appy? HEahehahehahehae.....
-BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly) {
+function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fForceAdjust: BOOLEAN, fCheckOnly: BOOLEAN): BOOLEAN {
   BOOLEAN fScrollGood = FALSE;
   BOOLEAN fOutLeft = FALSE;
   BOOLEAN fOutRight = FALSE;
@@ -3324,7 +3324,7 @@ BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLE
   return FALSE;
 }
 
-void ClearMarkedTiles(void) {
+function ClearMarkedTiles(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < WORLD_MAX; uiCount++)
@@ -3332,7 +3332,7 @@ void ClearMarkedTiles(void) {
 }
 
 // @@ATECLIP TO WORLD!
-void InvalidateWorldRedundencyRadius(INT16 sX, INT16 sY, INT16 sRadius) {
+function InvalidateWorldRedundencyRadius(sX: INT16, sY: INT16, sRadius: INT16): void {
   INT16 sCountX, sCountY;
   UINT32 uiTile;
 
@@ -3347,7 +3347,7 @@ void InvalidateWorldRedundencyRadius(INT16 sX, INT16 sY, INT16 sRadius) {
   }
 }
 
-void InvalidateWorldRedundency() {
+function InvalidateWorldRedundency(): void {
   UINT32 uiCount;
 
   SetRenderFlags(RENDER_FLAG_CHECKZ);
@@ -3368,7 +3368,7 @@ const Z_STRIP_DELTA_Y = (Z_SUBLAYERS * 10);
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion) {
+function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
   UINT16 *p16BPPPalette;
   UINT32 uiOffset;
   UINT32 usHeight, usWidth, Unblitted;
@@ -3744,7 +3744,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClip(UINT16 *pBuffer, UINT32 uiDestPitc
         must be the same dimensions (including Pitch) as the destination.
 
 **********************************************************************************************/
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion) {
+function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
   UINT16 *p16BPPPalette;
   UINT32 uiOffset;
   UINT32 usHeight, usWidth, Unblitted;
@@ -4123,7 +4123,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(UINT16 *pBuffer,
         // render at all
 
 **********************************************************************************************/
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncObscureClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion) {
+function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
   UINT16 *p16BPPPalette;
   UINT32 uiOffset, uiLineFlag;
   UINT32 usHeight, usWidth, Unblitted;
@@ -4517,7 +4517,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncObscureClip(UINT16 *pBuffer, UINT32 uiD
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion, INT16 sZIndex, UINT16 *p16BPPPalette) {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
   UINT32 uiOffset, uiLineFlag;
   UINT32 usHeight, usWidth, Unblitted;
   UINT8 *SrcPtr, *DestPtr, *ZPtr;
@@ -4915,7 +4915,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(UINT16 *pBuffer,
   return TRUE;
 }
 
-void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16 *pSNewX, INT16 *pSNewY) {
+function CorrectRenderCenter(sRenderX: INT16, sRenderY: INT16, pSNewX: Pointer<INT16>, pSNewY: Pointer<INT16>): void {
   INT16 sScreenX, sScreenY;
   INT16 sNumXSteps, sNumYSteps;
 
@@ -4952,7 +4952,7 @@ void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16 *pSNewX, INT16 *p
 // 3 ) clipped
 // 4 ) trans shadow - if value is 254, makes a shadow
 //
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion, INT16 sZIndex, UINT16 *p16BPPPalette) {
+function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, sZIndex: INT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
   UINT32 uiOffset;
   UINT32 usHeight, usWidth, Unblitted;
   UINT8 *SrcPtr, *DestPtr, *ZPtr;
@@ -5328,7 +5328,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(UINT16 *pBuffer, UINT32
   return TRUE;
 }
 
-void RenderRoomInfo(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS) {
+function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16): void {
   INT8 bXOddFlag = 0;
   INT16 sAnchorPosX_M, sAnchorPosY_M;
   INT16 sAnchorPosX_S, sAnchorPosY_S;
@@ -5421,13 +5421,13 @@ void RenderRoomInfo(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPoin
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void ExamineZBufferRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
+function ExamineZBufferRect(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): void {
   CalcRenderParameters(sLeft, sTop, sRight, sBottom);
 
   ExamineZBufferForHiddenTiles(gsStartPointX_M, gsStartPointY_M, gsStartPointX_S, gsStartPointY_S, gsEndXS, gsEndYS);
 }
 
-void ExamineZBufferForHiddenTiles(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS) {
+function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16): void {
   INT8 bXOddFlag = 0;
   INT16 sAnchorPosX_M, sAnchorPosY_M;
   INT16 sAnchorPosX_S, sAnchorPosY_S;
@@ -5537,7 +5537,7 @@ void ExamineZBufferForHiddenTiles(INT16 sStartPointX_M, INT16 sStartPointY_M, IN
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
+function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): void {
   INT16 sTempPosX_W, sTempPosY_W;
   INT16 sRenderCenterX_W, sRenderCenterY_W;
   INT16 sOffsetX_W, sOffsetY_W, sOffsetX_S, sOffsetY_S;
@@ -5645,12 +5645,12 @@ void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) 
   }
 }
 
-void ResetRenderParameters() {
+function ResetRenderParameters(): void {
   // Restore clipping rect
   gClippingRect = gOldClipRect;
 }
 
-BOOLEAN Zero8BPPDataTo16BPPBufferTransparent(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex) {
+function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
   UINT32 uiOffset;
   UINT32 usHeight, usWidth;
   UINT8 *SrcPtr, *DestPtr;
@@ -5763,7 +5763,7 @@ BOOLEAN Zero8BPPDataTo16BPPBufferTransparent(UINT16 *pBuffer, UINT32 uiDestPitch
   return TRUE;
 }
 
-BOOLEAN Blt8BPPDataTo16BPPBufferTransInvZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex) {
+function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
   UINT16 *p16BPPPalette;
   UINT32 uiOffset;
   UINT32 usHeight, usWidth;
@@ -5864,7 +5864,7 @@ BOOLEAN Blt8BPPDataTo16BPPBufferTransInvZ(UINT16 *pBuffer, UINT32 uiDestPitchBYT
   return TRUE;
 }
 
-BOOLEAN IsTileRedundent(UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex) {
+function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
   UINT16 *p16BPPPalette;
   UINT32 uiOffset;
   UINT32 usHeight, usWidth;
@@ -5956,15 +5956,15 @@ BOOLEAN IsTileRedundent(UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject,
   return fHidden;
 }
 
-void SetMercGlowFast() {
+function SetMercGlowFast(): void {
   // gpGlowFramePointer	= gsFastGlowFrames;
 }
 
-void SetMercGlowNormal() {
+function SetMercGlowNormal(): void {
   gpGlowFramePointer = gsGlowFrames;
 }
 
-void SetRenderCenter(INT16 sNewX, INT16 sNewY) {
+function SetRenderCenter(sNewX: INT16, sNewY: INT16): void {
   if (gfIgnoreScrolling == 1) {
     return;
   }

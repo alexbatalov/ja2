@@ -26,17 +26,17 @@ BOOLEAN gfFadeOut = FALSE;
 BOOLEAN gfFadeOutDone = FALSE;
 BOOLEAN gfFadeInDone = FALSE;
 
-void FadeInNextFrame() {
+function FadeInNextFrame(): void {
   gfFadeIn = TRUE;
   gfFadeInDone = FALSE;
 }
 
-void FadeOutNextFrame() {
+function FadeOutNextFrame(): void {
   gfFadeOut = TRUE;
   gfFadeOutDone = FALSE;
 }
 
-BOOLEAN HandleBeginFadeIn(UINT32 uiScreenExit) {
+function HandleBeginFadeIn(uiScreenExit: UINT32): BOOLEAN {
   if (gfFadeIn) {
     BeginFade(uiScreenExit, 35, FADE_IN_REALFADE, 5);
 
@@ -50,7 +50,7 @@ BOOLEAN HandleBeginFadeIn(UINT32 uiScreenExit) {
   return FALSE;
 }
 
-BOOLEAN HandleBeginFadeOut(UINT32 uiScreenExit) {
+function HandleBeginFadeOut(uiScreenExit: UINT32): BOOLEAN {
   if (gfFadeOut) {
     BeginFade(uiScreenExit, 35, FADE_OUT_REALFADE, 5);
 
@@ -64,7 +64,7 @@ BOOLEAN HandleBeginFadeOut(UINT32 uiScreenExit) {
   return FALSE;
 }
 
-BOOLEAN HandleFadeOutCallback() {
+function HandleFadeOutCallback(): BOOLEAN {
   if (gfFadeOutDone) {
     gfFadeOutDone = FALSE;
 
@@ -80,7 +80,7 @@ BOOLEAN HandleFadeOutCallback() {
   return FALSE;
 }
 
-BOOLEAN HandleFadeInCallback() {
+function HandleFadeInCallback(): BOOLEAN {
   if (gfFadeInDone) {
     gfFadeInDone = FALSE;
 
@@ -96,7 +96,7 @@ BOOLEAN HandleFadeInCallback() {
   return FALSE;
 }
 
-void BeginFade(UINT32 uiExitScreen, INT8 bFadeValue, INT8 bType, UINT32 uiDelay) {
+function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay: UINT32): void {
   // Init some paramters
   guiExitScreen = uiExitScreen;
   gbFadeValue = bFadeValue;
@@ -197,11 +197,11 @@ void BeginFade(UINT32 uiExitScreen, INT8 bFadeValue, INT8 bType, UINT32 uiDelay)
   SetPendingNewScreen(FADE_SCREEN);
 }
 
-UINT32 FadeScreenInit() {
+function FadeScreenInit(): UINT32 {
   return TRUE;
 }
 
-UINT32 FadeScreenHandle() {
+function FadeScreenHandle(): UINT32 {
   UINT32 uiTime;
 
   if (!gfFadeInitialized) {
@@ -258,11 +258,11 @@ UINT32 FadeScreenHandle() {
   return FADE_SCREEN;
 }
 
-UINT32 FadeScreenShutdown() {
+function FadeScreenShutdown(): UINT32 {
   return FALSE;
 }
 
-void FadeFrameBufferVersionOne() {
+function FadeFrameBufferVersionOne(): void {
   INT32 cX, cY;
   UINT32 uiDestPitchBYTES;
   UINT16 *pBuf;
@@ -304,7 +304,7 @@ void FadeFrameBufferVersionOne() {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void FadeInBackBufferVersionOne() {
+function FadeInBackBufferVersionOne(): void {
   INT32 cX, cY;
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT16 *pSrcBuf, *pDestBuf;
@@ -349,7 +349,7 @@ void FadeInBackBufferVersionOne() {
   UnLockVideoSurface(BACKBUFFER);
 }
 
-void FadeFrameBufferVersionFaster(INT8 bFadeValue) {
+function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
   INT32 cX, cY, iStartX, iStartY;
   UINT32 uiDestPitchBYTES;
   UINT16 *pBuf;
@@ -400,7 +400,7 @@ void FadeFrameBufferVersionFaster(INT8 bFadeValue) {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void FadeFrameBufferSide() {
+function FadeFrameBufferSide(): void {
   INT32 iX1, iX2;
   INT16 sFadeMove;
 
@@ -417,7 +417,7 @@ void FadeFrameBufferSide() {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, iX1, 0, iX2, 480, Get16BPPColor(FROMRGB(0, 0, 0)));
 }
 
-void FadeFrameBufferSquare() {
+function FadeFrameBufferSquare(): void {
   INT32 iX1, iX2, iY1, iY2;
   INT16 sFadeXMove, sFadeYMove;
 
@@ -446,7 +446,7 @@ void FadeFrameBufferSquare() {
   giY2 -= sFadeYMove;
 }
 
-void FadeInBackBufferSquare() {
+function FadeInBackBufferSquare(): void {
   INT32 iX1, iX2, iY1, iY2;
   INT16 sFadeXMove, sFadeYMove;
   blt_vs_fx BltFx;
@@ -520,7 +520,7 @@ void FadeInBackBufferSquare() {
   giY2 += sFadeYMove;
 }
 
-void FadeFrameBufferRealFade() {
+function FadeFrameBufferRealFade(): void {
   if (gsFadeRealCount != gsFadeCount) {
     ShadowVideoSurfaceRectUsingLowPercentTable(FRAME_BUFFER, 0, 0, 640, 480);
 
@@ -528,7 +528,7 @@ void FadeFrameBufferRealFade() {
   }
 }
 
-void FadeInFrameBufferRealFade() {
+function FadeInFrameBufferRealFade(): void {
   INT32 cnt;
 
   if (gsFadeRealCount != gsFadeCount) {
@@ -546,7 +546,7 @@ void FadeInFrameBufferRealFade() {
   }
 }
 
-BOOLEAN UpdateSaveBufferWithBackbuffer(void) {
+function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
   UINT16 usWidth, usHeight;

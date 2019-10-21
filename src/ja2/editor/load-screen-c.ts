@@ -56,17 +56,17 @@ INT8 gbCurrentFileIOStatus; // 1 init saving message, 2 save, 3 init loading mes
 
 // BOOLEAN fSavingFile;
 extern UINT16 gusLightLevel, gusSavedLightLevel;
-UINT32 LoadSaveScreenInit(void) {
+function LoadSaveScreenInit(): UINT32 {
   gfUpdateSummaryInfo = TRUE;
   fEnteringLoadSaveScreen = TRUE;
   return TRUE;
 }
 
-UINT32 LoadSaveScreenShutdown(void) {
+function LoadSaveScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-void LoadSaveScreenEntry() {
+function LoadSaveScreenEntry(): void {
   fEnteringLoadSaveScreen = FALSE;
   gbCurrentFileIOStatus = IOSTATUS_NONE;
 
@@ -113,7 +113,7 @@ void LoadSaveScreenEntry() {
   iLastClickTime = 0;
 }
 
-UINT32 ProcessLoadSaveScreenMessageBoxResult() {
+function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
   FDLG_LIST *curr, *temp;
   gfRenderWorld = TRUE;
   RemoveMessageBox();
@@ -199,7 +199,7 @@ UINT32 ProcessLoadSaveScreenMessageBoxResult() {
   return LOADSAVE_SCREEN;
 }
 
-UINT32 LoadSaveScreenHandle(void) {
+function LoadSaveScreenHandle(): UINT32 {
   FDLG_LIST *FListNode;
   INT32 x;
   InputAtom DialogEvent;
@@ -328,7 +328,7 @@ UINT32 LoadSaveScreenHandle(void) {
   return LOADSAVE_SCREEN;
 }
 
-void CreateFileDialog(UINT16 *zTitle) {
+function CreateFileDialog(zTitle: Pointer<UINT16>): void {
   iFDlgState = DIALOG_NONE;
 
   DisableEditorTaskbar();
@@ -367,7 +367,7 @@ void CreateFileDialog(UINT16 *zTitle) {
   AddUserInputField(FileDialogModeCallback);
 }
 
-void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason) {
+function UpdateWorldInfoCallback(b: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
     gfUpdateSummaryInfo = b->uiFlags & BUTTON_CLICKED_ON ? TRUE : FALSE;
 }
@@ -375,7 +375,7 @@ void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason) {
 // This is a hook into the text input code.  This callback is called whenever the user is currently
 // editing text, and presses Tab to transfer to the file dialog mode.  When this happens, we set the text
 // field to the currently selected file in the list which is already know.
-void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering) {
+function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
   INT32 x;
   FDLG_LIST *FListNode;
   if (fEntering) {
@@ -396,7 +396,7 @@ void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering) {
   }
 }
 
-void RemoveFileDialog(void) {
+function RemoveFileDialog(): void {
   INT32 x;
 
   MSYS_RemoveRegion(&BlanketRegion);
@@ -421,7 +421,7 @@ void RemoveFileDialog(void) {
   EndFrameBufferRender();
 }
 
-void DrawFileDialog(void) {
+function DrawFileDialog(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 179, 69, (179 + 281), 261, Get16BPPColor(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 180, 70, (179 + 281), 261, Get16BPPColor(FROMRGB(24, 61, 81)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 180, 70, (179 + 280), 260, Get16BPPColor(FROMRGB(65, 79, 94)));
@@ -447,7 +447,7 @@ void DrawFileDialog(void) {
 
 // The callback calls this function passing the relative y position of where
 // the user clicked on the hot spot.
-void SelectFileDialogYPos(UINT16 usRelativeYPos) {
+function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
   INT16 sSelName;
   INT32 x;
   FDLG_LIST *FListNode;
@@ -492,7 +492,7 @@ void SelectFileDialogYPos(UINT16 usRelativeYPos) {
   }
 }
 
-FDLG_LIST *AddToFDlgList(FDLG_LIST *pList, GETFILESTRUCT *pInfo) {
+function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>): Pointer<FDLG_LIST> {
   FDLG_LIST *pNode;
 
   // Add to start of list
@@ -519,7 +519,7 @@ FDLG_LIST *AddToFDlgList(FDLG_LIST *pList, GETFILESTRUCT *pInfo) {
   return pList;
 }
 
-BOOLEAN RemoveFromFDlgList(FDLG_LIST **head, FDLG_LIST *node) {
+function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDLG_LIST>): BOOLEAN {
   FDLG_LIST *curr;
   curr = *head;
   while (curr) {
@@ -539,7 +539,7 @@ BOOLEAN RemoveFromFDlgList(FDLG_LIST **head, FDLG_LIST *node) {
   return FALSE; // wasn't deleted
 }
 
-void TrashFDlgList(FDLG_LIST *pList) {
+function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
   FDLG_LIST *pNode;
 
   while (pList != NULL) {
@@ -549,7 +549,7 @@ void TrashFDlgList(FDLG_LIST *pList) {
   }
 }
 
-void SetTopFileToLetter(UINT16 usLetter) {
+function SetTopFileToLetter(usLetter: UINT16): void {
   UINT32 x;
   FDLG_LIST *curr;
   FDLG_LIST *prev;
@@ -577,7 +577,7 @@ void SetTopFileToLetter(UINT16 usLetter) {
   }
 }
 
-void HandleMainKeyEvents(InputAtom *pEvent) {
+function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
   INT32 iPrevFileShown = iCurrFileShown;
   // Replace Alt-x press with ESC.
   if (pEvent->usKeyState & ALT_DOWN && pEvent->usParam == 'x')
@@ -663,7 +663,7 @@ void HandleMainKeyEvents(InputAtom *pEvent) {
 }
 
 // editor doesn't care about the z value.  It uses it's own methods.
-void SetGlobalSectorValues(UINT16 *szFilename) {
+function SetGlobalSectorValues(szFilename: Pointer<UINT16>): void {
   UINT16 *pStr;
   if (ValidCoordinate()) {
     // convert the coordinate string into into the actual global sector coordinates.
@@ -688,7 +688,7 @@ void SetGlobalSectorValues(UINT16 *szFilename) {
   }
 }
 
-void InitErrorCatchDialog() {
+function InitErrorCatchDialog(): void {
   SGPRect CenteringRect = { 0, 0, 639, 479 };
 
   // do message box and return
@@ -700,7 +700,7 @@ void InitErrorCatchDialog() {
 // on the screen and then update it which requires passing the screen back to the main loop.
 // When we come back for the next frame, we then actually save or load the map.  So this
 // process takes two full screen cycles.
-UINT32 ProcessFileIO() {
+function ProcessFileIO(): UINT32 {
   INT16 usStartX, usStartY;
   UINT8 ubNewFilename[50];
   switch (gbCurrentFileIOStatus) {
@@ -841,46 +841,46 @@ UINT32 ProcessFileIO() {
 }
 
 // LOADSCREEN
-void FDlgNamesCallback(GUI_BUTTON *butn, INT32 reason) {
+function FDlgNamesCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     SelectFileDialogYPos(butn->Area.RelativeYPos);
   }
 }
 
-void FDlgOkCallback(GUI_BUTTON *butn, INT32 reason) {
+function FDlgOkCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = TRUE;
     iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
   }
 }
 
-void FDlgCancelCallback(GUI_BUTTON *butn, INT32 reason) {
+function FDlgCancelCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     gfDestroyFDlg = TRUE;
     iFDlgState = DIALOG_CANCEL;
   }
 }
 
-void FDlgUpCallback(GUI_BUTTON *butn, INT32 reason) {
+function FDlgUpCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if (iTopFileShown > 0)
       iTopFileShown--;
   }
 }
 
-void FDlgDwnCallback(GUI_BUTTON *butn, INT32 reason) {
+function FDlgDwnCallback(butn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP)) {
     if ((iTopFileShown + 7) < iTotalFiles)
       iTopFileShown++;
   }
 }
 
-BOOLEAN ExtractFilenameFromFields() {
+function ExtractFilenameFromFields(): BOOLEAN {
   Get16BitStringFromField(0, gzFilename);
   return ValidFilename();
 }
 
-BOOLEAN ValidCoordinate() {
+function ValidCoordinate(): BOOLEAN {
   if (gzFilename[0] >= 'A' && gzFilename[0] <= 'P' || gzFilename[0] >= 'a' && gzFilename[0] <= 'p') {
     UINT16 usTotal;
     if (gzFilename[1] == '1' && gzFilename[2] >= '0' && gzFilename[2] <= '6') {
@@ -899,7 +899,7 @@ BOOLEAN ValidCoordinate() {
   return FALSE;
 }
 
-BOOLEAN ValidFilename() {
+function ValidFilename(): BOOLEAN {
   UINT16 *pDest;
   if (gzFilename[0] != '\0')
     ;
@@ -913,7 +913,7 @@ BOOLEAN ValidFilename() {
   return FALSE;
 }
 
-BOOLEAN ExternalLoadMap(UINT16 *szFilename) {
+function ExternalLoadMap(szFilename: Pointer<UINT16>): BOOLEAN {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return FALSE;
@@ -930,7 +930,7 @@ BOOLEAN ExternalLoadMap(UINT16 *szFilename) {
   return FALSE;
 }
 
-BOOLEAN ExternalSaveMap(UINT16 *szFilename) {
+function ExternalSaveMap(szFilename: Pointer<UINT16>): BOOLEAN {
   Assert(szFilename);
   if (!wcslen(szFilename))
     return FALSE;

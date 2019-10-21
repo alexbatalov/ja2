@@ -42,7 +42,7 @@
 //
 //**************************************************************************
 
-BOOLEAN LoadTGAFileToImage(HIMAGE hImage, UINT16 fContents) {
+function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   HWFILE hFile;
   UINT8 uiImgID, uiColMap, uiType;
   UINT32 uiBytesRead;
@@ -100,7 +100,7 @@ end:
 //
 //**************************************************************************
 
-BOOLEAN ReadUncompColMapImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents) {
+function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
   return FALSE;
 }
 
@@ -118,7 +118,7 @@ BOOLEAN ReadUncompColMapImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 
 //
 //**************************************************************************
 
-BOOLEAN ReadUncompRGBImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents) {
+function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
   UINT8 *pBMData;
   UINT8 *pBMPtr;
 
@@ -264,7 +264,7 @@ freeEnd:
 //
 //**************************************************************************
 
-BOOLEAN ReadRLEColMapImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents) {
+function ReadRLEColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
   return FALSE;
 }
 
@@ -282,7 +282,7 @@ BOOLEAN ReadRLEColMapImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 uiC
 //
 //**************************************************************************
 
-BOOLEAN ReadRLERGBImage(HIMAGE hImage, HWFILE hFile, UINT8 uiImgID, UINT8 uiColMap, UINT16 fContents) {
+function ReadRLERGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
   return FALSE;
 }
 

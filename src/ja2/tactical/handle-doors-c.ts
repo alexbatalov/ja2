@@ -1,6 +1,6 @@
 BOOLEAN gfSetPerceivedDoorState = FALSE;
 
-void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fNoAnimations) {
+function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: BOOLEAN): void {
   STRUCTURE *pStructure;
   DOOR_STATUS *pDoorStatus;
   BOOLEAN fDoorsAnimated = FALSE;
@@ -28,7 +28,7 @@ void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fN
   }
 }
 
-UINT16 GetAnimStateForInteraction(SOLDIERTYPE *pSoldier, BOOLEAN fDoor, UINT16 usAnimState) {
+function GetAnimStateForInteraction(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN, usAnimState: UINT16): UINT16 {
   switch (usAnimState) {
     case OPEN_DOOR:
 
@@ -131,7 +131,7 @@ UINT16 GetAnimStateForInteraction(SOLDIERTYPE *pSoldier, BOOLEAN fDoor, UINT16 u
   }
 }
 
-void InteractWithClosedDoor(SOLDIERTYPE *pSoldier, UINT8 ubHandleCode) {
+function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleCode: UINT8): void {
   pSoldier->ubDoorHandleCode = ubHandleCode;
 
   switch (ubHandleCode) {
@@ -158,7 +158,7 @@ void InteractWithClosedDoor(SOLDIERTYPE *pSoldier, UINT8 ubHandleCode) {
   }
 }
 
-BOOLEAN DoTrapCheckOnStartingMenu(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
+function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   INT8 bDetectLevel;
 
   if (pDoor && pDoor->fLocked && pDoor->ubTrapID != NO_TRAP && pDoor->bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
@@ -176,7 +176,7 @@ BOOLEAN DoTrapCheckOnStartingMenu(SOLDIERTYPE *pSoldier, DOOR *pDoor) {
   return FALSE;
 }
 
-void InteractWithOpenableStruct(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UINT8 ubDirection, BOOLEAN fDoor) {
+function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fDoor: BOOLEAN): void {
   STRUCTURE *pBaseStructure;
   BOOLEAN fDoMenu = FALSE;
   DOOR *pDoor;
@@ -263,7 +263,7 @@ void InteractWithOpenableStruct(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UI
   }
 }
 
-void ProcessImplicationsOfPCMessingWithDoor(SOLDIERTYPE *pSoldier) {
+function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT8 ubRoom;
   SOLDIERTYPE *pGoon;
   // if player is hacking at a door in the brothel and a kingpin guy can see him
@@ -293,7 +293,7 @@ void ProcessImplicationsOfPCMessingWithDoor(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure) {
+function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>): BOOLEAN {
   BOOLEAN fHandleDoor = FALSE;
   INT16 sAPCost = 0, sBPCost = 0;
   DOOR *pDoor;
@@ -700,7 +700,7 @@ BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pS
   return fHandleDoor;
 }
 
-BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure, BOOLEAN fNoAnimations) {
+function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fNoAnimations: BOOLEAN): BOOLEAN {
   LEVELNODE *pShadowNode;
   LEVELNODE *pNode;
   INT32 cnt;
@@ -972,7 +972,7 @@ BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pS
   return fDoAnimation;
 }
 
-void SetDoorString(INT16 sGridNo) {
+function SetDoorString(sGridNo: INT16): void {
   DOOR *pDoor;
   DOOR_STATUS *pDoorStatus;
   STRUCTURE *pStructure;

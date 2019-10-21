@@ -429,7 +429,7 @@ UINT32 guiBodyInvVO[4][2];
 UINT32 guiGoldKeyVO;
 INT8 gbCompatibleApplyItem = FALSE;
 
-BOOLEAN AttemptToAddSubstring(STR16 zDest, STR16 zTemp, UINT32 *puiStringLength, UINT32 uiPixLimit) {
+function AttemptToAddSubstring(zDest: STR16, zTemp: STR16, puiStringLength: Pointer<UINT32>, uiPixLimit: UINT32): BOOLEAN {
   UINT32 uiRequiredStringLength, uiTempStringLength;
 
   uiTempStringLength = StringPixLength(zTemp, ITEMDESC_FONT);
@@ -450,7 +450,7 @@ BOOLEAN AttemptToAddSubstring(STR16 zDest, STR16 zTemp, UINT32 *puiStringLength,
   }
 }
 
-void GenerateProsString(UINT16 *zItemPros, OBJECTTYPE *pObject, UINT32 uiPixLimit) {
+function GenerateProsString(zItemPros: Pointer<UINT16>, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
   UINT32 uiStringLength = 0;
   UINT16 *zTemp;
   UINT16 usItem = pObject->usItem;
@@ -535,7 +535,7 @@ void GenerateProsString(UINT16 *zItemPros, OBJECTTYPE *pObject, UINT32 uiPixLimi
   }
 }
 
-void GenerateConsString(UINT16 *zItemCons, OBJECTTYPE *pObject, UINT32 uiPixLimit) {
+function GenerateConsString(zItemCons: Pointer<UINT16>, pObject: Pointer<OBJECTTYPE>, uiPixLimit: UINT32): void {
   UINT32 uiStringLength = 0;
   UINT16 *zTemp;
   UINT8 ubWeight;
@@ -613,7 +613,7 @@ void GenerateConsString(UINT16 *zItemCons, OBJECTTYPE *pObject, UINT32 uiPixLimi
   }
 }
 
-BOOLEAN InitInvSlotInterface(INV_REGION_DESC *pRegionDesc, INV_REGION_DESC *pCamoRegion, MOUSE_CALLBACK INVMoveCallback, MOUSE_CALLBACK INVClickCallback, MOUSE_CALLBACK INVMoveCammoCallback, MOUSE_CALLBACK INVClickCammoCallback, BOOLEAN fSetHighestPrioity) {
+function InitInvSlotInterface(pRegionDesc: Pointer<INV_REGION_DESC>, pCamoRegion: Pointer<INV_REGION_DESC>, INVMoveCallback: MOUSE_CALLBACK, INVClickCallback: MOUSE_CALLBACK, INVMoveCammoCallback: MOUSE_CALLBACK, INVClickCammoCallback: MOUSE_CALLBACK, fSetHighestPrioity: BOOLEAN): BOOLEAN {
   INT32 cnt;
   VOBJECT_DESC VObjectDesc;
 
@@ -677,19 +677,19 @@ BOOLEAN InitInvSlotInterface(INV_REGION_DESC *pRegionDesc, INV_REGION_DESC *pCam
   return TRUE;
 }
 
-void InitKeyRingInterface(MOUSE_CALLBACK KeyRingClickCallback) {
+function InitKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
   MSYS_DefineRegion(&gKeyRingPanel, KEYRING_X, KEYRING_Y, KEYRING_X + KEYRING_WIDTH, KEYRING_X + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
   SetRegionFastHelpText(&(gKeyRingPanel), TacticalStr[KEYRING_HELP_TEXT]);
 }
 
-void InitMapKeyRingInterface(MOUSE_CALLBACK KeyRingClickCallback) {
+function InitMapKeyRingInterface(KeyRingClickCallback: MOUSE_CALLBACK): void {
   MSYS_DefineRegion(&gKeyRingPanel, MAP_KEYRING_X, MAP_KEYRING_Y, MAP_KEYRING_X + KEYRING_WIDTH, MAP_KEYRING_Y + KEYRING_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, KeyRingClickCallback);
 
   SetRegionFastHelpText(&(gKeyRingPanel), TacticalStr[KEYRING_HELP_TEXT]);
 }
 
-void EnableKeyRing(BOOLEAN fEnable) {
+function EnableKeyRing(fEnable: BOOLEAN): void {
   if (fEnable) {
     MSYS_EnableRegion(&gKeyRingPanel);
   } else {
@@ -697,12 +697,12 @@ void EnableKeyRing(BOOLEAN fEnable) {
   }
 }
 
-void ShutdownKeyRingInterface(void) {
+function ShutdownKeyRingInterface(): void {
   MSYS_RemoveRegion(&gKeyRingPanel);
   return;
 }
 
-void DisableInvRegions(BOOLEAN fDisable) {
+function DisableInvRegions(fDisable: BOOLEAN): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
@@ -726,7 +726,7 @@ void DisableInvRegions(BOOLEAN fDisable) {
   }
 }
 
-void ShutdownInvSlotInterface() {
+function ShutdownInvSlotInterface(): void {
   UINT32 cnt;
 
   // Remove all body type panels
@@ -752,14 +752,14 @@ void ShutdownInvSlotInterface() {
   MSYS_RemoveRegion(&gSMInvCamoRegion);
 }
 
-void RenderInvBodyPanel(SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY) {
+function RenderInvBodyPanel(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): void {
   // Blit body inv, based on body type
   INT8 bSubImageIndex = gbCompatibleApplyItem;
 
   BltVideoObjectFromIndex(guiSAVEBUFFER, guiBodyInvVO[pSoldier->ubBodyType][bSubImageIndex], 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void HandleRenderInvSlots(SOLDIERTYPE *pSoldier, UINT8 fDirtyLevel) {
+function HandleRenderInvSlots(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: UINT8): void {
   INT32 cnt;
   static INT16 pStr[150];
 
@@ -788,7 +788,7 @@ void HandleRenderInvSlots(SOLDIERTYPE *pSoldier, UINT8 fDirtyLevel) {
   }
 }
 
-void INVRenderINVPanelItem(SOLDIERTYPE *pSoldier, INT16 sPocket, UINT8 fDirtyLevel) {
+function INVRenderINVPanelItem(pSoldier: Pointer<SOLDIERTYPE>, sPocket: INT16, fDirtyLevel: UINT8): void {
   INT16 sX, sY;
   INT16 sBarX, sBarY;
   OBJECTTYPE *pObject;
@@ -899,7 +899,7 @@ void INVRenderINVPanelItem(SOLDIERTYPE *pSoldier, INT16 sPocket, UINT8 fDirtyLev
   }
 }
 
-BOOLEAN CompatibleAmmoForGun(OBJECTTYPE *pTryObject, OBJECTTYPE *pTestObject) {
+function CompatibleAmmoForGun(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
   if ((Item[pTryObject->usItem].usItemClass & IC_AMMO)) {
     // CHECK
     if (Weapon[pTestObject->usItem].ubCalibre == Magazine[Item[pTryObject->usItem].ubClassIndex].ubCalibre) {
@@ -909,7 +909,7 @@ BOOLEAN CompatibleAmmoForGun(OBJECTTYPE *pTryObject, OBJECTTYPE *pTestObject) {
   return FALSE;
 }
 
-BOOLEAN CompatibleGunForAmmo(OBJECTTYPE *pTryObject, OBJECTTYPE *pTestObject) {
+function CompatibleGunForAmmo(pTryObject: Pointer<OBJECTTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
   if ((Item[pTryObject->usItem].usItemClass & IC_GUN)) {
     // CHECK
     if (Weapon[pTryObject->usItem].ubCalibre == Magazine[Item[pTestObject->usItem].ubClassIndex].ubCalibre) {
@@ -919,7 +919,7 @@ BOOLEAN CompatibleGunForAmmo(OBJECTTYPE *pTryObject, OBJECTTYPE *pTestObject) {
   return FALSE;
 }
 
-BOOLEAN CompatibleItemForApplyingOnMerc(OBJECTTYPE *pTestObject) {
+function CompatibleItemForApplyingOnMerc(pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT16 usItem = pTestObject->usItem;
 
   // ATE: If in mapscreen, return false always....
@@ -935,7 +935,7 @@ BOOLEAN CompatibleItemForApplyingOnMerc(OBJECTTYPE *pTestObject) {
   }
 }
 
-BOOLEAN SoldierContainsAnyCompatibleStuff(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTestObject) {
+function SoldierContainsAnyCompatibleStuff(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>): BOOLEAN {
   INT32 cnt;
   OBJECTTYPE *pObject;
 
@@ -964,7 +964,7 @@ BOOLEAN SoldierContainsAnyCompatibleStuff(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTe
   return FALSE;
 }
 
-void HandleAnyMercInSquadHasCompatibleStuff(UINT8 ubSquad, OBJECTTYPE *pObject, BOOLEAN fReset) {
+function HandleAnyMercInSquadHasCompatibleStuff(ubSquad: UINT8, pObject: Pointer<OBJECTTYPE>, fReset: BOOLEAN): void {
   INT32 iCounter = 0;
 
   if (ubSquad == NUMBER_OF_SQUADS) {
@@ -985,7 +985,7 @@ void HandleAnyMercInSquadHasCompatibleStuff(UINT8 ubSquad, OBJECTTYPE *pObject, 
   }
 }
 
-BOOLEAN HandleCompatibleAmmoUIForMapScreen(SOLDIERTYPE *pSoldier, INT32 bInvPos, BOOLEAN fOn, BOOLEAN fFromMerc) {
+function HandleCompatibleAmmoUIForMapScreen(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, fOn: BOOLEAN, fFromMerc: BOOLEAN): BOOLEAN {
   BOOLEAN fFound = FALSE;
   INT32 cnt;
   OBJECTTYPE *pObject, *pTestObject;
@@ -1095,7 +1095,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapScreen(SOLDIERTYPE *pSoldier, INT32 bInvPos,
   return fFound;
 }
 
-BOOLEAN HandleCompatibleAmmoUIForMapInventory(SOLDIERTYPE *pSoldier, INT32 bInvPos, INT32 iStartSlotNumber, BOOLEAN fOn, BOOLEAN fFromMerc) {
+function HandleCompatibleAmmoUIForMapInventory(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT32, iStartSlotNumber: INT32, fOn: BOOLEAN, fFromMerc: BOOLEAN): BOOLEAN {
   // CJC: ATE, needs fixing here!
 
   BOOLEAN fFound = FALSE;
@@ -1168,7 +1168,7 @@ BOOLEAN HandleCompatibleAmmoUIForMapInventory(SOLDIERTYPE *pSoldier, INT32 bInvP
   return fFound;
 }
 
-BOOLEAN InternalHandleCompatibleAmmoUI(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTestObject, BOOLEAN fOn) {
+function InternalHandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, pTestObject: Pointer<OBJECTTYPE>, fOn: BOOLEAN): BOOLEAN {
   BOOLEAN fFound = FALSE;
   INT32 cnt;
   OBJECTTYPE *pObject;
@@ -1296,7 +1296,7 @@ BOOLEAN InternalHandleCompatibleAmmoUI(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTestO
   return fFound;
 }
 
-void ResetCompatibleItemArray() {
+function ResetCompatibleItemArray(): void {
   INT32 cnt = 0;
 
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
@@ -1306,7 +1306,7 @@ void ResetCompatibleItemArray() {
   }
 }
 
-BOOLEAN HandleCompatibleAmmoUI(SOLDIERTYPE *pSoldier, INT8 bInvPos, BOOLEAN fOn) {
+function HandleCompatibleAmmoUI(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8, fOn: BOOLEAN): BOOLEAN {
   INT32 cnt;
   OBJECTTYPE *pTestObject;
   BOOLEAN fFound = FALSE;
@@ -1358,17 +1358,17 @@ BOOLEAN HandleCompatibleAmmoUI(SOLDIERTYPE *pSoldier, INT8 bInvPos, BOOLEAN fOn)
   return InternalHandleCompatibleAmmoUI(pSoldier, pTestObject, fOn);
 }
 
-void GetSlotInvXY(UINT8 ubPos, INT16 *psX, INT16 *psY) {
+function GetSlotInvXY(ubPos: UINT8, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
   *psX = gSMInvData[ubPos].sX;
   *psY = gSMInvData[ubPos].sY;
 }
 
-void GetSlotInvHeightWidth(UINT8 ubPos, INT16 *psWidth, INT16 *psHeight) {
+function GetSlotInvHeightWidth(ubPos: UINT8, psWidth: Pointer<INT16>, psHeight: Pointer<INT16>): void {
   *psWidth = gSMInvData[ubPos].sWidth;
   *psHeight = gSMInvData[ubPos].sHeight;
 }
 
-void HandleNewlyAddedItems(SOLDIERTYPE *pSoldier, BOOLEAN *fDirtyLevel) {
+function HandleNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>, fDirtyLevel: Pointer<BOOLEAN>): void {
   UINT32 cnt;
   INT16 sX, sY;
   OBJECTTYPE *pObject;
@@ -1401,7 +1401,7 @@ void HandleNewlyAddedItems(SOLDIERTYPE *pSoldier, BOOLEAN *fDirtyLevel) {
   }
 }
 
-void CheckForAnyNewlyAddedItems(SOLDIERTYPE *pSoldier) {
+function CheckForAnyNewlyAddedItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 cnt;
 
   // OK, l0ok for any new...
@@ -1412,7 +1412,7 @@ void CheckForAnyNewlyAddedItems(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void DegradeNewlyAddedItems() {
+function DegradeNewlyAddedItems(): void {
   UINT32 uiTime;
   UINT32 cnt, cnt2;
   SOLDIERTYPE *pSoldier;
@@ -1453,7 +1453,7 @@ void DegradeNewlyAddedItems() {
   }
 }
 
-void InitItemInterface() {
+function InitItemInterface(): void {
   UINT32 cnt, cnt2;
 
   for (cnt = 0, cnt2 = 0; cnt2 < 20; cnt += 3, cnt2++) {
@@ -1461,7 +1461,7 @@ void InitItemInterface() {
   }
 }
 
-void INVRenderItem(UINT32 uiBuffer, SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, INT16 sX, INT16 sY, INT16 sWidth, INT16 sHeight, UINT8 fDirtyLevel, UINT8 *pubHighlightCounter, UINT8 ubStatusIndex, BOOLEAN fOutline, INT16 sOutlineColor) {
+function INVRenderItem(uiBuffer: UINT32, pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, sWidth: INT16, sHeight: INT16, fDirtyLevel: UINT8, pubHighlightCounter: Pointer<UINT8>, ubStatusIndex: UINT8, fOutline: BOOLEAN, sOutlineColor: INT16): void {
   UINT16 uiStringLength;
   INVTYPE *pItem;
   ETRLEObject *pTrav;
@@ -1678,11 +1678,11 @@ void INVRenderItem(UINT32 uiBuffer, SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, 
   }
 }
 
-BOOLEAN InItemDescriptionBox() {
+function InItemDescriptionBox(): BOOLEAN {
   return gfInItemDescBox;
 }
 
-void CycleItemDescriptionItem() {
+function CycleItemDescriptionItem(): void {
   INT16 usOldItem;
 
   // Delete old box...
@@ -1710,7 +1710,7 @@ void CycleItemDescriptionItem() {
   InternalInitItemDescriptionBox(&(gpItemDescSoldier->inv[HANDPOS]), 214, (INT16)(INV_INTERFACE_START_Y + 1), gubItemDescStatusIndex, gpItemDescSoldier);
 }
 
-BOOLEAN InitItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sX, INT16 sY, UINT8 ubStatusIndex) {
+function InitItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): BOOLEAN {
   OBJECTTYPE *pObject;
 
   // DEF:
@@ -1727,7 +1727,7 @@ BOOLEAN InitItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sX
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-BOOLEAN InitKeyItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sX, INT16 sY, UINT8 ubStatusIndex) {
+function InitKeyItemDescriptionBox(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sX: INT16, sY: INT16, ubStatusIndex: UINT8): BOOLEAN {
   OBJECTTYPE *pObject;
 
   AllocateObject(&pObject);
@@ -1736,7 +1736,7 @@ BOOLEAN InitKeyItemDescriptionBox(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16
   return InternalInitItemDescriptionBox(pObject, sX, sY, ubStatusIndex, pSoldier);
 }
 
-BOOLEAN InternalInitItemDescriptionBox(OBJECTTYPE *pObject, INT16 sX, INT16 sY, UINT8 ubStatusIndex, SOLDIERTYPE *pSoldier) {
+function InternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, sX: INT16, sY: INT16, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 ubString[48];
   INT32 cnt;
@@ -2001,7 +2001,7 @@ BOOLEAN InternalInitItemDescriptionBox(OBJECTTYPE *pObject, INT16 sX, INT16 sY, 
   return TRUE;
 }
 
-BOOLEAN ReloadItemDesc() {
+function ReloadItemDesc(): BOOLEAN {
   if (!LoadTileGraphicForItem(&(Item[gpItemDescObject->usItem]), &guiItemGraphic)) {
     return FALSE;
   }
@@ -2040,7 +2040,7 @@ BOOLEAN ReloadItemDesc() {
   return TRUE;
 }
 
-void ItemDescAmmoCallback(GUI_BUTTON *btn, INT32 reason) {
+function ItemDescAmmoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   static BOOLEAN fRightDown = FALSE;
   INT16 pStr[10];
 
@@ -2107,7 +2107,7 @@ void ItemDescAmmoCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DoAttachment(void) {
+function DoAttachment(): void {
   if (AttachObject(gpItemDescSoldier, gpItemDescObject, gpItemPointer)) {
     if (gpItemPointer->usItem == NOTHING) {
       // attachment attached, merge item consumed, etc
@@ -2147,14 +2147,14 @@ void DoAttachment(void) {
   gfReEvaluateEveryonesNothingToDo = TRUE;
 }
 
-void PermanantAttachmentMessageBoxCallBack(UINT8 ubExitValue) {
+function PermanantAttachmentMessageBoxCallBack(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
     DoAttachment();
   }
   // else do nothing
 }
 
-void ItemDescAttachmentsCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemDescAttachmentsCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
   static BOOLEAN fRightDown = FALSE;
 
@@ -2250,7 +2250,7 @@ void ItemDescAttachmentsCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void RenderItemDescriptionBox() {
+function RenderItemDescriptionBox(): void {
   ETRLEObject *pTrav;
   UINT32 usHeight, usWidth;
   INT16 sCenX, sCenY, sStrX;
@@ -3025,7 +3025,7 @@ void RenderItemDescriptionBox() {
   }
 }
 
-void HandleItemDescriptionBox(BOOLEAN *pfDirty) {
+function HandleItemDescriptionBox(pfDirty: Pointer<BOOLEAN>): void {
   if (fItemDescDelete) {
     DeleteItemDescriptionBox();
     fItemDescDelete = FALSE;
@@ -3033,7 +3033,7 @@ void HandleItemDescriptionBox(BOOLEAN *pfDirty) {
   }
 }
 
-void DeleteItemDescriptionBox() {
+function DeleteItemDescriptionBox(): void {
   INT32 cnt, cnt2;
   BOOLEAN fFound, fAllFound;
 
@@ -3168,7 +3168,7 @@ void DeleteItemDescriptionBox() {
   gfItemDescObjectIsAttachment = FALSE;
 }
 
-void InternalBeginItemPointer(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, INT8 bHandPos) {
+function InternalBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>, bHandPos: INT8): void {
   //	BOOLEAN fOk;
 
   // If not null return
@@ -3196,7 +3196,7 @@ void InternalBeginItemPointer(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject, INT8 b
   gfReEvaluateEveryonesNothingToDo = TRUE;
 }
 
-void BeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
+function BeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
   BOOLEAN fOk;
   OBJECTTYPE pObject;
 
@@ -3214,7 +3214,7 @@ void BeginItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubHandPos) {
   }
 }
 
-void BeginKeyRingItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubKeyRingPosition) {
+function BeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubKeyRingPosition: UINT8): void {
   BOOLEAN fOk;
 
   // If not null return
@@ -3254,7 +3254,7 @@ void BeginKeyRingItemPointer(SOLDIERTYPE *pSoldier, UINT8 ubKeyRingPosition) {
   gfItemPointerDifferentThanDefault = FALSE;
 }
 
-void EndItemPointer() {
+function EndItemPointer(): void {
   if (gpItemPointer != NULL) {
     gpItemPointer = NULL;
     gbItemPointerSrcSlot = NO_SLOT;
@@ -3275,7 +3275,7 @@ void EndItemPointer() {
   }
 }
 
-void DrawItemFreeCursor() {
+function DrawItemFreeCursor(): void {
   // OBJECTTYPE		*gpItemPointer;
   // UINT16				usItemSnapCursor;
 
@@ -3287,11 +3287,11 @@ void DrawItemFreeCursor() {
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
 }
 
-void HideItemTileCursor() {
+function HideItemTileCursor(): void {
   //	RemoveTopmost( gusCurMousePos, gusItemPointer );
 }
 
-BOOLEAN SoldierCanSeeCatchComing(SOLDIERTYPE *pSoldier, INT16 sSrcGridNo) {
+function SoldierCanSeeCatchComing(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16): BOOLEAN {
   return TRUE;
   /*-
           INT32							cnt;
@@ -3330,7 +3330,7 @@ BOOLEAN SoldierCanSeeCatchComing(SOLDIERTYPE *pSoldier, INT16 sSrcGridNo) {
   -*/
 }
 
-void DrawItemTileCursor() {
+function DrawItemTileCursor(): void {
   UINT16 usMapPos;
   UINT16 usIndex;
   UINT8 ubSoldierID;
@@ -3567,7 +3567,7 @@ void DrawItemTileCursor() {
   }
 }
 
-BOOLEAN IsValidAmmoToReloadRobot(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
+function IsValidAmmoToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
   if (!CompatibleAmmoForGun(pObject, &(pSoldier->inv[HANDPOS]))) {
     // Build string...
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[ROBOT_NEEDS_GIVEN_CALIBER_STR], AmmoCaliber[Weapon[pSoldier->inv[HANDPOS].usItem].ubCalibre]);
@@ -3578,7 +3578,7 @@ BOOLEAN IsValidAmmoToReloadRobot(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
   return TRUE;
 }
 
-BOOLEAN HandleItemPointerClick(UINT16 usMapPos) {
+function HandleItemPointerClick(usMapPos: UINT16): BOOLEAN {
   // Determine what to do
   UINT8 ubDirection;
   UINT8 ubSoldierID;
@@ -3960,7 +3960,7 @@ BOOLEAN HandleItemPointerClick(UINT16 usMapPos) {
   return TRUE;
 }
 
-BOOLEAN ItemCursorInLobRange(UINT16 usMapPos) {
+function ItemCursorInLobRange(usMapPos: UINT16): BOOLEAN {
   // Draw item depending on distance from buddy
   if (GetRangeFromGridNoDiff(usMapPos, gpItemPointerSoldier->sGridNo) > MIN_LOB_RANGE) {
     return FALSE;
@@ -3969,15 +3969,15 @@ BOOLEAN ItemCursorInLobRange(UINT16 usMapPos) {
   }
 }
 
-BOOLEAN InItemStackPopup() {
+function InItemStackPopup(): BOOLEAN {
   return gfInItemStackPopup;
 }
 
-BOOLEAN InKeyRingPopup() {
+function InKeyRingPopup(): BOOLEAN {
   return gfInKeyRingPopup;
 }
 
-BOOLEAN InitItemStackPopup(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sInvX, INT16 sInvY, INT16 sInvWidth, INT16 sInvHeight) {
+function InitItemStackPopup(pSoldier: Pointer<SOLDIERTYPE>, ubPosition: UINT8, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   INT16 sX, sY, sCenX, sCenY;
   SGPRect aRect;
@@ -4094,13 +4094,13 @@ BOOLEAN InitItemStackPopup(SOLDIERTYPE *pSoldier, UINT8 ubPosition, INT16 sInvX,
   return TRUE;
 }
 
-void EndItemStackPopupWithItemInHand() {
+function EndItemStackPopupWithItemInHand(): void {
   if (gpItemPointer != NULL) {
     DeleteItemStackPopup();
   }
 }
 
-void RenderItemStackPopup(BOOLEAN fFullRender) {
+function RenderItemStackPopup(fFullRender: BOOLEAN): void {
   ETRLEObject *pTrav;
   UINT32 usHeight, usWidth;
   HVOBJECT hVObject;
@@ -4142,10 +4142,10 @@ void RenderItemStackPopup(BOOLEAN fFullRender) {
   InvalidateRegion(gsItemPopupInvX, gsItemPopupInvY, gsItemPopupInvX + gsItemPopupInvWidth, gsItemPopupInvY + gsItemPopupInvHeight);
 }
 
-void HandleItemStackPopup() {
+function HandleItemStackPopup(): void {
 }
 
-void DeleteItemStackPopup() {
+function DeleteItemStackPopup(): void {
   INT32 cnt;
 
   // Remove
@@ -4171,7 +4171,7 @@ void DeleteItemStackPopup() {
   FreeMouseCursor();
 }
 
-BOOLEAN InitKeyRingPopup(SOLDIERTYPE *pSoldier, INT16 sInvX, INT16 sInvY, INT16 sInvWidth, INT16 sInvHeight) {
+function InitKeyRingPopup(pSoldier: Pointer<SOLDIERTYPE>, sInvX: INT16, sInvY: INT16, sInvWidth: INT16, sInvHeight: INT16): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   SGPRect aRect;
   ETRLEObject *pTrav;
@@ -4259,7 +4259,7 @@ BOOLEAN InitKeyRingPopup(SOLDIERTYPE *pSoldier, INT16 sInvX, INT16 sInvY, INT16 
   return TRUE;
 }
 
-void RenderKeyRingPopup(BOOLEAN fFullRender) {
+function RenderKeyRingPopup(fFullRender: BOOLEAN): void {
   ETRLEObject *pTrav;
   UINT32 usHeight, usWidth;
   HVOBJECT hVObject;
@@ -4327,7 +4327,7 @@ void RenderKeyRingPopup(BOOLEAN fFullRender) {
   InvalidateRegion(gsKeyRingPopupInvX, gsKeyRingPopupInvY, gsKeyRingPopupInvX + gsKeyRingPopupInvWidth, gsKeyRingPopupInvY + gsKeyRingPopupInvHeight);
 }
 
-void DeleteKeyRingPopup() {
+function DeleteKeyRingPopup(): void {
   INT32 cnt;
 
   if (gfInKeyRingPopup == FALSE) {
@@ -4358,7 +4358,7 @@ void DeleteKeyRingPopup() {
   FreeMouseCursor();
 }
 
-UINT32 GetInterfaceGraphicForItem(INVTYPE *pItem) {
+function GetInterfaceGraphicForItem(pItem: Pointer<INVTYPE>): UINT32 {
   // CHECK SUBCLASS
   if (pItem->ubGraphicType == 0) {
     return guiGUNSM;
@@ -4371,7 +4371,7 @@ UINT32 GetInterfaceGraphicForItem(INVTYPE *pItem) {
   }
 }
 
-UINT16 GetTileGraphicForItem(INVTYPE *pItem) {
+function GetTileGraphicForItem(pItem: Pointer<INVTYPE>): UINT16 {
   UINT16 usIndex;
 
   // CHECK SUBCLASS
@@ -4387,7 +4387,7 @@ UINT16 GetTileGraphicForItem(INVTYPE *pItem) {
   return usIndex;
 }
 
-BOOLEAN LoadTileGraphicForItem(INVTYPE *pItem, UINT32 *puiVo) {
+function LoadTileGraphicForItem(pItem: Pointer<INVTYPE>, puiVo: Pointer<UINT32>): BOOLEAN {
   CHAR8 zName[100];
   UINT32 uiVo;
   VOBJECT_DESC VObjectDesc;
@@ -4435,10 +4435,10 @@ BOOLEAN LoadTileGraphicForItem(INVTYPE *pItem, UINT32 *puiVo) {
   return TRUE;
 }
 
-void ItemDescMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemDescMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
 }
 
-void ItemDescCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemDescCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   static BOOLEAN fRightDown = FALSE, fLeftDown = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -4465,7 +4465,7 @@ void ItemDescCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void ItemDescDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function ItemDescDoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= (BUTTON_CLICKED_ON);
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -4490,7 +4490,7 @@ void ItemDescDoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPopupRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemPopupRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -4581,7 +4581,7 @@ void ItemPopupRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void ItemPopupFullRegionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemPopupFullRegionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
@@ -4677,11 +4677,11 @@ ITEM_PICKUP_MENU_STRUCT gItemPickupMenu;
 BOOLEAN gfInItemPickupMenu = FALSE;
 
 // STUFF FOR POPUP ITEM INFO BOX
-void SetItemPickupMenuDirty(BOOLEAN fDirtyLevel) {
+function SetItemPickupMenuDirty(fDirtyLevel: BOOLEAN): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 }
 
-BOOLEAN InitializeItemPickupMenu(SOLDIERTYPE *pSoldier, INT16 sGridNo, ITEM_POOL *pItemPool, INT16 sScreenX, INT16 sScreenY, INT8 bZLevel) {
+function InitializeItemPickupMenu(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pItemPool: Pointer<ITEM_POOL>, sScreenX: INT16, sScreenY: INT16, bZLevel: INT8): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 ubString[48];
   ITEM_POOL *pTempItemPool;
@@ -4863,7 +4863,7 @@ BOOLEAN InitializeItemPickupMenu(SOLDIERTYPE *pSoldier, INT16 sGridNo, ITEM_POOL
   return TRUE;
 }
 
-void SetupPickupPage(INT8 bPage) {
+function SetupPickupPage(bPage: INT8): void {
   INT32 cnt, iStart, iEnd;
   ITEM_POOL *pTempItemPool;
   INT16 sValue;
@@ -4954,7 +4954,7 @@ void SetupPickupPage(INT8 bPage) {
   SetItemPickupMenuDirty(DIRTYLEVEL2);
 }
 
-void CalculateItemPickupMenuDimensions() {
+function CalculateItemPickupMenuDimensions(): void {
   INT32 cnt;
   INT16 sX, sY;
   UINT16 usSubRegion, usHeight, usWidth;
@@ -4988,13 +4988,13 @@ void CalculateItemPickupMenuDimensions() {
 }
 
 // set pick up menu dirty level
-void SetPickUpMenuDirtyLevel(BOOLEAN fDirtyLevel) {
+function SetPickUpMenuDirtyLevel(fDirtyLevel: BOOLEAN): void {
   gItemPickupMenu.fDirtyLevel = fDirtyLevel;
 
   return;
 }
 
-void RenderItemPickupMenu() {
+function RenderItemPickupMenu(): void {
   INT32 cnt;
   UINT16 usItemTileIndex;
   INT16 sX, sY, sCenX, sCenY, sFontX, sFontY, sNewX, sNewY;
@@ -5164,7 +5164,7 @@ void RenderItemPickupMenu() {
   }
 }
 
-void RemoveItemPickupMenu() {
+function RemoveItemPickupMenu(): void {
   INT32 cnt;
 
   if (gfInItemPickupMenu) {
@@ -5238,7 +5238,7 @@ void RemoveItemPickupMenu() {
   }
 }
 
-void ItemPickupScrollUp(GUI_BUTTON *btn, INT32 reason) {
+function ItemPickupScrollUp(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -5249,7 +5249,7 @@ void ItemPickupScrollUp(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPickupScrollDown(GUI_BUTTON *btn, INT32 reason) {
+function ItemPickupScrollDown(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -5260,7 +5260,7 @@ void ItemPickupScrollDown(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPickupAll(GUI_BUTTON *btn, INT32 reason) {
+function ItemPickupAll(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 cnt;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -5288,7 +5288,7 @@ void ItemPickupAll(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPickupOK(GUI_BUTTON *btn, INT32 reason) {
+function ItemPickupOK(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 cnt = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -5306,7 +5306,7 @@ void ItemPickupOK(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPickupCancel(GUI_BUTTON *btn, INT32 reason) {
+function ItemPickupCancel(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 cnt = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -5321,7 +5321,7 @@ void ItemPickupCancel(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ItemPickMenuMouseMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemPickMenuMouseMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT32 uiItemPos;
   ITEM_POOL *pTempItemPool;
   INT32 bPos;
@@ -5365,14 +5365,14 @@ void ItemPickMenuMouseMoveCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void ItemPickupBackgroundClick(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemPickupBackgroundClick(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     // OK, goto team panel....
     ToggleTacticalPanels();
   }
 }
 
-void ItemPickMenuMouseClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function ItemPickMenuMouseClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 uiItemPos;
   UINT8 cnt;
   BOOLEAN fEnable = FALSE;
@@ -5410,7 +5410,7 @@ void ItemPickMenuMouseClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-BOOLEAN HandleItemPickupMenu() {
+function HandleItemPickupMenu(): BOOLEAN {
   if (!gfInItemPickupMenu) {
     return FALSE;
   }
@@ -5422,7 +5422,7 @@ BOOLEAN HandleItemPickupMenu() {
   return gItemPickupMenu.fHandled;
 }
 
-void BtnMoneyButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMoneyButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT8 i;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -5528,7 +5528,7 @@ void BtnMoneyButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RemoveMoney() {
+function RemoveMoney(): void {
   if (gRemoveMoney.uiMoneyRemoving != 0) {
     // if we are in the shop keeper interface
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
@@ -5602,11 +5602,11 @@ void RemoveMoney() {
   //		gfAddingMoneyToMercFromPlayersAccount = FALSE;
 }
 
-BOOLEAN AttemptToApplyCamo(SOLDIERTYPE *pSoldier, UINT16 usItemIndex) {
+function AttemptToApplyCamo(pSoldier: Pointer<SOLDIERTYPE>, usItemIndex: UINT16): BOOLEAN {
   return FALSE;
 }
 
-void GetHelpTextForItem(INT16 *pzStr, OBJECTTYPE *pObject, SOLDIERTYPE *pSoldier) {
+function GetHelpTextForItem(pzStr: Pointer<INT16>, pObject: Pointer<OBJECTTYPE>, pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 pStr[250];
   UINT16 usItem = pObject->usItem;
   INT32 cnt = 0;
@@ -5671,7 +5671,7 @@ void GetHelpTextForItem(INT16 *pzStr, OBJECTTYPE *pObject, SOLDIERTYPE *pSoldier
   swprintf(pzStr, L"%s", pStr);
 }
 
-UINT8 GetPrefferedItemSlotGraphicNum(UINT16 usItem) {
+function GetPrefferedItemSlotGraphicNum(usItem: UINT16): UINT8 {
   // Check for small item...
   if (Item[usItem].ubPerPocket >= 1) {
     // Small
@@ -5687,7 +5687,7 @@ UINT8 GetPrefferedItemSlotGraphicNum(UINT16 usItem) {
   return 0;
 }
 
-void CancelItemPointer() {
+function CancelItemPointer(): void {
   // ATE: If we have an item pointer end it!
   if (gpItemPointer != NULL) {
     if (gbItemPointerSrcSlot != NO_SLOT) {
@@ -5720,7 +5720,7 @@ interface ITEM_CURSOR_SAVE_INFO {
   bPadding: INT8[] /* [5] */;
 }
 
-BOOLEAN LoadItemCursorFromSavedGame(HWFILE hFile) {
+function LoadItemCursorFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiLoadSize = 0;
   UINT32 uiNumBytesRead = 0;
   ITEM_CURSOR_SAVE_INFO SaveStruct;
@@ -5757,7 +5757,7 @@ BOOLEAN LoadItemCursorFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveItemCursorToSavedGame(HWFILE hFile) {
+function SaveItemCursorToSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiSaveSize = 0;
   UINT32 uiNumBytesWritten = 0;
 
@@ -5796,7 +5796,7 @@ BOOLEAN SaveItemCursorToSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-void UpdateItemHatches() {
+function UpdateItemHatches(): void {
   SOLDIERTYPE *pSoldier = NULL;
 
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {

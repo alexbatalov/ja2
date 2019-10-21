@@ -54,7 +54,7 @@ DEALER_ITEM_HEADER gArmsDealersInventory[NUM_ARMS_DEALERS][MAXITEMS];
 
 // INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo );
 
-void InitAllArmsDealers() {
+function InitAllArmsDealers(): void {
   UINT8 ubArmsDealer;
 
   // Memset all dealers' status tables to zeroes
@@ -72,7 +72,7 @@ void InitAllArmsDealers() {
   AdjustCertainDealersInventory();
 }
 
-void InitializeOneArmsDealer(UINT8 ubArmsDealer) {
+function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   UINT16 usItemIndex;
   UINT8 ubNumItems = 0;
 
@@ -102,7 +102,7 @@ void InitializeOneArmsDealer(UINT8 ubArmsDealer) {
   }
 }
 
-void ShutDownArmsDealers() {
+function ShutDownArmsDealers(): void {
   UINT8 ubArmsDealer;
   UINT16 usItemIndex;
 
@@ -117,7 +117,7 @@ void ShutDownArmsDealers() {
   }
 }
 
-BOOLEAN SaveArmsDealerInventoryToSaveGameFile(HWFILE hFile) {
+function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT8 ubArmsDealer;
   UINT16 usItemIndex;
@@ -148,7 +148,7 @@ BOOLEAN SaveArmsDealerInventoryToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadArmsDealerInventoryFromSavedGameFile(HWFILE hFile, BOOLEAN fIncludesElgin, BOOLEAN fIncludesManny) {
+function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT8 ubArmsDealer;
   UINT16 usItemIndex;
@@ -196,7 +196,7 @@ BOOLEAN LoadArmsDealerInventoryFromSavedGameFile(HWFILE hFile, BOOLEAN fIncludes
   return TRUE;
 }
 
-void DailyUpdateOfArmsDealersInventory() {
+function DailyUpdateOfArmsDealersInventory(): void {
   // if Gabby has creature blood, start turning it into extra elixir
   ConvertCreatureBloodToElixir();
 
@@ -211,7 +211,7 @@ void DailyUpdateOfArmsDealersInventory() {
 }
 
 // Once a day, loop through each dealer's inventory items and possibly sell some
-void SimulateArmsDealerCustomer() {
+function SimulateArmsDealerCustomer(): void {
   UINT8 ubArmsDealer = 0;
   UINT16 usItemIndex;
   UINT8 ubItemsSold = 0;
@@ -261,7 +261,7 @@ void SimulateArmsDealerCustomer() {
   }
 }
 
-void DailyCheckOnItemQuantities() {
+function DailyCheckOnItemQuantities(): void {
   UINT8 ubArmsDealer;
   UINT16 usItemIndex;
   UINT8 ubMaxSupply;
@@ -338,7 +338,7 @@ void DailyCheckOnItemQuantities() {
   }
 }
 
-void ConvertCreatureBloodToElixir(void) {
+function ConvertCreatureBloodToElixir(): void {
   UINT8 ubBloodAvailable;
   UINT8 ubAmountToConvert;
   SPECIAL_ITEM_INFO SpclItemInfo;
@@ -359,7 +359,7 @@ void ConvertCreatureBloodToElixir(void) {
   }
 }
 
-BOOLEAN AdjustCertainDealersInventory() {
+function AdjustCertainDealersInventory(): BOOLEAN {
   // Adjust Tony's items (this restocks *instantly* 1/day, doesn't use the reorder system)
   GuaranteeAtLeastOneItemOfType(ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS);
   LimitArmsDealersInventory(ARMS_DEALER_TONY, ARMS_DEALER_BIG_GUNS, 2);
@@ -391,7 +391,7 @@ BOOLEAN AdjustCertainDealersInventory() {
   return TRUE;
 }
 
-void LimitArmsDealersInventory(UINT8 ubArmsDealer, UINT32 uiDealerItemType, UINT8 ubMaxNumberOfItemType) {
+function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32, ubMaxNumberOfItemType: UINT8): void {
   UINT16 usItemIndex = 0;
   UINT32 uiItemsToRemove = 0;
   SPECIAL_ITEM_INFO SpclItemInfo;
@@ -508,7 +508,7 @@ void LimitArmsDealersInventory(UINT8 ubArmsDealer, UINT32 uiDealerItemType, UINT
   }
 }
 
-void GuaranteeAtLeastOneItemOfType(UINT8 ubArmsDealer, UINT32 uiDealerItemType) {
+function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UINT32): void {
   UINT16 usItemIndex;
   UINT8 ubChance;
   BOOLEAN fFoundEligibleItemOfSameType = FALSE;
@@ -572,7 +572,7 @@ void GuaranteeAtLeastOneItemOfType(UINT8 ubArmsDealer, UINT32 uiDealerItemType) 
   // internal logic failure!
 }
 
-void GuaranteeAtLeastXItemsOfIndex(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubHowMany) {
+function GuaranteeAtLeastXItemsOfIndex(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
   // not permitted for repair dealers - would take extra code to avoid counting items under repair!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
 
@@ -594,7 +594,7 @@ void GuaranteeAtLeastXItemsOfIndex(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8
   }
 }
 
-UINT32 GetArmsDealerItemTypeFromItemNumber(UINT16 usItem) {
+function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
   switch (Item[usItem].usItemClass) {
     case IC_NONE:
       return 0;
@@ -744,7 +744,7 @@ UINT32 GetArmsDealerItemTypeFromItemNumber(UINT16 usItem) {
   return 0;
 }
 
-BOOLEAN IsMercADealer(UINT8 ubMercID) {
+function IsMercADealer(ubMercID: UINT8): BOOLEAN {
   UINT8 cnt;
 
   // Manny is not actually a valid dealer unless a particular event sets that fact
@@ -760,7 +760,7 @@ BOOLEAN IsMercADealer(UINT8 ubMercID) {
   return FALSE;
 }
 
-INT8 GetArmsDealerIDFromMercID(UINT8 ubMercID) {
+function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
   INT8 cnt;
 
   // loop through the list of arms dealers
@@ -772,11 +772,11 @@ INT8 GetArmsDealerIDFromMercID(UINT8 ubMercID) {
   return -1;
 }
 
-UINT8 GetTypeOfArmsDealer(UINT8 ubDealerID) {
+function GetTypeOfArmsDealer(ubDealerID: UINT8): UINT8 {
   return ArmsDealerInfo[ubDealerID].ubTypeOfArmsDealer;
 }
 
-BOOLEAN DoesDealerDoRepairs(UINT8 ubArmsDealer) {
+function DoesDealerDoRepairs(ubArmsDealer: UINT8): BOOLEAN {
   if (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer == ARMS_DEALER_REPAIRS)
     return TRUE;
   else
@@ -805,7 +805,7 @@ INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIn
 }
 */
 
-BOOLEAN RepairmanIsFixingItemsButNoneAreDoneYet(UINT8 ubProfileID) {
+function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): BOOLEAN {
   INT8 bArmsDealer;
   BOOLEAN fHaveOnlyUnRepairedItems = FALSE;
   UINT8 ubElement;
@@ -844,7 +844,7 @@ BOOLEAN RepairmanIsFixingItemsButNoneAreDoneYet(UINT8 ubProfileID) {
   return fHaveOnlyUnRepairedItems;
 }
 
-UINT32 GetTimeToFixItemBeingRepaired(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubElement) {
+function GetTimeToFixItemBeingRepaired(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): UINT32 {
   // dealer must be a repair dealer
   Assert(DoesDealerDoRepairs(ubArmsDealer));
   // element index must be valid
@@ -862,7 +862,7 @@ UINT32 GetTimeToFixItemBeingRepaired(UINT8 ubArmsDealer, UINT16 usItemIndex, UIN
   return gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].uiRepairDoneTime - GetWorldTotalMin();
 }
 
-BOOLEAN CanDealerTransactItem(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN fPurchaseFromPlayer) {
+function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
   switch (ArmsDealerInfo[ubArmsDealer].ubTypeOfArmsDealer) {
     case ARMS_DEALER_SELLS_ONLY:
       if (fPurchaseFromPlayer) {
@@ -909,7 +909,7 @@ BOOLEAN CanDealerTransactItem(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN fP
   return DoesItemAppearInDealerInventoryList(ubArmsDealer, usItemIndex, fPurchaseFromPlayer);
 }
 
-BOOLEAN CanDealerRepairItem(UINT8 ubArmsDealer, UINT16 usItemIndex) {
+function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): BOOLEAN {
   UINT32 uiFlags;
 
   uiFlags = Item[usItemIndex].fFlags;
@@ -943,7 +943,7 @@ BOOLEAN CanDealerRepairItem(UINT8 ubArmsDealer, UINT16 usItemIndex) {
   return FALSE;
 }
 
-BOOLEAN AllocMemsetSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubElementsNeeded) {
+function AllocMemsetSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): BOOLEAN {
   Assert(pDealerItem);
   Assert(ubElementsNeeded > 0);
 
@@ -961,7 +961,7 @@ BOOLEAN AllocMemsetSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubEle
   return TRUE;
 }
 
-BOOLEAN ResizeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubElementsNeeded) {
+function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElementsNeeded: UINT8): BOOLEAN {
   Assert(pDealerItem);
   // must already have a ptr allocated!
   Assert(pDealerItem->SpecialItem);
@@ -989,7 +989,7 @@ BOOLEAN ResizeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubElements
   return TRUE;
 }
 
-void FreeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem) {
+function FreeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>): void {
   Assert(pDealerItem);
   // must already have a ptr allocated!
   Assert(pDealerItem->SpecialItem);
@@ -1003,7 +1003,7 @@ void FreeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem) {
   // doesn't effect perfect items, orders or stray bullets!
 }
 
-void ArmsDealerGetsFreshStock(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubNumItems) {
+function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNumItems: UINT8): void {
   UINT8 ubCnt;
   UINT8 ubItemCondition;
   UINT8 ubPerfectOnes = 0;
@@ -1033,7 +1033,7 @@ void ArmsDealerGetsFreshStock(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubNu
   }
 }
 
-UINT8 DetermineDealerItemCondition(UINT8 ubArmsDealer, UINT16 usItemIndex) {
+function DetermineDealerItemCondition(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
   UINT8 ubCondition = 100;
 
   // if it's a damagable item, and not a liquid (those are always sold full)
@@ -1048,7 +1048,7 @@ UINT8 DetermineDealerItemCondition(UINT8 ubArmsDealer, UINT16 usItemIndex) {
   return ubCondition;
 }
 
-BOOLEAN ItemContainsLiquid(UINT16 usItemIndex) {
+function ItemContainsLiquid(usItemIndex: UINT16): BOOLEAN {
   switch (usItemIndex) {
     case CANTEEN:
     case BEER:
@@ -1081,7 +1081,7 @@ UINT32 CountTotalItemsInArmsDealersInventory( UINT8 ubArmsDealer )
 }
 */
 
-UINT32 CountDistinctItemsInArmsDealersInventory(UINT8 ubArmsDealer) {
+function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
   UINT32 uiNumOfItems = 0;
   UINT16 usItemIndex;
 
@@ -1111,7 +1111,7 @@ UINT32 CountDistinctItemsInArmsDealersInventory(UINT8 ubArmsDealer) {
   return uiNumOfItems;
 }
 
-UINT8 CountActiveSpecialItemsInArmsDealersInventory(UINT8 ubArmsDealer, UINT16 usItemIndex) {
+function CountActiveSpecialItemsInArmsDealersInventory(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
   UINT8 ubActiveSpecialItems = 0;
   UINT8 ubElement;
 
@@ -1126,7 +1126,7 @@ UINT8 CountActiveSpecialItemsInArmsDealersInventory(UINT8 ubArmsDealer, UINT16 u
   return ubActiveSpecialItems;
 }
 
-UINT16 CountTotalItemsRepairDealerHasInForRepairs(UINT8 ubArmsDealer) {
+function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16 {
   UINT16 usItemIndex;
   UINT16 usHowManyInForRepairs = 0;
 
@@ -1142,7 +1142,7 @@ UINT16 CountTotalItemsRepairDealerHasInForRepairs(UINT8 ubArmsDealer) {
   return usHowManyInForRepairs;
 }
 
-UINT8 CountSpecificItemsRepairDealerHasInForRepairs(UINT8 ubArmsDealer, UINT16 usItemIndex) {
+function CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
   UINT8 ubElement;
   UINT8 ubHowManyInForRepairs = 0;
 
@@ -1166,7 +1166,7 @@ UINT8 CountSpecificItemsRepairDealerHasInForRepairs(UINT8 ubArmsDealer, UINT16 u
   return ubHowManyInForRepairs;
 }
 
-void AddObjectToArmsDealerInventory(UINT8 ubArmsDealer, OBJECTTYPE *pObject) {
+function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>): void {
   UINT8 ubCnt;
   SPECIAL_ITEM_INFO SpclItemInfo;
 
@@ -1238,7 +1238,7 @@ void AddObjectToArmsDealerInventory(UINT8 ubArmsDealer, OBJECTTYPE *pObject) {
   memset(pObject, 0, sizeof(OBJECTTYPE));
 }
 
-void AddAmmoToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubShotsLeft) {
+function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubShotsLeft: UINT8): void {
   UINT8 ubMagCapacity;
   UINT8 *pubStrayAmmo;
   SPECIAL_ITEM_INFO SpclItemInfo;
@@ -1279,7 +1279,7 @@ void AddAmmoToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 
 }
 
 // Use AddObjectToArmsDealerInventory() instead of this when converting a complex item in OBJECTTYPE format.
-void AddItemToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo, UINT8 ubHowMany) {
+function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
   UINT8 ubRoomLeft;
   UINT8 ubElement;
   UINT8 ubElementsToAdd;
@@ -1352,7 +1352,7 @@ void AddItemToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIA
   }
 }
 
-void AddSpecialItemToArmsDealerInventoryAtElement(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubElement, SPECIAL_ITEM_INFO *pSpclItemInfo) {
+function AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems < 255);
   Assert(ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced);
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == FALSE);
@@ -1368,7 +1368,7 @@ void AddSpecialItemToArmsDealerInventoryAtElement(UINT8 ubArmsDealer, UINT16 usI
 }
 
 // removes ubHowMany items of usItemIndex with the matching Info from dealer ubArmsDealer
-void RemoveItemFromArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo, UINT8 ubHowMany) {
+function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
   DEALER_SPECIAL_ITEM *pSpecialItem;
   UINT8 ubElement;
 
@@ -1411,7 +1411,7 @@ void RemoveItemFromArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, S
   }
 }
 
-void RemoveRandomItemFromArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubHowMany) {
+function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
   UINT8 ubWhichOne;
   UINT8 ubSkippedAlready;
   BOOLEAN fFoundIt;
@@ -1466,7 +1466,7 @@ void RemoveRandomItemFromArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIn
   }
 }
 
-void RemoveSpecialItemFromArmsDealerInventoryAtElement(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubElement) {
+function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usItemIndex: UINT16, ubElement: UINT8): void {
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems > 0);
   Assert(ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced);
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == TRUE);
@@ -1478,7 +1478,7 @@ void RemoveSpecialItemFromArmsDealerInventoryAtElement(UINT8 ubArmsDealer, UINT1
   gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems--;
 }
 
-BOOLEAN AddDeadArmsDealerItemsToWorld(UINT8 ubMercID) {
+function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
   INT8 bArmsDealer;
   SOLDIERTYPE *pSoldier;
   UINT16 usItemIndex;
@@ -1579,7 +1579,7 @@ BOOLEAN AddDeadArmsDealerItemsToWorld(UINT8 ubMercID) {
   return TRUE;
 }
 
-void MakeObjectOutOfDealerItems(UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo, OBJECTTYPE *pObject, UINT8 ubHowMany) {
+function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
   INT8 bItemCondition;
   UINT8 ubCnt;
 
@@ -1617,7 +1617,7 @@ void MakeObjectOutOfDealerItems(UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItem
   }
 }
 
-void GiveObjectToArmsDealerForRepair(UINT8 ubArmsDealer, OBJECTTYPE *pObject, UINT8 ubOwnerProfileId) {
+function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8): void {
   //	UINT8 ubCnt;
   SPECIAL_ITEM_INFO SpclItemInfo;
 
@@ -1666,7 +1666,7 @@ void GiveObjectToArmsDealerForRepair(UINT8 ubArmsDealer, OBJECTTYPE *pObject, UI
 }
 
 // PLEASE: Use GiveObjectToArmsDealerForRepair() instead of this when repairing a item in OBJECTTYPE format.
-void GiveItemToArmsDealerforRepair(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo, UINT8 ubOwnerProfileId) {
+function GiveItemToArmsDealerforRepair(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubOwnerProfileId: UINT8): void {
   UINT32 uiTimeWhenFreeToStartIt;
   UINT32 uiMinutesToFix;
   UINT32 uiMinutesShopClosedBeforeItsDone;
@@ -1699,7 +1699,7 @@ void GiveItemToArmsDealerforRepair(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECI
   gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[gubLastSpecialItemAddedAtElement].ubOwnerProfileId = ubOwnerProfileId;
 }
 
-UINT32 WhenWillRepairmanBeAllDoneRepairing(UINT8 ubArmsDealer) {
+function WhenWillRepairmanBeAllDoneRepairing(ubArmsDealer: UINT8): UINT32 {
   UINT32 uiWhenFree;
   UINT16 usItemIndex;
   UINT8 ubElement;
@@ -1731,7 +1731,7 @@ UINT32 WhenWillRepairmanBeAllDoneRepairing(UINT8 ubArmsDealer) {
   return uiWhenFree;
 }
 
-UINT32 CalculateSpecialItemRepairTime(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo) {
+function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): UINT32 {
   UINT32 uiRepairTime;
   UINT8 ubCnt;
 
@@ -1750,7 +1750,7 @@ UINT32 CalculateSpecialItemRepairTime(UINT8 ubArmsDealer, UINT16 usItemIndex, SP
   return uiRepairTime;
 }
 
-UINT32 CalculateObjectItemRepairTime(UINT8 ubArmsDealer, OBJECTTYPE *pItemObject) {
+function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
   UINT32 uiRepairTime;
   UINT8 ubCnt;
 
@@ -1769,7 +1769,7 @@ UINT32 CalculateObjectItemRepairTime(UINT8 ubArmsDealer, OBJECTTYPE *pItemObject
   return uiRepairTime;
 }
 
-UINT32 CalculateSimpleItemRepairTime(UINT8 ubArmsDealer, UINT16 usItemIndex, INT8 bItemCondition) {
+function CalculateSimpleItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16, bItemCondition: INT8): UINT32 {
   UINT32 uiTimeToRepair = 0;
   UINT32 uiRepairCost = 0;
 
@@ -1799,7 +1799,7 @@ UINT32 CalculateSimpleItemRepairTime(UINT8 ubArmsDealer, UINT16 usItemIndex, INT
   return uiTimeToRepair;
 }
 
-UINT32 CalculateSpecialItemRepairCost(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo) {
+function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): UINT32 {
   UINT32 uiRepairCost;
   UINT8 ubCnt;
 
@@ -1818,7 +1818,7 @@ UINT32 CalculateSpecialItemRepairCost(UINT8 ubArmsDealer, UINT16 usItemIndex, SP
   return uiRepairCost;
 }
 
-UINT32 CalculateObjectItemRepairCost(UINT8 ubArmsDealer, OBJECTTYPE *pItemObject) {
+function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
   UINT32 uiRepairCost;
   UINT8 ubCnt;
 
@@ -1837,7 +1837,7 @@ UINT32 CalculateObjectItemRepairCost(UINT8 ubArmsDealer, OBJECTTYPE *pItemObject
   return uiRepairCost;
 }
 
-UINT32 CalculateSimpleItemRepairCost(UINT8 ubArmsDealer, UINT16 usItemIndex, INT8 bItemCondition) {
+function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16, bItemCondition: INT8): UINT32 {
   UINT32 uiItemCost = 0;
   UINT32 uiRepairCost = 0;
   INT16 sRepairCostAdj = 0;
@@ -1880,7 +1880,7 @@ UINT32 CalculateSimpleItemRepairCost(UINT8 ubArmsDealer, UINT16 usItemIndex, INT
   return uiRepairCost;
 }
 
-void SetSpecialItemInfoToDefaults(SPECIAL_ITEM_INFO *pSpclItemInfo) {
+function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
   UINT8 ubCnt;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
@@ -1894,7 +1894,7 @@ void SetSpecialItemInfoToDefaults(SPECIAL_ITEM_INFO *pSpclItemInfo) {
   }
 }
 
-void SetSpecialItemInfoFromObject(SPECIAL_ITEM_INFO *pSpclItemInfo, OBJECTTYPE *pObject) {
+function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>): void {
   UINT8 ubCnt;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
@@ -1926,7 +1926,7 @@ void SetSpecialItemInfoFromObject(SPECIAL_ITEM_INFO *pSpclItemInfo, OBJECTTYPE *
   }
 }
 
-BOOLEAN IsItemInfoSpecial(SPECIAL_ITEM_INFO *pSpclItemInfo) {
+function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
   UINT8 ubCnt;
 
   // being damaged / in repairs makes an item special
@@ -1950,7 +1950,7 @@ BOOLEAN IsItemInfoSpecial(SPECIAL_ITEM_INFO *pSpclItemInfo) {
   return FALSE;
 }
 
-BOOLEAN DoesItemAppearInDealerInventoryList(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN fPurchaseFromPlayer) {
+function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
   DEALER_POSSIBLE_INV *pDealerInv = NULL;
   UINT16 usCnt;
 
@@ -1975,7 +1975,7 @@ BOOLEAN DoesItemAppearInDealerInventoryList(UINT8 ubArmsDealer, UINT16 usItemInd
   return FALSE;
 }
 
-UINT16 CalcValueOfItemToDealer(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN fDealerSelling) {
+function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: BOOLEAN): UINT16 {
   UINT16 usBasePrice;
   UINT8 ubItemPriceClass;
   UINT8 ubDealerPriceClass;
@@ -2066,7 +2066,7 @@ UINT16 CalcValueOfItemToDealer(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN f
 }
 
 // this only exists to support saves made with game versions < 54 or 55!
-BOOLEAN LoadIncompleteArmsDealersStatus(HWFILE hFile, BOOLEAN fIncludesElgin, BOOLEAN fIncludesManny) {
+function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
   UINT32 uiDealersSaved;
   UINT32 uiNumBytesRead;
 
@@ -2103,7 +2103,7 @@ BOOLEAN LoadIncompleteArmsDealersStatus(HWFILE hFile, BOOLEAN fIncludesElgin, BO
   return TRUE;
 }
 
-BOOLEAN DealerItemIsSafeToStack(UINT16 usItemIndex) {
+function DealerItemIsSafeToStack(usItemIndex: UINT16): BOOLEAN {
   // basically any item type with nothing unique about it besides its status can be stacked in dealer's inventory boxes...
   // NOTE: This test is only applied to items already KNOWN to be perfect - special items are obviously not-stackable
 
@@ -2121,13 +2121,13 @@ BOOLEAN DealerItemIsSafeToStack(UINT16 usItemIndex) {
   return TRUE;
 }
 
-void GuaranteeMinimumAlcohol(UINT8 ubArmsDealer) {
+function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
   GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, BEER, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, BEER) / 3));
   GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, WINE, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, WINE) / 3));
   GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, ALCOHOL, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, ALCOHOL) / 3));
 }
 
-BOOLEAN ItemIsARocketRifle(INT16 sItemIndex) {
+function ItemIsARocketRifle(sItemIndex: INT16): BOOLEAN {
   if ((sItemIndex == ROCKET_RIFLE) || (sItemIndex == AUTO_ROCKET_RIFLE)) {
     return TRUE;
   } else {
@@ -2135,7 +2135,7 @@ BOOLEAN ItemIsARocketRifle(INT16 sItemIndex) {
   }
 }
 
-BOOLEAN GetArmsDealerShopHours(UINT8 ubArmsDealer, UINT32 *puiOpeningTime, UINT32 *puiClosingTime) {
+function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = FindSoldierByProfileID(ArmsDealerInfo[ubArmsDealer].ubShopKeeperID, FALSE);
@@ -2152,7 +2152,7 @@ BOOLEAN GetArmsDealerShopHours(UINT8 ubArmsDealer, UINT32 *puiOpeningTime, UINT3
   return TRUE;
 }
 
-UINT32 CalculateOvernightRepairDelay(UINT8 ubArmsDealer, UINT32 uiTimeWhenFreeToStartIt, UINT32 uiMinutesToFix) {
+function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
   UINT32 uiOpeningTime, uiClosingTime;
   UINT32 uiMinutesClosedOvernight;
   UINT32 uiDelayInDays = 0;
@@ -2188,7 +2188,7 @@ UINT32 CalculateOvernightRepairDelay(UINT8 ubArmsDealer, UINT32 uiTimeWhenFreeTo
   return uiDelayInDays * uiMinutesClosedOvernight;
 }
 
-UINT32 CalculateMinutesClosedBetween(UINT8 ubArmsDealer, UINT32 uiStartTime, UINT32 uiEndTime) {
+function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32, uiEndTime: UINT32): UINT32 {
   UINT32 uiOpeningTime, uiClosingTime;
   UINT32 uiMinutesClosedOvernight;
   UINT32 uiDaysDifference = 0;

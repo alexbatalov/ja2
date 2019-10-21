@@ -29,7 +29,7 @@ BOOLEAN gfIgnoreMessages = FALSE;
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
 UINT8 gbPixelDepth = PIXEL_DEPTH;
 
-INT32 FAR PASCAL WindowProcedure(HWND hWindow, UINT16 Message, WPARAM wParam, LPARAM lParam) {
+function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam: LPARAM): INT32 {
   static fRestore = FALSE;
 
   if (gfIgnoreMessages)
@@ -114,7 +114,7 @@ INT32 FAR PASCAL WindowProcedure(HWND hWindow, UINT16 Message, WPARAM wParam, LP
   return 0L;
 }
 
-BOOLEAN InitializeStandardGamingPlatform(HINSTANCE hInstance, int sCommandShow) {
+function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): BOOLEAN {
   FontTranslationTable *pFontTable;
 
   // now required by all (even JA2) in order to call ShutdownSGP
@@ -240,7 +240,7 @@ BOOLEAN InitializeStandardGamingPlatform(HINSTANCE hInstance, int sCommandShow) 
   return TRUE;
 }
 
-void ShutdownStandardGamingPlatform(void) {
+function ShutdownStandardGamingPlatform(): void {
   //
   // Shut down the different components of the SGP
   //
@@ -281,7 +281,7 @@ void ShutdownStandardGamingPlatform(void) {
   ShutdownDebugManager();
 }
 
-int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCommandLine, int sCommandShow) {
+function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: LPSTR, sCommandShow: int): int {
   MSG Message;
   HWND hPrevInstanceWindow;
 
@@ -369,7 +369,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCommandL
   return Message.wParam;
 }
 
-void SGPExit(void) {
+function SGPExit(): void {
   static BOOLEAN fAlreadyExiting = FALSE;
   BOOLEAN fUnloadScreens = TRUE;
 
@@ -388,7 +388,7 @@ void SGPExit(void) {
   }
 }
 
-void GetRuntimeSettings() {
+function GetRuntimeSettings(): void {
   // Runtime settings - for now use INI file - later use registry
   STRING512 ExeDir;
   STRING512 INIFile;
@@ -401,7 +401,7 @@ void GetRuntimeSettings() {
   gbPixelDepth = GetPrivateProfileInt("SGP", "PIXEL_DEPTH", PIXEL_DEPTH, INIFile);
 }
 
-void ShutdownWithErrorBox(CHAR8 *pcMessage) {
+function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
   strncpy(gzErrorMsg, pcMessage, 255);
   gzErrorMsg[255] = '\0';
   gfIgnoreMessages = TRUE;
@@ -409,7 +409,7 @@ void ShutdownWithErrorBox(CHAR8 *pcMessage) {
   exit(0);
 }
 
-void ProcessJa2CommandLineBeforeInitialization(CHAR8 *pCommandLine) {
+function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>): void {
   CHAR8 cSeparators[] = "\t =";
   CHAR8 *pCopy = NULL, *pToken;
 

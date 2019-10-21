@@ -265,7 +265,7 @@ extern BOOLEAN gfHavePurchasedItemsFromTony;
 //
 /////////////////////////////////////////////////////
 
-BOOLEAN SaveGame(UINT8 ubSaveGameID, STR16 pGameDesc) {
+function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   UINT32 uiNumBytesWritten = 0;
   HWFILE hFile = 0;
   SAVED_GAME_HEADER SaveGameHeader;
@@ -759,7 +759,7 @@ FAILED_TO_SAVE:
 
 UINT32 guiBrokenSaveGameVersion = 0;
 
-BOOLEAN LoadSavedGame(UINT8 ubSavedGameID) {
+function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   HWFILE hFile;
   SAVED_GAME_HEADER SaveGameHeader;
   UINT32 uiNumBytesRead = 0;
@@ -1726,7 +1726,7 @@ BOOLEAN LoadSavedGame(UINT8 ubSavedGameID) {
   return TRUE;
 }
 
-BOOLEAN SaveMercProfiles(HWFILE hFile) {
+function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
   UINT16 cnt;
   UINT32 uiNumBytesWritten = 0;
   UINT32 uiSaveSize = sizeof(MERCPROFILESTRUCT);
@@ -1747,7 +1747,7 @@ BOOLEAN SaveMercProfiles(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadSavedMercProfiles(HWFILE hFile) {
+function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
   UINT16 cnt;
   UINT32 uiNumBytesRead = 0;
 
@@ -1787,7 +1787,7 @@ BOOLEAN LoadSavedMercProfiles(HWFILE hFile) {
 //	SGPPaletteEntry							*p8BPPPalette
 //	OBJECTTYPE									*pTempObject;
 
-BOOLEAN SaveSoldierStructure(HWFILE hFile) {
+function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
   UINT16 cnt;
   UINT32 uiNumBytesWritten = 0;
   UINT8 ubOne = 1;
@@ -1862,7 +1862,7 @@ BOOLEAN SaveSoldierStructure(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadSoldierStructure(HWFILE hFile) {
+function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
   UINT16 cnt;
   UINT32 uiNumBytesRead = 0;
   SOLDIERTYPE SavedSoldierInfo;
@@ -2114,7 +2114,7 @@ BOOLEAN LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile )
 }
 */
 
-BOOLEAN SaveFilesToSavedGame(STR pSrcFileName, HWFILE hFile) {
+function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   UINT32 uiFileSize;
   UINT32 uiNumBytesWritten = 0;
   HWFILE hSrcFile;
@@ -2171,7 +2171,7 @@ BOOLEAN SaveFilesToSavedGame(STR pSrcFileName, HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadFilesFromSavedGame(STR pSrcFileName, HWFILE hFile) {
+function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   UINT32 uiFileSize;
   UINT32 uiNumBytesWritten = 0;
   HWFILE hSrcFile;
@@ -2245,7 +2245,7 @@ BOOLEAN LoadFilesFromSavedGame(STR pSrcFileName, HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveEmailToSavedGame(HWFILE hFile) {
+function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumOfEmails = 0;
   UINT32 uiSizeOfEmails = 0;
   EmailPtr pEmail = pEmailList;
@@ -2316,7 +2316,7 @@ BOOLEAN SaveEmailToSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadEmailFromSavedGame(HWFILE hFile) {
+function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumOfEmails = 0;
   UINT32 uiSizeOfSubject = 0;
   EmailPtr pEmail = pEmailList;
@@ -2420,7 +2420,7 @@ BOOLEAN LoadEmailFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveTacticalStatusToSavedGame(HWFILE hFile) {
+function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // write the gTacticalStatus to the saved game file
@@ -2454,7 +2454,7 @@ BOOLEAN SaveTacticalStatusToSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadTacticalStatusFromSavedGame(HWFILE hFile) {
+function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   // Read the gTacticalStatus to the saved game file
@@ -2488,14 +2488,14 @@ BOOLEAN LoadTacticalStatusFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN CopySavedSoldierInfoToNewSoldier(SOLDIERTYPE *pDestSourceInfo, SOLDIERTYPE *pSourceInfo) {
+function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>, pSourceInfo: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Copy the old soldier information over to the new structure
   memcpy(pDestSourceInfo, pSourceInfo, sizeof(SOLDIERTYPE));
 
   return TRUE;
 }
 
-BOOLEAN SetMercsInsertionGridNo() {
+function SetMercsInsertionGridNo(): BOOLEAN {
   UINT16 cnt = 0;
 
   // loop through all the mercs
@@ -2518,7 +2518,7 @@ BOOLEAN SetMercsInsertionGridNo() {
   return TRUE;
 }
 
-BOOLEAN SaveOppListInfoToSavedGame(HWFILE hFile) {
+function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiSaveSize = 0;
   UINT32 uiNumBytesWritten = 0;
 
@@ -2581,7 +2581,7 @@ BOOLEAN SaveOppListInfoToSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadOppListInfoFromSavedGame(HWFILE hFile) {
+function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiLoadSize = 0;
   UINT32 uiNumBytesRead = 0;
 
@@ -2644,7 +2644,7 @@ BOOLEAN LoadOppListInfoFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveWatchedLocsToSavedGame(HWFILE hFile) {
+function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiArraySize;
   UINT32 uiSaveSize = 0;
   UINT32 uiNumBytesWritten = 0;
@@ -2678,7 +2678,7 @@ BOOLEAN SaveWatchedLocsToSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadWatchedLocsFromSavedGame(HWFILE hFile) {
+function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiArraySize;
   UINT32 uiLoadSize = 0;
   UINT32 uiNumBytesRead = 0;
@@ -2710,7 +2710,7 @@ BOOLEAN LoadWatchedLocsFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-void CreateSavedGameFileNameFromNumber(UINT8 ubSaveGameID, STR pzNewFileName) {
+function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: STR): void {
   // if we are creating the QuickSave file
   if (ubSaveGameID == 0) {
       sprintf(pzNewFileName, "%S\\%S.%S", pMessageStrings[MSG_SAVEDIRECTORY], pMessageStrings[MSG_QUICKSAVE_NAME], pMessageStrings[MSG_SAVEEXTENSION]);
@@ -2734,7 +2734,7 @@ void CreateSavedGameFileNameFromNumber(UINT8 ubSaveGameID, STR pzNewFileName) {
     sprintf(pzNewFileName, "%S\\%S%02d.%S", pMessageStrings[MSG_SAVEDIRECTORY], pMessageStrings[MSG_SAVE_NAME], ubSaveGameID, pMessageStrings[MSG_SAVEEXTENSION]);
 }
 
-BOOLEAN SaveMercPathFromSoldierStruct(HWFILE hFile, UINT8 ubID) {
+function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   UINT32 uiNumOfNodes = 0;
   PathStPtr pTempPath = Menptr[ubID].pMercPath;
   UINT32 uiNumBytesWritten = 0;
@@ -2768,7 +2768,7 @@ BOOLEAN SaveMercPathFromSoldierStruct(HWFILE hFile, UINT8 ubID) {
   return TRUE;
 }
 
-BOOLEAN LoadMercPathToSoldierStruct(HWFILE hFile, UINT8 ubID) {
+function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   UINT32 uiNumOfNodes = 0;
   PathStPtr pTempPath = NULL;
   PathStPtr pTemp = NULL;
@@ -2838,7 +2838,7 @@ BOOLEAN LoadMercPathToSoldierStruct(HWFILE hFile, UINT8 ubID) {
   return TRUE;
 }
 
-BOOLEAN SaveGeneralInfo(HWFILE hFile) {
+function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   GENERAL_SAVE_INFO sGeneralInfo;
@@ -3046,7 +3046,7 @@ BOOLEAN SaveGeneralInfo(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadGeneralInfo(HWFILE hFile) {
+function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   GENERAL_SAVE_INFO sGeneralInfo;
@@ -3281,7 +3281,7 @@ BOOLEAN LoadGeneralInfo(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SavePreRandomNumbersToSaveGameFile(HWFILE hFile) {
+function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // Save the Prerandom number index
@@ -3299,7 +3299,7 @@ BOOLEAN SavePreRandomNumbersToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadPreRandomNumbersFromSaveGameFile(HWFILE hFile) {
+function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   // Load the Prerandom number index
@@ -3317,7 +3317,7 @@ BOOLEAN LoadPreRandomNumbersFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadMeanwhileDefsFromSaveGameFile(HWFILE hFile) {
+function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   if (guiSaveGameVersion < 72) {
@@ -3339,7 +3339,7 @@ BOOLEAN LoadMeanwhileDefsFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveMeanwhileDefsFromSaveGameFile(HWFILE hFile) {
+function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // Save the array of meanwhile defs
@@ -3351,7 +3351,7 @@ BOOLEAN SaveMeanwhileDefsFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN DoesUserHaveEnoughHardDriveSpace() {
+function DoesUserHaveEnoughHardDriveSpace(): BOOLEAN {
   UINT32 uiBytesFree = 0;
 
   uiBytesFree = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
@@ -3364,7 +3364,7 @@ BOOLEAN DoesUserHaveEnoughHardDriveSpace() {
   return TRUE;
 }
 
-void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ) {
+function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>): void {
   // if the current sector is valid
   if (gfWorldLoaded) {
     *psSectorX = gWorldSectorX;
@@ -3429,7 +3429,7 @@ void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pb
   }
 }
 
-void PauseBeforeSaveGame(void) {
+function PauseBeforeSaveGame(): void {
   // if we are not in the save load screen
   if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
     // Pause the game
@@ -3437,7 +3437,7 @@ void PauseBeforeSaveGame(void) {
   }
 }
 
-void UnPauseAfterSaveGame(void) {
+function UnPauseAfterSaveGame(): void {
   // if we are not in the save load screen
   if (guiCurrentScreen != SAVE_LOAD_SCREEN) {
     // UnPause time compression
@@ -3445,7 +3445,7 @@ void UnPauseAfterSaveGame(void) {
   }
 }
 
-void TruncateStrategicGroupSizes() {
+function TruncateStrategicGroupSizes(): void {
   GROUP *pGroup;
   SECTORINFO *pSector;
   INT32 i;
@@ -3562,7 +3562,7 @@ void TruncateStrategicGroupSizes() {
   }
 }
 
-void UpdateMercMercContractInfo() {
+function UpdateMercMercContractInfo(): void {
   UINT8 ubCnt;
   SOLDIERTYPE *pSoldier;
 
@@ -3579,7 +3579,7 @@ void UpdateMercMercContractInfo() {
   }
 }
 
-INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave) {
+function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
   CHAR zFileName1[256];
   CHAR zFileName2[256];
   HWFILE hFile;
@@ -3634,7 +3634,7 @@ INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave) {
   }
 }
 
-void HandleOldBobbyRMailOrders() {
+function HandleOldBobbyRMailOrders(): void {
   INT32 iCnt;
   INT32 iNewListCnt = 0;
 
@@ -3674,7 +3674,7 @@ void HandleOldBobbyRMailOrders() {
   }
 }
 
-UINT32 CalcJA2EncryptionSet(SAVED_GAME_HEADER *pSaveGameHeader) {
+function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT32 {
   UINT32 uiEncryptionSet = 0;
 
   uiEncryptionSet = pSaveGameHeader->uiSavedGameVersion;

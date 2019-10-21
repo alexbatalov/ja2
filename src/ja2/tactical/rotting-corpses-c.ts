@@ -288,7 +288,7 @@ INT8 gDecapitatedCorpse[NUM_CORPSES] = {
 ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
 INT32 giNumRottingCorpse = 0;
 
-INT32 GetFreeRottingCorpse(void) {
+function GetFreeRottingCorpse(): INT32 {
   INT32 iCount;
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
@@ -302,7 +302,7 @@ INT32 GetFreeRottingCorpse(void) {
   return -1;
 }
 
-void RecountRottingCorpses(void) {
+function RecountRottingCorpses(): void {
   INT32 uiCount;
 
   if (giNumRottingCorpse > 0) {
@@ -315,7 +315,7 @@ void RecountRottingCorpses(void) {
   }
 }
 
-UINT16 GetCorpseStructIndex(ROTTING_CORPSE_DEFINITION *pCorpseDef, BOOLEAN fForImage) {
+function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fForImage: BOOLEAN): UINT16 {
   INT8 bDirection;
 
   switch (pCorpseDef->ubType) {
@@ -365,7 +365,7 @@ UINT16 GetCorpseStructIndex(ROTTING_CORPSE_DEFINITION *pCorpseDef, BOOLEAN fForI
   return bDirection;
 }
 
-INT32 AddRottingCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef) {
+function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32 {
   INT32 iIndex;
   ROTTING_CORPSE *pCorpse;
   ANITILE_PARAMS AniParams;
@@ -531,7 +531,7 @@ INT32 AddRottingCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef) {
   return iIndex;
 }
 
-void FreeCorpsePalettes(ROTTING_CORPSE *pCorpse) {
+function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
   INT32 cnt;
 
   // Free palettes
@@ -546,7 +546,7 @@ void FreeCorpsePalettes(ROTTING_CORPSE *pCorpse) {
   }
 }
 
-void RemoveCorpses() {
+function RemoveCorpses(): void {
   INT32 iCount;
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
@@ -558,7 +558,7 @@ void RemoveCorpses() {
   giNumRottingCorpse = 0;
 }
 
-void RemoveCorpse(INT32 iCorpseID) {
+function RemoveCorpse(iCorpseID: INT32): void {
   // Remove!
   gRottingCorpse[iCorpseID].fActivated = FALSE;
 
@@ -567,7 +567,7 @@ void RemoveCorpse(INT32 iCorpseID) {
   FreeCorpsePalettes(&(gRottingCorpse[iCorpseID]));
 }
 
-BOOLEAN CreateCorpsePalette(ROTTING_CORPSE *pCorpse) {
+function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
   CHAR8 zColFilename[100];
   INT8 bBodyTypePalette;
   SGPPaletteEntry Temp8BPPPalette[256];
@@ -617,7 +617,7 @@ BOOLEAN CreateCorpsePalette(ROTTING_CORPSE *pCorpse) {
   return TRUE;
 }
 
-BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE *pSoldier, BOOLEAN fRemoveMerc, BOOLEAN fCheckForLOS) {
+function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOLEAN, fCheckForLOS: BOOLEAN): BOOLEAN {
   ROTTING_CORPSE_DEFINITION Corpse;
   UINT8 ubType;
   INT32 cnt;
@@ -777,7 +777,7 @@ BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE *pSoldier, BOOLEAN fRemoveMerc, BOOLEA
   return TRUE;
 }
 
-INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier) {
+function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   INT32 uiRange, uiLowestRange = 999999;
   INT16 sLowestGridNo = NOWHERE;
   INT32 cnt;
@@ -803,7 +803,7 @@ INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier) {
   return sLowestGridNo;
 }
 
-void AddCrowToCorpse(ROTTING_CORPSE *pCorpse) {
+function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   SOLDIERCREATE_STRUCT MercCreateStruct;
   INT8 bBodyType = CROW;
   UINT8 iNewIndex;
@@ -858,7 +858,7 @@ void AddCrowToCorpse(ROTTING_CORPSE *pCorpse) {
   }
 }
 
-void HandleCrowLeave(SOLDIERTYPE *pSoldier) {
+function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
   ROTTING_CORPSE *pCorpse;
 
   // Check if this crow is still referencing the same corpse...
@@ -876,7 +876,7 @@ void HandleCrowLeave(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleCrowFlyAway(SOLDIERTYPE *pSoldier) {
+function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT8 ubDirection;
   INT16 sGridNo;
 
@@ -889,7 +889,7 @@ void HandleCrowFlyAway(SOLDIERTYPE *pSoldier) {
   SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier->usUIMovementMode);
 }
 
-void HandleRottingCorpses() {
+function HandleRottingCorpses(): void {
   ROTTING_CORPSE *pCorpse;
   INT8 bNumCrows = 0;
   UINT32 uiChosenCorpseID;
@@ -963,12 +963,12 @@ void HandleRottingCorpses() {
   }
 }
 
-void MakeCorpseVisible(SOLDIERTYPE *pSoldier, ROTTING_CORPSE *pCorpse) {
+function MakeCorpseVisible(pSoldier: Pointer<SOLDIERTYPE>, pCorpse: Pointer<ROTTING_CORPSE>): void {
   pCorpse->def.bVisible = 1;
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void AllMercsOnTeamLookForCorpse(ROTTING_CORPSE *pCorpse, INT8 bTeam) {
+function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: INT8): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 sDistVisible;
@@ -1007,7 +1007,7 @@ void AllMercsOnTeamLookForCorpse(ROTTING_CORPSE *pCorpse, INT8 bTeam) {
   }
 }
 
-void MercLooksForCorpses(SOLDIERTYPE *pSoldier) {
+function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt;
   INT16 sDistVisible;
   INT16 sGridNo;
@@ -1068,7 +1068,7 @@ void MercLooksForCorpses(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void RebuildAllCorpseShadeTables() {
+function RebuildAllCorpseShadeTables(): void {
   INT32 cnt;
   ROTTING_CORPSE *pCorpse;
 
@@ -1089,7 +1089,7 @@ void RebuildAllCorpseShadeTables() {
   }
 }
 
-UINT16 CreateCorpsePaletteTables(ROTTING_CORPSE *pCorpse) {
+function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
   SGPPaletteEntry LightPal[256];
   UINT32 uiCount;
 
@@ -1109,7 +1109,7 @@ UINT16 CreateCorpsePaletteTables(ROTTING_CORPSE *pCorpse) {
   return TRUE;
 }
 
-BOOLEAN CreateCorpseShadedPalette(ROTTING_CORPSE *pCorpse, UINT32 uiBase, SGPPaletteEntry *pShadePal) {
+function CreateCorpseShadedPalette(pCorpse: Pointer<ROTTING_CORPSE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   UINT32 uiCount;
 
   pCorpse->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
@@ -1121,7 +1121,7 @@ BOOLEAN CreateCorpseShadedPalette(ROTTING_CORPSE *pCorpse, UINT32 uiBase, SGPPal
   return TRUE;
 }
 
-ROTTING_CORPSE *FindCorpseBasedOnStructure(INT16 sGridNo, STRUCTURE *pStructure) {
+function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<ROTTING_CORPSE> {
   LEVELNODE *pLevelNode;
   ROTTING_CORPSE *pCorpse = NULL;
 
@@ -1141,10 +1141,10 @@ ROTTING_CORPSE *FindCorpseBasedOnStructure(INT16 sGridNo, STRUCTURE *pStructure)
   return pCorpse;
 }
 
-void CorpseHit(INT16 sGridNo, UINT16 usStructureID) {
+function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
 }
 
-void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
+function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
   STRUCTURE *pStructure, *pBaseStructure;
   ROTTING_CORPSE *pCorpse = NULL;
   INT16 sBaseGridNo;
@@ -1198,7 +1198,7 @@ void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID) {
   PlayJA2Sample((UINT32)(BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
-INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pDef, INT8 ubRadius) {
+function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
   INT16 sSweetGridNo;
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
@@ -1314,7 +1314,7 @@ INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pDef, INT8 
   return NOWHERE;
 }
 
-BOOLEAN IsValidDecapitationCorpse(ROTTING_CORPSE *pCorpse) {
+function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
   if (pCorpse->def.fHeadTaken) {
     return FALSE;
   }
@@ -1322,7 +1322,7 @@ BOOLEAN IsValidDecapitationCorpse(ROTTING_CORPSE *pCorpse) {
   return gbCorpseValidForDecapitation[pCorpse->def.ubType];
 }
 
-ROTTING_CORPSE *GetCorpseAtGridNo(INT16 sGridNo, INT8 bLevel) {
+function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE> {
   STRUCTURE *pStructure, *pBaseStructure;
   INT16 sBaseGridNo;
 
@@ -1343,7 +1343,7 @@ ROTTING_CORPSE *GetCorpseAtGridNo(INT16 sGridNo, INT8 bLevel) {
   return NULL;
 }
 
-void DecapitateCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel) {
+function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   OBJECTTYPE Object;
   ROTTING_CORPSE *pCorpse;
   ROTTING_CORPSE_DEFINITION CorpseDef;
@@ -1409,7 +1409,7 @@ void DecapitateCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel) {
   }
 }
 
-void GetBloodFromCorpse(SOLDIERTYPE *pSoldier) {
+function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   ROTTING_CORPSE *pCorpse;
   INT8 bObjSlot;
   OBJECTTYPE Object;
@@ -1443,7 +1443,7 @@ void GetBloodFromCorpse(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE *pSoldier, INT32 iInvSlot) {
+function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iInvSlot: INT32): void {
   OBJECTTYPE *pObj;
 
   Assert(pSoldier);
@@ -1463,7 +1463,7 @@ void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE *pSoldier, INT32 iInvSlot)
   }
 }
 
-void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubLevel) {
+function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8): void {
   ROTTING_CORPSE *pCorpse;
   INT8 bToleranceThreshold = 0;
   INT32 cnt;
@@ -1514,7 +1514,7 @@ void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UI
   }
 }
 
-INT16 GetGridNoOfCorpseGivenProfileID(UINT8 ubProfileID) {
+function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
   INT32 cnt;
   ROTTING_CORPSE *pCorpse;
 
@@ -1532,7 +1532,7 @@ INT16 GetGridNoOfCorpseGivenProfileID(UINT8 ubProfileID) {
   return NOWHERE;
 }
 
-void DecayRottingCorpseAIWarnings(void) {
+function DecayRottingCorpseAIWarnings(): void {
   INT32 cnt;
   ROTTING_CORPSE *pCorpse;
 
@@ -1545,7 +1545,7 @@ void DecayRottingCorpseAIWarnings(void) {
   }
 }
 
-UINT8 GetNearestRottingCorpseAIWarning(INT16 sGridNo) {
+function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
   INT32 cnt;
   ROTTING_CORPSE *pCorpse;
   UINT8 ubHighestWarning = 0;

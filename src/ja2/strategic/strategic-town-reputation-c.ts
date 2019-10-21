@@ -16,7 +16,7 @@ const TOWN_OPINION_START_TIME = (9 * 60);
 // how often the town opinion events occur...right now every 3 hours
 const TOWN_OPINION_PERIOD = (3 * 60);
 
-void InitializeProfilesForTownReputation(void) {
+function InitializeProfilesForTownReputation(): void {
   UINT32 uiProfileId = 0;
 
   // initialize the town opinion values in each recruitable merc's profile structure
@@ -25,7 +25,7 @@ void InitializeProfilesForTownReputation(void) {
   }
 }
 
-void PostEventsForSpreadOfTownOpinion(void) {
+function PostEventsForSpreadOfTownOpinion(): void {
   /* ARM - Do nothing, this system has been scrapped because it is so marginal and it's too late to bother with it now
 
           INT32 iCounter = 0;
@@ -37,7 +37,7 @@ void PostEventsForSpreadOfTownOpinion(void) {
   */
 }
 
-UINT8 GetTownOpinionOfMerc(UINT8 ubProfileId, UINT8 ubTownId) {
+function GetTownOpinionOfMerc(ubProfileId: UINT8, ubTownId: UINT8): UINT8 {
   Assert(ubProfileId < FIRST_NPC);
   Assert(ubTownId < NUM_TOWNS);
 
@@ -45,7 +45,7 @@ UINT8 GetTownOpinionOfMerc(UINT8 ubProfileId, UINT8 ubTownId) {
   return gMercProfiles[ubProfileId].bMercTownReputation[ubTownId];
 }
 
-UINT8 GetTownOpinionOfMercForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubTownId) {
+function GetTownOpinionOfMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8): UINT8 {
   // error check
   if (pSoldier == NULL) {
     return 0;
@@ -57,7 +57,7 @@ UINT8 GetTownOpinionOfMercForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubTownId) {
   return GetTownOpinionOfMerc(pSoldier->ubProfile, ubTownId);
 }
 
-void UpdateTownOpinionOfThisMerc(UINT8 ubProfileId, UINT8 ubTownId, INT8 bAmount) {
+function UpdateTownOpinionOfThisMerc(ubProfileId: UINT8, ubTownId: UINT8, bAmount: INT8): void {
   Assert(ubProfileId < FIRST_NPC);
   Assert(ubTownId < NUM_TOWNS);
 
@@ -74,7 +74,7 @@ void UpdateTownOpinionOfThisMerc(UINT8 ubProfileId, UINT8 ubTownId, INT8 bAmount
   }
 }
 
-void UpdateTownOpinionOfThisMercForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubTownId, INT8 bAmount) {
+function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubTownId: UINT8, bAmount: INT8): void {
   // error check
   if (pSoldier == NULL) {
     return;
@@ -86,7 +86,7 @@ void UpdateTownOpinionOfThisMercForSoldier(SOLDIERTYPE *pSoldier, UINT8 ubTownId
   UpdateTownOpinionOfThisMerc(pSoldier->ubProfile, ubTownId, bAmount);
 }
 
-void HandleSpreadOfAllTownsOpinion(void) {
+function HandleSpreadOfAllTownsOpinion(): void {
   UINT8 ubProfileId;
 
   // debug message
@@ -98,7 +98,7 @@ void HandleSpreadOfAllTownsOpinion(void) {
   }
 }
 
-void HandleSpreadOfTownOpinionForMerc(UINT8 ubProfileId) {
+function HandleSpreadOfTownOpinionForMerc(ubProfileId: UINT8): void {
   // handle opinion spread for this grunt
   INT32 iDistanceBetweenTowns;
   INT8 iCounterA, iCounterB;
@@ -121,7 +121,7 @@ void HandleSpreadOfTownOpinionForMerc(UINT8 ubProfileId) {
   }
 }
 
-void HandleOpinionOfTownsAboutSoldier(INT8 bTownA, INT8 bTownB, INT32 iDistanceBetweenThem, UINT8 ubProfile) {
+function HandleOpinionOfTownsAboutSoldier(bTownA: INT8, bTownB: INT8, iDistanceBetweenThem: INT32, ubProfile: UINT8): void {
   // ARM: System has been scrapped
 }
 

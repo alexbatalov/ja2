@@ -86,7 +86,7 @@ BOOLEAN fMemManagerInit = FALSE;
 //
 //**************************************************************************
 
-BOOLEAN InitializeMemoryManager(void) {
+function InitializeMemoryManager(): BOOLEAN {
   // Register the memory manager with the debugger
   RegisterDebugTopic(TOPIC_MEMORY_MANAGER, "Memory Manager");
   MemDebugCounter = 0;
@@ -112,7 +112,7 @@ BOOLEAN InitializeMemoryManager(void) {
 //
 //**************************************************************************
 
-void MemDebug(BOOLEAN f) {
+function MemDebug(f: BOOLEAN): void {
   gfMemDebug = f;
 }
 
@@ -130,7 +130,7 @@ void MemDebug(BOOLEAN f) {
 //
 //**************************************************************************
 
-void ShutdownMemoryManager(void) {
+function ShutdownMemoryManager(): void {
   if (MemDebugCounter != 0) {
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String(" "));
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("***** WARNING - WARNING - WARNING *****"));
@@ -155,7 +155,7 @@ void ShutdownMemoryManager(void) {
   fMemManagerInit = FALSE;
 }
 
-PTR *MemAllocLocked(UINT32 uiSize) {
+function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
   PTR ptr;
 
   if (!fMemManagerInit)
@@ -176,7 +176,7 @@ PTR *MemAllocLocked(UINT32 uiSize) {
   return ptr;
 }
 
-void MemFreeLocked(PTR ptr, UINT32 uiSize) {
+function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
   if (!fMemManagerInit)
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemFreeLocked: Warning -- Memory manager not initialized!!! "));
 
@@ -210,7 +210,7 @@ void MemFreeLocked(PTR ptr, UINT32 uiSize) {
 //
 //**************************************************************************
 
-UINT32 MemGetFree(void) {
+function MemGetFree(): UINT32 {
   MEMORYSTATUS ms;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
@@ -233,7 +233,7 @@ UINT32 MemGetFree(void) {
 //
 //**************************************************************************
 
-UINT32 MemGetTotalSystem(void) {
+function MemGetTotalSystem(): UINT32 {
   MEMORYSTATUS ms;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
@@ -256,7 +256,7 @@ UINT32 MemGetTotalSystem(void) {
 //
 //**************************************************************************
 
-BOOLEAN MemCheckPool(void) {
+function MemCheckPool(): BOOLEAN {
   BOOLEAN fRet = TRUE;
 
   return fRet;

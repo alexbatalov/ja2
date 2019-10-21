@@ -81,13 +81,13 @@ UINT16 uiMouthYPositions[] = {
 
 BOOLEAN fLoadingCharacterForPreviousImpProfile = FALSE;
 
-void EnterIMPConfirm(void) {
+function EnterIMPConfirm(): void {
   // create buttons
   CreateConfirmButtons();
   return;
 }
 
-void RenderIMPConfirm(void) {
+function RenderIMPConfirm(): void {
   // the background
   RenderProfileBackGround();
 
@@ -100,17 +100,17 @@ void RenderIMPConfirm(void) {
   return;
 }
 
-void ExitIMPConfirm(void) {
+function ExitIMPConfirm(): void {
   // destroy buttons
   DestroyConfirmButtons();
   return;
 }
 
-void HandleIMPConfirm(void) {
+function HandleIMPConfirm(): void {
   return;
 }
 
-void CreateConfirmButtons(void) {
+function CreateConfirmButtons(): void {
   // create buttons for confirm screen
 
   giIMPConfirmButtonImage[0] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
@@ -125,7 +125,7 @@ void CreateConfirmButtons(void) {
   return;
 }
 
-void DestroyConfirmButtons(void) {
+function DestroyConfirmButtons(): void {
   // destroy buttons for confirm screen
 
   RemoveButton(giIMPConfirmButton[0]);
@@ -136,7 +136,7 @@ void DestroyConfirmButtons(void) {
   return;
 }
 
-BOOLEAN AddCharacterToPlayersTeam(void) {
+function AddCharacterToPlayersTeam(): BOOLEAN {
   MERC_HIRE_STRUCT HireMercStruct;
 
   // last minute chage to make sure merc with right facehas not only the right body but body specific skills...
@@ -175,7 +175,7 @@ BOOLEAN AddCharacterToPlayersTeam(void) {
   }
 }
 
-void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -228,7 +228,7 @@ void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // fixed? by CJC Nov 28 2002
-void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPConfirmNo(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -294,7 +294,7 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 
 const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p->bSkillTrait == t) || (p->bSkillTrait2 == t));
 
-void GiveItemsToPC(UINT8 ubProfileId) {
+function GiveItemsToPC(ubProfileId: UINT8): void {
   MERCPROFILESTRUCT *pProfile;
 
   // gives starting items to merc
@@ -378,7 +378,7 @@ void GiveItemsToPC(UINT8 ubProfileId) {
   }
 }
 
-void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT *pProfile, UINT16 usItem, UINT8 ubStatus, UINT8 ubHowMany) {
+function MakeProfileInvItemAnySlot(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
   INT32 iSlot;
 
   iSlot = FirstFreeBigEnoughPocket(pProfile, usItem);
@@ -392,13 +392,13 @@ void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT *pProfile, UINT16 usItem, UINT8
   MakeProfileInvItemThisSlot(pProfile, iSlot, usItem, ubStatus, ubHowMany);
 }
 
-void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT *pProfile, UINT32 uiPos, UINT16 usItem, UINT8 ubStatus, UINT8 ubHowMany) {
+function MakeProfileInvItemThisSlot(pProfile: Pointer<MERCPROFILESTRUCT>, uiPos: UINT32, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
   pProfile->inv[uiPos] = usItem;
   pProfile->bInvStatus[uiPos] = ubStatus;
   pProfile->bInvNumber[uiPos] = ubHowMany;
 }
 
-INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT *pProfile, UINT16 usItem) {
+function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16): INT32 {
   UINT32 uiPos;
 
   // if it fits into a small pocket
@@ -421,7 +421,7 @@ INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT *pProfile, UINT16 usItem) {
   return -1;
 }
 
-void WriteOutCurrentImpCharacter(INT32 iProfileId) {
+function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
   // grab the profile number and write out what is contained there in
   HWFILE hFile;
   UINT32 uiBytesWritten = 0;
@@ -450,7 +450,7 @@ void WriteOutCurrentImpCharacter(INT32 iProfileId) {
   return;
 }
 
-void LoadInCurrentImpCharacter(void) {
+function LoadInCurrentImpCharacter(): void {
   INT32 iProfileId = 0;
   HWFILE hFile;
   UINT32 uiBytesRead = 0;
@@ -502,7 +502,7 @@ void LoadInCurrentImpCharacter(void) {
   return;
 }
 
-void ResetIMPCharactersEyesAndMouthOffsets(UINT8 ubMercProfileID) {
+function ResetIMPCharactersEyesAndMouthOffsets(ubMercProfileID: UINT8): void {
   // ATE: Check boundary conditions!
   if (((gMercProfiles[ubMercProfileID].ubFaceIndex - 200) > 16) || (ubMercProfileID >= PROF_HUMMER)) {
     return;

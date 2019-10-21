@@ -15,7 +15,7 @@ const PCX_INVALIDFORMAT = 2;
 const PCX_INVALIDLEN = 4;
 const PCX_OUTOFMEMORY = 8;
 
-BOOLEAN LoadPCXFileToImage(HIMAGE hImage, UINT16 fContents) {
+function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   PcxObject *pPcxObject;
 
   // First Load a PCX Image
@@ -56,7 +56,7 @@ BOOLEAN LoadPCXFileToImage(HIMAGE hImage, UINT16 fContents) {
   return TRUE;
 }
 
-PcxObject *LoadPcx(UINT8 *pFilename) {
+function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   PcxHeader Header;
   PcxObject *pCurrentPcxObject;
   HWFILE hFileHandle;
@@ -122,7 +122,7 @@ PcxObject *LoadPcx(UINT8 *pFilename) {
   return pCurrentPcxObject;
 }
 
-BOOLEAN BlitPcxToBuffer(PcxObject *pCurrentPcxObject, UINT8 *pBuffer, UINT16 usBufferWidth, UINT16 usBufferHeight, UINT16 usX, UINT16 usY, BOOLEAN fTransp) {
+function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer<UINT8>, usBufferWidth: UINT16, usBufferHeight: UINT16, usX: UINT16, usY: UINT16, fTransp: BOOLEAN): BOOLEAN {
   UINT8 *pPcxBuffer;
   UINT8 ubRepCount;
   UINT16 usMaxX, usMaxY;
@@ -281,7 +281,7 @@ BOOLEAN BlitPcxToBuffer(PcxObject *pCurrentPcxObject, UINT8 *pBuffer, UINT16 usB
   return TRUE;
 }
 
-BOOLEAN SetPcxPalette(PcxObject *pCurrentPcxObject, HIMAGE hImage) {
+function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): BOOLEAN {
   UINT16 Index;
   UINT8 *pubPalette;
 

@@ -143,10 +143,10 @@ UINT8 gubBobbyRPages[] = {
 // Bobby's Sign menu mouse regions
 MOUSE_REGION gSelectedBobbiesSignMenuRegion[BOBBIES_NUMBER_SIGNS];
 
-void GameInitBobbyR() {
+function GameInitBobbyR(): void {
 }
 
-BOOLEAN EnterBobbyR() {
+function EnterBobbyR(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 i;
 
@@ -219,7 +219,7 @@ BOOLEAN EnterBobbyR() {
   return TRUE;
 }
 
-void ExitBobbyR() {
+function ExitBobbyR(): void {
   DeleteVideoObjectFromIndex(guiBobbyName);
   DeleteVideoObjectFromIndex(guiPlaque);
   DeleteVideoObjectFromIndex(guiTopHinge);
@@ -238,11 +238,11 @@ void ExitBobbyR() {
   guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R;
 }
 
-void HandleBobbyR() {
+function HandleBobbyR(): void {
   HandleBobbyRUnderConstructionAni(FALSE);
 }
 
-void RenderBobbyR() {
+function RenderBobbyR(): void {
   HVOBJECT hPixHandle;
   HVOBJECT hStorePlaqueHandle;
 
@@ -323,7 +323,7 @@ void RenderBobbyR() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-BOOLEAN InitBobbyRWoodBackground() {
+function InitBobbyRWoodBackground(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the Wood bacground graphic and add it
@@ -334,12 +334,12 @@ BOOLEAN InitBobbyRWoodBackground() {
   return TRUE;
 }
 
-BOOLEAN DeleteBobbyRWoodBackground() {
+function DeleteBobbyRWoodBackground(): BOOLEAN {
   DeleteVideoObjectFromIndex(guiWoodBackground);
   return TRUE;
 }
 
-BOOLEAN DrawBobbyRWoodBackground() {
+function DrawBobbyRWoodBackground(): BOOLEAN {
   HVOBJECT hWoodBackGroundHandle;
   UINT16 x, y, uiPosX, uiPosY;
 
@@ -359,7 +359,7 @@ BOOLEAN DrawBobbyRWoodBackground() {
   return TRUE;
 }
 
-BOOLEAN InitBobbiesMouseRegion(UINT8 ubNumerRegions, UINT16 *usMouseRegionPosArray, MOUSE_REGION *MouseRegion) {
+function InitBobbiesMouseRegion(ubNumerRegions: UINT8, usMouseRegionPosArray: Pointer<UINT16>, MouseRegion: Pointer<MOUSE_REGION>): BOOLEAN {
   UINT8 i, ubCount = 0;
 
   for (i = 0; i < ubNumerRegions; i++) {
@@ -374,7 +374,7 @@ BOOLEAN InitBobbiesMouseRegion(UINT8 ubNumerRegions, UINT16 *usMouseRegionPosArr
   return TRUE;
 }
 
-BOOLEAN RemoveBobbiesMouseRegion(UINT8 ubNumberRegions, MOUSE_REGION *Mouse_Region) {
+function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: Pointer<MOUSE_REGION>): BOOLEAN {
   UINT8 i;
 
   for (i = 0; i < ubNumberRegions; i++)
@@ -383,7 +383,7 @@ BOOLEAN RemoveBobbiesMouseRegion(UINT8 ubNumberRegions, MOUSE_REGION *Mouse_Regi
   return TRUE;
 }
 
-void SelectBobbiesSignMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectBobbiesSignMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT8 ubNewPage = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
@@ -417,7 +417,7 @@ BOOLEAN WebPageTileBackground(UINT8 ubNumX, UINT8 ubNumY, UINT16 usWidth, UINT16
 }
 */
 
-void HandleBobbyRUnderConstructionAni(BOOLEAN fReset) {
+function HandleBobbyRUnderConstructionAni(fReset: BOOLEAN): void {
   HVOBJECT hPixHandle;
   static UINT32 uiLastTime = 1;
   static UINT16 usCount = 0;
@@ -454,7 +454,7 @@ void HandleBobbyRUnderConstructionAni(BOOLEAN fReset) {
   }
 }
 
-void InitBobbyRayInventory() {
+function InitBobbyRayInventory(): void {
   // Initializes which NEW items can be bought at Bobby Rays
   InitBobbyRayNewInventory();
 
@@ -468,7 +468,7 @@ void InitBobbyRayInventory() {
   SetupStoreInventory(LaptopSaveInfo.BobbyRayUsedInventory, TRUE);
 }
 
-BOOLEAN InitBobbyRayNewInventory() {
+function InitBobbyRayNewInventory(): BOOLEAN {
   UINT16 i;
   UINT16 usBobbyrIndex = 0;
 
@@ -496,7 +496,7 @@ BOOLEAN InitBobbyRayNewInventory() {
   return TRUE;
 }
 
-BOOLEAN InitBobbyRayUsedInventory() {
+function InitBobbyRayUsedInventory(): BOOLEAN {
   UINT16 i;
   UINT16 usBobbyrIndex = 0;
 
@@ -528,7 +528,7 @@ BOOLEAN InitBobbyRayUsedInventory() {
   return TRUE;
 }
 
-void DailyUpdateOfBobbyRaysNewInventory() {
+function DailyUpdateOfBobbyRaysNewInventory(): void {
   INT16 i;
   UINT16 usItemIndex;
   BOOLEAN fPrevElig;
@@ -574,7 +574,7 @@ void DailyUpdateOfBobbyRaysNewInventory() {
   }
 }
 
-void DailyUpdateOfBobbyRaysUsedInventory() {
+function DailyUpdateOfBobbyRaysUsedInventory(): void {
   INT16 i;
   UINT16 usItemIndex;
   BOOLEAN fPrevElig;
@@ -619,7 +619,7 @@ void DailyUpdateOfBobbyRaysUsedInventory() {
 }
 
 // returns the number of items to order
-UINT8 HowManyBRItemsToOrder(UINT16 usItemIndex, UINT8 ubCurrentlyOnHand, UINT8 ubBobbyRayNewUsed) {
+function HowManyBRItemsToOrder(usItemIndex: UINT16, ubCurrentlyOnHand: UINT8, ubBobbyRayNewUsed: UINT8): UINT8 {
   UINT8 ubItemsOrdered = 0;
 
   Assert(usItemIndex < MAXITEMS);
@@ -643,7 +643,7 @@ UINT8 HowManyBRItemsToOrder(UINT16 usItemIndex, UINT8 ubCurrentlyOnHand, UINT8 u
   return ubItemsOrdered;
 }
 
-void OrderBobbyRItem(UINT16 usItemIndex) {
+function OrderBobbyRItem(usItemIndex: UINT16): void {
   UINT32 uiArrivalTime;
 
   // add the new item to the queue.  The new item will arrive in 'uiArrivalTime' minutes.
@@ -652,7 +652,7 @@ void OrderBobbyRItem(UINT16 usItemIndex) {
   AddStrategicEvent(EVENT_UPDATE_BOBBY_RAY_INVENTORY, uiArrivalTime, usItemIndex);
 }
 
-void AddFreshBobbyRayInventory(UINT16 usItemIndex) {
+function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
   INT16 sInventorySlot;
   STORE_INVENTORY *pInventoryArray;
   BOOLEAN fUsed;
@@ -683,7 +683,7 @@ void AddFreshBobbyRayInventory(UINT16 usItemIndex) {
   pInventoryArray[sInventorySlot].ubQtyOnOrder = 0;
 }
 
-INT16 GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, UINT16 usItemIndex, BOOLEAN fUsed) {
+function GetInventorySlotForItem(pInventoryArray: Pointer<STORE_INVENTORY>, usItemIndex: UINT16, fUsed: BOOLEAN): INT16 {
   INT16 i;
 
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
@@ -697,7 +697,7 @@ INT16 GetInventorySlotForItem(STORE_INVENTORY *pInventoryArray, UINT16 usItemInd
   return -1;
 }
 
-void SimulateBobbyRayCustomer(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed) {
+function SimulateBobbyRayCustomer(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: BOOLEAN): void {
   INT16 i;
   UINT8 ubItemsSold;
 
@@ -711,7 +711,7 @@ void SimulateBobbyRayCustomer(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed) {
   }
 }
 
-void CancelAllPendingBRPurchaseOrders(void) {
+function CancelAllPendingBRPurchaseOrders(): void {
   INT16 i;
 
   // remove all the BR-Order events off the event queue

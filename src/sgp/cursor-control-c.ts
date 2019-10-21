@@ -23,7 +23,7 @@ UINT32 guiDelayTimer = 0;
 
 MOUSEBLT_HOOK gMouseBltOverride = NULL;
 
-BOOLEAN BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex, UINT16 usXPos, UINT16 usYPos) {
+function BltToMouseCursorFromVObject(hVObject: HVOBJECT, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
   BOOLEAN ReturnValue;
 
   ReturnValue = BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -31,7 +31,7 @@ BOOLEAN BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIn
   return ReturnValue;
 }
 
-BOOLEAN BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex, UINT16 usXPos, UINT16 usYPos) {
+function BltToMouseCursorFromVObjectWithOutline(hVObject: HVOBJECT, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
   BOOLEAN ReturnValue;
   ETRLEObject *pTrav;
   INT16 sXPos, sYPos;
@@ -56,7 +56,7 @@ BOOLEAN BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usVideo
 }
 
 // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC VARIABLES
-void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData, UINT16 suNumDataFiles) {
+function InitCursorDatabase(pCursorFileData: Pointer<CursorFileData>, pCursorData: Pointer<CursorData>, suNumDataFiles: UINT16): void {
   // Set global values!
 
   gpCursorFileDatabase = pCursorFileData;
@@ -71,7 +71,7 @@ void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN LoadCursorData(UINT32 uiCursorIndex) {
+function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
   // Load cursor data will load all data required for the cursor specified by this index
   CursorData *pCurData;
   CursorImage *pCurImage;
@@ -203,7 +203,7 @@ BOOLEAN LoadCursorData(UINT32 uiCursorIndex) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnLoadCursorData(UINT32 uiCursorIndex) {
+function UnLoadCursorData(uiCursorIndex: UINT32): void {
   // This function will unload add data used for this cursor
   //
   // Ok, first we make sure that the video object file is indeed loaded. Once this is verified, we will
@@ -230,7 +230,7 @@ void UnLoadCursorData(UINT32 uiCursorIndex) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CursorDatabaseClear(void) {
+function CursorDatabaseClear(): void {
   UINT32 uiIndex;
 
   for (uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
@@ -247,7 +247,7 @@ void CursorDatabaseClear(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
+function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
   BOOLEAN ReturnValue = TRUE;
   UINT16 usSubIndex;
   CursorData *pCurData;
@@ -448,12 +448,12 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
   return ReturnValue;
 }
 
-void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) {
+function SetMouseBltHook(pMouseBltOverride: MOUSEBLT_HOOK): void {
   gMouseBltOverride = pMouseBltOverride;
 }
 
 // Sets an external video object as cursor file data....
-void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex) {
+function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: UINT16): void {
   CursorData *pCurData;
   CursorImage *pCurImage;
   UINT32 cnt;
@@ -479,7 +479,7 @@ void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex)
   }
 }
 
-void RemoveExternVOData(UINT32 uiCursorIndex) {
+function RemoveExternVOData(uiCursorIndex: UINT32): void {
   CursorData *pCurData;
   CursorImage *pCurImage;
   UINT32 cnt;

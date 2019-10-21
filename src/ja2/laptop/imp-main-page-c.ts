@@ -22,7 +22,7 @@ UINT32 guiCHARACTERPORTRAITFORMAINPAGE;
         */
 INT32 iCurrentProfileMode = 0;
 
-void EnterIMPMainPage(void) {
+function EnterIMPMainPage(): void {
   // turn off review mode
   fReviewStats = FALSE;
 
@@ -44,7 +44,7 @@ void EnterIMPMainPage(void) {
   return;
 }
 
-void ExitIMPMainPage(void) {
+function ExitIMPMainPage(): void {
   // exit from IMP About us page
 
   // delete Buttons
@@ -54,7 +54,7 @@ void ExitIMPMainPage(void) {
   return;
 }
 
-void RenderIMPMainPage(void) {
+function RenderIMPMainPage(): void {
   // rneders the IMP about us page
 
   // the background
@@ -68,7 +68,7 @@ void RenderIMPMainPage(void) {
   return;
 }
 
-void HandleIMPMainPage(void) {
+function HandleIMPMainPage(): void {
   // handles the IMP about main page
 
   if (CheckIfFinishedCharacterGeneration()) {
@@ -79,7 +79,7 @@ void HandleIMPMainPage(void) {
   return;
 }
 
-void CreateIMPMainPageButtons(void) {
+function CreateIMPMainPageButtons(): void {
   // this function will create the buttons needed for th IMP about us page
   CHAR16 sString[128];
 
@@ -169,7 +169,7 @@ void CreateIMPMainPageButtons(void) {
   return;
 }
 
-void DeleteIMPMainPageButtons(void) {
+function DeleteIMPMainPageButtons(): void {
   // this function destroys the buttons needed for the IMP about Us Page
 
   // the back  button
@@ -199,7 +199,7 @@ void DeleteIMPMainPageButtons(void) {
   return;
 }
 
-void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPageBackCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Homepage About US button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -218,7 +218,7 @@ void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPageBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -251,7 +251,7 @@ void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPagePersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -274,7 +274,7 @@ void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPageAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -296,7 +296,7 @@ void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPagePortraitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -318,7 +318,7 @@ void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPMainPageVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -340,7 +340,7 @@ void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void NextProfilingMode(void) {
+function NextProfilingMode(): void {
   // this function will change to mode the player is in for profiling
 
   // if less than done
@@ -350,7 +350,7 @@ void NextProfilingMode(void) {
   return;
 }
 
-BOOLEAN CheckIfFinishedCharacterGeneration(void) {
+function CheckIfFinishedCharacterGeneration(): BOOLEAN {
   // this function checks to see if character is done character generation
 
   // are we done character generation
@@ -363,7 +363,7 @@ BOOLEAN CheckIfFinishedCharacterGeneration(void) {
   }
 }
 
-void ShadeUnSelectableButtons(void) {
+function ShadeUnSelectableButtons(): void {
   INT32 iCounter = 0;
   // this function looks at the status ofiCurrentProfileMode and decides which buttons
   // should be shaded ( unselectable )
@@ -377,7 +377,7 @@ void ShadeUnSelectableButtons(void) {
   return;
 }
 
-void UpDateIMPMainPageButtons(void) {
+function UpDateIMPMainPageButtons(): void {
   // update mainpage button states
   INT32 iCount = 0;
 
@@ -429,7 +429,7 @@ void UpDateIMPMainPageButtons(void) {
   return;
 }
 
-void BeginMessageBoxCallBack(UINT8 bExitValue) {
+function BeginMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     iCurrentImpPage = IMP_BEGIN;
@@ -442,7 +442,7 @@ void BeginMessageBoxCallBack(UINT8 bExitValue) {
   return;
 }
 
-void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
+function CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
   // this procedure will create masks for the char generation main page
 
   // mask for personality page button
@@ -460,7 +460,7 @@ void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
   return;
 }
 
-void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
+function DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
   // will destroy button masks for the char gen pages
 
   MSYS_RemoveRegion(&pIMPMainPageMouseRegions[0]);
@@ -474,7 +474,7 @@ void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(void) {
   return;
 }
 
-void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function IMPMainPageNotSelectableBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -486,7 +486,7 @@ void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   return;
 }
 
-BOOLEAN LoadCharacterPortraitForMainPage(void) {
+function LoadCharacterPortraitForMainPage(): BOOLEAN {
   // this function will load the character's portrait, to be used on portrait button
   VOBJECT_DESC VObjectDesc;
 

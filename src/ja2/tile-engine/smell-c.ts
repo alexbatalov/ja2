@@ -121,7 +121,7 @@ const SET_BLOOD_ROOF_TYPE = (s, ntr) => {
   (s) = BLOOD_ROOF_TYPE(ntr) | (s & 0xFD);
 };
 
-void RemoveBlood(INT16 sGridNo, INT8 bLevel) {
+function RemoveBlood(sGridNo: INT16, bLevel: INT8): void {
   gpWorldLevelData[sGridNo].ubBloodInfo = 0;
 
   gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_REEVALUATEBLOOD;
@@ -129,7 +129,7 @@ void RemoveBlood(INT16 sGridNo, INT8 bLevel) {
   UpdateBloodGraphics(sGridNo, bLevel);
 }
 
-void DecaySmells(void) {
+function DecaySmells(): void {
   UINT32 uiLoop;
   MAP_ELEMENT *pMapElement;
 
@@ -147,7 +147,7 @@ void DecaySmells(void) {
   }
 }
 
-void DecayBlood() {
+function DecayBlood(): void {
   UINT32 uiLoop;
   MAP_ELEMENT *pMapElement;
 
@@ -195,7 +195,7 @@ void DecayBlood() {
   }
 }
 
-void DecayBloodAndSmells(UINT32 uiTime) {
+function DecayBloodAndSmells(uiTime: UINT32): void {
   UINT32 uiCheckTime;
 
   if (!gfWorldLoaded) {
@@ -228,7 +228,7 @@ void DecayBloodAndSmells(UINT32 uiTime) {
   }
 }
 
-void DropSmell(SOLDIERTYPE *pSoldier) {
+function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
   MAP_ELEMENT *pMapElement;
   UINT8 ubOldSmell;
   UINT8 ubOldStrength;
@@ -292,7 +292,7 @@ void DropSmell(SOLDIERTYPE *pSoldier) {
   // otherwise skip dropping smell
 }
 
-void InternalDropBlood(INT16 sGridNo, INT8 bLevel, UINT8 ubType, UINT8 ubStrength, INT8 bVisible) {
+function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStrength: UINT8, bVisible: INT8): void {
   MAP_ELEMENT *pMapElement;
   UINT8 ubOldStrength = 0;
   UINT8 ubNewStrength = 0;
@@ -378,7 +378,7 @@ void InternalDropBlood(INT16 sGridNo, INT8 bLevel, UINT8 ubType, UINT8 ubStrengt
   }
 }
 
-void DropBlood(SOLDIERTYPE *pSoldier, UINT8 ubStrength, INT8 bVisible) {
+function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: INT8): void {
   UINT8 ubType;
   UINT8 ubOldStrength = 0;
   UINT8 ubNewStrength = 0;
@@ -402,7 +402,7 @@ void DropBlood(SOLDIERTYPE *pSoldier, UINT8 ubStrength, INT8 bVisible) {
   InternalDropBlood(pSoldier->sGridNo, pSoldier->bLevel, ubType, ubStrength, bVisible);
 }
 
-void UpdateBloodGraphics(INT16 sGridNo, INT8 bLevel) {
+function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
   MAP_ELEMENT *pMapElement;
   INT8 bValue;
   UINT16 usIndex, usNewIndex;

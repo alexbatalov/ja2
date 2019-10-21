@@ -39,7 +39,7 @@ UINT32 guiMainMenuExitScreen = MAINMENU_SCREEN;
 
 extern BOOLEAN gfLoadGameUponEntry;
 
-UINT32 MainMenuScreenInit() {
+function MainMenuScreenInit(): UINT32 {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %S", zVersionLabel));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", czVersionNumber));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Tracking #:    %S", zTrackingNumber));
@@ -47,7 +47,7 @@ UINT32 MainMenuScreenInit() {
   return TRUE;
 }
 
-UINT32 MainMenuScreenHandle() {
+function MainMenuScreenHandle(): UINT32 {
   UINT32 cnt;
   UINT32 uiTime;
 
@@ -128,11 +128,11 @@ UINT32 MainMenuScreenHandle() {
   return guiMainMenuExitScreen;
 }
 
-UINT32 MainMenuScreenShutdown() {
+function MainMenuScreenShutdown(): UINT32 {
   return FALSE;
 }
 
-void HandleMainMenuScreen() {
+function HandleMainMenuScreen(): void {
   if (gbHandledMainMenu != 0) {
     // Exit according to handled value!
     switch (gbHandledMainMenu) {
@@ -176,7 +176,7 @@ void HandleMainMenuScreen() {
   }
 }
 
-BOOLEAN InitMainMenu() {
+function InitMainMenu(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   //	gfDoHelpScreen = 0;
@@ -231,7 +231,7 @@ BOOLEAN InitMainMenu() {
   return TRUE;
 }
 
-void ExitMainMenu() {
+function ExitMainMenu(): void {
   //	UINT32										 uiDestPitchBYTES;
   //	UINT8											 *pDestBuf;
 
@@ -253,7 +253,7 @@ void ExitMainMenu() {
   */
 }
 
-void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT8 bID;
 
   bID = (UINT8)btn->UserData[0];
@@ -281,7 +281,7 @@ void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void MenuButtonMoveCallback(GUI_BUTTON *btn, INT32 reason) {
+function MenuButtonMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
     RenderMainMenu();
@@ -294,7 +294,7 @@ void MenuButtonMoveCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void HandleMainMenuInput() {
+function HandleMainMenuInput(): void {
   InputAtom InputEvent;
 
   // Check for esc
@@ -327,7 +327,7 @@ void HandleMainMenuInput() {
   }
 }
 
-void HandleHelpScreenInput() {
+function HandleHelpScreenInput(): void {
   InputAtom InputEvent;
 
   // Check for key
@@ -340,7 +340,7 @@ void HandleHelpScreenInput() {
   }
 }
 
-void ClearMainMenu() {
+function ClearMainMenu(): void {
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
 
@@ -351,7 +351,7 @@ void ClearMainMenu() {
   InvalidateScreen();
 }
 
-void SelectMainMenuBackGroundRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMainMenuBackGroundRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     //		if( gfDoHelpScreen )
@@ -370,7 +370,7 @@ void SelectMainMenuBackGroundRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-void SetMainMenuExitScreen(UINT32 uiNewScreen) {
+function SetMainMenuExitScreen(uiNewScreen: UINT32): void {
   guiMainMenuExitScreen = uiNewScreen;
 
   // REmove the background region
@@ -379,7 +379,7 @@ void SetMainMenuExitScreen(UINT32 uiNewScreen) {
   gfMainMenuScreenExit = TRUE;
 }
 
-void CreateDestroyBackGroundMouseMask(BOOLEAN fCreate) {
+function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
   static fRegionCreated = FALSE;
 
   if (fCreate) {
@@ -401,7 +401,7 @@ void CreateDestroyBackGroundMouseMask(BOOLEAN fCreate) {
   }
 }
 
-BOOLEAN CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
+function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
   static BOOLEAN fButtonsCreated = FALSE;
   INT32 cnt;
   SGPFILENAME filename;
@@ -480,7 +480,7 @@ BOOLEAN CreateDestroyMainMenuButtons(BOOLEAN fCreate) {
   return TRUE;
 }
 
-void RenderMainMenu() {
+function RenderMainMenu(): void {
   HVOBJECT hPixHandle;
 
   // Get and display the background image
@@ -497,7 +497,7 @@ void RenderMainMenu() {
   InvalidateRegion(0, 0, 640, 480);
 }
 
-void RestoreButtonBackGrounds() {
+function RestoreButtonBackGrounds(): void {
   UINT8 cnt;
 
   //	RestoreExternBackgroundRect( (UINT16)(320 - gusMainMenuButtonWidths[TITLE]/2), MAINMENU_TITLE_Y, gusMainMenuButtonWidths[TITLE], 23 );

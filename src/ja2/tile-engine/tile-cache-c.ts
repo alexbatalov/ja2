@@ -6,7 +6,7 @@ INT32 giDefaultStructIndex = -1;
 TILE_CACHE_ELEMENT *gpTileCache = NULL;
 TILE_CACHE_STRUCT *gpTileCacheStructInfo = NULL;
 
-BOOLEAN InitTileCache() {
+function InitTileCache(): BOOLEAN {
   UINT32 cnt;
   GETFILESTRUCT FileInfo;
   INT16 sFiles = 0;
@@ -62,7 +62,7 @@ BOOLEAN InitTileCache() {
   return TRUE;
 }
 
-void DeleteTileCache() {
+function DeleteTileCache(): void {
   UINT32 cnt;
 
   // Allocate entries
@@ -83,7 +83,7 @@ void DeleteTileCache() {
   guiCurTileCacheSize = 0;
 }
 
-INT16 FindCacheStructDataIndex(INT8 *cFilename) {
+function FindCacheStructDataIndex(cFilename: Pointer<INT8>): INT16 {
   UINT32 cnt;
 
   for (cnt = 0; cnt < guiNumTileCacheStructs; cnt++) {
@@ -95,7 +95,7 @@ INT16 FindCacheStructDataIndex(INT8 *cFilename) {
   return -1;
 }
 
-INT32 GetCachedTile(INT8 *cFilename) {
+function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
   UINT32 cnt;
   UINT32 ubLowestIndex = 0;
   INT16 sMostHits = (INT16)15000;
@@ -174,7 +174,7 @@ INT32 GetCachedTile(INT8 *cFilename) {
   return -1;
 }
 
-BOOLEAN RemoveCachedTile(INT32 iCachedTile) {
+function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
   UINT32 cnt;
 
   // Find tile
@@ -199,7 +199,7 @@ BOOLEAN RemoveCachedTile(INT32 iCachedTile) {
   return FALSE;
 }
 
-HVOBJECT GetCachedTileVideoObject(INT32 iIndex) {
+function GetCachedTileVideoObject(iIndex: INT32): HVOBJECT {
   if (iIndex == -1) {
     return NULL;
   }
@@ -211,7 +211,7 @@ HVOBJECT GetCachedTileVideoObject(INT32 iIndex) {
   return gpTileCache[iIndex].pImagery->vo;
 }
 
-STRUCTURE_FILE_REF *GetCachedTileStructureRef(INT32 iIndex) {
+function GetCachedTileStructureRef(iIndex: INT32): Pointer<STRUCTURE_FILE_REF> {
   if (iIndex == -1) {
     return NULL;
   }
@@ -223,7 +223,7 @@ STRUCTURE_FILE_REF *GetCachedTileStructureRef(INT32 iIndex) {
   return gpTileCacheStructInfo[gpTileCache[iIndex].sStructRefID].pStructureFileRef;
 }
 
-STRUCTURE_FILE_REF *GetCachedTileStructureRefFromFilename(INT8 *cFilename) {
+function GetCachedTileStructureRefFromFilename(cFilename: Pointer<INT8>): Pointer<STRUCTURE_FILE_REF> {
   INT16 sStructDataIndex;
 
   // Given filename, look for index
@@ -236,7 +236,7 @@ STRUCTURE_FILE_REF *GetCachedTileStructureRefFromFilename(INT8 *cFilename) {
   return gpTileCacheStructInfo[sStructDataIndex].pStructureFileRef;
 }
 
-void CheckForAndAddTileCacheStructInfo(LEVELNODE *pNode, INT16 sGridNo, UINT16 usIndex, UINT16 usSubIndex) {
+function CheckForAndAddTileCacheStructInfo(pNode: Pointer<LEVELNODE>, sGridNo: INT16, usIndex: UINT16, usSubIndex: UINT16): void {
   STRUCTURE_FILE_REF *pStructureFileRef;
 
   pStructureFileRef = GetCachedTileStructureRef(usIndex);
@@ -254,7 +254,7 @@ void CheckForAndAddTileCacheStructInfo(LEVELNODE *pNode, INT16 sGridNo, UINT16 u
   }
 }
 
-void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, UINT16 usIndex) {
+function CheckForAndDeleteTileCacheStructInfo(pNode: Pointer<LEVELNODE>, usIndex: UINT16): void {
   STRUCTURE_FILE_REF *pStructureFileRef;
 
   if (usIndex >= TILE_CACHE_START_INDEX) {
@@ -266,7 +266,7 @@ void CheckForAndDeleteTileCacheStructInfo(LEVELNODE *pNode, UINT16 usIndex) {
   }
 }
 
-void GetRootName(INT8 *pDestStr, INT8 *pSrcStr) {
+function GetRootName(pDestStr: Pointer<INT8>, pSrcStr: Pointer<INT8>): void {
   // Remove path and extension
   INT8 cTempFilename[120];
   STR cEndOfName;

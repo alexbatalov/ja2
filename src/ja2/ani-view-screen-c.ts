@@ -8,7 +8,7 @@ static UINT8 ubNumStates = 0;
 static UINT16 *pusStates = NULL;
 static INT8 ubCurLoadedState = 0;
 
-void CycleAnimations() {
+function CycleAnimations(): void {
   INT32 cnt;
 
   // FInd the next animation with start height the same...
@@ -24,18 +24,18 @@ void CycleAnimations() {
   EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
 }
 
-UINT32 AniEditScreenInit(void) {
+function AniEditScreenInit(): UINT32 {
   return TRUE;
 }
 
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-UINT32 AniEditScreenShutdown(void) {
+function AniEditScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 AniEditScreenHandle(void) {
+function AniEditScreenHandle(): UINT32 {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = TRUE;
   static UINT16 usOldState;
@@ -224,7 +224,7 @@ UINT32 AniEditScreenHandle(void) {
   return ANIEDIT_SCREEN;
 }
 
-UINT16 GetAnimStateFromName(INT8 *zName) {
+function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
   INT32 cnt;
 
   // FInd the next animation with start height the same...
@@ -237,7 +237,7 @@ UINT16 GetAnimStateFromName(INT8 *zName) {
   return 5555;
 }
 
-void BuildListFile() {
+function BuildListFile(): void {
   FILE *infoFile;
   char currFilename[128];
   int numEntries = 0;

@@ -121,14 +121,14 @@ UINT32 guiToMugShots;
 UINT32 guiToStats;
 UINT32 guiSelectLight;
 
-void GameInitAimSort() {
+function GameInitAimSort(): void {
   gubCurrentSortMode = 0;
   gubOldSortMode = 0;
   gubCurrentListMode = AIM_DESCEND;
   gubOldListMode = AIM_DESCEND;
 }
 
-BOOLEAN EnterAimSort() {
+function EnterAimSort(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 ubCurNumber = 0;
   UINT16 ubWidth;
@@ -238,7 +238,7 @@ BOOLEAN EnterAimSort() {
   return TRUE;
 }
 
-void ExitAimSort() {
+function ExitAimSort(): void {
   // Sort the merc array
   SortMercArray();
   RemoveAimDefaults();
@@ -264,10 +264,10 @@ void ExitAimSort() {
   ExitAimMenuBar();
 }
 
-void HandleAimSort() {
+function HandleAimSort(): void {
 }
 
-void RenderAimSort() {
+function RenderAimSort(): void {
   HVOBJECT hSortByHandle;
   HVOBJECT hToAlumniHandle;
   HVOBJECT hToMugShotHandle;
@@ -327,7 +327,7 @@ void RenderAimSort() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectToMugShotRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_FACIAL_INDEX;
@@ -335,7 +335,7 @@ void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectToStatsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS;
@@ -343,7 +343,7 @@ void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectToArchiveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_ARCHIVES;
@@ -351,7 +351,7 @@ void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectPriceBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 0) {
@@ -364,7 +364,7 @@ void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectExpBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 1) {
@@ -377,7 +377,7 @@ void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMarkBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 2) {
@@ -390,7 +390,7 @@ void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMedicalBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 3) {
@@ -403,7 +403,7 @@ void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectExplosiveBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 4) {
@@ -416,7 +416,7 @@ void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMechanicalBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentSortMode != 5) {
@@ -429,7 +429,7 @@ void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectAscendBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentListMode != AIM_ASCEND) {
@@ -442,7 +442,7 @@ void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectDescendBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubCurrentListMode != AIM_DESCEND) {
@@ -455,7 +455,7 @@ void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void DrawSelectLight(UINT8 ubMode, UINT8 ubImage) {
+function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
   HVOBJECT hSelectLightHandle;
 
   ubMode *= 2;
@@ -468,13 +468,13 @@ void DrawSelectLight(UINT8 ubMode, UINT8 ubImage) {
   InvalidateRegion(AimSortCheckBoxLoc[ubMode], AimSortCheckBoxLoc[ubMode + 1], (AimSortCheckBoxLoc[ubMode] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubMode + 1] + AIM_SORT_CHECKBOX_SIZE));
 }
 
-BOOLEAN SortMercArray(void) {
+function SortMercArray(): BOOLEAN {
   qsort((LPVOID)AimMercArray, (size_t)MAX_NUMBER_MERCS, sizeof(UINT8), QsortCompare);
 
   return TRUE;
 }
 
-INT32 QsortCompare(const void *pNum1, const void *pNum2) {
+function QsortCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
   UINT8 Num1 = *(UINT8 *)pNum1;
   UINT8 Num2 = *(UINT8 *)pNum2;
 
@@ -511,7 +511,7 @@ INT32 QsortCompare(const void *pNum1, const void *pNum2) {
   }
 }
 
-INT32 CompareValue(const INT32 Num1, const INT32 Num2) {
+function CompareValue(Num1: INT32, Num2: INT32): INT32 {
   // Ascending
   if (gubCurrentListMode == AIM_ASCEND) {
     if (Num1 < Num2)

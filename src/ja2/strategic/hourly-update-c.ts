@@ -1,11 +1,11 @@
-void HandleMinuteUpdate() {
+function HandleMinuteUpdate(): void {
 }
 
 // This function gets called every hour, on the hour.
 // It spawns the handling of all sorts of stuff:
 // Morale changes, assignment progress, town loyalties, etc.
 
-void HandleHourlyUpdate() {
+function HandleHourlyUpdate(): void {
   // if the game hasnt even started yet ( we havent arrived in the sector ) dont process this
   if (DidGameJustStart())
     return;
@@ -46,7 +46,7 @@ void HandleHourlyUpdate() {
   }
 }
 
-void UpdateRegenCounters(void) {
+function UpdateRegenCounters(): void {
   UINT8 ubID;
 
   for (ubID = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID++) {
@@ -56,7 +56,7 @@ void UpdateRegenCounters(void) {
   }
 }
 
-void HandleQuarterHourUpdate() {
+function HandleQuarterHourUpdate(): void {
   // if the game hasnt even started yet ( we havent arrived in the sector ) dont process this
   if (DidGameJustStart())
     return;
@@ -64,7 +64,7 @@ void HandleQuarterHourUpdate() {
   DecayTacticalMoraleModifiers();
 }
 
-void HourlyQuestUpdate(void) {
+function HourlyQuestUpdate(): void {
   UINT32 uiHour = GetWorldHour();
 
   // brothel
@@ -121,7 +121,7 @@ UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
 
 const LARRY_FALLS_OFF_WAGON = 8;
 
-void HourlyLarryUpdate(void) {
+function HourlyLarryUpdate(): void {
   SOLDIERTYPE *pSoldier;
   INT8 bSlot, bBoozeSlot;
   INT8 bLarryItemLoop;
@@ -221,7 +221,7 @@ void HourlyLarryUpdate(void) {
   }
 }
 
-void HourlyCheckIfSlayAloneSoHeCanLeave() {
+function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   SOLDIERTYPE *pSoldier;
   pSoldier = FindSoldierByProfileID(SLAY, TRUE);
   if (!pSoldier) {

@@ -27,7 +27,7 @@ RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {
 
 extern HVSURFACE ghFrameBuffer;
 
-void DisplayFrameRate() {
+function DisplayFrameRate(): void {
   static UINT32 uiFPS = 0;
   static UINT32 uiFrameCount = 0;
   UINT16 usMapPos;
@@ -96,31 +96,31 @@ void DisplayFrameRate() {
 }
 
 // USELESS!!!!!!!!!!!!!!!!!!
-UINT32 SavingScreenInitialize(void) {
+function SavingScreenInitialize(): UINT32 {
   return TRUE;
 }
-UINT32 SavingScreenHandle(void) {
+function SavingScreenHandle(): UINT32 {
   return SAVING_SCREEN;
 }
-UINT32 SavingScreenShutdown(void) {
+function SavingScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 LoadingScreenInitialize(void) {
+function LoadingScreenInitialize(): UINT32 {
   return TRUE;
 }
-UINT32 LoadingScreenHandle(void) {
+function LoadingScreenHandle(): UINT32 {
   return LOADING_SCREEN;
 }
-UINT32 LoadingScreenShutdown(void) {
+function LoadingScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 ErrorScreenInitialize(void) {
+function ErrorScreenInitialize(): UINT32 {
   return TRUE;
 }
 
-UINT32 ErrorScreenHandle(void) {
+function ErrorScreenHandle(): UINT32 {
   InputAtom InputEvent;
   static BOOLEAN fFirstTime = FALSE;
 
@@ -166,15 +166,15 @@ UINT32 ErrorScreenHandle(void) {
   return ERROR_SCREEN;
 }
 
-UINT32 ErrorScreenShutdown(void) {
+function ErrorScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 InitScreenInitialize(void) {
+function InitScreenInitialize(): UINT32 {
   return TRUE;
 }
 
-UINT32 InitScreenHandle(void) {
+function InitScreenHandle(): UINT32 {
   VSURFACE_DESC vs_desc;
   static HVSURFACE hVSurface;
   static UINT8 ubCurrentScreen = 255;
@@ -264,15 +264,15 @@ UINT32 InitScreenHandle(void) {
   return INIT_SCREEN;
 }
 
-UINT32 InitScreenShutdown(void) {
+function InitScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 PalEditScreenInit(void) {
+function PalEditScreenInit(): UINT32 {
   return TRUE;
 }
 
-UINT32 PalEditScreenHandle(void) {
+function PalEditScreenHandle(): UINT32 {
   static BOOLEAN FirstTime = TRUE;
 
   if (gfExitPalEditScreen) {
@@ -298,11 +298,11 @@ UINT32 PalEditScreenHandle(void) {
   return PALEDIT_SCREEN;
 }
 
-UINT32 PalEditScreenShutdown(void) {
+function PalEditScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-void PalEditRenderHook() {
+function PalEditRenderHook(): void {
   SOLDIERTYPE *pSoldier;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
@@ -316,7 +316,7 @@ void PalEditRenderHook() {
   }
 }
 
-BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent) {
+function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
   UINT8 ubType;
   SOLDIERTYPE *pSoldier;
   UINT8 ubPaletteRep;
@@ -444,11 +444,11 @@ BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent) {
   return FALSE;
 }
 
-UINT32 DebugScreenInit(void) {
+function DebugScreenInit(): UINT32 {
   return TRUE;
 }
 
-BOOLEAN CheckForAndExitTacticalDebug() {
+function CheckForAndExitTacticalDebug(): BOOLEAN {
   if (gfExitDebugScreen) {
     FirstTime = TRUE;
     gfInitRect = TRUE;
@@ -463,7 +463,7 @@ BOOLEAN CheckForAndExitTacticalDebug() {
   return FALSE;
 }
 
-void ExitDebugScreen() {
+function ExitDebugScreen(): void {
   if (guiCurrentScreen == DEBUG_SCREEN) {
     gfExitDebugScreen = TRUE;
   }
@@ -471,7 +471,7 @@ void ExitDebugScreen() {
   CheckForAndExitTacticalDebug();
 }
 
-UINT32 DebugScreenHandle(void) {
+function DebugScreenHandle(): UINT32 {
   if (CheckForAndExitTacticalDebug()) {
     return GAME_SCREEN;
   }
@@ -493,15 +493,15 @@ UINT32 DebugScreenHandle(void) {
   return DEBUG_SCREEN;
 }
 
-UINT32 DebugScreenShutdown(void) {
+function DebugScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-void DebugRenderHook() {
+function DebugRenderHook(): void {
   gDebugRenderOverride[gCurDebugPage]();
 }
 
-BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
+function DebugKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
   if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == 'q')) {
     gfExitDebugScreen = TRUE;
     return TRUE;
@@ -534,38 +534,38 @@ BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
   return FALSE;
 }
 
-void SetDebugRenderHook(RENDER_HOOK pDebugRenderOverride, INT8 ubPage) {
+function SetDebugRenderHook(pDebugRenderOverride: RENDER_HOOK, ubPage: INT8): void {
   gDebugRenderOverride[ubPage] = pDebugRenderOverride;
 }
 
-void DefaultDebugPage1() {
+function DefaultDebugPage1(): void {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE ONE");
 }
 
-void DefaultDebugPage2() {
+function DefaultDebugPage2(): void {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE TWO");
 }
 
-void DefaultDebugPage3() {
+function DefaultDebugPage3(): void {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE THREE");
 }
 
-void DefaultDebugPage4() {
+function DefaultDebugPage4(): void {
   SetFont(LARGEFONT1);
   gprintf(0, 0, L"DEBUG PAGE FOUR");
 }
 
-UINT32 SexScreenInit(void) {
+function SexScreenInit(): UINT32 {
   return TRUE;
 }
 
 const SMILY_DELAY = 100;
 const SMILY_END_DELAY = 1000;
 
-UINT32 SexScreenHandle(void) {
+function SexScreenHandle(): UINT32 {
   static UINT8 ubCurrentScreen = 0;
   VOBJECT_DESC VObjectDesc;
   static UINT32 guiSMILY;
@@ -653,15 +653,15 @@ UINT32 SexScreenHandle(void) {
   return SEX_SCREEN;
 }
 
-UINT32 SexScreenShutdown(void) {
+function SexScreenShutdown(): UINT32 {
   return TRUE;
 }
 
-UINT32 DemoExitScreenInit(void) {
+function DemoExitScreenInit(): UINT32 {
   return TRUE;
 }
 
-void DoneFadeOutForDemoExitScreen(void) {
+function DoneFadeOutForDemoExitScreen(): void {
   gfProgramIsRunning = FALSE;
 }
 
@@ -703,11 +703,11 @@ extern INT8 gbFadeSpeed;
 // }
 // #endif
 
-UINT32 DemoExitScreenHandle(void) {
+function DemoExitScreenHandle(): UINT32 {
   gfProgramIsRunning = FALSE;
   return DEMO_EXIT_SCREEN;
 }
 
-UINT32 DemoExitScreenShutdown(void) {
+function DemoExitScreenShutdown(): UINT32 {
   return TRUE;
 }

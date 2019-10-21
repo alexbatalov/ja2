@@ -18,7 +18,7 @@ BOOLEAN fReDrawVoicesScreenFlag = FALSE;
 // the portrait region, for player to click on and re-hear voice
 MOUSE_REGION gVoicePortraitRegion;
 
-void EnterIMPVoices(void) {
+function EnterIMPVoices(): void {
   fVoiceAVisited = FALSE;
   fVoiceBVisited = FALSE;
   fVoiceCVisited = FALSE;
@@ -38,7 +38,7 @@ void EnterIMPVoices(void) {
   return;
 }
 
-void RenderIMPVoices(void) {
+function RenderIMPVoices(): void {
   // render background
   RenderProfileBackGround();
 
@@ -60,7 +60,7 @@ void RenderIMPVoices(void) {
   return;
 }
 
-void ExitIMPVoices(void) {
+function ExitIMPVoices(): void {
   // destroy buttons for IMP Voices page
   DestroyIMPVoicesButtons();
 
@@ -70,7 +70,7 @@ void ExitIMPVoices(void) {
   return;
 }
 
-void HandleIMPVoices(void) {
+function HandleIMPVoices(): void {
   // do we need to re write screen
   if (fReDrawVoicesScreenFlag == TRUE) {
     RenderIMPVoices();
@@ -81,7 +81,7 @@ void HandleIMPVoices(void) {
   return;
 }
 
-void IncrementVoice(void) {
+function IncrementVoice(): void {
   // cycle to next voice
 
   iCurrentVoices++;
@@ -94,7 +94,7 @@ void IncrementVoice(void) {
   return;
 }
 
-void DecrementVoice(void) {
+function DecrementVoice(): void {
   // cycle to previous voice
 
   iCurrentVoices--;
@@ -107,7 +107,7 @@ void DecrementVoice(void) {
   return;
 }
 
-void CreateIMPVoicesButtons(void) {
+function CreateIMPVoicesButtons(): void {
   // will create buttons need for the IMP Voices screen
 
   // next button
@@ -139,7 +139,7 @@ void CreateIMPVoicesButtons(void) {
   SetButtonCursor(giIMPVoicesButton[2], CURSOR_WWW);
 }
 
-void DestroyIMPVoicesButtons(void) {
+function DestroyIMPVoicesButtons(): void {
   // will destroy buttons created for IMP Voices screen
 
   // the next button
@@ -157,7 +157,7 @@ void DestroyIMPVoicesButtons(void) {
   return;
 }
 
-void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPVoicesNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -183,7 +183,7 @@ void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPVoicesPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -209,7 +209,7 @@ void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPVoicesDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -250,7 +250,7 @@ void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-UINT32 PlayVoice(void) {
+function PlayVoice(): UINT32 {
   //	CHAR16 sString[ 64 ];
 
   // gender?
@@ -289,7 +289,7 @@ UINT32 PlayVoice(void) {
   return 0;
 }
 
-void CreateIMPVoiceMouseRegions(void) {
+function CreateIMPVoiceMouseRegions(): void {
   // will create mouse regions needed for the IMP voices page
   MSYS_DefineRegion(&gVoicePortraitRegion, LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176, LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, IMPPortraitRegionButtonCallback);
 
@@ -298,14 +298,14 @@ void CreateIMPVoiceMouseRegions(void) {
   return;
 }
 
-void DestroyIMPVoiceMouseRegions(void) {
+function DestroyIMPVoiceMouseRegions(): void {
   // will destroy already created mouse reiogns for IMP voices page
   MSYS_RemoveRegion(&gVoicePortraitRegion);
 
   return;
 }
 
-void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function IMPPortraitRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // callback handler for imp portrait region button events
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -320,7 +320,7 @@ void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   return;
 }
 
-void RenderVoiceIndex(void) {
+function RenderVoiceIndex(): void {
   CHAR16 sString[32];
   INT16 sX, sY;
 

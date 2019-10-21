@@ -4,7 +4,7 @@ SGPPaletteEntry gEditorLightColor;
 
 BOOLEAN gfEditorForceShadeTableRebuild = FALSE;
 
-void SetupTextInputForMapInfo() {
+function SetupTextInputForMapInfo(): void {
   UINT16 str[10];
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
@@ -40,7 +40,7 @@ void SetupTextInputForMapInfo() {
   AddTextInputField(338, 403, 40, 18, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
 }
 
-void UpdateMapInfo() {
+function UpdateMapInfo(): void {
   SetFont(FONT10ARIAL);
   SetFontShadow(FONT_NEARBLACK);
 
@@ -83,7 +83,7 @@ void UpdateMapInfo() {
   SetFontForeground(FONT_RED);
 }
 
-void UpdateMapInfoFields() {
+function UpdateMapInfoFields(): void {
   UINT16 str[10];
   // Update the text fields to reflect the validated values.
   // light rgb fields
@@ -108,7 +108,7 @@ void UpdateMapInfoFields() {
   ApplyNewExitGridValuesToTextFields();
 }
 
-void ExtractAndUpdateMapInfo() {
+function ExtractAndUpdateMapInfo(): void {
   UINT16 str[10];
   INT32 temp;
   BOOLEAN fUpdateLight1 = FALSE;
@@ -172,7 +172,7 @@ void ExtractAndUpdateMapInfo() {
   UpdateMapInfoFields();
 }
 
-BOOLEAN ApplyNewExitGridValuesToTextFields() {
+function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
   UINT16 str[10];
   // exit grid input fields
   if (iCurrentTaskbar != TASK_MAPINFO)
@@ -188,7 +188,7 @@ BOOLEAN ApplyNewExitGridValuesToTextFields() {
 }
 
 UINT16 usCurrentExitGridNo = 0;
-void LocateNextExitGrid() {
+function LocateNextExitGrid(): void {
   EXITGRID ExitGrid;
   UINT16 i;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
@@ -207,7 +207,7 @@ void LocateNextExitGrid() {
   }
 }
 
-void ChangeLightDefault(INT8 bLightType) {
+function ChangeLightDefault(bLightType: INT8): void {
   UnclickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);
   gbDefaultLightType = bLightType;
   ClickEditorButton(MAPINFO_PRIMETIME_LIGHT + gbDefaultLightType);

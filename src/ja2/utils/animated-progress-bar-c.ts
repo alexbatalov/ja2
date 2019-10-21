@@ -8,13 +8,13 @@ PROGRESSBAR *pBar[MAX_PROGRESSBARS];
 BOOLEAN gfUseLoadScreenProgressBar = FALSE;
 UINT16 gusLeftmostShaded = 0;
 
-void CreateLoadingScreenProgressBar() {
+function CreateLoadingScreenProgressBar(): void {
   gusLeftmostShaded = 162;
   gfUseLoadScreenProgressBar = TRUE;
   CreateProgressBar(0, 162, 427, 480, 443);
 }
 
-void RemoveLoadingScreenProgressBar() {
+function RemoveLoadingScreenProgressBar(): void {
   gfUseLoadScreenProgressBar = FALSE;
   RemoveProgressBar(0);
   SetFontShadow(DEFAULT_SHADOW);
@@ -22,7 +22,7 @@ void RemoveLoadingScreenProgressBar() {
 
 // This creates a single progress bar given the coordinates without a panel (containing a title and background).
 // A panel is automatically created if you specify a title using SetProgressBarTitle
-BOOLEAN CreateProgressBar(UINT8 ubProgressBarID, UINT16 usLeft, UINT16 usTop, UINT16 usRight, UINT16 usBottom) {
+function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): BOOLEAN {
   PROGRESSBAR *pNew;
   // Allocate new progress bar
   pNew = (PROGRESSBAR *)MemAlloc(sizeof(PROGRESSBAR));
@@ -60,7 +60,7 @@ BOOLEAN CreateProgressBar(UINT8 ubProgressBarID, UINT16 usLeft, UINT16 usTop, UI
 
 // You may also define a panel to go in behind the progress bar.  You can now assign a title to go with
 // the panel.
-void DefineProgressBarPanel(UINT32 ubID, UINT8 r, UINT8 g, UINT8 b, UINT16 usLeft, UINT16 usTop, UINT16 usRight, UINT16 usBottom) {
+function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): void {
   PROGRESSBAR *pCurr;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -80,7 +80,7 @@ void DefineProgressBarPanel(UINT32 ubID, UINT8 r, UINT8 g, UINT8 b, UINT16 usLef
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
 // panel and vertically centered from the top of the panel, to the top of the progress bar.
-void SetProgressBarTitle(UINT32 ubID, UINT16 *pString, UINT32 usFont, UINT8 ubForeColor, UINT8 ubShadowColor) {
+function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
   PROGRESSBAR *pCurr;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -101,7 +101,7 @@ void SetProgressBarTitle(UINT32 ubID, UINT16 *pString, UINT32 usFont, UINT8 ubFo
 
 // Unless you set up the attributes, any text you pass to SetRelativeStartAndEndPercentage will
 // default to FONT12POINT1 in a black color.
-void SetProgressBarMsgAttributes(UINT32 ubID, UINT32 usFont, UINT8 ubForeColor, UINT8 ubShadowColor) {
+function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
   PROGRESSBAR *pCurr;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -113,7 +113,7 @@ void SetProgressBarMsgAttributes(UINT32 ubID, UINT32 usFont, UINT8 ubForeColor, 
 }
 
 // When finished, the progress bar needs to be removed.
-void RemoveProgressBar(UINT8 ubID) {
+function RemoveProgressBar(ubID: UINT8): void {
   Assert(ubID < MAX_PROGRESSBARS);
   if (pBar[ubID]) {
     if (pBar[ubID]->swzTitle)
@@ -131,7 +131,7 @@ void RemoveProgressBar(UINT8 ubID) {
 // As the process animates using UpdateProgressBar( 0 to 100 ), the total progress bar will only reach 30%
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
-void SetRelativeStartAndEndPercentage(UINT8 ubID, UINT32 uiRelStartPerc, UINT32 uiRelEndPerc, UINT16 *str) {
+function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: Pointer<UINT16>): void {
   PROGRESSBAR *pCurr;
   UINT16 usStartX, usStartY;
 
@@ -186,7 +186,7 @@ void SetRelativeStartAndEndPercentage(UINT8 ubID, UINT32 uiRelStartPerc, UINT32 
 // This part renders the progress bar at the percentage level that you specify.  If you have set relative
 // percentage values in the above function, then the uiPercentage will be reflected based off of the relative
 // percentages.
-void RenderProgressBar(UINT8 ubID, UINT32 uiPercentage) {
+function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
   static UINT32 uiLastTime = 0;
   UINT32 uiCurTime = GetJA2Clock();
   double rActual;
@@ -240,7 +240,7 @@ void RenderProgressBar(UINT8 ubID, UINT32 uiPercentage) {
   }
 }
 
-void SetProgressBarColor(UINT8 ubID, UINT8 ubColorFillRed, UINT8 ubColorFillGreen, UINT8 ubColorFillBlue) {
+function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
   PROGRESSBAR *pCurr = NULL;
 
   Assert(ubID < MAX_PROGRESSBARS);
@@ -254,7 +254,7 @@ void SetProgressBarColor(UINT8 ubID, UINT8 ubColorFillRed, UINT8 ubColorFillGree
   pCurr->ubColorFillBlue = ubColorFillBlue;
 }
 
-void SetProgressBarTextDisplayFlag(UINT8 ubID, BOOLEAN fDisplayText, BOOLEAN fUseSaveBuffer, BOOLEAN fSaveScreenToFrameBuffer) {
+function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseSaveBuffer: BOOLEAN, fSaveScreenToFrameBuffer: BOOLEAN): void {
   PROGRESSBAR *pCurr = NULL;
 
   Assert(ubID < MAX_PROGRESSBARS);

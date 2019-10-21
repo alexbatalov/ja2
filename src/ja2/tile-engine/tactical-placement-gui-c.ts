@@ -45,7 +45,7 @@ SOLDIERTYPE *gpTacticalPlacementHilightedSoldier = NULL;
 
 BOOLEAN gfNorth, gfEast, gfSouth, gfWest;
 
-void InitTacticalPlacementGUI() {
+function InitTacticalPlacementGUI(): void {
   VOBJECT_DESC VObjectDesc;
   INT32 i, xp, yp;
   UINT8 ubFaceIndex;
@@ -191,7 +191,7 @@ void InitTacticalPlacementGUI() {
   }
 }
 
-void RenderTacticalPlacementGUI() {
+function RenderTacticalPlacementGUI(): void {
   INT32 i, xp, yp, width, height;
   INT32 iStartY;
   SOLDIERTYPE *pSoldier;
@@ -343,7 +343,7 @@ void RenderTacticalPlacementGUI() {
   }
 }
 
-void EnsureDoneButtonStatus() {
+function EnsureDoneButtonStatus(): void {
   INT32 i;
   // static BOOLEAN fInside = FALSE;
   // BOOLEAN fChanged = FALSE;
@@ -363,7 +363,7 @@ void EnsureDoneButtonStatus() {
   }
 }
 
-void TacticalPlacementHandle() {
+function TacticalPlacementHandle(): void {
   InputAtom InputEvent;
 
   EnsureDoneButtonStatus();
@@ -444,7 +444,7 @@ void TacticalPlacementHandle() {
   }
 }
 
-void KillTacticalPlacementGUI() {
+function KillTacticalPlacementGUI(): void {
   INT32 i;
 
   gbHilightedMercID = -1;
@@ -493,7 +493,7 @@ void KillTacticalPlacementGUI() {
   EnableScrollMessages();
 }
 
-void ChooseRandomEdgepoints() {
+function ChooseRandomEdgepoints(): void {
   INT32 i;
   for (i = 0; i < giPlacements; i++) {
     if (!(gMercPlacement[i].pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
@@ -513,7 +513,7 @@ void ChooseRandomEdgepoints() {
   gfEveryonePlaced = TRUE;
 }
 
-void PlaceMercs() {
+function PlaceMercs(): void {
   INT32 i;
   switch (gubDefaultButton) {
     case SPREAD_BUTTON: // Place mercs randomly along their side using map edgepoints.
@@ -534,13 +534,13 @@ void PlaceMercs() {
   gfTacticalPlacementGUIDirty = TRUE;
 }
 
-void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoneOverheadPlacementClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfKillTacticalGUI = 2;
   }
 }
 
-void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+function SpreadPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubDefaultButton = SPREAD_BUTTON;
     ButtonList[iTPButtons[GROUP_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -552,7 +552,7 @@ void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+function GroupPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gubDefaultButton == GROUP_BUTTON) {
       btn->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -569,7 +569,7 @@ void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
+function ClearPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[iTPButtons[GROUP_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[iTPButtons[GROUP_BUTTON]]->uiFlags |= BUTTON_DIRTY;
@@ -578,7 +578,7 @@ void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void MercMoveCallback(MOUSE_REGION *reg, INT32 reason) {
+function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reg->uiFlags & MSYS_MOUSE_IN_AREA) {
     INT8 i;
     for (i = 0; i < giPlacements; i++) {
@@ -596,7 +596,7 @@ void MercMoveCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void MercClickCallback(MOUSE_REGION *reg, INT32 reason) {
+function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     INT8 i;
     for (i = 0; i < giPlacements; i++) {
@@ -614,7 +614,7 @@ void MercClickCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void SelectNextUnplacedUnit() {
+function SelectNextUnplacedUnit(): void {
   INT32 i;
   if (gbSelectedMercID == -1)
     return;
@@ -656,7 +656,7 @@ void SelectNextUnplacedUnit() {
   }
 }
 
-void HandleTacticalPlacementClicksInOverheadMap(MOUSE_REGION *reg, INT32 reason) {
+function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   INT32 i;
   INT16 sGridNo;
   BOOLEAN fInvalidArea = FALSE;
@@ -731,7 +731,7 @@ void HandleTacticalPlacementClicksInOverheadMap(MOUSE_REGION *reg, INT32 reason)
   }
 }
 
-void SetCursorMerc(INT8 bPlacementID) {
+function SetCursorMerc(bPlacementID: INT8): void {
   if (gbCursorMercID != bPlacementID) {
     if (gbCursorMercID == -1 || bPlacementID == -1 || gMercPlacement[gbCursorMercID].ubStrategicInsertionCode != gMercPlacement[bPlacementID].ubStrategicInsertionCode)
       gfValidLocationsChanged = TRUE;
@@ -739,7 +739,7 @@ void SetCursorMerc(INT8 bPlacementID) {
   }
 }
 
-void PutDownMercPiece(INT32 iPlacement) {
+function PutDownMercPiece(iPlacement: INT32): void {
   INT16 sGridNo, sCellX, sCellY;
   UINT8 ubDirection;
 
@@ -778,22 +778,22 @@ void PutDownMercPiece(INT32 iPlacement) {
   }
 }
 
-void PickUpMercPiece(INT32 iPlacement) {
+function PickUpMercPiece(iPlacement: INT32): void {
   RemoveSoldierFromGridNo(gMercPlacement[iPlacement].pSoldier);
   gMercPlacement[iPlacement].fPlaced = FALSE;
   gMercPlacement[iPlacement].pSoldier->bInSector = FALSE;
 }
 
-void FastHelpRemovedCallback() {
+function FastHelpRemovedCallback(): void {
   gfTacticalPlacementGUIDirty = TRUE;
 }
 
-void FastHelpRemoved2Callback() {
+function FastHelpRemoved2Callback(): void {
   gfTacticalPlacementGUIDirty = TRUE;
   gfValidLocationsChanged = 2; // because fast help text covers it.
 }
 
-void DialogRemoved(UINT8 ubResult) {
+function DialogRemoved(ubResult: UINT8): void {
   gfTacticalPlacementGUIDirty = TRUE;
   gfValidLocationsChanged = TRUE;
 }

@@ -119,7 +119,7 @@ MOUSE_REGION GotoGridNoUIRegion;
 //
 //	This function is called once at SGP (and game) startup
 //
-UINT32 EditScreenInit(void) {
+function EditScreenInit(): UINT32 {
   gfFakeLights = FALSE;
 
   eInfo.fGameInit = TRUE;
@@ -150,7 +150,7 @@ UINT32 EditScreenInit(void) {
 //
 //	This function is called once at shutdown of the game
 //
-UINT32 EditScreenShutdown(void) {
+function EditScreenShutdown(): UINT32 {
   GameShutdownEditorMercsInfo();
   RemoveAllFromUndoList();
   KillClipboard();
@@ -162,7 +162,7 @@ UINT32 EditScreenShutdown(void) {
 //
 //	Editor's Init code. Called each time we enter edit mode from the game.
 //
-BOOLEAN EditModeInit(void) {
+function EditModeInit(): BOOLEAN {
   UINT32 x;
   INT32 i;
   SGPPaletteEntry LColors[2];
@@ -319,7 +319,7 @@ BOOLEAN EditModeInit(void) {
 //	EditModeShutdown
 //
 //	The above function's counterpart. Called when exiting the editor back to the game.
-BOOLEAN EditModeShutdown(void) {
+function EditModeShutdown(): BOOLEAN {
   if (gfConfirmExitFirst) {
     gfConfirmExitPending = TRUE;
     CreateMessageBox(L"Exit editor?");
@@ -428,7 +428,7 @@ BOOLEAN EditModeShutdown(void) {
 //
 //	Forces all land on the map to have the same ground texture.
 //
-void SetBackgroundTexture() {
+function SetBackgroundTexture(): void {
   int cnt;
   UINT16 usIndex, Dummy;
 
@@ -455,7 +455,7 @@ void SetBackgroundTexture() {
 //
 //	Displays the selection window and handles it's exit condition. Used by WaitForSelectionWindow
 //
-BOOLEAN DoWindowSelection(void) {
+function DoWindowSelection(): BOOLEAN {
   RenderSelectionWindow();
   RenderButtonsFastHelp();
   if (fAllDone) {
@@ -490,7 +490,7 @@ BOOLEAN DoWindowSelection(void) {
 
 // Whenever the mouse attaches an object to the cursor, it has to be removed, so it doesn't stay
 // in the world.
-void RemoveTempMouseCursorObject(void) {
+function RemoveTempMouseCursorObject(): void {
   if (iCurBankMapIndex < 0x8000) {
     ForceRemoveStructFromTail(iCurBankMapIndex);
     gCursorNode = NULL;
@@ -499,7 +499,7 @@ void RemoveTempMouseCursorObject(void) {
 
 // Whenever the editor wishes to show an object in the world, it will temporarily attach it to
 // the mouse cursor, to indicate what is about to be drawn.
-BOOLEAN DrawTempMouseCursorObject(void) {
+function DrawTempMouseCursorObject(): BOOLEAN {
   INT16 sMouseX_M, sMouseY_M;
   UINT16 usUseIndex;
   UINT16 usUseObjIndex;
@@ -613,7 +613,7 @@ BOOLEAN DrawTempMouseCursorObject(void) {
 }
 
 // Displays the current drawing object in the small, lower left window of the editor's toolbar.
-void ShowCurrentDrawingMode(void) {
+function ShowCurrentDrawingMode(): void {
   SGPRect ClipRect, NewRect;
   INT32 iShowMode;
   UINT16 usUseIndex;
@@ -852,7 +852,7 @@ void ShowCurrentDrawingMode(void) {
 //
 //	Select action to be taken based on user's toolbar selection.
 //
-void HandleJA2ToolbarSelection(void) {
+function HandleJA2ToolbarSelection(): void {
   BOOLEAN fPrevState;
 
   fPrevState = gfRenderTaskbar;
@@ -1116,7 +1116,7 @@ void HandleJA2ToolbarSelection(void) {
 //
 
 extern INT8 gbCurrSelect;
-void HandleKeyboardShortcuts() {
+function HandleKeyboardShortcuts(): void {
   static INT32 iSavedMode;
   static BOOLEAN fShowTrees = TRUE;
   while (DequeueEvent(&EditorInputEvent)) {
@@ -1644,7 +1644,7 @@ void HandleKeyboardShortcuts() {
 //
 //	Perform the current user selected action, if any (or at least set things up for doing that)
 //
-UINT32 PerformSelectedAction(void) {
+function PerformSelectedAction(): UINT32 {
   UINT32 uiRetVal;
 
   uiRetVal = EDIT_SCREEN;
@@ -2044,7 +2044,7 @@ UINT32 PerformSelectedAction(void) {
   return uiRetVal;
 }
 
-void CreateNewMap() {
+function CreateNewMap(): void {
   if (gfSummaryWindowActive)
     DestroySummaryWindow();
 
@@ -2086,7 +2086,7 @@ void CreateNewMap() {
   gMapInformation.sEastGridNo = -1;
 }
 
-UINT32 ProcessEditscreenMessageBoxResponse() {
+function ProcessEditscreenMessageBoxResponse(): UINT32 {
   RemoveMessageBox();
   gfRenderWorld = TRUE;
   if (gfConfirmExitPending) {
@@ -2135,7 +2135,7 @@ UINT32 ProcessEditscreenMessageBoxResponse() {
 //
 //	Displays a help screen and waits for the user to wisk it away.
 //
-UINT32 WaitForHelpScreenResponse(void) {
+function WaitForHelpScreenResponse(): UINT32 {
   InputAtom DummyEvent;
   BOOLEAN fLeaveScreen;
 
@@ -2244,7 +2244,7 @@ UINT32 WaitForHelpScreenResponse(void) {
 //
 //	Handles all keyboard input and display for a selection window.
 //
-UINT32 WaitForSelectionWindowResponse(void) {
+function WaitForSelectionWindowResponse(): UINT32 {
   InputAtom DummyEvent;
 
   while (DequeueEvent(&DummyEvent) == TRUE) {
@@ -2302,7 +2302,7 @@ UINT32 WaitForSelectionWindowResponse(void) {
 //
 //	Retrieves the file comments from the master list for the current tileset
 //
-void FindTilesetComments(void) {
+function FindTilesetComments(): void {
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2310,7 +2310,7 @@ void FindTilesetComments(void) {
 //
 //	Loads the master list for the tileset comments
 //
-void GetMasterList(void) {
+function GetMasterList(): void {
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2319,7 +2319,7 @@ void GetMasterList(void) {
 //	Displays the image of the currently highlighted tileset slot if it's a video surface.
 //	(usually a 16 bit image)
 //
-void ShowCurrentSlotSurface(UINT32 vSurface, INT32 iWindow) {
+function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   SGPRect ClipRect, WinRect;
   INT32 iStartX;
   INT32 iStartY;
@@ -2373,7 +2373,7 @@ void ShowCurrentSlotSurface(UINT32 vSurface, INT32 iWindow) {
 //	Displays the image of the currently highlighted tileset slot image. Usually this is for
 //	8 bit image (.STI) files
 //
-void ShowCurrentSlotImage(HVOBJECT hVObj, INT32 iWindow) {
+function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   SGPRect ClipRect, NewRect;
   INT32 iStartX;
   INT32 iStartY;
@@ -2424,7 +2424,7 @@ void ShowCurrentSlotImage(HVOBJECT hVObj, INT32 iWindow) {
 //
 //	Creates and places a light of selected radius and color into the world.
 //
-BOOLEAN PlaceLight(INT16 sRadius, INT16 iMapX, INT16 iMapY, INT16 sType) {
+function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): BOOLEAN {
   INT32 iLightHandle;
   UINT8 ubIntensity;
   STRING512 Filename;
@@ -2497,7 +2497,7 @@ BOOLEAN PlaceLight(INT16 sRadius, INT16 iMapX, INT16 iMapY, INT16 sType) {
 //	Returns TRUE if deleted the light, otherwise, returns FALSE.
 //	i.e. FALSE is not an error condition!
 //
-BOOLEAN RemoveLight(INT16 iMapX, INT16 iMapY) {
+function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
   INT32 iCount;
   UINT16 cnt;
   SOLDIERTYPE *pSoldier;
@@ -2553,7 +2553,7 @@ BOOLEAN RemoveLight(INT16 iMapX, INT16 iMapY) {
 //	For all lights that are in the world (except lights attached to mercs), this function places
 //	a marker at it's location for editing purposes.
 //
-void ShowLightPositionHandles(void) {
+function ShowLightPositionHandles(): void {
   INT32 iCount;
   INT32 iMapIndex;
   UINT16 cnt;
@@ -2589,7 +2589,7 @@ void ShowLightPositionHandles(void) {
 //
 //	Scans through all light currently in the world and removes any light markers that may be present.
 //
-void RemoveLightPositionHandles(void) {
+function RemoveLightPositionHandles(): void {
   INT32 iCount;
   INT32 iMapIndex;
   UINT16 cnt;
@@ -2631,7 +2631,7 @@ void RemoveLightPositionHandles(void) {
 //	This function is used to determine if we should force the area selection of rooms to handle
 //	slant roofs (which require at least one side to be exactly 8 tiles wide)
 //
-BOOLEAN CheckForSlantRoofs(void) {
+function CheckForSlantRoofs(): BOOLEAN {
   UINT16 usCheck;
 
   pSelList = SelRoom;
@@ -2657,7 +2657,7 @@ BOOLEAN CheckForSlantRoofs(void) {
 //	Doing the above has shown to free up about 1.1 Megs on the default map. Deletion of non-viewable
 //	land pieces alone gained us about 600 K of memory.
 //
-void MapOptimize(void) {
+function MapOptimize(): void {
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2669,7 +2669,7 @@ void MapOptimize(void) {
 //	if ANY piece other than a fence piece exists in the selection list, then we want to keep
 //	random selections.
 //
-BOOLEAN CheckForFences(void) {
+function CheckForFences(): BOOLEAN {
   UINT16 usCheck;
   BOOLEAN fFence;
   TILE_ELEMENT *T;
@@ -2690,7 +2690,7 @@ BOOLEAN CheckForFences(void) {
   return fFence;
 }
 
-void EnsureStatusOfEditorButtons() {
+function EnsureStatusOfEditorButtons(): void {
   if (iDrawMode >= DRAW_MODE_ERASE) {
     ClickEditorButton(TERRAIN_TOGGLE_ERASEMODE);
     ClickEditorButton(BUILDING_TOGGLE_ERASEMODE);
@@ -2720,7 +2720,7 @@ void EnsureStatusOfEditorButtons() {
     UnclickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
 }
 
-void HandleMouseClicksInGameScreen() {
+function HandleMouseClicksInGameScreen(): void {
   EXITGRID dummy = { 0, 0, 0, 0 };
   INT16 sX, sY;
   BOOLEAN fPrevState;
@@ -2995,7 +2995,7 @@ void HandleMouseClicksInGameScreen() {
   }
 }
 
-BOOLEAN DoIRenderASpecialMouseCursor() {
+function DoIRenderASpecialMouseCursor(): BOOLEAN {
   INT16 sMouseX_M, sMouseY_M;
 
   // Draw basic mouse
@@ -3046,7 +3046,7 @@ BOOLEAN DoIRenderASpecialMouseCursor() {
 extern INT32 iEditorToolbarState;
 extern INT32 iEditorToolbarLastWallState;
 
-void ShowEntryPoints() {
+function ShowEntryPoints(): void {
   // make entry points visible
   if (gMapInformation.sNorthGridNo != -1)
     AddTopmostToTail(gMapInformation.sNorthGridNo, FIRSTPOINTERS2);
@@ -3058,7 +3058,7 @@ void ShowEntryPoints() {
     AddTopmostToTail(gMapInformation.sWestGridNo, FIRSTPOINTERS2);
 }
 
-void HideEntryPoints() {
+function HideEntryPoints(): void {
   // remove entry point indicators
   if (gMapInformation.sNorthGridNo != -1)
     RemoveAllTopmostsOfTypeRange(gMapInformation.sNorthGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
@@ -3070,43 +3070,43 @@ void HideEntryPoints() {
     RemoveAllTopmostsOfTypeRange(gMapInformation.sWestGridNo, FIRSTPOINTERS, FIRSTPOINTERS);
 }
 
-void TaskOptionsCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskOptionsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_OPTIONS;
   }
 }
 
-void TaskTerrainCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskTerrainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_TERRAIN;
   }
 }
 
-void TaskBuildingCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskBuildingCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_BUILDINGS;
   }
 }
 
-void TaskItemsCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskItemsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_ITEMS;
   }
 }
 
-void TaskMercsCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_MERCS;
   }
 }
 
-void TaskMapInfoCallback(GUI_BUTTON *btn, INT32 reason) {
+function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iTaskMode = TASK_MAPINFO;
   }
 }
 
-void ProcessAreaSelection(BOOLEAN fWithLeftButton) {
+function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
   BOOLEAN fPrevState = gfRenderWorld;
   gfRenderWorld = TRUE;
   switch (iDrawMode) {
@@ -3156,7 +3156,7 @@ void ProcessAreaSelection(BOOLEAN fWithLeftButton) {
 // For any drawing modes that support large cursors, or even area selection, this function calls the
 // appropriate paste function for every gridno within the cursor.  This is not used for functions that
 // rely completely on selection areas, such as buildings.
-void DrawObjectsBasedOnSelectionRegion() {
+function DrawObjectsBasedOnSelectionRegion(): void {
   INT32 x, y, iMapIndex;
   BOOLEAN fSkipTest;
 
@@ -3212,7 +3212,7 @@ void DrawObjectsBasedOnSelectionRegion() {
 }
 
 // The main loop of the editor.
-UINT32 EditScreenHandle(void) {
+function EditScreenHandle(): UINT32 {
   UINT32 uiRetVal;
   BOOLEAN fShowingCursor;
   StartFrameBufferRender();
@@ -3349,7 +3349,7 @@ UINT32 EditScreenHandle(void) {
   return uiRetVal;
 }
 
-void CreateGotoGridNoUI() {
+function CreateGotoGridNoUI(): void {
   gfGotoGridNoUI = TRUE;
   // Disable the rest of the editor
   DisableEditorTaskbar();
@@ -3365,7 +3365,7 @@ void CreateGotoGridNoUI() {
   AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, L"", 6, INPUTTYPE_NUMERICSTRICT);
 }
 
-void RemoveGotoGridNoUI() {
+function RemoveGotoGridNoUI(): void {
   INT32 iMapIndex;
   gfGotoGridNoUI = FALSE;
   // Enable the rest of the editor
@@ -3382,13 +3382,13 @@ void RemoveGotoGridNoUI() {
   }
 }
 
-void UpdateLastActionBeforeLeaving() {
+function UpdateLastActionBeforeLeaving(): void {
   if (iCurrentTaskbar == TASK_MERCS)
     IndicateSelectedMerc(SELECT_NO_MERC);
   SpecifyItemToEdit(NULL, -1);
 }
 
-void ReloadMap() {
+function ReloadMap(): void {
   UINT16 szFilename[30];
   swprintf(szFilename, L"%S", gubFilename);
   ExternalLoadMap(szFilename);

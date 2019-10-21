@@ -178,7 +178,7 @@ UINT32 guiWaitingForAllMercsToExitData[3];
 UINT32 guiWaitingForAllMercsToExitTimer = 0;
 BOOLEAN gfKillingGuysForLosingBattle = FALSE;
 
-INT32 GetFreeMercSlot(void) {
+function GetFreeMercSlot(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
@@ -192,7 +192,7 @@ INT32 GetFreeMercSlot(void) {
   return -1;
 }
 
-void RecountMercSlots(void) {
+function RecountMercSlots(): void {
   INT32 iCount;
 
   if (guiNumMercSlots > 0) {
@@ -208,7 +208,7 @@ void RecountMercSlots(void) {
   }
 }
 
-INT32 AddMercSlot(SOLDIERTYPE *pSoldier) {
+function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iMercIndex;
 
   if ((iMercIndex = GetFreeMercSlot()) == (-1))
@@ -219,7 +219,7 @@ INT32 AddMercSlot(SOLDIERTYPE *pSoldier) {
   return iMercIndex;
 }
 
-BOOLEAN RemoveMercSlot(SOLDIERTYPE *pSoldier) {
+function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT32 uiCount;
 
   CHECKF(pSoldier != NULL);
@@ -236,7 +236,7 @@ BOOLEAN RemoveMercSlot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT32 GetFreeAwaySlot(void) {
+function GetFreeAwaySlot(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumAwaySlots; uiCount++) {
@@ -250,7 +250,7 @@ INT32 GetFreeAwaySlot(void) {
   return -1;
 }
 
-void RecountAwaySlots(void) {
+function RecountAwaySlots(): void {
   INT32 iCount;
 
   if (guiNumAwaySlots > 0) {
@@ -265,7 +265,7 @@ void RecountAwaySlots(void) {
   }
 }
 
-INT32 AddAwaySlot(SOLDIERTYPE *pSoldier) {
+function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iAwayIndex;
 
   if ((iAwayIndex = GetFreeAwaySlot()) == (-1))
@@ -276,7 +276,7 @@ INT32 AddAwaySlot(SOLDIERTYPE *pSoldier) {
   return iAwayIndex;
 }
 
-BOOLEAN RemoveAwaySlot(SOLDIERTYPE *pSoldier) {
+function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT32 uiCount;
 
   CHECKF(pSoldier != NULL);
@@ -293,7 +293,7 @@ BOOLEAN RemoveAwaySlot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT32 MoveSoldierFromMercToAwaySlot(SOLDIERTYPE *pSoldier) {
+function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   BOOLEAN fRet;
 
   fRet = RemoveMercSlot(pSoldier);
@@ -310,7 +310,7 @@ INT32 MoveSoldierFromMercToAwaySlot(SOLDIERTYPE *pSoldier) {
   return AddAwaySlot(pSoldier);
 }
 
-INT32 MoveSoldierFromAwayToMercSlot(SOLDIERTYPE *pSoldier) {
+function MoveSoldierFromAwayToMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   BOOLEAN fRet;
 
   fRet = RemoveAwaySlot(pSoldier);
@@ -325,7 +325,7 @@ INT32 MoveSoldierFromAwayToMercSlot(SOLDIERTYPE *pSoldier) {
   return AddMercSlot(pSoldier);
 }
 
-BOOLEAN InitTacticalEngine() {
+function InitTacticalEngine(): BOOLEAN {
   // Init renderer
   InitRenderParams(0);
 
@@ -364,7 +364,7 @@ BOOLEAN InitTacticalEngine() {
   return TRUE;
 }
 
-void ShutdownTacticalEngine() {
+function ShutdownTacticalEngine(): void {
   DeletePaletteData();
 
   ShutdownStaticExternalNPCFaces();
@@ -376,7 +376,7 @@ void ShutdownTacticalEngine() {
   ShutdownNPCQuotes();
 }
 
-BOOLEAN InitOverhead() {
+function InitOverhead(): BOOLEAN {
   UINT32 cnt;
   UINT8 cnt2;
 
@@ -470,7 +470,7 @@ BOOLEAN InitOverhead() {
   return TRUE;
 }
 
-BOOLEAN ShutdownOverhead() {
+function ShutdownOverhead(): BOOLEAN {
   UINT32 cnt;
 
   // Delete any soldiers which have been created!
@@ -485,7 +485,7 @@ BOOLEAN ShutdownOverhead() {
   return TRUE;
 }
 
-BOOLEAN GetSoldier(SOLDIERTYPE **ppSoldier, UINT16 usSoldierIndex) {
+function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UINT16): BOOLEAN {
   // Check range of index given
   *ppSoldier = NULL;
 
@@ -505,7 +505,7 @@ BOOLEAN GetSoldier(SOLDIERTYPE **ppSoldier, UINT16 usSoldierIndex) {
   }
 }
 
-BOOLEAN NextAIToHandle(UINT32 uiCurrAISlot) {
+function NextAIToHandle(uiCurrAISlot: UINT32): BOOLEAN {
   UINT32 cnt;
 
   if (uiCurrAISlot >= guiNumMercSlots) {
@@ -555,17 +555,17 @@ BOOLEAN NextAIToHandle(UINT32 uiCurrAISlot) {
   return FALSE;
 }
 
-void PauseAITemporarily(void) {
+function PauseAITemporarily(): void {
   gfPauseAllAI = TRUE;
   giPauseAllAITimer = GetJA2Clock();
 }
 
-void PauseAIUntilManuallyUnpaused(void) {
+function PauseAIUntilManuallyUnpaused(): void {
   gfPauseAllAI = TRUE;
   giPauseAllAITimer = 0;
 }
 
-void UnPauseAI(void) {
+function UnPauseAI(): void {
   // overrides any timer too
   gfPauseAllAI = FALSE;
   giPauseAllAITimer = 0;
@@ -583,7 +583,7 @@ FLOAT gdRadiansForAngle[] = {
   (FLOAT)(-3 * PI / 4),
 };
 
-BOOLEAN ExecuteOverhead() {
+function ExecuteOverhead(): BOOLEAN {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 sAPCost;
@@ -1258,7 +1258,7 @@ BOOLEAN ExecuteOverhead() {
   return TRUE;
 }
 
-void HaltGuyFromNewGridNoBecauseOfNoAPs(SOLDIERTYPE *pSoldier) {
+function HaltGuyFromNewGridNoBecauseOfNoAPs(pSoldier: Pointer<SOLDIERTYPE>): void {
   HaltMoveForSoldierOutOfPoints(pSoldier);
   pSoldier->usPendingAnimation = NO_PENDING_ANIMATION;
   pSoldier->ubPendingDirection = NO_PENDING_DIRECTION;
@@ -1277,7 +1277,7 @@ void HaltGuyFromNewGridNoBecauseOfNoAPs(SOLDIERTYPE *pSoldier) {
   UnSetEngagedInConvFromPCAction(pSoldier);
 }
 
-void HandleLocateToGuyAsHeWalks(SOLDIERTYPE *pSoldier) {
+function HandleLocateToGuyAsHeWalks(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Our guys if option set,
   if (pSoldier->bTeam == gbPlayerNum) {
     // IF tracking on, center on guy....
@@ -1300,7 +1300,7 @@ void HandleLocateToGuyAsHeWalks(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEAN fInitialMove, UINT16 usAnimState) {
+function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<BOOLEAN>, fInitialMove: BOOLEAN, usAnimState: UINT16): BOOLEAN {
   INT16 sAPCost;
   INT16 sBPCost;
   UINT16 usNewGridNo, sOverFenceGridNo, sMineGridNo;
@@ -1677,7 +1677,7 @@ BOOLEAN HandleGotoNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving, BOOLEA
   return TRUE;
 }
 
-void HandleMaryArrival(SOLDIERTYPE *pSoldier) {
+function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sDist;
 
   if (!pSoldier) {
@@ -1706,7 +1706,7 @@ void HandleMaryArrival(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleJohnArrival(SOLDIERTYPE *pSoldier) {
+function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pSoldier2 = NULL;
   INT16 sDist;
 
@@ -1747,7 +1747,7 @@ void HandleJohnArrival(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN HandleAtNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving) {
+function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<BOOLEAN>): BOOLEAN {
   INT16 sMineGridNo;
   UINT8 ubVolume;
 
@@ -1999,7 +1999,7 @@ BOOLEAN HandleAtNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving) {
   return TRUE;
 }
 
-void SelectNextAvailSoldier(SOLDIERTYPE *pSoldier) {
+function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
   BOOLEAN fSoldierFound = FALSE;
@@ -2024,7 +2024,7 @@ void SelectNextAvailSoldier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void InternalSelectSoldier(UINT16 usSoldierID, BOOLEAN fAcknowledge, BOOLEAN fForceReselect, BOOLEAN fFromUI) {
+function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForceReselect: BOOLEAN, fFromUI: BOOLEAN): void {
   SOLDIERTYPE *pSoldier, *pOldSoldier;
 
   // ARM: can't call SelectSoldier() in mapscreen, that will initialize interface panels!!!
@@ -2148,11 +2148,11 @@ void InternalSelectSoldier(UINT16 usSoldierID, BOOLEAN fAcknowledge, BOOLEAN fFo
   BeginCurInteractiveTileCheck(INTILE_CHECK_SELECTIVE);
 }
 
-void SelectSoldier(UINT16 usSoldierID, BOOLEAN fAcknowledge, BOOLEAN fForceReselect) {
+function SelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForceReselect: BOOLEAN): void {
   InternalSelectSoldier(usSoldierID, fAcknowledge, fForceReselect, FALSE);
 }
 
-BOOLEAN ResetAllAnimationCache() {
+function ResetAllAnimationCache(): BOOLEAN {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -2166,7 +2166,7 @@ BOOLEAN ResetAllAnimationCache() {
   return TRUE;
 }
 
-void LocateSoldier(UINT16 usID, BOOLEAN fSetLocator) {
+function LocateSoldier(usID: UINT16, fSetLocator: BOOLEAN): void {
   SOLDIERTYPE *pSoldier;
   INT16 sNewCenterWorldX, sNewCenterWorldY;
 
@@ -2199,7 +2199,7 @@ void LocateSoldier(UINT16 usID, BOOLEAN fSetLocator) {
   }
 }
 
-void InternalLocateGridNo(UINT16 sGridNo, BOOLEAN fForce) {
+function InternalLocateGridNo(sGridNo: UINT16, fForce: BOOLEAN): void {
   INT16 sNewCenterWorldX, sNewCenterWorldY;
 
   ConvertGridNoToCenterCellXY(sGridNo, &sNewCenterWorldX, &sNewCenterWorldY);
@@ -2212,11 +2212,11 @@ void InternalLocateGridNo(UINT16 sGridNo, BOOLEAN fForce) {
   SetRenderCenter(sNewCenterWorldX, sNewCenterWorldY);
 }
 
-void LocateGridNo(UINT16 sGridNo) {
+function LocateGridNo(sGridNo: UINT16): void {
   InternalLocateGridNo(sGridNo, FALSE);
 }
 
-void SlideTo(INT16 sGridno, UINT16 usSoldierID, UINT16 usReasonID, BOOLEAN fSetLocator) {
+function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16, fSetLocator: BOOLEAN): void {
   INT32 cnt;
 
   if (usSoldierID == NOBODY) {
@@ -2249,7 +2249,7 @@ void SlideTo(INT16 sGridno, UINT16 usSoldierID, UINT16 usReasonID, BOOLEAN fSetL
   gfPlotNewMovement = TRUE;
 }
 
-void SlideToLocation(UINT16 usReasonID, INT16 sDestGridNo) {
+function SlideToLocation(usReasonID: UINT16, sDestGridNo: INT16): void {
   if (sDestGridNo == NOWHERE) {
     return;
   }
@@ -2267,7 +2267,7 @@ void SlideToLocation(UINT16 usReasonID, INT16 sDestGridNo) {
   gfPlotNewMovement = TRUE;
 }
 
-void RebuildAllSoldierShadeTables() {
+function RebuildAllSoldierShadeTables(): void {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -2279,7 +2279,7 @@ void RebuildAllSoldierShadeTables() {
   }
 }
 
-void HandlePlayerTeamMemberDeath(SOLDIERTYPE *pSoldier) {
+function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt;
   INT32 iNewSelectedSoldier;
   SOLDIERTYPE *pTeamSoldier;
@@ -2369,7 +2369,7 @@ void HandlePlayerTeamMemberDeath(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleNPCTeamMemberDeath(SOLDIERTYPE *pSoldierOld) {
+function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pKiller = NULL;
   BOOLEAN bVisible;
 
@@ -2631,7 +2631,7 @@ void HandleNPCTeamMemberDeath(SOLDIERTYPE *pSoldierOld) {
   CheckForEndOfBattle(FALSE);
 }
 
-UINT8 LastActiveTeamMember(UINT8 ubTeam) {
+function LastActiveTeamMember(ubTeam: UINT8): UINT8 {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -2647,7 +2647,7 @@ UINT8 LastActiveTeamMember(UINT8 ubTeam) {
   return gTacticalStatus.Team[ubTeam].bLastID;
 }
 
-void CheckForPotentialAddToBattleIncrement(SOLDIERTYPE *pSoldier) {
+function CheckForPotentialAddToBattleIncrement(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Check if we are a threat!
   if (!pSoldier->bNeutral && (pSoldier->bSide != gbPlayerNum)) {
     // if ( FindObjClass( pSoldier, IC_WEAPON ) != NO_SLOT )
@@ -2674,7 +2674,7 @@ void CheckForPotentialAddToBattleIncrement(SOLDIERTYPE *pSoldier) {
 }
 
 // internal function for turning neutral to FALSE
-void SetSoldierNonNeutral(SOLDIERTYPE *pSoldier) {
+function SetSoldierNonNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->bNeutral = FALSE;
 
   if (gTacticalStatus.bBoxingState == NOT_BOXING) {
@@ -2684,7 +2684,7 @@ void SetSoldierNonNeutral(SOLDIERTYPE *pSoldier) {
 }
 
 // internal function for turning neutral to TRUE
-void SetSoldierNeutral(SOLDIERTYPE *pSoldier) {
+function SetSoldierNeutral(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->bNeutral = TRUE;
 
   if (gTacticalStatus.bBoxingState == NOT_BOXING) {
@@ -2695,7 +2695,7 @@ void SetSoldierNeutral(SOLDIERTYPE *pSoldier) {
     }
   }
 }
-void MakeCivHostile(SOLDIERTYPE *pSoldier, INT8 bNewSide) {
+function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
   if (pSoldier->ubBodyType == COW) {
     return;
   }
@@ -2771,7 +2771,7 @@ void MakeCivHostile(SOLDIERTYPE *pSoldier, INT8 bNewSide) {
   }
 }
 
-UINT8 CivilianGroupMembersChangeSidesWithinProximity(SOLDIERTYPE *pAttacked) {
+function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDIERTYPE>): UINT8 {
   SOLDIERTYPE *pSoldier;
   UINT8 ubFirstProfile = NO_PROFILE;
   UINT8 cnt;
@@ -2802,7 +2802,7 @@ UINT8 CivilianGroupMembersChangeSidesWithinProximity(SOLDIERTYPE *pAttacked) {
   return ubFirstProfile;
 }
 
-SOLDIERTYPE *CivilianGroupMemberChangesSides(SOLDIERTYPE *pAttacked) {
+function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   SOLDIERTYPE *pNew;
   SOLDIERTYPE *pNewAttacked = pAttacked;
   SOLDIERTYPE *pSoldier;
@@ -2862,7 +2862,7 @@ SOLDIERTYPE *CivilianGroupMemberChangesSides(SOLDIERTYPE *pAttacked) {
   return pNewAttacked;
 }
 
-void CivilianGroupChangesSides(UINT8 ubCivilianGroup) {
+function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
   // change civ group side due to external event (wall blowing up)
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
@@ -2897,7 +2897,7 @@ void CivilianGroupChangesSides(UINT8 ubCivilianGroup) {
   */
 }
 
-void HickCowAttacked(SOLDIERTYPE *pNastyGuy, SOLDIERTYPE *pTarget) {
+function HickCowAttacked(pNastyGuy: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -2913,7 +2913,7 @@ void HickCowAttacked(SOLDIERTYPE *pNastyGuy, SOLDIERTYPE *pTarget) {
   }
 }
 
-void MilitiaChangesSides(void) {
+function MilitiaChangesSides(): void {
   // make all the militia change sides
 
   INT32 cnt;
@@ -2950,7 +2950,7 @@ void MakePotentiallyHostileCivGroupsHostile( void )
 }
 */
 
-INT8 NumActiveAndConsciousTeamMembers(UINT8 ubTeam) {
+function NumActiveAndConsciousTeamMembers(ubTeam: UINT8): INT8 {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   UINT8 ubCount = 0;
@@ -2967,7 +2967,7 @@ INT8 NumActiveAndConsciousTeamMembers(UINT8 ubTeam) {
   return ubCount;
 }
 
-UINT8 FindNextActiveAndAliveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fGoodForLessOKLife, BOOLEAN fOnlyRegularMercs) {
+function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: BOOLEAN, fOnlyRegularMercs: BOOLEAN): UINT8 {
   UINT8 bLastTeamID;
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
@@ -3021,7 +3021,7 @@ UINT8 FindNextActiveAndAliveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fGoodForLessOKLi
   return pSoldier->ubID;
 }
 
-SOLDIERTYPE *FindNextActiveSquad(SOLDIERTYPE *pSoldier) {
+function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   INT32 cnt, cnt2;
 
   for (cnt = pSoldier->bAssignment + 1; cnt < NUMBER_OF_SQUADS; cnt++) {
@@ -3046,7 +3046,7 @@ SOLDIERTYPE *FindNextActiveSquad(SOLDIERTYPE *pSoldier) {
   return pSoldier;
 }
 
-UINT8 FindPrevActiveAndAliveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fGoodForLessOKLife, BOOLEAN fOnlyRegularMercs) {
+function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: BOOLEAN, fOnlyRegularMercs: BOOLEAN): UINT8 {
   UINT8 bLastTeamID;
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
@@ -3101,7 +3101,7 @@ UINT8 FindPrevActiveAndAliveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fGoodForLessOKLi
   return pSoldier->ubID;
 }
 
-BOOLEAN CheckForPlayerTeamInMissionExit() {
+function CheckForPlayerTeamInMissionExit(): BOOLEAN {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   UINT8 bGuysIn = 0;
@@ -3133,12 +3133,12 @@ BOOLEAN CheckForPlayerTeamInMissionExit() {
   return FALSE;
 }
 
-void EndTacticalDemo() {
+function EndTacticalDemo(): void {
   gTacticalStatus.uiFlags &= (~DEMOMODE);
   gTacticalStatus.fGoingToEnterDemo = FALSE;
 }
 
-UINT32 EnterTacticalDemoMode() {
+function EnterTacticalDemoMode(): UINT32 {
   UINT8 ubNewScene = gubCurrentScene;
   UINT8 ubNumScenes = NUM_RANDOM_SCENES;
 
@@ -3178,12 +3178,12 @@ UINT32 EnterTacticalDemoMode() {
   return INIT_SCREEN;
 }
 
-CHAR8 *GetSceneFilename() {
+function GetSceneFilename(): Pointer<CHAR8> {
   return gzLevelFilenames[gubCurrentScene];
 }
 
 // NB if making changes don't forget to update NewOKDestinationAndDirection
-INT16 NewOKDestination(SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, BOOLEAN fPeopleToo, INT8 bLevel) {
+function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fPeopleToo: BOOLEAN, bLevel: INT8): INT16 {
   UINT8 bPerson;
   STRUCTURE *pStructure;
   INT16 sDesiredLevel;
@@ -3285,7 +3285,7 @@ INT16 NewOKDestination(SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, BOOLEAN fPeople
 }
 
 // NB if making changes don't forget to update NewOKDestination
-INT16 NewOKDestinationAndDirection(SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, INT8 bDirection, BOOLEAN fPeopleToo, INT8 bLevel) {
+function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirection: INT8, fPeopleToo: BOOLEAN, bLevel: INT8): INT16 {
   UINT8 bPerson;
   STRUCTURE *pStructure;
   INT16 sDesiredLevel;
@@ -3382,7 +3382,7 @@ INT16 NewOKDestinationAndDirection(SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, INT
 }
 
 // Kris:
-BOOLEAN FlatRoofAboveGridNo(INT32 iMapIndex) {
+function FlatRoofAboveGridNo(iMapIndex: INT32): BOOLEAN {
   LEVELNODE *pRoof;
   UINT32 uiTileType;
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
@@ -3404,7 +3404,7 @@ BOOLEAN FlatRoofAboveGridNo(INT32 iMapIndex) {
 // to know is whether or not I can put a merc here.  In most cases, I won't be dealing with multi-tiled
 // mercs, and the rarity doesn't justify the needs.  I just wrote this to be quick and dirty, and I don't
 // expect it to perform perfectly in all situations.
-BOOLEAN IsLocationSittable(INT32 iMapIndex, BOOLEAN fOnRoof) {
+function IsLocationSittable(iMapIndex: INT32, fOnRoof: BOOLEAN): BOOLEAN {
   STRUCTURE *pStructure;
   INT16 sDesiredLevel;
   if (WhoIsThere2((INT16)iMapIndex, 0) != NO_SOLDIER)
@@ -3427,7 +3427,7 @@ BOOLEAN IsLocationSittable(INT32 iMapIndex, BOOLEAN fOnRoof) {
   return TRUE;
 }
 
-BOOLEAN IsLocationSittableExcludingPeople(INT32 iMapIndex, BOOLEAN fOnRoof) {
+function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: BOOLEAN): BOOLEAN {
   STRUCTURE *pStructure;
   INT16 sDesiredLevel;
 
@@ -3449,7 +3449,7 @@ BOOLEAN IsLocationSittableExcludingPeople(INT32 iMapIndex, BOOLEAN fOnRoof) {
   return TRUE;
 }
 
-BOOLEAN TeamMemberNear(INT8 bTeam, INT16 sGridNo, INT32 iRange) {
+function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): BOOLEAN {
   UINT8 bLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -3464,7 +3464,7 @@ BOOLEAN TeamMemberNear(INT8 bTeam, INT16 sGridNo, INT32 iRange) {
   return FALSE;
 }
 
-INT16 FindAdjacentGridEx(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 *pubDirection, INT16 *psAdjustedGridNo, BOOLEAN fForceToPerson, BOOLEAN fDoor) {
+function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: BOOLEAN, fDoor: BOOLEAN): INT16 {
   // psAdjustedGridNo gets the original gridno or the new one if updated
   // It will ONLY be updated IF we were over a merc, ( it's updated to their gridno )
   // pubDirection gets the direction to the final gridno
@@ -3703,7 +3703,7 @@ INT16 FindAdjacentGridEx(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 *pubDirecti
     return -1;
 }
 
-INT16 FindNextToAdjacentGridEx(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 *pubDirection, INT16 *psAdjustedGridNo, BOOLEAN fForceToPerson, BOOLEAN fDoor) {
+function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubDirection: Pointer<UINT8>, psAdjustedGridNo: Pointer<INT16>, fForceToPerson: BOOLEAN, fDoor: BOOLEAN): INT16 {
   // This function works in a similar way as FindAdjacentGridEx, but looks for a location 2 tiles away
 
   // psAdjustedGridNo gets the original gridno or the new one if updated
@@ -3931,7 +3931,7 @@ INT16 FindNextToAdjacentGridEx(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 *pubD
   */
 }
 
-INT16 FindAdjacentPunchTarget(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, INT16 *psAdjustedTargetGridNo, UINT8 *pubDirection) {
+function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, psAdjustedTargetGridNo: Pointer<INT16>, pubDirection: Pointer<UINT8>): INT16 {
   INT16 cnt;
   INT16 sSpot;
   UINT8 ubGuyThere;
@@ -3959,7 +3959,7 @@ INT16 FindAdjacentPunchTarget(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier
   return NOWHERE;
 }
 
-BOOLEAN UIOKMoveDestination(SOLDIERTYPE *pSoldier, UINT16 usMapPos) {
+function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): BOOLEAN {
   BOOLEAN fVisible;
 
   // Check if a hidden tile exists but is not revealed
@@ -3991,7 +3991,7 @@ BOOLEAN UIOKMoveDestination(SOLDIERTYPE *pSoldier, UINT16 usMapPos) {
   return TRUE;
 }
 
-void HandleTeamServices(UINT8 ubTeamNum) {
+function HandleTeamServices(ubTeamNum: UINT8): void {
   INT32 cnt;
   SOLDIERTYPE *pTeamSoldier, *pTargetSoldier;
   UINT32 uiPointsUsed;
@@ -4067,7 +4067,7 @@ void HandleTeamServices(UINT8 ubTeamNum) {
   }
 }
 
-void HandlePlayerServices(SOLDIERTYPE *pTeamSoldier) {
+function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pTargetSoldier;
   UINT32 uiPointsUsed;
   UINT16 usSoldierIndex, usInHand;
@@ -4137,7 +4137,7 @@ void HandlePlayerServices(SOLDIERTYPE *pTeamSoldier) {
   }
 }
 
-void CommonEnterCombatModeCode() {
+function CommonEnterCombatModeCode(): void {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -4223,7 +4223,7 @@ void CommonEnterCombatModeCode() {
   SetMusicMode(MUSIC_TACTICAL_BATTLE);
 }
 
-void EnterCombatMode(UINT8 ubStartingTeam) {
+function EnterCombatMode(ubStartingTeam: UINT8): void {
   UINT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
 
@@ -4271,7 +4271,7 @@ void EnterCombatMode(UINT8 ubStartingTeam) {
   }
 }
 
-void ExitCombatMode() {
+function ExitCombatMode(): void {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -4345,7 +4345,7 @@ void ExitCombatMode() {
   NonCombatDecayPublicOpplist(GetWorldTotalSeconds());
 }
 
-void SetEnemyPresence() {
+function SetEnemyPresence(): void {
   // We have an ememy present....
 
   // Check if we previously had no enemys present and we are in a virgin secotr ( no enemys spotted yet )
@@ -4370,7 +4370,7 @@ void SetEnemyPresence() {
 
 extern BOOLEAN gfLastMercTalkedAboutKillingID;
 
-BOOLEAN SoldierHasSeenEnemiesLastFewTurns(SOLDIERTYPE *pTeamSoldier) {
+function SoldierHasSeenEnemiesLastFewTurns(pTeamSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 cnt2;
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
@@ -4396,7 +4396,7 @@ BOOLEAN SoldierHasSeenEnemiesLastFewTurns(SOLDIERTYPE *pTeamSoldier) {
   return FALSE;
 }
 
-BOOLEAN WeSeeNoOne(void) {
+function WeSeeNoOne(): BOOLEAN {
   UINT32 uiLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -4414,7 +4414,7 @@ BOOLEAN WeSeeNoOne(void) {
   return TRUE;
 }
 
-BOOLEAN NobodyAlerted(void) {
+function NobodyAlerted(): BOOLEAN {
   UINT32 uiLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -4430,7 +4430,7 @@ BOOLEAN NobodyAlerted(void) {
   return TRUE;
 }
 
-BOOLEAN WeSawSomeoneThisTurn(void) {
+function WeSawSomeoneThisTurn(): BOOLEAN {
   UINT32 uiLoop, uiLoop2;
   SOLDIERTYPE *pSoldier;
 
@@ -4449,7 +4449,7 @@ BOOLEAN WeSawSomeoneThisTurn(void) {
   return FALSE;
 }
 
-void SayBattleSoundFromAnyBodyInSector(INT32 iBattleSnd) {
+function SayBattleSoundFromAnyBodyInSector(iBattleSnd: INT32): void {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;
   UINT8 ubChosenMerc;
@@ -4478,7 +4478,7 @@ void SayBattleSoundFromAnyBodyInSector(INT32 iBattleSnd) {
   }
 }
 
-BOOLEAN CheckForEndOfCombatMode(BOOLEAN fIncrementTurnsNotSeen) {
+function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
   SOLDIERTYPE *pTeamSoldier;
   UINT32 cnt = 0;
   BOOLEAN fWeSeeNoOne, fNobodyAlerted;
@@ -4594,14 +4594,14 @@ BOOLEAN CheckForEndOfCombatMode(BOOLEAN fIncrementTurnsNotSeen) {
   return FALSE;
 }
 
-void DeathNoMessageTimerCallback(void) {
+function DeathNoMessageTimerCallback(): void {
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
 //!!!!
 // IMPORTANT NEW NOTE:
 // Whenever returning TRUE, make sure you clear gfBlitBattleSectorLocator;
-BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated) {
+function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
   SOLDIERTYPE *pTeamSoldier;
   BOOLEAN fBattleWon = TRUE;
   BOOLEAN fBattleLost = FALSE;
@@ -4876,7 +4876,7 @@ BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated) {
   return FALSE;
 }
 
-void CycleThroughKnownEnemies() {
+function CycleThroughKnownEnemies(): void {
   // static to indicate last position we were at:
   SOLDIERTYPE *pSoldier;
   static BOOLEAN fFirstTime = TRUE;
@@ -4927,7 +4927,7 @@ void CycleThroughKnownEnemies() {
   }
 }
 
-void CycleVisibleEnemies(SOLDIERTYPE *pSrcSoldier) {
+function CycleVisibleEnemies(pSrcSoldier: Pointer<SOLDIERTYPE>): void {
   // static to indicate last position we were at:
   SOLDIERTYPE *pSoldier;
   UINT16 usStartToLook;
@@ -4976,7 +4976,7 @@ void CycleVisibleEnemies(SOLDIERTYPE *pSrcSoldier) {
   }
 }
 
-INT8 CountNonVehiclesOnPlayerTeam(void) {
+function CountNonVehiclesOnPlayerTeam(): INT8 {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
   INT8 bNumber = 0;
@@ -4990,7 +4990,7 @@ INT8 CountNonVehiclesOnPlayerTeam(void) {
   return bNumber;
 }
 
-BOOLEAN PlayerTeamFull() {
+function PlayerTeamFull(): BOOLEAN {
   // last ID for the player team is 19, so long as we have at most 17 non-vehicles...
   if (CountNonVehiclesOnPlayerTeam() <= gTacticalStatus.Team[gbPlayerNum].bLastID - 2) {
     return FALSE;
@@ -4999,7 +4999,7 @@ BOOLEAN PlayerTeamFull() {
   return TRUE;
 }
 
-UINT8 NumPCsInSector(void) {
+function NumPCsInSector(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   UINT32 cnt = 0;
   UINT8 ubNumPlayers = 0;
@@ -5018,7 +5018,7 @@ UINT8 NumPCsInSector(void) {
   return ubNumPlayers;
 }
 
-UINT8 NumEnemyInSector() {
+function NumEnemyInSector(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5037,7 +5037,7 @@ UINT8 NumEnemyInSector() {
   return ubNumEnemies;
 }
 
-UINT8 NumEnemyInSectorExceptCreatures() {
+function NumEnemyInSectorExceptCreatures(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5056,7 +5056,7 @@ UINT8 NumEnemyInSectorExceptCreatures() {
   return ubNumEnemies;
 }
 
-UINT8 NumEnemyInSectorNotDeadOrDying() {
+function NumEnemyInSectorNotDeadOrDying(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5084,7 +5084,7 @@ UINT8 NumEnemyInSectorNotDeadOrDying() {
   return ubNumEnemies;
 }
 
-UINT8 NumBloodcatsInSectorNotDeadOrDying() {
+function NumBloodcatsInSectorNotDeadOrDying(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5114,7 +5114,7 @@ UINT8 NumBloodcatsInSectorNotDeadOrDying() {
   return ubNumEnemies;
 }
 
-UINT8 NumCapableEnemyInSector() {
+function NumCapableEnemyInSector(): UINT8 {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5143,7 +5143,7 @@ UINT8 NumCapableEnemyInSector() {
   return ubNumEnemies;
 }
 
-BOOLEAN CheckForLosingEndOfBattle() {
+function CheckForLosingEndOfBattle(): BOOLEAN {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5273,7 +5273,7 @@ BOOLEAN CheckForLosingEndOfBattle() {
   return FALSE;
 }
 
-BOOLEAN KillIncompacitatedEnemyInSector() {
+function KillIncompacitatedEnemyInSector(): BOOLEAN {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   UINT8 ubNumEnemies = 0;
@@ -5294,7 +5294,7 @@ BOOLEAN KillIncompacitatedEnemyInSector() {
   return fReturnVal;
 }
 
-BOOLEAN AttackOnGroupWitnessed(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget) {
+function AttackOnGroupWitnessed(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT32 uiSlot;
   SOLDIERTYPE *pGroupMember;
 
@@ -5314,7 +5314,7 @@ BOOLEAN AttackOnGroupWitnessed(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget) {
   return FALSE;
 }
 
-INT8 CalcSuppressionTolerance(SOLDIERTYPE *pSoldier) {
+function CalcSuppressionTolerance(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bTolerance;
 
   // Calculate basic tolerance value
@@ -5365,7 +5365,7 @@ INT8 CalcSuppressionTolerance(SOLDIERTYPE *pSoldier) {
 }
 
 const MAX_APS_SUPPRESSED = 8;
-void HandleSuppressionFire(UINT8 ubTargetedMerc, UINT8 ubCausedAttacker) {
+function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): void {
   INT8 bTolerance;
   INT16 sClosestOpponent, sClosestOppLoc;
   UINT8 ubPointsLost, ubTotalPointsLost, ubNewStance;
@@ -5518,7 +5518,7 @@ void HandleSuppressionFire(UINT8 ubTargetedMerc, UINT8 ubCausedAttacker) {
   } // end of loop
 }
 
-BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE *pSoldier, SOLDIERTYPE **ppTarget, INT8 bReason) {
+function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget: Pointer<Pointer<SOLDIERTYPE>>, bReason: INT8): BOOLEAN {
   INT16 sTargetXPos, sTargetYPos;
   BOOLEAN fEnterCombat = TRUE;
   SOLDIERTYPE *pTarget = *ppTarget;
@@ -5641,7 +5641,7 @@ BOOLEAN ProcessImplicationsOfPCAttack(SOLDIERTYPE *pSoldier, SOLDIERTYPE **ppTar
   return fEnterCombat;
 }
 
-SOLDIERTYPE *InternalReduceAttackBusyCount(UINT8 ubID, BOOLEAN fCalledByAttacker, UINT8 ubTargetID) {
+function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5885,7 +5885,7 @@ SOLDIERTYPE *InternalReduceAttackBusyCount(UINT8 ubID, BOOLEAN fCalledByAttacker
   return pTarget;
 }
 
-SOLDIERTYPE *ReduceAttackBusyCount(UINT8 ubID, BOOLEAN fCalledByAttacker) {
+function ReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN): Pointer<SOLDIERTYPE> {
   if (ubID == NOBODY) {
     return InternalReduceAttackBusyCount(ubID, fCalledByAttacker, NOBODY);
   } else {
@@ -5893,7 +5893,7 @@ SOLDIERTYPE *ReduceAttackBusyCount(UINT8 ubID, BOOLEAN fCalledByAttacker) {
   }
 }
 
-SOLDIERTYPE *FreeUpAttacker(UINT8 ubID) {
+function FreeUpAttacker(ubID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5901,7 +5901,7 @@ SOLDIERTYPE *FreeUpAttacker(UINT8 ubID) {
   return ReduceAttackBusyCount(ubID, TRUE);
 }
 
-SOLDIERTYPE *FreeUpAttackerGivenTarget(UINT8 ubID, UINT8 ubTargetID) {
+function FreeUpAttackerGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5909,7 +5909,7 @@ SOLDIERTYPE *FreeUpAttackerGivenTarget(UINT8 ubID, UINT8 ubTargetID) {
   return InternalReduceAttackBusyCount(ubID, TRUE, ubTargetID);
 }
 
-SOLDIERTYPE *ReduceAttackBusyGivenTarget(UINT8 ubID, UINT8 ubTargetID) {
+function ReduceAttackBusyGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SOLDIERTYPE> {
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
@@ -5917,7 +5917,7 @@ SOLDIERTYPE *ReduceAttackBusyGivenTarget(UINT8 ubID, UINT8 ubTargetID) {
   return InternalReduceAttackBusyCount(ubID, FALSE, ubTargetID);
 }
 
-void StopMercAnimation(BOOLEAN fStop) {
+function StopMercAnimation(fStop: BOOLEAN): void {
   static INT8 bOldRealtimeSpeed;
 
   if (fStop) {
@@ -5940,7 +5940,7 @@ void StopMercAnimation(BOOLEAN fStop) {
   }
 }
 
-void ResetAllMercSpeeds() {
+function ResetAllMercSpeeds(): void {
   SOLDIERTYPE *pSoldier;
   UINT32 cnt;
 
@@ -5953,7 +5953,7 @@ void ResetAllMercSpeeds() {
   }
 }
 
-void SetActionToDoOnceMercsGetToLocation(UINT8 ubActionCode, INT8 bNumMercsWaiting, UINT32 uiData1, UINT32 uiData2, UINT32 uiData3) {
+function SetActionToDoOnceMercsGetToLocation(ubActionCode: UINT8, bNumMercsWaiting: INT8, uiData1: UINT32, uiData2: UINT32, uiData3: UINT32): void {
   gubWaitingForAllMercsToExitCode = ubActionCode;
   gbNumMercsUntilWaitingOver = bNumMercsWaiting;
   guiWaitingForAllMercsToExitData[0] = uiData1;
@@ -5967,7 +5967,7 @@ void SetActionToDoOnceMercsGetToLocation(UINT8 ubActionCode, INT8 bNumMercsWaiti
   gTacticalStatus.uiFlags |= (DISALLOW_SIGHT);
 }
 
-void HandleBloodForNewGridNo(SOLDIERTYPE *pSoldier) {
+function HandleBloodForNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Handle bleeding...
   if ((pSoldier->bBleeding > MIN_BLEEDING_THRESHOLD)) {
     INT8 bBlood;
@@ -5989,7 +5989,7 @@ void HandleBloodForNewGridNo(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void CencelAllActionsForTimeCompression(void) {
+function CencelAllActionsForTimeCompression(): void {
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
 
@@ -6006,7 +6006,7 @@ void CencelAllActionsForTimeCompression(void) {
   }
 }
 
-void AddManToTeam(INT8 bTeam) {
+function AddManToTeam(bTeam: INT8): void {
   // ATE: If not loading game!
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Increment men in sector number!
@@ -6020,7 +6020,7 @@ void AddManToTeam(INT8 bTeam) {
   }
 }
 
-void RemoveManFromTeam(INT8 bTeam) {
+function RemoveManFromTeam(bTeam: INT8): void {
   // ATE; if not loading game!
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Decrement men in sector number!
@@ -6034,7 +6034,7 @@ void RemoveManFromTeam(INT8 bTeam) {
   }
 }
 
-void RemoveSoldierFromTacticalSector(SOLDIERTYPE *pSoldier, BOOLEAN fAdjustSelected) {
+function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjustSelected: BOOLEAN): void {
   UINT8 ubID;
   SOLDIERTYPE *pNewSoldier;
 
@@ -6082,18 +6082,18 @@ void RemoveSoldierFromTacticalSector(SOLDIERTYPE *pSoldier, BOOLEAN fAdjustSelec
   }
 }
 
-void DoneFadeOutDueToDeath(void) {
+function DoneFadeOutDueToDeath(): void {
   // Quit game....
   InternalLeaveTacticalScreen(MAINMENU_SCREEN);
   // SetPendingNewScreen( MAINMENU_SCREEN );
 }
 
-void EndBattleWithUnconsciousGuysCallback(UINT8 bExitValue) {
+function EndBattleWithUnconsciousGuysCallback(bExitValue: UINT8): void {
   // Enter mapscreen.....
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-void InitializeTacticalStatusAtBattleStart(void) {
+function InitializeTacticalStatusAtBattleStart(): void {
   INT8 bLoop;
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
@@ -6131,20 +6131,20 @@ void InitializeTacticalStatusAtBattleStart(void) {
   }
 }
 
-void DoneFadeOutDemoCreatureLevel(void) {
+function DoneFadeOutDemoCreatureLevel(): void {
   // OK, insertion data found, enter sector!
   SetCurrentWorldSector(1, 16, 0);
 
   FadeInGameScreen();
 }
 
-void DemoEndOKCallback(INT8 bExitCode) {
+function DemoEndOKCallback(bExitCode: INT8): void {
 }
 
-void HandleEndDemoInCreatureLevel() {
+function HandleEndDemoInCreatureLevel(): void {
 }
 
-void DeathTimerCallback(void) {
+function DeathTimerCallback(): void {
   if (gTacticalStatus.Team[CREATURE_TEAM].bMenInSector > gTacticalStatus.Team[ENEMY_TEAM].bMenInSector) {
     DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_AGAINST_CREATURES_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   } else {
@@ -6152,7 +6152,7 @@ void DeathTimerCallback(void) {
   }
 }
 
-void CaptureTimerCallback(void) {
+function CaptureTimerCallback(): void {
   if (gfSurrendered) {
     DoMessageBox(MSG_BOX_BASIC_STYLE, LargeTacticalStr[3], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, EndBattleWithUnconsciousGuysCallback, NULL);
   } else {
@@ -6161,7 +6161,7 @@ void CaptureTimerCallback(void) {
   gfSurrendered = FALSE;
 }
 
-void DoPOWPathChecks(void) {
+function DoPOWPathChecks(): void {
   INT32 iLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -6192,7 +6192,7 @@ void DoPOWPathChecks(void) {
   }
 }
 
-BOOLEAN HostileCiviliansPresent(void) {
+function HostileCiviliansPresent(): BOOLEAN {
   INT32 iLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -6211,7 +6211,7 @@ BOOLEAN HostileCiviliansPresent(void) {
   return FALSE;
 }
 
-BOOLEAN HostileCiviliansWithGunsPresent(void) {
+function HostileCiviliansWithGunsPresent(): BOOLEAN {
   INT32 iLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -6232,7 +6232,7 @@ BOOLEAN HostileCiviliansWithGunsPresent(void) {
   return FALSE;
 }
 
-BOOLEAN HostileBloodcatsPresent(void) {
+function HostileBloodcatsPresent(): BOOLEAN {
   INT32 iLoop;
   SOLDIERTYPE *pSoldier;
 
@@ -6254,7 +6254,7 @@ BOOLEAN HostileBloodcatsPresent(void) {
   return FALSE;
 }
 
-void HandleCreatureTenseQuote() {
+function HandleCreatureTenseQuote(): void {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;
   UINT8 ubChosenMerc;
@@ -6298,7 +6298,7 @@ void HandleCreatureTenseQuote() {
   }
 }
 
-void DoCreatureTensionQuote(SOLDIERTYPE *pSoldier) {
+function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iRandomQuote;
   BOOLEAN fCanDoQuote = TRUE;
   INT32 iQuoteToUse;

@@ -1,4 +1,4 @@
-void InitEditorItemStatsButtons() {
+function InitEditorItemStatsButtons(): void {
   iEditorButton[ITEMSTATS_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 480, 361, 160, 99, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[ITEMSTATS_PANEL], DISABLED_STYLE_NONE);
   DisableButton(iEditorButton[ITEMSTATS_PANEL]);
@@ -6,7 +6,7 @@ void InitEditorItemStatsButtons() {
   iEditorButton[ITEMSTATS_DELETE_BTN] = CreateTextButton(L"Delete", FONT10ARIAL, FONT_RED, FONT_BLACK, BUTTON_USE_DEFAULT, 600, 441, 36, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL + 1, DEFAULT_MOVE_CALLBACK, ItemStatsDeleteCallback);
 }
 
-void InitEditorMercsToolbar() {
+function InitEditorMercsToolbar(): void {
   INT16 TempString[30];
   INT16 *FaceDirs[8] = {
     L"north",
@@ -234,7 +234,7 @@ void InitEditorMercsToolbar() {
   MSYS_SetBtnUserData(iEditorButton[MERCS_PACK4_SLOT], 0, BIGPOCK4POS);
 }
 
-void InitEditorBuildingsToolbar() {
+function InitEditorBuildingsToolbar(): void {
   iEditorButton[BUILDING_TOGGLE_ROOF_VIEW] = CreateTextButton(L"ROOFS", (UINT16)SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 110, 400, 50, 15, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BuildingToggleRoofViewCallback);
   iEditorButton[BUILDING_TOGGLE_WALL_VIEW] = CreateTextButton(L"WALLS", (UINT16)SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 110, 415, 50, 15, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BuildingToggleWallViewCallback);
   iEditorButton[BUILDING_TOGGLE_INFO_VIEW] = CreateTextButton(L"ROOM INFO", (UINT16)SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 110, 430, 50, 15, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BuildingToggleInfoViewCallback);
@@ -300,7 +300,7 @@ void InitEditorBuildingsToolbar() {
   SetButtonFastHelpText(iEditorButton[BUILDING_CYCLE_BRUSHSIZE], L"Cycle brush size");
 }
 
-void InitEditorItemsToolbar() {
+function InitEditorItemsToolbar(): void {
   SetFontForeground(FONT_MCOLOR_LTRED);
   iEditorButton[ITEMS_WEAPONS] = CreateTextButton(L"Weapons", (UINT16)BLOCKFONT, FONT_MCOLOR_DKWHITE, FONT_BLACK, BUTTON_USE_DEFAULT, 100, 440, 59, 20, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ItemsWeaponsCallback);
   iEditorButton[ITEMS_AMMO] = CreateTextButton(L"Ammo", (UINT16)BLOCKFONT, FONT_MCOLOR_DKWHITE, FONT_BLACK, BUTTON_USE_DEFAULT, 159, 440, 40, 20, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ItemsAmmoCallback);
@@ -316,7 +316,7 @@ void InitEditorItemsToolbar() {
   iEditorButton[ITEMS_RIGHTSCROLL] = CreateEasyNoToggleButton(50, 361, "EDITOR//rightscroll.sti", ItemsRightScrollCallback);
 }
 
-void InitEditorMapInfoToolbar() {
+function InitEditorMapInfoToolbar(): void {
   iEditorButton[MAPINFO_ADD_LIGHT1_SOURCE] = CreateEasyToggleButton(10, 362, "EDITOR//light.sti", BtnDrawLightsCallback);
   SetButtonFastHelpText(iEditorButton[MAPINFO_ADD_LIGHT1_SOURCE], L"Add ambient light source");
 
@@ -366,7 +366,7 @@ void InitEditorMapInfoToolbar() {
   SetButtonFastHelpText(iEditorButton[MAPINFO_ISOLATED_POINT], L"Specify isolated point for validation purposes.");
 }
 
-void InitEditorOptionsToolbar() {
+function InitEditorOptionsToolbar(): void {
   iEditorButton[OPTIONS_NEW_MAP] = CreateEasyNoToggleButton(71, 401, "EDITOR//new.sti", BtnNewMapCallback);
   SetButtonFastHelpText(iEditorButton[OPTIONS_NEW_MAP], L"New map");
 
@@ -392,7 +392,7 @@ void InitEditorOptionsToolbar() {
   SetButtonFastHelpText(iEditorButton[OPTIONS_QUIT_GAME], L"Exit game.");
 }
 
-void InitEditorTerrainToolbar() {
+function InitEditorTerrainToolbar(): void {
   iEditorButton[TERRAIN_FGROUND_TEXTURES] = CreateEasyToggleButton(100, 400, "EDITOR//downgrid.sti", BtnFgGrndCallback);
   SetButtonFastHelpText(iEditorButton[TERRAIN_FGROUND_TEXTURES], L"Draw ground textures");
 
@@ -436,7 +436,7 @@ void InitEditorTerrainToolbar() {
   SetButtonFastHelpText(iEditorButton[TERRAIN_LOWER_DENSITY], L"Lower brush density");
 }
 
-void CreateEditorTaskbarInternal() {
+function CreateEditorTaskbarInternal(): void {
   // Create the tabs for the editor taskbar
   iEditorButton[TAB_TERRAIN] = CreateTextButton(L"Terrain", (UINT16)SMALLFONT1, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, 100, 460, 90, 20, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BUTTON_NO_CALLBACK, TaskTerrainCallback);
   SpecifyButtonDownTextColors(iEditorButton[TAB_TERRAIN], FONT_YELLOW, FONT_ORANGE);

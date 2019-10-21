@@ -19,12 +19,12 @@ BOOLEAN gfBeginBurstSpreadTracking = FALSE;
 BOOLEAN gfRTClickLeftHoldIntercepted = FALSE;
 BOOLEAN gfRTHaveClickedRightWhileLeftDown = FALSE;
 
-void GetRTMouseButtonInput(UINT32 *puiNewEvent) {
+function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryRTLeftButton(puiNewEvent);
   QueryRTRightButton(puiNewEvent);
 }
 
-void QueryRTLeftButton(UINT32 *puiNewEvent) {
+function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
   UINT16 usSoldierIndex;
   SOLDIERTYPE *pSoldier;
   UINT32 uiMercFlags;
@@ -629,7 +629,7 @@ void QueryRTLeftButton(UINT32 *puiNewEvent) {
   }
 }
 
-void QueryRTRightButton(UINT32 *puiNewEvent) {
+function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
   static BOOLEAN fClickHoldIntercepted = FALSE;
   static BOOLEAN fClickIntercepted = FALSE;
   static UINT32 uiSingleClickTime;
@@ -876,7 +876,7 @@ void QueryRTRightButton(UINT32 *puiNewEvent) {
 
 extern BOOLEAN gUIActionModeChangeDueToMouseOver;
 
-void GetRTMousePositionInput(UINT32 *puiNewEvent) {
+function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   UINT16 usMapPos;
   static UINT16 usOldMapPos = 0;
   static UINT32 uiMoveTargetSoldierId = NO_SOLDIER;

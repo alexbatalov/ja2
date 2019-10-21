@@ -1,6 +1,6 @@
 ANITILE *pAniTileHead = NULL;
 
-ANITILE *CreateAnimationTile(ANITILE_PARAMS *pAniParams) {
+function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
   ANITILE *pAniNode;
   ANITILE *pNewAniNode;
   LEVELNODE *pNode;
@@ -223,7 +223,7 @@ ANITILE *CreateAnimationTile(ANITILE_PARAMS *pAniParams) {
 }
 
 // Loop throug all ani tiles and remove...
-void DeleteAniTiles() {
+function DeleteAniTiles(): void {
   ANITILE *pAniNode = NULL;
   ANITILE *pNode = NULL;
 
@@ -239,7 +239,7 @@ void DeleteAniTiles() {
   }
 }
 
-void DeleteAniTile(ANITILE *pAniTile) {
+function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
   ANITILE *pAniNode = NULL;
   ANITILE *pOldAniNode = NULL;
   TILE_ELEMENT *TileElem;
@@ -355,7 +355,7 @@ void DeleteAniTile(ANITILE *pAniTile) {
   }
 }
 
-void UpdateAniTiles() {
+function UpdateAniTiles(): void {
   ANITILE *pAniNode = NULL;
   ANITILE *pNode = NULL;
   UINT32 uiClock = GetJA2Clock();
@@ -579,7 +579,7 @@ void UpdateAniTiles() {
   }
 }
 
-void SetAniTileFrame(ANITILE *pAniTile, INT16 sFrame) {
+function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
   UINT8 ubTempDir;
   INT16 sStartFrame = 0;
 
@@ -598,7 +598,7 @@ void SetAniTileFrame(ANITILE *pAniTile, INT16 sFrame) {
   pAniTile->sCurrentFrame = sStartFrame;
 }
 
-ANITILE *GetCachedAniTileOfType(INT16 sGridNo, UINT8 ubLevelID, UINT32 uiFlags) {
+function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
   LEVELNODE *pNode = NULL;
 
   switch (ubLevelID) {
@@ -650,7 +650,7 @@ ANITILE *GetCachedAniTileOfType(INT16 sGridNo, UINT8 ubLevelID, UINT32 uiFlags) 
   return NULL;
 }
 
-void HideAniTile(ANITILE *pAniTile, BOOLEAN fHide) {
+function HideAniTile(pAniTile: Pointer<ANITILE>, fHide: BOOLEAN): void {
   if (fHide) {
     pAniTile->pLevelNode->uiFlags |= LEVELNODE_HIDDEN;
   } else {
@@ -658,7 +658,7 @@ void HideAniTile(ANITILE *pAniTile, BOOLEAN fHide) {
   }
 }
 
-void PauseAniTile(ANITILE *pAniTile, BOOLEAN fPause) {
+function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
   if (fPause) {
     pAniTile->uiFlags |= ANITILE_PAUSED;
   } else {
@@ -666,7 +666,7 @@ void PauseAniTile(ANITILE *pAniTile, BOOLEAN fPause) {
   }
 }
 
-void PauseAllAniTilesOfType(UINT32 uiType, BOOLEAN fPause) {
+function PauseAllAniTilesOfType(uiType: UINT32, fPause: BOOLEAN): void {
   ANITILE *pAniNode = NULL;
   ANITILE *pNode = NULL;
 

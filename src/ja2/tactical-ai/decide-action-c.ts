@@ -5,13 +5,13 @@ extern BOOLEAN gfUseAlternateQueenPosition;
 
 const CENTER_OF_RING = 11237;
 
-void DoneScheduleAction(SOLDIERTYPE *pSoldier) {
+function DoneScheduleAction(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->fAIFlags &= (~AI_CHECK_SCHEDULE);
   pSoldier->bAIScheduleProgress = 0;
   PostNextSchedule(pSoldier);
 }
 
-INT8 DecideActionSchedule(SOLDIERTYPE *pSoldier) {
+function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   SCHEDULENODE *pSchedule;
   INT32 iScheduleIndex;
   UINT8 ubScheduleAction;
@@ -379,7 +379,7 @@ INT8 DecideActionSchedule(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideActionBoxerEnteringRing(SOLDIERTYPE *pSoldier) {
+function DecideActionBoxerEnteringRing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   UINT8 ubRoom;
   INT16 sDesiredMercLoc;
   UINT8 ubDesiredMercDir;
@@ -411,7 +411,7 @@ INT8 DecideActionBoxerEnteringRing(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_ABSOLUTELY_NONE;
 }
 
-INT8 DecideActionNamedNPC(SOLDIERTYPE *pSoldier) {
+function DecideActionNamedNPC(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT16 sDesiredMercLoc;
   UINT8 ubDesiredMercDir;
   UINT8 ubDesiredMerc;
@@ -486,7 +486,7 @@ INT8 DecideActionNamedNPC(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideActionGreen(SOLDIERTYPE *pSoldier) {
+function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iChance, iSneaky = 10;
   INT8 bInWater, bInGas;
 
@@ -893,7 +893,7 @@ INT8 DecideActionGreen(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideActionYellow(SOLDIERTYPE *pSoldier) {
+function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iDummy;
   UINT8 ubNoiseDir;
   INT16 sNoiseGridNo;
@@ -1333,7 +1333,7 @@ INT8 DecideActionYellow(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK) {
+function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
   INT8 bActionReturned;
   INT32 iDummy;
   INT16 iChance, sClosestOpponent, sClosestFriend;
@@ -2235,7 +2235,7 @@ INT8 DecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideActionBlack(SOLDIERTYPE *pSoldier) {
+function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iCoverPercentBetter, iOffense, iDefense, iChance;
   INT16 sClosestOpponent, sBestCover = NOWHERE;
   INT16 sClosestDisturbance;
@@ -3276,7 +3276,7 @@ INT8 DecideActionBlack(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 DecideAction(SOLDIERTYPE *pSoldier) {
+function DecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bAction = AI_ACTION_NONE;
 
   // turn off cautious flag
@@ -3320,7 +3320,7 @@ INT8 DecideAction(SOLDIERTYPE *pSoldier) {
   return bAction;
 }
 
-INT8 DecideActionEscort(SOLDIERTYPE *pSoldier) {
+function DecideActionEscort(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // if he has a place to go, and isn't already there... go!
   if (pSoldier->usActionData != NOWHERE && (pSoldier->sGridNo != pSoldier->usActionData)) {
     return AI_ACTION_ESCORTED_MOVE;
@@ -3328,7 +3328,7 @@ INT8 DecideActionEscort(SOLDIERTYPE *pSoldier) {
     return AI_ACTION_NONE;
 }
 
-void DecideAlertStatus(SOLDIERTYPE *pSoldier) {
+function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bOldStatus;
   INT32 iDummy;
   BOOLEAN fClimbDummy, fReachableDummy;

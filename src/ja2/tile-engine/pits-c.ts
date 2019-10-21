@@ -3,7 +3,7 @@ BOOLEAN gfShowPits = FALSE;
 
 BOOLEAN gfLoadPitsWithoutArming = FALSE;
 
-void Add3X3Pit(INT32 iMapIndex) {
+function Add3X3Pit(iMapIndex: INT32): void {
   EXITGRID ExitGrid;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
@@ -39,7 +39,7 @@ void Add3X3Pit(INT32 iMapIndex) {
     ApplyMapChangesToMapTempFile(FALSE);
 }
 
-void Add5X5Pit(INT32 iMapIndex) {
+function Add5X5Pit(iMapIndex: INT32): void {
   EXITGRID ExitGrid;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
@@ -106,7 +106,7 @@ void Add5X5Pit(INT32 iMapIndex) {
     ApplyMapChangesToMapTempFile(FALSE);
 }
 
-void Remove3X3Pit(INT32 iMapIndex) {
+function Remove3X3Pit(iMapIndex: INT32): void {
   RemoveAllObjectsOfTypeRange(iMapIndex + 159, REGWATERTEXTURE, REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 1, REGWATERTEXTURE, REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 161, REGWATERTEXTURE, REGWATERTEXTURE);
@@ -119,7 +119,7 @@ void Remove3X3Pit(INT32 iMapIndex) {
   MarkWorldDirty();
 }
 
-void Remove5X5Pit(INT32 iMapIndex) {
+function Remove5X5Pit(iMapIndex: INT32): void {
   RemoveAllObjectsOfTypeRange(iMapIndex + 318, REGWATERTEXTURE, REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex + 158, REGWATERTEXTURE, REGWATERTEXTURE);
   RemoveAllObjectsOfTypeRange(iMapIndex - 2, REGWATERTEXTURE, REGWATERTEXTURE);
@@ -148,7 +148,7 @@ void Remove5X5Pit(INT32 iMapIndex) {
   MarkWorldDirty();
 }
 
-void AddAllPits() {
+function AddAllPits(): void {
   UINT32 i;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == ACTION_ITEM) {
@@ -160,7 +160,7 @@ void AddAllPits() {
   }
 }
 
-void RemoveAllPits() {
+function RemoveAllPits(): void {
   UINT32 i;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == ACTION_ITEM) {
@@ -172,7 +172,7 @@ void RemoveAllPits() {
   }
 }
 
-void SearchForOtherMembersWithinPitRadiusAndMakeThemFall(INT16 sGridNo, INT16 sRadius) {
+function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRadius: INT16): void {
   INT16 x, y, sNewGridNo;
   UINT8 ubID;
   SOLDIERTYPE *pSoldier;
@@ -200,7 +200,7 @@ void SearchForOtherMembersWithinPitRadiusAndMakeThemFall(INT16 sGridNo, INT16 sR
     }
 }
 
-void HandleFallIntoPitFromAnimation(UINT8 ubID) {
+function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier = MercPtrs[ubID];
   EXITGRID ExitGrid;
   INT16 sPitGridNo;

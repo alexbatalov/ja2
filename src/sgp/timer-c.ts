@@ -1,7 +1,7 @@
 UINT32 guiStartupTime;
 UINT32 guiCurrentTime;
 
-void CALLBACK Clock(HWND hWindow, UINT uMessage, UINT idEvent, DWORD dwTime) {
+function Clock(hWindow: HWND, uMessage: UINT, idEvent: UINT, dwTime: DWORD): void {
   guiCurrentTime = GetTickCount();
   if (guiCurrentTime < guiStartupTime) {
     // Adjust guiCurrentTime because of loopback on the timer value
@@ -12,7 +12,7 @@ void CALLBACK Clock(HWND hWindow, UINT uMessage, UINT idEvent, DWORD dwTime) {
   }
 }
 
-BOOLEAN InitializeClockManager(void) {
+function InitializeClockManager(): BOOLEAN {
   // Register the start time (use WIN95 API call)
   guiCurrentTime = guiStartupTime = GetTickCount();
   SetTimer(ghWindow, MAIN_TIMER_ID, 10, (TIMERPROC)Clock);
@@ -20,20 +20,20 @@ BOOLEAN InitializeClockManager(void) {
   return TRUE;
 }
 
-void ShutdownClockManager(void) {
+function ShutdownClockManager(): void {
   // Make sure we kill the timer
   KillTimer(ghWindow, MAIN_TIMER_ID);
 }
 
-TIMER GetClock(void) {
+function GetClock(): TIMER {
   return guiCurrentTime;
 }
 
-TIMER SetCountdownClock(UINT32 uiTimeToElapse) {
+function SetCountdownClock(uiTimeToElapse: UINT32): TIMER {
   return guiCurrentTime + uiTimeToElapse;
 }
 
-UINT32 ClockIsTicking(TIMER uiTimer) {
+function ClockIsTicking(uiTimer: TIMER): UINT32 {
   if (uiTimer > guiCurrentTime) {
     // Well timer still hasn't elapsed
     return uiTimer - guiCurrentTime;

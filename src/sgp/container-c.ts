@@ -72,7 +72,7 @@ interface TEST {
 //
 //*****************************************************************************
 
-HSTACK CreateStack(UINT32 uiNum_items, UINT32 uiSiz_each) {
+function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
   UINT32 uiAmount;
   HSTACK hStack;
   StackHeader *pStack;
@@ -113,7 +113,7 @@ HSTACK CreateStack(UINT32 uiNum_items, UINT32 uiSiz_each) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HQUEUE CreateQueue(UINT32 uiNum_items, UINT32 uiSiz_each) {
+function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
   UINT32 uiAmount;
   HQUEUE hQueue;
   QueueHeader *pQueue;
@@ -158,7 +158,7 @@ HQUEUE CreateQueue(UINT32 uiNum_items, UINT32 uiSiz_each) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HLIST CreateList(UINT32 uiNum_items, UINT32 uiSiz_each) {
+function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
   UINT32 uiAmount;
   HLIST hList;
   ListHeader *pList;
@@ -205,7 +205,7 @@ HLIST CreateList(UINT32 uiNum_items, UINT32 uiSiz_each) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HORDLIST CreateOrdList(UINT32 uiNum_items, UINT32 uiSiz_each, INT8 (*compare)(void *, void *, UINT32)) {
+function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Pointer<void>, b: Pointer<void>, c: UINT32) => INT8): HORDLIST {
   UINT32 uiAmount;
   HLIST hOrdList;
   OrdListHeader *pOrdList;
@@ -255,7 +255,7 @@ HORDLIST CreateOrdList(UINT32 uiNum_items, UINT32 uiSiz_each, INT8 (*compare)(vo
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HSTACK Push(HSTACK hStack, void *pdata) {
+function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
   StackHeader *pTemp_cont;
   UINT32 uiOffset;
   UINT32 uiNew_size;
@@ -312,7 +312,7 @@ HSTACK Push(HSTACK hStack, void *pdata) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN Pop(HSTACK hStack, void *pdata) {
+function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
   StackHeader *pTemp_cont;
   UINT32 uiOffset;
   UINT32 uiSize_of_each;
@@ -362,7 +362,7 @@ BOOLEAN Pop(HSTACK hStack, void *pdata) {
 // Apr 14 2000 SCT -> Created
 //
 //*****************************************************************************
-BOOLEAN PeekStack(HSTACK hStack, void *pdata) {
+function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
   StackHeader *pTemp_cont;
   UINT32 uiOffset;
   UINT32 uiSize_of_each;
@@ -410,7 +410,7 @@ BOOLEAN PeekStack(HSTACK hStack, void *pdata) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN DeleteStack(HSTACK hStack) {
+function DeleteStack(hStack: HSTACK): BOOLEAN {
   if (hStack == NULL) {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the stack");
     return FALSE;
@@ -431,7 +431,7 @@ BOOLEAN DeleteStack(HSTACK hStack) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN DeleteQueue(HQUEUE hQueue) {
+function DeleteQueue(hQueue: HQUEUE): BOOLEAN {
   if (hQueue == NULL) {
     DbgMessage(TOPIC_QUEUE_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the queue");
     return FALSE;
@@ -452,7 +452,7 @@ BOOLEAN DeleteQueue(HQUEUE hQueue) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN DeleteList(HLIST hList) {
+function DeleteList(hList: HLIST): BOOLEAN {
   if (hList == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the list");
     return FALSE;
@@ -473,7 +473,7 @@ BOOLEAN DeleteList(HLIST hList) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN DeleteOrdList(HORDLIST hOrdList) {
+function DeleteOrdList(hOrdList: HORDLIST): BOOLEAN {
   if (hOrdList == NULL) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "This is not a valid pointer to the ordered list");
     return FALSE;
@@ -495,7 +495,7 @@ BOOLEAN DeleteOrdList(HORDLIST hOrdList) {
 //
 //*****************************************************************************
 
-void InitializeContainers(void) {
+function InitializeContainers(): void {
   // register the appropriate debug topics
   RegisterDebugTopic(TOPIC_STACK_CONTAINERS, "Stack Container");
   RegisterDebugTopic(TOPIC_LIST_CONTAINERS, "List Container");
@@ -516,7 +516,7 @@ void InitializeContainers(void) {
 //
 //*****************************************************************************
 
-void ShutdownContainers(void) {
+function ShutdownContainers(): void {
   UnRegisterDebugTopic(TOPIC_STACK_CONTAINERS, "Stack Container");
   UnRegisterDebugTopic(TOPIC_LIST_CONTAINERS, "List Container");
   UnRegisterDebugTopic(TOPIC_QUEUE_CONTAINERS, "Queue Container");
@@ -538,7 +538,7 @@ void ShutdownContainers(void) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN PeekQueue(HQUEUE hQueue, void *pdata) {
+function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   QueueHeader *pTemp_cont;
   void *pvoid;
   BYTE *pbyte;
@@ -587,7 +587,7 @@ BOOLEAN PeekQueue(HQUEUE hQueue, void *pdata) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN PeekList(HLIST hList, void *pdata, UINT32 uiPos) {
+function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   ListHeader *pTemp_cont;
   void *pvoid;
   UINT32 uiOffsetSrc;
@@ -648,7 +648,7 @@ BOOLEAN PeekList(HLIST hList, void *pdata, UINT32 uiPos) {
 //		- This function was based on the PeekList function.
 //
 //*****************************************************************************
-BOOLEAN SwapListNode(HLIST hList, void *pdata, UINT32 uiPos) {
+function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   ListHeader *pTemp_cont;
   BYTE *pvoid;
   UINT32 uiOffsetSrc;
@@ -714,7 +714,7 @@ BOOLEAN SwapListNode(HLIST hList, void *pdata, UINT32 uiPos) {
 //		- This function is nearly identical to the SwapListNode() function.
 //
 //*****************************************************************************
-BOOLEAN StoreListNode(HLIST hList, void *pdata, UINT32 uiPos) {
+function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   ListHeader *pTemp_cont;
   UINT32 uiOffsetSrc;
   BYTE *pbyte;
@@ -772,7 +772,7 @@ BOOLEAN StoreListNode(HLIST hList, void *pdata, UINT32 uiPos) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN PeekOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
+function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   OrdListHeader *pTemp_cont;
   void *pvoid;
   UINT32 uiOffsetSrc;
@@ -828,7 +828,7 @@ BOOLEAN PeekOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN RemfromQueue(HQUEUE hQueue, void *pdata) {
+function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   QueueHeader *pTemp_cont;
   void *pvoid;
   BYTE *pbyte;
@@ -891,7 +891,7 @@ BOOLEAN RemfromQueue(HQUEUE hQueue, void *pdata) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HQUEUE AddtoQueue(HQUEUE hQueue, void *pdata) {
+function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
   QueueHeader *pTemp_cont;
   UINT32 uiMax_size;
   UINT32 uiSize_of_each;
@@ -970,7 +970,7 @@ HQUEUE AddtoQueue(HQUEUE hQueue, void *pdata) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN do_copy(void *pmem_void, UINT32 uiSourceOfst, UINT32 uiDestOfst, UINT32 uiSize) {
+function do_copy(pmem_void: Pointer<void>, uiSourceOfst: UINT32, uiDestOfst: UINT32, uiSize: UINT32): BOOLEAN {
   BYTE *pOffsetSrc;
   BYTE *pOffsetDst;
   void *pvoid_src;
@@ -1007,7 +1007,7 @@ BOOLEAN do_copy(void *pmem_void, UINT32 uiSourceOfst, UINT32 uiDestOfst, UINT32 
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN do_copy_data(void *pmem_void, void *data, UINT32 uiSrcOfst, UINT32 uiSize) {
+function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: UINT32, uiSize: UINT32): BOOLEAN {
   BYTE *pOffsetSrc;
   void *pvoid_src;
 
@@ -1039,7 +1039,7 @@ BOOLEAN do_copy_data(void *pmem_void, void *data, UINT32 uiSrcOfst, UINT32 uiSiz
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-UINT32 StackSize(HSTACK hStack) {
+function StackSize(hStack: HSTACK): UINT32 {
   StackHeader *pTemp_cont;
   if (hStack == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Stack pointer is NULL");
@@ -1061,7 +1061,7 @@ UINT32 StackSize(HSTACK hStack) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-UINT32 QueueSize(HQUEUE hQueue) {
+function QueueSize(hQueue: HQUEUE): UINT32 {
   QueueHeader *pTemp_cont;
   if (hQueue == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
@@ -1083,7 +1083,7 @@ UINT32 QueueSize(HQUEUE hQueue) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-UINT32 ListSize(HLIST hList) {
+function ListSize(hList: HLIST): UINT32 {
   ListHeader *pTemp_cont;
   if (hList == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
@@ -1105,7 +1105,7 @@ UINT32 ListSize(HLIST hList) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-UINT32 OrdListSize(HORDLIST hOrdList) {
+function OrdListSize(hOrdList: HORDLIST): UINT32 {
   OrdListHeader *pTemp_cont;
   if (hOrdList == NULL) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Ordered List pointer is NULL");
@@ -1130,7 +1130,7 @@ UINT32 OrdListSize(HORDLIST hOrdList) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HLIST AddtoList(HLIST hList, void *pdata, UINT32 uiPos) {
+function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
   ListHeader *pTemp_cont;
   UINT32 uiMax_size;
   UINT32 uiSize_of_each;
@@ -1290,7 +1290,7 @@ HLIST AddtoList(HLIST hList, void *pdata, UINT32 uiPos) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN RemfromList(HLIST hList, void *pdata, UINT32 uiPos) {
+function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   ListHeader *pTemp_cont;
   UINT32 uiMax_size;
   UINT32 uiSize_of_each;
@@ -1416,7 +1416,7 @@ BOOLEAN RemfromList(HLIST hList, void *pdata, UINT32 uiPos) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-BOOLEAN RemfromOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
+function RemfromOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   OrdListHeader *pTemp_cont;
   UINT32 uiMax_size;
   UINT32 uiSize_of_each;
@@ -1550,7 +1550,7 @@ BOOLEAN RemfromOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
 // Nov 26th 1996 -> modified for use by Wizardry
 //
 //*****************************************************************************
-HORDLIST StoreinOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
+function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): HORDLIST {
   OrdListHeader *pTemp_cont;
   UINT32 uiMax_size;
   UINT32 uiSize_of_each;
@@ -1726,7 +1726,7 @@ HORDLIST StoreinOrdList(HORDLIST hOrdList, void *pdata, UINT32 uiPos) {
 // Dec 19th 1997 -> verified, cleaned up, and heavily commented by AM
 //
 //*****************************************************************************
-HORDLIST AddtoOrdList(HORDLIST hOrdList, void *pdata) {
+function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
   OrdListHeader *pOrdList;
   void *pTemp_data;
   UINT32 uiOffset;
@@ -1842,7 +1842,7 @@ HORDLIST AddtoOrdList(HORDLIST hOrdList, void *pdata) {
   return hOrdList;
 }
 
-INT8 Compare(void *p, void *q, UINT32 size) {
+function Compare(p: Pointer<void>, q: Pointer<void>, size: UINT32): INT8 {
   TEST *temp1;
   TEST *temp2;
 

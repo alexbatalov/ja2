@@ -91,10 +91,10 @@ UINT32 guiMercBackButton;
 //
 //****************************
 
-void GameInitMercsFiles() {
+function GameInitMercsFiles(): void {
 }
 
-BOOLEAN EnterMercsFiles() {
+function EnterMercsFiles(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   InitMercBackGround();
@@ -142,7 +142,7 @@ BOOLEAN EnterMercsFiles() {
   return TRUE;
 }
 
-void ExitMercsFiles() {
+function ExitMercsFiles(): void {
   DeleteVideoObjectFromIndex(guiPortraitBox);
   DeleteVideoObjectFromIndex(guiStatsBox);
   DeleteVideoObjectFromIndex(guiBioBox);
@@ -156,10 +156,10 @@ void ExitMercsFiles() {
   RemoveMercBackGround();
 }
 
-void HandleMercsFiles() {
+function HandleMercsFiles(): void {
 }
 
-void RenderMercsFiles() {
+function RenderMercsFiles(): void {
   HVOBJECT hPixHandle;
 
   DrawMecBackGround();
@@ -205,7 +205,7 @@ void RenderMercsFiles() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -235,7 +235,7 @@ void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -265,7 +265,7 @@ void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnMercHireButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -305,7 +305,7 @@ void BtnMercHireButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN DisplayMercFace(UINT8 ubMercID) {
+function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
   HVOBJECT hFaceHandle;
   HVOBJECT hPortraitHandle;
   STR sFaceLoc = "FACES\\BIGFACES\\";
@@ -378,7 +378,7 @@ BOOLEAN DisplayMercFace(UINT8 ubMercID) {
   return TRUE;
 }
 
-void LoadAndDisplayMercBio(UINT8 ubMercID) {
+function LoadAndDisplayMercBio(ubMercID: UINT8): void {
   wchar_t sText[400];
   UINT32 uiStartLoc = 0;
 
@@ -396,7 +396,7 @@ void LoadAndDisplayMercBio(UINT8 ubMercID) {
   }
 }
 
-void DisplayMercsStats(UINT8 ubMercID) {
+function DisplayMercsStats(ubMercID: UINT8): void {
   UINT16 usPosY, usPosX;
   wchar_t sString[128];
 
@@ -466,7 +466,7 @@ void DisplayMercsStats(UINT8 ubMercID) {
   DrawTextToScreen(sString, usPosX, usPosY, 95, MERC_NAME_FONT, MERC_DYNAMIC_STATS_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
 }
 
-BOOLEAN MercFilesHireMerc(UINT8 ubMercID) {
+function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   MERC_HIRE_STRUCT HireMercStruct;
   INT8 bReturnCode;
 
@@ -524,7 +524,7 @@ BOOLEAN MercFilesHireMerc(UINT8 ubMercID) {
   }
 }
 
-void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercFilesBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -545,7 +545,7 @@ void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void EnableDisableMercFilesNextPreviousButton() {
+function EnableDisableMercFilesNextPreviousButton(): void {
   if (gubCurMercIndex <= LaptopSaveInfo.gubLastMercIndex - 1)
     EnableButton(guiNextButton);
   else

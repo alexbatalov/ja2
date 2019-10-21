@@ -76,14 +76,14 @@ const enum Enum64 {
   INCORPORATION_3,
 }
 
-void GameInitAimHistory() {
+function GameInitAimHistory(): void {
 }
 
-void EnterInitAimHistory() {
+function EnterInitAimHistory(): void {
   memset(&AimHistorySubPagesVisitedFlag, 0, NUM_AIM_HISTORY_PAGES);
 }
 
-BOOLEAN EnterAimHistory() {
+function EnterAimHistory(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   gfExitingAimHistory = FALSE;
@@ -104,7 +104,7 @@ BOOLEAN EnterAimHistory() {
   return TRUE;
 }
 
-void ExitAimHistory() {
+function ExitAimHistory(): void {
   gfExitingAimHistory = TRUE;
   RemoveAimDefaults();
   ExitAimHistoryMenuBar();
@@ -116,10 +116,10 @@ void ExitAimHistory() {
     ExitTocMenu();
 }
 
-void HandleAimHistory() {
+function HandleAimHistory(): void {
 }
 
-void RenderAimHistory() {
+function RenderAimHistory(): void {
   wchar_t sText[400];
   UINT32 uiStartLoc = 0;
   UINT16 usPosY;
@@ -186,7 +186,7 @@ void RenderAimHistory() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-BOOLEAN InitAimHistoryMenuBar(void) {
+function InitAimHistoryMenuBar(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 i, usPosX;
 
@@ -218,7 +218,7 @@ BOOLEAN InitAimHistoryMenuBar(void) {
   return TRUE;
 }
 
-BOOLEAN ExitAimHistoryMenuBar(void) {
+function ExitAimHistoryMenuBar(): BOOLEAN {
   int i;
 
   //	DeleteVideoObjectFromIndex(guiHistoryMenuButtonImage);
@@ -230,7 +230,7 @@ BOOLEAN ExitAimHistoryMenuBar(void) {
   return TRUE;
 }
 
-void SelectHistoryMenuButtonsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   UINT8 rValue;
   static BOOLEAN fOnPage = TRUE;
 
@@ -274,7 +274,7 @@ void SelectHistoryMenuButtonsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-BOOLEAN DisplayAimHistoryParagraph(UINT8 ubPageNum, UINT8 ubNumParagraphs) {
+function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): BOOLEAN {
   wchar_t sText[400];
   UINT32 uiStartLoc = 0;
   UINT16 usPosY = 0;
@@ -313,7 +313,7 @@ BOOLEAN DisplayAimHistoryParagraph(UINT8 ubPageNum, UINT8 ubNumParagraphs) {
   return TRUE;
 }
 
-BOOLEAN InitTocMenu() {
+function InitTocMenu(): BOOLEAN {
   UINT16 i, usPosY;
   UINT16 usHeight;
   UINT16 usWidth = 0;
@@ -356,7 +356,7 @@ BOOLEAN InitTocMenu() {
   return TRUE;
 }
 
-BOOLEAN ExitTocMenu() {
+function ExitTocMenu(): BOOLEAN {
   UINT16 i;
 
   if (gfInToc) {
@@ -368,7 +368,7 @@ BOOLEAN ExitTocMenu() {
   return TRUE;
 }
 
-void SelectHistoryTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (gfInToc) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -384,7 +384,7 @@ void SelectHistoryTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BtnHistoryMenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
   gubAimHistoryMenuButtonDown = 255;
 
@@ -447,7 +447,7 @@ void BtnHistoryMenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ResetAimHistoryButtons() {
+function ResetAimHistoryButtons(): void {
   int i = 0;
 
   for (i = 0; i < AIM_HISTORY_MENU_BUTTON_AMOUNT; i++) {
@@ -455,7 +455,7 @@ void ResetAimHistoryButtons() {
   }
 }
 
-void DisableAimHistoryButton() {
+function DisableAimHistoryButton(): void {
   if (gfExitingAimHistory == TRUE)
     return;
 
@@ -466,7 +466,7 @@ void DisableAimHistoryButton() {
   }
 }
 
-void ChangingAimHistorySubPage(UINT8 ubSubPageNumber) {
+function ChangingAimHistorySubPage(ubSubPageNumber: UINT8): void {
   fLoadPendingFlag = TRUE;
 
   if (AimHistorySubPagesVisitedFlag[ubSubPageNumber] == FALSE) {

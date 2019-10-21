@@ -2,13 +2,13 @@
 UINT32 giIMPAttributeEntranceButtonImage[1];
 UINT32 giIMPAttributeEntranceButton[1];
 
-void EnterIMPAttributeEntrance(void) {
+function EnterIMPAttributeEntrance(): void {
   CreateIMPAttributeEntranceButtons();
 
   return;
 }
 
-void RenderIMPAttributeEntrance(void) {
+function RenderIMPAttributeEntrance(): void {
   // the background
   RenderProfileBackGround();
 
@@ -18,18 +18,18 @@ void RenderIMPAttributeEntrance(void) {
   return;
 }
 
-void ExitIMPAttributeEntrance(void) {
+function ExitIMPAttributeEntrance(): void {
   // destroy the finish buttons
   DestroyIMPAttributeEntranceButtons();
 
   return;
 }
 
-void HandleIMPAttributeEntrance(void) {
+function HandleIMPAttributeEntrance(): void {
   return;
 }
 
-void CreateIMPAttributeEntranceButtons(void) {
+function CreateIMPAttributeEntranceButtons(): void {
   // the begin button
   giIMPAttributeEntranceButtonImage[0] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
   /*
@@ -43,7 +43,7 @@ void CreateIMPAttributeEntranceButtons(void) {
   return;
 }
 
-void DestroyIMPAttributeEntranceButtons(void) {
+function DestroyIMPAttributeEntranceButtons(): void {
   // this function will destroy the buttons needed for the IMP attrib enter page
 
   // the begin  button
@@ -53,7 +53,7 @@ void DestroyIMPAttributeEntranceButtons(void) {
   return;
 }
 
-void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeBeginCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

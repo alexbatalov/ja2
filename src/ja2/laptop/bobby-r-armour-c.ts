@@ -1,10 +1,10 @@
 UINT32 guiArmourBackground;
 UINT32 guiArmourGrid;
 
-void GameInitBobbyRArmour() {
+function GameInitBobbyRArmour(): void {
 }
 
-BOOLEAN EnterBobbyRArmour() {
+function EnterBobbyRArmour(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the background graphic and add it
@@ -29,7 +29,7 @@ BOOLEAN EnterBobbyRArmour() {
   return TRUE;
 }
 
-void ExitBobbyRArmour() {
+function ExitBobbyRArmour(): void {
   DeleteVideoObjectFromIndex(guiArmourBackground);
   DeleteVideoObjectFromIndex(guiArmourGrid);
   DeleteBobbyMenuBar();
@@ -41,10 +41,10 @@ void ExitBobbyRArmour() {
   guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_ARMOR;
 }
 
-void HandleBobbyRArmour() {
+function HandleBobbyRArmour(): void {
 }
 
-void RenderBobbyRArmour() {
+function RenderBobbyRArmour(): void {
   HVOBJECT hPixHandle;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiArmourBackground);

@@ -15,14 +15,14 @@ SGPRect gDirtyClipRect = { 0, 0, 640, 480 };
 
 BOOLEAN gfViewportDirty = FALSE;
 
-BOOLEAN InitializeBaseDirtyRectQueue() {
+function InitializeBaseDirtyRectQueue(): BOOLEAN {
   return TRUE;
 }
 
-void ShutdownBaseDirtyRectQueue() {
+function ShutdownBaseDirtyRectQueue(): void {
 }
 
-void AddBaseDirtyRect(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+function AddBaseDirtyRect(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
   SGPRect aRect;
 
   if (iLeft < 0) {
@@ -71,7 +71,7 @@ void AddBaseDirtyRect(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   InvalidateRegionEx(aRect.iLeft, aRect.iTop, aRect.iRight, aRect.iBottom, 0);
 }
 
-BOOLEAN ExecuteBaseDirtyRectQueue() {
+function ExecuteBaseDirtyRectQueue(): BOOLEAN {
   if (gfViewportDirty) {
     // InvalidateRegion(gsVIEWPORT_START_X, gsVIEWPORT_START_Y, gsVIEWPORT_END_X, gsVIEWPORT_END_Y);
     InvalidateScreen();
@@ -83,11 +83,11 @@ BOOLEAN ExecuteBaseDirtyRectQueue() {
   return TRUE;
 }
 
-BOOLEAN EmptyDirtyRectQueue() {
+function EmptyDirtyRectQueue(): BOOLEAN {
   return TRUE;
 }
 
-INT32 GetFreeBackgroundBuffer(void) {
+function GetFreeBackgroundBuffer(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -101,7 +101,7 @@ INT32 GetFreeBackgroundBuffer(void) {
   return -1;
 }
 
-void RecountBackgrounds(void) {
+function RecountBackgrounds(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumBackSaves - 1; (uiCount >= 0); uiCount--) {
@@ -112,7 +112,7 @@ void RecountBackgrounds(void) {
   }
 }
 
-INT32 RegisterBackgroundRect(UINT32 uiFlags, INT16 *pSaveArea, INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom) {
+function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16): INT32 {
   UINT32 uiBufSize;
   INT32 iBackIndex;
   INT32 ClipX1, ClipY1, ClipX2, ClipY2;
@@ -206,13 +206,13 @@ INT32 RegisterBackgroundRect(UINT32 uiFlags, INT16 *pSaveArea, INT16 sLeft, INT1
   return iBackIndex;
 }
 
-void SetBackgroundRectFilled(UINT32 uiBackgroundID) {
+function SetBackgroundRectFilled(uiBackgroundID: UINT32): void {
   gBackSaves[uiBackgroundID].fFilled = TRUE;
 
   AddBaseDirtyRect(gBackSaves[uiBackgroundID].sLeft, gBackSaves[uiBackgroundID].sTop, gBackSaves[uiBackgroundID].sRight, gBackSaves[uiBackgroundID].sBottom);
 }
 
-BOOLEAN RestoreBackgroundRects(void) {
+function RestoreBackgroundRects(): BOOLEAN {
   UINT32 uiCount, uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
 
@@ -247,7 +247,7 @@ BOOLEAN RestoreBackgroundRects(void) {
   return TRUE;
 }
 
-BOOLEAN EmptyBackgroundRects(void) {
+function EmptyBackgroundRects(): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -299,7 +299,7 @@ BOOLEAN EmptyBackgroundRects(void) {
   return TRUE;
 }
 
-BOOLEAN SaveBackgroundRects(void) {
+function SaveBackgroundRects(): BOOLEAN {
   UINT32 uiCount, uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
 
@@ -328,7 +328,7 @@ BOOLEAN SaveBackgroundRects(void) {
   return TRUE;
 }
 
-BOOLEAN FreeBackgroundRect(INT32 iIndex) {
+function FreeBackgroundRect(iIndex: INT32): BOOLEAN {
   if (iIndex != -1) {
     gBackSaves[iIndex].fAllocated = FALSE;
 
@@ -338,13 +338,13 @@ BOOLEAN FreeBackgroundRect(INT32 iIndex) {
   return TRUE;
 }
 
-BOOLEAN FreeBackgroundRectPending(INT32 iIndex) {
+function FreeBackgroundRectPending(iIndex: INT32): BOOLEAN {
   gBackSaves[iIndex].fPendingDelete = TRUE;
 
   return TRUE;
 }
 
-BOOLEAN FreeBackgroundRectNow(INT32 uiCount) {
+function FreeBackgroundRectNow(uiCount: INT32): BOOLEAN {
   if (gBackSaves[uiCount].fFreeMemory == TRUE) {
     // MemFree(gBackSaves[uiCount].pSaveArea);
     if (gBackSaves[uiCount].fZBuffer)
@@ -361,7 +361,7 @@ BOOLEAN FreeBackgroundRectNow(INT32 uiCount) {
   return TRUE;
 }
 
-BOOLEAN FreeBackgroundRectType(UINT32 uiFlags) {
+function FreeBackgroundRectType(uiFlags: UINT32): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -385,12 +385,12 @@ BOOLEAN FreeBackgroundRectType(UINT32 uiFlags) {
   return TRUE;
 }
 
-BOOLEAN InitializeBackgroundRects(void) {
+function InitializeBackgroundRects(): BOOLEAN {
   guiNumBackSaves = 0;
   return TRUE;
 }
 
-BOOLEAN InvalidateBackgroundRects(void) {
+function InvalidateBackgroundRects(): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++)
@@ -399,7 +399,7 @@ BOOLEAN InvalidateBackgroundRects(void) {
   return TRUE;
 }
 
-BOOLEAN ShutdownBackgroundRects(void) {
+function ShutdownBackgroundRects(): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
@@ -410,11 +410,11 @@ BOOLEAN ShutdownBackgroundRects(void) {
   return TRUE;
 }
 
-void DisableBackgroundRect(INT32 iIndex, BOOLEAN fDisabled) {
+function DisableBackgroundRect(iIndex: INT32, fDisabled: BOOLEAN): void {
   gBackSaves[iIndex].fDisabled = fDisabled;
 }
 
-BOOLEAN UpdateSaveBuffer(void) {
+function UpdateSaveBuffer(): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
   UINT16 usWidth, usHeight;
@@ -440,7 +440,7 @@ BOOLEAN UpdateSaveBuffer(void) {
   return TRUE;
 }
 
-BOOLEAN RestoreExternBackgroundRect(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight) {
+function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
 
@@ -463,7 +463,7 @@ BOOLEAN RestoreExternBackgroundRect(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16
   return TRUE;
 }
 
-BOOLEAN RestoreExternBackgroundRectGivenID(INT32 iBack) {
+function RestoreExternBackgroundRectGivenID(iBack: INT32): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   INT16 sLeft, sTop, sWidth, sHeight;
   UINT8 *pDestBuf, *pSrcBuf;
@@ -496,7 +496,7 @@ BOOLEAN RestoreExternBackgroundRectGivenID(INT32 iBack) {
   return TRUE;
 }
 
-BOOLEAN CopyExternBackgroundRect(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight) {
+function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
 
@@ -525,7 +525,7 @@ BOOLEAN CopyExternBackgroundRect(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sH
 // to the video buffer.
 //
 //*****************************************************************************
-UINT16 gprintfdirty(INT16 x, INT16 y, UINT16 *pFontString, ...) {
+function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   va_list argptr;
   wchar_t string[512];
   UINT16 uiStringLength, uiStringHeight;
@@ -556,7 +556,7 @@ UINT16 gprintfdirty(INT16 x, INT16 y, UINT16 *pFontString, ...) {
   return uiStringLength;
 }
 
-UINT16 gprintfinvalidate(INT16 x, INT16 y, UINT16 *pFontString, ...) {
+function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   va_list argptr;
   wchar_t string[512];
   UINT16 uiStringLength, uiStringHeight;
@@ -576,7 +576,7 @@ UINT16 gprintfinvalidate(INT16 x, INT16 y, UINT16 *pFontString, ...) {
   return uiStringLength;
 }
 
-UINT16 gprintfRestore(INT16 x, INT16 y, UINT16 *pFontString, ...) {
+function gprintfRestore(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): UINT16 {
   va_list argptr;
   wchar_t string[512];
   UINT16 uiStringLength, uiStringHeight;
@@ -598,7 +598,7 @@ UINT16 gprintfRestore(INT16 x, INT16 y, UINT16 *pFontString, ...) {
 }
 
 // OVERLAY STUFF
-INT32 GetFreeVideoOverlay(void) {
+function GetFreeVideoOverlay(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
@@ -612,7 +612,7 @@ INT32 GetFreeVideoOverlay(void) {
   return -1;
 }
 
-void RecountVideoOverlays(void) {
+function RecountVideoOverlays(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumVideoOverlays - 1; (uiCount >= 0); uiCount--) {
@@ -623,7 +623,7 @@ void RecountVideoOverlays(void) {
   }
 }
 
-INT32 RegisterVideoOverlay(UINT32 uiFlags, VIDEO_OVERLAY_DESC *pTopmostDesc) {
+function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>): INT32 {
   UINT32 iBlitterIndex;
   UINT32 iBackIndex;
   UINT16 uiStringLength, uiStringHeight;
@@ -678,13 +678,13 @@ INT32 RegisterVideoOverlay(UINT32 uiFlags, VIDEO_OVERLAY_DESC *pTopmostDesc) {
   return iBlitterIndex;
 }
 
-void SetVideoOverlayPendingDelete(INT32 iVideoOverlay) {
+function SetVideoOverlayPendingDelete(iVideoOverlay: INT32): void {
   if (iVideoOverlay != -1) {
     gVideoOverlays[iVideoOverlay].fDeletionPending = TRUE;
   }
 }
 
-void RemoveVideoOverlay(INT32 iVideoOverlay) {
+function RemoveVideoOverlay(iVideoOverlay: INT32): void {
   if (iVideoOverlay != -1 && gVideoOverlays[iVideoOverlay].fAllocated) {
     // Check if we are actively scrolling
     if (gVideoOverlays[iVideoOverlay].fActivelySaving) {
@@ -711,7 +711,7 @@ void RemoveVideoOverlay(INT32 iVideoOverlay) {
   }
 }
 
-BOOLEAN UpdateVideoOverlay(VIDEO_OVERLAY_DESC *pTopmostDesc, UINT32 iBlitterIndex, BOOLEAN fForceAll) {
+function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterIndex: UINT32, fForceAll: BOOLEAN): BOOLEAN {
   UINT32 uiFlags;
   UINT16 uiStringLength, uiStringHeight;
 
@@ -770,7 +770,7 @@ BOOLEAN UpdateVideoOverlay(VIDEO_OVERLAY_DESC *pTopmostDesc, UINT32 iBlitterInde
 }
 
 // FUnctions for entrie array of blitters
-void ExecuteVideoOverlays() {
+function ExecuteVideoOverlays(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
@@ -799,7 +799,7 @@ void ExecuteVideoOverlays() {
   }
 }
 
-void ExecuteVideoOverlaysToAlternateBuffer(UINT32 uiNewDestBuffer) {
+function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
   UINT32 uiCount;
   UINT32 uiOldDestBuffer;
 
@@ -819,7 +819,7 @@ void ExecuteVideoOverlaysToAlternateBuffer(UINT32 uiNewDestBuffer) {
   }
 }
 
-void AllocateVideoOverlaysArea() {
+function AllocateVideoOverlaysArea(): void {
   UINT32 uiCount;
   UINT32 uiBufSize;
   UINT32 iBackIndex;
@@ -843,7 +843,7 @@ void AllocateVideoOverlaysArea() {
   }
 }
 
-void AllocateVideoOverlayArea(UINT32 uiCount) {
+function AllocateVideoOverlayArea(uiCount: UINT32): void {
   UINT32 uiBufSize;
   UINT32 iBackIndex;
 
@@ -863,7 +863,7 @@ void AllocateVideoOverlayArea(UINT32 uiCount) {
   }
 }
 
-void SaveVideoOverlaysArea(UINT32 uiSrcBuffer) {
+function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
   UINT32 uiCount;
   UINT32 iBackIndex;
   UINT32 uiSrcPitchBYTES;
@@ -890,7 +890,7 @@ void SaveVideoOverlaysArea(UINT32 uiSrcBuffer) {
   UnLockVideoSurface(uiSrcBuffer);
 }
 
-void SaveVideoOverlayArea(UINT32 uiSrcBuffer, UINT32 uiCount) {
+function SaveVideoOverlayArea(uiSrcBuffer: UINT32, uiCount: UINT32): void {
   UINT32 iBackIndex;
   UINT32 uiSrcPitchBYTES;
   UINT8 *pSrcBuf;
@@ -914,7 +914,7 @@ void SaveVideoOverlayArea(UINT32 uiSrcBuffer, UINT32 uiCount) {
   UnLockVideoSurface(uiSrcBuffer);
 }
 
-void DeleteVideoOverlaysArea() {
+function DeleteVideoOverlaysArea(): void {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
@@ -937,7 +937,7 @@ void DeleteVideoOverlaysArea() {
   }
 }
 
-BOOLEAN RestoreShiftedVideoOverlays(INT16 sShiftX, INT16 sShiftY) {
+function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): BOOLEAN {
   UINT32 uiCount, uiDestPitchBYTES;
   UINT8 *pDestBuf;
   UINT32 iBackIndex;
@@ -1013,7 +1013,7 @@ BOOLEAN RestoreShiftedVideoOverlays(INT16 sShiftX, INT16 sShiftY) {
   return TRUE;
 }
 
-BOOLEAN SetOverlayUserData(INT32 iVideoOverlay, UINT8 ubNum, UINT32 uiData) {
+function SetOverlayUserData(iVideoOverlay: INT32, ubNum: UINT8, uiData: UINT32): BOOLEAN {
   if (!gVideoOverlays[iVideoOverlay].fAllocated) {
     return FALSE;
   }
@@ -1028,7 +1028,7 @@ BOOLEAN SetOverlayUserData(INT32 iVideoOverlay, UINT8 ubNum, UINT32 uiData) {
 }
 
 // Common callbacks for topmost blitters
-void BlitMFont(VIDEO_OVERLAY *pBlitter) {
+function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
 
@@ -1043,7 +1043,7 @@ void BlitMFont(VIDEO_OVERLAY *pBlitter) {
   UnLockVideoSurface(pBlitter->uiDestBuff);
 }
 
-BOOLEAN BlitBufferToBuffer(UINT32 uiSrcBuffer, UINT32 uiDestBuffer, UINT16 usSrcX, UINT16 usSrcY, UINT16 usWidth, UINT16 usHeight) {
+function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: UINT16, usSrcY: UINT16, usWidth: UINT16, usHeight: UINT16): BOOLEAN {
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
   BOOLEAN fRetVal;
@@ -1059,7 +1059,7 @@ BOOLEAN BlitBufferToBuffer(UINT32 uiSrcBuffer, UINT32 uiDestBuffer, UINT16 usSrc
   return fRetVal;
 }
 
-void EnableVideoOverlay(BOOLEAN fEnable, INT32 iOverlayIndex) {
+function EnableVideoOverlay(fEnable: BOOLEAN, iOverlayIndex: INT32): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));

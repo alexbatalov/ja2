@@ -2,7 +2,7 @@ StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
 
 extern BOOLEAN fReDrawFace;
 
-BOOLEAN HandleStrategicDeath(SOLDIERTYPE *pSoldier) {
+function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // add the guy to the dead list
   // AddCharacterToDeadList( pSoldier );
 
@@ -60,7 +60,7 @@ BOOLEAN HandleStrategicDeath(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-void HandleSoldierDeadComments(SOLDIERTYPE *pSoldier) {
+function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt = 0;
   SOLDIERTYPE *pTeamSoldier;
   INT8 bBuddyIndex;

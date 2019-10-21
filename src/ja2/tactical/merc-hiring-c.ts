@@ -9,7 +9,7 @@ extern BOOLEAN gfFirstHeliRun;
 INT16 gsMercArriveSectorX = 9;
 INT16 gsMercArriveSectorY = 1;
 
-INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
+function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   SOLDIERTYPE *pSoldier;
   UINT8 iNewIndex;
   UINT8 ubCount = 0;
@@ -184,7 +184,7 @@ INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
   return MERC_HIRE_OK;
 }
 
-void MercArrivesCallback(UINT8 ubSoldierID) {
+function MercArrivesCallback(ubSoldierID: UINT8): void {
   MERCPROFILESTRUCT *pMerc;
   SOLDIERTYPE *pSoldier;
   UINT32 uiTimeOfPost;
@@ -295,7 +295,7 @@ void MercArrivesCallback(UINT8 ubSoldierID) {
   return;
 }
 
-BOOLEAN IsMercHireable(UINT8 ubMercID) {
+function IsMercHireable(ubMercID: UINT8): BOOLEAN {
   // If the merc has an .EDT file, is not away on assignment, and isnt already hired (but not arrived yet), he is not DEAD and he isnt returning home
   if ((gMercProfiles[ubMercID].bMercStatus == MERC_HAS_NO_TEXT_FILE) || (gMercProfiles[ubMercID].bMercStatus > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_HIRED_BUT_NOT_ARRIVED_YET) || (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD) || (gMercProfiles[ubMercID].uiDayBecomesAvailable > 0) || (gMercProfiles[ubMercID].bMercStatus == MERC_WORKING_ELSEWHERE) || (gMercProfiles[ubMercID].bMercStatus == MERC_FIRED_AS_A_POW) || (gMercProfiles[ubMercID].bMercStatus == MERC_RETURNING_HOME))
     return FALSE;
@@ -303,21 +303,21 @@ BOOLEAN IsMercHireable(UINT8 ubMercID) {
     return TRUE;
 }
 
-BOOLEAN IsMercDead(UINT8 ubMercID) {
+function IsMercDead(ubMercID: UINT8): BOOLEAN {
   if (gMercProfiles[ubMercID].bMercStatus == MERC_IS_DEAD)
     return TRUE;
   else
     return FALSE;
 }
 
-BOOLEAN IsTheSoldierAliveAndConcious(SOLDIERTYPE *pSoldier) {
+function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->bLife >= CONSCIOUSNESS)
     return TRUE;
   else
     return FALSE;
 }
 
-UINT8 NumberOfMercsOnPlayerTeam() {
+function NumberOfMercsOnPlayerTeam(): UINT8 {
   INT8 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 bLastTeamID;
@@ -337,7 +337,7 @@ UINT8 NumberOfMercsOnPlayerTeam() {
   return ubCount;
 }
 
-void HandleMercArrivesQuotes(SOLDIERTYPE *pSoldier) {
+function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 cnt, bHated, bLastTeamID;
   SOLDIERTYPE *pTeamSoldier;
 
@@ -377,7 +377,7 @@ void HandleMercArrivesQuotes(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT32 GetMercArrivalTimeOfDay() {
+function GetMercArrivalTimeOfDay(): UINT32 {
   UINT32 uiCurrHour;
   UINT32 uiMinHour;
 
@@ -408,7 +408,7 @@ UINT32 GetMercArrivalTimeOfDay() {
   }
 }
 
-void UpdateAnyInTransitMercsWithGlobalArrivalSector() {
+function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -428,7 +428,7 @@ void UpdateAnyInTransitMercsWithGlobalArrivalSector() {
   }
 }
 
-INT16 StrategicPythSpacesAway(INT16 sOrigin, INT16 sDest) {
+function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
   INT16 sRows, sCols, sResult;
 
   sRows = abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
@@ -445,7 +445,7 @@ INT16 StrategicPythSpacesAway(INT16 sOrigin, INT16 sDest) {
 // is valid
 // if there are enemies present, it's invalid
 // if so, search around for nearest non-occupied sector.
-void CheckForValidArrivalSector() {
+function CheckForValidArrivalSector(): void {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2, sGoodX, sGoodY;

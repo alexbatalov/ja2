@@ -64,7 +64,7 @@ extern BOOLEAN gfKillingGuysForLosingBattle;
 
 extern UINT8 gubInterruptProvoker;
 
-BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
+function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   EV_S_FIREWEAPON SFireWeapon;
 
   UINT16 sNewAniFrame, anAniFrame;
@@ -2384,7 +2384,7 @@ BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
 
 const MIN_DEADLINESS_FOR_LIKE_GUN_QUOTE = 20;
 
-BOOLEAN ShouldMercSayHappyWithGunQuote(SOLDIERTYPE *pSoldier) {
+function ShouldMercSayHappyWithGunQuote(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // How do we do this....
 
   if (QuoteExp_GotGunOrUsedGun[pSoldier->ubProfile] == QUOTE_SATISFACTION_WITH_GUN_AFTER_KILL) {
@@ -2408,7 +2408,7 @@ BOOLEAN ShouldMercSayHappyWithGunQuote(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-void SayBuddyWitnessedQuoteFromKill(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   UINT8 ubMercsInSector[20] = { 0 };
   INT8 bBuddyIndex[20] = { -1 };
   INT8 bTempBuddyIndex;
@@ -2500,7 +2500,7 @@ void SayBuddyWitnessedQuoteFromKill(SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, 
   }
 }
 
-void HandleKilledQuote(SOLDIERTYPE *pKilledSoldier, SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel) {
+function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt;
   UINT8 ubMercsInSector[20] = { 0 };
@@ -2631,7 +2631,7 @@ void HandleKilledQuote(SOLDIERTYPE *pKilledSoldier, SOLDIERTYPE *pKillerSoldier,
   }
 }
 
-BOOLEAN HandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorpse) {
+function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<BOOLEAN>): BOOLEAN {
   BOOLEAN fBuddyJustDead = FALSE;
 
   *pfMadeCorpse = FALSE;
@@ -2773,7 +2773,7 @@ BOOLEAN HandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorpse) {
   return fBuddyJustDead;
 }
 
-void HandlePlayerTeamMemberDeathAfterSkullAnimation(SOLDIERTYPE *pSoldier) {
+function HandlePlayerTeamMemberDeathAfterSkullAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Release attacker
   if (!pSoldier->fDoingExternalDeath) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Releasesoldierattacker, code 497 = handle soldier death"));
@@ -2786,7 +2786,7 @@ void HandlePlayerTeamMemberDeathAfterSkullAnimation(SOLDIERTYPE *pSoldier) {
   RemoveCharacterFromSquads(pSoldier);
 }
 
-BOOLEAN CheckForAndHandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorpse) {
+function CheckForAndHandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<BOOLEAN>): BOOLEAN {
   if (HandleSoldierDeath(pSoldier, pfMadeCorpse)) {
     // Select approriate death
     switch (pSoldier->usAnimState) {
@@ -2849,7 +2849,7 @@ BOOLEAN CheckForAndHandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorp
 //#define TESTFALLBACK
 //#define TESTFALLFORWARD
 
-void CheckForAndHandleSoldierIncompacitated(SOLDIERTYPE *pSoldier) {
+function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sNewGridNo;
 
   if (pSoldier->bLife < OKLIFE) {
@@ -2990,7 +2990,7 @@ void CheckForAndHandleSoldierIncompacitated(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN CheckForAndHandleSoldierDyingNotFromHit(SOLDIERTYPE *pSoldier) {
+function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->bLife == 0) {
     DoMercBattleSound(pSoldier, BATTLE_SOUND_DIE1);
     pSoldier->fDeadSoundPlayed = TRUE;
@@ -3079,7 +3079,7 @@ BOOLEAN CheckForAndHandleSoldierDyingNotFromHit(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN CheckForImproperFireGunEnd(SOLDIERTYPE *pSoldier) {
+function CheckForImproperFireGunEnd(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (AM_A_ROBOT(pSoldier)) {
     return FALSE;
   }
@@ -3097,7 +3097,7 @@ BOOLEAN CheckForImproperFireGunEnd(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN OKHeightDest(SOLDIERTYPE *pSoldier, INT16 sNewGridNo) {
+function OKHeightDest(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16): BOOLEAN {
   if (pSoldier->bLevel == 0) {
     return TRUE;
   }
@@ -3110,7 +3110,7 @@ BOOLEAN OKHeightDest(SOLDIERTYPE *pSoldier, INT16 sNewGridNo) {
   return TRUE;
 }
 
-BOOLEAN HandleUnjamAnimation(SOLDIERTYPE *pSoldier) {
+function HandleUnjamAnimation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // OK, play intermediate animation here..... save in pending animation data, the current
   // code we are at!
   pSoldier->uiPendingActionData1 = pSoldier->usAniCode;
@@ -3167,7 +3167,7 @@ BOOLEAN HandleUnjamAnimation(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN OKFallDirection(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, INT8 bTestDirection, UINT16 usAnimState) {
+function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bTestDirection: INT8, usAnimState: UINT16): BOOLEAN {
   STRUCTURE_FILE_REF *pStructureFileRef;
   UINT16 usAnimSurface;
 
@@ -3212,7 +3212,7 @@ BOOLEAN OKFallDirection(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, INT8 
   return TRUE;
 }
 
-BOOLEAN HandleCheckForDeathCommonCode(SOLDIERTYPE *pSoldier) {
+function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Do we have a primary pending animation?
   if (pSoldier->usPendingAnimation2 != NO_PENDING_ANIMATION) {
     ChangeSoldierState(pSoldier, pSoldier->usPendingAnimation2, 0, FALSE);
@@ -3332,7 +3332,7 @@ BOOLEAN HandleCheckForDeathCommonCode(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-void KickOutWheelchair(SOLDIERTYPE *pSoldier) {
+function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sNewGridNo;
 
   // Move forward one gridno....

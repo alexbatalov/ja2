@@ -306,13 +306,13 @@ BOOLEAN fCreateRegionsForPastCurrentToggle = FALSE;
 
 // atm misc functions
 
-void GameInitPersonnel(void) {
+function GameInitPersonnel(): void {
   // init past characters lists
   INT32 iCounter = 0;
   InitPastCharactersList();
 }
 
-void EnterPersonnel(void) {
+function EnterPersonnel(): void {
   fReDrawScreenFlag = TRUE;
   iStartPersonId = -1;
 
@@ -362,7 +362,7 @@ void EnterPersonnel(void) {
   return;
 }
 
-void ExitPersonnel(void) {
+function ExitPersonnel(): void {
   if (fCurrentTeamMode == FALSE) {
     fCurrentTeamMode = TRUE;
     CreateDestroyButtonsForDepartedTeamList();
@@ -403,7 +403,7 @@ void ExitPersonnel(void) {
   return;
 }
 
-void HandlePersonnel(void) {
+function HandlePersonnel(): void {
   // RenderButtonsFastHelp( );
   CreateDestroyButtonsForPersonnelDepartures();
 
@@ -427,7 +427,7 @@ void HandlePersonnel(void) {
   return;
 }
 
-BOOLEAN LoadPersonnelGraphics(void) {
+function LoadPersonnelGraphics(): BOOLEAN {
   // load graphics needed for personnel screen
   VOBJECT_DESC VObjectDesc;
 
@@ -450,7 +450,7 @@ BOOLEAN LoadPersonnelGraphics(void) {
   return TRUE;
 }
 
-void RemovePersonnelGraphics(void) {
+function RemovePersonnelGraphics(): void {
   // delete graphics needed for personnel screen
 
   DeleteVideoObjectFromIndex(guiSCREEN);
@@ -460,7 +460,7 @@ void RemovePersonnelGraphics(void) {
   return;
 }
 
-void RenderPersonnel(void) {
+function RenderPersonnel(): void {
   HVOBJECT hHandle;
   INT32 iCounter = 0;
   // re-renders personnel screen
@@ -542,7 +542,7 @@ void RenderPersonnel(void) {
   return;
 }
 
-BOOLEAN RenderPersonnelPictures(void) {
+function RenderPersonnelPictures(): BOOLEAN {
   // will render portraits of personnel onscreen
   // find person with iStartPersonId, unless it is -1, then find first bActive Merc on Staff
   SOLDIERTYPE *pTeamSoldier, *pSoldier;
@@ -602,7 +602,7 @@ BOOLEAN RenderPersonnelPictures(void) {
   return TRUE;
 }
 
-void RenderPersonnelStats(INT32 iId, INT32 iSlot) {
+function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
   INT32 iCounter = 0;
   // will render the stats of person iId in slot iSlot
   SetFont(PERS_FONT);
@@ -619,7 +619,7 @@ void RenderPersonnelStats(INT32 iId, INT32 iSlot) {
   }
 }
 
-BOOLEAN RenderPersonnelFace(INT32 iId, INT32 iSlot, BOOLEAN fDead, BOOLEAN fFired, BOOLEAN fOther) {
+function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
   char sTemp[100];
   HVOBJECT hFaceHandle;
   VOBJECT_DESC VObjectDesc;
@@ -731,7 +731,7 @@ BOOLEAN RenderPersonnelFace(INT32 iId, INT32 iSlot, BOOLEAN fDead, BOOLEAN fFire
   return TRUE;
 }
 
-BOOLEAN NextPersonnelFace(void) {
+function NextPersonnelFace(): BOOLEAN {
   if (iCurrentPersonSelectedId == -1) {
     return TRUE;
   }
@@ -764,7 +764,7 @@ BOOLEAN NextPersonnelFace(void) {
   return TRUE;
 }
 
-BOOLEAN PrevPersonnelFace(void) {
+function PrevPersonnelFace(): BOOLEAN {
   if (iCurrentPersonSelectedId == -1) {
     return TRUE;
   }
@@ -801,7 +801,7 @@ BOOLEAN PrevPersonnelFace(void) {
   return TRUE;
 }
 
-void CreatePersonnelButtons(void) {
+function CreatePersonnelButtons(): void {
   // left button
   giPersonnelButtonImage[0] = LoadButtonImage("LAPTOP\\personnelbuttons.sti", -1, 0, -1, 1, -1);
   giPersonnelButton[0] = QuickCreateButton(giPersonnelButtonImage[0], PREV_MERC_FACE_X, MERC_FACE_SCROLL_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)LeftButtonCallBack);
@@ -844,7 +844,7 @@ void CreatePersonnelButtons(void) {
   return;
 }
 
-void DeletePersonnelButtons(void) {
+function DeletePersonnelButtons(): void {
   RemoveButton(giPersonnelButton[0]);
   UnloadButtonImage(giPersonnelButtonImage[0]);
   RemoveButton(giPersonnelButton[1]);
@@ -857,7 +857,7 @@ void DeletePersonnelButtons(void) {
   return;
 }
 
-void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function LeftButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -877,7 +877,7 @@ void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void LeftFFButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function LeftFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -901,7 +901,7 @@ void LeftFFButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function RightButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -921,7 +921,7 @@ void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RightFFButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
+function RightFFButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -945,7 +945,7 @@ void RightFFButtonCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DisplayHeader(void) {
+function DisplayHeader(): void {
   SetFont(PERS_HEADER_FONT);
   SetFontForeground(PERS_FONT_COLOR);
   SetFontBackground(0);
@@ -955,7 +955,7 @@ void DisplayHeader(void) {
   return;
 }
 
-void DisplayCharName(INT32 iId, INT32 iSlot) {
+function DisplayCharName(iId: INT32, iSlot: INT32): void {
   // get merc's nickName, assignment, and sector location info
   INT16 sX, sY;
   SOLDIERTYPE *pSoldier;
@@ -1062,7 +1062,7 @@ void DisplayCharName(INT32 iId, INT32 iSlot) {
   return;
 }
 
-void DisplayCharStats(INT32 iId, INT32 iSlot) {
+function DisplayCharStats(iId: INT32, iSlot: INT32): void {
   INT32 iCounter = 0;
   wchar_t sString[50];
   //	wchar_t sStringA[ 50 ];
@@ -1446,7 +1446,7 @@ void DisplayCharStats(INT32 iId, INT32 iSlot) {
   return;
 }
 
-INT32 GetLastMercId(void) {
+function GetLastMercId(): INT32 {
   // rolls through list of mercs and returns how many on team
   SOLDIERTYPE *pSoldier, *pTeamSoldier;
   INT32 cnt = 0;
@@ -1460,7 +1460,7 @@ INT32 GetLastMercId(void) {
   return iCounter;
 }
 
-void DrawPageNumber(void) {
+function DrawPageNumber(): void {
   // draws the page number
 
   wchar_t sString[10];
@@ -1497,7 +1497,7 @@ void DrawPageNumber(void) {
   return;
 }
 
-void SetPersonnelButtonStates(void) {
+function SetPersonnelButtonStates(): void {
   // this function will look at what page we are viewing, enable and disable buttons as needed
 
   if (!PrevPersonnelFace()) {
@@ -1528,7 +1528,7 @@ void SetPersonnelButtonStates(void) {
   return;
 }
 
-void RenderPersonnelScreenBackground(void) {
+function RenderPersonnelScreenBackground(): void {
   HVOBJECT hHandle;
 
   // this fucntion will render the background for the personnel screen
@@ -1545,7 +1545,7 @@ void RenderPersonnelScreenBackground(void) {
   return;
 }
 
-BOOLEAN LoadPersonnelScreenBackgroundGraphics(void) {
+function LoadPersonnelScreenBackgroundGraphics(): BOOLEAN {
   // will load the graphics for the personeel screen background
   VOBJECT_DESC VObjectDesc;
 
@@ -1562,14 +1562,14 @@ BOOLEAN LoadPersonnelScreenBackgroundGraphics(void) {
   return TRUE;
 }
 
-void DeletePersonnelScreenBackgroundGraphics(void) {
+function DeletePersonnelScreenBackgroundGraphics(): void {
   // delete background V/O's
 
   DeleteVideoObjectFromIndex(guiCURRENTTEAM);
   DeleteVideoObjectFromIndex(guiDEPARTEDTEAM);
 }
 
-void CreateDestroyButtonsForPersonnelDepartures(void) {
+function CreateDestroyButtonsForPersonnelDepartures(): void {
   static BOOLEAN fCreated = FALSE;
 
   // create/ destroy personnel departures buttons as needed
@@ -1584,7 +1584,7 @@ void CreateDestroyButtonsForPersonnelDepartures(void) {
   return;
 }
 
-INT32 GetNumberOfMercsOnPlayersTeam(void) {
+function GetNumberOfMercsOnPlayersTeam(): INT32 {
   SOLDIERTYPE *pTeamSoldier, *pSoldier;
   INT32 cnt = 0;
   INT32 iCounter = 0;
@@ -1602,7 +1602,7 @@ INT32 GetNumberOfMercsOnPlayersTeam(void) {
   return iCounter;
 }
 
-INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam(void) {
+function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
   SOLDIERTYPE *pTeamSoldier, *pSoldier;
   INT32 cnt = 0;
   INT32 iCounter = 0;
@@ -1620,7 +1620,7 @@ INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam(void) {
   return iCounter;
 }
 
-void CreateDestroyMouseRegionsForPersonnelPortraits(void) {
+function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   // creates/ destroys mouse regions for portraits
 
   static BOOLEAN fCreated = FALSE;
@@ -1646,7 +1646,7 @@ void CreateDestroyMouseRegionsForPersonnelPortraits(void) {
   return;
 }
 
-BOOLEAN DisplayPicturesOfCurrentTeam(void) {
+function DisplayPicturesOfCurrentTeam(): BOOLEAN {
   INT32 iCounter = 0;
   INT32 iTotalOnTeam = 0;
   char sTemp[100];
@@ -1713,7 +1713,7 @@ BOOLEAN DisplayPicturesOfCurrentTeam(void) {
   return TRUE;
 }
 
-void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iPortraitId = 0;
   INT32 iOldPortraitId;
 
@@ -1784,7 +1784,7 @@ void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void DisplayFaceOfDisplayedMerc() {
+function DisplayFaceOfDisplayedMerc(): void {
   // valid person?, display
 
   if (iCurrentPersonSelectedId != -1) {
@@ -1819,7 +1819,7 @@ void DisplayFaceOfDisplayedMerc() {
   return;
 }
 
-void DisplayInventoryForSelectedChar(void) {
+function DisplayInventoryForSelectedChar(): void {
   // display the inventory for this merc
   //	if( fShowInventory == FALSE )
   if (gubPersonnelInfoState != PRSNL_INV) {
@@ -1837,7 +1837,7 @@ void DisplayInventoryForSelectedChar(void) {
   return;
 }
 
-void RenderInventoryForCharacter(INT32 iId, INT32 iSlot) {
+function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   UINT8 ubCounter = 0;
   SOLDIERTYPE *pSoldier;
   INT16 sIndex;
@@ -1974,7 +1974,7 @@ void RenderInventoryForCharacter(INT32 iId, INT32 iSlot) {
   return;
 }
 
-void InventoryUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = 0;
   SOLDIERTYPE *pSoldier = MercPtrs[0];
   INT32 cnt = 0;
@@ -2011,7 +2011,7 @@ void InventoryUpButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void InventoryDownButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = 0;
   SOLDIERTYPE *pSoldier = MercPtrs[0];
   INT32 cnt = 0;
@@ -2049,7 +2049,7 @@ void InventoryDownButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 }
 
 // decide which buttons can and can't be accessed based on what the current item is
-void EnableDisableInventoryScrollButtons(void) {
+function EnableDisableInventoryScrollButtons(): void {
   //	if( fShowInventory == FALSE )
   if (gubPersonnelInfoState != PRSNL_INV) {
     return;
@@ -2072,7 +2072,7 @@ void EnableDisableInventoryScrollButtons(void) {
   return;
 }
 
-INT32 GetNumberOfInventoryItemsOnCurrentMerc(void) {
+function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
   INT32 iId = 0;
   UINT8 ubCounter = 0;
   UINT8 ubCount = 0;
@@ -2096,7 +2096,7 @@ INT32 GetNumberOfInventoryItemsOnCurrentMerc(void) {
   return ubCount;
 }
 
-void CreateDestroyPersonnelInventoryScrollButtons(void) {
+function CreateDestroyPersonnelInventoryScrollButtons(): void {
   static BOOLEAN fCreated = FALSE;
 
   //	if( ( fShowInventory == TRUE ) && ( fCreated == FALSE ) )
@@ -2130,7 +2130,7 @@ void CreateDestroyPersonnelInventoryScrollButtons(void) {
   }
 }
 
-void DisplayNumberOnCurrentTeam(void) {
+function DisplayNumberOnCurrentTeam(): void {
   // display number on team
   CHAR16 sString[32];
   INT16 sX = 0, sY = 0;
@@ -2156,7 +2156,7 @@ void DisplayNumberOnCurrentTeam(void) {
   return;
 }
 
-void DisplayNumberDeparted(void) {
+function DisplayNumberDeparted(): void {
   // display number departed from team
   CHAR16 sString[32];
   INT16 sX = 0, sY = 0;
@@ -2179,7 +2179,7 @@ void DisplayNumberDeparted(void) {
   return;
 }
 
-INT32 GetTotalDailyCostOfCurrentTeam(void) {
+function GetTotalDailyCostOfCurrentTeam(): INT32 {
   // will return the total daily cost of the current team
 
   SOLDIERTYPE *pSoldier;
@@ -2221,7 +2221,7 @@ INT32 GetTotalDailyCostOfCurrentTeam(void) {
   return iCostOfTeam;
 }
 
-INT32 GetLowestDailyCostOfCurrentTeam(void) {
+function GetLowestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
   SOLDIERTYPE *pSoldier;
@@ -2275,7 +2275,7 @@ INT32 GetLowestDailyCostOfCurrentTeam(void) {
   return iLowest;
 }
 
-INT32 GetHighestDailyCostOfCurrentTeam(void) {
+function GetHighestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
   SOLDIERTYPE *pSoldier;
@@ -2323,7 +2323,7 @@ INT32 GetHighestDailyCostOfCurrentTeam(void) {
   return iHighest;
 }
 
-void DisplayCostOfCurrentTeam(void) {
+function DisplayCostOfCurrentTeam(): void {
   // display number on team
   CHAR16 sString[32];
   INT16 sX, sY;
@@ -2372,7 +2372,7 @@ void DisplayCostOfCurrentTeam(void) {
   }
 }
 
-INT32 GetIdOfDepartedMercWithHighestStat(INT32 iStat) {
+function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   INT32 iId = -1;
@@ -2524,7 +2524,7 @@ INT32 GetIdOfDepartedMercWithHighestStat(INT32 iStat) {
   return iId;
 }
 
-INT32 GetIdOfDepartedMercWithLowestStat(INT32 iStat) {
+function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   INT32 iId = -1;
@@ -2675,7 +2675,7 @@ INT32 GetIdOfDepartedMercWithLowestStat(INT32 iStat) {
   return iId;
 }
 
-INT32 GetIdOfMercWithHighestStat(INT32 iStat) {
+function GetIdOfMercWithHighestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   INT32 iId = -1;
@@ -2780,7 +2780,7 @@ INT32 GetIdOfMercWithHighestStat(INT32 iStat) {
   return iId;
 }
 
-INT32 GetIdOfMercWithLowestStat(INT32 iStat) {
+function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   INT32 iId = -1;
@@ -2886,7 +2886,7 @@ INT32 GetIdOfMercWithLowestStat(INT32 iStat) {
   return iId;
 }
 
-INT32 GetAvgStatOfCurrentTeamStat(INT32 iStat) {
+function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   SOLDIERTYPE *pTeamSoldier, *pSoldier;
@@ -2982,7 +2982,7 @@ INT32 GetAvgStatOfCurrentTeamStat(INT32 iStat) {
   }
 }
 
-INT32 GetAvgStatOfPastTeamStat(INT32 iStat) {
+function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
   INT32 cnt = 0;
@@ -3119,7 +3119,7 @@ INT32 GetAvgStatOfPastTeamStat(INT32 iStat) {
   }
 }
 
-void DisplayAverageStatValuesForCurrentTeam(void) {
+function DisplayAverageStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
   INT16 sX, sY;
   INT32 iCounter = 0;
@@ -3175,7 +3175,7 @@ void DisplayAverageStatValuesForCurrentTeam(void) {
   return;
 }
 
-void DisplayLowestStatValuesForCurrentTeam(void) {
+function DisplayLowestStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
   INT16 sX, sY;
   INT32 iCounter = 0;
@@ -3347,7 +3347,7 @@ void DisplayLowestStatValuesForCurrentTeam(void) {
   return;
 }
 
-void DisplayHighestStatValuesForCurrentTeam(void) {
+function DisplayHighestStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
   INT16 sX, sY;
   INT32 iCounter = 0;
@@ -3516,7 +3516,7 @@ void DisplayHighestStatValuesForCurrentTeam(void) {
   return;
 }
 
-void DisplayPersonnelTeamStats(void) {
+function DisplayPersonnelTeamStats(): void {
   // displays the stat title for each row in the team stat list
   INT32 iCounter = 0;
 
@@ -3540,7 +3540,7 @@ void DisplayPersonnelTeamStats(void) {
   return;
 }
 
-INT32 GetNumberOfPastMercsOnPlayersTeam(void) {
+function GetNumberOfPastMercsOnPlayersTeam(): INT32 {
   INT32 iPastNumberOfMercs = 0;
   INT32 iCounter = 0;
   // will run through the alist of past mercs on the players team and return thier number
@@ -3557,7 +3557,7 @@ INT32 GetNumberOfPastMercsOnPlayersTeam(void) {
   return iPastNumberOfMercs;
 }
 
-void InitPastCharactersList(void) {
+function InitPastCharactersList(): void {
   // inits the past characters list
   memset(&LaptopSaveInfo.ubDeadCharactersList, -1, sizeof(LaptopSaveInfo.ubDeadCharactersList));
   memset(&LaptopSaveInfo.ubLeftCharactersList, -1, sizeof(LaptopSaveInfo.ubLeftCharactersList));
@@ -3566,7 +3566,7 @@ void InitPastCharactersList(void) {
   return;
 }
 
-INT32 GetNumberOfDeadOnPastTeam(void) {
+function GetNumberOfDeadOnPastTeam(): INT32 {
   INT32 iNumberDead = 0;
   INT32 iCounter = 0;
 
@@ -3579,7 +3579,7 @@ INT32 GetNumberOfDeadOnPastTeam(void) {
   return iNumberDead;
 }
 
-INT32 GetNumberOfLeftOnPastTeam(void) {
+function GetNumberOfLeftOnPastTeam(): INT32 {
   INT32 iNumberLeft = 0;
   INT32 iCounter = 0;
 
@@ -3591,7 +3591,7 @@ INT32 GetNumberOfLeftOnPastTeam(void) {
   return iNumberLeft;
 }
 
-INT32 GetNumberOfOtherOnPastTeam(void) {
+function GetNumberOfOtherOnPastTeam(): INT32 {
   INT32 iNumberOther = 0;
   INT32 iCounter = 0;
 
@@ -3603,7 +3603,7 @@ INT32 GetNumberOfOtherOnPastTeam(void) {
   return iNumberOther;
 }
 
-void DisplayStateOfPastTeamMembers(void) {
+function DisplayStateOfPastTeamMembers(): void {
   INT16 sX, sY;
   CHAR16 sString[32];
 
@@ -3643,7 +3643,7 @@ void DisplayStateOfPastTeamMembers(void) {
   return;
 }
 
-void CreateDestroyCurrentDepartedMouseRegions(void) {
+function CreateDestroyCurrentDepartedMouseRegions(): void {
   static BOOLEAN fCreated = FALSE;
 
   // will arbitrate the creation/deletion of mouse regions for current/past team toggles
@@ -3670,7 +3670,7 @@ void CreateDestroyCurrentDepartedMouseRegions(void) {
   return;
 }
 
-void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function PersonnelCurrentTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fCurrentTeamMode = TRUE;
 
@@ -3690,7 +3690,7 @@ void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fCurrentTeamMode = FALSE;
 
@@ -3710,7 +3710,7 @@ void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void CreateDestroyButtonsForDepartedTeamList(void) {
+function CreateDestroyButtonsForDepartedTeamList(): void {
   // creates/ destroys the buttons for cdeparted team list
   static BOOLEAN fCreated = FALSE;
 
@@ -3739,7 +3739,7 @@ void CreateDestroyButtonsForDepartedTeamList(void) {
   }
 }
 
-void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason) {
+function DepartedUpCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -3759,7 +3759,7 @@ void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason) {
+function DepartedDownCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -3778,7 +3778,7 @@ void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DisplayPastMercsPortraits(void) {
+function DisplayPastMercsPortraits(): void {
   // display past mercs portraits, starting at giCurrentUpperLeftPortraitNumber and going up 20 mercs
   // start at dead mercs, then fired, then other
 
@@ -3881,7 +3881,7 @@ void DisplayPastMercsPortraits(void) {
   return;
 }
 
-INT32 GetIdOfPastMercInSlot(INT32 iSlot) {
+function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
   INT32 iCounter = -1;
   INT32 iCounterA = 0;
   // returns ID of Merc in this slot
@@ -3926,7 +3926,7 @@ INT32 GetIdOfPastMercInSlot(INT32 iSlot) {
   return LaptopSaveInfo.ubOtherCharactersList[iCounterA - 1];
 }
 
-BOOLEAN DisplayPortraitOfPastMerc(INT32 iId, INT32 iCounter, BOOLEAN fDead, BOOLEAN fFired, BOOLEAN fOther) {
+function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
   char sTemp[100];
   HVOBJECT hFaceHandle;
   VOBJECT_DESC VObjectDesc;
@@ -3980,7 +3980,7 @@ BOOLEAN DisplayPortraitOfPastMerc(INT32 iId, INT32 iCounter, BOOLEAN fDead, BOOL
   return TRUE;
 }
 
-void DisplayDepartedCharStats(INT32 iId, INT32 iSlot, INT32 iState) {
+function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void {
   INT32 iCounter = 0;
   wchar_t sString[50];
   INT16 sX, sY;
@@ -4134,7 +4134,7 @@ void DisplayDepartedCharStats(INT32 iId, INT32 iSlot, INT32 iState) {
   return;
 }
 
-void EnableDisableDeparturesButtons(void) {
+function EnableDisableDeparturesButtons(): void {
   // will enable or disable departures buttons based on upperleft picutre index value
   if ((fCurrentTeamMode == TRUE) || (fNewMailFlag == TRUE)) {
     return;
@@ -4156,7 +4156,7 @@ void EnableDisableDeparturesButtons(void) {
   return;
 }
 
-void DisplayDepartedCharName(INT32 iId, INT32 iSlot, INT32 iState) {
+function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void {
   // get merc's nickName, assignment, and sector location info
   INT16 sX, sY;
   CHAR16 sString[32];
@@ -4228,7 +4228,7 @@ void DisplayDepartedCharName(INT32 iId, INT32 iSlot, INT32 iState) {
   return;
 }
 
-INT32 GetTheStateOfDepartedMerc(INT32 iId) {
+function GetTheStateOfDepartedMerc(iId: INT32): INT32 {
   INT32 iCounter = 0;
   // will runt hrough each list until merc is found, if not a -1 is returned
 
@@ -4253,7 +4253,7 @@ INT32 GetTheStateOfDepartedMerc(INT32 iId) {
   return -1;
 }
 
-void DisplayPersonnelTextOnTitleBar(void) {
+function DisplayPersonnelTextOnTitleBar(): void {
   // draw email screen title text
 
   // font stuff
@@ -4267,7 +4267,7 @@ void DisplayPersonnelTextOnTitleBar(void) {
   // reset the shadow
 }
 
-BOOLEAN DisplayHighLightBox(void) {
+function DisplayHighLightBox(): BOOLEAN {
   // will display highlight box around selected merc
   VOBJECT_DESC VObjectDesc;
   UINT32 uiBox = 0;
@@ -4297,7 +4297,7 @@ BOOLEAN DisplayHighLightBox(void) {
 }
 
 // add to dead list
-void AddCharacterToDeadList(SOLDIERTYPE *pSoldier) {
+function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4316,7 +4316,7 @@ void AddCharacterToDeadList(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void AddCharacterToFiredList(SOLDIERTYPE *pSoldier) {
+function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4335,7 +4335,7 @@ void AddCharacterToFiredList(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void AddCharacterToOtherList(SOLDIERTYPE *pSoldier) {
+function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4357,7 +4357,7 @@ void AddCharacterToOtherList(SOLDIERTYPE *pSoldier) {
 // If you have hired a merc before, then the they left for whatever reason, and now you are hiring them again,
 // we must get rid of them from the departed section in the personnel screen.  ( wouldnt make sense for them
 // to be on your team list, and departed list )
-BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile) {
+function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): BOOLEAN {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4387,7 +4387,7 @@ BOOLEAN RemoveNewlyHiredMercFromPersonnelDepartedList(UINT8 ubProfile) {
 }
 
 // grab the id of the first merc being displayed
-INT32 GetIdOfFirstDisplayedMerc() {
+function GetIdOfFirstDisplayedMerc(): INT32 {
   SOLDIERTYPE *pSoldier;
   INT32 cnt = 0, iCounter = 0;
 
@@ -4409,7 +4409,7 @@ INT32 GetIdOfFirstDisplayedMerc() {
   }
 }
 
-INT32 GetIdOfThisSlot(INT32 iSlot) {
+function GetIdOfThisSlot(iSlot: INT32): INT32 {
   SOLDIERTYPE *pSoldier;
   INT32 cnt = 0;
   INT32 iCounter = 0;
@@ -4439,7 +4439,7 @@ INT32 GetIdOfThisSlot(INT32 iSlot) {
   return 0;
 }
 
-BOOLEAN RenderAtmPanel(void) {
+function RenderAtmPanel(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT32 uiBox = 0;
   HVOBJECT hHandle;
@@ -4499,7 +4499,7 @@ BOOLEAN RenderAtmPanel(void) {
   return TRUE;
 }
 
-void CreateDestroyStartATMButton(void) {
+function CreateDestroyStartATMButton(): void {
   static BOOLEAN fCreated = FALSE;
   // create/destroy atm start button as needed
 
@@ -4567,7 +4567,7 @@ void CreateDestroyStartATMButton(void) {
   }
 }
 
-void FindPositionOfPersInvSlider(void) {
+function FindPositionOfPersInvSlider(): void {
   INT32 iValue = 0;
   INT32 iNumberOfItems = 0;
   INT16 sSizeOfEachSubRegion = 0;
@@ -4591,7 +4591,7 @@ void FindPositionOfPersInvSlider(void) {
   guiSliderPosition = uiCurrentInventoryIndex * sSizeOfEachSubRegion;
 }
 
-void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iValue = 0;
   INT32 iNumberOfItems = 0;
   POINT MousePos;
@@ -4645,7 +4645,7 @@ void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void RenderSliderBarForPersonnelInventory(void) {
+function RenderSliderBarForPersonnelInventory(): void {
   HVOBJECT hHandle;
 
   // render slider bar for personnel
@@ -4653,7 +4653,7 @@ void RenderSliderBarForPersonnelInventory(void) {
   BltVideoObject(FRAME_BUFFER, hHandle, 5, (INT16)(X_OF_PERSONNEL_SCROLL_REGION), (INT16)(guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void CreateDestroyATMButton(void) {
+function CreateDestroyATMButton(): void {
   /*
   static BOOLEAN fCreated = FALSE;
   CHAR16 sString[ 32 ];
@@ -4758,7 +4758,7 @@ void CreateDestroyATMButton(void) {
   */
 }
 
-void ATMStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function ATMStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -4778,7 +4778,7 @@ void ATMStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function PersonnelINVStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -4792,7 +4792,7 @@ void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function PersonnelStatStartButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -4806,7 +4806,7 @@ void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function EmployementInfoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -4819,7 +4819,7 @@ void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ATMOther2ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = 0;
   SOLDIERTYPE *pSoldier = MercPtrs[0];
   INT32 cnt = 0;
@@ -4851,7 +4851,7 @@ void ATMOther2ButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ATMOtherButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = 0;
   SOLDIERTYPE *pSoldier = MercPtrs[0];
   INT32 cnt = 0;
@@ -4969,7 +4969,7 @@ void ATMOtherButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ATMNumberButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = 0;
   INT32 iCounter = 0;
   CHAR16 sZero[2] = L"0";
@@ -5002,7 +5002,7 @@ void ATMNumberButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DisplayATMAmount(void) {
+function DisplayATMAmount(): void {
   INT16 sX = 0, sY = 0;
   CHAR16 sTempString[32];
   CHAR16 sZero[2] = L"0";
@@ -5041,7 +5041,7 @@ void DisplayATMAmount(void) {
   return;
 }
 
-void HandleStateOfATMButtons(void) {
+function HandleStateOfATMButtons(): void {
   INT32 iCounter = 0;
 
   // disable buttons based on state
@@ -5066,7 +5066,7 @@ void HandleStateOfATMButtons(void) {
   }
 }
 
-INT32 GetFundsOnMerc(SOLDIERTYPE *pSoldier) {
+function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iCurrentAmount = 0;
   INT32 iCurrentPocket = 0;
   // run through mercs pockets, if any money in them, add to total
@@ -5086,7 +5086,7 @@ INT32 GetFundsOnMerc(SOLDIERTYPE *pSoldier) {
   return iCurrentAmount;
 }
 
-BOOLEAN TransferFundsFromMercToBank(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance) {
+function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
   INT32 iCurrentPocket = 0;
   INT32 iAmountLeftToTake = iCurrentBalance;
   OBJECTTYPE ObjectToRemove;
@@ -5125,7 +5125,7 @@ BOOLEAN TransferFundsFromMercToBank(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance
   }
 }
 
-BOOLEAN TransferFundsFromBankToMerc(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance) {
+function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
   OBJECTTYPE pMoneyObject;
 
   // move this amount of money from the grunt to the bank
@@ -5165,7 +5165,7 @@ BOOLEAN TransferFundsFromBankToMerc(SOLDIERTYPE *pSoldier, INT32 iCurrentBalance
   return TRUE;
 }
 
-void DisplayATMStrings(void) {
+function DisplayATMStrings(): void {
   // display strings for ATM
 
   switch (fATMFlags) {
@@ -5201,7 +5201,7 @@ void DisplayATMStrings(void) {
   }
 }
 
-void UpDateStateOfStartButton(void) {
+function UpDateStateOfStartButton(): void {
   INT32 iId = 0;
 
   // start button being shown?
@@ -5270,7 +5270,7 @@ void UpDateStateOfStartButton(void) {
   }
 }
 
-void DisplayAmountOnCurrentMerc(void) {
+function DisplayAmountOnCurrentMerc(): void {
   // will display the amount that the merc is carrying on him or herself
   INT32 iId;
   SOLDIERTYPE *pSoldier = NULL;
@@ -5311,7 +5311,7 @@ void DisplayAmountOnCurrentMerc(void) {
   return;
 }
 
-void HandlePersonnelKeyboard(void) {
+function HandlePersonnelKeyboard(): void {
   INT32 iCounter = 0;
   INT32 iValue = 0;
   CHAR16 sZero[2] = L"0";
@@ -5343,7 +5343,7 @@ void HandlePersonnelKeyboard(void) {
   }
 }
 
-void RenderRectangleForPersonnelTransactionAmount(void) {
+function RenderRectangleForPersonnelTransactionAmount(): void {
   INT32 iLength = 0;
   INT32 iHeight = GetFontHeight(ATM_FONT);
   UINT32 uiDestPitchBYTES;
@@ -5379,7 +5379,7 @@ void RenderRectangleForPersonnelTransactionAmount(void) {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void HandleTimedAtmModes(void) {
+function HandleTimedAtmModes(): void {
   static BOOLEAN fOldAtmMode = 0;
   static UINT32 uiBaseTime = 0;
 
@@ -5406,7 +5406,7 @@ void HandleTimedAtmModes(void) {
   }
 }
 
-BOOLEAN IsPastMercDead(INT32 iId) {
+function IsPastMercDead(iId: INT32): BOOLEAN {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_DEAD) {
     return TRUE;
   } else {
@@ -5414,7 +5414,7 @@ BOOLEAN IsPastMercDead(INT32 iId) {
   }
 }
 
-BOOLEAN IsPastMercFired(INT32 iId) {
+function IsPastMercFired(iId: INT32): BOOLEAN {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_FIRED) {
     return TRUE;
   } else {
@@ -5422,7 +5422,7 @@ BOOLEAN IsPastMercFired(INT32 iId) {
   }
 }
 
-BOOLEAN IsPastMercOther(INT32 iId) {
+function IsPastMercOther(iId: INT32): BOOLEAN {
   if (GetTheStateOfDepartedMerc(GetIdOfPastMercInSlot(iId)) == DEPARTED_OTHER) {
     return TRUE;
   } else {
@@ -5430,7 +5430,7 @@ BOOLEAN IsPastMercOther(INT32 iId) {
   }
 }
 
-void DisplayEmploymentinformation(INT32 iId, INT32 iSlot) {
+function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
   INT32 iCounter = 0;
   wchar_t sString[50];
   wchar_t sStringA[50];
@@ -5649,7 +5649,7 @@ void DisplayEmploymentinformation(INT32 iId, INT32 iSlot) {
 // MERC merc: Returns the amount of time the merc has worked
 // IMP merc:	Returns the amount of time the merc has worked
 // else:			returns -1
-INT32 CalcTimeLeftOnMercContract(SOLDIERTYPE *pSoldier) {
+function CalcTimeLeftOnMercContract(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iTimeLeftOnContract = -1;
 
   if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {

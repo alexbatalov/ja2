@@ -13,7 +13,7 @@ UINT32 gDoCliffs = NO_CLIFFS;
 //
 //	Performs ersing operation when the DEL key is hit in the editor
 //
-void QuickEraseMapTile(UINT32 iMapIndex) {
+function QuickEraseMapTile(iMapIndex: UINT32): void {
   if (iMapIndex >= 0x8000)
     return;
   AddToUndoList(iMapIndex);
@@ -26,7 +26,7 @@ void QuickEraseMapTile(UINT32 iMapIndex) {
 //
 //	Common delete function for both QuickEraseMapTile and EraseMapTile
 //
-void DeleteStuffFromMapTile(UINT32 iMapIndex) {
+function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
   // UINT16		usUseIndex;
   // UINT16		usType;
   // UINT32		uiCheckType;
@@ -52,7 +52,7 @@ void DeleteStuffFromMapTile(UINT32 iMapIndex) {
 //
 //	Generic tile erasing function. Erases things from the world depending on the current drawing mode
 //
-void EraseMapTile(UINT32 iMapIndex) {
+function EraseMapTile(iMapIndex: UINT32): void {
   INT32 iEraseMode;
   UINT32 uiCheckType;
   if (iMapIndex >= 0x8000)
@@ -171,7 +171,7 @@ void EraseMapTile(UINT32 iMapIndex) {
 //	Place some "debris" on the map at the current mouse coordinates. This function is called repeatedly if
 //	the current brush size is larger than 1 tile.
 //
-void PasteDebris(UINT32 iMapIndex) {
+function PasteDebris(iMapIndex: UINT32): void {
   UINT16 usUseIndex;
   UINT16 usUseObjIndex;
   INT32 iRandSelIndex;
@@ -200,38 +200,38 @@ void PasteDebris(UINT32 iMapIndex) {
   }
 }
 
-void PasteSingleWall(UINT32 iMapIndex) {
+function PasteSingleWall(iMapIndex: UINT32): void {
   pSelList = SelSingleWall;
   pNumSelList = &iNumWallsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleDoor(UINT32 iMapIndex) {
+function PasteSingleDoor(iMapIndex: UINT32): void {
   pSelList = SelSingleDoor;
   pNumSelList = &iNumDoorsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleWindow(UINT32 iMapIndex) {
+function PasteSingleWindow(iMapIndex: UINT32): void {
   pSelList = SelSingleWindow;
   pNumSelList = &iNumWindowsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleRoof(UINT32 iMapIndex) {
+function PasteSingleRoof(iMapIndex: UINT32): void {
   pSelList = SelSingleRoof;
   pNumSelList = &iNumRoofsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteRoomNumber(UINT32 iMapIndex, UINT8 ubRoomNumber) {
+function PasteRoomNumber(iMapIndex: UINT32, ubRoomNumber: UINT8): void {
   if (gubWorldRoomInfo[iMapIndex] != ubRoomNumber) {
     AddToUndoList(iMapIndex);
     gubWorldRoomInfo[iMapIndex] = ubRoomNumber;
   }
 }
 
-void PasteSingleBrokenWall(UINT32 iMapIndex) {
+function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   UINT16 usIndex, usObjIndex, usTileIndex, usWallOrientation;
 
   pSelList = SelSingleBrokenWall;
@@ -249,25 +249,25 @@ void PasteSingleBrokenWall(UINT32 iMapIndex) {
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleDecoration(UINT32 iMapIndex) {
+function PasteSingleDecoration(iMapIndex: UINT32): void {
   pSelList = SelSingleDecor;
   pNumSelList = &iNumDecorSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleDecal(UINT32 iMapIndex) {
+function PasteSingleDecal(iMapIndex: UINT32): void {
   pSelList = SelSingleDecal;
   pNumSelList = &iNumDecalsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleFloor(UINT32 iMapIndex) {
+function PasteSingleFloor(iMapIndex: UINT32): void {
   pSelList = SelSingleFloor;
   pNumSelList = &iNumFloorsSelected;
   PasteSingleWallCommon(iMapIndex);
 }
 
-void PasteSingleToilet(UINT32 iMapIndex) {
+function PasteSingleToilet(iMapIndex: UINT32): void {
   pSelList = SelSingleToilet;
   pNumSelList = &iNumToiletsSelected;
   PasteSingleWallCommon(iMapIndex);
@@ -279,7 +279,7 @@ void PasteSingleToilet(UINT32 iMapIndex) {
 //	Common paste routine for PasteSingleWall, PasteSingleDoor, PasteSingleDecoration, and
 //	PasteSingleDecor (above).
 //
-void PasteSingleWallCommon(UINT32 iMapIndex) {
+function PasteSingleWallCommon(iMapIndex: UINT32): void {
   UINT16 usUseIndex;
   UINT16 usUseObjIndex;
   UINT16 usTempIndex;
@@ -357,7 +357,7 @@ void PasteSingleWallCommon(UINT32 iMapIndex) {
 //
 //	Returns a randomly picked object index given the current selection list, and the type or types of objects we want
 //	from that list. If no such objects are in the list, we return 0xffff (-1).
-UINT16 GetRandomIndexByRange(UINT16 usRangeStart, UINT16 usRangeEnd) {
+function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
   UINT16 usPickList[50];
   UINT16 usNumInPickList;
   UINT16 usWhich;
@@ -374,7 +374,7 @@ UINT16 GetRandomIndexByRange(UINT16 usRangeStart, UINT16 usRangeEnd) {
   return (usNumInPickList) ? usPickList[rand() % usNumInPickList] : 0xffff;
 }
 
-UINT16 GetRandomTypeByRange(UINT16 usRangeStart, UINT16 usRangeEnd) {
+function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
   UINT16 usPickList[50];
   UINT16 usNumInPickList;
   UINT16 i;
@@ -398,7 +398,7 @@ UINT16 GetRandomTypeByRange(UINT16 usRangeStart, UINT16 usRangeEnd) {
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-void PasteStructure(UINT32 iMapIndex) {
+function PasteStructure(iMapIndex: UINT32): void {
   pSelList = SelOStructs;
   pNumSelList = &iNumOStructsSelected;
 
@@ -410,7 +410,7 @@ void PasteStructure(UINT32 iMapIndex) {
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-void PasteStructure1(UINT32 iMapIndex) {
+function PasteStructure1(iMapIndex: UINT32): void {
   pSelList = SelOStructs1;
   pNumSelList = &iNumOStructs1Selected;
 
@@ -422,7 +422,7 @@ void PasteStructure1(UINT32 iMapIndex) {
 //
 //	Puts a structure (trees, trucks, etc.) into the world
 //
-void PasteStructure2(UINT32 iMapIndex) {
+function PasteStructure2(iMapIndex: UINT32): void {
   pSelList = SelOStructs2;
   pNumSelList = &iNumOStructs2Selected;
 
@@ -435,7 +435,7 @@ void PasteStructure2(UINT32 iMapIndex) {
 //	This is the main (common) structure pasting function. The above three wrappers are only required because they
 //	each use different selection lists. Other than that, they are COMPLETELY identical.
 //
-void PasteStructureCommon(UINT32 iMapIndex) {
+function PasteStructureCommon(iMapIndex: UINT32): void {
   BOOLEAN fDoPaste = FALSE;
   UINT32 fHeadType;
   UINT16 usUseIndex;
@@ -488,7 +488,7 @@ void PasteStructureCommon(UINT32 iMapIndex) {
 //
 //	Places a river bank or cliff into the world
 //
-void PasteBanks(UINT32 iMapIndex, UINT16 usStructIndex, BOOLEAN fReplace) {
+function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN): void {
   BOOLEAN fDoPaste = FALSE;
   UINT16 usUseIndex;
   UINT16 usUseObjIndex;
@@ -534,7 +534,7 @@ void PasteBanks(UINT32 iMapIndex, UINT16 usStructIndex, BOOLEAN fReplace) {
   }
 }
 
-void PasteRoads(UINT32 iMapIndex) {
+function PasteRoads(iMapIndex: UINT32): void {
   UINT16 usUseIndex;
 
   pSelList = SelRoads;
@@ -551,7 +551,7 @@ void PasteRoads(UINT32 iMapIndex) {
 //	Puts a ground texture in the world. Ground textures are then "smoothed" in order to blend the edges with one
 //	another. The current drawing brush also affects this function.
 //
-void PasteTexture(UINT32 iMapIndex) {
+function PasteTexture(iMapIndex: UINT32): void {
   ChooseWeightedTerrainTile(); // Kris
   PasteTextureCommon(iMapIndex);
 }
@@ -563,7 +563,7 @@ void PasteTexture(UINT32 iMapIndex) {
 //	one tile, then the above function will call this one and indicate that they should all be placed into the undo
 //	stack as the same undo command.
 //
-void PasteTextureCommon(UINT32 iMapIndex) {
+function PasteTextureCommon(iMapIndex: UINT32): void {
   UINT8 ubLastHighLevel;
   UINT16 usTileIndex;
   // UINT16					Dummy;
@@ -609,7 +609,7 @@ void PasteTextureCommon(UINT32 iMapIndex) {
 //	Some ground textures should be placed "above" others. That is, grass needs to be placed "above" sand etc.
 //	This function performs the appropriate actions.
 //
-void PasteHigherTexture(UINT32 iMapIndex, UINT32 fNewType) {
+function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   UINT16 NewTile;
   UINT8 ubLastHighLevel;
   UINT32 *puiDeletedTypes = NULL;
@@ -663,7 +663,7 @@ void PasteHigherTexture(UINT32 iMapIndex, UINT32 fNewType) {
 //
 //	Like above function except it performs it's operation on a redial area.
 //
-BOOLEAN PasteHigherTextureFromRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubRadius) {
+function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8): BOOLEAN {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -708,7 +708,7 @@ BOOLEAN PasteHigherTextureFromRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ub
 //---------------------------------------------------------------------------------------------------------------
 //	PasteExistingTexture
 //
-BOOLEAN PasteExistingTexture(UINT32 iMapIndex, UINT16 usIndex) {
+function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   UINT32 uiNewType;
   UINT16 usNewIndex;
   // UINT16					Dummy;
@@ -753,7 +753,7 @@ BOOLEAN PasteExistingTexture(UINT32 iMapIndex, UINT16 usIndex) {
 //
 //	As above, but on a radial area
 //
-BOOLEAN PasteExistingTextureFromRadius(INT32 iMapIndex, UINT16 usIndex, UINT8 ubRadius) {
+function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRadius: UINT8): BOOLEAN {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -790,7 +790,7 @@ BOOLEAN PasteExistingTextureFromRadius(INT32 iMapIndex, UINT16 usIndex, UINT8 ub
 //
 //	Puts a land index "under" an existing ground texture. Affects a radial area.
 //
-BOOLEAN SetLowerLandIndexWithRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubRadius, BOOLEAN fReplace) {
+function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
   UINT16 usTempIndex;
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
@@ -873,7 +873,7 @@ BOOLEAN SetLowerLandIndexWithRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubR
 }
 
 // ATE FIXES
-void PasteTextureEx(INT16 sGridNo, UINT16 usType) {
+function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
   UINT16 usIndex;
   UINT8 ubTypeLevel;
   UINT16 NewTile;
@@ -894,7 +894,7 @@ void PasteTextureEx(INT16 sGridNo, UINT16 usType) {
   }
 }
 
-void PasteTextureFromRadiusEx(INT16 sGridNo, UINT16 usType, UINT8 ubRadius) {
+function PasteTextureFromRadiusEx(sGridNo: INT16, usType: UINT16, ubRadius: UINT8): void {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -931,7 +931,7 @@ const LAND_DROP_2 = FIRSTCLIFF11;
 const LAND_DROP_3 = FIRSTCLIFF12;
 const LAND_DROP_4 = FIRSTCLIFF15;
 const LAND_DROP_5 = FIRSTCLIFF8;
-void RaiseWorldLand() {
+function RaiseWorldLand(): void {
   INT32 cnt;
   UINT32 sTempGridNo;
   LEVELNODE *pStruct;
@@ -1130,7 +1130,7 @@ void RaiseWorldLand() {
   //*/
 }
 
-void EliminateObjectLayerRedundancy() {
+function EliminateObjectLayerRedundancy(): void {
   INT32 i, numRoads, numAnothers;
   UINT32 uiType;
   LEVELNODE *pObject, *pValidRoad, *pValidAnother;

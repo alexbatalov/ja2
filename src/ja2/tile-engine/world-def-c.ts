@@ -34,7 +34,7 @@ extern UINT32 guiMemTotal;
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
 INT8 gbNewTileSurfaceLoaded[NUMBEROFTILETYPES];
 
-void SetAllNewTileSurfacesLoaded(BOOLEAN fNew) {
+function SetAllNewTileSurfacesLoaded(fNew: BOOLEAN): void {
   memset(gbNewTileSurfaceLoaded, fNew, sizeof(gbNewTileSurfaceLoaded));
 }
 
@@ -54,7 +54,7 @@ INT16 gsRecompileAreaBottom = 0;
 
 // TIMER TESTING STUFF
 
-BOOLEAN DoorAtGridNo(UINT32 iMapIndex) {
+function DoorAtGridNo(iMapIndex: UINT32): BOOLEAN {
   STRUCTURE *pStruct;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
@@ -65,7 +65,7 @@ BOOLEAN DoorAtGridNo(UINT32 iMapIndex) {
   return FALSE;
 }
 
-BOOLEAN OpenableAtGridNo(UINT32 iMapIndex) {
+function OpenableAtGridNo(iMapIndex: UINT32): BOOLEAN {
   STRUCTURE *pStruct;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
@@ -76,7 +76,7 @@ BOOLEAN OpenableAtGridNo(UINT32 iMapIndex) {
   return FALSE;
 }
 
-BOOLEAN FloorAtGridNo(UINT32 iMapIndex) {
+function FloorAtGridNo(iMapIndex: UINT32): BOOLEAN {
   LEVELNODE *pLand;
   UINT32 uiTileType;
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
@@ -93,7 +93,7 @@ BOOLEAN FloorAtGridNo(UINT32 iMapIndex) {
   return FALSE;
 }
 
-BOOLEAN GridNoIndoors(UINT32 iMapIndex) {
+function GridNoIndoors(iMapIndex: UINT32): BOOLEAN {
   if (gfBasement || gfCaves)
     return TRUE;
   if (FloorAtGridNo(iMapIndex))
@@ -101,7 +101,7 @@ BOOLEAN GridNoIndoors(UINT32 iMapIndex) {
   return FALSE;
 }
 
-void DOIT() {
+function DOIT(): void {
   //	LEVELNODE *			pLand;
   // LEVELNODE *			pObject;
   LEVELNODE *pStruct, *pNewStruct;
@@ -126,7 +126,7 @@ void DOIT() {
   }
 }
 
-BOOLEAN InitializeWorld() {
+function InitializeWorld(): BOOLEAN {
   gTileDatabaseSize = 0;
   gSurfaceMemUsage = 0;
   giCurrentTilesetID = -1;
@@ -169,7 +169,7 @@ BOOLEAN InitializeWorld() {
   return TRUE;
 }
 
-void DeinitializeWorld() {
+function DeinitializeWorld(): void {
   TrashWorld();
 
   if (gpWorldLevelData != NULL) {
@@ -189,11 +189,11 @@ void DeinitializeWorld() {
   ShutdownRoomDatabase();
 }
 
-BOOLEAN ReloadTilesetSlot(INT32 iSlot) {
+function ReloadTilesetSlot(iSlot: INT32): BOOLEAN {
   return TRUE;
 }
 
-BOOLEAN LoadTileSurfaces(char ppTileSurfaceFilenames[][32], UINT8 ubTilesetID) {
+function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): BOOLEAN {
   SGPFILENAME cTemp;
   UINT32 uiLoop;
 
@@ -293,7 +293,7 @@ BOOLEAN LoadTileSurfaces(char ppTileSurfaceFilenames[][32], UINT8 ubTilesetID) {
   return TRUE;
 }
 
-BOOLEAN AddTileSurface(char *cFilename, UINT32 ubType, UINT8 ubTilesetID, BOOLEAN fGetFromRoot) {
+function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: BOOLEAN): BOOLEAN {
   // Add tile surface
   PTILE_IMAGERY TileSurf;
   CHAR8 cFileBPP[128];
@@ -343,7 +343,7 @@ BOOLEAN AddTileSurface(char *cFilename, UINT32 ubType, UINT8 ubTilesetID, BOOLEA
 
 extern BOOLEAN gfLoadShadeTablesFromTextFile;
 
-void BuildTileShadeTables() {
+function BuildTileShadeTables(): void {
   HWFILE hfile;
   STRING512 DataDir;
   STRING512 ShadeTableDir;
@@ -412,7 +412,7 @@ void BuildTileShadeTables() {
   ubLastBlue = gpLightColors[0].peBlue;
 }
 
-void DestroyTileShadeTables() {
+function DestroyTileShadeTables(): void {
   UINT32 uiLoop;
 
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
@@ -425,7 +425,7 @@ void DestroyTileShadeTables() {
   }
 }
 
-void DestroyTileSurfaces() {
+function DestroyTileSurfaces(): void {
   UINT32 uiLoop;
 
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
@@ -436,7 +436,7 @@ void DestroyTileSurfaces() {
   }
 }
 
-void CompileWorldTerrainIDs(void) {
+function CompileWorldTerrainIDs(): void {
   INT16 sGridNo;
   INT16 sTempGridNo;
   LEVELNODE *pNode;
@@ -476,7 +476,7 @@ void CompileWorldTerrainIDs(void) {
   }
 }
 
-void CompileTileMovementCosts(UINT16 usGridNo) {
+function CompileTileMovementCosts(usGridNo: UINT16): void {
   UINT8 ubTerrainID;
   TILE_ELEMENT TileElem;
   LEVELNODE *pLand;
@@ -1075,7 +1075,7 @@ void CompileTileMovementCosts(UINT16 usGridNo) {
 
 const LOCAL_RADIUS = 4;
 
-void RecompileLocalMovementCosts(INT16 sCentreGridNo) {
+function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
   INT16 usGridNo;
   INT16 sGridX, sGridY;
   INT16 sCentreGridX, sCentreGridY;
@@ -1108,7 +1108,7 @@ void RecompileLocalMovementCosts(INT16 sCentreGridNo) {
   }
 }
 
-void RecompileLocalMovementCostsFromRadius(INT16 sCentreGridNo, INT8 bRadius) {
+function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: INT8): void {
   INT16 usGridNo;
   INT16 sGridX, sGridY;
   INT16 sCentreGridX, sCentreGridY;
@@ -1150,7 +1150,7 @@ void RecompileLocalMovementCostsFromRadius(INT16 sCentreGridNo, INT8 bRadius) {
   }
 }
 
-void AddTileToRecompileArea(INT16 sGridNo) {
+function AddTileToRecompileArea(sGridNo: INT16): void {
   INT16 sCheckGridNo;
   INT16 sCheckX;
   INT16 sCheckY;
@@ -1185,7 +1185,7 @@ void AddTileToRecompileArea(INT16 sGridNo) {
   }
 }
 
-void RecompileLocalMovementCostsInAreaWithFlags(void) {
+function RecompileLocalMovementCostsInAreaWithFlags(): void {
   INT16 usGridNo;
   INT16 sGridX, sGridY;
   INT8 bDirLoop;
@@ -1215,7 +1215,7 @@ void RecompileLocalMovementCostsInAreaWithFlags(void) {
   }
 }
 
-void RecompileLocalMovementCostsForWall(INT16 sGridNo, UINT8 ubOrientation) {
+function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8): void {
   INT8 bDirLoop;
   INT16 sUp, sDown, sLeft, sRight;
   INT16 sX, sY, sTempGridNo;
@@ -1253,7 +1253,7 @@ void RecompileLocalMovementCostsForWall(INT16 sGridNo, UINT8 ubOrientation) {
 }
 
 // GLOBAL WORLD MANIPULATION FUNCTIONS
-void CompileWorldMovementCosts() {
+function CompileWorldMovementCosts(): void {
   UINT16 usGridNo;
 
   memset(gubWorldMovementCosts, 0, sizeof(gubWorldMovementCosts));
@@ -1265,7 +1265,7 @@ void CompileWorldMovementCosts() {
 }
 
 // SAVING CODE
-BOOLEAN SaveWorld(UINT8 *puiFilename) {
+function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   INT32 cnt;
   UINT32 uiSoldierSize;
   UINT32 uiType;
@@ -1695,7 +1695,7 @@ INT8 bDirectionsForShadowSearch[NUM_DIR_SEARCHES] = {
   EAST,
 };
 
-void OptimizeMapForShadows() {
+function OptimizeMapForShadows(): void {
   INT32 cnt, dir;
   INT16 sNewGridNo;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -1719,7 +1719,7 @@ void OptimizeMapForShadows() {
   }
 }
 
-void SetBlueFlagFlags(void) {
+function SetBlueFlagFlags(): void {
   INT32 cnt;
   LEVELNODE *pNode;
 
@@ -1735,7 +1735,7 @@ void SetBlueFlagFlags(void) {
   }
 }
 
-void InitLoadedWorld() {
+function InitLoadedWorld(): void {
   // if the current sector is not valid, dont init the world
   if (gWorldSectorX == 0 || gWorldSectorY == 0) {
     return;
@@ -1770,7 +1770,7 @@ void InitLoadedWorld() {
 extern double MasterStart, MasterEnd;
 extern BOOLEAN gfUpdatingNow;
 
-BOOLEAN EvaluateWorld(UINT8 *pSector, UINT8 ubLevel) {
+function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   FLOAT dMajorMapVersion;
   SUMMARYFILE *pSummary;
   HWFILE hfile;
@@ -2146,7 +2146,7 @@ BOOLEAN EvaluateWorld(UINT8 *pSector, UINT8 ubLevel) {
   return TRUE;
 }
 
-BOOLEAN LoadWorld(UINT8 *puiFilename) {
+function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
   HWFILE hfile;
   FLOAT dMajorMapVersion;
   UINT32 uiFlags;
@@ -2626,7 +2626,7 @@ BOOLEAN LoadWorld(UINT8 *puiFilename) {
 //	Deletes everything then re-creates the world with simple ground tiles
 //
 //****************************************************************************************
-BOOLEAN NewWorld(void) {
+function NewWorld(): BOOLEAN {
   UINT16 NewIndex;
   INT32 cnt;
 
@@ -2650,7 +2650,7 @@ BOOLEAN NewWorld(void) {
   return TRUE;
 }
 
-void TrashWorld(void) {
+function TrashWorld(): void {
   MAP_ELEMENT *pMapTile;
   LEVELNODE *pLandNode;
   LEVELNODE *pObjectNode;
@@ -2799,7 +2799,7 @@ void TrashWorld(void) {
   sprintf(gubFilename, "none");
 }
 
-void TrashMapTile(INT16 MapTile) {
+function TrashMapTile(MapTile: INT16): void {
   MAP_ELEMENT *pMapTile;
   LEVELNODE *pLandNode;
   LEVELNODE *pObjectNode;
@@ -2883,7 +2883,7 @@ void TrashMapTile(INT16 MapTile) {
   pMapTile->pStructureHead = pMapTile->pStructureTail = NULL;
 }
 
-BOOLEAN LoadMapTileset(INT32 iTilesetID) {
+function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
   if (iTilesetID >= NUM_TILESETS) {
     return FALSE;
   }
@@ -2920,7 +2920,7 @@ BOOLEAN LoadMapTileset(INT32 iTilesetID) {
   return TRUE;
 }
 
-BOOLEAN SaveMapTileset(INT32 iTilesetID) {
+function SaveMapTileset(iTilesetID: INT32): BOOLEAN {
   //	FILE *hTSet;
   HWFILE hTSet;
   char zTilesetName[65];
@@ -2948,7 +2948,7 @@ BOOLEAN SaveMapTileset(INT32 iTilesetID) {
   return TRUE;
 }
 
-void SetLoadOverrideParams(BOOLEAN fForceLoad, BOOLEAN fForceFile, CHAR8 *zLoadName) {
+function SetLoadOverrideParams(fForceLoad: BOOLEAN, fForceFile: BOOLEAN, zLoadName: Pointer<CHAR8>): void {
   gfForceLoadPlayers = fForceLoad;
   gfForceLoad = fForceFile;
 
@@ -2957,7 +2957,7 @@ void SetLoadOverrideParams(BOOLEAN fForceLoad, BOOLEAN fForceFile, CHAR8 *zLoadN
   }
 }
 
-void AddWireFrame(INT16 sGridNo, UINT16 usIndex, BOOLEAN fForced) {
+function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
   LEVELNODE *pTopmost, *pTopmostTail;
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
@@ -2977,7 +2977,7 @@ void AddWireFrame(INT16 sGridNo, UINT16 usIndex, BOOLEAN fForced) {
   }
 }
 
-UINT16 GetWireframeGraphicNumToUseForWall(INT16 sGridNo, STRUCTURE *pStructure) {
+function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): UINT16 {
   LEVELNODE *pNode = NULL;
   UINT8 ubWallOrientation;
   UINT16 usValue = 0;
@@ -3031,7 +3031,7 @@ UINT16 GetWireframeGraphicNumToUseForWall(INT16 sGridNo, STRUCTURE *pStructure) 
   return usValue;
 }
 
-void CalculateWorldWireFrameTiles(BOOLEAN fForce) {
+function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
   INT32 cnt;
   STRUCTURE *pStructure;
   INT16 sGridNo;
@@ -3199,7 +3199,7 @@ void CalculateWorldWireFrameTiles(BOOLEAN fForce) {
   }
 }
 
-void RemoveWorldWireFrameTiles() {
+function RemoveWorldWireFrameTiles(): void {
   INT32 cnt;
 
   // Create world randomly from tiles
@@ -3208,7 +3208,7 @@ void RemoveWorldWireFrameTiles() {
   }
 }
 
-void RemoveWireFrameTiles(INT16 sGridNo) {
+function RemoveWireFrameTiles(sGridNo: INT16): void {
   LEVELNODE *pTopmost, *pNewTopmost;
   TILE_ELEMENT *pTileElement;
 
@@ -3229,7 +3229,7 @@ void RemoveWireFrameTiles(INT16 sGridNo) {
   }
 }
 
-INT8 IsHiddenTileMarkerThere(INT16 sGridNo) {
+function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
   STRUCTURE *pStructure;
 
   if (!gfBasement) {
@@ -3255,7 +3255,7 @@ INT8 IsHiddenTileMarkerThere(INT16 sGridNo) {
   return -1;
 }
 
-void ReloadTileset(UINT8 ubID) {
+function ReloadTileset(ubID: UINT8): void {
   CHAR8 aFilename[255];
   INT32 iCurrTilesetID = giCurrentTilesetID;
 
@@ -3278,7 +3278,7 @@ void ReloadTileset(UINT8 ubID) {
   FileDelete(aFilename);
 }
 
-void SaveMapLights(HWFILE hfile) {
+function SaveMapLights(hfile: HWFILE): void {
   SOLDIERTYPE *pSoldier;
   SGPPaletteEntry LColors[3];
   UINT8 ubNumColors;
@@ -3335,7 +3335,7 @@ void SaveMapLights(HWFILE hfile) {
   }
 }
 
-void LoadMapLights(INT8 **hBuffer) {
+function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
   SGPPaletteEntry LColors[3];
   UINT8 ubNumColors;
   UINT16 usNumLights;
@@ -3404,7 +3404,7 @@ void LoadMapLights(INT8 **hBuffer) {
   }
 }
 
-BOOLEAN IsRoofVisibleForWireframe(INT16 sMapPos) {
+function IsRoofVisibleForWireframe(sMapPos: INT16): BOOLEAN {
   STRUCTURE *pStructure;
 
   if (!gfBasement) {

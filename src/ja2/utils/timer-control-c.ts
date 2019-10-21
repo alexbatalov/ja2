@@ -71,7 +71,7 @@ extern INT32 giFlashContractBaseTime;
 extern UINT32 guiFlashCursorBaseTime;
 extern INT32 giPotCharPathBaseTime;
 
-void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) {
+function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD): void {
   static BOOLEAN fInFunction = FALSE;
   // SOLDIERTYPE		*pSoldier;
 
@@ -131,7 +131,7 @@ void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) 
   }
 }
 
-BOOLEAN InitializeJA2Clock(void) {
+function InitializeJA2Clock(): BOOLEAN {
   MMRESULT mmResult;
   TIMECAPS tc;
   INT32 cnt;
@@ -158,13 +158,13 @@ BOOLEAN InitializeJA2Clock(void) {
   return TRUE;
 }
 
-void ShutdownJA2Clock(void) {
+function ShutdownJA2Clock(): void {
   // Make sure we kill the timer
 
   timeKillEvent(gTimerID);
 }
 
-UINT32 InitializeJA2TimerCallback(UINT32 uiDelay, LPTIMECALLBACK TimerProc, UINT32 uiUser) {
+function InitializeJA2TimerCallback(uiDelay: UINT32, TimerProc: LPTIMECALLBACK, uiUser: UINT32): UINT32 {
   MMRESULT mmResult;
   TIMECAPS tc;
   MMRESULT TimerID;
@@ -186,11 +186,11 @@ UINT32 InitializeJA2TimerCallback(UINT32 uiDelay, LPTIMECALLBACK TimerProc, UINT
   return (UINT32)TimerID;
 }
 
-void RemoveJA2TimerCallback(UINT32 uiTimer) {
+function RemoveJA2TimerCallback(uiTimer: UINT32): void {
   timeKillEvent(uiTimer);
 }
 
-UINT32 InitializeJA2TimerID(UINT32 uiDelay, UINT32 uiCallbackID, UINT32 uiUser) {
+function InitializeJA2TimerID(uiDelay: UINT32, uiCallbackID: UINT32, uiUser: UINT32): UINT32 {
   switch (uiCallbackID) {
     case ITEM_LOCATOR_CALLBACK:
 
@@ -206,14 +206,14 @@ UINT32 InitializeJA2TimerID(UINT32 uiDelay, UINT32 uiCallbackID, UINT32 uiUser) 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // TIMER CALLBACK S
 //////////////////////////////////////////////////////////////////////////////////////////////
-void CALLBACK FlashItem(UINT uiID, UINT uiMsg, DWORD uiUser, DWORD uiDw1, DWORD uiDw2) {
+function FlashItem(uiID: UINT, uiMsg: UINT, uiUser: DWORD, uiDw1: DWORD, uiDw2: DWORD): void {
 }
 
-void PauseTime(BOOLEAN fPaused) {
+function PauseTime(fPaused: BOOLEAN): void {
   gfPauseClock = fPaused;
 }
 
-void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback, BOOLEAN fReplace) {
+function SetCustomizableTimerCallbackAndDelay(iDelay: INT32, pCallback: CUSTOMIZABLE_TIMER_CALLBACK, fReplace: BOOLEAN): void {
   if (gpCustomizableTimerCallback) {
     if (!fReplace) {
       // replace callback but call the current callback first
@@ -225,7 +225,7 @@ void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLB
   gpCustomizableTimerCallback = pCallback;
 }
 
-void CheckCustomizableTimer(void) {
+function CheckCustomizableTimer(): void {
   if (gpCustomizableTimerCallback) {
     if (TIMECOUNTERDONE(giTimerCustomizable, 0)) {
       // set the callback to a temp variable so we can reset the global variable
@@ -240,7 +240,7 @@ void CheckCustomizableTimer(void) {
   }
 }
 
-void ResetJA2ClockGlobalTimers(void) {
+function ResetJA2ClockGlobalTimers(): void {
   UINT32 uiCurrentTime = GetJA2Clock();
 
   guiCompressionStringBaseTime = uiCurrentTime;

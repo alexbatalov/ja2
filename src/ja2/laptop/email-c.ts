@@ -237,7 +237,7 @@ INT32 iTotalHeight = 0;
 
 BOOLEAN fFirstTime = TRUE;
 
-void InitializeMouseRegions() {
+function InitializeMouseRegions(): void {
   INT32 iCounter = 0;
 
   // init mouseregions
@@ -252,7 +252,7 @@ void InitializeMouseRegions() {
   CreateDestroyNextPreviousRegions();
 }
 
-void DeleteEmailMouseRegions() {
+function DeleteEmailMouseRegions(): void {
   // this function will remove the mouse regions added
   INT32 iCounter = 0;
 
@@ -262,7 +262,7 @@ void DeleteEmailMouseRegions() {
   // DeleteSortRegions();
   CreateDestroyNextPreviousRegions();
 }
-void GameInitEmail() {
+function GameInitEmail(): void {
   pEmailList = NULL;
   pPageList = NULL;
 
@@ -278,7 +278,7 @@ void GameInitEmail() {
   giMessagePage = 0;
 }
 
-BOOLEAN EnterEmail() {
+function EnterEmail(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   // load graphics
 
@@ -337,7 +337,7 @@ BOOLEAN EnterEmail() {
   return TRUE;
 }
 
-void ExitEmail() {
+function ExitEmail(): void {
   LaptopSaveInfo.iCurrentEmailPage = iCurrentPage;
 
   // clear out message record list
@@ -376,7 +376,7 @@ void ExitEmail() {
   DestroyMailScreenButtons();
 }
 
-void HandleEmail(void) {
+function HandleEmail(): void {
   INT32 iViewerY = 0;
   static BOOLEAN fEmailListBeenDrawAlready = FALSE;
   // RenderButtonsFastHelp( );
@@ -447,7 +447,7 @@ void HandleEmail(void) {
   return;
 }
 
-void DisplayEmailHeaders(void) {
+function DisplayEmailHeaders(): void {
   // draw the text at the top of the screen
 
   // font stuff
@@ -473,7 +473,7 @@ void DisplayEmailHeaders(void) {
   return;
 }
 
-void RenderEmail(void) {
+function RenderEmail(): void {
   HVOBJECT hHandle;
   INT32 iCounter = 0;
 
@@ -519,7 +519,7 @@ void RenderEmail(void) {
   return;
 }
 
-void AddEmailWithSpecialData(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate, INT32 iFirstData, UINT32 uiSecondData) {
+function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32, iFirstData: INT32, uiSecondData: UINT32): void {
   wchar_t pSubject[320];
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -551,7 +551,7 @@ void AddEmailWithSpecialData(INT32 iMessageOffset, INT32 iMessageLength, UINT8 u
   return;
 }
 
-void AddEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate) {
+function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
   wchar_t pSubject[320];
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -575,7 +575,7 @@ void AddEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 
   return;
 }
 
-void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender, INT32 iDate) {
+function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
   wchar_t pSubject[320];
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
@@ -599,7 +599,7 @@ void AddPreReadEmail(INT32 iMessageOffset, INT32 iMessageLength, UINT8 ubSender,
   return;
 }
 
-void AddEmailMessage(INT32 iMessageOffset, INT32 iMessageLength, STR16 pSubject, INT32 iDate, UINT8 ubSender, BOOLEAN fAlreadyRead, INT32 iFirstData, UINT32 uiSecondData) {
+function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: STR16, iDate: INT32, ubSender: UINT8, fAlreadyRead: BOOLEAN, iFirstData: INT32, uiSecondData: UINT32): void {
   // will add a message to the list of messages
   EmailPtr pEmail = pEmailList;
   EmailPtr pTempEmail = NULL;
@@ -691,7 +691,7 @@ void AddEmailMessage(INT32 iMessageOffset, INT32 iMessageLength, STR16 pSubject,
   return;
 }
 
-void RemoveEmailMessage(INT32 iId) {
+function RemoveEmailMessage(iId: INT32): void {
   // run through list and remove message, update everyone afterwards
   EmailPtr pEmail = pEmailList;
   EmailPtr pTempEmail = NULL;
@@ -765,7 +765,7 @@ void RemoveEmailMessage(INT32 iId) {
   }
 }
 
-EmailPtr GetEmailMessage(INT32 iId) {
+function GetEmailMessage(iId: INT32): EmailPtr {
   EmailPtr pEmail = pEmailList;
   // return pointer to message with iId
 
@@ -793,7 +793,7 @@ EmailPtr GetEmailMessage(INT32 iId) {
     return pEmail;
 }
 
-void AddEmailPage() {
+function AddEmailPage(): void {
   // simple adds a page to the list
   PagePtr pPage = pPageList;
   if (pPage) {
@@ -823,7 +823,7 @@ void AddEmailPage() {
   return;
 }
 
-void RemoveEmailPage(INT32 iPageId) {
+function RemoveEmailPage(iPageId: INT32): void {
   PagePtr pPage = pPageList;
   PagePtr pTempPage = NULL;
 
@@ -865,7 +865,7 @@ void RemoveEmailPage(INT32 iPageId) {
     iLastPage--;
 }
 
-void AddMessageToPages(INT32 iMessageId) {
+function AddMessageToPages(iMessageId: INT32): void {
   // go to end of page list
   PagePtr pPage = pPageList;
   INT32 iCounter = 0;
@@ -890,7 +890,7 @@ void AddMessageToPages(INT32 iMessageId) {
   return;
 }
 
-void SortMessages(INT32 iCriteria) {
+function SortMessages(iCriteria: INT32): void {
   EmailPtr pA = pEmailList;
   EmailPtr pB = pEmailList;
   CHAR16 pSubjectA[256];
@@ -998,7 +998,7 @@ void SortMessages(INT32 iCriteria) {
   fReDrawScreenFlag = TRUE;
 }
 
-void SwapMessages(INT32 iIdA, INT32 iIdB) {
+function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   // swaps locations of messages in the linked list
   EmailPtr pA = pEmailList;
   EmailPtr pB = pEmailList;
@@ -1054,7 +1054,7 @@ void SwapMessages(INT32 iIdA, INT32 iIdB) {
   return;
 }
 
-void ClearPages() {
+function ClearPages(): void {
   // run through list of message pages and set to -1
   PagePtr pPage = pPageList;
 
@@ -1075,7 +1075,7 @@ void ClearPages() {
   return;
 }
 
-void PlaceMessagesinPages() {
+function PlaceMessagesinPages(): void {
   EmailPtr pEmail = pEmailList;
   // run through the list of messages and add to pages
   ClearPages();
@@ -1088,7 +1088,7 @@ void PlaceMessagesinPages() {
   return;
 }
 
-void DisplayMessageList(INT32 iPageNum) {
+function DisplayMessageList(iPageNum: INT32): void {
   // will display page with idNumber iPageNum
   PagePtr pPage = pPageList;
   while (pPage->iPageId != iPageNum) {
@@ -1100,7 +1100,7 @@ void DisplayMessageList(INT32 iPageNum) {
   return;
 }
 
-void DrawLetterIcon(INT32 iCounter, BOOLEAN fRead) {
+function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
   HVOBJECT hHandle;
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
@@ -1115,7 +1115,7 @@ void DrawLetterIcon(INT32 iCounter, BOOLEAN fRead) {
   return;
 }
 
-void DrawSubject(INT32 iCounter, STR16 pSubject, BOOLEAN fRead) {
+function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
   wchar_t pTempSubject[320];
 
   // draw subject line of mail being viewed in viewer
@@ -1152,7 +1152,7 @@ void DrawSubject(INT32 iCounter, STR16 pSubject, BOOLEAN fRead) {
   return;
 }
 
-void DrawSender(INT32 iCounter, UINT8 ubSender, BOOLEAN fRead) {
+function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: BOOLEAN): void {
   // draw name of sender in mail viewer
   SetFontShadow(NO_SHADOW);
 
@@ -1173,7 +1173,7 @@ void DrawSender(INT32 iCounter, UINT8 ubSender, BOOLEAN fRead) {
   return;
 }
 
-void DrawDate(INT32 iCounter, INT32 iDate, BOOLEAN fRead) {
+function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
   wchar_t sString[20];
 
   SetFontShadow(NO_SHADOW);
@@ -1194,7 +1194,7 @@ void DrawDate(INT32 iCounter, INT32 iDate, BOOLEAN fRead) {
   return;
 }
 
-void DisplayEmailList() {
+function DisplayEmailList(): void {
   INT32 iCounter = 0;
   // look at current page, and display
   PagePtr pPage = pPageList;
@@ -1254,7 +1254,7 @@ void DisplayEmailList() {
   return;
 }
 
-void LookForUnread() {
+function LookForUnread(): void {
   BOOLEAN fStatusOfNewEmailFlag = fUnReadMailFlag;
 
   // simply runrs through list of messages, if any unread, set unread flag
@@ -1280,7 +1280,7 @@ void LookForUnread() {
   return;
 }
 
-void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iCount;
   PagePtr pPage = pPageList;
   INT32 iId = 0;
@@ -1348,7 +1348,7 @@ void EmailBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
     }
   }
 }
-void EmailMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function EmailMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -1364,7 +1364,7 @@ void EmailMvtCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BtnMessageXCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMessageXCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1395,7 +1395,7 @@ void BtnMessageXCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SetUnNewMessages() {
+function SetUnNewMessages(): void {
   // on exit from the mailer, set all new messages as 'un'new
   EmailPtr pEmail = pEmailList;
   // run through the list of messages and add to pages
@@ -1407,7 +1407,7 @@ void SetUnNewMessages() {
   return;
 }
 
-INT32 DisplayEmailMessage(EmailPtr pMail) {
+function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   HVOBJECT hHandle;
   INT32 iCnt = 0;
   INT32 iHeight = 0;
@@ -1622,7 +1622,7 @@ while( pTempRecord )
   return iViewerPositionY;
 }
 
-void BtnNewOkback(GUI_BUTTON *btn, INT32 reason) {
+function BtnNewOkback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1638,7 +1638,7 @@ void BtnNewOkback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void AddDeleteRegionsToMessageRegion(INT32 iViewerY) {
+function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
   // will create/destroy mouse region for message display
 
   if ((fDisplayMessageFlag) && (!fOldDisplayMessageFlag)) {
@@ -1697,7 +1697,7 @@ void AddDeleteRegionsToMessageRegion(INT32 iViewerY) {
   }
 }
 
-void CreateDestroyNewMailButton() {
+function CreateDestroyNewMailButton(): void {
   static BOOLEAN fOldNewMailFlag = FALSE;
 
   // check if we are video conferencing, if so, do nothing
@@ -1742,7 +1742,7 @@ void CreateDestroyNewMailButton() {
   }
 }
 
-BOOLEAN DisplayNewMailBox(void) {
+function DisplayNewMailBox(): BOOLEAN {
   HVOBJECT hHandle;
   static BOOLEAN fOldNewMailFlag = FALSE;
   // will display a new mail box whenever new mail has arrived
@@ -1809,7 +1809,7 @@ BOOLEAN DisplayNewMailBox(void) {
   return TRUE;
 }
 
-void ReDrawNewMailBox(void) {
+function ReDrawNewMailBox(): void {
   // this function will check to see if the new mail region needs to be redrawn
   if (fReDrawNewMailFlag == TRUE) {
     if (fNewMailFlag) {
@@ -1838,7 +1838,7 @@ void ReDrawNewMailBox(void) {
   }
 }
 
-void SwitchEmailPages(void) {
+function SwitchEmailPages(): void {
   // this function will switch current page
 
   // gone too far, reset page to start
@@ -1851,7 +1851,7 @@ void SwitchEmailPages(void) {
   return;
 }
 
-void DetermineNextPrevPageDisplay(void) {
+function DetermineNextPrevPageDisplay(): void {
   // will determine which of previous and next page graphics to display
 
   if (iCurrentPage > 0) {
@@ -1880,7 +1880,7 @@ void DetermineNextPrevPageDisplay(void) {
   }
 }
 
-void NextRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function NextRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1905,7 +1905,7 @@ void NextRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnPreviousEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1930,7 +1930,7 @@ void BtnPreviousEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnNextEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnNextEmailPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1958,7 +1958,7 @@ void BtnNextEmailPageCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void PreviousRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function PreviousRegionButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1982,7 +1982,7 @@ void PreviousRegionButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnDeleteNoback(GUI_BUTTON *btn, INT32 reason) {
+function BtnDeleteNoback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1999,7 +1999,7 @@ void BtnDeleteNoback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnDeleteYesback(GUI_BUTTON *btn, INT32 reason) {
+function BtnDeleteYesback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -2016,7 +2016,7 @@ void BtnDeleteYesback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void CreateDestroyNextPreviousRegions() {
+function CreateDestroyNextPreviousRegions(): void {
   static BOOLEAN fCreated = FALSE;
   if (fCreated) {
     // destroy already create next, previous mouse regions
@@ -2049,7 +2049,7 @@ MSYS_AddRegion(&pEmailMoveRegions[NEXT_BUTTON]);
   }
 }
 
-void ReDraw() {
+function ReDraw(): void {
   // forces update of entire laptop screen
   if (fReDraw) {
     RenderLaptop();
@@ -2061,7 +2061,7 @@ void ReDraw() {
   }
 }
 
-void CreateDestroyDeleteNoticeMailButton() {
+function CreateDestroyDeleteNoticeMailButton(): void {
   static BOOLEAN fOldDeleteMailFlag = FALSE;
   if ((fDeleteMailFlag) && (!fOldDeleteMailFlag)) {
     // confirm delete email buttons
@@ -2101,7 +2101,7 @@ void CreateDestroyDeleteNoticeMailButton() {
   }
   return;
 }
-BOOLEAN DisplayDeleteNotice(EmailPtr pMail) {
+function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
   HVOBJECT hHandle;
   // will display a delete mail box whenever delete mail has arrived
   if (!fDeleteMailFlag)
@@ -2160,7 +2160,7 @@ BOOLEAN DisplayDeleteNotice(EmailPtr pMail) {
   return TRUE;
 }
 
-void DeleteEmail() {
+function DeleteEmail(): void {
   // error check, invalid mail, or not time to delete mail
   if (fDeleteInternal != TRUE) {
     if ((iDeleteId == -1) || (!fDeleteMailFlag))
@@ -2195,7 +2195,7 @@ void DeleteEmail() {
   InvalidateRegion(0, 0, 640, 480);
 }
 
-void FromCallback(GUI_BUTTON *btn, INT32 iReason) {
+function FromCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2218,7 +2218,7 @@ void FromCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-void SubjectCallback(GUI_BUTTON *btn, INT32 iReason) {
+function SubjectCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2236,7 +2236,7 @@ void SubjectCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-void BtnDeleteCallback(GUI_BUTTON *btn, INT32 iReason) {
+function BtnDeleteCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2249,7 +2249,7 @@ void BtnDeleteCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-void DateCallback(GUI_BUTTON *btn, INT32 iReason) {
+function DateCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2267,7 +2267,7 @@ void DateCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-void ReadCallback(GUI_BUTTON *btn, INT32 iReason) {
+function ReadCallback(btn: Pointer<GUI_BUTTON>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -2284,7 +2284,7 @@ void ReadCallback(GUI_BUTTON *btn, INT32 iReason) {
   }
 }
 
-void SetUpSortRegions() {
+function SetUpSortRegions(): void {
   // have been replaced by buttons
   return;
 
@@ -2312,7 +2312,7 @@ void SetUpSortRegions() {
         */
 }
 
-void DeleteSortRegions() {
+function DeleteSortRegions(): void {
   // have been replaced by buttons
   return;
   /*
@@ -2322,7 +2322,7 @@ void DeleteSortRegions() {
   */
 }
 
-void DisplayTextOnTitleBar(void) {
+function DisplayTextOnTitleBar(): void {
   // draw email screen title text
 
   // font stuff
@@ -2336,7 +2336,7 @@ void DisplayTextOnTitleBar(void) {
   // reset the shadow
 }
 
-void DestroyMailScreenButtons(void) {
+function DestroyMailScreenButtons(): void {
   // this function will destory the buttons used in the email screen
 
   // the sort email buttons
@@ -2352,7 +2352,7 @@ void DestroyMailScreenButtons(void) {
   return;
 }
 
-void CreateMailScreenButtons(void) {
+function CreateMailScreenButtons(): void {
   // create sort buttons, right now - not finished
 
   // read sort
@@ -2381,7 +2381,7 @@ void CreateMailScreenButtons(void) {
   return;
 }
 
-void DisplayEmailMessageSubjectDateFromLines(EmailPtr pMail, INT32 iViewerY) {
+function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT32): void {
   // this procedure will draw the title/headers to From, Subject, Date fields in the display
   // message box
   UINT16 usX, usY;
@@ -2423,7 +2423,7 @@ void DisplayEmailMessageSubjectDateFromLines(EmailPtr pMail, INT32 iViewerY) {
   return;
 }
 
-void DrawEmailMessageDisplayTitleText(INT32 iViewerY) {
+function DrawEmailMessageDisplayTitleText(iViewerY: INT32): void {
   // this procedure will display the title of the email message display box
 
   // font stuff
@@ -2437,7 +2437,7 @@ void DrawEmailMessageDisplayTitleText(INT32 iViewerY) {
   return;
 }
 
-void DrawLineDividers(void) {
+function DrawLineDividers(): void {
   // this function draws divider lines between lines of text
   INT32 iCounter = 0;
   HVOBJECT hHandle;
@@ -2450,7 +2450,7 @@ void DrawLineDividers(void) {
   return;
 }
 
-void ClearOutEmailMessageRecordsList(void) {
+function ClearOutEmailMessageRecordsList(): void {
   RecordPtr pTempRecord;
   INT32 iCounter = 0;
 
@@ -2477,7 +2477,7 @@ void ClearOutEmailMessageRecordsList(void) {
   return;
 }
 
-void AddEmailRecordToList(STR16 pString) {
+function AddEmailRecordToList(pString: STR16): void {
   RecordPtr pTempRecord;
 
   // set to head of list
@@ -2511,7 +2511,7 @@ void AddEmailRecordToList(STR16 pString) {
   return;
 }
 
-void UpDateMessageRecordList(void) {
+function UpDateMessageRecordList(): void {
   // simply checks to see if old and new message ids are the same, if so, do nothing
   // otherwise clear list
 
@@ -2524,7 +2524,7 @@ void UpDateMessageRecordList(void) {
   }
 }
 
-void HandleAnySpecialEmailMessageEvents(INT32 iMessageId) {
+function HandleAnySpecialEmailMessageEvents(iMessageId: INT32): void {
   // handles any special message events
 
   switch (iMessageId) {
@@ -2537,7 +2537,7 @@ void HandleAnySpecialEmailMessageEvents(INT32 iMessageId) {
   }
 }
 
-void ReDisplayBoxes(void) {
+function ReDisplayBoxes(): void {
   // the email message itself
   if (fDisplayMessageFlag) {
     // this simply redraws message with button manipulation
@@ -2555,7 +2555,7 @@ void ReDisplayBoxes(void) {
   }
 }
 
-BOOLEAN HandleMailSpecialMessages(UINT16 usMessageId, INT32 *iResults, EmailPtr pMail) {
+function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr): BOOLEAN {
   BOOLEAN fSpecialCase = FALSE;
 
   // this procedure will handle special cases of email messages that are not stored in email.edt, or need special processing
@@ -2718,7 +2718,7 @@ const IMP_PORTRAIT_FEMALE_6 = IMP_PORTRAIT_FEMALE_5 + 4;
 const IMP_RESULTS_END = IMP_PORTRAIT_FEMALE_6 + 1;
 const IMP_RESULTS_END_LENGTH = 3;
 
-void HandleIMPCharProfileResultsMessage(void) {
+function HandleIMPCharProfileResultsMessage(): void {
   // special case, IMP profile return
   INT32 iTotalHeight = 0;
   INT32 iCnt = 0;
@@ -3697,7 +3697,7 @@ void HandleIMPCharProfileResultsMessage(void) {
   pTempRecord = pMessageRecordList;
 }
 
-void HandleEmailViewerButtonStates(void) {
+function HandleEmailViewerButtonStates(): void {
   // handle state of email viewer buttons
 
   if (fDisplayMessageFlag == FALSE) {
@@ -3726,7 +3726,7 @@ void HandleEmailViewerButtonStates(void) {
   return;
 }
 
-void SetUpIconForButton() {
+function SetUpIconForButton(): void {
   // if we just got in, return, don't set any
 
   if (fJustStartedEmail == TRUE) {
@@ -3736,7 +3736,7 @@ void SetUpIconForButton() {
   return;
 }
 
-void DeleteCurrentMessage(void) {
+function DeleteCurrentMessage(): void {
   // will delete the currently displayed message
 
   // set current message to be deleted
@@ -3767,7 +3767,7 @@ void DeleteCurrentMessage(void) {
   return;
 }
 
-void CreateNextPreviousEmailPageButtons(void) {
+function CreateNextPreviousEmailPageButtons(): void {
   // this function will create the buttons to advance and go back email pages
 
   // next button
@@ -3789,7 +3789,7 @@ SpecifyDisabledButtonStyle( giMailPageButtons[0], DISABLED_STYLE_SHADED );
   return;
 }
 
-void UpdateStatusOfNextPreviousButtons(void) {
+function UpdateStatusOfNextPreviousButtons(): void {
   // set the states of the page advance buttons
 
   DisableButton(giMailPageButtons[0]);
@@ -3804,7 +3804,7 @@ void UpdateStatusOfNextPreviousButtons(void) {
   }
 }
 
-void DisplayWhichPageOfEmailProgramIsDisplayed(void) {
+function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
   // will draw the number of the email program we are viewing right now
   CHAR16 sString[10];
 
@@ -3829,7 +3829,7 @@ void DisplayWhichPageOfEmailProgramIsDisplayed(void) {
   return;
 }
 
-void OpenMostRecentUnreadEmail(void) {
+function OpenMostRecentUnreadEmail(): void {
   // will open the most recent email the player has recieved and not read
   INT32 iMostRecentMailId = -1;
   EmailPtr pB = pEmailList;
@@ -3857,7 +3857,7 @@ void OpenMostRecentUnreadEmail(void) {
   return;
 }
 
-BOOLEAN DisplayNumberOfPagesToThisEmail(INT32 iViewerY) {
+function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   // display the indent for the display of pages to this email..along with the current page/number of pages
 
   INT32 iCounter = 0;
@@ -3896,7 +3896,7 @@ BOOLEAN DisplayNumberOfPagesToThisEmail(INT32 iViewerY) {
   return TRUE;
 }
 
-INT32 GetNumberOfPagesToEmail() {
+function GetNumberOfPagesToEmail(): INT32 {
   RecordPtr pTempRecord;
   INT32 iNumberOfPagesToEmail = 0;
 
@@ -3912,7 +3912,7 @@ INT32 GetNumberOfPagesToEmail() {
   return iNumberOfPagesToEmail;
 }
 
-void ShutDownEmailList() {
+function ShutDownEmailList(): void {
   EmailPtr pEmail = pEmailList;
   EmailPtr pTempEmail = NULL;
 
@@ -3933,7 +3933,7 @@ void ShutDownEmailList() {
   ClearPages();
 }
 
-void PreProcessEmail(EmailPtr pMail) {
+function PreProcessEmail(pMail: EmailPtr): void {
   RecordPtr pTempRecord, pCurrentRecord, pLastRecord, pTempList;
   CHAR16 pString[512];
   INT32 iCounter = 0, iHeight = 0, iOffSet = 0;
@@ -4124,7 +4124,7 @@ void PreProcessEmail(EmailPtr pMail) {
   }
 }
 
-void ModifyInsuranceEmails(UINT16 usMessageId, INT32 *iResults, EmailPtr pMail, UINT8 ubNumberOfRecords) {
+function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr, ubNumberOfRecords: UINT8): void {
   INT32 iHeight = 0;
   RecordPtr pTempRecord;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
@@ -4157,7 +4157,7 @@ void ModifyInsuranceEmails(UINT16 usMessageId, INT32 *iResults, EmailPtr pMail, 
   giPrevMessageId = giMessageId;
 }
 
-BOOLEAN ReplaceMercNameAndAmountWithProperData(CHAR16 *pFinishedString, EmailPtr pMail) {
+function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>, pMail: EmailPtr): BOOLEAN {
   //	wchar_t		pTempString[MAIL_STRING_SIZE/2 + 1];
   wchar_t pTempString[MAIL_STRING_SIZE];
   INT32 iLength = 0;

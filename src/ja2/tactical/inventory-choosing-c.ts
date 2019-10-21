@@ -63,7 +63,7 @@ ARMY_GUN_CHOICE_TYPE gExtendedArmyGunChoices[ARMY_GUN_LEVELS] = {
    /* 10- rocket rifle		*/ 4, ROCKET_RIFLE, ROCKET_RIFLE, RPK74, HK21E, -1 },
 };
 
-void InitArmyGunTypes(void) {
+function InitArmyGunTypes(): void {
   ARMY_GUN_CHOICE_TYPE *pGunChoiceTable;
   UINT32 uiGunLevel;
   UINT32 uiChoice;
@@ -97,7 +97,7 @@ void InitArmyGunTypes(void) {
   MarkAllWeaponsOfSameGunClassAsDropped(SW38);
 }
 
-INT8 GetWeaponClass(UINT16 usGun) {
+function GetWeaponClass(usGun: UINT16): INT8 {
   UINT32 uiGunLevel, uiLoop;
 
   // always use the extended list since it contains all guns...
@@ -111,7 +111,7 @@ INT8 GetWeaponClass(UINT16 usGun) {
   return -1;
 }
 
-void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon) {
+function MarkAllWeaponsOfSameGunClassAsDropped(usWeapon: UINT16): void {
   INT8 bGunClass;
   UINT32 uiLoop;
 
@@ -133,7 +133,7 @@ void MarkAllWeaponsOfSameGunClassAsDropped(UINT16 usWeapon) {
 // of equipment to choose from.
 // NOTE:  I'm just winging it for the decisions on which items that different groups can have.  Basically,
 // there are variations, so a guy at a certain level may get a better gun and worse armour or vice versa.
-void GenerateRandomEquipment(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass, INT8 bEquipmentRating) {
+function GenerateRandomEquipment(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8, bEquipmentRating: INT8): void {
   OBJECTTYPE *pItem;
   // general rating information
   INT8 bRating = 0;
@@ -496,7 +496,7 @@ void GenerateRandomEquipment(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass, INT8 
 // selection for that particular type of item, and 1-11 means to choose an item if possible.  1 is
 // the worst class of item, while 11 is the best.
 
-void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bWeaponClass, INT8 bAmmoClips, INT8 bAttachClass, BOOLEAN fAttachment) {
+function ChooseWeaponForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bWeaponClass: INT8, bAmmoClips: INT8, bAttachClass: INT8, fAttachment: BOOLEAN): void {
   INVTYPE *pItem;
   OBJECTTYPE Object;
   UINT16 i;
@@ -647,7 +647,7 @@ void ChooseWeaponForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bWeaponCl
   }
 }
 
-void ChooseGrenadesForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bGrenades, INT8 bGrenadeClass, BOOLEAN fGrenadeLauncher) {
+function ChooseGrenadesForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bGrenades: INT8, bGrenadeClass: INT8, fGrenadeLauncher: BOOLEAN): void {
   OBJECTTYPE Object;
   INT16 sNumPoints;
   UINT16 usItem;
@@ -871,7 +871,7 @@ void ChooseGrenadesForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bGrenad
   }
 }
 
-void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bHelmetClass, INT8 bVestClass, INT8 bLeggingsClass) {
+function ChooseArmourForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bHelmetClass: INT8, bVestClass: INT8, bLeggingsClass: INT8): void {
   UINT16 i;
   INVTYPE *pItem;
   UINT16 usRandom;
@@ -1012,7 +1012,7 @@ void ChooseArmourForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bHelmetCl
   }
 }
 
-void ChooseSpecialWeaponsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bKnifeClass, BOOLEAN fGrenadeLauncher, BOOLEAN fLAW, BOOLEAN fMortar) {
+function ChooseSpecialWeaponsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bKnifeClass: INT8, fGrenadeLauncher: BOOLEAN, fLAW: BOOLEAN, fMortar: BOOLEAN): void {
   UINT16 i;
   INVTYPE *pItem;
   UINT16 usRandom;
@@ -1080,7 +1080,7 @@ void ChooseSpecialWeaponsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 b
   }
 }
 
-void ChooseFaceGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp) {
+function ChooseFaceGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   INT32 i;
   INT8 bDifficultyRating = CalcDifficultyModifier(pp->ubSoldierClass);
 
@@ -1143,7 +1143,7 @@ void ChooseFaceGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp) {
   }
 }
 
-void ChooseKitsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bKitClass) {
+function ChooseKitsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bKitClass: INT8): void {
   UINT16 i;
   INVTYPE *pItem;
   UINT16 usRandom;
@@ -1191,7 +1191,7 @@ void ChooseKitsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bKitClass) 
   }
 }
 
-void ChooseMiscGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bMiscClass) {
+function ChooseMiscGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bMiscClass: INT8): void {
   UINT16 i;
   INVTYPE *pItem;
   UINT16 usRandom;
@@ -1256,7 +1256,7 @@ void ChooseMiscGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bMiscCl
   }
 }
 
-void ChooseBombsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bBombClass) {
+function ChooseBombsForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, bBombClass: INT8): void {
   UINT16 i;
   INVTYPE *pItem;
   UINT16 usRandom;
@@ -1290,7 +1290,7 @@ void ChooseBombsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bBombClass
   }
 }
 
-void ChooseLocationSpecificGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp) {
+function ChooseLocationSpecificGearForSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   OBJECTTYPE Object;
 
   // If this is Tixa and the player doesn't control Tixa then give all enemies gas masks,
@@ -1301,7 +1301,7 @@ void ChooseLocationSpecificGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp) 
   }
 }
 
-BOOLEAN PlaceObjectInSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, OBJECTTYPE *pObject) {
+function PlaceObjectInSoldierCreateStruct(pp: Pointer<SOLDIERCREATE_STRUCT>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
   INT8 i;
   if (!Item[pObject->usItem].ubPerPocket) {
     // ubPerPocket == 0 will only fit in large pockets.
@@ -1333,7 +1333,7 @@ BOOLEAN PlaceObjectInSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, OBJECTTYPE *p
   return FALSE;
 }
 
-void RandomlyChooseWhichItemsAreDroppable(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass) {
+function RandomlyChooseWhichItemsAreDroppable(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8): void {
   INT32 i;
   //	UINT16 usRandomNum;
   UINT32 uiItemClass;
@@ -1654,7 +1654,7 @@ void RandomlyChooseWhichItemsAreDroppable(SOLDIERCREATE_STRUCT *pp, INT8 bSoldie
   }
 }
 
-void AssignCreatureInventory(SOLDIERTYPE *pSoldier) {
+function AssignCreatureInventory(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 uiChanceToDrop = 0;
   BOOLEAN fMaleCreature = FALSE;
   BOOLEAN fBloodcat = FALSE;
@@ -1745,7 +1745,7 @@ void AssignCreatureInventory(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void ReplaceExtendedGuns(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass) {
+function ReplaceExtendedGuns(pp: Pointer<SOLDIERCREATE_STRUCT>, bSoldierClass: INT8): void {
   UINT32 uiLoop, uiLoop2, uiAttachDestIndex;
   INT8 bWeaponClass;
   OBJECTTYPE OldObj;
@@ -1799,7 +1799,7 @@ void ReplaceExtendedGuns(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass) {
   }
 }
 
-UINT16 SelectStandardArmyGun(UINT8 uiGunLevel) {
+function SelectStandardArmyGun(uiGunLevel: UINT8): UINT16 {
   ARMY_GUN_CHOICE_TYPE *pGunChoiceTable;
   UINT32 uiChoice;
   UINT16 usGunIndex;
@@ -1827,7 +1827,7 @@ UINT16 SelectStandardArmyGun(UINT8 uiGunLevel) {
   return usGunIndex;
 }
 
-void EquipTank(SOLDIERCREATE_STRUCT *pp) {
+function EquipTank(pp: Pointer<SOLDIERCREATE_STRUCT>): void {
   OBJECTTYPE Object;
 
   // tanks get special equipment, and they drop nothing (MGs are hard-mounted & non-removable)
@@ -1855,6 +1855,6 @@ void EquipTank(SOLDIERCREATE_STRUCT *pp) {
   pp->Inv[LEGPOS].fFlags |= OBJECT_UNDROPPABLE;
 }
 
-void ResetMortarsOnTeamCount(void) {
+function ResetMortarsOnTeamCount(): void {
   guiMortarsRolledByTeam = 0;
 }

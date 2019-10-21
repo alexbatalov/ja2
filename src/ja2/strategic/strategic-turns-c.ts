@@ -3,17 +3,17 @@ const NUM_SEC_PER_STRATEGIC_TURN = (NUM_SEC_IN_MIN * 15); // Every fifteen minut
 UINT32 guiLastStrategicTime = 0;
 UINT32 guiLastTacticalRealTime = 0;
 
-void StrategicTurnsNewGame() {
+function StrategicTurnsNewGame(): void {
   // Sync game start time
   SyncStrategicTurnTimes();
 }
 
-void SyncStrategicTurnTimes() {
+function SyncStrategicTurnTimes(): void {
   guiLastStrategicTime = GetWorldTotalSeconds();
   guiLastTacticalRealTime = GetJA2Clock();
 }
 
-void HandleStrategicTurn() {
+function HandleStrategicTurn(): void {
   UINT32 uiTime;
   UINT32 uiCheckTime;
 
@@ -56,7 +56,7 @@ void HandleStrategicTurn() {
   }
 }
 
-void HandleStrategicTurnImplicationsOfExitingCombatMode(void) {
+function HandleStrategicTurnImplicationsOfExitingCombatMode(): void {
   SyncStrategicTurnTimes();
   HandleTacticalEndTurn(GetWorldTotalSeconds());
 }

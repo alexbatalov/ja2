@@ -62,7 +62,7 @@ extern iCurrentVoices;
 extern INT32 giMaxPersonalityQuizQuestion;
 extern BOOLEAN fStartOverFlag;
 
-void GameInitCharProfile() {
+function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;
   iCurrentPortrait = 0;
   iCurrentVoices = 0;
@@ -71,7 +71,7 @@ void GameInitCharProfile() {
   return;
 }
 
-void EnterCharProfile() {
+function EnterCharProfile(): void {
   // reset previous page
   iPreviousImpPage = -1;
 
@@ -79,7 +79,7 @@ void EnterCharProfile() {
   LoadImpGraphics();
 }
 
-void ExitCharProfile() {
+function ExitCharProfile(): void {
   // get rid of graphics
   RemoveImpGraphics();
 
@@ -87,7 +87,7 @@ void ExitCharProfile() {
   ExitOldIMPMode();
 }
 
-void HandleCharProfile() {
+function HandleCharProfile(): void {
   if (fReDrawCharProfile) {
     // re draw
     RenderCharProfile();
@@ -190,7 +190,7 @@ void HandleCharProfile() {
   return;
 }
 
-void RenderCharProfile() {
+function RenderCharProfile(): void {
   // button is waiting to go up?...do nothing,
 
   if (fButtonPendingFlag) {
@@ -258,7 +258,7 @@ void RenderCharProfile() {
   return;
 }
 
-void ExitOldIMPMode(void) {
+function ExitOldIMPMode(): void {
   // exit old mode
 
   if (iPreviousImpPage == -1) {
@@ -324,7 +324,7 @@ void ExitOldIMPMode(void) {
   return;
 }
 
-void EnterNewIMPMode(void) {
+function EnterNewIMPMode(): void {
   // enter new mode
 
   switch (iCurrentImpPage) {
@@ -385,7 +385,7 @@ void EnterNewIMPMode(void) {
   return;
 }
 
-void ResetCharacterStats(void) {
+function ResetCharacterStats(): void {
   // attributes
   iStrength = 55;
   iDexterity = 55;
@@ -415,7 +415,7 @@ void ResetCharacterStats(void) {
   memset(&pNickName, 0, sizeof(pNickName));
 }
 
-void LoadImpGraphics(void) {
+function LoadImpGraphics(): void {
   // load all graphics needed for IMP
 
   LoadProfileBackGround();
@@ -463,7 +463,7 @@ void LoadImpGraphics(void) {
   return;
 }
 
-void RemoveImpGraphics(void) {
+function RemoveImpGraphics(): void {
   // remove all graphics needed for IMP
 
   RemoveProfileBackGround();
@@ -510,7 +510,7 @@ void RemoveImpGraphics(void) {
   return;
 }
 
-void CreateIMPButtons(void) {
+function CreateIMPButtons(): void {
   // create all the buttons global to the IMP system
 
   giIMPButtonImage[0] = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
@@ -526,7 +526,7 @@ void CreateIMPButtons(void) {
   return;
 }
 
-void DestroyIMPButtons(void) {
+function DestroyIMPButtons(): void {
   // destroy the buttons we created
   RemoveButton(giIMPButton[0]);
   UnloadButtonImage(giIMPButtonImage[0]);
@@ -534,7 +534,7 @@ void DestroyIMPButtons(void) {
   return;
 }
 
-void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP cancel button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -585,7 +585,7 @@ void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason) {
   return;
 }
 
-void InitIMPSubPageList(void) {
+function InitIMPSubPageList(): void {
   INT32 iCounter = 0;
 
   for (iCounter = 0; iCounter < IMP_CONFIRM; iCounter++) {
@@ -595,7 +595,7 @@ void InitIMPSubPageList(void) {
   return;
 }
 
-BOOLEAN HasTheCurrentIMPPageBeenVisited(void) {
+function HasTheCurrentIMPPageBeenVisited(): BOOLEAN {
   // returns if we have vsisted the current IMP PageAlready
 
   // make sure we are not hosing memory

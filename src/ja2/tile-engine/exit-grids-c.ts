@@ -5,7 +5,7 @@ EXITGRID gExitGrid = { 0, 1, 1, 0 };
 
 BOOLEAN gfOverrideInsertionWithExitGrid = FALSE;
 
-INT32 ConvertExitGridToINT32(EXITGRID *pExitGrid) {
+function ConvertExitGridToINT32(pExitGrid: Pointer<EXITGRID>): INT32 {
   INT32 iExitGridInfo;
   iExitGridInfo = (pExitGrid->ubGotoSectorX - 1) << 28;
   iExitGridInfo += (pExitGrid->ubGotoSectorY - 1) << 24;
@@ -14,7 +14,7 @@ INT32 ConvertExitGridToINT32(EXITGRID *pExitGrid) {
   return iExitGridInfo;
 }
 
-void ConvertINT32ToExitGrid(INT32 iExitGridInfo, EXITGRID *pExitGrid) {
+function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: Pointer<EXITGRID>): void {
   // convert the int into 4 unsigned bytes.
   pExitGrid->ubGotoSectorX = (UINT8)(((iExitGridInfo & 0xf0000000) >> 28) + 1);
   pExitGrid->ubGotoSectorY = (UINT8)(((iExitGridInfo & 0x0f000000) >> 24) + 1);
@@ -22,7 +22,7 @@ void ConvertINT32ToExitGrid(INT32 iExitGridInfo, EXITGRID *pExitGrid) {
   pExitGrid->usGridNo = (UINT16)(iExitGridInfo & 0x0000ffff);
 }
 
-BOOLEAN GetExitGrid(UINT16 usMapIndex, EXITGRID *pExitGrid) {
+function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): BOOLEAN {
   LEVELNODE *pShadow;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -40,7 +40,7 @@ BOOLEAN GetExitGrid(UINT16 usMapIndex, EXITGRID *pExitGrid) {
   return FALSE;
 }
 
-BOOLEAN ExitGridAtGridNo(UINT16 usMapIndex) {
+function ExitGridAtGridNo(usMapIndex: UINT16): BOOLEAN {
   LEVELNODE *pShadow;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -53,7 +53,7 @@ BOOLEAN ExitGridAtGridNo(UINT16 usMapIndex) {
   return FALSE;
 }
 
-BOOLEAN GetExitGridLevelNode(UINT16 usMapIndex, LEVELNODE **ppLevelNode) {
+function GetExitGridLevelNode(usMapIndex: UINT16, ppLevelNode: Pointer<Pointer<LEVELNODE>>): BOOLEAN {
   LEVELNODE *pShadow;
   pShadow = gpWorldLevelData[usMapIndex].pShadowHead;
   // Search through object layer for an exitgrid
@@ -67,7 +67,7 @@ BOOLEAN GetExitGridLevelNode(UINT16 usMapIndex, LEVELNODE **ppLevelNode) {
   return FALSE;
 }
 
-void AddExitGridToWorld(INT32 iMapIndex, EXITGRID *pExitGrid) {
+function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): void {
   LEVELNODE *pShadow, *tail;
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
@@ -98,14 +98,14 @@ void AddExitGridToWorld(INT32 iMapIndex, EXITGRID *pExitGrid) {
   }
 }
 
-void RemoveExitGridFromWorld(INT32 iMapIndex) {
+function RemoveExitGridFromWorld(iMapIndex: INT32): void {
   UINT16 usDummy;
   if (TypeExistsInShadowLayer(iMapIndex, MOCKFLOOR, &usDummy)) {
     RemoveAllShadowsOfTypeRange(iMapIndex, MOCKFLOOR, MOCKFLOOR);
   }
 }
 
-void SaveExitGrids(HWFILE fp, UINT16 usNumExitGrids) {
+function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   EXITGRID exitGrid;
   UINT16 usNumSaved = 0;
   UINT16 x;
@@ -122,7 +122,7 @@ void SaveExitGrids(HWFILE fp, UINT16 usNumExitGrids) {
   Assert(usNumExitGrids == usNumSaved);
 }
 
-void LoadExitGrids(INT8 **hBuffer) {
+function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
   EXITGRID exitGrid;
   UINT16 x;
   UINT16 usNumSaved;
@@ -140,7 +140,7 @@ void LoadExitGrids(INT8 **hBuffer) {
   gfLoadingExitGrids = FALSE;
 }
 
-void AttemptToChangeFloorLevel(INT8 bRelativeZLevel) {
+function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   UINT8 ubLookForLevel = 0;
   UINT16 i;
   if (bRelativeZLevel != 1 && bRelativeZLevel != -1)
@@ -176,7 +176,7 @@ void AttemptToChangeFloorLevel(INT8 bRelativeZLevel) {
   }
 }
 
-UINT16 FindGridNoFromSweetSpotCloseToExitGrid(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -280,7 +280,7 @@ UINT16 FindGridNoFromSweetSpotCloseToExitGrid(SOLDIERTYPE *pSoldier, INT16 sSwee
   }
 }
 
-UINT16 FindClosestExitGrid(SOLDIERTYPE *pSoldier, INT16 sSrcGridNo, INT8 ubRadius) {
+function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16, ubRadius: INT8): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;

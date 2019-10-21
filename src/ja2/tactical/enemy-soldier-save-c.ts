@@ -1,7 +1,7 @@
 BOOLEAN gfRestoringEnemySoldiersFromTempFile = FALSE;
 BOOLEAN gfRestoringCiviliansFromTempFile = FALSE;
 
-void RemoveEnemySoldierTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   CHAR8 zMapName[128];
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS)) {
     // Delete any temp file that is here and toast the flag that say's one exists.
@@ -18,7 +18,7 @@ void RemoveEnemySoldierTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
   }
 }
 
-void RemoveCivilianTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   // CHAR8		zTempName[ 128 ];
   CHAR8 zMapName[128];
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS)) {
@@ -34,7 +34,7 @@ void RemoveCivilianTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
 }
 
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
-BOOLEAN LoadEnemySoldiersFromTempFile() {
+function LoadEnemySoldiersFromTempFile(): BOOLEAN {
   SOLDIERINITNODE *curr;
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
   INT32 i;
@@ -275,7 +275,7 @@ FAIL_LOAD:
 }
 
 // OLD SAVE METHOD:  This is the older way of saving the civilian and the enemies placement into a temp file
-BOOLEAN SaveEnemySoldiersToTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT8 ubFirstIdTeam, UINT8 ubLastIdTeam, BOOLEAN fAppendToFile) {
+function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubFirstIdTeam: UINT8, ubLastIdTeam: UINT8, fAppendToFile: BOOLEAN): BOOLEAN {
   SOLDIERINITNODE *curr;
   SOLDIERTYPE *pSoldier;
   INT32 i;
@@ -542,7 +542,7 @@ FAIL_SAVE:
   return FALSE;
 }
 
-BOOLEAN NewWayOfLoadingEnemySoldiersFromTempFile() {
+function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   SOLDIERINITNODE *curr;
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
   INT32 i;
@@ -836,7 +836,7 @@ FAIL_LOAD:
   return FALSE;
 }
 
-BOOLEAN NewWayOfLoadingCiviliansFromTempFile() {
+function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   SOLDIERINITNODE *curr, *temp;
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
   INT32 i;
@@ -1055,7 +1055,7 @@ FAIL_LOAD:
 
 // If we are saving a game and we are in the sector, we will need to preserve the links between the
 // soldiers and the soldier init list.  Otherwise, the temp file will be deleted.
-BOOLEAN NewWayOfSavingEnemyAndCivliansToTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, BOOLEAN fEnemy, BOOLEAN fValidateOnly) {
+function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: BOOLEAN, fValidateOnly: BOOLEAN): BOOLEAN {
   SOLDIERINITNODE *curr;
   SOLDIERTYPE *pSoldier;
   INT32 i;
@@ -1309,7 +1309,7 @@ FAIL_SAVE:
   return FALSE;
 }
 
-BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(UINT8 *pubNumElites, UINT8 *pubNumRegulars, UINT8 *pubNumAdmins, UINT8 *pubNumCreatures) {
+function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(pubNumElites: Pointer<UINT8>, pubNumRegulars: Pointer<UINT8>, pubNumAdmins: Pointer<UINT8>, pubNumCreatures: Pointer<UINT8>): BOOLEAN {
   //	SOLDIERINITNODE *curr;
   SOLDIERCREATE_STRUCT tempDetailedPlacement;
   INT32 i;

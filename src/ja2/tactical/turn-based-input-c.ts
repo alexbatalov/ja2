@@ -38,12 +38,12 @@ BOOLEAN gfNextFireJam = FALSE;
 
 UINT8 gubCheatLevel = STARTING_CHEAT_LEVEL;
 
-void GetTBMouseButtonInput(UINT32 *puiNewEvent) {
+function GetTBMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryTBLeftButton(puiNewEvent);
   QueryTBRightButton(puiNewEvent);
 }
 
-void QueryTBLeftButton(UINT32 *puiNewEvent) {
+function QueryTBLeftButton(puiNewEvent: Pointer<UINT32>): void {
   SOLDIERTYPE *pSoldier;
   UINT16 usMapPos;
   static BOOLEAN fClickHoldIntercepted = FALSE;
@@ -407,7 +407,7 @@ void QueryTBLeftButton(UINT32 *puiNewEvent) {
   }
 }
 
-void QueryTBRightButton(UINT32 *puiNewEvent) {
+function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
   static BOOLEAN fClickHoldIntercepted = FALSE;
   static BOOLEAN fClickIntercepted = FALSE;
   SOLDIERTYPE *pSoldier;
@@ -607,7 +607,7 @@ void QueryTBRightButton(UINT32 *puiNewEvent) {
 
 extern BOOLEAN gUIActionModeChangeDueToMouseOver;
 
-void GetTBMousePositionInput(UINT32 *puiNewEvent) {
+function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   UINT16 usMapPos;
   static UINT16 usOldMapPos = 0;
   SOLDIERTYPE *pSoldier;
@@ -833,7 +833,7 @@ void GetTBMousePositionInput(UINT32 *puiNewEvent) {
   }
 }
 
-void GetPolledKeyboardInput(UINT32 *puiNewEvent) {
+function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   static BOOLEAN fShifted = FALSE;
   static BOOLEAN fShifted2 = FALSE;
   static BOOLEAN fCtrlDown = FALSE;
@@ -958,7 +958,7 @@ void GetPolledKeyboardInput(UINT32 *puiNewEvent) {
 extern BOOLEAN gfDisableRegionActive;
 extern BOOLEAN gfUserTurnRegionActive;
 
-void GetKeyboardInput(UINT32 *puiNewEvent) {
+function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   InputAtom InputEvent;
   BOOLEAN fKeyTaken = FALSE;
   POINT MousePos;
@@ -2228,7 +2228,7 @@ void GetKeyboardInput(UINT32 *puiNewEvent) {
   }
 }
 
-void HandleTalkingMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
+function HandleTalkingMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointer<UINT32>): void {
   // CHECK ESC KEYS HERE....
   if (pInputEvent->usEvent == KEY_UP) {
     if (pInputEvent->usParam == ESC) {
@@ -2242,7 +2242,7 @@ void HandleTalkingMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
   }
 }
 
-void HandleSectorExitMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
+function HandleSectorExitMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointer<UINT32>): void {
   // CHECK ESC KEYS HERE....
   if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == ESC)) {
     // Handle esc in talking menu
@@ -2252,7 +2252,7 @@ void HandleSectorExitMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
   }
 }
 
-void HandleOpenDoorMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
+function HandleOpenDoorMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointer<UINT32>): void {
   // CHECK ESC KEYS HERE....
   if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == ESC)) {
     // Handle esc in talking menu
@@ -2262,7 +2262,7 @@ void HandleOpenDoorMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
   }
 }
 
-void HandleMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
+function HandleMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointer<UINT32>): void {
   // CHECK ESC KEYS HERE....
   if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == ESC)) {
     // Handle esc in talking menu
@@ -2272,7 +2272,7 @@ void HandleMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
   }
 }
 
-void HandleItemMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
+function HandleItemMenuKeys(pInputEvent: Pointer<InputAtom>, puiNewEvent: Pointer<UINT32>): void {
   // CHECK ESC KEYS HERE....
   if ((pInputEvent->usEvent == KEY_UP) && (pInputEvent->usParam == ESC)) {
     // Handle esc in talking menu
@@ -2281,7 +2281,7 @@ void HandleItemMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent) {
   }
 }
 
-BOOLEAN HandleCheckForExitArrowsInput(BOOLEAN fAdjustConfirm) {
+function HandleCheckForExitArrowsInput(fAdjustConfirm: BOOLEAN): BOOLEAN {
   INT16 sMapPos;
 
   // If not in move mode, return!
@@ -2411,7 +2411,7 @@ BOOLEAN HandleCheckForExitArrowsInput(BOOLEAN fAdjustConfirm) {
 
 // Simple function implementations called by keyboard input
 
-void CreateRandomItem() {
+function CreateRandomItem(): void {
   OBJECTTYPE Object;
   UINT16 usMapPos;
   if (GetMouseMapPos(&usMapPos)) {
@@ -2420,7 +2420,7 @@ void CreateRandomItem() {
   }
 }
 
-void MakeSelectedSoldierTired() {
+function MakeSelectedSoldierTired(): void {
   // Key to make guy get tired!
   SOLDIERTYPE *pSoldier;
   OBJECTTYPE Object;
@@ -2441,7 +2441,7 @@ void MakeSelectedSoldierTired() {
   }
 }
 
-void ToggleRealTime(UINT32 *puiNewEvent) {
+function ToggleRealTime(puiNewEvent: Pointer<UINT32>): void {
   if (gTacticalStatus.uiFlags & TURNBASED) {
     // Change to real-time
     gTacticalStatus.uiFlags &= (~TURNBASED);
@@ -2462,7 +2462,7 @@ void ToggleRealTime(UINT32 *puiNewEvent) {
   gfPlotNewMovement = TRUE;
 }
 
-void ToggleViewAllMercs() {
+function ToggleViewAllMercs(): void {
   // Set option to show all mercs
   if (gTacticalStatus.uiFlags & SHOW_ALL_MERCS) {
     gTacticalStatus.uiFlags &= (~SHOW_ALL_MERCS);
@@ -2474,7 +2474,7 @@ void ToggleViewAllMercs() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void ToggleViewAllItems() {
+function ToggleViewAllItems(): void {
   // Set option to show all mercs
   if (gTacticalStatus.uiFlags & SHOW_ALL_ITEMS) {
     gTacticalStatus.uiFlags &= ~SHOW_ALL_ITEMS;
@@ -2492,7 +2492,7 @@ void ToggleViewAllItems() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void TestExplosion() {
+function TestExplosion(): void {
   UINT16 usMapPos;
   if (GetMouseMapPos(&usMapPos)) {
     EXPLOSION_PARAMS ExpParams;
@@ -2507,7 +2507,7 @@ void TestExplosion() {
   }
 }
 
-void CycleSelectedMercsItem() {
+function CycleSelectedMercsItem(): void {
   UINT16 usOldItem;
   SOLDIERTYPE *pSoldier;
   // Cycle selected guy's item...
@@ -2529,7 +2529,7 @@ void CycleSelectedMercsItem() {
   }
 }
 
-void ToggleWireFrame() {
+function ToggleWireFrame(): void {
   if (gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME]) {
     gGameSettings.fOptions[TOPTION_TOGGLE_WIREFRAME] = FALSE;
 
@@ -2543,7 +2543,7 @@ void ToggleWireFrame() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void RefreshSoldier() {
+function RefreshSoldier(): void {
   SOLDIERTYPE *pSoldier;
   UINT16 usMapPos;
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
@@ -2558,7 +2558,7 @@ void RefreshSoldier() {
     sprintf(gDebugStr, "%d %d %d %d %d %d %d %d", gubWorldMovementCosts[usMapPos][0][0], gubWorldMovementCosts[usMapPos][1][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][2][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][3][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][4][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][5][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][6][gsInterfaceLevel], gubWorldMovementCosts[usMapPos][7][gsInterfaceLevel]);
 }
 
-void ChangeSoldiersBodyType(UINT8 ubBodyType, BOOLEAN fCreateNewPalette) {
+function ChangeSoldiersBodyType(ubBodyType: UINT8, fCreateNewPalette: BOOLEAN): void {
   SOLDIERTYPE *pSoldier;
   if (gusSelectedSoldier != NO_SOLDIER) {
     if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
@@ -2601,7 +2601,7 @@ void ChangeSoldiersBodyType(UINT8 ubBodyType, BOOLEAN fCreateNewPalette) {
   }
 }
 
-void TeleportSelectedSoldier() {
+function TeleportSelectedSoldier(): void {
   SOLDIERTYPE *pSoldier;
   UINT16 usMapPos;
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
@@ -2625,7 +2625,7 @@ void TeleportSelectedSoldier() {
   }
 }
 
-void ToggleTreeTops() {
+function ToggleTreeTops(): void {
   if (gGameSettings.fOptions[TOPTION_TOGGLE_TREE_TOPS]) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, TacticalStr[REMOVING_TREETOPS_STR]);
     WorldHideTrees();
@@ -2641,7 +2641,7 @@ void ToggleTreeTops() {
   InvalidateWorldRedundency();
 }
 
-void ToggleZBuffer() {
+function ToggleZBuffer(): void {
   // Set option to show all mercs
   if (gTacticalStatus.uiFlags & SHOW_Z_BUFFER) {
     gTacticalStatus.uiFlags &= (~SHOW_Z_BUFFER);
@@ -2651,7 +2651,7 @@ void ToggleZBuffer() {
   }
 }
 
-void TogglePlanningMode() {
+function TogglePlanningMode(): void {
   SOLDIERTYPE *pSoldier;
   UINT16 usMapPos;
   // DO ONLY IN TURNED BASED!
@@ -2680,13 +2680,13 @@ void TogglePlanningMode() {
   }
 }
 
-void SetBurstMode() {
+function SetBurstMode(): void {
   if (gusSelectedSoldier != NO_SOLDIER) {
     ChangeWeaponMode(MercPtrs[gusSelectedSoldier]);
   }
 }
 
-void ObliterateSector() {
+function ObliterateSector(): void {
   INT32 cnt;
   SOLDIERTYPE *pTSoldier;
 
@@ -2713,7 +2713,7 @@ void ObliterateSector() {
   }
 }
 
-void RandomizeMercProfile() {
+function RandomizeMercProfile(): void {
   SOLDIERTYPE *pSoldier;
   // Get selected soldier
   if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
@@ -2725,7 +2725,7 @@ void RandomizeMercProfile() {
   }
 }
 
-void JumpFence() {
+function JumpFence(): void {
   SOLDIERTYPE *pSoldier;
   INT8 bDirection;
   if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
@@ -2735,7 +2735,7 @@ void JumpFence() {
   }
 }
 
-void CreateNextCivType() {
+function CreateNextCivType(): void {
   INT16 sWorldX, sWorldY;
   SOLDIERCREATE_STRUCT MercCreateStruct;
   UINT16 usMapPos;
@@ -2771,7 +2771,7 @@ void CreateNextCivType() {
   }
 }
 
-void ToggleCliffDebug() {
+function ToggleCliffDebug(): void {
   // Set option to show all mercs
   if (gTacticalStatus.uiFlags & DEBUGCLIFFS) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_TESTVERSION, L"Cliff debug OFF.");
@@ -2785,7 +2785,7 @@ void ToggleCliffDebug() {
   }
 }
 
-void CreateCow() {
+function CreateCow(): void {
   INT16 sWorldX, sWorldY;
   SOLDIERCREATE_STRUCT MercCreateStruct;
   UINT16 usMapPos;
@@ -2813,7 +2813,7 @@ void CreateCow() {
   }
 }
 
-void CreatePlayerControlledCow() {
+function CreatePlayerControlledCow(): void {
   INT16 sWorldX, sWorldY;
   SOLDIERCREATE_STRUCT MercCreateStruct;
   UINT16 usMapPos;
@@ -2842,10 +2842,10 @@ void CreatePlayerControlledCow() {
   }
 }
 
-void ToggleRealTimeConfirm() {
+function ToggleRealTimeConfirm(): void {
 }
 
-void GrenadeTest1() {
+function GrenadeTest1(): void {
   // Get mousexy
   INT16 sX, sY;
   if (GetMouseXY(&sX, &sY)) {
@@ -2857,7 +2857,7 @@ void GrenadeTest1() {
   }
 }
 
-void GrenadeTest2() {
+function GrenadeTest2(): void {
   // Get mousexy
   INT16 sX, sY;
   if (GetMouseXY(&sX, &sY)) {
@@ -2869,7 +2869,7 @@ void GrenadeTest2() {
   }
 }
 
-void GrenadeTest3() {
+function GrenadeTest3(): void {
   // Get mousexy
   INT16 sX, sY;
   if (GetMouseXY(&sX, &sY)) {
@@ -2881,7 +2881,7 @@ void GrenadeTest3() {
   }
 }
 
-void CreatePlayerControlledMonster() {
+function CreatePlayerControlledMonster(): void {
   INT16 sWorldX, sWorldY;
   UINT16 usMapPos;
   if (GetMouseWorldCoordsInCenter(&sWorldX, &sWorldY) && GetMouseMapPos(&usMapPos)) {
@@ -2910,7 +2910,7 @@ void CreatePlayerControlledMonster() {
   }
 }
 
-INT8 CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fMovementMode) {
+function CheckForAndHandleHandleVehicleInteractiveClick(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, fMovementMode: BOOLEAN): INT8 {
   // Look for an item pool
   INT16 sActionGridNo;
   UINT8 ubDirection;
@@ -2961,7 +2961,7 @@ INT8 CheckForAndHandleHandleVehicleInteractiveClick(SOLDIERTYPE *pSoldier, UINT1
   return 0;
 }
 
-void HandleHandCursorClick(UINT16 usMapPos, UINT32 *puiNewEvent) {
+function HandleHandCursorClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): void {
   SOLDIERTYPE *pSoldier;
   LEVELNODE *pIntTile;
   INT16 sIntTileGridNo;
@@ -3080,13 +3080,13 @@ void HandleHandCursorClick(UINT16 usMapPos, UINT32 *puiNewEvent) {
   }
 }
 
-void ExchangeMessageBoxCallBack(UINT8 bExitValue) {
+function ExchangeMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     SwapMercPositions(gpExchangeSoldier1, gpExchangeSoldier2);
   }
 }
 
-INT8 HandleMoveModeInteractiveClick(UINT16 usMapPos, UINT32 *puiNewEvent) {
+function HandleMoveModeInteractiveClick(usMapPos: UINT16, puiNewEvent: Pointer<UINT32>): INT8 {
   // Look for an item pool
   ITEM_POOL *pItemPool;
   BOOLEAN fContinue = TRUE;
@@ -3192,7 +3192,7 @@ INT8 HandleMoveModeInteractiveClick(UINT16 usMapPos, UINT32 *puiNewEvent) {
   return bReturnCode;
 }
 
-BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier) {
+function HandleUIReloading(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT8 bAPs = 0;
 
   // CHECK OUR CURRENT CURSOR...
@@ -3226,7 +3226,7 @@ BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN ConfirmActionCancel(UINT16 usMapPos, UINT16 usOldMapPos) {
+function ConfirmActionCancel(usMapPos: UINT16, usOldMapPos: UINT16): BOOLEAN {
   // OK, most times we want to leave confirm mode if our
   // gridno is different... but if we are in the grenade throw
   // confirm UI, we want a bigger radius...
@@ -3249,7 +3249,7 @@ BOOLEAN ConfirmActionCancel(UINT16 usMapPos, UINT16 usOldMapPos) {
   return FALSE;
 }
 
-void ChangeCurrentSquad(INT32 iSquad) {
+function ChangeCurrentSquad(iSquad: INT32): void {
   // only allow if nothing in hand and the Change Squad button for whichever panel we're in must be enabled
   if ((gpItemPointer == NULL) && !gfDisableTacticalPanelButtons && ((gsCurInterfacePanel != TEAM_PANEL) || (ButtonList[iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]]->uiFlags & BUTTON_ENABLED))) {
     if (IsSquadOnCurrentTacticalMap(iSquad)) {
@@ -3258,7 +3258,7 @@ void ChangeCurrentSquad(INT32 iSquad) {
   }
 }
 
-void HandleSelectMercSlot(UINT8 ubPanelSlot, INT8 bCode) {
+function HandleSelectMercSlot(ubPanelSlot: UINT8, bCode: INT8): void {
   UINT8 ubID;
 
   if (GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot, &ubID)) {
@@ -3269,7 +3269,7 @@ void HandleSelectMercSlot(UINT8 ubPanelSlot, INT8 bCode) {
   }
 }
 
-void TestMeanWhile(INT32 iID) {
+function TestMeanWhile(iID: INT32): void {
   MEANWHILE_DEFINITION MeanwhileDef;
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
@@ -3302,7 +3302,7 @@ void TestMeanWhile(INT32 iID) {
   ScheduleMeanwhileEvent(&MeanwhileDef, 10);
 }
 
-void EscapeUILock() {
+function EscapeUILock(): void {
   // UNLOCK UI
   UnSetUIBusy((UINT8)gusSelectedSoldier);
 
@@ -3313,7 +3313,7 @@ void EscapeUILock() {
   UIHandleLUIEndLock(NULL);
 }
 
-void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight) {
+function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
   // If we have multiple guys selected, make all change stance!
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
@@ -3337,7 +3337,7 @@ void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight) {
   }
 }
 
-void ToggleStealthMode(SOLDIERTYPE *pSoldier) {
+function ToggleStealthMode(pSoldier: Pointer<SOLDIERTYPE>): void {
   // nothing in hand and either not in SM panel, or the matching button is enabled if we are in SM panel
   if ((gsCurInterfacePanel != SM_PANEL) || (ButtonList[giSMStealthButton]->uiFlags & BUTTON_ENABLED)) {
     // ATE: Toggle stealth
@@ -3357,7 +3357,7 @@ void ToggleStealthMode(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleStealthChangeFromUIKeys() {
+function HandleStealthChangeFromUIKeys(): void {
   // If we have multiple guys selected, make all change stance!
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
@@ -3384,7 +3384,7 @@ void HandleStealthChangeFromUIKeys() {
   }
 }
 
-void TestCapture() {
+function TestCapture(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   UINT32 uiNumChosen = 0;
@@ -3413,7 +3413,7 @@ void TestCapture() {
   EndCaptureSequence();
 }
 
-void PopupAssignmentMenuInTactical(SOLDIERTYPE *pSoldier) {
+function PopupAssignmentMenuInTactical(pSoldier: Pointer<SOLDIERTYPE>): void {
   // do something
   fShowAssignmentMenu = TRUE;
   CreateDestroyAssignmentPopUpBoxes();

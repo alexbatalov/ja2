@@ -308,7 +308,7 @@ UINT32 guiHelpScreenScrollArrowImage[2];
 
 // ppp
 
-void InitHelpScreenSystem() {
+function InitHelpScreenSystem(): void {
   // set some values
   memset(&gHelpScreen, 0, sizeof(gHelpScreen));
 
@@ -321,7 +321,7 @@ void InitHelpScreenSystem() {
   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = FALSE;
 }
 
-BOOLEAN ShouldTheHelpScreenComeUp(UINT8 ubScreenID, BOOLEAN fForceHelpScreenToComeUp) {
+function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: BOOLEAN): BOOLEAN {
   // if the screen is being forsced to come up ( user pressed 'h' )
   if (fForceHelpScreenToComeUp) {
     // Set thefact that the user broughtthe help screen up
@@ -386,7 +386,7 @@ HELP_SCREEN_SHOULD_COME_UP:
   return TRUE;
 }
 
-void HelpScreenHandler() {
+function HelpScreenHandler(): void {
   // if we are just entering the help screen
   if (gfHelpScreenEntry) {
     // setup the help screen
@@ -437,7 +437,7 @@ void HelpScreenHandler() {
   }
 }
 
-BOOLEAN EnterHelpScreen() {
+function EnterHelpScreen(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX, usPosY; //, usWidth, usHeight;
   //	INT32	iStartLoc;
@@ -553,7 +553,7 @@ BOOLEAN EnterHelpScreen() {
   return TRUE;
 }
 
-void HandleHelpScreen() {
+function HandleHelpScreen(): void {
   // if any of the possible screens need to have a some code done every loop..  its done in here
   SpecialHandlerCode();
 
@@ -579,7 +579,7 @@ void HandleHelpScreen() {
   RefreshAllHelpScreenButtons();
 }
 
-void RenderHelpScreen() {
+function RenderHelpScreen(): void {
   // rrr
 
   if (gfHaveRenderedFirstFrameToSaveBuffer) {
@@ -610,7 +610,7 @@ void RenderHelpScreen() {
   }
 }
 
-void ExitHelpScreen() {
+function ExitHelpScreen(): void {
   INT32 i;
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
@@ -670,7 +670,7 @@ void ExitHelpScreen() {
   SaveGameSettings();
 }
 
-BOOLEAN DrawHelpScreenBackGround() {
+function DrawHelpScreenBackGround(): BOOLEAN {
   HVOBJECT hPixHandle;
   UINT16 usPosX;
 
@@ -692,7 +692,7 @@ BOOLEAN DrawHelpScreenBackGround() {
   return TRUE;
 }
 
-void SetSizeAndPropertiesOfHelpScreen() {
+function SetSizeAndPropertiesOfHelpScreen(): void {
   // new screen:
   gHelpScreen.bNumberOfButtons = 0;
 
@@ -765,7 +765,7 @@ void SetSizeAndPropertiesOfHelpScreen() {
     gHelpScreen.usLeftMarginPosX = gHelpScreen.usScreenLocX + HELP_SCREEN_TEXT_LEFT_MARGIN;
 }
 
-void CreateHelpScreenButtons() {
+function CreateHelpScreenButtons(): void {
   UINT16 usPosX, usPosY;
   CHAR16 sText[1024];
   INT32 i;
@@ -802,7 +802,7 @@ void CreateHelpScreenButtons() {
   }
 }
 
-void GetHelpScreenUserInput() {
+function GetHelpScreenUserInput(): void {
   InputAtom Event;
   POINT MousePos;
 
@@ -897,7 +897,7 @@ void GetHelpScreenUserInput() {
 }
 
 // Handles anything spcial that must be done when exiting the specific screen we are about to reenter ( eg. dirtying of the screen )
-void HelpScreenSpecialExitCode() {
+function HelpScreenSpecialExitCode(): void {
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
     case HELP_SCREEN_LAPTOP:
@@ -929,12 +929,12 @@ void HelpScreenSpecialExitCode() {
   }
 }
 
-void PrepareToExitHelpScreen() {
+function PrepareToExitHelpScreen(): void {
   gfHelpScreenExit = TRUE;
 }
 
 // Handles anything special that must be done when exiting the specific screen we are about to reenter ( eg. dirtying of the screen )
-void SpecialHandlerCode() {
+function SpecialHandlerCode(): void {
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreen) {
     case HELP_SCREEN_LAPTOP:
@@ -964,7 +964,7 @@ void SpecialHandlerCode() {
   }
 }
 
-UINT16 RenderSpecificHelpScreen() {
+function RenderSpecificHelpScreen(): UINT16 {
   UINT16 usNumVerticalPixelsDisplayed = 0;
   // new screen:
 
@@ -1010,7 +1010,7 @@ UINT16 RenderSpecificHelpScreen() {
   return usNumVerticalPixelsDisplayed;
 }
 
-void GetHelpScreenTextPositions(UINT16 *pusPosX, UINT16 *pusPosY, UINT16 *pusWidth) {
+function GetHelpScreenTextPositions(pusPosX: Pointer<UINT16>, pusPosY: Pointer<UINT16>, pusWidth: Pointer<UINT16>): void {
   // if there are buttons
   if (pusPosX != NULL)
     *pusPosX = 0;
@@ -1022,7 +1022,7 @@ void GetHelpScreenTextPositions(UINT16 *pusPosX, UINT16 *pusPosY, UINT16 *pusWid
     *pusPosY = 0;
 }
 
-void DisplayCurrentScreenTitleAndFooter() {
+function DisplayCurrentScreenTitleAndFooter(): void {
   INT32 iStartLoc = -1;
   CHAR16 zText[1024];
   UINT16 usPosX = 0, usPosY = 0, usWidth = 0;
@@ -1108,7 +1108,7 @@ void DisplayCurrentScreenTitleAndFooter() {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-void BtnHelpScreenBtnsCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnHelpScreenBtnsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     //		btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -1142,7 +1142,7 @@ void BtnHelpScreenBtnsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ChangeToHelpScreenSubPage(INT8 bNewPage) {
+function ChangeToHelpScreenSubPage(bNewPage: INT8): void {
   INT8 i;
 
   // if for some reason, we are assigning a lower number
@@ -1180,7 +1180,7 @@ void ChangeToHelpScreenSubPage(INT8 bNewPage) {
   ChangeHelpScreenSubPage();
 }
 
-void GetHelpScreenText(UINT32 uiRecordToGet, STR16 pText) {
+function GetHelpScreenText(uiRecordToGet: UINT32, pText: STR16): void {
   INT32 iStartLoc = -1;
 
   iStartLoc = HELPSCREEN_RECORD_SIZE * uiRecordToGet;
@@ -1188,7 +1188,7 @@ void GetHelpScreenText(UINT32 uiRecordToGet, STR16 pText) {
 }
 
 // returns the number of vertical pixels printed
-UINT16 GetAndDisplayHelpScreenText(UINT32 uiRecord, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth) {
+function GetAndDisplayHelpScreenText(uiRecord: UINT32, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16): UINT16 {
   CHAR16 zText[1024];
   UINT16 usNumVertPixels = 0;
   UINT32 uiStartLoc;
@@ -1209,7 +1209,7 @@ UINT16 GetAndDisplayHelpScreenText(UINT32 uiRecord, UINT16 usPosX, UINT16 usPosY
   return usNumVertPixels;
 }
 
-void BtnHelpScreenDontShowHelpAgainCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnHelpScreenDontShowHelpAgainCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   //	UINT8	ubButton = (UINT8)MSYS_GetBtnUserData( btn, 0 );
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -1254,12 +1254,12 @@ void HelpScreenDontShowHelpAgainToggleTextRegionCallBack(MOUSE_REGION * pRegion,
 */
 
 // set the fact the we have chmaged to a new screen
-void NewScreenSoResetHelpScreen() {
+function NewScreenSoResetHelpScreen(): void {
   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = FALSE;
   gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
 }
 
-void BtnHelpScreenExitCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnHelpScreenExitCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -1277,7 +1277,7 @@ void BtnHelpScreenExitCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-UINT16 RenderLaptopHelpScreen() {
+function RenderLaptopHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1379,7 +1379,7 @@ UINT16 RenderLaptopHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-UINT16 RenderMapScreenNoOneHiredYetHelpScreen() {
+function RenderMapScreenNoOneHiredYetHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1413,7 +1413,7 @@ UINT16 RenderMapScreenNoOneHiredYetHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-UINT16 RenderMapScreenNotYetInArulcoHelpScreen() {
+function RenderMapScreenNotYetInArulcoHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1446,7 +1446,7 @@ UINT16 RenderMapScreenNotYetInArulcoHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-UINT16 RenderMapScreenSectorInventoryHelpScreen() {
+function RenderMapScreenSectorInventoryHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1480,7 +1480,7 @@ UINT16 RenderMapScreenSectorInventoryHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-UINT16 RenderTacticalHelpScreen() {
+function RenderTacticalHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1581,7 +1581,7 @@ UINT16 RenderTacticalHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-UINT16 RenderMapScreenHelpScreen() {
+function RenderMapScreenHelpScreen(): UINT16 {
   UINT16 usPosX, usPosY, usWidth, usNumVertPixels;
   UINT8 ubCnt;
   UINT16 usTotalNumberOfVerticalPixels = 0;
@@ -1712,7 +1712,7 @@ UINT16 RenderMapScreenHelpScreen() {
   return usTotalNumberOfVerticalPixels;
 }
 
-void RefreshAllHelpScreenButtons() {
+function RefreshAllHelpScreenButtons(): void {
   UINT8 i;
 
   // loop through all the buttons, and refresh them
@@ -1730,7 +1730,7 @@ void RefreshAllHelpScreenButtons() {
   ButtonList[giHelpScreenScrollArrows[1]]->uiFlags |= BUTTON_DIRTY;
 }
 
-INT8 HelpScreenDetermineWhichMapScreenHelpToShow() {
+function HelpScreenDetermineWhichMapScreenHelpToShow(): INT8 {
   if (fShowMapInventoryPool) {
     return HELP_SCREEN_MAPSCREEN_SECTOR_INVENTORY;
   }
@@ -1746,7 +1746,7 @@ INT8 HelpScreenDetermineWhichMapScreenHelpToShow() {
   return HELP_SCREEN_MAPSCREEN;
 }
 
-BOOLEAN CreateHelpScreenTextBuffer() {
+function CreateHelpScreenTextBuffer(): BOOLEAN {
   VSURFACE_DESC vs_desc;
 
   // Create a background video surface to blt the face onto
@@ -1759,11 +1759,11 @@ BOOLEAN CreateHelpScreenTextBuffer() {
   return TRUE;
 }
 
-void DestroyHelpScreenTextBuffer() {
+function DestroyHelpScreenTextBuffer(): void {
   DeleteVideoSurfaceFromIndex(guiHelpScreenTextBufferSurface);
 }
 
-void RenderCurrentHelpScreenTextToBuffer() {
+function RenderCurrentHelpScreenTextToBuffer(): void {
   // clear the buffer ( use 0, black as a transparent color
   ClearHelpScreenTextBuffer();
 
@@ -1774,7 +1774,7 @@ void RenderCurrentHelpScreenTextToBuffer() {
   gHelpScreen.usTotalNumberOfLinesInBuffer = gHelpScreen.usTotalNumberOfPixelsInBuffer / (HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER);
 }
 
-void RenderTextBufferToScreen() {
+function RenderTextBufferToScreen(): void {
   HVSURFACE hDestVSurface, hSrcVSurface;
   SGPRect SrcRect;
 
@@ -1791,7 +1791,7 @@ void RenderTextBufferToScreen() {
   DisplayHelpScreenTextBufferScrollBox();
 }
 
-void ChangeHelpScreenSubPage() {
+function ChangeHelpScreenSubPage(): void {
   // reset
   gHelpScreen.iLineAtTopOfTextBuffer = 0;
 
@@ -1807,7 +1807,7 @@ void ChangeHelpScreenSubPage() {
   }
 }
 
-void ClearHelpScreenTextBuffer() {
+function ClearHelpScreenTextBuffer(): void {
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
 
@@ -1819,7 +1819,7 @@ void ClearHelpScreenTextBuffer() {
 }
 
 // - is up, + is down
-void ChangeTopLineInTextBufferByAmount(INT32 iAmouontToMove) {
+function ChangeTopLineInTextBufferByAmount(iAmouontToMove: INT32): void {
   // if we are moving up
   if (iAmouontToMove < 0) {
     if (gHelpScreen.iLineAtTopOfTextBuffer + iAmouontToMove >= 0) {
@@ -1856,7 +1856,7 @@ void ChangeTopLineInTextBufferByAmount(INT32 iAmouontToMove) {
   gHelpScreen.ubHelpScreenDirty = HLP_SCRN_DRTY_LVL_REFRESH_TEXT;
 }
 
-void DisplayHelpScreenTextBufferScrollBox() {
+function DisplayHelpScreenTextBufferScrollBox(): void {
   INT32 iSizeOfBox;
   INT32 iTopPosScrollBox = 0;
   UINT8 *pDestBuf;
@@ -1900,7 +1900,7 @@ void DisplayHelpScreenTextBufferScrollBox() {
   }
 }
 
-void CreateScrollAreaButtons() {
+function CreateScrollAreaButtons(): void {
   UINT16 usPosX, usWidth, usPosY;
   INT32 iPosY, iHeight;
 
@@ -1942,7 +1942,7 @@ void CreateScrollAreaButtons() {
   SetButtonCursor(giHelpScreenScrollArrows[1], gHelpScreen.usCursor);
 }
 
-void DeleteScrollArrowButtons() {
+function DeleteScrollArrowButtons(): void {
   INT8 i;
   // remove the mouse region that blankets
   MSYS_RemoveRegion(&gHelpScreenScrollArea);
@@ -1953,7 +1953,7 @@ void DeleteScrollArrowButtons() {
   }
 }
 
-void CalculateHeightAndPositionForHelpScreenScrollBox(INT32 *piHeightOfScrollBox, INT32 *piTopOfScrollBox) {
+function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: Pointer<INT32>, piTopOfScrollBox: Pointer<INT32>): void {
   INT32 iSizeOfBox, iTopPosScrollBox;
   FLOAT dPercentSizeOfBox = 0;
   FLOAT dTemp = 0;
@@ -1984,7 +1984,7 @@ void CalculateHeightAndPositionForHelpScreenScrollBox(INT32 *piHeightOfScrollBox
     *piTopOfScrollBox = iTopPosScrollBox;
 }
 
-void SelectHelpScrollAreaCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectHelpScrollAreaCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gfScrollBoxIsScrolling = FALSE;
@@ -1996,7 +1996,7 @@ void SelectHelpScrollAreaCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectHelpScrollAreaMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectHelpScrollAreaMovementCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     //		InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -2007,7 +2007,7 @@ void SelectHelpScrollAreaMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason) 
   }
 }
 
-void HelpScreenMouseMoveScrollBox(INT32 usMousePosY) {
+function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
   INT32 iPosY, iHeight;
   INT32 iNumberOfIncrements = 0;
   FLOAT dSizeOfIncrement = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / (FLOAT)gHelpScreen.usTotalNumberOfLinesInBuffer);
@@ -2059,7 +2059,7 @@ void HelpScreenMouseMoveScrollBox(INT32 usMousePosY) {
   }
 }
 
-void BtnHelpScreenScrollArrowsCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnHelpScreenScrollArrowsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -2094,7 +2094,7 @@ void BtnHelpScreenScrollArrowsCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN AreWeClickingOnScrollBar(INT32 usMousePosY) {
+function AreWeClickingOnScrollBar(usMousePosY: INT32): BOOLEAN {
   INT32 iPosY, iHeight;
 
   CalculateHeightAndPositionForHelpScreenScrollBox(&iHeight, &iPosY);

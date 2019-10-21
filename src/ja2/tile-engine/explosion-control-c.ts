@@ -82,7 +82,7 @@ const NUM_EXPLOSION_SLOTS = 100;
 EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
 UINT32 guiNumExplosions = 0;
 
-INT32 GetFreeExplosion(void) {
+function GetFreeExplosion(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumExplosions; uiCount++) {
@@ -96,7 +96,7 @@ INT32 GetFreeExplosion(void) {
   return -1;
 }
 
-void RecountExplosions(void) {
+function RecountExplosions(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumExplosions - 1; (uiCount >= 0); uiCount--) {
@@ -108,7 +108,7 @@ void RecountExplosions(void) {
 }
 
 // GENERATE EXPLOSION
-void InternalIgniteExplosion(UINT8 ubOwner, INT16 sX, INT16 sY, INT16 sZ, INT16 sGridNo, UINT16 usItem, BOOLEAN fLocate, INT8 bLevel) {
+function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, fLocate: BOOLEAN, bLevel: INT8): void {
   EXPLOSION_PARAMS ExpParams;
 
   // Double check that we are using an explosive!
@@ -143,11 +143,11 @@ void InternalIgniteExplosion(UINT8 ubOwner, INT16 sX, INT16 sY, INT16 sZ, INT16 
   GenerateExplosion(&ExpParams);
 }
 
-void IgniteExplosion(UINT8 ubOwner, INT16 sX, INT16 sY, INT16 sZ, INT16 sGridNo, UINT16 usItem, INT8 bLevel) {
+function IgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, bLevel: INT8): void {
   InternalIgniteExplosion(ubOwner, sX, sY, sZ, sGridNo, usItem, TRUE, bLevel);
 }
 
-void GenerateExplosion(EXPLOSION_PARAMS *pExpParams) {
+function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
   EXPLOSIONTYPE *pExplosion;
   UINT32 uiFlags;
   UINT8 ubOwner;
@@ -198,7 +198,7 @@ void GenerateExplosion(EXPLOSION_PARAMS *pExpParams) {
   }
 }
 
-void GenerateExplosionFromExplosionPointer(EXPLOSIONTYPE *pExplosion) {
+function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE>): void {
   UINT32 uiFlags;
   UINT8 ubOwner;
   UINT8 ubTypeID;
@@ -300,11 +300,11 @@ void GenerateExplosionFromExplosionPointer(EXPLOSIONTYPE *pExplosion) {
   PlayJA2Sample(uiSoundID, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
-void UpdateExplosionFrame(INT32 iIndex, INT16 sCurrentFrame) {
+function UpdateExplosionFrame(iIndex: INT32, sCurrentFrame: INT16): void {
   gExplosionData[iIndex].sCurrentFrame = sCurrentFrame;
 }
 
-void RemoveExplosionData(INT32 iIndex) {
+function RemoveExplosionData(iIndex: INT32): void {
   gExplosionData[iIndex].fAllocated = FALSE;
 
   if (gExplosionData[iIndex].iLightID != -1) {
@@ -312,7 +312,7 @@ void RemoveExplosionData(INT32 iIndex) {
   }
 }
 
-void HandleFencePartnerCheck(INT16 sStructGridNo) {
+function HandleFencePartnerCheck(sStructGridNo: INT16): void {
   STRUCTURE *pFenceStructure, *pFenceBaseStructure;
   LEVELNODE *pFenceNode;
   INT8 bFenceDestructionPartner = -1;
@@ -352,7 +352,7 @@ void HandleFencePartnerCheck(INT16 sStructGridNo) {
   }
 }
 
-BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNextCurrent, INT16 sGridNo, INT16 sWoundAmt, UINT32 uiDist, BOOLEAN *pfRecompileMovementCosts, BOOLEAN fOnlyWalls, BOOLEAN fSubSequentMultiTilesTransitionDamage, UINT8 ubOwner, INT8 bLevel) {
+function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCurrent: Pointer<Pointer<STRUCTURE>>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<BOOLEAN>, fOnlyWalls: BOOLEAN, fSubSequentMultiTilesTransitionDamage: BOOLEAN, ubOwner: UINT8, bLevel: INT8): BOOLEAN {
   INT16 sX, sY;
   STRUCTURE *pBase, *pWallStruct, *pAttached, *pAttachedBase;
   LEVELNODE *pNode = NULL, *pNewNode = NULL, *pAttachedNode;
@@ -867,7 +867,7 @@ BOOLEAN ExplosiveDamageStructureAtGridNo(STRUCTURE *pCurrent, STRUCTURE **ppNext
 
 STRUCTURE *gStruct;
 
-void ExplosiveDamageGridNo(INT16 sGridNo, INT16 sWoundAmt, UINT32 uiDist, BOOLEAN *pfRecompileMovementCosts, BOOLEAN fOnlyWalls, INT8 bMultiStructSpecialFlag, BOOLEAN fSubSequentMultiTilesTransitionDamage, UINT8 ubOwner, INT8 bLevel) {
+function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<BOOLEAN>, fOnlyWalls: BOOLEAN, bMultiStructSpecialFlag: INT8, fSubSequentMultiTilesTransitionDamage: BOOLEAN, ubOwner: UINT8, bLevel: INT8): void {
   STRUCTURE *pCurrent, *pNextCurrent, *pStructure;
   STRUCTURE *pBaseStructure;
   INT16 sDesiredLevel;
@@ -985,7 +985,7 @@ void ExplosiveDamageGridNo(INT16 sGridNo, INT16 sWoundAmt, UINT32 uiDist, BOOLEA
   }
 }
 
-BOOLEAN DamageSoldierFromBlast(UINT8 ubPerson, UINT8 ubOwner, INT16 sBombGridNo, INT16 sWoundAmt, INT16 sBreathAmt, UINT32 uiDist, UINT16 usItem, INT16 sSubsequent) {
+function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: INT16, sWoundAmt: INT16, sBreathAmt: INT16, uiDist: UINT32, usItem: UINT16, sSubsequent: INT16): BOOLEAN {
   SOLDIERTYPE *pSoldier;
   INT16 sNewWoundAmt = 0;
   UINT8 ubDirection;
@@ -1022,7 +1022,7 @@ BOOLEAN DamageSoldierFromBlast(UINT8 ubPerson, UINT8 ubOwner, INT16 sBombGridNo,
   return TRUE;
 }
 
-BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE *pExplosive, INT16 sSubsequent, BOOLEAN fRecompileMovementCosts, INT16 sWoundAmt, INT16 sBreathAmt, UINT8 ubOwner) {
+function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EXPLOSIVETYPE>, sSubsequent: INT16, fRecompileMovementCosts: BOOLEAN, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): BOOLEAN {
   INT8 bPosOfMask = NO_SLOT;
 
   if (!pSoldier->bActive || !pSoldier->bInSector || !pSoldier->bLife || AM_A_ROBOT(pSoldier)) {
@@ -1129,7 +1129,7 @@ BOOLEAN DishOutGasDamage(SOLDIERTYPE *pSoldier, EXPLOSIVETYPE *pExplosive, INT16
   return fRecompileMovementCosts;
 }
 
-BOOLEAN ExpAffect(INT16 sBombGridNo, INT16 sGridNo, UINT32 uiDist, UINT16 usItem, UINT8 ubOwner, INT16 sSubsequent, BOOLEAN *pfMercHit, INT8 bLevel, INT32 iSmokeEffectID) {
+function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: UINT16, ubOwner: UINT8, sSubsequent: INT16, pfMercHit: Pointer<BOOLEAN>, bLevel: INT8, iSmokeEffectID: INT32): BOOLEAN {
   INT16 sWoundAmt = 0, sBreathAmt = 0, sNewWoundAmt = 0, sNewBreathAmt = 0, sStructDmgAmt;
   UINT8 ubPerson;
   SOLDIERTYPE *pSoldier;
@@ -1491,7 +1491,7 @@ BOOLEAN ExpAffect(INT16 sBombGridNo, INT16 sGridNo, UINT32 uiDist, UINT16 usItem
   return fRecompileMovementCosts;
 }
 
-void GetRayStopInfo(UINT32 uiNewSpot, UINT8 ubDir, INT8 bLevel, BOOLEAN fSmokeEffect, INT32 uiCurRange, INT32 *piMaxRange, UINT8 *pubKeepGoing) {
+function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEffect: BOOLEAN, uiCurRange: INT32, piMaxRange: Pointer<INT32>, pubKeepGoing: Pointer<UINT8>): void {
   INT8 bStructHeight;
   UINT8 ubMovementCost;
   INT8 Blocking, BlockingTemp;
@@ -1661,7 +1661,7 @@ void GetRayStopInfo(UINT32 uiNewSpot, UINT8 ubDir, INT8 bLevel, BOOLEAN fSmokeEf
   }
 }
 
-void SpreadEffect(INT16 sGridNo, UINT8 ubRadius, UINT16 usItem, UINT8 ubOwner, BOOLEAN fSubsequent, INT8 bLevel, INT32 iSmokeEffectID) {
+function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: BOOLEAN, bLevel: INT8, iSmokeEffectID: INT32): void {
   INT32 uiNewSpot, uiTempSpot, uiBranchSpot, cnt, branchCnt;
   INT32 uiTempRange, ubBranchRange;
   UINT8 ubDir, ubBranchDir, ubKeepGoing;
@@ -1842,7 +1842,7 @@ void SpreadEffect(INT16 sGridNo, UINT8 ubRadius, UINT16 usItem, UINT8 ubOwner, B
   }
 }
 
-void ToggleActionItemsByFrequency(INT8 bFrequency) {
+function ToggleActionItemsByFrequency(bFrequency: INT8): void {
   UINT32 uiWorldBombIndex;
   OBJECTTYPE *pObj;
 
@@ -1865,7 +1865,7 @@ void ToggleActionItemsByFrequency(INT8 bFrequency) {
   }
 }
 
-void TogglePressureActionItemsInGridNo(INT16 sGridNo) {
+function TogglePressureActionItemsInGridNo(sGridNo: INT16): void {
   UINT32 uiWorldBombIndex;
   OBJECTTYPE *pObj;
 
@@ -1886,7 +1886,7 @@ void TogglePressureActionItemsInGridNo(INT16 sGridNo) {
   }
 }
 
-void DelayedBillyTriggerToBlockOnExit(void) {
+function DelayedBillyTriggerToBlockOnExit(): void {
   if (WhoIsThere2(gsTempActionGridNo, 0) == NOBODY) {
     TriggerNPCRecord(BILLY, 6);
   } else {
@@ -1895,11 +1895,11 @@ void DelayedBillyTriggerToBlockOnExit(void) {
   }
 }
 
-void BillyBlocksDoorCallback(void) {
+function BillyBlocksDoorCallback(): void {
   TriggerNPCRecord(BILLY, 6);
 }
 
-BOOLEAN HookerInRoom(UINT8 ubRoom) {
+function HookerInRoom(ubRoom: UINT8): BOOLEAN {
   UINT8 ubLoop, ubTempRoom;
   SOLDIERTYPE *pSoldier;
 
@@ -1916,7 +1916,7 @@ BOOLEAN HookerInRoom(UINT8 ubRoom) {
   return FALSE;
 }
 
-void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
+function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
   STRUCTURE *pStructure;
 
   switch (pObj->bActionValue) {
@@ -2253,7 +2253,7 @@ void PerformItemAction(INT16 sGridNo, OBJECTTYPE *pObj) {
   }
 }
 
-void AddBombToQueue(UINT32 uiWorldBombIndex, UINT32 uiTimeStamp) {
+function AddBombToQueue(uiWorldBombIndex: UINT32, uiTimeStamp: UINT32): void {
   if (gubElementsOnExplosionQueue == MAX_BOMB_QUEUE) {
     return;
   }
@@ -2271,7 +2271,7 @@ void AddBombToQueue(UINT32 uiWorldBombIndex, UINT32 uiTimeStamp) {
   gfExplosionQueueActive = TRUE;
 }
 
-void HandleExplosionQueue(void) {
+function HandleExplosionQueue(): void {
   UINT32 uiIndex;
   UINT32 uiWorldBombIndex;
   UINT32 uiCurrentTime;
@@ -2379,7 +2379,7 @@ void HandleExplosionQueue(void) {
   }
 }
 
-void DecayBombTimers(void) {
+function DecayBombTimers(): void {
   UINT32 uiWorldBombIndex;
   UINT32 uiTimeStamp;
   OBJECTTYPE *pObj;
@@ -2412,7 +2412,7 @@ void DecayBombTimers(void) {
   }
 }
 
-void SetOffBombsByFrequency(UINT8 ubID, INT8 bFrequency) {
+function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
   UINT32 uiWorldBombIndex;
   UINT32 uiTimeStamp;
   OBJECTTYPE *pObj;
@@ -2439,7 +2439,7 @@ void SetOffBombsByFrequency(UINT8 ubID, INT8 bFrequency) {
   }
 }
 
-void SetOffPanicBombs(UINT8 ubID, INT8 bPanicTrigger) {
+function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
   // need to turn off gridnos & flags in gTacticalStatus
   gTacticalStatus.sPanicTriggerGridNo[bPanicTrigger] = NOWHERE;
   if ((gTacticalStatus.sPanicTriggerGridNo[0] == NOWHERE) && (gTacticalStatus.sPanicTriggerGridNo[1] == NOWHERE) && (gTacticalStatus.sPanicTriggerGridNo[2] == NOWHERE)) {
@@ -2470,7 +2470,7 @@ void SetOffPanicBombs(UINT8 ubID, INT8 bPanicTrigger) {
   }
 }
 
-BOOLEAN SetOffBombsInGridNo(UINT8 ubID, INT16 sGridNo, BOOLEAN fAllBombs, INT8 bLevel) {
+function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bLevel: INT8): BOOLEAN {
   UINT32 uiWorldBombIndex;
   UINT32 uiTimeStamp;
   OBJECTTYPE *pObj;
@@ -2521,7 +2521,7 @@ BOOLEAN SetOffBombsInGridNo(UINT8 ubID, INT16 sGridNo, BOOLEAN fAllBombs, INT8 b
   return fFoundMine;
 }
 
-void ActivateSwitchInGridNo(UINT8 ubID, INT16 sGridNo) {
+function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
   UINT32 uiWorldBombIndex;
   OBJECTTYPE *pObj;
 
@@ -2543,7 +2543,7 @@ void ActivateSwitchInGridNo(UINT8 ubID, INT16 sGridNo) {
   }
 }
 
-BOOLEAN SaveExplosionTableToSaveGameFile(HWFILE hFile) {
+function SaveExplosionTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT32 uiExplosionCount = 0;
   UINT32 uiCnt;
@@ -2601,7 +2601,7 @@ BOOLEAN SaveExplosionTableToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadExplosionTableFromSavedGameFile(HWFILE hFile) {
+function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiExplosionCount = 0;
   UINT32 uiCnt;
@@ -2652,7 +2652,7 @@ BOOLEAN LoadExplosionTableFromSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN DoesSAMExistHere(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 sGridNo) {
+function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16): BOOLEAN {
   INT32 cnt;
   INT16 sSectorNo;
 
@@ -2676,7 +2676,7 @@ BOOLEAN DoesSAMExistHere(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 s
   return FALSE;
 }
 
-void UpdateAndDamageSAMIfFound(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 sGridNo, UINT8 ubDamage) {
+function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16, ubDamage: UINT8): void {
   INT16 sSectorNo;
 
   // OK, First check if SAM exists, and if not, return
@@ -2699,7 +2699,7 @@ void UpdateAndDamageSAMIfFound(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, I
   // ATE: GRAPHICS UPDATE WILL GET DONE VIA NORMAL EXPLOSION CODE.....
 }
 
-void UpdateSAMDoneRepair(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
+function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   INT32 cnt;
   INT16 sSectorNo;
   BOOLEAN fInSector = FALSE;
@@ -2754,7 +2754,7 @@ void UpdateSAMDoneRepair(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
 // loop through civ team and find
 // anybody who is an NPC and
 // see if they get angry
-void HandleBuldingDestruction(INT16 sGridNo, UINT8 ubOwner) {
+function HandleBuldingDestruction(sGridNo: INT16, ubOwner: UINT8): void {
   SOLDIERTYPE *pSoldier;
   UINT8 cnt;
 
@@ -2783,7 +2783,7 @@ void HandleBuldingDestruction(INT16 sGridNo, UINT8 ubOwner) {
   }
 }
 
-INT32 FindActiveTimedBomb(void) {
+function FindActiveTimedBomb(): INT32 {
   UINT32 uiWorldBombIndex;
   UINT32 uiTimeStamp;
   OBJECTTYPE *pObj;
@@ -2803,7 +2803,7 @@ INT32 FindActiveTimedBomb(void) {
   return -1;
 }
 
-BOOLEAN ActiveTimedBombExists(void) {
+function ActiveTimedBombExists(): BOOLEAN {
   if (gfWorldLoaded) {
     return FindActiveTimedBomb() != -1;
   } else {
@@ -2811,7 +2811,7 @@ BOOLEAN ActiveTimedBombExists(void) {
   }
 }
 
-void RemoveAllActiveTimedBombs(void) {
+function RemoveAllActiveTimedBombs(): void {
   INT32 iItemIndex;
 
   do {

@@ -43,7 +43,7 @@ UINT32 guiSHORT2HINDENT;
 const CHAR_PROFILE_BACKGROUND_TILE_WIDTH = 125;
 const CHAR_PROFILE_BACKGROUND_TILE_HEIGHT = 100;
 
-BOOLEAN LoadProfileBackGround(void) {
+function LoadProfileBackGround(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // this procedure will load in the graphics for the generic background
@@ -55,14 +55,14 @@ BOOLEAN LoadProfileBackGround(void) {
   return TRUE;
 }
 
-void RemoveProfileBackGround(void) {
+function RemoveProfileBackGround(): void {
   // remove background
   DeleteVideoObjectFromIndex(guiBACKGROUND);
 
   return;
 }
 
-void RenderProfileBackGround(void) {
+function RenderProfileBackGround(): void {
   HVOBJECT hHandle;
   INT32 iCurrentHeight = 0;
   INT32 iCounter = 0;
@@ -90,7 +90,7 @@ void RenderProfileBackGround(void) {
   return;
 }
 
-BOOLEAN LoadIMPSymbol(void) {
+function LoadIMPSymbol(): BOOLEAN {
   // this procedure will load the IMP main symbol into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -101,14 +101,14 @@ BOOLEAN LoadIMPSymbol(void) {
   return TRUE;
 }
 
-void DeleteIMPSymbol(void) {
+function DeleteIMPSymbol(): void {
   // remove IMP symbol
   DeleteVideoObjectFromIndex(guiIMPSYMBOL);
 
   return;
 }
 
-void RenderIMPSymbol(INT16 sX, INT16 sY) {
+function RenderIMPSymbol(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -120,7 +120,7 @@ void RenderIMPSymbol(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadBeginIndent(void) {
+function LoadBeginIndent(): BOOLEAN {
   // this procedure will load the indent main symbol into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -131,7 +131,7 @@ BOOLEAN LoadBeginIndent(void) {
   return TRUE;
 }
 
-void DeleteBeginIndent(void) {
+function DeleteBeginIndent(): void {
   // remove indent symbol
 
   DeleteVideoObjectFromIndex(guiBEGININDENT);
@@ -139,7 +139,7 @@ void DeleteBeginIndent(void) {
   return;
 }
 
-void RenderBeginIndent(INT16 sX, INT16 sY) {
+function RenderBeginIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -151,7 +151,7 @@ void RenderBeginIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadActivationIndent(void) {
+function LoadActivationIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -162,14 +162,14 @@ BOOLEAN LoadActivationIndent(void) {
   return TRUE;
 }
 
-void DeleteActivationIndent(void) {
+function DeleteActivationIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiACTIVATIONINDENT);
 
   return;
 }
 
-void RenderActivationIndent(INT16 sX, INT16 sY) {
+function RenderActivationIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -181,7 +181,7 @@ void RenderActivationIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadFrontPageIndent(void) {
+function LoadFrontPageIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -192,14 +192,14 @@ BOOLEAN LoadFrontPageIndent(void) {
   return TRUE;
 }
 
-void DeleteFrontPageIndent(void) {
+function DeleteFrontPageIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiFRONTPAGEINDENT);
 
   return;
 }
 
-void RenderFrontPageIndent(INT16 sX, INT16 sY) {
+function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -211,7 +211,7 @@ void RenderFrontPageIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAnalyse(void) {
+function LoadAnalyse(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -222,14 +222,14 @@ BOOLEAN LoadAnalyse(void) {
   return TRUE;
 }
 
-void DeleteAnalyse(void) {
+function DeleteAnalyse(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiANALYSE);
 
   return;
 }
 
-void RenderAnalyse(INT16 sX, INT16 sY, INT8 bImageNumber) {
+function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -241,7 +241,7 @@ void RenderAnalyse(INT16 sX, INT16 sY, INT8 bImageNumber) {
   return;
 }
 
-BOOLEAN LoadAttributeGraph(void) {
+function LoadAttributeGraph(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -252,14 +252,14 @@ BOOLEAN LoadAttributeGraph(void) {
   return TRUE;
 }
 
-void DeleteAttributeGraph(void) {
+function DeleteAttributeGraph(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiATTRIBUTEGRAPH);
 
   return;
 }
 
-void RenderAttributeGraph(INT16 sX, INT16 sY) {
+function RenderAttributeGraph(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -271,7 +271,7 @@ void RenderAttributeGraph(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAttributeGraphBar(void) {
+function LoadAttributeGraphBar(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -282,14 +282,14 @@ BOOLEAN LoadAttributeGraphBar(void) {
   return TRUE;
 }
 
-void DeleteAttributeBarGraph(void) {
+function DeleteAttributeBarGraph(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiATTRIBUTEGRAPHBAR);
 
   return;
 }
 
-void RenderAttributeBarGraph(INT16 sX, INT16 sY) {
+function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -301,7 +301,7 @@ void RenderAttributeBarGraph(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadFullNameIndent(void) {
+function LoadFullNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -312,14 +312,14 @@ BOOLEAN LoadFullNameIndent(void) {
   return TRUE;
 }
 
-void DeleteFullNameIndent(void) {
+function DeleteFullNameIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiFULLNAMEINDENT);
 
   return;
 }
 
-void RenderFullNameIndent(INT16 sX, INT16 sY) {
+function RenderFullNameIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -331,7 +331,7 @@ void RenderFullNameIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadNickNameIndent(void) {
+function LoadNickNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -342,14 +342,14 @@ BOOLEAN LoadNickNameIndent(void) {
   return TRUE;
 }
 
-void DeleteNickNameIndent(void) {
+function DeleteNickNameIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiNICKNAMEINDENT);
 
   return;
 }
 
-void RenderNickNameIndent(INT16 sX, INT16 sY) {
+function RenderNickNameIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -361,7 +361,7 @@ void RenderNickNameIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadNameIndent(void) {
+function LoadNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -372,14 +372,14 @@ BOOLEAN LoadNameIndent(void) {
   return TRUE;
 }
 
-void DeleteNameIndent(void) {
+function DeleteNameIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiNAMEINDENT);
 
   return;
 }
 
-void RenderNameIndent(INT16 sX, INT16 sY) {
+function RenderNameIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -391,7 +391,7 @@ void RenderNameIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadGenderIndent(void) {
+function LoadGenderIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -402,14 +402,14 @@ BOOLEAN LoadGenderIndent(void) {
   return TRUE;
 }
 
-void DeleteGenderIndent(void) {
+function DeleteGenderIndent(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiGENDERINDENT);
 
   return;
 }
 
-void RenderGenderIndent(INT16 sX, INT16 sY) {
+function RenderGenderIndent(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -421,7 +421,7 @@ void RenderGenderIndent(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadSmallFrame(void) {
+function LoadSmallFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -432,14 +432,14 @@ BOOLEAN LoadSmallFrame(void) {
   return TRUE;
 }
 
-void DeleteSmallFrame(void) {
+function DeleteSmallFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSMALLFRAME);
 
   return;
 }
 
-void RenderSmallFrame(INT16 sX, INT16 sY) {
+function RenderSmallFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -451,7 +451,7 @@ void RenderSmallFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadSmallSilhouette(void) {
+function LoadSmallSilhouette(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -462,14 +462,14 @@ BOOLEAN LoadSmallSilhouette(void) {
   return TRUE;
 }
 
-void DeleteSmallSilhouette(void) {
+function DeleteSmallSilhouette(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSMALLSILHOUETTE);
 
   return;
 }
 
-void RenderSmallSilhouette(INT16 sX, INT16 sY) {
+function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -481,7 +481,7 @@ void RenderSmallSilhouette(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadLargeSilhouette(void) {
+function LoadLargeSilhouette(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -492,14 +492,14 @@ BOOLEAN LoadLargeSilhouette(void) {
   return TRUE;
 }
 
-void DeleteLargeSilhouette(void) {
+function DeleteLargeSilhouette(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiLARGESILHOUETTE);
 
   return;
 }
 
-void RenderLargeSilhouette(INT16 sX, INT16 sY) {
+function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -511,7 +511,7 @@ void RenderLargeSilhouette(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAttributeFrame(void) {
+function LoadAttributeFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -522,14 +522,14 @@ BOOLEAN LoadAttributeFrame(void) {
   return TRUE;
 }
 
-void DeleteAttributeFrame(void) {
+function DeleteAttributeFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiATTRIBUTEFRAME);
 
   return;
 }
 
-void RenderAttributeFrame(INT16 sX, INT16 sY) {
+function RenderAttributeFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
   INT32 iCounter = 0;
   INT16 sCurrentY = 0;
@@ -555,7 +555,7 @@ void RenderAttributeFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-void RenderAttributeFrameForIndex(INT16 sX, INT16 sY, INT32 iIndex) {
+function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void {
   INT16 sCurrentY = 0;
   HVOBJECT hHandle;
 
@@ -585,7 +585,7 @@ void RenderAttributeFrameForIndex(INT16 sX, INT16 sY, INT32 iIndex) {
   return;
 }
 
-BOOLEAN LoadSliderBar(void) {
+function LoadSliderBar(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -596,14 +596,14 @@ BOOLEAN LoadSliderBar(void) {
   return TRUE;
 }
 
-void DeleteSliderBar(void) {
+function DeleteSliderBar(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSLIDERBAR);
 
   return;
 }
 
-void RenderSliderBar(INT16 sX, INT16 sY) {
+function RenderSliderBar(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -615,7 +615,7 @@ void RenderSliderBar(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadButton2Image(void) {
+function LoadButton2Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -626,14 +626,14 @@ BOOLEAN LoadButton2Image(void) {
   return TRUE;
 }
 
-void DeleteButton2Image(void) {
+function DeleteButton2Image(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiBUTTON2IMAGE);
 
   return;
 }
 
-void RenderButton2Image(INT16 sX, INT16 sY) {
+function RenderButton2Image(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -645,7 +645,7 @@ void RenderButton2Image(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadButton4Image(void) {
+function LoadButton4Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -656,14 +656,14 @@ BOOLEAN LoadButton4Image(void) {
   return TRUE;
 }
 
-void DeleteButton4Image(void) {
+function DeleteButton4Image(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiBUTTON4IMAGE);
 
   return;
 }
 
-void RenderButton4Image(INT16 sX, INT16 sY) {
+function RenderButton4Image(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -675,7 +675,7 @@ void RenderButton4Image(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadButton1Image(void) {
+function LoadButton1Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -686,14 +686,14 @@ BOOLEAN LoadButton1Image(void) {
   return TRUE;
 }
 
-void DeleteButton1Image(void) {
+function DeleteButton1Image(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiBUTTON1IMAGE);
 
   return;
 }
 
-void RenderButton1Image(INT16 sX, INT16 sY) {
+function RenderButton1Image(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -705,7 +705,7 @@ void RenderButton1Image(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadPortraitFrame(void) {
+function LoadPortraitFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -716,14 +716,14 @@ BOOLEAN LoadPortraitFrame(void) {
   return TRUE;
 }
 
-void DeletePortraitFrame(void) {
+function DeletePortraitFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiPORTRAITFRAME);
 
   return;
 }
 
-void RenderPortraitFrame(INT16 sX, INT16 sY) {
+function RenderPortraitFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -735,7 +735,7 @@ void RenderPortraitFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadMainIndentFrame(void) {
+function LoadMainIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -746,14 +746,14 @@ BOOLEAN LoadMainIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteMainIndentFrame(void) {
+function DeleteMainIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiMAININDENT);
 
   return;
 }
 
-void RenderMainIndentFrame(INT16 sX, INT16 sY) {
+function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -765,7 +765,7 @@ void RenderMainIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnLongIndentFrame(void) {
+function LoadQtnLongIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -776,14 +776,14 @@ BOOLEAN LoadQtnLongIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnLongIndentFrame(void) {
+function DeleteQtnLongIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiLONGINDENT);
 
   return;
 }
 
-void RenderQtnLongIndentFrame(INT16 sX, INT16 sY) {
+function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -795,7 +795,7 @@ void RenderQtnLongIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnShortIndentFrame(void) {
+function LoadQtnShortIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -806,14 +806,14 @@ BOOLEAN LoadQtnShortIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnShortIndentFrame(void) {
+function DeleteQtnShortIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSHORTINDENT);
 
   return;
 }
 
-void RenderQtnShortIndentFrame(INT16 sX, INT16 sY) {
+function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -825,7 +825,7 @@ void RenderQtnShortIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnLongIndentHighFrame(void) {
+function LoadQtnLongIndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -836,14 +836,14 @@ BOOLEAN LoadQtnLongIndentHighFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnLongIndentHighFrame(void) {
+function DeleteQtnLongIndentHighFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiLONGHINDENT);
 
   return;
 }
 
-void RenderQtnLongIndentHighFrame(INT16 sX, INT16 sY) {
+function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -855,7 +855,7 @@ void RenderQtnLongIndentHighFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnShortIndentHighFrame(void) {
+function LoadQtnShortIndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -866,14 +866,14 @@ BOOLEAN LoadQtnShortIndentHighFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnShortIndentHighFrame(void) {
+function DeleteQtnShortIndentHighFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSHORTHINDENT);
 
   return;
 }
 
-void RenderQtnShortIndentHighFrame(INT16 sX, INT16 sY) {
+function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -885,7 +885,7 @@ void RenderQtnShortIndentHighFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnIndentFrame(void) {
+function LoadQtnIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -896,14 +896,14 @@ BOOLEAN LoadQtnIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnIndentFrame(void) {
+function DeleteQtnIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiQINDENT);
 
   return;
 }
 
-void RenderQtnIndentFrame(INT16 sX, INT16 sY) {
+function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -915,7 +915,7 @@ void RenderQtnIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAttrib1IndentFrame(void) {
+function LoadAttrib1IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -926,14 +926,14 @@ BOOLEAN LoadAttrib1IndentFrame(void) {
   return TRUE;
 }
 
-void DeleteAttrib1IndentFrame(void) {
+function DeleteAttrib1IndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiA1INDENT);
 
   return;
 }
 
-void RenderAttrib1IndentFrame(INT16 sX, INT16 sY) {
+function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -945,7 +945,7 @@ void RenderAttrib1IndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAttrib2IndentFrame(void) {
+function LoadAttrib2IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -956,14 +956,14 @@ BOOLEAN LoadAttrib2IndentFrame(void) {
   return TRUE;
 }
 
-void DeleteAttrib2IndentFrame(void) {
+function DeleteAttrib2IndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiA2INDENT);
 
   return;
 }
 
-void RenderAttrib2IndentFrame(INT16 sX, INT16 sY) {
+function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -975,7 +975,7 @@ void RenderAttrib2IndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAvgMercIndentFrame(void) {
+function LoadAvgMercIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -986,14 +986,14 @@ BOOLEAN LoadAvgMercIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteAvgMercIndentFrame(void) {
+function DeleteAvgMercIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiAVGMERCINDENT);
 
   return;
 }
 
-void RenderAvgMercIndentFrame(INT16 sX, INT16 sY) {
+function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -1005,7 +1005,7 @@ void RenderAvgMercIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadAboutUsIndentFrame(void) {
+function LoadAboutUsIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -1016,14 +1016,14 @@ BOOLEAN LoadAboutUsIndentFrame(void) {
   return TRUE;
 }
 
-void DeleteAboutUsIndentFrame(void) {
+function DeleteAboutUsIndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiABOUTUSINDENT);
 
   return;
 }
 
-void RenderAboutUsIndentFrame(INT16 sX, INT16 sY) {
+function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -1035,7 +1035,7 @@ void RenderAboutUsIndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnShort2IndentFrame(void) {
+function LoadQtnShort2IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -1046,14 +1046,14 @@ BOOLEAN LoadQtnShort2IndentFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnShort2IndentFrame(void) {
+function DeleteQtnShort2IndentFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSHORT2INDENT);
 
   return;
 }
 
-void RenderQtnShort2IndentFrame(INT16 sX, INT16 sY) {
+function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object
@@ -1065,7 +1065,7 @@ void RenderQtnShort2IndentFrame(INT16 sX, INT16 sY) {
   return;
 }
 
-BOOLEAN LoadQtnShort2IndentHighFrame(void) {
+function LoadQtnShort2IndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
   VOBJECT_DESC VObjectDesc;
 
@@ -1076,14 +1076,14 @@ BOOLEAN LoadQtnShort2IndentHighFrame(void) {
   return TRUE;
 }
 
-void DeleteQtnShort2IndentHighFrame(void) {
+function DeleteQtnShort2IndentHighFrame(): void {
   // remove activation indent symbol
   DeleteVideoObjectFromIndex(guiSHORT2HINDENT);
 
   return;
 }
 
-void RenderQtnShort2IndentHighFrame(INT16 sX, INT16 sY) {
+function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
   HVOBJECT hHandle;
 
   // get the video object

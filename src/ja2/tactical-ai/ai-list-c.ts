@@ -15,7 +15,7 @@ const AI_LIST_SIZE = TOTAL_SOLDIERS;
 AILIST gAIList[AI_LIST_SIZE];
 AILIST *gpFirstAIListEntry = NULL;
 
-void ClearAIList(void) {
+function ClearAIList(): void {
   UINT8 ubLoop;
 
   for (ubLoop = 0; ubLoop < AI_LIST_SIZE; ubLoop++) {
@@ -26,13 +26,13 @@ void ClearAIList(void) {
   gpFirstAIListEntry = NULL; // ??
 }
 
-void DeleteAIListEntry(AILIST *pEntry) {
+function DeleteAIListEntry(pEntry: Pointer<AILIST>): void {
   pEntry->ubID = NOBODY;
   pEntry->bPriority = 0;
   pEntry->pNext = NULL;
 }
 
-UINT8 FindEmptyAIListEntry(void) {
+function FindEmptyAIListEntry(): UINT8 {
   UINT8 ubLoop;
 
   for (ubLoop = 0; ubLoop < AI_LIST_SIZE; ubLoop++) {
@@ -44,14 +44,14 @@ UINT8 FindEmptyAIListEntry(void) {
   return AI_LIST_SIZE;
 }
 
-AILIST *CreateNewAIListEntry(UINT8 ubNewEntry, UINT8 ubID, INT8 bPriority) {
+function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): Pointer<AILIST> {
   gAIList[ubNewEntry].ubID = ubID;
   gAIList[ubNewEntry].bPriority = bPriority;
   gAIList[ubNewEntry].pNext = NULL;
   return &(gAIList[ubNewEntry]);
 }
 
-UINT8 RemoveFirstAIListEntry(void) {
+function RemoveFirstAIListEntry(): UINT8 {
   AILIST *pOldFirstEntry;
   UINT8 ubID;
 
@@ -73,7 +73,7 @@ UINT8 RemoveFirstAIListEntry(void) {
   return NOBODY;
 }
 
-void RemoveAIListEntryForID(UINT8 ubID) {
+function RemoveAIListEntryForID(ubID: UINT8): void {
   AILIST *pEntry;
   AILIST *pPrevEntry;
 
@@ -96,7 +96,7 @@ void RemoveAIListEntryForID(UINT8 ubID) {
   // none found, that's okay
 }
 
-BOOLEAN InsertIntoAIList(UINT8 ubID, INT8 bPriority) {
+function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
   UINT8 ubNewEntry;
   AILIST *pEntry, *pNewEntry, *pPrevEntry = NULL;
 
@@ -139,7 +139,7 @@ BOOLEAN InsertIntoAIList(UINT8 ubID, INT8 bPriority) {
   return FALSE;
 }
 
-BOOLEAN SatisfiesAIListConditions(SOLDIERTYPE *pSoldier, UINT8 *pubDoneCount, BOOLEAN fDoRandomChecks) {
+function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount: Pointer<UINT8>, fDoRandomChecks: BOOLEAN): BOOLEAN {
   if ((gTacticalStatus.bBoxingState == BOXING) && !(pSoldier->uiStatusFlags & SOLDIER_BOXER)) {
     return FALSE;
   }
@@ -213,7 +213,7 @@ BOOLEAN SatisfiesAIListConditions(SOLDIERTYPE *pSoldier, UINT8 *pubDoneCount, BO
   return TRUE;
 }
 
-BOOLEAN MoveToFrontOfAIList(UINT8 ubID) {
+function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
   // we'll have to fake this guy's alert status (in the list) to be the same as the current
   // front of the list
   INT8 bPriority;
@@ -241,7 +241,7 @@ BOOLEAN MoveToFrontOfAIList(UINT8 ubID) {
   }
 }
 
-BOOLEAN BuildAIListForTeam(INT8 bTeam) {
+function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
   // loop through all non-player-team guys and add to list
   UINT32 uiLoop;
   BOOLEAN fInsertRet;

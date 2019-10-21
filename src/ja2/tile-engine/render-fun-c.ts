@@ -2,21 +2,21 @@
 UINT8 gubWorldRoomInfo[WORLD_MAX];
 UINT8 gubWorldRoomHidden[MAX_ROOMS];
 
-BOOLEAN InitRoomDatabase() {
+function InitRoomDatabase(): BOOLEAN {
   memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
   memset(gubWorldRoomHidden, TRUE, sizeof(gubWorldRoomHidden));
   return TRUE;
 }
 
-void ShutdownRoomDatabase() {
+function ShutdownRoomDatabase(): void {
 }
 
-void SetTileRoomNum(INT16 sGridNo, UINT8 ubRoomNum) {
+function SetTileRoomNum(sGridNo: INT16, ubRoomNum: UINT8): void {
   // Add to global room list
   gubWorldRoomInfo[sGridNo] = ubRoomNum;
 }
 
-void SetTileRangeRoomNum(SGPRect *pSelectRegion, UINT8 ubRoomNum) {
+function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8): void {
   INT32 cnt1, cnt2;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
@@ -26,7 +26,7 @@ void SetTileRangeRoomNum(SGPRect *pSelectRegion, UINT8 ubRoomNum) {
   }
 }
 
-BOOLEAN InARoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
+function InARoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if (pubRoomNo) {
       *pubRoomNo = gubWorldRoomInfo[sGridNo];
@@ -37,7 +37,7 @@ BOOLEAN InARoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
   return FALSE;
 }
 
-BOOLEAN InAHiddenRoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
+function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
   if (gubWorldRoomInfo[sGridNo] != NO_ROOM) {
     if ((gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]])) {
       *pubRoomNo = gubWorldRoomInfo[sGridNo];
@@ -49,7 +49,7 @@ BOOLEAN InAHiddenRoom(UINT16 sGridNo, UINT8 *pubRoomNo) {
 }
 
 // @@ATECLIP TO WORLD!
-void SetRecalculateWireFrameFlagRadius(INT16 sX, INT16 sY, INT16 sRadius) {
+function SetRecalculateWireFrameFlagRadius(sX: INT16, sY: INT16, sRadius: INT16): void {
   INT16 sCountX, sCountY;
   UINT32 uiTile;
 
@@ -62,7 +62,7 @@ void SetRecalculateWireFrameFlagRadius(INT16 sX, INT16 sY, INT16 sRadius) {
   }
 }
 
-void SetGridNoRevealedFlag(UINT16 sGridNo) {
+function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   //	UINT32 cnt;
   //  ITEM_POOL					*pItemPool;
   //	INT16							sX, sY;
@@ -122,7 +122,7 @@ void SetGridNoRevealedFlag(UINT16 sGridNo) {
   gubWorldRoomHidden[gubWorldRoomInfo[sGridNo]] = FALSE;
 }
 
-void ExamineGridNoForSlantRoofExtraGraphic(UINT16 sCheckGridNo) {
+function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
   LEVELNODE *pNode = NULL;
   STRUCTURE *pStructure, *pBase;
   UINT8 ubLoop;
@@ -179,7 +179,7 @@ void ExamineGridNoForSlantRoofExtraGraphic(UINT16 sCheckGridNo) {
   }
 }
 
-void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
+function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 cnt;
   ITEM_POOL *pItemPool;
   INT16 sX, sY;
@@ -231,7 +231,7 @@ void RemoveRoomRoof(UINT16 sGridNo, UINT8 bRoomNum, SOLDIERTYPE *pSoldier) {
   CalculateWorldWireFrameTiles(FALSE);
 }
 
-BOOLEAN AddSpecialTileRange(SGPRect *pSelectRegion) {
+function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
   INT32 cnt1, cnt2;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
@@ -243,7 +243,7 @@ BOOLEAN AddSpecialTileRange(SGPRect *pSelectRegion) {
   return TRUE;
 }
 
-BOOLEAN RemoveSpecialTileRange(SGPRect *pSelectRegion) {
+function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
   INT32 cnt1, cnt2;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {

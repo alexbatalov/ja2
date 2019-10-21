@@ -144,7 +144,7 @@ UINT16 gusShadeLevels[16][3] = {
 // Set this true if you want the shadetables to be loaded from the text file.
 BOOLEAN gfLoadShadeTablesFromTextFile = FALSE;
 
-void LoadShadeTablesFromTextFile() {
+function LoadShadeTablesFromTextFile(): void {
   FILE *fp;
   INT32 i, j;
   INT32 num;
@@ -174,7 +174,7 @@ UINT32 gNodesAdded = 0;
         Initializes the lighting system.
 
 ***************************************************************************************/
-BOOLEAN InitLightingSystem(void) {
+function InitLightingSystem(): BOOLEAN {
   UINT32 uiCount;
 
   LoadShadeTablesFromTextFile();
@@ -201,7 +201,7 @@ BOOLEAN InitLightingSystem(void) {
 }
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-BOOLEAN SetDefaultWorldLightingColors(void) {
+function SetDefaultWorldLightingColors(): BOOLEAN {
   SGPPaletteEntry pPal[2];
 
   pPal[0].peRed = 0;
@@ -223,7 +223,7 @@ BOOLEAN SetDefaultWorldLightingColors(void) {
         memory attached to them freed up.
 
 ***************************************************************************************/
-BOOLEAN ShutdownLightingSystem(void) {
+function ShutdownLightingSystem(): BOOLEAN {
   UINT32 uiCount;
 
   // free up all allocated light nodes
@@ -240,7 +240,7 @@ BOOLEAN ShutdownLightingSystem(void) {
         Removes all currently active lights, without undrawing them.
 
 ***************************************************************************************/
-BOOLEAN LightReset(void) {
+function LightReset(): BOOLEAN {
   UINT32 uiCount;
 
   // reset all light lists
@@ -272,7 +272,7 @@ BOOLEAN LightReset(void) {
         returned.
 
 ***************************************************************************************/
-UINT16 LightCreateTemplateNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight) {
+function LightCreateTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8): UINT16 {
   UINT16 usNumNodes;
 
   // create a new list
@@ -306,7 +306,7 @@ UINT16 LightCreateTemplateNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight) 
         Returns the index into the list.
 
 ***************************************************************************************/
-UINT16 LightAddTemplateNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight) {
+function LightAddTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8): UINT16 {
   UINT16 usCount;
 
   for (usCount = 0; usCount < usTemplateSize[iLight]; usCount++) {
@@ -324,7 +324,7 @@ UINT16 LightAddTemplateNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight) {
         Adds a node to the ray casting list.
 
 ***************************************************************************************/
-UINT16 LightAddRayNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight, UINT16 usFlags) {
+function LightAddRayNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8, usFlags: UINT16): UINT16 {
   UINT16 usNumNodes;
 
   // create a new list
@@ -351,7 +351,7 @@ UINT16 LightAddRayNode(INT32 iLight, INT16 iX, INT16 iY, UINT8 ubLight, UINT16 u
         Adds a node to the ray casting list.
 
 ***************************************************************************************/
-UINT16 LightInsertRayNode(INT32 iLight, UINT16 usIndex, INT16 iX, INT16 iY, UINT8 ubLight, UINT16 usFlags) {
+function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16, ubLight: UINT8, usFlags: UINT16): UINT16 {
   UINT16 usNumNodes;
 
   // create a new list
@@ -383,7 +383,7 @@ UINT16 LightInsertRayNode(INT32 iLight, UINT16 usIndex, INT16 iX, INT16 iY, UINT
         Returns TRUE/FALSE if the tile at the specified tile number can block light.
 
 ***************************************************************************************/
-BOOLEAN LightTileBlocked(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY) {
+function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
   UINT16 usTileNo, usSrcTileNo;
 
   Assert(gpWorldLevelData != NULL);
@@ -425,7 +425,7 @@ BOOLEAN LightTileBlocked(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY) {
         Returns TRUE/FALSE if the tile at the specified coordinates contains a wall.
 
 ***************************************************************************************/
-BOOLEAN LightTileHasWall(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY) {
+function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
   // LEVELNODE *pStruct;
   // UINT32 uiType;
   UINT16 usTileNo;
@@ -488,7 +488,7 @@ BOOLEAN LightTileHasWall(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY) {
         Removes a light template from the list, and frees up the associated node memory.
 
 ***************************************************************************************/
-BOOLEAN LightDelete(INT32 iLight) {
+function LightDelete(iLight: INT32): BOOLEAN {
   if (pLightList[iLight] != NULL) {
     if (pLightList[iLight] != NULL) {
       MemFree(pLightList[iLight]);
@@ -520,7 +520,7 @@ BOOLEAN LightDelete(INT32 iLight) {
         returned.
 
 ***************************************************************************************/
-INT32 LightGetFree(void) {
+function LightGetFree(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < MAX_LIGHT_TEMPLATES; uiCount++)
@@ -536,7 +536,7 @@ INT32 LightGetFree(void) {
         Calculates the 2D linear distance between two points.
 
 ***************************************************************************************/
-INT32 LinearDistance(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2) {
+function LinearDistance(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): INT32 {
   INT32 iDx, iDy;
 
   iDx = abs(iX1 - iX2);
@@ -554,7 +554,7 @@ INT32 LinearDistance(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2) {
         for greater accuracy.
 
 ***************************************************************************************/
-DOUBLE LinearDistanceDouble(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2) {
+function LinearDistanceDouble(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): DOUBLE {
   INT32 iDx, iDy;
 
   iDx = abs(iX1 - iX2);
@@ -571,7 +571,7 @@ DOUBLE LinearDistanceDouble(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2) {
                 Returns the light level at a particular level without fake lights
 
 ***************************************************************************************/
-UINT8 LightTrueLevel(INT16 sGridNo, INT8 bLevel) {
+function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
   LEVELNODE *pNode;
   INT32 iSum;
 
@@ -598,7 +598,7 @@ UINT8 LightTrueLevel(INT16 sGridNo, INT8 bLevel) {
                 Does the addition of light values to individual LEVELNODEs in the world tile list.
 
 ***************************************************************************************/
-void LightAddTileNode(LEVELNODE *pNode, UINT32 uiLightType, UINT8 ubShadeAdd, BOOLEAN fFake) {
+function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeAdd: UINT8, fFake: BOOLEAN): void {
   INT16 sSum;
 
   pNode->ubSumLights += ubShadeAdd;
@@ -623,7 +623,7 @@ void LightAddTileNode(LEVELNODE *pNode, UINT32 uiLightType, UINT8 ubShadeAdd, BO
                 Does the subtraction of light values to individual LEVELNODEs in the world tile list.
 
 ***************************************************************************************/
-void LightSubtractTileNode(LEVELNODE *pNode, UINT32 uiLightType, UINT8 ubShadeSubtract, BOOLEAN fFake) {
+function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeSubtract: UINT8, fFake: BOOLEAN): void {
   INT16 sSum;
 
   if (ubShadeSubtract > pNode->ubSumLights) {
@@ -656,7 +656,7 @@ void LightSubtractTileNode(LEVELNODE *pNode, UINT32 uiLightType, UINT8 ubShadeSu
                 Adds a specified amount of light to all objects on a given tile.
 
 ***************************************************************************************/
-BOOLEAN LightAddTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiFlags, BOOLEAN fOnlyWalls) {
+function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
   LEVELNODE *pLand, *pStruct, *pObject, *pMerc, *pRoof, *pOnRoof;
   UINT8 ubShadeAdd;
   UINT32 uiTile;
@@ -767,7 +767,7 @@ BOOLEAN LightAddTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX, INT
                 Subtracts a specified amount of light to a given tile.
 
 ***************************************************************************************/
-BOOLEAN LightSubtractTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiFlags, BOOLEAN fOnlyWalls) {
+function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
   LEVELNODE *pLand, *pStruct, *pObject, *pMerc, *pRoof, *pOnRoof;
   UINT8 ubShadeSubtract;
   UINT32 uiTile;
@@ -880,7 +880,7 @@ BOOLEAN LightSubtractTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX
                 Sets the natural light level (as well as the current) on individual LEVELNODEs.
 
 ***************************************************************************************/
-void LightSetNaturalTileNode(LEVELNODE *pNode, UINT8 ubShade) {
+function LightSetNaturalTileNode(pNode: Pointer<LEVELNODE>, ubShade: UINT8): void {
   Assert(pNode != NULL);
 
   pNode->ubSumLights = 0;
@@ -897,7 +897,7 @@ void LightSetNaturalTileNode(LEVELNODE *pNode, UINT8 ubShade) {
         This is the light value a tile has with no artificial lighting affecting it.
 
 ***************************************************************************************/
-BOOLEAN LightSetNaturalTile(INT16 iX, INT16 iY, UINT8 ubShade) {
+function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
   LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pMerc;
   UINT32 uiIndex;
 
@@ -963,7 +963,7 @@ BOOLEAN LightSetNaturalTile(INT16 iX, INT16 iY, UINT8 ubShade) {
         natural light level.
 
 ***************************************************************************************/
-void LightResetTileNode(LEVELNODE *pNode) {
+function LightResetTileNode(pNode: Pointer<LEVELNODE>): void {
   pNode->ubSumLights = 0;
   pNode->ubMaxLights = 0;
   pNode->ubShadeLevel = pNode->ubNaturalShadeLevel;
@@ -977,7 +977,7 @@ void LightResetTileNode(LEVELNODE *pNode) {
         for that tile.
 
 ***************************************************************************************/
-BOOLEAN LightResetTile(INT16 iX, INT16 iY) {
+function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
   LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pMerc;
   UINT32 uiTile;
 
@@ -1040,7 +1040,7 @@ BOOLEAN LightResetTile(INT16 iX, INT16 iY) {
                 Resets all tiles on the map to their baseline values.
 
 ***************************************************************************************/
-BOOLEAN LightResetAllTiles(void) {
+function LightResetAllTiles(): BOOLEAN {
   INT16 iCountY, iCountX;
 
   for (iCountY = 0; iCountY < WORLD_ROWS; iCountY++)
@@ -1056,7 +1056,7 @@ BOOLEAN LightResetAllTiles(void) {
                 Sets the current light value of all objects on a given tile to the specified value.
 
 ***************************************************************************************/
-BOOLEAN LightSetTile(INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiLightType) {
+function LightSetTile(iX: INT16, iY: INT16, ubShade: UINT8, uiLightType: UINT32): BOOLEAN {
   /*LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pFog;
   UINT32 uiIndex;
 
@@ -1131,7 +1131,7 @@ BOOLEAN LightSetTile(INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiLightType) {
         returned.
 
 ***************************************************************************************/
-UINT16 LightGetLastNode(INT32 iLight) {
+function LightGetLastNode(iLight: INT32): UINT16 {
   return usRaySize[iLight];
 }
 
@@ -1141,7 +1141,7 @@ UINT16 LightGetLastNode(INT32 iLight) {
                 Creates a new node, and adds it to the end of a light list.
 
 ***************************************************************************************/
-BOOLEAN LightAddNode(INT32 iLight, INT16 iHotSpotX, INT16 iHotSpotY, INT16 iX, INT16 iY, UINT8 ubIntensity, UINT16 uiFlags) {
+function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
   BOOLEAN fDuplicate = FALSE;
   DOUBLE dDistance;
   UINT8 ubShade;
@@ -1170,7 +1170,7 @@ BOOLEAN LightAddNode(INT32 iLight, INT16 iHotSpotX, INT16 iHotSpotY, INT16 iX, I
                 Creates a new node, and inserts it after the specified node.
 
 ***************************************************************************************/
-BOOLEAN LightInsertNode(INT32 iLight, UINT16 usLightIns, INT16 iHotSpotX, INT16 iHotSpotY, INT16 iX, INT16 iY, UINT8 ubIntensity, UINT16 uiFlags) {
+function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
   DOUBLE dDistance;
   UINT8 ubShade;
   INT32 iLightDecay;
@@ -1200,7 +1200,7 @@ BOOLEAN LightInsertNode(INT32 iLight, UINT16 usLightIns, INT16 iHotSpotX, INT16 
         the pointer. If the end of list is reached, NULL is returned.
 
 ***************************************************************************************/
-UINT16 LightFindNextRay(INT32 iLight, UINT16 usIndex) {
+function LightFindNextRay(iLight: INT32, usIndex: UINT16): UINT16 {
   UINT16 usNodeIndex;
 
   usNodeIndex = usIndex;
@@ -1217,7 +1217,7 @@ UINT16 LightFindNextRay(INT32 iLight, UINT16 usIndex) {
         light list.
 
 ***************************************************************************************/
-BOOLEAN LightCastRay(INT32 iLight, INT16 iStartX, INT16 iStartY, INT16 iEndPointX, INT16 iEndPointY, UINT8 ubStartIntens, UINT8 ubEndIntens) {
+function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX: INT16, iEndPointY: INT16, ubStartIntens: UINT8, ubEndIntens: UINT8): BOOLEAN {
   INT16 AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
   INT32 WholeStep, InitialPixelCount, FinalPixelCount, i, j, RunLength;
   INT16 iXPos, iYPos, iEndY, iEndX;
@@ -1503,7 +1503,7 @@ and to avoid nasty boundary conditions and division by 0 */
                 Creates an elliptical light, taking two radii.
 
 ***************************************************************************************/
-BOOLEAN LightGenerateElliptical(INT32 iLight, UINT8 iIntensity, INT16 iA, INT16 iB) {
+function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
   INT16 iX, iY;
   INT32 WorkingX, WorkingY;
   DOUBLE ASquared;
@@ -1590,7 +1590,7 @@ BOOLEAN LightGenerateElliptical(INT32 iLight, UINT8 iIntensity, INT16 iA, INT16 
                 Creates an square light, taking two radii.
 
 ***************************************************************************************/
-BOOLEAN LightGenerateSquare(INT32 iLight, UINT8 iIntensity, INT16 iA, INT16 iB) {
+function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
   INT16 iX, iY;
 
   for (iX = 0 - iA; iX <= 0 + iA; iX++)
@@ -1626,7 +1626,7 @@ BOOLEAN LightGenerateSquare(INT32 iLight, UINT8 iIntensity, INT16 iA, INT16 iB) 
                 Creates a directional light.
 
 ***************************************************************************************/
-BOOLEAN LightGenerateBeam(INT32 iLight, UINT8 iIntensity, INT16 iLength, INT16 iRadius, INT16 iDirection) {
+function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRadius: INT16, iDirection: INT16): BOOLEAN {
   return FALSE;
 }
 
@@ -1636,7 +1636,7 @@ BOOLEAN LightGenerateBeam(INT32 iLight, UINT8 iIntensity, INT16 iLength, INT16 i
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-BOOLEAN LightSetBaseLevel(UINT8 iIntensity) {
+function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
   INT16 iCountY, iCountX;
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
@@ -1677,7 +1677,7 @@ BOOLEAN LightSetBaseLevel(UINT8 iIntensity) {
                 Adds a light value to all the tiles in the world
 
 ***************************************************************************************/
-BOOLEAN LightAddBaseLevel(UINT32 uiLightType, UINT8 iIntensity) {
+function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
   INT16 iCountY, iCountX;
 
   ubAmbientLightLevel = __max(SHADE_MAX, ubAmbientLightLevel - iIntensity);
@@ -1700,7 +1700,7 @@ BOOLEAN LightAddBaseLevel(UINT32 uiLightType, UINT8 iIntensity) {
                 Sets the current and natural light settings for all tiles in the world.
 
 ***************************************************************************************/
-BOOLEAN LightSubtractBaseLevel(UINT32 uiLightType, UINT8 iIntensity) {
+function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
   INT16 iCountY, iCountX;
 
   ubAmbientLightLevel = __min(SHADE_MIN, ubAmbientLightLevel + iIntensity);
@@ -1723,7 +1723,7 @@ BOOLEAN LightSubtractBaseLevel(UINT32 uiLightType, UINT8 iIntensity) {
                 Creates a circular light.
 
 ***************************************************************************************/
-INT32 LightCreateOmni(UINT8 ubIntensity, INT16 iRadius) {
+function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
   INT32 iLight;
   UINT8 usName[14];
 
@@ -1745,7 +1745,7 @@ INT32 LightCreateOmni(UINT8 ubIntensity, INT16 iRadius) {
                 Creates a square light.
 
 ***************************************************************************************/
-INT32 LightCreateSquare(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2) {
+function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
   INT32 iLight;
   UINT8 usName[14];
 
@@ -1767,7 +1767,7 @@ INT32 LightCreateSquare(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2) {
                 Creates an elliptical light.
 
 ***************************************************************************************/
-INT32 LightCreateElliptical(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2) {
+function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
   INT32 iLight;
   UINT8 usName[14];
 
@@ -1788,7 +1788,7 @@ INT32 LightCreateElliptical(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2) {
                 Renders a light template at the specified X,Y coordinates.
 
 ***************************************************************************************/
-BOOLEAN LightIlluminateWall(INT16 iSourceX, INT16 iSourceY, INT16 iTileX, INT16 iTileY, LEVELNODE *pStruct) {
+function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iTileY: INT16, pStruct: Pointer<LEVELNODE>): BOOLEAN {
   //	return( LightTileHasWall( iSourceX, iSourceY, iTileX, iTileY ) );
 
   return TRUE;
@@ -1800,7 +1800,7 @@ BOOLEAN LightIlluminateWall(INT16 iSourceX, INT16 iSourceY, INT16 iTileX, INT16 
                 Renders a light template at the specified X,Y coordinates.
 
 ***************************************************************************************/
-BOOLEAN LightDraw(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 uiSprite) {
+function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
   LIGHT_NODE *pLight;
   UINT16 uiCount;
   UINT16 usNodeIndex;
@@ -1893,7 +1893,7 @@ BOOLEAN LightDraw(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 u
   return TRUE;
 }
 
-BOOLEAN LightRevealWall(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
+function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
   LEVELNODE *pStruct;
   UINT32 uiTile;
   BOOLEAN fRerender = FALSE, fHitWall = FALSE, fDoRightWalls = TRUE, fDoLeftWalls = TRUE;
@@ -1967,7 +1967,7 @@ BOOLEAN LightRevealWall(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
   return fHitWall;
 }
 
-BOOLEAN LightHideWall(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
+function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
   LEVELNODE *pStruct;
   UINT32 uiTile;
   BOOLEAN fRerender = FALSE, fHitWall = FALSE, fDoRightWalls = TRUE, fDoLeftWalls = TRUE;
@@ -2042,7 +2042,7 @@ BOOLEAN LightHideWall(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
                 Tags walls as being translucent using a light template.
 
 ***************************************************************************************/
-BOOLEAN CalcTranslucentWalls(INT16 iX, INT16 iY) {
+function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
   LIGHT_NODE *pLight;
   UINT16 uiCount;
   UINT16 usNodeIndex;
@@ -2065,7 +2065,7 @@ BOOLEAN CalcTranslucentWalls(INT16 iX, INT16 iY) {
   return TRUE;
 }
 
-BOOLEAN LightGreenTile(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
+function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
   LEVELNODE *pStruct, *pLand;
   UINT32 uiTile;
   BOOLEAN fRerender = FALSE, fHitWall = FALSE, fThroughWall = FALSE;
@@ -2128,7 +2128,7 @@ BOOLEAN LightGreenTile(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
 each tile drawn to facilitate animating the drawing process for debugging.
 
 ***************************************************************************************/
-BOOLEAN LightShowRays(INT16 iX, INT16 iY, BOOLEAN fReset) {
+function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
   LIGHT_NODE *pLight;
   static UINT16 uiCount = 0;
   UINT16 usNodeIndex;
@@ -2163,7 +2163,7 @@ BOOLEAN LightShowRays(INT16 iX, INT16 iY, BOOLEAN fReset) {
         Removes the green from the tiles that was drawn to show the path of the rays.
 
 ***************************************************************************************/
-BOOLEAN LightHideGreen(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
+function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
   LEVELNODE *pStruct, *pLand;
   UINT32 uiTile;
   BOOLEAN fRerender = FALSE, fHitWall = FALSE;
@@ -2222,7 +2222,7 @@ BOOLEAN LightHideGreen(INT16 sX, INT16 sY, INT16 sSrcX, INT16 sSrcY) {
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-BOOLEAN LightHideRays(INT16 iX, INT16 iY) {
+function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
   LIGHT_NODE *pLight;
   UINT16 uiCount;
   UINT16 usNodeIndex;
@@ -2252,7 +2252,7 @@ BOOLEAN LightHideRays(INT16 iX, INT16 iY) {
                 Hides walls that were revealed by CalcTranslucentWalls.
 
 ***************************************************************************************/
-BOOLEAN ApplyTranslucencyToWalls(INT16 iX, INT16 iY) {
+function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
   LIGHT_NODE *pLight;
   UINT16 uiCount;
   UINT16 usNodeIndex;
@@ -2281,7 +2281,7 @@ BOOLEAN ApplyTranslucencyToWalls(INT16 iX, INT16 iY) {
 
                 Makes all the near-side trees around a given coordinate translucent.
 ***************************************************************************************/
-BOOLEAN LightTranslucentTrees(INT16 iX, INT16 iY) {
+function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
   INT32 iCountX, iCountY;
   UINT32 uiTile;
   LEVELNODE *pNode;
@@ -2321,7 +2321,7 @@ BOOLEAN LightTranslucentTrees(INT16 iX, INT16 iY) {
 
                 Removes the translucency from any trees in the area.
 ***************************************************************************************/
-BOOLEAN LightHideTrees(INT16 iX, INT16 iY) {
+function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
   INT32 iCountX, iCountY;
   UINT32 uiTile;
   LEVELNODE *pNode;
@@ -2363,7 +2363,7 @@ BOOLEAN LightHideTrees(INT16 iX, INT16 iY) {
                 Reverts all tiles a given light affects to their natural light levels.
 
 ***************************************************************************************/
-BOOLEAN LightErase(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 uiSprite) {
+function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
   LIGHT_NODE *pLight;
   UINT16 uiCount;
   UINT16 usNodeIndex;
@@ -2435,7 +2435,7 @@ BOOLEAN LightErase(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 
         a light.
 
 ***************************************************************************************/
-BOOLEAN LightCalcRect(INT32 iLight) {
+function LightCalcRect(iLight: INT32): BOOLEAN {
   SGPRect MaxRect;
   INT16 sXValue, sYValue, sDummy;
   UINT32 uiCount;
@@ -2496,7 +2496,7 @@ BOOLEAN LightCalcRect(INT32 iLight) {
         filename forces the system to save the light with the internal filename (recommended).
 
 ***************************************************************************************/
-BOOLEAN LightSave(INT32 iLight, STR pFilename) {
+function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
   HWFILE hFile;
   STR pName;
 
@@ -2528,7 +2528,7 @@ BOOLEAN LightSave(INT32 iLight, STR pFilename) {
         if the file wasn't loaded.
 
 ***************************************************************************************/
-INT32 LightLoad(STR pFilename) {
+function LightLoad(pFilename: STR): INT32 {
   HWFILE hFile;
   LIGHT_NODE *pNewLight = NULL, *pLastLight = NULL;
   INT32 iLight;
@@ -2571,7 +2571,7 @@ INT32 LightLoad(STR pFilename) {
         disk. Returns the index of the template, or (-1) if it couldn't be loaded.
 
 ***************************************************************************************/
-INT32 LightLoadCachedTemplate(STR pFilename) {
+function LightLoadCachedTemplate(pFilename: STR): INT32 {
   INT32 iCount;
 
   for (iCount = 0; iCount < MAX_LIGHT_TEMPLATES; iCount++) {
@@ -2582,7 +2582,7 @@ INT32 LightLoadCachedTemplate(STR pFilename) {
   return LightLoad(pFilename);
 }
 
-UINT8 LightGetColors(SGPPaletteEntry *pPal) {
+function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
   if (pPal != NULL)
     memcpy(pPal, &gpOrigLights[0], sizeof(SGPPaletteEntry) * gubNumLightColors);
 
@@ -2597,7 +2597,7 @@ UINT8 LightGetColors(SGPPaletteEntry *pPal) {
 ***************************************************************************************/
 BOOLEAN gfEditorForceRebuildAllColors = FALSE;
 
-BOOLEAN LightSetColors(SGPPaletteEntry *pPal, UINT8 ubNumColors) {
+function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOOLEAN {
   INT16 sRed, sGreen, sBlue;
 
   Assert(ubNumColors >= 1 && ubNumColors <= 2);
@@ -2660,7 +2660,7 @@ BOOLEAN LightSetColors(SGPPaletteEntry *pPal, UINT8 ubNumColors) {
  *		Returns the index of the next available sprite.
  *
  ********************************************************************************/
-INT32 LightSpriteGetFree(void) {
+function LightSpriteGetFree(): INT32 {
   INT32 iCount;
 
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
@@ -2678,7 +2678,7 @@ INT32 LightSpriteGetFree(void) {
  * If this function fails (out of sprites, or bad template name) it returns (-1).
  *
  ********************************************************************************/
-INT32 LightSpriteCreate(STR pName, UINT32 uiLightType) {
+function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
   INT32 iSprite;
 
   if ((iSprite = LightSpriteGetFree()) != (-1)) {
@@ -2704,7 +2704,7 @@ INT32 LightSpriteCreate(STR pName, UINT32 uiLightType) {
  *		Sets the flag of a light sprite to "fake" (in game for merc navig purposes)
  *
  ********************************************************************************/
-BOOLEAN LightSpriteFake(INT32 iSprite) {
+function LightSpriteFake(iSprite: INT32): BOOLEAN {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     LightSprites[iSprite].uiFlags |= MERC_LIGHT;
     return TRUE;
@@ -2719,7 +2719,7 @@ BOOLEAN LightSpriteFake(INT32 iSprite) {
  *		Removes an instance of a light. If it was on, it is erased from the scene.
  *
  ********************************************************************************/
-BOOLEAN LightSpriteDestroy(INT32 iSprite) {
+function LightSpriteDestroy(iSprite: INT32): BOOLEAN {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ERASE) {
       if ((LightSprites[iSprite].iX < WORLD_COLS) && (LightSprites[iSprite].iY < WORLD_ROWS)) {
@@ -2742,7 +2742,7 @@ BOOLEAN LightSpriteDestroy(INT32 iSprite) {
  *		Currently unused.
  *
  ********************************************************************************/
-BOOLEAN LightSpriteRender(void) {
+function LightSpriteRender(): BOOLEAN {
   // INT32 iCount;
   // BOOLEAN fRenderLights=FALSE;
 
@@ -2795,7 +2795,7 @@ BOOLEAN LightSpriteRender(void) {
  * active lights.
  *
  ********************************************************************************/
-BOOLEAN LightSpriteRenderAll(void) {
+function LightSpriteRenderAll(): BOOLEAN {
   INT32 iCount;
   BOOLEAN fRenderLights = FALSE;
 
@@ -2822,7 +2822,7 @@ BOOLEAN LightSpriteRenderAll(void) {
  *		Sets the X,Y position (IN TILES) of a light instance.
  *
  ********************************************************************************/
-BOOLEAN LightSpritePosition(INT32 iSprite, INT16 iX, INT16 iY) {
+function LightSpritePosition(iSprite: INT32, iX: INT16, iY: INT16): BOOLEAN {
   if (LightSprites[iSprite].uiFlags & LIGHT_SPR_ACTIVE) {
     if ((LightSprites[iSprite].iX == iX) && (LightSprites[iSprite].iY == iY))
       return TRUE;
@@ -2859,7 +2859,7 @@ BOOLEAN LightSpritePosition(INT32 iSprite, INT16 iX, INT16 iY) {
  *		Determines whether a light is on a roof or not.
  *
  ********************************************************************************/
-BOOLEAN LightSpriteRoofStatus(INT32 iSprite, BOOLEAN fOnRoof) {
+function LightSpriteRoofStatus(iSprite: INT32, fOnRoof: BOOLEAN): BOOLEAN {
   if (fOnRoof && (LightSprites[iSprite].uiFlags & LIGHT_SPR_ONROOF))
     return FALSE;
 
@@ -2898,7 +2898,7 @@ BOOLEAN LightSpriteRoofStatus(INT32 iSprite, BOOLEAN fOnRoof) {
  *		Turns on or off a light, based on the BOOLEAN.
  *
  ********************************************************************************/
-BOOLEAN LightSpritePower(INT32 iSprite, BOOLEAN fOn) {
+function LightSpritePower(iSprite: INT32, fOn: BOOLEAN): BOOLEAN {
   if (fOn) {
     LightSprites[iSprite].uiFlags |= (LIGHT_SPR_ON | LIGHT_SPR_REDRAW);
     LightSprites[iSprite].iOldX = WORLD_COLS;
@@ -2914,7 +2914,7 @@ BOOLEAN LightSpritePower(INT32 iSprite, BOOLEAN fOn) {
  *		Sets the flag for the renderer to draw all marked tiles.
  *
  ********************************************************************************/
-BOOLEAN LightSpriteDirty(INT32 iSprite) {
+function LightSpriteDirty(iSprite: INT32): BOOLEAN {
   // INT16 iLeft_s, iTop_s;
   // INT16 iMapLeft, iMapTop, iMapRight, iMapBottom;
 
@@ -2941,7 +2941,7 @@ BOOLEAN LightSpriteDirty(INT32 iSprite) {
   return TRUE;
 }
 
-BOOLEAN CreateObjectPalette(HVOBJECT pObj, UINT32 uiBase, SGPPaletteEntry *pShadePal) {
+function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   UINT32 uiCount;
 
   pObj->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
@@ -2953,7 +2953,7 @@ BOOLEAN CreateObjectPalette(HVOBJECT pObj, UINT32 uiBase, SGPPaletteEntry *pShad
   return TRUE;
 }
 
-BOOLEAN CreateSoldierShadedPalette(SOLDIERTYPE *pSoldier, UINT32 uiBase, SGPPaletteEntry *pShadePal) {
+function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
   UINT32 uiCount;
 
   pSoldier->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
@@ -2976,7 +2976,7 @@ BOOLEAN CreateSoldierShadedPalette(SOLDIERTYPE *pSoldier, UINT32 uiBase, SGPPale
 
 **********************************************************************************************/
 
-UINT16 CreateTilePaletteTables(HVOBJECT pObj, UINT32 uiTileIndex, BOOLEAN fForce) {
+function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BOOLEAN): UINT16 {
   UINT32 uiCount;
   SGPPaletteEntry LightPal[256];
   BOOLEAN fLoaded = FALSE;
@@ -3037,7 +3037,7 @@ UINT16 CreateTilePaletteTables(HVOBJECT pObj, UINT32 uiTileIndex, BOOLEAN fForce
   return TRUE;
 }
 
-UINT16 CreateSoldierPaletteTables(SOLDIERTYPE *pSoldier, UINT32 uiType) {
+function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
   SGPPaletteEntry LightPal[256];
   UINT32 uiCount;
 

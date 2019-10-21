@@ -144,7 +144,7 @@ void HandleTheftByCiviliansInSector( INT16 sX, INT16 sY, INT32 iLoyalty );
 void HandleTownTheft( void );
 */
 
-void InitTownLoyalty(void) {
+function InitTownLoyalty(): void {
   UINT8 ubTown = 0;
 
   // set up town loyalty table
@@ -159,7 +159,7 @@ void InitTownLoyalty(void) {
   return;
 }
 
-void StartTownLoyaltyIfFirstTime(INT8 bTownId) {
+function StartTownLoyaltyIfFirstTime(bTownId: INT8): void {
   Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
 
   // if loyalty tracking hasn't yet been started for this town, and the town does use loyalty
@@ -187,7 +187,7 @@ void StartTownLoyaltyIfFirstTime(INT8 bTownId) {
 }
 
 // set a specified town's loyalty rating (ignores previous loyalty value - probably NOT what you want)
-void SetTownLoyalty(INT8 bTownId, UINT8 ubNewLoyaltyRating) {
+function SetTownLoyalty(bTownId: INT8, ubNewLoyaltyRating: UINT8): void {
   Assert((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS));
 
   // if the town does use loyalty
@@ -203,7 +203,7 @@ void SetTownLoyalty(INT8 bTownId, UINT8 ubNewLoyaltyRating) {
 }
 
 // increments the town's loyalty rating by that many HUNDREDTHS of loyalty pts
-void IncrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyIncrease) {
+function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
   UINT32 uiRemainingIncrement;
   INT16 sThisIncrement;
 
@@ -237,7 +237,7 @@ void IncrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyIncrease) {
 
 // decrements the town's loyalty rating by that many HUNDREDTHS of loyalty pts
 // NOTE: This function expects a POSITIVE number for a decrease!!!
-void DecrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyDecrease) {
+function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
   UINT32 uiRemainingDecrement;
   INT16 sThisDecrement;
 
@@ -270,7 +270,7 @@ void DecrementTownLoyalty(INT8 bTownId, UINT32 uiLoyaltyDecrease) {
 }
 
 // update town loyalty rating based on gain values
-void UpdateTownLoyaltyRating(INT8 bTownId) {
+function UpdateTownLoyaltyRating(bTownId: INT8): void {
   // check gain value and update loyaty
   UINT8 ubOldLoyaltyRating = 0;
   INT16 sRatingChange = 0;
@@ -327,7 +327,7 @@ void UpdateTownLoyaltyRating(INT8 bTownId) {
 }
 
 // strategic handler, goes through and handles all strategic events for town loyalty updates...player controlled, monsters
-void HandleTownLoyalty(void) {
+function HandleTownLoyalty(): void {
   INT8 bTownId = 0;
 
   /* ARM: removed to experiment with keeping loyalty from drifing without any direct causes from the player
@@ -556,7 +556,7 @@ void UpdateTownLoyaltyBasedOnBadGuysInTown( INT8 bTownId )
 }
 */
 
-void HandleMurderOfCivilian(SOLDIERTYPE *pSoldier, BOOLEAN fIntentional) {
+function HandleMurderOfCivilian(pSoldier: Pointer<SOLDIERTYPE>, fIntentional: BOOLEAN): void {
   // handle the impact on loyalty of the murder of a civilian
   INT8 bTownId = 0;
   INT32 iLoyaltyChange = 0;
@@ -802,7 +802,7 @@ void HandleMurderOfCivilian(SOLDIERTYPE *pSoldier, BOOLEAN fIntentional) {
 }
 
 // check town and raise loyalty value for hiring a merc from a town...not a lot of a gain, but some
-void HandleTownLoyaltyForNPCRecruitment(SOLDIERTYPE *pSoldier) {
+function HandleTownLoyaltyForNPCRecruitment(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bTownId = 0;
   UINT32 uiLoyaltyValue = 0;
   INT32 iRating = 0;
@@ -825,7 +825,7 @@ void HandleTownLoyaltyForNPCRecruitment(SOLDIERTYPE *pSoldier) {
   return;
 }
 
-BOOLEAN HandleLoyaltyAdjustmentForRobbery(SOLDIERTYPE *pSoldier) {
+function HandleLoyaltyAdjustmentForRobbery(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // not to be implemented at this time
   return FALSE;
 
@@ -849,7 +849,7 @@ BOOLEAN HandleLoyaltyAdjustmentForRobbery(SOLDIERTYPE *pSoldier) {
 }
 
 // handle loyalty adjustment for dmg inflicted on a building
-void HandleLoyaltyForDemolitionOfBuilding(SOLDIERTYPE *pSoldier, INT16 sPointsDmg) {
+function HandleLoyaltyForDemolitionOfBuilding(pSoldier: Pointer<SOLDIERTYPE>, sPointsDmg: INT16): void {
   // find this soldier's team and decrement the loyalty rating for them and for the people who police the sector
   // more penalty for the people who did it, a lesser one for those who should have stopped it
   INT16 sLoyaltyValue = 0;
@@ -893,7 +893,7 @@ void HandleLoyaltyForDemolitionOfBuilding(SOLDIERTYPE *pSoldier, INT16 sPointsDm
   return;
 }
 
-void RemoveRandomItemsInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 ubChance) {
+function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubChance: UINT8): void {
   // remove random items in sector
   UINT32 uiNumberOfItems = 0, iCounter = 0;
   WORLDITEM *pItemList;
@@ -1016,7 +1016,7 @@ void HandleTownTheft( void )
 }
 */
 
-void BuildListOfTownSectors(void) {
+function BuildListOfTownSectors(): void {
   INT32 iCounterX = 0, iCounterY = 0, iCounter = 0;
   UINT16 usSector;
 
@@ -1039,7 +1039,7 @@ void BuildListOfTownSectors(void) {
   }
 }
 
-void ReadInDistancesBetweenTowns(void) {
+function ReadInDistancesBetweenTowns(): void {
   HWFILE hFileHandle;
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, FALSE);
@@ -1052,7 +1052,7 @@ void ReadInDistancesBetweenTowns(void) {
   return;
 }
 
-INT32 GetTownDistances(UINT8 ubTown, UINT8 ubTownA) {
+function GetTownDistances(ubTown: UINT8, ubTownA: UINT8): INT32 {
   return iTownDistances[ubTown][ubTownA];
 }
 
@@ -1107,7 +1107,7 @@ UINT32 BuildLoyaltyEventValue( INT8 bTownValue, UINT32 uiValue, BOOLEAN fIncreme
 }
 */
 
-BOOLEAN SaveStrategicTownLoyaltyToSaveGameFile(HWFILE hFile) {
+function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   // Save the Town Loyalty
@@ -1119,7 +1119,7 @@ BOOLEAN SaveStrategicTownLoyaltyToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadStrategicTownLoyaltyFromSavedGameFile(HWFILE hFile) {
+function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   // Restore the Town Loyalty
@@ -1131,7 +1131,7 @@ BOOLEAN LoadStrategicTownLoyaltyFromSavedGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void ReduceLoyaltyForRebelsBetrayed(void) {
+function ReduceLoyaltyForRebelsBetrayed(): void {
   INT8 bTownId;
 
   // reduce loyalty to player all across Arulco
@@ -1150,7 +1150,7 @@ void ReduceLoyaltyForRebelsBetrayed(void) {
   }
 }
 
-INT32 GetNumberOfWholeTownsUnderControl(void) {
+function GetNumberOfWholeTownsUnderControl(): INT32 {
   INT32 iNumber = 0;
   INT8 bTownId = 0;
 
@@ -1166,7 +1166,7 @@ INT32 GetNumberOfWholeTownsUnderControl(void) {
   return iNumber;
 }
 
-INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude) {
+function GetNumberOfWholeTownsUnderControlButExcludeCity(bCityToExclude: INT8): INT32 {
   INT32 iNumber = 0;
   INT8 bTownId = 0;
 
@@ -1181,7 +1181,7 @@ INT32 GetNumberOfWholeTownsUnderControlButExcludeCity(INT8 bCityToExclude) {
 }
 
 // is the ENTIRE town under player control?
-INT32 IsTownUnderCompleteControlByPlayer(INT8 bTownId) {
+function IsTownUnderCompleteControlByPlayer(bTownId: INT8): INT32 {
   INT32 iNumber = 0;
 
   if (GetTownSectorSize(bTownId) == GetTownSectorsUnderControl(bTownId)) {
@@ -1192,7 +1192,7 @@ INT32 IsTownUnderCompleteControlByPlayer(INT8 bTownId) {
 }
 
 // is the ENTIRE town under enemy control?
-INT32 IsTownUnderCompleteControlByEnemy(INT8 bTownId) {
+function IsTownUnderCompleteControlByEnemy(bTownId: INT8): INT32 {
   INT32 iNumber = 0;
 
   if (GetTownSectorsUnderControl(bTownId) == 0) {
@@ -1202,7 +1202,7 @@ INT32 IsTownUnderCompleteControlByEnemy(INT8 bTownId) {
   return FALSE;
 }
 
-void AdjustLoyaltyForCivsEatenByMonsters(INT16 sSectorX, INT16 sSectorY, UINT8 ubHowMany) {
+function AdjustLoyaltyForCivsEatenByMonsters(sSectorX: INT16, sSectorY: INT16, ubHowMany: UINT8): void {
   INT8 bTownId = 0;
   UINT32 uiLoyaltyChange = 0;
   UINT16 str[256];
@@ -1227,7 +1227,7 @@ void AdjustLoyaltyForCivsEatenByMonsters(INT16 sSectorX, INT16 sSectorY, UINT8 u
 }
 
 // this applies the SAME change to every town equally, regardless of distance from the event
-void IncrementTownLoyaltyEverywhere(UINT32 uiLoyaltyIncrease) {
+function IncrementTownLoyaltyEverywhere(uiLoyaltyIncrease: UINT32): void {
   INT8 bTownId;
 
   for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
@@ -1235,7 +1235,7 @@ void IncrementTownLoyaltyEverywhere(UINT32 uiLoyaltyIncrease) {
   }
 }
 
-void DecrementTownLoyaltyEverywhere(UINT32 uiLoyaltyDecrease) {
+function DecrementTownLoyaltyEverywhere(uiLoyaltyDecrease: UINT32): void {
   INT8 bTownId;
 
   for (bTownId = FIRST_TOWN; bTownId < NUM_TOWNS; bTownId++) {
@@ -1243,7 +1243,7 @@ void DecrementTownLoyaltyEverywhere(UINT32 uiLoyaltyDecrease) {
   }
 }
 // this applies the change to every town differently, depending on the distance from the event
-void HandleGlobalLoyaltyEvent(UINT8 ubEventType, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function HandleGlobalLoyaltyEvent(ubEventType: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   INT32 iLoyaltyChange;
   INT8 bTownId = 0;
 
@@ -1314,7 +1314,7 @@ void HandleGlobalLoyaltyEvent(UINT8 ubEventType, INT16 sSectorX, INT16 sSectorY,
   AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange, sSectorX, sSectorY, bSectorZ);
 }
 
-void AffectAllTownsLoyaltyByDistanceFrom(INT32 iLoyaltyChange, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   INT16 sEventSector;
   UINT8 ubTempGroupId;
   INT8 bTownId;
@@ -1402,7 +1402,7 @@ void AffectAllTownsLoyaltyByDistanceFrom(INT32 iLoyaltyChange, INT16 sSectorX, I
 }
 
 // to be called whenever player gains control of a sector in any way
-void CheckIfEntireTownHasBeenLiberated(INT8 bTownId, INT16 sSectorX, INT16 sSectorY) {
+function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
   // the whole town is under our control, check if we never libed this town before
   if (!gTownLoyalty[bTownId].fLiberatedAlready && IsTownUnderCompleteControlByPlayer(bTownId)) {
     if (MilitiaTrainingAllowedInSector(sSectorX, sSectorY, 0)) {
@@ -1427,7 +1427,7 @@ void CheckIfEntireTownHasBeenLiberated(INT8 bTownId, INT16 sSectorX, INT16 sSect
   }
 }
 
-void CheckIfEntireTownHasBeenLost(INT8 bTownId, INT16 sSectorX, INT16 sSectorY) {
+function CheckIfEntireTownHasBeenLost(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): void {
   // NOTE:  only towns which allow you to train militia are important enough to get
   // reported here (and they're the only ones you can protect)
   if (MilitiaTrainingAllowedInSector(sSectorX, sSectorY, 0) && IsTownUnderCompleteControlByEnemy(bTownId)) {
@@ -1438,7 +1438,7 @@ void CheckIfEntireTownHasBeenLost(INT8 bTownId, INT16 sSectorX, INT16 sSectorY) 
   }
 }
 
-void HandleLoyaltyChangeForNPCAction(UINT8 ubNPCProfileId) {
+function HandleLoyaltyChangeForNPCAction(ubNPCProfileId: UINT8): void {
   switch (ubNPCProfileId) {
     case MIGUEL:
       // Omerta loyalty increases when Miguel receives letter from Enrico
@@ -1482,7 +1482,7 @@ void HandleLoyaltyChangeForNPCAction(UINT8 ubNPCProfileId) {
 }
 
 // set the location of the first encounter with enemy
-void SetTheFirstBattleSector(INT16 sSectorValue) {
+function SetTheFirstBattleSector(sSectorValue: INT16): void {
   if (sWorldSectorLocationOfFirstBattle == 0) {
     sWorldSectorLocationOfFirstBattle = sSectorValue;
   }
@@ -1491,7 +1491,7 @@ void SetTheFirstBattleSector(INT16 sSectorValue) {
 }
 
 // did first battle take place here
-BOOLEAN DidFirstBattleTakePlaceInThisTown(INT8 bTownId) {
+function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): BOOLEAN {
   INT8 bTownBattleId = 0;
 
   // get town id for sector
@@ -1500,7 +1500,7 @@ BOOLEAN DidFirstBattleTakePlaceInThisTown(INT8 bTownId) {
   return bTownId == bTownBattleId;
 }
 
-UINT32 PlayerStrength(void) {
+function PlayerStrength(): UINT32 {
   UINT8 ubLoop;
   SOLDIERTYPE *pSoldier;
   UINT32 uiStrength, uiTotal = 0;
@@ -1518,7 +1518,7 @@ UINT32 PlayerStrength(void) {
   return uiTotal;
 }
 
-UINT32 EnemyStrength(void) {
+function EnemyStrength(): UINT32 {
   UINT8 ubLoop;
   SOLDIERTYPE *pSoldier;
   UINT32 uiStrength, uiTotal = 0;
@@ -1538,7 +1538,7 @@ UINT32 EnemyStrength(void) {
 // Function assumes that mercs have retreated already.  Handles two cases, one for general merc retreat
 // which slightly demoralizes the mercs, the other handles abandonment of militia forces which poses
 // as a serious loyalty penalty.
-void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
+function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   if (CountAllMilitiaInSector(sSectorX, sSectorY)) {
     // Big morale penalty!
     HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, (INT8)sSectorZ);
@@ -1555,7 +1555,7 @@ void HandleLoyaltyImplicationsOfMercRetreat(INT8 bRetreatCode, INT16 sSectorX, I
   }
 }
 
-void MaximizeLoyaltyForDeidrannaKilled(void) {
+function MaximizeLoyaltyForDeidrannaKilled(): void {
   INT8 bTownId;
 
   // max out loyalty to player all across Arulco

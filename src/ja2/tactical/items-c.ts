@@ -821,7 +821,7 @@ UINT16 ReplacementAmmo[][2] = {
   { 0, 0 },
 };
 
-BOOLEAN ItemIsLegal(UINT16 usItemIndex) {
+function ItemIsLegal(usItemIndex: UINT16): BOOLEAN {
   // if the user has selected the reduced gun list
   if (!gGameOptions.fGunNut) {
     // if the item is a gun, or ammo
@@ -837,11 +837,11 @@ BOOLEAN ItemIsLegal(UINT16 usItemIndex) {
 }
 
 // also used for ammo
-BOOLEAN ExtendedGunListGun(UINT16 usGun) {
+function ExtendedGunListGun(usGun: UINT16): BOOLEAN {
   return (Item[usGun].fFlags & ITEM_BIGGUNLIST) != 0;
 }
 
-UINT16 StandardGunListReplacement(UINT16 usGun) {
+function StandardGunListReplacement(usGun: UINT16): UINT16 {
   UINT8 ubLoop;
 
   if (ExtendedGunListGun(usGun)) {
@@ -860,7 +860,7 @@ UINT16 StandardGunListReplacement(UINT16 usGun) {
   }
 }
 
-UINT16 StandardGunListAmmoReplacement(UINT16 usAmmo) {
+function StandardGunListAmmoReplacement(usAmmo: UINT16): UINT16 {
   UINT8 ubLoop;
 
   if (ExtendedGunListGun(usAmmo)) {
@@ -879,7 +879,7 @@ UINT16 StandardGunListAmmoReplacement(UINT16 usAmmo) {
   }
 }
 
-BOOLEAN WeaponInHand(SOLDIERTYPE *pSoldier) {
+function WeaponInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (Item[pSoldier->inv[HANDPOS].usItem].usItemClass & (IC_WEAPON | IC_THROWN)) {
     if (pSoldier->inv[HANDPOS].usItem == ROCKET_RIFLE || pSoldier->inv[HANDPOS].usItem == AUTO_ROCKET_RIFLE) {
       if (pSoldier->inv[HANDPOS].ubImprintID != NO_PROFILE) {
@@ -902,7 +902,7 @@ BOOLEAN WeaponInHand(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-UINT8 ItemSlotLimit(UINT16 usItem, INT8 bSlot) {
+function ItemSlotLimit(usItem: UINT16, bSlot: INT8): UINT8 {
   UINT8 ubSlotLimit;
 
   if (bSlot < BIGPOCK1POS) {
@@ -916,7 +916,7 @@ UINT8 ItemSlotLimit(UINT16 usItem, INT8 bSlot) {
   }
 }
 
-UINT32 MoneySlotLimit(INT8 bSlot) {
+function MoneySlotLimit(bSlot: INT8): UINT32 {
   if (bSlot >= SMALLPOCK1POS) {
     return MAX_MONEY_PER_SLOT / 2;
   } else {
@@ -924,7 +924,7 @@ UINT32 MoneySlotLimit(INT8 bSlot) {
   }
 }
 
-INT8 FindObj(SOLDIERTYPE *pSoldier, UINT16 usItem) {
+function FindObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -935,7 +935,7 @@ INT8 FindObj(SOLDIERTYPE *pSoldier, UINT16 usItem) {
   return NO_SLOT;
 }
 
-INT8 FindUsableObj(SOLDIERTYPE *pSoldier, UINT16 usItem) {
+function FindUsableObj(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -946,7 +946,7 @@ INT8 FindUsableObj(SOLDIERTYPE *pSoldier, UINT16 usItem) {
   return NO_SLOT;
 }
 
-INT8 FindObjExcludingSlot(SOLDIERTYPE *pSoldier, UINT16 usItem, INT8 bExcludeSlot) {
+function FindObjExcludingSlot(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bExcludeSlot: INT8): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -960,7 +960,7 @@ INT8 FindObjExcludingSlot(SOLDIERTYPE *pSoldier, UINT16 usItem, INT8 bExcludeSlo
   return NO_SLOT;
 }
 
-INT8 FindExactObj(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj) {
+function FindExactObj(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -971,7 +971,7 @@ INT8 FindExactObj(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj) {
   return NO_SLOT;
 }
 
-INT8 FindObjWithin(SOLDIERTYPE *pSoldier, UINT16 usItem, INT8 bLower, INT8 bUpper) {
+function FindObjWithin(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, bLower: INT8, bUpper: INT8): INT8 {
   INT8 bLoop;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
@@ -982,7 +982,7 @@ INT8 FindObjWithin(SOLDIERTYPE *pSoldier, UINT16 usItem, INT8 bLower, INT8 bUppe
   return ITEM_NOT_FOUND;
 }
 
-INT8 FindObjInObjRange(SOLDIERTYPE *pSoldier, UINT16 usItem1, UINT16 usItem2) {
+function FindObjInObjRange(pSoldier: Pointer<SOLDIERTYPE>, usItem1: UINT16, usItem2: UINT16): INT8 {
   INT8 bLoop;
   UINT16 usTemp;
 
@@ -1003,7 +1003,7 @@ INT8 FindObjInObjRange(SOLDIERTYPE *pSoldier, UINT16 usItem1, UINT16 usItem2) {
   return ITEM_NOT_FOUND;
 }
 
-INT8 FindObjClass(SOLDIERTYPE *pSoldier, UINT32 usItemClass) {
+function FindObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -1014,7 +1014,7 @@ INT8 FindObjClass(SOLDIERTYPE *pSoldier, UINT32 usItemClass) {
   return NO_SLOT;
 }
 
-INT8 FindObjClassAfterSlot(SOLDIERTYPE *pSoldier, INT8 bStartAfter, UINT32 usItemClass) {
+function FindObjClassAfterSlot(pSoldier: Pointer<SOLDIERTYPE>, bStartAfter: INT8, usItemClass: UINT32): INT8 {
   INT8 bLoop;
 
   for (bLoop = bStartAfter + 1; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -1025,7 +1025,7 @@ INT8 FindObjClassAfterSlot(SOLDIERTYPE *pSoldier, INT8 bStartAfter, UINT32 usIte
   return NO_SLOT;
 }
 
-INT8 FindAIUsableObjClass(SOLDIERTYPE *pSoldier, UINT32 usItemClass) {
+function FindAIUsableObjClass(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32): INT8 {
   // finds the first object of the specified class which does NOT have
   // the "unusable by AI" flag set.
 
@@ -1047,7 +1047,7 @@ INT8 FindAIUsableObjClass(SOLDIERTYPE *pSoldier, UINT32 usItemClass) {
   return NO_SLOT;
 }
 
-INT8 FindAIUsableObjClassWithin(SOLDIERTYPE *pSoldier, UINT32 usItemClass, INT8 bLower, INT8 bUpper) {
+function FindAIUsableObjClassWithin(pSoldier: Pointer<SOLDIERTYPE>, usItemClass: UINT32, bLower: INT8, bUpper: INT8): INT8 {
   INT8 bLoop;
 
   // This is for the AI only so:
@@ -1064,7 +1064,7 @@ INT8 FindAIUsableObjClassWithin(SOLDIERTYPE *pSoldier, UINT32 usItemClass, INT8 
   return NO_SLOT;
 }
 
-INT8 FindEmptySlotWithin(SOLDIERTYPE *pSoldier, INT8 bLower, INT8 bUpper) {
+function FindEmptySlotWithin(pSoldier: Pointer<SOLDIERTYPE>, bLower: INT8, bUpper: INT8): INT8 {
   INT8 bLoop;
 
   for (bLoop = bLower; bLoop <= bUpper; bLoop++) {
@@ -1079,7 +1079,7 @@ INT8 FindEmptySlotWithin(SOLDIERTYPE *pSoldier, INT8 bLower, INT8 bUpper) {
   return ITEM_NOT_FOUND;
 }
 
-BOOLEAN GLGrenadeInSlot(SOLDIERTYPE *pSoldier, INT8 bSlot) {
+function GLGrenadeInSlot(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
   switch (pSoldier->inv[bSlot].usItem) {
     case GL_HE_GRENADE:
     case GL_TEARGAS_GRENADE:
@@ -1092,7 +1092,7 @@ BOOLEAN GLGrenadeInSlot(SOLDIERTYPE *pSoldier, INT8 bSlot) {
 }
 
 // for grenade launchers
-INT8 FindGLGrenade(SOLDIERTYPE *pSoldier) {
+function FindGLGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -1103,7 +1103,7 @@ INT8 FindGLGrenade(SOLDIERTYPE *pSoldier) {
   return NO_SLOT;
 }
 
-INT8 FindThrowableGrenade(SOLDIERTYPE *pSoldier) {
+function FindThrowableGrenade(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bLoop;
   BOOLEAN fCheckForFlares = FALSE;
 
@@ -1131,7 +1131,7 @@ INT8 FindThrowableGrenade(SOLDIERTYPE *pSoldier) {
   return NO_SLOT;
 }
 
-INT8 FindAttachment(OBJECTTYPE *pObj, UINT16 usItem) {
+function FindAttachment(pObj: Pointer<OBJECTTYPE>, usItem: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1142,7 +1142,7 @@ INT8 FindAttachment(OBJECTTYPE *pObj, UINT16 usItem) {
   return ITEM_NOT_FOUND;
 }
 
-INT8 FindAttachmentByClass(OBJECTTYPE *pObj, UINT32 uiItemClass) {
+function FindAttachmentByClass(pObj: Pointer<OBJECTTYPE>, uiItemClass: UINT32): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1153,7 +1153,7 @@ INT8 FindAttachmentByClass(OBJECTTYPE *pObj, UINT32 uiItemClass) {
   return ITEM_NOT_FOUND;
 }
 
-INT8 FindLaunchable(SOLDIERTYPE *pSoldier, UINT16 usWeapon) {
+function FindLaunchable(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < NUM_INV_SLOTS; bLoop++) {
@@ -1164,7 +1164,7 @@ INT8 FindLaunchable(SOLDIERTYPE *pSoldier, UINT16 usWeapon) {
   return ITEM_NOT_FOUND;
 }
 
-INT8 FindLaunchableAttachment(OBJECTTYPE *pObj, UINT16 usWeapon) {
+function FindLaunchableAttachment(pObj: Pointer<OBJECTTYPE>, usWeapon: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_ATTACHMENTS; bLoop++) {
@@ -1177,7 +1177,7 @@ INT8 FindLaunchableAttachment(OBJECTTYPE *pObj, UINT16 usWeapon) {
 }
 
 // Simple check to see if the item has any attachments
-BOOLEAN ItemHasAttachments(OBJECTTYPE *pObj) {
+function ItemHasAttachments(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   if ((pObj->usAttachItem[0] == NOTHING) && (pObj->usAttachItem[1] == NOTHING) && (pObj->usAttachItem[2] == NOTHING) && (pObj->usAttachItem[3] == NOTHING)) {
     return FALSE;
   }
@@ -1186,7 +1186,7 @@ BOOLEAN ItemHasAttachments(OBJECTTYPE *pObj) {
 
 // Determine if it is possible to add this attachment to the CLASS of this item
 // (i.e. to any item in the class)
-BOOLEAN ValidAttachmentClass(UINT16 usAttachment, UINT16 usItem) {
+function ValidAttachmentClass(usAttachment: UINT16, usItem: UINT16): BOOLEAN {
   INT32 iLoop = 0;
   while (1) {
     // see comment for AttachmentInfo array for why we skip IC_NONE
@@ -1206,7 +1206,7 @@ BOOLEAN ValidAttachmentClass(UINT16 usAttachment, UINT16 usItem) {
   return FALSE;
 }
 
-INT8 GetAttachmentInfoIndex(UINT16 usItem) {
+function GetAttachmentInfoIndex(usItem: UINT16): INT8 {
   INT32 iLoop = 0;
 
   while (1) {
@@ -1223,7 +1223,7 @@ INT8 GetAttachmentInfoIndex(UINT16 usItem) {
 }
 
 // Determine if it is possible to add this attachment to the item.
-BOOLEAN ValidAttachment(UINT16 usAttachment, UINT16 usItem) {
+function ValidAttachment(usAttachment: UINT16, usItem: UINT16): BOOLEAN {
   INT32 iLoop = 0;
 
   // look for the section of the array pertaining to this attachment...
@@ -1254,7 +1254,7 @@ BOOLEAN ValidAttachment(UINT16 usAttachment, UINT16 usItem) {
 // Determine if this item can receive this attachment.  This is different, in that it may
 // be possible to have this attachment on this item, but may already have an attachment on
 // it which doesn't work simultaneously with the new attachment (like a silencer and duckbill).
-BOOLEAN ValidItemAttachment(OBJECTTYPE *pObj, UINT16 usAttachment, BOOLEAN fAttemptingAttachment) {
+function ValidItemAttachment(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16, fAttemptingAttachment: BOOLEAN): BOOLEAN {
   BOOLEAN fSameItem = FALSE, fSimilarItems = FALSE;
   UINT16 usSimilarItem = NOTHING;
 
@@ -1353,7 +1353,7 @@ BOOLEAN ValidItemAttachment(OBJECTTYPE *pObj, UINT16 usAttachment, BOOLEAN fAtte
 }
 
 // Determines if it is possible to equip this weapon with this ammo.
-BOOLEAN ValidAmmoType(UINT16 usItem, UINT16 usAmmoType) {
+function ValidAmmoType(usItem: UINT16, usAmmoType: UINT16): BOOLEAN {
   if (Item[usItem].usItemClass == IC_GUN && Item[usAmmoType].usItemClass == IC_AMMO) {
     if (Weapon[usItem].ubCalibre == Magazine[Item[usAmmoType].ubClassIndex].ubCalibre) {
       return TRUE;
@@ -1362,7 +1362,7 @@ BOOLEAN ValidAmmoType(UINT16 usItem, UINT16 usAmmoType) {
   return FALSE;
 }
 
-BOOLEAN CompatibleFaceItem(UINT16 usItem1, UINT16 usItem2) {
+function CompatibleFaceItem(usItem1: UINT16, usItem2: UINT16): BOOLEAN {
   INT32 iLoop = 0;
 
   // look for the section of the array pertaining to this attachment...
@@ -1391,14 +1391,14 @@ BOOLEAN CompatibleFaceItem(UINT16 usItem1, UINT16 usItem2) {
 }
 
 // Determines if this item is a two handed item.
-BOOLEAN TwoHandedItem(UINT16 usItem) {
+function TwoHandedItem(usItem: UINT16): BOOLEAN {
   if (Item[usItem].fFlags & ITEM_TWO_HANDED) {
     return TRUE;
   }
   return FALSE;
 }
 
-BOOLEAN ValidLaunchable(UINT16 usLaunchable, UINT16 usItem) {
+function ValidLaunchable(usLaunchable: UINT16, usItem: UINT16): BOOLEAN {
   INT32 iLoop = 0;
 
   // look for the section of the array pertaining to this launchable item...
@@ -1426,7 +1426,7 @@ BOOLEAN ValidLaunchable(UINT16 usLaunchable, UINT16 usItem) {
   return TRUE;
 }
 
-BOOLEAN ValidItemLaunchable(OBJECTTYPE *pObj, UINT16 usAttachment) {
+function ValidItemLaunchable(pObj: Pointer<OBJECTTYPE>, usAttachment: UINT16): BOOLEAN {
   if (!ValidLaunchable(usAttachment, pObj->usItem)) {
     return FALSE;
   }
@@ -1437,7 +1437,7 @@ BOOLEAN ValidItemLaunchable(OBJECTTYPE *pObj, UINT16 usAttachment) {
   return TRUE;
 }
 
-UINT16 GetLauncherFromLaunchable(UINT16 usLaunchable) {
+function GetLauncherFromLaunchable(usLaunchable: UINT16): UINT16 {
   INT32 iLoop = 0;
   UINT16 usItem = NOTHING;
 
@@ -1456,7 +1456,7 @@ UINT16 GetLauncherFromLaunchable(UINT16 usLaunchable) {
   return Launchable[iLoop][1];
 }
 
-BOOLEAN EvaluateValidMerge(UINT16 usMerge, UINT16 usItem, UINT16 *pusResult, UINT8 *pubType) {
+function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<UINT16>, pubType: Pointer<UINT8>): BOOLEAN {
   // NB "usMerge" is the object being merged with (e.g. compound 18)
   // "usItem" is the item being merged "onto" (e.g. kevlar vest)
   INT32 iLoop = 0;
@@ -1493,13 +1493,13 @@ BOOLEAN EvaluateValidMerge(UINT16 usMerge, UINT16 usItem, UINT16 *pusResult, UIN
   return TRUE;
 }
 
-BOOLEAN ValidMerge(UINT16 usMerge, UINT16 usItem) {
+function ValidMerge(usMerge: UINT16, usItem: UINT16): BOOLEAN {
   UINT16 usIgnoreResult;
   UINT8 ubIgnoreType;
   return EvaluateValidMerge(usMerge, usItem, &usIgnoreResult, &ubIgnoreType);
 }
 
-UINT8 CalculateObjectWeight(OBJECTTYPE *pObject) {
+function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
   INT32 cnt;
   UINT16 usWeight;
   INVTYPE *pItem;
@@ -1529,7 +1529,7 @@ UINT8 CalculateObjectWeight(OBJECTTYPE *pObject) {
   return (UINT8)usWeight;
 }
 
-UINT32 CalculateCarriedWeight(SOLDIERTYPE *pSoldier) {
+function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   UINT32 uiTotalWeight = 0;
   UINT32 uiPercent;
   UINT8 ubLoop;
@@ -1555,15 +1555,15 @@ UINT32 CalculateCarriedWeight(SOLDIERTYPE *pSoldier) {
   return uiPercent;
 }
 
-void DeleteObj(OBJECTTYPE *pObj) {
+function DeleteObj(pObj: Pointer<OBJECTTYPE>): void {
   memset(pObj, 0, sizeof(OBJECTTYPE));
 }
 
-void CopyObj(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj) {
+function CopyObj(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>): void {
   memcpy(pTargetObj, pSourceObj, sizeof(OBJECTTYPE));
 }
 
-void SwapObjs(OBJECTTYPE *pObj1, OBJECTTYPE *pObj2) {
+function SwapObjs(pObj1: Pointer<OBJECTTYPE>, pObj2: Pointer<OBJECTTYPE>): void {
   OBJECTTYPE Temp;
 
   memcpy(&Temp, pObj1, sizeof(OBJECTTYPE));
@@ -1587,7 +1587,7 @@ void SwapObjs(OBJECTTYPE *pObj1, OBJECTTYPE *pObj2) {
   */
 }
 
-void RemoveObjFrom(OBJECTTYPE *pObj, UINT8 ubRemoveIndex) {
+function RemoveObjFrom(pObj: Pointer<OBJECTTYPE>, ubRemoveIndex: UINT8): void {
   // remove 1 object from an OBJECTTYPE, starting at index bRemoveIndex
   UINT8 ubLoop;
 
@@ -1609,7 +1609,7 @@ void RemoveObjFrom(OBJECTTYPE *pObj, UINT8 ubRemoveIndex) {
   }
 }
 
-void RemoveObjs(OBJECTTYPE *pObj, UINT8 ubNumberToRemove) {
+function RemoveObjs(pObj: Pointer<OBJECTTYPE>, ubNumberToRemove: UINT8): void {
   // remove a certain number of objects from an OBJECTTYPE, starting at index 0
   UINT8 ubLoop;
 
@@ -1627,7 +1627,7 @@ void RemoveObjs(OBJECTTYPE *pObj, UINT8 ubNumberToRemove) {
   }
 }
 
-void GetObjFrom(OBJECTTYPE *pObj, UINT8 ubGetIndex, OBJECTTYPE *pDest) {
+function GetObjFrom(pObj: Pointer<OBJECTTYPE>, ubGetIndex: UINT8, pDest: Pointer<OBJECTTYPE>): void {
   if (!pDest || ubGetIndex >= pObj->ubNumberOfObjects) {
     return;
   }
@@ -1644,7 +1644,7 @@ void GetObjFrom(OBJECTTYPE *pObj, UINT8 ubGetIndex, OBJECTTYPE *pDest) {
   }
 }
 
-void SwapWithinObj(OBJECTTYPE *pObj, UINT8 ubIndex1, UINT8 ubIndex2) {
+function SwapWithinObj(pObj: Pointer<OBJECTTYPE>, ubIndex1: UINT8, ubIndex2: UINT8): void {
   INT8 bTemp;
 
   if (pObj->ubNumberOfObjects >= ubIndex1 || pObj->ubNumberOfObjects >= ubIndex1) {
@@ -1656,7 +1656,7 @@ void SwapWithinObj(OBJECTTYPE *pObj, UINT8 ubIndex1, UINT8 ubIndex2) {
   pObj->bStatus[ubIndex2] = bTemp;
 }
 
-void DamageObj(OBJECTTYPE *pObj, INT8 bAmount) {
+function DamageObj(pObj: Pointer<OBJECTTYPE>, bAmount: INT8): void {
   if (bAmount >= pObj->bStatus[0]) {
     pObj->bStatus[0] = 1;
   } else {
@@ -1664,7 +1664,7 @@ void DamageObj(OBJECTTYPE *pObj, INT8 bAmount) {
   }
 }
 
-void StackObjs(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj, UINT8 ubNumberToCopy) {
+function StackObjs(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubNumberToCopy: UINT8): void {
   UINT8 ubLoop;
 
   // copy over N status values
@@ -1683,7 +1683,7 @@ void StackObjs(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj, UINT8 ubNumberToC
   pTargetObj->ubWeight = CalculateObjectWeight(pTargetObj);
 }
 
-void CleanUpStack(OBJECTTYPE *pObj, OBJECTTYPE *pCursorObj) {
+function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>): void {
   INT8 bLoop, bLoop2;
   INT8 bMaxPoints, bPointsToMove;
 
@@ -1742,7 +1742,7 @@ void CleanUpStack(OBJECTTYPE *pObj, OBJECTTYPE *pCursorObj) {
   }
 }
 
-BOOLEAN PlaceObjectAtObjectIndex(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj, UINT8 ubIndex) {
+function PlaceObjectAtObjectIndex(pSourceObj: Pointer<OBJECTTYPE>, pTargetObj: Pointer<OBJECTTYPE>, ubIndex: UINT8): BOOLEAN {
   INT8 bTemp;
 
   if (pSourceObj->usItem != pTargetObj->usItem) {
@@ -1767,7 +1767,7 @@ const RELOAD_SWAP = 2;
 const RELOAD_TOPOFF = 3;
 const RELOAD_AUTOPLACE_OLD = 4;
 
-BOOLEAN ReloadGun(SOLDIERTYPE *pSoldier, OBJECTTYPE *pGun, OBJECTTYPE *pAmmo) {
+function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): BOOLEAN {
   OBJECTTYPE OldAmmo;
   UINT8 ubBulletsToMove;
   INT8 bAPs;
@@ -1943,7 +1943,7 @@ BOOLEAN ReloadGun(SOLDIERTYPE *pSoldier, OBJECTTYPE *pGun, OBJECTTYPE *pAmmo) {
   return TRUE;
 }
 
-BOOLEAN EmptyWeaponMagazine(OBJECTTYPE *pWeapon, OBJECTTYPE *pAmmo) {
+function EmptyWeaponMagazine(pWeapon: Pointer<OBJECTTYPE>, pAmmo: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT16 usReloadSound;
 
   CHECKF(pAmmo != NULL);
@@ -2021,7 +2021,7 @@ BOOLEAN ReloadLauncher( OBJECTTYPE * pLauncher, OBJECTTYPE * pAmmo )
 }
 */
 
-INT8 FindAmmo(SOLDIERTYPE *pSoldier, UINT8 ubCalibre, UINT8 ubMagSize, INT8 bExcludeSlot) {
+function FindAmmo(pSoldier: Pointer<SOLDIERTYPE>, ubCalibre: UINT8, ubMagSize: UINT8, bExcludeSlot: INT8): INT8 {
   INT8 bLoop;
   INVTYPE *pItem;
 
@@ -2039,7 +2039,7 @@ INT8 FindAmmo(SOLDIERTYPE *pSoldier, UINT8 ubCalibre, UINT8 ubMagSize, INT8 bExc
   return NO_SLOT;
 }
 
-INT8 FindAmmoToReload(SOLDIERTYPE *pSoldier, INT8 bWeaponIn, INT8 bExcludeSlot) {
+function FindAmmoToReload(pSoldier: Pointer<SOLDIERTYPE>, bWeaponIn: INT8, bExcludeSlot: INT8): INT8 {
   OBJECTTYPE *pObj;
   INT8 bSlot;
 
@@ -2077,7 +2077,7 @@ INT8 FindAmmoToReload(SOLDIERTYPE *pSoldier, INT8 bWeaponIn, INT8 bExcludeSlot) 
   }
 }
 
-BOOLEAN AutoReload(SOLDIERTYPE *pSoldier) {
+function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   OBJECTTYPE *pObj;
   INT8 bSlot, bAPCost;
   BOOLEAN fRet;
@@ -2116,7 +2116,7 @@ BOOLEAN AutoReload(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT8 GetAttachmentComboMerge(OBJECTTYPE *pObj) {
+function GetAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>): INT8 {
   INT8 bIndex = 0;
   INT8 bAttachLoop, bAttachPos;
 
@@ -2144,7 +2144,7 @@ INT8 GetAttachmentComboMerge(OBJECTTYPE *pObj) {
   return -1;
 }
 
-void PerformAttachmentComboMerge(OBJECTTYPE *pObj, INT8 bAttachmentComboMerge) {
+function PerformAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>, bAttachmentComboMerge: INT8): void {
   INT8 bAttachLoop, bAttachPos;
   UINT32 uiStatusTotal = 0;
   INT8 bNumStatusContributors = 0;
@@ -2176,7 +2176,7 @@ void PerformAttachmentComboMerge(OBJECTTYPE *pObj, INT8 bAttachmentComboMerge) {
   pObj->bStatus[0] = (INT8)(uiStatusTotal / bNumStatusContributors);
 }
 
-BOOLEAN AttachObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTargetObj, OBJECTTYPE *pAttachment) {
+function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECTTYPE>, pAttachment: Pointer<OBJECTTYPE>): BOOLEAN {
   INT8 bAttachPos, bSecondAttachPos; //, bAbility, bSuccess;
   UINT16 usResult;
   INT8 bLoop;
@@ -2380,7 +2380,7 @@ BOOLEAN AttachObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTargetObj, OBJECTTYPE *
   return FALSE;
 }
 
-BOOLEAN CanItemFitInPosition(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, INT8 bPos, BOOLEAN fDoingPlacement) {
+function CanItemFitInPosition(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, bPos: INT8, fDoingPlacement: BOOLEAN): BOOLEAN {
   UINT8 ubSlotLimit;
   INT8 bNewPos;
 
@@ -2456,7 +2456,7 @@ BOOLEAN CanItemFitInPosition(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, INT8 bPos,
   return TRUE;
 }
 
-BOOLEAN DropObjIfThereIsRoom(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
+function DropObjIfThereIsRoom(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   // try autoplacing item in bSlot elsewhere, then do a placement
   BOOLEAN fAutoPlacedOld;
 
@@ -2468,7 +2468,7 @@ BOOLEAN DropObjIfThereIsRoom(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj)
   }
 }
 
-BOOLEAN PlaceObject(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
+function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   // returns object to have in hand after placement... same as original in the
   // case of error
 
@@ -2648,7 +2648,7 @@ BOOLEAN PlaceObject(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
   return TRUE;
 }
 
-BOOLEAN InternalAutoPlaceObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN fNewItem, INT8 bExcludeSlot) {
+function InternalAutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, fNewItem: BOOLEAN, bExcludeSlot: INT8): BOOLEAN {
   INT8 bSlot;
   INVTYPE *pItem;
   UINT8 ubPerSlot;
@@ -2826,11 +2826,11 @@ BOOLEAN InternalAutoPlaceObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN
   return FALSE;
 }
 
-BOOLEAN AutoPlaceObject(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN fNewItem) {
+function AutoPlaceObject(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, fNewItem: BOOLEAN): BOOLEAN {
   return InternalAutoPlaceObject(pSoldier, pObj, fNewItem, NO_SLOT);
 }
 
-BOOLEAN RemoveObjectFromSlot(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj) {
+function RemoveObjectFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   CHECKF(pObj);
   if (pSoldier->inv[bPos].ubNumberOfObjects == 0) {
     return FALSE;
@@ -2841,7 +2841,7 @@ BOOLEAN RemoveObjectFromSlot(SOLDIERTYPE *pSoldier, INT8 bPos, OBJECTTYPE *pObj)
   }
 }
 
-BOOLEAN RemoveKeyFromSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTYPE *pObj) {
+function RemoveKeyFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT8 ubItem = 0;
 
   CHECKF(pObj);
@@ -2867,7 +2867,7 @@ BOOLEAN RemoveKeyFromSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTY
   return FALSE;
 }
 
-BOOLEAN RemoveKeysFromSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, UINT8 ubNumberOfKeys, OBJECTTYPE *pObj) {
+function RemoveKeysFromSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, ubNumberOfKeys: UINT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT8 ubItems = 0;
 
   CHECKF(pObj);
@@ -2895,7 +2895,7 @@ BOOLEAN RemoveKeysFromSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, UINT8 u
 }
 
 // return number added
-UINT8 AddKeysToSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTYPE *pObj) {
+function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   UINT8 ubNumberNotAdded = 0;
 
   if (pSoldier->uiStatusFlags & SOLDIER_PC) // redundant but what the hey
@@ -2932,7 +2932,7 @@ UINT8 AddKeysToSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTYPE *pO
   return pObj->ubNumberOfObjects;
 }
 
-UINT8 SwapKeysToSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTYPE *pObj) {
+function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, pObj: Pointer<OBJECTTYPE>): UINT8 {
   // swap keys in keyring slot and keys in pocket
   UINT8 ubNumberNotAdded = 0;
   OBJECTTYPE TempObj;
@@ -2949,7 +2949,7 @@ UINT8 SwapKeysToSlot(SOLDIERTYPE *pSoldier, INT8 bKeyRingPosition, OBJECTTYPE *p
   return 1;
 }
 
-BOOLEAN CreateKeyObject(OBJECTTYPE *pObj, UINT8 ubNumberOfKeys, UINT8 ubKeyID) {
+function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKeyID: UINT8): BOOLEAN {
   BOOLEAN fRet;
 
   fRet = CreateItems((UINT16)(FIRST_KEY + LockTable[ubKeyID].usKeyItem), 100, ubNumberOfKeys, pObj);
@@ -2961,7 +2961,7 @@ BOOLEAN CreateKeyObject(OBJECTTYPE *pObj, UINT8 ubNumberOfKeys, UINT8 ubKeyID) {
   return fRet;
 }
 
-BOOLEAN AllocateObject(OBJECTTYPE **pObj) {
+function AllocateObject(pObj: Pointer<Pointer<OBJECTTYPE>>): BOOLEAN {
   // create a key object
   *pObj = MemAlloc(sizeof(OBJECTTYPE));
   Assert(pObj);
@@ -2969,7 +2969,7 @@ BOOLEAN AllocateObject(OBJECTTYPE **pObj) {
   return TRUE;
 }
 
-BOOLEAN DeleteKeyObject(OBJECTTYPE *pObj) {
+function DeleteKeyObject(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   if (pObj == FALSE) {
     return FALSE;
   }
@@ -2980,7 +2980,7 @@ BOOLEAN DeleteKeyObject(OBJECTTYPE *pObj) {
   return TRUE;
 }
 
-UINT16 TotalPoints(OBJECTTYPE *pObj) {
+function TotalPoints(pObj: Pointer<OBJECTTYPE>): UINT16 {
   UINT16 usPoints = 0;
   UINT8 ubLoop;
 
@@ -2990,7 +2990,7 @@ UINT16 TotalPoints(OBJECTTYPE *pObj) {
   return usPoints;
 }
 
-UINT16 UseKitPoints(OBJECTTYPE *pObj, UINT16 usPoints, SOLDIERTYPE *pSoldier) {
+function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   // start consuming from the last kit in, so we end up with fewer fuller kits rather than
   // lots of half-empty ones.
   INT8 bLoop;
@@ -3021,7 +3021,7 @@ UINT16 UseKitPoints(OBJECTTYPE *pObj, UINT16 usPoints, SOLDIERTYPE *pSoldier) {
   return usOriginalPoints - usPoints;
 }
 
-void DoChrisTest(SOLDIERTYPE *pSoldier) {
+function DoChrisTest(pSoldier: Pointer<SOLDIERTYPE>): void {
   /*
   UINT32 uiLoop;
 
@@ -3148,7 +3148,7 @@ void DoChrisTest(SOLDIERTYPE *pSoldier) {
           */
 }
 
-UINT16 MagazineClassIndexToItemType(UINT16 usMagIndex) {
+function MagazineClassIndexToItemType(usMagIndex: UINT16): UINT16 {
   UINT16 usLoop;
 
   // Note: if any ammo items in the item table are separated from the main group,
@@ -3163,7 +3163,7 @@ UINT16 MagazineClassIndexToItemType(UINT16 usMagIndex) {
   return NONE;
 }
 
-UINT16 DefaultMagazine(UINT16 usItem) {
+function DefaultMagazine(usItem: UINT16): UINT16 {
   WEAPONTYPE *pWeapon;
   UINT16 usLoop;
 
@@ -3184,7 +3184,7 @@ UINT16 DefaultMagazine(UINT16 usItem) {
   return 0;
 }
 
-UINT16 FindReplacementMagazine(UINT8 ubCalibre, UINT8 ubMagSize, UINT8 ubAmmoType) {
+function FindReplacementMagazine(ubCalibre: UINT8, ubMagSize: UINT8, ubAmmoType: UINT8): UINT16 {
   UINT8 ubLoop;
   UINT16 usDefault;
 
@@ -3207,7 +3207,7 @@ UINT16 FindReplacementMagazine(UINT8 ubCalibre, UINT8 ubMagSize, UINT8 ubAmmoTyp
   return usDefault;
 }
 
-UINT16 FindReplacementMagazineIfNecessary(UINT16 usOldGun, UINT16 usOldAmmo, UINT16 usNewGun) {
+function FindReplacementMagazineIfNecessary(usOldGun: UINT16, usOldAmmo: UINT16, usNewGun: UINT16): UINT16 {
   UINT16 usNewAmmo = NOTHING;
 
   if ((Magazine[Item[usOldAmmo].ubClassIndex].ubCalibre == Weapon[usOldGun].ubCalibre) && (Magazine[Item[usOldAmmo].ubClassIndex].ubMagSize == Weapon[usOldGun].ubMagSize)) {
@@ -3221,7 +3221,7 @@ UINT16 FindReplacementMagazineIfNecessary(UINT16 usOldGun, UINT16 usOldAmmo, UIN
 // increase this if any gun can have more types that this
 const MAX_AMMO_TYPES_PER_GUN = 3;
 
-UINT16 RandomMagazine(UINT16 usItem, UINT8 ubPercentStandard) {
+function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
   // Note: if any ammo items in the item table are separated from the main group,
   // this function will have to be rewritten to scan the item table for an item
   // with item class ammo, which has class index ubLoop
@@ -3272,7 +3272,7 @@ UINT16 RandomMagazine(UINT16 usItem, UINT8 ubPercentStandard) {
   }
 }
 
-BOOLEAN CreateGun(UINT16 usItem, INT8 bStatus, OBJECTTYPE *pObj) {
+function CreateGun(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT16 usAmmo;
 
   Assert(pObj != NULL);
@@ -3324,7 +3324,7 @@ BOOLEAN CreateGun(UINT16 usItem, INT8 bStatus, OBJECTTYPE *pObj) {
   return TRUE;
 }
 
-BOOLEAN CreateMagazine(UINT16 usItem, OBJECTTYPE *pObj) {
+function CreateMagazine(usItem: UINT16, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   if (pObj == NULL) {
     return FALSE;
   }
@@ -3336,7 +3336,7 @@ BOOLEAN CreateMagazine(UINT16 usItem, OBJECTTYPE *pObj) {
   return TRUE;
 }
 
-BOOLEAN CreateItem(UINT16 usItem, INT8 bStatus, OBJECTTYPE *pObj) {
+function CreateItem(usItem: UINT16, bStatus: INT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   BOOLEAN fRet;
 
   memset(pObj, 0, sizeof(OBJECTTYPE));
@@ -3369,7 +3369,7 @@ BOOLEAN CreateItem(UINT16 usItem, INT8 bStatus, OBJECTTYPE *pObj) {
   return fRet;
 }
 
-BOOLEAN CreateItems(UINT16 usItem, INT8 bStatus, UINT8 ubNumber, OBJECTTYPE *pObj) {
+function CreateItems(usItem: UINT16, bStatus: INT8, ubNumber: UINT8, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   BOOLEAN fOk;
   UINT8 ubLoop;
 
@@ -3396,7 +3396,7 @@ BOOLEAN CreateItems(UINT16 usItem, INT8 bStatus, UINT8 ubNumber, OBJECTTYPE *pOb
   return FALSE;
 }
 
-BOOLEAN CreateMoney(UINT32 uiMoney, OBJECTTYPE *pObj) {
+function CreateMoney(uiMoney: UINT32, pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   BOOLEAN fOk;
 
   fOk = CreateItem(MONEY, 100, pObj);
@@ -3406,7 +3406,7 @@ BOOLEAN CreateMoney(UINT32 uiMoney, OBJECTTYPE *pObj) {
   return fOk;
 }
 
-BOOLEAN ArmBomb(OBJECTTYPE *pObj, INT8 bSetting) {
+function ArmBomb(pObj: Pointer<OBJECTTYPE>, bSetting: INT8): BOOLEAN {
   BOOLEAN fRemote = FALSE;
   BOOLEAN fPressure = FALSE;
   BOOLEAN fTimed = FALSE;
@@ -3468,7 +3468,7 @@ BOOLEAN ArmBomb(OBJECTTYPE *pObj, INT8 bSetting) {
   return TRUE;
 }
 
-void RenumberAttachments(OBJECTTYPE *pObj) {
+function RenumberAttachments(pObj: Pointer<OBJECTTYPE>): void {
   // loop through attachment positions and make sure we don't have any empty
   // attachment slots before filled ones
   INT8 bAttachPos;
@@ -3502,7 +3502,7 @@ void RenumberAttachments(OBJECTTYPE *pObj) {
   }
 }
 
-BOOLEAN RemoveAttachment(OBJECTTYPE *pObj, INT8 bAttachPos, OBJECTTYPE *pNewObj) {
+function RemoveAttachment(pObj: Pointer<OBJECTTYPE>, bAttachPos: INT8, pNewObj: Pointer<OBJECTTYPE>): BOOLEAN {
   INT8 bGrenade;
 
   CHECKF(pObj);
@@ -3545,7 +3545,7 @@ BOOLEAN RemoveAttachment(OBJECTTYPE *pObj, INT8 bAttachPos, OBJECTTYPE *pNewObj)
   return TRUE;
 }
 
-void SetNewItem(SOLDIERTYPE *pSoldier, UINT8 ubInvPos, BOOLEAN fNewItem) {
+function SetNewItem(pSoldier: Pointer<SOLDIERTYPE>, ubInvPos: UINT8, fNewItem: BOOLEAN): void {
   if (fNewItem) {
     pSoldier->bNewItemCount[ubInvPos] = -1;
     pSoldier->bNewItemCycleCount[ubInvPos] = NEW_ITEM_CYCLE_COUNT;
@@ -3553,7 +3553,7 @@ void SetNewItem(SOLDIERTYPE *pSoldier, UINT8 ubInvPos, BOOLEAN fNewItem) {
   }
 }
 
-BOOLEAN PlaceObjectInSoldierProfile(UINT8 ubProfile, OBJECTTYPE *pObject) {
+function PlaceObjectInSoldierProfile(ubProfile: UINT8, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
   INT8 bLoop, bLoop2;
   SOLDIERTYPE *pSoldier;
   UINT16 usItem;
@@ -3620,7 +3620,7 @@ BOOLEAN PlaceObjectInSoldierProfile(UINT8 ubProfile, OBJECTTYPE *pObject) {
   return fReturnVal;
 }
 
-BOOLEAN RemoveObjectFromSoldierProfile(UINT8 ubProfile, UINT16 usItem) {
+function RemoveObjectFromSoldierProfile(ubProfile: UINT8, usItem: UINT16): BOOLEAN {
   INT8 bLoop;
   SOLDIERTYPE *pSoldier;
   BOOLEAN fReturnVal = FALSE;
@@ -3652,7 +3652,7 @@ BOOLEAN RemoveObjectFromSoldierProfile(UINT8 ubProfile, UINT16 usItem) {
   return fReturnVal;
 }
 
-void SetMoneyInSoldierProfile(UINT8 ubProfile, UINT32 uiMoney) {
+function SetMoneyInSoldierProfile(ubProfile: UINT8, uiMoney: UINT32): void {
   // INT8						bSlot;
   OBJECTTYPE Object;
   // SOLDIERTYPE *		pSoldier;
@@ -3672,7 +3672,7 @@ void SetMoneyInSoldierProfile(UINT8 ubProfile, UINT32 uiMoney) {
   }
 }
 
-INT8 FindObjectInSoldierProfile(UINT8 ubProfile, UINT16 usItem) {
+function FindObjectInSoldierProfile(ubProfile: UINT8, usItem: UINT16): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < 19; bLoop++) {
@@ -3685,14 +3685,14 @@ INT8 FindObjectInSoldierProfile(UINT8 ubProfile, UINT16 usItem) {
   return NO_SLOT;
 }
 
-BOOLEAN ObjectExistsInSoldierProfile(UINT8 ubProfile, UINT16 usItem) {
+function ObjectExistsInSoldierProfile(ubProfile: UINT8, usItem: UINT16): BOOLEAN {
   INT8 bSlot;
 
   bSlot = FindObjectInSoldierProfile(ubProfile, usItem);
   return bSlot != NO_SLOT;
 }
 
-void RemoveInvObject(SOLDIERTYPE *pSoldier, UINT16 usItem) {
+function RemoveInvObject(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16): void {
   INT8 bInvPos;
 
   // find object
@@ -3706,7 +3706,7 @@ void RemoveInvObject(SOLDIERTYPE *pSoldier, UINT16 usItem) {
   }
 }
 
-INT8 CheckItemForDamage(UINT16 usItem, INT32 iMaxDamage) {
+function CheckItemForDamage(usItem: UINT16, iMaxDamage: INT32): INT8 {
   INT8 bDamage = 0;
 
   // if the item is protective armour, reduce the amount of damage
@@ -3726,7 +3726,7 @@ INT8 CheckItemForDamage(UINT16 usItem, INT32 iMaxDamage) {
   return bDamage;
 }
 
-BOOLEAN CheckForChainReaction(UINT16 usItem, INT8 bStatus, INT8 bDamage, BOOLEAN fOnGround) {
+function CheckForChainReaction(usItem: UINT16, bStatus: INT8, bDamage: INT8, fOnGround: BOOLEAN): BOOLEAN {
   INT32 iChance;
 
   iChance = Explosive[Item[usItem].ubClassIndex].ubVolatility;
@@ -3747,7 +3747,7 @@ BOOLEAN CheckForChainReaction(UINT16 usItem, INT8 bStatus, INT8 bDamage, BOOLEAN
   return FALSE;
 }
 
-BOOLEAN DamageItem(OBJECTTYPE *pObject, INT32 iDamage, BOOLEAN fOnGround) {
+function DamageItem(pObject: Pointer<OBJECTTYPE>, iDamage: INT32, fOnGround: BOOLEAN): BOOLEAN {
   INT8 bLoop;
   INT8 bDamage;
 
@@ -3814,7 +3814,7 @@ BOOLEAN DamageItem(OBJECTTYPE *pObject, INT32 iDamage, BOOLEAN fOnGround) {
   return FALSE;
 }
 
-void CheckEquipmentForDamage(SOLDIERTYPE *pSoldier, INT32 iDamage) {
+function CheckEquipmentForDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
   INT8 bSlot;
   BOOLEAN fBlowsUp;
   UINT8 ubNumberOfObjects;
@@ -3844,7 +3844,7 @@ void CheckEquipmentForDamage(SOLDIERTYPE *pSoldier, INT32 iDamage) {
   }
 }
 
-void CheckEquipmentForFragileItemDamage(SOLDIERTYPE *pSoldier, INT32 iDamage) {
+function CheckEquipmentForFragileItemDamage(pSoldier: Pointer<SOLDIERTYPE>, iDamage: INT32): void {
   // glass jars etc can be damaged by falling over
   INT8 bSlot;
   UINT8 ubNumberOfObjects;
@@ -3871,7 +3871,7 @@ void CheckEquipmentForFragileItemDamage(SOLDIERTYPE *pSoldier, INT32 iDamage) {
   }
 }
 
-BOOLEAN DamageItemOnGround(OBJECTTYPE *pObject, INT16 sGridNo, INT8 bLevel, INT32 iDamage, UINT8 ubOwner) {
+function DamageItemOnGround(pObject: Pointer<OBJECTTYPE>, sGridNo: INT16, bLevel: INT8, iDamage: INT32, ubOwner: UINT8): BOOLEAN {
   BOOLEAN fBlowsUp;
 
   fBlowsUp = DamageItem(pObject, iDamage, TRUE);
@@ -3889,7 +3889,7 @@ BOOLEAN DamageItemOnGround(OBJECTTYPE *pObject, INT16 sGridNo, INT8 bLevel, INT3
 }
 
 // is the item a medical kit/first aid kit item?
-INT8 IsMedicalKitItem(OBJECTTYPE *pObject) {
+function IsMedicalKitItem(pObject: Pointer<OBJECTTYPE>): INT8 {
   // check item id against current medical kits
   switch (pObject->usItem) {
     case (MEDICKIT):
@@ -3901,7 +3901,7 @@ INT8 IsMedicalKitItem(OBJECTTYPE *pObject) {
   return 0;
 }
 
-void SwapHandItems(SOLDIERTYPE *pSoldier) {
+function SwapHandItems(pSoldier: Pointer<SOLDIERTYPE>): void {
   BOOLEAN fOk;
 
   CHECKV(pSoldier);
@@ -3923,7 +3923,7 @@ void SwapHandItems(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SwapOutHandItem(SOLDIERTYPE *pSoldier) {
+function SwapOutHandItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   BOOLEAN fOk;
 
   CHECKV(pSoldier);
@@ -3946,7 +3946,7 @@ void SwapOutHandItem(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void WaterDamage(SOLDIERTYPE *pSoldier) {
+function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
   // damage guy's equipment and camouflage due to water
   INT8 bLoop, bDamage, bDieSize;
   UINT32 uiRoll;
@@ -4002,7 +4002,7 @@ void WaterDamage(SOLDIERTYPE *pSoldier) {
   DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 }
 
-BOOLEAN ApplyCammo(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs) {
+function ApplyCammo(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<BOOLEAN>): BOOLEAN {
   INT8 bPointsToUse;
   UINT16 usTotalKitPoints;
 
@@ -4046,7 +4046,7 @@ BOOLEAN ApplyCammo(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs) 
   return TRUE;
 }
 
-BOOLEAN ApplyCanteen(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs) {
+function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<BOOLEAN>): BOOLEAN {
   INT16 sPointsToUse;
   UINT16 usTotalKitPoints;
 
@@ -4087,7 +4087,7 @@ BOOLEAN ApplyCanteen(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs
 
 const MAX_HUMAN_CREATURE_SMELL = (NORMAL_HUMAN_SMELL_STRENGTH - 1);
 
-BOOLEAN ApplyElixir(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs) {
+function ApplyElixir(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>, pfGoodAPs: Pointer<BOOLEAN>): BOOLEAN {
   INT16 sPointsToUse;
   UINT16 usTotalKitPoints;
 
@@ -4120,15 +4120,15 @@ BOOLEAN ApplyElixir(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, BOOLEAN *pfGoodAPs)
   return TRUE;
 }
 
-UINT32 ConvertProfileMoneyValueToObjectTypeMoneyValue(UINT8 ubStatus) {
+function ConvertProfileMoneyValueToObjectTypeMoneyValue(ubStatus: UINT8): UINT32 {
   return ubStatus * 50;
 }
 
-UINT8 ConvertObjectTypeMoneyValueToProfileMoneyValue(UINT32 uiMoneyAmount) {
+function ConvertObjectTypeMoneyValueToProfileMoneyValue(uiMoneyAmount: UINT32): UINT8 {
   return (UINT8)(uiMoneyAmount / 50);
 }
 
-BOOLEAN ItemIsCool(OBJECTTYPE *pObj) {
+function ItemIsCool(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
   if (pObj->bStatus[0] < 60) {
     return FALSE;
   }
@@ -4145,7 +4145,7 @@ BOOLEAN ItemIsCool(OBJECTTYPE *pObj) {
   return FALSE;
 }
 
-void ActivateXRayDevice(SOLDIERTYPE *pSoldier) {
+function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pSoldier2;
   UINT32 uiSlot;
   INT8 bBatteries;
@@ -4189,7 +4189,7 @@ void ActivateXRayDevice(SOLDIERTYPE *pSoldier) {
   pSoldier->uiXRayActivatedTime = GetWorldTotalSeconds();
 }
 
-void TurnOffXRayEffects(SOLDIERTYPE *pSoldier) {
+function TurnOffXRayEffects(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pSoldier2;
   UINT32 uiSlot;
 

@@ -9,7 +9,7 @@ UINT32 guiPabloExtraDaysBribed = 0;
 
 UINT8 gubCambriaMedicalObjects;
 
-void BobbyRayPurchaseEventCallback(UINT8 ubOrderID) {
+function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
   UINT8 i, j;
   UINT16 usItem;
   OBJECTTYPE Object;
@@ -285,7 +285,7 @@ void BobbyRayPurchaseEventCallback(UINT8 ubOrderID) {
   }
 }
 
-void HandleDelayedItemsArrival(UINT32 uiReason) {
+function HandleDelayedItemsArrival(uiReason: UINT32): void {
   // This function moves all the items that Pablos has stolen
   // (or items that were delayed) to the arrival location for new shipments,
   INT16 sStartGridNo;
@@ -371,14 +371,14 @@ void HandleDelayedItemsArrival(UINT32 uiReason) {
   }
 }
 
-void AddSecondAirportAttendant(void) {
+function AddSecondAirportAttendant(): void {
   // add the second airport attendant to the Drassen airport...
   gMercProfiles[99].sSectorX = BOBBYR_SHIPPING_DEST_SECTOR_X;
   gMercProfiles[99].sSectorY = BOBBYR_SHIPPING_DEST_SECTOR_Y;
   gMercProfiles[99].bSectorZ = BOBBYR_SHIPPING_DEST_SECTOR_Z;
 }
 
-void SetPabloToUnbribed(void) {
+function SetPabloToUnbribed(): void {
   if (guiPabloExtraDaysBribed > 0) {
     // set new event for later on, because the player gave Pablo more money!
     AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, GetWorldMinutesInDay(), FACT_PABLOS_BRIBED, guiPabloExtraDaysBribed);
@@ -388,7 +388,7 @@ void SetPabloToUnbribed(void) {
   }
 }
 
-void HandlePossiblyDamagedPackage(void) {
+function HandlePossiblyDamagedPackage(): void {
   if (Random(100) < 70) {
     SetFactTrue(FACT_PACKAGE_DAMAGED);
     HandleDelayedItemsArrival(FACT_PACKAGE_DAMAGED);
@@ -400,7 +400,7 @@ void HandlePossiblyDamagedPackage(void) {
   SetFactFalse(FACT_SHIPMENT_DELAYED_24_HOURS);
 }
 
-void CheckForKingpinsMoneyMissing(BOOLEAN fFirstCheck) {
+function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
   UINT32 uiLoop;
   UINT32 uiTotalCash = 0;
   BOOLEAN fKingpinWillDiscover = FALSE, fKingpinDiscovers = FALSE;
@@ -466,7 +466,7 @@ void CheckForKingpinsMoneyMissing(BOOLEAN fFirstCheck) {
   }
 }
 
-void HandleNPCSystemEvent(UINT32 uiEvent) {
+function HandleNPCSystemEvent(uiEvent: UINT32): void {
   if (uiEvent < NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS) {
     switch (uiEvent) {
       case FACT_PABLOS_BRIBED:
@@ -592,7 +592,7 @@ void HandleNPCSystemEvent(UINT32 uiEvent) {
   }
 }
 
-void HandleEarlyMorningEvents(void) {
+function HandleEarlyMorningEvents(): void {
   UINT32 cnt;
   UINT32 uiAmount;
 
@@ -786,7 +786,7 @@ void HandleEarlyMorningEvents(void) {
   }
 }
 
-void MakeCivGroupHostileOnNextSectorEntrance(UINT8 ubCivGroup) {
+function MakeCivGroupHostileOnNextSectorEntrance(ubCivGroup: UINT8): void {
   // if it's the rebels that will become hostile, reduce town loyalties NOW, not later
   if (ubCivGroup == REBEL_CIV_GROUP && gTacticalStatus.fCivGroupHostile[ubCivGroup] == CIV_GROUP_NEUTRAL) {
     ReduceLoyaltyForRebelsBetrayed();
@@ -795,13 +795,13 @@ void MakeCivGroupHostileOnNextSectorEntrance(UINT8 ubCivGroup) {
   gTacticalStatus.fCivGroupHostile[ubCivGroup] = CIV_GROUP_WILL_BECOME_HOSTILE;
 }
 
-void RemoveAssassin(UINT8 ubProfile) {
+function RemoveAssassin(ubProfile: UINT8): void {
   gMercProfiles[ubProfile].sSectorX = 0;
   gMercProfiles[ubProfile].sSectorY = 0;
   gMercProfiles[ubProfile].bLife = gMercProfiles[ubProfile].bLifeMax;
 }
 
-void CheckForMissingHospitalSupplies(void) {
+function CheckForMissingHospitalSupplies(): void {
   UINT32 uiLoop;
   ITEM_POOL *pItemPool;
   OBJECTTYPE *pObj;
@@ -848,7 +848,7 @@ void CheckForMissingHospitalSupplies(void) {
   }
 }
 
-void DropOffItemsInMeduna(UINT8 ubOrderNum) {
+function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
   BOOLEAN fSectorLoaded = FALSE;
   OBJECTTYPE Object;
   UINT32 uiCount = 0;

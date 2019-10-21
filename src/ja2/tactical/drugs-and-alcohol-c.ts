@@ -30,7 +30,7 @@ INT32 giDrunkModifier[] = {
 const HANGOVER_AP_REDUCE = 5;
 const HANGOVER_BP_REDUCE = 200;
 
-UINT8 GetDrugType(UINT16 usItem) {
+function GetDrugType(usItem: UINT16): UINT8 {
   if (usItem == ADRENALINE_BOOSTER) {
     return DRUG_TYPE_ADRENALINE;
   }
@@ -46,7 +46,7 @@ UINT8 GetDrugType(UINT16 usItem) {
   return NO_DRUG;
 }
 
-BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
+function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
   UINT8 ubDrugType;
   UINT8 ubKitPoints;
   INT8 bRegenPointsGained;
@@ -177,7 +177,7 @@ BOOLEAN ApplyDrugs(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObject) {
   return TRUE;
 }
 
-void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier) {
+function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt, cnt2;
   INT32 iNumLoops;
   //	INT8 bBandaged;
@@ -262,11 +262,11 @@ void HandleEndTurnDrugAdjustments(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 GetDrugEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType) {
+function GetDrugEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): INT8 {
   return pSoldier->bDrugEffect[ubDrugType];
 }
 
-INT8 GetDrugSideEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType) {
+function GetDrugSideEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): INT8 {
   // If we have a o-positive effect
   if (pSoldier->bDrugEffect[ubDrugType] > 0) {
     return 0;
@@ -275,7 +275,7 @@ INT8 GetDrugSideEffect(SOLDIERTYPE *pSoldier, UINT8 ubDrugType) {
   }
 }
 
-void HandleAPEffectDueToDrugs(SOLDIERTYPE *pSoldier, UINT8 *pubPoints) {
+function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
   INT8 bDrunkLevel;
   INT16 sPoints = (*pubPoints);
 
@@ -306,7 +306,7 @@ void HandleAPEffectDueToDrugs(SOLDIERTYPE *pSoldier, UINT8 *pubPoints) {
   (*pubPoints) = (UINT8)sPoints;
 }
 
-void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, INT16 *psPointReduction) {
+function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {
   INT8 bDrunkLevel;
 
   // Are we in a side effect or good effect?
@@ -326,7 +326,7 @@ void HandleBPEffectDueToDrugs(SOLDIERTYPE *pSoldier, INT16 *psPointReduction) {
   }
 }
 
-INT8 GetDrunkLevel(SOLDIERTYPE *pSoldier) {
+function GetDrunkLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bNumDrinks;
 
   // If we have a -ve effect ...
@@ -350,11 +350,11 @@ INT8 GetDrunkLevel(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT32 EffectStatForBeingDrunk(SOLDIERTYPE *pSoldier, INT32 iStat) {
+function EffectStatForBeingDrunk(pSoldier: Pointer<SOLDIERTYPE>, iStat: INT32): INT32 {
   return iStat * giDrunkModifier[GetDrunkLevel(pSoldier)] / 100;
 }
 
-BOOLEAN MercUnderTheInfluence(SOLDIERTYPE *pSoldier) {
+function MercUnderTheInfluence(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Are we in a side effect or good effect?
   if (pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE]) {
     return TRUE;

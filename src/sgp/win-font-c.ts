@@ -16,7 +16,7 @@ LOGFONT gLogFont;
 
 HWINFONT WinFonts[MAX_WIN_FONTS];
 
-void Convert16BitStringTo8BitChineseBig5String(UINT8 *dst, UINT16 *src) {
+function Convert16BitStringTo8BitChineseBig5String(dst: Pointer<UINT8>, src: Pointer<UINT16>): void {
   INT32 i, j;
   char *ptr;
 
@@ -32,14 +32,14 @@ void Convert16BitStringTo8BitChineseBig5String(UINT8 *dst, UINT16 *src) {
   }
 }
 
-void InitWinFonts() {
+function InitWinFonts(): void {
   memset(WinFonts, 0, sizeof(WinFonts));
 }
 
-void ShutdownWinFonts() {
+function ShutdownWinFonts(): void {
 }
 
-INT32 FindFreeWinFont(void) {
+function FindFreeWinFont(): INT32 {
   INT32 iCount;
 
   for (iCount = 0; iCount < MAX_WIN_FONTS; iCount++) {
@@ -51,7 +51,7 @@ INT32 FindFreeWinFont(void) {
   return -1;
 }
 
-HWINFONT *GetWinFont(INT32 iFont) {
+function GetWinFont(iFont: INT32): Pointer<HWINFONT> {
   if (iFont == -1) {
     return NULL;
   }
@@ -65,7 +65,7 @@ HWINFONT *GetWinFont(INT32 iFont) {
 
 UINT16 gzFontName[32];
 
-INT32 CreateWinFont(INT32 iHeight, INT32 iWidth, INT32 iEscapement, INT32 iWeight, BOOLEAN fItalic, BOOLEAN fUnderline, BOOLEAN fStrikeOut, STR16 szFontName, INT32 iCharSet) {
+function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeight: INT32, fItalic: BOOLEAN, fUnderline: BOOLEAN, fStrikeOut: BOOLEAN, szFontName: STR16, iCharSet: INT32): INT32 {
   INT32 iFont;
   HFONT hFont;
   UINT8 szCharFontName[32]; // 32 characters including null terminator (matches max font name length)
@@ -100,7 +100,7 @@ INT32 CreateWinFont(INT32 iHeight, INT32 iWidth, INT32 iEscapement, INT32 iWeigh
   return iFont;
 }
 
-void DeleteWinFont(INT32 iFont) {
+function DeleteWinFont(iFont: INT32): void {
   HWINFONT *pWinFont;
 
   pWinFont = GetWinFont(iFont);
@@ -110,7 +110,7 @@ void DeleteWinFont(INT32 iFont) {
   }
 }
 
-void SetWinFontForeColor(INT32 iFont, COLORVAL *pColor) {
+function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   HWINFONT *pWinFont;
 
   pWinFont = GetWinFont(iFont);
@@ -120,7 +120,7 @@ void SetWinFontForeColor(INT32 iFont, COLORVAL *pColor) {
   }
 }
 
-void SetWinFontBackColor(INT32 iFont, COLORVAL *pColor) {
+function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
   HWINFONT *pWinFont;
 
   pWinFont = GetWinFont(iFont);
@@ -130,7 +130,7 @@ void SetWinFontBackColor(INT32 iFont, COLORVAL *pColor) {
   }
 }
 
-void PrintWinFont(UINT32 uiDestBuf, INT32 iFont, INT32 x, INT32 y, UINT16 *pFontString, ...) {
+function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   wchar_t string2[512];
   char string[512];
@@ -172,7 +172,7 @@ void PrintWinFont(UINT32 uiDestBuf, INT32 iFont, INT32 x, INT32 y, UINT16 *pFont
   IDirectDrawSurface2_ReleaseDC(pDDSurface, hdc);
 }
 
-INT16 WinFontStringPixLength(UINT16 *string2, INT32 iFont) {
+function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   HWINFONT *pWinFont;
   HDC hdc;
   SIZE RectSize;
@@ -194,7 +194,7 @@ INT16 WinFontStringPixLength(UINT16 *string2, INT32 iFont) {
   return (INT16)RectSize.cx;
 }
 
-INT16 GetWinFontHeight(UINT16 *string2, INT32 iFont) {
+function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   HWINFONT *pWinFont;
   HDC hdc;
   SIZE RectSize;
@@ -216,7 +216,7 @@ INT16 GetWinFontHeight(UINT16 *string2, INT32 iFont) {
   return (INT16)RectSize.cy;
 }
 
-UINT32 WinFont_mprintf(INT32 iFont, INT32 x, INT32 y, UINT16 *pFontString, ...) {
+function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
   va_list argptr;
   wchar_t string[512];
 
@@ -229,13 +229,13 @@ UINT32 WinFont_mprintf(INT32 iFont, INT32 x, INT32 y, UINT16 *pFontString, ...) 
   return 1;
 }
 
-int CALLBACK EnumFontFamProc(CONST LOGFONT *lplf, CONST TEXTMETRIC *lptm, DWORD dwType, LPARAM lpData) {
+function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwType: DWORD, lpData: LPARAM): int {
   gfEnumSucceed = TRUE;
 
   return TRUE;
 }
 
-int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, int FontType, LPARAM lParam) {
+function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: int, lParam: LPARAM): int {
   UINT8 szFontName[32];
 
   sprintf(szFontName, "%S", gzFontName);
@@ -247,7 +247,7 @@ int CALLBACK EnumFontFamExProc(ENUMLOGFONTEX *lpelfe, NEWTEXTMETRICEX *lpntme, i
   return TRUE;
 }
 
-BOOLEAN DoesWinFontExistOnSystem(STR16 pTypeFaceName, INT32 iCharSet) {
+function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEAN {
   HDC hdc;
   char string[512];
   LOGFONT LogFont;

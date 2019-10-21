@@ -16,11 +16,11 @@ INT16 gsInterrogationGridNo[3] = {
   7758,
 };
 
-void ValidateEnemiesHaveWeapons() {
+function ValidateEnemiesHaveWeapons(): void {
 }
 
 // Counts enemies and crepitus, but not bloodcats.
-UINT8 NumHostilesInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
+function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): UINT8 {
   UINT8 ubNumHostiles = 0;
 
   Assert(sSectorX >= 1 && sSectorX <= 16);
@@ -54,7 +54,7 @@ UINT8 NumHostilesInSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
   return ubNumHostiles;
 }
 
-UINT8 NumEnemiesInAnySector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
+function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): UINT8 {
   UINT8 ubNumEnemies = 0;
 
   Assert(sSectorX >= 1 && sSectorX <= 16);
@@ -88,7 +88,7 @@ UINT8 NumEnemiesInAnySector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
   return ubNumEnemies;
 }
 
-UINT8 NumEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
+function NumEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   SECTORINFO *pSector;
   GROUP *pGroup;
   UINT8 ubNumTroops;
@@ -107,7 +107,7 @@ UINT8 NumEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
   return ubNumTroops;
 }
 
-UINT8 NumStationaryEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
+function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   SECTORINFO *pSector;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
@@ -127,7 +127,7 @@ UINT8 NumStationaryEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
   return (UINT8)(pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
 }
 
-UINT8 NumMobileEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
+function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   GROUP *pGroup;
   SECTORINFO *pSector;
   UINT8 ubNumTroops;
@@ -152,7 +152,7 @@ UINT8 NumMobileEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {
   return ubNumTroops;
 }
 
-void GetNumberOfMobileEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdmins, UINT8 *pubNumTroops, UINT8 *pubNumElites) {
+function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
   GROUP *pGroup;
   SECTORINFO *pSector;
   Assert(sSectorX >= 1 && sSectorX <= 16);
@@ -179,7 +179,7 @@ void GetNumberOfMobileEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pub
   }
 }
 
-void GetNumberOfStationaryEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdmins, UINT8 *pubNumTroops, UINT8 *pubNumElites) {
+function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
   SECTORINFO *pSector;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
@@ -191,7 +191,7 @@ void GetNumberOfStationaryEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 
   *pubNumElites = pSector->ubNumElites;
 }
 
-void GetNumberOfEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdmins, UINT8 *pubNumTroops, UINT8 *pubNumElites) {
+function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
   UINT8 ubNumAdmins, ubNumTroops, ubNumElites;
 
   GetNumberOfStationaryEnemiesInSector(sSectorX, sSectorY, pubNumAdmins, pubNumTroops, pubNumElites);
@@ -203,7 +203,7 @@ void GetNumberOfEnemiesInSector(INT16 sSectorX, INT16 sSectorY, UINT8 *pubNumAdm
   *pubNumElites += ubNumElites;
 }
 
-void EndTacticalBattleForEnemy() {
+function EndTacticalBattleForEnemy(): void {
   GROUP *pGroup;
   INT32 i, iNumMilitia = 0, iNumEnemies = 0;
 
@@ -258,7 +258,7 @@ void EndTacticalBattleForEnemy() {
   }
 }
 
-UINT8 NumFreeEnemySlots() {
+function NumFreeEnemySlots(): UINT8 {
   UINT8 ubNumFreeSlots = 0;
   INT32 i;
   SOLDIERTYPE *pSoldier;
@@ -274,7 +274,7 @@ UINT8 NumFreeEnemySlots() {
 // Called when entering a sector so the campaign AI can automatically insert the
 // correct number of troops of each type based on the current number in the sector
 // in global focus (gWorldSectorX/Y)
-BOOLEAN PrepareEnemyForSectorBattle() {
+function PrepareEnemyForSectorBattle(): BOOLEAN {
   SECTORINFO *pSector;
   GROUP *pGroup;
   SOLDIERTYPE *pSoldier;
@@ -493,7 +493,7 @@ BOOLEAN PrepareEnemyForSectorBattle() {
   return TRUE;
 }
 
-BOOLEAN PrepareEnemyForUndergroundBattle() {
+function PrepareEnemyForUndergroundBattle(): BOOLEAN {
   UNDERGROUND_SECTORINFO *pUnderground;
   UINT8 ubTotalAdmins, ubTotalTroops, ubTotalElites;
   pUnderground = gpUndergroundSectorInfoHead;
@@ -521,7 +521,7 @@ BOOLEAN PrepareEnemyForUndergroundBattle() {
 }
 
 // The queen AI layer must process the event by subtracting forces, etc.
-void ProcessQueenCmdImplicationsOfDeath(SOLDIERTYPE *pSoldier) {
+function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iNumEnemiesInSector;
   SECTORINFO *pSector;
   UINT16 str[128];
@@ -732,7 +732,7 @@ void ProcessQueenCmdImplicationsOfDeath(SOLDIERTYPE *pSoldier) {
 // essentially allows for an infinite number of troops, though only 32 at a time can fight.
 // This is also called whenever an enemy group's reinforcements arrive because the code is
 // identical, though it is highly likely that they will all be successfully added on the first call.
-void AddPossiblePendingEnemiesToBattle() {
+function AddPossiblePendingEnemiesToBattle(): void {
   UINT8 ubSlots, ubNumAvailable;
   UINT8 ubNumElites, ubNumTroops, ubNumAdmins;
   GROUP *pGroup;
@@ -813,7 +813,7 @@ void AddPossiblePendingEnemiesToBattle() {
   }
 }
 
-void NotifyPlayersOfNewEnemies() {
+function NotifyPlayersOfNewEnemies(): void {
   INT32 iSoldiers, iChosenSoldier, i;
   SOLDIERTYPE *pSoldier;
   BOOLEAN fIgnoreBreath = FALSE;
@@ -859,7 +859,7 @@ void NotifyPlayersOfNewEnemies() {
   }
 }
 
-void AddEnemiesToBattle(GROUP *pGroup, UINT8 ubStrategicInsertionCode, UINT8 ubNumAdmins, UINT8 ubNumTroops, UINT8 ubNumElites, BOOLEAN fMagicallyAppeared) {
+function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UINT8, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8, fMagicallyAppeared: BOOLEAN): void {
   SOLDIERTYPE *pSoldier;
   MAPEDGEPOINTINFO MapEdgepointInfo;
   UINT8 ubCurrSlot;
@@ -974,7 +974,7 @@ void AddEnemiesToBattle(GROUP *pGroup, UINT8 ubStrategicInsertionCode, UINT8 ubN
   }
 }
 
-BOOLEAN SaveUnderGroundSectorInfoToSaveGame(HWFILE hFile) {
+function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
   UINT32 uiNumOfRecords = 0;
   UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
@@ -1006,7 +1006,7 @@ BOOLEAN SaveUnderGroundSectorInfoToSaveGame(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadUnderGroundSectorInfoFromSavedGame(HWFILE hFile) {
+function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiNumOfRecords = 0;
   UINT32 cnt = 0;
@@ -1053,7 +1053,7 @@ BOOLEAN LoadUnderGroundSectorInfoFromSavedGame(HWFILE hFile) {
   return TRUE;
 }
 
-UNDERGROUND_SECTORINFO *FindUnderGroundSector(INT16 sMapX, INT16 sMapY, UINT8 bMapZ) {
+function FindUnderGroundSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
   UNDERGROUND_SECTORINFO *pUnderground;
   pUnderground = gpUndergroundSectorInfoHead;
 
@@ -1069,13 +1069,13 @@ UNDERGROUND_SECTORINFO *FindUnderGroundSector(INT16 sMapX, INT16 sMapY, UINT8 bM
   return NULL;
 }
 
-void BeginCaptureSquence() {
+function BeginCaptureSquence(): void {
   if (!(gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE) || !(gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_ESCAPE)) {
     gStrategicStatus.ubNumCapturedForRescue = 0;
   }
 }
 
-void EndCaptureSequence() {
+function EndCaptureSequence(): void {
   // Set flag...
   if (!(gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_RESCUE) || !(gStrategicStatus.uiFlags & STRATEGIC_PLAYER_CAPTURED_FOR_ESCAPE)) {
     // CJC Dec 1 2002: fixing multiple captures:
@@ -1115,7 +1115,7 @@ void EndCaptureSequence() {
   }
 }
 
-void EnemyCapturesPlayerSoldier(SOLDIERTYPE *pSoldier) {
+function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 i;
   WORLDITEM WorldItem;
   BOOLEAN fMadeCorpse;
@@ -1274,7 +1274,7 @@ void EnemyCapturesPlayerSoldier(SOLDIERTYPE *pSoldier) {
   pSoldier->fMercCollapsedFlag = FALSE;
 }
 
-void HandleEnemyStatusInCurrentMapBeforeLoadingNewMap() {
+function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   INT32 i;
   BOOLEAN fMadeCorpse;
   INT8 bKilledEnemies = 0, bKilledCreatures = 0, bKilledRebels = 0, bKilledCivilians = 0;
@@ -1342,7 +1342,7 @@ void HandleEnemyStatusInCurrentMapBeforeLoadingNewMap() {
   }
 }
 
-BOOLEAN PlayerSectorDefended(UINT8 ubSectorID) {
+function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
   SECTORINFO *pSector;
   pSector = &SectorInfo[ubSectorID];
   if (pSector->ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector->ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector->ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
@@ -1357,7 +1357,7 @@ BOOLEAN PlayerSectorDefended(UINT8 ubSectorID) {
 }
 
 // Assumes gTacticalStatus.fEnemyInSector
-BOOLEAN OnlyHostileCivsInSector() {
+function OnlyHostileCivsInSector(): BOOLEAN {
   SOLDIERTYPE *pSoldier;
   INT32 i;
   BOOLEAN fHostileCivs = FALSE;

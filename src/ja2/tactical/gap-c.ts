@@ -1,4 +1,4 @@
-void AudioGapListInit(CHAR8 *zSoundFile, AudioGapList *pGapList) {
+function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGapList>): void {
   // This procedure will load in the appropriate .gap file, corresponding
   // to the .wav file in szSoundEffects indexed by uiSampleNum
   // The procedure will then allocate and load in the AUDIO_GAP information,
@@ -86,7 +86,7 @@ void AudioGapListInit(CHAR8 *zSoundFile, AudioGapList *pGapList) {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Gap List Started From File %s and has %d gaps", pDestFileName, pGapList->size));
 }
 
-void AudioGapListDone(AudioGapList *pGapList) {
+function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
   // This procedure will go through the  AudioGapList and free space/nullify pointers
   // for any allocated elements
 
@@ -111,7 +111,7 @@ void AudioGapListDone(AudioGapList *pGapList) {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Audio Gap List Deleted"));
 }
 
-void PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList) {
+function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): void {
   // This procedure will access the AudioGapList pertaining to the .wav about
   // to be played and sets the audio_gap_active flag. This is done by
   // going to the current AUDIO_GAP element in the AudioGapList, comparing to see if
@@ -168,7 +168,7 @@ void PollAudioGap(UINT32 uiSampleNum, AudioGapList *pGapList) {
   }
 }
 
-UINT32 PlayJA2GapSample(CHAR8 *zSoundFile, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan, AudioGapList *pData) {
+function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
   SOUNDPARMS spParms;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));

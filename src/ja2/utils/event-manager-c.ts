@@ -4,7 +4,7 @@ HLIST hDemandEventQueue = NULL;
 
 const QUEUE_RESIZE = 20;
 
-BOOLEAN InitializeEventManager() {
+function InitializeEventManager(): BOOLEAN {
   // Create Queue
   hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));
 
@@ -30,7 +30,7 @@ BOOLEAN InitializeEventManager() {
   return TRUE;
 }
 
-BOOLEAN ShutdownEventManager() {
+function ShutdownEventManager(): BOOLEAN {
   if (hEventQueue != NULL) {
     DeleteList(hEventQueue);
   }
@@ -46,7 +46,7 @@ BOOLEAN ShutdownEventManager() {
   return TRUE;
 }
 
-BOOLEAN AddEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSize, UINT8 ubQueueID) {
+function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): BOOLEAN {
   EVENT *pEvent;
   UINT32 uiEventSize = sizeof(EVENT);
   HLIST hQueue;
@@ -75,7 +75,7 @@ BOOLEAN AddEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData, UINT32 uiDataSi
   return TRUE;
 }
 
-BOOLEAN RemoveEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
+function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
   UINT32 uiQueueSize;
   HLIST hQueue;
 
@@ -97,7 +97,7 @@ BOOLEAN RemoveEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
   return TRUE;
 }
 
-BOOLEAN PeekEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
+function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
   UINT32 uiQueueSize;
   HLIST hQueue;
 
@@ -119,7 +119,7 @@ BOOLEAN PeekEvent(EVENT **ppEvent, UINT32 uiIndex, UINT8 ubQueueID) {
   return TRUE;
 }
 
-BOOLEAN FreeEvent(EVENT *pEvent) {
+function FreeEvent(pEvent: Pointer<EVENT>): BOOLEAN {
   CHECKF(pEvent != NULL);
 
   // Delete event
@@ -128,7 +128,7 @@ BOOLEAN FreeEvent(EVENT *pEvent) {
   return TRUE;
 }
 
-UINT32 EventQueueSize(UINT8 ubQueueID) {
+function EventQueueSize(ubQueueID: UINT8): UINT32 {
   UINT32 uiQueueSize;
   HLIST hQueue;
 
@@ -143,7 +143,7 @@ UINT32 EventQueueSize(UINT8 ubQueueID) {
   return uiQueueSize;
 }
 
-HLIST GetQueue(UINT8 ubQueueID) {
+function GetQueue(ubQueueID: UINT8): HLIST {
   switch (ubQueueID) {
     case PRIMARY_EVENT_QUEUE:
       return hEventQueue;
@@ -164,7 +164,7 @@ HLIST GetQueue(UINT8 ubQueueID) {
   }
 }
 
-void SetQueue(UINT8 ubQueueID, HQUEUE hQueue) {
+function SetQueue(ubQueueID: UINT8, hQueue: HQUEUE): void {
   switch (ubQueueID) {
     case PRIMARY_EVENT_QUEUE:
       hEventQueue = hQueue;

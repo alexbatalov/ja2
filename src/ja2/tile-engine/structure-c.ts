@@ -103,7 +103,7 @@ UINT8 gubMaterialArmour[] = {
 };
 
 // Function operating on a structure tile
-UINT8 FilledTilePositions(DB_STRUCTURE_TILE *pTile) {
+function FilledTilePositions(pTile: Pointer<DB_STRUCTURE_TILE>): UINT8 {
   UINT8 ubFilled = 0, ubShapeValue;
   INT8 bLoopX, bLoopY, bLoopZ;
 
@@ -126,7 +126,7 @@ UINT8 FilledTilePositions(DB_STRUCTURE_TILE *pTile) {
 // Structure database functions
 //
 
-void FreeStructureFileRef(STRUCTURE_FILE_REF *pFileRef) {
+function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
   // Frees all of the memory associated with a file reference, including
                                                           // the file reference structure itself
 
@@ -153,7 +153,7 @@ void FreeStructureFileRef(STRUCTURE_FILE_REF *pFileRef) {
   MemFree(pFileRef);
 }
 
-void FreeAllStructureFiles(void) {
+function FreeAllStructureFiles(): void {
   // Frees all of the structure database!
   STRUCTURE_FILE_REF *pFileRef;
   STRUCTURE_FILE_REF *pNextRef;
@@ -166,7 +166,7 @@ void FreeAllStructureFiles(void) {
   }
 }
 
-BOOLEAN FreeStructureFile(STRUCTURE_FILE_REF *pStructureFile) {
+function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): BOOLEAN {
   CHECKF(pStructureFile);
 
   // unlink the file ref
@@ -188,7 +188,7 @@ BOOLEAN FreeStructureFile(STRUCTURE_FILE_REF *pStructureFile) {
   return TRUE;
 }
 
-BOOLEAN LoadStructureData(STR szFileName, STRUCTURE_FILE_REF *pFileRef, UINT32 *puiStructureDataSize)
+function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): BOOLEAN
 // UINT8 **ppubStructureData, UINT32 * puiDataSize, STRUCTURE_FILE_HEADER * pHeader )
 { // Loads a structure file's data as a honking chunk o' memory
   HWFILE hInput;
@@ -272,7 +272,7 @@ BOOLEAN LoadStructureData(STR szFileName, STRUCTURE_FILE_REF *pFileRef, UINT32 *
   return TRUE;
 }
 
-BOOLEAN CreateFileStructureArrays(STRUCTURE_FILE_REF *pFileRef, UINT32 uiDataSize) {
+function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiDataSize: UINT32): BOOLEAN {
   // Based on a file chunk, creates all the dynamic arrays for the
                                                                                      // structure definitions contained within
 
@@ -339,7 +339,7 @@ BOOLEAN CreateFileStructureArrays(STRUCTURE_FILE_REF *pFileRef, UINT32 uiDataSiz
   return TRUE;
 }
 
-STRUCTURE_FILE_REF *LoadStructureFile(STR szFileName) {
+function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   // NB should be passed in expected number of structures so we can check equality
   UINT32 uiDataSize = 0;
   BOOLEAN fOk;
@@ -375,7 +375,7 @@ STRUCTURE_FILE_REF *LoadStructureFile(STR szFileName) {
 // Structure creation functions
 //
 
-STRUCTURE *CreateStructureFromDB(DB_STRUCTURE_REF *pDBStructureRef, UINT8 ubTileNum) {
+function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileNum: UINT8): Pointer<STRUCTURE> {
   // Creates a STRUCTURE struct for one tile of a structure
   STRUCTURE *pStructure;
   DB_STRUCTURE *pDBStructure;
@@ -420,7 +420,7 @@ STRUCTURE *CreateStructureFromDB(DB_STRUCTURE_REF *pDBStructureRef, UINT8 ubTile
   return pStructure;
 }
 
-BOOLEAN OkayToAddStructureToTile(INT16 sBaseGridNo, INT16 sCubeOffset, DB_STRUCTURE_REF *pDBStructureRef, UINT8 ubTileIndex, INT16 sExclusionID, BOOLEAN fIgnorePeople) {
+function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileIndex: UINT8, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
   // Verifies whether a structure is blocked from being added to the map at a particular point
   DB_STRUCTURE *pDBStructure;
   DB_STRUCTURE_TILE **ppTile;
@@ -607,7 +607,7 @@ BOOLEAN OkayToAddStructureToTile(INT16 sBaseGridNo, INT16 sCubeOffset, DB_STRUCT
   return TRUE;
 }
 
-BOOLEAN InternalOkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pDBStructureRef, INT16 sExclusionID, BOOLEAN fIgnorePeople) {
+function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
   UINT8 ubLoop;
   INT16 sCubeOffset;
 
@@ -641,11 +641,11 @@ BOOLEAN InternalOkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STR
   return TRUE;
 }
 
-BOOLEAN OkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pDBStructureRef, INT16 sExclusionID) {
+function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): BOOLEAN {
   return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID, (BOOLEAN)(sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID));
 }
 
-BOOLEAN AddStructureToTile(MAP_ELEMENT *pMapElement, STRUCTURE *pStructure, UINT16 usStructureID) {
+function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>, usStructureID: UINT16): BOOLEAN {
   // adds a STRUCTURE to a MAP_ELEMENT (adds part of a structure to a location on the map)
   STRUCTURE *pStructureTail;
 
@@ -668,7 +668,7 @@ BOOLEAN AddStructureToTile(MAP_ELEMENT *pMapElement, STRUCTURE *pStructure, UINT
   return TRUE;
 }
 
-STRUCTURE *InternalAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pDBStructureRef, LEVELNODE *pLevelNode) {
+function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelNode: Pointer<LEVELNODE>): Pointer<STRUCTURE> {
   // Adds a complete structure to the world at a location plus all other locations covered by the structure
   INT16 sGridNo;
   STRUCTURE **ppStructure;
@@ -803,7 +803,7 @@ STRUCTURE *InternalAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCT
   return pBaseStructure;
 }
 
-BOOLEAN AddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pDBStructureRef, PTR pLevelN) {
+function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): BOOLEAN {
   STRUCTURE *pStructure;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, (LEVELNODE *)pLevelN);
@@ -817,7 +817,7 @@ BOOLEAN AddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pD
 // Structure deletion functions
 //
 
-void DeleteStructureFromTile(MAP_ELEMENT *pMapElement, STRUCTURE *pStructure) {
+function DeleteStructureFromTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>): void {
   // removes a STRUCTURE element at a particular location from the world
   // put location pointer in tile
   if (pMapElement->pStructureHead == pStructure) {
@@ -848,7 +848,7 @@ void DeleteStructureFromTile(MAP_ELEMENT *pMapElement, STRUCTURE *pStructure) {
   MemFree(pStructure);
 }
 
-BOOLEAN DeleteStructureFromWorld(STRUCTURE *pStructure) {
+function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
   // removes all of the STRUCTURE elements for a structure from the world
   MAP_ELEMENT *pBaseMapElement;
   STRUCTURE *pBaseStructure;
@@ -909,7 +909,7 @@ BOOLEAN DeleteStructureFromWorld(STRUCTURE *pStructure) {
   return TRUE;
 }
 
-STRUCTURE *InternalSwapStructureForPartner(INT16 sGridNo, STRUCTURE *pStructure, BOOLEAN fFlipSwitches, BOOLEAN fStoreInMap) {
+function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fFlipSwitches: BOOLEAN, fStoreInMap: BOOLEAN): Pointer<STRUCTURE> {
   // switch structure
   LEVELNODE *pLevelNode;
   LEVELNODE *pShadowNode;
@@ -985,19 +985,19 @@ STRUCTURE *InternalSwapStructureForPartner(INT16 sGridNo, STRUCTURE *pStructure,
   return pNewBaseStructure;
 }
 
-STRUCTURE *SwapStructureForPartner(INT16 sGridNo, STRUCTURE *pStructure) {
+function SwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, TRUE, FALSE);
 }
 
-STRUCTURE *SwapStructureForPartnerWithoutTriggeringSwitches(INT16 sGridNo, STRUCTURE *pStructure) {
+function SwapStructureForPartnerWithoutTriggeringSwitches(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, FALSE, FALSE);
 }
 
-STRUCTURE *SwapStructureForPartnerAndStoreChangeInMap(INT16 sGridNo, STRUCTURE *pStructure) {
+function SwapStructureForPartnerAndStoreChangeInMap(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   return InternalSwapStructureForPartner(sGridNo, pStructure, TRUE, TRUE);
 }
 
-STRUCTURE *FindStructure(INT16 sGridNo, UINT32 fFlags) {
+function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
   STRUCTURE *pCurrent;
 
@@ -1011,7 +1011,7 @@ STRUCTURE *FindStructure(INT16 sGridNo, UINT32 fFlags) {
   return NULL;
 }
 
-STRUCTURE *FindNextStructure(STRUCTURE *pStructure, UINT32 fFlags) {
+function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
   STRUCTURE *pCurrent;
 
   CHECKF(pStructure);
@@ -1025,7 +1025,7 @@ STRUCTURE *FindNextStructure(STRUCTURE *pStructure, UINT32 fFlags) {
   return NULL;
 }
 
-STRUCTURE *FindStructureByID(INT16 sGridNo, UINT16 usStructureID) {
+function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
   STRUCTURE *pCurrent;
 
@@ -1039,7 +1039,7 @@ STRUCTURE *FindStructureByID(INT16 sGridNo, UINT16 usStructureID) {
   return NULL;
 }
 
-STRUCTURE *FindBaseStructure(STRUCTURE *pStructure) {
+function FindBaseStructure(pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   // finds the base structure for any structure
   CHECKF(pStructure);
   if (pStructure->fFlags & STRUCTURE_BASE_TILE) {
@@ -1048,7 +1048,7 @@ STRUCTURE *FindBaseStructure(STRUCTURE *pStructure) {
   return FindStructureByID(pStructure->sBaseGridNo, pStructure->usStructureID);
 }
 
-STRUCTURE *FindNonBaseStructure(INT16 sGridNo, STRUCTURE *pStructure) {
+function FindNonBaseStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<STRUCTURE> {
   // finds a non-base structure in a location
   CHECKF(pStructure);
   if (!(pStructure->fFlags & STRUCTURE_BASE_TILE)) {
@@ -1059,7 +1059,7 @@ STRUCTURE *FindNonBaseStructure(INT16 sGridNo, STRUCTURE *pStructure) {
   return FindStructureByID(sGridNo, pStructure->usStructureID);
 }
 
-INT16 GetBaseTile(STRUCTURE *pStructure) {
+function GetBaseTile(pStructure: Pointer<STRUCTURE>): INT16 {
   if (pStructure == NULL) {
     return -1;
   }
@@ -1070,7 +1070,7 @@ INT16 GetBaseTile(STRUCTURE *pStructure) {
   }
 }
 
-INT8 StructureHeight(STRUCTURE *pStructure) {
+function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the height of an object from 1-4
   UINT8 ubLoopX, ubLoopY;
   PROFILE *pShape;
@@ -1112,7 +1112,7 @@ INT8 StructureHeight(STRUCTURE *pStructure) {
   return bGreatestHeight + 1;
 }
 
-INT8 GetTallestStructureHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
+function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
   STRUCTURE *pCurrent;
   INT8 iHeight;
   INT8 iTallest = 0;
@@ -1136,7 +1136,7 @@ INT8 GetTallestStructureHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
   return iTallest;
 }
 
-INT8 GetStructureTargetHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
+function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
   STRUCTURE *pCurrent;
   INT8 iHeight;
   INT8 iTallest = 0;
@@ -1173,7 +1173,7 @@ INT8 GetStructureTargetHeight(INT16 sGridNo, BOOLEAN fOnRoof) {
   return iTallest;
 }
 
-INT8 StructureBottomLevel(STRUCTURE *pStructure) {
+function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the bottom level of an object, from 1-4
   UINT8 ubLoopX, ubLoopY;
   PROFILE *pShape;
@@ -1206,7 +1206,7 @@ INT8 StructureBottomLevel(STRUCTURE *pStructure) {
   return bLowestHeight + 1;
 }
 
-BOOLEAN StructureDensity(STRUCTURE *pStructure, UINT8 *pubLevel0, UINT8 *pubLevel1, UINT8 *pubLevel2, UINT8 *pubLevel3) {
+function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): BOOLEAN {
   UINT8 ubLoopX, ubLoopY;
   UINT8 ubShapeValue;
   PROFILE *pShape;
@@ -1248,7 +1248,7 @@ BOOLEAN StructureDensity(STRUCTURE *pStructure, UINT8 *pubLevel0, UINT8 *pubLeve
   return TRUE;
 }
 
-BOOLEAN DamageStructure(STRUCTURE *pStructure, UINT8 ubDamage, UINT8 ubReason, INT16 sGridNo, INT16 sX, INT16 sY, UINT8 ubOwner) {
+function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): BOOLEAN {
   // do damage to a structure; returns TRUE if the structure should be removed
 
   STRUCTURE *pBase;
@@ -1344,7 +1344,7 @@ BOOLEAN DamageStructure(STRUCTURE *pStructure, UINT8 ubDamage, UINT8 ubReason, I
 }
 
 const LINE_HEIGHT = 20;
-void DebugStructurePage1(void) {
+function DebugStructurePage1(): void {
   STRUCTURE *pStructure;
   STRUCTURE *pBase;
   // LEVELNODE *		pLand;
@@ -1436,7 +1436,7 @@ void DebugStructurePage1(void) {
   gprintf(0, LINE_HEIGHT * 16, L"Adj soldiers %d", gpWorldLevelData[sGridNo].ubAdjacentSoldierCnt);
 }
 
-BOOLEAN AddZStripInfoToVObject(HVOBJECT hVObject, STRUCTURE_FILE_REF *pStructureFileRef, BOOLEAN fFromAnimation, INT16 sSTIStartIndex) {
+function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: BOOLEAN, sSTIStartIndex: INT16): BOOLEAN {
   UINT32 uiLoop;
   UINT8 ubLoop2;
   UINT8 ubNumIncreasing = 0;
@@ -1683,17 +1683,17 @@ BOOLEAN AddZStripInfoToVObject(HVOBJECT hVObject, STRUCTURE_FILE_REF *pStructure
   return TRUE;
 }
 
-BOOLEAN InitStructureDB(void) {
+function InitStructureDB(): BOOLEAN {
   gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
   return TRUE;
 }
 
-BOOLEAN FiniStructureDB(void) {
+function FiniStructureDB(): BOOLEAN {
   gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
   return TRUE;
 }
 
-INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLevel, INT8 *pStructHeight, STRUCTURE **ppTallestStructure, BOOLEAN fWallsBlock) {
+function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: BOOLEAN): INT8 {
   STRUCTURE *pCurrent, *pStructure;
   INT16 sDesiredLevel;
   BOOLEAN fOKStructOnLevel = FALSE;
@@ -1822,7 +1822,7 @@ INT8 GetBlockingStructureInfo(INT16 sGridNo, INT8 bDir, INT8 bNextDir, INT8 bLev
   }
 }
 
-UINT8 StructureFlagToType(UINT32 uiFlag) {
+function StructureFlagToType(uiFlag: UINT32): UINT8 {
   UINT8 ubLoop;
   UINT32 uiBit = STRUCTURE_GENERIC;
 
@@ -1835,14 +1835,14 @@ UINT8 StructureFlagToType(UINT32 uiFlag) {
   return 0;
 }
 
-UINT32 StructureTypeToFlag(UINT8 ubType) {
+function StructureTypeToFlag(ubType: UINT8): UINT32 {
   UINT32 uiFlag = 0x1;
 
   uiFlag = uiFlag << ubType;
   return uiFlag;
 }
 
-STRUCTURE *FindStructureBySavedInfo(INT16 sGridNo, UINT8 ubType, UINT8 ubWallOrientation, INT8 bLevel) {
+function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientation: UINT8, bLevel: INT8): Pointer<STRUCTURE> {
   STRUCTURE *pCurrent;
   UINT32 uiTypeFlag;
 
@@ -1858,7 +1858,7 @@ STRUCTURE *FindStructureBySavedInfo(INT16 sGridNo, UINT8 ubType, UINT8 ubWallOri
   return NULL;
 }
 
-UINT32 GetStructureOpenSound(STRUCTURE *pStructure, BOOLEAN fClose) {
+function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: BOOLEAN): UINT32 {
   UINT32 uiSoundID;
 
   switch (pStructure->pDBStructureRef->pDBStructure->ubArmour) {

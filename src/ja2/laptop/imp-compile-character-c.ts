@@ -72,7 +72,7 @@ STR8 pPlayerSelectedBigFaceFileNames[NUMBER_OF_PLAYER_PORTRAITS] = {
   "Faces\\BigFaces\\215.sti",
 };
 
-void CreateACharacterFromPlayerEnteredStats(void) {
+function CreateACharacterFromPlayerEnteredStats(): void {
   // copy over full name
   wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName, pFullName);
 
@@ -120,7 +120,7 @@ void CreateACharacterFromPlayerEnteredStats(void) {
   return;
 }
 
-BOOLEAN DoesCharacterHaveAnAttitude(void) {
+function DoesCharacterHaveAnAttitude(): BOOLEAN {
   // simply checks if caracter has an attitude other than normal
   switch (iAttitude) {
     case ATT_LONER:
@@ -135,7 +135,7 @@ BOOLEAN DoesCharacterHaveAnAttitude(void) {
   }
 }
 
-BOOLEAN DoesCharacterHaveAPersoanlity(void) {
+function DoesCharacterHaveAPersoanlity(): BOOLEAN {
   // only one we can get is PSYCHO, and that is not much of a penalty
   return FALSE;
   /*
@@ -153,7 +153,7 @@ if( iPersonality != NO_PERSONALITYTRAIT )
   */
 }
 
-void CreatePlayerAttitude(void) {
+function CreatePlayerAttitude(): void {
   // this function will 'roll a die' and decide if any attitude does exists
   INT32 iDiceValue = 0;
   INT32 iCounter = 0, iCounter2 = 0;
@@ -225,7 +225,7 @@ void CreatePlayerAttitude(void) {
           */
 }
 
-void AddAnAttitudeToAttitudeList(INT8 bAttitude) {
+function AddAnAttitudeToAttitudeList(bAttitude: INT8): void {
   // adds an attitude to attitude list
 
   if (iLastElementInAttitudeList < ATTITUDE_LIST_SIZE) {
@@ -239,7 +239,7 @@ void AddAnAttitudeToAttitudeList(INT8 bAttitude) {
   return;
 }
 
-void AddSkillToSkillList(INT8 bSkill) {
+function AddSkillToSkillList(bSkill: INT8): void {
   // adds a skill to skills list
 
   if (iLastElementInSkillsList < ATTITUDE_LIST_SIZE) {
@@ -253,7 +253,7 @@ void AddSkillToSkillList(INT8 bSkill) {
   return;
 }
 
-void RemoveSkillFromSkillsList(INT32 iIndex) {
+function RemoveSkillFromSkillsList(iIndex: INT32): void {
   INT32 iLoop;
 
   // remove a skill from the index given and shorten the list
@@ -276,7 +276,7 @@ void RemoveSkillFromSkillsList(INT32 iIndex) {
   }
 }
 
-INT32 FindSkillInSkillsList(INT32 iSkill) {
+function FindSkillInSkillsList(iSkill: INT32): INT32 {
   INT32 iLoop;
 
   for (iLoop = 0; iLoop < iLastElementInSkillsList; iLoop++) {
@@ -288,7 +288,7 @@ INT32 FindSkillInSkillsList(INT32 iSkill) {
   return -1;
 }
 
-void ValidateSkillsList(void) {
+function ValidateSkillsList(): void {
   INT32 iIndex, iValue;
   MERCPROFILESTRUCT *pProfile;
 
@@ -336,7 +336,7 @@ void ValidateSkillsList(void) {
   }
 }
 
-void CreatePlayerSkills(void) {
+function CreatePlayerSkills(): void {
   // this function will 'roll a die' and decide if any attitude does exists
   INT32 iDiceValue = 0;
   INT32 iCounter = 0;
@@ -394,7 +394,7 @@ iSkillB = NO_SKILLTRAIT;
   */
 }
 
-void AddAPersonalityToPersonalityList(INT8 bPersonlity) {
+function AddAPersonalityToPersonalityList(bPersonlity: INT8): void {
   // CJC, Oct 26 98: prevent personality list from being generated
   // because no dialogue was written to support PC personality quotes
 
@@ -416,7 +416,7 @@ void AddAPersonalityToPersonalityList(INT8 bPersonlity) {
   return;
 }
 
-void CreatePlayerPersonality(void) {
+function CreatePlayerPersonality(): void {
   // only psycho is available since we have no quotes
   // SO if the array is not empty, give them psycho!
   if (iLastElementInPersonalityList == 0) {
@@ -465,7 +465,7 @@ void CreatePlayerPersonality(void) {
   */
 }
 
-void CreatePlayersPersonalitySkillsAndAttitude(void) {
+function CreatePlayersPersonalitySkillsAndAttitude(): void {
   // creates personality, skills and attitudes from curretly built list
 
   // personality
@@ -480,7 +480,7 @@ void CreatePlayersPersonalitySkillsAndAttitude(void) {
   return;
 }
 
-void ResetSkillsAttributesAndPersonality(void) {
+function ResetSkillsAttributesAndPersonality(): void {
   // reset count of skills attributes and personality
 
   iLastElementInPersonalityList = 0;
@@ -490,7 +490,7 @@ void ResetSkillsAttributesAndPersonality(void) {
   iLastElementInAttitudeList = 0;
 }
 
-void ResetIncrementCharacterAttributes(void) {
+function ResetIncrementCharacterAttributes(): void {
   // this resets any increments due to character generation
 
   // attributes
@@ -508,7 +508,7 @@ void ResetIncrementCharacterAttributes(void) {
   iAddMechanical = 0;
 }
 
-void SelectMercFace(void) {
+function SelectMercFace(): void {
   // this procedure will select the approriate face for the merc and save offsets
 
   // grab face filename
@@ -530,7 +530,7 @@ void SelectMercFace(void) {
   return;
 }
 
-void SetMercSkinAndHairColors(void) {
+function SetMercSkinAndHairColors(): void {
   const enum Enum387 {
     PINKSKIN,
     TANSKIN,
@@ -639,7 +639,7 @@ void SetMercSkinAndHairColors(void) {
   strcpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].SKIN, sSkinStrings[sSkinColor]);
 }
 
-void HandleMercStatsForChangesInFace() {
+function HandleMercStatsForChangesInFace(): void {
   if (fLoadingCharacterForPreviousImpProfile) {
     return;
   }
@@ -680,7 +680,7 @@ void HandleMercStatsForChangesInFace() {
   gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 = (INT8)iSkillB;
 }
 
-BOOLEAN ShouldThisMercHaveABigBody(void) {
+function ShouldThisMercHaveABigBody(): BOOLEAN {
   // should this merc be a big body typ
   if ((iPortraitNumber == 0) || (iPortraitNumber == 6) || (iPortraitNumber == 7)) {
     if (gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength >= 75) {

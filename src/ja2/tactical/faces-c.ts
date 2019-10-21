@@ -90,7 +90,7 @@ extern UINT16 gusSMCurrentMerc;
 extern BOOLEAN gfRerenderInterfaceFromHelpText;
 extern BOOLEAN gfInItemPickupMenu;
 
-INT32 GetFreeFace(void) {
+function GetFreeFace(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
@@ -104,7 +104,7 @@ INT32 GetFreeFace(void) {
   return -1;
 }
 
-void RecountFaces(void) {
+function RecountFaces(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumFaces - 1; (uiCount >= 0); uiCount--) {
@@ -115,7 +115,7 @@ void RecountFaces(void) {
   }
 }
 
-INT32 InitSoldierFace(SOLDIERTYPE *pSoldier) {
+function InitSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT32 iFaceIndex;
 
   // Check if we have a face init already
@@ -128,7 +128,7 @@ INT32 InitSoldierFace(SOLDIERTYPE *pSoldier) {
   return InitFace(pSoldier->ubProfile, pSoldier->ubID, 0);
 }
 
-INT32 InitFace(UINT8 usMercProfileID, UINT8 ubSoldierID, UINT32 uiInitFlags) {
+function InitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags: UINT32): INT32 {
   UINT32 uiBlinkFrequency;
   UINT32 uiExpressionFrequency;
 
@@ -148,7 +148,7 @@ INT32 InitFace(UINT8 usMercProfileID, UINT8 ubSoldierID, UINT32 uiInitFlags) {
   return InternalInitFace(usMercProfileID, ubSoldierID, uiInitFlags, gMercProfiles[usMercProfileID].ubFaceIndex, uiBlinkFrequency, uiExpressionFrequency);
 }
 
-INT32 InternalInitFace(UINT8 usMercProfileID, UINT8 ubSoldierID, UINT32 uiInitFlags, INT32 iFaceFileID, UINT32 uiBlinkFrequency, UINT32 uiExpressionFrequency) {
+function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlags: UINT32, iFaceFileID: INT32, uiBlinkFrequency: UINT32, uiExpressionFrequency: UINT32): INT32 {
   FACETYPE *pFace;
   VOBJECT_DESC VObjectDesc;
   UINT32 uiVideoObject;
@@ -298,13 +298,13 @@ INT32 InternalInitFace(UINT8 usMercProfileID, UINT8 ubSoldierID, UINT32 uiInitFl
   return iFaceIndex;
 }
 
-void DeleteSoldierFace(SOLDIERTYPE *pSoldier) {
+function DeleteSoldierFace(pSoldier: Pointer<SOLDIERTYPE>): void {
   DeleteFace(pSoldier->iFaceIndex);
 
   pSoldier->iFaceIndex = -1;
 }
 
-void DeleteFace(INT32 iFaceIndex) {
+function DeleteFace(iFaceIndex: INT32): void {
   FACETYPE *pFace;
 
   // Check face index
@@ -338,7 +338,7 @@ void DeleteFace(INT32 iFaceIndex) {
   RecountFaces();
 }
 
-void SetAutoFaceActiveFromSoldier(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer, UINT8 ubSoldierID, UINT16 usFaceX, UINT16 usFaceY) {
+function SetAutoFaceActiveFromSoldier(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, ubSoldierID: UINT8, usFaceX: UINT16, usFaceY: UINT16): void {
   if (ubSoldierID == NOBODY) {
     return;
   }
@@ -346,7 +346,7 @@ void SetAutoFaceActiveFromSoldier(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer
   SetAutoFaceActive(uiDisplayBuffer, uiRestoreBuffer, MercPtrs[ubSoldierID]->iFaceIndex, usFaceX, usFaceY);
 }
 
-void GetFaceRelativeCoordinates(FACETYPE *pFace, UINT16 *pusEyesX, UINT16 *pusEyesY, UINT16 *pusMouthX, UINT16 *pusMouthY) {
+function GetFaceRelativeCoordinates(pFace: Pointer<FACETYPE>, pusEyesX: Pointer<UINT16>, pusEyesY: Pointer<UINT16>, pusMouthX: Pointer<UINT16>, pusMouthY: Pointer<UINT16>): void {
   UINT16 usMercProfileID;
   UINT16 usEyesX;
   UINT16 usEyesY;
@@ -385,7 +385,7 @@ void GetFaceRelativeCoordinates(FACETYPE *pFace, UINT16 *pusEyesX, UINT16 *pusEy
   (*pusMouthY) = usMouthY;
 }
 
-void SetAutoFaceActive(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer, INT32 iFaceIndex, UINT16 usFaceX, UINT16 usFaceY) {
+function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16): void {
   UINT16 usEyesX;
   UINT16 usEyesY;
   UINT16 usMouthX;
@@ -402,7 +402,7 @@ void SetAutoFaceActive(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer, INT32 iFa
   InternalSetAutoFaceActive(uiDisplayBuffer, uiRestoreBuffer, iFaceIndex, usFaceX, usFaceY, usEyesX, usEyesY, usMouthX, usMouthY);
 }
 
-void InternalSetAutoFaceActive(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer, INT32 iFaceIndex, UINT16 usFaceX, UINT16 usFaceY, UINT16 usEyesX, UINT16 usEyesY, UINT16 usMouthX, UINT16 usMouthY) {
+function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFaceIndex: INT32, usFaceX: UINT16, usFaceY: UINT16, usEyesX: UINT16, usEyesY: UINT16, usMouthX: UINT16, usMouthY: UINT16): void {
   UINT16 usMercProfileID;
   FACETYPE *pFace;
   VSURFACE_DESC vs_desc;
@@ -495,14 +495,14 @@ void InternalSetAutoFaceActive(UINT32 uiDisplayBuffer, UINT32 uiRestoreBuffer, I
   }
 }
 
-void SetAutoFaceInActiveFromSoldier(UINT8 ubSoldierID) {
+function SetAutoFaceInActiveFromSoldier(ubSoldierID: UINT8): void {
   // Check for valid soldier
   CHECKV(ubSoldierID != NOBODY);
 
   SetAutoFaceInActive(MercPtrs[ubSoldierID]->iFaceIndex);
 }
 
-void SetAutoFaceInActive(INT32 iFaceIndex) {
+function SetAutoFaceInActive(iFaceIndex: INT32): void {
   FACETYPE *pFace;
   SOLDIERTYPE *pSoldier;
 
@@ -555,7 +555,7 @@ void SetAutoFaceInActive(INT32 iFaceIndex) {
   pFace->fDisabled = TRUE;
 }
 
-void SetAllAutoFacesInactive() {
+function SetAllAutoFacesInactive(): void {
   UINT32 uiCount;
   FACETYPE *pFace;
 
@@ -568,7 +568,7 @@ void SetAllAutoFacesInactive() {
   }
 }
 
-void BlinkAutoFace(INT32 iFaceIndex) {
+function BlinkAutoFace(iFaceIndex: INT32): void {
   FACETYPE *pFace;
   INT16 sFrame;
   BOOLEAN fDoBlink = FALSE;
@@ -655,7 +655,7 @@ void BlinkAutoFace(INT32 iFaceIndex) {
   }
 }
 
-void HandleFaceHilights(FACETYPE *pFace, UINT32 uiBuffer, INT16 sFaceX, INT16 sFaceY) {
+function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16): void {
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
   UINT16 usLineColor;
@@ -726,7 +726,7 @@ void HandleFaceHilights(FACETYPE *pFace, UINT32 uiBuffer, INT16 sFaceX, INT16 sF
   }
 }
 
-void MouthAutoFace(INT32 iFaceIndex) {
+function MouthAutoFace(iFaceIndex: INT32): void {
   FACETYPE *pFace;
   INT16 sFrame;
 
@@ -804,7 +804,7 @@ void MouthAutoFace(INT32 iFaceIndex) {
   }
 }
 
-void HandleTalkingAutoFace(INT32 iFaceIndex) {
+function HandleTalkingAutoFace(iFaceIndex: INT32): void {
   FACETYPE *pFace;
 
   if (gFacesData[iFaceIndex].fAllocated) {
@@ -853,7 +853,7 @@ void HandleTalkingAutoFace(INT32 iFaceIndex) {
 }
 
 // Local function - uses these variables because they have already been validated
-void SetFaceShade(SOLDIERTYPE *pSoldier, FACETYPE *pFace, BOOLEAN fExternBlit) {
+function SetFaceShade(pSoldier: Pointer<SOLDIERTYPE>, pFace: Pointer<FACETYPE>, fExternBlit: BOOLEAN): void {
   // Set to default
   SetObjectHandleShade(pFace->uiVideoObject, FLASH_PORTRAIT_NOSHADE);
 
@@ -875,14 +875,14 @@ void SetFaceShade(SOLDIERTYPE *pSoldier, FACETYPE *pFace, BOOLEAN fExternBlit) {
   }
 }
 
-BOOLEAN RenderAutoFaceFromSoldier(UINT8 ubSoldierID) {
+function RenderAutoFaceFromSoldier(ubSoldierID: UINT8): BOOLEAN {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
   return RenderAutoFace(MercPtrs[ubSoldierID]->iFaceIndex);
 }
 
-void GetXYForIconPlacement(FACETYPE *pFace, UINT16 ubIndex, INT16 sFaceX, INT16 sFaceY, INT16 *psX, INT16 *psY) {
+function GetXYForIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX: INT16, sFaceY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>): void {
   INT16 sX, sY;
   UINT16 usWidth, usHeight;
   ETRLEObject *pTrav;
@@ -901,7 +901,7 @@ void GetXYForIconPlacement(FACETYPE *pFace, UINT16 ubIndex, INT16 sFaceX, INT16 
   *psY = sY;
 }
 
-void GetXYForRightIconPlacement(FACETYPE *pFace, UINT16 ubIndex, INT16 sFaceX, INT16 sFaceY, INT16 *psX, INT16 *psY, INT8 bNumIcons) {
+function GetXYForRightIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX: INT16, sFaceY: INT16, psX: Pointer<INT16>, psY: Pointer<INT16>, bNumIcons: INT8): void {
   INT16 sX, sY;
   UINT16 usWidth, usHeight;
   ETRLEObject *pTrav;
@@ -920,7 +920,7 @@ void GetXYForRightIconPlacement(FACETYPE *pFace, UINT16 ubIndex, INT16 sFaceX, I
   *psY = sY;
 }
 
-void DoRightIcon(UINT32 uiRenderBuffer, FACETYPE *pFace, INT16 sFaceX, INT16 sFaceY, INT8 bNumIcons, INT8 sIconIndex) {
+function DoRightIcon(uiRenderBuffer: UINT32, pFace: Pointer<FACETYPE>, sFaceX: INT16, sFaceY: INT16, bNumIcons: INT8, sIconIndex: INT8): void {
   INT16 sIconX, sIconY;
 
   // Find X, y for placement
@@ -928,7 +928,7 @@ void DoRightIcon(UINT32 uiRenderBuffer, FACETYPE *pFace, INT16 sFaceX, INT16 sFa
   BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void HandleRenderFaceAdjustments(FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLEAN fUseExternBuffer, UINT32 uiBuffer, INT16 sFaceX, INT16 sFaceY, UINT16 usEyesX, UINT16 usEyesY) {
+function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: BOOLEAN, fUseExternBuffer: BOOLEAN, uiBuffer: UINT32, sFaceX: INT16, sFaceY: INT16, usEyesX: UINT16, usEyesY: UINT16): void {
   INT16 sIconX, sIconY;
   INT16 sIconIndex = -1;
   BOOLEAN fDoIcon = FALSE;
@@ -1214,7 +1214,7 @@ void HandleRenderFaceAdjustments(FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLEA
   }
 }
 
-BOOLEAN RenderAutoFace(INT32 iFaceIndex) {
+function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
   FACETYPE *pFace;
 
   // Check face index
@@ -1254,14 +1254,14 @@ BOOLEAN RenderAutoFace(INT32 iFaceIndex) {
   return TRUE;
 }
 
-BOOLEAN ExternRenderFaceFromSoldier(UINT32 uiBuffer, UINT8 ubSoldierID, INT16 sX, INT16 sY) {
+function ExternRenderFaceFromSoldier(uiBuffer: UINT32, ubSoldierID: UINT8, sX: INT16, sY: INT16): BOOLEAN {
   // Check for valid soldier
   CHECKF(ubSoldierID != NOBODY);
 
   return ExternRenderFace(uiBuffer, MercPtrs[ubSoldierID]->iFaceIndex, sX, sY);
 }
 
-BOOLEAN ExternRenderFace(UINT32 uiBuffer, INT32 iFaceIndex, INT16 sX, INT16 sY) {
+function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: INT16): BOOLEAN {
   UINT16 usEyesX;
   UINT16 usEyesY;
   UINT16 usMouthX;
@@ -1298,7 +1298,7 @@ BOOLEAN ExternRenderFace(UINT32 uiBuffer, INT32 iFaceIndex, INT16 sX, INT16 sY) 
   return TRUE;
 }
 
-void NewEye(FACETYPE *pFace) {
+function NewEye(pFace: Pointer<FACETYPE>): void {
   switch (pFace->sEyeFrame) {
     case 0: // pFace->sEyeFrame = (INT16)Random(2);	// normal - can blink or frown
       if (pFace->ubExpression == ANGRY) {
@@ -1381,7 +1381,7 @@ void NewEye(FACETYPE *pFace) {
   }
 }
 
-void NewMouth(FACETYPE *pFace) {
+function NewMouth(pFace: Pointer<FACETYPE>): void {
   BOOLEAN OK = FALSE;
   UINT16 sOld = pFace->sMouthFrame;
 
@@ -1421,7 +1421,7 @@ void NewMouth(FACETYPE *pFace) {
   } while (!OK);
 }
 
-void HandleAutoFaces() {
+function HandleAutoFaces(): void {
   UINT32 uiCount;
   FACETYPE *pFace;
   INT8 bLife;
@@ -1615,7 +1615,7 @@ void HandleAutoFaces() {
   }
 }
 
-void HandleTalkingAutoFaces() {
+function HandleTalkingAutoFaces(): void {
   UINT32 uiCount;
   FACETYPE *pFace;
 
@@ -1629,7 +1629,7 @@ void HandleTalkingAutoFaces() {
   }
 }
 
-BOOLEAN FaceRestoreSavedBackgroundRect(INT32 iFaceIndex, INT16 sDestLeft, INT16 sDestTop, INT16 sSrcLeft, INT16 sSrcTop, INT16 sWidth, INT16 sHeight) {
+function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDestTop: INT16, sSrcLeft: INT16, sSrcTop: INT16, sWidth: INT16, sHeight: INT16): BOOLEAN {
   FACETYPE *pFace;
   UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
   UINT8 *pDestBuf, *pSrcBuf;
@@ -1659,7 +1659,7 @@ BOOLEAN FaceRestoreSavedBackgroundRect(INT32 iFaceIndex, INT16 sDestLeft, INT16 
   return TRUE;
 }
 
-BOOLEAN SetFaceTalking(INT32 iFaceIndex, CHAR8 *zSoundFile, STR16 zTextString, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): BOOLEAN {
   FACETYPE *pFace;
 
   pFace = &gFacesData[iFaceIndex];
@@ -1695,7 +1695,7 @@ BOOLEAN SetFaceTalking(INT32 iFaceIndex, CHAR8 *zSoundFile, STR16 zTextString, U
   return TRUE;
 }
 
-BOOLEAN ExternSetFaceTalking(INT32 iFaceIndex, UINT32 uiSoundID) {
+function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): BOOLEAN {
   FACETYPE *pFace;
 
   pFace = &gFacesData[iFaceIndex];
@@ -1711,7 +1711,7 @@ BOOLEAN ExternSetFaceTalking(INT32 iFaceIndex, UINT32 uiSoundID) {
   return TRUE;
 }
 
-void InternalShutupaYoFace(INT32 iFaceIndex, BOOLEAN fForce) {
+function InternalShutupaYoFace(iFaceIndex: INT32, fForce: BOOLEAN): void {
   FACETYPE *pFace;
 
   // Check face index
@@ -1757,11 +1757,11 @@ void InternalShutupaYoFace(INT32 iFaceIndex, BOOLEAN fForce) {
   }
 }
 
-void ShutupaYoFace(INT32 iFaceIndex) {
+function ShutupaYoFace(iFaceIndex: INT32): void {
   InternalShutupaYoFace(iFaceIndex, TRUE);
 }
 
-void SetupFinalTalkingDelay(FACETYPE *pFace) {
+function SetupFinalTalkingDelay(pFace: Pointer<FACETYPE>): void {
   pFace->fFinishTalking = TRUE;
 
   pFace->fAnimatingTalking = FALSE;

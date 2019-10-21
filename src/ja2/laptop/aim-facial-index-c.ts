@@ -37,10 +37,10 @@ MOUSE_REGION gMercFaceMouseRegions[MAX_NUMBER_MERCS];
 // Screen region, used to right click to go back to previous page
 MOUSE_REGION gScreenMouseRegions;
 
-void GameInitAimFacialIndex() {
+function GameInitAimFacialIndex(): void {
 }
 
-BOOLEAN EnterAimFacialIndex() {
+function EnterAimFacialIndex(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 i;
   UINT16 usPosX, usPosY, x, y;
@@ -87,7 +87,7 @@ BOOLEAN EnterAimFacialIndex() {
   return TRUE;
 }
 
-void ExitAimFacialIndex() {
+function ExitAimFacialIndex(): void {
   UINT8 i;
 
   RemoveAimDefaults();
@@ -103,12 +103,12 @@ void ExitAimFacialIndex() {
   MSYS_RemoveRegion(&gScreenMouseRegions);
 }
 
-void HandleAimFacialIndex() {
+function HandleAimFacialIndex(): void {
   //	if( fShowBookmarkInfo )
   //		fPausedReDrawScreenFlag = TRUE;
 }
 
-BOOLEAN RenderAimFacialIndex() {
+function RenderAimFacialIndex(): BOOLEAN {
   UINT16 usPosX, usPosY, x, y;
   wchar_t sString[150];
   UINT8 i;
@@ -157,7 +157,7 @@ BOOLEAN RenderAimFacialIndex() {
   return TRUE;
 }
 
-void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMercFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS;
@@ -167,14 +167,14 @@ void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectScreenRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES;
   }
 }
 
-void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   UINT8 ubMercNum;
   UINT16 usPosX, usPosY;
   UINT16 ty1, ty2, tx1, tx2;
@@ -206,7 +206,7 @@ void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 reason) {
   }
 }
 
-BOOLEAN DrawMercsFaceToScreen(UINT8 ubMercID, UINT16 usPosX, UINT16 usPosY, UINT8 ubImage) {
+function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): BOOLEAN {
   HVOBJECT hMugShotBorderHandle;
   HVOBJECT hFaceHandle;
   SOLDIERTYPE *pSoldier = NULL;

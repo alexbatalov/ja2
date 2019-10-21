@@ -2,12 +2,12 @@ const EMPTY_CACHE_ENTRY = 65000;
 
 UINT32 guiCacheSize = MIN_CACHE_SIZE;
 
-void DetermineOptimumAnimationCacheSize() {
+function DetermineOptimumAnimationCacheSize(): void {
   // If we have lots-a memory, adjust accordingly!
   guiCacheSize = MIN_CACHE_SIZE;
 }
 
-BOOLEAN InitAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
+function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): BOOLEAN {
   UINT32 cnt;
 
   // Allocate entries
@@ -32,7 +32,7 @@ BOOLEAN InitAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimC
   return TRUE;
 }
 
-void DeleteAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
+function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
   // Allocate entries
   if (pAnimCache->usCachedSurfaces != NULL) {
     AnimDebugMsg(String("*** Removing Anim Cache surface for soldier %d", usSoldierID));
@@ -45,7 +45,7 @@ void DeleteAnimationCache(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCa
   }
 }
 
-BOOLEAN GetCachedAnimationSurface(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache, UINT16 usSurfaceIndex, UINT16 usCurrentAnimation) {
+function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): BOOLEAN {
   UINT8 cnt;
   UINT8 ubLowestIndex = 0;
   INT16 sMostHits = (INT16)32000;
@@ -113,7 +113,7 @@ BOOLEAN GetCachedAnimationSurface(UINT16 usSoldierID, AnimationSurfaceCacheType 
   return TRUE;
 }
 
-void UnLoadCachedAnimationSurfaces(UINT16 usSoldierID, AnimationSurfaceCacheType *pAnimCache) {
+function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
   UINT8 cnt;
 
   // Check to see if surface exists already

@@ -4,7 +4,7 @@ interface RGBValues {
   b: UINT8;
 }
 
-BOOLEAN QuantizeImage(UINT8 *pDest, UINT8 *pSrc, INT16 sWidth, INT16 sHeight, SGPPaletteEntry *pPalette) {
+function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   INT16 sNumColors;
 
   // FIRST CREATE PALETTE
@@ -25,7 +25,7 @@ BOOLEAN QuantizeImage(UINT8 *pDest, UINT8 *pSrc, INT16 sWidth, INT16 sHeight, SG
   return TRUE;
 }
 
-void MapPalette(UINT8 *pDest, UINT8 *pSrc, INT16 sWidth, INT16 sHeight, INT16 sNumColors, SGPPaletteEntry *pTable) {
+function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, sNumColors: INT16, pTable: Pointer<SGPPaletteEntry>): void {
   INT32 cX, cY, cnt, bBest;
   real dLowestDist;
   real dCubeDist;

@@ -38,7 +38,7 @@ const PRIORITY_DECR_DISTANCE = 30;
 const CALL_1_OPPONENT = CALL_1_PREY;
 const CALL_MULTIPLE_OPPONENT = CALL_MULTIPLE_PREY;
 
-void CreatureCall(SOLDIERTYPE *pCaller) {
+function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
   UINT8 ubCallerType = 0;
   UINT8 ubReceiver;
   INT8 bFullPriority;
@@ -113,7 +113,7 @@ void CreatureCall(SOLDIERTYPE *pCaller) {
   }
 }
 
-INT8 CreatureDecideActionGreen(SOLDIERTYPE *pSoldier) {
+function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT32 iChance, iSneaky = 10;
   // INT8		bInWater;
   INT8 bInGas;
@@ -383,7 +383,7 @@ INT8 CreatureDecideActionGreen(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 CreatureDecideActionYellow(SOLDIERTYPE *pSoldier) {
+function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // monster AI - heard something
   UINT8 ubNoiseDir;
   INT16 sNoiseGridNo;
@@ -532,7 +532,7 @@ INT8 CreatureDecideActionYellow(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 CreatureDecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK) {
+function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
   // monster AI - hostile mammals somewhere around!
   INT16 iChance, sClosestOpponent /*,sClosestOpponent,sClosestFriend*/;
   INT16 sClosestDisturbance;
@@ -751,7 +751,7 @@ INT8 CreatureDecideActionRed(SOLDIERTYPE *pSoldier, UINT8 ubUnconsciousOK) {
   return AI_ACTION_NONE;
 }
 
-INT8 CreatureDecideActionBlack(SOLDIERTYPE *pSoldier) {
+function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // monster AI - hostile mammals in sense range
   INT16 sClosestOpponent, sBestCover = NOWHERE;
   INT16 sClosestDisturbance;
@@ -1147,7 +1147,7 @@ INT8 CreatureDecideActionBlack(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 CreatureDecideAction(SOLDIERTYPE *pSoldier) {
+function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bAction = AI_ACTION_NONE;
 
   switch (pSoldier->bAlertStatus) {
@@ -1171,7 +1171,7 @@ INT8 CreatureDecideAction(SOLDIERTYPE *pSoldier) {
   return bAction;
 }
 
-void CreatureDecideAlertStatus(SOLDIERTYPE *pSoldier) {
+function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bOldStatus;
   INT32 iDummy;
   BOOLEAN fClimbDummy, fReachableDummy;
@@ -1299,7 +1299,7 @@ void CreatureDecideAlertStatus(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 CrowDecideActionRed(SOLDIERTYPE *pSoldier) {
+function CrowDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // OK, Fly away!
   // HandleCrowFlyAway( pSoldier );
   if (!gfTurnBasedAI) {
@@ -1310,7 +1310,7 @@ INT8 CrowDecideActionRed(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 CrowDecideActionGreen(SOLDIERTYPE *pSoldier) {
+function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT16 sCorpseGridNo;
   UINT8 ubDirection;
   INT16 sFacingDir;
@@ -1345,7 +1345,7 @@ INT8 CrowDecideActionGreen(SOLDIERTYPE *pSoldier) {
   return AI_ACTION_NONE;
 }
 
-INT8 CrowDecideAction(SOLDIERTYPE *pSoldier) {
+function CrowDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier->usAnimState == CROW_FLY) {
     return AI_ACTION_NONE;
   }

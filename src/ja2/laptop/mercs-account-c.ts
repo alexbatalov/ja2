@@ -48,10 +48,10 @@ INT32 guiMercAuthorizeButtonImage;
 
 UINT32 guiMercBackBoxButton;
 
-void GameInitMercsAccount() {
+function GameInitMercsAccount(): void {
 }
 
-BOOLEAN EnterMercsAccount() {
+function EnterMercsAccount(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   InitMercBackGround();
@@ -84,7 +84,7 @@ BOOLEAN EnterMercsAccount() {
   return TRUE;
 }
 
-void ExitMercsAccount() {
+function ExitMercsAccount(): void {
   DeleteVideoObjectFromIndex(guiMercOrderGrid);
   DeleteVideoObjectFromIndex(guiAccountNumberGrid);
 
@@ -95,7 +95,7 @@ void ExitMercsAccount() {
   RemoveMercBackGround();
 }
 
-void HandleMercsAccount() {
+function HandleMercsAccount(): void {
   // if true, will display a msgbox telling user that they dont have enough funds
   if (gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning) {
     gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
@@ -104,7 +104,7 @@ void HandleMercsAccount() {
   }
 }
 
-void RenderMercsAccount() {
+function RenderMercsAccount(): void {
   wchar_t sText[100];
   HVOBJECT hPixHandle;
 
@@ -141,7 +141,7 @@ void RenderMercsAccount() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -172,7 +172,7 @@ void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMercBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -193,7 +193,7 @@ void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DisplayHiredMercs() {
+function DisplayHiredMercs(): void {
   UINT16 usPosY;
   UINT32 uiContractCharge;
   wchar_t sTemp[20];
@@ -246,7 +246,7 @@ void DisplayHiredMercs() {
   DrawTextToScreen(sTemp, MERC_AC_FOURTH_COLUMN_X, MERC_AC_TOTAL_COST_Y, MERC_AC_FOURTH_COLUMN_WIDTH, MERC_ACCOUNT_DYNAMIC_TEXT_FONT, MERC_ACCOUNT_DYNAMIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 }
 
-void SettleMercAccounts() {
+function SettleMercAccounts(): void {
   //	SOLDIERTYPE *pSoldier;
   INT16 i;
   UINT8 ubMercID;
@@ -402,7 +402,7 @@ void SettleMercAccounts() {
   */
 }
 
-void MercAuthorizePaymentMessageBoxCallBack(UINT8 bExitValue) {
+function MercAuthorizePaymentMessageBoxCallBack(bExitValue: UINT8): void {
   // yes, clear the form
   if (bExitValue == MSG_BOX_RETURN_YES) {
     // if the player owes Speck money, then settle the accounts
@@ -411,7 +411,7 @@ void MercAuthorizePaymentMessageBoxCallBack(UINT8 bExitValue) {
   }
 }
 
-UINT32 CalculateHowMuchPlayerOwesSpeck() {
+function CalculateHowMuchPlayerOwesSpeck(): UINT32 {
   UINT8 i = 0;
   UINT32 uiContractCharge = 0;
   UINT16 usMercID;

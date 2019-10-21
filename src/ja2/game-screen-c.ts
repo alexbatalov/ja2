@@ -43,7 +43,7 @@ const RESTART_DELAY = 6000;
 UINT32 guiTacticalLeaveScreenID;
 BOOLEAN guiTacticalLeaveScreen = FALSE;
 
-UINT32 MainGameScreenInit(void) {
+function MainGameScreenInit(): UINT32 {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   gpZBuffer = InitZBuffer(1280, 480);
@@ -85,7 +85,7 @@ UINT32 MainGameScreenInit(void) {
 // The ShutdownGame function will free up/undo all things that were started in InitializeGame()
 // It will also be responsible to making sure that all Gaming Engine tasks exit properly
 
-UINT32 MainGameScreenShutdown(void) {
+function MainGameScreenShutdown(): UINT32 {
   ShutdownZBuffer(gpZBuffer);
   ShutdownBackgroundRects();
 
@@ -95,17 +95,17 @@ UINT32 MainGameScreenShutdown(void) {
   return TRUE;
 }
 
-void FadeInGameScreen() {
+function FadeInGameScreen(): void {
   fFirstTimeInGameScreen = TRUE;
 
   FadeInNextFrame();
 }
 
-void FadeOutGameScreen() {
+function FadeOutGameScreen(): void {
   FadeOutNextFrame();
 }
 
-void EnterTacticalScreen() {
+function EnterTacticalScreen(): void {
   guiTacticalLeaveScreen = FALSE;
 
   SetPositionSndsActive();
@@ -189,12 +189,12 @@ void EnterTacticalScreen() {
   EnableScrollMessages();
 }
 
-void LeaveTacticalScreen(UINT32 uiNewScreen) {
+function LeaveTacticalScreen(uiNewScreen: UINT32): void {
   guiTacticalLeaveScreenID = uiNewScreen;
   guiTacticalLeaveScreen = TRUE;
 }
 
-void InternalLeaveTacticalScreen(UINT32 uiNewScreen) {
+function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   gpCustomizableTimerCallback = NULL;
 
   // unload the sector they teleported out of
@@ -253,7 +253,7 @@ void InternalLeaveTacticalScreen(UINT32 uiNewScreen) {
 
 extern INT32 iInterfaceDialogueBox;
 
-UINT32 MainGameScreenHandle(void) {
+function MainGameScreenHandle(): UINT32 {
   UINT32 uiNewScreen = GAME_SCREEN;
   BOOLEAN fEnterDemoMode = FALSE;
 
@@ -596,11 +596,11 @@ UINT32 MainGameScreenHandle(void) {
   return GAME_SCREEN;
 }
 
-void SetRenderHook(RENDER_HOOK pRenderOverride) {
+function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
   gRenderOverride = pRenderOverride;
 }
 
-void DisableFPSOverlay(BOOLEAN fEnable) {
+function DisableFPSOverlay(fEnable: BOOLEAN): void {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
@@ -612,7 +612,7 @@ void DisableFPSOverlay(BOOLEAN fEnable) {
   UpdateVideoOverlay(&VideoOverlayDesc, giCounterPeriodOverlay, FALSE);
 }
 
-void TacticalScreenLocateToSoldier() {
+function TacticalScreenLocateToSoldier(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 bLastTeamID;
@@ -642,14 +642,14 @@ void TacticalScreenLocateToSoldier() {
   }
 }
 
-void EnterMapScreen() {
+function EnterMapScreen(): void {
   // ATE: These flags well get set later on in mapscreen....
   // SetTacticalInterfaceFlags( INTERFACE_MAPSCREEN );
   // fInterfacePanelDirty = DIRTYLEVEL2;
   LeaveTacticalScreen(MAP_SCREEN);
 }
 
-void UpdateTeamPanelAssignments() {
+function UpdateTeamPanelAssignments(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   INT16 bLastTeamID;
@@ -666,7 +666,7 @@ void UpdateTeamPanelAssignments() {
   }
 }
 
-void EnterModalTactical(INT8 bMode) {
+function EnterModalTactical(bMode: INT8): void {
   gbTacticalDisableMode = bMode;
   gfTacticalIsModal = TRUE;
 
@@ -683,7 +683,7 @@ void EnterModalTactical(INT8 bMode) {
   UpdateSaveBuffer();
 }
 
-void EndModalTactical() {
+function EndModalTactical(): void {
   if (gfTacticalDisableRegionActive) {
     MSYS_RemoveRegion(&gTacticalDisableRegion);
 
@@ -701,7 +701,7 @@ void EndModalTactical() {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void HandleModalTactical() {
+function HandleModalTactical(): void {
   StartFrameBufferRender();
 
   RestoreBackgroundRects();
@@ -731,7 +731,7 @@ void HandleModalTactical() {
   EndFrameBufferRender();
 }
 
-void InitHelicopterEntranceByMercs(void) {
+function InitHelicopterEntranceByMercs(): void {
   if (DidGameJustStart()) {
     AIR_RAID_DEFINITION AirRaidDef;
 

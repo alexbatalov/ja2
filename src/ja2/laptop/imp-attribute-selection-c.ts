@@ -80,7 +80,7 @@ INT32 uiBarToReRender = -1;
 // are we actually coming back to edit, or are we restarting?
 BOOLEAN fReturnStatus = FALSE;
 
-void EnterIMPAttributeSelection(void) {
+function EnterIMPAttributeSelection(): void {
   // set attributes and skills
   if ((fReturnStatus == FALSE) && (fFirstIMPAttribTime == TRUE)) {
     // re starting
@@ -119,9 +119,9 @@ if( DoesCharacterHaveAPersoanlity( ) )
   return;
 }
 
-void RenderIMPAlteredAttribute(void) {
+function RenderIMPAlteredAttribute(): void {
 }
-void RenderIMPAttributeSelection(void) {
+function RenderIMPAttributeSelection(): void {
   // the background
   RenderProfileBackGround();
 
@@ -149,7 +149,7 @@ void RenderIMPAttributeSelection(void) {
   return;
 }
 
-void ExitIMPAttributeSelection(void) {
+function ExitIMPAttributeSelection(): void {
   // get rid of slider buttons
   DestroyAttributeSliderButtons();
 
@@ -165,7 +165,7 @@ void ExitIMPAttributeSelection(void) {
   return;
 }
 
-void HandleIMPAttributeSelection(void) {
+function HandleIMPAttributeSelection(): void {
   // review mode, do not allow changes
   if (fReviewStats) {
     return;
@@ -259,7 +259,7 @@ void HandleIMPAttributeSelection(void) {
   return;
 }
 
-void ProcessAttributes(void) {
+function ProcessAttributes(): void {
   // this function goes through and confirms thet state of attributes, ie not allowing attributes to
   // drop below 35 or skills to go below 0...and if skill is 34 set to 0
 
@@ -341,7 +341,7 @@ void ProcessAttributes(void) {
   return;
 }
 
-UINT8 IncrementStat(INT32 iStatToIncrement) {
+function IncrementStat(iStatToIncrement: INT32): UINT8 {
   // this function is responsable for incrementing a stat
 
   // review mode, do not allow changes
@@ -492,7 +492,7 @@ UINT8 IncrementStat(INT32 iStatToIncrement) {
   return SLIDER_OK;
 }
 
-UINT8 DecrementStat(INT32 iStatToDecrement) {
+function DecrementStat(iStatToDecrement: INT32): UINT8 {
   // review mode, do not allow changes
   if (fReviewStats) {
     return SLIDER_ERROR;
@@ -613,7 +613,7 @@ UINT8 DecrementStat(INT32 iStatToDecrement) {
   return SLIDER_OK;
 }
 
-BOOLEAN DoWeHaveThisManyBonusPoints(INT32 iBonusPoints) {
+function DoWeHaveThisManyBonusPoints(iBonusPoints: INT32): BOOLEAN {
   // returns if player has at least this many bonus points
   if (iCurrentBonusPoints >= iBonusPoints) {
     // yep, return true
@@ -624,7 +624,7 @@ BOOLEAN DoWeHaveThisManyBonusPoints(INT32 iBonusPoints) {
   }
 }
 
-void CreateIMPAttributeSelectionButtons(void) {
+function CreateIMPAttributeSelectionButtons(): void {
   // the finished button
   giIMPAttributeSelectionButtonImage[0] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
   /*	giIMPAttributeSelectionButton[0] = QuickCreateButton( giIMPAttributeSelectionButtonImage[0], LAPTOP_SCREEN_UL_X +  ( 136 ), LAPTOP_SCREEN_WEB_UL_Y + ( 314 ),
@@ -637,7 +637,7 @@ void CreateIMPAttributeSelectionButtons(void) {
   return;
 }
 
-void DestroyIMPAttributeSelectionButtons(void) {
+function DestroyIMPAttributeSelectionButtons(): void {
   // this function will destroy the buttons needed for the IMP attrib enter page
 
   // the begin  button
@@ -647,7 +647,7 @@ void DestroyIMPAttributeSelectionButtons(void) {
   return;
 }
 
-void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -669,7 +669,7 @@ void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RenderAttributeBoxes(void) {
+function RenderAttributeBoxes(): void {
   // this function will render the boxes in the sliding attribute bar, based on position
   INT32 iCnt = STRENGTH_ATTRIBUTE;
   INT16 sX = 0;
@@ -879,7 +879,7 @@ void RenderAttributeBoxes(void) {
   return;
 }
 
-void CreateAttributeSliderButtons(void) {
+function CreateAttributeSliderButtons(): void {
   // this function will create the buttons for the attribute slider
   // the finished button
   INT32 iCounter = 0;
@@ -904,7 +904,7 @@ void CreateAttributeSliderButtons(void) {
   MarkButtonsDirty();
 }
 
-void DestroyAttributeSliderButtons(void) {
+function DestroyAttributeSliderButtons(): void {
   // this function will destroy the buttons used for attribute manipulation
   INT32 iCounter = 0;
 
@@ -920,7 +920,7 @@ void DestroyAttributeSliderButtons(void) {
   return;
 }
 
-void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = -1;
 
   // btn callback for IMP personality quiz answer button
@@ -948,7 +948,7 @@ void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 iValue = -1;
 
   // btn callback for IMP personality quiz answer button
@@ -976,7 +976,7 @@ void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void CreateSlideRegionMouseRegions(void) {
+function CreateSlideRegionMouseRegions(): void {
   // this function will create that mouse regions on the sliding area, that, if the player clicks on, the bar will automatically jump to
   INT32 iCounter = 0;
 
@@ -993,7 +993,7 @@ void CreateSlideRegionMouseRegions(void) {
   return;
 }
 
-void CreateSliderBarMouseRegions(void) {
+function CreateSliderBarMouseRegions(): void {
   // this function will create that mouse regions on the sliding bars, that, if the player clicks on, the bar will automatically jump to
   INT32 iCounter = 0;
   INT16 sX = 0;
@@ -1014,7 +1014,7 @@ void CreateSliderBarMouseRegions(void) {
   return;
 }
 
-void DestroySlideRegionMouseRegions(void) {
+function DestroySlideRegionMouseRegions(): void {
   // this function will destroy the regions user for the slider ' jumping'
   INT32 iCounter = 0;
 
@@ -1026,7 +1026,7 @@ void DestroySlideRegionMouseRegions(void) {
   return;
 }
 
-void DestroySlideBarMouseRegions(void) {
+function DestroySlideBarMouseRegions(): void {
   // this function will destroy the regions user for the slider ' jumping'
   INT32 iCounter = 0;
 
@@ -1038,7 +1038,7 @@ void DestroySlideBarMouseRegions(void) {
   return;
 }
 
-void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iCurrentAttributeValue = 0;
   INT32 iNewAttributeValue = 0;
   INT32 iAttributeDelta = 0;
@@ -1201,7 +1201,7 @@ void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SliderBarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function SliderBarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fSlideIsActive = TRUE;
     SliderRegionButtonCallback(&pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)], MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
@@ -1211,7 +1211,7 @@ void SliderBarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-INT32 GetCurrentAttributeValue(INT32 iAttribute) {
+function GetCurrentAttributeValue(iAttribute: INT32): INT32 {
   // this function will get the value of the attribute that was passed to this fucntion via iAttribute
   INT32 iValue = 0;
 
@@ -1251,7 +1251,7 @@ INT32 GetCurrentAttributeValue(INT32 iAttribute) {
   return iValue;
 }
 
-void SetAttributes(void) {
+function SetAttributes(): void {
   /*
     // set attributes and skills based on what is in charprofile.c
 
@@ -1294,7 +1294,7 @@ void SetAttributes(void) {
   return;
 }
 
-void DrawBonusPointsRemaining(void) {
+function DrawBonusPointsRemaining(): void {
   // draws the amount of points remaining player has
   CHAR16 sString[64];
 
@@ -1316,7 +1316,7 @@ void DrawBonusPointsRemaining(void) {
   return;
 }
 
-void SetGeneratedCharacterAttributes(void) {
+function SetGeneratedCharacterAttributes(): void {
   // copies over the attributes of the player generated character
   iStrength = iCurrentStrength;
   iDexterity = iCurrentDexterity;
@@ -1334,7 +1334,7 @@ void SetGeneratedCharacterAttributes(void) {
   return;
 }
 
-void StatAtZeroBoxCallBack(UINT8 bExitValue) {
+function StatAtZeroBoxCallBack(bExitValue: UINT8): void {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
     MarkButtonsDirty();

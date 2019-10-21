@@ -154,7 +154,7 @@ extern BOOLEAN fReDrawFace;
 extern UINT8 gubWaitingForAllMercsToExitCode;
 BOOLEAN gfGetNewPathThroughPeople = FALSE;
 
-void HandleVehicleMovementSound(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
+function HandleVehicleMovementSound(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {
   VEHICLETYPE *pVehicle = &(pVehicleList[pSoldier->bVehicleID]);
 
   if (fOn) {
@@ -169,7 +169,7 @@ void HandleVehicleMovementSound(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
   }
 }
 
-void AdjustNoAPToFinishMove(SOLDIERTYPE *pSoldier, BOOLEAN fSet) {
+function AdjustNoAPToFinishMove(pSoldier: Pointer<SOLDIERTYPE>, fSet: BOOLEAN): void {
   if (pSoldier->ubBodyType == CROW) {
     return;
   }
@@ -198,7 +198,7 @@ void AdjustNoAPToFinishMove(SOLDIERTYPE *pSoldier, BOOLEAN fSet) {
   }
 }
 
-void HandleCrowShadowVisibility(SOLDIERTYPE *pSoldier) {
+function HandleCrowShadowVisibility(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->ubBodyType == CROW) {
     if (pSoldier->usAnimState == CROW_FLY) {
       if (pSoldier->pAniTile != NULL) {
@@ -212,7 +212,7 @@ void HandleCrowShadowVisibility(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleCrowShadowNewGridNo(SOLDIERTYPE *pSoldier) {
+function HandleCrowShadowNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   ANITILE_PARAMS AniParams;
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
@@ -245,7 +245,7 @@ void HandleCrowShadowNewGridNo(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleCrowShadowRemoveGridNo(SOLDIERTYPE *pSoldier) {
+function HandleCrowShadowRemoveGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->ubBodyType == CROW) {
     if (pSoldier->usAnimState == CROW_FLY) {
       if (pSoldier->pAniTile != NULL) {
@@ -256,7 +256,7 @@ void HandleCrowShadowRemoveGridNo(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleCrowShadowNewDirection(SOLDIERTYPE *pSoldier) {
+function HandleCrowShadowNewDirection(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->ubBodyType == CROW) {
     if (pSoldier->usAnimState == CROW_FLY) {
       if (pSoldier->pAniTile != NULL) {
@@ -266,7 +266,7 @@ void HandleCrowShadowNewDirection(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleCrowShadowNewPosition(SOLDIERTYPE *pSoldier) {
+function HandleCrowShadowNewPosition(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->ubBodyType == CROW) {
     if (pSoldier->usAnimState == CROW_FLY) {
       if (pSoldier->pAniTile != NULL) {
@@ -277,7 +277,7 @@ void HandleCrowShadowNewPosition(SOLDIERTYPE *pSoldier) {
   }
 }
 
-INT8 CalcActionPoints(SOLDIERTYPE *pSold) {
+function CalcActionPoints(pSold: Pointer<SOLDIERTYPE>): INT8 {
   UINT8 ubPoints, ubMaxAPs;
   INT8 bBandage;
 
@@ -366,7 +366,7 @@ INT8 CalcActionPoints(SOLDIERTYPE *pSold) {
   return ubPoints;
 }
 
-void CalcNewActionPoints(SOLDIERTYPE *pSoldier) {
+function CalcNewActionPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (gTacticalStatus.bBoxingState == BOXING || gTacticalStatus.bBoxingState == PRE_BOXING) {
     // if we are in boxing mode, carry 1/2 as many points
     if (pSoldier->bActionPoints > MAX_AP_CARRIED / 2) {
@@ -388,7 +388,7 @@ void CalcNewActionPoints(SOLDIERTYPE *pSoldier) {
   pSoldier->bInitialActionPoints = pSoldier->bActionPoints;
 }
 
-void DoNinjaAttack(SOLDIERTYPE *pSoldier) {
+function DoNinjaAttack(pSoldier: Pointer<SOLDIERTYPE>): void {
   // UINT32						uiMercFlags;
   UINT16 usSoldierIndex;
   SOLDIERTYPE *pTSoldier;
@@ -481,7 +481,7 @@ void DoNinjaAttack(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN CreateSoldierCommon(UINT8 ubBodyType, SOLDIERTYPE *pSoldier, UINT16 usSoldierID, UINT16 usState) {
+function CreateSoldierCommon(ubBodyType: UINT8, pSoldier: Pointer<SOLDIERTYPE>, usSoldierID: UINT16, usState: UINT16): BOOLEAN {
   BOOLEAN fSuccess = FALSE;
   INT32 iCounter = 0;
 
@@ -581,7 +581,7 @@ BOOLEAN CreateSoldierCommon(UINT8 ubBodyType, SOLDIERTYPE *pSoldier, UINT16 usSo
   return fSuccess;
 }
 
-BOOLEAN DeleteSoldier(SOLDIERTYPE *pSoldier) {
+function DeleteSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT32 cnt;
   INT32 iGridNo;
   INT8 bDir;
@@ -675,7 +675,7 @@ BOOLEAN DeleteSoldier(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN CreateSoldierLight(SOLDIERTYPE *pSoldier) {
+function CreateSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->bTeam != gbPlayerNum) {
     return FALSE;
   }
@@ -714,7 +714,7 @@ BOOLEAN CreateSoldierLight(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN ReCreateSoldierLight(SOLDIERTYPE *pSoldier) {
+function ReCreateSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->bTeam != gbPlayerNum) {
     return FALSE;
   }
@@ -737,7 +737,7 @@ BOOLEAN ReCreateSoldierLight(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-BOOLEAN ReCreateSelectedSoldierLight() {
+function ReCreateSelectedSoldierLight(): BOOLEAN {
   SOLDIERTYPE *pSoldier;
 
   if (gusSelectedSoldier == NO_SOLDIER) {
@@ -749,7 +749,7 @@ BOOLEAN ReCreateSelectedSoldierLight() {
   return ReCreateSoldierLight(pSoldier);
 }
 
-BOOLEAN DeleteSoldierLight(SOLDIERTYPE *pSoldier) {
+function DeleteSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->iLight != (-1)) {
     LightSpriteDestroy(pSoldier->iLight);
     pSoldier->iLight = -1;
@@ -761,7 +761,7 @@ BOOLEAN DeleteSoldierLight(SOLDIERTYPE *pSoldier) {
 // FUNCTIONS CALLED BY EVENT PUMP
 /////////////////////////////////
 
-BOOLEAN ChangeSoldierState(SOLDIERTYPE *pSoldier, UINT16 usNewState, UINT16 usStartingAniCode, BOOLEAN fForce) {
+function ChangeSoldierState(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: BOOLEAN): BOOLEAN {
   EV_S_CHANGESTATE SChangeState;
 
   // Send message that we have changed states
@@ -781,7 +781,7 @@ BOOLEAN ChangeSoldierState(SOLDIERTYPE *pSoldier, UINT16 usNewState, UINT16 usSt
 }
 
 // This function reevaluates the stance if the guy sees us!
-BOOLEAN ReevaluateEnemyStance(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+function ReevaluateEnemyStance(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): BOOLEAN {
   INT32 cnt, iClosestEnemy = NOBODY;
   INT16 sTargetXPos, sTargetYPos;
   BOOLEAN fReturnVal = FALSE;
@@ -836,7 +836,7 @@ BOOLEAN ReevaluateEnemyStance(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
   return FALSE;
 }
 
-void CheckForFreeupFromHit(SOLDIERTYPE *pSoldier, UINT32 uiOldAnimFlags, UINT32 uiNewAnimFlags, UINT16 usOldAniState, UINT16 usNewState) {
+function CheckForFreeupFromHit(pSoldier: Pointer<SOLDIERTYPE>, uiOldAnimFlags: UINT32, uiNewAnimFlags: UINT32, usOldAniState: UINT16, usNewState: UINT16): void {
   // THIS COULD POTENTIALLY CALL EVENT_INITNEWAnim() if the GUY was SUPPRESSED
   // CHECK IF THE OLD ANIMATION WAS A HIT START THAT WAS NOT FOLLOWED BY A HIT FINISH
   // IF SO, RELEASE ATTACKER FROM ATTACKING
@@ -881,7 +881,7 @@ void CheckForFreeupFromHit(SOLDIERTYPE *pSoldier, UINT32 uiOldAnimFlags, UINT32 
 }
 
 // THIS IS CALLED FROM AN EVENT ( S_CHANGESTATE )!
-BOOLEAN EVENT_InitNewSoldierAnim(SOLDIERTYPE *pSoldier, UINT16 usNewState, UINT16 usStartingAniCode, BOOLEAN fForce) {
+function EVENT_InitNewSoldierAnim(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16, usStartingAniCode: UINT16, fForce: BOOLEAN): BOOLEAN {
   UINT16 usNewGridNo = 0;
   INT16 sAPCost = 0;
   INT16 sBPCost = 0;
@@ -1681,7 +1681,7 @@ BOOLEAN EVENT_InitNewSoldierAnim(SOLDIERTYPE *pSoldier, UINT16 usNewState, UINT1
   return TRUE;
 }
 
-void InternalRemoveSoldierFromGridNo(SOLDIERTYPE *pSoldier, BOOLEAN fForce) {
+function InternalRemoveSoldierFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, fForce: BOOLEAN): void {
   INT8 bDir;
   INT32 iGridNo;
 
@@ -1712,11 +1712,11 @@ void InternalRemoveSoldierFromGridNo(SOLDIERTYPE *pSoldier, BOOLEAN fForce) {
   }
 }
 
-void RemoveSoldierFromGridNo(SOLDIERTYPE *pSoldier) {
+function RemoveSoldierFromGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalRemoveSoldierFromGridNo(pSoldier, FALSE);
 }
 
-void EVENT_InternalSetSoldierPosition(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos, BOOLEAN fUpdateDest, BOOLEAN fUpdateFinalDest, BOOLEAN fForceRemove) {
+function EVENT_InternalSetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: BOOLEAN, fUpdateFinalDest: BOOLEAN, fForceRemove: BOOLEAN): void {
   INT16 sNewGridNo;
 
   // Not if we're dead!
@@ -1760,23 +1760,23 @@ void EVENT_InternalSetSoldierPosition(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLO
   UpdateAllVehiclePassengersGridNo(pSoldier);
 }
 
-void EVENT_SetSoldierPosition(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos) {
+function EVENT_SetSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, TRUE, TRUE, FALSE);
 }
 
-void EVENT_SetSoldierPositionForceDelete(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos) {
+function EVENT_SetSoldierPositionForceDelete(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, TRUE, TRUE, TRUE);
 }
 
-void EVENT_SetSoldierPositionAndMaybeFinalDest(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos, BOOLEAN fUpdateFinalDest) {
+function EVENT_SetSoldierPositionAndMaybeFinalDest(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateFinalDest: BOOLEAN): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, TRUE, fUpdateFinalDest, FALSE);
 }
 
-void EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos, BOOLEAN fUpdateDest, BOOLEAN fUpdateFinalDest) {
+function EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT, fUpdateDest: BOOLEAN, fUpdateFinalDest: BOOLEAN): void {
   EVENT_InternalSetSoldierPosition(pSoldier, dNewXPos, dNewYPos, fUpdateDest, fUpdateFinalDest, FALSE);
 }
 
-void InternalSetSoldierHeight(SOLDIERTYPE *pSoldier, FLOAT dNewHeight, BOOLEAN fUpdateLevel) {
+function InternalSetSoldierHeight(pSoldier: Pointer<SOLDIERTYPE>, dNewHeight: FLOAT, fUpdateLevel: BOOLEAN): void {
   INT8 bOldLevel = pSoldier->bLevel;
 
   pSoldier->dHeightAdjustment = dNewHeight;
@@ -1813,11 +1813,11 @@ void InternalSetSoldierHeight(SOLDIERTYPE *pSoldier, FLOAT dNewHeight, BOOLEAN f
   }
 }
 
-void SetSoldierHeight(SOLDIERTYPE *pSoldier, FLOAT dNewHeight) {
+function SetSoldierHeight(pSoldier: Pointer<SOLDIERTYPE>, dNewHeight: FLOAT): void {
   InternalSetSoldierHeight(pSoldier, dNewHeight, TRUE);
 }
 
-void SetSoldierGridNo(SOLDIERTYPE *pSoldier, INT16 sNewGridNo, BOOLEAN fForceRemove) {
+function SetSoldierGridNo(pSoldier: Pointer<SOLDIERTYPE>, sNewGridNo: INT16, fForceRemove: BOOLEAN): void {
   BOOLEAN fInWaterValue;
   INT8 bDir;
   INT32 cnt;
@@ -2069,7 +2069,7 @@ void SetSoldierGridNo(SOLDIERTYPE *pSoldier, INT16 sNewGridNo, BOOLEAN fForceRem
   }
 }
 
-void EVENT_FireSoldierWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function EVENT_FireSoldierWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   INT16 sTargetXPos, sTargetYPos;
   BOOLEAN fDoFireRightAway = FALSE;
 
@@ -2178,7 +2178,7 @@ void EVENT_FireSoldierWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
 // gAnimControl[ pSoldier->usAnimState ].ubEndHeight
 //					ChangeSoldierState( pSoldier, SHOOT_RIFLE_STAND, 0 , FALSE );
 
-UINT16 SelectFireAnimation(SOLDIERTYPE *pSoldier, UINT8 ubHeight) {
+function SelectFireAnimation(pSoldier: Pointer<SOLDIERTYPE>, ubHeight: UINT8): UINT16 {
   INT16 sDist;
   UINT16 usItem;
   FLOAT dTargetX;
@@ -2336,7 +2336,7 @@ UINT16 SelectFireAnimation(SOLDIERTYPE *pSoldier, UINT8 ubHeight) {
   return 0;
 }
 
-UINT16 GetMoveStateBasedOnStance(SOLDIERTYPE *pSoldier, UINT8 ubStanceHeight) {
+function GetMoveStateBasedOnStance(pSoldier: Pointer<SOLDIERTYPE>, ubStanceHeight: UINT8): UINT16 {
   // Determine which animation to do...depending on stance and gun in hand...
   switch (ubStanceHeight) {
     case ANIM_STAND:
@@ -2373,7 +2373,7 @@ UINT16 GetMoveStateBasedOnStance(SOLDIERTYPE *pSoldier, UINT8 ubStanceHeight) {
   return 0;
 }
 
-void SelectFallAnimation(SOLDIERTYPE *pSoldier) {
+function SelectFallAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Determine which animation to do...depending on stance and gun in hand...
   switch (gAnimControl[pSoldier->usAnimState].ubEndHeight) {
     case ANIM_STAND:
@@ -2386,7 +2386,7 @@ void SelectFallAnimation(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN SoldierReadyWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetXPos, INT16 sTargetYPos, BOOLEAN fEndReady) {
+function SoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetXPos: INT16, sTargetYPos: INT16, fEndReady: BOOLEAN): BOOLEAN {
   INT16 sFacingDir;
 
   sFacingDir = GetDirectionFromXY(sTargetXPos, sTargetYPos, pSoldier);
@@ -2394,7 +2394,7 @@ BOOLEAN SoldierReadyWeapon(SOLDIERTYPE *pSoldier, INT16 sTargetXPos, INT16 sTarg
   return InternalSoldierReadyWeapon(pSoldier, (INT8)sFacingDir, fEndReady);
 }
 
-BOOLEAN InternalSoldierReadyWeapon(SOLDIERTYPE *pSoldier, UINT8 sFacingDir, BOOLEAN fEndReady) {
+function InternalSoldierReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, sFacingDir: UINT8, fEndReady: BOOLEAN): BOOLEAN {
   UINT16 usAnimState;
   BOOLEAN fReturnVal = FALSE;
 
@@ -2431,7 +2431,7 @@ BOOLEAN InternalSoldierReadyWeapon(SOLDIERTYPE *pSoldier, UINT8 sFacingDir, BOOL
   return fReturnVal;
 }
 
-UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady) {
+function PickSoldierReadyAnimation(pSoldier: Pointer<SOLDIERTYPE>, fEndReady: BOOLEAN): UINT16 {
   // Invalid animation if nothing in our hands
   if (pSoldier->inv[HANDPOS].usItem == NOTHING) {
     return INVALID_ANIMATION;
@@ -2537,7 +2537,7 @@ UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady) {
 }
 
 // ATE: THIS FUNCTION IS USED FOR ALL SOLDIER TAKE DAMAGE FUNCTIONS!
-void EVENT_SoldierGotHit(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, INT16 sBreathLoss, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation, INT16 sSubsequent, INT16 sLocationGrid) {
+function EVENT_SoldierGotHit(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8, sSubsequent: INT16, sLocationGrid: INT16): void {
   UINT8 ubCombinedLoss, ubVolume, ubReason;
   SOLDIERTYPE *pNewSoldier;
 
@@ -2902,7 +2902,7 @@ void EVENT_SoldierGotHit(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDam
   }
 }
 
-UINT8 CalcScreamVolume(SOLDIERTYPE *pSoldier, UINT8 ubCombinedLoss) {
+function CalcScreamVolume(pSoldier: Pointer<SOLDIERTYPE>, ubCombinedLoss: UINT8): UINT8 {
   // NB explosions are so loud they should drown out screams
   UINT8 ubVolume;
 
@@ -2932,7 +2932,7 @@ UINT8 CalcScreamVolume(SOLDIERTYPE *pSoldier, UINT8 ubCombinedLoss) {
   return ubVolume;
 }
 
-void DoGenericHit(SOLDIERTYPE *pSoldier, UINT8 ubSpecial, INT16 bDirection) {
+function DoGenericHit(pSoldier: Pointer<SOLDIERTYPE>, ubSpecial: UINT8, bDirection: INT16): void {
   // Based on stance, select generic hit animation
   switch (gAnimControl[pSoldier->usAnimState].ubEndHeight) {
     case ANIM_STAND:
@@ -2966,7 +2966,7 @@ void DoGenericHit(SOLDIERTYPE *pSoldier, UINT8 ubSpecial, INT16 bDirection) {
   }
 }
 
-void SoldierGotHitGunFire(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation) {
+function SoldierGotHitGunFire(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   UINT16 usNewGridNo;
   BOOLEAN fBlownAway = FALSE;
   BOOLEAN fHeadHit = FALSE;
@@ -3053,7 +3053,7 @@ void SoldierGotHitGunFire(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDa
   DoGenericHit(pSoldier, ubSpecial, bDirection);
 }
 
-void SoldierGotHitExplosion(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation) {
+function SoldierGotHitExplosion(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   INT16 sNewGridNo;
 
   // IF HERE AND GUY IS DEAD, RETURN!
@@ -3117,7 +3117,7 @@ void SoldierGotHitExplosion(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 s
   }
 }
 
-void SoldierGotHitBlade(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation) {
+function SoldierGotHitBlade(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   // IF HERE AND GUY IS DEAD, RETURN!
   if (pSoldier->uiStatusFlags & SOLDIER_DEAD) {
     return;
@@ -3145,7 +3145,7 @@ void SoldierGotHitBlade(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDama
   }
 }
 
-void SoldierGotHitPunch(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation) {
+function SoldierGotHitPunch(pSoldier: Pointer<SOLDIERTYPE>, usWeaponIndex: UINT16, sDamage: INT16, bDirection: UINT16, sRange: UINT16, ubAttackerID: UINT8, ubSpecial: UINT8, ubHitLocation: UINT8): void {
   // IF HERE AND GUY IS DEAD, RETURN!
   if (pSoldier->uiStatusFlags & SOLDIER_DEAD) {
     return;
@@ -3172,7 +3172,7 @@ void SoldierGotHitPunch(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDama
   }
 }
 
-BOOLEAN EVENT_InternalGetNewSoldierPath(SOLDIERTYPE *pSoldier, UINT16 sDestGridNo, UINT16 usMovementAnim, BOOLEAN fFromUI, BOOLEAN fForceRestartAnim) {
+function EVENT_InternalGetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16, fFromUI: BOOLEAN, fForceRestartAnim: BOOLEAN): BOOLEAN {
   INT32 iDest;
   INT16 sNewGridNo;
   BOOLEAN fContinue;
@@ -3325,13 +3325,13 @@ BOOLEAN EVENT_InternalGetNewSoldierPath(SOLDIERTYPE *pSoldier, UINT16 sDestGridN
   return FALSE;
 }
 
-void EVENT_GetNewSoldierPath(SOLDIERTYPE *pSoldier, UINT16 sDestGridNo, UINT16 usMovementAnim) {
+function EVENT_GetNewSoldierPath(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
   // ATE: Default restart of animation to TRUE
   EVENT_InternalGetNewSoldierPath(pSoldier, sDestGridNo, usMovementAnim, FALSE, TRUE);
 }
 
 // Change our state based on stance, to stop!
-void StopSoldier(SOLDIERTYPE *pSoldier) {
+function StopSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   ReceivingSoldierCancelServices(pSoldier);
   GivingSoldierCancelServices(pSoldier);
 
@@ -3344,7 +3344,7 @@ void StopSoldier(SOLDIERTYPE *pSoldier) {
   pSoldier->sFinalDestination = pSoldier->sGridNo;
 }
 
-void SoldierGotoStationaryStance(SOLDIERTYPE *pSoldier) {
+function SoldierGotoStationaryStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   // ATE: This is to turn off fast movement, that us used to change movement mode
   // for ui display on stance changes....
   if (pSoldier->bTeam == gbPlayerNum) {
@@ -3395,7 +3395,7 @@ void SoldierGotoStationaryStance(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void ChangeSoldierStance(SOLDIERTYPE *pSoldier, UINT8 ubDesiredStance) {
+function ChangeSoldierStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UINT8): void {
   UINT16 usNewState;
 
   // Check if they are the same!
@@ -3426,7 +3426,7 @@ void ChangeSoldierStance(SOLDIERTYPE *pSoldier, UINT8 ubDesiredStance) {
   }
 }
 
-void EVENT_InternalSetSoldierDestination(SOLDIERTYPE *pSoldier, UINT16 usNewDirection, BOOLEAN fFromMove, UINT16 usAnimState) {
+function EVENT_InternalSetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fFromMove: BOOLEAN, usAnimState: UINT16): void {
   UINT16 usNewGridNo;
   INT16 sXPos, sYPos;
 
@@ -3459,12 +3459,12 @@ void EVENT_InternalSetSoldierDestination(SOLDIERTYPE *pSoldier, UINT16 usNewDire
   }
 }
 
-void EVENT_SetSoldierDestination(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) {
+function EVENT_SetSoldierDestination(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   EVENT_InternalSetSoldierDestination(pSoldier, usNewDirection, FALSE, pSoldier->usAnimState);
 }
 
 // function to determine which direction a creature can turn in
-INT8 MultiTiledTurnDirection(SOLDIERTYPE *pSoldier, INT8 bStartDirection, INT8 bDesiredDirection) {
+function MultiTiledTurnDirection(pSoldier: Pointer<SOLDIERTYPE>, bStartDirection: INT8, bDesiredDirection: INT8): INT8 {
   INT8 bTurningIncrement;
   INT8 bCurrentDirection;
   INT8 bLoop;
@@ -3527,7 +3527,7 @@ INT8 MultiTiledTurnDirection(SOLDIERTYPE *pSoldier, INT8 bStartDirection, INT8 b
   return bTurningIncrement;
 }
 
-void EVENT_InternalSetSoldierDesiredDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection, BOOLEAN fInitalMove, UINT16 usAnimState) {
+function EVENT_InternalSetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16, fInitalMove: BOOLEAN, usAnimState: UINT16): void {
   // if ( usAnimState == WALK_BACKWARDS )
   if (pSoldier->bReverse && usAnimState != SIDE_STEP) {
     // OK, check if we are going to go in the exact opposite than our facing....
@@ -3612,11 +3612,11 @@ void EVENT_InternalSetSoldierDesiredDirection(SOLDIERTYPE *pSoldier, UINT16 usNe
   }
 }
 
-void EVENT_SetSoldierDesiredDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) {
+function EVENT_SetSoldierDesiredDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   EVENT_InternalSetSoldierDesiredDirection(pSoldier, usNewDirection, FALSE, pSoldier->usAnimState);
 }
 
-void EVENT_SetSoldierDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) {
+function EVENT_SetSoldierDirection(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   // Remove old location data
   HandleAnimationProfile(pSoldier, pSoldier->usAnimState, TRUE);
 
@@ -3648,7 +3648,7 @@ void EVENT_SetSoldierDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) {
   SetSoldierLocatorOffsets(pSoldier);
 }
 
-void EVENT_BeginMercTurn(SOLDIERTYPE *pSoldier, BOOLEAN fFromRealTime, INT32 iRealTimeCounter) {
+function EVENT_BeginMercTurn(pSoldier: Pointer<SOLDIERTYPE>, fFromRealTime: BOOLEAN, iRealTimeCounter: INT32): void {
   // NB realtimecounter is not used, always passed in as 0 now!
 
   INT32 iBlood;
@@ -3844,7 +3844,7 @@ UINT8 gDirectionFrom8to2[] = {
   0,
 };
 
-BOOLEAN ConvertAniCodeToAniFrame(SOLDIERTYPE *pSoldier, UINT16 usAniFrame) {
+function ConvertAniCodeToAniFrame(pSoldier: Pointer<SOLDIERTYPE>, usAniFrame: UINT16): BOOLEAN {
   UINT16 usAnimSurface;
   UINT8 ubTempDir;
   // Given ani code, adjust for facing direction
@@ -3905,7 +3905,7 @@ BOOLEAN ConvertAniCodeToAniFrame(SOLDIERTYPE *pSoldier, UINT16 usAniFrame) {
   return TRUE;
 }
 
-void TurnSoldier(SOLDIERTYPE *pSoldier) {
+function TurnSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sDirection;
   BOOLEAN fDoDirectionChange = TRUE;
   INT32 cnt;
@@ -4210,7 +4210,7 @@ UINT8 gOrangeGlowG[] = {
   180,
 };
 
-BOOLEAN CreateSoldierPalettes(SOLDIERTYPE *pSoldier) {
+function CreateSoldierPalettes(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT16 usAnimSurface, usPaletteAnimSurface;
   CHAR8 zColFilename[100];
   INT32 iWhich;
@@ -4338,7 +4338,7 @@ BOOLEAN CreateSoldierPalettes(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-void AdjustAniSpeed(SOLDIERTYPE *pSoldier) {
+function AdjustAniSpeed(pSoldier: Pointer<SOLDIERTYPE>): void {
   if ((gTacticalStatus.uiFlags & SLOW_ANIMATION)) {
     if (gTacticalStatus.bRealtimeSpeed == -1) {
       pSoldier->sAniDelay = 10000;
@@ -4350,7 +4350,7 @@ void AdjustAniSpeed(SOLDIERTYPE *pSoldier) {
   RESETTIMECOUNTER(pSoldier->UpdateCounter, pSoldier->sAniDelay);
 }
 
-void CalculateSoldierAniSpeed(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pStatsSoldier) {
+function CalculateSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>, pStatsSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 uiTerrainDelay;
   UINT32 uiSpeed = 0;
 
@@ -4477,7 +4477,7 @@ void CalculateSoldierAniSpeed(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pStatsSoldier)
   }
 }
 
-void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier) {
+function SetSoldierAniSpeed(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pStatsSoldier;
 
   // ATE: If we are an enemy and are not visible......
@@ -4512,7 +4512,7 @@ void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier) {
 ///////////////////////////////////////////////////////
 // PALETTE REPLACEMENT FUNCTIONS
 ///////////////////////////////////////////////////////
-BOOLEAN LoadPaletteData() {
+function LoadPaletteData(): BOOLEAN {
   HWFILE hFile;
   UINT32 cnt, cnt2;
 
@@ -4594,7 +4594,7 @@ BOOLEAN LoadPaletteData() {
   return TRUE;
 }
 
-BOOLEAN SetPaletteReplacement(SGPPaletteEntry *p8BPPPalette, PaletteRepID aPalRep) {
+function SetPaletteReplacement(p8BPPPalette: Pointer<SGPPaletteEntry>, aPalRep: PaletteRepID): BOOLEAN {
   UINT32 cnt2;
   UINT8 ubType;
   UINT8 ubPalIndex;
@@ -4613,7 +4613,7 @@ BOOLEAN SetPaletteReplacement(SGPPaletteEntry *p8BPPPalette, PaletteRepID aPalRe
   return TRUE;
 }
 
-BOOLEAN DeletePaletteData() {
+function DeletePaletteData(): BOOLEAN {
   UINT32 cnt;
 
   // Free!
@@ -4652,7 +4652,7 @@ BOOLEAN DeletePaletteData() {
   return TRUE;
 }
 
-BOOLEAN GetPaletteRepIndexFromID(PaletteRepID aPalRep, UINT8 *pubPalIndex) {
+function GetPaletteRepIndexFromID(aPalRep: PaletteRepID, pubPalIndex: Pointer<UINT8>): BOOLEAN {
   UINT32 cnt;
 
   // Check if type exists
@@ -4667,7 +4667,7 @@ BOOLEAN GetPaletteRepIndexFromID(PaletteRepID aPalRep, UINT8 *pubPalIndex) {
   return FALSE;
 }
 
-UINT16 GetNewSoldierStateFromNewStance(SOLDIERTYPE *pSoldier, UINT8 ubDesiredStance) {
+function GetNewSoldierStateFromNewStance(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredStance: UINT8): UINT16 {
   UINT16 usNewState;
   INT8 bCurrentHeight;
 
@@ -4707,7 +4707,7 @@ UINT16 GetNewSoldierStateFromNewStance(SOLDIERTYPE *pSoldier, UINT8 ubDesiredSta
   return usNewState;
 }
 
-void MoveMercFacingDirection(SOLDIERTYPE *pSoldier, BOOLEAN fReverse, FLOAT dMovementDist) {
+function MoveMercFacingDirection(pSoldier: Pointer<SOLDIERTYPE>, fReverse: BOOLEAN, dMovementDist: FLOAT): void {
   FLOAT dAngle = (FLOAT)0;
 
   // Determine which direction we are in
@@ -4753,7 +4753,7 @@ void MoveMercFacingDirection(SOLDIERTYPE *pSoldier, BOOLEAN fReverse, FLOAT dMov
   MoveMerc(pSoldier, dMovementDist, dAngle, FALSE);
 }
 
-void BeginSoldierClimbUpRoof(SOLDIERTYPE *pSoldier) {
+function BeginSoldierClimbUpRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bNewDirection;
 
   if (FindHeigherLevel(pSoldier, pSoldier->sGridNo, pSoldier->bDirection, &bNewDirection) && (pSoldier->bLevel == 0)) {
@@ -4775,7 +4775,7 @@ void BeginSoldierClimbUpRoof(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void BeginSoldierClimbFence(SOLDIERTYPE *pSoldier) {
+function BeginSoldierClimbFence(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bDirection;
 
   if (FindFenceJumpDirection(pSoldier, pSoldier->sGridNo, pSoldier->bDirection, &bDirection)) {
@@ -4789,7 +4789,7 @@ void BeginSoldierClimbFence(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT32 SleepDartSuccumbChance(SOLDIERTYPE *pSoldier) {
+function SleepDartSuccumbChance(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   UINT32 uiChance;
   INT8 bEffectiveStrength;
 
@@ -4812,7 +4812,7 @@ UINT32 SleepDartSuccumbChance(SOLDIERTYPE *pSoldier) {
   return uiChance;
 }
 
-void BeginSoldierGetup(SOLDIERTYPE *pSoldier) {
+function BeginSoldierGetup(pSoldier: Pointer<SOLDIERTYPE>): void {
   // RETURN IF WE ARE BEING SERVICED
   if (pSoldier->ubServiceCount > 0) {
     return;
@@ -4883,7 +4883,7 @@ void BeginSoldierGetup(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleTakeDamageDeath(SOLDIERTYPE *pSoldier, UINT8 bOldLife, UINT8 ubReason) {
+function HandleTakeDamageDeath(pSoldier: Pointer<SOLDIERTYPE>, bOldLife: UINT8, ubReason: UINT8): void {
   switch (ubReason) {
     case TAKE_DAMAGE_BLOODLOSS:
     case TAKE_DAMAGE_ELECTRICITY:
@@ -4943,7 +4943,7 @@ void HandleTakeDamageDeath(SOLDIERTYPE *pSoldier, UINT8 bOldLife, UINT8 ubReason
   }
 }
 
-UINT8 SoldierTakeDamage(SOLDIERTYPE *pSoldier, INT8 bHeight, INT16 sLifeDeduct, INT16 sBreathLoss, UINT8 ubReason, UINT8 ubAttacker, INT16 sSourceGrid, INT16 sSubsequent, BOOLEAN fShowDamage) {
+function SoldierTakeDamage(pSoldier: Pointer<SOLDIERTYPE>, bHeight: INT8, sLifeDeduct: INT16, sBreathLoss: INT16, ubReason: UINT8, ubAttacker: UINT8, sSourceGrid: INT16, sSubsequent: INT16, fShowDamage: BOOLEAN): UINT8 {
   INT8 bOldLife;
   UINT8 ubCombinedLoss;
   INT8 bBandage;
@@ -5293,7 +5293,7 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *pSoldier, INT8 bHeight, INT16 sLifeDeduct, 
   return ubCombinedLoss;
 }
 
-BOOLEAN InternalDoMercBattleSound(SOLDIERTYPE *pSoldier, UINT8 ubBattleSoundID, INT8 bSpecialCode) {
+function InternalDoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8, bSpecialCode: INT8): BOOLEAN {
   SGPFILENAME zFilename;
   SOUNDPARMS spParms;
   UINT8 ubSoundID;
@@ -5589,7 +5589,7 @@ BOOLEAN InternalDoMercBattleSound(SOLDIERTYPE *pSoldier, UINT8 ubBattleSoundID, 
   }
 }
 
-BOOLEAN DoMercBattleSound(SOLDIERTYPE *pSoldier, UINT8 ubBattleSoundID) {
+function DoMercBattleSound(pSoldier: Pointer<SOLDIERTYPE>, ubBattleSoundID: UINT8): BOOLEAN {
   // We WANT to play some RIGHT AWAY.....
   if (gBattleSndsData[ubBattleSoundID].fStopDialogue == 1 || (pSoldier->ubProfile == NO_PROFILE) || InOverheadMap()) {
     return InternalDoMercBattleSound(pSoldier, ubBattleSoundID, 0);
@@ -5606,7 +5606,7 @@ BOOLEAN DoMercBattleSound(SOLDIERTYPE *pSoldier, UINT8 ubBattleSoundID) {
   return TRUE;
 }
 
-BOOLEAN PreloadSoldierBattleSounds(SOLDIERTYPE *pSoldier, BOOLEAN fRemove) {
+function PreloadSoldierBattleSounds(pSoldier: Pointer<SOLDIERTYPE>, fRemove: BOOLEAN): BOOLEAN {
   UINT32 cnt;
 
   CHECKF(pSoldier->bActive != FALSE);
@@ -5635,7 +5635,7 @@ BOOLEAN PreloadSoldierBattleSounds(SOLDIERTYPE *pSoldier, BOOLEAN fRemove) {
   return TRUE;
 }
 
-BOOLEAN CheckSoldierHitRoof(SOLDIERTYPE *pSoldier) {
+function CheckSoldierHitRoof(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Check if we are near a lower level
   INT8 bNewDirection;
   BOOLEAN fReturnVal = FALSE;
@@ -5702,7 +5702,7 @@ BOOLEAN CheckSoldierHitRoof(SOLDIERTYPE *pSoldier) {
   return fReturnVal;
 }
 
-void BeginSoldierClimbDownRoof(SOLDIERTYPE *pSoldier) {
+function BeginSoldierClimbDownRoof(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT8 bNewDirection;
 
   if (FindLowerLevel(pSoldier, pSoldier->sGridNo, pSoldier->bDirection, &bNewDirection) && (pSoldier->bLevel > 0)) {
@@ -5725,7 +5725,7 @@ void BeginSoldierClimbDownRoof(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void MoveMerc(SOLDIERTYPE *pSoldier, FLOAT dMovementChange, FLOAT dAngle, BOOLEAN fCheckRange) {
+function MoveMerc(pSoldier: Pointer<SOLDIERTYPE>, dMovementChange: FLOAT, dAngle: FLOAT, fCheckRange: BOOLEAN): void {
   INT16 dDegAngle;
   FLOAT dDeltaPos;
   FLOAT dXPos, dYPos;
@@ -5830,7 +5830,7 @@ void MoveMerc(SOLDIERTYPE *pSoldier, FLOAT dMovementChange, FLOAT dAngle, BOOLEA
   //	DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("X: %f Y: %f", dXPos, dYPos ) );
 }
 
-INT16 GetDirectionFromGridNo(INT16 sGridNo, SOLDIERTYPE *pSoldier) {
+function GetDirectionFromGridNo(sGridNo: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   INT16 sXPos, sYPos;
 
   ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
@@ -5838,7 +5838,7 @@ INT16 GetDirectionFromGridNo(INT16 sGridNo, SOLDIERTYPE *pSoldier) {
   return GetDirectionFromXY(sXPos, sYPos, pSoldier);
 }
 
-INT16 GetDirectionToGridNoFromGridNo(INT16 sGridNoDest, INT16 sGridNoSrc) {
+function GetDirectionToGridNoFromGridNo(sGridNoDest: INT16, sGridNoSrc: INT16): INT16 {
   INT16 sXPos2, sYPos2;
   INT16 sXPos, sYPos;
 
@@ -5848,7 +5848,7 @@ INT16 GetDirectionToGridNoFromGridNo(INT16 sGridNoDest, INT16 sGridNoSrc) {
   return atan8(sXPos2, sYPos2, sXPos, sYPos);
 }
 
-INT16 GetDirectionFromXY(INT16 sXPos, INT16 sYPos, SOLDIERTYPE *pSoldier) {
+function GetDirectionFromXY(sXPos: INT16, sYPos: INT16, pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   INT16 sXPos2, sYPos2;
 
   ConvertGridNoToXY(pSoldier->sGridNo, &sXPos2, &sYPos2);
@@ -5857,7 +5857,7 @@ INT16 GetDirectionFromXY(INT16 sXPos, INT16 sYPos, SOLDIERTYPE *pSoldier) {
 }
 
 //#if 0
-UINT8 atan8(INT16 sXPos, INT16 sYPos, INT16 sXPos2, INT16 sYPos2) {
+function atan8(sXPos: INT16, sYPos: INT16, sXPos2: INT16, sYPos2: INT16): UINT8 {
   DOUBLE test_x = sXPos2 - sXPos;
   DOUBLE test_y = sYPos2 - sYPos;
   UINT8 mFacing = WEST;
@@ -5911,7 +5911,7 @@ UINT8 atan8(INT16 sXPos, INT16 sYPos, INT16 sXPos2, INT16 sYPos2) {
   return mFacing;
 }
 
-UINT8 atan8FromAngle(DOUBLE angle) {
+function atan8FromAngle(angle: DOUBLE): UINT8 {
   UINT8 mFacing = WEST;
 
   if (angle > PI) {
@@ -5959,7 +5959,7 @@ UINT8 atan8FromAngle(DOUBLE angle) {
   return mFacing;
 }
 
-void CheckForFullStructures(SOLDIERTYPE *pSoldier) {
+function CheckForFullStructures(pSoldier: Pointer<SOLDIERTYPE>): void {
   // This function checks to see if we are near a specific structure type which requires us to blit a
   // small obscuring peice
   INT16 sGridNo;
@@ -5985,7 +5985,7 @@ void CheckForFullStructures(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN CheckForFullStruct(INT16 sGridNo, UINT16 *pusIndex) {
+function CheckForFullStruct(sGridNo: INT16, pusIndex: Pointer<UINT16>): BOOLEAN {
   LEVELNODE *pStruct = NULL;
   LEVELNODE *pOldStruct = NULL;
   UINT32 fTileFlags;
@@ -6024,7 +6024,7 @@ BOOLEAN CheckForFullStruct(INT16 sGridNo, UINT16 *pusIndex) {
   return FALSE;
 }
 
-BOOLEAN FullStructAlone(INT16 sGridNo, UINT8 ubRadius) {
+function FullStructAlone(sGridNo: INT16, ubRadius: UINT8): BOOLEAN {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -6056,7 +6056,7 @@ BOOLEAN FullStructAlone(INT16 sGridNo, UINT8 ubRadius) {
   return TRUE;
 }
 
-void AdjustForFastTurnAnimation(SOLDIERTYPE *pSoldier) {
+function AdjustForFastTurnAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // CHECK FOR FASTTURN ANIMATIONS
   // ATE: Mod: Only fastturn for OUR guys!
   if (gAnimControl[pSoldier->usAnimState].uiFlags & ANIM_FASTTURN && pSoldier->bTeam == gbPlayerNum && !(pSoldier->uiStatusFlags & SOLDIER_TURNINGFROMHIT)) {
@@ -6069,7 +6069,7 @@ void AdjustForFastTurnAnimation(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN IsActionInterruptable(SOLDIERTYPE *pSoldier) {
+function IsActionInterruptable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (gAnimControl[pSoldier->usAnimState].uiFlags & ANIM_NONINTERRUPT) {
     return FALSE;
   }
@@ -6077,7 +6077,7 @@ BOOLEAN IsActionInterruptable(SOLDIERTYPE *pSoldier) {
 }
 
 // WRAPPER FUNCTIONS FOR SOLDIER EVENTS
-void SendSoldierPositionEvent(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos) {
+function SendSoldierPositionEvent(pSoldier: Pointer<SOLDIERTYPE>, dNewXPos: FLOAT, dNewYPos: FLOAT): void {
   // Sent event for position update
   EV_S_SETPOSITION SSetPosition;
 
@@ -6090,7 +6090,7 @@ void SendSoldierPositionEvent(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewY
   AddGameEvent(S_SETPOSITION, 0, &SSetPosition);
 }
 
-void SendSoldierDestinationEvent(SOLDIERTYPE *pSoldier, UINT16 usNewDestination) {
+function SendSoldierDestinationEvent(pSoldier: Pointer<SOLDIERTYPE>, usNewDestination: UINT16): void {
   // Sent event for position update
   EV_S_CHANGEDEST SChangeDest;
 
@@ -6101,7 +6101,7 @@ void SendSoldierDestinationEvent(SOLDIERTYPE *pSoldier, UINT16 usNewDestination)
   AddGameEvent(S_CHANGEDEST, 0, &SChangeDest);
 }
 
-void SendSoldierSetDirectionEvent(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) {
+function SendSoldierSetDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usNewDirection: UINT16): void {
   // Sent event for position update
   EV_S_SETDIRECTION SSetDirection;
 
@@ -6112,7 +6112,7 @@ void SendSoldierSetDirectionEvent(SOLDIERTYPE *pSoldier, UINT16 usNewDirection) 
   AddGameEvent(S_SETDIRECTION, 0, &SSetDirection);
 }
 
-void SendSoldierSetDesiredDirectionEvent(SOLDIERTYPE *pSoldier, UINT16 usDesiredDirection) {
+function SendSoldierSetDesiredDirectionEvent(pSoldier: Pointer<SOLDIERTYPE>, usDesiredDirection: UINT16): void {
   // Sent event for position update
   EV_S_SETDESIREDDIRECTION SSetDesiredDirection;
 
@@ -6123,7 +6123,7 @@ void SendSoldierSetDesiredDirectionEvent(SOLDIERTYPE *pSoldier, UINT16 usDesired
   AddGameEvent(S_SETDESIREDDIRECTION, 0, &SSetDesiredDirection);
 }
 
-void SendGetNewSoldierPathEvent(SOLDIERTYPE *pSoldier, UINT16 sDestGridNo, UINT16 usMovementAnim) {
+function SendGetNewSoldierPathEvent(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: UINT16, usMovementAnim: UINT16): void {
   EV_S_GETNEWPATH SGetNewPath;
 
   SGetNewPath.usSoldierID = pSoldier->ubID;
@@ -6134,11 +6134,11 @@ void SendGetNewSoldierPathEvent(SOLDIERTYPE *pSoldier, UINT16 sDestGridNo, UINT1
   AddGameEvent(S_GETNEWPATH, 0, &SGetNewPath);
 }
 
-void SendChangeSoldierStanceEvent(SOLDIERTYPE *pSoldier, UINT8 ubNewStance) {
+function SendChangeSoldierStanceEvent(pSoldier: Pointer<SOLDIERTYPE>, ubNewStance: UINT8): void {
   ChangeSoldierStance(pSoldier, ubNewStance);
 }
 
-void SendBeginFireWeaponEvent(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
+function SendBeginFireWeaponEvent(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
   EV_S_BEGINFIREWEAPON SBeginFireWeapon;
 
   SBeginFireWeapon.usSoldierID = pSoldier->ubID;
@@ -6151,7 +6151,7 @@ void SendBeginFireWeaponEvent(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo) {
 }
 
 // This function just encapolates the check for turnbased and having an attacker in the first place
-void ReleaseSoldiersAttacker(SOLDIERTYPE *pSoldier) {
+function ReleaseSoldiersAttacker(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 cnt;
   UINT8 ubNumToFree;
 
@@ -6188,7 +6188,7 @@ void ReleaseSoldiersAttacker(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN MercInWater(SOLDIERTYPE *pSoldier) {
+function MercInWater(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Our water texture , for now is of a given type
   if (pSoldier->bOverTerrainType == LOW_WATER || pSoldier->bOverTerrainType == MED_WATER || pSoldier->bOverTerrainType == DEEP_WATER) {
     return TRUE;
@@ -6197,7 +6197,7 @@ BOOLEAN MercInWater(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void RevivePlayerTeam() {
+function RevivePlayerTeam(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
 
@@ -6210,7 +6210,7 @@ void RevivePlayerTeam() {
   }
 }
 
-void ReviveSoldier(SOLDIERTYPE *pSoldier) {
+function ReviveSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sX, sY;
 
   if (pSoldier->bLife < OKLIFE && pSoldier->bActive) {
@@ -6242,7 +6242,7 @@ void ReviveSoldier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleAnimationProfile(SOLDIERTYPE *pSoldier, UINT16 usAnimState, BOOLEAN fRemove) {
+function HandleAnimationProfile(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, fRemove: BOOLEAN): void {
   //#if 0
   ANIM_PROF *pProfile;
   ANIM_PROF_DIR *pProfileDir;
@@ -6296,7 +6296,7 @@ void HandleAnimationProfile(SOLDIERTYPE *pSoldier, UINT16 usAnimState, BOOLEAN f
   //#endif
 }
 
-LEVELNODE *GetAnimProfileFlags(UINT16 sGridNo, UINT16 *usFlags, SOLDIERTYPE **ppTargSoldier, LEVELNODE *pGivenNode) {
+function GetAnimProfileFlags(sGridNo: UINT16, usFlags: Pointer<UINT16>, ppTargSoldier: Pointer<Pointer<SOLDIERTYPE>>, pGivenNode: Pointer<LEVELNODE>): Pointer<LEVELNODE> {
   LEVELNODE *pNode;
 
   (*ppTargSoldier) = NULL;
@@ -6322,7 +6322,7 @@ LEVELNODE *GetAnimProfileFlags(UINT16 sGridNo, UINT16 *usFlags, SOLDIERTYPE **pp
   return pNode;
 }
 
-BOOLEAN GetProfileFlagsFromGridno(SOLDIERTYPE *pSoldier, UINT16 usAnimState, UINT16 sTestGridNo, UINT16 *usFlags) {
+function GetProfileFlagsFromGridno(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sTestGridNo: UINT16, usFlags: Pointer<UINT16>): BOOLEAN {
   ANIM_PROF *pProfile;
   ANIM_PROF_DIR *pProfileDir;
   ANIM_PROF_TILE *pProfileTile;
@@ -6367,7 +6367,7 @@ BOOLEAN GetProfileFlagsFromGridno(SOLDIERTYPE *pSoldier, UINT16 usAnimState, UIN
   return FALSE;
 }
 
-void EVENT_SoldierBeginGiveItem(SOLDIERTYPE *pSoldier) {
+function EVENT_SoldierBeginGiveItem(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pTSoldier;
 
   if (VerifyGiveItem(pSoldier, &pTSoldier)) {
@@ -6384,7 +6384,7 @@ void EVENT_SoldierBeginGiveItem(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void EVENT_SoldierBeginBladeAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginBladeAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   SOLDIERTYPE *pTSoldier;
   // UINT32 uiMercFlags;
   UINT16 usSoldierIndex;
@@ -6514,7 +6514,7 @@ void EVENT_SoldierBeginBladeAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 u
   pSoldier->ubTargetID = WhoIsThere2(sGridNo, pSoldier->bTargetLevel);
 }
 
-void EVENT_SoldierBeginPunchAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginPunchAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   BOOLEAN fMartialArtist = FALSE;
   SOLDIERTYPE *pTSoldier;
   // UINT32 uiMercFlags;
@@ -6620,7 +6620,7 @@ void EVENT_SoldierBeginPunchAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 u
   pSoldier->ubTargetID = WhoIsThere2(sGridNo, pSoldier->bTargetLevel);
 }
 
-void EVENT_SoldierBeginKnifeThrowAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginKnifeThrowAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   // Increment the number of people busy doing stuff because of an attack
   // if ( (gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) )
   //{
@@ -6644,7 +6644,7 @@ void EVENT_SoldierBeginKnifeThrowAttack(SOLDIERTYPE *pSoldier, INT16 sGridNo, UI
   pSoldier->ubTargetID = WhoIsThere2(sGridNo, pSoldier->bTargetLevel);
 }
 
-void EVENT_SoldierBeginDropBomb(SOLDIERTYPE *pSoldier) {
+function EVENT_SoldierBeginDropBomb(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Increment the number of people busy doing stuff because of an attack
   switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -6661,7 +6661,7 @@ void EVENT_SoldierBeginDropBomb(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void EVENT_SoldierBeginUseDetonator(SOLDIERTYPE *pSoldier) {
+function EVENT_SoldierBeginUseDetonator(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Increment the number of people busy doing stuff because of an attack
   switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -6677,7 +6677,7 @@ void EVENT_SoldierBeginUseDetonator(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void EVENT_SoldierBeginFirstAid(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginFirstAid(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   SOLDIERTYPE *pTSoldier;
   // UINT32 uiMercFlags;
   UINT16 usSoldierIndex;
@@ -6747,7 +6747,7 @@ void EVENT_SoldierBeginFirstAid(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDi
   }
 }
 
-void EVENT_SoldierEnterVehicle(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierEnterVehicle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   SOLDIERTYPE *pTSoldier;
   UINT32 uiMercFlags;
   UINT16 usSoldierIndex;
@@ -6762,7 +6762,7 @@ void EVENT_SoldierEnterVehicle(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDir
   UnSetUIBusy(pSoldier->ubID);
 }
 
-UINT32 SoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, INT16 sKitPts, INT16 sStatus) {
+function SoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
   UINT32 uiDressSkill, uiPossible, uiActual, uiMedcost, uiDeficiency, uiAvailAPs, uiUsedAPs;
   UINT8 ubBelowOKlife, ubPtsLeft;
   BOOLEAN fRanOut = FALSE;
@@ -6937,7 +6937,7 @@ UINT32 SoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, INT16 sKit
   return uiMedcost;
 }
 
-void InternalReceivingSoldierCancelServices(SOLDIERTYPE *pSoldier, BOOLEAN fPlayEndAnim) {
+function InternalReceivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, fPlayEndAnim: BOOLEAN): void {
   SOLDIERTYPE *pTSoldier;
   INT32 cnt;
 
@@ -6967,11 +6967,11 @@ void InternalReceivingSoldierCancelServices(SOLDIERTYPE *pSoldier, BOOLEAN fPlay
   }
 }
 
-void ReceivingSoldierCancelServices(SOLDIERTYPE *pSoldier) {
+function ReceivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalReceivingSoldierCancelServices(pSoldier, TRUE);
 }
 
-void InternalGivingSoldierCancelServices(SOLDIERTYPE *pSoldier, BOOLEAN fPlayEndAnim) {
+function InternalGivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>, fPlayEndAnim: BOOLEAN): void {
   SOLDIERTYPE *pTSoldier;
 
   // GET TARGET SOLDIER
@@ -6996,11 +6996,11 @@ void InternalGivingSoldierCancelServices(SOLDIERTYPE *pSoldier, BOOLEAN fPlayEnd
   }
 }
 
-void GivingSoldierCancelServices(SOLDIERTYPE *pSoldier) {
+function GivingSoldierCancelServices(pSoldier: Pointer<SOLDIERTYPE>): void {
   InternalGivingSoldierCancelServices(pSoldier, TRUE);
 }
 
-void HaultSoldierFromSighting(SOLDIERTYPE *pSoldier, BOOLEAN fFromSightingEnemy) {
+function HaultSoldierFromSighting(pSoldier: Pointer<SOLDIERTYPE>, fFromSightingEnemy: BOOLEAN): void {
   // SEND HUALT EVENT!
   // EV_S_STOP_MERC				SStopMerc;
 
@@ -7083,7 +7083,7 @@ void HaultSoldierFromSighting(SOLDIERTYPE *pSoldier, BOOLEAN fFromSightingEnemy)
 }
 
 // HUALT EVENT IS USED TO STOP A MERC - NETWORKING SHOULD CHECK / ADJUST TO GRIDNO?
-void EVENT_StopMerc(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bDirection) {
+function EVENT_StopMerc(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirection: INT8): void {
   INT16 sX, sY;
 
   // MOVE GUY TO GRIDNO--- SHOULD BE THE SAME UNLESS IN MULTIPLAYER
@@ -7139,7 +7139,7 @@ void EVENT_StopMerc(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bDirection) {
   UnMarkMovementReserved(pSoldier);
 }
 
-void ReLoadSoldierAnimationDueToHandItemChange(SOLDIERTYPE *pSoldier, UINT16 usOldItem, UINT16 usNewItem) {
+function ReLoadSoldierAnimationDueToHandItemChange(pSoldier: Pointer<SOLDIERTYPE>, usOldItem: UINT16, usNewItem: UINT16): void {
   // DON'T continue aiming!
   // GOTO STANCE
   // CHECK FOR AIMING ANIMATIONS
@@ -7201,7 +7201,7 @@ void ReLoadSoldierAnimationDueToHandItemChange(SOLDIERTYPE *pSoldier, UINT16 usO
   }
 }
 
-UINT16 *CreateEnemyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale, BOOLEAN fAdjustGreen) {
+function CreateEnemyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rscale: UINT32, gscale: UINT32, fAdjustGreen: BOOLEAN): Pointer<UINT16> {
   UINT16 *p16BPPPalette, r16, g16, b16, usColor;
   UINT32 cnt;
   UINT32 rmod, gmod, bmod;
@@ -7251,7 +7251,7 @@ UINT16 *CreateEnemyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale, UI
   return p16BPPPalette;
 }
 
-UINT16 *CreateEnemyGreyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale, BOOLEAN fAdjustGreen) {
+function CreateEnemyGreyGlow16BPPPalette(pPalette: Pointer<SGPPaletteEntry>, rscale: UINT32, gscale: UINT32, fAdjustGreen: BOOLEAN): Pointer<UINT16> {
   UINT16 *p16BPPPalette, r16, g16, b16, usColor;
   UINT32 cnt, lumin;
   UINT32 rmod, gmod, bmod;
@@ -7303,7 +7303,7 @@ UINT16 *CreateEnemyGreyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale
   return p16BPPPalette;
 }
 
-void ContinueMercMovement(SOLDIERTYPE *pSoldier) {
+function ContinueMercMovement(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sAPCost;
   INT16 sGridNo;
 
@@ -7342,7 +7342,7 @@ void ContinueMercMovement(SOLDIERTYPE *pSoldier) {
   }
 }
 
-BOOLEAN CheckForBreathCollapse(SOLDIERTYPE *pSoldier) {
+function CheckForBreathCollapse(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Check if we are out of breath!
   // Only check if > 70
   if (pSoldier->bBreathMax > 70) {
@@ -7380,7 +7380,7 @@ BOOLEAN CheckForBreathCollapse(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN InternalIsValidStance(SOLDIERTYPE *pSoldier, INT8 bDirection, INT8 bNewStance) {
+function InternalIsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, bNewStance: INT8): BOOLEAN {
   UINT16 usOKToAddStructID = 0;
   STRUCTURE_FILE_REF *pStructureFileRef;
   UINT16 usAnimSurface = 0;
@@ -7464,11 +7464,11 @@ BOOLEAN InternalIsValidStance(SOLDIERTYPE *pSoldier, INT8 bDirection, INT8 bNewS
   return TRUE;
 }
 
-BOOLEAN IsValidStance(SOLDIERTYPE *pSoldier, INT8 bNewStance) {
+function IsValidStance(pSoldier: Pointer<SOLDIERTYPE>, bNewStance: INT8): BOOLEAN {
   return InternalIsValidStance(pSoldier, pSoldier->bDirection, bNewStance);
 }
 
-BOOLEAN IsValidMovementMode(SOLDIERTYPE *pSoldier, INT16 usMovementMode) {
+function IsValidMovementMode(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: INT16): BOOLEAN {
   // Check, if dest is prone, we can actually do this!
 
   // Check if we are in water?
@@ -7481,7 +7481,7 @@ BOOLEAN IsValidMovementMode(SOLDIERTYPE *pSoldier, INT16 usMovementMode) {
   return TRUE;
 }
 
-void SelectMoveAnimationFromStance(SOLDIERTYPE *pSoldier) {
+function SelectMoveAnimationFromStance(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Determine which animation to do...depending on stance and gun in hand...
   switch (gAnimControl[pSoldier->usAnimState].ubEndHeight) {
     case ANIM_STAND:
@@ -7498,7 +7498,7 @@ void SelectMoveAnimationFromStance(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void GetActualSoldierAnimDims(SOLDIERTYPE *pSoldier, INT16 *psHeight, INT16 *psWidth) {
+function GetActualSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<INT16>, psWidth: Pointer<INT16>): void {
   UINT16 usAnimSurface;
   ETRLEObject *pTrav;
 
@@ -7531,7 +7531,7 @@ void GetActualSoldierAnimDims(SOLDIERTYPE *pSoldier, INT16 *psHeight, INT16 *psW
   *psWidth = (INT16)pTrav->usWidth;
 }
 
-void GetActualSoldierAnimOffsets(SOLDIERTYPE *pSoldier, INT16 *sOffsetX, INT16 *sOffsetY) {
+function GetActualSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
   UINT16 usAnimSurface;
   ETRLEObject *pTrav;
 
@@ -7556,7 +7556,7 @@ void GetActualSoldierAnimOffsets(SOLDIERTYPE *pSoldier, INT16 *sOffsetX, INT16 *
   *sOffsetY = (INT16)pTrav->sOffsetY;
 }
 
-void SetSoldierLocatorOffsets(SOLDIERTYPE *pSoldier) {
+function SetSoldierLocatorOffsets(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 sHeight, sWidth;
   INT16 sOffsetX, sOffsetY;
 
@@ -7573,7 +7573,7 @@ void SetSoldierLocatorOffsets(SOLDIERTYPE *pSoldier) {
   pSoldier->sBoundingBoxOffsetY = sOffsetY;
 }
 
-BOOLEAN SoldierCarriesTwoHandedWeapon(SOLDIERTYPE *pSoldier) {
+function SoldierCarriesTwoHandedWeapon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT16 usItem;
 
   usItem = pSoldier->inv[HANDPOS].usItem;
@@ -7585,7 +7585,7 @@ BOOLEAN SoldierCarriesTwoHandedWeapon(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT32 CheckBleeding(SOLDIERTYPE *pSoldier) {
+function CheckBleeding(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
   INT8 bBandaged; //,savedOurTurn;
   INT32 iBlood = NOBLOOD;
 
@@ -7667,7 +7667,7 @@ INT32 CheckBleeding(SOLDIERTYPE *pSoldier) {
   return iBlood;
 }
 
-void SoldierBleed(SOLDIERTYPE *pSoldier, BOOLEAN fBandagedBleed) {
+function SoldierBleed(pSoldier: Pointer<SOLDIERTYPE>, fBandagedBleed: BOOLEAN): void {
   INT8 bOldLife;
 
   // OK, here make some stuff happen for bleeding
@@ -7693,7 +7693,7 @@ void SoldierBleed(SOLDIERTYPE *pSoldier, BOOLEAN fBandagedBleed) {
   }
 }
 
-void SoldierCollapse(SOLDIERTYPE *pSoldier) {
+function SoldierCollapse(pSoldier: Pointer<SOLDIERTYPE>): void {
   BOOLEAN fMerc = FALSE;
 
   if (pSoldier->ubBodyType <= REGFEMALE) {
@@ -7793,7 +7793,7 @@ void SoldierCollapse(SOLDIERTYPE *pSoldier) {
   //}
 }
 
-FLOAT CalcSoldierNextBleed(SOLDIERTYPE *pSoldier) {
+function CalcSoldierNextBleed(pSoldier: Pointer<SOLDIERTYPE>): FLOAT {
   INT8 bBandaged;
 
   // calculate how many turns before he bleeds again
@@ -7806,7 +7806,7 @@ FLOAT CalcSoldierNextBleed(SOLDIERTYPE *pSoldier) {
   return ((FLOAT)1 + (FLOAT)((pSoldier->bLife + bBandaged / 2) / (10 + pSoldier->bTilesMoved))); // min = 1
 }
 
-FLOAT CalcSoldierNextUnmovingBleed(SOLDIERTYPE *pSoldier) {
+function CalcSoldierNextUnmovingBleed(pSoldier: Pointer<SOLDIERTYPE>): FLOAT {
   INT8 bBandaged;
 
   // calculate bleeding rate without the penalty for tiles moved
@@ -7817,7 +7817,7 @@ FLOAT CalcSoldierNextUnmovingBleed(SOLDIERTYPE *pSoldier) {
   return ((FLOAT)1 + (FLOAT)((pSoldier->bLife + bBandaged / 2) / 10)); // min = 1
 }
 
-void HandlePlacingRoofMarker(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fSet, BOOLEAN fForce) {
+function HandlePlacingRoofMarker(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fSet: BOOLEAN, fForce: BOOLEAN): void {
   LEVELNODE *pRoofNode;
   LEVELNODE *pNode;
 
@@ -7871,7 +7871,7 @@ void HandlePlacingRoofMarker(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fSet,
   }
 }
 
-void PositionSoldierLight(SOLDIERTYPE *pSoldier) {
+function PositionSoldierLight(pSoldier: Pointer<SOLDIERTYPE>): void {
   // DO ONLY IF WE'RE AT A GOOD LEVEL
   if (ubAmbientLightLevel < MIN_AMB_LEVEL_FOR_MERC_LIGHTS) {
     return;
@@ -7907,12 +7907,12 @@ void PositionSoldierLight(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SetCheckSoldierLightFlag(SOLDIERTYPE *pSoldier) {
+function SetCheckSoldierLightFlag(pSoldier: Pointer<SOLDIERTYPE>): void {
   PositionSoldierLight(pSoldier);
   // pSoldier->uiStatusFlags |= SOLDIER_RECHECKLIGHT;
 }
 
-void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo, INT8 bZLevel) {
+function PickPickupAnimation(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sGridNo: INT16, bZLevel: INT8): void {
   INT8 bDirection;
   STRUCTURE *pStructure;
   BOOLEAN fDoNormalPickup = TRUE;
@@ -8010,7 +8010,7 @@ void PickPickupAnimation(SOLDIERTYPE *pSoldier, INT32 iItemIndex, INT16 sGridNo,
   }
 }
 
-void PickDropItemAnimation(SOLDIERTYPE *pSoldier) {
+function PickDropItemAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Don't show animation of getting item, if we are not standing
   switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
     case ANIM_STAND:
@@ -8027,7 +8027,7 @@ void PickDropItemAnimation(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void EVENT_SoldierBeginCutFence(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginCutFence(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   // Make sure we have a structure here....
   if (IsCuttableWireFenceAtGridNo(sGridNo)) {
     // CHANGE DIRECTION AND GOTO ANIMATION NOW
@@ -8044,7 +8044,7 @@ void EVENT_SoldierBeginCutFence(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDi
   }
 }
 
-void EVENT_SoldierBeginRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   INT8 bRepairItem;
   UINT8 ubID;
 
@@ -8075,7 +8075,7 @@ void EVENT_SoldierBeginRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDire
   }
 }
 
-void EVENT_SoldierBeginRefuel(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginRefuel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   INT8 bRefuelItem;
   UINT8 ubID;
 
@@ -8098,7 +8098,7 @@ void EVENT_SoldierBeginRefuel(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDire
   }
 }
 
-void EVENT_SoldierBeginTakeBlood(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginTakeBlood(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   ROTTING_CORPSE *pCorpse;
 
   // See if these is a corpse here....
@@ -8118,7 +8118,7 @@ void EVENT_SoldierBeginTakeBlood(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubD
   }
 }
 
-void EVENT_SoldierBeginAttachCan(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection) {
+function EVENT_SoldierBeginAttachCan(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8): void {
   STRUCTURE *pStructure;
   DOOR_STATUS *pDoorStatus;
 
@@ -8164,7 +8164,7 @@ void EVENT_SoldierBeginAttachCan(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubD
   fInterfacePanelDirty = DIRTYLEVEL2;
 }
 
-void EVENT_SoldierBeginReloadRobot(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection, UINT8 ubMercSlot) {
+function EVENT_SoldierBeginReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, ubMercSlot: UINT8): void {
   UINT8 ubPerson;
 
   // Make sure we have a robot here....
@@ -8180,7 +8180,7 @@ void EVENT_SoldierBeginReloadRobot(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 u
   }
 }
 
-void ResetSoldierChangeStatTimer(SOLDIERTYPE *pSoldier) {
+function ResetSoldierChangeStatTimer(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->uiChangeLevelTime = 0;
   pSoldier->uiChangeHealthTime = 0;
   pSoldier->uiChangeStrengthTime = 0;
@@ -8196,7 +8196,7 @@ void ResetSoldierChangeStatTimer(SOLDIERTYPE *pSoldier) {
   return;
 }
 
-void ChangeToFlybackAnimation(SOLDIERTYPE *pSoldier, INT8 bDirection) {
+function ChangeToFlybackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): void {
   UINT16 usNewGridNo;
 
   // Get dest gridno, convert to center coords
@@ -8220,7 +8220,7 @@ void ChangeToFlybackAnimation(SOLDIERTYPE *pSoldier, INT8 bDirection) {
   EVENT_InitNewSoldierAnim(pSoldier, FLYBACK_HIT, 0, FALSE);
 }
 
-void ChangeToFallbackAnimation(SOLDIERTYPE *pSoldier, INT8 bDirection) {
+function ChangeToFallbackAnimation(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): void {
   UINT16 usNewGridNo;
 
   // Get dest gridno, convert to center coords
@@ -8242,7 +8242,7 @@ void ChangeToFallbackAnimation(SOLDIERTYPE *pSoldier, INT8 bDirection) {
   EVENT_InitNewSoldierAnim(pSoldier, FALLBACK_HIT_STAND, 0, FALSE);
 }
 
-void SetSoldierCowerState(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
+function SetSoldierCowerState(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {
   // Robot's don't cower!
   if (pSoldier->ubBodyType == ROBOTNOWEAPON) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ERROR: Robot was told to cower!"));
@@ -8269,7 +8269,7 @@ void SetSoldierCowerState(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
   }
 }
 
-void MercStealFromMerc(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget) {
+function MercStealFromMerc(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): void {
   INT16 sActionGridNo, sGridNo, sAdjustedGridNo;
   UINT8 ubDirection;
 
@@ -8304,7 +8304,7 @@ void MercStealFromMerc(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget) {
   }
 }
 
-BOOLEAN PlayerSoldierStartTalking(SOLDIERTYPE *pSoldier, UINT8 ubTargetID, BOOLEAN fValidate) {
+function PlayerSoldierStartTalking(pSoldier: Pointer<SOLDIERTYPE>, ubTargetID: UINT8, fValidate: BOOLEAN): BOOLEAN {
   INT16 sFacingDir, sXPos, sYPos, sAPCost;
   SOLDIERTYPE *pTSoldier;
   UINT32 uiRange;
@@ -8387,7 +8387,7 @@ BOOLEAN PlayerSoldierStartTalking(SOLDIERTYPE *pSoldier, UINT8 ubTargetID, BOOLE
   return TRUE;
 }
 
-BOOLEAN IsValidSecondHandShot(SOLDIERTYPE *pSoldier) {
+function IsValidSecondHandShot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (Item[pSoldier->inv[SECONDHANDPOS].usItem].usItemClass == IC_GUN && !(Item[pSoldier->inv[SECONDHANDPOS].usItem].fFlags & ITEM_TWO_HANDED) && !pSoldier->bDoBurst && pSoldier->inv[HANDPOS].usItem != GLAUNCHER && Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_GUN && pSoldier->inv[SECONDHANDPOS].bGunStatus >= USABLE && pSoldier->inv[SECONDHANDPOS].ubGunShotsLeft > 0) {
     return TRUE;
   }
@@ -8395,7 +8395,7 @@ BOOLEAN IsValidSecondHandShot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN IsValidSecondHandShotForReloadingPurposes(SOLDIERTYPE *pSoldier) {
+function IsValidSecondHandShotForReloadingPurposes(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // should be maintained as same as function above with line
   // about ammo taken out!
   if (Item[pSoldier->inv[SECONDHANDPOS].usItem].usItemClass == IC_GUN && !pSoldier->bDoBurst && pSoldier->inv[HANDPOS].usItem != GLAUNCHER && Item[pSoldier->inv[HANDPOS].usItem].usItemClass == IC_GUN && pSoldier->inv[SECONDHANDPOS].bGunStatus >= USABLE //&&
@@ -8408,7 +8408,7 @@ BOOLEAN IsValidSecondHandShotForReloadingPurposes(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN CanRobotBeControlled(SOLDIERTYPE *pSoldier) {
+function CanRobotBeControlled(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   SOLDIERTYPE *pController;
 
   if (!(pSoldier->uiStatusFlags & SOLDIER_ROBOT)) {
@@ -8431,7 +8431,7 @@ BOOLEAN CanRobotBeControlled(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN ControllingRobot(SOLDIERTYPE *pSoldier) {
+function ControllingRobot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   SOLDIERTYPE *pRobot;
   INT8 bPos;
 
@@ -8496,7 +8496,7 @@ BOOLEAN ControllingRobot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-SOLDIERTYPE *GetRobotController(SOLDIERTYPE *pSoldier) {
+function GetRobotController(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   if (pSoldier->ubRobotRemoteHolderID == NOBODY) {
     return NULL;
   } else {
@@ -8504,7 +8504,7 @@ SOLDIERTYPE *GetRobotController(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void UpdateRobotControllerGivenRobot(SOLDIERTYPE *pRobot) {
+function UpdateRobotControllerGivenRobot(pRobot: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
 
@@ -8526,7 +8526,7 @@ void UpdateRobotControllerGivenRobot(SOLDIERTYPE *pRobot) {
   pRobot->ubRobotRemoteHolderID = NOBODY;
 }
 
-void UpdateRobotControllerGivenController(SOLDIERTYPE *pSoldier) {
+function UpdateRobotControllerGivenController(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
 
@@ -8546,7 +8546,7 @@ void UpdateRobotControllerGivenController(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleSoldierTakeDamageFeedback(SOLDIERTYPE *pSoldier) {
+function HandleSoldierTakeDamageFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Do sound.....
   // if ( pSoldier->bLife >= CONSCIOUSNESS )
   {
@@ -8564,7 +8564,7 @@ void HandleSoldierTakeDamageFeedback(SOLDIERTYPE *pSoldier) {
   RESETTIMECOUNTER(pSoldier->PortraitFlashCounter, FLASH_PORTRAIT_DELAY);
 }
 
-void HandleSystemNewAISituation(SOLDIERTYPE *pSoldier, BOOLEAN fResetABC) {
+function HandleSystemNewAISituation(pSoldier: Pointer<SOLDIERTYPE>, fResetABC: BOOLEAN): void {
   // Are we an AI guy?
   if (gTacticalStatus.ubCurrentTeam != gbPlayerNum && pSoldier->bTeam != gbPlayerNum) {
     if (pSoldier->bNewSituation == IS_NEW_SITUATION) {
@@ -8606,7 +8606,7 @@ void HandleSystemNewAISituation(SOLDIERTYPE *pSoldier, BOOLEAN fResetABC) {
   }
 }
 
-void InternalPlaySoldierFootstepSound(SOLDIERTYPE *pSoldier) {
+function InternalPlaySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT8 ubRandomSnd;
   INT8 bVolume = MIDVOLUME;
   // Assume outside
@@ -8661,19 +8661,19 @@ void InternalPlaySoldierFootstepSound(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void PlaySoldierFootstepSound(SOLDIERTYPE *pSoldier) {
+function PlaySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
   // normally, not in stealth mode
   if (!pSoldier->bStealthMode) {
     InternalPlaySoldierFootstepSound(pSoldier);
   }
 }
 
-void PlayStealthySoldierFootstepSound(SOLDIERTYPE *pSoldier) {
+function PlayStealthySoldierFootstepSound(pSoldier: Pointer<SOLDIERTYPE>): void {
   // even if in stealth mode
   InternalPlaySoldierFootstepSound(pSoldier);
 }
 
-void CrowsFlyAway(UINT8 ubTeam) {
+function CrowsFlyAway(ubTeam: UINT8): void {
   UINT32 cnt;
   SOLDIERTYPE *pTeamSoldier;
 
@@ -8687,7 +8687,7 @@ void CrowsFlyAway(UINT8 ubTeam) {
   }
 }
 
-void BeginTyingToFall(SOLDIERTYPE *pSoldier) {
+function BeginTyingToFall(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->bStartFallDir = pSoldier->bDirection;
   pSoldier->fTryingToFall = TRUE;
 
@@ -8699,7 +8699,7 @@ void BeginTyingToFall(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SetSoldierAsUnderAiControl(SOLDIERTYPE *pSoldierToSet) {
+function SetSoldierAsUnderAiControl(pSoldierToSet: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pSoldier = NULL;
   INT32 cnt;
 
@@ -8718,7 +8718,7 @@ void SetSoldierAsUnderAiControl(SOLDIERTYPE *pSoldierToSet) {
   pSoldierToSet->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
 }
 
-void HandlePlayerTogglingLightEffects(BOOLEAN fToggleValue) {
+function HandlePlayerTogglingLightEffects(fToggleValue: BOOLEAN): void {
   if (fToggleValue) {
     // Toggle light status
     gGameSettings.fOptions[TOPTION_MERC_CASTS_LIGHT] ^= TRUE;
@@ -8730,7 +8730,7 @@ void HandlePlayerTogglingLightEffects(BOOLEAN fToggleValue) {
   SetRenderFlags(RENDER_FLAG_FULL);
 }
 
-void EnableDisableSoldierLightEffects(BOOLEAN fEnableLights) {
+function EnableDisableSoldierLightEffects(fEnableLights: BOOLEAN): void {
   SOLDIERTYPE *pSoldier = NULL;
   INT32 cnt;
 
@@ -8754,7 +8754,7 @@ void EnableDisableSoldierLightEffects(BOOLEAN fEnableLights) {
   }
 }
 
-void SetSoldierPersonalLightLevel(SOLDIERTYPE *pSoldier) {
+function SetSoldierPersonalLightLevel(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier == NULL) {
     return;
   }

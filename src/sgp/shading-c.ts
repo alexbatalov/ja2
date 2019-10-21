@@ -7,7 +7,7 @@ UINT16 White16BPPPalette[256];
 FLOAT guiShadePercent = (FLOAT)0.48;
 FLOAT guiBrightPercent = (FLOAT)1.1;
 
-BOOLEAN ShadesCalculateTables(SGPPaletteEntry *p8BPPPalette) {
+function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   UINT32 uiCount;
 
   // Green palette
@@ -49,7 +49,7 @@ BOOLEAN ShadesCalculateTables(SGPPaletteEntry *p8BPPPalette) {
   return TRUE;
 }
 
-BOOLEAN ShadesCalculatePalette(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pDestPalette, UINT16 usRed, UINT16 usGreen, UINT16 usBlue, BOOLEAN fMono) {
+function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPalette: Pointer<SGPPaletteEntry>, usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: BOOLEAN): BOOLEAN {
   UINT32 cnt, lumin;
   UINT32 rmod, gmod, bmod;
 
@@ -76,7 +76,7 @@ BOOLEAN ShadesCalculatePalette(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pD
   return TRUE;
 }
 
-void FindIndecies(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pMapPalette, UINT8 *pTable) {
+function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointer<SGPPaletteEntry>, pTable: Pointer<UINT8>): void {
   UINT16 usCurIndex, usCurDelta, usCurCount;
   UINT32 *pSavedPtr;
 
@@ -168,7 +168,7 @@ void FindIndecies(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pMapPalette, UI
         the table and the entry at that point will be a pixel that is 25% darker.
 
 **********************************************************************************************/
-void BuildShadeTable(void) {
+function BuildShadeTable(): void {
   UINT16 red, green, blue;
   UINT16 index;
 
@@ -193,7 +193,7 @@ void BuildShadeTable(void) {
 
 
 **********************************************************************************************/
-void BuildIntensityTable(void) {
+function BuildIntensityTable(): void {
   UINT16 red, green, blue;
   UINT16 index;
   FLOAT dShadedPercent = (FLOAT)0.80;
@@ -206,12 +206,12 @@ void BuildIntensityTable(void) {
       }
 }
 
-void SetShadeTablePercent(FLOAT uiShadePercent) {
+function SetShadeTablePercent(uiShadePercent: FLOAT): void {
   guiShadePercent = uiShadePercent;
   BuildShadeTable();
 }
 
-void Init8BitTables(void) {
+function Init8BitTables(): void {
   SGPPaletteEntry Pal[256];
   UINT32 uiCount;
 
@@ -229,7 +229,7 @@ void Init8BitTables(void) {
   Set8BPPPalette(Shaded8BPPPalettes[4]);
 }
 
-BOOLEAN Set8BitModePalette(SGPPaletteEntry *pPal) {
+function Set8BitModePalette(pPal: Pointer<SGPPaletteEntry>): BOOLEAN {
   ShadesCalculateTables(pPal);
   Set8BPPPalette(pPal);
   return TRUE;

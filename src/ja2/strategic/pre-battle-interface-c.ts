@@ -109,7 +109,7 @@ BOOLEAN gfUsePersistantPBI;
 
 INT32 giHilitedInvolved, giHilitedUninvolved;
 
-void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
+function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BOOLEAN): void {
   VOBJECT_DESC VObjectDesc;
   INT32 i;
   UINT8 ubGroupID = 0;
@@ -493,7 +493,7 @@ void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
   DoTransitionFromMapscreenToPreBattleInterface();
 }
 
-void DoTransitionFromMapscreenToPreBattleInterface() {
+function DoTransitionFromMapscreenToPreBattleInterface(): void {
   SGPRect DstRect, PBIRect;
   UINT32 uiStartTime, uiCurrTime;
   INT32 iPercentage, iFactor;
@@ -590,7 +590,7 @@ void DoTransitionFromMapscreenToPreBattleInterface() {
   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
 }
 
-void KillPreBattleInterface() {
+function KillPreBattleInterface(): void {
   if (!gfPreBattleInterfaceActive)
     return;
 
@@ -642,7 +642,7 @@ void KillPreBattleInterface() {
   }
 }
 
-void RenderPBHeader(INT32 *piX, INT32 *piWidth) {
+function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
   UINT16 str[100];
   INT32 x, width;
   SetFont(FONT10ARIALBOLD);
@@ -693,7 +693,7 @@ void RenderPBHeader(INT32 *piX, INT32 *piWidth) {
   *piWidth = width;
 }
 
-void RenderPreBattleInterface() {
+function RenderPreBattleInterface(): void {
   GROUP *pGroup;
   HVOBJECT hVObject;
   INT32 i, x, y, line, width;
@@ -950,7 +950,7 @@ void RenderPreBattleInterface() {
   gfIgnoreAllInput = FALSE;
 }
 
-void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
+function AutoResolveBattleCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
@@ -978,7 +978,7 @@ void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason) {
+function GoToSectorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       if (_KeyDown(ALT) && CHEATER_CHEAT_LEVEL())
@@ -1035,7 +1035,7 @@ void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RetreatMercsCallback(GUI_BUTTON *btn, INT32 reason) {
+function RetreatMercsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!gfIgnoreAllInput) {
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       // get them outta here!
@@ -1081,7 +1081,7 @@ const enum Enum163 {
   COND_DEAD,
 }
 
-void GetSoldierConditionInfo(SOLDIERTYPE *pSoldier, UINT16 *szCondition, UINT8 *pubHPPercent, UINT8 *pubBPPercent) {
+function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<UINT16>, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
   Assert(pSoldier);
   *pubHPPercent = (UINT8)(pSoldier->bLife * 100 / pSoldier->bLifeMax);
   *pubBPPercent = pSoldier->bBreath;
@@ -1250,34 +1250,34 @@ SOLDIERTYPE* UninvolvedSoldier( INT32 index )
 }
 */
 
-void ActivatePreBattleAutoresolveAction() {
+function ActivatePreBattleAutoresolveAction(): void {
   if (ButtonList[iPBButton[0]]->uiFlags & BUTTON_ENABLED) {
     // Feign call the autoresolve button using the callback
     AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
-void ActivatePreBattleEnterSectorAction() {
+function ActivatePreBattleEnterSectorAction(): void {
   if (ButtonList[iPBButton[1]]->uiFlags & BUTTON_ENABLED) {
     // Feign call the enter sector button using the callback
     GoToSectorCallback(ButtonList[iPBButton[1]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
-void ActivatePreBattleRetreatAction() {
+function ActivatePreBattleRetreatAction(): void {
   if (ButtonList[iPBButton[2]]->uiFlags & BUTTON_ENABLED) {
     // Feign call the retreat button using the callback
     RetreatMercsCallback(ButtonList[iPBButton[2]], MSYS_CALLBACK_REASON_LBUTTON_UP);
   }
 }
 
-void ActivateAutomaticAutoResolveStart() {
+function ActivateAutomaticAutoResolveStart(): void {
   ButtonList[iPBButton[0]]->uiFlags |= BUTTON_CLICKED_ON;
   gfIgnoreAllInput = FALSE;
   AutoResolveBattleCallback(ButtonList[iPBButton[0]], MSYS_CALLBACK_REASON_LBUTTON_UP);
 }
 
-void CalculateNonPersistantPBIInfo() {
+function CalculateNonPersistantPBIInfo(): void {
   // We need to set up the non-persistant PBI
   if (!gfBlitBattleSectorLocator || gubPBSectorX != gWorldSectorX || gubPBSectorY != gWorldSectorY || gubPBSectorZ != gbWorldSectorZ) {
     // Either the locator isn't on or the locator info is in a different sector
@@ -1320,11 +1320,11 @@ void CalculateNonPersistantPBIInfo() {
   }
 }
 
-void ClearNonPersistantPBIInfo() {
+function ClearNonPersistantPBIInfo(): void {
   gfBlitBattleSectorLocator = FALSE;
 }
 
-void PutNonSquadMercsInBattleSectorOnSquads(BOOLEAN fExitVehicles) {
+function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
   GROUP *pGroup, *pNextGroup;
 
   // IMPORTANT: Have to do this by group, so everyone inside vehicles gets assigned to the same squad.  Needed for
@@ -1352,7 +1352,7 @@ void PutNonSquadMercsInBattleSectorOnSquads(BOOLEAN fExitVehicles) {
   }
 }
 
-void PutNonSquadMercsInPlayerGroupOnSquads(GROUP *pGroup, BOOLEAN fExitVehicles) {
+function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehicles: BOOLEAN): void {
   PLAYERGROUP *pPlayer, *pNextPlayer;
   SOLDIERTYPE *pSoldier;
   INT8 bUniqueVehicleSquad = -1;
@@ -1409,7 +1409,7 @@ void PutNonSquadMercsInPlayerGroupOnSquads(GROUP *pGroup, BOOLEAN fExitVehicles)
   }
 }
 
-void WakeUpAllMercsInSectorUnderAttack(void) {
+function WakeUpAllMercsInSectorUnderAttack(): void {
   INT32 iCounter = 0, iNumberOfMercsOnTeam = 0;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -1431,7 +1431,7 @@ void WakeUpAllMercsInSectorUnderAttack(void) {
 }
 
 // we are entering the sector, clear out all mvt orders for grunts
-void ClearMovementForAllInvolvedPlayerGroups(void) {
+function ClearMovementForAllInvolvedPlayerGroups(): void {
   GROUP *pGroup;
 
   pGroup = gpGroupList;
@@ -1444,7 +1444,7 @@ void ClearMovementForAllInvolvedPlayerGroups(void) {
   }
 }
 
-void RetreatAllInvolvedPlayerGroups(void) {
+function RetreatAllInvolvedPlayerGroups(): void {
   GROUP *pGroup;
 
   // make sure guys stop their off duty assignments, like militia training!
@@ -1464,7 +1464,7 @@ void RetreatAllInvolvedPlayerGroups(void) {
   }
 }
 
-BOOLEAN PlayerMercInvolvedInThisCombat(SOLDIERTYPE *pSoldier) {
+function PlayerMercInvolvedInThisCombat(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier);
   Assert(pSoldier->bActive);
 
@@ -1481,7 +1481,7 @@ BOOLEAN PlayerMercInvolvedInThisCombat(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN PlayerGroupInvolvedInThisCombat(GROUP *pGroup) {
+function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): BOOLEAN {
   Assert(pGroup);
 
   // player group, non-empty, not between sectors, in the right sector, isn't a group of in transit, dead, or POW mercs,
@@ -1497,7 +1497,7 @@ BOOLEAN PlayerGroupInvolvedInThisCombat(GROUP *pGroup) {
   return FALSE;
 }
 
-BOOLEAN CurrentBattleSectorIs(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
+function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): BOOLEAN {
   INT16 sBattleSectorX, sBattleSectorY, sBattleSectorZ;
   BOOLEAN fSuccess;
 
@@ -1513,7 +1513,7 @@ BOOLEAN CurrentBattleSectorIs(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
   }
 }
 
-void CheckForRobotAndIfItsControlled(void) {
+function CheckForRobotAndIfItsControlled(): void {
   INT32 i;
 
   // search for the robot on player's team
@@ -1532,7 +1532,7 @@ void CheckForRobotAndIfItsControlled(void) {
   }
 }
 
-void LogBattleResults(UINT8 ubVictoryCode) {
+function LogBattleResults(ubVictoryCode: UINT8): void {
   INT16 sSectorX, sSectorY, sSectorZ;
   GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
   if (ubVictoryCode == LOG_VICTORY) {
@@ -1582,7 +1582,7 @@ void LogBattleResults(UINT8 ubVictoryCode) {
   }
 }
 
-void HandlePreBattleInterfaceStates() {
+function HandlePreBattleInterfaceStates(): void {
   if (gfEnteringMapScreenToEnterPreBattleInterface && !gfEnteringMapScreen) {
     gfEnteringMapScreenToEnterPreBattleInterface = FALSE;
     if (!gfUsePersistantPBI) {

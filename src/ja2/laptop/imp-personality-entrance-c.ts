@@ -2,14 +2,14 @@
 INT32 giIMPPersonalityEntranceButton[1];
 INT32 giIMPPersonalityEntranceButtonImage[1];
 
-void EnterIMPPersonalityEntrance(void) {
+function EnterIMPPersonalityEntrance(): void {
   // create buttons needed
   CreateIMPPersonalityEntranceButtons();
 
   return;
 }
 
-void RenderIMPPersonalityEntrance(void) {
+function RenderIMPPersonalityEntrance(): void {
   // the background
   RenderProfileBackGround();
 
@@ -21,18 +21,18 @@ void RenderIMPPersonalityEntrance(void) {
   return;
 }
 
-void ExitIMPPersonalityEntrance(void) {
+function ExitIMPPersonalityEntrance(): void {
   // destroy buttons needed
   DestroyIMPPersonalityEntranceButtons();
 
   return;
 }
 
-void HandleIMPPersonalityEntrance(void) {
+function HandleIMPPersonalityEntrance(): void {
   return;
 }
 
-void CreateIMPPersonalityEntranceButtons(void) {
+function CreateIMPPersonalityEntranceButtons(): void {
   // this function will create the buttons needed for the IMP personality Page
 
   // ths begin button
@@ -48,7 +48,7 @@ void CreateIMPPersonalityEntranceButtons(void) {
   return;
 }
 
-void DestroyIMPPersonalityEntranceButtons(void) {
+function DestroyIMPPersonalityEntranceButtons(): void {
   // this function will destroy the buttons needed for the IMP personality page
 
   // the begin button
@@ -58,7 +58,7 @@ void DestroyIMPPersonalityEntranceButtons(void) {
   return;
 }
 
-void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityEntranceDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP Begin Screen done button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

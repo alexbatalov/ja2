@@ -4,7 +4,7 @@ const NUM_LIGHT_EFFECT_SLOTS = 25;
 LIGHTEFFECT gLightEffectData[NUM_LIGHT_EFFECT_SLOTS];
 UINT32 guiNumLightEffects = 0;
 
-INT32 GetFreeLightEffect(void) {
+function GetFreeLightEffect(): INT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
@@ -18,7 +18,7 @@ INT32 GetFreeLightEffect(void) {
   return -1;
 }
 
-void RecountLightEffects(void) {
+function RecountLightEffects(): void {
   INT32 uiCount;
 
   for (uiCount = guiNumLightEffects - 1; (uiCount >= 0); uiCount--) {
@@ -29,7 +29,7 @@ void RecountLightEffects(void) {
   }
 }
 
-void UpdateLightingSprite(LIGHTEFFECT *pLight) {
+function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
   CHAR8 LightName[20];
   // Build light....
 
@@ -52,7 +52,7 @@ void UpdateLightingSprite(LIGHTEFFECT *pLight) {
   LightSpritePosition(pLight->iLight, (INT16)(CenterX(pLight->sGridNo) / CELL_X_SIZE), (INT16)(CenterY(pLight->sGridNo) / CELL_Y_SIZE));
 }
 
-INT32 NewLightEffect(INT16 sGridNo, INT8 bType) {
+function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   LIGHTEFFECT *pLight;
   INT32 iLightIndex;
   UINT8 ubDuration = 0;
@@ -92,7 +92,7 @@ INT32 NewLightEffect(INT16 sGridNo, INT8 bType) {
   return iLightIndex;
 }
 
-void RemoveLightEffectFromTile(INT16 sGridNo) {
+function RemoveLightEffectFromTile(sGridNo: INT16): void {
   LIGHTEFFECT *pLight;
   UINT32 cnt;
 
@@ -114,7 +114,7 @@ void RemoveLightEffectFromTile(INT16 sGridNo) {
   }
 }
 
-void DecayLightEffects(UINT32 uiTime) {
+function DecayLightEffects(uiTime: UINT32): void {
   LIGHTEFFECT *pLight;
   UINT32 cnt, cnt2;
   BOOLEAN fDelete = FALSE;
@@ -172,7 +172,7 @@ void DecayLightEffects(UINT32 uiTime) {
   }
 }
 
-BOOLEAN SaveLightEffectsToSaveGameFile(HWFILE hFile) {
+function SaveLightEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   /*
   UINT32	uiNumBytesWritten;
   UINT32	uiNumberOfLights=0;
@@ -216,7 +216,7 @@ BOOLEAN SaveLightEffectsToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadLightEffectsFromLoadGameFile(HWFILE hFile) {
+function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiCount;
 
@@ -252,7 +252,7 @@ BOOLEAN LoadLightEffectsFromLoadGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   UINT32 uiNumLightEffects = 0;
   HWFILE hFile;
   UINT32 uiNumBytesWritten = 0;
@@ -318,7 +318,7 @@ BOOLEAN SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return TRUE;
 }
 
-BOOLEAN LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
   UINT32 uiNumBytesRead;
   UINT32 uiCount;
   UINT32 uiCnt = 0;
@@ -366,7 +366,7 @@ BOOLEAN LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   return TRUE;
 }
 
-void ResetLightEffects() {
+function ResetLightEffects(): void {
   // Clear out the old list
   memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
   guiNumLightEffects = 0;

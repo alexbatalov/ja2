@@ -51,7 +51,7 @@ MoraleEvent gbMoraleEvent[NUM_MORALE_EVENTS] = {
 
 BOOLEAN gfSomeoneSaidMoraleQuote = FALSE;
 
-INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier) {
+function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier->uiStatusFlags & SOLDIER_PC) {
     if (pSoldier->bMorale > 50) {
       // give +1 at 55, +3 at 65, up to +5 at 95 and above
@@ -77,7 +77,7 @@ INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void DecayTacticalMorale(SOLDIERTYPE *pSoldier) {
+function DecayTacticalMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   // decay the tactical morale modifier
   if (pSoldier->bTacticalMoraleMod != 0) {
     // decay the modifier!
@@ -89,7 +89,7 @@ void DecayTacticalMorale(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void DecayStrategicMorale(SOLDIERTYPE *pSoldier) {
+function DecayStrategicMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   // decay the modifier!
   if (pSoldier->bStrategicMoraleMod > 0) {
     pSoldier->bStrategicMoraleMod = __max(0, pSoldier->bStrategicMoraleMod - (8 - pSoldier->bStrategicMoraleMod / 10));
@@ -98,7 +98,7 @@ void DecayStrategicMorale(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void DecayTacticalMoraleModifiers(void) {
+function DecayTacticalMoraleModifiers(): void {
   SOLDIERTYPE *pSoldier;
   UINT8 ubLoop, ubLoop2;
   BOOLEAN fHandleNervous;
@@ -172,7 +172,7 @@ void DecayTacticalMoraleModifiers(void) {
   }
 }
 
-void DecayStrategicMoraleModifiers(void) {
+function DecayStrategicMoraleModifiers(): void {
   SOLDIERTYPE *pSoldier;
   UINT8 ubLoop;
 
@@ -192,7 +192,7 @@ void DecayStrategicMoraleModifiers(void) {
   }
 }
 
-void RefreshSoldierMorale(SOLDIERTYPE *pSoldier) {
+function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iActualMorale;
 
   if (pSoldier->fMercAsleep) {
@@ -215,7 +215,7 @@ void RefreshSoldierMorale(SOLDIERTYPE *pSoldier) {
   fCharacterInfoPanelDirty = TRUE;
 }
 
-void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, UINT8 ubType, INT8 bMoraleMod) {
+function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMoraleMod: INT8): void {
   MERCPROFILESTRUCT *pProfile;
   INT32 iMoraleModTotal;
 
@@ -316,11 +316,11 @@ void UpdateSoldierMorale(SOLDIERTYPE *pSoldier, UINT8 ubType, INT8 bMoraleMod) {
   }
 }
 
-void HandleMoraleEventForSoldier(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent) {
+function HandleMoraleEventForSoldier(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8): void {
   UpdateSoldierMorale(pSoldier, gbMoraleEvent[bMoraleEvent].ubType, gbMoraleEvent[bMoraleEvent].bChange);
 }
 
-void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
+function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
   UINT8 ubLoop;
   SOLDIERTYPE *pTeamSoldier;
   MERCPROFILESTRUCT *pProfile;
@@ -574,7 +574,7 @@ void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, IN
   }
 }
 
-void HourlyMoraleUpdate(void) {
+function HourlyMoraleUpdate(): void {
   INT8 bMercID, bOtherID;
   INT8 bActualTeamOpinion;
   INT8 bTeamMoraleModChange, bTeamMoraleModDiff;
@@ -724,7 +724,7 @@ void HourlyMoraleUpdate(void) {
   }
 }
 
-void DailyMoraleUpdate(SOLDIERTYPE *pSoldier) {
+function DailyMoraleUpdate(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->ubProfile == NO_PROFILE) {
     return;
   }

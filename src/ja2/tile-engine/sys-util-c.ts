@@ -6,11 +6,11 @@ UINT32 guiEXTRABUFFER = 0;
 
 BOOLEAN gfExtraBuffer = FALSE;
 
-BOOLEAN InitializeSystemVideoObjects() {
+function InitializeSystemVideoObjects(): BOOLEAN {
   return TRUE;
 }
 
-BOOLEAN InitializeGameVideoObjects() {
+function InitializeGameVideoObjects(): BOOLEAN {
   VSURFACE_DESC vs_desc;
   UINT16 usWidth;
   UINT16 usHeight;

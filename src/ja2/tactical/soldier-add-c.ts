@@ -18,7 +18,7 @@
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-UINT16 FindGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -107,7 +107,7 @@ UINT16 FindGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 u
   }
 }
 
-UINT16 FindGridNoFromSweetSpotThroughPeople(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -193,7 +193,7 @@ UINT16 FindGridNoFromSweetSpotThroughPeople(SOLDIERTYPE *pSoldier, INT16 sSweetG
 
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
-UINT16 FindGridNoFromSweetSpotWithStructData(SOLDIERTYPE *pSoldier, UINT16 usAnimState, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection, BOOLEAN fClosestToMerc) {
+function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2, cnt3;
@@ -326,7 +326,7 @@ UINT16 FindGridNoFromSweetSpotWithStructData(SOLDIERTYPE *pSoldier, UINT16 usAni
   }
 }
 
-UINT16 FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(SOLDIERTYPE *pSoldier, UINT16 usAnimState, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection, BOOLEAN fClosestToMerc, INT8 bGivenDirection) {
+function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN, bGivenDirection: INT8): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2, cnt3;
@@ -467,7 +467,7 @@ UINT16 FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(SOLDIERTYPE
   }
 }
 
-UINT16 FindGridNoFromSweetSpotWithStructDataFromSoldier(SOLDIERTYPE *pSoldier, UINT16 usAnimState, INT8 ubRadius, UINT8 *pubDirection, BOOLEAN fClosestToMerc, SOLDIERTYPE *pSrcSoldier) {
+function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN, pSrcSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2, cnt3;
@@ -592,7 +592,7 @@ UINT16 FindGridNoFromSweetSpotWithStructDataFromSoldier(SOLDIERTYPE *pSoldier, U
   }
 }
 
-UINT16 FindGridNoFromSweetSpotExcludingSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -645,7 +645,7 @@ UINT16 FindGridNoFromSweetSpotExcludingSweetSpot(SOLDIERTYPE *pSoldier, INT16 sS
   }
 }
 
-UINT16 FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection, INT8 ubQuardentDir) {
+function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
   INT16 cnt1, cnt2;
@@ -703,7 +703,7 @@ UINT16 FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(SOLDIERTYPE *pSoldier
   }
 }
 
-BOOLEAN CanSoldierReachGridNoInGivenTileLimit(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT16 sMaxTiles, INT8 bLevel) {
+function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): BOOLEAN {
   INT32 iNumTiles;
   INT16 sActionGridNo;
   UINT8 ubDirection;
@@ -731,7 +731,7 @@ BOOLEAN CanSoldierReachGridNoInGivenTileLimit(SOLDIERTYPE *pSoldier, INT16 sGrid
   }
 }
 
-UINT16 FindRandomGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sX, sY;
   INT16 sGridNo;
   INT32 leftmost;
@@ -819,7 +819,7 @@ UINT16 FindRandomGridNoFromSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, 
   return sGridNo;
 }
 
-UINT16 FindRandomGridNoFromSweetSpotExcludingSweetSpot(SOLDIERTYPE *pSoldier, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection) {
+function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
   INT16 sX, sY;
   INT16 sGridNo;
   INT32 leftmost;
@@ -858,7 +858,7 @@ UINT16 FindRandomGridNoFromSweetSpotExcludingSweetSpot(SOLDIERTYPE *pSoldier, IN
   return sGridNo;
 }
 
-BOOLEAN InternalAddSoldierToSector(UINT8 ubID, BOOLEAN fCalculateDirection, BOOLEAN fUseAnimation, UINT16 usAnimState, UINT16 usAnimCode) {
+function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: BOOLEAN, fUseAnimation: BOOLEAN, usAnimState: UINT16, usAnimCode: UINT16): BOOLEAN {
   UINT8 ubDirection, ubCalculatedDirection;
   SOLDIERTYPE *pSoldier;
   INT16 sGridNo;
@@ -964,19 +964,19 @@ BOOLEAN InternalAddSoldierToSector(UINT8 ubID, BOOLEAN fCalculateDirection, BOOL
   return FALSE;
 }
 
-BOOLEAN AddSoldierToSector(UINT8 ubID) {
+function AddSoldierToSector(ubID: UINT8): BOOLEAN {
   return InternalAddSoldierToSector(ubID, TRUE, FALSE, 0, 0);
 }
 
-BOOLEAN AddSoldierToSectorNoCalculateDirection(UINT8 ubID) {
+function AddSoldierToSectorNoCalculateDirection(ubID: UINT8): BOOLEAN {
   return InternalAddSoldierToSector(ubID, FALSE, FALSE, 0, 0);
 }
 
-BOOLEAN AddSoldierToSectorNoCalculateDirectionUseAnimation(UINT8 ubID, UINT16 usAnimState, UINT16 usAnimCode) {
+function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, usAnimState: UINT16, usAnimCode: UINT16): BOOLEAN {
   return InternalAddSoldierToSector(ubID, FALSE, TRUE, usAnimState, usAnimCode);
 }
 
-void InternalSoldierInSectorSleep(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fDoTransition) {
+function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fDoTransition: BOOLEAN): void {
   INT16 sWorldX, sWorldY;
   UINT8 ubNewDirection;
   INT16 sGoodGridNo;
@@ -1014,7 +1014,7 @@ void InternalSoldierInSectorSleep(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN 
   }
 }
 
-void SoldierInSectorIncompaciated(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function SoldierInSectorIncompaciated(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   INT16 sWorldX, sWorldY;
   UINT8 ubNewDirection;
   INT16 sGoodGridNo;
@@ -1046,7 +1046,7 @@ void SoldierInSectorSleep( SOLDIERTYPE *pSoldier, INT16 sGridNo )
 }
 */
 
-void SoldierInSectorPatient(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   INT16 sWorldX, sWorldY;
   UINT8 ubNewDirection;
   INT16 sGoodGridNo;
@@ -1075,7 +1075,7 @@ void SoldierInSectorPatient(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   }
 }
 
-void SoldierInSectorDoctor(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   INT16 sWorldX, sWorldY;
   UINT8 ubNewDirection;
   INT16 sGoodGridNo;
@@ -1104,7 +1104,7 @@ void SoldierInSectorDoctor(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   }
 }
 
-void SoldierInSectorRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
   INT16 sWorldX, sWorldY;
   UINT8 ubNewDirection;
   INT16 sGoodGridNo;
@@ -1133,7 +1133,7 @@ void SoldierInSectorRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
   }
 }
 
-void AddSoldierToSectorGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection, BOOLEAN fUseAnimation, UINT16 usAnimState, UINT16 usAnimCode) {
+function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, fUseAnimation: BOOLEAN, usAnimState: UINT16, usAnimCode: UINT16): void {
   INT16 sWorldX, sWorldY;
   INT16 sNewGridNo;
   UINT8 ubNewDirection;
@@ -1262,7 +1262,7 @@ void AddSoldierToSectorGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDire
 }
 
 // IsMercOnTeam() checks to see if the passed in Merc Profile ID is currently on the player's team
-BOOLEAN IsMercOnTeam(UINT8 ubMercID) {
+function IsMercOnTeam(ubMercID: UINT8): BOOLEAN {
   UINT16 cnt;
   UINT8 ubLastTeamID;
   SOLDIERTYPE *pTeamSoldier;
@@ -1283,7 +1283,7 @@ BOOLEAN IsMercOnTeam(UINT8 ubMercID) {
 }
 
 // ATE: Added this new function for contract renewals
-BOOLEAN IsMercOnTeamAndAlive(UINT8 ubMercID) {
+function IsMercOnTeamAndAlive(ubMercID: UINT8): BOOLEAN {
   UINT16 cnt;
   UINT8 ubLastTeamID;
   SOLDIERTYPE *pTeamSoldier;
@@ -1306,7 +1306,7 @@ BOOLEAN IsMercOnTeamAndAlive(UINT8 ubMercID) {
   return FALSE;
 }
 
-BOOLEAN IsMercOnTeamAndInOmertaAlready(UINT8 ubMercID) {
+function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): BOOLEAN {
   UINT16 cnt;
   UINT8 ubLastTeamID;
   SOLDIERTYPE *pTeamSoldier;
@@ -1326,7 +1326,7 @@ BOOLEAN IsMercOnTeamAndInOmertaAlready(UINT8 ubMercID) {
   return FALSE;
 }
 
-BOOLEAN IsMercOnTeamAndInOmertaAlreadyAndAlive(UINT8 ubMercID) {
+function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): BOOLEAN {
   UINT16 cnt;
   UINT8 ubLastTeamID;
   SOLDIERTYPE *pTeamSoldier;
@@ -1350,7 +1350,7 @@ BOOLEAN IsMercOnTeamAndInOmertaAlreadyAndAlive(UINT8 ubMercID) {
 }
 
 // GetSoldierIDFromMercID() Gets the Soldier ID from the Merc Profile ID, else returns -1
-INT16 GetSoldierIDFromMercID(UINT8 ubMercID) {
+function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
   UINT16 cnt;
   UINT8 ubLastTeamID;
   SOLDIERTYPE *pTeamSoldier;

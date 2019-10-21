@@ -235,19 +235,19 @@ SOLDIERCELL *gpCivs = NULL;
 SOLDIERCELL *gpEnemies = NULL;
 
 // Simple wrappers for autoresolve sounds that are played.
-void PlayAutoResolveSample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayAutoResolveSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
   if (gpAR->fSound) {
     PlayJA2Sample(usNum, usRate, ubVolume, ubLoops, uiPan);
   }
 }
 
-void PlayAutoResolveSampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan) {
+function PlayAutoResolveSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
   if (gpAR->fSound) {
     PlayJA2SampleFromFile(szFileName, usRate, ubVolume, ubLoops, uiPan);
   }
 }
 
-void EliminateAllMercs() {
+function EliminateAllMercs(): void {
   SOLDIERCELL *pAttacker = NULL;
   INT32 i, iNum = 0;
   if (gpAR) {
@@ -271,7 +271,7 @@ void EliminateAllMercs() {
   }
 }
 
-void EliminateAllFriendlies() {
+function EliminateAllFriendlies(): void {
   INT32 i;
   if (gpAR) {
     for (i = 0; i < gpAR->ubMercs; i++) {
@@ -285,7 +285,7 @@ void EliminateAllFriendlies() {
   }
 }
 
-void EliminateAllEnemies(UINT8 ubSectorX, UINT8 ubSectorY) {
+function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
   GROUP *pGroup, *pDeleteGroup;
   SECTORINFO *pSector;
   INT32 i;
@@ -357,7 +357,7 @@ const ORIG_TOP = 53;
 const ORIG_RIGHT = 92;
 const ORIG_BOTTOM = 84;
 
-void DoTransitionFromPreBattleInterfaceToAutoResolve() {
+function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
   SGPRect SrcRect, DstRect;
   UINT32 uiStartTime, uiCurrTime;
   INT32 iPercentage, iFactor;
@@ -431,7 +431,7 @@ void DoTransitionFromPreBattleInterfaceToAutoResolve() {
   // BlitBufferToBuffer( FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480 );
 }
 
-void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY) {
+function EnterAutoResolveMode(ubSectorX: UINT8, ubSectorY: UINT8): void {
   // Set up mapscreen for removal
   SetPendingNewScreen(AUTORESOLVE_SCREEN);
   CreateDestroyMapInvButton();
@@ -482,16 +482,16 @@ void EnterAutoResolveMode(UINT8 ubSectorX, UINT8 ubSectorY) {
   }
 }
 
-UINT32 AutoResolveScreenInit() {
+function AutoResolveScreenInit(): UINT32 {
   return TRUE;
 }
 
-UINT32 AutoResolveScreenShutdown() {
+function AutoResolveScreenShutdown(): UINT32 {
   gpBattleGroup = NULL;
   return TRUE;
 }
 
-UINT32 AutoResolveScreenHandle() {
+function AutoResolveScreenHandle(): UINT32 {
   RestoreBackgroundRects();
 
   if (!gpAR) {
@@ -546,7 +546,7 @@ UINT32 AutoResolveScreenHandle() {
   return AUTORESOLVE_SCREEN;
 }
 
-void RefreshMerc(SOLDIERTYPE *pSoldier) {
+function RefreshMerc(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier->bLife = pSoldier->bLifeMax;
   pSoldier->bBleeding = 0;
   pSoldier->bBreath = pSoldier->bBreathMax = 100;
@@ -559,7 +559,7 @@ void RefreshMerc(SOLDIERTYPE *pSoldier) {
 
 // Now assign the pSoldier->ubGroupIDs for the enemies, so we know where to remove them.  Start with
 // stationary groups first.
-void AssociateEnemiesWithStrategicGroups() {
+function AssociateEnemiesWithStrategicGroups(): void {
   SECTORINFO *pSector;
   GROUP *pGroup;
   UINT8 ubNumAdmins, ubNumTroops, ubNumElites;
@@ -635,7 +635,7 @@ void AssociateEnemiesWithStrategicGroups() {
   }
 }
 
-void CalculateSoldierCells(BOOLEAN fReset) {
+function CalculateSoldierCells(fReset: BOOLEAN): void {
   INT32 i, x, y;
   INT32 index, iStartY, iTop, gapStartRow;
   INT32 iMaxTeamSize;
@@ -742,7 +742,7 @@ void CalculateSoldierCells(BOOLEAN fReset) {
   }
 }
 
-void RenderSoldierCell(SOLDIERCELL *pCell) {
+function RenderSoldierCell(pCell: Pointer<SOLDIERCELL>): void {
   UINT8 x;
   if (pCell->uiFlags & CELL_MERC) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 36, pCell->yp + 2, pCell->xp + 44, pCell->yp + 30, 0);
@@ -809,7 +809,7 @@ void RenderSoldierCell(SOLDIERCELL *pCell) {
   }
 }
 
-void RenderSoldierCellBars(SOLDIERCELL *pCell) {
+function RenderSoldierCellBars(pCell: Pointer<SOLDIERCELL>): void {
   INT32 iStartY;
   // HEALTH BAR
   if (!pCell->pSoldier->bLife)
@@ -836,7 +836,7 @@ void RenderSoldierCellBars(SOLDIERCELL *pCell) {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 46, iStartY, pCell->xp + 47, pCell->yp + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
 }
 
-void BuildInterfaceBuffer() {
+function BuildInterfaceBuffer(): void {
   VSURFACE_DESC vs_desc;
   UINT16 usUselessWidth, usUselessHeight;
   UINT8 ubBitDepth;
@@ -912,7 +912,7 @@ void BuildInterfaceBuffer() {
   SetClippingRect(&ClipRect);
 }
 
-void ExpandWindow() {
+function ExpandWindow(): void {
   SGPRect OldRect;
   UINT32 uiDestPitchBYTES;
   UINT32 uiCurrentTime, uiTimeRange, uiPercent;
@@ -1001,7 +1001,7 @@ void ExpandWindow() {
   InvalidateRegion(gpAR->ExRect.iLeft, gpAR->ExRect.iBottom, gpAR->ExRect.iRight + 1, gpAR->ExRect.iBottom + 1);
 }
 
-UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJECTTYPE *pKit, INT16 sKitPts, INT16 sStatus) {
+function VirtualSoldierDressWound(pSoldier: Pointer<SOLDIERTYPE>, pVictim: Pointer<SOLDIERTYPE>, pKit: Pointer<OBJECTTYPE>, sKitPts: INT16, sStatus: INT16): UINT32 {
   UINT32 uiDressSkill, uiPossible, uiActual, uiMedcost, uiDeficiency, uiAvailAPs, uiUsedAPs;
   UINT8 bBelowOKlife, bPtsLeft;
 
@@ -1143,7 +1143,7 @@ UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJ
   return uiMedcost;
 }
 
-OBJECTTYPE *FindMedicalKit() {
+function FindMedicalKit(): Pointer<OBJECTTYPE> {
   INT32 i;
   INT32 iSlot;
   for (i = 0; i < gpAR->ubMercs; i++) {
@@ -1155,7 +1155,7 @@ OBJECTTYPE *FindMedicalKit() {
   return NULL;
 }
 
-UINT32 AutoBandageMercs() {
+function AutoBandageMercs(): UINT32 {
   INT32 i, iBest;
   UINT32 uiPointsUsed, uiCurrPointsUsed, uiMaxPointsUsed, uiParallelPointsUsed;
   UINT16 usKitPts;
@@ -1238,7 +1238,7 @@ UINT32 AutoBandageMercs() {
   return 1;
 }
 
-void RenderAutoResolve() {
+function RenderAutoResolve(): void {
   INT32 i;
   HVSURFACE hVSurface;
   INT32 xp, yp;
@@ -1472,7 +1472,7 @@ void RenderAutoResolve() {
   InvalidateScreen();
 }
 
-void CreateAutoResolveInterface() {
+function CreateAutoResolveInterface(): void {
   VOBJECT_DESC VObjectDesc;
   INT32 i, index;
   HVOBJECT hVObject;
@@ -1717,7 +1717,7 @@ void CreateAutoResolveInterface() {
   ButtonList[gpAR->iButton[PLAY_BUTTON]]->uiFlags |= BUTTON_CLICKED_ON;
 }
 
-void RemoveAutoResolveInterface(BOOLEAN fDeleteForGood) {
+function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
   INT32 i;
   UINT8 ubCurrentRank;
   UINT8 ubCurrentGroupID = 0;
@@ -1921,7 +1921,7 @@ void RemoveAutoResolveInterface(BOOLEAN fDeleteForGood) {
   // VtPauseSampling();
 }
 
-void PauseButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function PauseButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[gpAR->iButton[PLAY_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR->iButton[FAST_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1930,7 +1930,7 @@ void PauseButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void PlayButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function PlayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[gpAR->iButton[PAUSE_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR->iButton[FAST_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1940,7 +1940,7 @@ void PlayButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void FastButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function FastButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[gpAR->iButton[PAUSE_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR->iButton[PLAY_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1950,7 +1950,7 @@ void FastButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void FinishButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function FinishButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[gpAR->iButton[PAUSE_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[gpAR->iButton[PLAY_BUTTON]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -1962,7 +1962,7 @@ void FinishButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RetreatButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function RetreatButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     INT32 i;
     for (i = 0; i < gpAR->ubMercs; i++) {
@@ -1997,7 +1997,7 @@ void RetreatButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void DetermineBandageButtonState() {
+function DetermineBandageButtonState(): void {
   INT32 i;
   OBJECTTYPE *pKit = NULL;
   BOOLEAN fFound = FALSE;
@@ -2043,20 +2043,20 @@ void DetermineBandageButtonState() {
   SetButtonFastHelpText(gpAR->iButton[BANDAGE_BUTTON], gzLateLocalizedString[12]);
 }
 
-void BandageButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BandageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     AutoBandageMercs();
     SetupDoneInterface();
   }
 }
 
-void DoneButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoneButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpAR->fExitAutoResolve = TRUE;
   }
 }
 
-void MercCellMouseMoveCallback(MOUSE_REGION *reg, INT32 reason) {
+function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   // Find the merc with the same region.
   INT32 i;
   SOLDIERCELL *pCell = NULL;
@@ -2084,7 +2084,7 @@ void MercCellMouseMoveCallback(MOUSE_REGION *reg, INT32 reason) {
   }
 }
 
-void MercCellMouseClickCallback(MOUSE_REGION *reg, INT32 reason) {
+function MercCellMouseClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Find the merc with the same region.
     INT32 i;
@@ -2144,7 +2144,7 @@ void MercCellMouseClickCallback(MOUSE_REGION *reg, INT32 reason) {
 
 // Determine how many players, militia, and enemies that are going at it, and use these values
 // to figure out how many rows and columns we can use.  The will effect the size of the panel.
-void CalculateAutoResolveInfo() {
+function CalculateAutoResolveInfo(): void {
   VOBJECT_DESC VObjectDesc;
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
@@ -2198,7 +2198,7 @@ void CalculateAutoResolveInfo() {
   CalculateRowsAndColumns();
 }
 
-void ResetAutoResolveInterface() {
+function ResetAutoResolveInterface(): void {
   guiPreRandomIndex = gpAR->uiPreRandomIndex;
 
   RemoveAutoResolveInterface(FALSE);
@@ -2274,7 +2274,7 @@ void ResetAutoResolveInterface() {
   CalculateAttackValues();
 }
 
-void CalculateRowsAndColumns() {
+function CalculateRowsAndColumns(): void {
   // now that we have the number on each team, calculate the number of rows and columns to be used on
   // the player's sides.  NOTE:  Militia won't appear on the same row as mercs.
   if (!gpAR->ubMercs) {
@@ -2402,7 +2402,7 @@ void CalculateRowsAndColumns() {
   }
 }
 
-void HandleAutoResolveInput() {
+function HandleAutoResolveInput(): void {
   InputAtom InputEvent;
   BOOLEAN fResetAutoResolve = FALSE;
   while (DequeueEvent(&InputEvent)) {
@@ -2433,7 +2433,7 @@ void HandleAutoResolveInput() {
   }
 }
 
-void RenderSoldierCellHealth(SOLDIERCELL *pCell) {
+function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
   INT32 cnt, cntStart;
   INT32 xp, yp;
   UINT16 *pStr;
@@ -2520,7 +2520,7 @@ void RenderSoldierCellHealth(SOLDIERCELL *pCell) {
   mprintf(xp, yp, pStr);
 }
 
-UINT8 GetUnusedMercProfileID() {
+function GetUnusedMercProfileID(): UINT8 {
   UINT8 ubRandom = 0;
   INT32 i;
   BOOLEAN fUnique = FALSE;
@@ -2537,7 +2537,7 @@ UINT8 GetUnusedMercProfileID() {
   return ubRandom;
 }
 
-void CreateTempPlayerMerc() {
+function CreateTempPlayerMerc(): void {
   SOLDIERCREATE_STRUCT MercCreateStruct;
   static INT32 iSoldierCount = 0;
   UINT8 ubID;
@@ -2560,7 +2560,7 @@ void CreateTempPlayerMerc() {
   }
 }
 
-void DetermineTeamLeader(BOOLEAN fFriendlyTeam) {
+function DetermineTeamLeader(fFriendlyTeam: BOOLEAN): void {
   INT32 i;
   SOLDIERCELL *pBestLeaderCell = NULL;
   // For each team (civs and players count as same team), find the merc with the best
@@ -2600,7 +2600,7 @@ void DetermineTeamLeader(BOOLEAN fFriendlyTeam) {
   }
 }
 
-void ResetNextAttackCounter(SOLDIERCELL *pCell) {
+function ResetNextAttackCounter(pCell: Pointer<SOLDIERCELL>): void {
   pCell->usNextAttack = min(1000 - pCell->usAttack, 800);
   pCell->usNextAttack = (UINT16)(1000 + pCell->usNextAttack * 5 + PreRandom(2000 - pCell->usAttack));
   if (pCell->uiFlags & CELL_CREATURE) {
@@ -2608,7 +2608,7 @@ void ResetNextAttackCounter(SOLDIERCELL *pCell) {
   }
 }
 
-void CalculateAttackValues() {
+function CalculateAttackValues(): void {
   INT32 i;
   SOLDIERCELL *pCell;
   SOLDIERTYPE *pSoldier;
@@ -2752,7 +2752,7 @@ void CalculateAttackValues() {
     gpEnemies[i].usNextAttack -= usBestAttack;
 }
 
-void DrawDebugText(SOLDIERCELL *pCell) {
+function DrawDebugText(pCell: Pointer<SOLDIERCELL>): void {
   INT32 xp, yp;
   if (!gpAR->fDebugInfo)
     return;
@@ -2794,7 +2794,7 @@ void DrawDebugText(SOLDIERCELL *pCell) {
   }
 }
 
-SOLDIERCELL *ChooseTarget(SOLDIERCELL *pAttacker) {
+function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
   INT32 iAvailableTargets;
   INT32 index;
   INT32 iRandom = -1;
@@ -2851,7 +2851,7 @@ SOLDIERCELL *ChooseTarget(SOLDIERCELL *pAttacker) {
   return NULL;
 }
 
-BOOLEAN FireAShot(SOLDIERCELL *pAttacker) {
+function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
   OBJECTTYPE *pItem;
   SOLDIERTYPE *pSoldier;
   INT32 i;
@@ -2895,7 +2895,7 @@ BOOLEAN FireAShot(SOLDIERCELL *pAttacker) {
   return FALSE;
 }
 
-BOOLEAN AttackerHasKnife(SOLDIERCELL *pAttacker) {
+function AttackerHasKnife(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
   INT32 i;
   for (i = 0; i < NUM_INV_SLOTS; i++) {
     if (Item[pAttacker->pSoldier->inv[i].usItem].usItemClass == IC_BLADE) {
@@ -2907,7 +2907,7 @@ BOOLEAN AttackerHasKnife(SOLDIERCELL *pAttacker) {
   return FALSE;
 }
 
-BOOLEAN TargetHasLoadedGun(SOLDIERTYPE *pSoldier) {
+function TargetHasLoadedGun(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 i;
   OBJECTTYPE *pItem;
   for (i = 0; i < NUM_INV_SLOTS; i++) {
@@ -2924,7 +2924,7 @@ BOOLEAN TargetHasLoadedGun(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-void AttackTarget(SOLDIERCELL *pAttacker, SOLDIERCELL *pTarget) {
+function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERCELL>): void {
   UINT16 usAttack;
   UINT16 usDefence;
   UINT8 ubImpact;
@@ -3130,7 +3130,7 @@ void AttackTarget(SOLDIERCELL *pAttacker, SOLDIERCELL *pTarget) {
   }
 }
 
-void TargetHitCallback(SOLDIERCELL *pTarget, INT32 index) {
+function TargetHitCallback(pTarget: Pointer<SOLDIERCELL>, index: INT32): void {
   INT32 iNewLife;
   SOLDIERCELL *pAttacker;
   if (!pTarget->pSoldier->bLife) {
@@ -3287,14 +3287,14 @@ void TargetHitCallback(SOLDIERCELL *pTarget, INT32 index) {
   pTarget->uiFlags |= CELL_HITBYATTACKER | CELL_DIRTY;
 }
 
-void Delay(UINT32 uiMilliseconds) {
+function Delay(uiMilliseconds: UINT32): void {
   INT32 iTime;
   iTime = GetJA2Clock();
   while (GetJA2Clock() < iTime + uiMilliseconds)
     ;
 }
 
-BOOLEAN IsBattleOver() {
+function IsBattleOver(): BOOLEAN {
   INT32 i;
   INT32 iNumInvolvedMercs = 0;
   INT32 iNumMercsRetreated = 0;
@@ -3372,7 +3372,7 @@ BOOLEAN IsBattleOver() {
 
 //#define TESTSURRENDER
 
-BOOLEAN AttemptPlayerCapture() {
+function AttemptPlayerCapture(): BOOLEAN {
   INT32 i;
   BOOLEAN fConcious;
   INT32 iConciousEnemies;
@@ -3440,7 +3440,7 @@ BOOLEAN AttemptPlayerCapture() {
   return TRUE;
 }
 
-void SetupDoneInterface() {
+function SetupDoneInterface(): void {
   INT32 i;
   gpAR->fRenderAutoResolve = TRUE;
 
@@ -3464,7 +3464,7 @@ void SetupDoneInterface() {
   }
 }
 
-void SetupSurrenderInterface() {
+function SetupSurrenderInterface(): void {
   HideButton(gpAR->iButton[PAUSE_BUTTON]);
   HideButton(gpAR->iButton[PLAY_BUTTON]);
   HideButton(gpAR->iButton[FAST_BUTTON]);
@@ -3479,7 +3479,7 @@ void SetupSurrenderInterface() {
   gpAR->fPendingSurrender = TRUE;
 }
 
-void HideSurrenderInterface() {
+function HideSurrenderInterface(): void {
   HideButton(gpAR->iButton[PAUSE_BUTTON]);
   HideButton(gpAR->iButton[PLAY_BUTTON]);
   HideButton(gpAR->iButton[FAST_BUTTON]);
@@ -3494,7 +3494,7 @@ void HideSurrenderInterface() {
   gpAR->fRenderAutoResolve = TRUE;
 }
 
-void AcceptSurrenderCallback(GUI_BUTTON *btn, INT32 reason) {
+function AcceptSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     BeginCaptureSquence();
 
@@ -3504,14 +3504,14 @@ void AcceptSurrenderCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void RejectSurrenderCallback(GUI_BUTTON *btn, INT32 reason) {
+function RejectSurrenderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gpAR->fPlayerRejectedSurrenderOffer = TRUE;
     HideSurrenderInterface();
   }
 }
 
-void ProcessBattleFrame() {
+function ProcessBattleFrame(): void {
   INT32 iRandom;
   INT32 i;
   SOLDIERCELL *pAttacker, *pTarget;
@@ -3683,7 +3683,7 @@ void ProcessBattleFrame() {
   }
 }
 
-BOOLEAN IsAutoResolveActive() {
+function IsAutoResolveActive(): BOOLEAN {
   // is the autoresolve up or not?
   if (gpAR) {
     return TRUE;
@@ -3691,7 +3691,7 @@ BOOLEAN IsAutoResolveActive() {
   return FALSE;
 }
 
-UINT8 GetAutoResolveSectorID() {
+function GetAutoResolveSectorID(): UINT8 {
   if (gpAR) {
     return (UINT8)SECTOR(gpAR->ubSectorX, gpAR->ubSectorY);
   }
@@ -3699,7 +3699,7 @@ UINT8 GetAutoResolveSectorID() {
 }
 
 // Returns TRUE if a battle is happening or sector is loaded
-BOOLEAN GetCurrentBattleSectorXYZ(INT16 *psSectorX, INT16 *psSectorY, INT16 *psSectorZ) {
+function GetCurrentBattleSectorXYZ(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
   if (gpAR) {
     *psSectorX = gpAR->ubSectorX;
     *psSectorY = gpAR->ubSectorY;
@@ -3724,7 +3724,7 @@ BOOLEAN GetCurrentBattleSectorXYZ(INT16 *psSectorX, INT16 *psSectorY, INT16 *psS
 }
 
 // Returns TRUE if a battle is happening ONLY
-BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(INT16 *psSectorX, INT16 *psSectorY, INT16 *psSectorZ) {
+function GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, psSectorZ: Pointer<INT16>): BOOLEAN {
   if (gpAR) {
     *psSectorX = gpAR->ubSectorX;
     *psSectorY = gpAR->ubSectorY;
@@ -3751,6 +3751,6 @@ BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(INT16 *psSectorX,
   }
 }
 
-void AutoBandageFinishedCallback(UINT8 ubResult) {
+function AutoBandageFinishedCallback(ubResult: UINT8): void {
   SetupDoneInterface();
 }

@@ -63,7 +63,7 @@ BOOLEAN gfWaitingForInput = FALSE;
 //.........................
 // Creates a new player group, returning the unique ID of that group.  This is the first
 // step before adding waypoints and members to the player group.
-UINT8 CreateNewPlayerGroupDepartingFromSector(UINT8 ubSectorX, UINT8 ubSectorY) {
+function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8): UINT8 {
   GROUP *pNew;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewPlayerGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewPlayerGroup with out of range sectorY value of %d", ubSectorY));
@@ -88,7 +88,7 @@ UINT8 CreateNewPlayerGroupDepartingFromSector(UINT8 ubSectorX, UINT8 ubSectorY) 
   return AddGroupToList(pNew);
 }
 
-UINT8 CreateNewVehicleGroupDepartingFromSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT32 uiUNISEDVehicleId) {
+function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UINT8, uiUNISEDVehicleId: UINT32): UINT8 {
   GROUP *pNew;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewVehicleGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewVehicleGroup with out of range sectorY value of %d", ubSectorY));
@@ -116,7 +116,7 @@ UINT8 CreateNewVehicleGroupDepartingFromSector(UINT8 ubSectorX, UINT8 ubSectorY,
 }
 
 // Allows you to add players to the group.
-BOOLEAN AddPlayerToGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
+function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer, *curr;
   pGroup = GetGroup(ubGroupID);
@@ -163,7 +163,7 @@ BOOLEAN AddPlayerToGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
 }
 
 // remove all grunts from player mvt grp
-BOOLEAN RemoveAllPlayersFromGroup(UINT8 ubGroupId) {
+function RemoveAllPlayersFromGroup(ubGroupId: UINT8): BOOLEAN {
   GROUP *pGroup;
 
   // grab group id
@@ -175,7 +175,7 @@ BOOLEAN RemoveAllPlayersFromGroup(UINT8 ubGroupId) {
   return RemoveAllPlayersFromPGroup(pGroup);
 }
 
-BOOLEAN RemoveAllPlayersFromPGroup(GROUP *pGroup) {
+function RemoveAllPlayersFromPGroup(pGroup: Pointer<GROUP>): BOOLEAN {
   PLAYERGROUP *curr;
 
   AssertMsg(pGroup->fPlayer, "Attempting RemovePlayerFromGroup() on an ENEMY group!");
@@ -203,7 +203,7 @@ BOOLEAN RemoveAllPlayersFromPGroup(GROUP *pGroup) {
   return TRUE;
 }
 
-BOOLEAN RemovePlayerFromPGroup(GROUP *pGroup, SOLDIERTYPE *pSoldier) {
+function RemovePlayerFromPGroup(pGroup: Pointer<GROUP>, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   PLAYERGROUP *prev, *curr;
   AssertMsg(pGroup->fPlayer, "Attempting RemovePlayerFromGroup() on an ENEMY group!");
 
@@ -265,7 +265,7 @@ BOOLEAN RemovePlayerFromPGroup(GROUP *pGroup, SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN RemovePlayerFromGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
+function RemovePlayerFromGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
 
@@ -282,7 +282,7 @@ BOOLEAN RemovePlayerFromGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
   return RemovePlayerFromPGroup(pGroup, pSoldier);
 }
 
-BOOLEAN GroupReversingDirectionsBetweenSectors(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY, BOOLEAN fBuildingWaypoints) {
+function GroupReversingDirectionsBetweenSectors(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8, fBuildingWaypoints: BOOLEAN): BOOLEAN {
   // if we're not between sectors, or we are but we're continuing in the same direction as before
   if (!GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup, ubSectorX, ubSectorY)) {
     // then there's no need to reverse directions
@@ -339,7 +339,7 @@ BOOLEAN GroupReversingDirectionsBetweenSectors(GROUP *pGroup, UINT8 ubSectorX, U
   return TRUE;
 }
 
-BOOLEAN GroupBetweenSectorsAndSectorXYIsInDifferentDirection(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY) {
+function GroupBetweenSectorsAndSectorXYIsInDifferentDirection(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): BOOLEAN {
   INT32 currDX, currDY, newDX, newDY;
   UINT8 ubNumUnalignedAxes = 0;
 
@@ -383,7 +383,7 @@ BOOLEAN GroupBetweenSectorsAndSectorXYIsInDifferentDirection(GROUP *pGroup, UINT
 
 // Appends a waypoint to the end of the list.  Waypoint MUST be on the
 // same horizontal or vertical level as the last waypoint added.
-BOOLEAN AddWaypointToPGroup(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY) // Same, but overloaded
+function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): BOOLEAN // Same, but overloaded
 {
   WAYPOINT *pWay;
   UINT8 ubNumAlignedAxes = 0;
@@ -488,34 +488,34 @@ BOOLEAN AddWaypointToPGroup(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY) // 
   return TRUE;
 }
 
-BOOLEAN AddWaypointToGroup(UINT8 ubGroupID, UINT8 ubSectorX, UINT8 ubSectorY) {
+function AddWaypointToGroup(ubGroupID: UINT8, ubSectorX: UINT8, ubSectorY: UINT8): BOOLEAN {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   return AddWaypointToPGroup(pGroup, ubSectorX, ubSectorY);
 }
 
 // NOTE: This does NOT expect a strategic sector ID
-BOOLEAN AddWaypointIDToGroup(UINT8 ubGroupID, UINT8 ubSectorID) {
+function AddWaypointIDToGroup(ubGroupID: UINT8, ubSectorID: UINT8): BOOLEAN {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   return AddWaypointIDToPGroup(pGroup, ubSectorID);
 }
 
 // NOTE: This does NOT expect a strategic sector ID
-BOOLEAN AddWaypointIDToPGroup(GROUP *pGroup, UINT8 ubSectorID) {
+function AddWaypointIDToPGroup(pGroup: Pointer<GROUP>, ubSectorID: UINT8): BOOLEAN {
   UINT8 ubSectorX, ubSectorY;
   ubSectorX = SECTORX(ubSectorID);
   ubSectorY = SECTORY(ubSectorID);
   return AddWaypointToPGroup(pGroup, ubSectorX, ubSectorY);
 }
 
-BOOLEAN AddWaypointStrategicIDToGroup(UINT8 ubGroupID, UINT32 uiSectorID) {
+function AddWaypointStrategicIDToGroup(ubGroupID: UINT8, uiSectorID: UINT32): BOOLEAN {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   return AddWaypointStrategicIDToPGroup(pGroup, uiSectorID);
 }
 
-BOOLEAN AddWaypointStrategicIDToPGroup(GROUP *pGroup, UINT32 uiSectorID) {
+function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT32): BOOLEAN {
   UINT8 ubSectorX, ubSectorY;
   ubSectorX = (UINT8)GET_X_FROM_STRATEGIC_INDEX(uiSectorID);
   ubSectorY = (UINT8)GET_Y_FROM_STRATEGIC_INDEX(uiSectorID);
@@ -524,7 +524,7 @@ BOOLEAN AddWaypointStrategicIDToPGroup(GROUP *pGroup, UINT32 uiSectorID) {
 
 // Enemy grouping functions -- private use by the strategic AI.
 //............................................................
-GROUP *CreateNewEnemyGroupDepartingFromSector(UINT32 uiSector, UINT8 ubNumAdmins, UINT8 ubNumTroops, UINT8 ubNumElites) {
+function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8): Pointer<GROUP> {
   GROUP *pNew;
   AssertMsg(uiSector >= 0 && uiSector <= 255, String("CreateNewEnemyGroup with out of range value of %d", uiSector));
   pNew = (GROUP *)MemAlloc(sizeof(GROUP));
@@ -562,7 +562,7 @@ GROUP *CreateNewEnemyGroupDepartingFromSector(UINT32 uiSector, UINT8 ubNumAdmins
 // 1)  Find the first unused ID (unique)
 // 2)  Assign that ID to the new group
 // 3)  Insert the group at the end of the list.
-UINT8 AddGroupToList(GROUP *pGroup) {
+function AddGroupToList(pGroup: Pointer<GROUP>): UINT8 {
   GROUP *curr;
   UINT32 bit, index, mask;
   UINT8 ID = 0;
@@ -591,7 +591,7 @@ UINT8 AddGroupToList(GROUP *pGroup) {
   return FALSE;
 }
 
-void RemoveGroupIdFromList(UINT8 ubId) {
+function RemoveGroupIdFromList(ubId: UINT8): void {
   GROUP *pGroup;
 
   if (ubId == 0) {
@@ -609,7 +609,7 @@ void RemoveGroupIdFromList(UINT8 ubId) {
   RemoveGroupFromList(pGroup);
 }
 // Destroys the waypoint list, detaches group from list, then deallocated the memory for the group
-void RemoveGroupFromList(GROUP *pGroup) {
+function RemoveGroupFromList(pGroup: Pointer<GROUP>): void {
   GROUP *curr, *temp;
   curr = gpGroupList;
   if (!curr)
@@ -652,7 +652,7 @@ void RemoveGroupFromList(GROUP *pGroup) {
   }
 }
 
-GROUP *GetGroup(UINT8 ubGroupID) {
+function GetGroup(ubGroupID: UINT8): Pointer<GROUP> {
   GROUP *curr;
   curr = gpGroupList;
   while (curr) {
@@ -663,7 +663,7 @@ GROUP *GetGroup(UINT8 ubGroupID) {
   return NULL;
 }
 
-void HandleImportantPBIQuote(SOLDIERTYPE *pSoldier, GROUP *pInitiatingBattleGroup) {
+function HandleImportantPBIQuote(pSoldier: Pointer<SOLDIERTYPE>, pInitiatingBattleGroup: Pointer<GROUP>): void {
   // wake merc up for THIS quote
   if (pSoldier->fMercAsleep) {
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 0, 0);
@@ -677,7 +677,7 @@ void HandleImportantPBIQuote(SOLDIERTYPE *pSoldier, GROUP *pInitiatingBattleGrou
 // If this is called, we are setting the game up to bring up the prebattle interface.  Before doing so,
 // one of the involved mercs will pipe up.  When he is finished, we automatically go into the mapscreen,
 // regardless of the mode we are in.
-void PrepareForPreBattleInterface(GROUP *pPlayerDialogGroup, GROUP *pInitiatingBattleGroup) {
+function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pInitiatingBattleGroup: Pointer<GROUP>): void {
   // ATE; Changed alogrithm here...
   // We first loop through the group and save ubID's ov valid guys to talk....
   // ( Can't if sleeping, unconscious, and EPC, etc....
@@ -762,7 +762,7 @@ void PrepareForPreBattleInterface(GROUP *pPlayerDialogGroup, GROUP *pInitiatingB
   }
 }
 
-BOOLEAN CheckConditionsForBattle(GROUP *pGroup) {
+function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
   GROUP *curr;
   GROUP *pPlayerDialogGroup = NULL;
   PLAYERGROUP *pPlayer;
@@ -916,13 +916,13 @@ BOOLEAN CheckConditionsForBattle(GROUP *pGroup) {
   return FALSE;
 }
 
-void TriggerPrebattleInterface(UINT8 ubResult) {
+function TriggerPrebattleInterface(ubResult: UINT8): void {
   StopTimeCompression();
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE, (UINT32)gpInitPrebattleGroup, 0, 0, 0, 0);
   gpInitPrebattleGroup = NULL;
 }
 
-void DeployGroupToSector(GROUP *pGroup) {
+function DeployGroupToSector(pGroup: Pointer<GROUP>): void {
   Assert(pGroup);
   if (pGroup->fPlayer) {
     // Update the sector positions of the players...
@@ -933,7 +933,7 @@ void DeployGroupToSector(GROUP *pGroup) {
 
 // This will get called after a battle is auto-resolved or automatically after arriving
 // at the next sector during a move and the area is clear.
-void CalculateNextMoveIntention(GROUP *pGroup) {
+function CalculateNextMoveIntention(pGroup: Pointer<GROUP>): void {
   INT32 i;
   WAYPOINT *wp;
 
@@ -1013,7 +1013,7 @@ void CalculateNextMoveIntention(GROUP *pGroup) {
   InitiateGroupMovementToNextSector(pGroup);
 }
 
-BOOLEAN AttemptToMergeSeparatedGroups(GROUP *pGroup, BOOLEAN fDecrementTraversals) {
+function AttemptToMergeSeparatedGroups(pGroup: Pointer<GROUP>, fDecrementTraversals: BOOLEAN): BOOLEAN {
   GROUP *curr = NULL;
   SOLDIERTYPE *pSoldier = NULL, *pCharacter = NULL;
   PLAYERGROUP *pPlayer = NULL;
@@ -1021,7 +1021,7 @@ BOOLEAN AttemptToMergeSeparatedGroups(GROUP *pGroup, BOOLEAN fDecrementTraversal
   return FALSE;
 }
 
-void AwardExperienceForTravelling(GROUP *pGroup) {
+function AwardExperienceForTravelling(pGroup: Pointer<GROUP>): void {
   // based on how long movement took, mercs gain a bit of life experience for travelling
   PLAYERGROUP *pPlayerGroup;
   SOLDIERTYPE *pSoldier;
@@ -1058,7 +1058,7 @@ void AwardExperienceForTravelling(GROUP *pGroup) {
   }
 }
 
-void AddCorpsesToBloodcatLair(INT16 sSectorX, INT16 sSectorY) {
+function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   ROTTING_CORPSE_DEFINITION Corpse;
   INT16 sXPos, sYPos;
 
@@ -1116,7 +1116,7 @@ void AddCorpsesToBloodcatLair(INT16 sSectorX, INT16 sSectorY) {
 // This is called whenever any group arrives in the next sector (player or enemy)
 // This function will first check to see if a battle should start, or if they
 // aren't at the final destination, they will move to the next sector.
-void GroupArrivedAtSector(UINT8 ubGroupID, BOOLEAN fCheckForBattle, BOOLEAN fNeverLeft) {
+function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNeverLeft: BOOLEAN): void {
   GROUP *pGroup;
   INT32 iVehId = -1;
   PLAYERGROUP *curr;
@@ -1456,7 +1456,7 @@ void GroupArrivedAtSector(UINT8 ubGroupID, BOOLEAN fCheckForBattle, BOOLEAN fNev
   gfWaitingForInput = FALSE;
 }
 
-void HandleNonCombatGroupArrival(GROUP *pGroup, BOOLEAN fMainGroup, BOOLEAN fNeverLeft) {
+function HandleNonCombatGroupArrival(pGroup: Pointer<GROUP>, fMainGroup: BOOLEAN, fNeverLeft: BOOLEAN): void {
   // if any mercs are actually in the group
 
   if (StrategicAILookForAdjacentGroups(pGroup)) {
@@ -1510,7 +1510,7 @@ void HandleNonCombatGroupArrival(GROUP *pGroup, BOOLEAN fMainGroup, BOOLEAN fNev
 // groups that may arrive at the same time -- enemies or players, and blindly add them to the sector
 // without checking for battle conditions, as it has already determined that a new battle is about to
 // start.
-void HandleOtherGroupsArrivingSimultaneously(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
+function HandleOtherGroupsArrivingSimultaneously(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): void {
   STRATEGICEVENT *pEvent;
   UINT32 uiCurrTimeStamp;
   GROUP *pGroup;
@@ -1538,7 +1538,7 @@ void HandleOtherGroupsArrivingSimultaneously(UINT8 ubSectorX, UINT8 ubSectorY, U
 
 // The user has just approved to plan a simultaneous arrival.  So we will syncronize all of the involved
 // groups so that they arrive at the same time (which is the time the final group would arrive).
-void PrepareGroupsForSimultaneousArrival() {
+function PrepareGroupsForSimultaneousArrival(): void {
   GROUP *pGroup;
   UINT32 uiLatestArrivalTime = 0;
   SOLDIERTYPE *pSoldier = NULL;
@@ -1612,7 +1612,7 @@ void PrepareGroupsForSimultaneousArrival() {
 // See if there are other groups OTW.  If so, and if we haven't asked the user yet to plan
 // a simultaneous attack, do so now, and readjust the groups accordingly.  If it is possible
 // to do so, then we will set up the gui, and postpone the prebattle interface.
-BOOLEAN PossibleToCoordinateSimultaneousGroupArrivals(GROUP *pFirstGroup) {
+function PossibleToCoordinateSimultaneousGroupArrivals(pFirstGroup: Pointer<GROUP>): BOOLEAN {
   GROUP *pGroup;
   UINT8 ubNumNearbyGroups = 0;
 
@@ -1677,7 +1677,7 @@ BOOLEAN PossibleToCoordinateSimultaneousGroupArrivals(GROUP *pFirstGroup) {
   return FALSE;
 }
 
-void PlanSimultaneousGroupArrivalCallback(UINT8 bMessageValue) {
+function PlanSimultaneousGroupArrivalCallback(bMessageValue: UINT8): void {
   if (bMessageValue == MSG_BOX_RETURN_YES) {
     PrepareGroupsForSimultaneousArrival();
   } else {
@@ -1687,7 +1687,7 @@ void PlanSimultaneousGroupArrivalCallback(UINT8 bMessageValue) {
   UnPauseGame();
 }
 
-void DelayEnemyGroupsIfPathsCross(GROUP *pPlayerGroup) {
+function DelayEnemyGroupsIfPathsCross(pPlayerGroup: Pointer<GROUP>): void {
   GROUP *pGroup;
   pGroup = gpGroupList;
   while (pGroup) {
@@ -1712,7 +1712,7 @@ void DelayEnemyGroupsIfPathsCross(GROUP *pPlayerGroup) {
   }
 }
 
-void InitiateGroupMovementToNextSector(GROUP *pGroup) {
+function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
   INT32 dx, dy;
   INT32 i;
   UINT8 ubDirection;
@@ -1865,14 +1865,14 @@ void InitiateGroupMovementToNextSector(GROUP *pGroup) {
   }
 }
 
-void RemoveGroupWaypoints(UINT8 ubGroupID) {
+function RemoveGroupWaypoints(ubGroupID: UINT8): void {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
   RemovePGroupWaypoints(pGroup);
 }
 
-void RemovePGroupWaypoints(GROUP *pGroup) {
+function RemovePGroupWaypoints(pGroup: Pointer<GROUP>): void {
   WAYPOINT *wp;
   // if there aren't any waypoints to delete, then return.  This also avoids setting
   // the fWaypointsCancelled flag.
@@ -1894,7 +1894,7 @@ void RemovePGroupWaypoints(GROUP *pGroup) {
 }
 
 // set groups waypoints as cancelled
-void SetWayPointsAsCanceled(UINT8 ubGroupID) {
+function SetWayPointsAsCanceled(ubGroupID: UINT8): void {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
@@ -1905,7 +1905,7 @@ void SetWayPointsAsCanceled(UINT8 ubGroupID) {
 }
 
 // set this groups previous sector values
-void SetGroupPrevSectors(UINT8 ubGroupID, UINT8 ubX, UINT8 ubY) {
+function SetGroupPrevSectors(ubGroupID: UINT8, ubX: UINT8, ubY: UINT8): void {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
@@ -1915,7 +1915,7 @@ void SetGroupPrevSectors(UINT8 ubGroupID, UINT8 ubX, UINT8 ubY) {
   pGroup->ubPrevY = ubY;
 }
 
-void RemoveGroup(UINT8 ubGroupID) {
+function RemoveGroup(ubGroupID: UINT8): void {
   GROUP *pGroup;
   pGroup = GetGroup(ubGroupID);
 
@@ -1929,7 +1929,7 @@ void RemoveGroup(UINT8 ubGroupID) {
 
 BOOLEAN gfRemovingAllGroups = FALSE;
 
-void RemovePGroup(GROUP *pGroup) {
+function RemovePGroup(pGroup: Pointer<GROUP>): void {
   UINT32 bit, index, mask;
 
   if (pGroup->fPersistant && !gfRemovingAllGroups) {
@@ -1985,7 +1985,7 @@ void RemovePGroup(GROUP *pGroup) {
   pGroup = NULL;
 }
 
-void RemoveAllGroups() {
+function RemoveAllGroups(): void {
   gfRemovingAllGroups = TRUE;
   while (gpGroupList) {
     RemovePGroup(gpGroupList);
@@ -1993,7 +1993,7 @@ void RemoveAllGroups() {
   gfRemovingAllGroups = FALSE;
 }
 
-void SetGroupSectorValue(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 ubGroupID) {
+function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, ubGroupID: UINT8): void {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
 
@@ -2030,7 +2030,7 @@ void SetGroupSectorValue(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, UINT8 u
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-void SetEnemyGroupSector(GROUP *pGroup, UINT8 ubSectorID) {
+function SetEnemyGroupSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8): void {
   // make sure it is valid
   Assert(pGroup);
   DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup->ubGroupID);
@@ -2048,7 +2048,7 @@ void SetEnemyGroupSector(GROUP *pGroup, UINT8 ubSectorID) {
   // pGroup->fWaypointsCancelled = FALSE;
 }
 
-void SetGroupNextSectorValue(INT16 sSectorX, INT16 sSectorY, UINT8 ubGroupID) {
+function SetGroupNextSectorValue(sSectorX: INT16, sSectorY: INT16, ubGroupID: UINT8): void {
   GROUP *pGroup;
 
   // get the group
@@ -2070,7 +2070,7 @@ void SetGroupNextSectorValue(INT16 sSectorX, INT16 sSectorY, UINT8 ubGroupID) {
 }
 
 // get eta of the group with this id
-INT32 CalculateTravelTimeOfGroupId(UINT8 ubId) {
+function CalculateTravelTimeOfGroupId(ubId: UINT8): INT32 {
   GROUP *pGroup;
 
   // get the group
@@ -2083,7 +2083,7 @@ INT32 CalculateTravelTimeOfGroupId(UINT8 ubId) {
   return CalculateTravelTimeOfGroup(pGroup);
 }
 
-INT32 CalculateTravelTimeOfGroup(GROUP *pGroup) {
+function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
   INT32 iDelta;
   UINT32 uiEtaTime = 0;
   WAYPOINT *pNode = NULL;
@@ -2140,7 +2140,7 @@ INT32 CalculateTravelTimeOfGroup(GROUP *pGroup) {
   return uiEtaTime;
 }
 
-INT32 FindTravelTimeBetweenWaypoints(WAYPOINT *pSource, WAYPOINT *pDest, GROUP *pGroup) {
+function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Pointer<WAYPOINT>, pGroup: Pointer<GROUP>): INT32 {
   UINT8 ubStart = 0, ubEnd = 0;
   INT32 iDelta = 0;
   INT32 iCurrentCostInTime = 0;
@@ -2207,7 +2207,7 @@ const TRACKED_TRAVEL_TIME = 46;
 const AIR_TRAVEL_TIME = 10;
 
 // CHANGES:  ubDirection contains the strategic move value, not the delta value.
-INT32 GetSectorMvtTimeForGroup(UINT8 ubSector, UINT8 ubDirection, GROUP *pGroup) {
+function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: Pointer<GROUP>): INT32 {
   INT32 iTraverseTime;
   INT32 iBestTraverseTime = 1000000;
   INT32 iEncumbrance, iHighestEncumbrance = 0;
@@ -2386,7 +2386,7 @@ INT32 GetSectorMvtTimeForGroup(UINT8 ubSector, UINT8 ubDirection, GROUP *pGroup)
 }
 
 // Counts the number of live mercs in any given sector.
-UINT8 PlayerMercsInSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
+function PlayerMercsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
   UINT8 ubNumMercs = 0;
@@ -2410,7 +2410,7 @@ UINT8 PlayerMercsInSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
   return ubNumMercs;
 }
 
-UINT8 PlayerGroupsInSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
+function PlayerGroupsInSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): UINT8 {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
   UINT8 ubNumGroups = 0;
@@ -2435,7 +2435,7 @@ UINT8 PlayerGroupsInSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
 }
 
 // is the player group with this id in motion?
-BOOLEAN PlayerIDGroupInMotion(UINT8 ubID) {
+function PlayerIDGroupInMotion(ubID: UINT8): BOOLEAN {
   GROUP *pGroup;
 
   // get the group
@@ -2452,12 +2452,12 @@ BOOLEAN PlayerIDGroupInMotion(UINT8 ubID) {
 }
 
 // is the player group in motion?
-BOOLEAN PlayerGroupInMotion(GROUP *pGroup) {
+function PlayerGroupInMotion(pGroup: Pointer<GROUP>): BOOLEAN {
   return pGroup->fBetweenSectors;
 }
 
 // get travel time for this group
-INT32 GetTravelTimeForGroup(UINT8 ubSector, UINT8 ubDirection, UINT8 ubGroup) {
+function GetTravelTimeForGroup(ubSector: UINT8, ubDirection: UINT8, ubGroup: UINT8): INT32 {
   GROUP *pGroup;
 
   // get the group
@@ -2469,7 +2469,7 @@ INT32 GetTravelTimeForGroup(UINT8 ubSector, UINT8 ubDirection, UINT8 ubGroup) {
   return GetSectorMvtTimeForGroup(ubSector, ubDirection, pGroup);
 }
 
-INT32 GetTravelTimeForFootTeam(UINT8 ubSector, UINT8 ubDirection) {
+function GetTravelTimeForFootTeam(ubSector: UINT8, ubDirection: UINT8): INT32 {
   GROUP Group;
 
   // group going on foot
@@ -2482,7 +2482,7 @@ INT32 GetTravelTimeForFootTeam(UINT8 ubSector, UINT8 ubDirection) {
 // NOTE:  For enemies, only MAX_STRATEGIC_TEAM_SIZE at a time can be in a battle, so
 // if it ever gets past that, god help the player, but we'll have to insert them
 // as those slots free up.
-void HandleArrivalOfReinforcements(GROUP *pGroup) {
+function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
   SOLDIERTYPE *pSoldier;
   SECTORINFO *pSector;
   INT32 iNumEnemiesInSector;
@@ -2542,7 +2542,7 @@ void HandleArrivalOfReinforcements(GROUP *pGroup) {
   }
 }
 
-BOOLEAN PlayersBetweenTheseSectors(INT16 sSource, INT16 sDest, INT32 *iCountEnter, INT32 *iCountExit, BOOLEAN *fAboutToArriveEnter) {
+function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: Pointer<INT32>, iCountExit: Pointer<INT32>, fAboutToArriveEnter: Pointer<BOOLEAN>): BOOLEAN {
   GROUP *curr = gpGroupList;
   INT16 sBattleSector = -1;
   BOOLEAN fMayRetreatFromBattle = FALSE;
@@ -2634,7 +2634,7 @@ BOOLEAN PlayersBetweenTheseSectors(INT16 sSource, INT16 sDest, INT32 *iCountEnte
   }
 }
 
-void MoveAllGroupsInCurrentSectorToSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {
+function MoveAllGroupsInCurrentSectorToSector(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): void {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
   pGroup = gpGroupList;
@@ -2658,7 +2658,7 @@ void MoveAllGroupsInCurrentSectorToSector(UINT8 ubSectorX, UINT8 ubSectorY, UINT
   CheckAndHandleUnloadingOfCurrentWorld();
 }
 
-void GetGroupPosition(UINT8 *ubNextX, UINT8 *ubNextY, UINT8 *ubPrevX, UINT8 *ubPrevY, UINT32 *uiTraverseTime, UINT32 *uiArriveTime, UINT8 ubGroupId) {
+function GetGroupPosition(ubNextX: Pointer<UINT8>, ubNextY: Pointer<UINT8>, ubPrevX: Pointer<UINT8>, ubPrevY: Pointer<UINT8>, uiTraverseTime: Pointer<UINT32>, uiArriveTime: Pointer<UINT32>, ubGroupId: UINT8): void {
   GROUP *pGroup;
 
   // get the group
@@ -2689,7 +2689,7 @@ void GetGroupPosition(UINT8 *ubNextX, UINT8 *ubNextY, UINT8 *ubPrevX, UINT8 *ubP
 }
 
 // this is only for grunts who were in mvt groups between sectors and are set to a new squad...NOTHING ELSE!!!!!
-void SetGroupPosition(UINT8 ubNextX, UINT8 ubNextY, UINT8 ubPrevX, UINT8 ubPrevY, UINT32 uiTraverseTime, UINT32 uiArriveTime, UINT8 ubGroupId) {
+function SetGroupPosition(ubNextX: UINT8, ubNextY: UINT8, ubPrevX: UINT8, ubPrevY: UINT8, uiTraverseTime: UINT32, uiArriveTime: UINT32, ubGroupId: UINT8): void {
   GROUP *pGroup;
   PLAYERGROUP *pPlayer;
 
@@ -2723,7 +2723,7 @@ void SetGroupPosition(UINT8 ubNextX, UINT8 ubNextY, UINT8 ubPrevX, UINT8 ubPrevY
   return;
 }
 
-BOOLEAN SaveStrategicMovementGroupsToSaveGameFile(HWFILE hFile) {
+function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   GROUP *pGroup = NULL;
   UINT32 uiNumberOfGroups = 0;
   UINT32 uiNumBytesWritten = 0;
@@ -2790,7 +2790,7 @@ BOOLEAN SaveStrategicMovementGroupsToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadStrategicMovementGroupsFromSavedGameFile(HWFILE hFile) {
+function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   GROUP *pGroup = NULL;
   GROUP *pTemp = NULL;
   UINT32 uiNumberOfGroups = 0;
@@ -2902,7 +2902,7 @@ BOOLEAN LoadStrategicMovementGroupsFromSavedGameFile(HWFILE hFile) {
 }
 
 // Saves the Player's group list to the saved game file
-BOOLEAN SavePlayerGroupList(HWFILE hFile, GROUP *pGroup) {
+function SavePlayerGroupList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   UINT32 uiNumberOfNodesInList = 0;
   PLAYERGROUP *pTemp = NULL;
   UINT32 uiNumBytesWritten = 0;
@@ -2940,7 +2940,7 @@ BOOLEAN SavePlayerGroupList(HWFILE hFile, GROUP *pGroup) {
   return TRUE;
 }
 
-BOOLEAN LoadPlayerGroupList(HWFILE hFile, GROUP **pGroup) {
+function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BOOLEAN {
   UINT32 uiNumberOfNodesInList = 0;
   PLAYERGROUP *pTemp = NULL;
   PLAYERGROUP *pHead = NULL;
@@ -3004,7 +3004,7 @@ BOOLEAN LoadPlayerGroupList(HWFILE hFile, GROUP **pGroup) {
 }
 
 // Saves the enemy group struct to the saved game struct
-BOOLEAN SaveEnemyGroupStruct(HWFILE hFile, GROUP *pGroup) {
+function SaveEnemyGroupStruct(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   UINT32 uiNumBytesWritten = 0;
 
   // Save the enemy struct info to the saved game file
@@ -3018,7 +3018,7 @@ BOOLEAN SaveEnemyGroupStruct(HWFILE hFile, GROUP *pGroup) {
 }
 
 // Loads the enemy group struct from the saved game file
-BOOLEAN LoadEnemyGroupStructFromSavedGame(HWFILE hFile, GROUP *pGroup) {
+function LoadEnemyGroupStructFromSavedGame(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   UINT32 uiNumBytesRead = 0;
   ENEMYGROUP *pEnemyGroup = NULL;
 
@@ -3041,7 +3041,7 @@ BOOLEAN LoadEnemyGroupStructFromSavedGame(HWFILE hFile, GROUP *pGroup) {
   return TRUE;
 }
 
-void CheckMembersOfMvtGroupAndComplainAboutBleeding(SOLDIERTYPE *pSoldier) {
+function CheckMembersOfMvtGroupAndComplainAboutBleeding(pSoldier: Pointer<SOLDIERTYPE>): void {
   // run through members of group
   UINT8 ubGroupId = pSoldier->ubGroupID;
   GROUP *pGroup;
@@ -3083,7 +3083,7 @@ void CheckMembersOfMvtGroupAndComplainAboutBleeding(SOLDIERTYPE *pSoldier) {
   BeginLoggingForBleedMeToos(FALSE);
 }
 
-BOOLEAN SaveWayPointList(HWFILE hFile, GROUP *pGroup) {
+function SaveWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   UINT32 cnt = 0;
   UINT32 uiNumberOfWayPoints = 0;
   UINT32 uiNumBytesWritten = 0;
@@ -3120,7 +3120,7 @@ BOOLEAN SaveWayPointList(HWFILE hFile, GROUP *pGroup) {
   return TRUE;
 }
 
-BOOLEAN LoadWayPointList(HWFILE hFile, GROUP *pGroup) {
+function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   UINT32 cnt = 0;
   UINT32 uiNumberOfWayPoints = 0;
   UINT32 uiNumBytesRead = 0;
@@ -3169,7 +3169,7 @@ BOOLEAN LoadWayPointList(HWFILE hFile, GROUP *pGroup) {
   return TRUE;
 }
 
-void CalculateGroupRetreatSector(GROUP *pGroup) {
+function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
   SECTORINFO *pSector;
   UINT32 uiSectorID;
 
@@ -3205,7 +3205,7 @@ void CalculateGroupRetreatSector(GROUP *pGroup) {
 
 // Called when all checks have been made for the group (if possible to retreat, etc.)  This function
 // blindly determines where to move the group.
-void RetreatGroupToPreviousSector(GROUP *pGroup) {
+function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   UINT8 ubSector, ubDirection = 255;
   INT32 iVehId, dx, dy;
   Assert(pGroup);
@@ -3283,7 +3283,7 @@ void RetreatGroupToPreviousSector(GROUP *pGroup) {
   }
 }
 
-GROUP *FindMovementGroupInSector(UINT8 ubSectorX, UINT8 ubSectorY, BOOLEAN fPlayer) {
+function FindMovementGroupInSector(ubSectorX: UINT8, ubSectorY: UINT8, fPlayer: BOOLEAN): Pointer<GROUP> {
   GROUP *pGroup;
   pGroup = gpGroupList;
   while (pGroup) {
@@ -3300,7 +3300,7 @@ GROUP *FindMovementGroupInSector(UINT8 ubSectorX, UINT8 ubSectorY, BOOLEAN fPlay
   return NULL;
 }
 
-BOOLEAN GroupAtFinalDestination(GROUP *pGroup) {
+function GroupAtFinalDestination(pGroup: Pointer<GROUP>): BOOLEAN {
   WAYPOINT *wp;
 
   if (pGroup->ubMoveType != ONE_WAY)
@@ -3324,7 +3324,7 @@ BOOLEAN GroupAtFinalDestination(GROUP *pGroup) {
   return FALSE;
 }
 
-WAYPOINT *GetFinalWaypoint(GROUP *pGroup) {
+function GetFinalWaypoint(pGroup: Pointer<GROUP>): Pointer<WAYPOINT> {
   WAYPOINT *wp;
 
   Assert(pGroup);
@@ -3344,7 +3344,7 @@ WAYPOINT *GetFinalWaypoint(GROUP *pGroup) {
 
 // The sector supplied resets ALL enemy groups in the sector specified.  See comments in
 // ResetMovementForEnemyGroup() for more details on what the resetting does.
-void ResetMovementForEnemyGroupsInLocation(UINT8 ubSectorX, UINT8 ubSectorY) {
+function ResetMovementForEnemyGroupsInLocation(ubSectorX: UINT8, ubSectorY: UINT8): void {
   GROUP *pGroup, *next;
   INT16 sSectorX, sSectorY, sSectorZ;
 
@@ -3366,7 +3366,7 @@ void ResetMovementForEnemyGroupsInLocation(UINT8 ubSectorX, UINT8 ubSectorY) {
 // then after this function is called, then that group would be 0% of the way from
 // sector A10 to A11.  In no way does this function effect the strategic path for
 // the group.
-void ResetMovementForEnemyGroup(GROUP *pGroup) {
+function ResetMovementForEnemyGroup(pGroup: Pointer<GROUP>): void {
   // Validate that the group is an enemy group and that it is moving.
   if (pGroup->fPlayer) {
     return;
@@ -3392,7 +3392,7 @@ void ResetMovementForEnemyGroup(GROUP *pGroup) {
   AddStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup->uiArrivalTime, pGroup->ubGroupID);
 }
 
-void UpdatePersistantGroupsFromOldSave(UINT32 uiSavedGameVersion) {
+function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
   GROUP *pGroup = NULL;
   BOOLEAN fDone = FALSE;
   INT32 cnt;
@@ -3453,7 +3453,7 @@ void UpdatePersistantGroupsFromOldSave(UINT32 uiSavedGameVersion) {
 // Determines if any particular group WILL be moving through a given sector given it's current
 // position in the route and the pGroup->ubMoveType must be ONE_WAY.  If the group is currently
 // IN the sector, or just left the sector, it will return FALSE.
-BOOLEAN GroupWillMoveThroughSector(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY) {
+function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY: UINT8): BOOLEAN {
   WAYPOINT *wp;
   INT32 i, dx, dy;
   UINT8 ubOrigX, ubOrigY;
@@ -3533,11 +3533,11 @@ BOOLEAN GroupWillMoveThroughSector(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSecto
   return FALSE;
 }
 
-INT16 CalculateFuelCostBetweenSectors(UINT8 ubSectorID1, UINT8 ubSectorID2) {
+function CalculateFuelCostBetweenSectors(ubSectorID1: UINT8, ubSectorID2: UINT8): INT16 {
   return 0;
 }
 
-BOOLEAN VehicleHasFuel(SOLDIERTYPE *pSoldier) {
+function VehicleHasFuel(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier->uiStatusFlags & SOLDIER_VEHICLE);
   if (pSoldier->sBreathRed) {
     return TRUE;
@@ -3545,12 +3545,12 @@ BOOLEAN VehicleHasFuel(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-INT16 VehicleFuelRemaining(SOLDIERTYPE *pSoldier) {
+function VehicleFuelRemaining(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   Assert(pSoldier->uiStatusFlags & SOLDIER_VEHICLE);
   return pSoldier->sBreathRed;
 }
 
-BOOLEAN SpendVehicleFuel(SOLDIERTYPE *pSoldier, INT16 sFuelSpent) {
+function SpendVehicleFuel(pSoldier: Pointer<SOLDIERTYPE>, sFuelSpent: INT16): BOOLEAN {
   Assert(pSoldier->uiStatusFlags & SOLDIER_VEHICLE);
   pSoldier->sBreathRed -= sFuelSpent;
   pSoldier->sBreathRed = (INT16)max(0, pSoldier->sBreathRed);
@@ -3558,7 +3558,7 @@ BOOLEAN SpendVehicleFuel(SOLDIERTYPE *pSoldier, INT16 sFuelSpent) {
   return FALSE;
 }
 
-void AddFuelToVehicle(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVehicle) {
+function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLDIERTYPE>): void {
   OBJECTTYPE *pItem;
   INT16 sFuelNeeded, sFuelAvailable, sFuelAdded;
   pItem = &pSoldier->inv[HANDPOS];
@@ -3588,14 +3588,14 @@ void AddFuelToVehicle(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVehicle) {
   }
 }
 
-void ReportVehicleOutOfGas(INT32 iVehicleID, UINT8 ubSectorX, UINT8 ubSectorY) {
+function ReportVehicleOutOfGas(iVehicleID: INT32, ubSectorX: UINT8, ubSectorY: UINT8): void {
   UINT16 str[255];
   // Report that the vehicle that just arrived is out of gas.
   swprintf(str, gzLateLocalizedString[5], pVehicleStrings[pVehicleList[iVehicleID].ubVehicleType], ubSectorY + 'A' - 1, ubSectorX);
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, NULL);
 }
 
-void SetLocationOfAllPlayerSoldiersInGroup(GROUP *pGroup, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function SetLocationOfAllPlayerSoldiersInGroup(pGroup: Pointer<GROUP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   PLAYERGROUP *pPlayer = NULL;
   SOLDIERTYPE *pSoldier = NULL;
 
@@ -3639,7 +3639,7 @@ void SetLocationOfAllPlayerSoldiersInGroup(GROUP *pGroup, INT16 sSectorX, INT16 
   }
 }
 
-void RandomizePatrolGroupLocation(GROUP *pGroup) {
+function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   // Make sure this is an enemy patrol group
   WAYPOINT *wp;
   UINT8 ubMaxWaypointID = 0;
@@ -3709,7 +3709,7 @@ void RandomizePatrolGroupLocation(GROUP *pGroup) {
 
 // Whenever a player group arrives in a sector, and if bloodcats exist in the sector,
 // roll the dice to see if this will become an ambush random encounter.
-BOOLEAN TestForBloodcatAmbush(GROUP *pGroup) {
+function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
   SECTORINFO *pSector;
   INT32 iHoursElapsed;
   UINT8 ubSectorID;
@@ -3786,7 +3786,7 @@ BOOLEAN TestForBloodcatAmbush(GROUP *pGroup) {
   }
 }
 
-void NotifyPlayerOfBloodcatBattle(UINT8 ubSectorX, UINT8 ubSectorY) {
+function NotifyPlayerOfBloodcatBattle(ubSectorX: UINT8, ubSectorY: UINT8): void {
   UINT16 str[256];
   UINT16 zTempString[128];
   if (gubEnemyEncounterCode == BLOODCAT_AMBUSH_CODE) {
@@ -3808,7 +3808,7 @@ void NotifyPlayerOfBloodcatBattle(UINT8 ubSectorX, UINT8 ubSectorY) {
   DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, TriggerPrebattleInterface);
 }
 
-void PlaceGroupInSector(UINT8 ubGroupID, INT16 sPrevX, INT16 sPrevY, INT16 sNextX, INT16 sNextY, INT8 bZ, BOOLEAN fCheckForBattle) {
+function PlaceGroupInSector(ubGroupID: UINT8, sPrevX: INT16, sPrevY: INT16, sNextX: INT16, sNextY: INT16, bZ: INT8, fCheckForBattle: BOOLEAN): void {
   ClearMercPathsAndWaypointsForAllInGroup(GetGroup(ubGroupID));
 
   // change where they are and where they're going
@@ -3821,7 +3821,7 @@ void PlaceGroupInSector(UINT8 ubGroupID, INT16 sPrevX, INT16 sPrevY, INT16 sNext
 }
 
 // ARM: centralized it so we can do a comprehensive Assert on it.  Causing problems with helicopter group!
-void SetGroupArrivalTime(GROUP *pGroup, UINT32 uiArrivalTime) {
+function SetGroupArrivalTime(pGroup: Pointer<GROUP>, uiArrivalTime: UINT32): void {
   // PLEASE CENTRALIZE ALL CHANGES TO THE ARRIVAL TIMES OF GROUPS THROUGH HERE, ESPECIALLY THE HELICOPTER GROUP!!!
 
   // if this group is the helicopter group, we have to make sure that its arrival time is never greater than the sum
@@ -3845,7 +3845,7 @@ void SetGroupArrivalTime(GROUP *pGroup, UINT32 uiArrivalTime) {
 }
 
 // non-persistent groups should be simply removed instead!
-void CancelEmptyPersistentGroupMovement(GROUP *pGroup) {
+function CancelEmptyPersistentGroupMovement(pGroup: Pointer<GROUP>): void {
   Assert(pGroup);
   Assert(pGroup->ubGroupSize == 0);
   Assert(pGroup->fPersistant);
@@ -3875,7 +3875,7 @@ void CancelEmptyPersistentGroupMovement(GROUP *pGroup) {
 }
 
 // look for NPCs to stop for, anyone is too tired to keep going, if all OK rebuild waypoints & continue movement
-void PlayerGroupArrivedSafelyInSector(GROUP *pGroup, BOOLEAN fCheckForNPCs) {
+function PlayerGroupArrivedSafelyInSector(pGroup: Pointer<GROUP>, fCheckForNPCs: BOOLEAN): void {
   BOOLEAN fPlayerPrompted = FALSE;
 
   Assert(pGroup);
@@ -3911,7 +3911,7 @@ void PlayerGroupArrivedSafelyInSector(GROUP *pGroup, BOOLEAN fCheckForNPCs) {
   }
 }
 
-BOOLEAN HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(GROUP *pGroup) {
+function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(pGroup: Pointer<GROUP>): BOOLEAN {
   INT16 sSectorX = 0, sSectorY = 0;
   INT8 bSectorZ = 0;
   CHAR16 sString[128];
@@ -3983,7 +3983,7 @@ BOOLEAN HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(GROUP *pGroup) {
   return TRUE;
 }
 
-BOOLEAN WildernessSectorWithAllProfiledNPCsNotSpokenWith(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function WildernessSectorWithAllProfiledNPCsNotSpokenWith(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
   UINT8 ubProfile;
   MERCPROFILESTRUCT *pProfile;
   BOOLEAN fFoundSomebody = FALSE;
@@ -4018,7 +4018,7 @@ BOOLEAN WildernessSectorWithAllProfiledNPCsNotSpokenWith(INT16 sSectorX, INT16 s
   return fFoundSomebody;
 }
 
-void HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(UINT8 ubExitValue) {
+function HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(ubExitValue: UINT8): void {
   Assert(gpGroupPrompting);
 
   if ((ubExitValue == MSG_BOX_RETURN_YES) || (ubExitValue == MSG_BOX_RETURN_OK)) {
@@ -4046,7 +4046,7 @@ void HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(UINT8 ubExitVal
   return;
 }
 
-BOOLEAN DoesPlayerExistInPGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
+function DoesPlayerExistInPGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   GROUP *pGroup;
   PLAYERGROUP *curr;
 
@@ -4073,7 +4073,7 @@ BOOLEAN DoesPlayerExistInPGroup(UINT8 ubGroupID, SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN GroupHasInTransitDeadOrPOWMercs(GROUP *pGroup) {
+function GroupHasInTransitDeadOrPOWMercs(pGroup: Pointer<GROUP>): BOOLEAN {
   PLAYERGROUP *pPlayer;
 
   pPlayer = pGroup->pPlayerList;
@@ -4092,7 +4092,7 @@ BOOLEAN GroupHasInTransitDeadOrPOWMercs(GROUP *pGroup) {
   return FALSE;
 }
 
-UINT8 NumberMercsInVehicleGroup(GROUP *pGroup) {
+function NumberMercsInVehicleGroup(pGroup: Pointer<GROUP>): UINT8 {
   INT32 iVehicleID;
   iVehicleID = GivenMvtGroupIdFindVehicleId(pGroup->ubGroupID);
   Assert(iVehicleID != -1);

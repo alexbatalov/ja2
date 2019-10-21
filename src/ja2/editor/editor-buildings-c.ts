@@ -5,7 +5,7 @@ UINT8 gubMaxRoomNumber;
 BOOLEAN gfEditingDoor;
 
 // BEGINNNING OF BUILDING INITIALIZATION FUNCTIONS
-void GameInitEditorBuildingInfo() {
+function GameInitEditorBuildingInfo(): void {
   fBuildingShowRoofs = TRUE;
   fBuildingShowWalls = TRUE;
   fBuildingShowRoomInfo = FALSE;
@@ -14,7 +14,7 @@ void GameInitEditorBuildingInfo() {
 }
 
 // BEGINNING OF BUILDING UTILITY FUNCTIONS
-void UpdateRoofsView() {
+function UpdateRoofsView(): void {
   INT32 x;
   UINT16 usType;
   for (x = 0; x < WORLD_MAX; x++) {
@@ -25,7 +25,7 @@ void UpdateRoofsView() {
   gfRenderWorld = TRUE;
 }
 
-void UpdateWallsView() {
+function UpdateWallsView(): void {
   INT32 cnt;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (fBuildingShowWalls) {
@@ -37,7 +37,7 @@ void UpdateWallsView() {
   gfRenderWorld = TRUE;
 }
 
-void UpdateBuildingsInfo() {
+function UpdateBuildingsInfo(): void {
   // print the headers on top of the columns
   SetFont(SMALLCOMPFONT);
   SetFontForeground(FONT_RED);
@@ -61,7 +61,7 @@ void UpdateBuildingsInfo() {
 // 4) KillBuilding at x  , y-1.
 // 5) KillBuilding at x+1, y.
 // 6) KillBuilding at x  , y+1.
-void KillBuilding(UINT32 iMapIndex) {
+function KillBuilding(iMapIndex: UINT32): void {
   BOOLEAN fFound = FALSE;
 
   if (!gfBasement)
@@ -93,7 +93,7 @@ void KillBuilding(UINT32 iMapIndex) {
 BUILDINGLAYOUTNODE *gpBuildingLayoutList = NULL;
 INT16 gsBuildingLayoutAnchorGridNo = -1;
 
-void DeleteBuildingLayout() {
+function DeleteBuildingLayout(): void {
   BUILDINGLAYOUTNODE *curr;
   // Erases the cursors associated with them.
   RemoveBuildingLayout();
@@ -106,7 +106,7 @@ void DeleteBuildingLayout() {
   gsBuildingLayoutAnchorGridNo = -1;
 }
 
-void BuildLayout(INT32 iMapIndex, INT32 iOffset) {
+function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
   BUILDINGLAYOUTNODE *curr;
   // First, validate the gridno
   iMapIndex += iOffset;
@@ -145,7 +145,7 @@ void BuildLayout(INT32 iMapIndex, INT32 iOffset) {
 }
 
 // The first step is copying a building.  After that, it either must be pasted or moved.
-void CopyBuilding(INT32 iMapIndex) {
+function CopyBuilding(iMapIndex: INT32): void {
   AssertMsg(!gpBuildingLayoutList, "Error:  Attempting to copy building multiple times.");
 
   // First step is to determine if we have a building in the area that we click.  If not, do nothing.
@@ -175,7 +175,7 @@ void CopyBuilding(INT32 iMapIndex) {
 
 // depending on the offset, we will either sort in increasing order, or decreasing order.
 // This will prevent overlapping problems.
-void SortBuildingLayout(iMapIndex) {
+function SortBuildingLayout(iMapIndex): void {
   BUILDINGLAYOUTNODE *head, *curr, *prev, *prevBest, *best;
   INT32 iBestIndex;
   head = NULL;
@@ -232,7 +232,7 @@ void SortBuildingLayout(iMapIndex) {
   gpBuildingLayoutList = head;
 }
 
-void PasteMapElementToNewMapElement(INT32 iSrcGridNo, INT32 iDstGridNo) {
+function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): void {
   MAP_ELEMENT *pSrcMapElement;
   LEVELNODE *pNode;
   UINT16 usType;
@@ -288,7 +288,7 @@ void PasteMapElementToNewMapElement(INT32 iSrcGridNo, INT32 iDstGridNo) {
   }
 }
 
-void MoveBuilding(INT32 iMapIndex) {
+function MoveBuilding(iMapIndex: INT32): void {
   BUILDINGLAYOUTNODE *curr;
   INT32 iOffset;
   if (!gpBuildingLayoutList)
@@ -312,7 +312,7 @@ void MoveBuilding(INT32 iMapIndex) {
   MarkWorldDirty();
 }
 
-void PasteBuilding(INT32 iMapIndex) {
+function PasteBuilding(iMapIndex: INT32): void {
   BUILDINGLAYOUTNODE *curr;
   INT32 iOffset;
   if (!gpBuildingLayoutList)
@@ -342,7 +342,7 @@ interface ROOFNODE {
 
 ROOFNODE *gpRoofList = NULL;
 
-void ReplaceRoof(INT32 iMapIndex, UINT16 usRoofType) {
+function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
   ROOFNODE *curr;
   // First, validate the gridno
   if (iMapIndex < 0 && iMapIndex >= WORLD_COLS * WORLD_ROWS)
@@ -373,7 +373,7 @@ void ReplaceRoof(INT32 iMapIndex, UINT16 usRoofType) {
   ReplaceRoof(iMapIndex + 1, usRoofType);
 }
 
-void ReplaceBuildingWithNewRoof(INT32 iMapIndex) {
+function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   UINT16 usRoofType;
   ROOFNODE *curr;
   // Not in normal editor mode, then can't do it.
@@ -419,7 +419,7 @@ const enum Enum34 {
 INT32 iDoorButton[NUM_DOOR_BUTTONS];
 MOUSE_REGION DoorRegion;
 
-void InitDoorEditing(INT32 iMapIndex) {
+function InitDoorEditing(iMapIndex: INT32): void {
   DOOR *pDoor;
   if (!DoorAtGridNo(iMapIndex) && !OpenableAtGridNo(iMapIndex))
     return;
@@ -451,7 +451,7 @@ void InitDoorEditing(INT32 iMapIndex) {
   }
 }
 
-void ExtractAndUpdateDoorInfo() {
+function ExtractAndUpdateDoorInfo(): void {
   LEVELNODE *pNode;
   INT32 num;
   DOOR door;
@@ -511,7 +511,7 @@ void ExtractAndUpdateDoorInfo() {
   }
 }
 
-void FindNextLockedDoor() {
+function FindNextLockedDoor(): void {
   DOOR *pDoor;
   INT32 i;
   for (i = iDoorMapIndex + 1; i < WORLD_MAX; i++) {
@@ -532,7 +532,7 @@ void FindNextLockedDoor() {
   }
 }
 
-void RenderDoorEditingWindow() {
+function RenderDoorEditingWindow(): void {
   InvalidateRegion(200, 130, 440, 230);
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_YELLOW);
@@ -547,7 +547,7 @@ void RenderDoorEditingWindow() {
   mprintf(238, 218, L"Locked");
 }
 
-void KillDoorEditing() {
+function KillDoorEditing(): void {
   INT32 i;
   EnableEditorTaskbar();
   MSYS_RemoveRegion(&DoorRegion);
@@ -557,24 +557,24 @@ void KillDoorEditing() {
   KillTextInputMode();
 }
 
-void DoorOkayCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoorOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ExtractAndUpdateDoorInfo();
     KillDoorEditing();
   }
 }
 
-void DoorCancelCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoorCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     KillDoorEditing();
   }
 }
 
-void DoorToggleLockedCallback(GUI_BUTTON *btn, INT32 reason) {
+function DoorToggleLockedCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // handled in ExtractAndUpdateDoorInfo();
 }
 
-void AddLockedDoorCursors() {
+function AddLockedDoorCursors(): void {
   DOOR *pDoor;
   INT i;
   for (i = 0; i < gubNumDoors; i++) {
@@ -583,7 +583,7 @@ void AddLockedDoorCursors() {
   }
 }
 
-void RemoveLockedDoorCursors() {
+function RemoveLockedDoorCursors(): void {
   DOOR *pDoor;
   INT i;
   LEVELNODE *pNode;
@@ -602,7 +602,7 @@ void RemoveLockedDoorCursors() {
   }
 }
 
-void SetupTextInputForBuildings() {
+function SetupTextInputForBuildings(): void {
   UINT16 str[4];
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
@@ -610,7 +610,7 @@ void SetupTextInputForBuildings() {
   AddTextInputField(410, 400, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
 }
 
-void ExtractAndUpdateBuildingInfo() {
+function ExtractAndUpdateBuildingInfo(): void {
   UINT16 str[4];
   INT32 temp;
   // extract light1 colors

@@ -169,7 +169,7 @@ extern INT16 gusGreenShift;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *WindowProc) {
+function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): BOOLEAN {
   UINT32 uiIndex, uiPitch;
   HRESULT ReturnCode;
   HWND hWindow;
@@ -477,7 +477,7 @@ BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ShutdownVideoManager(void) {
+function ShutdownVideoManager(): void {
   // UINT32  uiRefreshThreadState;
 
   DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Shutting down the video manager");
@@ -515,11 +515,11 @@ void ShutdownVideoManager(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SuspendVideoManager(void) {
+function SuspendVideoManager(): void {
   guiVideoManagerState = VIDEO_SUSPENDED;
 }
 
-void DoTester() {
+function DoTester(): void {
   IDirectDraw2_RestoreDisplayMode(gpDirectDrawObject);
   IDirectDraw2_SetCooperativeLevel(gpDirectDrawObject, ghWindow, DDSCL_NORMAL);
   ShowCursor(TRUE);
@@ -527,7 +527,7 @@ void DoTester() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN RestoreVideoManager(void) {
+function RestoreVideoManager(): BOOLEAN {
   HRESULT ReturnCode;
 
   //
@@ -585,7 +585,7 @@ BOOLEAN RestoreVideoManager(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void GetCurrentVideoSettings(UINT16 *usWidth, UINT16 *usHeight, UINT8 *ubBitDepth) {
+function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): void {
   *usWidth = (UINT16)gusScreenWidth;
   *usHeight = (UINT16)gusScreenHeight;
   *ubBitDepth = (UINT8)gubScreenPixelDepth;
@@ -593,7 +593,7 @@ void GetCurrentVideoSettings(UINT16 *usWidth, UINT16 *usHeight, UINT8 *ubBitDept
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN CanBlitToFrameBuffer(void) {
+function CanBlitToFrameBuffer(): BOOLEAN {
   BOOLEAN fCanBlit;
 
   //
@@ -611,7 +611,7 @@ BOOLEAN CanBlitToFrameBuffer(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN CanBlitToMouseBuffer(void) {
+function CanBlitToMouseBuffer(): BOOLEAN {
   BOOLEAN fCanBlit;
 
   //
@@ -629,7 +629,7 @@ BOOLEAN CanBlitToMouseBuffer(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32): void {
   if (gfForceFullScreenRefresh == TRUE) {
     //
     // There's no point in going on since we are forcing a full screen refresh
@@ -681,7 +681,7 @@ void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
   }
 }
 
-void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT32 uiFlags) {
+function InvalidateRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, uiFlags: UINT32): void {
   INT32 iOldBottom;
 
   iOldBottom = iBottom;
@@ -701,7 +701,7 @@ void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UI
   }
 }
 
-void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT32 uiFlags) {
+function AddRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, uiFlags: UINT32): void {
   if (guiDirtyRegionExCount < MAX_DIRTY_REGIONS) {
     // DO SOME PREMIMARY CHECKS FOR VALID RECTS
     if (iLeft < 0)
@@ -739,7 +739,7 @@ void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT32 ui
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void InvalidateRegions(SGPRect *pArrayOfRegions, UINT32 uiRegionCount) {
+function InvalidateRegions(pArrayOfRegions: Pointer<SGPRect>, uiRegionCount: UINT32): void {
   if (gfForceFullScreenRefresh == TRUE) {
     //
     // There's no point in going on since we are forcing a full screen refresh
@@ -771,7 +771,7 @@ void InvalidateRegions(SGPRect *pArrayOfRegions, UINT32 uiRegionCount) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void InvalidateScreen(void) {
+function InvalidateScreen(): void {
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
   //
@@ -788,7 +788,7 @@ void InvalidateScreen(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void InvalidateFrameBuffer(void) {
+function InvalidateFrameBuffer(): void {
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
   //
@@ -802,14 +802,14 @@ void InvalidateFrameBuffer(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void SetFrameBufferRefreshOverride(PTR pFrameBufferRefreshOverride) {
+function SetFrameBufferRefreshOverride(pFrameBufferRefreshOverride: PTR): void {
   gpFrameBufferRefreshOverride = pFrameBufferRefreshOverride;
 }
 
 //#define SCROLL_TEST
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void ScrollJA2Background(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScrollYIncrement, LPDIRECTDRAWSURFACE2 pSource, LPDIRECTDRAWSURFACE2 pDest, BOOLEAN fRenderStrip, UINT32 uiCurrentMouseBackbuffer) {
+function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScrollYIncrement: INT16, pSource: LPDIRECTDRAWSURFACE2, pDest: LPDIRECTDRAWSURFACE2, fRenderStrip: BOOLEAN, uiCurrentMouseBackbuffer: UINT32): void {
   UINT16 usWidth, usHeight;
   UINT8 ubBitDepth;
   HRESULT ReturnCode;
@@ -1214,7 +1214,7 @@ void ScrollJA2Background(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScr
   // SaveBackgroundRects();
 }
 
-void RefreshScreen(void *DummyVariable) {
+function RefreshScreen(DummyVariable: Pointer<void>): void {
   static UINT32 uiRefreshThreadState, uiIndex;
   UINT16 usScreenWidth, usScreenHeight;
   static BOOLEAN fShowMouse;
@@ -1873,7 +1873,7 @@ ENDOFLOOP:
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-LPDIRECTDRAW2 GetDirectDraw2Object(void) {
+function GetDirectDraw2Object(): LPDIRECTDRAW2 {
   Assert(gpDirectDrawObject != NULL);
 
   return gpDirectDrawObject;
@@ -1881,7 +1881,7 @@ LPDIRECTDRAW2 GetDirectDraw2Object(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-LPDIRECTDRAWSURFACE2 GetPrimarySurfaceObject(void) {
+function GetPrimarySurfaceObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != NULL);
 
   return gpPrimarySurface;
@@ -1889,7 +1889,7 @@ LPDIRECTDRAWSURFACE2 GetPrimarySurfaceObject(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-LPDIRECTDRAWSURFACE2 GetBackBufferObject(void) {
+function GetBackBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != NULL);
 
   return gpBackBuffer;
@@ -1897,7 +1897,7 @@ LPDIRECTDRAWSURFACE2 GetBackBufferObject(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-LPDIRECTDRAWSURFACE2 GetFrameBufferObject(void) {
+function GetFrameBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != NULL);
 
   return gpFrameBuffer;
@@ -1905,7 +1905,7 @@ LPDIRECTDRAWSURFACE2 GetFrameBufferObject(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-LPDIRECTDRAWSURFACE2 GetMouseBufferObject(void) {
+function GetMouseBufferObject(): LPDIRECTDRAWSURFACE2 {
   Assert(gpPrimarySurface != NULL);
 
   return gpMouseCursor;
@@ -1917,7 +1917,7 @@ LPDIRECTDRAWSURFACE2 GetMouseBufferObject(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-PTR LockPrimarySurface(UINT32 *uiPitch) {
+function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
   HRESULT ReturnCode;
   DDSURFACEDESC SurfaceDescription;
 
@@ -1939,7 +1939,7 @@ PTR LockPrimarySurface(UINT32 *uiPitch) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnlockPrimarySurface(void) {
+function UnlockPrimarySurface(): void {
   DDSURFACEDESC SurfaceDescription;
   HRESULT ReturnCode;
 
@@ -1953,7 +1953,7 @@ void UnlockPrimarySurface(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-PTR LockBackBuffer(UINT32 *uiPitch) {
+function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
   HRESULT ReturnCode;
   DDSURFACEDESC SurfaceDescription;
 
@@ -1983,7 +1983,7 @@ PTR LockBackBuffer(UINT32 *uiPitch) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnlockBackBuffer(void) {
+function UnlockBackBuffer(): void {
   DDSURFACEDESC SurfaceDescription;
   HRESULT ReturnCode;
 
@@ -2005,7 +2005,7 @@ void UnlockBackBuffer(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-PTR LockFrameBuffer(UINT32 *uiPitch) {
+function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
   HRESULT ReturnCode;
   DDSURFACEDESC SurfaceDescription;
 
@@ -2028,7 +2028,7 @@ PTR LockFrameBuffer(UINT32 *uiPitch) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnlockFrameBuffer(void) {
+function UnlockFrameBuffer(): void {
   DDSURFACEDESC SurfaceDescription;
   HRESULT ReturnCode;
 
@@ -2042,7 +2042,7 @@ void UnlockFrameBuffer(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-PTR LockMouseBuffer(UINT32 *uiPitch) {
+function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
   HRESULT ReturnCode;
   DDSURFACEDESC SurfaceDescription;
 
@@ -2061,7 +2061,7 @@ PTR LockMouseBuffer(UINT32 *uiPitch) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void UnlockMouseBuffer(void) {
+function UnlockMouseBuffer(): void {
   DDSURFACEDESC SurfaceDescription;
   HRESULT ReturnCode;
 
@@ -2079,7 +2079,7 @@ void UnlockMouseBuffer(void) {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN GetRGBDistribution(void) {
+function GetRGBDistribution(): BOOLEAN {
   DDSURFACEDESC SurfaceDescription;
   UINT16 usBit;
   HRESULT ReturnCode;
@@ -2141,7 +2141,7 @@ BOOLEAN GetRGBDistribution(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN GetPrimaryRGBDistributionMasks(UINT32 *RedBitMask, UINT32 *GreenBitMask, UINT32 *BlueBitMask) {
+function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMask: Pointer<UINT32>, BlueBitMask: Pointer<UINT32>): BOOLEAN {
   *RedBitMask = gusRedMask;
   *GreenBitMask = gusGreenMask;
   *BlueBitMask = gusBlueMask;
@@ -2151,7 +2151,7 @@ BOOLEAN GetPrimaryRGBDistributionMasks(UINT32 *RedBitMask, UINT32 *GreenBitMask,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN SetMouseCursorFromObject(UINT32 uiVideoObjectHandle, UINT16 usVideoObjectSubIndex, UINT16 usOffsetX, UINT16 usOffsetY) {
+function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
   BOOLEAN ReturnValue;
   PTR pTmpPointer;
   UINT32 uiPitch;
@@ -2188,7 +2188,7 @@ BOOLEAN SetMouseCursorFromObject(UINT32 uiVideoObjectHandle, UINT16 usVideoObjec
   return ReturnValue;
 }
 
-BOOLEAN EraseMouseCursor() {
+function EraseMouseCursor(): BOOLEAN {
   PTR pTmpPointer;
   UINT32 uiPitch;
 
@@ -2204,7 +2204,7 @@ BOOLEAN EraseMouseCursor() {
   return TRUE;
 }
 
-BOOLEAN SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHeight, UINT16 usCursorWidth) {
+function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeight: UINT16, usCursorWidth: UINT16): BOOLEAN {
   gsMouseCursorXOffset = sOffsetX;
   gsMouseCursorYOffset = sOffsetY;
   gusMouseCursorWidth = usCursorWidth;
@@ -2212,7 +2212,7 @@ BOOLEAN SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursor
   return TRUE;
 }
 
-BOOLEAN BltToMouseCursor(UINT32 uiVideoObjectHandle, UINT16 usVideoObjectSubIndex, UINT16 usXPos, UINT16 usYPos) {
+function BltToMouseCursor(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
   BOOLEAN ReturnValue;
 
   ReturnValue = BltVideoObjectFromIndex(MOUSE_BUFFER, uiVideoObjectHandle, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -2220,11 +2220,11 @@ BOOLEAN BltToMouseCursor(UINT32 uiVideoObjectHandle, UINT16 usVideoObjectSubInde
   return ReturnValue;
 }
 
-void DirtyCursor() {
+function DirtyCursor(): void {
   guiMouseBufferState = BUFFER_DIRTY;
 }
 
-void EnableCursor(BOOLEAN fEnable) {
+function EnableCursor(fEnable: BOOLEAN): void {
   if (fEnable) {
     guiMouseBufferState = BUFFER_DISABLED;
   } else {
@@ -2234,7 +2234,7 @@ void EnableCursor(BOOLEAN fEnable) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN HideMouseCursor(void) {
+function HideMouseCursor(): BOOLEAN {
   guiMouseBufferState = BUFFER_DISABLED;
 
   return TRUE;
@@ -2242,7 +2242,7 @@ BOOLEAN HideMouseCursor(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN LoadCursorFile(PTR pFilename) {
+function LoadCursorFile(pFilename: PTR): BOOLEAN {
   VOBJECT_DESC VideoObjectDescription;
 
   //
@@ -2275,7 +2275,7 @@ BOOLEAN LoadCursorFile(PTR pFilename) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN SetCurrentCursor(UINT16 usVideoObjectSubIndex, UINT16 usOffsetX, UINT16 usOffsetY) {
+function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
   BOOLEAN ReturnValue;
   PTR pTmpPointer;
   UINT32 uiPitch;
@@ -2326,13 +2326,13 @@ BOOLEAN SetCurrentCursor(UINT16 usVideoObjectSubIndex, UINT16 usOffsetX, UINT16 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void StartFrameBufferRender(void) {
+function StartFrameBufferRender(): void {
   return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void EndFrameBufferRender(void) {
+function EndFrameBufferRender(): void {
   guiFrameBufferState = BUFFER_DIRTY;
 
   return;
@@ -2340,12 +2340,12 @@ void EndFrameBufferRender(void) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PrintScreen(void) {
+function PrintScreen(): void {
   gfPrintFrameBuffer = TRUE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-BOOLEAN Set8BPPPalette(SGPPaletteEntry *pPalette) {
+function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   HRESULT ReturnCode;
 
   // If we are in 256 colors, then we have to initialize the palette system to 0 (faded out)
@@ -2378,7 +2378,7 @@ BOOLEAN Set8BPPPalette(SGPPaletteEntry *pPalette) {
   return TRUE;
 }
 
-void FatalError(UINT8 *pError, ...) {
+function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
   va_list argptr;
 
   va_start(argptr, pError); // Set up variable argument pointer
@@ -2425,7 +2425,7 @@ interface TARGA_HEADER {
   ubImageDescriptor: UINT8;
 }
 
-void SnapshotSmall(void) {
+function SnapshotSmall(): void {
   INT32 iCountX, iCountY;
   DDSURFACEDESC SurfaceDescription;
   UINT16 *pVideo, *pDest;
@@ -2492,10 +2492,10 @@ void SnapshotSmall(void) {
   //	fclose(disk);
 }
 
-void VideoCaptureToggle(void) {
+function VideoCaptureToggle(): void {
 }
 
-void VideoMovieCapture(BOOLEAN fEnable) {
+function VideoMovieCapture(fEnable: BOOLEAN): void {
   INT32 cnt;
 
   gfVideoCapture = fEnable;
@@ -2519,7 +2519,7 @@ void VideoMovieCapture(BOOLEAN fEnable) {
   }
 }
 
-void RefreshMovieCache() {
+function RefreshMovieCache(): void {
   TARGA_HEADER Header;
   INT32 iCountX, iCountY;
   FILE *disk;

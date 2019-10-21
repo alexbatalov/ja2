@@ -14,7 +14,7 @@ INT32 iPortraitNumber = 0;
 
 // function definitions
 
-void EnterIMPPortraits(void) {
+function EnterIMPPortraits(): void {
   // create buttons
   CreateIMPPortraitButtons();
 
@@ -24,7 +24,7 @@ void EnterIMPPortraits(void) {
   return;
 }
 
-void RenderIMPPortraits(void) {
+function RenderIMPPortraits(): void {
   // render background
   RenderProfileBackGround();
 
@@ -43,14 +43,14 @@ void RenderIMPPortraits(void) {
   return;
 }
 
-void ExitIMPPortraits(void) {
+function ExitIMPPortraits(): void {
   // destroy buttons for IMP portrait page
   DestroyIMPPortraitButtons();
 
   return;
 }
 
-void HandleIMPPortraits(void) {
+function HandleIMPPortraits(): void {
   // do we need to re write screen
   if (fReDrawPortraitScreenFlag == TRUE) {
     RenderIMPPortraits();
@@ -61,7 +61,7 @@ void HandleIMPPortraits(void) {
   return;
 }
 
-BOOLEAN RenderPortrait(INT16 sX, INT16 sY) {
+function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
   // render the portrait of the current picture
   VOBJECT_DESC VObjectDesc;
   HVOBJECT hHandle;
@@ -96,7 +96,7 @@ BOOLEAN RenderPortrait(INT16 sX, INT16 sY) {
   return TRUE;
 }
 
-void IncrementPictureIndex(void) {
+function IncrementPictureIndex(): void {
   // cycle to next picture
 
   iCurrentPortrait++;
@@ -109,7 +109,7 @@ void IncrementPictureIndex(void) {
   return;
 }
 
-void DecrementPicture(void) {
+function DecrementPicture(): void {
   // cycle to previous picture
 
   iCurrentPortrait--;
@@ -122,7 +122,7 @@ void DecrementPicture(void) {
   return;
 }
 
-void CreateIMPPortraitButtons(void) {
+function CreateIMPPortraitButtons(): void {
   // will create buttons need for the IMP portrait screen
 
   // next button
@@ -154,7 +154,7 @@ void CreateIMPPortraitButtons(void) {
   SetButtonCursor(giIMPPortraitButton[2], CURSOR_WWW);
 }
 
-void DestroyIMPPortraitButtons(void) {
+function DestroyIMPPortraitButtons(): void {
   // will destroy buttons created for IMP Portrait screen
 
   // the next button
@@ -172,7 +172,7 @@ void DestroyIMPPortraitButtons(void) {
   return;
 }
 
-void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPortraitNextCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -191,7 +191,7 @@ void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPortraitPreviousCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -210,7 +210,7 @@ void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPortraitDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP attrbite begin button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

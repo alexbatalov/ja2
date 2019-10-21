@@ -29,10 +29,10 @@ MOUSE_REGION gSelectedFloristCardsRegion[9];
 INT32 guiFlowerCardsButtonImage;
 UINT32 guiFlowerCardsBackButton;
 
-void GameInitFloristCards() {
+function GameInitFloristCards(): void {
 }
 
-BOOLEAN EnterFloristCards() {
+function EnterFloristCards(): BOOLEAN {
   UINT16 i, j, usPosX, usPosY;
   VOBJECT_DESC VObjectDesc;
   UINT8 ubCount;
@@ -70,7 +70,7 @@ BOOLEAN EnterFloristCards() {
   return TRUE;
 }
 
-void ExitFloristCards() {
+function ExitFloristCards(): void {
   UINT8 i;
 
   RemoveFloristDefaults();
@@ -84,10 +84,10 @@ void ExitFloristCards() {
   RemoveButton(guiFlowerCardsBackButton);
 }
 
-void HandleFloristCards() {
+function HandleFloristCards(): void {
 }
 
-void RenderFloristCards() {
+function RenderFloristCards(): void {
   UINT8 i, j, ubCount;
   UINT16 usPosX, usPosY;
   wchar_t sTemp[640];
@@ -130,7 +130,7 @@ void RenderFloristCards() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectFloristCardsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristCardsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gbCurrentlySelectedCard = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
@@ -140,7 +140,7 @@ void SelectFloristCardsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void BtnFlowerCardsBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFlowerCardsBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);

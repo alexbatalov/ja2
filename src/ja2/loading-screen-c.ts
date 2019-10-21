@@ -3,7 +3,7 @@ extern HVSURFACE ghFrameBuffer;
 UINT8 gubLastLoadingScreenID = LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
-UINT8 GetLoadScreenID(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
+function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
   SECTORINFO *pSector;
   UINT8 ubSectorID;
   BOOLEAN fNight = FALSE;
@@ -174,7 +174,7 @@ extern BOOLEAN gfSchedulesHosed;
 
 // sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
 // and refreshing the screen with it.
-void DisplayLoadScreenWithID(UINT8 ubLoadScreenID) {
+function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
   VSURFACE_DESC vs_desc;
   HVSURFACE hVSurface;
   UINT32 uiLoadScreen;

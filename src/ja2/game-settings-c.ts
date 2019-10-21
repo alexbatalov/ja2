@@ -13,7 +13,7 @@ extern CHAR8 gzErrorMsg[256];
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 
-BOOLEAN LoadGameSettings() {
+function LoadGameSettings(): BOOLEAN {
   HWFILE hFile;
   UINT32 uiNumBytesRead;
 
@@ -93,7 +93,7 @@ BOOLEAN LoadGameSettings() {
   return TRUE;
 }
 
-BOOLEAN SaveGameSettings() {
+function SaveGameSettings(): BOOLEAN {
   HWFILE hFile;
   UINT32 uiNumBytesWritten;
 
@@ -126,7 +126,7 @@ BOOLEAN SaveGameSettings() {
   return TRUE;
 }
 
-void InitGameSettings() {
+function InitGameSettings(): void {
   memset(&gGameSettings, 0, sizeof(GAME_SETTINGS));
 
   // Init the Game Settings
@@ -175,7 +175,7 @@ void InitGameSettings() {
   SaveGameSettings();
 }
 
-void InitGameOptions() {
+function InitGameOptions(): void {
   memset(&gGameOptions, 0, sizeof(GAME_OPTIONS));
 
   // Init the game options
@@ -186,7 +186,7 @@ void InitGameOptions() {
   gGameOptions.fIronManMode = FALSE;
 }
 
-BOOLEAN GetCDLocation() {
+function GetCDLocation(): BOOLEAN {
   UINT32 uiStrngLength = 0;
   CHAR8 zCdLocation[SGPFILENAME_LEN];
   UINT32 uiDriveType = 0;
@@ -238,7 +238,7 @@ BOOLEAN GetCDLocation() {
   return TRUE;
 }
 
-BOOLEAN GetCDromDriveLetter(STR8 pString) {
+function GetCDromDriveLetter(pString: STR8): BOOLEAN {
   UINT32 uiSize = 0;
   UINT8 ubCnt = 0;
   CHAR8 zDriveLetters[512];
@@ -333,7 +333,7 @@ BOOLEAN GetCDromDriveLetter(STR8 pString) {
 
 */
 
-BOOLEAN CheckIfGameCdromIsInCDromDrive() {
+function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
   CHAR8 zVolumeNameBuffer[512];
   UINT32 uiVolumeSerialNumber = 0;
   UINT32 uiMaxComponentLength = 0;
@@ -388,7 +388,7 @@ BOOLEAN CheckIfGameCdromIsInCDromDrive() {
   return TRUE;
 }
 
-BOOLEAN GetCdromLocationFromIniFile(STR pRootOfCdromDrive) {
+function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): BOOLEAN {
   UINT32 uiRetVal = 0;
 
   // Do a crude check to make sure the Ja2.ini file is the right on
@@ -404,7 +404,7 @@ BOOLEAN GetCdromLocationFromIniFile(STR pRootOfCdromDrive) {
   }
 }
 
-void CDromEjectionErrorMessageBoxCallBack(UINT8 bExitValue) {
+function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_OK) {
     guiPreviousOptionScreen = GAME_SCREEN;
 
@@ -418,7 +418,7 @@ void CDromEjectionErrorMessageBoxCallBack(UINT8 bExitValue) {
   }
 }
 
-BOOLEAN IsDriveLetterACDromDrive(STR pDriveLetter) {
+function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
   UINT32 uiDriveType;
   CHAR8 zRootName[512];
 
@@ -436,7 +436,7 @@ BOOLEAN IsDriveLetterACDromDrive(STR pDriveLetter) {
   return FALSE;
 }
 
-void DisplayGameSettings() {
+function DisplayGameSettings(): void {
   // Display the version number
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%s: %s (%S)", pMessageStrings[MSG_VERSION], zVersionLabel, czVersionNumber);
 
@@ -464,7 +464,7 @@ void DisplayGameSettings() {
   }
 }
 
-BOOLEAN MeanwhileSceneSeen(UINT8 ubMeanwhile) {
+function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
   UINT32 uiCheckFlag;
 
   if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
@@ -480,7 +480,7 @@ BOOLEAN MeanwhileSceneSeen(UINT8 ubMeanwhile) {
   }
 }
 
-BOOLEAN SetMeanwhileSceneSeen(UINT8 ubMeanwhile) {
+function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
   UINT32 uiCheckFlag;
 
   if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
@@ -492,7 +492,7 @@ BOOLEAN SetMeanwhileSceneSeen(UINT8 ubMeanwhile) {
   return TRUE;
 }
 
-BOOLEAN CanGameBeSaved() {
+function CanGameBeSaved(): BOOLEAN {
   // if the iron man mode is on
   if (gGameOptions.fIronManMode) {
     // if we are in turn based combat

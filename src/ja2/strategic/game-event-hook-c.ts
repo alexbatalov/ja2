@@ -2,7 +2,7 @@ extern BOOLEAN gfProcessingGameEvents;
 extern UINT32 guiTimeStampOfCurrentlyExecutingEvent;
 extern BOOLEAN gfPreventDeletionOfAnyEvent;
 
-BOOLEAN DelayEventIfBattleInProgress(STRATEGICEVENT *pEvent) {
+function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
   STRATEGICEVENT *pNewEvent;
   if (gTacticalStatus.fEnemyInSector) {
     pNewEvent = AddAdvancedStrategicEvent(pEvent->ubEventType, pEvent->ubCallbackID, pEvent->uiTimeStamp + 180 + Random(121), pEvent->uiParam);
@@ -13,7 +13,7 @@ BOOLEAN DelayEventIfBattleInProgress(STRATEGICEVENT *pEvent) {
   return FALSE;
 }
 
-BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent) {
+function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
   BOOLEAN fOrigPreventFlag;
 
   fOrigPreventFlag = gfPreventDeletionOfAnyEvent;

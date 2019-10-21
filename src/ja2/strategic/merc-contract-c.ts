@@ -30,7 +30,7 @@ BOOLEAN gfInContractMenuFromRenewSequence = FALSE;
 const AIRPORT_X = 13;
 const AIRPORT_Y = 2;
 
-BOOLEAN SaveContractRenewalDataToSaveGameFile(HWFILE hFile) {
+function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesWritten;
 
   FileWrite(hFile, ContractRenewalList, sizeof(ContractRenewalList), &uiNumBytesWritten);
@@ -46,7 +46,7 @@ BOOLEAN SaveContractRenewalDataToSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-BOOLEAN LoadContractRenewalDataFromSaveGameFile(HWFILE hFile) {
+function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   UINT32 uiNumBytesRead;
 
   FileRead(hFile, ContractRenewalList, sizeof(ContractRenewalList), &uiNumBytesRead);
@@ -62,7 +62,7 @@ BOOLEAN LoadContractRenewalDataFromSaveGameFile(HWFILE hFile) {
   return TRUE;
 }
 
-void BeginContractRenewalSequence() {
+function BeginContractRenewalSequence(): void {
   INT32 cnt;
   SOLDIERTYPE *pSoldier;
   BOOLEAN fFoundAtLeastOne = FALSE;
@@ -104,7 +104,7 @@ void BeginContractRenewalSequence() {
   }
 }
 
-void HandleContractRenewalSequence() {
+function HandleContractRenewalSequence(): void {
   SOLDIERTYPE *pSoldier;
 
   if (gfContractRenewalSquenceOn) {
@@ -166,7 +166,7 @@ void HandleContractRenewalSequence() {
   }
 }
 
-void EndCurrentContractRenewal() {
+function EndCurrentContractRenewal(): void {
   // Are we in the requence?
   if (gfContractRenewalSquenceOn) {
     // OK stop this one and increment current one
@@ -177,7 +177,7 @@ void EndCurrentContractRenewal() {
   }
 }
 
-void HandleMercIsWillingToRenew(UINT8 ubID) {
+function HandleMercIsWillingToRenew(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier = MercPtrs[ubID];
 
   // We wish to lock interface
@@ -195,7 +195,7 @@ void HandleMercIsWillingToRenew(UINT8 ubID) {
   SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 0, MAP_SCREEN, 0, 0, 0);
 }
 
-void HandleMercIsNotWillingToRenew(UINT8 ubID) {
+function HandleMercIsNotWillingToRenew(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier = MercPtrs[ubID];
 
   // We wish to lock interface
@@ -212,7 +212,7 @@ void HandleMercIsNotWillingToRenew(UINT8 ubID) {
 }
 
 // This is used only to EXTEND the contract of an AIM merc already on the team
-BOOLEAN MercContractHandling(SOLDIERTYPE *pSoldier, UINT8 ubDesiredAction) {
+function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: UINT8): BOOLEAN {
   INT32 iContractCharge = 0;
   INT32 iContractLength = 0;
   UINT8 ubHistoryContractType = 0;
@@ -343,7 +343,7 @@ BOOLEAN MercContractHandling(SOLDIERTYPE *pSoldier, UINT8 ubDesiredAction) {
   return TRUE;
 }
 
-BOOLEAN WillMercRenew(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote) {
+function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN): BOOLEAN {
   UINT8 i;
   INT8 bMercID;
   BOOLEAN fBuddyAround = FALSE;
@@ -533,7 +533,7 @@ BOOLEAN WillMercRenew(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote) {
   }
 }
 
-void HandleSoldierLeavingWithLowMorale(SOLDIERTYPE *pSoldier) {
+function HandleSoldierLeavingWithLowMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (MercThinksHisMoraleIsTooLow(pSoldier)) {
     // this will cause him give us lame excuses for a while until he gets over it
     // 3-6 days (but the first 1-2 days of that are spent "returning" home)
@@ -541,7 +541,7 @@ void HandleSoldierLeavingWithLowMorale(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HandleSoldierLeavingForAnotherContract(SOLDIERTYPE *pSoldier) {
+function HandleSoldierLeavingForAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->fSignedAnotherContract) {
     // merc goes to work elsewhere
     gMercProfiles[pSoldier->ubProfile].bMercStatus = MERC_WORKING_ELSEWHERE;
@@ -595,7 +595,7 @@ BOOLEAN SoldierWantsToDelayRenewalOfContract( SOLDIERTYPE *pSoldier )
 */
 
 // this is called once a day (daily update) for every merc working for the player
-void CheckIfMercGetsAnotherContract(SOLDIERTYPE *pSoldier) {
+function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 uiFullDaysRemaining = 0;
   INT32 iChance = 0;
 
@@ -639,7 +639,7 @@ void CheckIfMercGetsAnotherContract(SOLDIERTYPE *pSoldier) {
 }
 
 // for ubRemoveType pass in the enum from the .h, 	( MERC_QUIT, MERC_FIRED  )
-BOOLEAN BeginStrategicRemoveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fAddRehireButton) {
+function BeginStrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: BOOLEAN): BOOLEAN {
   InterruptTime();
   PauseGame();
   LockPauseState(8);
@@ -657,7 +657,7 @@ BOOLEAN BeginStrategicRemoveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fAddRehireButton
   return TRUE;
 }
 
-BOOLEAN StrategicRemoveMerc(SOLDIERTYPE *pSoldier) {
+function StrategicRemoveMerc(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT8 ubHistoryCode = 0;
 
   if (gfInContractMenuFromRenewSequence) {
@@ -760,7 +760,7 @@ BOOLEAN StrategicRemoveMerc(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-void CalculateMedicalDepositRefund(SOLDIERTYPE *pSoldier) {
+function CalculateMedicalDepositRefund(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iRefundAmount = 0;
 
   // if the merc didnt have any medical deposit, exit
@@ -797,7 +797,7 @@ void CalculateMedicalDepositRefund(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(SOLDIERTYPE *pSoldier, BOOLEAN fAddRehireButton) {
+function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointer<SOLDIERTYPE>, fAddRehireButton: BOOLEAN): void {
   // will tell player this character is leaving and ask where they want the equipment left
   CHAR16 sString[1024];
   BOOLEAN fInSector = FALSE;
@@ -899,7 +899,7 @@ void NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(SOLDIERTYPE *pSoldie
   }
 }
 
-void MercDepartEquipmentBoxCallBack(UINT8 bExitValue) {
+function MercDepartEquipmentBoxCallBack(bExitValue: UINT8): void {
   // gear left in current sector?
   if (pLeaveSoldier == NULL) {
     return;
@@ -940,13 +940,13 @@ void MercDepartEquipmentBoxCallBack(UINT8 bExitValue) {
   return;
 }
 
-BOOLEAN HandleFiredDeadMerc(SOLDIERTYPE *pSoldier) {
+function HandleFiredDeadMerc(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   AddCharacterToDeadList(pSoldier);
 
   return TRUE;
 }
 
-void HandleExtendMercsContract(SOLDIERTYPE *pSoldier) {
+function HandleExtendMercsContract(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     gfEnteringMapScreen = TRUE;
 
@@ -972,7 +972,7 @@ void HandleExtendMercsContract(SOLDIERTYPE *pSoldier) {
   return;
 }
 
-void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void) {
+function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // find out is something was said
   SOLDIERTYPE *pSoldier = NULL, *pSoldierWhoWillQuit = NULL;
   INT32 iCounter = 0, iNumberOnTeam = 0;
@@ -1054,11 +1054,11 @@ void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void) {
   }
 }
 
-void HandleNotifyPlayerCantAffordInsurance(void) {
+function HandleNotifyPlayerCantAffordInsurance(): void {
   DoScreenIndependantMessageBox(zMarksMapScreenText[9], MSG_BOX_FLAG_OK, NULL);
 }
 
-void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength, INT32 iCost) {
+function HandleNotifyPlayerCanAffordInsurance(pSoldier: Pointer<SOLDIERTYPE>, ubLength: UINT8, iCost: INT32): void {
   CHAR16 sString[128];
   CHAR16 sStringA[32];
 
@@ -1084,7 +1084,7 @@ void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength,
   return;
 }
 
-void ExtendMercInsuranceContractCallBack(UINT8 bExitValue) {
+function ExtendMercInsuranceContractCallBack(bExitValue: UINT8): void {
   if (bExitValue == MSG_BOX_RETURN_YES) {
     PurchaseOrExtendInsuranceForSoldier(gpInsuranceSoldier, gubContractLength);
   }
@@ -1097,7 +1097,7 @@ void ExtendMercInsuranceContractCallBack(UINT8 bExitValue) {
   gpInsuranceSoldier = NULL;
 }
 
-void HandleUniqueEventWhenPlayerLeavesTeam(SOLDIERTYPE *pSoldier) {
+function HandleUniqueEventWhenPlayerLeavesTeam(pSoldier: Pointer<SOLDIERTYPE>): void {
   switch (pSoldier->ubProfile) {
     // When iggy leaves the players team,
     case IGGY:
@@ -1110,7 +1110,7 @@ void HandleUniqueEventWhenPlayerLeavesTeam(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier) {
+function GetHourWhenContractDone(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
   UINT32 uiArriveHour;
 
   // Get the arrival hour - that will give us when they arrived....
@@ -1119,7 +1119,7 @@ UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier) {
   return uiArriveHour;
 }
 
-BOOLEAN ContractIsExpiring(SOLDIERTYPE *pSoldier) {
+function ContractIsExpiring(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   UINT32 uiCheckHour;
 
   // First at least make sure same day....
@@ -1136,7 +1136,7 @@ BOOLEAN ContractIsExpiring(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE *pSoldier) {
+function ContractIsGoingToExpireSoon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // get hour contract is going to expire....
   UINT32 uiCheckHour;
 

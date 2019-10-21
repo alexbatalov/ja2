@@ -36,11 +36,11 @@ doesn't use the undo methodology.
 
 BOOLEAN gfUndoEnabled = FALSE;
 
-void EnableUndo() {
+function EnableUndo(): void {
   gfUndoEnabled = TRUE;
 }
 
-void DisableUndo() {
+function DisableUndo(): void {
   gfUndoEnabled = FALSE;
 }
 
@@ -79,7 +79,7 @@ interface MapIndexBinaryTree {
 MapIndexBinaryTree *top = NULL;
 
 // Recursively deletes all nodes below the node passed including itself.
-void DeleteTreeNode(MapIndexBinaryTree **node) {
+function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
   if ((*node)->left)
     DeleteTreeNode(&((*node)->left));
   if ((*node)->right)
@@ -89,12 +89,12 @@ void DeleteTreeNode(MapIndexBinaryTree **node) {
 }
 
 // Recursively delete all nodes (from the top down).
-void ClearUndoMapIndexTree() {
+function ClearUndoMapIndexTree(): void {
   if (top)
     DeleteTreeNode(&top);
 }
 
-BOOLEAN AddMapIndexToTree(UINT16 usMapIndex) {
+function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
   MapIndexBinaryTree *curr, *parent;
   if (!top) {
     top = (MapIndexBinaryTree *)MemAlloc(sizeof(MapIndexBinaryTree));
@@ -137,7 +137,7 @@ BOOLEAN AddMapIndexToTree(UINT16 usMapIndex) {
 //
 //*************************************************************************
 
-BOOLEAN DeleteTopStackNode(void) {
+function DeleteTopStackNode(): BOOLEAN {
   undo_stack *pCurrent;
 
   pCurrent = gpTileUndoStack;
@@ -151,7 +151,7 @@ BOOLEAN DeleteTopStackNode(void) {
   return TRUE;
 }
 
-undo_stack *DeleteThisStackNode(undo_stack *pThisNode) {
+function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack> {
   undo_stack *pCurrent;
   undo_stack *pNextNode;
 
@@ -165,7 +165,7 @@ undo_stack *DeleteThisStackNode(undo_stack *pThisNode) {
   return pNextNode;
 }
 
-BOOLEAN DeleteStackNodeContents(undo_stack *pCurrent) {
+function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
   undo_struct *pData;
   MAP_ELEMENT *pMapTile;
   LEVELNODE *pLandNode;
@@ -262,7 +262,7 @@ BOOLEAN DeleteStackNodeContents(undo_stack *pCurrent) {
   return TRUE;
 }
 
-void CropStackToMaxLength(INT32 iMaxCmds) {
+function CropStackToMaxLength(iMaxCmds: INT32): void {
   INT32 iCmdCount;
   undo_stack *pCurrent;
 
@@ -293,7 +293,7 @@ void CropStackToMaxLength(INT32 iMaxCmds) {
 // this will handle the way the undo command is handled.  If there is no lightradius in
 // our saved light, then we intend on erasing the light upon undo execution, otherwise, we
 // save the light radius and light ID, so that we place it during undo execution.
-void AddLightToUndoList(INT32 iMapIndex, INT32 iLightRadius, UINT8 ubLightID) {
+function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UINT8): void {
   undo_stack *pNode;
   undo_struct *pUndoInfo;
 
@@ -334,7 +334,7 @@ void AddLightToUndoList(INT32 iMapIndex, INT32 iLightRadius, UINT8 ubLightID) {
   CropStackToMaxLength(MAX_UNDO_COMMAND_LENGTH);
 }
 
-BOOLEAN AddToUndoList(INT32 iMapIndex) {
+function AddToUndoList(iMapIndex: INT32): BOOLEAN {
   static INT32 iCount = 1;
 
   if (!gfUndoEnabled)
@@ -357,7 +357,7 @@ BOOLEAN AddToUndoList(INT32 iMapIndex) {
   return FALSE;
 }
 
-BOOLEAN AddToUndoListCmd(INT32 iMapIndex, INT32 iCmdCount) {
+function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
   undo_stack *pNode;
   undo_struct *pUndoInfo;
   MAP_ELEMENT *pData;
@@ -436,7 +436,7 @@ BOOLEAN AddToUndoListCmd(INT32 iMapIndex, INT32 iCmdCount) {
   return TRUE;
 }
 
-void CheckMapIndexForMultiTileStructures(UINT16 usMapIndex) {
+function CheckMapIndexForMultiTileStructures(usMapIndex: UINT16): void {
   STRUCTURE *pStructure;
   UINT8 ubLoop;
   INT32 iCoveredMapIndex;
@@ -458,7 +458,7 @@ void CheckMapIndexForMultiTileStructures(UINT16 usMapIndex) {
   }
 }
 
-void CheckForMultiTilesInTreeAndAddToUndoList(MapIndexBinaryTree *node) {
+function CheckForMultiTilesInTreeAndAddToUndoList(node: Pointer<MapIndexBinaryTree>): void {
   CheckMapIndexForMultiTileStructures(node->usMapIndex);
   if (node->left)
     CheckForMultiTilesInTreeAndAddToUndoList(node->left);
@@ -466,7 +466,7 @@ void CheckForMultiTilesInTreeAndAddToUndoList(MapIndexBinaryTree *node) {
     CheckForMultiTilesInTreeAndAddToUndoList(node->right);
 }
 
-BOOLEAN RemoveAllFromUndoList(void) {
+function RemoveAllFromUndoList(): BOOLEAN {
   ClearUndoMapIndexTree();
 
   while (gpTileUndoStack != NULL)
@@ -475,7 +475,7 @@ BOOLEAN RemoveAllFromUndoList(void) {
   return TRUE;
 }
 
-BOOLEAN ExecuteUndoList(void) {
+function ExecuteUndoList(): BOOLEAN {
   INT32 iCmdCount, iCurCount;
   INT32 iUndoMapIndex;
   BOOLEAN fExitGrid;
@@ -547,7 +547,7 @@ BOOLEAN ExecuteUndoList(void) {
   return TRUE;
 }
 
-void SmoothUndoMapTileTerrain(INT32 iWorldTile, MAP_ELEMENT *pUndoTile) {
+function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEMENT>): void {
   LEVELNODE *pWorldLand;
   LEVELNODE *pUndoLand;
   LEVELNODE *pLand;
@@ -622,7 +622,7 @@ void SmoothUndoMapTileTerrain(INT32 iWorldTile, MAP_ELEMENT *pUndoTile) {
 // Because of the potentially huge amounts of memory that can be allocated due to the inefficient
 // undo methods coded by Bret, it is feasible that it could fail.  Instead of using assertions to
 // terminate the program, destroy the memory allocated thusfar.
-void DeleteMapElementContentsAfterCreationFail(MAP_ELEMENT *pNewMapElement) {
+function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_ELEMENT>): void {
   LEVELNODE *pLevelNode;
   STRUCTURE *pStructure;
   INT32 x;
@@ -668,7 +668,7 @@ void DeleteMapElementContentsAfterCreationFail(MAP_ELEMENT *pNewMapElement) {
                 };
         }; // ( 4 byte union )
 */
-BOOLEAN CopyMapElementFromWorld(MAP_ELEMENT *pNewMapElement, INT32 iMapIndex) {
+function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex: INT32): BOOLEAN {
   MAP_ELEMENT *pOldMapElement;
   LEVELNODE *pOldLevelNode;
   LEVELNODE *pLevelNode;
@@ -824,7 +824,7 @@ BOOLEAN CopyMapElementFromWorld(MAP_ELEMENT *pNewMapElement, INT32 iMapIndex) {
   return TRUE;
 }
 
-BOOLEAN SwapMapElementWithWorld(INT32 iMapIndex, MAP_ELEMENT *pUndoMapElement) {
+function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_ELEMENT>): BOOLEAN {
   MAP_ELEMENT *pCurrentMapElement;
   MAP_ELEMENT TempMapElement;
 
@@ -844,7 +844,7 @@ BOOLEAN SwapMapElementWithWorld(INT32 iMapIndex, MAP_ELEMENT *pUndoMapElement) {
   return TRUE;
 }
 
-void DetermineUndoState() {
+function DetermineUndoState(): void {
   // Reset the undo command mode if we released the left button.
   if (!fNewUndoCmd) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {

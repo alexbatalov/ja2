@@ -139,7 +139,7 @@ UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES] = {
   TRAVELCOST_SHORE, // DEEP WATER
 };
 
-void CreateTileDatabase() {
+function CreateTileDatabase(): void {
   UINT32 cnt1, cnt2;
   UINT8 ubLoop;
   UINT32 NumRegions;
@@ -281,7 +281,7 @@ void CreateTileDatabase() {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Database Item Total Mem:		%d", gSurfaceMemUsage));
 }
 
-void DeallocateTileDatabase() {
+function DeallocateTileDatabase(): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < NUMBEROFTILES; cnt++) {
@@ -296,7 +296,7 @@ void DeallocateTileDatabase() {
   gusNumAnimatedTiles = 0;
 }
 
-BOOLEAN GetLandHeadType(INT32 iMapIndex, UINT32 *puiType) {
+function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
   UINT16 usIndex;
 
   Assert(puiType != NULL);
@@ -310,7 +310,7 @@ BOOLEAN GetLandHeadType(INT32 iMapIndex, UINT32 *puiType) {
   return TRUE;
 }
 
-BOOLEAN SetLandIndex(INT32 iMapIndex, UINT16 usIndex, UINT32 uiNewType, BOOLEAN fDelete) {
+function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: BOOLEAN): BOOLEAN {
   UINT16 usTempIndex;
   UINT8 ubLastHighLevel = 0;
 
@@ -339,7 +339,7 @@ BOOLEAN SetLandIndex(INT32 iMapIndex, UINT16 usIndex, UINT32 uiNewType, BOOLEAN 
   }
 }
 
-BOOLEAN SetLandIndexWithRadius(INT32 iMapIndex, UINT16 usIndex, UINT32 uiNewType, UINT8 ubRadius, BOOLEAN fReplace) {
+function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
   UINT16 usTempIndex;
   INT16 sTop, sBottom;
   INT16 sLeft, sRight;
@@ -383,7 +383,7 @@ BOOLEAN SetLandIndexWithRadius(INT32 iMapIndex, UINT16 usIndex, UINT32 uiNewType
   return TRUE;
 }
 
-BOOLEAN GetTypeLandLevel(UINT32 iMapIndex, UINT32 uiNewType, UINT8 *pubLevel) {
+function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): BOOLEAN {
   UINT8 level = 0;
   LEVELNODE *pLand;
   UINT32 fTileType = 0;
@@ -407,7 +407,7 @@ BOOLEAN GetTypeLandLevel(UINT32 iMapIndex, UINT32 uiNewType, UINT8 *pubLevel) {
   return FALSE;
 }
 
-UINT8 GetLandLevelDepth(UINT32 iMapIndex) {
+function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
   UINT8 level = 0;
   LEVELNODE *pLand;
 
@@ -421,7 +421,7 @@ UINT8 GetLandLevelDepth(UINT32 iMapIndex) {
   return level;
 }
 
-BOOLEAN GetSubIndexFromTileIndex(UINT16 usTileIndex, UINT16 *pusSubIndex) {
+function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
   UINT32 uiType = 0;
   if (GetTileType(usTileIndex, &uiType)) {
     *pusSubIndex = usTileIndex - gTileTypeStartIndex[uiType] + 1;
@@ -430,7 +430,7 @@ BOOLEAN GetSubIndexFromTileIndex(UINT16 usTileIndex, UINT16 *pusSubIndex) {
   return FALSE;
 }
 
-BOOLEAN GetTypeSubIndexFromTileIndex(UINT32 uiCheckType, UINT16 usIndex, UINT16 *pusSubIndex) {
+function GetTypeSubIndexFromTileIndex(uiCheckType: UINT32, usIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
@@ -440,7 +440,7 @@ BOOLEAN GetTypeSubIndexFromTileIndex(UINT32 uiCheckType, UINT16 usIndex, UINT16 
   return TRUE;
 }
 
-BOOLEAN GetTypeSubIndexFromTileIndexChar(UINT32 uiCheckType, UINT16 usIndex, UINT8 *pubSubIndex) {
+function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, pubSubIndex: Pointer<UINT8>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
@@ -450,7 +450,7 @@ BOOLEAN GetTypeSubIndexFromTileIndexChar(UINT32 uiCheckType, UINT16 usIndex, UIN
   return TRUE;
 }
 
-BOOLEAN GetTileIndexFromTypeSubIndex(UINT32 uiCheckType, UINT16 usSubIndex, UINT16 *pusTileIndex) {
+function GetTileIndexFromTypeSubIndex(uiCheckType: UINT32, usSubIndex: UINT16, pusTileIndex: Pointer<UINT16>): BOOLEAN {
   // Tile database is zero-based, Type indecies are 1-based!
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
@@ -460,7 +460,7 @@ BOOLEAN GetTileIndexFromTypeSubIndex(UINT32 uiCheckType, UINT16 usSubIndex, UINT
   return TRUE;
 }
 
-BOOLEAN MoveLandIndexToTop(UINT32 iMapIndex, UINT16 usIndex) {
+function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Remove, then add again
   RemoveLand(iMapIndex, usIndex);
 
@@ -470,7 +470,7 @@ BOOLEAN MoveLandIndexToTop(UINT32 iMapIndex, UINT16 usIndex) {
 }
 
 // Database access functions
-BOOLEAN GetTileType(UINT16 usIndex, UINT32 *puiType) {
+function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
   TILE_ELEMENT TileElem;
 
   CHECKF(usIndex != NO_TILE);
@@ -483,7 +483,7 @@ BOOLEAN GetTileType(UINT16 usIndex, UINT32 *puiType) {
   return TRUE;
 }
 
-BOOLEAN GetTileFlags(UINT16 usIndex, UINT32 *puiFlags) {
+function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
   TILE_ELEMENT TileElem;
 
   CHECKF(usIndex != NO_TILE);
@@ -497,13 +497,13 @@ BOOLEAN GetTileFlags(UINT16 usIndex, UINT32 *puiFlags) {
   return TRUE;
 }
 
-BOOLEAN GetTileTypeLogicalHeight(UINT32 fType, UINT8 *pubLogHeight) {
+function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): BOOLEAN {
   *pubLogHeight = gTileTypeLogicalHeight[fType];
 
   return TRUE;
 }
 
-BOOLEAN LandTypeHeigher(UINT32 uiDestType, UINT32 uiSrcType) {
+function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
   UINT8 ubDestLogHeight;
   UINT8 ubSrcLogHeight;
 
@@ -514,7 +514,7 @@ BOOLEAN LandTypeHeigher(UINT32 uiDestType, UINT32 uiSrcType) {
   return ubDestLogHeight > ubSrcLogHeight;
 }
 
-BOOLEAN AnyHeigherLand(UINT32 iMapIndex, UINT32 uiSrcType, UINT8 *pubLastLevel) {
+function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
   LEVELNODE *pLand = NULL;
   UINT8 ubSrcLogHeight = 0;
   UINT32 fTileType = 0;
@@ -554,7 +554,7 @@ BOOLEAN AnyHeigherLand(UINT32 iMapIndex, UINT32 uiSrcType, UINT8 *pubLastLevel) 
   return fFound;
 }
 
-BOOLEAN AnyLowerLand(UINT32 iMapIndex, UINT32 uiSrcType, UINT8 *pubLastLevel) {
+function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
   LEVELNODE *pLand = NULL;
   UINT8 ubSrcLogHeight;
   UINT32 fTileType = 0;
@@ -596,7 +596,7 @@ BOOLEAN AnyLowerLand(UINT32 iMapIndex, UINT32 uiSrcType, UINT8 *pubLastLevel) {
   return FALSE;
 }
 
-BOOLEAN GetWallOrientation(UINT16 usIndex, UINT16 *pusWallOrientation) {
+function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): BOOLEAN {
   TILE_ELEMENT TileElem;
 
   CHECKF(usIndex != NO_TILE);
@@ -609,7 +609,7 @@ BOOLEAN GetWallOrientation(UINT16 usIndex, UINT16 *pusWallOrientation) {
   return TRUE;
 }
 
-BOOLEAN ContainsWallOrientation(INT32 iMapIndex, UINT32 uiType, UINT16 usWallOrientation, UINT8 *pubLevel) {
+function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): BOOLEAN {
   LEVELNODE *pStruct = NULL;
   UINT8 level = 0;
   UINT16 usCheckWallOrient = 0;
@@ -640,7 +640,7 @@ BOOLEAN ContainsWallOrientation(INT32 iMapIndex, UINT32 uiType, UINT16 usWallOri
 // sharing the same tile.  This case only happens with the exterior and
 // interior bottom corners.  Otherwise, it returns the orientation of the
 // first wall encountered -- not that there should be duplicate walls...
-UINT8 CalculateWallOrientationsAtGridNo(INT32 iMapIndex) {
+function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   UINT16 usCheckWallOrientation = 0;
   LEVELNODE *pStruct = NULL;
   UINT8 ubFinalWallOrientation = NO_ORIENTATION;
@@ -679,7 +679,7 @@ UINT8 CalculateWallOrientationsAtGridNo(INT32 iMapIndex) {
   return ubFinalWallOrientation;
 }
 
-BOOLEAN AllocateAnimTileData(TILE_ELEMENT *pTileElem, UINT8 ubNumFrames) {
+function AllocateAnimTileData(pTileElem: Pointer<TILE_ELEMENT>, ubNumFrames: UINT8): BOOLEAN {
   pTileElem->pAnimData = MemAlloc(sizeof(TILE_ANIMATION_DATA));
 
   CHECKF(pTileElem->pAnimData != NULL);
@@ -694,7 +694,7 @@ BOOLEAN AllocateAnimTileData(TILE_ELEMENT *pTileElem, UINT8 ubNumFrames) {
   return TRUE;
 }
 
-void FreeAnimTileData(TILE_ELEMENT *pTileElem) {
+function FreeAnimTileData(pTileElem: Pointer<TILE_ELEMENT>): void {
   if (pTileElem->pAnimData != NULL) {
     // Free frames list
     MemFree(pTileElem->pAnimData->pusFrames);

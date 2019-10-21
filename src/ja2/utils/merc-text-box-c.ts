@@ -57,7 +57,7 @@ UINT32 guiFlags = 0;
 UINT32 guiBoxIcons;
 UINT32 guiSkullIcons;
 
-BOOLEAN SetCurrentPopUpBox(UINT32 uiId) {
+function SetCurrentPopUpBox(uiId: UINT32): BOOLEAN {
   // given id of the box, find it in the list and set to current
 
   // make sure the box id is valid
@@ -74,7 +74,7 @@ BOOLEAN SetCurrentPopUpBox(UINT32 uiId) {
   return FALSE;
 }
 
-BOOLEAN OverrideMercPopupBox(MercPopUpBox *pMercBox) {
+function OverrideMercPopupBox(pMercBox: Pointer<MercPopUpBox>): BOOLEAN {
   // store old box and set current this passed one
   gOldPopUpTextBox = gPopUpTextBox;
 
@@ -83,13 +83,13 @@ BOOLEAN OverrideMercPopupBox(MercPopUpBox *pMercBox) {
   return TRUE;
 }
 
-BOOLEAN ResetOverrideMercPopupBox() {
+function ResetOverrideMercPopupBox(): BOOLEAN {
   gPopUpTextBox = gOldPopUpTextBox;
 
   return TRUE;
 }
 
-BOOLEAN InitMercPopupBox() {
+function InitMercPopupBox(): BOOLEAN {
   INT32 iCounter = 0;
   VOBJECT_DESC VObjectDesc;
 
@@ -114,7 +114,7 @@ BOOLEAN InitMercPopupBox() {
   return TRUE;
 }
 
-BOOLEAN ShutDownPopUpBoxes() {
+function ShutDownPopUpBoxes(): BOOLEAN {
   INT32 iCounter = 0;
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
     // now attempt to remove this box
@@ -125,7 +125,7 @@ BOOLEAN ShutDownPopUpBoxes() {
 }
 
 // Tactical Popup
-BOOLEAN LoadTextMercPopupImages(UINT8 ubBackgroundIndex, UINT8 ubBorderIndex) {
+function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): BOOLEAN {
   VSURFACE_DESC vs_desc;
   VOBJECT_DESC VObjectDesc;
 
@@ -150,7 +150,7 @@ BOOLEAN LoadTextMercPopupImages(UINT8 ubBackgroundIndex, UINT8 ubBorderIndex) {
   return TRUE;
 }
 
-void RemoveTextMercPopupImages() {
+function RemoveTextMercPopupImages(): void {
   // this procedure will remove the background and border video surface/object from the indecies
   if (gPopUpTextBox) {
     if (gPopUpTextBox->fMercTextPopupInitialized) {
@@ -168,7 +168,7 @@ void RemoveTextMercPopupImages() {
   return;
 }
 
-BOOLEAN RenderMercPopUpBoxFromIndex(INT32 iBoxId, INT16 sDestX, INT16 sDestY, UINT32 uiBuffer) {
+function RenderMercPopUpBoxFromIndex(iBoxId: INT32, sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOOLEAN {
   // set the current box
   if (SetCurrentPopUpBox(iBoxId) == FALSE) {
     return FALSE;
@@ -178,7 +178,7 @@ BOOLEAN RenderMercPopUpBoxFromIndex(INT32 iBoxId, INT16 sDestX, INT16 sDestY, UI
   return RenderMercPopupBox(sDestX, sDestY, uiBuffer);
 }
 
-BOOLEAN RenderMercPopupBox(INT16 sDestX, INT16 sDestY, UINT32 uiBuffer) {
+function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOOLEAN {
   //	UINT32  uiDestPitchBYTES;
   //	UINT32  uiSrcPitchBYTES;
   //  UINT16  *pDestBuf;
@@ -219,7 +219,7 @@ BOOLEAN RenderMercPopupBox(INT16 sDestX, INT16 sDestY, UINT32 uiBuffer) {
   return fReturnValue;
 }
 
-INT32 AddPopUpBoxToList(MercPopUpBox *pPopUpTextBox) {
+function AddPopUpBoxToList(pPopUpTextBox: Pointer<MercPopUpBox>): INT32 {
   INT32 iCounter = 0;
 
   // make sure is a valid box
@@ -246,11 +246,11 @@ INT32 AddPopUpBoxToList(MercPopUpBox *pPopUpTextBox) {
 }
 
 // get box with this id
-MercPopUpBox *GetPopUpBoxIndex(INT32 iId) {
+function GetPopUpBoxIndex(iId: INT32): Pointer<MercPopUpBox> {
   return gpPopUpBoxList[iId];
 }
 
-INT32 PrepareMercPopupBox(INT32 iBoxId, UINT8 ubBackgroundIndex, UINT8 ubBorderIndex, STR16 pString, UINT16 usWidth, UINT16 usMarginX, UINT16 usMarginTopY, UINT16 usMarginBottomY, UINT16 *pActualWidth, UINT16 *pActualHeight) {
+function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIndex: UINT8, pString: STR16, usWidth: UINT16, usMarginX: UINT16, usMarginTopY: UINT16, usMarginBottomY: UINT16, pActualWidth: Pointer<UINT16>, pActualHeight: Pointer<UINT16>): INT32 {
   UINT16 usNumberVerticalPixels, usNumberOfLines;
   UINT16 usTextWidth, usHeight;
   UINT16 i;
@@ -475,7 +475,7 @@ INT32 PrepareMercPopupBox(INT32 iBoxId, UINT8 ubBackgroundIndex, UINT8 ubBorderI
 }
 
 // Deletes the surface thats contains the border, background and the text.
-BOOLEAN RemoveMercPopupBox() {
+function RemoveMercPopupBox(): BOOLEAN {
   INT32 iCounter = 0;
 
   // make sure the current box does in fact exist
@@ -509,7 +509,7 @@ BOOLEAN RemoveMercPopupBox() {
   return TRUE;
 }
 
-BOOLEAN RemoveMercPopupBoxFromIndex(UINT32 uiId) {
+function RemoveMercPopupBoxFromIndex(uiId: UINT32): BOOLEAN {
   // find this box, set it to current, and delete it
   if (SetCurrentPopUpBox(uiId) == FALSE) {
     // failed
@@ -521,7 +521,7 @@ BOOLEAN RemoveMercPopupBoxFromIndex(UINT32 uiId) {
 }
 
 // Pass in the background index, and pointers to the font and shadow color
-void GetMercPopupBoxFontColor(UINT8 ubBackgroundIndex, UINT8 *pubFontColor, UINT8 *pubFontShadowColor) {
+function GetMercPopupBoxFontColor(ubBackgroundIndex: UINT8, pubFontColor: Pointer<UINT8>, pubFontShadowColor: Pointer<UINT8>): void {
   switch (ubBackgroundIndex) {
     case BASIC_MERC_POPUP_BACKGROUND:
       *pubFontColor = TEXT_POPUP_COLOR;
@@ -550,12 +550,12 @@ void GetMercPopupBoxFontColor(UINT8 ubBackgroundIndex, UINT8 *pubFontColor, UINT
   }
 }
 
-BOOLEAN SetPrepareMercPopupFlags(UINT32 uiFlags) {
+function SetPrepareMercPopupFlags(uiFlags: UINT32): BOOLEAN {
   guiFlags |= uiFlags;
   return TRUE;
 }
 
-BOOLEAN SetPrepareMercPopUpFlagsFromIndex(UINT32 uiFlags, UINT32 uiId) {
+function SetPrepareMercPopUpFlagsFromIndex(uiFlags: UINT32, uiId: UINT32): BOOLEAN {
   // find this box, set it to current, and delete it
   if (SetCurrentPopUpBox(uiId) == FALSE) {
     // failed

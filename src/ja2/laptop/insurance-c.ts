@@ -61,10 +61,10 @@ MOUSE_REGION gSelectedInsuranceLinkRegion[3];
 // link to the home page by clicking on the small title
 MOUSE_REGION gSelectedInsuranceTitleLinkRegion;
 
-void GameInitInsurance() {
+function GameInitInsurance(): void {
 }
 
-BOOLEAN EnterInsurance() {
+function EnterInsurance(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX, i;
 
@@ -99,7 +99,7 @@ BOOLEAN EnterInsurance() {
   return TRUE;
 }
 
-void ExitInsurance() {
+function ExitInsurance(): void {
   UINT8 i;
 
   RemoveInsuranceDefaults();
@@ -111,10 +111,10 @@ void ExitInsurance() {
     MSYS_RemoveRegion(&gSelectedInsuranceLinkRegion[i]);
 }
 
-void HandleInsurance() {
+function HandleInsurance(): void {
 }
 
-void RenderInsurance() {
+function RenderInsurance(): void {
   wchar_t sText[800];
   HVOBJECT hPixHandle;
 
@@ -179,7 +179,7 @@ void RenderInsurance() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-BOOLEAN InitInsuranceDefaults() {
+function InitInsuranceDefaults(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the Flower Account Box graphic and add it
@@ -212,7 +212,7 @@ BOOLEAN InitInsuranceDefaults() {
   return TRUE;
 }
 
-void DisplayInsuranceDefaults() {
+function DisplayInsuranceDefaults(): void {
   HVOBJECT hPixHandle;
   UINT8 i;
   UINT16 usPosY;
@@ -256,7 +256,7 @@ void DisplayInsuranceDefaults() {
   }
 }
 
-void RemoveInsuranceDefaults() {
+function RemoveInsuranceDefaults(): void {
   DeleteVideoObjectFromIndex(guiInsuranceBackGround);
   DeleteVideoObjectFromIndex(guiInsuranceRedBarImage);
   DeleteVideoObjectFromIndex(guiInsuranceBigRedLineImage);
@@ -268,7 +268,7 @@ void RemoveInsuranceDefaults() {
   }
 }
 
-void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY) {
+function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16): void {
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
 
@@ -286,7 +286,7 @@ void DisplaySmallRedLineWithShadow(UINT16 usStartX, UINT16 usStartY, UINT16 EndX
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void GetInsuranceText(UINT8 ubNumber, STR16 pString) {
+function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
   UINT32 uiStartLoc = 0;
 
   if (ubNumber < INS_MULTI_LINE_BEGINS) {
@@ -300,7 +300,7 @@ void GetInsuranceText(UINT8 ubNumber, STR16 pString) {
   }
 }
 
-void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
@@ -315,7 +315,7 @@ void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;

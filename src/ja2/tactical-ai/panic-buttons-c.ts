@@ -1,4 +1,4 @@
-void MakeClosestEnemyChosenOne() {
+function MakeClosestEnemyChosenOne(): void {
   UINT32 cnt;
   INT16 sPathCost, sShortestPath = 1000;
   INT8 bOldKeys = -1;
@@ -128,7 +128,7 @@ void MakeClosestEnemyChosenOne() {
   }
 }
 
-void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
+function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 iAPCost, iPathCost;
   // INT8		bOldKeys;
   INT8 bPanicTrigger;
@@ -182,7 +182,7 @@ void PossiblyMakeThisEnemyChosenOne(SOLDIERTYPE *pSoldier) {
   pSoldier->bHasKeys = (pSoldier->bHasKeys >> 1);
 }
 
-INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
+function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
   BOOLEAN fFoundRoute = FALSE;
   INT8 bSlot;
   INT32 iPathCost;
@@ -302,13 +302,13 @@ INT8 PanicAI(SOLDIERTYPE *pSoldier, UINT8 ubCanMove) {
   return -1;
 }
 
-void InitPanicSystem(void) {
+function InitPanicSystem(): void {
   // start by assuming there is no panic bombs or triggers here
   gTacticalStatus.ubTheChosenOne = NOBODY;
   FindPanicBombsAndTriggers();
 }
 
-INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
+function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bLoop;
   INT16 sDistance;
   INT16 sClosestDistance = 1000;
@@ -348,7 +348,7 @@ INT8 ClosestPanicTrigger(SOLDIERTYPE *pSoldier) {
   return bClosestTrigger;
 }
 
-BOOLEAN NeedToRadioAboutPanicTrigger(void) {
+function NeedToRadioAboutPanicTrigger(): BOOLEAN {
   UINT32 uiPercentEnemiesKilled;
   INT8 bLoop;
 
@@ -384,7 +384,7 @@ BOOLEAN NeedToRadioAboutPanicTrigger(void) {
 const STAIRCASE_GRIDNO = 12067;
 const STAIRCASE_DIRECTION = 0;
 
-INT8 HeadForTheStairCase(SOLDIERTYPE *pSoldier) {
+function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   UNDERGROUND_SECTORINFO *pBasementInfo;
 
   pBasementInfo = FindUnderGroundSector(3, MAP_ROW_P, 1);

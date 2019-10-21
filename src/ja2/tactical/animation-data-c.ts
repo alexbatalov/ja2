@@ -713,7 +713,7 @@ AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS] = 
   },
 };
 
-BOOLEAN InitAnimationSystem() {
+function InitAnimationSystem(): BOOLEAN {
   INT32 cnt1, cnt2;
   CHAR8 sFilename[50];
   STRUCTURE_FILE_REF *pStructureFileRef;
@@ -744,7 +744,7 @@ BOOLEAN InitAnimationSystem() {
   return TRUE;
 }
 
-BOOLEAN DeInitAnimationSystem() {
+function DeInitAnimationSystem(): BOOLEAN {
   INT32 cnt1, cnt2;
 
   for (cnt1 = 0; cnt1 < NUMANIMATIONSURFACETYPES; cnt1++) {
@@ -770,7 +770,7 @@ BOOLEAN DeInitAnimationSystem() {
   return TRUE;
 }
 
-STRUCTURE_FILE_REF *InternalGetAnimationStructureRef(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState, BOOLEAN fUseAbsolute) {
+function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: BOOLEAN): Pointer<STRUCTURE_FILE_REF> {
   INT8 bStructDataType;
 
   if (usSurfaceIndex == INVALID_ANIMATION_SURFACE) {
@@ -793,16 +793,16 @@ STRUCTURE_FILE_REF *InternalGetAnimationStructureRef(UINT16 usSoldierID, UINT16 
   return gAnimStructureDatabase[MercPtrs[usSoldierID]->ubBodyType][bStructDataType].pStructureFileRef;
 }
 
-STRUCTURE_FILE_REF *GetAnimationStructureRef(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState) {
+function GetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): Pointer<STRUCTURE_FILE_REF> {
   return InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, FALSE);
 }
 
-STRUCTURE_FILE_REF *GetDefaultStructureRef(UINT16 usSoldierID) {
+function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF> {
   return gAnimStructureDatabase[MercPtrs[usSoldierID]->ubBodyType][DEFAULT_STRUCT].pStructureFileRef;
 }
 
 // Surface mamagement functions
-BOOLEAN LoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState) {
+function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): BOOLEAN {
   AuxObjectData *pAuxData;
 
   // Check for valid surface
@@ -902,7 +902,7 @@ BOOLEAN LoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 u
   return TRUE;
 }
 
-BOOLEAN UnLoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex) {
+function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): BOOLEAN {
   // Decrement usage flag, only if this soldier has it currently tagged
   if (gbAnimUsageHistory[usSurfaceIndex][usSoldierID] > 0) {
     // Decrement usage count
@@ -936,7 +936,7 @@ BOOLEAN UnLoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex) {
   return TRUE;
 }
 
-void ClearAnimationSurfacesUsageHistory(UINT16 usSoldierID) {
+function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
   UINT32 cnt;
 
   for (cnt = 0; cnt < NUMANIMATIONSURFACETYPES; cnt++) {
@@ -944,7 +944,7 @@ void ClearAnimationSurfacesUsageHistory(UINT16 usSoldierID) {
   }
 }
 
-BOOLEAN LoadAnimationProfiles() {
+function LoadAnimationProfiles(): BOOLEAN {
   //	FILE *			pInput;
   HWFILE pInput;
   INT32 iProfileCount, iDirectionCount, iTileCount;
@@ -1013,7 +1013,7 @@ BOOLEAN LoadAnimationProfiles() {
   return TRUE;
 }
 
-void DeleteAnimationProfiles() {
+function DeleteAnimationProfiles(): void {
   INT32 iProfileCount, iDirectionCount;
   ANIM_PROF *pProfile;
   ANIM_PROF_DIR *pProfileDir;
@@ -1037,7 +1037,7 @@ void DeleteAnimationProfiles() {
   MemFree(gpAnimProfiles);
 }
 
-void ZeroAnimSurfaceCounts() {
+function ZeroAnimSurfaceCounts(): void {
   INT32 cnt;
 
   for (cnt = 0; cnt < NUMANIMATIONSURFACETYPES; cnt++) {

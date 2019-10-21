@@ -1,10 +1,10 @@
 UINT32 guiMiscBackground;
 UINT32 guiMiscGrid;
 
-void GameInitBobbyRMisc() {
+function GameInitBobbyRMisc(): void {
 }
 
-BOOLEAN EnterBobbyRMisc() {
+function EnterBobbyRMisc(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   // load the background graphic and add it
@@ -29,7 +29,7 @@ BOOLEAN EnterBobbyRMisc() {
   return TRUE;
 }
 
-void ExitBobbyRMisc() {
+function ExitBobbyRMisc(): void {
   DeleteVideoObjectFromIndex(guiMiscBackground);
   DeleteVideoObjectFromIndex(guiMiscGrid);
   DeleteBobbyBrTitle();
@@ -39,10 +39,10 @@ void ExitBobbyRMisc() {
   guiLastBobbyRayPage = LAPTOP_MODE_BOBBY_R_MISC;
 }
 
-void HandleBobbyRMisc() {
+function HandleBobbyRMisc(): void {
 }
 
-void RenderBobbyRMisc() {
+function RenderBobbyRMisc(): void {
   HVOBJECT hPixHandle;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiMiscBackground);

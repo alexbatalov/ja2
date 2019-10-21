@@ -1,4 +1,4 @@
-vector_3 VSetEqual(vector_3 *a) {
+function VSetEqual(a: Pointer<vector_3>): vector_3 {
   vector_3 c;
 
   //	c.x = a->x;
@@ -9,7 +9,7 @@ vector_3 VSetEqual(vector_3 *a) {
   return c;
 }
 
-vector_3 VSubtract(vector_3 *a, vector_3 *b) {
+function VSubtract(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
   vector_3 c;
 
   c.x = a->x - b->x;
@@ -19,7 +19,7 @@ vector_3 VSubtract(vector_3 *a, vector_3 *b) {
   return c;
 }
 
-vector_3 VAdd(vector_3 *a, vector_3 *b) {
+function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
   vector_3 c;
 
   c.x = a->x + b->x;
@@ -29,7 +29,7 @@ vector_3 VAdd(vector_3 *a, vector_3 *b) {
   return c;
 }
 
-vector_3 VMultScalar(vector_3 *a, real b) {
+function VMultScalar(a: Pointer<vector_3>, b: real): vector_3 {
   vector_3 c;
 
   c.x = a->x * b;
@@ -39,7 +39,7 @@ vector_3 VMultScalar(vector_3 *a, real b) {
   return c;
 }
 
-vector_3 VDivScalar(vector_3 *a, real b) {
+function VDivScalar(a: Pointer<vector_3>, b: real): vector_3 {
   vector_3 c;
 
   c.x = a->x / b;
@@ -49,15 +49,15 @@ vector_3 VDivScalar(vector_3 *a, real b) {
   return c;
 }
 
-real VDotProduct(vector_3 *a, vector_3 *b) {
+function VDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): real {
   return (a->x * b->x) + (a->y * b->y) + (a->z * b->z);
 }
 
-real VPerpDotProduct(vector_3 *a, vector_3 *b) {
+function VPerpDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): real {
   return (a->x * b->x) - (a->y * b->y) - (a->z * b->z);
 }
 
-vector_3 VCrossProduct(vector_3 *a, vector_3 *b) {
+function VCrossProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
   vector_3 c;
 
   c.x = (a->y * b->z) - (a->z * b->y);
@@ -67,7 +67,7 @@ vector_3 VCrossProduct(vector_3 *a, vector_3 *b) {
   return c;
 }
 
-vector_3 VGetPerpendicular(vector_3 *a) {
+function VGetPerpendicular(a: Pointer<vector_3>): vector_3 {
   vector_3 c;
 
   c.x = -a->y;
@@ -77,11 +77,11 @@ vector_3 VGetPerpendicular(vector_3 *a) {
   return c;
 }
 
-real VGetLength(vector_3 *a) {
+function VGetLength(a: Pointer<vector_3>): real {
   return (real)sqrt((a->x * a->x) + (a->y * a->y) + (a->z * a->z));
 }
 
-vector_3 VGetNormal(vector_3 *a) {
+function VGetNormal(a: Pointer<vector_3>): vector_3 {
   vector_3 c;
   real OneOverLength, Length;
 

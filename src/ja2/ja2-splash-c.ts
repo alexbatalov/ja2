@@ -3,7 +3,7 @@ UINT32 guiSplashStartTime = 0;
 extern HVSURFACE ghFrameBuffer;
 
 // Simply create videosurface, load image, and draw it to the screen.
-void InitJA2SplashScreen() {
+function InitJA2SplashScreen(): void {
   UINT32 uiLogoID = 0;
   STRING512 CurrentDir;
   STRING512 DataDir;

@@ -139,7 +139,7 @@ INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
 extern SOLDIERTYPE *gpSMCurrentMerc;
 extern BOOLEAN gfRerenderInterfaceFromHelpText;
 
-BOOLEAN LoadMercProfiles(void) {
+function LoadMercProfiles(): BOOLEAN {
   //	FILE *fptr;
   HWFILE fptr;
   char *pFileName = "BINARYDATA\\Prof.dat";
@@ -277,7 +277,7 @@ BOOLEAN LoadMercProfiles(void) {
 
 const MAX_ADDITIONAL_TERRORISTS = 4;
 
-void DecideActiveTerrorists(void) {
+function DecideActiveTerrorists(): void {
   UINT8 ubLoop, ubLoop2;
   UINT8 ubTerrorist;
   UINT8 ubNumAdditionalTerrorists, ubNumTerroristsAdded = 0;
@@ -364,7 +364,7 @@ void DecideActiveTerrorists(void) {
   gubNumTerrorists = 1 + ubNumAdditionalTerrorists;
 }
 
-void MakeRemainingTerroristsTougher(void) {
+function MakeRemainingTerroristsTougher(): void {
   UINT8 ubRemainingTerrorists = 0, ubLoop;
   UINT16 usNewItem, usOldItem;
   OBJECTTYPE Object;
@@ -441,7 +441,7 @@ void MakeRemainingTerroristsTougher(void) {
   }
 }
 
-void DecideOnAssassin(void) {
+function DecideOnAssassin(): void {
   UINT8 ubAssassinPossibility[NUM_ASSASSINS] = {
     NO_PROFILE,
     NO_PROFILE,
@@ -477,7 +477,7 @@ void DecideOnAssassin(void) {
   }
 }
 
-void MakeRemainingAssassinsTougher(void) {
+function MakeRemainingAssassinsTougher(): void {
   UINT8 ubRemainingAssassins = 0, ubLoop;
   UINT16 usNewItem, usOldItem;
   OBJECTTYPE Object;
@@ -541,7 +541,7 @@ void MakeRemainingAssassinsTougher(void) {
   }
 }
 
-void StartSomeMercsOnAssignment(void) {
+function StartSomeMercsOnAssignment(): void {
   UINT32 uiCnt;
   MERCPROFILESTRUCT *pProfile;
   UINT32 uiChance;
@@ -566,7 +566,7 @@ void StartSomeMercsOnAssignment(void) {
   }
 }
 
-void SetProfileFaceData(UINT8 ubCharNum, UINT8 ubFaceIndex, UINT16 usEyesX, UINT16 usEyesY, UINT16 usMouthX, UINT16 usMouthY) {
+function SetProfileFaceData(ubCharNum: UINT8, ubFaceIndex: UINT8, usEyesX: UINT16, usEyesY: UINT16, usMouthX: UINT16, usMouthY: UINT16): void {
   gMercProfiles[ubCharNum].ubFaceIndex = ubFaceIndex;
   gMercProfiles[ubCharNum].usEyesX = usEyesX;
   gMercProfiles[ubCharNum].usEyesY = usEyesY;
@@ -574,7 +574,7 @@ void SetProfileFaceData(UINT8 ubCharNum, UINT8 ubFaceIndex, UINT16 usEyesX, UINT
   gMercProfiles[ubCharNum].usMouthY = usMouthY;
 }
 
-UINT16 CalcCompetence(MERCPROFILESTRUCT *pProfile) {
+function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
   UINT32 uiStats, uiSkills, uiActionPoints, uiSpecialSkills;
   UINT16 usCompetence;
 
@@ -597,7 +597,7 @@ UINT16 CalcCompetence(MERCPROFILESTRUCT *pProfile) {
   return usCompetence;
 }
 
-INT16 CalcMedicalDeposit(MERCPROFILESTRUCT *pProfile) {
+function CalcMedicalDeposit(pProfile: Pointer<MERCPROFILESTRUCT>): INT16 {
   UINT16 usDeposit;
 
   // this rounds off to the nearest hundred
@@ -606,7 +606,7 @@ INT16 CalcMedicalDeposit(MERCPROFILESTRUCT *pProfile) {
   return usDeposit;
 }
 
-SOLDIERTYPE *FindSoldierByProfileID(UINT8 ubProfileID, BOOLEAN fPlayerMercsOnly) {
+function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): Pointer<SOLDIERTYPE> {
   UINT8 ubLoop, ubLoopLimit;
   SOLDIERTYPE *pSoldier;
 
@@ -624,7 +624,7 @@ SOLDIERTYPE *FindSoldierByProfileID(UINT8 ubProfileID, BOOLEAN fPlayerMercsOnly)
   return NULL;
 }
 
-SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *pSoldier, UINT8 ubTeam) {
+function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Pointer<SOLDIERTYPE> {
   UINT8 ubID;
   SOLDIERTYPE *pNewSoldier = NULL;
   SOLDIERCREATE_STRUCT MercCreateStruct;
@@ -750,7 +750,7 @@ SOLDIERTYPE *ChangeSoldierTeam(SOLDIERTYPE *pSoldier, UINT8 ubTeam) {
   return pNewSoldier;
 }
 
-BOOLEAN RecruitRPC(UINT8 ubCharNum) {
+function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   SOLDIERTYPE *pSoldier, *pNewSoldier;
 
   // Get soldier pointer
@@ -824,7 +824,7 @@ BOOLEAN RecruitRPC(UINT8 ubCharNum) {
   return TRUE;
 }
 
-BOOLEAN RecruitEPC(UINT8 ubCharNum) {
+function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   SOLDIERTYPE *pSoldier, *pNewSoldier;
 
   // Get soldier pointer
@@ -868,7 +868,7 @@ BOOLEAN RecruitEPC(UINT8 ubCharNum) {
   return TRUE;
 }
 
-BOOLEAN UnRecruitEPC(UINT8 ubCharNum) {
+function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
   SOLDIERTYPE *pSoldier, *pNewSoldier;
 
   // Get soldier pointer
@@ -922,7 +922,7 @@ BOOLEAN UnRecruitEPC(UINT8 ubCharNum) {
   return TRUE;
 }
 
-INT8 WhichBuddy(UINT8 ubCharNum, UINT8 ubBuddy) {
+function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
   MERCPROFILESTRUCT *pProfile;
   INT8 bLoop;
 
@@ -936,7 +936,7 @@ INT8 WhichBuddy(UINT8 ubCharNum, UINT8 ubBuddy) {
   return -1;
 }
 
-INT8 WhichHated(UINT8 ubCharNum, UINT8 ubHated) {
+function WhichHated(ubCharNum: UINT8, ubHated: UINT8): INT8 {
   MERCPROFILESTRUCT *pProfile;
   INT8 bLoop;
 
@@ -950,7 +950,7 @@ INT8 WhichHated(UINT8 ubCharNum, UINT8 ubHated) {
   return -1;
 }
 
-BOOLEAN IsProfileATerrorist(UINT8 ubProfile) {
+function IsProfileATerrorist(ubProfile: UINT8): BOOLEAN {
   if (ubProfile == 83 || ubProfile == 111 || ubProfile == 64 || ubProfile == 112 || ubProfile == 82 || ubProfile == 110) {
     return TRUE;
   } else {
@@ -958,7 +958,7 @@ BOOLEAN IsProfileATerrorist(UINT8 ubProfile) {
   }
 }
 
-BOOLEAN IsProfileAHeadMiner(UINT8 ubProfile) {
+function IsProfileAHeadMiner(ubProfile: UINT8): BOOLEAN {
   if (ubProfile == 106 || ubProfile == 148 || ubProfile == 156 || ubProfile == 157 || ubProfile == 158) {
     return TRUE;
   } else {
@@ -966,7 +966,7 @@ BOOLEAN IsProfileAHeadMiner(UINT8 ubProfile) {
   }
 }
 
-void UpdateSoldierPointerDataIntoProfile(BOOLEAN fPlayerMercs) {
+function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
   UINT32 uiCount;
   SOLDIERTYPE *pSoldier = NULL;
   MERCPROFILESTRUCT *pProfile;
@@ -1014,7 +1014,7 @@ void UpdateSoldierPointerDataIntoProfile(BOOLEAN fPlayerMercs) {
   }
 }
 
-BOOLEAN DoesMercHaveABuddyOnTheTeam(UINT8 ubMercID) {
+function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
   UINT8 ubCnt;
   INT8 bBuddyID;
 
@@ -1037,7 +1037,7 @@ BOOLEAN DoesMercHaveABuddyOnTheTeam(UINT8 ubMercID) {
   return FALSE;
 }
 
-BOOLEAN MercIsHot(SOLDIERTYPE *pSoldier) {
+function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   if (pSoldier->ubProfile != NO_PROFILE && gMercProfiles[pSoldier->ubProfile].bPersonalityTrait == HEAT_INTOLERANT) {
     if (SectorTemperature(GetWorldMinutesInDay(), pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ) > 0) {
       return TRUE;
@@ -1046,7 +1046,7 @@ BOOLEAN MercIsHot(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *pSoldier) {
+function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
   UINT8 ubSrcProfile;
   UINT8 ubDestProfile;
   MERCPROFILESTRUCT *pNewProfile;
@@ -1157,7 +1157,7 @@ SOLDIERTYPE *SwapLarrysProfiles(SOLDIERTYPE *pSoldier) {
   return pSoldier;
 }
 
-BOOLEAN DoesNPCOwnBuilding(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
+function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
   UINT8 ubRoomInfo;
 
   // Get room info

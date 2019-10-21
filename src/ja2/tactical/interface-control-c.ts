@@ -22,11 +22,11 @@ extern UINT32 guiUIMessageTimeDelay;
 BOOLEAN gfPausedTacticalRenderInterfaceFlags = FALSE;
 BOOLEAN gfPausedTacticalRenderFlags = FALSE;
 
-void SetTacticalInterfaceFlags(UINT32 uiFlags) {
+function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
   guiTacticalInterfaceFlags = uiFlags;
 }
 
-void HandleTacticalPanelSwitch() {
+function HandleTacticalPanelSwitch(): void {
   if (gfSwitchPanel) {
     SetCurrentInterfacePanel(gbNewPanel);
     SetCurrentTacticalPanelCurrentMerc(gubNewPanelParam);
@@ -38,7 +38,7 @@ void HandleTacticalPanelSwitch() {
   }
 }
 
-void RenderTacticalInterface() {
+function RenderTacticalInterface(): void {
   // handle paused render of tactical
   HandlePausedTacticalRender();
 
@@ -66,7 +66,7 @@ void RenderTacticalInterface() {
     HandleAutoFaces();
 }
 
-void HandlePausedTacticalRender(void) {
+function HandlePausedTacticalRender(): void {
   // for a one frame paused render of tactical
   if (gfPausedTacticalRenderFlags) {
     gRenderFlags |= gfPausedTacticalRenderFlags;
@@ -81,7 +81,7 @@ void HandlePausedTacticalRender(void) {
   return;
 }
 
-void RenderTacticalInterfaceWhileScrolling() {
+function RenderTacticalInterfaceWhileScrolling(): void {
   RenderButtons();
 
   switch (gsCurInterfacePanel) {
@@ -98,7 +98,7 @@ void RenderTacticalInterfaceWhileScrolling() {
   HandleAutoFaces();
 }
 
-void SetUpInterface() {
+function SetUpInterface(): void {
   SOLDIERTYPE *pSoldier;
   LEVELNODE *pIntTile;
 
@@ -212,7 +212,7 @@ void SetUpInterface() {
   }
 }
 
-void ResetInterface() {
+function ResetInterface(): void {
   LEVELNODE *pNode;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
@@ -285,7 +285,7 @@ UINT32 guiColors[12] = {
   FROMRGB(185, 150, 0),
 };
 
-void RenderRubberBanding() {
+function RenderRubberBanding(): void {
   UINT16 usLineColor;
   UINT32 uiDestPitchBYTES;
   UINT8 *pDestBuf;
@@ -378,7 +378,7 @@ void RenderRubberBanding() {
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void RenderTopmostTacticalInterface() {
+function RenderTopmostTacticalInterface(): void {
   SOLDIERTYPE *pSoldier;
   UINT32 cnt;
   static UINT32 uiBogTarget = 0;
@@ -673,7 +673,7 @@ void RenderTopmostTacticalInterface() {
   DisplayBoxes(FRAME_BUFFER);
 }
 
-void StartViewportOverlays() {
+function StartViewportOverlays(): void {
   // Set Clipping Rect to be the viewscreen
   // Save old one
   memcpy(&gOldClippingRect, &ClippingRect, sizeof(gOldClippingRect));
@@ -697,14 +697,14 @@ void StartViewportOverlays() {
   SetFontDestBuffer(FRAME_BUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
 }
 
-void EndViewportOverlays() {
+function EndViewportOverlays(): void {
   // Reset clipping rect
   memcpy(&ClippingRect, &gOldClippingRect, sizeof(gOldClippingRect));
   memcpy(&gDirtyClipRect, &gOldDirtyClippingRect, sizeof(gOldDirtyClippingRect));
   RestoreFontSettings();
 }
 
-void LockTacticalInterface() {
+function LockTacticalInterface(): void {
   // OK, check and see if we are not locked, if so
   // 1) create a mouse region over the entrie interface panel
   // 2) set flag for use in tactical to indicate we are locked
@@ -717,7 +717,7 @@ void LockTacticalInterface() {
   }
 }
 
-void UnLockTacticalInterface() {
+function UnLockTacticalInterface(): void {
   if ((guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
     // Remove region
     MSYS_RemoveRegion(&gLockPanelOverlayRegion);
@@ -726,7 +726,7 @@ void UnLockTacticalInterface() {
   }
 }
 
-void EraseInterfaceMenus(BOOLEAN fIgnoreUIUnLock) {
+function EraseInterfaceMenus(fIgnoreUIUnLock: BOOLEAN): void {
   // ATE: If we are currently talking, setup this flag so that the
   // automatic handler in handledialogue doesn't adjust the UI setting
   if ((gTacticalStatus.uiFlags & ENGAGED_IN_CONV) && fIgnoreUIUnLock) {
@@ -742,7 +742,7 @@ void EraseInterfaceMenus(BOOLEAN fIgnoreUIUnLock) {
   DeleteTalkingMenu();
 }
 
-BOOLEAN AreWeInAUIMenu() {
+function AreWeInAUIMenu(): BOOLEAN {
   if (gfInMovementMenu || gfInOpenDoorMenu || gfInItemPickupMenu || gfInSectorExitMenu || gfInTalkPanel) {
     return TRUE;
   } else {
@@ -750,7 +750,7 @@ BOOLEAN AreWeInAUIMenu() {
   }
 }
 
-void ResetInterfaceAndUI() {
+function ResetInterfaceAndUI(): void {
   // Erase menus
   EraseInterfaceMenus(FALSE);
 
@@ -770,7 +770,7 @@ void ResetInterfaceAndUI() {
   HandleTacticalUI();
 }
 
-BOOLEAN InterfaceOKForMeanwhilePopup() {
+function InterfaceOKForMeanwhilePopup(): BOOLEAN {
   if (gfSwitchPanel) {
     return FALSE;
   }

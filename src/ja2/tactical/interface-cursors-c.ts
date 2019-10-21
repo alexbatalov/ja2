@@ -183,14 +183,14 @@ UINT16 gusCurMousePos;
 UINT16 gusTargetDropPos;
 BOOLEAN gfTargetDropPos = FALSE;
 
-BOOLEAN SetUICursor(UINT32 uiNewCursor) {
+function SetUICursor(uiNewCursor: UINT32): BOOLEAN {
   guiOldUICursor = guiCurUICursor;
   guiCurUICursor = uiNewCursor;
 
   return TRUE;
 }
 
-BOOLEAN DrawUICursor() {
+function DrawUICursor(): BOOLEAN {
   UINT16 usMapPos;
   static BOOLEAN fHideCursor = FALSE;
   LEVELNODE *pNode;
@@ -358,7 +358,7 @@ BOOLEAN DrawUICursor() {
   return TRUE;
 }
 
-BOOLEAN HideUICursor() {
+function HideUICursor(): BOOLEAN {
   HandleLooseCursorHide();
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
@@ -405,7 +405,7 @@ BOOLEAN HideUICursor() {
   return TRUE;
 }
 
-void DrawSnappingCursor() {
+function DrawSnappingCursor(): void {
   LEVELNODE *pNewUIElem;
   SOLDIERTYPE *pSoldier;
   static BOOLEAN fShowAP = TRUE;
@@ -542,7 +542,7 @@ void DrawSnappingCursor() {
   }
 }
 
-void EraseSnappingCursor() {
+function EraseSnappingCursor(): void {
   RemoveAllTopmostsOfTypeRange(gusCurMousePos, MOCKFLOOR, MOCKFLOOR);
   RemoveAllTopmostsOfTypeRange(gusCurMousePos, FIRSTPOINTERS, LASTPOINTERS);
   RemoveAllObjectsOfTypeRange(gusCurMousePos, FIRSTPOINTERS, LASTPOINTERS);
@@ -550,7 +550,7 @@ void EraseSnappingCursor() {
   RemoveAllOnRoofsOfTypeRange(gusCurMousePos, MOCKFLOOR, MOCKFLOOR);
 }
 
-void StartLooseCursor(INT16 sGridNo, UINT32 uiCursorID) {
+function StartLooseCursor(sGridNo: INT16, uiCursorID: UINT32): void {
   gfLooseCursorOn = TRUE;
 
   guiLooseCursorID = uiCursorID;
@@ -560,7 +560,7 @@ void StartLooseCursor(INT16 sGridNo, UINT32 uiCursorID) {
   gsLooseCursorGridNo = sGridNo;
 }
 
-void HandleLooseCursorDraw() {
+function HandleLooseCursorDraw(): void {
   LEVELNODE *pNewUIElem;
 
   if ((GetJA2Clock() - guiLooseCursorTimeOfLastUpdate) > LOOSE_CURSOR_DELAY) {
@@ -574,13 +574,13 @@ void HandleLooseCursorDraw() {
   }
 }
 
-void HandleLooseCursorHide() {
+function HandleLooseCursorHide(): void {
   if (gfLooseCursorOn) {
     RemoveTopmost(gsLooseCursorGridNo, FIRSTPOINTERS4);
   }
 }
 
-UINT16 GetSnapCursorIndex(UINT16 usAdditionalData) {
+function GetSnapCursorIndex(usAdditionalData: UINT16): UINT16 {
   // OK, this function will get the 'true' index for drawing the cursor....
   if (gGameSettings.fOptions[TOPTION_3D_CURSOR]) {
     switch (usAdditionalData) {

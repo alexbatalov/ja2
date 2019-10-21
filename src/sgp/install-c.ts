@@ -34,7 +34,7 @@
 //
 //**************************************************************************
 
-BOOLEAN InstallApplication(STR strAppname, STR strPath) {
+function InstallApplication(strAppname: STR, strPath: STR): BOOLEAN {
   HKEY hKey;
   BOOL fRet = TRUE;
 

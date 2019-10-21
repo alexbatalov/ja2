@@ -1022,7 +1022,7 @@ ANIMSUBTYPE gNothingInjuredSub[] = {
 
 ANIMSUBTYPE gDoubleHandledSub = { STANDING, RGMDBLBREATH, BGMDBLBREATH, RGMDBLBREATH, RGFDBLBREATH };
 
-void InitAnimationSurfacesPerBodytype() {
+function InitAnimationSurfacesPerBodytype(): void {
   INT32 cnt1, cnt2;
 
   // Should be set to a non-init values
@@ -2929,7 +2929,7 @@ void InitAnimationSurfacesPerBodytype() {
   gubAnimSurfaceIndex[JEEP][VEHICLE_DIE] = HUMVEE_DIE;
 }
 
-BOOLEAN LoadAnimationStateInstructions() {
+function LoadAnimationStateInstructions(): BOOLEAN {
   HWFILE hFile;
   UINT32 uiBytesRead;
 
@@ -2950,7 +2950,7 @@ BOOLEAN LoadAnimationStateInstructions() {
   return TRUE;
 }
 
-BOOLEAN IsAnimationValidForBodyType(SOLDIERTYPE *pSoldier, UINT16 usNewState) {
+function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): BOOLEAN {
   UINT16 usAnimSurface;
 
   // From animation control, get surface
@@ -2965,7 +2965,7 @@ BOOLEAN IsAnimationValidForBodyType(SOLDIERTYPE *pSoldier, UINT16 usNewState) {
   return TRUE;
 }
 
-BOOLEAN SubstituteBodyTypeAnimation(SOLDIERTYPE *pSoldier, UINT16 usTestState, UINT16 *pusSubState) {
+function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): BOOLEAN {
   BOOLEAN fSubFound = FALSE;
 
   *pusSubState = usTestState;
@@ -3084,7 +3084,7 @@ BOOLEAN SubstituteBodyTypeAnimation(SOLDIERTYPE *pSoldier, UINT16 usTestState, U
   return fSubFound;
 }
 
-INT8 GetBodyTypePaletteSubstitutionCode(SOLDIERTYPE *pSoldier, UINT8 ubBodyType, CHAR8 *zColFilename) {
+function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBodyType: UINT8, zColFilename: Pointer<CHAR8>): INT8 {
   switch (ubBodyType) {
     case REGMALE:
     case BIGMALE:
@@ -3143,7 +3143,7 @@ INT8 GetBodyTypePaletteSubstitutionCode(SOLDIERTYPE *pSoldier, UINT8 ubBodyType,
   return -1;
 }
 
-BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): BOOLEAN {
   UINT16 usAnimSurface;
 
   // Delete any structure info!
@@ -3169,7 +3169,7 @@ BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
   return TRUE;
 }
 
-UINT16 LoadSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   UINT16 usAnimSurface;
 
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
@@ -3195,7 +3195,7 @@ UINT16 gusQueenMonsterSpitAnimPerDir[] = {
   QUEENMONSTERSPIT_NE,
 };
 
-UINT16 DetermineSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   UINT16 usAnimSurface;
   UINT16 usAltAnimSurface;
   UINT8 ubBodyType;
@@ -3368,7 +3368,7 @@ UINT16 DetermineSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimStat
   return usAnimSurface;
 }
 
-UINT16 GetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState) {
+function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
   UINT16 usAnimSurface;
 
   usAnimSurface = pSoldier->usAnimSurface;

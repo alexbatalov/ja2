@@ -17,7 +17,7 @@ BOOLEAN fCreateFinishOkButton = FALSE;
 UINT32 giIMPPersonalityFinishButton[2];
 UINT32 giIMPPersonalityFinishButtonImage[2];
 
-void EnterIMPPersonalityFinish(void) {
+function EnterIMPPersonalityFinish(): void {
   // reset states
   fCreateFinishOkButton = FALSE;
   bPersonalityEndState = 0;
@@ -29,7 +29,7 @@ void EnterIMPPersonalityFinish(void) {
   return;
 }
 
-void RenderIMPPersonalityFinish(void) {
+function RenderIMPPersonalityFinish(): void {
   // the background
   RenderProfileBackGround();
 
@@ -50,7 +50,7 @@ void RenderIMPPersonalityFinish(void) {
   return;
 }
 
-void ExitIMPPersonalityFinish(void) {
+function ExitIMPPersonalityFinish(): void {
   // exit at IMP Ok button
   if (fExitIMPPerFinAtOk) {
     // destroy the finish ok buttons
@@ -69,14 +69,14 @@ void ExitIMPPersonalityFinish(void) {
   return;
 }
 
-void HandleIMPPersonalityFinish(void) {
+function HandleIMPPersonalityFinish(): void {
   // check if confirm and delay
   CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed();
 
   return;
 }
 
-void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(void) {
+function CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(): void {
   // this function will check to see if player has in fact confirmed selection and delay to
   // read text has occurred
 
@@ -110,7 +110,7 @@ void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(void) {
   return;
 }
 
-void CreateIMPPersonalityFinishButtons(void) {
+function CreateIMPPersonalityFinishButtons(): void {
   // this function will create the buttons needed for the IMP personality Finish Page
 
   // ths Yes button
@@ -135,7 +135,7 @@ void CreateIMPPersonalityFinishButtons(void) {
   return;
 }
 
-void DestroyIMPersonalityFinishButtons(void) {
+function DestroyIMPersonalityFinishButtons(): void {
   // this function will destroy the buttons needed for the IMP personality Finish page
 
   // the yes button
@@ -149,7 +149,7 @@ void DestroyIMPersonalityFinishButtons(void) {
   return;
 }
 
-void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityFinishYesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -183,7 +183,7 @@ void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityFinishNoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -216,7 +216,7 @@ void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void CreatePersonalityFinishOkButton(void) {
+function CreatePersonalityFinishOkButton(): void {
   // create personality button finish button
   giIMPPersonalityFinishButtonImage[0] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
   giIMPPersonalityFinishButton[0] = CreateIconAndTextButton(giIMPPersonalityFinishButtonImage[0], pImpButtonText[24], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (186), LAPTOP_SCREEN_WEB_UL_Y + (224), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPersonalityFinishOkCallback);
@@ -226,13 +226,13 @@ void CreatePersonalityFinishOkButton(void) {
   return;
 }
 
-void DestroyPersonalityFinishOkButton(void) {
+function DestroyPersonalityFinishOkButton(): void {
   // the ok button
   RemoveButton(giIMPPersonalityFinishButton[0]);
   UnloadButtonImage(giIMPPersonalityFinishButtonImage[0]);
 }
 
-void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPPersonalityFinishOkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;

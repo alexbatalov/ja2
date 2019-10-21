@@ -9,7 +9,7 @@ extern INT16 DirYIncrementer[8];
 // GoAsFarAsPossibleTowards - C.O. stuff related to current animation esp first aid
 // SetCivilianDestination - C.O. stuff for if we don't control the civ
 
-int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, UINT8 ubWaterOK, UINT8 fFlags) {
+function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubPathMode: UINT8, ubWaterOK: UINT8, fFlags: UINT8): int {
   BOOLEAN fSkipTilesWithMercs;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
@@ -74,7 +74,7 @@ int LegalNPCDestination(SOLDIERTYPE *pSoldier, INT16 sGridno, UINT8 ubPathMode, 
     return (FALSE); // illegal destination
 }
 
-int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
+function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): int {
   UINT8 ubGottaCancel = FALSE;
   UINT8 ubSuccess = FALSE;
 
@@ -138,7 +138,7 @@ int TryToResumeMovement(SOLDIERTYPE *pSoldier, INT16 sGridno) {
   return ubSuccess;
 }
 
-INT16 NextPatrolPoint(SOLDIERTYPE *pSoldier) {
+function NextPatrolPoint(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // patrol slot 0 is UNUSED, so max patrolCnt is actually only 9
   if ((pSoldier->bPatrolCnt < 1) || (pSoldier->bPatrolCnt >= MAXPATROLGRIDS)) {
     return NOWHERE;
@@ -153,7 +153,7 @@ INT16 NextPatrolPoint(SOLDIERTYPE *pSoldier) {
   return pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt];
 }
 
-INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
+function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT16 sPatrolPoint;
   INT8 bOldOrders;
 
@@ -205,7 +205,7 @@ INT8 PointPatrolAI(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
+function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT16 sPatrolPoint;
   INT8 bOldOrders, bPatrolIndex;
   INT8 bCnt;
@@ -271,7 +271,7 @@ INT8 RandomPointPatrolAI(SOLDIERTYPE *pSoldier) {
   return TRUE;
 }
 
-INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bReserveAPs, INT8 bAction, INT8 fFlags) {
+function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGrid: INT16, bReserveAPs: INT8, bAction: INT8, fFlags: INT8): INT16 {
   INT16 sLoop, sAPCost;
   INT16 sTempDest, sGoToGrid;
   INT16 sOrigin;
@@ -514,11 +514,11 @@ INT16 InternalGoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, IN
   }
 }
 
-INT16 GoAsFarAsPossibleTowards(SOLDIERTYPE *pSoldier, INT16 sDesGrid, INT8 bAction) {
+function GoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGrid: INT16, bAction: INT8): INT16 {
   return InternalGoAsFarAsPossibleTowards(pSoldier, sDesGrid, -1, bAction, 0);
 }
 
-void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
+function SoldierTriesToContinueAlongPath(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT16 usNewGridNo, bAPCost;
 
   // turn off the flag now that we're going to do something about it...
@@ -570,7 +570,7 @@ void SoldierTriesToContinueAlongPath(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void HaltMoveForSoldierOutOfPoints(SOLDIERTYPE *pSoldier) {
+function HaltMoveForSoldierOutOfPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If a special move, ignore this!
   if ((gAnimControl[pSoldier->usAnimState].uiFlags & ANIM_SPECIALMOVE)) {
     return;
@@ -588,7 +588,7 @@ void HaltMoveForSoldierOutOfPoints(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void SetCivilianDestination(UINT8 ubWho, INT16 sGridno) {
+function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = MercPtrs[ubWho];
@@ -635,7 +635,7 @@ void SetCivilianDestination(UINT8 ubWho, INT16 sGridno) {
 
 const RADIUS = 3;
 
-INT16 TrackScent(SOLDIERTYPE *pSoldier) {
+function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // This function returns the best gridno to go to based on the scent being followed,
   // and the soldier (creature/animal)'s current direction (which is used to resolve
   // ties.

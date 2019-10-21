@@ -21,10 +21,10 @@ UINT32 guiInsCmntBulletImage;
 // link to the varios pages
 MOUSE_REGION gSelectedInsuranceCommentLinkRegion[3];
 
-void GameInitInsuranceComments() {
+function GameInitInsuranceComments(): void {
 }
 
-BOOLEAN EnterInsuranceComments() {
+function EnterInsuranceComments(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 i;
   UINT16 usPosX;
@@ -50,7 +50,7 @@ BOOLEAN EnterInsuranceComments() {
   return TRUE;
 }
 
-void ExitInsuranceComments() {
+function ExitInsuranceComments(): void {
   UINT8 i;
   RemoveInsuranceDefaults();
   DeleteVideoObjectFromIndex(guiInsCmntBulletImage);
@@ -59,10 +59,10 @@ void ExitInsuranceComments() {
     MSYS_RemoveRegion(&gSelectedInsuranceCommentLinkRegion[i]);
 }
 
-void HandleInsuranceComments() {
+function HandleInsuranceComments(): void {
 }
 
-void RenderInsuranceComments() {
+function RenderInsuranceComments(): void {
   //  HVOBJECT hPixHandle;
   wchar_t sText[800];
   UINT16 usPosX, usPosY;
@@ -124,7 +124,7 @@ void RenderInsuranceComments() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
@@ -139,7 +139,7 @@ void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReas
   }
 }
 
-BOOLEAN DisplayComment(UINT8 ubCommentorsName, UINT8 ubComment, UINT16 usPosY) {
+function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT16): BOOLEAN {
   wchar_t sText[800];
   HVOBJECT hPixHandle;
   UINT16 sNumPixels = 0;

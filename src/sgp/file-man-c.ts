@@ -157,7 +157,7 @@ HANDLE hFindInfoHandle[20] = {
 //
 //**************************************************************************
 
-BOOLEAN InitializeFileManager(STR strIndexFilename) {
+function InitializeFileManager(strIndexFilename: STR): BOOLEAN {
   RegisterDebugTopic(TOPIC_FILE_MANAGER, "File Manager");
   return TRUE;
 }
@@ -178,7 +178,7 @@ BOOLEAN InitializeFileManager(STR strIndexFilename) {
 //
 //**************************************************************************
 
-void ShutdownFileManager(void) {
+function ShutdownFileManager(): void {
   UnRegisterDebugTopic(TOPIC_FILE_MANAGER, "File Manager");
 }
 
@@ -196,7 +196,7 @@ void ShutdownFileManager(void) {
 //
 //**************************************************************************
 
-void FileDebug(BOOLEAN f) {
+function FileDebug(f: BOOLEAN): void {
   //	gfs.fDebug = f;
 }
 
@@ -223,7 +223,7 @@ void FileDebug(BOOLEAN f) {
 //
 //**************************************************************************
 
-BOOLEAN FileExists(STR strFilename) {
+function FileExists(strFilename: STR): BOOLEAN {
   BOOLEAN fExists = FALSE;
   FILE *file;
   // HANDLE	hRealFile;
@@ -271,7 +271,7 @@ BOOLEAN FileExists(STR strFilename) {
 //
 //**************************************************************************
 
-BOOLEAN FileExistsNoDB(STR strFilename) {
+function FileExistsNoDB(strFilename: STR): BOOLEAN {
   BOOLEAN fExists = FALSE;
   FILE *file;
   // HANDLE	hRealFile;
@@ -312,7 +312,7 @@ BOOLEAN FileExistsNoDB(STR strFilename) {
 //
 //**************************************************************************
 
-BOOLEAN FileDelete(STR strFilename) {
+function FileDelete(strFilename: STR): BOOLEAN {
   return DeleteFile(strFilename);
 }
 
@@ -340,7 +340,7 @@ BOOLEAN FileDelete(STR strFilename) {
 //
 //**************************************************************************
 
-HWFILE FileOpen(STR strFilename, UINT32 uiOptions, BOOLEAN fDeleteOnClose) {
+function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: BOOLEAN): HWFILE {
   HWFILE hFile;
   HANDLE hRealFile;
   DWORD dwAccess;
@@ -463,7 +463,7 @@ HWFILE FileOpen(STR strFilename, UINT32 uiOptions, BOOLEAN fDeleteOnClose) {
 //
 //**************************************************************************
 
-void FileClose(HWFILE hFile) {
+function FileClose(hFile: HWFILE): void {
   INT16 sLibraryID;
   UINT32 uiFileNum;
 
@@ -516,7 +516,7 @@ void FileClose(HWFILE hFile) {
 //
 //**************************************************************************
 
-BOOLEAN FileRead(HWFILE hFile, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytesRead) {
+function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
   HANDLE hRealFile;
   DWORD dwNumBytesToRead, dwNumBytesRead;
   BOOLEAN fRet = FALSE;
@@ -595,7 +595,7 @@ BOOLEAN FileRead(HWFILE hFile, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytes
 //
 //**************************************************************************
 
-BOOLEAN FileWrite(HWFILE hFile, PTR pDest, UINT32 uiBytesToWrite, UINT32 *puiBytesWritten) {
+function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): BOOLEAN {
   HANDLE hRealFile;
   DWORD dwNumBytesToWrite, dwNumBytesWritten;
   BOOLEAN fRet;
@@ -649,7 +649,7 @@ BOOLEAN FileWrite(HWFILE hFile, PTR pDest, UINT32 uiBytesToWrite, UINT32 *puiByt
 //
 //**************************************************************************
 
-BOOLEAN FileLoad(STR strFilename, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBytesRead) {
+function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
   HWFILE hFile;
   UINT32 uiNumBytesRead;
   BOOLEAN fRet;
@@ -696,7 +696,7 @@ BOOLEAN FileLoad(STR strFilename, PTR pDest, UINT32 uiBytesToRead, UINT32 *puiBy
 //
 //**************************************************************************
 
-BOOLEAN _cdecl FilePrintf(HWFILE hFile, UINT8 *strFormatted, ...) {
+function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[]): BOOLEAN {
   UINT8 strToSend[80];
   va_list argptr;
   BOOLEAN fRetVal = FALSE;
@@ -746,7 +746,7 @@ BOOLEAN _cdecl FilePrintf(HWFILE hFile, UINT8 *strFormatted, ...) {
 //
 //**************************************************************************
 
-BOOLEAN FileSeek(HWFILE hFile, UINT32 uiDistance, UINT8 uiHow) {
+function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
   HANDLE hRealFile;
   LONG lDistanceToMove;
   DWORD dwMoveMethod;
@@ -809,7 +809,7 @@ BOOLEAN FileSeek(HWFILE hFile, UINT32 uiDistance, UINT8 uiHow) {
 //
 //**************************************************************************
 
-INT32 FileGetPos(HWFILE hFile) {
+function FileGetPos(hFile: HWFILE): INT32 {
   HANDLE hRealFile;
   UINT32 uiPositionInFile = 0;
 
@@ -865,7 +865,7 @@ INT32 FileGetPos(HWFILE hFile) {
 //
 //**************************************************************************
 
-UINT32 FileGetSize(HWFILE hFile) {
+function FileGetSize(hFile: HWFILE): UINT32 {
   HANDLE hRealHandle;
   UINT32 uiFileSize = 0xFFFFFFFF;
 
@@ -906,7 +906,7 @@ UINT32 FileGetSize(HWFILE hFile) {
 //
 //**************************************************************************
 
-void FileDebugPrint(void) {
+function FileDebugPrint(): void {
 }
 
 //**************************************************************************
@@ -925,7 +925,7 @@ void FileDebugPrint(void) {
 //
 //**************************************************************************
 
-HANDLE GetHandleToRealFile(HWFILE hFile, BOOLEAN *pfDatabaseFile) {
+function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): HANDLE {
   HANDLE hRealFile;
 
   INT16 sLibraryID;
@@ -1047,7 +1047,7 @@ void DestroyFileHandle( HWFILE hFile )
 //
 //**************************************************************************
 
-void BuildFileDirectory(void) {
+function BuildFileDirectory(): void {
   return; // temporary until container stuff is fixed
   /*
           INT32					i, iNumFiles = 0;
@@ -1146,7 +1146,7 @@ void BuildFileDirectory(void) {
 //
 //**************************************************************************
 
-INT32 GetFilesInDirectory(HCONTAINER hStack, CHAR *pcDir, HANDLE hFile, WIN32_FIND_DATA *pFind) {
+function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
   INT32 iNumFiles;
   WIN32_FIND_DATA inFind;
   BOOLEAN fMore;
@@ -1183,18 +1183,18 @@ INT32 GetFilesInDirectory(HCONTAINER hStack, CHAR *pcDir, HANDLE hFile, WIN32_FI
   return iNumFiles;
 }
 
-BOOLEAN SetFileManCurrentDirectory(STR pcDirectory) {
+function SetFileManCurrentDirectory(pcDirectory: STR): BOOLEAN {
   return SetCurrentDirectory(pcDirectory);
 }
 
-BOOLEAN GetFileManCurrentDirectory(STRING512 pcDirectory) {
+function GetFileManCurrentDirectory(pcDirectory: STRING512): BOOLEAN {
   if (GetCurrentDirectory(512, pcDirectory) == 0) {
     return FALSE;
   }
   return TRUE;
 }
 
-BOOLEAN DirectoryExists(STRING512 pcDirectory) {
+function DirectoryExists(pcDirectory: STRING512): BOOLEAN {
   UINT32 uiAttribs;
   DWORD uiLastError;
 
@@ -1218,7 +1218,7 @@ BOOLEAN DirectoryExists(STRING512 pcDirectory) {
   return FALSE;
 }
 
-BOOLEAN MakeFileManDirectory(STRING512 pcDirectory) {
+function MakeFileManDirectory(pcDirectory: STRING512): BOOLEAN {
   return CreateDirectory(pcDirectory, NULL);
 }
 
@@ -1226,7 +1226,7 @@ BOOLEAN MakeFileManDirectory(STRING512 pcDirectory) {
 // Removes ALL FILES in the specified directory (and all subdirectories with their files if fRecursive is TRUE)
 // Use EraseDirectory() to simply delete directory contents without deleting the directory itself
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOLEAN RemoveFileManDirectory(STRING512 pcDirectory, BOOLEAN fRecursive) {
+function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BOOLEAN {
   WIN32_FIND_DATA sFindData;
   HANDLE SearchHandle;
   const CHAR8 *pFileSpec = "*.*";
@@ -1295,7 +1295,7 @@ BOOLEAN RemoveFileManDirectory(STRING512 pcDirectory, BOOLEAN fRecursive) {
 // Removes ALL FILES in the specified directory but leaves the directory alone.  Does not affect any subdirectories!
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOLEAN EraseDirectory(STRING512 pcDirectory) {
+function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
   WIN32_FIND_DATA sFindData;
   HANDLE SearchHandle;
   const CHAR8 *pFileSpec = "*.*";
@@ -1337,7 +1337,7 @@ BOOLEAN EraseDirectory(STRING512 pcDirectory) {
   return TRUE;
 }
 
-BOOLEAN GetExecutableDirectory(STRING512 pcDirectory) {
+function GetExecutableDirectory(pcDirectory: STRING512): BOOLEAN {
   SGPFILENAME ModuleFilename;
   UINT32 cnt;
 
@@ -1358,7 +1358,7 @@ BOOLEAN GetExecutableDirectory(STRING512 pcDirectory) {
   return TRUE;
 }
 
-BOOLEAN GetFileFirst(CHAR8 *pSpec, GETFILESTRUCT *pGFStruct) {
+function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
   INT32 x, iWhich = 0;
   BOOLEAN fFound;
 
@@ -1389,7 +1389,7 @@ BOOLEAN GetFileFirst(CHAR8 *pSpec, GETFILESTRUCT *pGFStruct) {
   return TRUE;
 }
 
-BOOLEAN GetFileNext(GETFILESTRUCT *pGFStruct) {
+function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
   CHECKF(pGFStruct != NULL);
 
   if (FindNextFile(hFindInfoHandle[pGFStruct->iFindHandle], &Win32FindInfo[pGFStruct->iFindHandle])) {
@@ -1399,7 +1399,7 @@ BOOLEAN GetFileNext(GETFILESTRUCT *pGFStruct) {
   return FALSE;
 }
 
-void GetFileClose(GETFILESTRUCT *pGFStruct) {
+function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
   if (pGFStruct == NULL)
     return;
 
@@ -1410,7 +1410,7 @@ void GetFileClose(GETFILESTRUCT *pGFStruct) {
   return;
 }
 
-void W32toSGPFileFind(GETFILESTRUCT *pGFStruct, WIN32_FIND_DATA *pW32Struct) {
+function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer<WIN32_FIND_DATA>): void {
   UINT32 uiAttribMask;
 
   // Copy the filename
@@ -1466,7 +1466,7 @@ void W32toSGPFileFind(GETFILESTRUCT *pGFStruct, WIN32_FIND_DATA *pW32Struct) {
   }
 }
 
-BOOLEAN FileCopy(STR strSrcFile, STR strDstFile, BOOLEAN fFailIfExists) {
+function FileCopy(strSrcFile: STR, strDstFile: STR, fFailIfExists: BOOLEAN): BOOLEAN {
   return CopyFile(strSrcFile, strDstFile, fFailIfExists);
 
   // Not needed, use Windows CopyFile
@@ -1541,13 +1541,13 @@ BOOLEAN FileCopy(STR strSrcFile, STR strDstFile, BOOLEAN fFailIfExists) {
   */
 }
 
-BOOLEAN FileMove(STR strOldName, STR strNewName) {
+function FileMove(strOldName: STR, strNewName: STR): BOOLEAN {
   // rename
   return MoveFile(strOldName, strNewName);
 }
 
 // Additions by Kris Morness
-BOOLEAN FileSetAttributes(STR strFilename, UINT32 uiNewAttribs) {
+function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): BOOLEAN {
   UINT32 uiFileAttrib = 0;
 
   if (uiNewAttribs & FILE_ATTRIBUTES_ARCHIVE)
@@ -1574,7 +1574,7 @@ BOOLEAN FileSetAttributes(STR strFilename, UINT32 uiNewAttribs) {
   return SetFileAttributes(strFilename, uiFileAttrib);
 }
 
-UINT32 FileGetAttributes(STR strFilename) {
+function FileGetAttributes(strFilename: STR): UINT32 {
   UINT32 uiAttribs = 0;
   UINT32 uiFileAttrib = 0;
 
@@ -1610,12 +1610,12 @@ UINT32 FileGetAttributes(STR strFilename) {
   return uiFileAttrib;
 }
 
-BOOLEAN FileClearAttributes(STR strFilename) {
+function FileClearAttributes(strFilename: STR): BOOLEAN {
   return SetFileAttributes(strFilename, FILE_ATTRIBUTE_NORMAL);
 }
 
 // returns true if at end of file, else false
-BOOLEAN FileCheckEndOfFile(HWFILE hFile) {
+function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
   INT16 sLibraryID;
   UINT32 uiFileNum;
   HANDLE hRealFile;
@@ -1676,7 +1676,7 @@ BOOLEAN FileCheckEndOfFile(HWFILE hFile) {
   return 0;
 }
 
-BOOLEAN GetFileManFileTime(HWFILE hFile, SGP_FILETIME *pCreationTime, SGP_FILETIME *pLastAccessedTime, SGP_FILETIME *pLastWriteTime) {
+function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>, pLastAccessedTime: Pointer<SGP_FILETIME>, pLastWriteTime: Pointer<SGP_FILETIME>): BOOLEAN {
   HANDLE hRealFile;
   INT16 sLibraryID;
   UINT32 uiFileNum;
@@ -1726,11 +1726,11 @@ BOOLEAN GetFileManFileTime(HWFILE hFile, SGP_FILETIME *pCreationTime, SGP_FILETI
   return TRUE;
 }
 
-INT32 CompareSGPFileTimes(SGP_FILETIME *pFirstFileTime, SGP_FILETIME *pSecondFileTime) {
+function CompareSGPFileTimes(pFirstFileTime: Pointer<SGP_FILETIME>, pSecondFileTime: Pointer<SGP_FILETIME>): INT32 {
   return CompareFileTime(pFirstFileTime, pSecondFileTime);
 }
 
-UINT32 FileSize(STR strFilename) {
+function FileSize(strFilename: STR): UINT32 {
   HWFILE hFile;
   UINT32 uiSize;
 
@@ -1743,7 +1743,7 @@ UINT32 FileSize(STR strFilename) {
   return uiSize;
 }
 
-HANDLE GetRealFileHandleFromFileManFileHandle(HWFILE hFile) {
+function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
   INT16 sLibraryID;
   UINT32 uiFileNum;
 
@@ -1778,7 +1778,7 @@ HANDLE GetRealFileHandleFromFileManFileHandle(HWFILE hFile) {
 //		10June98:DB		-> creation
 //
 //**************************************************************************
-BOOLEAN AddSubdirectoryToPath(CHAR8 *pDirectory) {
+function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
   CHAR8 *pSystemPath;
   CHAR8 *pPath;
   UINT32 uiPathLen;
@@ -1828,7 +1828,7 @@ BOOLEAN AddSubdirectoryToPath(CHAR8 *pDirectory) {
   }
 }
 
-UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
+function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
   STRING512 zExecDir;
   STRING512 zDrive;
   STRING512 zDir;
@@ -1849,7 +1849,7 @@ UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom() {
   return uiFreeSpace;
 }
 
-UINT32 GetFreeSpaceOnHardDrive(STR pzDriveLetter) {
+function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
   UINT32 uiBytesFree = 0;
 
   UINT32 uiSectorsPerCluster = 0;

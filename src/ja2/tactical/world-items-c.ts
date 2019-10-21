@@ -5,7 +5,7 @@ UINT32 guiNumWorldItems = 0;
 WORLDBOMB *gWorldBombs = NULL;
 UINT32 guiNumWorldBombs = 0;
 
-INT32 GetFreeWorldBombIndex(void) {
+function GetFreeWorldBombIndex(): INT32 {
   UINT32 uiCount;
   WORLDBOMB *newWorldBombs;
   UINT32 uiOldNumWorldBombs;
@@ -31,7 +31,7 @@ INT32 GetFreeWorldBombIndex(void) {
   return uiCount;
 }
 
-UINT32 GetNumUsedWorldBombs(void) {
+function GetNumUsedWorldBombs(): UINT32 {
   UINT32 uiCount, uiNumItems;
   uiNumItems = 0;
 
@@ -48,7 +48,7 @@ UINT32 GetNumUsedWorldBombs(void) {
   return uiNumItems;
 }
 
-INT32 AddBombToWorld(INT32 iItemIndex) {
+function AddBombToWorld(iItemIndex: INT32): INT32 {
   UINT32 iBombIndex;
 
   iBombIndex = GetFreeWorldBombIndex();
@@ -60,12 +60,12 @@ INT32 AddBombToWorld(INT32 iItemIndex) {
   return iBombIndex;
 }
 
-void RemoveBombFromWorld(INT32 iBombIndex) {
+function RemoveBombFromWorld(iBombIndex: INT32): void {
   // Remove the world bomb from the table.
   gWorldBombs[iBombIndex].fExists = FALSE;
 }
 
-void RemoveBombFromWorldByItemIndex(INT32 iItemIndex) {
+function RemoveBombFromWorldByItemIndex(iItemIndex: INT32): void {
   // Find the world bomb which corresponds with a particular world item, then
   // remove the world bomb from the table.
   UINT32 uiBombIndex;
@@ -78,7 +78,7 @@ void RemoveBombFromWorldByItemIndex(INT32 iItemIndex) {
   }
 }
 
-INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel) {
+function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
   UINT32 uiBombIndex;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
@@ -89,7 +89,7 @@ INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel) {
   return -1;
 }
 
-void FindPanicBombsAndTriggers(void) {
+function FindPanicBombsAndTriggers(): void {
   // This function searches the bomb table to find panic-trigger-tuned bombs and triggers
 
   UINT32 uiBombIndex;
@@ -157,7 +157,7 @@ void FindPanicBombsAndTriggers(void) {
   }
 }
 
-INT32 GetFreeWorldItemIndex(void) {
+function GetFreeWorldItemIndex(): INT32 {
   UINT32 uiCount;
   WORLDITEM *newWorldItems;
   UINT32 uiOldNumWorldItems;
@@ -183,7 +183,7 @@ INT32 GetFreeWorldItemIndex(void) {
   return uiCount;
 }
 
-UINT32 GetNumUsedWorldItems(void) {
+function GetNumUsedWorldItems(): UINT32 {
   UINT32 uiCount, uiNumItems;
   uiNumItems = 0;
 
@@ -200,7 +200,7 @@ UINT32 GetNumUsedWorldItems(void) {
   return uiNumItems;
 }
 
-INT32 AddItemToWorld(INT16 sGridNo, OBJECTTYPE *pObject, UINT8 ubLevel, UINT16 usFlags, INT8 bRenderZHeightAboveLevel, INT8 bVisible) {
+function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
   UINT32 iItemIndex;
   INT32 iReturn;
 
@@ -233,7 +233,7 @@ INT32 AddItemToWorld(INT16 sGridNo, OBJECTTYPE *pObject, UINT8 ubLevel, UINT16 u
   return iItemIndex;
 }
 
-void RemoveItemFromWorld(INT32 iItemIndex) {
+function RemoveItemFromWorld(iItemIndex: INT32): void {
   // Ensure the item still exists, then if it's a bomb,
   // remove the appropriate entry from the bomb table
   if (gWorldItems[iItemIndex].fExists) {
@@ -244,7 +244,7 @@ void RemoveItemFromWorld(INT32 iItemIndex) {
   }
 }
 
-void TrashWorldItems() {
+function TrashWorldItems(): void {
   UINT32 i;
   if (gWorldItems) {
     for (i = 0; i < guiNumWorldItems; i++) {
@@ -263,7 +263,7 @@ void TrashWorldItems() {
   }
 }
 
-void SaveWorldItemsToMap(HWFILE fp) {
+function SaveWorldItemsToMap(fp: HWFILE): void {
   UINT32 i, uiBytesWritten;
   UINT32 uiActualNumWorldItems;
 
@@ -277,7 +277,7 @@ void SaveWorldItemsToMap(HWFILE fp) {
   }
 }
 
-void LoadWorldItemsFromMap(INT8 **hBuffer) {
+function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   // Start loading itmes...
 
   UINT32 i;
@@ -382,7 +382,7 @@ void LoadWorldItemsFromMap(INT8 **hBuffer) {
   }
 }
 
-void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void) {
+function DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(): void {
   UINT32 uiLoop;
   UINT32 uiLoop2;
   INT16 sGridNo;
@@ -415,7 +415,7 @@ void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void) {
   // else the terrorists haven't been placed yet!
 }
 
-void DeleteWorldItemsBelongingToQueenIfThere(void) {
+function DeleteWorldItemsBelongingToQueenIfThere(): void {
   UINT32 uiLoop;
   UINT32 uiLoop2;
   INT16 sGridNo;
@@ -465,7 +465,7 @@ void DeleteWorldItemsBelongingToQueenIfThere(void) {
 }
 
 // Refresh item pools
-void RefreshWorldItemsIntoItemPools(WORLDITEM *pItemList, INT32 iNumberOfItems) {
+function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
   INT32 i;
   WORLDITEM dummyItem;
 

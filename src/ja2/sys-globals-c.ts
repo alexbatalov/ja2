@@ -9,7 +9,7 @@ BOOLEAN gfGlobalError = FALSE;
 
 UINT32 guiGameCycleCounter = 0;
 
-BOOLEAN SET_ERROR(const char *String, ...) {
+function SET_ERROR(String: Pointer<char>, ...args: any[]): BOOLEAN {
   va_list ArgPtr;
 
   va_start(ArgPtr, String);

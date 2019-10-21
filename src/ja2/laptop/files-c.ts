@@ -109,7 +109,7 @@ const enum Enum76 {
 // mouse regions
 MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
 
-UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile) {
+function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8): UINT32 {
   // adds Files item to player's log(Files List), returns unique id number of it
   // outside of the Files system(the code in this .c file), this is the only function you'll ever need
   UINT32 uiId = 0;
@@ -131,7 +131,7 @@ UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pF
   // return unique id of this transaction
   return uiId;
 }
-void GameInitFiles() {
+function GameInitFiles(): void {
   if ((FileExists(FILES_DAT_FILE) == TRUE)) {
     FileClearAttributes(FILES_DAT_FILE);
     FileDelete(FILES_DAT_FILE);
@@ -143,7 +143,7 @@ void GameInitFiles() {
   AddFilesToPlayersLog(ENRICO_BACKGROUND, 0, 255, NULL, NULL);
 }
 
-void EnterFiles() {
+function EnterFiles(): void {
   // load grpahics for files system
   LoadFiles();
 
@@ -175,7 +175,7 @@ void EnterFiles() {
   }
 }
 
-void ExitFiles() {
+function ExitFiles(): void {
   // write files list out to disk
   OpenAndWriteFilesFile();
 
@@ -191,11 +191,11 @@ void ExitFiles() {
   RemoveFiles();
 }
 
-void HandleFiles() {
+function HandleFiles(): void {
   CheckForUnreadFiles();
 }
 
-void RenderFiles() {
+function RenderFiles(): void {
   HVOBJECT hHandle;
 
   // render the background
@@ -221,7 +221,7 @@ void RenderFiles() {
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
-void RenderFilesBackGround(void) {
+function RenderFilesBackGround(): void {
   // render generic background for file system
   HVOBJECT hHandle;
   INT32 iCounter = 0;
@@ -239,7 +239,7 @@ void RenderFilesBackGround(void) {
   return;
 }
 
-void DrawFilesTitleText(void) {
+function DrawFilesTitleText(): void {
   // setup the font stuff
   SetFont(FILES_TITLE_FONT);
   SetFontForeground(FONT_WHITE);
@@ -253,7 +253,7 @@ void DrawFilesTitleText(void) {
   return;
 }
 
-BOOLEAN LoadFiles(void) {
+function LoadFiles(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   // load files video objects into memory
 
@@ -280,7 +280,7 @@ BOOLEAN LoadFiles(void) {
   return TRUE;
 }
 
-void RemoveFiles(void) {
+function RemoveFiles(): void {
   // delete files video objects from memory
 
   DeleteVideoObjectFromIndex(guiTOP);
@@ -291,7 +291,7 @@ void RemoveFiles(void) {
   return;
 }
 
-UINT32 ProcessAndEnterAFilesRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile, BOOLEAN fRead) {
+function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8, fRead: BOOLEAN): UINT32 {
   UINT32 uiId = 0;
   FilesUnitPtr pFiles = pFilesListHead;
 
@@ -372,7 +372,7 @@ UINT32 ProcessAndEnterAFilesRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, 
   return uiId;
 }
 
-void OpenAndReadFilesFile(void) {
+function OpenAndReadFilesFile(): void {
   // this procedure will open and read in data to the finance list
   HWFILE hFileHandle;
   UINT8 ubCode;
@@ -432,7 +432,7 @@ void OpenAndReadFilesFile(void) {
   return;
 }
 
-BOOLEAN OpenAndWriteFilesFile(void) {
+function OpenAndWriteFilesFile(): BOOLEAN {
   // this procedure will open and write out data from the finance list
   HWFILE hFileHandle;
   INT32 iBytesWritten = 0;
@@ -481,7 +481,7 @@ BOOLEAN OpenAndWriteFilesFile(void) {
   return TRUE;
 }
 
-void ClearFilesList(void) {
+function ClearFilesList(): void {
   // remove each element from list of transactions
   FilesUnitPtr pFilesList = pFilesListHead;
   FilesUnitPtr pFilesNode = pFilesList;
@@ -509,7 +509,7 @@ void ClearFilesList(void) {
   return;
 }
 
-void DrawFilesListBackGround(void) {
+function DrawFilesListBackGround(): void {
   // proceudre will draw the background for the list of files
   INT32 iCounter = 7;
   // HVOBJECT hHandle;
@@ -519,7 +519,7 @@ void DrawFilesListBackGround(void) {
   return;
 }
 
-void DisplayFilesList(void) {
+function DisplayFilesList(): void {
   // this function will run through the list of files of files and display the 'sender'
   FilesUnitPtr pFilesList = pFilesListHead;
   INT32 iCounter = 0;
@@ -550,7 +550,7 @@ void DisplayFilesList(void) {
   return;
 }
 
-void DisplayFileMessage(void) {
+function DisplayFileMessage(): void {
   // get the currently selected message
   if (iHighLightFileLine != -1) {
     // display text
@@ -565,7 +565,7 @@ void DisplayFileMessage(void) {
   return;
 }
 
-void InitializeFilesMouseRegions(void) {
+function InitializeFilesMouseRegions(): void {
   INT32 iCounter = 0;
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
@@ -577,14 +577,14 @@ void InitializeFilesMouseRegions(void) {
   return;
 }
 
-void RemoveFilesMouseRegions(void) {
+function RemoveFilesMouseRegions(): void {
   INT32 iCounter = 0;
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
     MSYS_RemoveRegion(&pFilesRegions[iCounter]);
   }
 }
 
-void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   INT32 iFileId = -1;
   INT32 iCounter = 0;
   FilesUnitPtr pFilesList = pFilesListHead;
@@ -625,7 +625,7 @@ void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-BOOLEAN DisplayFormattedText(void) {
+function DisplayFormattedText(): BOOLEAN {
   FilesUnitPtr pFilesList = pFilesListHead;
 
   UINT16 usFirstWidth = 0;
@@ -813,7 +813,7 @@ BOOLEAN DisplayFormattedText(void) {
   return TRUE;
 }
 
-BOOLEAN HandleSpecialFiles(UINT8 ubFormat) {
+function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
   INT32 iCounter = 0;
   wchar_t sString[2048];
   FileStringPtr pTempString = NULL;
@@ -995,7 +995,7 @@ BOOLEAN HandleSpecialFiles(UINT8 ubFormat) {
   return TRUE;
 }
 
-void AddStringToFilesList(STR16 pString) {
+function AddStringToFilesList(pString: STR16): void {
   FileStringPtr pFileString;
   FileStringPtr pTempString = pFileStringList;
 
@@ -1022,7 +1022,7 @@ void AddStringToFilesList(STR16 pString) {
   return;
 }
 
-void ClearFileStringList(void) {
+function ClearFileStringList(): void {
   FileStringPtr pFileString;
   FileStringPtr pDeleteFileString;
 
@@ -1043,7 +1043,7 @@ void ClearFileStringList(void) {
   pFileStringList = NULL;
 }
 
-void CreateButtonsForFilesPage(void) {
+function CreateButtonsForFilesPage(): void {
   // will create buttons for the files page
   giFilesPageButtonsImage[0] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
   giFilesPageButtons[0] = QuickCreateButton(giFilesPageButtonsImage[0], PREVIOUS_FILE_PAGE_BUTTON_X, PREVIOUS_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnPreviousFilePageCallback);
@@ -1057,7 +1057,7 @@ void CreateButtonsForFilesPage(void) {
   return;
 }
 
-void DeleteButtonsForFilesPage(void) {
+function DeleteButtonsForFilesPage(): void {
   // destroy buttons for the files page
 
   RemoveButton(giFilesPageButtons[0]);
@@ -1070,7 +1070,7 @@ void DeleteButtonsForFilesPage(void) {
 }
 
 // callbacks
-void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnPreviousFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1102,7 +1102,7 @@ void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
   return;
 }
 
-void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnNextFilePageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
@@ -1134,7 +1134,7 @@ void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason) {
   return;
 }
 
-void HandleFileViewerButtonStates(void) {
+function HandleFileViewerButtonStates(): void {
   // handle state of email viewer buttons
 
   if (iHighLightFileLine == -1) {
@@ -1166,7 +1166,7 @@ void HandleFileViewerButtonStates(void) {
   return;
 }
 
-FileRecordWidthPtr CreateRecordWidth(INT32 iRecordNumber, INT32 iRecordWidth, INT32 iRecordHeightAdjustment, UINT8 ubFlags) {
+function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHeightAdjustment: INT32, ubFlags: UINT8): FileRecordWidthPtr {
   FileRecordWidthPtr pTempRecord = NULL;
 
   // allocs and inits a width info record for the multipage file viewer...this will tell the procedure that does inital computation on which record is the start of the current page
@@ -1182,7 +1182,7 @@ FileRecordWidthPtr CreateRecordWidth(INT32 iRecordNumber, INT32 iRecordWidth, IN
   return pTempRecord;
 }
 
-FileRecordWidthPtr CreateWidthRecordsForAruloIntelFile(void) {
+function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
   FileRecordWidthPtr pTempRecord = NULL;
   FileRecordWidthPtr pRecordListHead = NULL;
@@ -1207,7 +1207,7 @@ FileRecordWidthPtr CreateWidthRecordsForAruloIntelFile(void) {
   return pRecordListHead;
 }
 
-FileRecordWidthPtr CreateWidthRecordsForTerroristFile(void) {
+function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
   FileRecordWidthPtr pTempRecord = NULL;
   FileRecordWidthPtr pRecordListHead = NULL;
@@ -1228,7 +1228,7 @@ FileRecordWidthPtr CreateWidthRecordsForTerroristFile(void) {
   return pRecordListHead;
 }
 
-void ClearOutWidthRecordsList(FileRecordWidthPtr pFileRecordWidthList) {
+function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): void {
   FileRecordWidthPtr pTempRecord = NULL;
   FileRecordWidthPtr pDeleteRecord = NULL;
 
@@ -1259,7 +1259,7 @@ void ClearOutWidthRecordsList(FileRecordWidthPtr pFileRecordWidthList) {
   return;
 }
 
-void OpenFirstUnreadFile(void) {
+function OpenFirstUnreadFile(): void {
   // open the first unread file in the list
   INT32 iCounter = 0;
   FilesUnitPtr pFilesList = pFilesListHead;
@@ -1281,7 +1281,7 @@ void OpenFirstUnreadFile(void) {
   return;
 }
 
-void CheckForUnreadFiles(void) {
+function CheckForUnreadFiles(): void {
   BOOLEAN fStatusOfNewFileFlag = fNewFilesInFileViewer;
 
   // willc heck for any unread files and set flag if any
@@ -1304,7 +1304,7 @@ void CheckForUnreadFiles(void) {
   }
 }
 
-BOOLEAN HandleSpecialTerroristFile(INT32 iFileNumber, STR sPictureName) {
+function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOLEAN {
   INT32 iCounter = 0;
   wchar_t sString[2048];
   FileStringPtr pTempString = NULL;
@@ -1446,7 +1446,7 @@ BOOLEAN HandleSpecialTerroristFile(INT32 iFileNumber, STR sPictureName) {
 }
 
 // add a file about this terrorist
-BOOLEAN AddFileAboutTerrorist(INT32 iProfileId) {
+function AddFileAboutTerrorist(iProfileId: INT32): BOOLEAN {
   INT32 iCounter = 0;
 
   for (iCounter = 1; iCounter < 7; iCounter++) {

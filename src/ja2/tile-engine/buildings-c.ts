@@ -4,7 +4,7 @@ UINT8 gubBuildingInfo[WORLD_MAX];
 BUILDING gBuildings[MAX_BUILDINGS];
 UINT8 gubNumberOfBuildings;
 
-BUILDING *CreateNewBuilding(UINT8 *pubBuilding) {
+function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   if (gubNumberOfBuildings + 1 >= MAX_BUILDINGS) {
     return NULL;
   }
@@ -17,7 +17,7 @@ BUILDING *CreateNewBuilding(UINT8 *pubBuilding) {
   return &(gBuildings[gubNumberOfBuildings]);
 }
 
-BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
+function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   UINT32 uiLoop;
   INT16 sTempGridNo, sNextTempGridNo, sVeryTemporaryGridNo;
   INT16 sStartGridNo, sCurrGridNo, sPrevGridNo = NOWHERE, sRightGridNo;
@@ -243,7 +243,7 @@ BUILDING *GenerateBuilding(INT16 sDesiredSpot) {
   return pBuilding;
 }
 
-BUILDING *FindBuilding(INT16 sGridNo) {
+function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
   UINT8 ubBuildingID;
   // UINT8					ubRoomNo;
 
@@ -276,14 +276,14 @@ BUILDING *FindBuilding(INT16 sGridNo) {
   return &(gBuildings[ubBuildingID]);
 }
 
-BOOLEAN InBuilding(INT16 sGridNo) {
+function InBuilding(sGridNo: INT16): BOOLEAN {
   if (FindBuilding(sGridNo) == NULL) {
     return FALSE;
   }
   return TRUE;
 }
 
-void GenerateBuildings(void) {
+function GenerateBuildings(): void {
   UINT32 uiLoop;
 
   // init building structures and variables
@@ -313,7 +313,7 @@ void GenerateBuildings(void) {
   }
 }
 
-INT16 FindClosestClimbPoint(INT16 sStartGridNo, INT16 sDesiredGridNo, BOOLEAN fClimbUp) {
+function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: BOOLEAN): INT16 {
   BUILDING *pBuilding;
   UINT8 ubNumClimbSpots;
   INT16 *psClimbSpots;
@@ -346,7 +346,7 @@ INT16 FindClosestClimbPoint(INT16 sStartGridNo, INT16 sDesiredGridNo, BOOLEAN fC
   return sClosestSpot;
 }
 
-BOOLEAN SameBuilding(INT16 sGridNo1, INT16 sGridNo2) {
+function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): BOOLEAN {
   if (gubBuildingInfo[sGridNo1] == NO_BUILDING) {
     return FALSE;
   }

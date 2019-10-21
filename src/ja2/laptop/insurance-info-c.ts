@@ -53,14 +53,14 @@ MOUSE_REGION gSelectedInsuranceInfoLinkRegion;
 
 MOUSE_REGION gSelectedInsuranceInfoHomeLinkRegion;
 
-void GameInitInsuranceInfo() {
+function GameInitInsuranceInfo(): void {
 }
 
-void EnterInitInsuranceInfo() {
+function EnterInitInsuranceInfo(): void {
   memset(&InsuranceInfoSubPagesVisitedFlag, 0, INS_INFO_LAST_PAGE - 1);
 }
 
-BOOLEAN EnterInsuranceInfo() {
+function EnterInsuranceInfo(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosX;
 
@@ -100,7 +100,7 @@ BOOLEAN EnterInsuranceInfo() {
   return TRUE;
 }
 
-void ExitInsuranceInfo() {
+function ExitInsuranceInfo(): void {
   RemoveInsuranceDefaults();
 
   UnloadButtonImage(guiInsPrevButtonImage);
@@ -115,10 +115,10 @@ void ExitInsuranceInfo() {
   DeleteVideoObjectFromIndex(guiBulletImage);
 }
 
-void HandleInsuranceInfo() {
+function HandleInsuranceInfo(): void {
 }
 
-void RenderInsuranceInfo() {
+function RenderInsuranceInfo(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   UINT16 usPosX;
@@ -174,7 +174,7 @@ void RenderInsuranceInfo() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnInsPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsPrevButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -198,7 +198,7 @@ void BtnInsPrevButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnInsNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnInsNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -223,7 +223,7 @@ void BtnInsNextButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SelectInsuranceLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_CONTRACT;
@@ -231,7 +231,7 @@ void SelectInsuranceLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectInsuranceInfoHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectInsuranceInfoHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -239,7 +239,7 @@ void SelectInsuranceInfoHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iRea
   }
 }
 
-void DisplaySubmitClaimPage() {
+function DisplaySubmitClaimPage(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   UINT16 usPosX;
@@ -276,7 +276,7 @@ void DisplaySubmitClaimPage() {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-void DisplayPremiumPage() {
+function DisplayPremiumPage(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   HVOBJECT hPixHandle;
@@ -316,7 +316,7 @@ void DisplayPremiumPage() {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-void DisplayRenewingPremiumPage() {
+function DisplayRenewingPremiumPage(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   //  HVOBJECT hPixHandle;
@@ -351,7 +351,7 @@ void DisplayRenewingPremiumPage() {
   */
 }
 
-void DisplayCancelationPagePage() {
+function DisplayCancelationPagePage(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
 
@@ -374,7 +374,7 @@ void DisplayCancelationPagePage() {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 }
 
-void DisableArrowButtonsIfOnLastOrFirstPage() {
+function DisableArrowButtonsIfOnLastOrFirstPage(): void {
   if (gubCurrentInsInfoSubPage == INS_INFO_INFO_TOC)
     DisableButton(guiInsPrevBackButton);
   else
@@ -386,7 +386,7 @@ void DisableArrowButtonsIfOnLastOrFirstPage() {
     EnableButton(guiInsNextBackButton);
 }
 
-void ChangingInsuranceInfoSubPage(UINT8 ubSubPageNumber) {
+function ChangingInsuranceInfoSubPage(ubSubPageNumber: UINT8): void {
   fLoadPendingFlag = TRUE;
 
   if (InsuranceInfoSubPagesVisitedFlag[ubSubPageNumber] == FALSE) {
@@ -400,7 +400,7 @@ void ChangingInsuranceInfoSubPage(UINT8 ubSubPageNumber) {
   }
 }
 
-void DisplayInfoTocPage() {
+function DisplayInfoTocPage(): void {
   wchar_t sText[800];
   UINT16 usNewLineOffset = 0;
   HVOBJECT hPixHandle;

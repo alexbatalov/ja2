@@ -40,10 +40,10 @@ UINT8 gubLinkPages[] = {
 // Clicking on guys Face
 MOUSE_REGION gSelectedLinkRegion[AIM_LINK_NUM_LINKS];
 
-void GameInitAimLinks() {
+function GameInitAimLinks(): void {
 }
 
-BOOLEAN EnterAimLinks() {
+function EnterAimLinks(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT16 usPosY;
   INT16 i;
@@ -78,7 +78,7 @@ BOOLEAN EnterAimLinks() {
   return TRUE;
 }
 
-void ExitAimLinks() {
+function ExitAimLinks(): void {
   INT16 i;
 
   RemoveAimDefaults();
@@ -93,10 +93,10 @@ void ExitAimLinks() {
   ExitAimMenuBar();
 }
 
-void HandleAimLinks() {
+function HandleAimLinks(): void {
 }
 
-void RenderAimLinks() {
+function RenderAimLinks(): void {
   HVOBJECT hPixHandle;
 
   DrawAimDefaults();
@@ -121,7 +121,7 @@ void RenderAimLinks() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

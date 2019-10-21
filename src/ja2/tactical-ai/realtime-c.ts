@@ -1,4 +1,4 @@
-INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
+function RTPlayerDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   INT8 bAction = AI_ACTION_NONE;
 
   if (gTacticalStatus.fAutoBandageMode) {
@@ -10,7 +10,7 @@ INT8 RTPlayerDecideAction(SOLDIERTYPE *pSoldier) {
   return bAction;
 }
 
-INT8 RTDecideAction(SOLDIERTYPE *pSoldier) {
+function RTDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (CREATURE_OR_BLOODCAT(pSoldier)) {
     return CreatureDecideAction(pSoldier);
   } else if (pSoldier->ubBodyType == CROW) {
@@ -32,7 +32,7 @@ INT8 RTDecideAction(SOLDIERTYPE *pSoldier) {
   }
 }
 
-UINT16 RealtimeDelay(SOLDIERTYPE *pSoldier) {
+function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   if (PTR_CIV_OR_MILITIA && !(pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP)) {
     return (UINT16)REALTIME_CIV_AI_DELAY;
   } else if (CREATURE_OR_BLOODCAT(pSoldier) && !(pSoldier->bHunting)) {
@@ -50,7 +50,7 @@ UINT16 RealtimeDelay(SOLDIERTYPE *pSoldier) {
   }
 }
 
-void RTHandleAI(SOLDIERTYPE *pSoldier) {
+function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   if ((pSoldier->bAction != AI_ACTION_NONE) && pSoldier->bActionInProgress) {
     // if action should remain in progress
     if (ActionInProgress(pSoldier)) {

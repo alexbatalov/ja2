@@ -7,18 +7,18 @@ const BROKEN_LINK__MESSAGE_WIDTH = (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X);
 
 const BROKEN_LINK__SITE_NOT_FOUND_Y = LAPTOP_SCREEN_UL_Y + 65;
 
-BOOLEAN EnterBrokenLink() {
+function EnterBrokenLink(): BOOLEAN {
   //	RenderBrokenLink();
   return TRUE;
 }
 
-void ExitBrokenLink() {
+function ExitBrokenLink(): void {
 }
 
-void HandleBrokenLink() {
+function HandleBrokenLink(): void {
 }
 
-void RenderBrokenLink() {
+function RenderBrokenLink(): void {
   // Color fill the laptop white
   DrawBrokenLinkWhiteBackground();
 
@@ -35,6 +35,6 @@ void RenderBrokenLink() {
   InvalidateRegion(0, 0, 640, 480);
 }
 
-void DrawBrokenLinkWhiteBackground() {
+function DrawBrokenLinkWhiteBackground(): void {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, Get16BPPColor(FROMRGB(255, 255, 255)));
 }

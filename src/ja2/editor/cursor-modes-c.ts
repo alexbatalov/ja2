@@ -29,13 +29,13 @@ BOOLEAN gfUsingOffset;
 
 // Based on the density level setting and the selection type, this test will
 // randomly choose TRUE or FALSE to reflect the *odds*.
-BOOLEAN PerformDensityTest() {
+function PerformDensityTest(): BOOLEAN {
   if (Random(100) < gusSelectionDensity)
     return TRUE;
   return FALSE;
 }
 
-void IncreaseSelectionDensity() {
+function IncreaseSelectionDensity(): void {
   if (gusSelectionDensity == 100)
     gusSelectionDensity = 2;
   else if (gusSelectionDensity == 2)
@@ -46,7 +46,7 @@ void IncreaseSelectionDensity() {
     gusSelectionDensity += 10;
 }
 
-void DecreaseSelectionDensity() {
+function DecreaseSelectionDensity(): void {
   if (gusSelectionDensity == 10)
     gusSelectionDensity = 5;
   else if (gusSelectionDensity == 5)
@@ -57,7 +57,7 @@ void DecreaseSelectionDensity() {
     gusSelectionDensity -= 10;
 }
 
-void RemoveCursors() {
+function RemoveCursors(): void {
   INT32 x, y, iMapIndex;
   if (gpBuildingLayoutList) {
     RemoveBuildingLayout();
@@ -84,7 +84,7 @@ void RemoveCursors() {
   gfUsingOffset = FALSE;
 }
 
-void RemoveBadMarker() {
+function RemoveBadMarker(): void {
   LEVELNODE *pNode;
   if (sBadMarker < 0)
     return;
@@ -99,7 +99,7 @@ void RemoveBadMarker() {
   }
 }
 
-void UpdateCursorAreas() {
+function UpdateCursorAreas(): void {
   INT32 x, y, iMapIndex;
 
   RemoveCursors();
@@ -175,7 +175,7 @@ void UpdateCursorAreas() {
   }
 }
 
-void ForceAreaSelectionWidth() {
+function ForceAreaSelectionWidth(): void {
   UINT16 gusDecSelWidth;
 
   // If the anchor isn't set, we don't want to force the size yet.
@@ -211,7 +211,7 @@ void ForceAreaSelectionWidth() {
   }
 }
 
-BOOLEAN HandleAreaSelection() {
+function HandleAreaSelection(): BOOLEAN {
   // When the user releases the left button, then clear and process the area.
   if (fAnchored) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {
@@ -261,14 +261,14 @@ BOOLEAN HandleAreaSelection() {
   return TRUE;
 }
 
-void ValidateSelectionRegionBoundaries() {
+function ValidateSelectionRegionBoundaries(): void {
   gSelectRegion.iLeft = max(min(159, gSelectRegion.iLeft), 0);
   gSelectRegion.iRight = max(min(159, gSelectRegion.iRight), 0);
   gSelectRegion.iTop = max(min(159, gSelectRegion.iTop), 0);
   gSelectRegion.iBottom = max(min(159, gSelectRegion.iBottom), 0);
 }
 
-void EnsureSelectionType() {
+function EnsureSelectionType(): void {
   BOOLEAN fPrevBrushEnabledState = gfBrushEnabled;
 
   // At time of writing, the only drawing mode supporting right mouse button
@@ -329,7 +329,7 @@ void EnsureSelectionType() {
   }
 }
 
-void DrawBuildingLayout(INT32 iMapIndex) {
+function DrawBuildingLayout(iMapIndex: INT32): void {
   BUILDINGLAYOUTNODE *curr;
   INT32 iOffset;
   LEVELNODE *pNode;
@@ -355,7 +355,7 @@ void DrawBuildingLayout(INT32 iMapIndex) {
   }
 }
 
-void RemoveBuildingLayout() {
+function RemoveBuildingLayout(): void {
   BUILDINGLAYOUTNODE *curr;
   INT32 iOffset;
   INT32 iMapIndex;

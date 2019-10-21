@@ -19,7 +19,7 @@ extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
 
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
-INT16 *GetPopupMenuString(UINT8 ubIndex) {
+function GetPopupMenuString(ubIndex: UINT8): Pointer<INT16> {
   switch (gPopup.ubPopupMenuID) {
     case CHANGETSET_POPUP: // tile sets
       return gTilesets[ubIndex].zName;
@@ -56,7 +56,7 @@ Returns 0 if nothing in menu was selected, else
 returns the menu entry number starting from 1.
 */
 
-void InitPopupMenu(INT32 iButtonID, UINT8 ubPopupMenuID, UINT8 ubDirection) {
+function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT8): void {
   UINT16 usX, usY;
   UINT16 usMenuHeight;
   UINT16 usMenuWidth = 0;
@@ -192,7 +192,7 @@ void InitPopupMenu(INT32 iButtonID, UINT8 ubPopupMenuID, UINT8 ubDirection) {
   RenderPopupMenu();
 }
 
-void RenderPopupMenu() {
+function RenderPopupMenu(): void {
   UINT16 usX, usY;
   UINT8 ubColumn, ubEntry, ubCounter;
   UINT8 *pDestBuf;
@@ -252,7 +252,7 @@ void RenderPopupMenu() {
 // This private function of PopupMenuHandle determines which menu entry
 // is highlighted based on the mouse cursor position.  Returns 0 if the
 // mouse is out of the menu region.
-UINT8 GetPopupIndexFromMousePosition() {
+function GetPopupIndexFromMousePosition(): UINT8 {
   UINT8 ubNumEntriesDown;
   UINT16 usRelX;
   UINT8 ubCount;
@@ -278,7 +278,7 @@ UINT8 GetPopupIndexFromMousePosition() {
   return 0; // mouse not in valid region.
 }
 
-void PopupMenuHandle() {
+function PopupMenuHandle(): void {
   InputAtom InputEvent;
 
   if (gPopup.ubActiveType == POPUP_ACTIVETYPE_NOT_YET_DETERMINED) {
@@ -371,7 +371,7 @@ void PopupMenuHandle() {
   }
 }
 
-void ProcessPopupMenuSelection() {
+function ProcessPopupMenuSelection(): void {
   switch (gPopup.ubPopupMenuID) {
     case CHANGETSET_POPUP:
       // change the tileset here.
@@ -393,7 +393,7 @@ void ProcessPopupMenuSelection() {
   }
 }
 
-BOOLEAN ProcessPopupMenuIfActive() {
+function ProcessPopupMenuIfActive(): BOOLEAN {
   if (!gPopup.fActive && !fWaitingForLButtonRelease)
     return FALSE;
   if (fWaitingForLButtonRelease) {

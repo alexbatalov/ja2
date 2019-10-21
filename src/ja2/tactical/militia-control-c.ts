@@ -1,6 +1,6 @@
 BOOLEAN gfStrategicMilitiaChangesMade = FALSE;
 
-void ResetMilitia() {
+function ResetMilitia(): void {
   if (gfStrategicMilitiaChangesMade || gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
     gfStrategicMilitiaChangesMade = FALSE;
     RemoveMilitiaFromTactical();
@@ -8,7 +8,7 @@ void ResetMilitia() {
   }
 }
 
-void RemoveMilitiaFromTactical() {
+function RemoveMilitiaFromTactical(): void {
   SOLDIERINITNODE *curr;
   INT32 i;
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
@@ -25,7 +25,7 @@ void RemoveMilitiaFromTactical() {
   }
 }
 
-void PrepareMilitiaForTactical() {
+function PrepareMilitiaForTactical(): void {
   SECTORINFO *pSector;
   //	INT32 i;
   UINT8 ubGreen, ubRegs, ubElites;
@@ -52,7 +52,7 @@ void PrepareMilitiaForTactical() {
   */
 }
 
-void HandleMilitiaPromotions(void) {
+function HandleMilitiaPromotions(): void {
   UINT8 cnt;
   UINT8 ubMilitiaRank;
   SOLDIERTYPE *pTeamSoldier;

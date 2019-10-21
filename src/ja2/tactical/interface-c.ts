@@ -157,7 +157,7 @@ INT16 gsInterfaceLevel = I_GROUND_LEVEL;
 INT16 gsCurrentSoldierGridNo = 0;
 INT16 gsCurInterfacePanel = TEAM_PANEL;
 
-BOOLEAN InitializeTacticalInterface() {
+function InitializeTacticalInterface(): BOOLEAN {
   VSURFACE_DESC vs_desc;
   VOBJECT_DESC VObjectDesc;
 
@@ -328,13 +328,13 @@ BOOLEAN InitializeTacticalInterface() {
   return TRUE;
 }
 
-BOOLEAN ShutdownTacticalInterface() {
+function ShutdownTacticalInterface(): BOOLEAN {
   ShutdownCurrentPanel();
 
   return TRUE;
 }
 
-BOOLEAN InitializeCurrentPanel() {
+function InitializeCurrentPanel(): BOOLEAN {
   BOOLEAN fOK = FALSE;
 
   MoveRadarScreen();
@@ -363,7 +363,7 @@ BOOLEAN InitializeCurrentPanel() {
   return fOK;
 }
 
-void ShutdownCurrentPanel() {
+function ShutdownCurrentPanel(): void {
   if (gfPanelAllocated) {
     switch (gsCurInterfacePanel) {
       case SM_PANEL:
@@ -379,7 +379,7 @@ void ShutdownCurrentPanel() {
   }
 }
 
-void SetCurrentTacticalPanelCurrentMerc(UINT8 ubID) {
+function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   // Disable faces
@@ -406,7 +406,7 @@ void SetCurrentTacticalPanelCurrentMerc(UINT8 ubID) {
   }
 }
 
-void CreateCurrentTacticalPanelButtons() {
+function CreateCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
       CreateSMPanelButtons(fInterfacePanelDirty);
@@ -418,7 +418,7 @@ void CreateCurrentTacticalPanelButtons() {
   }
 }
 
-void SetCurrentInterfacePanel(UINT8 ubNewPanel) {
+function SetCurrentInterfacePanel(ubNewPanel: UINT8): void {
   ShutdownCurrentPanel();
 
   // INit new panel
@@ -427,7 +427,7 @@ void SetCurrentInterfacePanel(UINT8 ubNewPanel) {
   InitializeCurrentPanel();
 }
 
-void ToggleTacticalPanels() {
+function ToggleTacticalPanels(): void {
   gfSwitchPanel = TRUE;
   gubNewPanelParam = (UINT8)gusSelectedSoldier;
 
@@ -438,7 +438,7 @@ void ToggleTacticalPanels() {
   }
 }
 
-void RemoveCurrentTacticalPanelButtons() {
+function RemoveCurrentTacticalPanelButtons(): void {
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
       RemoveSMPanelButtons(fInterfacePanelDirty);
@@ -450,7 +450,7 @@ void RemoveCurrentTacticalPanelButtons() {
   }
 }
 
-BOOLEAN IsMercPortraitVisible(UINT8 ubSoldierID) {
+function IsMercPortraitVisible(ubSoldierID: UINT8): BOOLEAN {
   if (gsCurInterfacePanel == TEAM_PANEL) {
     return TRUE;
   }
@@ -464,20 +464,20 @@ BOOLEAN IsMercPortraitVisible(UINT8 ubSoldierID) {
   return FALSE;
 }
 
-void HandleInterfaceBackgrounds() {
+function HandleInterfaceBackgrounds(): void {
   HandleUpDownArrowBackgrounds();
 }
 
-void PopupPositionMenu(UI_EVENT *pUIEvent) {
+function PopupPositionMenu(pUIEvent: Pointer<UI_EVENT>): void {
 }
 
-void PopDownPositionMenu() {
+function PopDownPositionMenu(): void {
 }
 
-void BtnPositionCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnPositionCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
-void PopupMovementMenu(UI_EVENT *pUIEvent) {
+function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   SOLDIERTYPE *pSoldier = NULL;
   INT32 iMenuAnchorX, iMenuAnchorY;
   UINT32 uiActionImages;
@@ -719,7 +719,7 @@ void PopupMovementMenu(UI_EVENT *pUIEvent) {
   gfIgnoreScrolling = TRUE;
 }
 
-void PopDownMovementMenu() {
+function PopDownMovementMenu(): void {
   if (gfInMovementMenu) {
     RemoveButton(iActionIcons[WALK_ICON]);
     RemoveButton(iActionIcons[SNEAK_ICON]);
@@ -746,7 +746,7 @@ void PopDownMovementMenu() {
   gfInMovementMenu = FALSE;
 }
 
-void RenderMovementMenu() {
+function RenderMovementMenu(): void {
   if (gfInMovementMenu) {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiBUTTONBORDER, 0, giMenuAnchorX, giMenuAnchorY, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -765,13 +765,13 @@ void RenderMovementMenu() {
   }
 }
 
-void CancelMovementMenu() {
+function CancelMovementMenu(): void {
   // Signal end of event
   PopDownMovementMenu();
   guiPendingOverrideEvent = A_CHANGE_TO_MOVE;
 }
 
-void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 uiBtnID;
   UI_EVENT *pUIEvent;
 
@@ -813,7 +813,7 @@ void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void HandleUpDownArrowBackgrounds() {
+function HandleUpDownArrowBackgrounds(): void {
   static UINT32 uiOldShowUpDownArrows = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 
   // Check for change in mode
@@ -827,7 +827,7 @@ void HandleUpDownArrowBackgrounds() {
   }
 }
 
-void RenderArrows() {
+function RenderArrows(): void {
   TILE_ELEMENT TileElem;
 
   if (guiShowUPDownArrows & ARROWS_HIDE_UP && guiShowUPDownArrows & ARROWS_HIDE_DOWN) {
@@ -928,7 +928,7 @@ void RenderArrows() {
   }
 }
 
-void EraseRenderArrows() {
+function EraseRenderArrows(): void {
   if (giUpArrowRect != 0) {
     if (giUpArrowRect != -1) {
       FreeBackgroundRect(giUpArrowRect);
@@ -944,7 +944,7 @@ void EraseRenderArrows() {
   giDownArrowRect = 0;
 }
 
-void GetArrowsBackground() {
+function GetArrowsBackground(): void {
   SOLDIERTYPE *pSoldier;
   INT16 sMercScreenX, sMercScreenY;
   UINT16 sArrowHeight = ARROWS_HEIGHT, sArrowWidth = ARROWS_WIDTH;
@@ -1037,7 +1037,7 @@ void GetArrowsBackground() {
   }
 }
 
-void GetSoldierAboveGuyPositions(SOLDIERTYPE *pSoldier, INT16 *psX, INT16 *psY, BOOLEAN fRadio) {
+function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: BOOLEAN): void {
   INT16 sMercScreenX, sMercScreenY;
   INT16 sOffsetX, sOffsetY, sAddXOffset = 0;
   UINT8 ubAnimUseHeight;
@@ -1120,7 +1120,7 @@ void GetSoldierAboveGuyPositions(SOLDIERTYPE *pSoldier, INT16 *psX, INT16 *psY, 
   }
 }
 
-void DrawSelectedUIAboveGuy(UINT16 usSoldierID) {
+function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   SOLDIERTYPE *pSoldier;
   INT16 sXPos, sYPos;
   INT16 sX, sY;
@@ -1379,7 +1379,7 @@ void DrawSelectedUIAboveGuy(UINT16 usSoldierID) {
   }
 }
 
-void RenderOverlayMessage(VIDEO_OVERLAY *pBlitter) {
+function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   // Override it!
   OverrideMercPopupBox(&gpOverrideMercBox);
 
@@ -1391,7 +1391,7 @@ void RenderOverlayMessage(VIDEO_OVERLAY *pBlitter) {
   InvalidateRegion(pBlitter->sX, pBlitter->sY, pBlitter->sX + gusOverlayPopupBoxWidth, pBlitter->sY + gusOverlayPopupBoxHeight);
 }
 
-void BeginOverlayMessage(UINT32 uiFont, UINT16 *pFontString, ...) {
+function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
   wchar_t SlideString[512];
@@ -1425,7 +1425,7 @@ void BeginOverlayMessage(UINT32 uiFont, UINT16 *pFontString, ...) {
   }
 }
 
-void EndOverlayMessage() {
+function EndOverlayMessage(): void {
   if (giPopupSlideMessageOverlay != -1) {
     //		DebugMsg( TOPIC_JA2, DBG_LEVEL_0, String( "Removing Overlay message") );
 
@@ -1435,7 +1435,7 @@ void EndOverlayMessage() {
   }
 }
 
-void DrawBarsInUIBox(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight) {
+function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16): void {
   FLOAT dWidth, dPercentage;
   // UINT16										 usLineColor;
 
@@ -1534,12 +1534,12 @@ void DrawBarsInUIBox(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWid
   UnLockVideoSurface(FRAME_BUFFER);
 }
 
-void EndDeadlockMsg() {
+function EndDeadlockMsg(): void {
   // Reset gridlock
   gfUIInDeadlock = FALSE;
 }
 
-void ClearInterface() {
+function ClearInterface(): void {
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     return;
   }
@@ -1593,7 +1593,7 @@ void ClearInterface() {
   }
 }
 
-void RestoreInterface() {
+function RestoreInterface(): void {
   // Once we are done, plot path again!
   gfPlotNewMovement = TRUE;
 
@@ -1605,7 +1605,7 @@ void RestoreInterface() {
   MSYS_ChangeRegionCursor(&gUserTurnRegion, CURSOR_WAIT);
 }
 
-void BlitPopupText(VIDEO_OVERLAY *pBlitter) {
+function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   UINT8 *pDestBuf;
   UINT32 uiDestPitchBYTES;
 
@@ -1622,7 +1622,7 @@ void BlitPopupText(VIDEO_OVERLAY *pBlitter) {
   UnLockVideoSurface(pBlitter->uiDestBuff);
 }
 
-void DirtyMercPanelInterface(SOLDIERTYPE *pSoldier, UINT8 ubDirtyLevel) {
+function DirtyMercPanelInterface(pSoldier: Pointer<SOLDIERTYPE>, ubDirtyLevel: UINT8): void {
   if (pSoldier->bTeam == gbPlayerNum) {
     // ONly set to a higher level!
     if (fInterfacePanelDirty < ubDirtyLevel) {
@@ -1644,7 +1644,7 @@ interface OPENDOOR_MENU {
 OPENDOOR_MENU gOpenDoorMenu;
 BOOLEAN gfInOpenDoorMenu = FALSE;
 
-BOOLEAN InitDoorOpenMenu(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UINT8 ubDirection, BOOLEAN fClosingDoor) {
+function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fClosingDoor: BOOLEAN): BOOLEAN {
   INT16 sHeight, sWidth;
   INT16 sScreenX, sScreenY;
 
@@ -1698,7 +1698,7 @@ BOOLEAN InitDoorOpenMenu(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UINT8 ubD
   return TRUE;
 }
 
-void PopupDoorOpenMenu(BOOLEAN fClosingDoor) {
+function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   INT32 iMenuAnchorX, iMenuAnchorY;
   INT16 zDisp[100];
 
@@ -1896,7 +1896,7 @@ void PopupDoorOpenMenu(BOOLEAN fClosingDoor) {
   gfIgnoreScrolling = TRUE;
 }
 
-void PopDownOpenDoorMenu() {
+function PopDownOpenDoorMenu(): void {
   if (gfInOpenDoorMenu) {
     UnLockPauseState();
     UnPauseGame();
@@ -1928,7 +1928,7 @@ void PopDownOpenDoorMenu() {
   gfInOpenDoorMenu = FALSE;
 }
 
-void RenderOpenDoorMenu() {
+function RenderOpenDoorMenu(): void {
   if (gfInOpenDoorMenu) {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiBUTTONBORDER, 0, gOpenDoorMenu.sX, gOpenDoorMenu.sY, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -1952,12 +1952,12 @@ void RenderOpenDoorMenu() {
   }
 }
 
-void CancelOpenDoorMenu() {
+function CancelOpenDoorMenu(): void {
   // Signal end of event
   gOpenDoorMenu.fMenuHandled = 2;
 }
 
-void BtnDoorMenuCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   INT32 uiBtnID;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -2087,7 +2087,7 @@ void BtnDoorMenuCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-BOOLEAN HandleOpenDoorMenu() {
+function HandleOpenDoorMenu(): BOOLEAN {
   if (gOpenDoorMenu.fMenuHandled) {
     PopDownOpenDoorMenu();
     return gOpenDoorMenu.fMenuHandled;
@@ -2096,7 +2096,7 @@ BOOLEAN HandleOpenDoorMenu() {
   return FALSE;
 }
 
-void RenderUIMessage(VIDEO_OVERLAY *pBlitter) {
+function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   // Shade area first...
   ShadowVideoSurfaceRect(pBlitter->uiDestBuff, pBlitter->sX, pBlitter->sY, pBlitter->sX + gusUIMessageWidth - 2, pBlitter->sY + gusUIMessageHeight - 2);
 
@@ -2105,7 +2105,7 @@ void RenderUIMessage(VIDEO_OVERLAY *pBlitter) {
   InvalidateRegion(pBlitter->sX, pBlitter->sY, pBlitter->sX + gusUIMessageWidth, pBlitter->sY + gusUIMessageHeight);
 }
 
-void InternalBeginUIMessage(BOOLEAN fUseSkullIcon, UINT16 *pFontString, ...) {
+function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
   wchar_t MsgString[512];
@@ -2158,7 +2158,7 @@ void InternalBeginUIMessage(BOOLEAN fUseSkullIcon, UINT16 *pFontString, ...) {
   gfUseSkullIconMessage = fUseSkullIcon;
 }
 
-void BeginUIMessage(UINT16 *pFontString, ...) {
+function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   wchar_t MsgString[512];
 
@@ -2169,7 +2169,7 @@ void BeginUIMessage(UINT16 *pFontString, ...) {
   InternalBeginUIMessage(FALSE, MsgString);
 }
 
-void BeginMapUIMessage(UINT8 ubPosition, UINT16 *pFontString, ...) {
+function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...args: any[]): void {
   va_list argptr;
   VIDEO_OVERLAY_DESC VideoOverlayDesc;
   wchar_t MsgString[512];
@@ -2216,7 +2216,7 @@ void BeginMapUIMessage(UINT8 ubPosition, UINT16 *pFontString, ...) {
   }
 }
 
-void EndUIMessage() {
+function EndUIMessage(): void {
   UINT32 uiClock = GetJA2Clock();
 
   if (giUIMessageOverlay != -1) {
@@ -2250,7 +2250,7 @@ const PLAYER_TEAM_TIMER_TICKS_FROM_END_TO_START_BEEP = (5000 / PLAYER_TEAM_TIMER
 const PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS = (500);
 const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
-BOOLEAN AddTopMessage(UINT8 ubType, UINT16 *pzString) {
+function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
   UINT32 cnt;
   BOOLEAN fFound = FALSE;
 
@@ -2285,7 +2285,7 @@ BOOLEAN AddTopMessage(UINT8 ubType, UINT16 *pzString) {
   return FALSE;
 }
 
-void CreateTopMessage(UINT32 uiSurface, UINT8 ubType, UINT16 *psString) {
+function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UINT16>): void {
   UINT32 uiBAR, uiPLAYERBAR, uiINTBAR;
   VOBJECT_DESC VObjectDesc;
   INT16 sX, sY;
@@ -2427,12 +2427,12 @@ void CreateTopMessage(UINT32 uiSurface, UINT8 ubType, UINT16 *psString) {
   gfTopMessageDirty = TRUE;
 }
 
-void TurnExpiredCallBack(UINT8 bExitValue) {
+function TurnExpiredCallBack(bExitValue: UINT8): void {
   // End turn...
   UIHandleEndTurn(NULL);
 }
 
-void CheckForAndHandleEndPlayerTimeLimit() {
+function CheckForAndHandleEndPlayerTimeLimit(): void {
   if (gTacticalStatus.fInTopMessage) {
     if (gGameOptions.fTurnTimeLimit) {
       if (gTacticalStatus.ubTopMessageType == PLAYER_TURN_MESSAGE || gTacticalStatus.ubTopMessageType == PLAYER_INTERRUPT_MESSAGE) {
@@ -2451,7 +2451,7 @@ void CheckForAndHandleEndPlayerTimeLimit() {
   }
 }
 
-void HandleTopMessages() {
+function HandleTopMessages(): void {
   // UINT32		uiTime;
   blt_vs_fx BltFx;
 
@@ -2566,7 +2566,7 @@ void HandleTopMessages() {
   }
 }
 
-void EndTopMessage() {
+function EndTopMessage(): void {
   //	blt_vs_fx BltFx;
 
   // OK, end the topmost message!
@@ -2609,7 +2609,7 @@ void EndTopMessage() {
   }
 }
 
-BOOLEAN InTopMessageBarAnimation() {
+function InTopMessageBarAnimation(): BOOLEAN {
   if (gTacticalStatus.fInTopMessage) {
     if (gTopMessage.bAnimate != 0) {
       HandleTopMessages();
@@ -2621,7 +2621,7 @@ BOOLEAN InTopMessageBarAnimation() {
   return FALSE;
 }
 
-void PauseRT(BOOLEAN fPause) {
+function PauseRT(fPause: BOOLEAN): void {
   // StopMercAnimation( fPause );
 
   if (fPause) {
@@ -2631,7 +2631,7 @@ void PauseRT(BOOLEAN fPause) {
   }
 }
 
-void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies) {
+function InitEnemyUIBar(ubNumEnemies: UINT8, ubDoneEnemies: UINT8): void {
   // OK, set value
   gubProgNumEnemies = ubNumEnemies + ubDoneEnemies;
   gubProgCurEnemy = ubDoneEnemies;
@@ -2641,7 +2641,7 @@ void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies) {
   gTacticalStatus.usTactialTurnLimitMax = ((ubNumEnemies + ubDoneEnemies) * PLAYER_TEAM_TIMER_TICKS_PER_ENEMY);
 }
 
-void UpdateEnemyUIBar() {
+function UpdateEnemyUIBar(): void {
   // Are we active?
   if (gfProgBarActive) {
     // OK, update team limit counter....
@@ -2659,7 +2659,7 @@ void UpdateEnemyUIBar() {
   }
 }
 
-void InitPlayerUIBar(BOOLEAN fInterrupt) {
+function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
   SOLDIERTYPE *pTeamSoldier;
   INT32 cnt = 0;
   INT8 bNumOK = 0, bNumNotOK = 0;
@@ -2714,19 +2714,19 @@ void InitPlayerUIBar(BOOLEAN fInterrupt) {
   }
 }
 
-void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function MovementMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelMovementMenu();
   }
 }
 
-void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason) {
+function DoorMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     CancelOpenDoorMenu();
   }
 }
 
-UINT16 *GetSoldierHealthString(SOLDIERTYPE *pSoldier) {
+function GetSoldierHealthString(pSoldier: Pointer<SOLDIERTYPE>): Pointer<UINT16> {
   INT32 cnt, cntStart;
   if (pSoldier->bLife == pSoldier->bLifeMax) {
     cntStart = 4;
@@ -2766,7 +2766,7 @@ static AIMCUBE_UI_DATA gCubeUIData;
 
 const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h) => (32 + (h * 64));
 
-void CalculateAimCubeUIPhysics() {
+function CalculateAimCubeUIPhysics(): void {
   UINT8 ubHeight;
 
   ubHeight = GET_CUBES_HEIGHT_FROM_UIHEIGHT(gCubeUIData.bHeight);
@@ -2789,15 +2789,15 @@ void CalculateAimCubeUIPhysics() {
   }
 }
 
-INT16 GetInAimCubeUIGridNo() {
+function GetInAimCubeUIGridNo(): INT16 {
   return gCubeUIData.sGridNo;
 }
 
-BOOLEAN InAimCubeUI() {
+function InAimCubeUI(): BOOLEAN {
   return gfInAimCubeUI;
 }
 
-BOOLEAN AimCubeUIClick() {
+function AimCubeUIClick(): BOOLEAN {
   if (!gfInAimCubeUI) {
     return FALSE;
   }
@@ -2814,7 +2814,7 @@ BOOLEAN AimCubeUIClick() {
   }
 }
 
-void BeginAimCubeUI(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 ubLevel, UINT8 bStartPower, INT8 bStartHeight) {
+function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: INT8, bStartPower: UINT8, bStartHeight: INT8): void {
   gfInAimCubeUI = TRUE;
 
   gCubeUIData.sGridNo = sGridNo;
@@ -2833,11 +2833,11 @@ void BeginAimCubeUI(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 ubLevel, UINT8 bS
   CalculateAimCubeUIPhysics();
 }
 
-void EndAimCubeUI() {
+function EndAimCubeUI(): void {
   gfInAimCubeUI = FALSE;
 }
 
-void IncrementAimCubeUI() {
+function IncrementAimCubeUI(): void {
   if (gCubeUIData.fActiveHeightBar) {
     // Cycle the last height yellow once
     if (gCubeUIData.bHeight == 3) {
@@ -2876,7 +2876,7 @@ void IncrementAimCubeUI() {
   }
 }
 
-void SetupAimCubeAI() {
+function SetupAimCubeAI(): void {
   if (gfInAimCubeUI) {
     AddTopmostToHead(gCubeUIData.sTargetGridNo, FIRSTPOINTERS2);
     gpWorldLevelData[gCubeUIData.sTargetGridNo].pTopmostHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -2888,14 +2888,14 @@ void SetupAimCubeAI() {
   }
 }
 
-void ResetAimCubeAI() {
+function ResetAimCubeAI(): void {
   if (gfInAimCubeUI) {
     RemoveTopmost(gCubeUIData.sTargetGridNo, FIRSTPOINTERS2);
     // RemoveTopmost( gCubeUIData.sGridNo, FIRSTPOINTERS2 );
   }
 }
 
-void RenderAimCubeUI() {
+function RenderAimCubeUI(): void {
   INT16 sScreenX, sScreenY;
   INT32 cnt;
   INT16 sBarHeight;
@@ -2947,7 +2947,7 @@ void RenderAimCubeUI() {
   }
 }
 
-void GetLaunchItemParamsFromUI() {
+function GetLaunchItemParamsFromUI(): void {
 }
 
 static BOOLEAN gfDisplayPhysicsUI = FALSE;
@@ -2955,18 +2955,18 @@ static INT16 gsPhysicsImpactPointGridNo;
 static INT8 gbPhysicsImpactPointLevel;
 static BOOLEAN gfBadPhysicsCTGT = FALSE;
 
-void BeginPhysicsTrajectoryUI(INT16 sGridNo, INT8 bLevel, BOOLEAN fBadCTGT) {
+function BeginPhysicsTrajectoryUI(sGridNo: INT16, bLevel: INT8, fBadCTGT: BOOLEAN): void {
   gfDisplayPhysicsUI = TRUE;
   gsPhysicsImpactPointGridNo = sGridNo;
   gbPhysicsImpactPointLevel = bLevel;
   gfBadPhysicsCTGT = fBadCTGT;
 }
 
-void EndPhysicsTrajectoryUI() {
+function EndPhysicsTrajectoryUI(): void {
   gfDisplayPhysicsUI = FALSE;
 }
 
-void SetupPhysicsTrajectoryUI() {
+function SetupPhysicsTrajectoryUI(): void {
   if (gfDisplayPhysicsUI && gfUIHandlePhysicsTrajectory) {
     if (gbPhysicsImpactPointLevel == 0) {
       if (gfBadPhysicsCTGT) {
@@ -2988,7 +2988,7 @@ void SetupPhysicsTrajectoryUI() {
   }
 }
 
-void ResetPhysicsTrajectoryUI() {
+function ResetPhysicsTrajectoryUI(): void {
   if (gfDisplayPhysicsUI) {
     RemoveTopmost(gsPhysicsImpactPointGridNo, FIRSTPOINTERS8);
     RemoveTopmost(gsPhysicsImpactPointGridNo, FIRSTPOINTERS12);
@@ -2997,11 +2997,11 @@ void ResetPhysicsTrajectoryUI() {
   }
 }
 
-void DirtyTopMessage() {
+function DirtyTopMessage(): void {
   gTopMessage.fCreated = FALSE;
 }
 
-UINT32 CalcUIMessageDuration(STR16 wString) {
+function CalcUIMessageDuration(wString: STR16): UINT32 {
   // base + X per letter
   return 1000 + 50 * wcslen(wString);
 }
@@ -3013,7 +3013,7 @@ INT16 gsMultiPurposeLocatorGridNo;
 INT8 gbMultiPurposeLocatorLevel;
 INT8 gbMultiPurposeLocatorCycles;
 
-void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel, BOOLEAN fSlideTo) {
+function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: BOOLEAN): void {
   guiMultiPurposeLocatorLastUpdate = 0;
   gbMultiPurposeLocatorCycles = 0;
   gbMultiPurposeLocatorFrame = 0;
@@ -3037,7 +3037,7 @@ void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel, BOOLEAN fSlideTo) {
   }
 }
 
-void HandleMultiPurposeLocator() {
+function HandleMultiPurposeLocator(): void {
   UINT32 uiClock;
 
   if (!gfMultipurposeLocatorOn) {
@@ -3065,7 +3065,7 @@ void HandleMultiPurposeLocator() {
   }
 }
 
-void RenderTopmostMultiPurposeLocator() {
+function RenderTopmostMultiPurposeLocator(): void {
   FLOAT dOffsetX, dOffsetY;
   FLOAT dTempX_S, dTempY_S;
   INT16 sX, sY, sXPos, sYPos;

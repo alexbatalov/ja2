@@ -41,7 +41,7 @@ UINT16 gszActionItemDesc[NUM_ACTIONITEMS][30] = {
   L"Big teargas",
 };
 
-UINT16 *GetActionItemName(OBJECTTYPE *pItem) {
+function GetActionItemName(pItem: Pointer<OBJECTTYPE>): Pointer<UINT16> {
   if (!pItem || pItem->usItem != ACTION_ITEM)
     return NULL;
   if (pItem->bActionValue != ACTION_ITEM_BLOW_UP) {
@@ -171,26 +171,26 @@ INT16 gsItemGridNo;
 ITEM_POOL *gpEditingItemPool = NULL;
 extern ITEM_POOL *gpItemPool;
 
-void ShowItemStatsPanel() {
+function ShowItemStatsPanel(): void {
   ShowEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);
   if (iCurrentTaskbar == TASK_MERCS || !gpItem)
     HideEditorButton(ITEMSTATS_HIDDEN_BTN);
   gfShowItemStatsPanel = TRUE;
 }
 
-void HideItemStatsPanel() {
+function HideItemStatsPanel(): void {
   HideEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);
   SpecifyItemToEdit(NULL, -1);
   gfShowItemStatsPanel = FALSE;
 }
 
-void EnableItemStatsPanel() {
+function EnableItemStatsPanel(): void {
 }
 
-void DisableItemStatsPanel() {
+function DisableItemStatsPanel(): void {
 }
 
-void ExecuteItemStatsCmd(UINT8 ubAction) {
+function ExecuteItemStatsCmd(ubAction: UINT8): void {
   switch (ubAction) {
     case ITEMSTATS_APPLY:
       if (gpItem && gpItem->usItem == ACTION_ITEM) {
@@ -244,7 +244,7 @@ void ExecuteItemStatsCmd(UINT8 ubAction) {
   }
 }
 
-void RemoveItemGUI() {
+function RemoveItemGUI(): void {
   if (!gpItem)
     return;
   if (TextInputMode())
@@ -283,7 +283,7 @@ void RemoveItemGUI() {
     }
 }
 
-void SpecifyItemToEdit(OBJECTTYPE *pItem, INT32 iMapIndex) {
+function SpecifyItemToEdit(pItem: Pointer<OBJECTTYPE>, iMapIndex: INT32): void {
   // Set the global item pointer to point to the new item
   if (gpItem == pItem)
     return;
@@ -397,7 +397,7 @@ void SpecifyItemToEdit(OBJECTTYPE *pItem, INT32 iMapIndex) {
 }
 
 // called from the taskbar renderer.
-void UpdateItemStatsPanel() {
+function UpdateItemStatsPanel(): void {
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
@@ -479,7 +479,7 @@ void UpdateItemStatsPanel() {
   InvalidateRegion(477, 362, 161, 97);
 }
 
-void RealisticOnlyCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
+function RealisticOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[giRealisticCheckboxButton]->uiFlags |= (BUTTON_CLICKED_ON | BUTTON_DIRTY);
     ButtonList[giSciFiCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -491,7 +491,7 @@ void RealisticOnlyCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SciFiOnlyCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
+function SciFiOnlyCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[giRealisticCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[giRealisticCheckboxButton]->uiFlags |= BUTTON_DIRTY;
@@ -503,7 +503,7 @@ void SciFiOnlyCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BothModesCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
+function BothModesCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     ButtonList[giRealisticCheckboxButton]->uiFlags &= ~BUTTON_CLICKED_ON;
     ButtonList[giRealisticCheckboxButton]->uiFlags |= BUTTON_DIRTY;
@@ -514,7 +514,7 @@ void BothModesCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SetupGameTypeFlags() {
+function SetupGameTypeFlags(): void {
   if (gpEditingItemPool) {
     giBothCheckboxButton = CreateCheckBoxButton(573, 365, "EDITOR//radiobutton.sti", MSYS_PRIORITY_NORMAL, BothModesCheckboxCallback);
     SetButtonFastHelpText(giBothCheckboxButton, L"Item appears in both Sci-Fi and Realistic modes. (|B)");
@@ -532,7 +532,7 @@ void SetupGameTypeFlags() {
   }
 }
 
-void RemoveGameTypeFlags() {
+function RemoveGameTypeFlags(): void {
   if (giBothCheckboxButton != -1) {
     RemoveButton(giBothCheckboxButton);
     giBothCheckboxButton = -1;
@@ -547,7 +547,7 @@ void RemoveGameTypeFlags() {
   }
 }
 
-void SetupGunGUI() {
+function SetupGunGUI(): void {
   UINT16 str[20];
   INT16 yp;
   memset(gfAttachment, 0, NUM_ATTACHMENT_BUTTONS);
@@ -621,7 +621,7 @@ void SetupGunGUI() {
   ReEvaluateAttachmentStatii();
 }
 
-void RemoveGunGUI() {
+function RemoveGunGUI(): void {
   INT32 i;
   for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
     if (guiAttachmentButton[i] != -1) {
@@ -631,7 +631,7 @@ void RemoveGunGUI() {
   }
 }
 
-void ExtractAndUpdateGunGUI() {
+function ExtractAndUpdateGunGUI(): void {
   INT32 i;
   // Update the gun status
   i = GetNumericStrictValueFromField(1);
@@ -662,7 +662,7 @@ void ExtractAndUpdateGunGUI() {
   }
 }
 
-void SetupAmmoGUI() {
+function SetupAmmoGUI(): void {
   UINT16 str[20];
   swprintf(str, L"%d", gpItem->ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
@@ -674,11 +674,11 @@ void SetupAmmoGUI() {
   }
 }
 
-void RemoveAmmoGUI() {
+function RemoveAmmoGUI(): void {
   // nothing to remove
 }
 
-void ExtractAndUpdateAmmoGUI() {
+function ExtractAndUpdateAmmoGUI(): void {
   INT32 i;
   // Update the number of clips
   i = GetNumericStrictValueFromField(1);
@@ -702,7 +702,7 @@ void ExtractAndUpdateAmmoGUI() {
   }
 }
 
-void SetupArmourGUI() {
+function SetupArmourGUI(): void {
   UINT16 str[20];
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -723,14 +723,14 @@ void SetupArmourGUI() {
   }
 }
 
-void RemoveArmourGUI() {
+function RemoveArmourGUI(): void {
   if (guiCeramicPlatesButton != -1) {
     RemoveButton(guiCeramicPlatesButton);
     guiCeramicPlatesButton = -1;
   }
 }
 
-void ExtractAndUpdateArmourGUI() {
+function ExtractAndUpdateArmourGUI(): void {
   INT32 i;
   // Update the armour status
   i = GetNumericStrictValueFromField(1);
@@ -753,7 +753,7 @@ void ExtractAndUpdateArmourGUI() {
   }
 }
 
-void SetupEquipGUI() {
+function SetupEquipGUI(): void {
   UINT16 str[20];
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -765,11 +765,11 @@ void SetupEquipGUI() {
   }
 }
 
-void RemoveEquipGUI() {
+function RemoveEquipGUI(): void {
   // nothing to remove
 }
 
-void ExtractAndUpdateEquipGUI() {
+function ExtractAndUpdateEquipGUI(): void {
   INT32 i;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
@@ -792,7 +792,7 @@ void ExtractAndUpdateEquipGUI() {
   }
 }
 
-void SetupExplosivesGUI() {
+function SetupExplosivesGUI(): void {
   UINT16 str[20];
   INT16 yp;
   swprintf(str, L"%d", gpItem->bStatus[0]);
@@ -821,14 +821,14 @@ void SetupExplosivesGUI() {
   }
 }
 
-void RemoveExplosivesGUI() {
+function RemoveExplosivesGUI(): void {
   if (guiDetonatorButton != -1) {
     RemoveButton(guiDetonatorButton);
     guiDetonatorButton = -1;
   }
 }
 
-void ExtractAndUpdateExplosivesGUI() {
+function ExtractAndUpdateExplosivesGUI(): void {
   INT32 i;
   // Update the explosives status
   i = GetNumericStrictValueFromField(1);
@@ -862,7 +862,7 @@ void ExtractAndUpdateExplosivesGUI() {
   }
 }
 
-void SetupMoneyGUI() {
+function SetupMoneyGUI(): void {
   UINT16 str[20];
   swprintf(str, L"%d", gpItem->uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
@@ -872,7 +872,7 @@ void SetupMoneyGUI() {
   }
 }
 
-void ExtractAndUpdateMoneyGUI() {
+function ExtractAndUpdateMoneyGUI(): void {
   INT32 i;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
@@ -891,28 +891,28 @@ void ExtractAndUpdateMoneyGUI() {
   }
 }
 
-void RemoveMoneyGUI() {
+function RemoveMoneyGUI(): void {
 }
 
-void SetupOwnershipGUI() {
+function SetupOwnershipGUI(): void {
   UINT16 str[20];
   swprintf(str, L"%d", gpItem->ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem->ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
 }
 
-void OwnershipGroupButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function OwnershipGroupButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     InitPopupMenu(btn->IDNum, OWNERSHIPGROUP_POPUP, DIR_UPLEFT);
   }
 }
 
-void SetOwnershipGroup(UINT8 ubNewGroup) {
+function SetOwnershipGroup(ubNewGroup: UINT8): void {
   gpItem->ubOwnerCivGroup = ubNewGroup;
   SpecifyButtonText(giOwnershipGroupButton, gszCivGroupNames[ubNewGroup]);
 }
 
-void ExtractAndUpdateOwnershipGUI() {
+function ExtractAndUpdateOwnershipGUI(): void {
   INT32 i;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
@@ -924,14 +924,14 @@ void ExtractAndUpdateOwnershipGUI() {
   SetInputFieldStringWithNumericStrictValue(1, i);
 }
 
-void RemoveOwnershipGUI() {
+function RemoveOwnershipGUI(): void {
   if (giOwnershipGroupButton != -1) {
     RemoveButton(giOwnershipGroupButton);
     giOwnershipGroupButton = -1;
   }
 }
 
-void SetupKeysGUI() {
+function SetupKeysGUI(): void {
   UINT16 str[20];
   if (gpEditingItemPool) {
     swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
@@ -939,7 +939,7 @@ void SetupKeysGUI() {
   }
 }
 
-void ExtractAndUpdateKeysGUI() {
+function ExtractAndUpdateKeysGUI(): void {
   if (gpEditingItemPool) {
     giDefaultExistChance = GetNumericStrictValueFromField(1);
     giDefaultExistChance = (giDefaultExistChance == -1) ? 100 : max(1, min(giDefaultExistChance, 100));
@@ -948,10 +948,10 @@ void ExtractAndUpdateKeysGUI() {
   }
 }
 
-void RemoveKeysGUI() {
+function RemoveKeysGUI(): void {
 }
 
-void SetupActionItemsGUI() {
+function SetupActionItemsGUI(): void {
   UINT16 str[4];
   UINT16 *pStr;
   swprintf(str, L"%d", gpItem->bStatus[0]);
@@ -966,7 +966,7 @@ void SetupActionItemsGUI() {
   guiActionItemButton = CreateTextButton(pStr, FONT10ARIAL, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 510, 410, 100, 20, BUTTON_NO_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, ActionItemCallback);
 }
 
-void ExtractAndUpdateActionItemsGUI() {
+function ExtractAndUpdateActionItemsGUI(): void {
   INT32 i;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
@@ -992,14 +992,14 @@ void ExtractAndUpdateActionItemsGUI() {
   }
 }
 
-void RemoveActionItemsGUI() {
+function RemoveActionItemsGUI(): void {
   if (guiActionItemButton != -1) {
     RemoveButton(guiActionItemButton);
     guiActionItemButton = -1;
   }
 }
 
-void AlarmTriggerCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
+function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON)
       gpItem->fFlags |= OBJECT_ALARM_TRIGGER;
@@ -1008,7 +1008,7 @@ void AlarmTriggerCheckboxCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SetupTriggersGUI() {
+function SetupTriggersGUI(): void {
   UINT16 str[4];
   swprintf(str, L"%d", gpItem->bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -1026,7 +1026,7 @@ void SetupTriggersGUI() {
   }
 }
 
-void ExtractAndUpdateTriggersGUI() {
+function ExtractAndUpdateTriggersGUI(): void {
   INT32 i;
   // Update the trap level
   i = GetNumericStrictValueFromField(1);
@@ -1047,7 +1047,7 @@ void ExtractAndUpdateTriggersGUI() {
   }
 }
 
-void RemoveTriggersGUI() {
+function RemoveTriggersGUI(): void {
   if (gpEditingItemPool && gpItem->bFrequency <= PANIC_FREQUENCY && gpItem->bFrequency >= PANIC_FREQUENCY_3) {
     if (giAlarmTriggerButton != -1) {
       RemoveButton(giAlarmTriggerButton);
@@ -1056,7 +1056,7 @@ void RemoveTriggersGUI() {
   }
 }
 
-void ToggleAttachment(GUI_BUTTON *btn, INT32 reason) {
+function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     INT32 i;
     UINT16 usAttachment;
@@ -1105,7 +1105,7 @@ void ToggleAttachment(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ToggleCeramicPlates(GUI_BUTTON *btn, INT32 reason) {
+function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     OBJECTTYPE temp;
     gfCeramicPlates ^= TRUE;
@@ -1123,7 +1123,7 @@ void ToggleCeramicPlates(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ToggleDetonator(GUI_BUTTON *btn, INT32 reason) {
+function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     OBJECTTYPE temp;
     if (!gfDetonator) {
@@ -1143,13 +1143,13 @@ void ToggleDetonator(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void ActionItemCallback(GUI_BUTTON *btn, INT32 reason) {
+function ActionItemCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     InitPopupMenu(guiActionItemButton, ACTIONITEM_POPUP, DIR_UPLEFT);
   }
 }
 
-void ChangeActionItem(OBJECTTYPE *pItem, INT8 bActionItemIndex) {
+function ChangeActionItem(pItem: Pointer<OBJECTTYPE>, bActionItemIndex: INT8): void {
   pItem->usItem = ACTION_ITEM;
   pItem->bActionValue = ACTION_ITEM_BLOW_UP;
   switch (bActionItemIndex) {
@@ -1281,7 +1281,7 @@ void ChangeActionItem(OBJECTTYPE *pItem, INT8 bActionItemIndex) {
   }
 }
 
-void UpdateActionItem(INT8 bActionItemIndex) {
+function UpdateActionItem(bActionItemIndex: INT8): void {
   gbActionItemIndex = bActionItemIndex; // used for future new actionitems as the default.
 
   if (!gpItemPool || !gpItem)
@@ -1307,7 +1307,7 @@ void UpdateActionItem(INT8 bActionItemIndex) {
   }
 }
 
-void ReEvaluateAttachmentStatii() {
+function ReEvaluateAttachmentStatii(): void {
   INT32 i;
   UINT16 usAttachment;
   for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {

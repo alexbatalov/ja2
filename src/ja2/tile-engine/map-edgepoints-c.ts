@@ -44,7 +44,7 @@ INT16 gsBRGridNo = 12635;
 
 extern UINT8 gubTacticalDirection;
 
-void TrashMapEdgepoints() {
+function TrashMapEdgepoints(): void {
   // Primary edgepoints
   if (gps1stNorthEdgepointArray)
     MemFree(gps1stNorthEdgepointArray);
@@ -92,7 +92,7 @@ void TrashMapEdgepoints() {
 // This final step eliminates some edgepoints which actually don't path directly to the edge of the map.
 // Cases would include an area that is close to the edge, but a fence blocks it from direct access to the edge
 // of the map.
-void ValidateEdgepoints() {
+function ValidateEdgepoints(): void {
   INT32 i;
   UINT16 usValidEdgepoints;
   SOLDIERTYPE Soldier;
@@ -231,7 +231,7 @@ void ValidateEdgepoints() {
   gus2ndWestEdgepointArraySize = usValidEdgepoints;
 }
 
-void CompactEdgepointArray(INT16 **psArray, UINT16 *pusMiddleIndex, UINT16 *pusArraySize) {
+function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex: Pointer<UINT16>, pusArraySize: Pointer<UINT16>): void {
   INT32 i;
   UINT16 usArraySize, usValidIndex = 0;
 
@@ -254,7 +254,7 @@ void CompactEdgepointArray(INT16 **psArray, UINT16 *pusMiddleIndex, UINT16 *pusA
   Assert(*psArray);
 }
 
-void InternallyClassifyEdgepoints(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT16 **psArray1, UINT16 *pusMiddleIndex1, UINT16 *pusArraySize1, INT16 **psArray2, UINT16 *pusMiddleIndex2, UINT16 *pusArraySize2) {
+function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
   INT32 i;
   UINT16 us1stBenchmarkID, us2ndBenchmarkID;
   us1stBenchmarkID = us2ndBenchmarkID = 0xffff;
@@ -349,7 +349,7 @@ void InternallyClassifyEdgepoints(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT16 **
   (*psArray2) = (INT16 *)MemRealloc((*psArray2), *pusArraySize2 * sizeof(INT16));
 }
 
-void ClassifyEdgepoints() {
+function ClassifyEdgepoints(): void {
   SOLDIERTYPE Soldier;
   INT16 sGridNo = -1;
 
@@ -386,7 +386,7 @@ void ClassifyEdgepoints() {
   }
 }
 
-void GenerateMapEdgepoints() {
+function GenerateMapEdgepoints(): void {
   INT32 i = -1;
   INT16 sGridNo = -1;
   INT16 sVGridNo[400];
@@ -707,7 +707,7 @@ void GenerateMapEdgepoints() {
   gfGeneratingMapEdgepoints = FALSE;
 }
 
-void SaveMapEdgepoints(HWFILE fp) {
+function SaveMapEdgepoints(fp: HWFILE): void {
   // 1st priority edgepoints -- for common entry -- tactical placement gui uses only these points.
   FileWrite(fp, &gus1stNorthEdgepointArraySize, 2, NULL);
   FileWrite(fp, &gus1stNorthEdgepointMiddleIndex, 2, NULL);
@@ -744,7 +744,7 @@ void SaveMapEdgepoints(HWFILE fp) {
     FileWrite(fp, gps2ndWestEdgepointArray, gus2ndWestEdgepointArraySize * sizeof(INT16), NULL);
 }
 
-void OldLoadMapEdgepoints(INT8 **hBuffer) {
+function OldLoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): void {
   LOADDATA(&gus1stNorthEdgepointArraySize, *hBuffer, 2);
   LOADDATA(&gus1stNorthEdgepointMiddleIndex, *hBuffer, 2);
   if (gus1stNorthEdgepointArraySize) {
@@ -775,7 +775,7 @@ void OldLoadMapEdgepoints(INT8 **hBuffer) {
   }
 }
 
-BOOLEAN LoadMapEdgepoints(INT8 **hBuffer) {
+function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   TrashMapEdgepoints();
   if (gMapInformation.ubMapVersion < 17) {
     // To prevent invalidation of older maps, which only used one layer of edgepoints, and a UINT8 for
@@ -851,7 +851,7 @@ BOOLEAN LoadMapEdgepoints(INT8 **hBuffer) {
   return TRUE;
 }
 
-UINT16 ChooseMapEdgepoint(UINT8 ubStrategicInsertionCode) {
+function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
   INT16 *psArray = NULL;
   UINT16 usArraySize = 0;
   static INT32 randomVal = 0;
@@ -885,7 +885,7 @@ UINT16 ChooseMapEdgepoint(UINT8 ubStrategicInsertionCode) {
   return psArray[Random(usArraySize)];
 }
 
-void ChooseMapEdgepoints(MAPEDGEPOINTINFO *pMapEdgepointInfo, UINT8 ubStrategicInsertionCode, UINT8 ubNumDesiredPoints) {
+function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
   INT16 *psArray = NULL;
   UINT16 usArraySize = 0;
   INT32 i = -1;
@@ -974,7 +974,7 @@ void ChooseMapEdgepoints(MAPEDGEPOINTINFO *pMapEdgepointInfo, UINT8 ubStrategicI
 INT16 *gpReservedGridNos = NULL;
 INT16 gsReservedIndex = 0;
 
-void BeginMapEdgepointSearch() {
+function BeginMapEdgepointSearch(): void {
   INT16 sGridNo;
 
   // Create the reserved list
@@ -999,7 +999,7 @@ void BeginMapEdgepointSearch() {
   // Now, we have the path values calculated.  Now, we can check for closest edgepoints.
 }
 
-void EndMapEdgepointSearch() {
+function EndMapEdgepointSearch(): void {
   AssertMsg(gpReservedGridNos, "Attempting to EndMapEdgepointSearch that has already been removed.");
   MemFree(gpReservedGridNos);
   gpReservedGridNos = NULL;
@@ -1007,7 +1007,7 @@ void EndMapEdgepointSearch() {
 }
 
 // THIS CODE ISN'T RECOMMENDED FOR TIME CRITICAL AREAS.
-INT16 SearchForClosestPrimaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode) {
+function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   INT32 i, iDirectionLoop;
   INT16 *psArray = NULL;
   INT16 sRadius, sDistance, sDirection, sOriginalGridNo;
@@ -1125,7 +1125,7 @@ INT16 SearchForClosestPrimaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode) 
   return NOWHERE;
 }
 
-INT16 SearchForClosestSecondaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode) {
+function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
   INT32 i, iDirectionLoop;
   INT16 *psArray = NULL;
   INT16 sRadius, sDistance, sDirection, sOriginalGridNo;
@@ -1244,7 +1244,7 @@ INT16 SearchForClosestSecondaryMapEdgepoint(INT16 sGridNo, UINT8 ubInsertionCode
 }
 
 const EDGE_OF_MAP_SEARCH = 5;
-BOOLEAN VerifyEdgepoint(SOLDIERTYPE *pSoldier, INT16 sEdgepoint) {
+function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOOLEAN {
   INT32 iSearchRange;
   INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
   INT16 sGridNo;
@@ -1306,7 +1306,7 @@ BOOLEAN VerifyEdgepoint(SOLDIERTYPE *pSoldier, INT16 sEdgepoint) {
   return FALSE;
 }
 
-BOOLEAN EdgepointsClose(SOLDIERTYPE *pSoldier, INT16 sEdgepoint1, INT16 sEdgepoint2) {
+function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEdgepoint2: INT16): BOOLEAN {
   INT32 iSearchRange;
   INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
   INT16 sGridNo;
@@ -1351,7 +1351,7 @@ BOOLEAN EdgepointsClose(SOLDIERTYPE *pSoldier, INT16 sEdgepoint1, INT16 sEdgepoi
   return FALSE;
 }
 
-UINT8 CalcMapEdgepointClassInsertionCode(INT16 sGridNo) {
+function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
   SOLDIERTYPE Soldier;
   INT32 iLoop;
   INT16 *psEdgepointArray1, *psEdgepointArray2;

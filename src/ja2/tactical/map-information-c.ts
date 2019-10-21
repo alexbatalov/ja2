@@ -54,7 +54,7 @@ Version 11 -- Kris -- obsolete May 2, 1998
 
 // EntryPoints can't be placed on the top two gridnos in a map.  So all we do in this case
 // is return the closest gridno.  Returns TRUE if the mapindex changes.
-BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo) {
+function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
   INT16 sXMapPos, sYMapPos;
   INT16 sWorldX, sWorldY;
   INT32 iNewMapX, iNewMapY;
@@ -84,14 +84,14 @@ BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo) {
   return TRUE; // modified
 }
 
-void SaveMapInformation(HWFILE fp) {
+function SaveMapInformation(fp: HWFILE): void {
   UINT32 uiBytesWritten;
 
   gMapInformation.ubMapVersion = MINOR_MAP_VERSION;
   FileWrite(fp, &gMapInformation, sizeof(MAPCREATE_STRUCT), &uiBytesWritten);
 }
 
-void LoadMapInformation(INT8 **hBuffer) {
+function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
   LOADDATA(&gMapInformation, *hBuffer, sizeof(MAPCREATE_STRUCT));
   // FileRead( hfile, &gMapInformation, sizeof( MAPCREATE_STRUCT ), &uiBytesRead);
 
@@ -104,7 +104,7 @@ void LoadMapInformation(INT8 **hBuffer) {
 // work in the game itself, but would require conversion to happen every time.  This is completely
 // transparent to the rest of the game, but in the editor, obsolete versions will be updated upon
 // loading and won't be permanently updated until the map is saved, regardless of changes.
-void UpdateOldVersionMap() {
+function UpdateOldVersionMap(): void {
   if (gMapInformation.ubMapVersion < 15) {
     AssertMsg(0, "Map is less than minimum supported version.");
   }
@@ -192,7 +192,7 @@ void UpdateOldVersionMap() {
   }
 }
 
-void AutoCalculateItemNoOverwriteStatus() {
+function AutoCalculateItemNoOverwriteStatus(): void {
   SOLDIERINITNODE *curr;
   INT32 i;
   OBJECTTYPE *pItem;
@@ -218,7 +218,7 @@ void AutoCalculateItemNoOverwriteStatus() {
   }
 }
 
-void ValidateAndUpdateMapVersionIfNecessary() {
+function ValidateAndUpdateMapVersionIfNecessary(): void {
   // Older versions of mercs may require updating due to past bug fixes, new changes, etc.
   if (gMapInformation.ubMapVersion < MINOR_MAP_VERSION) {
     SetRelativeStartAndEndPercentage(0, 92, 93, L"Updating older map version...");
@@ -234,7 +234,7 @@ void ValidateAndUpdateMapVersionIfNecessary() {
 // This function is used to avoid conflicts between minor version updates and sector summary info.
 // By updating the summary info in conjunction with minor version updates, we can avoid these conflicts
 // and really prevent major map updates.
-void UpdateSummaryInfo(SUMMARYFILE *pSummary) {
+function UpdateSummaryInfo(pSummary: Pointer<SUMMARYFILE>): void {
   if (pSummary->MapInfo.ubMapVersion == MINOR_MAP_VERSION)
     return;
   if (pSummary->MapInfo.ubMapVersion < 9) {

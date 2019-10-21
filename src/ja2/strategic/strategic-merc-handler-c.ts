@@ -7,7 +7,7 @@ BOOLEAN fProcessingAMerc = FALSE;
 SOLDIERTYPE *pProcessingSoldier = NULL;
 extern BOOLEAN gfFirstMercSayingQuoteWillLeaveNoMatterWhat = FALSE;
 
-void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE *pSoldier) {
+function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
   SOLDIERTYPE *pKiller = NULL;
   INT16 sSectorX, sSectorY;
 
@@ -98,7 +98,7 @@ void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE *pSoldier) {
 }
 
 // MercDailyUpdate() gets called every day at midnight.  If something is to happen to a merc that day, add an event for it.
-void MercDailyUpdate() {
+function MercDailyUpdate(): void {
   INT32 cnt;
   INT8 bLastTeamID;
   SOLDIERTYPE *pSoldier;
@@ -485,7 +485,7 @@ void HandleMercsAboutToLeave( SOLDIERTYPE *pMercList )
 
 // ATE: This function deals with MERC MERC and NPC's leaving because of not getting paid...
 // NOT AIM renewals....
-void MercsContractIsFinished(UINT8 ubID) {
+function MercsContractIsFinished(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = &Menptr[ubID];
@@ -531,7 +531,7 @@ void MercsContractIsFinished(UINT8 ubID) {
 }
 
 // ATE: Called for RPCs who should now complain about no pay...
-void RPCWhineAboutNoPay(UINT8 ubID) {
+function RPCWhineAboutNoPay(ubID: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   pSoldier = &Menptr[ubID];
@@ -547,7 +547,7 @@ void RPCWhineAboutNoPay(UINT8 ubID) {
 }
 
 // OK loop through and check!
-BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier) {
+function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 cnt;
   UINT16 usItem;
   INT8 bBestArmour = -1;
@@ -596,7 +596,7 @@ BOOLEAN SoldierHasWorseEquipmentThanUsedTo(SOLDIERTYPE *pSoldier) {
   return FALSE;
 }
 
-void MercComplainAboutEquipment(UINT8 ubProfile) {
+function MercComplainAboutEquipment(ubProfile: UINT8): void {
   SOLDIERTYPE *pSoldier;
 
   if (ubProfile == LARRY_NORMAL) {
@@ -622,7 +622,7 @@ void MercComplainAboutEquipment(UINT8 ubProfile) {
   }
 }
 
-void UpdateBuddyAndHatedCounters(void) {
+function UpdateBuddyAndHatedCounters(): void {
   INT8 bMercID;
   INT32 iLoop;
   INT8 bOtherID;
@@ -813,7 +813,7 @@ void UpdateBuddyAndHatedCounters(void) {
   }
 }
 
-void HourlyCamouflageUpdate(void) {
+function HourlyCamouflageUpdate(): void {
   INT8 bMercID, bLastTeamID;
   SOLDIERTYPE *pSoldier;
 

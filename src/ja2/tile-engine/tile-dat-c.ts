@@ -680,7 +680,7 @@ UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
   10, // Second water
 };
 
-void SetSpecificDatabaseValues(UINT16 usType, UINT16 uiDatabaseElem, TILE_ELEMENT *TileElement, BOOLEAN fUseRaisedObjectType) {
+function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: BOOLEAN): void {
   UINT8 ubLoop;
   INT16 sIndexDiff;
   UINT32 cnt;

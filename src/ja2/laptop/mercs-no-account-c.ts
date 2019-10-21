@@ -21,10 +21,10 @@ INT32 guiOpenAccountBoxButtonImage;
 
 UINT32 guiCancelBoxButton;
 
-void GameInitMercsNoAccount() {
+function GameInitMercsNoAccount(): void {
 }
 
-BOOLEAN EnterMercsNoAccount() {
+function EnterMercsNoAccount(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
 
   InitMercBackGround();
@@ -50,7 +50,7 @@ BOOLEAN EnterMercsNoAccount() {
   return TRUE;
 }
 
-void ExitMercsNoAccount() {
+function ExitMercsNoAccount(): void {
   DeleteVideoObjectFromIndex(guiNoAccountImage);
 
   UnloadButtonImage(guiOpenAccountBoxButtonImage);
@@ -60,10 +60,10 @@ void ExitMercsNoAccount() {
   RemoveMercBackGround();
 }
 
-void HandleMercsNoAccount() {
+function HandleMercsNoAccount(): void {
 }
 
-void RenderMercsNoAccount() {
+function RenderMercsNoAccount(): void {
   HVOBJECT hPixHandle;
 
   DrawMecBackGround();
@@ -80,7 +80,7 @@ void RenderMercsNoAccount() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnOpenAccountBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -110,7 +110,7 @@ void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnCancelBoxButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);

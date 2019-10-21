@@ -52,7 +52,7 @@ BOOLEAN fNewCharInString = FALSE;
 // mouse regions
 MOUSE_REGION gIMPBeginScreenMouseRegions[4];
 
-void EnterIMPBeginScreen(void) {
+function EnterIMPBeginScreen(): void {
   // reset all variables
 
   memset(pFullNameString, 0, sizeof(pFullNameString));
@@ -100,7 +100,7 @@ void EnterIMPBeginScreen(void) {
   return;
 }
 
-void RenderIMPBeginScreen(void) {
+function RenderIMPBeginScreen(): void {
   // the background
   RenderProfileBackGround();
 
@@ -137,7 +137,7 @@ void RenderIMPBeginScreen(void) {
   return;
 }
 
-void ExitIMPBeginScreen(void) {
+function ExitIMPBeginScreen(): void {
   // remove buttons
   RemoveIMPBeginScreenButtons();
 
@@ -160,7 +160,7 @@ void ExitIMPBeginScreen(void) {
   return;
 }
 
-void HandleIMPBeginScreen(void) {
+function HandleIMPBeginScreen(): void {
   GetPlayerKeyBoardInputForIMPBeginScreen();
 
   // has a new char been added to activation string
@@ -195,7 +195,7 @@ void HandleIMPBeginScreen(void) {
   return;
 }
 
-void CreateIMPBeginScreenButtons(void) {
+function CreateIMPBeginScreenButtons(): void {
   // this procedure will create the buttons needed for the IMP BeginScreen
 
   // ths done button
@@ -211,7 +211,7 @@ void CreateIMPBeginScreenButtons(void) {
   return;
 }
 
-void RemoveIMPBeginScreenButtons(void) {
+function RemoveIMPBeginScreenButtons(): void {
   // this procedure will destroy the already created buttosn for the IMP BeginScreen
 
   // the done button
@@ -221,7 +221,7 @@ void RemoveIMPBeginScreenButtons(void) {
   return;
 }
 
-void BtnIMPBeginScreenDoneCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // easter egg check
   BOOLEAN fEggOnYouFace = FALSE;
 
@@ -277,7 +277,7 @@ void BtnIMPBeginScreenDoneCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void GetPlayerKeyBoardInputForIMPBeginScreen(void) {
+function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
   InputAtom InputEvent;
   POINT MousePos;
 
@@ -354,7 +354,7 @@ switch(InputEvent.usEvent)
   return;
 }
 
-void HandleBeginScreenTextEvent(UINT32 uiKey) {
+function HandleBeginScreenTextEvent(uiKey: UINT32): void {
   // this function checks to see if a letter or a backspace was pressed, if so, either put char to screen
   // or delete it
 
@@ -469,7 +469,7 @@ void HandleBeginScreenTextEvent(UINT32 uiKey) {
   return;
 }
 
-void DisplayFullNameStringCursor(void) {
+function DisplayFullNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   UINT32 uiDestPitchBYTES;
   static UINT32 uiBaseTime = 0;
@@ -519,7 +519,7 @@ void DisplayFullNameStringCursor(void) {
   return;
 }
 
-void DisplayNickNameStringCursor(void) {
+function DisplayNickNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   UINT32 uiDestPitchBYTES;
   static UINT32 uiBaseTime = 0;
@@ -569,7 +569,7 @@ void DisplayNickNameStringCursor(void) {
   return;
 }
 
-void DisplayPlayerFullNameString(void) {
+function DisplayPlayerFullNameString(): void {
   // this function will grab the string that the player will enter for activation
   INT32 iCounter = 0;
 
@@ -595,7 +595,7 @@ void DisplayPlayerFullNameString(void) {
   return;
 }
 
-void DisplayPlayerNickNameString(void) {
+function DisplayPlayerNickNameString(): void {
   // this function will grab the string that the player will enter for activation
   INT32 iCounter = 0;
 
@@ -621,7 +621,7 @@ void DisplayPlayerNickNameString(void) {
   return;
 }
 
-void DisplayMaleGlowCursor(void) {
+function DisplayMaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   UINT32 uiDestPitchBYTES;
   static UINT32 uiBaseTime = 0;
@@ -671,7 +671,7 @@ void DisplayMaleGlowCursor(void) {
   return;
 }
 
-void DisplayFemaleGlowCursor(void) {
+function DisplayFemaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
   UINT32 uiDestPitchBYTES;
   static UINT32 uiBaseTime = 0;
@@ -721,7 +721,7 @@ void DisplayFemaleGlowCursor(void) {
   return;
 }
 
-void CopyFirstNameIntoNickName(void) {
+function CopyFirstNameIntoNickName(): void {
   // this procedure will copy the characters first name in to the nickname for the character
   UINT32 iCounter = 0;
   while ((pFullNameString[iCounter] != L' ') && (iCounter < 20) && (pFullNameString[iCounter] != 0)) {
@@ -733,7 +733,7 @@ void CopyFirstNameIntoNickName(void) {
   return;
 }
 
-void IncrementTextEnterMode(void) {
+function IncrementTextEnterMode(): void {
   // this function will incrment which text enter mode we are in, FULLname, NICKname, IMP_MALE or IMP_FEMALE
 
   // if at IMP_FEMALE gender selection, reset to full name
@@ -745,7 +745,7 @@ void IncrementTextEnterMode(void) {
   }
 }
 
-void DecrementTextEnterMode(void) {
+function DecrementTextEnterMode(): void {
   // this function will incrment which text enter mode we are in, FULLname, NICKname, IMP_MALE or IMP_FEMALE
 
   // if at IMP_FEMALE gender selection, reset to full name
@@ -757,7 +757,7 @@ void DecrementTextEnterMode(void) {
   }
 }
 
-void RenderMaleGenderIcon(void) {
+function RenderMaleGenderIcon(): void {
   // this function displays a filled box in the IMP_MALE gender box if IMP_MALE has been selected
 
   // re render indent
@@ -768,7 +768,7 @@ void RenderMaleGenderIcon(void) {
   }
 }
 
-void RenderFemaleGenderIcon(void) {
+function RenderFemaleGenderIcon(): void {
   // this function displays a filled box in the IMP_MALE gender box if IMP_MALE has been selected
 
   // re render indent
@@ -781,7 +781,7 @@ void RenderFemaleGenderIcon(void) {
 
 // mouse regions
 
-void CreateIMPBeginScreenMouseRegions(void) {
+function CreateIMPBeginScreenMouseRegions(): void {
   // this function creates the IMP mouse regions
 
   // are we only reviewing text?.. if so, do not create regions
@@ -809,7 +809,7 @@ void CreateIMPBeginScreenMouseRegions(void) {
   return;
 }
 
-void DestroyIMPBeginScreenMouseRegions(void) {
+function DestroyIMPBeginScreenMouseRegions(): void {
   // this function destroys the IMP mouse regions
 
   // are we only reviewing text?.. if so, do not remove regions
@@ -825,7 +825,7 @@ void DestroyIMPBeginScreenMouseRegions(void) {
   return;
 }
 
-void SelectFullNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFullNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set current mode to full name type in mode
@@ -835,7 +835,7 @@ void SelectFullNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectNickNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectNickNameRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -845,7 +845,7 @@ void SelectNickNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -855,7 +855,7 @@ void SelectMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // set mode to nick name type in
@@ -865,7 +865,7 @@ void SelectFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void MvtOnFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function MvtOnFemaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -874,7 +874,7 @@ void MvtOnFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void MvtOnMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function MvtOnMaleRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     // fNewCharInString = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
@@ -883,7 +883,7 @@ void MvtOnMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void RenderGender(void) {
+function RenderGender(): void {
   // this procedure will render the gender of the character int he appropriate box
 
   // check to see if gender has been in fact set
@@ -903,7 +903,7 @@ void RenderGender(void) {
   }
 }
 
-void Print8CharacterOnlyString(void) {
+function Print8CharacterOnlyString(): void {
   SetFontBackground(FONT_BLACK);
   SetFontForeground(FONT_BLACK);
   SetFont(FONT12ARIAL);
@@ -915,7 +915,7 @@ void Print8CharacterOnlyString(void) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-BOOLEAN CheckCharacterInputForEgg(void) {
+function CheckCharacterInputForEgg(): BOOLEAN {
   MERC_HIRE_STRUCT HireMercStruct;
 
   return FALSE;

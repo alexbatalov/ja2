@@ -211,10 +211,10 @@ MOUSE_REGION gSelectedFlowerDropDownRegion[FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCA
 // MOUSE_REGION    gSelectedFloristPersonalSentimentBoxRegion;
 // void SelectFloristPersonalSentimentBoxRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
-void GameInitFloristOrderForm() {
+function GameInitFloristOrderForm(): void {
 }
 
-BOOLEAN EnterFloristOrderForm() {
+function EnterFloristOrderForm(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;
   UINT8 i;
   char sTemp[40];
@@ -343,13 +343,13 @@ BOOLEAN EnterFloristOrderForm() {
   return TRUE;
 }
 
-void InitFloristOrderFormVariables() {
+function InitFloristOrderFormVariables(): void {
   guiFlowerPrice = 0;
   gubFlowerDestDropDownMode = FLOWER_ORDER_DROP_DOWN_NO_ACTION;
   gubCurrentlySelectedFlowerLocation = 0;
 }
 
-void ExitFloristOrderForm() {
+function ExitFloristOrderForm(): void {
   UINT8 i;
   RemoveFloristDefaults();
 
@@ -394,7 +394,7 @@ void ExitFloristOrderForm() {
   DestroyFlowerOrderTextInputBoxes();
 }
 
-void HandleFloristOrderForm() {
+function HandleFloristOrderForm(): void {
   if (gubFlowerDestDropDownMode != FLOWER_ORDER_DROP_DOWN_NO_ACTION) {
     CreateDestroyFlowerOrderDestDropDown(gubFlowerDestDropDownMode);
   }
@@ -403,7 +403,7 @@ void HandleFloristOrderForm() {
   RenderAllTextFields();
 }
 
-void RenderFloristOrderForm() {
+function RenderFloristOrderForm(): void {
   HVOBJECT hPixHandle;
   UINT16 usPosX;
   wchar_t sTemp[640];
@@ -498,7 +498,7 @@ void RenderFloristOrderForm() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void BtnFlowerOrderBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFlowerOrderBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -518,7 +518,7 @@ void BtnFlowerOrderBackButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFlowerOrderSendButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFlowerOrderSendButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -554,7 +554,7 @@ void BtnFlowerOrderSendButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFlowerOrderClearButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFlowerOrderClearButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -575,7 +575,7 @@ void BtnFlowerOrderClearButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void BtnFlowerOrderGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason) {
+function BtnFlowerOrderGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -598,7 +598,7 @@ void BtnFlowerOrderGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason) {
   }
 }
 
-void SelectFlorsitCheckBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFlorsitCheckBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     UINT32 uiUserData;
@@ -655,7 +655,7 @@ void SelectFlorsitCheckBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void DisplayFloristCheckBox() {
+function DisplayFloristCheckBox(): void {
   HVOBJECT hPixHandle;
 
   // check box
@@ -703,7 +703,7 @@ void DisplayFloristCheckBox() {
   InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
 }
 
-void SelectFloristCardGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristCardGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_CARD_GALLERY;
@@ -712,7 +712,7 @@ void SelectFloristCardGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iRe
 }
 
 // display the things that change on the screen
-void DisplayFlowerDynamicItems() {
+function DisplayFlowerDynamicItems(): void {
   UINT32 uiStartLoc = 0;
   UINT16 usPosX;
   wchar_t sTemp[640];
@@ -772,7 +772,7 @@ void DisplayFlowerDynamicItems() {
   DrawTextToScreen(sTemp, usPosX, FLOWER_ORDER_BOUQUET_NAME_Y, 0, FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 }
 
-void SelectFloristGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_FLOWER_GALLERY;
@@ -780,21 +780,21 @@ void SelectFloristGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason
   }
 }
 
-void SelectFloristDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubFlowerDestDropDownMode = FLOWER_ORDER_DROP_DOWN_CREATE;
   }
 }
 
-void SelectFloristDisableDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFloristDisableDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubFlowerDestDropDownMode = FLOWER_ORDER_DROP_DOWN_DESTROY;
   }
 }
 
-void SelectFlowerDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
+function SelectFlowerDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     gubCurrentlySelectedFlowerLocation = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
@@ -803,7 +803,7 @@ void SelectFlowerDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason) {
   }
 }
 
-void SelectFlowerDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
+function SelectFlowerDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
@@ -817,7 +817,7 @@ void SelectFlowerDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 reason) {
   }
 }
 
-BOOLEAN CreateDestroyFlowerOrderDestDropDown(UINT8 ubDropDownMode) {
+function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
   static UINT16 usHeight;
   static BOOLEAN fMouseRegionsCreated = FALSE;
 
@@ -956,7 +956,7 @@ BOOLEAN CreateDestroyFlowerOrderDestDropDown(UINT8 ubDropDownMode) {
   return TRUE;
 }
 
-void FlowerOrderDrawSelectedCity(UINT8 ubNumber) {
+function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
   UINT16 usPosY;
   UINT16 usFontHeight = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
 
@@ -973,13 +973,13 @@ void FlowerOrderDrawSelectedCity(UINT8 ubNumber) {
   SetFontShadow(DEFAULT_SHADOW);
 }
 
-void FlowerOrderDisplayShippingLocationCity() {
+function FlowerOrderDisplayShippingLocationCity(): void {
   // display the name on the title bar
   ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2, Get16BPPColor(FROMRGB(0, 0, 0)));
   DrawTextToScreen(*(FlowerOrderLocations[gubCurrentlySelectedFlowerLocation].psCityLoc), FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0, FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 }
 
-void InitFlowerOrderTextInputBoxes() {
+function InitFlowerOrderTextInputBoxes(): void {
   UINT32 uiStartLoc = 0;
   wchar_t sTemp[640];
   wchar_t sText[640];
@@ -1018,11 +1018,11 @@ void InitFlowerOrderTextInputBoxes() {
   AddTextInputField(FLOWER_ORDER_NAME_TEXT_BOX_X, FLOWER_ORDER_NAME_TEXT_BOX_Y, FLOWER_ORDER_NAME_TEXT_BOX_WIDTH, FLOWER_ORDER_NAME_TEXT_BOX_HEIGHT, MSYS_PRIORITY_HIGH + 2, gsNameTextField, FLOWER_ORDER_NAME_FIELD_NUM_CHARS, INPUTTYPE_ASCII);
 }
 
-void DestroyFlowerOrderTextInputBoxes() {
+function DestroyFlowerOrderTextInputBoxes(): void {
   KillTextInputMode();
 }
 
-void HandleFloristOrderKeyBoardInput() {
+function HandleFloristOrderKeyBoardInput(): void {
   InputAtom InputEvent;
 
   while (DequeueEvent(&InputEvent) == TRUE) {
@@ -1056,14 +1056,14 @@ void HandleFloristOrderKeyBoardInput() {
   }
 }
 
-void FlowerOrderUserTextFieldCallBack(UINT8 ubID, BOOLEAN fEntering) {
+function FlowerOrderUserTextFieldCallBack(ubID: UINT8, fEntering: BOOLEAN): void {
   if (fEntering) {
     //		SetActiveField(1);
   }
 }
 
 // Initialize the Florsit Order Page (reset some variables)
-void InitFloristOrderForm() {
+function InitFloristOrderForm(): void {
   gsSentimentTextField[0] = 0;
 
   gfFLoristCheckBox0Down = FALSE; // next day delviery

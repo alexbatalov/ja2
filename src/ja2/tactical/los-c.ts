@@ -17,7 +17,7 @@ static FIXEDPT gqStandardWindowTopHeight = INT32_TO_FIXEDPT(WINDOW_TOP_HEIGHT_UN
 
 const FIXEDPT_MULTIPLY = (a, b) => ((a / 256) * (b / 256));
 
-UINT32 FPMult32(UINT32 uiA, UINT32 uiB) {
+function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
   UINT32 uiResult;
 
   __asm {
@@ -164,7 +164,7 @@ UINT8 gubLocalStructureNumTimesHit[MAX_LOCAL_STRUCTURES];
 
 extern UINT8 gubMaterialArmour[];
 
-FIXEDPT FloatToFixed(FLOAT dN) {
+function FloatToFixed(dN: FLOAT): FIXEDPT {
   FIXEDPT qN;
   // verify that dN is within the range storable by FIXEDPT?
 
@@ -178,7 +178,7 @@ FIXEDPT FloatToFixed(FLOAT dN) {
   return qN;
 }
 
-FLOAT FixedToFloat(FIXEDPT qN) {
+function FixedToFloat(qN: FIXEDPT): FLOAT {
   return ((FLOAT)qN) / FIXEDPT_FRACTIONAL_RESOLUTION;
 }
 
@@ -186,11 +186,11 @@ FLOAT FixedToFloat(FIXEDPT qN) {
 // fixed-point arithmetic stuff ends here
 //
 
-FLOAT Distance3D(FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ) {
+function Distance3D(dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT): FLOAT {
   return (FLOAT)sqrt((DOUBLE)(dDeltaX * dDeltaX + dDeltaY * dDeltaY + dDeltaZ * dDeltaZ));
 }
 
-FLOAT Distance2D(FLOAT dDeltaX, FLOAT dDeltaY) {
+function Distance2D(dDeltaX: FLOAT, dDeltaY: FLOAT): FLOAT {
   return (FLOAT)sqrt((DOUBLE)(dDeltaX * dDeltaX + dDeltaY * dDeltaY));
 }
 
@@ -207,7 +207,7 @@ const enum Enum228 {
   LOC_4_4,
 }
 
-BOOLEAN ResolveHitOnWall(STRUCTURE *pStructure, INT32 iGridNo, INT8 bLOSIndexX, INT8 bLOSIndexY, DOUBLE ddHorizAngle) {
+function ResolveHitOnWall(pStructure: Pointer<STRUCTURE>, iGridNo: INT32, bLOSIndexX: INT8, bLOSIndexY: INT8, ddHorizAngle: DOUBLE): BOOLEAN {
   BOOLEAN fNorthSouth, fEastWest;
   BOOLEAN fTopLeft, fTopRight;
   INT8 bLocation = LOC_OTHER;
@@ -495,7 +495,7 @@ BOOLEAN ResolveHitOnWall(STRUCTURE *pStructure, INT32 iGridNo, INT8 bLOSIndexX, 
  * - stops at other obstacles
  *
  */
-INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ, UINT8 ubTileSightLimit, UINT8 ubTreeSightReduction, INT8 bAware, INT8 bCamouflage, BOOLEAN fSmell, INT16 *psWindowGridNo) {
+function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, ubTileSightLimit: UINT8, ubTreeSightReduction: UINT8, bAware: INT8, bCamouflage: INT8, fSmell: BOOLEAN, psWindowGridNo: Pointer<INT16>): INT32 {
   // Parameters...
   // the X,Y,Z triplets should be obvious
   // TileSightLimit is the max # of tiles of distance visible
@@ -1054,7 +1054,7 @@ INT32 LineOfSightTest(FLOAT dStartX, FLOAT dStartY, FLOAT dStartZ, FLOAT dEndX, 
   return (iDistance + (iSightLimit - iAdjSightLimit)) * (MaxDistanceVisible() * CELL_X_SIZE) / iSightLimit;
 }
 
-BOOLEAN CalculateSoldierZPos(SOLDIERTYPE *pSoldier, UINT8 ubPosType, FLOAT *pdZPos) {
+function CalculateSoldierZPos(pSoldier: Pointer<SOLDIERTYPE>, ubPosType: UINT8, pdZPos: Pointer<FLOAT>): BOOLEAN {
   UINT8 ubHeight;
 
   if (pSoldier->ubBodyType == CROW) {
@@ -1214,7 +1214,7 @@ BOOLEAN CalculateSoldierZPos(SOLDIERTYPE *pSoldier, UINT8 ubPosType, FLOAT *pdZP
   return TRUE;
 }
 
-INT32 SoldierToSoldierLineOfSightTest(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *pEndSoldier, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   FLOAT dStartZPos, dEndZPos;
   BOOLEAN fOk;
   BOOLEAN fSmell;
@@ -1306,7 +1306,7 @@ INT32 SoldierToSoldierLineOfSightTest(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *p
   return LineOfSightTest((FLOAT)CenterX(pStartSoldier->sGridNo), (FLOAT)CenterY(pStartSoldier->sGridNo), dStartZPos, (FLOAT)CenterX(pEndSoldier->sGridNo), (FLOAT)CenterY(pEndSoldier->sGridNo), dEndZPos, ubTileSightLimit, ubTreeReduction, bAware, bEffectiveCamo, fSmell, NULL);
 }
 
-INT16 SoldierToLocationWindowTest(SOLDIERTYPE *pStartSoldier, INT16 sEndGridNo) {
+function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16): INT16 {
   // figure out if there is a SINGLE window between the looker and target
   FLOAT dStartZPos, dEndZPos;
   INT16 sXPos, sYPos, sWindowGridNo = NOWHERE;
@@ -1332,7 +1332,7 @@ INT16 SoldierToLocationWindowTest(SOLDIERTYPE *pStartSoldier, INT16 sEndGridNo) 
   return sWindowGridNo;
 }
 
-BOOLEAN SoldierToSoldierLineOfSightTimingTest(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *pEndSoldier, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierToSoldierLineOfSightTimingTest(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubTileSightLimit: UINT8, bAware: INT8): BOOLEAN {
   UINT32 uiLoopLimit = 100000;
   UINT32 uiLoop;
   UINT32 uiStartTime, uiEndTime;
@@ -1351,7 +1351,7 @@ BOOLEAN SoldierToSoldierLineOfSightTimingTest(SOLDIERTYPE *pStartSoldier, SOLDIE
   return TRUE;
 }
 
-INT32 SoldierTo3DLocationLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel, INT8 bCubeLevel, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   FLOAT dStartZPos, dEndZPos;
   INT16 sXPos, sYPos;
   UINT8 ubTargetID;
@@ -1386,7 +1386,7 @@ INT32 SoldierTo3DLocationLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGrid
   return LineOfSightTest((FLOAT)CenterX(pStartSoldier->sGridNo), (FLOAT)CenterY(pStartSoldier->sGridNo), dStartZPos, (FLOAT)sXPos, (FLOAT)sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
 }
 
-INT32 SoldierToBodyPartLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel, UINT8 ubAimLocation, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, ubAimLocation: UINT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   SOLDIERTYPE *pEndSoldier;
   UINT8 ubTargetID;
   FLOAT dStartZPos, dEndZPos;
@@ -1433,7 +1433,7 @@ INT32 SoldierToBodyPartLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo
   return LineOfSightTest((FLOAT)CenterX(pStartSoldier->sGridNo), (FLOAT)CenterY(pStartSoldier->sGridNo), dStartZPos, (FLOAT)sXPos, (FLOAT)sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
 }
 
-INT32 SoldierToVirtualSoldierLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel, INT8 bStance, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bStance: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   FLOAT dStartZPos, dEndZPos;
   INT16 sXPos, sYPos;
   BOOLEAN fOk;
@@ -1470,11 +1470,11 @@ INT32 SoldierToVirtualSoldierLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 s
   return LineOfSightTest((FLOAT)CenterX(pStartSoldier->sGridNo), (FLOAT)CenterY(pStartSoldier->sGridNo), dStartZPos, (FLOAT)sXPos, (FLOAT)sYPos, dEndZPos, ubTileSightLimit, gubTreeSightReduction[ANIM_STAND], bAware, 0, FALSE, NULL);
 }
 
-INT32 SoldierToLocationLineOfSightTest(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, UINT8 ubTileSightLimit, INT8 bAware) {
+function SoldierToLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   return SoldierTo3DLocationLineOfSightTest(pStartSoldier, sGridNo, 0, 0, ubTileSightLimit, bAware);
 }
 
-INT32 LocationToLocationLineOfSightTest(INT16 sStartGridNo, INT8 bStartLevel, INT16 sEndGridNo, INT8 bEndLevel, UINT8 ubTileSightLimit, INT8 bAware) {
+function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT8, sEndGridNo: INT16, bEndLevel: INT8, ubTileSightLimit: UINT8, bAware: INT8): INT32 {
   FLOAT dStartZPos, dEndZPos;
   INT16 sStartXPos, sStartYPos, sEndXPos, sEndYPos;
   UINT8 ubStartID;
@@ -1516,7 +1516,7 @@ INT32 BulletImpactReducedByRange( INT32 iImpact, INT32 iDistanceTravelled, INT32
 }
 */
 
-BOOLEAN BulletHitMerc(BULLET *pBullet, STRUCTURE *pStructure, BOOLEAN fIntended) {
+function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>, fIntended: BOOLEAN): BOOLEAN {
   INT32 iImpact, iDamage;
   EV_S_WEAPONHIT SWeaponHit;
   INT16 sRange;
@@ -1842,7 +1842,7 @@ BOOLEAN BulletHitMerc(BULLET *pBullet, STRUCTURE *pStructure, BOOLEAN fIntended)
   return fStopped;
 }
 
-void BulletHitStructure(BULLET *pBullet, UINT16 usStructureID, INT32 iImpact, SOLDIERTYPE *pFirer, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qCurrZ, BOOLEAN fStopped) {
+function BulletHitStructure(pBullet: Pointer<BULLET>, usStructureID: UINT16, iImpact: INT32, pFirer: Pointer<SOLDIERTYPE>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT, fStopped: BOOLEAN): void {
   EV_S_STRUCTUREHIT SStructureHit;
 
   SStructureHit.sXPos = (INT16)FIXEDPT_TO_INT32(qCurrX + FloatToFixed(0.5f)); // + 0.5);
@@ -1858,15 +1858,15 @@ void BulletHitStructure(BULLET *pBullet, UINT16 usStructureID, INT32 iImpact, SO
   StructureHit(SStructureHit.iBullet, SStructureHit.usWeaponIndex, SStructureHit.bWeaponStatus, SStructureHit.ubAttackerID, SStructureHit.sXPos, SStructureHit.sYPos, SStructureHit.sZPos, SStructureHit.usStructureID, SStructureHit.iImpact, fStopped);
 }
 
-void BulletHitWindow(BULLET *pBullet, INT16 sGridNo, UINT16 usStructureID, BOOLEAN fBlowWindowSouth) {
+function BulletHitWindow(pBullet: Pointer<BULLET>, sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOLEAN): void {
   WindowHit(sGridNo, usStructureID, fBlowWindowSouth, FALSE);
 }
 
-void BulletMissed(BULLET *pBullet, SOLDIERTYPE *pFirer) {
+function BulletMissed(pBullet: Pointer<BULLET>, pFirer: Pointer<SOLDIERTYPE>): void {
   ShotMiss(pFirer->ubID, pBullet->iBullet);
 }
 
-UINT32 ChanceOfBulletHittingStructure(INT32 iDistance, INT32 iDistanceToTarget, INT16 sHitBy) {
+function ChanceOfBulletHittingStructure(iDistance: INT32, iDistanceToTarget: INT32, sHitBy: INT16): UINT32 {
   INT32 iCloseToCoverPenalty;
 
   if (iDistance / CELL_X_SIZE > MAX_DIST_FOR_LESS_THAN_MAX_CHANCE_TO_HIT_STRUCTURE) {
@@ -1888,7 +1888,7 @@ UINT32 ChanceOfBulletHittingStructure(INT32 iDistance, INT32 iDistanceToTarget, 
   }
 }
 
-INT32 StructureResistanceIncreasedByRange(INT32 iImpactReduction, INT32 iGunRange, INT32 iDistance) {
+function StructureResistanceIncreasedByRange(iImpactReduction: INT32, iGunRange: INT32, iDistance: INT32): INT32 {
   return iImpactReduction * (100 + PERCENT_BULLET_SLOWED_BY_RANGE * (iDistance - iGunRange) / iGunRange) / 100;
   /*
   if ( iDistance > iGunRange )
@@ -1902,7 +1902,7 @@ INT32 StructureResistanceIncreasedByRange(INT32 iImpactReduction, INT32 iGunRang
   */
 }
 
-INT32 HandleBulletStructureInteraction(BULLET *pBullet, STRUCTURE *pStructure, BOOLEAN *pfHit) {
+function HandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>, pfHit: Pointer<BOOLEAN>): INT32 {
   DOOR *pDoor;
   INT16 sLockDamage;
 
@@ -2010,7 +2010,7 @@ INT32 HandleBulletStructureInteraction(BULLET *pBullet, STRUCTURE *pStructure, B
   }
 }
 
-INT32 CTGTHandleBulletStructureInteraction(BULLET *pBullet, STRUCTURE *pStructure) {
+function CTGTHandleBulletStructureInteraction(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>): INT32 {
   // returns reduction in impact for summing in CTGT
 
   INT32 iCurrImpact;
@@ -2059,7 +2059,7 @@ INT32 CTGTHandleBulletStructureInteraction(BULLET *pBullet, STRUCTURE *pStructur
   return iImpactReduction;
 }
 
-UINT8 CalcChanceToGetThrough(BULLET *pBullet) {
+function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
   FIXEDPT qLandHeight;
   INT32 iCurrAboveLevelZ;
   INT32 iCurrCubesAboveLevelZ;
@@ -2420,7 +2420,7 @@ UINT8 CalcChanceToGetThrough(BULLET *pBullet) {
   return (UINT8)iChanceToGetThrough;
 }
 
-UINT8 SoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *pEndSoldier) {
+function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   FLOAT dEndZPos;
   BOOLEAN fOk;
 
@@ -2440,7 +2440,7 @@ UINT8 SoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE
   return ChanceToGetThrough(pStartSoldier, (FLOAT)CenterX(pEndSoldier->sGridNo), (FLOAT)CenterY(pEndSoldier->sGridNo), dEndZPos);
 }
 
-UINT8 SoldierToSoldierBodyPartChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *pEndSoldier, UINT8 ubAimLocation) {
+function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>, ubAimLocation: UINT8): UINT8 {
   // does like StS-CTGT but with a particular body part in mind
   FLOAT dEndZPos;
   BOOLEAN fOk;
@@ -2477,7 +2477,7 @@ UINT8 SoldierToSoldierBodyPartChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOL
   return ChanceToGetThrough(pStartSoldier, (FLOAT)CenterX(pEndSoldier->sGridNo), (FLOAT)CenterY(pEndSoldier->sGridNo), dEndZPos);
 }
 
-UINT8 SoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel, INT8 bCubeLevel, UINT8 ubTargetID) {
+function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8, ubTargetID: UINT8): UINT8 {
   FLOAT dEndZPos;
   INT16 sXPos;
   INT16 sYPos;
@@ -2519,7 +2519,7 @@ UINT8 SoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sGri
   }
 }
 
-UINT8 AISoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOLDIERTYPE *pEndSoldier) {
+function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, pEndSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   // Like a standard CTGT algorithm BUT fakes the start soldier at standing height
   FLOAT dEndZPos;
   BOOLEAN fOk;
@@ -2547,7 +2547,7 @@ UINT8 AISoldierToSoldierChanceToGetThrough(SOLDIERTYPE *pStartSoldier, SOLDIERTY
   return ubChance;
 }
 
-UINT8 AISoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sGridNo, INT8 bLevel, INT8 bCubeLevel) {
+function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bCubeLevel: INT8): UINT8 {
   FLOAT dEndZPos;
   INT16 sXPos;
   INT16 sYPos;
@@ -2600,7 +2600,7 @@ UINT8 AISoldierToLocationChanceToGetThrough(SOLDIERTYPE *pStartSoldier, INT16 sG
   }
 }
 
-void CalculateFiringIncrements(DOUBLE ddHorizAngle, DOUBLE ddVerticAngle, DOUBLE dd2DDistance, BULLET *pBullet, DOUBLE *pddNewHorizAngle, DOUBLE *pddNewVerticAngle) {
+function CalculateFiringIncrements(ddHorizAngle: DOUBLE, ddVerticAngle: DOUBLE, dd2DDistance: DOUBLE, pBullet: Pointer<BULLET>, pddNewHorizAngle: Pointer<DOUBLE>, pddNewVerticAngle: Pointer<DOUBLE>): void {
   INT32 iMissedBy = -pBullet->sHitBy;
   DOUBLE ddVerticPercentOfMiss;
   DOUBLE ddAbsVerticAngle;
@@ -2674,7 +2674,7 @@ void CalculateFiringIncrements(DOUBLE ddHorizAngle, DOUBLE ddVerticAngle, DOUBLE
   pBullet->qIncrZ = FloatToFixed((FLOAT)(sin(ddVerticAngle) / sin((PI / 2) - ddVerticAngle) * 2.56));
 }
 
-INT8 FireBullet(SOLDIERTYPE *pFirer, BULLET *pBullet, BOOLEAN fFake) {
+function FireBullet(pFirer: Pointer<SOLDIERTYPE>, pBullet: Pointer<BULLET>, fFake: BOOLEAN): INT8 {
   pBullet->iCurrTileX = FIXEDPT_TO_INT32(pBullet->qCurrX) / CELL_X_SIZE;
   pBullet->iCurrTileY = FIXEDPT_TO_INT32(pBullet->qCurrY) / CELL_Y_SIZE;
   pBullet->bLOSIndexX = CONVERT_WITHINTILE_TO_INDEX(FIXEDPT_TO_INT32(pBullet->qCurrX) % CELL_X_SIZE);
@@ -2738,7 +2738,7 @@ DOUBLE CalculateVerticalAngle( SOLDIERTYPE * pFirer, SOLDIERTYPE * pTarget )
 }
 */
 
-INT8 FireBulletGivenTarget(SOLDIERTYPE *pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ, UINT16 usHandItem, INT16 sHitBy, BOOLEAN fBuckshot, BOOLEAN fFake) {
+function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT, usHandItem: UINT16, sHitBy: INT16, fBuckshot: BOOLEAN, fFake: BOOLEAN): INT8 {
   // fFake indicates that we should set things up for a call to ChanceToGetThrough
   FLOAT dStartZ;
 
@@ -2938,7 +2938,7 @@ INT8 FireBulletGivenTarget(SOLDIERTYPE *pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT 
   return TRUE;
 }
 
-INT8 ChanceToGetThrough(SOLDIERTYPE *pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEndZ) {
+function ChanceToGetThrough(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY: FLOAT, dEndZ: FLOAT): INT8 {
   if (Item[pFirer->usAttackingWeapon].usItemClass == IC_GUN || Item[pFirer->usAttackingWeapon].usItemClass == IC_THROWING_KNIFE) {
     BOOLEAN fBuckShot = FALSE;
 
@@ -2956,7 +2956,7 @@ INT8 ChanceToGetThrough(SOLDIERTYPE *pFirer, FLOAT dEndX, FLOAT dEndY, FLOAT dEn
   }
 }
 
-void MoveBullet(INT32 iBullet) {
+function MoveBullet(iBullet: INT32): void {
   BULLET *pBullet;
 
   FIXEDPT qLandHeight;
@@ -3605,7 +3605,7 @@ void MoveBullet(INT32 iBullet) {
   // but we shouldn't(?) need to check it because the target is there!
 }
 
-INT32 CheckForCollision(FLOAT dX, FLOAT dY, FLOAT dZ, FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ, INT16 *pusStructureID, FLOAT *pdNormalX, FLOAT *pdNormalY, FLOAT *pdNormalZ) {
+function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pusStructureID: Pointer<INT16>, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): INT32 {
   INT32 iLandHeight;
   INT32 iCurrAboveLevelZ;
   INT32 iCurrCubesAboveLevelZ;
@@ -3903,7 +3903,7 @@ INT16 gsLOSDirLUT[3][3] = {
   { 225, 180, 135 },
 };
 
-BOOLEAN CalculateLOSNormal(STRUCTURE *pStructure, INT8 bLOSX, INT8 bLOSY, INT8 bLOSZ, FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ, FLOAT *pdNormalX, FLOAT *pdNormalY, FLOAT *pdNormalZ) {
+function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: INT8, bLOSZ: INT8, dDeltaX: FLOAT, dDeltaY: FLOAT, dDeltaZ: FLOAT, pdNormalX: Pointer<FLOAT>, pdNormalY: Pointer<FLOAT>, pdNormalZ: Pointer<FLOAT>): BOOLEAN {
   INT32 cntx, cnty;
   INT8 bX, bY, tX, tY;
   INT8 bNumNormals = 0;

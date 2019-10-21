@@ -132,7 +132,7 @@ CHAR8 *pEAXRoomTypes[EAXROOMTYPE_NUM_TYPES] = {
 //	Returns:	Nothing.
 //
 //*******************************************************************************
-void SoundEnableSound(BOOLEAN fEnable) {
+function SoundEnableSound(fEnable: BOOLEAN): void {
   gfEnableStartup = fEnable;
 }
 
@@ -144,7 +144,7 @@ void SoundEnableSound(BOOLEAN fEnable) {
 //	Returns:	TRUE always
 //
 //*******************************************************************************
-BOOLEAN InitializeSoundManager(void) {
+function InitializeSoundManager(): BOOLEAN {
   UINT32 uiCount;
 
   if (fSoundSystemInit)
@@ -175,7 +175,7 @@ BOOLEAN InitializeSoundManager(void) {
 //	and releases the sound hardware.
 //
 //*******************************************************************************
-void ShutdownSoundManager(void) {
+function ShutdownSoundManager(): void {
   if (gh3DProvider)
     Sound3DShutdownProvider();
 
@@ -205,7 +205,7 @@ void ShutdownSoundManager(void) {
 //
 //*******************************************************************************
 
-UINT32 SoundPlay(STR pFilename, SOUNDPARMS *pParms) {
+function SoundPlay(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
   UINT32 uiSample, uiChannel;
 
   if (fSoundSystemInit) {
@@ -243,7 +243,7 @@ UINT32 SoundPlay(STR pFilename, SOUNDPARMS *pParms) {
 //						If an error occured, SOUND_ERROR will be returned
 //
 //*******************************************************************************
-UINT32 SoundPlayStreamedFile(STR pFilename, SOUNDPARMS *pParms) {
+function SoundPlayStreamedFile(pFilename: STR, pParms: Pointer<SOUNDPARMS>): UINT32 {
   UINT32 uiChannel;
   HANDLE hRealFileHandle;
   CHAR8 pFileHandlefileName[128];
@@ -308,7 +308,7 @@ UINT32 SoundPlayStreamedFile(STR pFilename, SOUNDPARMS *pParms) {
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundPlayRandom(STR pFilename, RANDOMPARMS *pParms) {
+function SoundPlayRandom(pFilename: STR, pParms: Pointer<RANDOMPARMS>): UINT32 {
   UINT32 uiSample, uiTicks;
 
   if (fSoundSystemInit) {
@@ -380,7 +380,7 @@ UINT32 SoundPlayRandom(STR pFilename, RANDOMPARMS *pParms) {
 //						SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundStreamCallback(STR pFilename, SOUNDPARMS *pParms, void (*pCallback)(UINT8 *, UINT32, UINT32, UINT32, void *), void *pData) {
+function SoundStreamCallback(pFilename: STR, pParms: Pointer<SOUNDPARMS>, pCallback: (a: Pointer<UINT8>, b: UINT32, c: UINT32, d: UINT32, e: Pointer<void>) => void, pData: Pointer<void>): UINT32 {
   UINT32 uiChannel, uiSoundID;
 
   if (fSoundSystemInit) {
@@ -405,7 +405,7 @@ UINT32 SoundStreamCallback(STR pFilename, SOUNDPARMS *pParms, void (*pCallback)(
 //		Returns TRUE/FALSE that an instance of a sound is still playing.
 //
 //*******************************************************************************
-BOOLEAN SoundIsPlaying(UINT32 uiSoundID) {
+function SoundIsPlaying(uiSoundID: UINT32): BOOLEAN {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -428,7 +428,7 @@ BOOLEAN SoundIsPlaying(UINT32 uiSoundID) {
 //
 // Created:  2/24/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN SoundIndexIsPlaying(UINT32 uiSound) {
+function SoundIndexIsPlaying(uiSound: UINT32): BOOLEAN {
   INT32 iStatus = SMP_DONE;
 
   if (fSoundSystemInit) {
@@ -456,7 +456,7 @@ BOOLEAN SoundIndexIsPlaying(UINT32 uiSound) {
 //						found, or was not playing.
 //
 //*******************************************************************************
-BOOLEAN SoundStop(UINT32 uiSoundID) {
+function SoundStop(uiSoundID: UINT32): BOOLEAN {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -480,7 +480,7 @@ BOOLEAN SoundStop(UINT32 uiSoundID) {
 //	Returns:	TRUE if samples were actually stopped, FALSE if none were found
 //
 //*******************************************************************************
-BOOLEAN SoundStopGroup(UINT32 uiPriority) {
+function SoundStopGroup(uiPriority: UINT32): BOOLEAN {
   UINT32 uiCount;
   BOOLEAN fStopped = FALSE;
 
@@ -510,7 +510,7 @@ BOOLEAN SoundStopGroup(UINT32 uiPriority) {
 //						greater than the limit requested.
 //
 //*******************************************************************************
-BOOLEAN SoundSetMemoryLimit(UINT32 uiLimit) {
+function SoundSetMemoryLimit(uiLimit: UINT32): BOOLEAN {
   if (guiSoundMemoryLimit < guiSoundMemoryUsed)
     return FALSE;
 
@@ -527,7 +527,7 @@ BOOLEAN SoundSetMemoryLimit(UINT32 uiLimit) {
 //	Returns:	FALSE, always
 //
 //*******************************************************************************
-BOOLEAN SoundGetSystemInfo(void) {
+function SoundGetSystemInfo(): BOOLEAN {
   return FALSE;
 }
 
@@ -540,7 +540,7 @@ BOOLEAN SoundGetSystemInfo(void) {
 //	Returns:	TRUE, always
 //
 //*******************************************************************************
-BOOLEAN SoundSetDigitalVolume(UINT32 uiVolume) {
+function SoundSetDigitalVolume(uiVolume: UINT32): BOOLEAN {
   UINT32 uiVolClip;
 
   if (fSoundSystemInit) {
@@ -558,7 +558,7 @@ BOOLEAN SoundSetDigitalVolume(UINT32 uiVolume) {
 //	Returns:	0-127
 //
 //*******************************************************************************
-UINT32 SoundGetDigitalVolume(UINT32 uiVolume) {
+function SoundGetDigitalVolume(uiVolume: UINT32): UINT32 {
   if (fSoundSystemInit)
     return (UINT32)AIL_digital_master_volume(hSoundDriver);
   else
@@ -576,7 +576,7 @@ UINT32 SoundGetDigitalVolume(UINT32 uiVolume) {
 //
 // Created:  3/28/00 Derek Beland
 //*****************************************************************************************
-void SoundSetDefaultVolume(UINT32 uiVolume) {
+function SoundSetDefaultVolume(uiVolume: UINT32): void {
   guiSoundDefaultVolume = __min(uiVolume, 127);
 }
 
@@ -591,7 +591,7 @@ void SoundSetDefaultVolume(UINT32 uiVolume) {
 //
 // Created:  3/28/00 Derek Beland
 //*****************************************************************************************
-UINT32 SoundGetDefaultVolume(void) {
+function SoundGetDefaultVolume(): UINT32 {
   return guiSoundDefaultVolume;
 }
 
@@ -603,7 +603,7 @@ UINT32 SoundGetDefaultVolume(void) {
 //	Returns:	TRUE, always
 //
 //*******************************************************************************
-BOOLEAN SoundStopAll(void) {
+function SoundStopAll(): BOOLEAN {
   UINT32 uiCount;
 
   if (fSoundSystemInit) {
@@ -629,7 +629,7 @@ BOOLEAN SoundStopAll(void) {
 //
 // Created:  3/17/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN SoundSetFadeVolume(UINT32 uiSoundID, UINT32 uiVolume, UINT32 uiRate, BOOLEAN fStopAtZero) {
+function SoundSetFadeVolume(uiSoundID: UINT32, uiVolume: UINT32, uiRate: UINT32, fStopAtZero: BOOLEAN): BOOLEAN {
   UINT32 uiSound, uiVolCap, uiVolumeDiff;
 
   if (fSoundSystemInit) {
@@ -662,7 +662,7 @@ BOOLEAN SoundSetFadeVolume(UINT32 uiSoundID, UINT32 uiVolume, UINT32 uiRate, BOO
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
+function SoundSetVolume(uiSoundID: UINT32, uiVolume: UINT32): BOOLEAN {
   UINT32 uiSound, uiVolCap;
 
   if (fSoundSystemInit) {
@@ -689,7 +689,7 @@ BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
 //
 // Created:  3/17/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN SoundSetVolumeIndex(UINT32 uiChannel, UINT32 uiVolume) {
+function SoundSetVolumeIndex(uiChannel: UINT32, uiVolume: UINT32): BOOLEAN {
   UINT32 uiVolCap;
 
   if (fSoundSystemInit) {
@@ -719,7 +719,7 @@ BOOLEAN SoundSetVolumeIndex(UINT32 uiChannel, UINT32 uiVolume) {
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
+function SoundSetPan(uiSoundID: UINT32, uiPan: UINT32): BOOLEAN {
   UINT32 uiSound, uiPanCap;
 
   if (fSoundSystemInit) {
@@ -748,7 +748,7 @@ BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-BOOLEAN SoundSetFrequency(UINT32 uiSoundID, UINT32 uiFreq) {
+function SoundSetFrequency(uiSoundID: UINT32, uiFreq: UINT32): BOOLEAN {
   UINT32 uiSound, uiFreqCap;
 
   if (fSoundSystemInit) {
@@ -780,7 +780,7 @@ BOOLEAN SoundSetFrequency(UINT32 uiSoundID, UINT32 uiFreq) {
 //						sample had already expired or couldn't be found
 //
 //*******************************************************************************
-BOOLEAN SoundSetLoop(UINT32 uiSoundID, UINT32 uiLoop) {
+function SoundSetLoop(uiSoundID: UINT32, uiLoop: UINT32): BOOLEAN {
   UINT32 uiSound, uiLoopCap;
 
   if (fSoundSystemInit) {
@@ -810,7 +810,7 @@ BOOLEAN SoundSetLoop(UINT32 uiSoundID, UINT32 uiLoop) {
 //	has expired, or could not be found, SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundGetVolume(UINT32 uiSoundID) {
+function SoundGetVolume(uiSoundID: UINT32): UINT32 {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -832,7 +832,7 @@ UINT32 SoundGetVolume(UINT32 uiSoundID) {
 //
 // Created:  3/17/00 Derek Beland
 //*****************************************************************************************
-UINT32 SoundGetVolumeIndex(UINT32 uiChannel) {
+function SoundGetVolumeIndex(uiChannel: UINT32): UINT32 {
   if (fSoundSystemInit) {
     if (pSoundList[uiChannel].hMSS != NULL)
       return (UINT32)AIL_sample_volume(pSoundList[uiChannel].hMSS);
@@ -854,7 +854,7 @@ UINT32 SoundGetVolumeIndex(UINT32 uiChannel) {
 //	has expired, or could not be found, SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundGetPan(UINT32 uiSoundID) {
+function SoundGetPan(uiSoundID: UINT32): UINT32 {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -877,7 +877,7 @@ UINT32 SoundGetPan(UINT32 uiSoundID) {
 //	has expired, or could not be found, SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundGetFrequency(UINT32 uiSoundID) {
+function SoundGetFrequency(uiSoundID: UINT32): UINT32 {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -903,7 +903,7 @@ UINT32 SoundGetFrequency(UINT32 uiSoundID) {
 //	has expired, or could not be found, SOUND_ERROR is returned.
 //
 //*******************************************************************************
-UINT32 SoundGetLoop(UINT32 uiSoundID) {
+function SoundGetLoop(uiSoundID: UINT32): UINT32 {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -935,7 +935,7 @@ UINT32 SoundGetLoop(UINT32 uiSoundID) {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-BOOLEAN SoundServiceRandom(void) {
+function SoundServiceRandom(): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -954,7 +954,7 @@ BOOLEAN SoundServiceRandom(void) {
 //	Returns:	TRUE if a the sample should be played.
 //
 //*******************************************************************************
-BOOLEAN SoundRandomShouldPlay(UINT32 uiSample) {
+function SoundRandomShouldPlay(uiSample: UINT32): BOOLEAN {
   UINT32 uiTicks;
 
   uiTicks = GetTickCount();
@@ -974,7 +974,7 @@ BOOLEAN SoundRandomShouldPlay(UINT32 uiSample) {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-UINT32 SoundStartRandom(UINT32 uiSample) {
+function SoundStartRandom(uiSample: UINT32): UINT32 {
   UINT32 uiChannel, uiSoundID;
   SOUNDPARMS spParms;
 
@@ -1009,7 +1009,7 @@ UINT32 SoundStartRandom(UINT32 uiSample) {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-BOOLEAN SoundStopAllRandom(void) {
+function SoundStopAllRandom(): BOOLEAN {
   UINT32 uiChannel, uiSample;
 
   // Stop all currently playing random sounds
@@ -1046,7 +1046,7 @@ BOOLEAN SoundStopAllRandom(void) {
 //	Returns:	TRUE always.
 //
 //*******************************************************************************
-BOOLEAN SoundServiceStreams(void) {
+function SoundServiceStreams(): BOOLEAN {
   UINT32 uiCount, uiSpeed, uiBuffLen, uiBytesPerSample;
   UINT8 *pBuffer;
   void *pData;
@@ -1107,7 +1107,7 @@ BOOLEAN SoundServiceStreams(void) {
 //	Returns:	The current time of the sample in milliseconds.
 //
 //*******************************************************************************
-UINT32 SoundGetPosition(UINT32 uiSoundID) {
+function SoundGetPosition(uiSoundID: UINT32): UINT32 {
   // UINT32 uiSound, uiFreq=0, uiPosition=0, uiBytesPerSample=0, uiFormat=0;
   UINT32 uiSound, uiTime, uiPosition;
 
@@ -1174,7 +1174,7 @@ UINT32 SoundGetPosition(UINT32 uiSoundID) {
 //  Created on:     7/23/99
 //
 //*****************************************************************************************
-BOOLEAN SoundGetMilliSecondPosition(UINT32 uiSoundID, UINT32 *puiTotalMilliseconds, UINT32 *puiCurrentMilliseconds) {
+function SoundGetMilliSecondPosition(uiSoundID: UINT32, puiTotalMilliseconds: Pointer<UINT32>, puiCurrentMilliseconds: Pointer<UINT32>): BOOLEAN {
   UINT32 uiSound;
 
   if (fSoundSystemInit) {
@@ -1207,7 +1207,7 @@ BOOLEAN SoundGetMilliSecondPosition(UINT32 uiSoundID, UINT32 *puiTotalMillisecon
 //		Zeros out the structures of the sample list.
 //
 //*******************************************************************************
-BOOLEAN SoundInitCache(void) {
+function SoundInitCache(): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++)
@@ -1224,7 +1224,7 @@ BOOLEAN SoundInitCache(void) {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-BOOLEAN SoundShutdownCache(void) {
+function SoundShutdownCache(): BOOLEAN {
   SoundEmptyCache();
   return TRUE;
 }
@@ -1238,7 +1238,7 @@ BOOLEAN SoundShutdownCache(void) {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-BOOLEAN SoundSetCacheThreshhold(UINT32 uiThreshold) {
+function SoundSetCacheThreshhold(uiThreshold: UINT32): BOOLEAN {
   if (uiThreshold == 0)
     guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;
   else
@@ -1255,7 +1255,7 @@ BOOLEAN SoundSetCacheThreshhold(UINT32 uiThreshold) {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-BOOLEAN SoundEmptyCache(void) {
+function SoundEmptyCache(): BOOLEAN {
   UINT32 uiCount;
 
   SoundStopAll();
@@ -1274,7 +1274,7 @@ BOOLEAN SoundEmptyCache(void) {
 //	Returns: TRUE, always
 //
 //*******************************************************************************
-UINT32 SoundLoadSample(STR pFilename) {
+function SoundLoadSample(pFilename: STR): UINT32 {
   UINT32 uiSample = NO_SAMPLE;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE)
@@ -1293,7 +1293,7 @@ UINT32 SoundLoadSample(STR pFilename) {
 //						in the cache.
 //
 //*******************************************************************************
-UINT32 SoundLockSample(STR pFilename) {
+function SoundLockSample(pFilename: STR): UINT32 {
   UINT32 uiSample;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1313,7 +1313,7 @@ UINT32 SoundLockSample(STR pFilename) {
 //						in the cache.
 //
 //*******************************************************************************
-UINT32 SoundUnlockSample(STR pFilename) {
+function SoundUnlockSample(pFilename: STR): UINT32 {
   UINT32 uiSample;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1333,7 +1333,7 @@ UINT32 SoundUnlockSample(STR pFilename) {
 //						in the cache.
 //
 //*******************************************************************************
-UINT32 SoundFreeSample(STR pFilename) {
+function SoundFreeSample(pFilename: STR): UINT32 {
   UINT32 uiSample;
 
   if ((uiSample = SoundGetCached(pFilename)) != NO_SAMPLE) {
@@ -1359,7 +1359,7 @@ UINT32 SoundFreeSample(STR pFilename) {
 // random sounds, call SoundStopAllRandom instead.
 //
 //*******************************************************************************
-BOOLEAN SoundFreeGroup(UINT32 uiPriority) {
+function SoundFreeGroup(uiPriority: UINT32): BOOLEAN {
   BOOLEAN fFreed = FALSE;
 
   SoundStopGroup(uiPriority);
@@ -1376,7 +1376,7 @@ BOOLEAN SoundFreeGroup(UINT32 uiPriority) {
 //						in the cache.
 //
 //*******************************************************************************
-UINT32 SoundGetCached(STR pFilename) {
+function SoundGetCached(pFilename: STR): UINT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -1398,7 +1398,7 @@ UINT32 SoundGetCached(STR pFilename) {
 //						in the cache.
 //
 //*******************************************************************************
-UINT32 SoundLoadDisk(STR pFilename) {
+function SoundLoadDisk(pFilename: STR): UINT32 {
   HWFILE hFile;
   UINT32 uiSize, uiSample;
   BOOLEAN fRemoved = TRUE;
@@ -1469,7 +1469,7 @@ UINT32 SoundLoadDisk(STR pFilename) {
 //	Returns:	TRUE if a sample was freed, FALSE if none
 //
 //*******************************************************************************
-BOOLEAN SoundCleanCache(void) {
+function SoundCleanCache(): BOOLEAN {
   UINT32 uiCount, uiLowestHits = NO_SAMPLE, uiLowestHitsCount = 0;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -1501,7 +1501,7 @@ BOOLEAN SoundCleanCache(void) {
 //		Returns TRUE/FALSE that a sample is currently in use for playing a sound.
 //
 //*******************************************************************************
-BOOLEAN SoundSampleIsPlaying(UINT32 uiSample) {
+function SoundSampleIsPlaying(uiSample: UINT32): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -1520,7 +1520,7 @@ BOOLEAN SoundSampleIsPlaying(UINT32 uiSample) {
 //	Returns:	A free sample index, or NO_SAMPLE if none are left.
 //
 //*******************************************************************************
-UINT32 SoundGetEmptySample(void) {
+function SoundGetEmptySample(): UINT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++) {
@@ -1540,7 +1540,7 @@ UINT32 SoundGetEmptySample(void) {
 //	Returns:	TRUE if a good header was processed, FALSE if an error occurred.
 //
 //*******************************************************************************
-BOOLEAN SoundProcessWAVHeader(UINT32 uiSample) {
+function SoundProcessWAVHeader(uiSample: UINT32): BOOLEAN {
   CHAR8 *pChunk;
   AILSOUNDINFO ailInfo;
 
@@ -1569,7 +1569,7 @@ BOOLEAN SoundProcessWAVHeader(UINT32 uiSample) {
 //	Returns:	Slot number if something was free, NO_SAMPLE otherwise.
 //
 //*******************************************************************************
-UINT32 SoundFreeSampleIndex(UINT32 uiSample) {
+function SoundFreeSampleIndex(uiSample: UINT32): UINT32 {
   if (pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED) {
     if (pSampleList[uiSample].pData != NULL) {
       guiSoundMemoryUsed -= pSampleList[uiSample].uiSize;
@@ -1591,7 +1591,7 @@ UINT32 SoundFreeSampleIndex(UINT32 uiSample) {
 //	Returns:	If the instance was found, the slot number. NO_SAMPLE otherwise.
 //
 //*******************************************************************************
-UINT32 SoundGetIndexByID(UINT32 uiSoundID) {
+function SoundGetIndexByID(uiSoundID: UINT32): UINT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -1611,7 +1611,7 @@ UINT32 SoundGetIndexByID(UINT32 uiSoundID) {
 //	Returns:	TRUE if the hardware was initialized, FALSE otherwise.
 //
 //*******************************************************************************
-BOOLEAN SoundInitHardware(void) {
+function SoundInitHardware(): BOOLEAN {
   UINT32 uiCount;
   CHAR8 cDriverName[128];
 
@@ -1704,7 +1704,7 @@ BOOLEAN SoundInitHardware(void) {
 //	Returns:	TRUE always.
 //
 //*******************************************************************************
-BOOLEAN SoundShutdownHardware(void) {
+function SoundShutdownHardware(): BOOLEAN {
   if (fSoundSystemInit)
     AIL_shutdown();
 
@@ -1719,7 +1719,7 @@ BOOLEAN SoundShutdownHardware(void) {
 //	Returns:	Pointer to the driver if successful, NULL otherwise.
 //
 //*******************************************************************************
-static HDIGDRIVER SoundInitDriver(UINT32 uiRate, UINT16 uiBits, UINT16 uiChans) {
+function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGDRIVER {
   static PCMWAVEFORMAT sPCMWF;
   HDIGDRIVER DIG;
   CHAR8 cBuf[128];
@@ -1750,7 +1750,7 @@ static HDIGDRIVER SoundInitDriver(UINT32 uiRate, UINT16 uiBits, UINT16 uiChans) 
 //	Returns:	TRUE or FALSE if the string was filled.
 //
 //*******************************************************************************
-BOOLEAN SoundGetDriverName(HDIGDRIVER DIG, CHAR8 *cBuf) {
+function SoundGetDriverName(DIG: HDIGDRIVER, cBuf: Pointer<CHAR8>): BOOLEAN {
   if (DIG) {
     cBuf[0] = '\0';
     AIL_digital_configuration(DIG, NULL, NULL, cBuf);
@@ -1767,7 +1767,7 @@ BOOLEAN SoundGetDriverName(HDIGDRIVER DIG, CHAR8 *cBuf) {
 //	Returns:	Index of a sound channel if one was found, SOUND_ERROR if not.
 //
 //*******************************************************************************
-UINT32 SoundGetFreeChannel(void) {
+function SoundGetFreeChannel(): UINT32 {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -1792,7 +1792,7 @@ UINT32 SoundGetFreeChannel(void) {
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-UINT32 SoundStartSample(UINT32 uiSample, UINT32 uiChannel, SOUNDPARMS *pParms) {
+function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
   UINT32 uiSoundID;
   CHAR8 AILString[200];
 
@@ -1893,7 +1893,7 @@ UINT32 SoundStartSample(UINT32 uiSample, UINT32 uiChannel, SOUNDPARMS *pParms) {
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-UINT32 SoundStartStream(STR pFilename, UINT32 uiChannel, SOUNDPARMS *pParms) {
+function SoundStartStream(pFilename: STR, uiChannel: UINT32, pParms: Pointer<SOUNDPARMS>): UINT32 {
   UINT32 uiSoundID, uiSpeed;
   CHAR8 AILString[200];
 
@@ -1966,7 +1966,7 @@ UINT32 SoundStartStream(STR pFilename, UINT32 uiChannel, SOUNDPARMS *pParms) {
 // static value that is incremented each time.
 //
 //*******************************************************************************
-UINT32 SoundGetUniqueID(void) {
+function SoundGetUniqueID(): UINT32 {
   static UINT32 uiNextID = 0;
 
   if (uiNextID == SOUND_ERROR)
@@ -1985,7 +1985,7 @@ UINT32 SoundGetUniqueID(void) {
 //	Returns:	TRUE if it should be streamed, FALSE if loaded.
 //
 //*******************************************************************************
-BOOLEAN SoundPlayStreamed(STR pFilename) {
+function SoundPlayStreamed(pFilename: STR): BOOLEAN {
   HWFILE hDisk;
   UINT32 uiFilesize;
 
@@ -2009,7 +2009,7 @@ BOOLEAN SoundPlayStreamed(STR pFilename) {
 //	Returns:	TRUE if the sample was stopped, FALSE if it could not be found.
 //
 //*******************************************************************************
-BOOLEAN SoundStopIndex(UINT32 uiChannel) {
+function SoundStopIndex(uiChannel: UINT32): BOOLEAN {
   UINT32 uiSample;
 
   if (fSoundSystemInit) {
@@ -2081,12 +2081,12 @@ BOOLEAN SoundStopIndex(UINT32 uiChannel) {
 //	Returns:	Pointer to the current sound driver
 //
 //*******************************************************************************
-HDIGDRIVER SoundGetDriverHandle(void) {
+function SoundGetDriverHandle(): HDIGDRIVER {
   return hSoundDriver;
 }
 
 // FUNCTIONS TO SET / RESET SAMPLE FLAGS
-void SoundSetSampleFlags(UINT32 uiSample, UINT32 uiFlags) {
+function SoundSetSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
   // CHECK FOR VALUE SAMPLE
   if ((pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED)) {
     // SET
@@ -2094,7 +2094,7 @@ void SoundSetSampleFlags(UINT32 uiSample, UINT32 uiFlags) {
   }
 }
 
-void SoundRemoveSampleFlags(UINT32 uiSample, UINT32 uiFlags) {
+function SoundRemoveSampleFlags(uiSample: UINT32, uiFlags: UINT32): void {
   // CHECK FOR VALID SAMPLE
   if ((pSampleList[uiSample].uiFlags & SAMPLE_ALLOCATED)) {
     // REMOVE
@@ -2108,7 +2108,7 @@ void SoundRemoveSampleFlags(UINT32 uiSample, UINT32 uiFlags) {
 //	Returns:	TRUE if the sample index is currently being played by the system.
 //
 //*******************************************************************************
-BOOLEAN SoundSampleIsInUse(UINT32 uiSample) {
+function SoundSampleIsInUse(uiSample: UINT32): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -2131,7 +2131,7 @@ BOOLEAN SoundSampleIsInUse(UINT32 uiSample) {
 //
 // Created:  2/24/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN SoundFileIsPlaying(CHAR8 *pFilename) {
+function SoundFileIsPlaying(pFilename: Pointer<CHAR8>): BOOLEAN {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++) {
@@ -2156,7 +2156,7 @@ BOOLEAN SoundFileIsPlaying(CHAR8 *pFilename) {
 //
 // Created:  10/29/97 Andrew Emmons
 //*****************************************************************************************
-void SoundSampleSetVolumeRange(UINT32 uiSample, UINT32 uiVolMin, UINT32 uiVolMax) {
+function SoundSampleSetVolumeRange(uiSample: UINT32, uiVolMin: UINT32, uiVolMax: UINT32): void {
   Assert((uiSample >= 0) && (uiSample < SOUND_MAX_CACHED));
 
   pSampleList[uiSample].uiVolMin = uiVolMin;
@@ -2176,7 +2176,7 @@ void SoundSampleSetVolumeRange(UINT32 uiSample, UINT32 uiVolMin, UINT32 uiVolMax
 //
 // Created:  10/29/97 Andrew Emmons
 //*****************************************************************************************
-void SoundSampleSetPanRange(UINT32 uiSample, UINT32 uiPanMin, UINT32 uiPanMax) {
+function SoundSampleSetPanRange(uiSample: UINT32, uiPanMin: UINT32, uiPanMax: UINT32): void {
   Assert((uiSample >= 0) && (uiSample < SOUND_MAX_CACHED));
 
   pSampleList[uiSample].uiPanMin = uiPanMin;
@@ -2194,7 +2194,7 @@ void SoundSampleSetPanRange(UINT32 uiSample, UINT32 uiPanMin, UINT32 uiPanMax) {
 //
 // Created:  3/16/00 Derek Beland
 //*****************************************************************************************
-void SoundSetMusic(UINT32 uiSoundID) {
+function SoundSetMusic(uiSoundID: UINT32): void {
   UINT32 uiSound = SoundGetIndexByID(uiSoundID);
 
   if (uiSound != NO_SAMPLE)
@@ -2210,7 +2210,7 @@ void SoundSetMusic(UINT32 uiSoundID) {
 //
 // Created:  3/16/00 Derek Beland
 //*****************************************************************************************
-BOOLEAN SoundStopMusic(void) {
+function SoundStopMusic(): BOOLEAN {
   UINT32 uiCount;
   BOOLEAN fStopped = FALSE;
 
@@ -2251,7 +2251,7 @@ BOOLEAN SoundStopMusic(void) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetProvider(CHAR8 *pProviderName) {
+function Sound3DSetProvider(pProviderName: Pointer<CHAR8>): void {
   Assert(pProviderName);
 
   if (pProviderName) {
@@ -2271,7 +2271,7 @@ void Sound3DSetProvider(CHAR8 *pProviderName) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-BOOLEAN Sound3DInitProvider(CHAR8 *pProviderName) {
+function Sound3DInitProvider(pProviderName: Pointer<CHAR8>): BOOLEAN {
   HPROENUM hEnum = HPROENUM_FIRST;
   HPROVIDER hProvider = 0;
   BOOLEAN fDone = FALSE;
@@ -2326,7 +2326,7 @@ BOOLEAN Sound3DInitProvider(CHAR8 *pProviderName) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DShutdownProvider(void) {
+function Sound3DShutdownProvider(): void {
   Sound3DStopAll();
 
   if (gh3DListener) {
@@ -2354,7 +2354,7 @@ void Sound3DShutdownProvider(void) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetPosition(UINT32 uiSample, FLOAT flX, FLOAT flY, FLOAT flZ) {
+function Sound3DSetPosition(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
   UINT32 uiChannel;
 
   if (fSoundSystemInit && gh3DProvider) {
@@ -2381,7 +2381,7 @@ void Sound3DSetPosition(UINT32 uiSample, FLOAT flX, FLOAT flY, FLOAT flZ) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetVelocity(UINT32 uiSample, FLOAT flX, FLOAT flY, FLOAT flZ) {
+function Sound3DSetVelocity(uiSample: UINT32, flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
   UINT32 uiChannel;
 
   if (fSoundSystemInit && gh3DProvider) {
@@ -2405,7 +2405,7 @@ void Sound3DSetVelocity(UINT32 uiSample, FLOAT flX, FLOAT flY, FLOAT flZ) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetListener(FLOAT flX, FLOAT flY, FLOAT flZ) {
+function Sound3DSetListener(flX: FLOAT, flY: FLOAT, flZ: FLOAT): void {
   if (fSoundSystemInit && gh3DListener)
     AIL_set_3D_position(gh3DListener, flX, flY, flZ);
 }
@@ -2428,7 +2428,7 @@ void Sound3DSetListener(FLOAT flX, FLOAT flY, FLOAT flZ) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetFacing(FLOAT flXFace, FLOAT flYFace, FLOAT flZFace, FLOAT flXUp, FLOAT flYUp, FLOAT flZUp) {
+function Sound3DSetFacing(flXFace: FLOAT, flYFace: FLOAT, flZFace: FLOAT, flXUp: FLOAT, flYUp: FLOAT, flZUp: FLOAT): void {
   if (fSoundSystemInit && gh3DListener)
     AIL_set_3D_orientation(gh3DListener, flXFace, flYFace, flZFace, flXUp, flYUp, flZUp);
 }
@@ -2451,7 +2451,7 @@ void Sound3DSetFacing(FLOAT flXFace, FLOAT flYFace, FLOAT flZFace, FLOAT flXUp, 
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetDirection(UINT32 uiSample, FLOAT flXFace, FLOAT flYFace, FLOAT flZFace, FLOAT flXUp, FLOAT flYUp, FLOAT flZUp) {
+function Sound3DSetDirection(uiSample: UINT32, flXFace: FLOAT, flYFace: FLOAT, flZFace: FLOAT, flXUp: FLOAT, flYUp: FLOAT, flZUp: FLOAT): void {
   UINT32 uiChannel;
 
   if (fSoundSystemInit && gh3DProvider) {
@@ -2478,7 +2478,7 @@ void Sound3DSetDirection(UINT32 uiSample, FLOAT flXFace, FLOAT flYFace, FLOAT fl
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetFalloff(UINT32 uiSample, FLOAT flMax, FLOAT flMin) {
+function Sound3DSetFalloff(uiSample: UINT32, flMax: FLOAT, flMin: FLOAT): void {
   UINT32 uiChannel;
   // max = far
   // min = near
@@ -2501,7 +2501,7 @@ void Sound3DSetFalloff(UINT32 uiSample, FLOAT flMax, FLOAT flMin) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-INT32 Sound3DActiveSounds(void) {
+function Sound3DActiveSounds(): INT32 {
   return (INT32)AIL_active_3D_sample_count(gh3DProvider);
 }
 
@@ -2517,7 +2517,7 @@ INT32 Sound3DActiveSounds(void) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetEnvironment(INT32 iEnvironment) {
+function Sound3DSetEnvironment(iEnvironment: INT32): void {
   if (fSoundSystemInit && gh3DProvider) {
   }
 }
@@ -2534,7 +2534,7 @@ void Sound3DSetEnvironment(INT32 iEnvironment) {
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-UINT32 Sound3DPlay(STR pFilename, SOUND3DPARMS *pParms) {
+function Sound3DPlay(pFilename: STR, pParms: Pointer<SOUND3DPARMS>): UINT32 {
   UINT32 uiSample, uiChannel;
 
   if (fSoundSystemInit && gh3DProvider) {
@@ -2560,7 +2560,7 @@ UINT32 Sound3DPlay(STR pFilename, SOUND3DPARMS *pParms) {
 //	Returns:	Unique sound ID if successful, SOUND_ERROR if not.
 //
 //*******************************************************************************
-UINT32 Sound3DStartSample(UINT32 uiSample, UINT32 uiChannel, SOUND3DPARMS *pParms) {
+function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<SOUND3DPARMS>): UINT32 {
   UINT32 uiSoundID;
   CHAR8 AILString[200];
 
@@ -2662,7 +2662,7 @@ UINT32 Sound3DStartSample(UINT32 uiSample, UINT32 uiChannel, SOUND3DPARMS *pParm
 //
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
-void Sound3DStopAll(void) {
+function Sound3DStopAll(): void {
   UINT32 uiChannel;
 
   // Stop all currently playing random sounds
@@ -2680,7 +2680,7 @@ void Sound3DStopAll(void) {
 //	Returns:	TRUE if a new random sound was created, FALSE if nothing was done.
 //
 //*******************************************************************************
-UINT32 Sound3DStartRandom(UINT32 uiSample, SOUND3DPOS *pPos) {
+function Sound3DStartRandom(uiSample: UINT32, pPos: Pointer<SOUND3DPOS>): UINT32 {
   UINT32 uiChannel, uiSoundID;
   SOUND3DPARMS sp3DParms;
 
@@ -2737,7 +2737,7 @@ UINT32 Sound3DStartRandom(UINT32 uiSample, SOUND3DPOS *pPos) {
 //
 // Created:  8/23/99 Derek Beland
 //*****************************************************************************************
-void Sound3DSetRoomType(UINT32 uiRoomType) {
+function Sound3DSetRoomType(uiRoomType: UINT32): void {
   if (gh3DProvider && gfUsingEAX && (guiRoomTypeIndex != uiRoomType)) {
     CHAR8 cName[128];
 
@@ -2757,7 +2757,7 @@ void Sound3DSetRoomType(UINT32 uiRoomType) {
 //
 // Created:  5/26/00 Derek Beland
 //*****************************************************************************************
-UINT32 Sound3DChannelsInUse(void) {
+function Sound3DChannelsInUse(): UINT32 {
   UINT32 uiChannel, uiUsed = 0;
 
   // Stop all currently playing random sounds
@@ -2778,7 +2778,7 @@ UINT32 Sound3DChannelsInUse(void) {
 //
 // Created:  5/26/00 Derek Beland
 //*****************************************************************************************
-UINT32 SoundStreamsInUse(void) {
+function SoundStreamsInUse(): UINT32 {
   UINT32 uiChannel, uiUsed = 0;
 
   // Stop all currently playing random sounds
@@ -2799,7 +2799,7 @@ UINT32 SoundStreamsInUse(void) {
 //
 // Created:  5/26/00 Derek Beland
 //*****************************************************************************************
-UINT32 Sound2DChannelsInUse(void) {
+function Sound2DChannelsInUse(): UINT32 {
   UINT32 uiChannel, uiUsed = 0;
 
   // Stop all currently playing random sounds
@@ -2820,7 +2820,7 @@ UINT32 Sound2DChannelsInUse(void) {
 //
 // Created:  5/26/00 Derek Beland
 //*****************************************************************************************
-UINT32 SoundTotalChannelsInUse(void) {
+function SoundTotalChannelsInUse(): UINT32 {
   UINT32 uiChannel, uiUsed = 0;
 
   // Stop all currently playing random sounds

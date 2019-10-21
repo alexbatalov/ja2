@@ -32,7 +32,7 @@ UINT32 guiSmackPixelFormat = SMACKBUFFER565;
 LPDIRECTDRAWSURFACE lpVideoPlayback = NULL;
 LPDIRECTDRAWSURFACE2 lpVideoPlayback2 = NULL;
 
-BOOLEAN SmkPollFlics(void) {
+function SmkPollFlics(): BOOLEAN {
   UINT32 uiCount;
   BOOLEAN fFlicStatus = FALSE;
   DDSURFACEDESC SurfaceDescription;
@@ -68,7 +68,7 @@ BOOLEAN SmkPollFlics(void) {
   return fFlicStatus;
 }
 
-void SmkInitialize(HWND hWindow, UINT32 uiWidth, UINT32 uiHeight) {
+function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
   HDIGDRIVER pSoundDriver = NULL;
 
   // Wipe the flic list clean
@@ -90,7 +90,7 @@ void SmkInitialize(HWND hWindow, UINT32 uiWidth, UINT32 uiHeight) {
     SmackSoundUseMSS(pSoundDriver);
 }
 
-void SmkShutdown(void) {
+function SmkShutdown(): void {
   UINT32 uiCount;
 
   // Close and deallocate any open flics
@@ -100,7 +100,7 @@ void SmkShutdown(void) {
   }
 }
 
-SMKFLIC *SmkPlayFlic(CHAR8 *cFilename, UINT32 uiLeft, UINT32 uiTop, BOOLEAN fClose) {
+function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: BOOLEAN): Pointer<SMKFLIC> {
   SMKFLIC *pSmack;
 
   // Open the flic
@@ -118,7 +118,7 @@ SMKFLIC *SmkPlayFlic(CHAR8 *cFilename, UINT32 uiLeft, UINT32 uiTop, BOOLEAN fClo
   return pSmack;
 }
 
-SMKFLIC *SmkOpenFlic(CHAR8 *cFilename) {
+function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
   SMKFLIC *pSmack;
   HANDLE hFile;
 
@@ -163,12 +163,12 @@ SMKFLIC *SmkOpenFlic(CHAR8 *cFilename) {
   return pSmack;
 }
 
-void SmkSetBlitPosition(SMKFLIC *pSmack, UINT32 uiLeft, UINT32 uiTop) {
+function SmkSetBlitPosition(pSmack: Pointer<SMKFLIC>, uiLeft: UINT32, uiTop: UINT32): void {
   pSmack->uiLeft = uiLeft;
   pSmack->uiTop = uiTop;
 }
 
-void SmkCloseFlic(SMKFLIC *pSmack) {
+function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
   // Attempt opening the filename
   FileClose(pSmack->hFileHandle);
 
@@ -182,7 +182,7 @@ void SmkCloseFlic(SMKFLIC *pSmack) {
   memset(pSmack, 0, sizeof(SMKFLIC));
 }
 
-SMKFLIC *SmkGetFreeFlic(void) {
+function SmkGetFreeFlic(): Pointer<SMKFLIC> {
   UINT32 uiCount;
 
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++)
@@ -192,7 +192,7 @@ SMKFLIC *SmkGetFreeFlic(void) {
   return NULL;
 }
 
-void SmkSetupVideo(void) {
+function SmkSetupVideo(): void {
   DDSURFACEDESC SurfaceDescription;
   HRESULT ReturnCode;
   UINT16 usRed, usGreen, usBlue;
@@ -222,7 +222,7 @@ void SmkSetupVideo(void) {
     guiSmackPixelFormat = SMACKBUFFER555;
 }
 
-void SmkShutdownVideo(void) {
+function SmkShutdownVideo(): void {
   // DEF:
   //	CinematicModeOff();
 }

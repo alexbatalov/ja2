@@ -14,7 +14,7 @@ UINT8 gubScheduleID = 0;
 // This function adds a NEWLY allocated schedule to the list.  The pointer passed is totally
 // separate.  So make sure that you delete the pointer if you don't need it anymore.  The editor
 // uses a single static node to copy data from, hence this method.
-void CopyScheduleToList(SCHEDULENODE *pSchedule, SOLDIERINITNODE *pNode) {
+function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOLDIERINITNODE>): void {
   SCHEDULENODE *curr;
   curr = gpScheduleList;
   gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
@@ -35,7 +35,7 @@ void CopyScheduleToList(SCHEDULENODE *pSchedule, SOLDIERINITNODE *pNode) {
   }
 }
 
-SCHEDULENODE *GetSchedule(UINT8 ubScheduleID) {
+function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
   SCHEDULENODE *curr;
   curr = gpScheduleList;
   while (curr) {
@@ -47,7 +47,7 @@ SCHEDULENODE *GetSchedule(UINT8 ubScheduleID) {
 }
 
 // Removes all schedules from the event list, and cleans out the list.
-void DestroyAllSchedules() {
+function DestroyAllSchedules(): void {
   SCHEDULENODE *curr;
   // First remove all of the events.
   DeleteAllStrategicEventsOfType(EVENT_PROCESS_TACTICAL_SCHEDULE);
@@ -62,7 +62,7 @@ void DestroyAllSchedules() {
 }
 
 // cleans out the schedule list without touching events, for saving & loading games
-void DestroyAllSchedulesWithoutDestroyingEvents() {
+function DestroyAllSchedulesWithoutDestroyingEvents(): void {
   SCHEDULENODE *curr;
 
   // delete all of the schedules.
@@ -75,7 +75,7 @@ void DestroyAllSchedulesWithoutDestroyingEvents() {
   gubScheduleID = 0;
 }
 
-void DeleteSchedule(UINT8 ubScheduleID) {
+function DeleteSchedule(ubScheduleID: UINT8): void {
   SCHEDULENODE *curr, *temp = NULL;
 
   if (!gpScheduleList) {
@@ -104,7 +104,7 @@ void DeleteSchedule(UINT8 ubScheduleID) {
   }
 }
 
-void ProcessTacticalSchedule(UINT8 ubScheduleID) {
+function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
   SCHEDULENODE *pSchedule;
   SOLDIERTYPE *pSoldier;
   INT32 iScheduleIndex = 0;
@@ -180,7 +180,7 @@ void ProcessTacticalSchedule(UINT8 ubScheduleID) {
 
 // Called before leaving the editor, or saving the map.  This recalculates
 // all of the schedule IDs from scratch and adjusts the effected structures accordingly.
-void OptimizeSchedules() {
+function OptimizeSchedules(): void {
   SCHEDULENODE *pSchedule;
   SOLDIERINITNODE *pNode;
   UINT8 ubOldScheduleID;
@@ -219,7 +219,7 @@ void OptimizeSchedules() {
 }
 
 // Called when transferring from the game to the editor.
-void PrepareSchedulesForEditorEntry() {
+function PrepareSchedulesForEditorEntry(): void {
   SCHEDULENODE *curr, *prev, *temp;
 
   // Delete all schedule events.  The editor will automatically warp all civilians to their starting locations.
@@ -254,11 +254,11 @@ void PrepareSchedulesForEditorEntry() {
 }
 
 // Called when leaving the editor to enter the game.  This posts all of the events that apply.
-void PrepareSchedulesForEditorExit() {
+function PrepareSchedulesForEditorExit(): void {
   PostSchedules();
 }
 
-void LoadSchedules(INT8 **hBuffer) {
+function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   SCHEDULENODE *pSchedule = NULL;
   SCHEDULENODE temp;
   UINT8 ubNum;
@@ -294,7 +294,7 @@ void LoadSchedules(INT8 **hBuffer) {
 }
 
 extern BOOLEAN gfSchedulesHosed;
-BOOLEAN LoadSchedulesFromSave(HWFILE hFile) {
+function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
   SCHEDULENODE *pSchedule = NULL;
   SCHEDULENODE temp;
   UINT8 ubNum;
@@ -351,7 +351,7 @@ BOOLEAN LoadSchedulesFromSave(HWFILE hFile) {
 
 // used to fix a bug in the editor where the schedules were reversed.  Because only
 // some maps were effected, this feature was required.
-void ReverseSchedules() {
+function ReverseSchedules(): void {
   SCHEDULENODE *pReverseHead, *pPrevReverseHead, *pPrevScheduleHead;
   UINT8 ubOppositeID = gubScheduleID;
   // First, remove any gaps which would mess up the reverse ID assignment by optimizing
@@ -377,7 +377,7 @@ void ReverseSchedules() {
 }
 
 // Another debug feature.
-void ClearAllSchedules() {
+function ClearAllSchedules(): void {
   SOLDIERINITNODE *pNode;
   DestroyAllSchedules();
   pNode = gSoldierInitHead;
@@ -392,7 +392,7 @@ void ClearAllSchedules() {
   }
 }
 
-BOOLEAN SaveSchedules(HWFILE hFile) {
+function SaveSchedules(hFile: HWFILE): BOOLEAN {
   SCHEDULENODE *curr;
   UINT32 uiBytesWritten;
   UINT8 ubNum, ubNumFucker;
@@ -435,7 +435,7 @@ BOOLEAN SaveSchedules(HWFILE hFile) {
 
 // Each schedule has upto four parts to it, so sort them chronologically.
 // Happily, the fields with no times actually are the highest.
-BOOLEAN SortSchedule(SCHEDULENODE *pSchedule) {
+function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
   INT32 index, i, iBestIndex;
   UINT16 usTime;
   UINT16 usData1;
@@ -475,7 +475,7 @@ BOOLEAN SortSchedule(SCHEDULENODE *pSchedule) {
   return fSorted;
 }
 
-BOOLEAN BumpAnyExistingMerc(INT16 sGridNo) {
+function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   UINT8 ubID;
   SOLDIERTYPE *pSoldier; // NB this is the person already in the location,
   INT16 sNewGridNo;
@@ -512,7 +512,7 @@ BOOLEAN BumpAnyExistingMerc(INT16 sGridNo) {
   return TRUE;
 }
 
-void AutoProcessSchedule(SCHEDULENODE *pSchedule, INT32 index) {
+function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): void {
   INT16 sCellX, sCellY, sGridNo;
   INT8 bDirection;
   SOLDIERTYPE *pSoldier;
@@ -609,7 +609,7 @@ void AutoProcessSchedule(SCHEDULENODE *pSchedule, INT32 index) {
   }
 }
 
-void PostSchedule(SOLDIERTYPE *pSoldier) {
+function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   UINT32 uiStartTime, uiEndTime;
   INT32 i;
   INT8 bEmpty;
@@ -705,7 +705,7 @@ void PostSchedule(SOLDIERTYPE *pSoldier) {
   PrepareScheduleForAutoProcessing(pSchedule, uiStartTime, uiEndTime);
 }
 
-void PrepareScheduleForAutoProcessing(SCHEDULENODE *pSchedule, UINT32 uiStartTime, UINT32 uiEndTime) {
+function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiStartTime: UINT32, uiEndTime: UINT32): void {
   INT32 i;
   BOOLEAN fPostedNextEvent = FALSE;
 
@@ -759,7 +759,7 @@ void PrepareScheduleForAutoProcessing(SCHEDULENODE *pSchedule, UINT32 uiStartTim
 
 // Leave at night, come back in the morning.  The time variances are a couple hours, so
 // the town doesn't turn into a ghost town in 5 minutes.
-void PostDefaultSchedule(SOLDIERTYPE *pSoldier) {
+function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   INT32 i;
   SCHEDULENODE *curr;
 
@@ -805,7 +805,7 @@ void PostDefaultSchedule(SOLDIERTYPE *pSoldier) {
   PostSchedule(pSoldier);
 }
 
-void PostSchedules() {
+function PostSchedules(): void {
   SOLDIERINITNODE *curr;
   BOOLEAN fDefaultSchedulesPossible = FALSE;
 
@@ -829,7 +829,7 @@ void PostSchedules() {
   }
 }
 
-void PerformActionOnDoorAdjacentToGridNo(UINT8 ubScheduleAction, UINT16 usGridNo) {
+function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: UINT16): void {
   INT16 sDoorGridNo;
   DOOR *pDoor;
 
@@ -862,7 +862,7 @@ void PerformActionOnDoorAdjacentToGridNo(UINT8 ubScheduleAction, UINT16 usGridNo
 
 // Assumes that a schedule has just been processed.  This takes the current time, and compares it to the
 // schedule, and looks for the next schedule action that would get processed and posts it.
-void PostNextSchedule(SOLDIERTYPE *pSoldier) {
+function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   SCHEDULENODE *pSchedule;
   INT32 i, iBestIndex;
   UINT16 usTime, usBestTime;
@@ -894,7 +894,7 @@ void PostNextSchedule(SOLDIERTYPE *pSoldier) {
   AddStrategicEvent(EVENT_PROCESS_TACTICAL_SCHEDULE, GetWorldDayInMinutes() + pSchedule->usTime[iBestIndex], pSchedule->ubScheduleID);
 }
 
-BOOLEAN ExtractScheduleEntryAndExitInfo(SOLDIERTYPE *pSoldier, UINT32 *puiEntryTime, UINT32 *puiExitTime) {
+function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): BOOLEAN {
   INT32 iLoop;
   BOOLEAN fFoundEntryTime = FALSE, fFoundExitTime = FALSE;
   SCHEDULENODE *pSchedule;
@@ -928,7 +928,7 @@ BOOLEAN ExtractScheduleEntryAndExitInfo(SOLDIERTYPE *pSoldier, UINT32 *puiEntryT
 }
 
 // This is for determining shopkeeper's opening/closing hours
-BOOLEAN ExtractScheduleDoorLockAndUnlockInfo(SOLDIERTYPE *pSoldier, UINT32 *puiOpeningTime, UINT32 *puiClosingTime) {
+function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
   INT32 iLoop;
   BOOLEAN fFoundOpeningTime = FALSE, fFoundClosingTime = FALSE;
   SCHEDULENODE *pSchedule;
@@ -961,7 +961,7 @@ BOOLEAN ExtractScheduleDoorLockAndUnlockInfo(SOLDIERTYPE *pSoldier, UINT32 *puiO
   }
 }
 
-BOOLEAN GetEarliestMorningScheduleEvent(SCHEDULENODE *pSchedule, UINT32 *puiTime) {
+function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTime: Pointer<UINT32>): BOOLEAN {
   INT32 iLoop;
   BOOLEAN fFoundTime = FALSE;
 
@@ -980,7 +980,7 @@ BOOLEAN GetEarliestMorningScheduleEvent(SCHEDULENODE *pSchedule, UINT32 *puiTime
   }
 }
 
-BOOLEAN ScheduleHasMorningNonSleepEntries(SCHEDULENODE *pSchedule) {
+function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
@@ -993,7 +993,7 @@ BOOLEAN ScheduleHasMorningNonSleepEntries(SCHEDULENODE *pSchedule) {
   return FALSE;
 }
 
-INT8 GetEmptyScheduleEntry(SCHEDULENODE *pSchedule) {
+function GetEmptyScheduleEntry(pSchedule: Pointer<SCHEDULENODE>): INT8 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
@@ -1033,7 +1033,7 @@ void ReconnectSchedules( void )
 }
 */
 
-UINT16 FindSleepSpot(SCHEDULENODE *pSchedule) {
+function FindSleepSpot(pSchedule: Pointer<SCHEDULENODE>): UINT16 {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
@@ -1044,7 +1044,7 @@ UINT16 FindSleepSpot(SCHEDULENODE *pSchedule) {
   return NOWHERE;
 }
 
-void ReplaceSleepSpot(SCHEDULENODE *pSchedule, UINT16 usNewSpot) {
+function ReplaceSleepSpot(pSchedule: Pointer<SCHEDULENODE>, usNewSpot: UINT16): void {
   INT8 bLoop;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
@@ -1055,7 +1055,7 @@ void ReplaceSleepSpot(SCHEDULENODE *pSchedule, UINT16 usNewSpot) {
   }
 }
 
-void SecureSleepSpot(SOLDIERTYPE *pSoldier, UINT16 usSleepSpot) {
+function SecureSleepSpot(pSoldier: Pointer<SOLDIERTYPE>, usSleepSpot: UINT16): void {
   SOLDIERTYPE *pSoldier2;
   UINT16 usSleepSpot2, usNewSleepSpot;
   UINT32 uiLoop;

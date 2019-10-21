@@ -17,7 +17,7 @@ UINT8 gubQuestDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
 UINT8 gubNPCDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
 
 // set the current output mode for either the NPC or the quest output
-void ToggleQuestDebugModes(UINT8 ubType) {
+function ToggleQuestDebugModes(ubType: UINT8): void {
   wchar_t sType[16];
   UINT8 ubLevel;
 
@@ -56,7 +56,7 @@ void ToggleQuestDebugModes(UINT8 ubType) {
     ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"%s Level %d", sType, ubLevel);
 }
 
-void QuestDebugFileMsg(UINT8 ubQuoteType, UINT8 ubPriority, STR pStringA, ...) {
+function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR, ...args: any[]): void {
   static BOOLEAN fFirstTimeIn = TRUE;
   static UINT32 uiLineNumber = 1;
   HWFILE hFile;

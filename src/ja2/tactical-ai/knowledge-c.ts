@@ -1,4 +1,4 @@
-void CallAvailableEnemiesTo(INT16 sGridNo) {
+function CallAvailableEnemiesTo(sGridNo: INT16): void {
   INT32 iLoop;
   INT32 iLoop2;
   SOLDIERTYPE *pSoldier;
@@ -26,7 +26,7 @@ void CallAvailableEnemiesTo(INT16 sGridNo) {
   }
 }
 
-void CallAvailableTeamEnemiesTo(INT16 sGridno, INT8 bTeam) {
+function CallAvailableTeamEnemiesTo(sGridno: INT16, bTeam: INT8): void {
   INT32 iLoop2;
   SOLDIERTYPE *pSoldier;
 
@@ -51,7 +51,7 @@ void CallAvailableTeamEnemiesTo(INT16 sGridno, INT8 bTeam) {
   }
 }
 
-void CallAvailableKingpinMenTo(INT16 sGridNo) {
+function CallAvailableKingpinMenTo(sGridNo: INT16): void {
   // like call all enemies, but only affects civgroup KINGPIN guys with
   // NO PROFILE
 
@@ -76,7 +76,7 @@ void CallAvailableKingpinMenTo(INT16 sGridNo) {
   }
 }
 
-void CallEldinTo(INT16 sGridNo) {
+function CallEldinTo(sGridNo: INT16): void {
   // like call all enemies, but only affects Eldin
   SOLDIERTYPE *pSoldier;
 
@@ -109,7 +109,7 @@ void CallEldinTo(INT16 sGridNo) {
   }
 }
 
-INT16 MostImportantNoiseHeard(SOLDIERTYPE *pSoldier, INT32 *piRetValue, BOOLEAN *pfClimbingNecessary, BOOLEAN *pfReachable) {
+function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Pointer<INT32>, pfClimbingNecessary: Pointer<BOOLEAN>, pfReachable: Pointer<BOOLEAN>): INT16 {
   UINT32 uiLoop;
   INT8 *pbPersOL, *pbPublOL;
   INT16 *psLastLoc, *psNoiseGridNo;
@@ -259,7 +259,7 @@ INT16 MostImportantNoiseHeard(SOLDIERTYPE *pSoldier, INT32 *piRetValue, BOOLEAN 
   return sBestGridNo;
 }
 
-INT16 WhatIKnowThatPublicDont(SOLDIERTYPE *pSoldier, UINT8 ubInSightOnly) {
+function WhatIKnowThatPublicDont(pSoldier: Pointer<SOLDIERTYPE>, ubInSightOnly: UINT8): INT16 {
   UINT8 ubTotal = 0;
   UINT32 uiLoop;
   INT8 *pbPersOL, *pbPublOL;

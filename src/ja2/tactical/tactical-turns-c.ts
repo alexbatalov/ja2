@@ -1,4 +1,4 @@
-void HandleRPCDescription() {
+function HandleRPCDescription(): void {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;
   UINT8 ubChosenMerc;
@@ -66,7 +66,7 @@ void HandleRPCDescription() {
   }
 }
 
-void HandleTacticalEndTurn() {
+function HandleTacticalEndTurn(): void {
   UINT32 cnt;
   SOLDIERTYPE *pSoldier;
   UINT32 uiTime;
