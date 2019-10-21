@@ -21,19 +21,6 @@ FADE_FUNCTION gFadeFunction = NULL;
 FADE_HOOK gFadeInDoneCallback = NULL;
 FADE_HOOK gFadeOutDoneCallback = NULL;
 
-void FadeFrameBufferSquare();
-void FadeFrameBufferVersionOne();
-void FadeFrameBufferVersionFaster();
-void FadeFrameBufferSide();
-void FadeFrameBufferRealFade();
-
-void FadeInBackBufferVersionOne();
-void FadeInBackBufferSquare();
-void FadeInFrameBufferRealFade();
-
-extern BOOLEAN ShadowVideoSurfaceRectUsingLowPercentTable(UINT32 uiDestVSurface, INT32 X1, INT32 Y1, INT32 X2, INT32 Y2);
-BOOLEAN UpdateSaveBufferWithBackbuffer(void);
-
 BOOLEAN gfFadeIn = FALSE;
 BOOLEAN gfFadeOut = FALSE;
 BOOLEAN gfFadeOutDone = FALSE;

@@ -8,22 +8,6 @@ extern INT32 iSelectWin, iCancelWin, iScrollUp, iScrollDown;
 
 extern BOOLEAN fAllDone;
 
-extern void CreateJA2SelectionWindow(INT16 sWhat);
-extern void InitJA2SelectionWindow(void);
-extern void ShutdownJA2SelectionWindow(void);
-extern void RemoveJA2SelectionWindow(void);
-extern void RenderSelectionWindow(void);
-extern void DrawSelections(void);
-
-extern void SelWinClkCallback(GUI_BUTTON *button, INT32 reason);
-extern void CnclClkCallback(GUI_BUTTON *button, INT32 reason);
-extern void UpClkCallback(GUI_BUTTON *button, INT32 reason);
-extern void DwnClkCallback(GUI_BUTTON *button, INT32 reason);
-extern void OkClkCallback(GUI_BUTTON *button, INT32 reason);
-
-extern void ScrollSelWinUp(void);
-extern void ScrollSelWinDown(void);
-
 // defines for DisplaySpec.ubType
 
 const DISPLAY_TEXT = 1;
@@ -91,17 +75,6 @@ interface Selections {
   sCount: INT16;
 }
 
-INT32 FindInSelectionList(DisplayList *pNode);
-BOOLEAN IsInSelectionList(DisplayList *pNode);
-INT32 GetRandomSelection(void);
-BOOLEAN RemoveFromSelectionList(DisplayList *pNode);
-void AddToSelectionList(DisplayList *pNode);
-void RestoreSelectionList(void);
-void SaveSelectionList(void);
-BOOLEAN ClearSelectionList(void);
-
-void DisplaySelectionWindowGraphicalInformation();
-
 extern INT32 iCurBank;
 extern Selections *pSelList;
 extern INT32 *pNumSelList;
@@ -145,8 +118,3 @@ extern INT32 iNumNewRoofsSelected;
 extern INT32 iNumRoomsSelected;
 
 extern INT32 iDrawMode;
-extern DisplayList *TrashList(DisplayList *pNode);
-
-extern BOOLEAN BuildDisplayWindow(DisplaySpec *pDisplaySpecs, UINT16 usNumSpecs, DisplayList **pDisplayList, SGPPoint *pUpperLeft, SGPPoint *pBottomRight, SGPPoint *pSpacing, UINT16 fFlags);
-
-extern BOOLEAN DisplayWindowFunc(DisplayList *pNode, INT16 iTopCutOff, INT16 iBottomCutOff, SGPPoint *pUpperLeft, UINT16 fFlags);

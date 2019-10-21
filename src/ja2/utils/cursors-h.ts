@@ -227,19 +227,3 @@ const enum Enum318 {
 
 const MOUSE_LEVEL_GROUND = 0;
 const MOUSE_LEVEL_ROOF = 1;
-
-void RaiseMouseToLevel(INT8 bLevel);
-
-void InitCursors();
-void HandleAnimatedCursors();
-
-void DrawMouseActionPoints();
-void UpdateAnimatedCursorFrames(UINT32 uiCursorIndex);
-
-void SyncPairedCursorFrames(UINT32 uiSrcCursor, UINT32 uiDestCursor);
-
-void SetCursorSpecialFrame(UINT32 uiCursor, UINT8 ubFrame);
-
-void SetCursorFlags(UINT32 uiCursor, UINT8 ubFlags);
-
-void RemoveCursorFlags(UINT32 uiCursor, UINT8 ubFlags);

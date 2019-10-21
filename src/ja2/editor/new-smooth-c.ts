@@ -1,7 +1,3 @@
-BOOLEAN CaveAtGridNo(INT32 iMapIndex);
-UINT16 GetCaveTileIndexFromPerimeterValue(UINT8 ubTotal);
-UINT8 CalcNewCavePerimeterValue(INT32 iMapIndex);
-
 BOOLEAN CaveAtGridNo(INT32 iMapIndex) {
   STRUCTURE *pStruct;
   LEVELNODE *pLevel;
@@ -493,18 +489,6 @@ const HWALL_RIGHT = 34;
 const FLOOR_VARIANTS = 8;
 
 // PRIVATELY "ENCAPSULATED" FUNCTIONS
-
-// These construction functions do all the smoothing.
-// NOTE:  passing null for wall/roof type will force the function to search for the nearest
-//  existing respective type.
-void BuildSlantRoof(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT16 usWallType, UINT16 usRoofType, BOOLEAN fVertical);
-
-void BulldozeNature(UINT32 iMapIndex);
-void EraseRoof(UINT32 iMapIndex);
-void EraseFloor(UINT32 iMapIndex);
-void EraseBuilding(UINT32 iMapIndex);
-void EraseFloorOwnedBuildingPieces(UINT32 iMapIndex);
-void ConsiderEffectsOfNewWallPiece(UINT32 iMapIndex, UINT8 usWallOrientation);
 
 //----------------------------------------------------------------------------------------------------
 // BEGIN IMPLEMENTATION OF PRIVATE FUNCTIONS

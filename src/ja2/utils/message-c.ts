@@ -46,8 +46,6 @@ BOOLEAN fDisableJustForIan = FALSE;
 BOOLEAN fScrollMessagesHidden = FALSE;
 UINT32 uiStartOfPauseTime = 0;
 
-// test extern functions
-BOOLEAN RestoreExternBackgroundRectGivenID(INT32 iBack);
 extern VIDEO_OVERLAY gVideoOverlays[];
 
 extern UINT16 gusSubtitleBoxWidth;
@@ -58,40 +56,6 @@ extern BOOLEAN fTextBoxMouseRegionCreated;
 extern BOOLEAN fDialogueBoxDueToLastMessage;
 
 // prototypes
-
-BOOLEAN CreateStringVideoOverlay(ScrollStringStPtr pStringSt, UINT16 usX, UINT16 usY);
-void SetStringVideoOverlayPosition(ScrollStringStPtr pStringSt, UINT16 usX, UINT16 usY);
-
-void BlitString(VIDEO_OVERLAY *pBlitter);
-void RemoveStringVideoOverlay(ScrollStringStPtr pStringSt);
-void EnableStringVideoOverlay(ScrollStringStPtr pStringSt, BOOLEAN fEnable);
-
-ScrollStringStPtr GetNextString(ScrollStringStPtr pStringSt);
-ScrollStringStPtr GetPrevString(ScrollStringStPtr pStringSt);
-void AlignString(ScrollStringStPtr pPermStringSt);
-
-INT32 GetMessageQueueSize(void);
-
-ScrollStringStPtr AddString(STR16 string, UINT16 usColor, UINT32 uiFont, BOOLEAN fStartOfNewString, UINT8 ubPriority);
-void SetString(ScrollStringStPtr pStringSt, STR16 String);
-
-void SetStringPosition(ScrollStringStPtr pStringSt, UINT16 x, UINT16 y);
-void SetStringColor(ScrollStringStPtr pStringSt, UINT16 color);
-ScrollStringStPtr SetStringNext(ScrollStringStPtr pStringSt, ScrollStringStPtr pNext);
-ScrollStringStPtr SetStringPrev(ScrollStringStPtr pStringSt, ScrollStringStPtr pPrev);
-void AddStringToMapScreenMessageList(STR16 pString, UINT16 usColor, UINT32 uiFont, BOOLEAN fStartOfNewString, UINT8 ubPriority);
-
-// clear up a linked list of wrapped strings
-void ClearWrappedStrings(WRAPPED_STRING *pStringWrapperHead);
-void WriteMessageToFile(STR16 pString);
-
-// tactical screen message
-void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...);
-
-// play bee when new message is added
-void PlayNewMessageSound(void);
-
-void HandleLastQuotePopUpTimer(void);
 
 // functions
 

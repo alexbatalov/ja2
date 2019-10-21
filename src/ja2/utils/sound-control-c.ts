@@ -383,7 +383,6 @@ UINT8 AmbientVols[NUM_AMBIENTS] = {
 
 SOUNDPARMS gDelayedSoundParms;
 UINT32 guiDelayedSoundNum;
-void DelayedSoundTimerCallback(void);
 
 BOOLEAN InitJA2Sound() {
   // UINT32 uiCount;
@@ -658,9 +657,6 @@ interface POSITIONSND {
 POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];
 UINT32 guiNumPositionSnds = 0;
 BOOLEAN gfPositionSoundsActive = FALSE;
-
-INT32 GetFreePositionSnd(void);
-void RecountPositionSnds(void);
 
 INT32 GetFreePositionSnd(void) {
   UINT32 uiCount;

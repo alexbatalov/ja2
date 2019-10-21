@@ -42,19 +42,6 @@ INT16 gsLastVisibleToSoldierGridNo = NOWHERE;
 
 //*******  Function Prototypes ***************************************
 
-INT8 CalcCoverForGridNoBasedOnTeamKnownEnemies(SOLDIERTYPE *pSoldier, INT16 sTargetGridno, INT8 bStance);
-void CalculateCoverInRadiusAroundGridno(INT16 sTargetGridNo, INT8 bSearchRange);
-void AddCoverTileToEachGridNo();
-void AddCoverObjectToWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof);
-void RemoveCoverObjectFromWorld(INT16 sGridNo, UINT16 usGraphic, BOOLEAN fRoof);
-INT8 GetCurrentMercForDisplayCoverStance();
-SOLDIERTYPE *GetCurrentMercForDisplayCover();
-
-void CalculateVisibleToSoldierAroundGridno(INT16 sGridNo, INT8 bSearchRange);
-void AddVisibleToSoldierToEachGridNo();
-INT8 CalcIfSoldierCanSeeGridNo(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo, BOOLEAN fRoof);
-BOOLEAN IsTheRoofVisible(INT16 sGridNo);
-
 // ppp
 
 //*******  Functions **************************************************

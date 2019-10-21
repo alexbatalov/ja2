@@ -27,23 +27,6 @@ extern BOOLEAN gfNextShotKills;
 UINT32 guiSoldierFlags;
 UINT32 guiUITargetSoldierId = NOBODY;
 
-void HandleTalkingMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent);
-void HandleMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent);
-void HandleItemMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent);
-void HandleOpenDoorMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent);
-void HandleSectorExitMenuKeys(InputAtom *pInputEvent, UINT32 *puiNewEvent);
-void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight);
-
-extern BOOLEAN ValidQuickExchangePosition();
-
-BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier);
-
-extern SOLDIERTYPE *FindNextActiveSquad(SOLDIERTYPE *pSoldier);
-extern SOLDIERTYPE *FindPrevActiveSquad(SOLDIERTYPE *pSoldier);
-extern void ToggleItemGlow(BOOLEAN fOn);
-extern void HandleTalkingMenuBackspace(void);
-extern void BeginKeyPanelFromKeyShortcut();
-
 extern INT32 iSMPanelButtons[NUM_SM_BUTTONS];
 extern INT32 iTEAMPanelButtons[NUM_TEAM_BUTTONS];
 extern INT32 giSMStealthButton;
@@ -51,49 +34,9 @@ extern INT32 giSMStealthButton;
 SOLDIERTYPE *gpExchangeSoldier1;
 SOLDIERTYPE *gpExchangeSoldier2;
 
-BOOLEAN ConfirmActionCancel(UINT16 usMapPos, UINT16 usOldMapPos);
-
 BOOLEAN gfNextFireJam = FALSE;
 
-// Little functions called by keyboard input
-void CreateRandomItem();
-void MakeSelectedSoldierTired();
-void ToggleRealTime(UINT32 *puiNewEvent);
-void ToggleViewAllMercs();
-void ToggleViewAllItems();
-void TestExplosion();
-void CycleSelectedMercsItem();
-void ToggleWireFrame();
-void RefreshSoldier();
-void ChangeSoldiersBodyType(UINT8 ubBodyType, BOOLEAN fCreateNewPalette);
-void TeleportSelectedSoldier();
-void ToggleTreeTops();
-void ToggleZBuffer();
-void TogglePlanningMode();
-void SetBurstMode();
-void ObliterateSector();
-void RandomizeMercProfile();
-void JumpFence();
-void CreateNextCivType();
-void ToggleCliffDebug();
-void CreateCow();
-void CreatePlayerControlledCow();
-void ToggleRealTimeConfirm();
-void GrenadeTest1();
-void GrenadeTest2();
-void GrenadeTest3();
-void TestMeanWhile(INT32 iID);
-void CreatePlayerControlledMonster();
-void ChangeCurrentSquad(INT32 iSquad);
-void HandleSelectMercSlot(UINT8 ubPanelSlot, INT8 bCode);
-void EscapeUILock();
-void TestCapture();
-
-void HandleStealthChangeFromUIKeys();
-
 UINT8 gubCheatLevel = STARTING_CHEAT_LEVEL;
-
-extern void DetermineWhichAssignmentMenusCanBeShown(void);
 
 void GetTBMouseButtonInput(UINT32 *puiNewEvent) {
   QueryTBLeftButton(puiNewEvent);
@@ -3136,8 +3079,6 @@ void HandleHandCursorClick(UINT16 usMapPos, UINT32 *puiNewEvent) {
     }
   }
 }
-
-extern BOOLEAN AnyItemsVisibleOnLevel(ITEM_POOL *pItemPool, INT8 bZLevel);
 
 void ExchangeMessageBoxCallBack(UINT8 bExitValue) {
   if (bExitValue == MSG_BOX_RETURN_YES) {

@@ -43,8 +43,6 @@ UINT32 guiSHORT2HINDENT;
 const CHAR_PROFILE_BACKGROUND_TILE_WIDTH = 125;
 const CHAR_PROFILE_BACKGROUND_TILE_HEIGHT = 100;
 
-extern void DrawBonusPointsRemaining(void);
-
 BOOLEAN LoadProfileBackGround(void) {
   VOBJECT_DESC VObjectDesc;
 

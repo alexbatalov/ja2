@@ -1,5 +1,3 @@
-extern BOOLEAN DoesSAMExistHere(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, INT16 sGridNo);
-
 BOOLEAN IsFencePresentAtGridno(INT16 sGridNo) {
   if (FindStructure(sGridNo, STRUCTURE_ANYFENCE) != NULL) {
     return TRUE;

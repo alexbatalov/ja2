@@ -1,5 +1,3 @@
-void RenderEditorInfo();
-
 extern ITEM_POOL *gpItemPool;
 
 // editor icon storage vars

@@ -12,11 +12,3 @@ const SMELL_STRENGTH = (s) => ((s & 0xFC) >> SMELL_TYPE_NUM_BITS);
 
 const MAXBLOODQUANTITY = 7;
 const BLOODDIVISOR = 10;
-
-void DecaySmells(void);
-void DecayBloodAndSmells(UINT32 uiTime);
-void DropSmell(SOLDIERTYPE *pSoldier);
-void DropBlood(SOLDIERTYPE *pSoldier, UINT8 ubStrength, INT8 bVisible);
-void UpdateBloodGraphics(INT16 sGridNo, INT8 bLevel);
-void RemoveBlood(INT16 sGridNo, INT8 bLevel);
-void InternalDropBlood(INT16 sGridNo, INT8 bLevel, UINT8 ubType, UINT8 ubStrength, INT8 bVisible);

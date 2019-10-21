@@ -35,17 +35,3 @@ const enum Enum54 {
   TE, // top edge
   NUM_ROAD_MACROS,
 }
-
-// The old road system used multi-tiled roads as a single image.  The new road system has taken these large
-// pieces and chopped them up into single tiled images (to mitigate lighting problems).  Some of the larger
-// road pieces turned into 18 smaller pieces.  So this function will go analyse the world, and replaces any
-// locations containing the original road tile information, delete it, and replace it by inserting it's
-// equivalent macro.
-void ReplaceObsoleteRoads();
-
-// Road macros vary in size from 3 gridnos to 18 gridnos.  Using the anchor gridno based off of the original
-// road system, this function will place the new macro (consisting of multiple road pieces in multiple
-// gridnos).
-void PlaceRoadMacroAtGridNo(INT32 iMapIndex, INT32 iMacroID);
-
-void InitializeRoadMacros();

@@ -65,18 +65,6 @@ CHAR *gpzSmackerFileNames[] = {
 // enums used for when the intro screen can come up, either begining game intro, or end game cinematic
 INT8 gbIntroScreenMode = -1;
 
-extern void CDromEjectionErrorMessageBoxCallBack(UINT8 bExitValue);
-
-void GetIntroScreenUserInput();
-BOOLEAN EnterIntroScreen();
-void RenderIntroScreen();
-void ExitIntroScreen();
-void HandleIntroScreen();
-void PrepareToExitIntroScreen();
-INT32 GetNextIntroVideo(UINT32 uiCurrentVideo);
-void StartPlayingIntroFlic(INT32 iIndexOfFlicToPlay);
-void DisplaySirtechSplashScreen();
-
 // ppp
 
 UINT32 IntroScreenInit(void) {

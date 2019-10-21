@@ -128,27 +128,20 @@ INT32 giGioMessageBox = -1;
 
 // extern	INT32						gp16PointArial;
 
-// Done Button
-void BtnGIODoneCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiGIODoneButton;
 INT32 giGIODoneBtnImage;
 
-// Cancel Button
-void BtnGIOCancelCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiGIOCancelButton;
 INT32 giGIOCancelBtnImage;
 
 // checkbox to toggle the Diff level
 UINT32 guiDifficultySettingsToggles[NUM_DIFF_SETTINGS];
-void BtnDifficultyTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 // checkbox to toggle Game style
 UINT32 guiGameStyleToggles[NUM_GAME_STYLES];
-void BtnGameStyleTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 // checkbox to toggle Gun options
 UINT32 guiGunOptionToggles[NUM_GUN_OPTIONS];
-void BtnGunOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 // JA2Gold: no more timed turns setting
 /*
@@ -159,36 +152,12 @@ void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn,INT32 reason);
 
 // checkbox to toggle Save style
 UINT32 guiGameSaveToggles[NUM_SAVE_OPTIONS];
-void BtnGameSaveTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 ////////////////////////////////////////////
 //
 //	Local Function Prototypes
 //
 ///////////////////////////////////////////
-
-extern void ClearMainMenu();
-
-BOOLEAN EnterGIOScreen();
-BOOLEAN ExitGIOScreen();
-void HandleGIOScreen();
-BOOLEAN RenderGIOScreen();
-void GetGIOScreenUserInput();
-UINT8 GetCurrentGunButtonSetting();
-// JA2Gold: added save (iron man) button setting
-UINT8 GetCurrentGameSaveButtonSetting();
-UINT8 GetCurrentGameStyleButtonSetting();
-UINT8 GetCurrentDifficultyButtonSetting();
-void RestoreGIOButtonBackGrounds();
-void DoneFadeOutForExitGameInitOptionScreen(void);
-void DoneFadeInForExitGameInitOptionScreen(void);
-// JA2Gold: no more timed turns setting
-// UINT8			GetCurrentTimedTurnsButtonSetting();
-BOOLEAN DoGioMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback);
-void DisplayMessageToUserAboutGameDifficulty();
-void ConfirmGioDifSettingMessageBoxCallBack(UINT8 bExitValue);
-BOOLEAN DisplayMessageToUserAboutIronManMode();
-void ConfirmGioIronManMessageBoxCallBack(UINT8 bExitValue);
 
 // ppp
 

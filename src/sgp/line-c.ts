@@ -23,12 +23,6 @@ int giClipXMax = 0;
 int giClipYMin = 0;
 int giClipYMax = 0;
 
-void DrawHorizontalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth);
-void DrawVerticalRun(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth);
-
-void DrawHorizontalRun8(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth);
-void DrawVerticalRun8(char **ScreenPtr, int XAdvance, int RunLength, int Color, int ScreenWidth);
-
 void SetClippingRegionAndImageWidth(int iImageWidth, int iClipStartX, int iClipStartY, int iClipWidth, int iClipHeight) {
   giImageWidth = iImageWidth;
   giClipXMin = iClipStartX;

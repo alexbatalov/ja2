@@ -1,10 +1,3 @@
-void InitTacticalPlacementGUI();
-void KillTacticalPlacementGUI();
-void TacticalPlacementHandle();
-void RenderTacticalPlacementGUI();
-
-void HandleTacticalPlacementClicksInOverheadMap(MOUSE_REGION *reg, INT32 reason);
-
 extern BOOLEAN gfTacticalPlacementGUIActive;
 extern BOOLEAN gfEnterTacticalPlacementGUI;
 

@@ -1,8 +1,3 @@
-// Adds a soldier to a world gridno and set's direction
-void AddSoldierToSectorGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection, BOOLEAN fUseAnimation, UINT16 usAnimState, UINT16 usAnimCode);
-
-UINT16 FindGridNoFromSweetSpotWithStructData(SOLDIERTYPE *pSoldier, UINT16 usAnimState, INT16 sSweetGridNo, INT8 ubRadius, UINT8 *pubDirection, BOOLEAN fClosestToMerc);
-
 // SO, STEPS IN CREATING A MERC!
 
 // 1 ) Setup the SOLDIERCREATE_STRUCT
@@ -1137,8 +1132,6 @@ void SoldierInSectorRepair(SOLDIERTYPE *pSoldier, INT16 sGridNo) {
     EVENT_InitNewSoldierAnim(pSoldier, BEING_REPAIRMAN, 1, TRUE);
   }
 }
-
-extern void EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos, BOOLEAN fUpdateDest, BOOLEAN fUpdateFinalDest);
 
 void AddSoldierToSectorGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubDirection, BOOLEAN fUseAnimation, UINT16 usAnimState, UINT16 usAnimCode) {
   INT16 sWorldX, sWorldY;

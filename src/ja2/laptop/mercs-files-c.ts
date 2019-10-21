@@ -76,21 +76,13 @@ UINT32 guiMercFace;
 // Buttons
 //
 
-// The Prev button
-void BtnMercPrevButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiPrevButton;
 INT32 guiButtonImage;
 
-// The Next button
-void BtnMercNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiNextButton;
 
-// The Hire button
-void BtnMercHireButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiHireButton;
 
-// The Back button
-void BtnMercFilesBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiMercBackButton;
 
 //****************************
@@ -98,12 +90,6 @@ UINT32 guiMercBackButton;
 //  Function Prototypes
 //
 //****************************
-
-BOOLEAN DisplayMercFace(UINT8 ubMercID);
-void LoadAndDisplayMercBio(UINT8 ubMercID);
-void DisplayMercsStats(UINT8 ubMercID);
-BOOLEAN MercFilesHireMerc(UINT8 ubMercID);
-void EnableDisableMercFilesNextPreviousButton();
 
 void GameInitMercsFiles() {
 }

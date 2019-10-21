@@ -1,8 +1,5 @@
 const ANY_MAGSIZE = 255;
 
-void RemoveObjs(OBJECTTYPE *pObj, UINT8 ubNumberToRemove);
-void SetNewItem(SOLDIERTYPE *pSoldier, UINT8 ubInvPos, BOOLEAN fNewItem);
-
 extern SOLDIERTYPE *gpItemDescSoldier;
 
 // weight units are 100g each

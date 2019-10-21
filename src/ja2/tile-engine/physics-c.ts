@@ -40,34 +40,6 @@ const CALCULATE_OBJECT_MASS = (m) => ((float)(m * 2));
 const SCALE_VERT_VAL_TO_HORZ = (f) => ((f / HEIGHT_UNITS) * CELL_X_SIZE);
 const SCALE_HORZ_VAL_TO_VERT = (f) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
 
-void SimulateObject(REAL_OBJECT *pObject, real deltaT);
-
-void CheckForObjectHittingMerc(REAL_OBJECT *pObject, UINT16 usStructureID);
-extern void DoGenericHit(SOLDIERTYPE *pSoldier, UINT8 ubSpecial, INT16 bDirection);
-
-BOOLEAN PhysicsUpdateLife(REAL_OBJECT *pObject, real DeltaTime);
-BOOLEAN PhysicsComputeForces(REAL_OBJECT *pObject);
-BOOLEAN PhysicsIntegrate(REAL_OBJECT *pObject, real DeltaTime);
-BOOLEAN PhysicsMoveObject(REAL_OBJECT *pObject);
-BOOLEAN PhysicsCheckForCollisions(REAL_OBJECT *pObject, INT32 *piCollisionID);
-void PhysicsResolveCollision(REAL_OBJECT *pObject, vector_3 *pVelocity, vector_3 *pNormal, real CoefficientOfRestitution);
-void PhysicsDeleteObject(REAL_OBJECT *pObject);
-BOOLEAN PhysicsHandleCollisions(REAL_OBJECT *pObject, INT32 *piCollisionID, real DeltaTime);
-FLOAT CalculateForceFromRange(INT16 sRange, FLOAT dDegrees);
-
-UINT16 RandomGridFromRadius(INT16 sSweetGridNo, INT8 ubMinRadius, INT8 ubMaxRadius);
-
-void HandleArmedObjectImpact(REAL_OBJECT *pObject);
-void ObjectHitWindow(INT16 sGridNo, UINT16 usStructureID, BOOLEAN fBlowWindowSouth, BOOLEAN fLargeForce);
-FLOAT CalculateObjectTrajectory(INT16 sTargetZ, OBJECTTYPE *pItem, vector_3 *vPosition, vector_3 *vForce, INT16 *psFinalGridNo);
-vector_3 FindBestForceForTrajectory(INT16 sSrcGridNo, INT16 sGridNo, INT16 sStartZ, INT16 sEndZ, real dzDegrees, OBJECTTYPE *pItem, INT16 *psGridNo, FLOAT *pzMagForce);
-INT32 ChanceToGetThroughObjectTrajectory(INT16 sTargetZ, OBJECTTYPE *pItem, vector_3 *vPosition, vector_3 *vForce, INT16 *psFinalGridNo, INT8 *pbLevel, BOOLEAN fFromUI);
-FLOAT CalculateSoldierMaxForce(SOLDIERTYPE *pSoldier, FLOAT dDegrees, OBJECTTYPE *pObject, BOOLEAN fArmed);
-BOOLEAN AttemptToCatchObject(REAL_OBJECT *pObject);
-BOOLEAN CheckForCatchObject(REAL_OBJECT *pObject);
-BOOLEAN DoCatchObject(REAL_OBJECT *pObject);
-BOOLEAN CheckForCatcher(REAL_OBJECT *pObject, UINT16 usStructureID);
-
 /// OBJECT POOL FUNCTIONS
 INT32 GetFreeObjectSlot(void) {
   UINT32 uiCount;

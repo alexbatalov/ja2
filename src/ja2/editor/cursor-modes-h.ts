@@ -15,13 +15,6 @@ extern UINT16 gusSelectionDensity;
 extern UINT16 gusSavedSelectionType;
 extern UINT16 gusSavedBuildingSelectionType;
 
-BOOLEAN PerformDensityTest();
-void SetDrawingMode(INT32 iMode);
-void UpdateCursorAreas();
-void IncreaseSelectionDensity();
-void DecreaseSelectionDensity();
-void RemoveCursors();
-
 extern UINT16 *wszSelType[6];
 
 extern BOOLEAN gfCurrentSelectionWithRightButton;

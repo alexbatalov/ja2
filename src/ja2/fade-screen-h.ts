@@ -20,14 +20,3 @@ BOOLEAN gfFadeIn;
 INT8 gbFadeType;
 FADE_FUNCTION gFadeFunction;
 BOOLEAN gfFadeInVideo;
-
-void BeginFade(UINT32 uiExitScreen, INT8 bFadeValue, INT8 bType, UINT32 uiDelay);
-
-BOOLEAN HandleBeginFadeIn(UINT32 uiScreenExit);
-BOOLEAN HandleBeginFadeOut(UINT32 uiScreenExit);
-
-BOOLEAN HandleFadeOutCallback();
-BOOLEAN HandleFadeInCallback();
-
-void FadeInNextFrame();
-void FadeOutNextFrame();

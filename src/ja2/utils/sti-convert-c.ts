@@ -1,6 +1,3 @@
-// CONVERT_TO_16_BIT
-BOOLEAN ConvertToETRLE(UINT8 **ppDest, UINT32 *puiDestLen, UINT8 **ppSubImageBuffer, UINT16 *pusNumberOfSubImages, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, UINT32 fFlags);
-
 const CONVERT_ADD_APPDATA = 0x0001;
 const CONVERT_ADD_JA2DATA = 0x0003;
 const CONVERT_ZLIB_COMPRESS = 0x0010;
@@ -190,17 +187,6 @@ const COMPRESS_RUN_LIMIT = 0x7F;
 
 const TCI = 0x00;
 const WI = 0xFF;
-
-UINT32 ETRLECompressSubImage(UINT8 *pDest, UINT32 uiDestLen, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-UINT32 ETRLECompress(UINT8 *pDest, UINT32 uiDestLen, UINT8 *pSource, UINT32 uiSourceLen);
-BOOLEAN DetermineOffset(UINT32 *puiOffset, UINT16 usWidth, UINT16 usHeight, INT16 sX, INT16 sY);
-BOOLEAN GoPastWall(INT16 *psNewX, INT16 *psNewY, UINT16 usWidth, UINT16 usHeight, UINT8 *pCurrent, INT16 sCurrX, INT16 sCurrY);
-BOOLEAN GoToNextSubImage(INT16 *psNewX, INT16 *psNewY, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, INT16 sOrigX, INT16 sOrigY);
-BOOLEAN DetermineSubImageSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-BOOLEAN DetermineSubImageUsedSize(UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-BOOLEAN CheckForDataInRows(INT16 *psXValue, INT16 sXIncrement, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-BOOLEAN CheckForDataInCols(INT16 *psXValue, INT16 sXIncrement, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, STCISubImage *pSubImage);
-UINT8 *CheckForDataInRowOrColumn(UINT8 *pPixel, UINT16 usIncrement, UINT16 usNumberOfPixels);
 
 BOOLEAN ConvertToETRLE(UINT8 **ppDest, UINT32 *puiDestLen, UINT8 **ppSubImageBuffer, UINT16 *pusNumberOfSubImages, UINT8 *p8BPPBuffer, UINT16 usWidth, UINT16 usHeight, UINT32 fFlags) {
   INT16 sCurrX;

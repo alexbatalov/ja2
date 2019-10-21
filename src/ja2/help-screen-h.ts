@@ -49,9 +49,3 @@ interface HELP_SCREEN_STRUCT {
 }
 
 extern HELP_SCREEN_STRUCT gHelpScreen;
-
-BOOLEAN ShouldTheHelpScreenComeUp(UINT8 ubScreenID, BOOLEAN fForceHelpScreenToComeUp);
-void HelpScreenHandler();
-void InitHelpScreenSystem();
-void NewScreenSoResetHelpScreen();
-INT8 HelpScreenDetermineWhichMapScreenHelpToShow();

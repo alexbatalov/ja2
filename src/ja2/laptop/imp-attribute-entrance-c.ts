@@ -2,13 +2,6 @@
 UINT32 giIMPAttributeEntranceButtonImage[1];
 UINT32 giIMPAttributeEntranceButton[1];
 
-// function definitions
-void DestroyIMPAttributeEntranceButtons(void);
-void CreateIMPAttributeEntranceButtons(void);
-
-// callbacks
-void BtnIMPAttributeBeginCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPAttributeEntrance(void) {
   CreateIMPAttributeEntranceButtons();
 

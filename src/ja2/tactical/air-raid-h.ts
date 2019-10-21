@@ -29,19 +29,3 @@ const enum Enum192 {
   AIR_RAID_START_END,
   AIR_RAID_END,
 }
-
-void ScheduleAirRaid(AIR_RAID_DEFINITION *pAirRaidDef);
-void HandleAirRaid();
-
-BOOLEAN BeginAirRaid();
-BOOLEAN InAirRaid();
-
-BOOLEAN HandleAirRaidEndTurn();
-
-// Save the air raid info to the saved game
-BOOLEAN SaveAirRaidInfoToSaveGameFile(HWFILE hFile);
-
-// load the air raid info from the saved game
-BOOLEAN LoadAirRaidInfoFromSaveGameFile(HWFILE hFile);
-
-void EndAirRaid();

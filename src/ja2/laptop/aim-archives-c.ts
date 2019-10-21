@@ -109,25 +109,12 @@ BOOLEAN AimArchivesSubPagesVisitedFlag[3] = {
 
 // Face regions
 MOUSE_REGION gMercAlumniFaceMouseRegions[MAX_NUMBER_OLD_MERCS_ON_PAGE];
-void SelectAlumniFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Done region
 MOUSE_REGION gDoneRegion;
-void SelectAlumniDoneRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-// Previous Button
-void BtnAlumniPageButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiAlumniPageButton[3];
 INT32 guiAlumniPageButtonImage;
-
-void ResetAimArchiveButtons();
-void DisableAimArchiveButton();
-void DisplayAlumniOldMercPopUp();
-void DestroyPopUpBox();
-void InitAlumniFaceRegions();
-void RemoveAimAlumniFaceRegion();
-void CreateDestroyDoneMouseRegion(UINT16 usPosY);
-void ChangingAimArchiveSubPage(UINT8 ubSubPageNumber);
 
 void GameInitAimArchives() {
 }

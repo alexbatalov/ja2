@@ -12,8 +12,6 @@ const PRICE_CLASS_JUNK = 0;
 const PRICE_CLASS_CHEAP = 1;
 const PRICE_CLASS_EXPENSIVE = 2;
 
-void ConvertCreatureBloodToElixir(void);
-
 UINT8 gubLastSpecialItemAddedAtElement = 255;
 
 // THIS STRUCTURE HAS UNCHANGING INFO THAT DOESN'T GET SAVED/RESTORED/RESET
@@ -54,43 +52,7 @@ ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS] = {
 ARMS_DEALER_STATUS gArmsDealerStatus[NUM_ARMS_DEALERS];
 DEALER_ITEM_HEADER gArmsDealersInventory[NUM_ARMS_DEALERS][MAXITEMS];
 
-void InitializeOneArmsDealer(UINT8 ubArmsDealer);
-
-void AddAmmoToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubShotsLeft);
-void AddItemToArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo, UINT8 ubHowMany);
-void AddSpecialItemToArmsDealerInventoryAtElement(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubElement, SPECIAL_ITEM_INFO *pSpclItemInfo);
-
-void RemoveRandomItemFromArmsDealerInventory(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubHowMany);
-
-void DailyCheckOnItemQuantities();
-void SimulateArmsDealerCustomer();
-
-BOOLEAN AdjustCertainDealersInventory();
-void LimitArmsDealersInventory(UINT8 ubArmsDealer, UINT32 uDealerItemType, UINT8 ubMaxNumberOfItemType);
-void GuaranteeAtLeastOneItemOfType(UINT8 ubArmsDealer, UINT32 uiDealerItemType);
-void GuaranteeAtLeastXItemsOfIndex(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubHowMany);
-
-BOOLEAN AllocMemsetSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubElementsNeeded);
-BOOLEAN ResizeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem, UINT8 ubElementsNeeded);
-void FreeSpecialItemArray(DEALER_ITEM_HEADER *pDealerItem);
-
-void ArmsDealerGetsFreshStock(UINT8 ubArmsDealer, UINT16 usItemIndex, UINT8 ubNumItems);
-BOOLEAN ItemContainsLiquid(UINT16 usItemIndex);
-UINT8 DetermineDealerItemCondition(UINT8 ubArmsDealer, UINT16 usItemIndex);
-
-BOOLEAN IsItemInfoSpecial(SPECIAL_ITEM_INFO *pSpclItemInfo);
-
-BOOLEAN DoesItemAppearInDealerInventoryList(UINT8 ubArmsDealer, UINT16 usItemIndex, BOOLEAN fPurchaseFromPlayer);
-
-BOOLEAN LoadIncompleteArmsDealersStatus(HWFILE hFile, BOOLEAN fIncludesElgin, BOOLEAN fIncludesManny);
-
 // INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo );
-
-void GuaranteeMinimumAlcohol(UINT8 ubArmsDealer);
-
-BOOLEAN ItemIsARocketRifle(INT16 sItemIndex);
-
-BOOLEAN GetArmsDealerShopHours(UINT8 ubArmsDealer, UINT32 *puiOpeningTime, UINT32 *puiClosingTime);
 
 void InitAllArmsDealers() {
   UINT8 ubArmsDealer;

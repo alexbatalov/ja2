@@ -57,11 +57,9 @@ UINT32 guiInsuranceBulletImage;
 
 // link to the varios pages
 MOUSE_REGION gSelectedInsuranceLinkRegion[3];
-void SelectInsuranceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // link to the home page by clicking on the small title
 MOUSE_REGION gSelectedInsuranceTitleLinkRegion;
-void SelectInsuranceTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 void GameInitInsurance() {
 }

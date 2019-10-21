@@ -28,9 +28,3 @@ const enum Enum175 {
 //#define			GETWORLDMAPNO( x, y )		( x+(MAP_WORLD_X*y) )
 
 extern StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
-
-BOOLEAN InitStrategicEngine();
-
-void HandleSoldierDeadComments(SOLDIERTYPE *pSoldier);
-
-BOOLEAN HandleStrategicDeath(SOLDIERTYPE *pSoldier);

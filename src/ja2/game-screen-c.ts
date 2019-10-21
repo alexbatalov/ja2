@@ -40,14 +40,8 @@ const NOINPUT_DELAY = 60000;
 const DEMOPLAY_DELAY = 40000;
 const RESTART_DELAY = 6000;
 
-void TacticalScreenLocateToSoldier();
-
 UINT32 guiTacticalLeaveScreenID;
 BOOLEAN guiTacticalLeaveScreen = FALSE;
-
-void HandleModalTactical();
-extern void CheckForDisabledRegionRemove();
-extern void InternalLocateGridNo(UINT16 sGridNo, BOOLEAN fForce);
 
 UINT32 MainGameScreenInit(void) {
   VIDEO_OVERLAY_DESC VideoOverlayDesc;

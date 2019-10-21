@@ -1,5 +1,3 @@
-void ValidateGameEvents();
-
 STRATEGICEVENT *gpEventList = NULL;
 
 extern UINT32 guiGameClock;

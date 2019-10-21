@@ -434,73 +434,8 @@ INT32 giAnimateRouteBaseTime = 0;
 INT32 giPotHeliPathBaseTime = 0;
 INT32 giClickHeliIconBaseTime = 0;
 
-// display the level string on the strategic map
-void DisplayLevelString(void);
-
-void ShowTownText(void);
-void DrawTownLabels(STR16 pString, STR16 pStringA, UINT16 usFirstX, UINT16 usFirstY);
-void ShowTeamAndVehicles(INT32 fShowFlags);
-BOOLEAN ShadeMapElem(INT16 sMapX, INT16 sMapY, INT32 iColor);
-BOOLEAN ShadeMapElemZoomIn(INT16 sMapX, INT16 sMapY, INT32 iColor);
-void AdjustXForLeftMapEdge(STR16 wString, INT16 *psX);
-void BlitTownGridMarkers(void);
-void BlitMineGridMarkers(void);
-void BlitSAMGridMarkers(void);
-void BlitMineIcon(INT16 sMapX, INT16 sMapY);
-void BlitMineText(INT16 sMapX, INT16 sMapY);
-extern BOOLEAN GetMouseMapXY(INT16 *psMapWorldX, INT16 *psMapWorldY);
-INT16 GetBaseSectorForCurrentTown(void);
-void RenderIconsPerSectorForSelectedTown(void);
-void MilitiaRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void MilitiaRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void CreateDestroyMilitiaSectorButtons(void);
-void ShowHighLightedSectorOnMilitiaMap(void);
-void SetMilitiaMapButtonsText(void);
-void MilitiaButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void DisplayUnallocatedMilitia(void);
-BOOLEAN IsThisMilitiaTownSectorAllowable(INT16 sSectorIndexValue);
-void DrawTownMilitiaName(void);
-void HandleShutDownOfMilitiaPanelIfPeopleOnTheCursor(INT16 sTownValue);
-void HandleEveningOutOfTroopsAmongstSectors(void);
-void CreateMilitiaPanelBottomButton(void);
-void DeleteMilitiaPanelBottomButton(void);
-void MilitiaDoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void MilitiaAutoButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void RenderShadingForUnControlledSectors(void);
-void DrawTownMilitiaForcesOnMap(void);
-void CheckAndUpdateStatesOfSelectedMilitiaSectorButtons(void);
-void HandleLowerLevelMapBlit(void);
-void ShowSAMSitesOnStrategicMap(void);
-
 // UINT8 NumActiveCharactersInSector( INT16 sSectorX, INT16 sSectorY, INT16 bSectorZ );
 // UINT8 NumFriendlyInSector( INT16 sX, INT16 sY, INT8 bZ );
-
-// callbacks
-void MilitiaBoxMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-// display potential path, yes or no?
-void DisplayThePotentialPathForHelicopter(INT16 sMapX, INT16 sMapY);
-void ShowEnemiesInSector(INT16 sSectorX, INT16 sSectorY, INT16 sNumberOfEnemies, UINT8 ubIconPosition);
-void ShowUncertainNumberEnemiesInSector(INT16 sSectorX, INT16 sSectorY);
-void HandleShowingOfEnemyForcesInSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT8 ubIconPosition);
-
-BOOLEAN CanMilitiaAutoDistribute(void);
-
-void ShowItemsOnMap(void);
-void DrawMapBoxIcon(HVOBJECT hIconHandle, UINT16 usVOIndex, INT16 sMapX, INT16 sMapY, UINT8 ubIconPosition);
-void DisplayDestinationOfHelicopter(void);
-void DrawOrta();
-void DrawTixa();
-void DrawBullseye();
-void HideExistenceOfUndergroundMapSector(UINT8 ubSectorX, UINT8 ubSectorY);
-
-BOOLEAN CanMercsScoutThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-
-BOOLEAN TraceCharAnimatedRoute(PathStPtr pPath, BOOLEAN fCheckFlag, BOOLEAN fForceUpDate);
-void AnimateRoute(PathStPtr pPath);
-
-extern void EndConfirmMapMoveMode(void);
-extern BOOLEAN CanDrawSectorCursor(void);
 
 void DrawMapIndexBigMap(BOOLEAN fSelectedCursorIsYellow) {
   // this procedure will draw the coord indexes on the zoomed out map

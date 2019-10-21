@@ -1,8 +1,3 @@
-extern void DecayPublicOpplist(INT8 bTeam);
-
-// not in overhead.h!
-extern UINT8 NumEnemyInSector();
-
 void HandleRPCDescription() {
   UINT8 ubMercsInSector[20] = { 0 };
   UINT8 ubNumMercs = 0;

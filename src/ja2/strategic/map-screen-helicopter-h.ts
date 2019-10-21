@@ -114,10 +114,6 @@ extern UINT8 gubHelicopterHitsTaken;
 extern BOOLEAN gfSkyriderSaidCongratsOnTakingSAM;
 extern UINT8 gubPlayerProgressSkyriderLastCommentedOn;
 
-// add and remove grunts from the helicopter
-BOOLEAN AddSoldierToHelicopter(SOLDIERTYPE *pSoldier);
-BOOLEAN RemoveSoldierFromHelicopter(SOLDIERTYPE *pSoldier);
-
 /* ARM: Max. fuel range system removed
 // add another sector to how far helictoper has travelled
 void AddSectorToHelicopterDistanceTravelled( void );
@@ -136,114 +132,8 @@ BOOLEAN IsSectorOutOfTheWay( INT16 sX, INT16 sY );
 
 */
 
-// how far to nearest refuel point from this sector?
-INT32 DistanceToNearestRefuelPoint(INT16 sX, INT16 sY);
-
-// location of closest
-INT32 LocationOfNearestRefuelPoint(BOOLEAN fNotifyPlayerIfNoSafeLZ);
-
-// refuel helicopter
-void ReFuelHelicopter(void);
-
-// how much will it cost for helicopter to travel through this sector?
-INT32 GetCostOfPassageForHelicopter(INT16 sX, INT16 sY);
-
-// helicopter shot down, kill all on board
-void SkyriderDestroyed(void);
-
-// have pilot say different stuff
-void HelicopterDialogue(UINT8 ubDialogueCondition);
-
-// is the helicopter available for flight?
-BOOLEAN CanHelicopterFly(void);
-
-// is the pilot alive and on our side?
-BOOLEAN IsHelicopterPilotAvailable(void);
-
-// land the helicopter here
-void LandHelicopter(void);
-
-// have helicopter take off
-void TakeOffHelicopter(void);
-
-// test whether or not a sector contains a fuel site
-BOOLEAN IsRefuelSiteInSector(INT16 sMapX, INT16 sMapY);
-
-// update which refueling sites are controlled by player & therefore available
-void UpdateRefuelSiteAvailability(void);
-
-// setup helicopter for player
-void SetUpHelicopterForPlayer(INT16 sX, INT16 sY);
-
-// the intended path of the helicopter
-INT32 DistanceOfIntendedHelicopterPath(void);
-
-// handle a little wait for hover
-void HandleHeliHoverLong(void);
-
-// handle a LONG wait in hover mode
-void HandleHeliHoverTooLong(void);
-
-// start the heli hover time
-void StartHoverTime(void);
-
-// drop off everyone in helicopter
-void DropOffEveryOneInHelicopter(void);
-
-// handle heli entering this sector
-BOOLEAN HandleHeliEnteringSector(INT16 sX, INT16 sY);
-
-// check for arrival at refuel
-BOOLEAN CheckForArrivalAtRefuelPoint(void);
-
-// set up helic, if it doesn't have a mvt group
-void SetUpHelicopterForMovement(void);
-
-// number of passengers in helicopter
-INT32 GetNumberOfPassengersInHelicopter(void);
-
-// skyrider talking to player
-void SkyRiderTalk(UINT16 usQuoteNum);
-
-// sky rider monlogue events for mapscreen
-void HandleSkyRiderMonologueEvent(UINT32 uiEventCode, UINT32 uiSpecialCode);
-
-// handle animation of sectors for mapscreen
-void HandleAnimationOfSectors(void);
-
-// check and handle skyrider monologue
-void CheckAndHandleSkyriderMonologues(void);
-
-// last sector value in helicopter's path
-INT16 LastSectorInHelicoptersPath(void);
-
 // total cost of helicopter trip
 // INT32 GetTotalCostOfHelicopterTrip( void );
 
-void HandleHelicopterOnGroundGraphic(void);
-
-void HandleHelicopterOnGroundSkyriderProfile(void);
-
-BOOLEAN IsHelicopterOnGroundAtRefuelingSite(UINT8 ubRefuelingSite);
-
-BOOLEAN HandleSAMSiteAttackOfHelicopterInSector(INT16 sSectorX, INT16 sSectorY);
-
 // will a sam site under the players control shoot down an airraid?
 // BOOLEAN WillAirRaidBeStopped( INT16 sSectorX, INT16 sSectorY );
-
-// is the helicopter capable of taking off for the player?
-BOOLEAN CanHelicopterTakeOff(void);
-
-void InitializeHelicopter(void);
-
-BOOLEAN IsSkyriderIsFlyingInSector(INT16 sSectorX, INT16 sSectorY);
-
-BOOLEAN IsGroupTheHelicopterGroup(GROUP *pGroup);
-
-INT16 GetNumSafeSectorsInPath(void);
-
-INT16 GetNumUnSafeSectorsInPath(void);
-
-BOOLEAN SoldierAboardAirborneHeli(SOLDIERTYPE *pSoldier);
-
-UINT8 MoveAllInHelicopterToFootMovementGroup(void);

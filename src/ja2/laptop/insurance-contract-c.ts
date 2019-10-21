@@ -90,54 +90,21 @@ INT16 gsMaxPlayersOnTeam;
 
 // link to the varios pages
 MOUSE_REGION gSelectedInsuranceContractLinkRegion[2];
-void SelectInsuranceContractRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 INT32 guiInsContractPrevButtonImage;
-void BtnInsContractPrevButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsContractPrevBackButton;
 
 INT32 guiInsContractNextButtonImage;
-void BtnInsContractNextButtonCallBack(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsContractNextBackButton;
 
 // Graphic for Accept, Clear button for form 1
 INT32 guiInsuranceAcceptClearForm1ButtonImage;
-void BtnInsuranceAcceptClearForm1ButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsuranceAcceptClearForm1Button;
 
-// Graphic for Accept, Clear button for form 2
-void BtnInsuranceAcceptClearForm2ButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsuranceAcceptClearForm2Button;
 
-// Graphic for Accept, Clear button for form 3
-void BtnInsuranceAcceptClearForm3ButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsuranceAcceptClearForm3Button;
 
-//
-//	Function Prototypes
-//
-BOOLEAN DisplayOrderGrid(UINT8 ubGridNumber, UINT8 ubMercID);
-INT8 GetNumberOfHireMercsStartingFromID(UINT8 ubStartMercID);
-// INT32			CalculateInsuranceCost( SOLDIERTYPE *pSoldier, BOOLEAN fHaveInsurance );
-void InsuranceContractUserTextFieldCallBack(UINT8 ubID, BOOLEAN fEntering);
-INT8 CountInsurableMercs();
-void DisableInsuranceContractNextPreviousbuttons();
-void CreateDestroyInsuranceContractFormButtons(BOOLEAN fCreate);
-void HandleAcceptButton(UINT8 ubSoldierID, UINT8 ubFormID);
-FLOAT DiffFromNormRatio(INT16 sThisValue, INT16 sNormalValue);
-void InsContractNoMercsPopupCallBack(UINT8 bExitValue);
-void BuildInsuranceArray();
-BOOLEAN MercIsInsurable(SOLDIERTYPE *pSoldier);
-// UINT32		GetContractLengthForFormNumber( UINT8 ubFormID );
-void EnableDisableInsuranceContractAcceptButtons();
-UINT32 GetTimeRemainingOnSoldiersContract(SOLDIERTYPE *pSoldier);
-UINT32 GetTimeRemainingOnSoldiersInsuranceContract(SOLDIERTYPE *pSoldier);
-void EnableDisableIndividualInsuranceContractButton(UINT8 ubMercIDForMercInForm1, UINT32 *puiAcceptButton);
-BOOLEAN CanSoldierExtendInsuranceContract(SOLDIERTYPE *pSoldier);
-INT32 CalculateSoldiersInsuranceContractLength(SOLDIERTYPE *pSoldier);
-INT32 CalcStartDayOfInsurance(SOLDIERTYPE *pSoldier);
-
-BOOLEAN AreAnyAimMercsOnTeam();
 // ppp
 
 void GameInitInsuranceContract() {

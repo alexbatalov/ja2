@@ -62,11 +62,6 @@ StringInput *gpCurrentStringDescriptor;
 
 // Local function headers
 
-void QueueEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam);
-void RedirectToString(UINT16 uiInputCharacter);
-void HandleSingleClicksAndButtonRepeats(void);
-void AdjustMouseForWindowOrigin(void);
-
 // These are the hook functions for both keyboard and mouse
 
 LRESULT CALLBACK KeyboardHandler(int Code, WPARAM wParam, LPARAM lParam) {

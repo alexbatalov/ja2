@@ -23,39 +23,6 @@ extern MINE_STATUS_TYPE gMineStatus[];
 extern BOOLEAN fMapScreenBottomDirty;
 // extern UINT8 gubMonsterMineInfestation[];
 
-// create the town/mine info box
-void CreateTownInfoBox(void);
-
-// add town text to town info box
-void AddTextToTownBox(void);
-
-// add text to mine info box
-void AddTextToMineBox(void);
-
-// add text to non-town/non-mine the other boxes
-void AddTextToBlankSectorBox(void);
-
-// add "sector" line text to any popup box
-void AddSectorToBox(void);
-
-void AddCommonInfoToBox(void);
-
-void AddItemsInSectorToBox(void);
-
-// position town/mine info box on the screen
-void PositionTownMineInfoBox(void);
-
-// add the pop up button for the map inventory pop up activation
-void AddInventoryButtonForMapPopUpBox(void);
-
-// now remove the above button
-void RemoveInventoryButtonForMapPopUpBox(void);
-
-// callback to turn on sector invneotry list
-void MapTownMineInventoryButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void MapTownMineExitButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void MinWidthOfTownMineInfoBox(void);
-
 void DisplayTownInfo(INT16 sMapX, INT16 sMapY, INT8 bMapZ) {
   // will display town info for a particular town
 

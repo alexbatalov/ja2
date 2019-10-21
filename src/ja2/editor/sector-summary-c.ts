@@ -35,25 +35,17 @@ const ALTERNATE_B2_MASK = 0x40;
 const ALTERNATE_B3_MASK = 0x80;
 const ALTERNATE_LEVELS_MASK = 0xf0;
 
-void ExtractTempFilename();
-
 INT32 giCurrLevel;
 
 BOOLEAN gfOutdatedDenied;
 UINT16 gusNumEntriesWithOutdatedOrNoSummaryInfo;
 
-void UpdateMasterProgress();
 BOOLEAN gfUpdatingNow;
 UINT16 gusTotal, gusCurrent;
 
 BOOLEAN gfMustForceUpdateAllMaps = FALSE;
 UINT16 gusNumberOfMapsToBeForceUpdated = 0;
 BOOLEAN gfMajorUpdate = FALSE;
-
-void LoadSummary(UINT8 *pSector, UINT8 ubLevel, FLOAT dMajorMapVersion);
-void RegenerateSummaryInfoForAllOutdatedMaps();
-
-void SetupItemDetailsMode(BOOLEAN fAllowRecursion);
 
 INT32 giCurrentViewLevel = ALL_LEVELS_MASK;
 
@@ -66,26 +58,6 @@ SUMMARYFILE *gpCurrentSectorSummary;
 MOUSE_REGION MapRegion;
 
 extern INT8 gbMercSlotTypes[9];
-
-extern void UpdateSummaryInfo(SUMMARYFILE *pSummary);
-
-void SummaryOkayCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryToggleGridCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryToggleProgressCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryToggleLevelCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryLoadMapCallback(GUI_BUTTON *btn, INT32 reason);
-void SummarySaveMapCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryOverrideCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryNewGroundLevelCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryNewBasementLevelCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryNewCaveLevelCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryUpdateCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryToggleAlternateCallback(GUI_BUTTON *btn, INT32 reason);
-void SummarySciFiCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryRealCallback(GUI_BUTTON *btn, INT32 reason);
-void SummaryEnemyCallback(GUI_BUTTON *btn, INT32 reason);
-void MapMoveCallback(MOUSE_REGION *reg, INT32 reason);
-void MapClickCallback(MOUSE_REGION *reg, INT32 reason);
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.
@@ -180,8 +152,6 @@ UINT32 giInitTimer;
 UINT16 gszFilename[40];
 UINT16 gszTempFilename[21];
 UINT16 gszDisplayName[21];
-
-void CalculateOverrideStatus();
 
 const enum Enum58 {
   SUMMARY_BACKGROUND,

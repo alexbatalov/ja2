@@ -12,24 +12,6 @@ const MINE_PRODUCTION_PERIOD = (3 * 60); // time seperating daily mine productio
 
 // PRIVATE PROTOTYPES
 
-// mine this mine
-INT32 MineAMine(INT8 bMineIndex);
-
-// remove actual ore from mine
-UINT32 ExtractOreFromMine(INT8 bMineIndex, UINT32 uiAmount);
-
-// get available workforce for the mine
-INT32 GetAvailableWorkForceForMineForPlayer(INT8 bMineIndex);
-
-// get workforce conscripted by enemy for mine
-INT32 GetAvailableWorkForceForMineForEnemy(INT8 bMineIndex);
-
-// how fast is the mine's workforce working for you?
-INT32 GetCurrentWorkRateOfMineForPlayer(INT8 bMineIndex);
-
-// how fast is workforce working for the enemy
-INT32 GetCurrentWorkRateOfMineForEnemy(INT8 bMineIndex);
-
 // DATA TABLES
 
 // this table holds mine values that change during the course of the game and must be saved

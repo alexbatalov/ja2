@@ -63,18 +63,6 @@ interface undo_stack {
 }
 undo_stack *gpTileUndoStack = NULL;
 
-// Map tile element manipulation functions
-BOOLEAN CopyMapElementFromWorld(MAP_ELEMENT *pMapTile, INT32 iMapIndex);
-BOOLEAN SwapMapElementWithWorld(INT32 iDestMapTileIndex, MAP_ELEMENT *pMapTile);
-
-// Undo structure functions
-BOOLEAN DeleteTopStackNode(void);
-undo_stack *DeleteThisStackNode(undo_stack *pThisNode);
-BOOLEAN DeleteStackNodeContents(undo_stack *pCurrent);
-BOOLEAN AddToUndoListCmd(INT32 iMapIndex, INT32 iCmdCount);
-void CropStackToMaxLength(INT32 iMaxCmds);
-void SmoothUndoMapTileTerrain(INT32 iWorldTile, MAP_ELEMENT *pUndoTile);
-
 BOOLEAN fNewUndoCmd = TRUE;
 BOOLEAN gfIgnoreUndoCmdsForLights = FALSE;
 
@@ -89,10 +77,6 @@ interface MapIndexBinaryTree {
 }
 
 MapIndexBinaryTree *top = NULL;
-void ClearUndoMapIndexTree();
-BOOLEAN AddMapIndexToTree(UINT16 usMapIndex);
-void CheckMapIndexForMultiTileStructures(UINT16 usMapIndex);
-void CheckForMultiTilesInTreeAndAddToUndoList(MapIndexBinaryTree *node);
 
 // Recursively deletes all nodes below the node passed including itself.
 void DeleteTreeNode(MapIndexBinaryTree **node) {

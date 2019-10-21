@@ -50,45 +50,6 @@ interface StringInput {
   pNextString: Pointer<StringInput>;
 }
 
-extern BOOLEAN InitializeInputManager(void);
-extern void ShutdownInputManager(void);
-extern BOOLEAN DequeueEvent(InputAtom *Event);
-extern void QueueEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam);
-
-extern void KeyDown(UINT32 usParam, UINT32 uiParam);
-extern void KeyUp(UINT32 usParam, UINT32 uiParam);
-
-extern void EnableDoubleClk(void);
-extern void DisableDoubleClk(void);
-extern void GetMousePos(SGPPoint *Point);
-
-extern StringInput *InitStringInput(UINT16 *pInputString, UINT16 usLength, UINT16 *pFilter);
-extern void LinkPreviousString(StringInput *pCurrentString, StringInput *pPreviousString);
-extern void LinkNextString(StringInput *pCurrentString, StringInput *pNextString);
-extern UINT16 GetStringLastInput(void);
-extern BOOLEAN StringInputHasFocus(void);
-extern BOOLEAN SetStringFocus(StringInput *pStringDescriptor);
-extern UINT16 GetCursorPositionInString(StringInput *pStringDescriptor);
-extern UINT16 GetStringInputState(void);
-extern BOOLEAN StringHasFocus(StringInput *pStringDescriptor);
-extern UINT16 *GetString(StringInput *pStringDescriptor);
-extern void EndStringInput(StringInput *pStringDescriptor);
-extern BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags);
-
-extern void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2);
-extern void RestrictMouseCursor(SGPRect *pRectangle);
-extern void FreeMouseCursor(void);
-extern BOOLEAN IsCursorRestricted(void);
-extern void GetRestrictedClipCursor(SGPRect *pRectangle);
-extern void RestoreCursorClipRect(void);
-
-void SimulateMouseMovement(UINT32 uiNewXPos, UINT32 uiNewYPos);
-BOOLEAN InputEventInside(InputAtom *Event, UINT32 uiX1, UINT32 uiY1, UINT32 uiX2, UINT32 uiY2);
-
-INT16 GetMouseWheelDeltaValue(UINT32 wParam);
-
-extern void DequeueAllKeyBoardEvents();
-
 extern BOOLEAN gfKeyState[256]; // TRUE = Pressed, FALSE = Not Pressed
 
 extern UINT16 gusMouseXPos; // X position of the mouse on screen

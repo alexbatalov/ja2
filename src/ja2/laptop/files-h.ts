@@ -1,11 +1,5 @@
 const FILES_DAT_FILE = "TEMP\\files.dat";
 
-void GameInitFiles();
-void EnterFiles();
-void ExitFiles();
-void HandleFiles();
-void RenderFiles();
-
 interface FilesUnit {
   ubCode: UINT8; // the code index in the files code table
   ubFormat: UINT8; // layout format
@@ -56,7 +50,3 @@ interface FileRecordWidth {
 }
 
 type FileRecordWidthPtr = Pointer<FileRecordWidth>;
-UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile);
-
-// add a file about this terrorist
-BOOLEAN AddFileAboutTerrorist(INT32 iProfileId);

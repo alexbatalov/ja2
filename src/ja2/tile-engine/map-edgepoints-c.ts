@@ -42,9 +42,6 @@ INT16 gsTRGridNo = 1043;
 INT16 gsBLGridNo = 24878;
 INT16 gsBRGridNo = 12635;
 
-BOOLEAN VerifyEdgepoint(SOLDIERTYPE *pSoldier, INT16 sEdgepoint);
-BOOLEAN EdgepointsClose(SOLDIERTYPE *pSoldier, INT16 sEdgepoint1, INT16 sEdgepoint2);
-
 extern UINT8 gubTacticalDirection;
 
 void TrashMapEdgepoints() {

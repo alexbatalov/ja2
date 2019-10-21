@@ -1,7 +1,5 @@
 BOOLEAN gfSetPerceivedDoorState = FALSE;
 
-BOOLEAN HandleDoorsOpenClose(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure, BOOLEAN fNoAnimations);
-
 void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fNoAnimations) {
   STRUCTURE *pStructure;
   DOOR_STATUS *pDoorStatus;

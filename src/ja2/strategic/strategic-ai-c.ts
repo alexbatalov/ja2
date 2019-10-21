@@ -174,13 +174,6 @@ UINT8 *gubPatrolReinforcementsDenied = NULL;
 // Unsaved vars
 BOOLEAN gfDisplayStrategicAILogs = FALSE;
 
-void ValidatePendingGroups();
-void ValidateWeights(INT32 iID);
-void ValidateGroup(GROUP *pGroup);
-void ValidateLargeGroup(GROUP *pGroup);
-
-extern BOOLEAN TeleportSoldier(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fForce);
-
 // The army composition defines attributes for the various garrisons.  The priority reflects how important the sector is
 // to the queen, the elite/troop percentages refer to the desired composition of the group.  The admin percentage has recently been
 // changed to reflect the starting percentage of the garrison that are administrators.  Note that elite% + troop% = 100, and the admin% is
@@ -342,68 +335,7 @@ GARRISON_GROUP gOrigGarrisonGroup[] = {
   // 57
 };
 
-// Various decision functions and utils to help make those decisions.
-BOOLEAN AdjacentSectorIsImportantAndUndefended(UINT8 ubSectorID);
-BOOLEAN HandleEmptySectorNoticedByPatrolGroup(GROUP *pGroup, UINT8 ubEmptySectorID);
-void HandleEmptySectorNoticedByGarrison(UINT8 ubGarrisonSectorID, UINT8 ubEmptySectorID);
-
-BOOLEAN PlayerForceTooStrong(UINT8 ubSectorID, UINT16 usOffensePoints, UINT16 *pusDefencePoints);
-void RequestAttackOnSector(UINT8 ubSectorID, UINT16 usDefencePoints);
-void RequestHighPriorityStagingGroupReinforcements(GROUP *pGroup);
-void RequestHighPriorityGarrisonReinforcements(INT32 iGarrisonID, UINT8 ubSoldiersRequested);
-
-BOOLEAN GarrisonCanProvideMinimumReinforcements(INT32 iGarrisonID);
-BOOLEAN GarrisonRequestingMinimumReinforcements(INT32 iGarrisonID);
-BOOLEAN PatrolRequestingMinimumReinforcements(INT32 iPatrolID);
-
-// These are the chance functions that the AI uses to see player's/militia in adjacent sectors.
-BOOLEAN AttemptToNoticeAdjacentGroupSucceeds();
-BOOLEAN AttemptToNoticeEmptySectorSucceeds();
-
-void EliminateSurplusTroopsForGarrison(GROUP *pGroup, SECTORINFO *pSector);
-void ReinitializeUnvisitedGarrisons();
-
-// Recalculates a group's weight based on any changes.
-//@@@Alex, this is possibly missing in some areas.  It is hard to ensure it is
-// everywhere with all the changes I've made.  I'm sure you could probably find some missing calls.
-void RecalculatePatrolWeight(INT32 iPatrolID);
-void RecalculateGarrisonWeight(INT32 iGarrisonID);
-
-INT32 GarrisonReinforcementsRequested(INT32 iGarrisonID, UINT8 *pubExtraReinforcements);
-INT32 PatrolReinforcementsRequested(INT32 iPatrolID);
-INT32 ReinforcementsAvailable(INT32 iGarrisonID);
-BOOLEAN ReinforcementsApproved(INT32 iGarrisonID, UINT16 *pusDefencePoints);
-void SendReinforcementsForGarrison(INT32 iDstGarrisonID, UINT16 usDefencePoints, GROUP **pOptionalGroup);
-void SendReinforcementsForPatrol(INT32 iPatrolID, GROUP **pOptionalGroup);
-
-void ClearPreviousAIGroupAssignment(GROUP *pGroup);
-
-void CalcNumTroopsBasedOnComposition(UINT8 *pubNumTroops, UINT8 *pubNumElites, UINT8 ubTotal, INT32 iCompositionID);
-void ConvertGroupTroopsToComposition(GROUP *pGroup, INT32 iCompositionID);
-void RemoveSoldiersFromGarrisonBasedOnComposition(INT32 iGarrisonID, UINT8 ubSize);
-
-// If there are any enemy groups that will be moving through this sector due, they will have to repath which
-// will cause them to avoid the sector.  Returns the number of redirected groups.
-UINT8 RedirectEnemyGroupsMovingThroughSector(UINT8 ubSectorX, UINT8 ubSectorY);
-
-// As the player's progress changes in the game, the queen will adjust her priorities accordingly.
-// Basically, increasing priorities and numbers for sectors she owns, and lowering them.
-//@@@Alex, this is tweakable.  My philosophies could be incorrect.  It might be better if instead of lowering
-// priorities and numbers for towns the queen has lost, to instead lower the priority but increase the numbers so
-// she would send larger attack forces.  This is questionable.
-void EvolveQueenPriorityPhase(BOOLEAN fForceChange);
-
 extern INT16 sWorldSectorLocationOfFirstBattle;
-
-void ReassignAIGroup(GROUP **pGroup);
-void TransferGroupToPool(GROUP **pGroup);
-void SendGroupToPool(GROUP **pGroup);
-
-// Simply orders all garrisons to take troops from the patrol groups and send the closest troops from them.  Any garrison,
-// whom there request isn't fulfilled (due to lack of troops), will recieve their reinforcements from the queen (P3).
-void MassFortifyTowns();
-
-void UpgradeAdminsToTroops();
 
 const SAIReportError = (a) => {}; // define it out
 
@@ -412,7 +344,6 @@ const enum Enum172 {
   EVASIVE,
   STAGE,
 }
-void MoveSAIGroupToSector(GROUP **pGroup, UINT8 ubSectorID, UINT32 uiMoveCode, UINT8 ubIntention);
 
 // returns the number of reinforcements permitted to be sent.  Will increased if the denied counter is non-zero.
 INT32 GarrisonReinforcementsRequested(INT32 iGarrisonID, UINT8 *pubExtraReinforcements) {

@@ -16,13 +16,9 @@ const MERC_NA_SENTENCE_WIDTH = 460 - 20;
 
 UINT32 guiNoAccountImage;
 
-// The Open Account Box button
-void BtnOpenAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiOpenAccountBoxButton;
 INT32 guiOpenAccountBoxButtonImage;
 
-// The Cancel Account Box button
-void BtnCancelBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiCancelBoxButton;
 
 void GameInitMercsNoAccount() {

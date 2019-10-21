@@ -1,12 +1,6 @@
 // MODULE FOR EXPLOSIONS
 
-// Spreads the effects of explosions...
-BOOLEAN ExpAffect(INT16 sBombGridNo, INT16 sGridNo, UINT32 uiDist, UINT16 usItem, UINT8 ubOwner, INT16 sSubsequent, BOOLEAN *pfMercHit, INT8 bLevel, INT32 iSmokeEffectID);
-
 extern INT8 gbSAMGraphicList[NUMBER_OF_SAMS];
-extern void AddToShouldBecomeHostileOrSayQuoteList(UINT8 ubID);
-extern void RecompileLocalMovementCostsForWall(INT16 sGridNo, UINT8 ubOrientation);
-void FatigueCharacter(SOLDIERTYPE *pSoldier);
 
 UINT8 ubTransKeyFrame[NUM_EXP_TYPES] = {
   0,
@@ -87,11 +81,6 @@ const NUM_EXPLOSION_SLOTS = 100;
 // GLOBAL FOR SMOKE LISTING
 EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
 UINT32 guiNumExplosions = 0;
-
-INT32 GetFreeExplosion(void);
-void RecountExplosions(void);
-void GenerateExplosionFromExplosionPointer(EXPLOSIONTYPE *pExplosion);
-void HandleBuldingDestruction(INT16 sGridNo, UINT8 ubOwner);
 
 INT32 GetFreeExplosion(void) {
   UINT32 uiCount;

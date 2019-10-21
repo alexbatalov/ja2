@@ -1,14 +1,5 @@
 extern INT32 iCurrentMapSectorZ;
 
-void AdjustWorldCenterFromRadarCoords(INT16 sRadarX, INT16 sRadarY);
-
-// render the squad list
-void RenderSquadList(void);
-
-// squad list mvt + btn callback
-void TacticalSquadListMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TacticalSquadListBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
 // the squad list font
 const SQUAD_FONT = () => COMPFONT();
 

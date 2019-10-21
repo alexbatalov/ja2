@@ -578,8 +578,6 @@ DEALER_POSSIBLE_INV gFredoInventory[] = {
 
 // prototypes
 
-INT8 GetMaxItemAmount(DEALER_POSSIBLE_INV *pInv, UINT16 usItemIndex);
-
 INT8 GetDealersMaxItemAmount(UINT8 ubDealerID, UINT16 usItemIndex) {
   switch (ubDealerID) {
     case ARMS_DEALER_TONY:

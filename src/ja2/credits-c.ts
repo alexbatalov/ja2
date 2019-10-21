@@ -235,8 +235,6 @@ STR16	gzCreditNameFunny[]=
 // Global Variables
 
 MOUSE_REGION gCrdtMouseRegions[NUM_PEOPLE_IN_CREDITS];
-void SelectCreditFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectCreditFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 UINT32 guiCreditBackGroundImage;
 UINT32 guiCreditFaces;
@@ -283,27 +281,6 @@ HWFILE ghFile;
 
 // Function Prototypes
 
-BOOLEAN EnterCreditsScreen();
-BOOLEAN ExitCreditScreen();
-void HandleCreditScreen();
-BOOLEAN RenderCreditScreen();
-void GetCreditScreenUserInput();
-void SetCreditsExitScreen(UINT32 uiScreenToGoTo);
-BOOLEAN ShutDownCreditList();
-BOOLEAN AddCreditNode(UINT32 uiType, UINT32 uiFlags, STR16 pString);
-BOOLEAN InitCreditNode();
-BOOLEAN DisplayCreditNode(CRDT_NODE *pCurrent);
-void HandleCreditNodes();
-void HandleNode_Default(CRDT_NODE *pCurrent);
-void HandleCurrentCreditNode(CRDT_NODE *pCurrent);
-BOOLEAN DeleteNode(CRDT_NODE *pNodeToDelete);
-UINT32 GetAndHandleCreditCodeFromCodeString(STR16 pzCode);
-BOOLEAN GetNextCreditFromTextFile();
-UINT32 CountNumberOfCreditNodes();
-STR16 GetNextCreditCode(STR16 pString, UINT32 *pSizeOfCode);
-void HandleCreditFlags(UINT32 uiFlags);
-void HandleCreditEyeBlinking();
-void InitCreditEyeBlinking();
 // ppp
 
 //	VSURFACE_DESC		vs_desc;

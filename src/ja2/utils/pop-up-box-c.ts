@@ -8,12 +8,6 @@ const BOTTOM_LEFT_CORNER = 2;
 const BOTTOM_EDGE = 4;
 const BOTTOM_RIGHT_CORNER = 3;
 
-BOOLEAN DrawBox(UINT32 uiCounter);
-BOOLEAN DrawBoxText(UINT32 uiCounter);
-
-void RemoveCurrentBoxPrimaryText(INT32 hStringHandle);
-void RemoveCurrentBoxSecondaryText(INT32 hStringHandle);
-
 void InitPopUpBoxList() {
   memset(&PopUpBoxList, 0, sizeof(PopUpBoxPt));
   return;

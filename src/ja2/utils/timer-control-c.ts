@@ -71,11 +71,6 @@ extern INT32 giFlashContractBaseTime;
 extern UINT32 guiFlashCursorBaseTime;
 extern INT32 giPotCharPathBaseTime;
 
-UINT32 InitializeJA2TimerCallback(UINT32 uiDelay, LPTIMECALLBACK TimerProc, UINT32 uiUser);
-
-// CALLBACKS
-void CALLBACK FlashItem(UINT uiID, UINT uiMsg, DWORD uiUser, DWORD uiDw1, DWORD uiDw2);
-
 void CALLBACK TimeProc(UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) {
   static BOOLEAN fInFunction = FALSE;
   // SOLDIERTYPE		*pSoldier;

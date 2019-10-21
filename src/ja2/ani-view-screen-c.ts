@@ -1,5 +1,3 @@
-void BuildListFile();
-
 BOOLEAN gfAniEditMode = FALSE;
 static UINT16 usStartAnim = 0;
 static UINT8 ubStartHeight = 0;

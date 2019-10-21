@@ -78,13 +78,9 @@ UINT32 guiRightColumn;
 
 // Clicking on Funeral link
 MOUSE_REGION gSelectedFuneralLinkRegion[FUNERAL_NUMBER_OF_LINKS];
-void SelectFuneralLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Clicking on rip sign to make it disappear
 MOUSE_REGION gSelectedRipSignRegion;
-void SelectRipSignRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-void DisplayFuneralRipTombStone();
 
 void GameInitFuneral() {
 }

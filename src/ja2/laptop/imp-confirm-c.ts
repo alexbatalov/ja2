@@ -81,17 +81,6 @@ UINT16 uiMouthYPositions[] = {
 
 BOOLEAN fLoadingCharacterForPreviousImpProfile = FALSE;
 
-void CreateConfirmButtons(void);
-void DestroyConfirmButtons(void);
-void GiveItemsToPC(UINT8 ubProfileId);
-void MakeProfileInvItemAnySlot(MERCPROFILESTRUCT *pProfile, UINT16 usItem, UINT8 ubStatus, UINT8 ubHowMany);
-void MakeProfileInvItemThisSlot(MERCPROFILESTRUCT *pProfile, UINT32 uiPos, UINT16 usItem, UINT8 ubStatus, UINT8 ubHowMany);
-INT32 FirstFreeBigEnoughPocket(MERCPROFILESTRUCT *pProfile, UINT16 usItem);
-
-// callbacks
-void BtnIMPConfirmNo(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPConfirmYes(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPConfirm(void) {
   // create buttons
   CreateConfirmButtons();

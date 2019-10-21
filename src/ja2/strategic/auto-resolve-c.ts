@@ -2,7 +2,6 @@
 
 //#define INVULNERABILITY
 
-extern BOOLEAN AutoReload(SOLDIERTYPE *pSoldier);
 extern HVSURFACE ghFrameBuffer;
 BOOLEAN gfTransferTacticalOppositionToAutoResolve = FALSE;
 
@@ -224,60 +223,9 @@ const enum Enum122 {
   MILITIA3F_FACE,
 }
 
-extern void CreateDestroyMapInvButton();
-
 // Autoresolve sets this variable which defaults to -1 when not needed.
 INT16 gsEnemyGainedControlOfSectorID = -1;
 INT16 gsCiviliansEatenByMonsters = -1;
-
-// Autoresolve handling -- keyboard input, callbacks
-void HandleAutoResolveInput();
-void PauseButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void PlayButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void FastButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void FinishButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void RetreatButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void BandageButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void DoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void MercCellMouseMoveCallback(MOUSE_REGION *reg, INT32 reason);
-void MercCellMouseClickCallback(MOUSE_REGION *reg, INT32 reason);
-
-void DetermineBandageButtonState();
-
-// Surrender interface
-void SetupDoneInterface();
-void SetupSurrenderInterface();
-void HideSurrenderInterface();
-void AcceptSurrenderCallback(GUI_BUTTON *btn, INT32 reason);
-void RejectSurrenderCallback(GUI_BUTTON *btn, INT32 reason);
-
-// Precalculations for interface positioning and the calculation routines to do so.
-void CalculateAutoResolveInfo();
-void CalculateSoldierCells(BOOLEAN fReset);
-void CalculateRowsAndColumns();
-void CreateAutoResolveInterface();
-void RemoveAutoResolveInterface(BOOLEAN fDeleteForGood);
-INT32 CalcIndexFromColRowsXY(INT32 iMaxCols, INT32 iMaxRows, INT32 iCol, INT32 iRow);
-
-// Battle system routines
-void DetermineTeamLeader(BOOLEAN fFriendlyTeam);
-void CalculateAttackValues();
-void ProcessBattleFrame();
-BOOLEAN IsBattleOver();
-BOOLEAN AttemptPlayerCapture();
-
-void AutoBandageFinishedCallback(UINT8 ubResult);
-
-// Debug utilities
-void ResetAutoResolveInterface();
-void CreateTempPlayerMerc();
-void DrawDebugText(SOLDIERCELL *pCell);
-
-// Rendering routines
-void RenderAutoResolve();
-void RenderSoldierCellHealth(SOLDIERCELL *pCell);
-void RenderSoldierCell(SOLDIERCELL *pCell);
-void RenderSoldierCellBars(SOLDIERCELL *pCell);
 
 // Dynamic globals -- to conserve memory, all global variables are allocated upon entry
 // and deleted before we leave.
@@ -298,8 +246,6 @@ void PlayAutoResolveSampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolu
     PlayJA2SampleFromFile(szFileName, usRate, ubVolume, ubLoops, uiPan);
   }
 }
-
-extern void ClearPreviousAIGroupAssignment(GROUP *pGroup);
 
 void EliminateAllMercs() {
   SOLDIERCELL *pAttacker = NULL;

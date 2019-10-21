@@ -58,34 +58,11 @@ INT32 giMapBorderButtonsImage[6] = {
 // UINT32 guiMapBorderLandRaiseButtons[ 2 ] = { -1, -1 };
 // UINT32 guiMapBorderLandRaiseButtonsImage[ 2 ];
 
-void DeleteMapBorderButtons(void);
-BOOLEAN CreateButtonsForMapBorder(void);
-
 // void MapScrollButtonMvtCheck( void );
 // BOOLEAN ScrollButtonsDisplayingHelpMessage( void );
 // void UpdateScrollButtonStatesWhileScrolling( void );
 
-// set button states to match map flags
-void InitializeMapBorderButtonStates(void);
-
-// blit in the level marker
-void DisplayCurrentLevelMarker(void);
-
-extern void CancelMapUIMessage(void);
-
-// callbacks
-void BtnTownCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMineCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnItemCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnAircraftCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnTeamCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMilitiaCallback(GUI_BUTTON *btn, INT32 reason);
 // void BtnZoomCallback(GUI_BUTTON *btn,INT32 reason);
-
-void BtnGenericMouseMoveButtonCallbackForMapBorder(GUI_BUTTON *btn, INT32 reason);
-void LevelMarkerBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void CommonBtnCallbackBtnDownChecks(void);
 
 /*
 void BtnScrollNorthMapScreenCallback( GUI_BUTTON *btn,INT32 reason );

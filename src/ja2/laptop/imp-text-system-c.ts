@@ -37,10 +37,6 @@ INT32 iIMPQuestionLengths[25] = {
   5,
 };
 
-// function headers
-void PrintIMPPersonalityQuizQuestionAndAnsers(void);
-void OffSetQuestionForFemaleSpecificQuestions(INT32 *iCurrentOffset);
-
 const QTN_FIRST_COLUMN_X = 80;
 const QTN_SECOND_COLUMN_X = 320;
 

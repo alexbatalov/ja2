@@ -1,2 +1,0 @@
-BOOLEAN InitMainMenu();
-void ClearMainMenu();

@@ -21,16 +21,6 @@ BOOLEAN gfInMsgBox = FALSE;
 extern BOOLEAN fInMapMode;
 extern BOOLEAN gfOverheadMapDirty;
 
-void OKMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void YESMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void ContractMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void LieMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void NOMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void NumberedMsgBoxCallback(GUI_BUTTON *btn, INT32 reason);
-void MsgBoxClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-UINT32 ExitMsgBox(INT8 ubExitCode);
-UINT16 GetMSgBoxButtonWidth(INT32 iButtonImage);
-
 SGPRect gOldCursorLimitRectangle;
 
 MESSAGE_BOX_STRUCT gMsgBox;
@@ -39,7 +29,6 @@ BOOLEAN gfStartedFromGameScreen = FALSE;
 BOOLEAN gfStartedFromMapScreen = FALSE;
 BOOLEAN fRestoreBackgroundForMessageBox = FALSE;
 BOOLEAN gfDontOverRideSaveBuffer = TRUE; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
-extern void HandleTacticalUILoseCursorFromOtherScreen();
 extern STR16 pUpdatePanelButtons[];
 
 CHAR16 gzUserDefinedButton1[128];

@@ -1,8 +1,5 @@
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 
-void SetTilesetThreeTerrainValues();
-void SetTilesetFourTerrainValues();
-
 TILESET gTilesets[NUM_TILESETS];
 
 void InitEngineTilesets() {

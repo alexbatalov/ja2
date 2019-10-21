@@ -405,145 +405,68 @@ MOUSE_REGION gQuestDebugSysScreenRegions;
 // void QuestDebugSysScreenRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
 UINT32 guiQuestDebugExitButton;
-void BtnQuestDebugExitButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 // checkbox for weather to show all npc or just npc in sector
 UINT32 guiQuestDebugAllOrSectorNPCToggle;
-void BtnQuestDebugAllOrSectorNPCToggleCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugCurNPCButton;
-void BtnQuestDebugCurNPCButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugCurItemButton;
-void BtnQuestDebugCurItemButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugAddNpcToLocationButton;
-void BtnQuestDebugAddNpcToLocationButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugAddItemToLocationButton;
-void BtnQuestDebugAddItemToLocationButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugGiveItemToNPCButton;
-void BtnQuestDebugGiveItemToNPCButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugChangeDayButton;
-void BtnQuestDebugChangeDayButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugViewNPCInvButton;
-void BtnQuestDebugViewNPCInvButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugRestoreNPCInvButton;
-void BtnQuestDebugRestoreNPCInvButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugNPCLogButtonButton;
-void BtnQuestDebugNPCLogButtonButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugNPCRefreshButtonButton;
-void BtnQuestDebugNPCRefreshButtonButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQuestDebugStartMercTalkingButtonButton;
-void BtnQuestDebugStartMercTalkingButtonButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 // checkbox for weather to add the merc to the players team
 UINT32 guiQuestDebugAddNpcToTeamToggle;
-void BtnQuestDebugAddNpcToTeamToggleCallback(GUI_BUTTON *btn, INT32 reason);
 
 // checkbox for weather have rpc say the sector description
 UINT32 guiQuestDebugRPCSaySectorDescToggle;
-void BtnQuestDebugRPCSaySectorDescToggleCallback(GUI_BUTTON *btn, INT32 reason);
 
 MOUSE_REGION gSelectedNpcListRegion[QUEST_DBS_MAX_DISPLAYED_ENTRIES];
-void SelectNpcListRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectNpcListMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 MOUSE_REGION gScrollAreaRegion[QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR];
-void ScrollAreaRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void ScrollAreaMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 MOUSE_REGION gScrollArrowsRegion[2];
-void ScrollArrowsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Text entry Disable the screen
 MOUSE_REGION gQuestTextEntryDebugDisableScreenRegion;
-void QuestDebugTextEntryDisableScreenRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Ok button on the text entry form
 UINT32 guiQuestDebugTextEntryOkBtn;
-void BtnQuestDebugTextEntryOkBtnButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 // Ok button on the NPC inventory form
 UINT32 guiQuestDebugNPCInventOkBtn;
-void BtnQuestDebugNPCInventOkBtnButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 // Mouse regions for the Quests
 MOUSE_REGION gQuestListRegion[QUEST_DBS_NUM_DISPLAYED_QUESTS];
-void ScrollQuestListRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Mouse regions for the Facts
 MOUSE_REGION gFactListRegion[QUEST_DBS_NUM_DISPLAYED_FACTS];
-void ScrollFactListRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 UINT32 guiQDPgUpButtonButton;
-void BtnQDPgUpButtonButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiQDPgDownButtonButton;
-void BtnQDPgDownButtonButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
 //*******************************
 //
 //	Function Prototypes
 //
 //*******************************
-
-BOOLEAN EnterQuestDebugSystem();
-void RenderQuestDebugSystem();
-void ExitQuestDebugSystem();
-void HandleQuestDebugSystem();
-void GetUserInput();
-void ColorFillQuestDebugScreenScreen(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-void QuestDebug_ExitTactical();
-void QuestDebug_EnterTactical();
-void DisplayQuestInformation();
-void DisplayFactInformation();
-void DisplaySectionLine();
-void DisplayQuestList();
-void DisplayFactList();
-void DisplayNPCInfo();
-BOOLEAN CreateDestroyDisplaySelectNpcDropDownBox();
-void DrawQdsScrollRectangle();
-void CalcPositionOfNewScrollBoxLocation();
-void DisplaySelectedListBox();
-void DisplaySelectedNPC();
-void DisplaySelectedItem();
-void TextEntryBox(STR16 pString, TEXT_ENTRY_CALLBACK TextEntryCallBack);
-BOOLEAN CreateDestroyDisplayTextEntryBox(UINT8 ubAction, STR16 pString, TEXT_ENTRY_CALLBACK TextEntryCallBack);
-void InitQuestDebugTextInputBoxes();
-void DestroyQuestDebugTextInputBoxes();
-void AddNPCToGridNo(INT32 iGridNo);
-void AddItemToGridNo(INT32 iGridNo);
-void StartMercTalkingFromQuoteNum(INT32 iGridNo);
-void AddKeyToGridNo(INT32 iGridNo);
-void ChangeDayNumber(INT32 iDayToChangeTo);
-void CreateDestroyDisplayNPCInventoryPopup(UINT8 ubAction);
-void AddNPCsInSectorToArray();
-void ChangeQuestState(INT32 iNumber);
-void ChangeFactState(INT32 iNumber);
-void DisplayCurrentGridNo();
-void EnableQDSButtons();
-BOOLEAN DoQDSMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT8 ubFlags, MSGBOX_CALLBACK ReturnCallback);
-void IncrementActiveDropDownBox(INT16 sIncrementValue);
-INT16 IsMercInTheSector(UINT16 usMercID);
-void RefreshAllNPCInventory();
-void SetQDSMercProfile();
-void HandleQDSTalkingMerc();
-void DisplayQDSCurrentlyQuoteNum();
-void SetTalkingMercPauseState(BOOLEAN fState);
-UINT8 WhichPanelShouldTalkingMercUse();
-void EndMercTalking();
-void EnableFactMouseRegions();
-void DisableFactMouseRegions();
-INT32 GetMaxNumberOfQuotesToPlay();
-void GetDebugLocationString(UINT16 usProfileID, STR16 pzText);
 
 // ppp
 

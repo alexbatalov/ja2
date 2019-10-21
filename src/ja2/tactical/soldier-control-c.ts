@@ -108,8 +108,6 @@ BATTLESNDS_STRUCT gBattleSndsData[] = {
   { "enem", 0, 1, 1, 1, 0 },
 };
 
-BOOLEAN IsValidSecondHandShot(SOLDIERTYPE *pSoldier);
-
 UINT8 bHealthStrRanges[] = {
   15,
   30,
@@ -155,40 +153,6 @@ PaletteReplacementType *guipPaletteReplacements = NULL;
 extern BOOLEAN fReDrawFace;
 extern UINT8 gubWaitingForAllMercsToExitCode;
 BOOLEAN gfGetNewPathThroughPeople = FALSE;
-
-// LOCAL FUNCTIONS
-// DO NOT CALL UNLESS THROUGH EVENT_SetSoldierPosition
-UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady);
-BOOLEAN CheckForFullStruct(INT16 sGridNo, UINT16 *pusIndex);
-void SetSoldierLocatorOffsets(SOLDIERTYPE *pSoldier);
-void CheckForFullStructures(SOLDIERTYPE *pSoldier);
-BOOLEAN InitNewSoldierState(SOLDIERTYPE *pSoldier, UINT8 ubNewState, UINT16 usStartingAniCode);
-UINT16 GetNewSoldierStateFromNewStance(SOLDIERTYPE *pSoldier, UINT8 ubDesiredStance);
-void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier);
-void AdjustForFastTurnAnimation(SOLDIERTYPE *pSoldier);
-UINT16 SelectFireAnimation(SOLDIERTYPE *pSoldier, UINT8 ubHeight);
-void SelectFallAnimation(SOLDIERTYPE *pSoldier);
-BOOLEAN FullStructAlone(INT16 sGridNo, UINT8 ubRadius);
-void SoldierGotHitGunFire(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation);
-void SoldierGotHitBlade(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation);
-void SoldierGotHitPunch(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation);
-void SoldierGotHitExplosion(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation);
-UINT8 CalcScreamVolume(SOLDIERTYPE *pSoldier, UINT8 ubCombinedLoss);
-void PlaySoldierFootstepSound(SOLDIERTYPE *pSoldier);
-void HandleSystemNewAISituation(SOLDIERTYPE *pSoldier, BOOLEAN fResetABC);
-
-UINT16 *CreateEnemyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale, BOOLEAN fAdjustGreen);
-UINT16 *CreateEnemyGreyGlow16BPPPalette(SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale, BOOLEAN fAdjustGreen);
-
-void SoldierBleed(SOLDIERTYPE *pSoldier, BOOLEAN fBandagedBleed);
-INT32 CheckBleeding(SOLDIERTYPE *pSoldier);
-
-void EVENT_InternalSetSoldierDesiredDirection(SOLDIERTYPE *pSoldier, UINT16 usNewDirection, BOOLEAN fInitalMove, UINT16 usAnimState);
-
-UINT32 SleepDartSuccumbChance(SOLDIERTYPE *pSoldier);
-
-void EnableDisableSoldierLightEffects(BOOLEAN fEnableLights);
-void SetSoldierPersonalLightLevel(SOLDIERTYPE *pSoldier);
 
 void HandleVehicleMovementSound(SOLDIERTYPE *pSoldier, BOOLEAN fOn) {
   VEHICLETYPE *pVehicle = &(pVehicleList[pSoldier->bVehicleID]);
@@ -2571,9 +2535,6 @@ UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady) {
 
   return INVALID_ANIMATION;
 }
-
-extern SOLDIERTYPE *FreeUpAttackerGivenTarget(UINT8 ubID, UINT8 ubTargetID);
-extern SOLDIERTYPE *ReduceAttackBusyGivenTarget(UINT8 ubID, UINT8 ubTargetID);
 
 // ATE: THIS FUNCTION IS USED FOR ALL SOLDIER TAKE DAMAGE FUNCTIONS!
 void EVENT_SoldierGotHit(SOLDIERTYPE *pSoldier, UINT16 usWeaponIndex, INT16 sDamage, INT16 sBreathLoss, UINT16 bDirection, UINT16 sRange, UINT8 ubAttackerID, UINT8 ubSpecial, UINT8 ubHitLocation, INT16 sSubsequent, INT16 sLocationGrid) {
@@ -5331,8 +5292,6 @@ UINT8 SoldierTakeDamage(SOLDIERTYPE *pSoldier, INT8 bHeight, INT16 sLifeDeduct, 
 
   return ubCombinedLoss;
 }
-
-extern BOOLEAN IsMercSayingDialogue(UINT8 ubProfileID);
 
 BOOLEAN InternalDoMercBattleSound(SOLDIERTYPE *pSoldier, UINT8 ubBattleSoundID, INT8 bSpecialCode) {
   SGPFILENAME zFilename;

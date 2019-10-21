@@ -137,13 +137,9 @@ BOOLEAN gfOnUsedPage;
 
 UINT16 gusOldItemNumOnTopOfPage = 65535;
 
-// The menu bar at the bottom that changes to different pages
-void BtnBobbyRPageMenuCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRPageMenu[NUM_CATALOGUE_BUTTONS];
 INT32 guiBobbyRPageMenuImage;
 
-// The next and previous buttons
-void BtnBobbyRNextPreviousPageCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRPreviousPage;
 INT32 guiBobbyRPreviousPageImage;
 
@@ -152,51 +148,17 @@ INT32 guiBobbyRNextPageImage;
 
 // Big Image Mouse region
 MOUSE_REGION gSelectedBigImageRegion[BOBBYR_NUM_WEAPONS_ON_PAGE];
-void SelectBigImageRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-// The order form button
-void BtnBobbyROrderFormCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyROrderForm;
 INT32 guiBobbyROrderFormImage;
 
-// The Home button
-void BtnBobbyRHomeButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRHome;
 INT32 guiBobbyRHomeImage;
 
 // Link from the title
 MOUSE_REGION gSelectedTitleImageLinkRegion;
-void SelectTitleImageLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 UINT32 guiTempCurrentMode;
-
-BOOLEAN DisplayNonGunWeaponInfo(UINT16 usItemIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-BOOLEAN DisplayArmourInfo(UINT16 usItemIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-BOOLEAN DisplayMiscInfo(UINT16 usItemIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-BOOLEAN DisplayGunInfo(UINT16 usItemIndex, UINT16 usTextPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-BOOLEAN DisplayAmmoInfo(UINT16 usItemIndex, UINT16 usPosY, BOOLEAN fUsed, UINT16 usBobbyIndex);
-
-BOOLEAN DisplayBigItemImage(UINT16 ubIndex, UINT16 usPosY);
-// void InitFirstAndLastGlobalIndex(UINT32 ubItemClassMask);
-UINT16 DisplayCostAndQty(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight, UINT16 usBobbyIndex, BOOLEAN fUsed);
-UINT16 DisplayRof(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-UINT16 DisplayDamage(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-UINT16 DisplayRange(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-UINT16 DisplayMagazine(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-void DisplayItemNameAndInfo(UINT16 usPosY, UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed);
-UINT16 DisplayWeight(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-UINT16 DisplayCaliber(UINT16 usPosY, UINT16 usIndex, UINT16 usFontHeight);
-void CreateMouseRegionForBigImage(UINT16 usPosY, UINT8 ubCount, INT16 *pItemNumbers);
-void PurchaseBobbyRayItem(UINT16 usItemNumber);
-UINT8 CheckIfItemIsPurchased(UINT16 usItemNumber);
-UINT8 GetNextPurchaseNumber();
-void UnPurchaseBobbyRayItem(UINT16 usItemNumber);
-UINT32 CalculateTotalPurchasePrice();
-void DisableBobbyRButtons();
-void CalcFirstIndexForPage(STORE_INVENTORY *pInv, UINT32 uiItemClass);
-void OutOfStockMessageBoxCallBack(UINT8 bExitValue);
-UINT8 CheckPlayersInventoryForGunMatchingGivenAmmoID(INT16 sItemID);
-void BobbyrRGunsHelpTextDoneCallBack(void);
 
 // ppp
 

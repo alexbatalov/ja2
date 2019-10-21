@@ -226,91 +226,12 @@ UINT32 guiUIFullTargetFlags;
 BOOLEAN gfUIConfirmExitArrows;
 INT16 gsJumpOverGridNo;
 
-UINT32 HandleTacticalUI(void);
-UINT32 UIHandleEndTurn(UI_EVENT *pUIEvent);
-
 BOOLEAN gfUIShowCurIntTile;
 
 SGPRect gRubberBandRect;
 BOOLEAN gRubberBandActive;
 
-void EndMenuEvent(UINT32 uiEvent);
-void SetUIKeyboardHook(UIKEYBOARD_HOOK KeyboardHookFnc);
-void HandleObjectHighlighting();
-
 BOOLEAN gfUIForceReExamineCursorData;
 
 INT16 guiCreateGuyIndex;
 INT16 guiCreateBadGuyIndex;
-
-// FUNCTIONS IN INPUT MODULES
-void GetKeyboardInput(UINT32 *puiNewEvent);
-void GetPolledKeyboardInput(UINT32 *puiNewEvent);
-
-void GetTBMouseButtonInput(UINT32 *puiNewEvent);
-void GetTBMousePositionInput(UINT32 *puiNewEvent);
-void QueryTBLeftButton(UINT32 *puiNewEvent);
-void QueryTBRightButton(UINT32 *puiNewEvent);
-void HandleStanceChangeFromUIKeys(UINT8 ubAnimHeight);
-void HandleKeyInputOnEnemyTurn();
-
-void GetRTMouseButtonInput(UINT32 *puiNewEvent);
-void GetRTMousePositionInput(UINT32 *puiNewEvent);
-void QueryRTLeftButton(UINT32 *puiNewEvent);
-void QueryRTRightButton(UINT32 *puiNewEvent);
-
-void AdjustSoldierCreationStartValues();
-
-BOOLEAN SelectedMercCanAffordAttack();
-BOOLEAN SelectedMercCanAffordMove();
-void GetMercClimbDirection(UINT8 ubSoldierID, BOOLEAN *pfGoDown, BOOLEAN *pfGoUp);
-
-void ToggleHandCursorMode(UINT32 *puiNewEvent);
-void ToggleTalkCursorMode(UINT32 *puiNewEvent);
-void ToggleLookCursorMode(UINT32 *puiNewEvent);
-
-void UIHandleSoldierStanceChange(UINT8 ubSoldierID, INT8 bNewStance);
-void GetCursorMovementFlags(UINT32 *puiCursorFlags);
-
-BOOLEAN HandleUIMovementCursor(SOLDIERTYPE *pSoldier, UINT32 uiCursorFlags, UINT16 usMapPos, UINT32 uiFlags);
-BOOLEAN UIMouseOnValidAttackLocation(SOLDIERTYPE *pSoldier);
-
-BOOLEAN UIOkForItemPickup(SOLDIERTYPE *pSoldier, INT16 sGridNo);
-
-BOOLEAN IsValidTalkableNPCFromMouse(UINT8 *pubSoldierID, BOOLEAN fGive, BOOLEAN fAllowMercs, BOOLEAN fCheckCollapsed);
-BOOLEAN IsValidTalkableNPC(UINT8 ubSoldierID, BOOLEAN fGive, BOOLEAN fAllowMercs, BOOLEAN fCheckCollapsed);
-
-BOOLEAN HandleTalkInit();
-
-BOOLEAN HandleCheckForExitArrowsInput(BOOLEAN fAdjustForConfirm);
-
-void SetUIBusy(UINT8 ubID);
-void UnSetUIBusy(UINT8 ubID);
-
-UINT32 UIHandleLUIEndLock(UI_EVENT *pUIEvent);
-
-void BeginDisplayTimedCursor(UINT32 uiCursorID, UINT32 uiDelay);
-
-void HandleHandCursorClick(UINT16 usMapPos, UINT32 *puiNewEvent);
-INT8 HandleMoveModeInteractiveClick(UINT16 usMapPos, UINT32 *puiNewEvent);
-
-BOOLEAN HandleUIReloading(SOLDIERTYPE *pSoldier);
-
-UINT32 UIHandleChangeLevel(UI_EVENT *pUIEvent);
-BOOLEAN UIHandleOnMerc(BOOLEAN fMovementMode);
-
-void ChangeInterfaceLevel(INT16 sLevel);
-
-void EndRubberBanding();
-void ResetMultiSelection();
-void EndMultiSoldierSelection(BOOLEAN fAcknowledge);
-void StopRubberBandedMercFromMoving();
-
-BOOLEAN SelectedGuyInBusyAnimation();
-
-void GotoLowerStance(SOLDIERTYPE *pSoldier);
-void GotoHeigherStance(SOLDIERTYPE *pSoldier);
-
-BOOLEAN IsValidJumpLocation(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fCheckForPath);
-
-void PopupAssignmentMenuInTactical(SOLDIERTYPE *pSoldier);

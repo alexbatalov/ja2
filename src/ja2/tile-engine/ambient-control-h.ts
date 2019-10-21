@@ -1,15 +1,5 @@
-BOOLEAN LoadAmbientControlFile(UINT8 ubAmbientID);
-
-void HandleNewSectorAmbience(UINT8 ubAmbientID);
-UINT32 SetupNewAmbientSound(UINT32 uiAmbientID);
-
-void StopAmbients();
-void DeleteAllAmbients();
-
 extern AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
 extern INT16 gsNumAmbData;
-
-BOOLEAN SetSteadyStateAmbience(UINT8 ubAmbience);
 
 const SOUND_NAME_SIZE = 256;
 const NUM_SOUNDS_PER_TIMEFRAME = 8;

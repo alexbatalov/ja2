@@ -1,10 +1,3 @@
-void EnterIMPAttributeSelection(void);
-void RenderIMPAttributeSelection(void);
-void ExitIMPAttributeSelection(void);
-void HandleIMPAttributeSelection(void);
-
-void RenderAttributeBoxes(void);
-
 extern BOOLEAN fReviewStats;
 extern BOOLEAN fSkillAtZeroWarning;
 

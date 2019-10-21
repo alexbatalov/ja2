@@ -39,14 +39,6 @@ NPCQuoteInfo *gpCivQuoteInfoArray[NUM_CIVQUOTE_SECTORS] = { NULL };
 
 UINT8 gubTeamPenalty;
 
-BOOLEAN EnsureQuoteFileLoaded(UINT8 ubNPC);
-NPCQuoteInfo *LoadQuoteFile(UINT8 ubNPC);
-UINT8 NPCConsiderQuote(UINT8 ubNPC, UINT8 ubMerc, UINT8 ubApproach, UINT8 ubQuoteNum, UINT8 ubTalkDesire, NPCQuoteInfo *pNPCQuoteInfoArray);
-UINT8 NPCConsiderReceivingItemFromMerc(UINT8 ubNPC, UINT8 ubMerc, OBJECTTYPE *pObj, NPCQuoteInfo *pNPCQuoteInfoArray, NPCQuoteInfo **ppResultQuoteInfo, UINT8 *pubQuoteNum);
-void PCsNearNPC(UINT8 ubNPC);
-void TriggerClosestMercWhoCanSeeNPC(UINT8 ubNPC, NPCQuoteInfo *pQuotePtr);
-BOOLEAN NPCHasUnusedRecordWithGivenApproach(UINT8 ubNPC, UINT8 ubApproach);
-
 INT8 gbFirstApproachFlags[4] = {
   0x01,
   0x02,
@@ -93,8 +85,6 @@ UINT8 gubAlternateNPCFileNumsForElliotMeanwhiles[] = {
   196,
 };
 
-extern void PauseAITemporarily(void);
-extern void PayOffSkyriderDebtIfAny();
 //
 // NPC QUOTE LOW LEVEL ROUTINES
 //

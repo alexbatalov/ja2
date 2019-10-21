@@ -18,12 +18,6 @@ const MERC_BACKGROUND_HEIGHT = 200;
 // the max number of pop up boxes availiable to user
 const MAX_NUMBER_OF_POPUP_BOXES = 10;
 
-// attempt to add box to pop up box list
-INT32 AddPopUpBoxToList(MercPopUpBox *pPopUpTextBox);
-
-// grab box with this id value
-MercPopUpBox *GetPopUpBoxIndex(INT32 iId);
-
 // both of the below are index by the enum for thier types - background and border in
 // MercTextBox.h
 
@@ -129,9 +123,6 @@ BOOLEAN ShutDownPopUpBoxes() {
 
   return TRUE;
 }
-
-// Pass in the background index, and pointers to the font and shadow color
-void GetMercPopupBoxFontColor(UINT8 ubBackgroundIndex, UINT8 *pubFontColor, UINT8 *pubFontShadowColor);
 
 // Tactical Popup
 BOOLEAN LoadTextMercPopupImages(UINT8 ubBackgroundIndex, UINT8 ubBorderIndex) {

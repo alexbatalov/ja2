@@ -369,64 +369,40 @@ BOOLEAN gfAimMemberCanMercSayOpeningQuote = TRUE;
 
 // Graphic for following
 INT32 guiPreviousContactNextButtonImage;
-// Previous Button
-void BtnPreviousButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giPreviousButton;
 
-// Contact
-void BtnContactButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giContactButton;
 
-// NExt
-void BtnNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giNextButton;
 
 // Video conference buttons
 INT32 guiVideoConferenceButtonImage[3];
 
-// Contract Length Button
-void BtnContractLengthButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giContractLengthButton[3];
 
-// BuyEquipment Button
-void BtnBuyEquipmentButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giBuyEquipmentButton[2];
 
-// Authorize Payment Button
-void BtnAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giAuthorizeButton[2];
 
-// Hang up Button
-void BtnHangUpButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giHangUpButton;
 
-// PopupBox button
-void BtnPopUpOkButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiPopUpOkButton;
 INT32 guiPopUpImage;
 
-// First Contact Screen, Goto Hire merc Button
-void BtnFirstContactButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giFirstContactButton[2];
 
-// Leave Message merc Button
-void BtnAnsweringMachineButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giAnsweringMachineButton[2];
 
 // X to Close the video conference Button
 INT32 giXToCloseVideoConfButtonImage;
-void BtnXToCloseVideoConfButtonCallback(GUI_BUTTON *btn, INT32 reason);
 INT32 giXToCloseVideoConfButton;
 
 // Mouse Regions
 // Clicking on guys Face
 MOUSE_REGION gSelectedFaceRegion;
-void SelectFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectFaceMovementRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Clicking To shut merc up
 MOUSE_REGION gSelectedShutUpMercRegion;
-void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 //*******************************************
 //
@@ -434,51 +410,10 @@ void SelectShutUpMercRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 //
 //*******************************************
 
-BOOLEAN UpdateMercInfo(void);
-BOOLEAN LoadMercBioInfo(UINT8 ubIndex, STR16 pInfoString, STR16 pAddInfo);
-BOOLEAN DisplayMercsInventory(UINT8 ubMercID);
-BOOLEAN DisplayMercsFace();
-void DisplayMercStats();
-INT8 AimMemberHireMerc();
-BOOLEAN DisplayVideoConferencingDisplay();
-BOOLEAN DisplayMercsVideoFace();
-void DisplaySelectLights(BOOLEAN fContractDown, BOOLEAN fBuyEquipDown);
-UINT32 DisplayMercChargeAmount();
-BOOLEAN InitCreateDeleteAimPopUpBox(UINT8 ubFlag, STR16 sString1, STR16 sString2, UINT16 usPosX, UINT16 usPosY, UINT8 ubData);
-BOOLEAN InitVideoFaceTalking(UINT8 ubMercID, UINT16 usQuoteNum);
-BOOLEAN InitVideoFace(UINT8 ubMercID);
-BOOLEAN DisplaySnowBackground();
-UINT8 WillMercAcceptCall();
-void HandleVideoDistortion();
-UINT8 DisplayDistortionLine(UINT8 ubMode, UINT32 uiImageIdentifier, UINT8 ubMaxImages);
-UINT8 DisplayPixelatedImage(UINT8 ubMaxImages);
-void HandleMercAttitude();
-void StopMercTalking();
-UINT8 DisplayTransparentSnow(UINT8 ubMode, UINT32 uiImageIdentifier, UINT8 ubMaxImages, BOOLEAN bForward);
-
-BOOLEAN InitDeleteVideoConferencePopUp();
-BOOLEAN DeleteVideoConfPopUp();
-BOOLEAN HandleCurrentVideoConfMode();
-
-BOOLEAN EnableDisableCurrentVideoConferenceButtons(BOOLEAN fEnable);
-
 // BOOLEAN DisplayAnimatedAnsweringMachineMsg( BOOLEAN fInit, UINT8 ubNumSubImages);
 // BOOLEAN HandleAnsweringMachineMessage();
 
-BOOLEAN CanMercBeHired();
-BOOLEAN DisplayMovingTitleBar(BOOLEAN fForward, BOOLEAN fInit);
-BOOLEAN DisplayBlackBackground(UINT8 ubMaxNumOfLoops);
-void DisplayDots(UINT16 usNameX, UINT16 usNameY, UINT16 usStatX, STR16 pString);
-
-void DelayMercSpeech(UINT8 ubMercID, UINT16 usQuoteNum, UINT16 usDelay, BOOLEAN fNewQuote, BOOLEAN fReset);
-void DisplayPopUpBoxExplainingMercArrivalLocationAndTimeCallBack(UINT8 bExitValue);
-void DisplayAimMemberClickOnFaceHelpText();
-
 // ppp
-
-UINT8 GetStatColor(INT8 bStat);
-
-void WaitForMercToFinishTalkingOrUserToClick();
 
 //*******************************************
 //

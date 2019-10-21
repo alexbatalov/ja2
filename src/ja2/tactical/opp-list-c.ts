@@ -1,20 +1,3 @@
-extern void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier);
-void MakeBloodcatsHostile(void);
-
-void OurNoise(UINT8 ubNoiseMaker, INT16 sGridNo, INT8 bLevel, UINT8 ubTerrType, UINT8 ubVolume, UINT8 ubNoiseType);
-void TheirNoise(UINT8 ubNoiseMaker, INT16 sGridNo, INT8 bLevel, UINT8 ubTerrType, UINT8 ubVolume, UINT8 ubNoiseType);
-void ProcessNoise(UINT8 ubNoiseMaker, INT16 sGridNo, INT8 bLevel, UINT8 ubTerrType, UINT8 ubBaseVolume, UINT8 ubNoiseType);
-UINT8 CalcEffVolume(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, UINT8 ubNoiseType, UINT8 ubBaseVolume, UINT8 bCheckTerrain, UINT8 ubTerrType1, UINT8 ubTerrType2);
-void HearNoise(SOLDIERTYPE *pSoldier, UINT8 ubNoiseMaker, UINT16 sGridNo, INT8 bLevel, UINT8 ubVolume, UINT8 ubNoiseType, UINT8 *ubSeen);
-void TellPlayerAboutNoise(SOLDIERTYPE *pSoldier, UINT8 ubNoiseMaker, INT16 sGridNo, INT8 bLevel, UINT8 ubVolume, UINT8 ubNoiseType, UINT8 ubNoiseDir);
-void OurTeamSeesSomeone(SOLDIERTYPE *pSoldier, INT8 bNumReRevealed, INT8 bNumNewEnemies);
-
-void IncrementWatchedLoc(UINT8 ubID, INT16 sGridNo, INT8 bLevel);
-void SetWatchedLocAsUsed(UINT8 ubID, INT16 sGridNo, INT8 bLevel);
-void DecayWatchedLocs(INT8 bTeam);
-
-void HandleManNoLongerSeen(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOpponent, INT8 *pPersOL, INT8 *pbPublOL);
-
 //#define TESTOPPLIST
 
 // for ManSeesMan()

@@ -1,16 +1,3 @@
-void CalculateMedicalDepositRefund(SOLDIERTYPE *pSoldier);
-void NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(SOLDIERTYPE *pSoldier, BOOLEAN fAddRehireButton);
-void MercDepartEquipmentBoxCallBack(UINT8 bExitValue);
-BOOLEAN HandleFiredDeadMerc(SOLDIERTYPE *pSoldier);
-void HandleExtendMercsContract(SOLDIERTYPE *pSoldier);
-void HandleSoldierLeavingWithLowMorale(SOLDIERTYPE *pSoldier);
-void HandleSoldierLeavingForAnotherContract(SOLDIERTYPE *pSoldier);
-// BOOLEAN SoldierWantsToDelayRenewalOfContract( SOLDIERTYPE *pSoldier );
-void HandleNotifyPlayerCantAffordInsurance(void);
-void HandleNotifyPlayerCanAffordInsurance(SOLDIERTYPE *pSoldier, UINT8 ubLength, INT32 iCost);
-void ExtendMercInsuranceContractCallBack(UINT8 bExitValue);
-void HandleUniqueEventWhenPlayerLeavesTeam(SOLDIERTYPE *pSoldier);
-
 UINT32 uiContractTimeMode = 0;
 
 SOLDIERTYPE *pLeaveSoldier = NULL;

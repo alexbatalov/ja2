@@ -10,10 +10,6 @@ const GET_WINFONT = () => (giCurWinFont);
 const SET_USE_WINFONTS = (fSet) => (gfUseWinFonts = fSet);
 const SET_WINFONT = (fFont) => (giCurWinFont = fFont);
 
-// ATE: A few winfont wrappers..
-UINT16 WFGetFontHeight(INT32 FontNum);
-INT16 WFStringPixLength(UINT16 *string, INT32 UseFont);
-
 // Global variables for video objects
 INT32 gpLargeFontType1;
 HVOBJECT gvoLargeFontType1;
@@ -168,8 +164,3 @@ const FONT_BURGUNDY = 172;
 const FONT_LTKHAKI = 88;
 const FONT_KHAKI = 198;
 const FONT_DKKHAKI = 201;
-
-BOOLEAN InitializeFonts();
-void ShutdownFonts();
-
-BOOLEAN SetFontShade(UINT32 uiFontID, INT8 bColorID);

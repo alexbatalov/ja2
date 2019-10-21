@@ -1,12 +1,3 @@
-void GetPlayerKeyBoardInputForIMPHomePage(void);
-void DisplayPlayerActivationString(void);
-void ProcessPlayerInputActivationString(void);
-void GetPlayerKeyBoardInputForIMPHomePage(void);
-void HandleTextEvent(UINT32 uiKey);
-void CreateIMPHomePageButtons(void);
-void RemoveIMPHomePageButtons(void);
-void DisplayActivationStringCursor(void);
-
 INT32 GlowColorsList[][3] = {
   { 0, 0, 0 },
   { 0, 25, 0 },
@@ -20,9 +11,6 @@ INT32 GlowColorsList[][3] = {
   { 0, 225, 0 },
   { 0, 255, 0 },
 };
-
-// btn callbacks
-void BtnIMPAboutUsCallback(GUI_BUTTON *btn, INT32 reason);
 
 // position defines
 const IMP_PLAYER_ACTIVATION_STRING_X = LAPTOP_SCREEN_UL_X + 261;

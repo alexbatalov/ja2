@@ -39,7 +39,6 @@ UINT8 gubLinkPages[] = {
 
 // Clicking on guys Face
 MOUSE_REGION gSelectedLinkRegion[AIM_LINK_NUM_LINKS];
-void SelectLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 void GameInitAimLinks() {
 }

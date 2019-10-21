@@ -137,15 +137,6 @@ HANDLE hFindInfoHandle[20] = {
 //
 //**************************************************************************
 
-void W32toSGPFileFind(GETFILESTRUCT *pGFStruct, WIN32_FIND_DATA *pW32Struct);
-
-void FileDebugPrint(void);
-HANDLE GetHandleToRealFile(HWFILE hFile, BOOLEAN *pfDatabaseFile);
-HWFILE CreateFileHandle(HANDLE hRealFile, BOOLEAN fDatabaseFile);
-void DestroyFileHandle(HWFILE hFile);
-void BuildFileDirectory(void);
-INT32 GetFilesInDirectory(HCONTAINER hStack, CHAR *, HANDLE hFile, WIN32_FIND_DATA *pFind);
-
 //**************************************************************************
 //
 //				Functions

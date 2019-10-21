@@ -14,33 +14,7 @@ const PAUSE_ALL_AI_DELAY = 1500;
 BOOLEAN gfPauseAllAI = FALSE;
 INT32 giPauseAllAITimer = 0;
 
-extern void RecalculateOppCntsDueToNoLongerNeutral(SOLDIERTYPE *pSoldier);
-extern void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier);
-extern void HandleExplosionQueue(void);
-extern void UpdateForContOverPortrait(SOLDIERTYPE *pSoldier, BOOLEAN fOn);
-extern void HandleSystemNewAISituation(SOLDIERTYPE *pSoldier, BOOLEAN fResetABC);
-
-extern BOOLEAN NPCInRoom(UINT8 ubProfileID, UINT8 ubRoomID);
-
 extern INT8 gbInvalidPlacementSlot[NUM_INV_SLOTS];
-
-void ResetAllMercSpeeds();
-void HandleBloodForNewGridNo(SOLDIERTYPE *pSoldier);
-BOOLEAN HandleAtNewGridNo(SOLDIERTYPE *pSoldier, BOOLEAN *pfKeepMoving);
-void DoCreatureTensionQuote(SOLDIERTYPE *pSoldier);
-void HandleCreatureTenseQuote();
-
-void RemoveSoldierFromTacticalSector(SOLDIERTYPE *pSoldier, BOOLEAN fAdjustSelected);
-void HandleEndDemoInCreatureLevel();
-void DeathTimerCallback(void);
-void CaptureTimerCallback(void);
-
-extern void CheckForAlertWhenEnemyDies(SOLDIERTYPE *pDyingSoldier);
-extern void PlaySoldierFootstepSound(SOLDIERTYPE *pSoldier);
-extern void HandleKilledQuote(SOLDIERTYPE *pKilledSoldier, SOLDIERTYPE *pKillerSoldier, INT16 sGridNo, INT8 bLevel);
-extern UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady);
-
-extern void PlayStealthySoldierFootstepSound(SOLDIERTYPE *pSoldier);
 
 extern BOOLEAN gfSurrendered;
 
@@ -197,18 +171,6 @@ COLORVAL bDefaultTeamColors[MAXTEAMS] = {
   FROMRGB(255, 255, 255),
   FROMRGB(0, 0, 255),
 };
-
-// UTILITY FUNCTIONS
-INT8 NumActiveAndConsciousTeamMembers(UINT8 ubTeam);
-UINT8 NumEnemyInSector();
-UINT8 NumEnemyInSectorExceptCreatures();
-UINT8 NumCapableEnemyInSector();
-
-BOOLEAN KillIncompacitatedEnemyInSector();
-BOOLEAN CheckForLosingEndOfBattle();
-void EndBattleWithUnconsciousGuysCallback(UINT8 bExitValue);
-UINT8 NumEnemyInSectorNotDeadOrDying();
-UINT8 NumBloodcatsInSectorNotDeadOrDying();
 
 UINT8 gubWaitingForAllMercsToExitCode = 0;
 INT8 gbNumMercsUntilWaitingOver = 0;
@@ -3219,8 +3181,6 @@ UINT32 EnterTacticalDemoMode() {
 CHAR8 *GetSceneFilename() {
   return gzLevelFilenames[gubCurrentScene];
 }
-
-extern BOOLEAN InternalOkayToAddStructureToWorld(INT16 sBaseGridNo, INT8 bLevel, DB_STRUCTURE_REF *pDBStructureRef, INT16 sExclusionID, BOOLEAN fIgnorePeople);
 
 // NB if making changes don't forget to update NewOKDestinationAndDirection
 INT16 NewOKDestination(SOLDIERTYPE *pCurrSoldier, INT16 sGridNo, BOOLEAN fPeopleToo, INT8 bLevel) {

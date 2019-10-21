@@ -17,18 +17,6 @@ BOOLEAN fCreateFinishOkButton = FALSE;
 UINT32 giIMPPersonalityFinishButton[2];
 UINT32 giIMPPersonalityFinishButtonImage[2];
 
-// function definitions
-void CreateIMPPersonalityFinishButtons(void);
-void CheckIfConfirmHasBeenSelectedAndTimeDelayHasPassed(void);
-void DestroyIMPersonalityFinishButtons(void);
-void CreatePersonalityFinishOkButton(void);
-void DestroyPersonalityFinishOkButton(void);
-
-// callbacks
-void BtnIMPPersonalityFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityFinishOkCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPPersonalityFinish(void) {
   // reset states
   fCreateFinishOkButton = FALSE;

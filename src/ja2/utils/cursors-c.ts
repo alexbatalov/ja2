@@ -5,14 +5,8 @@ INT16 gsMouseGlobalYOffsets[NUM_MOUSE_LEVELS] = {
   50,
 };
 
-void UpdateFlashingCursorFrames(UINT32 uiCursorIndex);
-
 extern MOUSE_REGION gDisableRegion;
 extern MOUSE_REGION gUserTurnRegion;
-
-void BltJA2CursorData();
-
-void DrawMouseText();
 
 CursorFileData CursorFileDatabase[] = {
   { "CURSORS\\cursor.sti", FALSE, 0, 0, 0, NULL },

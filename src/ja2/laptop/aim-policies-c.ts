@@ -121,15 +121,10 @@ const enum Enum68 {
 
 // Toc menu mouse regions
 MOUSE_REGION gSelectedPolicyTocMenuRegion[NUM_AIM_POLICY_TOC_BUTTONS];
-void SelectPolicyTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-// Agree/Disagree menu Buttons regions
-void BtnPoliciesAgreeButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiPoliciesAgreeButton[2];
 INT32 guiPoliciesButtonImage;
 
-// Bottom Menu Buttons
-void BtnPoliciesMenuButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiPoliciesMenuButton[AIM_POLICY_MENU_BUTTON_AMOUNT];
 INT32 guiPoliciesMenuButtonImage;
 
@@ -145,23 +140,6 @@ UINT8 gubPoliciesAgreeButtonDown;
 UINT8 gubAimPolicyMenuButtonDown = 255;
 BOOLEAN gfExitingAimPolicy;
 BOOLEAN AimPoliciesSubPagesVisitedFlag[NUM_AIM_POLICY_PAGES];
-
-BOOLEAN InitAimPolicyMenuBar(void);
-BOOLEAN ExitAimPolicyMenuBar(void);
-BOOLEAN InitAimPolicyTocMenu(void);
-BOOLEAN ExitAimPolicyTocMenu(void);
-BOOLEAN DrawAimPolicyMenu();
-BOOLEAN DisplayAimPolicyStatement(void);
-BOOLEAN DisplayAimPolicyTitleText(void);
-BOOLEAN InitAgreementRegion(void);
-BOOLEAN ExitAgreementButton(void);
-void DisableAimPolicyButton();
-void ResetAimPolicyButtons();
-void ChangingAimPoliciesSubPage(UINT8 ubSubPageNumber);
-
-BOOLEAN DisplayAimPolicyTitle(UINT16 usPosY, UINT8 ubPageNum, FLOAT fNumber);
-UINT16 DisplayAimPolicyParagraph(UINT16 usPosY, UINT8 ubPageNum, FLOAT fNumber);
-UINT16 DisplayAimPolicySubParagraph(UINT16 usPosY, UINT8 ubPageNum, FLOAT fNumber);
 
 void GameInitAimPolicies() {
 }

@@ -11,26 +11,6 @@ MOUSE_REGION pIMPMainPageMouseRegions[4];
 
 UINT32 guiCHARACTERPORTRAITFORMAINPAGE;
 
-// function definitions
-void CreateIMPMainPageButtons(void);
-void DeleteIMPMainPageButtons(void);
-void BtnIMPMainPageBackCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPageBeginCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPagePersonalityCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPageAttributesCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
-void ShadeUnSelectableButtons(void);
-void UpDateIMPMainPageButtons(void);
-void BeginMessageBoxCallBack(UINT8 bExitValue);
-void DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(void);
-void CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(void);
-void IMPMainPageNotSelectableBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-BOOLEAN LoadCharacterPortraitForMainPage(void);
-
-BOOLEAN CheckIfFinishedCharacterGeneration(void);
-
 // this is the current state of profiling the player is in.
 /*
   0 - Beginning

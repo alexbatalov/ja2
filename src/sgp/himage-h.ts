@@ -121,42 +121,9 @@ const SGPGetGValue = (rgb) => ((BYTE)(((UINT16)(rgb)) >> 8));
 //
 // *****************************************************************************
 
-// This function will return NULL if it fails, and call SetLastError() to set
-// error information
-HIMAGE CreateImage(SGPFILENAME ImageFile, UINT16 fContents);
-
-// This function destroys the HIMAGE structure as well as its contents
-BOOLEAN DestroyImage(HIMAGE hImage);
-
-// This function releases data allocated to various parts of the image based
-// on the contents flags passed as a parameter.  If a contents flag is given
-// and the image does not contain that data, no error is raised
-BOOLEAN ReleaseImageData(HIMAGE hImage, UINT16 fContents);
-
-// This function will attept to Load data from an existing image object's filename
-// In this way, dynamic loading of image data can be done
-BOOLEAN LoadImageData(HIMAGE hImage, UINT16 fContents);
-
-// This function will run the appropriate copy function based on the type of HIMAGE object
-BOOLEAN CopyImageToBuffer(HIMAGE hImage, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth, UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPRect *srcRect);
-
 // The following blitters are used by the function above as well as clients
 
-BOOLEAN Copy8BPPImageTo8BPPBuffer(HIMAGE hImage, BYTE *pDestBuf, UINT16 usDestWidth, UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPRect *srcRect);
-BOOLEAN Copy8BPPImageTo16BPPBuffer(HIMAGE hImage, BYTE *pDestBuf, UINT16 usDestWidth, UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPRect *srcRect);
-BOOLEAN Copy16BPPImageTo16BPPBuffer(HIMAGE hImage, BYTE *pDestBuf, UINT16 usDestWidth, UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPRect *srcRect);
-
-// This function will create a buffer in memory of ETRLE data, excluding palette
-BOOLEAN GetETRLEImageData(HIMAGE hImage, ETRLEData *pBuffer);
-
 // UTILITY FUNCTIONS
-
-// Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
-UINT16 *Create16BPPPaletteShaded(SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale, UINT32 bscale, BOOLEAN mono);
-UINT16 *Create16BPPPalette(SGPPaletteEntry *pPalette);
-UINT16 Get16BPPColor(UINT32 RGBValue);
-UINT32 GetRGBColor(UINT16 Value16BPP);
-SGPPaletteEntry *ConvertRGBToPaletteEntry(UINT8 sbStart, UINT8 sbEnd, UINT8 *pOldPalette);
 
 extern UINT16 gusAlphaMask;
 extern UINT16 gusRedMask;
@@ -165,9 +132,3 @@ extern UINT16 gusBlueMask;
 extern INT16 gusRedShift;
 extern INT16 gusBlueShift;
 extern INT16 gusGreenShift;
-
-// used to convert 565 RGB data into different bit-formats
-void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-void ConvertRGBDistribution565ToAny(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);

@@ -1,9 +1,3 @@
-void GameInitFinances();
-void EnterFinances();
-void ExitFinances();
-void HandleFinances();
-void RenderFinances();
-
 const FINANCES_DATA_FILE = "TEMP\\finances.dat";
 
 // the financial structure
@@ -51,9 +45,3 @@ const enum Enum80 {
 type FinanceUnitPtr = Pointer<FinanceUnit>;
 
 extern FinanceUnitPtr pFinanceListHead;
-// extern INT32 iCurrentBalance;
-UINT32 AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT32 iAmount);
-void InsertDollarSignInToString(STR16 pString);
-void InsertCommasForDollarFigure(STR16 pString);
-INT32 GetTodaysDaysIncome(void);
-INT32 GetProjectedTotalDailyIncome(void);

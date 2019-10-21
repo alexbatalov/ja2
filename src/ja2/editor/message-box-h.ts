@@ -7,10 +7,6 @@ const enum Enum52 {
 extern UINT8 gubMessageBoxStatus;
 extern BOOLEAN gfMessageBoxResult;
 
-void CreateMessageBox(UINT16 *wzString);
-BOOLEAN MessageBoxHandled();
-void RemoveMessageBox();
-
 // NOTES:
 // Rewrote the damn thing.  It is better now because you have less management issues.
 // In your screen's main loop, instead of using the previous method, you would use the following syntax:

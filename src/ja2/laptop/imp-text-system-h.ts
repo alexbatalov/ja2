@@ -1,8 +1,3 @@
-void LoadAndDisplayIMPText(INT16 sStartX, INT16 sStartY, INT16 sLineLength, INT16 sIMPTextRecordNumber, UINT32 uiFont, UINT8 ubColor, BOOLEAN fShadow, UINT32 uiFlags);
-void InitializeImpRecordLengthList(void);
-void PrintImpText(void);
-void PrintIMPPersonalityQuizQuestionAndAnsers(void);
-
 // buttons text
 extern STR16 pImpButtonText[];
 

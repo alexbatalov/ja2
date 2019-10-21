@@ -32,24 +32,6 @@ INT32 giAutoBandagesSoldierFaces[2 * MAX_CHARACTER_COUNT];
 // has the button for autobandage end been setup yet
 BOOLEAN fAutoEndBandageButtonCreated = FALSE;
 
-void BeginAutoBandageCallBack(UINT8 bExitValue);
-void CancelAutoBandageCallBack(UINT8 bExitValue);
-
-// the update box for autobandaging mercs
-void CreateTerminateAutoBandageButton(INT16 sX, INT16 sY);
-void DestroyTerminateAutoBandageButton(void);
-void DisplayAutoBandageUpdatePanel(void);
-void EndAutobandageButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void SetUpAutoBandageUpdatePanel(void);
-BOOLEAN AddFacesToAutoBandageBox(void);
-BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(INT32 iIndex, INT16 sCurrentXPosition, INT16 sCurrentYPosition);
-void StopAutoBandageButtonCallback(GUI_BUTTON *btn, INT32 reason);
-BOOLEAN RemoveFacesForAutoBandage(void);
-
-extern BOOLEAN CanCharacterAutoBandageTeammate(SOLDIERTYPE *pSoldier);
-extern BOOLEAN CanCharacterBeAutoBandagedByTeammate(SOLDIERTYPE *pSoldier);
-extern UINT8 NumEnemyInSector();
-
 void BeginAutoBandage() {
   INT32 cnt;
   BOOLEAN fFoundAGuy = FALSE;

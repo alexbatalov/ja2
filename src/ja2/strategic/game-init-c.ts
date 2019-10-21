@@ -1,12 +1,6 @@
-// Temp function
-void QuickSetupOfMercProfileItems(UINT32 uiCount, UINT8 ubProfileIndex);
-BOOLEAN QuickGameMemberHireMerc(UINT8 ubCurrentSoldier);
 extern UINT32 guiExitScreen;
 extern UINT32 uiMeanWhileFlags;
 extern BOOLEAN gfGamePaused;
-
-extern UNDERGROUND_SECTORINFO *FindUnderGroundSector(INT16 sMapX, INT16 sMapY, UINT8 bMapZ);
-extern InitVehicles();
 
 UINT8 gubScreenCount = 0;
 

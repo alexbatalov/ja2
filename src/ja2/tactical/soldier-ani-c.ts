@@ -5,8 +5,6 @@ const TIME_FOR_RANDOM_ANIM_CHECK = 2;
 
 BOOLEAN gfLastMercTalkedAboutKillingID = NOBODY;
 
-extern void AddFuelToVehicle(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVehicle);
-
 DOUBLE gHopFenceForwardSEDist[NUMSOLDIERBODYTYPES] = {
   2.2,
   0.7,
@@ -62,21 +60,9 @@ DOUBLE gClimbUpRoofDistGoingLower[NUMSOLDIERBODYTYPES] = {
   1,
 };
 
-BOOLEAN HandleSoldierDeath(SOLDIERTYPE *pSoldier, BOOLEAN *pfMadeCorpse);
-
-void CheckForAndHandleSoldierIncompacitated(SOLDIERTYPE *pSoldier);
-BOOLEAN CheckForImproperFireGunEnd(SOLDIERTYPE *pSoldier);
-BOOLEAN OKHeightDest(SOLDIERTYPE *pSoldier, INT16 sNewGridNo);
-BOOLEAN HandleUnjamAnimation(SOLDIERTYPE *pSoldier);
-
-extern void HandleSystemNewAISituation(SOLDIERTYPE *pSoldier, BOOLEAN fResetABC);
-extern void PlaySoldierFootstepSound(SOLDIERTYPE *pSoldier);
-extern UINT8 NumCapableEnemyInSector();
 extern BOOLEAN gfKillingGuysForLosingBattle;
 
 extern UINT8 gubInterruptProvoker;
-
-extern UINT16 PickSoldierReadyAnimation(SOLDIERTYPE *pSoldier, BOOLEAN fEndReady);
 
 BOOLEAN AdjustToNextAnimationFrame(SOLDIERTYPE *pSoldier) {
   EV_S_FIREWEAPON SFireWeapon;

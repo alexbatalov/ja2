@@ -524,21 +524,6 @@ interface AnimationStructureType {
 AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES];
 AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS];
 
-// Functions
-BOOLEAN InitAnimationSystem();
-BOOLEAN DeInitAnimationSystem();
-BOOLEAN LoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState);
-BOOLEAN UnLoadAnimationSurface(UINT16 usSoldierID, UINT16 usSurfaceIndex);
-void ClearAnimationSurfacesUsageHistory(UINT16 usSoldierID);
-
-void DeleteAnimationProfiles();
-BOOLEAN LoadAnimationProfiles();
-
-STRUCTURE_FILE_REF *GetAnimationStructureRef(UINT16 usSoldierID, UINT16 usSurfaceIndex, UINT16 usAnimState);
-STRUCTURE_FILE_REF *GetDefaultStructureRef(UINT16 usSoldierID);
-
 // Profile data
 ANIM_PROF *gpAnimProfiles;
 UINT8 gubNumAnimProfiles;
-
-void ZeroAnimSurfaceCounts();

@@ -1,21 +1,5 @@
 BOOLEAN gfInSectorExitMenu = FALSE;
 
-void CheckLoadMapCallback(GUI_BUTTON *btn, INT32 reason);
-void SingleMoveCallback(GUI_BUTTON *btn, INT32 reason);
-void AllMoveCallback(GUI_BUTTON *btn, INT32 reason);
-
-void OKCallback(GUI_BUTTON *btn, INT32 reason);
-void CancelCallback(GUI_BUTTON *btn, INT32 reason);
-
-void SectorExitBackgroundCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void SingleRegionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void AllRegionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void LoadRegionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SingleRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void AllRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void LoadRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
 interface EXIT_DIALOG_STRUCT {
   BackRegion: MOUSE_REGION;
   SingleRegion: MOUSE_REGION;

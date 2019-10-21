@@ -1,12 +1,3 @@
-// Category tabs of the editor buttons
-void InitEditorTerrainToolbar();
-void InitEditorBuildingsToolbar();
-void InitEditorItemsToolbar();
-void InitEditorMercsToolbar();
-void InitEditorMapInfoToolbar();
-void InitEditorOptionsToolbar();
-void InitEditorItemStatsButtons();
-
 void InitEditorItemStatsButtons() {
   iEditorButton[ITEMSTATS_PANEL] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 480, 361, 160, 99, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   SpecifyDisabledButtonStyle(iEditorButton[ITEMSTATS_PANEL], DISABLED_STYLE_NONE);

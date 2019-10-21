@@ -2,11 +2,6 @@
 INT32 giIMPPersonalityEntranceButton[1];
 INT32 giIMPPersonalityEntranceButtonImage[1];
 
-// function definitions
-void CreateIMPPersonalityEntranceButtons(void);
-void DestroyIMPPersonalityEntranceButtons(void);
-void BtnIMPPersonalityEntranceDoneCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPPersonalityEntrance(void) {
   // create buttons needed
   CreateIMPPersonalityEntranceButtons();

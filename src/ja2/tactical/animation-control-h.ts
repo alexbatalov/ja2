@@ -521,18 +521,3 @@ RANDOM_ANI_DEF gRandomAnimDefs[TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE];
 
 // Corpse Defines
 extern UINT16 gubAnimSurfaceCorpseID[TOTALBODYTYPES][NUMANIMATIONSTATES];
-
-// FUNCTIONS
-BOOLEAN LoadAnimationStateInstructions();
-void InitAnimationSurfacesPerBodytype();
-BOOLEAN IsAnimationValidForBodyType(SOLDIERTYPE *pSoldier, UINT16 usNewState);
-BOOLEAN SubstituteBodyTypeAnimation(SOLDIERTYPE *pSoldier, UINT16 usTestState, UINT16 *pusSubState);
-INT8 GetBodyTypePaletteSubstitutionCode(SOLDIERTYPE *pSoldier, UINT8 ubBodyType, CHAR8 *zColFilename);
-
-BOOLEAN SetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState);
-UINT16 DetermineSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState);
-UINT16 LoadSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState);
-
-// This function could be wrapped in a debug marco, since it only returns pSoldier->ubAnimSurface but
-// Also does some debug checking
-UINT16 GetSoldierAnimationSurface(SOLDIERTYPE *pSoldier, UINT16 usAnimState);

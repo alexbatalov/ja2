@@ -75,8 +75,6 @@ INT32 giSubTitleWinFont;
 
 BOOLEAN gfFontsInit = FALSE;
 
-UINT16 CreateFontPaletteTables(HVOBJECT pObj);
-
 extern UINT16 gzFontName[32];
 
 BOOLEAN InitializeFonts() {

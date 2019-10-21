@@ -2,16 +2,6 @@
 
 extern BOOLEAN gfFadeOut;
 
-// These functions shouldn't be used anywhere else...
-extern BOOLEAN GameEventsPending(UINT32 uiAdjustment);
-extern void ProcessPendingGameEvents(UINT32 uiAdjustment, UINT8 ubWarpCode);
-void PauseOfClockBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void ScreenMaskForGamePauseBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-void CreateDestroyScreenMaskForPauseGame(void);
-
-void SetClockResolutionToCompressMode(INT32 iCompressMode);
-
 // is the clock pause region created currently?
 BOOLEAN fClockMouseRegionCreated = FALSE;
 
@@ -28,7 +18,6 @@ BOOLEAN gfJustFinishedAPause = FALSE;
 // clock mouse region
 MOUSE_REGION gClockMouseRegion;
 MOUSE_REGION gClockScreenMaskMouseRegion;
-void AdvanceClock(UINT8 ubWarpCode);
 
 extern BOOLEAN fMapScreenBottomDirty;
 

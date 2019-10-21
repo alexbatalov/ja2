@@ -1,8 +1,5 @@
 extern UINT8 gbPlayerNum;
 
-// local prototypes
-UINT8 CalcImportantSectorControl(void);
-
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 void StatChange(SOLDIERTYPE *pSoldier, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason) {
   Assert(pSoldier != NULL);

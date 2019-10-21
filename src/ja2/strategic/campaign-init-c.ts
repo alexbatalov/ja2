@@ -1,6 +1,3 @@
-extern void InitStrategicMovementCosts();
-void InitKnowFacilitiesFlags();
-
 UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoTail = NULL;
 
 UNDERGROUND_SECTORINFO *NewUndergroundNode(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ) {

@@ -31,12 +31,8 @@ UINT8 str[128];
 GUI_BUTTON *gpAnchoredButton;
 GUI_BUTTON *gpPrevAnchoredButton;
 BOOLEAN gfAnchoredState;
-void ReleaseAnchorMode();
 
 INT8 gbDisabledButtonStyle;
-void DrawHatchOnButton(GUI_BUTTON *b);
-void DrawShadeOnButton(GUI_BUTTON *b);
-void DrawDefaultOnButton(GUI_BUTTON *b);
 
 GUI_BUTTON *gpCurrentFastHelpButton;
 
@@ -76,7 +72,6 @@ BOOLEAN fDisableHelpTextRestoreFlag = FALSE;
 
 BOOLEAN gfDelayButtonDeletion = FALSE;
 BOOLEAN gfPendingButtonDeletion = FALSE;
-void RemoveButtonsMarkedForDeletion();
 
 extern MOUSE_REGION *MSYS_PrevRegion;
 extern MOUSE_REGION *MSYS_CurrRegion;

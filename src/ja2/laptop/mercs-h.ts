@@ -39,28 +39,6 @@ const enum Enum105 {
   MERC_CAME_FROM_HIRE_PAGE,
 }
 
-void GameInitMercs();
-BOOLEAN EnterMercs();
-void ExitMercs();
-void HandleMercs();
-void RenderMercs();
-
-BOOLEAN InitMercBackGround();
-BOOLEAN DrawMecBackGround();
-BOOLEAN RemoveMercBackGround();
-void DailyUpdateOfMercSite(UINT16 usDate);
-UINT8 GetMercIDFromMERCArray(UINT8 ubMercID);
-void DisplayTextForSpeckVideoPopUp(STR16 pString);
-
-BOOLEAN IsMercMercAvailable(UINT8 ubMercID);
-
-void HandlePlayerHiringMerc(UINT8 ubHiredMercID);
-void EnterInitMercSite();
-
-void GetMercSiteBackOnline();
-
-void DisableMercSiteButton();
-
 extern UINT16 gusMercVideoSpeckSpeech;
 
 extern UINT8 gubArrivedFromMercSubSite;
@@ -73,9 +51,3 @@ extern UINT8 gubCurMercIndex;
 // extern	UINT8			gubNumDaysTillFirstMercArrives;
 
 extern BOOLEAN gfJustHiredAMercMerc;
-
-void InitializeNumDaysMercArrive();
-
-void NewMercsAvailableAtMercSiteCallBack();
-
-void CalcAproximateAmountPaidToSpeck();

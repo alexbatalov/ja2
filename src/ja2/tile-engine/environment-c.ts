@@ -135,9 +135,6 @@ BOOLEAN gfDoLighting = FALSE;
 UINT8 gubDesertTemperature = 0;
 UINT8 gubGlobalTemperature = 0;
 
-// local prototypes
-void EnvDoLightning(void);
-
 // polled by the game to handle time/atmosphere changes from gamescreen
 void EnvironmentController(BOOLEAN fCheckForLights) {
   UINT32 uiOldWorldHour;

@@ -162,8 +162,6 @@ STRUCTURE *gpLocalStructure[MAX_LOCAL_STRUCTURES];
 UINT32 guiLocalStructureCTH[MAX_LOCAL_STRUCTURES];
 UINT8 gubLocalStructureNumTimesHit[MAX_LOCAL_STRUCTURES];
 
-BOOLEAN CalculateLOSNormal(STRUCTURE *pStructure, INT8 bLOSX, INT8 bLOSY, INT8 bLOSZ, FLOAT dDeltaX, FLOAT dDeltaY, FLOAT dDeltaZ, FLOAT *pdNormalX, FLOAT *pdNormalY, FLOAT *pdNormalZ);
-
 extern UINT8 gubMaterialArmour[];
 
 FIXEDPT FloatToFixed(FLOAT dN) {

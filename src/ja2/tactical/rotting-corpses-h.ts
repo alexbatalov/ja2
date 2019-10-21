@@ -119,50 +119,8 @@ interface ROTTING_CORPSE {
   iID: INT32;
 }
 
-INT32 AddRottingCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef);
-
-void RemoveCorpse(INT32 iCorpseID);
-void RemoveCorpses();
-
-BOOLEAN TurnSoldierIntoCorpse(SOLDIERTYPE *pSoldier, BOOLEAN fRemoveMerc, BOOLEAN fCheckForLOS);
-
-INT16 FindNearestRottingCorpse(SOLDIERTYPE *pSoldier);
-
-void AllMercsOnTeamLookForCorpse(ROTTING_CORPSE *pCorpse, INT8 bTeam);
-void MercLooksForCorpses(SOLDIERTYPE *pSoldier);
-void RebuildAllCorpseShadeTables();
-
-UINT16 CreateCorpsePaletteTables(ROTTING_CORPSE *pCorpse);
-
-INT16 FindNearestAvailableGridNoForCorpse(ROTTING_CORPSE_DEFINITION *pCorpseDef, INT8 ubRadius);
-
-void HandleRottingCorpses();
-void AddCrowToCorpse(ROTTING_CORPSE *pCorpse);
-
-void VaporizeCorpse(INT16 sGridNo, UINT16 usStructureID);
-void CorpseHit(INT16 sGridNo, UINT16 usStructureID);
-
-void HandleCrowLeave(SOLDIERTYPE *pSoldier);
-
-void HandleCrowFlyAway(SOLDIERTYPE *pSoldier);
-
 const MAX_ROTTING_CORPSES = 100;
 
 extern ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
 extern INT32 giNumRottingCorpse;
 extern UINT8 gb4DirectionsFrom8[8];
-
-ROTTING_CORPSE *GetCorpseAtGridNo(INT16 sGridNo, INT8 bLevel);
-BOOLEAN IsValidDecapitationCorpse(ROTTING_CORPSE *pCorpse);
-void DecapitateCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel);
-
-void GetBloodFromCorpse(SOLDIERTYPE *pSoldier);
-
-UINT16 GetCorpseStructIndex(ROTTING_CORPSE_DEFINITION *pCorpseDef, BOOLEAN fForImage);
-
-void LookForAndMayCommentOnSeeingCorpse(SOLDIERTYPE *pSoldier, INT16 sGridNo, UINT8 ubLevel);
-
-INT16 GetGridNoOfCorpseGivenProfileID(UINT8 ubProfileID);
-
-void DecayRottingCorpseAIWarnings(void);
-UINT8 GetNearestRottingCorpseAIWarning(INT16 sGridNo);

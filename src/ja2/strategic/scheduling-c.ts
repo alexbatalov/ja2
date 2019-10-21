@@ -1,9 +1,5 @@
 extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
 
-BOOLEAN GetEarliestMorningScheduleEvent(SCHEDULENODE *pSchedule, UINT32 *puiTime);
-INT8 GetEmptyScheduleEntry(SCHEDULENODE *pSchedule);
-BOOLEAN ScheduleHasMorningNonSleepEntries(SCHEDULENODE *pSchedule);
-
 const FOURPM = 960;
 
 // waketime is the # of minutes in the day minus the sleep time
@@ -13,9 +9,6 @@ const WAKETIME = (x) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
 
 SCHEDULENODE *gpScheduleList = NULL;
 UINT8 gubScheduleID = 0;
-void ReverseSchedules();
-
-void PrepareScheduleForAutoProcessing(SCHEDULENODE *pSchedule, UINT32 uiStartTime, UINT32 uiEndTime);
 
 // IMPORTANT:
 // This function adds a NEWLY allocated schedule to the list.  The pointer passed is totally

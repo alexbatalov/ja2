@@ -27,15 +27,6 @@ interface WORLDITEM {
 extern WORLDITEM *gWorldItems;
 extern UINT32 guiNumWorldItems;
 
-INT32 AddItemToWorld(INT16 sGridNo, OBJECTTYPE *pObject, UINT8 ubLevel, UINT16 usFlags, INT8 bRenderZHeightAboveLevel, INT8 bVisible);
-void RemoveItemFromWorld(INT32 iItemIndex);
-INT32 FindWorldItem(UINT16 usItem);
-
-void LoadWorldItemsFromMap(INT8 **hBuffer);
-void SaveWorldItemsToMap(HWFILE fp);
-
-void TrashWorldItems();
-
 interface WORLDBOMB {
   fExists: BOOLEAN;
   iItemIndex: INT32;
@@ -43,9 +34,3 @@ interface WORLDBOMB {
 
 extern WORLDBOMB *gWorldBombs;
 extern UINT32 guiNumWorldBombs;
-
-extern INT32 AddBombToWorld(INT32 iItemIndex);
-extern void FindPanicBombsAndTriggers(void);
-extern INT32 FindWorldItemForBombInGridNo(INT16 sGridNo, INT8 bLevel);
-
-void RefreshWorldItemsIntoItemPools(WORLDITEM *pItemList, INT32 iNumberOfItems);

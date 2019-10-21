@@ -37,41 +37,6 @@ INT32 iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];
 // current number of buttons being shown
 INT32 iNumberOfPersonaButtons = 0;
 
-// function definitions
-void DestroyIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons);
-void CreateIMPPersonalityQuizAnswerButtons(void);
-void CreateIMPPersonalityQuizButtons(void);
-void DestroyIMPersonalityQuizButtons(void);
-void AddIMPPersonalityQuizAnswerButtons(INT32 iNumberOfButtons);
-void DestroyPersonalityQuizButtons(void);
-void ResetQuizAnswerButtons();
-void CompileQuestionsInStatsAndWhatNot(void);
-void PrintQuizQuestionNumber(void);
-void CheckStateOfTheConfirmButton(void);
-void HandleIMPQuizKeyBoard(void);
-void ToggleQuestionNumberButtonOn(INT32 iAnswerNumber);
-void MoveBackAQuestion(void);
-void MoveAheadAQuestion(void);
-void CheckAndUpdateNextPreviousIMPQuestionButtonStates(void);
-
-// answer button callbacks
-void BtnIMPPersonalityQuizAnswer0Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer1Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer2Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer3Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer4Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer5Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer6Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer7Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer8Callback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizAnswer9Callback(GUI_BUTTON *btn, INT32 reason);
-
-// other callbacks
-void BtnIMPPersonalityQuizAnswerConfirmCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPersonalityQuizStartOverCallback(GUI_BUTTON *btn, INT32 reason);
-void PreviousQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason);
-void NextQuestionButtonCallback(GUI_BUTTON *btn, INT32 iReason);
-
 void EnterIMPPersonalityQuiz(void) {
   // void answers out the quiz
   memset(&iQuizAnswerList, -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);

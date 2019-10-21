@@ -62,16 +62,6 @@ extern iCurrentVoices;
 extern INT32 giMaxPersonalityQuizQuestion;
 extern BOOLEAN fStartOverFlag;
 
-void ExitOldIMPMode(void);
-void EnterNewIMPMode(void);
-void LoadImpGraphics(void);
-void RemoveImpGraphics(void);
-void CreateIMPButtons(void);
-void DestroyIMPButtons(void);
-void BtnIMPCancelCallback(GUI_BUTTON *btn, INT32 reason);
-BOOLEAN HasTheCurrentIMPPageBeenVisited(void);
-extern void SetAttributes(void);
-
 void GameInitCharProfile() {
   LaptopSaveInfo.iVoiceId = 0;
   iCurrentPortrait = 0;

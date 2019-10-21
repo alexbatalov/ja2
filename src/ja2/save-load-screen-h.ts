@@ -11,21 +11,3 @@ extern INT8 gbSetSlotToBeSelected;
 extern BOOLEAN gbSaveGameArray[NUM_SAVE_GAMES];
 
 extern BOOLEAN gfCameDirectlyFromGame;
-
-UINT32 SaveLoadScreenShutdown(void);
-UINT32 SaveLoadScreenHandle(void);
-UINT32 SaveLoadScreenInit(void);
-
-BOOLEAN DoSaveLoadMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT16 usFlags, MSGBOX_CALLBACK ReturnCallback);
-
-BOOLEAN InitSaveGameArray();
-
-void DoneFadeOutForSaveLoadScreen(void);
-void DoneFadeInForSaveLoadScreen(void);
-
-BOOLEAN DoQuickSave();
-BOOLEAN DoQuickLoad();
-
-BOOLEAN IsThereAnySavedGameFiles();
-
-void DeleteSaveGameNumber(UINT8 ubSaveGameSlotID);

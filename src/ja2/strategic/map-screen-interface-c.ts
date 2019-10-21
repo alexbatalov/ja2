@@ -268,65 +268,8 @@ SGPPoint OrigVehiclePosition = { 160, 150 };
 // at least one merc was hired at some time
 BOOLEAN gfAtLeastOneMercWasHired = FALSE;
 
-// rebuild contract box this character
-extern void RebuildContractBoxForMerc(SOLDIERTYPE *pCharacter);
-
-extern void SetUpCursorForStrategicMap(void);
-
-extern void MapScreenDefaultOkBoxCallback(UINT8 bExitValue);
-
-extern BOOLEAN PlayerSoldierTooTiredToTravel(SOLDIERTYPE *pSoldier);
-
-extern void RememberPreviousPathForAllSelectedChars(void);
-
-// the screen mask functions
-void CreateScreenMaskForInventoryPoolPopUp(void);
-void RemoveScreenMaskForInventoryPoolPopUp(void);
-void InventoryScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void MapScreenHelpTextScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SetUpShutDownMapScreenHelpTextScreenMask(void);
-void DisplayFastHelpRegions(FASTHELPREGION *pRegion, INT32 iSize);
-void DisplayUserDefineHelpTextRegions(FASTHELPREGION *pRegion);
-
 // how many people does the player have?
 // INT32 GetNumberOfCharactersOnPlayersTeam( void );
-
-void AddStringsToMoveBox(void);
-void CreatePopUpBoxForMovementBox(void);
-void MoveMenuMvtCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void MoveMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectAllOtherSoldiersInList(void);
-void DeselectAllOtherSoldiersInList(void);
-void HandleMoveoutOfSectorMovementTroops(void);
-void HandleSettingTheSelectedListOfMercs(void);
-void BuildMouseRegionsForMoveBox(void);
-INT32 HowManyMovingSoldiersInVehicle(INT32 iVehicleId);
-INT32 HowManyMovingSoldiersInSquad(INT32 iSquadNumber);
-void ClearMouseRegionsForMoveBox(void);
-BOOLEAN AllOtherSoldiersInListAreSelected(void);
-BOOLEAN AllSoldiersInSquadSelected(INT32 iSquadNumber);
-
-void MoveScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-/*
-void CreateUpdateBoxStrings( void );
-void CreateUpdateBox( void );
-void RemoveUpdateBox( void );
-void DisplayUpdateBox( void );
-*/
-void CreateDestroyUpdatePanelButtons(INT32 iX, INT32 iY, BOOLEAN fFourWideMode);
-void RenderSoldierSmallFaceForUpdatePanel(INT32 iIndex, INT32 iX, INT32 iY);
-void ContinueUpdateButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void StopUpdateButtonCallback(GUI_BUTTON *btn, INT32 reason);
-// INT32 GetSquadListIndexForSquadNumber( INT32 iSquadNumber );
-INT8 FindSquadThatSoldierCanJoin(SOLDIERTYPE *pSoldier);
-BOOLEAN CanSoldierMoveWithVehicleId(SOLDIERTYPE *pSoldier, INT32 iVehicle1Id);
-BOOLEAN IsAnythingSelectedForMoving(void);
-BOOLEAN CanMoveBoxSoldierMoveStrategically(SOLDIERTYPE *pSoldier, BOOLEAN fShowErrorMessage);
-
-BOOLEAN ValidSelectableCharForNextOrPrev(INT32 iNewCharSlot);
-
-extern void ResumeOldAssignment(SOLDIERTYPE *pSoldier);
 
 void InitalizeVehicleAndCharacterList(void) {
   // will init the vehicle and character lists to zero

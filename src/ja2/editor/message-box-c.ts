@@ -7,9 +7,6 @@ SGPRect MsgBoxRect;
 BOOLEAN gfMessageBoxResult = FALSE;
 UINT8 gubMessageBoxStatus = MESSAGEBOX_NONE;
 
-void MsgBoxOkClkCallback(GUI_BUTTON *butn, INT32 reason);
-void MsgBoxCnclClkCallback(GUI_BUTTON *butn, INT32 reason);
-
 void CreateMessageBox(UINT16 *wzString) {
   INT16 sPixLen;
   INT16 sStartX, sStartY;

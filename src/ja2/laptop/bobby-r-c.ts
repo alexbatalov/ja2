@@ -142,13 +142,6 @@ UINT8 gubBobbyRPages[] = {
 
 // Bobby's Sign menu mouse regions
 MOUSE_REGION gSelectedBobbiesSignMenuRegion[BOBBIES_NUMBER_SIGNS];
-void SelectBobbiesSignMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-BOOLEAN InitBobbiesMouseRegion(UINT8 ubNumerRegions, UINT16 *usMouseRegionPosArray, MOUSE_REGION *MouseRegion);
-BOOLEAN RemoveBobbiesMouseRegion(UINT8 ubNumberRegions, MOUSE_REGION *Mouse_Region);
-void HandleBobbyRUnderConstructionAni(BOOLEAN fReset);
-
-void SimulateBobbyRayCustomer(STORE_INVENTORY *pInventoryArray, BOOLEAN fUsed);
 
 void GameInitBobbyR() {
 }

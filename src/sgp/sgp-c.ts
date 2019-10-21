@@ -1,21 +1,9 @@
 extern UINT32 MemDebugCounter;
 extern BOOLEAN gfPauseDueToPlayerGamePause;
 
-extern BOOLEAN CheckIfGameCdromIsInCDromDrive();
-extern void QueueEvent(UINT16 ubInputEvent, UINT32 usParam, UINT32 uiParam);
-
 // Prototype Declarations
 
-INT32 FAR PASCAL WindowProcedure(HWND hWindow, UINT16 Message, WPARAM wParam, LPARAM lParam);
-BOOLEAN InitializeStandardGamingPlatform(HINSTANCE hInstance, int sCommandShow);
-void ShutdownStandardGamingPlatform(void);
-void GetRuntimeSettings();
-
-int PASCAL HandledWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCommandLine, int sCommandShow);
-
 HINSTANCE ghInstance;
-
-void ProcessJa2CommandLineBeforeInitialization(CHAR8 *pCommandLine);
 
 // Global Variable Declarations
 

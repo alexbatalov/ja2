@@ -4,9 +4,6 @@ const NUM_LIGHT_EFFECT_SLOTS = 25;
 LIGHTEFFECT gLightEffectData[NUM_LIGHT_EFFECT_SLOTS];
 UINT32 guiNumLightEffects = 0;
 
-INT32 GetFreeLightEffect(void);
-void RecountLightEffects(void);
-
 INT32 GetFreeLightEffect(void) {
   UINT32 uiCount;
 

@@ -92,18 +92,3 @@ GAME_SETTINGS gGameSettings;
 
 // This structure will contain the Game options set at the beginning of the game.
 GAME_OPTIONS gGameOptions;
-
-BOOLEAN SaveGameSettings();
-BOOLEAN LoadGameSettings();
-
-void InitGameOptions();
-
-BOOLEAN GetCDLocation();
-
-void DisplayGameSettings();
-
-BOOLEAN MeanwhileSceneSeen(UINT8 ubMeanwhile);
-
-BOOLEAN SetMeanwhileSceneSeen(UINT8 ubMeanwhile);
-
-BOOLEAN CanGameBeSaved();

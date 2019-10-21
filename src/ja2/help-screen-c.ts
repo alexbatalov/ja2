@@ -1,7 +1,4 @@
 extern INT16 gsVIEWPORT_END_Y;
-extern void PrintDate(void);
-extern void PrintNumberOnTeam(void);
-extern void PrintBalance(void);
 extern BOOLEAN fMapScreenBottomDirty;
 extern BOOLEAN fCharacterInfoPanelDirty;
 extern BOOLEAN fTeamPanelDirty;
@@ -9,8 +6,6 @@ extern BOOLEAN fMapScreenBottomDirty;
 extern BOOLEAN fMapPanelDirty;
 extern BOOLEAN gfGamePaused;
 extern BOOLEAN fShowMapInventoryPool;
-
-extern BOOLEAN BltVSurfaceUsingDD(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurface, UINT32 fBltFlags, INT32 iDestX, INT32 iDestY, RECT *SrcRect);
 
 const HELP_SCREEN_ACTIVE = 0x00000001;
 
@@ -291,75 +286,25 @@ MOUSE_REGION gHelpScreenFullScreenMask;
 
 // region to mask the background
 MOUSE_REGION gHelpScreenScrollArea;
-void SelectHelpScrollAreaMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectHelpScrollAreaCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // region to mask the background
 MOUSE_REGION gHelpScreenScrollAreaArrows;
-void SelectHelpScrollAreaArrowsCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // checkbox to toggle show help again toggle
 UINT32 gHelpScreenDontShowHelpAgainToggle;
-void BtnHelpScreenDontShowHelpAgainCallback(GUI_BUTTON *btn, INT32 reason);
 // MOUSE_REGION    HelpScreenDontShowHelpAgainToggleTextRegion;
 // void		HelpScreenDontShowHelpAgainToggleTextRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
 INT32 giHelpScreenButtonsImage[HELP_SCREEN_NUM_BTNS];
 UINT32 guiHelpScreenBtns[HELP_SCREEN_NUM_BTNS];
-void BtnHelpScreenBtnsCallback(GUI_BUTTON *btn, INT32 reason);
 
 INT32 giExitBtnImage;
 UINT32 guiHelpScreenExitBtn;
-void BtnHelpScreenExitCallback(GUI_BUTTON *btn, INT32 reason);
 
 INT32 giHelpScreenScrollArrows[2];
 UINT32 guiHelpScreenScrollArrowImage[2];
-void BtnHelpScreenScrollArrowsCallback(GUI_BUTTON *btn, INT32 reason);
 
 // ggg
-
-BOOLEAN EnterHelpScreen();
-void HandleHelpScreen();
-void RenderHelpScreen();
-void ExitHelpScreen();
-
-void GetHelpScreenUserInput();
-void HelpScreenSpecialExitCode();
-void SetSizeAndPropertiesOfHelpScreen();
-BOOLEAN DrawHelpScreenBackGround();
-void PrepareToExitHelpScreen();
-void SpecialHandlerCode();
-
-UINT16 RenderSpecificHelpScreen();
-
-UINT16 RenderLaptopHelpScreen();
-UINT16 RenderTacticalHelpScreen();
-UINT16 RenderMapScreenHelpScreen();
-UINT16 RenderMapScreenNoOneHiredYetHelpScreen();
-UINT16 RenderMapScreenNotYetInArulcoHelpScreen();
-UINT16 RenderMapScreenSectorInventoryHelpScreen();
-
-void GetHelpScreenTextPositions(UINT16 *pusPosX, UINT16 *pusPosY, UINT16 *pusWidth);
-void DisplayCurrentScreenTitleAndFooter();
-void GetHelpScreenText(UINT32 uiRecordToGet, STR16 pText);
-UINT16 GetAndDisplayHelpScreenText(UINT32 uiRecord, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth);
-void CreateHelpScreenButtons();
-void RefreshAllHelpScreenButtons();
-
-void RenderTextBufferToScreen();
-void RenderCurrentHelpScreenTextToBuffer();
-void DestroyHelpScreenTextBuffer();
-BOOLEAN CreateHelpScreenTextBuffer();
-void ChangeHelpScreenSubPage();
-void ClearHelpScreenTextBuffer();
-void ChangeTopLineInTextBufferByAmount(INT32 iAmouontToMove);
-void DisplayHelpScreenTextBufferScrollBox();
-void CalculateHeightAndPositionForHelpScreenScrollBox(INT32 *piHeightOfScrollBox, INT32 *iTopOfScrollBox);
-void HelpScreenMouseMoveScrollBox(INT32 usMousePosY);
-void CreateScrollAreaButtons();
-void DeleteScrollArrowButtons();
-void ChangeToHelpScreenSubPage(INT8 bNewPage);
-BOOLEAN AreWeClickingOnScrollBar(INT32 usMousePosY);
 
 // ppp
 

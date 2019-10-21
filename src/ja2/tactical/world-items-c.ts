@@ -5,11 +5,6 @@ UINT32 guiNumWorldItems = 0;
 WORLDBOMB *gWorldBombs = NULL;
 UINT32 guiNumWorldBombs = 0;
 
-void DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(void);
-void DeleteWorldItemsBelongingToQueenIfThere(void);
-
-extern UINT16 StandardGunListAmmoReplacement(UINT16 usAmmo);
-
 INT32 GetFreeWorldBombIndex(void) {
   UINT32 uiCount;
   WORLDBOMB *newWorldBombs;

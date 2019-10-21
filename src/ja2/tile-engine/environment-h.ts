@@ -43,33 +43,11 @@ const WEATHER_FORECAST_THUNDERSHOWERS = 0x00000020;
 const NORMAL_LIGHTLEVEL_NIGHT = 12;
 const NORMAL_LIGHTLEVEL_DAY = 3;
 
-void ForecastDayEvents();
-
-void EnvironmentController(BOOLEAN fCheckForLights);
-void EnvEnableTOD(void);
-void EnvDisableTOD(void);
-
-void BuildDayAmbientSounds();
-void BuildDayLightLevels();
-UINT8 GetTimeOfDayAmbientLightLevel();
-
-void EnvBeginRainStorm(UINT8 ubIntensity);
-void EnvEndRainStorm();
-
 extern UINT8 gubEnvLightValue;
 extern BOOLEAN gfDoLighting;
 extern UINT32 guiEnvWeather;
-
-void TurnOnNightLights();
-void TurnOffNightLights();
-void TurnOnPrimeLights();
-void TurnOffPrimeLights();
 
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
 extern BOOLEAN gfCaves;
 extern BOOLEAN gfBasement;
-
-extern INT8 SectorTemperature(UINT32 uiTime, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-
-extern void UpdateTemperature(UINT8 ubTemperatureCode);

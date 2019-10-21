@@ -9,8 +9,6 @@ extern BOOLEAN gfFirstHeliRun;
 INT16 gsMercArriveSectorX = 9;
 INT16 gsMercArriveSectorY = 1;
 
-void CheckForValidArrivalSector();
-
 INT8 HireMerc(MERC_HIRE_STRUCT *pHireMerc) {
   SOLDIERTYPE *pSoldier;
   UINT8 iNewIndex;

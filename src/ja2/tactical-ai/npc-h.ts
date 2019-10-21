@@ -119,70 +119,7 @@ extern INT8 gbFirstApproachFlags[4];
 
 extern UINT8 gubTeamPenalty;
 
-extern void ShutdownNPCQuotes(void);
-
-extern void SetQuoteRecordAsUsed(UINT8 ubNPC, UINT8 ubRecord);
-
-// uiApproachData is used for approach things like giving items, etc.
-extern UINT8 CalcDesireToTalk(UINT8 ubNPC, UINT8 ubMerc, INT8 bApproach);
-extern void Converse(UINT8 ubNPC, UINT8 ubMerc, INT8 bApproach, UINT32 uiApproachData);
-
-extern BOOLEAN NPCOkToGiveItem(UINT8 ubNPC, UINT8 ubMerc, UINT16 usItem);
-extern void NPCReachedDestination(SOLDIERTYPE *pNPC, BOOLEAN fAlreadyThere);
-extern void PCsNearNPC(UINT8 ubNPC);
-extern BOOLEAN PCDoesFirstAidOnNPC(UINT8 ubNPC);
-extern void TriggerNPCRecord(UINT8 ubTriggerNPC, UINT8 ubTriggerNPCRec);
-extern BOOLEAN TriggerNPCWithIHateYouQuote(UINT8 ubTriggerNPC);
-
-extern void TriggerNPCRecordImmediately(UINT8 ubTriggerNPC, UINT8 ubTriggerNPCRec);
-
-extern BOOLEAN TriggerNPCWithGivenApproach(UINT8 ubTriggerNPC, UINT8 ubApproach, BOOLEAN fShowPanel);
-
-extern BOOLEAN ReloadQuoteFile(UINT8 ubNPC);
-extern BOOLEAN ReloadAllQuoteFiles(void);
-
-// Save and loads the npc info to a saved game file
-extern BOOLEAN SaveNPCInfoToSaveGameFile(HWFILE hFile);
-BOOLEAN LoadNPCInfoFromSavedGameFile(HWFILE hFile, UINT32 uiSaveGameVersion);
-
-extern void TriggerFriendWithHostileQuote(UINT8 ubNPC);
-
-extern void ReplaceLocationInNPCDataFromProfileID(UINT8 ubNPC, INT16 sOldGridNo, INT16 sNewGridNo);
-
-extern UINT8 ActionIDForMovementRecord(UINT8 ubNPC, UINT8 ubRecord);
-
 // total amount given to doctors
 extern UINT32 uiTotalAmountGivenToDoctors;
 
-// handle money being npc being
-extern BOOLEAN HandleNPCBeingGivenMoneyByPlayer(UINT8 ubNPCId, UINT32 uiMoneyAmount, UINT8 *pQuoteValue);
-
-// given a victory in this sector, handle specific facts
-void HandleVictoryInNPCSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
-
-// check if this shopkeep has been shutdown, if so do soething and return the fact
-BOOLEAN HandleShopKeepHasBeenShutDown(UINT8 ubCharNum);
-
-BOOLEAN NPCHasUnusedRecordWithGivenApproach(UINT8 ubNPC, UINT8 ubApproach);
-BOOLEAN NPCWillingToAcceptItem(UINT8 ubNPC, UINT8 ubMerc, OBJECTTYPE *pObj);
-
-BOOLEAN SaveBackupNPCInfoToSaveGameFile(HWFILE hFile);
-BOOLEAN LoadBackupNPCInfoFromSavedGameFile(HWFILE hFile, UINT32 uiSaveGameVersion);
-
-void UpdateDarrelScriptToGoTo(SOLDIERTYPE *pSoldier);
-
 const WALTER_BRIBE_AMOUNT = 20000;
-
-BOOLEAN GetInfoForAbandoningEPC(UINT8 ubNPC, UINT16 *pusQuoteNum, UINT16 *pusFactToSetTrue);
-
-BOOLEAN RecordHasDialogue(UINT8 ubNPC, UINT8 ubRecord);
-
-INT8 ConsiderCivilianQuotes(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ, BOOLEAN fSetAsUsed);
-
-void ResetOncePerConvoRecordsForNPC(UINT8 ubNPC);
-
-void HandleNPCChangesForTacticalTraversal(SOLDIERTYPE *pSoldier);
-
-BOOLEAN NPCHasUnusedHostileRecord(UINT8 ubNPC, UINT8 ubApproach);
-
-void ResetOncePerConvoRecordsForAllNPCsInLoadedSector(void);

@@ -197,181 +197,21 @@ const HIGH_ACTIVITY_LEVEL = 12;
 #define MIN_CONDITION_TO_FIX_SAM 20
 */
 
-// how many points worth of tool kits does the character have?
-UINT16 ToolKitPoints(SOLDIERTYPE *pSoldier);
-
-// how many points worth of doctoring does the character have in his medical kits ?
-UINT16 TotalMedicalKitPoints(SOLDIERTYPE *pSoldier);
-
-// handle doctor in this sector
-void HandleDoctorsInSector(INT16 sX, INT16 sY, INT8 bZ);
-
-// handle any repair man in sector
-void HandleRepairmenInSector(INT16 sX, INT16 sY, INT8 bZ);
-
-// heal characters in this sector with this doctor
-void HealCharacters(SOLDIERTYPE *pDoctor, INT16 sX, INT16 sY, INT8 bZ);
-
-// update characters who might done healing but are still patients
-void UpdatePatientsWhoAreDoneHealing(void);
-
-// returns minimum medical skill necessary to treat this patient
-UINT8 GetMinHealingSkillNeeded(SOLDIERTYPE *pPatient);
-
-// heal patient, given doctor and total healing pts available to doctor at this time
-UINT16 HealPatient(SOLDIERTYPE *pPatient, SOLDIERTYPE *pDoctor, UINT16 usHundredthsHealed);
-
-// can item be repaired?
-BOOLEAN IsItemRepairable(UINT16 usItem, INT8 bStatus);
-
-// does another merc have a repairable item on them?
-INT8 FindRepairableItemOnOtherSoldier(SOLDIERTYPE *pSoldier, UINT8 ubPassType);
-
-// repair stuff
-void HandleRepairBySoldier(SOLDIERTYPE *pSoldier);
-
-// rest the character
-void RestCharacter(SOLDIERTYPE *pSoldier);
-// fatigue the character
-void FatigueCharacter(SOLDIERTYPE *pSoldier);
-
 // a list of which sectors have characters
 BOOLEAN fSectorsWithSoldiers[MAP_WORLD_X * MAP_WORLD_Y][4];
-
-// can soldier repair robot
-BOOLEAN CanCharacterRepairRobot(SOLDIERTYPE *pSoldier);
-
-// can the character repair this vehicle?
-BOOLEAN CanCharacterRepairVehicle(SOLDIERTYPE *pSoldier, INT32 iVehicleId);
-
-// handle training of character in sector
-void HandleTrainingInSector(INT16 sMapX, INT16 sMapY, INT8 bZ);
-
-// QSort compare function for town training
-int TownTrainerQsortCompare(const void *pArg1, const void *pArg2);
-
-// this function will actually pass on the pts to the mercs stat
-void TrainSoldierWithPts(SOLDIERTYPE *pSoldier, INT16 sTrainPts);
-
-// train militia in this sector with this soldier
-BOOLEAN TrainTownInSector(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMapY, INT16 sTrainingPts);
-
-// is the character between secotrs in mvt
-BOOLEAN CharacterIsBetweenSectors(SOLDIERTYPE *pSoldier);
-
-// update soldier life
-void UpDateSoldierLife(SOLDIERTYPE *pSoldier);
-
-// handle natural healing for all mercs on players team
-void HandleNaturalHealing(void);
-
-// handle natural healing for any individual grunt
-void HandleHealingByNaturalCauses(SOLDIERTYPE *pSoldier);
 
 /*
 // auto sleep mercs
 BOOLEAN AutoSleepMerc( SOLDIERTYPE *pSoldier );
 */
 
-// assignment screen mask
-void AssignmentScreenMaskBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
 // glow area for contract region?
 BOOLEAN fGlowContractRegion = FALSE;
-
-void HandleShadingOfLinesForSquadMenu(void);
-void HandleShadingOfLinesForVehicleMenu(void);
-void HandleShadingOfLinesForRepairMenu(void);
-void HandleShadingOfLinesForTrainingMenu(void);
-void HandleShadingOfLinesForAttributeMenus(void);
-
-// post message about contract
-void PostContractMessage(SOLDIERTYPE *pCharacter, INT32 iContract);
-
-// post a terminate message
-void PostTerminateMessage(SOLDIERTYPE *pCharacter);
-
-BOOLEAN DisplayVehicleMenu(SOLDIERTYPE *pSoldier);
-BOOLEAN DisplayRepairMenu(SOLDIERTYPE *pSoldier);
-
-// create menus
-void CreateEPCBox(void);
-void CreateSquadBox(void);
-void CreateVehicleBox();
-void CreateRepairBox(void);
 
 /*
 // get how fast the person regains sleep
 INT8 GetRegainDueToSleepNeeded( SOLDIERTYPE *pSoldier, INT32 iRateOfReGain );
 */
-
-void PositionCursorForTacticalAssignmentBox(void);
-
-// can this soldier be healed by this doctor?
-BOOLEAN CanSoldierBeHealedByDoctor(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pDoctor, BOOLEAN fIgnoreAssignment, BOOLEAN fThisHour, BOOLEAN fSkipKitCheck, BOOLEAN fSkipSkillCheck);
-UINT8 GetNumberThatCanBeDoctored(SOLDIERTYPE *pDoctor, BOOLEAN fThisHour, BOOLEAN fSkipKitCheck, BOOLEAN fSkipSkillCheck);
-void CheckForAndHandleHospitalPatients(void);
-void HealHospitalPatient(SOLDIERTYPE *pPatient, UINT16 usHealingPtsLeft);
-
-void MakeSureToolKitIsInHand(SOLDIERTYPE *pSoldier);
-BOOLEAN MakeSureMedKitIsInHand(SOLDIERTYPE *pSoldier);
-
-void RepositionMouseRegions(void);
-void CheckAndUpdateTacticalAssignmentPopUpPositions(void);
-void HandleRestFatigueAndSleepStatus(void);
-BOOLEAN CharacterIsTakingItEasy(SOLDIERTYPE *pSoldier);
-void RepairMenuBtnCallback(MOUSE_REGION *pRegion, INT32 iReason);
-BOOLEAN CanCharacterDoctorButDoesntHaveMedKit(SOLDIERTYPE *pSoldier);
-BOOLEAN CanCharacterRepairButDoesntHaveARepairkit(SOLDIERTYPE *pSoldier);
-
-// robot replated stuff
-BOOLEAN IsRobotInThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-SOLDIERTYPE *GetRobotSoldier(void);
-UINT8 RepairRobot(SOLDIERTYPE *pRobot, UINT8 ubRepairPts, BOOLEAN *pfNothingLeftToRepair);
-UINT8 HandleRepairOfRobotBySoldier(SOLDIERTYPE *pSoldier, UINT8 ubRepairPts, BOOLEAN *pfNothingLeftToRepair);
-BOOLEAN HandleAssignmentExpansionAndHighLightForAssignMenu(SOLDIERTYPE *pSoldier);
-BOOLEAN HandleAssignmentExpansionAndHighLightForTrainingMenu(void);
-BOOLEAN HandleShowingOfMovementBox(void);
-// BOOLEAN HandleShowingOfUpBox( void );
-void ReportTrainersTraineesWithoutPartners(void);
-BOOLEAN ValidTrainingPartnerInSameSectorOnAssignmentFound(SOLDIERTYPE *pSoldier, INT8 bTargetAssignment, INT8 bTargetStat);
-
-extern void AddSectorForSoldierToListOfSectorsThatCompletedMilitiaTraining(SOLDIERTYPE *pSoldier);
-
-extern BOOLEAN SectorIsImpassable(INT16 sSector);
-
-extern BOOLEAN CanChangeSleepStatusForCharSlot(INT8 bCharNumber);
-
-extern UINT32 VirtualSoldierDressWound(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pVictim, OBJECTTYPE *pKit, INT16 sKitPts, INT16 sStatus);
-
-// only 2 trainers are allowed per sector, so this function counts the # in a guy's sector
-INT8 CountMilitiaTrainersInSoldiersSector(SOLDIERTYPE *pSoldier);
-
-// notify player of assignment attempt failure
-void NotifyPlayerOfAssignmentAttemptFailure(INT8 bAssignment);
-
-BOOLEAN PlayerSoldierTooTiredToTravel(SOLDIERTYPE *pSoldier);
-
-void AssignmentAborted(SOLDIERTYPE *pSoldier, UINT8 ubReason);
-
-UINT8 CalcSoldierNeedForSleep(SOLDIERTYPE *pSoldier);
-
-UINT32 GetLastSquadListedInSquadMenu(void);
-
-BOOLEAN IsAnythingAroundForSoldierToRepair(SOLDIERTYPE *pSoldier);
-BOOLEAN HasCharacterFinishedRepairing(SOLDIERTYPE *pSoldier);
-BOOLEAN DoesCharacterHaveAnyItemsToRepair(SOLDIERTYPE *pSoldier, INT8 bHighestPass);
-
-BOOLEAN CanCharacterRepairAnotherSoldiersStuff(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOtherSoldier);
-
-// can this character EVER train militia?
-BOOLEAN BasicCanCharacterTrainMilitia(SOLDIERTYPE *pCharacter);
-
-SOLDIERTYPE *GetSelectedAssignSoldier(BOOLEAN fNullOK);
-
-BOOLEAN RepairObject(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pOwner, OBJECTTYPE *pObj, UINT8 *pubRepairPtsLeft);
-void RepairItemsOnOthers(SOLDIERTYPE *pSoldier, UINT8 *pubRepairPtsLeft);
-BOOLEAN UnjamGunsOnSoldier(SOLDIERTYPE *pOwnerSoldier, SOLDIERTYPE *pRepairSoldier, UINT8 *pubRepairPtsLeft);
 
 /* No point in allowing SAM site repair any more.  Jan/13/99.  ARM
 BOOLEAN IsTheSAMSiteInSectorRepairable( INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ );

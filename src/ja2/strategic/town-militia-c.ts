@@ -18,21 +18,6 @@ INT16 gsUnpaidStrategicSector[MAX_CHARACTER_COUNT];
 // the selected list of mercs
 extern BOOLEAN fSelectedListOfMercsForMapScreen[MAX_CHARACTER_COUNT];
 
-// private prototypes
-void PayMilitiaTrainingYesNoBoxCallback(UINT8 bExitValue);
-void CantTrainMilitiaOkBoxCallback(UINT8 bExitValue);
-void MilitiaTrainingRejected(void);
-
-void InitFriendlyTownSectorServer(UINT8 ubTownId, INT16 sSkipSectorX, INT16 sSkipSectorY);
-BOOLEAN ServeNextFriendlySectorInTown(INT16 *sNeighbourX, INT16 *sNeighbourY);
-
-void BuildListOfUnpaidTrainableSectors(void);
-INT32 GetNumberOfUnpaidTrainableSectors(void);
-void ContinueTrainingInThisSector(void);
-void StartTrainingInAllUnpaidTrainableSectors();
-void PayForTrainingInSector(UINT8 ubSector);
-void ResetDoneFlagForAllMilitiaTrainersInSector(UINT8 ubSector);
-
 void TownMilitiaTrainingCompleted(SOLDIERTYPE *pTrainer, INT16 sMapX, INT16 sMapY) {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
   UINT8 ubMilitiaTrained = 0;

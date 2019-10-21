@@ -46,24 +46,10 @@ UINT8 gubAimHistoryMenuButtonDown = 255;
 BOOLEAN gfExitingAimHistory;
 BOOLEAN AimHistorySubPagesVisitedFlag[NUM_AIM_HISTORY_PAGES];
 
-void ResetAimHistoryButtons();
-void DisableAimHistoryButton();
-
 MOUSE_REGION gSelectedHistoryTocMenuRegion[NUM_AIM_HISTORY_PAGES];
-void SelectHistoryTocMenuRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-// Bottom Menu Buttons
-void BtnHistoryMenuButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiHistoryMenuButton[AIM_HISTORY_MENU_BUTTON_AMOUNT];
 INT32 guiHistoryMenuButtonImage;
-
-BOOLEAN DrawAimHistoryMenuBar(void);
-BOOLEAN ExitAimHistoryMenuBar(void);
-BOOLEAN InitAimHistoryMenuBar(void);
-BOOLEAN DisplayAimHistoryParagraph(UINT8 ubPageNum, UINT8 ubNumParagraphs);
-BOOLEAN InitTocMenu();
-BOOLEAN ExitTocMenu();
-void ChangingAimHistorySubPage(UINT8 ubSubPageNumber);
 
 // These enums represent which paragraph they are located in the AimHist.edt file
 const enum Enum64 {

@@ -13,8 +13,6 @@ const MAX_NUM_CROWS = 6;
 extern SGPPaletteEntry gpLightColors[3];
 extern UINT16 gusShadeLevels[16][3];
 
-void MakeCorpseVisible(SOLDIERTYPE *pSoldier, ROTTING_CORPSE *pCorpse);
-
 // When adding a corpse, add struct data...
 CHAR8 zCorpseFilenames[NUM_CORPSES][70] = {
   "",
@@ -289,11 +287,6 @@ INT8 gDecapitatedCorpse[NUM_CORPSES] = {
 
 ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
 INT32 giNumRottingCorpse = 0;
-
-BOOLEAN CreateCorpsePalette(ROTTING_CORPSE *pCorpse);
-BOOLEAN CreateCorpseShadedPalette(ROTTING_CORPSE *pCorpse, UINT32 uiBase, SGPPaletteEntry *pShadePal);
-
-void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE *pSoldier, INT32 iInvSlot);
 
 INT32 GetFreeRottingCorpse(void) {
   INT32 iCount;

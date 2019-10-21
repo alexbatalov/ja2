@@ -8,8 +8,6 @@ interface CIV_QUOTE {
   ubUnusedCurrentEntry: UINT8;
 }
 
-extern void CaptureTimerCallback(void);
-
 BOOLEAN gfSurrendered = FALSE;
 
 CIV_QUOTE gCivQuotes[NUM_CIV_QUOTES];

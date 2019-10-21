@@ -1,7 +1,3 @@
-BOOLEAN IsGridNoInScreenRect(INT16 sGridNo, SGPRect *pRect);
-BOOLEAN IsPointInScreenRect(INT16 sXPos, INT16 sYPos, SGPRect *pRect);
-void GetSoldierScreenRect(SOLDIERTYPE *pSoldier, SGPRect *pRect);
-
 // This value is used to keep a small static array of uBID's which are stacked
 const MAX_STACKED_MERCS = 10;
 
@@ -111,8 +107,6 @@ UINT32 GetSoldierFindFlags(UINT16 ubID) {
 
   return MercFlags;
 }
-
-extern BOOLEAN CheckVideoObjectScreenCoordinateInData(HVOBJECT hSrcVObject, UINT16 usIndex, INT32 iTextX, INT32 iTestY);
 
 // THIS FUNCTION IS CALLED FAIRLY REGULARLY
 BOOLEAN FindSoldier(INT16 sGridNo, UINT16 *pusSoldierIndex, UINT32 *pMercFlags, UINT32 uiFlags) {

@@ -8,12 +8,6 @@ extern BOOLEAN gfAutoBandageFailed;
 const NOT_GOING_TO_DIE = -1;
 const NOT_GOING_TO_COLLAPSE = -1;
 
-// can this grunt be bandaged by a teammate?
-BOOLEAN CanCharacterBeAutoBandagedByTeammate(SOLDIERTYPE *pSoldier);
-
-// c an this grunt help anyone else out?
-BOOLEAN CanCharacterAutoBandageTeammate(SOLDIERTYPE *pSoldier);
-
 BOOLEAN FindAutobandageClimbPoint(INT16 sDesiredGridNo, BOOLEAN fClimbUp) {
   // checks for existance of location to climb up to building, not occupied by a medic
   BUILDING *pBuilding;

@@ -1,5 +1,3 @@
-extern void GetSoldierAboveGuyPositions(SOLDIERTYPE *pSoldier, INT16 *psX, INT16 *psY, BOOLEAN fRadio);
-
 //--------------------------------------------------
 //	NON_CIV_GROUP,
 //	REBEL_CIV_GROUP,
@@ -72,22 +70,6 @@ BOOLEAN gfUseScheduleData2 = FALSE;
 UINT8 gubCurrentScheduleActionIndex = 0;
 SCHEDULENODE gCurrSchedule;
 UINT8 gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
-void DetermineScheduleEditability();
-void RenderCurrentSchedule();
-void UpdateScheduleInfo();
-
-void ShowEditMercPalettes(SOLDIERTYPE *pSoldier);
-void ShowEditMercColorSet(UINT8 ubPaletteRep, INT16 sSet);
-
-void ChangeBaseSoldierStats(SOLDIERTYPE *pSoldier);
-void AskDefaultDifficulty(void);
-
-// internal merc inventory functions
-void AddNewItemToSelectedMercsInventory(BOOLEAN fCreate);
-void RenderMercInventoryPanel();
-void SetDroppableCheckboxesBasedOnMercsInventory();
-
-extern BOOLEAN InternalAddSoldierToSector(UINT8 ubID, BOOLEAN fCalculateDirection, BOOLEAN fUseAnimation, UINT16 usAnimState, UINT16 usAnimCode);
 
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so
 // these temp values must be updated when different mercs are selected, and reset when a merc detailed
@@ -122,19 +104,6 @@ const GetSelectedMercSlot = (x) => (&gpSelected->pDetailedPlacement->Inv[gbMercS
 // values indicating which merc inventory slot is hilited and which slot is selected.
 INT8 gbCurrHilite = -1;
 INT8 gbCurrSelect = -1;
-// when a new merc is selected, this function sets up all of the information for the slots,
-// selections, and hilites.
-void UpdateMercItemSlots();
-
-// internal merc utility functions
-void SetupTextInputForMercAttributes();
-void SetupTextInputForMercProfile();
-void SetupTextInputForMercSchedule();
-void ExtractAndUpdateMercAttributes();
-void ExtractAndUpdateMercProfile();
-void ExtractAndUpdateMercSchedule();
-void CalcStringForValue(UINT16 *str, INT32 iValue, UINT32 uiMax);
-void ChangeBodyType(INT8 bOffset); //+1 or -1 only
 
 // internal merc variables
 BASIC_SOLDIERCREATE_STRUCT gTempBasicPlacement;
@@ -331,8 +300,6 @@ INT8 gbCurrCreature = BLOODCAT;
 BOOLEAN gfSaveBuffer = FALSE;
 BASIC_SOLDIERCREATE_STRUCT gSaveBufferBasicPlacement;
 SOLDIERCREATE_STRUCT gSaveBufferDetailedPlacement;
-void CopyMercPlacement();
-void PasteMercPlacement();
 
 void GameInitEditorMercsInfo() {
   INT32 i;

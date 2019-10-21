@@ -92,7 +92,6 @@ void KillBuilding(UINT32 iMapIndex) {
 
 BUILDINGLAYOUTNODE *gpBuildingLayoutList = NULL;
 INT16 gsBuildingLayoutAnchorGridNo = -1;
-extern void RemoveBuildingLayout();
 
 void DeleteBuildingLayout() {
   BUILDINGLAYOUTNODE *curr;
@@ -419,11 +418,6 @@ const enum Enum34 {
 }
 INT32 iDoorButton[NUM_DOOR_BUTTONS];
 MOUSE_REGION DoorRegion;
-void DoorOkayCallback(GUI_BUTTON *btn, INT32 reason);
-void DoorCancelCallback(GUI_BUTTON *btn, INT32 reason);
-void DoorToggleLockedCallback(GUI_BUTTON *btn, INT32 reason);
-
-extern BOOLEAN OpenableAtGridNo(UINT32 iMapIndex);
 
 void InitDoorEditing(INT32 iMapIndex) {
   DOOR *pDoor;

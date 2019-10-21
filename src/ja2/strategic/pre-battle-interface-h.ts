@@ -1,7 +1,3 @@
-void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI);
-void KillPreBattleInterface();
-void RenderPreBattleInterface();
-
 extern BOOLEAN gfPreBattleInterfaceActive;
 extern BOOLEAN gfDisplayPotentialRetreatPaths;
 extern BOOLEAN gfAutomaticallyStartAutoResolve;
@@ -37,14 +33,6 @@ const enum Enum164 {
 extern BOOLEAN gfAutoAmbush;
 extern BOOLEAN gfHighPotentialForAmbush;
 
-extern void ActivatePreBattleAutoresolveAction();
-extern void ActivatePreBattleEnterSectorAction();
-extern void ActivatePreBattleRetreatAction();
-extern void ActivateAutomaticAutoResolveStart();
-
-void CalculateNonPersistantPBIInfo();
-void ClearNonPersistantPBIInfo();
-
 // SAVE START
 
 // Using the ESC key in the PBI will get rid of the PBI and go back to mapscreen, but
@@ -74,18 +62,7 @@ extern UINT8 gubPBSectorZ;
 BOOLEAN gfCantRetreatInPBI;
 // SAVE END
 
-void WakeUpAllMercsInSectorUnderAttack(void);
-
-void ClearMovementForAllInvolvedPlayerGroups(void);
-void RetreatAllInvolvedPlayerGroups(void);
-
-BOOLEAN PlayerGroupInvolvedInThisCombat(GROUP *pGroup);
-BOOLEAN PlayerMercInvolvedInThisCombat(SOLDIERTYPE *pSoldier);
-
-BOOLEAN CurrentBattleSectorIs(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ);
-
 const enum Enum165 {
   LOG_DEFEAT,
   LOG_VICTORY,
 }
-void LogBattleResults(UINT8 ubVictoryCode);

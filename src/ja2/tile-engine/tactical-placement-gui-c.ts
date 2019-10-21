@@ -18,7 +18,6 @@ const enum Enum310 {
 UINT32 iTPButtons[NUM_TP_BUTTONS];
 
 extern BOOLEAN gfOverheadMapDirty;
-extern BOOLEAN GetOverheadMouseGridNo(INT16 *psGridNo);
 
 UINT8 gubDefaultButton = CLEAR_BUTTON;
 BOOLEAN gfTacticalPlacementGUIActive = FALSE;
@@ -45,22 +44,6 @@ SOLDIERTYPE *gpTacticalPlacementSelectedSoldier = NULL;
 SOLDIERTYPE *gpTacticalPlacementHilightedSoldier = NULL;
 
 BOOLEAN gfNorth, gfEast, gfSouth, gfWest;
-
-void DoneOverheadPlacementClickCallback(GUI_BUTTON *btn, INT32 reason);
-void SpreadPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
-void GroupPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
-void ClearPlacementsCallback(GUI_BUTTON *btn, INT32 reason);
-void MercMoveCallback(MOUSE_REGION *reg, INT32 reason);
-void MercClickCallback(MOUSE_REGION *reg, INT32 reason);
-void PlaceMercs();
-void FastHelpRemovedCallback();
-void FastHelpRemoved2Callback();
-void DialogRemoved(UINT8 ubResult);
-
-void PutDownMercPiece(INT32 iPlacement);
-void PickUpMercPiece(INT32 iPlacement);
-void SetCursorMerc(INT8 bPlacementID);
-void SelectNextUnplacedUnit();
 
 void InitTacticalPlacementGUI() {
   VOBJECT_DESC VObjectDesc;

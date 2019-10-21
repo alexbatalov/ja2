@@ -114,12 +114,7 @@ const COST_PER_ENGINE_CRIT = 15;
 const COST_PER_TIRE_HIT = 5;
 //#define VEHICLE_MAX_INTERNAL 250
 
-// set the driver of the vehicle
-void SetDriver(INT32 iID, UINT8 ubID);
-
 // void RemoveSoldierFromVehicleBetweenSectors( pSoldier, iId );
-
-void TeleportVehicleToItsClosestSector(INT32 iVehicleId, UINT8 ubGroupID);
 
 // Loop through and create a few soldier squad ID's for vehicles ( max # 3 )
 void InitVehicles() {

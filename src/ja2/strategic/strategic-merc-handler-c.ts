@@ -7,9 +7,6 @@ BOOLEAN fProcessingAMerc = FALSE;
 SOLDIERTYPE *pProcessingSoldier = NULL;
 extern BOOLEAN gfFirstMercSayingQuoteWillLeaveNoMatterWhat = FALSE;
 
-// build a list of mercs based on departure time
-void BuildMercQuitList(SOLDIERTYPE *pMercList);
-
 void StrategicHandlePlayerTeamMercDeath(SOLDIERTYPE *pSoldier) {
   SOLDIERTYPE *pKiller = NULL;
   INT16 sSectorX, sSectorY;

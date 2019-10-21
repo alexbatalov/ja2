@@ -13,15 +13,6 @@ static CHAR16 gzLevelString[9][15] = {
   L"Topmost %d",
 };
 
-// World management routines ( specific Double Linked list functions
-void SetIndexLevelNodeFlags(LEVELNODE *pStartNode, UINT32 uiFlags, UINT16 usIndex);
-void RemoveIndexLevelNodeFlags(LEVELNODE *pStartNode, UINT32 uiFlags, UINT16 usIndex);
-
-void SetWorldFlagsFromNewNode(UINT16 sGridNo, UINT16 usIndex);
-void RemoveWorldFlagsFromNewNode(UINT16 sGridNo, UINT16 usIndex);
-
-BOOLEAN RemoveLandEx(UINT32 iMapIndex, UINT16 usIndex);
-
 UINT32 guiLevelNodes = 0;
 
 // LEVEL NODE MANIPLULATION FUNCTIONS

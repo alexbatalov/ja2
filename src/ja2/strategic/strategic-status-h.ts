@@ -89,27 +89,4 @@ interface STRATEGIC_STATUS {
   bPadding: INT8[] /* [70] */;
 }
 
-void InitStrategicStatus();
-
 extern STRATEGIC_STATUS gStrategicStatus;
-
-BOOLEAN SaveStrategicStatusToSaveGameFile(HWFILE hFile);
-
-BOOLEAN LoadStrategicStatusFromSaveGameFile(HWFILE hFile);
-
-UINT8 CalcDeathRate(void);
-
-void ModifyPlayerReputation(INT8 bRepChange);
-
-BOOLEAN MercThinksDeathRateTooHigh(UINT8 ubProfileID);
-BOOLEAN MercThinksBadReputationTooHigh(UINT8 ubProfileID);
-BOOLEAN MercThinksHisMoraleIsTooLow(SOLDIERTYPE *pSoldier);
-
-void HandleEnricoEmail(void);
-
-void TrackEnemiesKilled(UINT8 ubKilledHow, UINT8 ubSoldierClass);
-
-INT8 SoldierClassToRankIndex(UINT8 ubSoldierClass);
-UINT8 RankIndexToSoldierClass(UINT8 ubRankIndex);
-
-void UpdateLastDayOfPlayerActivity(UINT16 usDay);

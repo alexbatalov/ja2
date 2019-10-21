@@ -43,42 +43,6 @@ INT32 giErrorMessageBox = 0;
 //
 ///////////////////////////////////////////////////////////////
 
-void TempFileLoadErrorMessageReturnCallback(UINT8 ubRetVal);
-
-BOOLEAN SaveWorldItemsToTempItemFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems, WORLDITEM *pData);
-BOOLEAN RetrieveTempFileFromSavedGame(HWFILE hFile, UINT32 uiType, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-BOOLEAN AddTempFileToSavedGame(HWFILE hFile, UINT32 uiType, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-BOOLEAN SaveRottingCorpsesToTempCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-BOOLEAN LoadRottingCorpsesFromTempCorpseFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-void LoadNPCInformationFromProfileStruct();
-void SaveNPCInformationToProfileStruct();
-
-BOOLEAN DoesTempFileExistsForMap(UINT32 uiType, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-INT16 GetSoldierIDFromAnyMercID(UINT8 ubMercID);
-
-BOOLEAN SetUnderGroundSectorFlag(INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ, UINT32 uiFlagToSet);
-BOOLEAN GetUnderGroundSectorFlagStatus(INT16 sSectorX, INT16 sSectorY, UINT8 ubSectorZ, UINT32 uiFlagToCheck);
-
-BOOLEAN LoadAndAddWorldItemsFromTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-BOOLEAN InitTempNpcQuoteInfoForNPCFromTempFile();
-BOOLEAN SaveTempNpcQuoteInfoForNPCToTempFile(UINT8 ubNpcId);
-BOOLEAN LoadTempNpcQuoteInfoForNPCFromTempFile(UINT8 ubNpcId);
-UINT32 GetLastTimePlayerWasInSector();
-void SetLastTimePlayerWasInSector();
-
-extern void InitLoadedWorld();
-extern void ReduceAmmoDroppedByNonPlayerSoldiers(SOLDIERTYPE *pSoldier, INT32 iInvSlot);
-
-extern void StripEnemyDetailedPlacementsIfSectorWasPlayerLiberated();
-
-void SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(INT16 sMapX, INT16 sMapY, INT8 bMapZ, BOOLEAN fLoadingGame);
-UINT32 UpdateLoadedSectorsItemInventory(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems);
-
 // ppp
 
 ///////////////////////////////////////////////////////////////
@@ -1406,8 +1370,6 @@ void SaveNPCInformationToProfileStruct() {
     }
   }
 }
-
-extern void EVENT_SetSoldierPositionAndMaybeFinalDestAndMaybeNotDestination(SOLDIERTYPE *pSoldier, FLOAT dNewXPos, FLOAT dNewYPos, BOOLEAN fUpdateDest, BOOLEAN fUpdateFinalDest);
 
 void LoadNPCInformationFromProfileStruct() {
   UINT32 cnt;

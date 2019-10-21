@@ -80,32 +80,6 @@ INT32 uiBarToReRender = -1;
 // are we actually coming back to edit, or are we restarting?
 BOOLEAN fReturnStatus = FALSE;
 
-// function definition
-void ProcessAttributes(void);
-void DestroyIMPAttributeSelectionButtons(void);
-void CreateIMPAttributeSelectionButtons(void);
-UINT8 IncrementStat(INT32 iStatToIncrement);
-UINT8 DecrementStat(INT32 iStatToDecrement);
-BOOLEAN DoWeHaveThisManyBonusPoints(INT32 iBonusPoints);
-void CreateAttributeSliderButtons(void);
-void DestroyAttributeSliderButtons(void);
-void CreateSlideRegionMouseRegions(void);
-void DestroySlideRegionMouseRegions(void);
-INT32 GetCurrentAttributeValue(INT32 iAttribute);
-void CreateSliderBarMouseRegions(void);
-void DestroySlideBarMouseRegions(void);
-void SetAttributes(void);
-void DrawBonusPointsRemaining(void);
-void SetGeneratedCharacterAttributes(void);
-
-// callbacks
-void BtnIMPAttributeFinishCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPAttributeSliderLeftCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPAttributeSliderRightCallback(GUI_BUTTON *btn, INT32 reason);
-void SliderRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SliderBarRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void StatAtZeroBoxCallBack(UINT8 bExitValue);
-
 void EnterIMPAttributeSelection(void) {
   // set attributes and skills
   if ((fReturnStatus == FALSE) && (fFirstIMPAttribTime == TRUE)) {

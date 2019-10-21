@@ -59,23 +59,11 @@ SLIDER *gpCurrentSlider = NULL;
 UINT32 guiSliderBoxImage = 0;
 // ggg
 
-// Mouse regions for the currently selected save game
-void SelectedSliderButtonCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectedSliderMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
-
 ///////////////////////////////////////////////////
 //
 //	Function Prototypes
 //
 ///////////////////////////////////////////////////
-
-void OptDisplayLine(UINT16 usStartX, UINT16 usStartY, UINT16 EndX, UINT16 EndY, INT16 iColor);
-
-void RenderSelectedSliderBar(SLIDER *pSlider);
-void CalculateNewSliderBoxPosition(SLIDER *pSlider);
-SLIDER *GetSliderFromID(UINT32 uiSliderID);
-void RenderSliderBox(SLIDER *pSlider);
-void CalculateNewSliderIncrement(UINT32 uiSliderID, UINT16 usPosX);
 
 // ppp
 

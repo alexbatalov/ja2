@@ -19,22 +19,6 @@ const enum Enum70 {
   BR_VANCOUVER,
 }
 
-void GameInitBobbyRMailOrder();
-BOOLEAN EnterBobbyRMailOrder();
-void ExitBobbyRMailOrder();
-void HandleBobbyRMailOrder();
-void RenderBobbyRMailOrder();
-
-void BobbyRayMailOrderEndGameShutDown();
-void EnterInitBobbyRayOrder();
-void AddJohnsGunShipment();
-
-BOOLEAN CreateBobbyRayOrderTitle();
-void DestroyBobbyROrderTitle();
-void DrawBobbyROrderTitle();
-
-void DisplayPurchasedItems(BOOLEAN fCalledFromOrderPage, UINT16 usGridX, UINT16 usGridY, BobbyRayPurchaseStruct *pBobbyRayPurchase, BOOLEAN fJustDisplayTitles, INT32 iOrderNum);
-
 interface NewBobbyRayOrderStruct {
   fActive: BOOLEAN;
   ubDeliveryLoc: UINT8; // the city the shipment is going to
@@ -52,10 +36,3 @@ interface NewBobbyRayOrderStruct {
 
 extern NewBobbyRayOrderStruct *gpNewBobbyrShipments;
 extern INT32 giNumberOfNewBobbyRShipment;
-
-BOOLEAN AddNewBobbyRShipment(BobbyRayPurchaseStruct *pPurchaseStruct, UINT8 ubDeliveryLoc, UINT8 ubDeliveryMethod, BOOLEAN fPruchasedFromBobbyR, UINT32 uiPackageWeight);
-
-UINT16 CountNumberOfBobbyPurchasesThatAreInTransit();
-
-BOOLEAN NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(HWFILE hFile);
-BOOLEAN NewWayOfSavingBobbyRMailOrdersToSaveGameFile(HWFILE hFile);

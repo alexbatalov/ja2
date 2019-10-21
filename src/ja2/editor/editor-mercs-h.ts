@@ -58,50 +58,8 @@ const enum Enum43 {
   // >= 0 select merc with matching ID
 }
 
-void IndicateSelectedMerc(INT16 sID);
-
-void GameInitEditorMercsInfo();
-void GameShutdownEditorMercsInfo();
-void EntryInitEditorMercsInfo();
-void UpdateMercsInfo();
-
-void ProcessMercEditing();
-void AddMercToWorld(INT32 iMapIndex);
-void HandleRightClickOnMerc(INT32 iMapIndex);
-void SetMercEditingMode(UINT8 ubNewMode);
-
-void ResetAllMercPositions();
-
-void EraseMercWaypoint();
-void AddMercWaypoint(UINT32 iMapIndex);
-
-void SetEnemyColorCode(UINT8 ubColorCode);
-
-void SpecifyEntryPoint(UINT32 iMapIndex);
-
-// Modify stats of current soldiers
-void SetMercOrders(INT8 bOrders);
-void SetMercAttitude(INT8 bAttitude);
-void SetMercDirection(INT8 bDirection);
-void SetMercRelativeEquipment(INT8 bLevel);
-void SetMercRelativeAttributes(INT8 bLevel);
-
-void DeleteSelectedMerc();
-
-void CreateEditMercWindow(void);
-void DisplayEditMercWindow(void);
-INT32 IsMercHere(INT32 iMapIndex);
-
-void ExtractCurrentMercModeInfo(BOOLEAN fKillTextInputMode);
-
-void SetMercEditability(BOOLEAN fEditable);
-
-void HandleMercInventoryPanel(INT16 sX, INT16 sY, INT8 bEvent);
-
 extern UINT16 gusMercsNewItemIndex;
 extern BOOLEAN gfRenderMercInfo;
-
-void ChangeCivGroup(UINT8 ubNewCivGroup);
 
 const MERCINV_LGSLOT_WIDTH = 48;
 const MERCINV_SMSLOT_WIDTH = 24;
@@ -109,27 +67,12 @@ const MERCINV_SLOT_HEIGHT = 18;
 
 extern BOOLEAN gfRoofPlacement;
 
-extern void SetEnemyDroppableStatus(UINT32 uiSlot, BOOLEAN fDroppable);
-
-void RenderMercStrings();
-
 extern BOOLEAN gfShowPlayers;
 extern BOOLEAN gfShowEnemies;
 extern BOOLEAN gfShowCreatures;
 extern BOOLEAN gfShowRebels;
 extern BOOLEAN gfShowCivilians;
-void SetMercTeamVisibility(INT8 bTeam, BOOLEAN fVisible);
 
 extern UINT8 gubCurrentScheduleActionIndex;
 extern BOOLEAN gfSingleAction;
 extern BOOLEAN gfUseScheduleData2;
-
-void UpdateScheduleAction(UINT8 ubNewAction);
-void FindScheduleGridNo(UINT8 ubScheduleData);
-void ClearCurrentSchedule();
-void CancelCurrentScheduleAction();
-void RegisterCurrentScheduleAction(INT32 iMapIndex);
-void StartScheduleAction();
-
-void InitDetailedPlacementForMerc();
-void KillDetailedPlacementForMerc();

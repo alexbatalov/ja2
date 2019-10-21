@@ -72,11 +72,6 @@ STR8 pPlayerSelectedBigFaceFileNames[NUMBER_OF_PLAYER_PORTRAITS] = {
   "Faces\\BigFaces\\215.sti",
 };
 
-// function declarations
-void SelectMercFace(void);
-void SetMercSkinAndHairColors(void);
-BOOLEAN ShouldThisMercHaveABigBody(void);
-
 void CreateACharacterFromPlayerEnteredStats(void) {
   // copy over full name
   wcscpy(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName, pFullName);

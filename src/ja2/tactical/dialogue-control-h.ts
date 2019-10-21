@@ -213,88 +213,8 @@ const enum Enum204 {
 extern UINT32 uiExternalStaticNPCFaces[];
 extern UINT32 uiExternalFaceProfileIds[];
 
-// Functions for handling dialogue Q
-BOOLEAN InitalizeDialogueControl();
-void ShutdownDialogueControl();
-void EmptyDialogueQueue();
-void HandleDialogue();
-void HandleImportantMercQuote(SOLDIERTYPE *pSoldier, UINT16 usQuoteNumber);
-
-// Send in a profile number to see if text dialog exists for this guy....
-BOOLEAN DialogueDataFileExistsForProfile(UINT8 ubCharacterNum, UINT16 usQuoteNum, BOOLEAN fWavFile, UINT8 **ppStr);
-
-// Do special event as well as dialogue!
-BOOLEAN CharacterDialogueWithSpecialEvent(UINT8 ubCharacterNum, UINT16 usQuoteNum, INT32 iFaceIndex, UINT8 bUIHandlerID, BOOLEAN fFromSoldier, BOOLEAN fDelayed, UINT32 uiFlag, UINT32 uiData1, UINT32 uiData2);
-
-// Do special event as well as dialogue!
-BOOLEAN CharacterDialogueWithSpecialEventEx(UINT8 ubCharacterNum, UINT16 usQuoteNum, INT32 iFaceIndex, UINT8 bUIHandlerID, BOOLEAN fFromSoldier, BOOLEAN fDelayed, UINT32 uiFlag, UINT32 uiData1, UINT32 uiData2, UINT32 uiData3);
-
-// A higher level function used for tactical quotes
-BOOLEAN TacticalCharacterDialogueWithSpecialEvent(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum, UINT32 uiFlag, UINT32 uiData1, UINT32 uiData2);
-
-// A higher level function used for tactical quotes
-BOOLEAN TacticalCharacterDialogueWithSpecialEventEx(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum, UINT32 uiFlag, UINT32 uiData1, UINT32 uiData2, UINT32 uiData3);
-
-// A higher level function used for tactical quotes
-BOOLEAN TacticalCharacterDialogue(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum);
-
-// A higher level function used for tactical quotes
-BOOLEAN DelayedTacticalCharacterDialogue(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum);
-
-// A more general purpose function for processing quotes
-BOOLEAN CharacterDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, INT32 iFaceIndex, UINT8 bUIHandlerID, BOOLEAN fFromSoldier, BOOLEAN fDelayed);
-
-// A special event can be setup which can be queued with other speech
-BOOLEAN SpecialCharacterDialogueEvent(UINT32 uiSpecialEventFlag, UINT32 uiSpecialEventData1, UINT32 uiSpecialEventData2, UINT32 uiSpecialEventData3, INT32 iFaceIndex, UINT8 bUIHandlerID);
-
-// Same as above, for triggers, with extra param to hold approach value
-BOOLEAN SpecialCharacterDialogueEventWithExtraParam(UINT32 uiSpecialEventFlag, UINT32 uiSpecialEventData1, UINT32 uiSpecialEventData2, UINT32 uiSpecialEventData3, UINT32 uiSpecialEventData4, INT32 iFaceIndex, UINT8 bUIHandlerID);
-
-// execute specific character dialogue
-BOOLEAN ExecuteCharacterDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, INT32 iFaceIndex, UINT8 bUIHandlerID, BOOLEAN fSoldier);
-
-// Called when a face stops talking...
-void HandleDialogueEnd(FACETYPE *pFace);
-
-// shut down last quotetext box
-void ShutDownLastQuoteTacticalTextBox(void);
-
-// Called to advance speech
-// Used for option when no speech sound file
-void DialogueAdvanceSpeech();
-
-BOOLEAN DialogueQueueIsEmpty();
-BOOLEAN DialogueQueueIsEmptyOrSomebodyTalkingNow();
-
-// Adjust the face, etc when switching from panel to extern panel...
-void HandleDialogueUIAdjustments();
-
-// pause game time during
-void PauseTimeDuringNextQuote();
-void UnPauseGameDuringNextQuote(void);
-
-// set up and shutdown static external NPC faces
-void InitalizeStaticExternalNPCFaces(void);
-void ShutdownStaticExternalNPCFaces(void);
-
-void SayQuoteFromAnyBodyInSector(UINT16 usQuoteNum);
-void SayQuoteFromAnyBodyInThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT16 usQuoteNum);
-void SayQuoteFromNearbyMercInSector(INT16 sGridNo, INT8 bDistance, UINT16 usQuoteNum);
-void SayQuote58FromNearbyMercInSector(INT16 sGridNo, INT8 bDistance, UINT16 usQuoteNum, INT8 bSex);
-void ExecuteTacticalTextBox(INT16 sLeftPosition, STR16 pString);
-void ExecuteTacticalTextBoxForLastQuote(INT16 sLeftPosition, STR16 pString);
-UINT32 FindDelayForString(STR16 sString);
-void BeginLoggingForBleedMeToos(BOOLEAN fStart);
-
-void UnSetEngagedInConvFromPCAction(SOLDIERTYPE *pSoldier);
-void SetEngagedInConvFromPCAction(SOLDIERTYPE *pSoldier);
-
 extern UINT32 guiDialogueLastQuoteTime;
 extern UINT32 guiDialogueLastQuoteDelay;
-
-void SetStopTimeQuoteCallback(MODAL_HOOK pCallBack);
-
-BOOLEAN DialogueActive();
 
 extern INT32 giNPCReferenceCount;
 extern INT32 giNPCSpecialReferenceCount;
@@ -302,20 +222,3 @@ extern INT32 giNPCSpecialReferenceCount;
 const NUMBER_VALID_MERC_PRECEDENT_QUOTES = 13;
 
 extern UINT8 gubMercValidPrecedentQuoteID[NUMBER_VALID_MERC_PRECEDENT_QUOTES];
-
-BOOLEAN ShouldMercSayPrecedentToRepeatOneSelf(UINT8 ubMercID, UINT32 uiQuoteID);
-BOOLEAN GetMercPrecedentQuoteBitStatus(UINT8 ubMercID, UINT8 ubQuoteBit);
-BOOLEAN SetMercPrecedentQuoteBitStatus(UINT8 ubMercID, UINT8 ubBitToSet);
-BOOLEAN IsQuoteInPrecedentArray(UINT32 uiQuoteID);
-UINT8 GetQuoteBitNumberFromQuoteID(UINT32 uiQuoteID);
-void HandleShutDownOfMapScreenWhileExternfaceIsTalking(void);
-
-void StopAnyCurrentlyTalkingSpeech();
-
-// handle pausing of the dialogue queue
-void PauseDialogueQueue(void);
-
-// unpause the dialogue queue
-void UnPauseDialogueQueue(void);
-
-void SetExternMapscreenSpeechPanelXY(INT16 sXPos, INT16 sYPos);

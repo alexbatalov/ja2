@@ -4,10 +4,6 @@ HLIST hDemandEventQueue = NULL;
 
 const QUEUE_RESIZE = 20;
 
-// LOCAL FUNCTIONS
-HLIST GetQueue(UINT8 ubQueueID);
-void SetQueue(UINT8 ubQueueID, HLIST hQueue);
-
 BOOLEAN InitializeEventManager() {
   // Create Queue
   hEventQueue = CreateList(QUEUE_RESIZE, sizeof(PTR));

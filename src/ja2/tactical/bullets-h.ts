@@ -52,23 +52,3 @@ interface BULLET {
 }
 
 extern UINT32 guiNumBullets;
-
-INT32 CreateBullet(UINT8 ubFirer, BOOLEAN fFake, UINT16 usFlags);
-void RemoveBullet(INT32 iBullet);
-void StopBullet(INT32 iBullet);
-void UpdateBullets();
-BULLET *GetBulletPtr(INT32 iBullet);
-
-void DeleteAllBullets();
-
-void LocateBullet(INT32 iBulletIndex);
-
-void HandleBulletSpecialFlags(INT32 iBulletIndex);
-
-void AddMissileTrail(BULLET *pBullet, FIXEDPT qCurrX, FIXEDPT qCurrY, FIXEDPT qCurrZ);
-
-// Save the bullet table to the saved game file
-BOOLEAN SaveBulletStructureToSaveGameFile(HWFILE hFile);
-
-// Load the bullet table from the saved game file
-BOOLEAN LoadBulletStructureFromSavedGameFile(HWFILE hFile);

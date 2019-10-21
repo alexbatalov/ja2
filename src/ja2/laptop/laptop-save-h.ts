@@ -119,7 +119,3 @@ interface LaptopSaveInfoStruct {
 extern LaptopSaveInfoStruct LaptopSaveInfo;
 
 extern BobbyRayPurchaseStruct BobbyRayPurchases[MAX_PURCHASE_AMOUNT];
-
-void LaptopSaveVariablesInit();
-BOOLEAN LoadLaptopInfoFromSavedGame(HWFILE hFile);
-BOOLEAN SaveLaptopInfoToSavedGame(HWFILE hFile);

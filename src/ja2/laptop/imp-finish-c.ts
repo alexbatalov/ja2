@@ -20,25 +20,6 @@ UINT32 guiCHARACTERPORTRAIT;
 extern INT32 iCurrentPortrait;
 extern INT32 iCurrentVoices;
 
-// function definitions
-void CreateIMPFinishButtons(void);
-void DeleteIMPFinishButtons(void);
-BOOLEAN RenderCharProfileFinishFace(void);
-void RenderCharFullName(void);
-BOOLEAN LoadCharacterPortrait(void);
-void DestroyCharacterPortrait(void);
-
-// callbacks
-void BtnIMPFinishVoiceCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPFinishAttributesCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPFinishPersonalityCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPFinishStartOverCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPFinishDoneCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPFinishPortraitCallback(GUI_BUTTON *btn, INT32 reason);
-void FinishMessageBoxCallBack(UINT8 bExitValue);
-extern void BtnIMPMainPageVoiceCallback(GUI_BUTTON *btn, INT32 reason);
-extern void BtnIMPMainPagePortraitCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPFinish(void) {
   // load graphic for portrait
   LoadCharacterPortrait();

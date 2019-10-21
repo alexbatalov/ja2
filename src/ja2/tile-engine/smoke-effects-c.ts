@@ -1,14 +1,8 @@
-INT8 FromWorldFlagsToSmokeType(UINT8 ubWorldFlags);
-UINT8 FromSmokeTypeToWorldFlags(INT8 bType);
-
 const NUM_SMOKE_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR SMOKE LISTING
 SMOKEEFFECT gSmokeEffectData[NUM_SMOKE_EFFECT_SLOTS];
 UINT32 guiNumSmokeEffects = 0;
-
-INT32 GetFreeSmokeEffect(void);
-void RecountSmokeEffects(void);
 
 INT32 GetFreeSmokeEffect(void) {
   UINT32 uiCount;

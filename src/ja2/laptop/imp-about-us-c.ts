@@ -1,12 +1,7 @@
 // IMP AboutUs buttons
 INT32 giIMPAboutUsButton[1];
 INT32 giIMPAboutUsButtonImage[1];
-void CreateIMPAboutUsButtons(void);
-void DeleteIMPAboutUsButtons(void);
 ;
-
-// fucntions
-void BtnIMPBackCallback(GUI_BUTTON *btn, INT32 reason);
 
 void EnterIMPAboutUs(void) {
   // create buttons

@@ -188,7 +188,6 @@ UINT16 gzItemCons[SIZE_ITEM_CONS];
 UINT16 gzFullItemPros[SIZE_ITEM_PROS];
 UINT16 gzFullItemCons[SIZE_ITEM_PROS];
 UINT16 gzFullItemTemp[SIZE_ITEM_PROS]; // necessary, unfortunately
-void ItemDescCallback(MOUSE_REGION *pRegion, INT32 iReason);
 INT16 gsInvDescX;
 INT16 gsInvDescY;
 UINT8 gubItemDescStatusIndex;
@@ -200,7 +199,6 @@ BOOLEAN fItemDescDelete = FALSE;
 MOUSE_REGION gItemDescAttachmentRegions[4];
 MOUSE_REGION gProsAndConsRegions[2];
 
-void BtnMoneyButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiMoneyButtonBtn[MAX_ATTACHMENTS];
 INT32 guiMoneyButtonImage;
 INT32 guiMoneyDoneButtonImage;
@@ -228,9 +226,6 @@ MoneyLoc gMapMoneyButtonLoc = { 174, 115 };
 // show the description
 extern BOOLEAN fShowDescriptionFlag;
 extern BOOLEAN fShowInventoryFlag;
-
-void ItemDescAttachmentsCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void ItemDescAmmoCallback(GUI_BUTTON *btn, INT32 reason);
 
 // number of keys on keyring, temp for now
 const NUMBER_KEYS_ON_KEYRING = 28;
@@ -267,25 +262,8 @@ extern BOOLEAN fMapScreenBottomDirty;
 INT32 giMapInvDescButtonImage;
 INT32 giMapInvDescButton = -1;
 
-// the done descrition button callback
-void ItemDescDoneButtonCallback(GUI_BUTTON *btn, INT32 reason);
-
 extern BOOLEAN fMapInventoryItem;
 BOOLEAN gfItemPopupRegionCallbackEndFix = FALSE;
-extern void InternalMAPBeginItemPointer(SOLDIERTYPE *pSoldier);
-
-void ItemPopupRegionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void ItemPopupFullRegionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-BOOLEAN ReloadItemDesc();
-
-extern void HelpTextDoneCallback(void);
-void RemoveMoney();
-BOOLEAN CompatibleItemForApplyingOnMerc(OBJECTTYPE *pTestObject);
-
-extern BOOLEAN MAPInternalInitItemDescriptionBox(OBJECTTYPE *pObject, UINT8 ubStatusIndex, SOLDIERTYPE *pSoldier);
-extern void StartSKIDescriptionBox(void);
-
-void UpdateItemHatches();
 
 UINT8 ubRGBItemCyclePlacedItemColors[] = {
   25, 25, 25,
@@ -4697,17 +4675,6 @@ const ITEMPICK_TEXT_HEIGHT = 17;
 
 ITEM_PICKUP_MENU_STRUCT gItemPickupMenu;
 BOOLEAN gfInItemPickupMenu = FALSE;
-
-void ItemPickupScrollUp(GUI_BUTTON *btn, INT32 reason);
-void ItemPickupScrollDown(GUI_BUTTON *btn, INT32 reason);
-void ItemPickupAll(GUI_BUTTON *btn, INT32 reason);
-void ItemPickupOK(GUI_BUTTON *btn, INT32 reason);
-void ItemPickupCancel(GUI_BUTTON *btn, INT32 reason);
-void SetupPickupPage(INT8 bPage);
-void ItemPickMenuMouseMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void ItemPickMenuMouseClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void CalculateItemPickupMenuDimensions();
-void ItemPickupBackgroundClick(MOUSE_REGION *pRegion, INT32 iReason);
 
 // STUFF FOR POPUP ITEM INFO BOX
 void SetItemPickupMenuDirty(BOOLEAN fDirtyLevel) {

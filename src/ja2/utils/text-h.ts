@@ -930,11 +930,6 @@ const SIZE_ITEM_INFO = 480;
 const SIZE_ITEM_PROS = 160;
 const SIZE_ITEM_CONS = 160;
 
-BOOLEAN LoadItemInfo(UINT16 ubIndex, STR16 pNameString, STR16 pInfoString);
-extern void LoadAllExternalText(void);
-BOOLEAN LoadShortNameItemInfo(UINT16 ubIndex, STR16 pNameString);
-BOOLEAN LoadItemProsAndCons(UINT16 usIndex, STR16 pProsString, STR16 pConsString);
-
 const enum Enum365 {
   // Coordinating simultaneous arrival dialog strings
   STR_DETECTED_SIMULTANEOUS_ARRIVAL,
@@ -1274,6 +1269,3 @@ const enum Enum382 {
 STR16 gzCreditNames[];
 STR16 gzCreditNameTitle[];
 STR16 gzCreditNameFunny[];
-
-extern INT16 *GetWeightUnitString(void);
-FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight);

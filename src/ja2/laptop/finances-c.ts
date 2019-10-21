@@ -102,51 +102,6 @@ UINT32 guiLastPageInRecordsList = 0;
 INT32 giFinanceButton[4];
 INT32 giFinanceButtonImage[4];
 
-// internal functions
-UINT32 ProcessAndEnterAFinacialRecord(UINT8 ubCode, UINT32 uiDate, INT32 iAmount, UINT8 ubSecondCode, INT32 iBalanceToDate);
-void RenderBackGround(void);
-BOOLEAN LoadFinances();
-void DrawSummary(void);
-void DrawSummaryLines(void);
-void DrawFinanceTitleText(void);
-void InvalidateLapTopScreen(void);
-void RemoveFinances(void);
-void DrawSummaryText(void);
-INT32 GetCurrentBalance(void);
-void ClearFinanceList(void);
-void OpenAndReadFinancesFile(void);
-void DrawAPageOfRecords(void);
-void DrawRecordsBackGround(void);
-void DrawRecordsText(void);
-void DrawRecordsColumnHeadersText(void);
-void BtnFinanceDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason);
-void BtnFinanceFirstLastPageCallBack(GUI_BUTTON *btn, INT32 reason);
-void BtnFinanceDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason);
-void CreateFinanceButtons(void);
-void DestroyFinanceButtons(void);
-void IncrementCurrentPageFinancialDisplay(void);
-void ProcessTransactionString(STR16 pString, FinanceUnitPtr pFinance);
-void DisplayFinancePageNumberAndDateRange(void);
-void GetBalanceFromDisk(void);
-BOOLEAN WriteBalanceToDisk(void);
-BOOLEAN AppendFinanceToEndOfFile(FinanceUnitPtr pFinance);
-UINT32 ReadInLastElementOfFinanceListAndReturnIdNumber(void);
-void SetLastPageInRecords(void);
-BOOLEAN LoadInRecords(UINT32 uiPage);
-BOOLEAN LoadPreviousPage(void);
-BOOLEAN LoadNextPage(void);
-
-INT32 GetPreviousBalanceToDate(void);
-INT32 GetPreviousDaysIncome(void);
-INT32 GetPreviousDaysBalance(void);
-
-void SetFinanceButtonStates(void);
-INT32 GetTodaysBalance(void);
-INT32 GetTodaysDebits(void);
-INT32 GetYesterdaysOtherDeposits(void);
-INT32 GetTodaysOtherDeposits(void);
-INT32 GetYesterdaysDebits(void);
-
 UINT32 AddTransactionToPlayersBook(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT32 iAmount) {
   // adds transaction to player's book(Financial List), returns unique id number of it
   // outside of the financial system(the code in this .c file), this is the only function you'll ever need

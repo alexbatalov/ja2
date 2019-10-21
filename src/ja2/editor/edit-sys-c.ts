@@ -1,11 +1,3 @@
-BOOLEAN PasteHigherTextureFromRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubRadius);
-BOOLEAN PasteExistingTexture(UINT32 iMapIndex, UINT16 usIndex);
-BOOLEAN PasteExistingTextureFromRadius(INT32 iMapIndex, UINT16 usIndex, UINT8 ubRadius);
-BOOLEAN SetLowerLandIndexWithRadius(INT32 iMapIndex, UINT32 uiNewType, UINT8 ubRadius, BOOLEAN fReplace);
-
-void PasteTextureEx(INT16 sGridNo, UINT16 usType);
-void PasteTextureFromRadiusEx(INT16 sGridNo, UINT16 usType, UINT8 ubRadius);
-
 BOOLEAN gfWarning = FALSE;
 
 BOOLEAN gfDoFill = FALSE;

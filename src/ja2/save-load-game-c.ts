@@ -4,15 +4,6 @@
 //
 /////////////////////////////////////////////////////
 
-void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ);
-extern void NextLoopCheckForEnoughFreeHardDriveSpace();
-extern void UpdatePersistantGroupsFromOldSave(UINT32 uiSavedGameVersion);
-extern void TrashAllSoldiers();
-extern void ResetJA2ClockGlobalTimers(void);
-
-extern BeginLoadScreen();
-extern EndLoadScreen();
-
 // Global variable used
 
 extern SOLDIERTYPE *gpSMCurrentMerc;
@@ -35,10 +26,8 @@ BOOLEAN gMusicModeToPlay = FALSE;
 BOOLEAN gfUseConsecutiveQuickSaveSlots = FALSE;
 UINT32 guiCurrentQuickSaveNumber = 0;
 UINT32 guiLastSaveGameNum;
-BOOLEAN DoesAutoSaveFileExist(BOOLEAN fLatestAutoSave);
 
 UINT32 guiJA2EncryptionSet = 0;
-UINT32 CalcJA2EncryptionSet(SAVED_GAME_HEADER *pSaveGameHeader);
 
 interface GENERAL_SAVE_INFO {
   // The screen that the gaem was saved from
@@ -265,47 +254,10 @@ extern BOOLEAN gfHavePurchasedItemsFromTony;
 //
 /////////////////////////////////////////////////////
 
-BOOLEAN SaveMercProfiles(HWFILE hFile);
-BOOLEAN LoadSavedMercProfiles(HWFILE hwFile);
-
-BOOLEAN SaveSoldierStructure(HWFILE hFile);
-BOOLEAN LoadSoldierStructure(HWFILE hFile);
-
 // BOOLEAN		SavePtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile );
 // BOOLEAN		LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile );
 
-BOOLEAN SaveEmailToSavedGame(HWFILE hFile);
-BOOLEAN LoadEmailFromSavedGame(HWFILE hFile);
-
-BOOLEAN SaveTacticalStatusToSavedGame(HWFILE hFile);
-BOOLEAN LoadTacticalStatusFromSavedGame(HWFILE hFile);
-
-BOOLEAN SetMercsInsertionGridNo();
-
-BOOLEAN LoadOppListInfoFromSavedGame(HWFILE hFile);
-BOOLEAN SaveOppListInfoToSavedGame(HWFILE hFile);
-
-BOOLEAN LoadMercPathToSoldierStruct(HWFILE hFilem, UINT8 ubID);
-BOOLEAN SaveMercPathFromSoldierStruct(HWFILE hFilem, UINT8 ubID);
-
-BOOLEAN LoadGeneralInfo(HWFILE hFile);
-BOOLEAN SaveGeneralInfo(HWFILE hFile);
-BOOLEAN SavePreRandomNumbersToSaveGameFile(HWFILE hFile);
-BOOLEAN LoadPreRandomNumbersFromSaveGameFile(HWFILE hFile);
-
-BOOLEAN SaveWatchedLocsToSavedGame(HWFILE hFile);
-BOOLEAN LoadWatchedLocsFromSavedGame(HWFILE hFile);
-
-BOOLEAN LoadMeanwhileDefsFromSaveGameFile(HWFILE hFile);
-BOOLEAN SaveMeanwhileDefsFromSaveGameFile(HWFILE hFile);
-
-void PauseBeforeSaveGame(void);
-void UnPauseAfterSaveGame(void);
-void UpdateMercMercContractInfo();
-void HandleOldBobbyRMailOrders();
 // ppp
-
-void TruncateStrategicGroupSizes();
 
 /////////////////////////////////////////////////////
 //

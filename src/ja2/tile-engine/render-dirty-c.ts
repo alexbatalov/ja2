@@ -8,9 +8,6 @@ UINT32 guiNumBackSaves = 0;
 VIDEO_OVERLAY gVideoOverlays[VIDEO_OVERLAYS];
 UINT32 guiNumVideoOverlays = 0;
 
-void AllocateVideoOverlayArea(UINT32 uiCount);
-void SaveVideoOverlayArea(UINT32 uiSrcBuffer, UINT32 uiCount);
-
 // BACKGROUND_SAVE	gTopmostSaves[BACKGROUND_BUFFERS];
 // UINT32 guiNumTopmostSaves=0;
 

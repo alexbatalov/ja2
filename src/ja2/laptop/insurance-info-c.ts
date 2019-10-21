@@ -43,27 +43,15 @@ UINT8 gubCurrentInsInfoSubPage = 0;
 BOOLEAN InsuranceInfoSubPagesVisitedFlag[INS_INFO_LAST_PAGE - 1];
 
 INT32 guiInsPrevButtonImage;
-void BtnInsPrevButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsPrevBackButton;
 
 INT32 guiInsNextButtonImage;
-void BtnInsNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiInsNextBackButton;
 
 // link to the varios pages
 MOUSE_REGION gSelectedInsuranceInfoLinkRegion;
-void SelectInsuranceLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 MOUSE_REGION gSelectedInsuranceInfoHomeLinkRegion;
-void SelectInsuranceInfoHomeLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-void DisplaySubmitClaimPage();
-void DisplayPremiumPage();
-void DisplayRenewingPremiumPage();
-void DisplayCancelationPagePage();
-void DisableArrowButtonsIfOnLastOrFirstPage();
-void ChangingInsuranceInfoSubPage(UINT8 ubSubPageNumber);
-void DisplayInfoTocPage();
 
 void GameInitInsuranceInfo() {
 }

@@ -9,11 +9,6 @@ BOOLEAN gfInitRect = TRUE;
 static BOOLEAN FirstTime = TRUE;
 BOOLEAN gfDoneWithSplashScreen = FALSE;
 
-void PalEditRenderHook();
-BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent);
-
-void DebugRenderHook();
-BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent);
 INT8 gCurDebugPage = 0;
 
 HVSURFACE hVAnims[7];
@@ -23,10 +18,6 @@ UINT32 uiDoTitleAnimTime = 0;
 BOOLEAN gfDoTitleAnimation = FALSE;
 BOOLEAN gfStartTitleAnimation = FALSE;
 
-void DefaultDebugPage1();
-void DefaultDebugPage2();
-void DefaultDebugPage3();
-void DefaultDebugPage4();
 RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {
   (RENDER_HOOK)DefaultDebugPage1,
   (RENDER_HOOK)DefaultDebugPage2,

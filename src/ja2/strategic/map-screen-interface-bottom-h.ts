@@ -18,37 +18,3 @@ extern BOOLEAN gfDontStartTransitionFromLaptop;
 extern BOOLEAN gfStartMapScreenToLaptopTransition;
 
 // function prototypes
-
-BOOLEAN LoadMapScreenInterfaceBottom(void);
-void DeleteMapScreenInterfaceBottom(void);
-void DestroyButtonsForMapScreenInterfaceBottom(void);
-BOOLEAN CreateButtonsForMapScreenInterfaceBottom(void);
-void RenderMapScreenInterfaceBottom(void);
-
-// delete map bottom graphics
-void DeleteMapBottomGraphics(void);
-
-// load bottom graphics
-void HandleLoadOfMapBottomGraphics(void);
-
-// allowed to time compress?
-BOOLEAN AllowedToTimeCompress(void);
-
-void EnableDisAbleMapScreenOptionsButton(BOOLEAN fEnable);
-
-// create and destroy masks to cover the time compression buttons as needed
-void CreateDestroyMouseRegionMasksForTimeCompressionButtons(void);
-
-BOOLEAN CommonTimeCompressionChecks(void);
-
-BOOLEAN AnyUsableRealMercenariesOnTeam(void);
-
-void RequestTriggerExitFromMapscreen(INT8 bExitToWhere);
-BOOLEAN AllowedToExitFromMapscreenTo(INT8 bExitToWhere);
-void HandleExitsFromMapScreen(void);
-
-void MapScreenMsgScrollDown(UINT8 ubLinesDown);
-void MapScreenMsgScrollUp(UINT8 ubLinesUp);
-
-void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex);
-void MoveToEndOfMapScreenMessageList(void);

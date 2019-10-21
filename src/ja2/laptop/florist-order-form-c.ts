@@ -181,56 +181,35 @@ UINT8 gubFlowerOrder_AdditioanalServicePrices[] = {
   10,
 };
 
-void BtnFlowerOrderBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFlowerOrderBackButton;
 
-void BtnFlowerOrderSendButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFlowerOrderSendButton;
 
-void BtnFlowerOrderClearButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFlowerOrderClearButton;
 
-void BtnFlowerOrderGalleryButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFlowerOrderGalleryButton;
 
 // Clicking on OrderCheckBox
 MOUSE_REGION gSelectedFloristCheckBoxRegion[6];
-void SelectFlorsitCheckBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // link to the card gallery
 MOUSE_REGION gSelectedFloristCardGalleryLinkRegion;
-void SelectFloristCardGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // link to the flower gallery by clicking on the flower
 MOUSE_REGION gSelectedFloristGalleryLinkRegion;
-void SelectFloristGalleryLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // the drop down for the city
 MOUSE_REGION gSelectedFloristDropDownRegion;
-void SelectFloristDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // to disable the drop down window
 MOUSE_REGION gSelectedFloristDisableDropDownRegion;
-void SelectFloristDisableDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region for the drop down city location area
 MOUSE_REGION gSelectedFlowerDropDownRegion[FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS];
-void SelectFlowerDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectFlowerDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // to select typing in the personal sentiment box
 // MOUSE_REGION    gSelectedFloristPersonalSentimentBoxRegion;
 // void SelectFloristPersonalSentimentBoxRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
-
-void DisplayFloristCheckBox();
-void DisplayFlowerDynamicItems();
-BOOLEAN CreateDestroyFlowerOrderDestDropDown(UINT8 ubDropDownMode);
-void FlowerOrderDrawSelectedCity(UINT8 ubNumber);
-void FlowerOrderDisplayShippingLocationCity();
-void InitFlowerOrderTextInputBoxes();
-void DestroyFlowerOrderTextInputBoxes();
-void HandleFloristOrderKeyBoardInput();
-void FlowerOrderUserTextFieldCallBack(UINT8 ubID, BOOLEAN fEntering);
 
 void GameInitFloristOrderForm() {
 }

@@ -1,7 +1,3 @@
-extern BOOLEAN IsValidSecondHandShot(SOLDIERTYPE *pSoldier);
-
-INT16 GetBreathPerAP(SOLDIERTYPE *pSoldier, UINT16 usAnimState);
-
 INT16 TerrainActionPoints(SOLDIERTYPE *pSoldier, INT16 sGridno, INT8 bDir, INT8 bLevel) {
   INT16 sAPCost = 0;
   INT16 sSwitchValue;

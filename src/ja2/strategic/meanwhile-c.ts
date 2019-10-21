@@ -70,13 +70,6 @@ INT16 gsOldCurInterfacePanel = 0;
 BOOLEAN gfWorldWasLoaded = FALSE;
 UINT8 ubCurrentMeanWhileId = 0;
 
-void BeginMeanwhileCallBack(UINT8 bExitValue);
-void DoneFadeOutMeanwhile(void);
-void DoneFadeInMeanwhile(void);
-void DoneFadeOutMeanwhileOnceDone(void);
-void DoneFadeInMeanwhileOnceDone(void);
-void LocateMeanWhileGrid(void);
-
 UINT32 uiMeanWhileFlags = 0;
 
 // meanwhile flag defines
@@ -97,10 +90,6 @@ const AWOL_SCIENTIST_FLAG = 0x00002000;
 const OUTSKIRTS_MEDUNA_FLAG = 0x00004000;
 const INTERROGATION_FLAG = 0x00008000;
 const BALIME_LIBERATED_FLAG = 0x00010000;
-
-extern void InternalLocateGridNo(UINT16 sGridNo, BOOLEAN fForce);
-
-void ProcessImplicationsOfMeanwhile(void);
 
 // set flag for this event
 void SetMeanWhileFlag(UINT8 ubMeanwhileID) {

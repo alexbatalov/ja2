@@ -1,12 +1,3 @@
-BOOLEAN ShadesCalculateTables(SGPPaletteEntry *p8BPPPalette);
-
-void BuildShadeTable(void);
-void BuildIntensityTable(void);
-void SetShadeTablePercent(FLOAT uiShadePercent);
-
-void Init8BitTables(void);
-BOOLEAN Set8BitModePalette(SGPPaletteEntry *pPal);
-
 extern SGPPaletteEntry Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 3][256];
 extern UINT8 ubColorTables[HVOBJECT_SHADE_TABLES + 3][256];
 

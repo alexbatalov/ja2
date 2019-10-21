@@ -97,8 +97,6 @@ void AIPickBurstLocations(SOLDIERTYPE *pSoldier, INT8 bTargets, SOLDIERTYPE *pTa
   // OK, they have been added
 }
 
-extern HVOBJECT GetCursorFileVideoObject(UINT32 uiCursorFile);
-
 void RenderAccumulatedBurstLocations() {
   INT32 cnt;
   INT16 sGridNo;

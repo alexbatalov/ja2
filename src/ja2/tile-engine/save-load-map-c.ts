@@ -8,13 +8,6 @@ BOOLEAN gfApplyChangesToTempFile = FALSE;
 //	3200 bytes * 8 bits = 25600 map elements
 UINT8 *gpRevealedMap;
 
-void RemoveSavedStructFromMap(UINT32 uiMapIndex, UINT16 usIndex);
-void AddObjectFromMapTempFileToMap(UINT32 uiMapIndex, UINT16 usIndex);
-void AddBloodOrSmellFromMapTempFileToMap(MODIFY_MAP *pMap);
-void SetSectorsRevealedBit(UINT16 usMapIndex);
-void SetMapRevealedStatus();
-void DamageStructsFromMapTempFile(MODIFY_MAP *pMap);
-BOOLEAN ModifyWindowStatus(UINT32 uiMapIndex);
 // ppp
 
 void ApplyMapChangesToMapTempFile(BOOLEAN fAddToMap) {

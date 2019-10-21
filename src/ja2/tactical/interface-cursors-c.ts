@@ -9,9 +9,6 @@ static INT16 gsLooseCursorGridNo = NOWHERE;
 static UINT32 guiLooseCursorID = 0;
 static UINT32 guiLooseCursorTimeOfLastUpdate = 0;
 
-void HandleLooseCursorDraw();
-void HandleLooseCursorHide();
-
 UICursor gUICursors[NUM_UI_CURSORS] = {
   { NO_UICURSOR, 0, 0, 0 },
   { NORMAL_FREEUICURSOR, UICURSOR_FREEFLOWING, CURSOR_NORMAL, 0 },
@@ -185,10 +182,6 @@ UINT32 guiOldUICursor = NO_UICURSOR;
 UINT16 gusCurMousePos;
 UINT16 gusTargetDropPos;
 BOOLEAN gfTargetDropPos = FALSE;
-
-// LOCAL FUNCTIONS
-void EraseSnappingCursor();
-void DrawSnappingCursor();
 
 BOOLEAN SetUICursor(UINT32 uiNewCursor) {
   guiOldUICursor = guiCurUICursor;

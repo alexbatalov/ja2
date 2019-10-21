@@ -386,44 +386,4 @@ extern UINT8 AmbientVols[NUM_AMBIENTS];
 
 char szSoundEffects[NUM_SAMPLES][255];
 
-BOOLEAN InitJA2Sound();
-BOOLEAN ShutdownJA2Sound();
-UINT32 PlayJA2Sample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-UINT32 PlayJA2StreamingSample(UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-
-UINT32 PlayJA2SampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-UINT32 PlayJA2StreamingSampleFromFile(STR8 szFileName, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan, SOUND_STOP_CALLBACK EndsCallback);
-
-UINT32 PlayJA2Ambient(UINT32 usNum, UINT32 ubVolume, UINT32 ubLoops);
-UINT32 PlayJA2AmbientRandom(UINT32 usNum, UINT32 uiTimeMin, UINT32 uiTimeMax);
-
-UINT32 PlaySoldierJA2Sample(UINT16 usID, UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan, BOOLEAN fCheck);
-
-UINT32 GetSoundEffectsVolume();
-void SetSoundEffectsVolume(UINT32 uiNewVolume);
-
-UINT32 GetSpeechVolume();
-void SetSpeechVolume(UINT32 uiNewVolume);
-
-// Calculates a volume based on the current Speech Volume level
-UINT32 CalculateSpeechVolume(UINT32 uiVolume);
-
-// Calculates a volume based on the current Sound Effects Volume level
-UINT32 CalculateSoundEffectsVolume(UINT32 uiVolume);
-
-INT8 SoundDir(INT16 sGridNo);
-INT8 SoundVolume(INT8 bInitialVolume, INT16 sGridNo);
-
-// ATE: Warning! Use this sparingly! NOT very robust - can
-// have only 1 delayed sound at a time, and uses the global custom
-// timer, again, of which can only be one
-void PlayDelayedJA2Sample(UINT32 uiDelay, UINT32 usNum, UINT32 usRate, UINT32 ubVolume, UINT32 ubLoops, UINT32 uiPan);
-
 const POSITION_SOUND_FROM_SOLDIER = 0x00000001;
-
-INT32 NewPositionSnd(INT16 sGridNo, UINT32 uiFlags, UINT32 uiData, UINT32 iSoundToPlay);
-void DeletePositionSnd(INT32 iPositionSndIndex);
-void SetPositionSndsActive();
-void SetPositionSndsInActive();
-void SetPositionSndsVolumeAndPanning();
-void SetPositionSndGridNo(INT32 iPositionSndIndex, INT16 sGridNo);

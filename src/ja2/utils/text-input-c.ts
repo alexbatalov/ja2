@@ -1,20 +1,6 @@
 UINT16 *szClipboard;
 BOOLEAN gfNoScroll = FALSE;
 
-// The internal callback functions assigned to each text field.
-void MouseClickedInTextRegionCallback(MOUSE_REGION *reg, INT32 reason);
-void MouseMovedInTextRegionCallback(MOUSE_REGION *reg, INT32 reason);
-
-// Internal string manipulation functions.
-void AddChar(UINT32 uiKey);
-void RemoveChar(UINT8 ubArrayIndex);
-void DeleteHilitedText();
-
-void DoublePercentileCharacterFromStringIntoString(UINT16 *pSrcString, UINT16 *pDstString);
-
-// All exclusive input types are handled in this function.
-void HandleExclusiveInput(UINT32 uiKey);
-
 interface TextInputColors {
   // internal values that contain all of the colors for the text editing fields.
   usFont: UINT16;
@@ -68,15 +54,6 @@ interface STACKTEXTINPUTNODE {
 }
 
 STACKTEXTINPUTNODE *pInputStack = NULL;
-
-// Internal renderer of previous nodes
-void RenderBackgroundField(TEXTINPUTNODE *pNode);
-void RenderInactiveTextFieldNode(TEXTINPUTNODE *pNode);
-
-// Internal copy, cut, and paste functions
-void ExecuteCopyCommand();
-void ExecuteCutCommand();
-void ExecutePasteCommand();
 
 // Internal list vars.  active always points to the currently edited field.
 TEXTINPUTNODE *gpTextInputHead = NULL, *gpTextInputTail = NULL, *gpActive = NULL;

@@ -7,16 +7,10 @@ INT32 giStartingMemValue = 0;
 const DONT_CHECK_FOR_FREE_SPACE = 255;
 UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 
-extern BOOLEAN DoSkiMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT8 ubFlags, MSGBOX_CALLBACK ReturnCallback);
-extern void NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(UINT8 bExitValue);
 extern BOOLEAN gfTacticalPlacementGUIActive;
 extern BOOLEAN gfTacticalPlacementGUIDirty;
 extern BOOLEAN gfValidLocationsChanged;
 extern BOOLEAN gfInMsgBox;
-
-// callback to confirm game is over
-void EndGameMessageBoxCallBack(UINT8 bExitValue);
-void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen);
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game

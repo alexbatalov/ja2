@@ -39,38 +39,6 @@ extern BOOLEAN fDisableJustForIan;
 // are we allowed to beep on message scroll in tactical
 extern BOOLEAN fOkToBeepNewMessage;
 
-void ScreenMsg(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...);
-
-// same as screen message, but only display to mapscreen message system, not tactical
-void MapScreenMessage(UINT16 usColor, UINT8 ubPriority, STR16 pStringA, ...);
-
-void ScrollString(void);
-void DisplayStringsInMapScreenMessageList(void);
-
-void InitGlobalMessageList(void);
-void FreeGlobalMessageList(void);
-
-UINT8 GetRangeOfMapScreenMessages(void);
-
-void EnableDisableScrollStringVideoOverlay(BOOLEAN fEnable);
-
-// will go and clear all displayed strings off the screen
-void ClearDisplayedListOfTacticalStrings(void);
-
-// clear ALL strings in the tactical Message Queue
-void ClearTacticalMessageQueue(void);
-
-BOOLEAN LoadMapScreenMessagesFromSaveGameFile(HWFILE hFile);
-BOOLEAN SaveMapScreenMessagesToSaveGameFile(HWFILE hFile);
-
-// use these if you are not Kris
-void HideMessagesDuringNPCDialogue(void);
-void UnHideMessagesDuringNPCDialogue(void);
-
-// disable and enable scroll string, only to be used by Kris
-void DisableScrollMessages(void);
-void EnableScrollMessages(void);
-
 /* unused functions, written by Mr. Carter, so don't expect these to work...
 UINT8 GetTheRelativePositionOfCurrentMessage( void );
 void MoveCurrentMessagePointerDownList( void );

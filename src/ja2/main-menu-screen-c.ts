@@ -39,20 +39,6 @@ UINT32 guiMainMenuExitScreen = MAINMENU_SCREEN;
 
 extern BOOLEAN gfLoadGameUponEntry;
 
-void ExitMainMenu();
-void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void HandleMainMenuInput();
-void HandleMainMenuScreen();
-void DisplayAssignmentText();
-void ClearMainMenu();
-void HandleHelpScreenInput();
-void SelectMainMenuBackGroundRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SetMainMenuExitScreen(UINT32 uiNewScreen);
-void CreateDestroyBackGroundMouseMask(BOOLEAN fCreate);
-BOOLEAN CreateDestroyMainMenuButtons(BOOLEAN fCreate);
-void RenderMainMenu();
-void RestoreButtonBackGrounds();
-
 UINT32 MainMenuScreenInit() {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %S", zVersionLabel));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", czVersionNumber));

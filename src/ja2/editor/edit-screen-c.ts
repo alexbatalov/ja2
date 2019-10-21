@@ -4,19 +4,7 @@ BOOLEAN gfCorruptMap = FALSE;
 BOOLEAN gfCorruptSchedules = FALSE;
 BOOLEAN gfProfileDataLoaded = FALSE;
 
-extern void RemoveMercsInSector();
-extern void ReverseSchedules();
-extern void ClearAllSchedules();
-
 extern UINT32 guiCurUICursor;
-
-void DrawObjectsBasedOnSelectionRegion();
-UINT32 ProcessEditscreenMessageBoxResponse();
-
-void ReloadMap();
-
-// defined in sector summary.c
-extern BOOLEAN HandleSummaryInput(InputAtom *pEvent);
 
 GUI_BUTTON *gpPersistantButton;
 
@@ -82,19 +70,8 @@ INT16 gsCursorGridNo;
 
 INT32 giMusicID = 0;
 
-void EraseWorldData();
-
-BOOLEAN EditModeInit(void);
-BOOLEAN EditModeShutdown(void);
-void EnsureStatusOfEditorButtons();
-
 extern BOOLEAN fAllDone;
 extern DisplayList Selection;
-
-extern void DisableButtonHelpTextRestore();
-extern void EnableButtonHelpTextRestore();
-
-void UpdateLastActionBeforeLeaving();
 
 BOOLEAN gfEditorDirty = TRUE;
 
@@ -133,8 +110,6 @@ UINT16 gusEditorTaskbarColor;
 UINT16 gusEditorTaskbarHiColor;
 UINT16 gusEditorTaskbarLoColor;
 
-void CreateGotoGridNoUI();
-void RemoveGotoGridNoUI();
 BOOLEAN gfGotoGridNoUI = FALSE;
 INT32 guiGotoGridNoUIButtonID;
 MOUSE_REGION GotoGridNoUIRegion;
@@ -1141,7 +1116,6 @@ void HandleJA2ToolbarSelection(void) {
 //
 
 extern INT8 gbCurrSelect;
-extern void DeleteSelectedMercsItem();
 void HandleKeyboardShortcuts() {
   static INT32 iSavedMode;
   static BOOLEAN fShowTrees = TRUE;
@@ -3236,8 +3210,6 @@ void DrawObjectsBasedOnSelectionRegion() {
     }
   }
 }
-
-extern void AutoLoadMap();
 
 // The main loop of the editor.
 UINT32 EditScreenHandle(void) {

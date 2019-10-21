@@ -14,18 +14,7 @@ INT8 SquadMovementGroups[NUMBER_OF_SQUADS];
 
 BOOLEAN fExitingVehicleToSquad = FALSE;
 
-extern void CheckForAndAddMercToTeamPanel(SOLDIERTYPE *pSoldier);
-extern void RemoveAllPlayersFromSlot();
 extern INT32 iHelicopterVehicleId;
-
-// update current merc selected in tactical
-void UpdateCurrentlySelectedMerc(SOLDIERTYPE *pSoldier, INT8 bSquadValue);
-
-// is the passed squad between sectors?
-void RebuildSquad(INT8 bSquadValue);
-
-BOOLEAN AddDeadCharacterToSquadDeadGuys(SOLDIERTYPE *pSoldier, INT32 iSquadValue);
-BOOLEAN IsDeadGuyOnAnySquad(SOLDIERTYPE *pSoldier);
 
 INT32 iCurrentTacticalSquad = FIRST_SQUAD;
 

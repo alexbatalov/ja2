@@ -5,40 +5,13 @@ const MIN_LOB_RANGE = 6;
 ITEM_POOL_LOCATOR FlashItemSlots[NUM_ITEM_FLASH_SLOTS];
 UINT32 guiNumFlashItemSlots = 0;
 
-LEVELNODE *AddItemGraphicToWorld(INVTYPE *pItem, INT16 sGridNo, UINT8 ubLevel);
-INT8 GetListMouseHotSpot(INT16 sLargestLineWidth, INT8 bNumItemsListed, INT16 sFontX, INT16 sFontY, INT8 bCurStart);
-void RemoveItemGraphicFromWorld(INVTYPE *pItem, INT16 sGridNo, UINT8 ubLevel, LEVELNODE *pLevelNode);
-
-ITEM_POOL *GetItemPoolForIndex(INT16 sGridNo, INT32 iItemIndex, UINT8 ubLevel);
-
-INT32 GetFreeFlashItemSlot(void);
-void RecountFlashItemSlots(void);
-INT32 AddFlashItemSlot(ITEM_POOL *pItemPool, ITEM_POOL_LOCATOR_HOOK Callback, UINT8 ubFlags);
-BOOLEAN RemoveFlashItemSlot(ITEM_POOL *pItemPool);
-
 // Disgusting hacks: have to keep track of these values for accesses in callbacks
 static SOLDIERTYPE *gpTempSoldier;
 static INT16 gsTempGridno;
 static INT8 bTempFrequency;
 
-void BombMessageBoxCallBack(UINT8 ubExitValue);
-void BoobyTrapMessageBoxCallBack(UINT8 ubExitValue);
-void SwitchMessageBoxCallBack(UINT8 ubExitValue);
-void BoobyTrapDialogueCallBack(void);
-void MineSpottedDialogueCallBack(void);
-void MineSpottedLocatorCallback(void);
-void RemoveBlueFlagDialogueCallBack(UINT8 ubExitValue);
-void MineSpottedMessageBoxCallBack(UINT8 ubExitValue);
-void CheckForPickedOwnership(void);
-void BoobyTrapInMapScreenMessageBoxCallBack(UINT8 ubExitValue);
-
-BOOLEAN ContinuePastBoobyTrap(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 bLevel, INT32 iItemIndex, BOOLEAN fInStrategic, BOOLEAN *pfSaidQuote);
-extern BOOLEAN ItemIsCool(OBJECTTYPE *pObj);
 extern INT8 gbItemPointerSrcSlot;
-extern void MAPEndItemPointer();
 extern BOOLEAN gfResetUIMovementOptimization;
-
-BOOLEAN ItemPoolOKForPickup(SOLDIERTYPE *pSoldier, ITEM_POOL *pItemPool, INT8 bZLevel);
 
 SOLDIERTYPE *gpBoobyTrapSoldier;
 ITEM_POOL *gpBoobyTrapItemPool;
@@ -48,8 +21,6 @@ BOOLEAN gfDisarmingBuriedBomb;
 extern BOOLEAN gfDontChargeAPsToPickup;
 INT8 gbTrapDifficulty;
 BOOLEAN gfJustFoundBoobyTrap = FALSE;
-
-void StartBombMessageBox(SOLDIERTYPE *pSoldier, INT16 sGridNo);
 
 BOOLEAN HandleCheckForBadChangeToGetThrough(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, INT16 sTargetGridNo, INT8 bLevel) {
   BOOLEAN fBadChangeToGetThrough = FALSE;
@@ -2406,8 +2377,6 @@ BOOLEAN ItemPoolOKForPickup(SOLDIERTYPE *pSoldier, ITEM_POOL *pItemPool, INT8 bZ
 
   return TRUE;
 }
-
-extern void HandleAnyMercInSquadHasCompatibleStuff(UINT8 ubSquad, OBJECTTYPE *pObject, BOOLEAN fReset);
 
 BOOLEAN DrawItemPoolList(ITEM_POOL *pItemPool, INT16 sGridNo, UINT8 bCommand, INT8 bZLevel, INT16 sXPos, INT16 sYPos) {
   INT16 sY;

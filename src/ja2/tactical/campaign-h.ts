@@ -48,31 +48,3 @@ const enum Enum200 {
   EXP_BONUS_MAXIMUM,
   NUM_EXP_BONUS_TYPES,
 }
-
-void StatChange(SOLDIERTYPE *pSoldier, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason);
-void ProfileStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason);
-void ProcessStatChange(MERCPROFILESTRUCT *pProfile, UINT8 ubStat, UINT16 usNumChances, UINT8 ubReason);
-
-void UpdateStats(SOLDIERTYPE *pSoldier);
-void ProfileUpdateStats(MERCPROFILESTRUCT *pProfile);
-void ProcessUpdateStats(MERCPROFILESTRUCT *pProfile, SOLDIERTYPE *pSoldier);
-
-UINT32 CalcNewSalary(UINT32 uiOldSalary, BOOLEAN fIncrease, UINT32 uiMaxLimit);
-UINT32 RoundOffSalary(UINT32 uiSalary);
-UINT16 SubpointsPerPoint(UINT8 ubStat, INT8 bExpLevel);
-
-void HandleUnhiredMercImprovement(MERCPROFILESTRUCT *pProfile);
-void HandleUnhiredMercDeaths(INT32 iProfileID);
-
-UINT8 CurrentPlayerProgressPercentage(void);
-UINT8 HighestPlayerProgressPercentage(void);
-
-void HourlyProgressUpdate(void);
-
-void HandleAnyStatChangesAfterAttack(void);
-
-void AwardExperienceBonusToActiveSquad(UINT8 ubExpBonusType);
-
-void BuildStatChangeString(STR16 wString, STR16 wName, BOOLEAN fIncrease, INT16 sPtsChanged, UINT8 ubStat);
-
-void MERCMercWentUpALevelSendEmail(UINT8 ubMercMercIdValue);

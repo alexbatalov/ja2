@@ -2,15 +2,6 @@
 INT32 giIMPAttributeFinishButtonImage[2];
 INT32 giIMPAttributeFinishButton[2];
 
-// function definitions
-void CreateAttributeFinishButtons(void);
-void DestroyAttributeFinishButtons(void);
-extern void SetGeneratedCharacterAttributes(void);
-
-// callbacks
-void BtnIMPAttributeFinishYesCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPAttributeFinishNoCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPAttributeFinish(void) {
   // create the needed buttons
   CreateAttributeFinishButtons();

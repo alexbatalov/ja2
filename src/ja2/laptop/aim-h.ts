@@ -73,22 +73,3 @@ const enum Enum63 {
   AIM_COPYRIGHT_2,
   AIM_COPYRIGHT_3,
 }
-
-void GameInitAIM();
-BOOLEAN EnterAIM();
-void ExitAIM();
-void HandleAIM();
-void RenderAIM();
-
-BOOLEAN ExitAimMenuBar(void);
-BOOLEAN InitAimMenuBar(void);
-
-BOOLEAN RemoveAimDefaults();
-BOOLEAN InitAimDefaults();
-BOOLEAN DrawAimDefaults();
-
-BOOLEAN DisplayAimSlogan();
-BOOLEAN DisplayAimCopyright();
-
-void ResetAimButtons(UINT32 *Buttons, UINT16 uNumberOfButtons);
-void DisableAimButton();

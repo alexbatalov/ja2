@@ -90,79 +90,9 @@ interface LIGHT_SPRITE {
   uiLightType: UINT32;
 }
 
-// Initializes the lighting system
-BOOLEAN InitLightingSystem(void);
-// Shuts down, and frees up all lights/memory
-BOOLEAN ShutdownLightingSystem(void);
-// Resets all light sprites and deallocates templates
-BOOLEAN LightReset(void);
-
-// THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
-BOOLEAN SetDefaultWorldLightingColors(void);
-
 // Low-Level Template Interface
 
-// Sets the normal light level for all tiles in the world
-BOOLEAN LightSetBaseLevel(UINT8 iIntensity);
-// Adds a light value to all tiles
-BOOLEAN LightAddBaseLevel(UINT32 uiLightType, UINT8 iIntensity);
-// Subtracts a light value from all tiles
-BOOLEAN LightSubtractBaseLevel(UINT32 uiLightType, UINT8 iIntensity);
-// Creates an omni (circular) light
-INT32 LightCreateOmni(UINT8 ubIntensity, INT16 iRadius);
-// Creates an oval-shaped light (two separate radii)
-INT32 LightCreateElliptical(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2);
-// Creates a square light
-INT32 LightCreateSquare(UINT8 ubIntensity, INT16 iRadius1, INT16 iRadius2);
-// Draws a light into the scene at X,Y
-BOOLEAN LightDraw(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 uiSprite);
-// Reverts the tiles a light has affected back to normal
-BOOLEAN LightErase(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 uiSprite);
-// Save a light list into a file
-BOOLEAN LightSave(INT32 uiLight, STR pFilename);
-// Load a light list from a file
-INT32 LightLoad(STR pFilename);
-
-// Sets the RGB values and number of light colors (1/2)
-BOOLEAN LightSetColors(SGPPaletteEntry *pPal, UINT8 ubNumColors);
-// Returns the number of colors active (1/2) and the palette colors
-UINT8 LightGetColors(SGPPaletteEntry *pPal);
-
 // High-Level Sprite Interface
-
-// Creates a new light sprite from a given filename/predefined symbol
-INT32 LightSpriteCreate(STR pName, UINT32 uiLightType);
-// Destroys the instance of that light
-BOOLEAN LightSpriteDestroy(INT32 iSprite);
-// Sets the tile position of the light instance
-BOOLEAN LightSpritePosition(INT32 iSprite, INT16 iX, INT16 iY);
-// Makes a light "fake"
-BOOLEAN LightSpriteFake(INT32 iSprite);
-// Updates any change in position in lights
-BOOLEAN LightSpriteRender();
-// Renders all lights
-BOOLEAN LightSpriteRenderAll(void);
-// Turns on/off power to a light
-BOOLEAN LightSpritePower(INT32 iSprite, BOOLEAN fOn);
-// Moves light to/from roof position
-BOOLEAN LightSpriteRoofStatus(INT32 iSprite, BOOLEAN fOnRoof);
-
-// Reveals translucent walls
-BOOLEAN CalcTranslucentWalls(INT16 iX, INT16 iY);
-BOOLEAN ApplyTranslucencyToWalls(INT16 iX, INT16 iY);
-// Makes trees translucent
-BOOLEAN LightTranslucentTrees(INT16 iX, INT16 iY);
-BOOLEAN LightHideTrees(INT16 iX, INT16 iY);
-BOOLEAN LightShowRays(INT16 iX, INT16 iY, BOOLEAN fReset);
-BOOLEAN LightHideRays(INT16 iX, INT16 iY);
-
-// makes the 16-bit palettes
-UINT16 CreateTilePaletteTables(HVOBJECT pObj, UINT32 uiType, BOOLEAN fForce);
-BOOLEAN CreateSoldierShadedPalette(SOLDIERTYPE *pSoldier, UINT32 uiBase, SGPPaletteEntry *pShadePal);
-UINT16 CreateSoldierPaletteTables(SOLDIERTYPE *pSoldier, UINT32 uiType);
-
-// returns the true light value at a tile (ignoring fake/merc lights)
-UINT8 LightTrueLevel(INT16 sGridNo, INT8 bLevel);
 
 // system variables
 extern LIGHT_NODE *pLightList[MAX_LIGHT_TEMPLATES];

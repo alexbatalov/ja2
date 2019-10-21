@@ -192,23 +192,17 @@ NUMBER_TIMES_QUOTE_SAID gNumberOfTimesQuoteSaid[MERC_NUMBER_OF_RANDOM_QUOTES] = 
 // Buttons
 //
 
-// The Account Box button
-void BtnAccountBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiAccountBoxButton;
 INT32 guiAccountBoxButtonImage;
 
 // File Box
 UINT32 guiFileBoxButton;
-void BtnFileBoxButtonCallback(GUI_BUTTON *btn, INT32 reason);
 
-// The 'X' to close the video conf window button
-void BtnXToCloseMercVideoButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiXToCloseMercVideoButton;
 INT32 guiXToCloseMercVideoButtonImage;
 
 // Mouse region for the subtitles region when the merc is talking
 MOUSE_REGION gMercSiteSubTitleMouseRegion;
-void MercSiteSubTitleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 //*******************************
 //
@@ -216,39 +210,6 @@ void MercSiteSubTitleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 //
 //*******************************
 
-BOOLEAN StartSpeckTalking(UINT16 usQuoteNum);
-void InitMercVideoFace();
-BOOLEAN HandleSpeckTalking(BOOLEAN fReset);
-// BOOLEAN	PixelateVideoMercImage();
-BOOLEAN PixelateVideoMercImage(BOOLEAN fUp, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT16 usHeight);
-BOOLEAN InitDestroyXToCloseVideoWindow(BOOLEAN fCreate);
-BOOLEAN DisplayMercVideoIntro(UINT16 usTimeTillFinish);
-void HandleCurrentMercDistortion();
-void HandleTalkingSpeck();
-// BOOLEAN DistortVideoMercImage();
-BOOLEAN DistortVideoMercImage(UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT16 usHeight);
-BOOLEAN IsAnyMercMercsHired();
-BOOLEAN IsAnyMercMercsDead();
-UINT8 CountNumberOfMercMercsHired();
-UINT8 CountNumberOfMercMercsWhoAreDead();
-BOOLEAN GetSpeckConditionalOpening(BOOLEAN fJustEnteredScreen);
-void RemoveSpeckPopupTextBox();
-BOOLEAN ShouldSpeckStartTalkingDueToActionOnSubPage();
-BOOLEAN ShouldSpeckSayAQuote();
-void HandleSpeckIdleConversation(BOOLEAN fReset);
-INT16 GetRandomQuoteThatHasBeenSaidTheLeast();
-void StopSpeckFromTalking();
-BOOLEAN HasLarryRelapsed();
-void IncreaseMercRandomQuoteValue(UINT8 ubQuoteID, UINT8 ubValue);
-BOOLEAN ShouldTheMercSiteServerGoDown();
-void DrawMercVideoBackGround();
-BOOLEAN CanMercQuoteBeSaid(UINT32 uiQuoteID);
-UINT8 NumberOfMercMercsDead();
-void MakeBiffAwayForCoupleOfDays();
-BOOLEAN AreAnyOfTheNewMercsAvailable();
-void ShouldAnyNewMercMercBecomeAvailable();
-BOOLEAN CanMercBeAvailableYet(UINT8 ubMercToCheck);
-UINT32 CalcMercDaysServed();
 // ppp
 
 void GameInitMercs() {

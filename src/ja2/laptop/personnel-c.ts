@@ -186,9 +186,6 @@ const enum Enum110 {
 
 extern BOOLEAN gfTemporaryDisablingOfLoadPendingFlag;
 extern BOOLEAN fExitingLaptopFlag;
-extern void HandleLapTopESCKey(void);
-extern void HandleAltTabKeyInLaptop(void);
-extern void HandleShiftAltTabKeyInLaptop(void);
 
 // BOOLEAN fShowInventory = FALSE;
 UINT8 uiCurrentInventoryIndex = 0;
@@ -307,128 +304,7 @@ INT32 iCurPortraitId = 0;
 // create mouse regions for past/current toggles
 BOOLEAN fCreateRegionsForPastCurrentToggle = FALSE;
 
-BOOLEAN LoadPersonnelGraphics(void);
-void RemovePersonnelGraphics(void);
-void RenderPersonnel(void);
-void RenderPersonnelStats(INT32 iId, INT32 iSlot);
-BOOLEAN RenderPersonnelFace(INT32 iId, INT32 iSlot, BOOLEAN fDead, BOOLEAN fFired, BOOLEAN fOther);
-BOOLEAN RenderPersonnelPictures(void);
-void LeftButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void RightButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void LeftFFButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void RightFFButtonCallBack(GUI_BUTTON *btn, INT32 reason);
-void PersonnelPortraitCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void CreatePersonnelButtons(void);
-void DeletePersonnelButtons(void);
-void DisplayHeader(void);
-void DisplayCharName(INT32 iId, INT32 iSlot);
-void DisplayCharStats(INT32 iId, INT32 iSlot);
-INT32 GetLastMercId(void);
-void DrawPageNumber(void);
-void SetPersonnelButtonStates(void);
-void CreateDestroyButtonsForPersonnelDepartures(void);
-BOOLEAN LoadPersonnelScreenBackgroundGraphics(void);
-void DeletePersonnelScreenBackgroundGraphics(void);
-void RenderPersonnelScreenBackground(void);
-INT32 GetNumberOfMercsOnPlayersTeam(void);
-void CreateDestroyMouseRegionsForPersonnelPortraits(void);
-BOOLEAN DisplayPicturesOfCurrentTeam(void);
-void DisplayFaceOfDisplayedMerc();
-void DisplayNumberOnCurrentTeam(void);
-void DisplayNumberDeparted(void);
-INT32 GetTotalDailyCostOfCurrentTeam(void);
-void DisplayCostOfCurrentTeam(void);
-INT32 GetLowestDailyCostOfCurrentTeam(void);
-INT32 GetHighestDailyCostOfCurrentTeam(void);
-INT32 GetAvgStatOfCurrentTeamStat(INT32 iStat);
-void DisplayAverageStatValuesForCurrentTeam(void);
-void DisplayLowestStatValuesForCurrentTeam(void);
-void DisplayHighestStatValuesForCurrentTeam(void);
-void DisplayPersonnelTeamStats(void);
-void InitPastCharactersList(void);
-INT32 GetNumberOfPastMercsOnPlayersTeam(void);
-INT32 GetNumberOfOtherOnPastTeam(void);
-INT32 GetNumberOfLeftOnPastTeam(void);
-INT32 GetNumberOfDeadOnPastTeam(void);
-void DisplayStateOfPastTeamMembers(void);
-void CreateDestroyCurrentDepartedMouseRegions(void);
-void PersonnelCurrentTeamCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void PersonnelDepartedTeamCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void CreateDestroyButtonsForDepartedTeamList(void);
-void DepartedDownCallBack(GUI_BUTTON *btn, INT32 reason);
-void DepartedUpCallBack(GUI_BUTTON *btn, INT32 reason);
-void DisplayPastMercsPortraits(void);
-BOOLEAN DisplayPortraitOfPastMerc(INT32 iId, INT32 iCounter, BOOLEAN fDead, BOOLEAN fFired, BOOLEAN fOther);
-INT32 GetIdOfPastMercInSlot(INT32 iSlot);
-void DisplayDepartedCharStats(INT32 iId, INT32 iSlot, INT32 iState);
-void EnableDisableDeparturesButtons(void);
-void DisplayDepartedCharName(INT32 iId, INT32 iSlot, INT32 iState);
-INT32 GetTheStateOfDepartedMerc(INT32 iId);
-void DisplayPersonnelTextOnTitleBar(void);
-INT32 GetIdOfDepartedMercWithHighestStat(INT32 iStat);
-INT32 GetIdOfDepartedMercWithLowestStat(INT32 iStat);
-void RenderInventoryForCharacter(INT32 iId, INT32 iSlot);
-void DisplayInventoryForSelectedChar(void);
-INT32 GetNumberOfInventoryItemsOnCurrentMerc(void);
-void CreateDestroyPersonnelInventoryScrollButtons(void);
-void EnableDisableInventoryScrollButtons(void);
-void PersonnelINVStartButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void EmployementInfoButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void PersonnelStatStartButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void HandleSliderBarClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-INT32 GetNumberOfMercsDeadOrAliveOnPlayersTeam(void);
-
-void RenderSliderBarForPersonnelInventory(void);
-void FindPositionOfPersInvSlider(void);
-
-// check if current guy can have atm
-void UpDateStateOfStartButton(void);
-void HandlePersonnelKeyboard(void);
-
-void DisplayEmploymentinformation(INT32 iId, INT32 iSlot);
-
-// AIM merc:  Returns the amount of time left on mercs contract
-// MERC merc: Returns the amount of time the merc has worked
-// IMP merc:	Returns the amount of time the merc has worked
-// else:			returns -1
-INT32 CalcTimeLeftOnMercContract(SOLDIERTYPE *pSoldier);
-
-// what state is the past merc in?
-BOOLEAN IsPastMercDead(INT32 iId);
-BOOLEAN IsPastMercFired(INT32 iId);
-BOOLEAN IsPastMercOther(INT32 iId);
-
-// display box around currently selected merc
-BOOLEAN DisplayHighLightBox(void);
-
-// id of merc in this slot
-INT32 GetIdOfThisSlot(INT32 iSlot);
-
-// grab appropriate id of soldier first being displayed
-INT32 GetIdOfFirstDisplayedMerc();
-
-// get avg for this stat
-INT32 GetAvgStatOfPastTeamStat(INT32 iStat);
-
-// render atm panel
-BOOLEAN RenderAtmPanel(void);
-void DisplayATMAmount(void);
-
-// create destroy ATM button
-void CreateDestroyStartATMButton(void);
-void CreateDestroyATMButton(void);
-void ATMStartButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void ATMNumberButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void HandleStateOfATMButtons(void);
-void ATMOtherButtonCallback(GUI_BUTTON *btn, INT32 reason);
-
 // atm misc functions
-
-void ATMOther2ButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void DisplayATMStrings(void);
-void DisplayAmountOnCurrentMerc(void);
-void RenderRectangleForPersonnelTransactionAmount(void);
-void HandleTimedAtmModes(void);
 
 void GameInitPersonnel(void) {
   // init past characters lists

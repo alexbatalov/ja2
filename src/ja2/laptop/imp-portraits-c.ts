@@ -14,16 +14,6 @@ INT32 iPortraitNumber = 0;
 
 // function definitions
 
-void IncrementPictureIndex(void);
-void DecrementPicture(void);
-void CreateIMPPortraitButtons(void);
-void DestroyIMPPortraitButtons(void);
-
-// callbacks
-void BtnIMPPortraitNextCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPortraitPreviousCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPPortraitDoneCallback(GUI_BUTTON *btn, INT32 reason);
-
 void EnterIMPPortraits(void) {
   // create buttons
   CreateIMPPortraitButtons();

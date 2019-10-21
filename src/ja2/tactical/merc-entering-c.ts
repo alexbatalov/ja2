@@ -334,8 +334,6 @@ BOOLEAN gfIngagedInDrop = FALSE;
 ANITILE *gpHeli;
 BOOLEAN gfFirstHeliRun;
 
-void HandleFirstHeliDropOfGame();
-
 void ResetHeliSeats() {
   gbNumHeliSeatsOccupied = 0;
 }

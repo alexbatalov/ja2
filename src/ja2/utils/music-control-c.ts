@@ -39,10 +39,6 @@ CHAR8 *szMusicList[NUM_MUSIC] = {
 BOOLEAN gfForceMusicToTense = FALSE;
 BOOLEAN gfDontRestartSong = FALSE;
 
-BOOLEAN StartMusicBasedOnMode();
-void DoneFadeOutDueToEndMusic(void);
-extern void HandleEndDemoInCreatureLevel();
-
 BOOLEAN NoEnemiesInSight() {
   SOLDIERTYPE *pSoldier;
   INT32 cnt;
@@ -62,8 +58,6 @@ BOOLEAN NoEnemiesInSight() {
 
   return TRUE;
 }
-
-void MusicStopCallback(void *pData);
 
 //********************************************************************************
 // MusicPlay

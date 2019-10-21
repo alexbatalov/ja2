@@ -109,13 +109,6 @@ BOOLEAN gfUseAlternateDialogueFile = FALSE;
 INT16 gsTopPosition = 20;
 
 INT32 iDialogueBox = -1;
-void RenderSubtitleBoxOverlay(VIDEO_OVERLAY *pBlitter);
-void RenderFaceOverlay(VIDEO_OVERLAY *pBlitter);
-
-extern BOOLEAN ContinueDialogue(SOLDIERTYPE *pSoldier, BOOLEAN fDone);
-extern void HandlePendingInitConv();
-extern BOOLEAN WillMercRenew(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote);
-extern void DrawFace(INT16 sCharNumber);
 
 // the next said quote will pause time
 BOOLEAN fPausedTimeDuringQuote = FALSE;
@@ -134,23 +127,6 @@ BOOLEAN fDialogueBoxDueToLastMessage = FALSE;
 // last quote timers
 UINT32 guiDialogueLastQuoteTime = 0;
 UINT32 guiDialogueLastQuoteDelay = 0;
-
-void CheckForStopTimeQuotes(UINT16 usQuoteNum);
-
-void TextOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void FaceOverlayClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-// Handler functions for tactical ui diaplay
-void HandleTacticalTextUI(INT32 iFaceIndex, SOLDIERTYPE *pSoldier, INT16 *zQuoteStr);
-void HandleTacticalNPCTextUI(UINT8 ubCharacterNum, INT16 *zQuoteStr);
-void HandleTacticalSpeechUI(UINT8 ubCharacterNum, INT32 iFaceIndex);
-void DisplayTextForExternalNPC(UINT8 ubCharacterNum, STR16 zQuoteStr);
-void CreateTalkingUI(INT8 bUIHandlerID, INT32 iFaceIndex, UINT8 ubCharacterNum, SOLDIERTYPE *pSoldier, INT16 *zQuoteStr);
-
-void HandleExternNPCSpeechFace(INT32 iIndex);
-
-extern BOOLEAN ContinueDialogue(SOLDIERTYPE *pSoldier, BOOLEAN fDone);
-extern BOOLEAN DoSkiMessageBox(UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT8 ubFlags, MSGBOX_CALLBACK ReturnCallback);
 
 void UnPauseGameDuringNextQuote(void) {
   fPausedTimeDuringQuote = FALSE;
@@ -941,8 +917,6 @@ void HandleDialogue() {
   // Delete memory
   MemFree(QItem);
 }
-
-BOOLEAN GetDialogue(UINT8 ubCharacterNum, UINT16 usQuoteNum, UINT32 iDataSize, UINT16 *zDialogueText, UINT32 *puiSoundID, CHAR8 *zSoundString);
 
 BOOLEAN DelayedTacticalCharacterDialogue(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum) {
   if (pSoldier->ubProfile == NO_PROFILE) {

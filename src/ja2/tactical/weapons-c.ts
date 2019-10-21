@@ -29,18 +29,7 @@ const HTH_MODE_STEAL = 3;
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
 const WEAPON_STATUS_MOD = (x) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
 
-extern void TeamChangesSides(UINT8 ubTeam, INT8 bSide);
-
 extern BOOLEAN gfNextFireJam;
-
-BOOLEAN WillExplosiveWeaponFail(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj);
-
-BOOLEAN UseGun(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo);
-BOOLEAN UseBlade(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo);
-BOOLEAN UseThrown(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo);
-BOOLEAN UseLauncher(SOLDIERTYPE *pSoldier, INT16 sTargetGridNo);
-
-INT32 HTHImpact(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTarget, INT32 iHitBy, BOOLEAN fBladeAttack);
 
 BOOLEAN gfNextShotKills = FALSE;
 BOOLEAN gfReportHitChances = FALSE;

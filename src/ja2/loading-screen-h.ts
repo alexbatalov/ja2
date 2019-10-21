@@ -46,10 +46,3 @@ const enum Enum22 {
 
 // For use by the game loader, before it can possibly know the situation.
 extern UINT8 gubLastLoadingScreenID;
-
-// returns the UINT8 ID for the specified sector.
-UINT8 GetLoadScreenID(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-
-// sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
-// and refreshing the screen with it.
-void DisplayLoadScreenWithID(UINT8 ubLoadScreenID);

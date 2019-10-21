@@ -100,63 +100,11 @@ const enum Enum215 {
   NUM_UI_PANELS,
 }
 
-BOOLEAN InitializeTacticalInterface();
-BOOLEAN ShutdownTacticalInterface();
 BOOLEAN fInterfacePanelDirty;
 BOOLEAN gfPausedTacticalRenderFlags;
 BOOLEAN gfPausedTacticalRenderInterfaceFlags;
 INT16 gsInterfaceLevel;
 BOOLEAN gfInMovementMenu;
-
-void PopupPositionMenu(UI_EVENT *pUIEvent);
-void PopDownPositionMenu();
-void PopupMovementMenu(UI_EVENT *pUIEvent);
-void PopDownMovementMenu();
-void RenderMovementMenu();
-void CancelMovementMenu();
-
-void PopDownOpenDoorMenu();
-void RenderOpenDoorMenu();
-BOOLEAN InitDoorOpenMenu(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UINT8 ubDirection, BOOLEAN fClosingDoor);
-BOOLEAN HandleOpenDoorMenu();
-void CancelOpenDoorMenu();
-
-void HandleInterfaceBackgrounds();
-
-void BeginOverlayMessage(UINT32 uiFont, UINT16 *pFontString, ...);
-void EndOverlayMessage();
-
-void DrawSelectedUIAboveGuy(UINT16 usSoldierID);
-
-void CreateCurrentTacticalPanelButtons();
-void RemoveCurrentTacticalPanelButtons();
-void SetCurrentTacticalPanelCurrentMerc(UINT8 ubID);
-void SetCurrentInterfacePanel(UINT8 ubNewPanel);
-BOOLEAN IsMercPortraitVisible(UINT8 ubSoldierID);
-
-BOOLEAN InitializeCurrentPanel();
-void ShutdownCurrentPanel();
-
-void ClearInterface();
-void RestoreInterface();
-
-void RenderArrows();
-void EraseRenderArrows();
-void GetArrowsBackground();
-void HandleUpDownArrowBackgrounds();
-
-void EndDeadlockMsg();
-
-void HandleLocateSelectMerc(UINT8 ubID, INT8 bFlag);
-
-void DirtyMercPanelInterface(SOLDIERTYPE *pSoldier, UINT8 ubDirtyLevel);
-
-void EndUIMessage();
-void BeginUIMessage(UINT16 *pFontString, ...);
-void InternalBeginUIMessage(BOOLEAN fUseSkullIcon, UINT16 *pFontString, ...);
-
-// map screen version, for centering over the map area
-void BeginMapUIMessage(UINT8 fPosition, UINT16 *pFontString, ...);
 
 UINT16 gusUIOldSelectedSoldier;
 
@@ -172,38 +120,3 @@ const enum Enum216 {
   AIR_RAID_TURN_MESSAGE,
   PLAYER_TURN_MESSAGE,
 }
-
-void HandleTopMessages();
-BOOLEAN AddTopMessage(UINT8 ubType, UINT16 *pzString);
-BOOLEAN InTopMessageBarAnimation();
-void EndTopMessage();
-
-void PauseRT(BOOLEAN fPause);
-
-void InitEnemyUIBar(UINT8 ubNumEnemies, UINT8 ubDoneEnemies);
-
-UINT16 *GetSoldierHealthString(SOLDIERTYPE *pSoldier);
-
-void GetLaunchItemParamsFromUI();
-void RenderAimCubeUI();
-void ResetAimCubeAI();
-void SetupAimCubeAI();
-void IncrementAimCubeUI();
-void EndAimCubeUI();
-void BeginAimCubeUI(SOLDIERTYPE *pSoldier, INT16 sGridNo, INT8 ubLevel, UINT8 bStartPower, INT8 bStartHeight);
-BOOLEAN AimCubeUIClick();
-
-void ResetPhysicsTrajectoryUI();
-void SetupPhysicsTrajectoryUI();
-void EndPhysicsTrajectoryUI();
-void BeginPhysicsTrajectoryUI(INT16 sGridNo, INT8 bLevel, BOOLEAN fBadCTGT);
-
-void InitPlayerUIBar(BOOLEAN fInterrupt);
-
-void ToggleTacticalPanels();
-
-void DirtyTopMessage();
-
-void BeginMultiPurposeLocator(INT16 sGridNo, INT8 bLevel, BOOLEAN fSlideTo);
-void HandleMultiPurposeLocator();
-void RenderTopmostMultiPurposeLocator();

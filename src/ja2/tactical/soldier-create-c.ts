@@ -13,14 +13,6 @@ const PALACE_SECTOR_Y = 16;
 
 const MAX_PALACE_DISTANCE = 20;
 
-// Private functions used within TacticalCreateStruct()
-void InitSoldierStruct(SOLDIERTYPE *pSoldier);
-BOOLEAN TacticalCopySoldierFromProfile(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct);
-BOOLEAN TacticalCopySoldierFromCreateStruct(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct);
-void CopyProfileItems(SOLDIERTYPE *pSoldier, SOLDIERCREATE_STRUCT *pCreateStruct);
-UINT8 GetLocationModifier(UINT8 ubSoldierClass);
-void ReduceHighExpLevels(INT8 *pbExpLevel);
-
 BOOLEAN gfProfiledEnemyAdded = FALSE;
 
 UINT32 guiCurrentUniqueSoldierId = 1;

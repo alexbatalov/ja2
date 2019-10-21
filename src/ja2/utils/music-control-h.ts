@@ -33,16 +33,3 @@ extern UINT32 uiMusicHandle;
 extern BOOLEAN fMusicPlaying;
 extern UINT8 gubMusicMode;
 extern BOOLEAN gfForceMusicToTense;
-
-BOOLEAN SetMusicMode(UINT8 ubMusicMode);
-BOOLEAN MusicPlay(UINT32 uiNum);
-BOOLEAN MusicSetVolume(UINT32 uiVolume);
-UINT32 MusicGetVolume(void);
-BOOLEAN MusicStop(void);
-BOOLEAN MusicFadeOut(void);
-BOOLEAN MusicFadeIn(void);
-BOOLEAN MusicPoll(BOOLEAN fForce);
-
-void SetMusicFadeSpeed(INT8 bFadeSpeed);
-
-void FadeMusicForXSeconds(UINT32 uiDelay);

@@ -235,21 +235,7 @@ extern UINT32 guiVEHINV;
 extern INT32 giMapInvDoneButton;
 extern BOOLEAN gfBeginEndTurn;
 extern SOLDIERTYPE *gpItemDescSoldier;
-extern BOOLEAN InternalInitItemDescriptionBox(OBJECTTYPE *pObject, INT16 sX, INT16 sY, UINT8 ubStatusIndex, SOLDIERTYPE *pSoldier);
 extern BOOLEAN gfInItemPickupMenu;
-extern void HandleAnyMercInSquadHasCompatibleStuff(UINT8 ubSquad, OBJECTTYPE *pObject, BOOLEAN fReset);
-extern BOOLEAN InternalHandleCompatibleAmmoUI(SOLDIERTYPE *pSoldier, OBJECTTYPE *pTestObject, BOOLEAN fOn);
-extern void SetNewItem(SOLDIERTYPE *pSoldier, UINT8 ubInvPos, BOOLEAN fNewItem);
-
-extern void CleanUpStack(OBJECTTYPE *pObj, OBJECTTYPE *pCursorObj);
-
-BOOLEAN IsMouseInRegion(MOUSE_REGION *pRegion);
-void HandleMouseOverSoldierFaceForContMove(SOLDIERTYPE *pSoldier, BOOLEAN fOn);
-void HandlePlayerTeamMemberDeathAfterSkullAnimation(SOLDIERTYPE *pSoldier);
-void EnableButtonsForInItemBox(BOOLEAN fDisable);
-void ConfirmationToDepositMoneyToPlayersAccount(UINT8 ubExitValue);
-
-void MergeMessageBoxCallBack(UINT8 ubExitValue);
 
 UINT8 gubHandPos;
 UINT16 gusOldItemIndex;
@@ -401,8 +387,6 @@ MOUSE_REGION gTEAM_EnemyIndicator[6];
 BOOLEAN gfTEAM_HandInvDispText[6][NUM_INV_SLOTS];
 BOOLEAN gfSM_HandInvDispText[NUM_INV_SLOTS];
 
-void HelpTextDoneCallback(void);
-
 // Globals - for one - the current merc here
 UINT16 gusSMCurrentMerc = 0;
 SOLDIERTYPE *gpSMCurrentMerc = NULL;
@@ -429,63 +413,6 @@ INT8 gbStanceButPos[2][3][3] = {
     },
   },
 };
-
-// Mouse button and region callbacks
-// void BtnPositionCallback( GUI_BUTTON *btn, INT32 reason );
-// void BtnMovementCallback( GUI_BUTTON *btn, INT32 reason );
-void SelectedMercButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectedMercButtonMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectedMercEnemyIndicatorCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SMInvMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SMInvClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SMInvClickCamoCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SMInvMoveCammoCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void SMInvMoneyButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-// SINGLE MERC PANEL BUTTON CALLBACKS
-void BtnStealthModeCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnStanceUpCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnUpdownCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnClimbCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnStanceDownCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnHandCursorCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnTalkCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMuteCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnSMDoneCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-
-void BtnPrevMercCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnNextMercCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnOptionsCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnBurstModeCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnLookCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnPositionShowCallback(GUI_BUTTON *btn, INT32 reason);
-void InvPanelButtonClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-// TEAM PANEL BUTTON CALLBACKS
-void BtnEndTurnCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnRostermodeCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnSquadCallback(GUI_BUTTON *btn, INT32 reason);
-void MercFacePanelCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void MercFacePanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TMFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TMClickFirstHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TMClickSecondHandInvCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void EnemyIndicatorClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void RenderSoldierTeamInv(SOLDIERTYPE *pSoldier, INT16 sX, INT16 sY, UINT8 ubPanelNum, BOOLEAN fDirty);
-
-// keyring stuff
-void KeyRingItemPanelButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void UpdateSelectedSoldier(UINT16 usSoldierID, BOOLEAN fSelect);
-
-void CheckForFacePanelStartAnims(SOLDIERTYPE *pSoldier, INT16 sPanelX, INT16 sPanelY);
-void HandleSoldierFaceFlash(SOLDIERTYPE *pSoldier, INT16 sFaceX, INT16 sFaceY);
-BOOLEAN PlayerExistsInSlot(UINT8 ubID);
-void UpdateStatColor(UINT32 uiTimer, BOOLEAN fUpdate);
-
-extern void UpdateItemHatches();
 
 // Wraps up check for AP-s get from a different soldier for in a vehicle...
 INT8 GetUIApsToDisplay(SOLDIERTYPE *pSoldier) {
@@ -885,7 +812,6 @@ void UpdateSMPanel() {
   }
 }
 
-extern BOOLEAN CanItemFitInPosition(SOLDIERTYPE *pSoldier, OBJECTTYPE *pObj, INT8 bPos, BOOLEAN fDoingPlacement);
 extern INT8 gbInvalidPlacementSlot[NUM_INV_SLOTS];
 
 void ReevaluateItemHatches(SOLDIERTYPE *pSoldier, BOOLEAN fAllValid) {
@@ -3283,8 +3209,6 @@ void MercFacePanelCallback(MOUSE_REGION *pRegion, INT32 iReason) {
     }
   }
 }
-
-extern void InternalSelectSoldier(UINT16 usSoldierID, BOOLEAN fAcknowledge, BOOLEAN fForceReselect, BOOLEAN fFromUI);
 
 void HandleLocateSelectMerc(UINT8 ubID, INT8 bFlag) {
   BOOLEAN fSelect = FALSE;

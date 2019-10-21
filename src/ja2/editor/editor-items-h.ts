@@ -49,32 +49,4 @@ interface EditorItemsInfo {
 
 extern EditorItemsInfo eInfo;
 
-void InitEditorItemsToolbar();
-void EntryInitEditorItemsInfo();
-void InitEditorItemsInfo(UINT32 uiItemType);
-void RenderEditorItemsInfo();
-void ClearEditorItemsInfo();
-void DisplayItemStatistics();
-void DetermineItemsScrolling();
-
-// User actions
-void AddSelectedItemToWorld(INT16 sGridNo);
-void HandleRightClickOnItem(INT16 sGridNo);
-void DeleteSelectedItem();
-void ShowSelectedItem();
-void HideSelectedItem();
-void SelectNextItemPool();
-void SelectNextItemInPool();
-void SelectPrevItemInPool();
-
-void KillItemPoolList();
-void BuildItemPoolList();
-
-void HideItemCursor(INT32 iMapIndex);
-void ShowItemCursor(INT32 iMapIndex);
-
-void SetEditorItemsTaskbarMode(UINT16 usNewMode);
-
-void HandleItemsPanel(UINT16 usScreenX, UINT16 usScreenY, INT8 bEvent);
-
 extern INT32 giDefaultExistChance;

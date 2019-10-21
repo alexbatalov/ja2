@@ -191,10 +191,4 @@ interface UICursor {
 
 UICursor gUICursors[NUM_UI_CURSORS];
 
-BOOLEAN SetUICursor(UINT32 uiNewCursor);
-BOOLEAN DrawUICursor();
-BOOLEAN HideUICursor();
-
 UINT16 gusCurMousePos;
-
-UINT16 GetSnapCursorIndex(UINT16 usAdditionalData);

@@ -31,10 +31,6 @@ INT16 gsINTOldRenderCenterY = 0;
 UINT16 gusINTOldMousePosX = 0;
 UINT16 gusINTOldMousePosY = 0;
 
-BOOLEAN RefinePointCollisionOnStruct(INT16 sGridNo, INT16 sTestX, INT16 sTestY, INT16 sSrcX, INT16 sSrcY, LEVELNODE *pNode);
-BOOLEAN CheckVideoObjectScreenCoordinateInData(HVOBJECT hSrcVObject, UINT16 usIndex, INT32 iTextX, INT32 iTestY);
-BOOLEAN RefineLogicOnStruct(INT16 sGridNo, LEVELNODE *pNode);
-
 BOOLEAN InitInteractiveTileManagement() {
   return TRUE;
 }

@@ -545,31 +545,6 @@ UINT8 RenderFXStartIndex[] = {
 // void TempRenderTiles(UINT32 uiFlags, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS );
 // void TempRenderTiles(UINT32 uiFlags, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS, UINT8 ubNumLevels, UINT32 *puiLevels );
 
-void ExamineZBufferForHiddenTiles(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS);
-
-// void ReRenderWorld(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-void ClearMarkedTiles(void);
-void CorrectRenderCenter(INT16 sRenderX, INT16 sRenderY, INT16 *pSNewX, INT16 *pSNewY);
-void ScrollBackground(UINT32 uiDirection, INT16 sScrollXIncrement, INT16 sScrollYIncrement);
-
-void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-void ResetRenderParameters();
-
-BOOLEAN Zero8BPPDataTo16BPPBufferTransparent(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex);
-
-BOOLEAN Blt8BPPDataTo16BPPBufferTransInvZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex);
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion, INT16 sZIndex, UINT16 *p16BPPPalette);
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncObscureClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion);
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion, INT16 sZIndex, UINT16 *p16BPPPalette);
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion);
-
-void RenderRoomInfo(INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS);
-
-void DeleteFromWorld(UINT16 usTileIndex, UINT32 uiRenderTiles, UINT16 usIndex);
-
-void RenderHighlight(INT16 sMouseX_M, INT16 sMouseY_M, INT16 sStartPointX_M, INT16 sStartPointY_M, INT16 sStartPointX_S, INT16 sStartPointY_S, INT16 sEndXS, INT16 sEndYS);
-BOOLEAN CheckRenderCenter(INT16 sNewCenterX, INT16 sNewCenterY);
-
 BOOLEAN RevealWalls(INT16 sX, INT16 sY, INT16 sRadius) {
   LEVELNODE *pStruct;
   INT16 sCountX, sCountY;

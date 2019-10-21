@@ -25,10 +25,8 @@ INT8 gbCurrentlySelectedCard;
 
 // link to the card gallery
 MOUSE_REGION gSelectedFloristCardsRegion[9];
-void SelectFloristCardsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 INT32 guiFlowerCardsButtonImage;
-void BtnFlowerCardsBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFlowerCardsBackButton;
 
 void GameInitFloristCards() {

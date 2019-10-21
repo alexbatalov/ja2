@@ -1,5 +1,3 @@
-extern BOOLEAN SaveWorldItemsToTempItemFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ, UINT32 uiNumberOfItems, WORLDITEM *pData);
-
 // status bar colors
 const DESC_STATUS_BAR = () => FROMRGB(201, 172, 133);
 const DESC_STATUS_BAR_SHADOW = () => FROMRGB(140, 136, 119);
@@ -99,8 +97,6 @@ extern UINT32 guiNumWorldItems;
 extern BOOLEAN fShowInventoryFlag;
 extern BOOLEAN fMapScreenBottomDirty;
 
-extern BOOLEAN ReduceStringLength(STR16 pString, UINT32 uiWidth, UINT32 uiFont);
-
 extern OBJECTTYPE gItemPointer;
 
 extern OBJECTTYPE *gpItemPointer;
@@ -110,51 +106,6 @@ extern UINT32 guiExternVo;
 extern UINT16 gusExternVoSubIndex;
 
 extern MOUSE_REGION gMPanelRegion;
-
-// map inventory callback
-void MapInvenPoolSlots(MOUSE_REGION *pRegion, INT32 iReason);
-void MapInvenPoolSlotsMove(MOUSE_REGION *pRegion, INT32 iReason);
-void CreateMapInventoryPoolSlots(void);
-void DestroyMapInventoryPoolSlots(void);
-void CreateMapInventoryButtons(void);
-void DestroyMapInventoryButtons(void);
-void ReSizeStashListByThisAmount(INT32 iNumberOfItems);
-void DestroyStash(void);
-void BuildStashForSelectedSector(INT16 sMapX, INT16 sMapY, INT16 sMapZ);
-BOOLEAN GetObjFromInventoryStashSlot(OBJECTTYPE *pInventorySlot, OBJECTTYPE *pItemPtr);
-BOOLEAN RemoveObjectFromStashSlot(OBJECTTYPE *pInventorySlot, OBJECTTYPE *pItemPtr);
-void BeginInventoryPoolPtr(OBJECTTYPE *pInventorySlot);
-BOOLEAN PlaceObjectInInventoryStash(OBJECTTYPE *pInventorySlot, OBJECTTYPE *pItemPtr);
-void RenderItemsForCurrentPageOfInventoryPool(void);
-BOOLEAN RenderItemInPoolSlot(INT32 iCurrentSlot, INT32 iFirstSlotOnPage);
-void UpdateHelpTextForInvnentoryStashSlots(void);
-void MapInventoryPoolPrevBtn(GUI_BUTTON *btn, INT32 reason);
-void MapInventoryPoolNextBtn(GUI_BUTTON *btn, INT32 reason);
-void DisplayPagesForMapInventoryPool(void);
-void DrawNumberOfIventoryPoolItems(void);
-void CreateMapInventoryPoolDoneButton(void);
-void DestroyInventoryPoolDoneButton(void);
-void MapInventoryPoolDoneBtn(GUI_BUTTON *btn, INT32 reason);
-void DisplayCurrentSector(void);
-void CheckAndUnDateSlotAllocation(void);
-void ClearUpTempUnSeenList(void);
-void SaveSeenAndUnseenItems(void);
-void DrawTextOnMapInventoryBackground(void);
-void DrawTextOnSectorInventory(void);
-INT32 GetTotalNumberOfItemsInSectorStash(void);
-void HandleMapSectorInventory(void);
-void ResetMapSectorInventoryPoolHighLights(void);
-void ReBuildWorldItemStashForLoadedSector(INT32 iNumberSeenItems, INT32 iNumberUnSeenItems, WORLDITEM *pSeenItemsList, WORLDITEM *pUnSeenItemsList);
-BOOLEAN IsMapScreenWorldItemVisibleInMapInventory(WORLDITEM *pWorldItem);
-BOOLEAN IsMapScreenWorldItemInvisibleInMapInventory(WORLDITEM *pWorldItem);
-void CheckGridNoOfItemsInMapScreenMapInventory();
-INT32 MapScreenSectorInventoryCompare(const void *pNum1, const void *pNum2);
-void SortSectorInventory(WORLDITEM *pInventory, UINT32 uiSizeOfArray);
-BOOLEAN CanPlayerUseSectorInventory(SOLDIERTYPE *pSelectedSoldier);
-
-extern void StackObjs(OBJECTTYPE *pSourceObj, OBJECTTYPE *pTargetObj, UINT8 ubNumberToCopy);
-extern void MAPEndItemPointer();
-extern BOOLEAN GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(INT16 *psSectorX, INT16 *psSectorY, INT16 *psSectorZ);
 
 // load the background panel graphics for inventory
 BOOLEAN LoadInventoryPoolGraphic(void) {

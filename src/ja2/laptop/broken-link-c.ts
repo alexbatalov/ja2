@@ -7,8 +7,6 @@ const BROKEN_LINK__MESSAGE_WIDTH = (LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X);
 
 const BROKEN_LINK__SITE_NOT_FOUND_Y = LAPTOP_SCREEN_UL_Y + 65;
 
-void DrawBrokenLinkWhiteBackground();
-
 BOOLEAN EnterBrokenLink() {
   //	RenderBrokenLink();
   return TRUE;

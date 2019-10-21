@@ -123,63 +123,32 @@ BOOLEAN gfSettingOfTreeTopStatusOnEnterOfOptionScreen;
 BOOLEAN gfSettingOfItemGlowStatusOnEnterOfOptionScreen;
 BOOLEAN gfSettingOfDontAnimateSmoke;
 
-// Goto save game Button
-void BtnOptGotoSaveGameCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiOptGotoSaveGameBtn;
 INT32 giOptionsButtonImages;
 
-// Goto load game button
-void BtnOptGotoLoadGameCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiOptGotoLoadGameBtn;
 INT32 giGotoLoadBtnImage;
 
-// QuitButton
-void BtnOptQuitCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiQuitButton;
 INT32 giQuitBtnImage;
 
-// Done Button
-void BtnDoneCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiDoneButton;
 INT32 giDoneBtnImage;
 
 // checkbox to toggle tracking mode on or off
 UINT32 guiOptionsToggles[NUM_GAME_OPTIONS];
-void BtnOptionsTogglesCallback(GUI_BUTTON *btn, INT32 reason);
 
 // Mouse regions for the name of the option
 MOUSE_REGION gSelectedOptionTextRegion[NUM_GAME_OPTIONS];
-void SelectedOptionTextRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectedOptionTextRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
 
 // Mouse regions for the area around the toggle boxs
 MOUSE_REGION gSelectedToggleBoxAreaRegion;
-void SelectedToggleBoxAreaRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
 
 /////////////////////////////////
 //
 //	Function ProtoTypes
 //
 /////////////////////////////////
-
-BOOLEAN EnterOptionsScreen();
-void RenderOptionsScreen();
-void ExitOptionsScreen();
-void HandleOptionsScreen();
-void GetOptionsScreenUserInput();
-void SetOptionsExitScreen(UINT32 uiExitScreen);
-
-void SoundFXSliderChangeCallBack(INT32 iNewValue);
-void SpeechSliderChangeCallBack(INT32 iNewValue);
-void MusicSliderChangeCallBack(INT32 iNewValue);
-// BOOLEAN		DoOptionsMessageBox( UINT8 ubStyle, INT16 *zString, UINT32 uiExitScreen, UINT8 ubFlags, MSGBOX_CALLBACK ReturnCallback );
-void ConfirmQuitToMainMenuMessageBoxCallBack(UINT8 bExitValue);
-void HandleSliderBarMovementSounds();
-void HandleOptionToggle(UINT8 ubButton, BOOLEAN fState, BOOLEAN fDown, BOOLEAN fPlaySound);
-void HandleHighLightedText(BOOLEAN fHighLight);
-
-extern BOOLEAN CheckIfGameCdromIsInCDromDrive();
-extern void ToggleItemGlow(BOOLEAN fOn);
 
 // ppp
 

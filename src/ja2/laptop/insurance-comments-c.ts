@@ -20,9 +20,6 @@ UINT32 guiInsCmntBulletImage;
 
 // link to the varios pages
 MOUSE_REGION gSelectedInsuranceCommentLinkRegion[3];
-void SelectInsuranceCommentLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-BOOLEAN DisplayComment(UINT8 ubCommentorsName, UINT8 ubComment, UINT16 usPosY);
 
 void GameInitInsuranceComments() {
 }

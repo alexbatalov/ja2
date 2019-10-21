@@ -1,8 +1,3 @@
-BOOLEAN ShadesCalculateTables(SGPPaletteEntry *p8BPPPalette);
-BOOLEAN ShadesCalculatePalette(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pDestPalette, UINT16 usRed, UINT16 usGreen, UINT16 usBlue, BOOLEAN fMono);
-void FindIndecies(SGPPaletteEntry *pSrcPalette, SGPPaletteEntry *pMapPalette, UINT8 *pTable);
-void FindMaskIndecies(UINT8 *, UINT8 *, UINT8 *);
-
 SGPPaletteEntry Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 3][256];
 UINT8 ubColorTables[HVOBJECT_SHADE_TABLES + 3][256];
 

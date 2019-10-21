@@ -3,21 +3,6 @@ const PRESSURE_ACTION_ID = (NUMBER_TRIGGERS - 1);
 
 extern ITEM_POOL *gpEditingItemPool;
 
-// Simply counts the number of items in the world.  This is used for display purposes.
-UINT16 CountNumberOfEditorPlacementsInWorld(UINT16 usEInfoIndex, UINT16 *pusQuantity); // wrapper for the next three
-UINT16 CountNumberOfItemPlacementsInWorld(UINT16 usItem, UINT16 *pusQuantity);
-UINT16 CountNumberOfItemsWithFrequency(UINT16 usItem, INT8 bFrequency);
-UINT16 CountNumberOfPressureActionsInWorld();
-UINT16 CountNumberOfKeysOfTypeInWorld(UINT8 ubKeyID);
-
-// Finds and selects the next item when right clicking on an item type.  Only works if the
-// item actually exists in the world.
-void FindNextItemOfSelectedType(); // wrapper for the next four
-void SelectNextTriggerWithFrequency(UINT16 usItem, INT8 bFrequency);
-void SelectNextItemOfType(UINT16 usItem);
-void SelectNextPressureAction();
-void SelectNextKeyOfType(UINT8 ubKeyID);
-
 INT32 giDefaultExistChance = 100;
 
 interface IPListNode {
@@ -850,8 +835,6 @@ void HandleRightClickOnItem(INT16 sGridNo) {
   Assert(gpCurrItemPoolNode);
   SpecifyItemToEdit(&gWorldItems[gpItemPool->iItemIndex].o, gpItemPool->sGridNo);
 }
-
-extern void DeleteSelectedMercsItem();
 
 void DeleteSelectedItem() {
   SpecifyItemToEdit(NULL, -1);

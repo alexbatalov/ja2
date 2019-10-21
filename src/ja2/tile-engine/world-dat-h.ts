@@ -8,9 +8,3 @@ interface TILESET {
 }
 
 extern TILESET gTilesets[NUM_TILESETS];
-
-void InitEngineTilesets();
-
-// THESE FUNCTIONS WILL SET TERRAIN VALUES - CALL ONE FOR EACH TILESET
-void SetTilesetOneTerrainValues();
-void SetTilesetTwoTerrainValues();

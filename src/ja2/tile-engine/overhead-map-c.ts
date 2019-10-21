@@ -36,22 +36,6 @@ INT16 gsStartRestrictedX, gsStartRestrictedY;
 BOOLEAN gfOverItemPool = FALSE;
 INT16 gsOveritemPoolGridNo;
 
-void HandleOverheadUI();
-void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason);
-void MoveOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason);
-void DeleteOverheadDB();
-BOOLEAN GetOverheadMouseGridNoForFullSoldiersGridNo(INT16 *psGridNo);
-
-extern BOOLEAN AnyItemsVisibleOnLevel(ITEM_POOL *pItemPool, INT8 bZLevel);
-extern void HandleAnyMercInSquadHasCompatibleStuff(UINT8 ubSquad, OBJECTTYPE *pObject, BOOLEAN fReset);
-
-// Isometric utilities (for overhead stuff only)
-BOOLEAN GetOverheadMouseGridNo(INT16 *psGridNo);
-void GetOverheadScreenXYFromGridNo(INT16 sGridNo, INT16 *psScreenX, INT16 *psScreenY);
-void CopyOverheadDBShadetablesFromTileset();
-
-void RenderOverheadOverlays();
-
 void InitNewOverheadDB(UINT8 ubTilesetID) {
   UINT32 uiLoop;
   VOBJECT_DESC VObjectDesc;

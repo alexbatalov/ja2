@@ -10,16 +10,6 @@ GAME_OPTIONS gGameOptions;
 extern SGPFILENAME gCheckFilenames[];
 extern CHAR8 gzErrorMsg[256];
 
-void InitGameSettings();
-
-BOOLEAN GetCdromLocationFromIniFile(STR pRootOfCdromDrive);
-
-extern BOOLEAN DoJA2FilesExistsOnDrive(CHAR8 *zCdLocation);
-
-BOOLEAN GetCDromDriveLetter(STR8 pString);
-BOOLEAN IsDriveLetterACDromDrive(STR pDriveLetter);
-void CDromEjectionErrorMessageBoxCallBack(UINT8 bExitValue);
-
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 

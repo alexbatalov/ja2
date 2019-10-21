@@ -15,21 +15,3 @@ interface LIGHTEFFECT {
   iLight: INT32;
   uiTimeOfLastUpdate: UINT32;
 }
-
-// Decays all light effects...
-void DecayLightEffects(UINT32 uiTime);
-
-// Add light to gridno
-// ( Replacement algorithm uses distance away )
-void AddLightEffectToTile(INT8 bType, INT16 sGridNo);
-
-void RemoveLightEffectFromTile(INT16 sGridNo);
-
-INT32 NewLightEffect(INT16 sGridNo, INT8 bType);
-
-BOOLEAN SaveLightEffectsToSaveGameFile(HWFILE hFile);
-BOOLEAN LoadLightEffectsFromLoadGameFile(HWFILE hFile);
-
-BOOLEAN SaveLightEffectsToMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-BOOLEAN LoadLightEffectsFromMapTempFile(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-void ResetLightEffects();

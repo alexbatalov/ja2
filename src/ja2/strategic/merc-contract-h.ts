@@ -39,28 +39,6 @@ enum
 };
 */
 
-BOOLEAN MercContractHandling(SOLDIERTYPE *pSoldier, UINT8 ubDesiredAction);
-
-BOOLEAN StrategicRemoveMerc(SOLDIERTYPE *pSoldier);
-BOOLEAN BeginStrategicRemoveMerc(SOLDIERTYPE *pSoldier, BOOLEAN fAddRehireButton);
-
-BOOLEAN WillMercRenew(SOLDIERTYPE *pSoldier, BOOLEAN fSayQuote);
-void CheckIfMercGetsAnotherContract(SOLDIERTYPE *pSoldier);
-void FindOutIfAnyMercAboutToLeaveIsGonnaRenew(void);
-
-void BeginContractRenewalSequence();
-void HandleContractRenewalSequence();
-void EndCurrentContractRenewal();
-void HandleMercIsWillingToRenew(UINT8 ubID);
-void HandleMercIsNotWillingToRenew(UINT8 ubID);
-
-BOOLEAN ContractIsExpiring(SOLDIERTYPE *pSoldier);
-UINT32 GetHourWhenContractDone(SOLDIERTYPE *pSoldier);
-BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE *pSoldier);
-
-BOOLEAN LoadContractRenewalDataFromSaveGameFile(HWFILE hFile);
-BOOLEAN SaveContractRenewalDataToSaveGameFile(HWFILE hFile);
-
 // rehiring of mercs from leave equipment pop up
 extern BOOLEAN fEnterMapDueToContract;
 extern SOLDIERTYPE *pContractReHireSoldier;

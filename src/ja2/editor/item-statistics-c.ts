@@ -135,22 +135,16 @@ const enum Enum46 {
 }
 UINT32 guiAttachmentButton[NUM_ATTACHMENT_BUTTONS];
 BOOLEAN gfAttachment[NUM_ATTACHMENT_BUTTONS];
-void ToggleAttachment(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiCeramicPlatesButton;
 BOOLEAN gfCeramicPlates;
-void ToggleCeramicPlates(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiDetonatorButton;
 BOOLEAN gfDetonator;
-void ToggleDetonator(GUI_BUTTON *btn, INT32 reason);
 
 UINT32 guiActionItemButton;
-void ActionItemCallback(GUI_BUTTON *btn, INT32 reason);
 INT8 gbActionItemIndex = ACTIONITEM_MEDIUM;
 INT8 gbDefaultBombTrapLevel = 9;
-
-void RemoveBombFromWorldByItemIndex(INT32 iItemIndex);
 
 const enum Enum47 {
   EDITING_NOTHING,
@@ -176,52 +170,6 @@ INT16 gsItemGridNo;
 
 ITEM_POOL *gpEditingItemPool = NULL;
 extern ITEM_POOL *gpItemPool;
-
-void SetupGameTypeFlags();
-void RemoveGameTypeFlags();
-
-void SetupGunGUI();
-void ExtractAndUpdateGunGUI();
-void RemoveGunGUI();
-
-void SetupAmmoGUI();
-void ExtractAndUpdateAmmoGUI();
-void RemoveAmmoGUI();
-
-void SetupArmourGUI();
-void ExtractAndUpdateArmourGUI();
-void RemoveArmourGUI();
-
-void SetupEquipGUI();
-void ExtractAndUpdateEquipGUI();
-void RemoveEquipGUI();
-
-void SetupExplosivesGUI();
-void ExtractAndUpdateExplosivesGUI();
-void RemoveExplosivesGUI();
-
-void SetupTriggersGUI();
-void ExtractAndUpdateTriggersGUI();
-void RemoveTriggersGUI();
-
-void SetupActionItemsGUI();
-void ExtractAndUpdateActionItemsGUI();
-void RemoveActionItemsGUI();
-
-void SetupMoneyGUI();
-void ExtractAndUpdateMoneyGUI();
-void RemoveMoneyGUI();
-
-void SetupOwnershipGUI();
-void ExtractAndUpdateOwnershipGUI();
-void RemoveOwnershipGUI();
-void OwnershipGroupButtonCallback(GUI_BUTTON *btn, INT32 reason);
-
-void SetupKeysGUI();
-void ExtractAndUpdateKeysGUI();
-void RemoveKeysGUI();
-
-void ReEvaluateAttachmentStatii();
 
 void ShowItemStatsPanel() {
   ShowEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);

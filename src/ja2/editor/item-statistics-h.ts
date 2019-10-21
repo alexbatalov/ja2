@@ -8,16 +8,6 @@ extern BOOLEAN gfItemEditingMode;
 // Set if we need to update the panel.
 extern BOOLEAN gfRenderItemStatsPanel;
 
-void SpecifyItemToEdit(OBJECTTYPE *pItem, INT32 iMapIndex);
-
-void ShowItemStatsPanel();
-void HideItemStatsPanel();
-void EnableItemStatsPanel();
-void DisableItemStatsPanel();
-
-// called from the taskbar renderer.
-void UpdateItemStatsPanel();
-
 const enum Enum48 {
   ITEMSTATS_APPLY,
   ITEMSTATS_CANCEL,
@@ -26,7 +16,6 @@ const enum Enum48 {
   ITEMSTATS_HIDE,
   ITEMSTATS_SHOW,
 }
-void ExecuteItemStatsCmd(UINT8 ubAction);
 
 extern OBJECTTYPE *gpItem;
 extern INT16 gsItemGridNo;
@@ -72,13 +61,5 @@ const enum Enum49 {
   NUM_ACTIONITEMS,
 }
 extern UINT16 gszActionItemDesc[NUM_ACTIONITEMS][30];
-// Returns a pointer to one of the above string array.
-extern UINT16 *GetActionItemName(OBJECTTYPE *pItem);
-// Called by the popup menu, when a selection is made.
-extern void UpdateActionItem(INT8 bActionItemIndex);
-// Changes an action item into the type specified by the ACTIONITEM enumeration.
-extern void ChangeActionItem(OBJECTTYPE *pItem, INT8 bActionItemIndex);
 extern INT8 gbActionItemIndex;
 extern INT8 gbDefaultBombTrapLevel;
-
-extern void SetOwnershipGroup(UINT8 ubNewGroup);

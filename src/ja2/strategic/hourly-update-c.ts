@@ -1,12 +1,3 @@
-void HourlyQuestUpdate(void);
-void HourlyLarryUpdate(void);
-
-extern INT32 GetCurrentBalance(void);
-extern void PayOffSkyriderDebtIfAny();
-void HourlyCheckIfSlayAloneSoHeCanLeave();
-
-void UpdateRegenCounters(void);
-
 void HandleMinuteUpdate() {
 }
 

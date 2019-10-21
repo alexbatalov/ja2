@@ -20,26 +20,3 @@ const BOBBYR_NO_ITEMS = 65535;
 
 extern UINT16 gusCurWeaponIndex;
 extern UINT8 gubLastGunIndex;
-
-void GameInitBobbyRGuns();
-BOOLEAN EnterBobbyRGuns();
-void ExitBobbyRGuns();
-void HandleBobbyRGuns();
-void RenderBobbyRGuns();
-
-BOOLEAN DisplayBobbyRBrTitle();
-BOOLEAN DeleteBobbyBrTitle();
-BOOLEAN InitBobbyBrTitle();
-BOOLEAN InitBobbyMenuBar();
-BOOLEAN DeleteBobbyMenuBar();
-
-// BOOLEAN DisplayWeaponInfo();
-BOOLEAN DisplayItemInfo(UINT32 uiItemClass);
-void DeleteMouseRegionForBigImage();
-void UpdateButtonText(UINT32 uiCurPage);
-void EnterInitBobbyRGuns();
-void DailyUpdateOfBobbyRaysUsedInventory();
-UINT16 CalcBobbyRayCost(UINT16 usIndex, UINT16 usBobbyIndex, BOOLEAN fUsed);
-// void CalculateFirstAndLastIndexs();
-void SetFirstLastPagesForUsed();
-void SetFirstLastPagesForNew(UINT32 uiClass);

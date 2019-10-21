@@ -52,24 +52,10 @@ extern BOOLEAN fZoomFlag;
 // scroll animation
 extern INT32 giScrollButtonState;
 
-BOOLEAN LoadMapBorderGraphics(void);
-void DeleteMapBorderGraphics(void);
-void RenderMapBorder(void);
 // void RenderMapBorderCorner( void );
 // void ShowDestinationOfPlottedPath( STR16 pLoc );
 // void ResetAircraftButton( void );
 // void HandleMapScrollButtonStates( void );
-
-void ToggleShowTownsMode(void);
-void ToggleShowMinesMode(void);
-void ToggleShowMilitiaMode(void);
-void ToggleShowTeamsMode(void);
-void ToggleAirspaceMode(void);
-void ToggleItemsFilter(void);
-
-void TurnOnShowTeamsMode(void);
-void TurnOnAirSpaceMode(void);
-void TurnOnItemFilterMode(void);
 
 /*
 // enable disable map border
@@ -77,21 +63,4 @@ void DisableMapBorderRegion( void );
 void EnableMapBorderRegion( void );
 */
 
-// create/destroy buttons for map border region
-void DeleteMapBorderButtons(void);
-BOOLEAN CreateButtonsForMapBorder(void);
-
-// render the pop up for eta  in path plotting in map screen
-void RenderMapBorderEtaPopUp(void);
-BOOLEAN DoesPlayerHaveAnyMilitia(void);
-
 // void UpdateLevelButtonStates( void );
-
-// create mouse regions for level markers
-void CreateMouseRegionsForLevelMarkers(void);
-void DeleteMouseRegionsForLevelMarkers(void);
-
-void InitMapScreenFlags(void);
-
-void MapBorderButtonOff(UINT8 ubBorderButtonIndex);
-void MapBorderButtonOn(UINT8 ubBorderButtonIndex);

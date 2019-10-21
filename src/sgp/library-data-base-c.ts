@@ -6,14 +6,6 @@ INT16 gsCurrentLibrary = -1;
 // The location of the cdrom drive
 CHAR8 gzCdDirectory[SGPFILENAME_LEN];
 
-INT CompareFileNames(CHAR8 **arg1, FileHeaderStruct **arg2);
-BOOLEAN GetFileHeaderFromLibrary(INT16 sLibraryID, STR pstrFileName, FileHeaderStruct **pFileHeader);
-void AddSlashToPath(STR pName);
-HWFILE CreateLibraryFileHandle(INT16 sLibraryID, UINT32 uiFileNum);
-BOOLEAN CheckIfFileIsAlreadyOpen(STR pFileName, INT16 sLibraryID);
-
-INT32 CompareDirEntryFileNames(CHAR8 *arg1[], DIRENTRY **arg2);
-
 //************************************************************************
 //
 //	 InitializeFileDatabase():  Call this function to initialize the file

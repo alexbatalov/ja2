@@ -1,8 +1,4 @@
-extern BOOLEAN GetCDromDriveLetter(STR8 pString);
-
 const DATA_8_BIT_DIR = "8-Bit\\";
-
-BOOLEAN PerformTimeLimitedCheck();
 
 //#define	TIME_LIMITED_VERSION
 

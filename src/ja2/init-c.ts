@@ -1,5 +1,3 @@
-extern BOOLEAN GetCDromDriveLetter(STR8 pString);
-
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 

@@ -107,29 +107,6 @@ SOLDIERTYPE SoldierSkyRider;
 
 SOLDIERTYPE *pSkyRider;
 
-// helicopter char dialogue
-BOOLEAN HeliCharacterDialogue(SOLDIERTYPE *pSoldier, UINT16 usQuoteNum);
-
-// does skyrider notice bad guys in sector?
-BOOLEAN DoesSkyriderNoticeEnemiesInSector(UINT8 ubNumEnemies);
-
-// are we at the end of the path for the helicopter
-BOOLEAN EndOfHelicoptersPath(void);
-
-// find the location sector of closest refuel point for heli..and the criteria if the sector must be under the players control
-INT32 FindLocationOfClosestRefuelSite(BOOLEAN fMustBeAvailable);
-
-// add the tactical heli graphic
-void AddHelicopterToMaps(BOOLEAN fAdd, UINT8 ubSite);
-
-void PaySkyriderBill(void);
-void MakeHeliReturnToBase(void);
-
-void HandleSkyRiderMonologueAboutDrassenSAMSite(UINT32 uiSpecialCode);
-void HandleSkyRiderMonologueAboutCambriaHospital(UINT32 uiSpecialCode);
-void HandleSkyRiderMonologueAboutOtherSAMSites(UINT32 uiSpecialCode);
-void HandleSkyRiderMonologueAboutEstoniRefuel(UINT32 uiSpecialCode);
-
 void InitializeHelicopter(void) {
   // must be called whenever a new game starts up!
   fHelicopterAvailable = FALSE;

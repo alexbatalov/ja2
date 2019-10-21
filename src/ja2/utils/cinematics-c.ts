@@ -32,18 +32,6 @@ UINT32 guiSmackPixelFormat = SMACKBUFFER565;
 LPDIRECTDRAWSURFACE lpVideoPlayback = NULL;
 LPDIRECTDRAWSURFACE2 lpVideoPlayback2 = NULL;
 
-//-Function-Prototypes-------------------------------------------------------------
-void SmkInitialize(HWND hWindow, UINT32 uiWidth, UINT32 uiHeight);
-void SmkShutdown(void);
-SMKFLIC *SmkPlayFlic(CHAR8 *cFilename, UINT32 uiLeft, UINT32 uiTop, BOOLEAN fAutoClose);
-BOOLEAN SmkPollFlics(void);
-SMKFLIC *SmkOpenFlic(CHAR8 *cFilename);
-void SmkSetBlitPosition(SMKFLIC *pSmack, UINT32 uiLeft, UINT32 uiTop);
-void SmkCloseFlic(SMKFLIC *pSmack);
-SMKFLIC *SmkGetFreeFlic(void);
-void SmkSetupVideo(void);
-void SmkShutdownVideo(void);
-
 BOOLEAN SmkPollFlics(void) {
   UINT32 uiCount;
   BOOLEAN fFlicStatus = FALSE;

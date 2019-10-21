@@ -4,7 +4,6 @@ extern BOOLEAN fLeftButtonDown;
 extern BOOLEAN fIgnoreLeftUp;
 extern UINT32 guiCurrentEvent;
 extern UINT32 guiCurrentUICursor;
-extern void DetermineWhichAssignmentMenusCanBeShown(void);
 extern BOOLEAN gfIgnoreOnSelectedGuy;
 extern INT16 gsOverItemsGridNo;
 extern INT16 gsOverItemsLevel;
@@ -19,8 +18,6 @@ BOOLEAN gfBeginBurstSpreadTracking = FALSE;
 
 BOOLEAN gfRTClickLeftHoldIntercepted = FALSE;
 BOOLEAN gfRTHaveClickedRightWhileLeftDown = FALSE;
-
-extern BOOLEAN ValidQuickExchangePosition();
 
 void GetRTMouseButtonInput(UINT32 *puiNewEvent) {
   QueryRTLeftButton(puiNewEvent);
@@ -876,8 +873,6 @@ void QueryRTRightButton(UINT32 *puiNewEvent) {
     }
   }
 }
-
-extern BOOLEAN ConfirmActionCancel(UINT16 usMapPos, UINT16 usOldMapPos);
 
 extern BOOLEAN gUIActionModeChangeDueToMouseOver;
 

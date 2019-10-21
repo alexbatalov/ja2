@@ -13,15 +13,6 @@ interface SMKFLIC {
   uiTop: UINT32;
 }
 
-void SmkInitialize(HWND hWindow, UINT32 uiWidth, UINT32 uiHeight);
-void SmkShutdown(void);
-SMKFLIC *SmkPlayFlic(CHAR8 *cFilename, UINT32 uiLeft, UINT32 uiTop, BOOLEAN fAutoClose);
-BOOLEAN SmkPollFlics(void);
-SMKFLIC *SmkOpenFlic(CHAR8 *cFilename);
-void SmkSetBlitPosition(SMKFLIC *pSmack, UINT32 uiLeft, UINT32 uiTop);
-void SmkCloseFlic(SMKFLIC *pSmack);
-SMKFLIC *SmkGetFreeFlic(void);
-
 /*
 //--------------------------------------------------------------------------
 // Prototypes etc. for our functions that make use of the Smacker library.

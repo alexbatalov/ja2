@@ -114,55 +114,9 @@ BOOLEAN fLandLayerDirty;
 
 BOOLEAN gfIgnoreScrollDueToCenterAdjust;
 
-// FUNCTIONS
-void ScrollWorld();
-void InitRenderParams(UINT8 ubRestrictionID);
-void RenderWorld();
-
-void ResetLayerOptimizing(void);
-void ResetSpecificLayerOptimizing(UINT32 uiRowFlag);
-
-// Routines of RenderWorld
-extern void RenderStaticWorld();
-extern void RenderDynamicWorld();
-void CopyRenderBuffer();
-
-void SetRenderFlags(UINT32 uiFlags);
-UINT32 GetRenderFlags(void);
-void ClearRenderFlags(UINT32 uiFlags);
-
-void RenderSetShadows(BOOLEAN fShadows);
-
 extern UINT16 *gpZBuffer;
 extern UINT32 gRenderFlags;
 BOOLEAN gfIgnoreScrolling;
 
 BOOLEAN gfScrollInertia;
 BOOLEAN gfScrollPending;
-
-// Definitions for dirty rectangle uploads
-void ReRenderWorld(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-
-BOOLEAN ConcealWalls(INT16 sX, INT16 sY, INT16 sRadius);
-BOOLEAN RevealWalls(INT16 sX, INT16 sY, INT16 sRadius);
-void ConcealAllWalls(void);
-
-BOOLEAN ApplyScrolling(INT16 sTempRenderCenterX, INT16 sTempRenderCenterY, BOOLEAN fForceAdjust, BOOLEAN fCheckOnly);
-
-BOOLEAN Blt8BPPDataTo16BPPBufferTransZIncClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer, UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex, SGPRect *clipregion);
-
-void RenderStaticWorldRect(INT16, INT16, INT16, INT16, BOOLEAN);
-void RenderMarkedWorld(void);
-void RenderDynamicMercWorld(void);
-
-void ExamineZBufferRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
-
-void InvalidateWorldRedundency(void);
-void InvalidateWorldRedundencyRadius(INT16 sX, INT16 sY, INT16 sRadius);
-void DirtyWorldRender();
-
-// These two functions will setup the glow frame script to use then glowing enemy mercs....
-void SetMercGlowFast();
-void SetMercGlowNormal();
-
-void SetRenderCenter(INT16 sNewX, INT16 sNewY);

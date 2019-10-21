@@ -9,13 +9,3 @@ const HANDLE_DOOR_UNTRAP = 8;
 const HANDLE_DOOR_CROWBAR = 9;
 
 extern BOOLEAN gfSetPerceivedDoorState;
-
-BOOLEAN HandleOpenableStruct(SOLDIERTYPE *pSoldier, INT16 sGridNo, STRUCTURE *pStructure);
-
-void InteractWithOpenableStruct(SOLDIERTYPE *pSoldier, STRUCTURE *pStructure, UINT8 ubDirection, BOOLEAN fDoor);
-
-void InteractWithClosedDoor(SOLDIERTYPE *pSoldier, UINT8 ubHandleCode);
-
-void SetDoorString(INT16 sGridNo);
-
-void HandleDoorChangeFromGridNo(SOLDIERTYPE *pSoldier, INT16 sGridNo, BOOLEAN fNoAnimations);

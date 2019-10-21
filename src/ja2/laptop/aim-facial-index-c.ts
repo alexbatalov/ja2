@@ -33,14 +33,9 @@ const AIM_FI_AWAY_TEXT_OFFSET_WIDTH = 48;
 
 // Face regions
 MOUSE_REGION gMercFaceMouseRegions[MAX_NUMBER_MERCS];
-void SelectMercFaceRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectMercFaceMoveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Screen region, used to right click to go back to previous page
 MOUSE_REGION gScreenMouseRegions;
-void SelectScreenRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-BOOLEAN DrawMercsFaceToScreen(UINT8 ubMercID, UINT16 usPosX, UINT16 usPosY, UINT8 ubImage);
 
 void GameInitAimFacialIndex() {
 }

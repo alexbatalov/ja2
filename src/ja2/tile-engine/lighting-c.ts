@@ -24,31 +24,6 @@ const LIGHT_TREE_REVEAL = 5; // width of rect
 
 // Local-use only prototypes
 
-BOOLEAN LightTileBlocked(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY);
-BOOLEAN LightDraw(UINT32 uiLightType, INT32 iLight, INT16 iX, INT16 iY, UINT32 uiSprite);
-BOOLEAN LightDelete(INT32 iLight);
-INT32 LightGetFree(void);
-INT32 LinearDistance(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2);
-DOUBLE LinearDistanceDouble(INT16 iX1, INT16 iY1, INT16 iX2, INT16 iY2);
-BOOLEAN LightAddTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiFlags, BOOLEAN fOnlyWalls);
-BOOLEAN LightSubtractTile(UINT32 uiLightType, INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiFlags, BOOLEAN fOnlyWalls);
-BOOLEAN LightResetTile(INT16 iX, INT16 iY);
-BOOLEAN LightSetTile(INT16 iX, INT16 iY, UINT8 ubShade, UINT32 uiLightType);
-BOOLEAN LightSetNaturalTile(INT16 iX, INT16 iY, UINT8 ubShade);
-UINT16 LightGetLastNode(INT32 iLight);
-BOOLEAN LightAddNode(INT32 iLight, INT16 iHotSpotX, INT16 iHotSpotY, INT16 iX, INT16 iY, UINT8 ubIntensity, UINT16 uiFlags);
-BOOLEAN LightInsertNode(INT32 iLight, UINT16 usLightIns, INT16 iHotSpotX, INT16 iHotSpotY, INT16 iX, INT16 iY, UINT8 ubIntensity, UINT16 uiFlags);
-UINT16 LightFindNextRay(INT32 iLight, UINT16 usIndex);
-BOOLEAN LightCastRay(INT32 iLight, INT16 iStartX, INT16 iStartY, INT16 iEndPointX, INT16 iEndPointY, UINT8 ubStartIntens, UINT8 ubEndIntens);
-BOOLEAN LightGenerateElliptical(INT32 iLight, UINT8 iIntensity, INT16 iA, INT16 iB);
-BOOLEAN LightGenerateBeam(INT32 iLight, UINT8 iIntensity, INT16 iLength, INT16 iRadius, INT16 iDirection);
-BOOLEAN LightCalcRect(INT32 iLight);
-BOOLEAN LightIlluminateWall(INT16 iSourceX, INT16 iSourceY, INT16 iTileX, INT16 iTileY, LEVELNODE *pStruct);
-BOOLEAN LightTileHasWall(INT16 iSrcX, INT16 iSrcY, INT16 iX, INT16 iY);
-
-INT32 LightSpriteGetFree(void);
-BOOLEAN LightSpriteDirty(INT32 iLight);
-
 // Top node of linked lists, NULL = FREE
 LIGHT_NODE *pLightList[MAX_LIGHT_TEMPLATES];
 UINT16 usTemplateSize[MAX_LIGHT_TEMPLATES];
@@ -2621,8 +2596,6 @@ UINT8 LightGetColors(SGPPaletteEntry *pPal) {
 
 ***************************************************************************************/
 BOOLEAN gfEditorForceRebuildAllColors = FALSE;
-
-extern void SetAllNewTileSurfacesLoaded(BOOLEAN fNew);
 
 BOOLEAN LightSetColors(SGPPaletteEntry *pPal, UINT8 ubNumColors) {
   INT16 sRed, sGreen, sBlue;

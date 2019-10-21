@@ -47,29 +47,18 @@ BOOLEAN gfBobbyRShipmentsDirty = FALSE;
 
 INT32 giBobbyRShipmentSelectedShipment = -1;
 
-// Back Button
-void BtnBobbyRShipmentBackCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRShipmetBack;
 INT32 guiBobbyRShipmentBackImage;
 
-// Home Button
-void BtnBobbyRShipmentHomeCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRShipmentHome;
 INT32 giBobbyRShipmentHomeImage;
 
 MOUSE_REGION gSelectedPreviousShipmentsRegion[BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS];
-void SelectPreviousShipmentsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 //
 // Function Prototypes
 //
 
-void DisplayShipmentGrid();
-void DisplayPreviousShipments();
-void DisplayShipmentTitles();
-void RemovePreviousShipmentsMouseRegions();
-void CreatePreviousShipmentsMouseRegions();
-INT32 CountNumberValidShipmentForTheShipmentsPage();
 // ppp
 
 //

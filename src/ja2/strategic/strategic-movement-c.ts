@@ -54,46 +54,7 @@ UINT32 uniqueIDMask[8] = {
 
 // Internal function manipulation prototypes
 
-UINT8 AddGroupToList(GROUP *pGroup);
-
-void HandleOtherGroupsArrivingSimultaneously(UINT8 ubSectorX, UINT8 ubSectorY, UINT8 ubSectorZ);
-BOOLEAN PossibleToCoordinateSimultaneousGroupArrivals(GROUP *pGroup);
-
-void HandleNonCombatGroupArrival(GROUP *pGroup, BOOLEAN fMainGroup, BOOLEAN fNeverLeft);
-
 GROUP *gpInitPrebattleGroup = NULL;
-void TriggerPrebattleInterface(UINT8 ubResult);
-
-// Save the L.L. for the playerlist into the save game file
-BOOLEAN SavePlayerGroupList(HWFILE hFile, GROUP *pGroup);
-
-// Loads the LL for the playerlist from the savegame file
-BOOLEAN LoadPlayerGroupList(HWFILE hFile, GROUP **pGroup);
-
-BOOLEAN SaveEnemyGroupStruct(HWFILE hFile, GROUP *pGroup);
-BOOLEAN LoadEnemyGroupStructFromSavedGame(HWFILE hFile, GROUP *pGroup);
-
-BOOLEAN LoadWayPointList(HWFILE hFile, GROUP *pGroup);
-BOOLEAN SaveWayPointList(HWFILE hFile, GROUP *pGroup);
-
-extern void RandomMercInGroupSaysQuote(GROUP *pGroup, UINT16 usQuoteNum);
-
-void SetLocationOfAllPlayerSoldiersInGroup(GROUP *pGroup, INT16 sSectorX, INT16 sSectorZ, INT8 bSectorZ);
-
-// If there are bloodcats in this sector, then it internally
-BOOLEAN TestForBloodcatAmbush(GROUP *pGroup);
-void NotifyPlayerOfBloodcatBattle(UINT8 ubSectorX, UINT8 ubSectorY);
-
-BOOLEAN GroupBetweenSectorsAndSectorXYIsInDifferentDirection(GROUP *pGroup, UINT8 ubSectorX, UINT8 ubSectorY);
-
-void CancelEmptyPersistentGroupMovement(GROUP *pGroup);
-
-BOOLEAN HandlePlayerGroupEnteringSectorToCheckForNPCsOfNote(GROUP *pGroup);
-BOOLEAN WildernessSectorWithAllProfiledNPCsNotSpokenWith(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-void HandlePlayerGroupEnteringSectorToCheckForNPCsOfNoteCallback(UINT8 ubExitValue);
-void DelayEnemyGroupsIfPathsCross(GROUP *pPlayerGroup);
-
-UINT8 NumberMercsInVehicleGroup(GROUP *pGroup);
 
 // waiting for input from user
 BOOLEAN gfWaitingForInput = FALSE;

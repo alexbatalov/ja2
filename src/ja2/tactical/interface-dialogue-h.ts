@@ -36,51 +36,6 @@ interface NPC_DIALOGUE_TYPE {
 // GLOBAL NPC STRUCT
 NPC_DIALOGUE_TYPE gTalkPanel;
 
-BOOLEAN InitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, INT8 bApproach, UINT32 uiApproachData);
-
-// THis fuction will allocate and setup an NPCDiaogue structure. Loads the face for the character..
-BOOLEAN InitTalkingMenu(UINT8 ubCharacterNum, INT16 sGridNo);
-
-// Begins quote of NPC Dialogue
-BOOLEAN TalkingMenuDialogue(UINT16 usQuoteNum);
-
-// Removes memory allocated for structure, removes face...
-void DeleteTalkingMenu();
-
-// Dirty menu
-void SetTalkingMenuDirty(BOOLEAN fDirtyLevel);
-
-BOOLEAN HandleTalkingMenu();
-
-void RenderTalkingMenu();
-
-BOOLEAN HandleTalkingMenuEscape(BOOLEAN fCanDelete, BOOLEAN fFromEscKey);
-
-// Gices an item to buddy
-BOOLEAN TalkingMenuGiveItem(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos);
-// Triggers an NPC record
-BOOLEAN NPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, UINT8 ubTargetApproach, BOOLEAN fShowDialogueMenu);
-// NPC goto gridno
-BOOLEAN NPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubQuoteNum);
-// NPC Do action
-BOOLEAN NPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum);
-
-BOOLEAN NPCClosePanel();
-
-void HandleWaitTimerForNPCTrigger();
-
-void HandleNPCClosePanel();
-void HandleNPCItemGiven(UINT8 ubNPC, OBJECTTYPE *pObject, INT8 bInvPos);
-void HandleNPCTriggerNPC(UINT8 ubTargetNPC, UINT8 ubTargetRecord, BOOLEAN fShowDialogueMenu, UINT8 ubTargetApproach);
-void HandleNPCGotoGridNo(UINT8 ubTargetNPC, UINT16 usGridNo, UINT8 ubRecordNum);
-void HandleNPCDoAction(UINT8 ubTargetNPC, UINT16 usActionCode, UINT8 ubQuoteNum);
-
-BOOLEAN ProfileCurrentlyTalkingInDialoguePanel(UINT8 ubProfile);
-
-BOOLEAN InternalInitTalkingMenu(UINT8 ubCharacterNum, INT16 sX, INT16 sY);
-
-void HandleFactForNPCUnescorted(UINT8 ubNPC);
-
 const enum Enum213 {
   NPC_ACTION_NONE = 0,
   NPC_ACTION_DONT_ACCEPT_ITEM,
@@ -345,8 +300,5 @@ const HOSPITAL_PATIENT_DISTANCE = 9;
 extern INT32 giHospitalTempBalance;
 extern INT32 giHospitalRefund;
 extern INT8 gbHospitalPriceModifier;
-
-extern UINT32 CalcPatientMedicalCost(SOLDIERTYPE *pSoldier);
-extern UINT32 CalcMedicalCost(UINT8 ubId);
 
 BOOLEAN gfInTalkPanel;

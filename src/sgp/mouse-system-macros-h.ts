@@ -9,6 +9,3 @@
 //=================================================================================================
 
 const MouseSystemHook = (t, x, y, l, r) => MSYS_SGP_Mouse_Handler_Hook(t, x, y, l, r);
-
-// Special prototype for mouse handler hook
-extern void MSYS_SGP_Mouse_Handler_Hook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord, BOOLEAN LeftButton, BOOLEAN RightButton);

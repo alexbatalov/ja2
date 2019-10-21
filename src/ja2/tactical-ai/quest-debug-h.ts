@@ -12,6 +12,3 @@ const enum Enum300 {
   QD_LEVEL_4,
   QD_LEVEL_5,
 }
-
-void ToggleQuestDebugModes(UINT8 ubType);
-void QuestDebugFileMsg(UINT8 ubQuoteType, UINT8 ubPriority, STR pStringA, ...);

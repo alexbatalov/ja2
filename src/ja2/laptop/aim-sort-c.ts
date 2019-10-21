@@ -91,45 +91,29 @@ UINT8 gubOldListMode;
 // Mouse stuff
 // Clicking on To Mugshot
 MOUSE_REGION gSelectedToMugShotRegion;
-void SelectToMugShotRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Clicking on ToStats
 MOUSE_REGION gSelectedToStatsRegion;
-void SelectToStatsRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Clicking on ToStats
 MOUSE_REGION gSelectedToArchiveRegion;
-void SelectToArchiveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Clicking on Price Check Box
 MOUSE_REGION gSelectedPriceBoxRegion;
-void SelectPriceBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Explosive Check Box
 MOUSE_REGION gSelectedExpBoxRegion;
-void SelectExpBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Markmanship Check Box
 MOUSE_REGION gSelectedMarkBoxRegion;
-void SelectMarkBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Medical Check box
 MOUSE_REGION gSelectedMedicalBoxRegion;
-void SelectMedicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Explosive Check Box
 MOUSE_REGION gSelectedExplosiveBoxRegion;
-void SelectExplosiveBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Mechanical Check Box
 MOUSE_REGION gSelectedMechanicalBoxRegion;
-void SelectMechanicalBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Ascending Check Box
 MOUSE_REGION gSelectedAscendBoxRegion;
-void SelectAscendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 // Clicking on Descending Check Box
 MOUSE_REGION gSelectedDescendBoxRegion;
-void SelectDescendBoxRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-void DrawSelectLight(UINT8 ubMode, UINT8 ubImage);
-INT32 QsortCompare(const void *pNum1, const void *pNum2);
-INT32 CompareValue(const INT32 Num1, const INT32 Num2);
-BOOLEAN SortMercArray(void);
 
 UINT32 guiSortByBox;
 UINT32 guiToAlumni;

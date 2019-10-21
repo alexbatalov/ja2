@@ -109,49 +109,6 @@ const enum Enum76 {
 // mouse regions
 MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
 
-// function definitions
-void RenderFilesBackGround(void);
-BOOLEAN LoadFiles(void);
-void RemoveFiles(void);
-UINT32 ProcessAndEnterAFilesRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile, BOOLEAN fRead);
-void OpenAndReadFilesFile(void);
-BOOLEAN OpenAndWriteFilesFile(void);
-void ClearFilesList(void);
-void DrawFilesTitleText(void);
-void DrawFilesListBackGround(void);
-void DisplayFilesList(void);
-BOOLEAN OpenAndWriteFilesFile(void);
-void DisplayFileMessage(void);
-void InitializeFilesMouseRegions(void);
-void RemoveFilesMouseRegions(void);
-BOOLEAN DisplayFormattedText(void);
-
-// buttons
-void CreateButtonsForFilesPage(void);
-void DeleteButtonsForFilesPage(void);
-void HandleFileViewerButtonStates(void);
-
-// open new files for viewing
-void OpenFirstUnreadFile(void);
-void CheckForUnreadFiles(void);
-
-// file string structure manipulations
-void ClearFileStringList(void);
-void AddStringToFilesList(STR16 pString);
-BOOLEAN HandleSpecialFiles(UINT8 ubFormat);
-BOOLEAN HandleSpecialTerroristFile(INT32 iFileNumber, STR sPictureName);
-
-// callbacks
-void FilesBtnCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void BtnPreviousFilePageCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnNextFilePageCallback(GUI_BUTTON *btn, INT32 reason);
-
-// file width manipulation
-void ClearOutWidthRecordsList(FileRecordWidthPtr pFileRecordWidthList);
-FileRecordWidthPtr CreateWidthRecordsForAruloIntelFile(void);
-FileRecordWidthPtr CreateWidthRecordsForTerroristFile(void);
-FileRecordWidthPtr CreateRecordWidth(INT32 iRecordNumber, INT32 iRecordWidth, INT32 iRecordHeightAdjustment, UINT8 ubFlags);
-
 UINT32 AddFilesToPlayersLog(UINT8 ubCode, UINT32 uiDate, UINT8 ubFormat, STR8 pFirstPicFile, STR8 pSecondPicFile) {
   // adds Files item to player's log(Files List), returns unique id number of it
   // outside of the Files system(the code in this .c file), this is the only function you'll ever need

@@ -1,11 +1,5 @@
-extern void AddPlacementToWorld(SOLDIERINITNODE *pNode);
-
-BOOLEAN CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(UINT8 *pubNumElites, UINT8 *pubNumRegulars, UINT8 *pubNumAdmins, UINT8 *pubNumCreatures);
-
 BOOLEAN gfRestoringEnemySoldiersFromTempFile = FALSE;
 BOOLEAN gfRestoringCiviliansFromTempFile = FALSE;
-
-void RemoveCivilianTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 
 void RemoveEnemySoldierTempFile(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ) {
   CHAR8 zMapName[128];

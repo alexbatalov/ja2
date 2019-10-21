@@ -136,11 +136,6 @@ INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
   { CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN },
 };
 
-UINT16 CalcCompetence(MERCPROFILESTRUCT *pProfile);
-INT16 CalcMedicalDeposit(MERCPROFILESTRUCT *pProfile);
-extern void HandleEndDemoInCreatureLevel();
-void DecideActiveTerrorists(void);
-
 extern SOLDIERTYPE *gpSMCurrentMerc;
 extern BOOLEAN gfRerenderInterfaceFromHelpText;
 

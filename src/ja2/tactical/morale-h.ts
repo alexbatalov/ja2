@@ -48,12 +48,3 @@ interface MoraleEvent {
   ubType: UINT8;
   bChange: INT8;
 }
-
-extern void HandleMoraleEvent(SOLDIERTYPE *pSoldier, INT8 bMoraleEvent, INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-extern void RefreshSoldierMorale(SOLDIERTYPE *pSoldier);
-extern INT8 GetMoraleModifier(SOLDIERTYPE *pSoldier);
-
-void HourlyMoraleUpdate(void);
-void DailyMoraleUpdate(SOLDIERTYPE *pSoldier);
-
-void DecayTacticalMoraleModifiers(void);

@@ -33,9 +33,6 @@ interface TOP_MESSAGE {
 TOP_MESSAGE gTopMessage;
 BOOLEAN gfTopMessageDirty = FALSE;
 
-void CreateTopMessage(UINT32 uiSurface, UINT8 ubType, UINT16 *psString);
-extern UINT16 GetAnimStateForInteraction(SOLDIERTYPE *pSoldier, BOOLEAN fDoor, UINT16 usAnimState);
-
 MOUSE_REGION gMenuOverlayRegion;
 
 UINT16 gusOldSelectedSoldier = NO_SOLDIER;
@@ -53,9 +50,6 @@ INT32 iOverlayMessageBox = -1;
 INT32 iUIMessageBox = -1;
 UINT32 guiUIMessageTimeDelay = 0;
 BOOLEAN gfUseSkullIconMessage = FALSE;
-
-// Overlay callback
-void BlitPopupText(VIDEO_OVERLAY *pBlitter);
 
 BOOLEAN gfPanelAllocated = FALSE;
 
@@ -157,23 +151,11 @@ UINT16 gsDownArrowY;
 UINT32 giUpArrowRect;
 UINT32 giDownArrowRect;
 
-void DrawBarsInUIBox(SOLDIERTYPE *pSoldier, INT16 sXPos, INT16 sYPos, INT16 sWidth, INT16 sHeight);
-void PopupDoorOpenMenu(BOOLEAN fClosingDoor);
-
 BOOLEAN fFirstTimeInGameScreen = TRUE;
 BOOLEAN fInterfacePanelDirty = DIRTYLEVEL2;
 INT16 gsInterfaceLevel = I_GROUND_LEVEL;
 INT16 gsCurrentSoldierGridNo = 0;
 INT16 gsCurInterfacePanel = TEAM_PANEL;
-
-// LOCAL FUCTIONS
-void BtnPositionCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMovementCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnDoorMenuCallback(GUI_BUTTON *btn, INT32 reason);
-void MovementMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void DoorMenuBackregionCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-UINT32 CalcUIMessageDuration(STR16 wString);
 
 BOOLEAN InitializeTacticalInterface() {
   VSURFACE_DESC vs_desc;

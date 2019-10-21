@@ -1,7 +1,3 @@
-BOOLEAN STCILoadRGB(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeader *pHeader);
-BOOLEAN STCILoadIndexed(HIMAGE hImage, UINT16 fContents, HWFILE hFile, STCIHeader *pHeader);
-BOOLEAN STCISetPalette(PTR pSTCIPalette, HIMAGE hImage);
-
 BOOLEAN LoadSTCIFileToImage(HIMAGE hImage, UINT16 fContents) {
   HWFILE hFile;
   STCIHeader Header;

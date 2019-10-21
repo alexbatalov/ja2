@@ -9,8 +9,6 @@ UINT32 guiPabloExtraDaysBribed = 0;
 
 UINT8 gubCambriaMedicalObjects;
 
-void DropOffItemsInMeduna(UINT8 ubOrderNum);
-
 void BobbyRayPurchaseEventCallback(UINT8 ubOrderID) {
   UINT8 i, j;
   UINT16 usItem;

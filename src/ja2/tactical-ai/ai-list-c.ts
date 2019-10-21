@@ -15,8 +15,6 @@ const AI_LIST_SIZE = TOTAL_SOLDIERS;
 AILIST gAIList[AI_LIST_SIZE];
 AILIST *gpFirstAIListEntry = NULL;
 
-BOOLEAN SatisfiesAIListConditions(SOLDIERTYPE *pSoldier, UINT8 *pubDoneCount, BOOLEAN fDoRandomChecks);
-
 void ClearAIList(void) {
   UINT8 ubLoop;
 

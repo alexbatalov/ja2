@@ -34,5 +34,3 @@ const enum Enum326 {
   MLG_WARNING,
   MLG_YOURAD13,
 }
-
-BOOLEAN GetMLGFilename(SGPFILENAME filename, UINT16 usMLGGraphicID);

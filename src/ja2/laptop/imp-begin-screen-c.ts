@@ -52,37 +52,6 @@ BOOLEAN fNewCharInString = FALSE;
 // mouse regions
 MOUSE_REGION gIMPBeginScreenMouseRegions[4];
 
-// function definitions
-void CreateIMPBeginScreenButtons(void);
-void RemoveIMPBeginScreenButtons(void);
-void BtnIMPBeginScreenDoneCallback(GUI_BUTTON *btn, INT32 reason);
-void GetPlayerKeyBoardInputForIMPBeginScreen(void);
-void HandleBeginScreenTextEvent(UINT32 uiKey);
-void DisplayFullNameStringCursor(void);
-void DisplayNickNameStringCursor(void);
-void DisplayPlayerFullNameString(void);
-void DisplayPlayerNickNameString(void);
-void CopyFirstNameIntoNickName(void);
-void IncrementTextEnterMode(void);
-void DisplayMaleGlowCursor(void);
-void RenderMaleGenderIcon(void);
-void DisplayFemaleGlowCursor(void);
-void RenderFemaleGenderIcon(void);
-void CreateIMPBeginScreenMouseRegions(void);
-void DestroyIMPBeginScreenMouseRegions(void);
-void RenderGender(void);
-void DecrementTextEnterMode(void);
-void Print8CharacterOnlyString(void);
-BOOLEAN CheckCharacterInputForEgg(void);
-
-// mouse region callbacks
-void SelectFullNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectNickNameRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void MvtOnMaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void MvtOnFemaleRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
 void EnterIMPBeginScreen(void) {
   // reset all variables
 

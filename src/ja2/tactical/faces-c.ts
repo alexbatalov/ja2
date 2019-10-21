@@ -7,13 +7,6 @@ const END_FACE_OVERLAY_DELAY = 2000;
 FACETYPE gFacesData[NUM_FACE_SLOTS];
 UINT32 guiNumFaces = 0;
 
-// LOCAL FUNCTIONS
-void NewEye(FACETYPE *pFace);
-void NewMouth(FACETYPE *pFace);
-INT32 GetFreeFace(void);
-void RecountFaces(void);
-void HandleRenderFaceAdjustments(FACETYPE *pFace, BOOLEAN fDisplayBuffer, BOOLEAN fUseExternBuffer, UINT32 uiBuffer, INT16 sFaceX, INT16 sFaceY, UINT16 usEyesX, UINT16 usEyesY);
-
 extern BOOLEAN gfInItemPickupMenu;
 
 interface RPC_SMALL_FACE_VALUES {
@@ -96,9 +89,6 @@ extern INT16 gsCurInterfacePanel;
 extern UINT16 gusSMCurrentMerc;
 extern BOOLEAN gfRerenderInterfaceFromHelpText;
 extern BOOLEAN gfInItemPickupMenu;
-
-BOOLEAN FaceRestoreSavedBackgroundRect(INT32 iFaceIndex, INT16 sDestLeft, INT16 sDestTop, INT16 sSrcLeft, INT16 sSrcTop, INT16 sWidth, INT16 sHeight);
-void SetupFinalTalkingDelay(FACETYPE *pFace);
 
 INT32 GetFreeFace(void) {
   UINT32 uiCount;

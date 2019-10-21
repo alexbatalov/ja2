@@ -18,21 +18,6 @@ BOOLEAN fReDrawVoicesScreenFlag = FALSE;
 // the portrait region, for player to click on and re-hear voice
 MOUSE_REGION gVoicePortraitRegion;
 
-// function definitions
-void IncrementVoice(void);
-void DecrementVoice(void);
-void CreateIMPVoicesButtons(void);
-void DestroyIMPVoicesButtons(void);
-void CreateIMPVoiceMouseRegions(void);
-void DestroyIMPVoiceMouseRegions(void);
-void RenderVoiceIndex(void);
-
-// callbacks
-void BtnIMPVoicesNextCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPVoicesPreviousCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnIMPVoicesDoneCallback(GUI_BUTTON *btn, INT32 reason);
-void IMPPortraitRegionButtonCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
 void EnterIMPVoices(void) {
   fVoiceAVisited = FALSE;
   fVoiceBVisited = FALSE;

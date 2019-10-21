@@ -54,19 +54,11 @@ BOOLEAN FloristGallerySubPagesVisitedFlag[4];
 
 // Floral buttons
 INT32 guiGalleryButtonImage;
-void BtnGalleryFlowerButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiGalleryButton[FLOR_GALLERY_NUMBER_FLORAL_BUTTONS];
 
 // Next Previous buttons
 INT32 guiFloralGalleryButtonImage;
-void BtnFloralGalleryNextButtonCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnFloralGalleryBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiFloralGalleryButton[2];
-
-BOOLEAN InitFlowerButtons();
-void DeleteFlowerButtons();
-BOOLEAN DisplayFloralDescriptions();
-void ChangingFloristGallerySubPage(UINT8 ubSubPageNumber);
 
 void GameInitFloristGallery() {
 }

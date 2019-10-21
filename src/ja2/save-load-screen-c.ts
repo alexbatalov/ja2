@@ -93,8 +93,6 @@ const enum Enum25 {
 //
 //////////////////////////////////////////////////////
 
-extern void NextLoopCheckForEnoughFreeHardDriveSpace();
-
 BOOLEAN gfSaveLoadScreenEntry = TRUE;
 BOOLEAN gfSaveLoadScreenExit = FALSE;
 BOOLEAN gfRedrawSaveLoadScreen = TRUE;
@@ -152,63 +150,21 @@ BOOLEAN gfGettingNameFromSaveLoadScreen = FALSE;
 //
 INT32 guiSlgButtonImage;
 
-// Cancel Button
-void BtnSlgCancelCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiSlgCancelBtn;
 
-// Save game Button
-void BtnSlgSaveLoadCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiSlgSaveLoadBtn;
 INT32 guiSaveLoadImage;
 
 // Mouse regions for the currently selected save game
 MOUSE_REGION gSelectedSaveRegion[NUM_SAVE_GAMES];
-void SelectedSaveRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectedSaveRegionMovementCallBack(MOUSE_REGION *pRegion, INT32 reason);
 
 MOUSE_REGION gSLSEntireScreenRegion;
-void SelectedSLSEntireRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 //////////////////////////////////////////////////////
 //
 //  Function Prototypes
 //
 //////////////////////////////////////////////////////
-
-BOOLEAN EnterSaveLoadScreen();
-void RenderSaveLoadScreen();
-void ExitSaveLoadScreen();
-void HandleSaveLoadScreen();
-void GetSaveLoadScreenUserInput();
-void SaveLoadGameNumber(INT8 bSaveGameID);
-BOOLEAN LoadSavedGameHeader(INT8 bEntry, SAVED_GAME_HEADER *pSaveGameHeader);
-BOOLEAN DisplaySaveGameEntry(INT8 bEntryID); //, UINT16 usPosY );
-BOOLEAN DisplaySaveGameList();
-void InitSaveLoadScreenTextInputBoxes();
-void DestroySaveLoadTextInputBoxes();
-void SetSelection(UINT8 ubNewSelection);
-UINT8 CompareSaveGameVersion(INT8 bSaveGameID);
-void LoadSavedGameWarningMessageBoxCallBack(UINT8 bExitValue);
-void LoadSavedGameDeleteAllSaveGameMessageBoxCallBack(UINT8 bExitValue);
-void DeleteAllSaveGameFile();
-void DisplayOnScreenNumber(BOOLEAN fErase);
-
-void DisableSelectedSlot();
-
-void ConfirmSavedGameMessageBoxCallBack(UINT8 bExitValue);
-void ConfirmLoadSavedGameMessageBoxCallBack(UINT8 bExitValue);
-// void			FailedSavingGameCallBack( UINT8 bExitValue );
-void FailedLoadingGameCallBack(UINT8 bExitValue);
-void SetSaveLoadExitScreen(UINT32 uiScreen);
-
-void NotEnoughHardDriveSpaceForQuickSaveMessageBoxCallBack(UINT8 bExitValue);
-void NotEnoughHardDriveSpaceForNormalSaveMessageBoxCallBack(UINT8 bExitValue);
-
-void RedrawSaveLoadScreenAfterMessageBox(UINT8 bExitValue);
-void ClearSelectedSaveSlot();
-void MoveSelectionUpOrDown(BOOLEAN fUp);
-void SaveGameToSlotNum();
-void StartFadeOutForSaveLoadScreen();
 
 // ppp
 

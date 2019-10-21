@@ -66,40 +66,6 @@ HistoryUnitPtr pCurrentHistory = NULL;
 // last page in list
 UINT32 guiLastPageInHistoryRecordsList = 0;
 
-// function definitions
-BOOLEAN LoadHistory(void);
-void RenderHistoryBackGround(void);
-void RemoveHistory(void);
-void CreateHistoryButtons(void);
-void DestroyHistoryButtons(void);
-void CreateHistoryButtons(void);
-void DrawHistoryTitleText(void);
-UINT32 ProcessAndEnterAHistoryRecord(UINT8 ubCode, UINT32 uiDate, UINT8 ubSecondCode, INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ, UINT8 ubColor);
-void OpenAndReadHistoryFile(void);
-BOOLEAN OpenAndWriteHistoryFile(void);
-void ClearHistoryList(void);
-void DisplayHistoryListHeaders(void);
-void DisplayHistoryListBackground(void);
-void DrawAPageofHistoryRecords(void);
-BOOLEAN IncrementCurrentPageHistoryDisplay(void);
-void DisplayPageNumberAndDateRange(void);
-void ProcessHistoryTransactionString(STR16 pString, HistoryUnitPtr pHistory);
-void SetHistoryButtonStates(void);
-BOOLEAN LoadInHistoryRecords(UINT32 uiPage);
-BOOLEAN LoadNextHistoryPage(void);
-BOOLEAN LoadPreviousHistoryPage(void);
-void SetLastPageInHistoryRecords(void);
-UINT32 ReadInLastElementOfHistoryListAndReturnIdNumber(void);
-BOOLEAN AppendHistoryToEndOfFile(HistoryUnitPtr pHistory);
-BOOLEAN WriteOutHistoryRecords(UINT32 uiPage);
-void GetQuestStartedString(UINT8 ubQuestValue, STR16 sQuestString);
-void GetQuestEndedString(UINT8 ubQuestValue, STR16 sQuestString);
-INT32 GetNumberOfHistoryPages();
-
-// callbacks
-void BtnHistoryDisplayNextPageCallBack(GUI_BUTTON *btn, INT32 reason);
-void BtnHistoryDisplayPrevPageCallBack(GUI_BUTTON *btn, INT32 reason);
-
 UINT32 SetHistoryFact(UINT8 ubCode, UINT8 ubSecondCode, UINT32 uiDate, INT16 sSectorX, INT16 sSectorY) {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need

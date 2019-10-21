@@ -223,79 +223,45 @@ INT32 giNumberOfNewBobbyRShipment;
 // Buttons
 //
 
-// Clear Order Button
-void BtnBobbyRClearOrderCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRClearOrder;
 INT32 guiBobbyRClearOrderImage;
 
-// Accept Order Button
-void BtnBobbyRAcceptOrderCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRAcceptOrder;
 INT32 guiBobbyRAcceptOrderImage;
 
-// Back Button
-void BtnBobbyRBackCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRBack;
 INT32 guiBobbyRBackImage;
 
-// Home Button
-void BtnBobbyRHomeCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRHome;
 INT32 guiBobbyRHomeImage;
 
-// Goto Shipment Page Button
-void BtnBobbyRGotoShipmentPageCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBobbyRGotoShipmentPage;
 INT32 giBobbyRGotoShipmentPageImage;
 
 // mouse region for the shipping speed selection area
 MOUSE_REGION gSelectedShippingSpeedRegion[3];
-void SelectShippingSpeedRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region for the confirm area
 MOUSE_REGION gSelectedConfirmOrderRegion;
-void SelectConfirmOrderRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region for the drop down city location area
 MOUSE_REGION gSelectedDropDownRegion[BOBBYR_ORDER_NUM_SHIPPING_CITIES];
-void SelectDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region for scroll area for the drop down city location area
 MOUSE_REGION gSelectedScrollAreaDropDownRegion[BOBBYR_ORDER_NUM_SHIPPING_CITIES];
-void SelectScrollAreaDropDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-void SelectScrollAreaDropDownMovementCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region to activate the shipping location drop down
 MOUSE_REGION gSelectedActivateCityDroDownRegion;
-void SelectActivateCityDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region to close the drop down menu
 MOUSE_REGION gSelectedCloseDropDownRegion;
-void SelectCloseDroDownRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region to click on the title to go to the home page
 MOUSE_REGION gSelectedTitleLinkRegion;
-void SelectTitleLinkRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // mouse region to click on the up or down arrow on the scroll area
 MOUSE_REGION gSelectedUpDownArrowOnScrollAreaRegion[2];
-void SelectUpDownArrowOnScrollAreaRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-BOOLEAN DrawShippingSpeedLights(UINT8 ubSelectedLight);
-BOOLEAN CreateDestroyBobbyRDropDown(UINT8 ubDropDownAction);
-void DrawSelectedCity(UINT8 ubNumber);
-void DisplayShippingLocationCity();
-void DisplayShippingCosts(BOOLEAN fCalledFromOrderPage, INT32 iSubTotal, UINT16 usGridX, UINT16 usGridY, INT32 iOrderNum);
-void RemovePurchasedItemsFromBobbyRayInventory();
-BOOLEAN IsAnythingPurchasedFromBobbyRayPage();
-void DrawGoldRectangle(INT8 bCityNum);
-UINT32 CalcCostFromWeightOfPackage(UINT8 ubTypeOfService);
-void ConfirmBobbyRPurchaseMessageBoxCallBack(UINT8 bExitValue);
-void PurchaseBobbyOrder();
-UINT32 CalcPackageTotalWeight();
-void DisplayPackageWeight();
-void ShutDownBobbyRNewMailOrders();
 // ppp
 
 void GameInitBobbyRMailOrder() {

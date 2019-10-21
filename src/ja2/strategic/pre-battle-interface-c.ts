@@ -1,4 +1,3 @@
-extern void InitializeTacticalStatusAtBattleStart();
 extern BOOLEAN gfDelayAutoResolveStart;
 extern BOOLEAN gfTransitionMapscreenToAutoResolve;
 
@@ -43,17 +42,6 @@ UINT16 gusRetreatButtonLeft, gusRetreatButtonTop, gusRetreatButtonRight, gusRetr
 
 GROUP *gpBattleGroup = NULL;
 
-void AutoResolveBattleCallback(GUI_BUTTON *btn, INT32 reason);
-void GoToSectorCallback(GUI_BUTTON *btn, INT32 reason);
-void RetreatMercsCallback(GUI_BUTTON *btn, INT32 reason);
-
-void GetSoldierConditionInfo(SOLDIERTYPE *pSoldier, UINT16 *szCondition, UINT8 *pubHPPercent, UINT8 *pubBPPercent);
-
-void CheckForRobotAndIfItsControlled(void);
-
-void PutNonSquadMercsInBattleSectorOnSquads(BOOLEAN fExitVehicles);
-void PutNonSquadMercsInPlayerGroupOnSquads(GROUP *pGroup, BOOLEAN fExitVehicles);
-
 /*
 void InvolvedMoveCallback( MOUSE_REGION *reg, INT32 reason );
 void InvolvedClickCallback( MOUSE_REGION *reg, INT32 reason );
@@ -73,8 +61,6 @@ BOOLEAN gfRenderPBInterface;
 BOOLEAN gfPBButtonsHidden;
 BOOLEAN fDisableMapInterfaceDueToBattle = FALSE;
 
-void DoTransitionFromMapscreenToPreBattleInterface();
-
 BOOLEAN gfBlinkHeader;
 
 // mouse regions in mapscreen proper than must have thier help text disabled then re-enabled
@@ -83,8 +69,6 @@ extern MOUSE_REGION gCharInfoHandRegion;
 
 extern INT32 giMapContractButton;
 extern INT32 giCharInfoButton[2];
-extern void CreateDestroyMapCharacterScrollButtons(void);
-extern void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons(void);
 
 // were we showing the mapscreen inventory when the prebattle interface came up
 extern BOOLEAN fShowInventoryFlag;
@@ -124,13 +108,6 @@ BOOLEAN gfCantRetreatInPBI = FALSE;
 BOOLEAN gfUsePersistantPBI;
 
 INT32 giHilitedInvolved, giHilitedUninvolved;
-
-extern void CalculateGroupRetreatSector(GROUP *pGroup);
-
-extern void GetMapscreenMercAssignmentString(SOLDIERTYPE *pSoldier, wchar_t sString[]);
-extern void GetMapscreenMercLocationString(SOLDIERTYPE *pSoldier, wchar_t sString[]);
-extern void GetMapscreenMercDestinationString(SOLDIERTYPE *pSoldier, wchar_t sString[]);
-extern void GetMapscreenMercDepartureString(SOLDIERTYPE *pSoldier, wchar_t sString[], UINT8 *pubFontColor);
 
 void InitPreBattleInterface(GROUP *pBattleGroup, BOOLEAN fPersistantPBI) {
   VOBJECT_DESC VObjectDesc;

@@ -3,25 +3,6 @@ const MERC_POPUP_PREPARE_FLAGS_MARGINS = 0x00000002;
 const MERC_POPUP_PREPARE_FLAGS_STOPICON = 0x00000004;
 const MERC_POPUP_PREPARE_FLAGS_SKULLICON = 0x00000008;
 
-BOOLEAN InitMercPopupBox();
-
-// create a pop up box if needed, return id of box..a -1 means couldn't be added
-INT32 PrepareMercPopupBox(INT32 iBoxId, UINT8 ubBackgroundIndex, UINT8 ubBorderIndex, STR16 pString, UINT16 usWidth, UINT16 usMarginX, UINT16 usMarginTopY, UINT16 usMarginBottomY, UINT16 *pActualWidth, UINT16 *pActualHeight);
-
-// remove the current box
-BOOLEAN RemoveMercPopupBox();
-
-// remove this box from the index
-BOOLEAN RemoveMercPopupBoxFromIndex(UINT32 uiId);
-
-// render the current pop up box
-BOOLEAN RenderMercPopupBox(INT16 sDestX, INT16 sDestY, UINT32 uiBuffer);
-
-// render pop up box with this index value
-BOOLEAN RenderMercPopUpBoxFromIndex(INT32 iBoxId, INT16 sDestX, INT16 sDestY, UINT32 uiBuffer);
-
-void RemoveTextMercPopupImages();
-
 interface MercPopUpBox {
   uiSourceBufferIndex: UINT32;
   sWidth: UINT16;
@@ -34,10 +15,6 @@ interface MercPopUpBox {
   fMercTextPopupSurfaceInitialized: BOOLEAN;
   uiFlags: UINT32;
 }
-
-BOOLEAN OverrideMercPopupBox(MercPopUpBox *pMercBox);
-BOOLEAN ResetOverrideMercPopupBox();
-BOOLEAN SetPrepareMercPopupFlags(UINT32 uiFlags);
 
 // background enumeration
 const enum Enum324 {

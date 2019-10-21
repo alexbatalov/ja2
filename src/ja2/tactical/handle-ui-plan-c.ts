@@ -3,8 +3,6 @@ SOLDIERTYPE *gpUIPlannedSoldier = NULL;
 SOLDIERTYPE *gpUIStartPlannedSoldier = NULL;
 BOOLEAN gfInUIPlanMode = FALSE;
 
-void SelectPausedFireAnimation(SOLDIERTYPE *pSoldier);
-
 BOOLEAN BeginUIPlan(SOLDIERTYPE *pSoldier) {
   gubNumUIPlannedMoves = 0;
   gpUIPlannedSoldier = pSoldier;

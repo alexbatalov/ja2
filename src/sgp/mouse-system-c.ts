@@ -23,13 +23,6 @@ MOUSE_REGION *gpRegionLastLButtonDown = NULL;
 MOUSE_REGION *gpRegionLastLButtonUp = NULL;
 UINT32 guiRegionLastLButtonDownTime = 0;
 
-extern void ReleaseAnchorMode(); // private function used here (implemented in Button System.c)
-
-// number of lines in height help text will be
-INT16 GetNumberOfLinesInHeight(STR16 pStringA);
-INT16 GetWidthOfString(STR16 pStringA);
-void DisplayHelpTokenizedString(STR16 pStringA, INT16 sX, INT16 sY);
-
 INT32 MSYS_ScanForID = FALSE;
 INT32 MSYS_CurrentID = MSYS_ID_SYSTEM;
 
@@ -59,9 +52,6 @@ BOOLEAN gfPersistantFastHelpMode;
 
 INT16 gsFastHelpDelay = 600; // In timer ticks
 BOOLEAN gfShowFastHelp = TRUE;
-
-// help text is done, now execute callback, if there is one
-void ExecuteMouseHelpEndCallBack(MOUSE_REGION *region);
 
 // Kris:
 // NOTE:  This doesn't really need to be here, however, it is a good indication that

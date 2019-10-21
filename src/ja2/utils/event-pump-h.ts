@@ -191,12 +191,3 @@ interface EV_S_UPDATENETWORKSOLDIER {
   bActionPoints: INT8; // current A.P. value
   bBreath: INT8; // current breath value
 }
-
-// FUNCTIONS
-BOOLEAN AddGameEvent(UINT32 uiEvent, UINT16 usDelay, PTR pEventData);
-BOOLEAN AddGameEventFromNetwork(UINT32 uiEvent, UINT16 usDelay, PTR pEventData);
-BOOLEAN DequeAllGameEvents(BOOLEAN fExecute);
-BOOLEAN DequeueAllDemandGameEvents(BOOLEAN fExecute);
-
-// clean out the evetn queue
-BOOLEAN ClearEventQueue(void);

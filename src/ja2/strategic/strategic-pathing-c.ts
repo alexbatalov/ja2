@@ -1,5 +1,3 @@
-void AddSectorToFrontOfMercPath(PathStPtr *ppMercPath, UINT8 ubSectorX, UINT8 ubSectorY);
-
 // mvt modifier
 //#define FOOT_MVT_MODIFIER 2
 
@@ -131,8 +129,6 @@ INT16 diStratDelta[8] = {
   -1, // W
   -MAP_WIDTH - 1 // NW
 };
-
-extern UINT8 GetTraversability(INT16 sStartSector, INT16 sEndSector);
 
 // this will find if a shortest strategic path
 

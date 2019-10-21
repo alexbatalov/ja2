@@ -18,8 +18,6 @@ UINT8 gubBoxingMatchesWon = 0;
 UINT8 gubBoxersRests = 0;
 BOOLEAN gfBoxersResting = FALSE;
 
-extern void RecalculateOppCntsDueToBecomingNeutral(SOLDIERTYPE *pSoldier);
-
 void ExitBoxing(void) {
   UINT8 ubRoom;
   SOLDIERTYPE *pSoldier;

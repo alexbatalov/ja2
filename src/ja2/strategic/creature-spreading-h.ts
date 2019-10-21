@@ -1,28 +1,4 @@
-void InitCreatureQuest();
-void SpreadCreatures();
-void DecayCreatures();
-void ChooseCreatureQuestStartDay();
-void ClearCreatureQuest();
-void DeleteCreatureDirectives();
-
-BOOLEAN SaveCreatureDirectives(HWFILE hFile);
-BOOLEAN LoadCreatureDirectives(HWFILE hFile, UINT32 uiSavedGameVersion);
-
-UINT8 CreaturesInUndergroundSector(UINT8 ubSectorID, UINT8 ubSectorZ);
-BOOLEAN PrepareCreaturesForBattle();
-void CreatureNightPlanning();
-void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest);
-
-void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-
-void ForceCreaturesToAvoidMineTemporarily(UINT8 ubMineIndex);
-
 BOOLEAN gfUseCreatureMusic;
-
-BOOLEAN MineClearOfMonsters(UINT8 ubMineIndex);
-
-// Returns TRUE if valid and creature quest over, FALSE if creature quest active or not yet started
-BOOLEAN GetWarpOutOfMineCodes(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ, INT16 *psInsertionGridNo);
 
 extern INT16 gsCreatureInsertionCode;
 extern INT16 gsCreatureInsertionGridNo;
@@ -40,9 +16,3 @@ const enum Enum129 {
   CREATURE_BATTLE_CODE_AUTORESOLVE,
 }
 extern UINT8 gubCreatureBattleCode;
-
-void DetermineCreatureTownComposition(UINT8 ubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales);
-
-void DetermineCreatureTownCompositionBasedOnTacticalInformation(UINT8 *pubNumCreatures, UINT8 *pubNumYoungMales, UINT8 *pubNumYoungFemales, UINT8 *pubNumAdultMales, UINT8 *pubNumAdultFemales);
-
-BOOLEAN PlayerGroupIsInACreatureInfestedMine();

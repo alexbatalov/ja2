@@ -132,41 +132,24 @@ BOOLEAN gfInitAdArea;
 
 // MemberCard
 MOUSE_REGION gSelectedMemberCardRegion;
-void SelectMemberCardRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Policies
 MOUSE_REGION gSelectedPoliciesRegion;
-void SelectPoliciesRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // History
 MOUSE_REGION gSelectedHistoryRegion;
-void SelectHistoryRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Links
 MOUSE_REGION gSelectedLinksRegion;
-void SelectLinksRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
-// Bottom Buttons
-void BtnAimBottomButtonsCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiBottomButtons[NUM_AIM_SCREENS];
 INT32 guiBottomButtonImage;
 
 // Banner Area
 MOUSE_REGION gSelectedBannerRegion;
-void SelectBannerRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
 
 // Aim logo click
 MOUSE_REGION gSelectedAimLogo;
-void SelectAimLogoRegionCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
-BOOLEAN DrawWarningBox(BOOLEAN fInit, BOOLEAN fRedraw);
-BOOLEAN DisplayFlowerAd(BOOLEAN fInit, BOOLEAN fRedraw);
-void HandleAdAndWarningArea(BOOLEAN fInit, BOOLEAN fRedraw);
-void LaptopInitAim();
-BOOLEAN DisplayAd(BOOLEAN fInit, BOOLEAN fRedraw, UINT16 usDelay, UINT16 usNumberOfSubImages, UINT32 uiAdImageIdentifier);
-void HandleTextOnAimAdd(UINT8 ubCurSubImage);
-BOOLEAN DisplayBobbyRAd(BOOLEAN fInit, BOOLEAN fRedraw);
-UINT8 GetNextAimAd(UINT8 ubCurrentAd);
 
 BOOLEAN fFirstTimeIn = TRUE;
 

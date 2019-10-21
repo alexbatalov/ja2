@@ -1,6 +1,3 @@
-extern void SetClippingRect(SGPRect *clip);
-extern void GetClippingRect(SGPRect *clip);
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Video Surface SGP Module
@@ -28,16 +25,6 @@ const DEFAULT_VIDEO_SURFACE_LIST_SIZE = 10;
 // LOCAL functions
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-BOOLEAN UpdateBackupSurface(HVSURFACE hVSurface);
-BOOLEAN ClipReleatedSrcAndDestRectangles(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurface, RECT *DestRect, RECT *SrcRect);
-BOOLEAN FillSurface(HVSURFACE hDestVSurface, blt_vs_fx *pBltFx);
-BOOLEAN FillSurfaceRect(HVSURFACE hDestVSurface, blt_vs_fx *pBltFx);
-BOOLEAN BltVSurfaceUsingDD(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurface, UINT32 fBltFlags, INT32 iDestX, INT32 iDestY, RECT *SrcRect);
-BOOLEAN BltVSurfaceUsingDDBlt(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurface, UINT32 fBltFlags, INT32 iDestX, INT32 iDestY, RECT *SrcRect, RECT *DestRect);
-BOOLEAN GetVSurfaceRect(HVSURFACE hVSurface, RECT *pRect);
-
-void DeletePrimaryVideoSurfaces();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1899,8 +1886,6 @@ BOOLEAN BltVSurfaceUsingDD(HVSURFACE hDestVSurface, HVSURFACE hSrcVSurface, UINT
 
   return TRUE;
 }
-
-BOOLEAN Blt16BPPBufferShadowRectAlternateTable(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area);
 
 BOOLEAN InternalShadowVideoSurfaceRect(UINT32 uiDestVSurface, INT32 X1, INT32 Y1, INT32 X2, INT32 Y2, BOOLEAN fLowPercentShadeTable) {
   UINT16 *pBuffer;

@@ -63,13 +63,6 @@ ARMY_GUN_CHOICE_TYPE gExtendedArmyGunChoices[ARMY_GUN_LEVELS] = {
    /* 10- rocket rifle		*/ 4, ROCKET_RIFLE, ROCKET_RIFLE, RPK74, HK21E, -1 },
 };
 
-void RandomlyChooseWhichItemsAreDroppable(SOLDIERCREATE_STRUCT *pp, INT8 bSoldierClass);
-void EquipTank(SOLDIERCREATE_STRUCT *pp);
-
-void ChooseKitsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bKitClass);
-void ChooseMiscGearForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bMiscClass);
-void ChooseBombsForSoldierCreateStruct(SOLDIERCREATE_STRUCT *pp, INT8 bBombClass);
-
 void InitArmyGunTypes(void) {
   ARMY_GUN_CHOICE_TYPE *pGunChoiceTable;
   UINT32 uiGunLevel;

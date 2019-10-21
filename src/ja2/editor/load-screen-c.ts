@@ -4,8 +4,6 @@ BOOLEAN gfErrorCatch = FALSE;
 UINT16 gzErrorCatchString[256] = L"";
 INT32 giErrorCatchMessageBox = 0;
 
-extern void RemoveMercsInSector();
-
 const enum Enum50 {
   DIALOG_NONE,
   DIALOG_SAVE,
@@ -15,23 +13,6 @@ const enum Enum50 {
 }
 
 extern UINT16 Counter;
-
-// Hook into the text input code.  These callbacks help give back control, so we
-// can use the dialog interface in conjunction with the
-void FDlgOkCallback(GUI_BUTTON *butn, INT32 reason);
-void FDlgCancelCallback(GUI_BUTTON *butn, INT32 reason);
-void FDlgUpCallback(GUI_BUTTON *butn, INT32 reason);
-void FDlgDwnCallback(GUI_BUTTON *butn, INT32 reason);
-void FDlgNamesCallback(GUI_BUTTON *butn, INT32 reason);
-void UpdateWorldInfoCallback(GUI_BUTTON *b, INT32 reason);
-void FileDialogModeCallback(UINT8 ubID, BOOLEAN fEntering);
-
-UINT32 ProcessLoadSaveScreenMessageBoxResult();
-BOOLEAN RemoveFromFDlgList(FDLG_LIST **head, FDLG_LIST *node);
-
-void DrawFileDialog();
-void HandleMainKeyEvents(InputAtom *pEvent);
-void SetTopFileToLetter(UINT16 usLetter);
 
 INT32 iTotalFiles;
 INT32 iTopFileShown;
@@ -72,7 +53,6 @@ const enum Enum51 {
   LOADING_MAP,
 }
 INT8 gbCurrentFileIOStatus; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
-UINT32 ProcessFileIO();
 
 // BOOLEAN fSavingFile;
 extern UINT16 gusLightLevel, gusSavedLightLevel;

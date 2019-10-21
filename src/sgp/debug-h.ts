@@ -30,9 +30,6 @@ const PROFILE_REPORT = () => {
   _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, (FLOAT)guiProfileTime / guiExecutions);
 };
 
-extern void _Null(void);
-extern UINT8 *String(const char *String, ...);
-
 const Assert = (a) => {};
 const AssertMsg = (a, b) => {};
 
@@ -41,9 +38,6 @@ const AssertMsg = (a, b) => {};
 // Moved these out of the defines - debug mgr always initialized
 const InitializeDebugManager = () => DbgInitialize();
 const ShutdownDebugManager = () => DbgShutdown();
-
-extern BOOLEAN DbgInitialize(void);
-extern void DbgShutdown(void);
 
 //*******************************************************************************************
 // Release Mode

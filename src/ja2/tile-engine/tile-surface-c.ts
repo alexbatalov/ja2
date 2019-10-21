@@ -111,8 +111,6 @@ void DeleteTileSurface(PTILE_IMAGERY pTileSurf) {
   MemFree(pTileSurf);
 }
 
-extern void GetRootName(INT8 *pDestStr, INT8 *pSrcStr);
-
 void SetRaisedObjectFlag(char *cFilename, TILE_IMAGERY *pTileSurf) {
   INT32 cnt = 0;
   CHAR8 cRootFile[128];

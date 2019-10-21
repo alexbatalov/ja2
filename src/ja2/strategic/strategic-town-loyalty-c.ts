@@ -136,15 +136,6 @@ extern BOOLEAN fSectorsWithSoldiers[MAP_WORLD_X * MAP_WORLD_X][4];
 
 extern STR16 pTownNames[];
 
-// update the loyalty rating of the passed town id
-void UpdateTownLoyaltyRating(INT8 bTownId);
-
-// update town loyalty based on number of friendlies in this town
-void UpdateTownLoyaltyBasedOnFriendliesInTown(INT8 bTownId);
-
-// update town loyalty based on number of bad guys in this town
-void UpdateTownLoyaltyBasedOnBadGuysInTown(INT8 bTownId);
-
 /* ARM: Civilian theft of items was removed
 // handle theft by civi in a town sector
 void HandleTheftByCiviliansInSector( INT16 sX, INT16 sY, INT32 iLoyalty );
@@ -152,8 +143,6 @@ void HandleTheftByCiviliansInSector( INT16 sX, INT16 sY, INT32 iLoyalty );
 // handle theft in all towns
 void HandleTownTheft( void );
 */
-
-extern void MapScreenDefaultOkBoxCallback(UINT8 bExitValue);
 
 void InitTownLoyalty(void) {
   UINT8 ubTown = 0;

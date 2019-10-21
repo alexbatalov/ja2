@@ -62,18 +62,3 @@ const enum Enum201 {
 
   NUM_CIV_QUOTES,
 }
-
-void InitCivQuoteSystem();
-
-void StartCivQuote(SOLDIERTYPE *pCiv);
-
-INT8 GetCivType(SOLDIERTYPE *pCiv);
-
-void HandleCivQuote();
-
-BOOLEAN SaveCivQuotesToSaveGameFile(HWFILE hFile);
-BOOLEAN LoadCivQuotesFromLoadGameFile(HWFILE hFile);
-
-BOOLEAN ShutDownQuoteBoxIfActive();
-
-void BeginCivQuote(SOLDIERTYPE *pCiv, UINT8 ubCivQuoteID, UINT8 ubEntryID, INT16 sX, INT16 sY);

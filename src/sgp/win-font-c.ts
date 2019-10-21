@@ -1,6 +1,5 @@
 //#define UNICODE
 
-INT32 FindFreeWinFont(void);
 BOOLEAN gfEnumSucceed = FALSE;
 
 const MAX_WIN_FONTS = 10;

@@ -40,20 +40,6 @@ void SetAllNewTileSurfacesLoaded(BOOLEAN fNew) {
 
 BOOLEAN gfInitAnimateLoading = FALSE;
 
-// Local Functions
-BOOLEAN LoadTileSurfaces(char pTileSurfaceFilenames[][32], UINT8 ubTilesetID);
-BOOLEAN AddTileSurface(SGPFILENAME cFilename, UINT32 ubType, UINT8 ubTilesetID, BOOLEAN fGetFromRoot);
-void DestroyTileSurfaces(void);
-void ProcessTilesetNamesForBPP(void);
-BOOLEAN IsRoofVisibleForWireframe(INT16 sMapPos);
-
-INT8 IsHiddenTileMarkerThere(INT16 sGridNo);
-extern void SetInterfaceHeightLevel();
-extern void GetRootName(INT8 *pDestStr, INT8 *pSrcStr);
-
-void SaveMapLights(HWFILE hfile);
-void LoadMapLights(INT8 **hBuffer);
-
 // Global Variables
 MAP_ELEMENT *gpWorldLevelData;
 INT32 *gpDirtyData;
@@ -2159,9 +2145,6 @@ BOOLEAN EvaluateWorld(UINT8 *pSector, UINT8 ubLevel) {
   WriteSectorSummaryUpdate(szFilename, ubLevel, pSummary);
   return TRUE;
 }
-
-extern UINT8 GetCurrentSummaryVersion();
-extern void LoadShadeTablesFromTextFile();
 
 BOOLEAN LoadWorld(UINT8 *puiFilename) {
   HWFILE hfile;

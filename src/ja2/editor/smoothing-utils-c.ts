@@ -1,5 +1,3 @@
-extern UINT16 PickAWallPiece(UINT16 usWallPieceType);
-
 // This method isn't foolproof, but because erasing large areas of buildings could result in
 // multiple wall types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.

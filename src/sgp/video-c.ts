@@ -167,11 +167,6 @@ extern INT16 gusGreenShift;
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom, UINT32 uiFlags);
-void SnapshotSmall(void);
-void VideoMovieCapture(BOOLEAN fEnable);
-void RefreshMovieCache();
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 BOOLEAN InitializeVideoManager(HINSTANCE hInstance, UINT16 usCommandShow, void *WindowProc) {

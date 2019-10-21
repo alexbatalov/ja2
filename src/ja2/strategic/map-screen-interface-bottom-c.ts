@@ -104,41 +104,6 @@ extern MOUSE_REGION gMPanelRegion;
 
 // PROTOTYPES
 
-void LoadMessageSliderBar(void);
-void DeleteMessageSliderBar(void);
-void DisplayScrollBarSlider();
-
-void CreateMapScreenBottomMessageScrollBarRegion(void);
-void DeleteMapScreenBottomMessageScrollRegion(void);
-
-void DisplayCurrentBalanceForMapBottom(void);
-void DisplayCurrentBalanceTitleForMapBottom(void);
-void DisplayProjectedDailyMineIncome(void);
-void DrawNameOfLoadedSector(void);
-
-void EnableDisableBottomButtonsAndRegions(void);
-void EnableDisableTimeCompressButtons(void);
-void EnableDisableMessageScrollButtonsAndRegions(void);
-
-void DisplayCompressMode(void);
-void RemoveCompressModePause(void);
-void CreateCompressModePause(void);
-
-void BtnLaptopCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnTacticalCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnOptionsFromMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-
-void CompressModeClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void CompressMaskClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void BtnTimeCompressMoreMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnTimeCompressLessMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-
-void BtnMessageDownMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-void BtnMessageUpMapScreenCallback(GUI_BUTTON *btn, INT32 reason);
-
-void MapScreenMessageScrollBarCallBack(MOUSE_REGION *pRegion, INT32 iReason);
-
 // void CheckForAndHandleAutoMessageScroll( void );
 
 // FUNCTIONS

@@ -1,8 +1,5 @@
 extern BOOLEAN gfOverheadMapDirty;
 
-extern void SetClippingRect(SGPRect *clip);
-extern void GetClippingRect(SGPRect *clip);
-
 extern INT32 iEditorToolbar;
 
 extern BOOLEAN fDontUseRandom;

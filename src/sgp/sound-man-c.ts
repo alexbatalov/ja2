@@ -73,35 +73,6 @@ const SOUND_PARMS_DEFAULT = 0xffffffff;
 // Sound status flags
 const SOUND_CALLBACK = 0x00000008;
 
-// Local Function Prototypes
-BOOLEAN SoundInitCache(void);
-BOOLEAN SoundShutdownCache(void);
-UINT32 SoundLoadSample(STR pFilename);
-UINT32 SoundFreeSample(STR pFilename);
-UINT32 SoundGetCached(STR pFilename);
-UINT32 SoundLoadDisk(STR pFilename);
-
-// Low level
-UINT32 SoundGetEmptySample(void);
-BOOLEAN SoundProcessWAVHeader(UINT32 uiSample);
-UINT32 SoundFreeSampleIndex(UINT32 uiSample);
-UINT32 SoundGetIndexByID(UINT32 uiSoundID);
-static HDIGDRIVER SoundInitDriver(UINT32 uiRate, UINT16 uiBits, UINT16 uiChans);
-BOOLEAN SoundInitHardware(void);
-BOOLEAN SoundGetDriverName(HDIGDRIVER DIG, CHAR8 *cBuf);
-BOOLEAN SoundShutdownHardware(void);
-UINT32 SoundGetFreeChannel(void);
-UINT32 SoundStartSample(UINT32 uiSample, UINT32 uiChannel, SOUNDPARMS *pParms);
-UINT32 SoundStartStream(STR pFilename, UINT32 uiChannel, SOUNDPARMS *pParms);
-UINT32 SoundGetUniqueID(void);
-BOOLEAN SoundPlayStreamed(STR pFilename);
-BOOLEAN SoundCleanCache(void);
-BOOLEAN SoundSampleIsPlaying(UINT32 uiSample);
-BOOLEAN SoundIndexIsPlaying(UINT32 uiSound);
-BOOLEAN SoundStopIndex(UINT32 uiSound);
-UINT32 SoundGetVolumeIndex(UINT32 uiChannel);
-BOOLEAN SoundSetVolumeIndex(UINT32 uiChannel, UINT32 uiVolume);
-
 // Global variables
 UINT32 guiSoundDefaultVolume = 127;
 UINT32 guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY; // Maximum memory used for sounds

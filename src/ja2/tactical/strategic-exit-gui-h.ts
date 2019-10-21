@@ -10,8 +10,3 @@ const enum Enum277 {
 }
 
 BOOLEAN gfInSectorExitMenu;
-
-BOOLEAN InitSectorExitMenu(UINT8 ubDirection, INT16 sAdditionalData);
-void RenderSectorExitMenu();
-BOOLEAN HandleSectorExitMenu();
-void RemoveSectorExitMenu(BOOLEAN fOK);

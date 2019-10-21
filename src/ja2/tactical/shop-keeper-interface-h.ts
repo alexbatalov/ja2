@@ -52,32 +52,3 @@ extern OBJECTTYPE *gpHighLightedItemObject;
 extern INVENTORY_IN_SLOT gMoveingItem;
 
 extern OBJECTTYPE *pShopKeeperItemDescObject;
-
-UINT32 ShopKeeperScreenInit(void);
-UINT32 ShopKeeperScreenHandle(void);
-UINT32 ShopKeeperScreenShutdown(void);
-
-void EnterShopKeeperInterfaceScreen(UINT8 ubArmsDealer);
-
-void DrawHatchOnInventory(UINT32 uiSurface, UINT16 usPosX, UINT16 usPosY, UINT16 usWidth, UINT16 usHeight);
-BOOLEAN ShouldSoldierDisplayHatchOnItem(UINT8 ubProfileID, INT16 sSlotNum);
-INT8 AddItemToPlayersOfferArea(UINT8 ubProfileID, INVENTORY_IN_SLOT *pInvSlot, INT8 bSlotIdInOtherLocation);
-void ConfirmToDeductMoneyFromPlayersAccountMessageBoxCallBack(UINT8 bExitValue);
-void ConfirmDontHaveEnoughForTheDealerMessageBoxCallBack(UINT8 bExitValue);
-
-void SkiHelpTextDoneCallBack(void);
-void SetSkiCursor(UINT16 usCursor);
-
-void InitShopKeeperSubTitledText(STR16 pString);
-
-void AddItemToPlayersOfferAreaAfterShopKeeperOpen(OBJECTTYPE *pItemObject, INT8 bPreviousInvPos);
-
-void BeginSkiItemPointer(UINT8 ubSource, INT8 bSlotNum, BOOLEAN fOfferToDealerFirst);
-
-void DeleteShopKeeperItemDescBox();
-
-BOOLEAN CanMercInteractWithSelectedShopkeeper(SOLDIERTYPE *pSoldier);
-
-void DealerGetsBribed(UINT8 ubProfileId, UINT32 uiMoneyAmount);
-
-void RestrictSkiMouseCursor();

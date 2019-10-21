@@ -1,21 +1,3 @@
-// FUNCTIONS FOR ITEM CURSOR HANDLING
-UINT8 HandleActivatedTargetCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fShowAPs, BOOLEAN fRecalc, UINT32 uiCursorFlags);
-UINT8 HandleNonActivatedTargetCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fShowAPs, BOOLEAN fRecalc, UINT32 uiCursorFlags);
-UINT8 HandleKnifeCursor(SOLDIERTYPE *pSoldier, UINT16 sGridNo, BOOLEAN fActivated, UINT32 uiCursorFlags);
-UINT8 HandlePunchCursor(SOLDIERTYPE *pSoldier, UINT16 sGridNo, BOOLEAN fActivated, UINT32 uiCursorFlagsl);
-UINT8 HandleAidCursor(SOLDIERTYPE *pSoldier, UINT16 sGridNo, BOOLEAN fActivated, UINT32 uiCursorFlags);
-UINT8 HandleActivatedTossCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT8 ubCursor);
-UINT8 HandleNonActivatedTossCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, BOOLEAN fRecalc, UINT32 uiCursorFlags, UINT8 ubCursor);
-UINT8 HandleWirecutterCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT32 uiCursorFlags);
-UINT8 HandleRepairCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT32 uiCursorFlags);
-UINT8 HandleRefuelCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT32 uiCursorFlags);
-UINT8 HandleRemoteCursor(SOLDIERTYPE *pSoldier, UINT16 sGridNo, BOOLEAN fActivated, UINT32 uiCursorFlags);
-UINT8 HandleBombCursor(SOLDIERTYPE *pSoldier, UINT16 sGridNo, BOOLEAN fActivated, UINT32 uiCursorFlags);
-UINT8 HandleJarCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT32 uiCursorFlags);
-UINT8 HandleTinCanCursor(SOLDIERTYPE *pSoldier, UINT16 usMapPos, UINT32 uiCursorFlags);
-
-extern BOOLEAN HandleCheckForBadChangeToGetThrough(SOLDIERTYPE *pSoldier, SOLDIERTYPE *pTargetSoldier, INT16 sTargetGridNo, INT8 bLevel);
-
 BOOLEAN gfCannotGetThrough = FALSE;
 extern UINT32 guiUITargetSoldierId;
 BOOLEAN gfDisplayFullCountRing = FALSE;

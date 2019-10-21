@@ -44,19 +44,4 @@ interface SAVED_GAME_HEADER {
 extern UINT32 guiScreenToGotoAfterLoadingSavedGame;
 extern UINT32 guiSaveGameVersion;
 
-void CreateSavedGameFileNameFromNumber(UINT8 ubSaveGameID, STR pzNewFileName);
-
-BOOLEAN SaveGame(UINT8 ubSaveGameID, STR16 pGameDesc);
-BOOLEAN LoadSavedGame(UINT8 ubSavedGameID);
-
-BOOLEAN CopySavedSoldierInfoToNewSoldier(SOLDIERTYPE *pDestSourceInfo, SOLDIERTYPE *pSourceInfo);
-
-BOOLEAN SaveFilesToSavedGame(STR pSrcFileName, HWFILE hFile);
-BOOLEAN LoadFilesFromSavedGame(STR pSrcFileName, HWFILE hFile);
-
-BOOLEAN DoesUserHaveEnoughHardDriveSpace();
-
-void GetBestPossibleSectorXYZValues(INT16 *psSectorX, INT16 *psSectorY, INT8 *pbSectorZ);
-
 UINT32 guiLastSaveGameNum;
-INT8 GetNumberForAutoSave(BOOLEAN fLatestAutoSave);

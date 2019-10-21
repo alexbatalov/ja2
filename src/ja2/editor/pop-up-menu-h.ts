@@ -85,12 +85,3 @@ interface CurrentPopupMenuInformation {
 // A global var that keeps the popup menu information.
 extern CurrentPopupMenuInformation gPopup;
 extern UINT16 *popupMenuStrings[5];
-
-// These are the two main functions that outside users would call.
-void InitPopupMenu(INT32 iButtonID, UINT8 ubPopupMenuID, UINT8 ubDirection);
-BOOLEAN ProcessPopupMenuIfActive();
-
-// Internal functions that handled by ProcessPopupMenuIfActive
-void RenderPopupMenu();
-void PopupMenuHandle();
-void ProcessPopupMenuSelection();

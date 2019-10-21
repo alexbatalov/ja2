@@ -11,16 +11,11 @@ const enum Enum176 {
   ABOUT_TO_LOAD_NEW_MAP,
   ABOUT_TO_TRASH_WORLD,
 }
-BOOLEAN HandleDefiniteUnloadingOfWorld(UINT8 ubUnloadCode);
 
 extern INT16 gsRobotGridNo;
 extern BOOLEAN gfUndergroundTacticalTraversal;
 
 extern MINE_LOCATION_TYPE gMineLocation[MAX_NUMBER_OF_MINES];
-
-extern void CalculateNonPersistantPBIInfo();
-
-extern void MapScreenDefaultOkBoxCallback(UINT8 bExitValue);
 
 BOOLEAN gfGettingNameFromSaveLoadScreen;
 
@@ -187,25 +182,10 @@ STR8 pHortStrings[] = {
   "17",
 };
 
-void InitializeStrategicMapSectorTownNames(void);
-
-void DoneFadeOutAdjacentSector(void);
-void DoneFadeOutExitGridSector(void);
-
-INT16 PickGridNoNearestEdge(SOLDIERTYPE *pSoldier, UINT8 ubTacticalDirection);
-INT16 PickGridNoToWalkIn(SOLDIERTYPE *pSoldier, UINT8 ubInsertionDirection, UINT32 *puiNumAttempts);
-
-void HandleQuestCodeOnSectorExit(INT16 sOldSectorX, INT16 sOldSectorY, INT8 bOldSectorZ);
-void HandlePotentialMoraleHitForSkimmingSectors(GROUP *pGroup);
-
-extern void InitializeTacticalStatusAtBattleStart();
-
 extern HVSURFACE ghFrameBuffer;
 extern BOOLEAN gfOverrideSector;
 
 extern STR16 pBullseyeStrings[];
-
-extern void HandleRPCDescription();
 
 UINT32 UndergroundTacticalTraversalTime(INT8 bExitDirection) {
   // We are attempting to traverse in an underground environment.  We need to use a complete different
@@ -460,9 +440,6 @@ void GetCurrentWorldSector(INT16 *psMapX, INT16 *psMapY) {
   *psMapX = gWorldSectorX;
   *psMapY = gWorldSectorY;
 }
-
-// not in overhead.h!
-extern UINT8 NumEnemyInSector();
 
 void HandleRPCDescriptionOfSector(INT16 sSectorX, INT16 sSectorY, INT16 sSectorZ) {
   UINT32 cnt;

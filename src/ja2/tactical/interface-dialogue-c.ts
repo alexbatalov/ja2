@@ -19,20 +19,8 @@ INT16 sBasementExitGridNos[] = {
 
 extern UINT8 gubWaitingForAllMercsToExitCode;
 extern BOOLEAN fFoundTixa;
-void DoneFadeOutActionBasement(void);
-void DoneFadeOutActionSex(void);
-void DoneFadeInActionBasement(void);
-
-void DoneFadeOutActionLeaveBasement(void);
-void DoneFadeInActionLeaveBasement(void);
-
-BOOLEAN NPCOpenThing(SOLDIERTYPE *pSoldier, BOOLEAN fDoor);
 
 UINT16 gusDialogueMessageBoxType;
-
-void StartDialogueMessageBox(UINT8 ubProfileID, UINT16 usMessageBoxType);
-void DialogueMessageBoxCallBack(UINT8 ubExitValue);
-void CarmenLeavesSectorCallback(void);
 
 const TALK_PANEL_FACE_X = 6;
 const TALK_PANEL_FACE_Y = 9;
@@ -72,25 +60,6 @@ const TALK_PANEL_POPUP_RIGHT = 3;
 
 // chance vince will say random quote to player during conv.
 const CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE = 20;
-
-// NPC talk panel UI stuff
-void TalkPanelMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TalkPanelClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TextRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-
-void TalkPanelBaseRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TalkPanelNameRegionMoveCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void TalkPanelNameRegionClickCallback(MOUSE_REGION *pRegion, INT32 iReason);
-void DoneTalkingButtonClickCallback(GUI_BUTTON *btn, INT32 reason);
-
-void CalculatePopupTextPosition(INT16 sWidth, INT16 sHeight);
-void CalculatePopupTextOrientation(INT16 sWidth, INT16 sHeight);
-void HandleNPCTrigger();
-BOOLEAN InternalInitiateConversation(SOLDIERTYPE *pDestSoldier, SOLDIERTYPE *pSrcSoldier, INT8 bApproach, UINT32 uiApproachData);
-
-extern void EndGameMessageBoxCallBack(UINT8 ubExitValue);
-extern INT16 FindNearestOpenableNonDoor(INT16 sStartGridNo);
-extern void RecalculateOppCntsDueToBecomingNeutral(SOLDIERTYPE *pSoldier);
 
 UINT8 ubTalkMenuApproachIDs[] = {
   APPROACH_REPEAT,

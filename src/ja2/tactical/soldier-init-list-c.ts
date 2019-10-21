@@ -19,8 +19,6 @@ UINT32 CountNumberOfNodesWithSoldiers() {
   return num;
 }
 
-void SortSoldierInitList();
-
 void InitSoldierInitList() {
   if (gSoldierInitHead)
     KillSoldierInitList();
@@ -1318,7 +1316,6 @@ void AddSoldierInitListCreatures(BOOLEAN fQueen, UINT8 ubNumLarvae, UINT8 ubNumI
   }
 }
 
-SOLDIERINITNODE *FindSoldierInitNodeWithProfileID(UINT16 usProfile);
 SOLDIERINITNODE *FindSoldierInitNodeWithProfileID(UINT16 usProfile) {
   SOLDIERINITNODE *curr;
   curr = gSoldierInitHead;

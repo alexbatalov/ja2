@@ -1,7 +1,1 @@
 extern BOOLEAN fShowTownInfo;
-
-// display the box
-void DisplayTownInfo(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
-
-// create or destroy the town info box..should only be directly called the exit code for mapscreen
-void CreateDestroyTownInfoBox(void);

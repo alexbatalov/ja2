@@ -43,18 +43,10 @@ INT32 giMercTotalContractCharge;
 
 BOOLEAN gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
 
-// The Authorize button
-void BtnMercAuthorizeButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiMercAuthorizeBoxButton;
 INT32 guiMercAuthorizeButtonImage;
 
-// The Back button
-void BtnMercBackButtonCallback(GUI_BUTTON *btn, INT32 reason);
 UINT32 guiMercBackBoxButton;
-
-void DisplayHiredMercs();
-void SettleMercAccounts();
-void MercAuthorizePaymentMessageBoxCallBack(UINT8 bExitValue);
 
 void GameInitMercsAccount() {
 }
