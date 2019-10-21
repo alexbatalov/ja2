@@ -1,8 +1,6 @@
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 
-extern HINSTANCE ghInstance;
-
 function InitializeJA2(): UINT32 {
   HandleJA2CDCheck();
 

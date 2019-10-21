@@ -297,9 +297,6 @@ STR16 PocketText[] = {
 //
 //*******************************
 
-extern UINT32 guiGameClock;
-extern UINT32 guiBrownBackgroundForTeamPanel;
-
 type LISTBOX_DISPLAY_FNCTN = () => void; // Define Display Callback function
 type TEXT_ENTRY_CALLBACK = (a: INT32) => void; // Callback for when the text entry field is finished
 
@@ -381,11 +378,9 @@ INT32 giHaveSelectedNPC = -1; // If it is not the first time in, dont reset the 
 INT32 giSelectedMercCurrentQuote = -1;
 SOLDIERTYPE *gTalkingMercSoldier = NULL;
 BOOLEAN gfPauseTalkingMercPopup = FALSE;
-extern BOOLEAN gfFacePanelActive;
 BOOLEAN gfAddNpcToTeam = FALSE;
 BOOLEAN gfRpcToSaySectorDesc = FALSE;
 BOOLEAN gfNpcPanelIsUsedForTalkingMerc = FALSE;
-extern SOLDIERTYPE *gpDestSoldier;
 
 BOOLEAN gfBackgroundMaskEnabled = FALSE;
 

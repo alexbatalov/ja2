@@ -525,6 +525,3 @@ const IN_KINGPIN_HOUSE = (room) => (gWorldSectorX == 5 && gWorldSectorY == MAP_R
 const LOYALTY_LOW_THRESHOLD = 30;
 const LOYALTY_OK_THRESHOLD = 50;
 const LOYALTY_HIGH_THRESHOLD = 80;
-
-extern UINT8 gubQuest[MAX_QUESTS];
-extern UINT8 gubFact[NUM_FACTS];

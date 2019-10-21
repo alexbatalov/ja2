@@ -4,10 +4,6 @@ const MAP_BORDER_Y = 0;
 const MAP_BORDER_CORNER_X = 584;
 const MAP_BORDER_CORNER_Y = 279;
 
-// extern to anchored button in winbart97
-extern GUI_BUTTON *gpAnchoredButton;
-extern BOOLEAN gfAnchoredState;
-
 // mouse levels
 MOUSE_REGION LevelMouseRegions[4];
 

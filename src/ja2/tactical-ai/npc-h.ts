@@ -115,11 +115,4 @@ const NUM_REAL_APPROACHES = APPROACH_RECRUIT;
 
 const CONVO_DIST = 5;
 
-extern INT8 gbFirstApproachFlags[4];
-
-extern UINT8 gubTeamPenalty;
-
-// total amount given to doctors
-extern UINT32 uiTotalAmountGivenToDoctors;
-
 const WALTER_BRIBE_AMOUNT = 20000;

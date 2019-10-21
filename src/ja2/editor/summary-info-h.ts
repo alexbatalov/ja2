@@ -92,8 +92,3 @@ interface SUMMARYFILE {
                                     //	236
   ubPadding: UINT8[] /* [164] */; //	164
 }
-
-extern BOOLEAN gfAutoLoadA9;
-
-extern BOOLEAN gfMustForceUpdateAllMaps;
-extern BOOLEAN gfMajorUpdate;

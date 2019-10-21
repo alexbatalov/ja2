@@ -1,8 +1,5 @@
 const MIN_FLIGHT_PREP_TIME = 6;
 
-extern BOOLEAN gfTacticalDoHeliRun;
-extern BOOLEAN gfFirstHeliRun;
-
 // ATE: Globals that dictate where the mercs will land once being hired
 // Default to Omerta
 // Saved in general saved game structure

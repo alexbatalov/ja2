@@ -110,8 +110,6 @@ interface VSURFACE_DESC {
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern INT32 giMemUsedInSurfaces;
-
 // Creates and adds a video Surface to list
 const AddVideoSurface = (a, b) => AddStandardVideoSurface(a, b);
 

@@ -50,15 +50,6 @@ interface StringInput {
   pNextString: Pointer<StringInput>;
 }
 
-extern BOOLEAN gfKeyState[256]; // TRUE = Pressed, FALSE = Not Pressed
-
-extern UINT16 gusMouseXPos; // X position of the mouse on screen
-extern UINT16 gusMouseYPos; // y position of the mouse on screen
-extern BOOLEAN gfLeftButtonState; // TRUE = Pressed, FALSE = Not Pressed
-extern BOOLEAN gfRightButtonState; // TRUE = Pressed, FALSE = Not Pressed
-
-extern BOOLEAN gfSGPInputReceived;
-
 const _KeyDown = (a) => gfKeyState[(a)];
 const _LeftButtonDown = () => gfLeftButtonState;
 const _RightButtonDown = () => gfRightButtonState;

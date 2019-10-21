@@ -17,6 +17,3 @@ const BOBBYR_GUNS_TEXT_COLOR_OFF = FONT_NEARBLACK;
 const BOBBYR_GUNS_SHADOW_COLOR = 169;
 
 const BOBBYR_NO_ITEMS = 65535;
-
-extern UINT16 gusCurWeaponIndex;
-extern UINT8 gubLastGunIndex;

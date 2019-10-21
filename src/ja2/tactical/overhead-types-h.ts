@@ -283,10 +283,6 @@ const enum Enum247 {
   LOST_ROUND,
 }
 
-// NOTE:  The editor uses these enumerations, so please update the text as well if you modify or
-//			 add new groups.  Try to abbreviate the team name as much as possible.  The text is in
-//			 EditorMercs.c
-extern UINT16 gszCivGroupNames[NUM_CIV_GROUPS][20];
 //
 //-----------------------------------------------
 

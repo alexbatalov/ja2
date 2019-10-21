@@ -4,7 +4,6 @@ const MAXPATROLGRIDS = 10; // *** THIS IS A DUPLICATION - MUST BE MOVED !
 
 // TEMP VALUES FOR NAMES
 const MAXCIVLASTNAMES = 30;
-UINT16 CivLastNames[MAXCIVLASTNAMES][10];
 
 // ANDREW: these are defines for OKDestanation usage - please move to approprite file
 const IGNOREPEOPLE = 0;
@@ -920,15 +919,6 @@ interface ANIM_PROF {
 
 // Globals
 //////////
-
-// VARIABLES FOR PALETTE REPLACEMENTS FOR HAIR, ETC
-UINT32 guiNumPaletteSubRanges;
-UINT8 *gubpNumReplacementsPerRange;
-PaletteSubRangeType *gpPaletteSubRanges;
-UINT32 guiNumReplacements;
-PaletteReplacementType *gpPalRep;
-
-UINT8 bHealthStrRanges[];
 
 // Functions
 ////////////

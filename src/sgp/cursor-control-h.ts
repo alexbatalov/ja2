@@ -54,18 +54,4 @@ interface CursorData {
   bFlashIndex: UINT8;
 }
 
-extern INT16 gsGlobalCursorYOffset;
-
-// Globals for cursor database offset values
-extern INT16 gsCurMouseOffsetX;
-extern INT16 gsCurMouseOffsetY;
-extern UINT16 gsCurMouseHeight;
-extern UINT16 gsCurMouseWidth;
-
-extern UINT32 guiExternVo;
-extern UINT16 gusExternVoSubIndex;
-extern UINT32 guiExtern2Vo;
-extern UINT16 gusExtern2VoSubIndex;
-extern BOOLEAN gfExternUse2nd;
-
 type MOUSEBLT_HOOK = () => void;

@@ -17,9 +17,6 @@ INT16 sBasementExitGridNos[] = {
   7567,
 };
 
-extern UINT8 gubWaitingForAllMercsToExitCode;
-extern BOOLEAN fFoundTixa;
-
 UINT16 gusDialogueMessageBoxType;
 
 const TALK_PANEL_FACE_X = 6;
@@ -97,7 +94,6 @@ SOLDIERTYPE *gpPendingDestSoldier;
 SOLDIERTYPE *gpPendingSrcSoldier;
 INT8 gbPendingApproach;
 UINT32 guiPendingApproachData;
-extern BOOLEAN fMapPanelDirty;
 
 INT32 giHospitalTempBalance; // stores amount of money for current doctoring
 INT32 giHospitalRefund; // stores amount of money given to hospital for doctoring that wasn't used

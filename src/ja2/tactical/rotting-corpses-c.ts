@@ -9,10 +9,6 @@ const DELAY_UNTIL_DONE_ROTTING = (3 * NUM_SEC_IN_DAY / 60);
 
 const MAX_NUM_CROWS = 6;
 
-// From lighting
-extern SGPPaletteEntry gpLightColors[3];
-extern UINT16 gusShadeLevels[16][3];
-
 // When adding a corpse, add struct data...
 CHAR8 zCorpseFilenames[NUM_CORPSES][70] = {
   "",

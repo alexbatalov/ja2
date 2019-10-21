@@ -1,5 +1,3 @@
-extern UINT8 gbPlayerNum;
-
 // give pSoldier usNumChances to improve ubStat.  If it's from training, it doesn't count towards experience level gain
 function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
   Assert(pSoldier != NULL);

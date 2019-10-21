@@ -1,28 +1,3 @@
-extern UINT32 guiCurrentLaptopMode;
-extern UINT32 guiPreviousLaptopMode;
-extern INT32 giCurrentSubPage;
-extern UINT32 guiCurrentLapTopCursor;
-extern UINT32 guiPreviousLapTopCursor;
-extern BOOLEAN fMarkButtonsDirtyFlag;
-extern BOOLEAN fNotVistedImpYet;
-extern BOOLEAN fReDrawScreenFlag;
-extern BOOLEAN fPausedReDrawScreenFlag;
-extern BOOLEAN fIntermediateReDrawFlag;
-extern BOOLEAN fLoadPendingFlag;
-extern BOOLEAN fEscKeyHandled;
-extern BOOLEAN fReDrawPostButtonRender;
-extern BOOLEAN fCurrentlyInLaptop;
-// extern BOOLEAN gfNewGameLaptop;
-extern UINT32 guiLaptopBACKGROUND;
-extern UINT32 guiTITLEBARICONS;
-extern BOOLEAN fDoneLoadPending;
-extern BOOLEAN fReConnectingFlag;
-extern BOOLEAN fConnectingToSubPage;
-extern BOOLEAN fFastLoadFlag;
-extern BOOLEAN gfShowBookmarks;
-extern BOOLEAN fShowBookmarkInfo;
-extern BOOLEAN fReDrawBookMarkInfo;
-
 const enum Enum95 {
   LAPTOP_MODE_NONE = 0,
   LAPTOP_MODE_FINANCES,
@@ -121,8 +96,6 @@ const enum Enum98 {
   INSURANCE_BOOKMARK,
   CANCEL_STRING,
 }
-
-extern UINT32 guiLaptopBACKGROUND;
 
 const DEAD_MERC_COLOR_RED = 255;
 const DEAD_MERC_COLOR_GREEN = 55;

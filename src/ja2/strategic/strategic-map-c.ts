@@ -12,11 +12,6 @@ const enum Enum176 {
   ABOUT_TO_TRASH_WORLD,
 }
 
-extern INT16 gsRobotGridNo;
-extern BOOLEAN gfUndergroundTacticalTraversal;
-
-extern MINE_LOCATION_TYPE gMineLocation[MAX_NUMBER_OF_MINES];
-
 BOOLEAN gfGettingNameFromSaveLoadScreen;
 
 INT16 gWorldSectorX = 0;
@@ -43,8 +38,6 @@ INT8 gbGreenToElitePromotions = 0;
 INT8 gbGreenToRegPromotions = 0;
 INT8 gbRegToElitePromotions = 0;
 INT8 gbMilitiaPromotions = 0;
-
-extern BOOLEAN gfUsePersistantPBI;
 
 BOOLEAN gfUseAlternateMap = FALSE;
 // whether or not we have found Orta yet
@@ -181,11 +174,6 @@ STR8 pHortStrings[] = {
   "16",
   "17",
 };
-
-extern HVSURFACE ghFrameBuffer;
-extern BOOLEAN gfOverrideSector;
-
-extern STR16 pBullseyeStrings[];
 
 function UndergroundTacticalTraversalTime(bExitDirection: INT8): UINT32 {
   // We are attempting to traverse in an underground environment.  We need to use a complete different

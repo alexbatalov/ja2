@@ -1,35 +1,7 @@
-extern UIKEYBOARD_HOOK gUIKeyboardHook;
-extern BOOLEAN fRightButtonDown;
-extern BOOLEAN fLeftButtonDown;
-extern BOOLEAN fIgnoreLeftUp;
-extern UINT32 guiCurrentEvent;
-extern UINT8 gubIntTileCheckFlags;
-extern UINT32 guiCurrentUICursor;
-extern SOLDIERTYPE *gpSMCurrentMerc;
-extern INT16 gsOverItemsGridNo;
-extern INT16 gsOverItemsLevel;
-extern BOOLEAN gfUIShowExitSouth;
-
-extern INT32 giStartingMemValue;
-
-extern BOOLEAN gfBeginBurstSpreadTracking;
-extern BOOLEAN gfRTClickLeftHoldIntercepted;
-
-extern BOOLEAN gfReportHitChances;
-
 BOOLEAN gfFirstCycleMovementStarted = FALSE;
-
-extern UINT32 guiVObjectSize;
-extern UINT32 guiVSurfaceSize;
-
-extern BOOLEAN gfNextShotKills;
 
 UINT32 guiSoldierFlags;
 UINT32 guiUITargetSoldierId = NOBODY;
-
-extern INT32 iSMPanelButtons[NUM_SM_BUTTONS];
-extern INT32 iTEAMPanelButtons[NUM_TEAM_BUTTONS];
-extern INT32 giSMStealthButton;
 
 SOLDIERTYPE *gpExchangeSoldier1;
 SOLDIERTYPE *gpExchangeSoldier2;
@@ -605,8 +577,6 @@ function QueryTBRightButton(puiNewEvent: Pointer<UINT32>): void {
   }
 }
 
-extern BOOLEAN gUIActionModeChangeDueToMouseOver;
-
 function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   UINT16 usMapPos;
   static UINT16 usOldMapPos = 0;
@@ -954,9 +924,6 @@ function GetPolledKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
     fEndDown = FALSE;
   }
 }
-
-extern BOOLEAN gfDisableRegionActive;
-extern BOOLEAN gfUserTurnRegionActive;
 
 function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   InputAtom InputEvent;

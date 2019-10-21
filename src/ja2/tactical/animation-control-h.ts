@@ -506,18 +506,3 @@ const enum Enum193 {
 
   NUMANIMATIONSTATES,
 }
-
-UINT16 gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];
-ANIMCONTROLTYPE gAnimControl[NUMANIMATIONSTATES];
-
-ANI_SPEED_DEF gubAnimWalkSpeeds[TOTALBODYTYPES];
-ANI_SPEED_DEF gubAnimRunSpeeds[TOTALBODYTYPES];
-ANI_SPEED_DEF gubAnimSwatSpeeds[TOTALBODYTYPES];
-ANI_SPEED_DEF gubAnimCrawlSpeeds[TOTALBODYTYPES];
-UINT8 gubMaxActionPoints[TOTALBODYTYPES];
-
-// OK, this array contains definitions for random animations based on bodytype, total # allowed, and what is in their hand....
-RANDOM_ANI_DEF gRandomAnimDefs[TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE];
-
-// Corpse Defines
-extern UINT16 gubAnimSurfaceCorpseID[TOTALBODYTYPES][NUMANIMATIONSTATES];

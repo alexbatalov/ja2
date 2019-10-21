@@ -25,16 +25,6 @@ const NPC_TEMP_QUOTE_FILE = "Temp\\NpcQuote.tmp";
 //
 ///////////////////////////////////////////////////////////////
 
-extern UINT32 guiNumWorldItems;
-
-extern NPCQuoteInfo *gpNPCQuoteInfoArray[NUM_PROFILES];
-
-extern UINT32 guiJA2EncryptionSet;
-extern UINT8 gubEncryptionArray1[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE];
-extern UINT8 gubEncryptionArray2[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE];
-extern UINT8 gubEncryptionArray3[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE];
-extern UINT8 gubEncryptionArray4[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE];
-
 INT32 giErrorMessageBox = 0;
 
 ///////////////////////////////////////////////////////////////
@@ -580,8 +570,6 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
 
   return TRUE;
 }
-
-extern BOOLEAN gfInMeanwhile;
 
 function SaveCurrentSectorsInformationToTempItemFile(): BOOLEAN {
   BOOLEAN fShouldBeInMeanwhile = FALSE;

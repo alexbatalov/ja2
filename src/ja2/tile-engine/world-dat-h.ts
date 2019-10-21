@@ -6,5 +6,3 @@ interface TILESET {
   ubAmbientID: UINT8;
   MovementCostFnc: TILESET_CALLBACK;
 }
-
-extern TILESET gTilesets[NUM_TILESETS];

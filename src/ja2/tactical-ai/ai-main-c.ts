@@ -1,7 +1,3 @@
-extern UINT8 gubElementsOnExplosionQueue;
-
-extern BOOLEAN gfWaitingForTriggerTimer;
-
 UINT8 gubAICounter;
 
 //
@@ -10,9 +6,6 @@ UINT8 gubAICounter;
 //
 
 const DEADLOCK_DELAY = 15000;
-
-// Very representing if this computer is the host, therefore controlling the ai
-extern BYTE gfAmIHost;
 
 //#define TESTAI
 

@@ -14,9 +14,6 @@ const MAP_EDGEPOINTS_SAVED = 0x00000040;
 const MAP_AMBIENTLIGHTLEVEL_SAVED = 0x00000080;
 const MAP_NPCSCHEDULES_SAVED = 0x00000100;
 
-extern BOOLEAN gfErrorCatch;
-extern UINT16 gzErrorCatchString[256];
-
 // TEMP
 BOOLEAN gfForceLoadPlayers = FALSE;
 CHAR8 gzForceLoadFile[100];
@@ -27,9 +24,6 @@ INT32 giCurrentTilesetID = 0;
 CHAR8 gzLastLoadedFile[260];
 
 UINT32 gCurrentBackground = FIRSTTEXTURE;
-
-// From memman.c in SGP
-extern UINT32 guiMemTotal;
 
 CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
 INT8 gbNewTileSurfaceLoaded[NUMBEROFTILETYPES];
@@ -340,8 +334,6 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
 
   return TRUE;
 }
-
-extern BOOLEAN gfLoadShadeTablesFromTextFile;
 
 function BuildTileShadeTables(): void {
   HWFILE hfile;
@@ -1761,14 +1753,6 @@ function InitLoadedWorld(): void {
 
   SetBlueFlagFlags();
 }
-
-// This is a specialty function that is very similar to LoadWorld, except that it
-// doesn't actually load the world, it instead evaluates the map and generates summary
-// information for use within the summary editor.  The header is defined in Summary Info.h,
-// not worlddef.h -- though it's not likely this is going to be used anywhere where it would
-// matter.
-extern double MasterStart, MasterEnd;
-extern BOOLEAN gfUpdatingNow;
 
 function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   FLOAT dMajorMapVersion;

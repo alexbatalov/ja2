@@ -88,5 +88,3 @@ interface STRATEGIC_STATUS {
 
   bPadding: INT8[] /* [70] */;
 }
-
-extern STRATEGIC_STATUS gStrategicStatus;

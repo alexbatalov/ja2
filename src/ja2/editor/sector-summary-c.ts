@@ -1,5 +1,3 @@
-extern BOOLEAN gfOverheadMapDirty;
-
 const MAP_SIZE = 208;
 const MAP_LEFT = 417;
 const MAP_TOP = 15;
@@ -56,8 +54,6 @@ SUMMARYFILE *gpSectorSummary[16][16][8];
 SUMMARYFILE *gpCurrentSectorSummary;
 
 MOUSE_REGION MapRegion;
-
-extern INT8 gbMercSlotTypes[9];
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.

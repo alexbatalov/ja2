@@ -1,5 +1,3 @@
-extern BOOLEAN gfAutoBandageFailed;
-
 //
 // This file contains code devoted to the player AI-controlled medical system.  Maybe it
 // can be used or adapted for the enemies too...

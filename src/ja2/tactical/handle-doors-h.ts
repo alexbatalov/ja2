@@ -7,5 +7,3 @@ const HANDLE_DOOR_UNLOCK = 6;
 const HANDLE_DOOR_EXPLODE = 7;
 const HANDLE_DOOR_UNTRAP = 8;
 const HANDLE_DOOR_CROWBAR = 9;
-
-extern BOOLEAN gfSetPerceivedDoorState;

@@ -7,9 +7,6 @@ const CD_ROOT_DIR = "DATA\\";
 GAME_SETTINGS gGameSettings;
 GAME_OPTIONS gGameOptions;
 
-extern SGPFILENAME gCheckFilenames[];
-extern CHAR8 gzErrorMsg[256];
-
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 

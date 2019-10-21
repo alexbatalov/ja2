@@ -1,7 +1,5 @@
 //#define DEBUG_GAME_CLOCK
 
-extern BOOLEAN gfFadeOut;
-
 // is the clock pause region created currently?
 BOOLEAN fClockMouseRegionCreated = FALSE;
 
@@ -18,8 +16,6 @@ BOOLEAN gfJustFinishedAPause = FALSE;
 // clock mouse region
 MOUSE_REGION gClockMouseRegion;
 MOUSE_REGION gClockScreenMaskMouseRegion;
-
-extern BOOLEAN fMapScreenBottomDirty;
 
 const SECONDS_PER_COMPRESSION = 1; // 1/2 minute passes every 1 second of real time
 const SECONDS_PER_COMPRESSION_IN_RTCOMBAT = 10;
@@ -64,9 +60,6 @@ UINT32 guiLockPauseStateLastReasonId = 0;
 //   more IMPORTANTLY, add appropriate code in Save/LoadGameClock()!
 const TIME_PADDINGBYTES = 20;
 UINT8 gubUnusedTimePadding[TIME_PADDINGBYTES];
-
-extern UINT32 guiEnvTime;
-extern UINT32 guiEnvDay;
 
 function InitNewGameClock(): void {
   guiGameClock = STARTING_TIME;

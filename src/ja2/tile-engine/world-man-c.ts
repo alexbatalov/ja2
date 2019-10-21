@@ -1,5 +1,3 @@
-extern BOOLEAN gfBasement;
-
 UINT32 guiLNCount[9];
 static CHAR16 gzLevelString[9][15] = {
   L"",

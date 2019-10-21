@@ -81,7 +81,3 @@ interface CurrentPopupMenuInformation {
   usLastMouseX: UINT16;
   usLastMouseY: UINT16;
 }
-
-// A global var that keeps the popup menu information.
-extern CurrentPopupMenuInformation gPopup;
-extern UINT16 *popupMenuStrings[5];

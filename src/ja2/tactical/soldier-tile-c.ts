@@ -1,6 +1,3 @@
-extern INT8 gbNumMercsUntilWaitingOver;
-extern UINT8 gubWaitingForAllMercsToExitCode;
-
 const NEXT_TILE_CHECK_DELAY = 700;
 
 function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {

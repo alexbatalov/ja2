@@ -119,5 +119,3 @@ interface GROUP {
   /* } */
   next: Pointer<GROUP>; // next group
 }
-
-extern GROUP *gpGroupList;

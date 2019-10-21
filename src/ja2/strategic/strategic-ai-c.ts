@@ -162,8 +162,6 @@ ARMY_COMPOSITION gArmyComp[NUM_ARMY_COMPOSITIONS];
 const SAVED_GARRISON_GROUPS = 100;
 GARRISON_GROUP *gGarrisonGroup = NULL;
 
-extern UINT8 gubNumGroupsArrivedSimultaneously;
-
 // This refers to the number of force points that are *saved* for the AI to use.  This is basically an array of each
 // group.  When the queen wants to send forces to attack a town that is defended, the initial number of forces that
 // she would send would be considered too weak.  So, instead, she will send that force to the sector's adjacent sector,
@@ -334,8 +332,6 @@ GARRISON_GROUP gOrigGarrisonGroup[] = {
   { SEC_C5, SANMONA_SMALL, 0, 0, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
   // 57
 };
-
-extern INT16 sWorldSectorLocationOfFirstBattle;
 
 const SAIReportError = (a) => {}; // define it out
 

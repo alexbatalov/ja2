@@ -1,7 +1,5 @@
 // MODULE FOR EXPLOSIONS
 
-extern INT8 gbSAMGraphicList[NUMBER_OF_SAMS];
-
 UINT8 ubTransKeyFrame[NUM_EXP_TYPES] = {
   0,
   17,
@@ -73,8 +71,6 @@ BOOLEAN gfExplosionQueueMayHaveChangedSight = FALSE;
 UINT8 gubPersonToSetOffExplosions = NOBODY;
 
 INT16 gsTempActionGridNo = NOWHERE;
-
-extern UINT8 gubInterruptProvoker;
 
 const NUM_EXPLOSION_SLOTS = 100;
 

@@ -5,13 +5,6 @@ const enum Enum173 {
   STRATEGIC_AI_ACTION_QUEEN_DEAD,
 }
 
-extern BOOLEAN gfUseAlternateQueenPosition;
-
-extern BOOLEAN gfDisplayStrategicAILogs;
-extern BOOLEAN gfFirstBattleMeanwhileScenePending;
-
-extern UINT8 gubSAIVersion;
-
 // These enumerations define all of the various types of stationary garrison
 // groups, and index their compositions for forces, etc.
 const enum Enum174 {

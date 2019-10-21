@@ -18,8 +18,6 @@ BOOLEAN gfAutoBandageFailed;
 INT32 iEndAutoBandageButton[2];
 INT32 iEndAutoBandageButtonImage[2];
 
-extern FACETYPE *gpCurrentTalkingFace;
-extern INT32 giMercPanelImage;
 MOUSE_REGION gAutoBandageRegion;
 
 // the lists of the doctor and patient

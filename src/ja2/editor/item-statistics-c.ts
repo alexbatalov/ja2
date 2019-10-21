@@ -169,7 +169,6 @@ BOOLEAN gfShowItemStatsPanel;
 INT16 gsItemGridNo;
 
 ITEM_POOL *gpEditingItemPool = NULL;
-extern ITEM_POOL *gpItemPool;
 
 function ShowItemStatsPanel(): void {
   ShowEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);

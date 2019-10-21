@@ -9,11 +9,6 @@ const MOVE_Y = 5;
 const STRAFE_DIST = 80;
 const BOMB_DIST = 150;
 
-// BEGIN SERALIZATION
-extern INT32 giTimerAirRaidQuote;
-extern INT32 giTimerAirRaidDiveStarted;
-extern INT32 giTimerAirRaidUpdate;
-
 BOOLEAN gfInAirRaid = FALSE;
 BOOLEAN gfAirRaidScheduled = FALSE;
 UINT8 gubAirRaidMode;

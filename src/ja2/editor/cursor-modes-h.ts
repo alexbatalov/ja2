@@ -7,14 +7,3 @@ const enum Enum33 {
   AREASELECTION, // user controlled area
   NUMSELECTIONTYPES,
 }
-
-extern UINT16 gusSelectionType;
-extern UINT16 gusSelectionWidth;
-extern UINT16 gusPreserveSelectionWidth;
-extern UINT16 gusSelectionDensity;
-extern UINT16 gusSavedSelectionType;
-extern UINT16 gusSavedBuildingSelectionType;
-
-extern UINT16 *wszSelType[6];
-
-extern BOOLEAN gfCurrentSelectionWithRightButton;

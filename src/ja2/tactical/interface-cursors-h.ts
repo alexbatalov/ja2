@@ -188,7 +188,3 @@ interface UICursor {
   usFreeCursorName: UINT16;
   usAdditionalData: UINT16;
 }
-
-UICursor gUICursors[NUM_UI_CURSORS];
-
-UINT16 gusCurMousePos;

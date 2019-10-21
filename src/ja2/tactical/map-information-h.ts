@@ -1,6 +1,3 @@
-extern FLOAT gdMajorMapVersion;
-extern UINT8 gubMinorMapVersion;
-
 // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
 const enum Enum231 {
   SMOOTHING_NORMAL,
@@ -28,7 +25,3 @@ interface MAPCREATE_STRUCT {
   sIsolatedGridNo: INT16;
   bPadding: INT8[] /* [83] */; // I'm sure lots of map info will be added
 } // 99 bytes
-
-extern MAPCREATE_STRUCT gMapInformation;
-
-extern BOOLEAN gfWorldLoaded;

@@ -206,8 +206,3 @@ interface EXPLOSIVETYPE {
 }
 
 // GLOBALS
-
-extern WEAPONTYPE Weapon[MAX_WEAPONS];
-extern ARMOURTYPE Armour[];
-extern MAGTYPE Magazine[];
-extern EXPLOSIVETYPE Explosive[];

@@ -38,8 +38,6 @@ const STRUCTURE_ON_ROOF_MAX = PROFILE_Z_SIZE * 2;
 
 type PROFILE = UINT8[][] /* [PROFILE_X_SIZE][PROFILE_Y_SIZE] */;
 
-extern UINT8 AtHeight[PROFILE_Z_SIZE];
-
 // MAP_ELEMENT may get later:
 // PROFILE *		CombinedLOSProfile;
 // PROFILE *		CombinedProtectionProfile;

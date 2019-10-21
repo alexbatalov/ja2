@@ -1,6 +1,3 @@
-extern STR16 gzIntroScreen[];
-extern HVSURFACE ghFrameBuffer;
-
 const enum Enum19 {
   INTRO_TXT__CANT_FIND_INTRO,
 }
@@ -12,8 +9,6 @@ BOOLEAN gfIntroScreenEntry;
 BOOLEAN gfIntroScreenExit;
 
 UINT32 guiIntroExitScreen = INTRO_SCREEN;
-
-extern BOOLEAN gfDoneWithSplashScreen;
 
 SMKFLIC *gpSmackFlic = NULL;
 

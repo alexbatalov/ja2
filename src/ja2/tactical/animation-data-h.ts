@@ -520,10 +520,3 @@ interface AnimationStructureType {
   Filename: CHAR8[] /* [50] */;
   pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 }
-
-AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES];
-AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS];
-
-// Profile data
-ANIM_PROF *gpAnimProfiles;
-UINT8 gubNumAnimProfiles;

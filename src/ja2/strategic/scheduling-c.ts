@@ -1,5 +1,3 @@
-extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
-
 const FOURPM = 960;
 
 // waketime is the # of minutes in the day minus the sleep time
@@ -293,7 +291,6 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
   // Schedules are posted when the soldier is added...
 }
 
-extern BOOLEAN gfSchedulesHosed;
 function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
   SCHEDULENODE *pSchedule = NULL;
   SCHEDULENODE temp;

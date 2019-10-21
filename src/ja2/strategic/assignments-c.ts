@@ -46,8 +46,6 @@ REPAIR_PASS_SLOTS_TYPE gRepairPassSlotList[NUM_REPAIR_PASS_TYPES] = {
   { /* pockets */ 12, { BIGPOCK1POS, BIGPOCK2POS, BIGPOCK3POS, BIGPOCK4POS, SMALLPOCK1POS, SMALLPOCK2POS, SMALLPOCK3POS, SMALLPOCK4POS, SMALLPOCK5POS, SMALLPOCK6POS, SMALLPOCK7POS, SMALLPOCK8POS } },
 };
 
-extern STR16 sRepairsDoneString[];
-
 // PopUp Box Handles
 INT32 ghAssignmentBox = -1;
 INT32 ghEpcBox = -1;
@@ -86,34 +84,10 @@ BOOLEAN fShownContractMenu = FALSE;
 
 BOOLEAN fFirstClickInAssignmentScreenMask = FALSE;
 
-// render pre battle interface?
-extern BOOLEAN gfRenderPBInterface;
-extern BOOLEAN fMapScreenBottomDirty;
-extern SOLDIERTYPE *pMilitiaTrainerSoldier;
-
-// in the mapscreen?
-extern BOOLEAN fInMapMode;
-
 // we are in fact training?..then who temmates, or self?
 INT8 gbTrainingMode = -1;
 
-// who is the highlighted guy
-extern UINT16 gusUIFullTargetID;
-
-// showing town info?
-extern BOOLEAN fShowTownInfo;
-
-extern INT32 giMapBorderButtons[];
-
-extern BOOLEAN fProcessingAMerc;
-extern SOLDIERTYPE *pProcessingSoldier;
-
 BOOLEAN gfAddDisplayBoxToWaitingQueue = FALSE;
-
-// redraw character list
-extern BOOLEAN fDrawCharacterList;
-
-extern BOOLEAN fSelectedListOfMercsForMapScreen[MAX_CHARACTER_COUNT];
 
 SOLDIERTYPE *gpDismissSoldier = NULL;
 

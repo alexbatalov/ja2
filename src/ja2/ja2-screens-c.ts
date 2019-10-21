@@ -25,8 +25,6 @@ RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {
   (RENDER_HOOK)DefaultDebugPage4,
 };
 
-extern HVSURFACE ghFrameBuffer;
-
 function DisplayFrameRate(): void {
   static UINT32 uiFPS = 0;
   static UINT32 uiFrameCount = 0;
@@ -664,8 +662,6 @@ function DemoExitScreenInit(): UINT32 {
 function DoneFadeOutForDemoExitScreen(): void {
   gfProgramIsRunning = FALSE;
 }
-
-extern INT8 gbFadeSpeed;
 
 // FIXME: Language-specific code
 // #ifdef GERMAN

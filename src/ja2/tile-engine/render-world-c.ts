@@ -1,25 +1,10 @@
-extern INT8 gDebugStr[128];
 extern BOOLEAN fLandLayerDirty = TRUE;
-
-extern INT16 gsVIEWPORT_START_X;
-extern INT16 gsVIEWPORT_START_Y;
-extern INT16 gsVIEWPORT_END_Y;
-extern INT16 gsVIEWPORT_WINDOW_END_Y;
-extern INT16 gsVIEWPORT_WINDOW_START_Y;
-extern INT16 gsVIEWPORT_END_X;
 
 UINT16 *gpZBuffer = NULL;
 BOOLEAN gfTagAnimatedTiles = TRUE;
 
 INT16 gsCurrentGlowFrame = 0;
 INT16 gsCurrentItemGlowFrame = 0;
-
-extern BOOLEAN gfUIShowExitEast;
-extern BOOLEAN gfUIShowExitWest;
-extern BOOLEAN gfUIShowExitNorth;
-extern BOOLEAN gfUIShowExitSouth;
-
-extern BOOLEAN gfTopMessageDirty;
 
 // VIEWPORT OFFSET VALUES
 // NOTE:

@@ -28,8 +28,3 @@ const enum Enum328 {
   MUSIC_TACTICAL_DEATH,
   MUSIC_LAPTOP,
 }
-
-extern UINT32 uiMusicHandle;
-extern BOOLEAN fMusicPlaying;
-extern UINT8 gubMusicMode;
-extern BOOLEAN gfForceMusicToTense;

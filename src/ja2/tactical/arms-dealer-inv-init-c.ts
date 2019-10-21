@@ -1,5 +1,3 @@
-extern INT8 gbSelectedArmsDealerID;
-
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
 ITEM_SORT_ENTRY DealerItemSortInfo[] = {
   //  item class					weapon class	sold used?

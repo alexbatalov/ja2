@@ -55,9 +55,5 @@ const BLOOD_SPREAD_EFFECT = 3;
 const REDO_SPREAD_EFFECT = 4;
 
 const NUM_EXPLOSION_SLOTS = 100;
-extern EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
-
-extern UINT8 gubElementsOnExplosionQueue;
-extern BOOLEAN gfExplosionQueueActive;
 
 const GASMASK_MIN_STATUS = 70;

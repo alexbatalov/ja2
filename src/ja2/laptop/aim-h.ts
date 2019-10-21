@@ -6,7 +6,6 @@ const AIMHISTORYFILE = "BINARYDATA\\AimHist.edt";
 const AIM_HISTORY_LINE_SIZE = 400 * 2;
 
 const MAX_NUMBER_MERCS = 40;
-UINT8 AimMercArray[MAX_NUMBER_MERCS];
 
 const NUM_AIM_SCREENS = 6;
 

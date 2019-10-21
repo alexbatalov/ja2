@@ -8,8 +8,6 @@
         Date            :       1997-NOV
 */
 
-extern UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
-
 // extern UINT8 gubDiagCost[20];
 // skiplist has extra level of pointers every 4 elements, so a level 5is optimized for
 // 4 to the power of 5 elements, or 2 to the power of 10, 1024
@@ -45,8 +43,6 @@ const MAX_PATHQ = (512);
 INT32 iMaxSkipListLevel = MAX_SKIPLIST_LEVEL;
 INT32 iMaxTrailTree = MAX_TRAIL_TREE;
 INT32 iMaxPathQ = MAX_PATHQ;
-
-extern BOOLEAN gfGeneratingMapEdgepoints;
 
 const TRAILCELLTYPE = UINT16;
 

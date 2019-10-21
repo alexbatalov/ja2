@@ -45,6 +45,3 @@ interface PopUpBo {
 }
 
 type PopUpBoxPt = Pointer<PopUpBo>;
-
-static PopUpBoxPt PopUpBoxList[MAX_POPUP_BOX_COUNT];
-static UINT32 guiCurrentBox;

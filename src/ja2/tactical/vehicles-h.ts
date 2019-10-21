@@ -38,8 +38,6 @@ const enum Enum281 {
 
 // extern INT8 bInternalCritHitsByLocation[NUMBER_OF_EXTERNAL_HIT_LOCATIONS_ON_VEHICLE][ NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE ];
 
-extern INT16 sVehicleOrigArmorValues[NUMBER_OF_TYPES_OF_VEHICLES][NUMBER_OF_INTERNAL_HIT_LOCATIONS_IN_VEHICLE];
-
 // struct for vehicles
 interface VEHICLETYPE {
   pMercPath: PathStPtr; // vehicle's stategic path list
@@ -67,14 +65,6 @@ interface VEHICLETYPE {
 
   fValid: BOOLEAN;
 }
-
-// the list of vehicles
-extern VEHICLETYPE *pVehicleList;
-
-// number of vehicles on the list
-extern UINT8 ubNumberOfVehicles;
-
-extern INT32 iMvtTypes[];
 
 // get orig armor values for vehicle in this location
 // INT16 GetOrigInternalArmorValueForVehicleInLocation( UINT8 ubID, UINT8 ubLocation );

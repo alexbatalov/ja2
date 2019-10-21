@@ -10,12 +10,6 @@ interface CONTRACT_NEWAL_LIST_NODE {
   ubFiller: UINT8[] /* [3] */;
 }
 
-extern CONTRACT_NEWAL_LIST_NODE ContractRenewalList[20];
-extern UINT8 ubNumContractRenewals;
-extern BOOLEAN gfContractRenewalSquenceOn;
-extern UINT8 ubCurrentContractRenewal;
-extern BOOLEAN gfInContractMenuFromRenewSequence;
-
 /*
 
 //list of quotes used in renewing a mercs contract
@@ -38,10 +32,3 @@ enum
         REFUSAL_DUE_TO_LACK_OF_FUNDS,
 };
 */
-
-// rehiring of mercs from leave equipment pop up
-extern BOOLEAN fEnterMapDueToContract;
-extern SOLDIERTYPE *pContractReHireSoldier;
-extern SOLDIERTYPE *pLeaveSoldier;
-extern UINT8 ubQuitType;
-extern BOOLEAN gfFirstMercSayQuote;

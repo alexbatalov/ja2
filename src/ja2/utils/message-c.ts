@@ -46,15 +46,6 @@ BOOLEAN fDisableJustForIan = FALSE;
 BOOLEAN fScrollMessagesHidden = FALSE;
 UINT32 uiStartOfPauseTime = 0;
 
-extern VIDEO_OVERLAY gVideoOverlays[];
-
-extern UINT16 gusSubtitleBoxWidth;
-extern BOOLEAN gfFacePanelActive;
-
-// region created and due to last quote box
-extern BOOLEAN fTextBoxMouseRegionCreated;
-extern BOOLEAN fDialogueBoxDueToLastMessage;
-
 // prototypes
 
 // functions

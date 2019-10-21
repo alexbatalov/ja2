@@ -16,13 +16,6 @@ const BREATH_BAR_SHAD_BACK = () => FROMRGB(1, 1, 1);
 const FACE_WIDTH = 48;
 const FACE_HEIGHT = 43;
 
-// backgrounds for breath max background
-extern UINT32 guiBrownBackgroundForTeamPanel;
-extern UINT32 guiGoldBackgroundForTeamPanel;
-
-// selected grunt
-extern UINT16 gusSelectedSoldier;
-
 // car portraits
 const enum Enum222 {
   ELDORADO_PORTRAIT = 0,

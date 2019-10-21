@@ -1,7 +1,5 @@
 StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
 
-extern BOOLEAN fReDrawFace;
-
 function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // add the guy to the dead list
   // AddCharacterToDeadList( pSoldier );

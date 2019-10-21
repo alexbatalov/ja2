@@ -51,31 +51,7 @@ const enum Enum237 {
 
 const NUM_WATCHED_LOCS = 3;
 
-extern INT8 gbPublicOpplist[MAXTEAMS][TOTAL_SOLDIERS];
-extern INT8 gbSeenOpponents[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
-extern INT16 gsLastKnownOppLoc[TOTAL_SOLDIERS][TOTAL_SOLDIERS]; // merc vs. merc
-extern INT8 gbLastKnownOppLevel[TOTAL_SOLDIERS][TOTAL_SOLDIERS];
-extern INT16 gsPublicLastKnownOppLoc[MAXTEAMS][TOTAL_SOLDIERS]; // team vs. merc
-extern INT8 gbPublicLastKnownOppLevel[MAXTEAMS][TOTAL_SOLDIERS];
-extern UINT8 gubPublicNoiseVolume[MAXTEAMS];
-extern INT16 gsPublicNoiseGridno[MAXTEAMS];
-extern INT8 gbPublicNoiseLevel[MAXTEAMS];
-extern UINT8 gubKnowledgeValue[10][10];
-extern INT8 gbLookDistance[8][8];
-extern INT8 gfKnowAboutOpponents;
-
-extern BOOLEAN gfPlayerTeamSawJoey;
-extern BOOLEAN gfMikeShouldSayHi;
-
-extern INT16 gsWatchedLoc[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-extern INT8 gbWatchedLocLevel[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-extern UINT8 gubWatchedLocPoints[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-extern BOOLEAN gfWatchedLocReset[TOTAL_SOLDIERS][NUM_WATCHED_LOCS];
-
 const BEST_SIGHTING_ARRAY_SIZE = 6;
 const BEST_SIGHTING_ARRAY_SIZE_ALL_TEAMS_LOOK_FOR_ALL = 6;
 const BEST_SIGHTING_ARRAY_SIZE_NONCOMBAT = 3;
 const BEST_SIGHTING_ARRAY_SIZE_INCOMBAT = 0;
-extern UINT8 gubBestToMakeSightingSize;
-
-extern INT8 gbLightSighting[1][16];

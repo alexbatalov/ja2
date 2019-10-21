@@ -94,32 +94,6 @@ interface LIGHT_SPRITE {
 
 // High-Level Sprite Interface
 
-// system variables
-extern LIGHT_NODE *pLightList[MAX_LIGHT_TEMPLATES];
-extern UINT16 usTemplateSize[MAX_LIGHT_TEMPLATES];
-extern UINT16 *pLightRayList[MAX_LIGHT_TEMPLATES];
-extern UINT16 usRaySize[MAX_LIGHT_TEMPLATES];
-extern INT16 LightHeight[MAX_LIGHT_TEMPLATES];
-extern INT16 LightWidth[MAX_LIGHT_TEMPLATES];
-extern INT16 LightXOffset[MAX_LIGHT_TEMPLATES];
-extern INT16 LightYOffset[MAX_LIGHT_TEMPLATES];
-extern INT16 LightMapLeft[MAX_LIGHT_TEMPLATES];
-extern INT16 LightMapTop[MAX_LIGHT_TEMPLATES];
-extern INT16 LightMapRight[MAX_LIGHT_TEMPLATES];
-extern INT16 LightMapBottom[MAX_LIGHT_TEMPLATES];
-extern STR pLightNames[MAX_LIGHT_TEMPLATES];
-
-// Sprite data
-extern LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
-
-// Lighting system general data
-extern UINT8 ubAmbientLightLevel;
-extern UINT8 gubNumLightColors;
-
-// Lighting colors
-extern UINT8 gubNumLightColors;
-extern SGPPaletteEntry gpLightColors[3];
-
 // macros
 const LightSpriteGetType = (x) => (LightSprites[x].uiLightType);
 const LightSpriteGetTypeName = (x) => (pLightNames[LightSprites[x].iTemplate]);

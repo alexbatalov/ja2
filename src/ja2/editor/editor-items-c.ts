@@ -1,8 +1,6 @@
 const NUMBER_TRIGGERS = 27;
 const PRESSURE_ACTION_ID = (NUMBER_TRIGGERS - 1);
 
-extern ITEM_POOL *gpEditingItemPool;
-
 INT32 giDefaultExistChance = 100;
 
 interface IPListNode {

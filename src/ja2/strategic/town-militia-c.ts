@@ -15,9 +15,6 @@ SOLDIERTYPE *pMilitiaTrainerSoldier = NULL;
 // note that these sector values are STRATEGIC INDEXES, not 0-255!
 INT16 gsUnpaidStrategicSector[MAX_CHARACTER_COUNT];
 
-// the selected list of mercs
-extern BOOLEAN fSelectedListOfMercsForMapScreen[MAX_CHARACTER_COUNT];
-
 function TownMilitiaTrainingCompleted(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16): void {
   SECTORINFO *pSectorInfo = &(SectorInfo[SECTOR(sMapX, sMapY)]);
   UINT8 ubMilitiaTrained = 0;

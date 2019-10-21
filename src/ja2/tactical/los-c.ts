@@ -8,8 +8,6 @@ UINT16 gusLOSStartGridNo = 0;
 UINT16 gusLOSEndGridNo = 0;
 UINT16 gusLOSStartSoldier = NOBODY;
 UINT16 gusLOSEndSoldier = NOBODY;
-extern UINT32 guiSoldierFlags;
-extern INT16 DirIncrementer[8];
 
 static FIXEDPT gqStandardWallHeight = INT32_TO_FIXEDPT(WALL_HEIGHT_UNITS);
 static FIXEDPT gqStandardWindowBottomHeight = INT32_TO_FIXEDPT(WINDOW_BOTTOM_HEIGHT_UNITS);
@@ -161,8 +159,6 @@ const MAX_LOCAL_STRUCTURES = 20;
 STRUCTURE *gpLocalStructure[MAX_LOCAL_STRUCTURES];
 UINT32 guiLocalStructureCTH[MAX_LOCAL_STRUCTURES];
 UINT8 gubLocalStructureNumTimesHit[MAX_LOCAL_STRUCTURES];
-
-extern UINT8 gubMaterialArmour[];
 
 function FloatToFixed(dN: FLOAT): FIXEDPT {
   FIXEDPT qN;

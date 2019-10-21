@@ -70,11 +70,6 @@ UINT8 gubMonsterMineInfestation[]={
 };
 */
 
-// the static NPC dialogue faces
-extern UINT32 uiExternalStaticNPCFaces[];
-extern FACETYPE *gpCurrentTalkingFace;
-extern UINT8 gubCurrentTalkingID;
-
 function InitializeMines(): void {
   UINT8 ubMineIndex;
   MINE_STATUS_TYPE *pMineStatus;

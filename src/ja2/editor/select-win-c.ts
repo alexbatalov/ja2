@@ -1,11 +1,3 @@
-extern BOOLEAN gfOverheadMapDirty;
-
-extern INT32 iEditorToolbar;
-
-extern BOOLEAN fDontUseRandom;
-
-extern UINT16 GenericButtonFillColors[40];
-
 BOOLEAN gfRenderSquareArea = FALSE;
 INT16 iStartClickX, iStartClickY;
 INT16 iEndClickX, iEndClickY;

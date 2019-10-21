@@ -39,15 +39,7 @@ const enum Enum105 {
   MERC_CAME_FROM_HIRE_PAGE,
 }
 
-extern UINT16 gusMercVideoSpeckSpeech;
-
-extern UINT8 gubArrivedFromMercSubSite;
-
-extern UINT8 gubMercArray[NUMBER_OF_MERCS];
-extern UINT8 gubCurMercIndex;
 // extern	UINT8			gubLastMercIndex;
 
 // extern	UINT32		guiNumberOfMercPaymentsInDays;
 // extern	UINT8			gubNumDaysTillFirstMercArrives;
-
-extern BOOLEAN gfJustHiredAMercMerc;

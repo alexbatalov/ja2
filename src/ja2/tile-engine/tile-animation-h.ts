@@ -99,6 +99,3 @@ const enum Enum311 {
   ANI_KEYFRAME_CHAIN_WATER_EXPLOSION,
   ANI_KEYFRAME_DO_SOUND,
 }
-
-// ANimation tile data
-ANITILE *pAniTileHead;

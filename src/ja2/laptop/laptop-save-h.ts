@@ -115,7 +115,3 @@ interface LaptopSaveInfoStruct {
   ubLastMercAvailableId: UINT8;
   bPadding: UINT8[] /* [86] */;
 }
-
-extern LaptopSaveInfoStruct LaptopSaveInfo;
-
-extern BobbyRayPurchaseStruct BobbyRayPurchases[MAX_PURCHASE_AMOUNT];

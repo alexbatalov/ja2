@@ -124,11 +124,3 @@ const SGPGetGValue = (rgb) => ((BYTE)(((UINT16)(rgb)) >> 8));
 // The following blitters are used by the function above as well as clients
 
 // UTILITY FUNCTIONS
-
-extern UINT16 gusAlphaMask;
-extern UINT16 gusRedMask;
-extern UINT16 gusGreenMask;
-extern UINT16 gusBlueMask;
-extern INT16 gusRedShift;
-extern INT16 gusBlueShift;
-extern INT16 gusGreenShift;

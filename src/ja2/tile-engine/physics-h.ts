@@ -1,5 +1,3 @@
-extern UINT32 guiNumObjectSlots;
-
 interface REAL_OBJECT {
   fAllocated: BOOLEAN;
   fAlive: BOOLEAN;
@@ -61,5 +59,3 @@ interface REAL_OBJECT {
 }
 
 const NUM_OBJECT_SLOTS = 50;
-
-extern REAL_OBJECT ObjectSlots[NUM_OBJECT_SLOTS];

@@ -16,7 +16,4 @@ const enum Enum112 {
   BOBBY_RAY_LISTS,
 }
 
-extern UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS];
-extern INT16 WeaponROF[MAX_WEAPONS];
-
 // INT16	CountNumberOfItemsInStoreInventory( UINT8 ubArmsDealerID );

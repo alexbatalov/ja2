@@ -12,8 +12,6 @@ INT32 iLastElementInSkillsList = 0;
 INT32 PersonalityList[ATTITUDE_LIST_SIZE];
 INT32 iLastElementInPersonalityList = 0;
 
-extern BOOLEAN fLoadingCharacterForPreviousImpProfile;
-
 // positions of the face x and y for eyes and mouth for the 10 portraits
 INT16 sFacePositions[NUMBER_OF_PLAYER_PORTRAITS][4] = {
   { 0, 0, 0, 0 },

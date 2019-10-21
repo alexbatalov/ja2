@@ -4,10 +4,6 @@ const FULL_SELECT = 1;
 const SELECT_WIDTH = 2;
 const SELECT_HEIGHT = 3;
 
-BOOLEAN gfDoVideoScroll;
-BOOLEAN gfDoSubtileScroll;
-UINT8 gubCurScrollSpeedID;
-
 // RENDERING FLAGS
 const RENDER_FLAG_FULL = 0x00000001;
 const RENDER_FLAG_SHADOWS = 0x00000002;
@@ -63,60 +59,5 @@ const TILES_DYNAMIC_HIGHMERCS = 0x00000004;
 const TILES_DYNAMIC_ONROOF = 0x00000002;
 const TILES_DYNAMIC_TOPMOST = 0x00000001;
 
-BOOLEAN gfRenderScroll;
-INT16 gsScrollXIncrement;
-INT16 gsScrollYIncrement;
-INT32 guiScrollDirection;
-BOOLEAN gfScrollStart;
-extern INT16 gsRenderHeight;
-
 // Distance around mercs to pixelate walls
 const REVEAL_WALLS_RADIUS = 3;
-
-// GLOBAL VARIABLES
-INT16 SCROLL_X_STEP;
-INT16 SCROLL_Y_STEP;
-
-INT16 gsVIEWPORT_START_X;
-INT16 gsVIEWPORT_START_Y;
-INT16 gsVIEWPORT_WINDOW_START_Y;
-INT16 gsVIEWPORT_END_Y;
-INT16 gsVIEWPORT_WINDOW_END_Y;
-INT16 gsVIEWPORT_END_X;
-
-INT16 gsRenderCenterX;
-INT16 gsRenderCenterY;
-INT16 gsRenderWorldOffsetX;
-INT16 gsRenderWorldOffsetY;
-
-// CURRENT VIEWPORT IN WORLD COORDS
-INT16 gsTopLeftWorldX, gsTopLeftWorldY;
-INT16 gsTopRightWorldX, gsTopRightWorldY;
-INT16 gsBottomLeftWorldX, gsBottomLeftWorldY;
-INT16 gsBottomRightWorldX, gsBottomRightWorldY;
-
-SGPRect gSelectRegion;
-SGPPoint gSelectAnchor;
-UINT32 fSelectMode;
-
-// GLOBAL COORDINATES
-INT16 gTopLeftWorldLimitX, gTopLeftWorldLimitY;
-INT16 gTopRightWorldLimitX, gTopRightWorldLimitY;
-INT16 gBottomLeftWorldLimitX, gBottomLeftWorldLimitY;
-INT16 gBottomRightWorldLimitX, gBottomRightWorldLimitY;
-INT16 gCenterWorldX, gCenterWorldY;
-INT16 gsTLX, gsTLY, gsTRX, gsTRY;
-INT16 gsBLX, gsBLY, gsBRX, gsBRY;
-INT16 gsCX, gsCY;
-DOUBLE gdScaleX, gdScaleY;
-
-BOOLEAN fLandLayerDirty;
-
-BOOLEAN gfIgnoreScrollDueToCenterAdjust;
-
-extern UINT16 *gpZBuffer;
-extern UINT32 gRenderFlags;
-BOOLEAN gfIgnoreScrolling;
-
-BOOLEAN gfScrollInertia;
-BOOLEAN gfScrollPending;

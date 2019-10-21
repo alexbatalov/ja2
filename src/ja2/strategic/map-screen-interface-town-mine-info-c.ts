@@ -18,9 +18,6 @@ UINT32 guiMapButtonInventory[2];
 
 UINT16 sTotalButtonWidth = 0;
 
-extern MINE_LOCATION_TYPE gMineLocation[];
-extern MINE_STATUS_TYPE gMineStatus[];
-extern BOOLEAN fMapScreenBottomDirty;
 // extern UINT8 gubMonsterMineInfestation[];
 
 function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {

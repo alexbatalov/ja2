@@ -36,21 +36,11 @@ const MAP_LEVEL_MARKER_Y = 323;
 const MAP_LEVEL_MARKER_DELTA = 8;
 const MAP_LEVEL_MARKER_WIDTH = (620 - MAP_LEVEL_MARKER_X);
 
-extern BOOLEAN fShowTownFlag;
-extern BOOLEAN fShowMineFlag;
-extern BOOLEAN fShowTeamFlag;
-extern BOOLEAN fShowMilitia;
-extern BOOLEAN fShowAircraftFlag;
-extern BOOLEAN fShowItemsFlag;
-extern BOOLEAN fZoomFlag;
 // extern BOOLEAN fShowVehicleFlag;
 
 // extern BOOLEAN fMapScrollDueToPanelButton;
 // extern BOOLEAN fCursorIsOnMapScrollButtons;
 // extern BOOLEAN fDisabledMapBorder;
-
-// scroll animation
-extern INT32 giScrollButtonState;
 
 // void RenderMapBorderCorner( void );
 // void ShowDestinationOfPlottedPath( STR16 pLoc );

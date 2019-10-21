@@ -128,14 +128,6 @@ BOOLEAN gfTownUsesLoyalty[NUM_TOWNS] = {
 // location of first enocunter with enemy
 INT16 sWorldSectorLocationOfFirstBattle = 0;
 
-// number of items in currently loaded sector
-extern UINT32 guiNumWorldItems;
-
-// preprocess sector for mercs in it
-extern BOOLEAN fSectorsWithSoldiers[MAP_WORLD_X * MAP_WORLD_X][4];
-
-extern STR16 pTownNames[];
-
 /* ARM: Civilian theft of items was removed
 // handle theft by civi in a town sector
 void HandleTheftByCiviliansInSector( INT16 sX, INT16 sY, INT32 iLoyalty );

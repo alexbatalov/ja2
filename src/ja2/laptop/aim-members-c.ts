@@ -350,9 +350,6 @@ UINT16 usAimMercSpeechDuration = 0;
 
 BOOLEAN gfIsNewMailFlagSet = FALSE;
 
-extern UINT8 gubBasicInventoryPositions[];
-extern BOOLEAN fExitDueToMessageBox;
-
 BOOLEAN gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
 
 INT32 giIdOfLastHiredMerc = -1;

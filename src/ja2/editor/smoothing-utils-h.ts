@@ -28,6 +28,3 @@ const enum Enum61 {
   EXTERIOR_LEFT,
   EXTERIOR_RIGHT,
 }
-
-// in newsmooth.c
-extern INT8 gbWallTileLUT[NUM_WALL_TYPES][7];

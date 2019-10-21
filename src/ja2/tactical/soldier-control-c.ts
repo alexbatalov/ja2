@@ -1,5 +1,3 @@
-extern INT16 DirIncrementer[8];
-
 const PALETTEFILENAME = "BINARYDATA\\ja2pal.dat";
 
 const LOW_MORALE_BATTLE_SND_THREASHOLD = 35;
@@ -150,8 +148,6 @@ PaletteSubRangeType *guipPaletteSubRanges = NULL;
 UINT32 guiNumReplacements;
 PaletteReplacementType *guipPaletteReplacements = NULL;
 
-extern BOOLEAN fReDrawFace;
-extern UINT8 gubWaitingForAllMercsToExitCode;
 BOOLEAN gfGetNewPathThroughPeople = FALSE;
 
 function HandleVehicleMovementSound(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {

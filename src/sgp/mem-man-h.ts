@@ -34,11 +34,6 @@
 //
 //**************************************************************************
 
-extern UINT32 MemDebugCounter;
-extern UINT32 guiMemTotal;
-extern UINT32 guiMemAlloced;
-extern UINT32 guiMemFreed;
-
 // Creates and adds a video object to list
 const MemAlloc = (size) => malloc((size));
 const MemFree = (ptr) => free((ptr));

@@ -6,5 +6,3 @@ interface AnimationSurfaceCacheType {
   sCacheHits: Pointer<INT16>;
   ubCacheSize: UINT8;
 }
-
-UINT32 guiCacheSize;

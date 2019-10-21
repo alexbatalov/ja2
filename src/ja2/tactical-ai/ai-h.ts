@@ -1,8 +1,4 @@
-extern INT8 gubAIPathCosts[19][19];
 const AI_PATHCOST_RADIUS = 9;
-
-extern BOOLEAN gfDisplayCoverValues;
-extern INT16 gsCoverValue[WORLD_MAX];
 
 // AI actions
 
@@ -119,8 +115,6 @@ const DIFF_ENEMY_INTERRUPT_MOD = 2;
 const DIFF_RADIO_RED_ALERT = 3;
 const DIFF_MAX_COVER_RANGE = 4;
 const MAX_DIFF_PARMS = 5; // how many different difficulty variables?
-
-extern INT8 gbDiff[MAX_DIFF_PARMS][5];
 
 // Kris:  Added these as I need specific searches on certain sides.
 const enum Enum291 {

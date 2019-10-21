@@ -446,21 +446,6 @@ INT32 giFlashContractBaseTime = 0;
 UINT32 guiFlashCursorBaseTime = 0;
 INT32 giPotCharPathBaseTime = 0;
 
-/*
-// next and prev
-INT32 giMapInvPrev;
-INT32 giMapInvNext;
-INT32 giMapInvPrevImage;
-INT32 giMapInvNextImage;
-*/
-extern UINT32 guiVObjectSize;
-extern UINT32 guiVSurfaceSize;
-
-extern UINT8 gubHandPos;
-extern UINT16 gusOldItemIndex;
-extern UINT16 gusNewItemIndex;
-extern BOOLEAN gfDeductPoints;
-
 UINT32 guiCHARLIST;
 UINT32 guiCHARINFO;
 UINT32 guiSleepIcon;
@@ -495,71 +480,7 @@ PathStPtr gpHelicopterPreviousMercPath = NULL;
 
 // GLOBAL VARIABLES (EXTERNAL)
 
-extern BOOLEAN fHoveringHelicopter;
-extern BOOLEAN fDeletedNode;
-extern BOOLEAN gfRenderPBInterface;
-extern BOOLEAN fMapScreenBottomDirty;
-extern BOOLEAN fResetTimerForFirstEntryIntoMapScreen;
-extern BOOLEAN gfStartedFromMapScreen;
-
-extern BOOLEAN gfUsePersistantPBI;
-
-extern BOOLEAN gfOneFramePauseOnExit;
-
-// the selected list of mercs
-extern BOOLEAN fSelectedListOfMercsForMapScreen[MAX_CHARACTER_COUNT];
-
-extern INT32 iDialogueBox;
-extern INT32 giMapInvDescButton;
-
-extern UINT32 guiBrownBackgroundForTeamPanel;
-
-// the town mine info box
-extern INT32 ghTownMineBox;
-// border and bottom buttons
-extern INT32 giMapBorderButtons[];
-extern UINT32 guiMapButtonInventory[];
-
-// the mine icon
-extern UINT32 guiMINEICON;
-extern UINT32 guiSecItemHiddenVO;
-
-extern UINT32 guiUIMessageTimeDelay;
-
-extern PathStPtr pTempCharacterPath;
-extern PathStPtr pTempHelicopterPath;
-
-extern BOOLEAN gfAutoAIAware;
-
-// the title for the contract button on the character info panel in the upper left portion of the mapscreen
-extern STR16 pContractButtonString[];
-extern STR16 pBullseyeStrings[];
-
-extern OBJECTTYPE *gpItemDescObject;
-
-extern SOLDIERTYPE *pProcessingSoldier;
-
-// faces stuff
-extern FACETYPE *gpCurrentTalkingFace;
 // extern BOOLEAN	gfFacePanelActive;
-
-// externs for highlighting of ammo/weapons
-extern UINT32 guiMouseOverItemTime;
-extern BOOLEAN gfCheckForMouseOverItem;
-extern INT8 gbCheckForMouseOverItemPos;
-
-// Autoresolve sets this variable which defaults to -1 when not needed.
-extern INT16 gsEnemyGainedControlOfSectorID;
-extern INT16 gsCiviliansEatenByMonsters;
-
-extern BOOLEAN gfFadeOutDone;
-
-extern UINT32 guiPendingScreen;
-
-extern CHAR16 gzUserDefinedButton1[128];
-extern CHAR16 gzUserDefinedButton2[128];
-
-extern BOOLEAN gfMilitiaPopupCreated;
 
 // PROTOTYPES
 

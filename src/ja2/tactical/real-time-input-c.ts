@@ -1,15 +1,3 @@
-extern UIKEYBOARD_HOOK gUIKeyboardHook;
-extern BOOLEAN fRightButtonDown;
-extern BOOLEAN fLeftButtonDown;
-extern BOOLEAN fIgnoreLeftUp;
-extern UINT32 guiCurrentEvent;
-extern UINT32 guiCurrentUICursor;
-extern BOOLEAN gfIgnoreOnSelectedGuy;
-extern INT16 gsOverItemsGridNo;
-extern INT16 gsOverItemsLevel;
-extern UINT32 guiUITargetSoldierId;
-extern BOOLEAN gfUIShowExitSouth;
-
 BOOLEAN gfStartLookingForRubberBanding = FALSE;
 UINT16 gusRubberBandX = 0;
 UINT16 gusRubberBandY = 0;
@@ -873,8 +861,6 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
     }
   }
 }
-
-extern BOOLEAN gUIActionModeChangeDueToMouseOver;
 
 function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   UINT16 usMapPos;

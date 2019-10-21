@@ -1,5 +1,3 @@
-extern BOOLEAN gfTurnBasedAI;
-
 // THIS IS AN ITEM #  - AND FOR NOW JUST COMPLETELY FAKE...
 
 const MAX_TOSS_SEARCH_DIST = 1; // must throw within this of opponent
@@ -113,11 +111,6 @@ interface ATTACKTYPE {
   ubAPCost: UINT8; // how many APs the attack will use up
   bWeaponIn: INT8; // the inv slot of the weapon in question
 }
-
-extern THREATTYPE Threat[MAXMERCS];
-extern int ThreatPercent[10];
-extern UINT8 SkipCoverCheck;
-extern INT8 GameOption[MAXGAMEOPTIONS];
 
 const enum Enum293 {
   SEARCH_GENERAL_ITEMS,

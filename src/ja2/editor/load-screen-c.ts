@@ -12,8 +12,6 @@ const enum Enum50 {
   DIALOG_DELETE,
 }
 
-extern UINT16 Counter;
-
 INT32 iTotalFiles;
 INT32 iTopFileShown;
 INT32 iCurrFileShown;
@@ -54,8 +52,6 @@ const enum Enum51 {
 }
 INT8 gbCurrentFileIOStatus; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 
-// BOOLEAN fSavingFile;
-extern UINT16 gusLightLevel, gusSavedLightLevel;
 function LoadSaveScreenInit(): UINT32 {
   gfUpdateSummaryInfo = TRUE;
   fEnteringLoadSaveScreen = TRUE;

@@ -1,5 +1,3 @@
-extern UINT8 gubCheatLevel;
-
 // GLOBALS FOR CHEAT MODE......
 // FIXME: Language-specific code
 // #ifdef GERMAN

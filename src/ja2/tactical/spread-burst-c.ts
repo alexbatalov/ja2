@@ -9,8 +9,6 @@ interface BURST_LOCATIONS {
 BURST_LOCATIONS gsBurstLocations[MAX_BURST_LOCATIONS];
 INT8 gbNumBurstLocations = 0;
 
-extern BOOLEAN gfBeginBurstSpreadTracking;
-
 function ResetBurstLocations(): void {
   gbNumBurstLocations = 0;
 }

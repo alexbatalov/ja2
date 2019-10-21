@@ -24,9 +24,6 @@ interface SOLDIER_STACK_TYPE {
 SOLDIER_STACK_TYPE gSoldierStack;
 BOOLEAN gfHandleStack = FALSE;
 
-extern BOOLEAN gUIActionModeChangeDueToMouseOver;
-extern UINT32 guiUITargetSoldierId;
-
 function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
   INT16 sMapPos;
 

@@ -2,7 +2,6 @@
 
 //#define INVULNERABILITY
 
-extern HVSURFACE ghFrameBuffer;
 BOOLEAN gfTransferTacticalOppositionToAutoResolve = FALSE;
 
 // button images

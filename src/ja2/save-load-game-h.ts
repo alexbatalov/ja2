@@ -40,8 +40,3 @@ interface SAVED_GAME_HEADER {
 
   ubFiller: UINT8[] /* [110] */;
 }
-
-extern UINT32 guiScreenToGotoAfterLoadingSavedGame;
-extern UINT32 guiSaveGameVersion;
-
-UINT32 guiLastSaveGameNum;

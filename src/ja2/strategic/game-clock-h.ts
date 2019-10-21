@@ -38,47 +38,13 @@ const enum Enum130 {
   NUM_TIME_COMPRESS_SPEEDS,
 }
 
-// dereferenced with the above enumerations to provide the actual time compression rate.
-extern INT32 giTimeCompressSpeeds[NUM_TIME_COMPRESS_SPEEDS];
-
 const STARTING_TIME = ((1 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN) + NUM_SEC_IN_DAY); // 1am
 const FIRST_ARRIVAL_DELAY = ((6 * NUM_SEC_IN_HOUR) + (0 * NUM_SEC_IN_MIN)); // 7am ( 6hours later)
 
 const WORLDTIMESTR = () => gswzWorldTimeStr;
-
-// compress mode now in use
-INT32 giTimeCompressMode;
 
 const enum Enum131 {
   WARPTIME_NO_PROCESSING_OF_EVENTS,
   WARPTIME_PROCESS_EVENTS_NORMALLY,
   WARPTIME_PROCESS_TARGET_TIME_FIRST,
 }
-
-extern UINT16 gswzWorldTimeStr[20]; // Day 99, 23:55
-
-extern UINT32 guiDay;
-extern UINT32 guiHour;
-extern UINT32 guiMin;
-
-// Advanced function used by certain event callbacks.  In the case where time is warped, certain event
-// need to know how much time was warped since the last query to the event list.
-// This function returns that value
-extern UINT32 guiTimeOfLastEventQuery;
-
-// This value represents the time that the sector was loaded.  If you are in sector A9, and leave
-// the game clock at that moment will get saved into the temp file associated with it.  The next time you
-// enter A9, this value will contain that time.  Used for scheduling purposes.
-extern UINT32 guiTimeCurrentSectorWasLastLoaded;
-
-// is the current pause state due to the player?
-extern BOOLEAN gfPauseDueToPlayerGamePause;
-
-// we've just clued up a pause by the player, the tactical screen will need a full one shot refresh to remove a 2 frame update problem
-extern BOOLEAN gfJustFinishedAPause;
-
-extern BOOLEAN gfResetAllPlayerKnowsEnemiesFlags;
-
-extern UINT32 guiLockPauseStateLastReasonId;
-
-extern BOOLEAN gfTimeInterrupt;

@@ -34,9 +34,6 @@ interface INVENTORY_IN_SLOT {
                               // occupies.  -1 Means the item is "perfect" and has no associated special item.
 }
 
-extern INVENTORY_IN_SLOT PlayersOfferArea[SKI_NUM_TRADING_INV_SLOTS];
-extern INT32 giShopKeepDialogueEventinProgress;
-
 // extern	BOOLEAN		gfRedrawSkiScreen;
 
 const enum Enum253 {
@@ -44,11 +41,3 @@ const enum Enum253 {
   SKI_DIRTY_LEVEL1, // redraw only items
   SKI_DIRTY_LEVEL2, // redraw everything
 }
-
-extern UINT8 gubSkiDirtyLevel;
-
-extern OBJECTTYPE *gpHighLightedItemObject;
-
-extern INVENTORY_IN_SLOT gMoveingItem;
-
-extern OBJECTTYPE *pShopKeeperItemDescObject;

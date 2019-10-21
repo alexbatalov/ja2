@@ -10,15 +10,11 @@ static SOLDIERTYPE *gpTempSoldier;
 static INT16 gsTempGridno;
 static INT8 bTempFrequency;
 
-extern INT8 gbItemPointerSrcSlot;
-extern BOOLEAN gfResetUIMovementOptimization;
-
 SOLDIERTYPE *gpBoobyTrapSoldier;
 ITEM_POOL *gpBoobyTrapItemPool;
 INT16 gsBoobyTrapGridNo;
 INT8 gbBoobyTrapLevel;
 BOOLEAN gfDisarmingBuriedBomb;
-extern BOOLEAN gfDontChargeAPsToPickup;
 INT8 gbTrapDifficulty;
 BOOLEAN gfJustFoundBoobyTrap = FALSE;
 

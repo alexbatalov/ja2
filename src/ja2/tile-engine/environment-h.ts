@@ -42,12 +42,3 @@ const WEATHER_FORECAST_THUNDERSHOWERS = 0x00000020;
 // higher is darker, remember
 const NORMAL_LIGHTLEVEL_NIGHT = 12;
 const NORMAL_LIGHTLEVEL_DAY = 3;
-
-extern UINT8 gubEnvLightValue;
-extern BOOLEAN gfDoLighting;
-extern UINT32 guiEnvWeather;
-
-// effects whether or not time of day effects the lighting.  Underground
-// maps have an ambient light level that is saved in the map, and doesn't change.
-extern BOOLEAN gfCaves;
-extern BOOLEAN gfBasement;

@@ -1,5 +1,3 @@
-extern UINT8 gubSrcSoldierProfile;
-
 // Structure used in Tactical display of NPC dialogue
 interface NPC_DIALOGUE_TYPE {
   iFaceIndex: INT32;
@@ -32,9 +30,6 @@ interface NPC_DIALOGUE_TYPE {
   fSetupSubTitles: BOOLEAN;
   zQuoteStr: INT16[] /* [480] */; // QIALOGUE_SIZE is in dialog control which includes this file...
 }
-
-// GLOBAL NPC STRUCT
-NPC_DIALOGUE_TYPE gTalkPanel;
 
 const enum Enum213 {
   NPC_ACTION_NONE = 0,
@@ -296,9 +291,3 @@ const enum Enum213 {
 }
 
 const HOSPITAL_PATIENT_DISTANCE = 9;
-
-extern INT32 giHospitalTempBalance;
-extern INT32 giHospitalRefund;
-extern INT8 gbHospitalPriceModifier;
-
-BOOLEAN gfInTalkPanel;

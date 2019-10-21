@@ -1,9 +1,5 @@
 INT8 gubAIPathCosts[19][19];
 
-// FindBestNearbyCover - "Net" related stuff commented out
-extern UINT8 gubAICounter;
-extern BOOLEAN gfTurnBasedAI;
-
 function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32, iNewScale: INT32): INT32 {
   INT32 iValueChange, iScaleSum, iPercentBetter; //,loopCnt,tempInt;
 

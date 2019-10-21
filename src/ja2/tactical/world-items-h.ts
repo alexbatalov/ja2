@@ -24,13 +24,7 @@ interface WORLDITEM {
   ubNonExistChance: UINT8;
 }
 
-extern WORLDITEM *gWorldItems;
-extern UINT32 guiNumWorldItems;
-
 interface WORLDBOMB {
   fExists: BOOLEAN;
   iItemIndex: INT32;
 }
-
-extern WORLDBOMB *gWorldBombs;
-extern UINT32 guiNumWorldBombs;

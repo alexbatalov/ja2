@@ -1,5 +1,3 @@
-extern INT16 DirIncrementer[8];
-
 //
 // CJC DG->JA2 conversion notes
 //

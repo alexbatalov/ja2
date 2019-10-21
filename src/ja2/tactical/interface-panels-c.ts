@@ -229,14 +229,6 @@ BOOLEAN gfReEvaluateDisabledINVPanelButtons = FALSE;
 UINT32 guiBrownBackgroundForTeamPanel;
 UINT32 guiGoldBackgroundForTeamPanel;
 
-extern BOOLEAN gfRerenderInterfaceFromHelpText;
-extern BOOLEAN gfInKeyRingPopup;
-extern UINT32 guiVEHINV;
-extern INT32 giMapInvDoneButton;
-extern BOOLEAN gfBeginEndTurn;
-extern SOLDIERTYPE *gpItemDescSoldier;
-extern BOOLEAN gfInItemPickupMenu;
-
 UINT8 gubHandPos;
 UINT16 gusOldItemIndex;
 UINT16 gusNewItemIndex;
@@ -390,9 +382,7 @@ BOOLEAN gfSM_HandInvDispText[NUM_INV_SLOTS];
 // Globals - for one - the current merc here
 UINT16 gusSMCurrentMerc = 0;
 SOLDIERTYPE *gpSMCurrentMerc = NULL;
-extern SOLDIERTYPE *gpItemPopupSoldier;
 INT8 gbSMCurStanceObj;
-extern INT8 gbCompatibleApplyItem;
 
 INT8 gbStanceButPos[2][3][3] = {
   // NON-STEALTH
@@ -811,8 +801,6 @@ function UpdateSMPanel(): void {
     EnableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
   }
 }
-
-extern INT8 gbInvalidPlacementSlot[NUM_INV_SLOTS];
 
 function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEAN): void {
   INT32 cnt;

@@ -138,9 +138,6 @@ interface FACETYPE {
   GapList: AudioGapList;
 }
 
-// GLOBAL FOR FACES LISTING
-FACETYPE gFacesData[NUM_FACE_SLOTS];
-
 // The first parameter is the profile ID and the second is the soldier ID ( which for most cases
 // will be NOBODY if the face is not created from a SOLDIERTYPE )
 // This function allocates a slot in the table for the face, loads it's STI file, sets some

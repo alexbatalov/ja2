@@ -44,23 +44,7 @@ const enum Enum386 {
 // Base resultion of callback timer
 const BASETIMESLICE = 10;
 
-// TIMER INTERVALS
-INT32 giTimerIntervals[NUMTIMERS];
-// TIMER COUNTERS
-INT32 giTimerCounters[NUMTIMERS];
-
-// GLOBAL SYNC TEMP TIME
-INT32 giClockTimer;
-
-INT32 giTimerDiag;
-
-INT32 giTimerTeamTurnUpdate;
-
 const GetJA2Clock = () => guiBaseJA2Clock;
-
-// Don't modify this value
-extern UINT32 guiBaseJA2Clock;
-extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 
 // MACROS
 //																CHeck if new counter < 0														 | set to 0 |										 Decrement

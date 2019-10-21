@@ -3502,8 +3502,3 @@ const WALL_AFRAME1 = 31;
 const WALL_AFRAME2 = 32;
 const WALL_AFRAME3 = 33;
 const WALL_AFRAME4 = 34;
-
-extern INT16 gOpenDoorList[20];
-extern INT16 gOpenDoorShadowList[20];
-extern INT16 gClosedDoorList[20];
-extern INT16 gClosedDoorShadowList[20];

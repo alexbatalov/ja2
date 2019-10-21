@@ -382,8 +382,4 @@ const enum Enum331 {
 
 type SOUND_STOP_CALLBACK = (pData: Pointer<void>) => void;
 
-extern UINT8 AmbientVols[NUM_AMBIENTS];
-
-char szSoundEffects[NUM_SAMPLES][255];
-
 const POSITION_SOUND_FROM_SOLDIER = 0x00000001;

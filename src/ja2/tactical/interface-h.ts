@@ -55,32 +55,6 @@ const DRAW_RED_BAR = 1;
 const DRAW_BLUE_BAR = 2;
 const DRAW_ERASE_BAR = 3;
 
-BOOLEAN gfSwitchPanel;
-BOOLEAN gfUIStanceDifferent;
-UINT8 gbNewPanel;
-UINT8 gubNewPanelParam;
-INT16 gsCurInterfacePanel;
-
-UINT32 guiRENDERBUFFER;
-UINT32 guiCLOSE;
-UINT32 guiDEAD;
-UINT32 guiHATCH;
-UINT32 guiINTEXT;
-UINT32 guiGUNSM;
-UINT32 guiP1ITEMS;
-UINT32 guiP2ITEMS;
-UINT32 guiP3ITEMS;
-UINT32 guiCOMPANEL;
-extern UINT32 guiCOMPANELB;
-UINT32 guiRADIO;
-UINT32 guiPORTRAITICONS;
-UINT32 guiBURSTACCUM;
-UINT32 guiITEMPOINTERHATCHES;
-
-MOUSE_REGION gViewportRegion;
-MOUSE_REGION gRadarRegion;
-MOUSE_REGION gBottomPanalRegion;
-
 const MOVEMENT_MENU_LOOK = 1;
 const MOVEMENT_MENU_ACTIONC = 2;
 const MOVEMENT_MENU_HAND = 3;
@@ -99,17 +73,6 @@ const enum Enum215 {
   TEAM_PANEL,
   NUM_UI_PANELS,
 }
-
-BOOLEAN fInterfacePanelDirty;
-BOOLEAN gfPausedTacticalRenderFlags;
-BOOLEAN gfPausedTacticalRenderInterfaceFlags;
-INT16 gsInterfaceLevel;
-BOOLEAN gfInMovementMenu;
-
-UINT16 gusUIOldSelectedSoldier;
-
-INT32 giUIMessageOverlay;
-UINT32 guiUIMessageTime;
 
 const enum Enum216 {
   NO_MESSAGE,

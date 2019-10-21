@@ -12,5 +12,3 @@ interface BUILDING {
   sDownClimbSpots: INT16[] /* [MAX_CLIMBSPOTS_PER_BUILDING] */;
   ubNumClimbSpots: UINT8;
 }
-
-extern UINT8 gubBuildingInfo[WORLD_MAX];

@@ -6,21 +6,6 @@
 
 // Global variable used
 
-extern SOLDIERTYPE *gpSMCurrentMerc;
-extern INT32 giSortStateForMapScreenList;
-extern INT16 sDeadMercs[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
-extern INT32 giRTAILastUpdateTime;
-extern BOOLEAN gfRedrawSaveLoadScreen;
-extern UINT8 gubScreenCount;
-extern INT16 sWorldSectorLocationOfFirstBattle;
-extern BOOLEAN gfGamePaused;
-extern BOOLEAN gfLockPauseState;
-extern BOOLEAN gfLoadedGame;
-extern HELP_SCREEN_STRUCT gHelpScreen;
-extern UINT8 gubDesertTemperature;
-extern UINT8 gubGlobalTemperature;
-extern BOOLEAN gfCreatureMeanwhileScenePlayed;
-
 BOOLEAN gMusicModeToPlay = FALSE;
 
 BOOLEAN gfUseConsecutiveQuickSaveSlots = FALSE;
@@ -243,10 +228,6 @@ UINT32 guiSaveGameVersion = 0;
 UINT8 gubSaveGameLoc = 0;
 
 UINT32 guiScreenToGotoAfterLoadingSavedGame = 0;
-
-extern EmailPtr pEmailList;
-extern UINT32 guiCurrentUniqueSoldierId;
-extern BOOLEAN gfHavePurchasedItemsFromTony;
 
 /////////////////////////////////////////////////////
 //

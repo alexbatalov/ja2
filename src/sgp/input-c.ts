@@ -1,10 +1,6 @@
 // Make sure to refer to the translation table which is within one of the following files (depending
 // on the language used). ENGLISH.C, JAPANESE.C, FRENCH.C, GERMAN.C, SPANISH.C, etc...
 
-extern UINT16 gsKeyTranslationTable[1024];
-
-extern BOOLEAN gfApplicationActive;
-
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling
 // the interface.
 

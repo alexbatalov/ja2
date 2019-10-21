@@ -13,12 +13,3 @@ const enum Enum199 {
   NON_BOXER_IN_RING,
   BAD_ATTACK,
 }
-
-extern INT16 gsBoxerGridNo[NUM_BOXERS];
-extern UINT8 gubBoxerID[NUM_BOXERS];
-extern BOOLEAN gfBoxerFought[NUM_BOXERS];
-extern INT8 gbBoxingState;
-extern BOOLEAN gfLastBoxingMatchWonByPlayer;
-extern UINT8 gubBoxingMatchesWon;
-extern UINT8 gubBoxersRests;
-extern BOOLEAN gfBoxersResting;

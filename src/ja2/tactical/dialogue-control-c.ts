@@ -33,15 +33,6 @@ interface DIALOGUE_Q_STRUCT {
 
 type DIALOGUE_Q_STRUCT_PTR = Pointer<DIALOGUE_Q_STRUCT>;
 
-extern INT32 giMapInvPrev;
-extern INT32 giMapInvNext;
-extern BOOLEAN gfSKIScreenExit;
-extern SOLDIERTYPE *pProcessingSoldier;
-extern BOOLEAN fProcessingAMerc;
-extern UINT32 guiPendingScreen;
-extern BOOLEAN fReDrawFace;
-extern BOOLEAN gfWaitingForTriggerTimer;
-
 BOOLEAN fExternFacesLoaded = FALSE;
 
 UINT32 uiExternalStaticNPCFaces[NUMBER_OF_EXTERNAL_NPC_FACES];
@@ -69,10 +60,6 @@ UINT8 gubMercValidPrecedentQuoteID[NUMBER_VALID_MERC_PRECEDENT_QUOTES] = {
   101,
   102,
 };
-
-extern INT32 iInterfaceDialogueBox;
-extern BOOLEAN gfRerenderInterfaceFromHelpText;
-extern UINT32 guiSKI_TransactionButton;
 
 UINT16 gusStopTimeQuoteList[] = {
   QUOTE_BOOBYTRAP_ITEM,
@@ -113,7 +100,6 @@ INT32 iDialogueBox = -1;
 // the next said quote will pause time
 BOOLEAN fPausedTimeDuringQuote = FALSE;
 BOOLEAN fWasPausedDuringDialogue = FALSE;
-extern BOOLEAN gfLockPauseState;
 
 INT8 gubLogForMeTooBleeds = FALSE;
 

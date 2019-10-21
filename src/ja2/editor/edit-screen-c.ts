@@ -1,10 +1,6 @@
-extern CHAR8 *szMusicList[NUM_MUSIC];
-
 BOOLEAN gfCorruptMap = FALSE;
 BOOLEAN gfCorruptSchedules = FALSE;
 BOOLEAN gfProfileDataLoaded = FALSE;
-
-extern UINT32 guiCurUICursor;
 
 GUI_BUTTON *gpPersistantButton;
 
@@ -69,9 +65,6 @@ LEVELNODE *gCursorNode = NULL;
 INT16 gsCursorGridNo;
 
 INT32 giMusicID = 0;
-
-extern BOOLEAN fAllDone;
-extern DisplayList Selection;
 
 BOOLEAN gfEditorDirty = TRUE;
 
@@ -1115,7 +1108,6 @@ function HandleJA2ToolbarSelection(): void {
 //	Select action to be taken based on the user's current key press (if any)
 //
 
-extern INT8 gbCurrSelect;
 function HandleKeyboardShortcuts(): void {
   static INT32 iSavedMode;
   static BOOLEAN fShowTrees = TRUE;
@@ -3042,9 +3034,6 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
   }
   return FALSE;
 }
-
-extern INT32 iEditorToolbarState;
-extern INT32 iEditorToolbarLastWallState;
 
 function ShowEntryPoints(): void {
   // make entry points visible

@@ -53,12 +53,6 @@ BOOLEAN gfUseSkullIconMessage = FALSE;
 
 BOOLEAN gfPanelAllocated = FALSE;
 
-extern MOUSE_REGION gDisableRegion;
-extern MOUSE_REGION gUserTurnRegion;
-extern BOOLEAN gfUserTurnRegionActive;
-extern UINT8 gubSelectSMPanelToMerc;
-extern BOOLEAN gfIgnoreOnSelectedGuy;
-
 const enum Enum208 {
   WALK_IMAGES = 0,
   SNEAK_IMAGES,

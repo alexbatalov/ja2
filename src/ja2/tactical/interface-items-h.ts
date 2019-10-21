@@ -38,12 +38,3 @@ interface INV_REGION_DESC {
 //	pubHighlightCounter - if not null, and == 2 - will display name above item
 //											-	if == 1 will only dirty the name space and then set counter to 0
 //  Last parameter used mainly for when mouse is over item
-
-BOOLEAN gfInItemDescBox;
-
-OBJECTTYPE *gpItemPointer;
-OBJECTTYPE gItemPointer;
-SOLDIERTYPE *gpItemPointerSoldier;
-UINT16 usItemSnapCursor;
-UINT16 us16BPPItemCyclePlacedItemColors[20];
-BOOLEAN gfItemPointerDifferentThanDefault;

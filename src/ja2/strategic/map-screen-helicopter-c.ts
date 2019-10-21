@@ -13,23 +13,6 @@ const REFUEL_HELICOPTER_DELAY = 30; // minutes
 // maximum chance out of a hundred per unsafe sector that a SAM site in decent working condition will hit Skyrider
 const MAX_SAM_SITE_ACCURACY = 33;
 
-extern FACETYPE *gpCurrentTalkingFace;
-extern UINT8 gubCurrentTalkingID;
-
-// current temp path for dest char
-extern PathStPtr pTempHelicopterPath;
-
-extern UINT8 ubSAMControlledSectors[MAP_WORLD_X][MAP_WORLD_Y];
-
-// the seating capacities
-extern INT32 iSeatingCapacities[];
-
-// the static NPC dialogue faces
-extern UINT32 uiExternalStaticNPCFaces[];
-
-// the squad mvt groups
-extern INT8 SquadMovementGroups[];
-
 // whether helicopted variables have been set up
 BOOLEAN fSkyRiderSetUp = FALSE;
 

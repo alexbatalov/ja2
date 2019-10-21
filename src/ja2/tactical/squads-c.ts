@@ -14,8 +14,6 @@ INT8 SquadMovementGroups[NUMBER_OF_SQUADS];
 
 BOOLEAN fExitingVehicleToSquad = FALSE;
 
-extern INT32 iHelicopterVehicleId;
-
 INT32 iCurrentTacticalSquad = FIRST_SQUAD;
 
 function InitSquads(): void {

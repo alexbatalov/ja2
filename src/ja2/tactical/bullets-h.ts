@@ -50,5 +50,3 @@ interface BULLET {
   pShadowAniTile: Pointer<ANITILE>;
   ubItemStatus: UINT8;
 }
-
-extern UINT32 guiNumBullets;

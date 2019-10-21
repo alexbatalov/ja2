@@ -1,10 +1,3 @@
-extern BOOLEAN gfDelayAutoResolveStart;
-extern BOOLEAN gfTransitionMapscreenToAutoResolve;
-
-// zoom flag
-extern BOOLEAN fZoomFlag;
-extern BOOLEAN fMapScreenBottomDirty;
-
 BOOLEAN gfTacticalTraversal = FALSE;
 GROUP *gpTacticalTraversalGroup = NULL;
 SOLDIERTYPE *gpTacticalTraversalChosenSoldier = NULL;
@@ -62,16 +55,6 @@ BOOLEAN gfPBButtonsHidden;
 BOOLEAN fDisableMapInterfaceDueToBattle = FALSE;
 
 BOOLEAN gfBlinkHeader;
-
-// mouse regions in mapscreen proper than must have thier help text disabled then re-enabled
-extern MOUSE_REGION gMapStatusBarsRegion;
-extern MOUSE_REGION gCharInfoHandRegion;
-
-extern INT32 giMapContractButton;
-extern INT32 giCharInfoButton[2];
-
-// were we showing the mapscreen inventory when the prebattle interface came up
-extern BOOLEAN fShowInventoryFlag;
 
 UINT32 guiNumInvolved;
 UINT32 guiNumUninvolved;

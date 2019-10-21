@@ -76,8 +76,5 @@ interface VIDEO_OVERLAY_DESC {
   BltCallback: OVERLAY_CALLBACK;
 }
 
-// GLOBAL VARIABLES
-SGPRect gDirtyClipRect;
-
 // FUNCTIONS
 ////////////

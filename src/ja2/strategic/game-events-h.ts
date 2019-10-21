@@ -20,7 +20,3 @@ const enum Enum133 {
   PERIODIC_EVENT,
   QUEUED_EVENT,
 }
-
-extern BOOLEAN gfEventDeletionPending;
-
-extern STRATEGICEVENT *gpEventList;

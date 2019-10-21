@@ -445,8 +445,6 @@ function SelectSpeakerFromHostileOrSayQuoteList(): UINT8 {
   }
 }
 
-extern BOOLEAN gfWaitingForTriggerTimer;
-
 function CheckHostileOrSayQuoteList(): void {
   if (gubNumShouldBecomeHostileOrSayQuote == 0 || !DialogueQueueIsEmpty() || gfInTalkPanel || gfWaitingForTriggerTimer) {
     return;
@@ -2586,8 +2584,6 @@ const COLOR1 = FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGREEN;
 const COLOR2 = FONT_MCOLOR_BLACK << 8 | FONT_MCOLOR_LTGRAY2;
 
 const LINE_HEIGHT = 15;
-
-extern UINT32 guiNumBackSaves;
 
 function DebugSoldierPage1(): void {
   SOLDIERTYPE *pSoldier;

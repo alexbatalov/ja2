@@ -1,9 +1,3 @@
-// buttons text
-extern STR16 pImpButtonText[];
-
-// extra strings not found in IMP Text Document
-extern STR16 pExtraIMPStrings[];
-
 const enum Enum88 {
   IMP_HOME_1,
   IMP_HOME_2,

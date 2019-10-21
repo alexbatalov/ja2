@@ -1,6 +1,3 @@
-extern BOOLEAN gfHiddenInterrupt;
-extern BOOLEAN gfUseAlternateQueenPosition;
-
 // global status time counters to determine what takes the most time
 
 const CENTER_OF_RING = 11237;

@@ -5,14 +5,6 @@ GROUP *gpGroupList;
 
 GROUP *gpPendingSimultaneousGroup = NULL;
 
-// is the bottom of the map panel dirty?
-extern BOOLEAN fMapScreenBottomDirty;
-extern BOOLEAN gfUsePersistantPBI;
-
-extern BOOLEAN gubNumAwareBattles;
-extern INT8 SquadMovementGroups[];
-extern INT8 gubVehicleMovementGroups[];
-
 BOOLEAN gfDelayAutoResolveStart = FALSE;
 
 BOOLEAN gfRandomizingPatrolGroup = FALSE;

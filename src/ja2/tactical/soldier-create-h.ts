@@ -139,5 +139,3 @@ interface SOLDIERCREATE_STRUCT {
 //  values that work in conjunction with the strategic AI's relative values to generate soldiers.  In no
 //  circumstances will static detailed placements be used outside of the editor.  Note, that this hybrid version
 //  uses the identical structure as detailed placements.  All non-static values are set to -1.
-
-extern BOOLEAN gfProfiledEnemyAdded; // needs to be saved (used by the above function)

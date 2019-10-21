@@ -33,13 +33,8 @@ const enum Enum78 {
   REXALL_BACKGROUND,
   ELGIN_BACKGROUND,
 }
-extern UINT8 ubFileRecordsLength[];
-extern BOOLEAN fEnteredFileViewerFromNewFileIcon;
-extern BOOLEAN fNewFilesInFileViewer;
 
 type FilesUnitPtr = Pointer<FilesUnit>;
-
-extern FilesUnitPtr pFilesListHead;
 
 interface FileRecordWidth {
   iRecordNumber: INT32;

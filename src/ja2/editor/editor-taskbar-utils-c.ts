@@ -1,5 +1,3 @@
-extern ITEM_POOL *gpItemPool;
-
 // editor icon storage vars
 INT32 giEditMercDirectionIcons[2];
 UINT32 guiMercInventoryPanel;
@@ -810,11 +808,6 @@ function RenderEditorInfo(): void {
       break;
   }
 }
-
-// This is in ButtonSystem.c as a hack.  Because we need to save the buffer whenever we do a full
-// taskbar render, we need to draw the buttons without hilites, hence this flag.  This flag is
-// always true in ButtonSystem.c, so it won't effect anything else.
-extern BOOLEAN gfGotoGridNoUI;
 
 function ProcessEditorRendering(): void {
   BOOLEAN fSaveBuffer = FALSE;

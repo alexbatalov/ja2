@@ -105,26 +105,9 @@ const ANYKEY = 252;
 const AUTOUNLOCK = 253;
 const OPENING_NOT_POSSIBLE = 254;
 
-extern KEY KeyTable[NUM_KEYS];
-extern LOCK LockTable[NUM_LOCKS];
-extern DOORTRAP DoorTrapTable[NUM_DOOR_TRAPS];
-
-extern STR16 sKeyDescriptionStrings[];
 /**********************************
  * Door utils add by Kris Morness *
  **********************************/
 
-// Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
-// are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
-// the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
-extern DOOR *DoorTable;
-
-// Current number of doors in world.
-extern UINT8 gubNumDoors;
-// Current max number of doors.  This is only used by the editor.  When adding doors to the
-// world, we may run out of space in the DoorTable, so we will allocate a new array with extra slots,
-// then copy everything over again.  gubMaxDoors holds the arrays actual number of slots, even though
-// the current number (gubNumDoors) will be <= to it.
-extern UINT8 gubMaxDoors;
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.

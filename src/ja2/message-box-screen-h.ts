@@ -59,12 +59,6 @@ interface MESSAGE_BOX_STRUCT {
   iBoxId: INT32;
 }
 
-extern MESSAGE_BOX_STRUCT gMsgBox;
-extern BOOLEAN fRestoreBackgroundForMessageBox;
-
-// this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
-extern BOOLEAN gfDontOverRideSaveBuffer;
-
 ////////////////////////////////
 // ubStyle:				Determines the look of graphics including buttons
 // zString:				16-bit string

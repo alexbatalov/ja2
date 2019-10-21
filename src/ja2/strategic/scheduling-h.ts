@@ -43,6 +43,3 @@ interface SCHEDULENODE {
   ubSoldierID: UINT8;
   usFlags: UINT16;
 }
-
-extern UINT8 gubScheduleID;
-extern SCHEDULENODE *gpScheduleList;

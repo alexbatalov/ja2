@@ -21,13 +21,3 @@ const enum Enum135 {
 
 const FIRST_TOWN = OMERTA;
 //#define PALACE			NUM_TOWNS
-
-extern BOOLEAN fCharacterInfoPanelDirty;
-extern BOOLEAN fTeamPanelDirty;
-extern BOOLEAN fMapPanelDirty;
-
-extern BOOLEAN fMapInventoryItem;
-extern BOOLEAN gfInConfirmMapMoveMode;
-extern BOOLEAN gfInChangeArrivalSectorMode;
-
-extern BOOLEAN gfSkyriderEmptyHelpGiven;

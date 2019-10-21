@@ -33,22 +33,9 @@ const PASSING_ITEM_DISTANCE_NOTOKLIFE = 2;
 const SHOW_LOCATOR_NORMAL = 1;
 const SHOW_LOCATOR_FAST = 2;
 
-// ATE TO BE MOVED TO INTERFACE_ITEMS.C
-INT8 gbNewItem[NUM_INV_SLOTS];
-INT8 gbNewItemCycle[NUM_INV_SLOTS];
-UINT8 gubNewItemMerc;
-
-MOUSE_REGION gSMPanelRegion;
-
-UINT32 guiSecItemHiddenVO;
-
-extern BOOLEAN gfDisableTacticalPanelButtons;
-
 interface TEAM_PANEL_SLOTS_TYPE {
   ubID: UINT8;
   fOccupied: BOOLEAN;
 }
-
-TEAM_PANEL_SLOTS_TYPE gTeamPanel[NUM_TEAM_SLOTS];
 
 // void DisableSMPpanelButtonsWhenInShopKeeperInterface( );

@@ -92,16 +92,6 @@ MOUSE_REGION gTimeCompressionMask[3];
 
 // EXTERNS
 
-extern UINT8 gubStartOfMapScreenMessageList;
-
-extern INT32 giMapInvDoneButton;
-
-extern BOOLEAN fInMapMode;
-extern BOOLEAN fShowInventoryFlag;
-extern BOOLEAN fShowDescriptionFlag;
-
-extern MOUSE_REGION gMPanelRegion;
-
 // PROTOTYPES
 
 // void CheckForAndHandleAutoMessageScroll( void );

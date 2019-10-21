@@ -1,5 +1,3 @@
-extern struct POINT;
-
 const NUM_BACKGROUND_REPS = 40;
 const BACKGROUND_HEIGHT = 10;
 const BACKGROUND_WIDTH = 125;
@@ -183,9 +181,6 @@ const enum Enum110 {
   PRSNL_TXT_SKILLS,
   PRSNL_TXT_NOSKILLS,
 }
-
-extern BOOLEAN gfTemporaryDisablingOfLoadPendingFlag;
-extern BOOLEAN fExitingLaptopFlag;
 
 // BOOLEAN fShowInventory = FALSE;
 UINT8 uiCurrentInventoryIndex = 0;

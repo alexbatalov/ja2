@@ -88,34 +88,4 @@ const CHARACTER_CANT_JOIN_SQUAD_FULL = -1;
 const CHARACTER_CANT_JOIN_SQUAD = 0;
 const CHARACTER_CAN_JOIN_SQUAD = 1;
 
-extern INT32 ghAssignmentBox;
-extern INT32 ghEpcBox;
-extern INT32 ghSquadBox;
-extern INT32 ghVehicleBox;
-extern INT32 ghRepairBox;
-extern INT32 ghTrainingBox;
-extern INT32 ghAttributeBox;
-extern INT32 ghRemoveMercAssignBox;
-extern INT32 ghContractBox;
-extern INT32 ghMoveBox;
 // extern INT32 ghUpdateBox;
-
-extern MOUSE_REGION gAssignmentScreenMaskRegion;
-
-extern MOUSE_REGION gAssignmentMenuRegion[];
-extern MOUSE_REGION gTrainingMenuRegion[];
-extern MOUSE_REGION gAttributeMenuRegion[];
-extern MOUSE_REGION gSquadMenuRegion[];
-extern MOUSE_REGION gContractMenuRegion[];
-extern MOUSE_REGION gRemoveMercAssignRegion[];
-extern MOUSE_REGION gVehicleMenuRegion[];
-
-extern BOOLEAN fShownContractMenu;
-extern BOOLEAN fShownAssignmentMenu;
-extern BOOLEAN fShowRepairMenu;
-
-extern BOOLEAN fFirstClickInAssignmentScreenMask;
-
-extern BOOLEAN fGlowContractRegion;
-
-extern BOOLEAN gfReEvaluateEveryonesNothingToDo;

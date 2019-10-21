@@ -7,6 +7,3 @@ interface EXITGRID {
   ubGotoSectorY: UINT8;
   ubGotoSectorZ: UINT8;
 }
-
-extern EXITGRID gExitGrid;
-extern BOOLEAN gfOverrideInsertionWithExitGrid;

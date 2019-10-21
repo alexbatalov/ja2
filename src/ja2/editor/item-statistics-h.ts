@@ -1,13 +1,6 @@
 // Handles the dynamic changing of text input fields and button modes depending on the currently edited
 // item.  Both the merc's inventory panel, and the items tab use the same code to accomplish this.
 
-// Set if we are editing items from the items tab.  Otherwise, it is assumed that we are
-// editing items from the merc's inventory panel.
-extern BOOLEAN gfItemEditingMode;
-
-// Set if we need to update the panel.
-extern BOOLEAN gfRenderItemStatsPanel;
-
 const enum Enum48 {
   ITEMSTATS_APPLY,
   ITEMSTATS_CANCEL,
@@ -16,9 +9,6 @@ const enum Enum48 {
   ITEMSTATS_HIDE,
   ITEMSTATS_SHOW,
 }
-
-extern OBJECTTYPE *gpItem;
-extern INT16 gsItemGridNo;
 
 // enumerations for all of the different action items.  Used by the popup menu for
 // changing the type of action item.  When modified, an equivalent text array must be
@@ -60,6 +50,3 @@ const enum Enum49 {
   ACTIONITEM_BIG_TEAR_GAS,
   NUM_ACTIONITEMS,
 }
-extern UINT16 gszActionItemDesc[NUM_ACTIONITEMS][30];
-extern INT8 gbActionItemIndex;
-extern INT8 gbDefaultBombTrapLevel;

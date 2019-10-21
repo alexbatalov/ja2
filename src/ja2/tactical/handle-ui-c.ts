@@ -36,12 +36,6 @@ const GO_MOVE_THREE = 100;
 
 INT16 gsTreeRevealXPos, gsTreeRevealYPos;
 
-extern BOOLEAN gfExitDebugScreen;
-extern INT8 gCurDebugPage;
-extern BOOLEAN gfGetNewPathThroughPeople;
-extern BOOLEAN gfIgnoreOnSelectedGuy;
-extern BOOLEAN gfInOpenDoorMenu;
-
 SOLDIERTYPE *gpRequesterMerc = NULL;
 SOLDIERTYPE *gpRequesterTargetMerc = NULL;
 INT16 gsRequesterGridNo;

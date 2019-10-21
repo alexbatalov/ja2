@@ -42,8 +42,6 @@ INT16 gsTRGridNo = 1043;
 INT16 gsBLGridNo = 24878;
 INT16 gsBRGridNo = 12635;
 
-extern UINT8 gubTacticalDirection;
-
 function TrashMapEdgepoints(): void {
   // Primary edgepoints
   if (gps1stNorthEdgepointArray)

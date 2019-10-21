@@ -10,13 +10,4 @@ const FADE_IN_REALFADE = 12;
 
 type FADE_HOOK = () => void;
 
-extern FADE_HOOK gFadeInDoneCallback;
-extern FADE_HOOK gFadeOutDoneCallback;
-
 type FADE_FUNCTION = () => void;
-
-BOOLEAN gfFadeInitialized;
-BOOLEAN gfFadeIn;
-INT8 gbFadeType;
-FADE_FUNCTION gFadeFunction;
-BOOLEAN gfFadeInVideo;

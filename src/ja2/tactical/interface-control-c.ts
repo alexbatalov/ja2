@@ -12,13 +12,6 @@ BOOLEAN gfRerenderInterfaceFromHelpText = FALSE;
 
 MOUSE_REGION gLockPanelOverlayRegion;
 
-extern BOOLEAN gfUIOverItemPool;
-extern INT16 gfUIOverItemPoolGridNo;
-extern BOOLEAN gfInMovementMenu;
-extern BOOLEAN gfInItemPickupMenu;
-extern BOOLEAN gfInOpenDoorMenu;
-extern UINT32 guiUIMessageTimeDelay;
-
 BOOLEAN gfPausedTacticalRenderInterfaceFlags = FALSE;
 BOOLEAN gfPausedTacticalRenderFlags = FALSE;
 

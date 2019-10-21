@@ -91,8 +91,6 @@ UINT8 gubAdultFemalesAttackingTown = 0;
 UINT8 gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
 UINT8 gubSectorIDOfCreatureAttack = 0;
 
-extern MINE_STATUS_TYPE gMineStatus[MAX_NUMBER_OF_MINES];
-
 function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
   CREATURE_DIRECTIVE *curr;
   UINT8 ubSectorX, ubSectorY;

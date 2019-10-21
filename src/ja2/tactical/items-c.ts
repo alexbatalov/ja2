@@ -1,7 +1,5 @@
 const ANY_MAGSIZE = 255;
 
-extern SOLDIERTYPE *gpItemDescSoldier;
-
 // weight units are 100g each
 
 ////////////////////////////////////////////////////////////////////////////

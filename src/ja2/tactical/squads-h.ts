@@ -31,8 +31,3 @@ const enum Enum275 {
 const NO_CURRENT_SQUAD = NUMBER_OF_SQUADS;
 
 // ptrs to soldier types of squads and their members
-
-// squads
-extern SOLDIERTYPE *Squad[NUMBER_OF_SQUADS][NUMBER_OF_SOLDIERS_PER_SQUAD];
-
-extern INT32 iCurrentTacticalSquad;

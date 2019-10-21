@@ -392,7 +392,6 @@ const enum Enum127 {
 
   NUM_TRAVTERRAIN_TYPES,
 }
-extern UINT8 gszTerrain[NUM_TRAVTERRAIN_TYPES][15];
 
 const TRAVELRATING_NONE = 0;
 const TRAVELRATING_LOW = 25;
@@ -499,8 +498,3 @@ interface UNDERGROUND_SECTORINFO {
   uiNumberOfWorldItemsInTempFileThatCanBeSeenByPlayer: UINT32;
   bPadding: INT8[] /* [36] */;
 }
-
-// The sector information required for the strategic AI.  Contains the number of enemy troops,
-// as well as intentions, etc.
-extern SECTORINFO SectorInfo[256];
-extern UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoHead;

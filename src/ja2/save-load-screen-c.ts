@@ -1,5 +1,4 @@
 BOOLEAN gfSchedulesHosed = FALSE;
-extern UINT32 guiBrokenSaveGameVersion;
 
 //////////////////////////////////////////////////////
 //

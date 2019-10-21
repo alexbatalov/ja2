@@ -285,17 +285,12 @@ INT16 sElitesOnCursor = 0;
 // the current militia town id
 INT16 sSelectedMilitiaTown = 0;
 
-extern MINE_LOCATION_TYPE gMineLocation[];
-extern MINE_STATUS_TYPE gMineStatus[];
-
 // sublevel graphics
 UINT32 guiSubLevel1, guiSubLevel2, guiSubLevel3;
 
 // the between sector icons
 UINT32 guiCHARBETWEENSECTORICONS;
 UINT32 guiCHARBETWEENSECTORICONSCLOSE;
-
-extern BOOLEAN fMapScreenBottomDirty;
 
 // tixa found
 BOOLEAN fFoundTixa = FALSE;

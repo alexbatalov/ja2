@@ -7,6 +7,3 @@ interface SOLDIERINITNODE {
   prev: Pointer<SOLDIERINITNODE>;
   next: Pointer<SOLDIERINITNODE>;
 }
-
-extern SOLDIERINITNODE *gSoldierInitHead;
-extern SOLDIERINITNODE *gSoldierInitTail;

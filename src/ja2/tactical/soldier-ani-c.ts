@@ -60,10 +60,6 @@ DOUBLE gClimbUpRoofDistGoingLower[NUMSOLDIERBODYTYPES] = {
   1,
 };
 
-extern BOOLEAN gfKillingGuysForLosingBattle;
-
-extern UINT8 gubInterruptProvoker;
-
 function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   EV_S_FIREWEAPON SFireWeapon;
 

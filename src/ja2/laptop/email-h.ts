@@ -227,17 +227,6 @@ const enum Enum75 {
 // the length of the subject in char
 const EMAIL_SUBJECT_LENGTH = 128;
 
-extern BOOLEAN fUnReadMailFlag;
-extern BOOLEAN fNewMailFlag;
-extern BOOLEAN fOldUnreadFlag;
-extern BOOLEAN fOldNewMailFlag;
-extern BOOLEAN fDeleteMailFlag;
-extern BOOLEAN fDisplayMessageFlag;
-extern BOOLEAN fReDrawNewMailFlag;
-extern BOOLEAN fOpenMostRecentUnReadFlag;
-extern EmailPtr pEmailList;
-extern UINT32 guiEmailWarning;
-
 const CHECK_X = 15;
 const CHECK_Y = 13;
 const VIEWER_X = 155;

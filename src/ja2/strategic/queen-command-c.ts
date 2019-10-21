@@ -4,11 +4,7 @@
 // as well as intentions, etc.
 SECTORINFO SectorInfo[256];
 UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoHead = NULL;
-extern UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoTail;
 BOOLEAN gfPendingEnemies = FALSE;
-
-extern GARRISON_GROUP *gGarrisonGroup;
-extern INT32 giGarrisonArraySize;
 
 INT16 gsInterrogationGridNo[3] = {
   7756,

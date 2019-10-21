@@ -43,6 +43,3 @@ const enum Enum22 {
   LOADINGSCREEN_DAYBALIME,
   LOADINGSCREEN_NIGHTBALIME,
 }
-
-// For use by the game loader, before it can possibly know the situation.
-extern UINT8 gubLastLoadingScreenID;

@@ -57,62 +57,11 @@ const enum Enum138 {
   NUMBER_OF_SAM_SITES,
 }
 
-// list of refueling site's sector locations
-extern UINT8 ubRefuelList[NUMBER_OF_REFUEL_SITES][2];
-
-// is the helicopter available to player?
-extern BOOLEAN fHelicopterAvailable;
-
-// helicopter vehicle id value
-extern INT32 iHelicopterVehicleId;
-
-// heli is hovering
-extern BOOLEAN fHoveringHelicopter;
-
-// helicopter icon
-extern UINT32 guiHelicopterIcon;
-
-// helicopter destroyed
-extern BOOLEAN fHelicopterDestroyed;
-
-// is the pilot returning straight to base?
-extern BOOLEAN fHeliReturnStraightToBase;
-
-// is the heli in the air?
-extern BOOLEAN fHelicopterIsAirBorne;
-
 // total distance travelled
 // extern INT32 iTotalHeliDistanceSinceRefuel;
 
 // total owed to player
 // extern INT32 iTotalAccumlatedCostByPlayer;
-
-// whether or not skyrider is alive and well? and on our side yet?
-extern BOOLEAN fSkyRiderAvailable;
-
-// time started hovering
-extern UINT32 uiStartHoverTime;
-
-// what state is skyrider's dialogue in in?
-extern UINT32 guiHelicopterSkyriderTalkState;
-
-// plot for helicopter
-extern BOOLEAN fPlotForHelicopter;
-
-// the flags for skyrider events
-extern BOOLEAN fShowEstoniRefuelHighLight;
-extern BOOLEAN fShowOtherSAMHighLight;
-extern BOOLEAN fShowDrassenSAMHighLight;
-extern BOOLEAN fShowCambriaHospitalHighLight;
-
-extern INT32 iTotalAccumulatedCostByPlayer;
-extern UINT32 guiTimeOfLastSkyriderMonologue;
-extern BOOLEAN fSkyRiderSetUp;
-extern BOOLEAN fRefuelingSiteAvailable[NUMBER_OF_REFUEL_SITES];
-
-extern UINT8 gubHelicopterHitsTaken;
-extern BOOLEAN gfSkyriderSaidCongratsOnTakingSAM;
-extern UINT8 gubPlayerProgressSkyriderLastCommentedOn;
 
 /* ARM: Max. fuel range system removed
 // add another sector to how far helictoper has travelled

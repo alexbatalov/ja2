@@ -15,9 +15,6 @@ BOOLEAN InterruptsAllowed = TRUE;
 BOOLEAN gfHiddenInterrupt = FALSE;
 UINT8 gubLastInterruptedGuy = 0;
 
-extern INT16 gsWhoThrewRock;
-extern UINT8 gubSightFlags;
-
 interface TEAM_TURN_SAVE_STRUCT {
   ubOutOfTurnPersons: UINT8;
 

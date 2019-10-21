@@ -8,5 +8,3 @@ const enum Enum277 {
   LEAVE_SECTOR_GOTO_MAP_NOT_DISABLED, // Same as previous, but uses "map" instead of "sector".
   LEAVE_SECTOR_DISABLED_BECAUSE_MULTIPLE_SQUADS_IN_HOSTILE_SECTOR, // Self-explanatory
 }
-
-BOOLEAN gfInSectorExitMenu;

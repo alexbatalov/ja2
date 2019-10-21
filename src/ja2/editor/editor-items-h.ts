@@ -46,7 +46,3 @@ interface EditorItemsInfo {
   sNumTriggers: INT16;
   sNumKeys: INT16;
 }
-
-extern EditorItemsInfo eInfo;
-
-extern INT32 giDefaultExistChance;

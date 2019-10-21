@@ -120,7 +120,3 @@ interface ROTTING_CORPSE {
 }
 
 const MAX_ROTTING_CORPSES = 100;
-
-extern ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
-extern INT32 giNumRottingCorpse;
-extern UINT8 gb4DirectionsFrom8[8];

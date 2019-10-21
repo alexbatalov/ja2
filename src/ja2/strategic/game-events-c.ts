@@ -1,7 +1,5 @@
 STRATEGICEVENT *gpEventList = NULL;
 
-extern UINT32 guiGameClock;
-extern BOOLEAN gfTimeInterruptPause;
 BOOLEAN gfPreventDeletionOfAnyEvent = FALSE;
 BOOLEAN gfEventDeletionPending = FALSE;
 

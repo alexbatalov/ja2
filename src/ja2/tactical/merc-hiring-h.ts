@@ -25,7 +25,3 @@ interface MERC_HIRE_STRUCT {
   usInsertionData: UINT16;
   fUseLandingZoneForArrival: BOOLEAN;
 }
-
-// ATE: Globals that dictate where the mercs will land once being hired
-extern INT16 gsMercArriveSectorX;
-extern INT16 gsMercArriveSectorY;

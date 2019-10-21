@@ -27,5 +27,3 @@ extern	UINT16  gusFirstUsedIndex;
 extern	UINT16  gusLastUsedIndex;
 extern	UINT8		gubNumUsedPages;
 */
-
-extern UINT32 guiLastBobbyRayPage;

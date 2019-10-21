@@ -1,10 +1,3 @@
-extern INT8 gbSkillTraitBonus[NUM_SKILLTRAITS];
-extern UINT8 gubTerrorists[];
-extern INT16 gsTerroristSector[][5][2];
-extern BOOLEAN gfPotentialTeamChangeDuringDeath;
-
-MERCPROFILESTRUCT gMercProfiles[NUM_PROFILES];
-
 const AIM_AND_MERC_MERCS = 51; // A.I.M. is 0-39, M.E.R.C.s are 40-50
 
 // enums for the mercs
@@ -147,5 +140,3 @@ const enum Enum268 {
   NPC168,
   NPC169,
 }
-
-extern BOOLEAN gubNumTerrorists;

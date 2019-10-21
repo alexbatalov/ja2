@@ -210,15 +210,4 @@ const enum Enum204 {
   UPDATE_BOX_REASON_SHOW_BOX,
 }
 
-extern UINT32 uiExternalStaticNPCFaces[];
-extern UINT32 uiExternalFaceProfileIds[];
-
-extern UINT32 guiDialogueLastQuoteTime;
-extern UINT32 guiDialogueLastQuoteDelay;
-
-extern INT32 giNPCReferenceCount;
-extern INT32 giNPCSpecialReferenceCount;
-
 const NUMBER_VALID_MERC_PRECEDENT_QUOTES = 13;
-
-extern UINT8 gubMercValidPrecedentQuoteID[NUMBER_VALID_MERC_PRECEDENT_QUOTES];

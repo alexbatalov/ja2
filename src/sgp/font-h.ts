@@ -31,13 +31,6 @@ interface FontTranslationTable {
   DynamicArrayOf16BitValues: Pointer<UINT16>;
 }
 
-extern INT32 FontDefault;
-extern UINT32 FontDestBuffer;
-extern UINT32 FontDestPitch;
-extern UINT32 FontDestBPP;
-extern SGPRect FontDestRegion;
-extern BOOLEAN FontDestWrap;
-
 const SetFontDestObject = (x) => (SetFontDestBuffer(x, FontDestRegion.left, FontDestRegion.top, FontDestRegion.right, FontDestRegion.bottom, FontDestWrap));
 
 const SetFontDestClip = (x1, y1, x2, y2) => (SetFontDestBuffer(FontDestBuffer, x1, y1, x2, y2, FontDestWrap));

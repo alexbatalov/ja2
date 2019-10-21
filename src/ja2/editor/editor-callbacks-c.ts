@@ -1,6 +1,3 @@
-extern SOLDIERINITNODE *gpSelected;
-extern SCHEDULENODE gCurrSchedule;
-
 // TERRAIN
 function BtnFgGrndCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {

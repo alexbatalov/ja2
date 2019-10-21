@@ -25,9 +25,6 @@ interface LibraryInitHeader {
   fInitOnStart: BOOLEAN; // Flag specifying if the library is to Initialized at the begining of the game
 }
 
-extern LibraryInitHeader gGameLibaries[];
-extern CHAR8 gzCdDirectory[SGPFILENAME_LEN];
-
 const REAL_LIBRARY_FILE = "RealFiles.slf";
 
 interface RealFileOpenStruct {
@@ -108,8 +105,5 @@ interface DIRENTRY {
   sFileTime: FILETIME;
   usReserved2: UINT16;
 }
-
-// The FileDatabaseHeader
-extern DatabaseManagerHeaderStruct gFileDataBase;
 
 // Function Prototypes

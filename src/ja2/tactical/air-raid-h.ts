@@ -11,11 +11,6 @@ interface AIR_RAID_DEFINITION {
   ubFiller: UINT8[] /* [8] */;
 }
 
-extern BOOLEAN gfInAirRaid;
-
-// what ari raid mode are we in?
-extern UINT8 gubAirRaidMode;
-
 const enum Enum192 {
   AIR_RAID_TRYING_TO_START,
   AIR_RAID_START,

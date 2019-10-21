@@ -4,9 +4,6 @@ const enum Enum52 {
   MESSAGEBOX_WAIT,
 }
 
-extern UINT8 gubMessageBoxStatus;
-extern BOOLEAN gfMessageBoxResult;
-
 // NOTES:
 // Rewrote the damn thing.  It is better now because you have less management issues.
 // In your screen's main loop, instead of using the previous method, you would use the following syntax:

@@ -1,159 +1,8 @@
 const STRING_LENGTH = 255;
 
-extern UINT16 ShortItemNames[MAXITEMS][80];
-extern UINT16 ItemNames[MAXITEMS][80];
-extern UINT16 AmmoCaliber[][20];
-extern UINT16 BobbyRayAmmoCaliber[][20];
-extern UINT16 WeaponType[][30];
-
-extern UINT16 Message[][STRING_LENGTH];
-extern UINT16 TeamTurnString[][STRING_LENGTH];
-extern STR16 pAssignMenuStrings[];
-extern STR16 pTrainingStrings[];
-extern STR16 pTrainingMenuStrings[];
-extern STR16 pAttributeMenuStrings[];
-extern STR16 pVehicleStrings[];
-extern STR16 pShortAttributeStrings[];
-extern STR16 pLongAttributeStrings[];
-extern STR16 pContractStrings[];
-extern STR16 pAssignmentStrings[];
-extern STR16 pConditionStrings[];
-extern STR16 pTownNames[];
-extern STR16 pPersonnelScreenStrings[];
-extern STR16 pPersonnelTitle[];
-extern STR16 pUpperLeftMapScreenStrings[];
-extern STR16 pTacticalPopupButtonStrings[];
-extern STR16 pSquadMenuStrings[];
-extern STR16 pDoorTrapStrings[];
-extern STR16 pLongAssignmentStrings[];
-extern STR16 pContractExtendStrings[];
-extern STR16 pMapScreenMouseRegionHelpText[];
-extern STR16 pPersonnelAssignmentStrings[];
-extern STR16 pNoiseVolStr[];
-extern STR16 pNoiseTypeStr[];
-extern STR16 pDirectionStr[];
-extern STR16 pRemoveMercStrings[];
-extern STR16 sTimeStrings[];
-extern STR16 pLandTypeStrings[];
-extern STR16 pGuardMenuStrings[];
-extern STR16 pOtherGuardMenuStrings[];
-extern STR16 pInvPanelTitleStrings[];
-extern STR16 pPOWStrings[];
-extern STR16 pMilitiaString[];
-extern STR16 pMilitiaButtonString[];
-extern STR16 pEpcMenuStrings[];
-
-extern STR16 pRepairStrings[];
-extern STR16 sPreStatBuildString[];
-extern STR16 sStatGainStrings[];
-extern STR16 pHelicopterEtaStrings[];
-extern STR16 sMapLevelString[];
-extern STR16 gsLoyalString[];
-extern STR16 pMapHeliErrorString[];
-extern STR16 gsUndergroundString[];
-extern STR16 gsTimeStrings[];
-extern STR16 sFacilitiesStrings[];
-extern STR16 pMapPopUpInventoryText[];
-extern STR16 pwTownInfoStrings[];
-extern STR16 pwMineStrings[];
-extern STR16 pwMiscSectorStrings[];
-extern STR16 pMapInventoryErrorString[];
-extern STR16 pMapInventoryStrings[];
-extern STR16 pMapScreenFastHelpTextList[];
-extern STR16 pMovementMenuStrings[];
-extern STR16 pUpdateMercStrings[];
-extern STR16 pMapScreenBorderButtonHelpText[];
-extern STR16 pMapScreenBottomFastHelp[];
-extern STR16 pMapScreenBottomText[];
-extern STR16 pMercDeadString[];
-extern STR16 pSenderNameList[];
-extern STR16 pTraverseStrings[];
-extern STR16 pNewMailStrings[];
-extern STR16 pDeleteMailStrings[];
-extern STR16 pEmailHeaders[];
-extern STR16 pEmailTitleText[];
-extern STR16 pFinanceTitle[];
-extern STR16 pFinanceSummary[];
-extern STR16 pFinanceHeaders[];
-extern STR16 pTransactionText[];
-extern STR16 pTransactionAlternateText[];
-extern STR16 pMoralStrings[];
-extern STR16 pSkyriderText[];
-extern STR16 pMercFellAsleepString[];
-extern STR16 pLeftEquipmentString[];
-extern STR16 pMapScreenStatusStrings[];
-extern STR16 pMapScreenPrevNextCharButtonHelpText[];
-extern STR16 pEtaString[];
-extern STR16 pShortVehicleStrings[];
-extern STR16 pTrashItemText[];
-extern STR16 pMapErrorString[];
-extern STR16 pMapPlotStrings[];
-extern STR16 pMiscMapScreenMouseRegionHelpText[];
-extern STR16 pMercHeLeaveString[];
-extern STR16 pMercSheLeaveString[];
-extern STR16 pImpPopUpStrings[];
-extern STR16 pImpButtonText[];
-extern STR16 pExtraIMPStrings[];
-extern STR16 pFilesTitle[];
-extern STR16 pFilesSenderList[];
-extern STR16 pHistoryLocations[];
-// extern STR16 pHistoryAlternateStrings[];
-extern STR16 pHistoryStrings[];
-extern STR16 pHistoryHeaders[];
-extern STR16 pHistoryTitle[];
-extern STR16 pShowBookmarkString[];
-extern STR16 pWebPagesTitles[];
-extern STR16 pWebTitle[];
-extern STR16 pPersonnelString[];
-extern STR16 pErrorStrings[];
-extern STR16 pDownloadString[];
-extern STR16 pBookmarkTitle[];
-extern STR16 pBookMarkStrings[];
-extern STR16 pLaptopIcons[];
-extern STR16 sATMText[];
-extern STR16 gsAtmStartButtonText[];
-extern STR16 gsAtmSideButtonText[];
-extern STR16 pDownloadString[];
-extern STR16 pPersonnelTeamStatsStrings[];
-extern STR16 pPersonnelCurrentTeamStatsStrings[];
-extern STR16 pPersonelTeamStrings[];
-extern STR16 pPersonnelDepartedStateStrings[];
-extern STR16 pMapHortIndex[];
-extern STR16 pMapVertIndex[];
-extern STR16 pMapDepthIndex[];
-// extern STR16 sCritLocationStrings[];
-// extern STR16 sVehicleHit[ ];
-extern STR16 pLaptopTitles[];
-extern STR16 pDayStrings[];
-extern STR16 pMercContractOverStrings[];
-extern STR16 pMilitiaConfirmStrings[];
-extern STR16 pDeliveryLocationStrings[];
-extern STR16 pSkillAtZeroWarning[];
-extern STR16 pIMPBeginScreenStrings[];
-extern STR16 pIMPFinishButtonText[1];
-extern STR16 pIMPFinishStrings[];
-extern STR16 pIMPVoicesStrings[];
-extern STR16 pDepartedMercPortraitStrings[];
-extern STR16 pPersTitleText[];
-extern STR16 pPausedGameText[];
-extern STR16 zOptionsToggleText[];
-extern STR16 zOptionsScreenHelpText[];
-extern STR16 pDoctorWarningString[];
-extern STR16 pMilitiaButtonsHelpText[];
-extern STR16 pMapScreenJustStartedHelpText[];
-extern STR16 pLandMarkInSectorString[];
-extern STR16 gzMercSkillText[];
-extern STR16 gzNonPersistantPBIText[];
-extern STR16 gzMiscString[];
-
-extern STR16 wMapScreenSortButtonHelpText[];
-extern STR16 pNewNoiseStr[];
-extern STR16 gzLateLocalizedString[];
-
 const enum Enum332 {
   ANTIHACKERSTR_EXITGAME,
 }
-extern STR16 pAntiHackerString[];
 
 const enum Enum333 {
   MSG_EXITGAME,
@@ -234,9 +83,6 @@ const enum Enum333 {
   MSG_JUST_HIRED_MERC_ARRIVAL_LOCATION_POPUP,
   MSG_HISTORY_UPDATED,
 }
-extern STR16 pMessageStrings[];
-
-extern UINT16 ItemPickupHelpPopup[][40];
 
 const enum Enum334 {
   STR_EMPTY,
@@ -307,21 +153,6 @@ const enum Enum334 {
 const LARGE_STRING_LENGTH = 200;
 const MED_STRING_LENGTH = 80;
 const SMALL_STRING_LENGTH = 20;
-
-extern UINT16 TacticalStr[][MED_STRING_LENGTH];
-extern UINT16 LargeTacticalStr[][LARGE_STRING_LENGTH];
-
-extern UINT16 zDialogActions[][SMALL_STRING_LENGTH];
-extern UINT16 zDealerStrings[][SMALL_STRING_LENGTH];
-extern UINT16 zTalkMenuStrings[][SMALL_STRING_LENGTH];
-extern STR16 gzMoneyAmounts[6];
-extern INT16 gzProsLabel[10];
-extern INT16 gzConsLabel[10];
-extern INT16 gMoneyStatsDesc[][13];
-extern INT16 gWeaponStatsDesc[][14];
-extern STR16 sKeyDescriptionStrings[2];
-extern UINT16 zHealthStr[][13];
-extern STR16 zVehicleName[6];
 
 const enum Enum335 {
   AIR_RAID_TURN_STR,
@@ -491,7 +322,6 @@ const enum Enum336 {
   EXIT_GUI_ALL_TRAVERSAL_WILL_MOVE_CURRENT_SQUAD_HELPTEXT,
   EXIT_GUI_ESCORTED_CHARACTERS_CANT_LEAVE_SECTOR_ALONE_STR,
 }
-extern STR16 pExitingSectorHelpText[];
 
 const enum Enum337 {
   LARGESTR_NOONE_LEFT_CAPABLE_OF_BATTLE_STR,
@@ -506,14 +336,12 @@ const enum Enum338 {
   INS_CONTRACT_ACCEPT,
   INS_CONTRACT_CLEAR,
 }
-extern STR16 InsContractText[];
 
 // Insurance Info
 const enum Enum339 {
   INS_INFO_PREVIOUS,
   INS_INFO_NEXT,
 }
-extern STR16 InsInfoText[];
 
 // Merc Account.c
 const enum Enum340 {
@@ -528,7 +356,6 @@ const enum Enum340 {
   MERC_ACCOUNT_AUTHORIZE_CONFIRMATION,
   MERC_ACCOUNT_NOT_ENOUGH_MONEY,
 }
-extern STR16 MercAccountText[];
 
 // MercFile.c
 const enum Enum341 {
@@ -558,7 +385,6 @@ const enum Enum341 {
 
   MERC_FILES_MERC_UNAVAILABLE,
 }
-extern STR16 MercInfo[];
 
 // MercNoAccount.c
 const enum Enum342 {
@@ -566,7 +392,6 @@ const enum Enum342 {
   MERC_NO_ACC_CANCEL,
   MERC_NO_ACC_NO_ACCOUNT_OPEN_ONE,
 }
-extern STR16 MercNoAccountText[];
 
 // Merc HomePage
 const enum Enum343 {
@@ -576,7 +401,6 @@ const enum Enum343 {
   MERC_VIEW_FILES,
   MERC_SPECK_COM,
 }
-extern STR16 MercHomePageText[];
 
 // Funerl.c
 const enum Enum344 {
@@ -593,7 +417,6 @@ const enum Enum344 {
   FUNERAL_OUR_CONDOLENCES, // 10
   FUNERAL_OUR_SYMPATHIES,
 }
-extern STR16 sFuneralString[];
 
 // Florist.c
 const enum Enum345 {
@@ -611,7 +434,6 @@ const enum Enum345 {
   FLORIST_ADVERTISEMENT_7,
   FLORIST_ADVERTISEMENT_8,
 }
-extern STR16 sFloristText[];
 
 // Florist Order Form
 const enum Enum346 {
@@ -638,7 +460,6 @@ const enum Enum346 {
   FLORIST_ORDER_BILLING_INFO, // 20
   FLORIST_ORDER_NAME,
 }
-extern STR16 sOrderFormText[];
 
 // Florist Gallery.c
 const enum Enum347 {
@@ -648,14 +469,12 @@ const enum Enum347 {
   FLORIST_GALLERY_ADDIFTIONAL_FEE,
   FLORIST_GALLERY_HOME,
 }
-extern STR16 sFloristGalleryText[];
 
 // Florist Cards
 const enum Enum348 {
   FLORIST_CARDS_CLICK_SELECTION,
   FLORIST_CARDS_BACK,
 }
-extern STR16 sFloristCards[];
 
 // Bobbyr Mail Order.c
 const enum Enum349 {
@@ -686,7 +505,6 @@ const enum Enum349 {
   BOBBYR_MINIMUM_WEIGHT,
   BOBBYR_GOTOSHIPMENT_PAGE,
 }
-extern STR16 BobbyROrderFormText[];
 
 // BobbyRGuns.c
 const enum Enum350 {
@@ -723,8 +541,6 @@ const enum Enum350 {
   BOBBYR_NO_MORE_STOCK,
 }
 
-extern STR16 BobbyRText[];
-
 // BobbyR.c
 const enum Enum351 {
   BOBBYR_ADVERTISMENT_1,
@@ -737,7 +553,6 @@ const enum Enum351 {
   BOBBYR_ADVERTISMENT_3,
   BOBBYR_UNDER_CONSTRUCTION,
 }
-extern STR16 BobbyRaysFrontText[];
 
 // Aim Sort.c
 const enum Enum352 {
@@ -755,7 +570,6 @@ const enum Enum352 {
   ASCENDING,
   DESCENDING,
 }
-extern STR16 AimSortText[];
 
 // Aim Policies.c
 const enum Enum353 {
@@ -766,13 +580,11 @@ const enum Enum353 {
   AIM_POLICIES_DISAGREE,
   AIM_POLICIES_AGREE,
 }
-extern STR16 AimPolicyText[];
 
 // Aim Member.c
 const enum Enum354 {
   AIM_MEMBER_CLICK_INSTRUCTIONS,
 }
-extern STR16 AimMemberText[];
 
 // Aim Member.c
 const enum Enum355 {
@@ -800,7 +612,6 @@ const enum Enum355 {
   AIM_MEMBER_OPTIONAL_GEAR,
   AIM_MEMBER_MEDICAL_DEPOSIT_REQ,
 }
-extern STR16 CharacterInfo[];
 
 // Aim Member.c
 const enum Enum356 {
@@ -820,7 +631,6 @@ const enum Enum356 {
   AIM_MEMBER_CONNECTING,
   AIM_MEMBER_WITH_MEDICAL, // 14
 }
-extern STR16 VideoConfercingText[];
 
 // Aim Member.c
 const enum Enum357 {
@@ -837,13 +647,11 @@ const enum Enum357 {
   AIM_MEMBER_PRERECORDED_MESSAGE,
   AIM_MEMBER_MESSAGE_RECORDED,
 }
-extern STR16 AimPopUpText[];
 
 // AIM Link.c
 const enum Enum358 {
   AIM_LINK_TITLE,
 }
-extern STR16 AimLinkText[];
 
 // Aim History
 const enum Enum359 {
@@ -853,7 +661,6 @@ const enum Enum359 {
   AIM_HISTORY_AIM_ALUMNI,
   AIM_HISTORY_NEXT,
 }
-extern STR16 AimHistoryText[];
 
 // Aim Facial Index
 const enum Enum360 {
@@ -872,7 +679,6 @@ const enum Enum360 {
   AIM_FI_AWAY,
   AIM_FI_DEAD,
 }
-extern STR16 AimFiText[];
 
 // AimArchives.
 const enum Enum361 {
@@ -882,7 +688,6 @@ const enum Enum361 {
   AIM_ALUMNI_ALUMNI,
   AIM_ALUMNI_DONE,
 }
-extern STR16 AimAlumniText[];
 
 // Aim Home Page
 const enum Enum362 {
@@ -901,8 +706,6 @@ const enum Enum362 {
   AIM_BOBBYR_ADD3,
 }
 
-extern STR16 AimScreenText[];
-
 // Aim Home Page
 const enum Enum363 {
   AIM_HOME,
@@ -913,14 +716,11 @@ const enum Enum363 {
   AIM_LINKS,
 }
 
-extern STR16 AimBottomMenuText[];
-
 // MapScreen
 const enum Enum364 {
   MAP_SCREEN_MAP_LEVEL,
   MAP_SCREEN_NO_MILITIA_TEXT,
 }
-extern STR16 zMarksMapScreenText[];
 
 // Weapon Name and Description size
 const ITEMSTRINGFILENAME = "BINARYDATA\\ITEMDESC.EDT";
@@ -1015,13 +815,9 @@ const enum Enum365 {
   STR_DIALOG_CREATURES_ATTACK_UNCONCIOUSMERCS,
 }
 
-// Strings used in conjunction with above enumerations
-extern STR16 gpStrategicString[];
-
 const enum Enum366 {
   STR_GAMECLOCK_DAY_NAME,
 }
-extern STR16 gpGameClockString[];
 
 // enums for the Shopkeeper Interface
 const enum Enum367 {
@@ -1040,7 +836,6 @@ const enum Enum367 {
   SKI_TEXT_MINUTES,
   SKI_TEXT_DROP_ITEM_TO_GROUND,
 }
-extern STR16 SKI_Text[];
 
 // ShopKeeper Interface
 const enum Enum368 {
@@ -1062,7 +857,6 @@ const enum Enum368 {
 
   NUM_SKI_ATM_BUTTONS,
 }
-extern STR16 SkiAtmText[];
 
 // ShopKeeper Interface
 const enum Enum369 {
@@ -1073,7 +867,6 @@ const enum Enum369 {
   SKI_ATM_MODE_TEXT_SELECT_INUSUFFICIENT_FUNDS,
   SKI_ATM_MODE_TEXT_BALANCE,
 }
-extern STR16 gzSkiAtmText[];
 
 // ShopKeeperInterface Message Box defines
 const enum Enum370 {
@@ -1087,8 +880,6 @@ const enum Enum370 {
 
   SKI_PLAYERS_CURRENT_BALANCE,
 }
-
-extern STR16 SkiMessageBoxText[];
 
 // enums for the above text
 const enum Enum371 {
@@ -1116,7 +907,6 @@ const enum Enum371 {
 
   SLG_DIFF,
 }
-extern STR16 zSaveLoadText[];
 
 // OptionScreen.h
 // defines used for the zOptionsText
@@ -1131,8 +921,6 @@ const enum Enum372 {
   OPT_RETURN_TO_MAIN,
   OPT_NEED_AT_LEAST_SPEECH_OR_SUBTITLE_OPTION_ON,
 }
-
-extern STR16 zOptionsText[];
 
 // used with the gMoneyStatsDesc[]
 const enum Enum373 {
@@ -1178,7 +966,6 @@ const enum Enum375 {
   GIO_IRON_MAN_TEXT,
   GIO_DISABLED_FOR_THE_DEMO_TEXT,
 }
-extern STR16 gzGIOScreenText[];
 
 const enum Enum376 {
   LAPTOP_BN_HLP_TXT_VIEW_EMAIL,
@@ -1205,12 +992,6 @@ const enum Enum376 {
 const enum Enum377 {
   HLP_SCRN_TXT__EXIT_SCREEN,
 }
-extern STR16 gzHelpScreenText[];
-
-extern STR16 gzLaptopHelpText[];
-
-extern STR16 gzMoneyWithdrawMessageText[];
-extern STR16 gzCopyrightText[];
 
 // enums used for the mapscreen inventory messages
 const enum Enum378 {
@@ -1227,7 +1008,6 @@ const enum Enum379 {
   BROKEN_LINK_TXT_ERROR_404,
   BROKEN_LINK_TXT_SITE_NOT_FOUND,
 }
-extern STR16 BrokenLinkText[];
 
 // Bobby rays page for recent shipments
 const enum Enum380 {
@@ -1237,14 +1017,11 @@ const enum Enum380 {
   BOBBYR_SHIPMENT__ORDERED_ON,
 }
 
-extern STR16 gzBobbyRShipmentText[];
-
 const enum Enum381 {
   GIO_CFS_NOVICE,
   GIO_CFS_EXPERIENCED,
   GIO_CFS_EXPERT,
 }
-extern STR16 zGioDifConfirmText[];
 
 const enum Enum382 {
   CRDT_CAMFIELD,
@@ -1265,7 +1042,3 @@ const enum Enum382 {
 
   NUM_PEOPLE_IN_CREDITS,
 }
-
-STR16 gzCreditNames[];
-STR16 gzCreditNameTitle[];
-STR16 gzCreditNameFunny[];

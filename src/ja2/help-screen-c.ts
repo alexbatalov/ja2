@@ -1,12 +1,3 @@
-extern INT16 gsVIEWPORT_END_Y;
-extern BOOLEAN fMapScreenBottomDirty;
-extern BOOLEAN fCharacterInfoPanelDirty;
-extern BOOLEAN fTeamPanelDirty;
-extern BOOLEAN fMapScreenBottomDirty;
-extern BOOLEAN fMapPanelDirty;
-extern BOOLEAN gfGamePaused;
-extern BOOLEAN fShowMapInventoryPool;
-
 const HELP_SCREEN_ACTIVE = 0x00000001;
 
 // The defualt size and placement of the screen

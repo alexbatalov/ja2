@@ -90,7 +90,6 @@ UINT32 guiLISTCOLUMNS;
 
 // are in the financial system right now?
 BOOLEAN fInFinancialMode = FALSE;
-extern BOOLEAN fMapScreenBottomDirty;
 
 // the last page loaded
 UINT32 guiLastPageLoaded = 0;

@@ -5,5 +5,3 @@ const enum Enum21 {
 
   INTRO_SPLASH,
 }
-
-extern UINT32 guiSmackerSurface;

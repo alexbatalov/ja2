@@ -1,7 +1,3 @@
-extern BOOLEAN gfProcessingGameEvents;
-extern UINT32 guiTimeStampOfCurrentlyExecutingEvent;
-extern BOOLEAN gfPreventDeletionOfAnyEvent;
-
 function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
   STRATEGICEVENT *pNewEvent;
   if (gTacticalStatus.fEnemyInSector) {

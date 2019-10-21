@@ -93,20 +93,6 @@ UINT32 guiMapInvenButton[3];
 
 BOOLEAN gfCheckForCursorOverMapSectorInventoryItem = FALSE;
 
-extern UINT32 guiNumWorldItems;
-extern BOOLEAN fShowInventoryFlag;
-extern BOOLEAN fMapScreenBottomDirty;
-
-extern OBJECTTYPE gItemPointer;
-
-extern OBJECTTYPE *gpItemPointer;
-
-// outside vidieo objects for cursor
-extern UINT32 guiExternVo;
-extern UINT16 gusExternVoSubIndex;
-
-extern MOUSE_REGION gMPanelRegion;
-
 // load the background panel graphics for inventory
 function LoadInventoryPoolGraphic(): BOOLEAN {
   VOBJECT_DESC VObjectDesc;

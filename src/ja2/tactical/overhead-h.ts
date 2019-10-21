@@ -166,31 +166,5 @@ interface TacticalStatusType {
   uiCreatureTenseQuoteLastUpdate: UINT32;
 }
 
-UINT8 gbPlayerNum;
-INT8 gbShowEnemies;
-
-UINT16 gusSelectedSoldier;
-UINT16 gusOldSelectedSoldier;
-
-CHAR8 gzAlertStr[][30];
-CHAR8 gzActionStr[][30];
-CHAR8 gzDirectionStr[][30];
-
-// TEMP FOR E3
-UINT8 gubCurrentScene;
-INT8 ubLevelMoveLink[10];
-
-// Soldier List used for all soldier overhead interaction
-SOLDIERTYPE Menptr[TOTAL_SOLDIERS];
-SOLDIERTYPE *MercPtrs[TOTAL_SOLDIERS];
-
-// MERC SLOTS - A LIST OF ALL ACTIVE MERCS
-SOLDIERTYPE *MercSlots[TOTAL_SOLDIERS];
-UINT32 guiNumMercSlots;
-
-BOOLEAN gfMovingAnimation;
-
-TacticalStatusType gTacticalStatus;
-
 const REASON_NORMAL_ATTACK = 1;
 const REASON_EXPLOSION = 2;

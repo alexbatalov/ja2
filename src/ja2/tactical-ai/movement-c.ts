@@ -1,6 +1,3 @@
-// from strategic
-extern INT16 DirXIncrementer[8];
-extern INT16 DirYIncrementer[8];
 //
 // CJC's DG->JA2 conversion notes
 //

@@ -1,6 +1,3 @@
-extern AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
-extern INT16 gsNumAmbData;
-
 const SOUND_NAME_SIZE = 256;
 const NUM_SOUNDS_PER_TIMEFRAME = 8;
 

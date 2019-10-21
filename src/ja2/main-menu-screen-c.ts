@@ -37,8 +37,6 @@ BOOLEAN gfMainMenuScreenExit = FALSE;
 
 UINT32 guiMainMenuExitScreen = MAINMENU_SCREEN;
 
-extern BOOLEAN gfLoadGameUponEntry;
-
 function MainMenuScreenInit(): UINT32 {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %S", zVersionLabel));
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", czVersionNumber));

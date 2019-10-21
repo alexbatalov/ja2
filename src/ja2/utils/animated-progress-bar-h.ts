@@ -44,5 +44,3 @@ interface PROGRESSBAR {
   fUseSaveBuffer: BOOLEAN; // use the save buffer when display the text
   rLastActual: double;
 }
-
-PROGRESSBAR *pBar[MAX_PROGRESSBARS];

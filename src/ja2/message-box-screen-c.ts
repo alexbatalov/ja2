@@ -17,10 +17,6 @@ SGPRect MessageBoxRestrictedCursorRegion;
 BOOLEAN fCursorLockedToArea = FALSE;
 BOOLEAN gfInMsgBox = FALSE;
 
-// extern BOOLEAN fMapExitDueToMessageBox;
-extern BOOLEAN fInMapMode;
-extern BOOLEAN gfOverheadMapDirty;
-
 SGPRect gOldCursorLimitRectangle;
 
 MESSAGE_BOX_STRUCT gMsgBox;
@@ -29,7 +25,6 @@ BOOLEAN gfStartedFromGameScreen = FALSE;
 BOOLEAN gfStartedFromMapScreen = FALSE;
 BOOLEAN fRestoreBackgroundForMessageBox = FALSE;
 BOOLEAN gfDontOverRideSaveBuffer = TRUE; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
-extern STR16 pUpdatePanelButtons[];
 
 CHAR16 gzUserDefinedButton1[128];
 CHAR16 gzUserDefinedButton2[128];

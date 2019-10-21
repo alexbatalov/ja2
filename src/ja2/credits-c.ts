@@ -1,6 +1,3 @@
-// externals
-extern HVSURFACE ghFrameBuffer;
-
 // local Defines
 const enum Enum1 {
   CRDT_RENDER_NONE,

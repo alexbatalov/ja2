@@ -7,8 +7,6 @@ const END_FACE_OVERLAY_DELAY = 2000;
 FACETYPE gFacesData[NUM_FACE_SLOTS];
 UINT32 guiNumFaces = 0;
 
-extern BOOLEAN gfInItemPickupMenu;
-
 interface RPC_SMALL_FACE_VALUES {
   bEyesX: INT8;
   bEyesY: INT8;
@@ -83,12 +81,6 @@ UINT8 gubRPCSmallFaceProfileNum[] = {
 };
 
 UINT8 ubRPCNumSmallFaceValues = 28;
-
-extern BOOLEAN gfSMDisableForItems;
-extern INT16 gsCurInterfacePanel;
-extern UINT16 gusSMCurrentMerc;
-extern BOOLEAN gfRerenderInterfaceFromHelpText;
-extern BOOLEAN gfInItemPickupMenu;
 
 function GetFreeFace(): INT32 {
   UINT32 uiCount;

@@ -33,6 +33,3 @@ interface NewBobbyRayOrderStruct {
 
   ubFiller: UINT8[] /* [7] */;
 }
-
-extern NewBobbyRayOrderStruct *gpNewBobbyrShipments;
-extern INT32 giNumberOfNewBobbyRShipment;

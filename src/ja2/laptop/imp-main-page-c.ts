@@ -4,8 +4,6 @@ const MAIN_PAGE_BUTTON_TEXT_WIDTH = 95;
 INT32 giIMPMainPageButton[6];
 INT32 giIMPMainPageButtonImage[6];
 
-extern INT32 iCurrentVoices;
-
 // mouse regions for not entablable warning
 MOUSE_REGION pIMPMainPageMouseRegions[4];
 

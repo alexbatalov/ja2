@@ -305,17 +305,6 @@ BOOLEAN gfPerformTransactionInProgress = FALSE;
 
 BOOLEAN gfCommonQuoteUsedThisSession[NUM_COMMON_SK_QUOTES];
 
-extern SOLDIERTYPE *gpSMCurrentMerc;
-extern SOLDIERTYPE *gpItemDescSoldier;
-extern MOUSE_REGION gItemDescAttachmentRegions[MAX_ATTACHMENTS];
-extern MOUSE_REGION gInvDesc;
-extern BOOLEAN gfSMDisableForItems;
-extern OBJECTTYPE *gpItemDescObject;
-extern UINT8 gubSelectSMPanelToMerc;
-extern INT32 giItemDescAmmoButton;
-
-extern UINT8 gubLastSpecialItemAddedAtElement;
-
 // Enums for the various Atm modes
 const enum Enum250 {
   SKI_ATM_DISABLED_MODE,

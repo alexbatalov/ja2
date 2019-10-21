@@ -26,5 +26,3 @@ const enum Enum175 {
 
 // PLEASE USE CALCULATE_STRATEGIC_INDEX() macro instead (they're identical).
 //#define			GETWORLDMAPNO( x, y )		( x+(MAP_WORLD_X*y) )
-
-extern StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];

@@ -1,5 +1,3 @@
-extern INT32 iCurrentMapSectorZ;
-
 // the squad list font
 const SQUAD_FONT = () => COMPFONT();
 

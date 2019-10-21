@@ -66,5 +66,3 @@ type INPUT_CALLBACK = (a: UINT8, b: BOOLEAN) => void;
 // The function must use this signature:  void FunctionName( UINT8 ubFieldID, BOOLEAN fEntering );
 // ubFieldID contains the fieldID of that field
 // fEntering is true if you are entering the user field, false if exiting.
-
-BOOLEAN gfNoScroll;

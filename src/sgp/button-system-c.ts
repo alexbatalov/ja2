@@ -73,9 +73,6 @@ BOOLEAN fDisableHelpTextRestoreFlag = FALSE;
 BOOLEAN gfDelayButtonDeletion = FALSE;
 BOOLEAN gfPendingButtonDeletion = FALSE;
 
-extern MOUSE_REGION *MSYS_PrevRegion;
-extern MOUSE_REGION *MSYS_CurrRegion;
-
 //=============================================================================
 //	FindFreeButtonSlot
 //

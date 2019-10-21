@@ -1,7 +1,3 @@
-extern UINT32 guiExitScreen;
-extern UINT32 uiMeanWhileFlags;
-extern BOOLEAN gfGamePaused;
-
 UINT8 gubScreenCount = 0;
 
 function InitNPCs(): void {

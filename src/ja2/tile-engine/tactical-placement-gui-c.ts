@@ -17,8 +17,6 @@ const enum Enum310 {
 }
 UINT32 iTPButtons[NUM_TP_BUTTONS];
 
-extern BOOLEAN gfOverheadMapDirty;
-
 UINT8 gubDefaultButton = CLEAR_BUTTON;
 BOOLEAN gfTacticalPlacementGUIActive = FALSE;
 BOOLEAN gfTacticalPlacementFirstTime = FALSE;

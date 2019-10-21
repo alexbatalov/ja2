@@ -23,9 +23,7 @@ const enum Enum322 {
   TCTL_MSG__NEW_CAMPAIGN_CONFIRM,
   TCTL_MSG__CANT_EDIT_DEFAULT,
 }
-extern STR16 zNewTacticalMessages[];
 
 const enum Enum323 {
   IMM__IRON_MAN_MODE_WARNING_TEXT,
 }
-extern STR16 gzIronManModeWarningText[];

@@ -211,32 +211,5 @@ const enum Enum38 {
   DRAW_MODE_ERASE = 1000,
 }
 
-extern INT32 iEditorButton[NUMBER_EDITOR_BUTTONS];
-extern INT32 iEditorToolbarState;
-extern INT32 iDrawMode;
-extern INT32 iCurrentAction;
-extern INT32 iActionParam;
-extern INT32 iEditAction;
-
-extern UINT16 gusLightLevel;
-extern UINT16 gusLightLevelPercentage;
-extern INT16 gsLightRadius;
-
-extern BOOLEAN gfRenderWorld;
-extern BOOLEAN gfRenderTaskbar;
-extern BOOLEAN gfShowTerrainTileButtons;
-extern BOOLEAN gfRenderDrawingMode;
-
-extern BOOLEAN gfPendingBasement;
-extern BOOLEAN gfPendingCaves;
-
-// When in merc-inventory mode, this flag is set when the user wishes to get an item, which requires hooking
-// into the item editing features.  It is defined here, so editoritems can get access to this mode which makes
-// certain special cases.
-extern BOOLEAN gfMercGetItem;
-
-// When actually editing item statistics, this value will be set, for the purposes of rendering, input, etc.
-extern BOOLEAN gfShowItemStatsPanel;
-
 const MERCPANEL_X = 177;
 const MERCPANEL_Y = 361;

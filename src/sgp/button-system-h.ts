@@ -75,8 +75,6 @@ const GUI_SND_MOV_OFF = BUTTON_SOUND_MOVED_OFF_OF;
 const GUI_SND_DCLK = BUTTON_SOUND_DISABLED_CLICK;
 const GUI_SND_DMOV = BUTTON_SOUND_DISABLED_MOVED_ONTO;
 
-extern UINT32 ButtonDestBuffer;
-
 // GUI_BUTTON callback function type
 type GUI_CALLBACK = (a: Pointer<GUI_BUTTON>, b: INT32) => void;
 
@@ -130,8 +128,6 @@ interface GUI_BUTTON {
 
 const MAX_BUTTONS = 400;
 
-extern GUI_BUTTON *ButtonList[MAX_BUTTONS]; // Button System's Main Button List
-
 const GetButtonPtr = (x) => (((x >= 0) && (x < MAX_BUTTONS)) ? ButtonList[x] : NULL);
 
 // Struct definition for the QuickButton pictures.
@@ -149,11 +145,8 @@ interface BUTTON_PICS {
 
 const MAX_BUTTON_PICS = 256;
 
-extern BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
-
 const RenderButtonsFastHelp = () => RenderFastHelp();
 
-extern BOOLEAN gfRenderHilights;
 const EnableHilightsAndHelpText = () => gfRenderHilights = TRUE;
 const DisableHilightsAndHelpText = () => gfRenderHilights = FALSE;
 

@@ -8,8 +8,6 @@ const NOVIEW = 5;
 const MAXVIEWPATHS = 17;
 const VIEWPATHLENGTH = 13;
 
-extern INT16 DirIncrementer[8];
-
 UINT8 gubGridNoMarkers[WORLD_MAX];
 UINT8 gubGridNoValue = 254;
 

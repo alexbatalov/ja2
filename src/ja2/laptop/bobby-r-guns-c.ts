@@ -110,8 +110,6 @@ BobbyRayPurchaseStruct BobbyRayPurchases[MAX_PURCHASE_AMOUNT];
 // UINT8	usNumberOfBobbyRayOrderItems = 0;
 // UINT8	usNumberOfBobbyRayOrderUsed = 0;
 
-extern BOOLEAN fExitingLaptopFlag;
-
 UINT32 guiGunBackground;
 UINT32 guiGunsGrid;
 UINT32 guiBrTitle;

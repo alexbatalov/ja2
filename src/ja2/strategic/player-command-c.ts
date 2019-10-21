@@ -1,5 +1,3 @@
-extern BOOLEAN fMapScreenBottomDirty;
-
 function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString: STR16): void {
   // will build a string stating current facilities present in sector
 

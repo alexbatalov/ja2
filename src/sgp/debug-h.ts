@@ -14,11 +14,6 @@
 const INVALID_TOPIC = 0xffff;
 const MAX_TOPICS_ALLOTED = 1024;
 
-extern BOOLEAN gfRecordToFile;
-extern BOOLEAN gfRecordToDebugger;
-extern UINT32 guiProfileStart, guiExecutions, guiProfileTime;
-extern INT32 giProfileCount;
-
 const PROFILE = (x) => {
   guiProfileStart = GetTickCount();
   guiExecutions = x;

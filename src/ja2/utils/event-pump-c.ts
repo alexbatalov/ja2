@@ -136,8 +136,6 @@ EV_S_NOISE SNoise;
 EV_S_STOP_MERC SStopMerc;
 EV_S_SENDPATHTONETWORK SUpdateNetworkSoldier;
 
-extern BOOLEAN gfAmINetworked;
-
 function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
   if (usDelay == DEMAND_EVENT_DELAY) {
 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("AddGameEvent: Sending Local and network #%d", uiEvent));

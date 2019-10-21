@@ -95,5 +95,3 @@ const enum Enum83 {
 }
 
 type HistoryUnitPtr = Pointer<HistoryUnit>;
-
-extern HistoryUnitPtr pHistoryListHead;

@@ -9,12 +9,4 @@ const enum Enum144 {
   MAP_EXIT_TO_SAVE,
 }
 
-// there's no button for entering SAVE/LOAD screen directly...
-extern UINT32 guiMapBottomExitButtons[3];
-
-extern BOOLEAN fLapTop;
-extern BOOLEAN fLeavingMapScreen;
-extern BOOLEAN gfDontStartTransitionFromLaptop;
-extern BOOLEAN gfStartMapScreenToLaptopTransition;
-
 // function prototypes

@@ -1,6 +1,5 @@
 DOOR_STATUS *gpDoorStatus = NULL;
 UINT8 gubNumDoorStatus = 0;
-extern INT8 gbMercIsNewInThisSector[MAX_NUM_SOLDIERS];
 
 KEY KeyTable[NUM_KEYS] = {
   // Item #			Flags		Sector, Date Found

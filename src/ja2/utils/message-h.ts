@@ -31,14 +31,6 @@ const MSG_FONT_WHITE = FONT_MCOLOR_WHITE;
 
 type ScrollStringStPtr = Pointer<ScrollStringSt>;
 
-extern ScrollStringStPtr pStringS;
-extern UINT32 StringCount;
-extern UINT8 gubCurrentMapMessageString;
-extern BOOLEAN fDisableJustForIan;
-
-// are we allowed to beep on message scroll in tactical
-extern BOOLEAN fOkToBeepNewMessage;
-
 /* unused functions, written by Mr. Carter, so don't expect these to work...
 UINT8 GetTheRelativePositionOfCurrentMessage( void );
 void MoveCurrentMessagePointerDownList( void );

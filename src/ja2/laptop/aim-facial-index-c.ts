@@ -1,6 +1,5 @@
 UINT8 gubCurrentSortMode;
 UINT8 gubCurrentListMode;
-extern UINT8 gbCurrentIndex;
 
 UINT32 guiMugShotBorder;
 UINT32 guiAimFiFace[MAX_NUMBER_MERCS];

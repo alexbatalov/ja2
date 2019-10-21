@@ -75,8 +75,6 @@ INT32 giSubTitleWinFont;
 
 BOOLEAN gfFontsInit = FALSE;
 
-extern UINT16 gzFontName[32];
-
 function InitializeFonts(): BOOLEAN {
   INT16 zWinFontName[128];
   COLORVAL Color;

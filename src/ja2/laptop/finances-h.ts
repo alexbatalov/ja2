@@ -43,5 +43,3 @@ const enum Enum80 {
 }
 
 type FinanceUnitPtr = Pointer<FinanceUnit>;
-
-extern FinanceUnitPtr pFinanceListHead;

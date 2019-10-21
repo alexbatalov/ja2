@@ -156,7 +156,6 @@ const EXIT_LAPTOP_DELAY_TIME = 100;
 
 UINT32 guiTitleBarSurface;
 BOOLEAN gfTitleBarSurfaceAlreadyActive = FALSE;
-extern BOOLEAN fFirstTimeInGameScreen;
 
 const LAPTOP__NEW_FILE_ICON_X = 83;
 const LAPTOP__NEW_FILE_ICON_Y = 412; //(405+19)
@@ -173,9 +172,6 @@ UINT32 guiCurrentLapTopCursor;
 UINT32 guiPreviousLapTopCursor;
 UINT32 guiCurrentSidePanel; // the current navagation panel on the leftside of the laptop screen
 UINT32 guiPreviousSidePanel;
-
-extern UINT32 guiVObjectSize;
-extern UINT32 guiVSurfaceSize;
 
 INT32 iHighLightBookLine = -1;
 BOOLEAN fFastLoadFlag = FALSE;
@@ -226,9 +222,6 @@ BOOLEAN fReDrawBookMarkInfo = FALSE;
 // show the 2 second info about bookmarks being accessed by clicking on web
 BOOLEAN fShowBookmarkInfo = FALSE;
 
-// show start button for ATM panel?
-extern BOOLEAN fShowAtmPanelStartButton;
-
 // TEMP!	Disables the loadpending delay when switching b/n www pages
 BOOLEAN gfTemporaryDisablingOfLoadPendingFlag = FALSE;
 
@@ -241,9 +234,6 @@ UINT32 guiLAPTOP;
 BOOLEAN fNewWWWDisplay = TRUE;
 
 static BOOLEAN fNewWWW = TRUE;
-
-// Used to store the site to go to after the 'rain delay' message
-extern UINT32 guiRainLoop;
 
 INT32 giRainDelayInternetSite = -1;
 
@@ -1393,8 +1383,6 @@ function HandleLapTopHandles(): void {
       break;
   }
 }
-
-extern BOOLEAN gfPrintFrameBuffer;
 
 function LaptopScreenHandle(): UINT32 {
   // User just changed modes.  This is determined by the button callbacks

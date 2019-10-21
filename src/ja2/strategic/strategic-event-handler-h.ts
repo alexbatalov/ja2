@@ -5,5 +5,3 @@ const KINGPIN_MONEY_SECTOR_Z = 1;
 const HOSPITAL_SECTOR_X = 8;
 const HOSPITAL_SECTOR_Y = MAP_ROW_F;
 const HOSPITAL_SECTOR_Z = 0;
-
-extern UINT8 gubCambriaMedicalObjects;

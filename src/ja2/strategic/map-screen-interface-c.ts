@@ -59,11 +59,6 @@ BOOLEAN fShowMapScreenHelpText = FALSE;
 BOOLEAN fScreenMaskForMoveCreated = FALSE;
 BOOLEAN fLockOutMapScreenInterface = FALSE;
 
-extern INT32 giMercPanelImage;
-extern BOOLEAN fShowDescriptionFlag;
-extern BOOLEAN fInMapMode;
-extern GROUP *gpBattleGroup;
-
 CHAR16 gsCustomErrorString[128];
 
 BOOLEAN fShowUpdateBox = FALSE;
@@ -118,10 +113,6 @@ INT32 giNumberOfVehiclesInSectorMoving = 0;
 
 INT32 iHeightOfInitFastHelpText = 0;
 
-extern INT32 giMapContractButton;
-extern INT32 giCharInfoButton[];
-extern STR16 pUpdatePanelButtons[];
-
 // the list of soldiers that are moving
 SOLDIERTYPE *pSoldierMovingList[MAX_CHARACTER_COUNT];
 BOOLEAN fSoldierIsMoving[MAX_CHARACTER_COUNT];
@@ -140,22 +131,12 @@ INT32 fVehicleIsMoving[NUMBER_OF_SQUADS];
 
 MOUSE_REGION gMoveBoxScreenMask;
 
-// the save buffer
-extern UINT32 guiSAVEBUFFER;
-
-extern BOOLEAN fShowInventoryFlag;
-extern FACETYPE *gpCurrentTalkingFace;
-extern UINT8 gubCurrentTalkingID;
-extern BOOLEAN fMapScreenBottomDirty;
-extern MOUSE_REGION gMPanelRegion;
-
 // has the inventory pool been selected to be on or off?
 BOOLEAN fMapInventoryPoolInited = FALSE;
 BOOLEAN fShowMapScreenMovementList = FALSE;
 
 MapScreenCharacterSt gCharactersList[MAX_CHARACTER_COUNT + 1];
 
-extern MOUSE_REGION gCharInfoHandRegion;
 MOUSE_REGION gMapStatusBarsRegion;
 
 SGPPoint MovePosition = { 450, 100 };

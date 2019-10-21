@@ -14,21 +14,7 @@ const enum Enum178 {
   UNCONTROLLED,
 }
 
-// For speed, etc lets make these globals, forget the functions if you want
-INT16 gWorldSectorX;
-INT16 gWorldSectorY;
-INT8 gbWorldSectorZ;
-
 const NUMBER_OF_SAMS = 4;
-
-extern INT16 pSamList[NUMBER_OF_SAMS];
-extern INT16 pSamGridNoAList[NUMBER_OF_SAMS];
-extern INT16 pSamGridNoBList[NUMBER_OF_SAMS];
-
-extern BOOLEAN fFoundOrta;
-extern BOOLEAN fSamSiteFound[NUMBER_OF_SAMS];
-
-extern BOOLEAN gfUseAlternateMap;
 
 // SAM sites
 const SAM_1_X = 2;
@@ -58,16 +44,3 @@ const SECTOR_INFO_TO_STRATEGIC_INDEX = (i) => (CALCULATE_STRATEGIC_INDEX(SECTORX
 const STRATEGIC_INDEX_TO_SECTOR_INFO = (i) => (SECTOR(GET_X_FROM_STRATEGIC_INDEX(i), GET_Y_FROM_STRATEGIC_INDEX(i)));
 
 // BOOLEAN IsThereAnyOneInThisTown( UINT8 ubTownId );
-
-// Used for determining the type of error message that comes up when you can't traverse to
-// an adjacent sector.  THESE VALUES DO NOT NEED TO BE SAVED!
-extern BOOLEAN gfInvalidTraversal;
-extern BOOLEAN gfLoneEPCAttemptingTraversal;
-extern BOOLEAN gfRobotWithoutControllerAttemptingTraversal;
-extern UINT8 gubLoneMercAttemptingToAbandonEPCs;
-extern INT8 gbPotentiallyAbandonedEPCSlotID;
-
-extern INT8 gbGreenToElitePromotions;
-extern INT8 gbGreenToRegPromotions;
-extern INT8 gbRegToElitePromotions;
-extern INT8 gbMilitiaPromotions;

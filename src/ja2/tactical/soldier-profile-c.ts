@@ -1,5 +1,3 @@
-extern BOOLEAN gfProfileDataLoaded;
-
 BOOLEAN gfPotentialTeamChangeDuringDeath = FALSE;
 
 const MIN_BLINK_FREQ = 3000;
@@ -135,9 +133,6 @@ INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
   // Tyrone
   { CAMBRIA, BALIME, ALMA, GRUMM, DRASSEN },
 };
-
-extern SOLDIERTYPE *gpSMCurrentMerc;
-extern BOOLEAN gfRerenderInterfaceFromHelpText;
 
 function LoadMercProfiles(): BOOLEAN {
   //	FILE *fptr;

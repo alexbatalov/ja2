@@ -61,6 +61,3 @@ interface ITEM_POOL_LOCATOR {
   fAllocated: BOOLEAN;
   ubFlags: UINT8;
 }
-
-extern INT16 gsBoobyTrapGridNo;
-extern SOLDIERTYPE *gpBoobyTrapSoldier;

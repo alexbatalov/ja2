@@ -1,5 +1,3 @@
-extern SOLDIERINITNODE *gpSelected;
-
 // OK, these are values that are calculated in InitRenderParams( ) with normal view settings.
 // These would be different if we change ANYTHING about the game worlkd map sizes...
 const NORMAL_MAP_SCREEN_WIDTH = 3160;
@@ -31,7 +29,6 @@ MOUSE_REGION OverheadBackgroundRegion;
 UINT32 uiOVERMAP;
 UINT32 uiPERSONS;
 BOOLEAN gfOverheadMapDirty = FALSE;
-extern BOOLEAN gfRadarCurrentGuyFlash;
 INT16 gsStartRestrictedX, gsStartRestrictedY;
 BOOLEAN gfOverItemPool = FALSE;
 INT16 gsOveritemPoolGridNo;

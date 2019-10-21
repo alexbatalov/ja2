@@ -5,9 +5,6 @@ INT16 gsMouseGlobalYOffsets[NUM_MOUSE_LEVELS] = {
   50,
 };
 
-extern MOUSE_REGION gDisableRegion;
-extern MOUSE_REGION gUserTurnRegion;
-
 CursorFileData CursorFileDatabase[] = {
   { "CURSORS\\cursor.sti", FALSE, 0, 0, 0, NULL },
   { "CURSORS\\cur_targ.sti", FALSE, 0, ANIMATED_CURSOR, 7, NULL },

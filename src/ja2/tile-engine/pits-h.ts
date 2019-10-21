@@ -1,2 +1,0 @@
-BOOLEAN gfShowPits;
-BOOLEAN gfLoadPitsWithoutArming;

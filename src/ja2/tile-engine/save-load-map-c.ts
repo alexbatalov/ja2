@@ -1,7 +1,5 @@
 const NUM_REVEALED_BYTES = 3200;
 
-extern BOOLEAN gfLoadingExitGrids;
-
 BOOLEAN gfApplyChangesToTempFile = FALSE;
 
 //  There are 3200 bytes, and each bit represents the revelaed status.

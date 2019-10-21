@@ -1,5 +1,3 @@
-extern struct POINT;
-
 UINT32 giIMPPersonalityQuizButton[2];
 UINT32 giIMPPersonalityQuizButtonImage[2];
 

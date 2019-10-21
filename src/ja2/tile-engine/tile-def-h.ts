@@ -113,16 +113,3 @@ interface land_undo_struct {
   ubNumLayers: UINT8;
   pIndexValues: Pointer<UINT16>;
 }
-
-// Globals used
-TILE_ELEMENT gTileDatabase[NUMBEROFTILES];
-UINT16 gTileDatabaseSize;
-UINT8 gFullBaseTileValues[];
-UINT16 gNumTilesPerType[NUMBEROFTILETYPES];
-UINT16 gTileTypeStartIndex[NUMBEROFTILETYPES];
-STR gTileSurfaceName[NUMBEROFTILETYPES];
-UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES];
-
-UINT16 gusNumAnimatedTiles;
-UINT16 gusAnimatedTiles[MAX_ANIMATED_TILES];
-UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES];

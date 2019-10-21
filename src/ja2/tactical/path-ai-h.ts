@@ -6,18 +6,6 @@
         Copyright (C) 1993 HixoxiH Software
 */
 
-// Exporting these global variables
-extern UINT32 guiPathingData[256];
-extern UINT8 gubNPCAPBudget;
-extern UINT16 gusNPCMovementMode;
-extern UINT8 gubNPCDistLimit;
-extern UINT8 gubNPCPathCount;
-extern BOOLEAN gfPlotPathToExitGrid;
-extern BOOLEAN gfNPCCircularDistLimit;
-extern BOOLEAN gfEstimatePath;
-extern BOOLEAN gfPathAroundObstacles;
-extern UINT8 gubGlobalPathFlags;
-
 // Ian's terrain values for travelling speed/pathing purposes
 // Fixed by CJC March 4, 1998.  Please do not change these unless familiar
 // with how this will affect the path code!

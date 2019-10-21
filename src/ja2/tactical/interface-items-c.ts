@@ -149,14 +149,6 @@ const enum Enum217 {
 // AN ARRAY OF MOUSE REGIONS, ONE FOR EACH OBJECT POSITION ON BUDDY
 MOUSE_REGION gInvRegions[NUM_INV_SLOTS];
 
-extern MOUSE_REGION gMPanelRegion;
-extern BOOLEAN fMapInventoryItem;
-extern BOOLEAN gfAddingMoneyToMercFromPlayersAccount;
-extern SOLDIERTYPE *gpSMCurrentMerc;
-extern UINT8 gubSelectSMPanelToMerc;
-extern MOUSE_REGION gSM_SELMERCMoneyRegion;
-extern UINT32 guiMapInvSecondHandBlockout;
-
 MOUSE_REGION gInvDesc;
 
 OBJECTTYPE *gpItemPointer = NULL;
@@ -206,7 +198,6 @@ INT32 guiMoneyDoneButtonImage;
 UINT16 gusOriginalAttachItem[MAX_ATTACHMENTS];
 UINT8 gbOriginalAttachStatus[MAX_ATTACHMENTS];
 SOLDIERTYPE *gpAttachSoldier;
-extern BOOLEAN gfSMDisableForItems;
 
 interface MoneyLoc {
   x: UINT16;
@@ -222,10 +213,6 @@ MoneyLoc gMoneyButtonOffsets[] = {
   { 8, 22 },
 };
 MoneyLoc gMapMoneyButtonLoc = { 174, 115 };
-
-// show the description
-extern BOOLEAN fShowDescriptionFlag;
-extern BOOLEAN fShowInventoryFlag;
 
 // number of keys on keyring, temp for now
 const NUMBER_KEYS_ON_KEYRING = 28;
@@ -256,13 +243,11 @@ INT16 gsKeyRingPopupInvWidth;
 INT16 gsKeyRingPopupInvHeight;
 
 SOLDIERTYPE *gpItemPopupSoldier;
-extern BOOLEAN fMapScreenBottomDirty;
 
 // inventory description done button for mapscreen
 INT32 giMapInvDescButtonImage;
 INT32 giMapInvDescButton = -1;
 
-extern BOOLEAN fMapInventoryItem;
 BOOLEAN gfItemPopupRegionCallbackEndFix = FALSE;
 
 UINT8 ubRGBItemCyclePlacedItemColors[] = {

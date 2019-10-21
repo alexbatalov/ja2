@@ -7,11 +7,6 @@ INT32 giStartingMemValue = 0;
 const DONT_CHECK_FOR_FREE_SPACE = 255;
 UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 
-extern BOOLEAN gfTacticalPlacementGUIActive;
-extern BOOLEAN gfTacticalPlacementGUIDirty;
-extern BOOLEAN gfValidLocationsChanged;
-extern BOOLEAN gfInMsgBox;
-
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
 

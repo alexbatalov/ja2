@@ -47,5 +47,3 @@ interface HELP_SCREEN_STRUCT {
   usTotalNumberOfLinesInBuffer: UINT16;
   fForceHelpScreenToComeUp: BOOLEAN;
 }
-
-extern HELP_SCREEN_STRUCT gHelpScreen;

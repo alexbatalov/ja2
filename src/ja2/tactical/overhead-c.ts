@@ -1,5 +1,3 @@
-extern UINT8 gubAICounter;
-
 const RT_DELAY_BETWEEN_AI_HANDLING = 50;
 const RT_AI_TIMESLICE = 10;
 
@@ -13,10 +11,6 @@ const PAUSE_ALL_AI_DELAY = 1500;
 
 BOOLEAN gfPauseAllAI = FALSE;
 INT32 giPauseAllAITimer = 0;
-
-extern INT8 gbInvalidPlacementSlot[NUM_INV_SLOTS];
-
-extern BOOLEAN gfSurrendered;
 
 // GLOBALS
 const START_DEMO_SCENE = 3;
@@ -4367,8 +4361,6 @@ function SetEnemyPresence(): void {
     gTacticalStatus.fEnemyInSector = TRUE;
   }
 }
-
-extern BOOLEAN gfLastMercTalkedAboutKillingID;
 
 function SoldierHasSeenEnemiesLastFewTurns(pTeamSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   INT32 cnt2;

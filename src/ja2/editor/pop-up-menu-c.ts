@@ -15,8 +15,6 @@ MOUSE_REGION popupRegion;
 UINT16 gusEntryHeight;
 BOOLEAN fWaitingForLButtonRelease = FALSE;
 
-extern UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20];
-
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
 function GetPopupMenuString(ubIndex: UINT8): Pointer<INT16> {

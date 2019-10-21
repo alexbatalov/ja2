@@ -182,95 +182,11 @@ interface MERC_LEAVE_ITEM {
   pNext: Pointer<MERC_LEAVE_ITEM>;
 }
 
-extern BOOLEAN fShowAssignmentMenu;
-extern BOOLEAN fShowTrainingMenu;
-extern BOOLEAN fShowAttributeMenu;
-extern BOOLEAN fShowSquadMenu;
-extern BOOLEAN fShowContractMenu;
-extern BOOLEAN fShowRemoveMenu;
-
-extern BOOLEAN fFirstTimeInMapScreen;
-extern BOOLEAN fLockOutMapScreenInterface;
-
 // The character data structure
 interface MapScreenCharacterSt {
   usSolID: UINT16; // soldier ID in MenPtrs
   fValid: BOOLEAN; // is the current soldier a valid soldier
 }
-
-// map screen character structure list, contrains soldier ids into menptr
-extern MapScreenCharacterSt gCharactersList[];
-
-extern BOOLEAN fShowMapScreenHelpText;
-
-// map inventory pool inited
-extern BOOLEAN fMapInventoryPoolInited;
-
-// highlighted lines
-extern INT32 giHighLine;
-extern INT32 giAssignHighLine;
-extern INT32 giDestHighLine;
-extern INT32 giContractHighLine;
-extern INT32 giSleepHighLine;
-
-extern UINT32 guiUpdatePanel;
-extern UINT32 guiUpdatePanelTactical;
-extern BOOLEAN fShowUpdateBox;
-
-extern SGPRect ContractDimensions;
-extern SGPPoint ContractPosition;
-extern SGPRect AttributeDimensions;
-extern SGPPoint AttributePosition;
-extern SGPRect TrainDimensions;
-extern SGPPoint TrainPosition;
-extern SGPRect VehicleDimensions;
-extern SGPPoint VehiclePosition;
-extern SGPRect AssignmentDimensions;
-extern SGPPoint AssignmentPosition;
-extern SGPPoint SquadPosition;
-extern SGPRect SquadDimensions;
-
-extern SGPPoint RepairPosition;
-extern SGPRect RepairDimensions;
-
-extern SGPPoint OrigContractPosition;
-extern SGPPoint OrigAttributePosition;
-extern SGPPoint OrigSquadPosition;
-extern SGPPoint OrigAssignmentPosition;
-extern SGPPoint OrigTrainPosition;
-extern SGPPoint OrigVehiclePosition;
-
-// disble team info panel due to showing of battle roster
-extern BOOLEAN fDisableDueToBattleRoster;
-
-extern BOOLEAN gfAtLeastOneMercWasHired;
-
-// curtrent map sector z that is being displayed in the mapscreen
-extern INT32 iCurrentMapSectorZ;
-
-// y position of the pop up box
-extern INT32 giBoxY;
-
-// pop up box textures
-extern UINT32 guiPOPUPTEX;
-extern UINT32 guiPOPUPBORDERS;
-
-// the level-changing markers on the map border
-extern UINT32 guiLEVELMARKER;
-
-// the currently selected character arrow
-extern UINT32 guiSelectedCharArrow;
-
-// sam and mine icons
-extern UINT32 guiSAMICON;
-
-extern BOOLEAN fShowMapScreenMovementList;
-
-// do we need to rebuild the mapscreen characterlist?
-extern BOOLEAN fReBuildCharacterList;
-
-// restore glow rotation in contract region glow boxes
-extern BOOLEAN fResetContractGlow;
 
 /*
 // plot path for selected character list
@@ -280,17 +196,11 @@ void PlotPathForSelectedCharacterList( INT16 sX, INT16 sY );
 // remove item from leave index
 // BOOLEAN RemoveItemFromLeaveIndex( MERC_LEAVE_ITEM *pItem, UINT32 uiIndex );
 
-extern INT16 gsSectorLocatorX;
-extern INT16 gsSectorLocatorY;
-extern UINT8 gubBlitSectorLocatorCode;
-
 const enum Enum156 {
   LOCATOR_COLOR_NONE,
   LOCATOR_COLOR_RED,
   LOCATOR_COLOR_YELLOW,
 }
-
-extern UINT32 guiSectorLocatorGraphicID;
 
 // the tactical version
 

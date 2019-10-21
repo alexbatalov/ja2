@@ -57,10 +57,6 @@ INT32 giIMPButtonImage[1];
 
 // visted subpages
 BOOLEAN fVisitedIMPSubPages[IMP_NUM_PAGES];
-extern INT32 iCurrentPortrait;
-extern iCurrentVoices;
-extern INT32 giMaxPersonalityQuizQuestion;
-extern BOOLEAN fStartOverFlag;
 
 function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;

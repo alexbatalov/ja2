@@ -1,5 +1,4 @@
 BOOLEAN gfCannotGetThrough = FALSE;
-extern UINT32 guiUITargetSoldierId;
 BOOLEAN gfDisplayFullCountRing = FALSE;
 
 function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<BOOLEAN>): BOOLEAN {

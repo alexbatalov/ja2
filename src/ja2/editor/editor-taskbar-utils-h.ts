@@ -16,12 +16,3 @@ const enum Enum45 {
   ITEM_REGION_ID = NUM_TERRAIN_TILE_REGIONS,
   MERC_REGION_ID,
 }
-
-extern INT32 giEditMercDirectionIcons[2];
-extern UINT32 guiMercInventoryPanel;
-extern UINT32 guiOmertaMap;
-extern UINT32 guiExclamation;
-extern UINT32 guiKeyImage;
-extern UINT32 guiMercInvPanelBuffers[9];
-extern UINT32 guiMercTempBuffer;
-extern INT32 giEditMercImage[2];

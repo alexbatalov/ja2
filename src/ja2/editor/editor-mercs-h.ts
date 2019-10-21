@@ -15,8 +15,6 @@ const enum Enum42 {
   MERC_SCHEDULEMODE, // specifying a schedule for that particular individual
 }
 
-extern UINT8 gubCurrMercMode, gubPrevMercMode;
-
 const EDIT_NUM_COLORS = 4;
 const EDIT_COLOR_HEAD = 0;
 const EDIT_COLOR_PANTS = 1;
@@ -41,12 +39,6 @@ const NUM_MERC_BUTTONS = 40;
 
 const NUM_DIFF_LVLS = 5;
 
-extern UINT16 *zDiffNames[NUM_DIFF_LVLS];
-extern INT16 sCurBaseDiff;
-extern INT16 gsSelectedMercID;
-extern INT16 gsSelectedMercGridNo;
-extern UINT8 gubCurrMercMode;
-
 const enum Enum43 {
   SELECT_NEXT_CREATURE = -7,
   SELECT_NEXT_REBEL = -6,
@@ -58,21 +50,6 @@ const enum Enum43 {
   // >= 0 select merc with matching ID
 }
 
-extern UINT16 gusMercsNewItemIndex;
-extern BOOLEAN gfRenderMercInfo;
-
 const MERCINV_LGSLOT_WIDTH = 48;
 const MERCINV_SMSLOT_WIDTH = 24;
 const MERCINV_SLOT_HEIGHT = 18;
-
-extern BOOLEAN gfRoofPlacement;
-
-extern BOOLEAN gfShowPlayers;
-extern BOOLEAN gfShowEnemies;
-extern BOOLEAN gfShowCreatures;
-extern BOOLEAN gfShowRebels;
-extern BOOLEAN gfShowCivilians;
-
-extern UINT8 gubCurrentScheduleActionIndex;
-extern BOOLEAN gfSingleAction;
-extern BOOLEAN gfUseScheduleData2;

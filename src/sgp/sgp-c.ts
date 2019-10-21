@@ -1,6 +1,3 @@
-extern UINT32 MemDebugCounter;
-extern BOOLEAN gfPauseDueToPlayerGamePause;
-
 // Prototype Declarations
 
 HINSTANCE ghInstance;

@@ -57,20 +57,6 @@ SOLDIERTYPE *gPSOLDIER;
 UINT32 guiClockDiff = 0;
 UINT32 guiClockStart = 0;
 
-extern UINT32 guiCompressionStringBaseTime;
-extern INT32 giFlashHighlightedItemBaseTime;
-extern INT32 giCompatibleItemBaseTime;
-extern INT32 giAnimateRouteBaseTime;
-extern INT32 giPotHeliPathBaseTime;
-extern INT32 giClickHeliIconBaseTime;
-extern INT32 giExitToTactBaseTime;
-extern UINT32 guiSectorLocatorBaseTime;
-extern INT32 giCommonGlowBaseTime;
-extern INT32 giFlashAssignBaseTime;
-extern INT32 giFlashContractBaseTime;
-extern UINT32 guiFlashCursorBaseTime;
-extern INT32 giPotCharPathBaseTime;
-
 function TimeProc(uID: UINT, uMsg: UINT, dwUser: DWORD, dw1: DWORD, dw2: DWORD): void {
   static BOOLEAN fInFunction = FALSE;
   // SOLDIERTYPE		*pSoldier;

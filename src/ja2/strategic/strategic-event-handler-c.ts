@@ -3,8 +3,6 @@ const MEDUNA_ITEM_DROP_OFF_SECTOR_X = 3;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_Y = 14;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_Z = 0;
 
-extern INT16 gsRobotGridNo;
-
 UINT32 guiPabloExtraDaysBribed = 0;
 
 UINT8 gubCambriaMedicalObjects;

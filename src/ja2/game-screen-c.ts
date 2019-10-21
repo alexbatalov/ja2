@@ -27,10 +27,6 @@ BOOLEAN gfTacticalDisableRegionActive = FALSE;
 INT8 gbTacticalDisableMode = FALSE;
 MODAL_HOOK gModalDoneCallback;
 BOOLEAN gfBeginEndTurn = FALSE;
-extern BOOLEAN gfTopMessageDirty;
-extern BOOLEAN gfFailedToSaveGameWhenInsideAMessageBox;
-extern BOOLEAN gfFirstHeliRun;
-extern BOOLEAN gfRenderFullThisFrame;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
@@ -250,8 +246,6 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
 
   FinishAnySkullPanelAnimations();
 }
-
-extern INT32 iInterfaceDialogueBox;
 
 function MainGameScreenHandle(): UINT32 {
   UINT32 uiNewScreen = GAME_SCREEN;
