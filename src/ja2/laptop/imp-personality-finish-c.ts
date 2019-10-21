@@ -1,21 +1,21 @@
 // this is the amount of time, the player waits until booted back to main profileing screen
 
-UINT8 bPersonalityEndState = 0;
+let bPersonalityEndState: UINT8 = 0;
 
 const PERSONALITY_CONFIRM_FINISH_DELAY = 2500;
 
 // flag set when player hits  YES/NO button
-BOOLEAN fConfirmHasBeenSelectedFlag = FALSE;
-BOOLEAN fConfirmIsYesFlag = FALSE;
-BOOLEAN fOkToReturnIMPMainPageFromPersonalityFlag = FALSE;
-BOOLEAN fCreatedOkIMPButton = FALSE;
-BOOLEAN fExitDueFrIMPPerFinToOkButton = FALSE;
-BOOLEAN fExitIMPPerFinAtOk = FALSE;
-BOOLEAN fCreateFinishOkButton = FALSE;
+let fConfirmHasBeenSelectedFlag: BOOLEAN = FALSE;
+let fConfirmIsYesFlag: BOOLEAN = FALSE;
+let fOkToReturnIMPMainPageFromPersonalityFlag: BOOLEAN = FALSE;
+let fCreatedOkIMPButton: BOOLEAN = FALSE;
+let fExitDueFrIMPPerFinToOkButton: BOOLEAN = FALSE;
+let fExitIMPPerFinAtOk: BOOLEAN = FALSE;
+let fCreateFinishOkButton: BOOLEAN = FALSE;
 
 // buttons
-UINT32 giIMPPersonalityFinishButton[2];
-UINT32 giIMPPersonalityFinishButtonImage[2];
+let giIMPPersonalityFinishButton: UINT32[] /* [2] */;
+let giIMPPersonalityFinishButtonImage: UINT32[] /* [2] */;
 
 function EnterIMPPersonalityFinish(): void {
   // reset states

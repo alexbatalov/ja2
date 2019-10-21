@@ -1,10 +1,10 @@
 // used by editor
-BOOLEAN gfShowPits = FALSE;
+let gfShowPits: BOOLEAN = FALSE;
 
-BOOLEAN gfLoadPitsWithoutArming = FALSE;
+let gfLoadPitsWithoutArming: BOOLEAN = FALSE;
 
 function Add3X3Pit(iMapIndex: INT32): void {
-  EXITGRID ExitGrid;
+  let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
   AddObjectToTail(iMapIndex + 159, REGWATERTEXTURE1);
@@ -40,7 +40,7 @@ function Add3X3Pit(iMapIndex: INT32): void {
 }
 
 function Add5X5Pit(iMapIndex: INT32): void {
-  EXITGRID ExitGrid;
+  let ExitGrid: EXITGRID;
   if (!gfEditMode)
     ApplyMapChangesToMapTempFile(TRUE);
   AddObjectToTail(iMapIndex + 318, REGWATERTEXTURE10);
@@ -149,7 +149,7 @@ function Remove5X5Pit(iMapIndex: INT32): void {
 }
 
 function AddAllPits(): void {
-  UINT32 i;
+  let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == ACTION_ITEM) {
       if (gWorldItems[i].o.bActionValue == ACTION_ITEM_SMALL_PIT)
@@ -161,7 +161,7 @@ function AddAllPits(): void {
 }
 
 function RemoveAllPits(): void {
-  UINT32 i;
+  let i: UINT32;
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].o.usItem == ACTION_ITEM) {
       if (gWorldItems[i].o.bActionValue == ACTION_ITEM_SMALL_PIT)
@@ -173,9 +173,11 @@ function RemoveAllPits(): void {
 }
 
 function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRadius: INT16): void {
-  INT16 x, y, sNewGridNo;
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier;
+  let x: INT16;
+  let y: INT16;
+  let sNewGridNo: INT16;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   PlayJA2Sample(CAVE_COLLAPSE, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
   for (y = -sRadius; y <= sRadius; y++)
@@ -201,9 +203,9 @@ function SearchForOtherMembersWithinPitRadiusAndMakeThemFall(sGridNo: INT16, sRa
 }
 
 function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
-  SOLDIERTYPE *pSoldier = MercPtrs[ubID];
-  EXITGRID ExitGrid;
-  INT16 sPitGridNo;
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubID];
+  let ExitGrid: EXITGRID;
+  let sPitGridNo: INT16;
   // OK, get exit grid...
 
   sPitGridNo = (INT16)pSoldier->uiPendingActionData4;

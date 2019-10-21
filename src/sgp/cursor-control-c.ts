@@ -4,27 +4,27 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-BOOLEAN gfCursorDatabaseInit = FALSE;
+let gfCursorDatabaseInit: BOOLEAN = FALSE;
 
-CursorFileData *gpCursorFileDatabase;
-CursorData *gpCursorDatabase;
-INT16 gsGlobalCursorYOffset = 0;
-INT16 gsCurMouseOffsetX = 0;
-INT16 gsCurMouseOffsetY = 0;
-UINT16 gsCurMouseHeight = 0;
-UINT16 gsCurMouseWidth = 0;
-UINT16 gusNumDataFiles = 0;
-UINT32 guiExternVo;
-UINT16 gusExternVoSubIndex;
-UINT32 guiExtern2Vo;
-UINT16 gusExtern2VoSubIndex;
-UINT32 guiOldSetCursor = 0;
-UINT32 guiDelayTimer = 0;
+let gpCursorFileDatabase: Pointer<CursorFileData>;
+let gpCursorDatabase: Pointer<CursorData>;
+let gsGlobalCursorYOffset: INT16 = 0;
+let gsCurMouseOffsetX: INT16 = 0;
+let gsCurMouseOffsetY: INT16 = 0;
+let gsCurMouseHeight: UINT16 = 0;
+let gsCurMouseWidth: UINT16 = 0;
+let gusNumDataFiles: UINT16 = 0;
+let guiExternVo: UINT32;
+let gusExternVoSubIndex: UINT16;
+let guiExtern2Vo: UINT32;
+let gusExtern2VoSubIndex: UINT16;
+let guiOldSetCursor: UINT32 = 0;
+let guiDelayTimer: UINT32 = 0;
 
-MOUSEBLT_HOOK gMouseBltOverride = NULL;
+let gMouseBltOverride: MOUSEBLT_HOOK = NULL;
 
 function BltToMouseCursorFromVObject(hVObject: HVOBJECT, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
-  BOOLEAN ReturnValue;
+  let ReturnValue: BOOLEAN;
 
   ReturnValue = BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -32,9 +32,10 @@ function BltToMouseCursorFromVObject(hVObject: HVOBJECT, usVideoObjectSubIndex: 
 }
 
 function BltToMouseCursorFromVObjectWithOutline(hVObject: HVOBJECT, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
-  BOOLEAN ReturnValue;
-  ETRLEObject *pTrav;
-  INT16 sXPos, sYPos;
+  let ReturnValue: BOOLEAN;
+  let pTrav: Pointer<ETRLEObject>;
+  let sXPos: INT16;
+  let sYPos: INT16;
 
   // Adjust for offsets
   pTrav = &(hVObject->pETRLEObject[usVideoObjectSubIndex]);
@@ -73,12 +74,12 @@ function InitCursorDatabase(pCursorFileData: Pointer<CursorFileData>, pCursorDat
 
 function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
   // Load cursor data will load all data required for the cursor specified by this index
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
-  INT16 sMaxHeight = -1;
-  INT16 sMaxWidth = -1;
-  ETRLEObject *pTrav;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
+  let sMaxHeight: INT16 = -1;
+  let sMaxWidth: INT16 = -1;
+  let pTrav: Pointer<ETRLEObject>;
 
   pCurData = &(gpCursorDatabase[uiCursorIndex]);
 
@@ -89,10 +90,10 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
       //
       // The file containing the video object hasn't been loaded yet. Let's load it now
       //
-      VOBJECT_DESC VideoObjectDescription;
+      let VideoObjectDescription: VOBJECT_DESC;
       // FIRST LOAD AS AN HIMAGE SO WE CAN GET AUX DATA!
-      HIMAGE hImage;
-      AuxObjectData *pAuxData;
+      let hImage: HIMAGE;
+      let pAuxData: Pointer<AuxObjectData>;
 
       // ATE: First check if we are using an extern vo cursor...
       if (gpCursorFileDatabase[pCurImage->uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR) {
@@ -209,9 +210,9 @@ function UnLoadCursorData(uiCursorIndex: UINT32): void {
   // Ok, first we make sure that the video object file is indeed loaded. Once this is verified, we will
   // move on to the deletion
   //
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
 
   pCurData = &(gpCursorDatabase[uiCursorIndex]);
 
@@ -231,7 +232,7 @@ function UnLoadCursorData(uiCursorIndex: UINT32): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function CursorDatabaseClear(): void {
-  UINT32 uiIndex;
+  let uiIndex: UINT32;
 
   for (uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
     if (gpCursorFileDatabase[uiIndex].fLoaded == TRUE) {
@@ -248,15 +249,17 @@ function CursorDatabaseClear(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
-  BOOLEAN ReturnValue = TRUE;
-  UINT16 usSubIndex;
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
-  INT16 sCenterValX, sCenterValY;
-  HVOBJECT hVObject;
-  ETRLEObject *pTrav;
-  UINT16 usEffHeight, usEffWidth;
+  let ReturnValue: BOOLEAN = TRUE;
+  let usSubIndex: UINT16;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
+  let sCenterValX: INT16;
+  let sCenterValY: INT16;
+  let hVObject: HVOBJECT;
+  let pTrav: Pointer<ETRLEObject>;
+  let usEffHeight: UINT16;
+  let usEffWidth: UINT16;
 
   if (gfCursorDatabaseInit) {
     // Enter mouse buffer mutex
@@ -274,9 +277,10 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
     } else {
       // CHECK FOR EXTERN CURSOR
       if (uiCursorIndex == EXTERN_CURSOR || uiCursorIndex == EXTERN2_CURSOR) {
-        INT16 sSubX, sSubY;
-        HVOBJECT hVObjectTemp;
-        ETRLEObject *pTravTemp;
+        let sSubX: INT16;
+        let sSubY: INT16;
+        let hVObjectTemp: HVOBJECT;
+        let pTravTemp: Pointer<ETRLEObject>;
 
         // Erase old cursor
         EraseMouseCursor();
@@ -454,9 +458,9 @@ function SetMouseBltHook(pMouseBltOverride: MOUSEBLT_HOOK): void {
 
 // Sets an external video object as cursor file data....
 function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: UINT16): void {
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
 
   pCurData = &(gpCursorDatabase[uiCursorIndex]);
 
@@ -480,9 +484,9 @@ function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: 
 }
 
 function RemoveExternVOData(uiCursorIndex: UINT32): void {
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
 
   pCurData = &(gpCursorDatabase[uiCursorIndex]);
 

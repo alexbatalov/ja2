@@ -41,24 +41,24 @@ const FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y = 9;
 const FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y = FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y + 17;
 const FLOR_GALLERY_FLOWER_DESC_OFFSET_Y = FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y + 15;
 
-UINT32 guiFlowerImages[3];
+let guiFlowerImages: UINT32[] /* [3] */;
 
-UINT32 guiCurrentlySelectedFlower = 0;
+let guiCurrentlySelectedFlower: UINT32 = 0;
 
-UINT8 gubCurFlowerIndex = 0;
-UINT8 gubCurNumberOfFlowers = 0;
-UINT8 gubPrevNumberOfFlowers = 0;
-BOOLEAN gfRedrawFloristGallery = FALSE;
+let gubCurFlowerIndex: UINT8 = 0;
+let gubCurNumberOfFlowers: UINT8 = 0;
+let gubPrevNumberOfFlowers: UINT8 = 0;
+let gfRedrawFloristGallery: BOOLEAN = FALSE;
 
-BOOLEAN FloristGallerySubPagesVisitedFlag[4];
+let FloristGallerySubPagesVisitedFlag: BOOLEAN[] /* [4] */;
 
 // Floral buttons
-INT32 guiGalleryButtonImage;
-UINT32 guiGalleryButton[FLOR_GALLERY_NUMBER_FLORAL_BUTTONS];
+let guiGalleryButtonImage: INT32;
+let guiGalleryButton: UINT32[] /* [FLOR_GALLERY_NUMBER_FLORAL_BUTTONS] */;
 
 // Next Previous buttons
-INT32 guiFloralGalleryButtonImage;
-UINT32 guiFloralGalleryButton[2];
+let guiFloralGalleryButtonImage: INT32;
+let guiFloralGalleryButton: UINT32[] /* [2] */;
 
 function GameInitFloristGallery(): void {
 }
@@ -87,7 +87,7 @@ function EnterFloristGallery(): BOOLEAN {
 }
 
 function ExitFloristGallery(): void {
-  UINT16 i;
+  let i: UINT16;
 
   RemoveFloristDefaults();
 
@@ -204,10 +204,12 @@ function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 }
 
 function InitFlowerButtons(): BOOLEAN {
-  UINT16 i, j, count;
-  UINT16 usPosY;
-  char sTemp[40];
-  VOBJECT_DESC VObjectDesc;
+  let i: UINT16;
+  let j: UINT16;
+  let count: UINT16;
+  let usPosY: UINT16;
+  let sTemp: char[] /* [40] */;
+  let VObjectDesc: VOBJECT_DESC;
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
     gubCurNumberOfFlowers = 3;
@@ -258,7 +260,7 @@ function InitFlowerButtons(): BOOLEAN {
 }
 
 function DeleteFlowerButtons(): void {
-  UINT16 i;
+  let i: UINT16;
 
   for (i = 0; i < gubPrevNumberOfFlowers; i++) {
     DeleteVideoObjectFromIndex(guiFlowerImages[i]);
@@ -272,9 +274,11 @@ function DeleteFlowerButtons(): void {
 }
 
 function DisplayFloralDescriptions(): BOOLEAN {
-  wchar_t sTemp[640];
-  UINT32 uiStartLoc = 0, i;
-  UINT16 usPosY, usPrice;
+  let sTemp: wchar_t[] /* [640] */;
+  let uiStartLoc: UINT32 = 0;
+  let i: UINT32;
+  let usPosY: UINT16;
+  let usPrice: UINT16;
 
   if ((FLOR_GALLERY_NUMBER_FLORAL_IMAGES - gubCurFlowerIndex) >= 3)
     gubCurNumberOfFlowers = 3;

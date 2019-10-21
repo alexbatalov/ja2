@@ -7,7 +7,7 @@
 // SetCivilianDestination - C.O. stuff for if we don't control the civ
 
 function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubPathMode: UINT8, ubWaterOK: UINT8, fFlags: UINT8): int {
-  BOOLEAN fSkipTilesWithMercs;
+  let fSkipTilesWithMercs: BOOLEAN;
 
   if ((sGridno < 0) || (sGridno >= GRIDSIZE)) {
     return FALSE;
@@ -72,8 +72,8 @@ function LegalNPCDestination(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubP
 }
 
 function TryToResumeMovement(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): int {
-  UINT8 ubGottaCancel = FALSE;
-  UINT8 ubSuccess = FALSE;
+  let ubGottaCancel: UINT8 = FALSE;
+  let ubSuccess: UINT8 = FALSE;
 
   // have to make sure the old destination is still legal (somebody may
   // have occupied the destination gridno in the meantime!)
@@ -151,8 +151,8 @@ function NextPatrolPoint(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT16 sPatrolPoint;
-  INT8 bOldOrders;
+  let sPatrolPoint: INT16;
+  let bOldOrders: INT8;
 
   sPatrolPoint = pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt];
 
@@ -203,9 +203,10 @@ function PointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT16 sPatrolPoint;
-  INT8 bOldOrders, bPatrolIndex;
-  INT8 bCnt;
+  let sPatrolPoint: INT16;
+  let bOldOrders: INT8;
+  let bPatrolIndex: INT8;
+  let bCnt: INT8;
 
   sPatrolPoint = pSoldier->usPatrolGrid[pSoldier->bNextPatrolPnt];
 
@@ -269,13 +270,20 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGrid: INT16, bReserveAPs: INT8, bAction: INT8, fFlags: INT8): INT16 {
-  INT16 sLoop, sAPCost;
-  INT16 sTempDest, sGoToGrid;
-  INT16 sOrigin;
-  UINT16 usMaxDist;
-  UINT8 ubDirection, ubDirsLeft, ubDirChecked[8], fFound = FALSE;
-  INT8 bAPsLeft, fPathFlags;
-  UINT8 ubRoomRequired = 0, ubTempRoom;
+  let sLoop: INT16;
+  let sAPCost: INT16;
+  let sTempDest: INT16;
+  let sGoToGrid: INT16;
+  let sOrigin: INT16;
+  let usMaxDist: UINT16;
+  let ubDirection: UINT8;
+  let ubDirsLeft: UINT8;
+  let ubDirChecked: UINT8[] /* [8] */;
+  let fFound: UINT8 = FALSE;
+  let bAPsLeft: INT8;
+  let fPathFlags: INT8;
+  let ubRoomRequired: UINT8 = 0;
+  let ubTempRoom: UINT8;
 
   if (bReserveAPs == -1) {
     // default reserve points
@@ -516,7 +524,8 @@ function GoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGrid: INT1
 }
 
 function SoldierTriesToContinueAlongPath(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 usNewGridNo, bAPCost;
+  let usNewGridNo: INT16;
+  let bAPCost: INT16;
 
   // turn off the flag now that we're going to do something about it...
   // ATE: USed to be redundent, now if called befroe NewDest can cause some side efects...
@@ -586,7 +595,7 @@ function HaltMoveForSoldierOutOfPoints(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function SetCivilianDestination(ubWho: UINT8, sGridno: INT16): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = MercPtrs[ubWho];
 
@@ -636,15 +645,21 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // This function returns the best gridno to go to based on the scent being followed,
   // and the soldier (creature/animal)'s current direction (which is used to resolve
   // ties.
-  INT32 iXDiff, iYDiff, iXIncr;
-  INT32 iStart, iXStart, iYStart;
-  INT32 iGridNo;
-  INT8 bDir;
-  INT32 iBestGridNo = NOWHERE;
-  UINT8 ubBestDirDiff = 5, ubBestStrength = 0;
-  UINT8 ubDirDiff, ubStrength;
-  UINT8 ubSoughtSmell;
-  MAP_ELEMENT *pMapElement;
+  let iXDiff: INT32;
+  let iYDiff: INT32;
+  let iXIncr: INT32;
+  let iStart: INT32;
+  let iXStart: INT32;
+  let iYStart: INT32;
+  let iGridNo: INT32;
+  let bDir: INT8;
+  let iBestGridNo: INT32 = NOWHERE;
+  let ubBestDirDiff: UINT8 = 5;
+  let ubBestStrength: UINT8 = 0;
+  let ubDirDiff: UINT8;
+  let ubStrength: UINT8;
+  let ubSoughtSmell: UINT8;
+  let pMapElement: Pointer<MAP_ELEMENT>;
 
   iStart = pSoldier->sGridNo;
   iXStart = iStart % WORLD_COLS;

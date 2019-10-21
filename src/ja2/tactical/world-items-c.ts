@@ -1,14 +1,14 @@
 // Global dynamic array of all of the items in a loaded map.
-WORLDITEM *gWorldItems = NULL;
-UINT32 guiNumWorldItems = 0;
+let gWorldItems: Pointer<WORLDITEM> = NULL;
+let guiNumWorldItems: UINT32 = 0;
 
-WORLDBOMB *gWorldBombs = NULL;
-UINT32 guiNumWorldBombs = 0;
+let gWorldBombs: Pointer<WORLDBOMB> = NULL;
+let guiNumWorldBombs: UINT32 = 0;
 
 function GetFreeWorldBombIndex(): INT32 {
-  UINT32 uiCount;
-  WORLDBOMB *newWorldBombs;
-  UINT32 uiOldNumWorldBombs;
+  let uiCount: UINT32;
+  let newWorldBombs: Pointer<WORLDBOMB>;
+  let uiOldNumWorldBombs: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
     if (gWorldBombs[uiCount].fExists == FALSE)
@@ -32,7 +32,8 @@ function GetFreeWorldBombIndex(): INT32 {
 }
 
 function GetNumUsedWorldBombs(): UINT32 {
-  UINT32 uiCount, uiNumItems;
+  let uiCount: UINT32;
+  let uiNumItems: UINT32;
   uiNumItems = 0;
 
   if (guiNumWorldBombs == 0) {
@@ -49,7 +50,7 @@ function GetNumUsedWorldBombs(): UINT32 {
 }
 
 function AddBombToWorld(iItemIndex: INT32): INT32 {
-  UINT32 iBombIndex;
+  let iBombIndex: UINT32;
 
   iBombIndex = GetFreeWorldBombIndex();
 
@@ -68,7 +69,7 @@ function RemoveBombFromWorld(iBombIndex: INT32): void {
 function RemoveBombFromWorldByItemIndex(iItemIndex: INT32): void {
   // Find the world bomb which corresponds with a particular world item, then
   // remove the world bomb from the table.
-  UINT32 uiBombIndex;
+  let uiBombIndex: UINT32;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists && gWorldBombs[uiBombIndex].iItemIndex == iItemIndex) {
@@ -79,7 +80,7 @@ function RemoveBombFromWorldByItemIndex(iItemIndex: INT32): void {
 }
 
 function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
-  UINT32 uiBombIndex;
+  let uiBombIndex: UINT32;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists && gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].sGridNo == sGridNo && gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].ubLevel == bLevel) {
@@ -92,12 +93,12 @@ function FindWorldItemForBombInGridNo(sGridNo: INT16, bLevel: INT8): INT32 {
 function FindPanicBombsAndTriggers(): void {
   // This function searches the bomb table to find panic-trigger-tuned bombs and triggers
 
-  UINT32 uiBombIndex;
-  OBJECTTYPE *pObj;
-  STRUCTURE *pSwitch;
-  INT16 sGridNo = NOWHERE;
-  BOOLEAN fPanicTriggerIsAlarm = FALSE;
-  INT8 bPanicIndex;
+  let uiBombIndex: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
+  let pSwitch: Pointer<STRUCTURE>;
+  let sGridNo: INT16 = NOWHERE;
+  let fPanicTriggerIsAlarm: BOOLEAN = FALSE;
+  let bPanicIndex: INT8;
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists) {
@@ -158,9 +159,9 @@ function FindPanicBombsAndTriggers(): void {
 }
 
 function GetFreeWorldItemIndex(): INT32 {
-  UINT32 uiCount;
-  WORLDITEM *newWorldItems;
-  UINT32 uiOldNumWorldItems;
+  let uiCount: UINT32;
+  let newWorldItems: Pointer<WORLDITEM>;
+  let uiOldNumWorldItems: UINT32;
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
     if (gWorldItems[uiCount].fExists == FALSE)
@@ -184,7 +185,8 @@ function GetFreeWorldItemIndex(): INT32 {
 }
 
 function GetNumUsedWorldItems(): UINT32 {
-  UINT32 uiCount, uiNumItems;
+  let uiCount: UINT32;
+  let uiNumItems: UINT32;
   uiNumItems = 0;
 
   if (guiNumWorldItems == 0) {
@@ -201,8 +203,8 @@ function GetNumUsedWorldItems(): UINT32 {
 }
 
 function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8): INT32 {
-  UINT32 iItemIndex;
-  INT32 iReturn;
+  let iItemIndex: UINT32;
+  let iReturn: INT32;
 
   // ATE: Check if the gridno is OK
   if ((sGridNo) == NOWHERE) {
@@ -245,7 +247,7 @@ function RemoveItemFromWorld(iItemIndex: INT32): void {
 }
 
 function TrashWorldItems(): void {
-  UINT32 i;
+  let i: UINT32;
   if (gWorldItems) {
     for (i = 0; i < guiNumWorldItems; i++) {
       if (gWorldItems[i].fExists) {
@@ -264,8 +266,9 @@ function TrashWorldItems(): void {
 }
 
 function SaveWorldItemsToMap(fp: HWFILE): void {
-  UINT32 i, uiBytesWritten;
-  UINT32 uiActualNumWorldItems;
+  let i: UINT32;
+  let uiBytesWritten: UINT32;
+  let uiActualNumWorldItems: UINT32;
 
   uiActualNumWorldItems = GetNumUsedWorldItems();
 
@@ -280,11 +283,11 @@ function SaveWorldItemsToMap(fp: HWFILE): void {
 function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   // Start loading itmes...
 
-  UINT32 i;
-  UINT32 uiLevelItems = 0;
-  WORLDITEM dummyItem;
-  INT32 iItemIndex;
-  UINT32 uiNumWorldItems;
+  let i: UINT32;
+  let uiLevelItems: UINT32 = 0;
+  let dummyItem: WORLDITEM;
+  let iItemIndex: INT32;
+  let uiNumWorldItems: UINT32;
 
   // If any world items exist, we must delete them now.
   TrashWorldItems();
@@ -314,11 +317,12 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
           }
 
           if (!gGameOptions.fGunNut) {
-            UINT16 usReplacement;
+            let usReplacement: UINT16;
 
             // do replacements?
             if (Item[dummyItem.o.usItem].usItemClass == IC_GUN) {
-              INT8 bAmmo, bNewAmmo;
+              let bAmmo: INT8;
+              let bNewAmmo: INT8;
 
               usReplacement = StandardGunListReplacement(dummyItem.o.usItem);
               if (usReplacement) {
@@ -336,7 +340,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
             if (Item[dummyItem.o.usItem].usItemClass == IC_AMMO) {
               usReplacement = StandardGunListAmmoReplacement(dummyItem.o.usItem);
               if (usReplacement) {
-                UINT8 ubLoop;
+                let ubLoop: UINT8;
 
                 // go through status values and scale up/down
                 for (ubLoop = 0; ubLoop < dummyItem.o.ubNumberOfObjects; ubLoop++) {
@@ -383,10 +387,10 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
 }
 
 function DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(): void {
-  UINT32 uiLoop;
-  UINT32 uiLoop2;
-  INT16 sGridNo;
-  UINT8 ubLevel;
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let sGridNo: INT16;
+  let ubLevel: UINT8;
 
   // only do this after Carmen has talked to player and terrorists have been placed
   // if ( CheckFact( FACT_CARMEN_EXPLAINED_DEAL, 0 ) == TRUE )
@@ -416,11 +420,11 @@ function DeleteWorldItemsBelongingToTerroristsWhoAreNotThere(): void {
 }
 
 function DeleteWorldItemsBelongingToQueenIfThere(): void {
-  UINT32 uiLoop;
-  UINT32 uiLoop2;
-  INT16 sGridNo;
-  UINT8 ubLevel;
-  INT8 bSlot;
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let sGridNo: INT16;
+  let ubLevel: UINT8;
+  let bSlot: INT8;
 
   if (gMercProfiles[QUEEN].sSectorX == gWorldSectorX && gMercProfiles[QUEEN].sSectorY == gWorldSectorY && gMercProfiles[QUEEN].bSectorZ == gbWorldSectorZ) {
     for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
@@ -466,8 +470,8 @@ function DeleteWorldItemsBelongingToQueenIfThere(): void {
 
 // Refresh item pools
 function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOfItems: INT32): void {
-  INT32 i;
-  WORLDITEM dummyItem;
+  let i: INT32;
+  let dummyItem: WORLDITEM;
 
   for (i = 0; i < iNumberOfItems; i++) {
     if (pItemList[i].fExists) {

@@ -48,54 +48,54 @@ const MAP_INVEN_SLOT_HEIGHT = 32;
 const MAP_INVEN_SLOT_IMAGE_HEIGHT = 24;
 
 // the current highlighted item
-INT32 iCurrentlyHighLightedItem = -1;
-BOOLEAN fFlashHighLightInventoryItemOnradarMap = FALSE;
+let iCurrentlyHighLightedItem: INT32 = -1;
+let fFlashHighLightInventoryItemOnradarMap: BOOLEAN = FALSE;
 
 // whether we are showing the inventory pool graphic
-BOOLEAN fShowMapInventoryPool = FALSE;
+let fShowMapInventoryPool: BOOLEAN = FALSE;
 
 // the v-object index value for the background
-UINT32 guiMapInventoryPoolBackground;
+let guiMapInventoryPoolBackground: UINT32;
 
 // inventory pool list
-WORLDITEM *pInventoryPoolList = NULL;
+let pInventoryPoolList: Pointer<WORLDITEM> = NULL;
 
 // current page of inventory
-INT32 iCurrentInventoryPoolPage = 0;
-INT32 iLastInventoryPoolPage = 0;
+let iCurrentInventoryPoolPage: INT32 = 0;
+let iLastInventoryPoolPage: INT32 = 0;
 
 // total number of slots allocated
-INT32 iTotalNumberOfSlots = 0;
+let iTotalNumberOfSlots: INT32 = 0;
 
-INT16 sObjectSourceGridNo = 0;
+let sObjectSourceGridNo: INT16 = 0;
 
 // number of unseen items in sector
-UINT32 uiNumberOfUnSeenItems = 0;
+let uiNumberOfUnSeenItems: UINT32 = 0;
 
 // the inventory slots
-MOUSE_REGION MapInventoryPoolSlots[MAP_INVENTORY_POOL_SLOT_COUNT];
-MOUSE_REGION MapInventoryPoolMask;
-BOOLEAN fMapInventoryItemCompatable[MAP_INVENTORY_POOL_SLOT_COUNT];
-BOOLEAN fChangedInventorySlots = FALSE;
+let MapInventoryPoolSlots: MOUSE_REGION[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
+let MapInventoryPoolMask: MOUSE_REGION;
+let fMapInventoryItemCompatable: BOOLEAN[] /* [MAP_INVENTORY_POOL_SLOT_COUNT] */;
+let fChangedInventorySlots: BOOLEAN = FALSE;
 
 // the unseen items list...have to save this
-WORLDITEM *pUnSeenItems = NULL;
+let pUnSeenItems: Pointer<WORLDITEM> = NULL;
 
 // save list to write to temp file
-WORLDITEM *pSaveList = NULL;
+let pSaveList: Pointer<WORLDITEM> = NULL;
 
-INT32 giFlashHighlightedItemBaseTime = 0;
-INT32 giCompatibleItemBaseTime = 0;
+let giFlashHighlightedItemBaseTime: INT32 = 0;
+let giCompatibleItemBaseTime: INT32 = 0;
 
 // the buttons and images
-UINT32 guiMapInvenButtonImage[3];
-UINT32 guiMapInvenButton[3];
+let guiMapInvenButtonImage: UINT32[] /* [3] */;
+let guiMapInvenButton: UINT32[] /* [3] */;
 
-BOOLEAN gfCheckForCursorOverMapSectorInventoryItem = FALSE;
+let gfCheckForCursorOverMapSectorInventoryItem: BOOLEAN = FALSE;
 
 // load the background panel graphics for inventory
 function LoadInventoryPoolGraphic(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the file
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -120,7 +120,7 @@ function RemoveInventoryPoolGraphic(): void {
 
 // blit the background panel for the inventory
 function BlitInventoryPoolGraphic(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // blit inventory pool graphic to the screen
   GetVideoObject(&hHandle, guiMapInventoryPoolBackground);
@@ -156,7 +156,7 @@ function BlitInventoryPoolGraphic(): void {
 }
 
 function RenderItemsForCurrentPageOfInventoryPool(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // go through list of items on this page and place graphics to screen
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
@@ -168,13 +168,19 @@ function RenderItemsForCurrentPageOfInventoryPool(): void {
 
 function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOOLEAN {
   // render item in this slot of the list
-  INT16 sCenX, sCenY, usWidth, usHeight, sX, sY;
-  HVOBJECT hHandle;
-  ETRLEObject *pTrav;
-  CHAR16 sString[64];
-  INT16 sWidth = 0, sHeight = 0;
-  INT16 sOutLine = 0;
-  BOOLEAN fOutLine = FALSE;
+  let sCenX: INT16;
+  let sCenY: INT16;
+  let usWidth: INT16;
+  let usHeight: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let hHandle: HVOBJECT;
+  let pTrav: Pointer<ETRLEObject>;
+  let sString: CHAR16[] /* [64] */;
+  let sWidth: INT16 = 0;
+  let sHeight: INT16 = 0;
+  let sOutLine: INT16 = 0;
+  let fOutLine: BOOLEAN = FALSE;
 
   // check if anything there
   if (pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.ubNumberOfObjects == 0) {
@@ -266,9 +272,9 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 }
 
 function UpdateHelpTextForInvnentoryStashSlots(): void {
-  CHAR16 pStr[512];
-  INT32 iCounter = 0;
-  INT32 iFirstSlotOnPage = (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT);
+  let pStr: CHAR16[] /* [512] */;
+  let iCounter: INT32 = 0;
+  let iFirstSlotOnPage: INT32 = (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT);
 
   // run through list of items in slots and update help text for mouse regions
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
@@ -299,7 +305,7 @@ function UpdateHelpTextForInvnentoryStashSlots(): void {
 
 // create and remove buttons for inventory
 function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   /* player can leave items underground, no?
           if( iCurrentMapSectorZ )
@@ -393,10 +399,10 @@ function ClearUpTempUnSeenList(): void {
 }
 
 function SaveSeenAndUnseenItems(): void {
-  WORLDITEM *pSeenItemsList = NULL;
-  INT32 iCounter = 0;
-  INT32 iItemCount = 0;
-  INT32 iTotalNumberItems = 0;
+  let pSeenItemsList: Pointer<WORLDITEM> = NULL;
+  let iCounter: INT32 = 0;
+  let iItemCount: INT32 = 0;
+  let iTotalNumberItems: INT32 = 0;
 
   // allocate space
   iTotalNumberItems = GetTotalNumberOfItems();
@@ -477,11 +483,15 @@ function MapInvenPoolScreenMaskCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function CreateMapInventoryPoolSlots(): void {
-  INT32 iCounter = 0;
-  INT16 sX = 0, sY = 0;
-  INT16 sXA = 0, sYA = 0;
-  INT16 sULX = 0, sULY = 0;
-  INT16 sBRX = 0, sBRY = 0;
+  let iCounter: INT32 = 0;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sXA: INT16 = 0;
+  let sYA: INT16 = 0;
+  let sULX: INT16 = 0;
+  let sULY: INT16 = 0;
+  let sBRX: INT16 = 0;
+  let sBRY: INT16 = 0;
 
   MSYS_DefineRegion(&MapInventoryPoolMask, MAP_INVENTORY_POOL_SLOT_START_X, 0, 640, 360, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapInvenPoolScreenMaskCallback);
 
@@ -508,7 +518,7 @@ function CreateMapInventoryPoolSlots(): void {
 }
 
 function DestroyMapInventoryPoolSlots(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
     MSYS_RemoveRegion(&MapInventoryPoolSlots[iCounter]);
@@ -519,7 +529,7 @@ function DestroyMapInventoryPoolSlots(): void {
 }
 
 function MapInvenPoolSlotsMove(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -539,13 +549,14 @@ function MapInvenPoolSlotsMove(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
 function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
-  INT32 iCounter = 0;
-  UINT16 usOldItemIndex, usNewItemIndex;
-  INT16 sGridNo = 0;
-  INT32 iOldNumberOfObjects = 0;
-  INT16 sDistanceFromObject = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-  CHAR16 sString[128];
+  let iCounter: INT32 = 0;
+  let usOldItemIndex: UINT16;
+  let usNewItemIndex: UINT16;
+  let sGridNo: INT16 = 0;
+  let iOldNumberOfObjects: INT32 = 0;
+  let sDistanceFromObject: INT16 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sString: CHAR16[] /* [128] */;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -709,16 +720,17 @@ function DestroyMapInventoryButtons(): void {
 }
 
 function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): void {
-  INT32 iSize = 0;
-  OBJECTTYPE *pTempList = NULL;
-  UINT32 uiItemCount = 0;
-  UINT32 uiTotalNumberOfItems = 0, uiTotalNumberOfRealItems = 0;
-  WORLDITEM *pTotalSectorList = NULL;
-  INT32 iCounter = 0;
-  UINT32 uiTotalNumberOfSeenItems = 0;
+  let iSize: INT32 = 0;
+  let pTempList: Pointer<OBJECTTYPE> = NULL;
+  let uiItemCount: UINT32 = 0;
+  let uiTotalNumberOfItems: UINT32 = 0;
+  let uiTotalNumberOfRealItems: UINT32 = 0;
+  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let iCounter: INT32 = 0;
+  let uiTotalNumberOfSeenItems: UINT32 = 0;
 
   //	#ifdef _DEBUG
-  BOOLEAN fReturn = TRUE;
+  let fReturn: BOOLEAN = TRUE;
   //	#endif
 
   // get size of the current stash in sector (count stacks as one item)
@@ -863,12 +875,12 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
 }
 
 function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUnSeenItems: INT32, pSeenItemsList: Pointer<WORLDITEM>, pUnSeenItemsList: Pointer<WORLDITEM>): void {
-  INT32 iTotalNumberOfItems = 0;
-  INT32 iCurrentItem = 0;
-  INT32 iCounter = 0;
-  INT32 iRemainder = 0;
-  UINT32 uiTotalNumberOfVisibleItems = 0;
-  WORLDITEM *pTotalList = NULL;
+  let iTotalNumberOfItems: INT32 = 0;
+  let iCurrentItem: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iRemainder: INT32 = 0;
+  let uiTotalNumberOfVisibleItems: UINT32 = 0;
+  let pTotalList: Pointer<WORLDITEM> = NULL;
 
   // clear out the list
   TrashWorldItems();
@@ -923,8 +935,8 @@ function ReBuildWorldItemStashForLoadedSector(iNumberSeenItems: INT32, iNumberUn
 }
 
 function ReSizeStashListByThisAmount(iNumberOfItems: INT32): void {
-  INT32 iSizeOfList = iTotalNumberOfSlots;
-  WORLDITEM *pOldList;
+  let iSizeOfList: INT32 = iTotalNumberOfSlots;
+  let pOldList: Pointer<WORLDITEM>;
 
   // no items added, leave
   if (iNumberOfItems == 0) {
@@ -960,11 +972,12 @@ function DestroyStash(): void {
 
 function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCountStacksAsOne: BOOLEAN): INT32 {
   // get # of items in sector that are visible to the player
-  UINT32 uiTotalNumberOfItems = 0, uiTotalNumberOfRealItems = 0;
-  WORLDITEM *pTotalSectorList = NULL;
-  UINT32 uiItemCount = 0;
-  INT32 iCounter = 0;
-  BOOLEAN fReturn = TRUE;
+  let uiTotalNumberOfItems: UINT32 = 0;
+  let uiTotalNumberOfRealItems: UINT32 = 0;
+  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let uiItemCount: UINT32 = 0;
+  let iCounter: INT32 = 0;
+  let fReturn: BOOLEAN = TRUE;
 
   if ((sMapX == gWorldSectorX) && (sMapY == gWorldSectorY) && (sMapZ == gbWorldSectorZ)) {
     uiTotalNumberOfItems = guiNumWorldItems;
@@ -1023,7 +1036,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
 }
 
 function BeginInventoryPoolPtr(pInventorySlot: Pointer<OBJECTTYPE>): void {
-  BOOLEAN fOk = FALSE;
+  let fOk: BOOLEAN = FALSE;
 
   // If not null return
   if (gpItemPointer != NULL) {
@@ -1101,7 +1114,9 @@ function RemoveObjectFromStashSlot(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr
 }
 
 function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
-  UINT8 ubNumberToDrop, ubSlotLimit, ubLoop;
+  let ubNumberToDrop: UINT8;
+  let ubSlotLimit: UINT8;
+  let ubLoop: UINT8;
 
   // if there is something there, swap it, if they are of the same type and stackable then add to the count
 
@@ -1163,8 +1178,10 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
 }
 
 function AutoPlaceObjectInInventoryStash(pItemPtr: Pointer<OBJECTTYPE>): BOOLEAN {
-  UINT8 ubNumberToDrop, ubSlotLimit, ubLoop;
-  OBJECTTYPE *pInventorySlot;
+  let ubNumberToDrop: UINT8;
+  let ubSlotLimit: UINT8;
+  let ubLoop: UINT8;
+  let pInventorySlot: Pointer<OBJECTTYPE>;
 
   // if there is something there, swap it, if they are of the same type and stackable then add to the count
   pInventorySlot = &(pInventoryPoolList[iTotalNumberOfSlots].o);
@@ -1244,8 +1261,9 @@ function MapInventoryPoolDoneBtn(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function DisplayPagesForMapInventoryPool(): void {
   // get the current and last pages and display them
-  CHAR16 sString[32];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
 
   SetFont(COMPFONT);
   SetFontForeground(183);
@@ -1266,7 +1284,8 @@ function DisplayPagesForMapInventoryPool(): void {
 }
 
 function GetTotalNumberOfItemsInSectorStash(): INT32 {
-  INT32 iCounter, iCount = 0;
+  let iCounter: INT32;
+  let iCount: INT32 = 0;
 
   // run through list of items and find out how many are there
   for (iCounter = 0; iCounter < iTotalNumberOfSlots; iCounter++) {
@@ -1279,7 +1298,8 @@ function GetTotalNumberOfItemsInSectorStash(): INT32 {
 }
 
 function GetTotalNumberOfItems(): INT32 {
-  INT32 iCounter, iCount = 0;
+  let iCounter: INT32;
+  let iCount: INT32 = 0;
 
   // run through list of items and find out how many are there
   for (iCounter = 0; iCounter < iTotalNumberOfSlots; iCounter++) {
@@ -1292,9 +1312,10 @@ function GetTotalNumberOfItems(): INT32 {
 }
 
 function DrawNumberOfIventoryPoolItems(): void {
-  INT32 iNumberOfItems = 0;
-  CHAR16 sString[32];
-  INT16 sX, sY;
+  let iNumberOfItems: INT32 = 0;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
 
   iNumberOfItems = GetTotalNumberOfItemsInSectorStash();
 
@@ -1338,8 +1359,9 @@ function DestroyInventoryPoolDoneButton(): void {
 
 function DisplayCurrentSector(): void {
   // grab current sector being displayed
-  CHAR16 sString[32];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
 
   swprintf(sString, L"%s%s%s", pMapVertIndex[sSelMapY], pMapHortIndex[sSelMapX], pMapDepthIndex[iCurrentMapSectorZ]);
 
@@ -1361,7 +1383,7 @@ function DisplayCurrentSector(): void {
 
 function CheckAndUnDateSlotAllocation(): void {
   // will check number of available slots, if less than half a page, allocate a new page
-  INT32 iNumberOfTakenSlots = 0;
+  let iNumberOfTakenSlots: INT32 = 0;
 
   // get number of taken slots
   iNumberOfTakenSlots = GetTotalNumberOfItems();
@@ -1379,7 +1401,7 @@ function CheckAndUnDateSlotAllocation(): void {
 
 function DrawTextOnMapInventoryBackground(): void {
   //	CHAR16 sString[ 64 ];
-  UINT16 usStringHeight;
+  let usStringHeight: UINT16;
 
   SetFont(MAP_IVEN_FONT);
   SetFontBackground(FONT_BLACK);
@@ -1432,8 +1454,9 @@ function HandleButtonStatesWhileMapInventoryActive(): void {
 }
 
 function DrawTextOnSectorInventory(): void {
-  INT16 sX = 0, sY = 0;
-  CHAR16 sString[64];
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sString: CHAR16[] /* [64] */;
 
   // parse the string
   swprintf(sString, zMarksMapScreenText[11]);
@@ -1452,8 +1475,8 @@ function DrawTextOnSectorInventory(): void {
 }
 
 function HandleFlashForHighLightedItem(): void {
-  INT32 iCurrentTime = 0;
-  INT32 iDifference = 0;
+  let iCurrentTime: INT32 = 0;
+  let iDifference: INT32 = 0;
 
   // if there is an invalid item, reset
   if (iCurrentlyHighLightedItem == -1) {
@@ -1484,8 +1507,8 @@ function HandleFlashForHighLightedItem(): void {
 }
 
 function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  static BOOLEAN fItemWasHighLighted = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  /* static */ let fItemWasHighLighted: BOOLEAN = FALSE;
 
   if (iCurrentSlot == -1) {
     giCompatibleItemBaseTime = 0;
@@ -1555,7 +1578,7 @@ function HandleMouseInCompatableItemForMapSectorInventory(iCurrentSlot: INT32): 
 }
 
 function ResetMapSectorInventoryPoolHighLights(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // now reset the highlight list for the map sector inventory
   for (iCounter = 0; iCounter < MAP_INVENTORY_POOL_SLOT_COUNT; iCounter++) {
@@ -1593,9 +1616,9 @@ function IsMapScreenWorldItemInvisibleInMapInventory(pWorldItem: Pointer<WORLDIT
 
 // Check to see if any of the items in the list have a gridno of NOWHERE and the entry point flag NOT set
 function CheckGridNoOfItemsInMapScreenMapInventory(): void {
-  INT32 iCnt;
-  UINT32 uiNumFlagsNotSet = 0;
-  INT32 iTotalNumberItems = GetTotalNumberOfItems();
+  let iCnt: INT32;
+  let uiNumFlagsNotSet: UINT32 = 0;
+  let iTotalNumberItems: INT32 = GetTotalNumberOfItems();
 
   for (iCnt = 0; iCnt < iTotalNumberItems; iCnt++) {
     if (pInventoryPoolList[iCnt].sGridNo == NOWHERE && !(pInventoryPoolList[iCnt].usFlags & WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT)) {
@@ -1624,12 +1647,12 @@ function SortSectorInventory(pInventory: Pointer<WORLDITEM>, uiSizeOfArray: UINT
 }
 
 function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  WORLDITEM *pFirst = (WORLDITEM *)pNum1;
-  WORLDITEM *pSecond = (WORLDITEM *)pNum2;
-  UINT16 usItem1Index;
-  UINT16 usItem2Index;
-  UINT8 ubItem1Quality;
-  UINT8 ubItem2Quality;
+  let pFirst: Pointer<WORLDITEM> = (WORLDITEM *)pNum1;
+  let pSecond: Pointer<WORLDITEM> = (WORLDITEM *)pNum2;
+  let usItem1Index: UINT16;
+  let usItem2Index: UINT16;
+  let ubItem1Quality: UINT8;
+  let ubItem2Quality: UINT8;
 
   usItem1Index = pFirst->o.usItem;
   usItem2Index = pSecond->o.usItem;
@@ -1641,8 +1664,10 @@ function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<vo
 }
 
 function CanPlayerUseSectorInventory(pSelectedSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT16 sSectorX, sSectorY, sSectorZ;
-  BOOLEAN fInCombat;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let sSectorZ: INT16;
+  let fInCombat: BOOLEAN;
 
   // Get the sector that has a battle
   fInCombat = GetCurrentBattleSectorXYZAndReturnTRUEIfThereIsABattle(&sSectorX, &sSectorY, &sSectorZ);

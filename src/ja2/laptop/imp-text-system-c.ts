@@ -4,12 +4,12 @@ const IMP_LEFT_IDENT_TEXT_X = 116;
 const IMP_RIGHT_IDENT_TEXT_X = 509;
 const IMP_IDENT_WIDTH = 96;
 
-BOOLEAN fInitialized = FALSE;
+let fInitialized: BOOLEAN = FALSE;
 
-INT32 iIMPTextRecordLengths[300];
+let iIMPTextRecordLengths: INT32[] /* [300] */;
 
 // the length of persona questions
-INT32 iIMPQuestionLengths[25] = {
+let iIMPQuestionLengths: INT32[] /* [25] */ = {
   7,
   5,
   5,
@@ -43,10 +43,10 @@ const QTN_SECOND_COLUMN_X = 320;
 function LoadAndDisplayIMPText(sStartX: INT16, sStartY: INT16, sLineLength: INT16, sIMPTextRecordNumber: INT16, uiFont: UINT32, ubColor: UINT8, fShadow: BOOLEAN, uiFlags: UINT32): void {
   // this procedure will load and display to the screen starting at postion X, Y relative to the start of the laptop screen
   // it will access record sIMPTextRecordNumber and go until all records following it but before the next IMP record are displayed in font uiFont
-  CHAR16 sString[1024];
-  INT32 iCounter = 0;
-  BOOLEAN fNotDonePrintingFlag = TRUE;
-  INT32 iRecordPosition = 0;
+  let sString: CHAR16[] /* [1024] */;
+  let iCounter: INT32 = 0;
+  let fNotDonePrintingFlag: BOOLEAN = TRUE;
+  let iRecordPosition: INT32 = 0;
 
   if (fShadow == FALSE) {
     // don't want shadow, remove it
@@ -76,7 +76,7 @@ function InitializeImpRecordLengthList(): void {
 }
 
 function PrintImpText(): void {
-  INT16 sWidth = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
+  let sWidth: INT16 = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X + 1;
 
   // looks at current page and prints text needed
   switch (iCurrentImpPage) {
@@ -262,8 +262,8 @@ function PrintImpTextPostButtonRender(): void {
 }
 
 function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
-  INT32 iCounter = 0;
-  INT32 iOffset = 0;
+  let iCounter: INT32 = 0;
+  let iOffset: INT32 = 0;
 
   if (giCurrentPersonalityQuizQuestion < 0) {
     return;
@@ -351,9 +351,9 @@ function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
 }
 
 function OffSetQuestionForFemaleSpecificQuestions(iCurrentOffset: Pointer<INT32>): void {
-  INT32 iExtraOffSet = 0;
-  BOOLEAN fOffSet = TRUE;
-  INT32 iCounter = 0;
+  let iExtraOffSet: INT32 = 0;
+  let fOffSet: BOOLEAN = TRUE;
+  let iCounter: INT32 = 0;
 
   // find the extra
   switch (giCurrentPersonalityQuizQuestion) {

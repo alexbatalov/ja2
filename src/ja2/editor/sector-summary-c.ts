@@ -11,7 +11,7 @@ const enum Enum55 {
   BETA,
   RELEASE,
 }
-UINT16 gszVersionType[5][10] = {
+let gszVersionType: UINT16[][] /* [5][10] */ = {
   L"Pre-Alpha",
   L"Alpha",
   L"Demo",
@@ -33,89 +33,90 @@ const ALTERNATE_B2_MASK = 0x40;
 const ALTERNATE_B3_MASK = 0x80;
 const ALTERNATE_LEVELS_MASK = 0xf0;
 
-INT32 giCurrLevel;
+let giCurrLevel: INT32;
 
-BOOLEAN gfOutdatedDenied;
-UINT16 gusNumEntriesWithOutdatedOrNoSummaryInfo;
+let gfOutdatedDenied: BOOLEAN;
+let gusNumEntriesWithOutdatedOrNoSummaryInfo: UINT16;
 
-BOOLEAN gfUpdatingNow;
-UINT16 gusTotal, gusCurrent;
+let gfUpdatingNow: BOOLEAN;
+let gusTotal: UINT16;
+let gusCurrent: UINT16;
 
-BOOLEAN gfMustForceUpdateAllMaps = FALSE;
-UINT16 gusNumberOfMapsToBeForceUpdated = 0;
-BOOLEAN gfMajorUpdate = FALSE;
+let gfMustForceUpdateAllMaps: BOOLEAN = FALSE;
+let gusNumberOfMapsToBeForceUpdated: UINT16 = 0;
+let gfMajorUpdate: BOOLEAN = FALSE;
 
-INT32 giCurrentViewLevel = ALL_LEVELS_MASK;
+let giCurrentViewLevel: INT32 = ALL_LEVELS_MASK;
 
-BOOLEAN gbSectorLevels[16][16];
-BOOLEAN gfGlobalSummaryLoaded = FALSE;
+let gbSectorLevels: BOOLEAN[][] /* [16][16] */;
+let gfGlobalSummaryLoaded: BOOLEAN = FALSE;
 
-SUMMARYFILE *gpSectorSummary[16][16][8];
-SUMMARYFILE *gpCurrentSectorSummary;
+let gpSectorSummary: Pointer<SUMMARYFILE>[][][] /* [16][16][8] */;
+let gpCurrentSectorSummary: Pointer<SUMMARYFILE>;
 
-MOUSE_REGION MapRegion;
+let MapRegion: MOUSE_REGION;
 
 // Set if there is an existing global summary.  The first time this is run on your computer, it
 // will not exist, and will have to be generated before this will be set.
-BOOLEAN gfGlobalSummaryExists;
+let gfGlobalSummaryExists: BOOLEAN;
 // If you don't wish to create a global summary, you can deny it.  This safely locks the system
 // from generating one.
-BOOLEAN gfDeniedSummaryCreation;
+let gfDeniedSummaryCreation: BOOLEAN;
 // Set whenever the entire display is to be marked dirty.
-BOOLEAN gfRenderSummary;
+let gfRenderSummary: BOOLEAN;
 // Used externally to determine if the summary window is up or not.
-BOOLEAN gfSummaryWindowActive;
+let gfSummaryWindowActive: BOOLEAN;
 // When set, the summary window stays up until told otherwise.  When clear, the summary will disappear
 // when the assigned key (F5) is released.  The latter mode is initiated when F5 is held down for longer
 // than .4 seconds, and is useful for quickly looking at the information in the current map being edited.
-BOOLEAN gfPersistantSummary;
+let gfPersistantSummary: BOOLEAN;
 // When set, a grid is overlayed on top of the sector.  This grid defines each of the 256 sectors.  It is
 // on by default.
-BOOLEAN gfRenderGrid;
+let gfRenderGrid: BOOLEAN;
 // When set, parts of the map are darkened, showing that those sectors don't exist in the currently selected
 // layer.  When clear, the entire map is shown in full color.
-BOOLEAN gfRenderProgress;
+let gfRenderProgress: BOOLEAN;
 // When set, only the map section is rerendered.
-BOOLEAN gfRenderMap;
+let gfRenderMap: BOOLEAN;
 // Set whenever the ctrl key is held down.  This is used in conjunction with gfFileIO to determine whether the
 // selected sector is to be saved instead of loaded when clear.
-BOOLEAN gfCtrlPressed;
+let gfCtrlPressed: BOOLEAN;
 // When set, it is time to load or save the selected sector.  If gfCtrlPressed is set, the the map is saved,
 // instead of loaded.  It is impossible to load a map that doesn't exist.
-BOOLEAN gfFileIO;
+let gfFileIO: BOOLEAN;
 // When set, then we are overriding the ability to use normal methods for selecting sectors for saving and
 // loading.  Immediately upon entering the text input mode; for the temp file; then we are assuming that
 // the user will type in a name that doesn't follow standard naming conventions for the purposes of the
 // campaign editor.  This is useful for naming a temp file for saving or loading.
-BOOLEAN gfTempFile;
+let gfTempFile: BOOLEAN;
 // When set, only the alternate version of the maps will be displayed.  This is used for alternate maps in
 // particular sectors, such as the SkyRider quest which could be located at one of four maps randomly.  If
 // that particular map is chosen, then the alternate map will be used.
-BOOLEAN gfAlternateMaps = FALSE;
+let gfAlternateMaps: BOOLEAN = FALSE;
 
 const enum Enum56 {
   ITEMMODE_SCIFI,
   ITEMMODE_REAL,
   ITEMMODE_ENEMY,
 }
-UINT8 gubSummaryItemMode = ITEMMODE_SCIFI;
+let gubSummaryItemMode: UINT8 = ITEMMODE_SCIFI;
 
-BOOLEAN gfItemDetailsMode = FALSE;
+let gfItemDetailsMode: BOOLEAN = FALSE;
 
-WORLDITEM *gpWorldItemsSummaryArray = NULL;
-UINT16 gusWorldItemsSummaryArraySize = 0;
-OBJECTTYPE *gpPEnemyItemsSummaryArray = NULL;
-UINT16 gusPEnemyItemsSummaryArraySize = 0;
-OBJECTTYPE *gpNEnemyItemsSummaryArray = NULL;
-UINT16 gusNEnemyItemsSummaryArraySize = 0;
+let gpWorldItemsSummaryArray: Pointer<WORLDITEM> = NULL;
+let gusWorldItemsSummaryArraySize: UINT16 = 0;
+let gpPEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = NULL;
+let gusPEnemyItemsSummaryArraySize: UINT16 = 0;
+let gpNEnemyItemsSummaryArray: Pointer<OBJECTTYPE> = NULL;
+let gusNEnemyItemsSummaryArraySize: UINT16 = 0;
 
-BOOLEAN gfSetupItemDetailsMode = TRUE;
+let gfSetupItemDetailsMode: BOOLEAN = TRUE;
 
-BOOLEAN gfUpdateSummaryInfo;
+let gfUpdateSummaryInfo: BOOLEAN;
 
-UINT16 usNumSummaryFilesOutOfDate;
+let usNumSummaryFilesOutOfDate: UINT16;
 
-BOOLEAN gfMapFileDirty;
+let gfMapFileDirty: BOOLEAN;
 
 // Override status.  Hide is when there is nothing to override, readonly, when checked is to override a
 // readonly status file, so that you can write to it, and overwrite, when checked, allows you to save,
@@ -126,28 +127,31 @@ const enum Enum57 {
   READONLY,
   OVERWRITE,
 }
-UINT8 gubOverrideStatus;
+let gubOverrideStatus: UINT8;
 // Set when the a new sector/level is selected, forcing the user to reselect the override status.
-BOOLEAN gfOverrideDirty;
+let gfOverrideDirty: BOOLEAN;
 // The state of the override button, true if overriden intended.
-BOOLEAN gfOverride;
+let gfOverride: BOOLEAN;
 
 // The sector coordinates of the map currently loaded in memory (blue)
-INT16 gsSectorX, gsSectorY;
+let gsSectorX: INT16;
+let gsSectorY: INT16;
 // The layer of the sector that is currently loaded in memory.
-INT32 gsSectorLayer;
+let gsSectorLayer: INT32;
 // The sector coordinates of the mouse position (yellow)
-INT16 gsHiSectorX, gsHiSectorY;
+let gsHiSectorX: INT16;
+let gsHiSectorY: INT16;
 // The sector coordinates of the selected sector (red)
-INT16 gsSelSectorX, gsSelSectorY;
+let gsSelSectorX: INT16;
+let gsSelSectorY: INT16;
 
 // Used to determine how long the F5 key has been held down for to determine whether or not the
 // summary is going to be persistant or not.
-UINT32 giInitTimer;
+let giInitTimer: UINT32;
 
-UINT16 gszFilename[40];
-UINT16 gszTempFilename[21];
-UINT16 gszDisplayName[21];
+let gszFilename: UINT16[] /* [40] */;
+let gszTempFilename: UINT16[] /* [21] */;
+let gszDisplayName: UINT16[] /* [21] */;
 
 const enum Enum58 {
   SUMMARY_BACKGROUND,
@@ -169,10 +173,10 @@ const enum Enum58 {
   SUMMARY_ENEMY,
   NUM_SUMMARY_BUTTONS,
 }
-INT32 iSummaryButton[NUM_SUMMARY_BUTTONS];
+let iSummaryButton: INT32[] /* [NUM_SUMMARY_BUTTONS] */;
 
 function CreateSummaryWindow(): void {
-  INT32 i;
+  let i: INT32;
 
   if (!gfGlobalSummaryLoaded) {
     LoadGlobalSummary();
@@ -295,8 +299,8 @@ function AutoLoadMap(): void {
 }
 
 function ReleaseSummaryWindow(): void {
-  INT32 i;
-  UINT32 uiCurrTimer;
+  let i: INT32;
+  let uiCurrTimer: UINT32;
   if (!gfSummaryWindowActive || gfPersistantSummary)
     return;
   uiCurrTimer = GetJA2Clock();
@@ -319,7 +323,7 @@ function ReleaseSummaryWindow(): void {
 }
 
 function DestroySummaryWindow(): void {
-  INT32 i;
+  let i: INT32;
   if (!gfSummaryWindowActive)
     return;
   for (i = 0; i < NUM_SUMMARY_BUTTONS; i++) {
@@ -357,11 +361,11 @@ function DestroySummaryWindow(): void {
 
 function RenderSectorInformation(): void {
   // UINT16 str[ 100 ];
-  MAPCREATE_STRUCT *m;
-  SUMMARYFILE *s;
-  UINT8 ePoints = 0;
-  UINT16 usLine = 35;
-  INT32 iOverall;
+  let m: Pointer<MAPCREATE_STRUCT>;
+  let s: Pointer<SUMMARYFILE>;
+  let ePoints: UINT8 = 0;
+  let usLine: UINT16 = 35;
+  let iOverall: INT32;
 
   SetFont(FONT10ARIAL);
   SetFontShadow(FONT_NEARBLACK);
@@ -392,7 +396,7 @@ function RenderSectorInformation(): void {
   mprintf(10, 65, L"Number of lights:  %d", s->usNumLights);
   mprintf(10, 75, L"Number of entry points:  %d", ePoints);
   if (ePoints) {
-    INT32 x;
+    let x: INT32;
     x = 140;
     mprintf(x, 75, L"(");
     x += StringPixLength(L"(", FONT10ARIAL) + 2;
@@ -458,8 +462,8 @@ function RenderSectorInformation(): void {
       SetFontForeground(FONT_RED);
       mprintf(10, 265, L"Too many exit grid destinations (more than 4)...");
     } else {
-      UINT8 i;
-      UINT8 ubNumInvalid = 0;
+      let i: UINT8;
+      let ubNumInvalid: UINT8 = 0;
       for (i = 0; i < 4; i++) {
         if (s->fInvalidDest[i])
           ubNumInvalid++;
@@ -518,14 +522,22 @@ function RenderSectorInformation(): void {
 
 // 2)  CODE TRIGGER/ACTION NAMES
 function RenderItemDetails(): void {
-  FLOAT dAvgExistChance, dAvgStatus;
-  OBJECTTYPE *pItem;
-  INT32 index, i;
-  UINT16 str[100];
-  UINT32 uiQuantity, uiExistChance, uiStatus;
-  UINT32 uiTriggerQuantity[8], uiActionQuantity[8], uiTriggerExistChance[8], uiActionExistChance[8];
-  UINT32 xp, yp;
-  INT8 bFreqIndex;
+  let dAvgExistChance: FLOAT;
+  let dAvgStatus: FLOAT;
+  let pItem: Pointer<OBJECTTYPE>;
+  let index: INT32;
+  let i: INT32;
+  let str: UINT16[] /* [100] */;
+  let uiQuantity: UINT32;
+  let uiExistChance: UINT32;
+  let uiStatus: UINT32;
+  let uiTriggerQuantity: UINT32[] /* [8] */;
+  let uiActionQuantity: UINT32[] /* [8] */;
+  let uiTriggerExistChance: UINT32[] /* [8] */;
+  let uiActionExistChance: UINT32[] /* [8] */;
+  let xp: UINT32;
+  let yp: UINT32;
+  let bFreqIndex: INT8;
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_GRAY2);
   SetFontShadow(FONT_NEARBLACK);
@@ -780,10 +792,12 @@ function RenderItemDetails(): void {
 }
 
 function RenderSummaryWindow(): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  SGPRect ClipRect;
-  INT32 i, x, y;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
+  let ClipRect: SGPRect;
+  let i: INT32;
+  let x: INT32;
+  let y: INT32;
   if ((GetActiveFieldID() == 1) != gfTempFile) {
     gfTempFile ^= 1;
     SetInputFieldStringWith16BitString(1, L"");
@@ -818,8 +832,8 @@ function RenderSummaryWindow(): void {
     SetFont(FONT10ARIAL);
     SetFontShadow(FONT_NEARBLACK);
     if (gfGlobalSummaryExists) {
-      UINT16 str[100];
-      BOOLEAN fSectorSummaryExists = FALSE;
+      let str: UINT16[] /* [100] */;
+      let fSectorSummaryExists: BOOLEAN = FALSE;
       if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
         DisableButton(iSummaryButton[SUMMARY_LOAD]);
         SetFontForeground(FONT_YELLOW);
@@ -1159,12 +1173,12 @@ function RenderSummaryWindow(): void {
       mprintf(MAP_LEFT - 8, MAP_TOP + 4 + y * 13, L"%c", 65 + y);
     }
     for (x = 1; x <= 16; x++) {
-      UINT16 str[3];
+      let str: UINT16[] /* [3] */;
       swprintf(str, L"%d", x);
       mprintf(MAP_LEFT + x * 13 - (13 + StringPixLength(str, SMALLCOMPFONT)) / 2, MAP_TOP - 8, str);
     }
     if (gfRenderGrid) {
-      UINT16 pos;
+      let pos: UINT16;
       pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       for (i = 1; i <= 15; i++) {
@@ -1178,8 +1192,8 @@ function RenderSummaryWindow(): void {
       UnLockVideoSurface(FRAME_BUFFER);
     }
     if (gfRenderProgress) {
-      UINT8 ubNumUndergroundLevels;
-      UINT16 str[2];
+      let ubNumUndergroundLevels: UINT8;
+      let str: UINT16[] /* [2] */;
       for (y = 0; y < 16; y++) {
         ClipRect.iTop = MAP_TOP + y * 13;
         ClipRect.iBottom = ClipRect.iTop + 12;
@@ -1287,10 +1301,11 @@ function RenderSummaryWindow(): void {
 }
 
 function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): void {
-  UINT16 str[50];
-  UINT8 szCoord[40];
-  UINT16 *ptr;
-  INT16 x, y;
+  let str: UINT16[] /* [50] */;
+  let szCoord: UINT8[] /* [40] */;
+  let ptr: Pointer<UINT16>;
+  let x: INT16;
+  let y: INT16;
 
   gfRenderSummary = TRUE;
   // Extract the sector
@@ -1472,7 +1487,7 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
     return FALSE;
   gfCtrlPressed = pEvent->usKeyState & CTRL_DOWN;
   if (!HandleTextInput(pEvent) && pEvent->usEvent == KEY_DOWN || pEvent->usEvent == KEY_REPEAT) {
-    INT32 x;
+    let x: INT32;
     switch (pEvent->usParam) {
       case ESC:
         if (!gfWorldLoaded) {
@@ -1579,9 +1594,9 @@ function HandleSummaryInput(pEvent: Pointer<InputAtom>): BOOLEAN {
 }
 
 function CreateGlobalSummary(): void {
-  FILE *fp;
-  STRING512 Dir;
-  STRING512 ExecDir;
+  let fp: Pointer<FILE>;
+  let Dir: STRING512;
+  let ExecDir: STRING512;
 
   OutputDebugString("Generating GlobalSummary Information...\n");
 
@@ -1612,7 +1627,8 @@ function CreateGlobalSummary(): void {
 }
 
 function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  static INT16 gsPrevX = 0, gsPrevY = 0;
+  /* static */ let gsPrevX: INT16 = 0;
+  /* static */ let gsPrevY: INT16 = 0;
   // calc current sector highlighted.
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gsPrevX = gsHiSectorX = 0;
@@ -1630,8 +1646,9 @@ function MapMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
 }
 
 function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  static INT16 sLastX = -1, sLastY = -1;
-  static INT32 iLastClickTime = 0;
+  /* static */ let sLastX: INT16 = -1;
+  /* static */ let sLastY: INT16 = -1;
+  /* static */ let iLastClickTime: INT32 = 0;
   // calc current sector selected.
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1) {
@@ -1712,7 +1729,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
       }
     } else {
       // clicked in same sector, check for double click
-      INT32 iNewClickTime = GetJA2Clock();
+      let iNewClickTime: INT32 = GetJA2Clock();
       if (iNewClickTime - iLastClickTime < 400) {
         gfFileIO = TRUE;
       }
@@ -1723,7 +1740,7 @@ function MapClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
 }
 
 function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT8 i;
+  let i: INT8;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (GetActiveFieldID() == 1)
       SelectNextField();
@@ -1758,8 +1775,8 @@ function SummaryToggleLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 
 function SummaryLoadMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT16 *ptr;
-    UINT16 str[50];
+    let ptr: Pointer<UINT16>;
+    let str: UINT16[] /* [50] */;
     gfRenderSummary = TRUE;
 
     SetFont(FONT10ARIAL);
@@ -1813,7 +1830,7 @@ function SummarySaveMapCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     gfRenderSummary = TRUE;
     if (gubOverrideStatus == INACTIVE || gfOverride == TRUE) {
       if (gubOverrideStatus == READONLY) {
-        UINT8 filename[40];
+        let filename: UINT8[] /* [40] */;
         sprintf(filename, "MAPS\\%S", gszDisplayName);
         FileClearAttributes(filename);
       }
@@ -1841,12 +1858,12 @@ function SummaryOverrideCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 function CalculateOverrideStatus(): void {
-  GETFILESTRUCT FileInfo;
-  UINT8 szFilename[40];
+  let FileInfo: GETFILESTRUCT;
+  let szFilename: UINT8[] /* [40] */;
   gfOverrideDirty = FALSE;
   gfOverride = FALSE;
   if (gfTempFile) {
-    UINT8 *ptr;
+    let ptr: Pointer<UINT8>;
     sprintf(szFilename, "MAPS\\%S", gszTempFilename);
     if (strlen(szFilename) == 5)
       strcat(szFilename, "test.dat");
@@ -1880,15 +1897,16 @@ function CalculateOverrideStatus(): void {
 }
 
 function LoadGlobalSummary(): void {
-  HWFILE hfile;
-  STRING512 ExecDir;
-  STRING512 DevInfoDir;
-  STRING512 MapsDir;
-  UINT32 uiNumBytesRead;
-  FLOAT dMajorVersion;
-  INT32 x, y;
-  UINT8 szFilename[40];
-  UINT8 szSector[6];
+  let hfile: HWFILE;
+  let ExecDir: STRING512;
+  let DevInfoDir: STRING512;
+  let MapsDir: STRING512;
+  let uiNumBytesRead: UINT32;
+  let dMajorVersion: FLOAT;
+  let x: INT32;
+  let y: INT32;
+  let szFilename: UINT8[] /* [40] */;
+  let szSector: UINT8[] /* [6] */;
 
   OutputDebugString("Executing LoadGlobalSummary()...\n");
 
@@ -2048,9 +2066,9 @@ function LoadGlobalSummary(): void {
 }
 
 function GenerateSummaryList(): void {
-  FILE *fp;
-  STRING512 ExecDir;
-  STRING512 Dir;
+  let fp: Pointer<FILE>;
+  let ExecDir: STRING512;
+  let Dir: STRING512;
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
@@ -2074,11 +2092,12 @@ function GenerateSummaryList(): void {
 }
 
 function WriteSectorSummaryUpdate(puiFilename: Pointer<UINT8>, ubLevel: UINT8, pSummaryFileInfo: Pointer<SUMMARYFILE>): void {
-  FILE *fp;
-  STRING512 ExecDir;
-  STRING512 Dir;
-  UINT8 *ptr;
-  INT8 x, y;
+  let fp: Pointer<FILE>;
+  let ExecDir: STRING512;
+  let Dir: STRING512;
+  let ptr: Pointer<UINT8>;
+  let x: INT8;
+  let y: INT8;
 
   // Set current directory to JA2\DevInfo which contains all of the summary data
   GetExecutableDirectory(ExecDir);
@@ -2140,13 +2159,14 @@ function SummaryNewCaveLevelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: FLOAT): void {
-  UINT8 filename[40];
-  SUMMARYFILE temp;
-  INT32 x, y;
-  FILE *fp;
+  let filename: UINT8[] /* [40] */;
+  let temp: SUMMARYFILE;
+  let x: INT32;
+  let y: INT32;
+  let fp: Pointer<FILE>;
   sprintf(filename, pSector);
   if (ubLevel % 4) {
-    UINT8 str[4];
+    let str: UINT8[] /* [4] */;
     sprintf(str, "_b%d", ubLevel % 4);
     strcat(filename, str);
   }
@@ -2187,7 +2207,8 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
   fclose(fp);
 }
 
-double MasterStart, MasterEnd;
+let MasterStart: double;
+let MasterEnd: double;
 
 function UpdateMasterProgress(): void {
   if (gfUpdatingNow && gusTotal) {
@@ -2203,9 +2224,9 @@ function UpdateMasterProgress(): void {
 }
 
 function ReportError(pSector: Pointer<UINT8>, ubLevel: UINT8): void {
-  static INT32 yp = 180;
-  UINT16 str[40];
-  UINT16 temp[10];
+  /* static */ let yp: INT32 = 180;
+  let str: UINT16[] /* [40] */;
+  let temp: UINT16[] /* [10] */;
 
   // Make sure the file exists... if not, then return false
   swprintf(str, L"%S", pSector);
@@ -2219,9 +2240,10 @@ function ReportError(pSector: Pointer<UINT8>, ubLevel: UINT8): void {
 }
 
 function RegenerateSummaryInfoForAllOutdatedMaps(): void {
-  INT32 x, y;
-  UINT8 str[40];
-  SUMMARYFILE *pSF;
+  let x: INT32;
+  let y: INT32;
+  let str: UINT8[] /* [40] */;
+  let pSF: Pointer<SUMMARYFILE>;
   // CreateProgressBar( 0, 20, 120, 300, 132 ); //slave (individual)
   // CreateProgressBar( 1, 20, 100, 300, 112 ); //master (total)
   // DefineProgressBarPanel( 0, 65, 79, 94, 10, 80, 310, 152 );
@@ -2294,7 +2316,7 @@ function RegenerateSummaryInfoForAllOutdatedMaps(): void {
 
 function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 str[40];
+    let str: UINT8[] /* [40] */;
     CreateProgressBar(0, 20, 100, 300, 112); // slave (individual)
     DefineProgressBarPanel(0, 65, 79, 94, 10, 80, 310, 132);
     SetProgressBarTitle(0, L"Generating map summary", BLOCKFONT2, FONT_RED, FONT_NEARBLACK);
@@ -2317,7 +2339,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ExtractTempFilename(): void {
-  UINT16 str[40];
+  let str: UINT16[] /* [40] */;
   Get16BitStringFromField(1, str);
   if (wcscmp(gszTempFilename, str)) {
     wcscpy(gszTempFilename, str);
@@ -2329,10 +2351,11 @@ function ExtractTempFilename(): void {
 }
 
 function ApologizeOverrideAndForceUpdateEverything(): void {
-  INT32 x, y;
-  UINT16 str[50];
-  UINT8 name[50];
-  SUMMARYFILE *pSF;
+  let x: INT32;
+  let y: INT32;
+  let str: UINT16[] /* [50] */;
+  let name: UINT8[] /* [50] */;
+  let pSF: Pointer<SUMMARYFILE>;
   // Create one huge assed button
   gfMajorUpdate = TRUE;
   iSummaryButton[SUMMARY_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 0, 0, 640, 480, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
@@ -2443,16 +2466,18 @@ function ApologizeOverrideAndForceUpdateEverything(): void {
 }
 
 function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
-  HWFILE hfile;
-  UINT32 uiNumBytesRead;
-  UINT32 uiNumItems;
-  UINT8 szFilename[40];
-  BASIC_SOLDIERCREATE_STRUCT basic;
-  SOLDIERCREATE_STRUCT priority;
-  INT32 i, j;
-  UINT16 usNumItems;
-  OBJECTTYPE *pItem;
-  UINT16 usPEnemyIndex, usNEnemyIndex;
+  let hfile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let uiNumItems: UINT32;
+  let szFilename: UINT8[] /* [40] */;
+  let basic: BASIC_SOLDIERCREATE_STRUCT;
+  let priority: SOLDIERCREATE_STRUCT;
+  let i: INT32;
+  let j: INT32;
+  let usNumItems: UINT16;
+  let pItem: Pointer<OBJECTTYPE>;
+  let usPEnemyIndex: UINT16;
+  let usNEnemyIndex: UINT16;
 
   // Clear memory for all the item summaries loaded
   if (gpWorldItemsSummaryArray) {

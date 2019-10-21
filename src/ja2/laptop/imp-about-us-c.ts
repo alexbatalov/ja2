@@ -1,6 +1,6 @@
 // IMP AboutUs buttons
-INT32 giIMPAboutUsButton[1];
-INT32 giIMPAboutUsButtonImage[1];
+let giIMPAboutUsButton: INT32[] /* [1] */;
+let giIMPAboutUsButtonImage: INT32[] /* [1] */;
 ;
 
 function EnterIMPAboutUs(): void {

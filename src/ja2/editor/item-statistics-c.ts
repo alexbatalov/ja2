@@ -1,10 +1,10 @@
-INT32 giBothCheckboxButton = -1;
-INT32 giRealisticCheckboxButton = -1;
-INT32 giSciFiCheckboxButton = -1;
-INT32 giAlarmTriggerButton = -1;
-INT32 giOwnershipGroupButton = -1;
+let giBothCheckboxButton: INT32 = -1;
+let giRealisticCheckboxButton: INT32 = -1;
+let giSciFiCheckboxButton: INT32 = -1;
+let giAlarmTriggerButton: INT32 = -1;
+let giOwnershipGroupButton: INT32 = -1;
 
-UINT16 gszActionItemDesc[NUM_ACTIONITEMS][30] = {
+let gszActionItemDesc: UINT16[][] /* [NUM_ACTIONITEMS][30] */ = {
   L"Klaxon Mine",
   L"Flare Mine",
   L"Teargas Explosion",
@@ -133,18 +133,18 @@ const enum Enum46 {
   GLAUNCHER_ATTACHMENT_BUTTON,
   NUM_ATTACHMENT_BUTTONS,
 }
-UINT32 guiAttachmentButton[NUM_ATTACHMENT_BUTTONS];
-BOOLEAN gfAttachment[NUM_ATTACHMENT_BUTTONS];
+let guiAttachmentButton: UINT32[] /* [NUM_ATTACHMENT_BUTTONS] */;
+let gfAttachment: BOOLEAN[] /* [NUM_ATTACHMENT_BUTTONS] */;
 
-UINT32 guiCeramicPlatesButton;
-BOOLEAN gfCeramicPlates;
+let guiCeramicPlatesButton: UINT32;
+let gfCeramicPlates: BOOLEAN;
 
-UINT32 guiDetonatorButton;
-BOOLEAN gfDetonator;
+let guiDetonatorButton: UINT32;
+let gfDetonator: BOOLEAN;
 
-UINT32 guiActionItemButton;
-INT8 gbActionItemIndex = ACTIONITEM_MEDIUM;
-INT8 gbDefaultBombTrapLevel = 9;
+let guiActionItemButton: UINT32;
+let gbActionItemIndex: INT8 = ACTIONITEM_MEDIUM;
+let gbDefaultBombTrapLevel: INT8 = 9;
 
 const enum Enum47 {
   EDITING_NOTHING,
@@ -162,13 +162,13 @@ const enum Enum47 {
   EDITING_OWNERSHIP,
 }
 
-INT8 gbEditingMode = EDITING_NOTHING;
+let gbEditingMode: INT8 = EDITING_NOTHING;
 
-OBJECTTYPE *gpItem = NULL;
-BOOLEAN gfShowItemStatsPanel;
-INT16 gsItemGridNo;
+let gpItem: Pointer<OBJECTTYPE> = NULL;
+let gfShowItemStatsPanel: BOOLEAN;
+let gsItemGridNo: INT16;
 
-ITEM_POOL *gpEditingItemPool = NULL;
+let gpEditingItemPool: Pointer<ITEM_POOL> = NULL;
 
 function ShowItemStatsPanel(): void {
   ShowEditorButtons(FIRST_ITEMSTATS_BUTTON, LAST_ITEMSTATS_BUTTON);
@@ -463,7 +463,7 @@ function UpdateItemStatsPanel(): void {
       break;
   }
   if (gpEditingItemPool) {
-    INT32 iPercent = 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance;
+    let iPercent: INT32 = 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance;
     if (iPercent == 100)
       SetFontForeground(FONT_YELLOW);
     else if (iPercent >= 50)
@@ -547,8 +547,8 @@ function RemoveGameTypeFlags(): void {
 }
 
 function SetupGunGUI(): void {
-  UINT16 str[20];
-  INT16 yp;
+  let str: UINT16[] /* [20] */;
+  let yp: INT16;
   memset(gfAttachment, 0, NUM_ATTACHMENT_BUTTONS);
   swprintf(str, L"%d", gpItem->bGunStatus);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -621,7 +621,7 @@ function SetupGunGUI(): void {
 }
 
 function RemoveGunGUI(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
     if (guiAttachmentButton[i] != -1) {
       RemoveButton(guiAttachmentButton[i]);
@@ -631,7 +631,7 @@ function RemoveGunGUI(): void {
 }
 
 function ExtractAndUpdateGunGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the gun status
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -662,7 +662,7 @@ function ExtractAndUpdateGunGUI(): void {
 }
 
 function SetupAmmoGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   swprintf(str, L"%d", gpItem->ubNumberOfObjects);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 1, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->bTrap);
@@ -678,7 +678,7 @@ function RemoveAmmoGUI(): void {
 }
 
 function ExtractAndUpdateAmmoGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the number of clips
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -702,7 +702,7 @@ function ExtractAndUpdateAmmoGUI(): void {
 }
 
 function SetupArmourGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->bTrap);
@@ -730,7 +730,7 @@ function RemoveArmourGUI(): void {
 }
 
 function ExtractAndUpdateArmourGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the armour status
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -753,7 +753,7 @@ function ExtractAndUpdateArmourGUI(): void {
 }
 
 function SetupEquipGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->bTrap);
@@ -769,7 +769,7 @@ function RemoveEquipGUI(): void {
 }
 
 function ExtractAndUpdateEquipGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -792,8 +792,8 @@ function ExtractAndUpdateEquipGUI(): void {
 }
 
 function SetupExplosivesGUI(): void {
-  UINT16 str[20];
-  INT16 yp;
+  let str: UINT16[] /* [20] */;
+  let yp: INT16;
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->ubNumberOfObjects);
@@ -828,7 +828,7 @@ function RemoveExplosivesGUI(): void {
 }
 
 function ExtractAndUpdateExplosivesGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the explosives status
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -862,7 +862,7 @@ function ExtractAndUpdateExplosivesGUI(): void {
 }
 
 function SetupMoneyGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   swprintf(str, L"%d", gpItem->uiMoneyAmount);
   AddTextInputField(485, 380, 45, 15, MSYS_PRIORITY_NORMAL, str, 5, INPUTTYPE_NUMERICSTRICT);
   if (gpEditingItemPool) {
@@ -872,7 +872,7 @@ function SetupMoneyGUI(): void {
 }
 
 function ExtractAndUpdateMoneyGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -894,7 +894,7 @@ function RemoveMoneyGUI(): void {
 }
 
 function SetupOwnershipGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   swprintf(str, L"%d", gpItem->ubOwnerProfile);
   AddTextInputField(485, 380, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   giOwnershipGroupButton = CreateTextButton(gszCivGroupNames[gpItem->ubOwnerCivGroup], SMALLCOMPFONT, FONT_YELLOW, FONT_BLACK, BUTTON_USE_DEFAULT, 485, 415, 80, 25, BUTTON_TOGGLE, MSYS_PRIORITY_NORMAL, DEFAULT_MOVE_CALLBACK, OwnershipGroupButtonCallback);
@@ -912,7 +912,7 @@ function SetOwnershipGroup(ubNewGroup: UINT8): void {
 }
 
 function ExtractAndUpdateOwnershipGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the amount of cash
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -931,7 +931,7 @@ function RemoveOwnershipGUI(): void {
 }
 
 function SetupKeysGUI(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   if (gpEditingItemPool) {
     swprintf(str, L"%d", 100 - gWorldItems[gpEditingItemPool->iItemIndex].ubNonExistChance);
     AddTextInputField(485, 440, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
@@ -951,8 +951,8 @@ function RemoveKeysGUI(): void {
 }
 
 function SetupActionItemsGUI(): void {
-  UINT16 str[4];
-  UINT16 *pStr;
+  let str: UINT16[] /* [4] */;
+  let pStr: Pointer<UINT16>;
   swprintf(str, L"%d", gpItem->bStatus[0]);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->bTrap);
@@ -966,7 +966,7 @@ function SetupActionItemsGUI(): void {
 }
 
 function ExtractAndUpdateActionItemsGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the equipment status
   i = GetNumericStrictValueFromField(1);
   if (i == -1)
@@ -1008,7 +1008,7 @@ function AlarmTriggerCheckboxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function SetupTriggersGUI(): void {
-  UINT16 str[4];
+  let str: UINT16[] /* [4] */;
   swprintf(str, L"%d", gpItem->bTrap);
   AddTextInputField(485, 365, 25, 15, MSYS_PRIORITY_NORMAL, str, 3, INPUTTYPE_NUMERICSTRICT);
   swprintf(str, L"%d", gpItem->ubTolerance);
@@ -1026,7 +1026,7 @@ function SetupTriggersGUI(): void {
 }
 
 function ExtractAndUpdateTriggersGUI(): void {
-  INT32 i;
+  let i: INT32;
   // Update the trap level
   i = GetNumericStrictValueFromField(1);
   i = (i == -1) ? 0 : min(i, 20);
@@ -1057,9 +1057,9 @@ function RemoveTriggersGUI(): void {
 
 function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT32 i;
-    UINT16 usAttachment;
-    OBJECTTYPE temp;
+    let i: INT32;
+    let usAttachment: UINT16;
+    let temp: OBJECTTYPE;
     for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
       // Loop through and find the button that was just modified
       switch (i) {
@@ -1091,7 +1091,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
           AttachObject(NULL, gpItem, &temp);
         } else {
           // Button is out, so remove the attachment
-          INT8 slot;
+          let slot: INT8;
           gfAttachment[i] = FALSE;
           btn->uiFlags &= ~BUTTON_CLICKED_ON;
           slot = FindAttachment(gpItem, usAttachment);
@@ -1106,14 +1106,14 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    OBJECTTYPE temp;
+    let temp: OBJECTTYPE;
     gfCeramicPlates ^= TRUE;
     if (gfCeramicPlates) {
       btn->uiFlags |= BUTTON_CLICKED_ON;
       CreateItem(CERAMIC_PLATES, gpItem->bStatus[0], &temp);
       AttachObject(NULL, gpItem, &temp);
     } else {
-      INT8 slot;
+      let slot: INT8;
       btn->uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, CERAMIC_PLATES);
       if (slot != -1)
@@ -1124,7 +1124,7 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    OBJECTTYPE temp;
+    let temp: OBJECTTYPE;
     if (!gfDetonator) {
       gfDetonator = TRUE;
       btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -1132,7 +1132,7 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       AttachObject(NULL, gpItem, &temp);
     } else {
       // Button is out, so remove the attachment
-      INT8 slot;
+      let slot: INT8;
       gfDetonator = FALSE;
       btn->uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, DETONATOR);
@@ -1307,8 +1307,8 @@ function UpdateActionItem(bActionItemIndex: INT8): void {
 }
 
 function ReEvaluateAttachmentStatii(): void {
-  INT32 i;
-  UINT16 usAttachment;
+  let i: INT32;
+  let usAttachment: UINT16;
   for (i = 0; i < NUM_ATTACHMENT_BUTTONS; i++) {
     if (guiAttachmentButton[i] != -1 && !(ButtonList[guiAttachmentButton[i]]->uiFlags & BUTTON_CLICKED_ON)) {
       // if button exists and button isn't clicked

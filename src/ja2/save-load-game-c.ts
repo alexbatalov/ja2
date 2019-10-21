@@ -6,13 +6,13 @@
 
 // Global variable used
 
-BOOLEAN gMusicModeToPlay = FALSE;
+let gMusicModeToPlay: BOOLEAN = FALSE;
 
-BOOLEAN gfUseConsecutiveQuickSaveSlots = FALSE;
-UINT32 guiCurrentQuickSaveNumber = 0;
-UINT32 guiLastSaveGameNum;
+let gfUseConsecutiveQuickSaveSlots: BOOLEAN = FALSE;
+let guiCurrentQuickSaveNumber: UINT32 = 0;
+let guiLastSaveGameNum: UINT32;
 
-UINT32 guiJA2EncryptionSet = 0;
+let guiJA2EncryptionSet: UINT32 = 0;
 
 interface GENERAL_SAVE_INFO {
   // The screen that the gaem was saved from
@@ -215,7 +215,7 @@ interface GENERAL_SAVE_INFO {
   ubFiller: UINT8[] /* [550] */; // This structure should be 1024 bytes
 }
 
-UINT32 guiSaveGameVersion = 0;
+let guiSaveGameVersion: UINT32 = 0;
 
 /////////////////////////////////////////////////////
 //
@@ -225,9 +225,9 @@ UINT32 guiSaveGameVersion = 0;
 
 // CHAR8		gsSaveGameNameWithPath[ 512 ];
 
-UINT8 gubSaveGameLoc = 0;
+let gubSaveGameLoc: UINT8 = 0;
 
-UINT32 guiScreenToGotoAfterLoadingSavedGame = 0;
+let guiScreenToGotoAfterLoadingSavedGame: UINT32 = 0;
 
 /////////////////////////////////////////////////////
 //
@@ -247,17 +247,19 @@ UINT32 guiScreenToGotoAfterLoadingSavedGame = 0;
 /////////////////////////////////////////////////////
 
 function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
-  HWFILE hFile = 0;
-  SAVED_GAME_HEADER SaveGameHeader;
-  CHAR8 zSaveGameName[512];
-  UINT32 uiSizeOfGeneralInfo = sizeof(GENERAL_SAVE_INFO);
-  UINT8 saveDir[100];
-  BOOLEAN fPausedStateBeforeSaving = gfGamePaused;
-  BOOLEAN fLockPauseStateBeforeSaving = gfLockPauseState;
-  INT32 iSaveLoadGameMessageBoxID = -1;
-  UINT16 usPosX, usActualWidth, usActualHeight;
-  BOOLEAN fWePausedIt = FALSE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let hFile: HWFILE = 0;
+  let SaveGameHeader: SAVED_GAME_HEADER;
+  let zSaveGameName: CHAR8[] /* [512] */;
+  let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
+  let saveDir: UINT8[] /* [100] */;
+  let fPausedStateBeforeSaving: BOOLEAN = gfGamePaused;
+  let fLockPauseStateBeforeSaving: BOOLEAN = gfLockPauseState;
+  let iSaveLoadGameMessageBoxID: INT32 = -1;
+  let usPosX: UINT16;
+  let usActualWidth: UINT16;
+  let usActualHeight: UINT16;
+  let fWePausedIt: BOOLEAN = FALSE;
 
   sprintf(saveDir, "%S", pMessageStrings[MSG_SAVEDIRECTORY]);
 
@@ -738,21 +740,21 @@ FAILED_TO_SAVE:
   return FALSE;
 }
 
-UINT32 guiBrokenSaveGameVersion = 0;
+let guiBrokenSaveGameVersion: UINT32 = 0;
 
 function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
-  HWFILE hFile;
-  SAVED_GAME_HEADER SaveGameHeader;
-  UINT32 uiNumBytesRead = 0;
+  let hFile: HWFILE;
+  let SaveGameHeader: SAVED_GAME_HEADER;
+  let uiNumBytesRead: UINT32 = 0;
 
-  INT16 sLoadSectorX;
-  INT16 sLoadSectorY;
-  INT8 bLoadSectorZ;
-  CHAR8 zSaveGameName[512];
-  UINT32 uiSizeOfGeneralInfo = sizeof(GENERAL_SAVE_INFO);
+  let sLoadSectorX: INT16;
+  let sLoadSectorY: INT16;
+  let bLoadSectorZ: INT8;
+  let zSaveGameName: CHAR8[] /* [512] */;
+  let uiSizeOfGeneralInfo: UINT32 = sizeof(GENERAL_SAVE_INFO);
 
-  UINT32 uiRelStartPerc;
-  UINT32 uiRelEndPerc;
+  let uiRelStartPerc: UINT32;
+  let uiRelEndPerc: UINT32;
 
   uiRelStartPerc = uiRelEndPerc = 0;
 
@@ -1605,8 +1607,8 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
   // ATE: if we are within this window where skyridder was foobared, fix!
   if (SaveGameHeader.uiSavedGameVersion >= 61 && SaveGameHeader.uiSavedGameVersion <= 65) {
-    SOLDIERTYPE *pSoldier;
-    MERCPROFILESTRUCT *pProfile;
+    let pSoldier: Pointer<SOLDIERTYPE>;
+    let pProfile: Pointer<MERCPROFILESTRUCT>;
 
     if (!fSkyRiderSetUp) {
       // see if we can find him and remove him if so....
@@ -1645,7 +1647,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 
   if (SaveGameHeader.uiSavedGameVersion < 68) {
     // correct bVehicleUnderRepairID for all mercs
-    UINT8 ubID;
+    let ubID: UINT8;
     for (ubID = 0; ubID < MAXMERCS; ubID++) {
       Menptr[ubID].bVehicleUnderRepairID = -1;
     }
@@ -1708,9 +1710,9 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
 }
 
 function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
-  UINT16 cnt;
-  UINT32 uiNumBytesWritten = 0;
-  UINT32 uiSaveSize = sizeof(MERCPROFILESTRUCT);
+  let cnt: UINT16;
+  let uiNumBytesWritten: UINT32 = 0;
+  let uiSaveSize: UINT32 = sizeof(MERCPROFILESTRUCT);
 
   // Lopp through all the profiles to save
   for (cnt = 0; cnt < NUM_PROFILES; cnt++) {
@@ -1729,8 +1731,8 @@ function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
-  UINT16 cnt;
-  UINT32 uiNumBytesRead = 0;
+  let cnt: UINT16;
+  let uiNumBytesRead: UINT32 = 0;
 
   // Lopp through all the profiles to Load
   for (cnt = 0; cnt < NUM_PROFILES; cnt++) {
@@ -1769,12 +1771,12 @@ function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
 //	OBJECTTYPE									*pTempObject;
 
 function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
-  UINT16 cnt;
-  UINT32 uiNumBytesWritten = 0;
-  UINT8 ubOne = 1;
-  UINT8 ubZero = 0;
+  let cnt: UINT16;
+  let uiNumBytesWritten: UINT32 = 0;
+  let ubOne: UINT8 = 1;
+  let ubZero: UINT8 = 0;
 
-  UINT32 uiSaveSize = sizeof(SOLDIERTYPE);
+  let uiSaveSize: UINT32 = sizeof(SOLDIERTYPE);
 
   // Loop through all the soldier structs to save
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
@@ -1844,16 +1846,16 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
-  UINT16 cnt;
-  UINT32 uiNumBytesRead = 0;
-  SOLDIERTYPE SavedSoldierInfo;
-  UINT32 uiSaveSize = sizeof(SOLDIERTYPE);
-  UINT8 ubId;
-  UINT8 ubOne = 1;
-  UINT8 ubActive = 1;
-  UINT32 uiPercentage;
+  let cnt: UINT16;
+  let uiNumBytesRead: UINT32 = 0;
+  let SavedSoldierInfo: SOLDIERTYPE;
+  let uiSaveSize: UINT32 = sizeof(SOLDIERTYPE);
+  let ubId: UINT8;
+  let ubOne: UINT8 = 1;
+  let ubActive: UINT8 = 1;
+  let uiPercentage: UINT32;
 
-  SOLDIERCREATE_STRUCT CreateStruct;
+  let CreateStruct: SOLDIERCREATE_STRUCT;
 
   // Loop through all the soldier and delete them all
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
@@ -1986,7 +1988,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
 
   // Fix robot
   if (guiSaveGameVersion <= 87) {
-    SOLDIERTYPE *pSoldier;
+    let pSoldier: Pointer<SOLDIERTYPE>;
 
     if (gMercProfiles[ROBOT].inv[VESTPOS] == SPECTRA_VEST) {
       // update this
@@ -2096,11 +2098,11 @@ BOOLEAN LoadPtrInfo( PTR *pData, UINT32 uiSizeOfObject, HWFILE hFile )
 */
 
 function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
-  UINT32 uiFileSize;
-  UINT32 uiNumBytesWritten = 0;
-  HWFILE hSrcFile;
-  UINT8 *pData;
-  UINT32 uiNumBytesRead;
+  let uiFileSize: UINT32;
+  let uiNumBytesWritten: UINT32 = 0;
+  let hSrcFile: HWFILE;
+  let pData: Pointer<UINT8>;
+  let uiNumBytesRead: UINT32;
 
   // open the file
   hSrcFile = FileOpen(pSrcFileName, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
@@ -2153,11 +2155,11 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
 }
 
 function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
-  UINT32 uiFileSize;
-  UINT32 uiNumBytesWritten = 0;
-  HWFILE hSrcFile;
-  UINT8 *pData;
-  UINT32 uiNumBytesRead;
+  let uiFileSize: UINT32;
+  let uiNumBytesWritten: UINT32 = 0;
+  let hSrcFile: HWFILE;
+  let pData: Pointer<UINT8>;
+  let uiNumBytesRead: UINT32;
 
   // If the source file exists, delete it
   if (FileExists(pSrcFileName)) {
@@ -2227,15 +2229,15 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
 }
 
 function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumOfEmails = 0;
-  UINT32 uiSizeOfEmails = 0;
-  EmailPtr pEmail = pEmailList;
-  EmailPtr pTempEmail = NULL;
-  UINT32 cnt;
-  UINT32 uiStringLength = 0;
-  UINT32 uiNumBytesWritten = 0;
+  let uiNumOfEmails: UINT32 = 0;
+  let uiSizeOfEmails: UINT32 = 0;
+  let pEmail: EmailPtr = pEmailList;
+  let pTempEmail: EmailPtr = NULL;
+  let cnt: UINT32;
+  let uiStringLength: UINT32 = 0;
+  let uiNumBytesWritten: UINT32 = 0;
 
-  SavedEmailStruct SavedEmail;
+  let SavedEmail: SavedEmailStruct;
 
   // loop through all the email to find out the total number
   while (pEmail) {
@@ -2298,14 +2300,14 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumOfEmails = 0;
-  UINT32 uiSizeOfSubject = 0;
-  EmailPtr pEmail = pEmailList;
-  EmailPtr pTempEmail = NULL;
-  UINT8 *pData = NULL;
-  UINT32 cnt;
-  SavedEmailStruct SavedEmail;
-  UINT32 uiNumBytesRead = 0;
+  let uiNumOfEmails: UINT32 = 0;
+  let uiSizeOfSubject: UINT32 = 0;
+  let pEmail: EmailPtr = pEmailList;
+  let pTempEmail: EmailPtr = NULL;
+  let pData: Pointer<UINT8> = NULL;
+  let cnt: UINT32;
+  let SavedEmail: SavedEmailStruct;
+  let uiNumBytesRead: UINT32 = 0;
 
   // Delete the existing list of emails
   ShutDownEmailList();
@@ -2402,7 +2404,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // write the gTacticalStatus to the saved game file
   FileWrite(hFile, &gTacticalStatus, sizeof(TacticalStatusType), &uiNumBytesWritten);
@@ -2436,7 +2438,7 @@ function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   // Read the gTacticalStatus to the saved game file
   FileRead(hFile, &gTacticalStatus, sizeof(TacticalStatusType), &uiNumBytesRead);
@@ -2477,7 +2479,7 @@ function CopySavedSoldierInfoToNewSoldier(pDestSourceInfo: Pointer<SOLDIERTYPE>,
 }
 
 function SetMercsInsertionGridNo(): BOOLEAN {
-  UINT16 cnt = 0;
+  let cnt: UINT16 = 0;
 
   // loop through all the mercs
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
@@ -2500,8 +2502,8 @@ function SetMercsInsertionGridNo(): BOOLEAN {
 }
 
 function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiSaveSize = 0;
-  UINT32 uiNumBytesWritten = 0;
+  let uiSaveSize: UINT32 = 0;
+  let uiNumBytesWritten: UINT32 = 0;
 
   // Save the Public Opplist
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
@@ -2563,8 +2565,8 @@ function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiLoadSize = 0;
-  UINT32 uiNumBytesRead = 0;
+  let uiLoadSize: UINT32 = 0;
+  let uiNumBytesRead: UINT32 = 0;
 
   // Load the Public Opplist
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
@@ -2626,9 +2628,9 @@ function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiArraySize;
-  UINT32 uiSaveSize = 0;
-  UINT32 uiNumBytesWritten = 0;
+  let uiArraySize: UINT32;
+  let uiSaveSize: UINT32 = 0;
+  let uiNumBytesWritten: UINT32 = 0;
 
   uiArraySize = TOTAL_SOLDIERS * NUM_WATCHED_LOCS;
 
@@ -2660,9 +2662,9 @@ function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiArraySize;
-  UINT32 uiLoadSize = 0;
-  UINT32 uiNumBytesRead = 0;
+  let uiArraySize: UINT32;
+  let uiLoadSize: UINT32 = 0;
+  let uiNumBytesRead: UINT32 = 0;
 
   uiArraySize = TOTAL_SOLDIERS * NUM_WATCHED_LOCS;
 
@@ -2716,9 +2718,9 @@ function CreateSavedGameFileNameFromNumber(ubSaveGameID: UINT8, pzNewFileName: S
 }
 
 function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
-  UINT32 uiNumOfNodes = 0;
-  PathStPtr pTempPath = Menptr[ubID].pMercPath;
-  UINT32 uiNumBytesWritten = 0;
+  let uiNumOfNodes: UINT32 = 0;
+  let pTempPath: PathStPtr = Menptr[ubID].pMercPath;
+  let uiNumBytesWritten: UINT32 = 0;
 
   // loop through to get all the nodes
   while (pTempPath) {
@@ -2750,11 +2752,11 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
 }
 
 function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
-  UINT32 uiNumOfNodes = 0;
-  PathStPtr pTempPath = NULL;
-  PathStPtr pTemp = NULL;
-  UINT32 uiNumBytesRead = 0;
-  UINT32 cnt;
+  let uiNumOfNodes: UINT32 = 0;
+  let pTempPath: PathStPtr = NULL;
+  let pTemp: PathStPtr = NULL;
+  let uiNumBytesRead: UINT32 = 0;
+  let cnt: UINT32;
 
   // The list SHOULD be empty at this point
   /*
@@ -2820,9 +2822,9 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
 }
 
 function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
-  GENERAL_SAVE_INFO sGeneralInfo;
+  let sGeneralInfo: GENERAL_SAVE_INFO;
   memset(&sGeneralInfo, 0, sizeof(GENERAL_SAVE_INFO));
 
   sGeneralInfo.ubMusicMode = gubMusicMode;
@@ -3028,9 +3030,9 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
-  GENERAL_SAVE_INFO sGeneralInfo;
+  let sGeneralInfo: GENERAL_SAVE_INFO;
   memset(&sGeneralInfo, 0, sizeof(GENERAL_SAVE_INFO));
 
   // Load the current music mode
@@ -3263,7 +3265,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
 }
 
 function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // Save the Prerandom number index
   FileWrite(hFile, &guiPreRandomIndex, sizeof(UINT32), &uiNumBytesWritten);
@@ -3281,7 +3283,7 @@ function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   // Load the Prerandom number index
   FileRead(hFile, &guiPreRandomIndex, sizeof(UINT32), &uiNumBytesRead);
@@ -3299,7 +3301,7 @@ function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   if (guiSaveGameVersion < 72) {
     // Load the array of meanwhile defs
@@ -3321,7 +3323,7 @@ function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // Save the array of meanwhile defs
   FileWrite(hFile, &gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, &uiNumBytesWritten);
@@ -3333,7 +3335,7 @@ function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function DoesUserHaveEnoughHardDriveSpace(): BOOLEAN {
-  UINT32 uiBytesFree = 0;
+  let uiBytesFree: UINT32 = 0;
 
   uiBytesFree = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
@@ -3358,11 +3360,11 @@ function GetBestPossibleSectorXYZValues(psSectorX: Pointer<INT16>, psSectorY: Po
       *pbSectorZ = Squad[iCurrentTacticalSquad][0]->bSectorZ;
     }
   } else {
-    INT16 sSoldierCnt;
-    SOLDIERTYPE *pSoldier;
-    INT16 bLastTeamID;
-    INT8 bCount = 0;
-    BOOLEAN fFoundAMerc = FALSE;
+    let sSoldierCnt: INT16;
+    let pSoldier: Pointer<SOLDIERTYPE>;
+    let bLastTeamID: INT16;
+    let bCount: INT8 = 0;
+    let fFoundAMerc: BOOLEAN = FALSE;
 
     // Set locator to first merc
     sSoldierCnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -3427,9 +3429,9 @@ function UnPauseAfterSaveGame(): void {
 }
 
 function TruncateStrategicGroupSizes(): void {
-  GROUP *pGroup;
-  SECTORINFO *pSector;
-  INT32 i;
+  let pGroup: Pointer<GROUP>;
+  let pSector: Pointer<SECTORINFO>;
+  let i: INT32;
   for (i = SEC_A1; i < SEC_P16; i++) {
     pSector = &SectorInfo[i];
     if (pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
@@ -3544,8 +3546,8 @@ function TruncateStrategicGroupSizes(): void {
 }
 
 function UpdateMercMercContractInfo(): void {
-  UINT8 ubCnt;
-  SOLDIERTYPE *pSoldier;
+  let ubCnt: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (ubCnt = BIFF; ubCnt <= BUBBA; ubCnt++) {
     pSoldier = FindSoldierByProfileID(ubCnt, TRUE);
@@ -3561,12 +3563,17 @@ function UpdateMercMercContractInfo(): void {
 }
 
 function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
-  CHAR zFileName1[256];
-  CHAR zFileName2[256];
-  HWFILE hFile;
-  BOOLEAN fFile1Exist, fFile2Exist;
-  SGP_FILETIME CreationTime1, LastAccessedTime1, LastWriteTime1;
-  SGP_FILETIME CreationTime2, LastAccessedTime2, LastWriteTime2;
+  let zFileName1: CHAR[] /* [256] */;
+  let zFileName2: CHAR[] /* [256] */;
+  let hFile: HWFILE;
+  let fFile1Exist: BOOLEAN;
+  let fFile2Exist: BOOLEAN;
+  let CreationTime1: SGP_FILETIME;
+  let LastAccessedTime1: SGP_FILETIME;
+  let LastWriteTime1: SGP_FILETIME;
+  let CreationTime2: SGP_FILETIME;
+  let LastAccessedTime2: SGP_FILETIME;
+  let LastWriteTime2: SGP_FILETIME;
 
   fFile1Exist = FALSE;
   fFile2Exist = FALSE;
@@ -3616,8 +3623,8 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
 }
 
 function HandleOldBobbyRMailOrders(): void {
-  INT32 iCnt;
-  INT32 iNewListCnt = 0;
+  let iCnt: INT32;
+  let iNewListCnt: INT32 = 0;
 
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderUsed != 0) {
     // Allocate memory for the list
@@ -3656,7 +3663,7 @@ function HandleOldBobbyRMailOrders(): void {
 }
 
 function CalcJA2EncryptionSet(pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): UINT32 {
-  UINT32 uiEncryptionSet = 0;
+  let uiEncryptionSet: UINT32 = 0;
 
   uiEncryptionSet = pSaveGameHeader->uiSavedGameVersion;
   uiEncryptionSet *= pSaveGameHeader->uiFlags;

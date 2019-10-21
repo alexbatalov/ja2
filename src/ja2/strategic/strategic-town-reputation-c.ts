@@ -17,7 +17,7 @@ const TOWN_OPINION_START_TIME = (9 * 60);
 const TOWN_OPINION_PERIOD = (3 * 60);
 
 function InitializeProfilesForTownReputation(): void {
-  UINT32 uiProfileId = 0;
+  let uiProfileId: UINT32 = 0;
 
   // initialize the town opinion values in each recruitable merc's profile structure
   for (uiProfileId = 0; uiProfileId < FIRST_NPC; uiProfileId++) {
@@ -87,7 +87,7 @@ function UpdateTownOpinionOfThisMercForSoldier(pSoldier: Pointer<SOLDIERTYPE>, u
 }
 
 function HandleSpreadOfAllTownsOpinion(): void {
-  UINT8 ubProfileId;
+  let ubProfileId: UINT8;
 
   // debug message
   ScreenMsg(MSG_FONT_RED, MSG_DEBUG, L"%s - Spreading town opinions about mercs", WORLDTIMESTR);
@@ -100,9 +100,11 @@ function HandleSpreadOfAllTownsOpinion(): void {
 
 function HandleSpreadOfTownOpinionForMerc(ubProfileId: UINT8): void {
   // handle opinion spread for this grunt
-  INT32 iDistanceBetweenTowns;
-  INT8 iCounterA, iCounterB;
-  INT8 bOpinionOfTownA, bOpinionOfTownB;
+  let iDistanceBetweenTowns: INT32;
+  let iCounterA: INT8;
+  let iCounterB: INT8;
+  let bOpinionOfTownA: INT8;
+  let bOpinionOfTownB: INT8;
 
   Assert(ubProfileId < FIRST_NPC);
 

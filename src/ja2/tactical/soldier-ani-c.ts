@@ -3,57 +3,57 @@ const MAX_ANIFRAMES_PER_FLASH = 2;
 //#define		TIME_FOR_RANDOM_ANIM_CHECK	10
 const TIME_FOR_RANDOM_ANIM_CHECK = 2;
 
-BOOLEAN gfLastMercTalkedAboutKillingID = NOBODY;
+let gfLastMercTalkedAboutKillingID: BOOLEAN = NOBODY;
 
-DOUBLE gHopFenceForwardSEDist[NUMSOLDIERBODYTYPES] = {
+let gHopFenceForwardSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   2.2,
   0.7,
   3.2,
   0.7,
 };
-DOUBLE gHopFenceForwardNWDist[NUMSOLDIERBODYTYPES] = {
+let gHopFenceForwardNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   2.7,
   1.0,
   2.7,
   1.0,
 };
-DOUBLE gHopFenceForwardFullSEDist[NUMSOLDIERBODYTYPES] = {
+let gHopFenceForwardFullSEDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   1.1,
   1.0,
   2.1,
   1.1,
 };
-DOUBLE gHopFenceForwardFullNWDist[NUMSOLDIERBODYTYPES] = {
+let gHopFenceForwardFullNWDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   0.8,
   0.2,
   2.7,
   0.8,
 };
-DOUBLE gFalloffBackwardsDist[NUMSOLDIERBODYTYPES] = {
+let gFalloffBackwardsDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   1,
   0.8,
   1,
   1,
 };
-DOUBLE gClimbUpRoofDist[NUMSOLDIERBODYTYPES] = {
+let gClimbUpRoofDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   2,
   0.1,
   2,
   2,
 };
-DOUBLE gClimbUpRoofLATDist[NUMSOLDIERBODYTYPES] = {
+let gClimbUpRoofLATDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   0.7,
   0.5,
   0.7,
   0.5,
 };
-DOUBLE gClimbDownRoofStartDist[NUMSOLDIERBODYTYPES] = {
+let gClimbDownRoofStartDist: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   5.0,
   1.0,
   1,
   1,
 };
-DOUBLE gClimbUpRoofDistGoingLower[NUMSOLDIERBODYTYPES] = {
+let gClimbUpRoofDistGoingLower: DOUBLE[] /* [NUMSOLDIERBODYTYPES] */ = {
   0.9,
   0.1,
   1,
@@ -61,26 +61,28 @@ DOUBLE gClimbUpRoofDistGoingLower[NUMSOLDIERBODYTYPES] = {
 };
 
 function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  EV_S_FIREWEAPON SFireWeapon;
+  let SFireWeapon: EV_S_FIREWEAPON;
 
-  UINT16 sNewAniFrame, anAniFrame;
-  INT8 ubCurrentHeight;
-  UINT16 usOldAnimState;
-  static UINT32 uiJumpAddress = NO_JUMP;
-  INT16 sNewGridNo;
-  INT16 sX, sY;
-  BOOLEAN fStop;
-  UINT32 cnt;
-  UINT8 ubDiceRoll; // Percentile dice roll
-  UINT8 ubRandomHandIndex; // Index value into random animation table to use base don what is in the guys hand...
-  UINT16 usItem;
-  RANDOM_ANI_DEF *pAnimDef;
-  UINT8 ubNewDirection;
-  UINT8 ubDesiredHeight;
-  BOOLEAN bOKFireWeapon;
-  BOOLEAN bWeaponJammed;
-  BOOLEAN fFreeUpAttacker = FALSE;
-  UINT16 usUIMovementMode;
+  let sNewAniFrame: UINT16;
+  let anAniFrame: UINT16;
+  let ubCurrentHeight: INT8;
+  let usOldAnimState: UINT16;
+  /* static */ let uiJumpAddress: UINT32 = NO_JUMP;
+  let sNewGridNo: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let fStop: BOOLEAN;
+  let cnt: UINT32;
+  let ubDiceRoll: UINT8; // Percentile dice roll
+  let ubRandomHandIndex: UINT8; // Index value into random animation table to use base don what is in the guys hand...
+  let usItem: UINT16;
+  let pAnimDef: Pointer<RANDOM_ANI_DEF>;
+  let ubNewDirection: UINT8;
+  let ubDesiredHeight: UINT8;
+  let bOKFireWeapon: BOOLEAN;
+  let bWeaponJammed: BOOLEAN;
+  let fFreeUpAttacker: BOOLEAN = FALSE;
+  let usUIMovementMode: UINT16;
 
   do {
     // Get new frame code
@@ -179,7 +181,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // re-enable sight
           gTacticalStatus.uiFlags &= (~DISALLOW_SIGHT);
           {
-            INT16 sXPos, sYPos;
+            let sXPos: INT16;
+            let sYPos: INT16;
 
             // usNewGridNo = NewGridNo( (UINT16)pSoldier->sGridNo, (UINT16)DirectionInc( pSoldier->bDirection ) );
             ConvertMapPosToWorldTileCenter(pSoldier->sTempNewGridNo, &sXPos, &sYPos);
@@ -366,7 +369,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 440:
           // CODE: Set buddy as dead!
           {
-            BOOLEAN fMadeCorpse;
+            let fMadeCorpse: BOOLEAN;
 
             // ATE: Piggyback here on stopping the burn sound...
             if (pSoldier->usAnimState == CHARIOTS_OF_FIRE || pSoldier->usAnimState == BODYEXPLODING) {
@@ -401,8 +404,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           LightSpritePower(pSoldier->iMuzFlash, TRUE);
           // Get one move forward
           {
-            UINT16 usNewGridNo;
-            INT16 sXPos, sYPos;
+            let usNewGridNo: UINT16;
+            let sXPos: INT16;
+            let sYPos: INT16;
 
             usNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc(pSoldier->bDirection));
             ConvertGridNoToCenterCellXY(usNewGridNo, &sXPos, &sYPos);
@@ -511,7 +515,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // TRY TO FALL!!!
           if (pSoldier->fTryingToFall) {
-            INT16 sLastAniFrame;
+            let sLastAniFrame: INT16;
 
             // TRY FORWARDS...
             // FIRST GRIDNO
@@ -811,7 +815,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Set new gridno
           {
-            INT16 sTempGridNo, sNewX, sNewY;
+            let sTempGridNo: INT16;
+            let sNewX: INT16;
+            let sNewY: INT16;
 
             // Get Next GridNo;
             sTempGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (INT16)(DirectionInc(pSoldier->bDirection)));
@@ -842,7 +848,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: ADJUST TO OUR DEST HEIGHT
           if (pSoldier->sHeightAdjustment != pSoldier->sDesiredHeight) {
-            INT16 sDiff = pSoldier->sHeightAdjustment - pSoldier->sDesiredHeight;
+            let sDiff: INT16 = pSoldier->sHeightAdjustment - pSoldier->sDesiredHeight;
 
             if (abs(sDiff) > 4) {
               if (sDiff > 0) {
@@ -896,7 +902,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: End PUNCH
           {
-            BOOLEAN fNPCPunch = FALSE;
+            let fNPCPunch: BOOLEAN = FALSE;
 
             // ATE: Put some code in for NPC punches...
             if (pSoldier->uiStatusFlags & SOLDIER_NPC_DOING_PUNCH) {
@@ -911,7 +917,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // Are we a martial artist?
             {
-              BOOLEAN fMartialArtist = FALSE;
+              let fMartialArtist: BOOLEAN = FALSE;
 
               if (pSoldier->ubProfile != NO_PROFILE) {
                 if (gMercProfiles[pSoldier->ubProfile].bSkillTrait == MARTIALARTS || gMercProfiles[pSoldier->ubProfile].bSkillTrait2 == MARTIALARTS) {
@@ -984,7 +990,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 472:
 
         {
-          BOOLEAN fGoBackToAimAfterHit;
+          let fGoBackToAimAfterHit: BOOLEAN;
 
           // Save old flag, then reset. If we do nothing special here, at least go back
           // to aim if we were.
@@ -1076,8 +1082,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: Decide to turn from hit.......
           {
-            INT8 bNewDirection;
-            UINT32 uiChance;
+            let bNewDirection: INT8;
+            let uiChance: UINT32;
 
             // ONLY DO THIS IF CERTAIN CONDITIONS ARISE!
             // For one, only do for mercs!
@@ -1362,9 +1368,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // SIGNAL DODGE!
           // ATE: Only do if we're not inspecial case...
           if (!(pSoldier->uiStatusFlags & SOLDIER_NPC_DOING_PUNCH)) {
-            SOLDIERTYPE *pTSoldier;
-            UINT32 uiMercFlags;
-            UINT16 usSoldierIndex;
+            let pTSoldier: Pointer<SOLDIERTYPE>;
+            let uiMercFlags: UINT32;
+            let usSoldierIndex: UINT16;
 
             if (FindSoldier(pSoldier->sTargetGridNo, &usSoldierIndex, &uiMercFlags, FIND_SOLDIER_GRIDNO)) {
               GetSoldier(&pTSoldier, usSoldierIndex);
@@ -1549,7 +1555,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
                   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Ani: Death sequence needed for animation %d", pSoldier->usAnimState));
               }
             } else {
-              BOOLEAN fMadeCorpse;
+              let fMadeCorpse: BOOLEAN;
 
               CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
 
@@ -1690,7 +1696,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // Check if we should contine into a moving animation
             if (pSoldier->usPendingAnimation != NO_PENDING_ANIMATION) {
-              UINT16 usPendingAnimation = pSoldier->usPendingAnimation;
+              let usPendingAnimation: UINT16 = pSoldier->usPendingAnimation;
 
               pSoldier->usPendingAnimation = NO_PENDING_ANIMATION;
               ChangeSoldierState(pSoldier, usPendingAnimation, 0, FALSE);
@@ -1805,8 +1811,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // PLay lock n' load sound for gun....
           // Get LNL sound for current gun
           {
-            UINT16 usItem;
-            UINT16 usSoundID;
+            let usItem: UINT16;
+            let usSoundID: UINT16;
 
             usItem = pSoldier->inv[HANDPOS].usItem;
 
@@ -1882,8 +1888,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Battle cry
           {
-            INT32 iSoundID = 0;
-            BOOLEAN fDoCry = FALSE;
+            let iSoundID: INT32 = 0;
+            let fDoCry: BOOLEAN = FALSE;
 
             // if ( SoldierOnScreen( pSoldier->ubID ) )
             {
@@ -2079,8 +2085,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Reload robot....
           {
-            UINT8 ubPerson;
-            SOLDIERTYPE *pRobot;
+            let ubPerson: UINT8;
+            let pRobot: Pointer<SOLDIERTYPE>;
 
             // Get pointer...
             ubPerson = WhoIsThere2(pSoldier->sPendingActionData2, pSoldier->bLevel);
@@ -2119,7 +2125,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Getting hit by slap
           {
-            SOLDIERTYPE *pTarget;
+            let pTarget: Pointer<SOLDIERTYPE>;
 
             pTarget = FindSoldierByProfileID(ELLIOT, FALSE);
 
@@ -2152,7 +2158,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 762: {
           // CODE: Set off Trigger
-          INT8 bPanicTrigger;
+          let bPanicTrigger: INT8;
 
           bPanicTrigger = ClosestPanicTrigger(pSoldier);
           SetOffPanicBombs(pSoldier->ubID, bPanicTrigger);
@@ -2187,7 +2193,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // Flyback hit - do blood!
           // PLace in existing tile and one back...
           {
-            INT16 sNewGridNo;
+            let sNewGridNo: INT16;
 
             InternalDropBlood(pSoldier->sGridNo, pSoldier->bLevel, 0, (UINT8)(MAXBLOODQUANTITY), 1);
 
@@ -2226,8 +2232,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // REFUELING A VEHICLE
           // THE GAS_CAN IS IN THE MERCS MAIN HAND AT THIS TIME
           {
-            UINT8 ubPerson;
-            SOLDIERTYPE *pVehicle;
+            let ubPerson: UINT8;
+            let pVehicle: Pointer<SOLDIERTYPE>;
 
             // Get pointer to vehicle...
             ubPerson = WhoIsThere2(pSoldier->sPendingActionData2, pSoldier->bLevel);
@@ -2405,15 +2411,15 @@ function ShouldMercSayHappyWithGunQuote(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
 }
 
 function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  UINT8 ubMercsInSector[20] = { 0 };
-  INT8 bBuddyIndex[20] = { -1 };
-  INT8 bTempBuddyIndex;
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
-  INT16 sDistVisible = FALSE;
-  UINT16 usQuoteNum;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let bBuddyIndex: INT8[] /* [20] */ = { -1 };
+  let bTempBuddyIndex: INT8;
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let sDistVisible: INT16 = FALSE;
+  let usQuoteNum: UINT16;
 
   // Loop through all our guys and randomly say one from someone in our sector
 
@@ -2497,14 +2503,14 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
 }
 
 function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
-  UINT8 ubMercsInSector[20] = { 0 };
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  BOOLEAN fDoSomeoneElse = FALSE;
-  BOOLEAN fCanWeSeeLocation = FALSE;
-  INT16 sDistVisible = FALSE;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let fDoSomeoneElse: BOOLEAN = FALSE;
+  let fCanWeSeeLocation: BOOLEAN = FALSE;
+  let sDistVisible: INT16 = FALSE;
 
   gfLastMercTalkedAboutKillingID = pKilledSoldier->ubID;
 
@@ -2628,7 +2634,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
 }
 
 function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointer<BOOLEAN>): BOOLEAN {
-  BOOLEAN fBuddyJustDead = FALSE;
+  let fBuddyJustDead: BOOLEAN = FALSE;
 
   *pfMadeCorpse = FALSE;
 
@@ -2664,7 +2670,7 @@ function HandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCorpse: Pointe
         pSoldier->uiStatusFlags |= SOLDIER_DEAD;
       }
     } else {
-      UINT8 ubAssister;
+      let ubAssister: UINT8;
 
       // IF this guy has an attacker and he's a good guy, play sound
       if (pSoldier->ubAttackerID != NOBODY) {
@@ -2846,7 +2852,7 @@ function CheckForAndHandleSoldierDeath(pSoldier: Pointer<SOLDIERTYPE>, pfMadeCor
 //#define TESTFALLFORWARD
 
 function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 sNewGridNo;
+  let sNewGridNo: INT16;
 
   if (pSoldier->bLife < OKLIFE) {
     // Cancel services here...
@@ -2873,7 +2879,7 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
     // OK, if we are in a meanwhile and this is elliot...
     if (AreInMeanwhile()) {
-      SOLDIERTYPE *pQueen;
+      let pQueen: Pointer<SOLDIERTYPE>;
 
       pQueen = FindSoldierByProfileID(QUEEN, FALSE);
 
@@ -2897,9 +2903,9 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
     // Randomly fall back or forward, if we are in the standing hit animation
     if (pSoldier->usAnimState == GENERIC_HIT_STAND || pSoldier->usAnimState == STANDING_BURST_HIT || pSoldier->usAnimState == RIFLE_STAND_HIT) {
-      INT8 bTestDirection = pSoldier->bDirection;
-      BOOLEAN fForceDirection = FALSE;
-      BOOLEAN fDoFallback = FALSE;
+      let bTestDirection: INT8 = pSoldier->bDirection;
+      let fForceDirection: BOOLEAN = FALSE;
+      let fDoFallback: BOOLEAN = FALSE;
 
       // TRY FALLING BACKWARDS, ( ONLY IF WE ARE A MERC! )
       if (Random(100) > 40 && IS_MERC_BODY_TYPE(pSoldier) && !IsProfileATerrorist(pSoldier->ubProfile))
@@ -3059,13 +3065,13 @@ function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>)
         default:
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Control: Death state %d has no death hit", pSoldier->usAnimState));
           {
-            BOOLEAN fMadeCorpse;
+            let fMadeCorpse: BOOLEAN;
             CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
           }
           break;
       }
     } else {
-      BOOLEAN fMadeCorpse;
+      let fMadeCorpse: BOOLEAN;
 
       CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
     }
@@ -3164,8 +3170,8 @@ function HandleUnjamAnimation(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bTestDirection: INT8, usAnimState: UINT16): BOOLEAN {
-  STRUCTURE_FILE_REF *pStructureFileRef;
-  UINT16 usAnimSurface;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  let usAnimSurface: UINT16;
 
   // How are the movement costs?
   if (gubWorldMovementCosts[sGridNo][bTestDirection][bLevel] > TRAVELCOST_SHORE) {
@@ -3186,8 +3192,8 @@ function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel:
   pStructureFileRef = GetAnimationStructureRef(pSoldier->ubID, usAnimSurface, usAnimState);
 
   if (pStructureFileRef) {
-    UINT16 usStructureID;
-    INT16 sTestGridNo;
+    let usStructureID: UINT16;
+    let sTestGridNo: INT16;
 
     // must make sure that structure data can be added in the direction of the target
 
@@ -3329,7 +3335,7 @@ function HandleCheckForDeathCommonCode(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN 
 }
 
 function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 sNewGridNo;
+  let sNewGridNo: INT16;
 
   // Move forward one gridno....
   sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)(DirectionInc(pSoldier->bDirection)));

@@ -19,23 +19,23 @@ const MAINMENU_TITLE_Y = 75;
 const MAINMENU_Y = 277; // 200
 const MAINMENU_Y_SPACE = 37;
 
-INT32 iMenuImages[NUM_MENU_ITEMS];
-INT32 iMenuButtons[NUM_MENU_ITEMS];
+let iMenuImages: INT32[] /* [NUM_MENU_ITEMS] */;
+let iMenuButtons: INT32[] /* [NUM_MENU_ITEMS] */;
 
-UINT16 gusMainMenuButtonWidths[NUM_MENU_ITEMS];
+let gusMainMenuButtonWidths: UINT16[] /* [NUM_MENU_ITEMS] */;
 
-UINT32 guiMainMenuBackGroundImage;
-UINT32 guiJa2LogoImage;
+let guiMainMenuBackGroundImage: UINT32;
+let guiJa2LogoImage: UINT32;
 
-MOUSE_REGION gBackRegion;
-INT8 gbHandledMainMenu = 0;
-BOOLEAN fInitialRender = FALSE;
+let gBackRegion: MOUSE_REGION;
+let gbHandledMainMenu: INT8 = 0;
+let fInitialRender: BOOLEAN = FALSE;
 // BOOLEAN						gfDoHelpScreen = 0;
 
-BOOLEAN gfMainMenuScreenEntry = FALSE;
-BOOLEAN gfMainMenuScreenExit = FALSE;
+let gfMainMenuScreenEntry: BOOLEAN = FALSE;
+let gfMainMenuScreenExit: BOOLEAN = FALSE;
 
-UINT32 guiMainMenuExitScreen = MAINMENU_SCREEN;
+let guiMainMenuExitScreen: UINT32 = MAINMENU_SCREEN;
 
 function MainMenuScreenInit(): UINT32 {
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %S", zVersionLabel));
@@ -46,8 +46,8 @@ function MainMenuScreenInit(): UINT32 {
 }
 
 function MainMenuScreenHandle(): UINT32 {
-  UINT32 cnt;
-  UINT32 uiTime;
+  let cnt: UINT32;
+  let uiTime: UINT32;
 
   if (guiSplashStartTime + 4000 > GetJA2Clock()) {
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
@@ -175,7 +175,7 @@ function HandleMainMenuScreen(): void {
 }
 
 function InitMainMenu(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   //	gfDoHelpScreen = 0;
 
@@ -252,7 +252,7 @@ function ExitMainMenu(): void {
 }
 
 function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT8 bID;
+  let bID: INT8;
 
   bID = (UINT8)btn->UserData[0];
 
@@ -293,7 +293,7 @@ function MenuButtonMoveCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function HandleMainMenuInput(): void {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   // Check for esc
   while (DequeueEvent(&InputEvent) == TRUE) {
@@ -326,7 +326,7 @@ function HandleMainMenuInput(): void {
 }
 
 function HandleHelpScreenInput(): void {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   // Check for key
   while (DequeueEvent(&InputEvent) == TRUE) {
@@ -339,8 +339,8 @@ function HandleHelpScreenInput(): void {
 }
 
 function ClearMainMenu(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   // CLEAR THE FRAME BUFFER
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
@@ -378,7 +378,7 @@ function SetMainMenuExitScreen(uiNewScreen: UINT32): void {
 }
 
 function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
-  static fRegionCreated = FALSE;
+  /* static */ let fRegionCreated: BOOLEAN = FALSE;
 
   if (fCreate) {
     if (fRegionCreated)
@@ -400,12 +400,12 @@ function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
 }
 
 function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
-  static BOOLEAN fButtonsCreated = FALSE;
-  INT32 cnt;
-  SGPFILENAME filename;
-  INT16 sSlot;
-  INT32 iStartLoc = 0;
-  CHAR16 zText[512];
+  /* static */ let fButtonsCreated: BOOLEAN = FALSE;
+  let cnt: INT32;
+  let filename: SGPFILENAME;
+  let sSlot: INT16;
+  let iStartLoc: INT32 = 0;
+  let zText: CHAR16[] /* [512] */;
 
   if (fCreate) {
     if (fButtonsCreated)
@@ -453,7 +453,7 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
       iStartLoc = MAINMENU_RECORD_SIZE * cnt;
       if (!LoadEncryptedDataFromFile(MAINMENU_TEXT_FILE, zText, iStartLoc, MAINMENU_RECORD_SIZE)) {
         // the file was not able to be loaded properly
-        SOLDIERTYPE *pSoldier = NULL;
+        let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
         if (pSoldier->bActive != TRUE) {
           // something is very wrong
@@ -479,7 +479,7 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
 }
 
 function RenderMainMenu(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // Get and display the background image
   GetVideoObject(&hPixHandle, guiMainMenuBackGroundImage);
@@ -496,7 +496,7 @@ function RenderMainMenu(): void {
 }
 
 function RestoreButtonBackGrounds(): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   //	RestoreExternBackgroundRect( (UINT16)(320 - gusMainMenuButtonWidths[TITLE]/2), MAINMENU_TITLE_Y, gusMainMenuButtonWidths[TITLE], 23 );
 

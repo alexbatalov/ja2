@@ -1,7 +1,7 @@
 const NUM_SEC_PER_STRATEGIC_TURN = (NUM_SEC_IN_MIN * 15); // Every fifteen minutes
 
-UINT32 guiLastStrategicTime = 0;
-UINT32 guiLastTacticalRealTime = 0;
+let guiLastStrategicTime: UINT32 = 0;
+let guiLastTacticalRealTime: UINT32 = 0;
 
 function StrategicTurnsNewGame(): void {
   // Sync game start time
@@ -14,8 +14,8 @@ function SyncStrategicTurnTimes(): void {
 }
 
 function HandleStrategicTurn(): void {
-  UINT32 uiTime;
-  UINT32 uiCheckTime;
+  let uiTime: UINT32;
+  let uiCheckTime: UINT32;
 
   // OK, DO THIS CHECK EVERY ONCE AND A WHILE...
   if (COUNTERDONE(STRATEGIC_OVERHEAD)) {

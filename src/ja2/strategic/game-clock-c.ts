@@ -1,21 +1,21 @@
 //#define DEBUG_GAME_CLOCK
 
 // is the clock pause region created currently?
-BOOLEAN fClockMouseRegionCreated = FALSE;
+let fClockMouseRegionCreated: BOOLEAN = FALSE;
 
-BOOLEAN fTimeCompressHasOccured = FALSE;
+let fTimeCompressHasOccured: BOOLEAN = FALSE;
 
 // This value represents the time that the sector was loaded.  If you are in sector A9, and leave
 // the game clock at that moment will get saved into the temp file associated with it.  The next time you
 // enter A9, this value will contain that time.  Used for scheduling purposes.
-UINT32 guiTimeCurrentSectorWasLastLoaded = 0;
+let guiTimeCurrentSectorWasLastLoaded: UINT32 = 0;
 
 // did we JUST finish up a game pause by the player
-BOOLEAN gfJustFinishedAPause = FALSE;
+let gfJustFinishedAPause: BOOLEAN = FALSE;
 
 // clock mouse region
-MOUSE_REGION gClockMouseRegion;
-MOUSE_REGION gClockScreenMaskMouseRegion;
+let gClockMouseRegion: MOUSE_REGION;
+let gClockScreenMaskMouseRegion: MOUSE_REGION;
 
 const SECONDS_PER_COMPRESSION = 1; // 1/2 minute passes every 1 second of real time
 const SECONDS_PER_COMPRESSION_IN_RTCOMBAT = 10;
@@ -26,40 +26,40 @@ const CLOCK_FONT = () => COMPFONT();
 
 // These contain all of the information about the game time, rate of time, etc.
 // All of these get saved and loaded.
-INT32 giTimeCompressMode = TIME_COMPRESS_X0;
-UINT8 gubClockResolution = 1;
-BOOLEAN gfGamePaused = TRUE;
-BOOLEAN gfTimeInterrupt = FALSE;
-BOOLEAN gfTimeInterruptPause = FALSE;
-BOOLEAN fSuperCompression = FALSE;
-UINT32 guiGameClock = STARTING_TIME;
-UINT32 guiPreviousGameClock = 0; // used only for error-checking purposes
-UINT32 guiGameSecondsPerRealSecond;
-UINT32 guiTimesThisSecondProcessed = 0;
-INT32 iPausedPopUpBox = -1;
-UINT32 guiDay;
-UINT32 guiHour;
-UINT32 guiMin;
-UINT16 gswzWorldTimeStr[20];
-INT32 giTimeCompressSpeeds[NUM_TIME_COMPRESS_SPEEDS] = {
+let giTimeCompressMode: INT32 = TIME_COMPRESS_X0;
+let gubClockResolution: UINT8 = 1;
+let gfGamePaused: BOOLEAN = TRUE;
+let gfTimeInterrupt: BOOLEAN = FALSE;
+let gfTimeInterruptPause: BOOLEAN = FALSE;
+let fSuperCompression: BOOLEAN = FALSE;
+let guiGameClock: UINT32 = STARTING_TIME;
+let guiPreviousGameClock: UINT32 = 0; // used only for error-checking purposes
+let guiGameSecondsPerRealSecond: UINT32;
+let guiTimesThisSecondProcessed: UINT32 = 0;
+let iPausedPopUpBox: INT32 = -1;
+let guiDay: UINT32;
+let guiHour: UINT32;
+let guiMin: UINT32;
+let gswzWorldTimeStr: UINT16[] /* [20] */;
+let giTimeCompressSpeeds: INT32[] /* [NUM_TIME_COMPRESS_SPEEDS] */ = {
   0,
   1,
   5 * 60,
   30 * 60,
   60 * 60,
 };
-UINT16 usPausedActualWidth;
-UINT16 usPausedActualHeight;
-UINT32 guiTimeOfLastEventQuery = 0;
-BOOLEAN gfLockPauseState = FALSE;
-BOOLEAN gfPauseDueToPlayerGamePause = FALSE;
-BOOLEAN gfResetAllPlayerKnowsEnemiesFlags = FALSE;
-BOOLEAN gfTimeCompressionOn = FALSE;
-UINT32 guiLockPauseStateLastReasonId = 0;
+let usPausedActualWidth: UINT16;
+let usPausedActualHeight: UINT16;
+let guiTimeOfLastEventQuery: UINT32 = 0;
+let gfLockPauseState: BOOLEAN = FALSE;
+let gfPauseDueToPlayerGamePause: BOOLEAN = FALSE;
+let gfResetAllPlayerKnowsEnemiesFlags: BOOLEAN = FALSE;
+let gfTimeCompressionOn: BOOLEAN = FALSE;
+let guiLockPauseStateLastReasonId: UINT32 = 0;
 //***When adding new saved time variables, make sure you remove the appropriate amount from the paddingbytes and
 //   more IMPORTANTLY, add appropriate code in Save/LoadGameClock()!
 const TIME_PADDINGBYTES = 20;
-UINT8 gubUnusedTimePadding[TIME_PADDINGBYTES];
+let gubUnusedTimePadding: UINT8[] /* [TIME_PADDINGBYTES] */;
 
 function InitNewGameClock(): void {
   guiGameClock = STARTING_TIME;
@@ -113,7 +113,7 @@ function GetMidnightOfFutureDayInMinutes(uiDay: UINT32): UINT32 {
 
 // Not to be used too often by things other than internally
 function WarpGameTime(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
-  UINT32 uiSaveTimeRate;
+  let uiSaveTimeRate: UINT32;
   uiSaveTimeRate = guiGameSecondsPerRealSecond;
   guiGameSecondsPerRealSecond = uiAdjustment;
   AdvanceClock(ubWarpCode);
@@ -121,7 +121,7 @@ function WarpGameTime(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
 }
 
 function AdvanceClock(ubWarpCode: UINT8): void {
-  UINT32 uiGameSecondsPerRealSecond = guiGameSecondsPerRealSecond;
+  let uiGameSecondsPerRealSecond: UINT32 = guiGameSecondsPerRealSecond;
 
   // Set value, to different things if we are in combat...
   if ((gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -178,8 +178,8 @@ function AdvanceClock(ubWarpCode: UINT8): void {
 }
 
 function AdvanceToNextDay(): void {
-  INT32 uiDiff;
-  UINT32 uiTomorrowTimeInSec;
+  let uiDiff: INT32;
+  let uiTomorrowTimeInSec: UINT32;
 
   uiTomorrowTimeInSec = (guiDay + 1) * NUM_SEC_IN_DAY + 8 * NUM_SEC_IN_HOUR + 15 * NUM_SEC_IN_MIN;
   uiDiff = uiTomorrowTimeInSec - guiGameClock;
@@ -227,7 +227,7 @@ function RenderClock(sX: INT16, sY: INT16): void {
 }
 
 function ToggleSuperCompression(): void {
-  static UINT32 uiOldTimeCompressMode = 0;
+  /* static */ let uiOldTimeCompressMode: UINT32 = 0;
 
   // Display message
   if (gTacticalStatus.uiFlags & INCOMBAT) {
@@ -527,14 +527,14 @@ function ClockResolution(): UINT8 {
 //				 This value doesn't affect how much game time passes per real second, but allows for
 //				 a more accurate representation of faster time flows.
 function UpdateClock(): void {
-  UINT32 uiNewTime;
-  UINT32 uiThousandthsOfThisSecondProcessed;
-  UINT32 uiTimeSlice;
-  UINT32 uiNewTimeProcessed;
-  UINT32 uiAmountToAdvanceTime;
-  static UINT8 ubLastResolution = 1;
-  static UINT32 uiLastSecondTime = 0;
-  static UINT32 uiLastTimeProcessed = 0;
+  let uiNewTime: UINT32;
+  let uiThousandthsOfThisSecondProcessed: UINT32;
+  let uiTimeSlice: UINT32;
+  let uiNewTimeProcessed: UINT32;
+  let uiAmountToAdvanceTime: UINT32;
+  /* static */ let ubLastResolution: UINT8 = 1;
+  /* static */ let uiLastSecondTime: UINT32 = 0;
+  /* static */ let uiLastTimeProcessed: UINT32 = 0;
   // check game state for pause screen masks
   CreateDestroyScreenMaskForPauseGame();
 
@@ -604,7 +604,7 @@ function UpdateClock(): void {
 }
 
 function SaveGameClock(hFile: HWFILE, fGamePaused: BOOLEAN, fLockPauseState: BOOLEAN): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
+  let uiNumBytesWritten: UINT32 = 0;
 
   FileWrite(hFile, &giTimeCompressMode, sizeof(INT32), &uiNumBytesWritten);
   if (uiNumBytesWritten != sizeof(INT32))
@@ -685,7 +685,7 @@ function SaveGameClock(hFile: HWFILE, fGamePaused: BOOLEAN, fLockPauseState: BOO
 }
 
 function LoadGameClock(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   FileRead(hFile, &giTimeCompressMode, sizeof(INT32), &uiNumBytesRead);
   if (uiNumBytesRead != sizeof(INT32))
@@ -838,8 +838,9 @@ function HandlePlayerPauseUnPauseOfGame(): void {
 }
 
 function CreateDestroyScreenMaskForPauseGame(): void {
-  static BOOLEAN fCreated = FALSE;
-  INT16 sX = 0, sY = 0;
+  /* static */ let fCreated: BOOLEAN = FALSE;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
 
   if (((fClockMouseRegionCreated == FALSE) || (gfGamePaused == FALSE) || (gfPauseDueToPlayerGamePause == FALSE)) && (fCreated == TRUE)) {
     fCreated = FALSE;

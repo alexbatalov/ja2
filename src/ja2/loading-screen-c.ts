@@ -1,10 +1,10 @@
-UINT8 gubLastLoadingScreenID = LOADINGSCREEN_NOTHING;
+let gubLastLoadingScreenID: UINT8 = LOADINGSCREEN_NOTHING;
 
 // returns the UINT8 ID for the specified sector.
 function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT8 {
-  SECTORINFO *pSector;
-  UINT8 ubSectorID;
-  BOOLEAN fNight = FALSE;
+  let pSector: Pointer<SECTORINFO>;
+  let ubSectorID: UINT8;
+  let fNight: BOOLEAN = FALSE;
 
   ubSectorID = SECTOR(sSectorX, sSectorY);
   if (NightTime()) // before 5AM or after 9PM
@@ -171,9 +171,9 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
 // sets up the loadscreen with specified ID, and draws it to the FRAME_BUFFER,
 // and refreshing the screen with it.
 function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
-  VSURFACE_DESC vs_desc;
-  HVSURFACE hVSurface;
-  UINT32 uiLoadScreen;
+  let vs_desc: VSURFACE_DESC;
+  let hVSurface: HVSURFACE;
+  let uiLoadScreen: UINT32;
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
 

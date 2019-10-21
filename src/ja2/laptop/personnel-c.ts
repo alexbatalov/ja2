@@ -151,7 +151,7 @@ const enum Enum109 {
   PRSNL_EMPLOYMENT,
   PRSNL_INV,
 }
-UINT8 gubPersonnelInfoState = PRSNL_STATS;
+let gubPersonnelInfoState: UINT8 = PRSNL_STATS;
 
 // enums for the pPersonnelScreenStrings[]
 const enum Enum110 {
@@ -183,20 +183,20 @@ const enum Enum110 {
 }
 
 // BOOLEAN fShowInventory = FALSE;
-UINT8 uiCurrentInventoryIndex = 0;
+let uiCurrentInventoryIndex: UINT8 = 0;
 
-UINT32 guiSliderPosition;
+let guiSliderPosition: UINT32;
 
 // the transfer funds string
-CHAR16 sTransferString[32];
+let sTransferString: CHAR16[] /* [32] */;
 
-INT32 giPersonnelATMSideButton[NUMBER_ATM_BUTTONS];
-INT32 giPersonnelATMSideButtonImage[NUMBER_ATM_BUTTONS];
+let giPersonnelATMSideButton: INT32[] /* [NUMBER_ATM_BUTTONS] */;
+let giPersonnelATMSideButtonImage: INT32[] /* [NUMBER_ATM_BUTTONS] */;
 
-INT32 iNumberPadButtons[10];
-INT32 iNumberPadButtonsImages[10];
+let iNumberPadButtons: INT32[] /* [10] */;
+let iNumberPadButtonsImages: INT32[] /* [10] */;
 
-POINT pAtmSideButtonPts[] = {
+let pAtmSideButtonPts: POINT[] /* [] */ = {
   { 533, 155 },
   { 558, 110 },
   { 558, 125 },
@@ -208,7 +208,7 @@ const PrsnlOffSetX = (-15); //-20
 const Prsnl_DATA_OffSetX = (36);
 const PrsnlOffSetY = 10;
 
-POINT pPersonnelScreenPoints[] = {
+let pPersonnelScreenPoints: POINT[] /* [] */ = {
   { 422 + PrsnlOffSetX, 205 + PrsnlOffSetY },
   { 422 + PrsnlOffSetX, 215 + PrsnlOffSetY },
   { 422 + PrsnlOffSetX, 225 + PrsnlOffSetY },
@@ -237,73 +237,73 @@ POINT pPersonnelScreenPoints[] = {
   { 422 + PrsnlOffSetX, 395 + PrsnlOffSetY },
 };
 
-UINT32 guiSCREEN;
-UINT32 guiTITLE;
-UINT32 guiFACE;
-UINT32 guiDEPARTEDTEAM;
-UINT32 guiCURRENTTEAM;
-UINT32 guiPersonnelInventory;
+let guiSCREEN: UINT32;
+let guiTITLE: UINT32;
+let guiFACE: UINT32;
+let guiDEPARTEDTEAM: UINT32;
+let guiCURRENTTEAM: UINT32;
+let guiPersonnelInventory: UINT32;
 
-INT32 giPersonnelButton[6];
-INT32 giPersonnelButtonImage[6];
-INT32 giPersonnelInventoryButtons[2];
-INT32 giPersonnelInventoryButtonsImages[2];
-INT32 iStartPersonId; // iId of the person who is leftmost on the display
-INT32 iLastPersonId;
-INT32 giDepartedButtonImage[2];
-INT32 giDepartedButton[2];
+let giPersonnelButton: INT32[] /* [6] */;
+let giPersonnelButtonImage: INT32[] /* [6] */;
+let giPersonnelInventoryButtons: INT32[] /* [2] */;
+let giPersonnelInventoryButtonsImages: INT32[] /* [2] */;
+let iStartPersonId: INT32; // iId of the person who is leftmost on the display
+let iLastPersonId: INT32;
+let giDepartedButtonImage: INT32[] /* [2] */;
+let giDepartedButton: INT32[] /* [2] */;
 
 // buttons for ATM
-INT32 giPersonnelATMStartButton[3];
-INT32 giPersonnelATMStartButtonImage[3];
-INT32 giPersonnelATMButton;
-INT32 giPersonnelATMButtonImage;
+let giPersonnelATMStartButton: INT32[] /* [3] */;
+let giPersonnelATMStartButtonImage: INT32[] /* [3] */;
+let giPersonnelATMButton: INT32;
+let giPersonnelATMButtonImage: INT32;
 
-BOOLEAN fATMFlags = 0;
-BOOLEAN fOldATMFlags = 0;
+let fATMFlags: BOOLEAN = 0;
+let fOldATMFlags: BOOLEAN = 0;
 // the past team of the player
 // INT16 ubDeadCharactersList[ 256 ];
 // INT16 ubLeftCharactersList[ 256 ];
 // INT16 ubOtherCharactersList[ 256 ];
 
 // the id of currently displayed merc in right half of screen
-INT32 iCurrentPersonSelectedId = -1;
+let iCurrentPersonSelectedId: INT32 = -1;
 
-INT32 giCurrentUpperLeftPortraitNumber = 0;
+let giCurrentUpperLeftPortraitNumber: INT32 = 0;
 
 // which mode are we showing?..current team?...or deadly departed?
-BOOLEAN fCurrentTeamMode = TRUE;
+let fCurrentTeamMode: BOOLEAN = TRUE;
 
 // show the atm panel?
-BOOLEAN fShowAtmPanel = FALSE;
-BOOLEAN fShowAtmPanelStartButton = TRUE;
+let fShowAtmPanel: BOOLEAN = FALSE;
+let fShowAtmPanelStartButton: BOOLEAN = TRUE;
 
 // create buttons for scrolling departures
-BOOLEAN fCreatePeronnelDepartureButton = FALSE;
+let fCreatePeronnelDepartureButton: BOOLEAN = FALSE;
 
 // waitr one frame
-BOOLEAN fOneFrameDelayInPersonnel = FALSE;
+let fOneFrameDelayInPersonnel: BOOLEAN = FALSE;
 
 // whther or not we are creating mouse regions to place over portraits
-BOOLEAN fCreatePersonnelPortraitMouseRegions = FALSE;
+let fCreatePersonnelPortraitMouseRegions: BOOLEAN = FALSE;
 
 // mouse regions
-MOUSE_REGION gPortraitMouseRegions[20];
+let gPortraitMouseRegions: MOUSE_REGION[] /* [20] */;
 
-MOUSE_REGION gTogglePastCurrentTeam[2];
+let gTogglePastCurrentTeam: MOUSE_REGION[] /* [2] */;
 
-MOUSE_REGION gMouseScrollPersonnelINV;
+let gMouseScrollPersonnelINV: MOUSE_REGION;
 
-INT32 iCurPortraitId = 0;
+let iCurPortraitId: INT32 = 0;
 
 // create mouse regions for past/current toggles
-BOOLEAN fCreateRegionsForPastCurrentToggle = FALSE;
+let fCreateRegionsForPastCurrentToggle: BOOLEAN = FALSE;
 
 // atm misc functions
 
 function GameInitPersonnel(): void {
   // init past characters lists
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   InitPastCharactersList();
 }
 
@@ -424,7 +424,7 @@ function HandlePersonnel(): void {
 
 function LoadPersonnelGraphics(): BOOLEAN {
   // load graphics needed for personnel screen
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load graphics
 
@@ -456,8 +456,8 @@ function RemovePersonnelGraphics(): void {
 }
 
 function RenderPersonnel(): void {
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
   // re-renders personnel screen
   // render main background
 
@@ -540,12 +540,13 @@ function RenderPersonnel(): void {
 function RenderPersonnelPictures(): BOOLEAN {
   // will render portraits of personnel onscreen
   // find person with iStartPersonId, unless it is -1, then find first bActive Merc on Staff
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  BOOLEAN fFound = FALSE;
-  INT32 iCounter = 0;
-  INT32 iSlot = 0;
-  INT32 cnt = 0;
-  INT32 iCurrentId = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fFound: BOOLEAN = FALSE;
+  let iCounter: INT32 = 0;
+  let iSlot: INT32 = 0;
+  let cnt: INT32 = 0;
+  let iCurrentId: INT32 = 0;
 
   pSoldier = MercPtrs[cnt];
   pTeamSoldier = pSoldier;
@@ -598,7 +599,7 @@ function RenderPersonnelPictures(): BOOLEAN {
 }
 
 function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // will render the stats of person iId in slot iSlot
   SetFont(PERS_FONT);
   SetFontForeground(PERS_TEXT_FONT_COLOR);
@@ -615,10 +616,10 @@ function RenderPersonnelStats(iId: INT32, iSlot: INT32): void {
 }
 
 function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
-  char sTemp[100];
-  HVOBJECT hFaceHandle;
-  VOBJECT_DESC VObjectDesc;
-  INT32 iCounter = 7;
+  let sTemp: char[] /* [100] */;
+  let hFaceHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let iCounter: INT32 = 7;
 
   // draw face to soldier iId in slot iSlot
 
@@ -675,7 +676,7 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
 
   // if the merc is dead, display it
   if (!fCurrentTeamMode) {
-    INT32 iHeightOfText;
+    let iHeightOfText: INT32;
 
     iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
@@ -952,12 +953,13 @@ function DisplayHeader(): void {
 
 function DisplayCharName(iId: INT32, iSlot: INT32): void {
   // get merc's nickName, assignment, and sector location info
-  INT16 sX, sY;
-  SOLDIERTYPE *pSoldier;
-  CHAR16 sString[64];
-  CHAR16 sTownName[256];
-  INT8 bTownId = -1;
-  INT32 iHeightOfText;
+  let sX: INT16;
+  let sY: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sString: CHAR16[] /* [64] */;
+  let sTownName: CHAR16[] /* [256] */;
+  let bTownId: INT8 = -1;
+  let iHeightOfText: INT32;
 
   sTownName[0] = L'\0';
 
@@ -1058,13 +1060,14 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
 }
 
 function DisplayCharStats(iId: INT32, iSlot: INT32): void {
-  INT32 iCounter = 0;
-  wchar_t sString[50];
+  let iCounter: INT32 = 0;
+  let sString: wchar_t[] /* [50] */;
   //	wchar_t sStringA[ 50 ];
-  INT16 sX, sY;
-  UINT32 uiHits = 0;
-  SOLDIERTYPE *pSoldier = &Menptr[iId];
-  BOOLEAN fAmIaRobot = AM_A_ROBOT(pSoldier);
+  let sX: INT16;
+  let sY: INT16;
+  let uiHits: UINT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = &Menptr[iId];
+  let fAmIaRobot: BOOLEAN = AM_A_ROBOT(pSoldier);
 
   if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
     return;
@@ -1345,9 +1348,9 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
       // The Mercs Skills
       case 19: {
-        INT32 iWidth;
-        INT32 iMinimumX;
-        INT8 bScreenLocIndex = 19; // if you change the '19', change it below in the if statement
+        let iWidth: INT32;
+        let iMinimumX: INT32;
+        let bScreenLocIndex: INT8 = 19; // if you change the '19', change it below in the if statement
 
         // Display the 'Skills' text
         mprintf((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[bScreenLocIndex].y, pPersonnelScreenStrings[PRSNL_TXT_SKILLS]);
@@ -1360,8 +1363,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         iMinimumX = iWidth + pPersonnelScreenPoints[bScreenLocIndex].x + iSlot * TEXT_BOX_WIDTH + 2;
 
         if (!fAmIaRobot) {
-          INT8 bSkill1 = gMercProfiles[Menptr[iId].ubProfile].bSkillTrait;
-          INT8 bSkill2 = gMercProfiles[Menptr[iId].ubProfile].bSkillTrait2;
+          let bSkill1: INT8 = gMercProfiles[Menptr[iId].ubProfile].bSkillTrait;
+          let bSkill2: INT8 = gMercProfiles[Menptr[iId].ubProfile].bSkillTrait2;
 
           // if the 2 skills are the same, add the '(expert)' at the end
           if (bSkill1 == bSkill2 && bSkill1 != NO_SKILLTRAIT) {
@@ -1443,9 +1446,10 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
 
 function GetLastMercId(): INT32 {
   // rolls through list of mercs and returns how many on team
-  SOLDIERTYPE *pSoldier, *pTeamSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
   pSoldier = MercPtrs[0];
 
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[pSoldier->bTeam].bLastID; cnt++, pTeamSoldier++) {
@@ -1458,9 +1462,11 @@ function GetLastMercId(): INT32 {
 function DrawPageNumber(): void {
   // draws the page number
 
-  wchar_t sString[10];
-  INT16 sX, sY;
-  INT32 iPageNumber, iLastPage;
+  let sString: wchar_t[] /* [10] */;
+  let sX: INT16;
+  let sY: INT16;
+  let iPageNumber: INT32;
+  let iLastPage: INT32;
 
   return;
 
@@ -1524,7 +1530,7 @@ function SetPersonnelButtonStates(): void {
 }
 
 function RenderPersonnelScreenBackground(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // this fucntion will render the background for the personnel screen
   if (fCurrentTeamMode == TRUE) {
@@ -1542,7 +1548,7 @@ function RenderPersonnelScreenBackground(): void {
 
 function LoadPersonnelScreenBackgroundGraphics(): BOOLEAN {
   // will load the graphics for the personeel screen background
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // departed bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1565,7 +1571,7 @@ function DeletePersonnelScreenBackgroundGraphics(): void {
 }
 
 function CreateDestroyButtonsForPersonnelDepartures(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   // create/ destroy personnel departures buttons as needed
 
@@ -1580,9 +1586,10 @@ function CreateDestroyButtonsForPersonnelDepartures(): void {
 }
 
 function GetNumberOfMercsOnPlayersTeam(): INT32 {
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // grab number on team
   pSoldier = MercPtrs[0];
@@ -1598,9 +1605,10 @@ function GetNumberOfMercsOnPlayersTeam(): INT32 {
 }
 
 function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // grab number on team
   pSoldier = MercPtrs[0];
@@ -1618,8 +1626,8 @@ function GetNumberOfMercsDeadOrAliveOnPlayersTeam(): INT32 {
 function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   // creates/ destroys mouse regions for portraits
 
-  static BOOLEAN fCreated = FALSE;
-  INT16 sCounter = 0;
+  /* static */ let fCreated: BOOLEAN = FALSE;
+  let sCounter: INT16 = 0;
 
   if ((fCreated == FALSE) && (fCreatePersonnelPortraitMouseRegions == TRUE)) {
     // create regions
@@ -1642,14 +1650,14 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
 }
 
 function DisplayPicturesOfCurrentTeam(): BOOLEAN {
-  INT32 iCounter = 0;
-  INT32 iTotalOnTeam = 0;
-  char sTemp[100];
-  HVOBJECT hFaceHandle;
-  VOBJECT_DESC VObjectDesc;
-  SOLDIERTYPE *pSoldier;
-  INT32 iId = 0;
-  INT32 iCnt = 0;
+  let iCounter: INT32 = 0;
+  let iTotalOnTeam: INT32 = 0;
+  let sTemp: char[] /* [100] */;
+  let hFaceHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let iId: INT32 = 0;
+  let iCnt: INT32 = 0;
 
   // will display the 20 small portraits of the current team
 
@@ -1709,8 +1717,8 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
 }
 
 function PersonnelPortraitCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iPortraitId = 0;
-  INT32 iOldPortraitId;
+  let iPortraitId: INT32 = 0;
+  let iOldPortraitId: INT32;
 
   iPortraitId = MSYS_GetRegionUserData(pRegion, 0);
   iOldPortraitId = iCurrentPersonSelectedId;
@@ -1833,20 +1841,25 @@ function DisplayInventoryForSelectedChar(): void {
 }
 
 function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
-  UINT8 ubCounter = 0;
-  SOLDIERTYPE *pSoldier;
-  INT16 sIndex;
-  HVOBJECT hHandle;
-  ETRLEObject *pTrav;
-  INVTYPE *pItem;
-  INT16 PosX, PosY, sCenX, sCenY;
-  UINT32 usHeight, usWidth;
-  UINT8 ubItemCount = 0;
-  UINT8 ubUpToCount = 0;
-  INT16 sX, sY;
-  CHAR16 sString[128];
-  INT32 cnt = 0;
-  INT32 iTotalAmmo = 0;
+  let ubCounter: UINT8 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sIndex: INT16;
+  let hHandle: HVOBJECT;
+  let pTrav: Pointer<ETRLEObject>;
+  let pItem: Pointer<INVTYPE>;
+  let PosX: INT16;
+  let PosY: INT16;
+  let sCenX: INT16;
+  let sCenY: INT16;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let ubItemCount: UINT8 = 0;
+  let ubUpToCount: UINT8 = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let sString: CHAR16[] /* [128] */;
+  let cnt: INT32 = 0;
+  let iTotalAmmo: INT32 = 0;
 
   GetVideoObject(&hHandle, guiPersonnelInventory);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(397), (INT16)(200), VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1970,10 +1983,10 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
 }
 
 function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = MercPtrs[0];
-  INT32 cnt = 0;
-  INT32 iId = 0;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let cnt: INT32 = 0;
+  let iId: INT32 = 0;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2007,10 +2020,10 @@ function InventoryUpButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = MercPtrs[0];
-  INT32 cnt = 0;
-  INT32 iId = 0;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let cnt: INT32 = 0;
+  let iId: INT32 = 0;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2068,10 +2081,10 @@ function EnableDisableInventoryScrollButtons(): void {
 }
 
 function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
-  INT32 iId = 0;
-  UINT8 ubCounter = 0;
-  UINT8 ubCount = 0;
-  SOLDIERTYPE *pSoldier;
+  let iId: INT32 = 0;
+  let ubCounter: UINT8 = 0;
+  let ubCount: UINT8 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // in current team mode?..nope...move on
   if (fCurrentTeamMode == FALSE) {
@@ -2092,7 +2105,7 @@ function GetNumberOfInventoryItemsOnCurrentMerc(): INT32 {
 }
 
 function CreateDestroyPersonnelInventoryScrollButtons(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   //	if( ( fShowInventory == TRUE ) && ( fCreated == FALSE ) )
   if ((gubPersonnelInfoState == PRSNL_INV) && (fCreated == FALSE)) {
@@ -2127,8 +2140,9 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
 
 function DisplayNumberOnCurrentTeam(): void {
   // display number on team
-  CHAR16 sString[32];
-  INT16 sX = 0, sY = 0;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
 
   // font stuff
   SetFont(FONT10ARIAL);
@@ -2153,8 +2167,9 @@ function DisplayNumberOnCurrentTeam(): void {
 
 function DisplayNumberDeparted(): void {
   // display number departed from team
-  CHAR16 sString[32];
-  INT16 sX = 0, sY = 0;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
 
   // font stuff
   SetFont(FONT10ARIAL);
@@ -2177,10 +2192,10 @@ function DisplayNumberDeparted(): void {
 function GetTotalDailyCostOfCurrentTeam(): INT32 {
   // will return the total daily cost of the current team
 
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  INT32 iCostOfTeam = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iCostOfTeam: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2219,12 +2234,12 @@ function GetTotalDailyCostOfCurrentTeam(): INT32 {
 function GetLowestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  INT32 iLowest = 999999;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iLowest: INT32 = 999999;
   //	INT32 iId =0;
-  INT32 iCost = 0;
+  let iCost: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2273,12 +2288,12 @@ function GetLowestDailyCostOfCurrentTeam(): INT32 {
 function GetHighestDailyCostOfCurrentTeam(): INT32 {
   // will return the lowest daily cost of the current team
 
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  INT32 iHighest = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iHighest: INT32 = 0;
   //	INT32 iId =0;
-  INT32 iCost = 0;
+  let iCost: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2320,8 +2335,9 @@ function GetHighestDailyCostOfCurrentTeam(): INT32 {
 
 function DisplayCostOfCurrentTeam(): void {
   // display number on team
-  CHAR16 sString[32];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
 
   // font stuff
   SetFont(FONT10ARIAL);
@@ -2370,16 +2386,16 @@ function DisplayCostOfCurrentTeam(): void {
 function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  INT32 iId = -1;
-  INT32 iValue = 0;
-  MERCPROFILESTRUCT *pTeamSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  INT8 bCurrentList = 0;
-  INT16 *bCurrentListValue = LaptopSaveInfo.ubDeadCharactersList;
-  BOOLEAN fNotDone = TRUE;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiLoopCounter;
+  let iId: INT32 = -1;
+  let iValue: INT32 = 0;
+  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let bCurrentList: INT8 = 0;
+  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let fNotDone: BOOLEAN = TRUE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiLoopCounter: UINT32;
 
   // run through active soldiers
   //	while( fNotDone )
@@ -2522,16 +2538,16 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
 function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  INT32 iId = -1;
-  INT32 iValue = 9999999;
-  MERCPROFILESTRUCT *pTeamSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  INT8 bCurrentList = 0;
-  INT16 *bCurrentListValue = LaptopSaveInfo.ubDeadCharactersList;
-  BOOLEAN fNotDone = TRUE;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiLoopCounter;
+  let iId: INT32 = -1;
+  let iValue: INT32 = 9999999;
+  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let bCurrentList: INT8 = 0;
+  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let fNotDone: BOOLEAN = TRUE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiLoopCounter: UINT32;
 
   // run through active soldiers
   //	while( fNotDone )
@@ -2673,10 +2689,11 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
 function GetIdOfMercWithHighestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  INT32 iId = -1;
-  INT32 iValue = 0;
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  INT32 cnt = 0;
+  let iId: INT32 = -1;
+  let iValue: INT32 = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2778,10 +2795,11 @@ function GetIdOfMercWithHighestStat(iStat: INT32): INT32 {
 function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  INT32 iId = -1;
-  INT32 iValue = 999999;
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  INT32 cnt = 0;
+  let iId: INT32 = -1;
+  let iValue: INT32 = 999999;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2884,11 +2902,12 @@ function GetIdOfMercWithLowestStat(iStat: INT32): INT32 {
 function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  SOLDIERTYPE *pTeamSoldier, *pSoldier;
-  INT32 cnt = 0;
-  INT32 iTotalStatValue = 0;
-  INT8 bNumberOfPows = 0;
-  UINT8 ubNumberOfMercsInCalculation = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iTotalStatValue: INT32 = 0;
+  let bNumberOfPows: INT8 = 0;
+  let ubNumberOfMercsInCalculation: UINT8 = 0;
 
   // first grunt
   pSoldier = MercPtrs[0];
@@ -2980,15 +2999,15 @@ function GetAvgStatOfCurrentTeamStat(iStat: INT32): INT32 {
 function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
   // will return the id value of the merc on the players team with highest in this stat
   // -1 means error
-  INT32 cnt = 0;
-  INT32 iTotalStatValue = 0;
-  INT32 iId = -1;
-  MERCPROFILESTRUCT *pTeamSoldier;
-  INT32 iCounter = 0;
-  INT8 bCurrentList = 0;
-  INT16 *bCurrentListValue = LaptopSaveInfo.ubDeadCharactersList;
-  BOOLEAN fNotDone = TRUE;
-  UINT32 uiLoopCounter;
+  let cnt: INT32 = 0;
+  let iTotalStatValue: INT32 = 0;
+  let iId: INT32 = -1;
+  let pTeamSoldier: Pointer<MERCPROFILESTRUCT>;
+  let iCounter: INT32 = 0;
+  let bCurrentList: INT8 = 0;
+  let bCurrentListValue: Pointer<INT16> = LaptopSaveInfo.ubDeadCharactersList;
+  let fNotDone: BOOLEAN = TRUE;
+  let uiLoopCounter: UINT32;
 
   // run through active soldiers
 
@@ -3116,9 +3135,10 @@ function GetAvgStatOfPastTeamStat(iStat: INT32): INT32 {
 
 function DisplayAverageStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
-  INT16 sX, sY;
-  INT32 iCounter = 0;
-  CHAR16 sString[32];
+  let sX: INT16;
+  let sY: INT16;
+  let iCounter: INT32 = 0;
+  let sString: CHAR16[] /* [32] */;
 
   // set up font
   SetFont(FONT10ARIAL);
@@ -3151,7 +3171,7 @@ function DisplayAverageStatValuesForCurrentTeam(): void {
     }
 
     if (fCurrentTeamMode == TRUE) {
-      INT32 iValue = GetAvgStatOfCurrentTeamStat(iCounter);
+      let iValue: INT32 = GetAvgStatOfCurrentTeamStat(iCounter);
 
       // if there are no values
       if (iValue == -1)
@@ -3172,12 +3192,13 @@ function DisplayAverageStatValuesForCurrentTeam(): void {
 
 function DisplayLowestStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
-  INT16 sX, sY;
-  INT32 iCounter = 0;
-  CHAR16 sString[32];
-  INT32 iStat = 0;
-  INT32 iDepartedId = 0;
-  INT32 iId = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let iCounter: INT32 = 0;
+  let sString: CHAR16[] /* [32] */;
+  let iStat: INT32 = 0;
+  let iDepartedId: INT32 = 0;
+  let iId: INT32 = 0;
 
   // set up font
   SetFont(FONT10ARIAL);
@@ -3344,11 +3365,12 @@ function DisplayLowestStatValuesForCurrentTeam(): void {
 
 function DisplayHighestStatValuesForCurrentTeam(): void {
   // will display the average values for stats for the current team
-  INT16 sX, sY;
-  INT32 iCounter = 0;
-  CHAR16 sString[32];
-  INT32 iStat = 0;
-  INT32 iId = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let iCounter: INT32 = 0;
+  let sString: CHAR16[] /* [32] */;
+  let iStat: INT32 = 0;
+  let iId: INT32 = 0;
 
   // set up font
   SetFont(FONT10ARIAL);
@@ -3513,7 +3535,7 @@ function DisplayHighestStatValuesForCurrentTeam(): void {
 
 function DisplayPersonnelTeamStats(): void {
   // displays the stat title for each row in the team stat list
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // set up font
   SetFont(FONT10ARIAL);
@@ -3536,8 +3558,8 @@ function DisplayPersonnelTeamStats(): void {
 }
 
 function GetNumberOfPastMercsOnPlayersTeam(): INT32 {
-  INT32 iPastNumberOfMercs = 0;
-  INT32 iCounter = 0;
+  let iPastNumberOfMercs: INT32 = 0;
+  let iCounter: INT32 = 0;
   // will run through the alist of past mercs on the players team and return thier number
 
   // dead
@@ -3562,8 +3584,8 @@ function InitPastCharactersList(): void {
 }
 
 function GetNumberOfDeadOnPastTeam(): INT32 {
-  INT32 iNumberDead = 0;
-  INT32 iCounter = 0;
+  let iNumberDead: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   //	for( iCounter = 0; ( ( iCounter < 256) && ( LaptopSaveInfo.ubDeadCharactersList[ iCounter ] != -1 ) ) ; iCounter ++ )
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -3575,8 +3597,8 @@ function GetNumberOfDeadOnPastTeam(): INT32 {
 }
 
 function GetNumberOfLeftOnPastTeam(): INT32 {
-  INT32 iNumberLeft = 0;
-  INT32 iCounter = 0;
+  let iNumberLeft: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubLeftCharactersList[iCounter] != -1)
@@ -3587,8 +3609,8 @@ function GetNumberOfLeftOnPastTeam(): INT32 {
 }
 
 function GetNumberOfOtherOnPastTeam(): INT32 {
-  INT32 iNumberOther = 0;
-  INT32 iCounter = 0;
+  let iNumberOther: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubOtherCharactersList[iCounter] != -1)
@@ -3599,8 +3621,9 @@ function GetNumberOfOtherOnPastTeam(): INT32 {
 }
 
 function DisplayStateOfPastTeamMembers(): void {
-  INT16 sX, sY;
-  CHAR16 sString[32];
+  let sX: INT16;
+  let sY: INT16;
+  let sString: CHAR16[] /* [32] */;
 
   // font stuff
   SetFont(FONT10ARIAL);
@@ -3639,7 +3662,7 @@ function DisplayStateOfPastTeamMembers(): void {
 }
 
 function CreateDestroyCurrentDepartedMouseRegions(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   // will arbitrate the creation/deletion of mouse regions for current/past team toggles
 
@@ -3707,7 +3730,7 @@ function PersonnelDepartedTeamCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
 
 function CreateDestroyButtonsForDepartedTeamList(): void {
   // creates/ destroys the buttons for cdeparted team list
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   if ((fCurrentTeamMode == FALSE) && (fCreated == FALSE)) {
     // not created. create
@@ -3777,10 +3800,10 @@ function DisplayPastMercsPortraits(): void {
   // display past mercs portraits, starting at giCurrentUpperLeftPortraitNumber and going up 20 mercs
   // start at dead mercs, then fired, then other
 
-  INT32 iCounter = 0;
-  INT32 iCounterA = 0;
-  INT32 iStartArray = 0; // 0 = dead list, 1 = fired list, 2 = other list
-  BOOLEAN fFound = FALSE;
+  let iCounter: INT32 = 0;
+  let iCounterA: INT32 = 0;
+  let iStartArray: INT32 = 0; // 0 = dead list, 1 = fired list, 2 = other list
+  let fFound: BOOLEAN = FALSE;
 
   // not time to display
   if (fCurrentTeamMode == TRUE) {
@@ -3877,8 +3900,8 @@ function DisplayPastMercsPortraits(): void {
 }
 
 function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
-  INT32 iCounter = -1;
-  INT32 iCounterA = 0;
+  let iCounter: INT32 = -1;
+  let iCounterA: INT32 = 0;
   // returns ID of Merc in this slot
 
   // not time to display
@@ -3922,9 +3945,9 @@ function GetIdOfPastMercInSlot(iSlot: INT32): INT32 {
 }
 
 function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, fFired: BOOLEAN, fOther: BOOLEAN): BOOLEAN {
-  char sTemp[100];
-  HVOBJECT hFaceHandle;
-  VOBJECT_DESC VObjectDesc;
+  let sTemp: char[] /* [100] */;
+  let hFaceHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
 
   if ((50 < iId) && (57 > iId)) {
     sprintf(sTemp, "%s%03d.sti", SMALL_FACES_DIR, gMercProfiles[iId].ubFaceIndex);
@@ -3976,10 +3999,11 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, 
 }
 
 function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void {
-  INT32 iCounter = 0;
-  wchar_t sString[50];
-  INT16 sX, sY;
-  UINT32 uiHits = 0;
+  let iCounter: INT32 = 0;
+  let sString: wchar_t[] /* [50] */;
+  let sX: INT16;
+  let sY: INT16;
+  let uiHits: UINT32 = 0;
 
   // font stuff
   SetFont(FONT10ARIAL);
@@ -4153,8 +4177,9 @@ function EnableDisableDeparturesButtons(): void {
 
 function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void {
   // get merc's nickName, assignment, and sector location info
-  INT16 sX, sY;
-  CHAR16 sString[32];
+  let sX: INT16;
+  let sY: INT16;
+  let sString: CHAR16[] /* [32] */;
 
   SetFont(CHAR_NAME_FONT);
   SetFontForeground(PERS_TEXT_FONT_COLOR);
@@ -4224,7 +4249,7 @@ function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void 
 }
 
 function GetTheStateOfDepartedMerc(iId: INT32): INT32 {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // will runt hrough each list until merc is found, if not a -1 is returned
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
@@ -4264,9 +4289,9 @@ function DisplayPersonnelTextOnTitleBar(): void {
 
 function DisplayHighLightBox(): BOOLEAN {
   // will display highlight box around selected merc
-  VOBJECT_DESC VObjectDesc;
-  UINT32 uiBox = 0;
-  HVOBJECT hHandle;
+  let VObjectDesc: VOBJECT_DESC;
+  let uiBox: UINT32 = 0;
+  let hHandle: HVOBJECT;
 
   // load graphics
 
@@ -4293,7 +4318,7 @@ function DisplayHighLightBox(): BOOLEAN {
 
 // add to dead list
 function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubDeadCharactersList[iCounter] == -1) {
@@ -4312,7 +4337,7 @@ function AddCharacterToDeadList(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubLeftCharactersList[iCounter] == -1) {
@@ -4331,7 +4356,7 @@ function AddCharacterToFiredList(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     if (LaptopSaveInfo.ubOtherCharactersList[iCounter] == -1) {
@@ -4353,7 +4378,7 @@ function AddCharacterToOtherList(pSoldier: Pointer<SOLDIERTYPE>): void {
 // we must get rid of them from the departed section in the personnel screen.  ( wouldnt make sense for them
 // to be on your team list, and departed list )
 function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): BOOLEAN {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     // are they already in the Dead list?
@@ -4383,8 +4408,9 @@ function RemoveNewlyHiredMercFromPersonnelDepartedList(ubProfile: UINT8): BOOLEA
 
 // grab the id of the first merc being displayed
 function GetIdOfFirstDisplayedMerc(): INT32 {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt = 0, iCounter = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // set current soldier
   pSoldier = MercPtrs[cnt];
@@ -4405,9 +4431,9 @@ function GetIdOfFirstDisplayedMerc(): INT32 {
 }
 
 function GetIdOfThisSlot(iSlot: INT32): INT32 {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // set current soldier
   pSoldier = MercPtrs[cnt];
@@ -4435,9 +4461,9 @@ function GetIdOfThisSlot(iSlot: INT32): INT32 {
 }
 
 function RenderAtmPanel(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT32 uiBox = 0;
-  HVOBJECT hHandle;
+  let VObjectDesc: VOBJECT_DESC;
+  let uiBox: UINT32 = 0;
+  let hHandle: HVOBJECT;
 
   // render the ATM panel
   if (fShowAtmPanel) {
@@ -4495,7 +4521,7 @@ function RenderAtmPanel(): BOOLEAN {
 }
 
 function CreateDestroyStartATMButton(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
   // create/destroy atm start button as needed
 
   if ((fCreated == FALSE) && (fShowAtmPanelStartButton == TRUE)) {
@@ -4563,11 +4589,11 @@ function CreateDestroyStartATMButton(): void {
 }
 
 function FindPositionOfPersInvSlider(): void {
-  INT32 iValue = 0;
-  INT32 iNumberOfItems = 0;
-  INT16 sSizeOfEachSubRegion = 0;
-  INT16 sYPositionOnBar = 0;
-  INT16 iCurrentItemValue = 0;
+  let iValue: INT32 = 0;
+  let iNumberOfItems: INT32 = 0;
+  let sSizeOfEachSubRegion: INT16 = 0;
+  let sYPositionOnBar: INT16 = 0;
+  let iCurrentItemValue: INT16 = 0;
 
   // find out how many there are
   iValue = (INT32)(GetNumberOfInventoryItemsOnCurrentMerc());
@@ -4587,12 +4613,12 @@ function FindPositionOfPersInvSlider(): void {
 }
 
 function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
-  INT32 iNumberOfItems = 0;
-  POINT MousePos;
-  INT16 sSizeOfEachSubRegion = 0;
-  INT16 sYPositionOnBar = 0;
-  INT16 iCurrentItemValue = 0;
+  let iValue: INT32 = 0;
+  let iNumberOfItems: INT32 = 0;
+  let MousePos: POINT;
+  let sSizeOfEachSubRegion: INT16 = 0;
+  let sYPositionOnBar: INT16 = 0;
+  let iCurrentItemValue: INT16 = 0;
 
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) || (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
     // find out how many there are
@@ -4641,7 +4667,7 @@ function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
 }
 
 function RenderSliderBarForPersonnelInventory(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // render slider bar for personnel
   GetVideoObject(&hHandle, guiPersonnelInventory);
@@ -4815,10 +4841,10 @@ function EmployementInfoButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = MercPtrs[0];
-  INT32 cnt = 0;
-  INT32 iId = 0;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let cnt: INT32 = 0;
+  let iId: INT32 = 0;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -4847,10 +4873,10 @@ function ATMOther2ButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = MercPtrs[0];
-  INT32 cnt = 0;
-  INT32 iId = 0;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[0];
+  let cnt: INT32 = 0;
+  let iId: INT32 = 0;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -4965,9 +4991,9 @@ function ATMOtherButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
-  INT32 iCounter = 0;
-  CHAR16 sZero[2] = L"0";
+  let iValue: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let sZero: CHAR16[] /* [2] */ = L"0";
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -4998,10 +5024,11 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 function DisplayATMAmount(): void {
-  INT16 sX = 0, sY = 0;
-  CHAR16 sTempString[32];
-  CHAR16 sZero[2] = L"0";
-  INT32 iCounter = 0;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sTempString: CHAR16[] /* [32] */;
+  let sZero: CHAR16[] /* [2] */ = L"0";
+  let iCounter: INT32 = 0;
 
   if (fShowAtmPanel == FALSE) {
     return;
@@ -5037,7 +5064,7 @@ function DisplayATMAmount(): void {
 }
 
 function HandleStateOfATMButtons(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // disable buttons based on state
   if ((fATMFlags == 0)) {
@@ -5062,8 +5089,8 @@ function HandleStateOfATMButtons(): void {
 }
 
 function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iCurrentAmount = 0;
-  INT32 iCurrentPocket = 0;
+  let iCurrentAmount: INT32 = 0;
+  let iCurrentPocket: INT32 = 0;
   // run through mercs pockets, if any money in them, add to total
 
   // error check
@@ -5082,9 +5109,9 @@ function GetFundsOnMerc(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
-  INT32 iCurrentPocket = 0;
-  INT32 iAmountLeftToTake = iCurrentBalance;
-  OBJECTTYPE ObjectToRemove;
+  let iCurrentPocket: INT32 = 0;
+  let iAmountLeftToTake: INT32 = iCurrentBalance;
+  let ObjectToRemove: OBJECTTYPE;
 
   // move this amount of money from the grunt to the bank
   // error check
@@ -5121,7 +5148,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
 }
 
 function TransferFundsFromBankToMerc(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBalance: INT32): BOOLEAN {
-  OBJECTTYPE pMoneyObject;
+  let pMoneyObject: OBJECTTYPE;
 
   // move this amount of money from the grunt to the bank
   // error check
@@ -5197,7 +5224,7 @@ function DisplayATMStrings(): void {
 }
 
 function UpDateStateOfStartButton(): void {
-  INT32 iId = 0;
+  let iId: INT32 = 0;
 
   // start button being shown?
   if (fShowAtmPanelStartButton == FALSE) {
@@ -5267,11 +5294,12 @@ function UpDateStateOfStartButton(): void {
 
 function DisplayAmountOnCurrentMerc(): void {
   // will display the amount that the merc is carrying on him or herself
-  INT32 iId;
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iFunds;
-  CHAR16 sString[64];
-  INT16 sX, sY;
+  let iId: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iFunds: INT32;
+  let sString: CHAR16[] /* [64] */;
+  let sX: INT16;
+  let sY: INT16;
 
   iId = GetIdOfThisSlot(iCurrentPersonSelectedId);
 
@@ -5307,12 +5335,12 @@ function DisplayAmountOnCurrentMerc(): void {
 }
 
 function HandlePersonnelKeyboard(): void {
-  INT32 iCounter = 0;
-  INT32 iValue = 0;
-  CHAR16 sZero[2] = L"0";
+  let iCounter: INT32 = 0;
+  let iValue: INT32 = 0;
+  let sZero: CHAR16[] /* [2] */ = L"0";
 
-  InputAtom InputEvent;
-  POINT MousePos;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 
@@ -5339,13 +5367,13 @@ function HandlePersonnelKeyboard(): void {
 }
 
 function RenderRectangleForPersonnelTransactionAmount(): void {
-  INT32 iLength = 0;
-  INT32 iHeight = GetFontHeight(ATM_FONT);
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  CHAR16 sTempString[32];
-  CHAR16 sZero[2] = L"0";
-  INT32 iCounter = 0;
+  let iLength: INT32 = 0;
+  let iHeight: INT32 = GetFontHeight(ATM_FONT);
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let sTempString: CHAR16[] /* [32] */;
+  let sZero: CHAR16[] /* [2] */ = L"0";
+  let iCounter: INT32 = 0;
 
   wcscpy(sTempString, sTransferString);
 
@@ -5375,8 +5403,8 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
 }
 
 function HandleTimedAtmModes(): void {
-  static BOOLEAN fOldAtmMode = 0;
-  static UINT32 uiBaseTime = 0;
+  /* static */ let fOldAtmMode: BOOLEAN = 0;
+  /* static */ let uiBaseTime: UINT32 = 0;
 
   if (fShowAtmPanel == FALSE) {
     return;
@@ -5426,11 +5454,12 @@ function IsPastMercOther(iId: INT32): BOOLEAN {
 }
 
 function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
-  INT32 iCounter = 0;
-  wchar_t sString[50];
-  wchar_t sStringA[50];
-  INT16 sX, sY;
-  UINT32 uiHits = 0;
+  let iCounter: INT32 = 0;
+  let sString: wchar_t[] /* [50] */;
+  let sStringA: wchar_t[] /* [50] */;
+  let sX: INT16;
+  let sY: INT16;
+  let uiHits: UINT32 = 0;
 
   if (Menptr[iId].uiStatusFlags & SOLDIER_VEHICLE) {
     return;
@@ -5443,11 +5472,11 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 
       // Remaining Contract:
       case 0: {
-        UINT32 uiTimeUnderThisDisplayAsHours = 24 * 60;
-        UINT32 uiMinutesInDay = 24 * 60;
+        let uiTimeUnderThisDisplayAsHours: UINT32 = 24 * 60;
+        let uiMinutesInDay: UINT32 = 24 * 60;
 
         if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC || Menptr[iId].ubProfile == SLAY) {
-          INT32 iTimeLeftOnContract = CalcTimeLeftOnMercContract(&Menptr[iId]);
+          let iTimeLeftOnContract: INT32 = CalcTimeLeftOnMercContract(&Menptr[iId]);
 
           // if the merc is in transit
           if (Menptr[iId].bAssignment == IN_TRANSIT) {
@@ -5645,7 +5674,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 // IMP merc:	Returns the amount of time the merc has worked
 // else:			returns -1
 function CalcTimeLeftOnMercContract(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iTimeLeftOnContract = -1;
+  let iTimeLeftOnContract: INT32 = -1;
 
   if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
     iTimeLeftOnContract = pSoldier->iEndofContractTime - GetWorldTotalMin();

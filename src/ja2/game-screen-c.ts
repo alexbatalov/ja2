@@ -1,46 +1,46 @@
 const ARE_IN_FADE_IN = () => (gfFadeIn || gfFadeInitialized);
 
-BOOLEAN fDirtyRectangleMode = FALSE;
-UINT16 *gpFPSBuffer = NULL;
+let fDirtyRectangleMode: BOOLEAN = FALSE;
+let gpFPSBuffer: Pointer<UINT16> = NULL;
 // MarkNote
 // extern ScrollStringStPtr pStringS=NULL;
-UINT32 counter = 0;
-UINT32 count = 0;
-BOOLEAN gfTacticalDoHeliRun = FALSE;
-BOOLEAN gfPlayAttnAfterMapLoad = FALSE;
+let counter: UINT32 = 0;
+let count: UINT32 = 0;
+let gfTacticalDoHeliRun: BOOLEAN = FALSE;
+let gfPlayAttnAfterMapLoad: BOOLEAN = FALSE;
 
 // VIDEO OVERLAYS
-INT32 giFPSOverlay = 0;
-INT32 giCounterPeriodOverlay = 0;
+let giFPSOverlay: INT32 = 0;
+let giCounterPeriodOverlay: INT32 = 0;
 
-BOOLEAN gfExitToNewSector = FALSE;
+let gfExitToNewSector: BOOLEAN = FALSE;
 // UINT8		gubNewSectorExitDirection;
 
-BOOLEAN gfGameScreenLocateToSoldier = FALSE;
-BOOLEAN gfEnteringMapScreen = FALSE;
-UINT32 uiOldMouseCursor;
-UINT8 gubPreferredInitialSelectedGuy = NOBODY;
+let gfGameScreenLocateToSoldier: BOOLEAN = FALSE;
+let gfEnteringMapScreen: BOOLEAN = FALSE;
+let uiOldMouseCursor: UINT32;
+let gubPreferredInitialSelectedGuy: UINT8 = NOBODY;
 
-BOOLEAN gfTacticalIsModal = FALSE;
-MOUSE_REGION gTacticalDisableRegion;
-BOOLEAN gfTacticalDisableRegionActive = FALSE;
-INT8 gbTacticalDisableMode = FALSE;
-MODAL_HOOK gModalDoneCallback;
-BOOLEAN gfBeginEndTurn = FALSE;
+let gfTacticalIsModal: BOOLEAN = FALSE;
+let gTacticalDisableRegion: MOUSE_REGION;
+let gfTacticalDisableRegionActive: BOOLEAN = FALSE;
+let gbTacticalDisableMode: INT8 = FALSE;
+let gModalDoneCallback: MODAL_HOOK;
+let gfBeginEndTurn: BOOLEAN = FALSE;
 
 // The InitializeGame function is responsible for setting up all data and Gaming Engine
 // tasks which will run the game
-RENDER_HOOK gRenderOverride = NULL;
+let gRenderOverride: RENDER_HOOK = NULL;
 
 const NOINPUT_DELAY = 60000;
 const DEMOPLAY_DELAY = 40000;
 const RESTART_DELAY = 6000;
 
-UINT32 guiTacticalLeaveScreenID;
-BOOLEAN guiTacticalLeaveScreen = FALSE;
+let guiTacticalLeaveScreenID: UINT32;
+let guiTacticalLeaveScreen: BOOLEAN = FALSE;
 
 function MainGameScreenInit(): UINT32 {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   gpZBuffer = InitZBuffer(1280, 480);
   InitializeBackgroundRects();
@@ -248,8 +248,8 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
 }
 
 function MainGameScreenHandle(): UINT32 {
-  UINT32 uiNewScreen = GAME_SCREEN;
-  BOOLEAN fEnterDemoMode = FALSE;
+  let uiNewScreen: UINT32 = GAME_SCREEN;
+  let fEnterDemoMode: BOOLEAN = FALSE;
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
@@ -595,7 +595,7 @@ function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
 }
 
 function DisableFPSOverlay(fEnable: BOOLEAN): void {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -607,10 +607,10 @@ function DisableFPSOverlay(fEnable: BOOLEAN): void {
 }
 
 function TacticalScreenLocateToSoldier(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 bLastTeamID;
-  BOOLEAN fPreferedGuyUsed = FALSE;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
+  let fPreferedGuyUsed: BOOLEAN = FALSE;
 
   if (gubPreferredInitialSelectedGuy != NOBODY) {
     // ATE: Put condition here...
@@ -644,9 +644,9 @@ function EnterMapScreen(): void {
 }
 
 function UpdateTeamPanelAssignments(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 bLastTeamID;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
 
   // Remove all players
   RemoveAllPlayersFromSlot();
@@ -727,7 +727,7 @@ function HandleModalTactical(): void {
 
 function InitHelicopterEntranceByMercs(): void {
   if (DidGameJustStart()) {
-    AIR_RAID_DEFINITION AirRaidDef;
+    let AirRaidDef: AIR_RAID_DEFINITION;
 
     // Update clock ahead from STARTING_TIME to make mercs arrive!
     WarpGameTime(FIRST_ARRIVAL_DELAY, WARPTIME_PROCESS_EVENTS_NORMALLY);

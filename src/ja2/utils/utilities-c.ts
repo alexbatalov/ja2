@@ -3,7 +3,10 @@ const DATA_8_BIT_DIR = "8-Bit\\";
 //#define	TIME_LIMITED_VERSION
 
 function FilenameForBPP(pFilename: STR, pDestination: STR): void {
-  UINT8 Drive[128], Dir[128], Name[128], Ext[128];
+  let Drive: UINT8[] /* [128] */;
+  let Dir: UINT8[] /* [128] */;
+  let Name: UINT8[] /* [128] */;
+  let Ext: UINT8[] /* [128] */;
 
   if (GETPIXELDEPTH() == 16) {
     // no processing for 16 bit names
@@ -22,9 +25,9 @@ function FilenameForBPP(pFilename: STR, pDestination: STR): void {
 }
 
 function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile: SGPFILENAME): BOOLEAN {
-  HWFILE hFileHandle;
-  BYTE bColHeader[8];
-  UINT32 cnt;
+  let hFileHandle: HWFILE;
+  let bColHeader: BYTE[] /* [8] */;
+  let cnt: UINT32;
 
   // See if files exists, if not, return error
   if (!FileExists(ColFile)) {
@@ -57,11 +60,15 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
 }
 
 function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, uiDestSurface: UINT32): BOOLEAN {
-  UINT16 us16BPPColor;
-  UINT32 cnt1;
-  UINT8 ubSize, ubType;
-  INT16 sTLX, sTLY, sBRX, sBRY;
-  UINT8 ubPaletteRep;
+  let us16BPPColor: UINT16;
+  let cnt1: UINT32;
+  let ubSize: UINT8;
+  let ubType: UINT8;
+  let sTLX: INT16;
+  let sTLY: INT16;
+  let sBRX: INT16;
+  let sBRY: INT16;
+  let ubPaletteRep: UINT8;
 
   // Create 16BPP Palette
   CHECKF(GetPaletteRepIndexFromID(aPalRep, &ubPaletteRep));
@@ -88,10 +95,14 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
 }
 
 function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16, uiFont: INT32): BOOLEAN {
-  UINT32 Cur, uiLet, uiNewLet, uiHyphenLet;
-  UINT16 *curletter, transletter;
-  BOOLEAN fLineSplit = FALSE;
-  HVOBJECT hFont;
+  let Cur: UINT32;
+  let uiLet: UINT32;
+  let uiNewLet: UINT32;
+  let uiHyphenLet: UINT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let fLineSplit: BOOLEAN = FALSE;
+  let hFont: HVOBJECT;
 
   // CHECK FOR WRAP
   Cur = 0;
@@ -147,7 +158,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
 }
 
 function IfWinNT(): BOOLEAN {
-  OSVERSIONINFO OsVerInfo;
+  let OsVerInfo: OSVERSIONINFO;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
@@ -160,7 +171,7 @@ function IfWinNT(): BOOLEAN {
 }
 
 function IfWin95(): BOOLEAN {
-  OSVERSIONINFO OsVerInfo;
+  let OsVerInfo: OSVERSIONINFO;
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
@@ -174,9 +185,9 @@ function IfWin95(): BOOLEAN {
 
 function HandleLimitedNumExecutions(): void {
   // Get system directory
-  HWFILE hFileHandle;
-  UINT8 ubSysDir[512];
-  INT8 bNumRuns;
+  let hFileHandle: HWFILE;
+  let ubSysDir: UINT8[] /* [512] */;
+  let bNumRuns: INT8;
 
   GetSystemDirectory(ubSysDir, sizeof(ubSysDir));
 
@@ -220,7 +231,7 @@ function HandleLimitedNumExecutions(): void {
   FileClose(hFileHandle);
 }
 
-SGPFILENAME gCheckFilenames[] = {
+let gCheckFilenames: SGPFILENAME[] /* [] */ = {
   "DATA\\INTRO.SLF",
   "DATA\\LOADSCREENS.SLF",
   "DATA\\MAPS.SLF",
@@ -228,7 +239,7 @@ SGPFILENAME gCheckFilenames[] = {
   "DATA\\SPEECH.SLF",
 };
 
-UINT32 gCheckFileMinSizes[] = {
+let gCheckFileMinSizes: UINT32[] /* [] */ = {
   68000000,
   36000000,
   87000000,
@@ -251,10 +262,10 @@ function PerformTimeLimitedCheck(): BOOLEAN {
 }
 
 function DoJA2FilesExistsOnDrive(zCdLocation: Pointer<CHAR8>): BOOLEAN {
-  BOOLEAN fFailed = FALSE;
-  CHAR8 zCdFile[SGPFILENAME_LEN];
-  INT32 cnt;
-  HWFILE hFile;
+  let fFailed: BOOLEAN = FALSE;
+  let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let cnt: INT32;
+  let hFile: HWFILE;
 
   for (cnt = 0; cnt < 4; cnt++) {
     // OK, build filename

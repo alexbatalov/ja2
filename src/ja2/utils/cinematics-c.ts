@@ -21,21 +21,22 @@ const SMK_FLIC_LOOP = 0x00000004; // Play flic in a loop
 const SMK_FLIC_AUTOCLOSE = 0x00000008; // Close when done
 
 //-Globals-------------------------------------------------------------------------
-SMKFLIC SmkList[SMK_NUM_FLICS];
+let SmkList: SMKFLIC[] /* [SMK_NUM_FLICS] */;
 
-HWND hDisplayWindow = 0;
-UINT32 uiDisplayHeight, uiDisplayWidth;
-BOOLEAN fSuspendFlics = FALSE;
-UINT32 uiFlicsPlaying = 0;
-UINT32 guiSmackPixelFormat = SMACKBUFFER565;
+let hDisplayWindow: HWND = 0;
+let uiDisplayHeight: UINT32;
+let uiDisplayWidth: UINT32;
+let fSuspendFlics: BOOLEAN = FALSE;
+let uiFlicsPlaying: UINT32 = 0;
+let guiSmackPixelFormat: UINT32 = SMACKBUFFER565;
 
-LPDIRECTDRAWSURFACE lpVideoPlayback = NULL;
-LPDIRECTDRAWSURFACE2 lpVideoPlayback2 = NULL;
+let lpVideoPlayback: LPDIRECTDRAWSURFACE = NULL;
+let lpVideoPlayback2: LPDIRECTDRAWSURFACE2 = NULL;
 
 function SmkPollFlics(): BOOLEAN {
-  UINT32 uiCount;
-  BOOLEAN fFlicStatus = FALSE;
-  DDSURFACEDESC SurfaceDescription;
+  let uiCount: UINT32;
+  let fFlicStatus: BOOLEAN = FALSE;
+  let SurfaceDescription: DDSURFACEDESC;
 
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++) {
     if (SmkList[uiCount].uiFlags & SMK_FLIC_PLAYING) {
@@ -69,7 +70,7 @@ function SmkPollFlics(): BOOLEAN {
 }
 
 function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
-  HDIGDRIVER pSoundDriver = NULL;
+  let pSoundDriver: HDIGDRIVER = NULL;
 
   // Wipe the flic list clean
   memset(SmkList, 0, sizeof(SMKFLIC) * SMK_NUM_FLICS);
@@ -91,7 +92,7 @@ function SmkInitialize(hWindow: HWND, uiWidth: UINT32, uiHeight: UINT32): void {
 }
 
 function SmkShutdown(): void {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   // Close and deallocate any open flics
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++) {
@@ -101,7 +102,7 @@ function SmkShutdown(): void {
 }
 
 function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, fClose: BOOLEAN): Pointer<SMKFLIC> {
-  SMKFLIC *pSmack;
+  let pSmack: Pointer<SMKFLIC>;
 
   // Open the flic
   if ((pSmack = SmkOpenFlic(cFilename)) == NULL)
@@ -119,8 +120,8 @@ function SmkPlayFlic(cFilename: Pointer<CHAR8>, uiLeft: UINT32, uiTop: UINT32, f
 }
 
 function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
-  SMKFLIC *pSmack;
-  HANDLE hFile;
+  let pSmack: Pointer<SMKFLIC>;
+  let hFile: HANDLE;
 
   // Get an available flic slot from the list
   if (!(pSmack = SmkGetFreeFlic())) {
@@ -183,7 +184,7 @@ function SmkCloseFlic(pSmack: Pointer<SMKFLIC>): void {
 }
 
 function SmkGetFreeFlic(): Pointer<SMKFLIC> {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++)
     if (!(SmkList[uiCount].uiFlags & SMK_FLIC_OPEN))
@@ -193,10 +194,12 @@ function SmkGetFreeFlic(): Pointer<SMKFLIC> {
 }
 
 function SmkSetupVideo(): void {
-  DDSURFACEDESC SurfaceDescription;
-  HRESULT ReturnCode;
-  UINT16 usRed, usGreen, usBlue;
-  HVSURFACE hVSurface;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ReturnCode: HRESULT;
+  let usRed: UINT16;
+  let usGreen: UINT16;
+  let usBlue: UINT16;
+  let hVSurface: HVSURFACE;
 
   // DEF:
   //	lpVideoPlayback2=CinematicModeOn();

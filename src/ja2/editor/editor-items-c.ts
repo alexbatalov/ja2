@@ -1,22 +1,22 @@
 const NUMBER_TRIGGERS = 27;
 const PRESSURE_ACTION_ID = (NUMBER_TRIGGERS - 1);
 
-INT32 giDefaultExistChance = 100;
+let giDefaultExistChance: INT32 = 100;
 
 interface IPListNode {
   sGridNo: INT16;
   next: Pointer<IPListNode>;
 }
 
-IPListNode *pIPHead = NULL;
+let pIPHead: Pointer<IPListNode> = NULL;
 
-IPListNode *gpCurrItemPoolNode = NULL;
-ITEM_POOL *gpItemPool = NULL;
+let gpCurrItemPoolNode: Pointer<IPListNode> = NULL;
+let gpItemPool: Pointer<ITEM_POOL> = NULL;
 
 function BuildItemPoolList(): void {
-  ITEM_POOL *temp;
-  IPListNode *tail;
-  UINT16 i;
+  let temp: Pointer<ITEM_POOL>;
+  let tail: Pointer<IPListNode>;
+  let i: UINT16;
   KillItemPoolList();
   for (i = 0; i < WORLD_MAX; i++) {
     if (GetItemPool(i, &temp, 0)) {
@@ -39,7 +39,7 @@ function BuildItemPoolList(): void {
 }
 
 function KillItemPoolList(): void {
-  IPListNode *pIPCurr;
+  let pIPCurr: Pointer<IPListNode>;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     HideItemCursor(pIPCurr->sGridNo);
@@ -52,13 +52,13 @@ function KillItemPoolList(): void {
 
 // Contains global information about the editor items
 // May be expanded to encapsulate the entire editor later.
-EditorItemsInfo eInfo;
+let eInfo: EditorItemsInfo;
 
 // Does some precalculations regarding the number of each item type, so that it
 // isn't calculated every time a player changes categories.
 function EntryInitEditorItemsInfo(): void {
-  INT32 i;
-  INVTYPE *item;
+  let i: INT32;
+  let item: Pointer<INVTYPE>;
   eInfo.uiBuffer = 0;
   eInfo.fKill = 0;
   eInfo.fActive = 0;
@@ -127,22 +127,30 @@ function EntryInitEditorItemsInfo(): void {
 }
 
 function InitEditorItemsInfo(uiItemType: UINT32): void {
-  VSURFACE_DESC vs_desc;
-  UINT8 *pDestBuf, *pSrcBuf;
-  UINT32 uiSrcPitchBYTES, uiDestPitchBYTES;
-  INVTYPE *item;
-  SGPRect SaveRect, NewRect;
-  HVOBJECT hVObject;
-  UINT32 uiVideoObjectIndex;
-  UINT16 usUselessWidth, usUselessHeight;
-  INT16 sWidth, sOffset, sStart;
-  INT16 i, x, y;
-  UINT16 usCounter;
-  INT16 pStr[100]; //, pStr2[ 100 ];
-  UINT16 pItemName[SIZE_ITEM_NAME];
-  UINT8 ubBitDepth;
-  BOOLEAN fTypeMatch;
-  INT32 iEquipCount = 0;
+  let vs_desc: VSURFACE_DESC;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let uiSrcPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32;
+  let item: Pointer<INVTYPE>;
+  let SaveRect: SGPRect;
+  let NewRect: SGPRect;
+  let hVObject: HVOBJECT;
+  let uiVideoObjectIndex: UINT32;
+  let usUselessWidth: UINT16;
+  let usUselessHeight: UINT16;
+  let sWidth: INT16;
+  let sOffset: INT16;
+  let sStart: INT16;
+  let i: INT16;
+  let x: INT16;
+  let y: INT16;
+  let usCounter: UINT16;
+  let pStr: INT16[] /* [100] */; //, pStr2[ 100 ];
+  let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let ubBitDepth: UINT8;
+  let fTypeMatch: BOOLEAN;
+  let iEquipCount: INT32 = 0;
 
   // Check to make sure that there isn't already a valid eInfo
   if (eInfo.fActive) {
@@ -427,16 +435,23 @@ function DetermineItemsScrolling(): void {
 }
 
 function RenderEditorItemsInfo(): void {
-  UINT8 *pDestBuf, *pSrcBuf;
-  UINT32 uiSrcPitchBYTES, uiDestPitchBYTES;
-  INVTYPE *item;
-  HVOBJECT hVObject;
-  UINT32 uiVideoObjectIndex;
-  INT16 i;
-  INT16 minIndex, maxIndex;
-  INT16 sWidth, sOffset, sStart, x, y;
-  UINT16 usNumItems;
-  UINT16 usQuantity;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let uiSrcPitchBYTES: UINT32;
+  let uiDestPitchBYTES: UINT32;
+  let item: Pointer<INVTYPE>;
+  let hVObject: HVOBJECT;
+  let uiVideoObjectIndex: UINT32;
+  let i: INT16;
+  let minIndex: INT16;
+  let maxIndex: INT16;
+  let sWidth: INT16;
+  let sOffset: INT16;
+  let sStart: INT16;
+  let x: INT16;
+  let y: INT16;
+  let usNumItems: UINT16;
+  let usQuantity: UINT16;
 
   if (!eInfo.fActive) {
     return;
@@ -566,8 +581,8 @@ function ClearEditorItemsInfo(): void {
 }
 
 function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): void {
-  INT16 sIndex;
-  UINT16 usQuantity;
+  let sIndex: INT16;
+  let usQuantity: UINT16;
   // Calc base index from scrolling index
   sIndex = eInfo.sScrollIndex * 2;
   // Determine if the index is in the first row or second row from mouse YPos.
@@ -617,7 +632,7 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
 }
 
 function ShowItemCursor(iMapIndex: INT32): void {
-  LEVELNODE *pNode;
+  let pNode: Pointer<LEVELNODE>;
   pNode = gpWorldLevelData[iMapIndex].pTopmostHead;
   while (pNode) {
     if (pNode->usIndex == SELRING)
@@ -632,7 +647,7 @@ function HideItemCursor(iMapIndex: INT32): void {
 }
 
 function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
-  ITEM_POOL *pItemPool;
+  let pItemPool: Pointer<ITEM_POOL>;
   if (!GetItemPool(sGridNo, &pItemPool, 0)) {
     return FALSE;
   }
@@ -646,15 +661,16 @@ function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
 }
 
 function AddSelectedItemToWorld(sGridNo: INT16): void {
-  OBJECTTYPE tempObject;
-  OBJECTTYPE *pObject;
-  INVTYPE *pItem;
-  ITEM_POOL *pItemPool;
-  INT32 iItemIndex;
-  INT8 bVisibility = INVISIBLE;
-  BOOLEAN fFound = FALSE;
-  IPListNode *pIPCurr, *pIPPrev;
-  UINT16 usFlags;
+  let tempObject: OBJECTTYPE;
+  let pObject: Pointer<OBJECTTYPE>;
+  let pItem: Pointer<INVTYPE>;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let iItemIndex: INT32;
+  let bVisibility: INT8 = INVISIBLE;
+  let fFound: BOOLEAN = FALSE;
+  let pIPCurr: Pointer<IPListNode>;
+  let pIPPrev: Pointer<IPListNode>;
+  let usFlags: UINT16;
 
   // Extract the currently selected item.
   SpecifyItemToEdit(NULL, -1);
@@ -802,8 +818,8 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
 }
 
 function HandleRightClickOnItem(sGridNo: INT16): void {
-  ITEM_POOL *pItemPool;
-  IPListNode *pIPCurr;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pIPCurr: Pointer<IPListNode>;
 
   if (gsItemGridNo == sGridNo) {
     // Clicked on the same gridno as the selected item.  Automatically select the next
@@ -843,7 +859,7 @@ function DeleteSelectedItem(): void {
   }
   if (gpItemPool) {
     // Okay, we have a selected item...
-    INT16 sGridNo;
+    let sGridNo: INT16;
     // save the mapindex
     if (gpItemPool->pNext) {
       SpecifyItemToEdit(&gWorldItems[gpItemPool->pNext->iItemIndex].o, gpItemPool->sGridNo);
@@ -863,7 +879,8 @@ function DeleteSelectedItem(): void {
     // determine if there are still any items at this location
     if (!GetItemPool(sGridNo, &gpItemPool, 0)) {
       // no items left, so remove the node from the list.
-      IPListNode *pIPPrev, *pIPCurr;
+      let pIPPrev: Pointer<IPListNode>;
+      let pIPCurr: Pointer<IPListNode>;
       pIPCurr = pIPHead;
       pIPPrev = NULL;
       while (pIPCurr) {
@@ -958,11 +975,11 @@ function SelectPrevItemInPool(): void {
 }
 
 function FindNextItemOfSelectedType(): void {
-  UINT16 usItem;
+  let usItem: UINT16;
   usItem = eInfo.pusItemIndex[eInfo.sSelItemIndex];
   if (usItem == ACTION_ITEM || usItem == SWITCH) {
     if (eInfo.sSelItemIndex < PRESSURE_ACTION_ID) {
-      INT8 bFrequency;
+      let bFrequency: INT8;
       if (eInfo.sSelItemIndex < 2)
         bFrequency = PANIC_FREQUENCY;
       else if (eInfo.sSelItemIndex < 4)
@@ -983,8 +1000,8 @@ function FindNextItemOfSelectedType(): void {
 }
 
 function SelectNextItemOfType(usItem: UINT16): void {
-  IPListNode *curr;
-  OBJECTTYPE *pObject;
+  let curr: Pointer<IPListNode>;
+  let pObject: Pointer<OBJECTTYPE>;
   if (gpItemPool) {
     curr = pIPHead;
     while (curr) {
@@ -1038,8 +1055,8 @@ function SelectNextItemOfType(usItem: UINT16): void {
 }
 
 function SelectNextKeyOfType(ubKeyID: UINT8): void {
-  IPListNode *curr;
-  OBJECTTYPE *pObject;
+  let curr: Pointer<IPListNode>;
+  let pObject: Pointer<OBJECTTYPE>;
   if (gpItemPool) {
     curr = pIPHead;
     while (curr) {
@@ -1093,8 +1110,8 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
 }
 
 function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void {
-  IPListNode *curr;
-  OBJECTTYPE *pObject;
+  let curr: Pointer<IPListNode>;
+  let pObject: Pointer<OBJECTTYPE>;
   if (gpItemPool) {
     curr = pIPHead;
     while (curr) {
@@ -1148,8 +1165,8 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
 }
 
 function SelectNextPressureAction(): void {
-  IPListNode *curr;
-  OBJECTTYPE *pObject;
+  let curr: Pointer<IPListNode>;
+  let pObject: Pointer<OBJECTTYPE>;
   if (gpItemPool) {
     curr = pIPHead;
     while (curr) {
@@ -1203,9 +1220,9 @@ function SelectNextPressureAction(): void {
 }
 
 function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
-  ITEM_POOL *pItemPool;
-  IPListNode *pIPCurr;
-  INT16 num = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pIPCurr: Pointer<IPListNode>;
+  let num: INT16 = 0;
   *pusQuantity = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
@@ -1223,9 +1240,9 @@ function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer
 }
 
 function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT16 {
-  ITEM_POOL *pItemPool;
-  IPListNode *pIPCurr;
-  UINT16 num = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pIPCurr: Pointer<IPListNode>;
+  let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
@@ -1241,9 +1258,9 @@ function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT
 }
 
 function CountNumberOfPressureActionsInWorld(): UINT16 {
-  ITEM_POOL *pItemPool;
-  IPListNode *pIPCurr;
-  UINT16 num = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pIPCurr: Pointer<IPListNode>;
+  let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
@@ -1259,10 +1276,10 @@ function CountNumberOfPressureActionsInWorld(): UINT16 {
 }
 
 function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity: Pointer<UINT16>): UINT16 {
-  UINT16 usNumPlacements;
+  let usNumPlacements: UINT16;
   if (eInfo.uiItemType == TBAR_MODE_ITEM_TRIGGERS) {
     // find identical items with same frequency
-    INT8 bFrequency;
+    let bFrequency: INT8;
     if (usEInfoIndex < PRESSURE_ACTION_ID) {
       if (usEInfoIndex < 2)
         bFrequency = PANIC_FREQUENCY;
@@ -1288,9 +1305,9 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
 }
 
 function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
-  ITEM_POOL *pItemPool;
-  IPListNode *pIPCurr;
-  INT16 num = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pIPCurr: Pointer<IPListNode>;
+  let num: INT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
     GetItemPool(pIPCurr->sGridNo, &pItemPool, 0);
@@ -1308,10 +1325,10 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
 }
 
 function DisplayItemStatistics(): void {
-  BOOLEAN fUseSelectedItem;
-  INT16 usItemIndex;
-  UINT16 pItemName[SIZE_ITEM_NAME];
-  INVTYPE *pItem;
+  let fUseSelectedItem: BOOLEAN;
+  let usItemIndex: INT16;
+  let pItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let pItem: Pointer<INVTYPE>;
 
   if (!eInfo.fActive) {
     return;

@@ -1,19 +1,23 @@
 const SHADE_TABLE_DIR = "ShadeTables";
 
-CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
-BOOLEAN gfForceBuildShadeTables = FALSE;
+let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+let gfForceBuildShadeTables: BOOLEAN = FALSE;
 
 function DetermineRGBDistributionSettings(): void {
-  STRING512 DataDir;
-  STRING512 ExecDir;
-  STRING512 ShadeTableDir;
-  UINT32 uiRBitMask, uiGBitMask, uiBBitMask;
-  UINT32 uiPrevRBitMask, uiPrevGBitMask, uiPrevBBitMask;
-  UINT32 uiNumBytesRead;
-  HWFILE hfile;
-  BOOLEAN fSaveRGBDist = FALSE;
-  BOOLEAN fCleanShadeTable = FALSE;
-  BOOLEAN fLoadedPrevRGBDist = FALSE;
+  let DataDir: STRING512;
+  let ExecDir: STRING512;
+  let ShadeTableDir: STRING512;
+  let uiRBitMask: UINT32;
+  let uiGBitMask: UINT32;
+  let uiBBitMask: UINT32;
+  let uiPrevRBitMask: UINT32;
+  let uiPrevGBitMask: UINT32;
+  let uiPrevBBitMask: UINT32;
+  let uiNumBytesRead: UINT32;
+  let hfile: HWFILE;
+  let fSaveRGBDist: BOOLEAN = FALSE;
+  let fCleanShadeTable: BOOLEAN = FALSE;
+  let fLoadedPrevRGBDist: BOOLEAN = FALSE;
 
   // First, determine if we have a file saved.  If not, then this is the first time, and
   // all shade tables will have to be built and saved to disk.  This can be time consuming, adding up to
@@ -91,11 +95,11 @@ function DetermineRGBDistributionSettings(): void {
 }
 
 function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
-  HWFILE hfile;
-  INT32 i;
-  UINT32 uiNumBytesRead;
-  UINT8 ShadeFileName[100];
-  UINT8 *ptr;
+  let hfile: HWFILE;
+  let i: INT32;
+  let uiNumBytesRead: UINT32;
+  let ShadeFileName: UINT8[] /* [100] */;
+  let ptr: Pointer<UINT8>;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem
@@ -129,11 +133,11 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
 }
 
 function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
-  HWFILE hfile;
-  INT32 i;
-  UINT32 uiNumBytesWritten;
-  UINT8 ShadeFileName[100];
-  UINT8 *ptr;
+  let hfile: HWFILE;
+  let i: INT32;
+  let uiNumBytesWritten: UINT32;
+  let ShadeFileName: UINT8[] /* [100] */;
+  let ptr: Pointer<UINT8>;
   // ASSUMPTIONS:
   // We are assuming that the uiTileTypeIndex is referring to the correct file
   // stored in the TileSurfaceFilenames[].  If it isn't, then that is a huge problem

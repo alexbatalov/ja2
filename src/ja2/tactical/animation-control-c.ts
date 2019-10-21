@@ -11,12 +11,12 @@ interface ANIMSUBTYPE {
 }
 
 // Block for anim file
-UINT16 gusAnimInst[MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM];
+let gusAnimInst: UINT16[][] /* [MAX_ANIMATIONS][MAX_FRAMES_PER_ANIM] */;
 
 // OK, this array contains definitions for random animations based on bodytype, total # allowed, and what is in their hand....
-RANDOM_ANI_DEF gRandomAnimDefs[TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE];
+let gRandomAnimDefs: RANDOM_ANI_DEF[][] /* [TOTALBODYTYPES][MAX_RANDOM_ANIMS_PER_BODYTYPE] */;
 
-ANIMCONTROLTYPE gAnimControl[NUMANIMATIONSTATES] = {
+let gAnimControl: ANIMCONTROLTYPE[] /* [NUMANIMATIONSTATES] */ = {
   // NAME								//AP		//SPEED	  // MOVE	// FLAGS						// HEIGHT
 
   // WALKING
@@ -891,7 +891,7 @@ ANIMCONTROLTYPE gAnimControl[NUMANIMATIONSTATES] = {
   { "CROUCH PICK LOCK", 0, 70, (FLOAT)0, ANIM_STATIONARY | ANIM_TURNING | ANIM_FASTTURN | ANIM_NORESTART | ANIM_LOWER_WEAPON | ANIM_LIGHT_EFFORT, ANIM_CROUCH, ANIM_CROUCH, -1 },
 };
 
-ANI_SPEED_DEF gubAnimWalkSpeeds[TOTALBODYTYPES] = {
+let gubAnimWalkSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = {
   { -5, (FLOAT)1.6 }, // REGMALE
   { -10, (FLOAT)1.6 }, // BIGMALE
   { -5, (FLOAT)1.6 }, // STOCKYMALE
@@ -923,7 +923,7 @@ ANI_SPEED_DEF gubAnimWalkSpeeds[TOTALBODYTYPES] = {
   { -10, (FLOAT)4.0 }, // JEEP
 };
 
-UINT8 gubMaxActionPoints[TOTALBODYTYPES] = {
+let gubMaxActionPoints: UINT8[] /* [TOTALBODYTYPES] */ = {
   AP_MAXIMUM, // REGMALE
   AP_MAXIMUM, // BIGMALE
   AP_MAXIMUM, // STOCKYMALE
@@ -954,7 +954,7 @@ UINT8 gubMaxActionPoints[TOTALBODYTYPES] = {
   AP_VEHICLE_MAXIMUM, // JEEP
 };
 
-ANI_SPEED_DEF gubAnimRunSpeeds[TOTALBODYTYPES] = {
+let gubAnimRunSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = {
   { 0, (FLOAT)2.6 }, // REGMALE
   { 5, (FLOAT)2.6 }, // BIGMALE
   { 0, (FLOAT)2.6 }, // STOCKYMALE
@@ -977,7 +977,7 @@ ANI_SPEED_DEF gubAnimRunSpeeds[TOTALBODYTYPES] = {
 };
 
 // Really only the first mercs are using any of these values....
-ANI_SPEED_DEF gubAnimSwatSpeeds[TOTALBODYTYPES] = {
+let gubAnimSwatSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = {
   { 0, (FLOAT)2.2 }, // REGMALE
   { 20, (FLOAT)2.2 }, // BIGMALE
   { 0, (FLOAT)2.2 }, // STOCKYMALE
@@ -985,26 +985,26 @@ ANI_SPEED_DEF gubAnimSwatSpeeds[TOTALBODYTYPES] = {
 };
 
 // Really only the first mercs are using any of these values....
-ANI_SPEED_DEF gubAnimCrawlingSpeeds[TOTALBODYTYPES] = {
+let gubAnimCrawlingSpeeds: ANI_SPEED_DEF[] /* [TOTALBODYTYPES] */ = {
   { 0, (FLOAT)0.8 }, // REGMALE
   { 20, (FLOAT)0.8 }, // BIGMALE
   { 0, (FLOAT)0.8 }, // STOCKYMALE
   { -10, (FLOAT)0.8 }, // REGFEMALE
 };
 
-UINT16 gusNothingBreath[] = {
+let gusNothingBreath: UINT16[] /* [] */ = {
   RGMNOTHING_STD,
   BGMNOTHING_STD,
   RGMNOTHING_STD,
   RGFNOTHING_STD,
 };
 
-UINT16 gubAnimSurfaceIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
-UINT16 gubAnimSurfaceMidWaterSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES][2];
-UINT16 gubAnimSurfaceItemSubIndex[TOTALBODYTYPES][NUMANIMATIONSTATES];
-UINT16 gubAnimSurfaceCorpseID[TOTALBODYTYPES][NUMANIMATIONSTATES];
+let gubAnimSurfaceIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
+let gubAnimSurfaceMidWaterSubIndex: UINT16[][][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES][2] */;
+let gubAnimSurfaceItemSubIndex: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
+let gubAnimSurfaceCorpseID: UINT16[][] /* [TOTALBODYTYPES][NUMANIMATIONSTATES] */;
 
-ANIMSUBTYPE gRifleInjuredSub[] = {
+let gRifleInjuredSub: ANIMSUBTYPE[] /* [] */ = {
   WALKING,
   RGMHURTWALKINGR,
   BGMHURTWALKINGR,
@@ -1012,7 +1012,7 @@ ANIMSUBTYPE gRifleInjuredSub[] = {
   RGFHURTWALKINGR,
 };
 
-ANIMSUBTYPE gNothingInjuredSub[] = {
+let gNothingInjuredSub: ANIMSUBTYPE[] /* [] */ = {
   WALKING,
   RGMHURTWALKINGN,
   BGMHURTWALKINGN,
@@ -1020,10 +1020,11 @@ ANIMSUBTYPE gNothingInjuredSub[] = {
   RGFHURTWALKINGN,
 };
 
-ANIMSUBTYPE gDoubleHandledSub = { STANDING, RGMDBLBREATH, BGMDBLBREATH, RGMDBLBREATH, RGFDBLBREATH };
+let gDoubleHandledSub: ANIMSUBTYPE = { STANDING, RGMDBLBREATH, BGMDBLBREATH, RGMDBLBREATH, RGFDBLBREATH };
 
 function InitAnimationSurfacesPerBodytype(): void {
-  INT32 cnt1, cnt2;
+  let cnt1: INT32;
+  let cnt2: INT32;
 
   // Should be set to a non-init values
   for (cnt1 = 0; cnt1 < TOTALBODYTYPES; cnt1++) {
@@ -2930,8 +2931,8 @@ function InitAnimationSurfacesPerBodytype(): void {
 }
 
 function LoadAnimationStateInstructions(): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiBytesRead;
+  let hFile: HWFILE;
+  let uiBytesRead: UINT32;
 
   // Open ani file
   hFile = FileOpen(ANIMFILENAME, FILE_ACCESS_READ, FALSE);
@@ -2951,7 +2952,7 @@ function LoadAnimationStateInstructions(): BOOLEAN {
 }
 
 function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState: UINT16): BOOLEAN {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   // From animation control, get surface
 
@@ -2966,7 +2967,7 @@ function IsAnimationValidForBodyType(pSoldier: Pointer<SOLDIERTYPE>, usNewState:
 }
 
 function SubstituteBodyTypeAnimation(pSoldier: Pointer<SOLDIERTYPE>, usTestState: UINT16, pusSubState: Pointer<UINT16>): BOOLEAN {
-  BOOLEAN fSubFound = FALSE;
+  let fSubFound: BOOLEAN = FALSE;
 
   *pusSubState = usTestState;
 
@@ -3144,7 +3145,7 @@ function GetBodyTypePaletteSubstitutionCode(pSoldier: Pointer<SOLDIERTYPE>, ubBo
 }
 
 function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): BOOLEAN {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   // Delete any structure info!
   if (pSoldier->pLevelNode != NULL) {
@@ -3170,7 +3171,7 @@ function SetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState:
 }
 
 function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, usAnimState);
 
@@ -3184,7 +3185,7 @@ function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState
   return usAnimSurface;
 }
 
-UINT16 gusQueenMonsterSpitAnimPerDir[] = {
+let gusQueenMonsterSpitAnimPerDir: UINT16[] /* [] */ = {
   QUEENMONSTERSPIT_NE, // NORTH
   QUEENMONSTERSPIT_E,
   QUEENMONSTERSPIT_SE, // EAST
@@ -3196,14 +3197,14 @@ UINT16 gusQueenMonsterSpitAnimPerDir[] = {
 };
 
 function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
-  UINT16 usAnimSurface;
-  UINT16 usAltAnimSurface;
-  UINT8 ubBodyType;
-  UINT16 usItem;
-  UINT8 ubWaterHandIndex = 1;
-  INT32 cnt;
-  BOOLEAN fAdjustedForItem = FALSE;
-  UINT16 usNewAnimState;
+  let usAnimSurface: UINT16;
+  let usAltAnimSurface: UINT16;
+  let ubBodyType: UINT8;
+  let usItem: UINT16;
+  let ubWaterHandIndex: UINT8 = 1;
+  let cnt: INT32;
+  let fAdjustedForItem: BOOLEAN = FALSE;
+  let usNewAnimState: UINT16;
 
   ubBodyType = pSoldier->ubBodyType;
 
@@ -3229,7 +3230,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
 
   // If we are a queen, pick the 'real' anim surface....
   if (usAnimSurface == QUEENMONSTERSPIT_SW) {
-    INT8 bDir;
+    let bDir: INT8;
 
     // Assume a target gridno is here.... get direction...
     // ATE: use +2 in gridno because here head is far from body
@@ -3369,7 +3370,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
 }
 
 function GetSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16): UINT16 {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   usAnimSurface = pSoldier->usAnimSurface;
 

@@ -1,4 +1,4 @@
-STRATEGIC_STATUS gStrategicStatus;
+let gStrategicStatus: STRATEGIC_STATUS;
 
 function InitStrategicStatus(): void {
   memset(&gStrategicStatus, 0, sizeof(STRATEGIC_STATUS));
@@ -8,7 +8,7 @@ function InitStrategicStatus(): void {
 }
 
 function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // Save the Strategic Status structure to the saved game file
   FileWrite(hFile, &gStrategicStatus, sizeof(STRATEGIC_STATUS), &uiNumBytesWritten);
@@ -20,7 +20,7 @@ function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   // Load the Strategic Status structure from the saved game file
   FileRead(hFile, &gStrategicStatus, sizeof(STRATEGIC_STATUS), &uiNumBytesRead);
@@ -34,7 +34,7 @@ function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 const DEATH_RATE_SEVERITY = 1.0f; // increase to make death rates higher for same # of deaths/time
 
 function CalcDeathRate(): UINT8 {
-  UINT32 uiDeathRate = 0;
+  let uiDeathRate: UINT32 = 0;
 
   // give the player a grace period of 1 day
   if (gStrategicStatus.uiManDaysPlayed > 0) {
@@ -46,7 +46,7 @@ function CalcDeathRate(): UINT8 {
 }
 
 function ModifyPlayerReputation(bRepChange: INT8): void {
-  INT32 iNewBadRep;
+  let iNewBadRep: INT32;
 
   // subtract, so that a negative reputation change results in an increase in bad reputation
   iNewBadRep = (INT32)gStrategicStatus.ubBadReputation - bRepChange;
@@ -59,7 +59,7 @@ function ModifyPlayerReputation(bRepChange: INT8): void {
 }
 
 function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
-  INT8 bDeathRateTolerance;
+  let bDeathRateTolerance: INT8;
 
   bDeathRateTolerance = gMercProfiles[ubProfileID].bDeathRate;
 
@@ -79,7 +79,7 @@ function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
 }
 
 function MercThinksBadReputationTooHigh(ubProfileID: UINT8): BOOLEAN {
-  INT8 bRepTolerance;
+  let bRepTolerance: INT8;
 
   bRepTolerance = gMercProfiles[ubProfileID].bReputationTolerance;
 
@@ -100,8 +100,8 @@ function MercThinksBadReputationTooHigh(ubProfileID: UINT8): BOOLEAN {
 
 // only meaningful for already hired mercs
 function MercThinksHisMoraleIsTooLow(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT8 bRepTolerance;
-  INT8 bMoraleTolerance;
+  let bRepTolerance: INT8;
+  let bMoraleTolerance: INT8;
 
   bRepTolerance = gMercProfiles[pSoldier->ubProfile].bReputationTolerance;
 
@@ -142,8 +142,8 @@ function LackOfProgressTolerance(): UINT8 {
 
 // called once per day in the morning, decides whether Enrico should send any new E-mails to the player
 function HandleEnricoEmail(): void {
-  UINT8 ubCurrentProgress = CurrentPlayerProgressPercentage();
-  UINT8 ubHighestProgress = HighestPlayerProgressPercentage();
+  let ubCurrentProgress: UINT8 = CurrentPlayerProgressPercentage();
+  let ubHighestProgress: UINT8 = HighestPlayerProgressPercentage();
 
   // if creatures have attacked a mine (doesn't care if they're still there or not at the moment)
   if (HasAnyMineBeenAttackedByMonsters() && !(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_CREATURES)) {
@@ -185,8 +185,8 @@ function HandleEnricoEmail(): void {
     // remember that the original setback has been overcome, so another one can generate another E-mail
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_FLAG_SETBACK_OVER;
   } else if (GetWorldDay() > (UINT32)(gStrategicStatus.usLastDayOfPlayerActivity)) {
-    INT8 bComplaint = 0;
-    UINT8 ubTolerance;
+    let bComplaint: INT8 = 0;
+    let ubTolerance: UINT8;
 
     gStrategicStatus.ubNumberOfDaysOfInactivity++;
     ubTolerance = LackOfProgressTolerance();
@@ -251,7 +251,7 @@ function HandleEnricoEmail(): void {
 }
 
 function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
-  INT8 bRankIndex;
+  let bRankIndex: INT8;
 
   bRankIndex = SoldierClassToRankIndex(ubSoldierClass);
 
@@ -269,7 +269,7 @@ function TrackEnemiesKilled(ubKilledHow: UINT8, ubSoldierClass: UINT8): void {
 }
 
 function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
-  INT8 bRankIndex = -1;
+  let bRankIndex: INT8 = -1;
 
   // the soldier class defines are not in natural ascending order, elite comes before army!
   switch (ubSoldierClass) {
@@ -292,7 +292,7 @@ function SoldierClassToRankIndex(ubSoldierClass: UINT8): INT8 {
 }
 
 function RankIndexToSoldierClass(ubRankIndex: UINT8): UINT8 {
-  UINT8 ubSoldierClass = 0;
+  let ubSoldierClass: UINT8 = 0;
 
   Assert(ubRankIndex < NUM_ENEMY_RANKS);
 

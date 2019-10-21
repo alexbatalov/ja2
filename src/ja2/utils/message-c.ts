@@ -23,28 +23,28 @@ const INTERFACE_COLOR = FONT_YELLOW;
 
 const MAP_SCREEN_MESSAGE_FONT = () => TINYFONT1();
 
-UINT8 gubStartOfMapScreenMessageList = 0;
-UINT8 gubEndOfMapScreenMessageList = 0;
+let gubStartOfMapScreenMessageList: UINT8 = 0;
+let gubEndOfMapScreenMessageList: UINT8 = 0;
 
 // index of the current string we are looking at
-UINT8 gubCurrentMapMessageString = 0;
+let gubCurrentMapMessageString: UINT8 = 0;
 
 // temp position for display of marker
 // UINT8 ubTempPosition = 0;
 
 // are allowed to beep on message scroll?
-BOOLEAN fOkToBeepNewMessage = TRUE;
+let fOkToBeepNewMessage: BOOLEAN = TRUE;
 
-static ScrollStringStPtr gpDisplayList[MAX_LINE_COUNT];
-static ScrollStringStPtr gMapScreenMessageList[256];
-static ScrollStringStPtr pStringS = NULL;
+/* static */ let gpDisplayList: ScrollStringStPtr[] /* [MAX_LINE_COUNT] */;
+/* static */ let gMapScreenMessageList: ScrollStringStPtr[] /* [256] */;
+/* static */ let pStringS: ScrollStringStPtr = NULL;
 
 // first time adding any message to the message dialogue system
-BOOLEAN fFirstTimeInMessageSystem = TRUE;
-BOOLEAN fDisableJustForIan = FALSE;
+let fFirstTimeInMessageSystem: BOOLEAN = TRUE;
+let fDisableJustForIan: BOOLEAN = FALSE;
 
-BOOLEAN fScrollMessagesHidden = FALSE;
-UINT32 uiStartOfPauseTime = 0;
+let fScrollMessagesHidden: BOOLEAN = FALSE;
+let uiStartOfPauseTime: UINT32 = 0;
 
 // prototypes
 
@@ -60,7 +60,7 @@ function GetStringFont(pStringSt: ScrollStringStPtr): UINT32 {
 
 function AddString(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): ScrollStringStPtr {
   // add a new string to the list of strings
-  ScrollStringStPtr pStringSt = NULL;
+  let pStringSt: ScrollStringStPtr = NULL;
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
 
   SetString(pStringSt, pString);
@@ -121,7 +121,7 @@ function SetStringPrev(pStringSt: ScrollStringStPtr, pPrev: ScrollStringStPtr): 
 }
 
 function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): BOOLEAN {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   // SET VIDEO OVERLAY
   VideoOverlayDesc.sLeft = usX;
@@ -153,7 +153,7 @@ function RemoveStringVideoOverlay(pStringSt: ScrollStringStPtr): void {
 }
 
 function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -169,8 +169,8 @@ function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16
 }
 
 function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
 
   // gprintfdirty(pBlitter->sX,pBlitter->sY, pBlitter->zText);
   // RestoreExternBackgroundRect(pBlitter->sX,pBlitter->sY, pBlitter->sX+StringPixLength(pBlitter->zText,pBlitter->uiFontID ), pBlitter->sY+GetFontHeight(pBlitter->uiFontID ));
@@ -190,7 +190,7 @@ function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: BOOLEAN): void {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -203,7 +203,7 @@ function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: BOOLEAN
 
 function ClearDisplayedListOfTacticalStrings(): void {
   // this function will go through list of display strings and clear them all out
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
@@ -223,13 +223,13 @@ function ClearDisplayedListOfTacticalStrings(): void {
 }
 
 function ScrollString(): void {
-  ScrollStringStPtr pStringSt = pStringS;
-  UINT32 suiTimer = 0;
-  UINT32 cnt;
-  INT32 iNumberOfNewStrings = 0; // the count of new strings, so we can update position by WIDTH_BETWEEN_NEW_STRINGS pixels in the y
-  INT32 iNumberOfMessagesOnQueue = 0;
-  INT32 iMaxAge = 0;
-  BOOLEAN fDitchLastMessage = FALSE;
+  let pStringSt: ScrollStringStPtr = pStringS;
+  let suiTimer: UINT32 = 0;
+  let cnt: UINT32;
+  let iNumberOfNewStrings: INT32 = 0; // the count of new strings, so we can update position by WIDTH_BETWEEN_NEW_STRINGS pixels in the y
+  let iNumberOfMessagesOnQueue: INT32 = 0;
+  let iMaxAge: INT32 = 0;
+  let fDitchLastMessage: BOOLEAN = FALSE;
 
   // UPDATE TIMER
   suiTimer = GetJA2Clock();
@@ -353,9 +353,9 @@ function EnableScrollMessages(): void {
 
 function HideMessagesDuringNPCDialogue(): void {
   // will stop the scroll of messages in tactical and hide them during an NPC's dialogue
-  INT32 cnt;
+  let cnt: INT32;
 
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -376,8 +376,8 @@ function HideMessagesDuringNPCDialogue(): void {
 }
 
 function UnHideMessagesDuringNPCDialogue(): void {
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
-  INT32 cnt = 0;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let cnt: INT32 = 0;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -397,8 +397,8 @@ function UnHideMessagesDuringNPCDialogue(): void {
 
 // new screen message
 function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
-  wchar_t DestString[512];
-  va_list argptr;
+  let DestString: wchar_t[] /* [512] */;
+  let argptr: va_list;
 
   if (fDisableJustForIan == TRUE) {
     if (ubPriority == MSG_BETAVERSION) {
@@ -446,8 +446,8 @@ function ScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args:
 }
 
 function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void {
-  WRAPPED_STRING *pNode = pStringWrapperHead;
-  WRAPPED_STRING *pDeleteNode = NULL;
+  let pNode: Pointer<WRAPPED_STRING> = pStringWrapperHead;
+  let pDeleteNode: Pointer<WRAPPED_STRING> = NULL;
   // clear out a link list of wrapped string structures
 
   // error check, is there a node to delete?
@@ -481,25 +481,26 @@ function ClearWrappedStrings(pStringWrapperHead: Pointer<WRAPPED_STRING>): void 
 function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
-  ScrollStringStPtr pStringSt;
-  UINT32 uiFont = TINYFONT1;
-  UINT16 usPosition = 0;
-  UINT16 usCount = 0;
-  UINT16 usStringLength = 0;
-  UINT16 usCurrentSPosition = 0;
-  UINT16 usCurrentLookup = 0;
+  let pStringSt: ScrollStringStPtr;
+  let uiFont: UINT32 = TINYFONT1;
+  let usPosition: UINT16 = 0;
+  let usCount: UINT16 = 0;
+  let usStringLength: UINT16 = 0;
+  let usCurrentSPosition: UINT16 = 0;
+  let usCurrentLookup: UINT16 = 0;
   // wchar_t *pString;
-  BOOLEAN fLastLine = FALSE;
-  va_list argptr;
+  let fLastLine: BOOLEAN = FALSE;
+  let argptr: va_list;
 
-  wchar_t DestString[512], DestStringA[512];
+  let DestString: wchar_t[] /* [512] */;
+  let DestStringA: wchar_t[] /* [512] */;
   // wchar_t *pStringBuffer;
-  BOOLEAN fMultiLine = FALSE;
-  ScrollStringStPtr pTempStringSt = NULL;
-  WRAPPED_STRING *pStringWrapper = NULL;
-  WRAPPED_STRING *pStringWrapperHead = NULL;
-  BOOLEAN fNewString = FALSE;
-  UINT16 usLineWidthIfWordIsWiderThenWidth = 0;
+  let fMultiLine: BOOLEAN = FALSE;
+  let pTempStringSt: ScrollStringStPtr = NULL;
+  let pStringWrapper: Pointer<WRAPPED_STRING> = NULL;
+  let pStringWrapperHead: Pointer<WRAPPED_STRING> = NULL;
+  let fNewString: BOOLEAN = FALSE;
+  let usLineWidthIfWordIsWiderThenWidth: UINT16 = 0;
 
   if (giTimeCompressMode > TIME_COMPRESS_X1) {
     return;
@@ -601,23 +602,24 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
 function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, ...args: any[]): void {
   // this function sets up the string into several single line structures
 
-  ScrollStringStPtr pStringSt;
-  UINT32 uiFont = MAP_SCREEN_MESSAGE_FONT;
-  UINT16 usPosition = 0;
-  UINT16 usCount = 0;
-  UINT16 usStringLength = 0;
-  UINT16 usCurrentSPosition = 0;
-  UINT16 usCurrentLookup = 0;
+  let pStringSt: ScrollStringStPtr;
+  let uiFont: UINT32 = MAP_SCREEN_MESSAGE_FONT;
+  let usPosition: UINT16 = 0;
+  let usCount: UINT16 = 0;
+  let usStringLength: UINT16 = 0;
+  let usCurrentSPosition: UINT16 = 0;
+  let usCurrentLookup: UINT16 = 0;
   // wchar_t *pString;
-  BOOLEAN fLastLine = FALSE;
-  va_list argptr;
-  wchar_t DestString[512], DestStringA[512];
+  let fLastLine: BOOLEAN = FALSE;
+  let argptr: va_list;
+  let DestString: wchar_t[] /* [512] */;
+  let DestStringA: wchar_t[] /* [512] */;
   // wchar_t *pStringBuffer;
-  BOOLEAN fMultiLine = FALSE;
-  WRAPPED_STRING *pStringWrapper = NULL;
-  WRAPPED_STRING *pStringWrapperHead = NULL;
-  BOOLEAN fNewString = FALSE;
-  UINT16 usLineWidthIfWordIsWiderThenWidth;
+  let fMultiLine: BOOLEAN = FALSE;
+  let pStringWrapper: Pointer<WRAPPED_STRING> = NULL;
+  let pStringWrapperHead: Pointer<WRAPPED_STRING> = NULL;
+  let fNewString: BOOLEAN = FALSE;
+  let usLineWidthIfWordIsWiderThenWidth: UINT16;
 
   if (fDisableJustForIan == TRUE) {
     if (ubPriority == MSG_BETAVERSION) {
@@ -745,8 +747,8 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
 
 // add string to the map screen message list
 function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont: UINT32, fStartOfNewString: BOOLEAN, ubPriority: UINT8): void {
-  UINT8 ubSlotIndex = 0;
-  ScrollStringStPtr pStringSt = NULL;
+  let ubSlotIndex: UINT8 = 0;
+  let pStringSt: ScrollStringStPtr = NULL;
 
   pStringSt = MemAlloc(sizeof(ScrollStringSt));
 
@@ -787,10 +789,10 @@ function AddStringToMapScreenMessageList(pString: STR16, usColor: UINT16, uiFont
 }
 
 function DisplayStringsInMapScreenMessageList(): void {
-  UINT8 ubCurrentStringIndex;
-  UINT8 ubLinesPrinted;
-  INT16 sY;
-  UINT16 usSpacing;
+  let ubCurrentStringIndex: UINT8;
+  let ubLinesPrinted: UINT8;
+  let sY: INT16;
+  let usSpacing: UINT16;
 
   SetFontDestBuffer(FRAME_BUFFER, 17, 360 + 6, 407, 360 + 101, FALSE);
 
@@ -832,7 +834,7 @@ function DisplayStringsInMapScreenMessageList(): void {
 function EnableDisableScrollStringVideoOverlay(fEnable: BOOLEAN): void {
   // will go through the list of video overlays for the tactical scroll message system, and enable/disable
   // video overlays depending on fEnable
-  INT8 bCounter = 0;
+  let bCounter: INT8 = 0;
 
   for (bCounter = 0; bCounter < MAX_LINE_COUNT; bCounter++) {
     // if valid, enable/disable
@@ -846,7 +848,7 @@ function EnableDisableScrollStringVideoOverlay(fEnable: BOOLEAN): void {
 
 function PlayNewMessageSound(): void {
   // play a new message sound, if there is one playing, do nothing
-  static UINT32 uiSoundId = NO_SAMPLE;
+  /* static */ let uiSoundId: UINT32 = NO_SAMPLE;
 
   if (uiSoundId != NO_SAMPLE) {
     // is sound playing?..don't play new one
@@ -862,10 +864,10 @@ function PlayNewMessageSound(): void {
 }
 
 function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT32 uiCount;
-  UINT32 uiSizeOfString;
-  StringSaveStruct StringSave;
+  let uiNumBytesWritten: UINT32;
+  let uiCount: UINT32;
+  let uiSizeOfString: UINT32;
+  let StringSave: StringSaveStruct;
 
   //	write to the begining of the message list
   FileWrite(hFile, &gubEndOfMapScreenMessageList, sizeof(UINT8), &uiNumBytesWritten);
@@ -924,11 +926,11 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiCount;
-  UINT32 uiSizeOfString;
-  StringSaveStruct StringSave;
-  CHAR16 SavedString[512];
+  let uiNumBytesRead: UINT32;
+  let uiCount: UINT32;
+  let uiSizeOfString: UINT32;
+  let StringSave: StringSaveStruct;
+  let SavedString: CHAR16[] /* [512] */;
 
   // clear tactical message queue
   ClearTacticalMessageQueue();
@@ -979,7 +981,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
         }
       } else {
         // There is now message here, add one
-        ScrollStringSt *sScroll;
+        let sScroll: Pointer<ScrollStringSt>;
 
         sScroll = MemAlloc(sizeof(ScrollStringSt));
         if (sScroll == NULL)
@@ -1037,7 +1039,7 @@ function HandleLastQuotePopUpTimer(): void {
 }
 
 function MoveToBeginningOfMessageQueue(): ScrollStringStPtr {
-  ScrollStringStPtr pStringSt = pStringS;
+  let pStringSt: ScrollStringStPtr = pStringS;
 
   if (pStringSt == NULL) {
     return NULL;
@@ -1051,8 +1053,8 @@ function MoveToBeginningOfMessageQueue(): ScrollStringStPtr {
 }
 
 function GetMessageQueueSize(): INT32 {
-  ScrollStringStPtr pStringSt = pStringS;
-  INT32 iCounter = 0;
+  let pStringSt: ScrollStringStPtr = pStringS;
+  let iCounter: INT32 = 0;
 
   pStringSt = MoveToBeginningOfMessageQueue();
 
@@ -1065,7 +1067,8 @@ function GetMessageQueueSize(): INT32 {
 }
 
 function ClearTacticalMessageQueue(): void {
-  ScrollStringStPtr pStringSt = pStringS, pOtherStringSt = pStringS;
+  let pStringSt: ScrollStringStPtr = pStringS;
+  let pOtherStringSt: ScrollStringStPtr = pStringS;
 
   ClearDisplayedListOfTacticalStrings();
 
@@ -1086,7 +1089,7 @@ function WriteMessageToFile(pString: STR16): void {
 }
 
 function InitGlobalMessageList(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     gMapScreenMessageList[iCounter] = NULL;
@@ -1101,7 +1104,7 @@ function InitGlobalMessageList(): void {
 }
 
 function FreeGlobalMessageList(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 256; iCounter++) {
     // check if next unit is empty, if not...clear it up
@@ -1117,7 +1120,7 @@ function FreeGlobalMessageList(): void {
 }
 
 function GetRangeOfMapScreenMessages(): UINT8 {
-  UINT8 ubRange = 0;
+  let ubRange: UINT8 = 0;
 
   // NOTE: End is non-inclusive, so start/end 0/0 means no messages, 0/1 means 1 message, etc.
   if (gubStartOfMapScreenMessageList <= gubEndOfMapScreenMessageList) {

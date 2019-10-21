@@ -1,5 +1,5 @@
-UINT32 guiPreRandomIndex = 0;
-UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
+let guiPreRandomIndex: UINT32 = 0;
+let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */;
 
 function InitializeRandom(): void {
   // Seed the random-number generator with current time so that
@@ -26,7 +26,7 @@ function Chance(uiChance: UINT32): BOOLEAN {
 }
 
 function PreRandom(uiRange: UINT32): UINT32 {
-  UINT32 uiNum;
+  let uiNum: UINT32;
   if (!uiRange)
     return 0;
   // Extract the current pregenerated number

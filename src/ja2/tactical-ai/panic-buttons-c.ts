@@ -1,11 +1,12 @@
 function MakeClosestEnemyChosenOne(): void {
-  UINT32 cnt;
-  INT16 sPathCost, sShortestPath = 1000;
-  INT8 bOldKeys = -1;
-  UINT8 ubClosestEnemy = NOBODY;
-  SOLDIERTYPE *pSoldier;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
+  let cnt: UINT32;
+  let sPathCost: INT16;
+  let sShortestPath: INT16 = 1000;
+  let bOldKeys: INT8 = -1;
+  let ubClosestEnemy: UINT8 = NOBODY;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bPanicTrigger: INT8;
+  let sPanicTriggerGridNo: INT16;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE)) {
     return;
@@ -129,11 +130,12 @@ function MakeClosestEnemyChosenOne(): void {
 }
 
 function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iAPCost, iPathCost;
+  let iAPCost: INT32;
+  let iPathCost: INT32;
   // INT8		bOldKeys;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
-  UINT32 uiPercentEnemiesKilled;
+  let bPanicTrigger: INT8;
+  let sPanicTriggerGridNo: INT16;
+  let uiPercentEnemiesKilled: UINT32;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE)) {
     return;
@@ -183,11 +185,11 @@ function PossiblyMakeThisEnemyChosenOne(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function PanicAI(pSoldier: Pointer<SOLDIERTYPE>, ubCanMove: UINT8): INT8 {
-  BOOLEAN fFoundRoute = FALSE;
-  INT8 bSlot;
-  INT32 iPathCost;
-  INT8 bPanicTrigger;
-  INT16 sPanicTriggerGridNo;
+  let fFoundRoute: BOOLEAN = FALSE;
+  let bSlot: INT8;
+  let iPathCost: INT32;
+  let bPanicTrigger: INT8;
+  let sPanicTriggerGridNo: INT16;
 
   // if there are panic bombs here
   if (gTacticalStatus.fPanicFlags & PANIC_BOMBS_HERE) {
@@ -309,11 +311,11 @@ function InitPanicSystem(): void {
 }
 
 function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bLoop;
-  INT16 sDistance;
-  INT16 sClosestDistance = 1000;
-  INT8 bClosestTrigger = -1;
-  UINT32 uiPercentEnemiesKilled;
+  let bLoop: INT8;
+  let sDistance: INT16;
+  let sClosestDistance: INT16 = 1000;
+  let bClosestTrigger: INT8 = -1;
+  let uiPercentEnemiesKilled: UINT32;
 
   uiPercentEnemiesKilled = (UINT32)(100 * (UINT32)(gTacticalStatus.ubArmyGuysKilled) / (UINT32)(gTacticalStatus.Team[ENEMY_TEAM].bMenInSector + gTacticalStatus.ubArmyGuysKilled));
 
@@ -349,8 +351,8 @@ function ClosestPanicTrigger(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function NeedToRadioAboutPanicTrigger(): BOOLEAN {
-  UINT32 uiPercentEnemiesKilled;
-  INT8 bLoop;
+  let uiPercentEnemiesKilled: UINT32;
+  let bLoop: INT8;
 
   if (!(gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE) || gTacticalStatus.ubTheChosenOne != NOBODY) {
     // already done!
@@ -362,7 +364,7 @@ function NeedToRadioAboutPanicTrigger(): BOOLEAN {
   }
 
   if (gWorldSectorX == TIXA_SECTOR_X && gWorldSectorY == TIXA_SECTOR_Y) {
-    SOLDIERTYPE *pSoldier;
+    let pSoldier: Pointer<SOLDIERTYPE>;
     pSoldier = FindSoldierByProfileID(WARDEN, FALSE);
     if (!pSoldier || pSoldier->ubID == gTacticalStatus.ubTheChosenOne) {
       return FALSE;
@@ -385,7 +387,7 @@ const STAIRCASE_GRIDNO = 12067;
 const STAIRCASE_DIRECTION = 0;
 
 function HeadForTheStairCase(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  UNDERGROUND_SECTORINFO *pBasementInfo;
+  let pBasementInfo: Pointer<UNDERGROUND_SECTORINFO>;
 
   pBasementInfo = FindUnderGroundSector(3, MAP_ROW_P, 1);
   if (pBasementInfo && pBasementInfo->uiTimeCurrentSectorWasLastLoaded != 0 && (pBasementInfo->ubNumElites + pBasementInfo->ubNumTroops + pBasementInfo->ubNumAdmins) < 5) {

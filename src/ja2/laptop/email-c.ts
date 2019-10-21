@@ -1,29 +1,29 @@
 // static EmailPtr pEmailList;
-EmailPtr pEmailList;
-static PagePtr pPageList;
-static INT32 iLastPage = -1;
-static INT32 iCurrentPage = 0;
-INT32 iDeleteId = 0;
-BOOLEAN fUnReadMailFlag = FALSE;
-BOOLEAN fOldUnreadFlag = TRUE;
-BOOLEAN fNewMailFlag = FALSE;
-BOOLEAN fOldNewMailFlag = FALSE;
-BOOLEAN fDisplayMessageFlag = FALSE;
-BOOLEAN fOldDisplayMessageFlag = FALSE;
-BOOLEAN fReDraw = FALSE;
-BOOLEAN fDeleteMailFlag = FALSE;
-BOOLEAN fReDrawMessageFlag = FALSE;
-BOOLEAN fOnLastPageFlag = FALSE;
-BOOLEAN fJustStartedEmail = FALSE;
-BOOLEAN fDeleteInternal = FALSE;
-BOOLEAN fOpenMostRecentUnReadFlag = FALSE;
-INT32 iViewerPositionY = 0;
+let pEmailList: EmailPtr;
+/* static */ let pPageList: PagePtr;
+/* static */ let iLastPage: INT32 = -1;
+/* static */ let iCurrentPage: INT32 = 0;
+let iDeleteId: INT32 = 0;
+let fUnReadMailFlag: BOOLEAN = FALSE;
+let fOldUnreadFlag: BOOLEAN = TRUE;
+let fNewMailFlag: BOOLEAN = FALSE;
+let fOldNewMailFlag: BOOLEAN = FALSE;
+let fDisplayMessageFlag: BOOLEAN = FALSE;
+let fOldDisplayMessageFlag: BOOLEAN = FALSE;
+let fReDraw: BOOLEAN = FALSE;
+let fDeleteMailFlag: BOOLEAN = FALSE;
+let fReDrawMessageFlag: BOOLEAN = FALSE;
+let fOnLastPageFlag: BOOLEAN = FALSE;
+let fJustStartedEmail: BOOLEAN = FALSE;
+let fDeleteInternal: BOOLEAN = FALSE;
+let fOpenMostRecentUnReadFlag: BOOLEAN = FALSE;
+let iViewerPositionY: INT32 = 0;
 
-INT32 giMessageId = -1;
-INT32 giPrevMessageId = -1;
-INT32 giMessagePage = -1;
-INT32 giNumberOfPagesToCurrentEmail = -1;
-UINT32 guiEmailWarning;
+let giMessageId: INT32 = -1;
+let giPrevMessageId: INT32 = -1;
+let giMessagePage: INT32 = -1;
+let giNumberOfPagesToCurrentEmail: INT32 = -1;
+let guiEmailWarning: UINT32;
 
 const EMAIL_TOP_BAR_HEIGHT = 22;
 
@@ -166,47 +166,47 @@ const NEXT_PAGE_BUTTON_X = VIEWER_X + 395;
 const DELETE_BUTTON_X = NEXT_PAGE_BUTTON_X;
 const LOWER_BUTTON_Y = BUTTON_Y + 299;
 
-BOOLEAN fSortDateUpwards = FALSE;
-BOOLEAN fSortSenderUpwards = FALSE;
-BOOLEAN fSortSubjectUpwards = FALSE;
-BOOLEAN gfPageButtonsWereCreated = FALSE;
+let fSortDateUpwards: BOOLEAN = FALSE;
+let fSortSenderUpwards: BOOLEAN = FALSE;
+let fSortSubjectUpwards: BOOLEAN = FALSE;
+let gfPageButtonsWereCreated: BOOLEAN = FALSE;
 
 // mouse regions
-MOUSE_REGION pEmailRegions[MAX_MESSAGES_PAGE];
-MOUSE_REGION pScreenMask;
-MOUSE_REGION pDeleteScreenMask;
+let pEmailRegions: MOUSE_REGION[] /* [MAX_MESSAGES_PAGE] */;
+let pScreenMask: MOUSE_REGION;
+let pDeleteScreenMask: MOUSE_REGION;
 
 // the email info struct to speed up email
-EmailPageInfoStruct pEmailPageInfo[MAX_NUMBER_EMAIL_PAGES];
+let pEmailPageInfo: EmailPageInfoStruct[] /* [MAX_NUMBER_EMAIL_PAGES] */;
 
 // buttons
-INT32 giMessageButton[MAX_BUTTON_COUNT];
-INT32 giMessageButtonImage[MAX_BUTTON_COUNT];
-INT32 giDeleteMailButton[2];
-INT32 giDeleteMailButtonImage[2];
-INT32 giSortButton[4];
-INT32 giSortButtonImage[4];
-INT32 giNewMailButton[1];
-INT32 giNewMailButtonImage[1];
-INT32 giMailMessageButtons[3];
-INT32 giMailMessageButtonsImage[3];
-INT32 giMailPageButtons[2];
-INT32 giMailPageButtonsImage[2];
+let giMessageButton: INT32[] /* [MAX_BUTTON_COUNT] */;
+let giMessageButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */;
+let giDeleteMailButton: INT32[] /* [2] */;
+let giDeleteMailButtonImage: INT32[] /* [2] */;
+let giSortButton: INT32[] /* [4] */;
+let giSortButtonImage: INT32[] /* [4] */;
+let giNewMailButton: INT32[] /* [1] */;
+let giNewMailButtonImage: INT32[] /* [1] */;
+let giMailMessageButtons: INT32[] /* [3] */;
+let giMailMessageButtonsImage: INT32[] /* [3] */;
+let giMailPageButtons: INT32[] /* [2] */;
+let giMailPageButtonsImage: INT32[] /* [2] */;
 
 // mouse regions
-MOUSE_REGION pEmailMoveRegions[NEXT_BUTTON + 1];
-MOUSE_REGION pSortMailRegions[3];
+let pEmailMoveRegions: MOUSE_REGION[] /* [NEXT_BUTTON + 1] */;
+let pSortMailRegions: MOUSE_REGION[] /* [3] */;
 
 // the message record list, for the currently displayed message
-RecordPtr pMessageRecordList = NULL;
+let pMessageRecordList: RecordPtr = NULL;
 
 // video handles
-UINT32 guiEmailTitle;
-UINT32 guiEmailStamp;
-UINT32 guiEmailBackground;
-UINT32 guiEmailIndicator;
-UINT32 guiEmailMessage;
-UINT32 guiMAILDIVIDER;
+let guiEmailTitle: UINT32;
+let guiEmailStamp: UINT32;
+let guiEmailBackground: UINT32;
+let guiEmailIndicator: UINT32;
+let guiEmailMessage: UINT32;
+let guiMAILDIVIDER: UINT32;
 
 // the enumeration of headers
 const enum Enum73 {
@@ -228,17 +228,17 @@ const PREVIOUS_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 const NEXT_HEIGHT = () => GetFontHeight(TRAVERSE_EMAIL_FONT());
 
 // current line in the email list that is highlighted, -1 is no line highlighted
-INT32 iHighLightLine = -1;
+let iHighLightLine: INT32 = -1;
 
 // whther or not we need to redraw the new mail box
-BOOLEAN fReDrawNewMailFlag = FALSE;
-INT32 giNumberOfMessageToEmail = 0;
-INT32 iTotalHeight = 0;
+let fReDrawNewMailFlag: BOOLEAN = FALSE;
+let giNumberOfMessageToEmail: INT32 = 0;
+let iTotalHeight: INT32 = 0;
 
-BOOLEAN fFirstTime = TRUE;
+let fFirstTime: BOOLEAN = TRUE;
 
 function InitializeMouseRegions(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
@@ -254,7 +254,7 @@ function InitializeMouseRegions(): void {
 
 function DeleteEmailMouseRegions(): void {
   // this function will remove the mouse regions added
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
     MSYS_RemoveRegion(&pEmailRegions[iCounter]);
@@ -279,7 +279,7 @@ function GameInitEmail(): void {
 }
 
 function EnterEmail(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
   // load graphics
 
   iCurrentPage = LaptopSaveInfo.iCurrentEmailPage;
@@ -377,8 +377,8 @@ function ExitEmail(): void {
 }
 
 function HandleEmail(): void {
-  INT32 iViewerY = 0;
-  static BOOLEAN fEmailListBeenDrawAlready = FALSE;
+  let iViewerY: INT32 = 0;
+  /* static */ let fEmailListBeenDrawAlready: BOOLEAN = FALSE;
   // RenderButtonsFastHelp( );
 
   // check if email message record list needs to be updated
@@ -474,8 +474,8 @@ function DisplayEmailHeaders(): void {
 }
 
 function RenderEmail(): void {
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
 
   // get and blt the email list background
   GetVideoObject(&hHandle, guiEmailBackground);
@@ -520,13 +520,13 @@ function RenderEmail(): void {
 }
 
 function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32, iFirstData: INT32, uiSecondData: UINT32): void {
-  wchar_t pSubject[320];
+  let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
-  INT32 iPosition = 0;
-  INT32 iCounter = 1;
-  Email FakeEmail;
+  let iPosition: INT32 = 0;
+  let iCounter: INT32 = 1;
+  let FakeEmail: Email;
 
   // starts at iSubjectOffset amd goes iSubjectLength, reading in string
   LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", pSubject, 640 * (iMessageOffset), 640);
@@ -552,12 +552,12 @@ function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, u
 }
 
 function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
-  wchar_t pSubject[320];
+  let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
-  INT32 iPosition = 0;
-  INT32 iCounter = 1;
+  let iPosition: INT32 = 0;
+  let iCounter: INT32 = 1;
 
   // starts at iSubjectOffset amd goes iSubjectLength, reading in string
   LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", pSubject, 640 * (iMessageOffset), 640);
@@ -576,12 +576,12 @@ function AddEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8,
 }
 
 function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender: UINT8, iDate: INT32): void {
-  wchar_t pSubject[320];
+  let pSubject: wchar_t[] /* [320] */;
   // MessagePtr pMessageList;
   // MessagePtr pMessage;
   // wchar_t pMessageString[320];
-  INT32 iPosition = 0;
-  INT32 iCounter = 1;
+  let iPosition: INT32 = 0;
+  let iCounter: INT32 = 1;
 
   // starts at iSubjectOffset amd goes iSubjectLength, reading in string
   LoadEncryptedDataFromFile("BINARYDATA\\Email.edt", pSubject, 640 * (iMessageOffset), 640);
@@ -601,10 +601,10 @@ function AddPreReadEmail(iMessageOffset: INT32, iMessageLength: INT32, ubSender:
 
 function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject: STR16, iDate: INT32, ubSender: UINT8, fAlreadyRead: BOOLEAN, iFirstData: INT32, uiSecondData: UINT32): void {
   // will add a message to the list of messages
-  EmailPtr pEmail = pEmailList;
-  EmailPtr pTempEmail = NULL;
-  UINT32 iCounter = 0;
-  INT32 iId = 0;
+  let pEmail: EmailPtr = pEmailList;
+  let pTempEmail: EmailPtr = NULL;
+  let iCounter: UINT32 = 0;
+  let iId: INT32 = 0;
 
   // run through list of messages, get id of oldest message
   if (pEmail) {
@@ -693,9 +693,9 @@ function AddEmailMessage(iMessageOffset: INT32, iMessageLength: INT32, pSubject:
 
 function RemoveEmailMessage(iId: INT32): void {
   // run through list and remove message, update everyone afterwards
-  EmailPtr pEmail = pEmailList;
-  EmailPtr pTempEmail = NULL;
-  INT32 iCounter = 0;
+  let pEmail: EmailPtr = pEmailList;
+  let pTempEmail: EmailPtr = NULL;
+  let iCounter: INT32 = 0;
 
   // error check
   if (!pEmail)
@@ -766,7 +766,7 @@ function RemoveEmailMessage(iId: INT32): void {
 }
 
 function GetEmailMessage(iId: INT32): EmailPtr {
-  EmailPtr pEmail = pEmailList;
+  let pEmail: EmailPtr = pEmailList;
   // return pointer to message with iId
 
   // invalid id
@@ -795,7 +795,7 @@ function GetEmailMessage(iId: INT32): EmailPtr {
 
 function AddEmailPage(): void {
   // simple adds a page to the list
-  PagePtr pPage = pPageList;
+  let pPage: PagePtr = pPageList;
   if (pPage) {
     while (pPage->Next)
       pPage = pPage->Next;
@@ -824,8 +824,8 @@ function AddEmailPage(): void {
 }
 
 function RemoveEmailPage(iPageId: INT32): void {
-  PagePtr pPage = pPageList;
-  PagePtr pTempPage = NULL;
+  let pPage: PagePtr = pPageList;
+  let pTempPage: PagePtr = NULL;
 
   // run through list until page is matched, or out of pages
   while ((pPage->iPageId != iPageId) && (pPage))
@@ -867,8 +867,8 @@ function RemoveEmailPage(iPageId: INT32): void {
 
 function AddMessageToPages(iMessageId: INT32): void {
   // go to end of page list
-  PagePtr pPage = pPageList;
-  INT32 iCounter = 0;
+  let pPage: PagePtr = pPageList;
+  let iCounter: INT32 = 0;
   if (!pPage)
     AddEmailPage();
   pPage = pPageList;
@@ -891,11 +891,11 @@ function AddMessageToPages(iMessageId: INT32): void {
 }
 
 function SortMessages(iCriteria: INT32): void {
-  EmailPtr pA = pEmailList;
-  EmailPtr pB = pEmailList;
-  CHAR16 pSubjectA[256];
-  CHAR16 pSubjectB[256];
-  INT32 iId = 0;
+  let pA: EmailPtr = pEmailList;
+  let pB: EmailPtr = pEmailList;
+  let pSubjectA: CHAR16[] /* [256] */;
+  let pSubjectB: CHAR16[] /* [256] */;
+  let iId: INT32 = 0;
 
   // no messages to sort?
   if ((pA == NULL) || (pB == NULL)) {
@@ -1000,9 +1000,9 @@ function SortMessages(iCriteria: INT32): void {
 
 function SwapMessages(iIdA: INT32, iIdB: INT32): void {
   // swaps locations of messages in the linked list
-  EmailPtr pA = pEmailList;
-  EmailPtr pB = pEmailList;
-  EmailPtr pTemp = MemAlloc(sizeof(Email));
+  let pA: EmailPtr = pEmailList;
+  let pB: EmailPtr = pEmailList;
+  let pTemp: EmailPtr = MemAlloc(sizeof(Email));
   pTemp->pSubject = MemAlloc(128 * 2);
 
   memset(pTemp->pSubject, 0, sizeof(CHAR16) * 128);
@@ -1056,7 +1056,7 @@ function SwapMessages(iIdA: INT32, iIdB: INT32): void {
 
 function ClearPages(): void {
   // run through list of message pages and set to -1
-  PagePtr pPage = pPageList;
+  let pPage: PagePtr = pPageList;
 
   // error check
   if (pPageList == NULL) {
@@ -1076,7 +1076,7 @@ function ClearPages(): void {
 }
 
 function PlaceMessagesinPages(): void {
-  EmailPtr pEmail = pEmailList;
+  let pEmail: EmailPtr = pEmailList;
   // run through the list of messages and add to pages
   ClearPages();
   while (pEmail) {
@@ -1090,7 +1090,7 @@ function PlaceMessagesinPages(): void {
 
 function DisplayMessageList(iPageNum: INT32): void {
   // will display page with idNumber iPageNum
-  PagePtr pPage = pPageList;
+  let pPage: PagePtr = pPageList;
   while (pPage->iPageId != iPageNum) {
     pPage = pPage->Next;
     if (!pPage)
@@ -1101,7 +1101,7 @@ function DisplayMessageList(iPageNum: INT32): void {
 }
 
 function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
   // grab video object
@@ -1116,7 +1116,7 @@ function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
 }
 
 function DrawSubject(iCounter: INT32, pSubject: STR16, fRead: BOOLEAN): void {
-  wchar_t pTempSubject[320];
+  let pTempSubject: wchar_t[] /* [320] */;
 
   // draw subject line of mail being viewed in viewer
 
@@ -1174,7 +1174,7 @@ function DrawSender(iCounter: INT32, ubSender: UINT8, fRead: BOOLEAN): void {
 }
 
 function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
-  wchar_t sString[20];
+  let sString: wchar_t[] /* [20] */;
 
   SetFontShadow(NO_SHADOW);
   SetFontForeground(FONT_BLACK);
@@ -1195,10 +1195,10 @@ function DrawDate(iCounter: INT32, iDate: INT32, fRead: BOOLEAN): void {
 }
 
 function DisplayEmailList(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // look at current page, and display
-  PagePtr pPage = pPageList;
-  EmailPtr pEmail = NULL;
+  let pPage: PagePtr = pPageList;
+  let pEmail: EmailPtr = NULL;
 
   // error check, if no page, return
   if (!pPage)
@@ -1255,11 +1255,11 @@ function DisplayEmailList(): void {
 }
 
 function LookForUnread(): void {
-  BOOLEAN fStatusOfNewEmailFlag = fUnReadMailFlag;
+  let fStatusOfNewEmailFlag: BOOLEAN = fUnReadMailFlag;
 
   // simply runrs through list of messages, if any unread, set unread flag
 
-  EmailPtr pA = pEmailList;
+  let pA: EmailPtr = pEmailList;
 
   // reset unread flag
   fUnReadMailFlag = FALSE;
@@ -1281,10 +1281,10 @@ function LookForUnread(): void {
 }
 
 function EmailBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iCount;
-  PagePtr pPage = pPageList;
-  INT32 iId = 0;
-  EmailPtr pEmail = NULL;
+  let iCount: INT32;
+  let pPage: PagePtr = pPageList;
+  let iId: INT32 = 0;
+  let pEmail: EmailPtr = NULL;
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
   }
@@ -1397,7 +1397,7 @@ function BtnMessageXCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SetUnNewMessages(): void {
   // on exit from the mailer, set all new messages as 'un'new
-  EmailPtr pEmail = pEmailList;
+  let pEmail: EmailPtr = pEmailList;
   // run through the list of messages and add to pages
 
   while (pEmail) {
@@ -1408,22 +1408,22 @@ function SetUnNewMessages(): void {
 }
 
 function DisplayEmailMessage(pMail: EmailPtr): INT32 {
-  HVOBJECT hHandle;
-  INT32 iCnt = 0;
-  INT32 iHeight = 0;
-  INT32 iCounter = 1;
+  let hHandle: HVOBJECT;
+  let iCnt: INT32 = 0;
+  let iHeight: INT32 = 0;
+  let iCounter: INT32 = 1;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  wchar_t pString[MAIL_STRING_SIZE];
-  INT32 iOffSet = 0;
-  INT32 iHeightTemp = 0;
-  INT32 iHeightSoFar = 0;
-  RecordPtr pTempRecord;
-  INT32 iPageSize = 0;
-  INT32 iPastHeight = 0;
-  INT32 iYPositionOnPage = 0;
-  INT32 iTotalYPosition = 0;
-  BOOLEAN fGoingOffCurrentPage = FALSE;
-  BOOLEAN fDonePrintingMessage = FALSE;
+  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let iOffSet: INT32 = 0;
+  let iHeightTemp: INT32 = 0;
+  let iHeightSoFar: INT32 = 0;
+  let pTempRecord: RecordPtr;
+  let iPageSize: INT32 = 0;
+  let iPastHeight: INT32 = 0;
+  let iYPositionOnPage: INT32 = 0;
+  let iTotalYPosition: INT32 = 0;
+  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let fDonePrintingMessage: BOOLEAN = FALSE;
 
   if (!pMail)
     return 0;
@@ -1698,7 +1698,7 @@ function AddDeleteRegionsToMessageRegion(iViewerY: INT32): void {
 }
 
 function CreateDestroyNewMailButton(): void {
-  static BOOLEAN fOldNewMailFlag = FALSE;
+  /* static */ let fOldNewMailFlag: BOOLEAN = FALSE;
 
   // check if we are video conferencing, if so, do nothing
   if (gubVideoConferencingMode != 0) {
@@ -1743,8 +1743,8 @@ function CreateDestroyNewMailButton(): void {
 }
 
 function DisplayNewMailBox(): BOOLEAN {
-  HVOBJECT hHandle;
-  static BOOLEAN fOldNewMailFlag = FALSE;
+  let hHandle: HVOBJECT;
+  /* static */ let fOldNewMailFlag: BOOLEAN = FALSE;
   // will display a new mail box whenever new mail has arrived
 
   // check if we are video conferencing, if so, do nothing
@@ -2017,7 +2017,7 @@ function BtnDeleteYesback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function CreateDestroyNextPreviousRegions(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
   if (fCreated) {
     // destroy already create next, previous mouse regions
     fCreated = FALSE;
@@ -2062,7 +2062,7 @@ function ReDraw(): void {
 }
 
 function CreateDestroyDeleteNoticeMailButton(): void {
-  static BOOLEAN fOldDeleteMailFlag = FALSE;
+  /* static */ let fOldDeleteMailFlag: BOOLEAN = FALSE;
   if ((fDeleteMailFlag) && (!fOldDeleteMailFlag)) {
     // confirm delete email buttons
 
@@ -2102,7 +2102,7 @@ function CreateDestroyDeleteNoticeMailButton(): void {
   return;
 }
 function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
   // will display a delete mail box whenever delete mail has arrived
   if (!fDeleteMailFlag)
     return FALSE;
@@ -2384,8 +2384,9 @@ function CreateMailScreenButtons(): void {
 function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT32): void {
   // this procedure will draw the title/headers to From, Subject, Date fields in the display
   // message box
-  UINT16 usX, usY;
-  wchar_t sString[100];
+  let usX: UINT16;
+  let usY: UINT16;
+  let sString: wchar_t[] /* [100] */;
 
   // font stuff
   SetFont(MESSAGE_FONT);
@@ -2439,8 +2440,8 @@ function DrawEmailMessageDisplayTitleText(iViewerY: INT32): void {
 
 function DrawLineDividers(): void {
   // this function draws divider lines between lines of text
-  INT32 iCounter = 0;
-  HVOBJECT hHandle;
+  let iCounter: INT32 = 0;
+  let hHandle: HVOBJECT;
 
   for (iCounter = 1; iCounter < 19; iCounter++) {
     GetVideoObject(&hHandle, guiMAILDIVIDER);
@@ -2451,8 +2452,8 @@ function DrawLineDividers(): void {
 }
 
 function ClearOutEmailMessageRecordsList(): void {
-  RecordPtr pTempRecord;
-  INT32 iCounter = 0;
+  let pTempRecord: RecordPtr;
+  let iCounter: INT32 = 0;
 
   // runt hrough list freeing records up
   while (pMessageRecordList) {
@@ -2478,7 +2479,7 @@ function ClearOutEmailMessageRecordsList(): void {
 }
 
 function AddEmailRecordToList(pString: STR16): void {
-  RecordPtr pTempRecord;
+  let pTempRecord: RecordPtr;
 
   // set to head of list
   pTempRecord = pMessageRecordList;
@@ -2556,7 +2557,7 @@ function ReDisplayBoxes(): void {
 }
 
 function HandleMailSpecialMessages(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr): BOOLEAN {
-  BOOLEAN fSpecialCase = FALSE;
+  let fSpecialCase: BOOLEAN = FALSE;
 
   // this procedure will handle special cases of email messages that are not stored in email.edt, or need special processing
   switch (usMessageId) {
@@ -2720,21 +2721,29 @@ const IMP_RESULTS_END_LENGTH = 3;
 
 function HandleIMPCharProfileResultsMessage(): void {
   // special case, IMP profile return
-  INT32 iTotalHeight = 0;
-  INT32 iCnt = 0;
-  INT32 iHeight = 0;
-  INT32 iCounter = 0;
+  let iTotalHeight: INT32 = 0;
+  let iCnt: INT32 = 0;
+  let iHeight: INT32 = 0;
+  let iCounter: INT32 = 0;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  wchar_t pString[MAIL_STRING_SIZE];
-  INT32 iOffSet = 0;
-  INT32 iViewerY = 0;
-  INT32 iHeightTemp = 0;
-  INT32 iHeightSoFar = 0;
-  RecordPtr pTempRecord;
-  INT32 iEndOfSection = 0;
-  INT32 iRand = 0;
-  BOOLEAN fSufficientMechSkill = FALSE, fSufficientMarkSkill = FALSE, fSufficientMedSkill = FALSE, fSufficientExplSkill = FALSE;
-  BOOLEAN fSufficientHlth = FALSE, fSufficientStr = FALSE, fSufficientWis = FALSE, fSufficientAgi = FALSE, fSufficientDex = FALSE, fSufficientLdr = FALSE;
+  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let iOffSet: INT32 = 0;
+  let iViewerY: INT32 = 0;
+  let iHeightTemp: INT32 = 0;
+  let iHeightSoFar: INT32 = 0;
+  let pTempRecord: RecordPtr;
+  let iEndOfSection: INT32 = 0;
+  let iRand: INT32 = 0;
+  let fSufficientMechSkill: BOOLEAN = FALSE;
+  let fSufficientMarkSkill: BOOLEAN = FALSE;
+  let fSufficientMedSkill: BOOLEAN = FALSE;
+  let fSufficientExplSkill: BOOLEAN = FALSE;
+  let fSufficientHlth: BOOLEAN = FALSE;
+  let fSufficientStr: BOOLEAN = FALSE;
+  let fSufficientWis: BOOLEAN = FALSE;
+  let fSufficientAgi: BOOLEAN = FALSE;
+  let fSufficientDex: BOOLEAN = FALSE;
+  let fSufficientLdr: BOOLEAN = FALSE;
 
   iRand = Random(32767);
 
@@ -2755,7 +2764,7 @@ function HandleIMPCharProfileResultsMessage(): void {
 
       // have to place players name into string for first record
       if (iCounter == 0) {
-        wchar_t zTemp[512];
+        let zTemp: wchar_t[] /* [512] */;
 
         swprintf(zTemp, L" %s", gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].zName);
         wcscat(pString, zTemp);
@@ -3806,7 +3815,7 @@ function UpdateStatusOfNextPreviousButtons(): void {
 
 function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
   // will draw the number of the email program we are viewing right now
-  CHAR16 sString[10];
+  let sString: CHAR16[] /* [10] */;
 
   // font stuff
   SetFont(MESSAGE_FONT);
@@ -3831,9 +3840,9 @@ function DisplayWhichPageOfEmailProgramIsDisplayed(): void {
 
 function OpenMostRecentUnreadEmail(): void {
   // will open the most recent email the player has recieved and not read
-  INT32 iMostRecentMailId = -1;
-  EmailPtr pB = pEmailList;
-  UINT32 iLowestDate = 9999999;
+  let iMostRecentMailId: INT32 = -1;
+  let pB: EmailPtr = pEmailList;
+  let iLowestDate: UINT32 = 9999999;
 
   while (pB) {
     // if date is lesser and unread , swap
@@ -3860,9 +3869,10 @@ function OpenMostRecentUnreadEmail(): void {
 function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
   // display the indent for the display of pages to this email..along with the current page/number of pages
 
-  INT32 iCounter = 0;
-  INT16 sX = 0, sY = 0;
-  CHAR16 sString[32];
+  let iCounter: INT32 = 0;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sString: CHAR16[] /* [32] */;
 
   // get and blt the email list background
   // load, blt and delete graphics
@@ -3897,8 +3907,8 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
 }
 
 function GetNumberOfPagesToEmail(): INT32 {
-  RecordPtr pTempRecord;
-  INT32 iNumberOfPagesToEmail = 0;
+  let pTempRecord: RecordPtr;
+  let iNumberOfPagesToEmail: INT32 = 0;
 
   // set temp record to head of list
   pTempRecord = pMessageRecordList;
@@ -3913,8 +3923,8 @@ function GetNumberOfPagesToEmail(): INT32 {
 }
 
 function ShutDownEmailList(): void {
-  EmailPtr pEmail = pEmailList;
-  EmailPtr pTempEmail = NULL;
+  let pEmail: EmailPtr = pEmailList;
+  let pTempEmail: EmailPtr = NULL;
 
   // loop through all the emails to delete them
   while (pEmail) {
@@ -3934,11 +3944,16 @@ function ShutDownEmailList(): void {
 }
 
 function PreProcessEmail(pMail: EmailPtr): void {
-  RecordPtr pTempRecord, pCurrentRecord, pLastRecord, pTempList;
-  CHAR16 pString[512];
-  INT32 iCounter = 0, iHeight = 0, iOffSet = 0;
-  BOOLEAN fGoingOffCurrentPage = FALSE;
-  INT32 iYPositionOnPage = 0;
+  let pTempRecord: RecordPtr;
+  let pCurrentRecord: RecordPtr;
+  let pLastRecord: RecordPtr;
+  let pTempList: RecordPtr;
+  let pString: CHAR16[] /* [512] */;
+  let iCounter: INT32 = 0;
+  let iHeight: INT32 = 0;
+  let iOffSet: INT32 = 0;
+  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let iYPositionOnPage: INT32 = 0;
 
   iOffSet = (INT32)pMail->usOffset;
 
@@ -4125,11 +4140,11 @@ function PreProcessEmail(pMail: EmailPtr): void {
 }
 
 function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pMail: EmailPtr, ubNumberOfRecords: UINT8): void {
-  INT32 iHeight = 0;
-  RecordPtr pTempRecord;
+  let iHeight: INT32 = 0;
+  let pTempRecord: RecordPtr;
   //	wchar_t pString[MAIL_STRING_SIZE/2 + 1];
-  wchar_t pString[MAIL_STRING_SIZE];
-  UINT8 ubCnt;
+  let pString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let ubCnt: UINT8;
 
   // Replace the name in the subject line
   //	swprintf( pMail->pSubject, gMercProfiles[ pMail->ubFirstData ].zNickname );
@@ -4159,18 +4174,18 @@ function ModifyInsuranceEmails(usMessageId: UINT16, iResults: Pointer<INT32>, pM
 
 function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>, pMail: EmailPtr): BOOLEAN {
   //	wchar_t		pTempString[MAIL_STRING_SIZE/2 + 1];
-  wchar_t pTempString[MAIL_STRING_SIZE];
-  INT32 iLength = 0;
-  INT32 iCurLocInSourceString = 0;
-  INT32 iLengthOfSourceString = wcslen(pFinishedString); // Get the length of the source string
-  CHAR16 *pMercNameString = NULL;
-  CHAR16 *pAmountString = NULL;
-  CHAR16 *pSubString = NULL;
-  BOOLEAN fReplacingMercName = TRUE;
+  let pTempString: wchar_t[] /* [MAIL_STRING_SIZE] */;
+  let iLength: INT32 = 0;
+  let iCurLocInSourceString: INT32 = 0;
+  let iLengthOfSourceString: INT32 = wcslen(pFinishedString); // Get the length of the source string
+  let pMercNameString: Pointer<CHAR16> = NULL;
+  let pAmountString: Pointer<CHAR16> = NULL;
+  let pSubString: Pointer<CHAR16> = NULL;
+  let fReplacingMercName: BOOLEAN = TRUE;
 
-  CHAR16 sMercName[32] = L"$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
-  CHAR16 sAmount[32] = L"$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
-  CHAR16 sSearchString[32];
+  let sMercName: CHAR16[] /* [32] */ = L"$MERCNAME$"; // Doesnt need to be translated, inside Email.txt and will be replaced by the mercs name
+  let sAmount: CHAR16[] /* [32] */ = L"$AMOUN$"; // Doesnt need to be translated, inside Email.txt and will be replaced by a dollar amount
+  let sSearchString: CHAR16[] /* [32] */;
 
   // Copy the original string over to the temp string
   wcscpy(pTempString, pFinishedString);
@@ -4224,7 +4239,7 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
         // add the mercs name to the string
         wcscat(pFinishedString, gMercProfiles[pMail->uiSecondData].zName);
       } else {
-        CHAR16 sDollarAmount[64];
+        let sDollarAmount: CHAR16[] /* [64] */;
 
         swprintf(sDollarAmount, L"%d", pMail->iFirstData);
 

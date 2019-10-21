@@ -13,13 +13,13 @@ const PALACE_SECTOR_Y = 16;
 
 const MAX_PALACE_DISTANCE = 20;
 
-BOOLEAN gfProfiledEnemyAdded = FALSE;
+let gfProfiledEnemyAdded: BOOLEAN = FALSE;
 
-UINT32 guiCurrentUniqueSoldierId = 1;
+let guiCurrentUniqueSoldierId: UINT32 = 1;
 
 // CJC note: trust me, it's easiest just to put this here; this is the only
 // place it should need to be used
-UINT8 gubItemDroppableFlag[NUM_INV_SLOTS] = {
+let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = {
   0x01,
   0x02,
   0x04,
@@ -63,12 +63,12 @@ function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>):
 }
 
 function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pubID: Pointer<UINT8>): Pointer<SOLDIERTYPE> {
-  SOLDIERTYPE Soldier;
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
-  BOOLEAN fGuyAvail = FALSE;
-  UINT8 bLastTeamID;
-  UINT8 ubVehicleID = 0;
+  let Soldier: SOLDIERTYPE;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let fGuyAvail: BOOLEAN = FALSE;
+  let bLastTeamID: UINT8;
+  let ubVehicleID: UINT8 = 0;
 
   *pubID = NOBODY;
 
@@ -292,8 +292,8 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     // For inventory, look for any face class items that may be located in the big pockets and if found, move
     // that item to a face slot and clear the pocket!
     if (Soldier.bTeam != OUR_TEAM) {
-      INT32 i;
-      BOOLEAN fSecondFaceItem = FALSE;
+      let i: INT32;
+      let fSecondFaceItem: BOOLEAN = FALSE;
       for (i = BIGPOCK1POS; i <= BIGPOCK4POS; i++) {
         if (Item[Soldier.inv[i].usItem].usItemClass & IC_FACE) {
           if (!fSecondFaceItem) {
@@ -486,8 +486,8 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     return MercPtrs[Soldier.ubID];
   } else {
     // We are creating a dynamically allocated soldier for autoresolve.
-    SOLDIERTYPE *pSoldier;
-    UINT8 ubSectorID;
+    let pSoldier: Pointer<SOLDIERTYPE>;
+    let ubSectorID: UINT8;
     ubSectorID = GetAutoResolveSectorID();
     pSoldier = (SOLDIERTYPE *)MemAlloc(sizeof(SOLDIERTYPE));
     if (!pSoldier)
@@ -503,8 +503,8 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
 }
 
 function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): BOOLEAN {
-  UINT8 ubProfileIndex;
-  MERCPROFILESTRUCT *pProfile;
+  let ubProfileIndex: UINT8;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   ubProfileIndex = pCreateStruct->ubProfile;
   pProfile = &(gMercProfiles[ubProfileIndex]);
@@ -576,8 +576,8 @@ const enum Enum267 {
 }
 
 function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
-  INT32 iRandom;
-  INT32 hair = 0;
+  let iRandom: INT32;
+  let hair: INT32 = 0;
   iRandom = Random(100);
   switch (skin) {
     case PINKSKIN:
@@ -633,8 +633,9 @@ function ChooseHairColor(pSoldier: Pointer<SOLDIERTYPE>, skin: INT32): INT32 {
 }
 
 function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClass: UINT8): void {
-  INT32 skin, hair;
-  BOOLEAN fMercClothingScheme;
+  let skin: INT32;
+  let hair: INT32;
+  let fMercClothingScheme: BOOLEAN;
   hair = -1;
 
   // choose random skin tone which will limit the choice of hair colors.
@@ -883,8 +884,8 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
   // KM:  March 25, 1999
   // Assign nightops traits to enemies/militia
   if (pSoldier->ubSoldierClass == SOLDIER_CLASS_ELITE || pSoldier->ubSoldierClass == SOLDIER_CLASS_ELITE_MILITIA) {
-    INT32 iChance;
-    UINT8 ubProgress;
+    let iChance: INT32;
+    let ubProgress: UINT8;
 
     ubProgress = HighestPlayerProgressPercentage();
 
@@ -903,8 +904,8 @@ function TacticalCopySoldierFromCreateStruct(pSoldier: Pointer<SOLDIERTYPE>, pCr
       }
     }
   } else if (pSoldier->ubSoldierClass == SOLDIER_CLASS_ARMY || pSoldier->ubSoldierClass == SOLDIER_CLASS_REG_MILITIA) {
-    INT32 iChance;
-    UINT8 ubProgress;
+    let iChance: INT32;
+    let ubProgress: UINT8;
 
     ubProgress = HighestPlayerProgressPercentage();
 
@@ -1024,7 +1025,7 @@ function InitSoldierStruct(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function InternalTacticalRemoveSoldier(usSoldierIndex: UINT16, fRemoveVehicle: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Check range of index given
   if (usSoldierIndex < 0 || usSoldierIndex > TOTAL_SOLDIERS - 1) {
@@ -1110,9 +1111,9 @@ function TacticalRemoveSoldier(usSoldierIndex: UINT16): BOOLEAN {
 // returns a soldier difficulty modifier from 0 to 100 based on player's progress, distance from the Palace, mining income, and
 // playing difficulty level.  Used for generating soldier stats, equipment, and AI skill level.
 function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
-  INT8 bDiffModifier = 0;
-  UINT8 ubProgress;
-  UINT8 ubProgressModifier;
+  let bDiffModifier: INT8 = 0;
+  let ubProgress: UINT8;
+  let ubProgressModifier: UINT8;
 
   if (gfEditMode) {
     // return an average rating for editor purposes
@@ -1184,12 +1185,12 @@ function CalcDifficultyModifier(ubSoldierClass: UINT8): INT8 {
 // doesn't exist, meaning there are no static attributes.  This is called when you wish to convert a basic
 // placement into a detailed placement just before creating a soldier.
 function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
-  INT8 bBaseAttribute;
-  UINT8 ubSoldierClass;
-  UINT8 ubDiffFactor;
-  INT8 bExpLevelModifier;
-  INT8 bStatsModifier;
-  UINT8 ubStatsLevel;
+  let bBaseAttribute: INT8;
+  let ubSoldierClass: UINT8;
+  let ubDiffFactor: UINT8;
+  let bExpLevelModifier: INT8;
+  let bStatsModifier: INT8;
+  let ubStatsLevel: UINT8;
 
   if (!pp || !bp)
     return;
@@ -1244,7 +1245,7 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
               break;
           }
         } else {
-          INT32 iRandom;
+          let iRandom: INT32;
           iRandom = Random(100);
           if (iRandom < 8) {
             // 8% chance FATCIV
@@ -1445,7 +1446,7 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
 // This information is NOT compatible with TacticalCreateSoldier.  Before doing so, you must first convert the
 // static detailed placement to a regular detailed placement.
 function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
-  INT32 i;
+  let i: INT32;
   if (!spp || !bp)
     return;
   memset(spp, 0, sizeof(SOLDIERCREATE_STRUCT));
@@ -1512,7 +1513,7 @@ function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDI
 // the proper detailed placement slot given the static detailed placement and it's accompanying basic placement.
 // For the purposes of merc editing, the static detailed placement is preserved.
 function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(pp: Pointer<SOLDIERCREATE_STRUCT>, spp: Pointer<SOLDIERCREATE_STRUCT>, bp: Pointer<BASIC_SOLDIERCREATE_STRUCT>): void {
-  INT32 i;
+  let i: INT32;
 
   memset(pp, 0, sizeof(SOLDIERCREATE_STRUCT));
   pp->fOnRoof = spp->fOnRoof = bp->fOnRoof;
@@ -1627,7 +1628,7 @@ function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp
 
   if (spp->bExpLevel != -1) {
     // We have a static experience level, so generate all of the soldier's attributes.
-    INT8 bBaseAttribute;
+    let bBaseAttribute: INT8;
     s->bExpLevel = spp->bExpLevel;
     // Set the minimum base attribute
     bBaseAttribute = 49 + (4 * s->bExpLevel);
@@ -1686,8 +1687,8 @@ function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp
 // In the case of setting a profile ID in order to extract a soldier from the profile array, we
 // also want to copy that information to the static detailed placement, for editor viewing purposes.
 function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIERCREATE_STRUCT>, ubProfile: UINT8): void {
-  UINT32 cnt;
-  MERCPROFILESTRUCT *pProfile;
+  let cnt: UINT32;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   spp->ubProfile = ubProfile;
 
@@ -1724,7 +1725,7 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIE
 // When the editor modifies the soldier's relative attribute level,
 // this function is called to update that information.
 function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bRelativeAttributeLevel: INT8): void {
-  INT8 bBaseAttribute;
+  let bBaseAttribute: INT8;
   // Set the experience level based on the relative attribute level
   // NOTE OF WARNING: THIS CURRENTLY IGNORES THE ENEMY CLASS (ADMIN/REG/ELITE) FOR CALCULATING LEVEL & ATTRIBUTES
 
@@ -1754,7 +1755,7 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
 }
 
 function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
-  SOLDIERCREATE_STRUCT CreateStruct;
+  let CreateStruct: SOLDIERCREATE_STRUCT;
 
   memset(&CreateStruct, 0, sizeof(CreateStruct));
   CreateStruct.ubProfile = ubProfileID;
@@ -1778,8 +1779,10 @@ const CENTRAL_GRIDNO = 13202;
 const CENTRAL_RADIUS = 30;
 
 function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SOLDIERTYPE> {
-  INT32 i, iStart, iEnd;
-  SOLDIERTYPE *pSoldier;
+  let i: INT32;
+  let iStart: INT32;
+  let iEnd: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   // This code looks for a soldier of specified type that currently exists in tactical and
   // returns the pointer to that soldier.  This is used when copying the exact status of
   // all remaining enemy troops (or creatures) to finish the battle in autoresolve.  To
@@ -1816,10 +1819,10 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
-  BASIC_SOLDIERCREATE_STRUCT bp;
-  SOLDIERCREATE_STRUCT pp;
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier;
+  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ADMINISTRATOR);
@@ -1846,10 +1849,10 @@ function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
-  BASIC_SOLDIERCREATE_STRUCT bp;
-  SOLDIERCREATE_STRUCT pp;
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier;
+  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ARMY);
@@ -1876,10 +1879,10 @@ function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
 
 // USED BY STRATEGIC AI and AUTORESOLVE
 function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
-  BASIC_SOLDIERCREATE_STRUCT bp;
-  SOLDIERCREATE_STRUCT pp;
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier;
+  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ELITE);
@@ -1914,9 +1917,9 @@ function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
 }
 
 function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
-  BASIC_SOLDIERCREATE_STRUCT bp;
-  SOLDIERCREATE_STRUCT pp;
-  UINT8 ubID;
+  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT;
+  let ubID: UINT8;
 
   memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
   memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
@@ -1933,9 +1936,9 @@ function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
 }
 
 function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
-  BASIC_SOLDIERCREATE_STRUCT bp;
-  SOLDIERCREATE_STRUCT pp;
-  UINT8 ubID;
+  let bp: BASIC_SOLDIERCREATE_STRUCT;
+  let pp: SOLDIERCREATE_STRUCT;
+  let ubID: UINT8;
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN && !gfPersistantPBI) {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_CREATURE);
@@ -1955,9 +1958,10 @@ function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
 }
 
 function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
-  UINT8 ubLocationModifier;
-  INT8 bRollModifier;
-  INT8 bRoll, bAdjustedRoll;
+  let ubLocationModifier: UINT8;
+  let bRollModifier: INT8;
+  let bRoll: INT8;
+  let bAdjustedRoll: INT8;
 
   // We now adjust the relative level by location on the map, so enemies in NE corner will be generally very crappy (lots
   // of bad and poor, with avg about best), while enemies in the SW will have lots of great and good, with avg about as
@@ -2046,10 +2050,15 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
 // This function shouldn't be called outside of tactical
 function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   // Create guy # X
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  INT16 sWorldX, sWorldY, sSectorX, sSectorY, sGridX, sGridY;
-  UINT8 ubID;
-  UINT16 usMapPos;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let sGridX: INT16;
+  let sGridY: INT16;
+  let ubID: UINT8;
+  let usMapPos: UINT16;
 
   if (GetMouseXY(&sGridX, &sGridY)) {
     usMapPos = MAPROWCOLTOPOS(sGridY, sGridX);
@@ -2078,11 +2087,13 @@ function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
 }
 
 function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
-  UINT32 cnt, cnt2;
-  MERCPROFILESTRUCT *pProfile;
-  OBJECTTYPE Obj;
-  UINT32 uiMoneyLeft, uiMoneyLimitInSlot;
-  INT8 bSlot;
+  let cnt: UINT32;
+  let cnt2: UINT32;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let Obj: OBJECTTYPE;
+  let uiMoneyLeft: UINT32;
+  let uiMoneyLimitInSlot: UINT32;
+  let bSlot: INT8;
 
   pProfile = &(gMercProfiles[pCreateStruct->ubProfile]);
 
@@ -2210,8 +2221,8 @@ function OkayToUpgradeEliteToSpecialProfiledEnemy(pp: Pointer<SOLDIERCREATE_STRU
 }
 
 function TrashAllSoldiers(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = 0;
 
@@ -2224,11 +2235,13 @@ function TrashAllSoldiers(): void {
 }
 
 function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
-  UINT8 ubLocationModifier;
-  UINT8 ubPalaceDistance;
-  INT16 sSectorX, sSectorY, sSectorZ;
-  INT8 bTownId;
-  BOOLEAN fSuccess;
+  let ubLocationModifier: UINT8;
+  let ubPalaceDistance: UINT8;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let sSectorZ: INT16;
+  let bTownId: INT8;
+  let fSuccess: BOOLEAN;
 
   // where is all this taking place?
   fSuccess = GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
@@ -2266,9 +2279,10 @@ function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
 
 // grab the distance from the palace
 function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
-  UINT8 ubDistance = 0;
-  INT16 sRows = 0, sCols = 0;
-  float fValue = 0.0;
+  let ubDistance: UINT8 = 0;
+  let sRows: INT16 = 0;
+  let sCols: INT16 = 0;
+  let fValue: float = 0.0;
 
   // grab number of rows and cols
   sRows = (INT16)(abs((sSectorX) - (PALACE_SECTOR_X)));
@@ -2288,12 +2302,12 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
 }
 
 function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
-  UINT8 ubRoll;
+  let ubRoll: UINT8;
   // important: must reset these to 0 by default for logic to work!
-  UINT8 ubChanceLvl8 = 0;
-  UINT8 ubChanceLvl7 = 0;
-  UINT8 ubChanceLvl6 = 0;
-  UINT8 ubChanceLvl5 = 0;
+  let ubChanceLvl8: UINT8 = 0;
+  let ubChanceLvl7: UINT8 = 0;
+  let ubChanceLvl6: UINT8 = 0;
+  let ubChanceLvl5: UINT8 = 0;
 
   // this function reduces the experience levels of very high level enemies to something that player can compete with
   // for interrupts.  It doesn't affect attributes and skills, those are rolled prior to this reduction!

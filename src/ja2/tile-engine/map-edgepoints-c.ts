@@ -1,46 +1,46 @@
 // dynamic arrays that contain the valid gridno's for each edge
-INT16 *gps1stNorthEdgepointArray = NULL;
-INT16 *gps1stEastEdgepointArray = NULL;
-INT16 *gps1stSouthEdgepointArray = NULL;
-INT16 *gps1stWestEdgepointArray = NULL;
+let gps1stNorthEdgepointArray: Pointer<INT16> = NULL;
+let gps1stEastEdgepointArray: Pointer<INT16> = NULL;
+let gps1stSouthEdgepointArray: Pointer<INT16> = NULL;
+let gps1stWestEdgepointArray: Pointer<INT16> = NULL;
 // contains the size for each array
-UINT16 gus1stNorthEdgepointArraySize = 0;
-UINT16 gus1stEastEdgepointArraySize = 0;
-UINT16 gus1stSouthEdgepointArraySize = 0;
-UINT16 gus1stWestEdgepointArraySize = 0;
+let gus1stNorthEdgepointArraySize: UINT16 = 0;
+let gus1stEastEdgepointArraySize: UINT16 = 0;
+let gus1stSouthEdgepointArraySize: UINT16 = 0;
+let gus1stWestEdgepointArraySize: UINT16 = 0;
 // contains the index value for the first array index of the second row of each edgepoint array.
 // Because each edgepoint side has two rows, the outside most row is calculated first, then the inside row.
 // For purposes of AI, it may become necessary to avoid this.
-UINT16 gus1stNorthEdgepointMiddleIndex = 0;
-UINT16 gus1stEastEdgepointMiddleIndex = 0;
-UINT16 gus1stSouthEdgepointMiddleIndex = 0;
-UINT16 gus1stWestEdgepointMiddleIndex = 0;
+let gus1stNorthEdgepointMiddleIndex: UINT16 = 0;
+let gus1stEastEdgepointMiddleIndex: UINT16 = 0;
+let gus1stSouthEdgepointMiddleIndex: UINT16 = 0;
+let gus1stWestEdgepointMiddleIndex: UINT16 = 0;
 
 // dynamic arrays that contain the valid gridno's for each edge
-INT16 *gps2ndNorthEdgepointArray = NULL;
-INT16 *gps2ndEastEdgepointArray = NULL;
-INT16 *gps2ndSouthEdgepointArray = NULL;
-INT16 *gps2ndWestEdgepointArray = NULL;
+let gps2ndNorthEdgepointArray: Pointer<INT16> = NULL;
+let gps2ndEastEdgepointArray: Pointer<INT16> = NULL;
+let gps2ndSouthEdgepointArray: Pointer<INT16> = NULL;
+let gps2ndWestEdgepointArray: Pointer<INT16> = NULL;
 // contains the size for each array
-UINT16 gus2ndNorthEdgepointArraySize = 0;
-UINT16 gus2ndEastEdgepointArraySize = 0;
-UINT16 gus2ndSouthEdgepointArraySize = 0;
-UINT16 gus2ndWestEdgepointArraySize = 0;
+let gus2ndNorthEdgepointArraySize: UINT16 = 0;
+let gus2ndEastEdgepointArraySize: UINT16 = 0;
+let gus2ndSouthEdgepointArraySize: UINT16 = 0;
+let gus2ndWestEdgepointArraySize: UINT16 = 0;
 // contains the index value for the first array index of the second row of each edgepoint array.
 // Because each edgepoint side has two rows, the outside most row is calculated first, then the inside row.
 // For purposes of AI, it may become necessary to avoid this.
-UINT16 gus2ndNorthEdgepointMiddleIndex = 0;
-UINT16 gus2ndEastEdgepointMiddleIndex = 0;
-UINT16 gus2ndSouthEdgepointMiddleIndex = 0;
-UINT16 gus2ndWestEdgepointMiddleIndex = 0;
+let gus2ndNorthEdgepointMiddleIndex: UINT16 = 0;
+let gus2ndEastEdgepointMiddleIndex: UINT16 = 0;
+let gus2ndSouthEdgepointMiddleIndex: UINT16 = 0;
+let gus2ndWestEdgepointMiddleIndex: UINT16 = 0;
 
-BOOLEAN gfEdgepointsExist = FALSE;
-BOOLEAN gfGeneratingMapEdgepoints = FALSE;
+let gfEdgepointsExist: BOOLEAN = FALSE;
+let gfGeneratingMapEdgepoints: BOOLEAN = FALSE;
 
-INT16 gsTLGridNo = 13286;
-INT16 gsTRGridNo = 1043;
-INT16 gsBLGridNo = 24878;
-INT16 gsBRGridNo = 12635;
+let gsTLGridNo: INT16 = 13286;
+let gsTRGridNo: INT16 = 1043;
+let gsBLGridNo: INT16 = 24878;
+let gsBRGridNo: INT16 = 12635;
 
 function TrashMapEdgepoints(): void {
   // Primary edgepoints
@@ -91,9 +91,9 @@ function TrashMapEdgepoints(): void {
 // Cases would include an area that is close to the edge, but a fence blocks it from direct access to the edge
 // of the map.
 function ValidateEdgepoints(): void {
-  INT32 i;
-  UINT16 usValidEdgepoints;
-  SOLDIERTYPE Soldier;
+  let i: INT32;
+  let usValidEdgepoints: UINT16;
+  let Soldier: SOLDIERTYPE;
 
   memset(&Soldier, 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
@@ -230,8 +230,9 @@ function ValidateEdgepoints(): void {
 }
 
 function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex: Pointer<UINT16>, pusArraySize: Pointer<UINT16>): void {
-  INT32 i;
-  UINT16 usArraySize, usValidIndex = 0;
+  let i: INT32;
+  let usArraySize: UINT16;
+  let usValidIndex: UINT16 = 0;
 
   usArraySize = *pusArraySize;
 
@@ -253,8 +254,9 @@ function CompactEdgepointArray(psArray: Pointer<Pointer<INT16>>, pusMiddleIndex:
 }
 
 function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, psArray1: Pointer<Pointer<INT16>>, pusMiddleIndex1: Pointer<UINT16>, pusArraySize1: Pointer<UINT16>, psArray2: Pointer<Pointer<INT16>>, pusMiddleIndex2: Pointer<UINT16>, pusArraySize2: Pointer<UINT16>): void {
-  INT32 i;
-  UINT16 us1stBenchmarkID, us2ndBenchmarkID;
+  let i: INT32;
+  let us1stBenchmarkID: UINT16;
+  let us2ndBenchmarkID: UINT16;
   us1stBenchmarkID = us2ndBenchmarkID = 0xffff;
   if (!(*psArray2)) {
     *psArray2 = (INT16 *)MemAlloc(sizeof(INT16) * 400);
@@ -348,8 +350,8 @@ function InternallyClassifyEdgepoints(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
 }
 
 function ClassifyEdgepoints(): void {
-  SOLDIERTYPE Soldier;
-  INT16 sGridNo = -1;
+  let Soldier: SOLDIERTYPE;
+  let sGridNo: INT16 = -1;
 
   memset(&Soldier, 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;
@@ -385,11 +387,11 @@ function ClassifyEdgepoints(): void {
 }
 
 function GenerateMapEdgepoints(): void {
-  INT32 i = -1;
-  INT16 sGridNo = -1;
-  INT16 sVGridNo[400];
-  UINT8 gubSaveNPCAPBudget = 0;
-  UINT8 gubSaveNPCDistLimit = 0;
+  let i: INT32 = -1;
+  let sGridNo: INT16 = -1;
+  let sVGridNo: INT16[] /* [400] */;
+  let gubSaveNPCAPBudget: UINT8 = 0;
+  let gubSaveNPCDistLimit: UINT8 = 0;
 
   // Get rid of the current edgepoint lists.
   TrashMapEdgepoints();
@@ -850,9 +852,9 @@ function LoadMapEdgepoints(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
 }
 
 function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
-  INT16 *psArray = NULL;
-  UINT16 usArraySize = 0;
-  static INT32 randomVal = 0;
+  let psArray: Pointer<INT16> = NULL;
+  let usArraySize: UINT16 = 0;
+  /* static */ let randomVal: INT32 = 0;
 
   // First validate and get access to the correct array based on strategic direction.
   // We will use the selected array to choose insertion gridno's.
@@ -884,11 +886,12 @@ function ChooseMapEdgepoint(ubStrategicInsertionCode: UINT8): UINT16 {
 }
 
 function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStrategicInsertionCode: UINT8, ubNumDesiredPoints: UINT8): void {
-  INT16 *psArray = NULL;
-  UINT16 usArraySize = 0;
-  INT32 i = -1;
-  UINT16 usSlots, usCurrSlot;
-  INT16 *psTempArray = NULL;
+  let psArray: Pointer<INT16> = NULL;
+  let usArraySize: UINT16 = 0;
+  let i: INT32 = -1;
+  let usSlots: UINT16;
+  let usCurrSlot: UINT16;
+  let psTempArray: Pointer<INT16> = NULL;
 
   AssertMsg(ubNumDesiredPoints > 0 && ubNumDesiredPoints <= 32, String("ChooseMapEdgepoints:  Desired points = %d, valid range is 1-32", ubNumDesiredPoints));
   // First validate and get access to the correct array based on strategic direction.
@@ -969,11 +972,11 @@ function ChooseMapEdgepoints(pMapEdgepointInfo: Pointer<MAPEDGEPOINTINFO>, ubStr
   MemFree(psTempArray);
 }
 
-INT16 *gpReservedGridNos = NULL;
-INT16 gsReservedIndex = 0;
+let gpReservedGridNos: Pointer<INT16> = NULL;
+let gsReservedIndex: INT16 = 0;
 
 function BeginMapEdgepointSearch(): void {
-  INT16 sGridNo;
+  let sGridNo: INT16;
 
   // Create the reserved list
   AssertMsg(!gpReservedGridNos, "Attempting to BeginMapEdgepointSearch that has already been created.");
@@ -1006,11 +1009,15 @@ function EndMapEdgepointSearch(): void {
 
 // THIS CODE ISN'T RECOMMENDED FOR TIME CRITICAL AREAS.
 function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
-  INT32 i, iDirectionLoop;
-  INT16 *psArray = NULL;
-  INT16 sRadius, sDistance, sDirection, sOriginalGridNo;
-  UINT16 usArraySize = 0;
-  BOOLEAN fReserved;
+  let i: INT32;
+  let iDirectionLoop: INT32;
+  let psArray: Pointer<INT16> = NULL;
+  let sRadius: INT16;
+  let sDistance: INT16;
+  let sDirection: INT16;
+  let sOriginalGridNo: INT16;
+  let usArraySize: UINT16 = 0;
+  let fReserved: BOOLEAN;
 
   if (gsReservedIndex >= 20) {
     // Everything is reserved.
@@ -1124,11 +1131,15 @@ function SearchForClosestPrimaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UI
 }
 
 function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: UINT8): INT16 {
-  INT32 i, iDirectionLoop;
-  INT16 *psArray = NULL;
-  INT16 sRadius, sDistance, sDirection, sOriginalGridNo;
-  UINT16 usArraySize = 0;
-  BOOLEAN fReserved;
+  let i: INT32;
+  let iDirectionLoop: INT32;
+  let psArray: Pointer<INT16> = NULL;
+  let sRadius: INT16;
+  let sDistance: INT16;
+  let sDirection: INT16;
+  let sOriginalGridNo: INT16;
+  let usArraySize: UINT16 = 0;
+  let fReserved: BOOLEAN;
 
   if (gsReservedIndex >= 20) {
     // Everything is reserved.
@@ -1243,10 +1254,15 @@ function SearchForClosestSecondaryMapEdgepoint(sGridNo: INT16, ubInsertionCode: 
 
 const EDGE_OF_MAP_SEARCH = 5;
 function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOOLEAN {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sGridNo;
-  INT8 bDirection;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sGridNo: INT16;
+  let bDirection: INT8;
 
   pSoldier->sGridNo = sEdgepoint;
 
@@ -1305,9 +1321,14 @@ function VerifyEdgepoint(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint: INT16): BOO
 }
 
 function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEdgepoint2: INT16): BOOLEAN {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sGridNo;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sGridNo: INT16;
 
   pSoldier->sGridNo = sEdgepoint1;
 
@@ -1350,13 +1371,19 @@ function EdgepointsClose(pSoldier: Pointer<SOLDIERTYPE>, sEdgepoint1: INT16, sEd
 }
 
 function CalcMapEdgepointClassInsertionCode(sGridNo: INT16): UINT8 {
-  SOLDIERTYPE Soldier;
-  INT32 iLoop;
-  INT16 *psEdgepointArray1, *psEdgepointArray2;
-  INT32 iEdgepointArraySize1, iEdgepointArraySize2;
-  INT16 sClosestSpot1 = NOWHERE, sClosestDist1 = 0x7FFF, sTempDist;
-  INT16 sClosestSpot2 = NOWHERE, sClosestDist2 = 0x7FFF;
-  BOOLEAN fPrimaryValid = FALSE, fSecondaryValid = FALSE;
+  let Soldier: SOLDIERTYPE;
+  let iLoop: INT32;
+  let psEdgepointArray1: Pointer<INT16>;
+  let psEdgepointArray2: Pointer<INT16>;
+  let iEdgepointArraySize1: INT32;
+  let iEdgepointArraySize2: INT32;
+  let sClosestSpot1: INT16 = NOWHERE;
+  let sClosestDist1: INT16 = 0x7FFF;
+  let sTempDist: INT16;
+  let sClosestSpot2: INT16 = NOWHERE;
+  let sClosestDist2: INT16 = 0x7FFF;
+  let fPrimaryValid: BOOLEAN = FALSE;
+  let fSecondaryValid: BOOLEAN = FALSE;
 
   memset(&Soldier, 0, sizeof(SOLDIERTYPE));
   Soldier.bTeam = 1;

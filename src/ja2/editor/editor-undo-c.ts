@@ -34,7 +34,7 @@ doesn't use the undo methodology.
 
 */
 
-BOOLEAN gfUndoEnabled = FALSE;
+let gfUndoEnabled: BOOLEAN = FALSE;
 
 function EnableUndo(): void {
   gfUndoEnabled = TRUE;
@@ -61,10 +61,10 @@ interface undo_stack {
   pNext: Pointer<undo_stack>;
   iUndoType: INT32;
 }
-undo_stack *gpTileUndoStack = NULL;
+let gpTileUndoStack: Pointer<undo_stack> = NULL;
 
-BOOLEAN fNewUndoCmd = TRUE;
-BOOLEAN gfIgnoreUndoCmdsForLights = FALSE;
+let fNewUndoCmd: BOOLEAN = TRUE;
+let gfIgnoreUndoCmdsForLights: BOOLEAN = FALSE;
 
 // New pre-undo binary tree stuff
 // With this, new undo commands will not duplicate saves in the same command.  This will
@@ -76,7 +76,7 @@ interface MapIndexBinaryTree {
   usMapIndex: UINT16;
 }
 
-MapIndexBinaryTree *top = NULL;
+let top: Pointer<MapIndexBinaryTree> = NULL;
 
 // Recursively deletes all nodes below the node passed including itself.
 function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
@@ -95,7 +95,8 @@ function ClearUndoMapIndexTree(): void {
 }
 
 function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
-  MapIndexBinaryTree *curr, *parent;
+  let curr: Pointer<MapIndexBinaryTree>;
+  let parent: Pointer<MapIndexBinaryTree>;
   if (!top) {
     top = (MapIndexBinaryTree *)MemAlloc(sizeof(MapIndexBinaryTree));
     Assert(top);
@@ -138,7 +139,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
 //*************************************************************************
 
 function DeleteTopStackNode(): BOOLEAN {
-  undo_stack *pCurrent;
+  let pCurrent: Pointer<undo_stack>;
 
   pCurrent = gpTileUndoStack;
 
@@ -152,8 +153,8 @@ function DeleteTopStackNode(): BOOLEAN {
 }
 
 function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack> {
-  undo_stack *pCurrent;
-  undo_stack *pNextNode;
+  let pCurrent: Pointer<undo_stack>;
+  let pNextNode: Pointer<undo_stack>;
 
   pCurrent = pThisNode;
   pNextNode = pThisNode->pNext;
@@ -166,17 +167,17 @@ function DeleteThisStackNode(pThisNode: Pointer<undo_stack>): Pointer<undo_stack
 }
 
 function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
-  undo_struct *pData;
-  MAP_ELEMENT *pMapTile;
-  LEVELNODE *pLandNode;
-  LEVELNODE *pObjectNode;
-  LEVELNODE *pStructNode;
-  LEVELNODE *pShadowNode;
-  LEVELNODE *pMercNode;
-  LEVELNODE *pTopmostNode;
-  LEVELNODE *pRoofNode;
-  LEVELNODE *pOnRoofNode;
-  STRUCTURE *pStructureNode;
+  let pData: Pointer<undo_struct>;
+  let pMapTile: Pointer<MAP_ELEMENT>;
+  let pLandNode: Pointer<LEVELNODE>;
+  let pObjectNode: Pointer<LEVELNODE>;
+  let pStructNode: Pointer<LEVELNODE>;
+  let pShadowNode: Pointer<LEVELNODE>;
+  let pMercNode: Pointer<LEVELNODE>;
+  let pTopmostNode: Pointer<LEVELNODE>;
+  let pRoofNode: Pointer<LEVELNODE>;
+  let pOnRoofNode: Pointer<LEVELNODE>;
+  let pStructureNode: Pointer<STRUCTURE>;
 
   pData = pCurrent->pData;
   pMapTile = pData->pMapTile;
@@ -263,8 +264,8 @@ function DeleteStackNodeContents(pCurrent: Pointer<undo_stack>): BOOLEAN {
 }
 
 function CropStackToMaxLength(iMaxCmds: INT32): void {
-  INT32 iCmdCount;
-  undo_stack *pCurrent;
+  let iCmdCount: INT32;
+  let pCurrent: Pointer<undo_stack>;
 
   iCmdCount = 0;
   pCurrent = gpTileUndoStack;
@@ -294,8 +295,8 @@ function CropStackToMaxLength(iMaxCmds: INT32): void {
 // our saved light, then we intend on erasing the light upon undo execution, otherwise, we
 // save the light radius and light ID, so that we place it during undo execution.
 function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UINT8): void {
-  undo_stack *pNode;
-  undo_struct *pUndoInfo;
+  let pNode: Pointer<undo_stack>;
+  let pUndoInfo: Pointer<undo_struct>;
 
   if (!gfUndoEnabled)
     return;
@@ -335,7 +336,7 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
 }
 
 function AddToUndoList(iMapIndex: INT32): BOOLEAN {
-  static INT32 iCount = 1;
+  /* static */ let iCount: INT32 = 1;
 
   if (!gfUndoEnabled)
     return FALSE;
@@ -358,12 +359,12 @@ function AddToUndoList(iMapIndex: INT32): BOOLEAN {
 }
 
 function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
-  undo_stack *pNode;
-  undo_struct *pUndoInfo;
-  MAP_ELEMENT *pData;
-  STRUCTURE *pStructure;
-  INT32 iCoveredMapIndex;
-  UINT8 ubLoop;
+  let pNode: Pointer<undo_stack>;
+  let pUndoInfo: Pointer<undo_struct>;
+  let pData: Pointer<MAP_ELEMENT>;
+  let pStructure: Pointer<STRUCTURE>;
+  let iCoveredMapIndex: INT32;
+  let ubLoop: UINT8;
 
   if ((pNode = (undo_stack *)MemAlloc(sizeof(undo_stack))) == NULL) {
     return FALSE;
@@ -437,9 +438,9 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
 }
 
 function CheckMapIndexForMultiTileStructures(usMapIndex: UINT16): void {
-  STRUCTURE *pStructure;
-  UINT8 ubLoop;
-  INT32 iCoveredMapIndex;
+  let pStructure: Pointer<STRUCTURE>;
+  let ubLoop: UINT8;
+  let iCoveredMapIndex: INT32;
 
   pStructure = gpWorldLevelData[usMapIndex].pStructureHead;
   while (pStructure) {
@@ -476,9 +477,10 @@ function RemoveAllFromUndoList(): BOOLEAN {
 }
 
 function ExecuteUndoList(): BOOLEAN {
-  INT32 iCmdCount, iCurCount;
-  INT32 iUndoMapIndex;
-  BOOLEAN fExitGrid;
+  let iCmdCount: INT32;
+  let iCurCount: INT32;
+  let iUndoMapIndex: INT32;
+  let fExitGrid: BOOLEAN;
 
   if (!gfUndoEnabled)
     return FALSE;
@@ -498,7 +500,8 @@ function ExecuteUndoList(): BOOLEAN {
     // Find which map tile we are to "undo"
     if (gpTileUndoStack->pData->fLightSaved) {
       // We saved a light, so delete that light
-      INT16 sX, sY;
+      let sX: INT16;
+      let sY: INT16;
       // Turn on this flag so that the following code, when executed, doesn't attempt to
       // add lights to the undo list.  That would cause problems...
       gfIgnoreUndoCmdsForLights = TRUE;
@@ -548,12 +551,13 @@ function ExecuteUndoList(): BOOLEAN {
 }
 
 function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEMENT>): void {
-  LEVELNODE *pWorldLand;
-  LEVELNODE *pUndoLand;
-  LEVELNODE *pLand;
-  LEVELNODE *pWLand;
-  UINT32 uiCheckType, uiWCheckType;
-  BOOLEAN fFound;
+  let pWorldLand: Pointer<LEVELNODE>;
+  let pUndoLand: Pointer<LEVELNODE>;
+  let pLand: Pointer<LEVELNODE>;
+  let pWLand: Pointer<LEVELNODE>;
+  let uiCheckType: UINT32;
+  let uiWCheckType: UINT32;
+  let fFound: BOOLEAN;
 
   pUndoLand = pUndoTile->pLandHead;
   pWorldLand = gpWorldLevelData[iWorldTile].pLandHead;
@@ -623,15 +627,15 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
 // undo methods coded by Bret, it is feasible that it could fail.  Instead of using assertions to
 // terminate the program, destroy the memory allocated thusfar.
 function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_ELEMENT>): void {
-  LEVELNODE *pLevelNode;
-  STRUCTURE *pStructure;
-  INT32 x;
+  let pLevelNode: Pointer<LEVELNODE>;
+  let pStructure: Pointer<STRUCTURE>;
+  let x: INT32;
   for (x = 0; x < 9; x++) {
     if (x == 1)
       continue;
     pLevelNode = pNewMapElement->pLevelNodes[x];
     while (pLevelNode) {
-      LEVELNODE *temp;
+      let temp: Pointer<LEVELNODE>;
       temp = pLevelNode;
       pLevelNode = pLevelNode->pNext;
       MemFree(temp);
@@ -639,7 +643,7 @@ function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_E
   }
   pStructure = pNewMapElement->pStructureHead;
   while (pStructure) {
-    STRUCTURE *temp;
+    let temp: Pointer<STRUCTURE>;
     temp = pStructure;
     pStructure = pStructure->pNext;
     MemFree(temp);
@@ -669,14 +673,14 @@ function DeleteMapElementContentsAfterCreationFail(pNewMapElement: Pointer<MAP_E
         }; // ( 4 byte union )
 */
 function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex: INT32): BOOLEAN {
-  MAP_ELEMENT *pOldMapElement;
-  LEVELNODE *pOldLevelNode;
-  LEVELNODE *pLevelNode;
-  LEVELNODE *pNewLevelNode;
-  LEVELNODE *tail;
-  INT32 x;
+  let pOldMapElement: Pointer<MAP_ELEMENT>;
+  let pOldLevelNode: Pointer<LEVELNODE>;
+  let pLevelNode: Pointer<LEVELNODE>;
+  let pNewLevelNode: Pointer<LEVELNODE>;
+  let tail: Pointer<LEVELNODE>;
+  let x: INT32;
 
-  STRUCTURE *pOldStructure;
+  let pOldStructure: Pointer<STRUCTURE>;
 
   // Get a pointer to the current map index
   pOldMapElement = &gpWorldLevelData[iMapIndex];
@@ -684,9 +688,9 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
   // Save the structure information from the mapelement
   pOldStructure = pOldMapElement->pStructureHead;
   if (pOldStructure) {
-    STRUCTURE *pNewStructure;
-    STRUCTURE *pStructure;
-    STRUCTURE *tail;
+    let pNewStructure: Pointer<STRUCTURE>;
+    let pStructure: Pointer<STRUCTURE>;
+    let tail: Pointer<STRUCTURE>;
     tail = NULL;
     pNewStructure = NULL;
     while (pOldStructure) {
@@ -782,7 +786,8 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
         case 7: // ON ROOF LAYER
           if (pOldLevelNode->pStructureData) {
             // make sure the structuredata pointer points to the parallel structure
-            STRUCTURE *pOld, *pNew;
+            let pOld: Pointer<STRUCTURE>;
+            let pNew: Pointer<STRUCTURE>;
             // both lists are exactly the same size and contain the same information,
             // but the addresses are different.  We will traverse the old list until
             // we find the match, then
@@ -825,8 +830,8 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
 }
 
 function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_ELEMENT>): BOOLEAN {
-  MAP_ELEMENT *pCurrentMapElement;
-  MAP_ELEMENT TempMapElement;
+  let pCurrentMapElement: Pointer<MAP_ELEMENT>;
+  let TempMapElement: MAP_ELEMENT;
 
   pCurrentMapElement = &gpWorldLevelData[iMapIndex];
 

@@ -13,28 +13,30 @@
 //
 //**************************************************************************
 
-BOOLEAN gfRecordToFile = FALSE;
-BOOLEAN gfRecordToDebugger = TRUE;
+let gfRecordToFile: BOOLEAN = FALSE;
+let gfRecordToDebugger: BOOLEAN = TRUE;
 
 // moved from header file: 24mar98:HJH
-UINT32 guiProfileStart, guiExecutions, guiProfileTime;
-INT32 giProfileCount;
+let guiProfileStart: UINT32;
+let guiExecutions: UINT32;
+let guiProfileTime: UINT32;
+let giProfileCount: INT32;
 
 // Had to move these outside the ifdef SGP_DEBUG below, because
 // they are required for the String() function, which is NOT a
 // debug-mode only function, it's used in release-mode as well! -- DB
 
-UINT8 gubAssertString[128];
+let gubAssertString: UINT8[] /* [128] */;
 
 const MAX_MSG_LENGTH2 = 512;
-UINT8 gbTmpDebugString[8][MAX_MSG_LENGTH2];
-UINT8 gubStringIndex = 0;
+let gbTmpDebugString: UINT8[][] /* [8][MAX_MSG_LENGTH2] */;
+let gubStringIndex: UINT8 = 0;
 
 // This is NOT a _DEBUG only function! It is also needed in
 // release mode builds. -- DB
 function String(String: Pointer<char>, ...args: any[]): Pointer<UINT8> {
-  va_list ArgPtr;
-  UINT8 usIndex;
+  let ArgPtr: va_list;
+  let usIndex: UINT8;
 
   // Record string index. This index is used since we live in a multitasking environment.
   // It is still not bulletproof, but it's better than a single string

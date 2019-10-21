@@ -1,5 +1,5 @@
 function RTPlayerDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bAction = AI_ACTION_NONE;
+  let bAction: INT8 = AI_ACTION_NONE;
 
   if (gTacticalStatus.fAutoBandageMode) {
     bAction = DecideAutoBandage(pSoldier);
@@ -39,7 +39,7 @@ function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
     return (UINT16)REALTIME_CREATURE_AI_DELAY;
   } else {
     if (pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) {
-      UINT8 ubRoom;
+      let ubRoom: UINT8;
 
       if (InARoom(pSoldier->sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) {
         return (UINT16)(REALTIME_AI_DELAY / 3);
@@ -146,7 +146,7 @@ function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
       } else {
         pSoldier->usActionData = (UINT16)REALTIME_AI_DELAY;
         if (pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) {
-          UINT8 ubRoom;
+          let ubRoom: UINT8;
 
           if (InARoom(pSoldier->sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) {
             pSoldier->usActionData /= 3;

@@ -1,24 +1,24 @@
-UINT32 uiMusicHandle = NO_SAMPLE;
-UINT32 uiMusicVolume = 50;
-BOOLEAN fMusicPlaying = FALSE;
-BOOLEAN fMusicFadingOut = FALSE;
-BOOLEAN fMusicFadingIn = FALSE;
+let uiMusicHandle: UINT32 = NO_SAMPLE;
+let uiMusicVolume: UINT32 = 50;
+let fMusicPlaying: BOOLEAN = FALSE;
+let fMusicFadingOut: BOOLEAN = FALSE;
+let fMusicFadingIn: BOOLEAN = FALSE;
 
-BOOLEAN gfMusicEnded = FALSE;
+let gfMusicEnded: BOOLEAN = FALSE;
 
-UINT8 gubMusicMode = 0;
-UINT8 gubOldMusicMode = 0;
+let gubMusicMode: UINT8 = 0;
+let gubOldMusicMode: UINT8 = 0;
 
-INT8 gbVictorySongCount = 0;
-INT8 gbDeathSongCount = 0;
+let gbVictorySongCount: INT8 = 0;
+let gbDeathSongCount: INT8 = 0;
 
-INT8 bNothingModeSong;
-INT8 bEnemyModeSong;
-INT8 bBattleModeSong;
+let bNothingModeSong: INT8;
+let bEnemyModeSong: INT8;
+let bBattleModeSong: INT8;
 
-INT8 gbFadeSpeed = 1;
+let gbFadeSpeed: INT8 = 1;
 
-CHAR8 *szMusicList[NUM_MUSIC] = {
+let szMusicList: Pointer<CHAR8>[] /* [NUM_MUSIC] */ = {
   "MUSIC\\marimbad 2.wav",
   "MUSIC\\menumix1.wav",
   "MUSIC\\nothing A.wav",
@@ -36,12 +36,12 @@ CHAR8 *szMusicList[NUM_MUSIC] = {
   "MUSIC\\creature battle.wav",
 };
 
-BOOLEAN gfForceMusicToTense = FALSE;
-BOOLEAN gfDontRestartSong = FALSE;
+let gfForceMusicToTense: BOOLEAN = FALSE;
+let gfDontRestartSong: BOOLEAN = FALSE;
 
 function NoEnemiesInSight(): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Loop through our guys
   // End the turn of player charactors
@@ -68,7 +68,7 @@ function NoEnemiesInSight(): BOOLEAN {
 //
 //********************************************************************************
 function MusicPlay(uiNum: UINT32): BOOLEAN {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   if (fMusicPlaying)
     MusicStop();
@@ -104,7 +104,7 @@ function MusicPlay(uiNum: UINT32): BOOLEAN {
 //
 //********************************************************************************
 function MusicSetVolume(uiVolume: UINT32): BOOLEAN {
-  INT32 uiOldMusicVolume = uiMusicVolume;
+  let uiOldMusicVolume: INT32 = uiMusicVolume;
 
   uiMusicVolume = __min(uiVolume, 127);
 
@@ -207,7 +207,7 @@ function MusicFadeIn(): BOOLEAN {
 //
 //********************************************************************************
 function MusicPoll(fForce: BOOLEAN): BOOLEAN {
-  INT32 iVol;
+  let iVol: INT32;
 
   SoundServiceStreams();
   SoundServiceRandom();
@@ -273,7 +273,7 @@ function MusicPoll(fForce: BOOLEAN): BOOLEAN {
 }
 
 function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
-  static INT8 bPreviousMode = 0;
+  /* static */ let bPreviousMode: INT8 = 0;
 
   // OK, check if we want to restore
   if (ubMusicMode == MUSIC_RESTORE) {
@@ -311,7 +311,7 @@ function SetMusicMode(ubMusicMode: UINT8): BOOLEAN {
 }
 
 function StartMusicBasedOnMode(): BOOLEAN {
-  static BOOLEAN fFirstTime = TRUE;
+  /* static */ let fFirstTime: BOOLEAN = TRUE;
 
   if (fFirstTime) {
     fFirstTime = FALSE;
@@ -412,7 +412,8 @@ function SetMusicFadeSpeed(bFadeSpeed: INT8): void {
 }
 
 function FadeMusicForXSeconds(uiDelay: UINT32): void {
-  INT16 sNumTimeSteps, sNumVolumeSteps;
+  let sNumTimeSteps: INT16;
+  let sNumVolumeSteps: INT16;
 
   // get # time steps in delay....
   sNumTimeSteps = (INT16)(uiDelay / 10);

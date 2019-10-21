@@ -15,42 +15,42 @@ const MAX_FONTS = 25;
 //
 //*******************************************************
 
-SGPPaletteEntry gSgpPalette[256];
+let gSgpPalette: SGPPaletteEntry[] /* [256] */;
 
 interface FontManager {
   usDefaultPixelDepth: UINT16;
   pTranslationTable: Pointer<FontTranslationTable>;
 }
 
-FontManager *pFManager;
-HVOBJECT FontObjs[MAX_FONTS];
-INT32 FontsLoaded = 0;
+let pFManager: Pointer<FontManager>;
+let FontObjs: HVOBJECT[] /* [MAX_FONTS] */;
+let FontsLoaded: INT32 = 0;
 
 // Destination printing parameters
-INT32 FontDefault = (-1);
-UINT32 FontDestBuffer = BACKBUFFER;
-UINT32 FontDestPitch = 640 * 2;
-UINT32 FontDestBPP = 16;
-SGPRect FontDestRegion = { 0, 0, 640, 480 };
-BOOLEAN FontDestWrap = FALSE;
-UINT16 FontForeground16 = 0;
-UINT16 FontBackground16 = 0;
-UINT16 FontShadow16 = DEFAULT_SHADOW;
-UINT8 FontForeground8 = 0;
-UINT8 FontBackground8 = 0;
+let FontDefault: INT32 = (-1);
+let FontDestBuffer: UINT32 = BACKBUFFER;
+let FontDestPitch: UINT32 = 640 * 2;
+let FontDestBPP: UINT32 = 16;
+let FontDestRegion: SGPRect = { 0, 0, 640, 480 };
+let FontDestWrap: BOOLEAN = FALSE;
+let FontForeground16: UINT16 = 0;
+let FontBackground16: UINT16 = 0;
+let FontShadow16: UINT16 = DEFAULT_SHADOW;
+let FontForeground8: UINT8 = 0;
+let FontBackground8: UINT8 = 0;
 
 // Temp, for saving printing parameters
-INT32 SaveFontDefault = (-1);
-UINT32 SaveFontDestBuffer = BACKBUFFER;
-UINT32 SaveFontDestPitch = 640 * 2;
-UINT32 SaveFontDestBPP = 16;
-SGPRect SaveFontDestRegion = { 0, 0, 640, 480 };
-BOOLEAN SaveFontDestWrap = FALSE;
-UINT16 SaveFontForeground16 = 0;
-UINT16 SaveFontShadow16 = 0;
-UINT16 SaveFontBackground16 = 0;
-UINT8 SaveFontForeground8 = 0;
-UINT8 SaveFontBackground8 = 0;
+let SaveFontDefault: INT32 = (-1);
+let SaveFontDestBuffer: UINT32 = BACKBUFFER;
+let SaveFontDestPitch: UINT32 = 640 * 2;
+let SaveFontDestBPP: UINT32 = 16;
+let SaveFontDestRegion: SGPRect = { 0, 0, 640, 480 };
+let SaveFontDestWrap: BOOLEAN = FALSE;
+let SaveFontForeground16: UINT16 = 0;
+let SaveFontShadow16: UINT16 = 0;
+let SaveFontBackground16: UINT16 = 0;
+let SaveFontForeground8: UINT8 = 0;
+let SaveFontBackground8: UINT8 = 0;
 
 //*****************************************************************************
 // SetFontColors
@@ -61,7 +61,8 @@ UINT8 SaveFontBackground8 = 0;
 //
 //*****************************************************************************
 function SetFontColors(usColors: UINT16): void {
-  UINT8 ubForeground, ubBackground;
+  let ubForeground: UINT8;
+  let ubBackground: UINT8;
 
   ubForeground = (UINT8)(usColors & 0xff);
   ubBackground = (UINT8)((usColors & 0xff00) >> 8);
@@ -82,7 +83,9 @@ function SetFontColors(usColors: UINT16): void {
 //
 //*****************************************************************************
 function SetFontForeground(ubForeground: UINT8): void {
-  UINT32 uiRed, uiGreen, uiBlue;
+  let uiRed: UINT32;
+  let uiGreen: UINT32;
+  let uiBlue: UINT32;
 
   if ((FontDefault < 0) || (FontDefault > MAX_FONTS))
     return;
@@ -97,7 +100,9 @@ function SetFontForeground(ubForeground: UINT8): void {
 }
 
 function SetFontShadow(ubShadow: UINT8): void {
-  UINT32 uiRed, uiGreen, uiBlue;
+  let uiRed: UINT32;
+  let uiGreen: UINT32;
+  let uiBlue: UINT32;
 
   if ((FontDefault < 0) || (FontDefault > MAX_FONTS))
     return;
@@ -130,7 +135,9 @@ function SetFontShadow(ubShadow: UINT8): void {
 //
 //*****************************************************************************
 function SetFontBackground(ubBackground: UINT8): void {
-  UINT32 uiRed, uiGreen, uiBlue;
+  let uiRed: UINT32;
+  let uiGreen: UINT32;
+  let uiBlue: UINT32;
 
   if ((FontDefault < 0) || (FontDefault > MAX_FONTS))
     return;
@@ -190,7 +197,7 @@ function ResetFontObjectPalette(iFont: INT32): BOOLEAN {
 //
 //*****************************************************************************
 function SetFontObjectPalette8BPP(iFont: INT32, pPal8: Pointer<SGPPaletteEntry>): Pointer<UINT16> {
-  UINT16 *pPal16;
+  let pPal16: Pointer<UINT16>;
 
   Assert(iFont >= 0);
   Assert(iFont <= MAX_FONTS);
@@ -257,7 +264,7 @@ function GetFontObject(iFont: INT32): HVOBJECT {
 //
 //*****************************************************************************
 function FindFreeFont(): INT32 {
-  int count;
+  let count: int;
 
   for (count = 0; count < MAX_FONTS; count++)
     if (FontObjs[count] == NULL)
@@ -274,8 +281,8 @@ function FindFreeFont(): INT32 {
 //  Otherwise the font number is returned.
 //*****************************************************************************
 function LoadFontFile(filename: Pointer<UINT8>): INT32 {
-  VOBJECT_DESC vo_desc;
-  UINT32 LoadIndex;
+  let vo_desc: VOBJECT_DESC;
+  let LoadIndex: UINT32;
 
   Assert(filename != NULL);
   Assert(strlen(filename));
@@ -324,13 +331,13 @@ function UnloadFont(FontIndex: UINT32): void {
 //
 //*****************************************************************************
 function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
-  ETRLEObject *pTrav;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
 
   if (ssIndex < 0 || ssIndex > 92) {
-    int i = 0;
+    let i: int = 0;
   }
 
   // Get Offsets from Index into structure
@@ -347,8 +354,8 @@ function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 //    'uiCharCount' specifies how many characters of the string are counted.
 //*****************************************************************************
 function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: Pointer<UINT16>, ...args: any[]): INT16 {
-  va_list argptr;
-  wchar_t string[512];
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
 
   Assert(pFontString != NULL);
 
@@ -380,10 +387,11 @@ function StringPixLengthArg(usUseFont: INT32, uiCharCount: UINT32, pFontString: 
 // YOU HAVE TO PREBUILD THE FAST HELP STRING!
 //*****************************************************************************
 function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, uiCharCount: UINT32, pFontString: Pointer<UINT16>): INT16 {
-  wchar_t string[512];
-  UINT32 i, index;
-  INT16 sBoldDiff = 0;
-  UINT16 str[2];
+  let string: wchar_t[] /* [512] */;
+  let i: UINT32;
+  let index: UINT32;
+  let sBoldDiff: INT16 = 0;
+  let str: UINT16[] /* [2] */;
 
   Assert(pFontString != NULL);
 
@@ -431,8 +439,10 @@ function StringPixLengthArgFastHelp(usUseFont: INT32, usBoldFont: INT32, uiCharC
 //
 //*****************************************************************************************
 function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: INT32): INT16 {
-  UINT32 Cur, uiCharCount;
-  UINT16 *curletter, transletter;
+  let Cur: UINT32;
+  let uiCharCount: UINT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
 
   Cur = 0;
   uiCharCount = 0;
@@ -454,8 +464,9 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
 //
 //*****************************************************************************
 function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
-  UINT32 Cur;
-  UINT16 *curletter, transletter;
+  let Cur: UINT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
 
   if (string == NULL) {
     return 0;
@@ -520,7 +531,7 @@ function RestoreFontSettings(): void {
 //
 //*****************************************************************************
 function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
-  ETRLEObject *pTrav;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -554,9 +565,9 @@ function GetFontHeight(FontNum: INT32): UINT16 {
 //
 //*****************************************************************************
 function GetIndex(siChar: UINT16): INT16 {
-  UINT16 *pTrav;
-  UINT16 ssCount = 0;
-  UINT16 usNumberOfSymbols = pFManager->pTranslationTable->usNumberOfSymbols;
+  let pTrav: Pointer<UINT16>;
+  let ssCount: UINT16 = 0;
+  let usNumberOfSymbols: UINT16 = pFManager->pTranslationTable->usNumberOfSymbols;
 
   // search the Translation Table and return the index for the font
   pTrav = pFManager->pTranslationTable->DynamicArrayOf16BitValues;
@@ -621,12 +632,14 @@ function SetFontDestBuffer(DestBuffer: UINT32, x1: INT32, y1: INT32, x2: INT32, 
 // than 512 word-characters. Uses monochrome font color settings
 //*****************************************************************************
 function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != NULL);
 
@@ -666,8 +679,8 @@ function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
 }
 
 function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  wchar_t string[512];
-  va_list argptr;
+  let string: wchar_t[] /* [512] */;
+  let argptr: va_list;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -677,8 +690,8 @@ function VarFindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, s
 }
 
 function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  wchar_t string[512];
-  va_list argptr;
+  let string: wchar_t[] /* [512] */;
+  let argptr: va_list;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -688,7 +701,8 @@ function VarFindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, 
 }
 
 function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: Pointer<UINT16>, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
-  INT16 xp, yp;
+  let xp: INT16;
+  let yp: INT16;
 
   // Compute the coordinates to right justify the text
   xp = ((sWidth - StringPixLength(pStr, iFontIndex))) + sLeft;
@@ -699,7 +713,8 @@ function FindFontRightCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 }
 
 function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, pStr: Pointer<UINT16>, iFontIndex: INT32, psNewX: Pointer<INT16>, psNewY: Pointer<INT16>): void {
-  INT16 xp, yp;
+  let xp: INT16;
+  let yp: INT16;
 
   // Compute the coordinates to center the text
   xp = ((sWidth - StringPixLength(pStr, iFontIndex) + 1) / 2) + sLeft;
@@ -718,12 +733,14 @@ function FindFontCenterCoordinates(sLeft: INT16, sTop: INT16, sWidth: INT16, sHe
 // than 512 word-characters.
 //*****************************************************************************
 function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != NULL);
 
@@ -763,12 +780,14 @@ function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
 }
 
 function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != NULL);
 
@@ -817,10 +836,12 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
 // than 512 word-characters.
 //*****************************************************************************
 function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
 
   Assert(pFontString != NULL);
 
@@ -855,10 +876,12 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
 }
 
 function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
 
   Assert(pFontString != NULL);
 
@@ -892,11 +915,13 @@ function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
 }
 
 function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, FontType: UINT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
-  UINT16 usOldForeColor;
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let usOldForeColor: UINT16;
 
   Assert(pFontString != NULL);
 
@@ -941,13 +966,15 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
 }
 
 function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  INT32 destx, desty;
-  UINT16 *curletter, transletter;
-  va_list argptr;
-  wchar_t string[512];
-  UINT16 usOldForeColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let destx: INT32;
+  let desty: INT32;
+  let curletter: Pointer<UINT16>;
+  let transletter: UINT16;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let usOldForeColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   Assert(pFontString != NULL);
 
@@ -1004,10 +1031,11 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
 //
 //*****************************************************************************
 function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer<FontTranslationTable>): BOOLEAN {
-  FontTranslationTable *pTransTab;
-  int count;
-  UINT16 uiRight, uiBottom;
-  UINT8 uiPixelDepth;
+  let pTransTab: Pointer<FontTranslationTable>;
+  let count: int;
+  let uiRight: UINT16;
+  let uiBottom: UINT16;
+  let uiPixelDepth: UINT8;
 
   FontDefault = (-1);
   FontDestBuffer = BACKBUFFER;
@@ -1056,7 +1084,7 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
 //	Shuts down, and deallocates all fonts.
 //*****************************************************************************
 function ShutdownFontManager(): void {
-  INT32 count;
+  let count: INT32;
 
   UnRegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
   if (pFManager)
@@ -1093,8 +1121,8 @@ function DestroyEnglishTransTable(): void {
 // Creates the English text->font map table.
 //*****************************************************************************
 function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
-  FontTranslationTable *pTable = NULL;
-  UINT16 *temp;
+  let pTable: Pointer<FontTranslationTable> = NULL;
+  let temp: Pointer<UINT16>;
 
   pTable = (FontTranslationTable *)MemAlloc(sizeof(FontTranslationTable));
   // ha ha, we have more than Wizardry now (again)

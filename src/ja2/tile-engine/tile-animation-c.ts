@@ -1,20 +1,22 @@
-ANITILE *pAniTileHead = NULL;
+let pAniTileHead: Pointer<ANITILE> = NULL;
 
 function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITILE> {
-  ANITILE *pAniNode;
-  ANITILE *pNewAniNode;
-  LEVELNODE *pNode;
-  INT32 iCachedTile = -1;
-  INT16 sGridNo;
-  UINT8 ubLevel;
-  INT16 usTileType;
-  INT16 usTileIndex;
-  INT16 sDelay;
-  INT16 sStartFrame = -1;
-  UINT32 uiFlags;
-  LEVELNODE *pGivenNode;
-  INT16 sX, sY, sZ;
-  UINT8 ubTempDir;
+  let pAniNode: Pointer<ANITILE>;
+  let pNewAniNode: Pointer<ANITILE>;
+  let pNode: Pointer<LEVELNODE>;
+  let iCachedTile: INT32 = -1;
+  let sGridNo: INT16;
+  let ubLevel: UINT8;
+  let usTileType: INT16;
+  let usTileIndex: INT16;
+  let sDelay: INT16;
+  let sStartFrame: INT16 = -1;
+  let uiFlags: UINT32;
+  let pGivenNode: Pointer<LEVELNODE>;
+  let sX: INT16;
+  let sY: INT16;
+  let sZ: INT16;
+  let ubTempDir: UINT8;
 
   // Get some parameters from structure sent in...
   sGridNo = pAniParams->sGridNo;
@@ -224,8 +226,8 @@ function CreateAnimationTile(pAniParams: Pointer<ANITILE_PARAMS>): Pointer<ANITI
 
 // Loop throug all ani tiles and remove...
 function DeleteAniTiles(): void {
-  ANITILE *pAniNode = NULL;
-  ANITILE *pNode = NULL;
+  let pAniNode: Pointer<ANITILE> = NULL;
+  let pNode: Pointer<ANITILE> = NULL;
 
   // LOOP THROUGH EACH NODE
   // And call delete function...
@@ -240,9 +242,9 @@ function DeleteAniTiles(): void {
 }
 
 function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
-  ANITILE *pAniNode = NULL;
-  ANITILE *pOldAniNode = NULL;
-  TILE_ELEMENT *TileElem;
+  let pAniNode: Pointer<ANITILE> = NULL;
+  let pOldAniNode: Pointer<ANITILE> = NULL;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   pAniNode = pAniTileHead;
 
@@ -333,7 +335,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
 
         if (pAniNode->uiFlags & ANITILE_DOOR) {
           // unset door busy!
-          DOOR_STATUS *pDoorStatus;
+          let pDoorStatus: Pointer<DOOR_STATUS>;
 
           pDoorStatus = GetDoorStatus(pAniNode->sGridNo);
           if (pDoorStatus) {
@@ -356,11 +358,12 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
 }
 
 function UpdateAniTiles(): void {
-  ANITILE *pAniNode = NULL;
-  ANITILE *pNode = NULL;
-  UINT32 uiClock = GetJA2Clock();
-  UINT16 usMaxFrames, usMinFrames;
-  UINT8 ubTempDir;
+  let pAniNode: Pointer<ANITILE> = NULL;
+  let pNode: Pointer<ANITILE> = NULL;
+  let uiClock: UINT32 = GetJA2Clock();
+  let usMaxFrames: UINT16;
+  let usMinFrames: UINT16;
+  let ubTempDir: UINT8;
 
   // LOOP THROUGH EACH NODE
   pAniNode = pAniTileHead;
@@ -426,7 +429,7 @@ function UpdateAniTiles(): void {
 
           // CHECK IF WE SHOULD BE DISPLAYING TRANSLUCENTLY!
           if (pNode->sCurrentFrame == pNode->ubKeyFrame2) {
-            UINT8 ubExpType;
+            let ubExpType: UINT8;
 
             switch (pNode->uiKeyFrame2Code) {
               case ANI_KEYFRAME_BEGIN_DAMAGE:
@@ -580,8 +583,8 @@ function UpdateAniTiles(): void {
 }
 
 function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
-  UINT8 ubTempDir;
-  INT16 sStartFrame = 0;
+  let ubTempDir: UINT8;
+  let sStartFrame: INT16 = 0;
 
   if ((pAniTile->uiFlags & ANITILE_USE_DIRECTION_FOR_START_FRAME)) {
     // Our start frame is actually a direction indicator
@@ -599,7 +602,7 @@ function SetAniTileFrame(pAniTile: Pointer<ANITILE>, sFrame: INT16): void {
 }
 
 function GetCachedAniTileOfType(sGridNo: INT16, ubLevelID: UINT8, uiFlags: UINT32): Pointer<ANITILE> {
-  LEVELNODE *pNode = NULL;
+  let pNode: Pointer<LEVELNODE> = NULL;
 
   switch (ubLevelID) {
     case ANI_STRUCT_LEVEL:
@@ -667,8 +670,8 @@ function PauseAniTile(pAniTile: Pointer<ANITILE>, fPause: BOOLEAN): void {
 }
 
 function PauseAllAniTilesOfType(uiType: UINT32, fPause: BOOLEAN): void {
-  ANITILE *pAniNode = NULL;
-  ANITILE *pNode = NULL;
+  let pAniNode: Pointer<ANITILE> = NULL;
+  let pNode: Pointer<ANITILE> = NULL;
 
   // LOOP THROUGH EACH NODE
   pAniNode = pAniTileHead;

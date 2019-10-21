@@ -5,15 +5,15 @@ const WAKETIME = (x) => (NUM_SEC_IN_DAY / NUM_SEC_IN_MIN - x);
 
 //#define DISABLESCHEDULES
 
-SCHEDULENODE *gpScheduleList = NULL;
-UINT8 gubScheduleID = 0;
+let gpScheduleList: Pointer<SCHEDULENODE> = NULL;
+let gubScheduleID: UINT8 = 0;
 
 // IMPORTANT:
 // This function adds a NEWLY allocated schedule to the list.  The pointer passed is totally
 // separate.  So make sure that you delete the pointer if you don't need it anymore.  The editor
 // uses a single static node to copy data from, hence this method.
 function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOLDIERINITNODE>): void {
-  SCHEDULENODE *curr;
+  let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
   gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
   memcpy(gpScheduleList, pSchedule, sizeof(SCHEDULENODE));
@@ -34,7 +34,7 @@ function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOL
 }
 
 function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
-  SCHEDULENODE *curr;
+  let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
   while (curr) {
     if (curr->ubScheduleID == ubScheduleID)
@@ -46,7 +46,7 @@ function GetSchedule(ubScheduleID: UINT8): Pointer<SCHEDULENODE> {
 
 // Removes all schedules from the event list, and cleans out the list.
 function DestroyAllSchedules(): void {
-  SCHEDULENODE *curr;
+  let curr: Pointer<SCHEDULENODE>;
   // First remove all of the events.
   DeleteAllStrategicEventsOfType(EVENT_PROCESS_TACTICAL_SCHEDULE);
   // Now, delete all of the schedules.
@@ -61,7 +61,7 @@ function DestroyAllSchedules(): void {
 
 // cleans out the schedule list without touching events, for saving & loading games
 function DestroyAllSchedulesWithoutDestroyingEvents(): void {
-  SCHEDULENODE *curr;
+  let curr: Pointer<SCHEDULENODE>;
 
   // delete all of the schedules.
   while (gpScheduleList) {
@@ -74,7 +74,8 @@ function DestroyAllSchedulesWithoutDestroyingEvents(): void {
 }
 
 function DeleteSchedule(ubScheduleID: UINT8): void {
-  SCHEDULENODE *curr, *temp = NULL;
+  let curr: Pointer<SCHEDULENODE>;
+  let temp: Pointer<SCHEDULENODE> = NULL;
 
   if (!gpScheduleList) {
     // ScreenMsg( 0, MSG_BETAVERSION, L"Attempting to delete schedule that doesn't exist -- KM : 2" );
@@ -103,10 +104,10 @@ function DeleteSchedule(ubScheduleID: UINT8): void {
 }
 
 function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
-  SCHEDULENODE *pSchedule;
-  SOLDIERTYPE *pSoldier;
-  INT32 iScheduleIndex = 0;
-  BOOLEAN fAutoProcess;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let iScheduleIndex: INT32 = 0;
+  let fAutoProcess: BOOLEAN;
 
   // Attempt to locate the schedule.
   pSchedule = GetSchedule(ubScheduleID);
@@ -144,7 +145,8 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
     }
   }
   if (fAutoProcess) {
-    UINT32 uiStartTime, uiEndTime;
+    let uiStartTime: UINT32;
+    let uiEndTime: UINT32;
     // Grab the last time the eventlist was queued.  This will tell us how much time has passed since that moment,
     // and how long we need to auto process this schedule.
     uiStartTime = (guiTimeOfLastEventQuery / 60) % NUM_MIN_IN_DAY;
@@ -179,9 +181,9 @@ function ProcessTacticalSchedule(ubScheduleID: UINT8): void {
 // Called before leaving the editor, or saving the map.  This recalculates
 // all of the schedule IDs from scratch and adjusts the effected structures accordingly.
 function OptimizeSchedules(): void {
-  SCHEDULENODE *pSchedule;
-  SOLDIERINITNODE *pNode;
-  UINT8 ubOldScheduleID;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let pNode: Pointer<SOLDIERINITNODE>;
+  let ubOldScheduleID: UINT8;
   gubScheduleID = 0;
   pSchedule = gpScheduleList;
   while (pSchedule) {
@@ -218,7 +220,9 @@ function OptimizeSchedules(): void {
 
 // Called when transferring from the game to the editor.
 function PrepareSchedulesForEditorEntry(): void {
-  SCHEDULENODE *curr, *prev, *temp;
+  let curr: Pointer<SCHEDULENODE>;
+  let prev: Pointer<SCHEDULENODE>;
+  let temp: Pointer<SCHEDULENODE>;
 
   // Delete all schedule events.  The editor will automatically warp all civilians to their starting locations.
   DeleteAllStrategicEventsOfType(EVENT_PROCESS_TACTICAL_SCHEDULE);
@@ -240,7 +244,7 @@ function PrepareSchedulesForEditorEntry(): void {
     } else {
       if (curr->usFlags & SCHEDULE_FLAGS_SLEEP_CONVERTED) {
         // uncovert it!
-        INT32 i;
+        let i: INT32;
         for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {
           // if( i
         }
@@ -257,9 +261,9 @@ function PrepareSchedulesForEditorExit(): void {
 }
 
 function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
-  SCHEDULENODE *pSchedule = NULL;
-  SCHEDULENODE temp;
-  UINT8 ubNum;
+  let pSchedule: Pointer<SCHEDULENODE> = NULL;
+  let temp: SCHEDULENODE;
+  let ubNum: UINT8;
 
   // delete all the schedules we might have loaded (though we shouldn't have any loaded!!)
   if (gpScheduleList) {
@@ -292,12 +296,13 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
 }
 
 function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
-  SCHEDULENODE *pSchedule = NULL;
-  SCHEDULENODE temp;
-  UINT8 ubNum;
-  UINT32 ubRealNum;
+  let pSchedule: Pointer<SCHEDULENODE> = NULL;
+  let temp: SCHEDULENODE;
+  let ubNum: UINT8;
+  let ubRealNum: UINT32;
 
-  UINT32 uiNumBytesRead, uiNumBytesToRead;
+  let uiNumBytesRead: UINT32;
+  let uiNumBytesToRead: UINT32;
 
   // LOADDATA( &ubNum, *hBuffer, sizeof( UINT8 ) );
   uiNumBytesToRead = sizeof(UINT8);
@@ -349,8 +354,10 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
 // used to fix a bug in the editor where the schedules were reversed.  Because only
 // some maps were effected, this feature was required.
 function ReverseSchedules(): void {
-  SCHEDULENODE *pReverseHead, *pPrevReverseHead, *pPrevScheduleHead;
-  UINT8 ubOppositeID = gubScheduleID;
+  let pReverseHead: Pointer<SCHEDULENODE>;
+  let pPrevReverseHead: Pointer<SCHEDULENODE>;
+  let pPrevScheduleHead: Pointer<SCHEDULENODE>;
+  let ubOppositeID: UINT8 = gubScheduleID;
   // First, remove any gaps which would mess up the reverse ID assignment by optimizing
   // the schedules.
   OptimizeSchedules();
@@ -375,7 +382,7 @@ function ReverseSchedules(): void {
 
 // Another debug feature.
 function ClearAllSchedules(): void {
-  SOLDIERINITNODE *pNode;
+  let pNode: Pointer<SOLDIERINITNODE>;
   DestroyAllSchedules();
   pNode = gSoldierInitHead;
   while (pNode) {
@@ -390,10 +397,11 @@ function ClearAllSchedules(): void {
 }
 
 function SaveSchedules(hFile: HWFILE): BOOLEAN {
-  SCHEDULENODE *curr;
-  UINT32 uiBytesWritten;
-  UINT8 ubNum, ubNumFucker;
-  INT32 iNum;
+  let curr: Pointer<SCHEDULENODE>;
+  let uiBytesWritten: UINT32;
+  let ubNum: UINT8;
+  let ubNumFucker: UINT8;
+  let iNum: INT32;
   // Now, count the number of schedules in the list
   iNum = 0;
   curr = gpScheduleList;
@@ -433,12 +441,14 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
 // Each schedule has upto four parts to it, so sort them chronologically.
 // Happily, the fields with no times actually are the highest.
 function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
-  INT32 index, i, iBestIndex;
-  UINT16 usTime;
-  UINT16 usData1;
-  UINT16 usData2;
-  UINT8 ubAction;
-  BOOLEAN fSorted = FALSE;
+  let index: INT32;
+  let i: INT32;
+  let iBestIndex: INT32;
+  let usTime: UINT16;
+  let usData1: UINT16;
+  let usData2: UINT16;
+  let ubAction: UINT8;
+  let fSorted: BOOLEAN = FALSE;
 
   // Use a bubblesort method (max:  3 switches).
   index = 0;
@@ -473,11 +483,12 @@ function SortSchedule(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
 }
 
 function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier; // NB this is the person already in the location,
-  INT16 sNewGridNo;
-  UINT8 ubDir;
-  INT16 sCellX, sCellY;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>; // NB this is the person already in the location,
+  let sNewGridNo: INT16;
+  let ubDir: UINT8;
+  let sCellX: INT16;
+  let sCellY: INT16;
 
   // this is for autoprocessing schedules...
   // there could be someone in the destination location, in which case
@@ -510,9 +521,11 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
 }
 
 function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): void {
-  INT16 sCellX, sCellY, sGridNo;
-  INT8 bDirection;
-  SOLDIERTYPE *pSoldier;
+  let sCellX: INT16;
+  let sCellY: INT16;
+  let sGridNo: INT16;
+  let bDirection: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
     // CJC, November 28th:  when reloading a saved game we want events posted but no events autoprocessed since
@@ -607,12 +620,13 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
 }
 
 function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT32 uiStartTime, uiEndTime;
-  INT32 i;
-  INT8 bEmpty;
-  SCHEDULENODE *pSchedule;
-  UINT8 ubTempAction;
-  UINT16 usTemp;
+  let uiStartTime: UINT32;
+  let uiEndTime: UINT32;
+  let i: INT32;
+  let bEmpty: INT8;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let ubTempAction: UINT8;
+  let usTemp: UINT16;
 
   if ((pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP) && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN)))) && (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C) && (pSoldier->ubProfile == NO_PROFILE)) {
     // no schedules for people guarding Tony's!
@@ -703,8 +717,8 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiStartTime: UINT32, uiEndTime: UINT32): void {
-  INT32 i;
-  BOOLEAN fPostedNextEvent = FALSE;
+  let i: INT32;
+  let fPostedNextEvent: BOOLEAN = FALSE;
 
   if (uiStartTime > uiEndTime) {
     // The start time is later in the day than the end time, which means we'll be wrapping
@@ -757,8 +771,8 @@ function PrepareScheduleForAutoProcessing(pSchedule: Pointer<SCHEDULENODE>, uiSt
 // Leave at night, come back in the morning.  The time variances are a couple hours, so
 // the town doesn't turn into a ghost town in 5 minutes.
 function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 i;
-  SCHEDULENODE *curr;
+  let i: INT32;
+  let curr: Pointer<SCHEDULENODE>;
 
   if (gbWorldSectorZ) {
     // People in underground sectors don't get schedules.
@@ -803,8 +817,8 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function PostSchedules(): void {
-  SOLDIERINITNODE *curr;
-  BOOLEAN fDefaultSchedulesPossible = FALSE;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let fDefaultSchedulesPossible: BOOLEAN = FALSE;
 
   // If no way to leave the map, then don't post default schedules.
   if (gMapInformation.sNorthGridNo != -1 || gMapInformation.sEastGridNo != -1 || gMapInformation.sSouthGridNo != -1 || gMapInformation.sWestGridNo != -1) {
@@ -827,8 +841,8 @@ function PostSchedules(): void {
 }
 
 function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: UINT16): void {
-  INT16 sDoorGridNo;
-  DOOR *pDoor;
+  let sDoorGridNo: INT16;
+  let pDoor: Pointer<DOOR>;
 
   sDoorGridNo = FindDoorAtGridNoOrAdjacent((INT16)usGridNo);
   if (sDoorGridNo != NOWHERE) {
@@ -860,9 +874,11 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
 // Assumes that a schedule has just been processed.  This takes the current time, and compares it to the
 // schedule, and looks for the next schedule action that would get processed and posts it.
 function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
-  SCHEDULENODE *pSchedule;
-  INT32 i, iBestIndex;
-  UINT16 usTime, usBestTime;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let i: INT32;
+  let iBestIndex: INT32;
+  let usTime: UINT16;
+  let usBestTime: UINT16;
   pSchedule = GetSchedule(pSoldier->ubScheduleID);
   if (!pSchedule) {
     // post default?
@@ -892,9 +908,10 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntryTime: Pointer<UINT32>, puiExitTime: Pointer<UINT32>): BOOLEAN {
-  INT32 iLoop;
-  BOOLEAN fFoundEntryTime = FALSE, fFoundExitTime = FALSE;
-  SCHEDULENODE *pSchedule;
+  let iLoop: INT32;
+  let fFoundEntryTime: BOOLEAN = FALSE;
+  let fFoundExitTime: BOOLEAN = FALSE;
+  let pSchedule: Pointer<SCHEDULENODE>;
 
   *puiEntryTime = 0;
   *puiExitTime = 0;
@@ -926,9 +943,10 @@ function ExtractScheduleEntryAndExitInfo(pSoldier: Pointer<SOLDIERTYPE>, puiEntr
 
 // This is for determining shopkeeper's opening/closing hours
 function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
-  INT32 iLoop;
-  BOOLEAN fFoundOpeningTime = FALSE, fFoundClosingTime = FALSE;
-  SCHEDULENODE *pSchedule;
+  let iLoop: INT32;
+  let fFoundOpeningTime: BOOLEAN = FALSE;
+  let fFoundClosingTime: BOOLEAN = FALSE;
+  let pSchedule: Pointer<SCHEDULENODE>;
 
   *puiOpeningTime = 0;
   *puiClosingTime = 0;
@@ -959,8 +977,8 @@ function ExtractScheduleDoorLockAndUnlockInfo(pSoldier: Pointer<SOLDIERTYPE>, pu
 }
 
 function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTime: Pointer<UINT32>): BOOLEAN {
-  INT32 iLoop;
-  BOOLEAN fFoundTime = FALSE;
+  let iLoop: INT32;
+  let fFoundTime: BOOLEAN = FALSE;
 
   *puiTime = 100000;
 
@@ -978,7 +996,7 @@ function GetEarliestMorningScheduleEvent(pSchedule: Pointer<SCHEDULENODE>, puiTi
 }
 
 function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BOOLEAN {
-  INT8 bLoop;
+  let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
     if (pSchedule->ubAction[bLoop] != SCHEDULE_ACTION_NONE && pSchedule->ubAction[bLoop] != SCHEDULE_ACTION_SLEEP) {
@@ -991,7 +1009,7 @@ function ScheduleHasMorningNonSleepEntries(pSchedule: Pointer<SCHEDULENODE>): BO
 }
 
 function GetEmptyScheduleEntry(pSchedule: Pointer<SCHEDULENODE>): INT8 {
-  INT8 bLoop;
+  let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
     if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_NONE) {
@@ -1031,7 +1049,7 @@ void ReconnectSchedules( void )
 */
 
 function FindSleepSpot(pSchedule: Pointer<SCHEDULENODE>): UINT16 {
-  INT8 bLoop;
+  let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
     if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
@@ -1042,7 +1060,7 @@ function FindSleepSpot(pSchedule: Pointer<SCHEDULENODE>): UINT16 {
 }
 
 function ReplaceSleepSpot(pSchedule: Pointer<SCHEDULENODE>, usNewSpot: UINT16): void {
-  INT8 bLoop;
+  let bLoop: INT8;
 
   for (bLoop = 0; bLoop < MAX_SCHEDULE_ACTIONS; bLoop++) {
     if (pSchedule->ubAction[bLoop] == SCHEDULE_ACTION_SLEEP) {
@@ -1053,11 +1071,12 @@ function ReplaceSleepSpot(pSchedule: Pointer<SCHEDULENODE>, usNewSpot: UINT16): 
 }
 
 function SecureSleepSpot(pSoldier: Pointer<SOLDIERTYPE>, usSleepSpot: UINT16): void {
-  SOLDIERTYPE *pSoldier2;
-  UINT16 usSleepSpot2, usNewSleepSpot;
-  UINT32 uiLoop;
-  SCHEDULENODE *pSchedule;
-  UINT8 ubDirection;
+  let pSoldier2: Pointer<SOLDIERTYPE>;
+  let usSleepSpot2: UINT16;
+  let usNewSleepSpot: UINT16;
+  let uiLoop: UINT32;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let ubDirection: UINT8;
 
   // start after this soldier's ID so we don't duplicate work done in previous passes
   for (uiLoop = pSoldier->ubID + 1; uiLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; uiLoop++) {

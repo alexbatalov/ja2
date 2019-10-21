@@ -1,4 +1,4 @@
-INT16 sBasementEnterGridNos[] = {
+let sBasementEnterGridNos: INT16[] /* [] */ = {
   13362,
   13363,
   13364,
@@ -6,7 +6,7 @@ INT16 sBasementEnterGridNos[] = {
   13525,
   13524,
 };
-INT16 sBasementExitGridNos[] = {
+let sBasementExitGridNos: INT16[] /* [] */ = {
   8047,
   8207,
   8208,
@@ -17,7 +17,7 @@ INT16 sBasementExitGridNos[] = {
   7567,
 };
 
-UINT16 gusDialogueMessageBoxType;
+let gusDialogueMessageBoxType: UINT16;
 
 const TALK_PANEL_FACE_X = 6;
 const TALK_PANEL_FACE_Y = 9;
@@ -58,7 +58,7 @@ const TALK_PANEL_POPUP_RIGHT = 3;
 // chance vince will say random quote to player during conv.
 const CHANCE_FOR_DOCTOR_TO_SAY_RANDOM_QUOTE = 20;
 
-UINT8 ubTalkMenuApproachIDs[] = {
+let ubTalkMenuApproachIDs: UINT8[] /* [] */ = {
   APPROACH_REPEAT,
   APPROACH_FRIENDLY,
   APPROACH_DIRECT,
@@ -73,31 +73,31 @@ const enum Enum211 {
 }
 
 // GLOBAL NPC STRUCT
-NPC_DIALOGUE_TYPE gTalkPanel;
-BOOLEAN gfInTalkPanel = FALSE;
-SOLDIERTYPE *gpSrcSoldier = NULL;
-SOLDIERTYPE *gpDestSoldier = NULL;
-UINT8 gubSrcSoldierProfile;
-UINT8 gubNiceNPCProfile = NO_PROFILE;
-UINT8 gubNastyNPCProfile = NO_PROFILE;
+let gTalkPanel: NPC_DIALOGUE_TYPE;
+let gfInTalkPanel: BOOLEAN = FALSE;
+let gpSrcSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpDestSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gubSrcSoldierProfile: UINT8;
+let gubNiceNPCProfile: UINT8 = NO_PROFILE;
+let gubNastyNPCProfile: UINT8 = NO_PROFILE;
 
-UINT8 gubTargetNPC;
-UINT8 gubTargetRecord;
-UINT8 gubTargetApproach;
-BOOLEAN gfShowDialogueMenu;
-BOOLEAN gfWaitingForTriggerTimer;
-UINT32 guiWaitingForTriggerTime;
-INT32 iInterfaceDialogueBox = -1;
-UINT8 ubRecordThatTriggeredLiePrompt;
-BOOLEAN gfConversationPending = FALSE;
-SOLDIERTYPE *gpPendingDestSoldier;
-SOLDIERTYPE *gpPendingSrcSoldier;
-INT8 gbPendingApproach;
-UINT32 guiPendingApproachData;
+let gubTargetNPC: UINT8;
+let gubTargetRecord: UINT8;
+let gubTargetApproach: UINT8;
+let gfShowDialogueMenu: BOOLEAN;
+let gfWaitingForTriggerTimer: BOOLEAN;
+let guiWaitingForTriggerTime: UINT32;
+let iInterfaceDialogueBox: INT32 = -1;
+let ubRecordThatTriggeredLiePrompt: UINT8;
+let gfConversationPending: BOOLEAN = FALSE;
+let gpPendingDestSoldier: Pointer<SOLDIERTYPE>;
+let gpPendingSrcSoldier: Pointer<SOLDIERTYPE>;
+let gbPendingApproach: INT8;
+let guiPendingApproachData: UINT32;
 
-INT32 giHospitalTempBalance; // stores amount of money for current doctoring
-INT32 giHospitalRefund; // stores amount of money given to hospital for doctoring that wasn't used
-INT8 gbHospitalPriceModifier; // stores discount being offered
+let giHospitalTempBalance: INT32; // stores amount of money for current doctoring
+let giHospitalRefund: INT32; // stores amount of money given to hospital for doctoring that wasn't used
+let gbHospitalPriceModifier: INT8; // stores discount being offered
 
 const enum Enum212 {
   HOSPITAL_UNSET = 0,
@@ -149,7 +149,7 @@ function HandlePendingInitConv(): void {
 
 function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSoldier: Pointer<SOLDIERTYPE>, bApproach: INT8, uiApproachData: UINT32): BOOLEAN {
   // OK, init talking menu
-  BOOLEAN fFromPending;
+  let fFromPending: BOOLEAN;
 
   fFromPending = gfConversationPending;
 
@@ -212,8 +212,12 @@ function InternalInitiateConversation(pDestSoldier: Pointer<SOLDIERTYPE>, pSrcSo
 }
 
 function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
-  INT16 sXMapPos, sYMapPos, sScreenX, sScreenY;
-  INT16 sX, sY;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sX: INT16;
+  let sY: INT16;
 
   // Get XY values
   {
@@ -233,14 +237,16 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
 }
 
 function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): BOOLEAN {
-  INT32 iFaceIndex, cnt;
-  VSURFACE_DESC vs_desc;
-  FACETYPE *pFace;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  VOBJECT_DESC VObjectDesc;
-  INT16 sCenterYVal, sCenterXVal;
-  UINT8 ubString[48];
+  let iFaceIndex: INT32;
+  let cnt: INT32;
+  let vs_desc: VSURFACE_DESC;
+  let pFace: Pointer<FACETYPE>;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let VObjectDesc: VOBJECT_DESC;
+  let sCenterYVal: INT16;
+  let sCenterXVal: INT16;
+  let ubString: UINT8[] /* [48] */;
 
   // disable scroll messages
   HideMessagesDuringNPCDialogue();
@@ -397,7 +403,7 @@ function DoneTalkingButtonClickCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 }
 
 function DeleteTalkingMenu(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (!gfInTalkPanel)
     return;
@@ -463,9 +469,9 @@ function DeleteTalkingMenu(): void {
 
   if (CheckFact(FACT_NEED_TO_SAY_SOMETHING, 0)) {
     if (DialogueQueueIsEmpty() && !gfWaitingForTriggerTimer) {
-      UINT8 ubNPC;
-      BOOLEAN fNice = FALSE;
-      SOLDIERTYPE *pNPC;
+      let ubNPC: UINT8;
+      let fNice: BOOLEAN = FALSE;
+      let pNPC: Pointer<SOLDIERTYPE>;
 
       if (gubNiceNPCProfile != NO_PROFILE) {
         ubNPC = gubNiceNPCProfile;
@@ -501,14 +507,20 @@ function DeleteTalkingMenu(): void {
 }
 
 function RenderTalkingMenu(): void {
-  INT32 cnt;
-  FACETYPE *pFace;
-  INT16 sFontX, sFontY, sX, sY;
-  UINT8 ubCharacterNum = gTalkPanel.ubCharNum;
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT8 *pDestBuf, *pSrcBuf;
-  UINT16 usTextBoxWidth, usTextBoxHeight;
-  CHAR16 zTempString[128];
+  let cnt: INT32;
+  let pFace: Pointer<FACETYPE>;
+  let sFontX: INT16;
+  let sFontY: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let ubCharacterNum: UINT8 = gTalkPanel.ubCharNum;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let usTextBoxWidth: UINT16;
+  let usTextBoxHeight: UINT16;
+  let zTempString: CHAR16[] /* [128] */;
 
   if (!gfInTalkPanel) {
     return;
@@ -640,7 +652,7 @@ function RenderTalkingMenu(): void {
             case 4:
               // if its an arms dealer
               if (IsMercADealer(ubCharacterNum)) {
-                UINT8 ubType;
+                let ubType: UINT8;
 
                 // determine the 'kind' of arms dealer
                 ubType = GetTypeOfArmsDealer(GetArmsDealerIDFromMercID(ubCharacterNum));
@@ -661,7 +673,7 @@ function RenderTalkingMenu(): void {
           if (cnt == 4) {
             // if its an arms dealer
             if (IsMercADealer(ubCharacterNum)) {
-              UINT8 ubType;
+              let ubType: UINT8;
 
               // determine the 'kind' of arms dealer
               ubType = GetTypeOfArmsDealer(GetArmsDealerIDFromMercID(ubCharacterNum));
@@ -690,7 +702,7 @@ function RenderTalkingMenu(): void {
 }
 
 function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiItemPos;
+  let uiItemPos: UINT32;
 
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -705,8 +717,8 @@ function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 }
 
 function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiItemPos;
-  BOOLEAN fDoConverse = TRUE;
+  let uiItemPos: UINT32;
+  let fDoConverse: BOOLEAN = TRUE;
   uiItemPos = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
@@ -767,7 +779,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function TalkPanelBaseRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fLButtonDown = TRUE;
@@ -851,8 +863,8 @@ function ProfileCurrentlyTalkingInDialoguePanel(ubProfile: UINT8): BOOLEAN {
 }
 
 function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOOLEAN {
-  FACETYPE *pFace;
-  BOOLEAN fTalking = FALSE;
+  let pFace: Pointer<FACETYPE>;
+  let fTalking: BOOLEAN = FALSE;
 
   if (!gfInTalkPanel) {
     return FALSE;
@@ -898,8 +910,8 @@ function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOO
 }
 
 function HandleTalkingMenuBackspace(): void {
-  FACETYPE *pFace;
-  BOOLEAN fTalking = FALSE;
+  let pFace: Pointer<FACETYPE>;
+  let fTalking: BOOLEAN = FALSE;
 
   if (!gfInTalkPanel) {
     return;
@@ -931,8 +943,12 @@ function HandleTalkingMenuBackspace(): void {
 }
 
 function CalculatePopupTextOrientation(sWidth: INT16, sHeight: INT16): void {
-  BOOLEAN fOKLeft = FALSE, fOKTop = FALSE, fOKBottom = FALSE, fOK = FALSE;
-  INT16 sX, sY;
+  let fOKLeft: BOOLEAN = FALSE;
+  let fOKTop: BOOLEAN = FALSE;
+  let fOKBottom: BOOLEAN = FALSE;
+  let fOK: BOOLEAN = FALSE;
+  let sX: INT16;
+  let sY: INT16;
 
   // Check Left
   sX = gTalkPanel.sX - sWidth;
@@ -1058,7 +1074,7 @@ function NPCClosePanel(): BOOLEAN {
 }
 
 function SourceSoldierPointerIsValidAndReachableForGive(pGiver: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT16 sAdjGridNo;
+  let sAdjGridNo: INT16;
 
   if (!gpSrcSoldier) {
     return FALSE;
@@ -1097,7 +1113,7 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
 
     // have to walk up to the merc closest to ubNPC
 
-    SOLDIERTYPE *pNPC;
+    let pNPC: Pointer<SOLDIERTYPE>;
 
     pNPC = FindSoldierByProfileID(ubNPC, FALSE);
     if (pNPC) {
@@ -1114,7 +1130,7 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
 }
 
 function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDialogueMenu: BOOLEAN, ubTargetApproach: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
 
@@ -1176,9 +1192,9 @@ function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDia
 }
 
 function HandleNPCTrigger(): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sPlayerGridNo;
-  UINT8 ubPlayerID;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sPlayerGridNo: INT16;
+  let ubPlayerID: UINT8;
 
   pSoldier = FindSoldierByProfileID(gubTargetNPC, FALSE);
   if (!pSoldier) {
@@ -1237,7 +1253,7 @@ function HandleWaitTimerForNPCTrigger(): void {
 }
 
 function HandleNPCGotoGridNo(ubTargetNPC: UINT8, usGridNo: UINT16, ubQuoteNum: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   // OK, Move to gridNo!
 
   // Shotdown any panel we had up...
@@ -1291,7 +1307,7 @@ function HandleNPCClosePanel(): void {
 }
 
 function HandleStuffForNPCEscorted(ubNPC: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   switch (ubNPC) {
     case MARIA:
@@ -1358,15 +1374,17 @@ function HandleFactForNPCUnescorted(ubNPC: UINT8): void {
 }
 
 function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum: UINT8): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier, *pSoldier2;
-  INT8 bNumDone = 0;
-  INT16 sGridNo = NOWHERE, sAdjustedGridNo;
-  INT8 bItemIn;
-  UINT8 ubDesiredMercDir;
-  EXITGRID ExitGrid;
-  INT32 iRandom = 0;
-  UINT8 ubMineIndex;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier2: Pointer<SOLDIERTYPE>;
+  let bNumDone: INT8 = 0;
+  let sGridNo: INT16 = NOWHERE;
+  let sAdjustedGridNo: INT16;
+  let bItemIn: INT8;
+  let ubDesiredMercDir: UINT8;
+  let ExitGrid: EXITGRID;
+  let iRandom: INT32 = 0;
+  let ubMineIndex: UINT8;
 
   pSoldier2 = NULL;
   // ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Handling %s, action %d at %ld", gMercProfiles[ ubTargetNPC ].zNickname, usActionCode, GetJA2Clock() );
@@ -1470,7 +1488,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         // Look for letter....
         {
-          INT8 bInvPos;
+          let bInvPos: INT8;
 
           // Look for item....
           bInvPos = FindObj(pSoldier, 227);
@@ -1520,8 +1538,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
 
         if (pSoldier->inv[HANDPOS].usItem != NOTHING) {
-          UINT16 usGun;
-          INT8 bNewSlot, bOldSlot;
+          let usGun: UINT16;
+          let bNewSlot: INT8;
+          let bOldSlot: INT8;
 
           usGun = pSoldier->inv[HANDPOS].usItem;
 
@@ -1900,9 +1919,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         // add a money item with $10000 to the tile in front of Kyle
         // and then have him pick it up
         {
-          OBJECTTYPE Object;
-          INT16 sGridNo = 14952;
-          INT32 iWorldItem;
+          let Object: OBJECTTYPE;
+          let sGridNo: INT16 = 14952;
+          let iWorldItem: INT32;
 
           pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
           if (pSoldier) {
@@ -1990,7 +2009,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         }
         // JA3Gold: unlock the doors instead of opening them
         {
-          DOOR *pDoor;
+          let pDoor: Pointer<DOOR>;
 
           pDoor = FindDoorInfoAtGridNo(sGridNo);
           if (pDoor) {
@@ -2313,7 +2332,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case NPC_ACTION_DECIDE_ACTIVE_TERRORISTS: {
         // only (now) add all terrorist files to laptop
-        UINT8 ubLoop;
+        let ubLoop: UINT8;
 
         // one terrorist will always be Elgin
         // determine how many more terrorists - 2 to 4 more
@@ -2483,7 +2502,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         pSoldier2 = FindSoldierByProfileID(ROBOT, FALSE);
         if (pSoldier && pSoldier2) {
           // Give weapon to robot
-          INT8 bSlot;
+          let bSlot: INT8;
 
           bSlot = FindObjClass(pSoldier, IC_GUN);
           if (bSlot != NO_SLOT) {
@@ -2521,10 +2540,10 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
 
         if (pSoldier) {
-          INT16 sNearestPC;
-          UINT8 ubID;
-          INT8 bMoneySlot;
-          INT8 bEmptySlot;
+          let sNearestPC: INT16;
+          let ubID: UINT8;
+          let bMoneySlot: INT8;
+          let bEmptySlot: INT8;
 
           sNearestPC = ClosestPC(pSoldier, NULL);
 
@@ -2560,7 +2579,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
       case NPC_ACTION_TRIGGER_SPIKE_OR_DARREN:
         pSoldier = FindSoldierByProfileID(KINGPIN, FALSE);
         if (pSoldier) {
-          UINT8 ubRoom;
+          let ubRoom: UINT8;
 
           if (InARoom(pSoldier->sGridNo, &ubRoom) && (ubRoom == 1 || ubRoom == 2 || ubRoom == 3)) {
             // Kingpin is in the club
@@ -2637,8 +2656,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
         if (pSoldier) {
-          UINT8 ubTargetID;
-          SOLDIERTYPE *pTarget;
+          let ubTargetID: UINT8;
+          let pTarget: Pointer<SOLDIERTYPE>;
 
           // Target a different merc....
           if (usActionCode == NPC_ACTION_PUNCH_PC_SLOT_0) {
@@ -2695,7 +2714,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
         if (pSoldier) {
-          SOLDIERTYPE *pTarget;
+          let pTarget: Pointer<SOLDIERTYPE>;
 
           pTarget = FindSoldierByProfileID(ELLIOT, FALSE);
 
@@ -2736,10 +2755,10 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         // OK, LET'S FIND THE QUEEN AND MAKE HER DO SLAP ANIMATION
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
         if (pSoldier) {
-          UINT8 ubTargetID;
-          SOLDIERTYPE *pTarget;
-          INT32 cnt;
-          BOOLEAN fGoodTarget = FALSE;
+          let ubTargetID: UINT8;
+          let pTarget: Pointer<SOLDIERTYPE>;
+          let cnt: INT32;
+          let fGoodTarget: BOOLEAN = FALSE;
 
           for (cnt = 0; cnt < 3; cnt++) {
             ubTargetID = WhoIsThere2(gsInterrogationGridNo[cnt], 0);
@@ -3070,8 +3089,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case NPC_ACTION_INVOKE_CONVERSATION_MODE:
         if (!gfInTalkPanel) {
-          INT16 sNearestPC;
-          UINT8 ubID;
+          let sNearestPC: INT16;
+          let ubID: UINT8;
 
           pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
           if (pSoldier) {
@@ -3439,7 +3458,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         break;
       case NPC_ACTION_TRIGGER_HANS_BY_ROOM: {
         if (gpSrcSoldier) {
-          UINT8 ubRoom;
+          let ubRoom: UINT8;
 
           if (InARoom(gpSrcSoldier->sGridNo, &ubRoom) && (ubRoom == 49)) {
             TriggerNPCRecord(HANS, 18);
@@ -3515,7 +3534,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 }
 
 function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
-  UINT32 uiCost;
+  let uiCost: UINT32;
 
   if (!pSoldier) {
     return 0;
@@ -3556,10 +3575,11 @@ function CalcPatientMedicalCost(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
 }
 
 function CalcMedicalCost(ubId: UINT8): UINT32 {
-  INT32 cnt;
-  UINT32 uiCostSoFar;
-  INT16 sGridNo = 0;
-  SOLDIERTYPE *pSoldier, *pNPC;
+  let cnt: INT32;
+  let uiCostSoFar: UINT32;
+  let sGridNo: INT16 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   uiCostSoFar = 0;
 
@@ -3593,8 +3613,9 @@ function CalcMedicalCost(ubId: UINT8): UINT32 {
 }
 
 function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
-  UINT32 cnt, uiCount = 0;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let uiCount: UINT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[cnt]; cnt <= (UINT32)(gTacticalStatus.Team[gbPlayerNum].bLastID - 2); cnt++, pSoldier++) {
     if (pSoldier->bActive) {
@@ -3610,8 +3631,9 @@ function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
 }
 
 function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): void {
-  INT32 iTemp;
-  UINT16 zTemp[256], zTemp2[256];
+  let iTemp: INT32;
+  let zTemp: UINT16[] /* [256] */;
+  let zTemp2: UINT16[] /* [256] */;
 
   gusDialogueMessageBoxType = usMessageBoxType;
   switch (gusDialogueMessageBoxType) {
@@ -3682,8 +3704,8 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
 }
 
 function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
-  UINT8 ubProfile;
-  SOLDIERTYPE *pSoldier;
+  let ubProfile: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   ubProfile = gpDestSoldier->ubProfile;
 
@@ -3768,9 +3790,9 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
       } else {
         // He tried to lie.....
         // Find the best conscious merc with a chance....
-        UINT8 cnt;
-        SOLDIERTYPE *pLier = NULL;
-        SOLDIERTYPE *pSoldier;
+        let cnt: UINT8;
+        let pLier: Pointer<SOLDIERTYPE> = NULL;
+        let pSoldier: Pointer<SOLDIERTYPE>;
 
         cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
         for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier++) {
@@ -3867,7 +3889,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
         // create key for Daryl to give to player
         pSoldier = FindSoldierByProfileID(DARYL, FALSE);
         if (pSoldier) {
-          OBJECTTYPE Key;
+          let Key: OBJECTTYPE;
 
           CreateKeyObject(&Key, 1, 38);
           AutoPlaceObject(pSoldier, &Key, FALSE);
@@ -3910,8 +3932,9 @@ function DoneFadeOutActionSex(): void {
 
 function DoneFadeInActionBasement(): void {
   // Start conversation, etc
-  SOLDIERTYPE *pSoldier, *pNPCSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNPCSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Look for someone to talk to
   // look for all mercs on the same team,
@@ -3952,12 +3975,12 @@ function DoneFadeInActionLeaveBasement(): void {
 }
 
 function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
-  STRUCTURE *pStructure;
-  INT16 sStructGridNo;
-  INT16 sActionGridNo;
-  UINT8 ubDirection;
-  INT16 sGridNo;
-  DOOR *pDoor;
+  let pStructure: Pointer<STRUCTURE>;
+  let sStructGridNo: INT16;
+  let sActionGridNo: INT16;
+  let ubDirection: UINT8;
+  let sGridNo: INT16;
+  let pDoor: Pointer<DOOR>;
 
   // Find closest door and get struct data for it!
   if (fDoor) {
@@ -4023,7 +4046,7 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
 }
 
 function TextRegionClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fLButtonDown = TRUE;

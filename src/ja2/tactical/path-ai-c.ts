@@ -16,11 +16,11 @@
 
 //#define PATHAI_SKIPLIST_DEBUG
 
-BOOLEAN gfPlotPathToExitGrid = FALSE;
-BOOLEAN gfRecalculatingExistingPathCost = FALSE;
-UINT8 gubGlobalPathFlags = 0;
+let gfPlotPathToExitGrid: BOOLEAN = FALSE;
+let gfRecalculatingExistingPathCost: BOOLEAN = FALSE;
+let gubGlobalPathFlags: UINT8 = 0;
 
-UINT8 gubBuildingInfoToSet;
+let gubBuildingInfoToSet: UINT8;
 
 // ABSOLUTE maximums
 //#ifdef JA2EDITOR
@@ -40,9 +40,9 @@ const MAX_SKIPLIST_LEVEL = 5;
 const MAX_TRAIL_TREE = (4096);
 const MAX_PATHQ = (512);
 
-INT32 iMaxSkipListLevel = MAX_SKIPLIST_LEVEL;
-INT32 iMaxTrailTree = MAX_TRAIL_TREE;
-INT32 iMaxPathQ = MAX_PATHQ;
+let iMaxSkipListLevel: INT32 = MAX_SKIPLIST_LEVEL;
+let iMaxTrailTree: INT32 = MAX_TRAIL_TREE;
+let iMaxPathQ: INT32 = MAX_PATHQ;
 
 const TRAILCELLTYPE = UINT16;
 
@@ -77,13 +77,14 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 //#define VEINCOST TRAVELCOST_FLAT     //actual cost for bridges and doors and such
 //#define ISVEIN(v) ((v==TRAVELCOST_VEINMID) || (v==TRAVELCOST_VEINEND))
 
-static path_t *pathQ;
-static UINT16 gusPathShown, gusAPtsToMove;
-static INT32 queRequests;
-static INT32 iSkipListSize;
-static INT32 iClosedListSize;
-static INT8 bSkipListLevel;
-static INT32 iSkipListLevelLimit[8] = {
+/* static */ let pathQ: Pointer<path_t>;
+/* static */ let gusPathShown: UINT16;
+/* static */ let gusAPtsToMove: UINT16;
+/* static */ let queRequests: INT32;
+/* static */ let iSkipListSize: INT32;
+/* static */ let iClosedListSize: INT32;
+/* static */ let bSkipListLevel: INT8;
+/* static */ let iSkipListLevelLimit: INT32[] /* [8] */ = {
   0,
   4,
   16,
@@ -117,18 +118,18 @@ const SETLOC = (str, loc) => {
   (str).iLocation = loc;
 };
 
-static TRAILCELLTYPE *trailCost;
-static UINT8 *trailCostUsed;
-static UINT8 gubGlobalPathCount = 0;
-static trail_t *trailTree;
+/* static */ let trailCost: Pointer<TRAILCELLTYPE>;
+/* static */ let trailCostUsed: Pointer<UINT8>;
+/* static */ let gubGlobalPathCount: UINT8 = 0;
+/* static */ let trailTree: Pointer<trail_t>;
 
-static short trailTreeNdx = 0;
+/* static */ let trailTreeNdx: short = 0;
 
 const QHEADNDX = (0);
 const QPOOLNDX = () => (iMaxPathQ - 1);
 
-static path_t *pQueueHead;
-static path_t *pClosedHead;
+/* static */ let pQueueHead: Pointer<path_t>;
+/* static */ let pClosedHead: Pointer<path_t>;
 
 const pathQNotEmpty = () => (pQueueHead->pNext[0] != NULL);
 const pathFound = () => (pQueueHead->pNext[0]->iLocation == iDestination);
@@ -315,23 +316,23 @@ const PURPLESTEPSTART = 32;
 const BLUESTEPSTART = 48;
 const ORANGESTEPSTART = 64;
 
-UINT8 gubNPCAPBudget = 0;
-UINT16 gusNPCMovementMode;
-UINT8 gubNPCDistLimit = 0;
-BOOLEAN gfNPCCircularDistLimit = FALSE;
-UINT8 gubNPCPathCount;
+let gubNPCAPBudget: UINT8 = 0;
+let gusNPCMovementMode: UINT16;
+let gubNPCDistLimit: UINT8 = 0;
+let gfNPCCircularDistLimit: BOOLEAN = FALSE;
+let gubNPCPathCount: UINT8;
 
-BOOLEAN gfPlotDirectPath = FALSE;
-BOOLEAN gfEstimatePath = FALSE;
-BOOLEAN gfPathAroundObstacles = TRUE;
+let gfPlotDirectPath: BOOLEAN = FALSE;
+let gfEstimatePath: BOOLEAN = FALSE;
+let gfPathAroundObstacles: BOOLEAN = TRUE;
 
-static UINT32 guiPlottedPath[256];
-UINT32 guiPathingData[256];
-static INT32 giPathDataSize;
-static INT32 giPlotCnt;
-static UINT32 guiEndPlotGridNo;
+/* static */ let guiPlottedPath: UINT32[] /* [256] */;
+let guiPathingData: UINT32[] /* [256] */;
+/* static */ let giPathDataSize: INT32;
+/* static */ let giPlotCnt: INT32;
+/* static */ let guiEndPlotGridNo: UINT32;
 
-static INT32 dirDelta[8] = {
+/* static */ let dirDelta: INT32[] /* [8] */ = {
   -MAPWIDTH, // N
   1 - MAPWIDTH, // NE
   1, // E
@@ -347,7 +348,7 @@ const LOOPING_COUNTERCLOCKWISE = 1;
 const LOOPING_REVERSE = 2;
 
 function RandomSkipListLevel(): INT8 {
-  INT8 bLevel = 1;
+  let bLevel: INT8 = 1;
 
   while (Random(4) == 0 && bLevel < iMaxSkipListLevel - 1) {
     bLevel++;
@@ -403,69 +404,86 @@ function RestorePathAIToDefaults(): void {
 //	FINDBESTPATH                                                   /
 ////////////////////////////////////////////////////////////////////////
 function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT8, usMovementMode: INT16, bCopy: INT8, fFlags: UINT8): INT32 {
-  INT32 iDestination = sDestination, iOrigination;
-  INT32 iCnt = -1, iStructIndex;
-  INT32 iLoopStart = 0, iLoopEnd = 0;
-  INT8 bLoopState = LOOPING_CLOCKWISE;
+  let iDestination: INT32 = sDestination;
+  let iOrigination: INT32;
+  let iCnt: INT32 = -1;
+  let iStructIndex: INT32;
+  let iLoopStart: INT32 = 0;
+  let iLoopEnd: INT32 = 0;
+  let bLoopState: INT8 = LOOPING_CLOCKWISE;
   // BOOLEAN fLoopForwards = FALSE;
-  BOOLEAN fCheckedBehind = FALSE;
-  UINT8 ubMerc;
-  INT32 iDestX, iDestY, iLocX, iLocY, dx, dy;
-  INT32 newLoc, curLoc;
+  let fCheckedBehind: BOOLEAN = FALSE;
+  let ubMerc: UINT8;
+  let iDestX: INT32;
+  let iDestY: INT32;
+  let iLocX: INT32;
+  let iLocY: INT32;
+  let dx: INT32;
+  let dy: INT32;
+  let newLoc: INT32;
+  let curLoc: INT32;
   // INT32 curY;
-  INT32 curCost, newTotCost, nextCost;
-  INT16 sCurPathNdx;
-  INT32 prevCost;
-  INT32 iWaterToWater;
-  UINT8 ubCurAPCost, ubAPCost;
-  UINT8 ubNewAPCost = 0;
+  let curCost: INT32;
+  let newTotCost: INT32;
+  let nextCost: INT32;
+  let sCurPathNdx: INT16;
+  let prevCost: INT32;
+  let iWaterToWater: INT32;
+  let ubCurAPCost: UINT8;
+  let ubAPCost: UINT8;
+  let ubNewAPCost: UINT8 = 0;
   // BOOLEAN fTurnSlow = FALSE;
   // BOOLEAN fReverse = FALSE; // stuff for vehicles turning
-  BOOLEAN fMultiTile, fVehicle;
+  let fMultiTile: BOOLEAN;
+  let fVehicle: BOOLEAN;
   // INT32 iLastDir, iPrevToLastDir;
   // INT8 bVehicleCheckDir;
   // UINT16 adjLoc;
-  STRUCTURE_FILE_REF *pStructureFileRef = NULL;
-  UINT16 usAnimSurface;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let usAnimSurface: UINT16;
   // INT32 iCnt2, iCnt3;
 
-  INT32 iLastDir = 0;
+  let iLastDir: INT32 = 0;
 
-  path_t *pNewPtr;
-  path_t *pCurrPtr;
+  let pNewPtr: Pointer<path_t>;
+  let pCurrPtr: Pointer<path_t>;
 
-  path_t *pUpdate[ABSMAX_SKIPLIST_LEVEL];
-  path_t *pCurr;
-  path_t *pNext;
-  path_t *pDel;
-  UINT32 uiCost;
-  INT32 iCurrLevel, iLoop;
+  let pUpdate: Pointer<path_t>[] /* [ABSMAX_SKIPLIST_LEVEL] */;
+  let pCurr: Pointer<path_t>;
+  let pNext: Pointer<path_t>;
+  let pDel: Pointer<path_t>;
+  let uiCost: UINT32;
+  let iCurrLevel: INT32;
+  let iLoop: INT32;
 
-  BOOLEAN fHiddenStructVisible; // Used for hidden struct visiblity
-  UINT16 usOKToAddStructID = 0;
+  let fHiddenStructVisible: BOOLEAN; // Used for hidden struct visiblity
+  let usOKToAddStructID: UINT16 = 0;
 
-  BOOLEAN fCopyReachable;
-  BOOLEAN fCopyPathCosts;
-  BOOLEAN fVisitSpotsOnlyOnce;
-  INT32 iOriginationX, iOriginationY, iX, iY;
+  let fCopyReachable: BOOLEAN;
+  let fCopyPathCosts: BOOLEAN;
+  let fVisitSpotsOnlyOnce: BOOLEAN;
+  let iOriginationX: INT32;
+  let iOriginationY: INT32;
+  let iX: INT32;
+  let iY: INT32;
 
-  BOOLEAN fTurnBased;
-  BOOLEAN fPathingForPlayer;
-  INT32 iDoorGridNo = -1;
-  BOOLEAN fDoorIsObstacleIfClosed = 0; // if false, door is obstacle if it is open
-  DOOR_STATUS *pDoorStatus;
-  DOOR *pDoor;
-  STRUCTURE *pDoorStructure;
-  BOOLEAN fDoorIsOpen = FALSE;
-  BOOLEAN fNonFenceJumper;
-  BOOLEAN fNonSwimmer;
-  BOOLEAN fPathAroundPeople;
-  BOOLEAN fConsiderPersonAtDestAsObstacle;
-  BOOLEAN fGoingThroughDoor = FALSE; // for one tile
-  BOOLEAN fContinuousTurnNeeded;
-  BOOLEAN fCloseGoodEnough;
-  UINT16 usMovementModeToUseForAPs;
-  INT16 sClosePathLimit;
+  let fTurnBased: BOOLEAN;
+  let fPathingForPlayer: BOOLEAN;
+  let iDoorGridNo: INT32 = -1;
+  let fDoorIsObstacleIfClosed: BOOLEAN = 0; // if false, door is obstacle if it is open
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoor: Pointer<DOOR>;
+  let pDoorStructure: Pointer<STRUCTURE>;
+  let fDoorIsOpen: BOOLEAN = FALSE;
+  let fNonFenceJumper: BOOLEAN;
+  let fNonSwimmer: BOOLEAN;
+  let fPathAroundPeople: BOOLEAN;
+  let fConsiderPersonAtDestAsObstacle: BOOLEAN;
+  let fGoingThroughDoor: BOOLEAN = FALSE; // for one tile
+  let fContinuousTurnNeeded: BOOLEAN;
+  let fCloseGoodEnough: BOOLEAN;
+  let usMovementModeToUseForAPs: UINT16;
+  let sClosePathLimit: INT16;
 
   fVehicle = FALSE;
   iOriginationX = iOriginationY = 0;
@@ -1469,7 +1487,9 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
   // work finished. Did we find a path?
   if (pathQNotEmpty && pathFound) {
-    INT16 z, _z, _nextLink; //,tempgrid;
+    let z: INT16;
+    let _z: INT16;
+    let _nextLink: INT16; //,tempgrid;
 
     _z = 0;
     z = (INT16)pQueueHead->pNext[0]->sPathNdx;
@@ -1527,8 +1547,8 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 }
 
 function GlobalReachableTest(sStartGridNo: INT16): void {
-  SOLDIERTYPE s;
-  INT32 iCurrentGridNo = 0;
+  let s: SOLDIERTYPE;
+  let iCurrentGridNo: INT32 = 0;
 
   memset(&s, 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
@@ -1546,9 +1566,10 @@ function GlobalReachableTest(sStartGridNo: INT16): void {
 }
 
 function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
-  SOLDIERTYPE s;
-  INT32 iCurrentGridNo = 0;
-  INT32 iX, iY;
+  let s: SOLDIERTYPE;
+  let iCurrentGridNo: INT32 = 0;
+  let iX: INT32;
+  let iY: INT32;
 
   memset(&s, 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
@@ -1581,8 +1602,8 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
 }
 
 function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): void {
-  SOLDIERTYPE s;
-  INT32 iCurrentGridNo = 0;
+  let s: SOLDIERTYPE;
+  let iCurrentGridNo: INT32 = 0;
 
   memset(&s, 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo1;
@@ -1604,7 +1625,7 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
 }
 
 function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
-  SOLDIERTYPE s;
+  let s: SOLDIERTYPE;
 
   memset(&s, 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
@@ -1625,7 +1646,7 @@ function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
 }
 
 function ErasePath(bEraseOldOne: char): void {
-  INT16 iCnt;
+  let iCnt: INT16;
 
   // NOTE: This routine must be called BEFORE anything happens that changes
   //       a merc's gridno, else the....
@@ -1675,27 +1696,35 @@ function ErasePath(bEraseOldOne: char): void {
 }
 
 function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
-  INT16 sTileCost, sPoints = 0, sTempGrid, sAnimCost = 0;
-  INT16 sPointsWalk = 0, sPointsCrawl = 0, sPointsRun = 0, sPointsSwat = 0;
-  INT16 sExtraCostStand, sExtraCostSwat, sExtraCostCrawl;
-  INT32 iLastGrid;
-  INT32 iCnt;
-  INT16 sOldGrid = 0;
-  INT16 sFootOrderIndex;
-  INT16 sSwitchValue;
-  INT16 sFootOrder[5] = {
+  let sTileCost: INT16;
+  let sPoints: INT16 = 0;
+  let sTempGrid: INT16;
+  let sAnimCost: INT16 = 0;
+  let sPointsWalk: INT16 = 0;
+  let sPointsCrawl: INT16 = 0;
+  let sPointsRun: INT16 = 0;
+  let sPointsSwat: INT16 = 0;
+  let sExtraCostStand: INT16;
+  let sExtraCostSwat: INT16;
+  let sExtraCostCrawl: INT16;
+  let iLastGrid: INT32;
+  let iCnt: INT32;
+  let sOldGrid: INT16 = 0;
+  let sFootOrderIndex: INT16;
+  let sSwitchValue: INT16;
+  let sFootOrder: INT16[] /* [5] */ = {
     GREENSTEPSTART,
     PURPLESTEPSTART,
     BLUESTEPSTART,
     ORANGESTEPSTART,
     REDSTEPSTART,
   };
-  UINT16 usTileIndex;
-  UINT16 usTileNum;
-  LEVELNODE *pNode;
-  UINT16 usMovementModeToUseForAPs;
-  BOOLEAN bIgnoreNextCost = FALSE;
-  INT16 sTestGridno;
+  let usTileIndex: UINT16;
+  let usTileNum: UINT16;
+  let pNode: Pointer<LEVELNODE>;
+  let usMovementModeToUseForAPs: UINT16;
+  let bIgnoreNextCost: BOOLEAN = FALSE;
+  let sTestGridno: INT16;
 
   if (bPlot && gusPathShown) {
     ErasePath(FALSE);
@@ -2008,7 +2037,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
 function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for UI calls to the pathing routine, to
   // check whether the shift key is pressed, etc.
-  INT16 sRet;
+  let sRet: INT16;
 
   if (_KeyDown(SHIFT)) {
     gfPlotDirectPath = TRUE;
@@ -2030,7 +2059,7 @@ function UIPlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute:
 
 function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT16 {
   // AI function for a soldier already with a path; this will return the cost of that path using the given movement mode
-  INT16 sRet;
+  let sRet: INT16;
 
   if (!pSoldier->bPathStored || pSoldier->usPathDataSize == 0) {
     return 0;
@@ -2045,7 +2074,7 @@ function RecalculatePathCost(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UIN
 function EstimatePlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: INT8, bPlot: INT8, bStayOn: INT8, usMovementMode: UINT16, bStealth: INT8, bReverse: INT8, sAPBudget: INT16): INT16 {
   // This function is specifically for AI calls to estimate path cost to a location
   // It sets stuff up to ignore all people
-  INT16 sRet;
+  let sRet: INT16;
 
   gfEstimatePath = TRUE;
 
@@ -2060,13 +2089,13 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
   // This function will return either TRAVELCOST_DOOR (in place of closed door cost),
   // TRAVELCOST_OBSTACLE, or the base ground terrain
   // travel cost, depending on whether or not the door is open or closed etc.
-  BOOLEAN fDoorIsObstacleIfClosed = FALSE;
-  INT32 iDoorGridNo = -1;
-  DOOR_STATUS *pDoorStatus;
-  DOOR *pDoor;
-  STRUCTURE *pDoorStructure;
-  BOOLEAN fDoorIsOpen;
-  UINT8 ubReplacementCost;
+  let fDoorIsObstacleIfClosed: BOOLEAN = FALSE;
+  let iDoorGridNo: INT32 = -1;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pDoor: Pointer<DOOR>;
+  let pDoorStructure: Pointer<STRUCTURE>;
+  let fDoorIsOpen: BOOLEAN;
+  let ubReplacementCost: UINT8;
 
   if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
     ubReplacementCost = TRAVELCOST_OBSTACLE;

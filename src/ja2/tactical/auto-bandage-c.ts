@@ -1,40 +1,40 @@
 // max number of merc faces per row in autobandage box
 const NUMBER_MERC_FACES_AUTOBANDAGE_BOX = 4;
 
-STR16 sAutoBandageString = NULL;
-INT32 giBoxId = -1;
-UINT16 gusTextBoxWidth = 0;
-UINT16 gusTextBoxHeight = 0;
-BOOLEAN gfBeginningAutoBandage = FALSE;
-INT16 gsX = 0;
-INT16 gsY = 0;
-UINT32 guiAutoBandageSeconds = 0;
-BOOLEAN fAutoBandageComplete = FALSE;
-BOOLEAN fEndAutoBandage = FALSE;
+let sAutoBandageString: STR16 = NULL;
+let giBoxId: INT32 = -1;
+let gusTextBoxWidth: UINT16 = 0;
+let gusTextBoxHeight: UINT16 = 0;
+let gfBeginningAutoBandage: BOOLEAN = FALSE;
+let gsX: INT16 = 0;
+let gsY: INT16 = 0;
+let guiAutoBandageSeconds: UINT32 = 0;
+let fAutoBandageComplete: BOOLEAN = FALSE;
+let fEndAutoBandage: BOOLEAN = FALSE;
 
-BOOLEAN gfAutoBandageFailed;
+let gfAutoBandageFailed: BOOLEAN;
 
 // the button and associated image for ending autobandage
-INT32 iEndAutoBandageButton[2];
-INT32 iEndAutoBandageButtonImage[2];
+let iEndAutoBandageButton: INT32[] /* [2] */;
+let iEndAutoBandageButtonImage: INT32[] /* [2] */;
 
-MOUSE_REGION gAutoBandageRegion;
+let gAutoBandageRegion: MOUSE_REGION;
 
 // the lists of the doctor and patient
-INT32 iDoctorList[MAX_CHARACTER_COUNT];
-INT32 iPatientList[MAX_CHARACTER_COUNT];
+let iDoctorList: INT32[] /* [MAX_CHARACTER_COUNT] */;
+let iPatientList: INT32[] /* [MAX_CHARACTER_COUNT] */;
 
 // faces for update panel
-INT32 giAutoBandagesSoldierFaces[2 * MAX_CHARACTER_COUNT];
+let giAutoBandagesSoldierFaces: INT32[] /* [2 * MAX_CHARACTER_COUNT] */;
 
 // has the button for autobandage end been setup yet
-BOOLEAN fAutoEndBandageButtonCreated = FALSE;
+let fAutoEndBandageButtonCreated: BOOLEAN = FALSE;
 
 function BeginAutoBandage(): void {
-  INT32 cnt;
-  BOOLEAN fFoundAGuy = FALSE;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fFoundAMedKit = FALSE;
+  let cnt: INT32;
+  let fFoundAGuy: BOOLEAN = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fFoundAMedKit: BOOLEAN = FALSE;
 
   // If we are in combat, we con't...
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (NumEnemyInSector() != 0)) {
@@ -80,8 +80,8 @@ function BeginAutoBandage(): void {
 }
 
 function HandleAutoBandagePending(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier = NULL;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // OK, if we have a pending autobandage....
   // check some conditions
@@ -144,7 +144,7 @@ function ShouldBeginAutoBandage(): void {
 }
 
 function HandleAutoBandage(): BOOLEAN {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   if (gTacticalStatus.fAutoBandageMode) {
     if (gfBeginningAutoBandage) {
@@ -199,11 +199,12 @@ function HandleAutoBandage(): BOOLEAN {
 }
 
 function CreateAutoBandageString(): BOOLEAN {
-  INT32 cnt;
-  UINT8 ubDoctor[20], ubDoctors = 0;
-  UINT32 uiDoctorNameStringLength = 1; // for end-of-string character
-  STR16 sTemp;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let ubDoctor: UINT8[] /* [20] */;
+  let ubDoctors: UINT8 = 0;
+  let uiDoctorNameStringLength: UINT32 = 1; // for end-of-string character
+  let sTemp: STR16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[OUR_TEAM].bLastID; cnt++, pSoldier++) {
@@ -264,10 +265,10 @@ function SetAutoBandageComplete(): void {
 }
 
 function AutoBandage(fStart: BOOLEAN): void {
-  SGPRect aRect;
-  UINT8 ubLoop;
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let aRect: SGPRect;
+  let ubLoop: UINT8;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (fStart) {
     gTacticalStatus.fAutoBandageMode = TRUE;
@@ -392,10 +393,10 @@ function BeginAutoBandageCallBack(bExitValue: UINT8): void {
 }
 
 function SetUpAutoBandageUpdatePanel(): void {
-  INT32 iNumberDoctoring = 0;
-  INT32 iNumberPatienting = 0;
-  INT32 iNumberOnTeam = 0;
-  INT32 iCounterA = 0;
+  let iNumberDoctoring: INT32 = 0;
+  let iNumberPatienting: INT32 = 0;
+  let iNumberOnTeam: INT32 = 0;
+  let iCounterA: INT32 = 0;
 
   // reset the tables of merc ids
   memset(iDoctorList, -1, sizeof(INT32) * MAX_CHARACTER_COUNT);
@@ -438,18 +439,26 @@ function SetUpAutoBandageUpdatePanel(): void {
 }
 
 function DisplayAutoBandageUpdatePanel(): void {
-  INT32 iNumberDoctors = 0, iNumberPatients = 0;
-  INT32 iNumberDoctorsHigh = 0, iNumberPatientsHigh = 0;
-  INT32 iNumberDoctorsWide = 0, iNumberPatientsWide = 0;
-  INT32 iTotalPixelsHigh = 0, iTotalPixelsWide = 0;
-  INT32 iCurPixelY = 0;
-  INT16 sXPosition = 0, sYPosition = 0;
-  HVOBJECT hBackGroundHandle;
-  INT32 iCounterA = 0, iCounterB = 0;
-  INT32 iIndex = 0;
-  INT16 sCurrentXPosition = 0, sCurrentYPosition = 0;
-  CHAR16 sString[64];
-  INT16 sX = 0, sY = 0;
+  let iNumberDoctors: INT32 = 0;
+  let iNumberPatients: INT32 = 0;
+  let iNumberDoctorsHigh: INT32 = 0;
+  let iNumberPatientsHigh: INT32 = 0;
+  let iNumberDoctorsWide: INT32 = 0;
+  let iNumberPatientsWide: INT32 = 0;
+  let iTotalPixelsHigh: INT32 = 0;
+  let iTotalPixelsWide: INT32 = 0;
+  let iCurPixelY: INT32 = 0;
+  let sXPosition: INT16 = 0;
+  let sYPosition: INT16 = 0;
+  let hBackGroundHandle: HVOBJECT;
+  let iCounterA: INT32 = 0;
+  let iCounterB: INT32 = 0;
+  let iIndex: INT32 = 0;
+  let sCurrentXPosition: INT16 = 0;
+  let sCurrentYPosition: INT16 = 0;
+  let sString: CHAR16[] /* [64] */;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
 
   // are even in autobandage mode?
   if (gTacticalStatus.fAutoBandageMode == FALSE) {
@@ -786,9 +795,9 @@ function DestroyTerminateAutoBandageButton(): void {
 }
 
 function AddFacesToAutoBandageBox(): BOOLEAN {
-  INT32 iCounter = 0;
-  INT32 iNumberOfDoctors = 0;
-  VOBJECT_DESC VObjectDesc;
+  let iCounter: INT32 = 0;
+  let iNumberOfDoctors: INT32 = 0;
+  let VObjectDesc: VOBJECT_DESC;
 
   // reset
   memset(&giAutoBandagesSoldierFaces, -1, 2 * MAX_CHARACTER_COUNT);
@@ -839,7 +848,8 @@ function AddFacesToAutoBandageBox(): BOOLEAN {
 }
 
 function RemoveFacesForAutoBandage(): BOOLEAN {
-  INT32 iCounter = 0, iNumberOfDoctors = 0;
+  let iCounter: INT32 = 0;
+  let iNumberOfDoctors: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     // find a free slot
@@ -864,10 +874,11 @@ function RemoveFacesForAutoBandage(): BOOLEAN {
 }
 
 function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosition: INT16, sCurrentYPosition: INT16): BOOLEAN {
-  INT32 iStartY = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iCounter = 0, iIndexCount = 0;
-  HVOBJECT hHandle;
+  let iStartY: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iCounter: INT32 = 0;
+  let iIndexCount: INT32 = 0;
+  let hHandle: HVOBJECT;
 
   // grab the video object
   GetVideoObject(&hHandle, giAutoBandagesSoldierFaces[iIndex]);

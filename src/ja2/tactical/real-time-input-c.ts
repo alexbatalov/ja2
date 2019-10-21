@@ -1,11 +1,11 @@
-BOOLEAN gfStartLookingForRubberBanding = FALSE;
-UINT16 gusRubberBandX = 0;
-UINT16 gusRubberBandY = 0;
+let gfStartLookingForRubberBanding: BOOLEAN = FALSE;
+let gusRubberBandX: UINT16 = 0;
+let gusRubberBandY: UINT16 = 0;
 
-BOOLEAN gfBeginBurstSpreadTracking = FALSE;
+let gfBeginBurstSpreadTracking: BOOLEAN = FALSE;
 
-BOOLEAN gfRTClickLeftHoldIntercepted = FALSE;
-BOOLEAN gfRTHaveClickedRightWhileLeftDown = FALSE;
+let gfRTClickLeftHoldIntercepted: BOOLEAN = FALSE;
+let gfRTHaveClickedRightWhileLeftDown: BOOLEAN = FALSE;
 
 function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
   QueryRTLeftButton(puiNewEvent);
@@ -13,16 +13,16 @@ function GetRTMouseButtonInput(puiNewEvent: Pointer<UINT32>): void {
 }
 
 function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
-  UINT16 usSoldierIndex;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiMercFlags;
-  static UINT32 uiSingleClickTime;
-  UINT16 usMapPos;
-  BOOLEAN fDone = FALSE;
-  static BOOLEAN fDoubleClickIntercepted = FALSE;
-  static BOOLEAN fValidDoubleClickPossible = FALSE;
-  static BOOLEAN fCanCheckForSpeechAdvance = FALSE;
-  static INT16 sMoveClickGridNo = 0;
+  let usSoldierIndex: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiMercFlags: UINT32;
+  /* static */ let uiSingleClickTime: UINT32;
+  let usMapPos: UINT16;
+  let fDone: BOOLEAN = FALSE;
+  /* static */ let fDoubleClickIntercepted: BOOLEAN = FALSE;
+  /* static */ let fValidDoubleClickPossible: BOOLEAN = FALSE;
+  /* static */ let fCanCheckForSpeechAdvance: BOOLEAN = FALSE;
+  /* static */ let sMoveClickGridNo: INT16 = 0;
 
   // LEFT MOUSE BUTTON
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -86,7 +86,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                       ResetMultiSelection();
                     }
                   } else {
-                    INT8 bReturnCode;
+                    let bReturnCode: INT8;
 
                     bReturnCode = HandleMoveModeInteractiveClick(usMapPos, puiNewEvent);
 
@@ -104,7 +104,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                     } else if (bReturnCode == 0) {
                       {
                         {
-                          BOOLEAN fResult;
+                          let fResult: BOOLEAN;
 
                           if (gusSelectedSoldier != NOBODY) {
                             if ((fResult = UIOKMoveDestination(MercPtrs[gusSelectedSoldier], usMapPos)) == 1) {
@@ -425,7 +425,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                 }
                                 gfRTClickLeftHoldIntercepted = TRUE;
                               } else {
-                                INT8 bReturnCode;
+                                let bReturnCode: INT8;
 
                                 bReturnCode = HandleMoveModeInteractiveClick(usMapPos, puiNewEvent);
 
@@ -439,7 +439,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                   //}/
                                   // else
                                   {
-                                    INT16 sIntTileGridNo;
+                                    let sIntTileGridNo: INT16;
 
                                     if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
                                       BeginDisplayTimedCursor(GetInteractiveTileCursor(guiCurrentUICursor, TRUE), 300);
@@ -468,7 +468,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
                                         gfRTClickLeftHoldIntercepted = TRUE;
                                       } else {
-                                        BOOLEAN fResult;
+                                        let fResult: BOOLEAN;
 
                                         if (gusSelectedSoldier != NOBODY) {
                                           if ((fResult = UIOKMoveDestination(MercPtrs[gusSelectedSoldier], usMapPos)) == 1) {
@@ -618,14 +618,14 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 }
 
 function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
-  static BOOLEAN fClickHoldIntercepted = FALSE;
-  static BOOLEAN fClickIntercepted = FALSE;
-  static UINT32 uiSingleClickTime;
-  static BOOLEAN fDoubleClickIntercepted = FALSE;
-  static BOOLEAN fValidDoubleClickPossible = FALSE;
+  /* static */ let fClickHoldIntercepted: BOOLEAN = FALSE;
+  /* static */ let fClickIntercepted: BOOLEAN = FALSE;
+  /* static */ let uiSingleClickTime: UINT32;
+  /* static */ let fDoubleClickIntercepted: BOOLEAN = FALSE;
+  /* static */ let fValidDoubleClickPossible: BOOLEAN = FALSE;
 
-  SOLDIERTYPE *pSoldier;
-  UINT16 usMapPos;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let usMapPos: UINT16;
 
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
     if (!GetMouseMapPos(&usMapPos)) {
@@ -863,11 +863,11 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
 }
 
 function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
-  UINT16 usMapPos;
-  static UINT16 usOldMapPos = 0;
-  static UINT32 uiMoveTargetSoldierId = NO_SOLDIER;
-  SOLDIERTYPE *pSoldier;
-  static BOOLEAN fOnValidGuy = FALSE;
+  let usMapPos: UINT16;
+  /* static */ let usOldMapPos: UINT16 = 0;
+  /* static */ let uiMoveTargetSoldierId: UINT32 = NO_SOLDIER;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  /* static */ let fOnValidGuy: BOOLEAN = FALSE;
 
   if (!GetMouseMapPos(&usMapPos)) {
     return;
@@ -978,8 +978,8 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
 
         // Check for being on terrain
         if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
-          UINT16 usItem;
-          UINT8 ubItemCursor;
+          let usItem: UINT16;
+          let ubItemCursor: UINT8;
 
           // Alrighty, check what's in our hands = if a 'friendly thing', like med kit, look for our own guys
           usItem = pSoldier->inv[HANDPOS].usItem;

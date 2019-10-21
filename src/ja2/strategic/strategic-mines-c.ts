@@ -15,10 +15,10 @@ const MINE_PRODUCTION_PERIOD = (3 * 60); // time seperating daily mine productio
 // DATA TABLES
 
 // this table holds mine values that change during the course of the game and must be saved
-MINE_STATUS_TYPE gMineStatus[MAX_NUMBER_OF_MINES];
+let gMineStatus: MINE_STATUS_TYPE[] /* [MAX_NUMBER_OF_MINES] */;
 
 // this table holds mine values that never change and don't need to be saved
-MINE_LOCATION_TYPE gMineLocation[MAX_NUMBER_OF_MINES] = {
+let gMineLocation: MINE_LOCATION_TYPE[] /* [MAX_NUMBER_OF_MINES] */ = {
   { 4, 4, SAN_MONA },
   { 13, 4, DRASSEN },
   { 14, 9, ALMA },
@@ -28,7 +28,7 @@ MINE_LOCATION_TYPE gMineLocation[MAX_NUMBER_OF_MINES] = {
 };
 
 // the are not being randomized at all at this time
-UINT8 gubMineTypes[] = {
+let gubMineTypes: UINT8[] /* [] */ = {
   GOLD_MINE, // SAN MONA
   SILVER_MINE, // DRASSEN
   SILVER_MINE, // ALMA
@@ -38,7 +38,7 @@ UINT8 gubMineTypes[] = {
 };
 
 // These values also determine the most likely ratios of mine sizes after random production increases are done
-UINT32 guiMinimumMineProduction[] = {
+let guiMinimumMineProduction: UINT32[] /* [] */ = {
   0, // SAN MONA
   1000, // DRASSEN
   1500, // ALMA
@@ -47,7 +47,7 @@ UINT32 guiMinimumMineProduction[] = {
   2000, // GRUMM
 };
 
-HEAD_MINER_TYPE gHeadMinerData[NUM_HEAD_MINERS] = {
+let gHeadMinerData: HEAD_MINER_TYPE[] /* [NUM_HEAD_MINERS] */ = {
   //	Profile #		running out		creatures!		all dead!		creatures again!		external face graphic
   { FRED, 17, 18, 27, 26, MINER_FRED_EXTERNAL_FACE },
   { MATT, -1, 18, 32, 31, MINER_MATT_EXTERNAL_FACE },
@@ -71,11 +71,11 @@ UINT8 gubMonsterMineInfestation[]={
 */
 
 function InitializeMines(): void {
-  UINT8 ubMineIndex;
-  MINE_STATUS_TYPE *pMineStatus;
-  UINT8 ubMineProductionIncreases;
-  UINT8 ubDepletedMineIndex;
-  UINT8 ubMinDaysBeforeDepletion = 20;
+  let ubMineIndex: UINT8;
+  let pMineStatus: Pointer<MINE_STATUS_TYPE>;
+  let ubMineProductionIncreases: UINT8;
+  let ubDepletedMineIndex: UINT8;
+  let ubMinDaysBeforeDepletion: UINT8 = 20;
 
   // set up initial mine status
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -160,9 +160,9 @@ function InitializeMines(): void {
 }
 
 function HourlyMinesUpdate(): void {
-  UINT8 ubMineIndex;
-  MINE_STATUS_TYPE *pMineStatus;
-  UINT8 ubQuoteType;
+  let ubMineIndex: UINT8;
+  let pMineStatus: Pointer<MINE_STATUS_TYPE>;
+  let ubQuoteType: UINT8;
 
   // check every non-empty mine
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -245,7 +245,7 @@ function GetMaxPeriodicRemovalFromMine(bMineIndex: INT8): UINT32 {
 }
 
 function GetMaxDailyRemovalFromMine(bMineIndex: INT8): UINT32 {
-  UINT32 uiAmtExtracted;
+  let uiAmtExtracted: UINT32;
 
   // returns max amount that can be mined in one day
 
@@ -274,7 +274,7 @@ function GetTownAssociatedWithMine(bMineIndex: INT8): INT8 {
 }
 
 function GetMineAssociatedWithThisTown(bTownId: INT8): INT8 {
-  INT8 bCounter = 0;
+  let bCounter: INT8 = 0;
 
   // run through list of mines
   for (bCounter = 0; bCounter < MAX_NUMBER_OF_MINES; bCounter++) {
@@ -290,9 +290,10 @@ function GetMineAssociatedWithThisTown(bTownId: INT8): INT8 {
 
 function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
   // will remove the ore from the mine and return the amount that was removed
-  UINT32 uiAmountExtracted = 0;
-  UINT32 uiOreRunningOutPoint = 0;
-  INT16 sSectorX, sSectorY;
+  let uiAmountExtracted: UINT32 = 0;
+  let uiOreRunningOutPoint: UINT32 = 0;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
 
   Assert((bMineIndex >= 0) && (bMineIndex < MAX_NUMBER_OF_MINES));
 
@@ -351,8 +352,8 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
 
 function GetAvailableWorkForceForMineForPlayer(bMineIndex: INT8): INT32 {
   // look for available workforce in the town associated with the mine
-  INT32 iWorkForceSize = 0;
-  INT8 bTownId = 0;
+  let iWorkForceSize: INT32 = 0;
+  let bTownId: INT8 = 0;
 
   // return the loyalty of the town associated with the mine
 
@@ -390,8 +391,8 @@ function GetAvailableWorkForceForMineForPlayer(bMineIndex: INT8): INT32 {
 
 function GetAvailableWorkForceForMineForEnemy(bMineIndex: INT8): INT32 {
   // look for available workforce in the town associated with the mine
-  INT32 iWorkForceSize = 0;
-  INT8 bTownId = 0;
+  let iWorkForceSize: INT32 = 0;
+  let bTownId: INT8 = 0;
 
   // return the loyalty of the town associated with the mine
 
@@ -425,7 +426,7 @@ function GetAvailableWorkForceForMineForEnemy(bMineIndex: INT8): INT32 {
 }
 
 function GetCurrentWorkRateOfMineForPlayer(bMineIndex: INT8): INT32 {
-  INT32 iWorkRate = 0;
+  let iWorkRate: INT32 = 0;
 
   // multiply maximum possible removal rate by the percentage of workforce currently working
   iWorkRate = (gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForPlayer(bMineIndex)) / 100;
@@ -434,7 +435,7 @@ function GetCurrentWorkRateOfMineForPlayer(bMineIndex: INT8): INT32 {
 }
 
 function GetCurrentWorkRateOfMineForEnemy(bMineIndex: INT8): INT32 {
-  INT32 iWorkRate = 0;
+  let iWorkRate: INT32 = 0;
 
   // multiply maximum possible removal rate by the percentage of workforce currently working
   iWorkRate = (gMineStatus[bMineIndex].uiMaxRemovalRate * GetAvailableWorkForceForMineForEnemy(bMineIndex)) / 100;
@@ -444,8 +445,8 @@ function GetCurrentWorkRateOfMineForEnemy(bMineIndex: INT8): INT32 {
 
 function MineAMine(bMineIndex: INT8): INT32 {
   // will extract ore based on available workforce, and increment players income based on amount
-  INT8 bMineType = 0;
-  INT32 iAmtExtracted = 0;
+  let bMineType: INT8 = 0;
+  let iAmtExtracted: INT32 = 0;
 
   Assert((bMineIndex >= 0) && (bMineIndex < MAX_NUMBER_OF_MINES));
 
@@ -494,7 +495,7 @@ function MineAMine(bMineIndex: INT8): INT32 {
 }
 
 function PostEventsForMineProduction(): void {
-  UINT8 ubShift;
+  let ubShift: UINT8;
 
   for (ubShift = 0; ubShift < MINE_PRODUCTION_NUMBER_OF_PERIODS; ubShift++) {
     AddStrategicEvent(EVENT_HANDLE_MINE_INCOME, GetWorldDayInMinutes() + MINE_PRODUCTION_START_TIME + (ubShift * MINE_PRODUCTION_PERIOD), 0);
@@ -502,8 +503,8 @@ function PostEventsForMineProduction(): void {
 }
 
 function HandleIncomeFromMines(): void {
-  INT32 iIncome = 0;
-  INT8 bCounter = 0;
+  let iIncome: INT32 = 0;
+  let bCounter: INT8 = 0;
 
   // mine each mine, check if we own it and such
   for (bCounter = 0; bCounter < MAX_NUMBER_OF_MINES; bCounter++) {
@@ -518,7 +519,7 @@ function HandleIncomeFromMines(): void {
 function PredictDailyIncomeFromAMine(bMineIndex: INT8): UINT32 {
   // predict income from this mine, estimate assumes mining situation will not change during next 4 income periods
   // (miner loyalty, % town controlled, monster infestation level, and current max removal rate may all in fact change)
-  UINT32 uiAmtExtracted = 0;
+  let uiAmtExtracted: UINT32 = 0;
 
   if (PlayerControlsMine(bMineIndex)) {
     // get daily income for this mine (regardless of what time of day it currently is)
@@ -535,8 +536,8 @@ function PredictDailyIncomeFromAMine(bMineIndex: INT8): UINT32 {
 }
 
 function PredictIncomeFromPlayerMines(): INT32 {
-  INT32 iTotal = 0;
-  INT8 bCounter = 0;
+  let iTotal: INT32 = 0;
+  let bCounter: INT8 = 0;
 
   for (bCounter = 0; bCounter < MAX_NUMBER_OF_MINES; bCounter++) {
     // add up the total
@@ -547,8 +548,8 @@ function PredictIncomeFromPlayerMines(): INT32 {
 }
 
 function CalcMaxPlayerIncomeFromMines(): INT32 {
-  INT32 iTotal = 0;
-  INT8 bCounter = 0;
+  let iTotal: INT32 = 0;
+  let bCounter: INT8 = 0;
 
   // calculate how much player could make daily if he owned all mines with 100% control and 100% loyalty
   for (bCounter = 0; bCounter < MAX_NUMBER_OF_MINES; bCounter++) {
@@ -561,7 +562,7 @@ function CalcMaxPlayerIncomeFromMines(): INT32 {
 
 // get index of this mine, return -1 if no mine found
 function GetMineIndexForSector(sX: INT16, sY: INT16): INT8 {
-  UINT8 ubMineIndex = 0;
+  let ubMineIndex: UINT8 = 0;
 
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
     if ((gMineLocation[ubMineIndex].sSectorX == sX) && (gMineLocation[ubMineIndex].sSectorY == sY)) {
@@ -582,7 +583,7 @@ function GetMineSector(ubMineIndex: UINT8, psX: Pointer<INT16>, psY: Pointer<INT
 
 // get the index of the mine associated with this town
 function GetMineIndexForTown(bTownId: INT8): INT8 {
-  UINT8 ubMineIndex = 0;
+  let ubMineIndex: UINT8 = 0;
 
   // given town id, send sector value of mine, a 0 means no mine for this town
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -596,8 +597,8 @@ function GetMineIndexForTown(bTownId: INT8): INT8 {
 
 // get the sector value for the mine associated with this town
 function GetMineSectorForTown(bTownId: INT8): INT16 {
-  INT8 ubMineIndex;
-  INT16 sMineSector = -1;
+  let ubMineIndex: INT8;
+  let sMineSector: INT16 = -1;
 
   // given town id, send sector value of mine, a 0 means no mine for this town
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -612,7 +613,7 @@ function GetMineSectorForTown(bTownId: INT8): INT16 {
 }
 
 function IsThereAMineInThisSector(sX: INT16, sY: INT16): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   // run through the list...if a mine here, great
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -638,7 +639,7 @@ function PlayerControlsMine(bMineIndex: INT8): BOOLEAN {
 }
 
 function SaveMineStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // Save the MineStatus
   FileWrite(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, &uiNumBytesWritten);
@@ -650,7 +651,7 @@ function SaveMineStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadMineStatusFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   // Load the MineStatus
   FileRead(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, &uiNumBytesRead);
@@ -694,8 +695,8 @@ function IsMineShutDown(bMineIndex: INT8): BOOLEAN {
 }
 
 function GetHeadMinerIndexForMine(bMineIndex: INT8): UINT8 {
-  UINT8 ubMinerIndex = 0;
-  UINT16 usProfileId = 0;
+  let ubMinerIndex: UINT8 = 0;
+  let usProfileId: UINT16 = 0;
 
   Assert((bMineIndex >= 0) && (bMineIndex < MAX_NUMBER_OF_MINES));
 
@@ -718,12 +719,13 @@ function GetHeadMinerProfileIdForMine(bMineIndex: INT8): UINT16 {
 }
 
 function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
-  UINT8 ubHeadMinerIndex = 0;
-  UINT16 usHeadMinerProfileId = 0;
-  INT8 bQuoteNum = 0;
-  UINT8 ubFaceIndex = 0;
-  BOOLEAN fForceMapscreen = FALSE;
-  INT16 sXPos, sYPos;
+  let ubHeadMinerIndex: UINT8 = 0;
+  let usHeadMinerProfileId: UINT16 = 0;
+  let bQuoteNum: INT8 = 0;
+  let ubFaceIndex: UINT8 = 0;
+  let fForceMapscreen: BOOLEAN = FALSE;
+  let sXPos: INT16;
+  let sYPos: INT16;
 
   Assert((bMineIndex >= 0) && (bMineIndex < MAX_NUMBER_OF_MINES));
   Assert(ubQuoteType < NUM_HEAD_MINER_STRATEGIC_QUOTES);
@@ -785,7 +787,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
 }
 
 function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   // find which mine this guy represents
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -800,7 +802,7 @@ function GetHeadMinersMineIndex(ubMinerProfileId: UINT8): UINT8 {
 }
 
 function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -812,21 +814,21 @@ function PlayerSpokeToHeadMiner(ubMinerProfileId: UINT8): void {
 }
 
 function IsHisMineRunningOut(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fRunningOut;
 }
 
 function IsHisMineEmpty(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return gMineStatus[ubMineIndex].fEmpty;
 }
 
 function IsHisMineDisloyal(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -840,14 +842,14 @@ function IsHisMineDisloyal(ubMinerProfileId: UINT8): BOOLEAN {
 }
 
 function IsHisMineInfested(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
   return !MineClearOfMonsters(ubMineIndex);
 }
 
 function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -859,7 +861,7 @@ function IsHisMineLostAndRegained(ubMinerProfileId: UINT8): BOOLEAN {
 }
 
 function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -867,7 +869,7 @@ function ResetQueenRetookMine(ubMinerProfileId: UINT8): void {
 }
 
 function IsHisMineAtMaxProduction(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -889,7 +891,7 @@ function QueenHasRegainedMineSector(bMineIndex: INT8): void {
 }
 
 function HasAnyMineBeenAttackedByMonsters(): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   // find which mine this guy represents
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
@@ -902,8 +904,8 @@ function HasAnyMineBeenAttackedByMonsters(): BOOLEAN {
 }
 
 function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
-  UINT8 ubMineIndex;
-  INT8 bTownId;
+  let ubMineIndex: UINT8;
+  let bTownId: INT8;
 
   // get the index of his mine
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
@@ -925,7 +927,7 @@ function PlayerAttackedHeadMiner(ubMinerProfileId: UINT8): void {
 }
 
 function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): BOOLEAN {
-  UINT8 ubMineIndex;
+  let ubMineIndex: UINT8;
 
   ubMineIndex = GetHeadMinersMineIndex(ubMinerProfileId);
 
@@ -938,8 +940,8 @@ function HasHisMineBeenProducingForPlayerForSomeTime(ubMinerProfileId: UINT8): B
 
 // gte the id of the mine for this sector x,y,z...-1 is invalid
 function GetIdOfMineForSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
-  INT8 bMineIndex = -1;
-  INT16 sSectorValue;
+  let bMineIndex: INT8 = -1;
+  let sSectorValue: INT16;
 
   // are we even on the right level?
   if ((bSectorZ < 0) && (bSectorZ > 2)) {
@@ -1003,7 +1005,7 @@ function GetIdOfMineForSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8):
 
 // use this for miner (civilian) quotes when *underground* in a mine
 function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
-  MINE_STATUS_TYPE *pMineStatus;
+  let pMineStatus: Pointer<MINE_STATUS_TYPE>;
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 
@@ -1022,7 +1024,7 @@ function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
 
 // use this to determine whether or not to place miners into a underground mine level
 function AreThereMinersInsideThisMine(ubMineIndex: UINT8): BOOLEAN {
-  MINE_STATUS_TYPE *pMineStatus;
+  let pMineStatus: Pointer<MINE_STATUS_TYPE>;
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 

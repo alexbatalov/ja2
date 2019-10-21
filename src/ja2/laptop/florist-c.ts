@@ -39,27 +39,27 @@ const FLORIST_COMPANY_INFO_LINE_2_Y = LAPTOP_SCREEN_WEB_UL_Y + 94;
 const FLORIST_COMPANY_INFO_LINE_3_Y = LAPTOP_SCREEN_WEB_UL_Y + 107;
 const FLORIST_COMPANY_INFO_LINE_4_Y = LAPTOP_SCREEN_WEB_UL_Y + 119;
 
-UINT32 guiFloristBackground;
-UINT32 guiHandBullet;
-UINT32 guiLargeTitleSymbol;
-UINT32 guiSmallTitleSymbol;
+let guiFloristBackground: UINT32;
+let guiHandBullet: UINT32;
+let guiLargeTitleSymbol: UINT32;
+let guiSmallTitleSymbol: UINT32;
 
-BOOLEAN gfHomePageActive = FALSE; // Specifies whether or not the home page or the sub pages are active
+let gfHomePageActive: BOOLEAN = FALSE; // Specifies whether or not the home page or the sub pages are active
 
 // Buttons
 
 // Graphic for button
-INT32 guiGalleryButtonImage;
-UINT32 guiGalleryButton;
+let guiGalleryButtonImage: INT32;
+let guiGalleryButton: UINT32;
 
 // link to the flower home page by clicking on the flower title
-MOUSE_REGION gSelectedFloristTitleHomeLinkRegion;
+let gSelectedFloristTitleHomeLinkRegion: MOUSE_REGION;
 
 function GameInitFlorist(): void {
 }
 
 function EnterFlorist(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   SetBookMark(FLORIST_BOOKMARK);
 
@@ -107,9 +107,10 @@ function HandleFlorist(): void {
 }
 
 function RenderFlorist(): void {
-  HVOBJECT hPixHandle;
-  UINT16 i, usPosY;
-  UINT8 ubTextCounter;
+  let hPixHandle: HVOBJECT;
+  let i: UINT16;
+  let usPosY: UINT16;
+  let ubTextCounter: UINT8;
 
   GetVideoObject(&hPixHandle, guiHandBullet);
 
@@ -141,7 +142,7 @@ function RenderFlorist(): void {
 }
 
 function InitFloristDefaults(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the Florist background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -169,7 +170,7 @@ function InitFloristDefaults(): BOOLEAN {
 }
 
 function DisplayFloristDefaults(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(4, 4, FLORIST_BACKGROUND_WIDTH, FLORIST_BACKGROUND_HEIGHT, guiFloristBackground);
 

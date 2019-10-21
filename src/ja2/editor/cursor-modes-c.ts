@@ -1,15 +1,17 @@
-BOOLEAN fValidCursor = FALSE;
-BOOLEAN fAnchored = FALSE;
-BOOLEAN gfBrushEnabled = TRUE;
-UINT16 gusSelectionWidth = 1, gusPreserveSelectionWidth = 1;
-UINT16 gusSelectionType = SMALLSELECTION;
-UINT16 gusSelectionDensity = 2;
-UINT16 gusSavedSelectionType = SMALLSELECTION;
-UINT16 gusSavedBuildingSelectionType = AREASELECTION;
-INT16 sGridX, sGridY;
-INT16 sBadMarker = -1;
+let fValidCursor: BOOLEAN = FALSE;
+let fAnchored: BOOLEAN = FALSE;
+let gfBrushEnabled: BOOLEAN = TRUE;
+let gusSelectionWidth: UINT16 = 1;
+let gusPreserveSelectionWidth: UINT16 = 1;
+let gusSelectionType: UINT16 = SMALLSELECTION;
+let gusSelectionDensity: UINT16 = 2;
+let gusSavedSelectionType: UINT16 = SMALLSELECTION;
+let gusSavedBuildingSelectionType: UINT16 = AREASELECTION;
+let sGridX: INT16;
+let sGridY: INT16;
+let sBadMarker: INT16 = -1;
 
-UINT16 *wszSelType[6] = {
+let wszSelType: Pointer<UINT16>[] /* [6] */ = {
   L"Small",
   L"Medium",
   L"Large",
@@ -18,14 +20,14 @@ UINT16 *wszSelType[6] = {
   L"Area",
 };
 
-BOOLEAN gfAllowRightButtonSelections = FALSE;
-BOOLEAN gfCurrentSelectionWithRightButton = FALSE;
+let gfAllowRightButtonSelections: BOOLEAN = FALSE;
+let gfCurrentSelectionWithRightButton: BOOLEAN = FALSE;
 
 // Used for offseting cursor to show that it is on the roof rather than on the ground.
 // This can be conveniently executed by moving the cursor up and right 3 gridnos for a
 // total of -483  -(160*3)-(1*3)
 const ROOF_OFFSET = (-483);
-BOOLEAN gfUsingOffset;
+let gfUsingOffset: BOOLEAN;
 
 // Based on the density level setting and the selection type, this test will
 // randomly choose TRUE or FALSE to reflect the *odds*.
@@ -58,7 +60,9 @@ function DecreaseSelectionDensity(): void {
 }
 
 function RemoveCursors(): void {
-  INT32 x, y, iMapIndex;
+  let x: INT32;
+  let y: INT32;
+  let iMapIndex: INT32;
   if (gpBuildingLayoutList) {
     RemoveBuildingLayout();
   }
@@ -66,7 +70,7 @@ function RemoveCursors(): void {
   Assert(gSelectRegion.iLeft >= 0 && gSelectRegion.iLeft <= gSelectRegion.iRight);
   for (y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; y++) {
     for (x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; x++) {
-      LEVELNODE *pNode;
+      let pNode: Pointer<LEVELNODE>;
       iMapIndex = y * WORLD_COLS + x;
       if (gfUsingOffset)
         iMapIndex += ROOF_OFFSET;
@@ -85,7 +89,7 @@ function RemoveCursors(): void {
 }
 
 function RemoveBadMarker(): void {
-  LEVELNODE *pNode;
+  let pNode: Pointer<LEVELNODE>;
   if (sBadMarker < 0)
     return;
   pNode = gpWorldLevelData[sBadMarker].pTopmostHead;
@@ -100,7 +104,9 @@ function RemoveBadMarker(): void {
 }
 
 function UpdateCursorAreas(): void {
-  INT32 x, y, iMapIndex;
+  let x: INT32;
+  let y: INT32;
+  let iMapIndex: INT32;
 
   RemoveCursors();
 
@@ -176,7 +182,7 @@ function UpdateCursorAreas(): void {
 }
 
 function ForceAreaSelectionWidth(): void {
-  UINT16 gusDecSelWidth;
+  let gusDecSelWidth: UINT16;
 
   // If the anchor isn't set, we don't want to force the size yet.
   if (!fAnchored)
@@ -269,7 +275,7 @@ function ValidateSelectionRegionBoundaries(): void {
 }
 
 function EnsureSelectionType(): void {
-  BOOLEAN fPrevBrushEnabledState = gfBrushEnabled;
+  let fPrevBrushEnabledState: BOOLEAN = gfBrushEnabled;
 
   // At time of writing, the only drawing mode supporting right mouse button
   // area selections is the cave drawing mode.
@@ -330,10 +336,10 @@ function EnsureSelectionType(): void {
 }
 
 function DrawBuildingLayout(iMapIndex: INT32): void {
-  BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
-  LEVELNODE *pNode;
-  BOOLEAN fAdd;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let iOffset: INT32;
+  let pNode: Pointer<LEVELNODE>;
+  let fAdd: BOOLEAN;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;
   while (curr) {
@@ -356,9 +362,9 @@ function DrawBuildingLayout(iMapIndex: INT32): void {
 }
 
 function RemoveBuildingLayout(): void {
-  BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
-  INT32 iMapIndex;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let iOffset: INT32;
+  let iMapIndex: INT32;
   iMapIndex = gSelectRegion.iLeft + gSelectRegion.iTop * WORLD_COLS;
   iOffset = iMapIndex - gsBuildingLayoutAnchorGridNo;
   curr = gpBuildingLayoutList;

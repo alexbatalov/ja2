@@ -1,8 +1,8 @@
 const ROOF_LOCATION_CHANCE = 8;
 
-UINT8 gubBuildingInfo[WORLD_MAX];
-BUILDING gBuildings[MAX_BUILDINGS];
-UINT8 gubNumberOfBuildings;
+let gubBuildingInfo: UINT8[] /* [WORLD_MAX] */;
+let gBuildings: BUILDING[] /* [MAX_BUILDINGS] */;
+let gubNumberOfBuildings: UINT8;
 
 function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   if (gubNumberOfBuildings + 1 >= MAX_BUILDINGS) {
@@ -18,18 +18,25 @@ function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
 }
 
 function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
-  UINT32 uiLoop;
-  INT16 sTempGridNo, sNextTempGridNo, sVeryTemporaryGridNo;
-  INT16 sStartGridNo, sCurrGridNo, sPrevGridNo = NOWHERE, sRightGridNo;
-  INT8 bDirection, bTempDirection;
-  BOOLEAN fFoundDir, fFoundWall;
-  UINT32 uiChanceIn = ROOF_LOCATION_CHANCE; // chance of a location being considered
-  INT16 sWallGridNo;
-  INT8 bDesiredOrientation;
-  INT8 bSkipSpots = 0;
-  SOLDIERTYPE FakeSoldier;
-  BUILDING *pBuilding;
-  UINT8 ubBuildingID = 0;
+  let uiLoop: UINT32;
+  let sTempGridNo: INT16;
+  let sNextTempGridNo: INT16;
+  let sVeryTemporaryGridNo: INT16;
+  let sStartGridNo: INT16;
+  let sCurrGridNo: INT16;
+  let sPrevGridNo: INT16 = NOWHERE;
+  let sRightGridNo: INT16;
+  let bDirection: INT8;
+  let bTempDirection: INT8;
+  let fFoundDir: BOOLEAN;
+  let fFoundWall: BOOLEAN;
+  let uiChanceIn: UINT32 = ROOF_LOCATION_CHANCE; // chance of a location being considered
+  let sWallGridNo: INT16;
+  let bDesiredOrientation: INT8;
+  let bSkipSpots: INT8 = 0;
+  let FakeSoldier: SOLDIERTYPE;
+  let pBuilding: Pointer<BUILDING>;
+  let ubBuildingID: UINT8 = 0;
 
   pBuilding = CreateNewBuilding(&ubBuildingID);
   if (!pBuilding) {
@@ -244,7 +251,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
 }
 
 function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
-  UINT8 ubBuildingID;
+  let ubBuildingID: UINT8;
   // UINT8					ubRoomNo;
 
   if (sGridNo <= 0 || sGridNo > WORLD_MAX) {
@@ -284,7 +291,7 @@ function InBuilding(sGridNo: INT16): BOOLEAN {
 }
 
 function GenerateBuildings(): void {
-  UINT32 uiLoop;
+  let uiLoop: UINT32;
 
   // init building structures and variables
   memset(&gubBuildingInfo, 0, WORLD_MAX * sizeof(UINT8));
@@ -314,11 +321,13 @@ function GenerateBuildings(): void {
 }
 
 function FindClosestClimbPoint(sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: BOOLEAN): INT16 {
-  BUILDING *pBuilding;
-  UINT8 ubNumClimbSpots;
-  INT16 *psClimbSpots;
-  UINT8 ubLoop;
-  INT16 sDistance, sClosestDistance = 1000, sClosestSpot = NOWHERE;
+  let pBuilding: Pointer<BUILDING>;
+  let ubNumClimbSpots: UINT8;
+  let psClimbSpots: Pointer<INT16>;
+  let ubLoop: UINT8;
+  let sDistance: INT16;
+  let sClosestDistance: INT16 = 1000;
+  let sClosestSpot: INT16 = NOWHERE;
 
   pBuilding = FindBuilding(sDesiredGridNo);
   if (!pBuilding) {

@@ -1,6 +1,6 @@
-HLIST hEventQueue = NULL;
-HLIST hDelayEventQueue = NULL;
-HLIST hDemandEventQueue = NULL;
+let hEventQueue: HLIST = NULL;
+let hDelayEventQueue: HLIST = NULL;
+let hDemandEventQueue: HLIST = NULL;
 
 const QUEUE_RESIZE = 20;
 
@@ -47,9 +47,9 @@ function ShutdownEventManager(): BOOLEAN {
 }
 
 function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize: UINT32, ubQueueID: UINT8): BOOLEAN {
-  EVENT *pEvent;
-  UINT32 uiEventSize = sizeof(EVENT);
-  HLIST hQueue;
+  let pEvent: Pointer<EVENT>;
+  let uiEventSize: UINT32 = sizeof(EVENT);
+  let hQueue: HLIST;
 
   // Allocate new event
   pEvent = MemAlloc(uiEventSize + uiDataSize);
@@ -76,8 +76,8 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
 }
 
 function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
-  UINT32 uiQueueSize;
-  HLIST hQueue;
+  let uiQueueSize: UINT32;
+  let hQueue: HLIST;
 
   // Get an event from queue, if one exists
   //
@@ -98,8 +98,8 @@ function RemoveEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueI
 }
 
 function PeekEvent(ppEvent: Pointer<Pointer<EVENT>>, uiIndex: UINT32, ubQueueID: UINT8): BOOLEAN {
-  UINT32 uiQueueSize;
-  HLIST hQueue;
+  let uiQueueSize: UINT32;
+  let hQueue: HLIST;
 
   // Get an event from queue, if one exists
   //
@@ -129,8 +129,8 @@ function FreeEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 }
 
 function EventQueueSize(ubQueueID: UINT8): UINT32 {
-  UINT32 uiQueueSize;
-  HLIST hQueue;
+  let uiQueueSize: UINT32;
+  let hQueue: HLIST;
 
   // Get an event from queue, if one exists
   //

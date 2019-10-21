@@ -1,6 +1,6 @@
 // Room Information
-UINT8 gubWorldRoomInfo[WORLD_MAX];
-UINT8 gubWorldRoomHidden[MAX_ROOMS];
+let gubWorldRoomInfo: UINT8[] /* [WORLD_MAX] */;
+let gubWorldRoomHidden: UINT8[] /* [MAX_ROOMS] */;
 
 function InitRoomDatabase(): BOOLEAN {
   memset(gubWorldRoomInfo, NO_ROOM, sizeof(gubWorldRoomInfo));
@@ -17,7 +17,8 @@ function SetTileRoomNum(sGridNo: INT16, ubRoomNum: UINT8): void {
 }
 
 function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8): void {
-  INT32 cnt1, cnt2;
+  let cnt1: INT32;
+  let cnt2: INT32;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
@@ -50,8 +51,9 @@ function InAHiddenRoom(sGridNo: UINT16, pubRoomNo: Pointer<UINT8>): BOOLEAN {
 
 // @@ATECLIP TO WORLD!
 function SetRecalculateWireFrameFlagRadius(sX: INT16, sY: INT16, sRadius: INT16): void {
-  INT16 sCountX, sCountY;
-  UINT32 uiTile;
+  let sCountX: INT16;
+  let sCountY: INT16;
+  let uiTile: UINT32;
 
   for (sCountY = sY - sRadius; sCountY < (sY + sRadius + 2); sCountY++) {
     for (sCountX = sX - sRadius; sCountX < (sX + sRadius + 2); sCountX++) {
@@ -66,8 +68,9 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
   //	UINT32 cnt;
   //  ITEM_POOL					*pItemPool;
   //	INT16							sX, sY;
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure, *pBase;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBase: Pointer<STRUCTURE>;
 
   // Set hidden flag, for any roofs
   SetRoofIndexFlagsFromTypeRange(sGridNo, FIRSTROOF, FOURTHROOF, LEVELNODE_HIDDEN);
@@ -123,13 +126,14 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
 }
 
 function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure, *pBase;
-  UINT8 ubLoop;
-  DB_STRUCTURE_TILE **ppTile;
-  INT16 sGridNo;
-  UINT16 usIndex;
-  BOOLEAN fChanged = FALSE;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBase: Pointer<STRUCTURE>;
+  let ubLoop: UINT8;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let sGridNo: INT16;
+  let usIndex: UINT16;
+  let fChanged: BOOLEAN = FALSE;
 
   // CHECK FOR A SLANTED ROOF HERE....
   pStructure = FindStructure(sCheckGridNo, STRUCTURE_SLANTED_ROOF);
@@ -180,11 +184,12 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
 }
 
 function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT32 cnt;
-  ITEM_POOL *pItemPool;
-  INT16 sX, sY;
-  LEVELNODE *pNode = NULL;
-  BOOLEAN fSaidItemSeenQuote = FALSE;
+  let cnt: UINT32;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let sX: INT16;
+  let sY: INT16;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let fSaidItemSeenQuote: BOOLEAN = FALSE;
 
   //	STRUCTURE					*pStructure;//, *pBase;
 
@@ -232,7 +237,8 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
 }
 
 function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
-  INT32 cnt1, cnt2;
+  let cnt1: INT32;
+  let cnt2: INT32;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
@@ -244,7 +250,8 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
 }
 
 function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
-  INT32 cnt1, cnt2;
+  let cnt1: INT32;
+  let cnt2: INT32;
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {

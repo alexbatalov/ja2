@@ -69,41 +69,41 @@ const INS_CTRCT_FITNESS_BASE = 85;
 const INS_CTRCT_EXP_LEVEL_BASE = 3;
 const INS_CTRCT_SURVIVAL_BASE = 90;
 
-UINT32 guiInsOrderGridImage;
-UINT32 guiInsOrderBulletImage;
+let guiInsOrderGridImage: UINT32;
+let guiInsOrderBulletImage: UINT32;
 
-INT16 gsForm1InsuranceLengthNumber;
-INT16 gsForm2InsuranceLengthNumber;
-INT16 gsForm3InsuranceLengthNumber;
+let gsForm1InsuranceLengthNumber: INT16;
+let gsForm2InsuranceLengthNumber: INT16;
+let gsForm3InsuranceLengthNumber: INT16;
 
-UINT8 gubMercIDForMercInForm1;
-UINT8 gubMercIDForMercInForm2;
-UINT8 gubMercIDForMercInForm3;
+let gubMercIDForMercInForm1: UINT8;
+let gubMercIDForMercInForm2: UINT8;
+let gubMercIDForMercInForm3: UINT8;
 
-UINT8 gubNumberofDisplayedInsuranceGrids;
+let gubNumberofDisplayedInsuranceGrids: UINT8;
 
-BOOLEAN gfChangeInsuranceFormButtons = FALSE;
+let gfChangeInsuranceFormButtons: BOOLEAN = FALSE;
 
-UINT8 gubInsuranceMercArray[20];
-INT16 gsCurrentInsuranceMercIndex;
-INT16 gsMaxPlayersOnTeam;
+let gubInsuranceMercArray: UINT8[] /* [20] */;
+let gsCurrentInsuranceMercIndex: INT16;
+let gsMaxPlayersOnTeam: INT16;
 
 // link to the varios pages
-MOUSE_REGION gSelectedInsuranceContractLinkRegion[2];
+let gSelectedInsuranceContractLinkRegion: MOUSE_REGION[] /* [2] */;
 
-INT32 guiInsContractPrevButtonImage;
-UINT32 guiInsContractPrevBackButton;
+let guiInsContractPrevButtonImage: INT32;
+let guiInsContractPrevBackButton: UINT32;
 
-INT32 guiInsContractNextButtonImage;
-UINT32 guiInsContractNextBackButton;
+let guiInsContractNextButtonImage: INT32;
+let guiInsContractNextBackButton: UINT32;
 
 // Graphic for Accept, Clear button for form 1
-INT32 guiInsuranceAcceptClearForm1ButtonImage;
-UINT32 guiInsuranceAcceptClearForm1Button;
+let guiInsuranceAcceptClearForm1ButtonImage: INT32;
+let guiInsuranceAcceptClearForm1Button: UINT32;
 
-UINT32 guiInsuranceAcceptClearForm2Button;
+let guiInsuranceAcceptClearForm2Button: UINT32;
 
-UINT32 guiInsuranceAcceptClearForm3Button;
+let guiInsuranceAcceptClearForm3Button: UINT32;
 
 // ppp
 
@@ -112,7 +112,7 @@ function GameInitInsuranceContract(): void {
 }
 
 function EnterLaptopInitInsuranceContract(): void {
-  wchar_t zTextField[14];
+  let zTextField: wchar_t[] /* [14] */;
 
   swprintf(zTextField, L"%d", 0);
   SetInputFieldStringWith16BitString(1, zTextField);
@@ -121,8 +121,9 @@ function EnterLaptopInitInsuranceContract(): void {
 }
 
 function EnterInsuranceContract(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX, i;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16;
+  let i: UINT16;
 
   // build the list of mercs that are can be displayed
   BuildInsuranceArray();
@@ -172,7 +173,7 @@ function EnterInsuranceContract(): BOOLEAN {
 }
 
 function ExitInsuranceContract(): void {
-  UINT8 i;
+  let i: UINT8;
 
   RemoveInsuranceDefaults();
 
@@ -221,14 +222,14 @@ function HandleInsuranceContract(): void {
 }
 
 function RenderInsuranceContract(): void {
-  HVOBJECT hPixHandle;
-  wchar_t sText[800];
-  UINT8 ubCount = 0;
-  INT16 sMercID;
-  INT16 sNextMercID;
-  UINT16 usPosX;
-  BOOLEAN fIsThereAnyAimMercs = FALSE;
-  SOLDIERTYPE *pSoldier = NULL;
+  let hPixHandle: HVOBJECT;
+  let sText: wchar_t[] /* [800] */;
+  let ubCount: UINT8 = 0;
+  let sMercID: INT16;
+  let sNextMercID: INT16;
+  let usPosX: UINT16;
+  let fIsThereAnyAimMercs: BOOLEAN = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -356,16 +357,17 @@ function BtnInsContractNextButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT3
 }
 
 function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hPixHandle;
-  UINT16 usPosX, usPosY;
-  UINT32 uiInsMercFaceImage;
-  INT32 iCostOfContract = 0;
-  char sTemp[100];
-  wchar_t sText[800];
-  BOOLEAN fDisplayMercContractStateTextColorInRed = FALSE;
+  let VObjectDesc: VOBJECT_DESC;
+  let hPixHandle: HVOBJECT;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let uiInsMercFaceImage: UINT32;
+  let iCostOfContract: INT32 = 0;
+  let sTemp: char[] /* [100] */;
+  let sText: wchar_t[] /* [800] */;
+  let fDisplayMercContractStateTextColorInRed: BOOLEAN = FALSE;
 
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = &Menptr[GetSoldierIDFromMercID(ubMercID)];
 
@@ -566,8 +568,8 @@ function BtnInsuranceAcceptClearForm1ButtonCallback(btn: Pointer<GUI_BUTTON>, re
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
-      UINT8 ubSoldierID = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm1);
+      let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubSoldierID: UINT8 = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm1);
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -602,8 +604,8 @@ function BtnInsuranceAcceptClearForm2ButtonCallback(btn: Pointer<GUI_BUTTON>, re
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
-      UINT8 ubSoldierID = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm2);
+      let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubSoldierID: UINT8 = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm2);
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -638,8 +640,8 @@ function BtnInsuranceAcceptClearForm3ButtonCallback(btn: Pointer<GUI_BUTTON>, re
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
-      UINT8 ubSoldierID = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm3);
+      let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubSoldierID: UINT8 = (UINT8)GetSoldierIDFromMercID(gubMercIDForMercInForm3);
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -668,8 +670,8 @@ function BtnInsuranceAcceptClearForm3ButtonCallback(btn: Pointer<GUI_BUTTON>, re
 }
 
 function GetNumberOfHireMercsStartingFromID(ubStartMercID: UINT8): INT8 {
-  UINT8 i;
-  UINT8 ubCount = 0;
+  let i: UINT8;
+  let ubCount: UINT8 = 0;
 
   for (i = 0; i < gsMaxPlayersOnTeam; i++) {
     if (i >= ubStartMercID) {
@@ -715,7 +717,7 @@ INT32 CalculateInsuranceCost( SOLDIERTYPE *pSoldier, BOOLEAN fHaveInsurance )
 function SelectInsuranceContractRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -726,10 +728,10 @@ function SelectInsuranceContractRegionCallBack(pRegion: Pointer<MOUSE_REGION>, i
 }
 
 function CountInsurableMercs(): INT8 {
-  INT16 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 bLastTeamID;
-  INT8 bCount = 0;
+  let cnt: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
+  let bCount: INT8 = 0;
 
   // Set locator to first merc
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -759,7 +761,7 @@ function DisableInsuranceContractNextPreviousbuttons(): void {
 }
 
 function CreateDestroyInsuranceContractFormButtons(fCreate: BOOLEAN): void {
-  static BOOLEAN fButtonsCreated = FALSE;
+  /* static */ let fButtonsCreated: BOOLEAN = FALSE;
 
   if (fCreate && !fButtonsCreated) {
     // place the 3 accept buttons for the different forms
@@ -815,7 +817,7 @@ function CreateDestroyInsuranceContractFormButtons(fCreate: BOOLEAN): void {
 }
 
 function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
-  INT32 iAmountOfMoneyTransfer = -1;
+  let iAmountOfMoneyTransfer: INT32 = -1;
 
   // passed in either 1,2,3 should be 0,1,2
   ubFormID--;
@@ -827,9 +829,9 @@ function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
 
 // determines if a merc will run out of their insurance contract
 function DailyUpdateOfInsuredMercs(): void {
-  INT16 cnt;
-  INT16 bLastTeamID;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT16;
+  let bLastTeamID: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
@@ -860,13 +862,16 @@ const MIN_INSURANCE_RATIO = 0.1f;
 const MAX_INSURANCE_RATIO = 10.0f;
 
 function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 {
-  MERCPROFILESTRUCT *pProfile;
-  INT16 sTotalSkill = 0;
-  FLOAT flSkillFactor, flFitnessFactor, flExpFactor, flSurvivalFactor;
-  FLOAT flRiskFactor;
-  UINT32 uiDailyInsurancePremium;
-  UINT32 uiTotalInsurancePremium;
-  SOLDIERTYPE *pSoldier;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let sTotalSkill: INT16 = 0;
+  let flSkillFactor: FLOAT;
+  let flFitnessFactor: FLOAT;
+  let flExpFactor: FLOAT;
+  let flSurvivalFactor: FLOAT;
+  let flRiskFactor: FLOAT;
+  let uiDailyInsurancePremium: UINT32;
+  let uiTotalInsurancePremium: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = &Menptr[GetSoldierIDFromMercID(ubMercID)];
 
@@ -925,7 +930,7 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
 
 // values passed in must be such that exceeding the normal value REDUCES insurance premiums
 function DiffFromNormRatio(sThisValue: INT16, sNormalValue: INT16): FLOAT {
-  FLOAT flRatio;
+  let flRatio: FLOAT;
 
   if (sThisValue > 0) {
     flRatio = (FLOAT)sNormalValue / sThisValue;
@@ -954,9 +959,9 @@ function InsContractNoMercsPopupCallBack(bExitValue: UINT8): void {
 }
 
 function BuildInsuranceArray(): void {
-  INT16 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 bLastTeamID;
+  let cnt: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
@@ -972,11 +977,11 @@ function BuildInsuranceArray(): void {
 }
 
 function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT8 ubPayoutID;
-  UINT32 uiTimeInMinutes;
-  MERCPROFILESTRUCT *pProfile;
-  UINT32 uiCostPerDay;
-  UINT32 uiDaysToPay;
+  let ubPayoutID: UINT8;
+  let uiTimeInMinutes: UINT32;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let uiCostPerDay: UINT32;
+  let uiDaysToPay: UINT32;
 
   Assert(pSoldier != NULL);
   Assert(pSoldier->ubProfile != NO_PROFILE);
@@ -1049,7 +1054,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function StartInsuranceInvestigation(ubPayoutID: UINT8): void {
-  UINT8 ubDays;
+  let ubDays: UINT8;
 
   // send an email telling player an investigation is taking place
   if (gStrategicStatus.ubInsuranceInvestigationsCnt == 0) {
@@ -1159,7 +1164,7 @@ function EnableDisableInsuranceContractAcceptButtons(): void {
 }
 
 function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: UINT8, puiAcceptButton: Pointer<UINT32>): void {
-  INT16 sSoldierID = 0;
+  let sSoldierID: INT16 = 0;
 
   sSoldierID = GetSoldierIDFromMercID(ubMercIDForMercInForm);
   if (sSoldierID == -1)
@@ -1220,7 +1225,7 @@ function GetTimeRemainingOnSoldiersInsuranceContract(pSoldier: Pointer<SOLDIERTY
 }
 
 function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
-  INT32 iDayMercLeaves = (pSoldier->iEndofContractTime / 1440) - 1;
+  let iDayMercLeaves: INT32 = (pSoldier->iEndofContractTime / 1440) - 1;
 
   // Since the merc is leaving in the afternoon, we must adjust since the time left would be different if we did the calc
   // at 11:59 or 12:01 ( noon )
@@ -1238,7 +1243,7 @@ function GetTimeRemainingOnSoldiersContract(pSoldier: Pointer<SOLDIERTYPE>): UIN
 }
 
 function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiInsuranceLength: UINT32): void {
-  INT32 iAmountOfMoneyTransfer = -1;
+  let iAmountOfMoneyTransfer: INT32 = -1;
 
   if (pSoldier == NULL)
     AssertMsg(0, "Soldier pointer is NULL!");
@@ -1270,7 +1275,7 @@ function PurchaseOrExtendInsuranceForSoldier(pSoldier: Pointer<SOLDIERTYPE>, uiI
   } else {
     // if the player doesnt have enough money, tell him
     if (LaptopSaveInfo.iCurrentBalance < iAmountOfMoneyTransfer) {
-      wchar_t sText[800];
+      let sText: wchar_t[] /* [800] */;
 
       GetInsuranceText(INS_MLTI_NOT_ENOUGH_FUNDS, sText);
       if (guiCurrentScreen == LAPTOP_SCREEN)
@@ -1307,8 +1312,8 @@ function CanSoldierExtendInsuranceContract(pSoldier: Pointer<SOLDIERTYPE>): BOOL
 }
 
 function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iInsuranceContractLength = 0;
-  UINT32 uiTimeRemainingOnSoldiersContract = GetTimeRemainingOnSoldiersContract(pSoldier);
+  let iInsuranceContractLength: INT32 = 0;
+  let uiTimeRemainingOnSoldiersContract: UINT32 = GetTimeRemainingOnSoldiersContract(pSoldier);
 
   // if the merc is dead
   if (IsMercDead(pSoldier->ubProfile))
@@ -1348,7 +1353,7 @@ function CalculateSoldiersInsuranceContractLength(pSoldier: Pointer<SOLDIERTYPE>
 }
 
 function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  UINT32 uiDayToStartInsurance = 0;
+  let uiDayToStartInsurance: UINT32 = 0;
 
   // if the soldier was just hired ( in transit ), and the game didnt just start
   if (pSoldier->bAssignment == IN_TRANSIT && !DidGameJustStart()) {
@@ -1362,9 +1367,9 @@ function CalcStartDayOfInsurance(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function AreAnyAimMercsOnTeam(): BOOLEAN {
-  INT16 sNextMercID = 0;
-  BOOLEAN fIsThereAnyAimMercs = FALSE;
-  SOLDIERTYPE *pSoldier = NULL;
+  let sNextMercID: INT16 = 0;
+  let fIsThereAnyAimMercs: BOOLEAN = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   for (sNextMercID = 0; sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID; sNextMercID++) {
     pSoldier = &Menptr[GetSoldierIDFromMercID((UINT8)sNextMercID)];

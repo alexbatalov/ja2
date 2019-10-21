@@ -1,11 +1,11 @@
 const NUM_SMOKE_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR SMOKE LISTING
-SMOKEEFFECT gSmokeEffectData[NUM_SMOKE_EFFECT_SLOTS];
-UINT32 guiNumSmokeEffects = 0;
+let gSmokeEffectData: SMOKEEFFECT[] /* [NUM_SMOKE_EFFECT_SLOTS] */;
+let guiNumSmokeEffects: UINT32 = 0;
 
 function GetFreeSmokeEffect(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSmokeEffects; uiCount++) {
     if ((gSmokeEffectData[uiCount].fAllocated == FALSE))
@@ -19,7 +19,7 @@ function GetFreeSmokeEffect(): INT32 {
 }
 
 function RecountSmokeEffects(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumSmokeEffects - 1; (uiCount >= 0); uiCount--) {
     if ((gSmokeEffectData[uiCount].fAllocated)) {
@@ -31,7 +31,7 @@ function RecountSmokeEffects(): void {
 
 // Returns NO_SMOKE_EFFECT if none there...
 function GetSmokeEffectOnTile(sGridNo: INT16, bLevel: INT8): INT8 {
-  UINT8 ubExtFlags;
+  let ubExtFlags: UINT8;
 
   ubExtFlags = gpWorldLevelData[sGridNo].ubExtFlags[bLevel];
 
@@ -87,11 +87,11 @@ function FromSmokeTypeToWorldFlags(bType: INT8): UINT8 {
 }
 
 function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: UINT8): INT32 {
-  SMOKEEFFECT *pSmoke;
-  INT32 iSmokeIndex;
-  INT8 bSmokeEffectType = 0;
-  UINT8 ubDuration = 0;
-  UINT8 ubStartRadius = 0;
+  let pSmoke: Pointer<SMOKEEFFECT>;
+  let iSmokeIndex: INT32;
+  let bSmokeEffectType: INT8 = 0;
+  let ubDuration: UINT8 = 0;
+  let ubStartRadius: UINT8 = 0;
 
   if ((iSmokeIndex = GetFreeSmokeEffect()) == (-1))
     return -1;
@@ -184,10 +184,10 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
 // Add smoke to gridno
 // ( Replacement algorithm uses distance away )
 function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16, bLevel: INT8): void {
-  ANITILE_PARAMS AniParams;
-  ANITILE *pAniTile;
-  SMOKEEFFECT *pSmoke;
-  BOOLEAN fDissipating = FALSE;
+  let AniParams: ANITILE_PARAMS;
+  let pAniTile: Pointer<ANITILE>;
+  let pSmoke: Pointer<SMOKEEFFECT>;
+  let fDissipating: BOOLEAN = FALSE;
 
   pSmoke = &gSmokeEffectData[iSmokeEffectID];
 
@@ -302,8 +302,8 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
 }
 
 function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
-  ANITILE *pAniTile;
-  UINT8 ubLevelID;
+  let pAniTile: Pointer<ANITILE>;
+  let ubLevelID: UINT8;
 
   // Get ANI tile...
   if (bLevel == 0) {
@@ -328,12 +328,13 @@ function RemoveSmokeEffectFromTile(sGridNo: INT16, bLevel: INT8): void {
 }
 
 function DecaySmokeEffects(uiTime: UINT32): void {
-  SMOKEEFFECT *pSmoke;
-  UINT32 cnt, cnt2;
-  BOOLEAN fUpdate = FALSE;
-  BOOLEAN fSpreadEffect;
-  INT8 bLevel;
-  UINT16 usNumUpdates = 1;
+  let pSmoke: Pointer<SMOKEEFFECT>;
+  let cnt: UINT32;
+  let cnt2: UINT32;
+  let fUpdate: BOOLEAN = FALSE;
+  let fSpreadEffect: BOOLEAN;
+  let bLevel: INT8;
+  let usNumUpdates: UINT16 = 1;
 
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
     if (MercSlots[cnt]) {
@@ -481,10 +482,10 @@ function SaveSmokeEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiCount;
-  UINT32 uiCnt = 0;
-  INT8 bLevel;
+  let uiNumBytesRead: UINT32;
+  let uiCount: UINT32;
+  let uiCnt: UINT32 = 0;
+  let bLevel: INT8;
 
   // no longer need to load smoke effects.  They are now in temp files
   if (guiSaveGameVersion < 75) {
@@ -537,11 +538,11 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT32 uiNumSmokeEffects = 0;
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
-  CHAR8 zMapName[128];
-  UINT32 uiCnt;
+  let uiNumSmokeEffects: UINT32 = 0;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiCnt: UINT32;
 
   // get the name of the map
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -603,13 +604,13 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
 }
 
 function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiCount;
-  UINT32 uiCnt = 0;
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
-  CHAR8 zMapName[128];
-  INT8 bLevel;
+  let uiNumBytesRead: UINT32;
+  let uiCount: UINT32;
+  let uiCnt: UINT32 = 0;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
+  let bLevel: INT8;
 
   GetMapTempFileName(SF_SMOKE_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -666,9 +667,9 @@ function ResetSmokeEffects(): void {
 }
 
 function UpdateSmokeEffectGraphics(): void {
-  UINT32 uiCnt;
-  SMOKEEFFECT *pSmoke;
-  INT8 bLevel;
+  let uiCnt: UINT32;
+  let pSmoke: Pointer<SMOKEEFFECT>;
+  let bLevel: INT8;
 
   // loop through and save the number of smoke effects
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {

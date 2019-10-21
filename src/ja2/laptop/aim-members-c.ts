@@ -295,68 +295,68 @@ const enum Enum67 {
 }
 
 // Image Identifiers
-UINT32 guiStats;
-UINT32 guiPrice;
-UINT32 guiPortrait;
-UINT32 guiWeaponBox;
-UINT32 guiFace;
+let guiStats: UINT32;
+let guiPrice: UINT32;
+let guiPortrait: UINT32;
+let guiWeaponBox: UINT32;
+let guiFace: UINT32;
 // UINT32		guiVideoFace;
 // UINT32		guiContactButton;
-UINT32 guiVideoConfPopup;
-UINT32 guiVideoConfTerminal;
-UINT32 guiPopUpBox;
-UINT32 guiVideoFaceBackground;
-UINT32 guiBWSnow;
-UINT32 guiFuzzLine;
-UINT32 guiStraightLine;
-UINT32 guiTransSnow;
-UINT32 guiVideoContractCharge;
+let guiVideoConfPopup: UINT32;
+let guiVideoConfTerminal: UINT32;
+let guiPopUpBox: UINT32;
+let guiVideoFaceBackground: UINT32;
+let guiBWSnow: UINT32;
+let guiFuzzLine: UINT32;
+let guiStraightLine: UINT32;
+let guiTransSnow: UINT32;
+let guiVideoContractCharge: UINT32;
 // UINT32		guiAnsweringMachineImage;
-UINT32 guiVideoTitleBar;
-INT32 iAimMembersBoxId = -1;
+let guiVideoTitleBar: UINT32;
+let iAimMembersBoxId: INT32 = -1;
 
-UINT8 gbCurrentSoldier = 0;
-UINT8 gbCurrentIndex = 0;
+let gbCurrentSoldier: UINT8 = 0;
+let gbCurrentIndex: UINT8 = 0;
 
-UINT8 gubVideoConferencingMode;
-UINT8 gubVideoConferencingPreviousMode;
-BOOLEAN gfJustSwitchedVideoConferenceMode;
+let gubVideoConferencingMode: UINT8;
+let gubVideoConferencingPreviousMode: UINT8;
+let gfJustSwitchedVideoConferenceMode: BOOLEAN;
 
-BOOLEAN gfMercIsTalking = FALSE;
-BOOLEAN gfVideoFaceActive = FALSE;
+let gfMercIsTalking: BOOLEAN = FALSE;
+let gfVideoFaceActive: BOOLEAN = FALSE;
 
-UINT8 gubPopUpBoxAction = AIM_POPUP_NOTHING;
-BOOLEAN gfRedrawScreen = FALSE;
-UINT8 gubContractLength;
-BOOLEAN gfBuyEquipment;
-INT32 giContractAmount = 0;
-INT32 giMercFaceIndex;
-wchar_t gsTalkingMercText[TEXT_POPUP_STRING_SIZE];
-UINT32 guiTimeThatMercStartedTalking;
-UINT32 guiLastHandleMercTime;
-BOOLEAN gfFirstTimeInContactScreen;
+let gubPopUpBoxAction: UINT8 = AIM_POPUP_NOTHING;
+let gfRedrawScreen: BOOLEAN = FALSE;
+let gubContractLength: UINT8;
+let gfBuyEquipment: BOOLEAN;
+let giContractAmount: INT32 = 0;
+let giMercFaceIndex: INT32;
+let gsTalkingMercText: wchar_t[] /* [TEXT_POPUP_STRING_SIZE] */;
+let guiTimeThatMercStartedTalking: UINT32;
+let guiLastHandleMercTime: UINT32;
+let gfFirstTimeInContactScreen: BOOLEAN;
 
-UINT8 gubCurrentCount;
-UINT8 gubCurrentStaticMode;
-UINT32 guiMercAttitudeTime; // retains the amount of time the user is in a screen, if over a certain time, the merc gets miffed
-UINT8 gubMercAttitudeLevel; // retains the current level the merc is  P.O.'ed at the caller.
-BOOLEAN gfHangUpMerc; // if we have to cancel the video conferencing after the merc is finsihed talking
-BOOLEAN gfIsShutUpMouseRegionActive;
-BOOLEAN gfIsAnsweringMachineActive;
-BOOLEAN gfRenderTopLevel;
-BOOLEAN gfStopMercFromTalking;
+let gubCurrentCount: UINT8;
+let gubCurrentStaticMode: UINT8;
+let guiMercAttitudeTime: UINT32; // retains the amount of time the user is in a screen, if over a certain time, the merc gets miffed
+let gubMercAttitudeLevel: UINT8; // retains the current level the merc is  P.O.'ed at the caller.
+let gfHangUpMerc: BOOLEAN; // if we have to cancel the video conferencing after the merc is finsihed talking
+let gfIsShutUpMouseRegionActive: BOOLEAN;
+let gfIsAnsweringMachineActive: BOOLEAN;
+let gfRenderTopLevel: BOOLEAN;
+let gfStopMercFromTalking: BOOLEAN;
 
-UINT16 usAimMercSpeechDuration = 0;
+let usAimMercSpeechDuration: UINT16 = 0;
 
-BOOLEAN gfIsNewMailFlagSet = FALSE;
+let gfIsNewMailFlagSet: BOOLEAN = FALSE;
 
-BOOLEAN gfWaitingForMercToStopTalkingOrUserToClick = FALSE;
+let gfWaitingForMercToStopTalkingOrUserToClick: BOOLEAN = FALSE;
 
-INT32 giIdOfLastHiredMerc = -1;
+let giIdOfLastHiredMerc: INT32 = -1;
 
-BOOLEAN gfAimMemberDisplayFaceHelpText = FALSE;
+let gfAimMemberDisplayFaceHelpText: BOOLEAN = FALSE;
 
-BOOLEAN gfAimMemberCanMercSayOpeningQuote = TRUE;
+let gfAimMemberCanMercSayOpeningQuote: BOOLEAN = TRUE;
 
 ////////////////////////////////////////////////////////////////
 //
@@ -365,41 +365,41 @@ BOOLEAN gfAimMemberCanMercSayOpeningQuote = TRUE;
 ////////////////////////////////////////////////////////////////
 
 // Graphic for following
-INT32 guiPreviousContactNextButtonImage;
-INT32 giPreviousButton;
+let guiPreviousContactNextButtonImage: INT32;
+let giPreviousButton: INT32;
 
-INT32 giContactButton;
+let giContactButton: INT32;
 
-INT32 giNextButton;
+let giNextButton: INT32;
 
 // Video conference buttons
-INT32 guiVideoConferenceButtonImage[3];
+let guiVideoConferenceButtonImage: INT32[] /* [3] */;
 
-INT32 giContractLengthButton[3];
+let giContractLengthButton: INT32[] /* [3] */;
 
-INT32 giBuyEquipmentButton[2];
+let giBuyEquipmentButton: INT32[] /* [2] */;
 
-INT32 giAuthorizeButton[2];
+let giAuthorizeButton: INT32[] /* [2] */;
 
-INT32 giHangUpButton;
+let giHangUpButton: INT32;
 
-UINT32 guiPopUpOkButton;
-INT32 guiPopUpImage;
+let guiPopUpOkButton: UINT32;
+let guiPopUpImage: INT32;
 
-INT32 giFirstContactButton[2];
+let giFirstContactButton: INT32[] /* [2] */;
 
-INT32 giAnsweringMachineButton[2];
+let giAnsweringMachineButton: INT32[] /* [2] */;
 
 // X to Close the video conference Button
-INT32 giXToCloseVideoConfButtonImage;
-INT32 giXToCloseVideoConfButton;
+let giXToCloseVideoConfButtonImage: INT32;
+let giXToCloseVideoConfButton: INT32;
 
 // Mouse Regions
 // Clicking on guys Face
-MOUSE_REGION gSelectedFaceRegion;
+let gSelectedFaceRegion: MOUSE_REGION;
 
 // Clicking To shut merc up
-MOUSE_REGION gSelectedShutUpMercRegion;
+let gSelectedShutUpMercRegion: MOUSE_REGION;
 
 //*******************************************
 //
@@ -442,8 +442,8 @@ function EnterInitAimMembers(): void {
 }
 
 function EnterAIMMembers(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  VSURFACE_DESC vs_desc;
+  let VObjectDesc: VOBJECT_DESC;
+  let vs_desc: VSURFACE_DESC;
 
   // Create a background video surface to blt the face onto
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -691,11 +691,12 @@ function RenderAIMMembersTopLevel(): BOOLEAN {
 }
 
 function RenderAIMMembers(): BOOLEAN {
-  HVOBJECT hStatsHandle;
-  HVOBJECT hPriceHandle;
-  HVOBJECT hWeaponBoxHandle;
-  UINT16 x, uiPosX;
-  wchar_t wTemp[50];
+  let hStatsHandle: HVOBJECT;
+  let hPriceHandle: HVOBJECT;
+  let hWeaponBoxHandle: HVOBJECT;
+  let x: UINT16;
+  let uiPosX: UINT16;
+  let wTemp: wchar_t[] /* [50] */;
 
   DrawAimDefaults();
 
@@ -778,7 +779,7 @@ function RenderAIMMembers(): BOOLEAN {
 }
 
 function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
-  wchar_t sStr[10];
+  let sStr: wchar_t[] /* [10] */;
 
   swprintf(sStr, L"%d", iNumber);
 
@@ -788,7 +789,7 @@ function DrawNumeralsToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLo
 }
 
 function DrawMoneyToScreen(iNumber: INT32, bWidth: INT8, usLocX: UINT16, usLocY: UINT16, ulFont: UINT32, ubColor: UINT8): BOOLEAN {
-  wchar_t sStr[10];
+  let sStr: wchar_t[] /* [10] */;
 
   swprintf(sStr, L"%d", iNumber);
   InsertCommasForDollarFigure(sStr);
@@ -825,9 +826,9 @@ function SelectFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 function UpdateMercInfo(): BOOLEAN {
-  UINT16 PosY = 300;
-  wchar_t MercInfoString[SIZE_MERC_BIO_INFO];
-  wchar_t AdditionalInfoString[SIZE_MERC_BIO_INFO];
+  let PosY: UINT16 = 300;
+  let MercInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
+  let AdditionalInfoString: wchar_t[] /* [SIZE_MERC_BIO_INFO] */;
 
   // Display the salaries
   DrawMoneyToScreen(gMercProfiles[gbCurrentSoldier].sSalary, FEE_WIDTH, FEE_X, HEALTH_Y, AIM_M_NUMBER_FONT, AIM_M_COLOR_DYNAMIC_TEXT);
@@ -836,8 +837,8 @@ function UpdateMercInfo(): BOOLEAN {
 
   // if medical deposit is required
   if (gMercProfiles[gbCurrentSoldier].bMedicalDeposit) {
-    wchar_t zTemp[40];
-    wchar_t sMedicalString[40];
+    let zTemp: wchar_t[] /* [40] */;
+    let sMedicalString: wchar_t[] /* [40] */;
 
     // Display the medical cost
     swprintf(zTemp, L"%d", gMercProfiles[gbCurrentSoldier].sMedicalDepositAmount);
@@ -866,10 +867,10 @@ function UpdateMercInfo(): BOOLEAN {
 }
 
 function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiBytesRead;
-  UINT16 i;
-  UINT32 uiStartSeekAmount;
+  let hFile: HWFILE;
+  let uiBytesRead: UINT32;
+  let i: UINT16;
+  let uiStartSeekAmount: UINT32;
 
   hFile = FileOpen(MERCBIOSFILENAME, FILE_ACCESS_READ, FALSE);
   if (!hFile) {
@@ -1036,15 +1037,19 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): B
 }
 
 function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
-  UINT8 i;
-  INT16 PosX, PosY, sCenX, sCenY;
-  UINT16 usItem;
-  INVTYPE *pItem;
-  HVOBJECT hVObject;
-  UINT32 usHeight, usWidth;
-  ETRLEObject *pTrav;
-  UINT16 gzItemName[SIZE_ITEM_NAME];
-  UINT8 ubItemCount = 0;
+  let i: UINT8;
+  let PosX: INT16;
+  let PosY: INT16;
+  let sCenX: INT16;
+  let sCenY: INT16;
+  let usItem: UINT16;
+  let pItem: Pointer<INVTYPE>;
+  let hVObject: HVOBJECT;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let gzItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let ubItemCount: UINT8 = 0;
   //	UINT16			gzTempItemName[ SIZE_ITEM_INFO ];
 
   // if the mercs inventory has already been purchased, dont display the inventory
@@ -1078,7 +1083,7 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
 
       // if there are more then 1 piece of equipment in the current slot, display how many there are
       if (gMercProfiles[ubMercID].bInvNumber[i] > 1) {
-        wchar_t zTempStr[32];
+        let zTempStr: wchar_t[] /* [32] */;
         //				UINT16	usWidthOfNumber;
 
         swprintf(zTempStr, L"x%d", gMercProfiles[ubMercID].bInvNumber[i]);
@@ -1190,12 +1195,12 @@ function BtnNextButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function DisplayMercsFace(): BOOLEAN {
-  HVOBJECT hFaceHandle;
-  HVOBJECT hPortraitHandle;
-  STR sFaceLoc = "FACES\\BIGFACES\\";
-  char sTemp[100];
-  VOBJECT_DESC VObjectDesc;
-  SOLDIERTYPE *pSoldier = NULL;
+  let hFaceHandle: HVOBJECT;
+  let hPortraitHandle: HVOBJECT;
+  let sFaceLoc: STR = "FACES\\BIGFACES\\";
+  let sTemp: char[] /* [100] */;
+  let VObjectDesc: VOBJECT_DESC;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // See if the merc is currently hired
   pSoldier = FindSoldierByProfileID(gbCurrentSoldier, TRUE);
@@ -1256,7 +1261,7 @@ function DisplayMercsFace(): BOOLEAN {
 }
 
 function DisplayMercStats(): void {
-  UINT8 ubColor;
+  let ubColor: UINT8;
 
   //
   // Display all the static text
@@ -1353,10 +1358,10 @@ function GetStatColor(bStat: INT8): UINT8 {
 
 // displays the dots between the stats and the stat name
 function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString: STR16): void {
-  INT16 sNumberOfDots;
-  UINT16 usStringLength = StringPixLength(pString, AIM_M_FONT_STATIC_TEXT);
-  INT16 i;
-  UINT16 usPosX;
+  let sNumberOfDots: INT16;
+  let usStringLength: UINT16 = StringPixLength(pString, AIM_M_FONT_STATIC_TEXT);
+  let i: INT16;
+  let usPosX: UINT16;
 
   sNumberOfDots = (usStatX - usNameX - usStringLength) / 7;
 
@@ -1371,7 +1376,7 @@ function BtnContractLengthButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1435,7 +1440,7 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
     gfStopMercFromTalking = TRUE;
@@ -1488,11 +1493,11 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 }
 
 function AimMemberHireMerc(): INT8 {
-  MERC_HIRE_STRUCT HireMercStruct;
-  UINT8 ubCurrentSoldier = AimMercArray[gbCurrentIndex];
-  INT8 bReturnCode;
-  INT16 sSoldierID = 0;
-  INT8 bTypeOfContract = 0;
+  let HireMercStruct: MERC_HIRE_STRUCT;
+  let ubCurrentSoldier: UINT8 = AimMercArray[gbCurrentIndex];
+  let bReturnCode: INT8;
+  let sSoldierID: INT16 = 0;
+  let bTypeOfContract: INT8 = 0;
 
   if (LaptopSaveInfo.iCurrentBalance < giContractAmount) {
     // wasnt hired because of lack of funds
@@ -1574,7 +1579,7 @@ function AimMemberHireMerc(): INT8 {
 }
 
 function DisplayVideoConferencingDisplay(): BOOLEAN {
-  wchar_t sMercName[128];
+  let sMercName: wchar_t[] /* [128] */;
 
   if ((gubVideoConferencingMode == AIM_VIDEO_NOT_DISPLAYED_MODE) || (gubVideoConferencingMode == AIM_VIDEO_POPUP_MODE))
     return FALSE;
@@ -1602,9 +1607,9 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
 
   //	if( gfMercIsTalking && !gfIsAnsweringMachineActive)
   if (gfMercIsTalking && gGameSettings.fOptions[TOPTION_SUBTITLES]) {
-    UINT16 usActualWidth;
-    UINT16 usActualHeight;
-    UINT16 usPosX;
+    let usActualWidth: UINT16;
+    let usActualHeight: UINT16;
+    let usPosX: UINT16;
 
     SET_USE_WINFONTS(TRUE);
     SET_WINFONT(giSubTitleWinFont);
@@ -1626,8 +1631,8 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
 }
 
 function DisplayMercsVideoFace(): BOOLEAN {
-  HVOBJECT hTerminalHandle;
-  STR sFaceLoc = "FACES\\";
+  let hTerminalHandle: HVOBJECT;
+  let sFaceLoc: STR = "FACES\\";
 
   // Get and Blt Terminal Frame
   GetVideoObject(&hTerminalHandle, guiVideoConfTerminal);
@@ -1642,7 +1647,9 @@ function DisplayMercsVideoFace(): BOOLEAN {
 }
 
 function DisplaySelectLights(fContractDown: BOOLEAN, fBuyEquipDown: BOOLEAN): void {
-  UINT16 i, usPosY, usPosX;
+  let i: UINT16;
+  let usPosY: UINT16;
+  let usPosX: UINT16;
 
   // First draw the select light for the contract length buttons
   usPosY = AIM_MEMBER_BUY_CONTRACT_LENGTH_Y;
@@ -1684,9 +1691,9 @@ function DisplaySelectLights(fContractDown: BOOLEAN, fBuyEquipDown: BOOLEAN): vo
 }
 
 function DisplayMercChargeAmount(): UINT32 {
-  wchar_t wTemp[50];
-  wchar_t wDollarTemp[50];
-  HVOBJECT hImageHandle;
+  let wTemp: wchar_t[] /* [50] */;
+  let wDollarTemp: wchar_t[] /* [50] */;
+  let hImageHandle: HVOBJECT;
 
   if (gubVideoConferencingMode != AIM_VIDEO_HIRE_MERC_MODE)
     return 0;
@@ -1740,11 +1747,13 @@ function DisplayMercChargeAmount(): UINT32 {
 }
 
 function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: STR16, usPosX: UINT16, usPosY: UINT16, ubData: UINT8): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hPopupBoxHandle;
-  static UINT16 usPopUpBoxPosX, usPopUpBoxPosY;
-  static wchar_t sPopUpString1[400], sPopUpString2[400];
-  static BOOLEAN fPopUpBoxActive = FALSE;
+  let VObjectDesc: VOBJECT_DESC;
+  let hPopupBoxHandle: HVOBJECT;
+  /* static */ let usPopUpBoxPosX: UINT16;
+  /* static */ let usPopUpBoxPosY: UINT16;
+  /* static */ let sPopUpString1: wchar_t[] /* [400] */;
+  /* static */ let sPopUpString2: wchar_t[] /* [400] */;
+  /* static */ let fPopUpBoxActive: BOOLEAN = FALSE;
   ;
 
   switch (ubFlag) {
@@ -1799,8 +1808,8 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
     } break;
 
     case AIM_POPUP_DISPLAY: {
-      HVOBJECT hPopupBoxHandle;
-      UINT16 usTempPosY = usPopUpBoxPosY;
+      let hPopupBoxHandle: HVOBJECT;
+      let usTempPosY: UINT16 = usPopUpBoxPosY;
 
       if (gubPopUpBoxAction != AIM_POPUP_DISPLAY)
         return FALSE;
@@ -1849,7 +1858,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
 }
 
 function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fInCallback = TRUE;
+  /* static */ let fInCallback: BOOLEAN = TRUE;
 
   if (fInCallback) {
     if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -1860,7 +1869,7 @@ function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
     }
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      UINT8 ubCurPageNum = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubCurPageNum: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
       fInCallback = FALSE;
@@ -1894,7 +1903,7 @@ function BtnFirstContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
       //			gfStopMercFromTalking = TRUE;
       StopMercTalking();
@@ -1927,7 +1936,7 @@ function BtnAnsweringMachineButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
       if (ubRetValue == 0) {
         // Set a flag indicating that the merc has a message
@@ -2012,10 +2021,10 @@ function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): BOOLEAN {
 }
 
 function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
-  static BOOLEAN fWasTheMercTalking = FALSE;
-  BOOLEAN fIsTheMercTalking;
-  SGPRect SrcRect;
-  SGPRect DestRect;
+  /* static */ let fWasTheMercTalking: BOOLEAN = FALSE;
+  let fIsTheMercTalking: BOOLEAN;
+  let SrcRect: SGPRect;
+  let DestRect: SGPRect;
 
   // Test
   SrcRect.iLeft = 0;
@@ -2096,7 +2105,7 @@ function DisplayTextForMercFaceVideoPopUp(pString: STR16): void {
 }
 
 function SelectShutUpMercRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  BOOLEAN fInCallBack = TRUE;
+  let fInCallBack: BOOLEAN = TRUE;
 
   if (fInCallBack) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -2130,10 +2139,11 @@ function WillMercAcceptCall(): UINT8 {
 }
 
 function CanMercBeHired(): BOOLEAN {
-  UINT8 i, j;
-  INT8 bMercID;
-  BOOLEAN fRetVal = FALSE;
-  BOOLEAN fBuddyOnTeam = FALSE;
+  let i: UINT8;
+  let j: UINT8;
+  let bMercID: INT8;
+  let fRetVal: BOOLEAN = FALSE;
+  let fBuddyOnTeam: BOOLEAN = FALSE;
 
   StopMercTalking();
 
@@ -2236,9 +2246,9 @@ function CanMercBeHired(): BOOLEAN {
 }
 
 function DisplaySnowBackground(): BOOLEAN {
-  UINT32 uiCurrentTime = 0;
-  HVOBJECT hSnowHandle;
-  UINT8 ubCount;
+  let uiCurrentTime: UINT32 = 0;
+  let hSnowHandle: HVOBJECT;
+  let ubCount: UINT8;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2272,8 +2282,8 @@ function DisplaySnowBackground(): BOOLEAN {
 }
 
 function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): BOOLEAN {
-  UINT32 uiCurrentTime = 0;
-  UINT8 ubCount;
+  let uiCurrentTime: UINT32 = 0;
+  let ubCount: UINT8;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2297,8 +2307,8 @@ function DisplayBlackBackground(ubMaxNumOfLoops: UINT8): BOOLEAN {
 }
 
 function HandleVideoDistortion(): void {
-  static UINT32 uiStaticNoiseSound = NO_SAMPLE;
-  UINT8 ubOldMode = gubCurrentStaticMode;
+  /* static */ let uiStaticNoiseSound: UINT32 = NO_SAMPLE;
+  let ubOldMode: UINT8 = gubCurrentStaticMode;
 
   // if we are just entering the contact page, display a snowy background
   if (gfFirstTimeInContactScreen && !gfIsAnsweringMachineActive) {
@@ -2311,8 +2321,8 @@ function HandleVideoDistortion(): void {
   } else {
     switch (gubCurrentStaticMode) {
       case VC_NO_STATIC: {
-        static UINT32 uiCurTime = 0;
-        UINT8 ubNum;
+        /* static */ let uiCurTime: UINT32 = 0;
+        let ubNum: UINT8;
 
         // if the sound is playing, stop it
         if (uiStaticNoiseSound != NO_SAMPLE) {
@@ -2409,10 +2419,10 @@ function HandleVideoDistortion(): void {
 
 // returns true when done. else false
 function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8, bForward: BOOLEAN): UINT8 {
-  HVOBJECT hFuzzLineHandle;
-  static INT8 bCount = 0;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+  let hFuzzLineHandle: HVOBJECT;
+  /* static */ let bCount: INT8 = 0;
+  let uiCurrentTime: UINT32 = 0;
+  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2455,10 +2465,10 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
 
 // returns true when done. else false
 function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxImages: UINT8): UINT8 {
-  HVOBJECT hFuzzLineHandle;
-  static UINT8 ubCount = 255;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+  let hFuzzLineHandle: HVOBJECT;
+  /* static */ let ubCount: UINT8 = 255;
+  let uiCurrentTime: UINT32 = 0;
+  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2488,9 +2498,9 @@ function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxIm
 }
 
 function DisplayPixelatedImage(ubMaxImages: UINT8): UINT8 {
-  static UINT8 ubCount = 255;
-  UINT32 uiCurrentTime = 0;
-  static UINT32 uiLastTime = 0;
+  /* static */ let ubCount: UINT8 = 255;
+  let uiCurrentTime: UINT32 = 0;
+  /* static */ let uiLastTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2513,7 +2523,7 @@ function DisplayPixelatedImage(ubMaxImages: UINT8): UINT8 {
 }
 
 function HandleMercAttitude(): void {
-  UINT32 uiCurrentTime = 0;
+  let uiCurrentTime: UINT32 = 0;
 
   uiCurrentTime = GetJA2Clock();
 
@@ -2526,7 +2536,7 @@ function HandleMercAttitude(): void {
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_PRECEDENT_TO_REPEATING_ONESELF);
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_IMPATIENT_QUOTE);
     } else if (gubMercAttitudeLevel == QUOTE_DELAY_HANGUP_TALK) {
-      UINT32 uiResetTime;
+      let uiResetTime: UINT32;
       InitVideoFaceTalking(gbCurrentSoldier, QUOTE_COMMENT_BEFORE_HANG_UP);
 
       // if the merc is going to hang up disable the buttons, so user cant press any buttons
@@ -2588,12 +2598,13 @@ function BtnXToCloseVideoConfButtonCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 }
 
 function InitDeleteVideoConferencePopUp(): BOOLEAN {
-  static BOOLEAN fXRegionActive = FALSE;
-  static BOOLEAN fVideoConferenceCreated = FALSE;
-  UINT8 i;
-  UINT16 usPosX, usPosY;
-  VOBJECT_DESC VObjectDesc;
-  VSURFACE_DESC vs_desc;
+  /* static */ let fXRegionActive: BOOLEAN = FALSE;
+  /* static */ let fVideoConferenceCreated: BOOLEAN = FALSE;
+  let i: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let VObjectDesc: VOBJECT_DESC;
+  let vs_desc: VSURFACE_DESC;
 
   // remove the face help text
   gfAimMemberDisplayFaceHelpText = FALSE;
@@ -2664,8 +2675,8 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     gubVideoConferencingPreviousMode = gubVideoConferencingMode;
 
     if (gfJustSwitchedVideoConferenceMode) {
-      UINT32 uiVideoBackgroundGraphic;
-      HVOBJECT hImageHandle;
+      let uiVideoBackgroundGraphic: UINT32;
+      let hImageHandle: HVOBJECT;
 
       // load the answering machine graphic and add it
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2847,8 +2858,8 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
   }
 
   if (gubVideoConferencingMode == AIM_VIDEO_POPDOWN_MODE) {
-    UINT32 uiVideoBackgroundGraphic;
-    HVOBJECT hImageHandle;
+    let uiVideoBackgroundGraphic: UINT32;
+    let hImageHandle: HVOBJECT;
 
     if (gubPopUpBoxAction == AIM_POPUP_DISPLAY) {
       return TRUE;
@@ -2884,7 +2895,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
 }
 
 function DeleteVideoConfPopUp(): BOOLEAN {
-  UINT16 i;
+  let i: UINT16;
 
   // reset ( in case merc was going to say something
   DelayMercSpeech(0, 0, 0, FALSE, TRUE);
@@ -2989,7 +3000,7 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
     }
 
     case AIM_VIDEO_POPUP_MODE: {
-      BOOLEAN ubDone;
+      let ubDone: BOOLEAN;
 
       if (gfJustSwitchedVideoConferenceMode)
         ubDone = DisplayMovingTitleBar(TRUE, TRUE);
@@ -3004,8 +3015,8 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
 
     // The opening animation of the vc (fuzzy screen, then goes to black)
     case AIM_VIDEO_INIT_MODE: {
-      static UINT8 ubCurMode = 0;
-      BOOLEAN fDone;
+      /* static */ let ubCurMode: UINT8 = 0;
+      let fDone: BOOLEAN;
 
       if (ubCurMode == 0) {
         fDone = DisplayBlackBackground(10);
@@ -3053,7 +3064,7 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
     }
 
     case AIM_VIDEO_POPDOWN_MODE: {
-      BOOLEAN ubDone;
+      let ubDone: BOOLEAN;
 
       if (gfJustSwitchedVideoConferenceMode)
         ubDone = DisplayMovingTitleBar(FALSE, TRUE);
@@ -3083,8 +3094,8 @@ function HandleCurrentVideoConfMode(): BOOLEAN {
 }
 
 function EnableDisableCurrentVideoConferenceButtons(fEnable: BOOLEAN): BOOLEAN {
-  INT8 i;
-  static BOOLEAN fCreated = FALSE;
+  let i: INT8;
+  /* static */ let fCreated: BOOLEAN = FALSE;
   if (!fEnable) {
     if (fCreated) {
       // enable buttons behind the acknowlegde button
@@ -3230,12 +3241,17 @@ function DisableNewMailMessage(): BOOLEAN {
 }
 
 function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
-  static UINT8 ubCount;
-  UINT16 usPosX, usPosY, usPosRightX, usPosBottomY, usWidth, usHeight;
-  SGPRect SrcRect;
-  SGPRect DestRect;
-  static SGPRect LastRect;
-  FLOAT usTemp;
+  /* static */ let ubCount: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let usPosRightX: UINT16;
+  let usPosBottomY: UINT16;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let SrcRect: SGPRect;
+  let DestRect: SGPRect;
+  /* static */ let LastRect: SGPRect;
+  let usTemp: FLOAT;
 
   if (fForward) {
     if (fInit)
@@ -3330,13 +3346,13 @@ function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
 }
 
 function DelayMercSpeech(ubMercID: UINT8, usQuoteNum: UINT16, usDelay: UINT16, fNewQuote: BOOLEAN, fReset: BOOLEAN): void {
-  static UINT32 uiLastTime = 0;
-  UINT32 uiCurTime;
-  static UINT16 usCurQuoteNum;
-  static UINT16 usCurDelay;
-  static BOOLEAN fQuoteWaiting = FALSE; // a quote is waiting to be said
-  static UINT8 ubCurMercID;
-  static BOOLEAN fHangUpAfter = FALSE;
+  /* static */ let uiLastTime: UINT32 = 0;
+  let uiCurTime: UINT32;
+  /* static */ let usCurQuoteNum: UINT16;
+  /* static */ let usCurDelay: UINT16;
+  /* static */ let fQuoteWaiting: BOOLEAN = FALSE; // a quote is waiting to be said
+  /* static */ let ubCurMercID: UINT8;
+  /* static */ let fHangUpAfter: BOOLEAN = FALSE;
 
   uiCurTime = GetJA2Clock();
 
@@ -3418,11 +3434,11 @@ BOOLEAN DisplayShadedStretchedMercFace( UINT8 ubMercID, UINT16 usPosX, UINT16 us
 */
 
 function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
-  CHAR16 szLocAndTime[512];
-  SOLDIERTYPE *pSoldier = NULL;
-  CHAR16 zTimeString[128];
-  CHAR16 zSectorIDString[512];
-  UINT32 uiHour;
+  let szLocAndTime: CHAR16[] /* [512] */;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let zTimeString: CHAR16[] /* [128] */;
+  let zSectorIDString: CHAR16[] /* [512] */;
+  let uiHour: UINT32;
 
   // if the id of the merc is invalid, dont display the pop up
   if (LaptopSaveInfo.sLastHiredMerc.iIdOfMerc == -1)

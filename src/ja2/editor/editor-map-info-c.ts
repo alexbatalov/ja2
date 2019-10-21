@@ -1,11 +1,11 @@
-INT8 gbDefaultLightType = PRIMETIME_LIGHT;
+let gbDefaultLightType: INT8 = PRIMETIME_LIGHT;
 
-SGPPaletteEntry gEditorLightColor;
+let gEditorLightColor: SGPPaletteEntry;
 
-BOOLEAN gfEditorForceShadeTableRebuild = FALSE;
+let gfEditorForceShadeTableRebuild: BOOLEAN = FALSE;
 
 function SetupTextInputForMapInfo(): void {
-  UINT16 str[10];
+  let str: UINT16[] /* [10] */;
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
 
@@ -84,7 +84,7 @@ function UpdateMapInfo(): void {
 }
 
 function UpdateMapInfoFields(): void {
-  UINT16 str[10];
+  let str: UINT16[] /* [10] */;
   // Update the text fields to reflect the validated values.
   // light rgb fields
   swprintf(str, L"%d", gEditorLightColor.peRed);
@@ -109,9 +109,9 @@ function UpdateMapInfoFields(): void {
 }
 
 function ExtractAndUpdateMapInfo(): void {
-  UINT16 str[10];
-  INT32 temp;
-  BOOLEAN fUpdateLight1 = FALSE;
+  let str: UINT16[] /* [10] */;
+  let temp: INT32;
+  let fUpdateLight1: BOOLEAN = FALSE;
   // extract light1 colors
   temp = min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1 && temp != gEditorLightColor.peRed) {
@@ -173,7 +173,7 @@ function ExtractAndUpdateMapInfo(): void {
 }
 
 function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
-  UINT16 str[10];
+  let str: UINT16[] /* [10] */;
   // exit grid input fields
   if (iCurrentTaskbar != TASK_MAPINFO)
     return FALSE;
@@ -187,10 +187,10 @@ function ApplyNewExitGridValuesToTextFields(): BOOLEAN {
   return TRUE;
 }
 
-UINT16 usCurrentExitGridNo = 0;
+let usCurrentExitGridNo: UINT16 = 0;
 function LocateNextExitGrid(): void {
-  EXITGRID ExitGrid;
-  UINT16 i;
+  let ExitGrid: EXITGRID;
+  let i: UINT16;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
     if (GetExitGrid(i, &ExitGrid)) {
       usCurrentExitGridNo = i;

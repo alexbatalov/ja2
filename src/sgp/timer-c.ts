@@ -1,5 +1,5 @@
-UINT32 guiStartupTime;
-UINT32 guiCurrentTime;
+let guiStartupTime: UINT32;
+let guiCurrentTime: UINT32;
 
 function Clock(hWindow: HWND, uMessage: UINT, idEvent: UINT, dwTime: DWORD): void {
   guiCurrentTime = GetTickCount();

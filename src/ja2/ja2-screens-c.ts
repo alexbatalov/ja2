@@ -1,24 +1,24 @@
 const MAX_DEBUG_PAGES = 4;
 
 // GLOBAL FOR PAL EDITOR
-UINT8 CurrentPalette = 0;
-UINT32 guiBackgroundRect;
-BOOLEAN gfExitPalEditScreen = FALSE;
-BOOLEAN gfExitDebugScreen = FALSE;
-BOOLEAN gfInitRect = TRUE;
-static BOOLEAN FirstTime = TRUE;
-BOOLEAN gfDoneWithSplashScreen = FALSE;
+let CurrentPalette: UINT8 = 0;
+let guiBackgroundRect: UINT32;
+let gfExitPalEditScreen: BOOLEAN = FALSE;
+let gfExitDebugScreen: BOOLEAN = FALSE;
+let gfInitRect: BOOLEAN = TRUE;
+/* static */ let FirstTime: BOOLEAN = TRUE;
+let gfDoneWithSplashScreen: BOOLEAN = FALSE;
 
-INT8 gCurDebugPage = 0;
+let gCurDebugPage: INT8 = 0;
 
-HVSURFACE hVAnims[7];
-INT8 bTitleAnimFrame = 0;
-UINT32 uiTitleAnimTime = 0;
-UINT32 uiDoTitleAnimTime = 0;
-BOOLEAN gfDoTitleAnimation = FALSE;
-BOOLEAN gfStartTitleAnimation = FALSE;
+let hVAnims: HVSURFACE[] /* [7] */;
+let bTitleAnimFrame: INT8 = 0;
+let uiTitleAnimTime: UINT32 = 0;
+let uiDoTitleAnimTime: UINT32 = 0;
+let gfDoTitleAnimation: BOOLEAN = FALSE;
+let gfStartTitleAnimation: BOOLEAN = FALSE;
 
-RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {
+let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = {
   (RENDER_HOOK)DefaultDebugPage1,
   (RENDER_HOOK)DefaultDebugPage2,
   (RENDER_HOOK)DefaultDebugPage3,
@@ -26,10 +26,10 @@ RENDER_HOOK gDebugRenderOverride[MAX_DEBUG_PAGES] = {
 };
 
 function DisplayFrameRate(): void {
-  static UINT32 uiFPS = 0;
-  static UINT32 uiFrameCount = 0;
-  UINT16 usMapPos;
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
+  /* static */ let uiFPS: UINT32 = 0;
+  /* static */ let uiFrameCount: UINT32 = 0;
+  let usMapPos: UINT16;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
   // Increment frame count
   uiFrameCount++;
@@ -119,8 +119,8 @@ function ErrorScreenInitialize(): UINT32 {
 }
 
 function ErrorScreenHandle(): UINT32 {
-  InputAtom InputEvent;
-  static BOOLEAN fFirstTime = FALSE;
+  let InputEvent: InputAtom;
+  /* static */ let fFirstTime: BOOLEAN = FALSE;
 
   // For quick setting of new video stuff / to be changed
   StartFrameBufferRender();
@@ -173,9 +173,9 @@ function InitScreenInitialize(): UINT32 {
 }
 
 function InitScreenHandle(): UINT32 {
-  VSURFACE_DESC vs_desc;
-  static HVSURFACE hVSurface;
-  static UINT8 ubCurrentScreen = 255;
+  let vs_desc: VSURFACE_DESC;
+  /* static */ let hVSurface: HVSURFACE;
+  /* static */ let ubCurrentScreen: UINT8 = 255;
 
   if (ubCurrentScreen == 255) {
 // FIXME: Language-specific code
@@ -271,7 +271,7 @@ function PalEditScreenInit(): UINT32 {
 }
 
 function PalEditScreenHandle(): UINT32 {
-  static BOOLEAN FirstTime = TRUE;
+  /* static */ let FirstTime: BOOLEAN = TRUE;
 
   if (gfExitPalEditScreen) {
     gfExitPalEditScreen = FALSE;
@@ -301,7 +301,7 @@ function PalEditScreenShutdown(): UINT32 {
 }
 
 function PalEditRenderHook(): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     // Set to current
@@ -315,12 +315,12 @@ function PalEditRenderHook(): void {
 }
 
 function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
-  UINT8 ubType;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubPaletteRep;
-  UINT32 cnt;
-  UINT8 ubStartRep = 0;
-  UINT8 ubEndRep = 0;
+  let ubType: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubPaletteRep: UINT8;
+  let cnt: UINT32;
+  let ubStartRep: UINT8 = 0;
+  let ubEndRep: UINT8 = 0;
 
   if (gusSelectedSoldier == NO_SOLDIER) {
     return FALSE;
@@ -564,14 +564,16 @@ const SMILY_DELAY = 100;
 const SMILY_END_DELAY = 1000;
 
 function SexScreenHandle(): UINT32 {
-  static UINT8 ubCurrentScreen = 0;
-  VOBJECT_DESC VObjectDesc;
-  static UINT32 guiSMILY;
-  static INT8 bCurFrame = 0;
-  static UINT32 uiTimeOfLastUpdate = 0, uiTime;
-  ETRLEObject *pTrav;
-  HVOBJECT hVObject;
-  INT16 sX, sY;
+  /* static */ let ubCurrentScreen: UINT8 = 0;
+  let VObjectDesc: VOBJECT_DESC;
+  /* static */ let guiSMILY: UINT32;
+  /* static */ let bCurFrame: INT8 = 0;
+  /* static */ let uiTimeOfLastUpdate: UINT32 = 0;
+  /* static */ let uiTime: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let hVObject: HVOBJECT;
+  let sX: INT16;
+  let sY: INT16;
 
   // OK, Clear screen and show smily face....
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));

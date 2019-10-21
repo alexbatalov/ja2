@@ -1,7 +1,7 @@
 const NEXT_TILE_CHECK_DELAY = 700;
 
 function SetDelayedTileWaiting(pSoldier: Pointer<SOLDIERTYPE>, sCauseGridNo: INT16, bValue: INT8): void {
-  UINT8 ubPerson;
+  let ubPerson: UINT8;
 
   // Cancel AI Action
   // CancelAIAction( pSoldier, TRUE );
@@ -65,7 +65,7 @@ function MarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): v
 }
 
 function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 sNewGridNo;
+  let sNewGridNo: INT16;
 
   sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(pSoldier->dYPos, pSoldier->dXPos);
 
@@ -84,10 +84,10 @@ function UnMarkMovementReserved(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, bLevel: INT8): INT8 {
-  UINT8 ubPerson;
-  INT16 sTempDestGridNo;
-  INT16 sNewGridNo;
-  BOOLEAN fSwapInDoor = FALSE;
+  let ubPerson: UINT8;
+  let sTempDestGridNo: INT16;
+  let sNewGridNo: INT16;
+  let fSwapInDoor: BOOLEAN = FALSE;
 
   if (sGridNo == NOWHERE) {
     return MOVE_TILE_CLEAR;
@@ -209,8 +209,8 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
 }
 
 function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: INT16, sFinalDestTile: INT16): BOOLEAN {
-  INT8 bBlocked;
-  INT16 bOverTerrainType;
+  let bBlocked: INT8;
+  let bOverTerrainType: INT16;
 
   // Check for blocking if in realtime
   /// if ( ( gTacticalStatus.uiFlags & REALTIME ) || !( gTacticalStatus.uiFlags & INCOMBAT ) )
@@ -242,7 +242,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
       else if (bBlocked == MOVE_TILE_STATIONARY_BLOCKED) {
         // Stationary,
         {
-          INT16 sOldFinalDest;
+          let sOldFinalDest: INT16;
 
           // Maintain sFinalDest....
           sOldFinalDest = pSoldier->sFinalDestination;
@@ -256,7 +256,7 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
         }
       } else {
         {
-          INT16 sOldFinalDest;
+          let sOldFinalDest: INT16;
 
           // Maintain sFinalDest....
           sOldFinalDest = pSoldier->sFinalDestination;
@@ -304,12 +304,15 @@ function HandleNextTile(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridN
 
 function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // Buddy is waiting to continue his path
-  INT8 bBlocked, bPathBlocked;
-  INT16 sCost;
-  INT16 sNewGridNo, sCheckGridNo;
-  UINT8 ubDirection, bCauseDirection;
-  UINT8 ubPerson;
-  UINT8 fFlags = 0;
+  let bBlocked: INT8;
+  let bPathBlocked: INT8;
+  let sCost: INT16;
+  let sNewGridNo: INT16;
+  let sCheckGridNo: INT16;
+  let ubDirection: UINT8;
+  let bCauseDirection: UINT8;
+  let ubPerson: UINT8;
+  let fFlags: UINT8 = 0;
 
   if (pSoldier->fDelayedMovement) {
     if (TIMECOUNTERDONE(pSoldier->NextTileCounter, NEXT_TILE_CHECK_DELAY)) {
@@ -510,7 +513,8 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce: BOOLEAN): BOOLEAN {
-  INT16 sX, sY;
+  let sX: INT16;
+  let sY: INT16;
 
   // Check dest...
   if (NewOKDestination(pSoldier, sGridNo, TRUE, 0) || fForce) {
@@ -546,7 +550,8 @@ function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce:
 
 // Swaps 2 soldier positions...
 function SwapMercPositions(pSoldier1: Pointer<SOLDIERTYPE>, pSoldier2: Pointer<SOLDIERTYPE>): void {
-  INT16 sGridNo1, sGridNo2;
+  let sGridNo1: INT16;
+  let sGridNo2: INT16;
 
   // OK, save positions...
   sGridNo1 = pSoldier1->sGridNo;

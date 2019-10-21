@@ -1,9 +1,9 @@
 const IMP_MERC_FILE = "IMP.dat";
 
-UINT32 giIMPConfirmButton[2];
-UINT32 giIMPConfirmButtonImage[2];
-BOOLEAN fNoAlreadySelected = FALSE;
-UINT16 uiEyeXPositions[] = {
+let giIMPConfirmButton: UINT32[] /* [2] */;
+let giIMPConfirmButtonImage: UINT32[] /* [2] */;
+let fNoAlreadySelected: BOOLEAN = FALSE;
+let uiEyeXPositions: UINT16[] /* [] */ = {
   8,
   9,
   8,
@@ -22,7 +22,7 @@ UINT16 uiEyeXPositions[] = {
   5,
 };
 
-UINT16 uiEyeYPositions[] = {
+let uiEyeYPositions: UINT16[] /* [] */ = {
   5,
   4,
   5,
@@ -41,7 +41,7 @@ UINT16 uiEyeYPositions[] = {
   6,
 };
 
-UINT16 uiMouthXPositions[] = {
+let uiMouthXPositions: UINT16[] /* [] */ = {
   8,
   9,
   7,
@@ -60,7 +60,7 @@ UINT16 uiMouthXPositions[] = {
   5,
 };
 
-UINT16 uiMouthYPositions[] = {
+let uiMouthYPositions: UINT16[] /* [] */ = {
   21,
   23,
   24,
@@ -79,7 +79,7 @@ UINT16 uiMouthYPositions[] = {
   26,
 };
 
-BOOLEAN fLoadingCharacterForPreviousImpProfile = FALSE;
+let fLoadingCharacterForPreviousImpProfile: BOOLEAN = FALSE;
 
 function EnterIMPConfirm(): void {
   // create buttons
@@ -137,7 +137,7 @@ function DestroyConfirmButtons(): void {
 }
 
 function AddCharacterToPlayersTeam(): BOOLEAN {
-  MERC_HIRE_STRUCT HireMercStruct;
+  let HireMercStruct: MERC_HIRE_STRUCT;
 
   // last minute chage to make sure merc with right facehas not only the right body but body specific skills...
   // ie..small mercs have martial arts..but big guys and women don't don't
@@ -295,7 +295,7 @@ void BtnIMPConfirmNo( GUI_BUTTON *btn,INT32 reason )
 const PROFILE_HAS_SKILL_TRAIT = (p, t) => ((p->bSkillTrait == t) || (p->bSkillTrait2 == t));
 
 function GiveItemsToPC(ubProfileId: UINT8): void {
-  MERCPROFILESTRUCT *pProfile;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // gives starting items to merc
   // NOTE: Any guns should probably be from those available in regular gun set
@@ -379,7 +379,7 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
 }
 
 function MakeProfileInvItemAnySlot(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16, ubStatus: UINT8, ubHowMany: UINT8): void {
-  INT32 iSlot;
+  let iSlot: INT32;
 
   iSlot = FirstFreeBigEnoughPocket(pProfile, usItem);
 
@@ -399,7 +399,7 @@ function MakeProfileInvItemThisSlot(pProfile: Pointer<MERCPROFILESTRUCT>, uiPos:
 }
 
 function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: UINT16): INT32 {
-  UINT32 uiPos;
+  let uiPos: UINT32;
 
   // if it fits into a small pocket
   if (Item[usItem].ubPerPocket != 0) {
@@ -423,8 +423,8 @@ function FirstFreeBigEnoughPocket(pProfile: Pointer<MERCPROFILESTRUCT>, usItem: 
 
 function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
   // grab the profile number and write out what is contained there in
-  HWFILE hFile;
-  UINT32 uiBytesWritten = 0;
+  let hFile: HWFILE;
+  let uiBytesWritten: UINT32 = 0;
 
   // open the file for writing
   hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
@@ -451,9 +451,9 @@ function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
 }
 
 function LoadInCurrentImpCharacter(): void {
-  INT32 iProfileId = 0;
-  HWFILE hFile;
-  UINT32 uiBytesRead = 0;
+  let iProfileId: INT32 = 0;
+  let hFile: HWFILE;
+  let uiBytesRead: UINT32 = 0;
 
   // open the file for writing
   hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_READ, FALSE);

@@ -1,4 +1,4 @@
-INT16 gOpenDoorList[20] = {
+let gOpenDoorList: INT16[] /* [20] */ = {
   FIRSTDOOR1,
   SECONDDOOR1,
   THIRDDOOR1,
@@ -18,7 +18,7 @@ INT16 gOpenDoorList[20] = {
   -1,
 };
 
-INT16 gOpenDoorShadowList[20] = {
+let gOpenDoorShadowList: INT16[] /* [20] */ = {
   FIRSTDOORSH1,
   SECONDDOORSH1,
   THIRDDOORSH1,
@@ -38,7 +38,7 @@ INT16 gOpenDoorShadowList[20] = {
   -1,
 };
 
-INT16 gClosedDoorList[20] = {
+let gClosedDoorList: INT16[] /* [20] */ = {
   FIRSTDOOR5,
   SECONDDOOR5,
   THIRDDOOR5,
@@ -58,7 +58,7 @@ INT16 gClosedDoorList[20] = {
   -1,
 };
 
-INT16 gClosedDoorShadowList[20] = {
+let gClosedDoorShadowList: INT16[] /* [20] */ = {
   FIRSTDOORSH5,
   SECONDDOORSH5,
   THIRDDOORSH5,
@@ -79,7 +79,7 @@ INT16 gClosedDoorShadowList[20] = {
 };
 
 // REVERSE BUDDIES FROM SHADOW BACK TO STRUCT
-INT16 gReverseShadowBuddys[] = {
+let gReverseShadowBuddys: INT16[] /* [] */ = {
   FIRSTCLIFFSHADOW,
   FIRSTCLIFFSHADOW1,
   FIRSTCLIFF1,
@@ -174,7 +174,7 @@ INT16 gReverseShadowBuddys[] = {
 };
 
 // SHADOW BUDDIES FROM STRUCT FORWARD TO SHADOW
-INT16 gForwardShadowBuddys[] = {
+let gForwardShadowBuddys: INT16[] /* [] */ = {
   FIRSTCLIFF,
   FIRSTCLIFF1,
   FIRSTCLIFFSHADOW1,
@@ -268,7 +268,7 @@ INT16 gForwardShadowBuddys[] = {
 };
 
 // Global variable used to initialize tile database with full tile spec
-UINT8 gFullBaseTileValues[] = {
+let gFullBaseTileValues: UINT8[] /* [] */ = {
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // First Texture
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -309,7 +309,7 @@ UINT8 gFullBaseTileValues[] = {
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, // Water2 Texture
 };
 
-STR gTileSurfaceName[NUMBEROFTILETYPES] = {
+let gTileSurfaceName: STR[] /* [NUMBEROFTILETYPES] */ = {
   "TEXTURE1",
   "TEXTURE2",
   "TEXTURE3",
@@ -483,7 +483,7 @@ STR gTileSurfaceName[NUMBEROFTILETYPES] = {
   "WIREFRAME",
 };
 
-UINT16 gNumTilesPerType[NUMBEROFTILETYPES] = {
+let gNumTilesPerType: UINT16[] /* [NUMBEROFTILETYPES] */ = {
   FIRSTTEXTURE35 - FIRSTTEXTURE1 + 1,
   SECONDTEXTURE35 - SECONDTEXTURE1 + 1,
   THIRDTEXTURE35 - THIRDTEXTURE1 + 1,
@@ -668,7 +668,7 @@ UINT16 gNumTilesPerType[NUMBEROFTILETYPES] = {
   WIREFRAMES15 - WIREFRAMES1 + 1,
 };
 
-UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
+let gTileTypeLogicalHeight: UINT8[] /* [NUMBEROFTILETYPES] */ = {
   2, // First texture
   2, // Second texture
   2, // Third texture
@@ -681,9 +681,9 @@ UINT8 gTileTypeLogicalHeight[NUMBEROFTILETYPES] = {
 };
 
 function SetSpecificDatabaseValues(usType: UINT16, uiDatabaseElem: UINT16, TileElement: Pointer<TILE_ELEMENT>, fUseRaisedObjectType: BOOLEAN): void {
-  UINT8 ubLoop;
-  INT16 sIndexDiff;
-  UINT32 cnt;
+  let ubLoop: UINT8;
+  let sIndexDiff: INT16;
+  let cnt: UINT32;
 
   // SETUP BUDDYS FOR SHADOWS
   cnt = 0;

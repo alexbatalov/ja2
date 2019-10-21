@@ -1,14 +1,14 @@
 //#include "editscreen.h"
 
 // GLobals
-TILE_ELEMENT gTileDatabase[NUMBEROFTILES];
-UINT16 gTileDatabaseSize;
-UINT16 gusNumAnimatedTiles = 0;
-UINT16 gusAnimatedTiles[MAX_ANIMATED_TILES];
+let gTileDatabase: TILE_ELEMENT[] /* [NUMBEROFTILES] */;
+let gTileDatabaseSize: UINT16;
+let gusNumAnimatedTiles: UINT16 = 0;
+let gusAnimatedTiles: UINT16[] /* [MAX_ANIMATED_TILES] */;
 
-UINT16 gTileTypeStartIndex[NUMBEROFTILETYPES];
+let gTileTypeStartIndex: UINT16[] /* [NUMBEROFTILETYPES] */;
 
-UINT8 gubEncryptionArray2[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] = {
+let gubEncryptionArray2: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = {
   { 81, 168, 102, 49, 61, 70, 172, 127, 7, 148, 115, 179, 10, 117, 253, 35, 30, 218, 76, 63, 116, 210, 241, 65, 169, 157, 4, 9, 29, 205, 160, 111, 41, 213, 193, 190, 86, 19, 207, 133, 25, 190, 187, 131, 66, 196, 253, 227, 163 },
 
   { 236, 81, 128, 26, 96, 137, 92, 120, 243, 71, 33, 141, 55, 2, 185, 185, 187, 33, 230, 72, 146, 143, 226, 21, 110, 155, 226, 150, 111, 124, 165, 242, 4, 76, 201, 34, 223, 227, 29, 202, 119, 86, 172, 219, 8, 121, 183, 148, 142 },
@@ -125,7 +125,7 @@ UINT8 gubEncryptionArray2[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY
 };
 
 // These values coorespond to TerrainTypeDefines order
-UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES] = {
+let gTileTypeMovementCost: UINT8[] /* [NUM_TERRAIN_TYPES] */ = {
   TRAVELCOST_FLAT, // NO_TERRAIN
   TRAVELCOST_FLAT, // FLAT GROUND
   TRAVELCOST_FLATFLOOR, // FLAT FLOOR
@@ -140,11 +140,12 @@ UINT8 gTileTypeMovementCost[NUM_TERRAIN_TYPES] = {
 };
 
 function CreateTileDatabase(): void {
-  UINT32 cnt1, cnt2;
-  UINT8 ubLoop;
-  UINT32 NumRegions;
-  PTILE_IMAGERY TileSurf;
-  TILE_ELEMENT TileElement;
+  let cnt1: UINT32;
+  let cnt2: UINT32;
+  let ubLoop: UINT8;
+  let NumRegions: UINT32;
+  let TileSurf: PTILE_IMAGERY;
+  let TileElement: TILE_ELEMENT;
 
   // Loop through all surfaces and tiles and build database
   for (cnt1 = 0; cnt1 < NUMBEROFTILETYPES; cnt1++) {
@@ -183,7 +184,7 @@ function CreateTileDatabase(): void {
             }
           } else {
             // Ate test to see if problems is gone
-            int i = 0;
+            let i: int = 0;
           }
         }
 
@@ -282,7 +283,7 @@ function CreateTileDatabase(): void {
 }
 
 function DeallocateTileDatabase(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUMBEROFTILES; cnt++) {
     // Check if an existing set of animated tiles are in place, remove if found
@@ -297,7 +298,7 @@ function DeallocateTileDatabase(): void {
 }
 
 function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
-  UINT16 usIndex;
+  let usIndex: UINT16;
 
   Assert(puiType != NULL);
 
@@ -311,8 +312,8 @@ function GetLandHeadType(iMapIndex: INT32, puiType: Pointer<UINT32>): BOOLEAN {
 }
 
 function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDelete: BOOLEAN): BOOLEAN {
-  UINT16 usTempIndex;
-  UINT8 ubLastHighLevel = 0;
+  let usTempIndex: UINT16;
+  let ubLastHighLevel: UINT8 = 0;
 
   if (fDelete) {
     RemoveLand(iMapIndex, usIndex);
@@ -340,15 +341,18 @@ function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDel
 }
 
 function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
-  UINT16 usTempIndex;
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  BOOLEAN fDoPaste = FALSE;
-  INT32 leftmost;
+  let usTempIndex: UINT16;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let fDoPaste: BOOLEAN = FALSE;
+  let leftmost: INT32;
   // BOOLEAN				fNewCommand;
-  UINT16 Dummy;
+  let Dummy: UINT16;
 
   // Determine start end end indicies and num rows
   sTop = ubRadius;
@@ -384,9 +388,9 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
 }
 
 function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointer<UINT8>): BOOLEAN {
-  UINT8 level = 0;
-  LEVELNODE *pLand;
-  UINT32 fTileType = 0;
+  let level: UINT8 = 0;
+  let pLand: Pointer<LEVELNODE>;
+  let fTileType: UINT32 = 0;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -408,8 +412,8 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
 }
 
 function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
-  UINT8 level = 0;
-  LEVELNODE *pLand;
+  let level: UINT8 = 0;
+  let pLand: Pointer<LEVELNODE>;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -422,7 +426,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
 }
 
 function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiType = 0;
+  let uiType: UINT32 = 0;
   if (GetTileType(usTileIndex, &uiType)) {
     *pusSubIndex = usTileIndex - gTileTypeStartIndex[uiType] + 1;
     return TRUE;
@@ -471,7 +475,7 @@ function MoveLandIndexToTop(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
 // Database access functions
 function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
-  TILE_ELEMENT TileElem;
+  let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
 
@@ -484,7 +488,7 @@ function GetTileType(usIndex: UINT16, puiType: Pointer<UINT32>): BOOLEAN {
 }
 
 function GetTileFlags(usIndex: UINT16, puiFlags: Pointer<UINT32>): BOOLEAN {
-  TILE_ELEMENT TileElem;
+  let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
   CHECKF(usIndex < NUMBEROFTILES);
@@ -504,8 +508,8 @@ function GetTileTypeLogicalHeight(fType: UINT32, pubLogHeight: Pointer<UINT8>): 
 }
 
 function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
-  UINT8 ubDestLogHeight;
-  UINT8 ubSrcLogHeight;
+  let ubDestLogHeight: UINT8;
+  let ubSrcLogHeight: UINT8;
 
   // Get logical height of type at head and type we wish to paste
   GetTileTypeLogicalHeight(uiDestType, &ubDestLogHeight);
@@ -515,12 +519,12 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
 }
 
 function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
-  LEVELNODE *pLand = NULL;
-  UINT8 ubSrcLogHeight = 0;
-  UINT32 fTileType = 0;
-  UINT8 level = 0;
-  UINT8 ubSrcTypeLevel = 0;
-  BOOLEAN fFound = FALSE;
+  let pLand: Pointer<LEVELNODE> = NULL;
+  let ubSrcLogHeight: UINT8 = 0;
+  let fTileType: UINT32 = 0;
+  let level: UINT8 = 0;
+  let ubSrcTypeLevel: UINT8 = 0;
+  let fFound: BOOLEAN = FALSE;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -555,12 +559,12 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 }
 
 function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointer<UINT8>): BOOLEAN {
-  LEVELNODE *pLand = NULL;
-  UINT8 ubSrcLogHeight;
-  UINT32 fTileType = 0;
-  UINT8 level = 0;
-  UINT8 ubSrcTypeLevel;
-  TILE_ELEMENT TileElem;
+  let pLand: Pointer<LEVELNODE> = NULL;
+  let ubSrcLogHeight: UINT8;
+  let fTileType: UINT32 = 0;
+  let level: UINT8 = 0;
+  let ubSrcTypeLevel: UINT8;
+  let TileElem: TILE_ELEMENT;
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
@@ -597,7 +601,7 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 }
 
 function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>): BOOLEAN {
-  TILE_ELEMENT TileElem;
+  let TileElem: TILE_ELEMENT;
 
   CHECKF(usIndex != NO_TILE);
 
@@ -610,9 +614,9 @@ function GetWallOrientation(usIndex: UINT16, pusWallOrientation: Pointer<UINT16>
 }
 
 function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrientation: UINT16, pubLevel: Pointer<UINT8>): BOOLEAN {
-  LEVELNODE *pStruct = NULL;
-  UINT8 level = 0;
-  UINT16 usCheckWallOrient = 0;
+  let pStruct: Pointer<LEVELNODE> = NULL;
+  let level: UINT8 = 0;
+  let usCheckWallOrient: UINT16 = 0;
 
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
@@ -641,9 +645,9 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
 // interior bottom corners.  Otherwise, it returns the orientation of the
 // first wall encountered -- not that there should be duplicate walls...
 function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
-  UINT16 usCheckWallOrientation = 0;
-  LEVELNODE *pStruct = NULL;
-  UINT8 ubFinalWallOrientation = NO_ORIENTATION;
+  let usCheckWallOrientation: UINT16 = 0;
+  let pStruct: Pointer<LEVELNODE> = NULL;
+  let ubFinalWallOrientation: UINT8 = NO_ORIENTATION;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
   while (pStruct != NULL) {

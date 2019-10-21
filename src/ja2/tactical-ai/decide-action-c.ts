@@ -9,15 +9,17 @@ function DoneScheduleAction(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  SCHEDULENODE *pSchedule;
-  INT32 iScheduleIndex;
-  UINT8 ubScheduleAction;
-  UINT16 usGridNo1, usGridNo2;
-  INT16 sX, sY;
-  INT8 bDirection;
-  STRUCTURE *pStructure;
-  BOOLEAN fDoUseDoor;
-  DOOR_STATUS *pDoorStatus;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let iScheduleIndex: INT32;
+  let ubScheduleAction: UINT8;
+  let usGridNo1: UINT16;
+  let usGridNo2: UINT16;
+  let sX: INT16;
+  let sY: INT16;
+  let bDirection: INT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let fDoUseDoor: BOOLEAN;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
 
   pSchedule = GetSchedule(pSoldier->ubScheduleID);
   if (!pSchedule) {
@@ -89,7 +91,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
               // close it too!
               pSoldier->fAIFlags |= AI_LOCK_DOOR_INCLUDES_CLOSE;
             } else {
-              DOOR *pDoor;
+              let pDoor: Pointer<DOOR>;
 
               pDoor = FindDoorInfoAtGridNo(usGridNo1);
               if (pDoor) {
@@ -182,7 +184,7 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                   fDoUseDoor = FALSE;
                 } else {
                   // set the door to unlocked
-                  DOOR *pDoor;
+                  let pDoor: Pointer<DOOR>;
 
                   pDoor = FindDoorInfoAtGridNo(usGridNo1);
                   if (pDoor) {
@@ -377,9 +379,9 @@ function DecideActionSchedule(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideActionBoxerEnteringRing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  UINT8 ubRoom;
-  INT16 sDesiredMercLoc;
-  UINT8 ubDesiredMercDir;
+  let ubRoom: UINT8;
+  let sDesiredMercLoc: INT16;
+  let ubDesiredMercDir: UINT8;
 
   // boxer, should move into ring!
   if (InARoom(pSoldier->sGridNo, &ubRoom)) {
@@ -409,10 +411,10 @@ function DecideActionBoxerEnteringRing(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideActionNamedNPC(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT16 sDesiredMercLoc;
-  UINT8 ubDesiredMercDir;
-  UINT8 ubDesiredMerc;
-  INT16 sDesiredMercDist;
+  let sDesiredMercLoc: INT16;
+  let ubDesiredMercDir: UINT8;
+  let ubDesiredMerc: UINT8;
+  let sDesiredMercDist: INT16;
 
   // if a quote record has been set and we're not doing movement, then
   // it means we have to wait until someone is nearby and then see
@@ -484,11 +486,13 @@ function DecideActionNamedNPC(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iChance, iSneaky = 10;
-  INT8 bInWater, bInGas;
+  let iChance: INT32;
+  let iSneaky: INT32 = 10;
+  let bInWater: INT8;
+  let bInGas: INT8;
 
-  BOOLEAN fCivilian = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
-  BOOLEAN fCivilianOrMilitia = PTR_CIV_OR_MILITIA;
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
+  let fCivilianOrMilitia: BOOLEAN = PTR_CIV_OR_MILITIA;
 
   gubNPCPathCount = 0;
 
@@ -497,8 +501,8 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (gTacticalStatus.bBoxingState == PRE_BOXING) {
         return DecideActionBoxerEnteringRing(pSoldier);
       } else {
-        UINT8 ubRoom;
-        UINT8 ubLoop;
+        let ubRoom: UINT8;
+        let ubLoop: UINT8;
 
         // boxer... but since in status green, it's time to leave the ring!
         if (InARoom(pSoldier->sGridNo, &ubRoom)) {
@@ -533,7 +537,7 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     }
     // else if ( (gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING) && ( PythSpacesAway( pSoldier->sGridNo, CENTER_OF_RING ) <= MaxDistanceVisible() ) )
     else if (PythSpacesAway(pSoldier->sGridNo, CENTER_OF_RING) <= MaxDistanceVisible()) {
-      UINT8 ubRingDir;
+      let ubRingDir: UINT8;
       // face ring!
 
       ubRingDir = atan8(CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), CenterX(CENTER_OF_RING), CenterY(CENTER_OF_RING));
@@ -891,15 +895,16 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iDummy;
-  UINT8 ubNoiseDir;
-  INT16 sNoiseGridNo;
-  INT32 iNoiseValue;
-  INT32 iChance, iSneaky;
-  INT16 sClosestFriend;
-  BOOLEAN fCivilian = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
-  BOOLEAN fClimb;
-  BOOLEAN fReachable;
+  let iDummy: INT32;
+  let ubNoiseDir: UINT8;
+  let sNoiseGridNo: INT16;
+  let iNoiseValue: INT32;
+  let iChance: INT32;
+  let iSneaky: INT32;
+  let sClosestFriend: INT16;
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
+  let fClimb: BOOLEAN;
+  let fReachable: BOOLEAN;
 
   if (fCivilian) {
     if (pSoldier->uiStatusFlags & SOLDIER_COWERING) {
@@ -1331,17 +1336,27 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
-  INT8 bActionReturned;
-  INT32 iDummy;
-  INT16 iChance, sClosestOpponent, sClosestFriend;
-  INT16 sClosestDisturbance, sDistVisible, sCheckGridNo;
-  UINT8 ubCanMove, ubOpponentDir;
-  INT8 bInWater, bInDeepWater, bInGas;
-  INT8 bSeekPts = 0, bHelpPts = 0, bHidePts = 0, bWatchPts = 0;
-  INT8 bHighestWatchLoc;
-  ATTACKTYPE BestThrow;
-  BOOLEAN fClimb;
-  BOOLEAN fCivilian = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || (pSoldier->bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier->ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
+  let bActionReturned: INT8;
+  let iDummy: INT32;
+  let iChance: INT16;
+  let sClosestOpponent: INT16;
+  let sClosestFriend: INT16;
+  let sClosestDisturbance: INT16;
+  let sDistVisible: INT16;
+  let sCheckGridNo: INT16;
+  let ubCanMove: UINT8;
+  let ubOpponentDir: UINT8;
+  let bInWater: INT8;
+  let bInDeepWater: INT8;
+  let bInGas: INT8;
+  let bSeekPts: INT8 = 0;
+  let bHelpPts: INT8 = 0;
+  let bHidePts: INT8 = 0;
+  let bWatchPts: INT8 = 0;
+  let bHighestWatchLoc: INT8;
+  let BestThrow: ATTACKTYPE;
+  let fClimb: BOOLEAN;
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || (pSoldier->bNeutral && gTacticalStatus.fCivGroupHostile[pSoldier->ubCivilianGroup] == CIV_GROUP_NEUTRAL) || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
 
   // if we have absolutely no action points, we can't do a thing under RED!
   if (!pSoldier->bActionPoints) {
@@ -2233,27 +2248,39 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
 }
 
 function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iCoverPercentBetter, iOffense, iDefense, iChance;
-  INT16 sClosestOpponent, sBestCover = NOWHERE;
-  INT16 sClosestDisturbance;
-  UINT8 ubMinAPCost, ubCanMove;
-  INT8 bInWater, bInDeepWater, bInGas;
-  INT8 bDirection;
-  UINT8 ubBestAttackAction = AI_ACTION_NONE;
-  INT8 bCanAttack, bActionReturned;
-  INT8 bWeaponIn;
-  BOOLEAN fTryPunching = FALSE;
+  let iCoverPercentBetter: INT32;
+  let iOffense: INT32;
+  let iDefense: INT32;
+  let iChance: INT32;
+  let sClosestOpponent: INT16;
+  let sBestCover: INT16 = NOWHERE;
+  let sClosestDisturbance: INT16;
+  let ubMinAPCost: UINT8;
+  let ubCanMove: UINT8;
+  let bInWater: INT8;
+  let bInDeepWater: INT8;
+  let bInGas: INT8;
+  let bDirection: INT8;
+  let ubBestAttackAction: UINT8 = AI_ACTION_NONE;
+  let bCanAttack: INT8;
+  let bActionReturned: INT8;
+  let bWeaponIn: INT8;
+  let fTryPunching: BOOLEAN = FALSE;
 
-  ATTACKTYPE BestShot, BestThrow, BestStab, BestAttack;
-  BOOLEAN fCivilian = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
-  UINT8 ubBestStance, ubStanceCost;
-  BOOLEAN fChangeStanceFirst; // before firing
-  BOOLEAN fClimb;
-  UINT8 ubBurstAPs;
-  UINT8 ubOpponentDir;
-  INT16 sCheckGridNo;
+  let BestShot: ATTACKTYPE;
+  let BestThrow: ATTACKTYPE;
+  let BestStab: ATTACKTYPE;
+  let BestAttack: ATTACKTYPE;
+  let fCivilian: BOOLEAN = (PTR_CIVILIAN && (pSoldier->ubCivilianGroup == NON_CIV_GROUP || pSoldier->bNeutral || (pSoldier->ubBodyType >= FATCIV && pSoldier->ubBodyType <= CRIPPLECIV)));
+  let ubBestStance: UINT8;
+  let ubStanceCost: UINT8;
+  let fChangeStanceFirst: BOOLEAN; // before firing
+  let fClimb: BOOLEAN;
+  let ubBurstAPs: UINT8;
+  let ubOpponentDir: UINT8;
+  let sCheckGridNo: INT16;
 
-  BOOLEAN fAllowCoverCheck = FALSE;
+  let fAllowCoverCheck: BOOLEAN = FALSE;
 
   // if we have absolutely no action points, we can't do a thing under BLACK!
   if (!pSoldier->bActionPoints) {
@@ -2265,7 +2292,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ubCanMove = (pSoldier->bActionPoints >= MinPtsToMove(pSoldier));
 
   if ((pSoldier->bTeam == ENEMY_TEAM || pSoldier->ubProfile == WARDEN) && (gTacticalStatus.fPanicFlags & PANIC_TRIGGERS_HERE) && (gTacticalStatus.ubTheChosenOne == NOBODY)) {
-    INT8 bPanicTrigger;
+    let bPanicTrigger: INT8;
 
     bPanicTrigger = ClosestPanicTrigger(pSoldier);
     // if it's an alarm trigger and team is alerted, ignore it
@@ -3274,7 +3301,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bAction = AI_ACTION_NONE;
+  let bAction: INT8 = AI_ACTION_NONE;
 
   // turn off cautious flag
   pSoldier->fAIFlags &= (~AI_CAUTIOUS);
@@ -3326,9 +3353,10 @@ function DecideActionEscort(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function DecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT8 bOldStatus;
-  INT32 iDummy;
-  BOOLEAN fClimbDummy, fReachableDummy;
+  let bOldStatus: INT8;
+  let iDummy: INT32;
+  let fClimbDummy: BOOLEAN;
+  let fReachableDummy: BOOLEAN;
 
   // THE FOUR (4) POSSIBLE ALERT STATUSES ARE:
   // GREEN - No one seen, no suspicious noise heard, go about regular duties

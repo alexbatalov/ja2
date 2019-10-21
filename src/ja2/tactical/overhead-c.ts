@@ -1,28 +1,28 @@
 const RT_DELAY_BETWEEN_AI_HANDLING = 50;
 const RT_AI_TIMESLICE = 10;
 
-INT32 giRTAILastUpdateTime = 0;
-UINT32 guiAISlotToHandle = 0;
+let giRTAILastUpdateTime: INT32 = 0;
+let guiAISlotToHandle: UINT32 = 0;
 const HANDLE_OFF_MAP_MERC = 0xFFFF;
 const RESET_HANDLE_OF_OFF_MAP_MERCS = 0xFFFF;
-UINT32 guiAIAwaySlotToHandle = RESET_HANDLE_OF_OFF_MAP_MERCS;
+let guiAIAwaySlotToHandle: UINT32 = RESET_HANDLE_OF_OFF_MAP_MERCS;
 
 const PAUSE_ALL_AI_DELAY = 1500;
 
-BOOLEAN gfPauseAllAI = FALSE;
-INT32 giPauseAllAITimer = 0;
+let gfPauseAllAI: BOOLEAN = FALSE;
+let giPauseAllAITimer: INT32 = 0;
 
 // GLOBALS
 const START_DEMO_SCENE = 3;
 const NUM_RANDOM_SCENES = 4;
 
-INT8 gDebugStr[128];
+let gDebugStr: INT8[] /* [128] */;
 
 const NEW_FADE_DELAY = 60;
 
 // ATE: GLOBALS FOR E3
-UINT8 gubCurrentScene = 0;
-CHAR8 gzLevelFilenames[][50] = {
+let gubCurrentScene: UINT8 = 0;
+let gzLevelFilenames: CHAR8[][] /* [][50] */ = {
   "A9.dat",
   "ScotTBMines.dat",
   "LindaTBCaves.dat",
@@ -32,7 +32,7 @@ CHAR8 gzLevelFilenames[][50] = {
   "LindaRTCave2.dat",
 };
 
-INT8 ubLevelMoveLink[10] = {
+let ubLevelMoveLink: INT8[] /* [10] */ = {
   1,
   2,
   3,
@@ -46,32 +46,32 @@ INT8 ubLevelMoveLink[10] = {
 };
 
 // Soldier List used for all soldier overhead interaction
-SOLDIERTYPE Menptr[TOTAL_SOLDIERS];
-SOLDIERTYPE *MercPtrs[TOTAL_SOLDIERS];
+let Menptr: SOLDIERTYPE[] /* [TOTAL_SOLDIERS] */;
+let MercPtrs: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
 
-SOLDIERTYPE *MercSlots[TOTAL_SOLDIERS];
-UINT32 guiNumMercSlots = 0;
+let MercSlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
+let guiNumMercSlots: UINT32 = 0;
 
-SOLDIERTYPE *AwaySlots[TOTAL_SOLDIERS];
-UINT32 guiNumAwaySlots = 0;
+let AwaySlots: Pointer<SOLDIERTYPE>[] /* [TOTAL_SOLDIERS] */;
+let guiNumAwaySlots: UINT32 = 0;
 
 // DEF: changed to have client wait for gPlayerNum assigned from host
-UINT8 gbPlayerNum = 0;
+let gbPlayerNum: UINT8 = 0;
 
 // Global for current selected soldier
-UINT16 gusSelectedSoldier = NO_SOLDIER;
-INT8 gbShowEnemies = FALSE;
+let gusSelectedSoldier: UINT16 = NO_SOLDIER;
+let gbShowEnemies: INT8 = FALSE;
 
-BOOLEAN gfMovingAnimation = FALSE;
+let gfMovingAnimation: BOOLEAN = FALSE;
 
-CHAR8 gzAlertStr[][30] = {
+let gzAlertStr: CHAR8[][] /* [][30] */ = {
   "GREEN",
   "YELLOW",
   "RED",
   "BLACK",
 };
 
-CHAR8 gzActionStr[][30] = {
+let gzActionStr: CHAR8[][] /* [][30] */ = {
   "NONE",
 
   "RANDOM PATROL",
@@ -130,7 +130,7 @@ CHAR8 gzActionStr[][30] = {
   "OFFER SURRENDER",
 };
 
-CHAR8 gzDirectionStr[][30] = {
+let gzDirectionStr: CHAR8[][] /* [][30] */ = {
   "NORTHEAST",
   "EAST",
   "SOUTHEAST",
@@ -142,7 +142,7 @@ CHAR8 gzDirectionStr[][30] = {
 };
 
 // TEMP VALUES FOR TEAM DEAFULT POSITIONS
-UINT8 bDefaultTeamRanges[MAXTEAMS][2] = {
+let bDefaultTeamRanges: UINT8[][] /* [MAXTEAMS][2] */ = {
   0,
   19, // 20  US
   20,
@@ -157,7 +157,7 @@ UINT8 bDefaultTeamRanges[MAXTEAMS][2] = {
   TOTAL_SOLDIERS - 1, // PLANNING SOLDIERS
 };
 
-COLORVAL bDefaultTeamColors[MAXTEAMS] = {
+let bDefaultTeamColors: COLORVAL[] /* [MAXTEAMS] */ = {
   FROMRGB(255, 255, 0),
   FROMRGB(255, 0, 0),
   FROMRGB(255, 0, 255),
@@ -166,14 +166,14 @@ COLORVAL bDefaultTeamColors[MAXTEAMS] = {
   FROMRGB(0, 0, 255),
 };
 
-UINT8 gubWaitingForAllMercsToExitCode = 0;
-INT8 gbNumMercsUntilWaitingOver = 0;
-UINT32 guiWaitingForAllMercsToExitData[3];
-UINT32 guiWaitingForAllMercsToExitTimer = 0;
-BOOLEAN gfKillingGuysForLosingBattle = FALSE;
+let gubWaitingForAllMercsToExitCode: UINT8 = 0;
+let gbNumMercsUntilWaitingOver: INT8 = 0;
+let guiWaitingForAllMercsToExitData: UINT32[] /* [3] */;
+let guiWaitingForAllMercsToExitTimer: UINT32 = 0;
+let gfKillingGuysForLosingBattle: BOOLEAN = FALSE;
 
 function GetFreeMercSlot(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     if ((MercSlots[uiCount] == NULL))
@@ -187,7 +187,7 @@ function GetFreeMercSlot(): INT32 {
 }
 
 function RecountMercSlots(): void {
-  INT32 iCount;
+  let iCount: INT32;
 
   if (guiNumMercSlots > 0) {
     // set equal to 0 as a default
@@ -203,7 +203,7 @@ function RecountMercSlots(): void {
 }
 
 function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iMercIndex;
+  let iMercIndex: INT32;
 
   if ((iMercIndex = GetFreeMercSlot()) == (-1))
     return -1;
@@ -214,7 +214,7 @@ function AddMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   CHECKF(pSoldier != NULL);
 
@@ -231,7 +231,7 @@ function RemoveMercSlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function GetFreeAwaySlot(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumAwaySlots; uiCount++) {
     if ((AwaySlots[uiCount] == NULL))
@@ -245,7 +245,7 @@ function GetFreeAwaySlot(): INT32 {
 }
 
 function RecountAwaySlots(): void {
-  INT32 iCount;
+  let iCount: INT32;
 
   if (guiNumAwaySlots > 0) {
     for (iCount = guiNumAwaySlots - 1; (iCount >= 0); iCount--) {
@@ -260,7 +260,7 @@ function RecountAwaySlots(): void {
 }
 
 function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iAwayIndex;
+  let iAwayIndex: INT32;
 
   if ((iAwayIndex = GetFreeAwaySlot()) == (-1))
     return -1;
@@ -271,7 +271,7 @@ function AddAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   CHECKF(pSoldier != NULL);
 
@@ -288,7 +288,7 @@ function RemoveAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  BOOLEAN fRet;
+  let fRet: BOOLEAN;
 
   fRet = RemoveMercSlot(pSoldier);
   if (!fRet) {
@@ -305,7 +305,7 @@ function MoveSoldierFromMercToAwaySlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function MoveSoldierFromAwayToMercSlot(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  BOOLEAN fRet;
+  let fRet: BOOLEAN;
 
   fRet = RemoveAwaySlot(pSoldier);
   if (!fRet) {
@@ -371,8 +371,8 @@ function ShutdownTacticalEngine(): void {
 }
 
 function InitOverhead(): BOOLEAN {
-  UINT32 cnt;
-  UINT8 cnt2;
+  let cnt: UINT32;
+  let cnt2: UINT8;
 
   memset(MercSlots, 0, sizeof(MercSlots));
   memset(AwaySlots, 0, sizeof(AwaySlots));
@@ -465,7 +465,7 @@ function InitOverhead(): BOOLEAN {
 }
 
 function ShutdownOverhead(): BOOLEAN {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   // Delete any soldiers which have been created!
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
@@ -500,7 +500,7 @@ function GetSoldier(ppSoldier: Pointer<Pointer<SOLDIERTYPE>>, usSoldierIndex: UI
 }
 
 function NextAIToHandle(uiCurrAISlot: UINT32): BOOLEAN {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   if (uiCurrAISlot >= guiNumMercSlots) {
     // last person to handle was an off-map merc, so now we start looping at the beginning
@@ -565,7 +565,7 @@ function UnPauseAI(): void {
   giPauseAllAITimer = 0;
 }
 
-FLOAT gdRadiansForAngle[] = {
+let gdRadiansForAngle: FLOAT[] /* [] */ = {
   (FLOAT)PI,
   (FLOAT)(3 * PI / 4),
   (FLOAT)(PI / 2),
@@ -578,22 +578,23 @@ FLOAT gdRadiansForAngle[] = {
 };
 
 function ExecuteOverhead(): BOOLEAN {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 sAPCost;
-  INT16 sBPCost;
-  FLOAT dXPos, dYPos;
-  FLOAT dAngle;
-  BOOLEAN fKeepMoving;
-  INT8 bShadeLevel;
-  BOOLEAN fNoAPsForPendingAction;
-  INT16 sGridNo;
-  STRUCTURE *pStructure;
-  BOOLEAN fHandleAI = FALSE;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sAPCost: INT16;
+  let sBPCost: INT16;
+  let dXPos: FLOAT;
+  let dYPos: FLOAT;
+  let dAngle: FLOAT;
+  let fKeepMoving: BOOLEAN;
+  let bShadeLevel: INT8;
+  let fNoAPsForPendingAction: BOOLEAN;
+  let sGridNo: INT16;
+  let pStructure: Pointer<STRUCTURE>;
+  let fHandleAI: BOOLEAN = FALSE;
 
   // Diagnostic Stuff
-  static INT32 iTimerTest = 0;
-  static INT32 iTimerVal = 0;
+  /* static */ let iTimerTest: INT32 = 0;
+  /* static */ let iTimerVal: INT32 = 0;
 
   gfMovingAnimation = FALSE;
 
@@ -745,7 +746,7 @@ function ExecuteOverhead(): BOOLEAN {
             if (pSoldier->sGridNo != NOWHERE) {
               pSoldier->ubFadeLevel = gpWorldLevelData[pSoldier->sGridNo].pLandHead->ubShadeLevel;
             } else {
-              int i = 0;
+              let i: int = 0;
             }
             pSoldier->fBeginFade = TRUE;
             pSoldier->sLocationOfFadeStart = pSoldier->sGridNo;
@@ -1084,7 +1085,7 @@ function ExecuteOverhead(): BOOLEAN {
                       // ATE: Added this to fcalilitate the fact
                       // that our final dest may now have people on it....
                       if (FindBestPath(pSoldier, pSoldier->sFinalDestination, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, PATH_THROUGH_PEOPLE) != 0) {
-                        INT16 sNewGridNo;
+                        let sNewGridNo: INT16;
 
                         sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)guiPathingData[0]));
 
@@ -1295,9 +1296,11 @@ function HandleLocateToGuyAsHeWalks(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<BOOLEAN>, fInitialMove: BOOLEAN, usAnimState: UINT16): BOOLEAN {
-  INT16 sAPCost;
-  INT16 sBPCost;
-  UINT16 usNewGridNo, sOverFenceGridNo, sMineGridNo;
+  let sAPCost: INT16;
+  let sBPCost: INT16;
+  let usNewGridNo: UINT16;
+  let sOverFenceGridNo: UINT16;
+  let sMineGridNo: UINT16;
 
   if (gTacticalStatus.uiFlags & INCOMBAT && fInitialMove) {
     HandleLocateToGuyAsHeWalks(pSoldier);
@@ -1372,9 +1375,9 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 
     return FALSE;
   } else if (InternalDoorTravelCost(pSoldier, usNewGridNo, gubWorldMovementCosts[usNewGridNo][(UINT8)pSoldier->usPathingData[pSoldier->usPathIndex]][pSoldier->bLevel], (BOOLEAN)(pSoldier->bTeam == gbPlayerNum), NULL, TRUE) == TRAVELCOST_DOOR) {
-    STRUCTURE *pStructure;
-    INT8 bDirection;
-    INT16 sDoorGridNo;
+    let pStructure: Pointer<STRUCTURE>;
+    let bDirection: INT8;
+    let sDoorGridNo: INT16;
 
     // OK, if we are here, we have been told to get a pth through a door.
 
@@ -1451,8 +1454,8 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 
       // IF not in combat, stop them all
       if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-        INT32 cnt2;
-        SOLDIERTYPE *pSoldier2;
+        let cnt2: INT32;
+        let pSoldier2: Pointer<SOLDIERTYPE>;
 
         cnt2 = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
@@ -1508,7 +1511,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
   //	(*pfKeepMoving ) = FALSE;
   //}
   else if (EnoughPoints(pSoldier, sAPCost, 0, FALSE)) {
-    BOOLEAN fDontContinue = FALSE;
+    let fDontContinue: BOOLEAN = FALSE;
 
     if (pSoldier->usPathIndex > 0) {
       // check for running into gas
@@ -1516,8 +1519,8 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
       // note: this will have to use the minimum types of structures for tear/creature gas
       // since there isn't a way to retrieve the smoke effect structure
       if (gpWorldLevelData[pSoldier->sGridNo].ubExtFlags[pSoldier->bLevel] & ANY_SMOKE_EFFECT && PreRandom(5) == 0) {
-        EXPLOSIVETYPE *pExplosive = NULL;
-        INT8 bPosOfMask;
+        let pExplosive: Pointer<EXPLOSIVETYPE> = NULL;
+        let bPosOfMask: INT8;
 
         if (pSoldier->inv[HEAD1POS].usItem == GASMASK && pSoldier->inv[HEAD1POS].bStatus[0] >= GASMASK_MIN_STATUS) {
           bPosOfMask = HEAD1POS;
@@ -1556,7 +1559,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 
       if (!fDontContinue) {
         if ((pSoldier->bOverTerrainType == FLAT_FLOOR || pSoldier->bOverTerrainType == PAVED_ROAD) && pSoldier->bLevel == 0) {
-          INT32 iMarblesIndex;
+          let iMarblesIndex: INT32;
 
           if (ItemTypeExistsAtLocation(pSoldier->sGridNo, MARBLES, 0, &iMarblesIndex)) {
             // Slip on marbles!
@@ -1672,7 +1675,7 @@ function HandleGotoNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Point
 }
 
 function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 sDist;
+  let sDist: INT16;
 
   if (!pSoldier) {
     pSoldier = FindSoldierByProfileID(MARY, TRUE);
@@ -1701,8 +1704,8 @@ function HandleMaryArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
-  SOLDIERTYPE *pSoldier2 = NULL;
-  INT16 sDist;
+  let pSoldier2: Pointer<SOLDIERTYPE> = NULL;
+  let sDist: INT16;
 
   if (!pSoldier) {
     pSoldier = FindSoldierByProfileID(JOHN, TRUE);
@@ -1742,8 +1745,8 @@ function HandleJohnArrival(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer<BOOLEAN>): BOOLEAN {
-  INT16 sMineGridNo;
-  UINT8 ubVolume;
+  let sMineGridNo: INT16;
+  let ubVolume: UINT8;
 
   // ATE; Handle bad guys, as they fade, to cancel it if
   // too long...
@@ -1878,8 +1881,8 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
 
       // IF not in combat, stop them all
       if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
-        INT32 cnt2;
-        SOLDIERTYPE *pSoldier2;
+        let cnt2: INT32;
+        let pSoldier2: Pointer<SOLDIERTYPE>;
 
         cnt2 = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
@@ -1973,7 +1976,7 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
       case RAY:
       case OLGA:
       case TYRONE: {
-        INT16 sDesiredMercDist;
+        let sDesiredMercDist: INT16;
 
         if (ClosestPC(pSoldier, &sDesiredMercDist) != NOWHERE) {
           if (sDesiredMercDist <= NPC_TALK_RADIUS * 2) {
@@ -1994,9 +1997,9 @@ function HandleAtNewGridNo(pSoldier: Pointer<SOLDIERTYPE>, pfKeepMoving: Pointer
 }
 
 function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
-  BOOLEAN fSoldierFound = FALSE;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let fSoldierFound: BOOLEAN = FALSE;
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
   cnt = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;
@@ -2019,7 +2022,8 @@ function SelectNextAvailSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function InternalSelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForceReselect: BOOLEAN, fFromUI: BOOLEAN): void {
-  SOLDIERTYPE *pSoldier, *pOldSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pOldSoldier: Pointer<SOLDIERTYPE>;
 
   // ARM: can't call SelectSoldier() in mapscreen, that will initialize interface panels!!!
   // ATE: Adjusted conditions a bit ( sometimes were not getting selected )
@@ -2147,8 +2151,8 @@ function SelectSoldier(usSoldierID: UINT16, fAcknowledge: BOOLEAN, fForceReselec
 }
 
 function ResetAllAnimationCache(): BOOLEAN {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Loop through all mercs and make go
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
@@ -2161,8 +2165,9 @@ function ResetAllAnimationCache(): BOOLEAN {
 }
 
 function LocateSoldier(usID: UINT16, fSetLocator: BOOLEAN): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sNewCenterWorldX, sNewCenterWorldY;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sNewCenterWorldX: INT16;
+  let sNewCenterWorldY: INT16;
 
   // if (!bCenter && SoldierOnScreen(usID))
   // return;
@@ -2194,7 +2199,8 @@ function LocateSoldier(usID: UINT16, fSetLocator: BOOLEAN): void {
 }
 
 function InternalLocateGridNo(sGridNo: UINT16, fForce: BOOLEAN): void {
-  INT16 sNewCenterWorldX, sNewCenterWorldY;
+  let sNewCenterWorldX: INT16;
+  let sNewCenterWorldY: INT16;
 
   ConvertGridNoToCenterCellXY(sGridNo, &sNewCenterWorldX, &sNewCenterWorldY);
 
@@ -2211,7 +2217,7 @@ function LocateGridNo(sGridNo: UINT16): void {
 }
 
 function SlideTo(sGridno: INT16, usSoldierID: UINT16, usReasonID: UINT16, fSetLocator: BOOLEAN): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (usSoldierID == NOBODY) {
     return;
@@ -2262,8 +2268,8 @@ function SlideToLocation(usReasonID: UINT16, sDestGridNo: INT16): void {
 }
 
 function RebuildAllSoldierShadeTables(): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Loop through all mercs and make go
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
@@ -2274,11 +2280,11 @@ function RebuildAllSoldierShadeTables(): void {
 }
 
 function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt;
-  INT32 iNewSelectedSoldier;
-  SOLDIERTYPE *pTeamSoldier;
-  BOOLEAN fMissionFailed = TRUE;
-  INT8 bBuddyIndex;
+  let cnt: INT32;
+  let iNewSelectedSoldier: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let fMissionFailed: BOOLEAN = TRUE;
+  let bBuddyIndex: INT8;
 
   VerifyPublicOpplistDueToDeath(pSoldier);
 
@@ -2364,8 +2370,8 @@ function HandlePlayerTeamMemberDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
-  SOLDIERTYPE *pKiller = NULL;
-  BOOLEAN bVisible;
+  let pKiller: Pointer<SOLDIERTYPE> = NULL;
+  let bVisible: BOOLEAN;
 
   pSoldierOld->uiStatusFlags |= SOLDIER_DEAD;
   bVisible = pSoldierOld->bVisible;
@@ -2391,7 +2397,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
   }
 
   if (pSoldierOld->bTeam == CIV_TEAM) {
-    SOLDIERTYPE *pOther;
+    let pOther: Pointer<SOLDIERTYPE>;
 
     // ATE: Added string to player
     if (bVisible != -1 && pSoldierOld->ubProfile != NO_PROFILE) {
@@ -2529,7 +2535,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
       }
     }
   } else if (pSoldierOld->bTeam == MILITIA_TEAM) {
-    INT8 bMilitiaRank;
+    let bMilitiaRank: INT8;
 
     bMilitiaRank = SoldierClassToMilitiaRank(pSoldierOld->ubSoldierClass);
 
@@ -2548,7 +2554,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
   } else // enemies and creatures... should any of this stuff not be called if a creature dies?
   {
     if (pSoldierOld->ubBodyType == QUEENMONSTER) {
-      SOLDIERTYPE *pKiller = NULL;
+      let pKiller: Pointer<SOLDIERTYPE> = NULL;
 
       if (pSoldierOld->ubAttackerID != NOBODY) {
         pKiller = MercPtrs[pSoldierOld->ubAttackerID];
@@ -2589,7 +2595,7 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
 
   // killing crows/cows is not worth any experience!
   if ((pSoldierOld->ubBodyType != CROW) && (pSoldierOld->ubBodyType != COW) && pSoldierOld->ubLastDamageReason != TAKE_DAMAGE_BLOODLOSS) {
-    UINT8 ubAssister;
+    let ubAssister: UINT8;
 
     // if it was a kill by a player's merc
     if (pSoldierOld->ubAttackerID != NOBODY && MercPtrs[pSoldierOld->ubAttackerID]->bTeam == gbPlayerNum) {
@@ -2626,8 +2632,8 @@ function HandleNPCTeamMemberDeath(pSoldierOld: Pointer<SOLDIERTYPE>): void {
 }
 
 function LastActiveTeamMember(ubTeam: UINT8): UINT8 {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[ubTeam].bLastID;
 
@@ -2740,7 +2746,7 @@ function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
       // if Maria is in the sector and escorted, set fact that the escape has
       // been noticed
       if (gubQuest[QUEST_RESCUE_MARIA] == QUESTINPROGRESS && gTacticalStatus.bBoxingState == NOT_BOXING) {
-        SOLDIERTYPE *pMaria = FindSoldierByProfileID(MARIA, FALSE);
+        let pMaria: Pointer<SOLDIERTYPE> = FindSoldierByProfileID(MARIA, FALSE);
         if (pMaria && pMaria->bActive && pMaria->bInSector) {
           SetFactTrue(FACT_MARIA_ESCAPE_NOTICED);
         }
@@ -2766,9 +2772,9 @@ function MakeCivHostile(pSoldier: Pointer<SOLDIERTYPE>, bNewSide: INT8): void {
 }
 
 function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDIERTYPE>): UINT8 {
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubFirstProfile = NO_PROFILE;
-  UINT8 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubFirstProfile: UINT8 = NO_PROFILE;
+  let cnt: UINT8;
 
   if (pAttacked->ubCivilianGroup == NON_CIV_GROUP) {
     return pAttacked->ubProfile;
@@ -2797,11 +2803,11 @@ function CivilianGroupMembersChangeSidesWithinProximity(pAttacked: Pointer<SOLDI
 }
 
 function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
-  SOLDIERTYPE *pNew;
-  SOLDIERTYPE *pNewAttacked = pAttacked;
-  SOLDIERTYPE *pSoldier;
-  UINT8 cnt;
-  UINT8 ubFirstProfile = NO_PROFILE;
+  let pNew: Pointer<SOLDIERTYPE>;
+  let pNewAttacked: Pointer<SOLDIERTYPE> = pAttacked;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT8;
+  let ubFirstProfile: UINT8 = NO_PROFILE;
 
   if (pAttacked->ubCivilianGroup == NON_CIV_GROUP) {
     // abort
@@ -2858,9 +2864,9 @@ function CivilianGroupMemberChangesSides(pAttacked: Pointer<SOLDIERTYPE>): Point
 
 function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
   // change civ group side due to external event (wall blowing up)
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubFirstProfile = NO_PROFILE;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubFirstProfile: UINT8 = NO_PROFILE;
 
   gTacticalStatus.fCivGroupHostile[ubCivilianGroup] = CIV_GROUP_HOSTILE;
 
@@ -2892,8 +2898,8 @@ function CivilianGroupChangesSides(ubCivilianGroup: UINT8): void {
 }
 
 function HickCowAttacked(pNastyGuy: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // now change sides for anyone on the civ team
   cnt = gTacticalStatus.Team[CIV_TEAM].bFirstID;
@@ -2910,8 +2916,8 @@ function HickCowAttacked(pNastyGuy: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDI
 function MilitiaChangesSides(): void {
   // make all the militia change sides
 
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.Team[MILITIA_TEAM].bMenInSector == 0) {
     return;
@@ -2945,9 +2951,9 @@ void MakePotentiallyHostileCivGroupsHostile( void )
 */
 
 function NumActiveAndConsciousTeamMembers(ubTeam: UINT8): INT8 {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubCount = 0;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubCount: UINT8 = 0;
 
   cnt = gTacticalStatus.Team[ubTeam].bFirstID;
 
@@ -2962,9 +2968,9 @@ function NumActiveAndConsciousTeamMembers(ubTeam: UINT8): INT8 {
 }
 
 function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: BOOLEAN, fOnlyRegularMercs: BOOLEAN): UINT8 {
-  UINT8 bLastTeamID;
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
+  let bLastTeamID: UINT8;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = pSoldier->ubID + 1;
   bLastTeamID = gTacticalStatus.Team[pSoldier->bTeam].bLastID;
@@ -3016,7 +3022,8 @@ function FindNextActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
 }
 
 function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
-  INT32 cnt, cnt2;
+  let cnt: INT32;
+  let cnt2: INT32;
 
   for (cnt = pSoldier->bAssignment + 1; cnt < NUMBER_OF_SQUADS; cnt++) {
     for (cnt2 = 0; cnt2 < NUMBER_OF_SOLDIERS_PER_SQUAD; cnt2++) {
@@ -3041,9 +3048,9 @@ function FindNextActiveSquad(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYP
 }
 
 function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: BOOLEAN, fOnlyRegularMercs: BOOLEAN): UINT8 {
-  UINT8 bLastTeamID;
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
+  let bLastTeamID: UINT8;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   // loop back
   bLastTeamID = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;
@@ -3096,9 +3103,9 @@ function FindPrevActiveAndAliveMerc(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLess
 }
 
 function CheckForPlayerTeamInMissionExit(): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  UINT8 bGuysIn = 0;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bGuysIn: UINT8 = 0;
 
   // End the turn of player charactors
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -3133,8 +3140,8 @@ function EndTacticalDemo(): void {
 }
 
 function EnterTacticalDemoMode(): UINT32 {
-  UINT8 ubNewScene = gubCurrentScene;
-  UINT8 ubNumScenes = NUM_RANDOM_SCENES;
+  let ubNewScene: UINT8 = gubCurrentScene;
+  let ubNumScenes: UINT8 = NUM_RANDOM_SCENES;
 
   gTacticalStatus.uiTimeOfLastInput = GetJA2Clock();
 
@@ -3178,10 +3185,10 @@ function GetSceneFilename(): Pointer<CHAR8> {
 
 // NB if making changes don't forget to update NewOKDestinationAndDirection
 function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fPeopleToo: BOOLEAN, bLevel: INT8): INT16 {
-  UINT8 bPerson;
-  STRUCTURE *pStructure;
-  INT16 sDesiredLevel;
-  BOOLEAN fOKCheckStruct;
+  let bPerson: UINT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
+  let fOKCheckStruct: BOOLEAN;
 
   if (!GridNoOnVisibleWorldTile(sGridNo)) {
     return TRUE;
@@ -3202,11 +3209,11 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
 
   // Check structure database
   if ((pCurrSoldier->uiStatusFlags & SOLDIER_MULTITILE) && !(gfEstimatePath)) {
-    UINT16 usAnimSurface;
-    STRUCTURE_FILE_REF *pStructureFileRef;
-    BOOLEAN fOk;
-    INT8 bLoop;
-    UINT16 usStructureID = INVALID_STRUCTURE_ID;
+    let usAnimSurface: UINT16;
+    let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+    let fOk: BOOLEAN;
+    let bLoop: INT8;
+    let usStructureID: UINT16 = INVALID_STRUCTURE_ID;
 
     // this could be kinda slow...
 
@@ -3280,10 +3287,10 @@ function NewOKDestination(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fP
 
 // NB if making changes don't forget to update NewOKDestination
 function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDirection: INT8, fPeopleToo: BOOLEAN, bLevel: INT8): INT16 {
-  UINT8 bPerson;
-  STRUCTURE *pStructure;
-  INT16 sDesiredLevel;
-  BOOLEAN fOKCheckStruct;
+  let bPerson: UINT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
+  let fOKCheckStruct: BOOLEAN;
 
   if (fPeopleToo && (bPerson = WhoIsThere2(sGridNo, bLevel)) != NO_SOLDIER) {
     // we could be multitiled... if the person there is us, and the gridno is not
@@ -3300,11 +3307,11 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
 
   // Check structure database
   if ((pCurrSoldier->uiStatusFlags & SOLDIER_MULTITILE) && !(gfEstimatePath)) {
-    UINT16 usAnimSurface;
-    STRUCTURE_FILE_REF *pStructureFileRef;
-    BOOLEAN fOk;
-    INT8 bLoop;
-    UINT16 usStructureID = INVALID_STRUCTURE_ID;
+    let usAnimSurface: UINT16;
+    let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+    let fOk: BOOLEAN;
+    let bLoop: INT8;
+    let usStructureID: UINT16 = INVALID_STRUCTURE_ID;
 
     // this could be kinda slow...
 
@@ -3377,8 +3384,8 @@ function NewOKDestinationAndDirection(pCurrSoldier: Pointer<SOLDIERTYPE>, sGridN
 
 // Kris:
 function FlatRoofAboveGridNo(iMapIndex: INT32): BOOLEAN {
-  LEVELNODE *pRoof;
-  UINT32 uiTileType;
+  let pRoof: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
   while (pRoof) {
     if (pRoof->usIndex != NO_TILE) {
@@ -3399,8 +3406,8 @@ function FlatRoofAboveGridNo(iMapIndex: INT32): BOOLEAN {
 // mercs, and the rarity doesn't justify the needs.  I just wrote this to be quick and dirty, and I don't
 // expect it to perform perfectly in all situations.
 function IsLocationSittable(iMapIndex: INT32, fOnRoof: BOOLEAN): BOOLEAN {
-  STRUCTURE *pStructure;
-  INT16 sDesiredLevel;
+  let pStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
   if (WhoIsThere2((INT16)iMapIndex, 0) != NO_SOLDIER)
     return FALSE;
   // Locations on roofs without a roof is not possible, so
@@ -3422,8 +3429,8 @@ function IsLocationSittable(iMapIndex: INT32, fOnRoof: BOOLEAN): BOOLEAN {
 }
 
 function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: BOOLEAN): BOOLEAN {
-  STRUCTURE *pStructure;
-  INT16 sDesiredLevel;
+  let pStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
 
   // Locations on roofs without a roof is not possible, so
   // we convert the onroof intention to ground.
@@ -3444,8 +3451,8 @@ function IsLocationSittableExcludingPeople(iMapIndex: INT32, fOnRoof: BOOLEAN): 
 }
 
 function TeamMemberNear(bTeam: INT8, sGridNo: INT16, iRange: INT32): BOOLEAN {
-  UINT8 bLoop;
-  SOLDIERTYPE *pSoldier;
+  let bLoop: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (bLoop = gTacticalStatus.Team[bTeam].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[bTeam].bLastID; bLoop++, pSoldier++) {
     if (pSoldier->bActive && pSoldier->bInSector && (pSoldier->bLife >= OKLIFE) && !(pSoldier->uiStatusFlags & SOLDIER_GASSED)) {
@@ -3466,25 +3473,28 @@ function FindAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pubD
   // in that location, because we could be passed a gridno based on the overlap of soldier's graphic
   // fDoor determines whether special door-handling code should be used (for interacting with doors)
 
-  INT16 sFourGrids[4], sDistance = 0;
-  INT16 sDirs[4] = {
+  let sFourGrids: INT16[] /* [4] */;
+  let sDistance: INT16 = 0;
+  let sDirs: INT16[] /* [4] */ = {
     NORTH,
     EAST,
     SOUTH,
     WEST,
   };
-  INT32 cnt;
-  INT16 sClosest = NOWHERE, sSpot, sOkTest;
-  INT16 sCloseGridNo = NOWHERE;
-  UINT32 uiMercFlags;
-  UINT16 usSoldierIndex;
-  UINT8 ubDir;
-  STRUCTURE *pDoor;
+  let cnt: INT32;
+  let sClosest: INT16 = NOWHERE;
+  let sSpot: INT16;
+  let sOkTest: INT16;
+  let sCloseGridNo: INT16 = NOWHERE;
+  let uiMercFlags: UINT32;
+  let usSoldierIndex: UINT16;
+  let ubDir: UINT8;
+  let pDoor: Pointer<STRUCTURE>;
   // STRUCTURE                            *pWall;
-  UINT8 ubWallOrientation;
-  BOOLEAN fCheckGivenGridNo = TRUE;
-  UINT8 ubTestDirection;
-  EXITGRID ExitGrid;
+  let ubWallOrientation: UINT8;
+  let fCheckGivenGridNo: BOOLEAN = TRUE;
+  let ubTestDirection: UINT8;
+  let ExitGrid: EXITGRID;
 
   // Set default direction
   if (pubDirection) {
@@ -3706,24 +3716,28 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   // in that location, because we could be passed a gridno based on the overlap of soldier's graphic
   // fDoor determines whether special door-handling code should be used (for interacting with doors)
 
-  INT16 sFourGrids[4], sDistance = 0;
-  INT16 sDirs[4] = {
+  let sFourGrids: INT16[] /* [4] */;
+  let sDistance: INT16 = 0;
+  let sDirs: INT16[] /* [4] */ = {
     NORTH,
     EAST,
     SOUTH,
     WEST,
   };
-  INT32 cnt;
-  INT16 sClosest = WORLD_MAX, sSpot, sSpot2, sOkTest;
-  INT16 sCloseGridNo = NOWHERE;
-  UINT32 uiMercFlags;
-  UINT16 usSoldierIndex;
-  UINT8 ubDir;
-  STRUCTURE *pDoor;
-  UINT8 ubWallOrientation;
-  BOOLEAN fCheckGivenGridNo = TRUE;
-  UINT8 ubTestDirection;
-  UINT8 ubWhoIsThere;
+  let cnt: INT32;
+  let sClosest: INT16 = WORLD_MAX;
+  let sSpot: INT16;
+  let sSpot2: INT16;
+  let sOkTest: INT16;
+  let sCloseGridNo: INT16 = NOWHERE;
+  let uiMercFlags: UINT32;
+  let usSoldierIndex: UINT16;
+  let ubDir: UINT8;
+  let pDoor: Pointer<STRUCTURE>;
+  let ubWallOrientation: UINT8;
+  let fCheckGivenGridNo: BOOLEAN = TRUE;
+  let ubTestDirection: UINT8;
+  let ubWhoIsThere: UINT8;
 
   // CHECK IF WE WANT TO FORCE GRIDNO TO PERSON
   if (psAdjustedGridNo != NULL) {
@@ -3926,9 +3940,9 @@ function FindNextToAdjacentGridEx(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 }
 
 function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SOLDIERTYPE>, psAdjustedTargetGridNo: Pointer<INT16>, pubDirection: Pointer<UINT8>): INT16 {
-  INT16 cnt;
-  INT16 sSpot;
-  UINT8 ubGuyThere;
+  let cnt: INT16;
+  let sSpot: INT16;
+  let ubGuyThere: UINT8;
 
   for (cnt = 0; cnt < NUM_WORLD_DIRECTIONS; cnt++) {
     sSpot = (INT16)NewGridNo(pSoldier->sGridNo, DirectionInc(cnt));
@@ -3954,7 +3968,7 @@ function FindAdjacentPunchTarget(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier:
 }
 
 function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): BOOLEAN {
-  BOOLEAN fVisible;
+  let fVisible: BOOLEAN;
 
   // Check if a hidden tile exists but is not revealed
   if (DoesGridnoContainHiddenStruct(usMapPos, &fVisible)) {
@@ -3986,13 +4000,15 @@ function UIOKMoveDestination(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): 
 }
 
 function HandleTeamServices(ubTeamNum: UINT8): void {
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier, *pTargetSoldier;
-  UINT32 uiPointsUsed;
-  UINT16 usSoldierIndex, usInHand;
-  UINT16 usKitPts;
-  INT8 bSlot;
-  BOOLEAN fDone;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let uiPointsUsed: UINT32;
+  let usSoldierIndex: UINT16;
+  let usInHand: UINT16;
+  let usKitPts: UINT16;
+  let bSlot: INT8;
+  let fDone: BOOLEAN;
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
   cnt = gTacticalStatus.Team[ubTeamNum].bFirstID;
@@ -4062,12 +4078,13 @@ function HandleTeamServices(ubTeamNum: UINT8): void {
 }
 
 function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
-  SOLDIERTYPE *pTargetSoldier;
-  UINT32 uiPointsUsed;
-  UINT16 usSoldierIndex, usInHand;
-  UINT16 usKitPts;
-  INT8 bSlot;
-  BOOLEAN fDone = FALSE;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let uiPointsUsed: UINT32;
+  let usSoldierIndex: UINT16;
+  let usInHand: UINT16;
+  let usKitPts: UINT16;
+  let bSlot: INT8;
+  let fDone: BOOLEAN = FALSE;
 
   if (pTeamSoldier->bLife >= OKLIFE && pTeamSoldier->bActive) {
     // Check for different events!
@@ -4132,8 +4149,8 @@ function HandlePlayerServices(pTeamSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CommonEnterCombatModeCode(): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   gTacticalStatus.uiFlags |= INCOMBAT;
 
@@ -4218,8 +4235,8 @@ function CommonEnterCombatModeCode(): void {
 }
 
 function EnterCombatMode(ubStartingTeam: UINT8): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.uiFlags & INCOMBAT) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Can't enter combat when already in combat");
@@ -4266,8 +4283,8 @@ function EnterCombatMode(ubStartingTeam: UINT8): void {
 }
 
 function ExitCombatMode(): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Exiting combat mode");
 
@@ -4363,9 +4380,9 @@ function SetEnemyPresence(): void {
 }
 
 function SoldierHasSeenEnemiesLastFewTurns(pTeamSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT32 cnt2;
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let cnt2: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < MAXTEAMS; cnt++) {
     if (gTacticalStatus.Team[cnt].bSide != pTeamSoldier->bSide) {
@@ -4389,8 +4406,8 @@ function SoldierHasSeenEnemiesLastFewTurns(pTeamSoldier: Pointer<SOLDIERTYPE>): 
 }
 
 function WeSeeNoOne(): BOOLEAN {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pSoldier;
+  let uiLoop: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -4407,8 +4424,8 @@ function WeSeeNoOne(): BOOLEAN {
 }
 
 function NobodyAlerted(): BOOLEAN {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pSoldier;
+  let uiLoop: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -4423,8 +4440,9 @@ function NobodyAlerted(): BOOLEAN {
 }
 
 function WeSawSomeoneThisTurn(): BOOLEAN {
-  UINT32 uiLoop, uiLoop2;
-  SOLDIERTYPE *pSoldier;
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -4442,11 +4460,11 @@ function WeSawSomeoneThisTurn(): BOOLEAN {
 }
 
 function SayBattleSoundFromAnyBodyInSector(iBattleSnd: INT32): void {
-  UINT8 ubMercsInSector[20] = { 0 };
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Loop through all our guys and randomly say one from someone in our sector
 
@@ -4471,11 +4489,13 @@ function SayBattleSoundFromAnyBodyInSector(iBattleSnd: INT32): void {
 }
 
 function CheckForEndOfCombatMode(fIncrementTurnsNotSeen: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pTeamSoldier;
-  UINT32 cnt = 0;
-  BOOLEAN fWeSeeNoOne, fNobodyAlerted;
-  BOOLEAN fSayQuote = FALSE;
-  BOOLEAN fWeSawSomeoneRecently = FALSE, fSomeoneSawSomeoneRecently = FALSE;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT32 = 0;
+  let fWeSeeNoOne: BOOLEAN;
+  let fNobodyAlerted: BOOLEAN;
+  let fSayQuote: BOOLEAN = FALSE;
+  let fWeSawSomeoneRecently: BOOLEAN = FALSE;
+  let fSomeoneSawSomeoneRecently: BOOLEAN = FALSE;
 
   // We can only check for end of combat if in combat mode
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -4594,11 +4614,11 @@ function DeathNoMessageTimerCallback(): void {
 // IMPORTANT NEW NOTE:
 // Whenever returning TRUE, make sure you clear gfBlitBattleSectorLocator;
 function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pTeamSoldier;
-  BOOLEAN fBattleWon = TRUE;
-  BOOLEAN fBattleLost = FALSE;
-  INT32 cnt = 0;
-  UINT16 usAnimState;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let fBattleWon: BOOLEAN = TRUE;
+  let fBattleLost: BOOLEAN = FALSE;
+  let cnt: INT32 = 0;
+  let usAnimState: UINT16;
 
   if (gTacticalStatus.bBoxingState == BOXING) {
     // no way are we going to exit boxing prematurely, thank you! :-)
@@ -4870,12 +4890,12 @@ function CheckForEndOfBattle(fAnEnemyRetreated: BOOLEAN): BOOLEAN {
 
 function CycleThroughKnownEnemies(): void {
   // static to indicate last position we were at:
-  SOLDIERTYPE *pSoldier;
-  static BOOLEAN fFirstTime = TRUE;
-  static UINT16 usStartToLook;
-  UINT32 cnt;
-  BOOLEAN fEnemyBehindStartLook = FALSE;
-  BOOLEAN fEnemiesFound = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  /* static */ let fFirstTime: BOOLEAN = TRUE;
+  /* static */ let usStartToLook: UINT16;
+  let cnt: UINT32;
+  let fEnemyBehindStartLook: BOOLEAN = FALSE;
+  let fEnemiesFound: BOOLEAN = FALSE;
 
   if (fFirstTime) {
     fFirstTime = FALSE;
@@ -4921,9 +4941,9 @@ function CycleThroughKnownEnemies(): void {
 
 function CycleVisibleEnemies(pSrcSoldier: Pointer<SOLDIERTYPE>): void {
   // static to indicate last position we were at:
-  SOLDIERTYPE *pSoldier;
-  UINT16 usStartToLook;
-  UINT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let usStartToLook: UINT16;
+  let cnt: UINT32;
 
   usStartToLook = gTacticalStatus.Team[gbPlayerNum].bLastID;
 
@@ -4969,9 +4989,9 @@ function CycleVisibleEnemies(pSrcSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CountNonVehiclesOnPlayerTeam(): INT8 {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT8 bNumber = 0;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bNumber: INT8 = 0;
 
   for (cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[cnt]; cnt <= (UINT32)(gTacticalStatus.Team[gbPlayerNum].bLastID); cnt++, pSoldier++) {
     if (pSoldier->bActive && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
@@ -4992,9 +5012,9 @@ function PlayerTeamFull(): BOOLEAN {
 }
 
 function NumPCsInSector(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  UINT32 cnt = 0;
-  UINT8 ubNumPlayers = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT32 = 0;
+  let ubNumPlayers: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5011,9 +5031,9 @@ function NumPCsInSector(): UINT8 {
 }
 
 function NumEnemyInSector(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5030,9 +5050,9 @@ function NumEnemyInSector(): UINT8 {
 }
 
 function NumEnemyInSectorExceptCreatures(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5049,9 +5069,9 @@ function NumEnemyInSectorExceptCreatures(): UINT8 {
 }
 
 function NumEnemyInSectorNotDeadOrDying(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5077,9 +5097,9 @@ function NumEnemyInSectorNotDeadOrDying(): UINT8 {
 }
 
 function NumBloodcatsInSectorNotDeadOrDying(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5107,9 +5127,9 @@ function NumBloodcatsInSectorNotDeadOrDying(): UINT8 {
 }
 
 function NumCapableEnemyInSector(): UINT8 {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5136,14 +5156,17 @@ function NumCapableEnemyInSector(): UINT8 {
 }
 
 function CheckForLosingEndOfBattle(): BOOLEAN {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
-  INT8 bNumDead = 0, bNumNotOK = 0, bNumInBattle = 0, bNumNotOKRealMercs = 0;
-  BOOLEAN fMadeCorpse;
-  BOOLEAN fDoCapture = FALSE;
-  BOOLEAN fOnlyEPCsLeft = TRUE;
-  BOOLEAN fMilitiaInSector = FALSE;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
+  let bNumDead: INT8 = 0;
+  let bNumNotOK: INT8 = 0;
+  let bNumInBattle: INT8 = 0;
+  let bNumNotOKRealMercs: INT8 = 0;
+  let fMadeCorpse: BOOLEAN;
+  let fDoCapture: BOOLEAN = FALSE;
+  let fOnlyEPCsLeft: BOOLEAN = TRUE;
+  let fMilitiaInSector: BOOLEAN = FALSE;
 
   // ATE: Check for MILITIA - we won't lose if we have some.....
   cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;
@@ -5266,10 +5289,10 @@ function CheckForLosingEndOfBattle(): BOOLEAN {
 }
 
 function KillIncompacitatedEnemyInSector(): BOOLEAN {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  UINT8 ubNumEnemies = 0;
-  BOOLEAN fReturnVal = FALSE;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let ubNumEnemies: UINT8 = 0;
+  let fReturnVal: BOOLEAN = FALSE;
 
   // Check if the battle is won!
   // Loop through all mercs and make go
@@ -5287,8 +5310,8 @@ function KillIncompacitatedEnemyInSector(): BOOLEAN {
 }
 
 function AttackOnGroupWitnessed(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT32 uiSlot;
-  SOLDIERTYPE *pGroupMember;
+  let uiSlot: UINT32;
+  let pGroupMember: Pointer<SOLDIERTYPE>;
 
   // look for all group members... rebels could be on the civ team or ours!
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
@@ -5307,7 +5330,7 @@ function AttackOnGroupWitnessed(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer
 }
 
 function CalcSuppressionTolerance(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bTolerance;
+  let bTolerance: INT8;
 
   // Calculate basic tolerance value
   bTolerance = pSoldier->bExpLevel * 2;
@@ -5358,12 +5381,15 @@ function CalcSuppressionTolerance(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
 const MAX_APS_SUPPRESSED = 8;
 function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): void {
-  INT8 bTolerance;
-  INT16 sClosestOpponent, sClosestOppLoc;
-  UINT8 ubPointsLost, ubTotalPointsLost, ubNewStance;
-  UINT32 uiLoop;
-  UINT8 ubLoop2;
-  SOLDIERTYPE *pSoldier;
+  let bTolerance: INT8;
+  let sClosestOpponent: INT16;
+  let sClosestOppLoc: INT16;
+  let ubPointsLost: UINT8;
+  let ubTotalPointsLost: UINT8;
+  let ubNewStance: UINT8;
+  let uiLoop: UINT32;
+  let ubLoop2: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -5511,9 +5537,10 @@ function HandleSuppressionFire(ubTargetedMerc: UINT8, ubCausedAttacker: UINT8): 
 }
 
 function ProcessImplicationsOfPCAttack(pSoldier: Pointer<SOLDIERTYPE>, ppTarget: Pointer<Pointer<SOLDIERTYPE>>, bReason: INT8): BOOLEAN {
-  INT16 sTargetXPos, sTargetYPos;
-  BOOLEAN fEnterCombat = TRUE;
-  SOLDIERTYPE *pTarget = *ppTarget;
+  let sTargetXPos: INT16;
+  let sTargetYPos: INT16;
+  let fEnterCombat: BOOLEAN = TRUE;
+  let pTarget: Pointer<SOLDIERTYPE> = *ppTarget;
 
   if (pTarget->fAIFlags & AI_ASLEEP) {
     // waaaaaaaaaaaaake up!
@@ -5637,9 +5664,9 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   // Strange as this may seem, this function returns a pointer to
   // the *target* in case the target has changed sides as a result
   // of being attacked
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pTarget;
-  BOOLEAN fEnterCombat = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTarget: Pointer<SOLDIERTYPE>;
+  let fEnterCombat: BOOLEAN = FALSE;
 
   if (ubID == NOBODY) {
     pSoldier = NULL;
@@ -5736,9 +5763,9 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
       if (pTarget->ubBodyType == CROW) {
         // Loop through our team, make guys who can see this fly away....
         {
-          UINT32 cnt;
-          SOLDIERTYPE *pTeamSoldier;
-          UINT8 ubTeam;
+          let cnt: UINT32;
+          let pTeamSoldier: Pointer<SOLDIERTYPE>;
+          let ubTeam: UINT8;
 
           ubTeam = pTarget->bTeam;
 
@@ -5839,8 +5866,8 @@ function InternalReduceAttackBusyCount(ubID: UINT8, fCalledByAttacker: BOOLEAN, 
   }
 
   if (gTacticalStatus.uiFlags & CHECK_SIGHT_AT_END_OF_ATTACK) {
-    UINT8 ubLoop;
-    SOLDIERTYPE *pSightSoldier;
+    let ubLoop: UINT8;
+    let pSightSoldier: Pointer<SOLDIERTYPE>;
 
     AllTeamsLookForAll(FALSE);
 
@@ -5910,7 +5937,7 @@ function ReduceAttackBusyGivenTarget(ubID: UINT8, ubTargetID: UINT8): Pointer<SO
 }
 
 function StopMercAnimation(fStop: BOOLEAN): void {
-  static INT8 bOldRealtimeSpeed;
+  /* static */ let bOldRealtimeSpeed: INT8;
 
   if (fStop) {
     if (!(gTacticalStatus.uiFlags & SLOW_ANIMATION)) {
@@ -5933,8 +5960,8 @@ function StopMercAnimation(fStop: BOOLEAN): void {
 }
 
 function ResetAllMercSpeeds(): void {
-  SOLDIERTYPE *pSoldier;
-  UINT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < TOTAL_SOLDIERS; cnt++) {
     pSoldier = MercPtrs[cnt];
@@ -5962,7 +5989,7 @@ function SetActionToDoOnceMercsGetToLocation(ubActionCode: UINT8, bNumMercsWaiti
 function HandleBloodForNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Handle bleeding...
   if ((pSoldier->bBleeding > MIN_BLEEDING_THRESHOLD)) {
-    INT8 bBlood;
+    let bBlood: INT8;
 
     bBlood = ((pSoldier->bBleeding - MIN_BLEEDING_THRESHOLD) / BLOODDIVISOR);
 
@@ -5982,8 +6009,8 @@ function HandleBloodForNewGridNo(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CencelAllActionsForTimeCompression(): void {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   for (pSoldier = Menptr, cnt = 0; cnt < TOTAL_SOLDIERS; pSoldier++, cnt++) {
     if (pSoldier->bActive) {
@@ -6027,8 +6054,8 @@ function RemoveManFromTeam(bTeam: INT8): void {
 }
 
 function RemoveSoldierFromTacticalSector(pSoldier: Pointer<SOLDIERTYPE>, fAdjustSelected: BOOLEAN): void {
-  UINT8 ubID;
-  SOLDIERTYPE *pNewSoldier;
+  let ubID: UINT8;
+  let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // reset merc's opplist
   InitSoldierOppList(pSoldier);
@@ -6086,9 +6113,9 @@ function EndBattleWithUnconsciousGuysCallback(bExitValue: UINT8): void {
 }
 
 function InitializeTacticalStatusAtBattleStart(): void {
-  INT8 bLoop;
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let bLoop: INT8;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   gTacticalStatus.ubArmyGuysKilled = 0;
   gTacticalStatus.bOriginalSizeOfEnemyForce = 0;
@@ -6154,8 +6181,8 @@ function CaptureTimerCallback(): void {
 }
 
 function DoPOWPathChecks(): void {
-  INT32 iLoop;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // loop through all mercs on our team and if they are POWs in sector, do POW path check and
   // put on a squad if available
@@ -6185,8 +6212,8 @@ function DoPOWPathChecks(): void {
 }
 
 function HostileCiviliansPresent(): BOOLEAN {
-  INT32 iLoop;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.Team[CIV_TEAM].bTeamActive == FALSE) {
     return FALSE;
@@ -6204,8 +6231,8 @@ function HostileCiviliansPresent(): BOOLEAN {
 }
 
 function HostileCiviliansWithGunsPresent(): BOOLEAN {
-  INT32 iLoop;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.Team[CIV_TEAM].bTeamActive == FALSE) {
     return FALSE;
@@ -6225,8 +6252,8 @@ function HostileCiviliansWithGunsPresent(): BOOLEAN {
 }
 
 function HostileBloodcatsPresent(): BOOLEAN {
-  INT32 iLoop;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.Team[CREATURE_TEAM].bTeamActive == FALSE) {
     return FALSE;
@@ -6247,12 +6274,12 @@ function HostileBloodcatsPresent(): BOOLEAN {
 }
 
 function HandleCreatureTenseQuote(): void {
-  UINT8 ubMercsInSector[20] = { 0 };
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
-  INT32 uiTime;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let uiTime: INT32;
 
   // Check for quote seeing creature attacks....
   if (gubQuest[QUEST_CREATURES] != QUESTDONE) {
@@ -6291,9 +6318,9 @@ function HandleCreatureTenseQuote(): void {
 }
 
 function DoCreatureTensionQuote(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iRandomQuote;
-  BOOLEAN fCanDoQuote = TRUE;
-  INT32 iQuoteToUse;
+  let iRandomQuote: INT32;
+  let fCanDoQuote: BOOLEAN = TRUE;
+  let iQuoteToUse: INT32;
 
   // Check for playing smell quote....
   iRandomQuote = Random(3);

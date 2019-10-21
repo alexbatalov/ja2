@@ -1,6 +1,6 @@
 const EMPTY_CACHE_ENTRY = 65000;
 
-UINT32 guiCacheSize = MIN_CACHE_SIZE;
+let guiCacheSize: UINT32 = MIN_CACHE_SIZE;
 
 function DetermineOptimumAnimationCacheSize(): void {
   // If we have lots-a memory, adjust accordingly!
@@ -8,7 +8,7 @@ function DetermineOptimumAnimationCacheSize(): void {
 }
 
 function InitAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): BOOLEAN {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   // Allocate entries
   AnimDebugMsg(String("*** Initializing anim cache surface for soldier %d", usSoldierID));
@@ -46,10 +46,10 @@ function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<Animation
 }
 
 function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): BOOLEAN {
-  UINT8 cnt;
-  UINT8 ubLowestIndex = 0;
-  INT16 sMostHits = (INT16)32000;
-  UINT16 usCurrentAnimSurface;
+  let cnt: UINT8;
+  let ubLowestIndex: UINT8 = 0;
+  let sMostHits: INT16 = (INT16)32000;
+  let usCurrentAnimSurface: UINT16;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {
@@ -114,7 +114,7 @@ function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<Anim
 }
 
 function UnLoadCachedAnimationSurfaces(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < pAnimCache->ubCacheSize; cnt++) {

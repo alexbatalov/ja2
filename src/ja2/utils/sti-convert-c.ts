@@ -52,10 +52,10 @@ interface SplitUINT32 {
 }
 
 function ConvertRGBDistribution555To565(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  UINT16 *pPixel;
-  UINT32 uiLoop;
+  let pPixel: Pointer<UINT16>;
+  let uiLoop: UINT32;
 
-  SplitUINT32 Pixel;
+  let Pixel: SplitUINT32;
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -75,22 +75,22 @@ function ConvertRGBDistribution555To565(p16BPPData: Pointer<UINT16>, uiNumberOfP
 }
 
 function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, sWidth: INT16, sHeight: INT16, cOutputName: STR, fFlags: UINT32, uiAppDataSize: UINT32): void {
-  FILE *pOutput;
+  let pOutput: Pointer<FILE>;
 
-  UINT32 uiOriginalSize;
-  UINT8 *pOutputBuffer = NULL;
-  UINT32 uiCompressedSize;
+  let uiOriginalSize: UINT32;
+  let pOutputBuffer: Pointer<UINT8> = NULL;
+  let uiCompressedSize: UINT32;
 
-  STCIHeader Header;
-  UINT32 uiLoop;
-  image_type Image;
+  let Header: STCIHeader;
+  let uiLoop: UINT32;
+  let Image: image_type;
 
-  SGPPaletteEntry *pSGPPaletteEntry;
-  STCIPaletteElement STCIPaletteEntry;
+  let pSGPPaletteEntry: Pointer<SGPPaletteEntry>;
+  let STCIPaletteEntry: STCIPaletteElement;
 
-  STCISubImage *pSubImageBuffer;
-  UINT16 usNumberOfSubImages;
-  UINT32 uiSubImageBufferSize = 0;
+  let pSubImageBuffer: Pointer<STCISubImage>;
+  let usNumberOfSubImages: UINT16;
+  let uiSubImageBufferSize: UINT32 = 0;
 
   // UINT16							usLoop;
 
@@ -189,21 +189,21 @@ const TCI = 0x00;
 const WI = 0xFF;
 
 function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UINT32>, ppSubImageBuffer: Pointer<Pointer<UINT8>>, pusNumberOfSubImages: Pointer<UINT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, fFlags: UINT32): BOOLEAN {
-  INT16 sCurrX;
-  INT16 sCurrY;
-  INT16 sNextX;
-  INT16 sNextY;
-  UINT8 *pOutputNext;
-  UINT8 *pTemp;
-  BOOLEAN fContinue = TRUE;
-  BOOLEAN fOk = TRUE;
-  BOOLEAN fStore;
-  BOOLEAN fNextExists;
-  STCISubImage *pCurrSubImage;
-  STCISubImage TempSubImage;
-  UINT32 uiCompressedSize = 0;
-  UINT32 uiSubImageCompressedSize;
-  UINT32 uiSpaceLeft;
+  let sCurrX: INT16;
+  let sCurrY: INT16;
+  let sNextX: INT16;
+  let sNextY: INT16;
+  let pOutputNext: Pointer<UINT8>;
+  let pTemp: Pointer<UINT8>;
+  let fContinue: BOOLEAN = TRUE;
+  let fOk: BOOLEAN = TRUE;
+  let fStore: BOOLEAN;
+  let fNextExists: BOOLEAN;
+  let pCurrSubImage: Pointer<STCISubImage>;
+  let TempSubImage: STCISubImage;
+  let uiCompressedSize: UINT32 = 0;
+  let uiSubImageCompressedSize: UINT32;
+  let uiSpaceLeft: UINT32;
 
   // worst-case situation	estimate
   uiSpaceLeft = (UINT32)usWidth * (UINT32)usHeight * 3;
@@ -337,11 +337,11 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
 }
 
 function ETRLECompressSubImage(pDest: Pointer<UINT8>, uiDestLen: UINT32, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): UINT32 {
-  UINT16 usLoop;
-  UINT32 uiScanLineCompressedSize;
-  UINT32 uiSpaceLeft = uiDestLen;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
+  let usLoop: UINT16;
+  let uiScanLineCompressedSize: UINT32;
+  let uiSpaceLeft: UINT32 = uiDestLen;
+  let uiOffset: UINT32;
+  let pCurrent: Pointer<UINT8>;
 
   CHECKF(DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, pSubImage->sOffsetY))
   pCurrent = p8BPPBuffer + uiOffset;
@@ -371,12 +371,12 @@ function ETRLECompress(pDest: Pointer<UINT8>, uiDestLen: UINT32, pSource: Pointe
 
   // uiSourceLoc keeps track of our current position in the
   // source
-  UINT32 uiSourceLoc = 0;
+  let uiSourceLoc: UINT32 = 0;
   // uiCurrentSourceLoc is used to look ahead in the source to
   // determine the length of runs
-  UINT32 uiCurrentSourceLoc = 0;
-  UINT32 uiDestLoc = 0;
-  UINT8 ubLength = 0;
+  let uiCurrentSourceLoc: UINT32 = 0;
+  let uiDestLoc: UINT32 = 0;
+  let ubLength: UINT8 = 0;
 
   while (uiSourceLoc < uiSourceLen && uiDestLoc < uiDestLen) {
     if (pSource[uiSourceLoc] == TCI) {
@@ -459,11 +459,11 @@ function GoPastWall(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, usWidth: UIN
 function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, sOrigX: INT16, sOrigY: INT16): BOOLEAN {
   // return the coordinates of the next subimage in the image
   // (either to the right, or the first of the next row down
-  INT16 sCurrX = sOrigX;
-  INT16 sCurrY = sOrigY;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  BOOLEAN fFound = TRUE;
+  let sCurrX: INT16 = sOrigX;
+  let sCurrY: INT16 = sOrigY;
+  let uiOffset: UINT32;
+  let pCurrent: Pointer<UINT8>;
+  let fFound: BOOLEAN = TRUE;
 
   CHECKF(DetermineOffset(&uiOffset, usWidth, usHeight, sCurrX, sCurrY))
   pCurrent = p8BPPBuffer + uiOffset;
@@ -525,10 +525,10 @@ function GoToNextSubImage(psNewX: Pointer<INT16>, psNewY: Pointer<INT16>, p8BPPB
 }
 
 function DetermineSubImageSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  INT16 sCurrX = pSubImage->sOffsetX;
-  INT16 sCurrY = pSubImage->sOffsetY;
+  let uiOffset: UINT32;
+  let pCurrent: Pointer<UINT8>;
+  let sCurrX: INT16 = pSubImage->sOffsetX;
+  let sCurrY: INT16 = pSubImage->sOffsetY;
 
   if (!DetermineOffset(&uiOffset, usWidth, usHeight, sCurrX, sCurrY)) {
     return FALSE;
@@ -554,13 +554,13 @@ function DetermineSubImageSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usH
 }
 
 function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
-  INT16 sNewValue;
+  let sNewValue: INT16;
   // to do our search loops properly, we can't change the height and width of the
   // subimages until we're done all of our shrinks
-  UINT16 usNewHeight;
-  UINT16 usNewWidth;
-  UINT16 usNewX;
-  UINT16 usNewY;
+  let usNewHeight: UINT16;
+  let usNewWidth: UINT16;
+  let usNewX: UINT16;
+  let usNewY: UINT16;
 
   // shrink from the top
   if (CheckForDataInRows(&sNewValue, 1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
@@ -594,10 +594,10 @@ function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16,
 }
 
 function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
-  INT16 sCurrY;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  UINT16 usLoop;
+  let sCurrY: INT16;
+  let uiOffset: UINT32;
+  let pCurrent: Pointer<UINT8>;
+  let usLoop: UINT16;
 
   if (sYIncrement == 1) {
     sCurrY = pSubImage->sOffsetY;
@@ -624,10 +624,10 @@ function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPB
 }
 
 function CheckForDataInCols(psXValue: Pointer<INT16>, sXIncrement: INT16, p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16, usHeight: UINT16, pSubImage: Pointer<STCISubImage>): BOOLEAN {
-  INT16 sCurrX;
-  UINT32 uiOffset;
-  UINT8 *pCurrent;
-  UINT16 usLoop;
+  let sCurrX: INT16;
+  let uiOffset: UINT32;
+  let pCurrent: Pointer<UINT8>;
+  let usLoop: UINT16;
 
   if (sXIncrement == 1) {
     sCurrX = pSubImage->sOffsetX;
@@ -657,7 +657,7 @@ function CheckForDataInRowOrColumn(pPixel: Pointer<UINT8>, usIncrement: UINT16, 
   // This function, passed the right increment value, can scan either across or
   // down an image to find a non-transparent pixel
 
-  UINT16 usLoop;
+  let usLoop: UINT16;
 
   for (usLoop = 0; usLoop < usNumberOfPixels; usLoop++) {
     if (*pPixel != TCI) {

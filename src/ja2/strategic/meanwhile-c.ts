@@ -1,6 +1,6 @@
 const MAX_MEANWHILE_PROFILES = 10;
 
-INT8 gzMeanwhileStr[][30] = {
+let gzMeanwhileStr: INT8[][] /* [][30] */ = {
   "End of player's first battle",
   "Drassen Lib. ",
   "Cambria Lib.",
@@ -21,7 +21,7 @@ INT8 gzMeanwhileStr[][30] = {
 };
 
 // the snap to grid nos for meanwhile scenes
-UINT16 gusMeanWhileGridNo[] = {
+let gusMeanWhileGridNo: UINT16[] /* [] */ = {
   12248,
   12248,
   12248,
@@ -50,27 +50,27 @@ interface NPC_SAVE_INFO {
 }
 
 // BEGIN SERALIZATION
-MEANWHILE_DEFINITION gCurrentMeanwhileDef;
-MEANWHILE_DEFINITION gMeanwhileDef[NUM_MEANWHILES];
-BOOLEAN gfMeanwhileTryingToStart = FALSE;
-BOOLEAN gfInMeanwhile = FALSE;
+let gCurrentMeanwhileDef: MEANWHILE_DEFINITION;
+let gMeanwhileDef: MEANWHILE_DEFINITION[] /* [NUM_MEANWHILES] */;
+let gfMeanwhileTryingToStart: BOOLEAN = FALSE;
+let gfInMeanwhile: BOOLEAN = FALSE;
 // END SERIALIZATION
-INT16 gsOldSectorX;
-INT16 gsOldSectorY;
-INT16 gsOldSectorZ;
-INT16 gsOldSelectedSectorX;
-INT16 gsOldSelectedSectorY;
-INT16 gsOldSelectedSectorZ;
+let gsOldSectorX: INT16;
+let gsOldSectorY: INT16;
+let gsOldSectorZ: INT16;
+let gsOldSelectedSectorX: INT16;
+let gsOldSelectedSectorY: INT16;
+let gsOldSelectedSectorZ: INT16;
 
-UINT32 guiOldScreen;
-NPC_SAVE_INFO gNPCSaveData[MAX_MEANWHILE_PROFILES];
-UINT32 guiNumNPCSaves = 0;
-BOOLEAN gfReloadingScreenFromMeanwhile = FALSE;
-INT16 gsOldCurInterfacePanel = 0;
-BOOLEAN gfWorldWasLoaded = FALSE;
-UINT8 ubCurrentMeanWhileId = 0;
+let guiOldScreen: UINT32;
+let gNPCSaveData: NPC_SAVE_INFO[] /* [MAX_MEANWHILE_PROFILES] */;
+let guiNumNPCSaves: UINT32 = 0;
+let gfReloadingScreenFromMeanwhile: BOOLEAN = FALSE;
+let gsOldCurInterfacePanel: INT16 = 0;
+let gfWorldWasLoaded: BOOLEAN = FALSE;
+let ubCurrentMeanWhileId: UINT8 = 0;
 
-UINT32 uiMeanWhileFlags = 0;
+let uiMeanWhileFlags: UINT32 = 0;
 
 // meanwhile flag defines
 const END_OF_PLAYERS_FIRST_BATTLE_FLAG = 0x00000001;
@@ -150,7 +150,7 @@ function SetMeanWhileFlag(ubMeanwhileID: UINT8): void {
 
 // is this flag set?
 function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
-  UINT32 uiTrue = FALSE;
+  let uiTrue: UINT32 = FALSE;
   switch (ubMeanwhileID) {
     case END_OF_PLAYERS_FIRST_BATTLE:
       uiTrue = (uiMeanWhileFlags & END_OF_PLAYERS_FIRST_BATTLE_FLAG);
@@ -213,7 +213,7 @@ function GetMeanWhileFlag(ubMeanwhileID: UINT8): BOOLEAN {
 }
 
 function GetFreeNPCSave(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumNPCSaves; uiCount++) {
     if ((gNPCSaveData[uiCount].ubProfile == NO_PROFILE))
@@ -227,7 +227,7 @@ function GetFreeNPCSave(): INT32 {
 }
 
 function RecountNPCSaves(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumNPCSaves - 1; (uiCount >= 0); uiCount--) {
     if ((gNPCSaveData[uiCount].ubProfile != NO_PROFILE)) {
@@ -264,7 +264,7 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
 }
 
 function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
-  INT32 cnt;
+  let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
   memcpy(&gCurrentMeanwhileDef, &(gMeanwhileDef[ubMeanwhileID]), sizeof(MEANWHILE_DEFINITION));
@@ -283,7 +283,7 @@ function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
 }
 
 function BringupMeanwhileBox(): void {
-  INT16 zStr[256];
+  let zStr: INT16[] /* [256] */;
 
   swprintf(zStr, L"%s.....", pMessageStrings[MSG_MEANWHILE]);
 
@@ -327,8 +327,8 @@ function CheckForMeanwhileOKStart(): void {
 }
 
 function StartMeanwhile(): void {
-  INT32 iIndex;
-  INT8 bNumDone = 0;
+  let iIndex: INT32;
+  let bNumDone: INT8 = 0;
 
   // OK, save old position...
   if (gfWorldLoaded) {
@@ -519,7 +519,7 @@ function BeginMeanwhileCallBack(bExitValue: UINT8): void {
 }
 
 function AreInMeanwhile(): BOOLEAN {
-  STRATEGICEVENT *curr;
+  let curr: Pointer<STRATEGICEVENT>;
 
   // KM:  April 6, 1999
   // Tactical traversal needs to take precedence over meanwhile events.  When tactically traversing, we
@@ -573,7 +573,8 @@ function ProcessImplicationsOfMeanwhile(): void {
       HandleNPCDoAction(QUEEN, NPC_ACTION_ADD_RAT, 0);
       break;
     case AWOL_SCIENTIST: {
-      INT16 sSectorX, sSectorY;
+      let sSectorX: INT16;
+      let sSectorY: INT16;
 
       StartQuest(QUEST_FIND_SCIENTIST, -1, -1);
       // place Madlab and robot!
@@ -616,8 +617,8 @@ function ProcessImplicationsOfMeanwhile(): void {
 }
 
 function EndMeanwhile(): void {
-  UINT32 cnt;
-  UINT8 ubProfile;
+  let cnt: UINT32;
+  let ubProfile: UINT8;
 
   EmptyDialogueQueue();
   ProcessImplicationsOfMeanwhile();
@@ -666,8 +667,8 @@ function EndMeanwhile(): void {
 }
 
 function DoneFadeOutMeanwhileOnceDone(): void {
-  UINT32 cnt;
-  UINT8 ubProfile;
+  let cnt: UINT32;
+  let ubProfile: UINT8;
 
   // OK, insertion data found, enter sector!
   gfReloadingScreenFromMeanwhile = TRUE;
@@ -725,7 +726,7 @@ function DoneFadeInMeanwhileOnceDone(): void {
 }
 
 function LocateMeanWhileGrid(): void {
-  INT16 sGridNo = 0;
+  let sGridNo: INT16 = 0;
 
   // go to the approp. gridno
   sGridNo = gusMeanWhileGridNo[ubCurrentMeanWhileId];
@@ -736,7 +737,7 @@ function LocateMeanWhileGrid(): void {
 }
 
 function LocateToMeanwhileCharacter(): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gfInMeanwhile) {
     pSoldier = FindSoldierByProfileID(gCurrentMeanwhileDef.ubNPCNumber, FALSE);
@@ -756,8 +757,8 @@ function GetMeanwhileID(): UINT8 {
 }
 
 function HandleCreatureRelease(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
@@ -774,10 +775,10 @@ function HandleCreatureRelease(): void {
 
 function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
   // post event for meanwhile whithin the next 6 hours if it still will be daylight, otherwise the next morning
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
-  BOOLEAN fHandled = FALSE;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
+  let fHandled: BOOLEAN = FALSE;
 
   MeanwhileDef.sSectorX = 3;
   MeanwhileDef.sSectorY = 16;
@@ -823,8 +824,8 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
 }
 
 function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(LOST_TOWN)) {
@@ -845,10 +846,10 @@ function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
 }
 
 function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
-  BOOLEAN fHandled = FALSE;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
+  let fHandled: BOOLEAN = FALSE;
 
   if (bSamId == -1) {
     // invalid parameter!
@@ -893,9 +894,9 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
 }
 
 function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(FLOWERS)) {
@@ -923,9 +924,9 @@ function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
 }
 
 function HandleOutskirtsOfMedunaMeanwhileScene(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(OUTSKIRTS_MEDUNA)) {
@@ -946,9 +947,9 @@ function HandleOutskirtsOfMedunaMeanwhileScene(): void {
 }
 
 function HandleKillChopperMeanwhileScene(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(KILL_CHOPPER)) {
@@ -969,9 +970,9 @@ function HandleKillChopperMeanwhileScene(): void {
 }
 
 function HandleScientistAWOLMeanwhileScene(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(AWOL_SCIENTIST)) {
@@ -992,9 +993,9 @@ function HandleScientistAWOLMeanwhileScene(): void {
 }
 
 function HandleInterrogationMeanwhileScene(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   // make sure scene hasn't been used before
   if (GetMeanWhileFlag(INTERROGATION)) {
@@ -1015,9 +1016,9 @@ function HandleInterrogationMeanwhileScene(): void {
 }
 
 function HandleFirstBattleVictory(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
     return;
@@ -1039,9 +1040,9 @@ function HandleFirstBattleVictory(): void {
 }
 
 function HandleDelayedFirstBattleVictory(): void {
-  UINT32 uiTime = 0;
-  MEANWHILE_DEFINITION MeanwhileDef;
-  UINT8 ubId = 0;
+  let uiTime: UINT32 = 0;
+  let MeanwhileDef: MEANWHILE_DEFINITION;
+  let ubId: UINT8 = 0;
 
   if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
     return;
@@ -1068,8 +1069,8 @@ function HandleDelayedFirstBattleVictory(): void {
 }
 
 function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: BOOLEAN): void {
-  INT8 bTownId = 0;
-  INT16 sSector = 0;
+  let bTownId: INT8 = 0;
+  let sSector: INT16 = 0;
 
   if (GetMeanWhileFlag(END_OF_PLAYERS_FIRST_BATTLE)) {
     return;

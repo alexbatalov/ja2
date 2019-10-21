@@ -1,10 +1,10 @@
 // NUMBER_OF_LIBRARIES
 
 // used when doing the binary search of the libraries
-INT16 gsCurrentLibrary = -1;
+let gsCurrentLibrary: INT16 = -1;
 
 // The location of the cdrom drive
-CHAR8 gzCdDirectory[SGPFILENAME_LEN];
+let gzCdDirectory: CHAR8[] /* [SGPFILENAME_LEN] */;
 
 //************************************************************************
 //
@@ -16,9 +16,9 @@ CHAR8 gzCdDirectory[SGPFILENAME_LEN];
 //
 //************************************************************************
 function InitializeFileDatabase(): BOOLEAN {
-  INT16 i;
-  UINT32 uiSize;
-  BOOLEAN fLibraryInited = FALSE;
+  let i: INT16;
+  let uiSize: UINT32;
+  let fLibraryInited: BOOLEAN = FALSE;
 
   GetCDLocation();
 
@@ -79,7 +79,7 @@ function InitializeFileDatabase(): BOOLEAN {
 // Created:  3/21/00 Derek Beland
 //*****************************************************************************************
 function ReopenCDLibraries(): BOOLEAN {
-  INT16 i;
+  let i: INT16;
 
   // Load up each library
   for (i = 0; i < NUMBER_OF_LIBRARIES; i++) {
@@ -101,7 +101,7 @@ function ReopenCDLibraries(): BOOLEAN {
 //************************************************************************
 
 function ShutDownFileDatabase(): BOOLEAN {
-  UINT16 sLoop1;
+  let sLoop1: UINT16;
 
   // Free up the memory used for each library
   for (sLoop1 = 0; sLoop1 < gFileDataBase.usNumberOfLibraries; sLoop1++)
@@ -129,8 +129,8 @@ function ShutDownFileDatabase(): BOOLEAN {
 }
 
 function CheckForLibraryExistence(pLibraryName: STR): BOOLEAN {
-  BOOLEAN fRetVal = FALSE;
-  HANDLE hFile;
+  let fRetVal: BOOLEAN = FALSE;
+  let hFile: HANDLE;
 
   // try to opent the file, if we canm the library exists
   hFile = CreateFile(pLibraryName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
@@ -148,14 +148,14 @@ function CheckForLibraryExistence(pLibraryName: STR): BOOLEAN {
 }
 
 function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderStruct>, fCanBeOnCDrom: BOOLEAN): BOOLEAN {
-  HANDLE hFile;
-  UINT16 usNumEntries = 0;
-  UINT32 uiNumBytesRead;
-  UINT32 uiLoop;
-  DIRENTRY DirEntry;
-  LIBHEADER LibFileHeader;
-  UINT32 uiCount = 0;
-  CHAR8 zTempPath[SGPFILENAME_LEN];
+  let hFile: HANDLE;
+  let usNumEntries: UINT16 = 0;
+  let uiNumBytesRead: UINT32;
+  let uiLoop: UINT32;
+  let DirEntry: DIRENTRY;
+  let LibFileHeader: LIBHEADER;
+  let uiCount: UINT32 = 0;
+  let zTempPath: CHAR8[] /* [SGPFILENAME_LEN] */;
 
   // open the library for reading ( if it exists )
   hFile = CreateFile(pLibraryName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
@@ -168,8 +168,8 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
       // look on the cdrom
       hFile = CreateFile(zTempPath, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL);
       if (hFile == INVALID_HANDLE_VALUE) {
-        UINT32 uiLastError = GetLastError();
-        char zString[1024];
+        let uiLastError: UINT32 = GetLastError();
+        let zString: char[] /* [1024] */;
         FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
 
         return FALSE;
@@ -279,10 +279,11 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
 }
 
 function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, uiBytesToRead: UINT32, pBytesRead: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiOffsetInLibrary, uiLength;
-  HANDLE hLibraryFile;
-  UINT32 uiNumBytesRead;
-  UINT32 uiCurPos;
+  let uiOffsetInLibrary: UINT32;
+  let uiLength: UINT32;
+  let hLibraryFile: HANDLE;
+  let uiNumBytesRead: UINT32;
+  let uiCurPos: UINT32;
 
   // get the offset into the library, the length and current position of the file pointer.
   uiOffsetInLibrary = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileOffset;
@@ -328,8 +329,8 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
 //************************************************************************
 
 function CheckIfFileExistInLibrary(pFileName: STR): BOOLEAN {
-  INT16 sLibraryID;
-  FileHeaderStruct *pFileHeader;
+  let sLibraryID: INT16;
+  let pFileHeader: Pointer<FileHeaderStruct>;
 
   // get thelibrary that file is in
   sLibraryID = GetLibraryIDFromFileName(pFileName);
@@ -352,7 +353,8 @@ function CheckIfFileExistInLibrary(pFileName: STR): BOOLEAN {
 //
 //************************************************************************
 function GetLibraryIDFromFileName(pFileName: STR): INT16 {
-  INT16 sLoop1, sBestMatch = -1;
+  let sLoop1: INT16;
+  let sBestMatch: INT16 = -1;
 
   // loop through all the libraries to check which library the file is in
   for (sLoop1 = 0; sLoop1 < gFileDataBase.usNumberOfLibraries; sLoop1++) {
@@ -393,8 +395,8 @@ function GetLibraryIDFromFileName(pFileName: STR): INT16 {
 //************************************************************************
 
 function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHeader: Pointer<Pointer<FileHeaderStruct>>): BOOLEAN {
-  FileHeaderStruct **ppFileHeader;
-  CHAR8 sFileNameWithPath[FILENAME_SIZE];
+  let ppFileHeader: Pointer<Pointer<FileHeaderStruct>>;
+  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
 
   // combine the library path to the file name (need it for the search of the library )
   strcpy(sFileNameWithPath, pstrFileName);
@@ -420,9 +422,9 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHea
 //************************************************************************
 
 function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<FileHeaderStruct>>): INT {
-  CHAR8 sSearchKey[FILENAME_SIZE];
-  CHAR8 sFileNameWithPath[FILENAME_SIZE];
-  FileHeaderStruct *TempFileHeader;
+  let sSearchKey: CHAR8[] /* [FILENAME_SIZE] */;
+  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
+  let TempFileHeader: Pointer<FileHeaderStruct>;
 
   TempFileHeader = (FileHeaderStruct *)arg2;
 
@@ -435,10 +437,11 @@ function CompareFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer
 }
 
 function AddSlashToPath(pName: STR): void {
-  UINT32 uiLoop, uiCounter;
-  BOOLEAN fDone = FALSE;
-  BOOLEAN fFound = FALSE;
-  CHAR8 sNewName[FILENAME_SIZE];
+  let uiLoop: UINT32;
+  let uiCounter: UINT32;
+  let fDone: BOOLEAN = FALSE;
+  let fFound: BOOLEAN = FALSE;
+  let sNewName: CHAR8[] /* [FILENAME_SIZE] */;
 
   // find out if there is a '\' in the file name
 
@@ -466,13 +469,13 @@ function AddSlashToPath(pName: STR): void {
 //************************************************************************
 
 function OpenFileFromLibrary(pName: STR): HWFILE {
-  FileHeaderStruct *pFileHeader;
-  HWFILE hLibFile;
-  INT16 sLibraryID;
-  UINT16 uiLoop1;
-  UINT32 uiFileNum = 0;
+  let pFileHeader: Pointer<FileHeaderStruct>;
+  let hLibFile: HWFILE;
+  let sLibraryID: INT16;
+  let uiLoop1: UINT16;
+  let uiFileNum: UINT32 = 0;
 
-  UINT32 uiNewFilePosition = 0;
+  let uiNewFilePosition: UINT32 = 0;
 
   // Check if the file can be contained from an open library ( the path to the file a library path )
   sLibraryID = GetLibraryIDFromFileName(pName);
@@ -498,7 +501,7 @@ function OpenFileFromLibrary(pName: STR): HWFILE {
 
       // if there isnt enough space to put the file, realloc more space
       if (gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen >= gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray) {
-        FileOpenStruct *pOpenFiles;
+        let pOpenFiles: Pointer<FileOpenStruct>;
 
         // reallocate more space for the array
         pOpenFiles = MemRealloc(gFileDataBase.pLibraries[sLibraryID].pOpenFiles, gFileDataBase.pLibraries[sLibraryID].iSizeOfOpenFileArray + NUM_FILES_TO_ADD_AT_A_TIME);
@@ -557,7 +560,7 @@ function OpenFileFromLibrary(pName: STR): HWFILE {
 }
 
 function CreateLibraryFileHandle(sLibraryID: INT16, uiFileNum: UINT32): HWFILE {
-  HWFILE hLibFile;
+  let hLibFile: HWFILE;
 
   hLibFile = uiFileNum;
   hLibFile |= DB_ADD_LIBRARY_ID(sLibraryID);
@@ -566,10 +569,10 @@ function CreateLibraryFileHandle(sLibraryID: INT16, uiFileNum: UINT32): HWFILE {
 }
 
 function CreateRealFileHandle(hFile: HANDLE): HWFILE {
-  HWFILE hLibFile;
-  INT32 iLoop1;
-  UINT32 uiFileNum = 0;
-  UINT32 uiSize;
+  let hLibFile: HWFILE;
+  let iLoop1: INT32;
+  let uiFileNum: UINT32 = 0;
+  let uiSize: UINT32;
 
   // if there isnt enough space to put the file, realloc more space
   if (gFileDataBase.RealFiles.iNumFilesOpen >= (gFileDataBase.RealFiles.iSizeOfOpenFileArray - 1)) {
@@ -656,7 +659,8 @@ function CloseLibraryFile(sLibraryID: INT16, uiFileID: UINT32): BOOLEAN {
 }
 
 function LibraryFileSeek(sLibraryID: INT16, uiFileNum: UINT32, uiDistance: UINT32, uiHowToSeek: UINT8): BOOLEAN {
-  UINT32 uiCurPos, uiSize;
+  let uiCurPos: UINT32;
+  let uiSize: UINT32;
 
   // if the library is not open, return an error
   if (!IsLibraryOpened(sLibraryID))
@@ -703,7 +707,7 @@ function OpenLibrary(sLibraryID: INT16): BOOLEAN {
 }
 
 function CloseLibrary(sLibraryID: INT16): BOOLEAN {
-  UINT32 uiLoop1;
+  let uiLoop1: UINT32;
 
   // if the library isnt loaded, dont close it
   if (!IsLibraryOpened(sLibraryID))
@@ -773,14 +777,14 @@ function IsLibraryOpened(sLibraryID: INT16): BOOLEAN {
 }
 
 function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): BOOLEAN {
-  UINT16 usLoop1 = 0;
+  let usLoop1: UINT16 = 0;
 
-  CHAR8 sName[60];
-  CHAR8 sPath[90];
-  CHAR8 sDrive[60];
-  CHAR8 sExt[6];
+  let sName: CHAR8[] /* [60] */;
+  let sPath: CHAR8[] /* [90] */;
+  let sDrive: CHAR8[] /* [60] */;
+  let sExt: CHAR8[] /* [6] */;
 
-  CHAR8 sTempName[70];
+  let sTempName: CHAR8[] /* [70] */;
 
   _splitpath(pFileName, sDrive, sPath, sName, sExt);
 
@@ -800,17 +804,17 @@ function CheckIfFileIsAlreadyOpen(pFileName: STR, sLibraryID: INT16): BOOLEAN {
 }
 
 function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime: Pointer<SGP_FILETIME>): BOOLEAN {
-  UINT16 usNumEntries = 0;
-  UINT32 uiNumBytesRead;
-  DIRENTRY *pDirEntry;
-  LIBHEADER LibFileHeader;
-  BOOLEAN fDone = FALSE;
+  let usNumEntries: UINT16 = 0;
+  let uiNumBytesRead: UINT32;
+  let pDirEntry: Pointer<DIRENTRY>;
+  let LibFileHeader: LIBHEADER;
+  let fDone: BOOLEAN = FALSE;
   //	UINT32	cnt;
-  INT32 iFilePos = 0;
+  let iFilePos: INT32 = 0;
 
-  DIRENTRY **ppDirEntry;
+  let ppDirEntry: Pointer<Pointer<DIRENTRY>>;
 
-  DIRENTRY *pAllEntries;
+  let pAllEntries: Pointer<DIRENTRY>;
 
   memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
 
@@ -870,9 +874,9 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
 //************************************************************************
 
 function CompareDirEntryFileNames(arg1: Pointer<CHAR8>[] /* [] */, arg2: Pointer<Pointer<DIRENTRY>>): INT32 {
-  CHAR8 sSearchKey[FILENAME_SIZE];
-  CHAR8 sFileNameWithPath[FILENAME_SIZE];
-  DIRENTRY *TempDirEntry;
+  let sSearchKey: CHAR8[] /* [FILENAME_SIZE] */;
+  let sFileNameWithPath: CHAR8[] /* [FILENAME_SIZE] */;
+  let TempDirEntry: Pointer<DIRENTRY>;
 
   TempDirEntry = (DIRENTRY *)arg2;
 

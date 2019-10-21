@@ -1,4 +1,4 @@
-BOOLEAN gfWasInMeanwhile = FALSE;
+let gfWasInMeanwhile: BOOLEAN = FALSE;
 
 ///////////////////////////////////////////////////////////////
 //
@@ -25,7 +25,7 @@ const NPC_TEMP_QUOTE_FILE = "Temp\\NpcQuote.tmp";
 //
 ///////////////////////////////////////////////////////////////
 
-INT32 giErrorMessageBox = 0;
+let giErrorMessageBox: INT32 = 0;
 
 ///////////////////////////////////////////////////////////////
 //
@@ -43,9 +43,9 @@ INT32 giErrorMessageBox = 0;
 
 // SaveMapTempFilesToSavedGameFile() Looks for and opens all Map Modification files.  It add each mod file to the save game file.
 function SaveMapTempFilesToSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
-  INT16 sMapX;
-  INT16 sMapY;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   // Save the current sectors open temp files to the disk
   //	SaveCurrentSectorsItemsToTempItemFile();
@@ -163,11 +163,11 @@ function SaveMapTempFilesToSavedGameFile(hFile: HWFILE): BOOLEAN {
 
 // LoadMapTempFilesFromSavedGameFile() loads all the temp files from the saved game file and writes them into the temp directory
 function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
-  INT16 sMapX;
-  INT16 sMapY;
-  UINT32 uiPercentage;
-  UINT32 iCounter = 0;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
+  let sMapX: INT16;
+  let sMapY: INT16;
+  let uiPercentage: UINT32;
+  let iCounter: UINT32 = 0;
 
   // HACK FOR GABBY
   if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 81) {
@@ -232,7 +232,7 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
       if (SectorInfo[SECTOR(sMapX, sMapY)].uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
         RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, sMapX, sMapY, 0);
         if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 78) {
-          INT8 pMapName[128];
+          let pMapName: INT8[] /* [128] */;
 
           // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
           GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, sMapX, sMapY, 0);
@@ -300,7 +300,7 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     if (TempNode->uiFlags & SF_CIV_PRESERVED_TEMP_FILE_EXISTS) {
       RetrieveTempFileFromSavedGame(hFile, SF_CIV_PRESERVED_TEMP_FILE_EXISTS, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
       if ((gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiSaveGameVersion < 78) {
-        INT8 pMapName[128];
+        let pMapName: INT8[] /* [128] */;
 
         // KILL IT!!! KILL KIT!!!! IT IS CORRUPTED!!!
         GetMapTempFileName(SF_CIV_PRESERVED_TEMP_FILE_EXISTS, pMapName, TempNode->ubSectorX, TempNode->ubSectorY, TempNode->ubSectorZ);
@@ -326,9 +326,9 @@ function LoadMapTempFilesFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, uiNumberOfItems: UINT32, pData: Pointer<WORLDITEM>): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
-  CHAR8 zMapName[128];
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -368,10 +368,10 @@ function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, u
 }
 
 function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pData: Pointer<WORLDITEM>): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  HWFILE hFile;
-  CHAR8 zMapName[128];
-  UINT32 uiNumberOfItems = 0;
+  let uiNumBytesRead: UINT32 = 0;
+  let hFile: HWFILE;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiNumberOfItems: UINT32 = 0;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
@@ -410,19 +410,19 @@ function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
 }
 
 function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pSizeOfData: Pointer<UINT32>, fIfEmptyCreate: BOOLEAN): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  HWFILE hFile;
-  CHAR8 zMapName[128];
-  UINT32 uiNumberOfItems = 0;
+  let uiNumBytesRead: UINT32 = 0;
+  let hFile: HWFILE;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiNumberOfItems: UINT32 = 0;
 
   GetMapTempFileName(SF_ITEM_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 
   // Check if the file DOESNT exists
   if (!FileExistsNoDB(zMapName)) {
     if (fIfEmptyCreate) {
-      WORLDITEM TempWorldItems[10];
-      UINT32 uiNumberOfItems = 10;
-      UINT32 uiNumBytesWritten = 0;
+      let TempWorldItems: WORLDITEM[] /* [10] */;
+      let uiNumberOfItems: UINT32 = 10;
+      let uiNumBytesWritten: UINT32 = 0;
 
       // If the file doesnt exists, create a file that has an initial amount of Items
       hFile = FileOpen(zMapName, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
@@ -482,10 +482,10 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
 }
 
 function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItemsToAdd: UINT32, pObject: Pointer<OBJECTTYPE>, ubLevel: UINT8, usFlags: UINT16, bRenderZHeightAboveLevel: INT8, bVisible: INT8, fReplaceEntireFile: BOOLEAN): BOOLEAN {
-  UINT32 uiNumberOfItems = 0;
-  WORLDITEM *pWorldItems;
-  UINT32 cnt;
-  UINT32 uiLoop1 = 0;
+  let uiNumberOfItems: UINT32 = 0;
+  let pWorldItems: Pointer<WORLDITEM>;
+  let cnt: UINT32;
+  let uiLoop1: UINT32 = 0;
 
   if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &uiNumberOfItems, TRUE)) {
     // Errror getting the numbers of the items from the sector
@@ -572,7 +572,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
 }
 
 function SaveCurrentSectorsInformationToTempItemFile(): BOOLEAN {
-  BOOLEAN fShouldBeInMeanwhile = FALSE;
+  let fShouldBeInMeanwhile: BOOLEAN = FALSE;
   if (gfWasInMeanwhile) {
     // Don't save a temp file for the meanwhile scene map.
     gfWasInMeanwhile = FALSE;
@@ -666,14 +666,16 @@ function SaveCurrentSectorsInformationToTempItemFile(): BOOLEAN {
 
 function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   // find out which items in the list are reachable
-  UINT32 uiCounter = 0;
-  UINT8 ubDir, ubMovementCost;
-  BOOLEAN fReachable = FALSE;
-  INT16 sGridNo = NOWHERE, sGridNo2 = NOWHERE;
-  INT16 sNewLoc;
+  let uiCounter: UINT32 = 0;
+  let ubDir: UINT8;
+  let ubMovementCost: UINT8;
+  let fReachable: BOOLEAN = FALSE;
+  let sGridNo: INT16 = NOWHERE;
+  let sGridNo2: INT16 = NOWHERE;
+  let sNewLoc: INT16;
 
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fSecondary = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fSecondary: BOOLEAN = FALSE;
 
   if (guiNumWorldItems == 0) {
     return;
@@ -768,7 +770,7 @@ function HandleAllReachAbleItemsInTheSector(sSectorX: INT16, sSectorY: INT16, bS
 }
 
 function LoadCurrentSectorsInformationFromTempItemsFile(): BOOLEAN {
-  BOOLEAN fUsedTempFile = FALSE;
+  let fUsedTempFile: BOOLEAN = FALSE;
 
   //
   // Load in the sectors ITems
@@ -901,7 +903,7 @@ function SetLastTimePlayerWasInSector(): void {
   if (!gbWorldSectorZ)
     SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)].uiTimeCurrentSectorWasLastLoaded = GetWorldTotalMin();
   else if (gbWorldSectorZ > 0) {
-    UNDERGROUND_SECTORINFO *pTempNode = gpUndergroundSectorInfoHead;
+    let pTempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
     pTempNode = gpUndergroundSectorInfoHead;
 
@@ -921,7 +923,7 @@ function GetLastTimePlayerWasInSector(): UINT32 {
   if (!gbWorldSectorZ)
     return SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)].uiTimeCurrentSectorWasLastLoaded;
   else if (gbWorldSectorZ > 0) {
-    UNDERGROUND_SECTORINFO *pTempNode = gpUndergroundSectorInfoHead;
+    let pTempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
     pTempNode = gpUndergroundSectorInfoHead;
 
@@ -940,10 +942,10 @@ function GetLastTimePlayerWasInSector(): UINT32 {
 }
 
 function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT32 uiNumberOfItems = 0;
-  WORLDITEM *pWorldItems = NULL;
-  UINT32 cnt;
-  INT16 sNewGridNo;
+  let uiNumberOfItems: UINT32 = 0;
+  let pWorldItems: Pointer<WORLDITEM> = NULL;
+  let cnt: UINT32;
+  let sNewGridNo: INT16;
 
   // Get the number of items from the file
   if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &uiNumberOfItems, TRUE)) {
@@ -1027,7 +1029,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
 }
 
 function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  CHAR8 zMapName[128];
+  let zMapName: CHAR8[] /* [128] */;
 
   GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
 
@@ -1039,7 +1041,7 @@ function AddTempFileToSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMa
 }
 
 function RetrieveTempFileFromSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  CHAR8 zMapName[128];
+  let zMapName: CHAR8[] /* [128] */;
 
   GetMapTempFileName(uiType, zMapName, sMapX, sMapY, bMapZ);
 
@@ -1052,7 +1054,7 @@ function RetrieveTempFileFromSavedGame(hFile: HWFILE, uiType: UINT32, sMapX: INT
 
 // Deletes the Temp map Directory
 function InitTacticalSave(fCreateTempDir: BOOLEAN): BOOLEAN {
-  UINT32 uiRetVal;
+  let uiRetVal: UINT32;
 
   // If the Map Temp directory exists, removes the temp files
   uiRetVal = FileGetAttributes(MAPS_DIR);
@@ -1079,12 +1081,12 @@ function InitTacticalSave(fCreateTempDir: BOOLEAN): BOOLEAN {
 }
 
 function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
-  UINT32 uiNumberOfCorpses = 0;
-  INT32 iCount;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiNumberOfCorpses: UINT32 = 0;
+  let iCount: INT32;
 
   /*
           //Convert the current sector location into a file name
@@ -1140,9 +1142,9 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
 }
 
 function DeleteTempItemMapFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT8 bSectorId = 0;
+  let bSectorId: UINT8 = 0;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
+  let zMapName: CHAR8[] /* [128] */;
 
   // grab the sector id
   bSectorId = SECTOR(sMapX, sMapY);
@@ -1167,15 +1169,15 @@ function DeleteTempItemMapFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
 }
 
 function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesRead = 0;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32 = 0;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
-  UINT32 uiNumberOfCorpses = 0;
-  UINT32 cnt;
-  ROTTING_CORPSE_DEFINITION def;
-  BOOLEAN fDontAddCorpse = FALSE;
-  INT8 bTownId;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiNumberOfCorpses: UINT32 = 0;
+  let cnt: UINT32;
+  let def: ROTTING_CORPSE_DEFINITION;
+  let fDontAddCorpse: BOOLEAN = FALSE;
+  let bTownId: INT8;
 
   // Delete the existing rotting corpse array
   RemoveCorpses();
@@ -1285,8 +1287,8 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
 }
 
 function AddWorldItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGridNo: INT16, uiNumberOfItems: UINT32, pWorldItem: Pointer<WORLDITEM>, fOverWrite: BOOLEAN): BOOLEAN {
-  UINT32 uiLoop;
-  BOOLEAN fLoop = fOverWrite;
+  let uiLoop: UINT32;
+  let fLoop: BOOLEAN = fOverWrite;
 
   for (uiLoop = 0; uiLoop < uiNumberOfItems; uiLoop++) {
     // If the item exists
@@ -1301,9 +1303,9 @@ function AddWorldItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, 
 }
 
 function SaveNPCInformationToProfileStruct(): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  MERCPROFILESTRUCT *pProfile;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // Loop through the active NPC's
 
@@ -1360,9 +1362,9 @@ function SaveNPCInformationToProfileStruct(): void {
 }
 
 function LoadNPCInformationFromProfileStruct(): void {
-  UINT32 cnt;
-  INT16 sSoldierID;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let sSoldierID: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // CJC: disabled this Dec 21, 1998 as unnecessary (and messing up quote files for recruited/escorted NPCs
   return;
@@ -1492,12 +1494,12 @@ function LoadNPCInformationFromProfileStruct(): void {
 }
 
 function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pNumberOfData: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiNumberOfItems = 0;
-  WORLDITEM *pWorldItems;
-  UINT32 cnt;
-  UINT32 uiNumberOfActive = 0;
-  BOOLEAN fFileLoaded = FALSE;
-  UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
+  let uiNumberOfItems: UINT32 = 0;
+  let pWorldItems: Pointer<WORLDITEM>;
+  let cnt: UINT32;
+  let uiNumberOfActive: UINT32 = 0;
+  let fFileLoaded: BOOLEAN = FALSE;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   //
   // Load in the sectors ITems
@@ -1557,7 +1559,7 @@ function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMa
 }
 
 function DoesTempFileExistsForMap(uiType: UINT32, sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   if (bMapZ == 0) {
     return (SectorInfo[SECTOR(sMapX, sMapY)].uiFlags & uiType) ? 1 : 0;
@@ -1574,9 +1576,9 @@ function DoesTempFileExistsForMap(uiType: UINT32, sMapX: INT16, sMapY: INT16, bM
 }
 
 function GetSoldierIDFromAnyMercID(ubMercID: UINT8): INT16 {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
@@ -1596,14 +1598,14 @@ function GetSoldierIDFromAnyMercID(ubMercID: UINT8): INT16 {
 
 // Initializes the NPC temp array
 function InitTempNpcQuoteInfoForNPCFromTempFile(): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT8 ubCnt;
-  UINT8 ubOne = 1;
-  UINT8 ubZero = 0;
-  TempNPCQuoteInfoSave TempNpcQuote[NUM_NPC_QUOTE_RECORDS];
-  UINT32 uiSizeOfTempArray = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
-  UINT16 usCnt1;
-  HWFILE hFile;
+  let uiNumBytesWritten: UINT32;
+  let ubCnt: UINT8;
+  let ubOne: UINT8 = 1;
+  let ubZero: UINT8 = 0;
+  let TempNpcQuote: TempNPCQuoteInfoSave[] /* [NUM_NPC_QUOTE_RECORDS] */;
+  let uiSizeOfTempArray: UINT32 = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
+  let usCnt1: UINT16;
+  let hFile: HWFILE;
 
   // Open the temp npc file
   hFile = FileOpen(NPC_TEMP_QUOTE_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
@@ -1638,14 +1640,14 @@ function InitTempNpcQuoteInfoForNPCFromTempFile(): BOOLEAN {
 }
 
 function SaveTempNpcQuoteInfoForNPCToTempFile(ubNpcId: UINT8): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT8 ubCnt;
-  UINT8 ubOne = 1;
-  UINT8 ubZero = 0;
-  TempNPCQuoteInfoSave TempNpcQuote[NUM_NPC_QUOTE_RECORDS];
-  UINT32 uiSizeOfTempArray = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
-  UINT32 uiSpotInFile = ubNpcId - FIRST_RPC;
-  HWFILE hFile = 0;
+  let uiNumBytesWritten: UINT32;
+  let ubCnt: UINT8;
+  let ubOne: UINT8 = 1;
+  let ubZero: UINT8 = 0;
+  let TempNpcQuote: TempNPCQuoteInfoSave[] /* [NUM_NPC_QUOTE_RECORDS] */;
+  let uiSizeOfTempArray: UINT32 = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
+  let uiSpotInFile: UINT32 = ubNpcId - FIRST_RPC;
+  let hFile: HWFILE = 0;
 
   // if there are records to save
   if (gpNPCQuoteInfoArray[ubNpcId]) {
@@ -1684,14 +1686,14 @@ function SaveTempNpcQuoteInfoForNPCToTempFile(ubNpcId: UINT8): BOOLEAN {
 }
 
 function LoadTempNpcQuoteInfoForNPCFromTempFile(ubNpcId: UINT8): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT8 ubCnt;
-  UINT8 ubOne = 1;
-  UINT8 ubZero = 0;
-  TempNPCQuoteInfoSave TempNpcQuote[NUM_NPC_QUOTE_RECORDS];
-  UINT32 uiSizeOfTempArray = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
-  UINT32 uiSpotInFile = ubNpcId - FIRST_RPC;
-  HWFILE hFile;
+  let uiNumBytesRead: UINT32;
+  let ubCnt: UINT8;
+  let ubOne: UINT8 = 1;
+  let ubZero: UINT8 = 0;
+  let TempNpcQuote: TempNPCQuoteInfoSave[] /* [NUM_NPC_QUOTE_RECORDS] */;
+  let uiSizeOfTempArray: UINT32 = sizeof(TempNPCQuoteInfoSave) * NUM_NPC_QUOTE_RECORDS;
+  let uiSpotInFile: UINT32 = ubNpcId - FIRST_RPC;
+  let hFile: HWFILE;
 
   // Init the array
   memset(TempNpcQuote, 0, uiSizeOfTempArray);
@@ -1755,12 +1757,12 @@ function ChangeNpcToDifferentSector(ubNpcId: UINT8, sSectorX: INT16, sSectorY: I
 }
 
 function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, pRottingCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumberOfCorpses;
+  let hFile: HWFILE;
+  let uiNumberOfCorpses: UINT32;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
-  UINT32 uiNumBytesRead;
-  UINT32 uiNumBytesWritten;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiNumBytesRead: UINT32;
+  let uiNumBytesWritten: UINT32;
 
   /*
           //Convert the current sector location into a file name
@@ -1827,7 +1829,7 @@ function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16, sMapY:
 }
 
 function SetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8, uiFlagToSet: UINT32): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pTempNode = gpUndergroundSectorInfoHead;
+  let pTempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   pTempNode = gpUndergroundSectorInfoHead;
 
@@ -1846,7 +1848,7 @@ function SetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ: U
 }
 
 function ReSetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8, uiFlagToSet: UINT32): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pTempNode = gpUndergroundSectorInfoHead;
+  let pTempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   pTempNode = gpUndergroundSectorInfoHead;
 
@@ -1865,7 +1867,7 @@ function ReSetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ:
 }
 
 function GetUnderGroundSectorFlagStatus(sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8, uiFlagToCheck: UINT32): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pTempNode = gpUndergroundSectorInfoHead;
+  let pTempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   pTempNode = gpUndergroundSectorInfoHead;
 
@@ -1934,22 +1936,23 @@ function GetSectorFlagStatus(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, uiFlagToS
 }
 
 function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, uiFlags: UINT32): BOOLEAN {
-  UINT32 uiNumberOfItems;
-  WORLDITEM *pWorldItems = NULL;
-  UINT i;
-  UINT8 bCount = 0;
-  UINT16 uiFlagsForWorldItems = 0;
-  UINT16 usFlagsForRottingCorpse = 0;
-  ROTTING_CORPSE_DEFINITION Corpse;
-  INT16 sXPos, sYPos;
-  UINT32 uiDeathAnim;
-  UINT32 uiPossibleDeathAnims[] = {
+  let uiNumberOfItems: UINT32;
+  let pWorldItems: Pointer<WORLDITEM> = NULL;
+  let i: UINT;
+  let bCount: UINT8 = 0;
+  let uiFlagsForWorldItems: UINT16 = 0;
+  let usFlagsForRottingCorpse: UINT16 = 0;
+  let Corpse: ROTTING_CORPSE_DEFINITION;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let uiDeathAnim: UINT32;
+  let uiPossibleDeathAnims: UINT32[] /* [] */ = {
     GENERIC_HIT_DEATH,
     FALLBACK_HIT_DEATH,
     PRONE_HIT_DEATH,
     FLYBACK_HIT_DEATH,
   };
-  const UINT8 ubNumOfDeaths = 4;
+  const ubNumOfDeaths: UINT8 = 4;
 
   // setup the flags for the items and the rotting corpses
   if (uiFlags & ADD_DEAD_SOLDIER_USE_GRIDNO) {
@@ -2096,15 +2099,15 @@ function TempFileLoadErrorMessageReturnCallback(ubRetVal: UINT8): void {
 // think it succeeded the load.  This sets up the dialog for the game exit, after the hacker
 // message appears.
 function InitExitGameDialogBecauseFileHackDetected(): void {
-  SGPRect CenteringRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // do message box and return
   giErrorMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, pAntiHackerString[ANTIHACKERSTR_EXITGAME], GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, &CenteringRect);
 }
 
 function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
-  UINT32 uiChecksum = 1;
-  UINT32 uiLoop;
+  let uiChecksum: UINT32 = 1;
+  let uiLoop: UINT32;
 
   uiChecksum += (pSoldier->bLife + 1);
   uiChecksum *= (pSoldier->bLifeMax + 1);
@@ -2129,8 +2132,8 @@ function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
 }
 
 function ProfileChecksum(pProfile: Pointer<MERCPROFILESTRUCT>): UINT32 {
-  UINT32 uiChecksum = 1;
-  UINT32 uiLoop;
+  let uiChecksum: UINT32 = 1;
+  let uiLoop: UINT32;
 
   uiChecksum += (pProfile->bLife + 1);
   uiChecksum *= (pProfile->bLifeMax + 1);
@@ -2172,13 +2175,13 @@ function GetRotationArray(): Pointer<UINT8> {
 }
 
 function NewJA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubArrayIndex = 0;
-  UINT8 ubLastByte = 0;
-  UINT8 ubLastByteForNextLoop;
-  BOOLEAN fRet;
-  UINT8 *pMemBlock;
-  UINT8 *pubRotationArray;
+  let uiLoop: UINT32;
+  let ubArrayIndex: UINT8 = 0;
+  let ubLastByte: UINT8 = 0;
+  let ubLastByteForNextLoop: UINT8;
+  let fRet: BOOLEAN;
+  let pMemBlock: Pointer<UINT8>;
+  let pubRotationArray: Pointer<UINT8>;
 
   pubRotationArray = GetRotationArray();
 
@@ -2200,12 +2203,12 @@ function NewJA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT3
 }
 
 function NewJA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubArrayIndex = 0;
-  UINT8 ubLastByte = 0; //, ubTemp;
-  UINT8 *pMemBlock;
-  BOOLEAN fRet;
-  UINT8 *pubRotationArray;
+  let uiLoop: UINT32;
+  let ubArrayIndex: UINT8 = 0;
+  let ubLastByte: UINT8 = 0; //, ubTemp;
+  let pMemBlock: Pointer<UINT8>;
+  let fRet: BOOLEAN;
+  let pubRotationArray: Pointer<UINT8>;
 
   pMemBlock = (UINT8 *)MemAlloc(uiBytesToWrite);
 
@@ -2234,7 +2237,7 @@ function NewJA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UIN
 }
 
 const ROTATION_ARRAY_SIZE = 46;
-UINT8 ubRotationArray[46] = {
+let ubRotationArray: UINT8[] /* [46] */ = {
   132,
   235,
   125,
@@ -2284,13 +2287,13 @@ UINT8 ubRotationArray[46] = {
 };
 
 function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubArrayIndex = 0;
+  let uiLoop: UINT32;
+  let ubArrayIndex: UINT8 = 0;
   // UINT8		ubLastNonBlank = 0;
-  UINT8 ubLastByte = 0;
-  UINT8 ubLastByteForNextLoop;
-  BOOLEAN fRet;
-  UINT8 *pMemBlock;
+  let ubLastByte: UINT8 = 0;
+  let ubLastByteForNextLoop: UINT8;
+  let fRet: BOOLEAN;
+  let pMemBlock: Pointer<UINT8>;
 
   fRet = FileRead(hFile, pDest, uiBytesToRead, puiBytesRead);
   if (fRet) {
@@ -2310,12 +2313,12 @@ function JA2EncryptedFileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, 
 }
 
 function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubArrayIndex = 0;
+  let uiLoop: UINT32;
+  let ubArrayIndex: UINT8 = 0;
   // UINT8		ubLastNonBlank = 0;
-  UINT8 ubLastByte = 0; //, ubTemp;
-  UINT8 *pMemBlock;
-  BOOLEAN fRet;
+  let ubLastByte: UINT8 = 0; //, ubTemp;
+  let pMemBlock: Pointer<UINT8>;
+  let fRet: BOOLEAN;
 
   pMemBlock = (UINT8 *)MemAlloc(uiBytesToWrite);
 
@@ -2366,7 +2369,7 @@ function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32
 }
 
 function GetMapTempFileName(uiType: UINT32, pMapName: STR, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
-  CHAR zTempName[512];
+  let zTempName: CHAR[] /* [512] */;
 
   // Convert the current sector location into a file name
   GetMapFileName(sMapX, sMapY, bMapZ, zTempName, FALSE, FALSE);
@@ -2424,8 +2427,8 @@ function GetMapTempFileName(uiType: UINT32, pMapName: STR, sMapX: INT16, sMapY: 
 }
 
 function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): UINT32 {
-  UINT32 uiNumberOfItems = 0;
-  UNDERGROUND_SECTORINFO *pSector = NULL;
+  let uiNumberOfItems: UINT32 = 0;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO> = NULL;
 
   // if the sector is above ground
   if (bMapZ == 0) {
@@ -2452,7 +2455,7 @@ function GetNumberOfVisibleWorldItemsFromSectorStructureForSector(sMapX: INT16, 
 }
 
 function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, uiNumberOfItems: UINT32): void {
-  UNDERGROUND_SECTORINFO *pSector = NULL;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO> = NULL;
 
   // if the sector is above ground
   if (bMapZ == 0) {
@@ -2468,11 +2471,12 @@ function SetNumberOfVisibleWorldItemsInSectorStructureForSector(sMapX: INT16, sM
 }
 
 function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fLoadingGame: BOOLEAN): void {
-  UINT32 uiTotalNumberOfItems = 0, uiTotalNumberOfRealItems = 0;
-  WORLDITEM *pTotalSectorList = NULL;
-  UINT32 uiItemCount = 0;
-  INT32 iCounter = 0;
-  BOOLEAN fReturn;
+  let uiTotalNumberOfItems: UINT32 = 0;
+  let uiTotalNumberOfRealItems: UINT32 = 0;
+  let pTotalSectorList: Pointer<WORLDITEM> = NULL;
+  let uiItemCount: UINT32 = 0;
+  let iCounter: INT32 = 0;
+  let fReturn: BOOLEAN;
 
   // get total number, visable and invisible
   fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, bMapZ, &(uiTotalNumberOfRealItems));
@@ -2508,8 +2512,8 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
 }
 
 function UpdateLoadedSectorsItemInventory(sMapX: INT16, sMapY: INT16, bMapZ: INT8, uiNumberOfItems: UINT32): UINT32 {
-  UINT32 uiCounter;
-  UINT32 uiItemCounter = 0;
+  let uiCounter: UINT32;
+  let uiItemCounter: UINT32 = 0;
 
   if (!gfWorldLoaded)
     return 0;

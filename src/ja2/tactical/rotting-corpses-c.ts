@@ -10,7 +10,7 @@ const DELAY_UNTIL_DONE_ROTTING = (3 * NUM_SEC_IN_DAY / 60);
 const MAX_NUM_CROWS = 6;
 
 // When adding a corpse, add struct data...
-CHAR8 zCorpseFilenames[NUM_CORPSES][70] = {
+let zCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
   "",
   "ANIMS\\CORPSES\\S_D_JFK.STI",
   "ANIMS\\CORPSES\\S_D_BCK.STI",
@@ -73,7 +73,7 @@ CHAR8 zCorpseFilenames[NUM_CORPSES][70] = {
 };
 
 // When adding a corpse, add struct data...
-CHAR8 zNoBloodCorpseFilenames[NUM_CORPSES][70] = {
+let zNoBloodCorpseFilenames: CHAR8[][] /* [NUM_CORPSES][70] */ = {
   "",
   "ANIMS\\CORPSES\\M_D_JFK_NB.STI",
   "ANIMS\\CORPSES\\S_D_BCK_NB.STI",
@@ -135,7 +135,7 @@ CHAR8 zNoBloodCorpseFilenames[NUM_CORPSES][70] = {
   "ANIMS\\CORPSES\\S_EXPLD.STI",
 };
 
-UINT8 gb4DirectionsFrom8[8] = {
+let gb4DirectionsFrom8: UINT8[] /* [8] */ = {
   7, // NORTH
   0, // NE
   0, // E
@@ -146,7 +146,7 @@ UINT8 gb4DirectionsFrom8[8] = {
   0 // NW
 };
 
-UINT8 gb2DirectionsFrom8[8] = {
+let gb2DirectionsFrom8: UINT8[] /* [8] */ = {
   0, // NORTH
   7, // NE
   7, // E
@@ -157,7 +157,7 @@ UINT8 gb2DirectionsFrom8[8] = {
   7 // NW
 };
 
-BOOLEAN gbCorpseValidForDecapitation[NUM_CORPSES] = {
+let gbCorpseValidForDecapitation: BOOLEAN[] /* [NUM_CORPSES] */ = {
   0,
   0,
   1,
@@ -219,7 +219,7 @@ BOOLEAN gbCorpseValidForDecapitation[NUM_CORPSES] = {
   0,
 };
 
-INT8 gDecapitatedCorpse[NUM_CORPSES] = {
+let gDecapitatedCorpse: INT8[] /* [NUM_CORPSES] */ = {
   0,
   SMERC_JFK,
   SMERC_JFK,
@@ -281,11 +281,11 @@ INT8 gDecapitatedCorpse[NUM_CORPSES] = {
   0,
 };
 
-ROTTING_CORPSE gRottingCorpse[MAX_ROTTING_CORPSES];
-INT32 giNumRottingCorpse = 0;
+let gRottingCorpse: ROTTING_CORPSE[] /* [MAX_ROTTING_CORPSES] */;
+let giNumRottingCorpse: INT32 = 0;
 
 function GetFreeRottingCorpse(): INT32 {
-  INT32 iCount;
+  let iCount: INT32;
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
     if ((gRottingCorpse[iCount].fActivated == FALSE))
@@ -299,7 +299,7 @@ function GetFreeRottingCorpse(): INT32 {
 }
 
 function RecountRottingCorpses(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   if (giNumRottingCorpse > 0) {
     for (uiCount = giNumRottingCorpse - 1; (uiCount >= 0); uiCount--) {
@@ -312,7 +312,7 @@ function RecountRottingCorpses(): void {
 }
 
 function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fForImage: BOOLEAN): UINT16 {
-  INT8 bDirection;
+  let bDirection: INT8;
 
   switch (pCorpseDef->ubType) {
     case QUEEN_MONSTER_DEAD:
@@ -362,18 +362,18 @@ function GetCorpseStructIndex(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>, fF
 }
 
 function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32 {
-  INT32 iIndex;
-  ROTTING_CORPSE *pCorpse;
-  ANITILE_PARAMS AniParams;
-  UINT8 ubLevelID;
-  STRUCTURE_FILE_REF *pStructureFileRef = NULL;
-  INT8 zFilename[150];
-  DB_STRUCTURE_REF *pDBStructureRef;
-  UINT8 ubLoop;
-  INT16 sTileGridNo;
-  DB_STRUCTURE_TILE **ppTile;
-  UINT16 usStructIndex;
-  UINT32 uiDirectionUseFlag;
+  let iIndex: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let AniParams: ANITILE_PARAMS;
+  let ubLevelID: UINT8;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let zFilename: INT8[] /* [150] */;
+  let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  let ubLoop: UINT8;
+  let sTileGridNo: INT16;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let usStructIndex: UINT16;
+  let uiDirectionUseFlag: UINT32;
 
   if (pCorpseDef->sGridNo == NOWHERE) {
     return -1;
@@ -528,7 +528,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
 }
 
 function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // Free palettes
   MemFree(pCorpse->p8BPPPalette);
@@ -543,7 +543,7 @@ function FreeCorpsePalettes(pCorpse: Pointer<ROTTING_CORPSE>): void {
 }
 
 function RemoveCorpses(): void {
-  INT32 iCount;
+  let iCount: INT32;
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
     if ((gRottingCorpse[iCount].fActivated)) {
@@ -564,9 +564,9 @@ function RemoveCorpse(iCorpseID: INT32): void {
 }
 
 function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
-  CHAR8 zColFilename[100];
-  INT8 bBodyTypePalette;
-  SGPPaletteEntry Temp8BPPPalette[256];
+  let zColFilename: CHAR8[] /* [100] */;
+  let bBodyTypePalette: INT8;
+  let Temp8BPPPalette: SGPPaletteEntry[] /* [256] */;
 
   pCorpse->p8BPPPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);
 
@@ -614,16 +614,16 @@ function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
 }
 
 function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOLEAN, fCheckForLOS: BOOLEAN): BOOLEAN {
-  ROTTING_CORPSE_DEFINITION Corpse;
-  UINT8 ubType;
-  INT32 cnt;
-  UINT16 usItemFlags = 0; // WORLD_ITEM_DONTRENDER;
-  INT32 iCorpseID;
-  INT8 bVisible = -1;
-  OBJECTTYPE *pObj;
-  UINT8 ubNumGoo;
-  INT16 sNewGridNo;
-  OBJECTTYPE ItemObject;
+  let Corpse: ROTTING_CORPSE_DEFINITION;
+  let ubType: UINT8;
+  let cnt: INT32;
+  let usItemFlags: UINT16 = 0; // WORLD_ITEM_DONTRENDER;
+  let iCorpseID: INT32;
+  let bVisible: INT8 = -1;
+  let pObj: Pointer<OBJECTTYPE>;
+  let ubNumGoo: UINT8;
+  let sNewGridNo: INT16;
+  let ItemObject: OBJECTTYPE;
 
   if (pSoldier->sGridNo == NOWHERE) {
     return FALSE;
@@ -774,10 +774,11 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
 }
 
 function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = NOWHERE;
-  INT32 cnt;
-  ROTTING_CORPSE *pCorpse;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = NOWHERE;
+  let cnt: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // OK, loop through our current listing of bodies
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
@@ -800,13 +801,13 @@ function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  INT8 bBodyType = CROW;
-  UINT8 iNewIndex;
-  INT16 sGridNo;
-  UINT8 ubDirection;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubRoomNum;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let bBodyType: INT8 = CROW;
+  let iNewIndex: UINT8;
+  let sGridNo: INT16;
+  let ubDirection: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubRoomNum: UINT8;
 
   // No crows inside :(
   if (InARoom(pCorpse->def.sGridNo, &ubRoomNum)) {
@@ -855,7 +856,7 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
 }
 
 function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
-  ROTTING_CORPSE *pCorpse;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Check if this crow is still referencing the same corpse...
   pCorpse = &(gRottingCorpse[pSoldier->uiPendingActionData1]);
@@ -873,8 +874,8 @@ function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubDirection;
-  INT16 sGridNo;
+  let ubDirection: UINT8;
+  let sGridNo: INT16;
 
   // Set desired height
   pSoldier->sDesiredHeight = 100;
@@ -886,9 +887,9 @@ function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleRottingCorpses(): void {
-  ROTTING_CORPSE *pCorpse;
-  INT8 bNumCrows = 0;
-  UINT32 uiChosenCorpseID;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let bNumCrows: INT8 = 0;
+  let uiChosenCorpseID: UINT32;
 
   // Don't allow crows here if flags not set
   if (!gTacticalStatus.fGoodToAllowCrows) {
@@ -907,8 +908,8 @@ function HandleRottingCorpses(): void {
   // ATE: Check for multiple crows.....
   // Couint how many we have now...
   {
-    UINT8 bLoop;
-    SOLDIERTYPE *pSoldier;
+    let bLoop: UINT8;
+    let pSoldier: Pointer<SOLDIERTYPE>;
 
     for (bLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID, pSoldier = MercPtrs[bLoop]; bLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; bLoop++, pSoldier++) {
       if (pSoldier->bActive && pSoldier->bInSector && (pSoldier->bLife >= OKLIFE) && !(pSoldier->uiStatusFlags & SOLDIER_GASSED)) {
@@ -965,10 +966,10 @@ function MakeCorpseVisible(pSoldier: Pointer<SOLDIERTYPE>, pCorpse: Pointer<ROTT
 }
 
 function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: INT8): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 sDistVisible;
-  INT16 sGridNo;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sDistVisible: INT16;
+  let sGridNo: INT16;
 
   // If this cump is already visible, return
   if (pCorpse->def.bVisible == 1) {
@@ -1004,10 +1005,10 @@ function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: IN
 }
 
 function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt;
-  INT16 sDistVisible;
-  INT16 sGridNo;
-  ROTTING_CORPSE *pCorpse;
+  let cnt: INT32;
+  let sDistVisible: INT16;
+  let sGridNo: INT16;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Should we say disgust quote?
   if ((pSoldier->usQuoteSaidFlags & SOLDIER_QUOTE_SAID_ROTTINGCORPSE)) {
@@ -1065,8 +1066,8 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function RebuildAllCorpseShadeTables(): void {
-  INT32 cnt;
-  ROTTING_CORPSE *pCorpse;
+  let cnt: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Loop through all corpses....
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
@@ -1086,8 +1087,8 @@ function RebuildAllCorpseShadeTables(): void {
 }
 
 function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
-  SGPPaletteEntry LightPal[256];
-  UINT32 uiCount;
+  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let uiCount: UINT32;
 
   // create the basic shade table
   for (uiCount = 0; uiCount < 256; uiCount++) {
@@ -1106,7 +1107,7 @@ function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
 }
 
 function CreateCorpseShadedPalette(pCorpse: Pointer<ROTTING_CORPSE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   pCorpse->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
@@ -1118,8 +1119,8 @@ function CreateCorpseShadedPalette(pCorpse: Pointer<ROTTING_CORPSE>, uiBase: UIN
 }
 
 function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): Pointer<ROTTING_CORPSE> {
-  LEVELNODE *pLevelNode;
-  ROTTING_CORPSE *pCorpse = NULL;
+  let pLevelNode: Pointer<LEVELNODE>;
+  let pCorpse: Pointer<ROTTING_CORPSE> = NULL;
 
   pLevelNode = gpWorldLevelData[sGridNo].pStructHead;
   while (pLevelNode != NULL) {
@@ -1141,10 +1142,11 @@ function CorpseHit(sGridNo: INT16, usStructureID: UINT16): void {
 }
 
 function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
-  STRUCTURE *pStructure, *pBaseStructure;
-  ROTTING_CORPSE *pCorpse = NULL;
-  INT16 sBaseGridNo;
-  ANITILE_PARAMS AniParams;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let pCorpse: Pointer<ROTTING_CORPSE> = NULL;
+  let sBaseGridNo: INT16;
+  let AniParams: ANITILE_PARAMS;
 
   pStructure = FindStructureByID(sGridNo, usStructureID);
 
@@ -1195,22 +1197,27 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
 }
 
 function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
-  INT16 sSweetGridNo;
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = 0;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
-  STRUCTURE_FILE_REF *pStructureFileRef = NULL;
-  INT8 zFilename[150];
-  UINT8 ubBestDirection = 0;
-  BOOLEAN fSetDirection = FALSE;
+  let sSweetGridNo: INT16;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let cnt3: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = 0;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF> = NULL;
+  let zFilename: INT8[] /* [150] */;
+  let ubBestDirection: UINT8 = 0;
+  let fSetDirection: BOOLEAN = FALSE;
 
   cnt3 = 0;
 
@@ -1265,8 +1272,8 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
         if (NewOKDestination(&soldier, sGridNo, TRUE, soldier.bLevel)) {
-          BOOLEAN fDirectionFound = FALSE;
-          BOOLEAN fCanSetDirection = FALSE;
+          let fDirectionFound: BOOLEAN = FALSE;
+          let fCanSetDirection: BOOLEAN = FALSE;
 
           // Check each struct in each direction
           if (pStructureFileRef == NULL) {
@@ -1319,8 +1326,9 @@ function IsValidDecapitationCorpse(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
 }
 
 function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE> {
-  STRUCTURE *pStructure, *pBaseStructure;
-  INT16 sBaseGridNo;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let sBaseGridNo: INT16;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_CORPSE);
 
@@ -1340,10 +1348,10 @@ function GetCorpseAtGridNo(sGridNo: INT16, bLevel: INT8): Pointer<ROTTING_CORPSE
 }
 
 function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  OBJECTTYPE Object;
-  ROTTING_CORPSE *pCorpse;
-  ROTTING_CORPSE_DEFINITION CorpseDef;
-  UINT16 usHeadIndex = HEAD_1;
+  let Object: OBJECTTYPE;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let CorpseDef: ROTTING_CORPSE_DEFINITION;
+  let usHeadIndex: UINT16 = HEAD_1;
 
   pCorpse = GetCorpseAtGridNo(sGridNo, bLevel);
 
@@ -1406,9 +1414,9 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
 }
 
 function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
-  ROTTING_CORPSE *pCorpse;
-  INT8 bObjSlot;
-  OBJECTTYPE Object;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let bObjSlot: INT8;
+  let Object: OBJECTTYPE;
 
   // OK, get corpse
   pCorpse = &(gRottingCorpse[pSoldier->uiPendingActionData4]);
@@ -1440,7 +1448,7 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iInvSlot: INT32): void {
-  OBJECTTYPE *pObj;
+  let pObj: Pointer<OBJECTTYPE>;
 
   Assert(pSoldier);
   Assert((iInvSlot >= 0) && (iInvSlot < NUM_INV_SLOTS));
@@ -1460,10 +1468,10 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
 }
 
 function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8): void {
-  ROTTING_CORPSE *pCorpse;
-  INT8 bToleranceThreshold = 0;
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let bToleranceThreshold: INT8 = 0;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   if (QuoteExp_HeadShotOnly[pSoldier->ubProfile] == 1) {
     return;
@@ -1511,8 +1519,8 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
 }
 
 function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
-  INT32 cnt;
-  ROTTING_CORPSE *pCorpse;
+  let cnt: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Loop through all corpses....
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
@@ -1529,8 +1537,8 @@ function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
 }
 
 function DecayRottingCorpseAIWarnings(): void {
-  INT32 cnt;
-  ROTTING_CORPSE *pCorpse;
+  let cnt: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
 
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);
@@ -1542,9 +1550,9 @@ function DecayRottingCorpseAIWarnings(): void {
 }
 
 function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
-  INT32 cnt;
-  ROTTING_CORPSE *pCorpse;
-  UINT8 ubHighestWarning = 0;
+  let cnt: INT32;
+  let pCorpse: Pointer<ROTTING_CORPSE>;
+  let ubHighestWarning: UINT8 = 0;
 
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
     pCorpse = &(gRottingCorpse[cnt]);

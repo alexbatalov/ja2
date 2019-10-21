@@ -29,8 +29,8 @@ const HTH_MODE_STEAL = 3;
 // JA2 GOLD: for weapons and attachments, give penalties only for status values below 85
 const WEAPON_STATUS_MOD = (x) => ((x) >= 85 ? 100 : (((x) * 100) / 85));
 
-BOOLEAN gfNextShotKills = FALSE;
-BOOLEAN gfReportHitChances = FALSE;
+let gfNextShotKills: BOOLEAN = FALSE;
+let gfReportHitChances: BOOLEAN = FALSE;
 
 // GLOBALS
 
@@ -75,7 +75,7 @@ const MONSTSPIT = (impact, rof, deadl, clip, range, av, hv, sd) =>
 // from Compendium of Modern Firearms (Edge of the Sword Vol 1)
 
 // JA2 GOLD: reduced pistol ready time to 0, tweaked sniper rifle values and G11 range
-WEAPONTYPE Weapon[MAX_WEAPONS] = {
+let Weapon: WEAPONTYPE[] /* [MAX_WEAPONS] */ = {
   //          Description			  Ammo      Bullet	Ready	 4xSng Burst	Burst	Deadl	Accu	Clip	Range Attack Impact		Fire
   //										   Spd  Imp	Time	 ROF	 ROF		penal	iness	racy	Size					Vol   Vol			Sounds
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0 }, // nada!  must have min range of 10
@@ -155,7 +155,7 @@ WEAPONTYPE Weapon[MAX_WEAPONS] = {
   ASRIFLE(/* auto rckt rifle */ AMMOROCKET, 20, 38, 2, 12, 5, 10, 97, 0, 5, 600, 80, 10, S_SMALL_ROCKET_LAUNCHER, S_BURSTTYPE1),
 };
 
-MAGTYPE Magazine[] = {
+let Magazine: MAGTYPE[] /* [] */ = {
   // calibre,			 mag size,			ammo type
   { AMMO9, 15, AMMO_REGULAR },
   { AMMO9, 30, AMMO_REGULAR },
@@ -205,7 +205,7 @@ MAGTYPE Magazine[] = {
   { NOAMMO, 0, 0 },
 };
 
-ARMOURTYPE Armour[] = {
+let Armour: ARMOURTYPE[] /* [] */ = {
   //	Class					      Protection	Degradation%			Description
   //  -------------       ----------  ------------      ----------------
   { ARMOURCLASS_VEST, 10, 25 }, /* Flak jacket     */
@@ -250,7 +250,7 @@ ARMOURTYPE Armour[] = {
   { ARMOURCLASS_VEST, 32, 10 }, /* Kevlar 2 jack w Y */
 };
 
-EXPLOSIVETYPE Explosive[] = {
+let Explosive: EXPLOSIVETYPE[] /* [] */ = {
   //	Type							Yield		Yield2		Radius		Volume		Volatility	Animation			Description
   //										-----		-------		------		------		----------	--------- 		------------------
   { EXPLOSV_STUN, 1, 70, 4, 0, 0, STUN_BLAST /* stun grenade       */ },
@@ -287,7 +287,7 @@ EXPLOSIVETYPE Explosive[] = {
   { EXPLOSV_CREATUREGAS, 0, 0, 0, 0, 0, NO_BLAST /* vry sm creature gas*/ },
 };
 
-INT8 gzBurstSndStrings[][30] = {
+let gzBurstSndStrings: INT8[][] /* [][30] */ = {
   "", // NOAMMO
   "", // 38
   "9mm Burst ", // 9mm
@@ -309,7 +309,7 @@ INT8 gzBurstSndStrings[][30] = {
 
 // the amount of momentum reduction for the head, torso, and legs
 // used to determine whether the bullet will go through someone
-UINT8 BodyImpactReduction[4] = {
+let BodyImpactReduction: UINT8[] /* [4] */ = {
   0,
   15,
   30,
@@ -317,7 +317,7 @@ UINT8 BodyImpactReduction[4] = {
 };
 
 function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
-  INT8 bAttachPos;
+  let bAttachPos: INT8;
 
   if (Item[pObj->usItem].usItemClass & IC_WEAPON) {
     bAttachPos = FindAttachment(pObj, GUN_BARREL_EXTENDER);
@@ -334,8 +334,8 @@ function GunRange(pObj: Pointer<OBJECTTYPE>): UINT16 {
 }
 
 function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
-  INT32 iValue;
-  INT8 bPlate;
+  let iValue: INT32;
+  let bPlate: INT8;
 
   if (pObj == NULL || Item[pObj->usItem].usItemClass != IC_ARMOUR) {
     return 0;
@@ -345,7 +345,7 @@ function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
 
   bPlate = FindAttachment(pObj, CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
-    INT32 iValue2;
+    let iValue2: INT32;
 
     iValue2 = Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection;
     iValue2 = iValue2 * pObj->bAttachStatus[bPlate] / 100;
@@ -356,7 +356,9 @@ function EffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
 }
 
 function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iVest, iHelmet, iLeg;
+  let iVest: INT32;
+  let iHelmet: INT32;
+  let iLeg: INT32;
 
   if (pSoldier->inv[VESTPOS].usItem) {
     iVest = EffectiveArmour(&(pSoldier->inv[VESTPOS]));
@@ -385,8 +387,8 @@ function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
-  INT32 iValue;
-  INT8 bPlate;
+  let iValue: INT32;
+  let bPlate: INT8;
 
   if (pObj == NULL || Item[pObj->usItem].usItemClass != IC_ARMOUR) {
     return 0;
@@ -400,7 +402,7 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
 
   bPlate = FindAttachment(pObj, CERAMIC_PLATES);
   if (bPlate != ITEM_NOT_FOUND) {
-    INT32 iValue2;
+    let iValue2: INT32;
 
     iValue2 = Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection;
     iValue2 = iValue2 * pObj->bAttachStatus[bPlate] / 100;
@@ -412,7 +414,9 @@ function ExplosiveEffectiveArmour(pObj: Pointer<OBJECTTYPE>): INT8 {
 
 function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // returns the % damage reduction from grenades
-  INT32 iVest, iHelmet, iLeg;
+  let iVest: INT32;
+  let iHelmet: INT32;
+  let iLeg: INT32;
 
   if (pSoldier->inv[VESTPOS].usItem) {
     iVest = ExplosiveEffectiveArmour(&(pSoldier->inv[VESTPOS]));
@@ -463,8 +467,9 @@ function AdjustImpactByHitLocation(iImpact: INT32, ubHitLocation: UINT8, piNewIm
 // #define	TESTGUNJAM
 
 function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  OBJECTTYPE *pObj;
-  INT32 iChance, iResult;
+  let pObj: Pointer<OBJECTTYPE>;
+  let iChance: INT32;
+  let iResult: INT32;
 
   // should jams apply to enemies?
   if (pSoldier->uiStatusFlags & SOLDIER_PC) {
@@ -528,7 +533,7 @@ function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function OKFireWeapon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  BOOLEAN bGunJamVal;
+  let bGunJamVal: BOOLEAN;
 
   // 1) Are we attacking with our second hand?
   if (pSoldier->ubAttackingHand == SECONDHANDPOS) {
@@ -619,13 +624,14 @@ function FireWeapon(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLE
 }
 
 function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, pdXPos: Pointer<FLOAT>, pdYPos: Pointer<FLOAT>, pdZPos: Pointer<FLOAT>): void {
-  FLOAT dTargetX;
-  FLOAT dTargetY;
-  FLOAT dTargetZ;
-  SOLDIERTYPE *pTargetSoldier;
-  INT8 bStructHeight;
-  INT16 sXMapPos, sYMapPos;
-  UINT32 uiRoll;
+  let dTargetX: FLOAT;
+  let dTargetY: FLOAT;
+  let dTargetZ: FLOAT;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let bStructHeight: INT8;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let uiRoll: UINT32;
 
   pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier->bTargetLevel);
   if (pTargetSoldier) {
@@ -643,7 +649,7 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
         pSoldier->bAimShotLocation = AIM_SHOT_TORSO;
       }
       if (pSoldier->bAimShotLocation != AIM_SHOT_HEAD) {
-        UINT32 uiChanceToGetThrough = SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier->bAimShotLocation);
+        let uiChanceToGetThrough: UINT32 = SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, pSoldier->bAimShotLocation);
 
         if (uiChanceToGetThrough < 25) {
           if (SoldierToSoldierBodyPartChanceToGetThrough(pSoldier, pTargetSoldier, AIM_SHOT_HEAD) > uiChanceToGetThrough * 2) {
@@ -703,23 +709,25 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
 }
 
 function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
-  UINT32 uiHitChance, uiDiceRoll;
-  INT16 sXMapPos, sYMapPos;
-  INT16 sAPCost;
-  FLOAT dTargetX;
-  FLOAT dTargetY;
-  FLOAT dTargetZ;
-  UINT16 usItemNum;
-  BOOLEAN fBuckshot;
-  UINT8 ubVolume;
-  INT8 bSilencerPos;
-  INT8 zBurstString[50];
-  UINT8 ubDirection;
-  INT16 sNewGridNo;
-  UINT8 ubMerc;
-  BOOLEAN fGonnaHit = FALSE;
-  UINT16 usExpGain = 0;
-  UINT32 uiDepreciateTest;
+  let uiHitChance: UINT32;
+  let uiDiceRoll: UINT32;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sAPCost: INT16;
+  let dTargetX: FLOAT;
+  let dTargetY: FLOAT;
+  let dTargetZ: FLOAT;
+  let usItemNum: UINT16;
+  let fBuckshot: BOOLEAN;
+  let ubVolume: UINT8;
+  let bSilencerPos: INT8;
+  let zBurstString: INT8[] /* [50] */;
+  let ubDirection: UINT8;
+  let sNewGridNo: INT16;
+  let ubMerc: UINT8;
+  let fGonnaHit: BOOLEAN = FALSE;
+  let usExpGain: UINT16 = 0;
+  let uiDepreciateTest: UINT32;
 
   // Deduct points!
   sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, FALSE, pSoldier->bAimTime);
@@ -769,7 +777,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     if (Weapon[usItemNum].sSound != NO_WEAPON_SOUND && Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
       // Switch on silencer...
       if (FindAttachment(&(pSoldier->inv[pSoldier->ubAttackingHand]), SILENCER) != NO_SLOT) {
-        INT32 uiSound;
+        let uiSound: INT32;
 
         if (Weapon[usItemNum].ubCalibre == AMMO9 || Weapon[usItemNum].ubCalibre == AMMO38 || Weapon[usItemNum].ubCalibre == AMMO57) {
           uiSound = S_SILENCER_1;
@@ -1005,16 +1013,19 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
 }
 
 function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
-  SOLDIERTYPE *pTargetSoldier;
-  INT32 iHitChance, iDiceRoll;
-  INT16 sXMapPos, sYMapPos;
-  INT16 sAPCost;
-  EV_S_WEAPONHIT SWeaponHit;
-  INT32 iImpact, iImpactForCrits;
-  BOOLEAN fGonnaHit = FALSE;
-  UINT16 usExpGain = 0;
-  INT8 bMaxDrop;
-  BOOLEAN fSurpriseAttack;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let iHitChance: INT32;
+  let iDiceRoll: INT32;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sAPCost: INT16;
+  let SWeaponHit: EV_S_WEAPONHIT;
+  let iImpact: INT32;
+  let iImpactForCrits: INT32;
+  let fGonnaHit: BOOLEAN = FALSE;
+  let usExpGain: UINT16 = 0;
+  let bMaxDrop: INT8;
+  let fSurpriseAttack: BOOLEAN;
 
   // Deduct points!
   sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, FALSE, pSoldier->bAimTime);
@@ -1151,14 +1162,16 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
 }
 
 function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fStealing: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pTargetSoldier;
-  INT32 iHitChance, iDiceRoll;
-  INT16 sXMapPos, sYMapPos;
-  INT16 sAPCost;
-  EV_S_WEAPONHIT SWeaponHit;
-  INT32 iImpact;
-  UINT16 usOldItem;
-  UINT8 ubExpGain;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let iHitChance: INT32;
+  let iDiceRoll: INT32;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sAPCost: INT16;
+  let SWeaponHit: EV_S_WEAPONHIT;
+  let iImpact: INT32;
+  let usOldItem: UINT16;
+  let ubExpGain: UINT8;
 
   // Deduct points!
   // August 13 2002: unless stealing - APs already deducted elsewhere
@@ -1335,11 +1348,12 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
 }
 
 function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
-  UINT32 uiHitChance, uiDiceRoll;
-  INT16 sAPCost = 0;
-  INT8 bLoop;
-  UINT8 ubTargetID;
-  SOLDIERTYPE *pTargetSoldier;
+  let uiHitChance: UINT32;
+  let uiDiceRoll: UINT32;
+  let sAPCost: INT16 = 0;
+  let bLoop: INT8;
+  let ubTargetID: UINT8;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
 
   uiHitChance = CalcThrownChanceToHit(pSoldier, sTargetGridNo, pSoldier->bAimTime, AIM_SHOT_TORSO);
 
@@ -1397,14 +1411,15 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEA
 }
 
 function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
-  UINT32 uiHitChance, uiDiceRoll;
-  INT16 sAPCost = 0;
-  INT8 bAttachPos;
-  OBJECTTYPE Launchable;
-  OBJECTTYPE *pObj;
-  UINT16 usItemNum;
-  INT32 iID;
-  REAL_OBJECT *pObject;
+  let uiHitChance: UINT32;
+  let uiDiceRoll: UINT32;
+  let sAPCost: INT16 = 0;
+  let bAttachPos: INT8;
+  let Launchable: OBJECTTYPE;
+  let pObj: Pointer<OBJECTTYPE>;
+  let usItemNum: UINT16;
+  let iID: INT32;
+  let pObject: Pointer<REAL_OBJECT>;
 
   usItemNum = pSoldier->usAttackingWeapon;
 
@@ -1489,9 +1504,9 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
 }
 
 function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, fSoundOnly: BOOLEAN, fFreeupAttacker: BOOLEAN, iBullet: INT32): BOOLEAN {
-  ANITILE_PARAMS AniParams;
-  UINT8 ubAmmoType;
-  UINT16 usItem;
+  let AniParams: ANITILE_PARAMS;
+  let ubAmmoType: UINT8;
+  let usItem: UINT16;
 
   ubAmmoType = MercPtrs[ubAttackerID]->inv[MercPtrs[ubAttackerID]->ubAttackingHand].ubGunAmmoType;
   usItem = MercPtrs[ubAttackerID]->inv[MercPtrs[ubAttackerID]->ubAttackingHand].usItem;
@@ -1556,7 +1571,8 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
 }
 
 function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, sBreathLoss: INT16, usDirection: UINT16, sXPos: INT16, sYPos: INT16, sZPos: INT16, sRange: INT16, ubAttackerID: UINT8, fHit: BOOLEAN, ubSpecial: UINT8, ubHitLocation: UINT8): void {
-  SOLDIERTYPE *pTargetSoldier, *pSoldier;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get attacker
   pSoldier = MercPtrs[ubAttackerID];
@@ -1595,16 +1611,17 @@ function WeaponHit(usSoldierID: UINT16, usWeaponIndex: UINT16, sDamage: INT16, s
 }
 
 function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8, ubAttackerID: UINT8, sXPos: UINT16, sYPos: INT16, sZPos: INT16, usStructureID: UINT16, iImpact: INT32, fStopped: BOOLEAN): void {
-  BOOLEAN fDoMissForGun = FALSE;
-  ANITILE *pNode;
-  INT16 sGridNo;
-  ANITILE_PARAMS AniParams;
-  UINT16 usMissTileIndex, usMissTileType;
-  STRUCTURE *pStructure = NULL;
-  UINT32 uiMissVolume = MIDVOLUME;
-  BOOLEAN fHitSameStructureAsBefore;
-  BULLET *pBullet;
-  SOLDIERTYPE *pAttacker;
+  let fDoMissForGun: BOOLEAN = FALSE;
+  let pNode: Pointer<ANITILE>;
+  let sGridNo: INT16;
+  let AniParams: ANITILE_PARAMS;
+  let usMissTileIndex: UINT16;
+  let usMissTileType: UINT16;
+  let pStructure: Pointer<STRUCTURE> = NULL;
+  let uiMissVolume: UINT32 = MIDVOLUME;
+  let fHitSameStructureAsBefore: BOOLEAN;
+  let pBullet: Pointer<BULLET>;
+  let pAttacker: Pointer<SOLDIERTYPE>;
 
   pBullet = GetBulletPtr(iBullet);
 
@@ -1709,7 +1726,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
 
       // When it hits the ground, leave on map...
       if (Item[usWeaponIndex].usItemClass == IC_THROWING_KNIFE) {
-        OBJECTTYPE Object;
+        let Object: OBJECTTYPE;
 
         // OK, have we hit ground?
         if (usStructureID == INVALID_STRUCTURE_ID) {
@@ -1831,12 +1848,12 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
 }
 
 function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOLEAN, fLargeForce: BOOLEAN): void {
-  STRUCTURE *pWallAndWindow;
-  DB_STRUCTURE *pWallAndWindowInDB;
-  INT16 sShatterGridNo;
-  UINT16 usTileIndex;
-  ANITILE *pNode;
-  ANITILE_PARAMS AniParams;
+  let pWallAndWindow: Pointer<STRUCTURE>;
+  let pWallAndWindowInDB: Pointer<DB_STRUCTURE>;
+  let sShatterGridNo: INT16;
+  let usTileIndex: UINT16;
+  let pNode: Pointer<ANITILE>;
+  let AniParams: ANITILE_PARAMS;
 
   // ATE: Make large force always for now ( feel thing )
   fLargeForce = TRUE;
@@ -1937,8 +1954,8 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
 }
 
 function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
-  INT16 sRange;
-  UINT16 usInHand;
+  let sRange: INT16;
+  let usInHand: UINT16;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -1963,17 +1980,23 @@ function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
 
 function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
   // SOLDIERTYPE *vicpSoldier;
-  SOLDIERTYPE *pTarget;
-  INT32 iChance, iRange, iSightRange, iMaxRange, iScopeBonus, iBonus; //, minRange;
-  INT32 iGunCondition, iMarksmanship;
-  INT32 iPenalty;
-  UINT16 usInHand;
-  OBJECTTYPE *pInHand;
-  INT8 bAttachPos;
-  INT8 bBandaged;
-  INT16 sDistVis;
-  UINT8 ubAdjAimPos;
-  UINT8 ubTargetID;
+  let pTarget: Pointer<SOLDIERTYPE>;
+  let iChance: INT32;
+  let iRange: INT32;
+  let iSightRange: INT32;
+  let iMaxRange: INT32;
+  let iScopeBonus: INT32;
+  let iBonus: INT32; //, minRange;
+  let iGunCondition: INT32;
+  let iMarksmanship: INT32;
+  let iPenalty: INT32;
+  let usInHand: UINT16;
+  let pInHand: Pointer<OBJECTTYPE>;
+  let bAttachPos: INT8;
+  let bBandaged: INT8;
+  let sDistVis: INT16;
+  let ubAdjAimPos: UINT8;
+  let ubTargetID: UINT8;
 
   if (pSoldier->bMarksmanship == 0) {
     // always min chance
@@ -1998,7 +2021,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
     iMarksmanship = EffectiveMarksmanship(pSoldier);
 
     if (AM_A_ROBOT(pSoldier)) {
-      SOLDIERTYPE *pSoldier2;
+      let pSoldier2: Pointer<SOLDIERTYPE>;
 
       pSoldier2 = GetRobotController(pSoldier);
       if (pSoldier2) {
@@ -2163,7 +2186,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
       if (pInHand->bAttachStatus[bAttachPos] - Random(35) - Random(35) < USABLE) {
         // barrel extender falls off!
-        OBJECTTYPE Temp;
+        let Temp: OBJECTTYPE;
 
         // since barrel extenders are not removable we cannot call RemoveAttachment here
         // and must create the item by hand
@@ -2218,7 +2241,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
     bAttachPos = FindAttachment(pInHand, LASERSCOPE);
     if (usInHand == ROCKET_RIFLE || usInHand == AUTO_ROCKET_RIFLE || bAttachPos != NO_SLOT) // rocket rifle has one built in
     {
-      INT8 bLaserStatus;
+      let bLaserStatus: INT8;
 
       if (usInHand == ROCKET_RIFLE || usInHand == AUTO_ROCKET_RIFLE) {
         bLaserStatus = WEAPON_STATUS_MOD(pInHand->bGunStatus);
@@ -2450,8 +2473,8 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 }
 
 function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
-  UINT16 usTrueState;
-  UINT32 uiChance;
+  let usTrueState: UINT16;
+  let uiChance: UINT32;
 
   // same as CCTHG but fakes the attacker always standing
   usTrueState = pSoldier->usAnimState;
@@ -2463,7 +2486,7 @@ function AICalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, u
 
 function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32 {
   // calculate how much bullets are slowed by passing through someone
-  INT32 iReduction = BodyImpactReduction[ubHitLocation];
+  let iReduction: INT32 = BodyImpactReduction[ubHitLocation];
 
   switch (ubAmmoType) {
     case AMMO_HP:
@@ -2483,7 +2506,9 @@ function CalcBodyImpactReduction(ubAmmoType: UINT8, ubHitLocation: UINT8): INT32
 }
 
 function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pbStatus: Pointer<INT8>, iImpact: INT32, ubAmmoType: UINT8): INT32 {
-  INT32 iProtection, iAppliedProtection, iFailure;
+  let iProtection: INT32;
+  let iAppliedProtection: INT32;
+  let iFailure: INT32;
 
   iProtection = Armour[ubArmourType].ubProtection;
 
@@ -2547,12 +2572,13 @@ function ArmourProtection(pTarget: Pointer<SOLDIERTYPE>, ubArmourType: UINT8, pb
 }
 
 function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iImpact: INT32, ubAmmoType: UINT8): INT32 {
-  INT32 iTotalProtection = 0, iSlot;
-  OBJECTTYPE *pArmour;
-  INT8 bPlatePos = -1;
+  let iTotalProtection: INT32 = 0;
+  let iSlot: INT32;
+  let pArmour: Pointer<OBJECTTYPE>;
+  let bPlatePos: INT8 = -1;
 
   if (pTarget->uiStatusFlags & SOLDIER_VEHICLE) {
-    INT8 bDummyStatus = 100;
+    let bDummyStatus: INT8 = 100;
 
     // bDummyStatus = (INT8) pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ];
 
@@ -2614,9 +2640,12 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
 }
 
 function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, ubHitLocation: UINT8, iOrigImpact: INT32, sHitBy: INT16, pubSpecial: Pointer<UINT8>): INT32 {
-  INT32 iImpact, iFluke, iBonus, iImpactForCrits = 0;
-  INT8 bStatLoss;
-  UINT8 ubAmmoType;
+  let iImpact: INT32;
+  let iFluke: INT32;
+  let iBonus: INT32;
+  let iImpactForCrits: INT32 = 0;
+  let bStatLoss: INT8;
+  let ubAmmoType: UINT8;
 
   // NOTE: reduction of bullet impact due to range and obstacles is handled
   // in MoveBullet.
@@ -2897,7 +2926,9 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
 }
 
 function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>, iHitBy: INT32, fBladeAttack: BOOLEAN): INT32 {
-  INT32 iImpact, iFluke, iBonus;
+  let iImpact: INT32;
+  let iFluke: INT32;
+  let iBonus: INT32;
 
   if (fBladeAttack) {
     iImpact = (EffectiveExpLevel(pSoldier) / 2); // 0 to 4 for level
@@ -2951,9 +2982,9 @@ function HTHImpact(pSoldier: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE>
 }
 
 function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
-  BOOLEAN fDoMissForGun = FALSE;
-  SOLDIERTYPE *pAttacker;
-  BULLET *pBullet;
+  let fDoMissForGun: BOOLEAN = FALSE;
+  let pAttacker: Pointer<SOLDIERTYPE>;
+  let pBullet: Pointer<BULLET>;
 
   pAttacker = MercPtrs[ubAttackerID];
 
@@ -3012,10 +3043,11 @@ function ShotMiss(ubAttackerID: UINT8, iBullet: INT32): void {
 }
 
 function CalcChanceHTH(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointer<SOLDIERTYPE>, ubAimTime: UINT8, ubMode: UINT8): UINT32 {
-  UINT16 usInHand;
-  UINT8 ubBandaged;
-  INT32 iAttRating, iDefRating;
-  INT32 iChance;
+  let usInHand: UINT16;
+  let ubBandaged: UINT8;
+  let iAttRating: INT32;
+  let iDefRating: INT32;
+  let iChance: INT32;
 
   usInHand = pAttacker->usAttackingWeapon;
 
@@ -3295,7 +3327,7 @@ function ReloadWeapon(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
 }
 
 function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNotify: BOOLEAN): BOOLEAN {
-  BOOLEAN fCapable = FALSE;
+  let fCapable: BOOLEAN = FALSE;
 
   if (pSoldier->inv[ubHandPos].usItem != NOTHING) {
     // ATE: Check for being a weapon....
@@ -3314,8 +3346,8 @@ function IsGunBurstCapable(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8, fNo
 }
 
 function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed: BOOLEAN): INT32 {
-  INT32 iRange;
-  UINT16 usSubItem;
+  let iRange: INT32;
+  let usSubItem: UINT16;
 
   if (EXPLOSIVE_GUN(usItem)) {
     // oops! return value in weapons table
@@ -3338,7 +3370,7 @@ function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed
       iRange = 1;
     } else if (Item[usItem].usItemClass == IC_GRENADE) {
       // start with the range based on the soldier's strength and the item's weight
-      INT32 iThrowingStrength = (EffectiveStrength(pSoldier) * 2 + 100) / 3;
+      let iThrowingStrength: INT32 = (EffectiveStrength(pSoldier) * 2 + 100) / 3;
       iRange = 2 + (iThrowingStrength / __min((3 + (Item[usItem].ubWeight) / 3), 4));
     } else {
       // not as aerodynamic!
@@ -3364,9 +3396,12 @@ function CalcMaxTossRange(pSoldier: Pointer<SOLDIERTYPE>, usItem: UINT16, fArmed
 }
 
 function CalcThrownChanceToHit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAimTime: UINT8, ubAimPos: UINT8): UINT32 {
-  INT32 iChance, iMaxRange, iRange;
-  UINT16 usHandItem;
-  INT8 bPenalty, bBandaged;
+  let iChance: INT32;
+  let iMaxRange: INT32;
+  let iRange: INT32;
+  let usHandItem: UINT16;
+  let bPenalty: INT8;
+  let bBandaged: INT8;
 
   if (pSoldier->bWeaponMode == WM_ATTACHED) {
     usHandItem = UNDER_GLAUNCHER;
@@ -3567,18 +3602,19 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function DishoutQueenSwipeDamage(pQueenSoldier: Pointer<SOLDIERTYPE>): void {
-  INT8 bValidDishoutDirs[3][3] = {
+  let bValidDishoutDirs: INT8[][] /* [3][3] */ = {
     { NORTH, NORTHEAST, -1 },
     { EAST, SOUTHEAST, -1 },
     { SOUTH, -1, -1 },
   };
 
-  UINT32 cnt, cnt2;
-  SOLDIERTYPE *pSoldier;
-  INT8 bDir;
-  INT32 iChance;
-  INT32 iImpact;
-  INT32 iHitBy;
+  let cnt: UINT32;
+  let cnt2: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bDir: INT8;
+  let iChance: INT32;
+  let iImpact: INT32;
+  let iHitBy: INT32;
 
   // Loop through all mercs and make go
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {

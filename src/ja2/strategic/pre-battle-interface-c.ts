@@ -1,14 +1,14 @@
-BOOLEAN gfTacticalTraversal = FALSE;
-GROUP *gpTacticalTraversalGroup = NULL;
-SOLDIERTYPE *gpTacticalTraversalChosenSoldier = NULL;
+let gfTacticalTraversal: BOOLEAN = FALSE;
+let gpTacticalTraversalGroup: Pointer<GROUP> = NULL;
+let gpTacticalTraversalChosenSoldier: Pointer<SOLDIERTYPE> = NULL;
 
-BOOLEAN gfAutomaticallyStartAutoResolve = FALSE;
-BOOLEAN gfAutoAmbush = FALSE;
-BOOLEAN gfHighPotentialForAmbush = FALSE;
-BOOLEAN gfGotoSectorTransition = FALSE;
-BOOLEAN gfEnterAutoResolveMode = FALSE;
-BOOLEAN gfEnteringMapScreenToEnterPreBattleInterface = FALSE;
-BOOLEAN gfIgnoreAllInput = TRUE;
+let gfAutomaticallyStartAutoResolve: BOOLEAN = FALSE;
+let gfAutoAmbush: BOOLEAN = FALSE;
+let gfHighPotentialForAmbush: BOOLEAN = FALSE;
+let gfGotoSectorTransition: BOOLEAN = FALSE;
+let gfEnterAutoResolveMode: BOOLEAN = FALSE;
+let gfEnteringMapScreenToEnterPreBattleInterface: BOOLEAN = FALSE;
+let gfIgnoreAllInput: BOOLEAN = TRUE;
 
 // GraphicIDs for the panel
 const enum Enum162 {
@@ -30,10 +30,13 @@ const ACTUAL_HEIGHT = 34;
 // The height of each row
 const ROW_HEIGHT = 10;
 
-BOOLEAN gfDisplayPotentialRetreatPaths = FALSE;
-UINT16 gusRetreatButtonLeft, gusRetreatButtonTop, gusRetreatButtonRight, gusRetreatButtonBottom;
+let gfDisplayPotentialRetreatPaths: BOOLEAN = FALSE;
+let gusRetreatButtonLeft: UINT16;
+let gusRetreatButtonTop: UINT16;
+let gusRetreatButtonRight: UINT16;
+let gusRetreatButtonBottom: UINT16;
 
-GROUP *gpBattleGroup = NULL;
+let gpBattleGroup: Pointer<GROUP> = NULL;
 
 /*
 void InvolvedMoveCallback( MOUSE_REGION *reg, INT32 reason );
@@ -45,64 +48,65 @@ SOLDIERTYPE* InvolvedSoldier( INT32 index );
 SOLDIERTYPE* UninvolvedSoldier( INT32 index );
 */
 
-MOUSE_REGION PBInterfaceBlanket;
-BOOLEAN gfPreBattleInterfaceActive = FALSE;
-UINT32 iPBButton[3];
-UINT32 iPBButtonImage[3];
-UINT32 uiInterfaceImages;
-BOOLEAN gfRenderPBInterface;
-BOOLEAN gfPBButtonsHidden;
-BOOLEAN fDisableMapInterfaceDueToBattle = FALSE;
+let PBInterfaceBlanket: MOUSE_REGION;
+let gfPreBattleInterfaceActive: BOOLEAN = FALSE;
+let iPBButton: UINT32[] /* [3] */;
+let iPBButtonImage: UINT32[] /* [3] */;
+let uiInterfaceImages: UINT32;
+let gfRenderPBInterface: BOOLEAN;
+let gfPBButtonsHidden: BOOLEAN;
+let fDisableMapInterfaceDueToBattle: BOOLEAN = FALSE;
 
-BOOLEAN gfBlinkHeader;
+let gfBlinkHeader: BOOLEAN;
 
-UINT32 guiNumInvolved;
-UINT32 guiNumUninvolved;
+let guiNumInvolved: UINT32;
+let guiNumUninvolved: UINT32;
 
 // SAVE START
 
 // Using the ESC key in the PBI will get rid of the PBI and go back to mapscreen, but
 // only if the PBI isn't persistant (!gfPersistantPBI).
-BOOLEAN gfPersistantPBI = FALSE;
+let gfPersistantPBI: BOOLEAN = FALSE;
 
 // Contains general information about the type of encounter the player is faced with.  This
 // determines whether or not you can autoresolve the battle or even retreat.  This code
 // dictates the header that is used at the top of the PBI.
-UINT8 gubEnemyEncounterCode = NO_ENCOUNTER_CODE;
+let gubEnemyEncounterCode: UINT8 = NO_ENCOUNTER_CODE;
 
 // The autoresolve during tactical battle option needs more detailed information than the
 // gubEnemyEncounterCode can provide.  The explicit version contains possibly unique codes
 // for reasons not normally used in the PBI.  For example, if we were fighting the enemy
 // in a normal situation, then shot at a civilian, the civilians associated with the victim
 // would turn hostile, which would disable the ability to autoresolve the battle.
-BOOLEAN gubExplicitEnemyEncounterCode = NO_ENCOUNTER_CODE;
+let gubExplicitEnemyEncounterCode: BOOLEAN = NO_ENCOUNTER_CODE;
 
 // Location of the current battle (determines where the animated icon is blitted) and if the
 // icon is to be blitted.
-BOOLEAN gfBlitBattleSectorLocator = FALSE;
+let gfBlitBattleSectorLocator: BOOLEAN = FALSE;
 
-extern UINT8 gubPBSectorX = 0;
-extern UINT8 gubPBSectorY = 0;
-extern UINT8 gubPBSectorZ = 0;
+let gubPBSectorX: UINT8 = 0;
+let gubPBSectorY: UINT8 = 0;
+let gubPBSectorZ: UINT8 = 0;
 
-BOOLEAN gfCantRetreatInPBI = FALSE;
+let gfCantRetreatInPBI: BOOLEAN = FALSE;
 // SAVE END
 
-BOOLEAN gfUsePersistantPBI;
+let gfUsePersistantPBI: BOOLEAN;
 
-INT32 giHilitedInvolved, giHilitedUninvolved;
+let giHilitedInvolved: INT32;
+let giHilitedUninvolved: INT32;
 
 function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BOOLEAN): void {
-  VOBJECT_DESC VObjectDesc;
-  INT32 i;
-  UINT8 ubGroupID = 0;
-  UINT8 ubNumStationaryEnemies = 0;
-  UINT8 ubNumMobileEnemies = 0;
-  UINT8 ubNumMercs;
-  BOOLEAN fUsePluralVersion = FALSE;
-  INT8 bBestExpLevel = 0;
-  BOOLEAN fRetreatAnOption = TRUE;
-  SECTORINFO *pSector;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: INT32;
+  let ubGroupID: UINT8 = 0;
+  let ubNumStationaryEnemies: UINT8 = 0;
+  let ubNumMobileEnemies: UINT8 = 0;
+  let ubNumMercs: UINT8;
+  let fUsePluralVersion: BOOLEAN = FALSE;
+  let bBestExpLevel: INT8 = 0;
+  let fRetreatAnOption: BOOLEAN = TRUE;
+  let pSector: Pointer<SECTORINFO>;
 
   // ARM: Feb01/98 - Cancel out of mapscreen movement plotting if PBI subscreen is coming up
   if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
@@ -283,7 +287,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
             bBestExpLevel = MercPtrs[i]->bExpLevel;
           if (MercPtrs[i]->ubPrevSectorID == 255) {
             // Not able to retreat (calculate it for group)
-            GROUP *pTempGroup;
+            let pTempGroup: Pointer<GROUP>;
             pTempGroup = GetGroup(ubGroupID);
             Assert(pTempGroup);
             CalculateGroupRetreatSector(pTempGroup);
@@ -322,7 +326,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
           } else if (WhatPlayerKnowsAboutEnemiesInSector(gubPBSectorX, gubPBSectorY) == KNOWS_NOTHING && CurrentPlayerProgressPercentage() >= 30 - gGameOptions.ubDifficultyLevel * 5) {
             // if the enemy outnumbers the players, then there is a small chance of the enemies ambushing the group
             if (ubNumMobileEnemies > ubNumMercs) {
-              INT32 iChance;
+              let iChance: INT32;
               pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
               if (!(pSector->uiFlags & SF_ALREADY_VISITED)) {
                 iChance = (UINT8)(4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
@@ -477,13 +481,22 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
 }
 
 function DoTransitionFromMapscreenToPreBattleInterface(): void {
-  SGPRect DstRect, PBIRect;
-  UINT32 uiStartTime, uiCurrTime;
-  INT32 iPercentage, iFactor;
-  UINT32 uiTimeRange;
-  INT16 sStartLeft, sEndLeft, sStartTop, sEndTop;
-  INT32 iLeft, iTop, iWidth, iHeight;
-  BOOLEAN fEnterAutoResolveMode = FALSE;
+  let DstRect: SGPRect;
+  let PBIRect: SGPRect;
+  let uiStartTime: UINT32;
+  let uiCurrTime: UINT32;
+  let iPercentage: INT32;
+  let iFactor: INT32;
+  let uiTimeRange: UINT32;
+  let sStartLeft: INT16;
+  let sEndLeft: INT16;
+  let sStartTop: INT16;
+  let sEndTop: INT16;
+  let iLeft: INT32;
+  let iTop: INT32;
+  let iWidth: INT32;
+  let iHeight: INT32;
+  let fEnterAutoResolveMode: BOOLEAN = FALSE;
 
   if (!gfExtraBuffer)
     return;
@@ -626,8 +639,9 @@ function KillPreBattleInterface(): void {
 }
 
 function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
-  UINT16 str[100];
-  INT32 x, width;
+  let str: UINT16[] /* [100] */;
+  let x: INT32;
+  let width: INT32;
   SetFont(FONT10ARIALBOLD);
   if (gfBlinkHeader) {
     if (GetJA2Clock() % 1000 < 667) {
@@ -677,14 +691,19 @@ function RenderPBHeader(piX: Pointer<INT32>, piWidth: Pointer<INT32>): void {
 }
 
 function RenderPreBattleInterface(): void {
-  GROUP *pGroup;
-  HVOBJECT hVObject;
-  INT32 i, x, y, line, width;
-  UINT16 str[100];
-  UINT16 pSectorName[128];
-  UINT8 ubHPPercent, ubBPPercent;
-  BOOLEAN fMouseInRetreatButtonArea;
-  UINT8 ubJunk;
+  let pGroup: Pointer<GROUP>;
+  let hVObject: HVOBJECT;
+  let i: INT32;
+  let x: INT32;
+  let y: INT32;
+  let line: INT32;
+  let width: INT32;
+  let str: UINT16[] /* [100] */;
+  let pSectorName: UINT16[] /* [128] */;
+  let ubHPPercent: UINT8;
+  let ubBPPercent: UINT8;
+  let fMouseInRetreatButtonArea: BOOLEAN;
+  let ubJunk: UINT8;
   // PLAYERGROUP *pPlayer;
 
   // This code determines if the cursor is inside the rectangle consisting of the
@@ -1275,7 +1294,7 @@ function CalculateNonPersistantPBIInfo(): void {
       // There are bloodcats in the sector, so no autoresolve allowed
       gubExplicitEnemyEncounterCode = HOSTILE_BLOODCATS_CODE;
     } else if (gbWorldSectorZ) {
-      UNDERGROUND_SECTORINFO *pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       Assert(pSector);
       if (pSector->ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
@@ -1284,7 +1303,7 @@ function CalculateNonPersistantPBIInfo(): void {
         gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
       }
     } else {
-      SECTORINFO *pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+      let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
       Assert(pSector);
       if (pSector->ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
@@ -1308,7 +1327,8 @@ function ClearNonPersistantPBIInfo(): void {
 }
 
 function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
-  GROUP *pGroup, *pNextGroup;
+  let pGroup: Pointer<GROUP>;
+  let pNextGroup: Pointer<GROUP>;
 
   // IMPORTANT: Have to do this by group, so everyone inside vehicles gets assigned to the same squad.  Needed for
   // the tactical placement interface to work in case of simultaneous multi-vehicle arrivals!
@@ -1336,10 +1356,11 @@ function PutNonSquadMercsInBattleSectorOnSquads(fExitVehicles: BOOLEAN): void {
 }
 
 function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehicles: BOOLEAN): void {
-  PLAYERGROUP *pPlayer, *pNextPlayer;
-  SOLDIERTYPE *pSoldier;
-  INT8 bUniqueVehicleSquad = -1;
-  BOOLEAN fSuccess;
+  let pPlayer: Pointer<PLAYERGROUP>;
+  let pNextPlayer: Pointer<PLAYERGROUP>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bUniqueVehicleSquad: INT8 = -1;
+  let fSuccess: BOOLEAN;
 
   if (pGroup->fVehicle) {
     // put these guys on their own squad (we need to return their group ID, and can only return one, so they need a unique one
@@ -1393,8 +1414,9 @@ function PutNonSquadMercsInPlayerGroupOnSquads(pGroup: Pointer<GROUP>, fExitVehi
 }
 
 function WakeUpAllMercsInSectorUnderAttack(): void {
-  INT32 iCounter = 0, iNumberOfMercsOnTeam = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let iNumberOfMercsOnTeam: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // get number of possible grunts on team
   iNumberOfMercsOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
@@ -1415,7 +1437,7 @@ function WakeUpAllMercsInSectorUnderAttack(): void {
 
 // we are entering the sector, clear out all mvt orders for grunts
 function ClearMovementForAllInvolvedPlayerGroups(): void {
-  GROUP *pGroup;
+  let pGroup: Pointer<GROUP>;
 
   pGroup = gpGroupList;
   while (pGroup) {
@@ -1428,7 +1450,7 @@ function ClearMovementForAllInvolvedPlayerGroups(): void {
 }
 
 function RetreatAllInvolvedPlayerGroups(): void {
-  GROUP *pGroup;
+  let pGroup: Pointer<GROUP>;
 
   // make sure guys stop their off duty assignments, like militia training!
   // but don't exit vehicles - drive off in them!
@@ -1481,8 +1503,10 @@ function PlayerGroupInvolvedInThisCombat(pGroup: Pointer<GROUP>): BOOLEAN {
 }
 
 function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): BOOLEAN {
-  INT16 sBattleSectorX, sBattleSectorY, sBattleSectorZ;
-  BOOLEAN fSuccess;
+  let sBattleSectorX: INT16;
+  let sBattleSectorY: INT16;
+  let sBattleSectorZ: INT16;
+  let fSuccess: BOOLEAN;
 
   fSuccess = GetCurrentBattleSectorXYZ(&sBattleSectorX, &sBattleSectorY, &sBattleSectorZ);
   Assert(fSuccess);
@@ -1497,7 +1521,7 @@ function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
 }
 
 function CheckForRobotAndIfItsControlled(): void {
-  INT32 i;
+  let i: INT32;
 
   // search for the robot on player's team
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
@@ -1516,7 +1540,9 @@ function CheckForRobotAndIfItsControlled(): void {
 }
 
 function LogBattleResults(ubVictoryCode: UINT8): void {
-  INT16 sSectorX, sSectorY, sSectorZ;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let sSectorZ: INT16;
   GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
   if (ubVictoryCode == LOG_VICTORY) {
     switch (gubEnemyEncounterCode) {

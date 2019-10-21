@@ -1,8 +1,8 @@
 function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  HWFILE hFile;
-  STCIHeader Header;
-  UINT32 uiBytesRead;
-  image_type TempImage;
+  let hFile: HWFILE;
+  let Header: STCIHeader;
+  let uiBytesRead: UINT32;
+  let TempImage: image_type;
 
   // Check that hImage is valid, and that the file in question exists
   Assert(hImage != NULL);
@@ -58,7 +58,7 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 }
 
 function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
-  UINT32 uiBytesRead;
+  let uiBytesRead: UINT32;
 
   if (fContents & IMAGE_PALETTE && !(fContents & IMAGE_ALLIMAGEDATA)) {
     // RGB doesn't have a palette!
@@ -113,9 +113,9 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
 }
 
 function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: Pointer<STCIHeader>): BOOLEAN {
-  UINT32 uiFileSectionSize;
-  UINT32 uiBytesRead;
-  PTR pSTCIPalette;
+  let uiFileSectionSize: UINT32;
+  let uiBytesRead: UINT32;
+  let pSTCIPalette: PTR;
 
   if (fContents & IMAGE_PALETTE) {
     // Allocate memory for reading in the palette
@@ -264,8 +264,8 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
 }
 
 function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
-  UINT16 usIndex;
-  STCIPaletteElement *pubPalette;
+  let usIndex: UINT16;
+  let pubPalette: Pointer<STCIPaletteElement>;
 
   pubPalette = (STCIPaletteElement *)pSTCIPalette;
 
@@ -289,9 +289,9 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
 }
 
 function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): BOOLEAN {
-  HWFILE hFile;
-  STCIHeader Header;
-  UINT32 uiBytesRead;
+  let hFile: HWFILE;
+  let Header: STCIHeader;
+  let uiBytesRead: UINT32;
 
   CHECKF(FileExists(ImageFile));
 

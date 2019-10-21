@@ -1,15 +1,16 @@
 const NUM_DAYS_TILL_UNPAID_RPC_QUITS = 3;
 
 // can you say me too after someone has said thier contract about to end
-BOOLEAN fContractOverMeTooFlag = FALSE;
-BOOLEAN fContractOverAndIWontRenewMeTooFlag = FALSE;
-BOOLEAN fProcessingAMerc = FALSE;
-SOLDIERTYPE *pProcessingSoldier = NULL;
-extern BOOLEAN gfFirstMercSayingQuoteWillLeaveNoMatterWhat = FALSE;
+let fContractOverMeTooFlag: BOOLEAN = FALSE;
+let fContractOverAndIWontRenewMeTooFlag: BOOLEAN = FALSE;
+let fProcessingAMerc: BOOLEAN = FALSE;
+let pProcessingSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gfFirstMercSayingQuoteWillLeaveNoMatterWhat: BOOLEAN = FALSE;
 
 function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
-  SOLDIERTYPE *pKiller = NULL;
-  INT16 sSectorX, sSectorY;
+  let pKiller: Pointer<SOLDIERTYPE> = NULL;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
 
   // if the soldier HAS a profile
   if (pSoldier->ubProfile != NO_PROFILE) {
@@ -99,14 +100,14 @@ function StrategicHandlePlayerTeamMercDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
 
 // MercDailyUpdate() gets called every day at midnight.  If something is to happen to a merc that day, add an event for it.
 function MercDailyUpdate(): void {
-  INT32 cnt;
-  INT8 bLastTeamID;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let bLastTeamID: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   // SOLDIERTYPE *pQuitList[ 21 ];
-  MERCPROFILESTRUCT *pProfile;
-  UINT32 uiChance;
-  INT32 iOffset = 0;
-  BOOLEAN fFoundSomeOneForMenuShowing = FALSE;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let uiChance: UINT32;
+  let iOffset: INT32 = 0;
+  let fFoundSomeOneForMenuShowing: BOOLEAN = FALSE;
 
   // if its the first day, leave
   if (GetWorldDay() == 1)
@@ -183,8 +184,8 @@ function MercDailyUpdate(): void {
 
       // if the character is an RPC
       if (pSoldier->ubProfile >= FIRST_RPC && pSoldier->ubProfile < FIRST_NPC) {
-        INT16 sSalary = gMercProfiles[pSoldier->ubProfile].sSalary;
-        INT32 iMoneyOwedToMerc = 0;
+        let sSalary: INT16 = gMercProfiles[pSoldier->ubProfile].sSalary;
+        let iMoneyOwedToMerc: INT32 = 0;
 
         // increment the number of days the mercs has been on the team
         pSoldier->iTotalContractLength++;
@@ -211,7 +212,7 @@ function MercDailyUpdate(): void {
               gMercProfiles[pSoldier->ubProfile].iBalance = 0;
             }
           } else {
-            CHAR16 zMoney[128];
+            let zMoney: CHAR16[] /* [128] */;
 
             // create a string for the salary owed to the npc
             swprintf(zMoney, L"%d", sSalary);
@@ -486,7 +487,7 @@ void HandleMercsAboutToLeave( SOLDIERTYPE *pMercList )
 // ATE: This function deals with MERC MERC and NPC's leaving because of not getting paid...
 // NOT AIM renewals....
 function MercsContractIsFinished(ubID: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = &Menptr[ubID];
 
@@ -532,7 +533,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
 
 // ATE: Called for RPCs who should now complain about no pay...
 function RPCWhineAboutNoPay(ubID: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = &Menptr[ubID];
 
@@ -548,12 +549,12 @@ function RPCWhineAboutNoPay(ubID: UINT8): void {
 
 // OK loop through and check!
 function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT32 cnt;
-  UINT16 usItem;
-  INT8 bBestArmour = -1;
-  INT8 bBestArmourIndex = -1;
-  INT8 bBestGun = -1;
-  INT8 bBestGunIndex = -1;
+  let cnt: INT32;
+  let usItem: UINT16;
+  let bBestArmour: INT8 = -1;
+  let bBestArmourIndex: INT8 = -1;
+  let bBestGun: INT8 = -1;
+  let bBestGunIndex: INT8 = -1;
 
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
     usItem = pSoldier->inv[cnt].usItem;
@@ -597,7 +598,7 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
 }
 
 function MercComplainAboutEquipment(ubProfile: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (ubProfile == LARRY_NORMAL) {
     if (CheckFact(FACT_LARRY_CHANGED, 0)) {
@@ -623,17 +624,17 @@ function MercComplainAboutEquipment(ubProfile: UINT8): void {
 }
 
 function UpdateBuddyAndHatedCounters(): void {
-  INT8 bMercID;
-  INT32 iLoop;
-  INT8 bOtherID;
-  INT8 bLastTeamID;
-  UINT8 ubOtherProfileID;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pOtherSoldier;
-  MERCPROFILESTRUCT *pProfile;
-  BOOLEAN fSameGroupOnly;
+  let bMercID: INT8;
+  let iLoop: INT32;
+  let bOtherID: INT8;
+  let bLastTeamID: INT8;
+  let ubOtherProfileID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pOtherSoldier: Pointer<SOLDIERTYPE>;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let fSameGroupOnly: BOOLEAN;
 
-  BOOLEAN fUpdatedTimeTillNextHatedComplaint = FALSE;
+  let fUpdatedTimeTillNextHatedComplaint: BOOLEAN = FALSE;
 
   bMercID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;
@@ -814,8 +815,9 @@ function UpdateBuddyAndHatedCounters(): void {
 }
 
 function HourlyCamouflageUpdate(): void {
-  INT8 bMercID, bLastTeamID;
-  SOLDIERTYPE *pSoldier;
+  let bMercID: INT8;
+  let bLastTeamID: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   bMercID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;

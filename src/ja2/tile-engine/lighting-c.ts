@@ -25,35 +25,35 @@ const LIGHT_TREE_REVEAL = 5; // width of rect
 // Local-use only prototypes
 
 // Top node of linked lists, NULL = FREE
-LIGHT_NODE *pLightList[MAX_LIGHT_TEMPLATES];
-UINT16 usTemplateSize[MAX_LIGHT_TEMPLATES];
-UINT16 *pLightRayList[MAX_LIGHT_TEMPLATES];
-UINT16 usRaySize[MAX_LIGHT_TEMPLATES];
-INT16 LightHeight[MAX_LIGHT_TEMPLATES];
-INT16 LightWidth[MAX_LIGHT_TEMPLATES];
-INT16 LightXOffset[MAX_LIGHT_TEMPLATES];
-INT16 LightYOffset[MAX_LIGHT_TEMPLATES];
-INT16 LightMapLeft[MAX_LIGHT_TEMPLATES];
-INT16 LightMapTop[MAX_LIGHT_TEMPLATES];
-INT16 LightMapRight[MAX_LIGHT_TEMPLATES];
-INT16 LightMapBottom[MAX_LIGHT_TEMPLATES];
-STR pLightNames[MAX_LIGHT_TEMPLATES];
+let pLightList: Pointer<LIGHT_NODE>[] /* [MAX_LIGHT_TEMPLATES] */;
+let usTemplateSize: UINT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let pLightRayList: Pointer<UINT16>[] /* [MAX_LIGHT_TEMPLATES] */;
+let usRaySize: UINT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightHeight: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightWidth: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightXOffset: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightYOffset: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightMapLeft: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightMapTop: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightMapRight: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let LightMapBottom: INT16[] /* [MAX_LIGHT_TEMPLATES] */;
+let pLightNames: STR[] /* [MAX_LIGHT_TEMPLATES] */;
 
 // Sprite data
-LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
+let LightSprites: LIGHT_SPRITE[] /* [MAX_LIGHT_SPRITES] */;
 
 // Lighting system general data
-UINT8 ubAmbientLightLevel = DEFAULT_SHADE_LEVEL;
-UINT8 gubNumLightColors = 1;
+let ubAmbientLightLevel: UINT8 = DEFAULT_SHADE_LEVEL;
+let gubNumLightColors: UINT8 = 1;
 
 // Externed in Rotting Corpses.c
-SGPPaletteEntry gpLightColors[3] = {
+let gpLightColors: SGPPaletteEntry[] /* [3] */ = {
   { 0, 0, 0, 0 },
   { 0, 0, 255, 0 },
   { 0, 0, 0, 0 },
 };
 
-SGPPaletteEntry gpOrigLights[2] = {
+let gpOrigLights: SGPPaletteEntry[] /* [2] */ = {
   { 0, 0, 0, 0 },
   { 0, 0, 255, 0 },
 };
@@ -122,7 +122,7 @@ UINT16 gusShadeLevels[16][3] =
 */
 
 // JA2 Gold:
-UINT16 gusShadeLevels[16][3] = {
+let gusShadeLevels: UINT16[][] /* [16][3] */ = {
   { 500, 500, 500 },
   { 450, 450, 450 }, // bright
   { 350, 350, 350 },
@@ -142,13 +142,14 @@ UINT16 gusShadeLevels[16][3] = {
 };
 
 // Set this true if you want the shadetables to be loaded from the text file.
-BOOLEAN gfLoadShadeTablesFromTextFile = FALSE;
+let gfLoadShadeTablesFromTextFile: BOOLEAN = FALSE;
 
 function LoadShadeTablesFromTextFile(): void {
-  FILE *fp;
-  INT32 i, j;
-  INT32 num;
-  UINT8 str[10];
+  let fp: Pointer<FILE>;
+  let i: INT32;
+  let j: INT32;
+  let num: INT32;
+  let str: UINT8[] /* [10] */;
   if (gfLoadShadeTablesFromTextFile) {
     fp = fopen("ShadeTables.txt", "r");
     Assert(fp);
@@ -166,7 +167,7 @@ function LoadShadeTablesFromTextFile(): void {
 }
 
 // Debug variable
-UINT32 gNodesAdded = 0;
+let gNodesAdded: UINT32 = 0;
 
 /****************************************************************************************
  InitLightingSystem
@@ -175,7 +176,7 @@ UINT32 gNodesAdded = 0;
 
 ***************************************************************************************/
 function InitLightingSystem(): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   LoadShadeTablesFromTextFile();
 
@@ -202,7 +203,7 @@ function InitLightingSystem(): BOOLEAN {
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
 function SetDefaultWorldLightingColors(): BOOLEAN {
-  SGPPaletteEntry pPal[2];
+  let pPal: SGPPaletteEntry[] /* [2] */;
 
   pPal[0].peRed = 0;
   pPal[0].peGreen = 0;
@@ -224,7 +225,7 @@ function SetDefaultWorldLightingColors(): BOOLEAN {
 
 ***************************************************************************************/
 function ShutdownLightingSystem(): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   // free up all allocated light nodes
   for (uiCount = 0; uiCount < MAX_LIGHT_TEMPLATES; uiCount++)
@@ -241,7 +242,7 @@ function ShutdownLightingSystem(): BOOLEAN {
 
 ***************************************************************************************/
 function LightReset(): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   // reset all light lists
   for (uiCount = 0; uiCount < MAX_LIGHT_TEMPLATES; uiCount++)
@@ -273,7 +274,7 @@ function LightReset(): BOOLEAN {
 
 ***************************************************************************************/
 function LightCreateTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8): UINT16 {
-  UINT16 usNumNodes;
+  let usNumNodes: UINT16;
 
   // create a new list
   if (pLightList[iLight] == NULL) {
@@ -307,7 +308,7 @@ function LightCreateTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: U
 
 ***************************************************************************************/
 function LightAddTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8): UINT16 {
-  UINT16 usCount;
+  let usCount: UINT16;
 
   for (usCount = 0; usCount < usTemplateSize[iLight]; usCount++) {
     if (((pLightList[iLight] + usCount)->iDX == iX) && ((pLightList[iLight] + usCount)->iDY == iY)) {
@@ -325,7 +326,7 @@ function LightAddTemplateNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT
 
 ***************************************************************************************/
 function LightAddRayNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8, usFlags: UINT16): UINT16 {
-  UINT16 usNumNodes;
+  let usNumNodes: UINT16;
 
   // create a new list
   if (pLightRayList[iLight] == NULL) {
@@ -352,7 +353,7 @@ function LightAddRayNode(iLight: INT32, iX: INT16, iY: INT16, ubLight: UINT8, us
 
 ***************************************************************************************/
 function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16, ubLight: UINT8, usFlags: UINT16): UINT16 {
-  UINT16 usNumNodes;
+  let usNumNodes: UINT16;
 
   // create a new list
   if (pLightRayList[iLight] == NULL) {
@@ -384,7 +385,8 @@ function LightInsertRayNode(iLight: INT32, usIndex: UINT16, iX: INT16, iY: INT16
 
 ***************************************************************************************/
 function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
-  UINT16 usTileNo, usSrcTileNo;
+  let usTileNo: UINT16;
+  let usSrcTileNo: UINT16;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -402,8 +404,8 @@ function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   if (gpWorldLevelData[usTileNo].sHeight > gpWorldLevelData[usSrcTileNo].sHeight)
     return TRUE;
   {
-    UINT16 usTileNo;
-    LEVELNODE *pStruct;
+    let usTileNo: UINT16;
+    let pStruct: Pointer<LEVELNODE>;
 
     usTileNo = MAPROWCOLTOPOS(iY, iX);
 
@@ -428,10 +430,10 @@ function LightTileBlocked(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
 function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOOLEAN {
   // LEVELNODE *pStruct;
   // UINT32 uiType;
-  UINT16 usTileNo;
-  UINT16 usSrcTileNo;
-  INT8 bDirection;
-  UINT8 ubTravelCost;
+  let usTileNo: UINT16;
+  let usSrcTileNo: UINT16;
+  let bDirection: INT8;
+  let ubTravelCost: UINT8;
   // INT8		bWallCount = 0;
   // UINT16	usWallOrientation;
 
@@ -462,7 +464,7 @@ function LightTileHasWall(iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16): BOO
   bDirection = atan8(iSrcX, iSrcY, iX, iY);
 
   if (usTileNo == 20415 && bDirection == 3) {
-    int i = 0;
+    let i: int = 0;
   }
 
   ubTravelCost = gubWorldMovementCosts[usTileNo][bDirection][0];
@@ -521,7 +523,7 @@ function LightDelete(iLight: INT32): BOOLEAN {
 
 ***************************************************************************************/
 function LightGetFree(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < MAX_LIGHT_TEMPLATES; uiCount++)
     if (pLightList[uiCount] == NULL)
@@ -537,7 +539,8 @@ function LightGetFree(): INT32 {
 
 ***************************************************************************************/
 function LinearDistance(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): INT32 {
-  INT32 iDx, iDy;
+  let iDx: INT32;
+  let iDy: INT32;
 
   iDx = abs(iX1 - iX2);
   iDx *= iDx;
@@ -555,7 +558,8 @@ function LinearDistance(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): INT32 {
 
 ***************************************************************************************/
 function LinearDistanceDouble(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): DOUBLE {
-  INT32 iDx, iDy;
+  let iDx: INT32;
+  let iDy: INT32;
 
   iDx = abs(iX1 - iX2);
   iDx *= iDx;
@@ -572,8 +576,8 @@ function LinearDistanceDouble(iX1: INT16, iY1: INT16, iX2: INT16, iY2: INT16): D
 
 ***************************************************************************************/
 function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
-  LEVELNODE *pNode;
-  INT32 iSum;
+  let pNode: Pointer<LEVELNODE>;
+  let iSum: INT32;
 
   if (bLevel == 0) {
     pNode = gpWorldLevelData[sGridNo].pLandHead;
@@ -599,7 +603,7 @@ function LightTrueLevel(sGridNo: INT16, bLevel: INT8): UINT8 {
 
 ***************************************************************************************/
 function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeAdd: UINT8, fFake: BOOLEAN): void {
-  INT16 sSum;
+  let sSum: INT16;
 
   pNode->ubSumLights += ubShadeAdd;
   if (fFake) {
@@ -624,7 +628,7 @@ function LightAddTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShad
 
 ***************************************************************************************/
 function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, ubShadeSubtract: UINT8, fFake: BOOLEAN): void {
-  INT16 sSum;
+  let sSum: INT16;
 
   if (ubShadeSubtract > pNode->ubSumLights) {
     pNode->ubSumLights = 0;
@@ -657,11 +661,16 @@ function LightSubtractTileNode(pNode: Pointer<LEVELNODE>, uiLightType: UINT32, u
 
 ***************************************************************************************/
 function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
-  LEVELNODE *pLand, *pStruct, *pObject, *pMerc, *pRoof, *pOnRoof;
-  UINT8 ubShadeAdd;
-  UINT32 uiTile;
-  BOOLEAN fLitWall = FALSE;
-  BOOLEAN fFake;
+  let pLand: Pointer<LEVELNODE>;
+  let pStruct: Pointer<LEVELNODE>;
+  let pObject: Pointer<LEVELNODE>;
+  let pMerc: Pointer<LEVELNODE>;
+  let pRoof: Pointer<LEVELNODE>;
+  let pOnRoof: Pointer<LEVELNODE>;
+  let ubShadeAdd: UINT8;
+  let uiTile: UINT32;
+  let fLitWall: BOOLEAN = FALSE;
+  let fFake: BOOLEAN;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -768,11 +777,16 @@ function LightAddTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16
 
 ***************************************************************************************/
 function LightSubtractTile(uiLightType: UINT32, iSrcX: INT16, iSrcY: INT16, iX: INT16, iY: INT16, ubShade: UINT8, uiFlags: UINT32, fOnlyWalls: BOOLEAN): BOOLEAN {
-  LEVELNODE *pLand, *pStruct, *pObject, *pMerc, *pRoof, *pOnRoof;
-  UINT8 ubShadeSubtract;
-  UINT32 uiTile;
-  BOOLEAN fLitWall = FALSE;
-  BOOLEAN fFake; // only passed in to land and roof layers; others get fed FALSE
+  let pLand: Pointer<LEVELNODE>;
+  let pStruct: Pointer<LEVELNODE>;
+  let pObject: Pointer<LEVELNODE>;
+  let pMerc: Pointer<LEVELNODE>;
+  let pRoof: Pointer<LEVELNODE>;
+  let pOnRoof: Pointer<LEVELNODE>;
+  let ubShadeSubtract: UINT8;
+  let uiTile: UINT32;
+  let fLitWall: BOOLEAN = FALSE;
+  let fFake: BOOLEAN; // only passed in to land and roof layers; others get fed FALSE
 
   Assert(gpWorldLevelData != NULL);
 
@@ -898,8 +912,14 @@ function LightSetNaturalTileNode(pNode: Pointer<LEVELNODE>, ubShade: UINT8): voi
 
 ***************************************************************************************/
 function LightSetNaturalTile(iX: INT16, iY: INT16, ubShade: UINT8): BOOLEAN {
-  LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pMerc;
-  UINT32 uiIndex;
+  let pLand: Pointer<LEVELNODE>;
+  let pStruct: Pointer<LEVELNODE>;
+  let pObject: Pointer<LEVELNODE>;
+  let pRoof: Pointer<LEVELNODE>;
+  let pOnRoof: Pointer<LEVELNODE>;
+  let pTopmost: Pointer<LEVELNODE>;
+  let pMerc: Pointer<LEVELNODE>;
+  let uiIndex: UINT32;
 
   CHECKF(gpWorldLevelData != NULL);
 
@@ -978,8 +998,14 @@ function LightResetTileNode(pNode: Pointer<LEVELNODE>): void {
 
 ***************************************************************************************/
 function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
-  LEVELNODE *pLand, *pStruct, *pObject, *pRoof, *pOnRoof, *pTopmost, *pMerc;
-  UINT32 uiTile;
+  let pLand: Pointer<LEVELNODE>;
+  let pStruct: Pointer<LEVELNODE>;
+  let pObject: Pointer<LEVELNODE>;
+  let pRoof: Pointer<LEVELNODE>;
+  let pOnRoof: Pointer<LEVELNODE>;
+  let pTopmost: Pointer<LEVELNODE>;
+  let pMerc: Pointer<LEVELNODE>;
+  let uiTile: UINT32;
 
   CHECKF(gpWorldLevelData != NULL);
 
@@ -1041,7 +1067,8 @@ function LightResetTile(iX: INT16, iY: INT16): BOOLEAN {
 
 ***************************************************************************************/
 function LightResetAllTiles(): BOOLEAN {
-  INT16 iCountY, iCountX;
+  let iCountY: INT16;
+  let iCountX: INT16;
 
   for (iCountY = 0; iCountY < WORLD_ROWS; iCountY++)
     for (iCountX = 0; iCountX < WORLD_COLS; iCountX++)
@@ -1142,10 +1169,10 @@ function LightGetLastNode(iLight: INT32): UINT16 {
 
 ***************************************************************************************/
 function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
-  BOOLEAN fDuplicate = FALSE;
-  DOUBLE dDistance;
-  UINT8 ubShade;
-  INT32 iLightDecay;
+  let fDuplicate: BOOLEAN = FALSE;
+  let dDistance: DOUBLE;
+  let ubShade: UINT8;
+  let iLightDecay: INT32;
 
   dDistance = LinearDistanceDouble(iX, iY, iHotSpotX, iHotSpotY);
   dDistance /= DISTANCE_SCALE;
@@ -1171,9 +1198,9 @@ function LightAddNode(iLight: INT32, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT
 
 ***************************************************************************************/
 function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iHotSpotY: INT16, iX: INT16, iY: INT16, ubIntensity: UINT8, uiFlags: UINT16): BOOLEAN {
-  DOUBLE dDistance;
-  UINT8 ubShade;
-  INT32 iLightDecay;
+  let dDistance: DOUBLE;
+  let ubShade: UINT8;
+  let iLightDecay: INT32;
 
   dDistance = LinearDistanceDouble(iX, iY, iHotSpotX, iHotSpotY);
   dDistance /= DISTANCE_SCALE;
@@ -1201,7 +1228,7 @@ function LightInsertNode(iLight: INT32, usLightIns: UINT16, iHotSpotX: INT16, iH
 
 ***************************************************************************************/
 function LightFindNextRay(iLight: INT32, usIndex: UINT16): UINT16 {
-  UINT16 usNodeIndex;
+  let usNodeIndex: UINT16;
 
   usNodeIndex = usIndex;
   while ((usNodeIndex < usRaySize[iLight]) && !(*(pLightRayList[iLight] + usNodeIndex) & LIGHT_NEW_RAY))
@@ -1218,11 +1245,25 @@ function LightFindNextRay(iLight: INT32, usIndex: UINT16): UINT16 {
 
 ***************************************************************************************/
 function LightCastRay(iLight: INT32, iStartX: INT16, iStartY: INT16, iEndPointX: INT16, iEndPointY: INT16, ubStartIntens: UINT8, ubEndIntens: UINT8): BOOLEAN {
-  INT16 AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
-  INT32 WholeStep, InitialPixelCount, FinalPixelCount, i, j, RunLength;
-  INT16 iXPos, iYPos, iEndY, iEndX;
-  UINT16 usCurNode = 0, usFlags = 0;
-  BOOLEAN fInsertNodes = FALSE;
+  let AdjUp: INT16;
+  let AdjDown: INT16;
+  let ErrorTerm: INT16;
+  let XAdvance: INT16;
+  let XDelta: INT16;
+  let YDelta: INT16;
+  let WholeStep: INT32;
+  let InitialPixelCount: INT32;
+  let FinalPixelCount: INT32;
+  let i: INT32;
+  let j: INT32;
+  let RunLength: INT32;
+  let iXPos: INT16;
+  let iYPos: INT16;
+  let iEndY: INT16;
+  let iEndX: INT16;
+  let usCurNode: UINT16 = 0;
+  let usFlags: UINT16 = 0;
+  let fInsertNodes: BOOLEAN = FALSE;
 
   if ((iEndPointX > 0) && (iEndPointY > 0))
     usFlags = LIGHT_BACKLIGHT;
@@ -1504,11 +1545,13 @@ and to avoid nasty boundary conditions and division by 0 */
 
 ***************************************************************************************/
 function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
-  INT16 iX, iY;
-  INT32 WorkingX, WorkingY;
-  DOUBLE ASquared;
-  DOUBLE BSquared;
-  DOUBLE Temp;
+  let iX: INT16;
+  let iY: INT16;
+  let WorkingX: INT32;
+  let WorkingY: INT32;
+  let ASquared: DOUBLE;
+  let BSquared: DOUBLE;
+  let Temp: DOUBLE;
 
   iX = 0;
   iY = 0;
@@ -1591,7 +1634,8 @@ function LightGenerateElliptical(iLight: INT32, iIntensity: UINT8, iA: INT16, iB
 
 ***************************************************************************************/
 function LightGenerateSquare(iLight: INT32, iIntensity: UINT8, iA: INT16, iB: INT16): BOOLEAN {
-  INT16 iX, iY;
+  let iX: INT16;
+  let iY: INT16;
 
   for (iX = 0 - iA; iX <= 0 + iA; iX++)
     LightCastRay(iLight, 0, 0, iX, (INT16)(0 - iB), iIntensity, 1);
@@ -1637,9 +1681,10 @@ function LightGenerateBeam(iLight: INT32, iIntensity: UINT8, iLength: INT16, iRa
 
 ***************************************************************************************/
 function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
-  INT16 iCountY, iCountX;
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let iCountY: INT16;
+  let iCountX: INT16;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   ubAmbientLightLevel = iIntensity;
 
@@ -1678,7 +1723,8 @@ function LightSetBaseLevel(iIntensity: UINT8): BOOLEAN {
 
 ***************************************************************************************/
 function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
-  INT16 iCountY, iCountX;
+  let iCountY: INT16;
+  let iCountX: INT16;
 
   ubAmbientLightLevel = __max(SHADE_MAX, ubAmbientLightLevel - iIntensity);
 
@@ -1701,7 +1747,8 @@ function LightAddBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
 
 ***************************************************************************************/
 function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN {
-  INT16 iCountY, iCountX;
+  let iCountY: INT16;
+  let iCountX: INT16;
 
   ubAmbientLightLevel = __min(SHADE_MIN, ubAmbientLightLevel + iIntensity);
 
@@ -1724,8 +1771,8 @@ function LightSubtractBaseLevel(uiLightType: UINT32, iIntensity: UINT8): BOOLEAN
 
 ***************************************************************************************/
 function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
-  INT32 iLight;
-  UINT8 usName[14];
+  let iLight: INT32;
+  let usName: UINT8[] /* [14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1)) {
@@ -1746,8 +1793,8 @@ function LightCreateOmni(ubIntensity: UINT8, iRadius: INT16): INT32 {
 
 ***************************************************************************************/
 function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
-  INT32 iLight;
-  UINT8 usName[14];
+  let iLight: INT32;
+  let usName: UINT8[] /* [14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1)) {
@@ -1768,8 +1815,8 @@ function LightCreateSquare(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16)
 
 ***************************************************************************************/
 function LightCreateElliptical(ubIntensity: UINT8, iRadius1: INT16, iRadius2: INT16): INT32 {
-  INT32 iLight;
-  UINT8 usName[14];
+  let iLight: INT32;
+  let usName: UINT8[] /* [14] */;
 
   iLight = LightGetFree();
   if (iLight != (-1))
@@ -1801,13 +1848,14 @@ function LightIlluminateWall(iSourceX: INT16, iSourceY: INT16, iTileX: INT16, iT
 
 ***************************************************************************************/
 function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
-  LIGHT_NODE *pLight;
-  UINT16 uiCount;
-  UINT16 usNodeIndex;
-  UINT32 uiFlags;
-  INT32 iOldX, iOldY;
-  BOOLEAN fBlocked = FALSE;
-  BOOLEAN fOnlyWalls;
+  let pLight: Pointer<LIGHT_NODE>;
+  let uiCount: UINT16;
+  let usNodeIndex: UINT16;
+  let uiFlags: UINT32;
+  let iOldX: INT32;
+  let iOldY: INT32;
+  let fBlocked: BOOLEAN = FALSE;
+  let fOnlyWalls: BOOLEAN;
 
   // MAP_ELEMENT * pMapElement;
 
@@ -1894,10 +1942,13 @@ function LightDraw(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiS
 }
 
 function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
-  LEVELNODE *pStruct;
-  UINT32 uiTile;
-  BOOLEAN fRerender = FALSE, fHitWall = FALSE, fDoRightWalls = TRUE, fDoLeftWalls = TRUE;
-  TILE_ELEMENT *TileElem;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTile: UINT32;
+  let fRerender: BOOLEAN = FALSE;
+  let fHitWall: BOOLEAN = FALSE;
+  let fDoRightWalls: BOOLEAN = TRUE;
+  let fDoLeftWalls: BOOLEAN = TRUE;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -1968,10 +2019,13 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
 }
 
 function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
-  LEVELNODE *pStruct;
-  UINT32 uiTile;
-  BOOLEAN fRerender = FALSE, fHitWall = FALSE, fDoRightWalls = TRUE, fDoLeftWalls = TRUE;
-  TILE_ELEMENT *TileElem;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTile: UINT32;
+  let fRerender: BOOLEAN = FALSE;
+  let fHitWall: BOOLEAN = FALSE;
+  let fDoRightWalls: BOOLEAN = TRUE;
+  let fDoLeftWalls: BOOLEAN = TRUE;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -2043,9 +2097,9 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
 
 ***************************************************************************************/
 function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
-  LIGHT_NODE *pLight;
-  UINT16 uiCount;
-  UINT16 usNodeIndex;
+  let pLight: Pointer<LIGHT_NODE>;
+  let uiCount: UINT16;
+  let usNodeIndex: UINT16;
   if (pLightList[0] == NULL)
     return FALSE;
   for (uiCount = 0; uiCount < usRaySize[0]; uiCount++) {
@@ -2066,10 +2120,13 @@ function CalcTranslucentWalls(iX: INT16, iY: INT16): BOOLEAN {
 }
 
 function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
-  LEVELNODE *pStruct, *pLand;
-  UINT32 uiTile;
-  BOOLEAN fRerender = FALSE, fHitWall = FALSE, fThroughWall = FALSE;
-  TILE_ELEMENT *TileElem;
+  let pStruct: Pointer<LEVELNODE>;
+  let pLand: Pointer<LEVELNODE>;
+  let uiTile: UINT32;
+  let fRerender: BOOLEAN = FALSE;
+  let fHitWall: BOOLEAN = FALSE;
+  let fThroughWall: BOOLEAN = FALSE;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -2129,9 +2186,9 @@ each tile drawn to facilitate animating the drawing process for debugging.
 
 ***************************************************************************************/
 function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
-  LIGHT_NODE *pLight;
-  static UINT16 uiCount = 0;
-  UINT16 usNodeIndex;
+  let pLight: Pointer<LIGHT_NODE>;
+  /* static */ let uiCount: UINT16 = 0;
+  let usNodeIndex: UINT16;
 
   if (fReset)
     uiCount = 0;
@@ -2164,10 +2221,12 @@ function LightShowRays(iX: INT16, iY: INT16, fReset: BOOLEAN): BOOLEAN {
 
 ***************************************************************************************/
 function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEAN {
-  LEVELNODE *pStruct, *pLand;
-  UINT32 uiTile;
-  BOOLEAN fRerender = FALSE, fHitWall = FALSE;
-  TILE_ELEMENT *TileElem;
+  let pStruct: Pointer<LEVELNODE>;
+  let pLand: Pointer<LEVELNODE>;
+  let uiTile: UINT32;
+  let fRerender: BOOLEAN = FALSE;
+  let fHitWall: BOOLEAN = FALSE;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   Assert(gpWorldLevelData != NULL);
 
@@ -2223,9 +2282,9 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
 
 ***************************************************************************************/
 function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
-  LIGHT_NODE *pLight;
-  UINT16 uiCount;
-  UINT16 usNodeIndex;
+  let pLight: Pointer<LIGHT_NODE>;
+  let uiCount: UINT16;
+  let usNodeIndex: UINT16;
 
   if (pLightList[0] == NULL)
     return FALSE;
@@ -2253,9 +2312,9 @@ function LightHideRays(iX: INT16, iY: INT16): BOOLEAN {
 
 ***************************************************************************************/
 function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
-  LIGHT_NODE *pLight;
-  UINT16 uiCount;
-  UINT16 usNodeIndex;
+  let pLight: Pointer<LIGHT_NODE>;
+  let uiCount: UINT16;
+  let usNodeIndex: UINT16;
 
   if (pLightList[0] == NULL)
     return FALSE;
@@ -2282,11 +2341,12 @@ function ApplyTranslucencyToWalls(iX: INT16, iY: INT16): BOOLEAN {
                 Makes all the near-side trees around a given coordinate translucent.
 ***************************************************************************************/
 function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
-  INT32 iCountX, iCountY;
-  UINT32 uiTile;
-  LEVELNODE *pNode;
-  BOOLEAN fRerender = FALSE;
-  UINT32 fTileFlags;
+  let iCountX: INT32;
+  let iCountY: INT32;
+  let uiTile: UINT32;
+  let pNode: Pointer<LEVELNODE>;
+  let fRerender: BOOLEAN = FALSE;
+  let fTileFlags: UINT32;
 
   for (iCountY = iY; iCountY < (INT16)(iY + LIGHT_TREE_REVEAL); iCountY++)
     for (iCountX = iX; iCountX < (INT16)(iX + LIGHT_TREE_REVEAL); iCountX++) {
@@ -2322,11 +2382,12 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
                 Removes the translucency from any trees in the area.
 ***************************************************************************************/
 function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
-  INT32 iCountX, iCountY;
-  UINT32 uiTile;
-  LEVELNODE *pNode;
-  BOOLEAN fRerender = FALSE;
-  UINT32 fTileFlags;
+  let iCountX: INT32;
+  let iCountY: INT32;
+  let uiTile: UINT32;
+  let pNode: Pointer<LEVELNODE>;
+  let fRerender: BOOLEAN = FALSE;
+  let fTileFlags: UINT32;
 
   // Kris:  added map boundary checking!!!
   for (iCountY = (INT16)__max(iY - LIGHT_TREE_REVEAL, 0); iCountY < (INT16)__min(iY + LIGHT_TREE_REVEAL, WORLD_ROWS - 1); iCountY++)
@@ -2364,13 +2425,14 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
 
 ***************************************************************************************/
 function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, uiSprite: UINT32): BOOLEAN {
-  LIGHT_NODE *pLight;
-  UINT16 uiCount;
-  UINT16 usNodeIndex;
-  UINT32 uiFlags;
-  INT32 iOldX, iOldY;
-  BOOLEAN fBlocked = FALSE;
-  BOOLEAN fOnlyWalls;
+  let pLight: Pointer<LIGHT_NODE>;
+  let uiCount: UINT16;
+  let usNodeIndex: UINT16;
+  let uiFlags: UINT32;
+  let iOldX: INT32;
+  let iOldY: INT32;
+  let fBlocked: BOOLEAN = FALSE;
+  let fOnlyWalls: BOOLEAN;
 
   if (pLightList[iLight] == NULL)
     return FALSE;
@@ -2436,10 +2498,12 @@ function LightErase(uiLightType: UINT32, iLight: INT32, iX: INT16, iY: INT16, ui
 
 ***************************************************************************************/
 function LightCalcRect(iLight: INT32): BOOLEAN {
-  SGPRect MaxRect;
-  INT16 sXValue, sYValue, sDummy;
-  UINT32 uiCount;
-  LIGHT_NODE *pLight;
+  let MaxRect: SGPRect;
+  let sXValue: INT16;
+  let sYValue: INT16;
+  let sDummy: INT16;
+  let uiCount: UINT32;
+  let pLight: Pointer<LIGHT_NODE>;
 
   if (pLightList[iLight] == NULL)
     return FALSE;
@@ -2497,8 +2561,8 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
 
 ***************************************************************************************/
 function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
-  HWFILE hFile;
-  STR pName;
+  let hFile: HWFILE;
+  let pName: STR;
 
   if (pLightList[iLight] == NULL)
     return FALSE;
@@ -2529,9 +2593,10 @@ function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
 
 ***************************************************************************************/
 function LightLoad(pFilename: STR): INT32 {
-  HWFILE hFile;
-  LIGHT_NODE *pNewLight = NULL, *pLastLight = NULL;
-  INT32 iLight;
+  let hFile: HWFILE;
+  let pNewLight: Pointer<LIGHT_NODE> = NULL;
+  let pLastLight: Pointer<LIGHT_NODE> = NULL;
+  let iLight: INT32;
 
   if ((iLight = LightGetFree()) == (-1))
     return -1;
@@ -2572,7 +2637,7 @@ function LightLoad(pFilename: STR): INT32 {
 
 ***************************************************************************************/
 function LightLoadCachedTemplate(pFilename: STR): INT32 {
-  INT32 iCount;
+  let iCount: INT32;
 
   for (iCount = 0; iCount < MAX_LIGHT_TEMPLATES; iCount++) {
     if ((pLightNames[iCount] != NULL) && !(stricmp(pFilename, pLightNames[iCount])))
@@ -2595,10 +2660,12 @@ function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
         Sets the number of light colors, and the RGB value for each.
 
 ***************************************************************************************/
-BOOLEAN gfEditorForceRebuildAllColors = FALSE;
+let gfEditorForceRebuildAllColors: BOOLEAN = FALSE;
 
 function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOOLEAN {
-  INT16 sRed, sGreen, sBlue;
+  let sRed: INT16;
+  let sGreen: INT16;
+  let sBlue: INT16;
 
   Assert(ubNumColors >= 1 && ubNumColors <= 2);
   Assert(pPal);
@@ -2661,7 +2728,7 @@ function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOO
  *
  ********************************************************************************/
 function LightSpriteGetFree(): INT32 {
-  INT32 iCount;
+  let iCount: INT32;
 
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
     if (!(LightSprites[iCount].uiFlags & LIGHT_SPR_ACTIVE))
@@ -2679,7 +2746,7 @@ function LightSpriteGetFree(): INT32 {
  *
  ********************************************************************************/
 function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
-  INT32 iSprite;
+  let iSprite: INT32;
 
   if ((iSprite = LightSpriteGetFree()) != (-1)) {
     memset(&LightSprites[iSprite], 0, sizeof(LIGHT_SPRITE));
@@ -2796,8 +2863,8 @@ function LightSpriteRender(): BOOLEAN {
  *
  ********************************************************************************/
 function LightSpriteRenderAll(): BOOLEAN {
-  INT32 iCount;
-  BOOLEAN fRenderLights = FALSE;
+  let iCount: INT32;
+  let fRenderLights: BOOLEAN = FALSE;
 
   LightResetAllTiles();
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
@@ -2942,7 +3009,7 @@ function LightSpriteDirty(iSprite: INT32): BOOLEAN {
 }
 
 function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   pObj->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
@@ -2954,7 +3021,7 @@ function CreateObjectPalette(pObj: HVOBJECT, uiBase: UINT32, pShadePal: Pointer<
 }
 
 function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT32, pShadePal: Pointer<SGPPaletteEntry>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   pSoldier->pShades[uiBase] = Create16BPPPaletteShaded(pShadePal, gusShadeLevels[0][0], gusShadeLevels[0][1], gusShadeLevels[0][2], TRUE);
 
@@ -2977,9 +3044,9 @@ function CreateSoldierShadedPalette(pSoldier: Pointer<SOLDIERTYPE>, uiBase: UINT
 **********************************************************************************************/
 
 function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BOOLEAN): UINT16 {
-  UINT32 uiCount;
-  SGPPaletteEntry LightPal[256];
-  BOOLEAN fLoaded = FALSE;
+  let uiCount: UINT32;
+  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let fLoaded: BOOLEAN = FALSE;
 
   Assert(pObj != NULL);
 
@@ -3038,8 +3105,8 @@ function CreateTilePaletteTables(pObj: HVOBJECT, uiTileIndex: UINT32, fForce: BO
 }
 
 function CreateSoldierPaletteTables(pSoldier: Pointer<SOLDIERTYPE>, uiType: UINT32): UINT16 {
-  SGPPaletteEntry LightPal[256];
-  UINT32 uiCount;
+  let LightPal: SGPPaletteEntry[] /* [256] */;
+  let uiCount: UINT32;
 
   // create the basic shade table
   for (uiCount = 0; uiCount < 256; uiCount++) {

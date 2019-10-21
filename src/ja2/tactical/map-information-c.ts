@@ -6,15 +6,15 @@
 const MAJOR_MAP_VERSION = 5.00;
 // #endif
 
-FLOAT gdMajorMapVersion = MAJOR_MAP_VERSION;
+let gdMajorMapVersion: FLOAT = MAJOR_MAP_VERSION;
 
-BOOLEAN gfWorldLoaded;
+let gfWorldLoaded: BOOLEAN;
 
-MAPCREATE_STRUCT gMapInformation;
+let gMapInformation: MAPCREATE_STRUCT;
 
 // Current minor map version updater.
 const MINOR_MAP_VERSION = 25;
-UINT8 gubMinorMapVersion = MINOR_MAP_VERSION;
+let gubMinorMapVersion: UINT8 = MINOR_MAP_VERSION;
 
 /*
 MINOR_MAP_VERSION Log -- Created by Kris Morness, November 14, 1997
@@ -55,10 +55,14 @@ Version 11 -- Kris -- obsolete May 2, 1998
 // EntryPoints can't be placed on the top two gridnos in a map.  So all we do in this case
 // is return the closest gridno.  Returns TRUE if the mapindex changes.
 function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
-  INT16 sXMapPos, sYMapPos;
-  INT16 sWorldX, sWorldY;
-  INT32 iNewMapX, iNewMapY;
-  INT16 sTopLimit, sBottomLimit;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let iNewMapX: INT32;
+  let iNewMapY: INT32;
+  let sTopLimit: INT16;
+  let sBottomLimit: INT16;
 
   if (*sGridNo < 0)
     return FALSE; // entry point is non-existant
@@ -85,7 +89,7 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
 }
 
 function SaveMapInformation(fp: HWFILE): void {
-  UINT32 uiBytesWritten;
+  let uiBytesWritten: UINT32;
 
   gMapInformation.ubMapVersion = MINOR_MAP_VERSION;
   FileWrite(fp, &gMapInformation, sizeof(MAPCREATE_STRUCT), &uiBytesWritten);
@@ -118,7 +122,7 @@ function UpdateOldVersionMap(): void {
   }
   if (gMapInformation.ubMapVersion < 18) {
     // replace useless crowbars with proper ones
-    UINT32 i;
+    let i: UINT32;
     gMapInformation.ubMapVersion = 18;
     for (i = 0; i < guiNumWorldItems; i++) {
       if (gWorldItems[i].o.usItem == JAR_ELIXIR) {
@@ -141,7 +145,7 @@ function UpdateOldVersionMap(): void {
     ValidateEntryPointGridNo(&gMapInformation.sIsolatedGridNo);
   }
   if (gMapInformation.ubMapVersion < 21) {
-    SOLDIERINITNODE *curr;
+    let curr: Pointer<SOLDIERINITNODE>;
     // override any item slots being locked if there is no item in that slot.
     // Laymen terms:  If any items slots are locked to be empty, make them empty but available
     // for random item generation.
@@ -149,7 +153,7 @@ function UpdateOldVersionMap(): void {
     curr = gSoldierInitHead;
     while (curr) {
       if (curr->pDetailedPlacement) {
-        INT32 i;
+        let i: INT32;
         for (i = 0; i < NUM_INV_SLOTS; i++) {
           if (!curr->pDetailedPlacement->Inv[i].usItem) {
             if (curr->pDetailedPlacement->Inv[i].fFlags & OBJECT_UNDROPPABLE) {
@@ -169,7 +173,7 @@ function UpdateOldVersionMap(): void {
   }
   if (gMapInformation.ubMapVersion < 23) {
     // Allow map edgepoints to be regenerated as new system has been reenabled.
-    SOLDIERINITNODE *curr;
+    let curr: Pointer<SOLDIERINITNODE>;
     gMapInformation.ubMapVersion = 23;
     if (giCurrentTilesetID == 1) // cave/mine tileset only
     {
@@ -193,9 +197,9 @@ function UpdateOldVersionMap(): void {
 }
 
 function AutoCalculateItemNoOverwriteStatus(): void {
-  SOLDIERINITNODE *curr;
-  INT32 i;
-  OBJECTTYPE *pItem;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let i: INT32;
+  let pItem: Pointer<OBJECTTYPE>;
 
   // Recalculate the "no overwrite" status flag on all items.  There are two different cases:
   // 1)  If detailed placement has item, the item "no overwrite" flag is set

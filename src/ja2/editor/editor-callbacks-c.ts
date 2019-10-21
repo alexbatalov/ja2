@@ -360,7 +360,8 @@ function MapInfoDrawExitGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 
 function MapInfoEntryPointsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & (MSYS_CALLBACK_REASON_LBUTTON_UP | MSYS_CALLBACK_REASON_RBUTTON_UP)) {
-    INT16 x, sGridNo;
+    let x: INT16;
+    let sGridNo: INT16;
     for (x = MAPINFO_NORTH_POINT; x <= MAPINFO_ISOLATED_POINT; x++) {
       if (btn == ButtonList[iEditorButton[x]]) {
         SetEditorMapInfoTaskbarMode(x);
@@ -678,7 +679,7 @@ function MercsDeleteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT32 uiSlot;
+    let uiSlot: INT32;
     uiSlot = MSYS_GetBtnUserData(btn, 0);
     if (btn->uiFlags & BUTTON_CLICKED_ON)
       SetEnemyDroppableStatus(uiSlot, TRUE);
@@ -689,7 +690,7 @@ function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 
 function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubColorCode;
+    let ubColorCode: UINT8;
     ubColorCode = (UINT8)MSYS_GetBtnUserData(btn, 0);
     SetEnemyColorCode(ubColorCode);
   }
@@ -947,7 +948,7 @@ function MercsDirectionSetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gsSelectedMercID == -1)
       return;

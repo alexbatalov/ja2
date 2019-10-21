@@ -3,10 +3,10 @@
 //
 
 // RELEASE BUILD VERSION
-INT16 zVersionLabel[16] = { L"Release v1.12" };
+let zVersionLabel: INT16[] /* [16] */ = { L"Release v1.12" };
 
-INT8 czVersionNumber[16] = { "Build 04.12.02" };
-INT16 zTrackingNumber[16] = { L"Z" };
+let czVersionNumber: INT8[] /* [16] */ = { "Build 04.12.02" };
+let zTrackingNumber: INT16[] /* [16] */ = { L"Z" };
 
 //
 //		Keeps track of the saved game version.  Increment the saved game version whenever
@@ -14,4 +14,4 @@ INT16 zTrackingNumber[16] = { L"Z" };
 
 const SAVE_GAME_VERSION = 99;
 
-const UINT32 guiSavedGameVersion = SAVE_GAME_VERSION;
+const guiSavedGameVersion: UINT32 = SAVE_GAME_VERSION;

@@ -10,37 +10,43 @@ const MSGBOX_SMALL_BUTTON_X_SEP = 8;
 type MSGBOX_CALLBACK = (bExitValue: UINT8) => void;
 
 // old mouse x and y positions
-SGPPoint pOldMousePosition;
-SGPRect MessageBoxRestrictedCursorRegion;
+let pOldMousePosition: SGPPoint;
+let MessageBoxRestrictedCursorRegion: SGPRect;
 
 // if the cursor was locked to a region
-BOOLEAN fCursorLockedToArea = FALSE;
-BOOLEAN gfInMsgBox = FALSE;
+let fCursorLockedToArea: BOOLEAN = FALSE;
+let gfInMsgBox: BOOLEAN = FALSE;
 
-SGPRect gOldCursorLimitRectangle;
+let gOldCursorLimitRectangle: SGPRect;
 
-MESSAGE_BOX_STRUCT gMsgBox;
-BOOLEAN gfNewMessageBox = FALSE;
-BOOLEAN gfStartedFromGameScreen = FALSE;
-BOOLEAN gfStartedFromMapScreen = FALSE;
-BOOLEAN fRestoreBackgroundForMessageBox = FALSE;
-BOOLEAN gfDontOverRideSaveBuffer = TRUE; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
+let gMsgBox: MESSAGE_BOX_STRUCT;
+let gfNewMessageBox: BOOLEAN = FALSE;
+let gfStartedFromGameScreen: BOOLEAN = FALSE;
+let gfStartedFromMapScreen: BOOLEAN = FALSE;
+let fRestoreBackgroundForMessageBox: BOOLEAN = FALSE;
+let gfDontOverRideSaveBuffer: BOOLEAN = TRUE; // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
 
-CHAR16 gzUserDefinedButton1[128];
-CHAR16 gzUserDefinedButton2[128];
+let gzUserDefinedButton1: CHAR16[] /* [128] */;
+let gzUserDefinedButton2: CHAR16[] /* [128] */;
 
 function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): INT32 {
-  VSURFACE_DESC vs_desc;
-  UINT16 usTextBoxWidth;
-  UINT16 usTextBoxHeight;
-  SGPRect aRect;
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT8 *pDestBuf, *pSrcBuf;
-  INT16 sButtonX, sButtonY, sBlankSpace;
-  UINT8 ubMercBoxBackground = BASIC_MERC_POPUP_BACKGROUND, ubMercBoxBorder = BASIC_MERC_POPUP_BORDER;
-  UINT8 ubFontColor, ubFontShadowColor;
-  UINT16 usCursor;
-  INT32 iId = -1;
+  let vs_desc: VSURFACE_DESC;
+  let usTextBoxWidth: UINT16;
+  let usTextBoxHeight: UINT16;
+  let aRect: SGPRect;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let sButtonX: INT16;
+  let sButtonY: INT16;
+  let sBlankSpace: INT16;
+  let ubMercBoxBackground: UINT8 = BASIC_MERC_POPUP_BACKGROUND;
+  let ubMercBoxBorder: UINT8 = BASIC_MERC_POPUP_BORDER;
+  let ubFontColor: UINT8;
+  let ubFontShadowColor: UINT8;
+  let usCursor: UINT16;
+  let iId: INT32 = -1;
 
   GetMousePos(&pOldMousePosition);
 
@@ -427,7 +433,7 @@ function MsgBoxClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 }
 
 function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -443,7 +449,7 @@ function OKMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -459,7 +465,7 @@ function YESMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -475,7 +481,7 @@ function NOMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -491,7 +497,7 @@ function ContractMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function LieMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static BOOLEAN fLButtonDown = FALSE;
+  /* static */ let fLButtonDown: BOOLEAN = FALSE;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -518,9 +524,11 @@ function NumberedMsgBoxCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ExitMsgBox(ubExitCode: INT8): UINT32 {
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT8 *pDestBuf, *pSrcBuf;
-  SGPPoint pPosition;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let pPosition: SGPPoint;
 
   // Delete popup!
   RemoveMercPopupBoxFromIndex(gMsgBox.iBoxId);
@@ -661,7 +669,7 @@ function MessageBoxScreenInit(): UINT32 {
 }
 
 function MessageBoxScreenHandle(): UINT32 {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   if (gfNewMessageBox) {
     // If in game screen....
@@ -847,19 +855,19 @@ function MessageBoxScreenShutdown(): UINT32 {
 
 // a basic box that don't care what screen we came from
 function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  SGPRect CenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
 function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  SGPRect CenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y / 2 };
+  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y / 2 };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 
 // a basic box that don't care what screen we came from
 function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
-  SGPRect CenteringRect = { 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = { 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y };
   DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
 }
 

@@ -1,6 +1,6 @@
 // IMP personality entrance buttons
-INT32 giIMPPersonalityEntranceButton[1];
-INT32 giIMPPersonalityEntranceButtonImage[1];
+let giIMPPersonalityEntranceButton: INT32[] /* [1] */;
+let giIMPPersonalityEntranceButtonImage: INT32[] /* [1] */;
 
 function EnterIMPPersonalityEntrance(): void {
   // create buttons needed

@@ -4,57 +4,57 @@
 // The gfKeyState table is used to track which of the keys is up or down at any one time. This is used while polling
 // the interface.
 
-BOOLEAN gfKeyState[256]; // TRUE = Pressed, FALSE = Not Pressed
-BOOLEAN fCursorWasClipped = FALSE;
-RECT gCursorClipRect;
+let gfKeyState: BOOLEAN[] /* [256] */; // TRUE = Pressed, FALSE = Not Pressed
+let fCursorWasClipped: BOOLEAN = FALSE;
+let gCursorClipRect: RECT;
 
 // The gsKeyTranslationTables basically translates scan codes to our own key value table. Please note that the table is 2 bytes
 // wide per entry. This will be used since we will use 2 byte characters for translation purposes.
 
-UINT16 gfShiftState; // TRUE = Pressed, FALSE = Not Pressed
-UINT16 gfAltState; // TRUE = Pressed, FALSE = Not Pressed
-UINT16 gfCtrlState; // TRUE = Pressed, FALSE = Not Pressed
+let gfShiftState: UINT16; // TRUE = Pressed, FALSE = Not Pressed
+let gfAltState: UINT16; // TRUE = Pressed, FALSE = Not Pressed
+let gfCtrlState: UINT16; // TRUE = Pressed, FALSE = Not Pressed
 
 // These data structure are used to track the mouse while polling
 
-BOOLEAN gfTrackDblClick;
-UINT32 guiDoubleClkDelay; // Current delay in milliseconds for a delay
-UINT32 guiSingleClickTimer;
-UINT32 guiRecordedWParam;
-UINT32 guiRecordedLParam;
-UINT16 gusRecordedKeyState;
-BOOLEAN gfRecordedLeftButtonUp;
+let gfTrackDblClick: BOOLEAN;
+let guiDoubleClkDelay: UINT32; // Current delay in milliseconds for a delay
+let guiSingleClickTimer: UINT32;
+let guiRecordedWParam: UINT32;
+let guiRecordedLParam: UINT32;
+let gusRecordedKeyState: UINT16;
+let gfRecordedLeftButtonUp: BOOLEAN;
 
-UINT32 guiLeftButtonRepeatTimer;
-UINT32 guiRightButtonRepeatTimer;
+let guiLeftButtonRepeatTimer: UINT32;
+let guiRightButtonRepeatTimer: UINT32;
 
-BOOLEAN gfTrackMousePos; // TRUE = queue mouse movement events, FALSE = don't
-BOOLEAN gfLeftButtonState; // TRUE = Pressed, FALSE = Not Pressed
-BOOLEAN gfRightButtonState; // TRUE = Pressed, FALSE = Not Pressed
-UINT16 gusMouseXPos; // X position of the mouse on screen
-UINT16 gusMouseYPos; // y position of the mouse on screen
+let gfTrackMousePos: BOOLEAN; // TRUE = queue mouse movement events, FALSE = don't
+let gfLeftButtonState: BOOLEAN; // TRUE = Pressed, FALSE = Not Pressed
+let gfRightButtonState: BOOLEAN; // TRUE = Pressed, FALSE = Not Pressed
+let gusMouseXPos: UINT16; // X position of the mouse on screen
+let gusMouseYPos: UINT16; // y position of the mouse on screen
 
 // The queue structures are used to track input events using queued events
 
-InputAtom gEventQueue[256];
-UINT16 gusQueueCount;
-UINT16 gusHeadIndex;
-UINT16 gusTailIndex;
+let gEventQueue: InputAtom[] /* [256] */;
+let gusQueueCount: UINT16;
+let gusHeadIndex: UINT16;
+let gusTailIndex: UINT16;
 
 // ATE: Added to signal if we have had input this frame - cleared by the SGP main loop
-BOOLEAN gfSGPInputReceived = FALSE;
+let gfSGPInputReceived: BOOLEAN = FALSE;
 
 // This is the WIN95 hook specific data and defines used to handle the keyboard and
 // mouse hook
 
-HHOOK ghKeyboardHook;
-HHOOK ghMouseHook;
+let ghKeyboardHook: HHOOK;
+let ghMouseHook: HHOOK;
 
 // If the following pointer is non NULL then input characters are redirected to
 // the related string
 
-BOOLEAN gfCurrentStringInputState;
-StringInput *gpCurrentStringDescriptor;
+let gfCurrentStringInputState: BOOLEAN;
+let gpCurrentStringDescriptor: Pointer<StringInput>;
 
 // Local function headers
 
@@ -81,7 +81,7 @@ function KeyboardHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
 }
 
 function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
-  UINT32 uiParam;
+  let uiParam: UINT32;
 
   if (Code < 0)
   {
@@ -209,8 +209,8 @@ function ShutdownInputManager(): void {
 }
 
 function QueuePureEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
-  UINT32 uiTimer;
-  UINT16 usKeyState;
+  let uiTimer: UINT32;
+  let usKeyState: UINT16;
 
   uiTimer = GetTickCount();
   usKeyState = gfShiftState | gfCtrlState | gfAltState;
@@ -242,8 +242,8 @@ function QueuePureEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32):
 }
 
 function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): void {
-  UINT32 uiTimer;
-  UINT16 usKeyState;
+  let uiTimer: UINT32;
+  let usKeyState: UINT16;
 
   uiTimer = GetTickCount();
   usKeyState = gfShiftState | gfCtrlState | gfAltState;
@@ -380,10 +380,10 @@ function DequeueEvent(Event: Pointer<InputAtom>): BOOLEAN {
 }
 
 function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
-  UINT32 ubKey;
-  UINT16 ubChar;
-  POINT MousePos;
-  UINT32 uiTmpLParam;
+  let ubKey: UINT32;
+  let ubChar: UINT16;
+  let MousePos: POINT;
+  let uiTmpLParam: UINT32;
 
   if ((usParam >= 96) && (usParam <= 110)) {
     // Well this could be a NUMPAD character imitating the center console characters (when NUMLOCK is OFF). Well we
@@ -824,7 +824,7 @@ function DisableDoubleClk(): void {
 }
 
 function GetMousePos(Point: Pointer<SGPPoint>): void {
-  POINT MousePos;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 
@@ -847,7 +847,7 @@ function GetMousePos(Point: Pointer<SGPPoint>): void {
 // string inputs
 
 function InitStringInput(pInputString: Pointer<UINT16>, usLength: UINT16, pFilter: Pointer<UINT16>): Pointer<StringInput> {
-  StringInput *pStringDescriptor;
+  let pStringDescriptor: Pointer<StringInput>;
 
   if ((pStringDescriptor = MemAlloc(sizeof(StringInput))) == NULL) {
     //
@@ -932,7 +932,8 @@ function LinkNextString(pCurrentString: Pointer<StringInput>, pNextString: Point
 }
 
 function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiIndex, uiEndIndex;
+  let uiIndex: UINT32;
+  let uiEndIndex: UINT32;
 
   if (pFilter != NULL) {
     uiEndIndex = *pFilter;
@@ -948,7 +949,7 @@ function CharacterIsValid(usCharacter: UINT16, pFilter: Pointer<UINT16>): BOOLEA
 }
 
 function RedirectToString(usInputCharacter: UINT16): void {
-  UINT16 usIndex;
+  let usIndex: UINT16;
 
   if (gpCurrentStringDescriptor != NULL) {
     // Handle the new character input
@@ -1190,7 +1191,7 @@ function EndStringInput(pStringDescriptor: Pointer<StringInput>): void {
 //
 
 function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UINT16): void {
-  SGPRect TempRect;
+  let TempRect: SGPRect;
 
   TempRect.iLeft = usX1;
   TempRect.iTop = usY1;
@@ -1227,7 +1228,8 @@ function IsCursorRestricted(): BOOLEAN {
 }
 
 function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
-  FLOAT flNewXPos, flNewYPos;
+  let flNewXPos: FLOAT;
+  let flNewYPos: FLOAT;
 
   // Wizardry NOTE: This function currently doesn't quite work right for in any Windows resolution other than 640x480.
   // mouse_event() uses your current Windows resolution to calculate the resulting x,y coordinates.  So in order to get
@@ -1247,7 +1249,8 @@ function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
 }
 
 function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): BOOLEAN {
-  UINT32 uiEventX, uiEventY;
+  let uiEventX: UINT32;
+  let uiEventY: UINT32;
 
   uiEventX = _EvMouseX(Event);
   uiEventY = _EvMouseY(Event);
@@ -1256,8 +1259,8 @@ function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32,
 }
 
 function DequeueAllKeyBoardEvents(): void {
-  InputAtom InputEvent;
-  MSG KeyMessage;
+  let InputEvent: InputAtom;
+  let KeyMessage: MSG;
 
   // dequeue all the events waiting in the windows queue
   while (PeekMessage(&KeyMessage, ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
@@ -1270,15 +1273,15 @@ function DequeueAllKeyBoardEvents(): void {
 }
 
 function HandleSingleClicksAndButtonRepeats(): void {
-  UINT32 uiTimer;
+  let uiTimer: UINT32;
 
   uiTimer = GetTickCount();
 
   // Is there a LEFT mouse button repeat
   if (gfLeftButtonState) {
     if ((guiLeftButtonRepeatTimer > 0) && (guiLeftButtonRepeatTimer <= uiTimer)) {
-      UINT32 uiTmpLParam;
-      POINT MousePos;
+      let uiTmpLParam: UINT32;
+      let MousePos: POINT;
 
       GetCursorPos(&MousePos);
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
@@ -1292,8 +1295,8 @@ function HandleSingleClicksAndButtonRepeats(): void {
   // Is there a RIGHT mouse button repeat
   if (gfRightButtonState) {
     if ((guiRightButtonRepeatTimer > 0) && (guiRightButtonRepeatTimer <= uiTimer)) {
-      UINT32 uiTmpLParam;
-      POINT MousePos;
+      let uiTmpLParam: UINT32;
+      let MousePos: POINT;
 
       GetCursorPos(&MousePos);
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
@@ -1306,7 +1309,7 @@ function HandleSingleClicksAndButtonRepeats(): void {
 }
 
 function GetMouseWheelDeltaValue(wParam: UINT32): INT16 {
-  INT16 sDelta = HIWORD(wParam);
+  let sDelta: INT16 = HIWORD(wParam);
 
   return sDelta / WHEEL_DELTA;
 }

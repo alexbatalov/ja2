@@ -3,29 +3,32 @@ const MEDUNA_ITEM_DROP_OFF_SECTOR_X = 3;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_Y = 14;
 const MEDUNA_ITEM_DROP_OFF_SECTOR_Z = 0;
 
-UINT32 guiPabloExtraDaysBribed = 0;
+let guiPabloExtraDaysBribed: UINT32 = 0;
 
-UINT8 gubCambriaMedicalObjects;
+let gubCambriaMedicalObjects: UINT8;
 
 function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
-  UINT8 i, j;
-  UINT16 usItem;
-  OBJECTTYPE Object;
-  UINT16 usMapPos, usStandardMapPos;
-  UINT16 usNumberOfItems;
-  BOOLEAN fSectorLoaded = FALSE;
-  UINT16 usTotalNumberOfItemTypes;
-  UINT32 uiCount = 0, uiStolenCount = 0;
-  static UINT8 ubShipmentsSinceNoBribes = 0;
-  UINT32 uiChanceOfTheft;
-  BOOLEAN fPablosStoleSomething = FALSE;
-  BOOLEAN fPablosStoleLastItem = FALSE;
-  OBJECTTYPE *pObject = NULL;
-  OBJECTTYPE *pStolenObject = NULL;
-  BOOLEAN fThisShipmentIsFromJohnKulba = FALSE; // if it is, dont add an email
-  UINT8 ubItemsDelivered;
-  UINT8 ubTempNumItems;
-  UINT8 ubItemsPurchased;
+  let i: UINT8;
+  let j: UINT8;
+  let usItem: UINT16;
+  let Object: OBJECTTYPE;
+  let usMapPos: UINT16;
+  let usStandardMapPos: UINT16;
+  let usNumberOfItems: UINT16;
+  let fSectorLoaded: BOOLEAN = FALSE;
+  let usTotalNumberOfItemTypes: UINT16;
+  let uiCount: UINT32 = 0;
+  let uiStolenCount: UINT32 = 0;
+  /* static */ let ubShipmentsSinceNoBribes: UINT8 = 0;
+  let uiChanceOfTheft: UINT32;
+  let fPablosStoleSomething: BOOLEAN = FALSE;
+  let fPablosStoleLastItem: BOOLEAN = FALSE;
+  let pObject: Pointer<OBJECTTYPE> = NULL;
+  let pStolenObject: Pointer<OBJECTTYPE> = NULL;
+  let fThisShipmentIsFromJohnKulba: BOOLEAN = FALSE; // if it is, dont add an email
+  let ubItemsDelivered: UINT8;
+  let ubTempNumItems: UINT8;
+  let ubItemsPurchased: UINT8;
 
   usStandardMapPos = BOBBYR_SHIPPING_DEST_GRIDNO;
 
@@ -286,12 +289,13 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
 function HandleDelayedItemsArrival(uiReason: UINT32): void {
   // This function moves all the items that Pablos has stolen
   // (or items that were delayed) to the arrival location for new shipments,
-  INT16 sStartGridNo;
-  UINT32 uiNumWorldItems, uiLoop;
-  BOOLEAN fOk;
-  WORLDITEM *pTemp;
-  UINT8 ubLoop;
-  OBJECTTYPE Object;
+  let sStartGridNo: INT16;
+  let uiNumWorldItems: UINT32;
+  let uiLoop: UINT32;
+  let fOk: BOOLEAN;
+  let pTemp: Pointer<WORLDITEM>;
+  let ubLoop: UINT8;
+  let Object: OBJECTTYPE;
 
   if (uiReason == NPC_SYSTEM_EVENT_ACTION_PARAM_BONUS + NPC_ACTION_RETURN_STOLEN_SHIPMENT_ITEMS) {
     if (gMercProfiles[PABLO].bMercStatus == MERC_IS_DEAD) {
@@ -399,9 +403,10 @@ function HandlePossiblyDamagedPackage(): void {
 }
 
 function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
-  UINT32 uiLoop;
-  UINT32 uiTotalCash = 0;
-  BOOLEAN fKingpinWillDiscover = FALSE, fKingpinDiscovers = FALSE;
+  let uiLoop: UINT32;
+  let uiTotalCash: UINT32 = 0;
+  let fKingpinWillDiscover: BOOLEAN = FALSE;
+  let fKingpinDiscovers: BOOLEAN = FALSE;
 
   // money in D5b1 must be less than 30k
 
@@ -557,7 +562,7 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
       case NPC_ACTION_ADD_JOEY_TO_WORLD:
         // If Joey is not dead, escorted, or already delivered
         if (gMercProfiles[JOEY].bMercStatus != MERC_IS_DEAD && !CheckFact(FACT_JOEY_ESCORTED, 0) && gMercProfiles[JOEY].sSectorX == 4 && gMercProfiles[JOEY].sSectorY == MAP_ROW_D && gMercProfiles[JOEY].bSectorZ == 1) {
-          SOLDIERTYPE *pJoey;
+          let pJoey: Pointer<SOLDIERTYPE>;
 
           pJoey = FindSoldierByProfileID(JOEY, FALSE);
           if (pJoey) {
@@ -591,8 +596,8 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
 }
 
 function HandleEarlyMorningEvents(): void {
-  UINT32 cnt;
-  UINT32 uiAmount;
+  let cnt: UINT32;
+  let uiAmount: UINT32;
 
   // loop through all *NPCs* and reset "default response used recently" flags
   for (cnt = FIRST_RPC; cnt < NUM_PROFILES; cnt++) {
@@ -800,10 +805,10 @@ function RemoveAssassin(ubProfile: UINT8): void {
 }
 
 function CheckForMissingHospitalSupplies(): void {
-  UINT32 uiLoop;
-  ITEM_POOL *pItemPool;
-  OBJECTTYPE *pObj;
-  UINT8 ubMedicalObjects = 0;
+  let uiLoop: UINT32;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pObj: Pointer<OBJECTTYPE>;
+  let ubMedicalObjects: UINT8 = 0;
 
   for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
     // loop through all items, look for ownership
@@ -847,13 +852,15 @@ function CheckForMissingHospitalSupplies(): void {
 }
 
 function DropOffItemsInMeduna(ubOrderNum: UINT8): void {
-  BOOLEAN fSectorLoaded = FALSE;
-  OBJECTTYPE Object;
-  UINT32 uiCount = 0;
-  OBJECTTYPE *pObject = NULL;
-  UINT16 usNumberOfItems = 0, usItem;
-  UINT8 ubItemsDelivered, ubTempNumItems;
-  UINT32 i;
+  let fSectorLoaded: BOOLEAN = FALSE;
+  let Object: OBJECTTYPE;
+  let uiCount: UINT32 = 0;
+  let pObject: Pointer<OBJECTTYPE> = NULL;
+  let usNumberOfItems: UINT16 = 0;
+  let usItem: UINT16;
+  let ubItemsDelivered: UINT8;
+  let ubTempNumItems: UINT8;
+  let i: UINT32;
 
   // if the player doesnt "own" the sector,
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(MEDUNA_ITEM_DROP_OFF_SECTOR_X, MEDUNA_ITEM_DROP_OFF_SECTOR_Y)].fEnemyControlled) {

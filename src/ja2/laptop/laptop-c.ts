@@ -25,7 +25,7 @@ interface RGBCOLOR {
   ubBlue: UINT8;
 }
 
-RGBCOLOR GlowColors[] = {
+let GlowColors: RGBCOLOR[] /* [] */ = {
   { 0, 0, 0 },
   { 25, 0, 0 },
   { 50, 0, 0 },
@@ -154,8 +154,8 @@ const DISPLAY_TIME_FOR_WEB_BOOKMARK_NOTIFY = 2000;
 // the wait time for closing of laptop animation/delay
 const EXIT_LAPTOP_DELAY_TIME = 100;
 
-UINT32 guiTitleBarSurface;
-BOOLEAN gfTitleBarSurfaceAlreadyActive = FALSE;
+let guiTitleBarSurface: UINT32;
+let gfTitleBarSurfaceAlreadyActive: BOOLEAN = FALSE;
 
 const LAPTOP__NEW_FILE_ICON_X = 83;
 const LAPTOP__NEW_FILE_ICON_Y = 412; //(405+19)
@@ -164,204 +164,204 @@ const LAPTOP__NEW_EMAIL_ICON_X = (83 - 16);
 const LAPTOP__NEW_EMAIL_ICON_Y = LAPTOP__NEW_FILE_ICON_Y;
 
 // Mode values
-UINT32 guiCurrentLaptopMode;
-UINT32 guiPreviousLaptopMode;
-UINT32 guiCurrentWWWMode = LAPTOP_MODE_NONE;
-INT32 giCurrentSubPage;
-UINT32 guiCurrentLapTopCursor;
-UINT32 guiPreviousLapTopCursor;
-UINT32 guiCurrentSidePanel; // the current navagation panel on the leftside of the laptop screen
-UINT32 guiPreviousSidePanel;
+let guiCurrentLaptopMode: UINT32;
+let guiPreviousLaptopMode: UINT32;
+let guiCurrentWWWMode: UINT32 = LAPTOP_MODE_NONE;
+let giCurrentSubPage: INT32;
+let guiCurrentLapTopCursor: UINT32;
+let guiPreviousLapTopCursor: UINT32;
+let guiCurrentSidePanel: UINT32; // the current navagation panel on the leftside of the laptop screen
+let guiPreviousSidePanel: UINT32;
 
-INT32 iHighLightBookLine = -1;
-BOOLEAN fFastLoadFlag = FALSE;
-BOOLEAN gfSideBarFlag;
-BOOLEAN gfEnterLapTop = TRUE;
-BOOLEAN gfShowBookmarks = FALSE;
+let iHighLightBookLine: INT32 = -1;
+let fFastLoadFlag: BOOLEAN = FALSE;
+let gfSideBarFlag: BOOLEAN;
+let gfEnterLapTop: BOOLEAN = TRUE;
+let gfShowBookmarks: BOOLEAN = FALSE;
 
 // in progress of loading a page?
-BOOLEAN fLoadPendingFlag = FALSE;
-BOOLEAN fErrorFlag;
+let fLoadPendingFlag: BOOLEAN = FALSE;
+let fErrorFlag: BOOLEAN;
 
 // mark buttons dirty?
-BOOLEAN fMarkButtonsDirtyFlag = TRUE;
+let fMarkButtonsDirtyFlag: BOOLEAN = TRUE;
 
 // redraw afer rendering buttons?
-BOOLEAN fReDrawPostButtonRender = FALSE;
+let fReDrawPostButtonRender: BOOLEAN = FALSE;
 
 // intermediate refresh flag
-BOOLEAN fIntermediateReDrawFlag = FALSE;
+let fIntermediateReDrawFlag: BOOLEAN = FALSE;
 
 // in laptop right now?
-BOOLEAN fCurrentlyInLaptop = FALSE;
+let fCurrentlyInLaptop: BOOLEAN = FALSE;
 
 // exit due to a message box pop up?..don't really leave LAPTOP
-BOOLEAN fExitDueToMessageBox = FALSE;
+let fExitDueToMessageBox: BOOLEAN = FALSE;
 
 // have we visited IMP yety?
-BOOLEAN fNotVistedImpYet = TRUE;
+let fNotVistedImpYet: BOOLEAN = TRUE;
 
 // exit laptop during a load?
-BOOLEAN fExitDuringLoad = FALSE;
+let fExitDuringLoad: BOOLEAN = FALSE;
 
 // done loading?
-BOOLEAN fDoneLoadPending = FALSE;
+let fDoneLoadPending: BOOLEAN = FALSE;
 
 // re connecting to a web page?
-BOOLEAN fReConnectingFlag = FALSE;
+let fReConnectingFlag: BOOLEAN = FALSE;
 
 // going a subpage of a web page?..faster access time
-BOOLEAN fConnectingToSubPage = FALSE;
+let fConnectingToSubPage: BOOLEAN = FALSE;
 
 // is this our first time in laptop?
-BOOLEAN fFirstTimeInLaptop = TRUE;
+let fFirstTimeInLaptop: BOOLEAN = TRUE;
 
 // redraw the book mark info panel .. for blitting on top of animations
-BOOLEAN fReDrawBookMarkInfo = FALSE;
+let fReDrawBookMarkInfo: BOOLEAN = FALSE;
 
 // show the 2 second info about bookmarks being accessed by clicking on web
-BOOLEAN fShowBookmarkInfo = FALSE;
+let fShowBookmarkInfo: BOOLEAN = FALSE;
 
 // TEMP!	Disables the loadpending delay when switching b/n www pages
-BOOLEAN gfTemporaryDisablingOfLoadPendingFlag = FALSE;
+let gfTemporaryDisablingOfLoadPendingFlag: BOOLEAN = FALSE;
 
 // GLOBAL FOR WHICH SCREEN TO EXIT TO FOR LAPTOP
-UINT32 guiExitScreen = MAP_SCREEN;
+let guiExitScreen: UINT32 = MAP_SCREEN;
 
-MOUSE_REGION gLaptopRegion;
+let gLaptopRegion: MOUSE_REGION;
 // Laptop screen graphic handle
-UINT32 guiLAPTOP;
-BOOLEAN fNewWWWDisplay = TRUE;
+let guiLAPTOP: UINT32;
+let fNewWWWDisplay: BOOLEAN = TRUE;
 
-static BOOLEAN fNewWWW = TRUE;
+/* static */ let fNewWWW: BOOLEAN = TRUE;
 
-INT32 giRainDelayInternetSite = -1;
+let giRainDelayInternetSite: INT32 = -1;
 
 // have we visitied this site already?
 // BOOLEAN fVisitedBookmarkAlready[20];
 
 // the laptop icons
-UINT32 guiFILESICON;
-UINT32 guiFINANCIALICON;
-UINT32 guiHISTORYICON;
-UINT32 guiMAILICON;
-UINT32 guiPERSICON;
-UINT32 guiWWWICON;
-UINT32 guiBOOKTOP;
-UINT32 guiBOOKHIGH;
-UINT32 guiBOOKMID;
-UINT32 guiBOOKBOT;
-UINT32 guiBOOKMARK;
-UINT32 guiGRAPHWINDOW;
-UINT32 guiGRAPHBAR;
-UINT32 guiLaptopBACKGROUND;
-UINT32 guiDOWNLOADTOP;
-UINT32 guiDOWNLOADMID;
-UINT32 guiDOWNLOADBOT;
-UINT32 guiTITLEBARLAPTOP;
-UINT32 guiLIGHTS;
-UINT32 guiTITLEBARICONS;
-UINT32 guiDESKTOP;
+let guiFILESICON: UINT32;
+let guiFINANCIALICON: UINT32;
+let guiHISTORYICON: UINT32;
+let guiMAILICON: UINT32;
+let guiPERSICON: UINT32;
+let guiWWWICON: UINT32;
+let guiBOOKTOP: UINT32;
+let guiBOOKHIGH: UINT32;
+let guiBOOKMID: UINT32;
+let guiBOOKBOT: UINT32;
+let guiBOOKMARK: UINT32;
+let guiGRAPHWINDOW: UINT32;
+let guiGRAPHBAR: UINT32;
+let guiLaptopBACKGROUND: UINT32;
+let guiDOWNLOADTOP: UINT32;
+let guiDOWNLOADMID: UINT32;
+let guiDOWNLOADBOT: UINT32;
+let guiTITLEBARLAPTOP: UINT32;
+let guiLIGHTS: UINT32;
+let guiTITLEBARICONS: UINT32;
+let guiDESKTOP: UINT32;
 
 // email notification
-UINT32 guiUNREAD;
-UINT32 guiNEWMAIL;
+let guiUNREAD: UINT32;
+let guiNEWMAIL: UINT32;
 
 // laptop button
-UINT32 guiLAPTOPBUTTON;
+let guiLAPTOPBUTTON: UINT32;
 // the sidepanel handle
-UINT32 guiLAPTOPSIDEPANEL;
+let guiLAPTOPSIDEPANEL: UINT32;
 
 // BOOLEAN		gfNewGameLaptop = TRUE;
 
 // enter new laptop mode due to sliding bars
-BOOLEAN fEnteredNewLapTopDueToHandleSlidingBars = FALSE;
+let fEnteredNewLapTopDueToHandleSlidingBars: BOOLEAN = FALSE;
 
 // laptop pop up messages index value
-INT32 iLaptopMessageBox = -1;
+let iLaptopMessageBox: INT32 = -1;
 
 // whether or not we are initing the slide in title bar
-BOOLEAN fInitTitle = TRUE;
+let fInitTitle: BOOLEAN = TRUE;
 
 // tab handled
-BOOLEAN fTabHandled = FALSE;
+let fTabHandled: BOOLEAN = FALSE;
 
 // are we maxing or mining?
-BOOLEAN fForward = TRUE;
+let fForward: BOOLEAN = TRUE;
 
 // BUTTON IMAGES
-INT32 giLapTopButton[MAX_BUTTON_COUNT];
-INT32 giLapTopButtonImage[MAX_BUTTON_COUNT];
-INT32 giErrorButton[1];
-INT32 giErrorButtonImage[1];
+let giLapTopButton: INT32[] /* [MAX_BUTTON_COUNT] */;
+let giLapTopButtonImage: INT32[] /* [MAX_BUTTON_COUNT] */;
+let giErrorButton: INT32[] /* [1] */;
+let giErrorButtonImage: INT32[] /* [1] */;
 
-INT32 gLaptopButton[7];
-INT32 gLaptopButtonImage[7];
+let gLaptopButton: INT32[] /* [7] */;
+let gLaptopButtonImage: INT32[] /* [7] */;
 
 // minimize button
-INT32 gLaptopMinButton[1];
-INT32 gLaptopMinButtonImage[1];
+let gLaptopMinButton: INT32[] /* [1] */;
+let gLaptopMinButtonImage: INT32[] /* [1] */;
 
-INT32 gLaptopProgramStates[LAPTOP_PROGRAM_HISTORY + 1];
+let gLaptopProgramStates: INT32[] /* [LAPTOP_PROGRAM_HISTORY + 1] */;
 
 // process of mazimizing
-BOOLEAN fMaximizingProgram = FALSE;
+let fMaximizingProgram: BOOLEAN = FALSE;
 
 // program we are maximizing
-INT8 bProgramBeingMaximized = -1;
+let bProgramBeingMaximized: INT8 = -1;
 
 // are we minimizing
-BOOLEAN fMinizingProgram = FALSE;
+let fMinizingProgram: BOOLEAN = FALSE;
 
 // process openned queue
-INT32 gLaptopProgramQueueList[6];
+let gLaptopProgramQueueList: INT32[] /* [6] */;
 
 // state of createion of minimize button
-BOOLEAN fCreateMinimizeButton = FALSE;
+let fCreateMinimizeButton: BOOLEAN = FALSE;
 
-BOOLEAN fExitingLaptopFlag = FALSE;
+let fExitingLaptopFlag: BOOLEAN = FALSE;
 
 // HD and power lights on
-BOOLEAN fPowerLightOn = TRUE;
-BOOLEAN fHardDriveLightOn = FALSE;
+let fPowerLightOn: BOOLEAN = TRUE;
+let fHardDriveLightOn: BOOLEAN = FALSE;
 
 // HD flicker
-BOOLEAN fFlickerHD = FALSE;
+let fFlickerHD: BOOLEAN = FALSE;
 
 // the screens limiting rect
-SGPRect LaptopScreenRect = { LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 };
+let LaptopScreenRect: SGPRect = { LAPTOP_UL_X, LAPTOP_UL_Y - 5, LAPTOP_SCREEN_LR_X + 2, LAPTOP_SCREEN_LR_Y + 5 + 19 };
 
 // the sub pages vistsed or not status within the web browser
-BOOLEAN gfWWWaitSubSitesVisitedFlags[LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW];
+let gfWWWaitSubSitesVisitedFlags: BOOLEAN[] /* [LAPTOP_MODE_SIRTECH - LAPTOP_MODE_WWW] */;
 
 // INT32 iBookMarkList[MAX_BOOKMARKS];
 
 // mouse regions
-MOUSE_REGION gEmailRegion;
-MOUSE_REGION gWWWRegion;
-MOUSE_REGION gFinancialRegion;
-MOUSE_REGION gPersonnelRegion;
-MOUSE_REGION gHistoryRegion;
-MOUSE_REGION gFilesRegion;
-MOUSE_REGION gLapTopScreenRegion;
-MOUSE_REGION gBookmarkMouseRegions[MAX_BOOKMARKS];
-MOUSE_REGION pScreenMask;
-MOUSE_REGION gLapTopProgramMinIcon;
-MOUSE_REGION gNewMailIconRegion;
-MOUSE_REGION gNewFileIconRegion;
+let gEmailRegion: MOUSE_REGION;
+let gWWWRegion: MOUSE_REGION;
+let gFinancialRegion: MOUSE_REGION;
+let gPersonnelRegion: MOUSE_REGION;
+let gHistoryRegion: MOUSE_REGION;
+let gFilesRegion: MOUSE_REGION;
+let gLapTopScreenRegion: MOUSE_REGION;
+let gBookmarkMouseRegions: MOUSE_REGION[] /* [MAX_BOOKMARKS] */;
+let pScreenMask: MOUSE_REGION;
+let gLapTopProgramMinIcon: MOUSE_REGION;
+let gNewMailIconRegion: MOUSE_REGION;
+let gNewFileIconRegion: MOUSE_REGION;
 
 // highlighted mouse region
-INT32 giHighLightRegion = NO_REGION;
+let giHighLightRegion: INT32 = NO_REGION;
 
 // highlighted regions
-INT32 giCurrentRegion = NO_REGION;
-INT32 giOldRegion = NO_REGION;
+let giCurrentRegion: INT32 = NO_REGION;
+let giOldRegion: INT32 = NO_REGION;
 
 // used for global variables that need to be saved
-LaptopSaveInfoStruct LaptopSaveInfo;
+let LaptopSaveInfo: LaptopSaveInfoStruct;
 
-BOOLEAN fReDrawScreenFlag = FALSE;
-BOOLEAN fPausedReDrawScreenFlag = FALSE; // used in the handler functions to redraw the screen, after the current frame
+let fReDrawScreenFlag: BOOLEAN = FALSE;
+let fPausedReDrawScreenFlag: BOOLEAN = FALSE; // used in the handler functions to redraw the screen, after the current frame
 
 // ppp
 
@@ -390,8 +390,8 @@ function HandleLapTopCursorUpDate(): void {
   guiPreviousLapTopCursor = guiCurrentLapTopCursor;
 }
 function GetLaptopKeyboardInput(): void {
-  InputAtom InputEvent;
-  POINT MousePos;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 
@@ -523,10 +523,10 @@ function LaptopScreenShutdown(): UINT32 {
 function EnterLaptop(): INT32 {
   // Create, load, initialize data -- just entered the laptop.
 
-  VOBJECT_DESC VObjectDesc;
-  INT32 iCounter = 0;
+  let VObjectDesc: VOBJECT_DESC;
+  let iCounter: INT32 = 0;
 
-  static BOOLEAN fEnteredFromGameStartup = TRUE;
+  /* static */ let fEnteredFromGameStartup: BOOLEAN = TRUE;
   // we are re entering due to message box, leave NOW!
   if (fExitDueToMessageBox == TRUE) {
     return TRUE;
@@ -784,7 +784,7 @@ function ExitLaptop(): void {
 }
 
 function RenderLapTopImage(): void {
-  HVOBJECT hLapTopHandle;
+  let hLapTopHandle: HVOBJECT;
 
   if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
     return;
@@ -799,7 +799,7 @@ function RenderLapTopImage(): void {
   MarkButtonsDirty();
 }
 function RenderLaptop(): void {
-  UINT32 uiTempMode = 0;
+  let uiTempMode: UINT32 = 0;
 
   if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
     gfShowBookmarks = FALSE;
@@ -957,7 +957,7 @@ function RenderLaptop(): void {
 }
 
 function EnterNewLaptopMode(): void {
-  static BOOLEAN fOldLoadFlag = FALSE;
+  /* static */ let fOldLoadFlag: BOOLEAN = FALSE;
 
   if (fExitingLaptopFlag) {
     return;
@@ -1397,12 +1397,21 @@ function LaptopScreenHandle(): UINT32 {
 
   if (gfStartMapScreenToLaptopTransition) {
     // Everything is set up to start the transition animation.
-    SGPRect SrcRect1, SrcRect2, DstRect;
-    INT32 iPercentage, iScalePercentage, iFactor;
-    UINT32 uiStartTime, uiTimeRange, uiCurrTime;
-    INT32 iX, iY, iWidth, iHeight;
+    let SrcRect1: SGPRect;
+    let SrcRect2: SGPRect;
+    let DstRect: SGPRect;
+    let iPercentage: INT32;
+    let iScalePercentage: INT32;
+    let iFactor: INT32;
+    let uiStartTime: UINT32;
+    let uiTimeRange: UINT32;
+    let uiCurrTime: UINT32;
+    let iX: INT32;
+    let iY: INT32;
+    let iWidth: INT32;
+    let iHeight: INT32;
 
-    INT32 iRealPercentage;
+    let iRealPercentage: INT32;
 
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
     // Step 1:  Build the laptop image into the save buffer.
@@ -1894,7 +1903,7 @@ function CreateLaptopButtons(): UINT32 {
 }
 
 function DeleteLapTopButtons(): void {
-  UINT32 cnt;
+  let cnt: UINT32;
   /*	for ( cnt = 0; cnt < MAX_BUTTON_COUNT; cnt++ )
           {
                   if (giLapTopButton[ cnt ] != -1 )
@@ -1966,11 +1975,20 @@ function LeaveLapTopScreen(): BOOLEAN {
     SetPendingNewScreen(guiExitScreen);
 
     if (!gfDontStartTransitionFromLaptop) {
-      SGPRect SrcRect1, SrcRect2, DstRect;
-      INT32 iPercentage, iScalePercentage, iFactor;
-      UINT32 uiStartTime, uiTimeRange, uiCurrTime;
-      INT32 iX, iY, iWidth, iHeight;
-      INT32 iRealPercentage;
+      let SrcRect1: SGPRect;
+      let SrcRect2: SGPRect;
+      let DstRect: SGPRect;
+      let iPercentage: INT32;
+      let iScalePercentage: INT32;
+      let iFactor: INT32;
+      let uiStartTime: UINT32;
+      let uiTimeRange: UINT32;
+      let uiCurrTime: UINT32;
+      let iX: INT32;
+      let iY: INT32;
+      let iWidth: INT32;
+      let iHeight: INT32;
+      let iRealPercentage: INT32;
 
       gfDontStartTransitionFromLaptop = TRUE;
       SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
@@ -2402,10 +2420,10 @@ function AnimateButton(uiIconID: UINT32, usX: UINT16, usY: UINT16): void {
 }
 
 function WWWRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2418,10 +2436,10 @@ function WWWRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
 }
 
 function EmailRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2439,10 +2457,10 @@ function EmailRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function FinancialRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2455,10 +2473,10 @@ function FinancialRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function HistoryRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2472,10 +2490,10 @@ function HistoryRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
 }
 
 function FilesRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2488,10 +2506,10 @@ function FilesRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function PersonnelRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iFrame = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iFrame: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     iBaseTime = 0;
     iFrame = 0;
@@ -2505,7 +2523,7 @@ function PersonnelRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function CheckIfMouseLeaveScreen(): void {
-  POINT MousePos;
+  let MousePos: POINT;
   GetCursorPos(&MousePos);
   if ((MousePos.x > LAPTOP_SCREEN_LR_X) || (MousePos.x < LAPTOP_UL_X) || (MousePos.y < LAPTOP_UL_Y) || (MousePos.y > LAPTOP_SCREEN_LR_Y)) {
     guiCurrentLapTopCursor = LAPTOP_PANEL_CURSOR;
@@ -2550,7 +2568,7 @@ function InitBookMarkList(): void {
 
 function SetBookMark(iBookId: INT32): void {
   // find first empty spot, set to iBookId
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   if (iBookId != -2) {
     while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
       // move trhough list until empty
@@ -2566,7 +2584,7 @@ function SetBookMark(iBookId: INT32): void {
 }
 
 function RemoveBookMark(iBookId: INT32): BOOLEAN {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // Loop through the bookmarks to get to the desired bookmark
   while (LaptopSaveInfo.iBookMarkList[iCounter] != iBookId) {
@@ -2587,7 +2605,7 @@ function RemoveBookMark(iBookId: INT32): BOOLEAN {
 }
 
 function LoadBookmark(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // grab download bars too
 
@@ -2627,11 +2645,12 @@ function LoadBookmark(): BOOLEAN {
 
 function DisplayBookMarks(): void {
   // will look at bookmarklist and set accordingly
-  INT32 iCounter = 1;
+  let iCounter: INT32 = 1;
   // load images
-  HVOBJECT hLapTopIconHandle;
+  let hLapTopIconHandle: HVOBJECT;
   // laptop icons
-  INT16 sX, sY;
+  let sX: INT16;
+  let sY: INT16;
 
   // check if we are maximizing or minimizing.. if so, do not display
   if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
@@ -2716,7 +2735,7 @@ ScrollDisplayText(BOOK_TOP_Y+2+((iCounter)*BOOK_HEIGHT)+6);
 }
 
 function RemoveBookmark(iBookId: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   if (iBookId == -2)
     return;
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
@@ -2745,9 +2764,9 @@ function DeleteBookmark(): void {
 }
 
 function ScrollDisplayText(iY: INT32): void {
-  static INT32 iBaseTime = 0;
-  static INT16 sCurX;
-  INT16 sY = (INT16)iY;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let sCurX: INT16;
+  let sY: INT16 = (INT16)iY;
 
   // if we are just enetering, set basetime to current clock value
   if (iBaseTime == 0)
@@ -2780,7 +2799,7 @@ function ScrollDisplayText(iY: INT32): void {
   InvalidateRegion(BOOK_X, iY, BOOK_X + BOOK_WIDTH, iY + BOOK_HEIGHT);
 }
 function CreateBookMarkMouseRegions(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // creates regions based on number of entries
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
     MSYS_DefineRegion(&gBookmarkMouseRegions[iCounter], (INT16)BOOK_X, (UINT16)(BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (INT16)(BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
@@ -2802,7 +2821,7 @@ function CreateBookMarkMouseRegions(): void {
 }
 
 function DeleteBookmarkRegions(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // deletes bookmark regions
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
     MSYS_RemoveRegion(&gBookmarkMouseRegions[iCounter]);
@@ -2815,7 +2834,7 @@ function DeleteBookmarkRegions(): void {
 
 function CreateDestoryBookMarkRegions(): void {
   // checks to see if a bookmark needs to be created or destroyed
-  static BOOLEAN fOldShowBookmarks = FALSE;
+  /* static */ let fOldShowBookmarks: BOOLEAN = FALSE;
 
   if ((gfShowBookmarks) && (!fOldShowBookmarks)) {
     // create regions
@@ -2829,7 +2848,7 @@ function CreateDestoryBookMarkRegions(): void {
 }
 
 function BookmarkCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iCount;
+  let iCount: INT32;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -3003,7 +3022,7 @@ function LoadLoadPending(): BOOLEAN {
   // function will load the load pending graphics
   // reuse bookmark
   // load graph window and bar
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\graphwindow.sti", VObjectDesc.ImageFile);
@@ -3017,17 +3036,18 @@ function LoadLoadPending(): BOOLEAN {
 
 function DisplayLoadPending(): BOOLEAN {
   // this function will display the load pending and return if the load is done
-  static INT32 iBaseTime = 0;
-  static INT32 iTotalTime = 0;
-  INT32 iTempTime = 0;
-  INT32 iCounter = 0;
-  INT32 iDifference = 0;
-  HVOBJECT hLapTopIconHandle;
-  INT32 iLoadTime;
-  INT32 iUnitTime;
-  UINT32 uiTempLaptopMode = 0;
-  UINT32 uiTempWWWMode = 0;
-  INT16 sXPosition = 0, sYPosition = 0;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iTotalTime: INT32 = 0;
+  let iTempTime: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iDifference: INT32 = 0;
+  let hLapTopIconHandle: HVOBJECT;
+  let iLoadTime: INT32;
+  let iUnitTime: INT32;
+  let uiTempLaptopMode: UINT32 = 0;
+  let uiTempWWWMode: UINT32 = 0;
+  let sXPosition: INT16 = 0;
+  let sYPosition: INT16 = 0;
 
   // if merc webpage, make it longer
   // TEMP disables the loadpending
@@ -3188,7 +3208,7 @@ function BtnErrorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   }
 }
 function CreateDestroyErrorButton(): void {
-  static BOOLEAN fOldErrorFlag = FALSE;
+  /* static */ let fOldErrorFlag: BOOLEAN = FALSE;
   if ((fErrorFlag) && (!fOldErrorFlag)) {
     // create inventory button
     fOldErrorFlag = TRUE;
@@ -3222,7 +3242,7 @@ function CreateDestroyErrorButton(): void {
 
 function DisplayErrorBox(): void {
   // this function will display the error graphic
-  HVOBJECT hLapTopIconHandle;
+  let hLapTopIconHandle: HVOBJECT;
   if (!fErrorFlag)
     return;
 
@@ -3325,7 +3345,7 @@ function PostButtonRendering(): void {
 }
 
 function ShouldNewMailBeDisplayed(): void {
-  BOOLEAN fReDraw = FALSE;
+  let fReDraw: BOOLEAN = FALSE;
   switch (guiCurrentLaptopMode) {
     case LAPTOP_MODE_AIM_MEMBERS:
       fReDraw = DisableNewMailMessage();
@@ -3343,8 +3363,9 @@ function ShouldNewMailBeDisplayed(): void {
 
 function DisplayPlayersBalanceToDate(): void {
   // print players balance to date
-  CHAR16 sString[100];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [100] */;
+  let sX: INT16;
+  let sY: INT16;
 
   // initialize string
   memset(sString, 0, sizeof(sString));
@@ -3517,7 +3538,7 @@ function LapTopScreenCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
 }
 
 function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect pCenteringRect = { LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y };
+  let pCenteringRect: SGPRect = { LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_LR_Y };
 
   // reset exit mode
   fExitDueToMessageBox = TRUE;
@@ -3541,7 +3562,7 @@ function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16
 }
 
 function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect CenteringRect = { 0, 0, 640, INV_INTERFACE_START_Y };
+  let CenteringRect: SGPRect = { 0, 0, 640, INV_INTERFACE_START_Y };
   // reset exit mode
   fExitDueToMessageBox = TRUE;
 
@@ -3554,8 +3575,11 @@ function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExi
 
 // places a tileable pattern down
 function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, usHeight: UINT16, uiBackgroundIdentifier: UINT32): BOOLEAN {
-  HVOBJECT hBackGroundHandle;
-  UINT16 x, y, uiPosX, uiPosY;
+  let hBackGroundHandle: HVOBJECT;
+  let x: UINT16;
+  let y: UINT16;
+  let uiPosX: UINT16;
+  let uiPosY: UINT16;
 
   // Blt the Wood background
   GetVideoObject(&hBackGroundHandle, uiBackgroundIdentifier);
@@ -3573,8 +3597,8 @@ function WebPageTileBackground(ubNumX: UINT8, ubNumY: UINT8, usWidth: UINT16, us
 }
 
 function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16, uiIconGraphic: UINT32, usIconGraphicIndex: UINT16): BOOLEAN {
-  VSURFACE_DESC vs_desc;
-  HVOBJECT hImageHandle;
+  let vs_desc: VSURFACE_DESC;
+  let hImageHandle: HVOBJECT;
 
   Assert(uiBackgroundGraphic);
 
@@ -3601,12 +3625,17 @@ function InitTitleBarMaximizeGraphics(uiBackgroundGraphic: UINT32, pTitle: STR16
 }
 
 function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTopLeftX: UINT16, usTopLeftY: UINT16, usTopRightX: UINT16): BOOLEAN {
-  static INT8 ubCount;
-  INT16 sPosX, sPosY, sPosRightX, sPosBottomY, sWidth, sHeight;
-  SGPRect SrcRect;
-  SGPRect DestRect;
-  static SGPRect LastRect;
-  FLOAT dTemp;
+  /* static */ let ubCount: INT8;
+  let sPosX: INT16;
+  let sPosY: INT16;
+  let sPosRightX: INT16;
+  let sPosBottomY: INT16;
+  let sWidth: INT16;
+  let sHeight: INT16;
+  let SrcRect: SGPRect;
+  let DestRect: SGPRect;
+  /* static */ let LastRect: SGPRect;
+  let dTemp: FLOAT;
 
   if (fInit) {
     if (gfTitleBarSurfaceAlreadyActive)
@@ -3851,7 +3880,7 @@ function HandleSlidingTitleBar(): void {
 
 function ShowLights(): void {
   // will show lights depending on state
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   if (fPowerLightOn == TRUE) {
     GetVideoObject(&hHandle, guiLIGHTS);
@@ -3871,9 +3900,9 @@ function ShowLights(): void {
 }
 
 function FlickerHDLight(): void {
-  static INT32 iBaseTime = 0;
-  static INT32 iTotalDifference = 0;
-  INT32 iDifference = 0;
+  /* static */ let iBaseTime: INT32 = 0;
+  /* static */ let iTotalDifference: INT32 = 0;
+  let iDifference: INT32 = 0;
 
   if (fLoadPendingFlag == TRUE) {
     fFlickerHD = TRUE;
@@ -3920,9 +3949,9 @@ function FlickerHDLight(): void {
 function ExitLaptopDone(): BOOLEAN {
   // check if this is the first time, to reset counter
 
-  static BOOLEAN fOldLeaveLaptopState = FALSE;
-  static INT32 iBaseTime = 0;
-  INT32 iDifference = 0;
+  /* static */ let fOldLeaveLaptopState: BOOLEAN = FALSE;
+  /* static */ let iBaseTime: INT32 = 0;
+  let iDifference: INT32 = 0;
 
   if (fOldLeaveLaptopState == FALSE) {
     fOldLeaveLaptopState = TRUE;
@@ -3948,7 +3977,7 @@ function ExitLaptopDone(): BOOLEAN {
 function CreateDestroyMinimizeButtonForCurrentMode(): void {
   // will create the minimize button
 
-  static BOOLEAN fAlreadyCreated = FALSE;
+  /* static */ let fAlreadyCreated: BOOLEAN = FALSE;
   // check to see if created, if so, do nothing
 
   // check current mode
@@ -4061,9 +4090,9 @@ function LaptopMinimizeProgramButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
 }
 
 function FindLastProgramStillOpen(): INT32 {
-  INT32 iLowestValue = 6;
-  INT32 iLowestValueProgram = 6;
-  INT32 iCounter = 0;
+  let iLowestValue: INT32 = 6;
+  let iLowestValueProgram: INT32 = 6;
+  let iCounter: INT32 = 0;
 
   // returns ID of last program open and not minimized
   for (iCounter = 0; iCounter < 6; iCounter++) {
@@ -4079,7 +4108,7 @@ function FindLastProgramStillOpen(): INT32 {
 }
 
 function UpdateListToReflectNewProgramOpened(iOpenedProgram: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // will update queue of opened programs to show thier states
   // set iOpenedProgram to 1, and update others
@@ -4095,7 +4124,7 @@ function UpdateListToReflectNewProgramOpened(iOpenedProgram: INT32): void {
 }
 
 function InitLaptopOpenQueue(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // set evereyone to 1
   for (iCounter = 0; iCounter < 6; iCounter++) {
@@ -4138,7 +4167,7 @@ function SetCurrentToLastProgramOpened(): void {
 }
 
 function BlitTitleBarIcons(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
   // will blit the icons for the title bar of the program we are in
   switch (guiCurrentLaptopMode) {
     case (LAPTOP_MODE_HISTORY):
@@ -4173,12 +4202,12 @@ function BlitTitleBarIcons(): void {
 }
 
 function DrawDeskTopBackground(): BOOLEAN {
-  HVSURFACE hSrcVSurface;
-  UINT32 uiDestPitchBYTES;
-  UINT32 uiSrcPitchBYTES;
-  UINT16 *pDestBuf;
-  UINT8 *pSrcBuf;
-  SGPRect clip;
+  let hSrcVSurface: HVSURFACE;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT16>;
+  let pSrcBuf: Pointer<UINT8>;
+  let clip: SGPRect;
 
   // set clipping region
   clip.iLeft = 0;
@@ -4202,7 +4231,7 @@ function DrawDeskTopBackground(): BOOLEAN {
 
 function LoadDesktopBackground(): BOOLEAN {
   // load desktop background
-  VSURFACE_DESC vs_desc;
+  let vs_desc: VSURFACE_DESC;
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   GetMLGFilename(vs_desc.ImageFile, MLG_DESKTOP);
@@ -4219,7 +4248,7 @@ function DeleteDesktopBackground(): void {
 }
 
 function PrintBalance(): void {
-  CHAR16 pString[32];
+  let pString: CHAR16[] /* [32] */;
   //	UINT16 usX, usY;
 
   SetFont(FONT10ARIAL);
@@ -4243,11 +4272,15 @@ function PrintBalance(): void {
 }
 
 function PrintNumberOnTeam(): void {
-  CHAR16 pString[32];
-  SOLDIERTYPE *pSoldier, *pTeamSoldier;
-  INT32 cnt = 0;
-  INT32 iCounter = 0;
-  UINT16 usPosX, usPosY, usFontHeight, usStrLength;
+  let pString: CHAR16[] /* [32] */;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let usFontHeight: UINT16;
+  let usStrLength: UINT16;
 
   SetFont(FONT10ARIAL);
   SetFontForeground(FONT_BLACK);
@@ -4326,7 +4359,7 @@ function PrintDate(): void {
 }
 
 function DisplayTaskBarIcons(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
   //	UINT16 usPosX;
 
   //	usPosX = 83;
@@ -4406,11 +4439,11 @@ function HandleKeyBoardShortCutsForLapTop(usEvent: UINT16, usParam: UINT32, usKe
 
 function RenderWWWProgramTitleBar(): BOOLEAN {
   // will render the title bar for the www program
-  UINT32 uiTITLEFORWWW;
-  HVOBJECT hHandle;
-  VOBJECT_DESC VObjectDesc;
-  INT32 iIndex = 0;
-  CHAR16 sString[256];
+  let uiTITLEFORWWW: UINT32;
+  let hHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let iIndex: INT32 = 0;
+  let sString: CHAR16[] /* [256] */;
 
   // title bar - load
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -4539,7 +4572,7 @@ function LaptopProgramIconMinimizeCallback(pRegion: Pointer<MOUSE_REGION>, iReas
 
 function DisplayProgramBoundingBox(fMarkButtons: BOOLEAN): void {
   // the border fot eh program
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   GetVideoObject(&hHandle, guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 1, 25, 23, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -4570,7 +4603,7 @@ function DisplayProgramBoundingBox(fMarkButtons: BOOLEAN): void {
 }
 
 function CreateDestroyMouseRegionForNewMailIcon(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   //. will toggle creation/destruction of the mouse regions used by the new mail icon
 
@@ -4648,7 +4681,7 @@ function UpdateStatusOfDisplayingBookMarks(): void {
 }
 
 function InitalizeSubSitesList(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // init all subsites list to not visited
   for (iCounter = LAPTOP_MODE_WWW + 1; iCounter <= LAPTOP_MODE_SIRTECH; iCounter++) {
@@ -4743,8 +4776,8 @@ function HandleAltTabKeyInLaptop(): void {
 
 // display the 2 second book mark instruction
 function DisplayWebBookMarkNotify(): void {
-  static BOOLEAN fOldShow = FALSE;
-  HVOBJECT hLapTopIconHandle;
+  /* static */ let fOldShow: BOOLEAN = FALSE;
+  let hLapTopIconHandle: HVOBJECT;
 
   // handle the timer for this thing
   HandleWebBookMarkNotifyTimer();
@@ -4798,9 +4831,9 @@ function DisplayWebBookMarkNotify(): void {
 }
 
 function HandleWebBookMarkNotifyTimer(): void {
-  static INT32 iBaseTime = 0;
-  INT32 iDifference = 0;
-  static BOOLEAN fOldShowBookMarkInfo = FALSE;
+  /* static */ let iBaseTime: INT32 = 0;
+  let iDifference: INT32 = 0;
+  /* static */ let fOldShowBookMarkInfo: BOOLEAN = FALSE;
 
   // check if maxing or mining?
   if ((fMaximizingProgram == TRUE) || (fMinizingProgram == TRUE)) {
@@ -4879,8 +4912,8 @@ function ClearOutTempLaptopFiles(): void {
 }
 
 function SaveLaptopInfoToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
-  UINT32 uiSize;
+  let uiNumBytesWritten: UINT32 = 0;
+  let uiSize: UINT32;
 
   // Save The laptop information
   FileWrite(hFile, &LaptopSaveInfo, sizeof(LaptopSaveInfoStruct), &uiNumBytesWritten);
@@ -4916,8 +4949,8 @@ function SaveLaptopInfoToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadLaptopInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  UINT32 uiSize;
+  let uiNumBytesRead: UINT32 = 0;
+  let uiSize: UINT32;
 
   // if there is memory allocated for the BobbyR orders
   if (LaptopSaveInfo.usNumberOfBobbyRayOrderItems) {
@@ -4989,7 +5022,7 @@ function LaptopSaveVariablesInit(): void {
 }
 
 function WWaitDelayIncreasedIfRaining(iUnitTime: INT32): INT32 {
-  INT32 iRetVal = 0;
+  let iRetVal: INT32 = 0;
 
   if (guiEnvWeather & WEATHER_FORECAST_THUNDERSHOWERS) {
     iRetVal = (INT32)(iUnitTime * (FLOAT)0.80);
@@ -5019,7 +5052,7 @@ function CreateBookMarkHelpText(pRegion: Pointer<MOUSE_REGION>, uiBookMarkID: UI
 }
 
 function CreateFileAndNewEmailIconFastHelpText(uiHelpTextID: UINT32, fClearHelpText: BOOLEAN): void {
-  MOUSE_REGION *pRegion;
+  let pRegion: Pointer<MOUSE_REGION>;
 
   switch (uiHelpTextID) {
     case LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL:

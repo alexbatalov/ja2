@@ -1,7 +1,7 @@
 function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFrom: UINT32, uiSeekAmount: UINT32): BOOLEAN {
-  HWFILE hFile;
-  UINT16 i;
-  UINT32 uiBytesRead;
+  let hFile: HWFILE;
+  let i: UINT16;
+  let uiBytesRead: UINT32;
 
   hFile = FileOpen(pFileName, FILE_ACCESS_READ, FALSE);
   if (!hFile) {

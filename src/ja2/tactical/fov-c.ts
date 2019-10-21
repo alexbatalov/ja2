@@ -8,10 +8,10 @@ const NOVIEW = 5;
 const MAXVIEWPATHS = 17;
 const VIEWPATHLENGTH = 13;
 
-UINT8 gubGridNoMarkers[WORLD_MAX];
-UINT8 gubGridNoValue = 254;
+let gubGridNoMarkers: UINT8[] /* [WORLD_MAX] */;
+let gubGridNoValue: UINT8 = 254;
 
-UINT8 ViewPath[MAXVIEWPATHS][VIEWPATHLENGTH] = {
+let ViewPath: UINT8[][] /* [MAXVIEWPATHS][VIEWPATHLENGTH] */ = {
   { NOVIEW, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP, UP },
   { UP, UP, UP, UP, DRIGHT, UP, UP, UP, UP, UP, UP, UP, UP },
   { UP, UP, UP, UP, DLEFT, UP, UP, UP, UP, UP, UP, UP, UP },
@@ -38,7 +38,7 @@ UINT8 ViewPath[MAXVIEWPATHS][VIEWPATHLENGTH] = {
   { RIGHT, RIGHT, RIGHT, UP, RIGHT, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW },
 };
 
-UINT8 ViewPath2[MAXVIEWPATHS][VIEWPATHLENGTH] = {
+let ViewPath2: UINT8[][] /* [MAXVIEWPATHS][VIEWPATHLENGTH] */ = {
   { NOVIEW, UP, UP, UP, UP, UP, UP, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW },
   { UP, UP, DLEFT, UP, UP, UP, DLEFT, DRIGHT, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW },
   { UP, UP, DLEFT, UP, UP, UP, DRIGHT, DLEFT, NOVIEW, NOVIEW, NOVIEW, NOVIEW, NOVIEW },
@@ -135,11 +135,11 @@ interface SLANT_ROOF_FOV_TYPE {
   fAllocated: BOOLEAN;
 }
 
-SLANT_ROOF_FOV_TYPE gSlantRoofData[NUM_SLANT_ROOF_SLOTS];
-UINT32 guiNumSlantRoofs = 0;
+let gSlantRoofData: SLANT_ROOF_FOV_TYPE[] /* [NUM_SLANT_ROOF_SLOTS] */;
+let guiNumSlantRoofs: UINT32 = 0;
 
 function GetFreeSlantRoof(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
     if ((gSlantRoofData[uiCount].fAllocated == FALSE))
@@ -153,7 +153,7 @@ function GetFreeSlantRoof(): INT32 {
 }
 
 function RecountSlantRoofs(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumSlantRoofs - 1; (uiCount >= 0); uiCount--) {
     if ((gSlantRoofData[uiCount].fAllocated)) {
@@ -164,7 +164,7 @@ function RecountSlantRoofs(): void {
 }
 
 function ClearSlantRoofs(): void {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
     if ((gSlantRoofData[uiCount].fAllocated)) {
@@ -176,7 +176,7 @@ function ClearSlantRoofs(): void {
 }
 
 function FindSlantRoofSlot(sGridNo: INT16): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
     if ((gSlantRoofData[uiCount].fAllocated)) {
@@ -190,8 +190,8 @@ function FindSlantRoofSlot(sGridNo: INT16): BOOLEAN {
 }
 
 function AddSlantRoofFOVSlot(sGridNo: INT16): void {
-  INT32 iSlantRoofSlot;
-  SLANT_ROOF_FOV_TYPE *pSlantRoof;
+  let iSlantRoofSlot: INT32;
+  let pSlantRoof: Pointer<SLANT_ROOF_FOV_TYPE>;
 
   // Check if this is a duplicate!
   if (FindSlantRoofSlot(sGridNo)) {
@@ -208,7 +208,7 @@ function AddSlantRoofFOVSlot(sGridNo: INT16): void {
 }
 
 function ExamineSlantRoofFOVSlots(): void {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
     if ((gSlantRoofData[uiCount].fAllocated)) {
@@ -220,30 +220,42 @@ function ExamineSlantRoofFOVSlots(): void {
 }
 
 function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, fShowLocators: BOOLEAN, ubLevel: UINT8, fForce: BOOLEAN): void {
-  UINT32 maincnt, markercnt, marker, tilesLeftToSee, cnt, prevmarker;
-  INT32 Inc[6], Dir[6];
-  INT8 itemVisible = FALSE;
-  INT8 Blocking, twoMoreTiles, markerDir;
-  INT8 nextDir = 0, AlreadySawItem = FALSE;
-  UINT8 who; //,itemIndex; // for each square checked
-  UINT8 dir, range, Path2;
-  UINT8 ubRoomNo;
-  BOOLEAN fCheckForRooms = FALSE;
-  ITEM_POOL *pItemPool;
-  BOOLEAN fHiddenStructVisible;
-  UINT8 ubMovementCost;
-  BOOLEAN fTravelCostObs;
-  BOOLEAN fGoneThroughDoor = FALSE;
-  BOOLEAN fThroughWindow = FALSE;
-  BOOLEAN fItemsQuoteSaid = FALSE;
-  UINT16 usIndex;
-  BOOLEAN fRevealItems = TRUE;
-  BOOLEAN fStopRevealingItemsAfterThisTile = FALSE;
-  INT8 bTallestStructureHeight;
-  INT32 iDoorGridNo;
-  STRUCTURE *pStructure, *pDummy;
-  INT8 bStructHeight;
-  INT8 bThroughWindowDirection;
+  let maincnt: UINT32;
+  let markercnt: UINT32;
+  let marker: UINT32;
+  let tilesLeftToSee: UINT32;
+  let cnt: UINT32;
+  let prevmarker: UINT32;
+  let Inc: INT32[] /* [6] */;
+  let Dir: INT32[] /* [6] */;
+  let itemVisible: INT8 = FALSE;
+  let Blocking: INT8;
+  let twoMoreTiles: INT8;
+  let markerDir: INT8;
+  let nextDir: INT8 = 0;
+  let AlreadySawItem: INT8 = FALSE;
+  let who: UINT8; //,itemIndex; // for each square checked
+  let dir: UINT8;
+  let range: UINT8;
+  let Path2: UINT8;
+  let ubRoomNo: UINT8;
+  let fCheckForRooms: BOOLEAN = FALSE;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let fHiddenStructVisible: BOOLEAN;
+  let ubMovementCost: UINT8;
+  let fTravelCostObs: BOOLEAN;
+  let fGoneThroughDoor: BOOLEAN = FALSE;
+  let fThroughWindow: BOOLEAN = FALSE;
+  let fItemsQuoteSaid: BOOLEAN = FALSE;
+  let usIndex: UINT16;
+  let fRevealItems: BOOLEAN = TRUE;
+  let fStopRevealingItemsAfterThisTile: BOOLEAN = FALSE;
+  let bTallestStructureHeight: INT8;
+  let iDoorGridNo: INT32;
+  let pStructure: Pointer<STRUCTURE>;
+  let pDummy: Pointer<STRUCTURE>;
+  let bStructHeight: INT8;
+  let bThroughWindowDirection: INT8;
 
   if (pSoldier->uiStatusFlags & SOLDIER_ENEMY) {
     // pSoldier->needToLookForItems = FALSE;
@@ -370,7 +382,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
       marker = NewGridNo((INT16)marker, (INT16)Inc[markerDir]);
 
       if (marker == 12426) {
-        int i = 0;
+        let i: int = 0;
       }
 
       // End if this is a no view...
@@ -601,7 +613,8 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
 
           // CHECK FOR SLANT ROOF!
           {
-            STRUCTURE *pStructure, *pBase;
+            let pStructure: Pointer<STRUCTURE>;
+            let pBase: Pointer<STRUCTURE>;
 
             pStructure = FindStructure((INT16)marker, STRUCTURE_SLANTED_ROOF);
 
@@ -620,7 +633,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               // 1 ) there is a roof over us and
               // 2 ) we are not in a room
               if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, FIRSTROOF, FOURTHROOF, &usIndex)) {
-                int i = 0;
+                let i: int = 0;
               } else {
                 gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REVEALED;
                 if (gfCaves) {

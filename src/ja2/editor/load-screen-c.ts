@@ -1,8 +1,8 @@
 //===========================================================================
 
-BOOLEAN gfErrorCatch = FALSE;
-UINT16 gzErrorCatchString[256] = L"";
-INT32 giErrorCatchMessageBox = 0;
+let gfErrorCatch: BOOLEAN = FALSE;
+let gzErrorCatchString: UINT16[] /* [256] */ = L"";
+let giErrorCatchMessageBox: INT32 = 0;
 
 const enum Enum50 {
   DIALOG_NONE,
@@ -12,36 +12,36 @@ const enum Enum50 {
   DIALOG_DELETE,
 }
 
-INT32 iTotalFiles;
-INT32 iTopFileShown;
-INT32 iCurrFileShown;
-INT32 iLastFileClicked;
-INT32 iLastClickTime;
+let iTotalFiles: INT32;
+let iTopFileShown: INT32;
+let iCurrFileShown: INT32;
+let iLastFileClicked: INT32;
+let iLastClickTime: INT32;
 
-UINT16 gzFilename[31];
+let gzFilename: UINT16[] /* [31] */;
 
-FDLG_LIST *FileList = NULL;
+let FileList: Pointer<FDLG_LIST> = NULL;
 
-INT32 iFDlgState = DIALOG_NONE;
-BOOLEAN gfDestroyFDlg = FALSE;
-INT32 iFileDlgButtons[7];
+let iFDlgState: INT32 = DIALOG_NONE;
+let gfDestroyFDlg: BOOLEAN = FALSE;
+let iFileDlgButtons: INT32[] /* [7] */;
 
-BOOLEAN gfLoadError;
-BOOLEAN gfReadOnly;
-BOOLEAN gfFileExists;
-BOOLEAN gfIllegalName;
-BOOLEAN gfDeleteFile;
-BOOLEAN gfNoFiles;
+let gfLoadError: BOOLEAN;
+let gfReadOnly: BOOLEAN;
+let gfFileExists: BOOLEAN;
+let gfIllegalName: BOOLEAN;
+let gfDeleteFile: BOOLEAN;
+let gfNoFiles: BOOLEAN;
 
-UINT16 zOrigName[60];
-GETFILESTRUCT FileInfo;
+let zOrigName: UINT16[] /* [60] */;
+let FileInfo: GETFILESTRUCT;
 
-BOOLEAN fEnteringLoadSaveScreen = TRUE;
-BOOLEAN gfPassedSaveCheck = FALSE;
+let fEnteringLoadSaveScreen: BOOLEAN = TRUE;
+let gfPassedSaveCheck: BOOLEAN = FALSE;
 
-MOUSE_REGION BlanketRegion;
+let BlanketRegion: MOUSE_REGION;
 
-CHAR8 gszCurrFilename[80];
+let gszCurrFilename: CHAR8[] /* [80] */;
 
 const enum Enum51 {
   IOSTATUS_NONE,
@@ -50,7 +50,7 @@ const enum Enum51 {
   INITIATE_MAP_LOAD,
   LOADING_MAP,
 }
-INT8 gbCurrentFileIOStatus; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
+let gbCurrentFileIOStatus: INT8; // 1 init saving message, 2 save, 3 init loading message, 4 load, 0 none
 
 function LoadSaveScreenInit(): UINT32 {
   gfUpdateSummaryInfo = TRUE;
@@ -110,7 +110,8 @@ function LoadSaveScreenEntry(): void {
 }
 
 function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
-  FDLG_LIST *curr, *temp;
+  let curr: Pointer<FDLG_LIST>;
+  let temp: Pointer<FDLG_LIST>;
   gfRenderWorld = TRUE;
   RemoveMessageBox();
   if (gfIllegalName) {
@@ -122,7 +123,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
   if (gfDeleteFile) {
     if (gfMessageBoxResult) {
       // delete file
-      INT32 x;
+      let x: INT32;
       curr = FileList;
       for (x = 0; x < iCurrFileShown && x < iTotalFiles && curr; x++) {
         curr = curr->pNext;
@@ -196,9 +197,9 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
 }
 
 function LoadSaveScreenHandle(): UINT32 {
-  FDLG_LIST *FListNode;
-  INT32 x;
-  InputAtom DialogEvent;
+  let FListNode: Pointer<FDLG_LIST>;
+  let x: INT32;
+  let DialogEvent: InputAtom;
 
   if (fEnteringLoadSaveScreen) {
     LoadSaveScreenEntry();
@@ -206,7 +207,7 @@ function LoadSaveScreenHandle(): UINT32 {
 
   if (gbCurrentFileIOStatus) // loading or saving map
   {
-    UINT32 uiScreen;
+    let uiScreen: UINT32;
     uiScreen = ProcessFileIO();
     if (uiScreen == EDIT_SCREEN && gbCurrentFileIOStatus == LOADING_MAP)
       RemoveProgressBar(0);
@@ -268,7 +269,7 @@ function LoadSaveScreenHandle(): UINT32 {
     case DIALOG_DELETE:
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
       if (GetFileFirst(gszCurrFilename, &FileInfo)) {
-        UINT16 str[40];
+        let str: UINT16[] /* [40] */;
         if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_HIDDEN | FILE_IS_SYSTEM)) {
           swprintf(str, L" Delete READ-ONLY file %s? ", gzFilename);
           gfReadOnly = TRUE;
@@ -372,8 +373,8 @@ function UpdateWorldInfoCallback(b: Pointer<GUI_BUTTON>, reason: INT32): void {
 // editing text, and presses Tab to transfer to the file dialog mode.  When this happens, we set the text
 // field to the currently selected file in the list which is already know.
 function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
-  INT32 x;
-  FDLG_LIST *FListNode;
+  let x: INT32;
+  let FListNode: Pointer<FDLG_LIST>;
   if (fEntering) {
     // Skip to first filename
     FListNode = FileList;
@@ -393,7 +394,7 @@ function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
 }
 
 function RemoveFileDialog(): void {
-  INT32 x;
+  let x: INT32;
 
   MSYS_RemoveRegion(&BlanketRegion);
 
@@ -444,9 +445,9 @@ function DrawFileDialog(): void {
 // The callback calls this function passing the relative y position of where
 // the user clicked on the hot spot.
 function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
-  INT16 sSelName;
-  INT32 x;
-  FDLG_LIST *FListNode;
+  let sSelName: INT16;
+  let x: INT32;
+  let FListNode: Pointer<FDLG_LIST>;
 
   sSelName = usRelativeYPos / 15;
 
@@ -461,7 +462,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
 
   for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
     if ((INT32)sSelName == (x - iTopFileShown)) {
-      INT32 iCurrClickTime;
+      let iCurrClickTime: INT32;
       iCurrFileShown = x;
       FListNode->FileInfo.zFileName[30] = 0;
       swprintf(gzFilename, L"%S", FListNode->FileInfo.zFileName);
@@ -489,7 +490,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
 }
 
 function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>): Pointer<FDLG_LIST> {
-  FDLG_LIST *pNode;
+  let pNode: Pointer<FDLG_LIST>;
 
   // Add to start of list
   if (pList == NULL) {
@@ -516,7 +517,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
 }
 
 function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDLG_LIST>): BOOLEAN {
-  FDLG_LIST *curr;
+  let curr: Pointer<FDLG_LIST>;
   curr = *head;
   while (curr) {
     if (curr == node) {
@@ -536,7 +537,7 @@ function RemoveFromFDlgList(head: Pointer<Pointer<FDLG_LIST>>, node: Pointer<FDL
 }
 
 function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
-  FDLG_LIST *pNode;
+  let pNode: Pointer<FDLG_LIST>;
 
   while (pList != NULL) {
     pNode = pList;
@@ -546,10 +547,10 @@ function TrashFDlgList(pList: Pointer<FDLG_LIST>): void {
 }
 
 function SetTopFileToLetter(usLetter: UINT16): void {
-  UINT32 x;
-  FDLG_LIST *curr;
-  FDLG_LIST *prev;
-  UINT16 usNodeLetter;
+  let x: UINT32;
+  let curr: Pointer<FDLG_LIST>;
+  let prev: Pointer<FDLG_LIST>;
+  let usNodeLetter: UINT16;
 
   // Skip to first filename
   x = 0;
@@ -574,7 +575,7 @@ function SetTopFileToLetter(usLetter: UINT16): void {
 }
 
 function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
-  INT32 iPrevFileShown = iCurrFileShown;
+  let iPrevFileShown: INT32 = iCurrFileShown;
   // Replace Alt-x press with ESC.
   if (pEvent->usKeyState & ALT_DOWN && pEvent->usParam == 'x')
     pEvent->usParam = ESC;
@@ -643,8 +644,8 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
   }
   // Update the text field if the file value has changed.
   if (iCurrFileShown != iPrevFileShown) {
-    INT32 x;
-    FDLG_LIST *curr;
+    let x: INT32;
+    let curr: Pointer<FDLG_LIST>;
     x = 0;
     curr = FileList;
     while (curr && x != iCurrFileShown) {
@@ -660,7 +661,7 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
 
 // editor doesn't care about the z value.  It uses it's own methods.
 function SetGlobalSectorValues(szFilename: Pointer<UINT16>): void {
-  UINT16 *pStr;
+  let pStr: Pointer<UINT16>;
   if (ValidCoordinate()) {
     // convert the coordinate string into into the actual global sector coordinates.
     if (gzFilename[0] >= 'A' && gzFilename[0] <= 'P')
@@ -685,7 +686,7 @@ function SetGlobalSectorValues(szFilename: Pointer<UINT16>): void {
 }
 
 function InitErrorCatchDialog(): void {
-  SGPRect CenteringRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // do message box and return
   giErrorCatchMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, gzErrorCatchString, EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, &CenteringRect);
@@ -697,8 +698,9 @@ function InitErrorCatchDialog(): void {
 // When we come back for the next frame, we then actually save or load the map.  So this
 // process takes two full screen cycles.
 function ProcessFileIO(): UINT32 {
-  INT16 usStartX, usStartY;
-  UINT8 ubNewFilename[50];
+  let usStartX: INT16;
+  let usStartY: INT16;
+  let ubNewFilename: UINT8[] /* [50] */;
   switch (gbCurrentFileIOStatus) {
     case INITIATE_MAP_SAVE: // draw save message
       StartFrameBufferRender();
@@ -878,7 +880,7 @@ function ExtractFilenameFromFields(): BOOLEAN {
 
 function ValidCoordinate(): BOOLEAN {
   if (gzFilename[0] >= 'A' && gzFilename[0] <= 'P' || gzFilename[0] >= 'a' && gzFilename[0] <= 'p') {
-    UINT16 usTotal;
+    let usTotal: UINT16;
     if (gzFilename[1] == '1' && gzFilename[2] >= '0' && gzFilename[2] <= '6') {
       usTotal = (gzFilename[1] - 0x30) * 10 + (gzFilename[2] - 0x30);
     } else if (gzFilename[1] >= '1' && gzFilename[1] <= '9') {
@@ -896,7 +898,7 @@ function ValidCoordinate(): BOOLEAN {
 }
 
 function ValidFilename(): BOOLEAN {
-  UINT16 *pDest;
+  let pDest: Pointer<UINT16>;
   if (gzFilename[0] != '\0')
     ;
   {

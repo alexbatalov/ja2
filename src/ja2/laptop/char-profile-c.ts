@@ -1,62 +1,62 @@
 // BOOLEAN fIMPCompletedFlag = FALSE;
-BOOLEAN fReDrawCharProfile = FALSE;
-BOOLEAN fButtonPendingFlag = FALSE;
-BOOLEAN fAddCreatedCharToPlayersTeam = FALSE;
-BOOLEAN fReEnterIMP = FALSE;
+let fReDrawCharProfile: BOOLEAN = FALSE;
+let fButtonPendingFlag: BOOLEAN = FALSE;
+let fAddCreatedCharToPlayersTeam: BOOLEAN = FALSE;
+let fReEnterIMP: BOOLEAN = FALSE;
 
-INT32 iCurrentImpPage = IMP_HOME_PAGE;
-INT32 iPreviousImpPage = -1;
+let iCurrentImpPage: INT32 = IMP_HOME_PAGE;
+let iPreviousImpPage: INT32 = -1;
 
 // attributes
-INT32 iStrength = 55;
-INT32 iDexterity = 55;
-INT32 iAgility = 55;
-INT32 iWisdom = 55;
-INT32 iLeadership = 55;
-INT32 iHealth = 55;
+let iStrength: INT32 = 55;
+let iDexterity: INT32 = 55;
+let iAgility: INT32 = 55;
+let iWisdom: INT32 = 55;
+let iLeadership: INT32 = 55;
+let iHealth: INT32 = 55;
 
 // skills
-INT32 iMarksmanship = 55;
-INT32 iMedical = 55;
-INT32 iExplosives = 55;
-INT32 iMechanical = 55;
+let iMarksmanship: INT32 = 55;
+let iMedical: INT32 = 55;
+let iExplosives: INT32 = 55;
+let iMechanical: INT32 = 55;
 
 // gender
-BOOLEAN fCharacterIsMale = TRUE;
+let fCharacterIsMale: BOOLEAN = TRUE;
 
 // name and nick name
-CHAR16 pFullName[32];
-CHAR16 pNickName[32];
+let pFullName: CHAR16[] /* [32] */;
+let pNickName: CHAR16[] /* [32] */;
 
 // skills
-INT32 iSkillA = 0;
-INT32 iSkillB = 0;
+let iSkillA: INT32 = 0;
+let iSkillB: INT32 = 0;
 
 // personality
-INT32 iPersonality = 0;
+let iPersonality: INT32 = 0;
 
 // attitude
-INT32 iAttitude = 0;
+let iAttitude: INT32 = 0;
 
 // additives, but no preservatives
-INT32 iAddStrength = 0;
-INT32 iAddDexterity = 0;
-INT32 iAddAgility = 0;
-INT32 iAddWisdom = 0;
-INT32 iAddHealth = 0;
-INT32 iAddLeadership = 0;
+let iAddStrength: INT32 = 0;
+let iAddDexterity: INT32 = 0;
+let iAddAgility: INT32 = 0;
+let iAddWisdom: INT32 = 0;
+let iAddHealth: INT32 = 0;
+let iAddLeadership: INT32 = 0;
 
-INT32 iAddMarksmanship = 0;
-INT32 iAddMedical = 0;
-INT32 iAddExplosives = 0;
-INT32 iAddMechanical = 0;
+let iAddMarksmanship: INT32 = 0;
+let iAddMedical: INT32 = 0;
+let iAddExplosives: INT32 = 0;
+let iAddMechanical: INT32 = 0;
 
 // IMP global buttons
-INT32 giIMPButton[1];
-INT32 giIMPButtonImage[1];
+let giIMPButton: INT32[] /* [1] */;
+let giIMPButtonImage: INT32[] /* [1] */;
 
 // visted subpages
-BOOLEAN fVisitedIMPSubPages[IMP_NUM_PAGES];
+let fVisitedIMPSubPages: BOOLEAN[] /* [IMP_NUM_PAGES] */;
 
 function GameInitCharProfile(): void {
   LaptopSaveInfo.iVoiceId = 0;
@@ -582,7 +582,7 @@ function BtnIMPCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function InitIMPSubPageList(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < IMP_CONFIRM; iCounter++) {
     fVisitedIMPSubPages[iCounter] = FALSE;

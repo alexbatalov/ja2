@@ -47,7 +47,7 @@ function HandleHourlyUpdate(): void {
 }
 
 function UpdateRegenCounters(): void {
-  UINT8 ubID;
+  let ubID: UINT8;
 
   for (ubID = gTacticalStatus.Team[gbPlayerNum].bFirstID; ubID <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubID++) {
     if (MercPtrs[ubID]->bRegenBoostersUsedToday > 0) {
@@ -65,7 +65,7 @@ function HandleQuarterHourUpdate(): void {
 }
 
 function HourlyQuestUpdate(): void {
-  UINT32 uiHour = GetWorldHour();
+  let uiHour: UINT32 = GetWorldHour();
 
   // brothel
   if (uiHour == 4) {
@@ -76,7 +76,7 @@ function HourlyQuestUpdate(): void {
 
   // bar/nightclub
   if (uiHour == 15) {
-    UINT8 ubLoop;
+    let ubLoop: UINT8;
 
     SetFactTrue(FACT_CLUB_OPEN);
     SetFactFalse(FACT_PAST_CLUB_CLOSING_AND_PLAYER_WARNED);
@@ -110,7 +110,7 @@ function HourlyQuestUpdate(): void {
 
 const BAR_TEMPTATION = 4;
 const NUM_LARRY_ITEMS = 6;
-UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
+let LarryItems: UINT16[][] /* [NUM_LARRY_ITEMS][3] */ = {
   { ADRENALINE_BOOSTER, 5, 100 },
   { ALCOHOL, BAR_TEMPTATION, 25 },
   { MEDICKIT, 4, 10 },
@@ -122,12 +122,13 @@ UINT16 LarryItems[NUM_LARRY_ITEMS][3] = {
 const LARRY_FALLS_OFF_WAGON = 8;
 
 function HourlyLarryUpdate(): void {
-  SOLDIERTYPE *pSoldier;
-  INT8 bSlot, bBoozeSlot;
-  INT8 bLarryItemLoop;
-  UINT16 usTemptation = 0;
-  UINT16 usCashAmount;
-  BOOLEAN fBar = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bSlot: INT8;
+  let bBoozeSlot: INT8;
+  let bLarryItemLoop: INT8;
+  let usTemptation: UINT16 = 0;
+  let usCashAmount: UINT16;
+  let fBar: BOOLEAN = FALSE;
 
   pSoldier = FindSoldierByProfileID(LARRY_NORMAL, TRUE);
   if (!pSoldier) {
@@ -222,7 +223,7 @@ function HourlyLarryUpdate(): void {
 }
 
 function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   pSoldier = FindSoldierByProfileID(SLAY, TRUE);
   if (!pSoldier) {
     return;

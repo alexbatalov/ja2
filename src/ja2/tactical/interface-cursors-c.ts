@@ -4,12 +4,12 @@ const SNAPCURSOR_AP_X_STARTVAL = 18;
 const SNAPCURSOR_AP_Y_STARTVAL = 9;
 
 const LOOSE_CURSOR_DELAY = 300;
-static BOOLEAN gfLooseCursorOn = FALSE;
-static INT16 gsLooseCursorGridNo = NOWHERE;
-static UINT32 guiLooseCursorID = 0;
-static UINT32 guiLooseCursorTimeOfLastUpdate = 0;
+/* static */ let gfLooseCursorOn: BOOLEAN = FALSE;
+/* static */ let gsLooseCursorGridNo: INT16 = NOWHERE;
+/* static */ let guiLooseCursorID: UINT32 = 0;
+/* static */ let guiLooseCursorTimeOfLastUpdate: UINT32 = 0;
 
-UICursor gUICursors[NUM_UI_CURSORS] = {
+let gUICursors: UICursor[] /* [NUM_UI_CURSORS] */ = {
   { NO_UICURSOR, 0, 0, 0 },
   { NORMAL_FREEUICURSOR, UICURSOR_FREEFLOWING, CURSOR_NORMAL, 0 },
   { NORMAL_SNAPUICURSOR, UICURSOR_SNAPPING, 0, 0 },
@@ -177,11 +177,11 @@ UICursor gUICursors[NUM_UI_CURSORS] = {
   { REFUEL_RED_UICURSOR, UICURSOR_FREEFLOWING, CURSOR_FUEL_RED, 0 },
 };
 
-UINT32 guiCurUICursor = NO_UICURSOR;
-UINT32 guiOldUICursor = NO_UICURSOR;
-UINT16 gusCurMousePos;
-UINT16 gusTargetDropPos;
-BOOLEAN gfTargetDropPos = FALSE;
+let guiCurUICursor: UINT32 = NO_UICURSOR;
+let guiOldUICursor: UINT32 = NO_UICURSOR;
+let gusCurMousePos: UINT16;
+let gusTargetDropPos: UINT16;
+let gfTargetDropPos: BOOLEAN = FALSE;
 
 function SetUICursor(uiNewCursor: UINT32): BOOLEAN {
   guiOldUICursor = guiCurUICursor;
@@ -191,10 +191,10 @@ function SetUICursor(uiNewCursor: UINT32): BOOLEAN {
 }
 
 function DrawUICursor(): BOOLEAN {
-  UINT16 usMapPos;
-  static BOOLEAN fHideCursor = FALSE;
-  LEVELNODE *pNode;
-  UINT16 usTileCursor;
+  let usMapPos: UINT16;
+  /* static */ let fHideCursor: BOOLEAN = FALSE;
+  let pNode: Pointer<LEVELNODE>;
+  let usTileCursor: UINT16;
 
   // RaiseMouseToLevel( (INT8)gsInterfaceLevel );
 
@@ -406,9 +406,9 @@ function HideUICursor(): BOOLEAN {
 }
 
 function DrawSnappingCursor(): void {
-  LEVELNODE *pNewUIElem;
-  SOLDIERTYPE *pSoldier;
-  static BOOLEAN fShowAP = TRUE;
+  let pNewUIElem: Pointer<LEVELNODE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  /* static */ let fShowAP: BOOLEAN = TRUE;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     GetSoldier(&pSoldier, gusSelectedSoldier);
@@ -561,7 +561,7 @@ function StartLooseCursor(sGridNo: INT16, uiCursorID: UINT32): void {
 }
 
 function HandleLooseCursorDraw(): void {
-  LEVELNODE *pNewUIElem;
+  let pNewUIElem: Pointer<LEVELNODE>;
 
   if ((GetJA2Clock() - guiLooseCursorTimeOfLastUpdate) > LOOSE_CURSOR_DELAY) {
     gfLooseCursorOn = FALSE;

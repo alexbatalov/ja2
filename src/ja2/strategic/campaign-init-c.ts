@@ -1,7 +1,7 @@
-UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoTail = NULL;
+let gpUndergroundSectorInfoTail: Pointer<UNDERGROUND_SECTORINFO> = NULL;
 
 function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
-  UNDERGROUND_SECTORINFO *curr;
+  let curr: Pointer<UNDERGROUND_SECTORINFO>;
   curr = (UNDERGROUND_SECTORINFO *)MemAlloc(sizeof(UNDERGROUND_SECTORINFO));
   AssertMsg(curr, "Failed to create an underground sector info node.");
   memset(curr, 0, sizeof(UNDERGROUND_SECTORINFO));
@@ -22,7 +22,7 @@ function NewUndergroundNode(ubSectorX: UINT8, ubSectorY: UINT8, ubSectorZ: UINT8
 
 // setup which know facilities are in which cities
 function InitKnowFacilitiesFlags(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   // Cambria hospital
   pSector = &SectorInfo[SEC_G8];
@@ -58,7 +58,7 @@ function InitKnowFacilitiesFlags(): void {
 }
 
 function InitMiningLocations(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
   // Set up mining sites
 
   pSector = &SectorInfo[SEC_D4];
@@ -89,8 +89,8 @@ function InitMiningLocations(): void {
 
 // Mobile groups are handled separately from sectors, because they are on the move.
 function GeneratePatrolGroups(): void {
-  GROUP *pGroup;
-  UINT8 ubNumTroops;
+  let pGroup: Pointer<GROUP>;
+  let ubNumTroops: UINT8;
   ubNumTroops = (UINT8)(3 + gGameOptions.ubDifficultyLevel + Random(3));
   pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_C7, 0, ubNumTroops, 0);
   pGroup->ubTransportationMask = CAR;
@@ -134,7 +134,7 @@ function GeneratePatrolGroups(): void {
 }
 
 function TrashUndergroundSectorInfo(): void {
-  UNDERGROUND_SECTORINFO *curr;
+  let curr: Pointer<UNDERGROUND_SECTORINFO>;
   while (gpUndergroundSectorInfoHead) {
     curr = gpUndergroundSectorInfoHead;
     gpUndergroundSectorInfoHead = gpUndergroundSectorInfoHead->next;
@@ -149,8 +149,8 @@ function TrashUndergroundSectorInfo(): void {
 // know how the levels connect without loading the maps.  This is completely hardcoded, and any
 // changes to the maps, require changes accordingly.
 function BuildUndergroundSectorInfoList(): void {
-  UNDERGROUND_SECTORINFO *curr;
-  SECTORINFO *pSector = NULL;
+  let curr: Pointer<UNDERGROUND_SECTORINFO>;
+  let pSector: Pointer<SECTORINFO> = NULL;
 
   TrashUndergroundSectorInfo();
 

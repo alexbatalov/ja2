@@ -50,103 +50,103 @@ interface MouseCursorBackground {
 // Video state variables
 //
 
-static UINT16 gusScreenWidth;
-static UINT16 gusScreenHeight;
-static UINT8 gubScreenPixelDepth;
+/* static */ let gusScreenWidth: UINT16;
+/* static */ let gusScreenHeight: UINT16;
+/* static */ let gubScreenPixelDepth: UINT8;
 
-static RECT gScrollRegion;
+/* static */ let gScrollRegion: RECT;
 
 const MAX_NUM_FRAMES = 25;
 
-BOOLEAN gfVideoCapture = FALSE;
-UINT32 guiFramePeriod = (1000 / 15);
-UINT32 guiLastFrame;
-UINT16 *gpFrameData[MAX_NUM_FRAMES];
-INT32 giNumFrames = 0;
+let gfVideoCapture: BOOLEAN = FALSE;
+let guiFramePeriod: UINT32 = (1000 / 15);
+let guiLastFrame: UINT32;
+let gpFrameData: Pointer<UINT16>[] /* [MAX_NUM_FRAMES] */;
+let giNumFrames: INT32 = 0;
 
 //
 // Direct Draw objects for both the Primary and Backbuffer surfaces
 //
 
-static LPDIRECTDRAW _gpDirectDrawObject = NULL;
-static LPDIRECTDRAW2 gpDirectDrawObject = NULL;
+/* static */ let _gpDirectDrawObject: LPDIRECTDRAW = NULL;
+/* static */ let gpDirectDrawObject: LPDIRECTDRAW2 = NULL;
 
-static LPDIRECTDRAWSURFACE _gpPrimarySurface = NULL;
-static LPDIRECTDRAWSURFACE2 gpPrimarySurface = NULL;
-static LPDIRECTDRAWSURFACE2 gpBackBuffer = NULL;
+/* static */ let _gpPrimarySurface: LPDIRECTDRAWSURFACE = NULL;
+/* static */ let gpPrimarySurface: LPDIRECTDRAWSURFACE2 = NULL;
+/* static */ let gpBackBuffer: LPDIRECTDRAWSURFACE2 = NULL;
 
 //
 // Direct Draw Objects for the frame buffer
 //
 
-static LPDIRECTDRAWSURFACE _gpFrameBuffer = NULL;
-static LPDIRECTDRAWSURFACE2 gpFrameBuffer = NULL;
+/* static */ let _gpFrameBuffer: LPDIRECTDRAWSURFACE = NULL;
+/* static */ let gpFrameBuffer: LPDIRECTDRAWSURFACE2 = NULL;
 
 //
 // Globals for mouse cursor
 //
 
-static UINT16 gusMouseCursorWidth;
-static UINT16 gusMouseCursorHeight;
-static INT16 gsMouseCursorXOffset;
-static INT16 gsMouseCursorYOffset;
+/* static */ let gusMouseCursorWidth: UINT16;
+/* static */ let gusMouseCursorHeight: UINT16;
+/* static */ let gsMouseCursorXOffset: INT16;
+/* static */ let gsMouseCursorYOffset: INT16;
 
-static LPDIRECTDRAWSURFACE _gpMouseCursor = NULL;
-static LPDIRECTDRAWSURFACE2 gpMouseCursor = NULL;
+/* static */ let _gpMouseCursor: LPDIRECTDRAWSURFACE = NULL;
+/* static */ let gpMouseCursor: LPDIRECTDRAWSURFACE2 = NULL;
 
-static LPDIRECTDRAWSURFACE _gpMouseCursorOriginal = NULL;
-static LPDIRECTDRAWSURFACE2 gpMouseCursorOriginal = NULL;
+/* static */ let _gpMouseCursorOriginal: LPDIRECTDRAWSURFACE = NULL;
+/* static */ let gpMouseCursorOriginal: LPDIRECTDRAWSURFACE2 = NULL;
 
-static MouseCursorBackground gMouseCursorBackground[2];
+/* static */ let gMouseCursorBackground: MouseCursorBackground[] /* [2] */;
 
-static HVOBJECT gpCursorStore;
+/* static */ let gpCursorStore: HVOBJECT;
 
-BOOLEAN gfFatalError = FALSE;
-char gFatalErrorString[512];
+let gfFatalError: BOOLEAN = FALSE;
+let gFatalErrorString: char[] /* [512] */;
 
 // 8-bit palette stuff
 
-SGPPaletteEntry gSgpPalette[256];
-LPDIRECTDRAWPALETTE gpDirectDrawPalette;
+let gSgpPalette: SGPPaletteEntry[] /* [256] */;
+let gpDirectDrawPalette: LPDIRECTDRAWPALETTE;
 
 //
 // Make sure we record the value of the hWindow (main window frame for the application)
 //
 
-HWND ghWindow;
+let ghWindow: HWND;
 
 //
 // Refresh thread based variables
 //
 
-UINT32 guiFrameBufferState; // BUFFER_READY, BUFFER_DIRTY
-UINT32 guiMouseBufferState; // BUFFER_READY, BUFFER_DIRTY, BUFFER_DISABLED
-UINT32 guiVideoManagerState; // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED, VIDEO_SHUTTING_DOWN
-UINT32 guiRefreshThreadState; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
+let guiFrameBufferState: UINT32; // BUFFER_READY, BUFFER_DIRTY
+let guiMouseBufferState: UINT32; // BUFFER_READY, BUFFER_DIRTY, BUFFER_DISABLED
+let guiVideoManagerState: UINT32; // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED, VIDEO_SHUTTING_DOWN
+let guiRefreshThreadState: UINT32; // THREAD_ON, THREAD_OFF, THREAD_SUSPENDED
 
 //
 // Dirty rectangle management variables
 //
 
 void (*gpFrameBufferRefreshOverride)(void);
-SGPRect gListOfDirtyRegions[MAX_DIRTY_REGIONS];
-UINT32 guiDirtyRegionCount;
-BOOLEAN gfForceFullScreenRefresh;
+let gListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let guiDirtyRegionCount: UINT32;
+let gfForceFullScreenRefresh: BOOLEAN;
 
-SGPRect gDirtyRegionsEx[MAX_DIRTY_REGIONS];
-UINT32 gDirtyRegionsFlagsEx[MAX_DIRTY_REGIONS];
-UINT32 guiDirtyRegionExCount;
+let gDirtyRegionsEx: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let gDirtyRegionsFlagsEx: UINT32[] /* [MAX_DIRTY_REGIONS] */;
+let guiDirtyRegionExCount: UINT32;
 
-SGPRect gBACKUPListOfDirtyRegions[MAX_DIRTY_REGIONS];
-UINT32 gBACKUPuiDirtyRegionCount;
-BOOLEAN gBACKUPfForceFullScreenRefresh;
+let gBACKUPListOfDirtyRegions: SGPRect[] /* [MAX_DIRTY_REGIONS] */;
+let gBACKUPuiDirtyRegionCount: UINT32;
+let gBACKUPfForceFullScreenRefresh: BOOLEAN;
 
 //
 // Screen output stuff
 //
 
-BOOLEAN gfPrintFrameBuffer;
-UINT32 guiPrintFrameBufferIndex;
+let gfPrintFrameBuffer: BOOLEAN;
+let guiPrintFrameBufferIndex: UINT32;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -163,16 +163,17 @@ UINT32 guiPrintFrameBufferIndex;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, WindowProc: Pointer<void>): BOOLEAN {
-  UINT32 uiIndex, uiPitch;
-  HRESULT ReturnCode;
-  HWND hWindow;
-  WNDCLASS WindowClass;
-  UINT8 ClassName[] = APPLICATION_NAME;
-  DDSURFACEDESC SurfaceDescription;
-  DDCOLORKEY ColorKey;
-  PTR pTmpPointer;
+  let uiIndex: UINT32;
+  let uiPitch: UINT32;
+  let ReturnCode: HRESULT;
+  let hWindow: HWND;
+  let WindowClass: WNDCLASS;
+  let ClassName: UINT8[] /* [] */ = APPLICATION_NAME;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ColorKey: DDCOLORKEY;
+  let pTmpPointer: PTR;
 
-  DDSCAPS SurfaceCaps;
+  let SurfaceCaps: DDSCAPS;
 
   //
   // Register debug topics
@@ -521,7 +522,7 @@ function DoTester(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function RestoreVideoManager(): BOOLEAN {
-  HRESULT ReturnCode;
+  let ReturnCode: HRESULT;
 
   //
   // Make sure the video manager is indeed suspended before moving on
@@ -587,7 +588,7 @@ function GetCurrentVideoSettings(usWidth: Pointer<UINT16>, usHeight: Pointer<UIN
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function CanBlitToFrameBuffer(): BOOLEAN {
-  BOOLEAN fCanBlit;
+  let fCanBlit: BOOLEAN;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -605,7 +606,7 @@ function CanBlitToFrameBuffer(): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function CanBlitToMouseBuffer(): BOOLEAN {
-  BOOLEAN fCanBlit;
+  let fCanBlit: BOOLEAN;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -675,7 +676,7 @@ function InvalidateRegion(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT
 }
 
 function InvalidateRegionEx(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, uiFlags: UINT32): void {
-  INT32 iOldBottom;
+  let iOldBottom: INT32;
 
   iOldBottom = iBottom;
 
@@ -742,7 +743,7 @@ function InvalidateRegions(pArrayOfRegions: Pointer<SGPRect>, uiRegionCount: UIN
   }
 
   if ((guiDirtyRegionCount + uiRegionCount) < MAX_DIRTY_REGIONS) {
-    UINT32 uiIndex;
+    let uiIndex: UINT32;
 
     for (uiIndex = 0; uiIndex < uiRegionCount; uiIndex++) {
       //
@@ -803,16 +804,20 @@ function SetFrameBufferRefreshOverride(pFrameBufferRefreshOverride: PTR): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScrollYIncrement: INT16, pSource: LPDIRECTDRAWSURFACE2, pDest: LPDIRECTDRAWSURFACE2, fRenderStrip: BOOLEAN, uiCurrentMouseBackbuffer: UINT32): void {
-  UINT16 usWidth, usHeight;
-  UINT8 ubBitDepth;
-  HRESULT ReturnCode;
-  static RECT Region;
-  static UINT16 usMouseXPos, usMouseYPos;
-  static RECT StripRegions[2], MouseRegion;
-  UINT16 usNumStrips = 0;
-  INT32 cnt;
-  INT16 sShiftX, sShiftY;
-  INT32 uiCountY;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let ubBitDepth: UINT8;
+  let ReturnCode: HRESULT;
+  /* static */ let Region: RECT;
+  /* static */ let usMouseXPos: UINT16;
+  /* static */ let usMouseYPos: UINT16;
+  /* static */ let StripRegions: RECT[] /* [2] */;
+  /* static */ let MouseRegion: RECT;
+  let usNumStrips: UINT16 = 0;
+  let cnt: INT32;
+  let sShiftX: INT16;
+  let sShiftY: INT16;
+  let uiCountY: INT32;
 
   GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
   usHeight = (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y);
@@ -1208,14 +1213,16 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
 }
 
 function RefreshScreen(DummyVariable: Pointer<void>): void {
-  static UINT32 uiRefreshThreadState, uiIndex;
-  UINT16 usScreenWidth, usScreenHeight;
-  static BOOLEAN fShowMouse;
-  HRESULT ReturnCode;
-  static RECT Region;
-  static POINT MousePos;
-  static BOOLEAN fFirstTime = TRUE;
-  UINT32 uiTime;
+  /* static */ let uiRefreshThreadState: UINT32;
+  /* static */ let uiIndex: UINT32;
+  let usScreenWidth: UINT16;
+  let usScreenHeight: UINT16;
+  /* static */ let fShowMouse: BOOLEAN;
+  let ReturnCode: HRESULT;
+  /* static */ let Region: RECT;
+  /* static */ let MousePos: POINT;
+  /* static */ let fFirstTime: BOOLEAN = TRUE;
+  let uiTime: UINT32;
 
   usScreenWidth = usScreenHeight = 0;
 
@@ -1410,14 +1417,14 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   }
 
   if (gfPrintFrameBuffer == TRUE) {
-    LPDIRECTDRAWSURFACE _pTmpBuffer;
-    LPDIRECTDRAWSURFACE2 pTmpBuffer;
-    DDSURFACEDESC SurfaceDescription;
-    FILE *OutputFile;
-    UINT8 FileName[64];
-    INT32 iIndex;
-    STRING512 ExecDir;
-    UINT16 *p16BPPData;
+    let _pTmpBuffer: LPDIRECTDRAWSURFACE;
+    let pTmpBuffer: LPDIRECTDRAWSURFACE2;
+    let SurfaceDescription: DDSURFACEDESC;
+    let OutputFile: Pointer<FILE>;
+    let FileName: UINT8[] /* [64] */;
+    let iIndex: INT32;
+    let ExecDir: STRING512;
+    let p16BPPData: Pointer<UINT16>;
 
     GetExecutableDirectory(ExecDir);
     SetFileManCurrentDirectory(ExecDir);
@@ -1911,8 +1918,8 @@ function GetMouseBufferObject(): LPDIRECTDRAWSURFACE2 {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
-  HRESULT ReturnCode;
-  DDSURFACEDESC SurfaceDescription;
+  let ReturnCode: HRESULT;
+  let SurfaceDescription: DDSURFACEDESC;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -1933,8 +1940,8 @@ function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function UnlockPrimarySurface(): void {
-  DDSURFACEDESC SurfaceDescription;
-  HRESULT ReturnCode;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ReturnCode: HRESULT;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -1947,8 +1954,8 @@ function UnlockPrimarySurface(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
-  HRESULT ReturnCode;
-  DDSURFACEDESC SurfaceDescription;
+  let ReturnCode: HRESULT;
+  let SurfaceDescription: DDSURFACEDESC;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -1977,8 +1984,8 @@ function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function UnlockBackBuffer(): void {
-  DDSURFACEDESC SurfaceDescription;
-  HRESULT ReturnCode;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ReturnCode: HRESULT;
 
   //
   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
@@ -1999,8 +2006,8 @@ function UnlockBackBuffer(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
-  HRESULT ReturnCode;
-  DDSURFACEDESC SurfaceDescription;
+  let ReturnCode: HRESULT;
+  let SurfaceDescription: DDSURFACEDESC;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -2022,8 +2029,8 @@ function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function UnlockFrameBuffer(): void {
-  DDSURFACEDESC SurfaceDescription;
-  HRESULT ReturnCode;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ReturnCode: HRESULT;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -2036,8 +2043,8 @@ function UnlockFrameBuffer(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
-  HRESULT ReturnCode;
-  DDSURFACEDESC SurfaceDescription;
+  let ReturnCode: HRESULT;
+  let SurfaceDescription: DDSURFACEDESC;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -2055,8 +2062,8 @@ function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function UnlockMouseBuffer(): void {
-  DDSURFACEDESC SurfaceDescription;
-  HRESULT ReturnCode;
+  let SurfaceDescription: DDSURFACEDESC;
+  let ReturnCode: HRESULT;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -2073,9 +2080,9 @@ function UnlockMouseBuffer(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function GetRGBDistribution(): BOOLEAN {
-  DDSURFACEDESC SurfaceDescription;
-  UINT16 usBit;
-  HRESULT ReturnCode;
+  let SurfaceDescription: DDSURFACEDESC;
+  let usBit: UINT16;
+  let ReturnCode: HRESULT;
 
   Assert(gpPrimarySurface != NULL);
 
@@ -2145,10 +2152,10 @@ function GetPrimaryRGBDistributionMasks(RedBitMask: Pointer<UINT32>, GreenBitMas
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
-  BOOLEAN ReturnValue;
-  PTR pTmpPointer;
-  UINT32 uiPitch;
-  ETRLEObject pETRLEPointer;
+  let ReturnValue: BOOLEAN;
+  let pTmpPointer: PTR;
+  let uiPitch: UINT32;
+  let pETRLEPointer: ETRLEObject;
 
   //
   // Erase cursor background
@@ -2182,8 +2189,8 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
 }
 
 function EraseMouseCursor(): BOOLEAN {
-  PTR pTmpPointer;
-  UINT32 uiPitch;
+  let pTmpPointer: PTR;
+  let uiPitch: UINT32;
 
   //
   // Erase cursor background
@@ -2206,7 +2213,7 @@ function SetMouseCursorProperties(sOffsetX: INT16, sOffsetY: INT16, usCursorHeig
 }
 
 function BltToMouseCursor(uiVideoObjectHandle: UINT32, usVideoObjectSubIndex: UINT16, usXPos: UINT16, usYPos: UINT16): BOOLEAN {
-  BOOLEAN ReturnValue;
+  let ReturnValue: BOOLEAN;
 
   ReturnValue = BltVideoObjectFromIndex(MOUSE_BUFFER, uiVideoObjectHandle, usVideoObjectSubIndex, usXPos, usYPos, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -2236,7 +2243,7 @@ function HideMouseCursor(): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function LoadCursorFile(pFilename: PTR): BOOLEAN {
-  VOBJECT_DESC VideoObjectDescription;
+  let VideoObjectDescription: VOBJECT_DESC;
 
   //
   // Make sure the old cursor store is destroyed
@@ -2269,10 +2276,10 @@ function LoadCursorFile(pFilename: PTR): BOOLEAN {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOffsetY: UINT16): BOOLEAN {
-  BOOLEAN ReturnValue;
-  PTR pTmpPointer;
-  UINT32 uiPitch;
-  ETRLEObject pETRLEPointer;
+  let ReturnValue: BOOLEAN;
+  let pTmpPointer: PTR;
+  let uiPitch: UINT32;
+  let pETRLEPointer: ETRLEObject;
 
   //
   // Make sure we have a cursor store
@@ -2339,7 +2346,7 @@ function PrintScreen(): void {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
-  HRESULT ReturnCode;
+  let ReturnCode: HRESULT;
 
   // If we are in 256 colors, then we have to initialize the palette system to 0 (faded out)
   memcpy(gSgpPalette, pPalette, sizeof(SGPPaletteEntry) * 256);
@@ -2372,7 +2379,7 @@ function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
 }
 
 function FatalError(pError: Pointer<UINT8>, ...args: any[]): void {
-  va_list argptr;
+  let argptr: va_list;
 
   va_start(argptr, pError); // Set up variable argument pointer
   vsprintf(gFatalErrorString, pError, argptr);
@@ -2419,11 +2426,13 @@ interface TARGA_HEADER {
 }
 
 function SnapshotSmall(): void {
-  INT32 iCountX, iCountY;
-  DDSURFACEDESC SurfaceDescription;
-  UINT16 *pVideo, *pDest;
+  let iCountX: INT32;
+  let iCountY: INT32;
+  let SurfaceDescription: DDSURFACEDESC;
+  let pVideo: Pointer<UINT16>;
+  let pDest: Pointer<UINT16>;
 
-  HRESULT ReturnCode;
+  let ReturnCode: HRESULT;
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
@@ -2489,7 +2498,7 @@ function VideoCaptureToggle(): void {
 }
 
 function VideoMovieCapture(fEnable: BOOLEAN): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   gfVideoCapture = fEnable;
   if (fEnable) {
@@ -2513,14 +2522,15 @@ function VideoMovieCapture(fEnable: BOOLEAN): void {
 }
 
 function RefreshMovieCache(): void {
-  TARGA_HEADER Header;
-  INT32 iCountX, iCountY;
-  FILE *disk;
-  CHAR8 cFilename[_MAX_PATH];
-  static UINT32 uiPicNum = 0;
-  UINT16 *pDest;
-  INT32 cnt;
-  STRING512 ExecDir;
+  let Header: TARGA_HEADER;
+  let iCountX: INT32;
+  let iCountY: INT32;
+  let disk: Pointer<FILE>;
+  let cFilename: CHAR8[] /* [_MAX_PATH] */;
+  /* static */ let uiPicNum: UINT32 = 0;
+  let pDest: Pointer<UINT16>;
+  let cnt: INT32;
+  let ExecDir: STRING512;
 
   PauseTime(TRUE);
 

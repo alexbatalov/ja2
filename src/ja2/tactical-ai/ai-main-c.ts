@@ -1,4 +1,4 @@
-UINT8 gubAICounter;
+let gubAICounter: UINT8;
 
 //
 // Commented out/ to fix:
@@ -9,7 +9,7 @@ const DEADLOCK_DELAY = 15000;
 
 //#define TESTAI
 
-INT8 GameOption[MAXGAMEOPTIONS] = {
+let GameOption: INT8[] /* [MAXGAMEOPTIONS] */ = {
   0,
   0,
   0,
@@ -28,9 +28,9 @@ INT8 GameOption[MAXGAMEOPTIONS] = {
 
 const AI_LIMIT_PER_UPDATE = 1;
 
-BOOLEAN gfTurnBasedAI;
+let gfTurnBasedAI: BOOLEAN;
 
-INT8 gbDiff[MAX_DIFF_PARMS][5] = {
+let gbDiff: INT8[][] /* [MAX_DIFF_PARMS][5] */ = {
   //       AI DIFFICULTY SETTING
   // WIMPY  EASY  NORMAL  TOUGH  ELITE
   { -20, -10, 0, 10, 20 }, // DIFF_ENEMY_EQUIP_MOD
@@ -44,7 +44,7 @@ function DebugAI(szOutput: STR): void {
 }
 
 function InitAI(): BOOLEAN {
-  FILE *DebugFile;
+  let DebugFile: Pointer<FILE>;
 
   // If we are not loading a saved game ( if we are, this has already been called )
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
@@ -60,7 +60,7 @@ function AimingGun(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT32 uiCurrTime = GetJA2Clock();
+  let uiCurrTime: UINT32 = GetJA2Clock();
 
   // ATE
   // Bail if we are engaged in a NPC conversation/ and/or sequence ... or we have a pause because
@@ -222,7 +222,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
   // ATE: Did some changes here
   // DON'T rethink if we are determined to get somewhere....
   if (pSoldier->bNewSituation == IS_NEW_SITUATION) {
-    BOOLEAN fProcessNewSituation;
+    let fProcessNewSituation: BOOLEAN;
 
     // if this happens during an attack then do nothing... wait for the A.B.C.
     // to be reduced to 0 first -- CJC December 13th
@@ -396,7 +396,7 @@ function HandleSoldierAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 const NOSCORE = 99;
 
 function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubID;
+  let ubID: UINT8;
 
   if (gfTurnBasedAI) {
     if (gTacticalStatus.uiFlags & PLAYER_TEAM_DEAD) {
@@ -422,7 +422,7 @@ function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
     // if civ in civ group and hostile, try to change nearby guys to hostile
     if (pSoldier->ubCivilianGroup != NON_CIV_GROUP && !pSoldier->bNeutral) {
       if (!(pSoldier->uiStatusFlags & SOLDIER_BOXER) || !(gTacticalStatus.bBoxingState == PRE_BOXING || gTacticalStatus.bBoxingState == BOXING)) {
-        UINT8 ubFirstProfile;
+        let ubFirstProfile: UINT8;
 
         ubFirstProfile = CivilianGroupMembersChangeSidesWithinProximity(pSoldier);
         if (ubFirstProfile != NO_PROFILE) {
@@ -460,9 +460,9 @@ function EndAIGuysTurn(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function EndAIDeadlock(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT8 bFound = FALSE;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bFound: INT8 = FALSE;
 
   // ESCAPE ENEMY'S TURN
 
@@ -490,7 +490,7 @@ function EndAIDeadlock(): void {
 }
 
 function StartNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
-  BOOLEAN fInValidSoldier = FALSE;
+  let fInValidSoldier: BOOLEAN = FALSE;
 
   // pSoldier->uiStatusFlags |= SOLDIER_UNDERAICONTROL;
   SetSoldierAsUnderAiControl(pSoldier);
@@ -550,8 +550,8 @@ function StartNPCAI(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function DestNotSpokenFor(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pOurTeam;
+  let cnt: INT32;
+  let pOurTeam: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;
 
@@ -567,14 +567,17 @@ function DestNotSpokenFor(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): BOOLE
 }
 
 function FindAdjacentSpotBeside(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16): INT16 {
-  INT32 cnt;
-  INT16 mods[4] = {
+  let cnt: INT32;
+  let mods: INT16[] /* [4] */ = {
     -1,
     -MAPWIDTH,
     1,
     MAPWIDTH,
   };
-  INT16 sTempGridno, sCheapestCost = 500, sMovementCost, sCheapestDest = NOWHERE;
+  let sTempGridno: INT16;
+  let sCheapestCost: INT16 = 500;
+  let sMovementCost: INT16;
+  let sCheapestDest: INT16 = NOWHERE;
 
   for (cnt = 0; cnt < 4; cnt++) {
     sTempGridno = sGridno + mods[cnt];
@@ -593,10 +596,11 @@ function FindAdjacentSpotBeside(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16):
 }
 
 function GetMostThreateningOpponent(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
-  UINT32 uiLoop;
-  INT32 iThreatVal, iMinThreat = 30000;
-  SOLDIERTYPE *pTargetSoldier;
-  UINT8 ubTargetSoldier = NO_SOLDIER;
+  let uiLoop: UINT32;
+  let iThreatVal: INT32;
+  let iMinThreat: INT32 = 30000;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let ubTargetSoldier: UINT8 = NO_SOLDIER;
 
   // Loop through all mercs
 
@@ -656,7 +660,7 @@ function FreeUpNPCFromPendingAction(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function FreeUpNPCFromAttacking(ubID: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = MercPtrs[ubID];
   ActionDone(pSoldier);
@@ -829,12 +833,12 @@ function ActionDone(pSoldier: Pointer<SOLDIERTYPE>): void {
 
 // GLOBALS:
 
-UINT8 SkipCoverCheck = FALSE;
-THREATTYPE Threat[MAXMERCS];
+let SkipCoverCheck: UINT8 = FALSE;
+let Threat: THREATTYPE[] /* [MAXMERCS] */;
 
 // threat percentage is based on the certainty of opponent knowledge:
 // opplist value:        -4  -3  -2  -1 SEEN  1    2   3   4   5
-int ThreatPercent[10] = {
+let ThreatPercent: int[] /* [10] */ = {
   20,
   40,
   60,
@@ -1480,7 +1484,7 @@ function AIDecideRadioAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iRetCode;
+  let iRetCode: INT32;
   // NumMessage("ExecuteAction - Guy#",pSoldier->ubID);
 
   // in most cases, merc will change location, or may cause damage to opponents,
@@ -1868,9 +1872,9 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     case AI_ACTION_OPEN_OR_CLOSE_DOOR:
     case AI_ACTION_UNLOCK_DOOR:
     case AI_ACTION_LOCK_DOOR: {
-      STRUCTURE *pStructure;
-      INT8 bDirection;
-      INT16 sDoorGridNo;
+      let pStructure: Pointer<STRUCTURE>;
+      let bDirection: INT8;
+      let sDoorGridNo: INT16;
 
       bDirection = (INT8)GetDirectionFromGridNo(pSoldier->usActionData, pSoldier);
       if (bDirection == EAST || bDirection == SOUTH) {
@@ -2006,7 +2010,7 @@ function HandleInitialRedAlert(bTeam: INT8, ubCommunicate: UINT8): void {
 
   if (bTeam == ENEMY_TEAM && gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_P && gbWorldSectorZ == 0) {
     // alert Queen and Joe if they are around
-    SOLDIERTYPE *pSoldier;
+    let pSoldier: Pointer<SOLDIERTYPE>;
 
     pSoldier = FindSoldierByProfileID(QUEEN, FALSE);
     if (pSoldier) {
@@ -2028,9 +2032,9 @@ function HandleInitialRedAlert(bTeam: INT8, ubCommunicate: UINT8): void {
 }
 
 function ManChecksOnFriends(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pFriend;
-  INT16 sDistVisible;
+  let uiLoop: UINT32;
+  let pFriend: Pointer<SOLDIERTYPE>;
+  let sDistVisible: INT16;
 
   // THIS ROUTINE SHOULD ONLY BE CALLED FOR SOLDIERS ON STATUS GREEN or YELLOW
 

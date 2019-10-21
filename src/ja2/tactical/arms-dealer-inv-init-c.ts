@@ -1,5 +1,5 @@
 // This table controls the order items appear in inventory at BR's and dealers, and which kinds of items are sold used
-ITEM_SORT_ENTRY DealerItemSortInfo[] = {
+let DealerItemSortInfo: ITEM_SORT_ENTRY[] /* [] */ = {
   //  item class					weapon class	sold used?
   { IC_GUN, HANDGUNCLASS, TRUE },
   { IC_GUN, SHOTGUNCLASS, TRUE },
@@ -36,7 +36,7 @@ ITEM_SORT_ENTRY DealerItemSortInfo[] = {
 // Tony ( Weapons only )
 //
 
-DEALER_POSSIBLE_INV gTonyInventory[] = {
+let gTonyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   // Rare guns/ammo that Tony will buy although he won't ever sell them
   { ROCKET_RIFLE, 0 },
   { AUTO_ROCKET_RIFLE, 0 },
@@ -196,7 +196,7 @@ DEALER_POSSIBLE_INV gTonyInventory[] = {
 //
 // Devin		( Explosives )
 //
-DEALER_POSSIBLE_INV gDevinInventory[] = {
+let gDevinInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { STUN_GRENADE, 3 },
   { TEARGAS_GRENADE, 3 },
   { MUSTARD_GRENADE, 2 },
@@ -245,7 +245,7 @@ DEALER_POSSIBLE_INV gDevinInventory[] = {
 //
 // Franz	(Expensive pawn shop )
 //
-DEALER_POSSIBLE_INV gFranzInventory[] = {
+let gFranzInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { NIGHTGOGGLES, 3 },
 
   { LASERSCOPE, 3 },
@@ -280,7 +280,7 @@ DEALER_POSSIBLE_INV gFranzInventory[] = {
 //
 // Keith		( Cheap Pawn Shop )
 //
-DEALER_POSSIBLE_INV gKeithInventory[] = {
+let gKeithInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { FIRSTAIDKIT, 5 },
 
   // WARNING: Keith must not carry any guns, it would conflict with his story/quest
@@ -313,7 +313,7 @@ DEALER_POSSIBLE_INV gKeithInventory[] = {
 //
 // Sam		( Hardware )
 //
-DEALER_POSSIBLE_INV gSamInventory[] = {
+let gSamInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { FIRSTAIDKIT, 3 },
 
   { LOCKSMITHKIT, 4 },
@@ -352,7 +352,7 @@ DEALER_POSSIBLE_INV gSamInventory[] = {
 //
 // Jake			( Junk )
 //
-DEALER_POSSIBLE_INV gJakeInventory[] = {
+let gJakeInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { FIRSTAIDKIT, 4 },
   { MEDICKIT, 3 },
 
@@ -418,7 +418,7 @@ DEALER_POSSIBLE_INV gJakeInventory[] = {
 //
 // Howard		( Pharmaceuticals )
 //
-DEALER_POSSIBLE_INV gHowardInventory[] = {
+let gHowardInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { FIRSTAIDKIT, 10 },
   { MEDICKIT, 5 },
   { ADRENALINE_BOOSTER, 5 },
@@ -437,7 +437,7 @@ DEALER_POSSIBLE_INV gHowardInventory[] = {
 //
 // Gabby			( Creature parts and Blood )
 //
-DEALER_POSSIBLE_INV gGabbyInventory[] = {
+let gGabbyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { JAR, 12 },
   { JAR_ELIXIR, 3 },
   // buys these, but can't supply them (player is the only source)
@@ -456,7 +456,7 @@ DEALER_POSSIBLE_INV gGabbyInventory[] = {
 //
 // Frank  ( Alcohol )
 //
-DEALER_POSSIBLE_INV gFrankInventory[] = {
+let gFrankInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -467,7 +467,7 @@ DEALER_POSSIBLE_INV gFrankInventory[] = {
 //
 // Elgin  ( Alcohol )
 //
-DEALER_POSSIBLE_INV gElginInventory[] = {
+let gElginInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -478,7 +478,7 @@ DEALER_POSSIBLE_INV gElginInventory[] = {
 //
 // Manny  ( Alcohol )
 //
-DEALER_POSSIBLE_INV gMannyInventory[] = {
+let gMannyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -489,7 +489,7 @@ DEALER_POSSIBLE_INV gMannyInventory[] = {
 //
 // Herve Santos		( Alcohol )
 //
-DEALER_POSSIBLE_INV gHerveInventory[] = {
+let gHerveInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -500,7 +500,7 @@ DEALER_POSSIBLE_INV gHerveInventory[] = {
 //
 // Peter Santos ( Alcohol )
 //
-DEALER_POSSIBLE_INV gPeterInventory[] = {
+let gPeterInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -511,7 +511,7 @@ DEALER_POSSIBLE_INV gPeterInventory[] = {
 //
 // Alberto Santos		( Alcohol )
 //
-DEALER_POSSIBLE_INV gAlbertoInventory[] = {
+let gAlbertoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -522,7 +522,7 @@ DEALER_POSSIBLE_INV gAlbertoInventory[] = {
 //
 // Carlo Santos		( Alcohol )
 //
-DEALER_POSSIBLE_INV gCarloInventory[] = {
+let gCarloInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   { BEER, 12 },
   { WINE, 6 },
   { ALCOHOL, 9 },
@@ -534,7 +534,7 @@ DEALER_POSSIBLE_INV gCarloInventory[] = {
 // Micky	( BUYS Animal / Creature parts )
 //
 
-DEALER_POSSIBLE_INV gMickyInventory[] = {
+let gMickyInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   // ONLY BUYS THIS STUFF, DOESN'T SELL IT
   { BLOODCAT_CLAWS, 0 },
   { BLOODCAT_TEETH, 0 },
@@ -550,7 +550,7 @@ DEALER_POSSIBLE_INV gMickyInventory[] = {
 //
 // Arnie		( Weapons REPAIR )
 //
-DEALER_POSSIBLE_INV gArnieInventory[] = {
+let gArnieInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   // NO INVENTORY
 
   { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
@@ -559,7 +559,7 @@ DEALER_POSSIBLE_INV gArnieInventory[] = {
 //
 // Perko			( REPAIR)
 //
-DEALER_POSSIBLE_INV gPerkoInventory[] = {
+let gPerkoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   // NO INVENTORY
 
   { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
@@ -568,7 +568,7 @@ DEALER_POSSIBLE_INV gPerkoInventory[] = {
 //
 // Fredo			( Electronics REPAIR)
 //
-DEALER_POSSIBLE_INV gFredoInventory[] = {
+let gFredoInventory: DEALER_POSSIBLE_INV[] /* [] */ = {
   // NO INVENTORY
 
   { LAST_DEALER_ITEM, NO_DEALER_ITEM }, // Last One
@@ -662,7 +662,7 @@ function GetDealersMaxItemAmount(ubDealerID: UINT8, usItemIndex: UINT16): INT8 {
 }
 
 function GetMaxItemAmount(pInv: Pointer<DEALER_POSSIBLE_INV>, usItemIndex: UINT16): INT8 {
-  UINT16 usCnt = 0;
+  let usCnt: UINT16 = 0;
 
   // loop through the array until a the LAST_DEALER_ITEM is hit
   while (pInv[usCnt].sItemIndex != LAST_DEALER_ITEM) {
@@ -761,8 +761,9 @@ function GetPointerToDealersPossibleInventory(ubArmsDealerID: UINT8): Pointer<DE
 }
 
 function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): UINT8 {
-  UINT8 ubItemCoolness;
-  UINT8 ubMinCoolness, ubMaxCoolness;
+  let ubItemCoolness: UINT8;
+  let ubMinCoolness: UINT8;
+  let ubMaxCoolness: UINT8;
 
   // item suitability varies with the player's maximum progress through the game.  The farther he gets, the better items
   // we make available.  Weak items become more and more infrequent later in the game, although they never quite vanish.
@@ -862,9 +863,9 @@ function GetCurrentSuitabilityForItem(bArmsDealer: INT8, usItemIndex: UINT16): U
 }
 
 function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: BOOLEAN, fUsed: BOOLEAN): UINT8 {
-  UINT8 ubItemCoolness;
-  UINT8 ubChance = 0;
-  BOOLEAN fBobbyRay = FALSE;
+  let ubItemCoolness: UINT8;
+  let ubChance: UINT8 = 0;
+  let fBobbyRay: BOOLEAN = FALSE;
 
   // make sure dealers don't carry used items that they shouldn't
   if (fUsed && !fDealerIsSelling && !CanDealerItemBeSoldUsed(usItemIndex))
@@ -937,8 +938,8 @@ function ChanceOfItemTransaction(bArmsDealer: INT8, usItemIndex: UINT16, fDealer
 }
 
 function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIsSelling: BOOLEAN, fUsed: BOOLEAN): BOOLEAN {
-  UINT8 ubChance;
-  INT16 sInventorySlot;
+  let ubChance: UINT8;
+  let sInventorySlot: INT16;
 
   ubChance = ChanceOfItemTransaction(bArmsDealer, usItemIndex, fDealerIsSelling, fUsed);
 
@@ -967,8 +968,8 @@ function ItemTransactionOccurs(bArmsDealer: INT8, usItemIndex: UINT16, fDealerIs
 }
 
 function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubChances: UINT8, fUsed: BOOLEAN): UINT8 {
-  UINT8 ubNumBought;
-  UINT8 ubCnt;
+  let ubNumBought: UINT8;
+  let ubCnt: UINT8;
 
   // initial inventory is now rolled for one item at a time, instead of one type at a time, to improve variety
   ubNumBought = 0;
@@ -982,8 +983,8 @@ function DetermineInitialInvItems(bArmsDealerID: INT8, usItemIndex: UINT16, ubCh
 }
 
 function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInStock: UINT8, fUsed: BOOLEAN): UINT8 {
-  UINT8 ubNumSold;
-  UINT8 ubCnt;
+  let ubNumSold: UINT8;
+  let ubCnt: UINT8;
 
   // items are now virtually "sold" one at a time
   ubNumSold = 0;
@@ -997,7 +998,7 @@ function HowManyItemsAreSold(bArmsDealerID: INT8, usItemIndex: UINT16, ubNumInSt
 }
 
 function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT8 {
-  UINT8 ubNumReordered;
+  let ubNumReordered: UINT8;
 
   Assert(ubStillHave <= ubWanted);
 
@@ -1017,10 +1018,10 @@ function HowManyItemsToReorder(ubWanted: UINT8, ubStillHave: UINT8): UINT8 {
 }
 
 function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
-  UINT16 usItem1Index;
-  UINT16 usItem2Index;
-  UINT8 ubItem1Quality;
-  UINT8 ubItem2Quality;
+  let usItem1Index: UINT16;
+  let usItem2Index: UINT16;
+  let ubItem1Quality: UINT8;
+  let ubItem2Quality: UINT8;
 
   usItem1Index = ((STORE_INVENTORY *)pArg1)->usItemIndex;
   usItem2Index = ((STORE_INVENTORY *)pArg2)->usItemIndex;
@@ -1032,10 +1033,10 @@ function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): i
 }
 
 function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
-  UINT16 usItem1Index;
-  UINT16 usItem2Index;
-  UINT8 ubItem1Quality;
-  UINT8 ubItem2Quality;
+  let usItem1Index: UINT16;
+  let usItem2Index: UINT16;
+  let ubItem1Quality: UINT8;
+  let ubItem2Quality: UINT8;
 
   usItem1Index = ((INVENTORY_IN_SLOT *)pArg1)->sItemIndex;
   usItem2Index = ((INVENTORY_IN_SLOT *)pArg2)->sItemIndex;
@@ -1047,10 +1048,10 @@ function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>):
 }
 
 function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): int {
-  INVENTORY_IN_SLOT *pInvSlot1;
-  INVENTORY_IN_SLOT *pInvSlot2;
-  UINT32 uiRepairTime1;
-  UINT32 uiRepairTime2;
+  let pInvSlot1: Pointer<INVENTORY_IN_SLOT>;
+  let pInvSlot2: Pointer<INVENTORY_IN_SLOT>;
+  let uiRepairTime1: UINT32;
+  let uiRepairTime2: UINT32;
 
   pInvSlot1 = (INVENTORY_IN_SLOT *)pArg1;
   pInvSlot2 = (INVENTORY_IN_SLOT *)pArg2;
@@ -1072,12 +1073,12 @@ function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): 
 }
 
 function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubItem1Quality: UINT8, ubItem2Quality: UINT8): int {
-  UINT8 ubItem1Category;
-  UINT8 ubItem2Category;
-  UINT16 usItem1Price;
-  UINT16 usItem2Price;
-  UINT8 ubItem1Coolness;
-  UINT8 ubItem2Coolness;
+  let ubItem1Category: UINT8;
+  let ubItem2Category: UINT8;
+  let usItem1Price: UINT16;
+  let usItem2Price: UINT16;
+  let ubItem1Coolness: UINT8;
+  let ubItem2Coolness: UINT8;
 
   ubItem1Category = GetDealerItemCategoryNumber(usItem1Index);
   ubItem2Category = GetDealerItemCategoryNumber(usItem2Index);
@@ -1090,10 +1091,10 @@ function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubIt
   } else {
     // the same category
     if (Item[usItem1Index].usItemClass == IC_AMMO && Item[usItem2Index].usItemClass == IC_AMMO) {
-      UINT8 ubItem1Calibre;
-      UINT8 ubItem2Calibre;
-      UINT8 ubItem1MagSize;
-      UINT8 ubItem2MagSize;
+      let ubItem1Calibre: UINT8;
+      let ubItem2Calibre: UINT8;
+      let ubItem1MagSize: UINT8;
+      let ubItem2MagSize: UINT8;
 
       // AMMO is sorted by caliber first
       ubItem1Calibre = Magazine[Item[usItem1Index].ubClassIndex].ubCalibre;
@@ -1159,9 +1160,9 @@ function CompareItemsForSorting(usItem1Index: UINT16, usItem2Index: UINT16, ubIt
 }
 
 function GetDealerItemCategoryNumber(usItemIndex: UINT16): UINT8 {
-  UINT32 uiItemClass;
-  UINT8 ubWeaponClass;
-  UINT8 ubCategory = 0;
+  let uiItemClass: UINT32;
+  let ubWeaponClass: UINT8;
+  let ubCategory: UINT8 = 0;
 
   uiItemClass = Item[usItemIndex].usItemClass;
 

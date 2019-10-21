@@ -35,38 +35,38 @@ const FILES_COUNTER_2_WIDTH = 43;
 const FILES_COUNTER_3_WIDTH = 45;
 
 // the highlighted line
-INT32 iHighLightFileLine = -1;
+let iHighLightFileLine: INT32 = -1;
 
 // the files record list
-FilesUnitPtr pFilesListHead = NULL;
+let pFilesListHead: FilesUnitPtr = NULL;
 
-FileStringPtr pFileStringList = NULL;
+let pFileStringList: FileStringPtr = NULL;
 
 // are we in files mode
-BOOLEAN fInFilesMode = FALSE;
-BOOLEAN fOnLastFilesPageFlag = FALSE;
+let fInFilesMode: BOOLEAN = FALSE;
+let fOnLastFilesPageFlag: BOOLEAN = FALSE;
 
 //. did we enter due to new file icon?
-BOOLEAN fEnteredFileViewerFromNewFileIcon = FALSE;
-BOOLEAN fWaitAFrame = FALSE;
+let fEnteredFileViewerFromNewFileIcon: BOOLEAN = FALSE;
+let fWaitAFrame: BOOLEAN = FALSE;
 
 // are there any new files
-BOOLEAN fNewFilesInFileViewer = FALSE;
+let fNewFilesInFileViewer: BOOLEAN = FALSE;
 
 // graphics handles
-UINT32 guiTITLE;
-UINT32 guiFileBack;
-UINT32 guiTOP;
-UINT32 guiHIGHLIGHT;
+let guiTITLE: UINT32;
+let guiFileBack: UINT32;
+let guiTOP: UINT32;
+let guiHIGHLIGHT: UINT32;
 
 // currewnt page of multipage files we are on
-INT32 giFilesPage = 0;
+let giFilesPage: INT32 = 0;
 // strings
 
 const SLAY_LENGTH = 12;
 const ENRICO_LENGTH = 0;
 
-UINT8 ubFileRecordsLength[] = {
+let ubFileRecordsLength: UINT8[] /* [] */ = {
   ENRICO_LENGTH,
   SLAY_LENGTH,
   SLAY_LENGTH,
@@ -76,7 +76,7 @@ UINT8 ubFileRecordsLength[] = {
   SLAY_LENGTH,
 };
 
-UINT16 ubFileOffsets[] = {
+let ubFileOffsets: UINT16[] /* [] */ = {
   0,
   ENRICO_LENGTH,
   SLAY_LENGTH + ENRICO_LENGTH,
@@ -86,7 +86,7 @@ UINT16 ubFileOffsets[] = {
   5 * SLAY_LENGTH + ENRICO_LENGTH,
 };
 
-UINT16 usProfileIdsForTerroristFiles[] = {
+let usProfileIdsForTerroristFiles: UINT16[] /* [] */ = {
   0, // no body
   112, // elgin
   64, // slay
@@ -97,8 +97,8 @@ UINT16 usProfileIdsForTerroristFiles[] = {
   112, // elgin
 };
 // buttons for next and previous pages
-UINT32 giFilesPageButtons[2];
-UINT32 giFilesPageButtonsImage[2];
+let giFilesPageButtons: UINT32[] /* [2] */;
+let giFilesPageButtonsImage: UINT32[] /* [2] */;
 
 // the previous and next pages buttons
 
@@ -107,12 +107,12 @@ const enum Enum76 {
   NEXT_FILES_PAGE_BUTTON,
 }
 // mouse regions
-MOUSE_REGION pFilesRegions[MAX_FILES_PAGE];
+let pFilesRegions: MOUSE_REGION[] /* [MAX_FILES_PAGE] */;
 
 function AddFilesToPlayersLog(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8): UINT32 {
   // adds Files item to player's log(Files List), returns unique id number of it
   // outside of the Files system(the code in this .c file), this is the only function you'll ever need
-  UINT32 uiId = 0;
+  let uiId: UINT32 = 0;
 
   // if not in Files mode, read in from file
   if (!fInFilesMode)
@@ -196,7 +196,7 @@ function HandleFiles(): void {
 }
 
 function RenderFiles(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // render the background
   RenderFilesBackGround();
@@ -223,8 +223,8 @@ function RenderFiles(): void {
 
 function RenderFilesBackGround(): void {
   // render generic background for file system
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
 
   // get title bar object
   GetVideoObject(&hHandle, guiTITLE);
@@ -254,7 +254,7 @@ function DrawFilesTitleText(): void {
 }
 
 function LoadFiles(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
   // load files video objects into memory
 
   // title bar
@@ -292,8 +292,8 @@ function RemoveFiles(): void {
 }
 
 function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UINT8, pFirstPicFile: STR8, pSecondPicFile: STR8, fRead: BOOLEAN): UINT32 {
-  UINT32 uiId = 0;
-  FilesUnitPtr pFiles = pFilesListHead;
+  let uiId: UINT32 = 0;
+  let pFiles: FilesUnitPtr = pFilesListHead;
 
   // add to Files list
   if (pFiles) {
@@ -374,15 +374,15 @@ function ProcessAndEnterAFilesRecord(ubCode: UINT8, uiDate: UINT32, ubFormat: UI
 
 function OpenAndReadFilesFile(): void {
   // this procedure will open and read in data to the finance list
-  HWFILE hFileHandle;
-  UINT8 ubCode;
-  UINT32 uiDate;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
-  CHAR8 pFirstFilePath[128];
-  CHAR8 pSecondFilePath[128];
-  UINT8 ubFormat;
-  BOOLEAN fRead;
+  let hFileHandle: HWFILE;
+  let ubCode: UINT8;
+  let uiDate: UINT32;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
+  let pFirstFilePath: CHAR8[] /* [128] */;
+  let pSecondFilePath: CHAR8[] /* [128] */;
+  let ubFormat: UINT8;
+  let fRead: BOOLEAN;
 
   // clear out the old list
   ClearFilesList();
@@ -434,11 +434,11 @@ function OpenAndReadFilesFile(): void {
 
 function OpenAndWriteFilesFile(): BOOLEAN {
   // this procedure will open and write out data from the finance list
-  HWFILE hFileHandle;
-  INT32 iBytesWritten = 0;
-  FilesUnitPtr pFilesList = pFilesListHead;
-  CHAR8 pFirstFilePath[128];
-  CHAR8 pSecondFilePath[128];
+  let hFileHandle: HWFILE;
+  let iBytesWritten: INT32 = 0;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFirstFilePath: CHAR8[] /* [128] */;
+  let pSecondFilePath: CHAR8[] /* [128] */;
 
   memset(&pFirstFilePath, 0, sizeof(pFirstFilePath));
   memset(&pSecondFilePath, 0, sizeof(pSecondFilePath));
@@ -483,8 +483,8 @@ function OpenAndWriteFilesFile(): BOOLEAN {
 
 function ClearFilesList(): void {
   // remove each element from list of transactions
-  FilesUnitPtr pFilesList = pFilesListHead;
-  FilesUnitPtr pFilesNode = pFilesList;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let pFilesNode: FilesUnitPtr = pFilesList;
 
   // while there are elements in the list left, delete them
   while (pFilesList) {
@@ -511,7 +511,7 @@ function ClearFilesList(): void {
 
 function DrawFilesListBackGround(): void {
   // proceudre will draw the background for the list of files
-  INT32 iCounter = 7;
+  let iCounter: INT32 = 7;
   // HVOBJECT hHandle;
 
   // now the columns
@@ -521,9 +521,9 @@ function DrawFilesListBackGround(): void {
 
 function DisplayFilesList(): void {
   // this function will run through the list of files of files and display the 'sender'
-  FilesUnitPtr pFilesList = pFilesListHead;
-  INT32 iCounter = 0;
-  HVOBJECT hHandle;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
+  let iCounter: INT32 = 0;
+  let hHandle: HVOBJECT;
 
   // font stuff
   SetFont(FILES_TEXT_FONT);
@@ -566,7 +566,7 @@ function DisplayFileMessage(): void {
 }
 
 function InitializeFilesMouseRegions(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
     MSYS_DefineRegion(&pFilesRegions[iCounter], FILES_LIST_X, (INT16)(FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (INT16)(FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
@@ -578,16 +578,16 @@ function InitializeFilesMouseRegions(): void {
 }
 
 function RemoveFilesMouseRegions(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
     MSYS_RemoveRegion(&pFilesRegions[iCounter]);
   }
 }
 
 function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iFileId = -1;
-  INT32 iCounter = 0;
-  FilesUnitPtr pFilesList = pFilesListHead;
+  let iFileId: INT32 = -1;
+  let iCounter: INT32 = 0;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -626,25 +626,25 @@ function FilesBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void 
 }
 
 function DisplayFormattedText(): BOOLEAN {
-  FilesUnitPtr pFilesList = pFilesListHead;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
 
-  UINT16 usFirstWidth = 0;
-  UINT16 usFirstHeight = 0;
-  UINT16 usSecondWidth;
-  UINT16 usSecondHeight;
-  INT16 sTextWidth = 0;
-  INT32 iCounter = 0;
-  INT32 iLength = 0;
-  INT32 iHeight = 0;
-  INT32 iOffSet = 0;
-  INT32 iMessageCode;
-  wchar_t sString[2048];
-  HVOBJECT hHandle;
-  UINT32 uiFirstTempPicture;
-  UINT32 uiSecondTempPicture;
-  VOBJECT_DESC VObjectDesc;
-  INT16 usFreeSpace = 0;
-  static INT32 iOldMessageCode = 0;
+  let usFirstWidth: UINT16 = 0;
+  let usFirstHeight: UINT16 = 0;
+  let usSecondWidth: UINT16;
+  let usSecondHeight: UINT16;
+  let sTextWidth: INT16 = 0;
+  let iCounter: INT32 = 0;
+  let iLength: INT32 = 0;
+  let iHeight: INT32 = 0;
+  let iOffSet: INT32 = 0;
+  let iMessageCode: INT32;
+  let sString: wchar_t[] /* [2048] */;
+  let hHandle: HVOBJECT;
+  let uiFirstTempPicture: UINT32;
+  let uiSecondTempPicture: UINT32;
+  let VObjectDesc: VOBJECT_DESC;
+  let usFreeSpace: INT16 = 0;
+  /* static */ let iOldMessageCode: INT32 = 0;
 
   fWaitAFrame = FALSE;
 
@@ -814,22 +814,22 @@ function DisplayFormattedText(): BOOLEAN {
 }
 
 function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
-  INT32 iCounter = 0;
-  wchar_t sString[2048];
-  FileStringPtr pTempString = NULL;
-  FileStringPtr pLocatorString = NULL;
-  INT32 iTotalYPosition = 0;
-  INT32 iYPositionOnPage = 0;
-  INT32 iFileLineWidth = 0;
-  INT32 iFileStartX = 0;
-  UINT32 uiFlags = 0;
-  UINT32 uiFont = 0;
-  BOOLEAN fGoingOffCurrentPage = FALSE;
-  FileRecordWidthPtr WidthList = NULL;
+  let iCounter: INT32 = 0;
+  let sString: wchar_t[] /* [2048] */;
+  let pTempString: FileStringPtr = NULL;
+  let pLocatorString: FileStringPtr = NULL;
+  let iTotalYPosition: INT32 = 0;
+  let iYPositionOnPage: INT32 = 0;
+  let iFileLineWidth: INT32 = 0;
+  let iFileStartX: INT32 = 0;
+  let uiFlags: UINT32 = 0;
+  let uiFont: UINT32 = 0;
+  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let WidthList: FileRecordWidthPtr = NULL;
 
-  UINT32 uiPicture;
-  HVOBJECT hHandle;
-  VOBJECT_DESC VObjectDesc;
+  let uiPicture: UINT32;
+  let hHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
 
   ClearFileStringList();
 
@@ -996,8 +996,8 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 }
 
 function AddStringToFilesList(pString: STR16): void {
-  FileStringPtr pFileString;
-  FileStringPtr pTempString = pFileStringList;
+  let pFileString: FileStringPtr;
+  let pTempString: FileStringPtr = pFileStringList;
 
   // create string structure
   pFileString = MemAlloc(sizeof(FileString));
@@ -1023,8 +1023,8 @@ function AddStringToFilesList(pString: STR16): void {
 }
 
 function ClearFileStringList(): void {
-  FileStringPtr pFileString;
-  FileStringPtr pDeleteFileString;
+  let pFileString: FileStringPtr;
+  let pDeleteFileString: FileStringPtr;
 
   pFileString = pFileStringList;
 
@@ -1167,7 +1167,7 @@ function HandleFileViewerButtonStates(): void {
 }
 
 function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHeightAdjustment: INT32, ubFlags: UINT8): FileRecordWidthPtr {
-  FileRecordWidthPtr pTempRecord = NULL;
+  let pTempRecord: FileRecordWidthPtr = NULL;
 
   // allocs and inits a width info record for the multipage file viewer...this will tell the procedure that does inital computation on which record is the start of the current page
   // how wide special records are ( ones that share space with pictures )
@@ -1184,8 +1184,8 @@ function CreateRecordWidth(iRecordNumber: INT32, iRecordWidth: INT32, iRecordHei
 
 function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
-  FileRecordWidthPtr pTempRecord = NULL;
-  FileRecordWidthPtr pRecordListHead = NULL;
+  let pTempRecord: FileRecordWidthPtr = NULL;
+  let pRecordListHead: FileRecordWidthPtr = NULL;
 
   // first record width
   //	pTempRecord = CreateRecordWidth( 7, 350, 200,0 );
@@ -1209,8 +1209,8 @@ function CreateWidthRecordsForAruloIntelFile(): FileRecordWidthPtr {
 
 function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
   // this fucntion will create the width list for the Arulco intelligence file
-  FileRecordWidthPtr pTempRecord = NULL;
-  FileRecordWidthPtr pRecordListHead = NULL;
+  let pTempRecord: FileRecordWidthPtr = NULL;
+  let pRecordListHead: FileRecordWidthPtr = NULL;
 
   // first record width
   pTempRecord = CreateRecordWidth(4, 170, 0, 0);
@@ -1229,8 +1229,8 @@ function CreateWidthRecordsForTerroristFile(): FileRecordWidthPtr {
 }
 
 function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): void {
-  FileRecordWidthPtr pTempRecord = NULL;
-  FileRecordWidthPtr pDeleteRecord = NULL;
+  let pTempRecord: FileRecordWidthPtr = NULL;
+  let pDeleteRecord: FileRecordWidthPtr = NULL;
 
   // set up to head of the list
   pTempRecord = pDeleteRecord = pFileRecordWidthList;
@@ -1261,8 +1261,8 @@ function ClearOutWidthRecordsList(pFileRecordWidthList: FileRecordWidthPtr): voi
 
 function OpenFirstUnreadFile(): void {
   // open the first unread file in the list
-  INT32 iCounter = 0;
-  FilesUnitPtr pFilesList = pFilesListHead;
+  let iCounter: INT32 = 0;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
 
   // make sure is a valid
   while (pFilesList) {
@@ -1282,10 +1282,10 @@ function OpenFirstUnreadFile(): void {
 }
 
 function CheckForUnreadFiles(): void {
-  BOOLEAN fStatusOfNewFileFlag = fNewFilesInFileViewer;
+  let fStatusOfNewFileFlag: BOOLEAN = fNewFilesInFileViewer;
 
   // willc heck for any unread files and set flag if any
-  FilesUnitPtr pFilesList = pFilesListHead;
+  let pFilesList: FilesUnitPtr = pFilesListHead;
 
   fNewFilesInFileViewer = FALSE;
 
@@ -1305,23 +1305,23 @@ function CheckForUnreadFiles(): void {
 }
 
 function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOLEAN {
-  INT32 iCounter = 0;
-  wchar_t sString[2048];
-  FileStringPtr pTempString = NULL;
-  FileStringPtr pLocatorString = NULL;
-  INT32 iTotalYPosition = 0;
-  INT32 iYPositionOnPage = 0;
-  INT32 iFileLineWidth = 0;
-  INT32 iFileStartX = 0;
-  UINT32 uiFlags = 0;
-  UINT32 uiFont = 0;
-  BOOLEAN fGoingOffCurrentPage = FALSE;
-  FileRecordWidthPtr WidthList = NULL;
-  INT32 iOffset = 0;
-  UINT32 uiPicture;
-  HVOBJECT hHandle;
-  VOBJECT_DESC VObjectDesc;
-  CHAR sTemp[128];
+  let iCounter: INT32 = 0;
+  let sString: wchar_t[] /* [2048] */;
+  let pTempString: FileStringPtr = NULL;
+  let pLocatorString: FileStringPtr = NULL;
+  let iTotalYPosition: INT32 = 0;
+  let iYPositionOnPage: INT32 = 0;
+  let iFileLineWidth: INT32 = 0;
+  let iFileStartX: INT32 = 0;
+  let uiFlags: UINT32 = 0;
+  let uiFont: UINT32 = 0;
+  let fGoingOffCurrentPage: BOOLEAN = FALSE;
+  let WidthList: FileRecordWidthPtr = NULL;
+  let iOffset: INT32 = 0;
+  let uiPicture: UINT32;
+  let hHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let sTemp: CHAR[] /* [128] */;
 
   iOffset = ubFileOffsets[iFileNumber];
 
@@ -1447,7 +1447,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
 // add a file about this terrorist
 function AddFileAboutTerrorist(iProfileId: INT32): BOOLEAN {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 1; iCounter < 7; iCounter++) {
     if (usProfileIdsForTerroristFiles[iCounter] == iProfileId) {

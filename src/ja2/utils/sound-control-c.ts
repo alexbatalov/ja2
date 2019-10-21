@@ -8,10 +8,10 @@ UINT32 MIDVOLUME								START_MIDVOLUME;
 UINT32 HIGHVOLUME								START_HIGHVOLUME;
 */
 
-UINT32 guiSpeechVolume = MIDVOLUME;
-UINT32 guiSoundEffectsVolume = MIDVOLUME;
+let guiSpeechVolume: UINT32 = MIDVOLUME;
+let guiSoundEffectsVolume: UINT32 = MIDVOLUME;
 
-char szSoundEffects[NUM_SAMPLES][255] = {
+let szSoundEffects: char[][] /* [NUM_SAMPLES][255] */ = {
   "SOUNDS\\RICOCHET 01.WAV",
   "SOUNDS\\RICOCHET 02.WAV",
   "SOUNDS\\RICOCHET 01.WAV",
@@ -347,7 +347,7 @@ char szSoundEffects[NUM_SAMPLES][255] = {
   "SOUNDS\\fence open.wav",
 };
 
-char szAmbientEffects[NUM_AMBIENTS][255] = {
+let szAmbientEffects: char[][] /* [NUM_AMBIENTS][255] */ = {
   "SOUNDS\\storm1.wav",
   "SOUNDS\\storm2.wav",
   "SOUNDS\\rain_loop_22k.wav",
@@ -364,7 +364,7 @@ char szAmbientEffects[NUM_AMBIENTS][255] = {
   "SOUNDS\\night_bird3.wav",
 };
 
-UINT8 AmbientVols[NUM_AMBIENTS] = {
+let AmbientVols: UINT8[] /* [NUM_AMBIENTS] */ = {
   25, // lightning 1
   25, // lightning 2
   10, // rain 1
@@ -381,8 +381,8 @@ UINT8 AmbientVols[NUM_AMBIENTS] = {
   25, // night bird 2
 };
 
-SOUNDPARMS gDelayedSoundParms;
-UINT32 guiDelayedSoundNum;
+let gDelayedSoundParms: SOUNDPARMS;
+let guiDelayedSoundNum: UINT32;
 
 function InitJA2Sound(): BOOLEAN {
   // UINT32 uiCount;
@@ -410,7 +410,7 @@ function ShutdownJA2Sound(): BOOLEAN {
 }
 
 function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -424,7 +424,7 @@ function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops:
 }
 
 function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -440,7 +440,7 @@ function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32,
 function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -456,7 +456,7 @@ function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT3
 function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
   // does the same thing as PlayJA2Sound, but one only has to pass the filename, not the index of the sound array
 
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -471,7 +471,7 @@ function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolu
 }
 
 function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -483,7 +483,7 @@ function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT3
 }
 
 function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT32): UINT32 {
-  RANDOMPARMS rpParms;
+  let rpParms: RANDOMPARMS;
 
   memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
 
@@ -532,10 +532,13 @@ function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
 }
 
 function SoundDir(sGridNo: INT16): INT8 {
-  INT16 sWorldX, sWorldY;
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX;
-  INT16 sDif, sAbsDif;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMiddleX: INT16;
+  let sDif: INT16;
+  let sAbsDif: INT16;
 
   if (sGridNo == NOWHERE) {
     return MIDDLEPAN;
@@ -576,11 +579,16 @@ function SoundDir(sGridNo: INT16): INT8 {
 }
 
 function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
-  INT16 sWorldX, sWorldY;
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX, sMiddleY;
-  INT16 sDifX, sAbsDifX;
-  INT16 sDifY, sAbsDifY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMiddleX: INT16;
+  let sMiddleY: INT16;
+  let sDifX: INT16;
+  let sAbsDifX: INT16;
+  let sDifY: INT16;
+  let sAbsDifY: INT16;
 
   if (sGridNo == NOWHERE) {
     return bInitialVolume;
@@ -654,12 +662,12 @@ interface POSITIONSND {
 }
 
 // GLOBAL FOR SMOKE LISTING
-POSITIONSND gPositionSndData[NUM_POSITION_SOUND_EFFECT_SLOTS];
-UINT32 guiNumPositionSnds = 0;
-BOOLEAN gfPositionSoundsActive = FALSE;
+let gPositionSndData: POSITIONSND[] /* [NUM_POSITION_SOUND_EFFECT_SLOTS] */;
+let guiNumPositionSnds: UINT32 = 0;
+let gfPositionSoundsActive: BOOLEAN = FALSE;
 
 function GetFreePositionSnd(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumPositionSnds; uiCount++) {
     if ((gPositionSndData[uiCount].fAllocated == FALSE))
@@ -673,7 +681,7 @@ function GetFreePositionSnd(): INT32 {
 }
 
 function RecountPositionSnds(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumPositionSnds - 1; (uiCount >= 0); uiCount--) {
     if ((gPositionSndData[uiCount].fAllocated)) {
@@ -684,8 +692,8 @@ function RecountPositionSnds(): void {
 }
 
 function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundToPlay: UINT32): INT32 {
-  POSITIONSND *pPositionSnd;
-  INT32 iPositionSndIndex;
+  let pPositionSnd: Pointer<POSITIONSND>;
+  let iPositionSndIndex: INT32;
 
   if ((iPositionSndIndex = GetFreePositionSnd()) == (-1))
     return -1;
@@ -714,7 +722,7 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
 }
 
 function DeletePositionSnd(iPositionSndIndex: INT32): void {
-  POSITIONSND *pPositionSnd;
+  let pPositionSnd: Pointer<POSITIONSND>;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
 
@@ -734,7 +742,7 @@ function DeletePositionSnd(iPositionSndIndex: INT32): void {
 }
 
 function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
-  POSITIONSND *pPositionSnd;
+  let pPositionSnd: Pointer<POSITIONSND>;
 
   pPositionSnd = &gPositionSndData[iPositionSndIndex];
 
@@ -746,8 +754,8 @@ function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
 }
 
 function SetPositionSndsActive(): void {
-  UINT32 cnt;
-  POSITIONSND *pPositionSnd;
+  let cnt: UINT32;
+  let pPositionSnd: Pointer<POSITIONSND>;
 
   gfPositionSoundsActive = TRUE;
 
@@ -767,8 +775,8 @@ function SetPositionSndsActive(): void {
 }
 
 function SetPositionSndsInActive(): void {
-  UINT32 cnt;
-  POSITIONSND *pPositionSnd;
+  let cnt: UINT32;
+  let pPositionSnd: Pointer<POSITIONSND>;
 
   gfPositionSoundsActive = FALSE;
 
@@ -788,10 +796,13 @@ function SetPositionSndsInActive(): void {
 }
 
 function PositionSoundDir(sGridNo: INT16): INT8 {
-  INT16 sWorldX, sWorldY;
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX;
-  INT16 sDif, sAbsDif;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMiddleX: INT16;
+  let sDif: INT16;
+  let sAbsDif: INT16;
 
   if (sGridNo == NOWHERE) {
     return MIDDLEPAN;
@@ -832,13 +843,20 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
 }
 
 function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
-  INT16 sWorldX, sWorldY;
-  INT16 sScreenX, sScreenY;
-  INT16 sMiddleX, sMiddleY;
-  INT16 sDifX, sAbsDifX;
-  INT16 sDifY, sAbsDifY;
-  INT16 sMaxDistX, sMaxDistY;
-  double sMaxSoundDist, sSoundDist;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMiddleX: INT16;
+  let sMiddleY: INT16;
+  let sDifX: INT16;
+  let sAbsDifX: INT16;
+  let sDifY: INT16;
+  let sAbsDifY: INT16;
+  let sMaxDistX: INT16;
+  let sMaxDistY: INT16;
+  let sMaxSoundDist: double;
+  let sSoundDist: double;
 
   if (sGridNo == NOWHERE) {
     return bInitialVolume;
@@ -879,10 +897,11 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
 }
 
 function SetPositionSndsVolumeAndPanning(): void {
-  UINT32 cnt;
-  POSITIONSND *pPositionSnd;
-  INT8 bVolume, bPan;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT32;
+  let pPositionSnd: Pointer<POSITIONSND>;
+  let bVolume: INT8;
+  let bPan: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
     pPositionSnd = &gPositionSndData[cnt];

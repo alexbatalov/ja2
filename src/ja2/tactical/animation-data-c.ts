@@ -3,12 +3,12 @@ const TO_INIT = 0;
 
 const ANIMPROFILEFILENAME = "BINARYDATA\\JA2PROF.DAT";
 
-ANIM_PROF *gpAnimProfiles = NULL;
-UINT8 gubNumAnimProfiles = 0;
+let gpAnimProfiles: Pointer<ANIM_PROF> = NULL;
+let gubNumAnimProfiles: UINT8 = 0;
 
-INT8 gbAnimUsageHistory[NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS];
+let gbAnimUsageHistory: INT8[][] /* [NUMANIMATIONSURFACETYPES][MAX_NUM_SOLDIERS] */;
 
-AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES] = {
+let gAnimSurfaceDatabase: AnimationSurfaceType[] /* [NUMANIMATIONSURFACETYPES] */ = {
   { RGMBASICWALKING, "ANIMS\\S_MERC\\S_R_WALK.STI", S_STRUCT, 0, 8, TO_INIT, NULL, NULL, 0, -1 },
   { RGMSTANDING, "ANIMS\\S_MERC\\S_R_STD.STI", S_STRUCT, 0, 8, TO_INIT, NULL, NULL, 0, -1 },
   { RGMCROUCHING, "ANIMS\\S_MERC\\S_R_C.STI", C_STRUCT, 0, 8, TO_INIT, NULL, NULL, 0, -1 },
@@ -431,7 +431,7 @@ AnimationSurfaceType gAnimSurfaceDatabase[NUMANIMATIONSURFACETYPES] = {
   { BODYEXPLODE, "ANIMS\\S_MERC\\BOD_BLOW.STI", NO_STRUCT, 0, 1, TO_INIT, NULL, NULL, 0, -1 },
 };
 
-AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS] = {
+let gAnimStructureDatabase: AnimationStructureType[][] /* [TOTALBODYTYPES][NUM_STRUCT_IDS] */ = {
   // Normal Male
   {
     { "ANIMS\\STRUCTDATA\\M_STAND.JSD", NULL },
@@ -714,9 +714,10 @@ AnimationStructureType gAnimStructureDatabase[TOTALBODYTYPES][NUM_STRUCT_IDS] = 
 };
 
 function InitAnimationSystem(): BOOLEAN {
-  INT32 cnt1, cnt2;
-  CHAR8 sFilename[50];
-  STRUCTURE_FILE_REF *pStructureFileRef;
+  let cnt1: INT32;
+  let cnt2: INT32;
+  let sFilename: CHAR8[] /* [50] */;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
   CHECKF(LoadAnimationStateInstructions());
 
@@ -745,7 +746,8 @@ function InitAnimationSystem(): BOOLEAN {
 }
 
 function DeInitAnimationSystem(): BOOLEAN {
-  INT32 cnt1, cnt2;
+  let cnt1: INT32;
+  let cnt2: INT32;
 
   for (cnt1 = 0; cnt1 < NUMANIMATIONSURFACETYPES; cnt1++) {
     if (gAnimSurfaceDatabase[cnt1].hVideoObject != NULL) {
@@ -771,7 +773,7 @@ function DeInitAnimationSystem(): BOOLEAN {
 }
 
 function InternalGetAnimationStructureRef(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16, fUseAbsolute: BOOLEAN): Pointer<STRUCTURE_FILE_REF> {
-  INT8 bStructDataType;
+  let bStructDataType: INT8;
 
   if (usSurfaceIndex == INVALID_ANIMATION_SURFACE) {
     return NULL;
@@ -803,7 +805,7 @@ function GetDefaultStructureRef(usSoldierID: UINT16): Pointer<STRUCTURE_FILE_REF
 
 // Surface mamagement functions
 function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAnimState: UINT16): BOOLEAN {
-  AuxObjectData *pAuxData;
+  let pAuxData: Pointer<AuxObjectData>;
 
   // Check for valid surface
   CHECKF(usSurfaceIndex < NUMANIMATIONSURFACETYPES);
@@ -814,11 +816,11 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     AnimDebugMsg(String("Surface Database: Hit %d", usSurfaceIndex));
   } else {
     // Load into memory
-    VOBJECT_DESC VObjectDesc;
-    HVOBJECT hVObject;
-    HIMAGE hImage;
-    CHAR8 sFilename[48];
-    STRUCTURE_FILE_REF *pStructureFileRef;
+    let VObjectDesc: VOBJECT_DESC;
+    let hVObject: HVOBJECT;
+    let hImage: HIMAGE;
+    let sFilename: CHAR8[] /* [48] */;
+    let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
 
     AnimDebugMsg(String("Surface Database: Loading %d", usSurfaceIndex));
 
@@ -862,7 +864,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     pStructureFileRef = InternalGetAnimationStructureRef(usSoldierID, usSurfaceIndex, usAnimState, TRUE);
 
     if (pStructureFileRef != NULL) {
-      INT16 sStartFrame = 0;
+      let sStartFrame: INT16 = 0;
 
       if (usSurfaceIndex == RGMPRONE) {
         sStartFrame = 5;
@@ -937,7 +939,7 @@ function UnLoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16): BO
 }
 
 function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < NUMANIMATIONSURFACETYPES; cnt++) {
     gbAnimUsageHistory[cnt][usSoldierID] = 0;
@@ -946,11 +948,13 @@ function ClearAnimationSurfacesUsageHistory(usSoldierID: UINT16): void {
 
 function LoadAnimationProfiles(): BOOLEAN {
   //	FILE *			pInput;
-  HWFILE pInput;
-  INT32 iProfileCount, iDirectionCount, iTileCount;
-  ANIM_PROF *pProfile;
-  ANIM_PROF_DIR *pProfileDirs;
-  UINT32 uiBytesRead;
+  let pInput: HWFILE;
+  let iProfileCount: INT32;
+  let iDirectionCount: INT32;
+  let iTileCount: INT32;
+  let pProfile: Pointer<ANIM_PROF>;
+  let pProfileDirs: Pointer<ANIM_PROF_DIR>;
+  let uiBytesRead: UINT32;
 
   //	pInput = fopen( ANIMPROFILEFILENAME, "rb" );
   pInput = FileOpen(ANIMPROFILEFILENAME, FILE_ACCESS_READ, FALSE);
@@ -1014,9 +1018,10 @@ function LoadAnimationProfiles(): BOOLEAN {
 }
 
 function DeleteAnimationProfiles(): void {
-  INT32 iProfileCount, iDirectionCount;
-  ANIM_PROF *pProfile;
-  ANIM_PROF_DIR *pProfileDir;
+  let iProfileCount: INT32;
+  let iDirectionCount: INT32;
+  let pProfile: Pointer<ANIM_PROF>;
+  let pProfileDir: Pointer<ANIM_PROF_DIR>;
 
   // Loop profiles
   for (iProfileCount = 0; iProfileCount < gubNumAnimProfiles; iProfileCount++) {
@@ -1038,7 +1043,7 @@ function DeleteAnimationProfiles(): void {
 }
 
 function ZeroAnimSurfaceCounts(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUMANIMATIONSURFACETYPES; cnt++) {
     gAnimSurfaceDatabase[cnt].bUsageCount = 0;

@@ -1,111 +1,113 @@
-BOOLEAN gfCorruptMap = FALSE;
-BOOLEAN gfCorruptSchedules = FALSE;
-BOOLEAN gfProfileDataLoaded = FALSE;
+let gfCorruptMap: BOOLEAN = FALSE;
+let gfCorruptSchedules: BOOLEAN = FALSE;
+let gfProfileDataLoaded: BOOLEAN = FALSE;
 
-GUI_BUTTON *gpPersistantButton;
+let gpPersistantButton: Pointer<GUI_BUTTON>;
 
 // These are global variables used by the main game loop
 
-UINT32 guiSaveTacticalStatusFlags; // saves the tactical status flags when entering the editor.
+let guiSaveTacticalStatusFlags: UINT32; // saves the tactical status flags when entering the editor.
 
-BOOLEAN gfAutoLoadA9 = FALSE;
+let gfAutoLoadA9: BOOLEAN = FALSE;
 // new vars added by Kris
-BOOLEAN gfRenderWorld = FALSE;
-BOOLEAN gfRenderTaskbar = FALSE;
-BOOLEAN gfRenderDrawingMode = FALSE;
-BOOLEAN gfFirstPlacement = TRUE;
-BOOLEAN gfPendingBasement = FALSE;
-BOOLEAN gfPendingCaves = FALSE;
-BOOLEAN gfNeedToInitGame = FALSE;
-BOOLEAN gfScheduleReversalPending = FALSE;
-BOOLEAN gfRemoveLightsPending = FALSE;
-BOOLEAN gfScheduleClearPending = FALSE;
-BOOLEAN gfConfirmExitFirst = TRUE;
-BOOLEAN gfConfirmExitPending = FALSE;
-BOOLEAN gfIntendOnEnteringEditor = FALSE;
+let gfRenderWorld: BOOLEAN = FALSE;
+let gfRenderTaskbar: BOOLEAN = FALSE;
+let gfRenderDrawingMode: BOOLEAN = FALSE;
+let gfFirstPlacement: BOOLEAN = TRUE;
+let gfPendingBasement: BOOLEAN = FALSE;
+let gfPendingCaves: BOOLEAN = FALSE;
+let gfNeedToInitGame: BOOLEAN = FALSE;
+let gfScheduleReversalPending: BOOLEAN = FALSE;
+let gfRemoveLightsPending: BOOLEAN = FALSE;
+let gfScheduleClearPending: BOOLEAN = FALSE;
+let gfConfirmExitFirst: BOOLEAN = TRUE;
+let gfConfirmExitPending: BOOLEAN = FALSE;
+let gfIntendOnEnteringEditor: BOOLEAN = FALSE;
 
 // original
-UINT8 gubFilename[200];
-INT16 gsBanksSubIndex = 0;
-INT16 gsOldBanksSubIndex = 1;
-INT16 gsCliffsSubIndex = 0;
-INT16 gsOldCliffsSubIndex = 1;
-BOOLEAN gfSwitchScreen = FALSE;
-BOOLEAN gDoTest = FALSE;
-BOOLEAN gDoTest2 = FALSE;
-FLOAT gShadePercent = (FLOAT)0.65;
-INT16 gusCurrentRoofType = ONELEVELTYPEONEROOF;
+let gubFilename: UINT8[] /* [200] */;
+let gsBanksSubIndex: INT16 = 0;
+let gsOldBanksSubIndex: INT16 = 1;
+let gsCliffsSubIndex: INT16 = 0;
+let gsOldCliffsSubIndex: INT16 = 1;
+let gfSwitchScreen: BOOLEAN = FALSE;
+let gDoTest: BOOLEAN = FALSE;
+let gDoTest2: BOOLEAN = FALSE;
+let gShadePercent: FLOAT = (FLOAT)0.65;
+let gusCurrentRoofType: INT16 = ONELEVELTYPEONEROOF;
 
-UINT16 gusLightLevel = 0;
-UINT16 gusGameLightLevel = 0;
-UINT16 gusSavedLightLevel = 0;
-BOOLEAN gfFakeLights = FALSE;
+let gusLightLevel: UINT16 = 0;
+let gusGameLightLevel: UINT16 = 0;
+let gusSavedLightLevel: UINT16 = 0;
+let gfFakeLights: BOOLEAN = FALSE;
 
-INT16 gsLightRadius = 5;
+let gsLightRadius: INT16 = 5;
 
-BOOLEAN gfOldDoVideoScroll; // Saved for returning to previous settings
-UINT8 gubOldCurScrollSpeedID; // Saved for returning to previous settings
+let gfOldDoVideoScroll: BOOLEAN; // Saved for returning to previous settings
+let gubOldCurScrollSpeedID: UINT8; // Saved for returning to previous settings
 
-INT32 iOldTaskMode = TASK_OPTIONS;
+let iOldTaskMode: INT32 = TASK_OPTIONS;
 
-INT32 iTaskMode = TASK_NONE;
+let iTaskMode: INT32 = TASK_NONE;
 
-INT32 iEditorTBarButton[NUMBER_EDITOR_BUTTONS]; // For Toolbars
+let iEditorTBarButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */; // For Toolbars
 
-BOOLEAN gfMercResetUponEditorEntry;
+let gfMercResetUponEditorEntry: BOOLEAN;
 
-BOOLEAN fHelpScreen = FALSE;
+let fHelpScreen: BOOLEAN = FALSE;
 
-BOOLEAN fDontUseRandom = FALSE;
+let fDontUseRandom: BOOLEAN = FALSE;
 
-INT32 TestButtons[10];
+let TestButtons: INT32[] /* [10] */;
 
-LEVELNODE *gCursorNode = NULL;
+let gCursorNode: Pointer<LEVELNODE> = NULL;
 // LEVELNODE *gBasicCursorNode = NULL;
-INT16 gsCursorGridNo;
+let gsCursorGridNo: INT16;
 
-INT32 giMusicID = 0;
+let giMusicID: INT32 = 0;
 
-BOOLEAN gfEditorDirty = TRUE;
+let gfEditorDirty: BOOLEAN = TRUE;
 
-BOOLEAN fRaiseHeight = FALSE;
+let fRaiseHeight: BOOLEAN = FALSE;
 
-INT32 iDrawMode = DRAW_MODE_NOTHING;
-INT32 iCurrentAction, iActionParam;
-INT32 iEditAction = ACTION_NULL;
+let iDrawMode: INT32 = DRAW_MODE_NOTHING;
+let iCurrentAction: INT32;
+let iActionParam: INT32;
+let iEditAction: INT32 = ACTION_NULL;
 
-INT32 iEditorButton[NUMBER_EDITOR_BUTTONS];
-INT32 iEditorToolbarState;
-INT32 iJA2ToolbarLastWallState;
+let iEditorButton: INT32[] /* [NUMBER_EDITOR_BUTTONS] */;
+let iEditorToolbarState: INT32;
+let iJA2ToolbarLastWallState: INT32;
 
-INT32 iCurrentTaskbar;
+let iCurrentTaskbar: INT32;
 
-UINT16 iCurBankMapIndex;
+let iCurBankMapIndex: UINT16;
 
-InputAtom EditorInputEvent;
-BOOLEAN fBeenWarned = FALSE;
-BOOLEAN fEditModeFirstTime = TRUE;
-BOOLEAN fFirstTimeInEditModeInit = TRUE;
-BOOLEAN fSelectionWindow = FALSE;
-BOOLEAN gfRealGunNut = TRUE;
+let EditorInputEvent: InputAtom;
+let fBeenWarned: BOOLEAN = FALSE;
+let fEditModeFirstTime: BOOLEAN = TRUE;
+let fFirstTimeInEditModeInit: BOOLEAN = TRUE;
+let fSelectionWindow: BOOLEAN = FALSE;
+let gfRealGunNut: BOOLEAN = TRUE;
 
-INT16 sGridX, sGridY;
-UINT32 iMapIndex;
-BOOLEAN fNewMap = FALSE;
+let sGridX: INT16;
+let sGridY: INT16;
+let iMapIndex: UINT32;
+let fNewMap: BOOLEAN = FALSE;
 
-INT32 iPrevDrawMode = DRAW_MODE_NOTHING;
-UINT16 PrevCurrentPaste = FIRSTTEXTURE;
-INT32 gPrevCurrentBackground = FIRSTTEXTURE;
-INT32 iPrevJA2ToolbarState = TBAR_MODE_NONE;
-INT32 PrevTerrainTileDrawMode = TERRAIN_TILES_NODRAW;
+let iPrevDrawMode: INT32 = DRAW_MODE_NOTHING;
+let PrevCurrentPaste: UINT16 = FIRSTTEXTURE;
+let gPrevCurrentBackground: INT32 = FIRSTTEXTURE;
+let iPrevJA2ToolbarState: INT32 = TBAR_MODE_NONE;
+let PrevTerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
 
-UINT16 gusEditorTaskbarColor;
-UINT16 gusEditorTaskbarHiColor;
-UINT16 gusEditorTaskbarLoColor;
+let gusEditorTaskbarColor: UINT16;
+let gusEditorTaskbarHiColor: UINT16;
+let gusEditorTaskbarLoColor: UINT16;
 
-BOOLEAN gfGotoGridNoUI = FALSE;
-INT32 guiGotoGridNoUIButtonID;
-MOUSE_REGION GotoGridNoUIRegion;
+let gfGotoGridNoUI: BOOLEAN = FALSE;
+let guiGotoGridNoUIButtonID: INT32;
+let GotoGridNoUIRegion: MOUSE_REGION;
 
 //----------------------------------------------------------------------------------------------
 //	EditScreenInit
@@ -156,9 +158,9 @@ function EditScreenShutdown(): UINT32 {
 //	Editor's Init code. Called each time we enter edit mode from the game.
 //
 function EditModeInit(): BOOLEAN {
-  UINT32 x;
-  INT32 i;
-  SGPPaletteEntry LColors[2];
+  let x: UINT32;
+  let i: INT32;
+  let LColors: SGPPaletteEntry[] /* [2] */;
 
   OutputDebugString("Entering editor mode...\n");
 
@@ -422,8 +424,9 @@ function EditModeShutdown(): BOOLEAN {
 //	Forces all land on the map to have the same ground texture.
 //
 function SetBackgroundTexture(): void {
-  int cnt;
-  UINT16 usIndex, Dummy;
+  let cnt: int;
+  let usIndex: UINT16;
+  let Dummy: UINT16;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // Erase old layers
@@ -493,9 +496,10 @@ function RemoveTempMouseCursorObject(): void {
 // Whenever the editor wishes to show an object in the world, it will temporarily attach it to
 // the mouse cursor, to indicate what is about to be drawn.
 function DrawTempMouseCursorObject(): BOOLEAN {
-  INT16 sMouseX_M, sMouseY_M;
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
+  let sMouseX_M: INT16;
+  let sMouseY_M: INT16;
+  let usUseIndex: UINT16;
+  let usUseObjIndex: UINT16;
 
   switch (iDrawMode) {
     case DRAW_MODE_ROOM:
@@ -607,20 +611,22 @@ function DrawTempMouseCursorObject(): BOOLEAN {
 
 // Displays the current drawing object in the small, lower left window of the editor's toolbar.
 function ShowCurrentDrawingMode(): void {
-  SGPRect ClipRect, NewRect;
-  INT32 iShowMode;
-  UINT16 usUseIndex;
-  UINT16 usObjIndex;
-  INT32 iStartX = 50;
-  INT32 iStartY = 440;
-  INT32 iPicHeight, iPicWidth;
-  INT16 sTempOffsetX;
-  INT16 sTempOffsetY;
-  ETRLEObject *pETRLEObject;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usFillColor;
-  INT32 iIndexToUse;
+  let ClipRect: SGPRect;
+  let NewRect: SGPRect;
+  let iShowMode: INT32;
+  let usUseIndex: UINT16;
+  let usObjIndex: UINT16;
+  let iStartX: INT32 = 50;
+  let iStartY: INT32 = 440;
+  let iPicHeight: INT32;
+  let iPicWidth: INT32;
+  let sTempOffsetX: INT16;
+  let sTempOffsetY: INT16;
+  let pETRLEObject: Pointer<ETRLEObject>;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usFillColor: UINT16;
+  let iIndexToUse: INT32;
 
   // Set up a clipping rectangle for the display window.
   NewRect.iLeft = 0;
@@ -846,7 +852,7 @@ function ShowCurrentDrawingMode(): void {
 //	Select action to be taken based on user's toolbar selection.
 //
 function HandleJA2ToolbarSelection(): void {
-  BOOLEAN fPrevState;
+  let fPrevState: BOOLEAN;
 
   fPrevState = gfRenderTaskbar;
   gfRenderTaskbar = TRUE;
@@ -1109,8 +1115,8 @@ function HandleJA2ToolbarSelection(): void {
 //
 
 function HandleKeyboardShortcuts(): void {
-  static INT32 iSavedMode;
-  static BOOLEAN fShowTrees = TRUE;
+  /* static */ let iSavedMode: INT32;
+  /* static */ let fShowTrees: BOOLEAN = TRUE;
   while (DequeueEvent(&EditorInputEvent)) {
     if (!HandleSummaryInput(&EditorInputEvent) && !HandleTextInput(&EditorInputEvent) && EditorInputEvent.usEvent == KEY_DOWN) {
       if (gfGotoGridNoUI) {
@@ -1323,8 +1329,10 @@ function HandleKeyboardShortcuts(): void {
 
           case F7:
             if (gfBasement) {
-              INT32 i;
-              UINT16 usRoofIndex, usRoofType, usTileIndex;
+              let i: INT32;
+              let usRoofIndex: UINT16;
+              let usRoofType: UINT16;
+              let usTileIndex: UINT16;
               pSelList = SelSingleRoof;
               pNumSelList = &iNumRoofsSelected;
               usRoofType = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
@@ -1637,7 +1645,7 @@ function HandleKeyboardShortcuts(): void {
 //	Perform the current user selected action, if any (or at least set things up for doing that)
 //
 function PerformSelectedAction(): UINT32 {
-  UINT32 uiRetVal;
+  let uiRetVal: UINT32;
 
   uiRetVal = EDIT_SCREEN;
 
@@ -2046,8 +2054,8 @@ function CreateNewMap(): void {
   LightReset();
   NewWorld();
   if (gfPendingBasement) {
-    UINT32 i;
-    UINT16 usIndex;
+    let i: UINT32;
+    let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
       GetTileIndexFromTypeSubIndex(FIRSTROOF, (UINT16)(9 + Random(3)), &usIndex);
@@ -2055,8 +2063,8 @@ function CreateNewMap(): void {
     }
     SetEditorSmoothingMode(SMOOTHING_BASEMENT);
   } else if (gfPendingCaves) {
-    UINT32 i;
-    UINT16 usIndex;
+    let i: UINT32;
+    let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
       GetTileIndexFromTypeSubIndex(FIRSTWALL, (UINT16)(60 + Random(6)), &usIndex);
@@ -2092,7 +2100,7 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
   if (!gfMessageBoxResult)
     return EDIT_SCREEN;
   if (gfRemoveLightsPending) {
-    INT32 i;
+    let i: INT32;
     LightReset();
     for (i = 0; i < WORLD_MAX; i++) {
       RemoveAllObjectsOfTypeRange(i, GOODRING, GOODRING);
@@ -2128,8 +2136,8 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
 //	Displays a help screen and waits for the user to wisk it away.
 //
 function WaitForHelpScreenResponse(): UINT32 {
-  InputAtom DummyEvent;
-  BOOLEAN fLeaveScreen;
+  let DummyEvent: InputAtom;
+  let fLeaveScreen: BOOLEAN;
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 50, 50, 590, 310, Get16BPPColor(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 51, 51, 590, 310, Get16BPPColor(FROMRGB(24, 61, 81)));
@@ -2237,7 +2245,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 //	Handles all keyboard input and display for a selection window.
 //
 function WaitForSelectionWindowResponse(): UINT32 {
-  InputAtom DummyEvent;
+  let DummyEvent: InputAtom;
 
   while (DequeueEvent(&DummyEvent) == TRUE) {
     if (DummyEvent.usEvent == KEY_DOWN) {
@@ -2312,13 +2320,16 @@ function GetMasterList(): void {
 //	(usually a 16 bit image)
 //
 function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
-  SGPRect ClipRect, WinRect;
-  INT32 iStartX;
-  INT32 iStartY;
-  INT32 iPicHeight, iPicWidth;
-  HVSURFACE hvSurface;
-  INT32 iWinWidth, iWinHeight;
-  blt_vs_fx vSfx;
+  let ClipRect: SGPRect;
+  let WinRect: SGPRect;
+  let iStartX: INT32;
+  let iStartY: INT32;
+  let iPicHeight: INT32;
+  let iPicWidth: INT32;
+  let hvSurface: HVSURFACE;
+  let iWinWidth: INT32;
+  let iWinHeight: INT32;
+  let vSfx: blt_vs_fx;
 
   WinRect.iLeft = (iWindow == 0) ? (336) : (488);
   WinRect.iTop = 211;
@@ -2366,14 +2377,17 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 //	8 bit image (.STI) files
 //
 function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
-  SGPRect ClipRect, NewRect;
-  INT32 iStartX;
-  INT32 iStartY;
-  INT32 iPicHeight, iPicWidth;
-  INT16 sTempOffsetX;
-  INT16 sTempOffsetY;
-  ETRLEObject *pETRLEObject;
-  INT32 iWinWidth, iWinHeight;
+  let ClipRect: SGPRect;
+  let NewRect: SGPRect;
+  let iStartX: INT32;
+  let iStartY: INT32;
+  let iPicHeight: INT32;
+  let iPicWidth: INT32;
+  let sTempOffsetX: INT16;
+  let sTempOffsetY: INT16;
+  let pETRLEObject: Pointer<ETRLEObject>;
+  let iWinWidth: INT32;
+  let iWinHeight: INT32;
 
   NewRect.iLeft = (iWindow == 0) ? (336) : (488);
   NewRect.iTop = 211;
@@ -2417,11 +2431,11 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
 //	Creates and places a light of selected radius and color into the world.
 //
 function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): BOOLEAN {
-  INT32 iLightHandle;
-  UINT8 ubIntensity;
-  STRING512 Filename;
-  INT32 iMapIndex;
-  UINT16 usTmpIndex;
+  let iLightHandle: INT32;
+  let ubIntensity: UINT8;
+  let Filename: STRING512;
+  let iMapIndex: INT32;
+  let usTmpIndex: UINT16;
 
   sprintf(Filename, "L-R%02d.LHT", sRadius);
 
@@ -2490,14 +2504,14 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
 //	i.e. FALSE is not an error condition!
 //
 function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
-  INT32 iCount;
-  UINT16 cnt;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fSoldierLight;
-  BOOLEAN fRemovedLight;
-  INT32 iMapIndex;
-  UINT32 uiLastLightType;
-  UINT8 *pLastLightName;
+  let iCount: INT32;
+  let cnt: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fSoldierLight: BOOLEAN;
+  let fRemovedLight: BOOLEAN;
+  let iMapIndex: INT32;
+  let uiLastLightType: UINT32;
+  let pLastLightName: Pointer<UINT8>;
 
   fRemovedLight = FALSE;
 
@@ -2528,7 +2542,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
     }
   }
   if (fRemovedLight) {
-    UINT16 usRadius;
+    let usRadius: UINT16;
     // Assuming that the light naming convention doesn't change, then this following conversion
     // should work.  Basically, the radius values aren't stored in the lights, so I have pull
     // the radius out of the filename.  Ex:  L-RO5.LHT
@@ -2546,12 +2560,12 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
 //	a marker at it's location for editing purposes.
 //
 function ShowLightPositionHandles(): void {
-  INT32 iCount;
-  INT32 iMapIndex;
-  UINT16 cnt;
-  UINT16 usTmpIndex;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fSoldierLight;
+  let iCount: INT32;
+  let iMapIndex: INT32;
+  let cnt: UINT16;
+  let usTmpIndex: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fSoldierLight: BOOLEAN;
 
   // Check all lights and place a position handle there!
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
@@ -2582,11 +2596,11 @@ function ShowLightPositionHandles(): void {
 //	Scans through all light currently in the world and removes any light markers that may be present.
 //
 function RemoveLightPositionHandles(): void {
-  INT32 iCount;
-  INT32 iMapIndex;
-  UINT16 cnt;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fSoldierLight;
+  let iCount: INT32;
+  let iMapIndex: INT32;
+  let cnt: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fSoldierLight: BOOLEAN;
 
   // Check all lights and remove the position handle there!
   for (iCount = 0; iCount < MAX_LIGHT_SPRITES; iCount++) {
@@ -2624,7 +2638,7 @@ function RemoveLightPositionHandles(): void {
 //	slant roofs (which require at least one side to be exactly 8 tiles wide)
 //
 function CheckForSlantRoofs(): BOOLEAN {
-  UINT16 usCheck;
+  let usCheck: UINT16;
 
   pSelList = SelRoom;
   pNumSelList = &iNumRoomsSelected;
@@ -2662,9 +2676,9 @@ function MapOptimize(): void {
 //	random selections.
 //
 function CheckForFences(): BOOLEAN {
-  UINT16 usCheck;
-  BOOLEAN fFence;
-  TILE_ELEMENT *T;
+  let usCheck: UINT16;
+  let fFence: BOOLEAN;
+  let T: Pointer<TILE_ELEMENT>;
 
   pSelList = SelOStructs2;
   pNumSelList = &iNumOStructs2Selected;
@@ -2713,9 +2727,10 @@ function EnsureStatusOfEditorButtons(): void {
 }
 
 function HandleMouseClicksInGameScreen(): void {
-  EXITGRID dummy = { 0, 0, 0, 0 };
-  INT16 sX, sY;
-  BOOLEAN fPrevState;
+  let dummy: EXITGRID = { 0, 0, 0, 0 };
+  let sX: INT16;
+  let sY: INT16;
+  let fPrevState: BOOLEAN;
   if (!GetMouseXY(&sGridX, &sGridY))
     return;
   if (iCurrentTaskbar == TASK_OPTIONS || iCurrentTaskbar == TASK_NONE) {
@@ -2988,7 +3003,8 @@ function HandleMouseClicksInGameScreen(): void {
 }
 
 function DoIRenderASpecialMouseCursor(): BOOLEAN {
-  INT16 sMouseX_M, sMouseY_M;
+  let sMouseX_M: INT16;
+  let sMouseY_M: INT16;
 
   // Draw basic mouse
   if (GetMouseXY(&sMouseX_M, &sMouseY_M)) {
@@ -3096,7 +3112,7 @@ function TaskMapInfoCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
-  BOOLEAN fPrevState = gfRenderWorld;
+  let fPrevState: BOOLEAN = gfRenderWorld;
   gfRenderWorld = TRUE;
   switch (iDrawMode) {
     case DRAW_MODE_ROOM:
@@ -3118,7 +3134,7 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
         gubCurrRoomNumber++;
         gubMaxRoomNumber++;
         if (iCurrentTaskbar == TASK_BUILDINGS && TextInputMode()) {
-          UINT16 str[4];
+          let str: UINT16[] /* [4] */;
           swprintf(str, L"%d", gubCurrRoomNumber);
           SetInputFieldStringWith16BitString(1, str);
           SetActiveField(0);
@@ -3146,8 +3162,10 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
 // appropriate paste function for every gridno within the cursor.  This is not used for functions that
 // rely completely on selection areas, such as buildings.
 function DrawObjectsBasedOnSelectionRegion(): void {
-  INT32 x, y, iMapIndex;
-  BOOLEAN fSkipTest;
+  let x: INT32;
+  let y: INT32;
+  let iMapIndex: INT32;
+  let fSkipTest: BOOLEAN;
 
   // Certain drawing modes are placed with 100% density.  Those cases are checked here,
   // so the density test can be skipped.
@@ -3202,8 +3220,8 @@ function DrawObjectsBasedOnSelectionRegion(): void {
 
 // The main loop of the editor.
 function EditScreenHandle(): UINT32 {
-  UINT32 uiRetVal;
-  BOOLEAN fShowingCursor;
+  let uiRetVal: UINT32;
+  let fShowingCursor: BOOLEAN;
   StartFrameBufferRender();
 
   if (gfWorldLoaded && gMapInformation.ubMapVersion <= 7 && !gfCorruptMap) {
@@ -3355,7 +3373,7 @@ function CreateGotoGridNoUI(): void {
 }
 
 function RemoveGotoGridNoUI(): void {
-  INT32 iMapIndex;
+  let iMapIndex: INT32;
   gfGotoGridNoUI = FALSE;
   // Enable the rest of the editor
   EnableEditorTaskbar();
@@ -3378,7 +3396,7 @@ function UpdateLastActionBeforeLeaving(): void {
 }
 
 function ReloadMap(): void {
-  UINT16 szFilename[30];
+  let szFilename: UINT16[] /* [30] */;
   swprintf(szFilename, L"%S", gubFilename);
   ExternalLoadMap(szFilename);
 }

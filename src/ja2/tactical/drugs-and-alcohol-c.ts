@@ -1,25 +1,25 @@
-UINT8 ubDrugTravelRate[] = {
+let ubDrugTravelRate: UINT8[] /* [] */ = {
   4,
   2,
 };
-UINT8 ubDrugWearoffRate[] = {
+let ubDrugWearoffRate: UINT8[] /* [] */ = {
   2,
   2,
 };
-UINT8 ubDrugEffect[] = {
+let ubDrugEffect: UINT8[] /* [] */ = {
   15,
   8,
 };
-UINT8 ubDrugSideEffect[] = {
+let ubDrugSideEffect: UINT8[] /* [] */ = {
   20,
   10,
 };
-UINT8 ubDrugSideEffectRate[] = {
+let ubDrugSideEffectRate: UINT8[] /* [] */ = {
   2,
   1,
 };
 
-INT32 giDrunkModifier[] = {
+let giDrunkModifier: INT32[] /* [] */ = {
   100, // Sober
   75, // Feeling good,
   65, // Bporderline
@@ -47,10 +47,10 @@ function GetDrugType(usItem: UINT16): UINT8 {
 }
 
 function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>): BOOLEAN {
-  UINT8 ubDrugType;
-  UINT8 ubKitPoints;
-  INT8 bRegenPointsGained;
-  UINT16 usItem;
+  let ubDrugType: UINT8;
+  let ubKitPoints: UINT8;
+  let bRegenPointsGained: INT8;
+  let usItem: UINT16;
 
   usItem = pObject->usItem;
 
@@ -178,8 +178,9 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
 }
 
 function HandleEndTurnDrugAdjustments(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt, cnt2;
-  INT32 iNumLoops;
+  let cnt: INT32;
+  let cnt2: INT32;
+  let iNumLoops: INT32;
   //	INT8 bBandaged;
 
   for (cnt = 0; cnt < NUM_COMPLEX_DRUGS; cnt++) {
@@ -276,8 +277,8 @@ function GetDrugSideEffect(pSoldier: Pointer<SOLDIERTYPE>, ubDrugType: UINT8): I
 }
 
 function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Pointer<UINT8>): void {
-  INT8 bDrunkLevel;
-  INT16 sPoints = (*pubPoints);
+  let bDrunkLevel: INT8;
+  let sPoints: INT16 = (*pubPoints);
 
   // Are we in a side effect or good effect?
   if (pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE]) {
@@ -307,7 +308,7 @@ function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Poi
 }
 
 function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {
-  INT8 bDrunkLevel;
+  let bDrunkLevel: INT8;
 
   // Are we in a side effect or good effect?
   if (pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE]) {
@@ -327,7 +328,7 @@ function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReducti
 }
 
 function GetDrunkLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bNumDrinks;
+  let bNumDrinks: INT8;
 
   // If we have a -ve effect ...
   if (pSoldier->bDrugEffect[DRUG_TYPE_ALCOHOL] == 0 && pSoldier->bDrugSideEffect[DRUG_TYPE_ALCOHOL] == 0) {

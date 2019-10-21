@@ -2,21 +2,21 @@ const BOX_BUTTON_WIDTH = 100;
 const BOX_BUTTON_HEIGHT = 20;
 
 // flag to say if we are showing town/mine box at all
-BOOLEAN fShowTownInfo = FALSE;
+let fShowTownInfo: BOOLEAN = FALSE;
 
-INT32 ghTownMineBox = -1;
-SGPPoint TownMinePosition = { 300, 150 };
-SGPRect TownMineDimensions = { 0, 0, 240, 60 };
+let ghTownMineBox: INT32 = -1;
+let TownMinePosition: SGPPoint = { 300, 150 };
+let TownMineDimensions: SGPRect = { 0, 0, 240, 60 };
 
-INT8 bCurrentTownMineSectorX = 0;
-INT8 bCurrentTownMineSectorY = 0;
-INT8 bCurrentTownMineSectorZ = 0;
+let bCurrentTownMineSectorX: INT8 = 0;
+let bCurrentTownMineSectorY: INT8 = 0;
+let bCurrentTownMineSectorZ: INT8 = 0;
 
 // inventory button
-UINT32 guiMapButtonInventoryImage[2];
-UINT32 guiMapButtonInventory[2];
+let guiMapButtonInventoryImage: UINT32[] /* [2] */;
+let guiMapButtonInventory: UINT32[] /* [2] */;
 
-UINT16 sTotalButtonWidth = 0;
+let sTotalButtonWidth: UINT16 = 0;
 
 // extern UINT8 gubMonsterMineInfestation[];
 
@@ -36,11 +36,12 @@ function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
 
 function CreateDestroyTownInfoBox(): void {
   // create destroy pop up box for town/mine info
-  static BOOLEAN fCreated = FALSE;
-  SGPRect pDimensions;
-  SGPPoint pPosition;
-  INT16 sButtonX = 0, sButtonY = 0;
-  INT8 bTownId = 0;
+  /* static */ let fCreated: BOOLEAN = FALSE;
+  let pDimensions: SGPRect;
+  let pPosition: SGPPoint;
+  let sButtonX: INT16 = 0;
+  let sButtonY: INT16 = 0;
+  let bTownId: INT8 = 0;
 
   if ((fCreated == FALSE) && (fShowTownInfo == TRUE)) {
     // create pop up box
@@ -178,11 +179,11 @@ function CreateTownInfoBox(): void {
 
 // adds text to town info box
 function AddTextToTownBox(): void {
-  UINT32 hStringHandle = 0;
-  CHAR16 wString[64];
-  UINT8 ubTownId = 0;
-  UINT16 usTownSectorIndex;
-  INT16 sMineSector = 0;
+  let hStringHandle: UINT32 = 0;
+  let wString: CHAR16[] /* [64] */;
+  let ubTownId: UINT8 = 0;
+  let usTownSectorIndex: UINT16;
+  let sMineSector: INT16 = 0;
 
   // remember town id
   ubTownId = GetTownIdForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
@@ -273,10 +274,10 @@ function AddTextToTownBox(): void {
 
 // adds text to mine info box
 function AddTextToMineBox(): void {
-  UINT8 ubMineIndex;
-  UINT8 ubTown;
-  UINT32 hStringHandle;
-  CHAR16 wString[64];
+  let ubMineIndex: UINT8;
+  let ubTown: UINT8;
+  let hStringHandle: UINT32;
+  let wString: CHAR16[] /* [64] */;
 
   ubMineIndex = GetMineIndexForSector(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
 
@@ -370,8 +371,8 @@ function AddTextToMineBox(): void {
 }
 
 function AddTextToBlankSectorBox(): void {
-  UINT32 hStringHandle;
-  UINT16 usSectorValue = 0;
+  let hStringHandle: UINT32;
+  let usSectorValue: UINT16 = 0;
 
   // get the sector value
   usSectorValue = SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY);
@@ -410,9 +411,9 @@ function AddTextToBlankSectorBox(): void {
 }
 
 function AddSectorToBox(): void {
-  CHAR16 wString[64];
-  CHAR16 wString2[10];
-  UINT32 hStringHandle = 0;
+  let wString: CHAR16[] /* [64] */;
+  let wString2: CHAR16[] /* [10] */;
+  let hStringHandle: UINT32 = 0;
 
   // sector
   swprintf(wString, L"%s:", pwMiscSectorStrings[1]);
@@ -428,11 +429,11 @@ function AddSectorToBox(): void {
 }
 
 function AddCommonInfoToBox(): void {
-  CHAR16 wString[64];
-  UINT32 hStringHandle = 0;
-  BOOLEAN fUnknownSAMSite = FALSE;
-  UINT8 ubMilitiaTotal = 0;
-  UINT8 ubNumEnemies;
+  let wString: CHAR16[] /* [64] */;
+  let hStringHandle: UINT32 = 0;
+  let fUnknownSAMSite: BOOLEAN = FALSE;
+  let ubMilitiaTotal: UINT8 = 0;
+  let ubNumEnemies: UINT8;
 
   switch (SECTOR(bCurrentTownMineSectorX, bCurrentTownMineSectorY)) {
     case SEC_D2: // Chitzena SAM
@@ -519,8 +520,8 @@ function AddCommonInfoToBox(): void {
 }
 
 function AddItemsInSectorToBox(): void {
-  CHAR16 wString[64];
-  UINT32 hStringHandle = 0;
+  let wString: CHAR16[] /* [64] */;
+  let hStringHandle: UINT32 = 0;
 
   // items in sector (this works even for underground)
 
@@ -534,10 +535,11 @@ function AddItemsInSectorToBox(): void {
 
 function PositionTownMineInfoBox(): void {
   // position town mine info box
-  SGPRect pDimensions;
-  SGPPoint pPosition;
-  INT16 sX = 0, sY = 0;
-  INT16 sNewMargin = 0;
+  let pDimensions: SGPRect;
+  let pPosition: SGPPoint;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sNewMargin: INT16 = 0;
 
   // position the box based on x and y of the selected sector
   GetScreenXYFromMapXY(bCurrentTownMineSectorX, bCurrentTownMineSectorY, &sX, &sY);
@@ -585,14 +587,17 @@ function PositionTownMineInfoBox(): void {
 }
 
 function AddInventoryButtonForMapPopUpBox(): void {
-  INT16 sX, sY;
-  SGPRect pDimensions;
-  SGPPoint pPosition;
-  VOBJECT_DESC VObjectDesc;
-  UINT32 uiObject;
-  ETRLEObject *pTrav;
-  INT16 sWidthA = 0, sWidthB = 0, sTotalBoxWidth = 0;
-  HVOBJECT hHandle;
+  let sX: INT16;
+  let sY: INT16;
+  let pDimensions: SGPRect;
+  let pPosition: SGPPoint;
+  let VObjectDesc: VOBJECT_DESC;
+  let uiObject: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let sWidthA: INT16 = 0;
+  let sWidthB: INT16 = 0;
+  let sTotalBoxWidth: INT16 = 0;
+  let hHandle: HVOBJECT;
 
   // load the button
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -691,11 +696,13 @@ function MapTownMineExitButtonCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 // get the min width of the town mine info pop up box
 function MinWidthOfTownMineInfoBox(): void {
-  HVOBJECT hHandle;
-  VOBJECT_DESC VObjectDesc;
-  INT16 sWidthA = 0, sWidthB = 0, sTotalBoxWidth = 0;
-  UINT32 uiObject;
-  ETRLEObject *pTrav;
+  let hHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let sWidthA: INT16 = 0;
+  let sWidthB: INT16 = 0;
+  let sTotalBoxWidth: INT16 = 0;
+  let uiObject: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mapinvbtns.sti", VObjectDesc.ImageFile);

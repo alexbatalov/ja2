@@ -12,10 +12,10 @@ const PRICE_CLASS_JUNK = 0;
 const PRICE_CLASS_CHEAP = 1;
 const PRICE_CLASS_EXPENSIVE = 2;
 
-UINT8 gubLastSpecialItemAddedAtElement = 255;
+let gubLastSpecialItemAddedAtElement: UINT8 = 255;
 
 // THIS STRUCTURE HAS UNCHANGING INFO THAT DOESN'T GET SAVED/RESTORED/RESET
-ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS] = {
+let ArmsDealerInfo: ARMS_DEALER_INFO[] /* [NUM_ARMS_DEALERS] */ = {
   // Buying		Selling	Merc ID#	Type									Initial						Flags
   // Price			Price							Of											Cash
   // Modifier	Modifier					Dealer
@@ -49,13 +49,13 @@ ARMS_DEALER_INFO ArmsDealerInfo[NUM_ARMS_DEALERS] = {
 };
 
 // THESE GET SAVED/RESTORED/RESET
-ARMS_DEALER_STATUS gArmsDealerStatus[NUM_ARMS_DEALERS];
-DEALER_ITEM_HEADER gArmsDealersInventory[NUM_ARMS_DEALERS][MAXITEMS];
+let gArmsDealerStatus: ARMS_DEALER_STATUS[] /* [NUM_ARMS_DEALERS] */;
+let gArmsDealersInventory: DEALER_ITEM_HEADER[][] /* [NUM_ARMS_DEALERS][MAXITEMS] */;
 
 // INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIndex, SPECIAL_ITEM_INFO *pSpclItemInfo );
 
 function InitAllArmsDealers(): void {
-  UINT8 ubArmsDealer;
+  let ubArmsDealer: UINT8;
 
   // Memset all dealers' status tables to zeroes
   memset(gArmsDealerStatus, 0, sizeof(gArmsDealerStatus));
@@ -73,8 +73,8 @@ function InitAllArmsDealers(): void {
 }
 
 function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
-  UINT16 usItemIndex;
-  UINT8 ubNumItems = 0;
+  let usItemIndex: UINT16;
+  let ubNumItems: UINT8 = 0;
 
   memset(&(gArmsDealerStatus[ubArmsDealer]), 0, sizeof(ARMS_DEALER_STATUS));
   memset(&(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * MAXITEMS);
@@ -103,8 +103,8 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
 }
 
 function ShutDownArmsDealers(): void {
-  UINT8 ubArmsDealer;
-  UINT16 usItemIndex;
+  let ubArmsDealer: UINT8;
+  let usItemIndex: UINT16;
 
   // loop through all the dealers
   for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
@@ -118,9 +118,9 @@ function ShutDownArmsDealers(): void {
 }
 
 function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT8 ubArmsDealer;
-  UINT16 usItemIndex;
+  let uiNumBytesWritten: UINT32;
+  let ubArmsDealer: UINT8;
+  let usItemIndex: UINT16;
 
   // Save the arms dealers status
   if (!FileWrite(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), &uiNumBytesWritten)) {
@@ -149,9 +149,9 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT8 ubArmsDealer;
-  UINT16 usItemIndex;
+  let uiNumBytesRead: UINT32;
+  let ubArmsDealer: UINT8;
+  let usItemIndex: UINT16;
 
   // Free all the dealers special inventory arrays
   ShutDownArmsDealers();
@@ -212,11 +212,11 @@ function DailyUpdateOfArmsDealersInventory(): void {
 
 // Once a day, loop through each dealer's inventory items and possibly sell some
 function SimulateArmsDealerCustomer(): void {
-  UINT8 ubArmsDealer = 0;
-  UINT16 usItemIndex;
-  UINT8 ubItemsSold = 0;
-  UINT8 ubElement;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubArmsDealer: UINT8 = 0;
+  let usItemIndex: UINT16;
+  let ubItemsSold: UINT8 = 0;
+  let ubElement: UINT8;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // loop through all the arms dealers
   for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
@@ -262,13 +262,13 @@ function SimulateArmsDealerCustomer(): void {
 }
 
 function DailyCheckOnItemQuantities(): void {
-  UINT8 ubArmsDealer;
-  UINT16 usItemIndex;
-  UINT8 ubMaxSupply;
-  UINT8 ubNumItems;
-  UINT32 uiArrivalDay;
-  BOOLEAN fPrevElig;
-  UINT8 ubReorderDays;
+  let ubArmsDealer: UINT8;
+  let usItemIndex: UINT16;
+  let ubMaxSupply: UINT8;
+  let ubNumItems: UINT8;
+  let uiArrivalDay: UINT32;
+  let fPrevElig: BOOLEAN;
+  let ubReorderDays: UINT8;
 
   // loop through all the arms dealers
   for (ubArmsDealer = 0; ubArmsDealer < NUM_ARMS_DEALERS; ubArmsDealer++) {
@@ -339,9 +339,9 @@ function DailyCheckOnItemQuantities(): void {
 }
 
 function ConvertCreatureBloodToElixir(): void {
-  UINT8 ubBloodAvailable;
-  UINT8 ubAmountToConvert;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubBloodAvailable: UINT8;
+  let ubAmountToConvert: UINT8;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   ubBloodAvailable = gArmsDealersInventory[ARMS_DEALER_GABBY][JAR_CREATURE_BLOOD].ubTotalItems;
   if (ubBloodAvailable) {
@@ -392,14 +392,16 @@ function AdjustCertainDealersInventory(): BOOLEAN {
 }
 
 function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32, ubMaxNumberOfItemType: UINT8): void {
-  UINT16 usItemIndex = 0;
-  UINT32 uiItemsToRemove = 0;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let usItemIndex: UINT16 = 0;
+  let uiItemsToRemove: UINT32 = 0;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
-  UINT16 usAvailableItem[MAXITEMS] = { NOTHING };
-  UINT8 ubNumberOfAvailableItem[MAXITEMS] = { 0 };
-  UINT32 uiTotalNumberOfItems = 0, uiRandomChoice;
-  UINT32 uiNumAvailableItems = 0, uiIndex;
+  let usAvailableItem: UINT16[] /* [MAXITEMS] */ = { NOTHING };
+  let ubNumberOfAvailableItem: UINT8[] /* [MAXITEMS] */ = { 0 };
+  let uiTotalNumberOfItems: UINT32 = 0;
+  let uiRandomChoice: UINT32;
+  let uiNumAvailableItems: UINT32 = 0;
+  let uiIndex: UINT32;
 
   // not permitted for repair dealers - would take extra code to avoid counting items under repair!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
@@ -509,15 +511,17 @@ function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32
 }
 
 function GuaranteeAtLeastOneItemOfType(ubArmsDealer: UINT8, uiDealerItemType: UINT32): void {
-  UINT16 usItemIndex;
-  UINT8 ubChance;
-  BOOLEAN fFoundEligibleItemOfSameType = FALSE;
-  BOOLEAN fItemHasBeenAdded = FALSE;
-  BOOLEAN fFailedOnce = FALSE;
-  UINT16 usAvailableItem[MAXITEMS] = { NOTHING };
-  UINT8 ubChanceForAvailableItem[MAXITEMS] = { 0 };
-  UINT32 uiTotalChances = 0;
-  UINT32 uiNumAvailableItems = 0, uiIndex, uiRandomChoice;
+  let usItemIndex: UINT16;
+  let ubChance: UINT8;
+  let fFoundEligibleItemOfSameType: BOOLEAN = FALSE;
+  let fItemHasBeenAdded: BOOLEAN = FALSE;
+  let fFailedOnce: BOOLEAN = FALSE;
+  let usAvailableItem: UINT16[] /* [MAXITEMS] */ = { NOTHING };
+  let ubChanceForAvailableItem: UINT8[] /* [MAXITEMS] */ = { 0 };
+  let uiTotalChances: UINT32 = 0;
+  let uiNumAvailableItems: UINT32 = 0;
+  let uiIndex: UINT32;
+  let uiRandomChoice: UINT32;
 
   // not permitted for repair dealers - would take extra code to avoid counting items under repair!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
@@ -745,7 +749,7 @@ function GetArmsDealerItemTypeFromItemNumber(usItem: UINT16): UINT32 {
 }
 
 function IsMercADealer(ubMercID: UINT8): BOOLEAN {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   // Manny is not actually a valid dealer unless a particular event sets that fact
   if ((ubMercID == MANNY) && !CheckFact(FACT_MANNY_IS_BARTENDER, 0)) {
@@ -761,7 +765,7 @@ function IsMercADealer(ubMercID: UINT8): BOOLEAN {
 }
 
 function GetArmsDealerIDFromMercID(ubMercID: UINT8): INT8 {
-  INT8 cnt;
+  let cnt: INT8;
 
   // loop through the list of arms dealers
   for (cnt = 0; cnt < NUM_ARMS_DEALERS; cnt++) {
@@ -806,10 +810,10 @@ INT16 GetSpecialItemFromArmsDealerInventory( UINT8 ubArmsDealer, UINT16 usItemIn
 */
 
 function RepairmanIsFixingItemsButNoneAreDoneYet(ubProfileID: UINT8): BOOLEAN {
-  INT8 bArmsDealer;
-  BOOLEAN fHaveOnlyUnRepairedItems = FALSE;
-  UINT8 ubElement;
-  UINT16 usItemIndex;
+  let bArmsDealer: INT8;
+  let fHaveOnlyUnRepairedItems: BOOLEAN = FALSE;
+  let ubElement: UINT8;
+  let usItemIndex: UINT16;
 
   bArmsDealer = GetArmsDealerIDFromMercID(ubProfileID);
   if (bArmsDealer == -1)
@@ -910,7 +914,7 @@ function CanDealerTransactItem(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurcha
 }
 
 function CanDealerRepairItem(ubArmsDealer: UINT8, usItemIndex: UINT16): BOOLEAN {
-  UINT32 uiFlags;
+  let uiFlags: UINT32;
 
   uiFlags = Item[usItemIndex].fFlags;
 
@@ -1004,10 +1008,10 @@ function FreeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>): void {
 }
 
 function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNumItems: UINT8): void {
-  UINT8 ubCnt;
-  UINT8 ubItemCondition;
-  UINT8 ubPerfectOnes = 0;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubCnt: UINT8;
+  let ubItemCondition: UINT8;
+  let ubPerfectOnes: UINT8 = 0;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // create item info describing a perfect item
   SetSpecialItemInfoToDefaults(&SpclItemInfo);
@@ -1034,7 +1038,7 @@ function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNu
 }
 
 function DetermineDealerItemCondition(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
-  UINT8 ubCondition = 100;
+  let ubCondition: UINT8 = 100;
 
   // if it's a damagable item, and not a liquid (those are always sold full)
   if ((Item[usItemIndex].fFlags & ITEM_DAMAGEABLE) && !ItemContainsLiquid(usItemIndex)) {
@@ -1082,8 +1086,8 @@ UINT32 CountTotalItemsInArmsDealersInventory( UINT8 ubArmsDealer )
 */
 
 function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
-  UINT32 uiNumOfItems = 0;
-  UINT16 usItemIndex;
+  let uiNumOfItems: UINT32 = 0;
+  let usItemIndex: UINT16;
 
   for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
     // if there are any items
@@ -1112,8 +1116,8 @@ function CountDistinctItemsInArmsDealersInventory(ubArmsDealer: UINT8): UINT32 {
 }
 
 function CountActiveSpecialItemsInArmsDealersInventory(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
-  UINT8 ubActiveSpecialItems = 0;
-  UINT8 ubElement;
+  let ubActiveSpecialItems: UINT8 = 0;
+  let ubElement: UINT8;
 
   // next, try to sell all the used ones, gotta do these one at a time so we can remove them by element
   for (ubElement = 0; ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
@@ -1127,8 +1131,8 @@ function CountActiveSpecialItemsInArmsDealersInventory(ubArmsDealer: UINT8, usIt
 }
 
 function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16 {
-  UINT16 usItemIndex;
-  UINT16 usHowManyInForRepairs = 0;
+  let usItemIndex: UINT16;
+  let usHowManyInForRepairs: UINT16 = 0;
 
   // if the dealer is not a repair dealer, no need to count, return 0
   if (!DoesDealerDoRepairs(ubArmsDealer))
@@ -1143,8 +1147,8 @@ function CountTotalItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8): UINT16
 }
 
 function CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8, usItemIndex: UINT16): UINT8 {
-  UINT8 ubElement;
-  UINT8 ubHowManyInForRepairs = 0;
+  let ubElement: UINT8;
+  let ubHowManyInForRepairs: UINT8 = 0;
 
   // if the dealer is not a repair dealer, no need to count, return 0
   if (!DoesDealerDoRepairs(ubArmsDealer))
@@ -1167,8 +1171,8 @@ function CountSpecificItemsRepairDealerHasInForRepairs(ubArmsDealer: UINT8, usIt
 }
 
 function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>): void {
-  UINT8 ubCnt;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubCnt: UINT8;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   SetSpecialItemInfoFromObject(&SpclItemInfo, pObject);
 
@@ -1239,9 +1243,9 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
 }
 
 function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubShotsLeft: UINT8): void {
-  UINT8 ubMagCapacity;
-  UINT8 *pubStrayAmmo;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubMagCapacity: UINT8;
+  let pubStrayAmmo: Pointer<UINT8>;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // Ammo only, please!!!
   if (Item[usItemIndex].usItemClass != IC_AMMO) {
@@ -1280,11 +1284,11 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
 
 // Use AddObjectToArmsDealerInventory() instead of this when converting a complex item in OBJECTTYPE format.
 function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
-  UINT8 ubRoomLeft;
-  UINT8 ubElement;
-  UINT8 ubElementsToAdd;
-  BOOLEAN fFoundOne;
-  BOOLEAN fSuccess;
+  let ubRoomLeft: UINT8;
+  let ubElement: UINT8;
+  let ubElementsToAdd: UINT8;
+  let fFoundOne: BOOLEAN;
+  let fSuccess: BOOLEAN;
 
   Assert(ubHowMany > 0);
 
@@ -1369,8 +1373,8 @@ function AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usIte
 
 // removes ubHowMany items of usItemIndex with the matching Info from dealer ubArmsDealer
 function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubHowMany: UINT8): void {
-  DEALER_SPECIAL_ITEM *pSpecialItem;
-  UINT8 ubElement;
+  let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
+  let ubElement: UINT8;
 
   Assert(ubHowMany <= gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
 
@@ -1412,11 +1416,11 @@ function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UIN
 }
 
 function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, ubHowMany: UINT8): void {
-  UINT8 ubWhichOne;
-  UINT8 ubSkippedAlready;
-  BOOLEAN fFoundIt;
-  UINT8 ubElement;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let ubWhichOne: UINT8;
+  let ubSkippedAlready: UINT8;
+  let fFoundIt: BOOLEAN;
+  let ubElement: UINT8;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // not permitted for repair dealers - would take extra code to subtract items under repair from ubTotalItems!!!
   Assert(!DoesDealerDoRepairs(ubArmsDealer));
@@ -1479,16 +1483,16 @@ function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, 
 }
 
 function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
-  INT8 bArmsDealer;
-  SOLDIERTYPE *pSoldier;
-  UINT16 usItemIndex;
-  UINT8 ubElement;
-  UINT8 ubHowManyMaxAtATime;
-  UINT8 ubLeftToDrop;
-  UINT8 ubNowDropping;
-  OBJECTTYPE TempObject;
-  DEALER_SPECIAL_ITEM *pSpecialItem;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let bArmsDealer: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let usItemIndex: UINT16;
+  let ubElement: UINT8;
+  let ubHowManyMaxAtATime: UINT8;
+  let ubLeftToDrop: UINT8;
+  let ubNowDropping: UINT8;
+  let TempObject: OBJECTTYPE;
+  let pSpecialItem: Pointer<DEALER_SPECIAL_ITEM>;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // Get Dealer ID from from merc Id
   bArmsDealer = GetArmsDealerIDFromMercID(ubMercID);
@@ -1580,8 +1584,8 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
 }
 
 function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>, ubHowMany: UINT8): void {
-  INT8 bItemCondition;
-  UINT8 ubCnt;
+  let bItemCondition: INT8;
+  let ubCnt: UINT8;
 
   bItemCondition = pSpclItemInfo->bItemCondition;
 
@@ -1619,7 +1623,7 @@ function MakeObjectOutOfDealerItems(usItemIndex: UINT16, pSpclItemInfo: Pointer<
 
 function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<OBJECTTYPE>, ubOwnerProfileId: UINT8): void {
   //	UINT8 ubCnt;
-  SPECIAL_ITEM_INFO SpclItemInfo;
+  let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
 
@@ -1667,10 +1671,10 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
 
 // PLEASE: Use GiveObjectToArmsDealerForRepair() instead of this when repairing a item in OBJECTTYPE format.
 function GiveItemToArmsDealerforRepair(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, ubOwnerProfileId: UINT8): void {
-  UINT32 uiTimeWhenFreeToStartIt;
-  UINT32 uiMinutesToFix;
-  UINT32 uiMinutesShopClosedBeforeItsDone;
-  UINT32 uiDoneWhen;
+  let uiTimeWhenFreeToStartIt: UINT32;
+  let uiMinutesToFix: UINT32;
+  let uiMinutesShopClosedBeforeItsDone: UINT32;
+  let uiDoneWhen: UINT32;
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
   Assert(pSpclItemInfo->bItemCondition > 0);
@@ -1700,9 +1704,9 @@ function GiveItemToArmsDealerforRepair(ubArmsDealer: UINT8, usItemIndex: UINT16,
 }
 
 function WhenWillRepairmanBeAllDoneRepairing(ubArmsDealer: UINT8): UINT32 {
-  UINT32 uiWhenFree;
-  UINT16 usItemIndex;
-  UINT8 ubElement;
+  let uiWhenFree: UINT32;
+  let usItemIndex: UINT16;
+  let ubElement: UINT8;
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
 
@@ -1732,8 +1736,8 @@ function WhenWillRepairmanBeAllDoneRepairing(ubArmsDealer: UINT8): UINT32 {
 }
 
 function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): UINT32 {
-  UINT32 uiRepairTime;
-  UINT8 ubCnt;
+  let uiRepairTime: UINT32;
+  let ubCnt: UINT8;
 
   uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, usItemIndex, pSpclItemInfo->bItemCondition);
 
@@ -1751,8 +1755,8 @@ function CalculateSpecialItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16
 }
 
 function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
-  UINT32 uiRepairTime;
-  UINT8 ubCnt;
+  let uiRepairTime: UINT32;
+  let ubCnt: UINT8;
 
   uiRepairTime = CalculateSimpleItemRepairTime(ubArmsDealer, pItemObject->usItem, pItemObject->bStatus[0]);
 
@@ -1770,8 +1774,8 @@ function CalculateObjectItemRepairTime(ubArmsDealer: UINT8, pItemObject: Pointer
 }
 
 function CalculateSimpleItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16, bItemCondition: INT8): UINT32 {
-  UINT32 uiTimeToRepair = 0;
-  UINT32 uiRepairCost = 0;
+  let uiTimeToRepair: UINT32 = 0;
+  let uiRepairCost: UINT32 = 0;
 
   Assert(DoesDealerDoRepairs(ubArmsDealer));
 
@@ -1800,8 +1804,8 @@ function CalculateSimpleItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16,
 }
 
 function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16, pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): UINT32 {
-  UINT32 uiRepairCost;
-  UINT8 ubCnt;
+  let uiRepairCost: UINT32;
+  let ubCnt: UINT8;
 
   uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, usItemIndex, pSpclItemInfo->bItemCondition);
 
@@ -1819,8 +1823,8 @@ function CalculateSpecialItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16
 }
 
 function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer<OBJECTTYPE>): UINT32 {
-  UINT32 uiRepairCost;
-  UINT8 ubCnt;
+  let uiRepairCost: UINT32;
+  let ubCnt: UINT8;
 
   uiRepairCost = CalculateSimpleItemRepairCost(ubArmsDealer, pItemObject->usItem, pItemObject->bStatus[0]);
 
@@ -1838,9 +1842,9 @@ function CalculateObjectItemRepairCost(ubArmsDealer: UINT8, pItemObject: Pointer
 }
 
 function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16, bItemCondition: INT8): UINT32 {
-  UINT32 uiItemCost = 0;
-  UINT32 uiRepairCost = 0;
-  INT16 sRepairCostAdj = 0;
+  let uiItemCost: UINT32 = 0;
+  let uiRepairCost: UINT32 = 0;
+  let sRepairCostAdj: INT16 = 0;
   //	UINT32	uiDifFrom10=0;
 
   // figure out the full value of the item, modified by this dealer's personal Sell (i.e. repair cost) modifier
@@ -1881,7 +1885,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
 }
 
 function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): void {
-  UINT8 ubCnt;
+  let ubCnt: UINT8;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
 
@@ -1895,7 +1899,7 @@ function SetSpecialItemInfoToDefaults(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>)
 }
 
 function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>, pObject: Pointer<OBJECTTYPE>): void {
-  UINT8 ubCnt;
+  let ubCnt: UINT8;
 
   memset(pSpclItemInfo, 0, sizeof(SPECIAL_ITEM_INFO));
 
@@ -1927,7 +1931,7 @@ function SetSpecialItemInfoFromObject(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>,
 }
 
 function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
-  UINT8 ubCnt;
+  let ubCnt: UINT8;
 
   // being damaged / in repairs makes an item special
   if (pSpclItemInfo->bItemCondition != 100) {
@@ -1951,8 +1955,8 @@ function IsItemInfoSpecial(pSpclItemInfo: Pointer<SPECIAL_ITEM_INFO>): BOOLEAN {
 }
 
 function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: UINT16, fPurchaseFromPlayer: BOOLEAN): BOOLEAN {
-  DEALER_POSSIBLE_INV *pDealerInv = NULL;
-  UINT16 usCnt;
+  let pDealerInv: Pointer<DEALER_POSSIBLE_INV> = NULL;
+  let usCnt: UINT16;
 
   // the others will buy only things that appear in their own "for sale" inventory lists
   pDealerInv = GetPointerToDealersPossibleInventory(ubArmsDealer);
@@ -1976,10 +1980,10 @@ function DoesItemAppearInDealerInventoryList(ubArmsDealer: UINT8, usItemIndex: U
 }
 
 function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDealerSelling: BOOLEAN): UINT16 {
-  UINT16 usBasePrice;
-  UINT8 ubItemPriceClass;
-  UINT8 ubDealerPriceClass;
-  UINT16 usValueToThisDealer;
+  let usBasePrice: UINT16;
+  let ubItemPriceClass: UINT8;
+  let ubDealerPriceClass: UINT8;
+  let usValueToThisDealer: UINT16;
 
   usBasePrice = Item[usItemIndex].usPrice;
 
@@ -2067,8 +2071,8 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 
 // this only exists to support saves made with game versions < 54 or 55!
 function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN, fIncludesManny: BOOLEAN): BOOLEAN {
-  UINT32 uiDealersSaved;
-  UINT32 uiNumBytesRead;
+  let uiDealersSaved: UINT32;
+  let uiNumBytesRead: UINT32;
 
   Assert(!fIncludesElgin || !fIncludesManny);
 
@@ -2136,7 +2140,7 @@ function ItemIsARocketRifle(sItemIndex: INT16): BOOLEAN {
 }
 
 function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UINT32>, puiClosingTime: Pointer<UINT32>): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = FindSoldierByProfileID(ArmsDealerInfo[ubArmsDealer].ubShopKeeperID, FALSE);
   if (pSoldier == NULL) {
@@ -2153,10 +2157,11 @@ function GetArmsDealerShopHours(ubArmsDealer: UINT8, puiOpeningTime: Pointer<UIN
 }
 
 function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStartIt: UINT32, uiMinutesToFix: UINT32): UINT32 {
-  UINT32 uiOpeningTime, uiClosingTime;
-  UINT32 uiMinutesClosedOvernight;
-  UINT32 uiDelayInDays = 0;
-  UINT32 uiDoneToday;
+  let uiOpeningTime: UINT32;
+  let uiClosingTime: UINT32;
+  let uiMinutesClosedOvernight: UINT32;
+  let uiDelayInDays: UINT32 = 0;
+  let uiDoneToday: UINT32;
 
   Assert(uiMinutesToFix > 0);
 
@@ -2189,10 +2194,11 @@ function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStar
 }
 
 function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32, uiEndTime: UINT32): UINT32 {
-  UINT32 uiOpeningTime, uiClosingTime;
-  UINT32 uiMinutesClosedOvernight;
-  UINT32 uiDaysDifference = 0;
-  UINT32 uiMinutesClosed = 0;
+  let uiOpeningTime: UINT32;
+  let uiClosingTime: UINT32;
+  let uiMinutesClosedOvernight: UINT32;
+  let uiDaysDifference: UINT32 = 0;
+  let uiMinutesClosed: UINT32 = 0;
 
   Assert(uiStartTime <= uiEndTime);
 

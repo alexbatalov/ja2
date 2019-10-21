@@ -3,9 +3,11 @@ const MINIMAP_Y_SIZE = 44;
 
 const WINDOW_SIZE = 2;
 
-FLOAT gdXStep, gdYStep;
-INT32 giMiniMap, gi8BitMiniMap;
-HVSURFACE ghvSurface;
+let gdXStep: FLOAT;
+let gdYStep: FLOAT;
+let giMiniMap: INT32;
+let gi8BitMiniMap: INT32;
+let ghvSurface: HVSURFACE;
 
 // Utililty file for sub-sampling/creating our radar screen maps
 // Loops though our maps directory and reads all .map files, subsamples an area, color
@@ -22,36 +24,64 @@ function MapUtilScreenInit(): UINT32 {
 }
 
 function MapUtilScreenHandle(): UINT32 {
-  static INT16 fNewMap = TRUE;
-  static INT16 sFileNum = 0;
-  InputAtom InputEvent;
-  GETFILESTRUCT FileInfo;
-  static FDLG_LIST *FListNode;
-  static INT16 sFiles = 0, sCurFile = 0;
-  static FDLG_LIST *FileList = NULL;
-  INT8 zFilename[260], zFilename2[260];
-  VSURFACE_DESC vs_desc;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT8 ubBitDepth;
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT16 *pDestBuf, *pSrcBuf;
-  UINT8 *pDataPtr;
+  /* static */ let fNewMap: INT16 = TRUE;
+  /* static */ let sFileNum: INT16 = 0;
+  let InputEvent: InputAtom;
+  let FileInfo: GETFILESTRUCT;
+  /* static */ let FListNode: Pointer<FDLG_LIST>;
+  /* static */ let sFiles: INT16 = 0;
+  /* static */ let sCurFile: INT16 = 0;
+  /* static */ let FileList: Pointer<FDLG_LIST> = NULL;
+  let zFilename: INT8[] /* [260] */;
+  let zFilename2: INT8[] /* [260] */;
+  let vs_desc: VSURFACE_DESC;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let ubBitDepth: UINT8;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT16>;
+  let pSrcBuf: Pointer<UINT16>;
+  let pDataPtr: Pointer<UINT8>;
 
-  static UINT8 *p24BitDest = NULL;
-  static RGBValues *p24BitValues = NULL;
+  /* static */ let p24BitDest: Pointer<UINT8> = NULL;
+  /* static */ let p24BitValues: Pointer<RGBValues> = NULL;
 
-  UINT32 uiRGBColor;
+  let uiRGBColor: UINT32;
 
-  UINT32 bR, bG, bB, bAvR, bAvG, bAvB;
-  INT16 s16BPPSrc, sDest16BPPColor;
-  INT32 cnt;
+  let bR: UINT32;
+  let bG: UINT32;
+  let bB: UINT32;
+  let bAvR: UINT32;
+  let bAvG: UINT32;
+  let bAvB: UINT32;
+  let s16BPPSrc: INT16;
+  let sDest16BPPColor: INT16;
+  let cnt: INT32;
 
-  INT16 sX1, sX2, sY1, sY2, sTop, sBottom, sLeft, sRight;
+  let sX1: INT16;
+  let sX2: INT16;
+  let sY1: INT16;
+  let sY2: INT16;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
 
-  FLOAT dX, dY, dStartX, dStartY;
-  INT32 iX, iY, iSubX1, iSubY1, iSubX2, iSubY2, iWindowX, iWindowY, iCount;
-  SGPPaletteEntry pPalette[256];
+  let dX: FLOAT;
+  let dY: FLOAT;
+  let dStartX: FLOAT;
+  let dStartY: FLOAT;
+  let iX: INT32;
+  let iY: INT32;
+  let iSubX1: INT32;
+  let iSubY1: INT32;
+  let iSubX2: INT32;
+  let iSubY2: INT32;
+  let iWindowX: INT32;
+  let iWindowY: INT32;
+  let iCount: INT32;
+  let pPalette: SGPPaletteEntry[] /* [256] */;
 
   sDest16BPPColor = -1;
   bAvR = bAvG = bAvB = 0;
@@ -223,9 +253,10 @@ function MapUtilScreenHandle(): UINT32 {
 
   // Write palette!
   {
-    INT32 cnt;
-    INT32 sX = 0, sY = 420;
-    UINT16 usLineColor;
+    let cnt: INT32;
+    let sX: INT32 = 0;
+    let sY: INT32 = 420;
+    let usLineColor: UINT16;
 
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 

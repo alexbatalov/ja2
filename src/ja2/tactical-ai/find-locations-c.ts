@@ -1,7 +1,9 @@
-INT8 gubAIPathCosts[19][19];
+let gubAIPathCosts: INT8[][] /* [19][19] */;
 
 function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32, iNewScale: INT32): INT32 {
-  INT32 iValueChange, iScaleSum, iPercentBetter; //,loopCnt,tempInt;
+  let iValueChange: INT32;
+  let iScaleSum: INT32;
+  let iPercentBetter: INT32; //,loopCnt,tempInt;
 
   // calcalate how much better the new cover would be than the current cover
   iValueChange = iNewValue - iOldValue;
@@ -24,7 +26,8 @@ function CalcPercentBetter(iOldValue: INT32, iNewValue: INT32, iOldScale: INT32,
 }
 
 function AICenterXY(sGridNo: INT16, pdX: Pointer<FLOAT>, pdY: Pointer<FLOAT>): void {
-  INT16 sXPos, sYPos;
+  let sXPos: INT16;
+  let sYPos: INT16;
 
   sXPos = sGridNo % WORLD_COLS;
   sYPos = sGridNo / WORLD_COLS;
@@ -36,7 +39,9 @@ function AICenterXY(sGridNo: INT16, pdX: Pointer<FLOAT>, pdY: Pointer<FLOAT>): v
 function CalcWorstCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
   // When considering a gridno for cover, we want to take into account cover if we
   // lie down, so we return the LOWEST chance to get through for that location.
-  INT8 bCubeLevel, bThisCTGT, bWorstCTGT = 100;
+  let bCubeLevel: INT8;
+  let bThisCTGT: INT8;
+  let bWorstCTGT: INT8 = 100;
 
   for (bCubeLevel = 1; bCubeLevel <= 3; bCubeLevel++) {
     switch (bCubeLevel) {
@@ -69,8 +74,9 @@ function CalcWorstCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8
 function CalcAverageCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
   // When considering a gridno for cover, we want to take into account cover if we
   // lie down, so we return the LOWEST chance to get through for that location.
-  INT8 bCubeLevel;
-  INT32 iTotalCTGT = 0, bValidCubeLevels = 0;
+  let bCubeLevel: INT8;
+  let iTotalCTGT: INT32 = 0;
+  let bValidCubeLevels: INT32 = 0;
   ;
 
   for (bCubeLevel = 1; bCubeLevel <= 3; bCubeLevel++) {
@@ -100,9 +106,16 @@ function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo
 
   // using only ints for maximum execution speed here
   // CJC: Well, so much for THAT idea!
-  INT16 sCentralGridNo, sAdjSpot, sNorthGridNo, sSouthGridNo, sDir, sCheckSpot, sOKTest;
+  let sCentralGridNo: INT16;
+  let sAdjSpot: INT16;
+  let sNorthGridNo: INT16;
+  let sSouthGridNo: INT16;
+  let sDir: INT16;
+  let sCheckSpot: INT16;
+  let sOKTest: INT16;
 
-  INT8 bThisCTGT, bBestCTGT = 0;
+  let bThisCTGT: INT8;
+  let bBestCTGT: INT8 = 0;
 
   sCheckSpot = -1;
 
@@ -169,14 +182,28 @@ function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo
 
 function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: INT32, iMyAPsLeft: INT32, uiThreatIndex: UINT32, iRange: INT32, morale: INT32, iTotalScale: Pointer<INT32>): INT32 {
   // all 32-bit integers for max. speed
-  INT32 iMyPosValue, iHisPosValue, iCoverValue;
-  INT32 iReductionFactor, iThisScale;
-  INT16 sHisGridNo, sMyRealGridNo = NOWHERE, sHisRealGridNo = NOWHERE;
-  INT16 sTempX, sTempY;
-  FLOAT dMyX, dMyY, dHisX, dHisY;
-  INT8 bHisBestCTGT, bHisActualCTGT, bHisCTGT, bMyCTGT;
-  INT32 iRangeChange, iRangeFactor, iRangeFactorMultiplier;
-  SOLDIERTYPE *pHim;
+  let iMyPosValue: INT32;
+  let iHisPosValue: INT32;
+  let iCoverValue: INT32;
+  let iReductionFactor: INT32;
+  let iThisScale: INT32;
+  let sHisGridNo: INT16;
+  let sMyRealGridNo: INT16 = NOWHERE;
+  let sHisRealGridNo: INT16 = NOWHERE;
+  let sTempX: INT16;
+  let sTempY: INT16;
+  let dMyX: FLOAT;
+  let dMyY: FLOAT;
+  let dHisX: FLOAT;
+  let dHisY: FLOAT;
+  let bHisBestCTGT: INT8;
+  let bHisActualCTGT: INT8;
+  let bHisCTGT: INT8;
+  let bMyCTGT: INT8;
+  let iRangeChange: INT32;
+  let iRangeFactor: INT32;
+  let iRangeFactorMultiplier: INT32;
+  let pHim: Pointer<SOLDIERTYPE>;
 
   dMyX = dMyY = dHisX = dHisY = -1.0;
 
@@ -356,8 +383,10 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
 }
 
 function NumberOfTeamMatesAdjacent(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): UINT8 {
-  UINT8 ubLoop, ubCount, ubWhoIsThere;
-  INT16 sTempGridNo;
+  let ubLoop: UINT8;
+  let ubCount: UINT8;
+  let ubWhoIsThere: UINT8;
+  let sTempGridNo: INT16;
 
   ubCount = 0;
 
@@ -378,32 +407,47 @@ function NumberOfTeamMatesAdjacent(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT1
 
 function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPercentBetter: Pointer<INT32>): INT16 {
   // all 32-bit integers for max. speed
-  UINT32 uiLoop;
-  INT32 iCurrentCoverValue, iCoverValue, iBestCoverValue;
-  INT32 iCurrentScale, iCoverScale, iBestCoverScale;
-  INT32 iDistFromOrigin, iDistCoverFromOrigin, iThreatCertainty;
-  INT16 sGridNo, sBestCover = NOWHERE;
-  INT32 iPathCost;
-  INT32 iThreatRange, iClosestThreatRange = 1500;
+  let uiLoop: UINT32;
+  let iCurrentCoverValue: INT32;
+  let iCoverValue: INT32;
+  let iBestCoverValue: INT32;
+  let iCurrentScale: INT32;
+  let iCoverScale: INT32;
+  let iBestCoverScale: INT32;
+  let iDistFromOrigin: INT32;
+  let iDistCoverFromOrigin: INT32;
+  let iThreatCertainty: INT32;
+  let sGridNo: INT16;
+  let sBestCover: INT16 = NOWHERE;
+  let iPathCost: INT32;
+  let iThreatRange: INT32;
+  let iClosestThreatRange: INT32 = 1500;
   //	INT16 sClosestThreatGridno = NOWHERE;
-  INT32 iMyThreatValue;
-  INT16 sThreatLoc;
-  INT32 iMaxThreatRange;
-  UINT32 uiThreatCnt = 0;
-  INT32 iMaxMoveTilesLeft, iSearchRange, iRoamRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sOrigin; // has to be a short, need a pointer
-  INT16 *pusLastLoc;
-  INT8 *pbPersOL;
-  INT8 *pbPublOL;
-  SOLDIERTYPE *pOpponent;
-  UINT16 usMovementMode;
-  INT8 fHasGasMask;
+  let iMyThreatValue: INT32;
+  let sThreatLoc: INT16;
+  let iMaxThreatRange: INT32;
+  let uiThreatCnt: UINT32 = 0;
+  let iMaxMoveTilesLeft: INT32;
+  let iSearchRange: INT32;
+  let iRoamRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sOrigin: INT16; // has to be a short, need a pointer
+  let pusLastLoc: Pointer<INT16>;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let usMovementMode: UINT16;
+  let fHasGasMask: INT8;
 
-  UINT8 ubBackgroundLightLevel;
-  UINT8 ubBackgroundLightPercent = 0;
-  UINT8 ubLightPercentDifference;
-  BOOLEAN fNight;
+  let ubBackgroundLightLevel: UINT8;
+  let ubBackgroundLightPercent: UINT8 = 0;
+  let ubLightPercentDifference: UINT8;
+  let fNight: BOOLEAN;
 
   switch (FindObj(pSoldier, GASMASK)) {
     case HEAD1POS:
@@ -809,20 +853,31 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
 }
 
 function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT16 sGridNo;
-  INT16 sBestSpot = NOWHERE;
-  UINT32 uiLoop;
-  INT32 iThreatRange, iClosestThreatRange = 1500, iSpotClosestThreatRange;
-  INT16 sThreatLoc, sThreatGridNo[MAXMERCS];
-  UINT32 uiThreatCnt = 0;
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT8 *pbPersOL, *pbPublOL, bEscapeDirection, bBestEscapeDirection = -1;
-  SOLDIERTYPE *pOpponent;
-  INT16 sOrigin;
-  INT32 iRoamRange;
+  let sGridNo: INT16;
+  let sBestSpot: INT16 = NOWHERE;
+  let uiLoop: UINT32;
+  let iThreatRange: INT32;
+  let iClosestThreatRange: INT32 = 1500;
+  let iSpotClosestThreatRange: INT32;
+  let sThreatLoc: INT16;
+  let sThreatGridNo: INT16[] /* [MAXMERCS] */;
+  let uiThreatCnt: UINT32 = 0;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let bEscapeDirection: INT8;
+  let bBestEscapeDirection: INT8 = -1;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let sOrigin: INT16;
+  let iRoamRange: INT32;
 
-  INT8 fHasGasMask;
+  let fHasGasMask: INT8;
 
   switch (FindObj(pSoldier, GASMASK)) {
     case HEAD1POS:
@@ -1066,9 +1121,17 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT16 sGridNo, sClosestLand = NOWHERE, sPathCost, sShortestPath = 1000;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT32 iSearchRange;
+  let sGridNo: INT16;
+  let sClosestLand: INT16 = NOWHERE;
+  let sPathCost: INT16;
+  let sShortestPath: INT16 = 1000;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let iSearchRange: INT32;
 
   // NameMessage(pSoldier,"looking for nearest reachable land");
 
@@ -1163,13 +1226,23 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT16 sGridNo, sClosestSpot = NOWHERE, sPathCost;
-  INT32 iSpotValue, iBestSpotValue = 1000;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT32 iSearchRange;
-  INT8 bLightLevel, bCurrLightLevel, bLightDiff;
-  INT32 iRoamRange;
-  INT16 sOrigin;
+  let sGridNo: INT16;
+  let sClosestSpot: INT16 = NOWHERE;
+  let sPathCost: INT16;
+  let iSpotValue: INT32;
+  let iBestSpotValue: INT32 = 1000;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let iSearchRange: INT32;
+  let bLightLevel: INT8;
+  let bCurrLightLevel: INT8;
+  let bLightDiff: INT8;
+  let iRoamRange: INT32;
+  let sOrigin: INT16;
 
   bCurrLightLevel = LightTrueLevel(pSoldier->sGridNo, pSoldier->bLevel);
 
@@ -1284,15 +1357,23 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 const MINIMUM_REQUIRED_STATUS = 70;
 
 function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: UINT16): INT8 {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sGridNo;
-  INT16 sBestSpot = NOWHERE;
-  INT32 iTempValue, iValue, iBestValue = 0;
-  ITEM_POOL *pItemPool;
-  OBJECTTYPE *pObj;
-  INVTYPE *pItem;
-  INT32 iItemIndex, iBestItemIndex;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sGridNo: INT16;
+  let sBestSpot: INT16 = NOWHERE;
+  let iTempValue: INT32;
+  let iValue: INT32;
+  let iBestValue: INT32 = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pObj: Pointer<OBJECTTYPE>;
+  let pItem: Pointer<INVTYPE>;
+  let iItemIndex: INT32;
+  let iBestItemIndex: INT32;
 
   iTempValue = -1;
   iItemIndex = iBestItemIndex = -1;
@@ -1554,11 +1635,17 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
 }
 
 function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT16 sClosestDoor = NOWHERE;
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  INT16 sGridNo;
-  INT32 iDist, iClosestDist = 10;
+  let sClosestDoor: INT16 = NOWHERE;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sGridNo: INT16;
+  let iDist: INT32;
+  let iClosestDist: INT32 = 10;
 
   iSearchRange = 5;
 
@@ -1592,10 +1679,12 @@ function FindClosestDoor(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function FindNearestEdgepointOnSpecifiedEdge(sGridNo: INT16, bEdgeCode: INT8): INT16 {
-  INT32 iLoop;
-  INT16 *psEdgepointArray;
-  INT32 iEdgepointArraySize;
-  INT16 sClosestSpot = NOWHERE, sClosestDist = 0x7FFF, sTempDist;
+  let iLoop: INT32;
+  let psEdgepointArray: Pointer<INT16>;
+  let iEdgepointArraySize: INT32;
+  let sClosestSpot: INT16 = NOWHERE;
+  let sClosestDist: INT16 = 0x7FFF;
+  let sTempDist: INT16;
 
   switch (bEdgeCode) {
     case NORTH_EDGEPOINT_SEARCH:
@@ -1634,14 +1723,21 @@ function FindNearestEdgepointOnSpecifiedEdge(sGridNo: INT16, bEdgeCode: INT8): I
 }
 
 function FindNearestEdgePoint(sGridNo: INT16): INT16 {
-  INT16 sGridX, sGridY;
-  INT16 sScreenX, sScreenY, sMaxScreenX, sMaxScreenY;
-  INT16 sDist[5], sMinDist;
-  INT32 iLoop;
-  INT8 bMinIndex;
-  INT16 *psEdgepointArray;
-  INT32 iEdgepointArraySize;
-  INT16 sClosestSpot = NOWHERE, sClosestDist = 0x7FFF, sTempDist;
+  let sGridX: INT16;
+  let sGridY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMaxScreenX: INT16;
+  let sMaxScreenY: INT16;
+  let sDist: INT16[] /* [5] */;
+  let sMinDist: INT16;
+  let iLoop: INT32;
+  let bMinIndex: INT8;
+  let psEdgepointArray: Pointer<INT16>;
+  let iEdgepointArraySize: INT32;
+  let sClosestSpot: INT16 = NOWHERE;
+  let sClosestDist: INT16 = 0x7FFF;
+  let sTempDist: INT16;
 
   ConvertGridNoToXY(sGridNo, &sGridX, &sGridY);
   GetWorldXYAbsoluteScreenXY(sGridX, sGridY, &sScreenX, &sScreenY);
@@ -1703,12 +1799,20 @@ function FindNearestEdgePoint(sGridNo: INT16): INT16 {
 const EDGE_OF_MAP_SEARCH = 5;
 
 function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection: Pointer<INT8>): INT16 {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
 
-  INT16 sGridNo, sClosestSpot = NOWHERE;
-  INT8 bDirection, bClosestDirection;
-  INT32 iPathCost, iClosestPathCost = 1000;
+  let sGridNo: INT16;
+  let sClosestSpot: INT16 = NOWHERE;
+  let bDirection: INT8;
+  let bClosestDirection: INT8;
+  let iPathCost: INT32;
+  let iClosestPathCost: INT32 = 1000;
 
   bClosestDirection = -1;
 
@@ -1793,12 +1897,19 @@ function FindRouteBackOntoMap(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16
 }
 
 function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: BOOLEAN): INT16 {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
 
-  INT16 sGridNo, sClosestSpot = NOWHERE;
-  INT32 iDistance, iClosestDistance = 9999;
-  UINT8 ubRoom;
+  let sGridNo: INT16;
+  let sClosestSpot: INT16 = NOWHERE;
+  let iDistance: INT32;
+  let iClosestDistance: INT32 = 9999;
+  let ubRoom: UINT8;
 
   // set the distance limit of the square region
   iSearchRange = 7;
@@ -1839,12 +1950,19 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: BOOL
 }
 
 function FindNearestOpenableNonDoor(sStartGridNo: INT16): INT16 {
-  INT32 iSearchRange;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
+  let iSearchRange: INT32;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
 
-  INT16 sGridNo, sClosestSpot = NOWHERE;
-  INT32 iDistance, iClosestDistance = 9999;
-  STRUCTURE *pStructure;
+  let sGridNo: INT16;
+  let sClosestSpot: INT16 = NOWHERE;
+  let iDistance: INT32;
+  let iClosestDistance: INT32 = 9999;
+  let pStructure: Pointer<STRUCTURE>;
 
   // set the distance limit of the square region
   iSearchRange = 7;

@@ -1,6 +1,6 @@
 // buttons
-INT32 giIMPAttributeFinishButtonImage[2];
-INT32 giIMPAttributeFinishButton[2];
+let giIMPAttributeFinishButtonImage: INT32[] /* [2] */;
+let giIMPAttributeFinishButton: INT32[] /* [2] */;
 
 function EnterIMPAttributeFinish(): void {
   // create the needed buttons

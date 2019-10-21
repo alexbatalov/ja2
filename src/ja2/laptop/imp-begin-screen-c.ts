@@ -25,32 +25,32 @@ const enum Enum87 {
 }
 
 // beginning character stats
-CHAR16 pFullNameString[128];
-CHAR16 pNickNameString[128];
+let pFullNameString: CHAR16[] /* [128] */;
+let pNickNameString: CHAR16[] /* [128] */;
 
 // positions in name strings
-UINT32 uiFullNameCharacterPosition = 0;
-UINT32 uiNickNameCharacterPosition = 0;
+let uiFullNameCharacterPosition: UINT32 = 0;
+let uiNickNameCharacterPosition: UINT32 = 0;
 
 // non gender
-INT8 bGenderFlag = -1;
+let bGenderFlag: INT8 = -1;
 
 // IMP begin page buttons
-INT32 giIMPBeginScreenButton[1];
-INT32 giIMPBeginScreenButtonImage[1];
+let giIMPBeginScreenButton: INT32[] /* [1] */;
+let giIMPBeginScreenButtonImage: INT32[] /* [1] */;
 
 // current mode of entering text we are in, ie FULL or Nick name?
-UINT8 ubTextEnterMode = 0;
+let ubTextEnterMode: UINT8 = 0;
 
 // cursor position
-UINT32 uiNickNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X;
-UINT32 uiFullNameCursorPosition = 196 + LAPTOP_SCREEN_UL_X;
+let uiNickNameCursorPosition: UINT32 = 196 + LAPTOP_SCREEN_UL_X;
+let uiFullNameCursorPosition: UINT32 = 196 + LAPTOP_SCREEN_UL_X;
 
 // whther a new char has been entered ( to force redraw)
-BOOLEAN fNewCharInString = FALSE;
+let fNewCharInString: BOOLEAN = FALSE;
 
 // mouse regions
-MOUSE_REGION gIMPBeginScreenMouseRegions[4];
+let gIMPBeginScreenMouseRegions: MOUSE_REGION[] /* [4] */;
 
 function EnterIMPBeginScreen(): void {
   // reset all variables
@@ -223,7 +223,7 @@ function RemoveIMPBeginScreenButtons(): void {
 
 function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // easter egg check
-  BOOLEAN fEggOnYouFace = FALSE;
+  let fEggOnYouFace: BOOLEAN = FALSE;
 
   // btn callback for IMP Begin Screen done button
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -278,8 +278,8 @@ function BtnIMPBeginScreenDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
-  InputAtom InputEvent;
-  POINT MousePos;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
 
   // get the current curosr position, might just need it.
   GetCursorPos(&MousePos);
@@ -471,12 +471,12 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
 
 function DisplayFullNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  UINT32 uiDestPitchBYTES;
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  static UINT32 iCurrentState = 0;
-  UINT8 *pDestBuf;
-  static BOOLEAN fIncrement = TRUE;
+  let uiDestPitchBYTES: UINT32;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  let uiDeltaTime: UINT32 = 0;
+  /* static */ let iCurrentState: UINT32 = 0;
+  let pDestBuf: Pointer<UINT8>;
+  /* static */ let fIncrement: BOOLEAN = TRUE;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -521,12 +521,12 @@ function DisplayFullNameStringCursor(): void {
 
 function DisplayNickNameStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  UINT32 uiDestPitchBYTES;
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  UINT8 *pDestBuf;
-  static UINT32 iCurrentState = 0;
-  static BOOLEAN fIncrement = TRUE;
+  let uiDestPitchBYTES: UINT32;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  let uiDeltaTime: UINT32 = 0;
+  let pDestBuf: Pointer<UINT8>;
+  /* static */ let iCurrentState: UINT32 = 0;
+  /* static */ let fIncrement: BOOLEAN = TRUE;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -571,7 +571,7 @@ function DisplayNickNameStringCursor(): void {
 
 function DisplayPlayerFullNameString(): void {
   // this function will grab the string that the player will enter for activation
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // player gone too far, move back
   if (uiFullNameCharacterPosition > MAX_FULL_NAME) {
@@ -597,7 +597,7 @@ function DisplayPlayerFullNameString(): void {
 
 function DisplayPlayerNickNameString(): void {
   // this function will grab the string that the player will enter for activation
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // player gone too far, move back
   if (uiNickNameCharacterPosition > MAX_NICK_NAME) {
@@ -623,12 +623,12 @@ function DisplayPlayerNickNameString(): void {
 
 function DisplayMaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  UINT32 uiDestPitchBYTES;
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  static UINT32 iCurrentState = 0;
-  static BOOLEAN fIncrement = TRUE;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  let uiDeltaTime: UINT32 = 0;
+  /* static */ let iCurrentState: UINT32 = 0;
+  /* static */ let fIncrement: BOOLEAN = TRUE;
+  let pDestBuf: Pointer<UINT8>;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -673,12 +673,12 @@ function DisplayMaleGlowCursor(): void {
 
 function DisplayFemaleGlowCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  UINT32 uiDestPitchBYTES;
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  static UINT32 iCurrentState = 0;
-  static BOOLEAN fIncrement = TRUE;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  let uiDeltaTime: UINT32 = 0;
+  /* static */ let iCurrentState: UINT32 = 0;
+  /* static */ let fIncrement: BOOLEAN = TRUE;
+  let pDestBuf: Pointer<UINT8>;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -723,7 +723,7 @@ function DisplayFemaleGlowCursor(): void {
 
 function CopyFirstNameIntoNickName(): void {
   // this procedure will copy the characters first name in to the nickname for the character
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
   while ((pFullNameString[iCounter] != L' ') && (iCounter < 20) && (pFullNameString[iCounter] != 0)) {
     // copy charcters into nick name
     pNickNameString[iCounter] = pFullNameString[iCounter];
@@ -916,7 +916,7 @@ function Print8CharacterOnlyString(): void {
 }
 
 function CheckCharacterInputForEgg(): BOOLEAN {
-  MERC_HIRE_STRUCT HireMercStruct;
+  let HireMercStruct: MERC_HIRE_STRUCT;
 
   return FALSE;
   if ((wcscmp(pFullNameString, L"Test Female") == 0) && (wcscmp(pNickNameString, L"Test") == 0)) {

@@ -1,22 +1,24 @@
-BOOLEAN gfUseSingleCharWordsForWordWrap = FALSE;
+let gfUseSingleCharWordsForWordWrap: BOOLEAN = FALSE;
 
 function UseSingleCharWordsForWordWrap(fUseSingleCharWords: BOOLEAN): void {
   gfUseSingleCharWordsForWordWrap = fUseSingleCharWords;
 }
 
 function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: STR16, ...args: any[]): Pointer<WRAPPED_STRING> {
-  WRAPPED_STRING FirstWrappedString;
-  WRAPPED_STRING *pWrappedString = NULL;
-  wchar_t TempString[1024];
+  let FirstWrappedString: WRAPPED_STRING;
+  let pWrappedString: Pointer<WRAPPED_STRING> = NULL;
+  let TempString: wchar_t[] /* [1024] */;
   //	wchar_t         pNullString[2];
-  INT16 usCurIndex, usEndIndex, usDestIndex;
-  wchar_t DestString[1024];
-  va_list argptr;
-  BOOLEAN fDone = FALSE;
-  UINT16 usCurrentWidthPixels = 0;
+  let usCurIndex: INT16;
+  let usEndIndex: INT16;
+  let usDestIndex: INT16;
+  let DestString: wchar_t[] /* [1024] */;
+  let argptr: va_list;
+  let fDone: BOOLEAN = FALSE;
+  let usCurrentWidthPixels: UINT16 = 0;
   //	UINT16					usCurrentLineWidthPixels=0;
-  wchar_t OneChar[2];
-  BOOLEAN fNewLine = FALSE;
+  let OneChar: wchar_t[] /* [2] */;
+  let fNewLine: BOOLEAN = FALSE;
   //	BOOLEAN					fTheStringIsToLong=FALSE;
   //	INT32 iCounter=0;
   //	INT32 iErrorCount = 0;
@@ -111,22 +113,24 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
 }
 
 function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordIsWiderThenWidth: Pointer<UINT16>, pString: STR16, ...args: any[]): Pointer<WRAPPED_STRING> {
-  WRAPPED_STRING FirstWrappedString;
-  WRAPPED_STRING *pWrappedString = NULL;
-  wchar_t TempString[1024];
-  wchar_t pNullString[2];
-  INT16 usCurIndex, usEndIndex, usDestIndex;
-  STR16 pCurrentStringLoc;
-  wchar_t DestString[1024];
-  va_list argptr;
-  BOOLEAN fDone = FALSE;
-  UINT16 usCurrentWidthPixels = 0;
-  UINT16 usCurrentLineWidthPixels = 0;
-  wchar_t OneChar[2];
-  BOOLEAN fNewLine = FALSE;
-  BOOLEAN fTheStringIsToLong = FALSE;
-  INT32 iCounter = 0;
-  INT32 iErrorCount = 0;
+  let FirstWrappedString: WRAPPED_STRING;
+  let pWrappedString: Pointer<WRAPPED_STRING> = NULL;
+  let TempString: wchar_t[] /* [1024] */;
+  let pNullString: wchar_t[] /* [2] */;
+  let usCurIndex: INT16;
+  let usEndIndex: INT16;
+  let usDestIndex: INT16;
+  let pCurrentStringLoc: STR16;
+  let DestString: wchar_t[] /* [1024] */;
+  let argptr: va_list;
+  let fDone: BOOLEAN = FALSE;
+  let usCurrentWidthPixels: UINT16 = 0;
+  let usCurrentLineWidthPixels: UINT16 = 0;
+  let OneChar: wchar_t[] /* [2] */;
+  let fNewLine: BOOLEAN = FALSE;
+  let fTheStringIsToLong: BOOLEAN = FALSE;
+  let iCounter: INT32 = 0;
+  let iErrorCount: INT32 = 0;
   pNullString[0] = L' ';
   pNullString[1] = 0;
 
@@ -272,7 +276,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
         usCurIndex--;
         usDestIndex = -1;
       } else {
-        CHAR zText[1024];
+        let zText: CHAR[] /* [1024] */;
 
         sprintf(zText, "LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, &TempString[usCurIndex], usLineWidthPixels);
 
@@ -302,10 +306,11 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
 //
 
 function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: BOOLEAN, uiFlags: UINT32): UINT16 {
-  WRAPPED_STRING *pFirstWrappedString, *pTempWrappedString;
-  UINT16 uiCounter = 0;
-  UINT16 usLineWidthIfWordIsWiderThenWidth = 0;
-  UINT16 usHeight;
+  let pFirstWrappedString: Pointer<WRAPPED_STRING>;
+  let pTempWrappedString: Pointer<WRAPPED_STRING>;
+  let uiCounter: UINT16 = 0;
+  let usLineWidthIfWordIsWiderThenWidth: UINT16 = 0;
+  let usHeight: UINT16;
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -339,8 +344,8 @@ function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, u
 }
 
 function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
-  WRAPPED_STRING *pTempWrappedString;
-  UINT16 uiCounter = 0;
+  let pTempWrappedString: Pointer<WRAPPED_STRING>;
+  let uiCounter: UINT16 = 0;
 
   while (pWrappedString != NULL) {
     pTempWrappedString = pWrappedString;
@@ -367,9 +372,10 @@ function DeleteWrappedString(pWrappedString: Pointer<WRAPPED_STRING>): UINT16 {
 //			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
 
 function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: UINT16, ulFont: UINT32, ubColor: UINT8, ubBackGroundColor: UINT8, fDirty: BOOLEAN, ulFlags: UINT32): BOOLEAN {
-  UINT16 usPosX, usPosY;
-  UINT16 usFontHeight = 0;
-  UINT16 usStringWidth = 0;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let usFontHeight: UINT16 = 0;
+  let usStringWidth: UINT16 = 0;
 
   if (ulFlags & DONT_DISPLAY_TEXT)
     return TRUE;
@@ -390,7 +396,7 @@ function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: 
   SetFont(ulFont);
 
   if (USE_WINFONTS()) {
-    COLORVAL Color = FROMRGB(255, 255, 255);
+    let Color: COLORVAL = FROMRGB(255, 255, 255);
     SetWinFontForeColor(GET_WINFONT(), &Color);
   } else {
     SetFontForeground(ubColor);
@@ -438,15 +444,22 @@ function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: 
 //
 
 function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: BOOLEAN, uiFlags: UINT32): UINT16 {
-  UINT16 usHeight;
-  UINT16 usSourceCounter = 0, usDestCounter = 0, usWordLengthPixels, usLineLengthPixels = 0, usPhraseLengthPixels = 0;
-  UINT16 usLinesUsed = 1, usLocalWidth = usWidth;
-  UINT32 uiLocalFont = uiFont;
-  UINT16 usJustification = LEFT_JUSTIFIED, usLocalPosX = usPosX;
-  UINT8 ubLocalColor = ubColor;
-  BOOLEAN fBoldOn = FALSE;
+  let usHeight: UINT16;
+  let usSourceCounter: UINT16 = 0;
+  let usDestCounter: UINT16 = 0;
+  let usWordLengthPixels: UINT16;
+  let usLineLengthPixels: UINT16 = 0;
+  let usPhraseLengthPixels: UINT16 = 0;
+  let usLinesUsed: UINT16 = 1;
+  let usLocalWidth: UINT16 = usWidth;
+  let uiLocalFont: UINT32 = uiFont;
+  let usJustification: UINT16 = LEFT_JUSTIFIED;
+  let usLocalPosX: UINT16 = usPosX;
+  let ubLocalColor: UINT8 = ubColor;
+  let fBoldOn: BOOLEAN = FALSE;
 
-  CHAR16 zLineString[128] = L"", zWordString[64] = L"";
+  let zLineString: CHAR16[] /* [128] */ = L"";
+  let zWordString: CHAR16[] /* [64] */ = L"";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -836,11 +849,11 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
 }
 
 function CleanOutControlCodesFromString(pSourceString: STR16, pDestString: STR16): void {
-  INT32 iSourceCounter = 0;
-  INT32 iDestCounter = 0;
+  let iSourceCounter: INT32 = 0;
+  let iDestCounter: INT32 = 0;
 
-  BOOLEAN fRemoveCurrentChar;
-  BOOLEAN fRemoveCurrentCharAndNextChar;
+  let fRemoveCurrentChar: BOOLEAN;
+  let fRemoveCurrentCharAndNextChar: BOOLEAN;
 
   // this procedure will run through a STR16 and strip out all control characters. This is a nessacary as wcscmp and the like tend not to like control chars in thier strings
 
@@ -911,15 +924,22 @@ function CleanOutControlCodesFromString(pSourceString: STR16, pDestString: STR16
 //
 
 function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usPageHeight: UINT16, usTotalHeight: UINT16, usPageNumber: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: BOOLEAN, uiFlags: UINT32, fOnLastPageFlag: Pointer<BOOLEAN>): INT16 {
-  UINT16 usHeight;
-  UINT16 usSourceCounter = 0, usDestCounter = 0, usWordLengthPixels, usLineLengthPixels = 0, usPhraseLengthPixels = 0;
-  UINT16 usLinesUsed = 1, usLocalWidth = usWidth;
-  UINT32 uiLocalFont = uiFont;
-  UINT16 usJustification = LEFT_JUSTIFIED, usLocalPosX = usPosX;
-  UINT8 ubLocalColor = ubColor;
-  BOOLEAN fBoldOn = FALSE;
-  UINT32 iTotalHeight = 0;
-  CHAR16 zLineString[640] = L"", zWordString[640] = L"";
+  let usHeight: UINT16;
+  let usSourceCounter: UINT16 = 0;
+  let usDestCounter: UINT16 = 0;
+  let usWordLengthPixels: UINT16;
+  let usLineLengthPixels: UINT16 = 0;
+  let usPhraseLengthPixels: UINT16 = 0;
+  let usLinesUsed: UINT16 = 1;
+  let usLocalWidth: UINT16 = usWidth;
+  let uiLocalFont: UINT32 = uiFont;
+  let usJustification: UINT16 = LEFT_JUSTIFIED;
+  let usLocalPosX: UINT16 = usPosX;
+  let ubLocalColor: UINT8 = ubColor;
+  let fBoldOn: BOOLEAN = FALSE;
+  let iTotalHeight: UINT32 = 0;
+  let zLineString: CHAR16[] /* [640] */ = L"";
+  let zWordString: CHAR16[] /* [640] */ = L"";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -1204,15 +1224,22 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
 
 // now variant for grabbing height
 function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, ubGap: UINT8, uiFont: UINT32, ubColor: UINT8, pString: STR16, ubBackGroundColor: UINT8, fDirty: BOOLEAN, uiFlags: UINT32): UINT16 {
-  UINT16 usHeight;
-  UINT16 usSourceCounter = 0, usDestCounter = 0, usWordLengthPixels, usLineLengthPixels = 0, usPhraseLengthPixels = 0;
-  UINT16 usLinesUsed = 1, usLocalWidth = usWidth;
-  UINT32 uiLocalFont = uiFont;
-  UINT16 usJustification = LEFT_JUSTIFIED, usLocalPosX = usPosX;
-  UINT8 ubLocalColor = ubColor;
-  BOOLEAN fBoldOn = FALSE;
-  UINT32 iTotalHeight = 0;
-  CHAR16 zLineString[640] = L"", zWordString[640] = L"";
+  let usHeight: UINT16;
+  let usSourceCounter: UINT16 = 0;
+  let usDestCounter: UINT16 = 0;
+  let usWordLengthPixels: UINT16;
+  let usLineLengthPixels: UINT16 = 0;
+  let usPhraseLengthPixels: UINT16 = 0;
+  let usLinesUsed: UINT16 = 1;
+  let usLocalWidth: UINT16 = usWidth;
+  let uiLocalFont: UINT32 = uiFont;
+  let usJustification: UINT16 = LEFT_JUSTIFIED;
+  let usLocalPosX: UINT16 = usPosX;
+  let ubLocalColor: UINT8 = ubColor;
+  let fBoldOn: BOOLEAN = FALSE;
+  let iTotalHeight: UINT32 = 0;
+  let zLineString: CHAR16[] /* [640] */ = L"";
+  let zWordString: CHAR16[] /* [640] */ = L"";
 
   usHeight = WFGetFontHeight(uiFont);
 
@@ -1470,8 +1497,8 @@ function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16,
 }
 
 function WillThisStringGetCutOff(iTotalYPosition: INT32, iBottomOfPage: INT32, iWrapWidth: INT32, uiFont: UINT32, pString: STR16, iGap: INT32, iPage: INT32): BOOLEAN {
-  BOOLEAN fGetCutOff = FALSE;
-  INT32 iHeight;
+  let fGetCutOff: BOOLEAN = FALSE;
+  let iHeight: INT32;
   // Will return if this string will get cut off
 
   iHeight = IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0);
@@ -1485,7 +1512,7 @@ function WillThisStringGetCutOff(iTotalYPosition: INT32, iBottomOfPage: INT32, i
 
 function IsThisStringBeforeTheCurrentPage(iTotalYPosition: INT32, iPageSize: INT32, iCurrentPage: INT32, iWrapWidth: INT32, uiFont: UINT32, pString: STR16, iGap: INT32): BOOLEAN {
   // check to see if the current string will appear on the current page
-  BOOLEAN fBeforeCurrentPage = FALSE;
+  let fBeforeCurrentPage: BOOLEAN = FALSE;
 
   if (iTotalYPosition + IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0) > (iPageSize * iCurrentPage)) {
     fBeforeCurrentPage = FALSE;
@@ -1497,7 +1524,7 @@ function IsThisStringBeforeTheCurrentPage(iTotalYPosition: INT32, iPageSize: INT
 }
 
 function GetNewTotalYPositionOfThisString(iTotalYPosition: INT32, iPageSize: INT32, iCurrentPage: INT32, iWrapWidth: INT32, uiFont: UINT32, pString: STR16, iGap: INT32): INT32 {
-  INT32 iNewYPosition = 0;
+  let iNewYPosition: INT32 = 0;
   // will returnt he new total y value of this string
 
   iNewYPosition = iTotalYPosition + IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0);
@@ -1506,8 +1533,8 @@ function GetNewTotalYPositionOfThisString(iTotalYPosition: INT32, iPageSize: INT
 }
 
 function ShadowText(uiDestVSurface: UINT32, pString: STR16, uiFont: UINT32, usPosX: UINT16, usPosY: UINT16): void {
-  UINT32 uiLength = StringPixLength(pString, uiFont);
-  UINT16 usFontHeight = WFGetFontHeight(uiFont);
+  let uiLength: UINT32 = StringPixLength(pString, uiFont);
+  let usFontHeight: UINT16 = WFGetFontHeight(uiFont);
 
   ShadowVideoSurfaceRect(uiDestVSurface, usPosX, usPosY, usPosX + uiLength + 1, usPosY + usFontHeight + 1);
 }
@@ -1516,10 +1543,10 @@ function ShadowText(uiDestVSurface: UINT32, pString: STR16, uiFont: UINT32, usPo
 function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32): RecordPtr {
   // get the first record on this page - build pages up until this point
 
-  RecordPtr CurrentRecord = NULL;
+  let CurrentRecord: RecordPtr = NULL;
 
-  INT32 iCurrentPositionOnThisPage = 0;
-  INT32 iCurrentPage = 0;
+  let iCurrentPositionOnThisPage: INT32 = 0;
+  let iCurrentPage: INT32 = 0;
 
   // null record list, nothing to do
   if (RecordList == NULL) {
@@ -1558,13 +1585,13 @@ function GetFirstRecordOnThisPage(RecordList: RecordPtr, uiFont: UINT32, usWidth
 function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usWidth: UINT16, ubGap: UINT8, iPage: INT32, iPageSize: INT32, WidthList: FileRecordWidthPtr): FileStringPtr {
   // get the first record on this page - build pages up until this point
 
-  FileStringPtr CurrentRecord = NULL;
+  let CurrentRecord: FileStringPtr = NULL;
 
-  INT32 iCurrentPositionOnThisPage = 0;
-  INT32 iCurrentPage = 0;
-  INT32 iCounter = 0;
-  FileRecordWidthPtr pWidthList = WidthList;
-  UINT16 usCurrentWidth = usWidth;
+  let iCurrentPositionOnThisPage: INT32 = 0;
+  let iCurrentPage: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let pWidthList: FileRecordWidthPtr = WidthList;
+  let usCurrentWidth: UINT16 = usWidth;
 
   // null record list, nothing to do
   if (RecordList == NULL) {
@@ -1629,15 +1656,15 @@ function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usW
 }
 
 function ReduceStringLength(pString: STR16, uiWidthToFitIn: UINT32, uiFont: UINT32): BOOLEAN {
-  wchar_t OneChar[2];
-  UINT16 zTemp[1024];
-  wchar_t zStrDots[16];
-  UINT32 uiDotWidth;
-  UINT32 uiTempStringPixWidth = 0;
-  UINT32 uiStringPixWidth;
-  BOOLEAN fDone = FALSE;
-  UINT32 uiSrcStringCntr = 0;
-  UINT32 uiOneCharWidth = 0;
+  let OneChar: wchar_t[] /* [2] */;
+  let zTemp: UINT16[] /* [1024] */;
+  let zStrDots: wchar_t[] /* [16] */;
+  let uiDotWidth: UINT32;
+  let uiTempStringPixWidth: UINT32 = 0;
+  let uiStringPixWidth: UINT32;
+  let fDone: BOOLEAN = FALSE;
+  let uiSrcStringCntr: UINT32 = 0;
+  let uiOneCharWidth: UINT32 = 0;
 
   uiStringPixWidth = WFStringPixLength(pString, uiFont);
 

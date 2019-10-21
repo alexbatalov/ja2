@@ -81,12 +81,12 @@ interface FileSystem {
 //**************************************************************************
 
 // The FileDatabaseHeader
-DatabaseManagerHeaderStruct gFileDataBase;
+let gFileDataBase: DatabaseManagerHeaderStruct;
 
 // FileSystem gfs;
 
-WIN32_FIND_DATA Win32FindInfo[20];
-BOOLEAN fFindInfoInUse[20] = {
+let Win32FindInfo: WIN32_FIND_DATA[] /* [20] */;
+let fFindInfoInUse: BOOLEAN[] /* [20] */ = {
   FALSE,
   FALSE,
   FALSE,
@@ -108,7 +108,7 @@ BOOLEAN fFindInfoInUse[20] = {
   FALSE,
   FALSE,
 };
-HANDLE hFindInfoHandle[20] = {
+let hFindInfoHandle: HANDLE[] /* [20] */ = {
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
   INVALID_HANDLE_VALUE,
@@ -224,8 +224,8 @@ function FileDebug(f: BOOLEAN): void {
 //**************************************************************************
 
 function FileExists(strFilename: STR): BOOLEAN {
-  BOOLEAN fExists = FALSE;
-  FILE *file;
+  let fExists: BOOLEAN = FALSE;
+  let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
   // open up the file to see if it exists on the disk
@@ -272,8 +272,8 @@ function FileExists(strFilename: STR): BOOLEAN {
 //**************************************************************************
 
 function FileExistsNoDB(strFilename: STR): BOOLEAN {
-  BOOLEAN fExists = FALSE;
-  FILE *file;
+  let fExists: BOOLEAN = FALSE;
+  let file: Pointer<FILE>;
   // HANDLE	hRealFile;
 
   // open up the file to see if it exists on the disk
@@ -341,14 +341,14 @@ function FileDelete(strFilename: STR): BOOLEAN {
 //**************************************************************************
 
 function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: BOOLEAN): HWFILE {
-  HWFILE hFile;
-  HANDLE hRealFile;
-  DWORD dwAccess;
-  DWORD dwFlagsAndAttributes;
-  HDBFILE hDBFile;
-  BOOLEAN fExists;
-  DWORD dwCreationFlags;
-  HWFILE hLibFile;
+  let hFile: HWFILE;
+  let hRealFile: HANDLE;
+  let dwAccess: DWORD;
+  let dwFlagsAndAttributes: DWORD;
+  let hDBFile: HDBFILE;
+  let fExists: BOOLEAN;
+  let dwCreationFlags: DWORD;
+  let hLibFile: HWFILE;
 
   hFile = 0;
   hDBFile = 0;
@@ -429,8 +429,8 @@ function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: BOOLEAN):
 
     hRealFile = CreateFile(strFilename, dwAccess, 0, NULL, dwCreationFlags, dwFlagsAndAttributes, NULL);
     if (hRealFile == INVALID_HANDLE_VALUE) {
-      UINT32 uiLastError = GetLastError();
-      char zString[1024];
+      let uiLastError: UINT32 = GetLastError();
+      let zString: char[] /* [1024] */;
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
 
       return 0;
@@ -464,8 +464,8 @@ function FileOpen(strFilename: STR, uiOptions: UINT32, fDeleteOnClose: BOOLEAN):
 //**************************************************************************
 
 function FileClose(hFile: HWFILE): void {
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -517,11 +517,12 @@ function FileClose(hFile: HWFILE): void {
 //**************************************************************************
 
 function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
-  HANDLE hRealFile;
-  DWORD dwNumBytesToRead, dwNumBytesRead;
-  BOOLEAN fRet = FALSE;
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let hRealFile: HANDLE;
+  let dwNumBytesToRead: DWORD;
+  let dwNumBytesRead: DWORD;
+  let fRet: BOOLEAN = FALSE;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   // init the variables
   dwNumBytesToRead = dwNumBytesRead = 0;
@@ -538,8 +539,8 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
 
       fRet = ReadFile(hRealFile, pDest, dwNumBytesToRead, &dwNumBytesRead, NULL);
       if (dwNumBytesToRead != dwNumBytesRead) {
-        UINT32 uiLastError = GetLastError();
-        char zString[1024];
+        let uiLastError: UINT32 = GetLastError();
+        let zString: char[] /* [1024] */;
         FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
 
         fRet = FALSE;
@@ -596,11 +597,12 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
 //**************************************************************************
 
 function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWritten: Pointer<UINT32>): BOOLEAN {
-  HANDLE hRealFile;
-  DWORD dwNumBytesToWrite, dwNumBytesWritten;
-  BOOLEAN fRet;
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let hRealFile: HANDLE;
+  let dwNumBytesToWrite: DWORD;
+  let dwNumBytesWritten: DWORD;
+  let fRet: BOOLEAN;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -650,9 +652,9 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
 //**************************************************************************
 
 function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead: Pointer<UINT32>): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
-  BOOLEAN fRet;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let fRet: BOOLEAN;
 
   hFile = FileOpen(strFilename, FILE_ACCESS_READ, FALSE);
   if (hFile) {
@@ -697,12 +699,12 @@ function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesR
 //**************************************************************************
 
 function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[]): BOOLEAN {
-  UINT8 strToSend[80];
-  va_list argptr;
-  BOOLEAN fRetVal = FALSE;
+  let strToSend: UINT8[] /* [80] */;
+  let argptr: va_list;
+  let fRetVal: BOOLEAN = FALSE;
 
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -747,13 +749,13 @@ function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[])
 //**************************************************************************
 
 function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
-  HANDLE hRealFile;
-  LONG lDistanceToMove;
-  DWORD dwMoveMethod;
-  INT32 iDistance = 0;
+  let hRealFile: HANDLE;
+  let lDistanceToMove: LONG;
+  let dwMoveMethod: DWORD;
+  let iDistance: INT32 = 0;
 
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -810,11 +812,11 @@ function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
 //**************************************************************************
 
 function FileGetPos(hFile: HWFILE): INT32 {
-  HANDLE hRealFile;
-  UINT32 uiPositionInFile = 0;
+  let hRealFile: HANDLE;
+  let uiPositionInFile: UINT32 = 0;
 
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -866,11 +868,11 @@ function FileGetPos(hFile: HWFILE): INT32 {
 //**************************************************************************
 
 function FileGetSize(hFile: HWFILE): UINT32 {
-  HANDLE hRealHandle;
-  UINT32 uiFileSize = 0xFFFFFFFF;
+  let hRealHandle: HANDLE;
+  let uiFileSize: UINT32 = 0xFFFFFFFF;
 
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -926,10 +928,10 @@ function FileDebugPrint(): void {
 //**************************************************************************
 
 function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): HANDLE {
-  HANDLE hRealFile;
+  let hRealFile: HANDLE;
 
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -1147,11 +1149,12 @@ function BuildFileDirectory(): void {
 //**************************************************************************
 
 function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HANDLE, pFind: Pointer<WIN32_FIND_DATA>): INT32 {
-  INT32 iNumFiles;
-  WIN32_FIND_DATA inFind;
-  BOOLEAN fMore;
-  CHAR cName[FILENAME_LENGTH], cDir[FILENAME_LENGTH];
-  HANDLE hFileIn;
+  let iNumFiles: INT32;
+  let inFind: WIN32_FIND_DATA;
+  let fMore: BOOLEAN;
+  let cName: CHAR[] /* [FILENAME_LENGTH] */;
+  let cDir: CHAR[] /* [FILENAME_LENGTH] */;
+  let hFileIn: HANDLE;
 
   fMore = TRUE;
   iNumFiles = 0;
@@ -1195,8 +1198,8 @@ function GetFileManCurrentDirectory(pcDirectory: STRING512): BOOLEAN {
 }
 
 function DirectoryExists(pcDirectory: STRING512): BOOLEAN {
-  UINT32 uiAttribs;
-  DWORD uiLastError;
+  let uiAttribs: UINT32;
+  let uiLastError: DWORD;
 
   uiAttribs = GetFileAttributes(pcDirectory);
 
@@ -1227,13 +1230,13 @@ function MakeFileManDirectory(pcDirectory: STRING512): BOOLEAN {
 // Use EraseDirectory() to simply delete directory contents without deleting the directory itself
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BOOLEAN {
-  WIN32_FIND_DATA sFindData;
-  HANDLE SearchHandle;
-  const CHAR8 *pFileSpec = "*.*";
-  BOOLEAN fDone = FALSE;
-  BOOLEAN fRetval = FALSE;
-  CHAR8 zOldDir[512];
-  CHAR8 zSubdirectory[512];
+  let sFindData: WIN32_FIND_DATA;
+  let SearchHandle: HANDLE;
+  const pFileSpec: Pointer<CHAR8> = "*.*";
+  let fDone: BOOLEAN = FALSE;
+  let fRetval: BOOLEAN = FALSE;
+  let zOldDir: CHAR8[] /* [512] */;
+  let zSubdirectory: CHAR8[] /* [512] */;
 
   GetFileManCurrentDirectory(zOldDir);
 
@@ -1296,11 +1299,11 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
 // Use RemoveFilemanDirectory() to also delete the directory itself, or to recursively delete subdirectories.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
-  WIN32_FIND_DATA sFindData;
-  HANDLE SearchHandle;
-  const CHAR8 *pFileSpec = "*.*";
-  BOOLEAN fDone = FALSE;
-  CHAR8 zOldDir[512];
+  let sFindData: WIN32_FIND_DATA;
+  let SearchHandle: HANDLE;
+  const pFileSpec: Pointer<CHAR8> = "*.*";
+  let fDone: BOOLEAN = FALSE;
+  let zOldDir: CHAR8[] /* [512] */;
 
   GetFileManCurrentDirectory(zOldDir);
 
@@ -1338,8 +1341,8 @@ function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
 }
 
 function GetExecutableDirectory(pcDirectory: STRING512): BOOLEAN {
-  SGPFILENAME ModuleFilename;
-  UINT32 cnt;
+  let ModuleFilename: SGPFILENAME;
+  let cnt: UINT32;
 
   if (GetModuleFileName(NULL, ModuleFilename, sizeof(ModuleFilename)) == 0) {
     return FALSE;
@@ -1359,8 +1362,9 @@ function GetExecutableDirectory(pcDirectory: STRING512): BOOLEAN {
 }
 
 function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
-  INT32 x, iWhich = 0;
-  BOOLEAN fFound;
+  let x: INT32;
+  let iWhich: INT32 = 0;
+  let fFound: BOOLEAN;
 
   CHECKF(pSpec != NULL);
   CHECKF(pGFStruct != NULL);
@@ -1411,7 +1415,7 @@ function GetFileClose(pGFStruct: Pointer<GETFILESTRUCT>): void {
 }
 
 function W32toSGPFileFind(pGFStruct: Pointer<GETFILESTRUCT>, pW32Struct: Pointer<WIN32_FIND_DATA>): void {
-  UINT32 uiAttribMask;
+  let uiAttribMask: UINT32;
 
   // Copy the filename
   strcpy(pGFStruct->zFileName, pW32Struct->cFileName);
@@ -1548,7 +1552,7 @@ function FileMove(strOldName: STR, strNewName: STR): BOOLEAN {
 
 // Additions by Kris Morness
 function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): BOOLEAN {
-  UINT32 uiFileAttrib = 0;
+  let uiFileAttrib: UINT32 = 0;
 
   if (uiNewAttribs & FILE_ATTRIBUTES_ARCHIVE)
     uiFileAttrib |= FILE_ATTRIBUTE_ARCHIVE;
@@ -1575,8 +1579,8 @@ function FileSetAttributes(strFilename: STR, uiNewAttribs: UINT32): BOOLEAN {
 }
 
 function FileGetAttributes(strFilename: STR): UINT32 {
-  UINT32 uiAttribs = 0;
-  UINT32 uiFileAttrib = 0;
+  let uiAttribs: UINT32 = 0;
+  let uiFileAttrib: UINT32 = 0;
 
   uiAttribs = GetFileAttributes(strFilename);
 
@@ -1616,14 +1620,14 @@ function FileClearAttributes(strFilename: STR): BOOLEAN {
 
 // returns true if at end of file, else false
 function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
-  HANDLE hRealFile;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
+  let hRealFile: HANDLE;
   //	UINT8		Data;
-  UINT32 uiNumberOfBytesRead = 0;
-  UINT32 uiOldFilePtrLoc = 0;
-  UINT32 uiEndOfFilePtrLoc = 0;
-  UINT32 temp = 0;
+  let uiNumberOfBytesRead: UINT32 = 0;
+  let uiOldFilePtrLoc: UINT32 = 0;
+  let uiEndOfFilePtrLoc: UINT32 = 0;
+  let temp: UINT32 = 0;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -1655,10 +1659,10 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
       if (IsLibraryOpened(sLibraryID)) {
         // if the file is opened
         if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFileID != 0) {
-          UINT32 uiLength; // uiOffsetInLibrary
+          let uiLength: UINT32; // uiOffsetInLibrary
           //					HANDLE	hLibraryFile;
           //					UINT32	uiNumBytesRead;
-          UINT32 uiCurPos;
+          let uiCurPos: UINT32;
 
           uiLength = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].pFileHeader->uiFileLength;
           uiCurPos = gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFilePosInFile;
@@ -1677,13 +1681,13 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
 }
 
 function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>, pLastAccessedTime: Pointer<SGP_FILETIME>, pLastWriteTime: Pointer<SGP_FILETIME>): BOOLEAN {
-  HANDLE hRealFile;
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let hRealFile: HANDLE;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
-  FILETIME sCreationUtcFileTime;
-  FILETIME sLastAccessedUtcFileTime;
-  FILETIME sLastWriteUtcFileTime;
+  let sCreationUtcFileTime: FILETIME;
+  let sLastAccessedUtcFileTime: FILETIME;
+  let sLastWriteUtcFileTime: FILETIME;
 
   // Initialize the passed in variables
   memset(pCreationTime, 0, sizeof(SGP_FILETIME));
@@ -1731,8 +1735,8 @@ function CompareSGPFileTimes(pFirstFileTime: Pointer<SGP_FILETIME>, pSecondFileT
 }
 
 function FileSize(strFilename: STR): UINT32 {
-  HWFILE hFile;
-  UINT32 uiSize;
+  let hFile: HWFILE;
+  let uiSize: UINT32;
 
   if ((hFile = FileOpen(strFilename, FILE_OPEN_EXISTING | FILE_ACCESS_READ, FALSE)) == 0)
     return 0;
@@ -1744,8 +1748,8 @@ function FileSize(strFilename: STR): UINT32 {
 }
 
 function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
-  INT16 sLibraryID;
-  UINT32 uiFileNum;
+  let sLibraryID: INT16;
+  let uiFileNum: UINT32;
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
@@ -1779,9 +1783,9 @@ function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
 //
 //**************************************************************************
 function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
-  CHAR8 *pSystemPath;
-  CHAR8 *pPath;
-  UINT32 uiPathLen;
+  let pSystemPath: Pointer<CHAR8>;
+  let pPath: Pointer<CHAR8>;
+  let uiPathLen: UINT32;
 
   // Check for NULL
   if (!pDirectory)
@@ -1829,13 +1833,13 @@ function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
 }
 
 function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
-  STRING512 zExecDir;
-  STRING512 zDrive;
-  STRING512 zDir;
-  STRING512 zFileName;
-  STRING512 zExt;
+  let zExecDir: STRING512;
+  let zDrive: STRING512;
+  let zDir: STRING512;
+  let zFileName: STRING512;
+  let zExt: STRING512;
 
-  UINT32 uiFreeSpace = 0;
+  let uiFreeSpace: UINT32 = 0;
 
   GetExecutableDirectory(zExecDir);
 
@@ -1850,16 +1854,16 @@ function GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(): UINT32 {
 }
 
 function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
-  UINT32 uiBytesFree = 0;
+  let uiBytesFree: UINT32 = 0;
 
-  UINT32 uiSectorsPerCluster = 0;
-  UINT32 uiBytesPerSector = 0;
-  UINT32 uiNumberOfFreeClusters = 0;
-  UINT32 uiTotalNumberOfClusters = 0;
+  let uiSectorsPerCluster: UINT32 = 0;
+  let uiBytesPerSector: UINT32 = 0;
+  let uiNumberOfFreeClusters: UINT32 = 0;
+  let uiTotalNumberOfClusters: UINT32 = 0;
 
   if (!GetDiskFreeSpace(pzDriveLetter, &uiSectorsPerCluster, &uiBytesPerSector, &uiNumberOfFreeClusters, &uiTotalNumberOfClusters)) {
-    UINT32 uiLastError = GetLastError();
-    char zString[1024];
+    let uiLastError: UINT32 = GetLastError();
+    let zString: char[] /* [1024] */;
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);
 
     return TRUE;

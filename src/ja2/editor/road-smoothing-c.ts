@@ -7,7 +7,7 @@ interface MACROSTRUCT {
 // These define the macros for the 32 road pieces.  The column contains the macro ID and
 // the second contains the gridno offset from the anchor position (where the user clicks in the world to
 // place the road).  The actual index of the array refers to the offset from ROADPIECE001.
-MACROSTRUCT gRoadMacros[] = {
+let gRoadMacros: MACROSTRUCT[] /* [] */ = {
   // left 1
   { L1, -2 },
   { L1, -162 },
@@ -354,13 +354,14 @@ MACROSTRUCT gRoadMacros[] = {
   { TE, 0 }
 };
 
-INT16 gsRoadMacroStartIndex[NUM_ROAD_MACROS];
+let gsRoadMacroStartIndex: INT16[] /* [NUM_ROAD_MACROS] */;
 
 // A simple optimization function that calculates the first index in the large database for
 // the particular macro ID.
 function InitializeRoadMacros(): void {
-  INT16 i, end;
-  INT16 sMacro = 0;
+  let i: INT16;
+  let end: INT16;
+  let sMacro: INT16 = 0;
   end = sizeof(gRoadMacros) / 4;
   for (i = 0; i < end; i++) {
     if (i >= sizeof(gRoadMacros) / sizeof(MACROSTRUCT)) {
@@ -378,8 +379,8 @@ function InitializeRoadMacros(): void {
 // road system, this function will place the new macro (consisting of multiple road pieces in multiple
 // gridnos).
 function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
-  INT32 i;
-  UINT16 usTileIndex;
+  let i: INT32;
+  let usTileIndex: UINT16;
   i = gsRoadMacroStartIndex[iMacroID];
   while (gRoadMacros[i].sMacroID == iMacroID) {
     AddToUndoList(iMapIndex + gRoadMacros[i].sOffset);
@@ -396,10 +397,10 @@ function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
 // locations containing the original road tile information, delete it, and replace it by inserting it's
 // equivalent macro.
 function ReplaceObsoleteRoads(): void {
-  INT32 i;
-  INT32 iMacro;
-  LEVELNODE *pObject;
-  BOOLEAN fRoadExistsAtGridNo;
+  let i: INT32;
+  let iMacro: INT32;
+  let pObject: Pointer<LEVELNODE>;
+  let fRoadExistsAtGridNo: BOOLEAN;
   for (i = 0; i < WORLD_MAX; i++) {
     pObject = gpWorldLevelData[i].pObjectHead;
     fRoadExistsAtGridNo = FALSE;

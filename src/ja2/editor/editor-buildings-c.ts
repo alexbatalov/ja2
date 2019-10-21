@@ -1,8 +1,10 @@
-BOOLEAN fBuildingShowRoofs, fBuildingShowWalls, fBuildingShowRoomInfo;
-UINT16 usCurrentMode;
-UINT8 gubCurrRoomNumber;
-UINT8 gubMaxRoomNumber;
-BOOLEAN gfEditingDoor;
+let fBuildingShowRoofs: BOOLEAN;
+let fBuildingShowWalls: BOOLEAN;
+let fBuildingShowRoomInfo: BOOLEAN;
+let usCurrentMode: UINT16;
+let gubCurrRoomNumber: UINT8;
+let gubMaxRoomNumber: UINT8;
+let gfEditingDoor: BOOLEAN;
 
 // BEGINNNING OF BUILDING INITIALIZATION FUNCTIONS
 function GameInitEditorBuildingInfo(): void {
@@ -15,8 +17,8 @@ function GameInitEditorBuildingInfo(): void {
 
 // BEGINNING OF BUILDING UTILITY FUNCTIONS
 function UpdateRoofsView(): void {
-  INT32 x;
-  UINT16 usType;
+  let x: INT32;
+  let usType: UINT16;
   for (x = 0; x < WORLD_MAX; x++) {
     for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
       HideStructOfGivenType(x, usType, (BOOLEAN)(!fBuildingShowRoofs));
@@ -26,7 +28,7 @@ function UpdateRoofsView(): void {
 }
 
 function UpdateWallsView(): void {
-  INT32 cnt;
+  let cnt: INT32;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (fBuildingShowWalls) {
       RemoveWallLevelnodeFlags((INT16)cnt, LEVELNODE_HIDDEN);
@@ -62,7 +64,7 @@ function UpdateBuildingsInfo(): void {
 // 5) KillBuilding at x+1, y.
 // 6) KillBuilding at x  , y+1.
 function KillBuilding(iMapIndex: UINT32): void {
-  BOOLEAN fFound = FALSE;
+  let fFound: BOOLEAN = FALSE;
 
   if (!gfBasement)
     fFound |= RemoveAllRoofsOfTypeRange(iMapIndex, FIRSTTEXTURE, LASTITEM);
@@ -90,11 +92,11 @@ function KillBuilding(iMapIndex: UINT32): void {
     RebuildRoof(iMapIndex, 0);
 }
 
-BUILDINGLAYOUTNODE *gpBuildingLayoutList = NULL;
-INT16 gsBuildingLayoutAnchorGridNo = -1;
+let gpBuildingLayoutList: Pointer<BUILDINGLAYOUTNODE> = NULL;
+let gsBuildingLayoutAnchorGridNo: INT16 = -1;
 
 function DeleteBuildingLayout(): void {
-  BUILDINGLAYOUTNODE *curr;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
   // Erases the cursors associated with them.
   RemoveBuildingLayout();
   while (gpBuildingLayoutList) {
@@ -107,7 +109,7 @@ function DeleteBuildingLayout(): void {
 }
 
 function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
-  BUILDINGLAYOUTNODE *curr;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
   // First, validate the gridno
   iMapIndex += iOffset;
   if (iMapIndex < 0 && iMapIndex >= WORLD_COLS * WORLD_ROWS)
@@ -176,8 +178,12 @@ function CopyBuilding(iMapIndex: INT32): void {
 // depending on the offset, we will either sort in increasing order, or decreasing order.
 // This will prevent overlapping problems.
 function SortBuildingLayout(iMapIndex): void {
-  BUILDINGLAYOUTNODE *head, *curr, *prev, *prevBest, *best;
-  INT32 iBestIndex;
+  let head: Pointer<BUILDINGLAYOUTNODE>;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let prev: Pointer<BUILDINGLAYOUTNODE>;
+  let prevBest: Pointer<BUILDINGLAYOUTNODE>;
+  let best: Pointer<BUILDINGLAYOUTNODE>;
+  let iBestIndex: INT32;
   head = NULL;
   if (iMapIndex < gsBuildingLayoutAnchorGridNo) {
     // Forward sort (in increasing order)
@@ -233,9 +239,9 @@ function SortBuildingLayout(iMapIndex): void {
 }
 
 function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): void {
-  MAP_ELEMENT *pSrcMapElement;
-  LEVELNODE *pNode;
-  UINT16 usType;
+  let pSrcMapElement: Pointer<MAP_ELEMENT>;
+  let pNode: Pointer<LEVELNODE>;
+  let usType: UINT16;
 
   DeleteStuffFromMapTile(iDstGridNo);
   DeleteAllLandLayers(iDstGridNo);
@@ -289,8 +295,8 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
 }
 
 function MoveBuilding(iMapIndex: INT32): void {
-  BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let iOffset: INT32;
   if (!gpBuildingLayoutList)
     return;
   SortBuildingLayout(iMapIndex);
@@ -313,8 +319,8 @@ function MoveBuilding(iMapIndex: INT32): void {
 }
 
 function PasteBuilding(iMapIndex: INT32): void {
-  BUILDINGLAYOUTNODE *curr;
-  INT32 iOffset;
+  let curr: Pointer<BUILDINGLAYOUTNODE>;
+  let iOffset: INT32;
   if (!gpBuildingLayoutList)
     return;
   SortBuildingLayout(iMapIndex);
@@ -340,10 +346,10 @@ interface ROOFNODE {
   next: Pointer<ROOFNODE>;
 }
 
-ROOFNODE *gpRoofList = NULL;
+let gpRoofList: Pointer<ROOFNODE> = NULL;
 
 function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
-  ROOFNODE *curr;
+  let curr: Pointer<ROOFNODE>;
   // First, validate the gridno
   if (iMapIndex < 0 && iMapIndex >= WORLD_COLS * WORLD_ROWS)
     return;
@@ -374,8 +380,8 @@ function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
 }
 
 function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
-  UINT16 usRoofType;
-  ROOFNODE *curr;
+  let usRoofType: UINT16;
+  let curr: Pointer<ROOFNODE>;
   // Not in normal editor mode, then can't do it.
   if (gfBasement || gfCaves)
     return;
@@ -408,7 +414,7 @@ function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
 }
 
 // internal door editing vars.
-INT32 iDoorMapIndex = 0;
+let iDoorMapIndex: INT32 = 0;
 const enum Enum34 {
   DOOR_BACKGROUND,
   DOOR_OKAY,
@@ -416,11 +422,11 @@ const enum Enum34 {
   DOOR_LOCKED,
   NUM_DOOR_BUTTONS,
 }
-INT32 iDoorButton[NUM_DOOR_BUTTONS];
-MOUSE_REGION DoorRegion;
+let iDoorButton: INT32[] /* [NUM_DOOR_BUTTONS] */;
+let DoorRegion: MOUSE_REGION;
 
 function InitDoorEditing(iMapIndex: INT32): void {
-  DOOR *pDoor;
+  let pDoor: Pointer<DOOR>;
   if (!DoorAtGridNo(iMapIndex) && !OpenableAtGridNo(iMapIndex))
     return;
   gfEditingDoor = TRUE;
@@ -452,11 +458,11 @@ function InitDoorEditing(iMapIndex: INT32): void {
 }
 
 function ExtractAndUpdateDoorInfo(): void {
-  LEVELNODE *pNode;
-  INT32 num;
-  DOOR door;
-  BOOLEAN fCursor = FALSE;
-  BOOLEAN fCursorExists = FALSE;
+  let pNode: Pointer<LEVELNODE>;
+  let num: INT32;
+  let door: DOOR;
+  let fCursor: BOOLEAN = FALSE;
+  let fCursorExists: BOOLEAN = FALSE;
 
   memset(&door, 0, sizeof(DOOR));
 
@@ -512,8 +518,8 @@ function ExtractAndUpdateDoorInfo(): void {
 }
 
 function FindNextLockedDoor(): void {
-  DOOR *pDoor;
-  INT32 i;
+  let pDoor: Pointer<DOOR>;
+  let i: INT32;
   for (i = iDoorMapIndex + 1; i < WORLD_MAX; i++) {
     pDoor = FindDoorInfoAtGridNo(i);
     if (pDoor) {
@@ -548,7 +554,7 @@ function RenderDoorEditingWindow(): void {
 }
 
 function KillDoorEditing(): void {
-  INT32 i;
+  let i: INT32;
   EnableEditorTaskbar();
   MSYS_RemoveRegion(&DoorRegion);
   for (i = 0; i < NUM_DOOR_BUTTONS; i++)
@@ -575,8 +581,8 @@ function DoorToggleLockedCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 }
 
 function AddLockedDoorCursors(): void {
-  DOOR *pDoor;
-  INT i;
+  let pDoor: Pointer<DOOR>;
+  let i: INT;
   for (i = 0; i < gubNumDoors; i++) {
     pDoor = &DoorTable[i];
     AddTopmostToHead(pDoor->sGridNo, ROTATINGKEY1);
@@ -584,10 +590,10 @@ function AddLockedDoorCursors(): void {
 }
 
 function RemoveLockedDoorCursors(): void {
-  DOOR *pDoor;
-  INT i;
-  LEVELNODE *pNode;
-  LEVELNODE *pTemp;
+  let pDoor: Pointer<DOOR>;
+  let i: INT;
+  let pNode: Pointer<LEVELNODE>;
+  let pTemp: Pointer<LEVELNODE>;
   for (i = 0; i < gubNumDoors; i++) {
     pDoor = &DoorTable[i];
     pNode = gpWorldLevelData[pDoor->sGridNo].pTopmostHead;
@@ -603,7 +609,7 @@ function RemoveLockedDoorCursors(): void {
 }
 
 function SetupTextInputForBuildings(): void {
-  UINT16 str[4];
+  let str: UINT16[] /* [4] */;
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddUserInputField(NULL); // just so we can use short cut keys while not typing.
   swprintf(str, L"%d", gubMaxRoomNumber);
@@ -611,8 +617,8 @@ function SetupTextInputForBuildings(): void {
 }
 
 function ExtractAndUpdateBuildingInfo(): void {
-  UINT16 str[4];
-  INT32 temp;
+  let str: UINT16[] /* [4] */;
+  let temp: INT32;
   // extract light1 colors
   temp = min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1) {

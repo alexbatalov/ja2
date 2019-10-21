@@ -1,20 +1,20 @@
-UINT32 guiBOTTOMPANEL = 0;
-UINT32 guiRIGHTPANEL = 0;
-UINT32 guiRENDERBUFFER = 0;
-UINT32 guiSAVEBUFFER = 0;
-UINT32 guiEXTRABUFFER = 0;
+let guiBOTTOMPANEL: UINT32 = 0;
+let guiRIGHTPANEL: UINT32 = 0;
+let guiRENDERBUFFER: UINT32 = 0;
+let guiSAVEBUFFER: UINT32 = 0;
+let guiEXTRABUFFER: UINT32 = 0;
 
-BOOLEAN gfExtraBuffer = FALSE;
+let gfExtraBuffer: BOOLEAN = FALSE;
 
 function InitializeSystemVideoObjects(): BOOLEAN {
   return TRUE;
 }
 
 function InitializeGameVideoObjects(): BOOLEAN {
-  VSURFACE_DESC vs_desc;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  UINT8 ubBitDepth;
+  let vs_desc: VSURFACE_DESC;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let ubBitDepth: UINT8;
 
   // Create render buffer
   GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);

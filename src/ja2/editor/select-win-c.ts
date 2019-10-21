@@ -1,14 +1,22 @@
-BOOLEAN gfRenderSquareArea = FALSE;
-INT16 iStartClickX, iStartClickY;
-INT16 iEndClickX, iEndClickY;
+let gfRenderSquareArea: BOOLEAN = FALSE;
+let iStartClickX: INT16;
+let iStartClickY: INT16;
+let iEndClickX: INT16;
+let iEndClickY: INT16;
 
-INT32 iButtonIcons[4];
-INT32 iSelectWin, iCancelWin, iScrollUp, iScrollDown, iOkWin;
+let iButtonIcons: INT32[] /* [4] */;
+let iSelectWin: INT32;
+let iCancelWin: INT32;
+let iScrollUp: INT32;
+let iScrollDown: INT32;
+let iOkWin: INT32;
 
-BOOLEAN fAllDone = FALSE;
-BOOLEAN fButtonsPresent = FALSE;
+let fAllDone: BOOLEAN = FALSE;
+let fButtonsPresent: BOOLEAN = FALSE;
 
-SGPPoint SelWinSpacing, SelWinStartPoint, SelWinEndPoint;
+let SelWinSpacing: SGPPoint;
+let SelWinStartPoint: SGPPoint;
+let SelWinEndPoint: SGPPoint;
 
 // These definitions help define the start and end of the various wall indices.
 // This needs to be maintained if the walls change.
@@ -50,85 +58,86 @@ const ROOM_NUMELEMENTS = ((LASTWALL - FIRSTWALL + 1) + (LASTFLOOR - FIRSTFLOOR +
 // This is a special case for trees which may have varying numbers.  There was a problem
 // in which we loaded a new tileset which had one less tree in it.  When we called BuildSelectionWindow(),
 // it would crash because it thought there was an extra tree which was now invalid.
-UINT16 gusNumOStructs = 0;
+let gusNumOStructs: UINT16 = 0;
 
 // List of objects to display in the selection window
-DisplaySpec OStructs[OSTRUCTS_NUMELEMENTS];
-DisplaySpec OStructs1[OSTRUCTS1_NUMELEMENTS];
-DisplaySpec OStructs2[OSTRUCTS2_NUMELEMENTS];
-DisplaySpec BanksList[BANKSLIST_NUMELEMENTS];
-DisplaySpec RoadsList[ROADSLIST_NUMELEMENTS];
-DisplaySpec DebrisList[DEBRISLIST_NUMELEMENTS];
-DisplaySpec SingleWall[SINGLEWALL_NUMELEMENTS];
-DisplaySpec SingleDoor[SINGLEDOOR_NUMELEMENTS];
-DisplaySpec SingleWindow[SINGLEWINDOW_NUMELEMENTS];
-DisplaySpec SingleRoof[SINGLEROOF_NUMELEMENTS];
-DisplaySpec SingleNewRoof[SINGLENEWROOF_NUMELEMENTS];
-DisplaySpec SingleBrokenWall[SINGLEBROKENWALL_NUMELEMENTS];
-DisplaySpec SingleDecor[SINGLEDECOR_NUMELEMENTS];
-DisplaySpec SingleDecal[SINGLEDECAL_NUMELEMENTS];
-DisplaySpec SingleFloor[SINGLEFLOOR_NUMELEMENTS];
-DisplaySpec SingleToilet[SINGLETOILET_NUMELEMENTS];
-DisplaySpec Room[ROOM_NUMELEMENTS];
+let OStructs: DisplaySpec[] /* [OSTRUCTS_NUMELEMENTS] */;
+let OStructs1: DisplaySpec[] /* [OSTRUCTS1_NUMELEMENTS] */;
+let OStructs2: DisplaySpec[] /* [OSTRUCTS2_NUMELEMENTS] */;
+let BanksList: DisplaySpec[] /* [BANKSLIST_NUMELEMENTS] */;
+let RoadsList: DisplaySpec[] /* [ROADSLIST_NUMELEMENTS] */;
+let DebrisList: DisplaySpec[] /* [DEBRISLIST_NUMELEMENTS] */;
+let SingleWall: DisplaySpec[] /* [SINGLEWALL_NUMELEMENTS] */;
+let SingleDoor: DisplaySpec[] /* [SINGLEDOOR_NUMELEMENTS] */;
+let SingleWindow: DisplaySpec[] /* [SINGLEWINDOW_NUMELEMENTS] */;
+let SingleRoof: DisplaySpec[] /* [SINGLEROOF_NUMELEMENTS] */;
+let SingleNewRoof: DisplaySpec[] /* [SINGLENEWROOF_NUMELEMENTS] */;
+let SingleBrokenWall: DisplaySpec[] /* [SINGLEBROKENWALL_NUMELEMENTS] */;
+let SingleDecor: DisplaySpec[] /* [SINGLEDECOR_NUMELEMENTS] */;
+let SingleDecal: DisplaySpec[] /* [SINGLEDECAL_NUMELEMENTS] */;
+let SingleFloor: DisplaySpec[] /* [SINGLEFLOOR_NUMELEMENTS] */;
+let SingleToilet: DisplaySpec[] /* [SINGLETOILET_NUMELEMENTS] */;
+let Room: DisplaySpec[] /* [ROOM_NUMELEMENTS] */;
 
 // These are all of the different selection lists.  Changing the max_selections will
 // change the number of selections values you can have at a time.  This is Bret's gay code,
 // though I've cleaned it up a lot.
-Selections SelOStructs[MAX_SELECTIONS] = { { FIRSTFULLSTRUCT, 0, 1 } }; // Default selections
-Selections SelOStructs1[MAX_SELECTIONS] = { { FOURTHOSTRUCT, 0, 1 } }; // Default selections
-Selections SelOStructs2[MAX_SELECTIONS] = { { THIRDOSTRUCT, 0, 1 } }; // Default selections
-Selections SelBanks[MAX_SELECTIONS] = { { FIRSTCLIFF, 0, 1 } };
-Selections SelRoads[MAX_SELECTIONS] = { { FIRSTROAD, 0, 1 } };
-Selections SelDebris[MAX_SELECTIONS] = { { DEBRISROCKS, 0, 1 } };
-Selections SelSingleWall[MAX_SELECTIONS] = { { FIRSTWALL, 0, 1 } };
-Selections SelSingleDoor[MAX_SELECTIONS] = { { FIRSTDOOR, 0, 1 } };
-Selections SelSingleWindow[MAX_SELECTIONS] = { { FIRSTWALL, 44, 1 } };
-Selections SelSingleRoof[MAX_SELECTIONS] = { { FIRSTROOF, 0, 1 } };
-Selections SelSingleNewRoof[MAX_SELECTIONS] = { { FIRSTROOF, 0, 1 } };
-Selections SelSingleBrokenWall[MAX_SELECTIONS] = { { FIRSTDECORATIONS, 0, 1 } };
-Selections SelSingleDecor[MAX_SELECTIONS] = { { FIRSTISTRUCT, 0, 1 } };
-Selections SelSingleDecal[MAX_SELECTIONS] = { { FIRSTWALLDECAL, 0, 1 } };
-Selections SelSingleFloor[MAX_SELECTIONS] = { { FIRSTFLOOR, 0, 1 } };
-Selections SelSingleToilet[MAX_SELECTIONS] = { { FIFTHISTRUCT, 0, 1 } };
-Selections SelRoom[MAX_SELECTIONS] = { { FIRSTWALL, 0, 1 } };
+let SelOStructs: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTFULLSTRUCT, 0, 1 } }; // Default selections
+let SelOStructs1: Selections[] /* [MAX_SELECTIONS] */ = { { FOURTHOSTRUCT, 0, 1 } }; // Default selections
+let SelOStructs2: Selections[] /* [MAX_SELECTIONS] */ = { { THIRDOSTRUCT, 0, 1 } }; // Default selections
+let SelBanks: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTCLIFF, 0, 1 } };
+let SelRoads: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROAD, 0, 1 } };
+let SelDebris: Selections[] /* [MAX_SELECTIONS] */ = { { DEBRISROCKS, 0, 1 } };
+let SelSingleWall: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 0, 1 } };
+let SelSingleDoor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTDOOR, 0, 1 } };
+let SelSingleWindow: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 44, 1 } };
+let SelSingleRoof: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROOF, 0, 1 } };
+let SelSingleNewRoof: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTROOF, 0, 1 } };
+let SelSingleBrokenWall: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTDECORATIONS, 0, 1 } };
+let SelSingleDecor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTISTRUCT, 0, 1 } };
+let SelSingleDecal: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALLDECAL, 0, 1 } };
+let SelSingleFloor: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTFLOOR, 0, 1 } };
+let SelSingleToilet: Selections[] /* [MAX_SELECTIONS] */ = { { FIFTHISTRUCT, 0, 1 } };
+let SelRoom: Selections[] /* [MAX_SELECTIONS] */ = { { FIRSTWALL, 0, 1 } };
 
 // Number of objects currently in the selection list
-INT32 iNumOStructsSelected = 1;
-INT32 iNumOStructs1Selected = 1;
-INT32 iNumOStructs2Selected = 1;
-INT32 iNumBanksSelected = 1;
-INT32 iNumRoadsSelected = 1;
-INT32 iNumDebrisSelected = 1;
+let iNumOStructsSelected: INT32 = 1;
+let iNumOStructs1Selected: INT32 = 1;
+let iNumOStructs2Selected: INT32 = 1;
+let iNumBanksSelected: INT32 = 1;
+let iNumRoadsSelected: INT32 = 1;
+let iNumDebrisSelected: INT32 = 1;
 
-INT32 iNumWallsSelected = 1;
-INT32 iNumDoorsSelected = 1;
-INT32 iNumWindowsSelected = 1;
-INT32 iNumDecorSelected = 1;
-INT32 iNumDecalsSelected = 1;
-INT32 iNumBrokenWallsSelected = 1;
-INT32 iNumFloorsSelected = 1;
-INT32 iNumToiletsSelected = 1;
-INT32 iNumRoofsSelected = 1;
-INT32 iNumNewRoofsSelected = 1;
-INT32 iNumRoomsSelected = 1;
+let iNumWallsSelected: INT32 = 1;
+let iNumDoorsSelected: INT32 = 1;
+let iNumWindowsSelected: INT32 = 1;
+let iNumDecorSelected: INT32 = 1;
+let iNumDecalsSelected: INT32 = 1;
+let iNumBrokenWallsSelected: INT32 = 1;
+let iNumFloorsSelected: INT32 = 1;
+let iNumToiletsSelected: INT32 = 1;
+let iNumRoofsSelected: INT32 = 1;
+let iNumNewRoofsSelected: INT32 = 1;
+let iNumRoomsSelected: INT32 = 1;
 
 // Holds the previous selection list when a selection window is up. Used for canceling the selection window
-Selections OldSelList[MAX_SELECTIONS];
-INT32 iOldNumSelList;
+let OldSelList: Selections[] /* [MAX_SELECTIONS] */;
+let iOldNumSelList: INT32;
 
 // Global pointers for selection list
-Selections *pSelList;
-INT32 *pNumSelList;
+let pSelList: Pointer<Selections>;
+let pNumSelList: Pointer<INT32>;
 
 // Global used to indicate which selection to use (changes with the PGUP/PGDWN keys in editor)
-INT32 iCurBank = 0;
+let iCurBank: INT32 = 0;
 
-DisplayList *pDispList;
-INT16 iTopWinCutOff, iBotWinCutOff;
-DisplayList Selection;
+let pDispList: Pointer<DisplayList>;
+let iTopWinCutOff: INT16;
+let iBotWinCutOff: INT16;
+let Selection: DisplayList;
 
-UINT16 SelWinFillColor = 0x0000; // Black
-UINT16 SelWinHilightFillColor = 0x000d; // a kind of medium dark blue
+let SelWinFillColor: UINT16 = 0x0000; // Black
+let SelWinHilightFillColor: UINT16 = 0x000d; // a kind of medium dark blue
 
 //----------------------------------------------------------------------------------------------
 //	CreateJA2SelectionWindow
@@ -136,8 +145,8 @@ UINT16 SelWinHilightFillColor = 0x000d; // a kind of medium dark blue
 //	Creates a selection window of the given type.
 //
 function CreateJA2SelectionWindow(sWhat: INT16): void {
-  DisplaySpec *pDSpec;
-  UINT16 usNSpecs;
+  let pDSpec: Pointer<DisplaySpec>;
+  let usNSpecs: UINT16;
 
   fAllDone = FALSE;
 
@@ -297,12 +306,12 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
 // where the initialization part is done.  I have also changed this from previously being loaded
 // every single time you go into a selection window which was redundant and CPU consuming.
 function InitJA2SelectionWindow(): void {
-  INT32 iCount;
-  INT32 iCount2;
-  INT32 iCount3;
+  let iCount: INT32;
+  let iCount2: INT32;
+  let iCount3: INT32;
 
-  UINT16 usETRLEObjects;
-  HVOBJECT hVObject;
+  let usETRLEObjects: UINT16;
+  let hVObject: HVOBJECT;
 
   pDispList = NULL;
 
@@ -689,7 +698,7 @@ function InitJA2SelectionWindow(): void {
 //	is removed.
 //
 function ShutdownJA2SelectionWindow(): void {
-  INT16 x;
+  let x: INT16;
 
   for (x = 0; x < 4; x++)
     UnloadGenericButtonIcon((INT16)iButtonIcons[x]);
@@ -747,11 +756,14 @@ function TrashList(pNode: Pointer<DisplayList>): Pointer<DisplayList> {
 //	Displays the current selection window
 //
 function RenderSelectionWindow(): void {
-  GUI_BUTTON *button;
-  INT32 iSX, iSY, iEX, iEY;
-  UINT16 usFillColor;
-  static UINT8 usFillGreen = 0;
-  static UINT8 usDir = 5;
+  let button: Pointer<GUI_BUTTON>;
+  let iSX: INT32;
+  let iSY: INT32;
+  let iEX: INT32;
+  let iEY: INT32;
+  let usFillColor: UINT16;
+  /* static */ let usFillGreen: UINT8 = 0;
+  /* static */ let usDir: UINT8 = 5;
 
   if (!fButtonsPresent)
     return;
@@ -817,9 +829,12 @@ function RenderSelectionWindow(): void {
 //	and drag to get the selection rectangle)
 //
 function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
-  DisplayList *pNode;
-  BOOLEAN fDone;
-  INT16 iClickX, iClickY, iYInc, iXInc;
+  let pNode: Pointer<DisplayList>;
+  let fDone: BOOLEAN;
+  let iClickX: INT16;
+  let iClickY: INT16;
+  let iYInc: INT16;
+  let iXInc: INT16;
 
   if (!(button->uiFlags & BUTTON_ENABLED))
     return;
@@ -905,10 +920,10 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 // When a selection window is up, the file information of the picture will display
 // at the top of the screen.
 function DisplaySelectionWindowGraphicalInformation(): void {
-  DisplayList *pNode;
-  BOOLEAN fDone;
+  let pNode: Pointer<DisplayList>;
+  let fDone: BOOLEAN;
   // UINT16 usObjIndex, usIndex;
-  UINT16 y;
+  let y: UINT16;
   // Determine if there is a valid picture at cursor position.
   // iRelX = gusMouseXPos;
   // iRelY = gusMouseYPos + iTopWinCutOff - (INT16)SelWinStartPoint.iY;
@@ -947,8 +962,9 @@ function DisplaySelectionWindowGraphicalInformation(): void {
 //	selection list, then it's count is incremented.
 //
 function AddToSelectionList(pNode: Pointer<DisplayList>): void {
-  INT32 iIndex, iUseIndex;
-  BOOLEAN fDone;
+  let iIndex: INT32;
+  let iUseIndex: INT32;
+  let fDone: BOOLEAN;
 
   fDone = FALSE;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fDone; iIndex++) {
@@ -979,8 +995,8 @@ function AddToSelectionList(pNode: Pointer<DisplayList>): void {
 //	Removes everything from the current selection list
 //
 function ClearSelectionList(): BOOLEAN {
-  INT32 iIndex;
-  DisplayList *pNode;
+  let iIndex: INT32;
+  let pNode: Pointer<DisplayList>;
 
   if (pNumSelList == NULL)
     return FALSE;
@@ -1005,8 +1021,10 @@ function ClearSelectionList(): BOOLEAN {
 //	greater than one, then the count is decremented and the object remains in the list.
 //
 function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
-  INT32 iIndex, iUseIndex;
-  BOOLEAN fDone, fRemoved;
+  let iIndex: INT32;
+  let iUseIndex: INT32;
+  let fDone: BOOLEAN;
+  let fRemoved: BOOLEAN;
 
   // Abort if no entries in list (pretend we removed a node)
   if ((*pNumSelList) <= 0)
@@ -1045,8 +1063,11 @@ function RemoveFromSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
 //	that objects with higher counts will be chosen more often.
 //
 function GetRandomSelection(): INT32 {
-  INT32 iRandNum, iTotalCounts;
-  INT32 iIndex, iSelectedIndex, iNextCount;
+  let iRandNum: INT32;
+  let iTotalCounts: INT32;
+  let iIndex: INT32;
+  let iSelectedIndex: INT32;
+  let iNextCount: INT32;
 
   if (fDontUseRandom) {
     fDontUseRandom = FALSE;
@@ -1076,8 +1097,8 @@ function GetRandomSelection(): INT32 {
 //	Verifies if a particular display list object exists in the current selection list.
 //
 function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
-  INT32 iIndex;
-  BOOLEAN fFound;
+  let iIndex: INT32;
+  let fFound: BOOLEAN;
 
   fFound = FALSE;
   for (iIndex = 0; iIndex < (*pNumSelList) && !fFound; iIndex++) {
@@ -1097,8 +1118,9 @@ function IsInSelectionList(pNode: Pointer<DisplayList>): BOOLEAN {
 //	returns -1
 //
 function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
-  INT32 iIndex, iUseIndex;
-  BOOLEAN fFound;
+  let iIndex: INT32;
+  let iUseIndex: INT32;
+  let fFound: BOOLEAN;
 
   fFound = FALSE;
   iUseIndex = -1;
@@ -1119,7 +1141,7 @@ function FindInSelectionList(pNode: Pointer<DisplayList>): INT32 {
 //	selection window.
 //
 function SaveSelectionList(): void {
-  INT32 iIndex;
+  let iIndex: INT32;
 
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++)
     OldSelList[iIndex] = pSelList[iIndex];
@@ -1133,7 +1155,7 @@ function SaveSelectionList(): void {
 //	Copies the selection list in the save buffer back to the current selection list.
 //
 function RestoreSelectionList(): void {
-  INT32 iIndex;
+  let iIndex: INT32;
 
   for (iIndex = 0; iIndex < MAX_SELECTIONS; iIndex++)
     pSelList[iIndex] = OldSelList[iIndex];
@@ -1189,9 +1211,10 @@ function UpClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //	Performs the calculations required to actually scroll a selection window up by one line.
 //
 function ScrollSelWinUp(): void {
-  DisplayList *pNode;
-  INT16 iCutOff, iBotCutOff;
-  BOOLEAN fDone;
+  let pNode: Pointer<DisplayList>;
+  let iCutOff: INT16;
+  let iBotCutOff: INT16;
+  let fDone: BOOLEAN;
 
   // Code to scroll window up!
   pNode = pDispList;
@@ -1218,9 +1241,10 @@ function ScrollSelWinUp(): void {
 //	Performs the actual calculations for scrolling a selection window down.
 //
 function ScrollSelWinDown(): void {
-  DisplayList *pNode;
-  INT16 iCutOff, iBotCutOff;
-  BOOLEAN fDone;
+  let pNode: Pointer<DisplayList>;
+  let iCutOff: INT16;
+  let iBotCutOff: INT16;
+  let fDone: BOOLEAN;
 
   pNode = pDispList;
   iCutOff = iTopWinCutOff;
@@ -1258,7 +1282,8 @@ function DwnClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
 //	Displays the objects in the display list to the selection window.
 //
 function DrawSelections(): void {
-  SGPRect ClipRect, NewRect;
+  let ClipRect: SGPRect;
+  let NewRect: SGPRect;
 
   NewRect.iLeft = SelWinStartPoint.iX;
   NewRect.iTop = SelWinStartPoint.iY;
@@ -1287,16 +1312,16 @@ function DrawSelections(): void {
 //	properly scrolling the window etc.
 //
 function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UINT16, pDisplayList: Pointer<Pointer<DisplayList>>, pUpperLeft: Pointer<SGPPoint>, pBottomRight: Pointer<SGPPoint>, pSpacing: Pointer<SGPPoint>, fFlags: UINT16): BOOLEAN {
-  INT32 iCurrX = pUpperLeft->iX;
-  INT32 iCurrY = pUpperLeft->iY;
-  UINT16 usGreatestHeightInRow = 0;
-  UINT16 usSpecLoop;
-  UINT16 usETRLELoop;
-  UINT16 usETRLEStart;
-  UINT16 usETRLEEnd;
-  DisplaySpec *pDisplaySpec;
-  ETRLEObject *pETRLEObject;
-  DisplayList *pCurNode;
+  let iCurrX: INT32 = pUpperLeft->iX;
+  let iCurrY: INT32 = pUpperLeft->iY;
+  let usGreatestHeightInRow: UINT16 = 0;
+  let usSpecLoop: UINT16;
+  let usETRLELoop: UINT16;
+  let usETRLEStart: UINT16;
+  let usETRLEEnd: UINT16;
+  let pDisplaySpec: Pointer<DisplaySpec>;
+  let pETRLEObject: Pointer<ETRLEObject>;
+  let pCurNode: Pointer<DisplayList>;
 
   SaveSelectionList();
 
@@ -1369,13 +1394,13 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
 //	left corner of the image.
 //
 function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBottomCutOff: INT16, pUpperLeft: Pointer<SGPPoint>, fFlags: UINT16): BOOLEAN {
-  INT16 iCurrY;
-  INT16 sTempOffsetX;
-  INT16 sTempOffsetY;
-  BOOLEAN fReturnVal;
-  ETRLEObject *pETRLEObject;
-  UINT16 usFillColor;
-  INT16 sCount;
+  let iCurrY: INT16;
+  let sTempOffsetX: INT16;
+  let sTempOffsetY: INT16;
+  let fReturnVal: BOOLEAN;
+  let pETRLEObject: Pointer<ETRLEObject>;
+  let usFillColor: UINT16;
+  let sCount: INT16;
 
   if (pNode == NULL)
     return TRUE;

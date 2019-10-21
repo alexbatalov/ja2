@@ -35,8 +35,8 @@
 //**************************************************************************
 
 function InstallApplication(strAppname: STR, strPath: STR): BOOLEAN {
-  HKEY hKey;
-  BOOL fRet = TRUE;
+  let hKey: HKEY;
+  let fRet: BOOL = TRUE;
 
   hKey = GetAppRegistryKey();
   RegCloseKey(hKey);

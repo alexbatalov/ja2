@@ -12,60 +12,61 @@ const enum Enum176 {
   ABOUT_TO_TRASH_WORLD,
 }
 
-BOOLEAN gfGettingNameFromSaveLoadScreen;
+let gfGettingNameFromSaveLoadScreen: BOOLEAN;
 
-INT16 gWorldSectorX = 0;
-INT16 gWorldSectorY = 0;
-INT8 gbWorldSectorZ = -1;
+let gWorldSectorX: INT16 = 0;
+let gWorldSectorY: INT16 = 0;
+let gbWorldSectorZ: INT8 = -1;
 
-INT16 gsAdjacentSectorX, gsAdjacentSectorY;
-INT8 gbAdjacentSectorZ;
-GROUP *gpAdjacentGroup = NULL;
-UINT8 gubAdjacentJumpCode;
-UINT32 guiAdjacentTraverseTime;
-UINT8 gubTacticalDirection;
-INT16 gsAdditionalData;
-UINT16 gusDestExitGridNo;
+let gsAdjacentSectorX: INT16;
+let gsAdjacentSectorY: INT16;
+let gbAdjacentSectorZ: INT8;
+let gpAdjacentGroup: Pointer<GROUP> = NULL;
+let gubAdjacentJumpCode: UINT8;
+let guiAdjacentTraverseTime: UINT32;
+let gubTacticalDirection: UINT8;
+let gsAdditionalData: INT16;
+let gusDestExitGridNo: UINT16;
 
-BOOLEAN fUsingEdgePointsForStrategicEntry = FALSE;
-BOOLEAN gfInvalidTraversal = FALSE;
-BOOLEAN gfLoneEPCAttemptingTraversal = FALSE;
-BOOLEAN gfRobotWithoutControllerAttemptingTraversal = FALSE;
-BOOLEAN gubLoneMercAttemptingToAbandonEPCs = 0;
-INT8 gbPotentiallyAbandonedEPCSlotID = -1;
+let fUsingEdgePointsForStrategicEntry: BOOLEAN = FALSE;
+let gfInvalidTraversal: BOOLEAN = FALSE;
+let gfLoneEPCAttemptingTraversal: BOOLEAN = FALSE;
+let gfRobotWithoutControllerAttemptingTraversal: BOOLEAN = FALSE;
+let gubLoneMercAttemptingToAbandonEPCs: BOOLEAN = 0;
+let gbPotentiallyAbandonedEPCSlotID: INT8 = -1;
 
-INT8 gbGreenToElitePromotions = 0;
-INT8 gbGreenToRegPromotions = 0;
-INT8 gbRegToElitePromotions = 0;
-INT8 gbMilitiaPromotions = 0;
+let gbGreenToElitePromotions: INT8 = 0;
+let gbGreenToRegPromotions: INT8 = 0;
+let gbRegToElitePromotions: INT8 = 0;
+let gbMilitiaPromotions: INT8 = 0;
 
-BOOLEAN gfUseAlternateMap = FALSE;
+let gfUseAlternateMap: BOOLEAN = FALSE;
 // whether or not we have found Orta yet
-BOOLEAN fFoundOrta = FALSE;
+let fFoundOrta: BOOLEAN = FALSE;
 
 // have any of the sam sites been found
-BOOLEAN fSamSiteFound[NUMBER_OF_SAMS] = {
+let fSamSiteFound: BOOLEAN[] /* [NUMBER_OF_SAMS] */ = {
   FALSE,
   FALSE,
   FALSE,
   FALSE,
 };
 
-INT16 pSamList[NUMBER_OF_SAMS] = {
+let pSamList: INT16[] /* [NUMBER_OF_SAMS] */ = {
   SECTOR(SAM_1_X, SAM_1_Y),
   SECTOR(SAM_2_X, SAM_2_Y),
   SECTOR(SAM_3_X, SAM_3_Y),
   SECTOR(SAM_4_X, SAM_4_Y),
 };
 
-INT16 pSamGridNoAList[NUMBER_OF_SAMS] = {
+let pSamGridNoAList: INT16[] /* [NUMBER_OF_SAMS] */ = {
   10196,
   11295,
   16080,
   11913,
 };
 
-INT16 pSamGridNoBList[NUMBER_OF_SAMS] = {
+let pSamGridNoBList: INT16[] /* [NUMBER_OF_SAMS] */ = {
   10195,
   11135,
   15920,
@@ -74,19 +75,19 @@ INT16 pSamGridNoBList[NUMBER_OF_SAMS] = {
 
 // ATE: Update this w/ graphic used
 // Use 3 if / orientation, 4 if \ orientation
-INT8 gbSAMGraphicList[NUMBER_OF_SAMS] = {
+let gbSAMGraphicList: INT8[] /* [NUMBER_OF_SAMS] */ = {
   4,
   3,
   3,
   3,
 };
 
-INT8 gbMercIsNewInThisSector[MAX_NUM_SOLDIERS];
+let gbMercIsNewInThisSector: INT8[] /* [MAX_NUM_SOLDIERS] */;
 
 // the amount of time that a soldier will wait to return to desired/old squad
 const DESIRE_SQUAD_RESET_DELAY = 12 * 60;
 
-UINT8 ubSAMControlledSectors[MAP_WORLD_Y][MAP_WORLD_X] = {
+let ubSAMControlledSectors: UINT8[][] /* [MAP_WORLD_Y][MAP_WORLD_X] */ = {
   //   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 
@@ -110,7 +111,7 @@ UINT8 ubSAMControlledSectors[MAP_WORLD_Y][MAP_WORLD_X] = {
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 };
 
-INT16 DirXIncrementer[8] = {
+let DirXIncrementer: INT16[] /* [8] */ = {
   0, // N
   1, // NE
   1, // E
@@ -121,7 +122,7 @@ INT16 DirXIncrementer[8] = {
   -1 // NW
 };
 
-INT16 DirYIncrementer[8] = {
+let DirYIncrementer: INT16[] /* [8] */ = {
   -1, // N
   -1, // NE
   0, // E
@@ -132,7 +133,7 @@ INT16 DirYIncrementer[8] = {
   -1 // NW
 };
 
-STR8 pVertStrings[] = {
+let pVertStrings: STR8[] /* [] */ = {
   "X",
   "A",
   "B",
@@ -154,7 +155,7 @@ STR8 pVertStrings[] = {
   "R",
 };
 
-STR8 pHortStrings[] = {
+let pHortStrings: STR8[] /* [] */ = {
   "X",
   "1",
   "2",
@@ -200,12 +201,15 @@ function UndergroundTacticalTraversalTime(bExitDirection: INT8): UINT32 {
 }
 
 function BeginLoadScreen(): void {
-  SGPRect SrcRect, DstRect;
-  UINT32 uiStartTime, uiCurrTime;
-  INT32 iPercentage, iFactor;
-  UINT32 uiTimeRange;
-  INT32 iLastShadePercentage;
-  UINT8 ubLoadScreenID;
+  let SrcRect: SGPRect;
+  let DstRect: SGPRect;
+  let uiStartTime: UINT32;
+  let uiCurrTime: UINT32;
+  let iPercentage: INT32;
+  let iFactor: INT32;
+  let uiTimeRange: UINT32;
+  let iLastShadePercentage: INT32;
+  let ubLoadScreenID: UINT8;
 
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
 
@@ -303,8 +307,9 @@ function GetTownIdForSector(sMapX: INT16, sMapY: INT16): UINT8 {
 
 // return number of sectors this town takes up
 function GetTownSectorSize(bTownId: INT8): UINT8 {
-  UINT8 ubSectorSize = 0;
-  INT32 iCounterA = 0, iCounterB = 0;
+  let ubSectorSize: UINT8 = 0;
+  let iCounterA: INT32 = 0;
+  let iCounterB: INT32 = 0;
 
   for (iCounterA = 0; iCounterA < (INT32)(MAP_WORLD_X - 1); iCounterA++) {
     for (iCounterB = 0; iCounterB < (INT32)(MAP_WORLD_Y - 1); iCounterB++) {
@@ -318,8 +323,8 @@ function GetTownSectorSize(bTownId: INT8): UINT8 {
 }
 
 function GetMilitiaCountAtLevelAnywhereInTown(ubTownValue: UINT8, ubLevelValue: UINT8): UINT8 {
-  INT32 iCounter = 0;
-  UINT8 ubCount = 0;
+  let iCounter: INT32 = 0;
+  let ubCount: UINT8 = 0;
 
   while (pTownNamesList[iCounter] != 0) {
     if (StrategicMap[pTownLocationsList[iCounter]].bNameId == ubTownValue) {
@@ -334,9 +339,10 @@ function GetMilitiaCountAtLevelAnywhereInTown(ubTownValue: UINT8, ubLevelValue: 
 
 // return number of sectors under player control for this town
 function GetTownSectorsUnderControl(bTownId: INT8): UINT8 {
-  INT8 ubSectorsControlled = 0;
-  INT32 iCounterA = 0, iCounterB = 0;
-  UINT16 usSector = 0;
+  let ubSectorsControlled: INT8 = 0;
+  let iCounterA: INT32 = 0;
+  let iCounterB: INT32 = 0;
+  let usSector: UINT16 = 0;
 
   for (iCounterA = 0; iCounterA < (INT32)(MAP_WORLD_X - 1); iCounterA++) {
     for (iCounterB = 0; iCounterB < (INT32)(MAP_WORLD_Y - 1); iCounterB++) {
@@ -380,8 +386,8 @@ function GetShortSectorString(sMapX: INT16, sMapY: INT16, sString: STR16): void 
 }
 
 function GetMapFileName(sMapX: INT16, sMapY: INT16, bSectorZ: INT8, bString: STR8, fUsePlaceholder: BOOLEAN, fAddAlternateMapLetter: BOOLEAN): void {
-  CHAR8 bTestString[150];
-  CHAR8 bExtensionString[15];
+  let bTestString: CHAR8[] /* [150] */;
+  let bExtensionString: CHAR8[] /* [15] */;
 
   if (bSectorZ != 0) {
     sprintf(bExtensionString, "_b%d", bSectorZ);
@@ -430,8 +436,8 @@ function GetCurrentWorldSector(psMapX: Pointer<INT16>, psMapY: Pointer<INT16>): 
 }
 
 function HandleRPCDescriptionOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
-  UINT32 cnt;
-  UINT8 ubSectorDescription[33][3] = {
+  let cnt: UINT32;
+  let ubSectorDescription: UINT8[][] /* [33][3] */ = {
     // row (letter), column, quote #
     { 2, 13, 0 }, // b13	Drassen
     { 3, 13, 1 }, // c13	Drassen
@@ -504,8 +510,8 @@ function HandleRPCDescriptionOfSector(sSectorX: INT16, sSectorY: INT16, sSectorZ
 }
 
 function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pUnderWorld = NULL;
-  BOOLEAN fChangeMusic = TRUE;
+  let pUnderWorld: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let fChangeMusic: BOOLEAN = TRUE;
 
   // ATE: Zero out accounting functions
   memset(gbMercIsNewInThisSector, 0, sizeof(gbMercIsNewInThisSector));
@@ -672,10 +678,10 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
     gTacticalStatus.sCreatureTenseQuoteDelay = (INT16)(10 + Random(20));
 
     {
-      INT16 sWarpWorldX;
-      INT16 sWarpWorldY;
-      INT8 bWarpWorldZ;
-      INT16 sWarpGridNo;
+      let sWarpWorldX: INT16;
+      let sWarpWorldY: INT16;
+      let bWarpWorldZ: INT8;
+      let sWarpGridNo: INT16;
 
       if (GetWarpOutOfMineCodes(&sWarpWorldX, &sWarpWorldY, &bWarpWorldZ, &sWarpGridNo) && gbWorldSectorZ >= 2) {
         gTacticalStatus.uiFlags |= IN_CREATURE_LAIR;
@@ -696,8 +702,8 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
 }
 
 function MapExists(szFilename: Pointer<UINT8>): BOOLEAN {
-  UINT8 str[50];
-  HWFILE fp;
+  let str: UINT8[] /* [50] */;
+  let fp: HWFILE;
   sprintf(str, "MAPS\\%s", szFilename);
   fp = FileOpen(str, FILE_ACCESS_READ, FALSE);
   if (!fp)
@@ -707,8 +713,8 @@ function MapExists(szFilename: Pointer<UINT8>): BOOLEAN {
 }
 
 function RemoveMercsInSector(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -722,11 +728,11 @@ function RemoveMercsInSector(): void {
 }
 
 function PrepareLoadedSector(): void {
-  INT32 iCounter = 0;
-  BOOLEAN fEnemyPresenceInThisSector = FALSE;
-  BOOLEAN fUsingOverride = FALSE;
-  BOOLEAN fAddCivs = TRUE;
-  INT8 bMineIndex = -1;
+  let iCounter: INT32 = 0;
+  let fEnemyPresenceInThisSector: BOOLEAN = FALSE;
+  let fUsingOverride: BOOLEAN = FALSE;
+  let fAddCivs: BOOLEAN = TRUE;
+  let bMineIndex: INT8 = -1;
 
   if (AreInMeanwhile() == FALSE) {
     if (gbWorldSectorZ == 0) {
@@ -840,16 +846,18 @@ function PrepareLoadedSector(): void {
 
 const RANDOM_HEAD_MINERS = 4;
 function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bNewSectorZ: INT8): void {
-  UINT8 ubRandomMiner[RANDOM_HEAD_MINERS] = {
+  let ubRandomMiner: UINT8[] /* [RANDOM_HEAD_MINERS] */ = {
     106,
     156,
     157,
     158,
   };
-  UINT8 ubMiner, ubMinersPlaced;
-  UINT8 ubMine, ubThisMine;
-  UINT8 cnt;
-  SOLDIERTYPE *pSoldier;
+  let ubMiner: UINT8;
+  let ubMinersPlaced: UINT8;
+  let ubMine: UINT8;
+  let ubThisMine: UINT8;
+  let cnt: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (CheckFact(FACT_ALL_TERRORISTS_KILLED, 0)) {
     // end terrorist quest
@@ -914,7 +922,7 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
   }
 
   if (CheckFact(FACT_ROBOT_RECRUITED_AND_MOVED, 0) == FALSE) {
-    SOLDIERTYPE *pRobot;
+    let pRobot: Pointer<SOLDIERTYPE>;
     pRobot = FindSoldierByProfileID(ROBOT, TRUE);
     if (pRobot) {
       // robot is on our team and we have changed sectors, so we can
@@ -993,9 +1001,9 @@ function HandleQuestCodeOnSectorExit(sOldSectorX: INT16, sOldSectorY: INT16, bOl
 }
 
 function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  INT32 i;
-  UNDERGROUND_SECTORINFO *pNode = NULL;
-  CHAR8 bFilename[50];
+  let i: INT32;
+  let pNode: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let bFilename: CHAR8[] /* [50] */;
 
   // pause game
   PauseGame();
@@ -1090,10 +1098,10 @@ function EnterSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN 
 }
 
 function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fPOWSquadSet = FALSE;
-  UINT8 ubPOWSquad = 0;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fPOWSquadSet: BOOLEAN = FALSE;
+  let ubPOWSquad: UINT8 = 0;
 
   // Remove from interface slot
   RemoveAllPlayersFromSlot();
@@ -1189,7 +1197,7 @@ function UpdateMercsInSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): 
 }
 
 function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  BOOLEAN fError = FALSE;
+  let fError: BOOLEAN = FALSE;
   if (pSoldier->uiStatusFlags & SOLDIER_IS_TACTICALLY_VALID) {
     pSoldier->ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
   }
@@ -1289,9 +1297,9 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
       if (fError) {
         // strategic insertion failed because it expected to find an entry point.  This is likely
         // a missing part of the map or possible fault in strategic movement costs, traversal logic, etc.
-        UINT16 szEntry[10];
-        UINT16 szSector[10];
-        INT16 sGridNo;
+        let szEntry: UINT16[] /* [10] */;
+        let szSector: UINT16[] /* [10] */;
+        let sGridNo: INT16;
         GetLoadedSectorString(szSector);
         if (gMapInformation.sNorthGridNo != -1) {
           swprintf(szEntry, L"north");
@@ -1363,12 +1371,12 @@ function InitializeStrategicMapSectorTownNames(): void {
 
 // Get sector ID string makes a string like 'A9 - OMERTA', or just J11 if no town....
 function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zString: Pointer<CHAR16>, fDetailed: BOOLEAN): void {
-  SECTORINFO *pSector = NULL;
-  UNDERGROUND_SECTORINFO *pUnderground;
-  INT8 bTownNameID;
-  INT8 bMineIndex;
-  UINT8 ubSectorID = 0;
-  UINT8 ubLandType = 0;
+  let pSector: Pointer<SECTORINFO> = NULL;
+  let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
+  let bTownNameID: INT8;
+  let bMineIndex: INT8;
+  let ubSectorID: UINT8 = 0;
+  let ubLandType: UINT8 = 0;
 
   if (sSectorX <= 0 || sSectorY <= 0 || bSectorZ < 0) {
     // swprintf( zString, L"%s", pErrorStrings[0] );
@@ -1506,8 +1514,8 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
 }
 
 function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirection: UINT8, sAdditionalData: INT16): UINT8 {
-  UINT8 ubDirection;
-  EXITGRID ExitGrid;
+  let ubDirection: UINT8;
+  let ExitGrid: EXITGRID;
 
   // Set insertion code
   switch (ubTacticalDirection) {
@@ -1549,7 +1557,7 @@ function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE
 }
 
 function GetInsertionDataFromAdjacentMoveDirection(ubTacticalDirection: UINT8, sAdditionalData: INT16): UINT8 {
-  UINT8 ubDirection;
+  let ubDirection: UINT8;
 
   // Set insertion code
   switch (ubTacticalDirection) {
@@ -1581,7 +1589,7 @@ function GetInsertionDataFromAdjacentMoveDirection(ubTacticalDirection: UINT8, s
 }
 
 function GetStrategicInsertionDataFromAdjacentMoveDirection(ubTacticalDirection: UINT8, sAdditionalData: INT16): UINT8 {
-  UINT8 ubDirection;
+  let ubDirection: UINT8;
 
   // Set insertion code
   switch (ubTacticalDirection) {
@@ -1613,15 +1621,15 @@ function GetStrategicInsertionDataFromAdjacentMoveDirection(ubTacticalDirection:
 }
 
 function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, sAdditionalData: INT16): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pValidSoldier = NULL;
-  GROUP *pGroup;
-  UINT32 uiTraverseTime = 0;
-  UINT8 ubDirection;
-  EXITGRID ExitGrid;
-  INT8 bPrevAssignment;
-  UINT8 ubPrevGroupID;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pValidSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pGroup: Pointer<GROUP>;
+  let uiTraverseTime: UINT32 = 0;
+  let ubDirection: UINT8;
+  let ExitGrid: EXITGRID;
+  let bPrevAssignment: INT8;
+  let ubPrevGroupID: UINT8;
 
   // Set initial selected
   // ATE: moved this towards top...
@@ -1666,7 +1674,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
       AddCharacterToUniqueSquad(pValidSoldier);
     }
     if (!pValidSoldier->ubNumTraversalsAllowedToMerge && bPrevAssignment < ON_DUTY) {
-      PLAYERGROUP *pPlayer;
+      let pPlayer: Pointer<PLAYERGROUP>;
       pValidSoldier->ubDesiredSquadAssignment = bPrevAssignment;
       pValidSoldier->ubNumTraversalsAllowedToMerge = 2;
       pGroup = GetGroup(ubPrevGroupID);
@@ -1740,9 +1748,9 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
   // Give guy(s) orders to walk off sector...
   if (pGroup->fPlayer) {
     // For player groups, update the soldier information
-    PLAYERGROUP *curr;
-    INT16 sGridNo;
-    UINT8 ubNum = 0;
+    let curr: Pointer<PLAYERGROUP>;
+    let sGridNo: INT16;
+    let ubNum: UINT8 = 0;
 
     curr = pGroup->pPlayerList;
     while (curr) {
@@ -1819,7 +1827,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
 function HandleSoldierLeavingSectorByThemSelf(pSoldier: Pointer<SOLDIERTYPE>): void {
   // soldier leaving thier squad behind, will rejoin later
   // if soldier in a squad, set the fact they want to return here
-  UINT8 ubGroupId;
+  let ubGroupId: UINT8;
 
   if (pSoldier->bAssignment < ON_DUTY) {
     RemoveCharacterFromSquads(pSoldier);
@@ -1853,8 +1861,8 @@ function HandleSoldierLeavingSectorByThemSelf(pSoldier: Pointer<SOLDIERTYPE>): v
 }
 
 function AllMercsWalkedToExitGrid(): void {
-  PLAYERGROUP *pPlayer;
-  BOOLEAN fDone;
+  let pPlayer: Pointer<PLAYERGROUP>;
+  let fDone: BOOLEAN;
 
   HandlePotentialMoraleHitForSkimmingSectors(gpAdjacentGroup);
 
@@ -2116,10 +2124,13 @@ void AllMercsHaveWalkedOffSector( )
 */
 
 function SetupTacticalTraversalInformation(): void {
-  SOLDIERTYPE *pSoldier;
-  PLAYERGROUP *pPlayer;
-  UINT32 sWorldX, sWorldY;
-  INT16 sScreenX, sScreenY, sNewGridNo;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pPlayer: Pointer<PLAYERGROUP>;
+  let sWorldX: UINT32;
+  let sWorldY: UINT32;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sNewGridNo: INT16;
 
   Assert(gpAdjacentGroup);
   pPlayer = gpAdjacentGroup->pPlayerList;
@@ -2179,8 +2190,8 @@ function SetupTacticalTraversalInformation(): void {
 }
 
 function AllMercsHaveWalkedOffSector(): void {
-  PLAYERGROUP *pPlayer;
-  BOOLEAN fEnemiesInLoadedSector = FALSE;
+  let pPlayer: Pointer<PLAYERGROUP>;
+  let fEnemiesInLoadedSector: BOOLEAN = FALSE;
 
   if (NumEnemiesInAnySector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ)) {
     fEnemiesInLoadedSector = TRUE;
@@ -2235,11 +2246,11 @@ function AllMercsHaveWalkedOffSector(): void {
     if (guiAdjacentTraverseTime <= 5) {
       // Case 2:  Immediatly loading the next sector
       if (!gbAdjacentSectorZ) {
-        UINT32 uiWarpTime;
+        let uiWarpTime: UINT32;
         uiWarpTime = (GetWorldTotalMin() + 5) * 60 - GetWorldTotalSeconds();
         WarpGameTime(uiWarpTime, WARPTIME_PROCESS_TARGET_TIME_FIRST);
       } else if (gbAdjacentSectorZ > 0) {
-        UINT32 uiWarpTime;
+        let uiWarpTime: UINT32;
         uiWarpTime = (GetWorldTotalMin() + 1) * 60 - GetWorldTotalSeconds();
         WarpGameTime(uiWarpTime, WARPTIME_PROCESS_TARGET_TIME_FIRST);
       }
@@ -2276,7 +2287,7 @@ function DoneFadeOutExitGridSector(): void {
 }
 
 function DoneFadeOutAdjacentSector(): void {
-  UINT8 ubDirection;
+  let ubDirection: UINT8;
   SetCurrentWorldSector(gsAdjacentSectorX, gsAdjacentSectorY, gbAdjacentSectorZ);
 
   ubDirection = GetStrategicInsertionDataFromAdjacentMoveDirection(gubTacticalDirection, gsAdditionalData);
@@ -2299,11 +2310,13 @@ function DoneFadeOutAdjacentSector(): void {
   // OK, give our guys new orders...
   if (gpAdjacentGroup->fPlayer) {
     // For player groups, update the soldier information
-    PLAYERGROUP *curr;
-    UINT32 uiAttempts;
-    INT16 sGridNo, sOldGridNo;
-    UINT8 ubNum = 0;
-    INT16 sWorldX, sWorldY;
+    let curr: Pointer<PLAYERGROUP>;
+    let uiAttempts: UINT32;
+    let sGridNo: INT16;
+    let sOldGridNo: INT16;
+    let ubNum: UINT8 = 0;
+    let sWorldX: INT16;
+    let sWorldY: INT16;
     curr = gpAdjacentGroup->pPlayerList;
     while (curr) {
       if (!(curr->pSoldier->uiStatusFlags & SOLDIER_IS_TACTICALLY_VALID)) {
@@ -2345,13 +2358,13 @@ function DoneFadeOutAdjacentSector(): void {
 }
 
 function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: INT8, usAdditionalData: UINT16): BOOLEAN {
-  INT16 sXMapPos;
-  INT16 sYMapPos;
-  INT16 sWorldX;
-  INT16 sWorldY;
-  UINT8 ubDirection;
-  INT16 sGridNo;
-  INT16 sAPs;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubDirection: UINT8;
+  let sGridNo: INT16;
+  let sAPs: INT16;
 
   // if the soldiers gridno is not NOWHERE
   if (pSoldier->sGridNo == NOWHERE)
@@ -2433,15 +2446,16 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
 
 // ATE: Returns FALSE if NOBODY is close enough, 1 if ONLY selected guy is and 2 if all on squad are...
 function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTraverseTimeInMinutes: Pointer<UINT32>): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fAtLeastOneMercControllable = FALSE;
-  BOOLEAN fOnlySelectedGuy = FALSE;
-  SOLDIERTYPE *pValidSoldier = NULL;
-  UINT8 ubReturnVal = FALSE;
-  UINT8 ubNumControllableMercs = 0;
-  UINT8 ubNumMercs = 0, ubNumEPCs = 0;
-  UINT8 ubPlayerControllableMercsInSquad = 0;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fAtLeastOneMercControllable: BOOLEAN = FALSE;
+  let fOnlySelectedGuy: BOOLEAN = FALSE;
+  let pValidSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let ubReturnVal: UINT8 = FALSE;
+  let ubNumControllableMercs: UINT8 = 0;
+  let ubNumMercs: UINT8 = 0;
+  let ubNumEPCs: UINT8 = 0;
+  let ubPlayerControllableMercsInSquad: UINT8 = 0;
 
   if (gusSelectedSoldier == NOBODY) {
     // must have a selected soldier to be allowed to tactically traverse.
@@ -2505,7 +2519,7 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
           fOnlySelectedGuy = TRUE;
         }
       } else {
-        GROUP *pGroup;
+        let pGroup: Pointer<GROUP>;
 
         // ATE: Dont's assume exit grids here...
         if (bExitDirection != -1) {
@@ -2555,7 +2569,7 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
       }
     }
     if (bExitDirection != -1) {
-      GROUP *pGroup;
+      let pGroup: Pointer<GROUP>;
       // Now, determine if this is a valid path.
       pGroup = GetGroup(pValidSoldier->ubGroupID);
       AssertMsg(pGroup, String("%S is not in a valid group (pSoldier->ubGroupID is %d)", pValidSoldier->name, pValidSoldier->ubGroupID));
@@ -2598,7 +2612,8 @@ function OKForSectorExit(bExitDirection: INT8, usAdditionalData: UINT16, puiTrav
 }
 
 function SetupNewStrategicGame(): void {
-  INT16 sSectorX, sSectorY;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
 
   // Set all sectors as enemy controlled
   for (sSectorX = 0; sSectorX < MAP_WORLD_X; sSectorX++) {
@@ -2646,8 +2661,8 @@ function SetupNewStrategicGame(): void {
 
 // a -1 will be returned upon failure
 function GetSAMIdFromSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): INT8 {
-  INT8 bCounter = 0;
-  INT16 sSectorValue = 0;
+  let bCounter: INT8 = 0;
+  let sSectorValue: INT16 = 0;
 
   // check if valid sector
   if (bSectorZ != 0) {
@@ -2668,8 +2683,8 @@ function GetSAMIdFromSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): I
 }
 
 function CanGoToTacticalInSector(sX: INT16, sY: INT16, ubZ: UINT8): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // if not a valid sector
   if ((sX < 1) || (sX > 16) || (sY < 1) || (sY > 16) || (ubZ > 3)) {
@@ -2692,7 +2707,8 @@ function CanGoToTacticalInSector(sX: INT16, sY: INT16, ubZ: UINT8): BOOLEAN {
 }
 
 function GetNumberOfSAMSitesUnderPlayerControl(): INT32 {
-  INT32 iNumber = 0, iCounter = 0;
+  let iNumber: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // if the sam site is under player control, up the number
   for (iCounter = 0; iCounter < NUMBER_OF_SAMS; iCounter++) {
@@ -2705,7 +2721,7 @@ function GetNumberOfSAMSitesUnderPlayerControl(): INT32 {
 }
 
 function SAMSitesUnderPlayerControl(sX: INT16, sY: INT16): INT32 {
-  BOOLEAN fSamSiteUnderControl = FALSE;
+  let fSamSiteUnderControl: BOOLEAN = FALSE;
 
   // is this sector a SAM sector?
   if (IsThisSectorASAMSector(sX, sY, 0) == TRUE) {
@@ -2720,10 +2736,11 @@ function SAMSitesUnderPlayerControl(sX: INT16, sY: INT16): INT32 {
 }
 
 function UpdateAirspaceControl(): void {
-  INT32 iCounterA = 0, iCounterB = 0;
-  UINT8 ubControllingSAM;
-  StrategicMapElement *pSAMStrategicMap = NULL;
-  BOOLEAN fEnemyControlsAir;
+  let iCounterA: INT32 = 0;
+  let iCounterB: INT32 = 0;
+  let ubControllingSAM: UINT8;
+  let pSAMStrategicMap: Pointer<StrategicMapElement> = NULL;
+  let fEnemyControlsAir: BOOLEAN;
 
   for (iCounterA = 1; iCounterA < (INT32)(MAP_WORLD_X - 1); iCounterA++) {
     for (iCounterB = 1; iCounterB < (INT32)(MAP_WORLD_Y - 1); iCounterB++) {
@@ -2753,7 +2770,9 @@ function UpdateAirspaceControl(): void {
   // if it's not enemy air controlled
   if (StrategicMap[CALCULATE_STRATEGIC_INDEX(gsMercArriveSectorX, gsMercArriveSectorY)].fEnemyAirControlled == TRUE) {
     // NOPE!
-    CHAR16 sMsgString[256], sMsgSubString1[64], sMsgSubString2[64];
+    let sMsgString: CHAR16[] /* [256] */;
+    let sMsgSubString1: CHAR16[] /* [64] */;
+    let sMsgSubString2: CHAR16[] /* [64] */;
 
     // get the name of the old sector
     GetSectorIDString(gsMercArriveSectorX, gsMercArriveSectorY, 0, sMsgSubString1, FALSE);
@@ -2825,8 +2844,8 @@ function SectorIsPartOfTown(bTownId: INT8, sSectorX: INT16, sSectorY: INT16): BO
 }
 
 function SaveStrategicInfoToSavedFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
-  UINT32 uiSize = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
+  let uiNumBytesWritten: UINT32 = 0;
+  let uiSize: UINT32 = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
 
   // Save the strategic map information
   FileWrite(hFile, StrategicMap, uiSize, &uiNumBytesWritten);
@@ -2862,8 +2881,8 @@ function SaveStrategicInfoToSavedFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadStrategicInfoFromSavedFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  UINT32 uiSize = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
+  let uiNumBytesRead: UINT32 = 0;
+  let uiSize: UINT32 = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
 
   // Load the strategic map information
   FileRead(hFile, StrategicMap, uiSize, &uiNumBytesRead);
@@ -2899,10 +2918,13 @@ function LoadStrategicInfoFromSavedFile(hFile: HWFILE): BOOLEAN {
 }
 
 function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirection: UINT8): INT16 {
-  INT16 sGridNo, sStartGridNo, sOldGridNo;
-  INT8 bOdd = 1, bOdd2 = 1;
-  UINT8 bAdjustedDist = 0;
-  UINT32 cnt;
+  let sGridNo: INT16;
+  let sStartGridNo: INT16;
+  let sOldGridNo: INT16;
+  let bOdd: INT8 = 1;
+  let bOdd2: INT8 = 1;
+  let bAdjustedDist: UINT8 = 0;
+  let cnt: UINT32;
 
   switch (ubTacticalDirection) {
     case EAST:
@@ -3114,8 +3136,9 @@ function PickGridNoNearestEdge(pSoldier: Pointer<SOLDIERTYPE>, ubTacticalDirecti
 }
 
 function AdjustSoldierPathToGoOffEdge(pSoldier: Pointer<SOLDIERTYPE>, sEndGridNo: INT16, ubTacticalDirection: UINT8): void {
-  INT16 sNewGridNo, sTempGridNo;
-  INT32 iLoop;
+  let sNewGridNo: INT16;
+  let sTempGridNo: INT16;
+  let iLoop: INT32;
 
   // will this path segment actually take us to our desired destination in the first place?
   if (pSoldier->usPathDataSize + 2 > MAX_PATH_LIST_SIZE) {
@@ -3247,10 +3270,13 @@ function AdjustSoldierPathToGoOffEdge(pSoldier: Pointer<SOLDIERTYPE>, sEndGridNo
 }
 
 function PickGridNoToWalkIn(pSoldier: Pointer<SOLDIERTYPE>, ubInsertionDirection: UINT8, puiNumAttempts: Pointer<UINT32>): INT16 {
-  INT16 sGridNo, sStartGridNo, sOldGridNo;
-  INT8 bOdd = 1, bOdd2 = 1;
-  UINT8 bAdjustedDist = 0;
-  UINT32 cnt;
+  let sGridNo: INT16;
+  let sStartGridNo: INT16;
+  let sOldGridNo: INT16;
+  let bOdd: INT8 = 1;
+  let bOdd2: INT8 = 1;
+  let bAdjustedDist: UINT8 = 0;
+  let cnt: UINT32;
 
   *puiNumAttempts = 0;
 
@@ -3481,7 +3507,7 @@ function GetLoadedSectorString(pString: Pointer<UINT16>): void {
 }
 
 function HandleSlayDailyEvent(): void {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // grab slay
   pSoldier = FindSoldierByProfileID(64, TRUE);
@@ -3515,7 +3541,7 @@ function IsSectorDesert(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
 }
 
 function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): BOOLEAN {
-  INT32 i;
+  let i: INT32;
 
   // clear tactical queue
   ClearEventQueue();
@@ -3571,7 +3597,7 @@ function HandleDefiniteUnloadingOfWorld(ubUnloadCode: UINT8): BOOLEAN {
 }
 
 function HandlePotentialBringUpAutoresolveToFinishBattle(): BOOLEAN {
-  INT32 i;
+  let i: INT32;
 
   // We don't have mercs in the sector.  Now, we check to see if there are BOTH enemies and militia.  If both
   // co-exist in the sector, then make them fight for control of the sector via autoresolve.
@@ -3610,8 +3636,10 @@ function HandlePotentialBringUpAutoresolveToFinishBattle(): BOOLEAN {
 }
 
 function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
-  INT32 i;
-  INT16 sBattleSectorX, sBattleSectorY, sBattleSectorZ;
+  let i: INT32;
+  let sBattleSectorX: INT16;
+  let sBattleSectorY: INT16;
+  let sBattleSectorZ: INT16;
 
   // Don't bother checking this if we don't have a world loaded.
   if (!gfWorldLoaded) {
@@ -3782,7 +3810,7 @@ function SetupProfileInsertionDataForSoldier(pSoldier: Pointer<SOLDIERTYPE>): vo
 }
 
 function HandlePotentialMoraleHitForSkimmingSectors(pGroup: Pointer<GROUP>): void {
-  PLAYERGROUP *pPlayer;
+  let pPlayer: Pointer<PLAYERGROUP>;
 
   if (!gTacticalStatus.fHasEnteredCombatModeSinceEntering && gTacticalStatus.fEnemyInSector) {
     // Flag is set so if "wilderness" enemies are in the adjacent sector of this group, the group has

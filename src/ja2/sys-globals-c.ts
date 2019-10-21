@@ -1,16 +1,16 @@
 // External globals
-UINT8 gubFilename[200];
-BOOLEAN gfEditMode = FALSE;
-INT8 gDebugStr[128];
-INT8 gSystemDebugStr[128];
-INT8 gbFPSDisplay = SHOW_MIN_FPS;
-BOOLEAN gfResetInputCheck = FALSE;
-BOOLEAN gfGlobalError = FALSE;
+let gubFilename: UINT8[] /* [200] */;
+let gfEditMode: BOOLEAN = FALSE;
+let gDebugStr: INT8[] /* [128] */;
+let gSystemDebugStr: INT8[] /* [128] */;
+let gbFPSDisplay: INT8 = SHOW_MIN_FPS;
+let gfResetInputCheck: BOOLEAN = FALSE;
+let gfGlobalError: BOOLEAN = FALSE;
 
-UINT32 guiGameCycleCounter = 0;
+let guiGameCycleCounter: UINT32 = 0;
 
 function SET_ERROR(String: Pointer<char>, ...args: any[]): BOOLEAN {
-  va_list ArgPtr;
+  let ArgPtr: va_list;
 
   va_start(ArgPtr, String);
   vsprintf(gubErrorText, String, ArgPtr);

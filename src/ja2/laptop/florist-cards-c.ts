@@ -19,23 +19,26 @@ const FLORIST_CARD_TITLE_SENTENCE_WIDTH = LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_
 const FLORIST_CARD_BACK_BUTTON_X = LAPTOP_SCREEN_UL_X + 8;
 const FLORIST_CARD_BACK_BUTTON_Y = LAPTOP_SCREEN_WEB_UL_Y + 12;
 
-UINT32 guiCardBackground;
+let guiCardBackground: UINT32;
 
-INT8 gbCurrentlySelectedCard;
+let gbCurrentlySelectedCard: INT8;
 
 // link to the card gallery
-MOUSE_REGION gSelectedFloristCardsRegion[9];
+let gSelectedFloristCardsRegion: MOUSE_REGION[] /* [9] */;
 
-INT32 guiFlowerCardsButtonImage;
-UINT32 guiFlowerCardsBackButton;
+let guiFlowerCardsButtonImage: INT32;
+let guiFlowerCardsBackButton: UINT32;
 
 function GameInitFloristCards(): void {
 }
 
 function EnterFloristCards(): BOOLEAN {
-  UINT16 i, j, usPosX, usPosY;
-  VOBJECT_DESC VObjectDesc;
-  UINT8 ubCount;
+  let i: UINT16;
+  let j: UINT16;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let VObjectDesc: VOBJECT_DESC;
+  let ubCount: UINT8;
 
   InitFloristDefaults();
 
@@ -71,7 +74,7 @@ function EnterFloristCards(): BOOLEAN {
 }
 
 function ExitFloristCards(): void {
-  UINT8 i;
+  let i: UINT8;
 
   RemoveFloristDefaults();
   DeleteVideoObjectFromIndex(guiCardBackground);
@@ -88,12 +91,15 @@ function HandleFloristCards(): void {
 }
 
 function RenderFloristCards(): void {
-  UINT8 i, j, ubCount;
-  UINT16 usPosX, usPosY;
-  wchar_t sTemp[640];
-  UINT32 uiStartLoc = 0;
-  HVOBJECT hPixHandle;
-  UINT16 usHeightOffset;
+  let i: UINT8;
+  let j: UINT8;
+  let ubCount: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let sTemp: wchar_t[] /* [640] */;
+  let uiStartLoc: UINT32 = 0;
+  let hPixHandle: HVOBJECT;
+  let usHeightOffset: UINT16;
 
   DisplayFloristDefaults();
 

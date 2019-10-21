@@ -1,4 +1,4 @@
-BOOLEAN gfInSectorExitMenu = FALSE;
+let gfInSectorExitMenu: BOOLEAN = FALSE;
 
 interface EXIT_DIALOG_STRUCT {
   BackRegion: MOUSE_REGION;
@@ -43,26 +43,27 @@ interface EXIT_DIALOG_STRUCT {
   fUncontrolledRobotInSquad: BOOLEAN;
 }
 
-EXIT_DIALOG_STRUCT gExitDialog;
+let gExitDialog: EXIT_DIALOG_STRUCT;
 
-UINT8 gubExitGUIDirection;
-INT16 gsExitGUIAdditionalData;
-INT16 gsWarpWorldX;
-INT16 gsWarpWorldY;
-INT8 gbWarpWorldZ;
-INT16 gsWarpGridNo;
+let gubExitGUIDirection: UINT8;
+let gsExitGUIAdditionalData: INT16;
+let gsWarpWorldX: INT16;
+let gsWarpWorldY: INT16;
+let gbWarpWorldZ: INT8;
+let gsWarpGridNo: INT16;
 
 // KM:  New method is coded for more sophistocated rules.  All the information is stored within the gExitDialog struct
 //		 and calculated upon entry to this function instead of passing in multiple arguments and calculating it prior.
 function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN {
-  UINT32 uiTraverseTimeInMinutes;
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
-  SGPRect aRect;
-  UINT16 usTextBoxWidth, usTextBoxHeight;
-  UINT16 usMapPos = 0;
-  INT8 bExitCode = -1;
-  BOOLEAN OkExitCode;
+  let uiTraverseTimeInMinutes: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
+  let aRect: SGPRect;
+  let usTextBoxWidth: UINT16;
+  let usTextBoxHeight: UINT16;
+  let usMapPos: UINT16 = 0;
+  let bExitCode: INT8 = -1;
+  let OkExitCode: BOOLEAN;
 
   // STEP 1:  Calculate the information for the exit gui
   memset(&gExitDialog, 0, sizeof(EXIT_DIALOG_STRUCT));
@@ -109,7 +110,8 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   }
 
   if (gTacticalStatus.uiFlags & INCOMBAT) {
-    INT32 i, cnt = 0;
+    let i: INT32;
+    let cnt: INT32 = 0;
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       if (OK_INSECTOR_MERC(MercPtrs[i]))
         cnt++;
@@ -165,8 +167,8 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
     // check to see if we have one selected merc and one or more EPCs.
     // If so, don't allow the selected merc to leave by himself.
     // Assuming that the matching squad assignment is in the same sector.
-    UINT8 ubNumMercs = 1; // selected soldier is a merc
-    UINT8 ubNumEPCs = 0;
+    let ubNumMercs: UINT8 = 1; // selected soldier is a merc
+    let ubNumEPCs: UINT8 = 0;
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
       if (i == gusSelectedSoldier) {
         continue;
@@ -269,8 +271,8 @@ function DoneFadeInWarp(): void {
 }
 
 function DoneFadeOutWarpCallback(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Warp!
 
@@ -390,7 +392,7 @@ function UpdateSectorExitMenu(): void {
     MSYS_DisableRegion(&(gExitDialog.SingleRegion));
     if (gExitDialog.fSelectedMercIsEPC) {
       // EPCs cannot leave the sector alone and must be escorted
-      UINT16 str[256];
+      let str: UINT16[] /* [256] */;
       swprintf(str, pExitingSectorHelpText[EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier]->name);
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
       SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
@@ -398,7 +400,7 @@ function UpdateSectorExitMenu(): void {
       // It has been previously determined that there are only two mercs in the squad, the selected merc
       // isn't an EPC, but the other merc is.  That means that this merc cannot leave the sector alone
       // as he would isolate the EPC.
-      UINT16 str[256];
+      let str: UINT16[] /* [256] */;
       if (!gExitDialog.fSquadHasMultipleEPCs) {
         if (gMercProfiles[MercPtrs[gusSelectedSoldier]->ubProfile].bSex == MALE) {
           // male singular
@@ -420,7 +422,7 @@ function UpdateSectorExitMenu(): void {
       SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
     }
   } else {
-    UINT16 str[256];
+    let str: UINT16[] /* [256] */;
     EnableButton(gExitDialog.uiSingleMoveButton);
     MSYS_EnableRegion(&(gExitDialog.SingleRegion));
     swprintf(str, pExitingSectorHelpText[EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier]->name);
@@ -447,7 +449,7 @@ function UpdateSectorExitMenu(): void {
 }
 
 function RenderSectorExitMenu(): void {
-  InputAtom Event;
+  let Event: InputAtom;
 
   RestoreBackgroundRects();
   // ATE: Reset mouse Y
@@ -524,7 +526,7 @@ function HandleSectorExitMenu(): BOOLEAN {
 }
 
 function RemoveSectorExitMenu(fOk: BOOLEAN): void {
-  INT16 Str[50];
+  let Str: INT16[] /* [50] */;
 
   if (gfInSectorExitMenu) {
     guiPendingOverrideEvent = A_CHANGE_TO_MOVE;

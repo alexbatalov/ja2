@@ -26,7 +26,7 @@ const enum Enum222 {
 }
 
 // the ids for the car portraits
-INT32 giCarPortraits[4] = {
+let giCarPortraits: INT32[] /* [4] */ = {
   -1,
   -1,
   -1,
@@ -34,7 +34,7 @@ INT32 giCarPortraits[4] = {
 };
 
 // the car portrait file names
-STR pbCarPortraitFileNames[] = {
+let pbCarPortraitFileNames: STR[] /* [] */ = {
   "INTERFACE\\eldorado.sti",
   "INTERFACE\\Hummer.sti",
   "INTERFACE\\ice Cream Truck.sti",
@@ -43,8 +43,8 @@ STR pbCarPortraitFileNames[] = {
 
 // load int he portraits for the car faces that will be use in mapscreen
 function LoadCarPortraitValues(): BOOLEAN {
-  INT32 iCounter = 0;
-  VOBJECT_DESC VObjectDesc;
+  let iCounter: INT32 = 0;
+  let VObjectDesc: VOBJECT_DESC;
 
   if (giCarPortraits[0] != -1) {
     return FALSE;
@@ -59,7 +59,7 @@ function LoadCarPortraitValues(): BOOLEAN {
 
 // get rid of the images we loaded for the mapscreen car portraits
 function UnLoadCarPortraits(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // car protraits loaded?
   if (giCarPortraits[0] == -1) {
@@ -73,13 +73,15 @@ function UnLoadCarPortraits(): void {
 }
 
 function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
-  FLOAT dStart, dEnd, dPercentage;
+  let dStart: FLOAT;
+  let dEnd: FLOAT;
+  let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
-  INT8 bBandage;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
+  let bBandage: INT8;
 
   // Erase what was there
   if (fErase) {
@@ -148,13 +150,15 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
 }
 
 function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
-  FLOAT dStart, dEnd, dPercentage;
+  let dStart: FLOAT;
+  let dEnd: FLOAT;
+  let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
-  HVOBJECT hHandle;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
+  let hHandle: HVOBJECT;
 
   // Erase what was there
   if (fErase) {
@@ -238,12 +242,14 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
 }
 
 function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
-  FLOAT dStart, dEnd, dPercentage;
+  let dStart: FLOAT;
+  let dEnd: FLOAT;
+  let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
 
   // Erase what was there
   if (fErase) {
@@ -276,13 +282,15 @@ function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
 }
 
 function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16, sColor1: INT16, sColor2: INT16, fErase: BOOLEAN, uiBuffer: UINT32): void {
-  FLOAT dStart, dEnd, dPercentage;
+  let dStart: FLOAT;
+  let dEnd: FLOAT;
+  let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
-  INT16 sValue;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
+  let sValue: INT16;
 
   if (ubStatus >= DRAW_ITEM_STATUS_ATTACHMENT1) {
     sValue = pObject->bAttachStatus[ubStatus - DRAW_ITEM_STATUS_ATTACHMENT1];
@@ -338,9 +346,9 @@ function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: I
 }
 
 function RenderSoldierFace(pSoldier: Pointer<SOLDIERTYPE>, sFaceX: INT16, sFaceY: INT16, fAutoFace: BOOLEAN): void {
-  BOOLEAN fDoFace = FALSE;
-  INT32 iFaceIndex = -1;
-  UINT8 ubVehicleType = 0;
+  let fDoFace: BOOLEAN = FALSE;
+  let iFaceIndex: INT32 = -1;
+  let ubVehicleType: UINT8 = 0;
 
   if (pSoldier->bActive) {
     if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {

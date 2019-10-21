@@ -1,4 +1,4 @@
-BOOLEAN gfShowExitGrids = FALSE;
+let gfShowExitGrids: BOOLEAN = FALSE;
 
 function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
   UnclickEditorButtons(ITEMS_WEAPONS, ITEMS_KEYS);
@@ -45,8 +45,10 @@ function SetEditorItemsTaskbarMode(usNewMode: UINT16): void {
 const NO_EFFECT = 2;
 
 function SetEditorBuildingTaskbarMode(usNewMode: UINT16): void {
-  BOOLEAN fNewGroup = FALSE;
-  BOOLEAN fNewRoofs, fNewWalls, fNewRoomInfo;
+  let fNewGroup: BOOLEAN = FALSE;
+  let fNewRoofs: BOOLEAN;
+  let fNewWalls: BOOLEAN;
+  let fNewRoomInfo: BOOLEAN;
   if (usNewMode == usCurrentMode) {
     ClickEditorButton(usNewMode);
     return;
@@ -214,8 +216,8 @@ function SetEditorTerrainTaskbarMode(usNewMode: UINT16): void {
 }
 
 function ShowExitGrids(): void {
-  UINT16 i;
-  LEVELNODE *pLevelNode;
+  let i: UINT16;
+  let pLevelNode: Pointer<LEVELNODE>;
   if (gfShowExitGrids)
     return;
   gfShowExitGrids = TRUE;
@@ -227,8 +229,8 @@ function ShowExitGrids(): void {
 }
 
 function HideExitGrids(): void {
-  UINT16 i;
-  LEVELNODE *pLevelNode;
+  let i: UINT16;
+  let pLevelNode: Pointer<LEVELNODE>;
   if (!gfShowExitGrids)
     return;
   gfShowExitGrids = FALSE;
@@ -247,7 +249,7 @@ function HideExitGrids(): void {
 }
 
 function SetEditorMapInfoTaskbarMode(usNewMode: UINT16): void {
-  BOOLEAN fShowExitGrids = FALSE;
+  let fShowExitGrids: BOOLEAN = FALSE;
   UnclickEditorButton(MAPINFO_ADD_LIGHT1_SOURCE);
   UnclickEditorButton(MAPINFO_DRAW_EXITGRIDS);
   UnclickEditorButton(MAPINFO_NORTH_POINT);

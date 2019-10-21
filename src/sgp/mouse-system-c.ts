@@ -19,47 +19,47 @@ const MSYS_DOUBLECLICK_DELAY = 400;
 //
 // Records and stores the last place the user clicked.  These values are compared to the current
 // click to determine if a double click event has been detected.
-MOUSE_REGION *gpRegionLastLButtonDown = NULL;
-MOUSE_REGION *gpRegionLastLButtonUp = NULL;
-UINT32 guiRegionLastLButtonDownTime = 0;
+let gpRegionLastLButtonDown: Pointer<MOUSE_REGION> = NULL;
+let gpRegionLastLButtonUp: Pointer<MOUSE_REGION> = NULL;
+let guiRegionLastLButtonDownTime: UINT32 = 0;
 
-INT32 MSYS_ScanForID = FALSE;
-INT32 MSYS_CurrentID = MSYS_ID_SYSTEM;
+let MSYS_ScanForID: INT32 = FALSE;
+let MSYS_CurrentID: INT32 = MSYS_ID_SYSTEM;
 
-INT16 MSYS_CurrentMX = 0;
-INT16 MSYS_CurrentMY = 0;
-INT16 MSYS_CurrentButtons = 0;
-INT16 MSYS_Action = 0;
+let MSYS_CurrentMX: INT16 = 0;
+let MSYS_CurrentMY: INT16 = 0;
+let MSYS_CurrentButtons: INT16 = 0;
+let MSYS_Action: INT16 = 0;
 
-BOOLEAN MSYS_SystemInitialized = FALSE;
-BOOLEAN MSYS_UseMouseHandlerHook = FALSE;
+let MSYS_SystemInitialized: BOOLEAN = FALSE;
+let MSYS_UseMouseHandlerHook: BOOLEAN = FALSE;
 
-BOOLEAN MSYS_Mouse_Grabbed = FALSE;
-MOUSE_REGION *MSYS_GrabRegion = NULL;
+let MSYS_Mouse_Grabbed: BOOLEAN = FALSE;
+let MSYS_GrabRegion: Pointer<MOUSE_REGION> = NULL;
 
-UINT16 gusClickedIDNumber;
-BOOLEAN gfClickedModeOn = FALSE;
+let gusClickedIDNumber: UINT16;
+let gfClickedModeOn: BOOLEAN = FALSE;
 
-MOUSE_REGION *MSYS_RegList = NULL;
+let MSYS_RegList: Pointer<MOUSE_REGION> = NULL;
 
-MOUSE_REGION *MSYS_PrevRegion = NULL;
-MOUSE_REGION *MSYS_CurrRegion = NULL;
+let MSYS_PrevRegion: Pointer<MOUSE_REGION> = NULL;
+let MSYS_CurrRegion: Pointer<MOUSE_REGION> = NULL;
 
 // When set, the fast help text will be instantaneous, if consecutive regions with help text are
 // hilighted.  It is set, whenever the timer for the first help button expires, and the mode is
 // cleared as soon as the cursor moves into no region or a region with no helptext.
-BOOLEAN gfPersistantFastHelpMode;
+let gfPersistantFastHelpMode: BOOLEAN;
 
-INT16 gsFastHelpDelay = 600; // In timer ticks
-BOOLEAN gfShowFastHelp = TRUE;
+let gsFastHelpDelay: INT16 = 600; // In timer ticks
+let gfShowFastHelp: BOOLEAN = TRUE;
 
 // Kris:
 // NOTE:  This doesn't really need to be here, however, it is a good indication that
 // when an error appears here, that you need to go below to the init code and initialize the
 // values there as well.  That's the only reason why I left this here.
-MOUSE_REGION MSYS_SystemBaseRegion = { MSYS_ID_SYSTEM, MSYS_PRIORITY_SYSTEM, BASE_REGION_FLAGS, -32767, -32767, 32767, 32767, 0, 0, 0, 0, 0, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK, { 0, 0, 0, 0 }, 0, 0, -1, MSYS_NO_CALLBACK, NULL, NULL };
+let MSYS_SystemBaseRegion: MOUSE_REGION = { MSYS_ID_SYSTEM, MSYS_PRIORITY_SYSTEM, BASE_REGION_FLAGS, -32767, -32767, 32767, 32767, 0, 0, 0, 0, 0, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK, { 0, 0, 0, 0 }, 0, 0, -1, MSYS_NO_CALLBACK, NULL, NULL };
 
-BOOLEAN gfRefreshUpdate = FALSE;
+let gfRefreshUpdate: BOOLEAN = FALSE;
 
 // Kris:  December 3, 1997
 // Special internal debugging utilities that will ensure that you don't attempt to delete
@@ -242,9 +242,11 @@ function MSYS_SGP_Mouse_Handler_Hook(Type: UINT16, Xcoord: UINT16, Ycoord: UINT1
 //	is returned.
 //
 function MSYS_GetNewID(): INT32 {
-  INT32 retID;
-  INT32 Current, found, done;
-  MOUSE_REGION *node;
+  let retID: INT32;
+  let Current: INT32;
+  let found: INT32;
+  let done: INT32;
+  let node: Pointer<MOUSE_REGION>;
 
   retID = MSYS_CurrentID;
   MSYS_CurrentID++;
@@ -298,8 +300,8 @@ function MSYS_TrashRegList(): void {
 //	have the same priority level, then the latest to enter the list gets the higher priority.
 //
 function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
-  MOUSE_REGION *curr;
-  INT32 done;
+  let curr: Pointer<MOUSE_REGION>;
+  let done: INT32;
 
   // If region seems to already be in list, delete it so we can
   // re-insert the region.
@@ -356,8 +358,8 @@ function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
 //	Scan region list for presence of a node with the same region ID number
 //
 function MSYS_RegionInList(region: Pointer<MOUSE_REGION>): INT32 {
-  MOUSE_REGION *Current;
-  INT32 found;
+  let Current: Pointer<MOUSE_REGION>;
+  let found: INT32;
 
   found = FALSE;
   Current = MSYS_RegList;
@@ -426,10 +428,10 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
 //	the callback functions
 //
 function MSYS_UpdateMouseRegion(): void {
-  INT32 found;
-  UINT32 ButtonReason;
-  MOUSE_REGION *pTempRegion;
-  BOOLEAN fFound = FALSE;
+  let found: INT32;
+  let ButtonReason: UINT32;
+  let pTempRegion: Pointer<MOUSE_REGION>;
+  let fFound: BOOLEAN = FALSE;
   found = FALSE;
 
   // Check previous region!
@@ -592,7 +594,7 @@ function MSYS_UpdateMouseRegion(): void {
             // Kris: Nov 31, 1999 -- Added support for double click events.
             // This is where double clicks are checked and passed down.
             if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-              UINT32 uiCurrTime = GetClock();
+              let uiCurrTime: UINT32 = GetClock();
               if (gpRegionLastLButtonDown == MSYS_CurrRegion && gpRegionLastLButtonUp == MSYS_CurrRegion && uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 // Sequential left click on same button within the maximum time allowed for a double click
                 // Double click check succeeded, set flag and reset double click globals.
@@ -606,7 +608,7 @@ function MSYS_UpdateMouseRegion(): void {
                 guiRegionLastLButtonDownTime = GetClock();
               }
             } else if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_UP) {
-              UINT32 uiCurrTime = GetClock();
+              let uiCurrTime: UINT32 = GetClock();
               if (gpRegionLastLButtonDown == MSYS_CurrRegion && uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 // Double click is Left down, then left up, then left down.  We have just detected the left up here (step 2).
                 gpRegionLastLButtonUp = MSYS_CurrRegion;
@@ -832,7 +834,7 @@ function MSYS_ChangeRegionPriority(region: Pointer<MOUSE_REGION>, priority: INT8
 //
 function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32, userdata: INT32): void {
   if (index < 0 || index > 3) {
-    UINT8 str[80];
+    let str: UINT8[] /* [80] */;
       return;
     sprintf(str, "Attempting MSYS_SetRegionUserData() with out of range index %d.", index);
     AssertMsg(0, str);
@@ -847,7 +849,7 @@ function MSYS_SetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32, use
 //
 function MSYS_GetRegionUserData(region: Pointer<MOUSE_REGION>, index: INT32): INT32 {
   if (index < 0 || index > 3) {
-    UINT8 str[80];
+    let str: UINT8[] /* [80] */;
       return 0;
     sprintf(str, "Attempting MSYS_GetRegionUserData() with out of range index %d", index);
     AssertMsg(0, str);
@@ -897,8 +899,8 @@ function MSYS_ReleaseMouse(region: Pointer<MOUSE_REGION>): void {
 */
 
 function MSYS_MoveMouseRegionTo(region: Pointer<MOUSE_REGION>, sX: INT16, sY: INT16): void {
-  INT16 sWidth;
-  INT16 sHeight;
+  let sWidth: INT16;
+  let sHeight: INT16;
 
   sWidth = region->RegionBottomRightX - region->RegionTopLeftX;
   sHeight = region->RegionBottomRightY - region->RegionTopLeftY;
@@ -978,9 +980,9 @@ function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: Pointer<UI
 }
 
 function GetNumberOfLinesInHeight(pStringA: STR16): INT16 {
-  STR16 pToken;
-  INT16 sCounter = 0;
-  CHAR16 pString[512];
+  let pToken: STR16;
+  let sCounter: INT16 = 0;
+  let pString: CHAR16[] /* [512] */;
 
   wcscpy(pString, pStringA);
 
@@ -1000,9 +1002,12 @@ function GetNumberOfLinesInHeight(pStringA: STR16): INT16 {
 //
 //
 function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
-  UINT16 usFillColor;
-  INT32 iX, iY, iW, iH;
-  INT32 iNumberOfLines = 1;
+  let usFillColor: UINT16;
+  let iX: INT32;
+  let iY: INT32;
+  let iW: INT32;
+  let iH: INT32;
+  let iNumberOfLines: INT32 = 1;
 
   if (region->uiFlags & MSYS_FASTHELP) {
     usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
@@ -1030,8 +1035,8 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
       region->uiFlags |= MSYS_GOT_BACKGROUND;
       region->uiFlags |= MSYS_HAS_BACKRECT;
     } else {
-      UINT8 *pDestBuf;
-      UINT32 uiDestPitchBYTES;
+      let pDestBuf: Pointer<UINT8>;
+      let uiDestPitchBYTES: UINT32;
       pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       RectangleDraw(TRUE, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
@@ -1049,9 +1054,9 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
 }
 
 function GetWidthOfString(pStringA: STR16): INT16 {
-  CHAR16 pString[512];
-  STR16 pToken;
-  INT16 sWidth = 0;
+  let pString: CHAR16[] /* [512] */;
+  let pToken: STR16;
+  let sWidth: INT16 = 0;
   wcscpy(pString, pStringA);
 
   // tokenize
@@ -1069,11 +1074,12 @@ function GetWidthOfString(pStringA: STR16): INT16 {
 }
 
 function DisplayHelpTokenizedString(pStringA: STR16, sX: INT16, sY: INT16): void {
-  STR16 pToken;
-  INT32 iCounter = 0, i;
-  UINT32 uiCursorXPos;
-  CHAR16 pString[512];
-  INT32 iLength;
+  let pToken: STR16;
+  let iCounter: INT32 = 0;
+  let i: INT32;
+  let uiCursorXPos: UINT32;
+  let pString: CHAR16[] /* [512] */;
+  let iLength: INT32;
 
   wcscpy(pString, pStringA);
 
@@ -1100,8 +1106,9 @@ function DisplayHelpTokenizedString(pStringA: STR16, sX: INT16, sY: INT16): void
 }
 
 function RenderFastHelp(): void {
-  static INT32 iLastClock;
-  INT32 iTimeDifferential, iCurrentClock;
+  /* static */ let iLastClock: INT32;
+  let iTimeDifferential: INT32;
+  let iCurrentClock: INT32;
 
   if (!gfRenderHilights)
     return;

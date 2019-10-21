@@ -9,8 +9,8 @@ function ZFree(opaque: voidpf, address: voidpf): void {
 }
 
 function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
-  z_stream *pZStream;
-  int iZRetCode;
+  let pZStream: Pointer<z_stream>;
+  let iZRetCode: int;
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
@@ -39,8 +39,8 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 }
 
 function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
-  int iZRetCode;
-  z_stream *pZStream = (z_stream *)pDecompPtr;
+  let iZRetCode: int;
+  let pZStream: Pointer<z_stream> = (z_stream *)pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -63,7 +63,7 @@ function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32
 }
 
 function DecompressFini(pDecompPtr: PTR): void {
-  z_stream *pZStream = (z_stream *)pDecompPtr;
+  let pZStream: Pointer<z_stream> = (z_stream *)pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -81,8 +81,8 @@ function CompressedBufferSize(uiDataSize: UINT32): UINT32 {
 }
 
 function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR {
-  z_stream *pZStream;
-  int iZRetCode;
+  let pZStream: Pointer<z_stream>;
+  let iZRetCode: int;
 
   // allocate memory for the z_stream struct
   pZStream = MemAlloc(sizeof(z_stream));
@@ -111,8 +111,8 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
 }
 
 function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
-  int iZRetCode;
-  z_stream *pZStream = (z_stream *)pCompPtr;
+  let iZRetCode: int;
+  let pZStream: Pointer<z_stream> = (z_stream *)pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -135,7 +135,7 @@ function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): U
 }
 
 function CompressFini(pCompPtr: PTR): void {
-  z_stream *pZStream = (z_stream *)pCompPtr;
+  let pZStream: Pointer<z_stream> = (z_stream *)pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);

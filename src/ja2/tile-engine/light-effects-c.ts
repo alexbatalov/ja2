@@ -1,11 +1,11 @@
 const NUM_LIGHT_EFFECT_SLOTS = 25;
 
 // GLOBAL FOR LIGHT LISTING
-LIGHTEFFECT gLightEffectData[NUM_LIGHT_EFFECT_SLOTS];
-UINT32 guiNumLightEffects = 0;
+let gLightEffectData: LIGHTEFFECT[] /* [NUM_LIGHT_EFFECT_SLOTS] */;
+let guiNumLightEffects: UINT32 = 0;
 
 function GetFreeLightEffect(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
     if ((gLightEffectData[uiCount].fAllocated == FALSE))
@@ -19,7 +19,7 @@ function GetFreeLightEffect(): INT32 {
 }
 
 function RecountLightEffects(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumLightEffects - 1; (uiCount >= 0); uiCount--) {
     if ((gLightEffectData[uiCount].fAllocated)) {
@@ -30,7 +30,7 @@ function RecountLightEffects(): void {
 }
 
 function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
-  CHAR8 LightName[20];
+  let LightName: CHAR8[] /* [20] */;
   // Build light....
 
   sprintf(LightName, "Light%d", pLight->bRadius);
@@ -53,10 +53,10 @@ function UpdateLightingSprite(pLight: Pointer<LIGHTEFFECT>): void {
 }
 
 function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
-  LIGHTEFFECT *pLight;
-  INT32 iLightIndex;
-  UINT8 ubDuration = 0;
-  UINT8 ubStartRadius = 0;
+  let pLight: Pointer<LIGHTEFFECT>;
+  let iLightIndex: INT32;
+  let ubDuration: UINT8 = 0;
+  let ubStartRadius: UINT8 = 0;
 
   if ((iLightIndex = GetFreeLightEffect()) == (-1))
     return -1;
@@ -93,8 +93,8 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
 }
 
 function RemoveLightEffectFromTile(sGridNo: INT16): void {
-  LIGHTEFFECT *pLight;
-  UINT32 cnt;
+  let pLight: Pointer<LIGHTEFFECT>;
+  let cnt: UINT32;
 
   // Set to unallocated....
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
@@ -115,10 +115,11 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
 }
 
 function DecayLightEffects(uiTime: UINT32): void {
-  LIGHTEFFECT *pLight;
-  UINT32 cnt, cnt2;
-  BOOLEAN fDelete = FALSE;
-  UINT16 usNumUpdates = 1;
+  let pLight: Pointer<LIGHTEFFECT>;
+  let cnt: UINT32;
+  let cnt2: UINT32;
+  let fDelete: BOOLEAN = FALSE;
+  let usNumUpdates: UINT16 = 1;
 
   // age all active tear gas clouds, deactivate those that are just dispersing
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
@@ -217,8 +218,8 @@ function SaveLightEffectsToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiCount;
+  let uiNumBytesRead: UINT32;
+  let uiCount: UINT32;
 
   // no longer need to load Light effects.  They are now in temp files
   if (guiSaveGameVersion < 76) {
@@ -253,11 +254,11 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT32 uiNumLightEffects = 0;
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
-  CHAR8 zMapName[128];
-  UINT32 uiCnt;
+  let uiNumLightEffects: UINT32 = 0;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
+  let uiCnt: UINT32;
 
   // get the name of the map
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
@@ -319,12 +320,12 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
 }
 
 function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiCount;
-  UINT32 uiCnt = 0;
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten = 0;
-  CHAR8 zMapName[128];
+  let uiNumBytesRead: UINT32;
+  let uiCount: UINT32;
+  let uiCnt: UINT32 = 0;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
 
   GetMapTempFileName(SF_LIGHTING_EFFECTS_TEMP_FILE_EXISTS, zMapName, sMapX, sMapY, bMapZ);
 

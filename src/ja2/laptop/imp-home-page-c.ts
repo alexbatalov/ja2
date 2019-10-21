@@ -1,4 +1,4 @@
-INT32 GlowColorsList[][3] = {
+let GlowColorsList: INT32[][] /* [][3] */ = {
   { 0, 0, 0 },
   { 0, 25, 0 },
   { 0, 50, 0 },
@@ -19,18 +19,18 @@ const CURSOR_Y = IMP_PLAYER_ACTIVATION_STRING_Y - 5;
 const CURSOR_HEIGHT = () => GetFontHeight(FONT14ARIAL()) + 6;
 
 // IMP homepage buttons
-INT32 giIMPHomePageButton[1];
-INT32 giIMPHomePageButtonImage[1];
+let giIMPHomePageButton: INT32[] /* [1] */;
+let giIMPHomePageButtonImage: INT32[] /* [1] */;
 
 // the player activation string
-CHAR16 pPlayerActivationString[32];
+let pPlayerActivationString: CHAR16[] /* [32] */;
 
 // position within player activation string
-INT32 iStringPos = 0;
-UINT16 uiCursorPosition = IMP_PLAYER_ACTIVATION_STRING_X;
+let iStringPos: INT32 = 0;
+let uiCursorPosition: UINT16 = IMP_PLAYER_ACTIVATION_STRING_X;
 
 // has a new char been added or deleted?
-BOOLEAN fNewCharInActivationString = FALSE;
+let fNewCharInActivationString: BOOLEAN = FALSE;
 
 function EnterImpHomePage(): void {
   // upon entry to Imp home page
@@ -103,7 +103,7 @@ function HandleImpHomePage(): void {
 
 function DisplayPlayerActivationString(): void {
   // this function will grab the string that the player will enter for activation
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // player gone too far, move back
   if (iStringPos > 64) {
@@ -129,12 +129,12 @@ function DisplayPlayerActivationString(): void {
 
 function DisplayActivationStringCursor(): void {
   // this procdure will draw the activation string cursor on the screen at position cursorx cursory
-  UINT32 uiDestPitchBYTES;
-  static UINT32 uiBaseTime = 0;
-  UINT32 uiDeltaTime = 0;
-  UINT8 *pDestBuf;
-  static UINT32 iCurrentState = 0;
-  static BOOLEAN fIncrement = TRUE;
+  let uiDestPitchBYTES: UINT32;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  let uiDeltaTime: UINT32 = 0;
+  let pDestBuf: Pointer<UINT8>;
+  /* static */ let iCurrentState: UINT32 = 0;
+  /* static */ let fIncrement: BOOLEAN = TRUE;
 
   if (uiBaseTime == 0) {
     uiBaseTime = GetJA2Clock();
@@ -179,8 +179,8 @@ function DisplayActivationStringCursor(): void {
 }
 
 function GetPlayerKeyBoardInputForIMPHomePage(): void {
-  InputAtom InputEvent;
-  POINT MousePos;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 

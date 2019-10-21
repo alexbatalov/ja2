@@ -8,7 +8,7 @@
  *    starting with the deletion of a MULTI SPECIAL structure
  */
 
-UINT8 AtHeight[PROFILE_Z_SIZE] = {
+let AtHeight: UINT8[] /* [PROFILE_Z_SIZE] */ = {
   0x01,
   0x02,
   0x04,
@@ -17,11 +17,11 @@ UINT8 AtHeight[PROFILE_Z_SIZE] = {
 
 const FIRST_AVAILABLE_STRUCTURE_ID = (INVALID_STRUCTURE_ID + 2);
 
-UINT16 gusNextAvailableStructureID = FIRST_AVAILABLE_STRUCTURE_ID;
+let gusNextAvailableStructureID: UINT16 = FIRST_AVAILABLE_STRUCTURE_ID;
 
-STRUCTURE_FILE_REF *gpStructureFileRefs;
+let gpStructureFileRefs: Pointer<STRUCTURE_FILE_REF>;
 
-INT32 guiMaterialHitSound[NUM_MATERIAL_TYPES] = {
+let guiMaterialHitSound: INT32[] /* [NUM_MATERIAL_TYPES] */ = {
   -1,
   S_WOOD_IMPACT1,
   S_WOOD_IMPACT2,
@@ -70,7 +70,7 @@ index 23, really heavy metal
 index 24, indestructable stone
 index 25, indestructable metal
 */
-UINT8 gubMaterialArmour[] = {
+let gubMaterialArmour: UINT8[] /* [] */ = {
   // note: must increase; r.c. should block *AP* 7.62mm rounds
   0, // nothing
   25, // dry timber; wood wall +1/2
@@ -104,8 +104,11 @@ UINT8 gubMaterialArmour[] = {
 
 // Function operating on a structure tile
 function FilledTilePositions(pTile: Pointer<DB_STRUCTURE_TILE>): UINT8 {
-  UINT8 ubFilled = 0, ubShapeValue;
-  INT8 bLoopX, bLoopY, bLoopZ;
+  let ubFilled: UINT8 = 0;
+  let ubShapeValue: UINT8;
+  let bLoopX: INT8;
+  let bLoopY: INT8;
+  let bLoopZ: INT8;
 
   // Loop through all parts of a structure and add up the number of
   // filled spots
@@ -130,7 +133,7 @@ function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
   // Frees all of the memory associated with a file reference, including
                                                           // the file reference structure itself
 
-  UINT16 usLoop;
+  let usLoop: UINT16;
 
   Assert(pFileRef != NULL);
   if (pFileRef->pDBStructureRef != NULL) {
@@ -155,8 +158,8 @@ function FreeStructureFileRef(pFileRef: Pointer<STRUCTURE_FILE_REF>): void {
 
 function FreeAllStructureFiles(): void {
   // Frees all of the structure database!
-  STRUCTURE_FILE_REF *pFileRef;
-  STRUCTURE_FILE_REF *pNextRef;
+  let pFileRef: Pointer<STRUCTURE_FILE_REF>;
+  let pNextRef: Pointer<STRUCTURE_FILE_REF>;
 
   pFileRef = gpStructureFileRefs;
   while (pFileRef != NULL) {
@@ -191,11 +194,11 @@ function FreeStructureFile(pStructureFile: Pointer<STRUCTURE_FILE_REF>): BOOLEAN
 function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF>, puiStructureDataSize: Pointer<UINT32>): BOOLEAN
 // UINT8 **ppubStructureData, UINT32 * puiDataSize, STRUCTURE_FILE_HEADER * pHeader )
 { // Loads a structure file's data as a honking chunk o' memory
-  HWFILE hInput;
-  STRUCTURE_FILE_HEADER Header;
-  UINT32 uiBytesRead;
-  UINT32 uiDataSize;
-  BOOLEAN fOk;
+  let hInput: HWFILE;
+  let Header: STRUCTURE_FILE_HEADER;
+  let uiBytesRead: UINT32;
+  let uiDataSize: UINT32;
+  let fOk: BOOLEAN;
 
   CHECKF(szFileName);
   CHECKF(pFileRef);
@@ -276,13 +279,13 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
   // Based on a file chunk, creates all the dynamic arrays for the
                                                                                      // structure definitions contained within
 
-  UINT8 *pCurrent;
-  DB_STRUCTURE_REF *pDBStructureRef;
-  DB_STRUCTURE_TILE **ppTileArray;
-  UINT16 usLoop;
-  UINT16 usIndex;
-  UINT16 usTileLoop;
-  UINT32 uiHitPoints;
+  let pCurrent: Pointer<UINT8>;
+  let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  let ppTileArray: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let usLoop: UINT16;
+  let usIndex: UINT16;
+  let usTileLoop: UINT16;
+  let uiHitPoints: UINT32;
 
   pCurrent = pFileRef->pubStructureData;
   pDBStructureRef = MemAlloc(pFileRef->usNumberOfStructures * sizeof(DB_STRUCTURE_REF));
@@ -341,9 +344,9 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
 
 function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
   // NB should be passed in expected number of structures so we can check equality
-  UINT32 uiDataSize = 0;
-  BOOLEAN fOk;
-  STRUCTURE_FILE_REF *pFileRef;
+  let uiDataSize: UINT32 = 0;
+  let fOk: BOOLEAN;
+  let pFileRef: Pointer<STRUCTURE_FILE_REF>;
 
   pFileRef = MemAlloc(sizeof(STRUCTURE_FILE_REF));
   if (pFileRef == NULL) {
@@ -377,9 +380,9 @@ function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
 
 function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileNum: UINT8): Pointer<STRUCTURE> {
   // Creates a STRUCTURE struct for one tile of a structure
-  STRUCTURE *pStructure;
-  DB_STRUCTURE *pDBStructure;
-  DB_STRUCTURE_TILE *pTile;
+  let pStructure: Pointer<STRUCTURE>;
+  let pDBStructure: Pointer<DB_STRUCTURE>;
+  let pTile: Pointer<DB_STRUCTURE_TILE>;
 
   // set pointers to the DBStructure and Tile
   CHECKN(pDBStructureRef);
@@ -422,13 +425,14 @@ function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTil
 
 function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTileIndex: UINT8, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
   // Verifies whether a structure is blocked from being added to the map at a particular point
-  DB_STRUCTURE *pDBStructure;
-  DB_STRUCTURE_TILE **ppTile;
-  STRUCTURE *pExistingStructure;
-  STRUCTURE *pOtherExistingStructure;
-  INT8 bLoop, bLoop2;
-  INT16 sGridNo;
-  INT16 sOtherGridNo;
+  let pDBStructure: Pointer<DB_STRUCTURE>;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let pExistingStructure: Pointer<STRUCTURE>;
+  let pOtherExistingStructure: Pointer<STRUCTURE>;
+  let bLoop: INT8;
+  let bLoop2: INT8;
+  let sGridNo: INT16;
+  let sOtherGridNo: INT16;
 
   ppTile = pDBStructureRef->ppTile;
   sGridNo = sBaseGridNo + ppTile[ubTileIndex]->sPosRelToBase;
@@ -608,8 +612,8 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
 }
 
 function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16, fIgnorePeople: BOOLEAN): BOOLEAN {
-  UINT8 ubLoop;
-  INT16 sCubeOffset;
+  let ubLoop: UINT8;
+  let sCubeOffset: INT16;
 
   CHECKF(pDBStructureRef);
   CHECKF(pDBStructureRef->pDBStructure);
@@ -647,7 +651,7 @@ function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructur
 
 function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>, usStructureID: UINT16): BOOLEAN {
   // adds a STRUCTURE to a MAP_ELEMENT (adds part of a structure to a location on the map)
-  STRUCTURE *pStructureTail;
+  let pStructureTail: Pointer<STRUCTURE>;
 
   CHECKF(pMapElement);
   CHECKF(pStructure);
@@ -670,15 +674,15 @@ function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Point
 
 function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelNode: Pointer<LEVELNODE>): Pointer<STRUCTURE> {
   // Adds a complete structure to the world at a location plus all other locations covered by the structure
-  INT16 sGridNo;
-  STRUCTURE **ppStructure;
-  STRUCTURE *pBaseStructure;
-  DB_STRUCTURE *pDBStructure;
-  DB_STRUCTURE_TILE **ppTile;
-  UINT8 ubLoop;
-  UINT8 ubLoop2;
-  INT16 sBaseTileHeight = -1;
-  UINT16 usStructureID;
+  let sGridNo: INT16;
+  let ppStructure: Pointer<Pointer<STRUCTURE>>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let pDBStructure: Pointer<DB_STRUCTURE>;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let sBaseTileHeight: INT16 = -1;
+  let usStructureID: UINT16;
 
   CHECKF(pDBStructureRef);
   CHECKF(pLevelNode);
@@ -804,7 +808,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
 }
 
 function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, (LEVELNODE *)pLevelN);
   if (pStructure == NULL) {
@@ -850,18 +854,20 @@ function DeleteStructureFromTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: 
 
 function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
   // removes all of the STRUCTURE elements for a structure from the world
-  MAP_ELEMENT *pBaseMapElement;
-  STRUCTURE *pBaseStructure;
-  DB_STRUCTURE_TILE **ppTile;
-  STRUCTURE *pCurrent;
-  UINT8 ubLoop, ubLoop2;
-  UINT8 ubNumberOfTiles;
-  INT16 sBaseGridNo, sGridNo;
-  UINT16 usStructureID;
-  BOOLEAN fMultiStructure;
-  BOOLEAN fRecompileMPs;
-  BOOLEAN fRecompileExtraRadius; // for doors... yuck
-  INT16 sCheckGridNo;
+  let pBaseMapElement: Pointer<MAP_ELEMENT>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let pCurrent: Pointer<STRUCTURE>;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let ubNumberOfTiles: UINT8;
+  let sBaseGridNo: INT16;
+  let sGridNo: INT16;
+  let usStructureID: UINT16;
+  let fMultiStructure: BOOLEAN;
+  let fRecompileMPs: BOOLEAN;
+  let fRecompileExtraRadius: BOOLEAN; // for doors... yuck
+  let sCheckGridNo: INT16;
 
   CHECKF(pStructure);
 
@@ -911,16 +917,16 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
 
 function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fFlipSwitches: BOOLEAN, fStoreInMap: BOOLEAN): Pointer<STRUCTURE> {
   // switch structure
-  LEVELNODE *pLevelNode;
-  LEVELNODE *pShadowNode;
-  STRUCTURE *pBaseStructure;
-  STRUCTURE *pNewBaseStructure;
-  DB_STRUCTURE_REF *pPartnerDBStructure;
-  BOOLEAN fDoor;
+  let pLevelNode: Pointer<LEVELNODE>;
+  let pShadowNode: Pointer<LEVELNODE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let pNewBaseStructure: Pointer<STRUCTURE>;
+  let pPartnerDBStructure: Pointer<DB_STRUCTURE_REF>;
+  let fDoor: BOOLEAN;
 
-  INT8 bDelta;
-  UINT8 ubHitPoints;
-  INT16 sCubeOffset;
+  let bDelta: INT8;
+  let ubHitPoints: UINT8;
+  let sCubeOffset: INT16;
 
   if (pStructure == NULL) {
     return NULL;
@@ -999,7 +1005,7 @@ function SwapStructureForPartnerAndStoreChangeInMap(sGridNo: INT16, pStructure: 
 
 function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
-  STRUCTURE *pCurrent;
+  let pCurrent: Pointer<STRUCTURE>;
 
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
   while (pCurrent != NULL) {
@@ -1012,7 +1018,7 @@ function FindStructure(sGridNo: INT16, fFlags: UINT32): Pointer<STRUCTURE> {
 }
 
 function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Pointer<STRUCTURE> {
-  STRUCTURE *pCurrent;
+  let pCurrent: Pointer<STRUCTURE>;
 
   CHECKF(pStructure);
   pCurrent = pStructure->pNext;
@@ -1027,7 +1033,7 @@ function FindNextStructure(pStructure: Pointer<STRUCTURE>, fFlags: UINT32): Poin
 
 function FindStructureByID(sGridNo: INT16, usStructureID: UINT16): Pointer<STRUCTURE> {
   // finds a structure that matches any of the given flags
-  STRUCTURE *pCurrent;
+  let pCurrent: Pointer<STRUCTURE>;
 
   pCurrent = gpWorldLevelData[sGridNo].pStructureHead;
   while (pCurrent != NULL) {
@@ -1072,11 +1078,12 @@ function GetBaseTile(pStructure: Pointer<STRUCTURE>): INT16 {
 
 function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the height of an object from 1-4
-  UINT8 ubLoopX, ubLoopY;
+  let ubLoopX: UINT8;
+  let ubLoopY: UINT8;
   PROFILE *pShape;
-  UINT8 ubShapeValue;
-  INT8 bLoopZ;
-  INT8 bGreatestHeight = -1;
+  let ubShapeValue: UINT8;
+  let bLoopZ: INT8;
+  let bGreatestHeight: INT8 = -1;
 
   if (pStructure == NULL || pStructure->pShape == NULL) {
     return 0;
@@ -1113,10 +1120,10 @@ function StructureHeight(pStructure: Pointer<STRUCTURE>): INT8 {
 }
 
 function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
-  STRUCTURE *pCurrent;
-  INT8 iHeight;
-  INT8 iTallest = 0;
-  INT16 sDesiredHeight;
+  let pCurrent: Pointer<STRUCTURE>;
+  let iHeight: INT8;
+  let iTallest: INT8 = 0;
+  let sDesiredHeight: INT16;
 
   if (fOnRoof) {
     sDesiredHeight = STRUCTURE_ON_ROOF;
@@ -1137,10 +1144,10 @@ function GetTallestStructureHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
 }
 
 function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
-  STRUCTURE *pCurrent;
-  INT8 iHeight;
-  INT8 iTallest = 0;
-  INT16 sDesiredHeight;
+  let pCurrent: Pointer<STRUCTURE>;
+  let iHeight: INT8;
+  let iTallest: INT8 = 0;
+  let sDesiredHeight: INT16;
 
   if (fOnRoof) {
     sDesiredHeight = STRUCTURE_ON_ROOF;
@@ -1175,11 +1182,12 @@ function GetStructureTargetHeight(sGridNo: INT16, fOnRoof: BOOLEAN): INT8 {
 
 function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
   // return the bottom level of an object, from 1-4
-  UINT8 ubLoopX, ubLoopY;
+  let ubLoopX: UINT8;
+  let ubLoopY: UINT8;
   PROFILE *pShape;
-  UINT8 ubShapeValue;
-  INT8 bLoopZ;
-  INT8 bLowestHeight = PROFILE_Z_SIZE;
+  let ubShapeValue: UINT8;
+  let bLoopZ: INT8;
+  let bLowestHeight: INT8 = PROFILE_Z_SIZE;
 
   if (pStructure == NULL || pStructure->pShape == NULL) {
     return 0;
@@ -1207,8 +1215,9 @@ function StructureBottomLevel(pStructure: Pointer<STRUCTURE>): INT8 {
 }
 
 function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UINT8>, pubLevel1: Pointer<UINT8>, pubLevel2: Pointer<UINT8>, pubLevel3: Pointer<UINT8>): BOOLEAN {
-  UINT8 ubLoopX, ubLoopY;
-  UINT8 ubShapeValue;
+  let ubLoopX: UINT8;
+  let ubLoopY: UINT8;
+  let ubShapeValue: UINT8;
   PROFILE *pShape;
 
   CHECKF(pStructure);
@@ -1251,8 +1260,8 @@ function StructureDensity(pStructure: Pointer<STRUCTURE>, pubLevel0: Pointer<UIN
 function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReason: UINT8, sGridNo: INT16, sX: INT16, sY: INT16, ubOwner: UINT8): BOOLEAN {
   // do damage to a structure; returns TRUE if the structure should be removed
 
-  STRUCTURE *pBase;
-  UINT8 ubArmour;
+  let pBase: Pointer<STRUCTURE>;
+  let ubArmour: UINT8;
   // LEVELNODE			*pNode;
 
   CHECKF(pStructure);
@@ -1345,14 +1354,19 @@ function DamageStructure(pStructure: Pointer<STRUCTURE>, ubDamage: UINT8, ubReas
 
 const LINE_HEIGHT = 20;
 function DebugStructurePage1(): void {
-  STRUCTURE *pStructure;
-  STRUCTURE *pBase;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBase: Pointer<STRUCTURE>;
   // LEVELNODE *		pLand;
-  INT16 sGridNo, sDesiredLevel;
-  INT8 bHeight, bDens0, bDens1, bDens2, bDens3;
-  INT8 bStructures;
+  let sGridNo: INT16;
+  let sDesiredLevel: INT16;
+  let bHeight: INT8;
+  let bDens0: INT8;
+  let bDens1: INT8;
+  let bDens2: INT8;
+  let bDens3: INT8;
+  let bStructures: INT8;
 
-  static CHAR16 WallOrientationString[5][15] = {
+  /* static */ let WallOrientationString: CHAR16[][] /* [5][15] */ = {
     L"None",
     L"Inside left",
     L"Inside right",
@@ -1437,27 +1451,27 @@ function DebugStructurePage1(): void {
 }
 
 function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<STRUCTURE_FILE_REF>, fFromAnimation: BOOLEAN, sSTIStartIndex: INT16): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubLoop2;
-  UINT8 ubNumIncreasing = 0;
-  UINT8 ubNumStable = 0;
-  UINT8 ubNumDecreasing = 0;
-  BOOLEAN fFound = FALSE;
-  ZStripInfo *pCurr;
-  INT16 sLeftHalfWidth;
-  INT16 sRightHalfWidth;
-  INT16 sOffsetX;
-  INT16 sOffsetY;
-  UINT16 usWidth;
-  UINT16 usHeight;
-  DB_STRUCTURE_REF *pDBStructureRef;
-  DB_STRUCTURE *pDBStructure = NULL;
-  INT16 sSTIStep = 0;
-  INT16 sStructIndex = 0;
-  INT16 sNext;
-  UINT32 uiDestVoIndex;
-  BOOLEAN fCopyIntoVo;
-  BOOLEAN fFirstTime;
+  let uiLoop: UINT32;
+  let ubLoop2: UINT8;
+  let ubNumIncreasing: UINT8 = 0;
+  let ubNumStable: UINT8 = 0;
+  let ubNumDecreasing: UINT8 = 0;
+  let fFound: BOOLEAN = FALSE;
+  let pCurr: Pointer<ZStripInfo>;
+  let sLeftHalfWidth: INT16;
+  let sRightHalfWidth: INT16;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let pDBStructureRef: Pointer<DB_STRUCTURE_REF>;
+  let pDBStructure: Pointer<DB_STRUCTURE> = NULL;
+  let sSTIStep: INT16 = 0;
+  let sStructIndex: INT16 = 0;
+  let sNext: INT16;
+  let uiDestVoIndex: UINT32;
+  let fCopyIntoVo: BOOLEAN;
+  let fFirstTime: BOOLEAN;
 
   if (pStructureFileRef->usNumberOfStructuresStored == 0) {
     return TRUE;
@@ -1562,7 +1576,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
             usWidth = hVObject->pETRLEObject[uiLoop].usWidth;
             usHeight = hVObject->pETRLEObject[uiLoop].usHeight;
             if (pDBStructure->fFlags & (STRUCTURE_MOBILE | STRUCTURE_CORPSE)) {
-              UINT32 i = 0;
+              let i: UINT32 = 0;
               // adjust for the difference between the animation and structure base tile
 
               // if (pDBStructure->fFlags & (STRUCTURE_MOBILE ) )
@@ -1694,10 +1708,11 @@ function FiniStructureDB(): BOOLEAN {
 }
 
 function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bLevel: INT8, pStructHeight: Pointer<INT8>, ppTallestStructure: Pointer<Pointer<STRUCTURE>>, fWallsBlock: BOOLEAN): INT8 {
-  STRUCTURE *pCurrent, *pStructure;
-  INT16 sDesiredLevel;
-  BOOLEAN fOKStructOnLevel = FALSE;
-  BOOLEAN fMinimumBlockingFound = FALSE;
+  let pCurrent: Pointer<STRUCTURE>;
+  let pStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
+  let fOKStructOnLevel: BOOLEAN = FALSE;
+  let fMinimumBlockingFound: BOOLEAN = FALSE;
 
   if (bLevel == 0) {
     sDesiredLevel = STRUCTURE_ON_GROUND;
@@ -1823,8 +1838,8 @@ function GetBlockingStructureInfo(sGridNo: INT16, bDir: INT8, bNextDir: INT8, bL
 }
 
 function StructureFlagToType(uiFlag: UINT32): UINT8 {
-  UINT8 ubLoop;
-  UINT32 uiBit = STRUCTURE_GENERIC;
+  let ubLoop: UINT8;
+  let uiBit: UINT32 = STRUCTURE_GENERIC;
 
   for (ubLoop = 8; ubLoop < 32; ubLoop++) {
     if ((uiFlag & uiBit) != 0) {
@@ -1836,15 +1851,15 @@ function StructureFlagToType(uiFlag: UINT32): UINT8 {
 }
 
 function StructureTypeToFlag(ubType: UINT8): UINT32 {
-  UINT32 uiFlag = 0x1;
+  let uiFlag: UINT32 = 0x1;
 
   uiFlag = uiFlag << ubType;
   return uiFlag;
 }
 
 function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientation: UINT8, bLevel: INT8): Pointer<STRUCTURE> {
-  STRUCTURE *pCurrent;
-  UINT32 uiTypeFlag;
+  let pCurrent: Pointer<STRUCTURE>;
+  let uiTypeFlag: UINT32;
 
   uiTypeFlag = StructureTypeToFlag(ubType);
 
@@ -1859,7 +1874,7 @@ function FindStructureBySavedInfo(sGridNo: INT16, ubType: UINT8, ubWallOrientati
 }
 
 function GetStructureOpenSound(pStructure: Pointer<STRUCTURE>, fClose: BOOLEAN): UINT32 {
-  UINT32 uiSoundID;
+  let uiSoundID: UINT32;
 
   switch (pStructure->pDBStructureRef->pDBStructure->ubArmour) {
     case MATERIAL_LIGHT_METAL:

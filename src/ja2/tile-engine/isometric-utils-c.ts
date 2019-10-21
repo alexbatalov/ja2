@@ -1,7 +1,7 @@
-UINT32 guiForceRefreshMousePositionCalculation = 0;
+let guiForceRefreshMousePositionCalculation: UINT32 = 0;
 
 // GLOBALS
-INT16 DirIncrementer[8] = {
+let DirIncrementer: INT16[] /* [8] */ = {
   -MAPWIDTH, // N
   1 - MAPWIDTH, // NE
   1, // E
@@ -13,7 +13,7 @@ INT16 DirIncrementer[8] = {
 };
 
 // Opposite directions
-UINT8 gOppositeDirection[NUM_WORLD_DIRECTIONS] = {
+let gOppositeDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   SOUTH,
   SOUTHWEST,
   WEST,
@@ -24,7 +24,7 @@ UINT8 gOppositeDirection[NUM_WORLD_DIRECTIONS] = {
   SOUTHEAST,
 };
 
-UINT8 gTwoCCDirection[NUM_WORLD_DIRECTIONS] = {
+let gTwoCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   WEST,
   NORTHWEST,
   NORTH,
@@ -35,7 +35,7 @@ UINT8 gTwoCCDirection[NUM_WORLD_DIRECTIONS] = {
   SOUTHWEST,
 };
 
-UINT8 gTwoCDirection[NUM_WORLD_DIRECTIONS] = {
+let gTwoCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   EAST,
   SOUTHEAST,
   SOUTH,
@@ -46,7 +46,7 @@ UINT8 gTwoCDirection[NUM_WORLD_DIRECTIONS] = {
   NORTHEAST,
 };
 
-UINT8 gOneCDirection[NUM_WORLD_DIRECTIONS] = {
+let gOneCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   NORTHEAST,
   EAST,
   SOUTHEAST,
@@ -57,7 +57,7 @@ UINT8 gOneCDirection[NUM_WORLD_DIRECTIONS] = {
   NORTH,
 };
 
-UINT8 gOneCCDirection[NUM_WORLD_DIRECTIONS] = {
+let gOneCCDirection: UINT8[] /* [NUM_WORLD_DIRECTIONS] */ = {
   NORTHWEST,
   NORTH,
   NORTHEAST,
@@ -69,7 +69,7 @@ UINT8 gOneCCDirection[NUM_WORLD_DIRECTIONS] = {
 };
 
 //														DIRECTION FACING			 DIRECTION WE WANT TO GOTO
-UINT8 gPurpendicularDirection[NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] = {
+let gPurpendicularDirection: UINT8[][] /* [NUM_WORLD_DIRECTIONS][NUM_WORLD_DIRECTIONS] */ = {
   // NORTH
   {
     WEST, // EITHER
@@ -182,7 +182,8 @@ function FromScreenToCellCoordinates(sScreenX: INT16, sScreenY: INT16, psCellX: 
 // determining screen coords
 
 function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreenX: Pointer<FLOAT>, pdScreenY: Pointer<FLOAT>): void {
-  FLOAT dScreenX, dScreenY;
+  let dScreenX: FLOAT;
+  let dScreenY: FLOAT;
 
   dScreenX = (2 * dCellX) - (2 * dCellY);
   dScreenY = dCellX + dCellY;
@@ -192,7 +193,8 @@ function FloatFromCellToScreenCoordinates(dCellX: FLOAT, dCellY: FLOAT, pdScreen
 }
 
 function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCellX: Pointer<FLOAT>, pdCellY: Pointer<FLOAT>): void {
-  FLOAT dCellX, dCellY;
+  let dCellX: FLOAT;
+  let dCellY: FLOAT;
 
   dCellX = ((dScreenX + (2 * dScreenY)) / 4);
   dCellY = ((2 * dScreenY) - dScreenX) / 4;
@@ -202,7 +204,8 @@ function FloatFromScreenToCellCoordinates(dScreenX: FLOAT, dScreenY: FLOAT, pdCe
 }
 
 function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
-  INT16 sWorldX, sWorldY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
 
   if (!GetMouseWorldCoords(&sWorldX, &sWorldY)) {
     (*psMouseX) = 0;
@@ -218,7 +221,8 @@ function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN
 }
 
 function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>, psCellX: Pointer<INT16>, psCellY: Pointer<INT16>): BOOLEAN {
-  INT16 sWorldX, sWorldY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
 
   if (!GetMouseWorldCoords(&sWorldX, &sWorldY)) {
     return FALSE;
@@ -235,9 +239,12 @@ function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT
 }
 
 function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
-  INT16 sOffsetX, sOffsetY;
-  INT16 sTempPosX_W, sTempPosY_W;
-  INT16 sStartPointX_W, sStartPointY_W;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let sTempPosX_W: INT16;
+  let sTempPosY_W: INT16;
+  let sStartPointX_W: INT16;
+  let sStartPointY_W: INT16;
 
   // Convert mouse screen coords into offset from center
   if (!(gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
@@ -277,7 +284,8 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
 }
 
 function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN {
-  INT16 sMouseX, sMouseY;
+  let sMouseX: INT16;
+  let sMouseY: INT16;
 
   // Get grid position
   if (!GetMouseXY(&sMouseX, &sMouseY)) {
@@ -292,9 +300,10 @@ function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer
 }
 
 function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
-  INT16 sWorldX, sWorldY;
-  static INT16 sSameCursorPos;
-  static UINT32 uiOldFrameNumber = 99999;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  /* static */ let sSameCursorPos: INT16;
+  /* static */ let uiOldFrameNumber: UINT32 = 99999;
 
   // Check if this is the same frame as before, return already calculated value if so!
   if (uiOldFrameNumber == guiGameCycleCounter && !guiForceRefreshMousePositionCalculation) {
@@ -321,8 +330,10 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
 }
 
 function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>, psYPos: Pointer<INT16>): BOOLEAN {
-  INT16 sWorldX, sWorldY;
-  INT16 sCellX, sCellY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sCellX: INT16;
+  let sCellY: INT16;
 
   // Get X, Y world GRID Coordinates
   sWorldY = (usMapPos / WORLD_COLS);
@@ -340,9 +351,12 @@ function ConvertMapPosToWorldTileCenter(usMapPos: UINT16, psXPos: Pointer<INT16>
 }
 
 function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Pointer<INT16>, psWorldY: Pointer<INT16>): void {
-  INT16 sOffsetX, sOffsetY;
-  INT16 sTempPosX_W, sTempPosY_W;
-  INT16 sStartPointX_W, sStartPointY_W;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let sTempPosX_W: INT16;
+  let sTempPosY_W: INT16;
+  let sStartPointX_W: INT16;
+  let sStartPointY_W: INT16;
 
   // Convert mouse screen coords into offset from center
   sOffsetX = sScreenX - (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
@@ -362,7 +376,8 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Poin
 }
 
 function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Pointer<INT16>, psWorldCellY: Pointer<INT16>): void {
-  INT16 sWorldX, sWorldY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
 
   GetScreenXYWorldCoords(sScreenX, sScreenY, &sWorldX, &sWorldY);
 
@@ -372,7 +387,8 @@ function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Po
 }
 
 function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<INT16>): void {
-  INT16 sWorldX, sWorldY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
 
   GetScreenXYWorldCell(sScreenX, sScreenY, &sWorldX, &sWorldY);
 
@@ -380,8 +396,10 @@ function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<I
 }
 
 function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWorldScreenX: Pointer<INT16>, psWorldScreenY: Pointer<INT16>): void {
-  INT16 sScreenCenterX, sScreenCenterY;
-  INT16 sDistToCenterY, sDistToCenterX;
+  let sScreenCenterX: INT16;
+  let sScreenCenterY: INT16;
+  let sDistToCenterY: INT16;
+  let sDistToCenterX: INT16;
 
   // Find the diustance from render center to true world center
   sDistToCenterX = (sWorldCellX * CELL_X_SIZE) - gCenterWorldX;
@@ -400,8 +418,10 @@ function GetWorldXYAbsoluteScreenXY(sWorldCellX: INT32, sWorldCellY: INT32, psWo
 }
 
 function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCellY: Pointer<INT32>, sWorldScreenX: INT16, sWorldScreenY: INT16): void {
-  INT16 sWorldCenterX, sWorldCenterY;
-  INT16 sDistToCenterY, sDistToCenterX;
+  let sWorldCenterX: INT16;
+  let sWorldCenterY: INT16;
+  let sDistToCenterY: INT16;
+  let sDistToCenterX: INT16;
 
   // Subtract screen center
   sDistToCenterX = sWorldScreenX - gsCX + gsTLX;
@@ -422,7 +442,8 @@ function GetFromAbsoluteScreenXYWorldXY(psWorldCellX: Pointer<INT32>, psWorldCel
 // UTILITY FUNTIONS
 
 function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
-  INT16 sMod, sPropMod;
+  let sMod: INT16;
+  let sPropMod: INT16;
 
   // get modulas of our origin
   sMod = sGridno % MAXCOL;
@@ -452,7 +473,7 @@ function OutOfBounds(sGridno: INT16, sProposedGridno: INT16): INT32 {
 }
 
 function NewGridNo(sGridno: INT16, sDirInc: INT16): INT16 {
-  INT16 sProposedGridno = sGridno + sDirInc;
+  let sProposedGridno: INT16 = sGridno + sDirInc;
 
   // now check for out-of-bounds
   if (OutOfBounds(sGridno, sProposedGridno))
@@ -476,8 +497,10 @@ function DirectionInc(sDirection: INT16): INT16 {
 }
 
 function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>, sScreenY: Pointer<INT16>): BOOLEAN {
-  INT16 sDeltaCellX, sDeltaCellY;
-  INT16 sDeltaScreenX, sDeltaScreenY;
+  let sDeltaCellX: INT16;
+  let sDeltaCellY: INT16;
+  let sDeltaScreenX: INT16;
+  let sDeltaScreenY: INT16;
 
   sDeltaCellX = sCellX - gsRenderCenterX;
   sDeltaCellY = sCellY - gsRenderCenterY;
@@ -512,8 +535,11 @@ function ConvertGridNoToCenterCellXY(sGridNo: INT16, sXPos: Pointer<INT16>, sYPo
 }
 
 function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
-  INT32 uiDist;
-  INT16 sXPos, sYPos, sXPos2, sYPos2;
+  let uiDist: INT32;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sXPos2: INT16;
+  let sYPos2: INT16;
 
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo1, &sXPos, &sYPos);
@@ -527,7 +553,10 @@ function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
 }
 
 function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
-  INT16 sXPos, sYPos, sXPos2, sYPos2;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sXPos2: INT16;
+  let sYPos2: INT16;
 
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo1, &sXPos, &sYPos);
@@ -558,7 +587,9 @@ function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Poin
 }
 
 function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
-  INT16 sRows, sCols, sResult;
+  let sRows: INT16;
+  let sCols: INT16;
+  let sResult: INT16;
 
   sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
   sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
@@ -571,7 +602,8 @@ function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
 }
 
 function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
-  INT16 sRows, sCols;
+  let sRows: INT16;
+  let sCols: INT16;
 
   sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
   sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
@@ -582,7 +614,8 @@ function SpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
 function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
 // distance away, ignoring diagonals!
 {
-  INT16 sRows, sCols;
+  let sRows: INT16;
+  let sCols: INT16;
 
   sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
   sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
@@ -591,8 +624,8 @@ function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
 }
 
 function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
-  INT16 sDirection;
-  INT16 sNumTurns = 0;
+  let sDirection: INT16;
+  let sNumTurns: INT16 = 0;
 
   sDirection = sDir1;
 
@@ -624,12 +657,12 @@ function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
 }
 
 function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
-  INT32 cnt;
-  INT16 sNewGridNo;
-  BOOLEAN fFound = FALSE;
-  UINT8 bMinNumTurns = 100;
-  INT8 bNumTurns;
-  INT8 bMinDirection = 0;
+  let cnt: INT32;
+  let sNewGridNo: INT16;
+  let fFound: BOOLEAN = FALSE;
+  let bMinNumTurns: UINT8 = 100;
+  let bNumTurns: INT8;
+  let bMinDirection: INT8 = 0;
 
   // IF there is a roof over our heads, this is an ivalid....
   // return ( FALSE );l
@@ -666,12 +699,12 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
 }
 
 function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
-  INT32 cnt;
-  INT16 sNewGridNo;
-  BOOLEAN fFound = FALSE;
-  UINT8 bMinNumTurns = 100;
-  INT8 bNumTurns;
-  INT8 bMinDirection = 0;
+  let cnt: INT32;
+  let sNewGridNo: INT16;
+  let fFound: BOOLEAN = FALSE;
+  let bMinNumTurns: UINT8 = 100;
+  let bNumTurns: INT8;
+  let bMinDirection: INT8 = 0;
 
   // LOOP THROUGH ALL 8 DIRECTIONS
   for (cnt = 0; cnt < 8; cnt += 2) {
@@ -705,7 +738,8 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
 }
 
 function QuickestDirection(origin: INT16, dest: INT16): INT16 {
-  INT16 v1, v2;
+  let v1: INT16;
+  let v2: INT16;
 
   if (origin == dest)
     return 0;
@@ -730,7 +764,8 @@ function QuickestDirection(origin: INT16, dest: INT16): INT16 {
 }
 
 function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
-  INT16 v1, v2;
+  let v1: INT16;
+  let v2: INT16;
 
   if (origin == dest)
     return 0;
@@ -756,7 +791,8 @@ function ExtQuickestDirection(origin: INT16, dest: INT16): INT16 {
 
 // Returns the (center ) cell coordinates in X
 function CenterX(sGridNo: INT16): INT16 {
-  INT16 sYPos, sXPos;
+  let sYPos: INT16;
+  let sXPos: INT16;
 
   sYPos = sGridNo / WORLD_COLS;
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
@@ -766,7 +802,8 @@ function CenterX(sGridNo: INT16): INT16 {
 
 // Returns the (center ) cell coordinates in Y
 function CenterY(sGridNo: INT16): INT16 {
-  INT16 sYPos, sXPos;
+  let sYPos: INT16;
+  let sXPos: INT16;
 
   sYPos = sGridNo / WORLD_COLS;
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
@@ -775,7 +812,8 @@ function CenterY(sGridNo: INT16): INT16 {
 }
 
 function MapX(sGridNo: INT16): INT16 {
-  INT16 sYPos, sXPos;
+  let sYPos: INT16;
+  let sXPos: INT16;
 
   sYPos = sGridNo / WORLD_COLS;
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
@@ -784,7 +822,8 @@ function MapX(sGridNo: INT16): INT16 {
 }
 
 function MapY(sGridNo: INT16): INT16 {
-  INT16 sYPos, sXPos;
+  let sYPos: INT16;
+  let sXPos: INT16;
 
   sYPos = sGridNo / WORLD_COLS;
   sXPos = (sGridNo - (sYPos * WORLD_COLS));
@@ -793,9 +832,10 @@ function MapY(sGridNo: INT16): INT16 {
 }
 
 function GridNoOnVisibleWorldTile(sGridNo: INT16): BOOLEAN {
-  INT16 sWorldX;
-  INT16 sWorldY;
-  INT16 sXMapPos, sYMapPos;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
 
   // Check for valid gridno...
   ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
@@ -814,9 +854,10 @@ function GridNoOnVisibleWorldTile(sGridNo: INT16): BOOLEAN {
 // gma eplay area
 // mostly due to UI bar that comes down....
 function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): BOOLEAN {
-  INT16 sWorldX;
-  INT16 sWorldY;
-  INT16 sXMapPos, sYMapPos;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
 
   // Check for valid gridno...
   ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
@@ -832,7 +873,7 @@ function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): BOOLEAN {
 }
 
 function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN {
-  INT8 bDir;
+  let bDir: INT8;
 
   // check NE, SE, SW, NW because of tilt of isometric display
 
@@ -848,12 +889,13 @@ function GridNoOnEdgeOfMap(sGridNo: INT16, pbDirection: Pointer<INT8>): BOOLEAN 
 }
 
 function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
-  INT32 cnt;
-  INT16 sNewGridNo, sOtherSideOfFence;
-  BOOLEAN fFound = FALSE;
-  UINT8 bMinNumTurns = 100;
-  INT8 bNumTurns;
-  INT8 bMinDirection = 0;
+  let cnt: INT32;
+  let sNewGridNo: INT16;
+  let sOtherSideOfFence: INT16;
+  let fFound: BOOLEAN = FALSE;
+  let bMinNumTurns: UINT8 = 100;
+  let bNumTurns: INT8;
+  let bMinDirection: INT8 = 0;
 
   // IF there is a fence in this gridno, return false!
   if (IsJumpableFencePresentAtGridno(sGridNo)) {
@@ -894,7 +936,9 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
 
 // Simply chooses a random gridno within valid boundaries (for dropping things in unloaded sectors)
 function RandomGridNo(): INT16 {
-  INT32 iMapXPos, iMapYPos, iMapIndex;
+  let iMapXPos: INT32;
+  let iMapYPos: INT32;
+  let iMapIndex: INT32;
   do {
     iMapXPos = Random(WORLD_COLS);
     iMapYPos = Random(WORLD_ROWS);

@@ -12,11 +12,11 @@
 
 const AI_LIST_SIZE = TOTAL_SOLDIERS;
 
-AILIST gAIList[AI_LIST_SIZE];
-AILIST *gpFirstAIListEntry = NULL;
+let gAIList: AILIST[] /* [AI_LIST_SIZE] */;
+let gpFirstAIListEntry: Pointer<AILIST> = NULL;
 
 function ClearAIList(): void {
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   for (ubLoop = 0; ubLoop < AI_LIST_SIZE; ubLoop++) {
     gAIList[ubLoop].ubID = NOBODY;
@@ -33,7 +33,7 @@ function DeleteAIListEntry(pEntry: Pointer<AILIST>): void {
 }
 
 function FindEmptyAIListEntry(): UINT8 {
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   for (ubLoop = 0; ubLoop < AI_LIST_SIZE; ubLoop++) {
     if (gAIList[ubLoop].ubID == NOBODY) {
@@ -52,8 +52,8 @@ function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): 
 }
 
 function RemoveFirstAIListEntry(): UINT8 {
-  AILIST *pOldFirstEntry;
-  UINT8 ubID;
+  let pOldFirstEntry: Pointer<AILIST>;
+  let ubID: UINT8;
 
   while (gpFirstAIListEntry != NULL) {
     // record pointer to start of list, and advance head ptr
@@ -74,8 +74,8 @@ function RemoveFirstAIListEntry(): UINT8 {
 }
 
 function RemoveAIListEntryForID(ubID: UINT8): void {
-  AILIST *pEntry;
-  AILIST *pPrevEntry;
+  let pEntry: Pointer<AILIST>;
+  let pPrevEntry: Pointer<AILIST>;
 
   pEntry = gpFirstAIListEntry;
   pPrevEntry = NULL;
@@ -97,8 +97,10 @@ function RemoveAIListEntryForID(ubID: UINT8): void {
 }
 
 function InsertIntoAIList(ubID: UINT8, bPriority: INT8): BOOLEAN {
-  UINT8 ubNewEntry;
-  AILIST *pEntry, *pNewEntry, *pPrevEntry = NULL;
+  let ubNewEntry: UINT8;
+  let pEntry: Pointer<AILIST>;
+  let pNewEntry: Pointer<AILIST>;
+  let pPrevEntry: Pointer<AILIST> = NULL;
 
   ubNewEntry = FindEmptyAIListEntry();
 
@@ -216,9 +218,9 @@ function SatisfiesAIListConditions(pSoldier: Pointer<SOLDIERTYPE>, pubDoneCount:
 function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
   // we'll have to fake this guy's alert status (in the list) to be the same as the current
   // front of the list
-  INT8 bPriority;
-  UINT8 ubNewEntry;
-  AILIST *pNewEntry;
+  let bPriority: INT8;
+  let ubNewEntry: UINT8;
+  let pNewEntry: Pointer<AILIST>;
 
   if (!SatisfiesAIListConditions(MercPtrs[ubID], NULL, FALSE)) {
     // can't do dat!
@@ -243,13 +245,13 @@ function MoveToFrontOfAIList(ubID: UINT8): BOOLEAN {
 
 function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
   // loop through all non-player-team guys and add to list
-  UINT32 uiLoop;
-  BOOLEAN fInsertRet;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fRet = FALSE;
-  UINT8 ubCount = 0;
-  UINT8 ubDoneCount = 0;
-  INT8 bPriority;
+  let uiLoop: UINT32;
+  let fInsertRet: BOOLEAN;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fRet: BOOLEAN = FALSE;
+  let ubCount: UINT8 = 0;
+  let ubDoneCount: UINT8 = 0;
+  let bPriority: INT8;
 
   // this team is being given control so reset their muzzle flashes
   TurnOffTeamsMuzzleFlashes(bTeam);
@@ -288,7 +290,7 @@ function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
   return fRet;
 }
 
-UINT8 gubEncryptionArray1[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] = {
+let gubEncryptionArray1: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = {
   { 11, 129, 18, 136, 163, 80, 128, 53, 174, 146, 188, 240, 208, 162, 127, 192, 251, 6, 52, 128, 119, 123, 234, 131, 60, 66, 171, 237, 89, 192, 17, 37, 139, 20, 185, 48, 218, 176, 116, 87, 91, 156, 166, 224, 215, 100, 237, 71, 157 },
 
   { 99, 93, 179, 25, 113, 109, 38, 135, 144, 248, 17, 108, 178, 84, 210, 254, 54, 240, 209, 92, 35, 121, 166, 153, 203, 239, 27, 134, 231, 193, 97, 73, 188, 59, 87, 146, 111, 103, 48, 161, 25, 196, 84, 201, 179, 208, 220, 189, 113 },

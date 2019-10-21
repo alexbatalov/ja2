@@ -1,8 +1,8 @@
-UINT8 gubCurrentSortMode;
-UINT8 gubCurrentListMode;
+let gubCurrentSortMode: UINT8;
+let gubCurrentListMode: UINT8;
 
-UINT32 guiMugShotBorder;
-UINT32 guiAimFiFace[MAX_NUMBER_MERCS];
+let guiMugShotBorder: UINT32;
+let guiAimFiFace: UINT32[] /* [MAX_NUMBER_MERCS] */;
 
 const AIM_FI_NUM_MUHSHOTS_X = 8;
 const AIM_FI_NUM_MUHSHOTS_Y = 5;
@@ -31,20 +31,23 @@ const AIM_FI_AWAY_TEXT_OFFSET_WIDTH = 48;
 // Mouse Regions
 
 // Face regions
-MOUSE_REGION gMercFaceMouseRegions[MAX_NUMBER_MERCS];
+let gMercFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_MERCS] */;
 
 // Screen region, used to right click to go back to previous page
-MOUSE_REGION gScreenMouseRegions;
+let gScreenMouseRegions: MOUSE_REGION;
 
 function GameInitAimFacialIndex(): void {
 }
 
 function EnterAimFacialIndex(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT8 i;
-  UINT16 usPosX, usPosY, x, y;
-  STR sFaceLoc = "FACES\\";
-  char sTemp[100];
+  let VObjectDesc: VOBJECT_DESC;
+  let i: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let x: UINT16;
+  let y: UINT16;
+  let sFaceLoc: STR = "FACES\\";
+  let sTemp: char[] /* [100] */;
 
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -87,7 +90,7 @@ function EnterAimFacialIndex(): BOOLEAN {
 }
 
 function ExitAimFacialIndex(): void {
-  UINT8 i;
+  let i: UINT8;
 
   RemoveAimDefaults();
 
@@ -108,9 +111,12 @@ function HandleAimFacialIndex(): void {
 }
 
 function RenderAimFacialIndex(): BOOLEAN {
-  UINT16 usPosX, usPosY, x, y;
-  wchar_t sString[150];
-  UINT8 i;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let x: UINT16;
+  let y: UINT16;
+  let sString: wchar_t[] /* [150] */;
+  let i: UINT8;
 
   DrawAimDefaults();
 
@@ -174,9 +180,13 @@ function SelectScreenRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
-  UINT8 ubMercNum;
-  UINT16 usPosX, usPosY;
-  UINT16 ty1, ty2, tx1, tx2;
+  let ubMercNum: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let ty1: UINT16;
+  let ty2: UINT16;
+  let tx1: UINT16;
+  let tx2: UINT16;
 
   ubMercNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -206,9 +216,9 @@ function SelectMercFaceMoveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, reason
 }
 
 function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, ubImage: UINT8): BOOLEAN {
-  HVOBJECT hMugShotBorderHandle;
-  HVOBJECT hFaceHandle;
-  SOLDIERTYPE *pSoldier = NULL;
+  let hMugShotBorderHandle: HVOBJECT;
+  let hFaceHandle: HVOBJECT;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], TRUE);
 

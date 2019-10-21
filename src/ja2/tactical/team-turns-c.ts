@@ -1,19 +1,19 @@
 const END_OF_INTERRUPTS = 255;
 
-UINT8 gubOutOfTurnOrder[MAXMERCS] = {
+let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = {
   END_OF_INTERRUPTS,
   0,
 };
-UINT8 gubOutOfTurnPersons = 0;
+let gubOutOfTurnPersons: UINT8 = 0;
 
 const LATEST_INTERRUPT_GUY = () => (gubOutOfTurnOrder[gubOutOfTurnPersons]);
 const REMOVE_LATEST_INTERRUPT_GUY = () => (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE));
 const INTERRUPTS_OVER = () => (gubOutOfTurnPersons == 1);
 
-INT16 InterruptOnlyGuynum = NOBODY;
-BOOLEAN InterruptsAllowed = TRUE;
-BOOLEAN gfHiddenInterrupt = FALSE;
-UINT8 gubLastInterruptedGuy = 0;
+let InterruptOnlyGuynum: INT16 = NOBODY;
+let InterruptsAllowed: BOOLEAN = TRUE;
+let gfHiddenInterrupt: BOOLEAN = FALSE;
+let gubLastInterruptedGuy: UINT8 = 0;
 
 interface TEAM_TURN_SAVE_STRUCT {
   ubOutOfTurnPersons: UINT8;
@@ -36,8 +36,8 @@ function ClearIntList(): void {
 }
 
 function BloodcatsPresent(): BOOLEAN {
-  INT32 iLoop;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (gTacticalStatus.Team[CREATURE_TEAM].bTeamActive == FALSE) {
     return FALSE;
@@ -55,7 +55,7 @@ function BloodcatsPresent(): BOOLEAN {
 }
 
 function StartPlayerTeamTurn(fDoBattleSnd: BOOLEAN, fEnteringCombatMode: BOOLEAN): void {
-  INT32 cnt;
+  let cnt: INT32;
   //	SOLDIERTYPE		*pSoldier;
   //	EV_S_BEGINTURN	SBeginTurn;
 
@@ -157,8 +157,8 @@ function FreezeInterfaceForEnemyTurn(): void {
 }
 
 function EndTurn(ubNextTeam: UINT8): void {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Check for enemy pooling (add enemies if there happens to be more than the max in the
   // current battle.  If one or more slots have freed up, we can add them now.
@@ -198,8 +198,8 @@ function EndTurn(ubNextTeam: UINT8): void {
 }
 
 function EndAITurn(): void {
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Remove any deadlock message
   EndDeadlockMsg();
@@ -223,8 +223,8 @@ function EndAITurn(): void {
 
 function EndAllAITurns(): void {
   // warp turn to the player's turn
-  SOLDIERTYPE *pSoldier;
-  INT32 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Remove any deadlock message
   EndDeadlockMsg();
@@ -266,9 +266,9 @@ function EndTurnEvents(): void {
 }
 
 function BeginTeamTurn(ubTeam: UINT8): void {
-  INT32 cnt;
-  UINT8 ubID;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let ubID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   while (1) {
     if (ubTeam > LAST_TEAM) {
@@ -422,8 +422,8 @@ function DisplayHiddenTurnbased(pActingSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function EveryoneInInterruptListOnSameTeam(): BOOLEAN {
-  UINT8 ubLoop;
-  UINT8 ubTeam = 255;
+  let ubLoop: UINT8;
+  let ubTeam: UINT8 = 255;
 
   for (ubLoop = 1; ubLoop <= gubOutOfTurnPersons; ubLoop++) {
     if (ubTeam == 255) {
@@ -438,12 +438,12 @@ function EveryoneInInterruptListOnSameTeam(): BOOLEAN {
 }
 
 function StartInterrupt(): void {
-  UINT8 ubFirstInterrupter;
-  INT8 bTeam;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pTempSoldier;
-  UINT8 ubInterrupter;
-  INT32 cnt;
+  let ubFirstInterrupter: UINT8;
+  let bTeam: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTempSoldier: Pointer<SOLDIERTYPE>;
+  let ubInterrupter: UINT8;
+  let cnt: INT32;
 
   ubFirstInterrupter = LATEST_INTERRUPT_GUY;
   pSoldier = MercPtrs[ubFirstInterrupter];
@@ -469,9 +469,10 @@ function StartInterrupt(): void {
 
   if (pSoldier->bTeam == OUR_TEAM) {
     // start interrupts for everyone on our side at once
-    INT16 sTemp[255];
-    UINT8 ubInterrupters = 0;
-    INT32 iSquad, iCounter;
+    let sTemp: INT16[] /* [255] */;
+    let ubInterrupters: UINT8 = 0;
+    let iSquad: INT32;
+    let iCounter: INT32;
 
     // build string for display of who gets interrupt
     while (1) {
@@ -623,12 +624,12 @@ function StartInterrupt(): void {
 }
 
 function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
-  UINT8 ubInterruptedSoldier;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pTempSoldier;
-  INT32 cnt;
-  BOOLEAN fFound;
-  UINT8 ubMinAPsToAttack;
+  let ubInterruptedSoldier: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTempSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let fFound: BOOLEAN;
+  let ubMinAPsToAttack: UINT8;
 
   for (cnt = gubOutOfTurnPersons; cnt > 0; cnt--) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("ENDINT:  Q position %d: %d", cnt, gubOutOfTurnOrder[cnt]));
@@ -834,9 +835,9 @@ function EndInterrupt(fMarkInterruptOccurred: BOOLEAN): void {
 
 function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, bOldOppList: INT8): BOOLEAN {
   //	UINT8 ubAniType;
-  UINT8 ubMinPtsNeeded;
-  INT8 bDir;
-  SOLDIERTYPE *pOpponent;
+  let ubMinPtsNeeded: UINT8;
+  let bDir: INT8;
+  let pOpponent: Pointer<SOLDIERTYPE>;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && !(gubSightFlags & SIGHT_INTERRUPT)) {
     return FALSE;
@@ -1049,9 +1050,9 @@ function StandardInterruptConditionsMet(pSoldier: Pointer<SOLDIERTYPE>, ubOppone
 }
 
 function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT8, fUseWatchSpots: BOOLEAN): INT8 {
-  INT8 bPoints;
-  INT8 bLightLevel;
-  UINT8 ubDistance;
+  let bPoints: INT8;
+  let bLightLevel: INT8;
+  let ubDistance: UINT8;
 
   // extra check to make sure neutral folks never get interrupts
   if (pSoldier->bNeutral) {
@@ -1180,7 +1181,7 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
 }
 
 function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>): BOOLEAN {
-  BOOLEAN fResult = FALSE;
+  let fResult: BOOLEAN = FALSE;
 
   // if opponent can't currently see us and we can see them
   if (pSoldier->bOppList[pOpponent->ubID] == SEEN_CURRENTLY && pOpponent->bOppList[pSoldier->ubID] != SEEN_CURRENTLY) {
@@ -1200,8 +1201,8 @@ function InterruptDuel(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIE
 }
 
 function DeleteFromIntList(ubIndex: UINT8, fCommunicate: BOOLEAN): void {
-  UINT8 ubLoop;
-  UINT8 ubID;
+  let ubLoop: UINT8;
+  let ubID: UINT8;
 
   if (ubIndex > gubOutOfTurnPersons) {
     return;
@@ -1234,7 +1235,7 @@ function DeleteFromIntList(ubIndex: UINT8, fCommunicate: BOOLEAN): void {
 }
 
 function AddToIntList(ubID: UINT8, fGainControl: BOOLEAN, fCommunicate: BOOLEAN): void {
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   //	ScreenMsg( FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"%d added to int list", ubID );
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("INTERRUPT: adding ID %d who %s", ubID, fGainControl ? "gains control" : "loses control"));
@@ -1284,12 +1285,14 @@ function AddToIntList(ubID: UINT8, fGainControl: BOOLEAN, fCommunicate: BOOLEAN)
 }
 
 function VerifyOutOfTurnOrderArray(): void {
-  UINT8 ubTeamHighest[MAXTEAMS] = { 0 };
-  UINT8 ubTeamsInList;
-  UINT8 ubNextInArrayOnTeam, ubNextIndex;
-  UINT8 ubTeam;
-  UINT8 ubLoop, ubLoop2;
-  BOOLEAN fFoundLoop = FALSE;
+  let ubTeamHighest: UINT8[] /* [MAXTEAMS] */ = { 0 };
+  let ubTeamsInList: UINT8;
+  let ubNextInArrayOnTeam: UINT8;
+  let ubNextIndex: UINT8;
+  let ubTeam: UINT8;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let fFoundLoop: BOOLEAN = FALSE;
 
   for (ubLoop = 1; ubLoop <= gubOutOfTurnPersons; ubLoop++) {
     ubTeam = Menptr[gubOutOfTurnOrder[ubLoop]].bTeam;
@@ -1382,16 +1385,18 @@ function DoneAddingToIntList(pSoldier: Pointer<SOLDIERTYPE>, fChange: BOOLEAN, u
 }
 
 function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UINT8): void {
-  UINT8 ubTeam, ubOpp;
-  UINT8 ubIntCnt;
-  UINT8 ubIntList[MAXMERCS];
-  UINT8 ubIntDiff[MAXMERCS];
-  UINT8 ubSmallestDiff;
-  UINT8 ubSlot, ubSmallestSlot;
-  UINT8 ubLoop;
-  BOOLEAN fIntOccurs;
-  SOLDIERTYPE *pOpponent;
-  BOOLEAN fControlChanged = FALSE;
+  let ubTeam: UINT8;
+  let ubOpp: UINT8;
+  let ubIntCnt: UINT8;
+  let ubIntList: UINT8[] /* [MAXMERCS] */;
+  let ubIntDiff: UINT8[] /* [MAXMERCS] */;
+  let ubSmallestDiff: UINT8;
+  let ubSlot: UINT8;
+  let ubSmallestSlot: UINT8;
+  let ubLoop: UINT8;
+  let fIntOccurs: BOOLEAN;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let fControlChanged: BOOLEAN = FALSE;
 
   if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT)) {
     ubIntCnt = 0;
@@ -1519,8 +1524,8 @@ function ResolveInterruptsVs(pSoldier: Pointer<SOLDIERTYPE>, ubInterruptType: UI
 }
 
 function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  TEAM_TURN_SAVE_STRUCT TeamTurnStruct;
+  let uiNumBytesWritten: UINT32;
+  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
   // Save the gubTurn Order Array
   FileWrite(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, &uiNumBytesWritten);
@@ -1546,8 +1551,8 @@ function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  TEAM_TURN_SAVE_STRUCT TeamTurnStruct;
+  let uiNumBytesRead: UINT32;
+  let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
   // Load the gubTurn Order Array
   FileRead(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, &uiNumBytesRead);
@@ -1576,7 +1581,10 @@ function NPCFirstDraw(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Pointer<SO
   // if attacking an NPC check to see who draws first!
 
   if (pTargetSoldier->ubProfile != NO_PROFILE && pTargetSoldier->ubProfile != SLAY && pTargetSoldier->bNeutral && pTargetSoldier->bOppList[pSoldier->ubID] == SEEN_CURRENTLY && (FindAIUsableObjClass(pTargetSoldier, IC_WEAPON) != NO_SLOT)) {
-    UINT8 ubLargerHalf, ubSmallerHalf, ubTargetLargerHalf, ubTargetSmallerHalf;
+    let ubLargerHalf: UINT8;
+    let ubSmallerHalf: UINT8;
+    let ubTargetLargerHalf: UINT8;
+    let ubTargetSmallerHalf: UINT8;
 
     // roll the dice!
     // e.g. if level 5, roll Random( 3 + 1 ) + 2 for result from 2 to 5

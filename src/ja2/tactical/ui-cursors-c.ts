@@ -1,11 +1,11 @@
-BOOLEAN gfCannotGetThrough = FALSE;
-BOOLEAN gfDisplayFullCountRing = FALSE;
+let gfCannotGetThrough: BOOLEAN = FALSE;
+let gfDisplayFullCountRing: BOOLEAN = FALSE;
 
 function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs: Pointer<BOOLEAN>): BOOLEAN {
-  UINT32 uiCursorFlags;
-  static BOOLEAN fDoNewTile = FALSE;
-  BOOLEAN fRecalc = FALSE;
-  BOOLEAN fShowAPs = FALSE;
+  let uiCursorFlags: UINT32;
+  /* static */ let fDoNewTile: BOOLEAN = FALSE;
+  let fRecalc: BOOLEAN = FALSE;
+  let fShowAPs: BOOLEAN = FALSE;
 
   // SET FLAGS FOR CERTAIN MOUSE MOVEMENTS
   GetCursorMovementFlags(&uiCursorFlags);
@@ -54,13 +54,13 @@ function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs
 
 // FUNCTIONS FOR CURSOR DETERMINATION!
 function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: UINT16, fActivated: BOOLEAN): UINT8 {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiCursorFlags;
-  BOOLEAN fShowAPs = FALSE;
-  BOOLEAN fRecalc = FALSE;
-  INT16 sTargetGridNo = usMapPos;
-  UINT8 ubCursorID = 0;
-  UINT8 ubItemCursor;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiCursorFlags: UINT32;
+  let fShowAPs: BOOLEAN = FALSE;
+  let fRecalc: BOOLEAN = FALSE;
+  let sTargetGridNo: INT16 = usMapPos;
+  let ubCursorID: UINT8 = 0;
+  let ubItemCursor: UINT8;
 
   pSoldier = MercPtrs[ubSoldierID];
 
@@ -193,13 +193,13 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
 }
 
 function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, fShowAPs: BOOLEAN, fRecalc: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  UINT8 switchVal;
-  BOOLEAN fEnoughPoints = TRUE;
-  UINT8 bFutureAim;
-  INT16 sAPCosts;
-  UINT16 usCursor = 0;
-  BOOLEAN fMaxPointLimitHit = FALSE;
-  UINT16 usInHand;
+  let switchVal: UINT8;
+  let fEnoughPoints: BOOLEAN = TRUE;
+  let bFutureAim: UINT8;
+  let sAPCosts: INT16;
+  let usCursor: UINT16 = 0;
+  let fMaxPointLimitHit: BOOLEAN = FALSE;
+  let usInHand: UINT16;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -466,7 +466,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 }
 
 function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, fShowAPs: BOOLEAN, fRecalc: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  UINT16 usInHand;
+  let usInHand: UINT16;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -572,12 +572,18 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
 }
 
 function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRecalc: BOOLEAN): void {
-  UINT16 usMapPos;
-  SOLDIERTYPE *pTargetSoldier = NULL, *pSoldier;
-  UINT16 usFlags;
-  INT16 sMouseX, sMouseY, sCellX, sCellY, sScreenX, sScreenY;
-  BOOLEAN fOnGuy = FALSE;
-  LEVELNODE *pNode;
+  let usMapPos: UINT16;
+  let pTargetSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let usFlags: UINT16;
+  let sMouseX: INT16;
+  let sMouseY: INT16;
+  let sCellX: INT16;
+  let sCellY: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let fOnGuy: BOOLEAN = FALSE;
+  let pNode: Pointer<LEVELNODE>;
 
   pSoldier = MercPtrs[ubSoldierID];
 
@@ -749,9 +755,9 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
 }
 
 function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActivated: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  INT16 sAPCosts;
-  INT8 bFutureAim;
-  BOOLEAN fEnoughPoints = TRUE;
+  let sAPCosts: INT16;
+  let bFutureAim: INT8;
+  let fEnoughPoints: BOOLEAN = TRUE;
 
   // DRAW PATH TO GUY
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_MERCS);
@@ -846,9 +852,9 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
 }
 
 function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActivated: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  INT16 sAPCosts;
-  INT8 bFutureAim;
-  BOOLEAN fEnoughPoints = TRUE;
+  let sAPCosts: INT16;
+  let bFutureAim: INT8;
+  let fEnoughPoints: BOOLEAN = TRUE;
 
   // DRAW PATH TO GUY
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_MERCS);
@@ -964,14 +970,14 @@ function HandleActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT
 }
 
 function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fRecalc: BOOLEAN, uiCursorFlags: UINT32, ubItemCursor: UINT8): UINT8 {
-  INT16 sFinalGridNo;
-  static BOOLEAN fBadCTGH = FALSE;
-  BOOLEAN fArmed = FALSE;
-  INT8 bLevel;
-  OBJECTTYPE TempObject;
-  INT8 bSlot;
-  OBJECTTYPE *pObj;
-  INT8 bAttachPos;
+  let sFinalGridNo: INT16;
+  /* static */ let fBadCTGH: BOOLEAN = FALSE;
+  let fArmed: BOOLEAN = FALSE;
+  let bLevel: INT8;
+  let TempObject: OBJECTTYPE;
+  let bSlot: INT8;
+  let pObj: Pointer<OBJECTTYPE>;
+  let bAttachPos: INT8;
 
   // Check for enough ammo...
   if (ubItemCursor == TRAJECTORYCURS) {
@@ -1120,9 +1126,9 @@ function HandleJarCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCurs
 }
 
 function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiCursorFlags: UINT32): UINT8 {
-  STRUCTURE *pStructure;
-  INT16 sIntTileGridNo;
-  LEVELNODE *pIntTile;
+  let pStructure: Pointer<STRUCTURE>;
+  let sIntTileGridNo: INT16;
+  let pIntTile: Pointer<LEVELNODE>;
 
   // DRAW PATH TO GUY
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_CAN);
@@ -1141,7 +1147,7 @@ function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
 }
 
 function HandleRemoteCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActivated: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  BOOLEAN fEnoughPoints = TRUE;
+  let fEnoughPoints: BOOLEAN = TRUE;
 
   // Calculate action points
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -1163,7 +1169,7 @@ function HandleRemoteCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAc
 }
 
 function HandleBombCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActivated: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
-  BOOLEAN fEnoughPoints = TRUE;
+  let fEnoughPoints: BOOLEAN = TRUE;
 
   // DRAW PATH TO GUY
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_BOMB);
@@ -1188,8 +1194,8 @@ function HandleBombCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fActi
 }
 
 function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT16 usInHand;
-  UINT8 ubItemCursor;
+  let usInHand: UINT16;
+  let ubItemCursor: UINT8;
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
   usInHand = pSoldier->inv[HANDPOS].usItem;
@@ -1202,9 +1208,9 @@ function HandleEndConfirmCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT16 usInHand;
-  UINT8 ubItemCursor;
-  INT16 sGridNo;
+  let usInHand: UINT16;
+  let ubItemCursor: UINT8;
+  let sGridNo: INT16;
 
   // LOOK IN GUY'S HAND TO CHECK LOCATION
   usInHand = pSoldier->inv[HANDPOS].usItem;
@@ -1282,13 +1288,13 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): void {
-  UINT16 usInHand;
-  INT16 sAPCosts;
-  INT8 bFutureAim;
-  UINT8 ubCursor;
-  SOLDIERTYPE *pTSoldier;
-  INT16 sGridNo;
-  INT8 bTargetLevel;
+  let usInHand: UINT16;
+  let sAPCosts: INT16;
+  let bFutureAim: INT8;
+  let ubCursor: UINT8;
+  let pTSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
+  let bTargetLevel: INT8;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -1434,8 +1440,8 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
 }
 
 function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
-  UINT8 ubCursor;
-  UINT16 usInHand;
+  let ubCursor: UINT8;
+  let usInHand: UINT16;
 
   // If we are an EPC, do nothing....
   // if ( ( pSoldier->uiStatusFlags & SOLDIER_VEHICLE ) )
@@ -1496,7 +1502,7 @@ function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 
 // Switch on item, display appropriate feedback cursor for a click....
 function HandleUICursorRTFeedback(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubItemCursor;
+  let ubItemCursor: UINT8;
 
   ubItemCursor = GetActionModeCursor(pSoldier);
 

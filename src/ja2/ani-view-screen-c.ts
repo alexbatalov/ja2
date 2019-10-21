@@ -1,15 +1,15 @@
-BOOLEAN gfAniEditMode = FALSE;
-static UINT16 usStartAnim = 0;
-static UINT8 ubStartHeight = 0;
-static SOLDIERTYPE *pSoldier;
+let gfAniEditMode: BOOLEAN = FALSE;
+/* static */ let usStartAnim: UINT16 = 0;
+/* static */ let ubStartHeight: UINT8 = 0;
+/* static */ let pSoldier: Pointer<SOLDIERTYPE>;
 
-static BOOLEAN fOKFiles = FALSE;
-static UINT8 ubNumStates = 0;
-static UINT16 *pusStates = NULL;
-static INT8 ubCurLoadedState = 0;
+/* static */ let fOKFiles: BOOLEAN = FALSE;
+/* static */ let ubNumStates: UINT8 = 0;
+/* static */ let pusStates: Pointer<UINT16> = NULL;
+/* static */ let ubCurLoadedState: INT8 = 0;
 
 function CycleAnimations(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // FInd the next animation with start height the same...
   for (cnt = usStartAnim + 1; cnt < NUMANIMATIONSTATES; cnt++) {
@@ -36,11 +36,11 @@ function AniEditScreenShutdown(): UINT32 {
 }
 
 function AniEditScreenHandle(): UINT32 {
-  InputAtom InputEvent;
-  static BOOLEAN fFirstTime = TRUE;
-  static UINT16 usOldState;
-  static BOOLEAN fToggle = FALSE;
-  static BOOLEAN fToggle2 = FALSE;
+  let InputEvent: InputAtom;
+  /* static */ let fFirstTime: BOOLEAN = TRUE;
+  /* static */ let usOldState: UINT16;
+  /* static */ let fToggle: BOOLEAN = FALSE;
+  /* static */ let fToggle2: BOOLEAN = FALSE;
 
   //	EV_S_SETPOSITION SSetPosition;
 
@@ -140,7 +140,7 @@ function AniEditScreenHandle(): UINT32 {
 
     if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 's')) {
       if (!fToggle) {
-        UINT16 usAnim = 0;
+        let usAnim: UINT16 = 0;
         usOldState = usStartAnim;
 
         switch (ubStartHeight) {
@@ -225,7 +225,7 @@ function AniEditScreenHandle(): UINT32 {
 }
 
 function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
-  INT32 cnt;
+  let cnt: INT32;
 
   // FInd the next animation with start height the same...
   for (cnt = 0; cnt < NUMANIMATIONSTATES; cnt++) {
@@ -238,12 +238,12 @@ function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
 }
 
 function BuildListFile(): void {
-  FILE *infoFile;
-  char currFilename[128];
-  int numEntries = 0;
-  int cnt;
-  UINT16 usState;
-  INT16 zError[128];
+  let infoFile: Pointer<FILE>;
+  let currFilename: char[] /* [128] */;
+  let numEntries: int = 0;
+  let cnt: int;
+  let usState: UINT16;
+  let zError: INT16[] /* [128] */;
 
   // Verify the existance of the header text file.
   infoFile = fopen("ANITEST.DAT", "rb");

@@ -1,7 +1,7 @@
 // This value is used to keep a small static array of uBID's which are stacked
 const MAX_STACKED_MERCS = 10;
 
-UINT32 gScrollSlideInertiaDirection[NUM_WORLD_DIRECTIONS] = {
+let gScrollSlideInertiaDirection: UINT32[] /* [NUM_WORLD_DIRECTIONS] */ = {
   3,
   0,
   0,
@@ -21,11 +21,11 @@ interface SOLDIER_STACK_TYPE {
   sUseGridNoGridNo: UINT16;
 }
 
-SOLDIER_STACK_TYPE gSoldierStack;
-BOOLEAN gfHandleStack = FALSE;
+let gSoldierStack: SOLDIER_STACK_TYPE;
+let gfHandleStack: BOOLEAN = FALSE;
 
 function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
-  INT16 sMapPos;
+  let sMapPos: INT16;
 
   *pMercFlags = 0;
 
@@ -39,7 +39,7 @@ function FindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Poin
 }
 
 function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>): BOOLEAN {
-  INT16 sMapPos;
+  let sMapPos: INT16;
 
   *pMercFlags = 0;
 
@@ -53,8 +53,8 @@ function SelectiveFindSoldierFromMouse(pusSoldierIndex: Pointer<UINT16>, pMercFl
 }
 
 function GetSoldierFindFlags(ubID: UINT16): UINT32 {
-  UINT32 MercFlags = 0;
-  SOLDIERTYPE *pSoldier;
+  let MercFlags: UINT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get pSoldier!
   pSoldier = MercPtrs[ubID];
@@ -107,18 +107,23 @@ function GetSoldierFindFlags(ubID: UINT16): UINT32 {
 
 // THIS FUNCTION IS CALLED FAIRLY REGULARLY
 function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlags: Pointer<UINT32>, uiFlags: UINT32): BOOLEAN {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  SGPRect aRect;
-  BOOLEAN fSoldierFound = FALSE;
-  INT16 sXMapPos, sYMapPos, sScreenX, sScreenY;
-  INT16 sMaxScreenMercY, sHeighestMercScreenY = -32000;
-  BOOLEAN fDoFull;
-  UINT8 ubBestMerc = NOBODY;
-  UINT16 usAnimSurface;
-  INT32 iMercScreenX, iMercScreenY;
-  BOOLEAN fInScreenRect = FALSE;
-  BOOLEAN fInGridNo = FALSE;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let aRect: SGPRect;
+  let fSoldierFound: BOOLEAN = FALSE;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sMaxScreenMercY: INT16;
+  let sHeighestMercScreenY: INT16 = -32000;
+  let fDoFull: BOOLEAN;
+  let ubBestMerc: UINT8 = NOBODY;
+  let usAnimSurface: UINT16;
+  let iMercScreenX: INT32;
+  let iMercScreenY: INT32;
+  let fInScreenRect: BOOLEAN = FALSE;
+  let fInGridNo: BOOLEAN = FALSE;
 
   *pusSoldierIndex = NOBODY;
   *pMercFlags = 0;
@@ -315,8 +320,8 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 }
 
 function CycleSoldierFindStack(usMapPos: UINT16): BOOLEAN {
-  UINT16 usSoldierIndex;
-  UINT32 uiMercFlags;
+  let usSoldierIndex: UINT16;
+  let uiMercFlags: UINT32;
 
   // Have we initalized for this yet?
   if (!gfHandleStack) {
@@ -359,7 +364,7 @@ function CycleSoldierFindStack(usMapPos: UINT16): BOOLEAN {
 }
 
 function SimpleFindSoldier(sGridNo: INT16, bLevel: INT8): Pointer<SOLDIERTYPE> {
-  UINT8 ubID;
+  let ubID: UINT8;
 
   ubID = WhoIsThere2(sGridNo, bLevel);
   if (ubID == NOBODY) {
@@ -370,7 +375,7 @@ function SimpleFindSoldier(sGridNo: INT16, bLevel: INT8): Pointer<SOLDIERTYPE> {
 }
 
 function IsValidTargetMerc(ubSoldierID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier = MercPtrs[ubSoldierID];
+  let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[ubSoldierID];
 
   // CHECK IF ACTIVE!
   if (!pSoldier->bActive) {
@@ -393,8 +398,9 @@ function IsValidTargetMerc(ubSoldierID: UINT8): BOOLEAN {
 }
 
 function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN {
-  INT32 iXTrav, iYTrav;
-  INT16 sMapPos;
+  let iXTrav: INT32;
+  let iYTrav: INT32;
+  let sMapPos: INT16;
 
   // Start with top left corner
   iXTrav = pRect->iLeft;
@@ -419,8 +425,9 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
 }
 
 function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGPRect>): void {
-  INT16 sMercScreenX, sMercScreenY;
-  UINT16 usAnimSurface;
+  let sMercScreenX: INT16;
+  let sMercScreenY: INT16;
+  let usAnimSurface: UINT16;
   //		ETRLEObject *pTrav;
   //		UINT32 usHeight, usWidth;
 
@@ -447,7 +454,7 @@ function GetSoldierScreenRect(pSoldier: Pointer<SOLDIERTYPE>, pRect: Pointer<SGP
 }
 
 function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<INT16>, psWidth: Pointer<INT16>): void {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
@@ -463,7 +470,7 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
   // uses of this function, we should be able to use just the first frame...
 
   if (pSoldier->usAniFrame >= gAnimSurfaceDatabase[usAnimSurface].hVideoObject->usNumberOfObjects) {
-    int i = 0;
+    let i: int = 0;
   }
 
   *psHeight = (INT16)pSoldier->sBoundingBoxHeight;
@@ -471,7 +478,7 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
 }
 
 function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
-  UINT16 usAnimSurface;
+  let usAnimSurface: UINT16;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
@@ -487,10 +494,13 @@ function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer
 }
 
 function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  INT16 sMercScreenX, sMercScreenY;
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
-  UINT16 usAnimSurface;
+  let sMercScreenX: INT16;
+  let sMercScreenY: INT16;
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let dTempX_S: FLOAT;
+  let dTempY_S: FLOAT;
+  let usAnimSurface: UINT16;
   //		ETRLEObject *pTrav;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
@@ -534,10 +544,13 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
 
 // THE TRUE SCREN RECT DOES NOT TAKE THE OFFSETS OF BUDDY INTO ACCOUNT!
 function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  INT16 sMercScreenX, sMercScreenY;
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
-  UINT16 usAnimSurface;
+  let sMercScreenX: INT16;
+  let sMercScreenY: INT16;
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let dTempX_S: FLOAT;
+  let dTempY_S: FLOAT;
+  let usAnimSurface: UINT16;
 
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
@@ -571,10 +584,11 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
 }
 
 function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
-  INT16 sNewCenterWorldX, sNewCenterWorldY;
-  INT16 sWorldX;
-  INT16 sWorldY;
-  INT16 sAllowance = 20;
+  let sNewCenterWorldX: INT16;
+  let sNewCenterWorldY: INT16;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sAllowance: INT16 = 20;
 
   if (gsVIEWPORT_WINDOW_START_Y == 20) {
     sAllowance = 40;
@@ -593,7 +607,7 @@ function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
 }
 
 function SoldierOnScreen(usID: UINT16): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get pointer of soldier
   pSoldier = MercPtrs[usID];
@@ -606,12 +620,15 @@ function SoldierOnVisibleWorldTile(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbDirection: Pointer<INT8>, puiScrollFlags: Pointer<UINT32>): BOOLEAN {
-  INT16 sWorldX;
-  INT16 sWorldY;
-  INT16 sY, sX;
-  static BOOLEAN fCountdown = 0;
-  INT16 sScreenCenterX, sScreenCenterY;
-  INT16 sDistToCenterY, sDistToCenterX;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sY: INT16;
+  let sX: INT16;
+  /* static */ let fCountdown: BOOLEAN = 0;
+  let sScreenCenterX: INT16;
+  let sScreenCenterY: INT16;
+  let sDistToCenterY: INT16;
+  let sDistToCenterX: INT16;
 
   *puiScrollFlags = 0;
 
@@ -669,7 +686,7 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
 }
 
 function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16): BOOLEAN {
-  SGPRect aRect;
+  let aRect: SGPRect;
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, &aRect);
@@ -682,9 +699,10 @@ function IsPointInSoldierBoundingBox(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, 
 }
 
 function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Pointer<UINT16>, sX: INT16, sY: INT16): BOOLEAN {
-  SGPRect aRect;
-  INT16 sRelX, sRelY;
-  FLOAT dRelPer;
+  let aRect: SGPRect;
+  let sRelX: INT16;
+  let sRelY: INT16;
+  let dRelPer: FLOAT;
 
   // Get Rect contained in the soldier
   GetSoldierScreenRect(pSoldier, &aRect);
@@ -729,8 +747,8 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
 
 // VERY quickly finds a soldier at gridno , ( that is visible )
 function QuickFindSoldier(sGridNo: INT16): UINT8 {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier = NULL;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // Loop through all mercs and make go
   for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
@@ -747,9 +765,12 @@ function QuickFindSoldier(sGridNo: INT16): UINT8 {
 }
 
 function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
-  INT16 sScreenX, sScreenY;
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let dTempX_S: FLOAT;
+  let dTempY_S: FLOAT;
 
   // Get 'TRUE' merc position
   dOffsetX = (FLOAT)(CenterX(sGridNo) - gsRenderCenterX);

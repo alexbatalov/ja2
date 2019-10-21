@@ -1,5 +1,5 @@
 function VSetEqual(a: Pointer<vector_3>): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   //	c.x = a->x;
   //	c.y = a->y;
@@ -10,7 +10,7 @@ function VSetEqual(a: Pointer<vector_3>): vector_3 {
 }
 
 function VSubtract(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = a->x - b->x;
   c.y = a->y - b->y;
@@ -20,7 +20,7 @@ function VSubtract(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
 }
 
 function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = a->x + b->x;
   c.y = a->y + b->y;
@@ -30,7 +30,7 @@ function VAdd(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
 }
 
 function VMultScalar(a: Pointer<vector_3>, b: real): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = a->x * b;
   c.y = a->y * b;
@@ -40,7 +40,7 @@ function VMultScalar(a: Pointer<vector_3>, b: real): vector_3 {
 }
 
 function VDivScalar(a: Pointer<vector_3>, b: real): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = a->x / b;
   c.y = a->y / b;
@@ -58,7 +58,7 @@ function VPerpDotProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): real {
 }
 
 function VCrossProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = (a->y * b->z) - (a->z * b->y);
   c.y = (a->x * b->z) - (a->z * b->x);
@@ -68,7 +68,7 @@ function VCrossProduct(a: Pointer<vector_3>, b: Pointer<vector_3>): vector_3 {
 }
 
 function VGetPerpendicular(a: Pointer<vector_3>): vector_3 {
-  vector_3 c;
+  let c: vector_3;
 
   c.x = -a->y;
   c.y = a->x;
@@ -82,8 +82,9 @@ function VGetLength(a: Pointer<vector_3>): real {
 }
 
 function VGetNormal(a: Pointer<vector_3>): vector_3 {
-  vector_3 c;
-  real OneOverLength, Length;
+  let c: vector_3;
+  let OneOverLength: real;
+  let Length: real;
 
   Length = VGetLength(a);
 

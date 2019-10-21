@@ -42,53 +42,53 @@ const enum Enum143 {
 // GLOBALS
 
 // the dirty state of the mapscreen interface bottom
-BOOLEAN fMapScreenBottomDirty = TRUE;
+let fMapScreenBottomDirty: BOOLEAN = TRUE;
 
-BOOLEAN fMapBottomDirtied = FALSE;
+let fMapBottomDirtied: BOOLEAN = FALSE;
 
 // Used to flag the transition animation from mapscreen to laptop.
-BOOLEAN gfStartMapScreenToLaptopTransition = FALSE;
+let gfStartMapScreenToLaptopTransition: BOOLEAN = FALSE;
 
 // leaving map screen
-BOOLEAN fLeavingMapScreen = FALSE;
+let fLeavingMapScreen: BOOLEAN = FALSE;
 
 // don't start transition from laptop to tactical stuff
-BOOLEAN gfDontStartTransitionFromLaptop = FALSE;
+let gfDontStartTransitionFromLaptop: BOOLEAN = FALSE;
 
 // exiting to laptop?
-BOOLEAN fLapTop = FALSE;
+let fLapTop: BOOLEAN = FALSE;
 
-BOOLEAN gfOneFramePauseOnExit = FALSE;
+let gfOneFramePauseOnExit: BOOLEAN = FALSE;
 
 // we've just scrolled to a new message (for autoscrolling only)
 // BOOLEAN gfNewScrollMessage = FALSE;
 
 // exit states
-INT8 gbExitingMapScreenToWhere = -1;
+let gbExitingMapScreenToWhere: INT8 = -1;
 
-UINT8 gubFirstMapscreenMessageIndex = 0;
+let gubFirstMapscreenMessageIndex: UINT8 = 0;
 
-UINT32 guiCompressionStringBaseTime = 0;
+let guiCompressionStringBaseTime: UINT32 = 0;
 
 // graphics
-UINT32 guiMAPBOTTOMPANEL;
-UINT32 guiSliderBar;
+let guiMAPBOTTOMPANEL: UINT32;
+let guiSliderBar: UINT32;
 
 // buttons
-UINT32 guiMapMessageScrollButtons[2];
-UINT32 guiMapBottomExitButtons[3];
-UINT32 guiMapBottomTimeButtons[2];
+let guiMapMessageScrollButtons: UINT32[] /* [2] */;
+let guiMapBottomExitButtons: UINT32[] /* [3] */;
+let guiMapBottomTimeButtons: UINT32[] /* [2] */;
 
 // buttons images
-UINT32 guiMapMessageScrollButtonsImage[2];
-UINT32 guiMapBottomExitButtonsImage[3];
-UINT32 guiMapBottomTimeButtonsImage[2];
+let guiMapMessageScrollButtonsImage: UINT32[] /* [2] */;
+let guiMapBottomExitButtonsImage: UINT32[] /* [3] */;
+let guiMapBottomTimeButtonsImage: UINT32[] /* [2] */;
 
 // mouse regions
-MOUSE_REGION gMapMessageScrollBarRegion;
-MOUSE_REGION gMapPauseRegion;
+let gMapMessageScrollBarRegion: MOUSE_REGION;
+let gMapPauseRegion: MOUSE_REGION;
 
-MOUSE_REGION gTimeCompressionMask[3];
+let gTimeCompressionMask: MOUSE_REGION[] /* [3] */;
 
 // EXTERNS
 
@@ -100,7 +100,7 @@ MOUSE_REGION gTimeCompressionMask[3];
 
 function HandleLoadOfMapBottomGraphics(): void {
   // will load the graphics needed for the mapscreen interface bottom
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // will create buttons for interface bottom
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -147,8 +147,8 @@ function DeleteMapScreenInterfaceBottom(): void {
 
 function RenderMapScreenInterfaceBottom(): void {
   // will render the map screen bottom interface
-  HVOBJECT hHandle;
-  CHAR8 bFilename[32];
+  let hHandle: HVOBJECT;
+  let bFilename: CHAR8[] /* [32] */;
 
   // render whole panel
   if (fMapScreenBottomDirty == TRUE) {
@@ -376,8 +376,9 @@ function BtnOptionsFromMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function DrawNameOfLoadedSector(): void {
-  CHAR16 sString[128];
-  INT16 sFontX, sFontY;
+  let sString: CHAR16[] /* [128] */;
+  let sFontX: INT16;
+  let sFontY: INT16;
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
@@ -450,7 +451,7 @@ function BtnTimeCompressLessMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: 
 }
 
 function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static INT32 iLastRepeatScrollTime = 0;
+  /* static */ let iLastRepeatScrollTime: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -524,7 +525,7 @@ function BtnMessageDownMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  static INT32 iLastRepeatScrollTime = 0;
+  /* static */ let iLastRepeatScrollTime: INT32 = 0;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (IsMapScreenHelpTextUp()) {
@@ -600,7 +601,7 @@ function BtnMessageUpMapScreenCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function EnableDisableMessageScrollButtonsAndRegions(): void {
-  UINT8 ubNumMessages;
+  let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -628,9 +629,10 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
 }
 
 function DisplayCompressMode(): void {
-  INT16 sX, sY;
-  CHAR16 sString[128];
-  static UINT8 usColor = FONT_LTGREEN;
+  let sX: INT16;
+  let sY: INT16;
+  let sString: CHAR16[] /* [128] */;
+  /* static */ let usColor: UINT8 = FONT_LTGREEN;
 
   // get compress speed
   if (giTimeCompressMode != NOT_USING_TIME_COMPRESSION) {
@@ -679,7 +681,7 @@ function RemoveCompressModePause(): void {
 
 function LoadMessageSliderBar(): void {
   // this function will load the message slider bar
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_screen_bottom_arrows.sti", VObjectDesc.ImageFile);
@@ -701,11 +703,11 @@ function DeleteMapScreenBottomMessageScrollRegion(): void {
 }
 
 function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  POINT MousePos;
-  UINT8 ubMouseYOffset;
-  UINT8 ubDesiredSliderOffset;
-  UINT8 ubDesiredMessageIndex;
-  UINT8 ubNumMessages;
+  let MousePos: POINT;
+  let ubMouseYOffset: UINT8;
+  let ubDesiredSliderOffset: UINT8;
+  let ubDesiredMessageIndex: UINT8;
+  let ubNumMessages: UINT8;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -751,9 +753,9 @@ function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 
 function DisplayScrollBarSlider(): void {
   // will display the scroll bar icon
-  UINT8 ubNumMessages;
-  UINT8 ubSliderOffset;
-  HVOBJECT hHandle;
+  let ubNumMessages: UINT8;
+  let ubSliderOffset: UINT8;
+  let hHandle: HVOBJECT;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -834,7 +836,7 @@ void CheckForAndHandleAutoMessageScroll( void )
 */
 
 function EnableDisableBottomButtonsAndRegions(): void {
-  INT8 iExitButtonIndex;
+  let iExitButtonIndex: INT8;
 
   // this enables and disables the buttons MAP_EXIT_TO_LAPTOP, MAP_EXIT_TO_TACTICAL, and MAP_EXIT_TO_OPTIONS
   for (iExitButtonIndex = 0; iExitButtonIndex < 3; iExitButtonIndex++) {
@@ -992,8 +994,9 @@ function AllowedToTimeCompress(): BOOLEAN {
 }
 
 function DisplayCurrentBalanceTitleForMapBottom(): void {
-  CHAR16 sString[128];
-  INT16 sFontX, sFontY;
+  let sString: CHAR16[] /* [128] */;
+  let sFontX: INT16;
+  let sFontY: INT16;
 
   // ste the font buffer
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
@@ -1025,8 +1028,9 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
 
 function DisplayCurrentBalanceForMapBottom(): void {
   // show the current balance for the player on the map panel bottom
-  CHAR16 sString[128];
-  INT16 sFontX, sFontY;
+  let sString: CHAR16[] /* [128] */;
+  let sFontX: INT16;
+  let sFontY: INT16;
 
   // ste the font buffer
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -1053,8 +1057,8 @@ function DisplayCurrentBalanceForMapBottom(): void {
 }
 
 function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
-  BOOLEAN fDisabled = FALSE;
-  static BOOLEAN fCreated = FALSE;
+  let fDisabled: BOOLEAN = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   // allowed to time compress?
   if (AllowedToTimeCompress() == FALSE) {
@@ -1094,10 +1098,11 @@ function CompressMaskClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function DisplayProjectedDailyMineIncome(): void {
-  INT32 iRate = 0;
-  static INT32 iOldRate = -1;
-  CHAR16 sString[128];
-  INT16 sFontX, sFontY;
+  let iRate: INT32 = 0;
+  /* static */ let iOldRate: INT32 = -1;
+  let sString: CHAR16[] /* [128] */;
+  let sFontX: INT16;
+  let sFontY: INT16;
 
   // grab the rate from the financial system
   iRate = GetProjectedTotalDailyIncome();
@@ -1151,8 +1156,9 @@ function CommonTimeCompressionChecks(): BOOLEAN {
 }
 
 function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iCounter = 0, iNumberOnTeam = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iCounter: INT32 = 0;
+  let iNumberOnTeam: INT32 = 0;
 
   // this is for speed, this runs once/frame
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
@@ -1330,7 +1336,7 @@ function HandleExitsFromMapScreen(): void {
 }
 
 function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
-  UINT8 ubNumMessages;
+  let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -1345,7 +1351,7 @@ function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
 }
 
 function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
-  UINT8 ubNumMessages;
+  let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 
@@ -1360,8 +1366,8 @@ function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
 }
 
 function MoveToEndOfMapScreenMessageList(): void {
-  UINT8 ubDesiredMessageIndex;
-  UINT8 ubNumMessages;
+  let ubDesiredMessageIndex: UINT8;
+  let ubNumMessages: UINT8;
 
   ubNumMessages = GetRangeOfMapScreenMessages();
 

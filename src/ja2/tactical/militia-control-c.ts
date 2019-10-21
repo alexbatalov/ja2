@@ -1,4 +1,4 @@
-BOOLEAN gfStrategicMilitiaChangesMade = FALSE;
+let gfStrategicMilitiaChangesMade: BOOLEAN = FALSE;
 
 function ResetMilitia(): void {
   if (gfStrategicMilitiaChangesMade || gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
@@ -9,8 +9,8 @@ function ResetMilitia(): void {
 }
 
 function RemoveMilitiaFromTactical(): void {
-  SOLDIERINITNODE *curr;
-  INT32 i;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let i: INT32;
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
     if (MercPtrs[i]->bActive) {
       TacticalRemoveSoldier(MercPtrs[i]->ubID);
@@ -26,9 +26,11 @@ function RemoveMilitiaFromTactical(): void {
 }
 
 function PrepareMilitiaForTactical(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
   //	INT32 i;
-  UINT8 ubGreen, ubRegs, ubElites;
+  let ubGreen: UINT8;
+  let ubRegs: UINT8;
+  let ubElites: UINT8;
   if (gbWorldSectorZ > 0)
     return;
 
@@ -53,10 +55,10 @@ function PrepareMilitiaForTactical(): void {
 }
 
 function HandleMilitiaPromotions(): void {
-  UINT8 cnt;
-  UINT8 ubMilitiaRank;
-  SOLDIERTYPE *pTeamSoldier;
-  UINT8 ubPromotions;
+  let cnt: UINT8;
+  let ubMilitiaRank: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let ubPromotions: UINT8;
 
   gbGreenToElitePromotions = 0;
   gbGreenToRegPromotions = 0;

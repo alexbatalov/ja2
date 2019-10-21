@@ -1,14 +1,16 @@
 // THIS FILE CONTAINS DEFINITIONS FOR TILESET FILES
 
-TILESET gTilesets[NUM_TILESETS];
+let gTilesets: TILESET[] /* [NUM_TILESETS] */;
 
 function InitEngineTilesets(): void {
-  UINT8 ubNumSets;
-  UINT32 cnt, cnt2, uiNumFiles;
+  let ubNumSets: UINT8;
+  let cnt: UINT32;
+  let cnt2: UINT32;
+  let uiNumFiles: UINT32;
   //	FILE					*hfile;
-  HWFILE hfile;
-  CHAR8 zName[32];
-  UINT32 uiNumBytesRead;
+  let hfile: HWFILE;
+  let zName: CHAR8[] /* [32] */;
+  let uiNumBytesRead: UINT32;
 
   // OPEN FILE
   //	hfile = fopen( "BINARYDATA\\JA2SET.DAT", "rb" );

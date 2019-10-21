@@ -68,26 +68,27 @@ const FUNERAL_RIP_SENTENCE_2_X = FUNERAL_RIP_SENTENCE_1_X;
 const FUNERAL_RIP_SENTENCE_2_Y = FUNERAL_CLOSED_RIP_SIGN_Y + 162;
 
 // Image Identifiers
-UINT32 guiClosedSign;
-UINT32 guiLeftColumn;
-UINT32 guiLinkCarving;
-UINT32 guiMarbleBackground;
-UINT32 guiMcGillicuttys;
-UINT32 guiMortuary;
-UINT32 guiRightColumn;
+let guiClosedSign: UINT32;
+let guiLeftColumn: UINT32;
+let guiLinkCarving: UINT32;
+let guiMarbleBackground: UINT32;
+let guiMcGillicuttys: UINT32;
+let guiMortuary: UINT32;
+let guiRightColumn: UINT32;
 
 // Clicking on Funeral link
-MOUSE_REGION gSelectedFuneralLinkRegion[FUNERAL_NUMBER_OF_LINKS];
+let gSelectedFuneralLinkRegion: MOUSE_REGION[] /* [FUNERAL_NUMBER_OF_LINKS] */;
 
 // Clicking on rip sign to make it disappear
-MOUSE_REGION gSelectedRipSignRegion;
+let gSelectedRipSignRegion: MOUSE_REGION;
 
 function GameInitFuneral(): void {
 }
 
 function EnterFuneral(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX, i;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16;
+  let i: UINT16;
 
   // load the Closed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -145,7 +146,7 @@ function EnterFuneral(): BOOLEAN {
 }
 
 function ExitFuneral(): void {
-  UINT8 i;
+  let i: UINT8;
 
   DeleteVideoObjectFromIndex(guiClosedSign);
   DeleteVideoObjectFromIndex(guiLeftColumn);
@@ -166,8 +167,10 @@ function HandleFuneral(): void {
 }
 
 function RenderFuneral(): void {
-  HVOBJECT hPixHandle;
-  UINT16 i, usPosX, usStringHeight;
+  let hPixHandle: HVOBJECT;
+  let i: UINT16;
+  let usPosX: UINT16;
+  let usStringHeight: UINT16;
 
   WebPageTileBackground(4, 4, FUNERAL_MARBLE_WIDTH, FUNERAL_MARBLE_HEIGHT, guiMarbleBackground);
 
@@ -228,7 +231,7 @@ function RenderFuneral(): void {
 }
 
 function DisplayFuneralRipTombStone(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // rip tombstone
   GetVideoObject(&hPixHandle, guiClosedSign);
@@ -254,7 +257,7 @@ function DisplayFuneralRipTombStone(): void {
 function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiUserData;
+    let uiUserData: UINT32;
 
     uiUserData = MSYS_GetRegionUserData(pRegion, 0);
 

@@ -1,6 +1,6 @@
 function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
-  STRUCTURE *pStruct;
-  LEVELNODE *pLevel;
+  let pStruct: Pointer<STRUCTURE>;
+  let pLevel: Pointer<LEVELNODE>;
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
     return TRUE;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
@@ -22,9 +22,9 @@ function CaveAtGridNo(iMapIndex: INT32): BOOLEAN {
 }
 
 function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
-  UINT16 usType = FIRSTWALL;
-  UINT16 usIndex;
-  UINT16 usTileIndex;
+  let usType: UINT16 = FIRSTWALL;
+  let usIndex: UINT16;
+  let usTileIndex: UINT16;
 
   switch (ubTotal) {
     case 0x00:
@@ -400,7 +400,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
 // up to 16 combinations can share the same graphic image, as corners
 // may not effect the look of the piece.
 function CalcNewCavePerimeterValue(iMapIndex: INT32): UINT8 {
-  UINT8 ubTotal = 0;
+  let ubTotal: UINT8 = 0;
   if (CaveAtGridNo(iMapIndex - WORLD_COLS))
     ubTotal += 0x01; // north
   if (CaveAtGridNo(iMapIndex + 1))
@@ -421,7 +421,7 @@ function CalcNewCavePerimeterValue(iMapIndex: INT32): UINT8 {
 }
 
 function AddCave(iMapIndex: INT32, usIndex: UINT16): void {
-  LEVELNODE *pStruct;
+  let pStruct: Pointer<LEVELNODE>;
 
   if (iMapIndex < 0 || iMapIndex >= NOWHERE)
     return;
@@ -441,7 +441,7 @@ const EXTERIOR_L_SHADOW_INDEX = 30;
 const INTERIOR_BOTTOMEND_SHADOW_INDEX = 31;
 
 // Wall Look Up Table containing variants and indices with each row being a different walltype.
-INT8 gbWallTileLUT[NUM_WALL_TYPES][7] = {
+let gbWallTileLUT: INT8[][] /* [NUM_WALL_TYPES][7] */ = {
   //	The number of variants of this tile type.
   //  |			The first relative index of the wall type (FIRSTWALL, SECONDWALL, etc. )  walltype + 10
   //	|			|		The 2nd relative index  ( walltype + 11 )
@@ -495,9 +495,9 @@ const FLOOR_VARIANTS = 8;
 //----------------------------------------------------------------------------------------------------
 
 function BuildSlantRoof(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32, usWallType: UINT16, usRoofType: UINT16, fVertical: BOOLEAN): void {
-  INT32 i;
-  UINT16 usTileIndex;
-  INT32 iMapIndex;
+  let i: INT32;
+  let usTileIndex: UINT16;
+  let iMapIndex: INT32;
   if (fVertical) {
     iMapIndex = iBottom * WORLD_COLS + iLeft;
     // This happens to be the only mapindex that needs to be backed up.  The rest have already been
@@ -554,9 +554,9 @@ function BuildSlantRoof(iLeft: INT32, iTop: INT32, iRight: INT32, iBottom: INT32
 }
 
 function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
-  UINT16 usVariants;
-  UINT16 usVariantChosen;
-  UINT16 usWallPieceChosen = 0;
+  let usVariants: UINT16;
+  let usVariantChosen: UINT16;
+  let usWallPieceChosen: UINT16 = 0;
   if (usWallPieceType >= 0 || usWallPieceType < NUM_WALL_TYPES) {
     usVariants = gbWallTileLUT[usWallPieceType][0];
     usVariantChosen = (rand() % usVariants) + 1;
@@ -576,10 +576,10 @@ function PickAWallPiece(usWallPieceType: UINT16): UINT16 {
 //  use that for building this new wall.  It is necessary for restructuring a building, but not for
 //  adding on to an existing building, where the type is already known.
 function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT16): void {
-  INT16 sIndex;
-  UINT16 usTileIndex;
-  UINT16 ubWallClass;
-  LEVELNODE *pStruct;
+  let sIndex: INT16;
+  let usTileIndex: UINT16;
+  let ubWallClass: UINT16;
+  let pStruct: Pointer<LEVELNODE>;
   if (!usWallType) {
     usWallType = SearchForWallType(iMapIndex);
   }
@@ -728,8 +728,12 @@ function BuildWallPiece(iMapIndex: UINT32, ubWallPiece: UINT8, usWallType: UINT1
 }
 
 function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
-  UINT16 usRoofIndex, usTileIndex;
-  BOOLEAN fTop = FALSE, fBottom = FALSE, fLeft = FALSE, fRight = FALSE;
+  let usRoofIndex: UINT16;
+  let usTileIndex: UINT16;
+  let fTop: BOOLEAN = FALSE;
+  let fBottom: BOOLEAN = FALSE;
+  let fLeft: BOOLEAN = FALSE;
+  let fRight: BOOLEAN = FALSE;
   if (!usRoofType) {
     usRoofType = SearchForRoofType(iMapIndex);
   }
@@ -775,8 +779,12 @@ function RebuildRoofUsingFloorInfo(iMapIndex: INT32, usRoofType: UINT16): void {
 // NOTE:  passing NULL for usRoofType will force the function to calculate the nearest roof type,
 //  and use that for the new roof.  This is needed when erasing parts of multiple buildings simultaneously.
 function RebuildRoof(iMapIndex: UINT32, usRoofType: UINT16): void {
-  UINT16 usRoofIndex, usTileIndex;
-  BOOLEAN fTop, fBottom, fLeft, fRight;
+  let usRoofIndex: UINT16;
+  let usTileIndex: UINT16;
+  let fTop: BOOLEAN;
+  let fBottom: BOOLEAN;
+  let fLeft: BOOLEAN;
+  let fRight: BOOLEAN;
   if (!usRoofType) {
     usRoofType = SearchForRoofType(iMapIndex);
   }
@@ -862,9 +870,9 @@ function EraseBuilding(iMapIndex: UINT32): void {
 // and the TOP_LEFT oriented wall in the gridno up one as well as the other building information at this
 // gridno.
 function EraseFloorOwnedBuildingPieces(iMapIndex: UINT32): void {
-  LEVELNODE *pStruct = NULL;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pStruct: Pointer<LEVELNODE> = NULL;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
 
   if (!gfBasement && !FloorAtGridNo(iMapIndex)) {
     // We don't have ownership issues if there isn't a floor here.
@@ -915,10 +923,15 @@ void AddCave( INT32 iMapIndex, UINT16 usIndex );
 */
 
 function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
-  UINT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usIndex;
-  UINT8 ubPerimeterValue;
+  let top: UINT32;
+  let left: UINT32;
+  let right: UINT32;
+  let bottom: UINT32;
+  let x: UINT32;
+  let y: UINT32;
+  let iMapIndex: UINT32;
+  let usIndex: UINT16;
+  let ubPerimeterValue: UINT8;
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
   right = pSelectRegion->iRight;
@@ -949,10 +962,15 @@ function RemoveCaveSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
 }
 
 function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
-  INT32 top, left, right, bottom, x, y;
-  UINT32 uiMapIndex;
-  UINT16 usIndex;
-  UINT8 ubPerimeterValue;
+  let top: INT32;
+  let left: INT32;
+  let right: INT32;
+  let bottom: INT32;
+  let x: INT32;
+  let y: INT32;
+  let uiMapIndex: UINT32;
+  let usIndex: UINT16;
+  let ubPerimeterValue: UINT8;
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
   right = pSelectRegion->iRight;
@@ -999,11 +1017,16 @@ function AddCaveSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
 // entire highlighted area, it'll repair the building itself so there are no
 // outside walls missing from the new building.
 function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
-  UINT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usTileIndex;
-  UINT16 usFloorType;
-  BOOLEAN fFloor;
+  let top: UINT32;
+  let left: UINT32;
+  let right: UINT32;
+  let bottom: UINT32;
+  let x: UINT32;
+  let y: UINT32;
+  let iMapIndex: UINT32;
+  let usTileIndex: UINT16;
+  let usFloorType: UINT16;
+  let fFloor: BOOLEAN;
 
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
@@ -1066,14 +1089,21 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
 }
 
 function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
-  INT32 top, left, right, bottom, x, y;
-  UINT32 iMapIndex;
-  UINT16 usFloorType, usWallType, usRoofType;
-  UINT16 usTileIndex;
-  BOOLEAN fNewBuilding;
-  BOOLEAN fSlantRoof = FALSE;
-  BOOLEAN fVertical;
-  BOOLEAN fFloor;
+  let top: INT32;
+  let left: INT32;
+  let right: INT32;
+  let bottom: INT32;
+  let x: INT32;
+  let y: INT32;
+  let iMapIndex: UINT32;
+  let usFloorType: UINT16;
+  let usWallType: UINT16;
+  let usRoofType: UINT16;
+  let usTileIndex: UINT16;
+  let fNewBuilding: BOOLEAN;
+  let fSlantRoof: BOOLEAN = FALSE;
+  let fVertical: BOOLEAN;
+  let fFloor: BOOLEAN;
   top = pSelectRegion->iTop;
   left = pSelectRegion->iLeft;
   right = pSelectRegion->iRight;
@@ -1106,8 +1136,8 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
     for (x = left; x <= right; x++) {
       iMapIndex = y * WORLD_COLS + x;
       if (FloorAtGridNo(iMapIndex)) {
-        LEVELNODE *pFloor;
-        UINT32 uiTileType;
+        let pFloor: Pointer<LEVELNODE>;
+        let uiTileType: UINT32;
         // If a floor is found, then we are adding to an existing structure.
         fNewBuilding = FALSE;
         // Extract the floor type.  We already checked if there was a floor here, so it is assumed.
@@ -1236,16 +1266,16 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
 }
 
 function AnalyseCaveMapForStructureInfo(): void {
-  LEVELNODE *pStruct;
-  UINT32 uiTileType;
-  INT32 iMapIndex;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let iMapIndex: INT32;
   for (iMapIndex = 0; iMapIndex < WORLD_MAX; iMapIndex++) {
     pStruct = gpWorldLevelData[iMapIndex].pStructHead;
     while (pStruct) {
       if (pStruct->usIndex != NO_TILE) {
         GetTileType(pStruct->usIndex, &uiTileType);
         if (uiTileType == FIRSTWALL) {
-          UINT16 usSubIndex;
+          let usSubIndex: UINT16;
           GetSubIndexFromTileIndex(pStruct->usIndex, &usSubIndex);
           if (usSubIndex >= 60 && usSubIndex <= 65) {
             pStruct->uiFlags |= LEVELNODE_CAVE;

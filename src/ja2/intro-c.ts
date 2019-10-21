@@ -5,12 +5,12 @@ const enum Enum19 {
 // ddd
 
 // ggg
-BOOLEAN gfIntroScreenEntry;
-BOOLEAN gfIntroScreenExit;
+let gfIntroScreenEntry: BOOLEAN;
+let gfIntroScreenExit: BOOLEAN;
 
-UINT32 guiIntroExitScreen = INTRO_SCREEN;
+let guiIntroExitScreen: UINT32 = INTRO_SCREEN;
 
-SMKFLIC *gpSmackFlic = NULL;
+let gpSmackFlic: Pointer<SMKFLIC> = NULL;
 
 const SMKINTRO_FIRST_VIDEO = 255;
 const SMKINTRO_NO_VIDEO = -1;
@@ -37,9 +37,9 @@ const enum Enum20 {
   SMKINTRO_LAST_END_GAME,
 }
 
-INT32 giCurrentIntroBeingPlayed = SMKINTRO_NO_VIDEO;
+let giCurrentIntroBeingPlayed: INT32 = SMKINTRO_NO_VIDEO;
 
-CHAR *gpzSmackerFileNames[] = {
+let gpzSmackerFileNames: Pointer<CHAR>[] /* [] */ = {
   // begining of the game
   "INTRO\\Rebel_cr.smk",
   "INTRO\\Omerta.smk",
@@ -58,7 +58,7 @@ CHAR *gpzSmackerFileNames[] = {
 };
 
 // enums used for when the intro screen can come up, either begining game intro, or end game cinematic
-INT8 gbIntroScreenMode = -1;
+let gbIntroScreenMode: INT8 = -1;
 
 // ppp
 
@@ -101,7 +101,7 @@ function IntroScreenHandle(): UINT32 {
 }
 
 function EnterIntroScreen(): BOOLEAN {
-  INT32 iFirstVideoID = -1;
+  let iFirstVideoID: INT32 = -1;
 
   ClearMainMenu();
 
@@ -145,7 +145,7 @@ function ExitIntroScreen(): void {
 }
 
 function HandleIntroScreen(): void {
-  BOOLEAN fFlicStillPlaying = FALSE;
+  let fFlicStillPlaying: BOOLEAN = FALSE;
 
   // if we are exiting this screen, this frame, dont update the screen
   if (gfIntroScreenExit)
@@ -156,7 +156,7 @@ function HandleIntroScreen(): void {
 
   // if the flic is not playing
   if (!fFlicStillPlaying) {
-    INT32 iNextVideoToPlay = -1;
+    let iNextVideoToPlay: INT32 = -1;
 
     iNextVideoToPlay = GetNextIntroVideo(giCurrentIntroBeingPlayed);
 
@@ -172,8 +172,8 @@ function HandleIntroScreen(): void {
 }
 
 function GetIntroScreenUserInput(): void {
-  InputAtom Event;
-  POINT MousePos;
+  let Event: InputAtom;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 
@@ -242,7 +242,7 @@ function PrepareToExitIntroScreen(): void {
 }
 
 function GetNextIntroVideo(uiCurrentVideo: UINT32): INT32 {
-  INT32 iStringToUse = -1;
+  let iStringToUse: INT32 = -1;
 
   // switch on whether it is the beginging or the end game video
   switch (gbIntroScreenMode) {
@@ -337,12 +337,12 @@ function SetIntroType(bIntroType: INT8): void {
 }
 
 function DisplaySirtechSplashScreen(): void {
-  HVOBJECT hPixHandle;
-  VOBJECT_DESC VObjectDesc;
-  UINT32 uiLogoID;
+  let hPixHandle: HVOBJECT;
+  let VObjectDesc: VOBJECT_DESC;
+  let uiLogoID: UINT32;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   // JA3Gold: do nothing until we have a graphic to replace Talonsoft's
   // return;

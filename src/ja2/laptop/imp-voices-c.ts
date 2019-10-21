@@ -1,22 +1,24 @@
 // current and last pages
-INT32 iCurrentVoices = 0;
-INT32 iLastVoice = 2;
+let iCurrentVoices: INT32 = 0;
+let iLastVoice: INT32 = 2;
 
 // INT32 iVoiceId = 0;
 
-UINT32 uiVocVoiceSound = 0;
+let uiVocVoiceSound: UINT32 = 0;
 // buttons needed for the IMP Voices screen
-INT32 giIMPVoicesButton[3];
-INT32 giIMPVoicesButtonImage[3];
+let giIMPVoicesButton: INT32[] /* [3] */;
+let giIMPVoicesButtonImage: INT32[] /* [3] */;
 
 // hacks to be removeed later
-BOOLEAN fVoiceAVisited = FALSE, fVoiceBVisited = FALSE, fVoiceCVisited = FALSE;
+let fVoiceAVisited: BOOLEAN = FALSE;
+let fVoiceBVisited: BOOLEAN = FALSE;
+let fVoiceCVisited: BOOLEAN = FALSE;
 
 // redraw protrait screen
-BOOLEAN fReDrawVoicesScreenFlag = FALSE;
+let fReDrawVoicesScreenFlag: BOOLEAN = FALSE;
 
 // the portrait region, for player to click on and re-hear voice
-MOUSE_REGION gVoicePortraitRegion;
+let gVoicePortraitRegion: MOUSE_REGION;
 
 function EnterIMPVoices(): void {
   fVoiceAVisited = FALSE;
@@ -321,8 +323,9 @@ function IMPPortraitRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason
 }
 
 function RenderVoiceIndex(): void {
-  CHAR16 sString[32];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
 
   // render the voice index value on the the blank portrait
   swprintf(sString, L"%s %d", pIMPVoicesStrings[0], iCurrentVoices + 1);

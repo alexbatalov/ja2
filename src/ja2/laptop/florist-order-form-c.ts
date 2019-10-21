@@ -120,7 +120,7 @@ interface FlowerOrderLocationStruct {
 
 const FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS = 17;
 
-FlowerOrderLocationStruct FlowerOrderLocations[FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] = {
+let FlowerOrderLocations: FlowerOrderLocationStruct[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */ = {
   { &pDeliveryLocationStrings[0], 20, 15 },
   { &pDeliveryLocationStrings[1], 95, 70 },
   { &pDeliveryLocationStrings[2], 100, 75 },
@@ -140,22 +140,22 @@ FlowerOrderLocationStruct FlowerOrderLocations[FLOWER_ORDER_NUMBER_OF_DROP_DOWN_
   { &pDeliveryLocationStrings[16], 40, 30 },
 };
 
-UINT32 guiDeliveryLocation;
-UINT32 guiFlowerFrame;
-UINT32 guiCurrentlySelectedFlowerImage;
-UINT32 guiNameBox;
-UINT32 guiPersonalSentiments;
-UINT32 guiFlowerOrderCheckBoxButtonImage;
-UINT32 guiDropDownBorder;
+let guiDeliveryLocation: UINT32;
+let guiFlowerFrame: UINT32;
+let guiCurrentlySelectedFlowerImage: UINT32;
+let guiNameBox: UINT32;
+let guiPersonalSentiments: UINT32;
+let guiFlowerOrderCheckBoxButtonImage: UINT32;
+let guiDropDownBorder: UINT32;
 
-BOOLEAN gfFLoristCheckBox0Down = FALSE; // next day delviery
-BOOLEAN gfFLoristCheckBox1Down = TRUE; // when it gets there delivery
-BOOLEAN gfFLoristCheckBox2Down = FALSE;
-BOOLEAN gfFLoristCheckBox3Down = FALSE;
-BOOLEAN gfFLoristCheckBox4Down = FALSE;
-BOOLEAN gfFLoristCheckBox5Down = FALSE;
+let gfFLoristCheckBox0Down: BOOLEAN = FALSE; // next day delviery
+let gfFLoristCheckBox1Down: BOOLEAN = TRUE; // when it gets there delivery
+let gfFLoristCheckBox2Down: BOOLEAN = FALSE;
+let gfFLoristCheckBox3Down: BOOLEAN = FALSE;
+let gfFLoristCheckBox4Down: BOOLEAN = FALSE;
+let gfFLoristCheckBox5Down: BOOLEAN = FALSE;
 
-UINT32 guiFlowerPrice;
+let guiFlowerPrice: UINT32;
 
 // drop down menu
 const enum Enum81 {
@@ -165,47 +165,47 @@ const enum Enum81 {
   FLOWER_ORDER_DROP_DOWN_DISPLAY,
 }
 // the current mode of the drop down display
-UINT8 gubFlowerDestDropDownMode;
-UINT8 gubCurrentlySelectedFlowerLocation;
+let gubFlowerDestDropDownMode: UINT8;
+let gubCurrentlySelectedFlowerLocation: UINT8;
 
-wchar_t gsSentimentTextField[FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] = { 0 };
-wchar_t gsNameTextField[FLOWER_ORDER_NAME_FIELD_NUM_CHARS] = { 0 };
+let gsSentimentTextField: wchar_t[] /* [FLOWER_ORDER_PERSONEL_SENTIMENT_NUM_CHARS] */ = { 0 };
+let gsNameTextField: wchar_t[] /* [FLOWER_ORDER_NAME_FIELD_NUM_CHARS] */ = { 0 };
 
 // buttons
-INT32 guiFlowerOrderButtonImage;
+let guiFlowerOrderButtonImage: INT32;
 
-UINT8 gubFlowerOrder_AdditioanalServicePrices[] = {
+let gubFlowerOrder_AdditioanalServicePrices: UINT8[] /* [] */ = {
   10,
   20,
   10,
   10,
 };
 
-UINT32 guiFlowerOrderBackButton;
+let guiFlowerOrderBackButton: UINT32;
 
-UINT32 guiFlowerOrderSendButton;
+let guiFlowerOrderSendButton: UINT32;
 
-UINT32 guiFlowerOrderClearButton;
+let guiFlowerOrderClearButton: UINT32;
 
-UINT32 guiFlowerOrderGalleryButton;
+let guiFlowerOrderGalleryButton: UINT32;
 
 // Clicking on OrderCheckBox
-MOUSE_REGION gSelectedFloristCheckBoxRegion[6];
+let gSelectedFloristCheckBoxRegion: MOUSE_REGION[] /* [6] */;
 
 // link to the card gallery
-MOUSE_REGION gSelectedFloristCardGalleryLinkRegion;
+let gSelectedFloristCardGalleryLinkRegion: MOUSE_REGION;
 
 // link to the flower gallery by clicking on the flower
-MOUSE_REGION gSelectedFloristGalleryLinkRegion;
+let gSelectedFloristGalleryLinkRegion: MOUSE_REGION;
 
 // the drop down for the city
-MOUSE_REGION gSelectedFloristDropDownRegion;
+let gSelectedFloristDropDownRegion: MOUSE_REGION;
 
 // to disable the drop down window
-MOUSE_REGION gSelectedFloristDisableDropDownRegion;
+let gSelectedFloristDisableDropDownRegion: MOUSE_REGION;
 
 // mouse region for the drop down city location area
-MOUSE_REGION gSelectedFlowerDropDownRegion[FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS];
+let gSelectedFlowerDropDownRegion: MOUSE_REGION[] /* [FLOWER_ORDER_NUMBER_OF_DROP_DOWN_LOCATIONS] */;
 
 // to select typing in the personal sentiment box
 // MOUSE_REGION    gSelectedFloristPersonalSentimentBoxRegion;
@@ -215,10 +215,12 @@ function GameInitFloristOrderForm(): void {
 }
 
 function EnterFloristOrderForm(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT8 i;
-  char sTemp[40];
-  UINT16 usPosX, usWidth, usHeight;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: UINT8;
+  let sTemp: char[] /* [40] */;
+  let usPosX: UINT16;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
 
   InitFloristDefaults();
 
@@ -350,7 +352,7 @@ function InitFloristOrderFormVariables(): void {
 }
 
 function ExitFloristOrderForm(): void {
-  UINT8 i;
+  let i: UINT8;
   RemoveFloristDefaults();
 
   DeleteVideoObjectFromIndex(guiDeliveryLocation);
@@ -404,10 +406,10 @@ function HandleFloristOrderForm(): void {
 }
 
 function RenderFloristOrderForm(): void {
-  HVOBJECT hPixHandle;
-  UINT16 usPosX;
-  wchar_t sTemp[640];
-  UINT32 uiStartLoc = 0;
+  let hPixHandle: HVOBJECT;
+  let usPosX: UINT16;
+  let sTemp: wchar_t[] /* [640] */;
+  let uiStartLoc: UINT32 = 0;
 
   DisplayFloristDefaults();
 
@@ -601,7 +603,7 @@ function BtnFlowerOrderGalleryButtonCallback(btn: Pointer<GUI_BUTTON>, reason: I
 function SelectFlorsitCheckBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiUserData;
+    let uiUserData: UINT32;
 
     uiUserData = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -656,7 +658,7 @@ function SelectFlorsitCheckBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
 }
 
 function DisplayFloristCheckBox(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // check box
   GetVideoObject(&hPixHandle, guiFlowerOrderCheckBoxButtonImage);
@@ -713,11 +715,11 @@ function SelectFloristCardGalleryLinkRegionCallBack(pRegion: Pointer<MOUSE_REGIO
 
 // display the things that change on the screen
 function DisplayFlowerDynamicItems(): void {
-  UINT32 uiStartLoc = 0;
-  UINT16 usPosX;
-  wchar_t sTemp[640];
+  let uiStartLoc: UINT32 = 0;
+  let usPosX: UINT16;
+  let sTemp: wchar_t[] /* [640] */;
   //	wchar_t	sText[ 640 ];
-  UINT16 usPrice;
+  let usPrice: UINT16;
   /*
           //display the card saying
           if( gbCurrentlySelectedCard != -1 )
@@ -818,19 +820,20 @@ function SelectFlowerDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, re
 }
 
 function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
-  static UINT16 usHeight;
-  static BOOLEAN fMouseRegionsCreated = FALSE;
+  /* static */ let usHeight: UINT16;
+  /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
 
   switch (ubDropDownMode) {
     case FLOWER_ORDER_DROP_DOWN_NO_ACTION: {
     } break;
 
     case FLOWER_ORDER_DROP_DOWN_CREATE: {
-      UINT8 i;
-      UINT16 usPosX, usPosY;
-      UINT16 usTemp;
-      UINT16 usFontHeight = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
-      UINT8 ubTextFieldID;
+      let i: UINT8;
+      let usPosX: UINT16;
+      let usPosY: UINT16;
+      let usTemp: UINT16;
+      let usFontHeight: UINT16 = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
+      let ubTextFieldID: UINT8;
 
       if (fMouseRegionsCreated) {
         return FALSE;
@@ -876,7 +879,7 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
     } break;
 
     case FLOWER_ORDER_DROP_DOWN_DESTROY: {
-      UINT8 i;
+      let i: UINT8;
 
       if (!fMouseRegionsCreated)
         break;
@@ -900,10 +903,11 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
     } break;
 
     case FLOWER_ORDER_DROP_DOWN_DISPLAY: {
-      UINT8 i;
-      UINT16 usPosY, usPosX;
-      UINT16 usFontHeight = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
-      HVOBJECT hImageHandle;
+      let i: UINT8;
+      let usPosY: UINT16;
+      let usPosX: UINT16;
+      let usFontHeight: UINT16 = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
+      let hImageHandle: HVOBJECT;
 
       // Display the background for the drop down window
       ColorFillVideoSurfaceArea(FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X, FLOWER_ORDER_DROP_DOWN_LOCATION_Y, FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH, FLOWER_ORDER_DROP_DOWN_LOCATION_Y + usHeight, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -957,8 +961,8 @@ function CreateDestroyFlowerOrderDestDropDown(ubDropDownMode: UINT8): BOOLEAN {
 }
 
 function FlowerOrderDrawSelectedCity(ubNumber: UINT8): void {
-  UINT16 usPosY;
-  UINT16 usFontHeight = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
+  let usPosY: UINT16;
+  let usFontHeight: UINT16 = GetFontHeight(FLOWER_ORDEER_DROP_DOWN_FONT);
 
   usPosY = (usFontHeight + 2) * ubNumber + FLOWER_ORDER_DROP_DOWN_CITY_START_Y;
 
@@ -980,9 +984,9 @@ function FlowerOrderDisplayShippingLocationCity(): void {
 }
 
 function InitFlowerOrderTextInputBoxes(): void {
-  UINT32 uiStartLoc = 0;
-  wchar_t sTemp[640];
-  wchar_t sText[640];
+  let uiStartLoc: UINT32 = 0;
+  let sTemp: wchar_t[] /* [640] */;
+  let sText: wchar_t[] /* [640] */;
 
   InitTextInputMode();
   SetTextInputFont((UINT16)FONT12ARIAL);
@@ -1023,11 +1027,11 @@ function DestroyFlowerOrderTextInputBoxes(): void {
 }
 
 function HandleFloristOrderKeyBoardInput(): void {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   while (DequeueEvent(&InputEvent) == TRUE) {
     if (!HandleTextInput(&InputEvent) && InputEvent.usEvent == KEY_DOWN) {
-      UINT8 ubTextFieldID;
+      let ubTextFieldID: UINT8;
       switch (InputEvent.usParam) {
         case ENTER:
 

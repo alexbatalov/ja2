@@ -3,13 +3,13 @@
 
 const BLACK_SUBSTITUTE = 0x0001;
 
-UINT16 gusAlphaMask = 0;
-UINT16 gusRedMask = 0;
-UINT16 gusGreenMask = 0;
-UINT16 gusBlueMask = 0;
-INT16 gusRedShift = 0;
-INT16 gusBlueShift = 0;
-INT16 gusGreenShift = 0;
+let gusAlphaMask: UINT16 = 0;
+let gusRedMask: UINT16 = 0;
+let gusGreenMask: UINT16 = 0;
+let gusBlueMask: UINT16 = 0;
+let gusRedShift: INT16 = 0;
+let gusBlueShift: INT16 = 0;
+let gusGreenShift: INT16 = 0;
 
 // this funky union is used for fast 16-bit pixel format conversions
 interface SplitUINT32 {
@@ -23,11 +23,11 @@ interface SplitUINT32 {
 }
 
 function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
-  HIMAGE hImage = NULL;
-  SGPFILENAME Extension;
-  CHAR8 ExtensionSep[] = ".";
-  STR StrPtr;
-  UINT32 iFileLoader;
+  let hImage: HIMAGE = NULL;
+  let Extension: SGPFILENAME;
+  let ExtensionSep: CHAR8[] /* [] */ = ".";
+  let StrPtr: STR;
+  let iFileLoader: UINT32;
 
   // Depending on extension of filename, use different image readers
   // Get extension
@@ -148,7 +148,7 @@ function ReleaseImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 }
 
 function LoadImageData(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  BOOLEAN fReturnVal = FALSE;
+  let fReturnVal: BOOLEAN = FALSE;
 
   Assert(hImage != NULL);
 
@@ -205,9 +205,13 @@ function CopyImageToBuffer(hImage: HIMAGE, fBufferType: UINT32, pDestBuf: Pointe
 }
 
 function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiSrcStart, uiDestStart, uiNumLines, uiLineSize;
-  UINT32 cnt;
-  UINT8 *pDest, *pSrc;
+  let uiSrcStart: UINT32;
+  let uiDestStart: UINT32;
+  let uiNumLines: UINT32;
+  let uiLineSize: UINT32;
+  let cnt: UINT32;
+  let pDest: Pointer<UINT8>;
+  let pSrc: Pointer<UINT8>;
 
   // Assertions
   Assert(hImage != NULL);
@@ -246,9 +250,13 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
 }
 
 function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiSrcStart, uiDestStart, uiNumLines, uiLineSize;
-  UINT32 cnt;
-  UINT16 *pDest, *pSrc;
+  let uiSrcStart: UINT32;
+  let uiDestStart: UINT32;
+  let uiNumLines: UINT32;
+  let uiLineSize: UINT32;
+  let cnt: UINT32;
+  let pDest: Pointer<UINT16>;
+  let pSrc: Pointer<UINT16>;
 
   Assert(hImage != NULL);
   Assert(hImage->p16BPPData != NULL);
@@ -294,11 +302,17 @@ function Extract16BPPCompressedImageToBuffer(hImage: HIMAGE, pDestBuf: Pointer<B
 }
 
 function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDestWidth: UINT16, usDestHeight: UINT16, usX: UINT16, usY: UINT16, srcRect: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiSrcStart, uiDestStart, uiNumLines, uiLineSize;
-  UINT32 rows, cols;
-  UINT8 *pSrc, *pSrcTemp;
-  UINT16 *pDest, *pDestTemp;
-  UINT16 *p16BPPPalette;
+  let uiSrcStart: UINT32;
+  let uiDestStart: UINT32;
+  let uiNumLines: UINT32;
+  let uiLineSize: UINT32;
+  let rows: UINT32;
+  let cols: UINT32;
+  let pSrc: Pointer<UINT8>;
+  let pSrcTemp: Pointer<UINT8>;
+  let pDest: Pointer<UINT16>;
+  let pDestTemp: Pointer<UINT16>;
+  let p16BPPPalette: Pointer<UINT16>;
 
   p16BPPPalette = hImage->pui16BPPPalette;
 
@@ -350,9 +364,15 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
 }
 
 function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16> {
-  UINT16 *p16BPPPalette, r16, g16, b16, usColor;
-  UINT32 cnt;
-  UINT8 r, g, b;
+  let p16BPPPalette: Pointer<UINT16>;
+  let r16: UINT16;
+  let g16: UINT16;
+  let b16: UINT16;
+  let usColor: UINT16;
+  let cnt: UINT32;
+  let r: UINT8;
+  let g: UINT8;
+  let b: UINT8;
 
   Assert(pPalette != NULL);
 
@@ -417,10 +437,19 @@ function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16>
 
 **********************************************************************************************/
 function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UINT32, gscale: UINT32, bscale: UINT32, mono: BOOLEAN): Pointer<UINT16> {
-  UINT16 *p16BPPPalette, r16, g16, b16, usColor;
-  UINT32 cnt, lumin;
-  UINT32 rmod, gmod, bmod;
-  UINT8 r, g, b;
+  let p16BPPPalette: Pointer<UINT16>;
+  let r16: UINT16;
+  let g16: UINT16;
+  let b16: UINT16;
+  let usColor: UINT16;
+  let cnt: UINT32;
+  let lumin: UINT32;
+  let rmod: UINT32;
+  let gmod: UINT32;
+  let bmod: UINT32;
+  let r: UINT8;
+  let g: UINT8;
+  let b: UINT8;
 
   Assert(pPalette != NULL);
 
@@ -473,8 +502,13 @@ function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UI
 
 // Convert from RGB to 16 bit value
 function Get16BPPColor(RGBValue: UINT32): UINT16 {
-  UINT16 r16, g16, b16, usColor;
-  UINT8 r, g, b;
+  let r16: UINT16;
+  let g16: UINT16;
+  let b16: UINT16;
+  let usColor: UINT16;
+  let r: UINT8;
+  let g: UINT8;
+  let b: UINT8;
 
   r = SGPGetRValue(RGBValue);
   g = SGPGetGValue(RGBValue);
@@ -512,8 +546,13 @@ function Get16BPPColor(RGBValue: UINT32): UINT16 {
 
 // Convert from 16 BPP to RGBvalue
 function GetRGBColor(Value16BPP: UINT16): UINT32 {
-  UINT16 r16, g16, b16;
-  UINT32 r, g, b, val;
+  let r16: UINT16;
+  let g16: UINT16;
+  let b16: UINT16;
+  let r: UINT32;
+  let g: UINT32;
+  let b: UINT32;
+  let val: UINT32;
 
   r16 = Value16BPP & gusRedMask;
   g16 = Value16BPP & gusGreenMask;
@@ -557,9 +596,9 @@ function GetRGBColor(Value16BPP: UINT16): UINT32 {
 //*****************************************************************************
 
 function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Pointer<UINT8>): Pointer<SGPPaletteEntry> {
-  UINT16 Index;
-  SGPPaletteEntry *pPalEntry;
-  SGPPaletteEntry *pInitEntry;
+  let Index: UINT16;
+  let pPalEntry: Pointer<SGPPaletteEntry>;
+  let pInitEntry: Pointer<SGPPaletteEntry>;
 
   pPalEntry = (SGPPaletteEntry *)MemAlloc(sizeof(SGPPaletteEntry) * 256);
   pInitEntry = pPalEntry;
@@ -602,10 +641,10 @@ function GetETRLEImageData(hImage: HIMAGE, pBuffer: Pointer<ETRLEData>): BOOLEAN
 }
 
 function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  UINT16 *pPixel;
-  UINT32 uiLoop;
+  let pPixel: Pointer<UINT16>;
+  let uiLoop: UINT32;
 
-  SplitUINT32 Pixel;
+  let Pixel: SplitUINT32;
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -627,10 +666,10 @@ function ConvertRGBDistribution565To555(p16BPPData: Pointer<UINT16>, uiNumberOfP
 }
 
 function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  UINT16 *pPixel;
-  UINT32 uiLoop;
+  let pPixel: Pointer<UINT16>;
+  let uiLoop: UINT32;
 
-  SplitUINT32 Pixel;
+  let Pixel: SplitUINT32;
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -652,10 +691,10 @@ function ConvertRGBDistribution565To655(p16BPPData: Pointer<UINT16>, uiNumberOfP
 }
 
 function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  UINT16 *pPixel;
-  UINT32 uiLoop;
+  let pPixel: Pointer<UINT16>;
+  let uiLoop: UINT32;
 
-  SplitUINT32 Pixel;
+  let Pixel: SplitUINT32;
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {
@@ -676,8 +715,12 @@ function ConvertRGBDistribution565To556(p16BPPData: Pointer<UINT16>, uiNumberOfP
 }
 
 function ConvertRGBDistribution565ToAny(p16BPPData: Pointer<UINT16>, uiNumberOfPixels: UINT32): void {
-  UINT16 *pPixel;
-  UINT32 uiRed, uiGreen, uiBlue, uiTemp, uiLoop;
+  let pPixel: Pointer<UINT16>;
+  let uiRed: UINT32;
+  let uiGreen: UINT32;
+  let uiBlue: UINT32;
+  let uiTemp: UINT32;
+  let uiLoop: UINT32;
 
   pPixel = p16BPPData;
   for (uiLoop = 0; uiLoop < uiNumberOfPixels; uiLoop++) {

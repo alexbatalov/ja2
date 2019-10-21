@@ -73,9 +73,9 @@ interface TEST {
 //*****************************************************************************
 
 function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
-  UINT32 uiAmount;
-  HSTACK hStack;
-  StackHeader *pStack;
+  let uiAmount: UINT32;
+  let hStack: HSTACK;
+  let pStack: Pointer<StackHeader>;
 
   // assign an initial amount of memory to allocate
   if ((uiNum_items > 0) && (uiSiz_each > 0))
@@ -114,9 +114,9 @@ function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
 //
 //*****************************************************************************
 function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
-  UINT32 uiAmount;
-  HQUEUE hQueue;
-  QueueHeader *pQueue;
+  let uiAmount: UINT32;
+  let hQueue: HQUEUE;
+  let pQueue: Pointer<QueueHeader>;
 
   // check to see if the queue has more than 1
   // element to be created and that the size > 1
@@ -159,9 +159,9 @@ function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
 //
 //*****************************************************************************
 function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
-  UINT32 uiAmount;
-  HLIST hList;
-  ListHeader *pList;
+  let uiAmount: UINT32;
+  let hList: HLIST;
+  let pList: Pointer<ListHeader>;
 
   // check to see if the queue has more than 1
   // element to be created and that the size > 1
@@ -206,9 +206,9 @@ function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
 //
 //*****************************************************************************
 function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Pointer<void>, b: Pointer<void>, c: UINT32) => INT8): HORDLIST {
-  UINT32 uiAmount;
-  HLIST hOrdList;
-  OrdListHeader *pOrdList;
+  let uiAmount: UINT32;
+  let hOrdList: HLIST;
+  let pOrdList: Pointer<OrdListHeader>;
 
   // check to see if the ordered list has more than 1
   // element to be created and that the size > 1
@@ -256,11 +256,11 @@ function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Poi
 //
 //*****************************************************************************
 function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
-  StackHeader *pTemp_cont;
-  UINT32 uiOffset;
-  UINT32 uiNew_size;
-  void *pvoid;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<StackHeader>;
+  let uiOffset: UINT32;
+  let uiNew_size: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
 
   // check for a NULL pointer
 
@@ -313,12 +313,12 @@ function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
 //
 //*****************************************************************************
 function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
-  StackHeader *pTemp_cont;
-  UINT32 uiOffset;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  void *pvoid;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<StackHeader>;
+  let uiOffset: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
 
   // check for a NULL queue
 
@@ -363,12 +363,12 @@ function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
 //
 //*****************************************************************************
 function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
-  StackHeader *pTemp_cont;
-  UINT32 uiOffset;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  void *pvoid;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<StackHeader>;
+  let uiOffset: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
 
   // check for a NULL queue
 
@@ -539,9 +539,9 @@ function ShutdownContainers(): void {
 //
 //*****************************************************************************
 function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
-  QueueHeader *pTemp_cont;
-  void *pvoid;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<QueueHeader>;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
   if (hQueue == NULL) {
@@ -588,10 +588,10 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
 //
 //*****************************************************************************
 function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  ListHeader *pTemp_cont;
-  void *pvoid;
-  UINT32 uiOffsetSrc;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<ListHeader>;
+  let pvoid: Pointer<void>;
+  let uiOffsetSrc: UINT32;
+  let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
   if (hList == NULL) {
@@ -649,11 +649,11 @@ function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
 //
 //*****************************************************************************
 function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  ListHeader *pTemp_cont;
-  BYTE *pvoid;
-  UINT32 uiOffsetSrc;
-  BYTE *pbyte;
-  BYTE *pSrc;
+  let pTemp_cont: Pointer<ListHeader>;
+  let pvoid: Pointer<BYTE>;
+  let uiOffsetSrc: UINT32;
+  let pbyte: Pointer<BYTE>;
+  let pSrc: Pointer<BYTE>;
 
   // cannot check for invalid handle, only 0
   if (hList == NULL) {
@@ -715,9 +715,9 @@ function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEA
 //
 //*****************************************************************************
 function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  ListHeader *pTemp_cont;
-  UINT32 uiOffsetSrc;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<ListHeader>;
+  let uiOffsetSrc: UINT32;
+  let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
   if (hList == NULL) {
@@ -773,10 +773,10 @@ function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLE
 //
 //*****************************************************************************
 function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  OrdListHeader *pTemp_cont;
-  void *pvoid;
-  UINT32 uiOffsetSrc;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<OrdListHeader>;
+  let pvoid: Pointer<void>;
+  let uiOffsetSrc: UINT32;
+  let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
   if (hOrdList == NULL) {
@@ -829,9 +829,9 @@ function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): B
 //
 //*****************************************************************************
 function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
-  QueueHeader *pTemp_cont;
-  void *pvoid;
-  BYTE *pbyte;
+  let pTemp_cont: Pointer<QueueHeader>;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
 
   // cannot check for invalid handle , only 0
   if (hQueue == NULL) {
@@ -892,18 +892,18 @@ function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
 //
 //*****************************************************************************
 function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
-  QueueHeader *pTemp_cont;
-  UINT32 uiMax_size;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  UINT32 uiNew_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  void *pvoid;
-  BYTE *pbyte;
-  BYTE *pmaxsize;
-  BYTE *presize;
-  BOOLEAN fresize;
+  let pTemp_cont: Pointer<QueueHeader>;
+  let uiMax_size: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let uiNew_size: UINT32;
+  let uiHead: UINT32;
+  let uiTail: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
+  let pmaxsize: Pointer<BYTE>;
+  let presize: Pointer<BYTE>;
+  let fresize: BOOLEAN;
 
   // check for invalid handle = 0
   if (hQueue == NULL) {
@@ -971,10 +971,10 @@ function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
 //
 //*****************************************************************************
 function do_copy(pmem_void: Pointer<void>, uiSourceOfst: UINT32, uiDestOfst: UINT32, uiSize: UINT32): BOOLEAN {
-  BYTE *pOffsetSrc;
-  BYTE *pOffsetDst;
-  void *pvoid_src;
-  void *pvoid_dest;
+  let pOffsetSrc: Pointer<BYTE>;
+  let pOffsetDst: Pointer<BYTE>;
+  let pvoid_src: Pointer<void>;
+  let pvoid_dest: Pointer<void>;
 
   if ((uiSourceOfst < 0) || (uiDestOfst < 0) || (uiSize < 0)) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid parameters passed to do_copy");
@@ -1008,8 +1008,8 @@ function do_copy(pmem_void: Pointer<void>, uiSourceOfst: UINT32, uiDestOfst: UIN
 //
 //*****************************************************************************
 function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: UINT32, uiSize: UINT32): BOOLEAN {
-  BYTE *pOffsetSrc;
-  void *pvoid_src;
+  let pOffsetSrc: Pointer<BYTE>;
+  let pvoid_src: Pointer<void>;
 
   if ((uiSrcOfst < 0) || (uiSize < 0)) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid parameters passed to do_copy_data");
@@ -1040,7 +1040,7 @@ function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: 
 //
 //*****************************************************************************
 function StackSize(hStack: HSTACK): UINT32 {
-  StackHeader *pTemp_cont;
+  let pTemp_cont: Pointer<StackHeader>;
   if (hStack == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Stack pointer is NULL");
     return 0;
@@ -1062,7 +1062,7 @@ function StackSize(hStack: HSTACK): UINT32 {
 //
 //*****************************************************************************
 function QueueSize(hQueue: HQUEUE): UINT32 {
-  QueueHeader *pTemp_cont;
+  let pTemp_cont: Pointer<QueueHeader>;
   if (hQueue == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
     return 0;
@@ -1084,7 +1084,7 @@ function QueueSize(hQueue: HQUEUE): UINT32 {
 //
 //*****************************************************************************
 function ListSize(hList: HLIST): UINT32 {
-  ListHeader *pTemp_cont;
+  let pTemp_cont: Pointer<ListHeader>;
   if (hList == NULL) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
     return 0;
@@ -1106,7 +1106,7 @@ function ListSize(hList: HLIST): UINT32 {
 //
 //*****************************************************************************
 function OrdListSize(hOrdList: HORDLIST): UINT32 {
-  OrdListHeader *pTemp_cont;
+  let pTemp_cont: Pointer<OrdListHeader>;
   if (hOrdList == NULL) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Ordered List pointer is NULL");
     return 0;
@@ -1131,19 +1131,19 @@ function OrdListSize(hOrdList: HORDLIST): UINT32 {
 //
 //*****************************************************************************
 function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
-  ListHeader *pTemp_cont;
-  UINT32 uiMax_size;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  UINT32 uiNew_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  void *pvoid;
-  BYTE *pbyte;
-  UINT32 uiOffsetSrc;
-  UINT32 uiOffsetDst;
-  UINT32 uiFinalLoc = 0;
-  BOOLEAN fTail_check = FALSE;
+  let pTemp_cont: Pointer<ListHeader>;
+  let uiMax_size: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let uiNew_size: UINT32;
+  let uiHead: UINT32;
+  let uiTail: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
+  let uiOffsetSrc: UINT32;
+  let uiOffsetDst: UINT32;
+  let uiFinalLoc: UINT32 = 0;
+  let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
   if (hList == NULL) {
@@ -1291,16 +1291,16 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
 //
 //*****************************************************************************
 function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  ListHeader *pTemp_cont;
-  UINT32 uiMax_size;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  UINT32 uiOffsetSrc;
-  UINT32 uiOffsetDst;
-  UINT32 uiFinalLoc = 0;
-  BOOLEAN fTail_check = FALSE;
+  let pTemp_cont: Pointer<ListHeader>;
+  let uiMax_size: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let uiHead: UINT32;
+  let uiTail: UINT32;
+  let uiOffsetSrc: UINT32;
+  let uiOffsetDst: UINT32;
+  let uiFinalLoc: UINT32 = 0;
+  let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
   if (hList == NULL) {
@@ -1417,15 +1417,15 @@ function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN
 //
 //*****************************************************************************
 function RemfromOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
-  OrdListHeader *pTemp_cont;
-  UINT32 uiMax_size;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  UINT32 uiOffsetSrc;
-  UINT32 uiOffsetDst;
-  UINT32 uiFinalLoc = 0;
+  let pTemp_cont: Pointer<OrdListHeader>;
+  let uiMax_size: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let uiHead: UINT32;
+  let uiTail: UINT32;
+  let uiOffsetSrc: UINT32;
+  let uiOffsetDst: UINT32;
+  let uiFinalLoc: UINT32 = 0;
 
   // check for invalid handle = 0
   if (hOrdList == NULL) {
@@ -1551,19 +1551,19 @@ function RemfromOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 //
 //*****************************************************************************
 function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): HORDLIST {
-  OrdListHeader *pTemp_cont;
-  UINT32 uiMax_size;
-  UINT32 uiSize_of_each;
-  UINT32 uiTotal;
-  UINT32 uiNew_size;
-  UINT32 uiHead;
-  UINT32 uiTail;
-  void *pvoid;
-  BYTE *pbyte;
-  UINT32 uiOffsetSrc;
-  UINT32 uiOffsetDst;
-  UINT32 uiFinalLoc = 0;
-  BOOLEAN fTail_check = FALSE;
+  let pTemp_cont: Pointer<OrdListHeader>;
+  let uiMax_size: UINT32;
+  let uiSize_of_each: UINT32;
+  let uiTotal: UINT32;
+  let uiNew_size: UINT32;
+  let uiHead: UINT32;
+  let uiTail: UINT32;
+  let pvoid: Pointer<void>;
+  let pbyte: Pointer<BYTE>;
+  let uiOffsetSrc: UINT32;
+  let uiOffsetDst: UINT32;
+  let uiFinalLoc: UINT32 = 0;
+  let fTail_check: BOOLEAN = FALSE;
 
   // check for invalid handle = 0
   if (hOrdList == NULL) {
@@ -1727,14 +1727,14 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 //
 //*****************************************************************************
 function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
-  OrdListHeader *pOrdList;
-  void *pTemp_data;
-  UINT32 uiOffset;
-  BOOLEAN fContinue = FALSE;
-  BOOLEAN fLessThan = FALSE;
-  BOOLEAN fMoreThan = FALSE;
-  INT8 sbResult;
-  UINT32 uiPosition;
+  let pOrdList: Pointer<OrdListHeader>;
+  let pTemp_data: Pointer<void>;
+  let uiOffset: UINT32;
+  let fContinue: BOOLEAN = FALSE;
+  let fLessThan: BOOLEAN = FALSE;
+  let fMoreThan: BOOLEAN = FALSE;
+  let sbResult: INT8;
+  let uiPosition: UINT32;
 
   // get a pointer into the list header
   pOrdList = (OrdListHeader *)hOrdList;
@@ -1843,8 +1843,8 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
 }
 
 function Compare(p: Pointer<void>, q: Pointer<void>, size: UINT32): INT8 {
-  TEST *temp1;
-  TEST *temp2;
+  let temp1: Pointer<TEST>;
+  let temp2: Pointer<TEST>;
 
   temp1 = (TEST *)p;
   temp2 = (TEST *)q;

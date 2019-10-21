@@ -1,30 +1,33 @@
 const SQUARE_STEP = 8;
 
-UINT32 guiExitScreen;
-BOOLEAN gfFadeInitialized = FALSE;
-INT8 gbFadeValue;
-INT16 gsFadeLimit;
-UINT32 guiTime;
-UINT32 guiFadeDelay;
-BOOLEAN gfFirstTimeInFade = FALSE;
-INT16 gsFadeCount;
-INT8 gbFadeType;
-BOOLEAN gfFadeIn;
-INT32 giX1, giX2, giY1, giY2;
-INT16 gsFadeRealCount;
-BOOLEAN gfFadeInVideo;
+let guiExitScreen: UINT32;
+let gfFadeInitialized: BOOLEAN = FALSE;
+let gbFadeValue: INT8;
+let gsFadeLimit: INT16;
+let guiTime: UINT32;
+let guiFadeDelay: UINT32;
+let gfFirstTimeInFade: BOOLEAN = FALSE;
+let gsFadeCount: INT16;
+let gbFadeType: INT8;
+let gfFadeIn: BOOLEAN;
+let giX1: INT32;
+let giX2: INT32;
+let giY1: INT32;
+let giY2: INT32;
+let gsFadeRealCount: INT16;
+let gfFadeInVideo: BOOLEAN;
 
-UINT32 uiOldMusicMode;
+let uiOldMusicMode: UINT32;
 
-FADE_FUNCTION gFadeFunction = NULL;
+let gFadeFunction: FADE_FUNCTION = NULL;
 
-FADE_HOOK gFadeInDoneCallback = NULL;
-FADE_HOOK gFadeOutDoneCallback = NULL;
+let gFadeInDoneCallback: FADE_HOOK = NULL;
+let gFadeOutDoneCallback: FADE_HOOK = NULL;
 
-BOOLEAN gfFadeIn = FALSE;
-BOOLEAN gfFadeOut = FALSE;
-BOOLEAN gfFadeOutDone = FALSE;
-BOOLEAN gfFadeInDone = FALSE;
+let gfFadeIn: BOOLEAN = FALSE;
+let gfFadeOut: BOOLEAN = FALSE;
+let gfFadeOutDone: BOOLEAN = FALSE;
+let gfFadeInDone: BOOLEAN = FALSE;
 
 function FadeInNextFrame(): void {
   gfFadeIn = TRUE;
@@ -202,7 +205,7 @@ function FadeScreenInit(): UINT32 {
 }
 
 function FadeScreenHandle(): UINT32 {
-  UINT32 uiTime;
+  let uiTime: UINT32;
 
   if (!gfFadeInitialized) {
     SET_ERROR("Fade Screen called but not intialized ");
@@ -263,12 +266,15 @@ function FadeScreenShutdown(): UINT32 {
 }
 
 function FadeFrameBufferVersionOne(): void {
-  INT32 cX, cY;
-  UINT32 uiDestPitchBYTES;
-  UINT16 *pBuf;
-  INT16 bR, bG, bB;
-  UINT32 uiRGBColor;
-  UINT16 s16BPPSrc;
+  let cX: INT32;
+  let cY: INT32;
+  let uiDestPitchBYTES: UINT32;
+  let pBuf: Pointer<UINT16>;
+  let bR: INT16;
+  let bG: INT16;
+  let bB: INT16;
+  let uiRGBColor: UINT32;
+  let s16BPPSrc: UINT16;
 
   pBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
@@ -305,13 +311,18 @@ function FadeFrameBufferVersionOne(): void {
 }
 
 function FadeInBackBufferVersionOne(): void {
-  INT32 cX, cY;
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT16 *pSrcBuf, *pDestBuf;
-  INT16 bR, bG, bB;
-  UINT32 uiRGBColor;
-  UINT16 s16BPPSrc;
-  INT16 bFadeVal = (gsFadeLimit - gsFadeCount) * gbFadeValue;
+  let cX: INT32;
+  let cY: INT32;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pSrcBuf: Pointer<UINT16>;
+  let pDestBuf: Pointer<UINT16>;
+  let bR: INT16;
+  let bG: INT16;
+  let bB: INT16;
+  let uiRGBColor: UINT32;
+  let s16BPPSrc: UINT16;
+  let bFadeVal: INT16 = (gsFadeLimit - gsFadeCount) * gbFadeValue;
 
   pDestBuf = (UINT16 *)LockVideoSurface(BACKBUFFER, &uiDestPitchBYTES);
   pSrcBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
@@ -350,12 +361,17 @@ function FadeInBackBufferVersionOne(): void {
 }
 
 function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
-  INT32 cX, cY, iStartX, iStartY;
-  UINT32 uiDestPitchBYTES;
-  UINT16 *pBuf;
-  INT16 bR, bG, bB;
-  UINT32 uiRGBColor;
-  UINT16 s16BPPSrc;
+  let cX: INT32;
+  let cY: INT32;
+  let iStartX: INT32;
+  let iStartY: INT32;
+  let uiDestPitchBYTES: UINT32;
+  let pBuf: Pointer<UINT16>;
+  let bR: INT16;
+  let bG: INT16;
+  let bB: INT16;
+  let uiRGBColor: UINT32;
+  let s16BPPSrc: UINT16;
 
   pBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
@@ -401,8 +417,9 @@ function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
 }
 
 function FadeFrameBufferSide(): void {
-  INT32 iX1, iX2;
-  INT16 sFadeMove;
+  let iX1: INT32;
+  let iX2: INT32;
+  let sFadeMove: INT16;
 
   sFadeMove = gsFadeCount * 4;
 
@@ -418,8 +435,12 @@ function FadeFrameBufferSide(): void {
 }
 
 function FadeFrameBufferSquare(): void {
-  INT32 iX1, iX2, iY1, iY2;
-  INT16 sFadeXMove, sFadeYMove;
+  let iX1: INT32;
+  let iX2: INT32;
+  let iY1: INT32;
+  let iY2: INT32;
+  let sFadeXMove: INT16;
+  let sFadeYMove: INT16;
 
   sFadeXMove = SQUARE_STEP;
   sFadeYMove = (INT16)(sFadeXMove * .75);
@@ -447,9 +468,13 @@ function FadeFrameBufferSquare(): void {
 }
 
 function FadeInBackBufferSquare(): void {
-  INT32 iX1, iX2, iY1, iY2;
-  INT16 sFadeXMove, sFadeYMove;
-  blt_vs_fx BltFx;
+  let iX1: INT32;
+  let iX2: INT32;
+  let iY1: INT32;
+  let iY2: INT32;
+  let sFadeXMove: INT16;
+  let sFadeYMove: INT16;
+  let BltFx: blt_vs_fx;
 
   sFadeXMove = SQUARE_STEP;
   sFadeYMove = (INT16)(sFadeXMove * .75);
@@ -529,7 +554,7 @@ function FadeFrameBufferRealFade(): void {
 }
 
 function FadeInFrameBufferRealFade(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (gsFadeRealCount != gsFadeCount) {
     for (cnt = 0; cnt < (gsFadeLimit - gsFadeCount); cnt++) {
@@ -547,10 +572,13 @@ function FadeInFrameBufferRealFade(): void {
 }
 
 function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
-  UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-  UINT8 *pDestBuf, *pSrcBuf;
-  UINT16 usWidth, usHeight;
-  UINT8 ubBitDepth;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let pSrcBuf: Pointer<UINT8>;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
+  let ubBitDepth: UINT8;
 
   // Update saved buffer - do for the viewport size ony!
   GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);

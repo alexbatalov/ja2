@@ -1,10 +1,10 @@
 const NUM_REVEALED_BYTES = 3200;
 
-BOOLEAN gfApplyChangesToTempFile = FALSE;
+let gfApplyChangesToTempFile: BOOLEAN = FALSE;
 
 //  There are 3200 bytes, and each bit represents the revelaed status.
 //	3200 bytes * 8 bits = 25600 map elements
-UINT8 *gpRevealedMap;
+let gpRevealedMap: Pointer<UINT8>;
 
 // ppp
 
@@ -13,9 +13,9 @@ function ApplyMapChangesToMapTempFile(fAddToMap: BOOLEAN): void {
 }
 
 function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( sSectorX, sSectorY, bSectorZ, zTempName, FALSE );
@@ -50,16 +50,16 @@ function SaveModifiedMapStructToMapTempFile(pMap: Pointer<MODIFY_MAP>, sSectorX:
 }
 
 function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
-  UINT32 uiFileSize;
-  UINT32 uiNumberOfElements;
-  UINT32 uiNumberOfElementsSavedBackToFile = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
-  UINT32 cnt;
-  MODIFY_MAP *pMap;
-  MODIFY_MAP *pTempArrayOfMaps = NULL;
-  UINT16 usIndex;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let uiFileSize: UINT32;
+  let uiNumberOfElements: UINT32;
+  let uiNumberOfElementsSavedBackToFile: UINT32 = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
+  let cnt: UINT32;
+  let pMap: Pointer<MODIFY_MAP>;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
+  let usIndex: UINT16;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
@@ -193,7 +193,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         break;
 
       case SLM_EXIT_GRIDS: {
-        EXITGRID ExitGrid;
+        let ExitGrid: EXITGRID;
         gfLoadingExitGrids = TRUE;
         ExitGrid.usGridNo = pMap->usSubImageIndex;
         ExitGrid.ubGotoSectorX = (UINT8)pMap->usImageType;
@@ -245,9 +245,9 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
 }
 
 function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (!gfApplyChangesToTempFile)
     return;
@@ -275,9 +275,9 @@ function AddStructFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
 }
 
 function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (!gfApplyChangesToTempFile)
     return;
@@ -305,9 +305,9 @@ function AddObjectFromMapTempFileToMap(uiMapIndex: UINT32, usIndex: UINT16): voi
 }
 
 function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (!gfApplyChangesToTempFile)
     return;
@@ -331,9 +331,9 @@ function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void
 }
 
 function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (!gfApplyChangesToTempFile)
     return;
@@ -361,9 +361,9 @@ function RemoveSavedStructFromMap(uiMapIndex: UINT32, usIndex: UINT16): void {
 }
 
 function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
-  MODIFY_MAP Map;
-  UINT16 cnt;
-  STRUCTURE *pStructure;
+  let Map: MODIFY_MAP;
+  let cnt: UINT16;
+  let pStructure: Pointer<STRUCTURE>;
 
   gpRevealedMap = MemAlloc(NUM_REVEALED_BYTES);
   if (gpRevealedMap == NULL)
@@ -395,7 +395,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
 
     // if there is a structure that is damaged
     if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_STRUCTURE_DAMAGED) {
-      STRUCTURE *pCurrent;
+      let pCurrent: Pointer<STRUCTURE>;
 
       pCurrent = gpWorldLevelData[cnt].pStructureHead;
 
@@ -405,8 +405,8 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
       while (pCurrent) {
         // if the structure has been damaged
         if (pCurrent->ubHitPoints < pCurrent->pDBStructureRef->pDBStructure->ubHitPoints) {
-          UINT8 ubBitToSet = 0x80;
-          UINT8 ubLevel = 0;
+          let ubBitToSet: UINT8 = 0x80;
+          let ubLevel: UINT8 = 0;
 
           if (pCurrent->sCubeOffset != 0)
             ubLevel |= ubBitToSet;
@@ -436,7 +436,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
     if (pStructure) {
       // if the current structure has an openable structure in it, and it is NOT a door
       if (!(pStructure->fFlags & STRUCTURE_ANYDOOR)) {
-        BOOLEAN fStatusOnTheMap;
+        let fStatusOnTheMap: BOOLEAN;
 
         fStatusOnTheMap = ((pStructure->fFlags & STRUCTURE_OPEN) != 0);
 
@@ -463,9 +463,9 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
 }
 
 function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32;
 
   Assert(gpRevealedMap != NULL);
 
@@ -503,9 +503,9 @@ function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: IN
 }
 
 function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
@@ -553,8 +553,8 @@ function LoadRevealedStatusArrayFromRevealedTempFile(): BOOLEAN {
 }
 
 function SetSectorsRevealedBit(usMapIndex: UINT16): void {
-  UINT16 usByteNumber;
-  UINT8 ubBitNumber;
+  let usByteNumber: UINT16;
+  let ubBitNumber: UINT8;
 
   usByteNumber = usMapIndex / 8;
   ubBitNumber = usMapIndex % 8;
@@ -563,9 +563,9 @@ function SetSectorsRevealedBit(usMapIndex: UINT16): void {
 }
 
 function SetMapRevealedStatus(): void {
-  UINT16 usByteCnt;
-  UINT8 ubBitCnt;
-  UINT16 usMapIndex;
+  let usByteCnt: UINT16;
+  let ubBitCnt: UINT8;
+  let usMapIndex: UINT16;
 
   if (gpRevealedMap == NULL)
     AssertMsg(0, "gpRevealedMap is NULL.  DF 1");
@@ -591,12 +591,12 @@ function SetMapRevealedStatus(): void {
 }
 
 function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
-  STRUCTURE *pCurrent = NULL;
-  INT8 bLevel;
-  UINT8 ubWallOrientation;
-  UINT8 ubBitToSet = 0x80;
-  UINT8 ubHitPoints = 0;
-  UINT8 ubType = 0;
+  let pCurrent: Pointer<STRUCTURE> = NULL;
+  let bLevel: INT8;
+  let ubWallOrientation: UINT8;
+  let ubBitToSet: UINT8 = 0x80;
+  let ubHitPoints: UINT8 = 0;
+  let ubType: UINT8 = 0;
 
   // Find the base structure
   pCurrent = FindStructure((INT16)pMap->usGridNo, STRUCTURE_BASE_TILE);
@@ -622,9 +622,9 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
 //////////////
 
 function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
@@ -645,9 +645,9 @@ function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
 }
 
 function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
@@ -668,9 +668,9 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
 }
 
 function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
@@ -691,9 +691,9 @@ function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16
 }
 
 function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  MODIFY_MAP Map;
-  UINT32 uiType;
-  UINT16 usSubIndex;
+  let Map: MODIFY_MAP;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME)
     return;
@@ -714,7 +714,7 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
 }
 
 function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): void {
-  MODIFY_MAP Map;
+  let Map: MODIFY_MAP;
 
   if (!gfApplyChangesToTempFile) {
     ScreenMsg(FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Called AddExitGridToMapTempFile() without calling ApplyMapChangesToMapTempFile()");
@@ -739,17 +739,17 @@ function AddExitGridToMapTempFile(usGridNo: UINT16, pExitGrid: Pointer<EXITGRID>
 }
 
 function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX: INT16, sSectorY: INT16, ubSectorZ: UINT8): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
-  MODIFY_MAP *pTempArrayOfMaps = NULL;
-  MODIFY_MAP *pMap;
-  UINT32 uiFileSize;
-  UINT32 uiNumberOfElements;
-  BOOLEAN fRetVal = FALSE;
-  UINT32 uiType;
-  UINT16 usSubIndex;
-  UINT32 cnt;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
+  let pMap: Pointer<MODIFY_MAP>;
+  let uiFileSize: UINT32;
+  let uiNumberOfElements: UINT32;
+  let fRetVal: BOOLEAN = FALSE;
+  let uiType: UINT32;
+  let usSubIndex: UINT16;
+  let cnt: UINT32;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( sSectorX, sSectorY, ubSectorZ, zTempName, FALSE );
@@ -819,7 +819,7 @@ function RemoveGraphicFromTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSectorX
 }
 
 function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: BOOLEAN): void {
-  MODIFY_MAP Map;
+  let Map: MODIFY_MAP;
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
@@ -832,7 +832,7 @@ function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: BOOLE
 }
 
 function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
-  MODIFY_MAP Map;
+  let Map: MODIFY_MAP;
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
@@ -843,7 +843,7 @@ function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
 }
 
 function ModifyWindowStatus(uiMapIndex: UINT32): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure((INT16)uiMapIndex, STRUCTURE_WALLNWINDOW);
   if (pStructure) {
@@ -855,11 +855,11 @@ function ModifyWindowStatus(uiMapIndex: UINT32): BOOLEAN {
 }
 
 function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOOLEAN): void {
-  STRUCTURE *pStructure;
-  STRUCTURE *pBase;
-  BOOLEAN fStatusOnTheMap;
-  ITEM_POOL *pItemPool;
-  INT16 sBaseGridNo = (INT16)uiMapIndex;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBase: Pointer<STRUCTURE>;
+  let fStatusOnTheMap: BOOLEAN;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let sBaseGridNo: INT16 = (INT16)uiMapIndex;
 
   pStructure = FindStructure((UINT16)uiMapIndex, STRUCTURE_OPENABLE);
 
@@ -901,16 +901,16 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
 function ChangeStatusOfOpenableStructInUnloadedSector(usSectorX: UINT16, usSectorY: UINT16, bSectorZ: INT8, usGridNo: UINT16, fChangeToOpen: BOOLEAN): BOOLEAN {
   //	STRUCTURE * pStructure;
   //	MODIFY_MAP Map;
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
-  UINT32 uiNumBytesWritten;
-  UINT32 uiFileSize;
-  UINT32 uiNumberOfElements;
-  UINT32 uiNumberOfElementsSavedBackToFile = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
-  UINT32 cnt;
-  MODIFY_MAP *pMap;
-  MODIFY_MAP *pTempArrayOfMaps = NULL;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let uiNumBytesWritten: UINT32;
+  let uiFileSize: UINT32;
+  let uiNumberOfElements: UINT32;
+  let uiNumberOfElementsSavedBackToFile: UINT32 = 0; // added becuase if no files get saved back to disk, the flag needs to be erased
+  let cnt: UINT32;
+  let pMap: Pointer<MODIFY_MAP>;
+  let pTempArrayOfMaps: Pointer<MODIFY_MAP> = NULL;
   //	UINT16	usIndex;
 
   // Convert the current sector location into a file name

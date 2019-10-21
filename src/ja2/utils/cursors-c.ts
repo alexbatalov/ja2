@@ -1,11 +1,11 @@
 const NUM_MOUSE_LEVELS = 2;
 
-INT16 gsMouseGlobalYOffsets[NUM_MOUSE_LEVELS] = {
+let gsMouseGlobalYOffsets: INT16[] /* [NUM_MOUSE_LEVELS] */ = {
   0,
   50,
 };
 
-CursorFileData CursorFileDatabase[] = {
+let CursorFileDatabase: CursorFileData[] /* [] */ = {
   { "CURSORS\\cursor.sti", FALSE, 0, 0, 0, NULL },
   { "CURSORS\\cur_targ.sti", FALSE, 0, ANIMATED_CURSOR, 7, NULL },
   { "CURSORS\\cur_tagr.sti", FALSE, 0, ANIMATED_CURSOR, 7, NULL },
@@ -85,7 +85,7 @@ function RaiseMouseToLevel(bLevel: INT8): void {
   gsGlobalCursorYOffset = gsMouseGlobalYOffsets[bLevel];
 }
 
-CursorData CursorDatabase[] = {
+let CursorDatabase: CursorData[] /* [] */ = {
   { { C_MISC, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, 1, 0, 0, 0, 0, 0, 0 },
 
   { { C_TRINGS, 6, 0, HIDE_SUBCURSOR, HIDE_SUBCURSOR }, { C_ACTIONMODE, 0, 0, CENTER_SUBCURSOR, CENTER_SUBCURSOR }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, 2, CENTER_CURSOR, CENTER_CURSOR, 0, 0, 0, 0 },
@@ -417,10 +417,11 @@ function BltJA2CursorData(): void {
 }
 
 function DrawMouseText(): void {
-  INT16 pStr[512];
-  INT16 sX, sY;
-  static BOOLEAN fShow = FALSE;
-  static BOOLEAN fHoldInvalid = TRUE;
+  let pStr: INT16[] /* [512] */;
+  let sX: INT16;
+  let sY: INT16;
+  /* static */ let fShow: BOOLEAN = FALSE;
+  /* static */ let fHoldInvalid: BOOLEAN = TRUE;
 
   // EnterMutex(MOUSE_BUFFER_MUTEX, __LINE__, __FILE__);
 
@@ -542,9 +543,9 @@ function DrawMouseText(): void {
 }
 
 function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
-  CursorData *pCurData;
-  CursorImage *pCurImage;
-  UINT32 cnt;
+  let pCurData: Pointer<CursorData>;
+  let pCurImage: Pointer<CursorImage>;
+  let cnt: UINT32;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
     pCurData = &(CursorDatabase[uiCursorIndex]);
@@ -564,7 +565,7 @@ function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
 }
 
 function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
-  CursorData *pCurData;
+  let pCurData: Pointer<CursorData>;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
     pCurData = &(CursorDatabase[uiCursorIndex]);

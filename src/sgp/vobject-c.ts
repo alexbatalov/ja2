@@ -35,8 +35,8 @@ const COMPRESS_RUN_MASK = 0x7F;
 // LOCAL global variables
 // *******************************************************************************
 
-HLIST ghVideoObjects = NULL;
-BOOLEAN gfVideoObjectsInit = FALSE;
+let ghVideoObjects: HLIST = NULL;
+let gfVideoObjectsInit: BOOLEAN = FALSE;
 
 interface VOBJECT_NODE {
   hVObject: HVOBJECT;
@@ -46,11 +46,11 @@ interface VOBJECT_NODE {
   prev: Pointer<VOBJECT_NODE>;
 }
 
-VOBJECT_NODE *gpVObjectHead = NULL;
-VOBJECT_NODE *gpVObjectTail = NULL;
-UINT32 guiVObjectIndex = 1;
-UINT32 guiVObjectSize = 0;
-UINT32 guiVObjectTotalAdded = 0;
+let gpVObjectHead: Pointer<VOBJECT_NODE> = NULL;
+let gpVObjectTail: Pointer<VOBJECT_NODE> = NULL;
+let guiVObjectIndex: UINT32 = 1;
+let guiVObjectSize: UINT32 = 0;
+let guiVObjectTotalAdded: UINT32 = 0;
 
 // **************************************************************
 //
@@ -70,7 +70,7 @@ function InitializeVideoObjectManager(): BOOLEAN {
 }
 
 function ShutdownVideoObjectManager(): BOOLEAN {
-  VOBJECT_NODE *curr;
+  let curr: Pointer<VOBJECT_NODE>;
   while (gpVObjectHead) {
     curr = gpVObjectHead;
     gpVObjectHead = gpVObjectHead->next;
@@ -88,8 +88,8 @@ function ShutdownVideoObjectManager(): BOOLEAN {
 }
 
 function CountVideoObjectNodes(): UINT32 {
-  VOBJECT_NODE *curr;
-  UINT32 i = 0;
+  let curr: Pointer<VOBJECT_NODE>;
+  let i: UINT32 = 0;
   curr = gpVObjectHead;
   while (curr) {
     i++;
@@ -99,7 +99,7 @@ function CountVideoObjectNodes(): UINT32 {
 }
 
 function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: Pointer<UINT32>): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
   // Assertions
   Assert(puiIndex);
@@ -144,7 +144,7 @@ function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: P
 }
 
 function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiIndex));
@@ -156,7 +156,7 @@ function SetVideoObjectTransparency(uiIndex: UINT32, TransColor: COLORVAL): BOOL
 }
 
 function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): BOOLEAN {
-  VOBJECT_NODE *curr;
+  let curr: Pointer<VOBJECT_NODE>;
 
   curr = gpVObjectHead;
   while (curr) {
@@ -170,9 +170,9 @@ function GetVideoObject(hVObject: Pointer<HVOBJECT>, uiIndex: UINT32): BOOLEAN {
 }
 
 function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
-  HVOBJECT hSrcVObject;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
+  let hSrcVObject: HVOBJECT;
 
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
@@ -199,7 +199,7 @@ function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, u
 }
 
 function DeleteVideoObjectFromIndex(uiVObject: UINT32): BOOLEAN {
-  VOBJECT_NODE *curr;
+  let curr: Pointer<VOBJECT_NODE>;
 
   curr = gpVObjectHead;
   while (curr) {
@@ -242,8 +242,8 @@ function DeleteVideoObjectFromIndex(uiVObject: UINT32): BOOLEAN {
 // There are two types, a BltFast and a Blt. BltFast is 10% faster, uses no
 // clipping lists
 function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_fx>): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
 
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
@@ -268,9 +268,9 @@ function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionI
 // *******************************************************************************
 
 function CreateVideoObject(VObjectDesc: Pointer<VOBJECT_DESC>): HVOBJECT {
-  HVOBJECT hVObject;
-  HIMAGE hImage;
-  ETRLEData TempETRLEData;
+  let hVObject: HVOBJECT;
+  let hImage: HIMAGE;
+  let TempETRLEData: ETRLEData;
   //	UINT32							count;
 
   // Allocate memory for video object data and initialize
@@ -400,7 +400,7 @@ function SetVideoObjectTransparencyColor(hVObject: HVOBJECT, TransColor: COLORVA
 
 // Deletes all palettes, surfaces and region data
 function DeleteVideoObject(hVObject: HVOBJECT): BOOLEAN {
-  UINT16 usLoop;
+  let usLoop: UINT16;
 
   // Assertions
   CHECKF(hVObject != NULL);
@@ -459,7 +459,7 @@ function DeleteVideoObject(hVObject: HVOBJECT): BOOLEAN {
 **********************************************************************************************/
 
 function CreateObjectPaletteTables(pObj: HVOBJECT, uiType: UINT32): UINT16 {
-  UINT32 count;
+  let count: UINT32;
 
   // this creates the highlight table. Specify the glow-type when creating the tables
   // through uiType, symbols are from VOBJECT.H
@@ -538,7 +538,7 @@ function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT
   Assert(pBuffer != NULL);
 
   if (hSrcVObject == NULL) {
-    int i = 0;
+    let i: int = 0;
   }
 
   Assert(hSrcVObject != NULL);
@@ -593,10 +593,10 @@ function BltVideoObjectToBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT
 }
 
 function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
-  SGPRect area;
-  UINT8 uiPattern[8][8] = {
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
+  let area: SGPRect;
+  let uiPattern: UINT8[][] /* [8][8] */ = {
     { 0, 1, 0, 1, 0, 1, 0, 1 },
     { 1, 0, 1, 0, 1, 0, 1, 0 },
     { 0, 1, 0, 1, 0, 1, 0, 1 },
@@ -645,8 +645,8 @@ function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X
 
 **********************************************************************************************/
 function DestroyObjectPaletteTables(hVObject: HVOBJECT): BOOLEAN {
-  UINT32 x;
-  BOOLEAN f16BitPal;
+  let x: UINT32;
+  let f16BitPal: BOOLEAN;
 
   for (x = 0; x < HVOBJECT_SHADE_TABLES; x++) {
     if (!(hVObject->fFlags & VOBJECT_FLAG_SHADETABLE_SHARED)) {
@@ -691,7 +691,7 @@ function SetObjectShade(pObj: HVOBJECT, uiShade: UINT32): UINT16 {
 }
 
 function SetObjectHandleShade(uiHandle: UINT32, uiShade: UINT32): UINT16 {
-  HVOBJECT hObj;
+  let hObj: HVOBJECT;
 
   if (!GetVideoObject(&hObj, uiHandle)) {
     DbgMessage(TOPIC_VIDEOOBJECT, DBG_LEVEL_2, String("Invalid object handle for setting shade level"));
@@ -733,11 +733,11 @@ UINT32	uiPitch;
         given image coordinates. The value returned is an 8-bit palette index
 ********************************************************************************************/
 function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIndex: UINT16, usX: UINT16, usY: UINT16): BOOLEAN {
-  UINT8 *pCurrent;
-  UINT16 usLoopX = 0;
-  UINT16 usLoopY = 0;
-  UINT16 ubRunLength;
-  ETRLEObject *pETRLEObject;
+  let pCurrent: Pointer<UINT8>;
+  let usLoopX: UINT16 = 0;
+  let usLoopY: UINT16 = 0;
+  let ubRunLength: UINT16;
+  let pETRLEObject: Pointer<ETRLEObject>;
 
   // Do a bunch of checks
   CHECKF(hVObject != NULL);
@@ -800,8 +800,8 @@ function GetVideoObjectETRLEProperties(hVObject: HVOBJECT, pETRLEObject: Pointer
 }
 
 function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: UINT16, pusWidth: Pointer<UINT16>, pusHeight: Pointer<UINT16>): BOOLEAN {
-  HVOBJECT hVObject;
-  ETRLEObject ETRLEObject;
+  let hVObject: HVOBJECT;
+  let ETRLEObject: ETRLEObject;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
@@ -815,7 +815,7 @@ function GetVideoObjectETRLESubregionProperties(uiVideoObject: UINT32, usIndex: 
 }
 
 function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObject: Pointer<ETRLEObject>, usIndex: UINT16): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
@@ -826,7 +826,7 @@ function GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject: UINT32, pETRLEObj
 }
 
 function SetVideoObjectPalette8BPP(uiVideoObject: INT32, pPal8: Pointer<SGPPaletteEntry>): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
@@ -835,7 +835,7 @@ function SetVideoObjectPalette8BPP(uiVideoObject: INT32, pPal8: Pointer<SGPPalet
 }
 
 function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Pointer<UINT16>>): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
@@ -846,7 +846,7 @@ function GetVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<Point
 }
 
 function CopyVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<UINT16>): BOOLEAN {
-  HVOBJECT hVObject;
+  let hVObject: HVOBJECT;
 
 // Get video object
   CHECKF(GetVideoObject(&hVObject, uiVideoObject));
@@ -857,8 +857,8 @@ function CopyVideoObjectPalette16BPP(uiVideoObject: INT32, ppPal16: Pointer<UINT
 }
 
 function CheckFor16BPPRegion(hVObject: HVOBJECT, usRegionIndex: UINT16, ubShadeLevel: UINT8, pusIndex: Pointer<UINT16>): BOOLEAN {
-  UINT16 usLoop;
-  SixteenBPPObjectInfo *p16BPPObject;
+  let usLoop: UINT16;
+  let p16BPPObject: Pointer<SixteenBPPObjectInfo>;
 
   if (hVObject->usNumberOf16BPPObjects > 0) {
     for (usLoop = 0; usLoop < hVObject->usNumberOf16BPPObjects; usLoop++) {
@@ -875,16 +875,16 @@ function CheckFor16BPPRegion(hVObject: HVOBJECT, usRegionIndex: UINT16, ubShadeL
 }
 
 function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, ubShadeLevel: UINT8): BOOLEAN {
-  SixteenBPPObjectInfo *p16BPPObject;
-  UINT8 *pInput;
-  UINT8 *pOutput;
-  UINT16 *p16BPPPalette;
-  UINT32 uiDataLoop;
-  UINT32 uiDataLength;
-  UINT8 ubRunLoop;
+  let p16BPPObject: Pointer<SixteenBPPObjectInfo>;
+  let pInput: Pointer<UINT8>;
+  let pOutput: Pointer<UINT8>;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiDataLoop: UINT32;
+  let uiDataLength: UINT32;
+  let ubRunLoop: UINT8;
   // UINT8					ubRunLength;
-  INT8 bData;
-  UINT32 uiLen;
+  let bData: INT8;
+  let uiLen: UINT32;
 
   // check for existing 16BPP region and then allocate memory
   if (usRegionIndex >= hVObject->usNumberOfObjects || ubShadeLevel >= HVOBJECT_SHADE_TABLES) {
@@ -998,9 +998,9 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
 }
 
 function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
-  HVOBJECT hSrcVObject;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
+  let hSrcVObject: HVOBJECT;
 
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
@@ -1025,8 +1025,8 @@ function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UI
 }
 
 function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usIndex: UINT16, iDestX: INT32, iDestY: INT32, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
 
@@ -1047,9 +1047,9 @@ function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, us
 }
 
 function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, usIndex: UINT16, iDestX: INT32, iDestY: INT32): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
-  HVOBJECT hSrcVObject;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
+  let hSrcVObject: HVOBJECT;
 
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
@@ -1074,8 +1074,8 @@ function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObje
 }
 
 function BltVideoObjectOutlineShadow(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usIndex: UINT16, iDestX: INT32, iDestY: INT32): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
   // Lock video surface
   pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
 

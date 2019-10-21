@@ -1,6 +1,6 @@
-UINT8 AimMercArray[MAX_NUMBER_MERCS];
+let AimMercArray: UINT8[] /* [MAX_NUMBER_MERCS] */;
 
-UINT8 gCurrentAimPage[NUM_AIM_SCREENS] = {
+let gCurrentAimPage: UINT8[] /* [NUM_AIM_SCREENS] */ = {
   LAPTOP_MODE_AIM,
   LAPTOP_MODE_AIM_MEMBERS_SORTED_FILES,
   LAPTOP_MODE_AIM_MEMBERS_ARCHIVES,
@@ -109,49 +109,49 @@ const enum Enum62 {
 }
 
 // Aim Screen Handle
-UINT32 guiAimSymbol;
-UINT32 guiRustBackGround;
-UINT32 guiMemberCard;
-UINT32 guiPolicies;
-UINT32 guiHistory;
-UINT32 guiLinks;
-UINT32 guiWarning;
-UINT32 guiBottomButton;
-UINT32 guiBottomButton2;
-UINT32 guiFlowerAdvertisement;
-UINT32 guiAdForAdsImages;
-UINT32 guiInsuranceAdImages;
-UINT32 guiFuneralAdImages;
-UINT32 guiBobbyRAdImages;
+let guiAimSymbol: UINT32;
+let guiRustBackGround: UINT32;
+let guiMemberCard: UINT32;
+let guiPolicies: UINT32;
+let guiHistory: UINT32;
+let guiLinks: UINT32;
+let guiWarning: UINT32;
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
+let guiFlowerAdvertisement: UINT32;
+let guiAdForAdsImages: UINT32;
+let guiInsuranceAdImages: UINT32;
+let guiFuneralAdImages: UINT32;
+let guiBobbyRAdImages: UINT32;
 
-UINT8 gubAimMenuButtonDown = 255;
-UINT32 gubWarningTimer;
-UINT8 gubCurrentAdvertisment;
+let gubAimMenuButtonDown: UINT8 = 255;
+let gubWarningTimer: UINT32;
+let gubCurrentAdvertisment: UINT8;
 
-BOOLEAN gfInitAdArea;
+let gfInitAdArea: BOOLEAN;
 
 // MemberCard
-MOUSE_REGION gSelectedMemberCardRegion;
+let gSelectedMemberCardRegion: MOUSE_REGION;
 
 // Policies
-MOUSE_REGION gSelectedPoliciesRegion;
+let gSelectedPoliciesRegion: MOUSE_REGION;
 
 // History
-MOUSE_REGION gSelectedHistoryRegion;
+let gSelectedHistoryRegion: MOUSE_REGION;
 
 // Links
-MOUSE_REGION gSelectedLinksRegion;
+let gSelectedLinksRegion: MOUSE_REGION;
 
-UINT32 guiBottomButtons[NUM_AIM_SCREENS];
-INT32 guiBottomButtonImage;
+let guiBottomButtons: UINT32[] /* [NUM_AIM_SCREENS] */;
+let guiBottomButtonImage: INT32;
 
 // Banner Area
-MOUSE_REGION gSelectedBannerRegion;
+let gSelectedBannerRegion: MOUSE_REGION;
 
 // Aim logo click
-MOUSE_REGION gSelectedAimLogo;
+let gSelectedAimLogo: MOUSE_REGION;
 
-BOOLEAN fFirstTimeIn = TRUE;
+let fFirstTimeIn: BOOLEAN = TRUE;
 
 //
 // ***********************  Functions		*************************
@@ -162,7 +162,7 @@ function GameInitAIM(): void {
 }
 
 function EnterAIM(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   gubWarningTimer = 0;
   gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
@@ -285,10 +285,10 @@ function HandleAIM(): void {
 }
 
 function RenderAIM(): void {
-  HVOBJECT hMemberCardHandle;
-  HVOBJECT hPoliciesHandle;
-  HVOBJECT hLinksHandle;
-  HVOBJECT hHistoryHandle;
+  let hMemberCardHandle: HVOBJECT;
+  let hPoliciesHandle: HVOBJECT;
+  let hLinksHandle: HVOBJECT;
+  let hHistoryHandle: HVOBJECT;
   //	UINT16	x,y, uiPosX, uiPosY;
 
   DrawAimDefaults();
@@ -365,7 +365,7 @@ function SelectLinksRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function InitAimDefaults(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -393,9 +393,12 @@ function RemoveAimDefaults(): BOOLEAN {
 }
 
 function DrawAimDefaults(): BOOLEAN {
-  HVOBJECT hRustBackGroundHandle;
-  HVOBJECT hAimSymbolHandle;
-  UINT16 x, y, uiPosX, uiPosY;
+  let hRustBackGroundHandle: HVOBJECT;
+  let hAimSymbolHandle: HVOBJECT;
+  let x: UINT16;
+  let y: UINT16;
+  let uiPosX: UINT16;
+  let uiPosY: UINT16;
 
   // Blt the rust background
   GetVideoObject(&hRustBackGroundHandle, guiRustBackGround);
@@ -426,7 +429,7 @@ function SelectAimLogoRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 }
 
 function DisplayAimSlogan(): BOOLEAN {
-  wchar_t sSlogan[400];
+  let sSlogan: wchar_t[] /* [400] */;
 
   LoadEncryptedDataFromFile(AIMHISTORYFILE, sSlogan, 0, AIM_HISTORY_LINE_SIZE);
   // Display Aim Text under the logo
@@ -436,8 +439,8 @@ function DisplayAimSlogan(): BOOLEAN {
 }
 
 function DisplayAimCopyright(): BOOLEAN {
-  wchar_t sSlogan[400];
-  UINT32 uiStartLoc = 0;
+  let sSlogan: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
 
   // Load and Display the copyright notice
 
@@ -458,8 +461,8 @@ function DisplayAimCopyright(): BOOLEAN {
 
 // Buttons
 function InitAimMenuBar(): BOOLEAN {
-  UINT8 i;
-  UINT16 usPosX;
+  let i: UINT8;
+  let usPosX: UINT16;
 
   guiBottomButtonImage = LoadButtonImage("LAPTOP\\BottomButtons2.sti", -1, 0, -1, 1, -1);
 
@@ -476,7 +479,7 @@ function InitAimMenuBar(): BOOLEAN {
   return TRUE;
 }
 function ExitAimMenuBar(): BOOLEAN {
-  UINT8 i;
+  let i: UINT8;
 
   UnloadButtonImage(guiBottomButtonImage);
 
@@ -487,7 +490,7 @@ function ExitAimMenuBar(): BOOLEAN {
 }
 
 function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT32 bNewValue;
+  let bNewValue: UINT32;
 
   bNewValue = MSYS_GetBtnUserData(btn, 0);
   gubAimMenuButtonDown = 255;
@@ -514,7 +517,7 @@ function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): void {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < uNumberOfButtons; cnt++) {
     ButtonList[Buttons[cnt]]->uiFlags &= ~(BUTTON_CLICKED_ON);
@@ -522,7 +525,7 @@ function ResetAimButtons(Buttons: Pointer<UINT32>, uNumberOfButtons: UINT16): vo
 }
 
 function DisableAimButton(): void {
-  int i = 0;
+  let i: int = 0;
 
   for (i = 0; i < NUM_AIM_BOTTOMBUTTONS; i++) {
     if (gCurrentAimPage[i] == guiCurrentLaptopMode)
@@ -531,7 +534,7 @@ function DisableAimButton(): void {
 }
 
 function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
-  static UINT8 ubPreviousAdvertisment;
+  /* static */ let ubPreviousAdvertisment: UINT8;
 
   if (fInit)
     gubCurrentAdvertisment = AIM_AD_WARNING_BOX;
@@ -630,10 +633,10 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
 }
 
 function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
+  /* static */ let uiLastTime: UINT32;
+  /* static */ let ubSubImage: UINT8 = 0;
+  /* static */ let ubCount: UINT8 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
 
   if (fInit) {
     uiLastTime = 0;
@@ -643,7 +646,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
   }
 
   if (((uiCurTime - uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
-    HVOBJECT hAdHandle;
+    let hAdHandle: HVOBJECT;
 
     if (ubSubImage == AIM_FLOWER_NUM_SUBIMAGES) {
       if (ubCount == 0 || fRedraw) {
@@ -689,15 +692,15 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 }
 
 function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  UINT32 uiCurTime = GetJA2Clock();
+  /* static */ let uiLastTime: UINT32;
+  /* static */ let ubSubImage: UINT8 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
 
   if (fInit || fRedraw) {
-    wchar_t sText[400];
-    UINT32 uiStartLoc = 0;
-    UINT16 usLocY = AIM_WARNING_TEXT_Y + (GetFontHeight(AIM_WARNING_FONT) + 2) * 2;
-    HVOBJECT hWarningHandle;
+    let sText: wchar_t[] /* [400] */;
+    let uiStartLoc: UINT32 = 0;
+    let usLocY: UINT16 = AIM_WARNING_TEXT_Y + (GetFontHeight(AIM_WARNING_FONT) + 2) * 2;
+    let hWarningHandle: HVOBJECT;
 
     // Warning
     GetVideoObject(&hWarningHandle, guiWarning);
@@ -741,11 +744,11 @@ function SelectBannerRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOfSubImages: UINT16, uiAdImageIdentifier: UINT32): BOOLEAN {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  UINT8 ubRetVal = 0;
+  /* static */ let uiLastTime: UINT32;
+  /* static */ let ubSubImage: UINT8 = 0;
+  /* static */ let ubCount: UINT8 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
+  let ubRetVal: UINT8 = 0;
 
   if (fInit) {
     uiLastTime = 0;
@@ -754,7 +757,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
   }
 
   if (((uiCurTime - uiLastTime) > usDelay) || fRedraw) {
-    HVOBJECT hAdHandle;
+    let hAdHandle: HVOBJECT;
 
     if (ubSubImage == 0) {
       if (ubCount == 0 || fRedraw) {
@@ -863,13 +866,13 @@ function HandleTextOnAimAdd(ubCurSubImage: UINT8): void {
 }
 
 function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
-  static UINT32 uiLastTime;
-  static UINT8 ubSubImage = 0;
-  static UINT8 ubDuckCount = 0;
-  static UINT8 ubCount = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  UINT8 ubRetVal = 0;
-  UINT16 usDelay = AIM_AD_BOBBYR_AD_DELAY;
+  /* static */ let uiLastTime: UINT32;
+  /* static */ let ubSubImage: UINT8 = 0;
+  /* static */ let ubDuckCount: UINT8 = 0;
+  /* static */ let ubCount: UINT8 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
+  let ubRetVal: UINT8 = 0;
+  let usDelay: UINT16 = AIM_AD_BOBBYR_AD_DELAY;
 
   if (fInit) {
     ubDuckCount = 0;
@@ -879,7 +882,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
   }
 
   if (((uiCurTime - uiLastTime) > usDelay) || fRedraw) {
-    HVOBJECT hAdHandle;
+    let hAdHandle: HVOBJECT;
 
     // Loop through the first 6 images twice, then start into the later ones
     GetVideoObject(&hAdHandle, guiBobbyRAdImages);
@@ -1013,9 +1016,9 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
 }
 
 function GetNextAimAd(ubCurrentAd: UINT8): UINT8 {
-  UINT8 ubNextAd;
-  UINT32 uiDay = GetWorldDay();
-  BOOLEAN fSkip = FALSE;
+  let ubNextAd: UINT8;
+  let uiDay: UINT32 = GetWorldDay();
+  let fSkip: BOOLEAN = FALSE;
 
   if (ubCurrentAd == AIM_AD_WARNING_BOX) {
     if (uiDay < AIM_AD_BOBBYR_AD_STARTS) {

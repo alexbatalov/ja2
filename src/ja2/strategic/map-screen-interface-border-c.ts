@@ -5,24 +5,24 @@ const MAP_BORDER_CORNER_X = 584;
 const MAP_BORDER_CORNER_Y = 279;
 
 // mouse levels
-MOUSE_REGION LevelMouseRegions[4];
+let LevelMouseRegions: MOUSE_REGION[] /* [4] */;
 
 // graphics
-UINT32 guiMapBorder;
+let guiMapBorder: UINT32;
 // UINT32 guiMapBorderCorner;
 
 // scroll direction
-INT32 giScrollButtonState = -1;
+let giScrollButtonState: INT32 = -1;
 
 // flags
-BOOLEAN fShowTownFlag = FALSE;
-BOOLEAN fShowMineFlag = FALSE;
-BOOLEAN fShowTeamFlag = FALSE;
-BOOLEAN fShowMilitia = FALSE;
-BOOLEAN fShowAircraftFlag = FALSE;
-BOOLEAN fShowItemsFlag = FALSE;
+let fShowTownFlag: BOOLEAN = FALSE;
+let fShowMineFlag: BOOLEAN = FALSE;
+let fShowTeamFlag: BOOLEAN = FALSE;
+let fShowMilitia: BOOLEAN = FALSE;
+let fShowAircraftFlag: BOOLEAN = FALSE;
+let fShowItemsFlag: BOOLEAN = FALSE;
 
-BOOLEAN fZoomFlag = FALSE;
+let fZoomFlag: BOOLEAN = FALSE;
 // BOOLEAN fShowVehicleFlag = FALSE;
 
 // BOOLEAN fMapScrollDueToPanelButton = FALSE;
@@ -30,7 +30,7 @@ BOOLEAN fZoomFlag = FALSE;
 // BOOLEAN fDisabledMapBorder = FALSE;
 
 // buttons & button images
-INT32 giMapBorderButtons[6] = {
+let giMapBorderButtons: INT32[] /* [6] */ = {
   -1,
   -1,
   -1,
@@ -38,7 +38,7 @@ INT32 giMapBorderButtons[6] = {
   -1,
   -1,
 };
-INT32 giMapBorderButtonsImage[6] = {
+let giMapBorderButtonsImage: INT32[] /* [6] */ = {
   -1,
   -1,
   -1,
@@ -71,7 +71,7 @@ void BtnRaiseLevelBtnCallback(GUI_BUTTON *btn,INT32 reason);
 
 function LoadMapBorderGraphics(): BOOLEAN {
   // this procedure will load the graphics needed for the map border
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // will load map border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -101,7 +101,7 @@ function DeleteMapBorderGraphics(): void {
 
 function RenderMapBorder(): void {
   // renders the actual border to the guiSAVEBUFFER
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   /*
           if( fDisabledMapBorder )
@@ -155,7 +155,7 @@ void RenderMapBorderCorner( void )
 
 function RenderMapBorderEtaPopUp(): void {
   // renders map border corner to the FRAME_BUFFER
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   /*
           if( fDisabledMapBorder )
@@ -284,7 +284,7 @@ function CreateButtonsForMapBorder(): BOOLEAN {
 }
 
 function DeleteMapBorderButtons(): void {
-  UINT8 ubCnt;
+  let ubCnt: UINT8;
 
   /*
           RemoveButton( guiMapBorderScrollButtons[ 0 ]);
@@ -577,7 +577,7 @@ function ToggleShowMilitiaMode(): void {
 
     // check if player has any militia
     if (DoesPlayerHaveAnyMilitia() == FALSE) {
-      STR16 pwString = NULL;
+      let pwString: STR16 = NULL;
 
       // no - so put up a message explaining how it works
 
@@ -941,7 +941,7 @@ BOOLEAN ScrollButtonsDisplayingHelpMessage( void )
 function DisplayCurrentLevelMarker(): void {
   // display the current level marker on the map border
 
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   /*
           if( fDisabledMapBorder )
@@ -958,8 +958,8 @@ function DisplayCurrentLevelMarker(): void {
 }
 
 function CreateMouseRegionsForLevelMarkers(): void {
-  INT16 sCounter = 0;
-  CHAR16 sString[64];
+  let sCounter: INT16 = 0;
+  let sString: CHAR16[] /* [64] */;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
     MSYS_DefineRegion(&LevelMouseRegions[sCounter], MAP_LEVEL_MARKER_X, (INT16)(MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (INT16)(MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
@@ -972,7 +972,7 @@ function CreateMouseRegionsForLevelMarkers(): void {
 }
 
 function DeleteMouseRegionsForLevelMarkers(): void {
-  INT16 sCounter = 0;
+  let sCounter: INT16 = 0;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
     MSYS_RemoveRegion(&LevelMouseRegions[sCounter]);
@@ -981,7 +981,7 @@ function DeleteMouseRegionsForLevelMarkers(): void {
 
 function LevelMarkerBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for assignment screen mask region
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   iCounter = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1253,7 +1253,8 @@ function InitializeMapBorderButtonStates(): void {
 }
 
 function DoesPlayerHaveAnyMilitia(): BOOLEAN {
-  INT16 sX, sY;
+  let sX: INT16;
+  let sY: INT16;
 
   // run through list of towns that might have militia..if any return TRUE..else return FALSE
   for (sX = 1; sX < MAP_WORLD_X - 1; sX++) {

@@ -108,18 +108,18 @@ const enum Enum7 {
 //
 ///////////////////////////////////////////
 
-BOOLEAN gfGIOScreenEntry = TRUE;
-BOOLEAN gfGIOScreenExit = FALSE;
-BOOLEAN gfReRenderGIOScreen = TRUE;
-BOOLEAN gfGIOButtonsAllocated = FALSE;
+let gfGIOScreenEntry: BOOLEAN = TRUE;
+let gfGIOScreenExit: BOOLEAN = FALSE;
+let gfReRenderGIOScreen: BOOLEAN = TRUE;
+let gfGIOButtonsAllocated: BOOLEAN = FALSE;
 
-UINT8 gubGameOptionScreenHandler = GIO_NOTHING;
+let gubGameOptionScreenHandler: UINT8 = GIO_NOTHING;
 
-UINT32 gubGIOExitScreen = GAME_INIT_OPTIONS_SCREEN;
+let gubGIOExitScreen: UINT32 = GAME_INIT_OPTIONS_SCREEN;
 
-UINT32 guiGIOMainBackGroundImage;
+let guiGIOMainBackGroundImage: UINT32;
 
-INT32 giGioMessageBox = -1;
+let giGioMessageBox: INT32 = -1;
 // BOOLEAN		gfExitGioDueToMessageBox=FALSE;
 
 // UINT8			gubDifficultySettings[ NUM_DIFF_SETTINGS ];
@@ -128,20 +128,20 @@ INT32 giGioMessageBox = -1;
 
 // extern	INT32						gp16PointArial;
 
-UINT32 guiGIODoneButton;
-INT32 giGIODoneBtnImage;
+let guiGIODoneButton: UINT32;
+let giGIODoneBtnImage: INT32;
 
-UINT32 guiGIOCancelButton;
-INT32 giGIOCancelBtnImage;
+let guiGIOCancelButton: UINT32;
+let giGIOCancelBtnImage: INT32;
 
 // checkbox to toggle the Diff level
-UINT32 guiDifficultySettingsToggles[NUM_DIFF_SETTINGS];
+let guiDifficultySettingsToggles: UINT32[] /* [NUM_DIFF_SETTINGS] */;
 
 // checkbox to toggle Game style
-UINT32 guiGameStyleToggles[NUM_GAME_STYLES];
+let guiGameStyleToggles: UINT32[] /* [NUM_GAME_STYLES] */;
 
 // checkbox to toggle Gun options
-UINT32 guiGunOptionToggles[NUM_GUN_OPTIONS];
+let guiGunOptionToggles: UINT32[] /* [NUM_GUN_OPTIONS] */;
 
 // JA2Gold: no more timed turns setting
 /*
@@ -151,7 +151,7 @@ void BtnTimedTurnsTogglesCallback(GUI_BUTTON *btn,INT32 reason);
 */
 
 // checkbox to toggle Save style
-UINT32 guiGameSaveToggles[NUM_SAVE_OPTIONS];
+let guiGameSaveToggles: UINT32[] /* [NUM_SAVE_OPTIONS] */;
 
 ////////////////////////////////////////////
 //
@@ -221,9 +221,9 @@ function GameInitOptionsScreenShutdown(): UINT32 {
 }
 
 function EnterGIOScreen(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 cnt;
-  UINT16 usPosY;
+  let VObjectDesc: VOBJECT_DESC;
+  let cnt: UINT16;
+  let usPosY: UINT16;
 
   if (gfGIOButtonsAllocated)
     return TRUE;
@@ -351,7 +351,7 @@ function EnterGIOScreen(): BOOLEAN {
 }
 
 function ExitGIOScreen(): BOOLEAN {
-  UINT16 cnt;
+  let cnt: UINT16;
 
   if (!gfGIOButtonsAllocated)
     return TRUE;
@@ -437,8 +437,8 @@ function HandleGIOScreen(): void {
 }
 
 function RenderGIOScreen(): BOOLEAN {
-  HVOBJECT hPixHandle;
-  UINT16 usPosY;
+  let hPixHandle: HVOBJECT;
+  let usPosY: UINT16;
 
   // Get the main background screen graphic and blt it
   GetVideoObject(&hPixHandle, guiGIOMainBackGroundImage);
@@ -518,7 +518,7 @@ function RenderGIOScreen(): BOOLEAN {
 }
 
 function GetGIOScreenUserInput(): void {
-  InputAtom Event;
+  let Event: InputAtom;
   //	POINT  MousePos;
 
   //	GetCursorPos(&MousePos);
@@ -541,10 +541,10 @@ function GetGIOScreenUserInput(): void {
 
 function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 cnt;
+      let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
         ButtonList[guiDifficultySettingsToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -553,8 +553,8 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       // enable the current button
       btn->uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      UINT8 cnt;
-      BOOLEAN fAnyChecked = FALSE;
+      let cnt: UINT8;
+      let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
@@ -571,10 +571,10 @@ function BtnDifficultyTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 
 function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 cnt;
+      let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
         ButtonList[guiGameStyleToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -583,8 +583,8 @@ function BtnGameStyleTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
       // enable the current button
       btn->uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      UINT8 cnt;
-      BOOLEAN fAnyChecked = FALSE;
+      let cnt: UINT8;
+      let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
@@ -604,7 +604,7 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     //		UINT8	ubButton = (UINT8)MSYS_GetBtnUserData( btn, 0 );
 
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 cnt;
+      let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
         ButtonList[guiGameSaveToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -613,8 +613,8 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
       // enable the current button
       btn->uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      UINT8 cnt;
-      BOOLEAN fAnyChecked = FALSE;
+      let cnt: UINT8;
+      let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
@@ -631,10 +631,10 @@ function BtnGameSaveTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 
 function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      UINT8 cnt;
+      let cnt: UINT8;
 
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
         ButtonList[guiGunOptionToggles[cnt]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -643,8 +643,8 @@ function BtnGunOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       // enable the current button
       btn->uiFlags |= BUTTON_CLICKED_ON;
     } else {
-      UINT8 cnt;
-      BOOLEAN fAnyChecked = FALSE;
+      let cnt: UINT8;
+      let fAnyChecked: BOOLEAN = FALSE;
 
       // if none of the other boxes are checked, do not uncheck this box
       for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
@@ -733,7 +733,7 @@ function BtnGIOCancelCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function GetCurrentDifficultyButtonSetting(): UINT8 {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_DIFF_SETTINGS; cnt++) {
     if (ButtonList[guiDifficultySettingsToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
@@ -745,7 +745,7 @@ function GetCurrentDifficultyButtonSetting(): UINT8 {
 }
 
 function GetCurrentGameStyleButtonSetting(): UINT8 {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GAME_STYLES; cnt++) {
     if (ButtonList[guiGameStyleToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
@@ -756,7 +756,7 @@ function GetCurrentGameStyleButtonSetting(): UINT8 {
 }
 
 function GetCurrentGunButtonSetting(): UINT8 {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GUN_OPTIONS; cnt++) {
     if (ButtonList[guiGunOptionToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
@@ -784,7 +784,7 @@ UINT8	GetCurrentTimedTurnsButtonSetting()
 */
 
 function GetCurrentGameSaveButtonSetting(): UINT8 {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_SAVE_OPTIONS; cnt++) {
     if (ButtonList[guiGameSaveToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON) {
@@ -795,8 +795,8 @@ function GetCurrentGameSaveButtonSetting(): UINT8 {
 }
 
 function RestoreGIOButtonBackGrounds(): void {
-  UINT8 cnt;
-  UINT16 usPosY;
+  let cnt: UINT8;
+  let usPosY: UINT16;
 
   usPosY = GIO_DIF_SETTINGS_Y - GIO_OFFSET_TO_TOGGLE_BOX_Y;
   // Check box to toggle Difficulty settings
@@ -868,7 +868,7 @@ function DoneFadeInForExitGameInitOptionScreen(): void {
 }
 
 function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect CenteringRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // reset exit mode
   //	gfExitGioDueToMessageBox = TRUE;
@@ -881,7 +881,7 @@ function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
 }
 
 function DisplayMessageToUserAboutGameDifficulty(): void {
-  UINT8 ubDiffLevel = GetCurrentDifficultyButtonSetting();
+  let ubDiffLevel: UINT8 = GetCurrentDifficultyButtonSetting();
 
   switch (ubDiffLevel) {
     case 0:
@@ -903,7 +903,7 @@ function ConfirmGioDifSettingMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function DisplayMessageToUserAboutIronManMode(): BOOLEAN {
-  UINT8 ubIronManMode = GetCurrentGameSaveButtonSetting();
+  let ubIronManMode: UINT8 = GetCurrentGameSaveButtonSetting();
 
   // if the user has selected IRON MAN mode
   if (ubIronManMode) {

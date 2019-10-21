@@ -36,23 +36,23 @@ const MERC_AC_FOURTH_COLUMN_WIDTH = 76;
 const MERC_AC_FIRST_ROW_Y = MERC_AC_ORDER_GRID_Y + 42;
 const MERC_AC_ROW_SIZE = 16;
 
-UINT32 guiMercOrderGrid;
-UINT32 guiAccountNumberGrid;
+let guiMercOrderGrid: UINT32;
+let guiAccountNumberGrid: UINT32;
 
-INT32 giMercTotalContractCharge;
+let giMercTotalContractCharge: INT32;
 
-BOOLEAN gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning = FALSE;
+let gfMercPlayerDoesntHaveEnoughMoney_DisplayWarning: BOOLEAN = FALSE;
 
-UINT32 guiMercAuthorizeBoxButton;
-INT32 guiMercAuthorizeButtonImage;
+let guiMercAuthorizeBoxButton: UINT32;
+let guiMercAuthorizeButtonImage: INT32;
 
-UINT32 guiMercBackBoxButton;
+let guiMercBackBoxButton: UINT32;
 
 function GameInitMercsAccount(): void {
 }
 
 function EnterMercsAccount(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
 
@@ -105,8 +105,8 @@ function HandleMercsAccount(): void {
 }
 
 function RenderMercsAccount(): void {
-  wchar_t sText[100];
-  HVOBJECT hPixHandle;
+  let sText: wchar_t[] /* [100] */;
+  let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();
 
@@ -148,8 +148,8 @@ function BtnMercAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      CHAR16 wzAuthorizeString[512];
-      CHAR16 wzDollarAmount[128];
+      let wzAuthorizeString: CHAR16[] /* [512] */;
+      let wzDollarAmount: CHAR16[] /* [128] */;
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -194,11 +194,12 @@ function BtnMercBackButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function DisplayHiredMercs(): void {
-  UINT16 usPosY;
-  UINT32 uiContractCharge;
-  wchar_t sTemp[20];
-  UINT8 i, usMercID;
-  UINT8 ubFontColor;
+  let usPosY: UINT16;
+  let uiContractCharge: UINT32;
+  let sTemp: wchar_t[] /* [20] */;
+  let i: UINT8;
+  let usMercID: UINT8;
+  let ubFontColor: UINT8;
 
   giMercTotalContractCharge = 0;
 
@@ -248,10 +249,10 @@ function DisplayHiredMercs(): void {
 
 function SettleMercAccounts(): void {
   //	SOLDIERTYPE *pSoldier;
-  INT16 i;
-  UINT8 ubMercID;
-  INT32 iPartialPayment = 0;
-  INT32 iContractCharge = 0;
+  let i: INT16;
+  let ubMercID: UINT8;
+  let iPartialPayment: INT32 = 0;
+  let iContractCharge: INT32 = 0;
 
   // loop through all the MERC mercs the player has on the team
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
@@ -412,9 +413,9 @@ function MercAuthorizePaymentMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function CalculateHowMuchPlayerOwesSpeck(): UINT32 {
-  UINT8 i = 0;
-  UINT32 uiContractCharge = 0;
-  UINT16 usMercID;
+  let i: UINT8 = 0;
+  let uiContractCharge: UINT32 = 0;
+  let usMercID: UINT16;
 
   for (i = 0; i < 10; i++) {
     // if it larry Roach burn advance.  ( cause larry is in twice, a sober larry and a stoned larry )

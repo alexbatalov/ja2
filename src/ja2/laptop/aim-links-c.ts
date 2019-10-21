@@ -28,25 +28,25 @@ const AIM_LINK_LINK_TEXT_1_Y = AIM_LINK_BOBBY_LINK_Y + 71;
 const AIM_LINK_LINK_TEXT_2_Y = AIM_LINK_FUNERAL_LINK_Y + 36;
 const AIM_LINK_LINK_TEXT_3_Y = AIM_LINK_INSURANCE_LINK_Y + 45;
 
-UINT32 guiBobbyLink;
-UINT32 guiFuneralLink;
-UINT32 guiInsuranceLink;
-UINT8 gubLinkPages[] = {
+let guiBobbyLink: UINT32;
+let guiFuneralLink: UINT32;
+let guiInsuranceLink: UINT32;
+let gubLinkPages: UINT8[] /* [] */ = {
   BOBBYR_BOOKMARK,
   FUNERAL_BOOKMARK,
   INSURANCE_BOOKMARK,
 };
 
 // Clicking on guys Face
-MOUSE_REGION gSelectedLinkRegion[AIM_LINK_NUM_LINKS];
+let gSelectedLinkRegion: MOUSE_REGION[] /* [AIM_LINK_NUM_LINKS] */;
 
 function GameInitAimLinks(): void {
 }
 
 function EnterAimLinks(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosY;
-  INT16 i;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosY: UINT16;
+  let i: INT16;
 
   InitAimDefaults();
   InitAimMenuBar();
@@ -79,7 +79,7 @@ function EnterAimLinks(): BOOLEAN {
 }
 
 function ExitAimLinks(): void {
-  INT16 i;
+  let i: INT16;
 
   RemoveAimDefaults();
 
@@ -97,7 +97,7 @@ function HandleAimLinks(): void {
 }
 
 function RenderAimLinks(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   DrawAimDefaults();
   DisableAimButton();
@@ -125,7 +125,7 @@ function SelectLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 gNextLaptopPage;
+    let gNextLaptopPage: UINT32;
 
     gNextLaptopPage = MSYS_GetRegionUserData(pRegion, 0);
 

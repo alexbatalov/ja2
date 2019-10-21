@@ -2,12 +2,14 @@
 // multiple wall types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.
 function SearchForWallType(iMapIndex: UINT32): UINT16 {
-  UINT32 uiTileType;
-  LEVELNODE *pWall;
-  INT16 sOffset;
-  INT16 x, y, sRadius = 0;
+  let uiTileType: UINT32;
+  let pWall: Pointer<LEVELNODE>;
+  let sOffset: INT16;
+  let x: INT16;
+  let y: INT16;
+  let sRadius: INT16 = 0;
   if (gfBasement) {
-    UINT16 usWallType;
+    let usWallType: UINT16;
     usWallType = GetRandomIndexByRange(FIRSTWALL, LASTWALL);
     if (usWallType == 0xffff)
       usWallType = FIRSTWALL;
@@ -47,10 +49,12 @@ function SearchForWallType(iMapIndex: UINT32): UINT16 {
 // multiple roof types for each building.  When processing the region, it is necessary to
 // calculate the roof type by searching for the nearest roof tile.
 function SearchForRoofType(iMapIndex: UINT32): UINT16 {
-  UINT32 uiTileType;
-  LEVELNODE *pRoof;
-  INT16 x, y, sRadius = 0;
-  INT16 sOffset;
+  let uiTileType: UINT32;
+  let pRoof: Pointer<LEVELNODE>;
+  let x: INT16;
+  let y: INT16;
+  let sRadius: INT16 = 0;
+  let sOffset: INT16;
   while (sRadius < 32) {
     for (y = -sRadius; y <= sRadius; y++)
       for (x = -sRadius; x <= sRadius; x++) {
@@ -76,8 +80,8 @@ function SearchForRoofType(iMapIndex: UINT32): UINT16 {
 }
 
 function RoofAtGridNo(iMapIndex: UINT32): BOOLEAN {
-  LEVELNODE *pRoof;
-  UINT32 uiTileType;
+  let pRoof: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
   // Look through all objects and Search for type
   while (pRoof) {
@@ -106,9 +110,9 @@ function ValidDecalPlacement(iMapIndex: UINT32): BOOLEAN {
 }
 
 function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
-  LEVELNODE *pStruct;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct->usIndex != NO_TILE) {
@@ -126,9 +130,9 @@ function GetVerticalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
 }
 
 function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
-  LEVELNODE *pStruct;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct->usIndex != NO_TILE) {
@@ -146,8 +150,8 @@ function GetHorizontalWall(iMapIndex: UINT32): Pointer<LEVELNODE> {
 }
 
 function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
-  LEVELNODE *pWall;
-  UINT32 uiTileType;
+  let pWall: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
@@ -159,8 +163,8 @@ function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
 }
 
 function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
-  LEVELNODE *pWall;
-  UINT32 uiTileType;
+  let pWall: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
@@ -172,9 +176,9 @@ function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
 }
 
 function GetVerticalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
-  LEVELNODE *pStruct;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct->usIndex != NO_TILE) {
@@ -192,9 +196,9 @@ function GetVerticalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
 }
 
 function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
-  LEVELNODE *pStruct;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pStruct: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   while (pStruct) {
     if (pStruct->usIndex != NO_TILE) {
@@ -212,7 +216,7 @@ function GetHorizontalFence(iMapIndex: UINT32): Pointer<LEVELNODE> {
 }
 
 function EraseHorizontalWall(iMapIndex: UINT32): void {
-  LEVELNODE *pWall;
+  let pWall: Pointer<LEVELNODE>;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     AddToUndoList(iMapIndex);
@@ -222,7 +226,7 @@ function EraseHorizontalWall(iMapIndex: UINT32): void {
 }
 
 function EraseVerticalWall(iMapIndex: UINT32): void {
-  LEVELNODE *pWall;
+  let pWall: Pointer<LEVELNODE>;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     AddToUndoList(iMapIndex);
@@ -232,10 +236,10 @@ function EraseVerticalWall(iMapIndex: UINT32): void {
 }
 
 function ChangeHorizontalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
-  LEVELNODE *pWall;
-  UINT32 uiTileType;
-  UINT16 usTileIndex;
-  INT16 sIndex;
+  let pWall: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usTileIndex: UINT16;
+  let sIndex: INT16;
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
@@ -250,10 +254,10 @@ function ChangeHorizontalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
 }
 
 function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
-  LEVELNODE *pWall;
-  UINT32 uiTileType;
-  UINT16 usTileIndex;
-  INT16 sIndex;
+  let pWall: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usTileIndex: UINT16;
+  let sIndex: INT16;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
@@ -268,12 +272,12 @@ function ChangeVerticalWall(iMapIndex: UINT32, usNewPiece: UINT16): void {
 }
 
 function RestoreWalls(iMapIndex: UINT32): void {
-  LEVELNODE *pWall = NULL;
-  UINT32 uiTileType;
-  UINT16 usWallType;
-  UINT16 usWallOrientation;
-  UINT8 ubSaveWallUIValue;
-  BOOLEAN fDone = FALSE;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let uiTileType: UINT32;
+  let usWallType: UINT16;
+  let usWallOrientation: UINT16;
+  let ubSaveWallUIValue: UINT8;
+  let fDone: BOOLEAN = FALSE;
 
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
@@ -348,8 +352,10 @@ function RestoreWalls(iMapIndex: UINT32): void {
 }
 
 function GetWallClass(pWall: Pointer<LEVELNODE>): UINT16 {
-  UINT16 row, col, rowVariants;
-  UINT16 usWallIndex;
+  let row: UINT16;
+  let col: UINT16;
+  let rowVariants: UINT16;
+  let usWallIndex: UINT16;
   if (!pWall)
     return 0xffff;
   GetSubIndexFromTileIndex(pWall->usIndex, &usWallIndex);
@@ -365,14 +371,14 @@ function GetWallClass(pWall: Pointer<LEVELNODE>): UINT16 {
 }
 
 function GetVerticalWallClass(iMapIndex: UINT16): UINT16 {
-  LEVELNODE *pWall;
+  let pWall: Pointer<LEVELNODE>;
   if (pWall = GetVerticalWall(iMapIndex))
     return GetWallClass(pWall);
   return 0xffff;
 }
 
 function GetHorizontalWallClass(iMapIndex: UINT16): UINT16 {
-  LEVELNODE *pWall;
+  let pWall: Pointer<LEVELNODE>;
   if (pWall = GetVerticalWall(iMapIndex))
     return GetWallClass(pWall);
   return 0xffff;

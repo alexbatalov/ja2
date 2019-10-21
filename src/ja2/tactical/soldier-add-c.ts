@@ -19,17 +19,21 @@
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
 function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -108,17 +112,21 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
 }
 
 function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -194,18 +202,23 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
 // Kris:  modified to actually path from sweetspot to gridno.  Previously, it only checked if the
 // destination was sittable (though it was possible that that location would be trapped.
 function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
-  UINT8 ubBestDirection = 0;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let cnt3: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
+  let ubBestDirection: UINT8 = 0;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -260,10 +273,10 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
         if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier->bLevel)) {
-          BOOLEAN fDirectionFound = FALSE;
-          UINT16 usOKToAddStructID;
-          STRUCTURE_FILE_REF *pStructureFileRef;
-          UINT16 usAnimSurface;
+          let fDirectionFound: BOOLEAN = FALSE;
+          let usOKToAddStructID: UINT16;
+          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let usAnimSurface: UINT16;
 
           if (pSoldier->pLevelNode != NULL) {
             if (pSoldier->pLevelNode->pStructureData != NULL) {
@@ -327,18 +340,23 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 }
 
 function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN, bGivenDirection: INT8): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
-  UINT8 ubBestDirection = 0;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let cnt3: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
+  let ubBestDirection: UINT8 = 0;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -393,10 +411,10 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
         if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier->bLevel)) {
-          BOOLEAN fDirectionFound = FALSE;
-          UINT16 usOKToAddStructID;
-          STRUCTURE_FILE_REF *pStructureFileRef;
-          UINT16 usAnimSurface;
+          let fDirectionFound: BOOLEAN = FALSE;
+          let usOKToAddStructID: UINT16;
+          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let usAnimSurface: UINT16;
 
           if (pSoldier->pLevelNode != NULL) {
             if (pSoldier->pLevelNode->pStructureData != NULL) {
@@ -468,19 +486,24 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 }
 
 function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, fClosestToMerc: BOOLEAN, pSrcSoldier: Pointer<SOLDIERTYPE>): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
-  UINT8 ubBestDirection = 0;
-  INT16 sSweetGridNo;
-  SOLDIERTYPE soldier;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let cnt3: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
+  let ubBestDirection: UINT8 = 0;
+  let sSweetGridNo: INT16;
+  let soldier: SOLDIERTYPE;
 
   sSweetGridNo = pSrcSoldier->sGridNo;
 
@@ -530,10 +553,10 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
         if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier->bLevel)) {
-          BOOLEAN fDirectionFound = FALSE;
-          UINT16 usOKToAddStructID;
-          STRUCTURE_FILE_REF *pStructureFileRef;
-          UINT16 usAnimSurface;
+          let fDirectionFound: BOOLEAN = FALSE;
+          let usOKToAddStructID: UINT16;
+          let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+          let usAnimSurface: UINT16;
 
           if (fClosestToMerc != 3) {
             if (pSoldier->pLevelNode != NULL && pSoldier->pLevelNode->pStructureData != NULL) {
@@ -593,14 +616,18 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
 }
 
 function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
 
   sTop = ubRadius;
   sBottom = -ubRadius;
@@ -646,14 +673,18 @@ function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE
 }
 
 function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>, ubQuardentDir: INT8): UINT16 {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT16 sLowestGridNo = -1;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let sLowestGridNo: INT16 = -1;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
 
   sTop = ubRadius;
   sBottom = -ubRadius;
@@ -704,9 +735,9 @@ function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<S
 }
 
 function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, sMaxTiles: INT16, bLevel: INT8): BOOLEAN {
-  INT32 iNumTiles;
-  INT16 sActionGridNo;
-  UINT8 ubDirection;
+  let iNumTiles: INT32;
+  let sActionGridNo: INT16;
+  let ubDirection: UINT8;
 
   if (pSoldier->bLevel != bLevel) {
     return FALSE;
@@ -732,19 +763,23 @@ function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, s
 }
 
 function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
-  INT16 sX, sY;
-  INT16 sGridNo;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  UINT32 cnt = 0;
-  SOLDIERTYPE soldier;
-  UINT8 ubSaveNPCAPBudget;
-  UINT8 ubSaveNPCDistLimit;
-  UINT8 ubBestDirection = 0;
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  UINT8 ubRoomNum;
+  let sX: INT16;
+  let sY: INT16;
+  let sGridNo: INT16;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let cnt: UINT32 = 0;
+  let soldier: SOLDIERTYPE;
+  let ubSaveNPCAPBudget: UINT8;
+  let ubSaveNPCDistLimit: UINT8;
+  let ubBestDirection: UINT8 = 0;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let ubRoomNum: UINT8;
 
   // Save AI pathing vars.  changing the distlimit restricts how
   // far away the pathing will consider.
@@ -820,11 +855,12 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
 }
 
 function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: INT16, ubRadius: INT8, pubDirection: Pointer<UINT8>): UINT16 {
-  INT16 sX, sY;
-  INT16 sGridNo;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  UINT32 cnt = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let sGridNo: INT16;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let cnt: UINT32 = 0;
 
   do {
     sX = (UINT16)Random(ubRadius);
@@ -859,10 +895,11 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
 }
 
 function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: BOOLEAN, fUseAnimation: BOOLEAN, usAnimState: UINT16, usAnimCode: UINT16): BOOLEAN {
-  UINT8 ubDirection, ubCalculatedDirection;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
-  INT16 sExitGridNo;
+  let ubDirection: UINT8;
+  let ubCalculatedDirection: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
+  let sExitGridNo: INT16;
 
   pSoldier = MercPtrs[ubID];
 
@@ -977,10 +1014,11 @@ function AddSoldierToSectorNoCalculateDirectionUseAnimation(ubID: UINT8, usAnimS
 }
 
 function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fDoTransition: BOOLEAN): void {
-  INT16 sWorldX, sWorldY;
-  UINT8 ubNewDirection;
-  INT16 sGoodGridNo;
-  UINT16 usAnim = SLEEPING;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubNewDirection: UINT8;
+  let sGoodGridNo: INT16;
+  let usAnim: UINT16 = SLEEPING;
 
   if (!pSoldier->bInSector) {
     return;
@@ -1015,9 +1053,10 @@ function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
 }
 
 function SoldierInSectorIncompaciated(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  INT16 sWorldX, sWorldY;
-  UINT8 ubNewDirection;
-  INT16 sGoodGridNo;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubNewDirection: UINT8;
+  let sGoodGridNo: INT16;
 
   if (!pSoldier->bInSector) {
     return;
@@ -1047,9 +1086,10 @@ void SoldierInSectorSleep( SOLDIERTYPE *pSoldier, INT16 sGridNo )
 */
 
 function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  INT16 sWorldX, sWorldY;
-  UINT8 ubNewDirection;
-  INT16 sGoodGridNo;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubNewDirection: UINT8;
+  let sGoodGridNo: INT16;
 
   if (!pSoldier->bInSector) {
     return;
@@ -1076,9 +1116,10 @@ function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
 }
 
 function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  INT16 sWorldX, sWorldY;
-  UINT8 ubNewDirection;
-  INT16 sGoodGridNo;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubNewDirection: UINT8;
+  let sGoodGridNo: INT16;
 
   if (!pSoldier->bInSector) {
     return;
@@ -1105,9 +1146,10 @@ function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
 }
 
 function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  INT16 sWorldX, sWorldY;
-  UINT8 ubNewDirection;
-  INT16 sGoodGridNo;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let ubNewDirection: UINT8;
+  let sGoodGridNo: INT16;
 
   if (!pSoldier->bInSector) {
     return;
@@ -1134,11 +1176,12 @@ function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
 }
 
 function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubDirection: UINT8, fUseAnimation: BOOLEAN, usAnimState: UINT16, usAnimCode: UINT16): void {
-  INT16 sWorldX, sWorldY;
-  INT16 sNewGridNo;
-  UINT8 ubNewDirection;
-  UINT8 ubInsertionCode;
-  BOOLEAN fUpdateFinalPosition = TRUE;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sNewGridNo: INT16;
+  let ubNewDirection: UINT8;
+  let ubInsertionCode: UINT8;
+  let fUpdateFinalPosition: BOOLEAN = TRUE;
 
   // Add merc to gridno
   sWorldX = CenterX(sGridNo);
@@ -1263,9 +1306,9 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 
 // IsMercOnTeam() checks to see if the passed in Merc Profile ID is currently on the player's team
 function IsMercOnTeam(ubMercID: UINT8): BOOLEAN {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
@@ -1284,9 +1327,9 @@ function IsMercOnTeam(ubMercID: UINT8): BOOLEAN {
 
 // ATE: Added this new function for contract renewals
 function IsMercOnTeamAndAlive(ubMercID: UINT8): BOOLEAN {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
@@ -1307,9 +1350,9 @@ function IsMercOnTeamAndAlive(ubMercID: UINT8): BOOLEAN {
 }
 
 function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): BOOLEAN {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
@@ -1327,9 +1370,9 @@ function IsMercOnTeamAndInOmertaAlready(ubMercID: UINT8): BOOLEAN {
 }
 
 function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): BOOLEAN {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 
@@ -1351,9 +1394,9 @@ function IsMercOnTeamAndInOmertaAlreadyAndAlive(ubMercID: UINT8): BOOLEAN {
 
 // GetSoldierIDFromMercID() Gets the Soldier ID from the Merc Profile ID, else returns -1
 function GetSoldierIDFromMercID(ubMercID: UINT8): INT16 {
-  UINT16 cnt;
-  UINT8 ubLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: UINT16;
+  let ubLastTeamID: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[OUR_TEAM].bFirstID;
 

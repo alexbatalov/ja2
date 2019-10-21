@@ -1,5 +1,7 @@
-INT16 gsRScreenCenterX, gsRScreenCenterY;
-INT16 gsRDistToCenterY, gsRDistToCenterX;
+let gsRScreenCenterX: INT16;
+let gsRScreenCenterY: INT16;
+let gsRDistToCenterY: INT16;
+let gsRDistToCenterX: INT16;
 
 const GetMapXYWorldY = (sWorldCellX, sWorldCellY, sWorldY) => {
   gsRDistToCenterX = (sWorldCellX * CELL_X_SIZE) - gCenterWorldX;

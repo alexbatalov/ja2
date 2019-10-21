@@ -47,14 +47,15 @@ function ProfileStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 }
 
 function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, usNumChances: UINT16, ubReason: UINT8): void {
-  UINT32 uiCnt, uiEffLevel;
-  INT16 sSubPointChange = 0;
-  UINT16 usChance = 0;
-  UINT16 usSubpointsPerPoint;
-  UINT16 usSubpointsPerLevel;
-  INT8 bCurrentRating;
-  UINT16 *psStatGainPtr;
-  BOOLEAN fAffectedByWisdom = TRUE;
+  let uiCnt: UINT32;
+  let uiEffLevel: UINT32;
+  let sSubPointChange: INT16 = 0;
+  let usChance: UINT16 = 0;
+  let usSubpointsPerPoint: UINT16;
+  let usSubpointsPerLevel: UINT16;
+  let bCurrentRating: INT8;
+  let psStatGainPtr: Pointer<UINT16>;
+  let fAffectedByWisdom: BOOLEAN = TRUE;
 
   Assert(pProfile != NULL);
 
@@ -290,17 +291,17 @@ function ProfileUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>): void {
 
 function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, sPtsChanged: INT16): void {
   // this function changes the stat a given amount...
-  INT16 *psStatGainPtr = NULL;
-  INT8 *pbStatPtr = NULL;
-  INT8 *pbSoldierStatPtr = NULL;
-  INT8 *pbStatDeltaPtr = NULL;
-  UINT32 *puiStatTimerPtr = NULL;
-  BOOLEAN fChangeTypeIncrease;
-  BOOLEAN fChangeSalary;
-  UINT32 uiLevelCnt;
-  UINT8 ubMercMercIdValue = 0;
-  UINT16 usIncreaseValue = 0;
-  UINT16 usSubpointsPerPoint;
+  let psStatGainPtr: Pointer<INT16> = NULL;
+  let pbStatPtr: Pointer<INT8> = NULL;
+  let pbSoldierStatPtr: Pointer<INT8> = NULL;
+  let pbStatDeltaPtr: Pointer<INT8> = NULL;
+  let puiStatTimerPtr: Pointer<UINT32> = NULL;
+  let fChangeTypeIncrease: BOOLEAN;
+  let fChangeSalary: BOOLEAN;
+  let uiLevelCnt: UINT32;
+  let ubMercMercIdValue: UINT8 = 0;
+  let usIncreaseValue: UINT16 = 0;
+  let usSubpointsPerPoint: UINT16;
 
   usSubpointsPerPoint = SubpointsPerPoint(ubStat, pProfile->bExpLevel);
 
@@ -483,7 +484,7 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
         TacticalCharacterDialogueWithSpecialEventEx(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE, fChangeTypeIncrease, sPtsChanged, ubStat);
         TacticalCharacterDialogue(pSoldier, QUOTE_EXPERIENCE_GAIN);
       } else {
-        CHAR16 wTempString[128];
+        let wTempString: CHAR16[] /* [128] */;
 
         // tell player about it
         BuildStatChangeString(wTempString, pSoldier->name, fChangeTypeIncrease, sPtsChanged, ubStat);
@@ -597,15 +598,15 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
 // pSoldier may be NULL!
 function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLDIERTYPE>): void {
   // this function will run through the soldier's profile and update their stats based on any accumulated gain pts.
-  UINT8 ubStat = 0;
-  INT16 *psStatGainPtr = NULL;
-  INT8 *pbStatPtr = NULL;
-  INT8 *pbSoldierStatPtr = NULL;
-  INT8 *pbStatDeltaPtr = NULL;
-  INT8 bMinStatValue;
-  INT8 bMaxStatValue;
-  UINT16 usSubpointsPerPoint;
-  INT16 sPtsChanged;
+  let ubStat: UINT8 = 0;
+  let psStatGainPtr: Pointer<INT16> = NULL;
+  let pbStatPtr: Pointer<INT8> = NULL;
+  let pbSoldierStatPtr: Pointer<INT8> = NULL;
+  let pbStatDeltaPtr: Pointer<INT8> = NULL;
+  let bMinStatValue: INT8;
+  let bMaxStatValue: INT8;
+  let usSubpointsPerPoint: UINT16;
+  let sPtsChanged: INT16;
 
   // if hired, not back at AIM
   if (pSoldier != NULL) {
@@ -797,8 +798,8 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
 }
 
 function HandleAnyStatChangesAfterAttack(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // must check everyone on player's team, not just the shooter
   for (cnt = 0, pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[MercPtrs[0]->bTeam].bLastID; cnt++, pSoldier++) {
@@ -809,7 +810,7 @@ function HandleAnyStatChangesAfterAttack(): void {
 }
 
 function CalcNewSalary(uiOldSalary: UINT32, fIncrease: BOOLEAN, uiMaxLimit: UINT32): UINT32 {
-  UINT32 uiNewSalary;
+  let uiNewSalary: UINT32;
 
   // if he was working for free, it's still free!
   if (uiOldSalary == 0) {
@@ -836,7 +837,7 @@ function CalcNewSalary(uiOldSalary: UINT32, fIncrease: BOOLEAN, uiMaxLimit: UINT
 }
 
 function RoundOffSalary(uiSalary: UINT32): UINT32 {
-  UINT32 uiMultiple;
+  let uiMultiple: UINT32;
 
   // determine what multiple value the salary should be rounded off to
   if (uiSalary <= 250)
@@ -869,7 +870,7 @@ function RoundOffSalary(uiSalary: UINT32): UINT32 {
 }
 
 function SubpointsPerPoint(ubStat: UINT8, bExpLevel: INT8): UINT16 {
-  UINT16 usSubpointsPerPoint;
+  let usSubpointsPerPoint: UINT16;
 
   // figure out how many subpoints this type of stat needs to change
   switch (ubStat) {
@@ -906,9 +907,9 @@ function SubpointsPerPoint(ubStat: UINT8, bExpLevel: INT8): UINT16 {
 
 // handles stat changes for mercs not currently working for the player
 function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): void {
-  UINT8 ubNumStats;
-  UINT8 ubStat;
-  UINT16 usNumChances;
+  let ubNumStats: UINT8;
+  let ubStat: UINT8;
+  let usNumChances: UINT16;
 
   ubNumStats = LAST_CHANGEABLE_STAT - FIRST_CHANGEABLE_STAT + 1;
 
@@ -953,9 +954,9 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
 
 // handles possible death of mercs not currently working for the player
 function HandleUnhiredMercDeaths(iProfileID: INT32): void {
-  UINT8 ubMaxDeaths;
-  INT16 sChance;
-  MERCPROFILESTRUCT *pProfile = &(gMercProfiles[iProfileID]);
+  let ubMaxDeaths: UINT8;
+  let sChance: INT16;
+  let pProfile: Pointer<MERCPROFILESTRUCT> = &(gMercProfiles[iProfileID]);
 
   // if the player has never yet had the chance to hire this merc
   if (!(pProfile->ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE)) {
@@ -1028,12 +1029,12 @@ const PROGRESS_PORTION_INCOME = 50;
 
 // returns a number between 0-100, this is an estimate of how far a player has progressed through the game
 function CurrentPlayerProgressPercentage(): UINT8 {
-  UINT32 uiCurrentIncome;
-  UINT32 uiPossibleIncome;
-  UINT8 ubCurrentProgress;
-  UINT8 ubKillsPerPoint;
-  UINT16 usKillsProgress;
-  UINT16 usControlProgress;
+  let uiCurrentIncome: UINT32;
+  let uiPossibleIncome: UINT32;
+  let ubCurrentProgress: UINT8;
+  let ubKillsPerPoint: UINT8;
+  let usKillsProgress: UINT16;
+  let usControlProgress: UINT16;
 
   if (gfEditMode)
     return 0;
@@ -1105,7 +1106,7 @@ function HighestPlayerProgressPercentage(): UINT8 {
 // monitors the highest level of progress that player has achieved so far (checking hourly),
 // as opposed to his immediate situation (which may be worse if he's suffered a setback).
 function HourlyProgressUpdate(): void {
-  UINT8 ubCurrentProgress;
+  let ubCurrentProgress: UINT8;
 
   ubCurrentProgress = CurrentPlayerProgressPercentage();
 
@@ -1137,9 +1138,9 @@ function HourlyProgressUpdate(): void {
 }
 
 function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
-  UINT16 usXPs = 0;
-  UINT8 ubGuynum;
-  SOLDIERTYPE *pSoldier;
+  let usXPs: UINT16 = 0;
+  let ubGuynum: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   Assert(ubExpBonusType < NUM_EXP_BONUS_TYPES);
 
@@ -1170,7 +1171,7 @@ function AwardExperienceBonusToActiveSquad(ubExpBonusType: UINT8): void {
 }
 
 function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: BOOLEAN, sPtsChanged: INT16, ubStat: UINT8): void {
-  UINT8 ubStringIndex;
+  let ubStringIndex: UINT8;
 
   Assert(sPtsChanged != 0);
   Assert(ubStat >= FIRST_CHANGEABLE_STAT);
@@ -1194,8 +1195,9 @@ function BuildStatChangeString(wString: STR16, wName: STR16, fIncrease: BOOLEAN,
 }
 
 function CalcImportantSectorControl(): UINT8 {
-  UINT8 ubMapX, ubMapY;
-  UINT8 ubSectorControlPts = 0;
+  let ubMapX: UINT8;
+  let ubMapY: UINT8;
+  let ubSectorControlPts: UINT8 = 0;
 
   for (ubMapX = 1; ubMapX < MAP_WORLD_X - 1; ubMapX++) {
     for (ubMapY = 1; ubMapY < MAP_WORLD_Y - 1; ubMapY++) {
@@ -1218,7 +1220,7 @@ function CalcImportantSectorControl(): UINT8 {
 }
 
 function MERCMercWentUpALevelSendEmail(ubMercMercIdValue: UINT8): void {
-  UINT8 ubEmailOffset = 0;
+  let ubEmailOffset: UINT8 = 0;
 
   ubEmailOffset = MERC_UP_LEVEL_BIFF + MERC_UP_LEVEL_LENGTH_BIFF * (ubMercMercIdValue);
   AddEmail(ubEmailOffset, MERC_UP_LEVEL_LENGTH_BIFF, SPECK_FROM_MERC, GetWorldTotalMin());

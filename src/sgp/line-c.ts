@@ -17,11 +17,11 @@
 //
 //**************************************************************************
 
-int giImageWidth = 0;
-int giClipXMin = 0;
-int giClipXMax = 0;
-int giClipYMin = 0;
-int giClipYMax = 0;
+let giImageWidth: int = 0;
+let giClipXMin: int = 0;
+let giClipXMax: int = 0;
+let giClipYMin: int = 0;
+let giClipYMax: int = 0;
 
 function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iClipStartY: int, iClipWidth: int, iClipHeight: int): void {
   giImageWidth = iImageWidth;
@@ -32,8 +32,8 @@ function SetClippingRegionAndImageWidth(iImageWidth: int, iClipStartX: int, iCli
 }
 
 function Clipt(denom: FLOAT, num: FLOAT, tE: Pointer<FLOAT>, tL: Pointer<FLOAT>): BOOL {
-  FLOAT t;
-  BOOL accept;
+  let t: FLOAT;
+  let accept: BOOL;
 
   accept = TRUE;
 
@@ -60,10 +60,15 @@ function ClipPoint(x: int, y: int): BOOL {
 }
 
 function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Pointer<int>): BOOL {
-  BOOL visible;
-  FLOAT te, tl;
-  FLOAT dx, dy;
-  FLOAT x0, y0, x1, y1;
+  let visible: BOOL;
+  let te: FLOAT;
+  let tl: FLOAT;
+  let dx: FLOAT;
+  let dy: FLOAT;
+  let x0: FLOAT;
+  let y0: FLOAT;
+  let x1: FLOAT;
+  let y1: FLOAT;
 
   x0 = (FLOAT)*ix0;
   x1 = (FLOAT)*ix1;
@@ -108,11 +113,21 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
 
 /* Draws a line between the specified endpoints in color Color. */
 function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
-  int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
-  int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
-  int ScreenWidth = giImageWidth / 2;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let Temp: int;
+  let AdjUp: int;
+  let AdjDown: int;
+  let ErrorTerm: int;
+  let XAdvance: int;
+  let XDelta: int;
+  let YDelta: int;
+  let WholeStep: int;
+  let InitialPixelCount: int;
+  let FinalPixelCount: int;
+  let i: int;
+  let RunLength: int;
+  let ScreenWidth: int = giImageWidth / 2;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   if (fClip) {
     if (!Clip2D(&XStart, &YStart, &XEnd, &YEnd))
@@ -289,8 +304,8 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
 
 // Draws a pixel in the specified color
 function PixelDraw(fClip: BOOLEAN, xp: INT32, yp: INT32, sColor: INT16, pScreen: Pointer<INT8>): void {
-  INT8 col2 = sColor >> 8;
-  INT8 col1 = sColor & 0x00ff;
+  let col2: INT8 = sColor >> 8;
+  let col1: INT8 = sColor & 0x00ff;
 
   if (fClip) {
     if (!ClipPoint(xp, yp))
@@ -307,10 +322,10 @@ function PixelDraw(fClip: BOOLEAN, xp: INT32, yp: INT32, sColor: INT16, pScreen:
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  int i;
-  char *WorkingScreenPtr = *ScreenPtr;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let i: int;
+  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
     WorkingScreenPtr[0] = col1;
@@ -325,10 +340,10 @@ function DrawHorizontalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, Run
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawVerticalRun(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  int i;
-  char *WorkingScreenPtr = *ScreenPtr;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let i: int;
+  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
     WorkingScreenPtr[0] = col1;
@@ -366,11 +381,21 @@ function RectangleDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: 
 
 /* Draws a line between the specified endpoints in color Color. */
 function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, Color: short, ScreenPtr: Pointer<char>): void {
-  int Temp, AdjUp, AdjDown, ErrorTerm, XAdvance, XDelta, YDelta;
-  int WholeStep, InitialPixelCount, FinalPixelCount, i, RunLength;
-  int ScreenWidth = giImageWidth;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let Temp: int;
+  let AdjUp: int;
+  let AdjDown: int;
+  let ErrorTerm: int;
+  let XAdvance: int;
+  let XDelta: int;
+  let YDelta: int;
+  let WholeStep: int;
+  let InitialPixelCount: int;
+  let FinalPixelCount: int;
+  let i: int;
+  let RunLength: int;
+  let ScreenWidth: int = giImageWidth;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   if (fClip) {
     if (!Clip2D(&XStart, &YStart, &XEnd, &YEnd))
@@ -545,10 +570,10 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
 /* Draws a horizontal run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  int i;
-  char *WorkingScreenPtr = *ScreenPtr;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let i: int;
+  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
     *WorkingScreenPtr = col1;
@@ -562,10 +587,10 @@ function DrawHorizontalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, Ru
 /* Draws a vertical run of pixels, then advances the bitmap pointer to
    the first pixel of the next run. */
 function DrawVerticalRun8(ScreenPtr: Pointer<Pointer<char>>, XAdvance: int, RunLength: int, Color: int, ScreenWidth: int): void {
-  int i;
-  char *WorkingScreenPtr = *ScreenPtr;
-  char col2 = Color >> 8;
-  char col1 = Color & 0x00FF;
+  let i: int;
+  let WorkingScreenPtr: Pointer<char> = *ScreenPtr;
+  let col2: char = Color >> 8;
+  let col1: char = Color & 0x00FF;
 
   for (i = 0; i < RunLength; i++) {
     *WorkingScreenPtr = col1;

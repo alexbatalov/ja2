@@ -1,4 +1,4 @@
-UINT8 gubEncryptionArray4[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] = {
+let gubEncryptionArray4: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = {
   { 177, 131, 58, 218, 175, 130, 210, 59, 25, 190, 170, 189, 227, 245, 104, 118, 7, 168, 136, 178, 184, 4, 27, 64, 199, 101, 160, 24, 83, 177, 178, 232, 185, 40, 122, 109, 38, 253, 160, 14, 133, 106, 190, 206, 58, 102, 244, 229, 124 },
 
   { 201, 183, 24, 153, 17, 111, 47, 19, 116, 248, 160, 215, 143, 180, 195, 122, 74, 29, 158, 193, 73, 159, 193, 93, 140, 172, 31, 38, 129, 181, 96, 183, 56, 29, 172, 191, 252, 183, 91, 214, 254, 247, 135, 66, 76, 87, 1, 112, 214 },
@@ -116,25 +116,25 @@ UINT8 gubEncryptionArray4[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY
 
 // GLobals used here, for each event structure used,
 // Used as globals for stack reasons
-EV_E_PLAYSOUND EPlaySound;
+let EPlaySound: EV_E_PLAYSOUND;
 
-EV_S_CHANGESTATE SChangeState;
-EV_S_CHANGEDEST SChangeDest;
-EV_S_SETPOSITION SSetPosition;
-EV_S_GETNEWPATH SGetNewPath;
-EV_S_BEGINTURN SBeginTurn;
-EV_S_CHANGESTANCE SChangeStance;
-EV_S_SETDIRECTION SSetDirection;
-EV_S_SETDESIREDDIRECTION SSetDesiredDirection;
-EV_S_BEGINFIREWEAPON SBeginFireWeapon;
-EV_S_FIREWEAPON SFireWeapon;
-EV_S_WEAPONHIT SWeaponHit;
-EV_S_STRUCTUREHIT SStructureHit;
-EV_S_WINDOWHIT SWindowHit;
-EV_S_MISS SMiss;
-EV_S_NOISE SNoise;
-EV_S_STOP_MERC SStopMerc;
-EV_S_SENDPATHTONETWORK SUpdateNetworkSoldier;
+let SChangeState: EV_S_CHANGESTATE;
+let SChangeDest: EV_S_CHANGEDEST;
+let SSetPosition: EV_S_SETPOSITION;
+let SGetNewPath: EV_S_GETNEWPATH;
+let SBeginTurn: EV_S_BEGINTURN;
+let SChangeStance: EV_S_CHANGESTANCE;
+let SSetDirection: EV_S_SETDIRECTION;
+let SSetDesiredDirection: EV_S_SETDESIREDDIRECTION;
+let SBeginFireWeapon: EV_S_BEGINFIREWEAPON;
+let SFireWeapon: EV_S_FIREWEAPON;
+let SWeaponHit: EV_S_WEAPONHIT;
+let SStructureHit: EV_S_STRUCTUREHIT;
+let SWindowHit: EV_S_WINDOWHIT;
+let SMiss: EV_S_MISS;
+let SNoise: EV_S_NOISE;
+let SStopMerc: EV_S_STOP_MERC;
+let SUpdateNetworkSoldier: EV_S_SENDPATHTONETWORK;
 
 function AddGameEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR): BOOLEAN {
   if (usDelay == DEMAND_EVENT_DELAY) {
@@ -160,7 +160,7 @@ function AddGameEventFromNetwork(uiEvent: UINT32, usDelay: UINT16, pEventData: P
 }
 
 function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, ubQueueID: UINT8): BOOLEAN {
-  UINT32 uiDataSize;
+  let uiDataSize: UINT32;
 
   // Check range of Event ui
   if (uiEvent < 0 || uiEvent > NUM_EVENTS) {
@@ -274,9 +274,10 @@ function AddGameEventToQueue(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, 
 }
 
 function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
-  EVENT *pEvent;
-  UINT32 uiQueueSize, cnt;
-  BOOLEAN fCompleteLoop = FALSE;
+  let pEvent: Pointer<EVENT>;
+  let uiQueueSize: UINT32;
+  let cnt: UINT32;
+  let fCompleteLoop: BOOLEAN = FALSE;
   // First dequeue all primary events
 
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
@@ -344,8 +345,8 @@ function DequeAllGameEvents(fExecute: BOOLEAN): BOOLEAN {
 }
 
 function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
-  EVENT *pEvent;
-  BOOLEAN fCompleteLoop = FALSE;
+  let pEvent: Pointer<EVENT>;
+  let fCompleteLoop: BOOLEAN = FALSE;
 
   // Dequeue all events on the demand queue (only)
 
@@ -372,7 +373,7 @@ function DequeueAllDemandGameEvents(fExecute: BOOLEAN): BOOLEAN {
 }
 
 function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Switch on event type
   switch (pEvent->uiEvent) {
@@ -664,7 +665,7 @@ function ExecuteGameEvent(pEvent: Pointer<EVENT>): BOOLEAN {
 
 function ClearEventQueue(): BOOLEAN {
   // clear out the event queue
-  EVENT *pEvent;
+  let pEvent: Pointer<EVENT>;
   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
     // Get Event
     if (RemoveEvent(&pEvent, 0, PRIMARY_EVENT_QUEUE) == FALSE) {

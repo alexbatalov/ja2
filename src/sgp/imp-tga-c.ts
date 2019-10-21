@@ -43,10 +43,12 @@
 //**************************************************************************
 
 function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  HWFILE hFile;
-  UINT8 uiImgID, uiColMap, uiType;
-  UINT32 uiBytesRead;
-  BOOLEAN fReturnVal = FALSE;
+  let hFile: HWFILE;
+  let uiImgID: UINT8;
+  let uiColMap: UINT8;
+  let uiType: UINT8;
+  let uiBytesRead: UINT32;
+  let fReturnVal: BOOLEAN = FALSE;
 
   Assert(hImage != NULL);
 
@@ -119,26 +121,26 @@ function ReadUncompColMapImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, ui
 //**************************************************************************
 
 function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiColMap: UINT8, fContents: UINT16): BOOLEAN {
-  UINT8 *pBMData;
-  UINT8 *pBMPtr;
+  let pBMData: Pointer<UINT8>;
+  let pBMPtr: Pointer<UINT8>;
 
-  UINT16 uiColMapOrigin;
-  UINT16 uiColMapLength;
-  UINT8 uiColMapEntrySize;
-  UINT32 uiBytesRead;
-  UINT16 uiXOrg;
-  UINT16 uiYOrg;
-  UINT16 uiWidth;
-  UINT16 uiHeight;
-  UINT8 uiImagePixelSize;
-  UINT8 uiImageDescriptor;
-  UINT32 iNumValues;
-  UINT16 cnt;
+  let uiColMapOrigin: UINT16;
+  let uiColMapLength: UINT16;
+  let uiColMapEntrySize: UINT8;
+  let uiBytesRead: UINT32;
+  let uiXOrg: UINT16;
+  let uiYOrg: UINT16;
+  let uiWidth: UINT16;
+  let uiHeight: UINT16;
+  let uiImagePixelSize: UINT8;
+  let uiImageDescriptor: UINT8;
+  let iNumValues: UINT32;
+  let cnt: UINT16;
 
-  UINT32 i;
-  UINT8 r;
-  UINT8 g;
-  UINT8 b;
+  let i: UINT32;
+  let r: UINT8;
+  let g: UINT8;
+  let b: UINT8;
 
   if (!FileRead(hFile, &uiColMapOrigin, sizeof(UINT16), &uiBytesRead))
     goto end;

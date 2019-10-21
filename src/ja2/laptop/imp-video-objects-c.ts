@@ -1,50 +1,50 @@
 // globals
 
 // video object handles
-UINT32 guiBACKGROUND;
-UINT32 guiIMPSYMBOL;
-UINT32 guiBEGININDENT;
-UINT32 guiACTIVATIONINDENT;
-UINT32 guiFRONTPAGEINDENT;
-UINT32 guiFULLNAMEINDENT;
-UINT32 guiNAMEINDENT;
-UINT32 guiNICKNAMEINDENT;
-UINT32 guiGENDERINDENT;
-UINT32 guiSMALLFRAME;
-UINT32 guiANALYSE;
-UINT32 guiATTRIBUTEGRAPH;
-UINT32 guiATTRIBUTEGRAPHBAR;
-UINT32 guiSMALLSILHOUETTE;
-UINT32 guiLARGESILHOUETTE;
-UINT32 guiPORTRAITFRAME;
-UINT32 guiSLIDERBAR;
-UINT32 guiATTRIBUTEFRAME;
-UINT32 guiATTRIBUTESCREENINDENT1;
-UINT32 guiATTRIBUTESCREENINDENT2;
-UINT32 guiATTRIBUTEBAR;
-UINT32 guiBUTTON2IMAGE;
-UINT32 guiBUTTON1IMAGE;
-UINT32 guiBUTTON4IMAGE;
-UINT32 guiPORTRAITFRAME;
-UINT32 guiMAININDENT;
-UINT32 guiLONGINDENT;
-UINT32 guiSHORTINDENT;
-UINT32 guiSHORTHINDENT;
-UINT32 guiSHORT2INDENT;
-UINT32 guiLONGHINDENT;
-UINT32 guiQINDENT;
-UINT32 guiA1INDENT;
-UINT32 guiA2INDENT;
-UINT32 guiAVGMERCINDENT;
-UINT32 guiABOUTUSINDENT;
-UINT32 guiSHORT2HINDENT;
+let guiBACKGROUND: UINT32;
+let guiIMPSYMBOL: UINT32;
+let guiBEGININDENT: UINT32;
+let guiACTIVATIONINDENT: UINT32;
+let guiFRONTPAGEINDENT: UINT32;
+let guiFULLNAMEINDENT: UINT32;
+let guiNAMEINDENT: UINT32;
+let guiNICKNAMEINDENT: UINT32;
+let guiGENDERINDENT: UINT32;
+let guiSMALLFRAME: UINT32;
+let guiANALYSE: UINT32;
+let guiATTRIBUTEGRAPH: UINT32;
+let guiATTRIBUTEGRAPHBAR: UINT32;
+let guiSMALLSILHOUETTE: UINT32;
+let guiLARGESILHOUETTE: UINT32;
+let guiPORTRAITFRAME: UINT32;
+let guiSLIDERBAR: UINT32;
+let guiATTRIBUTEFRAME: UINT32;
+let guiATTRIBUTESCREENINDENT1: UINT32;
+let guiATTRIBUTESCREENINDENT2: UINT32;
+let guiATTRIBUTEBAR: UINT32;
+let guiBUTTON2IMAGE: UINT32;
+let guiBUTTON1IMAGE: UINT32;
+let guiBUTTON4IMAGE: UINT32;
+let guiPORTRAITFRAME: UINT32;
+let guiMAININDENT: UINT32;
+let guiLONGINDENT: UINT32;
+let guiSHORTINDENT: UINT32;
+let guiSHORTHINDENT: UINT32;
+let guiSHORT2INDENT: UINT32;
+let guiLONGHINDENT: UINT32;
+let guiQINDENT: UINT32;
+let guiA1INDENT: UINT32;
+let guiA2INDENT: UINT32;
+let guiAVGMERCINDENT: UINT32;
+let guiABOUTUSINDENT: UINT32;
+let guiSHORT2HINDENT: UINT32;
 
 // position defines
 const CHAR_PROFILE_BACKGROUND_TILE_WIDTH = 125;
 const CHAR_PROFILE_BACKGROUND_TILE_HEIGHT = 100;
 
 function LoadProfileBackGround(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // this procedure will load in the graphics for the generic background
 
@@ -63,9 +63,9 @@ function RemoveProfileBackGround(): void {
 }
 
 function RenderProfileBackGround(): void {
-  HVOBJECT hHandle;
-  INT32 iCurrentHeight = 0;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCurrentHeight: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // this procedure will render the generic backgound to the screen
 
@@ -92,7 +92,7 @@ function RenderProfileBackGround(): void {
 
 function LoadIMPSymbol(): BOOLEAN {
   // this procedure will load the IMP main symbol into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_IMPSYMBOL);
@@ -109,7 +109,7 @@ function DeleteIMPSymbol(): void {
 }
 
 function RenderIMPSymbol(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiIMPSYMBOL);
@@ -122,7 +122,7 @@ function RenderIMPSymbol(sX: INT16, sY: INT16): void {
 
 function LoadBeginIndent(): BOOLEAN {
   // this procedure will load the indent main symbol into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BeginScreenIndent.sti", VObjectDesc.ImageFile);
@@ -140,7 +140,7 @@ function DeleteBeginIndent(): void {
 }
 
 function RenderBeginIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiBEGININDENT);
@@ -153,7 +153,7 @@ function RenderBeginIndent(sX: INT16, sY: INT16): void {
 
 function LoadActivationIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ActivationIndent.sti", VObjectDesc.ImageFile);
@@ -170,7 +170,7 @@ function DeleteActivationIndent(): void {
 }
 
 function RenderActivationIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiACTIVATIONINDENT);
@@ -183,7 +183,7 @@ function RenderActivationIndent(sX: INT16, sY: INT16): void {
 
 function LoadFrontPageIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FrontPageIndent.sti", VObjectDesc.ImageFile);
@@ -200,7 +200,7 @@ function DeleteFrontPageIndent(): void {
 }
 
 function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiFRONTPAGEINDENT);
@@ -213,7 +213,7 @@ function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
 
 function LoadAnalyse(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Analyze.sti", VObjectDesc.ImageFile);
@@ -230,7 +230,7 @@ function DeleteAnalyse(): void {
 }
 
 function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiANALYSE);
@@ -243,7 +243,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
 
 function LoadAttributeGraph(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Attributegraph.sti", VObjectDesc.ImageFile);
@@ -260,7 +260,7 @@ function DeleteAttributeGraph(): void {
 }
 
 function RenderAttributeGraph(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiATTRIBUTEGRAPH);
@@ -273,7 +273,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
 
 function LoadAttributeGraphBar(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AttributegraphBar.sti", VObjectDesc.ImageFile);
@@ -290,7 +290,7 @@ function DeleteAttributeBarGraph(): void {
 }
 
 function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiATTRIBUTEGRAPHBAR);
@@ -303,7 +303,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
 
 function LoadFullNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FullNameIndent.sti", VObjectDesc.ImageFile);
@@ -320,7 +320,7 @@ function DeleteFullNameIndent(): void {
 }
 
 function RenderFullNameIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiFULLNAMEINDENT);
@@ -333,7 +333,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
 
 function LoadNickNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NickName.sti", VObjectDesc.ImageFile);
@@ -350,7 +350,7 @@ function DeleteNickNameIndent(): void {
 }
 
 function RenderNickNameIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiNICKNAMEINDENT);
@@ -363,7 +363,7 @@ function RenderNickNameIndent(sX: INT16, sY: INT16): void {
 
 function LoadNameIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NameIndent.sti", VObjectDesc.ImageFile);
@@ -380,7 +380,7 @@ function DeleteNameIndent(): void {
 }
 
 function RenderNameIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiNAMEINDENT);
@@ -393,7 +393,7 @@ function RenderNameIndent(sX: INT16, sY: INT16): void {
 
 function LoadGenderIndent(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\GenderIndent.sti", VObjectDesc.ImageFile);
@@ -410,7 +410,7 @@ function DeleteGenderIndent(): void {
 }
 
 function RenderGenderIndent(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiGENDERINDENT);
@@ -423,7 +423,7 @@ function RenderGenderIndent(sX: INT16, sY: INT16): void {
 
 function LoadSmallFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallFrame.sti", VObjectDesc.ImageFile);
@@ -440,7 +440,7 @@ function DeleteSmallFrame(): void {
 }
 
 function RenderSmallFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSMALLFRAME);
@@ -453,7 +453,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
 
 function LoadSmallSilhouette(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallSilhouette.sti", VObjectDesc.ImageFile);
@@ -470,7 +470,7 @@ function DeleteSmallSilhouette(): void {
 }
 
 function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSMALLSILHOUETTE);
@@ -483,7 +483,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
 
 function LoadLargeSilhouette(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\largesilhouette.sti", VObjectDesc.ImageFile);
@@ -500,7 +500,7 @@ function DeleteLargeSilhouette(): void {
 }
 
 function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiLARGESILHOUETTE);
@@ -513,7 +513,7 @@ function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
 
 function LoadAttributeFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeframe.sti", VObjectDesc.ImageFile);
@@ -530,9 +530,9 @@ function DeleteAttributeFrame(): void {
 }
 
 function RenderAttributeFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
-  INT16 sCurrentY = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
+  let sCurrentY: INT16 = 0;
 
   // get the video object
   GetVideoObject(&hHandle, guiATTRIBUTEFRAME);
@@ -556,8 +556,8 @@ function RenderAttributeFrame(sX: INT16, sY: INT16): void {
 }
 
 function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void {
-  INT16 sCurrentY = 0;
-  HVOBJECT hHandle;
+  let sCurrentY: INT16 = 0;
+  let hHandle: HVOBJECT;
 
   // valid index?
   if (iIndex == -1) {
@@ -587,7 +587,7 @@ function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void
 
 function LoadSliderBar(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeslider.sti", VObjectDesc.ImageFile);
@@ -604,7 +604,7 @@ function DeleteSliderBar(): void {
 }
 
 function RenderSliderBar(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSLIDERBAR);
@@ -617,7 +617,7 @@ function RenderSliderBar(sX: INT16, sY: INT16): void {
 
 function LoadButton2Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_2.sti", VObjectDesc.ImageFile);
@@ -634,7 +634,7 @@ function DeleteButton2Image(): void {
 }
 
 function RenderButton2Image(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiBUTTON2IMAGE);
@@ -647,7 +647,7 @@ function RenderButton2Image(sX: INT16, sY: INT16): void {
 
 function LoadButton4Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_4.sti", VObjectDesc.ImageFile);
@@ -664,7 +664,7 @@ function DeleteButton4Image(): void {
 }
 
 function RenderButton4Image(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiBUTTON4IMAGE);
@@ -677,7 +677,7 @@ function RenderButton4Image(sX: INT16, sY: INT16): void {
 
 function LoadButton1Image(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_1.sti", VObjectDesc.ImageFile);
@@ -694,7 +694,7 @@ function DeleteButton1Image(): void {
 }
 
 function RenderButton1Image(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiBUTTON1IMAGE);
@@ -707,7 +707,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
 
 function LoadPortraitFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti", VObjectDesc.ImageFile);
@@ -724,7 +724,7 @@ function DeletePortraitFrame(): void {
 }
 
 function RenderPortraitFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiPORTRAITFRAME);
@@ -737,7 +737,7 @@ function RenderPortraitFrame(sX: INT16, sY: INT16): void {
 
 function LoadMainIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\mainprofilepageindent.sti", VObjectDesc.ImageFile);
@@ -754,7 +754,7 @@ function DeleteMainIndentFrame(): void {
 }
 
 function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiMAININDENT);
@@ -767,7 +767,7 @@ function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnLongIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindent.sti", VObjectDesc.ImageFile);
@@ -784,7 +784,7 @@ function DeleteQtnLongIndentFrame(): void {
 }
 
 function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiLONGINDENT);
@@ -797,7 +797,7 @@ function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnShortIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent.sti", VObjectDesc.ImageFile);
@@ -814,7 +814,7 @@ function DeleteQtnShortIndentFrame(): void {
 }
 
 function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSHORTINDENT);
@@ -827,7 +827,7 @@ function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnLongIndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindenthigh.sti", VObjectDesc.ImageFile);
@@ -844,7 +844,7 @@ function DeleteQtnLongIndentHighFrame(): void {
 }
 
 function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiLONGHINDENT);
@@ -857,7 +857,7 @@ function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnShortIndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindenthigh.sti", VObjectDesc.ImageFile);
@@ -874,7 +874,7 @@ function DeleteQtnShortIndentHighFrame(): void {
 }
 
 function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSHORTHINDENT);
@@ -887,7 +887,7 @@ function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\questionindent.sti", VObjectDesc.ImageFile);
@@ -904,7 +904,7 @@ function DeleteQtnIndentFrame(): void {
 }
 
 function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiQINDENT);
@@ -917,7 +917,7 @@ function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadAttrib1IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_1.sti", VObjectDesc.ImageFile);
@@ -934,7 +934,7 @@ function DeleteAttrib1IndentFrame(): void {
 }
 
 function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiA1INDENT);
@@ -947,7 +947,7 @@ function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadAttrib2IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_2.sti", VObjectDesc.ImageFile);
@@ -964,7 +964,7 @@ function DeleteAttrib2IndentFrame(): void {
 }
 
 function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiA2INDENT);
@@ -977,7 +977,7 @@ function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadAvgMercIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\anaveragemercindent.sti", VObjectDesc.ImageFile);
@@ -994,7 +994,7 @@ function DeleteAvgMercIndentFrame(): void {
 }
 
 function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiAVGMERCINDENT);
@@ -1007,7 +1007,7 @@ function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadAboutUsIndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\aboutusindent.sti", VObjectDesc.ImageFile);
@@ -1024,7 +1024,7 @@ function DeleteAboutUsIndentFrame(): void {
 }
 
 function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiABOUTUSINDENT);
@@ -1037,7 +1037,7 @@ function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnShort2IndentFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2.sti", VObjectDesc.ImageFile);
@@ -1054,7 +1054,7 @@ function DeleteQtnShort2IndentFrame(): void {
 }
 
 function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSHORT2INDENT);
@@ -1067,7 +1067,7 @@ function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
 
 function LoadQtnShort2IndentHighFrame(): BOOLEAN {
   // this procedure will load the activation indent into memory
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2High.sti", VObjectDesc.ImageFile);
@@ -1084,7 +1084,7 @@ function DeleteQtnShort2IndentHighFrame(): void {
 }
 
 function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // get the video object
   GetVideoObject(&hHandle, guiSHORT2HINDENT);

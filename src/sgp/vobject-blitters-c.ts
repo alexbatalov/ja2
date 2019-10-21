@@ -1,10 +1,13 @@
-SGPRect ClippingRect = { 0, 0, 640, 480 };
+let ClippingRect: SGPRect = { 0, 0, 640, 480 };
 // 555      565
-UINT32 guiTranslucentMask = 0x3def; // 0x7bef;		// mask for halving 5,6,5
+let guiTranslucentMask: UINT32 = 0x3def; // 0x7bef;		// mask for halving 5,6,5
 
 // GLOBALS for pre-calculating skip values
-INT32 gLeftSkip, gRightSkip, gTopSkip, gBottomSkip;
-BOOLEAN gfUsePreCalcSkips = FALSE;
+let gLeftSkip: INT32;
+let gRightSkip: INT32;
+let gTopSkip: INT32;
+let gBottomSkip: INT32;
+let gfUsePreCalcSkips: BOOLEAN = FALSE;
 
 //*Experimental**********************************************************************
 
@@ -19,14 +22,29 @@ BOOLEAN gfUsePreCalcSkips = FALSE;
 
 **********************************************************************************************/
 function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -272,13 +290,27 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
 function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
   // UINT16		*p16BPPPalette;
   // UINT32		uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
   // ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  SixteenBPPObjectInfo *p16BPPObject;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let p16BPPObject: Pointer<SixteenBPPObjectInfo>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -517,14 +549,30 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset, uiLineFlag;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiLineFlag: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -765,12 +813,18 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 usHeight, usWidth, uiOffset, LineSkip;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
-  ETRLEObject *pTrav;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let uiOffset: UINT32;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let uiLineFlag: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -884,14 +938,30 @@ function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiD
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset, uiLineFlag;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiLineFlag: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1135,12 +1205,18 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 usHeight, usWidth, uiOffset, LineSkip;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
-  ETRLEObject *pTrav;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let uiOffset: UINT32;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let uiLineFlag: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1246,15 +1322,32 @@ function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, u
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
-  UINT16 usZLevel, usZLinesToGo;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
+  let usZLevel: UINT16;
+  let usZLinesToGo: UINT16;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1499,7 +1592,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function InitZBuffer(uiPitch: UINT32, uiHeight: UINT32): Pointer<UINT16> {
-  UINT16 *pBuffer;
+  let pBuffer: Pointer<UINT16>;
 
   if ((pBuffer = MemAlloc(uiPitch * uiHeight)) == NULL)
     return NULL;
@@ -1520,9 +1613,14 @@ function ShutdownZBuffer(pBuffer: Pointer<UINT16>): BOOLEAN {
 }
 
 function BlitZRect(pZBuffer: Pointer<UINT16>, uiPitch: UINT32, sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: INT16, usZValue: UINT16): BOOLEAN {
-  INT16 sLeftClip, sTopClip, sRightClip, sBottomClip;
-  UINT8 *pZPtr;
-  UINT32 uiLineSkip, usWidth, usHeight;
+  let sLeftClip: INT16;
+  let sTopClip: INT16;
+  let sRightClip: INT16;
+  let sBottomClip: INT16;
+  let pZPtr: Pointer<UINT8>;
+  let uiLineSkip: UINT32;
+  let usWidth: UINT32;
+  let usHeight: UINT32;
 
   sLeftClip = __max(ClippingRect.iLeft, sLeft);
   sRightClip = __min(ClippingRect.iRight, sRight);
@@ -1569,12 +1667,15 @@ function BlitZRect(pZBuffer: Pointer<UINT16>, uiPitch: UINT32, sLeft: INT16, sTo
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  static UINT32 uiOffset;
-  static UINT32 usHeight, usWidth;
-  static UINT8 *SrcPtr, *DestPtr;
-  static UINT32 LineSkip;
-  static ETRLEObject *pTrav;
-  static INT32 iTempX, iTempY;
+  /* static */ let uiOffset: UINT32;
+  /* static */ let usHeight: UINT32;
+  /* static */ let usWidth: UINT32;
+  /* static */ let SrcPtr: Pointer<UINT8>;
+  /* static */ let DestPtr: Pointer<UINT8>;
+  /* static */ let LineSkip: UINT32;
+  /* static */ let pTrav: Pointer<ETRLEObject>;
+  /* static */ let iTempX: INT32;
+  /* static */ let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1672,13 +1773,18 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, ubForeground: UINT8, ubBackground: UINT8): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -1795,14 +1901,29 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
 
         **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubForeground: UINT8, ubBackground: UINT8): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2048,14 +2169,19 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT32 uiLineFlag;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiLineFlag: UINT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2170,14 +2296,19 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT32 uiLineFlag;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiLineFlag: UINT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2289,15 +2420,31 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT32 uiLineFlag;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let uiLineFlag: UINT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2546,15 +2693,31 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT32 uiLineFlag;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let uiLineFlag: UINT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -2797,14 +2960,27 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
 
 *******************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3058,12 +3234,16 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *pPal8BPP;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let pPal8BPP: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3199,13 +3379,19 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ, uiZComp;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let uiZComp: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3420,13 +3606,18 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3528,13 +3719,18 @@ function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBY
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, ubColor: UINT8): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3642,14 +3838,30 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -3882,14 +4094,30 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4119,14 +4347,30 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, ubColor: UINT8): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4362,13 +4606,18 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4468,13 +4717,18 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4573,14 +4827,30 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -4812,14 +5082,30 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5049,13 +5335,18 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5167,13 +5458,18 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5282,14 +5578,30 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5531,14 +5843,30 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip, LineSkipZ;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT8 *pPal8BPP;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LineSkipZ: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let pPal8BPP: Pointer<UINT8>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5773,13 +6101,16 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT8 *pPal8BPP;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let pPal8BPP: Pointer<UINT8>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -5910,14 +6241,27 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
 
 **********************************************************************************************/
 function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT8 *pPal8BPP;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let pPal8BPP: Pointer<UINT8>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6178,13 +6522,27 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usForeground: UINT16, usBackground: UINT16, usShadow: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6432,8 +6790,10 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): BOOLEAN {
-  UINT16 *pSrcPtr, *pDestPtr;
-  UINT32 uiLineSkipDest, uiLineSkipSrc;
+  let pSrcPtr: Pointer<UINT16>;
+  let pDestPtr: Pointer<UINT16>;
+  let uiLineSkipDest: UINT32;
+  let uiLineSkipSrc: UINT32;
 
   Assert(pDest != NULL);
   Assert(pSrc != NULL);
@@ -6496,8 +6856,10 @@ function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Poin
 
 **********************************************************************************************/
 function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32, usTrans: UINT16): BOOLEAN {
-  UINT16 *pSrcPtr, *pDestPtr;
-  UINT32 uiLineSkipDest, uiLineSkipSrc;
+  let pSrcPtr: Pointer<UINT16>;
+  let pDestPtr: Pointer<UINT16>;
+  let uiLineSkipDest: UINT32;
+  let uiLineSkipSrc: UINT32;
 
   Assert(pDest != NULL);
   Assert(pSrc != NULL);
@@ -6547,11 +6909,23 @@ function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc:
 
 **********************************************************************************************/
 function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Pointer<UINT16>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): BOOLEAN {
-  UINT16 *pSrcPtr, *pDestPtr;
-  UINT32 uiLineSkipDest, uiLineSkipSrc;
-  INT32 RightSkip, LeftSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 iTempX, iTempY, ClipX1, ClipY1, ClipX2, ClipY2;
-  SGPRect *clipregion = NULL;
+  let pSrcPtr: Pointer<UINT16>;
+  let pDestPtr: Pointer<UINT16>;
+  let uiLineSkipDest: UINT32;
+  let uiLineSkipSrc: UINT32;
+  let RightSkip: INT32;
+  let LeftSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let clipregion: Pointer<SGPRect> = NULL;
 
   Assert(pDest != NULL);
   Assert(pSrc != NULL);
@@ -6640,8 +7014,10 @@ function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc
 
 **********************************************************************************************/
 function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer<UINT8>, uiSrcPitch: UINT32, iDestXPos: INT32, iDestYPos: INT32, iSrcXPos: INT32, iSrcYPos: INT32, uiWidth: UINT32, uiHeight: UINT32): BOOLEAN {
-  UINT8 *pSrcPtr, *pDestPtr;
-  UINT32 uiLineSkipDest, uiLineSkipSrc;
+  let pSrcPtr: Pointer<UINT8>;
+  let pDestPtr: Pointer<UINT8>;
+  let uiLineSkipDest: UINT32;
+  let uiLineSkipSrc: UINT32;
 
   Assert(pDest != NULL);
   Assert(pSrc != NULL);
@@ -6702,12 +7078,18 @@ function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 usHeight, usWidth, uiOffset, LineSkip;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
-  ETRLEObject *pTrav;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let uiOffset: UINT32;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let uiLineFlag: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6826,12 +7208,18 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 usHeight, usWidth, uiOffset, LineSkip;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
-  ETRLEObject *pTrav;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let uiOffset: UINT32;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let uiLineFlag: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -6965,14 +7353,30 @@ function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset, uiLineFlag;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiLineFlag: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7220,12 +7624,18 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 usHeight, usWidth, uiOffset, LineSkip;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 uiLineFlag;
-  ETRLEObject *pTrav;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let uiOffset: UINT32;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let uiLineFlag: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7343,14 +7753,30 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset, uiLineFlag;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiLineFlag: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7596,13 +8022,17 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7707,13 +8137,17 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7816,13 +8250,17 @@ function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, usColor: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -7930,12 +8368,15 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8033,12 +8474,16 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8148,12 +8593,16 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8264,13 +8713,17 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT32 uiLineFlag;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiLineFlag: UINT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8405,13 +8858,28 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8652,13 +9120,27 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -8886,13 +9368,28 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9134,13 +9631,29 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted, uiLineFlag;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let uiLineFlag: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9405,13 +9918,28 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, p16BPPPalette: Pointer<UINT16>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9650,13 +10178,17 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9756,14 +10288,29 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -9993,13 +10540,17 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -10097,14 +10648,29 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -10333,14 +10899,29 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -10571,14 +11152,29 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -10808,14 +11404,29 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>, usColor: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -11048,11 +11659,20 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
 
 **********************************************************************************************/
 function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip, LeftSkip, RightSkip, TopSkip, BlitLength, SrcSkip, BlitHeight;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let LeftSkip: UINT32;
+  let RightSkip: UINT32;
+  let TopSkip: UINT32;
+  let BlitLength: UINT32;
+  let SrcSkip: UINT32;
+  let BlitHeight: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVSurface != NULL);
@@ -11128,14 +11748,17 @@ function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES:
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, iX: INT32, iY: INT32): BOOLEAN {
-  UINT16 *p16BPPPalette;
+  let p16BPPPalette: Pointer<UINT16>;
   //	UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
   //	ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT32 rows;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let rows: UINT32;
 
   // Assertions
   Assert(hSrcVSurface != NULL);
@@ -11261,12 +11884,15 @@ exactly half the size.
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  INT32 iTempX, iTempY;
-  UINT32 uiSrcSkip;
+  let p16BPPPalette: Pointer<UINT16>;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiSrcSkip: UINT32;
 
   // Assertions
   Assert(hSrcVSurface != NULL);
@@ -11346,12 +11972,15 @@ exactly half the size, from a sub-region.
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVSurface: HVSURFACE, pSrcBuffer: Pointer<UINT8>, uiSrcPitch: UINT32, iX: INT32, iY: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  INT32 iTempX, iTempY;
-  UINT32 uiSrcSkip;
+  let p16BPPPalette: Pointer<UINT16>;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiSrcSkip: UINT32;
 
   // Assertions
   Assert(hSrcVSurface != NULL);
@@ -11433,15 +12062,20 @@ function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchB
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, hMaskObject: HVOBJECT, iMOX: INT32, iMOY: INT32, usMask: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 uiMOffset;
-  UINT32 usHeight, usWidth;
-  UINT32 usMHeight, usMWidth;
-  UINT8 *SrcPtr, *DestPtr, *MaskPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiMOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let usMHeight: UINT32;
+  let usMWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let MaskPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -11606,10 +12240,14 @@ function GetClippingRect(clip: Pointer<SGPRect>): void {
 
 *********************************************************************************************/
 function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, Pattern: UINT8[][] /* [8][8] */, usColor: UINT16): BOOLEAN {
-  INT32 width, height;
-  UINT32 LineSkip;
-  UINT16 *DestPtr;
-  INT32 iLeft, iTop, iRight, iBottom;
+  let width: INT32;
+  let height: INT32;
+  let LineSkip: UINT32;
+  let DestPtr: Pointer<UINT16>;
+  let iLeft: INT32;
+  let iTop: INT32;
+  let iRight: INT32;
+  let iBottom: INT32;
 
   // Assertions
   Assert(pBuffer != NULL);
@@ -11679,7 +12317,7 @@ function Blt16BPPBufferPixelateRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: 
 
 *********************************************************************************************/
 function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): BOOLEAN {
-  UINT8 Pattern[8][8] = {
+  let Pattern: UINT8[][] /* [8][8] */ = {
     { 1, 0, 1, 0, 1, 0, 1, 0 },
     { 0, 1, 0, 1, 0, 1, 0, 1 },
     { 1, 0, 1, 0, 1, 0, 1, 0 },
@@ -11694,7 +12332,7 @@ function Blt16BPPBufferHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchB
 
 // Uses black hatch color
 function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): BOOLEAN {
-  UINT8 Pattern[8][8] = {
+  let Pattern: UINT8[][] /* [8][8] */ = {
     { 1, 0, 1, 0, 1, 0, 1, 0 },
     { 0, 1, 0, 1, 0, 1, 0, 1 },
     { 1, 0, 1, 0, 1, 0, 1, 0 },
@@ -11708,7 +12346,7 @@ function Blt16BPPBufferHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UIN
 }
 
 function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>, usColor: UINT16): BOOLEAN {
-  UINT8 Pattern[8][8] = {
+  let Pattern: UINT8[][] /* [8][8] */ = {
     { 1, 0, 0, 0, 1, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 1, 0, 0, 0, 1, 0 },
@@ -11722,7 +12360,7 @@ function Blt16BPPBufferLooseHatchRectWithColor(pBuffer: Pointer<UINT16>, uiDestP
 }
 
 function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): BOOLEAN {
-  UINT8 Pattern[8][8] = {
+  let Pattern: UINT8[][] /* [8][8] */ = {
     { 1, 0, 0, 0, 1, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 1, 0, 0, 0, 1, 0 },
@@ -11743,13 +12381,16 @@ function Blt16BPPBufferLooseHatchRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -11880,13 +12521,16 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
 **********************************************************************************************/
 
 function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -12026,13 +12670,16 @@ function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPit
 // Created:  7/28/99 Derek Beland
 //*****************************************************************************************
 function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 uiDestSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let uiDestSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -12178,14 +12825,27 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -12446,10 +13106,15 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
 
 **********************************************************************************************/
 function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 usHeight, usWidth;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -12500,14 +13165,27 @@ function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -12764,9 +13442,10 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
 
 *********************************************************************************************/
 function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): BOOLEAN {
-  INT32 width, height;
-  UINT32 LineSkip;
-  UINT16 *DestPtr;
+  let width: INT32;
+  let height: INT32;
+  let LineSkip: UINT32;
+  let DestPtr: Pointer<UINT16>;
 
   // Assertions
   Assert(pBuffer != NULL);
@@ -12830,9 +13509,10 @@ function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
 
 *********************************************************************************************/
 function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, area: Pointer<SGPRect>): BOOLEAN {
-  INT32 width, height;
-  UINT32 LineSkip;
-  UINT16 *DestPtr;
+  let width: INT32;
+  let height: INT32;
+  let LineSkip: UINT32;
+  let DestPtr: Pointer<UINT16>;
 
   // Assertions
   Assert(pBuffer != NULL);
@@ -12895,13 +13575,16 @@ function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, usForeground: UINT16, usBackground: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -13360,9 +14043,14 @@ BOOLEAN UpdateBackupSurface( HVOBJECT hVObject )
 */
 
 function FillRect8BPP(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, x1: INT32, y1: INT32, x2: INT32, y2: INT32, color: UINT8): BOOLEAN {
-  INT32 x1real, y1real, x2real, y2real;
-  UINT32 linelength, lines, lineskip;
-  UINT8 *startoffset;
+  let x1real: INT32;
+  let y1real: INT32;
+  let x2real: INT32;
+  let y2real: INT32;
+  let linelength: UINT32;
+  let lines: UINT32;
+  let lineskip: UINT32;
+  let startoffset: Pointer<UINT8>;
 
   // check parameters
   Assert(pBuffer != NULL);
@@ -13431,9 +14119,14 @@ function FillRect8BPP(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, x1: INT
 }
 
 function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: INT32, y1: INT32, x2: INT32, y2: INT32, color: UINT16): BOOLEAN {
-  INT32 x1real, y1real, x2real, y2real;
-  UINT32 linelength, lines, lineskip;
-  UINT16 *startoffset;
+  let x1real: INT32;
+  let y1real: INT32;
+  let x2real: INT32;
+  let y2real: INT32;
+  let linelength: UINT32;
+  let lines: UINT32;
+  let lineskip: UINT32;
+  let startoffset: Pointer<UINT16>;
 
   // check parameters
   Assert(pBuffer != NULL);
@@ -13498,10 +14191,15 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
 
 **********************************************************************************************/
 function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): CHAR8 {
-  UINT32 usHeight, usWidth;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -13561,13 +14259,16 @@ function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, us
 // Blt8BPPDataTo16BPPBufferOutline
 // ATE New blitter for rendering a differrent color for value 254. Can be transparent if fDoOutline is FALSE
 function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -13661,14 +14362,28 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
 
 // ATE New blitter for rendering a differrent color for value 254. Can be transparent if fDoOutline is FALSE
 function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT16 *p16BPPPalette;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -13891,14 +14606,29 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT16 *p16BPPPalette;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -14139,15 +14869,30 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-  UINT16 *p16BPPPalette;
-  UINT32 uiLineFlag;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiLineFlag: UINT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -14413,13 +15158,16 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT16 *p16BPPPalette;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let p16BPPPalette: Pointer<UINT16>;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -14502,14 +15250,27 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -14762,13 +15523,17 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -14881,14 +15646,18 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
 }
 
 function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
-  UINT32 uiLineFlag;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let uiLineFlag: UINT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15024,13 +15793,17 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
 
 // This is the same as above, but DONOT WRITE to Z!
 function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, s16BPPColor: INT16, fDoOutline: BOOLEAN): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15151,13 +15924,17 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15257,14 +16034,29 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15494,13 +16286,17 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15598,14 +16394,29 @@ function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPi
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -15832,14 +16643,27 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -16093,13 +16917,16 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr, *DestPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -16234,14 +17061,30 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
 
 **********************************************************************************************/
 function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT16, clipregion: Pointer<SGPRect>): BOOLEAN {
-  UINT16 *p16BPPPalette;
-  UINT32 uiOffset, uiLineFlag;
-  UINT32 usHeight, usWidth, Unblitted;
-  UINT8 *SrcPtr, *DestPtr, *ZPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  INT32 iTempX, iTempY, LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+  let p16BPPPalette: Pointer<UINT16>;
+  let uiOffset: UINT32;
+  let uiLineFlag: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let Unblitted: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let DestPtr: Pointer<UINT8>;
+  let ZPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let iTempX: INT32;
+  let iTempY: INT32;
+  let LeftSkip: INT32;
+  let RightSkip: INT32;
+  let TopSkip: INT32;
+  let BottomSkip: INT32;
+  let BlitLength: INT32;
+  let BlitHeight: INT32;
+  let LSCount: INT32;
+  let ClipX1: INT32;
+  let ClipY1: INT32;
+  let ClipX2: INT32;
+  let ClipY2: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);

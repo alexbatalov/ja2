@@ -1,4 +1,4 @@
-UINT8 gubEncryptionArray3[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] = {
+let gubEncryptionArray3: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY_SIZE] */ = {
   { 250, 224, 3, 197, 156, 209, 110, 159, 75, 119, 221, 42, 212, 180, 223, 115, 13, 246, 173, 221, 211, 148, 3, 78, 214, 195, 102, 155, 5, 128, 5, 204, 42, 72, 240, 65, 177, 242, 226, 81, 255, 139, 70, 150, 95, 124, 203, 83, 248 },
 
   { 234, 33, 49, 205, 144, 43, 212, 44, 249, 86, 116, 150, 112, 80, 244, 150, 120, 207, 182, 110, 50, 179, 160, 41, 114, 31, 130, 253, 243, 221, 106, 120, 118, 181, 252, 103, 30, 238, 119, 10, 242, 187, 99, 99, 210, 197, 153, 71, 176 },
@@ -115,7 +115,7 @@ UINT8 gubEncryptionArray3[BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_ROTATION_ARRAY
 };
 
 function InitStrategicRowA(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_A1];
   pSector->ubTravelRating = 10;
@@ -247,7 +247,7 @@ function InitStrategicRowA(): void {
 }
 
 function InitStrategicRowB(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_B1];
   pSector->ubTravelRating = 10;
@@ -379,7 +379,7 @@ function InitStrategicRowB(): void {
 }
 
 function InitStrategicRowC(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_C1];
   pSector->ubTravelRating = 8;
@@ -511,7 +511,7 @@ function InitStrategicRowC(): void {
 }
 
 function InitStrategicRowD(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_D1];
   pSector->ubTravelRating = 7;
@@ -643,7 +643,7 @@ function InitStrategicRowD(): void {
 }
 
 function InitStrategicRowE(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_E1];
   pSector->ubTravelRating = 0;
@@ -775,7 +775,7 @@ function InitStrategicRowE(): void {
 }
 
 function InitStrategicRowF(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_F1];
   pSector->ubTravelRating = 0;
@@ -907,7 +907,7 @@ function InitStrategicRowF(): void {
 }
 
 function InitStrategicRowG(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_G1];
   pSector->ubTravelRating = 60;
@@ -1039,7 +1039,7 @@ function InitStrategicRowG(): void {
 }
 
 function InitStrategicRowH(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_H1];
   pSector->ubTravelRating = 67;
@@ -1171,7 +1171,7 @@ function InitStrategicRowH(): void {
 }
 
 function InitStrategicRowI(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_I1];
   pSector->ubTravelRating = 0;
@@ -1303,7 +1303,7 @@ function InitStrategicRowI(): void {
 }
 
 function InitStrategicRowJ(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_J1];
   pSector->ubTravelRating = 0;
@@ -1435,7 +1435,7 @@ function InitStrategicRowJ(): void {
 }
 
 function InitStrategicRowK(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_K1];
   pSector->ubTravelRating = 0;
@@ -1567,7 +1567,7 @@ function InitStrategicRowK(): void {
 }
 
 function InitStrategicRowL(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_L1];
   pSector->ubTravelRating = 4;
@@ -1699,7 +1699,7 @@ function InitStrategicRowL(): void {
 }
 
 function InitStrategicRowM(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_M1];
   pSector->ubTravelRating = 0;
@@ -1831,7 +1831,7 @@ function InitStrategicRowM(): void {
 }
 
 function InitStrategicRowN(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_N1];
   pSector->ubTravelRating = 0;
@@ -1963,7 +1963,7 @@ function InitStrategicRowN(): void {
 }
 
 function InitStrategicRowO(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_O1];
   pSector->ubTravelRating = 0;
@@ -2095,7 +2095,7 @@ function InitStrategicRowO(): void {
 }
 
 function InitStrategicRowP(): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
 
   pSector = &SectorInfo[SEC_P1];
   pSector->ubTravelRating = 0;
@@ -2247,8 +2247,8 @@ function InitStrategicMovementCosts(): void {
 }
 
 function GetTraversability(sStartSector: INT16, sEndSector: INT16): UINT8 {
-  UINT8 ubDirection = 0;
-  INT16 sDifference = 0;
+  let ubDirection: UINT8 = 0;
+  let sDifference: INT16 = 0;
 
   // given start and end sectors
   sDifference = sEndSector - sStartSector;

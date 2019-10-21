@@ -7,8 +7,8 @@ function InitEditorItemStatsButtons(): void {
 }
 
 function InitEditorMercsToolbar(): void {
-  INT16 TempString[30];
-  INT16 *FaceDirs[8] = {
+  let TempString: INT16[] /* [30] */;
+  let FaceDirs: Pointer<INT16>[] /* [8] */ = {
     L"north",
     L"northeast",
     L"east",
@@ -18,7 +18,7 @@ function InitEditorMercsToolbar(): void {
     L"west",
     L"northwest",
   };
-  INT32 x;
+  let x: INT32;
 
   iEditorButton[MERCS_PLAYERTOGGLE] = CreateCheckBoxButton(4, 362, "EDITOR//SmCheckbox.sti", MSYS_PRIORITY_NORMAL, MercsTogglePlayers);
   if (gfShowPlayers)

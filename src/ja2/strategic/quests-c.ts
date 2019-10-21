@@ -1,8 +1,8 @@
-UINT8 gubQuest[MAX_QUESTS];
-UINT8 gubFact[NUM_FACTS]; // this has to be updated when we figure out how many facts we have
+let gubQuest: UINT8[] /* [MAX_QUESTS] */;
+let gubFact: UINT8[] /* [NUM_FACTS] */; // this has to be updated when we figure out how many facts we have
 
-INT16 gsFoodQuestSectorX;
-INT16 gsFoodQuestSectorY;
+let gsFoodQuestSectorX: INT16;
+let gsFoodQuestSectorY: INT16;
 
 function SetFactTrue(usFact: UINT16): void {
   // This function is here just for control flow purposes (debug breakpoints)
@@ -22,7 +22,7 @@ function SetFactFalse(usFact: UINT16): void {
 }
 
 function CheckForNewShipment(): BOOLEAN {
-  ITEM_POOL *pItemPool;
+  let pItemPool: Pointer<ITEM_POOL>;
 
   if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
     if (GetItemPool(BOBBYR_SHIPPING_DEST_GRIDNO, &pItemPool, 0)) {
@@ -33,7 +33,7 @@ function CheckForNewShipment(): BOOLEAN {
 }
 
 function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // is the NPC is wounded at all?
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -53,7 +53,7 @@ function CheckNPCWounded(ubProfileID: UINT8, fByPlayerOnly: BOOLEAN): BOOLEAN {
 }
 
 function CheckNPCInOkayHealth(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // is the NPC at better than half health?
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -65,7 +65,7 @@ function CheckNPCInOkayHealth(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CheckNPCBleeding(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // the NPC is wounded...
   pSoldier = FindSoldierByProfileID(ubProfileID, FALSE);
@@ -77,7 +77,8 @@ function CheckNPCBleeding(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CheckNPCWithin(ubFirstNPC: UINT8, ubSecondNPC: UINT8, ubMaxDistance: UINT8): BOOLEAN {
-  SOLDIERTYPE *pFirstNPC, *pSecondNPC;
+  let pFirstNPC: Pointer<SOLDIERTYPE>;
+  let pSecondNPC: Pointer<SOLDIERTYPE>;
 
   pFirstNPC = FindSoldierByProfileID(ubFirstNPC, FALSE);
   pSecondNPC = FindSoldierByProfileID(ubSecondNPC, FALSE);
@@ -89,7 +90,8 @@ function CheckNPCWithin(ubFirstNPC: UINT8, ubSecondNPC: UINT8, ubMaxDistance: UI
 
 function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): BOOLEAN {
   // NB ONLY WORKS IF ON DIFFERENT TEAMS
-  SOLDIERTYPE *pNPC, *pGuy;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let pGuy: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubNPC, FALSE);
   pGuy = FindSoldierByProfileID(ubGuy, FALSE);
@@ -104,7 +106,7 @@ function CheckGuyVisible(ubNPC: UINT8, ubGuy: UINT8): BOOLEAN {
 }
 
 function CheckNPCAt(ubNPC: UINT8, sGridNo: INT16): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubNPC, FALSE);
   if (!pNPC) {
@@ -114,7 +116,7 @@ function CheckNPCAt(ubNPC: UINT8, sGridNo: INT16): BOOLEAN {
 }
 
 function CheckNPCIsEnemy(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -133,8 +135,8 @@ function CheckNPCIsEnemy(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
-  INT16 sGridNo;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   // no merc nearby?
   if (pMerc == NULL) {
@@ -156,11 +158,11 @@ function CheckIfMercIsNearNPC(pMerc: Pointer<SOLDIERTYPE>, ubProfileId: UINT8): 
 }
 
 function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
-  INT8 bNumber = 0;
-  UINT32 uiLoop;
-  SOLDIERTYPE *pNPC;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
+  let bNumber: INT8 = 0;
+  let uiLoop: UINT32;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -182,11 +184,11 @@ function NumWoundedMercsNearby(ubProfileID: UINT8): INT8 {
 }
 
 function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
-  INT8 bNumber = 0;
-  UINT32 uiLoop;
-  SOLDIERTYPE *pNPC;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
+  let bNumber: INT8 = 0;
+  let uiLoop: UINT32;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -208,7 +210,7 @@ function NumMercsNear(ubProfileID: UINT8, ubMaxDist: UINT8): INT8 {
 }
 
 function CheckNPCIsEPC(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   if (gMercProfiles[ubProfileID].bMercStatus == MERC_IS_DEAD) {
     return FALSE;
@@ -222,7 +224,7 @@ function CheckNPCIsEPC(ubProfileID: UINT8): BOOLEAN {
 }
 
 function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] != ubRoomID)) {
@@ -232,7 +234,7 @@ function NPCInRoom(ubProfileID: UINT8, ubRoomID: UINT8): BOOLEAN {
 }
 
 function NPCInRoomRange(ubProfileID: UINT8, ubRoomID1: UINT8, ubRoomID2: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC || (gubWorldRoomInfo[pNPC->sGridNo] < ubRoomID1) || (gubWorldRoomInfo[pNPC->sGridNo] > ubRoomID2)) {
@@ -242,10 +244,10 @@ function NPCInRoomRange(ubProfileID: UINT8, ubRoomID1: UINT8, ubRoomID2: UINT8):
 }
 
 function PCInSameRoom(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
-  UINT8 ubRoom;
-  INT8 bLoop;
-  SOLDIERTYPE *pSoldier;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let ubRoom: UINT8;
+  let bLoop: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -297,11 +299,11 @@ function CheckTalkerUnpropositionedFemale(): BOOLEAN {
 }
 
 function NumMalesPresent(ubProfileID: UINT8): INT8 {
-  INT8 bNumber = 0;
-  UINT32 uiLoop;
-  SOLDIERTYPE *pNPC;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
+  let bNumber: INT8 = 0;
+  let uiLoop: UINT32;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -325,10 +327,10 @@ function NumMalesPresent(ubProfileID: UINT8): INT8 {
 }
 
 function FemalePresent(ubProfileID: UINT8): BOOLEAN {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pNPC;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
+  let uiLoop: UINT32;
+  let pNPC: Pointer<SOLDIERTYPE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -352,8 +354,8 @@ function FemalePresent(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CheckPlayerHasHead(): BOOLEAN {
-  INT8 bLoop;
-  SOLDIERTYPE *pSoldier;
+  let bLoop: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (bLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID; bLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; bLoop++) {
     pSoldier = MercPtrs[bLoop];
@@ -369,7 +371,7 @@ function CheckPlayerHasHead(): BOOLEAN {
 }
 
 function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSoldier = FindSoldierByProfileID(ubProfileID, TRUE);
 
@@ -385,8 +387,8 @@ function CheckNPCSector(ubProfileID: UINT8, sSectorX: INT16, sSectorY: INT16, bS
 }
 
 function AIMMercWithin(sGridNo: INT16, sDistance: INT16): BOOLEAN {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pSoldier;
+  let uiLoop: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -402,7 +404,7 @@ function AIMMercWithin(sGridNo: INT16, sDistance: INT16): BOOLEAN {
 }
 
 function CheckNPCCowering(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -412,8 +414,8 @@ function CheckNPCCowering(ubProfileID: UINT8): BOOLEAN {
 }
 
 function CountBartenders(): UINT8 {
-  UINT8 ubLoop;
-  UINT8 ubBartenders = 0;
+  let ubLoop: UINT8;
+  let ubBartenders: UINT8 = 0;
 
   for (ubLoop = HERVE; ubLoop <= CARLO; ubLoop++) {
     if (gMercProfiles[ubLoop].bNPCData != 0) {
@@ -424,7 +426,7 @@ function CountBartenders(): UINT8 {
 }
 
 function CheckNPCIsUnderFire(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -434,7 +436,7 @@ function CheckNPCIsUnderFire(ubProfileID: UINT8): BOOLEAN {
 }
 
 function NPCHeardShot(ubProfileID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pNPC;
+  let pNPC: Pointer<SOLDIERTYPE>;
 
   pNPC = FindSoldierByProfileID(ubProfileID, FALSE);
   if (!pNPC) {
@@ -444,7 +446,7 @@ function NPCHeardShot(ubProfileID: UINT8): BOOLEAN {
 }
 
 function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): BOOLEAN {
-  UINT8 ubTown;
+  let ubTown: UINT8;
 
   ubTown = GetTownIdForSector(sSectorX, sSectorY);
   if ((ubTown != BLANK_SECTOR) && gTownLoyalty[ubTown].fStarted && gfTownUsesLoyalty[ubTown]) {
@@ -455,7 +457,7 @@ function InTownSectorWithTrainingLoyalty(sSectorX: INT16, sSectorY: INT16): BOOL
 }
 
 function CheckFact(usFact: UINT16, ubProfileID: UINT8): BOOLEAN {
-  INT8 bTown = -1;
+  let bTown: INT8 = -1;
 
   switch (usFact) {
     case FACT_DIMITRI_DEAD:
@@ -713,7 +715,7 @@ case FACT_SKYRIDER_CLOSE_TO_CHOPPER:
       break;
 
     case FACT_PLAYER_BEEN_TO_K4: {
-      UNDERGROUND_SECTORINFO *pUnderGroundSector;
+      let pUnderGroundSector: Pointer<UNDERGROUND_SECTORINFO>;
 
       pUnderGroundSector = FindUnderGroundSector(4, MAP_ROW_K, 1);
       gubFact[usFact] = pUnderGroundSector->fVisited;
@@ -1092,7 +1094,7 @@ function CheckForQuests(uiDay: UINT32): void {
 }
 
 function SaveQuestInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   // Save all the states if the Quests
   FileWrite(hFile, gubQuest, MAX_QUESTS, &uiNumBytesWritten);
@@ -1110,7 +1112,7 @@ function SaveQuestInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
 
   // Save all the states if the Quests
   FileRead(hFile, gubQuest, MAX_QUESTS, &uiNumBytesRead);

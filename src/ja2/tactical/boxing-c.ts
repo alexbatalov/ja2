@@ -1,28 +1,28 @@
-INT16 gsBoxerGridNo[NUM_BOXERS] = {
+let gsBoxerGridNo: INT16[] /* [NUM_BOXERS] */ = {
   11393,
   11233,
   11073,
 };
-UINT8 gubBoxerID[NUM_BOXERS] = {
+let gubBoxerID: UINT8[] /* [NUM_BOXERS] */ = {
   NOBODY,
   NOBODY,
   NOBODY,
 };
-BOOLEAN gfBoxerFought[NUM_BOXERS] = {
+let gfBoxerFought: BOOLEAN[] /* [NUM_BOXERS] */ = {
   FALSE,
   FALSE,
   FALSE,
 };
-BOOLEAN gfLastBoxingMatchWonByPlayer = FALSE;
-UINT8 gubBoxingMatchesWon = 0;
-UINT8 gubBoxersRests = 0;
-BOOLEAN gfBoxersResting = FALSE;
+let gfLastBoxingMatchWonByPlayer: BOOLEAN = FALSE;
+let gubBoxingMatchesWon: UINT8 = 0;
+let gubBoxersRests: UINT8 = 0;
+let gfBoxersResting: BOOLEAN = FALSE;
 
 function ExitBoxing(): void {
-  UINT8 ubRoom;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiLoop;
-  UINT8 ubPass;
+  let ubRoom: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiLoop: UINT32;
+  let ubPass: UINT8;
 
   // find boxers and turn them neutral again
 
@@ -129,10 +129,10 @@ function TriggerEndOfBoxingRecord(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CountPeopleInBoxingRing(): UINT8 {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiLoop;
-  UINT8 ubRoom;
-  UINT8 ubTotalInRing = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiLoop: UINT32;
+  let ubRoom: UINT8;
+  let ubTotalInRing: UINT8 = 0;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -148,16 +148,16 @@ function CountPeopleInBoxingRing(): UINT8 {
 }
 
 function CountPeopleInBoxingRingAndDoActions(): void {
-  UINT32 uiLoop;
-  UINT8 ubTotalInRing = 0;
-  UINT8 ubRoom;
-  UINT8 ubPlayersInRing = 0;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pInRing[2] = {
+  let uiLoop: UINT32;
+  let ubTotalInRing: UINT8 = 0;
+  let ubRoom: UINT8;
+  let ubPlayersInRing: UINT8 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pInRing: Pointer<SOLDIERTYPE>[] /* [2] */ = {
     NULL,
     NULL,
   };
-  SOLDIERTYPE *pNonBoxingPlayer = NULL;
+  let pNonBoxingPlayer: Pointer<SOLDIERTYPE> = NULL;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -233,8 +233,8 @@ function CountPeopleInBoxingRingAndDoActions(): void {
 }
 
 function CheckOnBoxers(): BOOLEAN {
-  UINT32 uiLoop;
-  UINT8 ubID;
+  let uiLoop: UINT32;
+  let ubID: UINT8;
 
   // repick boxer IDs every time
   if (gubBoxerID[0] == NOBODY) {
@@ -256,7 +256,7 @@ function CheckOnBoxers(): BOOLEAN {
 }
 
 function BoxerExists(): BOOLEAN {
-  UINT32 uiLoop;
+  let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < NUM_BOXERS; uiLoop++) {
     if (WhoIsThere2(gsBoxerGridNo[uiLoop], 0) != NOBODY) {
@@ -267,8 +267,8 @@ function BoxerExists(): BOOLEAN {
 }
 
 function PickABoxer(): BOOLEAN {
-  UINT32 uiLoop;
-  SOLDIERTYPE *pBoxer;
+  let uiLoop: UINT32;
+  let pBoxer: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < NUM_BOXERS; uiLoop++) {
     if (gubBoxerID[uiLoop] != NOBODY) {
@@ -304,7 +304,7 @@ function PickABoxer(): BOOLEAN {
 }
 
 function BoxerAvailable(): BOOLEAN {
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   // No way around this, BoxerAvailable will have to go find boxer IDs if they aren't set.
   if (CheckOnBoxers() == FALSE) {
@@ -323,8 +323,8 @@ function BoxerAvailable(): BOOLEAN {
 // NOTE THIS IS NOW BROKEN BECAUSE NPC.C ASSUMES THAT BOXERSAVAILABLE < 3 IS A
 // SEQUEL FIGHT.   Maybe we could check Kingpin's location instead!
 function BoxersAvailable(): UINT8 {
-  UINT8 ubLoop;
-  UINT8 ubCount = 0;
+  let ubLoop: UINT8;
+  let ubCount: UINT8 = 0;
 
   for (ubLoop = 0; ubLoop < NUM_BOXERS; ubLoop++) {
     if (gubBoxerID[ubLoop] != NOBODY && !gfBoxerFought[ubLoop]) {
@@ -340,9 +340,9 @@ function AnotherFightPossible(): BOOLEAN {
   // a player has at least OKLIFE + 5 life
 
   // and at least one fight HAS occurred
-  UINT8 ubLoop;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubAvailable;
+  let ubLoop: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubAvailable: UINT8;
 
   ubAvailable = BoxersAvailable();
 
@@ -363,7 +363,7 @@ function AnotherFightPossible(): BOOLEAN {
 }
 
 function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubRoom;
+  let ubRoom: UINT8;
 
   if (InARoom(pSoldier->sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
     // someone moving in/into the ring
@@ -401,7 +401,7 @@ function SetBoxingState(bNewState: INT8): void {
 }
 
 function ClearAllBoxerFlags(): void {
-  UINT32 uiSlot;
+  let uiSlot: UINT32;
 
   for (uiSlot = 0; uiSlot < guiNumMercSlots; uiSlot++) {
     if (MercSlots[uiSlot] && MercSlots[uiSlot]->uiStatusFlags & SOLDIER_BOXER) {

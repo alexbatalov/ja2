@@ -6,7 +6,7 @@ interface MERCPLACEMENT {
   fPlaced: BOOLEAN;
 }
 
-MERCPLACEMENT *gMercPlacement = NULL;
+let gMercPlacement: Pointer<MERCPLACEMENT> = NULL;
 
 const enum Enum310 {
   DONE_BUTTON,
@@ -15,38 +15,43 @@ const enum Enum310 {
   CLEAR_BUTTON,
   NUM_TP_BUTTONS,
 }
-UINT32 iTPButtons[NUM_TP_BUTTONS];
+let iTPButtons: UINT32[] /* [NUM_TP_BUTTONS] */;
 
-UINT8 gubDefaultButton = CLEAR_BUTTON;
-BOOLEAN gfTacticalPlacementGUIActive = FALSE;
-BOOLEAN gfTacticalPlacementFirstTime = FALSE;
-BOOLEAN gfEnterTacticalPlacementGUI = FALSE;
-BOOLEAN gfKillTacticalGUI = FALSE;
-INT32 giOverheadPanelImage = 0;
-INT32 giOverheadButtonImages[NUM_TP_BUTTONS];
-INT32 giMercPanelImage = 0;
-INT32 giPlacements = 0;
-BOOLEAN gfTacticalPlacementGUIDirty = FALSE;
-BOOLEAN gfValidLocationsChanged = FALSE;
-SGPRect gTPClipRect = { 0, 0, 0, 0 };
-BOOLEAN gfValidCursor = FALSE;
-BOOLEAN gfEveryonePlaced = FALSE;
+let gubDefaultButton: UINT8 = CLEAR_BUTTON;
+let gfTacticalPlacementGUIActive: BOOLEAN = FALSE;
+let gfTacticalPlacementFirstTime: BOOLEAN = FALSE;
+let gfEnterTacticalPlacementGUI: BOOLEAN = FALSE;
+let gfKillTacticalGUI: BOOLEAN = FALSE;
+let giOverheadPanelImage: INT32 = 0;
+let giOverheadButtonImages: INT32[] /* [NUM_TP_BUTTONS] */;
+let giMercPanelImage: INT32 = 0;
+let giPlacements: INT32 = 0;
+let gfTacticalPlacementGUIDirty: BOOLEAN = FALSE;
+let gfValidLocationsChanged: BOOLEAN = FALSE;
+let gTPClipRect: SGPRect = { 0, 0, 0, 0 };
+let gfValidCursor: BOOLEAN = FALSE;
+let gfEveryonePlaced: BOOLEAN = FALSE;
 
-UINT8 gubSelectedGroupID = 0;
-UINT8 gubHilightedGroupID = 0;
-UINT8 gubCursorGroupID = 0;
-INT8 gbSelectedMercID = -1;
-INT8 gbHilightedMercID = -1;
-INT8 gbCursorMercID = -1;
-SOLDIERTYPE *gpTacticalPlacementSelectedSoldier = NULL;
-SOLDIERTYPE *gpTacticalPlacementHilightedSoldier = NULL;
+let gubSelectedGroupID: UINT8 = 0;
+let gubHilightedGroupID: UINT8 = 0;
+let gubCursorGroupID: UINT8 = 0;
+let gbSelectedMercID: INT8 = -1;
+let gbHilightedMercID: INT8 = -1;
+let gbCursorMercID: INT8 = -1;
+let gpTacticalPlacementSelectedSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpTacticalPlacementHilightedSoldier: Pointer<SOLDIERTYPE> = NULL;
 
-BOOLEAN gfNorth, gfEast, gfSouth, gfWest;
+let gfNorth: BOOLEAN;
+let gfEast: BOOLEAN;
+let gfSouth: BOOLEAN;
+let gfWest: BOOLEAN;
 
 function InitTacticalPlacementGUI(): void {
-  VOBJECT_DESC VObjectDesc;
-  INT32 i, xp, yp;
-  UINT8 ubFaceIndex;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: INT32;
+  let xp: INT32;
+  let yp: INT32;
+  let ubFaceIndex: UINT8;
   gfTacticalPlacementGUIActive = TRUE;
   gfTacticalPlacementGUIDirty = TRUE;
   gfValidLocationsChanged = TRUE;
@@ -190,14 +195,18 @@ function InitTacticalPlacementGUI(): void {
 }
 
 function RenderTacticalPlacementGUI(): void {
-  INT32 i, xp, yp, width, height;
-  INT32 iStartY;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiDestPitchBYTES;
-  UINT16 usHatchColor;
-  UINT16 str[128];
-  UINT8 *pDestBuf;
-  UINT8 ubColor;
+  let i: INT32;
+  let xp: INT32;
+  let yp: INT32;
+  let width: INT32;
+  let height: INT32;
+  let iStartY: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiDestPitchBYTES: UINT32;
+  let usHatchColor: UINT16;
+  let str: UINT16[] /* [128] */;
+  let pDestBuf: Pointer<UINT8>;
+  let ubColor: UINT8;
   if (gfTacticalPlacementFirstTime) {
     gfTacticalPlacementFirstTime = FALSE;
     DisableScrollMessages();
@@ -342,7 +351,7 @@ function RenderTacticalPlacementGUI(): void {
 }
 
 function EnsureDoneButtonStatus(): void {
-  INT32 i;
+  let i: INT32;
   // static BOOLEAN fInside = FALSE;
   // BOOLEAN fChanged = FALSE;
   for (i = 0; i < giPlacements; i++) {
@@ -362,7 +371,7 @@ function EnsureDoneButtonStatus(): void {
 }
 
 function TacticalPlacementHandle(): void {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   EnsureDoneButtonStatus();
 
@@ -443,7 +452,7 @@ function TacticalPlacementHandle(): void {
 }
 
 function KillTacticalPlacementGUI(): void {
-  INT32 i;
+  let i: INT32;
 
   gbHilightedMercID = -1;
   gbSelectedMercID = -1;
@@ -492,7 +501,7 @@ function KillTacticalPlacementGUI(): void {
 }
 
 function ChooseRandomEdgepoints(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < giPlacements; i++) {
     if (!(gMercPlacement[i].pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
       gMercPlacement[i].pSoldier->usStrategicInsertionData = ChooseMapEdgepoint(gMercPlacement[i].ubStrategicInsertionCode);
@@ -512,7 +521,7 @@ function ChooseRandomEdgepoints(): void {
 }
 
 function PlaceMercs(): void {
-  INT32 i;
+  let i: INT32;
   switch (gubDefaultButton) {
     case SPREAD_BUTTON: // Place mercs randomly along their side using map edgepoints.
       ChooseRandomEdgepoints();
@@ -578,7 +587,7 @@ function ClearPlacementsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reg->uiFlags & MSYS_MOUSE_IN_AREA) {
-    INT8 i;
+    let i: INT8;
     for (i = 0; i < giPlacements; i++) {
       if (&gMercPlacement[i].region == reg) {
         if (gbHilightedMercID != i) {
@@ -596,7 +605,7 @@ function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
 
 function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    INT8 i;
+    let i: INT8;
     for (i = 0; i < giPlacements; i++) {
       if (&gMercPlacement[i].region == reg) {
         if (gbSelectedMercID != i) {
@@ -613,7 +622,7 @@ function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
 }
 
 function SelectNextUnplacedUnit(): void {
-  INT32 i;
+  let i: INT32;
   if (gbSelectedMercID == -1)
     return;
   for (i = gbSelectedMercID; i < giPlacements; i++) {
@@ -655,9 +664,9 @@ function SelectNextUnplacedUnit(): void {
 }
 
 function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  INT32 i;
-  INT16 sGridNo;
-  BOOLEAN fInvalidArea = FALSE;
+  let i: INT32;
+  let sGridNo: INT16;
+  let fInvalidArea: BOOLEAN = FALSE;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // if we have a selected merc, move him to the new closest map edgepoint of his side.
     if (gfValidCursor) {
@@ -711,7 +720,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
 
           if (fInvalidArea) {
             // Report error due to invalid placement.
-            SGPRect CenterRect = { 220, 120, 420, 200 };
+            let CenterRect: SGPRect = { 220, 120, 420, 200 };
             DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, &CenterRect);
           } else {
             // Placement successful, so select the next unplaced unit (single or group).
@@ -722,7 +731,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
     } else {
       // not a valid cursor location...
       if (gbCursorMercID != -1) {
-        SGPRect CenterRect = { 220, 120, 420, 200 };
+        let CenterRect: SGPRect = { 220, 120, 420, 200 };
         DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, &CenterRect);
       }
     }
@@ -738,10 +747,12 @@ function SetCursorMerc(bPlacementID: INT8): void {
 }
 
 function PutDownMercPiece(iPlacement: INT32): void {
-  INT16 sGridNo, sCellX, sCellY;
-  UINT8 ubDirection;
+  let sGridNo: INT16;
+  let sCellX: INT16;
+  let sCellY: INT16;
+  let ubDirection: UINT8;
 
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   pSoldier = gMercPlacement[iPlacement].pSoldier;
   switch (pSoldier->ubStrategicInsertionCode) {
     case INSERTION_CODE_NORTH:

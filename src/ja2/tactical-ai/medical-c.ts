@@ -8,10 +8,10 @@ const NOT_GOING_TO_COLLAPSE = -1;
 
 function FindAutobandageClimbPoint(sDesiredGridNo: INT16, fClimbUp: BOOLEAN): BOOLEAN {
   // checks for existance of location to climb up to building, not occupied by a medic
-  BUILDING *pBuilding;
-  UINT8 ubNumClimbSpots;
-  UINT8 ubLoop;
-  UINT8 ubWhoIsThere;
+  let pBuilding: Pointer<BUILDING>;
+  let ubNumClimbSpots: UINT8;
+  let ubLoop: UINT8;
+  let ubWhoIsThere: UINT8;
 
   pBuilding = FindBuilding(sDesiredGridNo);
   if (!pBuilding) {
@@ -36,8 +36,8 @@ function FindAutobandageClimbPoint(sDesiredGridNo: INT16, fClimbUp: BOOLEAN): BO
 }
 
 function FullPatientCheck(pPatient: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT8 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (CanCharacterAutoBandageTeammate(pPatient)) {
     // can bandage self!
@@ -73,10 +73,11 @@ function FullPatientCheck(pPatient: Pointer<SOLDIERTYPE>): BOOLEAN {
 
 function CanAutoBandage(fDoFullCheck: BOOLEAN): BOOLEAN {
   // returns false if we should stop being in auto-bandage mode
-  UINT8 cnt;
-  UINT8 ubMedics = 0, ubPatients = 0;
-  SOLDIERTYPE *pSoldier;
-  static UINT8 ubIDForFullCheck = NOBODY;
+  let cnt: UINT8;
+  let ubMedics: UINT8 = 0;
+  let ubPatients: UINT8 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  /* static */ let ubIDForFullCheck: UINT8 = NOBODY;
 
   // run though the list of chars on team
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -160,18 +161,27 @@ function CanCharacterBeAutoBandagedByTeammate(pSoldier: Pointer<SOLDIERTYPE>): B
 }
 
 function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOLEAN>): INT8 {
-  UINT8 cnt, cnt2;
-  INT16 bBestPriority = 0, sBestAdjGridNo;
-  INT16 sPatientGridNo, sBestPatientGridNo;
-  INT16 sShortestPath = 1000, sPathCost, sOtherMedicPathCost;
-  SOLDIERTYPE *pPatient;
-  SOLDIERTYPE *pBestPatient = NULL;
-  SOLDIERTYPE *pOtherMedic;
-  INT8 bPatientPriority;
-  UINT8 ubDirection;
-  INT16 sAdjustedGridNo, sAdjacentGridNo, sOtherAdjacentGridNo;
-  INT16 sClimbGridNo, sBestClimbGridNo = NOWHERE, sShortestClimbPath = 1000;
-  BOOLEAN fClimbingNecessary;
+  let cnt: UINT8;
+  let cnt2: UINT8;
+  let bBestPriority: INT16 = 0;
+  let sBestAdjGridNo: INT16;
+  let sPatientGridNo: INT16;
+  let sBestPatientGridNo: INT16;
+  let sShortestPath: INT16 = 1000;
+  let sPathCost: INT16;
+  let sOtherMedicPathCost: INT16;
+  let pPatient: Pointer<SOLDIERTYPE>;
+  let pBestPatient: Pointer<SOLDIERTYPE> = NULL;
+  let pOtherMedic: Pointer<SOLDIERTYPE>;
+  let bPatientPriority: INT8;
+  let ubDirection: UINT8;
+  let sAdjustedGridNo: INT16;
+  let sAdjacentGridNo: INT16;
+  let sOtherAdjacentGridNo: INT16;
+  let sClimbGridNo: INT16;
+  let sBestClimbGridNo: INT16 = NOWHERE;
+  let sShortestClimbPath: INT16 = 1000;
+  let fClimbingNecessary: BOOLEAN;
 
   gubGlobalPathFlags = PATH_THROUGH_PEOPLE;
 
@@ -292,8 +302,8 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
 }
 
 function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bSlot;
-  BOOLEAN fDoClimb;
+  let bSlot: INT8;
+  let fDoClimb: BOOLEAN;
 
   if (pSoldier->bMedical == 0 || pSoldier->ubServicePartner != NOBODY) {
     // don't/can't make decision

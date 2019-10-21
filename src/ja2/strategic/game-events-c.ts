@@ -1,10 +1,10 @@
-STRATEGICEVENT *gpEventList = NULL;
+let gpEventList: Pointer<STRATEGICEVENT> = NULL;
 
-BOOLEAN gfPreventDeletionOfAnyEvent = FALSE;
-BOOLEAN gfEventDeletionPending = FALSE;
+let gfPreventDeletionOfAnyEvent: BOOLEAN = FALSE;
+let gfEventDeletionPending: BOOLEAN = FALSE;
 
-BOOLEAN gfProcessingGameEvents = FALSE;
-UINT32 guiTimeStampOfCurrentlyExecutingEvent = 0;
+let gfProcessingGameEvents: BOOLEAN = FALSE;
+let guiTimeStampOfCurrentlyExecutingEvent: UINT32 = 0;
 
 // Determines if there are any events that will be processed between the current global time,
 // and the beginning of the next global time.
@@ -18,8 +18,10 @@ function GameEventsPending(uiAdjustment: UINT32): BOOLEAN {
 
 // returns TRUE if any events were deleted
 function DeleteEventsWithDeletionPending(): BOOLEAN {
-  STRATEGICEVENT *curr, *prev, *temp;
-  BOOLEAN fEventDeleted = FALSE;
+  let curr: Pointer<STRATEGICEVENT>;
+  let prev: Pointer<STRATEGICEVENT>;
+  let temp: Pointer<STRATEGICEVENT>;
+  let fEventDeleted: BOOLEAN = FALSE;
   // ValidateGameEvents();
   curr = gpEventList;
   prev = NULL;
@@ -55,7 +57,7 @@ function DeleteEventsWithDeletionPending(): BOOLEAN {
 }
 
 function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment: Pointer<UINT32>): void {
-  UINT32 uiDiff;
+  let uiDiff: UINT32;
 
   uiDiff = pEvent->uiTimeStamp - guiGameClock;
   guiGameClock += uiDiff;
@@ -72,8 +74,12 @@ function AdjustClockToEventStamp(pEvent: Pointer<STRATEGICEVENT>, puiAdjustment:
 // If there are any events pending, they are processed, until the time limit is reached, or
 // a major event is processed (one that requires the player's attention).
 function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void {
-  STRATEGICEVENT *curr, *pEvent, *prev, *temp;
-  BOOLEAN fDeleteEvent = FALSE, fDeleteQueuedEvent = FALSE;
+  let curr: Pointer<STRATEGICEVENT>;
+  let pEvent: Pointer<STRATEGICEVENT>;
+  let prev: Pointer<STRATEGICEVENT>;
+  let temp: Pointer<STRATEGICEVENT>;
+  let fDeleteEvent: BOOLEAN = FALSE;
+  let fDeleteQueuedEvent: BOOLEAN = FALSE;
 
   gfTimeInterrupt = FALSE;
   gfProcessingGameEvents = TRUE;
@@ -171,19 +177,21 @@ function AddSameDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp
 }
 
 function AddFutureDayStrategicEvent(ubCallbackID: UINT8, uiMinStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
-  UINT32 uiDay;
+  let uiDay: UINT32;
   uiDay = GetWorldDay();
   return AddStrategicEvent(ubCallbackID, uiMinStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent), uiParam);
 }
 
 function AddFutureDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT32, uiParam: UINT32, uiNumDaysFromPresent: UINT32): BOOLEAN {
-  UINT32 uiDay;
+  let uiDay: UINT32;
   uiDay = GetWorldDay();
   return AddStrategicEventUsingSeconds(ubCallbackID, uiSecondStamp + GetFutureDayInMinutes(uiDay + uiNumDaysFromPresent) * 60, uiParam);
 }
 
 function AddAdvancedStrategicEvent(ubEventType: UINT8, ubCallbackID: UINT8, uiTimeStamp: UINT32, uiParam: UINT32): Pointer<STRATEGICEVENT> {
-  STRATEGICEVENT *pNode, *pNewNode, *pPrevNode;
+  let pNode: Pointer<STRATEGICEVENT>;
+  let pNewNode: Pointer<STRATEGICEVENT>;
+  let pPrevNode: Pointer<STRATEGICEVENT>;
 
   if (gfProcessingGameEvents && uiTimeStamp <= guiTimeStampOfCurrentlyExecutingEvent) {
     // Prevents infinite loops of posting events that are the same time or earlier than the event
@@ -251,7 +259,7 @@ function AddStrategicEventUsingSeconds(ubCallbackID: UINT8, uiSecondStamp: UINT3
 }
 
 function AddRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT32, uiLengthMin: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartMin * 60, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiLengthMin * 60;
@@ -269,7 +277,7 @@ function AddFutureDayRangedStrategicEvent(ubCallbackID: UINT8, uiStartMin: UINT3
 }
 
 function AddRangedStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSeconds: UINT32, uiLengthSeconds: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(RANGED_EVENT, ubCallbackID, uiStartSeconds, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiLengthSeconds;
@@ -301,7 +309,7 @@ function AddEveryDayStrategicEventUsingSeconds(ubCallbackID: UINT8, uiStartSecon
 // NEW:  Period Events
 // Event will get processed automatically once every X minutes.
 function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXMinutes * 60, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiOnceEveryXMinutes * 60;
@@ -311,7 +319,7 @@ function AddPeriodStrategicEvent(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT3
 }
 
 function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOnceEveryXSeconds, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiOnceEveryXSeconds;
@@ -321,7 +329,7 @@ function AddPeriodStrategicEventUsingSeconds(ubCallbackID: UINT8, uiOnceEveryXSe
 }
 
 function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinutes: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent * 60, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiOnceEveryXMinutes * 60;
@@ -331,7 +339,7 @@ function AddPeriodStrategicEventWithOffset(ubCallbackID: UINT8, uiOnceEveryXMinu
 }
 
 function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOnceEveryXSeconds: UINT32, uiOffsetFromCurrent: UINT32, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *pEvent;
+  let pEvent: Pointer<STRATEGICEVENT>;
   pEvent = AddAdvancedStrategicEvent(PERIODIC_EVENT, ubCallbackID, GetWorldDayInSeconds() + uiOffsetFromCurrent, uiParam);
   if (pEvent) {
     pEvent->uiTimeOffset = uiOnceEveryXSeconds;
@@ -341,7 +349,9 @@ function AddPeriodStrategicEventUsingSecondsWithOffset(ubCallbackID: UINT8, uiOn
 }
 
 function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
-  STRATEGICEVENT *curr, *prev, *temp;
+  let curr: Pointer<STRATEGICEVENT>;
+  let prev: Pointer<STRATEGICEVENT>;
+  let temp: Pointer<STRATEGICEVENT>;
   prev = NULL;
   curr = gpEventList;
   while (curr) {
@@ -373,7 +383,7 @@ function DeleteAllStrategicEventsOfType(ubCallbackID: UINT8): void {
 }
 
 function DeleteAllStrategicEvents(): void {
-  STRATEGICEVENT *temp;
+  let temp: Pointer<STRATEGICEVENT>;
   while (gpEventList) {
     temp = gpEventList;
     gpEventList = gpEventList->next;
@@ -388,7 +398,8 @@ function DeleteAllStrategicEvents(): void {
 // for more specific event removal, so let me know (Kris), of any support needs.  Function returns FALSE if
 // no events were found or if the event wasn't deleted due to delete lock,
 function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
-  STRATEGICEVENT *curr, *prev;
+  let curr: Pointer<STRATEGICEVENT>;
+  let prev: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
   prev = NULL;
   while (curr) {
@@ -418,11 +429,11 @@ function DeleteStrategicEvent(ubCallbackID: UINT8, uiParam: UINT32): BOOLEAN {
 
 // part of the game.sav files (not map files)
 function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
-  STRATEGICEVENT sGameEvent;
+  let uiNumBytesWritten: UINT32 = 0;
+  let sGameEvent: STRATEGICEVENT;
 
-  UINT32 uiNumGameEvents = 0;
-  STRATEGICEVENT *pTempEvent = gpEventList;
+  let uiNumGameEvents: UINT32 = 0;
+  let pTempEvent: Pointer<STRATEGICEVENT> = gpEventList;
 
   // Go through the list and determine the number of events
   while (pTempEvent) {
@@ -455,11 +466,11 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumGameEvents;
-  STRATEGICEVENT sGameEvent;
-  UINT32 cnt;
-  UINT32 uiNumBytesRead = 0;
-  STRATEGICEVENT *pTemp = NULL;
+  let uiNumGameEvents: UINT32;
+  let sGameEvent: STRATEGICEVENT;
+  let cnt: UINT32;
+  let uiNumBytesRead: UINT32 = 0;
+  let pTemp: Pointer<STRATEGICEVENT> = NULL;
 
   // erase the old Game Event queue
   DeleteAllStrategicEvents();
@@ -474,7 +485,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
 
   // loop through all the events and save them.
   for (cnt = 0; cnt < uiNumGameEvents; cnt++) {
-    STRATEGICEVENT *pTempEvent = NULL;
+    let pTempEvent: Pointer<STRATEGICEVENT> = NULL;
 
     // allocate memory for the event
     pTempEvent = MemAlloc(sizeof(STRATEGICEVENT));
@@ -522,7 +533,7 @@ function UnlockStrategicEventFromDeletion(pEvent: Pointer<STRATEGICEVENT>): void
 }
 
 function ValidateGameEvents(): void {
-  STRATEGICEVENT *curr;
+  let curr: Pointer<STRATEGICEVENT>;
   curr = gpEventList;
   while (curr) {
     curr = curr->next;

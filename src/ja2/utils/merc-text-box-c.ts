@@ -22,7 +22,7 @@ const MAX_NUMBER_OF_POPUP_BOXES = 10;
 // MercTextBox.h
 
 // filenames for border popup .sti's
-STR8 zMercBorderPopupFilenames[] = {
+let zMercBorderPopupFilenames: STR8[] /* [] */ = {
   "INTERFACE\\TactPopUp.sti",
   "INTERFACE\\TactRedPopUp.sti",
   "INTERFACE\\TactBluePopUp.sti",
@@ -31,7 +31,7 @@ STR8 zMercBorderPopupFilenames[] = {
 };
 
 // filenames for background popup .pcx's
-STR8 zMercBackgroundPopupFilenames[] = {
+let zMercBackgroundPopupFilenames: STR8[] /* [] */ = {
   "INTERFACE\\TactPopupBackground.pcx",
   "INTERFACE\\TactPopupWhiteBackground.pcx",
   "INTERFACE\\TactPopupGreyBackground.pcx",
@@ -41,21 +41,21 @@ STR8 zMercBackgroundPopupFilenames[] = {
 };
 
 // the pop up box structure
-MercPopUpBox gBasicPopUpTextBox;
+let gBasicPopUpTextBox: MercPopUpBox;
 
 // the current pop up box
-MercPopUpBox *gPopUpTextBox = NULL;
+let gPopUpTextBox: Pointer<MercPopUpBox> = NULL;
 
 // the old one
-MercPopUpBox *gOldPopUpTextBox = NULL;
+let gOldPopUpTextBox: Pointer<MercPopUpBox> = NULL;
 
 // the list of boxes
-MercPopUpBox *gpPopUpBoxList[MAX_NUMBER_OF_POPUP_BOXES];
+let gpPopUpBoxList: Pointer<MercPopUpBox>[] /* [MAX_NUMBER_OF_POPUP_BOXES] */;
 
 // the flags
-UINT32 guiFlags = 0;
-UINT32 guiBoxIcons;
-UINT32 guiSkullIcons;
+let guiFlags: UINT32 = 0;
+let guiBoxIcons: UINT32;
+let guiSkullIcons: UINT32;
 
 function SetCurrentPopUpBox(uiId: UINT32): BOOLEAN {
   // given id of the box, find it in the list and set to current
@@ -90,8 +90,8 @@ function ResetOverrideMercPopupBox(): BOOLEAN {
 }
 
 function InitMercPopupBox(): BOOLEAN {
-  INT32 iCounter = 0;
-  VOBJECT_DESC VObjectDesc;
+  let iCounter: INT32 = 0;
+  let VObjectDesc: VOBJECT_DESC;
 
   // init the pop up box list
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
@@ -115,7 +115,7 @@ function InitMercPopupBox(): BOOLEAN {
 }
 
 function ShutDownPopUpBoxes(): BOOLEAN {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < MAX_NUMBER_OF_POPUP_BOXES; iCounter++) {
     // now attempt to remove this box
     RemoveMercPopupBoxFromIndex(iCounter);
@@ -126,8 +126,8 @@ function ShutDownPopUpBoxes(): BOOLEAN {
 
 // Tactical Popup
 function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8): BOOLEAN {
-  VSURFACE_DESC vs_desc;
-  VOBJECT_DESC VObjectDesc;
+  let vs_desc: VSURFACE_DESC;
+  let VObjectDesc: VOBJECT_DESC;
 
   // this function will load the graphics associated with the background and border index values
 
@@ -185,7 +185,7 @@ function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOO
   //	UINT16  *pSrcBuf;
 
   // will render/transfer the image from the buffer in the data structure to the buffer specified by user
-  BOOLEAN fReturnValue = TRUE;
+  let fReturnValue: BOOLEAN = TRUE;
 
   // grab the destination buffer
   //	pDestBuf = ( UINT16* )LockVideoSurface( uiBuffer, &uiDestPitchBYTES );
@@ -220,7 +220,7 @@ function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOO
 }
 
 function AddPopUpBoxToList(pPopUpTextBox: Pointer<MercPopUpBox>): INT32 {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // make sure is a valid box
   if (pPopUpTextBox == NULL) {
@@ -251,24 +251,28 @@ function GetPopUpBoxIndex(iId: INT32): Pointer<MercPopUpBox> {
 }
 
 function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIndex: UINT8, pString: STR16, usWidth: UINT16, usMarginX: UINT16, usMarginTopY: UINT16, usMarginBottomY: UINT16, pActualWidth: Pointer<UINT16>, pActualHeight: Pointer<UINT16>): INT32 {
-  UINT16 usNumberVerticalPixels, usNumberOfLines;
-  UINT16 usTextWidth, usHeight;
-  UINT16 i;
-  HVOBJECT hImageHandle;
-  UINT16 usPosY, usPosX;
-  VSURFACE_DESC vs_desc;
-  UINT16 usStringPixLength;
-  SGPRect DestRect;
-  HVSURFACE hSrcVSurface;
-  UINT32 uiDestPitchBYTES;
-  UINT32 uiSrcPitchBYTES;
-  UINT16 *pDestBuf;
-  UINT8 *pSrcBuf;
-  UINT8 ubFontColor, ubFontShadowColor;
-  UINT16 usColorVal;
-  UINT16 usLoopEnd;
-  INT16 sDispTextXPos;
-  MercPopUpBox *pPopUpTextBox = NULL;
+  let usNumberVerticalPixels: UINT16;
+  let usNumberOfLines: UINT16;
+  let usTextWidth: UINT16;
+  let usHeight: UINT16;
+  let i: UINT16;
+  let hImageHandle: HVOBJECT;
+  let usPosY: UINT16;
+  let usPosX: UINT16;
+  let vs_desc: VSURFACE_DESC;
+  let usStringPixLength: UINT16;
+  let DestRect: SGPRect;
+  let hSrcVSurface: HVSURFACE;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT16>;
+  let pSrcBuf: Pointer<UINT8>;
+  let ubFontColor: UINT8;
+  let ubFontShadowColor: UINT8;
+  let usColorVal: UINT16;
+  let usLoopEnd: UINT16;
+  let sDispTextXPos: INT16;
+  let pPopUpTextBox: Pointer<MercPopUpBox> = NULL;
 
   if (usWidth >= 640)
     return -1;
@@ -476,7 +480,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 
 // Deletes the surface thats contains the border, background and the text.
 function RemoveMercPopupBox(): BOOLEAN {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // make sure the current box does in fact exist
   if (gPopUpTextBox == NULL) {

@@ -72,7 +72,7 @@ const AIM_SORT_ALUMNI_TEXT_Y = 351 + LAPTOP_SCREEN_WEB_DELTA_Y;
 
 const AIM_SORT_FIRST_SORT_CLOUMN_GAP = 22;
 
-UINT16 AimSortCheckBoxLoc[] = {
+let AimSortCheckBoxLoc: UINT16[] /* [] */ = {
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 34),
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 47),
   (AIM_SORT_SORT_BY_X + 9), (AIM_SORT_SORT_BY_Y + 60),
@@ -83,43 +83,43 @@ UINT16 AimSortCheckBoxLoc[] = {
   (AIM_SORT_SORT_BY_X + 172), (AIM_SORT_SORT_BY_Y + 17),
 };
 
-UINT8 gubCurrentSortMode;
-UINT8 gubOldSortMode;
-UINT8 gubCurrentListMode;
-UINT8 gubOldListMode;
+let gubCurrentSortMode: UINT8;
+let gubOldSortMode: UINT8;
+let gubCurrentListMode: UINT8;
+let gubOldListMode: UINT8;
 
 // Mouse stuff
 // Clicking on To Mugshot
-MOUSE_REGION gSelectedToMugShotRegion;
+let gSelectedToMugShotRegion: MOUSE_REGION;
 
 // Clicking on ToStats
-MOUSE_REGION gSelectedToStatsRegion;
+let gSelectedToStatsRegion: MOUSE_REGION;
 
 // Clicking on ToStats
-MOUSE_REGION gSelectedToArchiveRegion;
+let gSelectedToArchiveRegion: MOUSE_REGION;
 
 // Clicking on Price Check Box
-MOUSE_REGION gSelectedPriceBoxRegion;
+let gSelectedPriceBoxRegion: MOUSE_REGION;
 // Clicking on Explosive Check Box
-MOUSE_REGION gSelectedExpBoxRegion;
+let gSelectedExpBoxRegion: MOUSE_REGION;
 // Clicking on Markmanship Check Box
-MOUSE_REGION gSelectedMarkBoxRegion;
+let gSelectedMarkBoxRegion: MOUSE_REGION;
 // Clicking on Medical Check box
-MOUSE_REGION gSelectedMedicalBoxRegion;
+let gSelectedMedicalBoxRegion: MOUSE_REGION;
 // Clicking on Explosive Check Box
-MOUSE_REGION gSelectedExplosiveBoxRegion;
+let gSelectedExplosiveBoxRegion: MOUSE_REGION;
 // Clicking on Mechanical Check Box
-MOUSE_REGION gSelectedMechanicalBoxRegion;
+let gSelectedMechanicalBoxRegion: MOUSE_REGION;
 // Clicking on Ascending Check Box
-MOUSE_REGION gSelectedAscendBoxRegion;
+let gSelectedAscendBoxRegion: MOUSE_REGION;
 // Clicking on Descending Check Box
-MOUSE_REGION gSelectedDescendBoxRegion;
+let gSelectedDescendBoxRegion: MOUSE_REGION;
 
-UINT32 guiSortByBox;
-UINT32 guiToAlumni;
-UINT32 guiToMugShots;
-UINT32 guiToStats;
-UINT32 guiSelectLight;
+let guiSortByBox: UINT32;
+let guiToAlumni: UINT32;
+let guiToMugShots: UINT32;
+let guiToStats: UINT32;
+let guiSelectLight: UINT32;
 
 function GameInitAimSort(): void {
   gubCurrentSortMode = 0;
@@ -129,10 +129,10 @@ function GameInitAimSort(): void {
 }
 
 function EnterAimSort(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT8 ubCurNumber = 0;
-  UINT16 ubWidth;
-  UINT8 i;
+  let VObjectDesc: VOBJECT_DESC;
+  let ubCurNumber: UINT8 = 0;
+  let ubWidth: UINT16;
+  let i: UINT8;
 
   // Everytime into Aim Sort, reset array.
   for (i = 0; i < MAX_NUMBER_MERCS; i++) {
@@ -268,10 +268,10 @@ function HandleAimSort(): void {
 }
 
 function RenderAimSort(): void {
-  HVOBJECT hSortByHandle;
-  HVOBJECT hToAlumniHandle;
-  HVOBJECT hToMugShotHandle;
-  HVOBJECT hToStatsHandle;
+  let hSortByHandle: HVOBJECT;
+  let hToAlumniHandle: HVOBJECT;
+  let hToMugShotHandle: HVOBJECT;
+  let hToStatsHandle: HVOBJECT;
 
   DrawAimDefaults();
   // SortBy
@@ -456,7 +456,7 @@ function SelectDescendBoxRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
-  HVOBJECT hSelectLightHandle;
+  let hSelectLightHandle: HVOBJECT;
 
   ubMode *= 2;
 
@@ -475,8 +475,8 @@ function SortMercArray(): BOOLEAN {
 }
 
 function QsortCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  UINT8 Num1 = *(UINT8 *)pNum1;
-  UINT8 Num2 = *(UINT8 *)pNum2;
+  let Num1: UINT8 = *(UINT8 *)pNum1;
+  let Num2: UINT8 = *(UINT8 *)pNum2;
 
   switch (gubCurrentSortMode) {
     // Price						INT16	uiWeeklySalary

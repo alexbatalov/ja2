@@ -18,7 +18,7 @@ const enum Enum295 {
 const FRENZY_THRESHOLD = 8;
 const MAX_EAT_DIST = 5;
 
-INT8 gbCallPriority[NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] = {
+let gbCallPriority: INT8[][] /* [NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] */ = {
   { 0, 0, 0 }, // CALL_NONE
   { 3, 5, 12 }, // CALL_1_PREY
   { 5, 9, 12 }, // CALL_MULTIPLE_PREY
@@ -26,7 +26,7 @@ INT8 gbCallPriority[NUM_CREATURE_CALLS][NUM_CREATURE_CALLERS] = {
   { 6, 9, 12 }, // CALL_CRIPPLED
 };
 
-INT8 gbHuntCallPriority[NUM_CREATURE_CALLS] = {
+let gbHuntCallPriority: INT8[] /* [NUM_CREATURE_CALLS] */ = {
   4, // CALL_1_PREY
   5, // CALL_MULTIPLE_PREY
   7, // CALL_ATTACKED
@@ -39,12 +39,12 @@ const CALL_1_OPPONENT = CALL_1_PREY;
 const CALL_MULTIPLE_OPPONENT = CALL_MULTIPLE_PREY;
 
 function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubCallerType = 0;
-  UINT8 ubReceiver;
-  INT8 bFullPriority;
-  INT8 bPriority;
-  SOLDIERTYPE *pReceiver;
-  UINT16 usDistToCaller;
+  let ubCallerType: UINT8 = 0;
+  let ubReceiver: UINT8;
+  let bFullPriority: INT8;
+  let bPriority: INT8;
+  let pReceiver: Pointer<SOLDIERTYPE>;
+  let usDistToCaller: UINT16;
   // communicate call to all creatures on map through ultrasonics
 
   gTacticalStatus.Team[pCaller->bTeam].bAwareOfOpposition = TRUE;
@@ -114,9 +114,10 @@ function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
 }
 
 function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iChance, iSneaky = 10;
+  let iChance: INT32;
+  let iSneaky: INT32 = 10;
   // INT8		bInWater;
-  INT8 bInGas;
+  let bInGas: INT8;
 
   // bInWater = MercInWater(pSoldier);
 
@@ -385,12 +386,13 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
 function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // monster AI - heard something
-  UINT8 ubNoiseDir;
-  INT16 sNoiseGridNo;
-  INT32 iNoiseValue;
-  INT32 iChance, iSneaky;
-  BOOLEAN fClimb;
-  BOOLEAN fReachable;
+  let ubNoiseDir: UINT8;
+  let sNoiseGridNo: INT16;
+  let iNoiseValue: INT32;
+  let iChance: INT32;
+  let iSneaky: INT32;
+  let fClimb: BOOLEAN;
+  let fReachable: BOOLEAN;
   //	INT16 sClosestFriend;
 
   if (pSoldier->bMobility == CREATURE_CRAWLER && pSoldier->bActionPoints < pSoldier->bInitialActionPoints) {
@@ -534,15 +536,19 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
 function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8): INT8 {
   // monster AI - hostile mammals somewhere around!
-  INT16 iChance, sClosestOpponent /*,sClosestOpponent,sClosestFriend*/;
-  INT16 sClosestDisturbance;
-  INT16 sDistVisible;
-  UINT8 ubCanMove, ubOpponentDir;
+  let iChance: INT16;
+  let sClosestOpponent: INT16;
+  let sClosestDisturbance: INT16;
+  let sDistVisible: INT16;
+  let ubCanMove: UINT8;
+  let ubOpponentDir: UINT8;
   // INT8 bInWater;
-  INT8 bInGas;
-  INT8 bSeekPts = 0, bHelpPts = 0, bHidePts = 0;
-  INT16 sAdjustedGridNo;
-  BOOLEAN fChangeLevel;
+  let bInGas: INT8;
+  let bSeekPts: INT8 = 0;
+  let bHelpPts: INT8 = 0;
+  let bHidePts: INT8 = 0;
+  let sAdjustedGridNo: INT16;
+  let fChangeLevel: BOOLEAN;
 
   // if we have absolutely no action points, we can't do a thing under RED!
   if (!pSoldier->bActionPoints) {
@@ -680,7 +686,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
       pSoldier->usActionData = FindNearestRottingCorpse(pSoldier);
       // need smell/visibility check?
       if (PythSpacesAway(pSoldier->sGridNo, pSoldier->usActionData) < MAX_EAT_DIST) {
-        INT16 sGridNo;
+        let sGridNo: INT16;
 
         sGridNo = FindAdjacentGridEx(pSoldier, pSoldier->usActionData, &ubOpponentDir, &sAdjustedGridNo, FALSE, FALSE);
 
@@ -753,17 +759,24 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
 
 function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // monster AI - hostile mammals in sense range
-  INT16 sClosestOpponent, sBestCover = NOWHERE;
-  INT16 sClosestDisturbance;
-  UINT8 ubMinAPCost, ubCanMove /*,bInWater*/, bInGas;
-  INT8 bDirection;
-  UINT8 ubBestAttackAction;
-  INT8 bCanAttack;
-  INT8 bSpitIn, bWeaponIn;
-  UINT32 uiChance;
-  ATTACKTYPE BestShot, BestStab, BestAttack, CurrStab;
-  BOOLEAN fRunAway = FALSE;
-  BOOLEAN fChangeLevel;
+  let sClosestOpponent: INT16;
+  let sBestCover: INT16 = NOWHERE;
+  let sClosestDisturbance: INT16;
+  let ubMinAPCost: UINT8;
+  let ubCanMove: UINT8;
+  let bInGas: UINT8;
+  let bDirection: INT8;
+  let ubBestAttackAction: UINT8;
+  let bCanAttack: INT8;
+  let bSpitIn: INT8;
+  let bWeaponIn: INT8;
+  let uiChance: UINT32;
+  let BestShot: ATTACKTYPE;
+  let BestStab: ATTACKTYPE;
+  let BestAttack: ATTACKTYPE;
+  let CurrStab: ATTACKTYPE;
+  let fRunAway: BOOLEAN = FALSE;
+  let fChangeLevel: BOOLEAN;
 
   // if we have absolutely no action points, we can't do a thing under BLACK!
   if (!pSoldier->bActionPoints) {
@@ -1148,7 +1161,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bAction = AI_ACTION_NONE;
+  let bAction: INT8 = AI_ACTION_NONE;
 
   switch (pSoldier->bAlertStatus) {
     case STATUS_GREEN:
@@ -1172,9 +1185,10 @@ function CreatureDecideAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT8 bOldStatus;
-  INT32 iDummy;
-  BOOLEAN fClimbDummy, fReachableDummy;
+  let bOldStatus: INT8;
+  let iDummy: INT32;
+  let fClimbDummy: BOOLEAN;
+  let fReachableDummy: BOOLEAN;
 
   // THE FOUR (4) POSSIBLE ALERT STATUSES ARE:
   // GREEN - No one sensed, no suspicious noise heard, go about doing regular stuff
@@ -1311,9 +1325,9 @@ function CrowDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT16 sCorpseGridNo;
-  UINT8 ubDirection;
-  INT16 sFacingDir;
+  let sCorpseGridNo: INT16;
+  let ubDirection: UINT8;
+  let sFacingDir: INT16;
 
   // Look for a corse!
   sCorpseGridNo = FindNearestRottingCorpse(pSoldier);

@@ -1,9 +1,9 @@
-BOOLEAN gfSetPerceivedDoorState = FALSE;
+let gfSetPerceivedDoorState: BOOLEAN = FALSE;
 
 function HandleDoorChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fNoAnimations: BOOLEAN): void {
-  STRUCTURE *pStructure;
-  DOOR_STATUS *pDoorStatus;
-  BOOLEAN fDoorsAnimated = FALSE;
+  let pStructure: Pointer<STRUCTURE>;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let fDoorsAnimated: BOOLEAN = FALSE;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
@@ -159,7 +159,7 @@ function InteractWithClosedDoor(pSoldier: Pointer<SOLDIERTYPE>, ubHandleCode: UI
 }
 
 function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT8 bDetectLevel;
+  let bDetectLevel: INT8;
 
   if (pDoor && pDoor->fLocked && pDoor->ubTrapID != NO_TRAP && pDoor->bPerceivedTrapped == DOOR_PERCEIVED_UNKNOWN) {
     // check for noticing the trap
@@ -177,11 +177,11 @@ function DoTrapCheckOnStartingMenu(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointe
 }
 
 function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fDoor: BOOLEAN): void {
-  STRUCTURE *pBaseStructure;
-  BOOLEAN fDoMenu = FALSE;
-  DOOR *pDoor;
-  DOOR_STATUS *pDoorStatus;
-  BOOLEAN fTrapsFound = FALSE;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let fDoMenu: BOOLEAN = FALSE;
+  let pDoor: Pointer<DOOR>;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let fTrapsFound: BOOLEAN = FALSE;
 
   pBaseStructure = FindBaseStructure(pStructure);
 
@@ -264,11 +264,11 @@ function InteractWithOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, pStructure: 
 }
 
 function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubRoom;
-  SOLDIERTYPE *pGoon;
+  let ubRoom: UINT8;
+  let pGoon: Pointer<SOLDIERTYPE>;
   // if player is hacking at a door in the brothel and a kingpin guy can see him
   if ((InARoom(pSoldier->sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) || (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 && (pSoldier->sGridNo == 11010 || pSoldier->sGridNo == 11177 || pSoldier->sGridNo == 11176))) {
-    UINT8 ubLoop;
+    let ubLoop: UINT8;
 
     // see if a kingpin goon can see us
     for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
@@ -294,13 +294,14 @@ function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>):
 }
 
 function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>): BOOLEAN {
-  BOOLEAN fHandleDoor = FALSE;
-  INT16 sAPCost = 0, sBPCost = 0;
-  DOOR *pDoor;
-  BOOLEAN fTrapFound = FALSE;
-  BOOLEAN fDoAction = TRUE;
-  BOOLEAN fDoor = FALSE;
-  INT8 bItemIn = FALSE;
+  let fHandleDoor: BOOLEAN = FALSE;
+  let sAPCost: INT16 = 0;
+  let sBPCost: INT16 = 0;
+  let pDoor: Pointer<DOOR>;
+  let fTrapFound: BOOLEAN = FALSE;
+  let fDoAction: BOOLEAN = TRUE;
+  let fDoor: BOOLEAN = FALSE;
+  let bItemIn: INT8 = FALSE;
 
   // Are we a door?
   if (pStructure->fFlags & STRUCTURE_ANYDOOR) {
@@ -701,14 +702,14 @@ function HandleOpenableStruct(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 }
 
 function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pStructure: Pointer<STRUCTURE>, fNoAnimations: BOOLEAN): BOOLEAN {
-  LEVELNODE *pShadowNode;
-  LEVELNODE *pNode;
-  INT32 cnt;
-  BOOLEAN fOpenedGraphic = FALSE;
-  ANITILE_PARAMS AniParams;
-  BOOLEAN fDoAnimation = TRUE;
-  STRUCTURE *pBaseStructure;
-  UINT32 uiSoundID;
+  let pShadowNode: Pointer<LEVELNODE>;
+  let pNode: Pointer<LEVELNODE>;
+  let cnt: INT32;
+  let fOpenedGraphic: BOOLEAN = FALSE;
+  let AniParams: ANITILE_PARAMS;
+  let fDoAnimation: BOOLEAN = TRUE;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let uiSoundID: UINT32;
 
   pBaseStructure = FindBaseStructure(pStructure);
   if (!pBaseStructure) {
@@ -973,11 +974,11 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 }
 
 function SetDoorString(sGridNo: INT16): void {
-  DOOR *pDoor;
-  DOOR_STATUS *pDoorStatus;
-  STRUCTURE *pStructure;
+  let pDoor: Pointer<DOOR>;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pStructure: Pointer<STRUCTURE>;
 
-  BOOLEAN fTrapped = FALSE;
+  let fTrapped: BOOLEAN = FALSE;
 
   // Try and get a door if one exists here
   pDoor = FindDoorInfoAtGridNo(sGridNo);

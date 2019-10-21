@@ -1,13 +1,13 @@
 const MAIN_PAGE_BUTTON_TEXT_WIDTH = 95;
 
 // main page buttons
-INT32 giIMPMainPageButton[6];
-INT32 giIMPMainPageButtonImage[6];
+let giIMPMainPageButton: INT32[] /* [6] */;
+let giIMPMainPageButtonImage: INT32[] /* [6] */;
 
 // mouse regions for not entablable warning
-MOUSE_REGION pIMPMainPageMouseRegions[4];
+let pIMPMainPageMouseRegions: MOUSE_REGION[] /* [4] */;
 
-UINT32 guiCHARACTERPORTRAITFORMAINPAGE;
+let guiCHARACTERPORTRAITFORMAINPAGE: UINT32;
 
 // this is the current state of profiling the player is in.
 /*
@@ -18,7 +18,7 @@ UINT32 guiCHARACTERPORTRAITFORMAINPAGE;
         4 - Voice
         5 - Done
         */
-INT32 iCurrentProfileMode = 0;
+let iCurrentProfileMode: INT32 = 0;
 
 function EnterIMPMainPage(): void {
   // turn off review mode
@@ -79,7 +79,7 @@ function HandleIMPMainPage(): void {
 
 function CreateIMPMainPageButtons(): void {
   // this function will create the buttons needed for th IMP about us page
-  CHAR16 sString[128];
+  let sString: CHAR16[] /* [128] */;
 
   // the back button button
   giIMPMainPageButtonImage[0] = LoadButtonImage("LAPTOP\\button_3.sti", -1, 0, -1, 1, -1);
@@ -362,7 +362,7 @@ function CheckIfFinishedCharacterGeneration(): BOOLEAN {
 }
 
 function ShadeUnSelectableButtons(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   // this function looks at the status ofiCurrentProfileMode and decides which buttons
   // should be shaded ( unselectable )
 
@@ -377,7 +377,7 @@ function ShadeUnSelectableButtons(): void {
 
 function UpDateIMPMainPageButtons(): void {
   // update mainpage button states
-  INT32 iCount = 0;
+  let iCount: INT32 = 0;
 
   // disable all
   for (iCount = 2; iCount < 6; iCount++) {
@@ -486,7 +486,7 @@ function IMPMainPageNotSelectableBtnCallback(pRegion: Pointer<MOUSE_REGION>, iRe
 
 function LoadCharacterPortraitForMainPage(): BOOLEAN {
   // this function will load the character's portrait, to be used on portrait button
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   if (iCurrentProfileMode >= 4) {
     // load it

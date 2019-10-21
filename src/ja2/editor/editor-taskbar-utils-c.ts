@@ -1,18 +1,18 @@
 // editor icon storage vars
-INT32 giEditMercDirectionIcons[2];
-UINT32 guiMercInventoryPanel;
-UINT32 guiOmertaMap;
-UINT32 guiMercInvPanelBuffers[9];
-UINT32 guiMercTempBuffer;
-INT32 giEditMercImage[2];
-UINT32 guiExclamation;
-UINT32 guiKeyImage;
+let giEditMercDirectionIcons: INT32[] /* [2] */;
+let guiMercInventoryPanel: UINT32;
+let guiOmertaMap: UINT32;
+let guiMercInvPanelBuffers: UINT32[] /* [9] */;
+let guiMercTempBuffer: UINT32;
+let giEditMercImage: INT32[] /* [2] */;
+let guiExclamation: UINT32;
+let guiKeyImage: UINT32;
 
 // editor Mouseregion storage vars
-MOUSE_REGION TerrainTileButtonRegion[NUM_TERRAIN_TILE_REGIONS];
-MOUSE_REGION ItemsRegion;
-MOUSE_REGION MercRegion;
-MOUSE_REGION EditorRegion;
+let TerrainTileButtonRegion: MOUSE_REGION[] /* [NUM_TERRAIN_TILE_REGIONS] */;
+let ItemsRegion: MOUSE_REGION;
+let MercRegion: MOUSE_REGION;
+let EditorRegion: MOUSE_REGION;
 
 function EnableEditorRegion(bRegionID: INT8): void {
   switch (bRegionID) {
@@ -58,7 +58,7 @@ function DisableEditorRegion(bRegionID: INT8): void {
 }
 
 function RemoveEditorRegions(): void {
-  INT32 x;
+  let x: INT32;
   MSYS_RemoveRegion(&EditorRegion);
   for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     MSYS_RemoveRegion(&TerrainTileButtonRegion[x]);
@@ -68,7 +68,7 @@ function RemoveEditorRegions(): void {
 }
 
 function InitEditorRegions(): void {
-  INT32 x;
+  let x: INT32;
 
   // By doing this, all of the buttons underneath are blanketed and can't be used anymore.
   // Any new buttons will cover this up as well.  Think of it as a barrier between the editor buttons,
@@ -93,7 +93,7 @@ function InitEditorRegions(): void {
 }
 
 function LoadEditorImages(): void {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // Set up the merc inventory panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -132,10 +132,11 @@ function DeleteEditorImages(): void {
 }
 
 function CreateEditorBuffers(): void {
-  INT32 i;
-  VSURFACE_DESC vs_desc;
-  UINT16 usUselessWidth, usUselessHeight;
-  UINT8 ubBitDepth;
+  let i: INT32;
+  let vs_desc: VSURFACE_DESC;
+  let usUselessWidth: UINT16;
+  let usUselessHeight: UINT16;
+  let ubBitDepth: UINT8;
 
   // create buffer for the transition slot for merc items.  This slot contains the newly
   // selected item graphic in it's inventory size version.  This buffer is then scaled down
@@ -158,7 +159,7 @@ function CreateEditorBuffers(): void {
 }
 
 function DeleteEditorBuffers(): void {
-  INT32 i;
+  let i: INT32;
   DeleteVideoSurfaceFromIndex(guiMercTempBuffer);
   for (i = 0; i < 9; i++) {
     DeleteVideoSurfaceFromIndex(guiMercInvPanelBuffers[i]);
@@ -191,7 +192,9 @@ function ShowEditorToolbar(iNewTaskMode: INT32): void {
 }
 
 function HideEditorToolbar(iOldTaskMode: INT32): void {
-  INT32 i, iStart, iEnd;
+  let i: INT32;
+  let iStart: INT32;
+  let iEnd: INT32;
   switch (iOldTaskMode) {
     case TASK_TERRAIN:
       iStart = FIRST_TERRAIN_BUTTON;
@@ -235,7 +238,7 @@ function CreateEditorTaskbar(): void {
 }
 
 function DeleteEditorTaskbar(): void {
-  INT32 x;
+  let x: INT32;
 
   iOldTaskMode = iCurrentTaskbar;
 
@@ -359,13 +362,13 @@ function DoTaskbar(): void {
 
 // Disables the task bar, but leaves it on screen. Used when a selection window is up.
 function DisableEditorTaskbar(): void {
-  INT32 x;
+  let x: INT32;
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
     DisableButton(iEditorButton[x]);
 }
 
 function EnableEditorTaskbar(): void {
-  INT32 x;
+  let x: INT32;
 
   for (x = 0; x < NUMBER_EDITOR_BUTTONS; x++)
     EnableButton(iEditorButton[x]);
@@ -384,9 +387,10 @@ function EnableEditorTaskbar(): void {
 // string before rendering the string.  This is obviously only useful for drawing text
 // in the editor taskbar.
 function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  wchar_t string[512];
-  UINT16 uiStringLength, uiStringHeight;
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
+  let uiStringLength: UINT16;
+  let uiStringHeight: UINT16;
 
   Assert(pFontString != NULL);
 
@@ -425,9 +429,12 @@ function ClearTaskbarRegion(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom: I
 // are common throughout the editor.  This draws the yellow box with the indentation
 // look.
 function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: UINT16, w: UINT16, h: UINT16): void {
-  UINT16 usFillColorDark, usFillColorLight, usFillColorBack;
-  UINT16 x2, y2;
-  UINT16 usStrWidth;
+  let usFillColorDark: UINT16;
+  let usFillColorLight: UINT16;
+  let usFillColorBack: UINT16;
+  let x2: UINT16;
+  let y2: UINT16;
+  let usStrWidth: UINT16;
 
   x2 = x + w;
   y2 = y + h;
@@ -458,7 +465,7 @@ function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: U
 }
 
 function ClickEditorButton(iEditorButtonID: INT32): void {
-  GUI_BUTTON *butn;
+  let butn: Pointer<GUI_BUTTON>;
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
@@ -469,7 +476,7 @@ function ClickEditorButton(iEditorButtonID: INT32): void {
 }
 
 function UnclickEditorButton(iEditorButtonID: INT32): void {
-  GUI_BUTTON *butn;
+  let butn: Pointer<GUI_BUTTON>;
   if (iEditorButtonID < 0 || iEditorButtonID >= NUMBER_EDITOR_BUTTONS)
     return;
   if (iEditorButton[iEditorButtonID] != -1) {
@@ -496,8 +503,8 @@ function EnableEditorButton(iEditorButtonID: INT32): void {
 }
 
 function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
-  GUI_BUTTON *b;
+  let i: INT32;
+  let b: Pointer<GUI_BUTTON>;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
@@ -507,8 +514,8 @@ function ClickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: IN
 }
 
 function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
-  GUI_BUTTON *b;
+  let i: INT32;
+  let b: Pointer<GUI_BUTTON>;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++) {
     Assert(iEditorButton[i] != -1);
     b = ButtonList[iEditorButton[i]];
@@ -518,33 +525,34 @@ function UnclickEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: 
 }
 
 function HideEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
+  let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     HideButton(iEditorButton[i]);
 }
 
 function ShowEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
+  let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     ShowButton(iEditorButton[i]);
 }
 
 function DisableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
+  let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     DisableButton(iEditorButton[i]);
 }
 
 function EnableEditorButtons(iFirstEditorButtonID: INT32, iLastEditorButtonID: INT32): void {
-  INT32 i;
+  let i: INT32;
   for (i = iFirstEditorButtonID; i <= iLastEditorButtonID; i++)
     EnableButton(iEditorButton[i]);
 }
 
 function RenderMapEntryPointsAndLights(): void {
-  INT16 sGridNo;
-  INT16 sScreenX, sScreenY;
-  INT32 i;
+  let sGridNo: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let i: INT32;
   if (gfSummaryWindowActive)
     return;
   SetFont(FONT10ARIAL);
@@ -635,9 +643,12 @@ function BuildTriggerName(pItem: Pointer<OBJECTTYPE>, szItemName: Pointer<UINT16
 }
 
 function RenderDoorLockInfo(): void {
-  INT16 i, xp, yp;
-  INT16 sScreenX, sScreenY;
-  UINT16 str[50];
+  let i: INT16;
+  let xp: INT16;
+  let yp: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let str: UINT16[] /* [50] */;
   for (i = 0; i < gubNumDoors; i++) {
     GetGridNoScreenPos(DoorTable[i].sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY > 390)
@@ -681,13 +692,19 @@ function RenderDoorLockInfo(): void {
 }
 
 function RenderSelectedItemBlownUp(): void {
-  UINT32 uiVideoObjectIndex;
-  HVOBJECT hVObject;
-  INT16 sScreenX, sScreenY, xp, yp;
-  ITEM_POOL *pItemPool;
-  UINT16 szItemName[SIZE_ITEM_NAME];
-  INT32 i;
-  INT16 sWidth, sHeight, sOffsetX, sOffsetY;
+  let uiVideoObjectIndex: UINT32;
+  let hVObject: HVOBJECT;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let xp: INT16;
+  let yp: INT16;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let szItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+  let i: INT32;
+  let sWidth: INT16;
+  let sHeight: INT16;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
 
   GetGridNoScreenPos(gsItemGridNo, 0, &sScreenX, &sScreenY);
 
@@ -724,7 +741,7 @@ function RenderSelectedItemBlownUp(): void {
   mprintf(xp, yp, szItemName);
 
   if (gpItem->usItem == ACTION_ITEM) {
-    UINT16 *pStr;
+    let pStr: Pointer<UINT16>;
     pStr = GetActionItemName(gpItem);
     xp = sScreenX - (StringPixLength(pStr, FONT10ARIALBOLD) - 40) / 2;
     yp += 10;
@@ -758,9 +775,9 @@ function RenderSelectedItemBlownUp(): void {
 }
 
 function RenderEditorInfo(): void {
-  wchar_t FPSText[50];
-  static INT32 iSpewWarning = 0;
-  INT16 iMapIndex;
+  let FPSText: wchar_t[] /* [50] */;
+  /* static */ let iSpewWarning: INT32 = 0;
+  let iMapIndex: INT16;
 
   SetFont(FONT12POINT1);
   SetFontForeground(FONT_BLACK);
@@ -810,7 +827,7 @@ function RenderEditorInfo(): void {
 }
 
 function ProcessEditorRendering(): void {
-  BOOLEAN fSaveBuffer = FALSE;
+  let fSaveBuffer: BOOLEAN = FALSE;
   if (gfRenderTaskbar) // do a full taskbar render.
   {
     ClearTaskbarRegion(0, 360, 640, 480);

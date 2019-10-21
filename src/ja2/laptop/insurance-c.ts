@@ -48,25 +48,26 @@ const INSURANCE_SMALL_TITLE_Y = 5 + LAPTOP_SCREEN_WEB_UL_Y;
 const INSURANCE_SMALL_TITLE_WIDTH = 434 - 170;
 const INSURANCE_SMALL_TITLE_HEIGHT = 40 - 10;
 
-UINT32 guiInsuranceBackGround;
-UINT32 guiInsuranceTitleImage;
-UINT32 guiInsuranceSmallTitleImage;
-UINT32 guiInsuranceRedBarImage;
-UINT32 guiInsuranceBigRedLineImage;
-UINT32 guiInsuranceBulletImage;
+let guiInsuranceBackGround: UINT32;
+let guiInsuranceTitleImage: UINT32;
+let guiInsuranceSmallTitleImage: UINT32;
+let guiInsuranceRedBarImage: UINT32;
+let guiInsuranceBigRedLineImage: UINT32;
+let guiInsuranceBulletImage: UINT32;
 
 // link to the varios pages
-MOUSE_REGION gSelectedInsuranceLinkRegion[3];
+let gSelectedInsuranceLinkRegion: MOUSE_REGION[] /* [3] */;
 
 // link to the home page by clicking on the small title
-MOUSE_REGION gSelectedInsuranceTitleLinkRegion;
+let gSelectedInsuranceTitleLinkRegion: MOUSE_REGION;
 
 function GameInitInsurance(): void {
 }
 
 function EnterInsurance(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX, i;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16;
+  let i: UINT16;
 
   SetBookMark(INSURANCE_BOOKMARK);
 
@@ -100,7 +101,7 @@ function EnterInsurance(): BOOLEAN {
 }
 
 function ExitInsurance(): void {
-  UINT8 i;
+  let i: UINT8;
 
   RemoveInsuranceDefaults();
 
@@ -115,8 +116,8 @@ function HandleInsurance(): void {
 }
 
 function RenderInsurance(): void {
-  wchar_t sText[800];
-  HVOBJECT hPixHandle;
+  let sText: wchar_t[] /* [800] */;
+  let hPixHandle: HVOBJECT;
 
   DisplayInsuranceDefaults();
 
@@ -180,7 +181,7 @@ function RenderInsurance(): void {
 }
 
 function InitInsuranceDefaults(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -213,9 +214,9 @@ function InitInsuranceDefaults(): BOOLEAN {
 }
 
 function DisplayInsuranceDefaults(): void {
-  HVOBJECT hPixHandle;
-  UINT8 i;
-  UINT16 usPosY;
+  let hPixHandle: HVOBJECT;
+  let i: UINT8;
+  let usPosY: UINT16;
 
   WebPageTileBackground(4, 4, INSURANCE_BACKGROUND_WIDTH, INSURANCE_BACKGROUND_HEIGHT, guiInsuranceBackGround);
 
@@ -269,8 +270,8 @@ function RemoveInsuranceDefaults(): void {
 }
 
 function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
@@ -287,7 +288,7 @@ function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX:
 }
 
 function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
-  UINT32 uiStartLoc = 0;
+  let uiStartLoc: UINT32 = 0;
 
   if (ubNumber < INS_MULTI_LINE_BEGINS) {
     // Get and display the card saying
@@ -303,7 +304,7 @@ function GetInsuranceText(ubNumber: UINT8, pString: STR16): void {
 function SelectInsuranceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE_COMMENTS;

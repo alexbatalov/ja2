@@ -1,13 +1,13 @@
-BOOLEAN gfPotentialTeamChangeDuringDeath = FALSE;
+let gfPotentialTeamChangeDuringDeath: BOOLEAN = FALSE;
 
 const MIN_BLINK_FREQ = 3000;
 const MIN_EXPRESSION_FREQ = 2000;
 
 const SET_PROFILE_GAINS2 = 500, 500, 500, 500, 500, 500, 500, 500, 500;
 
-MERCPROFILESTRUCT gMercProfiles[NUM_PROFILES];
+let gMercProfiles: MERCPROFILESTRUCT[] /* [NUM_PROFILES] */;
 
-INT8 gbSkillTraitBonus[NUM_SKILLTRAITS] = {
+let gbSkillTraitBonus: INT8[] /* [NUM_SKILLTRAITS] */ = {
   0, // NO_SKILLTRAIT
   25, // LOCKPICKING
   15, // HANDTOHAND
@@ -26,7 +26,7 @@ INT8 gbSkillTraitBonus[NUM_SKILLTRAITS] = {
   0, // CAMOUFLAGED
 };
 
-UINT8 gubBasicInventoryPositions[] = {
+let gubBasicInventoryPositions: UINT8[] /* [] */ = {
   HELMETPOS,
   VESTPOS,
   LEGPOS,
@@ -39,7 +39,7 @@ UINT8 gubBasicInventoryPositions[] = {
 
 const NUM_TERRORISTS = 6;
 
-UINT8 gubTerrorists[NUM_TERRORISTS + 1] = {
+let gubTerrorists: UINT8[] /* [NUM_TERRORISTS + 1] */ = {
   DRUGGIST,
   SLAY,
   ANNIE,
@@ -49,11 +49,11 @@ UINT8 gubTerrorists[NUM_TERRORISTS + 1] = {
   0,
 };
 
-UINT8 gubNumTerrorists = 0;
+let gubNumTerrorists: UINT8 = 0;
 
 const NUM_TERRORIST_POSSIBLE_LOCATIONS = 5;
 
-INT16 gsTerroristSector[NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] = {
+let gsTerroristSector: INT16[][][] /* [NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] */ = {
   // Elgin... preplaced
   {
     { 0, 0 },
@@ -104,11 +104,11 @@ INT16 gsTerroristSector[NUM_TERRORISTS][NUM_TERRORIST_POSSIBLE_LOCATIONS][2] = {
   },
 };
 
-INT16 gsRobotGridNo;
+let gsRobotGridNo: INT16;
 
 const NUM_ASSASSINS = 6;
 
-UINT8 gubAssassins[NUM_ASSASSINS] = {
+let gubAssassins: UINT8[] /* [NUM_ASSASSINS] */ = {
   JIM,
   JACK,
   OLAF,
@@ -119,7 +119,7 @@ UINT8 gubAssassins[NUM_ASSASSINS] = {
 
 const NUM_ASSASSIN_POSSIBLE_TOWNS = 5;
 
-INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
+let gbAssassinTown: INT8[][] /* [NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] */ = {
   // Jim
   { CAMBRIA, DRASSEN, ALMA, BALIME, GRUMM },
   // Jack
@@ -136,11 +136,16 @@ INT8 gbAssassinTown[NUM_ASSASSINS][NUM_ASSASSIN_POSSIBLE_TOWNS] = {
 
 function LoadMercProfiles(): BOOLEAN {
   //	FILE *fptr;
-  HWFILE fptr;
-  char *pFileName = "BINARYDATA\\Prof.dat";
-  UINT32 uiLoop, uiLoop2, uiLoop3;
-  UINT16 usItem, usNewGun, usAmmo, usNewAmmo;
-  UINT32 uiNumBytesRead;
+  let fptr: HWFILE;
+  let pFileName: Pointer<char> = "BINARYDATA\\Prof.dat";
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let uiLoop3: UINT32;
+  let usItem: UINT16;
+  let usNewGun: UINT16;
+  let usAmmo: UINT16;
+  let usNewAmmo: UINT16;
+  let uiNumBytesRead: UINT32;
 
   fptr = FileOpen(pFileName, FILE_ACCESS_READ, FALSE);
   if (!fptr) {
@@ -273,12 +278,15 @@ function LoadMercProfiles(): BOOLEAN {
 const MAX_ADDITIONAL_TERRORISTS = 4;
 
 function DecideActiveTerrorists(): void {
-  UINT8 ubLoop, ubLoop2;
-  UINT8 ubTerrorist;
-  UINT8 ubNumAdditionalTerrorists, ubNumTerroristsAdded = 0;
-  UINT32 uiChance, uiLocationChoice;
-  BOOLEAN fFoundSpot;
-  INT16 sTerroristPlacement[MAX_ADDITIONAL_TERRORISTS][2] = {
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let ubTerrorist: UINT8;
+  let ubNumAdditionalTerrorists: UINT8;
+  let ubNumTerroristsAdded: UINT8 = 0;
+  let uiChance: UINT32;
+  let uiLocationChoice: UINT32;
+  let fFoundSpot: BOOLEAN;
+  let sTerroristPlacement: INT16[][] /* [MAX_ADDITIONAL_TERRORISTS][2] */ = {
     { 0, 0 },
     { 0, 0 },
     { 0, 0 },
@@ -360,10 +368,12 @@ function DecideActiveTerrorists(): void {
 }
 
 function MakeRemainingTerroristsTougher(): void {
-  UINT8 ubRemainingTerrorists = 0, ubLoop;
-  UINT16 usNewItem, usOldItem;
-  OBJECTTYPE Object;
-  UINT8 ubRemainingDifficulty;
+  let ubRemainingTerrorists: UINT8 = 0;
+  let ubLoop: UINT8;
+  let usNewItem: UINT16;
+  let usOldItem: UINT16;
+  let Object: OBJECTTYPE;
+  let ubRemainingDifficulty: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_TERRORISTS; ubLoop++) {
     if (gMercProfiles[gubTerrorists[ubLoop]].bMercStatus != MERC_IS_DEAD && gMercProfiles[gubTerrorists[ubLoop]].sSectorX != 0 && gMercProfiles[gubTerrorists[ubLoop]].sSectorY != 0) {
@@ -437,7 +447,7 @@ function MakeRemainingTerroristsTougher(): void {
 }
 
 function DecideOnAssassin(): void {
-  UINT8 ubAssassinPossibility[NUM_ASSASSINS] = {
+  let ubAssassinPossibility: UINT8[] /* [NUM_ASSASSINS] */ = {
     NO_PROFILE,
     NO_PROFILE,
     NO_PROFILE,
@@ -445,9 +455,10 @@ function DecideOnAssassin(): void {
     NO_PROFILE,
     NO_PROFILE,
   };
-  UINT8 ubAssassinsPossible = 0;
-  UINT8 ubLoop, ubLoop2;
-  UINT8 ubTown;
+  let ubAssassinsPossible: UINT8 = 0;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let ubTown: UINT8;
 
   ubTown = GetTownIdForSector(gWorldSectorX, gWorldSectorY);
 
@@ -473,10 +484,12 @@ function DecideOnAssassin(): void {
 }
 
 function MakeRemainingAssassinsTougher(): void {
-  UINT8 ubRemainingAssassins = 0, ubLoop;
-  UINT16 usNewItem, usOldItem;
-  OBJECTTYPE Object;
-  UINT8 ubRemainingDifficulty;
+  let ubRemainingAssassins: UINT8 = 0;
+  let ubLoop: UINT8;
+  let usNewItem: UINT16;
+  let usOldItem: UINT16;
+  let Object: OBJECTTYPE;
+  let ubRemainingDifficulty: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_ASSASSINS; ubLoop++) {
     if (gMercProfiles[gubAssassins[ubLoop]].bMercStatus != MERC_IS_DEAD) {
@@ -537,9 +550,9 @@ function MakeRemainingAssassinsTougher(): void {
 }
 
 function StartSomeMercsOnAssignment(): void {
-  UINT32 uiCnt;
-  MERCPROFILESTRUCT *pProfile;
-  UINT32 uiChance;
+  let uiCnt: UINT32;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let uiChance: UINT32;
 
   // some randomly picked A.I.M. mercs will start off "on assignment" at the beginning of each new game
   for (uiCnt = 0; uiCnt < AIM_AND_MERC_MERCS; uiCnt++) {
@@ -570,8 +583,11 @@ function SetProfileFaceData(ubCharNum: UINT8, ubFaceIndex: UINT8, usEyesX: UINT1
 }
 
 function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
-  UINT32 uiStats, uiSkills, uiActionPoints, uiSpecialSkills;
-  UINT16 usCompetence;
+  let uiStats: UINT32;
+  let uiSkills: UINT32;
+  let uiActionPoints: UINT32;
+  let uiSpecialSkills: UINT32;
+  let usCompetence: UINT16;
 
   // count life twice 'cause it's also hit points
   // mental skills are halved 'cause they're actually not that important within the game
@@ -593,7 +609,7 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
 }
 
 function CalcMedicalDeposit(pProfile: Pointer<MERCPROFILESTRUCT>): INT16 {
-  UINT16 usDeposit;
+  let usDeposit: UINT16;
 
   // this rounds off to the nearest hundred
   usDeposit = (((5 * CalcCompetence(pProfile)) + 50) / 100) * 100;
@@ -602,8 +618,9 @@ function CalcMedicalDeposit(pProfile: Pointer<MERCPROFILESTRUCT>): INT16 {
 }
 
 function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): Pointer<SOLDIERTYPE> {
-  UINT8 ubLoop, ubLoopLimit;
-  SOLDIERTYPE *pSoldier;
+  let ubLoop: UINT8;
+  let ubLoopLimit: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (fPlayerMercsOnly) {
     ubLoopLimit = gTacticalStatus.Team[0].bLastID;
@@ -620,17 +637,17 @@ function FindSoldierByProfileID(ubProfileID: UINT8, fPlayerMercsOnly: BOOLEAN): 
 }
 
 function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Pointer<SOLDIERTYPE> {
-  UINT8 ubID;
-  SOLDIERTYPE *pNewSoldier = NULL;
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  UINT32 cnt;
-  INT16 sOldGridNo;
+  let ubID: UINT8;
+  let pNewSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let cnt: UINT32;
+  let sOldGridNo: INT16;
 
-  UINT8 ubOldID;
-  UINT32 uiOldUniqueId;
+  let ubOldID: UINT8;
+  let uiOldUniqueId: UINT32;
 
-  UINT32 uiSlot;
-  SOLDIERTYPE *pGroupMember;
+  let uiSlot: UINT32;
+  let pGroupMember: Pointer<SOLDIERTYPE>;
 
   if (gfInTalkPanel) {
     DeleteTalkingMenu();
@@ -746,7 +763,8 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
 }
 
 function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier, *pNewSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
   pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
@@ -784,7 +802,7 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
 
   if (pNewSoldier->inv[HANDPOS].usItem == NOTHING) {
     // empty handed - swap in first available weapon
-    INT8 bSlot;
+    let bSlot: INT8;
 
     bSlot = FindObjClass(pNewSoldier, IC_WEAPON);
     if (bSlot != NO_SLOT) {
@@ -820,7 +838,8 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
 }
 
 function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier, *pNewSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
   pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
@@ -864,7 +883,8 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
 }
 
 function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier, *pNewSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pNewSoldier: Pointer<SOLDIERTYPE>;
 
   // Get soldier pointer
   pSoldier = FindSoldierByProfileID(ubCharNum, FALSE);
@@ -918,8 +938,8 @@ function UnRecruitEPC(ubCharNum: UINT8): BOOLEAN {
 }
 
 function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
-  MERCPROFILESTRUCT *pProfile;
-  INT8 bLoop;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let bLoop: INT8;
 
   pProfile = &(gMercProfiles[ubCharNum]);
 
@@ -932,8 +952,8 @@ function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
 }
 
 function WhichHated(ubCharNum: UINT8, ubHated: UINT8): INT8 {
-  MERCPROFILESTRUCT *pProfile;
-  INT8 bLoop;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let bLoop: INT8;
 
   pProfile = &(gMercProfiles[ubCharNum]);
 
@@ -962,10 +982,10 @@ function IsProfileAHeadMiner(ubProfile: UINT8): BOOLEAN {
 }
 
 function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
-  UINT32 uiCount;
-  SOLDIERTYPE *pSoldier = NULL;
-  MERCPROFILESTRUCT *pProfile;
-  BOOLEAN fDoCopy = FALSE;
+  let uiCount: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let fDoCopy: BOOLEAN = FALSE;
 
   for (uiCount = 0; uiCount < guiNumMercSlots; uiCount++) {
     pSoldier = MercSlots[uiCount];
@@ -1010,8 +1030,8 @@ function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
 }
 
 function DoesMercHaveABuddyOnTheTeam(ubMercID: UINT8): BOOLEAN {
-  UINT8 ubCnt;
-  INT8 bBuddyID;
+  let ubCnt: UINT8;
+  let bBuddyID: INT8;
 
   // loop through the list of people the merc is buddies with
   for (ubCnt = 0; ubCnt < 3; ubCnt++) {
@@ -1042,9 +1062,9 @@ function MercIsHot(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE> {
-  UINT8 ubSrcProfile;
-  UINT8 ubDestProfile;
-  MERCPROFILESTRUCT *pNewProfile;
+  let ubSrcProfile: UINT8;
+  let ubDestProfile: UINT8;
+  let pNewProfile: Pointer<MERCPROFILESTRUCT>;
 
   ubSrcProfile = pSoldier->ubProfile;
   if (ubSrcProfile == LARRY_NORMAL) {
@@ -1153,7 +1173,7 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
 }
 
 function DoesNPCOwnBuilding(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
-  UINT8 ubRoomInfo;
+  let ubRoomInfo: UINT8;
 
   // Get room info
   ubRoomInfo = gubWorldRoomInfo[sGridNo];

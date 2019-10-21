@@ -200,42 +200,42 @@ const enum Enum219 {
   NUM_TEAM_BUTTON_IMAGES,
 }
 
-INT32 iSMPanelImages[NUM_SM_BUTTON_IMAGES];
-INT32 iBurstButtonImages[NUM_WEAPON_MODES];
-INT32 iTEAMPanelImages[NUM_TEAM_BUTTON_IMAGES];
+let iSMPanelImages: INT32[] /* [NUM_SM_BUTTON_IMAGES] */;
+let iBurstButtonImages: INT32[] /* [NUM_WEAPON_MODES] */;
+let iTEAMPanelImages: INT32[] /* [NUM_TEAM_BUTTON_IMAGES] */;
 
-INT32 giSMStealthImages = -1;
-INT32 giSMStealthButton = -1;
+let giSMStealthImages: INT32 = -1;
+let giSMStealthButton: INT32 = -1;
 
-BOOLEAN gfSwitchPanel = FALSE;
-UINT8 gbNewPanel = SM_PANEL;
-UINT8 gubNewPanelParam = 0;
+let gfSwitchPanel: BOOLEAN = FALSE;
+let gbNewPanel: UINT8 = SM_PANEL;
+let gubNewPanelParam: UINT8 = 0;
 
-BOOLEAN gfUIStanceDifferent = FALSE;
-BOOLEAN gfAllDisabled = FALSE;
+let gfUIStanceDifferent: BOOLEAN = FALSE;
+let gfAllDisabled: BOOLEAN = FALSE;
 
-BOOLEAN gfSMDisableForItems = FALSE;
+let gfSMDisableForItems: BOOLEAN = FALSE;
 
-BOOLEAN gfDisableTacticalPanelButtons = FALSE;
+let gfDisableTacticalPanelButtons: BOOLEAN = FALSE;
 
-BOOLEAN gfAddingMoneyToMercFromPlayersAccount = FALSE;
+let gfAddingMoneyToMercFromPlayersAccount: BOOLEAN = FALSE;
 
-BOOLEAN gfCheckForMouseOverItem = FALSE;
-UINT32 guiMouseOverItemTime = 0;
-INT8 gbCheckForMouseOverItemPos = 0;
-UINT8 gubSelectSMPanelToMerc = NOBODY;
-BOOLEAN gfReEvaluateDisabledINVPanelButtons = FALSE;
+let gfCheckForMouseOverItem: BOOLEAN = FALSE;
+let guiMouseOverItemTime: UINT32 = 0;
+let gbCheckForMouseOverItemPos: INT8 = 0;
+let gubSelectSMPanelToMerc: UINT8 = NOBODY;
+let gfReEvaluateDisabledINVPanelButtons: BOOLEAN = FALSE;
 
-UINT32 guiBrownBackgroundForTeamPanel;
-UINT32 guiGoldBackgroundForTeamPanel;
+let guiBrownBackgroundForTeamPanel: UINT32;
+let guiGoldBackgroundForTeamPanel: UINT32;
 
-UINT8 gubHandPos;
-UINT16 gusOldItemIndex;
-UINT16 gusNewItemIndex;
-BOOLEAN gfDeductPoints;
+let gubHandPos: UINT8;
+let gusOldItemIndex: UINT16;
+let gusNewItemIndex: UINT16;
+let gfDeductPoints: BOOLEAN;
 
 // ARRAY FOR INV PANEL INTERFACE ITEM POSITIONS
-INV_REGION_DESC gSMInvPocketXY[] = {
+let gSMInvPocketXY: INV_REGION_DESC[] /* [] */ = {
   { 344, 347 }, // HELMETPOS
   { 344, 376 }, // VESTPOS
   { 344, 436 }, // LEGPOS,
@@ -257,11 +257,11 @@ INV_REGION_DESC gSMInvPocketXY[] = {
   { 432, 418 }, // SMALLPOCK8
 };
 
-INV_REGION_DESC gSMCamoXY = {
+let gSMCamoXY: INV_REGION_DESC = {
   SM_BODYINV_X, SM_BODYINV_Y // X, Y Location of cammo region
 };
 
-INT16 sTEAMAPPanelXY[] = {
+let sTEAMAPPanelXY: INT16[] /* [] */ = {
   69, (6 + INTERFACE_START_Y),
   151, (6 + INTERFACE_START_Y),
   234, (6 + INTERFACE_START_Y),
@@ -270,7 +270,7 @@ INT16 sTEAMAPPanelXY[] = {
   484, (6 + INTERFACE_START_Y),
 };
 
-INT16 sTEAMFacesXY[] = {
+let sTEAMFacesXY: INT16[] /* [] */ = {
   13, (366),
   97, (366),
   180, (366),
@@ -279,7 +279,7 @@ INT16 sTEAMFacesXY[] = {
   429, (366),
 };
 
-INT16 sTEAMNamesXY[] = {
+let sTEAMNamesXY: INT16[] /* [] */ = {
   7, (415),
   90, (415),
   173, (415),
@@ -288,7 +288,7 @@ INT16 sTEAMNamesXY[] = {
   422, (415),
 };
 
-INT16 sTEAMFaceHighlXY[] = {
+let sTEAMFaceHighlXY: INT16[] /* [] */ = {
   4, (2 + INTERFACE_START_Y),
   87, (2 + INTERFACE_START_Y),
   170, (2 + INTERFACE_START_Y),
@@ -297,7 +297,7 @@ INT16 sTEAMFaceHighlXY[] = {
   419, (2 + INTERFACE_START_Y),
 };
 
-INT16 sTEAMLifeXY[] = {
+let sTEAMLifeXY: INT16[] /* [] */ = {
   69, (365 + TM_LIFEBAR_HEIGHT),
   152, (365 + TM_LIFEBAR_HEIGHT),
   235, (365 + TM_LIFEBAR_HEIGHT),
@@ -306,7 +306,7 @@ INT16 sTEAMLifeXY[] = {
   484, (365 + TM_LIFEBAR_HEIGHT),
 };
 
-INT16 sTEAMBreathXY[] = {
+let sTEAMBreathXY: INT16[] /* [] */ = {
   75, (365 + TM_LIFEBAR_HEIGHT),
   158, (365 + TM_LIFEBAR_HEIGHT),
   241, (365 + TM_LIFEBAR_HEIGHT),
@@ -315,7 +315,7 @@ INT16 sTEAMBreathXY[] = {
   490, (365 + TM_LIFEBAR_HEIGHT),
 };
 
-INT16 sTEAMMoraleXY[] = {
+let sTEAMMoraleXY: INT16[] /* [] */ = {
   81, (365 + TM_LIFEBAR_HEIGHT),
   164, (365 + TM_LIFEBAR_HEIGHT),
   247, (365 + TM_LIFEBAR_HEIGHT),
@@ -324,7 +324,7 @@ INT16 sTEAMMoraleXY[] = {
   496, (365 + TM_LIFEBAR_HEIGHT),
 };
 
-INT16 sTEAMApXY[] = {
+let sTEAMApXY: INT16[] /* [] */ = {
   70, (413),
   153, (413),
   235, (413),
@@ -333,7 +333,7 @@ INT16 sTEAMApXY[] = {
   485, (413),
 };
 
-INT16 sTEAMBarsXY[] = {
+let sTEAMBarsXY: INT16[] /* [] */ = {
   61, (363),
   145, (363),
   228, (363),
@@ -342,7 +342,7 @@ INT16 sTEAMBarsXY[] = {
   477, (362),
 };
 
-INT16 sTEAMHandInvXY[] = {
+let sTEAMHandInvXY: INT16[] /* [] */ = {
   TM_INV_HAND1STARTX + (0 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (1 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
   TM_INV_HAND1STARTX + (2 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
@@ -351,40 +351,40 @@ INT16 sTEAMHandInvXY[] = {
   TM_INV_HAND1STARTX + (5 * TM_INV_HAND_SEP), TM_INV_HAND1STARTY,
 };
 
-INT32 iSMPanelButtons[NUM_SM_BUTTONS];
-INT32 iTEAMPanelButtons[NUM_TEAM_BUTTONS];
+let iSMPanelButtons: INT32[] /* [NUM_SM_BUTTONS] */;
+let iTEAMPanelButtons: INT32[] /* [NUM_TEAM_BUTTONS] */;
 
 // Video Surface for Single Merc Panel
-UINT32 guiSMPanel;
-UINT32 guiSMObjects;
-UINT32 guiSMObjects2;
-UINT32 guiSecItemHiddenVO;
+let guiSMPanel: UINT32;
+let guiSMObjects: UINT32;
+let guiSMObjects2: UINT32;
+let guiSecItemHiddenVO: UINT32;
 
-UINT32 guiTEAMPanel;
-UINT32 guiTEAMObjects;
+let guiTEAMPanel: UINT32;
+let guiTEAMObjects: UINT32;
 
 // Globals for various mouse regions
-MOUSE_REGION gSM_SELMERCPanelRegion;
-MOUSE_REGION gSM_SELMERCBarsRegion;
-MOUSE_REGION gSM_SELMERCMoneyRegion;
-MOUSE_REGION gSM_SELMERCEnemyIndicatorRegion;
-MOUSE_REGION gTEAM_PanelRegion;
-MOUSE_REGION gTEAM_FaceRegions[6];
-MOUSE_REGION gTEAM_BarsRegions[6];
-MOUSE_REGION gTEAM_LeftBarsRegions[6];
-MOUSE_REGION gTEAM_FirstHandInv[6];
-MOUSE_REGION gTEAM_SecondHandInv[6];
-MOUSE_REGION gTEAM_EnemyIndicator[6];
+let gSM_SELMERCPanelRegion: MOUSE_REGION;
+let gSM_SELMERCBarsRegion: MOUSE_REGION;
+let gSM_SELMERCMoneyRegion: MOUSE_REGION;
+let gSM_SELMERCEnemyIndicatorRegion: MOUSE_REGION;
+let gTEAM_PanelRegion: MOUSE_REGION;
+let gTEAM_FaceRegions: MOUSE_REGION[] /* [6] */;
+let gTEAM_BarsRegions: MOUSE_REGION[] /* [6] */;
+let gTEAM_LeftBarsRegions: MOUSE_REGION[] /* [6] */;
+let gTEAM_FirstHandInv: MOUSE_REGION[] /* [6] */;
+let gTEAM_SecondHandInv: MOUSE_REGION[] /* [6] */;
+let gTEAM_EnemyIndicator: MOUSE_REGION[] /* [6] */;
 
-BOOLEAN gfTEAM_HandInvDispText[6][NUM_INV_SLOTS];
-BOOLEAN gfSM_HandInvDispText[NUM_INV_SLOTS];
+let gfTEAM_HandInvDispText: BOOLEAN[][] /* [6][NUM_INV_SLOTS] */;
+let gfSM_HandInvDispText: BOOLEAN[] /* [NUM_INV_SLOTS] */;
 
 // Globals - for one - the current merc here
-UINT16 gusSMCurrentMerc = 0;
-SOLDIERTYPE *gpSMCurrentMerc = NULL;
-INT8 gbSMCurStanceObj;
+let gusSMCurrentMerc: UINT16 = 0;
+let gpSMCurrentMerc: Pointer<SOLDIERTYPE> = NULL;
+let gbSMCurStanceObj: INT8;
 
-INT8 gbStanceButPos[2][3][3] = {
+let gbStanceButPos: INT8[][][] /* [2][3][3] */ = {
   // NON-STEALTH
   {
     {
@@ -406,7 +406,7 @@ INT8 gbStanceButPos[2][3][3] = {
 
 // Wraps up check for AP-s get from a different soldier for in a vehicle...
 function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  SOLDIERTYPE *pVehicle;
+  let pVehicle: Pointer<SOLDIERTYPE>;
 
   if (pSoldier->uiStatusFlags & SOLDIER_DRIVER) {
     pVehicle = GetSoldierStructureForVehicle(pSoldier->iVehicleId);
@@ -422,13 +422,13 @@ function GetUIApsToDisplay(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CheckForDisabledForGiveItem(): void {
-  INT16 sDist;
-  INT16 sDistVisible;
-  INT16 sDestGridNo;
-  INT8 bDestLevel;
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubSrcSoldier;
+  let sDist: INT16;
+  let sDistVisible: INT16;
+  let sDestGridNo: INT16;
+  let bDestLevel: INT8;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubSrcSoldier: UINT8;
 
   Assert(gpSMCurrentMerc != NULL);
 
@@ -555,7 +555,7 @@ function SetSMPanelCurrentMerc(ubNewID: UINT8): void {
 }
 
 function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (gsCurInterfacePanel == SM_PANEL) {
     if (gpSMCurrentMerc != NULL) {
@@ -576,10 +576,10 @@ function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN)
 }
 
 function UpdateSMPanel(): void {
-  BOOLEAN fNearHeigherLevel;
-  BOOLEAN fNearLowerLevel;
-  INT8 bDirection;
-  UINT8 ubStanceState;
+  let fNearHeigherLevel: BOOLEAN;
+  let fNearLowerLevel: BOOLEAN;
+  let bDirection: INT8;
+  let ubStanceState: UINT8;
 
   if (gpSMCurrentMerc->sGridNo == NOWHERE) {
     return;
@@ -803,7 +803,7 @@ function UpdateSMPanel(): void {
 }
 
 function ReevaluateItemHatches(pSoldier: Pointer<SOLDIERTYPE>, fAllValid: BOOLEAN): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // if there's an item in the cursor and we're not supposed to just make them all valid
   if ((gpItemPointer != NULL) && !fAllValid) {
@@ -947,7 +947,7 @@ function GetSMPanelCurrentMerc(): UINT16 {
 }
 
 function InitializeSMPanel(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1034,7 +1034,7 @@ function InitializeSMPanel(): BOOLEAN {
 }
 
 function CreateSMPanelButtons(): BOOLEAN {
-  UINT8 ubString[48];
+  let ubString: UINT8[] /* [48] */;
 
   giSMStealthImages = -1;
   giSMStealthButton = -1;
@@ -1190,7 +1190,7 @@ function CreateSMPanelButtons(): BOOLEAN {
 }
 
 function RemoveSMPanelButtons(): void {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < NUM_SM_BUTTONS; cnt++) {
     if (iSMPanelButtons[cnt] != -1) {
@@ -1256,11 +1256,14 @@ function ShutdownSMPanel(): BOOLEAN {
 }
 
 function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
-  INT16 sFontX, sFontY;
-  UINT16 usX, usY;
-  wchar_t sString[9];
-  UINT32 cnt;
-  static INT16 pStr[200], pMoraleStr[20];
+  let sFontX: INT16;
+  let sFontY: INT16;
+  let usX: UINT16;
+  let usY: UINT16;
+  let sString: wchar_t[] /* [9] */;
+  let cnt: UINT32;
+  /* static */ let pStr: INT16[] /* [200] */;
+  /* static */ let pMoraleStr: INT16[] /* [20] */;
 
   if (gubSelectSMPanelToMerc != NOBODY) {
     // Give him the panel!
@@ -1538,9 +1541,9 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
   HandleRenderInvSlots(gpSMCurrentMerc, *pfDirty);
 
   if (gfSMDisableForItems && (*pfDirty) != DIRTYLEVEL0) {
-    UINT8 *pDestBuf;
-    UINT32 uiDestPitchBYTES;
-    SGPRect ClipRect;
+    let pDestBuf: Pointer<UINT8>;
+    let uiDestPitchBYTES: UINT32;
+    let ClipRect: SGPRect;
 
     ClipRect.iLeft = 87;
     ClipRect.iRight = 536;
@@ -1571,7 +1574,7 @@ function UpdateStatColor(uiTimer: UINT32, fIncrease: BOOLEAN): void {
 }
 
 function SMInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiHandPos;
+  let uiHandPos: UINT32;
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1628,8 +1631,9 @@ function SMInvMoveCammoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 
 function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // UINT16 usNewItemIndex;
-  UINT8 ubSrcID, ubDestID;
-  BOOLEAN fGoodAPs;
+  let ubSrcID: UINT8;
+  let ubDestID: UINT8;
+  let fGoodAPs: BOOLEAN;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -1723,7 +1727,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32, usReplaceItem: UINT16): BOOLEAN {
-  BOOLEAN fRefuse = FALSE;
+  let fRefuse: BOOLEAN = FALSE;
 
   // OK are we nails?
   if (pSoldier->ubProfile == 34) {
@@ -1805,13 +1809,14 @@ function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewIt
 }
 
 function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiHandPos;
+  let uiHandPos: UINT32;
   // Copyies of values
-  UINT16 usOldItemIndex, usNewItemIndex;
-  UINT16 usItemPrevInItemPointer;
-  BOOLEAN fNewItem = FALSE;
-  static BOOLEAN fRightDown = FALSE;
-  static BOOLEAN fLeftDown = FALSE;
+  let usOldItemIndex: UINT16;
+  let usNewItemIndex: UINT16;
+  let usItemPrevInItemPointer: UINT16;
+  let fNewItem: BOOLEAN = FALSE;
+  /* static */ let fRightDown: BOOLEAN = FALSE;
+  /* static */ let fLeftDown: BOOLEAN = FALSE;
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -1881,9 +1886,10 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       // HandleCompatibleAmmoUI( gpSMCurrentMerc, (INT8)uiHandPos, FALSE );
     } else // item in cursor
     {
-      UINT8 ubSrcID, ubDestID;
-      BOOLEAN fOKToGo = FALSE;
-      BOOLEAN fDeductPoints = FALSE;
+      let ubSrcID: UINT8;
+      let ubDestID: UINT8;
+      let fOKToGo: BOOLEAN = FALSE;
+      let fDeductPoints: BOOLEAN = FALSE;
 
       // ATE: OK, get source, dest guy if different... check for and then charge appropriate APs
       ubSrcID = gpSMCurrentMerc->ubID;
@@ -2085,8 +2091,8 @@ function MergeMessageBoxCallBack(ubExitValue: UINT8): void {
 }
 
 function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN): void {
-  FACETYPE *pFace;
-  INT16 sGridNo;
+  let pFace: Pointer<FACETYPE>;
+  let sGridNo: INT16;
 
   if (pSoldier == NULL) {
     return;
@@ -2138,7 +2144,7 @@ function SelectedMercButtonMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function SelectedMercButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  SOLDIERTYPE *pVehicle;
+  let pVehicle: Pointer<SOLDIERTYPE>;
 
   if (gpSMCurrentMerc == NULL) {
     return;
@@ -2214,7 +2220,7 @@ function SelectedMercEnemyIndicatorCallback(pRegion: Pointer<MOUSE_REGION>, iRea
 }
 
 function BtnStanceUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT8 bNewStance;
+  let bNewStance: INT8;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2260,9 +2266,9 @@ function BtnUpdownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  BOOLEAN fNearHeigherLevel;
-  BOOLEAN fNearLowerLevel;
-  INT8 bDirection;
+  let fNearHeigherLevel: BOOLEAN;
+  let fNearLowerLevel: BOOLEAN;
+  let bDirection: INT8;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2290,7 +2296,7 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnStanceDownCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT8 bNewStance;
+  let bNewStance: INT8;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2366,7 +2372,7 @@ function BtnMuteCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT16 sID;
+  let sID: INT16;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2402,7 +2408,7 @@ function BtnPrevMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnNextMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT16 sID;
+  let sID: INT16;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -2532,10 +2538,11 @@ function BtnPositionShowCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 
 // TEAM PANEL!!!!!!!!!!!!!!
 function InitializeTEAMPanel(): BOOLEAN {
-  VSURFACE_DESC vs_desc;
-  VOBJECT_DESC VObjectDesc;
-  UINT32 cnt, posIndex;
-  static BOOLEAN fFirstTime = TRUE;
+  let vs_desc: VSURFACE_DESC;
+  let VObjectDesc: VOBJECT_DESC;
+  let cnt: UINT32;
+  let posIndex: UINT32;
+  /* static */ let fFirstTime: BOOLEAN = TRUE;
 
   // INit viewport region
   // Set global mouse regions
@@ -2623,7 +2630,7 @@ function InitializeTEAMPanel(): BOOLEAN {
 }
 
 function ShutdownTEAMPanel(): BOOLEAN {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   // All buttons and regions and video objects and video surfaces will be deleted at shutddown of SGM
   // We may want to delete them at the interm as well, to free up room for other panels
@@ -2665,10 +2672,13 @@ function ShutdownTEAMPanel(): BOOLEAN {
 }
 
 function RenderTEAMPanel(fDirty: BOOLEAN): void {
-  INT16 sFontX, sFontY;
-  UINT32 cnt, posIndex;
-  SOLDIERTYPE *pSoldier;
-  static INT16 pStr[200], pMoraleStr[20];
+  let sFontX: INT16;
+  let sFontY: INT16;
+  let cnt: UINT32;
+  let posIndex: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  /* static */ let pStr: INT16[] /* [200] */;
+  /* static */ let pMoraleStr: INT16[] /* [20] */;
 
   if (fDirty == DIRTYLEVEL2) {
     MarkAButtonDirty(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
@@ -2705,7 +2715,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         if (pSoldier->uiStatusFlags & (SOLDIER_DRIVER)) {
           // Get soldier pointer for vehicle.....
-          SOLDIERTYPE *pVehicle;
+          let pVehicle: Pointer<SOLDIERTYPE>;
 
           pVehicle = GetSoldierStructureForVehicle(pSoldier->iVehicleId);
 
@@ -2883,7 +2893,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 }
 
 function CreateTEAMPanelButtons(): BOOLEAN {
-  UINT8 ubString[48];
+  let ubString: UINT8[] /* [48] */;
 
   FilenameForBPP("INTERFACE\\bottom_bar_buttons.sti", ubString);
 
@@ -2918,7 +2928,7 @@ function CreateTEAMPanelButtons(): BOOLEAN {
 }
 
 function RemoveTEAMPanelButtons(): void {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < NUM_TEAM_BUTTONS; cnt++) {
     RemoveButton(iTEAMPanelButtons[cnt]);
@@ -2979,7 +2989,7 @@ function SetTEAMPanelCurrentMerc(ubNewID: UINT8): void {
 }
 
 function UpdateTEAMPanel(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if ((gTacticalStatus.ubCurrentTeam != gbPlayerNum) || (gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     DisableButton(iTEAMPanelButtons[TEAM_DONE_BUTTON]);
@@ -3029,7 +3039,7 @@ function UpdateTEAMPanel(): void {
 }
 
 function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
-  FACETYPE *pFace;
+  let pFace: Pointer<FACETYPE>;
 
   if (fOn) {
     // Check if we are waiting to continue move...
@@ -3057,8 +3067,9 @@ function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
 }
 
 function MercFacePanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
-  SOLDIERTYPE *pSoldier;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3092,7 +3103,8 @@ function MercFacePanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function EnemyIndicatorClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3118,7 +3130,7 @@ function EnemyIndicatorClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     if (MercPtrs[ubSoldierID]->uiStatusFlags & (SOLDIER_DRIVER | SOLDIER_PASSENGER)) {
     } else {
-      SOLDIERTYPE *pSoldier;
+      let pSoldier: Pointer<SOLDIERTYPE>;
 
       pSoldier = MercPtrs[ubSoldierID];
 
@@ -3133,8 +3145,9 @@ function EnemyIndicatorClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 }
 
 function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
-  SOLDIERTYPE *pVehicle;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
+  let pVehicle: Pointer<SOLDIERTYPE>;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3199,7 +3212,7 @@ function MercFacePanelCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 }
 
 function HandleLocateSelectMerc(ubID: UINT8, bFlag: INT8): void {
-  BOOLEAN fSelect = FALSE;
+  let fSelect: BOOLEAN = FALSE;
 
   if (!MercPtrs[ubID]->bActive) {
     return;
@@ -3320,8 +3333,8 @@ function CheckForFacePanelStartAnims(pSoldier: Pointer<SOLDIERTYPE>, sPanelX: IN
 }
 
 function FinishAnySkullPanelAnimations(): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt2;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt2: INT32;
 
   cnt2 = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
@@ -3505,7 +3518,8 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
 }
 
 function TMFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3542,8 +3556,9 @@ function TMFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 }
 
 function TMClickFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
-  UINT16 usOldHandItem;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
+  let usOldHandItem: UINT16;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3573,8 +3588,9 @@ function TMClickFirstHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 }
 
 function TMClickSecondHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubID, ubSoldierID;
-  UINT16 usOldHandItem;
+  let ubID: UINT8;
+  let ubSoldierID: UINT8;
+  let usOldHandItem: UINT16;
 
   ubID = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3607,7 +3623,7 @@ function TMClickSecondHandInvCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
 }
 
 function PlayerExistsInSlot(ubID: UINT8): BOOLEAN {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     if (gTeamPanel[cnt].fOccupied) {
@@ -3621,7 +3637,7 @@ function PlayerExistsInSlot(ubID: UINT8): BOOLEAN {
 }
 
 function GetTeamSlotFromPlayerID(ubID: UINT8): INT8 {
-  INT8 cnt;
+  let cnt: INT8;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     if (gTeamPanel[cnt].fOccupied) {
@@ -3635,7 +3651,7 @@ function GetTeamSlotFromPlayerID(ubID: UINT8): INT8 {
 }
 
 function RemovePlayerFromTeamSlotGivenMercID(ubMercID: UINT8): BOOLEAN {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     if (gTeamPanel[cnt].fOccupied) {
@@ -3650,7 +3666,7 @@ function RemovePlayerFromTeamSlotGivenMercID(ubMercID: UINT8): BOOLEAN {
 }
 
 function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // If we are a vehicle don't ever add.....
   if (MercPtrs[ubID]->uiStatusFlags & SOLDIER_VEHICLE) {
@@ -3680,7 +3696,7 @@ function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
 }
 
 function InitTEAMSlots(): BOOLEAN {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     gTeamPanel[cnt].fOccupied = FALSE;
@@ -3704,7 +3720,7 @@ function GetPlayerIDFromInterfaceTeamSlot(ubPanelSlot: UINT8, pubID: Pointer<UIN
 }
 
 function RemoveAllPlayersFromSlot(): void {
-  int cnt;
+  let cnt: int;
 
   for (cnt = 0; cnt < NUM_TEAM_SLOTS; cnt++) {
     RemovePlayerFromInterfaceTeamSlot((UINT8)cnt);
@@ -3741,8 +3757,9 @@ function RemovePlayerFromInterfaceTeamSlot(ubPanelSlot: UINT8): BOOLEAN {
 }
 
 function RenderTownIDString(): void {
-  CHAR16 zTownIDString[80];
-  INT16 sFontX, sFontY;
+  let zTownIDString: CHAR16[] /* [80] */;
+  let sFontX: INT16;
+  let sFontY: INT16;
 
   // Render town, position
   SetFont(COMPFONT);
@@ -3790,9 +3807,9 @@ function CheckForAndAddMercToTeamPanel(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function FindNextMercInTeamPanel(pSoldier: Pointer<SOLDIERTYPE>, fGoodForLessOKLife: BOOLEAN, fOnlyRegularMercs: BOOLEAN): UINT8 {
-  INT32 cnt;
-  INT32 bFirstID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: INT32;
+  let bFirstID: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   bFirstID = GetTeamSlotFromPlayerID(pSoldier->ubID);
 
@@ -3863,9 +3880,10 @@ function DisableTacticalTeamPanelButtons(fDisable: BOOLEAN): void {
 }
 
 function BeginKeyPanelFromKeyShortcut(): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT16 sStartYPosition = 0;
-  INT16 sWidth = 0, sHeight = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sStartYPosition: INT16 = 0;
+  let sWidth: INT16 = 0;
+  let sHeight: INT16 = 0;
 
   if (gsCurInterfacePanel != SM_PANEL) {
     return;
@@ -3892,9 +3910,10 @@ function BeginKeyPanelFromKeyShortcut(): void {
 }
 
 function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT16 sStartYPosition = 0;
-  INT16 sWidth = 0, sHeight = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sStartYPosition: INT16 = 0;
+  let sWidth: INT16 = 0;
+  let sHeight: INT16 = 0;
 
   if (guiCurrentScreen == MAP_SCREEN) {
     if (bSelectedInfoChar == -1) {
@@ -3942,12 +3961,12 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiKeyRing;
+  let uiKeyRing: UINT32;
   // Copyies of values
-  UINT16 usOldItemIndex;
-  static BOOLEAN fRightDown = FALSE;
-  static BOOLEAN fLeftDown = FALSE;
-  INT32 iNumberOfKeysTaken = 0;
+  let usOldItemIndex: UINT16;
+  /* static */ let fRightDown: BOOLEAN = FALSE;
+  /* static */ let fLeftDown: BOOLEAN = FALSE;
+  let iNumberOfKeysTaken: INT32 = 0;
 
   uiKeyRing = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -3965,7 +3984,7 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
     // if we are in the shop keeper interface
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE) {
-      INVENTORY_IN_SLOT InvSlot;
+      let InvSlot: INVENTORY_IN_SLOT;
 
       if (gMoveingItem.sItemIndex == 0) {
         // Delete the contents of the item cursor
@@ -4014,9 +4033,10 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
       BeginKeyRingItemPointer(gpItemPopupSoldier, (UINT8)usOldItemIndex);
       // BeginItemPointer( gpSMCurrentMerc, (UINT8)uiHandPos );
     } else {
-      UINT8 ubSrcID, ubDestID;
-      BOOLEAN fOKToGo = FALSE;
-      BOOLEAN fDeductPoints = FALSE;
+      let ubSrcID: UINT8;
+      let ubDestID: UINT8;
+      let fOKToGo: BOOLEAN = FALSE;
+      let fDeductPoints: BOOLEAN = FALSE;
 
       if ((gpItemPointer->usItem < FIRST_KEY) || (gpItemPointer->usItem > KEY_32)) {
         return;
@@ -4244,8 +4264,8 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     if (gpItemPointer != NULL) {
       // and the item is money
       if (Item[gpItemPointer->usItem].usItemClass == IC_MONEY) {
-        CHAR16 zText[512];
-        CHAR16 zMoney[64];
+        let zText: CHAR16[] /* [512] */;
+        let zMoney: CHAR16[] /* [64] */;
 
         // Make sure we go back to movement mode...
         guiPendingOverrideEvent = A_CHANGE_TO_MOVE;

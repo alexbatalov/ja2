@@ -1,12 +1,13 @@
-double rStart, rEnd;
-double rActual;
+let rStart: double;
+let rEnd: double;
+let rActual: double;
 
 const MAX_PROGRESSBARS = 4;
 
-PROGRESSBAR *pBar[MAX_PROGRESSBARS];
+let pBar: Pointer<PROGRESSBAR>[] /* [MAX_PROGRESSBARS] */;
 
-BOOLEAN gfUseLoadScreenProgressBar = FALSE;
-UINT16 gusLeftmostShaded = 0;
+let gfUseLoadScreenProgressBar: BOOLEAN = FALSE;
+let gusLeftmostShaded: UINT16 = 0;
 
 function CreateLoadingScreenProgressBar(): void {
   gusLeftmostShaded = 162;
@@ -23,7 +24,7 @@ function RemoveLoadingScreenProgressBar(): void {
 // This creates a single progress bar given the coordinates without a panel (containing a title and background).
 // A panel is automatically created if you specify a title using SetProgressBarTitle
 function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): BOOLEAN {
-  PROGRESSBAR *pNew;
+  let pNew: Pointer<PROGRESSBAR>;
   // Allocate new progress bar
   pNew = (PROGRESSBAR *)MemAlloc(sizeof(PROGRESSBAR));
   Assert(pNew);
@@ -61,7 +62,7 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
 // You may also define a panel to go in behind the progress bar.  You can now assign a title to go with
 // the panel.
 function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): void {
-  PROGRESSBAR *pCurr;
+  let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
@@ -81,7 +82,7 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
 // Assigning a title for the panel will automatically position the text horizontally centered on the
 // panel and vertically centered from the top of the panel, to the top of the progress bar.
 function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
-  PROGRESSBAR *pCurr;
+  let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
@@ -102,7 +103,7 @@ function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UIN
 // Unless you set up the attributes, any text you pass to SetRelativeStartAndEndPercentage will
 // default to FONT12POINT1 in a black color.
 function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: UINT8, ubShadowColor: UINT8): void {
-  PROGRESSBAR *pCurr;
+  let pCurr: Pointer<PROGRESSBAR>;
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
   if (!pCurr)
@@ -132,8 +133,9 @@ function RemoveProgressBar(ubID: UINT8): void {
 // at the 100% mark within UpdateProgressBar.  At that time, you would go onto the next step, resetting the
 // relative start and end percentage from 30 to whatever, until your done.
 function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, uiRelEndPerc: UINT32, str: Pointer<UINT16>): void {
-  PROGRESSBAR *pCurr;
-  UINT16 usStartX, usStartY;
+  let pCurr: Pointer<PROGRESSBAR>;
+  let usStartX: UINT16;
+  let usStartY: UINT16;
 
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -169,7 +171,7 @@ function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, u
     // Draw message
     if (str) {
       if (pCurr->fUseSaveBuffer) {
-        UINT16 usFontHeight = GetFontHeight(pCurr->usMsgFont);
+        let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont);
 
         RestoreExternBackgroundRect(pCurr->usBarLeft, pCurr->usBarBottom, (INT16)(pCurr->usBarRight - pCurr->usBarLeft), (INT16)(usFontHeight + 3));
       }
@@ -187,12 +189,12 @@ function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, u
 // percentage values in the above function, then the uiPercentage will be reflected based off of the relative
 // percentages.
 function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
-  static UINT32 uiLastTime = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  double rActual;
-  PROGRESSBAR *pCurr = NULL;
+  /* static */ let uiLastTime: UINT32 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
+  let rActual: double;
+  let pCurr: Pointer<PROGRESSBAR> = NULL;
   // UINT32 r, g;
-  INT32 end;
+  let end: INT32;
 
   Assert(ubID < MAX_PROGRESSBARS);
   pCurr = pBar[ubID];
@@ -241,7 +243,7 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
 }
 
 function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGreen: UINT8, ubColorFillBlue: UINT8): void {
-  PROGRESSBAR *pCurr = NULL;
+  let pCurr: Pointer<PROGRESSBAR> = NULL;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
@@ -255,7 +257,7 @@ function SetProgressBarColor(ubID: UINT8, ubColorFillRed: UINT8, ubColorFillGree
 }
 
 function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseSaveBuffer: BOOLEAN, fSaveScreenToFrameBuffer: BOOLEAN): void {
-  PROGRESSBAR *pCurr = NULL;
+  let pCurr: Pointer<PROGRESSBAR> = NULL;
 
   Assert(ubID < MAX_PROGRESSBARS);
 
@@ -269,7 +271,7 @@ function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseS
 
   // if we are to use the save buffer, blit the portion of the screen to the save buffer
   if (fSaveScreenToFrameBuffer) {
-    UINT16 usFontHeight = GetFontHeight(pCurr->usMsgFont) + 3;
+    let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont) + 3;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
     BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr->usBarLeft, pCurr->usBarBottom, (UINT16)(pCurr->usBarRight - pCurr->usBarLeft), usFontHeight);

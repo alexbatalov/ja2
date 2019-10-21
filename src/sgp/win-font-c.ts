@@ -1,6 +1,6 @@
 //#define UNICODE
 
-BOOLEAN gfEnumSucceed = FALSE;
+let gfEnumSucceed: BOOLEAN = FALSE;
 
 const MAX_WIN_FONTS = 10;
 
@@ -12,13 +12,14 @@ interface HWINFONT {
   BackColor: COLORVAL;
 }
 
-LOGFONT gLogFont;
+let gLogFont: LOGFONT;
 
-HWINFONT WinFonts[MAX_WIN_FONTS];
+let WinFonts: HWINFONT[] /* [MAX_WIN_FONTS] */;
 
 function Convert16BitStringTo8BitChineseBig5String(dst: Pointer<UINT8>, src: Pointer<UINT16>): void {
-  INT32 i, j;
-  char *ptr;
+  let i: INT32;
+  let j: INT32;
+  let ptr: Pointer<char>;
 
   i = j = 0;
   ptr = (char *)src;
@@ -40,7 +41,7 @@ function ShutdownWinFonts(): void {
 }
 
 function FindFreeWinFont(): INT32 {
-  INT32 iCount;
+  let iCount: INT32;
 
   for (iCount = 0; iCount < MAX_WIN_FONTS; iCount++) {
     if (WinFonts[iCount].hFont == NULL) {
@@ -63,12 +64,12 @@ function GetWinFont(iFont: INT32): Pointer<HWINFONT> {
   }
 }
 
-UINT16 gzFontName[32];
+let gzFontName: UINT16[] /* [32] */;
 
 function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeight: INT32, fItalic: BOOLEAN, fUnderline: BOOLEAN, fStrikeOut: BOOLEAN, szFontName: STR16, iCharSet: INT32): INT32 {
-  INT32 iFont;
-  HFONT hFont;
-  UINT8 szCharFontName[32]; // 32 characters including null terminator (matches max font name length)
+  let iFont: INT32;
+  let hFont: HFONT;
+  let szCharFontName: UINT8[] /* [32] */; // 32 characters including null terminator (matches max font name length)
   // Find free slot
   iFont = FindFreeWinFont();
 
@@ -101,7 +102,7 @@ function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeigh
 }
 
 function DeleteWinFont(iFont: INT32): void {
-  HWINFONT *pWinFont;
+  let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
 
@@ -111,7 +112,7 @@ function DeleteWinFont(iFont: INT32): void {
 }
 
 function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
-  HWINFONT *pWinFont;
+  let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
 
@@ -121,7 +122,7 @@ function SetWinFontForeColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
 }
 
 function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
-  HWINFONT *pWinFont;
+  let pWinFont: Pointer<HWINFONT>;
 
   pWinFont = GetWinFont(iFont);
 
@@ -131,16 +132,16 @@ function SetWinFontBackColor(iFont: INT32, pColor: Pointer<COLORVAL>): void {
 }
 
 function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  wchar_t string2[512];
-  char string[512];
-  HVSURFACE hVSurface;
-  LPDIRECTDRAWSURFACE2 pDDSurface;
-  HDC hdc;
-  RECT rc;
-  HWINFONT *pWinFont;
-  int len;
-  SIZE RectSize;
+  let argptr: va_list;
+  let string2: wchar_t[] /* [512] */;
+  let string: char[] /* [512] */;
+  let hVSurface: HVSURFACE;
+  let pDDSurface: LPDIRECTDRAWSURFACE2;
+  let hdc: HDC;
+  let rc: RECT;
+  let pWinFont: Pointer<HWINFONT>;
+  let len: int;
+  let RectSize: SIZE;
 
   pWinFont = GetWinFont(iFont);
 
@@ -173,10 +174,10 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
 }
 
 function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
-  HWINFONT *pWinFont;
-  HDC hdc;
-  SIZE RectSize;
-  char string[512];
+  let pWinFont: Pointer<HWINFONT>;
+  let hdc: HDC;
+  let RectSize: SIZE;
+  let string: char[] /* [512] */;
 
   pWinFont = GetWinFont(iFont);
 
@@ -195,10 +196,10 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 }
 
 function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
-  HWINFONT *pWinFont;
-  HDC hdc;
-  SIZE RectSize;
-  char string[512];
+  let pWinFont: Pointer<HWINFONT>;
+  let hdc: HDC;
+  let RectSize: SIZE;
+  let string: char[] /* [512] */;
 
   pWinFont = GetWinFont(iFont);
 
@@ -217,8 +218,8 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 }
 
 function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
-  va_list argptr;
-  wchar_t string[512];
+  let argptr: va_list;
+  let string: wchar_t[] /* [512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(string, pFontString, argptr); // process gprintf string (get output str)
@@ -236,7 +237,7 @@ function EnumFontFamProc(lplf: Pointer<LOGFONT>, lptm: Pointer<TEXTMETRIC>, dwTy
 }
 
 function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTEXTMETRICEX>, FontType: int, lParam: LPARAM): int {
-  UINT8 szFontName[32];
+  let szFontName: UINT8[] /* [32] */;
 
   sprintf(szFontName, "%S", gzFontName);
   if (!strcmp(szFontName, lpelfe->elfFullName)) {
@@ -248,9 +249,9 @@ function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTE
 }
 
 function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEAN {
-  HDC hdc;
-  char string[512];
-  LOGFONT LogFont;
+  let hdc: HDC;
+  let string: char[] /* [512] */;
+  let LogFont: LOGFONT;
   hdc = GetDC(NULL);
 
   gfEnumSucceed = FALSE;

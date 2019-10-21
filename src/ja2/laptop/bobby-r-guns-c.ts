@@ -104,18 +104,18 @@ const BOBBYR_ORDER_SUBTOTAL_Y = BOBBYR_ORDER_FORM_Y + 2; // BOBBYR_HOME_BUTTON_Y
 const BOBBYR_PERCENT_FUNTCIONAL_X = BOBBYR_ORDER_SUBTOTAL_X;
 const BOBBYR_PERCENT_FUNTCIONAL_Y = BOBBYR_ORDER_SUBTOTAL_Y + 15;
 
-BobbyRayPurchaseStruct BobbyRayPurchases[MAX_PURCHASE_AMOUNT];
+let BobbyRayPurchases: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
 
 // BobbyRayOrderStruct *BobbyRayOrdersOnDeliveryArray=NULL;
 // UINT8	usNumberOfBobbyRayOrderItems = 0;
 // UINT8	usNumberOfBobbyRayOrderUsed = 0;
 
-UINT32 guiGunBackground;
-UINT32 guiGunsGrid;
-UINT32 guiBrTitle;
-UINT16 gusCurWeaponIndex;
-UINT8 gubCurPage;
-UINT8 ubCatalogueButtonValues[] = {
+let guiGunBackground: UINT32;
+let guiGunsGrid: UINT32;
+let guiBrTitle: UINT32;
+let gusCurWeaponIndex: UINT16;
+let gubCurPage: UINT8;
+let ubCatalogueButtonValues: UINT8[] /* [] */ = {
   LAPTOP_MODE_BOBBY_R_GUNS,
   LAPTOP_MODE_BOBBY_R_AMMO,
   LAPTOP_MODE_BOBBY_R_ARMOR,
@@ -123,40 +123,40 @@ UINT8 ubCatalogueButtonValues[] = {
   LAPTOP_MODE_BOBBY_R_USED,
 };
 
-UINT16 gusLastItemIndex = 0;
-UINT16 gusFirstItemIndex = 0;
-UINT8 gubNumItemsOnScreen;
-UINT8 gubNumPages;
+let gusLastItemIndex: UINT16 = 0;
+let gusFirstItemIndex: UINT16 = 0;
+let gubNumItemsOnScreen: UINT8;
+let gubNumPages: UINT8;
 
-BOOLEAN gfBigImageMouseRegionCreated;
-UINT16 gusItemNumberForItemsOnScreen[BOBBYR_NUM_WEAPONS_ON_PAGE];
+let gfBigImageMouseRegionCreated: BOOLEAN;
+let gusItemNumberForItemsOnScreen: UINT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
 
-BOOLEAN gfOnUsedPage;
+let gfOnUsedPage: BOOLEAN;
 
-UINT16 gusOldItemNumOnTopOfPage = 65535;
+let gusOldItemNumOnTopOfPage: UINT16 = 65535;
 
-UINT32 guiBobbyRPageMenu[NUM_CATALOGUE_BUTTONS];
-INT32 guiBobbyRPageMenuImage;
+let guiBobbyRPageMenu: UINT32[] /* [NUM_CATALOGUE_BUTTONS] */;
+let guiBobbyRPageMenuImage: INT32;
 
-UINT32 guiBobbyRPreviousPage;
-INT32 guiBobbyRPreviousPageImage;
+let guiBobbyRPreviousPage: UINT32;
+let guiBobbyRPreviousPageImage: INT32;
 
-UINT32 guiBobbyRNextPage;
-INT32 guiBobbyRNextPageImage;
+let guiBobbyRNextPage: UINT32;
+let guiBobbyRNextPageImage: INT32;
 
 // Big Image Mouse region
-MOUSE_REGION gSelectedBigImageRegion[BOBBYR_NUM_WEAPONS_ON_PAGE];
+let gSelectedBigImageRegion: MOUSE_REGION[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
 
-UINT32 guiBobbyROrderForm;
-INT32 guiBobbyROrderFormImage;
+let guiBobbyROrderForm: UINT32;
+let guiBobbyROrderFormImage: INT32;
 
-UINT32 guiBobbyRHome;
-INT32 guiBobbyRHomeImage;
+let guiBobbyRHome: UINT32;
+let guiBobbyRHomeImage: INT32;
 
 // Link from the title
-MOUSE_REGION gSelectedTitleImageLinkRegion;
+let gSelectedTitleImageLinkRegion: MOUSE_REGION;
 
-UINT32 guiTempCurrentMode;
+let guiTempCurrentMode: UINT32;
 
 // ppp
 
@@ -173,7 +173,7 @@ function EnterInitBobbyRGuns(): void {
 }
 
 function EnterBobbyRGuns(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   gfBigImageMouseRegionCreated = FALSE;
 
@@ -223,7 +223,7 @@ function HandleBobbyRGuns(): void {
 }
 
 function RenderBobbyRGuns(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiGunBackground);
 
@@ -243,7 +243,7 @@ function RenderBobbyRGuns(): void {
 }
 
 function DisplayBobbyRBrTitle(): BOOLEAN {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // BR title
   GetVideoObject(&hPixHandle, guiBrTitle);
@@ -262,7 +262,7 @@ function DisplayBobbyRBrTitle(): BOOLEAN {
 }
 
 function InitBobbyBrTitle(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the br title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -296,9 +296,9 @@ function SelectTitleImageLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
 }
 
 function InitBobbyMenuBar(): BOOLEAN {
-  UINT8 i;
-  UINT16 usPosX;
-  UINT8 bCurMode;
+  let i: UINT8;
+  let usPosX: UINT16;
+  let bCurMode: UINT8;
 
   // Previous button
   guiBobbyRPreviousPageImage = LoadButtonImage("LAPTOP\\PreviousButton.sti", -1, 0, -1, 1, -1);
@@ -346,7 +346,7 @@ function InitBobbyMenuBar(): BOOLEAN {
 }
 
 function DeleteBobbyMenuBar(): BOOLEAN {
-  UINT8 i;
+  let i: UINT8;
 
   UnloadButtonImage(guiBobbyRNextPageImage);
   UnloadButtonImage(guiBobbyRPreviousPageImage);
@@ -367,7 +367,7 @@ function DeleteBobbyMenuBar(): BOOLEAN {
 }
 
 function BtnBobbyRPageMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT32 bNewValue;
+  let bNewValue: UINT32;
   bNewValue = MSYS_GetBtnUserData(btn, 0);
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -395,7 +395,7 @@ function BtnBobbyRPageMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function BtnBobbyRNextPreviousPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT32 bNewValue;
+  let bNewValue: UINT32;
 
   bNewValue = MSYS_GetBtnUserData(btn, 0);
 
@@ -431,14 +431,15 @@ function BtnBobbyRNextPreviousPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 }
 
 function DisplayItemInfo(uiItemClass: UINT32): BOOLEAN {
-  UINT16 i;
-  UINT8 ubCount = 0;
-  UINT16 PosY, usTextPosY;
-  UINT16 ubFirstIndex = 0;
-  UINT16 usItemIndex;
-  wchar_t sDollarTemp[60];
-  wchar_t sTemp[60];
-  INT16 pItemNumbers[BOBBYR_NUM_WEAPONS_ON_PAGE];
+  let i: UINT16;
+  let ubCount: UINT8 = 0;
+  let PosY: UINT16;
+  let usTextPosY: UINT16;
+  let ubFirstIndex: UINT16 = 0;
+  let usItemIndex: UINT16;
+  let sDollarTemp: wchar_t[] /* [60] */;
+  let sTemp: wchar_t[] /* [60] */;
+  let pItemNumbers: INT16[] /* [BOBBYR_NUM_WEAPONS_ON_PAGE] */;
 
   PosY = BOBBYR_GRID_PIC_Y;
   usTextPosY = BOBBYR_ITEM_DESC_START_Y;
@@ -600,9 +601,9 @@ function DisplayItemInfo(uiItemClass: UINT32): BOOLEAN {
 }
 
 function DisplayGunInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usBobbyIndex: UINT16): BOOLEAN {
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  UINT16 usFontHeight;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let usFontHeight: UINT16;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -636,9 +637,9 @@ function DisplayGunInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usB
 } // DisplayGunInfo
 
 function DisplayNonGunWeaponInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usBobbyIndex: UINT16): BOOLEAN {
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  UINT16 usFontHeight;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let usFontHeight: UINT16;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -660,9 +661,9 @@ function DisplayNonGunWeaponInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOO
 } // DisplayNonGunWeaponInfo
 
 function DisplayAmmoInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usBobbyIndex: UINT16): BOOLEAN {
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  UINT16 usFontHeight;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let usFontHeight: UINT16;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -684,12 +685,15 @@ function DisplayAmmoInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, us
 } // DisplayAmmoInfo
 
 function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): BOOLEAN {
-  INT16 PosX, sCenX, sCenY;
-  UINT32 usHeight, usWidth;
-  ETRLEObject *pTrav;
-  INVTYPE *pItem;
-  UINT32 uiImage;
-  HVOBJECT hPixHandle;
+  let PosX: INT16;
+  let sCenX: INT16;
+  let sCenY: INT16;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let pItem: Pointer<INVTYPE>;
+  let uiImage: UINT32;
+  let hPixHandle: HVOBJECT;
 
   PosX = BOBBYR_GRID_PIC_X;
 
@@ -717,9 +721,9 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): BOOLEAN {
 }
 
 function DisplayArmourInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usBobbyIndex: UINT16): BOOLEAN {
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  UINT16 usFontHeight;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let usFontHeight: UINT16;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -738,9 +742,9 @@ function DisplayArmourInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, 
 } // DisplayArmourInfo
 
 function DisplayMiscInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, usBobbyIndex: UINT16): BOOLEAN {
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  UINT16 usFontHeight;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let usFontHeight: UINT16;
   usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
@@ -753,7 +757,7 @@ function DisplayMiscInfo(usIndex: UINT16, usTextPosY: UINT16, fUsed: BOOLEAN, us
 } // DisplayMiscInfo
 
 function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16, usBobbyIndex: UINT16, fUsed: BOOLEAN): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
   //	UINT8	ubPurchaseNumber;
 
   //
@@ -809,7 +813,7 @@ function DisplayCostAndQty(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16
 }
 
 function DisplayRof(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_ROF], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
@@ -824,7 +828,7 @@ function DisplayRof(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT
 }
 
 function DisplayDamage(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_DAMAGE], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   swprintf(sTemp, L"%4d", Weapon[usIndex].ubImpact);
@@ -834,7 +838,7 @@ function DisplayDamage(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
 }
 
 function DisplayRange(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_RANGE], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   swprintf(sTemp, L"%3d %s", Weapon[usIndex].usRange, pMessageStrings[MSG_METER_ABBREVIATION]);
@@ -844,7 +848,7 @@ function DisplayRange(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UI
 }
 
 function DisplayMagazine(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
 
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_MAGAZINE], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   swprintf(sTemp, L"%3d %s", Weapon[usIndex].ubMagSize, pMessageStrings[MSG_ROUNDS_ABBREVIATION]);
@@ -854,7 +858,7 @@ function DisplayMagazine(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16):
 }
 
 function DisplayCaliber(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  CHAR16 zTemp[128];
+  let zTemp: CHAR16[] /* [128] */;
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_CALIBRE], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   //	if ammo is begin drawn
@@ -877,7 +881,7 @@ function DisplayCaliber(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): 
 }
 
 function DisplayWeight(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): UINT16 {
-  wchar_t sTemp[20];
+  let sTemp: wchar_t[] /* [20] */;
 
   // display the 'weight' string
   DrawTextToScreen(BobbyRText[BOBBYR_GUNS_WEIGHT], BOBBYR_ITEM_WEIGHT_TEXT_X, (UINT16)usPosY, 0, BOBBYR_ITEM_DESC_TEXT_FONT, BOBBYR_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
@@ -889,12 +893,12 @@ function DisplayWeight(usPosY: UINT16, usIndex: UINT16, usFontHeight: UINT16): U
 }
 
 function DisplayItemNameAndInfo(usPosY: UINT16, usIndex: UINT16, usBobbyIndex: UINT16, fUsed: BOOLEAN): void {
-  wchar_t sText[400];
-  wchar_t sTemp[20];
-  UINT32 uiStartLoc = 0;
+  let sText: wchar_t[] /* [400] */;
+  let sTemp: wchar_t[] /* [20] */;
+  let uiStartLoc: UINT32 = 0;
 
-  UINT8 ubPurchaseNumber;
-  UINT16 usFontHeight = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
+  let ubPurchaseNumber: UINT8;
+  let usFontHeight: UINT16 = GetFontHeight(BOBBYR_ITEM_DESC_TEXT_FONT);
 
   // Display Items Name
   uiStartLoc = BOBBYR_ITEM_DESC_FILE_SIZE * usIndex;
@@ -986,11 +990,11 @@ void CalculateFirstAndLastIndexs()
 
 // Loops through Bobby Rays Inventory to find the first and last index
 function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
-  UINT16 i;
-  INT16 sFirst = -1;
-  INT16 sLast = -1;
-  UINT8 ubPages = 0;
-  UINT8 ubNumItems = 0;
+  let i: UINT16;
+  let sFirst: INT16 = -1;
+  let sLast: INT16 = -1;
+  let ubPages: UINT8 = 0;
+  let ubNumItems: UINT8 = 0;
 
   gubCurPage = 0;
 
@@ -1024,11 +1028,11 @@ function SetFirstLastPagesForNew(uiClassMask: UINT32): void {
 
 // Loops through Bobby Rays Used Inventory to find the first and last index
 function SetFirstLastPagesForUsed(): void {
-  UINT16 i;
-  INT16 sFirst = -1;
-  INT16 sLast = -1;
-  UINT8 ubPages = 0;
-  UINT8 ubNumItems = 0;
+  let i: UINT16;
+  let sFirst: INT16 = -1;
+  let sLast: INT16 = -1;
+  let ubPages: UINT8 = 0;
+  let ubNumItems: UINT8 = 0;
 
   gubCurPage = 0;
 
@@ -1058,9 +1062,9 @@ function SetFirstLastPagesForUsed(): void {
 }
 
 function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbers: Pointer<INT16>): void {
-  UINT8 i;
-  CHAR16 zItemName[SIZE_ITEM_NAME];
-  UINT8 ubItemCount = 0;
+  let i: UINT8;
+  let zItemName: CHAR16[] /* [SIZE_ITEM_NAME] */;
+  let ubItemCount: UINT8 = 0;
 
   if (gfBigImageMouseRegionCreated)
     return;
@@ -1093,7 +1097,7 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
 }
 
 function DeleteMouseRegionForBigImage(): void {
-  UINT8 i;
+  let i: UINT8;
 
   if (!gfBigImageMouseRegionCreated)
     return;
@@ -1109,26 +1113,26 @@ function DeleteMouseRegionForBigImage(): void {
 function SelectBigImageRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    let usItemNum: UINT16 = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
 
     PurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
 
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    let usItemNum: UINT16 = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
 
     UnPurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    let usItemNum: UINT16 = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
 
     PurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_REPEAT) {
-    UINT16 usItemNum = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
+    let usItemNum: UINT16 = (UINT16)MSYS_GetRegionUserData(pRegion, 0);
 
     UnPurchaseBobbyRayItem(gusItemNumberForItemsOnScreen[usItemNum]);
     fReDrawScreenFlag = TRUE;
@@ -1137,7 +1141,7 @@ function SelectBigImageRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 }
 
 function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
-  UINT8 ubPurchaseNumber;
+  let ubPurchaseNumber: UINT8;
 
   ubPurchaseNumber = CheckIfItemIsPurchased(usItemNumber);
 
@@ -1201,7 +1205,7 @@ function PurchaseBobbyRayItem(usItemNumber: UINT16): void {
 
 // Checks to see if the clicked item is already bought or not.
 function CheckIfItemIsPurchased(usItemNumber: UINT16): UINT8 {
-  UINT8 i;
+  let i: UINT8;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     if ((usItemNumber == BobbyRayPurchases[i].usBobbyItemIndex) && (BobbyRayPurchases[i].ubNumberPurchased != 0) && (BobbyRayPurchases[i].fUsed == gfOnUsedPage))
@@ -1211,7 +1215,7 @@ function CheckIfItemIsPurchased(usItemNumber: UINT16): UINT8 {
 }
 
 function GetNextPurchaseNumber(): UINT8 {
-  UINT8 i;
+  let i: UINT8;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     if ((BobbyRayPurchases[i].usBobbyItemIndex == 0) && (BobbyRayPurchases[i].ubNumberPurchased == 0))
@@ -1221,7 +1225,7 @@ function GetNextPurchaseNumber(): UINT8 {
 }
 
 function UnPurchaseBobbyRayItem(usItemNumber: UINT16): void {
-  UINT8 ubPurchaseNumber;
+  let ubPurchaseNumber: UINT8;
 
   ubPurchaseNumber = CheckIfItemIsPurchased(usItemNumber);
 
@@ -1292,7 +1296,7 @@ function UpdateButtonText(uiCurPage: UINT32): void {
 }
 
 function CalcBobbyRayCost(usIndex: UINT16, usBobbyIndex: UINT16, fUsed: BOOLEAN): UINT16 {
-  DOUBLE value;
+  let value: DOUBLE;
   if (fUsed)
     value = Item[LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].usItemIndex].usPrice * (.5 + .5 * (LaptopSaveInfo.BobbyRayUsedInventory[usBobbyIndex].ubItemQuality) / 100) + .5;
   else
@@ -1302,8 +1306,8 @@ function CalcBobbyRayCost(usIndex: UINT16, usBobbyIndex: UINT16, fUsed: BOOLEAN)
 }
 
 function CalculateTotalPurchasePrice(): UINT32 {
-  UINT16 i;
-  UINT32 uiTotal = 0;
+  let i: UINT16;
+  let uiTotal: UINT32 = 0;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     // if the item was purchased
@@ -1349,8 +1353,8 @@ function DisableBobbyRButtons(): void {
 }
 
 function CalcFirstIndexForPage(pInv: Pointer<STORE_INVENTORY>, uiItemClass: UINT32): void {
-  UINT16 i;
-  UINT16 usNumItems = 0;
+  let i: UINT16;
+  let usNumItems: UINT16 = 0;
 
   // Reset the Current weapon Index
   gusCurWeaponIndex = 0;
@@ -1400,12 +1404,12 @@ function OutOfStockMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function CheckPlayersInventoryForGunMatchingGivenAmmoID(sItemID: INT16): UINT8 {
-  UINT8 ubItemCount = 0;
-  UINT8 ubMercCount;
-  UINT8 ubPocketCount;
+  let ubItemCount: UINT8 = 0;
+  let ubMercCount: UINT8;
+  let ubPocketCount: UINT8;
 
-  UINT8 ubFirstID = gTacticalStatus.Team[OUR_TEAM].bFirstID;
-  UINT8 ubLastID = gTacticalStatus.Team[OUR_TEAM].bLastID;
+  let ubFirstID: UINT8 = gTacticalStatus.Team[OUR_TEAM].bFirstID;
+  let ubLastID: UINT8 = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // loop through all the mercs on the team
   for (ubMercCount = ubFirstID; ubMercCount <= ubLastID; ubMercCount++) {

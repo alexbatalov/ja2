@@ -1,7 +1,7 @@
-UINT8 gubDoorUIValue = 0;
-UINT8 gubWindowUIValue = 0;
-UINT8 gubWallUIValue = FIRSTWALL;
-UINT8 gubBrokenWallUIValue = 0;
+let gubDoorUIValue: UINT8 = 0;
+let gubWindowUIValue: UINT8 = 0;
+let gubWallUIValue: UINT8 = FIRSTWALL;
+let gubBrokenWallUIValue: UINT8 = 0;
 
 function CalcSmartWallDefault(pusObjIndex: Pointer<UINT16>, pusUseIndex: Pointer<UINT16>): void {
   *pusUseIndex = 0;
@@ -112,8 +112,8 @@ function CalcWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UI
 }
 
 function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  LEVELNODE *pWall = NULL;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let usWallOrientation: UINT16;
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetWallOrientation(pWall->usIndex, &usWallOrientation);
@@ -132,9 +132,9 @@ function CalcDoorInfoUsingSmartMethod(iMapIndex: UINT32, pusDoorType: Pointer<UI
 }
 
 function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  LEVELNODE *pWall = NULL;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -166,9 +166,9 @@ function CalcWindowInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<
 }
 
 function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Pointer<UINT16>, pusIndex: Pointer<UINT16>): BOOLEAN {
-  LEVELNODE *pWall = NULL;
-  UINT32 uiTileType;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let uiTileType: UINT32;
+  let usWallOrientation: UINT16;
 
   if (gubBrokenWallUIValue == 2) // the hole in the wall
   {
@@ -227,18 +227,18 @@ function CalcBrokenWallInfoUsingSmartMethod(iMapIndex: UINT32, pusWallType: Poin
 //		the x+1 position.  If there are matching walls, there, then we draw two pieces to connect the current
 //		gridno with the respective position.
 function PasteSmartWall(iMapIndex: UINT32): void {
-  static BOOLEAN fWallAlone = FALSE;
-  static UINT32 iAloneMapIndex = 0x8000;
-  UINT16 usWallType;
+  /* static */ let fWallAlone: BOOLEAN = FALSE;
+  /* static */ let iAloneMapIndex: UINT32 = 0x8000;
+  let usWallType: UINT16;
 
   // These are the counters for the walls of each type
-  UINT16 usNumV[4] = {
+  let usNumV: UINT16[] /* [4] */ = {
     0,
     0,
     0,
     0,
   }; // vertical wall weights
-  UINT16 usNumH[4] = {
+  let usNumH: UINT16[] /* [4] */ = {
     0,
     0,
     0,
@@ -415,11 +415,11 @@ function PasteSmartWall(iMapIndex: UINT32): void {
 }
 
 function PasteSmartDoor(iMapIndex: UINT32): void {
-  LEVELNODE *pWall = NULL;
-  UINT16 usTileIndex;
-  UINT16 usDoorType;
-  UINT16 usIndex;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let usTileIndex: UINT16;
+  let usDoorType: UINT16;
+  let usIndex: UINT16;
+  let usWallOrientation: UINT16;
 
   if (pWall = GetVerticalWall(iMapIndex)) {
     GetWallOrientation(pWall->usIndex, &usWallOrientation);
@@ -440,13 +440,13 @@ function PasteSmartDoor(iMapIndex: UINT32): void {
 }
 
 function PasteSmartWindow(iMapIndex: UINT32): void {
-  UINT16 usNewWallIndex;
+  let usNewWallIndex: UINT16;
 
-  LEVELNODE *pWall = NULL;
-  UINT32 uiTileType;
-  UINT16 usWallType;
-  UINT16 usIndex;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE> = NULL;
+  let uiTileType: UINT32;
+  let usWallType: UINT16;
+  let usIndex: UINT16;
+  let usWallOrientation: UINT16;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
@@ -484,13 +484,13 @@ function PasteSmartWindow(iMapIndex: UINT32): void {
 }
 
 function PasteSmartBrokenWall(iMapIndex: UINT32): void {
-  UINT16 usNewWallIndex;
+  let usNewWallIndex: UINT16;
 
-  LEVELNODE *pWall;
-  UINT32 uiTileType;
-  UINT16 usWallType;
-  UINT16 usIndex;
-  UINT16 usWallOrientation;
+  let pWall: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
+  let usWallType: UINT16;
+  let usIndex: UINT16;
+  let usWallOrientation: UINT16;
 
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {

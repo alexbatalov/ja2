@@ -6,15 +6,15 @@ interface BURST_LOCATIONS {
   sGridNo: INT16;
 }
 
-BURST_LOCATIONS gsBurstLocations[MAX_BURST_LOCATIONS];
-INT8 gbNumBurstLocations = 0;
+let gsBurstLocations: BURST_LOCATIONS[] /* [MAX_BURST_LOCATIONS] */;
+let gbNumBurstLocations: INT8 = 0;
 
 function ResetBurstLocations(): void {
   gbNumBurstLocations = 0;
 }
 
 function AccumulateBurstLocation(sGridNo: INT16): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (gbNumBurstLocations < MAX_BURST_LOCATIONS) {
     // Check if it already exists!
@@ -34,11 +34,11 @@ function AccumulateBurstLocation(sGridNo: INT16): void {
 }
 
 function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubShotsPerBurst;
-  FLOAT dAccululator = 0;
-  FLOAT dStep = 0;
-  INT32 cnt;
-  UINT8 ubLocationNum;
+  let ubShotsPerBurst: UINT8;
+  let dAccululator: FLOAT = 0;
+  let dStep: FLOAT = 0;
+  let cnt: INT32;
+  let ubLocationNum: UINT8;
 
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
@@ -64,11 +64,11 @@ function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pTargets: Pointer<SOLDIERTYPE>[] /* [5] */): void {
-  UINT8 ubShotsPerBurst;
-  FLOAT dAccululator = 0;
-  FLOAT dStep = 0;
-  INT32 cnt;
-  UINT8 ubLocationNum;
+  let ubShotsPerBurst: UINT8;
+  let dAccululator: FLOAT = 0;
+  let dStep: FLOAT = 0;
+  let cnt: INT32;
+  let ubLocationNum: UINT8;
 
   // OK, using the # of locations, spread them evenly between our current weapon shots per burst value
 
@@ -96,9 +96,9 @@ function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pT
 }
 
 function RenderAccumulatedBurstLocations(): void {
-  INT32 cnt;
-  INT16 sGridNo;
-  HVOBJECT hVObject;
+  let cnt: INT32;
+  let sGridNo: INT16;
+  let hVObject: HVOBJECT;
 
   if (!gfBeginBurstSpreadTracking) {
     return;
@@ -118,10 +118,13 @@ function RenderAccumulatedBurstLocations(): void {
     sGridNo = gsBurstLocations[cnt].sGridNo;
 
     if (GridNoOnScreen(sGridNo)) {
-      FLOAT dOffsetX, dOffsetY;
-      FLOAT dTempX_S, dTempY_S;
-      INT16 sXPos, sYPos;
-      INT32 iBack;
+      let dOffsetX: FLOAT;
+      let dOffsetY: FLOAT;
+      let dTempX_S: FLOAT;
+      let dTempY_S: FLOAT;
+      let sXPos: INT16;
+      let sYPos: INT16;
+      let iBack: INT32;
 
       dOffsetX = (FLOAT)(gsBurstLocations[cnt].sX - gsRenderCenterX);
       dOffsetY = (FLOAT)(gsBurstLocations[cnt].sY - gsRenderCenterY);

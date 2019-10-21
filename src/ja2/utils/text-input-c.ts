@@ -1,5 +1,5 @@
-UINT16 *szClipboard;
-BOOLEAN gfNoScroll = FALSE;
+let szClipboard: Pointer<UINT16>;
+let gfNoScroll: BOOLEAN = FALSE;
 
 interface TextInputColors {
   // internal values that contain all of the colors for the text editing fields.
@@ -28,7 +28,7 @@ interface TextInputColors {
   usDisabledTextFieldColor: UINT16;
 }
 
-TextInputColors *pColors = NULL;
+let pColors: Pointer<TextInputColors> = NULL;
 
 // Internal nodes for keeping track of the text and user defined fields.
 interface TEXTINPUTNODE {
@@ -53,20 +53,22 @@ interface STACKTEXTINPUTNODE {
   next: Pointer<STACKTEXTINPUTNODE>;
 }
 
-STACKTEXTINPUTNODE *pInputStack = NULL;
+let pInputStack: Pointer<STACKTEXTINPUTNODE> = NULL;
 
 // Internal list vars.  active always points to the currently edited field.
-TEXTINPUTNODE *gpTextInputHead = NULL, *gpTextInputTail = NULL, *gpActive = NULL;
+let gpTextInputHead: Pointer<TEXTINPUTNODE> = NULL;
+let gpTextInputTail: Pointer<TEXTINPUTNODE> = NULL;
+let gpActive: Pointer<TEXTINPUTNODE> = NULL;
 
 // Saving current mode
-TEXTINPUTNODE *pSavedHead = NULL;
-TextInputColors *pSavedColors = NULL;
-UINT16 gusTextInputCursor = CURSOR_IBEAM;
+let pSavedHead: Pointer<TEXTINPUTNODE> = NULL;
+let pSavedColors: Pointer<TextInputColors> = NULL;
+let gusTextInputCursor: UINT16 = CURSOR_IBEAM;
 
 // Saves the current text input mode by pushing it onto our stack, then starts a new
 // one.
 function PushTextInputLevel(): void {
-  STACKTEXTINPUTNODE *pNewLevel;
+  let pNewLevel: Pointer<STACKTEXTINPUTNODE>;
   pNewLevel = (STACKTEXTINPUTNODE *)MemAlloc(sizeof(STACKTEXTINPUTNODE));
   Assert(pNewLevel);
   pNewLevel->head = gpTextInputHead;
@@ -80,7 +82,7 @@ function PushTextInputLevel(): void {
 // automatically.  Assert failure in this function will expose cases where you are trigger
 // happy with killing non-existant text input modes.
 function PopTextInputLevel(): void {
-  STACKTEXTINPUTNODE *pLevel;
+  let pLevel: Pointer<STACKTEXTINPUTNODE>;
   gpTextInputHead = pInputStack->head;
   pColors = pInputStack->pColors;
   pLevel = pInputStack;
@@ -91,17 +93,17 @@ function PopTextInputLevel(): void {
 }
 
 // flags for determining various editing modes.
-BOOLEAN gfEditingText = FALSE;
-BOOLEAN gfTextInputMode = FALSE;
-BOOLEAN gfHiliteMode = FALSE;
+let gfEditingText: BOOLEAN = FALSE;
+let gfTextInputMode: BOOLEAN = FALSE;
+let gfHiliteMode: BOOLEAN = FALSE;
 
 // values that contain the hiliting positions and the cursor position.
-UINT8 gubCursorPos = 0;
-UINT8 gubStartHilite = 0;
-UINT8 gubEndHilite = 0;
+let gubCursorPos: UINT8 = 0;
+let gubStartHilite: UINT8 = 0;
+let gubEndHilite: UINT8 = 0;
 
 // allow the user to cut, copy, and paste just like windows.
-UINT16 gszClipboardString[256];
+let gszClipboardString: UINT16[] /* [256] */;
 
 // Simply initiates that you wish to begin inputting text.  This should only apply to screen
 // initializations that contain fields that edit text.  It also verifies and clears any existing
@@ -144,7 +146,7 @@ function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
 
 // Clears any existing fields, and ends text input mode.
 function KillTextInputMode(): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   if (!gpTextInputHead)
     //		AssertMsg( 0, "Called KillTextInputMode() without any text input mode defined.");
     return;
@@ -187,7 +189,7 @@ function KillAllTextInputModes(): void {
 // of calls to this function dictate the TAB order from traversing from one field to the next.  This
 // function adds mouse regions and processes them for you, as well as deleting them when you are done.
 function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: Pointer<UINT16>, ubMaxChars: UINT8, usInputType: UINT16): void {
-  TEXTINPUTNODE *pNode;
+  let pNode: Pointer<TEXTINPUTNODE>;
   pNode = (TEXTINPUTNODE *)MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   memset(pNode, 0, sizeof(TEXTINPUTNODE));
@@ -246,7 +248,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
 // field.  Pressing TAB again would place you back in the text input field.  All of that stuff would be handled
 // externally, except for the TAB keys.
 function AddUserInputField(userFunction: INPUT_CALLBACK): void {
-  TEXTINPUTNODE *pNode;
+  let pNode: Pointer<TEXTINPUTNODE>;
   pNode = (TEXTINPUTNODE *)MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   pNode->next = NULL;
@@ -275,7 +277,7 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
 // Removes the specified field from the existing fields.  If it doesn't exist, then there will be an
 // assertion failure.
 function RemoveTextInputField(ubField: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -317,7 +319,7 @@ function GetActiveFieldID(): INT16 {
 // call would be made when the user selected a different filename in the list via clicking or scrolling with
 // the arrows, or even using alpha chars to jump to the appropriate filename.
 function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<UINT16>): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -338,7 +340,7 @@ function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<U
 }
 
 function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UINT8>): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -360,7 +362,7 @@ function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UI
 
 // Allows external functions to access the strings within the fields at anytime.
 function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -373,7 +375,7 @@ function Get8BitStringFromField(ubField: UINT8, szString: Pointer<UINT8>): void 
 }
 
 function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -388,9 +390,9 @@ function Get16BitStringFromField(ubField: UINT8, szString: Pointer<UINT16>): voi
 // Converts the field's string into a number, then returns that number
 // returns -1 if blank or invalid.  Only works for positive numbers.
 function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
-  UINT16 *ptr;
-  UINT16 str[20];
-  INT32 total;
+  let ptr: Pointer<UINT16>;
+  let str: UINT16[] /* [20] */;
+  let total: INT32;
   Get16BitStringFromField(ubField, str);
   // Blank string, so return -1
   if (str[0] == '\0')
@@ -415,7 +417,7 @@ function GetNumericStrictValueFromField(ubField: UINT8): INT32 {
 // Converts a number to a numeric strict value.  If the number is negative, the
 // field will be blank.
 function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT32): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -424,7 +426,7 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
       if (iNumber < 0) // negative number converts to blank string
         swprintf(curr->szString, L"");
       else {
-        INT32 iMax = (INT32)pow(10.0, curr->ubMaxChars);
+        let iMax: INT32 = (INT32)pow(10.0, curr->ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
           swprintf(curr->szString, L"%d", iMax - 1);
         else // set string to the number given
@@ -439,7 +441,7 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
 
 // Sets the active field to the specified ID passed.
 function SetActiveField(ubField: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr != gpActive && curr->ubID == ubField && curr->fEnabled) {
@@ -463,8 +465,8 @@ function SetActiveField(ubField: UINT8): void {
 }
 
 function SelectNextField(): void {
-  BOOLEAN fDone = FALSE;
-  TEXTINPUTNODE *pStart;
+  let fDone: BOOLEAN = FALSE;
+  let pStart: Pointer<TEXTINPUTNODE>;
 
   if (!gpActive)
     return;
@@ -500,8 +502,8 @@ function SelectNextField(): void {
 }
 
 function SelectPrevField(): void {
-  BOOLEAN fDone = FALSE;
-  TEXTINPUTNODE *pStart;
+  let fDone: BOOLEAN = FALSE;
+  let pStart: Pointer<TEXTINPUTNODE>;
 
   if (!gpActive)
     return;
@@ -746,8 +748,8 @@ function HandleTextInput(Event: Pointer<InputAtom>): BOOLEAN {
         HandleExclusiveInput(Event->usParam);
       else {
         // Use abbreviations
-        UINT32 key = Event->usParam;
-        UINT16 type = gpActive->usInputType;
+        let key: UINT32 = Event->usParam;
+        let type: UINT16 = gpActive->usInputType;
         // Handle space key
         if (key == SPACE && type & INPUTTYPE_SPACES) {
           AddChar(key);
@@ -868,7 +870,7 @@ function AddChar(uiKey: UINT32): void {
     gubCursorPos = gpActive->ubStrLen;
   } else {
     // insert character after cursor
-    INT16 sChar;
+    let sChar: INT16;
     sChar = (INT16)(gpActive->ubStrLen + 1);
     while (sChar >= gubCursorPos) {
       gpActive->szString[sChar + 1] = gpActive->szString[sChar];
@@ -881,8 +883,9 @@ function AddChar(uiKey: UINT32): void {
 }
 
 function DeleteHilitedText(): void {
-  UINT8 ubCount;
-  UINT8 ubStart, ubEnd;
+  let ubCount: UINT8;
+  let ubStart: UINT8;
+  let ubEnd: UINT8;
   gfHiliteMode = FALSE;
   if (gubStartHilite != gubEndHilite) {
     if (gubStartHilite < gubEndHilite) {
@@ -903,7 +906,7 @@ function DeleteHilitedText(): void {
 }
 
 function RemoveChar(ubArrayIndex: UINT8): void {
-  BOOLEAN fDeleting = FALSE;
+  let fDeleting: BOOLEAN = FALSE;
   while (ubArrayIndex < gpActive->ubStrLen) {
     gpActive->szString[ubArrayIndex] = gpActive->szString[ubArrayIndex + 1];
     ubArrayIndex++;
@@ -916,11 +919,13 @@ function RemoveChar(ubArrayIndex: UINT8): void {
 
 // Internally used to continue highlighting text
 function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   if (gfLeftButtonState) {
     if (reason & MSYS_CALLBACK_REASON_MOVE || reason & MSYS_CALLBACK_REASON_LOST_MOUSE || reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-      INT32 iClickX, iCurrCharPos, iNextCharPos;
-      UINT8 ubNewID;
+      let iClickX: INT32;
+      let iCurrCharPos: INT32;
+      let iNextCharPos: INT32;
+      let ubNewID: UINT8;
       ubNewID = (UINT8)MSYS_GetRegionUserData(reg, 0);
       if (ubNewID != gpActive->ubID) {
         // deselect the current text edit region if applicable, then find the new one.
@@ -965,10 +970,12 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
 
 // Internally used to calculate where to place the cursor.
 function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    INT32 iClickX, iCurrCharPos, iNextCharPos;
-    UINT8 ubNewID;
+    let iClickX: INT32;
+    let iCurrCharPos: INT32;
+    let iNextCharPos: INT32;
+    let ubNewID: UINT8;
     ubNewID = (UINT8)MSYS_GetRegionUserData(reg, 0);
     if (ubNewID != gpActive->ubID) {
       // deselect the current text edit region if applicable, then find the new one.
@@ -1001,7 +1008,7 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
 }
 
 function RenderBackgroundField(pNode: Pointer<TEXTINPUTNODE>): void {
-  UINT16 usColor;
+  let usColor: UINT16;
   if (pColors->fBevelling) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->region.RegionTopLeftX, pNode->region.RegionTopLeftY, pNode->region.RegionBottomRightX, pNode->region.RegionBottomRightY, pColors->usDarkerColor);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, pNode->region.RegionTopLeftX + 1, pNode->region.RegionTopLeftY + 1, pNode->region.RegionBottomRightX, pNode->region.RegionBottomRightY, pColors->usBrighterColor);
@@ -1017,9 +1024,9 @@ function RenderBackgroundField(pNode: Pointer<TEXTINPUTNODE>): void {
 }
 
 function RenderActiveTextField(): void {
-  UINT32 uiCursorXPos;
-  UINT16 usOffset;
-  UINT16 str[256];
+  let uiCursorXPos: UINT32;
+  let usOffset: UINT16;
+  let str: UINT16[] /* [256] */;
   if (!gpActive || !gpActive->szString)
     return;
 
@@ -1029,8 +1036,9 @@ function RenderActiveTextField(): void {
   RenderBackgroundField(gpActive);
   if (gfHiliteMode && gubStartHilite != gubEndHilite) {
     // Some or all of the text is hilighted, so we will use a different method.
-    UINT16 i;
-    UINT16 usStart, usEnd;
+    let i: UINT16;
+    let usStart: UINT16;
+    let usEnd: UINT16;
     // sort the hilite order.
     if (gubStartHilite < gubEndHilite) {
       usStart = gubStartHilite;
@@ -1079,9 +1087,10 @@ function RenderActiveTextField(): void {
 }
 
 function RenderInactiveTextField(ubID: UINT8): void {
-  UINT16 usOffset;
-  TEXTINPUTNODE *pNode, *curr;
-  UINT16 str[256];
+  let usOffset: UINT16;
+  let pNode: Pointer<TEXTINPUTNODE>;
+  let curr: Pointer<TEXTINPUTNODE>;
+  let str: UINT16[] /* [256] */;
   curr = gpTextInputHead;
   pNode = NULL;
   while (curr) {
@@ -1105,8 +1114,8 @@ function RenderInactiveTextField(ubID: UINT8): void {
 }
 
 function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
-  UINT16 usOffset;
-  UINT16 str[256];
+  let usOffset: UINT16;
+  let str: UINT16[] /* [256] */;
   if (!pNode || !pNode->szString)
     return;
   SaveFontSettings();
@@ -1126,9 +1135,9 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
   mprintf(pNode->region.RegionTopLeftX + 3, pNode->region.RegionTopLeftY + usOffset, str);
   RestoreFontSettings();
   if (!pNode->fEnabled && pColors->fUseDisabledAutoShade) {
-    UINT8 *pDestBuf;
-    UINT32 uiDestPitchBYTES;
-    SGPRect ClipRect;
+    let pDestBuf: Pointer<UINT8>;
+    let uiDestPitchBYTES: UINT32;
+    let ClipRect: SGPRect;
     ClipRect.iLeft = pNode->region.RegionTopLeftX;
     ClipRect.iRight = pNode->region.RegionBottomRightX;
     ClipRect.iTop = pNode->region.RegionTopLeftY;
@@ -1141,8 +1150,8 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
 
 // Use when you do a full interface update.
 function RenderAllTextFields(): void {
-  STACKTEXTINPUTNODE *stackCurr;
-  TEXTINPUTNODE *curr;
+  let stackCurr: Pointer<STACKTEXTINPUTNODE>;
+  let curr: Pointer<TEXTINPUTNODE>;
   // Render all of the other text input levels first,
   // if they exist at all.
   stackCurr = pInputStack;
@@ -1166,7 +1175,7 @@ function RenderAllTextFields(): void {
 }
 
 function EnableTextField(ubID: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubID) {
@@ -1183,7 +1192,7 @@ function EnableTextField(ubID: UINT8): void {
 }
 
 function DisableTextField(ubID: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubID) {
@@ -1200,7 +1209,7 @@ function DisableTextField(ubID: UINT8): void {
 }
 
 function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID >= ubFirstID && curr->ubID <= ubLastID) {
@@ -1216,7 +1225,7 @@ function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
 }
 
 function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID >= ubFirstID && curr->ubID <= ubLastID) {
@@ -1232,7 +1241,7 @@ function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
 }
 
 function EnableAllTextFields(): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (!curr->fEnabled) {
@@ -1246,7 +1255,7 @@ function EnableAllTextFields(): void {
 }
 
 function DisableAllTextFields(): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->fEnabled) {
@@ -1279,8 +1288,9 @@ function KillClipboard(): void {
 }
 
 function ExecuteCopyCommand(): void {
-  UINT8 ubCount;
-  UINT8 ubStart, ubEnd;
+  let ubCount: UINT8;
+  let ubStart: UINT8;
+  let ubEnd: UINT8;
   if (!gpActive || !gpActive->szString)
     return;
   // Delete the current contents in the clipboard
@@ -1305,7 +1315,7 @@ function ExecuteCopyCommand(): void {
 }
 
 function ExecutePasteCommand(): void {
-  UINT8 ubCount;
+  let ubCount: UINT8;
   if (!gpActive || !szClipboard)
     return;
   DeleteHilitedText();
@@ -1353,8 +1363,8 @@ function GetTextInputCursor(): UINT16 {
 }
 
 function SetTextInputCursor(usNewCursor: UINT16): void {
-  STACKTEXTINPUTNODE *stackCurr;
-  TEXTINPUTNODE *curr;
+  let stackCurr: Pointer<STACKTEXTINPUTNODE>;
+  let curr: Pointer<TEXTINPUTNODE>;
   if (gusTextInputCursor == usNewCursor) {
     return;
   }
@@ -1380,8 +1390,8 @@ function SetTextInputCursor(usNewCursor: UINT16): void {
 
 // Utility functions for the INPUTTYPE_EXCLUSIVE_24HOURCLOCK input type.
 function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
-  TEXTINPUTNODE *curr;
-  UINT16 usTime;
+  let curr: Pointer<TEXTINPUTNODE>;
+  let usTime: UINT16;
   curr = gpTextInputHead;
   while (curr) {
     if (curr->ubID == ubField) {
@@ -1416,7 +1426,7 @@ function GetExclusive24HourTimeValueFromField(ubField: UINT8): UINT16 {
 
 // Utility functions for the INPUTTYPE_EXCLUSIVE_24HOURCLOCK input type.
 function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
-  TEXTINPUTNODE *curr;
+  let curr: Pointer<TEXTINPUTNODE>;
   // First make sure the time is a valid time.  If not, then use 23:59
   if (usTime == 0xffff) {
     SetInputFieldStringWith16BitString(ubField, L"");
@@ -1442,7 +1452,8 @@ function SetExclusive24HourTimeValue(ubField: UINT8, usTime: UINT16): void {
 }
 
 function DoublePercentileCharacterFromStringIntoString(pSrcString: Pointer<UINT16>, pDstString: Pointer<UINT16>): void {
-  INT32 iSrcIndex = 0, iDstIndex = 0;
+  let iSrcIndex: INT32 = 0;
+  let iDstIndex: INT32 = 0;
   while (pSrcString[iSrcIndex] != 0) {
     if (pSrcString[iSrcIndex] == '%') {
       pDstString[iDstIndex] = '%';

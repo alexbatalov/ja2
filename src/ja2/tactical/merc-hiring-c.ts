@@ -3,17 +3,17 @@ const MIN_FLIGHT_PREP_TIME = 6;
 // ATE: Globals that dictate where the mercs will land once being hired
 // Default to Omerta
 // Saved in general saved game structure
-INT16 gsMercArriveSectorX = 9;
-INT16 gsMercArriveSectorY = 1;
+let gsMercArriveSectorX: INT16 = 9;
+let gsMercArriveSectorY: INT16 = 1;
 
 function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
-  SOLDIERTYPE *pSoldier;
-  UINT8 iNewIndex;
-  UINT8 ubCount = 0;
-  UINT8 ubCurrentSoldier = pHireMerc->ubProfileID;
-  MERCPROFILESTRUCT *pMerc;
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  BOOLEAN fReturn = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let iNewIndex: UINT8;
+  let ubCount: UINT8 = 0;
+  let ubCurrentSoldier: UINT8 = pHireMerc->ubProfileID;
+  let pMerc: Pointer<MERCPROFILESTRUCT>;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let fReturn: BOOLEAN = FALSE;
   pMerc = &gMercProfiles[ubCurrentSoldier];
 
 // If we are to disregard the ststus of the merc
@@ -51,7 +51,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 // OK, CHECK FOR FIRST GUY, GIVE HIM SPECIAL ITEM!
     if (iNewIndex == 0) {
       // OK, give this item to our merc!
-      OBJECTTYPE Object;
+      let Object: OBJECTTYPE;
 
       // make an objecttype
       memset(&Object, 0, sizeof(OBJECTTYPE));
@@ -182,9 +182,9 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
 }
 
 function MercArrivesCallback(ubSoldierID: UINT8): void {
-  MERCPROFILESTRUCT *pMerc;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiTimeOfPost;
+  let pMerc: Pointer<MERCPROFILESTRUCT>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiTimeOfPost: UINT32;
 
   if (!DidGameJustStart() && gsMercArriveSectorX == 9 && gsMercArriveSectorY == 1) {
     // Mercs arriving in A9.  This sector has been deemed as the always safe sector.
@@ -315,10 +315,10 @@ function IsTheSoldierAliveAndConcious(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function NumberOfMercsOnPlayerTeam(): UINT8 {
-  INT8 cnt;
-  SOLDIERTYPE *pSoldier;
-  INT16 bLastTeamID;
-  UINT8 ubCount = 0;
+  let cnt: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
+  let ubCount: UINT8 = 0;
 
   // Set locator to first merc
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -335,8 +335,10 @@ function NumberOfMercsOnPlayerTeam(): UINT8 {
 }
 
 function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT8 cnt, bHated, bLastTeamID;
-  SOLDIERTYPE *pTeamSoldier;
+  let cnt: INT8;
+  let bHated: INT8;
+  let bLastTeamID: INT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   // If we are approaching with helicopter, don't say any ( yet )
   if (pSoldier->ubStrategicInsertionCode != INSERTION_CODE_CHOPPER) {
@@ -375,8 +377,8 @@ function HandleMercArrivesQuotes(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function GetMercArrivalTimeOfDay(): UINT32 {
-  UINT32 uiCurrHour;
-  UINT32 uiMinHour;
+  let uiCurrHour: UINT32;
+  let uiMinHour: UINT32;
 
   // Pick a time...
 
@@ -406,8 +408,8 @@ function GetMercArrivalTimeOfDay(): UINT32 {
 }
 
 function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
@@ -426,7 +428,9 @@ function UpdateAnyInTransitMercsWithGlobalArrivalSector(): void {
 }
 
 function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
-  INT16 sRows, sCols, sResult;
+  let sRows: INT16;
+  let sCols: INT16;
+  let sResult: INT16;
 
   sRows = abs((sOrigin / MAP_WORLD_X) - (sDest / MAP_WORLD_X));
   sCols = abs((sOrigin % MAP_WORLD_X) - (sDest % MAP_WORLD_X));
@@ -443,17 +447,24 @@ function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
 // if there are enemies present, it's invalid
 // if so, search around for nearest non-occupied sector.
 function CheckForValidArrivalSector(): void {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, sGoodX, sGoodY;
-  UINT8 ubRadius = 4;
-  INT32 leftmost;
-  INT16 sSectorGridNo, sSectorGridNo2;
-  INT32 uiRange, uiLowestRange = 999999;
-  BOOLEAN fFound = FALSE;
-  CHAR16 sString[1024];
-  CHAR16 zShortTownIDString1[50];
-  CHAR16 zShortTownIDString2[50];
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGoodX: INT16;
+  let sGoodY: INT16;
+  let ubRadius: UINT8 = 4;
+  let leftmost: INT32;
+  let sSectorGridNo: INT16;
+  let sSectorGridNo2: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let fFound: BOOLEAN = FALSE;
+  let sString: CHAR16[] /* [1024] */;
+  let zShortTownIDString1: CHAR16[] /* [50] */;
+  let zShortTownIDString2: CHAR16[] /* [50] */;
 
   sSectorGridNo = gsMercArriveSectorX + (MAP_WORLD_X * gsMercArriveSectorY);
 

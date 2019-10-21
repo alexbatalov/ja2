@@ -1,11 +1,11 @@
-UINT32 guiArmourBackground;
-UINT32 guiArmourGrid;
+let guiArmourBackground: UINT32;
+let guiArmourGrid: UINT32;
 
 function GameInitBobbyRArmour(): void {
 }
 
 function EnterBobbyRArmour(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -45,7 +45,7 @@ function HandleBobbyRArmour(): void {
 }
 
 function RenderBobbyRArmour(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiArmourBackground);
 

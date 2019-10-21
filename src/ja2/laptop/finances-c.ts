@@ -67,47 +67,47 @@ const BTN_Y = 53;
 const RECORD_SIZE = () => (sizeof(UINT32) + sizeof(INT32) + sizeof(INT32) + sizeof(UINT8) + sizeof(UINT8));
 
 // the financial record list
-FinanceUnitPtr pFinanceListHead = NULL;
+let pFinanceListHead: FinanceUnitPtr = NULL;
 
 // current players balance
 // INT32 iCurrentBalance=0;
 
 // current page displayed
-INT32 iCurrentPage = 0;
+let iCurrentPage: INT32 = 0;
 
 // current financial record (the one at the top of the current page)
-FinanceUnitPtr pCurrentFinance = NULL;
+let pCurrentFinance: FinanceUnitPtr = NULL;
 
 // video object id's
-UINT32 guiTITLE;
-UINT32 guiGREYFRAME;
-UINT32 guiTOP;
-UINT32 guiMIDDLE;
-UINT32 guiBOTTOM;
-UINT32 guiLINE;
-UINT32 guiLONGLINE;
-UINT32 guiLISTCOLUMNS;
+let guiTITLE: UINT32;
+let guiGREYFRAME: UINT32;
+let guiTOP: UINT32;
+let guiMIDDLE: UINT32;
+let guiBOTTOM: UINT32;
+let guiLINE: UINT32;
+let guiLONGLINE: UINT32;
+let guiLISTCOLUMNS: UINT32;
 
 // are in the financial system right now?
-BOOLEAN fInFinancialMode = FALSE;
+let fInFinancialMode: BOOLEAN = FALSE;
 
 // the last page loaded
-UINT32 guiLastPageLoaded = 0;
+let guiLastPageLoaded: UINT32 = 0;
 
 // the last page altogether
-UINT32 guiLastPageInRecordsList = 0;
+let guiLastPageInRecordsList: UINT32 = 0;
 
 // finance screen buttons
-INT32 giFinanceButton[4];
-INT32 giFinanceButtonImage[4];
+let giFinanceButton: INT32[] /* [4] */;
+let giFinanceButtonImage: INT32[] /* [4] */;
 
 function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, iAmount: INT32): UINT32 {
   // adds transaction to player's book(Financial List), returns unique id number of it
   // outside of the financial system(the code in this .c file), this is the only function you'll ever need
 
-  INT32 iCurPage = iCurrentPage;
-  UINT32 uiId = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let iCurPage: INT32 = iCurrentPage;
+  let uiId: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   // read in balance from file
 
@@ -156,7 +156,7 @@ function AddTransactionToPlayersBook(ubCode: UINT8, ubSecondCode: UINT8, uiDate:
 }
 
 function GetFinance(uiId: UINT32): FinanceUnitPtr {
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   // get a finance object and return a pointer to it, the obtaining of the
   // finance object is via a unique ID the programmer must store
@@ -180,8 +180,8 @@ function GetFinance(uiId: UINT32): FinanceUnitPtr {
 
 function GetTotalDebits(): UINT32 {
   // returns the total of the debits
-  UINT32 uiDebits = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiDebits: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   // run to end of list
   while (pFinance) {
@@ -198,8 +198,8 @@ function GetTotalDebits(): UINT32 {
 
 function GetTotalCredits(): UINT32 {
   // returns the total of the credits
-  UINT32 uiCredits = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiCredits: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   // run to end of list
   while (pFinance) {
@@ -216,8 +216,8 @@ function GetTotalCredits(): UINT32 {
 
 function GetDayCredits(usDayNumber: UINT32): UINT32 {
   // returns the total of the credits for day( note resolution of usDayNumber is days)
-  UINT32 uiCredits = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiCredits: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
     // if a credit and it occurs on day passed
@@ -233,8 +233,8 @@ function GetDayCredits(usDayNumber: UINT32): UINT32 {
 
 function GetDayDebits(usDayNumber: UINT32): UINT32 {
   // returns the total of the debits
-  UINT32 uiDebits = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiDebits: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
     if ((pFinance->iAmount > 0) && ((pFinance->uiDate / (60 * 24)) == usDayNumber))
@@ -249,8 +249,8 @@ function GetDayDebits(usDayNumber: UINT32): UINT32 {
 
 function GetTotalToDay(sTimeInMins: INT32): INT32 {
   // gets the total amount to this day
-  UINT32 uiTotal = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiTotal: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
     if (((INT32)(pFinance->uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
@@ -384,7 +384,7 @@ function HandleFinances(): void {
 }
 
 function RenderFinances(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // draw background
   RenderBackGround();
@@ -412,7 +412,7 @@ function RenderFinances(): void {
 }
 
 function LoadFinances(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
   // load Finance video objects into memory
 
   // title bar
@@ -456,8 +456,8 @@ function RemoveFinances(): void {
 
 function RenderBackGround(): void {
   // render generic background for Finance system
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
 
   // get title bar object
   GetVideoObject(&hHandle, guiTITLE);
@@ -480,7 +480,7 @@ function DrawSummary(): void {
 
 function DrawSummaryLines(): void {
   // draw divider lines on screen
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // the summary LINE object handle
   GetVideoObject(&hHandle, guiLINE);
@@ -498,8 +498,8 @@ function DrawSummaryLines(): void {
 
 function DrawAPageOfRecords(): void {
   // this procedure will draw a series of financial records to the screen
-  INT32 iCurPage = 1;
-  INT32 iCount = 0;
+  let iCurPage: INT32 = 1;
+  let iCount: INT32 = 0;
   pCurrentFinance = pFinanceListHead;
 
   // (re-)render background
@@ -517,8 +517,8 @@ function DrawAPageOfRecords(): void {
 
 function DrawRecordsBackGround(): void {
   // proceudre will draw the background for the list of financial records
-  INT32 iCounter = 6;
-  HVOBJECT hHandle;
+  let iCounter: INT32 = 6;
+  let hHandle: HVOBJECT;
 
   // render the generic background
   RenderBackGround();
@@ -546,7 +546,8 @@ function DrawRecordsBackGround(): void {
 
 function DrawRecordsColumnHeadersText(): void {
   // write the headers text for each column
-  UINT16 usX, usY;
+  let usX: UINT16;
+  let usY: UINT16;
 
   // font stuff
   SetFont(FINANCE_TEXT_FONT);
@@ -580,12 +581,13 @@ function DrawRecordsColumnHeadersText(): void {
 
 function DrawRecordsText(): void {
   // draws the text of the records
-  FinanceUnitPtr pCurFinance = pCurrentFinance;
-  FinanceUnitPtr pTempFinance = pFinanceListHead;
-  wchar_t sString[512];
-  INT32 iCounter = 0;
-  UINT16 usX, usY;
-  INT32 iBalance = 0;
+  let pCurFinance: FinanceUnitPtr = pCurrentFinance;
+  let pTempFinance: FinanceUnitPtr = pFinanceListHead;
+  let sString: wchar_t[] /* [512] */;
+  let iCounter: INT32 = 0;
+  let usX: UINT16;
+  let usY: UINT16;
+  let iBalance: INT32 = 0;
 
   // setup the font stuff
   SetFont(FINANCE_TEXT_FONT);
@@ -712,9 +714,10 @@ function InvalidateLapTopScreen(): void {
 }
 
 function DrawSummaryText(): void {
-  INT16 usX, usY;
-  wchar_t pString[100];
-  INT32 iBalance = 0;
+  let usX: INT16;
+  let usY: INT16;
+  let pString: wchar_t[] /* [100] */;
+  let iBalance: INT32 = 0;
 
   // setup the font stuff
   SetFont(FINANCE_TEXT_FONT);
@@ -902,13 +905,14 @@ function DrawSummaryText(): void {
 
 function OpenAndReadFinancesFile(): void {
   // this procedure will open and read in data to the finance list
-  HWFILE hFileHandle;
-  UINT8 ubCode, ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
+  let hFileHandle: HWFILE;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
 
   // clear out the old list
   ClearFinanceList();
@@ -967,8 +971,8 @@ function OpenAndReadFinancesFile(): void {
 
 function ClearFinanceList(): void {
   // remove each element from list of transactions
-  FinanceUnitPtr pFinanceList = pFinanceListHead;
-  FinanceUnitPtr pFinanceNode = pFinanceList;
+  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
+  let pFinanceNode: FinanceUnitPtr = pFinanceList;
 
   // while there are elements in the list left, delete them
   while (pFinanceList) {
@@ -987,8 +991,8 @@ function ClearFinanceList(): void {
 }
 
 function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: INT32, ubSecondCode: UINT8, iBalanceToDate: INT32): UINT32 {
-  UINT32 uiId = 0;
-  FinanceUnitPtr pFinance = pFinanceListHead;
+  let uiId: UINT32 = 0;
+  let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   // add to finance list
   if (pFinance) {
@@ -1057,7 +1061,7 @@ function CreateFinanceButtons(): void {
 }
 
 function DestroyFinanceButtons(): void {
-  UINT32 uiCnt;
+  let uiCnt: UINT32;
 
   for (uiCnt = 0; uiCnt < 4; uiCnt++) {
     RemoveButton(giFinanceButton[uiCnt]);
@@ -1096,7 +1100,7 @@ function BtnFinanceDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
 function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiButton = MSYS_GetBtnUserData(btn, 0);
+    let uiButton: UINT32 = MSYS_GetBtnUserData(btn, 0);
 
     btn->uiFlags &= ~(BUTTON_CLICKED_ON);
 
@@ -1124,9 +1128,9 @@ function BtnFinanceFirstLastPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT32
 
 function IncrementCurrentPageFinancialDisplay(): void {
   // run through list, from pCurrentFinance, to NUM_RECORDS_PER_PAGE +1 FinancialUnits
-  FinanceUnitPtr pTempFinance = pCurrentFinance;
-  BOOLEAN fOkToIncrementPage = FALSE;
-  INT32 iCounter = 0;
+  let pTempFinance: FinanceUnitPtr = pCurrentFinance;
+  let fOkToIncrementPage: BOOLEAN = FALSE;
+  let iCounter: INT32 = 0;
 
   // on the overview page, simply set iCurrent to head of list, and page to 1
   if (iCurrentPage == 0) {
@@ -1260,9 +1264,9 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       swprintf(pString, pTransactionText[PAYMENT_TO_NPC], gMercProfiles[pFinance->ubSecondCode].zNickname);
       break;
     case (TRAIN_TOWN_MILITIA): {
-      UINT16 str[128];
-      UINT8 ubSectorX;
-      UINT8 ubSectorY;
+      let str: UINT16[] /* [128] */;
+      let ubSectorX: UINT8;
+      let ubSectorY: UINT8;
       ubSectorX = (UINT8)SECTORX(pFinance->ubSecondCode);
       ubSectorY = (UINT8)SECTORY(pFinance->ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, TRUE);
@@ -1282,11 +1286,11 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
 function DisplayFinancePageNumberAndDateRange(): void {
   // this function will go through the list of 'histories' starting at current until end or
   // MAX_PER_PAGE...it will get the date range and the page number
-  INT32 iLastPage = 0;
-  INT32 iCounter = 0;
-  UINT32 uiLastDate;
-  FinanceUnitPtr pTempFinance = pFinanceListHead;
-  wchar_t sString[50];
+  let iLastPage: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let uiLastDate: UINT32;
+  let pTempFinance: FinanceUnitPtr = pFinanceListHead;
+  let sString: wchar_t[] /* [50] */;
 
   // setup the font stuff
   SetFont(FINANCE_TEXT_FONT);
@@ -1321,9 +1325,9 @@ function DisplayFinancePageNumberAndDateRange(): void {
 
 function WriteBalanceToDisk(): BOOLEAN {
   // will write the current balance to disk
-  HWFILE hFileHandle;
-  INT32 iBytesWritten = 0;
-  FinanceUnitPtr pFinanceList = pFinanceListHead;
+  let hFileHandle: HWFILE;
+  let iBytesWritten: INT32 = 0;
+  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
@@ -1341,8 +1345,8 @@ function GetBalanceFromDisk(): void {
   // will grab the current blanace from disk
   // assuming file already openned
   // this procedure will open and read in data to the finance list
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, (FILE_OPEN_EXISTING | FILE_ACCESS_READ), FALSE);
@@ -1371,9 +1375,9 @@ function GetBalanceFromDisk(): void {
 
 function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
   // will write the current finance to disk
-  HWFILE hFileHandle;
-  INT32 iBytesWritten = 0;
-  FinanceUnitPtr pFinanceList = pFinanceListHead;
+  let hFileHandle: HWFILE;
+  let iBytesWritten: INT32 = 0;
+  let pFinanceList: FinanceUnitPtr = pFinanceListHead;
 
   // open file
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
@@ -1410,9 +1414,9 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
 function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
   // this function will read in the last unit in the finance list, to grab it's id number
 
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  INT32 iFileSize = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iFileSize: INT32 = 0;
 
   // no file, return
   if (!(FileExists(FINANCES_DATA_FILE)))
@@ -1447,8 +1451,8 @@ function ReadInLastElementOfFinanceListAndReturnIdNumber(): UINT32 {
 
 function SetLastPageInRecords(): void {
   // grabs the size of the file and interprets number of pages it will take up
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
 
   // no file, return
   if (!(FileExists(FINANCES_DATA_FILE)))
@@ -1516,15 +1520,16 @@ function LoadNextPage(): BOOLEAN {
 function LoadInRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
-  BOOLEAN fOkToContinue = TRUE;
-  INT32 iCount = 0;
-  HWFILE hFileHandle;
-  UINT8 ubCode, ubSecondCode;
-  INT32 iBalanceToDate;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
+  let fOkToContinue: BOOLEAN = TRUE;
+  let iCount: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let iBalanceToDate: INT32;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1603,10 +1608,10 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
 }
 
 function InsertCommasForDollarFigure(pString: STR16): void {
-  INT16 sCounter = 0;
-  INT16 sZeroCount = 0;
-  INT16 sTempCounter = 0;
-  INT16 sEndPosition = 0;
+  let sCounter: INT16 = 0;
+  let sZeroCount: INT16 = 0;
+  let sTempCounter: INT16 = 0;
+  let sEndPosition: INT16 = 0;
 
   // go to end of dollar figure
   while (pString[sCounter] != 0) {
@@ -1660,7 +1665,7 @@ function InsertCommasForDollarFigure(pString: STR16): void {
 function InsertDollarSignInToString(pString: STR16): void {
   // run to end of string, copy everything in string 2 places right, insert a space at pString[ 1 ] and a L'$' at pString[ 0 ]
 
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // run to end of string
   while (pString[iCounter] != 0) {
@@ -1681,9 +1686,9 @@ function InsertDollarSignInToString(pString: STR16): void {
 function GetPreviousBalanceToDate(): INT32 {
   // will grab balance to date of previous record
   // grabs the size of the file and interprets number of pages it will take up
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  INT32 iBalanceToDate = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iBalanceToDate: INT32 = 0;
 
   // no file, return
   if (!(FileExists(FINANCES_DATA_FILE)))
@@ -1717,20 +1722,20 @@ function GetPreviousBalanceToDate(): INT32 {
 
 function GetPreviousDaysBalance(): INT32 {
   // find out what today is, then go back 2 days, get balance for that day
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
-  INT32 iFileSize = 0;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
+  let iFileSize: INT32 = 0;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin() - (60 * 24);
@@ -1797,19 +1802,19 @@ function GetPreviousDaysBalance(): INT32 {
 
 function GetTodaysBalance(): INT32 {
   // find out what today is, then go back 2 days, get balance for that day
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -1869,21 +1874,21 @@ function GetTodaysBalance(): INT32 {
 function GetPreviousDaysIncome(): INT32 {
   // will return the income from the previous day
   // which is todays starting balance - yesterdays starting balance
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  BOOLEAN fOkToIncrement = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
-  INT32 iTotalPreviousIncome = 0;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToIncrement: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
+  let iTotalPreviousIncome: INT32 = 0;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -1959,21 +1964,21 @@ function GetPreviousDaysIncome(): INT32 {
 function GetTodaysDaysIncome(): INT32 {
   // will return the income from the previous day
   // which is todays starting balance - yesterdays starting balance
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  BOOLEAN fOkToIncrement = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
-  INT32 iTotalIncome = 0;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToIncrement: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
+  let iTotalIncome: INT32 = 0;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2073,21 +2078,21 @@ function SetFinanceButtonStates(): void {
 function GetTodaysOtherDeposits(): INT32 {
   // grab todays other deposits
 
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  BOOLEAN fOkToIncrement = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
-  INT32 iTotalIncome = 0;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToIncrement: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
+  let iTotalIncome: INT32 = 0;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2161,21 +2166,21 @@ function GetTodaysOtherDeposits(): INT32 {
 }
 
 function GetYesterdaysOtherDeposits(): INT32 {
-  INT32 iPreviousDaysBalance = 0;
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  UINT32 iDateInMinutes = 0;
-  BOOLEAN fOkToContinue = FALSE;
-  BOOLEAN fOkToIncrement = FALSE;
-  UINT32 iByteCount = 0;
-  INT32 iCounter = 1;
-  UINT8 ubCode;
-  UINT8 ubSecondCode;
-  UINT32 uiDate;
-  INT32 iAmount;
-  INT32 iBalanceToDate;
-  BOOLEAN fGoneTooFar = FALSE;
-  INT32 iTotalPreviousIncome = 0;
+  let iPreviousDaysBalance: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iDateInMinutes: UINT32 = 0;
+  let fOkToContinue: BOOLEAN = FALSE;
+  let fOkToIncrement: BOOLEAN = FALSE;
+  let iByteCount: UINT32 = 0;
+  let iCounter: INT32 = 1;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let iAmount: INT32;
+  let iBalanceToDate: INT32;
+  let fGoneTooFar: BOOLEAN = FALSE;
+  let iTotalPreviousIncome: INT32 = 0;
 
   // what day is it?
   iDateInMinutes = GetWorldTotalMin();
@@ -2260,8 +2265,8 @@ function GetYesterdaysDebits(): INT32 {
 
 function LoadCurrentBalance(): void {
   // will load the current balance from finances.dat file
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
 
   // is the first record in the file
   // error checking

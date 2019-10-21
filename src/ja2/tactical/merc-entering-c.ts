@@ -33,7 +33,7 @@ const enum Enum233 {
   HELI_DONE,
 }
 
-UINT8 ubHeliScripts[NUM_HELI_STATES][MAX_HELI_SCRIPT] = {
+let ubHeliScripts: UINT8[][] /* [NUM_HELI_STATES][MAX_HELI_SCRIPT] */ = {
   // HELI_APPROACH
   {
     HELI_REST,
@@ -308,38 +308,38 @@ UINT8 ubHeliScripts[NUM_HELI_STATES][MAX_HELI_SCRIPT] = {
   },
 };
 
-BOOLEAN gfHandleHeli = FALSE;
-UINT8 gusHeliSeats[MAX_MERC_IN_HELI];
-INT8 gbNumHeliSeatsOccupied = 0;
+let gfHandleHeli: BOOLEAN = FALSE;
+let gusHeliSeats: UINT8[] /* [MAX_MERC_IN_HELI] */;
+let gbNumHeliSeatsOccupied: INT8 = 0;
 
-BOOLEAN gfFirstGuyDown = FALSE;
+let gfFirstGuyDown: BOOLEAN = FALSE;
 
-UINT32 uiSoundSample;
-INT16 gsGridNoSweetSpot;
-INT16 gsHeliXPos;
-INT16 gsHeliYPos;
-FLOAT gdHeliZPos;
-INT16 gsHeliScript;
-UINT8 gubHeliState;
-UINT32 guiHeliLastUpdate;
-INT8 gbCurDrop;
-INT8 gbExitCount;
-INT8 gbHeliRound;
+let uiSoundSample: UINT32;
+let gsGridNoSweetSpot: INT16;
+let gsHeliXPos: INT16;
+let gsHeliYPos: INT16;
+let gdHeliZPos: FLOAT;
+let gsHeliScript: INT16;
+let gubHeliState: UINT8;
+let guiHeliLastUpdate: UINT32;
+let gbCurDrop: INT8;
+let gbExitCount: INT8;
+let gbHeliRound: INT8;
 
-BOOLEAN fFadingHeliIn = FALSE;
-BOOLEAN fFadingHeliOut = FALSE;
+let fFadingHeliIn: BOOLEAN = FALSE;
+let fFadingHeliOut: BOOLEAN = FALSE;
 
-BOOLEAN gfIngagedInDrop = FALSE;
+let gfIngagedInDrop: BOOLEAN = FALSE;
 
-ANITILE *gpHeli;
-BOOLEAN gfFirstHeliRun;
+let gpHeli: Pointer<ANITILE>;
+let gfFirstHeliRun: BOOLEAN;
 
 function ResetHeliSeats(): void {
   gbNumHeliSeatsOccupied = 0;
 }
 
 function AddMercToHeli(ubID: UINT8): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   if (gbNumHeliSeatsOccupied < MAX_MERC_IN_HELI) {
     // Check if it already exists!
@@ -355,7 +355,8 @@ function AddMercToHeli(ubID: UINT8): void {
 }
 
 function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
-  INT16 sX, sY;
+  let sX: INT16;
+  let sY: INT16;
 
   gsGridNoSweetSpot = sGridNoSweetSpot;
 
@@ -394,12 +395,12 @@ function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
 }
 
 function HandleHeliDrop(): void {
-  UINT8 ubScriptCode;
-  UINT32 uiClock;
+  let ubScriptCode: UINT8;
+  let uiClock: UINT32;
   // INT16 sWorldX, sWorldY;
-  INT32 iVol;
-  INT32 cnt;
-  ANITILE_PARAMS AniParams;
+  let iVol: INT32;
+  let cnt: INT32;
+  let AniParams: ANITILE_PARAMS;
 
   if (gfHandleHeli) {
     if (gCurrentUIMode != LOCKUI_MODE) {
@@ -510,7 +511,7 @@ function HandleHeliDrop(): void {
       // Switch on mode...
       if (gubHeliState == HELI_DROP) {
         if (!gfIngagedInDrop) {
-          INT8 bEndVal;
+          let bEndVal: INT8;
 
           bEndVal = (gbHeliRound * NUM_PER_HELI_RUN);
 
@@ -645,7 +646,8 @@ function HandleHeliDrop(): void {
 
           if (gbCurDrop < gbNumHeliSeatsOccupied) {
             // Start another run......
-            INT16 sX, sY;
+            let sX: INT16;
+            let sY: INT16;
 
             ConvertGridNoToCenterCellXY(gsGridNoSweetSpot, &sX, &sY);
 

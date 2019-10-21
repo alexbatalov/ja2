@@ -1,16 +1,16 @@
 // current and last pages
-INT32 iCurrentPortrait = 0;
-INT32 iLastPicture = 7;
+let iCurrentPortrait: INT32 = 0;
+let iLastPicture: INT32 = 7;
 
 // buttons needed for the IMP portrait screen
-INT32 giIMPPortraitButton[3];
-INT32 giIMPPortraitButtonImage[3];
+let giIMPPortraitButton: INT32[] /* [3] */;
+let giIMPPortraitButtonImage: INT32[] /* [3] */;
 
 // redraw protrait screen
-BOOLEAN fReDrawPortraitScreenFlag = FALSE;
+let fReDrawPortraitScreenFlag: BOOLEAN = FALSE;
 
 // face index
-INT32 iPortraitNumber = 0;
+let iPortraitNumber: INT32 = 0;
 
 // function definitions
 
@@ -63,9 +63,9 @@ function HandleIMPPortraits(): void {
 
 function RenderPortrait(sX: INT16, sY: INT16): BOOLEAN {
   // render the portrait of the current picture
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hHandle;
-  UINT32 uiGraphicHandle;
+  let VObjectDesc: VOBJECT_DESC;
+  let hHandle: HVOBJECT;
+  let uiGraphicHandle: UINT32;
 
   if (fCharacterIsMale) {
     // load it

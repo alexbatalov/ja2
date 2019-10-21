@@ -5,7 +5,7 @@ interface BobbyROrderLocationStruct {
   usStandardService: UINT16;
 }
 
-BobbyROrderLocationStruct BobbyROrderLocations[] = {
+let BobbyROrderLocations: BobbyROrderLocationStruct[] /* [] */ = {
   { &pDeliveryLocationStrings[0], 20, 15, 10 },
   { &pDeliveryLocationStrings[1], 295, 150, 85 },
   { &pDeliveryLocationStrings[2], 200, 100, 50 }, // the only one that really matters
@@ -180,87 +180,87 @@ const BOBBYR_PACKAXGE_WEIGHT_X = BOBBYR_LOCATION_BOX_X;
 const BOBBYR_PACKAXGE_WEIGHT_Y = LAPTOP_SCREEN_WEB_UL_Y + 249;
 const BOBBYR_PACKAXGE_WEIGHT_WIDTH = 188;
 
-UINT16 gShippingSpeedAreas[] = {
+let gShippingSpeedAreas: UINT16[] /* [] */ = {
   585, 218 + LAPTOP_SCREEN_WEB_DELTA_Y,
   585, 238 + LAPTOP_SCREEN_WEB_DELTA_Y,
   585, 258 + LAPTOP_SCREEN_WEB_DELTA_Y,
 };
 
 // Identifier for the images
-UINT32 guiBobbyRayTitle;
-UINT32 guiBobbyROrderGrid;
-UINT32 guiBobbyRLocationGraphic;
-UINT32 guiDeliverySpeedGraphic;
-UINT32 guiConfirmGraphic;
-UINT32 guiTotalSaveArea; // used as a savebuffer for the subtotal, s&h, and grand total values
-UINT32 guiDropDownBorder;
-UINT32 guiGoldArrowImages;
-UINT32 guiPackageWeightImage;
+let guiBobbyRayTitle: UINT32;
+let guiBobbyROrderGrid: UINT32;
+let guiBobbyRLocationGraphic: UINT32;
+let guiDeliverySpeedGraphic: UINT32;
+let guiConfirmGraphic: UINT32;
+let guiTotalSaveArea: UINT32; // used as a savebuffer for the subtotal, s&h, and grand total values
+let guiDropDownBorder: UINT32;
+let guiGoldArrowImages: UINT32;
+let guiPackageWeightImage: UINT32;
 
-BOOLEAN gfReDrawBobbyOrder = FALSE;
+let gfReDrawBobbyOrder: BOOLEAN = FALSE;
 
-INT32 giGrandTotal;
-UINT32 guiShippingCost;
-UINT32 guiSubTotal;
+let giGrandTotal: INT32;
+let guiShippingCost: UINT32;
+let guiSubTotal: UINT32;
 
-UINT8 gubSelectedLight;
+let gubSelectedLight: UINT8;
 
-BOOLEAN gfDrawConfirmOrderGrpahic;
-BOOLEAN gfDestroyConfirmGrphiArea;
+let gfDrawConfirmOrderGrpahic: BOOLEAN;
+let gfDestroyConfirmGrphiArea: BOOLEAN;
 
-BOOLEAN gfCanAcceptOrder;
+let gfCanAcceptOrder: BOOLEAN;
 
-UINT8 gubDropDownAction;
-INT8 gbSelectedCity = -1; // keeps track of the currently selected city
-UINT8 gubCityAtTopOfList;
+let gubDropDownAction: UINT8;
+let gbSelectedCity: INT8 = -1; // keeps track of the currently selected city
+let gubCityAtTopOfList: UINT8;
 
-BOOLEAN gfRemoveItemsFromStock = FALSE;
+let gfRemoveItemsFromStock: BOOLEAN = FALSE;
 
-NewBobbyRayOrderStruct *gpNewBobbyrShipments;
-INT32 giNumberOfNewBobbyRShipment;
+let gpNewBobbyrShipments: Pointer<NewBobbyRayOrderStruct>;
+let giNumberOfNewBobbyRShipment: INT32;
 
 //
 // Buttons
 //
 
-UINT32 guiBobbyRClearOrder;
-INT32 guiBobbyRClearOrderImage;
+let guiBobbyRClearOrder: UINT32;
+let guiBobbyRClearOrderImage: INT32;
 
-UINT32 guiBobbyRAcceptOrder;
-INT32 guiBobbyRAcceptOrderImage;
+let guiBobbyRAcceptOrder: UINT32;
+let guiBobbyRAcceptOrderImage: INT32;
 
-UINT32 guiBobbyRBack;
-INT32 guiBobbyRBackImage;
+let guiBobbyRBack: UINT32;
+let guiBobbyRBackImage: INT32;
 
-UINT32 guiBobbyRHome;
-INT32 guiBobbyRHomeImage;
+let guiBobbyRHome: UINT32;
+let guiBobbyRHomeImage: INT32;
 
-UINT32 guiBobbyRGotoShipmentPage;
-INT32 giBobbyRGotoShipmentPageImage;
+let guiBobbyRGotoShipmentPage: UINT32;
+let giBobbyRGotoShipmentPageImage: INT32;
 
 // mouse region for the shipping speed selection area
-MOUSE_REGION gSelectedShippingSpeedRegion[3];
+let gSelectedShippingSpeedRegion: MOUSE_REGION[] /* [3] */;
 
 // mouse region for the confirm area
-MOUSE_REGION gSelectedConfirmOrderRegion;
+let gSelectedConfirmOrderRegion: MOUSE_REGION;
 
 // mouse region for the drop down city location area
-MOUSE_REGION gSelectedDropDownRegion[BOBBYR_ORDER_NUM_SHIPPING_CITIES];
+let gSelectedDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */;
 
 // mouse region for scroll area for the drop down city location area
-MOUSE_REGION gSelectedScrollAreaDropDownRegion[BOBBYR_ORDER_NUM_SHIPPING_CITIES];
+let gSelectedScrollAreaDropDownRegion: MOUSE_REGION[] /* [BOBBYR_ORDER_NUM_SHIPPING_CITIES] */;
 
 // mouse region to activate the shipping location drop down
-MOUSE_REGION gSelectedActivateCityDroDownRegion;
+let gSelectedActivateCityDroDownRegion: MOUSE_REGION;
 
 // mouse region to close the drop down menu
-MOUSE_REGION gSelectedCloseDropDownRegion;
+let gSelectedCloseDropDownRegion: MOUSE_REGION;
 
 // mouse region to click on the title to go to the home page
-MOUSE_REGION gSelectedTitleLinkRegion;
+let gSelectedTitleLinkRegion: MOUSE_REGION;
 
 // mouse region to click on the up or down arrow on the scroll area
-MOUSE_REGION gSelectedUpDownArrowOnScrollAreaRegion[2];
+let gSelectedUpDownArrowOnScrollAreaRegion: MOUSE_REGION[] /* [2] */;
 
 // ppp
 
@@ -272,8 +272,8 @@ function GameInitBobbyRMailOrder(): void {
 }
 
 function EnterBobbyRMailOrder(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 i;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: UINT16;
 
   gfReDrawBobbyOrder = FALSE;
   gfDrawConfirmOrderGrpahic = FALSE;
@@ -395,7 +395,7 @@ function EnterBobbyRMailOrder(): BOOLEAN {
 }
 
 function ExitBobbyRMailOrder(): void {
-  UINT16 i;
+  let i: UINT16;
 
   // if we are to remove the items from stock
   if (gfRemoveItemsFromStock) {
@@ -452,7 +452,7 @@ function HandleBobbyRMailOrder(): void {
   }
 
   if (gfDrawConfirmOrderGrpahic) {
-    HVOBJECT hPixHandle;
+    let hPixHandle: HVOBJECT;
 
     // Bobbyray title
     GetVideoObject(&hPixHandle, guiConfirmGraphic);
@@ -482,10 +482,10 @@ function HandleBobbyRMailOrder(): void {
 }
 
 function RenderBobbyRMailOrder(): void {
-  UINT16 usPosY;
-  HVOBJECT hPixHandle;
-  UINT16 usHeight; // usWidth,
-  CHAR16 sTemp[128];
+  let usPosY: UINT16;
+  let hPixHandle: HVOBJECT;
+  let usHeight: UINT16; // usWidth,
+  let sTemp: CHAR16[] /* [128] */;
 
   DrawBobbyRWoodBackground();
 
@@ -623,7 +623,7 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
       if (LaptopSaveInfo.iCurrentBalance < giGrandTotal) {
         DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, BobbyROrderFormText[BOBBYR_CANT_AFFORD_PURCHASE], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
       } else {
-        wchar_t zTemp[128];
+        let zTemp: wchar_t[] /* [128] */;
 
         // if the city is Drassen, and the airport sector is player controlled
         if (gbSelectedCity == BR_DRASSEN && !StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(SEC_B13)].fEnemyControlled) {
@@ -744,18 +744,19 @@ function BtnBobbyRAcceptOrderCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function DisplayPurchasedItems(fCalledFromOrderPage: BOOLEAN, usGridX: UINT16, usGridY: UINT16, pBobbyRayPurchase: Pointer<BobbyRayPurchaseStruct>, fJustDisplayTitles: BOOLEAN, iOrderNum: INT32): void {
-  UINT16 i, j;
-  wchar_t sText[400];
-  wchar_t sBack[400];
-  wchar_t sTemp[20];
-  UINT16 usPosY;
-  UINT32 uiStartLoc = 0;
-  UINT32 uiTotal;
-  UINT16 usStringLength;
-  UINT16 usPixLength;
-  wchar_t OneChar[2];
-  INT32 iGrandTotal;
-  INT32 iSubTotal;
+  let i: UINT16;
+  let j: UINT16;
+  let sText: wchar_t[] /* [400] */;
+  let sBack: wchar_t[] /* [400] */;
+  let sTemp: wchar_t[] /* [20] */;
+  let usPosY: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let uiTotal: UINT32;
+  let usStringLength: UINT16;
+  let usPixLength: UINT16;
+  let OneChar: wchar_t[] /* [2] */;
+  let iGrandTotal: INT32;
+  let iSubTotal: INT32;
 
   // Output the qty
   DrawTextToScreen(BobbyROrderFormText[BOBBYR_QTY], (UINT16)(usGridX + BOBBYR_GRID_FIRST_COLUMN_X), (UINT16)(usGridY + BOBBYR_GRID_FIRST_COLUMN_Y - BOBBYR_GRID_TITLE_OFFSET), BOBBYR_GRID_FIRST_COLUMN_WIDTH, BOBBYR_ORDER_STATIC_TEXT_FONT, BOBBYR_ORDER_STATIC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
@@ -873,9 +874,9 @@ function DisplayPurchasedItems(fCalledFromOrderPage: BOOLEAN, usGridX: UINT16, u
 }
 
 function DisplayShippingCosts(fCalledFromOrderPage: BOOLEAN, iSubTotal: INT32, usGridX: UINT16, usGridY: UINT16, iOrderNum: INT32): void {
-  wchar_t sTemp[20];
-  HVOBJECT hPixHandle;
-  INT32 iShippingCost = 0;
+  let sTemp: wchar_t[] /* [20] */;
+  let hPixHandle: HVOBJECT;
+  let iShippingCost: INT32 = 0;
   //	INT32 iTotal;
 
   if (fCalledFromOrderPage) {
@@ -891,7 +892,7 @@ function DisplayShippingCosts(fCalledFromOrderPage: BOOLEAN, iSubTotal: INT32, u
 
     iShippingCost = guiShippingCost;
   } else {
-    UINT16 usStandardCost;
+    let usStandardCost: UINT16;
 
     switch (gpNewBobbyrShipments[iOrderNum].ubDeliveryMethod) {
       case 0:
@@ -1034,18 +1035,20 @@ function SelectConfirmOrderRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
-  static UINT16 usHeight;
-  static BOOLEAN fMouseRegionsCreated = FALSE;
+  /* static */ let usHeight: UINT16;
+  /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
 
   switch (ubDropDownAction) {
     case BR_DROP_DOWN_NO_ACTION: {
     } break;
 
     case BR_DROP_DOWN_CREATE: {
-      UINT8 i;
-      UINT16 usPosX, usPosY, usHeight;
-      UINT16 usTemp;
-      UINT16 usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
+      let i: UINT8;
+      let usPosX: UINT16;
+      let usPosY: UINT16;
+      let usHeight: UINT16;
+      let usTemp: UINT16;
+      let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT);
 
       if (fMouseRegionsCreated) {
         gubDropDownAction = BR_DROP_DOWN_DESTROY;
@@ -1107,7 +1110,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
     } break;
 
     case BR_DROP_DOWN_DESTROY: {
-      UINT8 i;
+      let i: UINT8;
 
       if (!fMouseRegionsCreated)
         break;
@@ -1149,11 +1152,12 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
     } break;
 
     case BR_DROP_DOWN_DISPLAY: {
-      UINT8 i;
-      UINT16 usPosY, usPosX;
-      UINT16 usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
-      HVOBJECT hImageHandle;
-      HVOBJECT hArrowHandle;
+      let i: UINT8;
+      let usPosY: UINT16;
+      let usPosX: UINT16;
+      let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT);
+      let hImageHandle: HVOBJECT;
+      let hArrowHandle: HVOBJECT;
 
       // Display the background for the drop down window
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_CITY_START_LOCATION_X, BOBBYR_CITY_START_LOCATION_Y, BOBBYR_CITY_START_LOCATION_X + BOBBYR_DROP_DOWN_WIDTH, BOBBYR_CITY_START_LOCATION_Y + BOBBYR_SCROLL_AREA_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -1239,7 +1243,7 @@ function CreateDestroyBobbyRDropDown(ubDropDownAction: UINT8): BOOLEAN {
 function SelectDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
     gbSelectedCity = ubSelected + gubCityAtTopOfList;
 
     DrawSelectedCity(gbSelectedCity);
@@ -1271,9 +1275,9 @@ function SelectDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
 }
 
 function DrawSelectedCity(ubCityNumber: UINT8): void {
-  UINT16 usPosY;
-  UINT16 usFontHeight = GetFontHeight(BOBBYR_DROPDOWN_FONT);
-  UINT8 i;
+  let usPosY: UINT16;
+  let usFontHeight: UINT16 = GetFontHeight(BOBBYR_DROPDOWN_FONT);
+  let i: UINT8;
 
   // DEBUG: make sure it wont go over array bounds
   if (gubCityAtTopOfList + BOBBYR_NUM_DISPLAYED_CITIES > BOBBYR_ORDER_NUM_SHIPPING_CITIES)
@@ -1312,8 +1316,8 @@ function DrawSelectedCity(ubCityNumber: UINT8): void {
 }
 
 function DisplayShippingLocationCity(): void {
-  wchar_t sTemp[40];
-  UINT16 usPosY;
+  let sTemp: wchar_t[] /* [40] */;
+  let usPosY: UINT16;
 
   // display the name on the title bar
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X, BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_L_X + 175, BOBBYR_SHIPPING_LOC_AREA_T_Y + BOBBYR_DROP_DOWN_HEIGHT, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -1369,7 +1373,7 @@ function SelectCloseDroDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 function RemovePurchasedItemsFromBobbyRayInventory(): void {
-  INT16 i;
+  let i: INT16;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     // if the item was purchased
@@ -1397,8 +1401,8 @@ function RemovePurchasedItemsFromBobbyRayInventory(): void {
 }
 
 function IsAnythingPurchasedFromBobbyRayPage(): BOOLEAN {
-  UINT16 i;
-  BOOLEAN fReturnType = FALSE;
+  let i: UINT16;
+  let fReturnType: BOOLEAN = FALSE;
 
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
     // if the item was purchased
@@ -1419,7 +1423,7 @@ function SelectTitleLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubCityNum: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
     if (ubCityNum < gbSelectedCity) {
       gbSelectedCity--;
@@ -1435,7 +1439,7 @@ function SelectScrollAreaDropDownRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 
     gubDropDownAction = BR_DROP_DOWN_DISPLAY;
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubCityNum: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
     pRegion->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1463,7 +1467,7 @@ function SelectScrollAreaDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (gfLeftButtonState) {
-      UINT8 ubCityNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+      let ubCityNum: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
       pRegion->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1489,7 +1493,7 @@ function SelectScrollAreaDropDownMovementCallBack(pRegion: Pointer<MOUSE_REGION>
 function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP || iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    UINT8 ubUpArrow = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubUpArrow: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
     if (ubUpArrow) {
       if (gbSelectedCity < BOBBYR_ORDER_NUM_SHIPPING_CITIES - 1) {
@@ -1514,12 +1518,16 @@ function SelectUpDownArrowOnScrollAreaRegionCallBack(pRegion: Pointer<MOUSE_REGI
 }
 
 function DrawGoldRectangle(bCityNum: INT8): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usWidth, usTempHeight, usTempPosY, usHeight;
-  UINT16 usPosX, usPosY;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usWidth: UINT16;
+  let usTempHeight: UINT16;
+  let usTempPosY: UINT16;
+  let usHeight: UINT16;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
 
-  UINT16 temp;
+  let temp: UINT16;
 
   if (bCityNum == -1)
     bCityNum = 0;
@@ -1558,9 +1566,9 @@ function DrawGoldRectangle(bCityNum: INT8): void {
 }
 
 function CalcCostFromWeightOfPackage(ubTypeOfService: UINT8): UINT32 {
-  UINT32 uiTotalWeight = 0;
-  UINT16 usStandardCost = 0;
-  UINT32 uiTotalCost = 0;
+  let uiTotalWeight: UINT32 = 0;
+  let usStandardCost: UINT16 = 0;
+  let uiTotalCost: UINT32 = 0;
 
   if (gbSelectedCity == -1) {
     // shipping rates unknown until destination selected
@@ -1631,7 +1639,7 @@ function ShutDownBobbyRNewMailOrders(): void {
 }
 
 function CalculateOrderDelay(ubSelectedService: UINT8): INT8 {
-  INT8 bDaysAhead;
+  let bDaysAhead: INT8;
 
   // get the length of time to receive the shipment
   if (ubSelectedService == 0) {
@@ -1734,9 +1742,9 @@ function PurchaseBobbyOrder(): void {
 }
 
 function AddJohnsGunShipment(): void {
-  BobbyRayPurchaseStruct Temp[MAX_PURCHASE_AMOUNT];
+  let Temp: BobbyRayPurchaseStruct[] /* [MAX_PURCHASE_AMOUNT] */;
   //	UINT8	cnt;
-  INT8 bDaysAhead;
+  let bDaysAhead: INT8;
 
   // clear out the memory
   memset(Temp, 0, sizeof(BobbyRayPurchaseStruct) * MAX_PURCHASE_AMOUNT);
@@ -1816,8 +1824,8 @@ function EnterInitBobbyRayOrder(): void {
 }
 
 function CalcPackageTotalWeight(): UINT32 {
-  UINT16 i;
-  UINT32 uiTotalWeight = 0;
+  let i: UINT16;
+  let uiTotalWeight: UINT32 = 0;
 
   // loop through all the packages
   for (i = 0; i < MAX_PURCHASE_AMOUNT; i++) {
@@ -1832,8 +1840,8 @@ function CalcPackageTotalWeight(): UINT32 {
 }
 
 function DisplayPackageWeight(): void {
-  CHAR16 zTemp[32];
-  UINT32 uiTotalWeight = CalcPackageTotalWeight();
+  let zTemp: CHAR16[] /* [32] */;
+  let uiTotalWeight: UINT32 = CalcPackageTotalWeight();
   //	FLOAT			fWeight = (FLOAT)(uiTotalWeight / 10.0);
 
   // Display the 'Package Weight' text
@@ -1862,7 +1870,7 @@ function BtnBobbyRGotoShipmentPageCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 }
 
 function CreateBobbyRayOrderTitle(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load BobbyRayTitle graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -1882,7 +1890,7 @@ function DestroyBobbyROrderTitle(): void {
 }
 
 function DrawBobbyROrderTitle(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // Bobbyray title
   GetVideoObject(&hPixHandle, guiBobbyRayTitle);
@@ -1890,11 +1898,11 @@ function DrawBobbyROrderTitle(): void {
 }
 
 function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, ubDeliveryLoc: UINT8, ubDeliveryMethod: UINT8, fPruchasedFromBobbyR: BOOLEAN, uiPackageWeight: UINT32): BOOLEAN {
-  INT32 iCnt;
-  INT32 iFoundSpot = -1;
-  UINT8 ubItemCount = 0;
-  UINT8 i;
-  INT8 bDaysAhead = 0;
+  let iCnt: INT32;
+  let iFoundSpot: INT32 = -1;
+  let ubItemCount: UINT8 = 0;
+  let i: UINT8;
+  let bDaysAhead: INT8 = 0;
   //	UINT32	uiPackageWeight;
   //	gpNewBobbyrShipments = NULL;
   //	giNumberOfNewBobbyRShipment = 0;
@@ -1967,8 +1975,8 @@ function AddNewBobbyRShipment(pPurchaseStruct: Pointer<BobbyRayPurchaseStruct>, 
 }
 
 function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
-  UINT16 usItemCount = 0;
-  INT32 iCnt;
+  let usItemCount: UINT16 = 0;
+  let iCnt: INT32;
 
   for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
     if (gpNewBobbyrShipments[iCnt].fActive) {
@@ -1980,8 +1988,8 @@ function CountNumberOfBobbyPurchasesThatAreInTransit(): UINT16 {
 }
 
 function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  INT32 iCnt;
-  UINT32 uiNumBytesWritten;
+  let iCnt: INT32;
+  let uiNumBytesWritten: UINT32;
 
   // Write the number of orders
   FileWrite(hFile, &giNumberOfNewBobbyRShipment, sizeof(INT32), &uiNumBytesWritten);
@@ -2004,8 +2012,8 @@ function NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function NewWayOfLoadingBobbyRMailOrdersToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  INT32 iCnt;
-  UINT32 uiNumBytesRead;
+  let iCnt: INT32;
+  let uiNumBytesRead: UINT32;
 
   // clear out the old list
   ShutDownBobbyRNewMailOrders();

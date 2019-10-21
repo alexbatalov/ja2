@@ -27,7 +27,7 @@ const INS_INFO_LINK_START_Y = 392 + LAPTOP_SCREEN_WEB_UL_Y;
 
 const INS_INFO_LINK_TO_CONTRACT_TEXT_Y = 355 + LAPTOP_SCREEN_WEB_UL_Y;
 
-UINT32 guiBulletImage;
+let guiBulletImage: UINT32;
 
 // The list of Info sub pages
 const enum Enum89 {
@@ -38,20 +38,20 @@ const enum Enum89 {
   INS_INFO_CANCELATION,
   INS_INFO_LAST_PAGE,
 }
-UINT8 gubCurrentInsInfoSubPage = 0;
+let gubCurrentInsInfoSubPage: UINT8 = 0;
 
-BOOLEAN InsuranceInfoSubPagesVisitedFlag[INS_INFO_LAST_PAGE - 1];
+let InsuranceInfoSubPagesVisitedFlag: BOOLEAN[] /* [INS_INFO_LAST_PAGE - 1] */;
 
-INT32 guiInsPrevButtonImage;
-UINT32 guiInsPrevBackButton;
+let guiInsPrevButtonImage: INT32;
+let guiInsPrevBackButton: UINT32;
 
-INT32 guiInsNextButtonImage;
-UINT32 guiInsNextBackButton;
+let guiInsNextButtonImage: INT32;
+let guiInsNextBackButton: UINT32;
 
 // link to the varios pages
-MOUSE_REGION gSelectedInsuranceInfoLinkRegion;
+let gSelectedInsuranceInfoLinkRegion: MOUSE_REGION;
 
-MOUSE_REGION gSelectedInsuranceInfoHomeLinkRegion;
+let gSelectedInsuranceInfoHomeLinkRegion: MOUSE_REGION;
 
 function GameInitInsuranceInfo(): void {
 }
@@ -61,8 +61,8 @@ function EnterInitInsuranceInfo(): void {
 }
 
 function EnterInsuranceInfo(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16;
 
   InitInsuranceDefaults();
 
@@ -119,9 +119,9 @@ function HandleInsuranceInfo(): void {
 }
 
 function RenderInsuranceInfo(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
-  UINT16 usPosX;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
+  let usPosX: UINT16;
 
   DisableArrowButtonsIfOnLastOrFirstPage();
 
@@ -240,9 +240,9 @@ function SelectInsuranceInfoHomeLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION
 }
 
 function DisplaySubmitClaimPage(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
-  UINT16 usPosX;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
+  let usPosX: UINT16;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
@@ -277,9 +277,9 @@ function DisplaySubmitClaimPage(): void {
 }
 
 function DisplayPremiumPage(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
-  HVOBJECT hPixHandle;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
+  let hPixHandle: HVOBJECT;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
@@ -317,8 +317,8 @@ function DisplayPremiumPage(): void {
 }
 
 function DisplayRenewingPremiumPage(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
   //  HVOBJECT hPixHandle;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
@@ -352,8 +352,8 @@ function DisplayRenewingPremiumPage(): void {
 }
 
 function DisplayCancelationPagePage(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 
@@ -401,10 +401,10 @@ function ChangingInsuranceInfoSubPage(ubSubPageNumber: UINT8): void {
 }
 
 function DisplayInfoTocPage(): void {
-  wchar_t sText[800];
-  UINT16 usNewLineOffset = 0;
-  HVOBJECT hPixHandle;
-  UINT16 usPosY;
+  let sText: wchar_t[] /* [800] */;
+  let usNewLineOffset: UINT16 = 0;
+  let hPixHandle: HVOBJECT;
+  let usPosY: UINT16;
 
   usNewLineOffset = INS_INFO_FIRST_PARAGRAPH_Y;
 

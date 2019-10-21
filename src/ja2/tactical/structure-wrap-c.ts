@@ -15,7 +15,7 @@ function IsRoofPresentAtGridno(sGridNo: INT16): BOOLEAN {
 }
 
 function IsJumpableFencePresentAtGridno(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OBSTACLE);
 
@@ -48,8 +48,8 @@ function IsTreePresentAtGridno(sGridNo: INT16): BOOLEAN {
 }
 
 function IsWallPresentAtGridno(sGridNo: INT16): Pointer<LEVELNODE> {
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
 
@@ -61,8 +61,8 @@ function IsWallPresentAtGridno(sGridNo: INT16): Pointer<LEVELNODE> {
 }
 
 function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8): Pointer<LEVELNODE> {
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
 
@@ -79,8 +79,9 @@ function GetWallLevelNodeOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation
 }
 
 function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOrientation: INT8, ppStructure: Pointer<Pointer<STRUCTURE>>): Pointer<LEVELNODE> {
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure, *pBaseStructure;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
 
   (*ppStructure) = NULL;
 
@@ -103,8 +104,8 @@ function GetWallLevelNodeAndStructOfSameOrientationAtGridno(sGridNo: INT16, ubOr
 }
 
 function IsDoorVisibleAtGridNo(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
-  INT16 sNewGridNo;
+  let pStructure: Pointer<STRUCTURE>;
+  let sNewGridNo: INT16;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
@@ -187,7 +188,7 @@ function IsHiddenStructureVisible(sGridNo: INT16, usIndex: UINT16): BOOLEAN {
 
 function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
   // CJC: changing to search only for normal walls, July 16, 1998
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALL);
 
@@ -205,7 +206,7 @@ function WallExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
 
 function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
   // CJC: changing to search only for normal walls, July 16, 1998
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALL);
 
@@ -222,7 +223,7 @@ function WallExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
 }
 
 function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
 
@@ -242,7 +243,7 @@ function WallOrClosedDoorExistsOfTopLeftOrientation(sGridNo: INT16): BOOLEAN {
 }
 
 function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WALLSTUFF);
 
@@ -262,7 +263,7 @@ function WallOrClosedDoorExistsOfTopRightOrientation(sGridNo: INT16): BOOLEAN {
 }
 
 function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
@@ -281,7 +282,7 @@ function OpenRightOrientedDoorWithDoorOnRightOfEdgeExists(sGridNo: INT16): BOOLE
 }
 
 function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
 
@@ -300,7 +301,7 @@ function OpenLeftOrientedDoorWithDoorOnLeftOfEdgeExists(sGridNo: INT16): BOOLEAN
 }
 
 function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
   if (pStructure != NULL && pStructure->ubWallOrientation != NO_ORIENTATION && !(pStructure->fFlags & STRUCTURE_OPEN)) {
@@ -310,7 +311,7 @@ function FindCuttableWireFenceAtGridNo(sGridNo: INT16): Pointer<STRUCTURE> {
 }
 
 function CutWireFence(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindCuttableWireFenceAtGridNo(sGridNo);
   if (pStructure) {
@@ -329,7 +330,7 @@ function IsCuttableWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
 }
 
 function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
-  UINT8 ubMerc;
+  let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
   ubMerc = WhoIsThere2(sGridNo, 0);
@@ -354,7 +355,7 @@ function IsRepairableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
 }
 
 function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOLEAN {
-  UINT8 ubMerc;
+  let ubMerc: UINT8;
 
   // OK, first look for a vehicle....
   ubMerc = WhoIsThere2(sGridNo, 0);
@@ -372,7 +373,7 @@ function IsRefuelableStructAtGridNo(sGridNo: INT16, pubID: Pointer<UINT8>): BOOL
 }
 
 function IsCutWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_WIREFENCE);
   if (pStructure != NULL && (pStructure->ubWallOrientation != NO_ORIENTATION) && (pStructure->fFlags & STRUCTURE_OPEN)) {
@@ -382,9 +383,9 @@ function IsCutWireFenceAtGridNo(sGridNo: INT16): BOOLEAN {
 }
 
 function FindDoorAtGridNoOrAdjacent(sGridNo: INT16): INT16 {
-  STRUCTURE *pStructure;
-  STRUCTURE *pBaseStructure;
-  INT16 sTestGridNo;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let sTestGridNo: INT16;
 
   sTestGridNo = sGridNo;
   pStructure = FindStructure(sTestGridNo, STRUCTURE_ANYDOOR);
@@ -419,8 +420,8 @@ function IsCorpseAtGridNo(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
 }
 
 function SetOpenableStructureToClosed(sGridNo: INT16, ubLevel: UINT8): BOOLEAN {
-  STRUCTURE *pStructure;
-  STRUCTURE *pNewStructure;
+  let pStructure: Pointer<STRUCTURE>;
+  let pNewStructure: Pointer<STRUCTURE>;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
   if (!pStructure) {

@@ -1,4 +1,4 @@
-BOOLEAN gfSchedulesHosed = FALSE;
+let gfSchedulesHosed: BOOLEAN = FALSE;
 
 //////////////////////////////////////////////////////
 //
@@ -92,72 +92,72 @@ const enum Enum25 {
 //
 //////////////////////////////////////////////////////
 
-BOOLEAN gfSaveLoadScreenEntry = TRUE;
-BOOLEAN gfSaveLoadScreenExit = FALSE;
-BOOLEAN gfRedrawSaveLoadScreen = TRUE;
+let gfSaveLoadScreenEntry: BOOLEAN = TRUE;
+let gfSaveLoadScreenExit: BOOLEAN = FALSE;
+let gfRedrawSaveLoadScreen: BOOLEAN = TRUE;
 
-BOOLEAN gfExitAfterMessageBox = FALSE;
-INT32 giSaveLoadMessageBox = -1; // SaveLoad pop up messages index value
+let gfExitAfterMessageBox: BOOLEAN = FALSE;
+let giSaveLoadMessageBox: INT32 = -1; // SaveLoad pop up messages index value
 
-UINT32 guiSaveLoadExitScreen = SAVE_LOAD_SCREEN;
+let guiSaveLoadExitScreen: UINT32 = SAVE_LOAD_SCREEN;
 
 // Contains the array of valid save game locations
-BOOLEAN gbSaveGameArray[NUM_SAVE_GAMES];
+let gbSaveGameArray: BOOLEAN[] /* [NUM_SAVE_GAMES] */;
 
-BOOLEAN gfDoingQuickLoad = FALSE;
+let gfDoingQuickLoad: BOOLEAN = FALSE;
 
-BOOLEAN gfFailedToSaveGameWhenInsideAMessageBox = FALSE;
+let gfFailedToSaveGameWhenInsideAMessageBox: BOOLEAN = FALSE;
 
 // This flag is used to diferentiate between loading a game and saveing a game.
 // gfSaveGame=TRUE		For saving a game
 // gfSaveGame=FALSE		For loading a game
-BOOLEAN gfSaveGame = TRUE;
+let gfSaveGame: BOOLEAN = TRUE;
 
-BOOLEAN gfSaveLoadScreenButtonsCreated = FALSE;
+let gfSaveLoadScreenButtonsCreated: BOOLEAN = FALSE;
 
-INT8 gbSaveGameSelectedLocation[NUM_SAVE_GAMES];
-INT8 gbSelectedSaveLocation = -1;
-INT8 gbHighLightedLocation = -1;
-INT8 gbLastHighLightedLocation = -1;
-INT8 gbSetSlotToBeSelected = -1;
+let gbSaveGameSelectedLocation: INT8[] /* [NUM_SAVE_GAMES] */;
+let gbSelectedSaveLocation: INT8 = -1;
+let gbHighLightedLocation: INT8 = -1;
+let gbLastHighLightedLocation: INT8 = -1;
+let gbSetSlotToBeSelected: INT8 = -1;
 
-UINT32 guiSlgBackGroundImage;
-UINT32 guiBackGroundAddOns;
+let guiSlgBackGroundImage: UINT32;
+let guiBackGroundAddOns: UINT32;
 
 // The string that will contain the game desc text
-wchar_t gzGameDescTextField[SIZE_OF_SAVE_GAME_DESC] = { 0 };
+let gzGameDescTextField: wchar_t[] /* [SIZE_OF_SAVE_GAME_DESC] */ = { 0 };
 
-BOOLEAN gfUserInTextInputMode = FALSE;
-UINT8 gubSaveGameNextPass = 0;
+let gfUserInTextInputMode: BOOLEAN = FALSE;
+let gubSaveGameNextPass: UINT8 = 0;
 
-BOOLEAN gfStartedFadingOut = FALSE;
+let gfStartedFadingOut: BOOLEAN = FALSE;
 
-BOOLEAN gfCameDirectlyFromGame = FALSE;
+let gfCameDirectlyFromGame: BOOLEAN = FALSE;
 
-BOOLEAN gfLoadedGame = FALSE; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
+let gfLoadedGame: BOOLEAN = FALSE; // Used to know when a game has been loaded, the flag in gtacticalstatus might have been reset already
 
-BOOLEAN gfLoadGameUponEntry = FALSE;
+let gfLoadGameUponEntry: BOOLEAN = FALSE;
 
-BOOLEAN gfHadToMakeBasementLevels = FALSE;
+let gfHadToMakeBasementLevels: BOOLEAN = FALSE;
 
-BOOLEAN gfGettingNameFromSaveLoadScreen = FALSE;
+let gfGettingNameFromSaveLoadScreen: BOOLEAN = FALSE;
 
 // ggg
 
 //
 // Buttons
 //
-INT32 guiSlgButtonImage;
+let guiSlgButtonImage: INT32;
 
-UINT32 guiSlgCancelBtn;
+let guiSlgCancelBtn: UINT32;
 
-UINT32 guiSlgSaveLoadBtn;
-INT32 guiSaveLoadImage;
+let guiSlgSaveLoadBtn: UINT32;
+let guiSaveLoadImage: INT32;
 
 // Mouse regions for the currently selected save game
-MOUSE_REGION gSelectedSaveRegion[NUM_SAVE_GAMES];
+let gSelectedSaveRegion: MOUSE_REGION[] /* [NUM_SAVE_GAMES] */;
 
-MOUSE_REGION gSLSEntireScreenRegion;
+let gSLSEntireScreenRegion: MOUSE_REGION;
 
 //////////////////////////////////////////////////////
 //
@@ -299,10 +299,10 @@ function SetSaveLoadExitScreen(uiScreen: UINT32): void {
 }
 
 function EnterSaveLoadScreen(): BOOLEAN {
-  INT8 i;
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX = SLG_FIRST_SAVED_SPOT_X;
-  UINT16 usPosY = SLG_FIRST_SAVED_SPOT_Y;
+  let i: INT8;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
+  let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y;
 
   //	if( guiPreviousOptionScreen != MAINMENU_SCREEN )
   //		gbSetSlotToBeSelected = -1;
@@ -433,7 +433,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
     if (gGameSettings.bLastSavedGameSlot != -1) {
       // if the slot is valid
       if (gbSaveGameArray[gGameSettings.bLastSavedGameSlot]) {
-        SAVED_GAME_HEADER SaveGameHeader;
+        let SaveGameHeader: SAVED_GAME_HEADER;
 
         memset(&SaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
 
@@ -490,8 +490,8 @@ function EnterSaveLoadScreen(): BOOLEAN {
   gfLoadedGame = FALSE;
 
   if (gfLoadGameUponEntry) {
-    UINT32 uiDestPitchBYTES;
-    UINT8 *pDestBuf;
+    let uiDestPitchBYTES: UINT32;
+    let pDestBuf: Pointer<UINT8>;
 
     // unmark the 2 buttons from being dirty
     ButtonList[guiSlgCancelBtn]->uiFlags |= BUTTON_FORCE_UNDIRTY;
@@ -514,7 +514,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
 }
 
 function ExitSaveLoadScreen(): void {
-  INT8 i;
+  let i: INT8;
 
   gfLoadGameUponEntry = FALSE;
 
@@ -568,7 +568,7 @@ function ExitSaveLoadScreen(): void {
 }
 
 function RenderSaveLoadScreen(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {
@@ -615,10 +615,10 @@ function HandleSaveLoadScreen(): void {
 }
 
 function GetSaveLoadScreenUserInput(): void {
-  InputAtom Event;
-  POINT MousePos;
-  INT8 bActiveTextField;
-  static BOOLEAN fWasCtrlHeldDownLastFrame = FALSE;
+  let Event: InputAtom;
+  let MousePos: POINT;
+  let bActiveTextField: INT8;
+  /* static */ let fWasCtrlHeldDownLastFrame: BOOLEAN = FALSE;
 
   GetCursorPos(&MousePos);
 
@@ -701,7 +701,7 @@ function GetSaveLoadScreenUserInput(): void {
       switch (Event.usParam) {
         case 'a':
           if (gfKeyState[ALT] && !gfSaveGame) {
-            INT8 iFile = GetNumberForAutoSave(TRUE);
+            let iFile: INT8 = GetNumberForAutoSave(TRUE);
 
             if (iFile == -1)
               break;
@@ -715,7 +715,7 @@ function GetSaveLoadScreenUserInput(): void {
 
         case 'b':
           if (gfKeyState[ALT] && !gfSaveGame) {
-            INT8 iFile = GetNumberForAutoSave(FALSE);
+            let iFile: INT8 = GetNumberForAutoSave(FALSE);
 
             if (iFile == -1)
               break;
@@ -795,14 +795,14 @@ function GetSaveLoadScreenUserInput(): void {
 
 function SaveLoadGameNumber(bSaveGameID: INT8): void {
   //	CHAR16	zTemp[128];
-  UINT8 ubRetVal = 0;
+  let ubRetVal: UINT8 = 0;
 
   if (bSaveGameID >= NUM_SAVE_GAMES || bSaveGameID < 0) {
     return;
   }
 
   if (gfSaveGame) {
-    INT8 bActiveTextField;
+    let bActiveTextField: INT8;
 
     bActiveTextField = (INT8)GetActiveFieldID();
     if (bActiveTextField && bActiveTextField != -1) {
@@ -811,7 +811,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
 
     // if there is save game in the slot, ask for confirmation before overwriting
     if (gbSaveGameArray[bSaveGameID]) {
-      CHAR16 sText[512];
+      let sText: CHAR16[] /* [512] */;
 
       swprintf(sText, zSaveLoadText[SLG_CONFIRM_SAVE], bSaveGameID);
 
@@ -857,7 +857,7 @@ function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, u
 }
 
 function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect CenteringRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // do message box and return
   giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT8)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
@@ -867,9 +867,9 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
 }
 
 function InitSaveGameArray(): BOOLEAN {
-  INT8 cnt;
-  CHAR8 zSaveGameName[512];
-  SAVED_GAME_HEADER SaveGameHeader;
+  let cnt: INT8;
+  let zSaveGameName: CHAR8[] /* [512] */;
+  let SaveGameHeader: SAVED_GAME_HEADER;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
@@ -888,9 +888,9 @@ function InitSaveGameArray(): BOOLEAN {
 }
 
 function DisplaySaveGameList(): BOOLEAN {
-  INT8 bLoop1;
+  let bLoop1: INT8;
   //	UINT16 usPosX = SLG_FIRST_SAVED_SPOT_X;
-  UINT16 usPosY = SLG_FIRST_SAVED_SPOT_Y;
+  let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y;
 
   for (bLoop1 = 0; bLoop1 < NUM_SAVE_GAMES; bLoop1++) {
     // display all the information from the header
@@ -904,16 +904,16 @@ function DisplaySaveGameList(): BOOLEAN {
 
 function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 {
-  CHAR16 zDateString[128];
-  CHAR16 zLocationString[128];
-  CHAR16 zNumMercsString[128];
-  CHAR16 zBalanceString[128];
-  SAVED_GAME_HEADER SaveGameHeader;
-  HVOBJECT hPixHandle;
-  UINT16 usPosX = SLG_FIRST_SAVED_SPOT_X;
-  UINT32 uiFont = SAVE_LOAD_TITLE_FONT;
-  UINT8 ubFontColor = SAVE_LOAD_TITLE_COLOR;
-  UINT16 usPosY = SLG_FIRST_SAVED_SPOT_Y + (SLG_GAP_BETWEEN_LOCATIONS * bEntryID);
+  let zDateString: CHAR16[] /* [128] */;
+  let zLocationString: CHAR16[] /* [128] */;
+  let zNumMercsString: CHAR16[] /* [128] */;
+  let zBalanceString: CHAR16[] /* [128] */;
+  let SaveGameHeader: SAVED_GAME_HEADER;
+  let hPixHandle: HVOBJECT;
+  let usPosX: UINT16 = SLG_FIRST_SAVED_SPOT_X;
+  let uiFont: UINT32 = SAVE_LOAD_TITLE_FONT;
+  let ubFontColor: UINT8 = SAVE_LOAD_TITLE_COLOR;
+  let usPosY: UINT16 = SLG_FIRST_SAVED_SPOT_Y + (SLG_GAP_BETWEEN_LOCATIONS * bEntryID);
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {
@@ -1022,8 +1022,8 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 
     // if the user is LOADING and holding down the CTRL key, display the additional info
     if (!gfSaveGame && gfKeyState[CTRL] && gbSelectedSaveLocation == bEntryID) {
-      CHAR16 zMouseHelpTextString[256];
-      CHAR16 zDifString[256];
+      let zMouseHelpTextString: CHAR16[] /* [256] */;
+      let zDifString: CHAR16[] /* [256] */;
 
       // Create a string for difficulty level
       swprintf(zDifString, L"%s %s", gzGIOScreenText[GIO_EASY_TEXT + SaveGameHeader.sInitialGameOptions.ubDifficultyLevel - 1], zSaveLoadText[SLG_DIFF]);
@@ -1123,9 +1123,9 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
 }
 
 function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_HEADER>): BOOLEAN {
-  HWFILE hFile;
-  CHAR8 zSavedGameName[512];
-  UINT32 uiNumBytesRead;
+  let hFile: HWFILE;
+  let zSavedGameName: CHAR8[] /* [512] */;
+  let uiNumBytesRead: UINT32;
 
   // make sure the entry is valid
   if (bEntry < 0 || bEntry > NUM_SAVE_GAMES) {
@@ -1248,14 +1248,14 @@ void BtnSlgLoadCallback(GUI_BUTTON *btn,INT32 reason)
 */
 
 function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT8 bActiveTextField;
+  let bActiveTextField: INT8;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 bSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
-    static UINT32 uiLastTime = 0;
-    UINT32 uiCurTime = GetJA2Clock();
-    INT32 i;
+    let bSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    /* static */ let uiLastTime: UINT32 = 0;
+    let uiCurTime: UINT32 = GetJA2Clock();
+    let i: INT32;
 
     /*
                     //If we are saving and this is the quick save slot
@@ -1383,7 +1383,7 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
 function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
-    INT8 bTemp;
+    let bTemp: INT8;
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
 
     bTemp = gbHighLightedLocation;
@@ -1411,9 +1411,9 @@ function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reas
 }
 
 function InitSaveLoadScreenTextInputBoxes(): void {
-  UINT32 uiStartLoc = 0;
-  UINT16 usPosY;
-  SAVED_GAME_HEADER SaveGameHeader;
+  let uiStartLoc: UINT32 = 0;
+  let usPosY: UINT16;
+  let SaveGameHeader: SAVED_GAME_HEADER;
 
   if (gbSelectedSaveLocation == -1)
     return;
@@ -1552,9 +1552,9 @@ function SetSelection(ubNewSelection: UINT8): void {
 }
 
 function CompareSaveGameVersion(bSaveGameID: INT8): UINT8 {
-  UINT8 ubRetVal = SLS_HEADER_OK;
+  let ubRetVal: UINT8 = SLS_HEADER_OK;
 
-  SAVED_GAME_HEADER SaveGameHeader;
+  let SaveGameHeader: SAVED_GAME_HEADER;
 
   // Get the heade for the saved game
   LoadSavedGameHeader(bSaveGameID, &SaveGameHeader);
@@ -1603,7 +1603,7 @@ function LoadSavedGameDeleteAllSaveGameMessageBoxCallBack(bExitValue: UINT8): vo
 }
 
 function DeleteAllSaveGameFile(): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     DeleteSaveGameNumber(cnt);
@@ -1615,7 +1615,7 @@ function DeleteAllSaveGameFile(): void {
 }
 
 function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
-  CHAR8 zSaveGameName[512];
+  let zSaveGameName: CHAR8[] /* [512] */;
 
   // Create the name of the file
   CreateSavedGameFileNameFromNumber(ubSaveGameSlotID, zSaveGameName);
@@ -1625,11 +1625,11 @@ function DeleteSaveGameNumber(ubSaveGameSlotID: UINT8): void {
 }
 
 function DisplayOnScreenNumber(fErase: BOOLEAN): void {
-  wchar_t zTempString[16];
-  UINT16 usPosX = 6;
-  UINT16 usPosY;
-  INT8 bLoopNum;
-  INT8 bNum = 0;
+  let zTempString: wchar_t[] /* [16] */;
+  let usPosX: UINT16 = 6;
+  let usPosY: UINT16;
+  let bLoopNum: INT8;
+  let bNum: INT8 = 0;
 
   usPosY = SLG_FIRST_SAVED_SPOT_Y;
 
@@ -1860,8 +1860,8 @@ function DoQuickLoad(): BOOLEAN {
 }
 
 function IsThereAnySavedGameFiles(): BOOLEAN {
-  INT8 cnt;
-  CHAR8 zSaveGameName[512];
+  let cnt: INT8;
+  let zSaveGameName: CHAR8[] /* [512] */;
 
   for (cnt = 0; cnt < NUM_SAVE_GAMES; cnt++) {
     CreateSavedGameFileNameFromNumber(cnt, zSaveGameName);
@@ -1903,7 +1903,7 @@ function RedrawSaveLoadScreenAfterMessageBox(bExitValue: UINT8): void {
 }
 
 function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
-  INT32 i;
+  let i: INT32;
 
   // if we are saving, any slot otgher then the quick save slot is valid
   if (gfSaveGame) {
@@ -1959,7 +1959,7 @@ function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
 }
 
 function ClearSelectedSaveSlot(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < NUM_SAVE_GAMES; i++)
     gbSaveGameSelectedLocation[i] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
 

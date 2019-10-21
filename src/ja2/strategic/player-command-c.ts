@@ -60,10 +60,10 @@ function GetSectorFacilitiesFlags(sMapX: INT16, sMapY: INT16, sFacilitiesString:
 // ALL changes of control to player must be funneled through here!
 function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: BOOLEAN): BOOLEAN {
   // NOTE: MapSector must be 16-bit, cause MAX_WORLD_X is actually 18, so the sector numbers exceed 256 although we use only 16x16
-  UINT16 usMapSector = 0;
-  BOOLEAN fWasEnemyControlled = FALSE;
-  INT8 bTownId = 0;
-  UINT8 ubSectorID;
+  let usMapSector: UINT16 = 0;
+  let fWasEnemyControlled: BOOLEAN = FALSE;
+  let bTownId: INT8 = 0;
+  let ubSectorID: UINT8;
 
   if (AreInMeanwhile()) {
     return FALSE;
@@ -202,11 +202,11 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
 
 // ALL changes of control to enemy must be funneled through here!
 function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8, fContested: BOOLEAN): BOOLEAN {
-  UINT16 usMapSector = 0;
-  BOOLEAN fWasPlayerControlled = FALSE;
-  INT8 bTownId = 0;
-  UINT8 ubTheftChance;
-  UINT8 ubSectorID;
+  let usMapSector: UINT16 = 0;
+  let fWasPlayerControlled: BOOLEAN = FALSE;
+  let bTownId: INT8 = 0;
+  let ubTheftChance: UINT8;
+  let ubSectorID: UINT8;
 
   // KM : August 6, 1999 Patch fix
   //     This check was added because this function gets called when player mercs retreat from an unresolved
@@ -332,8 +332,8 @@ void MakePlayerPerceptionOfSectorControlCorrect( INT16 sMapX, INT16 sMapY, INT8 
 */
 
 function ReplaceSoldierProfileInPlayerGroup(ubGroupID: UINT8, ubOldProfile: UINT8, ubNewProfile: UINT8): void {
-  GROUP *pGroup;
-  PLAYERGROUP *curr;
+  let pGroup: Pointer<GROUP>;
+  let curr: Pointer<PLAYERGROUP>;
 
   pGroup = GetGroup(ubGroupID);
 

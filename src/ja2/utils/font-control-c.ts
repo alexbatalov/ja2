@@ -1,83 +1,83 @@
-INT32 giCurWinFont = 0;
-BOOLEAN gfUseWinFonts = FALSE;
+let giCurWinFont: INT32 = 0;
+let gfUseWinFonts: BOOLEAN = FALSE;
 
 // Global variables for video objects
-INT32 gpLargeFontType1;
-HVOBJECT gvoLargeFontType1;
+let gpLargeFontType1: INT32;
+let gvoLargeFontType1: HVOBJECT;
 
-INT32 gpSmallFontType1;
-HVOBJECT gvoSmallFontType1;
+let gpSmallFontType1: INT32;
+let gvoSmallFontType1: HVOBJECT;
 
-INT32 gpTinyFontType1;
-HVOBJECT gvoTinyFontType1;
+let gpTinyFontType1: INT32;
+let gvoTinyFontType1: HVOBJECT;
 
-INT32 gp12PointFont1;
-HVOBJECT gvo12PointFont1;
+let gp12PointFont1: INT32;
+let gvo12PointFont1: HVOBJECT;
 
-INT32 gpClockFont;
-HVOBJECT gvoClockFont;
+let gpClockFont: INT32;
+let gvoClockFont: HVOBJECT;
 
-INT32 gpCompFont;
-HVOBJECT gvoCompFont;
+let gpCompFont: INT32;
+let gvoCompFont: HVOBJECT;
 
-INT32 gpSmallCompFont;
-HVOBJECT gvoSmallCompFont;
+let gpSmallCompFont: INT32;
+let gvoSmallCompFont: HVOBJECT;
 
-INT32 gp10PointRoman;
-HVOBJECT gvo10PointRoman;
+let gp10PointRoman: INT32;
+let gvo10PointRoman: HVOBJECT;
 
-INT32 gp12PointRoman;
-HVOBJECT gvo12PointRoman;
+let gp12PointRoman: INT32;
+let gvo12PointRoman: HVOBJECT;
 
-INT32 gp14PointSansSerif;
-HVOBJECT gvo14PointSansSerif;
+let gp14PointSansSerif: INT32;
+let gvo14PointSansSerif: HVOBJECT;
 
 // INT32						gpMilitaryFont1;
 // HVOBJECT				gvoMilitaryFont1;
 
-INT32 gp10PointArial;
-HVOBJECT gvo10PointArial;
+let gp10PointArial: INT32;
+let gvo10PointArial: HVOBJECT;
 
-INT32 gp10PointArialBold;
-HVOBJECT gvo10PointArialBold;
+let gp10PointArialBold: INT32;
+let gvo10PointArialBold: HVOBJECT;
 
-INT32 gp14PointArial;
-HVOBJECT gvo14PointArial;
+let gp14PointArial: INT32;
+let gvo14PointArial: HVOBJECT;
 
-INT32 gp12PointArial;
-HVOBJECT gvo12PointArial;
+let gp12PointArial: INT32;
+let gvo12PointArial: HVOBJECT;
 
-INT32 gpBlockyFont;
-HVOBJECT gvoBlockyFont;
+let gpBlockyFont: INT32;
+let gvoBlockyFont: HVOBJECT;
 
-INT32 gpBlockyFont2;
-HVOBJECT gvoBlockyFont2;
+let gpBlockyFont2: INT32;
+let gvoBlockyFont2: HVOBJECT;
 
-INT32 gp12PointArialFixedFont;
-HVOBJECT gvo12PointArialFixedFont;
+let gp12PointArialFixedFont: INT32;
+let gvo12PointArialFixedFont: HVOBJECT;
 
-INT32 gp16PointArial;
-HVOBJECT gvo16PointArial;
+let gp16PointArial: INT32;
+let gvo16PointArial: HVOBJECT;
 
-INT32 gpBlockFontNarrow;
-HVOBJECT gvoBlockFontNarrow;
+let gpBlockFontNarrow: INT32;
+let gvoBlockFontNarrow: HVOBJECT;
 
-INT32 gp14PointHumanist;
-HVOBJECT gvo14PointHumanist;
+let gp14PointHumanist: INT32;
+let gvo14PointHumanist: HVOBJECT;
 
 // FIXME: Language-specific code
 // #ifdef ENGLISH
-INT32 gpHugeFont;
-HVOBJECT gvoHugeFont;
+let gpHugeFont: INT32;
+let gvoHugeFont: HVOBJECT;
 // #endif
 
-INT32 giSubTitleWinFont;
+let giSubTitleWinFont: INT32;
 
-BOOLEAN gfFontsInit = FALSE;
+let gfFontsInit: BOOLEAN = FALSE;
 
 function InitializeFonts(): BOOLEAN {
-  INT16 zWinFontName[128];
-  COLORVAL Color;
+  let zWinFontName: INT16[] /* [128] */;
+  let Color: COLORVAL;
 
   // Initialize fonts
   //	gpLargeFontType1  = LoadFontFile( "FONTS\\lfont1.sti" );
@@ -226,7 +226,7 @@ function ShutdownFonts(): void {
 
 // Set shades for fonts
 function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
-  HVOBJECT pFont;
+  let pFont: HVOBJECT;
 
   CHECKF(bColorID > 0);
   CHECKF(bColorID < 16);
@@ -239,8 +239,8 @@ function SetFontShade(uiFontID: UINT32, bColorID: INT8): BOOLEAN {
 }
 
 function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
-  UINT32 count;
-  SGPPaletteEntry Pal[256];
+  let count: UINT32;
+  let Pal: SGPPaletteEntry[] /* [256] */;
 
   for (count = 0; count < 16; count++) {
     if ((count == 4) && (pObj->p16BPPPalette == pObj->pShades[count]))

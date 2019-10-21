@@ -4,10 +4,10 @@
 // Use defines to allocate slots in the mutex manager. Put these defines in LOCAL.H
 //
 
-CRITICAL_SECTION MutexTable[MAX_MUTEX_HANDLES];
+let MutexTable: CRITICAL_SECTION[] /* [MAX_MUTEX_HANDLES] */;
 
 function InitializeMutexManager(): BOOLEAN {
-  UINT32 uiIndex;
+  let uiIndex: UINT32;
 
   //
   // Make sure all mutex handles are opened
@@ -23,7 +23,7 @@ function InitializeMutexManager(): BOOLEAN {
 }
 
 function ShutdownMutexManager(): void {
-  UINT32 uiIndex;
+  let uiIndex: UINT32;
 
   DbgMessage(TOPIC_MUTEX, DBG_LEVEL_0, "Shutting down the Mutex Manager");
 

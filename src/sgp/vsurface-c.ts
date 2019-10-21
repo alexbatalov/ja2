@@ -40,22 +40,22 @@ interface VSURFACE_NODE {
   prev: Pointer<VSURFACE_NODE>;
 }
 
-VSURFACE_NODE *gpVSurfaceHead = NULL;
-VSURFACE_NODE *gpVSurfaceTail = NULL;
-UINT32 guiVSurfaceIndex = 0;
-UINT32 guiVSurfaceSize = 0;
-UINT32 guiVSurfaceTotalAdded = 0;
+let gpVSurfaceHead: Pointer<VSURFACE_NODE> = NULL;
+let gpVSurfaceTail: Pointer<VSURFACE_NODE> = NULL;
+let guiVSurfaceIndex: UINT32 = 0;
+let guiVSurfaceSize: UINT32 = 0;
+let guiVSurfaceTotalAdded: UINT32 = 0;
 
-INT32 giMemUsedInSurfaces;
+let giMemUsedInSurfaces: INT32;
 
 // OBSOLETE!!!!!!!!!
-HLIST ghVideoSurfaces = NULL;
+let ghVideoSurfaces: HLIST = NULL;
 // OBSOLETE!!!!!!!!!
 
-HVSURFACE ghPrimary = NULL;
-HVSURFACE ghBackBuffer = NULL;
-HVSURFACE ghFrameBuffer = NULL;
-HVSURFACE ghMouseBuffer = NULL;
+let ghPrimary: HVSURFACE = NULL;
+let ghBackBuffer: HVSURFACE = NULL;
+let ghFrameBuffer: HVSURFACE = NULL;
+let ghMouseBuffer: HVSURFACE = NULL;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -83,7 +83,7 @@ function InitializeVideoSurfaceManager(): BOOLEAN {
 }
 
 function ShutdownVideoSurfaceManager(): BOOLEAN {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   DbgMessage(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
 
@@ -106,7 +106,7 @@ function ShutdownVideoSurfaceManager(): BOOLEAN {
 }
 
 function RestoreVideoSurfaces(): BOOLEAN {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   //
   // Loop through Video Surfaces and Restore
@@ -122,7 +122,7 @@ function RestoreVideoSurfaces(): BOOLEAN {
 }
 
 function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex: Pointer<UINT32>): BOOLEAN {
-  HVSURFACE hVSurface;
+  let hVSurface: HVSURFACE;
 
   // Assertions
   Assert(puiIndex);
@@ -167,7 +167,7 @@ function AddStandardVideoSurface(pVSurfaceDesc: Pointer<VSURFACE_DESC>, puiIndex
 }
 
 function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointer<BYTE> {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   //
   // Check if given backbuffer or primary buffer
@@ -211,7 +211,7 @@ function LockVideoSurface(uiVSurface: UINT32, puiPitch: Pointer<UINT32>): Pointe
 }
 
 function UnLockVideoSurface(uiVSurface: UINT32): void {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   //
   // Check if given backbuffer or primary buffer
@@ -255,7 +255,7 @@ function UnLockVideoSurface(uiVSurface: UINT32): void {
 }
 
 function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVAL): BOOLEAN {
-  HVSURFACE hVSurface;
+  let hVSurface: HVSURFACE;
 
   //
   // Get Video Surface
@@ -273,7 +273,7 @@ function SetVideoSurfaceTransparency(uiIndex: UINT32, TransColor: COLORVAL): BOO
 }
 
 function AddVideoSurfaceRegion(uiIndex: UINT32, pNewRegion: Pointer<VSURFACE_REGION>): BOOLEAN {
-  HVSURFACE hVSurface;
+  let hVSurface: HVSURFACE;
 
   //
   // Get Video Surface
@@ -291,7 +291,7 @@ function AddVideoSurfaceRegion(uiIndex: UINT32, pNewRegion: Pointer<VSURFACE_REG
 }
 
 function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, usHeight: Pointer<UINT16>, ubBitDepth: Pointer<UINT8>): BOOLEAN {
-  HVSURFACE hVSurface;
+  let hVSurface: HVSURFACE;
 
   Assert(usWidth != NULL);
   Assert(usHeight != NULL);
@@ -311,7 +311,7 @@ function GetVideoSurfaceDescription(uiIndex: UINT32, usWidth: Pointer<UINT16>, u
 }
 
 function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): BOOLEAN {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   if (uiIndex == PRIMARY_SURFACE) {
     *hVSurface = ghPrimary;
@@ -345,7 +345,7 @@ function GetVideoSurface(hVSurface: Pointer<HVSURFACE>, uiIndex: UINT32): BOOLEA
 }
 
 function SetPrimaryVideoSurfaces(): BOOLEAN {
-  LPDIRECTDRAWSURFACE2 pSurface;
+  let pSurface: LPDIRECTDRAWSURFACE2;
 
   // Delete surfaces if they exist
   DeletePrimaryVideoSurfaces();
@@ -427,8 +427,8 @@ function DeletePrimaryVideoSurfaces(): void {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegionIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, pBltFx: Pointer<blt_vs_fx>): BOOLEAN {
-  HVSURFACE hDestVSurface;
-  HVSURFACE hSrcVSurface;
+  let hDestVSurface: HVSURFACE;
+  let hSrcVSurface: HVSURFACE;
 
   if (!GetVideoSurface(&hDestVSurface, uiDestVSurface)) {
     return FALSE;
@@ -450,9 +450,9 @@ function BltVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, usRegion
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, Color16BPP: UINT16): BOOLEAN {
-  blt_vs_fx BltFx;
-  HVSURFACE hDestVSurface;
-  SGPRect Clip;
+  let BltFx: blt_vs_fx;
+  let hDestVSurface: HVSURFACE;
+  let Clip: SGPRect;
 
   if (!GetVideoSurface(&hDestVSurface, uiDestVSurface)) {
     return FALSE;
@@ -509,9 +509,21 @@ function ColorFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDest
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDestY1: INT32, iDestX2: INT32, iDestY2: INT32, BkgrndImg: HVOBJECT, Index: UINT16, Ox: INT16, Oy: INT16): BOOLEAN {
-  INT16 xc, yc, hblits, wblits, aw, pw, ah, ph, w, h, xo, yo;
-  ETRLEObject *pTrav;
-  SGPRect NewClip, OldClip;
+  let xc: INT16;
+  let yc: INT16;
+  let hblits: INT16;
+  let wblits: INT16;
+  let aw: INT16;
+  let pw: INT16;
+  let ah: INT16;
+  let ph: INT16;
+  let w: INT16;
+  let h: INT16;
+  let xo: INT16;
+  let yo: INT16;
+  let pTrav: Pointer<ETRLEObject>;
+  let NewClip: SGPRect;
+  let OldClip: SGPRect;
 
   pTrav = &(BkgrndImg->pETRLEObject[Index]);
   ph = (INT16)(pTrav->usHeight + pTrav->sOffsetY);
@@ -612,23 +624,23 @@ function ImageFillVideoSurfaceArea(uiDestVSurface: UINT32, iDestX1: INT32, iDest
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURFACE {
-  LPDIRECTDRAW2 lpDD2Object;
-  DDSURFACEDESC SurfaceDescription;
-  DDPIXELFORMAT PixelFormat;
-  LPDIRECTDRAWSURFACE lpDDS;
-  LPDIRECTDRAWSURFACE2 lpDDS2;
-  HVSURFACE hVSurface;
-  HIMAGE hImage;
-  SGPRect tempRect;
-  UINT16 usHeight;
-  UINT16 usWidth;
-  UINT8 ubBitDepth;
-  UINT32 fMemUsage;
+  let lpDD2Object: LPDIRECTDRAW2;
+  let SurfaceDescription: DDSURFACEDESC;
+  let PixelFormat: DDPIXELFORMAT;
+  let lpDDS: LPDIRECTDRAWSURFACE;
+  let lpDDS2: LPDIRECTDRAWSURFACE2;
+  let hVSurface: HVSURFACE;
+  let hImage: HIMAGE;
+  let tempRect: SGPRect;
+  let usHeight: UINT16;
+  let usWidth: UINT16;
+  let ubBitDepth: UINT8;
+  let fMemUsage: UINT32;
 
   //#ifdef JA2
-  UINT32 uiRBitMask;
-  UINT32 uiGBitMask;
-  UINT32 uiBBitMask;
+  let uiRBitMask: UINT32;
+  let uiGBitMask: UINT32;
+  let uiBBitMask: UINT32;
   //#endif
 
   // Clear the memory
@@ -916,9 +928,9 @@ function CreateVideoSurface(VSurfaceDesc: Pointer<VSURFACE_DESC>): HVSURFACE {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 function RestoreVideoSurface(hVSurface: HVSURFACE): BOOLEAN {
-  LPDIRECTDRAWSURFACE2 lpDDSurface;
-  LPDIRECTDRAWSURFACE2 lpBackupDDSurface;
-  RECT aRect;
+  let lpDDSurface: LPDIRECTDRAWSURFACE2;
+  let lpBackupDDSurface: LPDIRECTDRAWSURFACE2;
+  let aRect: RECT;
 
   Assert(hVSurface != NULL);
 
@@ -969,11 +981,11 @@ function RestoreVideoSurface(hVSurface: HVSURFACE): BOOLEAN {
 // Pitch MUST be used for all width calculations ( Pitch is in bytes )
 // The time between Locking and unlocking must be minimal
 function LockVideoSurfaceBuffer(hVSurface: HVSURFACE, pPitch: Pointer<UINT32>): Pointer<BYTE> {
-  DDSURFACEDESC SurfaceDescription;
+  let SurfaceDescription: DDSURFACEDESC;
 
   // Assertions
   if (hVSurface == NULL) {
-    int i = 0;
+    let i: int = 0;
   }
 
   Assert(hVSurface != NULL);
@@ -999,11 +1011,11 @@ function UnLockVideoSurfaceBuffer(hVSurface: HVSURFACE): void {
 
 // Given an HIMAGE object, blit imagery into existing Video Surface. Can be from 8->16 BPP
 function SetVideoSurfaceDataFromHImage(hVSurface: HVSURFACE, hImage: HIMAGE, usX: UINT16, usY: UINT16, pSrcRect: Pointer<SGPRect>): BOOLEAN {
-  BYTE *pDest;
-  UINT32 fBufferBPP = 0;
-  UINT32 uiPitch;
-  UINT16 usEffectiveWidth;
-  SGPRect aRect;
+  let pDest: Pointer<BYTE>;
+  let fBufferBPP: UINT32 = 0;
+  let uiPitch: UINT32;
+  let usEffectiveWidth: UINT16;
+  let aRect: SGPRect;
 
   // Assertions
   Assert(hVSurface != NULL);
@@ -1102,9 +1114,9 @@ function SetVideoSurfacePalette(hVSurface: HVSURFACE, pSrcPalette: Pointer<SGPPa
 // Transparency needs to take RGB value and find best fit and place it into DD Surface
 // colorkey value.
 function SetVideoSurfaceTransparencyColor(hVSurface: HVSURFACE, TransColor: COLORVAL): BOOLEAN {
-  DDCOLORKEY ColorKey;
-  DWORD fFlags = CLR_INVALID;
-  LPDIRECTDRAWSURFACE2 lpDDSurface;
+  let ColorKey: DDCOLORKEY;
+  let fFlags: DWORD = CLR_INVALID;
+  let lpDDSurface: LPDIRECTDRAWSURFACE2;
 
   // Assertions
   Assert(hVSurface != NULL);
@@ -1150,7 +1162,7 @@ function GetVSurfacePaletteEntries(hVSurface: HVSURFACE, pPalette: Pointer<SGPPa
 }
 
 function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): BOOLEAN {
-  VSURFACE_NODE *curr;
+  let curr: Pointer<VSURFACE_NODE>;
 
   curr = gpVSurfaceHead;
   while (curr) {
@@ -1190,7 +1202,7 @@ function DeleteVideoSurfaceFromIndex(uiIndex: UINT32): BOOLEAN {
 
 // Deletes all palettes, surfaces and region data
 function DeleteVideoSurface(hVSurface: HVSURFACE): BOOLEAN {
-  LPDIRECTDRAWSURFACE2 lpDDSurface;
+  let lpDDSurface: LPDIRECTDRAWSURFACE2;
 
   // Assertions
   CHECKF(hVSurface != NULL);
@@ -1245,9 +1257,9 @@ function DeleteVideoSurface(hVSurface: HVSURFACE): BOOLEAN {
 
 function SetClipList(hVSurface: HVSURFACE, RegionData: Pointer<SGPRect>, usNumRegions: UINT16): BOOLEAN {
   RGNDATA *pRgnData;
-  UINT16 cnt;
-  RECT aRect;
-  LPDIRECTDRAW2 lpDD2Object;
+  let cnt: UINT16;
+  let aRect: RECT;
+  let lpDD2Object: LPDIRECTDRAW2;
 
   // Get Direct Draw Object
   lpDD2Object = GetDirectDraw2Object();
@@ -1330,7 +1342,7 @@ function AddVSurfaceRegion(hVSurface: HVSURFACE, pNewRegion: Pointer<VSURFACE_RE
 
 // Add a group of regions
 function AddVSurfaceRegions(hVSurface: HVSURFACE, ppNewRegions: Pointer<Pointer<VSURFACE_REGION>>, uiNumRegions: UINT16): BOOLEAN {
-  UINT16 cnt;
+  let cnt: UINT16;
 
   Assert(hVSurface != NULL);
   Assert(ppNewRegions != NULL);
@@ -1343,7 +1355,7 @@ function AddVSurfaceRegions(hVSurface: HVSURFACE, ppNewRegions: Pointer<Pointer<
 }
 
 function RemoveVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16): BOOLEAN {
-  VSURFACE_REGION aRegion;
+  let aRegion: VSURFACE_REGION;
 
   Assert(hVSurface != NULL);
 
@@ -1351,7 +1363,8 @@ function RemoveVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16): BOOLEAN {
 }
 
 function ClearAllVSurfaceRegions(hVSurface: HVSURFACE): BOOLEAN {
-  UINT32 uiListSize, cnt;
+  let uiListSize: UINT32;
+  let cnt: UINT32;
 
   Assert(hVSurface != NULL);
 
@@ -1387,7 +1400,7 @@ function GetVSurfaceRect(hVSurface: HVSURFACE, pRect: Pointer<RECT>): BOOLEAN {
 }
 
 function ReplaceVSurfaceRegion(hVSurface: HVSURFACE, usIndex: UINT16, aRegion: Pointer<VSURFACE_REGION>): BOOLEAN {
-  VSURFACE_REGION OldRegion;
+  let OldRegion: VSURFACE_REGION;
 
   Assert(hVSurface != NULL);
 
@@ -1422,11 +1435,17 @@ function AddVSurfaceRegionAtIndex(hVSurface: HVSURFACE, usIndex: UINT16, pNewReg
 // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
 
 function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, usIndex: UINT16, iDestX: INT32, iDestY: INT32, fBltFlags: INT32, pBltFx: Pointer<blt_vs_fx>): BOOLEAN {
-  VSURFACE_REGION aRegion;
-  RECT SrcRect, DestRect;
-  UINT8 *pSrcSurface8, *pDestSurface8;
-  UINT16 *pDestSurface16, *pSrcSurface16;
-  UINT32 uiSrcPitch, uiDestPitch, uiWidth, uiHeight;
+  let aRegion: VSURFACE_REGION;
+  let SrcRect: RECT;
+  let DestRect: RECT;
+  let pSrcSurface8: Pointer<UINT8>;
+  let pDestSurface8: Pointer<UINT8>;
+  let pDestSurface16: Pointer<UINT16>;
+  let pSrcSurface16: Pointer<UINT16>;
+  let uiSrcPitch: UINT32;
+  let uiDestPitch: UINT32;
+  let uiWidth: UINT32;
+  let uiHeight: UINT32;
 
   // Assertions
   Assert(hDestVSurface != NULL);
@@ -1472,7 +1491,7 @@ function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: H
 
     // Use SUBRECT if specified
     if (fBltFlags & VS_BLT_SRCSUBRECT) {
-      SGPRect aSubRect;
+      let aSubRect: SGPRect;
 
       CHECKF(pBltFx != NULL);
 
@@ -1600,7 +1619,7 @@ function BltVideoSurfaceToVideoSurface(hDestVSurface: HVSURFACE, hSrcVSurface: H
 
 // Blt to backup buffer
 function UpdateBackupSurface(hVSurface: HVSURFACE): BOOLEAN {
-  RECT aRect;
+  let aRect: RECT;
 
   // Assertions
   Assert(hVSurface != NULL);
@@ -1645,12 +1664,12 @@ function GetVideoSurfaceDDPalette(hVSurface: HVSURFACE): LPDIRECTDRAWPALETTE {
 
 function CreateVideoSurfaceFromDDSurface(lpDDSurface: LPDIRECTDRAWSURFACE2): HVSURFACE {
   // Create Video Surface
-  DDPIXELFORMAT PixelFormat;
-  HVSURFACE hVSurface;
-  DDSURFACEDESC DDSurfaceDesc;
-  LPDIRECTDRAWPALETTE pDDPalette;
-  SGPPaletteEntry SGPPalette[256];
-  HRESULT ReturnCode;
+  let PixelFormat: DDPIXELFORMAT;
+  let hVSurface: HVSURFACE;
+  let DDSurfaceDesc: DDSURFACEDESC;
+  let pDDPalette: LPDIRECTDRAWPALETTE;
+  let SGPPalette: SGPPaletteEntry[] /* [256] */;
+  let ReturnCode: HRESULT;
 
   // Allocate Video Surface struct
   hVSurface = MemAlloc(sizeof(SGPVSurface));
@@ -1782,7 +1801,7 @@ function ClipReleatedSrcAndDestRectangles(hDestVSurface: HVSURFACE, hSrcVSurface
 }
 
 function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): BOOLEAN {
-  DDBLTFX BlitterFX;
+  let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != NULL);
   CHECKF(pBltFx != NULL);
@@ -1800,7 +1819,7 @@ function FillSurface(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): BOOL
 }
 
 function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): BOOLEAN {
-  DDBLTFX BlitterFX;
+  let BlitterFX: DDBLTFX;
 
   Assert(hDestVSurface != NULL);
   CHECKF(pBltFx != NULL);
@@ -1818,8 +1837,8 @@ function FillSurfaceRect(hDestVSurface: HVSURFACE, pBltFx: Pointer<blt_vs_fx>): 
 }
 
 function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>): BOOLEAN {
-  UINT32 uiDDFlags;
-  RECT DestRect;
+  let uiDDFlags: UINT32;
+  let DestRect: RECT;
 
   // Blit using the correct blitter
   if (fBltFlags & VS_BLT_FAST) {
@@ -1888,10 +1907,10 @@ function BltVSurfaceUsingDD(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, f
 }
 
 function InternalShadowVideoSurfaceRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X2: INT32, Y2: INT32, fLowPercentShadeTable: BOOLEAN): BOOLEAN {
-  UINT16 *pBuffer;
-  UINT32 uiPitch;
-  SGPRect area;
-  HVSURFACE hVSurface;
+  let pBuffer: Pointer<UINT16>;
+  let uiPitch: UINT32;
+  let area: SGPRect;
+  let hVSurface: HVSURFACE;
 
   // CLIP IT!
   // FIRST GET SURFACE
@@ -1979,7 +1998,7 @@ function ShadowVideoSurfaceRectUsingLowPercentTable(uiDestVSurface: UINT32, X1: 
 //
 // BltVSurfaceUsingDDBlt will always use Direct Draw Blt,NOT BltFast
 function BltVSurfaceUsingDDBlt(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE, fBltFlags: UINT32, iDestX: INT32, iDestY: INT32, SrcRect: Pointer<RECT>, DestRect: Pointer<RECT>): BOOLEAN {
-  UINT32 uiDDFlags;
+  let uiDDFlags: UINT32;
 
   // Default flags
   uiDDFlags = DDBLT_WAIT;
@@ -2005,8 +2024,8 @@ function BltVSurfaceUsingDDBlt(hDestVSurface: HVSURFACE, hSrcVSurface: HVSURFACE
 // If the 2 images are not 16 Bpp, it returns false.
 //
 function BltStretchVideoSurface(uiDestVSurface: UINT32, uiSrcVSurface: UINT32, iDestX: INT32, iDestY: INT32, fBltFlags: UINT32, SrcRect: Pointer<SGPRect>, DestRect: Pointer<SGPRect>): BOOLEAN {
-  HVSURFACE hDestVSurface;
-  HVSURFACE hSrcVSurface;
+  let hDestVSurface: HVSURFACE;
+  let hSrcVSurface: HVSURFACE;
 
   if (!GetVideoSurface(&hDestVSurface, uiDestVSurface)) {
     return FALSE;
@@ -2040,9 +2059,9 @@ function ShadowVideoSurfaceImage(uiDestVSurface: UINT32, hImageHandle: HVOBJECT,
 }
 
 function MakeVSurfaceFromVObject(uiVObject: UINT32, usSubIndex: UINT16, puiVSurface: Pointer<UINT32>): BOOLEAN {
-  HVOBJECT hSrcVObject;
-  UINT32 uiVSurface;
-  VSURFACE_DESC hDesc;
+  let hSrcVObject: HVOBJECT;
+  let uiVSurface: UINT32;
+  let hDesc: VSURFACE_DESC;
 
   if (GetVideoObject(&hSrcVObject, uiVObject)) {
     // ATE: Memset

@@ -33,14 +33,14 @@ const PREV_BTN_X = 553;
 const BTN_Y = 53;
 
 // graphics handles
-UINT32 guiTITLE;
+let guiTITLE: UINT32;
 // UINT32 guiGREYFRAME;
-UINT32 guiTOP;
+let guiTOP: UINT32;
 // UINT32 guiMIDDLE;
 // UINT32 guiBOTTOM;
 // UINT32 guiLINE;
-UINT32 guiLONGLINE;
-UINT32 guiSHADELINE;
+let guiLONGLINE: UINT32;
+let guiSHADELINE: UINT32;
 // UINT32 guiVERTLINE;
 // UINT32 guiBIGBOX;
 
@@ -50,28 +50,28 @@ const enum Enum82 {
 }
 
 // the page flipping buttons
-INT32 giHistoryButton[2];
-INT32 giHistoryButtonImage[2];
-BOOLEAN fInHistoryMode = FALSE;
+let giHistoryButton: INT32[] /* [2] */;
+let giHistoryButtonImage: INT32[] /* [2] */;
+let fInHistoryMode: BOOLEAN = FALSE;
 
 // current page displayed
-INT32 iCurrentHistoryPage = 1;
+let iCurrentHistoryPage: INT32 = 1;
 
 // the History record list
-HistoryUnitPtr pHistoryListHead = NULL;
+let pHistoryListHead: HistoryUnitPtr = NULL;
 
 // current History record (the one at the top of the current page)
-HistoryUnitPtr pCurrentHistory = NULL;
+let pCurrentHistory: HistoryUnitPtr = NULL;
 
 // last page in list
-UINT32 guiLastPageInHistoryRecordsList = 0;
+let guiLastPageInHistoryRecordsList: UINT32 = 0;
 
 function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
-  UINT32 uiId = 0;
-  UINT8 ubColor = 0;
-  HistoryUnitPtr pHistory = pHistoryListHead;
+  let uiId: UINT32 = 0;
+  let ubColor: UINT8 = 0;
+  let pHistory: HistoryUnitPtr = pHistoryListHead;
 
   // clear the list
   ClearHistoryList();
@@ -106,8 +106,8 @@ function SetHistoryFact(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSec
 function AddHistoryToPlayersLog(ubCode: UINT8, ubSecondCode: UINT8, uiDate: UINT32, sSectorX: INT16, sSectorY: INT16): UINT32 {
   // adds History item to player's log(History List), returns unique id number of it
   // outside of the History system(the code in this .c file), this is the only function you'll ever need
-  UINT32 uiId = 0;
-  HistoryUnitPtr pHistory = pHistoryListHead;
+  let uiId: UINT32 = 0;
+  let pHistory: HistoryUnitPtr = pHistoryListHead;
 
   // clear the list
   ClearHistoryList();
@@ -230,7 +230,7 @@ function RenderHistory(): void {
 }
 
 function LoadHistory(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
   // load History video objects into memory
 
   // title bar
@@ -275,8 +275,8 @@ function RemoveHistory(): void {
 
 function RenderHistoryBackGround(): void {
   // render generic background for history system
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
 
   // get title bar object
   GetVideoObject(&hHandle, guiTITLE);
@@ -377,12 +377,12 @@ function BtnHistoryDisplayNextPageCallBack(btn: Pointer<GUI_BUTTON>, reason: INT
 
 function IncrementCurrentPageHistoryDisplay(): BOOLEAN {
   // run through list, from pCurrentHistory, to NUM_RECORDS_PER_PAGE +1 HistoryUnits
-  HistoryUnitPtr pTempHistory = pCurrentHistory;
-  BOOLEAN fOkToIncrementPage = FALSE;
-  INT32 iCounter = 0;
-  HWFILE hFileHandle;
-  UINT32 uiFileSize = 0;
-  UINT32 uiSizeOfRecordsOnEachPage = 0;
+  let pTempHistory: HistoryUnitPtr = pCurrentHistory;
+  let fOkToIncrementPage: BOOLEAN = FALSE;
+  let iCounter: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let uiFileSize: UINT32 = 0;
+  let uiSizeOfRecordsOnEachPage: UINT32 = 0;
 
   if (!(FileExists(HISTORY_DATA_FILE)))
     return FALSE;
@@ -437,8 +437,8 @@ iCounter++;
 }
 
 function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCode: UINT8, sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubColor: UINT8): UINT32 {
-  UINT32 uiId = 0;
-  HistoryUnitPtr pHistory = pHistoryListHead;
+  let uiId: UINT32 = 0;
+  let pHistory: HistoryUnitPtr = pHistoryListHead;
 
   // add to History list
   if (pHistory) {
@@ -486,14 +486,16 @@ function ProcessAndEnterAHistoryRecord(ubCode: UINT8, uiDate: UINT32, ubSecondCo
 function OpenAndReadHistoryFile(): void {
   // this procedure will open and read in data to the History list
 
-  HWFILE hFileHandle;
-  UINT8 ubCode, ubSecondCode;
-  UINT32 uiDate;
-  INT16 sSectorX, sSectorY;
-  INT8 bSectorZ = 0;
-  UINT8 ubColor;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
+  let hFileHandle: HWFILE;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let uiDate: UINT32;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let bSectorZ: INT8 = 0;
+  let ubColor: UINT8;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
 
   // clear out the old list
   ClearHistoryList();
@@ -543,9 +545,9 @@ function OpenAndReadHistoryFile(): void {
 function OpenAndWriteHistoryFile(): BOOLEAN {
   // this procedure will open and write out data from the History list
 
-  HWFILE hFileHandle;
-  INT32 iBytesWritten = 0;
-  HistoryUnitPtr pHistoryList = pHistoryListHead;
+  let hFileHandle: HWFILE;
+  let iBytesWritten: INT32 = 0;
+  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
 
   // open file
   hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
@@ -580,8 +582,8 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
 function ClearHistoryList(): void {
   // remove each element from list of transactions
 
-  HistoryUnitPtr pHistoryList = pHistoryListHead;
-  HistoryUnitPtr pHistoryNode = pHistoryList;
+  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
+  let pHistoryNode: HistoryUnitPtr = pHistoryList;
 
   // while there are elements in the list left, delete them
   while (pHistoryList) {
@@ -601,7 +603,8 @@ function ClearHistoryList(): void {
 
 function DisplayHistoryListHeaders(): void {
   // this procedure will display the headers to each column in History
-  UINT16 usX, usY;
+  let usX: UINT16;
+  let usY: UINT16;
 
   // font stuff
   SetFont(HISTORY_TEXT_FONT);
@@ -627,8 +630,8 @@ function DisplayHistoryListHeaders(): void {
 
 function DisplayHistoryListBackground(): void {
   // this function will display the History list display background
-  HVOBJECT hHandle;
-  INT32 iCounter = 0;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32 = 0;
 
   // get shaded line object
   GetVideoObject(&hHandle, guiSHADELINE);
@@ -647,13 +650,15 @@ function DisplayHistoryListBackground(): void {
 
 function DrawHistoryRecordsText(): void {
   // draws the text of the records
-  HistoryUnitPtr pCurHistory = pHistoryListHead;
-  HistoryUnitPtr pTempHistory = pHistoryListHead;
-  wchar_t sString[512];
-  INT32 iCounter = 0;
-  UINT16 usX, usY;
-  INT32 iBalance = 0;
-  INT16 sX = 0, sY = 0;
+  let pCurHistory: HistoryUnitPtr = pHistoryListHead;
+  let pTempHistory: HistoryUnitPtr = pHistoryListHead;
+  let sString: wchar_t[] /* [512] */;
+  let iCounter: INT32 = 0;
+  let usX: UINT16;
+  let usY: UINT16;
+  let iBalance: INT32 = 0;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
 
   // setup the font stuff
   SetFont(HISTORY_TEXT_FONT);
@@ -717,8 +722,8 @@ function DrawHistoryRecordsText(): void {
 
 function DrawAPageofHistoryRecords(): void {
   // this procedure will draw a series of history records to the screen
-  INT32 iCurPage = 1;
-  INT32 iCount = 0;
+  let iCurPage: INT32 = 1;
+  let iCount: INT32 = 0;
   pCurrentHistory = pHistoryListHead;
 
   // (re-)render background
@@ -749,11 +754,11 @@ function DrawAPageofHistoryRecords(): void {
 function DisplayPageNumberAndDateRange(): void {
   // this function will go through the list of 'histories' starting at current until end or
   // MAX_PER_PAGE...it will get the date range and the page number
-  INT32 iLastPage = 0;
-  INT32 iCounter = 0;
-  UINT32 uiLastDate;
-  HistoryUnitPtr pTempHistory = pHistoryListHead;
-  wchar_t sString[50];
+  let iLastPage: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let uiLastDate: UINT32;
+  let pTempHistory: HistoryUnitPtr = pHistoryListHead;
+  let sString: wchar_t[] /* [50] */;
 
   // setup the font stuff
   SetFont(HISTORY_TEXT_FONT);
@@ -819,7 +824,7 @@ function DisplayPageNumberAndDateRange(): void {
 }
 
 function ProcessHistoryTransactionString(pString: STR16, pHistory: HistoryUnitPtr): void {
-  CHAR16 sString[128];
+  let sString: CHAR16[] /* [128] */;
 
   switch (pHistory->ubCode) {
     case HISTORY_ENTERED_HISTORY_MODE:
@@ -1010,16 +1015,18 @@ function SetHistoryButtonStates(): void {
 function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
-  BOOLEAN fOkToContinue = TRUE;
-  INT32 iCount = 0;
-  HWFILE hFileHandle;
-  UINT8 ubCode, ubSecondCode;
-  INT16 sSectorX, sSectorY;
-  INT8 bSectorZ;
-  UINT32 uiDate;
-  UINT8 ubColor;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
+  let fOkToContinue: BOOLEAN = TRUE;
+  let iCount: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let ubCode: UINT8;
+  let ubSecondCode: UINT8;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let bSectorZ: INT8;
+  let uiDate: UINT32;
+  let ubColor: UINT8;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1097,12 +1104,12 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
 function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   // loads in records belogning, to page uiPage
   // no file, return
-  BOOLEAN fOkToContinue = TRUE;
-  INT32 iCount = 0;
-  HWFILE hFileHandle;
-  HistoryUnitPtr pList;
-  INT32 iBytesRead = 0;
-  UINT32 uiByteCount = 0;
+  let fOkToContinue: BOOLEAN = TRUE;
+  let iCount: INT32 = 0;
+  let hFileHandle: HWFILE;
+  let pList: HistoryUnitPtr;
+  let iBytesRead: INT32 = 0;
+  let uiByteCount: UINT32 = 0;
 
   // check if bad page
   if (uiPage == 0) {
@@ -1206,8 +1213,8 @@ function LoadPreviousHistoryPage(): BOOLEAN {
 
 function SetLastPageInHistoryRecords(): void {
   // grabs the size of the file and interprets number of pages it will take up
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
 
   // no file, return
   if (!(FileExists(HISTORY_DATA_FILE)))
@@ -1240,9 +1247,9 @@ function SetLastPageInHistoryRecords(): void {
 function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
   // this function will read in the last unit in the history list, to grab it's id number
 
-  HWFILE hFileHandle;
-  INT32 iBytesRead = 0;
-  INT32 iFileSize = 0;
+  let hFileHandle: HWFILE;
+  let iBytesRead: INT32 = 0;
+  let iFileSize: INT32 = 0;
 
   // no file, return
   if (!(FileExists(HISTORY_DATA_FILE)))
@@ -1274,9 +1281,9 @@ function ReadInLastElementOfHistoryListAndReturnIdNumber(): UINT32 {
 
 function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   // will write the current finance to disk
-  HWFILE hFileHandle;
-  INT32 iBytesWritten = 0;
-  HistoryUnitPtr pHistoryList = pHistoryListHead;
+  let hFileHandle: HWFILE;
+  let iBytesWritten: INT32 = 0;
+  let pHistoryList: HistoryUnitPtr = pHistoryListHead;
 
   // open file
   hFileHandle = FileOpen(HISTORY_DATA_FILE, FILE_ACCESS_WRITE | FILE_OPEN_ALWAYS, FALSE);
@@ -1310,9 +1317,9 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
 
 function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void {
   // run through history list
-  INT32 iOldHistoryPage = iCurrentHistoryPage;
-  HistoryUnitPtr pList = pHistoryListHead;
-  BOOLEAN fFound = FALSE;
+  let iOldHistoryPage: INT32 = iCurrentHistoryPage;
+  let pList: HistoryUnitPtr = pHistoryListHead;
+  let fFound: BOOLEAN = FALSE;
 
   // set current page to before list
   iCurrentHistoryPage = 0;
@@ -1352,10 +1359,10 @@ function ResetHistoryFact(ubCode: UINT8, sSectorX: INT16, sSectorY: INT16): void
 
 function GetTimeQuestWasStarted(ubCode: UINT8): UINT32 {
   // run through history list
-  INT32 iOldHistoryPage = iCurrentHistoryPage;
-  HistoryUnitPtr pList = pHistoryListHead;
-  BOOLEAN fFound = FALSE;
-  UINT32 uiTime = 0;
+  let iOldHistoryPage: INT32 = iCurrentHistoryPage;
+  let pList: HistoryUnitPtr = pHistoryListHead;
+  let fFound: BOOLEAN = FALSE;
+  let uiTime: UINT32 = 0;
 
   // set current page to before list
   iCurrentHistoryPage = 0;
@@ -1400,10 +1407,10 @@ function GetQuestEndedString(ubQuestValue: UINT8, sQuestString: STR16): void {
 }
 
 function GetNumberOfHistoryPages(): INT32 {
-  HWFILE hFileHandle;
-  UINT32 uiFileSize = 0;
-  UINT32 uiSizeOfRecordsOnEachPage = 0;
-  INT32 iNumberOfHistoryPages = 0;
+  let hFileHandle: HWFILE;
+  let uiFileSize: UINT32 = 0;
+  let uiSizeOfRecordsOnEachPage: UINT32 = 0;
+  let iNumberOfHistoryPages: INT32 = 0;
 
   if (!(FileExists(HISTORY_DATA_FILE)))
     return 0;

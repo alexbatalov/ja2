@@ -1,6 +1,6 @@
 // MODULE FOR EXPLOSIONS
 
-UINT8 ubTransKeyFrame[NUM_EXP_TYPES] = {
+let ubTransKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
   0,
   17,
   28,
@@ -12,7 +12,7 @@ UINT8 ubTransKeyFrame[NUM_EXP_TYPES] = {
   1,
 };
 
-UINT8 ubDamageKeyFrame[NUM_EXP_TYPES] = {
+let ubDamageKeyFrame: UINT8[] /* [NUM_EXP_TYPES] */ = {
   0,
   3,
   5,
@@ -24,7 +24,7 @@ UINT8 ubDamageKeyFrame[NUM_EXP_TYPES] = {
   18,
 };
 
-UINT32 uiExplosionSoundID[NUM_EXP_TYPES] = {
+let uiExplosionSoundID: UINT32[] /* [NUM_EXP_TYPES] */ = {
   EXPLOSION_1,
   EXPLOSION_1,
   EXPLOSION_BLAST_2, // LARGE
@@ -36,7 +36,7 @@ UINT32 uiExplosionSoundID[NUM_EXP_TYPES] = {
   AIR_ESCAPING_1,
 };
 
-CHAR8 zBlastFilenames[][70] = {
+let zBlastFilenames: CHAR8[][] /* [][70] */ = {
   "",
   "TILECACHE\\ZGRAV_D.STI",
   "TILECACHE\\ZGRAV_C.STI",
@@ -48,7 +48,7 @@ CHAR8 zBlastFilenames[][70] = {
   "TILECACHE\\MUST_EXP.STI",
 };
 
-CHAR8 sBlastSpeeds[] = {
+let sBlastSpeeds: CHAR8[] /* [] */ = {
   0,
   80,
   80,
@@ -63,23 +63,23 @@ CHAR8 sBlastSpeeds[] = {
 const BOMB_QUEUE_DELAY = () => (1000 + Random(500));
 
 const MAX_BOMB_QUEUE = 40;
-ExplosionQueueElement gExplosionQueue[MAX_BOMB_QUEUE];
-UINT8 gubElementsOnExplosionQueue = 0;
-BOOLEAN gfExplosionQueueActive = FALSE;
+let gExplosionQueue: ExplosionQueueElement[] /* [MAX_BOMB_QUEUE] */;
+let gubElementsOnExplosionQueue: UINT8 = 0;
+let gfExplosionQueueActive: BOOLEAN = FALSE;
 
-BOOLEAN gfExplosionQueueMayHaveChangedSight = FALSE;
-UINT8 gubPersonToSetOffExplosions = NOBODY;
+let gfExplosionQueueMayHaveChangedSight: BOOLEAN = FALSE;
+let gubPersonToSetOffExplosions: UINT8 = NOBODY;
 
-INT16 gsTempActionGridNo = NOWHERE;
+let gsTempActionGridNo: INT16 = NOWHERE;
 
 const NUM_EXPLOSION_SLOTS = 100;
 
 // GLOBAL FOR SMOKE LISTING
-EXPLOSIONTYPE gExplosionData[NUM_EXPLOSION_SLOTS];
-UINT32 guiNumExplosions = 0;
+let gExplosionData: EXPLOSIONTYPE[] /* [NUM_EXPLOSION_SLOTS] */;
+let guiNumExplosions: UINT32 = 0;
 
 function GetFreeExplosion(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumExplosions; uiCount++) {
     if ((gExplosionData[uiCount].fAllocated == FALSE))
@@ -93,7 +93,7 @@ function GetFreeExplosion(): INT32 {
 }
 
 function RecountExplosions(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumExplosions - 1; (uiCount >= 0); uiCount--) {
     if ((gExplosionData[uiCount].fAllocated)) {
@@ -105,7 +105,7 @@ function RecountExplosions(): void {
 
 // GENERATE EXPLOSION
 function InternalIgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridNo: INT16, usItem: UINT16, fLocate: BOOLEAN, bLevel: INT8): void {
-  EXPLOSION_PARAMS ExpParams;
+  let ExpParams: EXPLOSION_PARAMS;
 
   // Double check that we are using an explosive!
   if (!(Item[usItem].usItemClass & IC_EXPLOSV)) {
@@ -144,17 +144,17 @@ function IgniteExplosion(ubOwner: UINT8, sX: INT16, sY: INT16, sZ: INT16, sGridN
 }
 
 function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
-  EXPLOSIONTYPE *pExplosion;
-  UINT32 uiFlags;
-  UINT8 ubOwner;
-  UINT8 ubTypeID;
-  INT16 sX;
-  INT16 sY;
-  INT16 sZ;
-  INT16 sGridNo;
-  UINT16 usItem;
-  INT32 iIndex;
-  INT8 bLevel;
+  let pExplosion: Pointer<EXPLOSIONTYPE>;
+  let uiFlags: UINT32;
+  let ubOwner: UINT8;
+  let ubTypeID: UINT8;
+  let sX: INT16;
+  let sY: INT16;
+  let sZ: INT16;
+  let sGridNo: INT16;
+  let usItem: UINT16;
+  let iIndex: INT32;
+  let bLevel: INT8;
 
   // Assign param values
   uiFlags = pExpParams->uiFlags;
@@ -195,19 +195,19 @@ function GenerateExplosion(pExpParams: Pointer<EXPLOSION_PARAMS>): void {
 }
 
 function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE>): void {
-  UINT32 uiFlags;
-  UINT8 ubOwner;
-  UINT8 ubTypeID;
-  INT16 sX;
-  INT16 sY;
-  INT16 sZ;
-  INT16 sGridNo;
-  UINT16 usItem;
-  UINT8 ubTerrainType;
-  INT8 bLevel;
-  UINT32 uiSoundID;
+  let uiFlags: UINT32;
+  let ubOwner: UINT8;
+  let ubTypeID: UINT8;
+  let sX: INT16;
+  let sY: INT16;
+  let sZ: INT16;
+  let sGridNo: INT16;
+  let usItem: UINT16;
+  let ubTerrainType: UINT8;
+  let bLevel: INT8;
+  let uiSoundID: UINT32;
 
-  ANITILE_PARAMS AniParams;
+  let AniParams: ANITILE_PARAMS;
 
   // Assign param values
   uiFlags = pExplosion->Params.uiFlags;
@@ -309,11 +309,12 @@ function RemoveExplosionData(iIndex: INT32): void {
 }
 
 function HandleFencePartnerCheck(sStructGridNo: INT16): void {
-  STRUCTURE *pFenceStructure, *pFenceBaseStructure;
-  LEVELNODE *pFenceNode;
-  INT8 bFenceDestructionPartner = -1;
-  UINT32 uiFenceType;
-  UINT16 usTileIndex;
+  let pFenceStructure: Pointer<STRUCTURE>;
+  let pFenceBaseStructure: Pointer<STRUCTURE>;
+  let pFenceNode: Pointer<LEVELNODE>;
+  let bFenceDestructionPartner: INT8 = -1;
+  let uiFenceType: UINT32;
+  let usTileIndex: UINT16;
 
   pFenceStructure = FindStructure(sStructGridNo, STRUCTURE_FENCE);
 
@@ -349,20 +350,30 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
 }
 
 function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCurrent: Pointer<Pointer<STRUCTURE>>, sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<BOOLEAN>, fOnlyWalls: BOOLEAN, fSubSequentMultiTilesTransitionDamage: BOOLEAN, ubOwner: UINT8, bLevel: INT8): BOOLEAN {
-  INT16 sX, sY;
-  STRUCTURE *pBase, *pWallStruct, *pAttached, *pAttachedBase;
-  LEVELNODE *pNode = NULL, *pNewNode = NULL, *pAttachedNode;
-  INT16 sNewGridNo, sStructGridNo;
-  INT16 sNewIndex, sSubIndex;
-  UINT16 usObjectIndex, usTileIndex;
-  UINT8 ubNumberOfTiles, ubLoop;
-  DB_STRUCTURE_TILE **ppTile;
-  INT8 bDestructionPartner = -1;
-  INT8 bDamageReturnVal;
-  BOOLEAN fContinue;
-  UINT32 uiTileType;
-  INT16 sBaseGridNo;
-  BOOLEAN fExplosive;
+  let sX: INT16;
+  let sY: INT16;
+  let pBase: Pointer<STRUCTURE>;
+  let pWallStruct: Pointer<STRUCTURE>;
+  let pAttached: Pointer<STRUCTURE>;
+  let pAttachedBase: Pointer<STRUCTURE>;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pNewNode: Pointer<LEVELNODE> = NULL;
+  let pAttachedNode: Pointer<LEVELNODE>;
+  let sNewGridNo: INT16;
+  let sStructGridNo: INT16;
+  let sNewIndex: INT16;
+  let sSubIndex: INT16;
+  let usObjectIndex: UINT16;
+  let usTileIndex: UINT16;
+  let ubNumberOfTiles: UINT8;
+  let ubLoop: UINT8;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let bDestructionPartner: INT8 = -1;
+  let bDamageReturnVal: INT8;
+  let fContinue: BOOLEAN;
+  let uiTileType: UINT32;
+  let sBaseGridNo: INT16;
+  let fExplosive: BOOLEAN;
 
   // ATE: Check for O3 statue for special damage..
   // note we do this check every time explosion goes off in game, but it's
@@ -766,8 +777,8 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
 
           // CJC, Sept 16: if we destroy any wall of the brothel, make Kingpin's men hostile!
           if (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_C && gbWorldSectorZ == 0) {
-            UINT8 ubRoom;
-            BOOLEAN fInRoom;
+            let ubRoom: UINT8;
+            let fInRoom: BOOLEAN;
 
             fInRoom = InARoom(sGridNo, &ubRoom);
             if (!fInRoom) {
@@ -861,20 +872,25 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
   return 1;
 }
 
-STRUCTURE *gStruct;
+let gStruct: Pointer<STRUCTURE>;
 
 function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32, pfRecompileMovementCosts: Pointer<BOOLEAN>, fOnlyWalls: BOOLEAN, bMultiStructSpecialFlag: INT8, fSubSequentMultiTilesTransitionDamage: BOOLEAN, ubOwner: UINT8, bLevel: INT8): void {
-  STRUCTURE *pCurrent, *pNextCurrent, *pStructure;
-  STRUCTURE *pBaseStructure;
-  INT16 sDesiredLevel;
-  DB_STRUCTURE_TILE **ppTile;
-  UINT8 ubLoop, ubLoop2;
-  INT16 sNewGridNo, sNewGridNo2, sBaseGridNo;
-  BOOLEAN fToBreak = FALSE;
-  BOOLEAN fMultiStructure = FALSE;
-  UINT8 ubNumberOfTiles;
-  BOOLEAN fMultiStructSpecialFlag = FALSE;
-  BOOLEAN fExplodeDamageReturn = FALSE;
+  let pCurrent: Pointer<STRUCTURE>;
+  let pNextCurrent: Pointer<STRUCTURE>;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let sDesiredLevel: INT16;
+  let ppTile: Pointer<Pointer<DB_STRUCTURE_TILE>>;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let sNewGridNo: INT16;
+  let sNewGridNo2: INT16;
+  let sBaseGridNo: INT16;
+  let fToBreak: BOOLEAN = FALSE;
+  let fMultiStructure: BOOLEAN = FALSE;
+  let ubNumberOfTiles: UINT8;
+  let fMultiStructSpecialFlag: BOOLEAN = FALSE;
+  let fExplodeDamageReturn: BOOLEAN = FALSE;
 
   // Based on distance away, damage any struct at this gridno
   // OK, loop through structures and damage!
@@ -982,9 +998,9 @@ function ExplosiveDamageGridNo(sGridNo: INT16, sWoundAmt: INT16, uiDist: UINT32,
 }
 
 function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: INT16, sWoundAmt: INT16, sBreathAmt: INT16, uiDist: UINT32, usItem: UINT16, sSubsequent: INT16): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  INT16 sNewWoundAmt = 0;
-  UINT8 ubDirection;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sNewWoundAmt: INT16 = 0;
+  let ubDirection: UINT8;
 
   pSoldier = MercPtrs[ubPerson]; // someone is here, and they're gonna get hurt
 
@@ -1019,7 +1035,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
 }
 
 function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EXPLOSIVETYPE>, sSubsequent: INT16, fRecompileMovementCosts: BOOLEAN, sWoundAmt: INT16, sBreathAmt: INT16, ubOwner: UINT8): BOOLEAN {
-  INT8 bPosOfMask = NO_SLOT;
+  let bPosOfMask: INT8 = NO_SLOT;
 
   if (!pSoldier->bActive || !pSoldier->bInSector || !pSoldier->bLife || AM_A_ROBOT(pSoldier)) {
     return fRecompileMovementCosts;
@@ -1126,20 +1142,26 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
 }
 
 function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: UINT16, ubOwner: UINT8, sSubsequent: INT16, pfMercHit: Pointer<BOOLEAN>, bLevel: INT8, iSmokeEffectID: INT32): BOOLEAN {
-  INT16 sWoundAmt = 0, sBreathAmt = 0, sNewWoundAmt = 0, sNewBreathAmt = 0, sStructDmgAmt;
-  UINT8 ubPerson;
-  SOLDIERTYPE *pSoldier;
-  EXPLOSIVETYPE *pExplosive;
-  INT16 sX, sY;
-  BOOLEAN fRecompileMovementCosts = FALSE;
-  BOOLEAN fSmokeEffect = FALSE;
-  BOOLEAN fStunEffect = FALSE;
-  INT8 bSmokeEffectType = 0;
-  BOOLEAN fBlastEffect = TRUE;
-  INT16 sNewGridNo;
-  BOOLEAN fBloodEffect = FALSE;
-  ITEM_POOL *pItemPool, *pItemPoolNext;
-  UINT32 uiRoll;
+  let sWoundAmt: INT16 = 0;
+  let sBreathAmt: INT16 = 0;
+  let sNewWoundAmt: INT16 = 0;
+  let sNewBreathAmt: INT16 = 0;
+  let sStructDmgAmt: INT16;
+  let ubPerson: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pExplosive: Pointer<EXPLOSIVETYPE>;
+  let sX: INT16;
+  let sY: INT16;
+  let fRecompileMovementCosts: BOOLEAN = FALSE;
+  let fSmokeEffect: BOOLEAN = FALSE;
+  let fStunEffect: BOOLEAN = FALSE;
+  let bSmokeEffectType: INT8 = 0;
+  let fBlastEffect: BOOLEAN = TRUE;
+  let sNewGridNo: INT16;
+  let fBloodEffect: BOOLEAN = FALSE;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let pItemPoolNext: Pointer<ITEM_POOL>;
+  let uiRoll: UINT32;
 
   // Init the variables
   sX = sY = -1;
@@ -1488,15 +1510,16 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
 }
 
 function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEffect: BOOLEAN, uiCurRange: INT32, piMaxRange: Pointer<INT32>, pubKeepGoing: Pointer<UINT8>): void {
-  INT8 bStructHeight;
-  UINT8 ubMovementCost;
-  INT8 Blocking, BlockingTemp;
-  BOOLEAN fTravelCostObs = FALSE;
-  UINT32 uiRangeReduce;
-  INT16 sNewGridNo;
-  STRUCTURE *pBlockingStructure;
-  BOOLEAN fBlowWindowSouth = FALSE;
-  BOOLEAN fReduceRay = TRUE;
+  let bStructHeight: INT8;
+  let ubMovementCost: UINT8;
+  let Blocking: INT8;
+  let BlockingTemp: INT8;
+  let fTravelCostObs: BOOLEAN = FALSE;
+  let uiRangeReduce: UINT32;
+  let sNewGridNo: INT16;
+  let pBlockingStructure: Pointer<STRUCTURE>;
+  let fBlowWindowSouth: BOOLEAN = FALSE;
+  let fReduceRay: BOOLEAN = TRUE;
 
   ubMovementCost = gubWorldMovementCosts[uiNewSpot][ubDir][bLevel];
 
@@ -1658,13 +1681,20 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
 }
 
 function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: UINT8, fSubsequent: BOOLEAN, bLevel: INT8, iSmokeEffectID: INT32): void {
-  INT32 uiNewSpot, uiTempSpot, uiBranchSpot, cnt, branchCnt;
-  INT32 uiTempRange, ubBranchRange;
-  UINT8 ubDir, ubBranchDir, ubKeepGoing;
-  INT16 sRange;
-  BOOLEAN fRecompileMovement = FALSE;
-  BOOLEAN fAnyMercHit = FALSE;
-  BOOLEAN fSmokeEffect = FALSE;
+  let uiNewSpot: INT32;
+  let uiTempSpot: INT32;
+  let uiBranchSpot: INT32;
+  let cnt: INT32;
+  let branchCnt: INT32;
+  let uiTempRange: INT32;
+  let ubBranchRange: INT32;
+  let ubDir: UINT8;
+  let ubBranchDir: UINT8;
+  let ubKeepGoing: UINT8;
+  let sRange: INT16;
+  let fRecompileMovement: BOOLEAN = FALSE;
+  let fAnyMercHit: BOOLEAN = FALSE;
+  let fSmokeEffect: BOOLEAN = FALSE;
 
   switch (usItem) {
     case MUSTARD_GRENADE:
@@ -1795,7 +1825,8 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
 
   // Recompile movement costs...
   if (fRecompileMovement) {
-    INT16 sX, sY;
+    let sX: INT16;
+    let sY: INT16;
 
     // DO wireframes as well
     ConvertGridNoToXY((INT16)sGridNo, &sX, &sY);
@@ -1839,8 +1870,8 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
 }
 
 function ToggleActionItemsByFrequency(bFrequency: INT8): void {
-  UINT32 uiWorldBombIndex;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   // Go through all the bombs in the world, and look for remote ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
@@ -1862,8 +1893,8 @@ function ToggleActionItemsByFrequency(bFrequency: INT8): void {
 }
 
 function TogglePressureActionItemsInGridNo(sGridNo: INT16): void {
-  UINT32 uiWorldBombIndex;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   // Go through all the bombs in the world, and look for remote ones
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
@@ -1896,8 +1927,9 @@ function BillyBlocksDoorCallback(): void {
 }
 
 function HookerInRoom(ubRoom: UINT8): BOOLEAN {
-  UINT8 ubLoop, ubTempRoom;
-  SOLDIERTYPE *pSoldier;
+  let ubLoop: UINT8;
+  let ubTempRoom: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (ubLoop = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubLoop <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubLoop++) {
     pSoldier = MercPtrs[ubLoop];
@@ -1913,7 +1945,7 @@ function HookerInRoom(ubRoom: UINT8): BOOLEAN {
 }
 
 function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   switch (pObj->bActionValue) {
     case ACTION_ITEM_OPEN_DOOR:
@@ -1966,7 +1998,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
       break;
     case ACTION_ITEM_UNLOCK_DOOR: {
-      DOOR *pDoor;
+      let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
@@ -1974,7 +2006,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
     } break;
     case ACTION_ITEM_TOGGLE_LOCK: {
-      DOOR *pDoor;
+      let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
@@ -1986,7 +2018,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       }
     } break;
     case ACTION_ITEM_UNTRAP_DOOR: {
-      DOOR *pDoor;
+      let pDoor: Pointer<DOOR>;
 
       pDoor = FindDoorInfoAtGridNo(sGridNo);
       if (pDoor) {
@@ -2122,8 +2154,9 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] = CIV_GROUP_HOSTILE;
 
       {
-        UINT8 ubID, ubID2;
-        BOOLEAN fEnterCombat = FALSE;
+        let ubID: UINT8;
+        let ubID2: UINT8;
+        let fEnterCombat: BOOLEAN = FALSE;
 
         for (ubID = gTacticalStatus.Team[CIV_TEAM].bFirstID; ubID <= gTacticalStatus.Team[CIV_TEAM].bLastID; ubID++) {
           if (MercPtrs[ubID]->bActive && MercPtrs[ubID]->bInSector && MercPtrs[ubID]->ubCivilianGroup == KINGPIN_CIV_GROUP) {
@@ -2222,7 +2255,7 @@ function PerformItemAction(sGridNo: INT16, pObj: Pointer<OBJECTTYPE>): void {
       */
       break;
     case ACTION_ITEM_REVEAL_ROOM: {
-      UINT8 ubRoom;
+      let ubRoom: UINT8;
       if (InAHiddenRoom(sGridNo, &ubRoom)) {
         RemoveRoomRoof(sGridNo, ubRoom, NULL);
       }
@@ -2268,12 +2301,12 @@ function AddBombToQueue(uiWorldBombIndex: UINT32, uiTimeStamp: UINT32): void {
 }
 
 function HandleExplosionQueue(): void {
-  UINT32 uiIndex;
-  UINT32 uiWorldBombIndex;
-  UINT32 uiCurrentTime;
-  INT16 sGridNo;
-  OBJECTTYPE *pObj;
-  UINT8 ubLevel;
+  let uiIndex: UINT32;
+  let uiWorldBombIndex: UINT32;
+  let uiCurrentTime: UINT32;
+  let sGridNo: INT16;
+  let pObj: Pointer<OBJECTTYPE>;
+  let ubLevel: UINT8;
 
   if (!gfExplosionQueueActive) {
     return;
@@ -2345,8 +2378,8 @@ function HandleExplosionQueue(): void {
     }
 
     if (gfExplosionQueueMayHaveChangedSight) {
-      UINT8 ubLoop;
-      SOLDIERTYPE *pTeamSoldier;
+      let ubLoop: UINT8;
+      let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
       // set variable so we may at least have someone to resolve interrupts vs
       gubInterruptProvoker = gubPersonToSetOffExplosions;
@@ -2376,9 +2409,9 @@ function HandleExplosionQueue(): void {
 }
 
 function DecayBombTimers(): void {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let uiTimeStamp: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   uiTimeStamp = GetJA2Clock();
 
@@ -2409,9 +2442,9 @@ function DecayBombTimers(): void {
 }
 
 function SetOffBombsByFrequency(ubID: UINT8, bFrequency: INT8): void {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let uiTimeStamp: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   uiTimeStamp = GetJA2Clock();
 
@@ -2467,10 +2500,10 @@ function SetOffPanicBombs(ubID: UINT8, bPanicTrigger: INT8): void {
 }
 
 function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bLevel: INT8): BOOLEAN {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  OBJECTTYPE *pObj;
-  BOOLEAN fFoundMine = FALSE;
+  let uiWorldBombIndex: UINT32;
+  let uiTimeStamp: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
+  let fFoundMine: BOOLEAN = FALSE;
 
   uiTimeStamp = GetJA2Clock();
 
@@ -2518,8 +2551,8 @@ function SetOffBombsInGridNo(ubID: UINT8, sGridNo: INT16, fAllBombs: BOOLEAN, bL
 }
 
 function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
-  UINT32 uiWorldBombIndex;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   // Go through all the bombs in the world, and look for mines at this location
   for (uiWorldBombIndex = 0; uiWorldBombIndex < guiNumWorldBombs; uiWorldBombIndex++) {
@@ -2540,9 +2573,9 @@ function ActivateSwitchInGridNo(ubID: UINT8, sGridNo: INT16): void {
 }
 
 function SaveExplosionTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT32 uiExplosionCount = 0;
-  UINT32 uiCnt;
+  let uiNumBytesWritten: UINT32;
+  let uiExplosionCount: UINT32 = 0;
+  let uiCnt: UINT32;
 
   //
   //	Explosion queue Info
@@ -2598,9 +2631,9 @@ function SaveExplosionTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiExplosionCount = 0;
-  UINT32 uiCnt;
+  let uiNumBytesRead: UINT32;
+  let uiExplosionCount: UINT32 = 0;
+  let uiCnt: UINT32;
 
   //
   //	Explosion Queue
@@ -2649,8 +2682,8 @@ function LoadExplosionTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16): BOOLEAN {
-  INT32 cnt;
-  INT16 sSectorNo;
+  let cnt: INT32;
+  let sSectorNo: INT16;
 
   // ATE: If we are belwo, return right away...
   if (sSectorZ != 0) {
@@ -2673,7 +2706,7 @@ function DoesSAMExistHere(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGr
 }
 
 function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, sGridNo: INT16, ubDamage: UINT8): void {
-  INT16 sSectorNo;
+  let sSectorNo: INT16;
 
   // OK, First check if SAM exists, and if not, return
   if (!DoesSAMExistHere(sSectorX, sSectorY, sSectorZ, sGridNo)) {
@@ -2696,10 +2729,11 @@ function UpdateAndDamageSAMIfFound(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
 }
 
 function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
-  INT32 cnt;
-  INT16 sSectorNo;
-  BOOLEAN fInSector = FALSE;
-  UINT16 usGoodGraphic, usDamagedGraphic;
+  let cnt: INT32;
+  let sSectorNo: INT16;
+  let fInSector: BOOLEAN = FALSE;
+  let usGoodGraphic: UINT16;
+  let usDamagedGraphic: UINT16;
 
   // ATE: If we are below, return right away...
   if (sSectorZ != 0) {
@@ -2751,8 +2785,8 @@ function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
 // anybody who is an NPC and
 // see if they get angry
 function HandleBuldingDestruction(sGridNo: INT16, ubOwner: UINT8): void {
-  SOLDIERTYPE *pSoldier;
-  UINT8 cnt;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT8;
 
   if (ubOwner == NOBODY) {
     return;
@@ -2780,9 +2814,9 @@ function HandleBuldingDestruction(sGridNo: INT16, ubOwner: UINT8): void {
 }
 
 function FindActiveTimedBomb(): INT32 {
-  UINT32 uiWorldBombIndex;
-  UINT32 uiTimeStamp;
-  OBJECTTYPE *pObj;
+  let uiWorldBombIndex: UINT32;
+  let uiTimeStamp: UINT32;
+  let pObj: Pointer<OBJECTTYPE>;
 
   uiTimeStamp = GetJA2Clock();
 
@@ -2808,7 +2842,7 @@ function ActiveTimedBombExists(): BOOLEAN {
 }
 
 function RemoveAllActiveTimedBombs(): void {
-  INT32 iItemIndex;
+  let iItemIndex: INT32;
 
   do {
     iItemIndex = FindActiveTimedBomb();

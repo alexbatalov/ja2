@@ -14,18 +14,18 @@ const MERC_NA_SENTENCE_X = MERC_NO_ACCOUNT_IMAGE_X + 10;
 const MERC_NA_SENTENCE_Y = MERC_NO_ACCOUNT_IMAGE_Y + 75;
 const MERC_NA_SENTENCE_WIDTH = 460 - 20;
 
-UINT32 guiNoAccountImage;
+let guiNoAccountImage: UINT32;
 
-UINT32 guiOpenAccountBoxButton;
-INT32 guiOpenAccountBoxButtonImage;
+let guiOpenAccountBoxButton: UINT32;
+let guiOpenAccountBoxButtonImage: INT32;
 
-UINT32 guiCancelBoxButton;
+let guiCancelBoxButton: UINT32;
 
 function GameInitMercsNoAccount(): void {
 }
 
 function EnterMercsNoAccount(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
 
@@ -64,7 +64,7 @@ function HandleMercsNoAccount(): void {
 }
 
 function RenderMercsNoAccount(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();
 

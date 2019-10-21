@@ -24,7 +24,7 @@
 //
 //**************************************************************************
 
-STR16 gzJA2ScreenNames[] = {
+let gzJA2ScreenNames: STR16[] /* [] */ = {
   L"EDIT_SCREEN",
   L"SAVING_SCREEN",
   L"LOADING_SCREEN",
@@ -52,13 +52,13 @@ STR16 gzJA2ScreenNames[] = {
   L"CREDIT_SCREEN",
 };
 
-static BOOLEAN gfMemDebug = TRUE;
+/* static */ let gfMemDebug: BOOLEAN = TRUE;
 // debug variable for total memory currently allocated
-UINT32 guiMemTotal = 0;
-UINT32 guiMemAlloced = 0;
-UINT32 guiMemFreed = 0;
-UINT32 MemDebugCounter = 0;
-BOOLEAN fMemManagerInit = FALSE;
+let guiMemTotal: UINT32 = 0;
+let guiMemAlloced: UINT32 = 0;
+let guiMemFreed: UINT32 = 0;
+let MemDebugCounter: UINT32 = 0;
+let fMemManagerInit: BOOLEAN = FALSE;
 
 //**************************************************************************
 //
@@ -156,7 +156,7 @@ function ShutdownMemoryManager(): void {
 }
 
 function MemAllocLocked(uiSize: UINT32): Pointer<PTR> {
-  PTR ptr;
+  let ptr: PTR;
 
   if (!fMemManagerInit)
     DbgMessage(TOPIC_MEMORY_MANAGER, DBG_LEVEL_0, String("MemAllocLocked: Warning -- Memory manager not initialized!!! "));
@@ -211,7 +211,7 @@ function MemFreeLocked(ptr: PTR, uiSize: UINT32): void {
 //**************************************************************************
 
 function MemGetFree(): UINT32 {
-  MEMORYSTATUS ms;
+  let ms: MEMORYSTATUS;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
   GlobalMemoryStatus(&ms);
@@ -234,7 +234,7 @@ function MemGetFree(): UINT32 {
 //**************************************************************************
 
 function MemGetTotalSystem(): UINT32 {
-  MEMORYSTATUS ms;
+  let ms: MEMORYSTATUS;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
   GlobalMemoryStatus(&ms);
@@ -257,7 +257,7 @@ function MemGetTotalSystem(): UINT32 {
 //**************************************************************************
 
 function MemCheckPool(): BOOLEAN {
-  BOOLEAN fRet = TRUE;
+  let fRet: BOOLEAN = TRUE;
 
   return fRet;
 }

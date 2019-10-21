@@ -67,23 +67,23 @@ const MERC_HEALTH_Y = MERC_FILES_STATS_BOX_Y + 30;
 
 const MERC_PORTRAIT_TEXT_OFFSET_Y = 110;
 
-UINT32 guiPortraitBox;
-UINT32 guiStatsBox;
-UINT32 guiBioBox;
-UINT32 guiMercFace;
+let guiPortraitBox: UINT32;
+let guiStatsBox: UINT32;
+let guiBioBox: UINT32;
+let guiMercFace: UINT32;
 
 //
 // Buttons
 //
 
-UINT32 guiPrevButton;
-INT32 guiButtonImage;
+let guiPrevButton: UINT32;
+let guiButtonImage: INT32;
 
-UINT32 guiNextButton;
+let guiNextButton: UINT32;
 
-UINT32 guiHireButton;
+let guiHireButton: UINT32;
 
-UINT32 guiMercBackButton;
+let guiMercBackButton: UINT32;
 
 //****************************
 //
@@ -95,7 +95,7 @@ function GameInitMercsFiles(): void {
 }
 
 function EnterMercsFiles(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   InitMercBackGround();
 
@@ -160,7 +160,7 @@ function HandleMercsFiles(): void {
 }
 
 function RenderMercsFiles(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   DrawMecBackGround();
 
@@ -306,13 +306,13 @@ function BtnMercHireButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
-  HVOBJECT hFaceHandle;
-  HVOBJECT hPortraitHandle;
-  STR sFaceLoc = "FACES\\BIGFACES\\";
-  char sTemp[100];
-  MERCPROFILESTRUCT *pMerc;
-  VOBJECT_DESC VObjectDesc;
-  SOLDIERTYPE *pSoldier = NULL;
+  let hFaceHandle: HVOBJECT;
+  let hPortraitHandle: HVOBJECT;
+  let sFaceLoc: STR = "FACES\\BIGFACES\\";
+  let sTemp: char[] /* [100] */;
+  let pMerc: Pointer<MERCPROFILESTRUCT>;
+  let VObjectDesc: VOBJECT_DESC;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // Portrait Frame
   GetVideoObject(&hPortraitHandle, guiPortraitBox);
@@ -379,8 +379,8 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
 }
 
 function LoadAndDisplayMercBio(ubMercID: UINT8): void {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
 
   // load and display the merc bio
   uiStartLoc = MERC_BIO_SIZE * ubMercID;
@@ -397,8 +397,9 @@ function LoadAndDisplayMercBio(ubMercID: UINT8): void {
 }
 
 function DisplayMercsStats(ubMercID: UINT8): void {
-  UINT16 usPosY, usPosX;
-  wchar_t sString[128];
+  let usPosY: UINT16;
+  let usPosX: UINT16;
+  let sString: wchar_t[] /* [128] */;
 
   usPosY = MERC_HEALTH_Y;
 
@@ -467,8 +468,8 @@ function DisplayMercsStats(ubMercID: UINT8): void {
 }
 
 function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
-  MERC_HIRE_STRUCT HireMercStruct;
-  INT8 bReturnCode;
+  let HireMercStruct: MERC_HIRE_STRUCT;
+  let bReturnCode: INT8;
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
 

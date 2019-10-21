@@ -1,26 +1,26 @@
-UINT32 giIMPPersonalityQuizButton[2];
-UINT32 giIMPPersonalityQuizButtonImage[2];
+let giIMPPersonalityQuizButton: UINT32[] /* [2] */;
+let giIMPPersonalityQuizButtonImage: UINT32[] /* [2] */;
 
 // these are the buttons for the current question
-INT32 giIMPPersonalityQuizAnswerButton[10];
-INT32 giIMPPersonalityQuizAnswerButtonImage[10];
+let giIMPPersonalityQuizAnswerButton: INT32[] /* [10] */;
+let giIMPPersonalityQuizAnswerButtonImage: INT32[] /* [10] */;
 
-INT32 giPreviousQuestionButton;
-INT32 giNextQuestionButton;
+let giPreviousQuestionButton: INT32;
+let giNextQuestionButton: INT32;
 
-INT32 giPreviousQuestionButtonImage;
-INT32 giNextQuestionButtonImage;
+let giPreviousQuestionButtonImage: INT32;
+let giNextQuestionButtonImage: INT32;
 
 // this the currently highlighted answer
-INT32 iCurrentAnswer = -1;
+let iCurrentAnswer: INT32 = -1;
 
 // the current quiz question
-INT32 giCurrentPersonalityQuizQuestion = 0;
-INT32 giPreviousPersonalityQuizQuestion = -1;
-INT32 giMaxPersonalityQuizQuestion = 0;
+let giCurrentPersonalityQuizQuestion: INT32 = 0;
+let giPreviousPersonalityQuizQuestion: INT32 = -1;
+let giMaxPersonalityQuizQuestion: INT32 = 0;
 
 // start over flag
-BOOLEAN fStartOverFlag = FALSE;
+let fStartOverFlag: BOOLEAN = FALSE;
 
 const BTN_FIRST_COLUMN_X = 15;
 const BTN_SECOND_COLUMN_X = 256;
@@ -31,9 +31,9 @@ const INDENT_OFFSET = 55;
 const MAX_NUMBER_OF_IMP_QUESTIONS = 16;
 
 // answer list
-INT32 iQuizAnswerList[MAX_NUMBER_OF_IMP_QUESTIONS];
+let iQuizAnswerList: INT32[] /* [MAX_NUMBER_OF_IMP_QUESTIONS] */;
 // current number of buttons being shown
-INT32 iNumberOfPersonaButtons = 0;
+let iNumberOfPersonaButtons: INT32 = 0;
 
 function EnterIMPPersonalityQuiz(): void {
   // void answers out the quiz
@@ -277,8 +277,8 @@ function DestroyPersonalityQuizButtons(): void {
 
 function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
   // will add iNumberofbuttons to the answer button list
-  INT32 iCounter = 0;
-  CHAR16 sString[32];
+  let iCounter: INT32 = 0;
+  let sString: CHAR16[] /* [32] */;
 
   for (iCounter = 0; iCounter < iNumberOfButtons; iCounter++) {
     switch (iCounter) {
@@ -348,7 +348,7 @@ function AddIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
 }
 
 function DestroyIMPPersonalityQuizAnswerButtons(iNumberOfButtons: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < iNumberOfButtons; iCounter++) {
     RemoveButton(giIMPPersonalityQuizAnswerButton[iCounter]);
     UnloadButtonImage(giIMPPersonalityQuizAnswerButtonImage[iCounter]);
@@ -726,8 +726,8 @@ function BtnIMPPersonalityQuizStartOverCallback(btn: Pointer<GUI_BUTTON>, reason
 }
 
 function ResetQuizAnswerButtons(): void {
-  INT32 iCounter = 0;
-  INT32 iCnt = 0;
+  let iCounter: INT32 = 0;
+  let iCnt: INT32 = 0;
 
   // how many buttons to reset?
   switch (giCurrentPersonalityQuizQuestion) {
@@ -771,7 +771,7 @@ function ResetQuizAnswerButtons(): void {
 
 function CompileQuestionsInStatsAndWhatNot(): void {
   // one BIG case/switch statement to determine what values are added where
-  INT32 iCurrentQuestion = 0;
+  let iCurrentQuestion: INT32 = 0;
 
   for (iCurrentQuestion = 0; iCurrentQuestion < MAX_NUMBER_OF_IMP_QUESTIONS; iCurrentQuestion++) {
     switch (iCurrentQuestion) {
@@ -1121,7 +1121,7 @@ function CompileQuestionsInStatsAndWhatNot(): void {
 }
 
 function BltAnswerIndents(iNumberOfIndents: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // the question indent
   RenderQtnIndentFrame(15, 20);
@@ -1268,7 +1268,7 @@ function BltAnswerIndents(iNumberOfIndents: INT32): void {
 function PrintQuizQuestionNumber(): void {
   // this function will print the number of the current question and the numebr of questions
 
-  CHAR16 sString[10];
+  let sString: CHAR16[] /* [10] */;
 
   // setup font
   SetFont(FONT12ARIAL);
@@ -1297,9 +1297,9 @@ function CheckStateOfTheConfirmButton(): void {
 }
 
 function HandleIMPQuizKeyBoard(): void {
-  InputAtom InputEvent;
-  POINT MousePos;
-  BOOLEAN fSkipFrame = FALSE;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
+  let fSkipFrame: BOOLEAN = FALSE;
 
   GetCursorPos(&MousePos);
 

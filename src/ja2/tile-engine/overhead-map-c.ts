@@ -19,30 +19,32 @@ interface SMALL_TILE_DB {
   fType: UINT32;
 }
 
-SMALL_TILE_SURF gSmTileSurf[NUMBEROFTILETYPES];
-SMALL_TILE_DB gSmTileDB[NUMBEROFTILES];
-UINT8 gubSmTileNum = 0;
-BOOLEAN gfSmTileLoaded = FALSE;
-BOOLEAN gfInOverheadMap = FALSE;
-MOUSE_REGION OverheadRegion;
-MOUSE_REGION OverheadBackgroundRegion;
-UINT32 uiOVERMAP;
-UINT32 uiPERSONS;
-BOOLEAN gfOverheadMapDirty = FALSE;
-INT16 gsStartRestrictedX, gsStartRestrictedY;
-BOOLEAN gfOverItemPool = FALSE;
-INT16 gsOveritemPoolGridNo;
+let gSmTileSurf: SMALL_TILE_SURF[] /* [NUMBEROFTILETYPES] */;
+let gSmTileDB: SMALL_TILE_DB[] /* [NUMBEROFTILES] */;
+let gubSmTileNum: UINT8 = 0;
+let gfSmTileLoaded: BOOLEAN = FALSE;
+let gfInOverheadMap: BOOLEAN = FALSE;
+let OverheadRegion: MOUSE_REGION;
+let OverheadBackgroundRegion: MOUSE_REGION;
+let uiOVERMAP: UINT32;
+let uiPERSONS: UINT32;
+let gfOverheadMapDirty: BOOLEAN = FALSE;
+let gsStartRestrictedX: INT16;
+let gsStartRestrictedY: INT16;
+let gfOverItemPool: BOOLEAN = FALSE;
+let gsOveritemPoolGridNo: INT16;
 
 function InitNewOverheadDB(ubTilesetID: UINT8): void {
-  UINT32 uiLoop;
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hVObject;
-  CHAR8 cFileBPP[128];
-  CHAR8 cAdjustedFile[128];
-  UINT32 cnt1, cnt2;
-  SMALL_TILE_SURF s;
-  UINT32 NumRegions;
-  UINT32 dbSize = 0;
+  let uiLoop: UINT32;
+  let VObjectDesc: VOBJECT_DESC;
+  let hVObject: HVOBJECT;
+  let cFileBPP: CHAR8[] /* [128] */;
+  let cAdjustedFile: CHAR8[] /* [128] */;
+  let cnt1: UINT32;
+  let cnt2: UINT32;
+  let s: SMALL_TILE_SURF;
+  let NumRegions: UINT32;
+  let dbSize: UINT32 = 0;
 
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     // Create video object
@@ -118,7 +120,10 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
 
   // Calculate Scale factors because of restricted map scroll regions
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    INT16 sX1, sY1, sX2, sY2;
+    let sX1: INT16;
+    let sY1: INT16;
+    let sX2: INT16;
+    let sY2: INT16;
 
     CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &gsStartRestrictedY, 640, 320);
     CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &gsStartRestrictedX, &sY2, 640, 320);
@@ -129,7 +134,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
 }
 
 function DeleteOverheadDB(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   for (cnt = 0; cnt < NUMBEROFTILETYPES; cnt++) {
     DeleteVideoObject(gSmTileSurf[cnt].vo);
@@ -137,14 +142,18 @@ function DeleteOverheadDB(): void {
 }
 
 function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Pointer<ITEM_POOL>>, ubRadius: UINT8, bLevel: INT8): BOOLEAN {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  ITEM_POOL *pItemPool;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let pItemPool: Pointer<ITEM_POOL>;
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
@@ -180,13 +189,17 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
 }
 
 function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Pointer<Pointer<SOLDIERTYPE>>, ubRadius: UINT8): BOOLEAN {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT16 sGridNo;
-  INT32 uiRange, uiLowestRange = 999999;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let sGridNo: INT16;
+  let uiRange: INT32;
+  let uiLowestRange: INT32 = 999999;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
@@ -222,8 +235,10 @@ function GetClosestMercInOverheadMap(sSweetGridNo: INT16, ppReturnedSoldier: Poi
 }
 
 function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT16 sWorldScreenX, sX;
-  INT16 sWorldScreenY, sY;
+  let sWorldScreenX: INT16;
+  let sX: INT16;
+  let sWorldScreenY: INT16;
+  let sY: INT16;
 
   // Get Screen position of guy.....
   GetWorldXYAbsoluteScreenXY((pSoldier->sX / CELL_X_SIZE), (pSoldier->sY / CELL_Y_SIZE), &sWorldScreenX, &sWorldScreenY);
@@ -247,8 +262,8 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleOverheadMap(): void {
-  static BOOLEAN fFirst = TRUE;
-  SOLDIERTYPE *pSoldier;
+  /* static */ let fFirst: BOOLEAN = TRUE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (fFirst) {
     fFirst = FALSE;
@@ -308,8 +323,8 @@ function HandleOverheadMap(): void {
   }
 
   if (!gfEditMode && !gfTacticalPlacementGUIActive) {
-    INT16 usMapPos;
-    ITEM_POOL *pItemPool;
+    let usMapPos: INT16;
+    let pItemPool: Pointer<ITEM_POOL>;
 
     gfUIHandleSelectionAboveGuy = FALSE;
 
@@ -318,10 +333,10 @@ function HandleOverheadMap(): void {
     if (GetOverheadMouseGridNo(&usMapPos)) {
       // ATE: Find the closest item pool within 5 tiles....
       if (GetClosestItemPool(usMapPos, &pItemPool, 1, 0)) {
-        STRUCTURE *pStructure = NULL;
-        INT16 sIntTileGridNo;
-        INT8 bZLevel = 0;
-        INT16 sActionGridNo = usMapPos;
+        let pStructure: Pointer<STRUCTURE> = NULL;
+        let sIntTileGridNo: INT16;
+        let bZLevel: INT8 = 0;
+        let sActionGridNo: INT16 = usMapPos;
 
         // Get interactive tile...
         if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {
@@ -339,8 +354,8 @@ function HandleOverheadMap(): void {
       }
 
       if (GetClosestItemPool(usMapPos, &pItemPool, 1, 1)) {
-        INT8 bZLevel = 0;
-        INT16 sActionGridNo = usMapPos;
+        let bZLevel: INT8 = 0;
+        let sActionGridNo: INT16 = usMapPos;
 
         if (AnyItemsVisibleOnLevel(pItemPool, bZLevel)) {
           DrawItemPoolList(pItemPool, usMapPos, ITEMLIST_DISPLAY, bZLevel, gusMouseXPos, (UINT16)(gusMouseYPos - 5));
@@ -389,8 +404,8 @@ function InOverheadMap(): BOOLEAN {
 }
 
 function GoIntoOverheadMap(): void {
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hVObject;
+  let VObjectDesc: VOBJECT_DESC;
+  let hVObject: HVOBJECT;
 
   gfInOverheadMap = TRUE;
 
@@ -441,9 +456,9 @@ function GoIntoOverheadMap(): void {
 }
 
 function HandleOverheadUI(): void {
-  InputAtom InputEvent;
-  INT16 sMousePos = 0;
-  UINT8 ubID;
+  let InputEvent: InputAtom;
+  let sMousePos: INT16 = 0;
+  let ubID: UINT8;
 
   // CHECK FOR MOUSE OVER REGIONS...
   if (GetOverheadMouseGridNo(&sMousePos)) {
@@ -492,7 +507,7 @@ function KillOverheadMap(): void {
 }
 
 function GetOffsetLandHeight(sGridNo: INT32): INT16 {
-  INT16 sTileHeight;
+  let sTileHeight: INT16;
 
   sTileHeight = gpWorldLevelData[sGridNo].sHeight;
 
@@ -500,8 +515,8 @@ function GetOffsetLandHeight(sGridNo: INT32): INT16 {
 }
 
 function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
-  INT16 sTileHeight;
-  INT16 sModifiedTileHeight;
+  let sTileHeight: INT16;
+  let sModifiedTileHeight: INT16;
 
   sTileHeight = gpWorldLevelData[sGridNo].sHeight;
 
@@ -515,22 +530,31 @@ function GetModifiedOffsetLandHeight(sGridNo: INT32): INT16 {
 }
 
 function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPointX_S: INT16, sStartPointY_S: INT16, sEndXS: INT16, sEndYS: INT16, fFromMapUtility: BOOLEAN): void {
-  INT8 bXOddFlag = 0;
-  INT16 sModifiedHeight = 0;
-  INT16 sAnchorPosX_M, sAnchorPosY_M;
-  INT16 sAnchorPosX_S, sAnchorPosY_S;
-  INT16 sTempPosX_M, sTempPosY_M;
-  INT16 sTempPosX_S, sTempPosY_S;
-  BOOLEAN fEndRenderRow = FALSE, fEndRenderCol = FALSE;
-  UINT32 usTileIndex;
-  INT16 sX, sY;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  LEVELNODE *pNode;
-  SMALL_TILE_DB *pTile;
-  INT16 sHeight;
-  HVOBJECT hVObject;
-  INT16 sX1, sX2, sY1, sY2;
+  let bXOddFlag: INT8 = 0;
+  let sModifiedHeight: INT16 = 0;
+  let sAnchorPosX_M: INT16;
+  let sAnchorPosY_M: INT16;
+  let sAnchorPosX_S: INT16;
+  let sAnchorPosY_S: INT16;
+  let sTempPosX_M: INT16;
+  let sTempPosY_M: INT16;
+  let sTempPosX_S: INT16;
+  let sTempPosY_S: INT16;
+  let fEndRenderRow: BOOLEAN = FALSE;
+  let fEndRenderCol: BOOLEAN = FALSE;
+  let usTileIndex: UINT32;
+  let sX: INT16;
+  let sY: INT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let pNode: Pointer<LEVELNODE>;
+  let pTile: Pointer<SMALL_TILE_DB>;
+  let sHeight: INT16;
+  let hVObject: HVOBJECT;
+  let sX1: INT16;
+  let sX2: INT16;
+  let sY1: INT16;
+  let sY2: INT16;
 
   // Get video object for persons...
   if (!fFromMapUtility) {
@@ -836,10 +860,13 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
     // Update the save buffer
     {
-      UINT32 uiDestPitchBYTES, uiSrcPitchBYTES;
-      UINT8 *pDestBuf, *pSrcBuf;
-      UINT16 usWidth, usHeight;
-      UINT8 ubBitDepth;
+      let uiDestPitchBYTES: UINT32;
+      let uiSrcPitchBYTES: UINT32;
+      let pDestBuf: Pointer<UINT8>;
+      let pSrcBuf: Pointer<UINT8>;
+      let usWidth: UINT16;
+      let usHeight: UINT16;
+      let ubBitDepth: UINT8;
 
       // Update saved buffer - do for the viewport size ony!
       GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
@@ -859,16 +886,17 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 }
 
 function RenderOverheadOverlays(): void {
-  UINT32 uiDestPitchBYTES;
-  WORLDITEM *pWorldItem;
-  UINT32 i;
-  SOLDIERTYPE *pSoldier;
-  HVOBJECT hVObject;
-  INT16 sX, sY;
-  UINT16 end;
-  UINT16 usLineColor = 0;
-  UINT8 *pDestBuf;
-  UINT8 ubPassengers = 0;
+  let uiDestPitchBYTES: UINT32;
+  let pWorldItem: Pointer<WORLDITEM>;
+  let i: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let hVObject: HVOBJECT;
+  let sX: INT16;
+  let sY: INT16;
+  let end: UINT16;
+  let usLineColor: UINT16 = 0;
+  let pDestBuf: Pointer<UINT8>;
+  let ubPassengers: UINT8 = 0;
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
   GetVideoObject(&hVObject, uiPERSONS);
@@ -1198,8 +1226,10 @@ function MoveInOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32)
 }
 
 function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  UINT32 uiCellX, uiCellY;
-  INT16 sWorldScreenX, sWorldScreenY;
+  let uiCellX: UINT32;
+  let uiCellY: UINT32;
+  let sWorldScreenX: INT16;
+  let sWorldScreenY: INT16;
 
   if (gfTacticalPlacementGUIActive) {
     HandleTacticalPlacementClicksInOverheadMap(reg, reason);
@@ -1243,8 +1273,10 @@ function GetOverheadScreenXYFromGridNo(sGridNo: INT16, psScreenX: Pointer<INT16>
 }
 
 function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
-  UINT32 uiCellX, uiCellY;
-  INT16 sWorldScreenX, sWorldScreenY;
+  let uiCellX: UINT32;
+  let uiCellY: UINT32;
+  let sWorldScreenX: INT16;
+  let sWorldScreenY: INT16;
 
   if ((OverheadRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
     // ATE: Adjust alogrithm values a tad to reflect map positioning
@@ -1272,8 +1304,10 @@ function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
 }
 
 function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
-  UINT32 uiCellX, uiCellY;
-  INT16 sWorldScreenX, sWorldScreenY;
+  let uiCellX: UINT32;
+  let uiCellY: UINT32;
+  let sWorldScreenX: INT16;
+  let sWorldScreenY: INT16;
 
   if ((OverheadRegion.uiFlags & MSYS_MOUSE_IN_AREA)) {
     // ATE: Adjust alogrithm values a tad to reflect map positioning
@@ -1340,8 +1374,9 @@ function CalculateRestrictedScaleFactors(pScaleX: Pointer<INT16>, pScaleY: Point
 }
 
 function CopyOverheadDBShadetablesFromTileset(): void {
-  UINT32 uiLoop, uiLoop2;
-  PTILE_IMAGERY pTileSurf;
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let pTileSurf: PTILE_IMAGERY;
 
   // Loop through tileset
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {

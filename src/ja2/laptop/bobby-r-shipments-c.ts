@@ -41,19 +41,19 @@ const BOBBYR_SHIPMENT_NUM_ITEMS_WIDTH = 116;
 
 //#define		BOBBYR_SHIPMENT_
 
-UINT32 guiBobbyRShipmentGrid;
+let guiBobbyRShipmentGrid: UINT32;
 
-BOOLEAN gfBobbyRShipmentsDirty = FALSE;
+let gfBobbyRShipmentsDirty: BOOLEAN = FALSE;
 
-INT32 giBobbyRShipmentSelectedShipment = -1;
+let giBobbyRShipmentSelectedShipment: INT32 = -1;
 
-UINT32 guiBobbyRShipmetBack;
-INT32 guiBobbyRShipmentBackImage;
+let guiBobbyRShipmetBack: UINT32;
+let guiBobbyRShipmentBackImage: INT32;
 
-UINT32 guiBobbyRShipmentHome;
-INT32 giBobbyRShipmentHomeImage;
+let guiBobbyRShipmentHome: UINT32;
+let giBobbyRShipmentHomeImage: INT32;
 
-MOUSE_REGION gSelectedPreviousShipmentsRegion[BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS];
+let gSelectedPreviousShipmentsRegion: MOUSE_REGION[] /* [BOBBYR_SHIPMENT_NUM_PREVIOUS_SHIPMENTS] */;
 
 //
 // Function Prototypes
@@ -69,7 +69,7 @@ function GameInitBobbyRShipments(): void {
 }
 
 function EnterBobbyRShipments(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   InitBobbyRWoodBackground();
 
@@ -92,7 +92,7 @@ function EnterBobbyRShipments(): BOOLEAN {
 
   // if there are shipments
   if (giNumberOfNewBobbyRShipment != 0) {
-    INT32 iCnt;
+    let iCnt: INT32;
 
     // get the first shipment #
     for (iCnt = 0; iCnt < giNumberOfNewBobbyRShipment; iCnt++) {
@@ -193,7 +193,7 @@ function BtnBobbyRShipmentHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function DisplayShipmentGrid(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   GetVideoObject(&hPixHandle, guiBobbyRShipmentGrid);
 
@@ -213,13 +213,13 @@ function DisplayShipmentTitles(): void {
 }
 
 function DisplayPreviousShipments(): void {
-  UINT32 uiCnt;
-  CHAR16 zText[512];
-  UINT16 usPosY = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
-  UINT32 uiNumItems = CountNumberValidShipmentForTheShipmentsPage();
-  UINT32 uiNumberItemsInShipments = 0;
-  UINT32 uiItemCnt;
-  UINT8 ubFontColor = BOBBYR_SHIPMENT_STATIC_TEXT_COLOR;
+  let uiCnt: UINT32;
+  let zText: CHAR16[] /* [512] */;
+  let usPosY: UINT16 = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
+  let uiNumItems: UINT32 = CountNumberValidShipmentForTheShipmentsPage();
+  let uiNumberItemsInShipments: UINT32 = 0;
+  let uiItemCnt: UINT32;
+  let ubFontColor: UINT8 = BOBBYR_SHIPMENT_STATIC_TEXT_COLOR;
 
   // loop through all the shipments
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
@@ -252,11 +252,11 @@ function DisplayPreviousShipments(): void {
 }
 
 function CreatePreviousShipmentsMouseRegions(): void {
-  UINT32 uiCnt;
-  UINT16 usPosY = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
-  UINT16 usWidth = BOBBYR_SHIPMENT_DELIVERY_GRID_WIDTH;
-  UINT16 usHeight = GetFontHeight(BOBBYR_SHIPMENT_STATIC_TEXT_FONT);
-  UINT32 uiNumItems = CountNumberOfBobbyPurchasesThatAreInTransit();
+  let uiCnt: UINT32;
+  let usPosY: UINT16 = BOBBYR_SHIPMENT_ORDER_NUM_START_Y;
+  let usWidth: UINT16 = BOBBYR_SHIPMENT_DELIVERY_GRID_WIDTH;
+  let usHeight: UINT16 = GetFontHeight(BOBBYR_SHIPMENT_STATIC_TEXT_FONT);
+  let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
     MSYS_DefineRegion(&gSelectedPreviousShipmentsRegion[uiCnt], BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (UINT16)(BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (UINT16)(usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
@@ -268,8 +268,8 @@ function CreatePreviousShipmentsMouseRegions(): void {
 }
 
 function RemovePreviousShipmentsMouseRegions(): void {
-  UINT32 uiCnt;
-  UINT32 uiNumItems = CountNumberOfBobbyPurchasesThatAreInTransit();
+  let uiCnt: UINT32;
+  let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
     MSYS_RemoveRegion(&gSelectedPreviousShipmentsRegion[uiCnt]);
@@ -279,11 +279,11 @@ function RemovePreviousShipmentsMouseRegions(): void {
 function SelectPreviousShipmentsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    INT32 iSlotID = MSYS_GetRegionUserData(pRegion, 0);
+    let iSlotID: INT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (CountNumberOfBobbyPurchasesThatAreInTransit() > iSlotID) {
-      INT32 iCnt;
-      INT32 iValidShipmentCounter = 0;
+      let iCnt: INT32;
+      let iValidShipmentCounter: INT32 = 0;
 
       giBobbyRShipmentSelectedShipment = -1;
 

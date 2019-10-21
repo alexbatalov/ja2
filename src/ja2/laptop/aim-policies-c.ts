@@ -120,26 +120,26 @@ const enum Enum68 {
 }
 
 // Toc menu mouse regions
-MOUSE_REGION gSelectedPolicyTocMenuRegion[NUM_AIM_POLICY_TOC_BUTTONS];
+let gSelectedPolicyTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_POLICY_TOC_BUTTONS] */;
 
-UINT32 guiPoliciesAgreeButton[2];
-INT32 guiPoliciesButtonImage;
+let guiPoliciesAgreeButton: UINT32[] /* [2] */;
+let guiPoliciesButtonImage: INT32;
 
-UINT32 guiPoliciesMenuButton[AIM_POLICY_MENU_BUTTON_AMOUNT];
-INT32 guiPoliciesMenuButtonImage;
+let guiPoliciesMenuButton: UINT32[] /* [AIM_POLICY_MENU_BUTTON_AMOUNT] */;
+let guiPoliciesMenuButtonImage: INT32;
 
-UINT32 guiBottomButton;
-UINT32 guiBottomButton2;
-UINT8 gubCurPageNum;
-BOOLEAN gfInPolicyToc = FALSE;
-BOOLEAN gfInAgreementPage = FALSE;
-BOOLEAN gfAimPolicyMenuBarLoaded = FALSE;
-UINT32 guiContentButton;
-BOOLEAN gfExitingPolicesAgreeButton;
-UINT8 gubPoliciesAgreeButtonDown;
-UINT8 gubAimPolicyMenuButtonDown = 255;
-BOOLEAN gfExitingAimPolicy;
-BOOLEAN AimPoliciesSubPagesVisitedFlag[NUM_AIM_POLICY_PAGES];
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
+let gubCurPageNum: UINT8;
+let gfInPolicyToc: BOOLEAN = FALSE;
+let gfInAgreementPage: BOOLEAN = FALSE;
+let gfAimPolicyMenuBarLoaded: BOOLEAN = FALSE;
+let guiContentButton: UINT32;
+let gfExitingPolicesAgreeButton: BOOLEAN;
+let gubPoliciesAgreeButtonDown: UINT8;
+let gubAimPolicyMenuButtonDown: UINT8 = 255;
+let gfExitingAimPolicy: BOOLEAN;
+let AimPoliciesSubPagesVisitedFlag: BOOLEAN[] /* [NUM_AIM_POLICY_PAGES] */;
 
 function GameInitAimPolicies(): void {
 }
@@ -149,7 +149,7 @@ function EnterInitAimPolicies(): void {
 }
 
 function EnterAimPolicies(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   InitAimDefaults();
 
@@ -213,7 +213,7 @@ function HandleAimPolicies(): void {
 }
 
 function RenderAimPolicies(): void {
-  UINT16 usNumPixles;
+  let usNumPixles: UINT16;
 
   DrawAimDefaults();
 
@@ -331,7 +331,8 @@ function RenderAimPolicies(): void {
 }
 
 function InitAimPolicyMenuBar(): BOOLEAN {
-  UINT16 i, usPosX;
+  let i: UINT16;
+  let usPosX: UINT16;
 
   if (gfAimPolicyMenuBarLoaded)
     return TRUE;
@@ -360,7 +361,7 @@ function InitAimPolicyMenuBar(): BOOLEAN {
 }
 
 function ExitAimPolicyMenuBar(): BOOLEAN {
-  int i;
+  let i: int;
 
   if (!gfAimPolicyMenuBarLoaded)
     return FALSE;
@@ -376,12 +377,13 @@ function ExitAimPolicyMenuBar(): BOOLEAN {
 }
 
 function DrawAimPolicyMenu(): BOOLEAN {
-  UINT16 i, usPosY;
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
-  wchar_t sText[400];
-  HVOBJECT hContentButtonHandle;
-  UINT8 ubLocInFile[] = {
+  let i: UINT16;
+  let usPosY: UINT16;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
+  let sText: wchar_t[] /* [400] */;
+  let hContentButtonHandle: HVOBJECT;
+  let ubLocInFile: UINT8[] /* [] */ = {
     DEFINITIONS,
     LENGTH_OF_ENGAGEMENT,
     LOCATION_0F_ENGAGEMENT,
@@ -412,9 +414,10 @@ function DrawAimPolicyMenu(): BOOLEAN {
 }
 
 function InitAimPolicyTocMenu(): BOOLEAN {
-  UINT16 i, usPosY;
-  UINT16 usHeight;
-  UINT32 uiStartLoc = 0;
+  let i: UINT16;
+  let usPosY: UINT16;
+  let usHeight: UINT16;
+  let uiStartLoc: UINT32 = 0;
 
   if (gfInPolicyToc)
     return TRUE;
@@ -435,7 +438,7 @@ function InitAimPolicyTocMenu(): BOOLEAN {
 }
 
 function ExitAimPolicyTocMenu(): BOOLEAN {
-  UINT16 i;
+  let i: UINT16;
 
   gfInPolicyToc = FALSE;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++)
@@ -461,8 +464,8 @@ function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 }
 
 function DisplayAimPolicyTitleText(): BOOLEAN {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
 
   // Load anfd display title
   uiStartLoc = AIM_POLICY_LINE_SIZE * AIM_STATEMENT_OF_POLICY;
@@ -477,9 +480,9 @@ function DisplayAimPolicyTitleText(): BOOLEAN {
 }
 
 function DisplayAimPolicyStatement(): BOOLEAN {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
-  UINT16 usNumPixels;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
+  let usNumPixels: UINT16;
 
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * AIM_STATEMENT_OF_POLICY_1;
@@ -495,7 +498,8 @@ function DisplayAimPolicyStatement(): BOOLEAN {
 }
 
 function InitAgreementRegion(): BOOLEAN {
-  UINT16 usPosX, i;
+  let usPosX: UINT16;
+  let i: UINT16;
 
   gfExitingPolicesAgreeButton = FALSE;
 
@@ -521,7 +525,7 @@ function InitAgreementRegion(): BOOLEAN {
 }
 
 function ExitAgreementButton(): BOOLEAN {
-  UINT8 i;
+  let i: UINT8;
 
   gfExitingPolicesAgreeButton = TRUE;
 
@@ -536,8 +540,8 @@ function ExitAgreementButton(): BOOLEAN {
 }
 
 function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): BOOLEAN {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
 
   // Load and display title
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
@@ -548,10 +552,10 @@ function DisplayAimPolicyTitle(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT)
 }
 
 function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): UINT16 {
-  wchar_t sText[400];
-  wchar_t sTemp[20];
-  UINT32 uiStartLoc = 0;
-  UINT16 usNumPixels;
+  let sText: wchar_t[] /* [400] */;
+  let sTemp: wchar_t[] /* [20] */;
+  let uiStartLoc: UINT32 = 0;
+  let usNumPixels: UINT16;
 
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
@@ -569,10 +573,10 @@ function DisplayAimPolicyParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FL
 }
 
 function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber: FLOAT): UINT16 {
-  wchar_t sText[400];
-  wchar_t sTemp[20];
-  UINT32 uiStartLoc = 0;
-  UINT16 usNumPixels;
+  let sText: wchar_t[] /* [400] */;
+  let sTemp: wchar_t[] /* [20] */;
+  let uiStartLoc: UINT32 = 0;
+  let usNumPixels: UINT16;
 
   uiStartLoc = AIM_POLICY_LINE_SIZE * ubPageNum;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
@@ -588,8 +592,8 @@ function DisplayAimPolicySubParagraph(usPosY: UINT16, ubPageNum: UINT8, fNumber:
 }
 
 function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT8 ubRetValue;
-  static BOOLEAN fOnPage = TRUE;
+  let ubRetValue: UINT8;
+  /* static */ let fOnPage: BOOLEAN = TRUE;
   if (fOnPage) {
     ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -627,8 +631,8 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
 }
 
 function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT8 ubRetValue;
-  static BOOLEAN fOnPage = TRUE;
+  let ubRetValue: UINT8;
+  /* static */ let fOnPage: BOOLEAN = TRUE;
   if (fOnPage) {
     ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -692,7 +696,7 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 }
 
 function ResetAimPolicyButtons(): void {
-  int i = 0;
+  let i: int = 0;
 
   for (i = 0; i < AIM_POLICY_MENU_BUTTON_AMOUNT; i++) {
     ButtonList[guiPoliciesMenuButton[i]]->uiFlags &= ~BUTTON_CLICKED_ON;

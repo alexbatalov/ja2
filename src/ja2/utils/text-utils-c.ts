@@ -1,8 +1,8 @@
 function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiBytesRead;
-  UINT16 i;
-  UINT32 uiStartSeekAmount;
+  let hFile: HWFILE;
+  let uiBytesRead: UINT32;
+  let i: UINT16;
+  let uiStartSeekAmount: UINT32;
 
   hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, FALSE);
   if (!hFile) {
@@ -181,11 +181,11 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
 }
 
 function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
-  HWFILE hFile;
+  let hFile: HWFILE;
   //  wchar_t		DestString[ SIZE_MERC_BIO_INFO ];
-  UINT32 uiBytesRead;
-  UINT16 i;
-  UINT32 uiStartSeekAmount;
+  let uiBytesRead: UINT32;
+  let i: UINT16;
+  let uiStartSeekAmount: UINT32;
 
   hFile = FileOpen(ITEMSTRINGFILENAME, FILE_ACCESS_READ, FALSE);
   if (!hFile) {
@@ -277,7 +277,7 @@ function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
 }
 
 function LoadAllItemNames(): void {
-  UINT16 usLoop;
+  let usLoop: UINT16;
 
   for (usLoop = 0; usLoop < MAXITEMS; usLoop++) {
     LoadItemInfo(usLoop, ItemNames[usLoop], NULL);
@@ -301,7 +301,7 @@ function GetWeightUnitString(): Pointer<INT16> {
 }
 
 function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
-  FLOAT fWeight = 0.0f;
+  let fWeight: FLOAT = 0.0f;
 
   // if the user is smart and wants things displayed in 'metric'
   if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric

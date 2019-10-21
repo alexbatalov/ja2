@@ -5,7 +5,7 @@
 //	SANMONA_ARMS_GROUP,
 //	ANGELS_GROUP,
 //	NUM_CIV_GROUPS
-UINT16 gszCivGroupNames[NUM_CIV_GROUPS][20] = {
+let gszCivGroupNames: UINT16[][] /* [NUM_CIV_GROUPS][20] */ = {
   L"NONE",
   L"REBEL",
   L"KINGPIN",
@@ -42,7 +42,7 @@ UINT16 gszCivGroupNames[NUM_CIV_GROUPS][20] = {
 //	SCHEDULE_ACTION_ENTERSECTOR,
 //	SCHEDULE_ACTION_STAYINSECTOR,
 //  SCHEDULE_ACTION_SLEEP,
-UINT16 gszScheduleActions[NUM_SCHEDULE_ACTIONS][20] = {
+let gszScheduleActions: UINT16[][] /* [NUM_SCHEDULE_ACTIONS][20] */ = {
   L"No action",
   L"Lock door",
   L"Unlock door",
@@ -65,16 +65,16 @@ const enum Enum40 {
   NUM_SCHEDULE_INSTRUCTIONS,
 }
 
-extern BOOLEAN gfSingleAction = FALSE;
-BOOLEAN gfUseScheduleData2 = FALSE;
-UINT8 gubCurrentScheduleActionIndex = 0;
-SCHEDULENODE gCurrSchedule;
-UINT8 gubScheduleInstructions = SCHEDULE_INSTRUCTIONS_NONE;
+let gfSingleAction: BOOLEAN = FALSE;
+let gfUseScheduleData2: BOOLEAN = FALSE;
+let gubCurrentScheduleActionIndex: UINT8 = 0;
+let gCurrSchedule: SCHEDULENODE;
+let gubScheduleInstructions: UINT8 = SCHEDULE_INSTRUCTIONS_NONE;
 
 // array which keeps track of which item is in which slot.  This is dependant on the selected merc, so
 // these temp values must be updated when different mercs are selected, and reset when a merc detailed
 // placement is created.
-OBJECTTYPE *gpMercSlotItem[9] = {
+let gpMercSlotItem: Pointer<OBJECTTYPE>[] /* [9] */ = {
   NULL,
   NULL,
   NULL,
@@ -87,7 +87,7 @@ OBJECTTYPE *gpMercSlotItem[9] = {
 };
 // Because we only support these nine slots, they aren't continuous values, so this array helps
 // processing functions by referring to this array to get the appropriate slot.
-INT8 gbMercSlotTypes[9] = {
+let gbMercSlotTypes: INT8[] /* [9] */ = {
   HELMETPOS,
   VESTPOS,
   LEGPOS,
@@ -102,76 +102,76 @@ INT8 gbMercSlotTypes[9] = {
 const GetSelectedMercSlotItemIndex = (x) => (gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]].usItem);
 const GetSelectedMercSlot = (x) => (&gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[x]]);
 // values indicating which merc inventory slot is hilited and which slot is selected.
-INT8 gbCurrHilite = -1;
-INT8 gbCurrSelect = -1;
+let gbCurrHilite: INT8 = -1;
+let gbCurrSelect: INT8 = -1;
 
 // internal merc variables
-BASIC_SOLDIERCREATE_STRUCT gTempBasicPlacement;
-SOLDIERCREATE_STRUCT gTempDetailedPlacement;
+let gTempBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+let gTempDetailedPlacement: SOLDIERCREATE_STRUCT;
 
-INT16 gsSelectedMercID;
-INT16 gsSelectedMercGridNo;
-SOLDIERINITNODE *gpSelected;
+let gsSelectedMercID: INT16;
+let gsSelectedMercGridNo: INT16;
+let gpSelected: Pointer<SOLDIERINITNODE>;
 
-UINT8 gubCurrMercMode = MERC_TEAMMODE;
-UINT8 gubPrevMercMode = MERC_NOMODE;
-UINT8 gubLastDetailedMercMode = MERC_GENERALMODE;
-INT8 gbDefaultOrders = STATIONARY;
-INT8 gbDefaultAttitude = DEFENSIVE;
-INT8 gbDefaultRelativeEquipmentLevel = 2;
-INT8 gbDefaultRelativeAttributeLevel = 2;
-INT8 gbDefaultDirection = NORTHWEST;
-INT8 gubSoldierClass = SOLDIER_CLASS_ARMY;
-UINT8 gubCivGroup = NON_CIV_GROUP;
+let gubCurrMercMode: UINT8 = MERC_TEAMMODE;
+let gubPrevMercMode: UINT8 = MERC_NOMODE;
+let gubLastDetailedMercMode: UINT8 = MERC_GENERALMODE;
+let gbDefaultOrders: INT8 = STATIONARY;
+let gbDefaultAttitude: INT8 = DEFENSIVE;
+let gbDefaultRelativeEquipmentLevel: INT8 = 2;
+let gbDefaultRelativeAttributeLevel: INT8 = 2;
+let gbDefaultDirection: INT8 = NORTHWEST;
+let gubSoldierClass: INT8 = SOLDIER_CLASS_ARMY;
+let gubCivGroup: UINT8 = NON_CIV_GROUP;
 
-SOLDIERTYPE *pTempSoldier;
-BOOLEAN gfRoofPlacement;
+let pTempSoldier: Pointer<SOLDIERTYPE>;
+let gfRoofPlacement: BOOLEAN;
 
 // Below are all flags that have to do with editing detailed placement mercs:
 
 // Determines if the user is allowed to edit merc colors.  User must specifically
 // click on the checkbox by the colors to confirm that colors will be specified.  If
 // not, the colors will be randomly generated upon creation in the game.
-BOOLEAN gfCanEditMercColors = FALSE;
+let gfCanEditMercColors: BOOLEAN = FALSE;
 // A rendering flag that is set whenever a full update of the merc editing information
 // needs to be done.
-BOOLEAN gfRenderMercInfo = FALSE;
+let gfRenderMercInfo: BOOLEAN = FALSE;
 // When the user specifies a profile index for the merc, all editing is disabled.  This is
 // because the profile contains all of the information.  When this happens, all of the editing
 // buttons are disabled, but you are allowed to view stats, inventory, etc., as well as specify
 // orders, attitude, and direction.
-BOOLEAN gfCanEditMercs = TRUE;
+let gfCanEditMercs: BOOLEAN = TRUE;
 // When in inventory mode, this flag is set when the user wishes to get an item, which requires hooking
 // into the item editing features.  This is processed during the editor update, which in turn, sets the
 // new mode.
-BOOLEAN gfMercGetItem = FALSE;
+let gfMercGetItem: BOOLEAN = FALSE;
 // As soon as an item is selected, the items index is stored here, so the item can be copied into the
 // slot for editing and rendering purposes.  This is a temp store value only when leaving the editor items
 // mode.
-UINT16 gusMercsNewItemIndex = 0xffff;
+let gusMercsNewItemIndex: UINT16 = 0xffff;
 
 // old and probably obsolete
 // BOOLEAN	fMercEdUseLeftSide = FALSE;
 // BOOLEAN fEditingMerc = FALSE;
 // BOOLEAN fKeepWindowHidden = FALSE;
-INT32 iEditMercPage = 1;
-INT32 iEditMercEnd = -1;
-INT32 iEditMercBkgrndArea = -1;
-INT32 iEditMercLocation;
-INT32 iEditStatTimer = 0;
-INT32 iEditWhichStat = -1;
-INT32 iEditMercMode = EDIT_MERC_NONE;
-INT32 iEditMercColorPage = -1;
-INT32 iEditMercStatPage = -1;
-INT32 iEditMercFindButton = -1;
-INT32 iEditMercSlotNumber;
-INT32 iEditColorStart[EDIT_NUM_COLORS];
+let iEditMercPage: INT32 = 1;
+let iEditMercEnd: INT32 = -1;
+let iEditMercBkgrndArea: INT32 = -1;
+let iEditMercLocation: INT32;
+let iEditStatTimer: INT32 = 0;
+let iEditWhichStat: INT32 = -1;
+let iEditMercMode: INT32 = EDIT_MERC_NONE;
+let iEditMercColorPage: INT32 = -1;
+let iEditMercStatPage: INT32 = -1;
+let iEditMercFindButton: INT32 = -1;
+let iEditMercSlotNumber: INT32;
+let iEditColorStart: INT32[] /* [EDIT_NUM_COLORS] */;
 
-BOOLEAN gfShowPlayers = TRUE;
-BOOLEAN gfShowEnemies = TRUE;
-BOOLEAN gfShowCreatures = TRUE;
-BOOLEAN gfShowRebels = TRUE;
-BOOLEAN gfShowCivilians = TRUE;
+let gfShowPlayers: BOOLEAN = TRUE;
+let gfShowEnemies: BOOLEAN = TRUE;
+let gfShowCreatures: BOOLEAN = TRUE;
+let gfShowRebels: BOOLEAN = TRUE;
+let gfShowCivilians: BOOLEAN = TRUE;
 
 const BASE_STAT_DEVIATION = 7;
 const BASE_EXPLVL_DEVIATION = 1;
@@ -179,23 +179,23 @@ const BASE_PROTLVL_DEVIATION = 0;
 const BASE_GUNTYPE_DEVIATION = 4;
 const DEFAULT_DIFF = 2;
 
-INT16 sCurBaseDiff = DEFAULT_DIFF;
-BOOLEAN fAskForBaseDifficulty = TRUE;
-UINT16 *zDiffNames[NUM_DIFF_LVLS] = {
+let sCurBaseDiff: INT16 = DEFAULT_DIFF;
+let fAskForBaseDifficulty: BOOLEAN = TRUE;
+let zDiffNames: Pointer<UINT16>[] /* [NUM_DIFF_LVLS] */ = {
   L"Wimp",
   L"Easy",
   L"Average",
   L"Tough",
   L"Steroid Users Only",
 };
-INT16 sBaseStat[NUM_DIFF_LVLS] = {
+let sBaseStat: INT16[] /* [NUM_DIFF_LVLS] */ = {
   50,
   60,
   70,
   80,
   90,
 };
-INT16 sBaseExpLvl[NUM_DIFF_LVLS] = {
+let sBaseExpLvl: INT16[] /* [NUM_DIFF_LVLS] */ = {
   1,
   3,
   5,
@@ -203,7 +203,7 @@ INT16 sBaseExpLvl[NUM_DIFF_LVLS] = {
   9,
 };
 
-UINT16 *EditMercStat[12] = {
+let EditMercStat: Pointer<UINT16>[] /* [12] */ = {
   L"Max Health",
   L"Cur Health",
   L"Strength",
@@ -219,7 +219,7 @@ UINT16 *EditMercStat[12] = {
 };
 
 const NUM_MERC_ORDERS = 8;
-UINT16 *EditMercOrders[8] = {
+let EditMercOrders: Pointer<UINT16>[] /* [8] */ = {
   L"Stationary",
   L"On Guard",
   L"Close Patrol",
@@ -230,7 +230,7 @@ UINT16 *EditMercOrders[8] = {
   L"Random Point Patrol",
 };
 
-UINT16 *EditMercAttitudes[6] = {
+let EditMercAttitudes: Pointer<UINT16>[] /* [6] */ = {
   L"Defensive",
   L"Brave Loner",
   L"Brave Buddy",
@@ -247,7 +247,7 @@ const MAX_CREATURETYPES = 8;
 const MAX_REBELTYPES = 7;
 const MAX_CIVTYPES = 18;
 //#define MAX_CIVRANDOMTYPES		11
-INT8 bEnemyArray[MAX_ENEMYTYPES] = {
+let bEnemyArray: INT8[] /* [MAX_ENEMYTYPES] */ = {
   RANDOM,
   REGMALE,
   BIGMALE,
@@ -256,7 +256,7 @@ INT8 bEnemyArray[MAX_ENEMYTYPES] = {
   TANK_NW,
   TANK_NE,
 };
-INT8 bCreatureArray[MAX_CREATURETYPES] = {
+let bCreatureArray: INT8[] /* [MAX_CREATURETYPES] */ = {
   BLOODCAT,
   LARVAE_MONSTER,
   INFANT_MONSTER,
@@ -266,7 +266,7 @@ INT8 bCreatureArray[MAX_CREATURETYPES] = {
   AM_MONSTER,
   QUEENMONSTER,
 };
-INT8 bRebelArray[MAX_REBELTYPES] = {
+let bRebelArray: INT8[] /* [MAX_REBELTYPES] */ = {
   RANDOM,
   FATCIV,
   MANCIV,
@@ -275,7 +275,7 @@ INT8 bRebelArray[MAX_REBELTYPES] = {
   STOCKYMALE,
   REGFEMALE,
 };
-INT8 bCivArray[MAX_CIVTYPES] = {
+let bCivArray: INT8[] /* [MAX_CIVTYPES] */ = {
   RANDOM,
   FATCIV,
   MANCIV,
@@ -295,14 +295,14 @@ INT8 bCivArray[MAX_CIVTYPES] = {
   ROBOTNOWEAPON,
   COW,
 };
-INT8 gbCurrCreature = BLOODCAT;
+let gbCurrCreature: INT8 = BLOODCAT;
 
-BOOLEAN gfSaveBuffer = FALSE;
-BASIC_SOLDIERCREATE_STRUCT gSaveBufferBasicPlacement;
-SOLDIERCREATE_STRUCT gSaveBufferDetailedPlacement;
+let gfSaveBuffer: BOOLEAN = FALSE;
+let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
 function GameInitEditorMercsInfo(): void {
-  INT32 i;
+  let i: INT32;
   // Initialize the placement list
   InitSoldierInitList();
   gMapInformation.ubNumIndividuals = 0;
@@ -322,7 +322,8 @@ function GameShutdownEditorMercsInfo(): void {
 }
 
 function EntryInitEditorMercsInfo(): void {
-  INT32 x, iCurStart = 0;
+  let x: INT32;
+  let iCurStart: INT32 = 0;
   iEditColorStart[0] = 0;
   for (x = 1; x < EDIT_NUM_COLORS; x++) {
     iCurStart += gubpNumReplacementsPerRange[x - 1];
@@ -342,8 +343,9 @@ const enum Enum41 {
 }
 
 function ProcessMercEditing(): void {
-  UINT8 ubType, ubPaletteRep;
-  SOLDIERTYPE *pSoldier;
+  let ubType: UINT8;
+  let ubPaletteRep: UINT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   if (iEditMercMode == EDIT_MERC_NONE) {
     return;
   }
@@ -460,8 +462,8 @@ function ProcessMercEditing(): void {
 }
 
 function AddMercToWorld(iMapIndex: INT32): void {
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
 
   memset(&gTempBasicPlacement, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
 
@@ -494,9 +496,10 @@ function AddMercToWorld(iMapIndex: INT32): void {
   }
 
   if (IsLocationSittable(iMapIndex, gfRoofPlacement)) {
-    UINT8 ubID;
-    INT16 sSectorX, sSectorY;
-    SOLDIERINITNODE *pNode;
+    let ubID: UINT8;
+    let sSectorX: INT16;
+    let sSectorY: INT16;
+    let pNode: Pointer<SOLDIERINITNODE>;
 
     GetCurrentWorldSector(&sSectorX, &sSectorY);
 
@@ -547,9 +550,10 @@ function AddMercToWorld(iMapIndex: INT32): void {
 }
 
 function HandleRightClickOnMerc(iMapIndex: INT32): void {
-  SOLDIERINITNODE *pNode;
-  INT16 sThisMercID;
-  INT16 sCellX, sCellY;
+  let pNode: Pointer<SOLDIERINITNODE>;
+  let sThisMercID: INT16;
+  let sCellX: INT16;
+  let sCellY: INT16;
 
   ConvertGridNoToCellXY((INT16)iMapIndex, &sCellX, &sCellY);
 
@@ -588,7 +592,7 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
 }
 
 function ResetAllMercPositions(): void {
-  SOLDIERINITNODE *curr;
+  let curr: Pointer<SOLDIERINITNODE>;
   // Remove all of the alternate placements (editor takes precedence)
   UseEditorAlternateList();
   curr = gSoldierInitHead;
@@ -625,7 +629,7 @@ function ResetAllMercPositions(): void {
 }
 
 function AddMercWaypoint(iMapIndex: UINT32): void {
-  INT32 iNum;
+  let iNum: INT32;
   // index 0 isn't used
   if (iActionParam == 0)
     return;
@@ -658,7 +662,7 @@ function AddMercWaypoint(iMapIndex: UINT32): void {
 }
 
 function EraseMercWaypoint(): void {
-  INT32 iNum;
+  let iNum: INT32;
   // index 0 isn't used
   if (iActionParam == 0)
     return;
@@ -725,12 +729,19 @@ function ChangeBaseSoldierStats(pSoldier: Pointer<SOLDIERTYPE>): void {
 //	to be displayed, this function will dispatch it instead.
 //
 function DisplayEditMercWindow(): void {
-  INT32 iXPos, iYPos, iHeight, iWidth;
-  UINT16 usFillColorBack, usFillColorDark, usFillColorLight, usFillColorTextBk;
-  INT32 x, iXOff;
-  INT16 TempString[30];
-  SOLDIERTYPE *pSoldier;
-  INT8 iEditStat[12];
+  let iXPos: INT32;
+  let iYPos: INT32;
+  let iHeight: INT32;
+  let iWidth: INT32;
+  let usFillColorBack: UINT16;
+  let usFillColorDark: UINT16;
+  let usFillColorLight: UINT16;
+  let usFillColorTextBk: UINT16;
+  let x: INT32;
+  let iXOff: INT32;
+  let TempString: INT16[] /* [30] */;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let iEditStat: INT8[] /* [12] */;
 
   usFillColorBack = 0;
 
@@ -817,10 +828,10 @@ function DisplayEditMercWindow(): void {
 //	otherwise it returns -1.
 //
 function IsMercHere(iMapIndex: INT32): INT32 {
-  INT32 IDNumber;
-  INT32 RetIDNumber;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fSoldierFound;
+  let IDNumber: INT32;
+  let RetIDNumber: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fSoldierFound: BOOLEAN;
 
   RetIDNumber = -1;
   fSoldierFound = FALSE;
@@ -903,7 +914,7 @@ function EditMercNextAttCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iBtn;
+  let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
@@ -926,7 +937,7 @@ function EditMercStatUpCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iBtn;
+  let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
@@ -949,7 +960,7 @@ function EditMercStatDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
 }
 
 function EditMercSetDirCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iBtn;
+  let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
@@ -977,7 +988,7 @@ function EditMercCenterCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function EditMercColorDwnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iBtn;
+  let iBtn: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
@@ -1016,7 +1027,7 @@ function MercsToggleColorModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function MercsSetColorsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iBtn;
+  let iBtn: INT32;
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     iEditWhichStat = -1;
     for (iBtn = FIRST_MERCS_COLOR_BUTTON; iBtn <= LAST_MERCS_COLOR_BUTTON; iBtn++) {
@@ -1063,7 +1074,7 @@ function EditMercIncDifficultyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 //	Displays the palette of the given merc (used by the edit merc color page)
 //
 function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT8 ubPaletteRep;
+  let ubPaletteRep: UINT8;
   if (!pSoldier)
     ubPaletteRep = 0xff;
 
@@ -1106,11 +1117,16 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
 //	Displays a single palette set. (used by ShowEditMercPalettes)
 //
 function ShowEditMercColorSet(ubPaletteRep: UINT8, sSet: INT16): void {
-  UINT16 us16BPPColor, usFillColorDark, usFillColorLight;
-  UINT8 cnt1;
-  UINT8 ubSize;
-  INT16 sUnitSize;
-  INT16 sLeft, sTop, sRight, sBottom;
+  let us16BPPColor: UINT16;
+  let usFillColorDark: UINT16;
+  let usFillColorLight: UINT16;
+  let cnt1: UINT8;
+  let ubSize: UINT8;
+  let sUnitSize: INT16;
+  let sLeft: INT16;
+  let sTop: INT16;
+  let sRight: INT16;
+  let sBottom: INT16;
 
   if (ubPaletteRep == 0xff)
     ubSize = 16;
@@ -1158,13 +1174,19 @@ function ShowEditMercColorSet(ubPaletteRep: UINT8, sSet: INT16): void {
 //	Displays the way points of the currently selected merc.
 //
 function DisplayWayPoints(): void {
-  INT16 sX, sY;
-  INT16 sXMapPos, sYMapPos;
-  INT16 sScreenX, sScreenY;
-  FLOAT ScrnX, ScrnY, dOffsetX, dOffsetY;
-  INT8 bPoint;
-  SOLDIERTYPE *pSoldier;
-  INT16 sGridNo;
+  let sX: INT16;
+  let sY: INT16;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let ScrnX: FLOAT;
+  let ScrnY: FLOAT;
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let bPoint: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sGridNo: INT16;
 
   if (gsSelectedMercID == -1 || (gsSelectedMercID <= (INT32)gTacticalStatus.Team[OUR_TEAM].bLastID) || gsSelectedMercID >= MAXMERCS)
     return;
@@ -1217,9 +1239,12 @@ function DisplayWayPoints(): void {
 }
 
 function CreateEditMercWindow(): void {
-  INT32 iXPos, iYPos, iHeight, iWidth;
-  INT32 x;
-  SOLDIERTYPE *pSoldier;
+  let iXPos: INT32;
+  let iYPos: INT32;
+  let iHeight: INT32;
+  let iWidth: INT32;
+  let x: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   iWidth = 266;
   iHeight = 360;
@@ -1339,8 +1364,8 @@ function SetMercRelativeAttributes(bLevel: INT8): void {
 }
 
 function IndicateSelectedMerc(sID: INT16): void {
-  SOLDIERINITNODE *prev;
-  INT8 bTeam;
+  let prev: Pointer<SOLDIERINITNODE>;
+  let bTeam: INT8;
 
   // If we are trying to select a merc that is already selected, ignore.
   if (sID >= 0 && sID == gsSelectedMercGridNo)
@@ -1564,8 +1589,8 @@ function DeleteSelectedMerc(): void {
 }
 
 function SetupTextInputForMercProfile(): void {
-  UINT16 str[4];
-  INT16 sNum;
+  let str: UINT16[] /* [4] */;
+  let sNum: INT16;
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
 
@@ -1578,7 +1603,7 @@ function SetupTextInputForMercProfile(): void {
 }
 
 function SetupTextInputForMercAttributes(): void {
-  UINT16 str[4];
+  let str: UINT16[] /* [4] */;
 
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
 
@@ -1666,8 +1691,8 @@ function ExtractAndUpdateMercAttributes(): void {
 }
 
 function ExtractAndUpdateMercProfile(): void {
-  INT16 sNum;
-  static INT16 sPrev = NO_PROFILE;
+  let sNum: INT16;
+  /* static */ let sPrev: INT16 = NO_PROFILE;
 
   // If we have just deleted the merc's detailed placement in the editor, we don't
   // need to extract the information
@@ -1710,10 +1735,10 @@ function SetupTextInputForMercSchedule(): void {
 }
 
 function ExtractAndUpdateMercSchedule(): void {
-  INT32 i;
-  BOOLEAN fValidSchedule = FALSE;
-  BOOLEAN fScheduleNeedsUpdate = FALSE;
-  SCHEDULENODE *pNext = NULL;
+  let i: INT32;
+  let fValidSchedule: BOOLEAN = FALSE;
+  let fScheduleNeedsUpdate: BOOLEAN = FALSE;
+  let pNext: Pointer<SCHEDULENODE> = NULL;
   if (!gpSelected)
     return;
   // extract all of the fields into a temp schedulenode.
@@ -1736,7 +1761,7 @@ function ExtractAndUpdateMercSchedule(): void {
       HideEditorButton(MERCS_SCHEDULE);
     }
   } else {
-    SCHEDULENODE *pSchedule;
+    let pSchedule: Pointer<SCHEDULENODE>;
     pSchedule = GetSchedule(gpSelected->pSoldier->ubScheduleID);
     if (!pSchedule) {
       gpSelected->pSoldier->ubScheduleID = 0;
@@ -1819,9 +1844,10 @@ function KillDetailedPlacementForMerc(): void {
 
 function ChangeBodyType(bOffset: INT8): void //+1 or -1 only
 {
-  INT8 *pbArray;
-  INT32 iMax, x;
-  INT32 iIndex;
+  let pbArray: Pointer<INT8>;
+  let iMax: INT32;
+  let x: INT32;
+  let iIndex: INT32;
 
   gfRenderTaskbar = TRUE;
   gfRenderMercInfo = TRUE;
@@ -1935,8 +1961,8 @@ function SetMercEditability(fEditable: BOOLEAN): void {
 // isn't necessary to specify all four points.  You wouldn't want to specify a north point if
 // there isn't going to be any traversing to adjacent maps from that side.
 function SpecifyEntryPoint(iMapIndex: UINT32): void {
-  INT16 *psEntryGridNo;
-  BOOLEAN fErasing = FALSE;
+  let psEntryGridNo: Pointer<INT16>;
+  let fErasing: BOOLEAN = FALSE;
   if (iDrawMode >= DRAW_MODE_ERASE) {
     iDrawMode -= DRAW_MODE_ERASE;
     fErasing = TRUE;
@@ -1973,7 +1999,7 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
     AddToUndoList(*psEntryGridNo);
     AddTopmostToTail(*psEntryGridNo, FIRSTPOINTERS2);
   } else {
-    UINT16 usDummy;
+    let usDummy: UINT16;
     if (TypeExistsInTopmostLayer(iMapIndex, FIRSTPOINTERS, &usDummy)) {
       AddToUndoList(iMapIndex);
       RemoveAllTopmostsOfTypeRange(iMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
@@ -2178,7 +2204,7 @@ function SetMercEditingMode(ubNewMode: UINT8): void {
 }
 
 function DisplayBodyTypeInfo(): void {
-  UINT16 str[20];
+  let str: UINT16[] /* [20] */;
   switch (gpSelected->pBasicPlacement->bBodyType) {
     case RANDOM:
       swprintf(str, L"Random");
@@ -2371,7 +2397,7 @@ function UpdateMercsInfo(): void {
       SetFontShadow(FONT_NEARBLACK);
       {
         // scope trick
-        UINT16 tempStr[500];
+        let tempStr: UINT16[] /* [500] */;
         swprintf(tempStr, L"%s%s%s%s%s%d.", L"By specifying a profile index, all of the information will be extracted from the profile ", L"and override any values that you have edited.  It will also disable the editing features ", L"though, you will still be able to view stats, etc.  Pressing ENTER will automatically ", L"extract the number you have typed.  A blank field will clear the profile.  The current ", L"number of profiles range from 0 to ", NUM_PROFILES);
         DisplayWrappedString(180, 370, 400, 2, FONT10ARIAL, 146, tempStr, FONT_BLACK, FALSE, LEFT_JUSTIFIED);
         SetFont(FONT12POINT1);
@@ -2426,8 +2452,8 @@ function UpdateMercsInfo(): void {
       mprintf(172, 418, L"3)");
       mprintf(172, 439, L"4)");
       if (gubScheduleInstructions) {
-        UINT16 str[255];
-        UINT16 keyword[10] = L"";
+        let str: UINT16[] /* [255] */;
+        let keyword: UINT16[] /* [10] */ = L"";
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450, Get16BPPColor(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
           case SCHEDULE_ACTION_LOCKDOOR:
@@ -2470,7 +2496,7 @@ function UpdateMercsInfo(): void {
 // is called by the region callback functions to handle these cases.  The event types are defined
 // in Editor Taskbar Utils.h.  Here are the internal functions...
 
-SGPRect mercRects[9] = {
+let mercRects: SGPRect[] /* [9] */ = {
   { 75, 0, 104, 19 }, // head
   { 75, 22, 104, 41 }, // body
   { 76, 73, 105, 92 }, // legs
@@ -2487,8 +2513,8 @@ function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): BOOLEAN {
 }
 
 function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, pRect->iLeft + MERCPANEL_X, pRect->iTop + MERCPANEL_Y, pRect->iRight + MERCPANEL_X, pRect->iBottom + MERCPANEL_Y, color, pDestBuf);
@@ -2497,12 +2523,15 @@ function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
 }
 
 function RenderSelectedMercsInventory(): void {
-  INT32 i;
-  UINT8 *pSrc, *pDst;
-  INT32 xp, yp;
-  UINT32 uiSrcPitchBYTES, uiDstPitchBYTES;
-  UINT16 pItemName[100];
-  UINT8 ubFontColor;
+  let i: INT32;
+  let pSrc: Pointer<UINT8>;
+  let pDst: Pointer<UINT8>;
+  let xp: INT32;
+  let yp: INT32;
+  let uiSrcPitchBYTES: UINT32;
+  let uiDstPitchBYTES: UINT32;
+  let pItemName: UINT16[] /* [100] */;
+  let ubFontColor: UINT8;
   if (gsSelectedMercID == -1)
     return;
   for (i = 0; i < 9; i++) {
@@ -2563,16 +2592,22 @@ function DeleteSelectedMercsItem(): void {
 //		 images are saved in individual slots are are blitted to the screen during rendering, not here.
 // NOTE:  Step one can be skipped (when selecting an existing merc).  By setting the
 function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
-  UINT32 uiVideoObjectIndex;
-  UINT32 uiSrcID, uiDstID;
-  HVOBJECT hVObject;
-  ETRLEObject *pObject;
-  INVTYPE *item;
-  SGPRect SrcRect, DstRect;
-  INT32 iSrcWidth, iSrcHeight;
-  INT32 iDstWidth, iDstHeight;
-  float rScalar, rWidthScalar, rHeightScalar;
-  BOOLEAN fUnDroppable;
+  let uiVideoObjectIndex: UINT32;
+  let uiSrcID: UINT32;
+  let uiDstID: UINT32;
+  let hVObject: HVOBJECT;
+  let pObject: Pointer<ETRLEObject>;
+  let item: Pointer<INVTYPE>;
+  let SrcRect: SGPRect;
+  let DstRect: SGPRect;
+  let iSrcWidth: INT32;
+  let iSrcHeight: INT32;
+  let iDstWidth: INT32;
+  let iDstHeight: INT32;
+  let rScalar: float;
+  let rWidthScalar: float;
+  let rHeightScalar: float;
+  let fUnDroppable: BOOLEAN;
 
   if (fCreate) {
     /*
@@ -2711,7 +2746,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
 }
 
 function RenderMercInventoryPanel(): void {
-  INT32 x;
+  let x: INT32;
   // Draw the graphical panel
   BltVideoObjectFromIndex(FRAME_BUFFER, guiMercInventoryPanel, 0, MERCPANEL_X, MERCPANEL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   // Mark the buttons dirty, so they don't disappear.
@@ -2733,7 +2768,7 @@ function RenderMercInventoryPanel(): void {
 // which are processed here.  This basically checks for new changes in hilighting and selections, which
 // will set the rendering flag, and getitem flag if the user wishes to choose an item.
 function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
-  INT8 x;
+  let x: INT8;
   if (!gfCanEditMercs && bEvent == GUI_RCLICK_EVENT) {
     // if we are dealing with a profile merc, we can't allow editing
     // of items, but we can look at them.  So, treat all right clicks
@@ -2783,7 +2818,7 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
 }
 
 function UpdateMercItemSlots(): void {
-  INT8 x;
+  let x: INT8;
   if (!gpSelected->pDetailedPlacement) {
     for (x = 0; x < 9; x++) {
       gpMercSlotItem[x] = NULL;
@@ -2806,8 +2841,8 @@ function UpdateMercItemSlots(): void {
 }
 
 function SetDroppableCheckboxesBasedOnMercsInventory(): void {
-  OBJECTTYPE *pItem;
-  INT32 i;
+  let pItem: Pointer<OBJECTTYPE>;
+  let i: INT32;
   if (gpSelected && gpSelected->pDetailedPlacement) {
     for (i = 0; i < 9; i++) {
       pItem = &gpSelected->pDetailedPlacement->Inv[gbMercSlotTypes[i]];
@@ -2906,12 +2941,14 @@ function ChangeCivGroup(ubNewCivGroup: UINT8): void {
 }
 
 function RenderMercStrings(): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sXPos, sYPos;
-  INT16 sX, sY;
-  UINT16 *pStr;
-  SOLDIERINITNODE *curr;
-  UINT16 str[50];
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let pStr: Pointer<UINT16>;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let str: UINT16[] /* [50] */;
 
   curr = gSoldierInitHead;
   while (curr) {
@@ -3012,8 +3049,8 @@ function RenderMercStrings(): void {
 }
 
 function SetMercTeamVisibility(bTeam: INT8, fVisible: BOOLEAN): void {
-  SOLDIERINITNODE *curr;
-  INT8 bVisible;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let bVisible: INT8;
   curr = gSoldierInitHead;
   bVisible = fVisible ? 1 : -1;
   while (curr) {
@@ -3031,7 +3068,7 @@ function SetMercTeamVisibility(bTeam: INT8, fVisible: BOOLEAN): void {
 }
 
 function DetermineScheduleEditability(): void {
-  INT32 i;
+  let i: INT32;
   EnableEditorButtons(MERCS_SCHEDULE_ACTION1, MERCS_SCHEDULE_DATA4B);
   EnableTextFields(1, 4);
   for (i = 0; i < 4; i++) {
@@ -3080,7 +3117,7 @@ function CancelCurrentScheduleAction(): void {
 }
 
 function RegisterCurrentScheduleAction(iMapIndex: INT32): void {
-  UINT16 str[6];
+  let str: UINT16[] /* [6] */;
   MarkWorldDirty();
   swprintf(str, L"%d", iMapIndex);
   if (gfUseScheduleData2) {
@@ -3192,7 +3229,7 @@ function UpdateScheduleAction(ubNewAction: UINT8): void {
 
 // 0:1A, 1:1B, 2:2A, 3:2B, ...
 function FindScheduleGridNo(ubScheduleData: UINT8): void {
-  INT32 iMapIndex;
+  let iMapIndex: INT32;
   switch (ubScheduleData) {
     case 0: // 1a
       iMapIndex = gCurrSchedule.usData1[0];
@@ -3227,7 +3264,7 @@ function FindScheduleGridNo(ubScheduleData: UINT8): void {
 }
 
 function ClearCurrentSchedule(): void {
-  UINT8 i;
+  let i: UINT8;
   memset(&gCurrSchedule, 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
     MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, 0);
@@ -3250,14 +3287,19 @@ function ClearCurrentSchedule(): void {
 }
 
 function RenderCurrentSchedule(): void {
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT ScrnX, ScrnY;
-  INT32 i;
-  INT32 iMapIndex;
-  INT16 sXMapPos, sYMapPos;
-  INT16 sScreenX, sScreenY;
-  INT16 sX, sY;
-  UINT16 str[3];
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let ScrnX: FLOAT;
+  let ScrnY: FLOAT;
+  let i: INT32;
+  let iMapIndex: INT32;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let str: UINT16[] /* [3] */;
   for (i = 0; i < 8; i++) {
     if (i % 2)
       iMapIndex = gCurrSchedule.usData2[i / 2];
@@ -3296,9 +3338,9 @@ function RenderCurrentSchedule(): void {
 }
 
 function UpdateScheduleInfo(): void {
-  INT32 i;
-  SCHEDULENODE *pSchedule;
-  UINT16 str[6];
+  let i: INT32;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let str: UINT16[] /* [6] */;
   if (gpSelected->pSoldier->ubScheduleID) {
     pSchedule = GetSchedule(gpSelected->pSoldier->ubScheduleID);
     if (!pSchedule) {
@@ -3341,8 +3383,8 @@ function UpdateScheduleInfo(): void {
   }
 }
 
-BASIC_SOLDIERCREATE_STRUCT gSaveBufferBasicPlacement;
-SOLDIERCREATE_STRUCT gSaveBufferDetailedPlacement;
+let gSaveBufferBasicPlacement: BASIC_SOLDIERCREATE_STRUCT;
+let gSaveBufferDetailedPlacement: SOLDIERCREATE_STRUCT;
 
 function CopyMercPlacement(iMapIndex: INT32): void {
   if (gsSelectedMercID == -1) {
@@ -3358,9 +3400,9 @@ function CopyMercPlacement(iMapIndex: INT32): void {
 }
 
 function PasteMercPlacement(iMapIndex: INT32): void {
-  SOLDIERTYPE *pSoldier;
-  SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  INT32 i;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let i: INT32;
 
   if (!gfSaveBuffer) {
     ScreenMsg(FONT_MCOLOR_LTRED, MSG_INTERFACE, L"Placement not pasted as no placement is saved in buffer.");
@@ -3398,9 +3440,10 @@ function PasteMercPlacement(iMapIndex: INT32): void {
   }
 
   if (IsLocationSittable(iMapIndex, gfRoofPlacement)) {
-    UINT8 ubID;
-    INT16 sSectorX, sSectorY;
-    SOLDIERINITNODE *pNode;
+    let ubID: UINT8;
+    let sSectorX: INT16;
+    let sSectorY: INT16;
+    let pNode: Pointer<SOLDIERINITNODE>;
 
     GetCurrentWorldSector(&sSectorX, &sSectorY);
 

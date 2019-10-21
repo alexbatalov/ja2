@@ -1,8 +1,8 @@
-BOOLEAN gfRestoringEnemySoldiersFromTempFile = FALSE;
-BOOLEAN gfRestoringCiviliansFromTempFile = FALSE;
+let gfRestoringEnemySoldiersFromTempFile: BOOLEAN = FALSE;
+let gfRestoringCiviliansFromTempFile: BOOLEAN = FALSE;
 
 function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  CHAR8 zMapName[128];
+  let zMapName: CHAR8[] /* [128] */;
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS)) {
     // Delete any temp file that is here and toast the flag that say's one exists.
     ReSetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_ENEMY_PRESERVED_TEMP_FILE_EXISTS);
@@ -20,7 +20,7 @@ function RemoveEnemySoldierTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: 
 
 function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
   // CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
+  let zMapName: CHAR8[] /* [128] */;
   if (GetSectorFlagStatus(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS)) {
     // Delete any temp file that is here and toast the flag that say's one exists.
     ReSetSectorFlag(sSectorX, sSectorY, bSectorZ, SF_CIV_PRESERVED_TEMP_FILE_EXISTS);
@@ -35,20 +35,28 @@ function RemoveCivilianTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8
 
 // OLD SAVE METHOD:  This is the old way of loading the enemies and civilians
 function LoadEnemySoldiersFromTempFile(): BOOLEAN {
-  SOLDIERINITNODE *curr;
-  SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  INT32 i;
-  INT32 slots = 0;
-  UINT32 uiNumBytesRead;
-  UINT32 uiTimeStamp;
-  HWFILE hfile;
-  INT16 sSectorX, sSectorY;
-  UINT16 usCheckSum, usFileCheckSum;
-  CHAR8 zMapName[128];
-  INT8 bSectorZ;
-  UINT8 ubSectorID;
-  UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
-  UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let uiNumBytesRead: UINT32;
+  let uiTimeStamp: UINT32;
+  let hfile: HWFILE;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let usCheckSum: UINT16;
+  let usFileCheckSum: UINT16;
+  let zMapName: CHAR8[] /* [128] */;
+  let bSectorZ: INT8;
+  let ubSectorID: UINT8;
+  let ubNumElites: UINT8 = 0;
+  let ubNumTroops: UINT8 = 0;
+  let ubNumAdmins: UINT8 = 0;
+  let ubNumCreatures: UINT8 = 0;
+  let ubStrategicElites: UINT8;
+  let ubStrategicTroops: UINT8;
+  let ubStrategicAdmins: UINT8;
+  let ubStrategicCreatures: UINT8;
 
   gfRestoringEnemySoldiersFromTempFile = TRUE;
 
@@ -144,7 +152,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
 
   // get the number of enemies in this sector.
   if (bSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
       goto FAIL_LOAD;
@@ -154,7 +162,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
     ubStrategicAdmins = pSector->ubNumAdmins;
     ubStrategicCreatures = pSector->ubNumCreatures;
   } else {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
     ubStrategicCreatures = pSector->ubNumCreatures;
     GetNumberOfEnemiesInSector(sSectorX, sSectorY, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
@@ -276,18 +284,18 @@ FAIL_LOAD:
 
 // OLD SAVE METHOD:  This is the older way of saving the civilian and the enemies placement into a temp file
 function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, ubFirstIdTeam: UINT8, ubLastIdTeam: UINT8, fAppendToFile: BOOLEAN): BOOLEAN {
-  SOLDIERINITNODE *curr;
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
-  INT32 slots = 0;
-  INT32 iSlotsAlreadyInUse = 0;
-  UINT32 uiNumBytesWritten;
-  UINT32 uiTimeStamp;
-  HWFILE hfile;
-  SCHEDULENODE *pSchedule;
-  UINT16 usCheckSum;
-  CHAR8 zMapName[128];
-  UINT8 ubSectorID;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let iSlotsAlreadyInUse: INT32 = 0;
+  let uiNumBytesWritten: UINT32;
+  let uiTimeStamp: UINT32;
+  let hfile: HWFILE;
+  let pSchedule: Pointer<SCHEDULENODE>;
+  let usCheckSum: UINT16;
+  let zMapName: CHAR8[] /* [128] */;
+  let ubSectorID: UINT8;
 
   // STEP ONE:  Prep the soldiers for saving...
 
@@ -543,20 +551,28 @@ FAIL_SAVE:
 }
 
 function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
-  SOLDIERINITNODE *curr;
-  SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  INT32 i;
-  INT32 slots = 0;
-  UINT32 uiNumBytesRead;
-  UINT32 uiTimeStamp;
-  HWFILE hfile;
-  INT16 sSectorX, sSectorY;
-  UINT16 usCheckSum, usFileCheckSum;
-  CHAR8 zMapName[128];
-  INT8 bSectorZ;
-  UINT8 ubSectorID;
-  UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
-  UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let uiNumBytesRead: UINT32;
+  let uiTimeStamp: UINT32;
+  let hfile: HWFILE;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let usCheckSum: UINT16;
+  let usFileCheckSum: UINT16;
+  let zMapName: CHAR8[] /* [128] */;
+  let bSectorZ: INT8;
+  let ubSectorID: UINT8;
+  let ubNumElites: UINT8 = 0;
+  let ubNumTroops: UINT8 = 0;
+  let ubNumAdmins: UINT8 = 0;
+  let ubNumCreatures: UINT8 = 0;
+  let ubStrategicElites: UINT8;
+  let ubStrategicTroops: UINT8;
+  let ubStrategicAdmins: UINT8;
+  let ubStrategicCreatures: UINT8;
 
   gfRestoringEnemySoldiersFromTempFile = TRUE;
 
@@ -573,13 +589,13 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   // Count the number of enemies ( elites, regulars, admins and creatures ) that are in the temp file.
 
   if (gbWorldSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
       goto FAIL_LOAD;
     }
   } else {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
 
     ubNumElites = pSector->ubNumElites;
@@ -686,7 +702,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
   // get the number of enemies in this sector.
   if (bSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, bSectorZ);
     if (!pSector) {
       goto FAIL_LOAD;
@@ -696,7 +712,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     ubStrategicAdmins = pSector->ubNumAdmins;
     ubStrategicCreatures = pSector->ubNumCreatures;
   } else {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
     ubStrategicCreatures = pSector->ubNumCreatures;
     GetNumberOfEnemiesInSector(sSectorX, sSectorY, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
@@ -799,7 +815,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
   // set the number of enemies in the sector
   if (bSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector) {
       goto FAIL_LOAD;
@@ -812,7 +828,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
       */
     }
   } else {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     /*
                     pSector->ubElitesInBattle = ubStrategicElites;
@@ -837,22 +853,28 @@ FAIL_LOAD:
 }
 
 function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
-  SOLDIERINITNODE *curr, *temp;
-  SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  INT32 i;
-  INT32 slots = 0;
-  UINT32 uiNumBytesRead;
-  UINT32 uiTimeStamp;
-  UINT32 uiTimeSinceLastLoaded;
-  HWFILE hfile;
-  INT16 sSectorX, sSectorY;
-  UINT16 usCheckSum, usFileCheckSum;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let temp: Pointer<SOLDIERINITNODE>;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let uiNumBytesRead: UINT32;
+  let uiTimeStamp: UINT32;
+  let uiTimeSinceLastLoaded: UINT32;
+  let hfile: HWFILE;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let usCheckSum: UINT16;
+  let usFileCheckSum: UINT16;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
-  INT8 bSectorZ;
-  UINT8 ubSectorID;
-  UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
-  BOOLEAN fDeleted;
+  let zMapName: CHAR8[] /* [128] */;
+  let bSectorZ: INT8;
+  let ubSectorID: UINT8;
+  let ubNumElites: UINT8 = 0;
+  let ubNumTroops: UINT8 = 0;
+  let ubNumAdmins: UINT8 = 0;
+  let ubNumCreatures: UINT8 = 0;
+  let fDeleted: BOOLEAN;
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
 
   gfRestoringCiviliansFromTempFile = TRUE;
@@ -985,7 +1007,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
 
             if (curr->pDetailedPlacement->bLife < curr->pDetailedPlacement->bLifeMax) {
               // Add 4 life for every hour that passes.
-              INT32 iNewLife;
+              let iNewLife: INT32;
               iNewLife = curr->pDetailedPlacement->bLife + uiTimeSinceLastLoaded / 15;
               iNewLife = min(curr->pDetailedPlacement->bLifeMax, iNewLife);
               curr->pDetailedPlacement->bLife = (INT8)iNewLife;
@@ -1056,20 +1078,20 @@ FAIL_LOAD:
 // If we are saving a game and we are in the sector, we will need to preserve the links between the
 // soldiers and the soldier init list.  Otherwise, the temp file will be deleted.
 function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, fEnemy: BOOLEAN, fValidateOnly: BOOLEAN): BOOLEAN {
-  SOLDIERINITNODE *curr;
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
-  INT32 slots = 0;
-  UINT32 uiNumBytesWritten;
-  UINT32 uiTimeStamp;
-  HWFILE hfile;
+  let curr: Pointer<SOLDIERINITNODE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let uiNumBytesWritten: UINT32;
+  let uiTimeStamp: UINT32;
+  let hfile: HWFILE;
   //	CHAR8		zTempName[ 128 ];
-  CHAR8 zMapName[128];
-  UINT8 ubSectorID;
-  UINT16 usCheckSum;
+  let zMapName: CHAR8[] /* [128] */;
+  let ubSectorID: UINT8;
+  let usCheckSum: UINT16;
 
-  UINT8 ubStartID = 0;
-  UINT8 ubEndID = 0;
+  let ubStartID: UINT8 = 0;
+  let ubEndID: UINT8 = 0;
 
   // if we are saving the enemy info to the enemy temp file
   if (fEnemy) {
@@ -1311,17 +1333,18 @@ FAIL_SAVE:
 
 function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(pubNumElites: Pointer<UINT8>, pubNumRegulars: Pointer<UINT8>, pubNumAdmins: Pointer<UINT8>, pubNumCreatures: Pointer<UINT8>): BOOLEAN {
   //	SOLDIERINITNODE *curr;
-  SOLDIERCREATE_STRUCT tempDetailedPlacement;
-  INT32 i;
-  INT32 slots = 0;
-  UINT32 uiNumBytesRead;
-  UINT32 uiTimeStamp;
-  HWFILE hfile;
-  INT16 sSectorX, sSectorY;
-  UINT16 usCheckSum;
-  CHAR8 zMapName[128];
-  INT8 bSectorZ;
-  UINT8 ubSectorID;
+  let tempDetailedPlacement: SOLDIERCREATE_STRUCT;
+  let i: INT32;
+  let slots: INT32 = 0;
+  let uiNumBytesRead: UINT32;
+  let uiTimeStamp: UINT32;
+  let hfile: HWFILE;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let usCheckSum: UINT16;
+  let zMapName: CHAR8[] /* [128] */;
+  let bSectorZ: INT8;
+  let ubSectorID: UINT8;
   //	UINT8 ubNumElites = 0, ubNumTroops = 0, ubNumAdmins = 0, ubNumCreatures = 0;
   //	UINT8 ubStrategicElites, ubStrategicTroops, ubStrategicAdmins, ubStrategicCreatures;
 

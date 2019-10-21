@@ -1,10 +1,12 @@
-BOOLEAN gfShowTerrainTileButtons;
-UINT8 ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];
-UINT16 usTotalWeight;
-BOOLEAN fPrevShowTerrainTileButtons = TRUE;
-BOOLEAN fUseTerrainWeights = FALSE;
-INT32 TerrainTileSelected = 0, TerrainForegroundTile, TerrainBackgroundTile;
-INT32 TerrainTileDrawMode = TERRAIN_TILES_NODRAW;
+let gfShowTerrainTileButtons: BOOLEAN;
+let ubTerrainTileButtonWeight: UINT8[] /* [NUM_TERRAIN_TILE_REGIONS] */;
+let usTotalWeight: UINT16;
+let fPrevShowTerrainTileButtons: BOOLEAN = TRUE;
+let fUseTerrainWeights: BOOLEAN = FALSE;
+let TerrainTileSelected: INT32 = 0;
+let TerrainForegroundTile: INT32;
+let TerrainBackgroundTile: INT32;
+let TerrainTileDrawMode: INT32 = TERRAIN_TILES_NODRAW;
 
 function EntryInitEditorTerrainInfo(): void {
   // ResetTerrainTileWeights();
@@ -14,7 +16,7 @@ function EntryInitEditorTerrainInfo(): void {
 }
 
 function ResetTerrainTileWeights(): void {
-  INT8 x;
+  let x: INT8;
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
     ubTerrainTileButtonWeight[x] = 0;
   }
@@ -24,7 +26,7 @@ function ResetTerrainTileWeights(): void {
 }
 
 function HideTerrainTileButtons(): void {
-  INT8 x;
+  let x: INT8;
   if (gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       DisableEditorRegion(x);
@@ -34,7 +36,7 @@ function HideTerrainTileButtons(): void {
 }
 
 function ShowTerrainTileButtons(): void {
-  INT8 x;
+  let x: INT8;
   if (!gfShowTerrainTileButtons) {
     for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
       EnableEditorRegion(x);
@@ -46,8 +48,14 @@ function ShowTerrainTileButtons(): void {
 function RenderTerrainTileButtons(): void {
   // If needed, display the ground tile images
   if (gfShowTerrainTileButtons) {
-    UINT16 usFillColorDark, usFillColorLight, usFillColorRed;
-    UINT16 x, usX, usX2, usY, usY2;
+    let usFillColorDark: UINT16;
+    let usFillColorLight: UINT16;
+    let usFillColorRed: UINT16;
+    let x: UINT16;
+    let usX: UINT16;
+    let usX2: UINT16;
+    let usY: UINT16;
+    let usY2: UINT16;
 
     usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
     usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
@@ -125,8 +133,9 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
 }
 
 function ChooseWeightedTerrainTile(): void {
-  UINT16 x, usWeight;
-  INT16 sRandomNum;
+  let x: UINT16;
+  let usWeight: UINT16;
+  let sRandomNum: INT16;
   if (!usTotalWeight) {
     // Not in the weighted mode.  CurrentPaste will already contain the selected tile.
     return;
@@ -143,12 +152,14 @@ function ChooseWeightedTerrainTile(): void {
   }
 }
 
-UINT32 guiSearchType;
-UINT32 count, maxCount = 0, calls = 0;
+let guiSearchType: UINT32;
+let count: UINT32;
+let maxCount: UINT32 = 0;
+let calls: UINT32 = 0;
 
 function Fill(x: INT32, y: INT32): void {
-  INT32 iMapIndex;
-  UINT32 uiCheckType;
+  let iMapIndex: INT32;
+  let uiCheckType: UINT32;
 
   count++;
   calls++;
@@ -181,7 +192,8 @@ function Fill(x: INT32, y: INT32): void {
 }
 
 function TerrainFill(iMapIndex: UINT32): void {
-  INT16 sX, sY;
+  let sX: INT16;
+  let sY: INT16;
   // determine what we should be looking for to replace...
   GetTileType(gpWorldLevelData[iMapIndex].pLandHead->usIndex, &guiSearchType);
 

@@ -1,18 +1,18 @@
-INT16 sStatueGridNos[] = {
+let sStatueGridNos: INT16[] /* [] */ = {
   13829,
   13830,
   13669,
   13670,
 };
 
-SOLDIERTYPE *gpKillerSoldier = NULL;
-INT16 gsGridNo;
-INT8 gbLevel;
+let gpKillerSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gsGridNo: INT16;
+let gbLevel: INT8;
 
 // This function checks if our statue exists in the current sector at given gridno
 function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
-  INT32 cnt;
-  EXITGRID ExitGrid;
+  let cnt: INT32;
+  let ExitGrid: EXITGRID;
 
   // First check current sector......
   if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
@@ -32,9 +32,10 @@ function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
 
 // This function changes the graphic of the statue and adds the exit grid...
 function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
-  EXITGRID ExitGrid;
-  UINT16 usTileIndex;
-  INT16 sX, sY;
+  let ExitGrid: EXITGRID;
+  let usTileIndex: UINT16;
+  let sX: INT16;
+  let sY: INT16;
 
   // Remove old graphic
   ApplyMapChangesToMapTempFile(TRUE);
@@ -99,10 +100,10 @@ function BeginHandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo
 }
 
 function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
-  INT16 sDistVisible = FALSE;
-  UINT8 ubKillerSoldierID = NOBODY;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let sDistVisible: INT16 = FALSE;
+  let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
   SetMusicMode(MUSIC_TACTICAL_VICTORY);
@@ -142,7 +143,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
 }
 
 function DoneFadeInKilledQueen(): void {
-  SOLDIERTYPE *pNPCSoldier;
+  let pNPCSoldier: Pointer<SOLDIERTYPE>;
 
   // Locate gridno.....
 
@@ -158,8 +159,9 @@ function DoneFadeInKilledQueen(): void {
 }
 
 function DoneFadeOutKilledQueen(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier, *pTeamSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
 
   // For one, loop through our current squad and move them over
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -253,8 +255,8 @@ function HandleDoneLastKilledQueenQuote(): void {
 }
 
 function EndQueenDeathEndgameBeginEndCimenatic(): void {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Start end cimimatic....
   gTacticalStatus.uiFlags |= IN_ENDGAME_SEQUENCE;
@@ -311,8 +313,8 @@ function QueenBitchTimerCallback(): void {
 }
 
 function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   gpKillerSoldier = pKillerSoldier;
   gsGridNo = sGridNo;
@@ -349,10 +351,10 @@ function BeginHandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridN
 }
 
 function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
-  INT16 sDistVisible = FALSE;
-  UINT8 ubKillerSoldierID = NOBODY;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
+  let sDistVisible: INT16 = FALSE;
+  let ubKillerSoldierID: UINT8 = NOBODY;
 
   // Start victory music here...
   SetMusicMode(MUSIC_TACTICAL_VICTORY);

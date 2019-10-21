@@ -1,7 +1,7 @@
 // effects whether or not time of day effects the lighting.  Underground
 // maps have an ambient light level that is saved in the map, and doesn't change.
-BOOLEAN gfBasement = FALSE;
-BOOLEAN gfCaves = FALSE;
+let gfBasement: BOOLEAN = FALSE;
+let gfCaves: BOOLEAN = FALSE;
 
 const ENV_TOD_FLAGS_DAY = 0x00000001;
 const ENV_TOD_FLAGS_DAWN = 0x00000002;
@@ -26,11 +26,11 @@ const DAY_TO_DUSK = (DUSK_START - DAY_START);
 const DUSK_TO_NIGHT = (NIGHT_START - DUSK_START);
 const NIGHT_TO_DAWN = (24 * 60 - NIGHT_START + DAWN_START);
 
-UINT32 guiEnvWeather = 0;
-UINT32 guiRainLoop = NO_SAMPLE;
+let guiEnvWeather: UINT32 = 0;
+let guiRainLoop: UINT32 = NO_SAMPLE;
 
 // frame cues for lightning
-UINT8 ubLightningTable[3][10][2] = {
+let ubLightningTable: UINT8[][][] /* [3][10][2] */ = {
   {
     { 0, 15 },
     { 1, 0 },
@@ -72,7 +72,7 @@ UINT8 ubLightningTable[3][10][2] = {
 };
 
 // CJC: I don't think these are used anywhere!
-UINT8 guiTODFlags[ENV_NUM_TIMES] = {
+let guiTODFlags: UINT8[] /* [ENV_NUM_TIMES] */ = {
   ENV_TOD_FLAGS_NIGHT, // 00
   ENV_TOD_FLAGS_NIGHT, // 01
   ENV_TOD_FLAGS_NIGHT, // 02
@@ -126,19 +126,19 @@ const GLOBAL_WARM_END = (17 * 60);
 
 const HOT_DAY_LIGHTLEVEL = 2;
 
-BOOLEAN fTimeOfDayControls = TRUE;
-UINT32 guiEnvTime = 0;
-UINT32 guiEnvDay = 0;
-UINT8 gubEnvLightValue = 0;
-BOOLEAN gfDoLighting = FALSE;
+let fTimeOfDayControls: BOOLEAN = TRUE;
+let guiEnvTime: UINT32 = 0;
+let guiEnvDay: UINT32 = 0;
+let gubEnvLightValue: UINT8 = 0;
+let gfDoLighting: BOOLEAN = FALSE;
 
-UINT8 gubDesertTemperature = 0;
-UINT8 gubGlobalTemperature = 0;
+let gubDesertTemperature: UINT8 = 0;
+let gubGlobalTemperature: UINT8 = 0;
 
 // polled by the game to handle time/atmosphere changes from gamescreen
 function EnvironmentController(fCheckForLights: BOOLEAN): void {
-  UINT32 uiOldWorldHour;
-  UINT8 ubLightAdjustFromWeather = 0;
+  let uiOldWorldHour: UINT32;
+  let ubLightAdjustFromWeather: UINT8 = 0;
 
   // do none of this stuff in the basement or caves
   if (gfBasement || gfCaves) {
@@ -193,7 +193,8 @@ function EnvironmentController(fCheckForLights: BOOLEAN): void {
 }
 
 function BuildDayLightLevels(): void {
-  UINT32 uiLoop, uiHour;
+  let uiLoop: UINT32;
+  let uiHour: UINT32;
 
   /*
   // Dawn; light 12
@@ -250,7 +251,7 @@ function BuildDayLightLevels(): void {
 }
 
 function BuildDayAmbientSounds(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // Add events!
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
@@ -274,9 +275,10 @@ function BuildDayAmbientSounds(): void {
 }
 
 function ForecastDayEvents(): void {
-  UINT32 uiOldDay;
-  UINT32 uiStartTime, uiEndTime;
-  UINT8 ubStormIntensity;
+  let uiOldDay: UINT32;
+  let uiStartTime: UINT32;
+  let uiEndTime: UINT32;
+  let ubStormIntensity: UINT8;
   //	UINT32 cnt;
 
   // Get current day and see if different
@@ -328,8 +330,12 @@ function EnvDisableTOD(): void {
 }
 
 function EnvDoLightning(): void {
-  static UINT32 uiCount = 0, uiIndex = 0, uiStrike = 0, uiFrameNext = 1000;
-  static UINT8 ubLevel = 0, ubLastLevel = 0;
+  /* static */ let uiCount: UINT32 = 0;
+  /* static */ let uiIndex: UINT32 = 0;
+  /* static */ let uiStrike: UINT32 = 0;
+  /* static */ let uiFrameNext: UINT32 = 1000;
+  /* static */ let ubLevel: UINT8 = 0;
+  /* static */ let ubLastLevel: UINT8 = 0;
 
   if (gfPauseDueToPlayerGamePause) {
     return;
@@ -404,7 +410,7 @@ function EnvEndRainStorm(): void {
 }
 
 function TurnOnNightLights(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
       LightSpritePower(i, TRUE);
@@ -413,7 +419,7 @@ function TurnOnNightLights(): void {
 }
 
 function TurnOffNightLights(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_NIGHTTIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
       LightSpritePower(i, FALSE);
@@ -422,7 +428,7 @@ function TurnOffNightLights(): void {
 }
 
 function TurnOnPrimeLights(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && !(LightSprites[i].uiFlags & (LIGHT_SPR_ON | MERC_LIGHT))) {
       LightSpritePower(i, TRUE);
@@ -431,7 +437,7 @@ function TurnOnPrimeLights(): void {
 }
 
 function TurnOffPrimeLights(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE && LightSprites[i].uiFlags & LIGHT_PRIMETIME && LightSprites[i].uiFlags & LIGHT_SPR_ON && !(LightSprites[i].uiFlags & MERC_LIGHT)) {
       LightSpritePower(i, FALSE);

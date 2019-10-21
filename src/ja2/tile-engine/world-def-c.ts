@@ -15,41 +15,41 @@ const MAP_AMBIENTLIGHTLEVEL_SAVED = 0x00000080;
 const MAP_NPCSCHEDULES_SAVED = 0x00000100;
 
 // TEMP
-BOOLEAN gfForceLoadPlayers = FALSE;
-CHAR8 gzForceLoadFile[100];
-BOOLEAN gfForceLoad = FALSE;
+let gfForceLoadPlayers: BOOLEAN = FALSE;
+let gzForceLoadFile: CHAR8[] /* [100] */;
+let gfForceLoad: BOOLEAN = FALSE;
 
-UINT8 gubCurrentLevel;
-INT32 giCurrentTilesetID = 0;
-CHAR8 gzLastLoadedFile[260];
+let gubCurrentLevel: UINT8;
+let giCurrentTilesetID: INT32 = 0;
+let gzLastLoadedFile: CHAR8[] /* [260] */;
 
-UINT32 gCurrentBackground = FIRSTTEXTURE;
+let gCurrentBackground: UINT32 = FIRSTTEXTURE;
 
-CHAR8 TileSurfaceFilenames[NUMBEROFTILETYPES][32];
-INT8 gbNewTileSurfaceLoaded[NUMBEROFTILETYPES];
+let TileSurfaceFilenames: CHAR8[][] /* [NUMBEROFTILETYPES][32] */;
+let gbNewTileSurfaceLoaded: INT8[] /* [NUMBEROFTILETYPES] */;
 
 function SetAllNewTileSurfacesLoaded(fNew: BOOLEAN): void {
   memset(gbNewTileSurfaceLoaded, fNew, sizeof(gbNewTileSurfaceLoaded));
 }
 
-BOOLEAN gfInitAnimateLoading = FALSE;
+let gfInitAnimateLoading: BOOLEAN = FALSE;
 
 // Global Variables
-MAP_ELEMENT *gpWorldLevelData;
-INT32 *gpDirtyData;
-UINT32 gSurfaceMemUsage;
-UINT8 gubWorldMovementCosts[WORLD_MAX][MAXDIR][2];
+let gpWorldLevelData: Pointer<MAP_ELEMENT>;
+let gpDirtyData: Pointer<INT32>;
+let gSurfaceMemUsage: UINT32;
+let gubWorldMovementCosts: UINT8[][][] /* [WORLD_MAX][MAXDIR][2] */;
 
 // set to nonzero (locs of base gridno of structure are good) to have it defined by structure code
-INT16 gsRecompileAreaTop = 0;
-INT16 gsRecompileAreaLeft = 0;
-INT16 gsRecompileAreaRight = 0;
-INT16 gsRecompileAreaBottom = 0;
+let gsRecompileAreaTop: INT16 = 0;
+let gsRecompileAreaLeft: INT16 = 0;
+let gsRecompileAreaRight: INT16 = 0;
+let gsRecompileAreaBottom: INT16 = 0;
 
 // TIMER TESTING STUFF
 
 function DoorAtGridNo(iMapIndex: UINT32): BOOLEAN {
-  STRUCTURE *pStruct;
+  let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
     if (pStruct->fFlags & STRUCTURE_ANYDOOR)
@@ -60,7 +60,7 @@ function DoorAtGridNo(iMapIndex: UINT32): BOOLEAN {
 }
 
 function OpenableAtGridNo(iMapIndex: UINT32): BOOLEAN {
-  STRUCTURE *pStruct;
+  let pStruct: Pointer<STRUCTURE>;
   pStruct = gpWorldLevelData[iMapIndex].pStructureHead;
   while (pStruct) {
     if (pStruct->fFlags & STRUCTURE_OPENABLE)
@@ -71,8 +71,8 @@ function OpenableAtGridNo(iMapIndex: UINT32): BOOLEAN {
 }
 
 function FloorAtGridNo(iMapIndex: UINT32): BOOLEAN {
-  LEVELNODE *pLand;
-  UINT32 uiTileType;
+  let pLand: Pointer<LEVELNODE>;
+  let uiTileType: UINT32;
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
   // Look through all objects and Search for type
   while (pLand) {
@@ -98,9 +98,10 @@ function GridNoIndoors(iMapIndex: UINT32): BOOLEAN {
 function DOIT(): void {
   //	LEVELNODE *			pLand;
   // LEVELNODE *			pObject;
-  LEVELNODE *pStruct, *pNewStruct;
+  let pStruct: Pointer<LEVELNODE>;
+  let pNewStruct: Pointer<LEVELNODE>;
   // LEVELNODE	*			pShadow;
-  UINT32 uiLoop;
+  let uiLoop: UINT32;
 
   // first level
   for (uiLoop = 0; uiLoop < WORLD_MAX; uiLoop++) {
@@ -188,14 +189,14 @@ function ReloadTilesetSlot(iSlot: INT32): BOOLEAN {
 }
 
 function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTilesetID: UINT8): BOOLEAN {
-  SGPFILENAME cTemp;
-  UINT32 uiLoop;
+  let cTemp: SGPFILENAME;
+  let uiLoop: UINT32;
 
-  UINT32 uiPercentage;
+  let uiPercentage: UINT32;
   // UINT32					uiLength;
   // UINT16					uiFillColor;
-  STRING512 ExeDir;
-  STRING512 INIFile;
+  let ExeDir: STRING512;
+  let INIFile: STRING512;
 
   // Get Executable Directory
   GetExecutableDirectory(ExeDir);
@@ -289,9 +290,9 @@ function LoadTileSurfaces(ppTileSurfaceFilenames: char[][] /* [][32] */, ubTiles
 
 function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: UINT8, fGetFromRoot: BOOLEAN): BOOLEAN {
   // Add tile surface
-  PTILE_IMAGERY TileSurf;
-  CHAR8 cFileBPP[128];
-  CHAR8 cAdjustedFile[128];
+  let TileSurf: PTILE_IMAGERY;
+  let cFileBPP: CHAR8[] /* [128] */;
+  let cAdjustedFile: CHAR8[] /* [128] */;
 
   // Delete the surface first!
   if (gTileSurfaceArray[ubType] != NULL) {
@@ -336,14 +337,16 @@ function AddTileSurface(cFilename: Pointer<char>, ubType: UINT32, ubTilesetID: U
 }
 
 function BuildTileShadeTables(): void {
-  HWFILE hfile;
-  STRING512 DataDir;
-  STRING512 ShadeTableDir;
-  UINT32 uiLoop;
-  CHAR8 cRootFile[128];
-  BOOLEAN fForceRebuildForSlot = FALSE;
+  let hfile: HWFILE;
+  let DataDir: STRING512;
+  let ShadeTableDir: STRING512;
+  let uiLoop: UINT32;
+  let cRootFile: CHAR8[] /* [128] */;
+  let fForceRebuildForSlot: BOOLEAN = FALSE;
 
-  static UINT8 ubLastRed = 255, ubLastGreen = 255, ubLastBlue = 255;
+  /* static */ let ubLastRed: UINT8 = 255;
+  /* static */ let ubLastGreen: UINT8 = 255;
+  /* static */ let ubLastBlue: UINT8 = 255;
 
   // Set the directory to the shadetable directory
   GetFileManCurrentDirectory(DataDir);
@@ -405,7 +408,7 @@ function BuildTileShadeTables(): void {
 }
 
 function DestroyTileShadeTables(): void {
-  UINT32 uiLoop;
+  let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     if (gTileSurfaceArray[uiLoop] != NULL) {
@@ -418,7 +421,7 @@ function DestroyTileShadeTables(): void {
 }
 
 function DestroyTileSurfaces(): void {
-  UINT32 uiLoop;
+  let uiLoop: UINT32;
 
   for (uiLoop = 0; uiLoop < NUMBEROFTILETYPES; uiLoop++) {
     if (gTileSurfaceArray[uiLoop] != NULL) {
@@ -429,11 +432,11 @@ function DestroyTileSurfaces(): void {
 }
 
 function CompileWorldTerrainIDs(): void {
-  INT16 sGridNo;
-  INT16 sTempGridNo;
-  LEVELNODE *pNode;
-  TILE_ELEMENT *pTileElement;
-  UINT8 ubLoop;
+  let sGridNo: INT16;
+  let sTempGridNo: INT16;
+  let pNode: Pointer<LEVELNODE>;
+  let pTileElement: Pointer<TILE_ELEMENT>;
+  let ubLoop: UINT8;
 
   for (sGridNo = 0; sGridNo < WORLD_MAX; sGridNo++) {
     if (GridNoOnVisibleWorldTile(sGridNo)) {
@@ -469,14 +472,14 @@ function CompileWorldTerrainIDs(): void {
 }
 
 function CompileTileMovementCosts(usGridNo: UINT16): void {
-  UINT8 ubTerrainID;
-  TILE_ELEMENT TileElem;
-  LEVELNODE *pLand;
+  let ubTerrainID: UINT8;
+  let TileElem: TILE_ELEMENT;
+  let pLand: Pointer<LEVELNODE>;
 
-  STRUCTURE *pStructure;
-  BOOLEAN fStructuresOnRoof;
+  let pStructure: Pointer<STRUCTURE>;
+  let fStructuresOnRoof: BOOLEAN;
 
-  UINT8 ubDirLoop;
+  let ubDirLoop: UINT8;
 
   /*
    */
@@ -1068,10 +1071,12 @@ function CompileTileMovementCosts(usGridNo: UINT16): void {
 const LOCAL_RADIUS = 4;
 
 function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
-  INT16 usGridNo;
-  INT16 sGridX, sGridY;
-  INT16 sCentreGridX, sCentreGridY;
-  INT8 bDirLoop;
+  let usGridNo: INT16;
+  let sGridX: INT16;
+  let sGridY: INT16;
+  let sCentreGridX: INT16;
+  let sCentreGridY: INT16;
+  let bDirLoop: INT8;
 
   ConvertGridNoToXY(sCentreGridNo, &sCentreGridX, &sCentreGridY);
   for (sGridY = sCentreGridY - LOCAL_RADIUS; sGridY < sCentreGridY + LOCAL_RADIUS; sGridY++) {
@@ -1101,10 +1106,12 @@ function RecompileLocalMovementCosts(sCentreGridNo: INT16): void {
 }
 
 function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: INT8): void {
-  INT16 usGridNo;
-  INT16 sGridX, sGridY;
-  INT16 sCentreGridX, sCentreGridY;
-  INT8 bDirLoop;
+  let usGridNo: INT16;
+  let sGridX: INT16;
+  let sGridY: INT16;
+  let sCentreGridX: INT16;
+  let sCentreGridY: INT16;
+  let bDirLoop: INT8;
 
   ConvertGridNoToXY(sCentreGridNo, &sCentreGridX, &sCentreGridY);
   if (bRadius == 0) {
@@ -1143,9 +1150,9 @@ function RecompileLocalMovementCostsFromRadius(sCentreGridNo: INT16, bRadius: IN
 }
 
 function AddTileToRecompileArea(sGridNo: INT16): void {
-  INT16 sCheckGridNo;
-  INT16 sCheckX;
-  INT16 sCheckY;
+  let sCheckGridNo: INT16;
+  let sCheckX: INT16;
+  let sCheckY: INT16;
 
   // Set flag to wipe and recompile MPs in this tile
   if (sGridNo < 0 || sGridNo >= WORLD_MAX) {
@@ -1178,9 +1185,10 @@ function AddTileToRecompileArea(sGridNo: INT16): void {
 }
 
 function RecompileLocalMovementCostsInAreaWithFlags(): void {
-  INT16 usGridNo;
-  INT16 sGridX, sGridY;
-  INT8 bDirLoop;
+  let usGridNo: INT16;
+  let sGridX: INT16;
+  let sGridY: INT16;
+  let bDirLoop: INT8;
 
   for (sGridY = gsRecompileAreaTop; sGridY <= gsRecompileAreaBottom; sGridY++) {
     for (sGridX = gsRecompileAreaLeft; sGridX < gsRecompileAreaRight; sGridX++) {
@@ -1208,9 +1216,14 @@ function RecompileLocalMovementCostsInAreaWithFlags(): void {
 }
 
 function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8): void {
-  INT8 bDirLoop;
-  INT16 sUp, sDown, sLeft, sRight;
-  INT16 sX, sY, sTempGridNo;
+  let bDirLoop: INT8;
+  let sUp: INT16;
+  let sDown: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let sTempGridNo: INT16;
 
   switch (ubOrientation) {
     case OUTSIDE_TOP_RIGHT:
@@ -1246,7 +1259,7 @@ function RecompileLocalMovementCostsForWall(sGridNo: INT16, ubOrientation: UINT8
 
 // GLOBAL WORLD MANIPULATION FUNCTIONS
 function CompileWorldMovementCosts(): void {
-  UINT16 usGridNo;
+  let usGridNo: UINT16;
 
   memset(gubWorldMovementCosts, 0, sizeof(gubWorldMovementCosts));
 
@@ -1258,34 +1271,34 @@ function CompileWorldMovementCosts(): void {
 
 // SAVING CODE
 function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
-  INT32 cnt;
-  UINT32 uiSoldierSize;
-  UINT32 uiType;
-  UINT32 uiFlags;
-  UINT32 uiBytesWritten;
-  UINT32 uiNumWarningsCaught = 0;
-  HWFILE hfile;
-  LEVELNODE *pLand;
-  LEVELNODE *pObject;
-  LEVELNODE *pStruct;
-  LEVELNODE *pShadow;
-  LEVELNODE *pRoof;
-  LEVELNODE *pOnRoof;
-  LEVELNODE *pTailLand = NULL;
-  UINT16 usNumExitGrids = 0;
-  UINT16 usTypeSubIndex;
-  UINT8 LayerCount;
-  UINT8 ObjectCount;
-  UINT8 StructCount;
-  UINT8 ShadowCount;
-  UINT8 RoofCount;
-  UINT8 OnRoofCount;
-  UINT8 ubType;
-  UINT8 ubTypeSubIndex;
-  UINT8 ubTest = 1;
-  CHAR8 aFilename[255];
-  UINT8 ubCombine;
-  UINT8 bCounts[WORLD_MAX][8];
+  let cnt: INT32;
+  let uiSoldierSize: UINT32;
+  let uiType: UINT32;
+  let uiFlags: UINT32;
+  let uiBytesWritten: UINT32;
+  let uiNumWarningsCaught: UINT32 = 0;
+  let hfile: HWFILE;
+  let pLand: Pointer<LEVELNODE>;
+  let pObject: Pointer<LEVELNODE>;
+  let pStruct: Pointer<LEVELNODE>;
+  let pShadow: Pointer<LEVELNODE>;
+  let pRoof: Pointer<LEVELNODE>;
+  let pOnRoof: Pointer<LEVELNODE>;
+  let pTailLand: Pointer<LEVELNODE> = NULL;
+  let usNumExitGrids: UINT16 = 0;
+  let usTypeSubIndex: UINT16;
+  let LayerCount: UINT8;
+  let ObjectCount: UINT8;
+  let StructCount: UINT8;
+  let ShadowCount: UINT8;
+  let RoofCount: UINT8;
+  let OnRoofCount: UINT8;
+  let ubType: UINT8;
+  let ubTypeSubIndex: UINT8;
+  let ubTest: UINT8 = 1;
+  let aFilename: CHAR8[] /* [255] */;
+  let ubCombine: UINT8;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
 
   sprintf(aFilename, "MAPS\\%s", puiFilename);
 
@@ -1369,7 +1382,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
     while (pObject != NULL) {
       // DON'T WRITE ANY ITEMS
       if (!(pObject->uiFlags & (LEVELNODE_ITEM))) {
-        UINT32 uiTileType;
+        let uiTileType: UINT32;
         // Make sure this isn't a UI Element
         GetTileType(pObject->usIndex, &uiTileType);
         if (uiTileType < FIRSTPOINTERS)
@@ -1679,7 +1692,7 @@ function SaveWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 }
 
 const NUM_DIR_SEARCHES = 5;
-INT8 bDirectionsForShadowSearch[NUM_DIR_SEARCHES] = {
+let bDirectionsForShadowSearch: INT8[] /* [NUM_DIR_SEARCHES] */ = {
   WEST,
   SOUTHWEST,
   SOUTH,
@@ -1688,8 +1701,9 @@ INT8 bDirectionsForShadowSearch[NUM_DIR_SEARCHES] = {
 };
 
 function OptimizeMapForShadows(): void {
-  INT32 cnt, dir;
-  INT16 sNewGridNo;
+  let cnt: INT32;
+  let dir: INT32;
+  let sNewGridNo: INT16;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     // CHECK IF WE ARE A TREE HERE
     if (IsTreePresentAtGridno((INT16)cnt)) {
@@ -1712,8 +1726,8 @@ function OptimizeMapForShadows(): void {
 }
 
 function SetBlueFlagFlags(): void {
-  INT32 cnt;
-  LEVELNODE *pNode;
+  let cnt: INT32;
+  let pNode: Pointer<LEVELNODE>;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
@@ -1755,28 +1769,29 @@ function InitLoadedWorld(): void {
 }
 
 function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
-  FLOAT dMajorMapVersion;
-  SUMMARYFILE *pSummary;
-  HWFILE hfile;
-  MAPCREATE_STRUCT mapInfo;
-  INT8 *pBuffer, *pBufferHead;
-  UINT32 uiFileSize;
-  UINT32 uiFlags;
-  UINT32 uiBytesRead;
-  INT32 cnt;
-  INT32 i;
-  INT32 iTilesetID;
-  UINT16 str[40];
-  UINT8 bCounts[WORLD_MAX][8];
-  UINT8 ubCombine;
-  UINT8 szDirFilename[50];
-  UINT8 szFilename[40];
-  UINT8 ubMinorMapVersion;
+  let dMajorMapVersion: FLOAT;
+  let pSummary: Pointer<SUMMARYFILE>;
+  let hfile: HWFILE;
+  let mapInfo: MAPCREATE_STRUCT;
+  let pBuffer: Pointer<INT8>;
+  let pBufferHead: Pointer<INT8>;
+  let uiFileSize: UINT32;
+  let uiFlags: UINT32;
+  let uiBytesRead: UINT32;
+  let cnt: INT32;
+  let i: INT32;
+  let iTilesetID: INT32;
+  let str: UINT16[] /* [40] */;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
+  let ubCombine: UINT8;
+  let szDirFilename: UINT8[] /* [50] */;
+  let szFilename: UINT8[] /* [40] */;
+  let ubMinorMapVersion: UINT8;
 
   // Make sure the file exists... if not, then return false
   sprintf(szFilename, pSector);
   if (ubLevel % 4) {
-    UINT8 str[4];
+    let str: UINT8[] /* [4] */;
     sprintf(str, "_b%d", ubLevel % 4);
     strcat(szFilename, str);
   }
@@ -1878,7 +1893,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
 
   // extract highest room number
   {
-    UINT8 ubRoomNum;
+    let ubRoomNum: UINT8;
     for (cnt = 0; cnt < WORLD_MAX; cnt++) {
       LOADDATA(&ubRoomNum, pBuffer, 1);
       if (ubRoomNum > pSummary->ubNumRooms) {
@@ -1888,7 +1903,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   }
 
   if (uiFlags & MAP_WORLDITEMS_SAVED) {
-    UINT32 temp;
+    let temp: UINT32;
     RenderProgressBar(0, 91);
     // RenderProgressBar( 1, 91 );
     // get number of items (for now)
@@ -1908,7 +1923,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   }
 
   if (uiFlags & MAP_WORLDLIGHTS_SAVED) {
-    UINT8 ubTemp;
+    let ubTemp: UINT8;
     RenderProgressBar(0, 92);
     // RenderProgressBar( 1, 92 );
     // skip number of light palette entries
@@ -1918,7 +1933,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
     LOADDATA(&pSummary->usNumLights, pBuffer, 2);
     // skip the light loading
     for (cnt = 0; cnt < pSummary->usNumLights; cnt++) {
-      UINT8 ubStrLen;
+      let ubStrLen: UINT8;
       pBuffer += sizeof(LIGHT_SPRITE);
       LOADDATA(&ubStrLen, pBuffer, 1);
       if (ubStrLen) {
@@ -1933,9 +1948,9 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   memcpy(&pSummary->MapInfo, &mapInfo, sizeof(MAPCREATE_STRUCT));
 
   if (uiFlags & MAP_FULLSOLDIER_SAVED) {
-    TEAMSUMMARY *pTeam = NULL;
-    BASIC_SOLDIERCREATE_STRUCT basic;
-    SOLDIERCREATE_STRUCT priority;
+    let pTeam: Pointer<TEAMSUMMARY> = NULL;
+    let basic: BASIC_SOLDIERCREATE_STRUCT;
+    let priority: SOLDIERCREATE_STRUCT;
     RenderProgressBar(0, 94);
     // RenderProgressBar( 1, 94 );
 
@@ -2065,10 +2080,10 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   }
 
   if (uiFlags & MAP_EXITGRIDS_SAVED) {
-    EXITGRID exitGrid;
-    INT32 loop;
-    UINT16 usMapIndex;
-    BOOLEAN fExitGridFound;
+    let exitGrid: EXITGRID;
+    let loop: INT32;
+    let usMapIndex: UINT16;
+    let fExitGridFound: BOOLEAN;
     RenderProgressBar(0, 98);
     // RenderProgressBar( 1, 98 );
 
@@ -2105,7 +2120,7 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
   }
 
   if (uiFlags & MAP_DOORTABLE_SAVED) {
-    DOOR Door;
+    let Door: DOOR;
 
     LOADDATA(&pSummary->ubNumDoors, pBuffer, 1);
 
@@ -2131,26 +2146,28 @@ function EvaluateWorld(pSector: Pointer<UINT8>, ubLevel: UINT8): BOOLEAN {
 }
 
 function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
-  HWFILE hfile;
-  FLOAT dMajorMapVersion;
-  UINT32 uiFlags;
-  UINT32 uiBytesRead;
-  UINT32 uiSoldierSize;
-  UINT32 uiFileSize;
-  UINT32 fp, offset;
-  INT32 cnt, cnt2;
-  INT32 iTilesetID;
-  UINT16 usTileIndex;
-  UINT16 usTypeSubIndex;
-  UINT8 ubType;
-  UINT8 ubSubIndex;
-  CHAR8 aFilename[50];
-  UINT8 ubCombine;
-  UINT8 bCounts[WORLD_MAX][8];
-  INT8 *pBuffer;
-  INT8 *pBufferHead;
-  BOOLEAN fGenerateEdgePoints = FALSE;
-  UINT8 ubMinorMapVersion;
+  let hfile: HWFILE;
+  let dMajorMapVersion: FLOAT;
+  let uiFlags: UINT32;
+  let uiBytesRead: UINT32;
+  let uiSoldierSize: UINT32;
+  let uiFileSize: UINT32;
+  let fp: UINT32;
+  let offset: UINT32;
+  let cnt: INT32;
+  let cnt2: INT32;
+  let iTilesetID: INT32;
+  let usTileIndex: UINT16;
+  let usTypeSubIndex: UINT16;
+  let ubType: UINT8;
+  let ubSubIndex: UINT8;
+  let aFilename: CHAR8[] /* [50] */;
+  let ubCombine: UINT8;
+  let bCounts: UINT8[][] /* [WORLD_MAX][8] */;
+  let pBuffer: Pointer<INT8>;
+  let pBufferHead: Pointer<INT8>;
+  let fGenerateEdgePoints: BOOLEAN = FALSE;
+  let ubMinorMapVersion: UINT8;
 
   LoadShadeTablesFromTextFile();
 
@@ -2611,8 +2628,8 @@ function LoadWorld(puiFilename: Pointer<UINT8>): BOOLEAN {
 //
 //****************************************************************************************
 function NewWorld(): BOOLEAN {
-  UINT16 NewIndex;
-  INT32 cnt;
+  let NewIndex: UINT16;
+  let cnt: INT32;
 
   gusSelectedSoldier = gusOldSelectedSoldier = NO_SOLDIER;
 
@@ -2635,18 +2652,18 @@ function NewWorld(): BOOLEAN {
 }
 
 function TrashWorld(): void {
-  MAP_ELEMENT *pMapTile;
-  LEVELNODE *pLandNode;
-  LEVELNODE *pObjectNode;
-  LEVELNODE *pStructNode;
-  LEVELNODE *pShadowNode;
-  LEVELNODE *pMercNode;
-  LEVELNODE *pRoofNode;
-  LEVELNODE *pOnRoofNode;
-  LEVELNODE *pTopmostNode;
+  let pMapTile: Pointer<MAP_ELEMENT>;
+  let pLandNode: Pointer<LEVELNODE>;
+  let pObjectNode: Pointer<LEVELNODE>;
+  let pStructNode: Pointer<LEVELNODE>;
+  let pShadowNode: Pointer<LEVELNODE>;
+  let pMercNode: Pointer<LEVELNODE>;
+  let pRoofNode: Pointer<LEVELNODE>;
+  let pOnRoofNode: Pointer<LEVELNODE>;
+  let pTopmostNode: Pointer<LEVELNODE>;
   //	STRUCTURE			*pStructureNode;
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   if (!gfWorldLoaded)
     return;
@@ -2784,15 +2801,15 @@ function TrashWorld(): void {
 }
 
 function TrashMapTile(MapTile: INT16): void {
-  MAP_ELEMENT *pMapTile;
-  LEVELNODE *pLandNode;
-  LEVELNODE *pObjectNode;
-  LEVELNODE *pStructNode;
-  LEVELNODE *pShadowNode;
-  LEVELNODE *pMercNode;
-  LEVELNODE *pRoofNode;
-  LEVELNODE *pOnRoofNode;
-  LEVELNODE *pTopmostNode;
+  let pMapTile: Pointer<MAP_ELEMENT>;
+  let pLandNode: Pointer<LEVELNODE>;
+  let pObjectNode: Pointer<LEVELNODE>;
+  let pStructNode: Pointer<LEVELNODE>;
+  let pShadowNode: Pointer<LEVELNODE>;
+  let pMercNode: Pointer<LEVELNODE>;
+  let pRoofNode: Pointer<LEVELNODE>;
+  let pOnRoofNode: Pointer<LEVELNODE>;
+  let pTopmostNode: Pointer<LEVELNODE>;
 
   pMapTile = &gpWorldLevelData[MapTile];
 
@@ -2906,10 +2923,10 @@ function LoadMapTileset(iTilesetID: INT32): BOOLEAN {
 
 function SaveMapTileset(iTilesetID: INT32): BOOLEAN {
   //	FILE *hTSet;
-  HWFILE hTSet;
-  char zTilesetName[65];
-  int cnt;
-  UINT32 uiBytesWritten;
+  let hTSet: HWFILE;
+  let zTilesetName: char[] /* [65] */;
+  let cnt: int;
+  let uiBytesWritten: UINT32;
 
   // Are we trying to save the default tileset?
   if (iTilesetID == 0)
@@ -2942,7 +2959,8 @@ function SetLoadOverrideParams(fForceLoad: BOOLEAN, fForceFile: BOOLEAN, zLoadNa
 }
 
 function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
-  LEVELNODE *pTopmost, *pTopmostTail;
+  let pTopmost: Pointer<LEVELNODE>;
+  let pTopmostTail: Pointer<LEVELNODE>;
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
@@ -2962,11 +2980,11 @@ function AddWireFrame(sGridNo: INT16, usIndex: UINT16, fForced: BOOLEAN): void {
 }
 
 function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<STRUCTURE>): UINT16 {
-  LEVELNODE *pNode = NULL;
-  UINT8 ubWallOrientation;
-  UINT16 usValue = 0;
-  UINT16 usSubIndex;
-  STRUCTURE *pBaseStructure;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let ubWallOrientation: UINT8;
+  let usValue: UINT16 = 0;
+  let usSubIndex: UINT16;
+  let pBaseStructure: Pointer<STRUCTURE>;
 
   ubWallOrientation = pStructure->ubWallOrientation;
 
@@ -3016,19 +3034,19 @@ function GetWireframeGraphicNumToUseForWall(sGridNo: INT16, pStructure: Pointer<
 }
 
 function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
-  INT32 cnt;
-  STRUCTURE *pStructure;
-  INT16 sGridNo;
-  UINT8 ubWallOrientation;
-  INT8 bHiddenVal;
-  INT8 bNumWallsSameGridNo;
-  UINT16 usWireFrameIndex;
+  let cnt: INT32;
+  let pStructure: Pointer<STRUCTURE>;
+  let sGridNo: INT16;
+  let ubWallOrientation: UINT8;
+  let bHiddenVal: INT8;
+  let bNumWallsSameGridNo: INT8;
+  let usWireFrameIndex: UINT16;
 
   // Create world randomly from tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (gpWorldLevelData[cnt].uiFlags & MAPELEMENT_RECALCULATE_WIREFRAMES || fForce) {
       if (cnt == 8377) {
-        int i = 0;
+        let i: int = 0;
       }
 
       // Turn off flag
@@ -3184,7 +3202,7 @@ function CalculateWorldWireFrameTiles(fForce: BOOLEAN): void {
 }
 
 function RemoveWorldWireFrameTiles(): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   // Create world randomly from tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
@@ -3193,8 +3211,9 @@ function RemoveWorldWireFrameTiles(): void {
 }
 
 function RemoveWireFrameTiles(sGridNo: INT16): void {
-  LEVELNODE *pTopmost, *pNewTopmost;
-  TILE_ELEMENT *pTileElement;
+  let pTopmost: Pointer<LEVELNODE>;
+  let pNewTopmost: Pointer<LEVELNODE>;
+  let pTileElement: Pointer<TILE_ELEMENT>;
 
   pTopmost = gpWorldLevelData[sGridNo].pTopmostHead;
 
@@ -3214,7 +3233,7 @@ function RemoveWireFrameTiles(sGridNo: INT16): void {
 }
 
 function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   if (!gfBasement) {
     pStructure = FindStructure(sGridNo, STRUCTURE_ROOF);
@@ -3240,8 +3259,8 @@ function IsHiddenTileMarkerThere(sGridNo: INT16): INT8 {
 }
 
 function ReloadTileset(ubID: UINT8): void {
-  CHAR8 aFilename[255];
-  INT32 iCurrTilesetID = giCurrentTilesetID;
+  let aFilename: CHAR8[] /* [255] */;
+  let iCurrTilesetID: INT32 = giCurrentTilesetID;
 
   // Set gloabal
   giCurrentTilesetID = ubID;
@@ -3263,14 +3282,15 @@ function ReloadTileset(ubID: UINT8): void {
 }
 
 function SaveMapLights(hfile: HWFILE): void {
-  SOLDIERTYPE *pSoldier;
-  SGPPaletteEntry LColors[3];
-  UINT8 ubNumColors;
-  BOOLEAN fSoldierLight;
-  UINT16 usNumLights = 0;
-  UINT16 cnt, cnt2;
-  UINT8 ubStrLen;
-  UINT32 uiBytesWritten;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let LColors: SGPPaletteEntry[] /* [3] */;
+  let ubNumColors: UINT8;
+  let fSoldierLight: BOOLEAN;
+  let usNumLights: UINT16 = 0;
+  let cnt: UINT16;
+  let cnt2: UINT16;
+  let ubStrLen: UINT8;
+  let uiBytesWritten: UINT32;
 
   ubNumColors = LightGetColors(LColors);
 
@@ -3320,16 +3340,17 @@ function SaveMapLights(hfile: HWFILE): void {
 }
 
 function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
-  SGPPaletteEntry LColors[3];
-  UINT8 ubNumColors;
-  UINT16 usNumLights;
-  INT32 cnt;
-  INT8 str[30];
-  UINT8 ubStrLen;
-  LIGHT_SPRITE TmpLight;
-  INT32 iLSprite;
-  UINT32 uiHour;
-  BOOLEAN fPrimeTime = FALSE, fNightTime = FALSE;
+  let LColors: SGPPaletteEntry[] /* [3] */;
+  let ubNumColors: UINT8;
+  let usNumLights: UINT16;
+  let cnt: INT32;
+  let str: INT8[] /* [30] */;
+  let ubStrLen: UINT8;
+  let TmpLight: LIGHT_SPRITE;
+  let iLSprite: INT32;
+  let uiHour: UINT32;
+  let fPrimeTime: BOOLEAN = FALSE;
+  let fNightTime: BOOLEAN = FALSE;
 
   // reset the lighting system, so that any current lights are toasted.
   LightReset();
@@ -3389,7 +3410,7 @@ function LoadMapLights(hBuffer: Pointer<Pointer<INT8>>): void {
 }
 
 function IsRoofVisibleForWireframe(sMapPos: INT16): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   if (!gfBasement) {
     pStructure = FindStructure(sMapPos, STRUCTURE_ROOF);

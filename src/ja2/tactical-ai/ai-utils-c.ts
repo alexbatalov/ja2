@@ -6,14 +6,14 @@
 // InWaterOrGas - gas stuff
 // RoamingRange - point patrol stuff
 
-UINT8 Urgency[NUM_STATUS_STATES][NUM_MORALE_STATES] = {
+let Urgency: UINT8[][] /* [NUM_STATUS_STATES][NUM_MORALE_STATES] */ = {
   { URGENCY_LOW, URGENCY_LOW, URGENCY_LOW, URGENCY_LOW, URGENCY_LOW }, // green
   { URGENCY_HIGH, URGENCY_MED, URGENCY_MED, URGENCY_LOW, URGENCY_LOW }, // yellow
   { URGENCY_HIGH, URGENCY_MED, URGENCY_MED, URGENCY_MED, URGENCY_MED }, // red
   { URGENCY_HIGH, URGENCY_HIGH, URGENCY_HIGH, URGENCY_MED, URGENCY_MED }, // black
 };
 
-UINT16 MovementMode[LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] = {
+let MovementMode: UINT16[][] /* [LAST_MOVEMENT_ACTION + 1][NUM_URGENCY_STATES] */ = {
   { WALKING, WALKING, WALKING }, // AI_ACTION_NONE
 
   { WALKING, WALKING, WALKING }, // AI_ACTION_RANDOM_PATROL
@@ -77,9 +77,9 @@ function OKToAttack(pSoldier: Pointer<SOLDIERTYPE>, target: int): INT8 {
 }
 
 function ConsiderProne(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT16 sOpponentGridNo;
-  INT8 bOpponentLevel;
-  INT32 iRange;
+  let sOpponentGridNo: INT16;
+  let bOpponentLevel: INT8;
+  let iRange: INT32;
 
   if (pSoldier->bAIMorale >= MORALE_NORMAL) {
     return FALSE;
@@ -120,12 +120,19 @@ function ShootingStanceChange(pSoldier: Pointer<SOLDIERTYPE>, pAttack: Pointer<A
   // just compare the chance of the bullet hitting if we are
   // standing, crouched, or prone
 
-  UINT16 usRealAnimState, usBestAnimState;
-  INT8 bBestStanceDiff = -1;
-  INT8 bLoop, bStanceNum, bStanceDiff, bAPsAfterAttack;
-  UINT32 uiChanceOfDamage, uiBestChanceOfDamage, uiCurrChanceOfDamage;
-  UINT32 uiStanceBonus, uiMinimumStanceBonusPerChange = 20 - 3 * pAttack->ubAimTime;
-  INT32 iRange;
+  let usRealAnimState: UINT16;
+  let usBestAnimState: UINT16;
+  let bBestStanceDiff: INT8 = -1;
+  let bLoop: INT8;
+  let bStanceNum: INT8;
+  let bStanceDiff: INT8;
+  let bAPsAfterAttack: INT8;
+  let uiChanceOfDamage: UINT32;
+  let uiBestChanceOfDamage: UINT32;
+  let uiCurrChanceOfDamage: UINT32;
+  let uiStanceBonus: UINT32;
+  let uiMinimumStanceBonusPerChange: UINT32 = 20 - 3 * pAttack->ubAimTime;
+  let iRange: INT32;
 
   bStanceNum = 0;
   uiCurrChanceOfDamage = 0;
@@ -261,10 +268,10 @@ function DetermineMovementMode(pSoldier: Pointer<SOLDIERTYPE>, bAction: INT8): U
 function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
   // ATE: Setting sDestination? Tis does not make sense...
   // pSoldier->sDestination = usGridNo;
-  BOOLEAN fSet = FALSE;
+  let fSet: BOOLEAN = FALSE;
 
   if (IS_MERC_BODY_TYPE(pSoldier) && pSoldier->bAction == AI_ACTION_TAKE_COVER && (pSoldier->bOrders == DEFENSIVE || pSoldier->bOrders == CUNNINGSOLO || pSoldier->bOrders == CUNNINGAID) && (SoldierDifficultyLevel(pSoldier) >= 2)) {
-    UINT16 usMovementMode;
+    let usMovementMode: UINT16;
 
     // getting real movement anim for someone who is going to take cover, not just considering
     usMovementMode = MovementMode[AI_ACTION_TAKE_COVER][Urgency[pSoldier->bAlertStatus][pSoldier->bAIMorale]];
@@ -290,7 +297,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
                 break;*/
         default:
           if (PreRandom(5 - SoldierDifficultyLevel(pSoldier)) == 0) {
-            INT16 sClosestNoise = (INT16)MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
+            let sClosestNoise: INT16 = (INT16)MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
             if (sClosestNoise != NOWHERE && PythSpacesAway(pSoldier->sGridNo, sClosestNoise) < MaxDistanceVisible() + 10) {
               pSoldier->usUIMovementMode = SWATTING;
               fSet = TRUE;
@@ -320,7 +327,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
 }
 
 function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT8 bMinPointsNeeded = 0;
+  let bMinPointsNeeded: INT8 = 0;
 
   // NumMessage("AffordableAction - Guy#",pSoldier->ubID);
 
@@ -428,15 +435,19 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  UINT32 uiLoop;
-  UINT16 usMaxDist;
-  UINT8 ubFriendCount, ubFriendIDs[MAXMERCS], ubFriendID;
-  UINT16 usDirection;
-  UINT8 ubDirsLeft;
-  BOOLEAN fDirChecked[8];
-  BOOLEAN fRangeRestricted = FALSE, fFound = FALSE;
-  UINT16 usDest, usOrigin;
-  SOLDIERTYPE *pFriend;
+  let uiLoop: UINT32;
+  let usMaxDist: UINT16;
+  let ubFriendCount: UINT8;
+  let ubFriendIDs: UINT8[] /* [MAXMERCS] */;
+  let ubFriendID: UINT8;
+  let usDirection: UINT16;
+  let ubDirsLeft: UINT8;
+  let fDirChecked: BOOLEAN[] /* [8] */;
+  let fRangeRestricted: BOOLEAN = FALSE;
+  let fFound: BOOLEAN = FALSE;
+  let usDest: UINT16;
+  let usOrigin: UINT16;
+  let pFriend: Pointer<SOLDIERTYPE>;
 
   // obtain maximum roaming distance from soldier's origin
   usMaxDist = RoamingRange(pSoldier, &usOrigin);
@@ -546,14 +557,26 @@ function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
-  INT16 sRandDest = NOWHERE;
-  UINT16 usOrigin, usMaxDist;
-  UINT8 ubTriesLeft;
-  BOOLEAN fLimited = FALSE, fFound = FALSE;
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXRange, sYRange, sXOffset, sYOffset;
-  INT16 sOrigX, sOrigY;
-  INT16 sX, sY;
-  UINT8 ubRoom = 0, ubTempRoom;
+  let sRandDest: INT16 = NOWHERE;
+  let usOrigin: UINT16;
+  let usMaxDist: UINT16;
+  let ubTriesLeft: UINT8;
+  let fLimited: BOOLEAN = FALSE;
+  let fFound: BOOLEAN = FALSE;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXRange: INT16;
+  let sYRange: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let sOrigX: INT16;
+  let sOrigY: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let ubRoom: UINT8 = 0;
+  let ubTempRoom: UINT8;
 
   sOrigX = sOrigY = -1;
   sMaxLeft = sMaxRight = sMaxUp = sMaxDown = sXRange = sYRange = -1;
@@ -657,26 +680,34 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 }
 
 function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8, pfChangeLevel: Pointer<BOOLEAN>): INT16 {
-  INT16 *psLastLoc, *pusNoiseGridNo;
-  INT8 *pbLastLevel;
-  INT16 sGridNo = -1;
-  INT8 bLevel, bClosestLevel;
-  BOOLEAN fClimbingNecessary, fClosestClimbingNecessary = FALSE;
-  INT32 iPathCost;
-  INT16 sClosestDisturbance = NOWHERE;
-  UINT32 uiLoop;
-  UINT16 closestConscious = NOWHERE, closestUnconscious = NOWHERE;
-  INT32 iShortestPath = 1000;
-  INT32 iShortestPathConscious = 1000, iShortestPathUnconscious = 1000;
-  UINT8 *pubNoiseVolume;
-  INT8 *pbNoiseLevel;
-  INT8 *pbPersOL, *pbPublOL;
-  INT16 sClimbGridNo;
-  SOLDIERTYPE *pOpp;
+  let psLastLoc: Pointer<INT16>;
+  let pusNoiseGridNo: Pointer<INT16>;
+  let pbLastLevel: Pointer<INT8>;
+  let sGridNo: INT16 = -1;
+  let bLevel: INT8;
+  let bClosestLevel: INT8;
+  let fClimbingNecessary: BOOLEAN;
+  let fClosestClimbingNecessary: BOOLEAN = FALSE;
+  let iPathCost: INT32;
+  let sClosestDisturbance: INT16 = NOWHERE;
+  let uiLoop: UINT32;
+  let closestConscious: UINT16 = NOWHERE;
+  let closestUnconscious: UINT16 = NOWHERE;
+  let iShortestPath: INT32 = 1000;
+  let iShortestPathConscious: INT32 = 1000;
+  let iShortestPathUnconscious: INT32 = 1000;
+  let pubNoiseVolume: Pointer<UINT8>;
+  let pbNoiseLevel: Pointer<INT8>;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let sClimbGridNo: INT16;
+  let pOpp: Pointer<SOLDIERTYPE>;
 
   // CJC: can't trace a path to every known disturbance!
   // for starters, try the closest one as the crow flies
-  INT16 sClosestEnemy = NOWHERE, sDistToClosestEnemy = 1000, sDistToEnemy;
+  let sClosestEnemy: INT16 = NOWHERE;
+  let sDistToClosestEnemy: INT16 = 1000;
+  let sDistToEnemy: INT16;
 
   *pfChangeLevel = FALSE;
 
@@ -826,12 +857,17 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
 }
 
 function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
-  INT16 *psLastLoc, sGridNo, sClosestOpponent = NOWHERE;
-  UINT32 uiLoop;
-  INT32 iRange, iClosestRange = 1500;
-  INT8 *pbPersOL, *pbPublOL;
-  INT8 bLevel, bClosestLevel;
-  SOLDIERTYPE *pOpp;
+  let psLastLoc: Pointer<INT16>;
+  let sGridNo: INT16;
+  let sClosestOpponent: INT16 = NOWHERE;
+  let uiLoop: UINT32;
+  let iRange: INT32;
+  let iClosestRange: INT32 = 1500;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let bLevel: INT8;
+  let bClosestLevel: INT8;
+  let pOpp: Pointer<SOLDIERTYPE>;
 
   bClosestLevel = -1;
 
@@ -914,12 +950,15 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
 }
 
 function ClosestSeenOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>): INT16 {
-  INT16 sGridNo, sClosestOpponent = NOWHERE;
-  UINT32 uiLoop;
-  INT32 iRange, iClosestRange = 1500;
-  INT8 *pbPersOL;
-  INT8 bLevel, bClosestLevel;
-  SOLDIERTYPE *pOpp;
+  let sGridNo: INT16;
+  let sClosestOpponent: INT16 = NOWHERE;
+  let uiLoop: UINT32;
+  let iRange: INT32;
+  let iClosestRange: INT32 = 1500;
+  let pbPersOL: Pointer<INT8>;
+  let bLevel: INT8;
+  let bClosestLevel: INT8;
+  let pOpp: Pointer<SOLDIERTYPE>;
 
   bClosestLevel = -1;
 
@@ -990,11 +1029,11 @@ function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): 
 
   // NOTE: skips EPCs!
 
-  UINT8 ubLoop;
-  SOLDIERTYPE *pTargetSoldier;
-  INT16 sMinDist = (INT16)WORLD_MAX;
-  INT16 sDist;
-  INT16 sGridNo = NOWHERE;
+  let ubLoop: UINT8;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let sMinDist: INT16 = (INT16)WORLD_MAX;
+  let sDist: INT16;
+  let sGridNo: INT16 = NOWHERE;
 
   // Loop through all mercs on player team
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -1037,9 +1076,9 @@ function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): 
 }
 
 function FindClosestClimbPointAvailableToAI(pSoldier: Pointer<SOLDIERTYPE>, sStartGridNo: INT16, sDesiredGridNo: INT16, fClimbUp: BOOLEAN): INT16 {
-  INT16 sGridNo;
-  INT16 sRoamingOrigin;
-  INT16 sRoamingRange;
+  let sGridNo: INT16;
+  let sRoamingOrigin: INT16;
+  let sRoamingRange: INT16;
 
   if (pSoldier->uiStatusFlags & SOLDIER_PC) {
     sRoamingOrigin = pSoldier->sGridNo;
@@ -1099,8 +1138,8 @@ function GetInterveningClimbingLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGri
 }
 
 function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo: INT16, bDestLevel: INT8, fAddCostAfterClimbingUp: BOOLEAN, pfClimbingNecessary: Pointer<BOOLEAN>, psClimbGridNo: Pointer<INT16>): INT16 {
-  INT16 sPathCost;
-  INT16 sClimbGridNo;
+  let sPathCost: INT16;
+  let sClimbGridNo: INT16;
 
   if (pSoldier->bLevel == bDestLevel) {
     if ((pSoldier->bLevel == 0) || (gubBuildingInfo[pSoldier->sGridNo] == gubBuildingInfo[sDestGridNo])) {
@@ -1174,8 +1213,8 @@ function EstimatePathCostToLocation(pSoldier: Pointer<SOLDIERTYPE>, sDestGridNo:
 }
 
 function GuySawEnemyThisTurnOrBefore(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  UINT8 ubTeamLoop;
-  UINT8 ubIDLoop;
+  let ubTeamLoop: UINT8;
+  let ubIDLoop: UINT8;
 
   for (ubTeamLoop = 0; ubTeamLoop < MAXTEAMS; ubTeamLoop++) {
     if (gTacticalStatus.Team[ubTeamLoop].bSide != pSoldier->bSide) {
@@ -1193,10 +1232,14 @@ function GuySawEnemyThisTurnOrBefore(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimbingNecessary: Pointer<BOOLEAN>): INT16 {
-  UINT32 uiLoop;
-  INT16 sPathCost, sClosestFriend = NOWHERE, sShortestPath = 1000, sClimbGridNo;
-  BOOLEAN fClimbingNecessary, fClosestClimbingNecessary = FALSE;
-  SOLDIERTYPE *pFriend;
+  let uiLoop: UINT32;
+  let sPathCost: INT16;
+  let sClosestFriend: INT16 = NOWHERE;
+  let sShortestPath: INT16 = 1000;
+  let sClimbGridNo: INT16;
+  let fClimbingNecessary: BOOLEAN;
+  let fClosestClimbingNecessary: BOOLEAN = FALSE;
+  let pFriend: Pointer<SOLDIERTYPE>;
 
   // civilians don't really have any "friends", so they don't bother with this
   if (PTR_CIVILIAN) {
@@ -1261,10 +1304,10 @@ function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimb
 
 function DistanceToClosestFriend(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // find the distance to the closest person on the same team
-  UINT8 ubLoop;
-  SOLDIERTYPE *pTargetSoldier;
-  INT16 sMinDist = 1000;
-  INT16 sDist;
+  let ubLoop: UINT8;
+  let pTargetSoldier: Pointer<SOLDIERTYPE>;
+  let sMinDist: INT16 = 1000;
+  let sDist: INT16;
 
   // Loop through all mercs on player team
   ubLoop = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;
@@ -1362,7 +1405,8 @@ function InGas(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
 }
 
 function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  INT8 bSlot, bNewSlot;
+  let bSlot: INT8;
+  let bNewSlot: INT8;
 
   bSlot = FindObj(pSoldier, GASMASK);
   if (bSlot == NO_SLOT) {
@@ -1385,7 +1429,7 @@ function WearGasMaskIfAvailable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function InLightAtNight(sGridNo: INT16, bLevel: INT8): BOOLEAN {
-  UINT8 ubBackgroundLightLevel;
+  let ubBackgroundLightLevel: UINT8;
 
   // do not consider us to be "in light" if we're in an underground sector
   if (gbWorldSectorZ > 0) {
@@ -1415,15 +1459,21 @@ function InLightAtNight(sGridNo: INT16, bLevel: INT8): BOOLEAN {
 }
 
 function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  UINT32 uiLoop, uiLoop2;
-  INT32 iOurTotalThreat = 0, iTheirTotalThreat = 0;
-  INT16 sOppThreatValue, sFrndThreatValue, sMorale;
-  INT32 iPercent;
-  INT8 bMostRecentOpplistValue;
-  INT8 bMoraleCategory;
-  UINT8 *pSeenOpp; //,*friendOlPtr;
-  INT8 *pbPersOL, *pbPublOL;
-  SOLDIERTYPE *pOpponent, *pFriend;
+  let uiLoop: UINT32;
+  let uiLoop2: UINT32;
+  let iOurTotalThreat: INT32 = 0;
+  let iTheirTotalThreat: INT32 = 0;
+  let sOppThreatValue: INT16;
+  let sFrndThreatValue: INT16;
+  let sMorale: INT16;
+  let iPercent: INT32;
+  let bMostRecentOpplistValue: INT8;
+  let bMoraleCategory: INT8;
+  let pSeenOpp: Pointer<UINT8>; //,*friendOlPtr;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let pFriend: Pointer<SOLDIERTYPE>;
 
   // if army guy has NO weapons left then panic!
   if (pSoldier->bTeam == ENEMY_TEAM) {
@@ -1647,8 +1697,8 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CalcManThreatValue(pEnemy: Pointer<SOLDIERTYPE>, sMyGrid: INT16, ubReduceForCover: UINT8, pMe: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iThreatValue = 0;
-  BOOLEAN fForCreature = CREATURE_OR_BLOODCAT(pMe);
+  let iThreatValue: INT32 = 0;
+  let fForCreature: BOOLEAN = CREATURE_OR_BLOODCAT(pMe);
 
   // If man is inactive, at base, on assignment, dead, unconscious
   if (!pEnemy->bActive || !pEnemy->bInSector || !pEnemy->bLife) {
@@ -1851,8 +1901,8 @@ function GetTraversalQuoteActionID(bDirection: INT8): UINT8 {
 }
 
 function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
-  INT8 bDifficultyBase;
-  INT8 bDifficulty;
+  let bDifficultyBase: INT8;
+  let bDifficulty: INT8;
 
   // difficulty modifier ranges from 0 to 100
   // and we want to end up with a number between 0 and 4 (4=hardest)
@@ -1902,10 +1952,10 @@ function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
 }
 
 function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8): BOOLEAN {
-  INT8 bDirChange;
-  INT8 bTempDir;
-  INT8 bLoop;
-  BOOLEAN fFound;
+  let bDirChange: INT8;
+  let bTempDir: INT8;
+  let bLoop: INT8;
+  let fFound: BOOLEAN;
 
   bDirChange = (INT8)QuickestDirection(pCreature->bDirection, bNewDirection);
 
@@ -1942,7 +1992,7 @@ function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8)
 }
 
 function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iRangeFactorMultiplier;
+  let iRangeFactorMultiplier: INT32;
 
   iRangeFactorMultiplier = pSoldier->bAIMorale - 1;
   switch (pSoldier->bAttitude) {
@@ -1973,8 +2023,8 @@ function RangeChangeDesire(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function ArmySeesOpponents(): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (cnt = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; cnt <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; cnt++) {
     pSoldier = MercPtrs[cnt];

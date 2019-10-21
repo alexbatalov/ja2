@@ -162,13 +162,13 @@ const enum Enum166 {
   QD_DROP_DOWN_CANCEL,
 }
 
-STR16 QuestStates[] = {
+let QuestStates: STR16[] /* [] */ = {
   L"N.S.",
   L"In Prog.",
   L"Done",
 };
 
-STR16 QuestDebugText[] = {
+let QuestDebugText: STR16[] /* [] */ = {
   L"Quest Debug System",
   L"Quests",
   L"Quest Number",
@@ -269,7 +269,7 @@ const enum Enum167 {
   QUEST_DBS_ESC_TOP_STOP_TALKING,
 }
 
-STR16 PocketText[] = {
+let PocketText: STR16[] /* [] */ = {
   L"Helmet",
   L"Vest",
   L"Leg",
@@ -332,130 +332,130 @@ const enum Enum168 {
 }
 
 // image identifiers
-UINT32 guiQdScrollArrowImage;
+let guiQdScrollArrowImage: UINT32;
 
-BOOLEAN gfQuestDebugEntry = TRUE;
-BOOLEAN gfQuestDebugExit = FALSE;
+let gfQuestDebugEntry: BOOLEAN = TRUE;
+let gfQuestDebugExit: BOOLEAN = FALSE;
 
-BOOLEAN gfRedrawQuestDebugSystem = TRUE;
+let gfRedrawQuestDebugSystem: BOOLEAN = TRUE;
 
-UINT16 gusQuestDebugBlue;
-UINT16 gusQuestDebugLtBlue;
-UINT16 gusQuestDebugDkBlue;
+let gusQuestDebugBlue: UINT16;
+let gusQuestDebugLtBlue: UINT16;
+let gusQuestDebugDkBlue: UINT16;
 
-UINT16 gusFactAtTopOfList;
+let gusFactAtTopOfList: UINT16;
 
 // INT16		gsCurScrollBoxY=0;
 
-SCROLL_BOX gNpcListBox; // The Npc Scroll box
-SCROLL_BOX gItemListBox; // The Npc Scroll box
+let gNpcListBox: SCROLL_BOX; // The Npc Scroll box
+let gItemListBox: SCROLL_BOX; // The Npc Scroll box
 
-SCROLL_BOX *gpActiveListBox; // Only 1 scroll box is active at a time, this is set to it.
+let gpActiveListBox: Pointer<SCROLL_BOX>; // Only 1 scroll box is active at a time, this is set to it.
 
-INT16 gsQdsEnteringGridNo = 0;
+let gsQdsEnteringGridNo: INT16 = 0;
 
-UINT8 gubTextEntryAction = QD_DROP_DOWN_NO_ACTION;
-BOOLEAN gfTextEntryActive = FALSE;
+let gubTextEntryAction: UINT8 = QD_DROP_DOWN_NO_ACTION;
+let gfTextEntryActive: BOOLEAN = FALSE;
 // wchar_t			gzTextEntryReturnString[ 16 ];
 
-BOOLEAN gfUseLocalNPCs = FALSE;
+let gfUseLocalNPCs: BOOLEAN = FALSE;
 
-UINT8 gubNPCInventoryPopupAction = QD_DROP_DOWN_NO_ACTION;
+let gubNPCInventoryPopupAction: UINT8 = QD_DROP_DOWN_NO_ACTION;
 
-UINT8 gubCurrentNpcInSector[QUEST_DBS_SIZE_NPC_ARRAY];
-UINT8 gubNumNPCinSector;
+let gubCurrentNpcInSector: UINT8[] /* [QUEST_DBS_SIZE_NPC_ARRAY] */;
+let gubNumNPCinSector: UINT8;
 
-UINT8 gubCurQuestSelected;
-UINT16 gusCurFactSelected;
-UINT16 gusFactAtTopOfList;
+let gubCurQuestSelected: UINT8;
+let gusCurFactSelected: UINT16;
+let gusFactAtTopOfList: UINT16;
 
 // INT16				gsCurrentNPCLog=-1;						//If this is set, the value will be set to the
-BOOLEAN gfNpcLogButton = FALSE;
+let gfNpcLogButton: BOOLEAN = FALSE;
 
-INT32 giHaveSelectedItem = -1; // If it is not the first time in, dont reset the Selected ITem
-INT32 giHaveSelectedNPC = -1; // If it is not the first time in, dont reset the selected NPC
+let giHaveSelectedItem: INT32 = -1; // If it is not the first time in, dont reset the Selected ITem
+let giHaveSelectedNPC: INT32 = -1; // If it is not the first time in, dont reset the selected NPC
 
-INT32 giSelectedMercCurrentQuote = -1;
-SOLDIERTYPE *gTalkingMercSoldier = NULL;
-BOOLEAN gfPauseTalkingMercPopup = FALSE;
-BOOLEAN gfAddNpcToTeam = FALSE;
-BOOLEAN gfRpcToSaySectorDesc = FALSE;
-BOOLEAN gfNpcPanelIsUsedForTalkingMerc = FALSE;
+let giSelectedMercCurrentQuote: INT32 = -1;
+let gTalkingMercSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gfPauseTalkingMercPopup: BOOLEAN = FALSE;
+let gfAddNpcToTeam: BOOLEAN = FALSE;
+let gfRpcToSaySectorDesc: BOOLEAN = FALSE;
+let gfNpcPanelIsUsedForTalkingMerc: BOOLEAN = FALSE;
 
-BOOLEAN gfBackgroundMaskEnabled = FALSE;
+let gfBackgroundMaskEnabled: BOOLEAN = FALSE;
 
-BOOLEAN gfExitQdsDueToMessageBox = FALSE;
-INT32 giQdsMessageBox = -1; // Qds pop up messages index value
+let gfExitQdsDueToMessageBox: BOOLEAN = FALSE;
+let giQdsMessageBox: INT32 = -1; // Qds pop up messages index value
 
-BOOLEAN gfInDropDownBox = FALSE;
+let gfInDropDownBox: BOOLEAN = FALSE;
 // BOOLEAN			gfExitOptionsAfterMessageBox = FALSE;
 
-BOOLEAN gfAddKeyNextPass = FALSE;
-BOOLEAN gfDropDamagedItems = FALSE;
+let gfAddKeyNextPass: BOOLEAN = FALSE;
+let gfDropDamagedItems: BOOLEAN = FALSE;
 
 //
 // Mouse Regions
 //
-MOUSE_REGION gQuestDebugSysScreenRegions;
+let gQuestDebugSysScreenRegions: MOUSE_REGION;
 // void QuestDebugSysScreenRegionCallBack(MOUSE_REGION * pRegion, INT32 iReason );
 
-UINT32 guiQuestDebugExitButton;
+let guiQuestDebugExitButton: UINT32;
 
 // checkbox for weather to show all npc or just npc in sector
-UINT32 guiQuestDebugAllOrSectorNPCToggle;
+let guiQuestDebugAllOrSectorNPCToggle: UINT32;
 
-UINT32 guiQuestDebugCurNPCButton;
+let guiQuestDebugCurNPCButton: UINT32;
 
-UINT32 guiQuestDebugCurItemButton;
+let guiQuestDebugCurItemButton: UINT32;
 
-UINT32 guiQuestDebugAddNpcToLocationButton;
+let guiQuestDebugAddNpcToLocationButton: UINT32;
 
-UINT32 guiQuestDebugAddItemToLocationButton;
+let guiQuestDebugAddItemToLocationButton: UINT32;
 
-UINT32 guiQuestDebugGiveItemToNPCButton;
+let guiQuestDebugGiveItemToNPCButton: UINT32;
 
-UINT32 guiQuestDebugChangeDayButton;
+let guiQuestDebugChangeDayButton: UINT32;
 
-UINT32 guiQuestDebugViewNPCInvButton;
+let guiQuestDebugViewNPCInvButton: UINT32;
 
-UINT32 guiQuestDebugRestoreNPCInvButton;
+let guiQuestDebugRestoreNPCInvButton: UINT32;
 
-UINT32 guiQuestDebugNPCLogButtonButton;
+let guiQuestDebugNPCLogButtonButton: UINT32;
 
-UINT32 guiQuestDebugNPCRefreshButtonButton;
+let guiQuestDebugNPCRefreshButtonButton: UINT32;
 
-UINT32 guiQuestDebugStartMercTalkingButtonButton;
+let guiQuestDebugStartMercTalkingButtonButton: UINT32;
 
 // checkbox for weather to add the merc to the players team
-UINT32 guiQuestDebugAddNpcToTeamToggle;
+let guiQuestDebugAddNpcToTeamToggle: UINT32;
 
 // checkbox for weather have rpc say the sector description
-UINT32 guiQuestDebugRPCSaySectorDescToggle;
+let guiQuestDebugRPCSaySectorDescToggle: UINT32;
 
-MOUSE_REGION gSelectedNpcListRegion[QUEST_DBS_MAX_DISPLAYED_ENTRIES];
+let gSelectedNpcListRegion: MOUSE_REGION[] /* [QUEST_DBS_MAX_DISPLAYED_ENTRIES] */;
 
-MOUSE_REGION gScrollAreaRegion[QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR];
+let gScrollAreaRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR] */;
 
-MOUSE_REGION gScrollArrowsRegion[2];
+let gScrollArrowsRegion: MOUSE_REGION[] /* [2] */;
 
 // Text entry Disable the screen
-MOUSE_REGION gQuestTextEntryDebugDisableScreenRegion;
+let gQuestTextEntryDebugDisableScreenRegion: MOUSE_REGION;
 
 // Ok button on the text entry form
-UINT32 guiQuestDebugTextEntryOkBtn;
+let guiQuestDebugTextEntryOkBtn: UINT32;
 
 // Ok button on the NPC inventory form
-UINT32 guiQuestDebugNPCInventOkBtn;
+let guiQuestDebugNPCInventOkBtn: UINT32;
 
 // Mouse regions for the Quests
-MOUSE_REGION gQuestListRegion[QUEST_DBS_NUM_DISPLAYED_QUESTS];
+let gQuestListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_QUESTS] */;
 
 // Mouse regions for the Facts
-MOUSE_REGION gFactListRegion[QUEST_DBS_NUM_DISPLAYED_FACTS];
+let gFactListRegion: MOUSE_REGION[] /* [QUEST_DBS_NUM_DISPLAYED_FACTS] */;
 
-UINT32 guiQDPgUpButtonButton;
+let guiQDPgUpButtonButton: UINT32;
 
-UINT32 guiQDPgDownButtonButton;
+let guiQDPgDownButtonButton: UINT32;
 
 //*******************************
 //
@@ -472,7 +472,7 @@ UINT32 guiQDPgDownButtonButton;
 //*******************************
 
 function QuestDebugScreenInit(): UINT32 {
-  UINT16 usListBoxFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+  let usListBoxFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
 
   // Set so next time we come in, we can set up
   gfQuestDebugEntry = TRUE;
@@ -621,16 +621,17 @@ function QuestDebugScreenShutdown(): UINT32 {
 }
 
 function EnterQuestDebugSystem(): BOOLEAN {
-  UINT8 i;
-  UINT16 usPosX, usPosY;
-  wchar_t zName[128];
+  let i: UINT8;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let zName: wchar_t[] /* [128] */;
   //	UINT16	usListBoxFontHeight = GetFontHeight( QUEST_DBS_FONT_LISTBOX_TEXT ) + 2;
 
   //	UINT16	zItemName[ SIZE_ITEM_NAME ];
   //	UINT16	zItemDesc[ SIZE_ITEM_INFO ];
 
-  UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
-  VOBJECT_DESC VObjectDesc;
+  let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
+  let VObjectDesc: VOBJECT_DESC;
 
   if (gfExitQdsDueToMessageBox) {
     gfRedrawQuestDebugSystem = TRUE;
@@ -747,7 +748,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
   DisableButton(guiQuestDebugNPCRefreshButtonButton);
 
   if (giHaveSelectedNPC != -1) {
-    UINT16 zItemDesc[SIZE_ITEM_INFO];
+    let zItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
 
     if (gfUseLocalNPCs)
       swprintf(zItemDesc, L"%d - %s", gubCurrentNpcInSector[giHaveSelectedNPC], gMercProfiles[gubCurrentNpcInSector[giHaveSelectedNPC]].zNickname);
@@ -761,8 +762,8 @@ function EnterQuestDebugSystem(): BOOLEAN {
   }
 
   if (giHaveSelectedItem != -1) {
-    UINT16 zItemName[SIZE_ITEM_NAME];
-    UINT16 zItemDesc[SIZE_ITEM_INFO];
+    let zItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
+    let zItemDesc: UINT16[] /* [SIZE_ITEM_INFO] */;
 
     wcscpy(zItemName, ShortItemNames[giHaveSelectedItem]);
 
@@ -778,7 +779,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
 }
 
 function ExitQuestDebugSystem(): void {
-  UINT16 i;
+  let i: UINT16;
 
   if (gfExitQdsDueToMessageBox) {
     return;
@@ -834,7 +835,7 @@ function ExitQuestDebugSystem(): void {
 }
 
 function HandleQuestDebugSystem(): void {
-  CHAR16 zTemp[512];
+  let zTemp: CHAR16[] /* [512] */;
 
   // hhh
 
@@ -921,7 +922,7 @@ function RenderQuestDebugSystem(): void {
 
 function DisplayCurrentGridNo(): void {
   if (gsQdsEnteringGridNo != 0) {
-    CHAR16 zTemp[512];
+    let zTemp: CHAR16[] /* [512] */;
 
     swprintf(zTemp, L"%s:  %d", QuestDebugText[QUEST_DBS_CURRENT_GRIDNO], gsQdsEnteringGridNo);
     DrawTextToScreen(zTemp, QUEST_DBS_NPC_CURRENT_GRIDNO_X, QUEST_DBS_NPC_CURRENT_GRIDNO_Y, QUEST_DBS_NUMBER_COL_WIDTH, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
@@ -929,9 +930,9 @@ function DisplayCurrentGridNo(): void {
 }
 
 function GetUserInput(): void {
-  InputAtom Event;
-  POINT MousePos;
-  UINT8 ubPanelMercShouldUse = WhichPanelShouldTalkingMercUse(giSelectedMercCurrentQuote);
+  let Event: InputAtom;
+  let MousePos: POINT;
+  let ubPanelMercShouldUse: UINT8 = WhichPanelShouldTalkingMercUse(giSelectedMercCurrentQuote);
 
   GetCursorPos(&MousePos);
 
@@ -1032,7 +1033,7 @@ function GetUserInput(): void {
           break;
 
         case 'd': {
-          CHAR16 zTemp[512];
+          let zTemp: CHAR16[] /* [512] */;
 
           // toggle whether dropped items are damaged or not
           gfDropDamagedItems ^= 1;
@@ -1112,12 +1113,12 @@ function QuestDebug_EnterTactical(): void {
 }
 
 function DisplaySectionLine(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usStartX;
-  UINT16 usStartY;
-  UINT16 usEndX;
-  UINT16 usEndY;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usStartX: UINT16;
+  let usStartY: UINT16;
+  let usEndX: UINT16;
+  let usEndY: UINT16;
 
   usStartX = usEndX = QUEST_DBS_FIRST_SECTION_WIDTH;
 
@@ -1189,10 +1190,11 @@ function BtnQuestDebugExitButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function DisplayQuestList(): void {
-  UINT16 usLoop1, usCount;
-  UINT16 usTextHeight = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
-  wchar_t sTemp[15];
-  UINT16 usPosY;
+  let usLoop1: UINT16;
+  let usCount: UINT16;
+  let usTextHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
+  let sTemp: wchar_t[] /* [15] */;
+  let usPosY: UINT16;
 
   usPosY = QUEST_DBS_FIRST_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET; //&& (usCount < QUEST_DBS_MAX_DISPLAYED_ENTRIES )
   for (usLoop1 = 0, usCount = 0; (usLoop1 < MAX_QUESTS); usLoop1++) {
@@ -1214,10 +1216,11 @@ function DisplayQuestList(): void {
 }
 
 function DisplayFactList(): void {
-  UINT16 usLoop1, usCount;
-  UINT16 usTextHeight = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
-  wchar_t sTemp[512];
-  UINT16 usPosY;
+  let usLoop1: UINT16;
+  let usCount: UINT16;
+  let usTextHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_DYNAMIC_TEXT) + 2;
+  let sTemp: wchar_t[] /* [512] */;
+  let usPosY: UINT16;
 
   usPosY = QUEST_DBS_SECOND_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET + QUEST_DBS_FACT_LIST_OFFSET; //
 
@@ -1309,9 +1312,10 @@ function DisplayNPCInfo(): void {
 }
 
 function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
-  static BOOLEAN fMouseRegionsCreated = FALSE;
-  UINT16 i;
-  UINT16 usPosX, usPosY;
+  /* static */ let fMouseRegionsCreated: BOOLEAN = FALSE;
+  let i: UINT16;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
 
   // if there are
   if (gpActiveListBox->usMaxArrayIndex == 0)
@@ -1322,7 +1326,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
     } break;
 
     case QD_DROP_DOWN_CREATE: {
-      UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+      let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
 
       // if the mouse regions have already been creates, return
       if (fMouseRegionsCreated)
@@ -1434,9 +1438,10 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
 }
 
 function DisplaySelectedListBox(): void {
-  UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
-  UINT16 usPosX, usPosY;
-  HVOBJECT hImageHandle;
+  let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let hImageHandle: HVOBJECT;
 
   // DEBUG: make sure it wont go over array bounds
   if (gpActiveListBox->usMaxArrayIndex == 0) {
@@ -1488,12 +1493,14 @@ function DisplaySelectedListBox(): void {
 }
 
 function DisplaySelectedNPC(): void {
-  UINT16 i;
-  UINT16 usPosX, usPosY;
-  UINT16 usLocationX = 0, usLocationY = 0;
-  UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
-  CHAR16 sTempString[64];
-  wchar_t zButtonName[256];
+  let i: UINT16;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let usLocationX: UINT16 = 0;
+  let usLocationY: UINT16 = 0;
+  let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+  let sTempString: CHAR16[] /* [64] */;
+  let zButtonName: wchar_t[] /* [256] */;
 
   usPosX = gpActiveListBox->usScrollPosX;
   usPosY = gpActiveListBox->usScrollPosY + 2;
@@ -1566,13 +1573,14 @@ function DisplaySelectedNPC(): void {
 }
 
 function DisplaySelectedItem(): void {
-  UINT16 i;
-  UINT16 usPosX, usPosY;
-  UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
-  UINT16 zItemName[SIZE_ITEM_NAME];
+  let i: UINT16;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+  let zItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
   //	UINT16	zItemDesc[ SIZE_ITEM_INFO ];
 
-  wchar_t zButtonName[256];
+  let zButtonName: wchar_t[] /* [256] */;
 
   usPosX = gpActiveListBox->usScrollPosX;
   usPosY = gpActiveListBox->usScrollPosY + 2;
@@ -1620,7 +1628,7 @@ function DisplaySelectedItem(): void {
 function SelectNpcListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT8 ubSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
     gpActiveListBox->ubCurScrollBoxAction = QD_DROP_DOWN_DESTROY; // qq
     gpActiveListBox->sCurSelectedItem = ubSelected + gpActiveListBox->usItemDisplayedOnTopOfList;
@@ -1636,7 +1644,7 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    INT16 sSelected = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
+    let sSelected: INT16 = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
     pRegion->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1654,7 +1662,7 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
 
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_MOVE) {
-    INT16 sSelected = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
+    let sSelected: INT16 = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -1670,14 +1678,17 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
 
 function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartPosX, UINT16 usStartPosY, UINT16 usScrollAreaHeight, UINT16 usNumEntries )
 {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usWidth, usTempPosY;
-  UINT16 usHeight, usPosY, usPosX;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usWidth: UINT16;
+  let usTempPosY: UINT16;
+  let usHeight: UINT16;
+  let usPosY: UINT16;
+  let usPosX: UINT16;
 
-  UINT16 usNumEntries = gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex - 1;
+  let usNumEntries: UINT16 = gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex - 1;
 
-  UINT16 temp;
+  let temp: UINT16;
 
   usTempPosY = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollArrowHeight;
   usPosX = gpActiveListBox->usScrollPosX + gpActiveListBox->usScrollWidth;
@@ -1720,7 +1731,7 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
 function ScrollArrowsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
-    UINT8 ubSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
     // if down arrow
     if (ubSelected) {
@@ -1782,13 +1793,14 @@ function ScrollAreaMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT3
 }
 
 function CalcPositionOfNewScrollBoxLocation(): void {
-  INT16 sMouseXPos, sMouseYPos;
-  INT16 sIncrementValue;
-  FLOAT dValue;
-  INT16 sHeight = 0;
+  let sMouseXPos: INT16;
+  let sMouseYPos: INT16;
+  let sIncrementValue: INT16;
+  let dValue: FLOAT;
+  let sHeight: INT16 = 0;
   //	INT16	sHeightOfScrollBox = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex ) + .5);
-  INT16 sHeightOfScrollBox = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex) + .5);
-  INT16 sStartPosOfScrollArea = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollArrowHeight;
+  let sHeightOfScrollBox: INT16 = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex) + .5);
+  let sStartPosOfScrollArea: INT16 = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollArrowHeight;
 
   sMouseXPos = gusMouseXPos;
   sMouseYPos = gusMouseYPos;
@@ -1878,7 +1890,7 @@ function BtnQuestDebugAddNpcToLocationButtonCallback(btn: Pointer<GUI_BUTTON>, r
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    CHAR16 zTemp[512];
+    let zTemp: CHAR16[] /* [512] */;
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
     swprintf(zTemp, L"%s where %s will be added.", QuestDebugText[QUEST_DBS_ENTER_GRID_NUM], gMercProfiles[gNpcListBox.sCurSelectedItem].zNickname);
@@ -1898,8 +1910,8 @@ function BtnQuestDebugAddItemToLocationButtonCallback(btn: Pointer<GUI_BUTTON>, 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    CHAR16 zTemp[512];
-    UINT16 zItemName[SIZE_ITEM_NAME];
+    let zTemp: CHAR16[] /* [512] */;
+    let zItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
     //		UINT16	zItemDesc[ SIZE_ITEM_INFO ];
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -1924,8 +1936,8 @@ function BtnQuestDebugGiveItemToNPCButtonCallback(btn: Pointer<GUI_BUTTON>, reas
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    SOLDIERTYPE *pSoldier;
-    OBJECTTYPE Object;
+    let pSoldier: Pointer<SOLDIERTYPE>;
+    let Object: OBJECTTYPE;
 
     CreateItem(gItemListBox.sCurSelectedItem, 100, &Object);
 
@@ -1961,7 +1973,7 @@ function BtnQuestDebugChangeDayButtonCallback(btn: Pointer<GUI_BUTTON>, reason: 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    CHAR16 zTemp[512];
+    let zTemp: CHAR16[] /* [512] */;
 
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -2020,7 +2032,7 @@ function BtnQuestDebugNPCLogButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reaso
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    wchar_t zName[128];
+    let zName: wchar_t[] /* [128] */;
 
     //		btn->uiFlags &= (~BUTTON_CLICKED_ON );
 
@@ -2048,9 +2060,9 @@ function BtnQuestDebugNPCRefreshButtonButtonCallback(btn: Pointer<GUI_BUTTON>, r
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    BOOLEAN fRetVal = FALSE;
-    CHAR16 zTemp[128];
-    UINT8 ubMercID = 0;
+    let fRetVal: BOOLEAN = FALSE;
+    let zTemp: CHAR16[] /* [128] */;
+    let ubMercID: UINT8 = 0;
 
     if (gfUseLocalNPCs) {
       ubMercID = gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem];
@@ -2104,9 +2116,9 @@ function BtnQuestDebugStartMercTalkingButtonButtonCallback(btn: Pointer<GUI_BUTT
 }
 
 function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, EntryCallBack: TEXT_ENTRY_CALLBACK): BOOLEAN {
-  static BOOLEAN fMouseRegionCreated = FALSE;
-  static wchar_t zString[256];
-  static TEXT_ENTRY_CALLBACK TextEntryCallback;
+  /* static */ let fMouseRegionCreated: BOOLEAN = FALSE;
+  /* static */ let zString: wchar_t[] /* [256] */;
+  /* static */ let TextEntryCallback: TEXT_ENTRY_CALLBACK;
 
   switch (ubAction) {
     case QD_DROP_DOWN_NO_ACTION: {
@@ -2140,8 +2152,8 @@ function CreateDestroyDisplayTextEntryBox(ubAction: UINT8, pString: STR16, Entry
 
     case QD_DROP_DOWN_CANCEL:
     case QD_DROP_DOWN_DESTROY: {
-      wchar_t zText[32];
-      INT32 iTextEntryNumber;
+      let zText: wchar_t[] /* [32] */;
+      let iTextEntryNumber: INT32;
 
       if (!fMouseRegionCreated)
         break;
@@ -2232,7 +2244,7 @@ function TextEntryBox(pString: STR16, TextEntryCallBack: TEXT_ENTRY_CALLBACK): v
 function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    wchar_t String[512];
+    let String: wchar_t[] /* [512] */;
 
     gubCurQuestSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
@@ -2247,7 +2259,7 @@ function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 function ScrollFactListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    wchar_t String[512];
+    let String: wchar_t[] /* [512] */;
 
     gusCurFactSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0) + gusFactAtTopOfList;
 
@@ -2262,8 +2274,8 @@ function ScrollFactListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 }
 
 function InitQuestDebugTextInputBoxes(): void {
-  UINT32 uiStartLoc = 0;
-  wchar_t sTemp[640];
+  let uiStartLoc: UINT32 = 0;
+  let sTemp: wchar_t[] /* [640] */;
   //	wchar_t	sText[ 640 ];
 
   InitTextInputMode();
@@ -2294,9 +2306,10 @@ function DestroyQuestDebugTextInputBoxes(): void {
 }
 
 function AddNPCToGridNo(iGridNo: INT32): void {
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  INT16 sSectorX, sSectorY;
-  UINT8 ubID;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let ubID: UINT8;
 
   GetCurrentWorldSector(&sSectorX, &sSectorY);
 
@@ -2324,7 +2337,7 @@ function AddNPCToGridNo(iGridNo: INT32): void {
 }
 
 function AddItemToGridNo(iGridNo: INT32): void {
-  OBJECTTYPE Object;
+  let Object: OBJECTTYPE;
 
   gsQdsEnteringGridNo = (INT16)iGridNo;
 
@@ -2341,7 +2354,7 @@ function AddItemToGridNo(iGridNo: INT32): void {
 }
 
 function AddKeyToGridNo(iKeyID: INT32): void {
-  OBJECTTYPE Object;
+  let Object: OBJECTTYPE;
 
   if (iKeyID < NUM_KEYS) {
     CreateKeyObject(&Object, 1, (UINT8)iKeyID);
@@ -2353,8 +2366,8 @@ function AddKeyToGridNo(iKeyID: INT32): void {
 }
 
 function ChangeDayNumber(iDayToChangeTo: INT32): void {
-  INT32 uiDiff;
-  UINT32 uiNewDayTimeInSec;
+  let uiDiff: INT32;
+  let uiNewDayTimeInSec: UINT32;
 
   if (iDayToChangeTo) {
     uiNewDayTimeInSec = (guiDay + iDayToChangeTo) * NUM_SEC_IN_DAY + 8 * NUM_SEC_IN_HOUR + 15 * NUM_SEC_IN_MIN;
@@ -2371,9 +2384,10 @@ function ChangeDayNumber(iDayToChangeTo: INT32): void {
 }
 
 function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
-  static BOOLEAN fMouseRegionCreated = FALSE;
-  UINT16 usPosY, i;
-  SOLDIERTYPE *pSoldier;
+  /* static */ let fMouseRegionCreated: BOOLEAN = FALSE;
+  let usPosY: UINT16;
+  let i: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   switch (ubAction) {
     case QD_DROP_DOWN_NO_ACTION:
@@ -2426,9 +2440,9 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       break;
 
     case QD_DROP_DOWN_DISPLAY: {
-      UINT16 zItemName[SIZE_ITEM_NAME];
+      let zItemName: UINT16[] /* [SIZE_ITEM_NAME] */;
       //			UINT16	zItemDesc[ SIZE_ITEM_INFO ];
-      UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
+      let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_LISTBOX_TEXT) + 2;
 
       // if the soldier is active
       // if the soldier is active
@@ -2539,8 +2553,9 @@ function BtnQuestDebugAllOrSectorNPCToggleCallback(btn: Pointer<GUI_BUTTON>, rea
 }
 
 function AddNPCsInSectorToArray(): void {
-  SOLDIERTYPE *pSoldier;
-  UINT16 cnt, i;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT16;
+  let i: UINT16;
 
   // Setup array of merc who are in the current sector
   i = 0;
@@ -2617,11 +2632,11 @@ function BtnQDPgDownButtonButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
 }
 
 function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8, ubApproach: UINT8): void {
-  static BOOLEAN fFirstTimeIn = TRUE;
+  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
 
-  HWFILE hFile;
-  UINT32 uiByteWritten;
-  char DestString[1024];
+  let hFile: HWFILE;
+  let uiByteWritten: UINT32;
+  let DestString: char[] /* [1024] */;
   //	char			MercName[ NICKNAME_LENGTH ];
   //	char			NpcName[ NICKNAME_LENGTH ];
 
@@ -2687,14 +2702,14 @@ function NpcRecordLoggingInit(ubNpcID: UINT8, ubMercID: UINT8, ubQuoteNum: UINT8
 }
 
 function NpcRecordLogging(ubApproach: UINT8, pStringA: STR, ...args: any[]): void {
-  static BOOLEAN fFirstTimeIn = TRUE;
+  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
   //	static UINT32		uiLineNumber = 1;
   //	static UINT32		uiRecordNumber = 1;
-  HWFILE hFile;
-  UINT32 uiByteWritten;
-  va_list argptr;
-  char TempString[1024];
-  char DestString[1024];
+  let hFile: HWFILE;
+  let uiByteWritten: UINT32;
+  let argptr: va_list;
+  let TempString: char[] /* [1024] */;
+  let DestString: char[] /* [1024] */;
 
   TempString[0] = '\0';
   DestString[0] = '\0';
@@ -2792,7 +2807,7 @@ function EnableQDSButtons(): void {
 }
 
 function DoQDSMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, ubFlags: UINT8, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect pCenteringRect = { 0, 0, 639, 479 };
+  let pCenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // reset exit mode
   gfExitQdsDueToMessageBox = TRUE;
@@ -2843,8 +2858,8 @@ function IncrementActiveDropDownBox(sIncrementValue: INT16): void {
 }
 
 function IsMercInTheSector(usMercID: UINT16): INT16 {
-  UINT8 cnt;
-  UINT8 ubCount = 0;
+  let cnt: UINT8;
+  let ubCount: UINT8 = 0;
 
   if (usMercID == -1)
     return FALSE;
@@ -2861,10 +2876,10 @@ function IsMercInTheSector(usMercID: UINT16): INT16 {
 }
 
 function RefreshAllNPCInventory(): void {
-  UINT16 usCnt;
-  UINT16 usItemCnt;
-  OBJECTTYPE TempObject;
-  UINT16 usItem;
+  let usCnt: UINT16;
+  let usItemCnt: UINT16;
+  let TempObject: OBJECTTYPE;
+  let usItem: UINT16;
 
   for (usCnt = 0; usCnt < TOTAL_SOLDIERS; usCnt++) {
     // if the is active
@@ -2893,8 +2908,8 @@ function RefreshAllNPCInventory(): void {
 }
 
 function StartMercTalkingFromQuoteNum(iQuoteToStartTalkingFrom: INT32): void {
-  CHAR16 zTemp[512];
-  INT32 uiMaxNumberOfQuotes = GetMaxNumberOfQuotesToPlay();
+  let zTemp: CHAR16[] /* [512] */;
+  let uiMaxNumberOfQuotes: INT32 = GetMaxNumberOfQuotesToPlay();
 
   // make sure the current character is created
   SetQDSMercProfile();
@@ -2944,8 +2959,8 @@ function EndMercTalking(): void {
 
 function HandleQDSTalkingMerc(): void {
   //	static BOOLEAN	fWas
-  BOOLEAN fIsTheMercTalking = FALSE;
-  UINT8 ubPanelMercShouldUse;
+  let fIsTheMercTalking: BOOLEAN = FALSE;
+  let ubPanelMercShouldUse: UINT8;
 
   if (giSelectedMercCurrentQuote != -1) {
     if (gTalkingMercSoldier == NULL)
@@ -3048,9 +3063,9 @@ function SetQDSMercProfile(): void {
 }
 
 function DisplayQDSCurrentlyQuoteNum(): void {
-  CHAR16 zTemp[512];
-  UINT16 usPosY;
-  UINT16 usFontHeight = GetFontHeight(QUEST_DBS_FONT_TEXT_ENTRY) + 2;
+  let zTemp: CHAR16[] /* [512] */;
+  let usPosY: UINT16;
+  let usFontHeight: UINT16 = GetFontHeight(QUEST_DBS_FONT_TEXT_ENTRY) + 2;
 
   // Display the box frame
   ColorFillVideoSurfaceArea(FRAME_BUFFER, QDS_CURRENT_QUOTE_NUM_BOX_X, QDS_CURRENT_QUOTE_NUM_BOX_Y, QDS_CURRENT_QUOTE_NUM_BOX_X + QDS_CURRENT_QUOTE_NUM_BOX_WIDTH, QDS_CURRENT_QUOTE_NUM_BOX_Y + QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT, Get16BPPColor(FROMRGB(32, 41, 53)));
@@ -3111,7 +3126,7 @@ function WhichPanelShouldTalkingMercUse(): UINT8 {
 }
 
 function DisableFactMouseRegions(): void {
-  UINT i;
+  let i: UINT;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
     MSYS_DisableRegion(&gFactListRegion[i]);
@@ -3119,7 +3134,7 @@ function DisableFactMouseRegions(): void {
 }
 
 function EnableFactMouseRegions(): void {
-  UINT i;
+  let i: UINT;
 
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
     MSYS_EnableRegion(&gFactListRegion[i]);
@@ -3127,8 +3142,8 @@ function EnableFactMouseRegions(): void {
 }
 
 function GetMaxNumberOfQuotesToPlay(): INT32 {
-  INT32 iNumberOfQuotes = 0;
-  UINT8 ubProfileID = (UINT8)gNpcListBox.sCurSelectedItem;
+  let iNumberOfQuotes: INT32 = 0;
+  let ubProfileID: UINT8 = (UINT8)gNpcListBox.sCurSelectedItem;
 
   // if it is the RPCs and they are to say the sector descs
   if (gfRpcToSaySectorDesc && ubProfileID >= 57 && ubProfileID <= 60) {
@@ -3155,7 +3170,7 @@ function GetMaxNumberOfQuotesToPlay(): INT32 {
 }
 
 function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get a soldier pointer
   pSoldier = FindSoldierByProfileID((UINT8)usProfileID, FALSE);

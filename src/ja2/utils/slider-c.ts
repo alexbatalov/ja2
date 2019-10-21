@@ -48,15 +48,15 @@ interface SLIDER {
 //
 ///////////////////////////////////////////////////
 
-SLIDER *pSliderHead = NULL;
-UINT32 guiCurrentSliderID = 1;
+let pSliderHead: Pointer<SLIDER> = NULL;
+let guiCurrentSliderID: UINT32 = 1;
 
-BOOLEAN gfSliderInited = FALSE;
+let gfSliderInited: BOOLEAN = FALSE;
 
-BOOLEAN gfCurrentSliderIsAnchored = FALSE; // if true, the current selected slider mouse button is down
-SLIDER *gpCurrentSlider = NULL;
+let gfCurrentSliderIsAnchored: BOOLEAN = FALSE; // if true, the current selected slider mouse button is down
+let gpCurrentSlider: Pointer<SLIDER> = NULL;
 
-UINT32 guiSliderBoxImage = 0;
+let guiSliderBoxImage: UINT32 = 0;
 // ggg
 
 ///////////////////////////////////////////////////
@@ -74,7 +74,7 @@ UINT32 guiSliderBoxImage = 0;
 ///////////////////////////////////////////////////
 
 function InitSlider(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load Slider Box Graphic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -87,8 +87,8 @@ function InitSlider(): BOOLEAN {
 }
 
 function ShutDownSlider(): void {
-  SLIDER *pRemove = NULL;
-  SLIDER *pTemp = NULL;
+  let pRemove: Pointer<SLIDER> = NULL;
+  let pTemp: Pointer<SLIDER> = NULL;
 
   AssertMsg(gfSliderInited, "Trying to ShutDown the Slider System when it was never inited");
 
@@ -108,11 +108,11 @@ function ShutDownSlider(): void {
 }
 
 function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, usNumberOfIncrements: UINT16, sPriority: INT8, SliderChangeCallback: SLIDER_CHANGE_CALLBACK, uiFlags: UINT32): INT32 {
-  SLIDER *pTemp = NULL;
-  SLIDER *pNewSlider = NULL;
-  INT32 iNewID = 0;
-  UINT32 cnt = 0;
-  UINT16 usIncrementWidth = 0;
+  let pTemp: Pointer<SLIDER> = NULL;
+  let pNewSlider: Pointer<SLIDER> = NULL;
+  let iNewID: INT32 = 0;
+  let cnt: UINT32 = 0;
+  let usIncrementWidth: UINT16 = 0;
 
   AssertMsg(gfSliderInited, "Trying to Add a Slider Bar when the Slider System was never inited");
 
@@ -205,11 +205,11 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
 }
 
 function RenderAllSliderBars(): void {
-  SLIDER *pTemp = NULL;
+  let pTemp: Pointer<SLIDER> = NULL;
 
   // set the currently selectd slider bar
   if (gfLeftButtonState && gpCurrentSlider != NULL) {
-    UINT16 usPosY = 0;
+    let usPosY: UINT16 = 0;
 
     if (gusMouseYPos < gpCurrentSlider->usPosY)
       usPosY = 0;
@@ -247,9 +247,9 @@ function RenderSelectedSliderBar(pSlider: Pointer<SLIDER>): void {
 }
 
 function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
-  HVOBJECT hPixHandle;
-  SGPRect SrcRect;
-  SGPRect DestRect;
+  let hPixHandle: HVOBJECT;
+  let SrcRect: SGPRect;
+  let DestRect: SGPRect;
 
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
     // fill out the settings for the current dest and source rects
@@ -317,8 +317,8 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
 }
 
 function RemoveSliderBar(uiSliderID: UINT32): void {
-  SLIDER *pTemp = NULL;
-  SLIDER *pNodeToRemove = NULL;
+  let pTemp: Pointer<SLIDER> = NULL;
+  let pNodeToRemove: Pointer<SLIDER> = NULL;
   //	UINT32	cnt;
 
   pTemp = pSliderHead;
@@ -358,8 +358,8 @@ function RemoveSliderBar(uiSliderID: UINT32): void {
 }
 
 function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
-  UINT32 uiSelectedSlider;
-  SLIDER *pSlider = NULL;
+  let uiSelectedSlider: UINT32;
+  let pSlider: Pointer<SLIDER> = NULL;
 
   // if we already have an anchored slider bar
   if (gpCurrentSlider != NULL)
@@ -427,8 +427,8 @@ function SelectedSliderMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: 
 }
 
 function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT32 uiSelectedSlider;
-  SLIDER *pSlider = NULL;
+  let uiSelectedSlider: UINT32;
+  let pSlider: Pointer<SLIDER> = NULL;
 
   // if we already have an anchored slider bar
   if (gpCurrentSlider != NULL)
@@ -480,11 +480,11 @@ function SelectedSliderButtonCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
 }
 
 function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
-  FLOAT dNewIncrement = 0.0;
-  SLIDER *pSlider;
-  UINT16 usOldIncrement;
-  BOOLEAN fLastSpot = FALSE;
-  BOOLEAN fFirstSpot = FALSE;
+  let dNewIncrement: FLOAT = 0.0;
+  let pSlider: Pointer<SLIDER>;
+  let usOldIncrement: UINT16;
+  let fLastSpot: BOOLEAN = FALSE;
+  let fFirstSpot: BOOLEAN = FALSE;
 
   pSlider = GetSliderFromID(uiSliderID);
   if (pSlider == NULL)
@@ -527,8 +527,8 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
 }
 
 function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: UINT16, iColor: INT16): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
@@ -542,7 +542,7 @@ function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: 
 }
 
 function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
-  UINT16 usMaxPos;
+  let usMaxPos: UINT16;
 
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
     // if the box is in the last position
@@ -578,7 +578,7 @@ function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
 }
 
 function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
-  SLIDER *pTemp = NULL;
+  let pTemp: Pointer<SLIDER> = NULL;
 
   pTemp = pSliderHead;
 
@@ -595,7 +595,7 @@ function GetSliderFromID(uiSliderID: UINT32): Pointer<SLIDER> {
 }
 
 function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
-  SLIDER *pSlider = NULL;
+  let pSlider: Pointer<SLIDER> = NULL;
 
   pSlider = GetSliderFromID(uiSliderID);
   if (pSlider == NULL)

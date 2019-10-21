@@ -26,11 +26,11 @@ const DELTA_T = (1.0 * TIME_MULTI);
 const GRAVITY = (9.8 * 2.5);
 //#define					GRAVITY						( 9.8 * 2.8 )
 
-REAL_OBJECT ObjectSlots[NUM_OBJECT_SLOTS];
-UINT32 guiNumObjectSlots = 0;
-BOOLEAN fDampingActive = FALSE;
+let ObjectSlots: REAL_OBJECT[] /* [NUM_OBJECT_SLOTS] */;
+let guiNumObjectSlots: UINT32 = 0;
+let fDampingActive: BOOLEAN = FALSE;
 // real						Kdl	= (float)0.5;					// LINEAR DAMPENING ( WIND RESISTANCE )
-real Kdl = (float)(0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
+let Kdl: real = (float)(0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
 
 const EPSILONV = 0.5;
 const EPSILONP = () => (real)0.01;
@@ -42,7 +42,7 @@ const SCALE_HORZ_VAL_TO_VERT = (f) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
 
 /// OBJECT POOL FUNCTIONS
 function GetFreeObjectSlot(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumObjectSlots; uiCount++) {
     if ((ObjectSlots[uiCount].fAllocated == FALSE))
@@ -56,7 +56,7 @@ function GetFreeObjectSlot(): INT32 {
 }
 
 function RecountObjectSlots(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumObjectSlots - 1; (uiCount >= 0); uiCount--) {
     if ((ObjectSlots[uiCount].fAllocated)) {
@@ -69,9 +69,9 @@ function RecountObjectSlots(): void {
 }
 
 function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, xPos: real, yPos: real, zPos: real, xForce: real, yForce: real, zForce: real, ubOwner: UINT8, ubActionCode: UINT8, uiActionData: UINT32): INT32 {
-  INT32 iObjectIndex;
-  FLOAT mass;
-  REAL_OBJECT *pObject;
+  let iObjectIndex: INT32;
+  let mass: FLOAT;
+  let pObject: Pointer<REAL_OBJECT>;
 
   if ((iObjectIndex = GetFreeObjectSlot()) == (-1))
     return -1;
@@ -152,8 +152,8 @@ function RemoveObjectSlot(iObject: INT32): BOOLEAN {
 }
 
 function SimulateWorld(): void {
-  UINT32 cnt;
-  REAL_OBJECT *pObject;
+  let cnt: UINT32;
+  let pObject: Pointer<REAL_OBJECT>;
 
   if (COUNTERDONE(PHYSICSUPDATE)) {
     RESETCOUNTER(PHYSICSUPDATE);
@@ -171,7 +171,7 @@ function SimulateWorld(): void {
 }
 
 function RemoveAllPhysicsObjects(): void {
-  UINT32 cnt;
+  let cnt: UINT32;
 
   for (cnt = 0; cnt < guiNumObjectSlots; cnt++) {
     // CHECK FOR ALLOCATED
@@ -182,11 +182,11 @@ function RemoveAllPhysicsObjects(): void {
 }
 
 function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
-  real DeltaTime = 0;
-  real CurrentTime = 0;
-  real TargetTime = DeltaTime;
-  INT32 iCollisionID;
-  BOOLEAN fEndThisObject = FALSE;
+  let DeltaTime: real = 0;
+  let CurrentTime: real = 0;
+  let TargetTime: real = DeltaTime;
+  let iCollisionID: INT32;
+  let fEndThisObject: BOOLEAN = FALSE;
 
   if (!PhysicsUpdateLife(pObject, (float)deltaT)) {
     return;
@@ -232,7 +232,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
 }
 
 function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
-  vector_3 vTemp;
+  let vTemp: vector_3;
 
   // Calculate forces
   pObject->Force = VSetEqual(&(pObject->InitialForce));
@@ -261,7 +261,7 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 }
 
 function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLEAN {
-  UINT8 bLevel = 0;
+  let bLevel: UINT8 = 0;
 
   pObject->dLifeSpan += DeltaTime;
 
@@ -320,7 +320,7 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
 
       // ATE: Handle end of animation...
       if (pObject->fCatchAnimOn) {
-        SOLDIERTYPE *pSoldier;
+        let pSoldier: Pointer<SOLDIERTYPE>;
 
         pObject->fCatchAnimOn = FALSE;
 
@@ -354,7 +354,7 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
 }
 
 function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLEAN {
-  vector_3 vTemp;
+  let vTemp: vector_3;
 
   // Save old position
   pObject->OldPosition = VSetEqual(&(pObject->Position));
@@ -391,7 +391,9 @@ function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLE
 }
 
 function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>, DeltaTime: real): BOOLEAN {
-  FLOAT dDeltaX, dDeltaY, dDeltaZ;
+  let dDeltaX: FLOAT;
+  let dDeltaY: FLOAT;
+  let dDeltaZ: FLOAT;
 
   if (PhysicsCheckForCollisions(pObject, piCollisionID)) {
     dDeltaX = pObject->Position.x - pObject->OldPosition.x;
@@ -480,14 +482,21 @@ function PhysicsDeleteObject(pObject: Pointer<REAL_OBJECT>): void {
 }
 
 function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: Pointer<INT32>): BOOLEAN {
-  vector_3 vTemp;
-  FLOAT dDeltaX, dDeltaY, dDeltaZ, dX, dY, dZ;
-  INT32 iCollisionCode = COLLISION_NONE;
-  BOOLEAN fDoCollision = FALSE;
-  FLOAT dElasity = 1;
-  UINT16 usStructureID;
-  FLOAT dNormalX, dNormalY, dNormalZ;
-  INT16 sGridNo;
+  let vTemp: vector_3;
+  let dDeltaX: FLOAT;
+  let dDeltaY: FLOAT;
+  let dDeltaZ: FLOAT;
+  let dX: FLOAT;
+  let dY: FLOAT;
+  let dZ: FLOAT;
+  let iCollisionCode: INT32 = COLLISION_NONE;
+  let fDoCollision: BOOLEAN = FALSE;
+  let dElasity: FLOAT = 1;
+  let usStructureID: UINT16;
+  let dNormalX: FLOAT;
+  let dNormalY: FLOAT;
+  let dNormalZ: FLOAT;
+  let sGridNo: INT16;
 
   // Checkf for collisions
   dX = pObject->Position.x;
@@ -682,8 +691,8 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       pObject->fHaveHitGround = TRUE;
     } else if (iCollisionCode == COLLISION_WATER) {
-      ANITILE_PARAMS AniParams;
-      ANITILE *pNode;
+      let AniParams: ANITILE_PARAMS;
+      let pNode: Pointer<ANITILE>;
 
       // Continue going...
       pObject->fApplyFriction = TRUE;
@@ -787,7 +796,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       dElasity = (float)1.1;
     } else {
-      vector_3 vIncident;
+      let vIncident: vector_3;
 
       if (CheckForCatcher(pObject, usStructureID)) {
         return FALSE;
@@ -844,8 +853,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 }
 
 function PhysicsResolveCollision(pObject: Pointer<REAL_OBJECT>, pVelocity: Pointer<vector_3>, pNormal: Pointer<vector_3>, CoefficientOfRestitution: real): void {
-  real ImpulseNumerator, Impulse;
-  vector_3 vTemp;
+  let ImpulseNumerator: real;
+  let Impulse: real;
+  let vTemp: vector_3;
 
   ImpulseNumerator = -1 * CoefficientOfRestitution * VDotProduct(pVelocity, pNormal);
 
@@ -857,10 +867,11 @@ function PhysicsResolveCollision(pObject: Pointer<REAL_OBJECT>, pVelocity: Point
 }
 
 function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
-  LEVELNODE *pNode;
-  INT16 sNewGridNo, sTileIndex;
-  ETRLEObject *pTrav;
-  HVOBJECT hVObject;
+  let pNode: Pointer<LEVELNODE>;
+  let sNewGridNo: INT16;
+  let sTileIndex: INT16;
+  let pTrav: Pointer<ETRLEObject>;
+  let hVObject: HVOBJECT;
 
   // Determine new gridno
   sNewGridNo = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
@@ -888,7 +899,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       // Add smoke trails...
       if (pObject->Obj.usItem == MORTAR_SHELL && pObject->uiNumTilesMoved > 2 && pObject->ubActionCode == THROW_ARM_ITEM) {
         if (sNewGridNo != pObject->sGridNo) {
-          ANITILE_PARAMS AniParams;
+          let AniParams: ANITILE_PARAMS;
 
           AniParams.sGridNo = (INT16)sNewGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
@@ -992,7 +1003,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 }
 
 function ObjectHitWindow(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOLEAN, fLargeForce: BOOLEAN): void {
-  EV_S_WINDOWHIT SWindowHit;
+  let SWindowHit: EV_S_WINDOWHIT;
   SWindowHit.sGridNo = sGridNo;
   SWindowHit.usStructureID = usStructureID;
   SWindowHit.fBlowWindowSouth = fBlowWindowSouth;
@@ -1003,13 +1014,19 @@ function ObjectHitWindow(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth
 }
 
 function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dzDegrees: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>, pdMagForce: Pointer<real>): vector_3 {
-  vector_3 vDirNormal, vPosition, vForce;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
-  real dForce = 20;
-  real dRange;
-  real dPercentDiff = 0;
-  real dTestRange, dTestDiff;
-  INT32 iNumChecks = 0;
+  let vDirNormal: vector_3;
+  let vPosition: vector_3;
+  let vForce: vector_3;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
+  let dForce: real = 20;
+  let dRange: real;
+  let dPercentDiff: real = 0;
+  let dTestRange: real;
+  let dTestDiff: real;
+  let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
   ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
@@ -1083,10 +1100,15 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 }
 
 function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: real, dzDegrees: real, pItem: Pointer<OBJECTTYPE>): INT16 {
-  vector_3 vDirNormal, vPosition, vForce;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
-  real dRange;
-  INT16 sEndGridNo;
+  let vDirNormal: vector_3;
+  let vPosition: vector_3;
+  let vForce: vector_3;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
+  let dRange: real;
+  let sEndGridNo: INT16;
 
   // Get XY from gridno
   ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
@@ -1122,13 +1144,19 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
 }
 
 function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): real {
-  vector_3 vDirNormal, vPosition, vForce;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
-  real dRange;
-  real dzDegrees = ((float)PI / 8);
-  real dPercentDiff = 0;
-  real dTestRange, dTestDiff;
-  INT32 iNumChecks = 0;
+  let vDirNormal: vector_3;
+  let vPosition: vector_3;
+  let vForce: vector_3;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
+  let dRange: real;
+  let dzDegrees: real = ((float)PI / 8);
+  let dPercentDiff: real = 0;
+  let dTestRange: real;
+  let dTestDiff: real;
+  let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
   ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
@@ -1212,8 +1240,13 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 }
 
 function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ: INT16, dForce: real, dzDegrees: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): void {
-  vector_3 vDirNormal, vPosition, vForce;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
+  let vDirNormal: vector_3;
+  let vPosition: vector_3;
+  let vForce: vector_3;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
 
   // Get XY from gridno
   ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
@@ -1247,10 +1280,11 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
 // return range
 
 function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psFinalGridNo: Pointer<INT16>): FLOAT {
-  INT32 iID;
-  REAL_OBJECT *pObject;
-  FLOAT dDiffX, dDiffY;
-  INT16 sGridNo;
+  let iID: INT32;
+  let pObject: Pointer<REAL_OBJECT>;
+  let dDiffX: FLOAT;
+  let dDiffY: FLOAT;
+  let sGridNo: INT16;
 
   if (psFinalGridNo) {
     (*psFinalGridNo) = NOWHERE;
@@ -1293,8 +1327,8 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
 }
 
 function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psNewGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): INT32 {
-  INT32 iID;
-  REAL_OBJECT *pObject;
+  let iID: INT32;
+  let pObject: Pointer<REAL_OBJECT>;
 
   // OK, create a physics object....
   iID = CreatePhysicalObject(pItem, -1, vPosition->x, vPosition->y, vPosition->z, vForce->x, vForce->y, vForce->z, NOBODY, NO_THROW_ACTION, 0);
@@ -1340,8 +1374,9 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
 }
 
 function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubHeight: UINT8, dForce: real, pItem: Pointer<OBJECTTYPE>, psGridNo: Pointer<INT16>): FLOAT {
-  real dAngle;
-  INT16 sSrcX, sSrcY;
+  let dAngle: real;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
 
   ConvertGridNoToCenterCellXY(pSoldier->sGridNo, &sSrcX, &sSrcY);
 
@@ -1352,17 +1387,20 @@ function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
 }
 
 function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pdMagForce: Pointer<FLOAT>, pdDegrees: Pointer<FLOAT>, psFinalGridNo: Pointer<INT16>, fArmed: BOOLEAN): void {
-  INT16 sInterGridNo;
-  INT16 sStartZ;
-  FLOAT dMagForce, dMaxForce, dMinForce;
-  FLOAT dDegrees, dNewDegrees;
-  BOOLEAN fThroughIntermediateGridNo = FALSE;
-  UINT16 usLauncher;
-  BOOLEAN fIndoors = FALSE;
-  BOOLEAN fLauncher = FALSE;
-  BOOLEAN fMortar = FALSE;
-  BOOLEAN fGLauncher = FALSE;
-  INT16 sMinRange = 0;
+  let sInterGridNo: INT16;
+  let sStartZ: INT16;
+  let dMagForce: FLOAT;
+  let dMaxForce: FLOAT;
+  let dMinForce: FLOAT;
+  let dDegrees: FLOAT;
+  let dNewDegrees: FLOAT;
+  let fThroughIntermediateGridNo: BOOLEAN = FALSE;
+  let usLauncher: UINT16;
+  let fIndoors: BOOLEAN = FALSE;
+  let fLauncher: BOOLEAN = FALSE;
+  let fMortar: BOOLEAN = FALSE;
+  let fGLauncher: BOOLEAN = FALSE;
+  let sMinRange: INT16 = 0;
 
   // Start with default degrees/ force
   dDegrees = OUTDOORS_START_ANGLE;
@@ -1492,9 +1530,15 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
 }
 
 function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pItem: Pointer<OBJECTTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, psFinalGridNo: Pointer<INT16>, fArmed: BOOLEAN, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): BOOLEAN {
-  FLOAT dForce, dDegrees;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
-  vector_3 vForce, vPosition, vDirNormal;
+  let dForce: FLOAT;
+  let dDegrees: FLOAT;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
+  let vForce: vector_3;
+  let vPosition: vector_3;
+  let vDirNormal: vector_3;
 
   // Ge7t basic launch params...
   CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, &dForce, &dDegrees, psFinalGridNo, fArmed);
@@ -1541,10 +1585,11 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
 }
 
 function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
-  FLOAT dMagForce;
-  INT16 sSrcGridNo, sDestGridNo;
-  OBJECTTYPE Object;
-  INT16 sFinalGridNo;
+  let dMagForce: FLOAT;
+  let sSrcGridNo: INT16;
+  let sDestGridNo: INT16;
+  let Object: OBJECTTYPE;
+  let sFinalGridNo: INT16;
 
   // OK, use a fake gridno, find the new gridno based on range, use height of merc, end height of ground,
   // 45 degrees
@@ -1560,8 +1605,8 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
 }
 
 function CalculateSoldierMaxForce(pSoldier: Pointer<SOLDIERTYPE>, dDegrees: FLOAT, pItem: Pointer<OBJECTTYPE>, fArmed: BOOLEAN): FLOAT {
-  INT32 uiMaxRange;
-  FLOAT dMagForce;
+  let uiMaxRange: INT32;
+  let dMagForce: FLOAT;
 
   dDegrees = (FLOAT)(PI / 4);
 
@@ -1577,15 +1622,22 @@ const MIN_MISS_BY = 1;
 const MAX_MISS_RADIUS = 5;
 
 function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel: UINT8, sEndZ: INT16, pItem: Pointer<OBJECTTYPE>, bMissBy: INT8, ubActionCode: UINT8, uiActionData: UINT32): void {
-  FLOAT dForce, dDegrees;
-  INT16 sDestX, sDestY, sSrcX, sSrcY;
-  vector_3 vForce, vDirNormal;
-  INT16 sFinalGridNo;
-  BOOLEAN fArmed = FALSE;
-  UINT16 usLauncher;
-  INT16 sStartZ;
-  INT8 bMinMissRadius, bMaxMissRadius, bMaxRadius;
-  FLOAT fScale;
+  let dForce: FLOAT;
+  let dDegrees: FLOAT;
+  let sDestX: INT16;
+  let sDestY: INT16;
+  let sSrcX: INT16;
+  let sSrcY: INT16;
+  let vForce: vector_3;
+  let vDirNormal: vector_3;
+  let sFinalGridNo: INT16;
+  let fArmed: BOOLEAN = FALSE;
+  let usLauncher: UINT16;
+  let sStartZ: INT16;
+  let bMinMissRadius: INT8;
+  let bMaxMissRadius: INT8;
+  let bMaxRadius: INT8;
+  let fScale: FLOAT;
 
   // Set target ID if anyone
   pSoldier->ubTargetID = WhoIsThere2(sGridNo, ubLevel);
@@ -1716,8 +1768,9 @@ function CheckForCatcher(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): 
 }
 
 function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID: UINT16): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sDamage, sBreath;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sDamage: INT16;
+  let sBreath: INT16;
 
   // Do we want to catch?
   if (pObject->fTestObject == NO_TEST_OBJECT) {
@@ -1738,8 +1791,8 @@ function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID:
 }
 
 function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiSpacesAway;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiSpacesAway: UINT32;
 
   // Do we want to catch?
   if (pObject->fTestObject == NO_TEST_OBJECT) {
@@ -1775,8 +1828,8 @@ function CheckForCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 }
 
 function AttemptToCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubChanceToCatch;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubChanceToCatch: UINT8;
 
   // Get intended target
   pSoldier = MercPtrs[pObject->uiActionData];
@@ -1797,9 +1850,9 @@ function AttemptToCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 }
 
 function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fGoodCatch = FALSE;
-  UINT16 usItem;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fGoodCatch: BOOLEAN = FALSE;
+  let usItem: UINT16;
 
   // Get intended target
   pSoldier = MercPtrs[pObject->uiActionData];
@@ -1846,13 +1899,13 @@ function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 //#define TESTDUDEXPLOSIVES
 
 function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
-  INT16 sZ;
-  BOOLEAN fDoImpact = FALSE;
-  BOOLEAN fCheckForDuds = FALSE;
-  OBJECTTYPE *pObj;
-  INT32 iTrapped = 0;
-  UINT16 usFlags = 0;
-  INT8 bLevel = 0;
+  let sZ: INT16;
+  let fDoImpact: BOOLEAN = FALSE;
+  let fCheckForDuds: BOOLEAN = FALSE;
+  let pObj: Pointer<OBJECTTYPE>;
+  let iTrapped: INT32 = 0;
+  let usFlags: UINT16 = 0;
+  let bLevel: INT8 = 0;
 
   // Calculate pixel position of z
   sZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)(pObject->Position.z)) - gpWorldLevelData[pObject->sGridNo].sHeight;
@@ -1941,9 +1994,9 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
 }
 
 function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
-  UINT16 usCnt = 0;
-  UINT32 usPhysicsCount = 0;
+  let uiNumBytesWritten: UINT32 = 0;
+  let usCnt: UINT16 = 0;
+  let usPhysicsCount: UINT32 = 0;
 
   for (usCnt = 0; usCnt < NUM_OBJECT_SLOTS; usCnt++) {
     // if the REAL_OBJECT is active, save it
@@ -1975,8 +2028,8 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  UINT16 usCnt = 0;
+  let uiNumBytesRead: UINT32 = 0;
+  let usCnt: UINT16 = 0;
 
   // make sure the objects are not allocated
   memset(ObjectSlots, 0, NUM_OBJECT_SLOTS * sizeof(REAL_OBJECT));
@@ -2004,11 +2057,12 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadius: INT8): UINT16 {
-  INT16 sX, sY;
-  INT16 sGridNo;
-  INT32 leftmost;
-  BOOLEAN fFound = FALSE;
-  UINT32 cnt = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let sGridNo: INT16;
+  let leftmost: INT32;
+  let fFound: BOOLEAN = FALSE;
+  let cnt: UINT32 = 0;
 
   if (ubMaxRadius == 0 || ubMinRadius == 0) {
     return sSweetGridNo;

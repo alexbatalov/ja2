@@ -2,11 +2,11 @@
 
 // The sector information required for the strategic AI.  Contains the number of enemy troops,
 // as well as intentions, etc.
-SECTORINFO SectorInfo[256];
-UNDERGROUND_SECTORINFO *gpUndergroundSectorInfoHead = NULL;
-BOOLEAN gfPendingEnemies = FALSE;
+let SectorInfo: SECTORINFO[] /* [256] */;
+let gpUndergroundSectorInfoHead: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+let gfPendingEnemies: BOOLEAN = FALSE;
 
-INT16 gsInterrogationGridNo[3] = {
+let gsInterrogationGridNo: INT16[] /* [3] */ = {
   7756,
   7757,
   7758,
@@ -17,21 +17,21 @@ function ValidateEnemiesHaveWeapons(): void {
 
 // Counts enemies and crepitus, but not bloodcats.
 function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): UINT8 {
-  UINT8 ubNumHostiles = 0;
+  let ubNumHostiles: UINT8 = 0;
 
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   Assert(sSectorZ >= 0 && sSectorZ <= 3);
 
   if (sSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, (UINT8)sSectorZ);
     if (pSector) {
       ubNumHostiles = (UINT8)(pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites + pSector->ubNumCreatures);
     }
   } else {
-    SECTORINFO *pSector;
-    GROUP *pGroup;
+    let pSector: Pointer<SECTORINFO>;
+    let pGroup: Pointer<GROUP>;
 
     // Count stationary hostiles
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
@@ -51,21 +51,21 @@ function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
 }
 
 function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): UINT8 {
-  UINT8 ubNumEnemies = 0;
+  let ubNumEnemies: UINT8 = 0;
 
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   Assert(sSectorZ >= 0 && sSectorZ <= 3);
 
   if (sSectorZ) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(sSectorX, sSectorY, (UINT8)sSectorZ);
     if (pSector) {
       ubNumEnemies = (UINT8)(pSector->ubNumAdmins + pSector->ubNumTroops + pSector->ubNumElites);
     }
   } else {
-    SECTORINFO *pSector;
-    GROUP *pGroup;
+    let pSector: Pointer<SECTORINFO>;
+    let pGroup: Pointer<GROUP>;
 
     // Count stationary enemies
     pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
@@ -85,9 +85,9 @@ function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
 }
 
 function NumEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
-  SECTORINFO *pSector;
-  GROUP *pGroup;
-  UINT8 ubNumTroops;
+  let pSector: Pointer<SECTORINFO>;
+  let pGroup: Pointer<GROUP>;
+  let ubNumTroops: UINT8;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
@@ -104,7 +104,7 @@ function NumEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
 }
 
 function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
@@ -124,9 +124,9 @@ function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
 }
 
 function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
-  GROUP *pGroup;
-  SECTORINFO *pSector;
-  UINT8 ubNumTroops;
+  let pGroup: Pointer<GROUP>;
+  let pSector: Pointer<SECTORINFO>;
+  let ubNumTroops: UINT8;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
 
@@ -149,8 +149,8 @@ function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
 }
 
 function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
-  GROUP *pGroup;
-  SECTORINFO *pSector;
+  let pGroup: Pointer<GROUP>;
+  let pSector: Pointer<SECTORINFO>;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
 
@@ -176,7 +176,7 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
 }
 
 function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
   pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
@@ -188,7 +188,9 @@ function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, 
 }
 
 function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmins: Pointer<UINT8>, pubNumTroops: Pointer<UINT8>, pubNumElites: Pointer<UINT8>): void {
-  UINT8 ubNumAdmins, ubNumTroops, ubNumElites;
+  let ubNumAdmins: UINT8;
+  let ubNumTroops: UINT8;
+  let ubNumElites: UINT8;
 
   GetNumberOfStationaryEnemiesInSector(sSectorX, sSectorY, pubNumAdmins, pubNumTroops, pubNumElites);
 
@@ -200,18 +202,20 @@ function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmi
 }
 
 function EndTacticalBattleForEnemy(): void {
-  GROUP *pGroup;
-  INT32 i, iNumMilitia = 0, iNumEnemies = 0;
+  let pGroup: Pointer<GROUP>;
+  let i: INT32;
+  let iNumMilitia: INT32 = 0;
+  let iNumEnemies: INT32 = 0;
 
   // Clear enemies in battle for all stationary groups in the sector.
   if (gbWorldSectorZ > 0) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     pSector->ubAdminsInBattle = 0;
     pSector->ubTroopsInBattle = 0;
     pSector->ubElitesInBattle = 0;
   } else if (!gbWorldSectorZ) {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     // grab the number of each type in the stationary sector
     pSector->ubAdminsInBattle = 0;
@@ -255,9 +259,9 @@ function EndTacticalBattleForEnemy(): void {
 }
 
 function NumFreeEnemySlots(): UINT8 {
-  UINT8 ubNumFreeSlots = 0;
-  INT32 i;
-  SOLDIERTYPE *pSoldier;
+  let ubNumFreeSlots: UINT8 = 0;
+  let i: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
   // Count the number of free enemy slots.  It is possible to have multiple groups exceed the maximum.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
     pSoldier = &Menptr[i];
@@ -271,14 +275,19 @@ function NumFreeEnemySlots(): UINT8 {
 // correct number of troops of each type based on the current number in the sector
 // in global focus (gWorldSectorX/Y)
 function PrepareEnemyForSectorBattle(): BOOLEAN {
-  SECTORINFO *pSector;
-  GROUP *pGroup;
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubNumAdmins, ubNumTroops, ubNumElites;
-  UINT8 ubTotalAdmins, ubTotalElites, ubTotalTroops;
-  UINT8 ubStationaryEnemies;
-  INT32 i, num;
-  INT16 sNumSlots;
+  let pSector: Pointer<SECTORINFO>;
+  let pGroup: Pointer<GROUP>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubNumAdmins: UINT8;
+  let ubNumTroops: UINT8;
+  let ubNumElites: UINT8;
+  let ubTotalAdmins: UINT8;
+  let ubTotalElites: UINT8;
+  let ubTotalTroops: UINT8;
+  let ubStationaryEnemies: UINT8;
+  let i: INT32;
+  let num: INT32;
+  let sNumSlots: INT16;
 
   gfPendingEnemies = FALSE;
 
@@ -310,7 +319,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
   if (pSector->uiFlags & SF_USE_MAP_SETTINGS) {
     // count the number of enemy placements in a map and use those
-    SOLDIERINITNODE *curr;
+    let curr: Pointer<SOLDIERINITNODE>;
     curr = gSoldierInitHead;
     ubTotalAdmins = ubTotalTroops = ubTotalElites = 0;
     while (curr) {
@@ -490,8 +499,10 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
 }
 
 function PrepareEnemyForUndergroundBattle(): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pUnderground;
-  UINT8 ubTotalAdmins, ubTotalTroops, ubTotalElites;
+  let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
+  let ubTotalAdmins: UINT8;
+  let ubTotalTroops: UINT8;
+  let ubTotalElites: UINT8;
   pUnderground = gpUndergroundSectorInfoHead;
   while (pUnderground) {
     if (pUnderground->ubSectorX == gWorldSectorX && pUnderground->ubSectorY == gWorldSectorY && pUnderground->ubSectorZ == gbWorldSectorZ) {
@@ -518,9 +529,9 @@ function PrepareEnemyForUndergroundBattle(): BOOLEAN {
 
 // The queen AI layer must process the event by subtracting forces, etc.
 function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iNumEnemiesInSector;
-  SECTORINFO *pSector;
-  UINT16 str[128];
+  let iNumEnemiesInSector: INT32;
+  let pSector: Pointer<SECTORINFO>;
+  let str: UINT16[] /* [128] */;
   EvaluateDeathEffectsToSoldierInitList(pSoldier);
 
   switch (pSoldier->ubProfile) {
@@ -539,7 +550,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
           pSector->ubElitesInBattle--;
         }
       } else {
-        UNDERGROUND_SECTORINFO *pUnderground;
+        let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
         pUnderground = FindUnderGroundSector((UINT8)pSoldier->sSectorX, (UINT8)pSoldier->sSectorY, (UINT8)pSoldier->bSectorZ);
         Assert(pUnderground);
         if (pUnderground->ubNumElites) {
@@ -557,7 +568,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
   // we are recording an enemy death
   if (pSoldier->ubGroupID) {
     // The enemy was in a mobile group
-    GROUP *pGroup;
+    let pGroup: Pointer<GROUP>;
     pGroup = GetGroup(pSoldier->ubGroupID);
     if (!pGroup) {
       return;
@@ -601,7 +612,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
     // The enemy was in a stationary defence group
     if (!gbWorldSectorZ || IsAutoResolveActive()) {
       // ground level (SECTORINFO)
-      SECTORINFO *pSector;
+      let pSector: Pointer<SECTORINFO>;
 
       if (!IsAutoResolveActive()) {
         pSector = &SectorInfo[SECTOR(pSoldier->sSectorX, pSoldier->sSectorY)];
@@ -653,7 +664,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       RecalculateSectorWeight((UINT8)SECTOR(pSoldier->sSectorX, pSoldier->sSectorY));
     } else {
       // basement level (UNDERGROUND_SECTORINFO)
-      UNDERGROUND_SECTORINFO *pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       if (pSector) {
         switch (pSoldier->ubSoldierClass) {
           case SOLDIER_CLASS_ADMINISTRATOR:
@@ -729,9 +740,12 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
 // This is also called whenever an enemy group's reinforcements arrive because the code is
 // identical, though it is highly likely that they will all be successfully added on the first call.
 function AddPossiblePendingEnemiesToBattle(): void {
-  UINT8 ubSlots, ubNumAvailable;
-  UINT8 ubNumElites, ubNumTroops, ubNumAdmins;
-  GROUP *pGroup;
+  let ubSlots: UINT8;
+  let ubNumAvailable: UINT8;
+  let ubNumElites: UINT8;
+  let ubNumTroops: UINT8;
+  let ubNumAdmins: UINT8;
+  let pGroup: Pointer<GROUP>;
   if (!gfPendingEnemies) {
     // Optimization.  No point in checking if we know that there aren't any more enemies that can
     // be added to this battle.  This changes whenever a new enemy group arrives at the scene.
@@ -775,7 +789,7 @@ function AddPossiblePendingEnemiesToBattle(): void {
       if (ubNumAdmins || ubNumTroops || ubNumElites) {
         // This group has contributed forces, then add them now, because different
         // groups appear on different sides of the map.
-        UINT8 ubStrategicInsertionCode = 0;
+        let ubStrategicInsertionCode: UINT8 = 0;
         // First, determine which entrypoint to use, based on the travel direction of the group.
         if (pGroup->ubPrevX && pGroup->ubPrevY) {
           if (pGroup->ubSectorX < pGroup->ubPrevX)
@@ -810,9 +824,11 @@ function AddPossiblePendingEnemiesToBattle(): void {
 }
 
 function NotifyPlayersOfNewEnemies(): void {
-  INT32 iSoldiers, iChosenSoldier, i;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fIgnoreBreath = FALSE;
+  let iSoldiers: INT32;
+  let iChosenSoldier: INT32;
+  let i: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fIgnoreBreath: BOOLEAN = FALSE;
 
   iSoldiers = 0;
   for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {
@@ -856,11 +872,11 @@ function NotifyPlayersOfNewEnemies(): void {
 }
 
 function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UINT8, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8, fMagicallyAppeared: BOOLEAN): void {
-  SOLDIERTYPE *pSoldier;
-  MAPEDGEPOINTINFO MapEdgepointInfo;
-  UINT8 ubCurrSlot;
-  UINT8 ubTotalSoldiers;
-  UINT8 bDesiredDirection = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let MapEdgepointInfo: MAPEDGEPOINTINFO;
+  let ubCurrSlot: UINT8;
+  let ubTotalSoldiers: UINT8;
+  let bDesiredDirection: UINT8 = 0;
   switch (ubStrategicInsertionCode) {
     case INSERTION_CODE_NORTH:
       bDesiredDirection = SOUTHEAST;
@@ -882,7 +898,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
   if (fMagicallyAppeared) {
     // update the strategic counters
     if (!gbWorldSectorZ) {
-      SECTORINFO *pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+      let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
       pSector->ubNumAdmins += ubNumAdmins;
       pSector->ubAdminsInBattle += ubNumAdmins;
       pSector->ubNumTroops += ubNumTroops;
@@ -890,7 +906,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
       pSector->ubNumElites += ubNumElites;
       pSector->ubElitesInBattle += ubNumElites;
     } else {
-      UNDERGROUND_SECTORINFO *pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+      let pSector: Pointer<UNDERGROUND_SECTORINFO> = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
       if (pSector) {
         pSector->ubNumAdmins += ubNumAdmins;
         pSector->ubAdminsInBattle += ubNumAdmins;
@@ -971,9 +987,9 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
 }
 
 function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT32 uiNumOfRecords = 0;
-  UNDERGROUND_SECTORINFO *TempNode = gpUndergroundSectorInfoHead;
+  let uiNumBytesWritten: UINT32;
+  let uiNumOfRecords: UINT32 = 0;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = gpUndergroundSectorInfoHead;
 
   // Loop through all the nodes to count how many there are
   while (TempNode) {
@@ -1003,11 +1019,11 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT32 uiNumOfRecords = 0;
-  UINT32 cnt = 0;
-  UNDERGROUND_SECTORINFO *TempNode = NULL;
-  UNDERGROUND_SECTORINFO *TempSpot = NULL;
+  let uiNumBytesRead: UINT32;
+  let uiNumOfRecords: UINT32 = 0;
+  let cnt: UINT32 = 0;
+  let TempNode: Pointer<UNDERGROUND_SECTORINFO> = NULL;
+  let TempSpot: Pointer<UNDERGROUND_SECTORINFO> = NULL;
 
   // Clear the current LL
   TrashUndergroundSectorInfo();
@@ -1050,7 +1066,7 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
 }
 
 function FindUnderGroundSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8): Pointer<UNDERGROUND_SECTORINFO> {
-  UNDERGROUND_SECTORINFO *pUnderground;
+  let pUnderground: Pointer<UNDERGROUND_SECTORINFO>;
   pUnderground = gpUndergroundSectorInfoHead;
 
   // Loop through all the underground sectors looking for specified sector
@@ -1091,7 +1107,7 @@ function EndCaptureSequence(): void {
 
       // OK! - Schedule Meanwhile now!
       {
-        MEANWHILE_DEFINITION MeanwhileDef;
+        let MeanwhileDef: MEANWHILE_DEFINITION;
 
         MeanwhileDef.sSectorX = 7;
         MeanwhileDef.sSectorY = 14;
@@ -1112,23 +1128,23 @@ function EndCaptureSequence(): void {
 }
 
 function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 i;
-  WORLDITEM WorldItem;
-  BOOLEAN fMadeCorpse;
-  INT32 iNumEnemiesInSector;
+  let i: INT32;
+  let WorldItem: WORLDITEM;
+  let fMadeCorpse: BOOLEAN;
+  let iNumEnemiesInSector: INT32;
 
-  static INT16 sAlmaCaptureGridNos[] = {
+  /* static */ let sAlmaCaptureGridNos: INT16[] /* [] */ = {
     9208,
     9688,
     9215,
   };
-  static INT16 sAlmaCaptureItemsGridNo[] = {
+  /* static */ let sAlmaCaptureItemsGridNo: INT16[] /* [] */ = {
     12246,
     12406,
     13046,
   };
 
-  static INT16 sInterrogationItemGridNo[] = {
+  /* static */ let sInterrogationItemGridNo: INT16[] /* [] */ = {
     12089,
     12089,
     12089,
@@ -1271,9 +1287,12 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
-  INT32 i;
-  BOOLEAN fMadeCorpse;
-  INT8 bKilledEnemies = 0, bKilledCreatures = 0, bKilledRebels = 0, bKilledCivilians = 0;
+  let i: INT32;
+  let fMadeCorpse: BOOLEAN;
+  let bKilledEnemies: INT8 = 0;
+  let bKilledCreatures: INT8 = 0;
+  let bKilledRebels: INT8 = 0;
+  let bKilledCivilians: INT8 = 0;
   return;
   // If any of the soldiers are dying, kill them now.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
@@ -1319,7 +1338,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
     ScreenMsg(FONT_BLUE, MSG_TESTVERSION, L"%d creatures died after you left the sector.", bKilledCreatures);
 
   if (!gbWorldSectorZ) {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     pSector->ubAdminsInBattle = 0;
     pSector->ubTroopsInBattle = 0;
@@ -1327,7 +1346,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
     pSector->ubCreaturesInBattle = 0;
     // RecalculateSectorWeight(
   } else if (gbWorldSectorZ > 0) {
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pSector)
       return;
@@ -1339,7 +1358,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
 }
 
 function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
-  SECTORINFO *pSector;
+  let pSector: Pointer<SECTORINFO>;
   pSector = &SectorInfo[ubSectorID];
   if (pSector->ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector->ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector->ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
     // militia in sector
@@ -1354,9 +1373,9 @@ function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
 
 // Assumes gTacticalStatus.fEnemyInSector
 function OnlyHostileCivsInSector(): BOOLEAN {
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
-  BOOLEAN fHostileCivs = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
+  let fHostileCivs: BOOLEAN = FALSE;
 
   // Look for any hostile civs.
   for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {

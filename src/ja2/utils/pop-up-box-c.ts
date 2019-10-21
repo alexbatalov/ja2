@@ -56,9 +56,9 @@ function SpecifyBoxMinWidth(hBoxHandle: INT32, iMinWidth: INT32): void {
 }
 
 function CreatePopUpBox(phBoxHandle: Pointer<INT32>, Dimensions: SGPRect, Position: SGPPoint, uiFlags: UINT32): BOOLEAN {
-  INT32 iCounter = 0;
-  INT32 iCount = 0;
-  PopUpBoxPt pBox = NULL;
+  let iCounter: INT32 = 0;
+  let iCount: INT32 = 0;
+  let pBox: PopUpBoxPt = NULL;
 
   // find first free box
   for (iCounter = 0; (iCounter < MAX_POPUP_BOX_COUNT) && (PopUpBoxList[iCounter] != NULL); iCounter++)
@@ -303,9 +303,9 @@ function SetBackGroundSurface(hBoxHandle: INT32, iBackGroundSurfaceIndex: INT32)
 
 // adds a FIRST column string to the CURRENT popup box
 function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  STR16 pLocalString = NULL;
-  POPUPSTRINGPTR pStringSt = NULL;
-  INT32 iCounter = 0;
+  let pLocalString: STR16 = NULL;
+  let pStringSt: POPUPSTRINGPTR = NULL;
+  let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -350,9 +350,9 @@ function AddMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
 
 // adds a SECOND column string to the CURRENT popup box
 function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  STR16 pLocalString = NULL;
-  POPUPSTRINGPTR pStringSt = NULL;
-  INT32 iCounter = 0;
+  let pLocalString: STR16 = NULL;
+  let pStringSt: POPUPSTRINGPTR = NULL;
+  let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -394,9 +394,9 @@ function AddSecondColumnMonoString(hStringHandle: Pointer<INT32>, pString: STR16
 
 // Adds a COLORED first column string to the CURRENT box
 function AddColorString(hStringHandle: Pointer<INT32>, pString: STR16): void {
-  STR16 pLocalString;
-  POPUPSTRINGPTR pStringSt = NULL;
-  INT32 iCounter = 0;
+  let pLocalString: STR16;
+  let pStringSt: POPUPSTRINGPTR = NULL;
+  let iCounter: INT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -437,9 +437,10 @@ function AddColorString(hStringHandle: Pointer<INT32>, pString: STR16): void {
 }
 
 function ResizeBoxForSecondStrings(hBoxHandle: INT32): void {
-  INT32 iCounter = 0;
-  PopUpBoxPt pBox;
-  UINT32 uiBaseWidth, uiThisWidth;
+  let iCounter: INT32 = 0;
+  let pBox: PopUpBoxPt;
+  let uiBaseWidth: UINT32;
+  let uiThisWidth: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -462,7 +463,7 @@ function ResizeBoxForSecondStrings(hBoxHandle: INT32): void {
 }
 
 function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return 0;
@@ -479,7 +480,7 @@ function GetNumberOfLinesOfTextInBox(hBoxHandle: INT32): UINT32 {
 }
 
 function SetBoxFont(hBoxHandle: INT32, uiFont: UINT32): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -515,7 +516,7 @@ function SetBoxSecondColumnCurrentOffset(hBoxHandle: INT32, uiCurrentOffset: UIN
 }
 
 function SetBoxSecondColumnFont(hBoxHandle: INT32, uiFont: UINT32): void {
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -555,7 +556,7 @@ function SetBoxLineForeground(iBox: INT32, iStringValue: INT32, ubColor: UINT8):
 }
 
 function SetBoxSecondaryShade(iBox: INT32, ubColor: UINT8): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((iBox < 0) || (iBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -694,7 +695,7 @@ function SetStringSecondColumnShade(hStringHandle: INT32, ubShade: UINT8): void 
 }
 
 function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -710,7 +711,7 @@ function SetBoxForeground(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -726,7 +727,7 @@ function SetBoxBackground(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -742,7 +743,7 @@ function SetBoxHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -758,7 +759,7 @@ function SetBoxShade(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -775,7 +776,7 @@ function SetBoxSecondColumnForeground(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -792,7 +793,7 @@ function SetBoxSecondColumnBackground(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -809,7 +810,7 @@ function SetBoxSecondColumnHighLight(hBoxHandle: INT32, ubColor: UINT8): void {
 }
 
 function SetBoxSecondColumnShade(hBoxHandle: INT32, ubColor: UINT8): void {
-  UINT32 iCounter = 0;
+  let iCounter: UINT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -912,7 +913,7 @@ function UnHighLightLine(hStringHandle: INT32): void {
 }
 
 function UnHighLightBox(hBoxHandle: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -937,7 +938,7 @@ function UnHighLightSecondColumnLine(hStringHandle: INT32): void {
 }
 
 function UnHighLightSecondColumnBox(hBoxHandle: INT32): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -949,7 +950,7 @@ function UnHighLightSecondColumnBox(hBoxHandle: INT32): void {
 }
 
 function RemoveOneCurrentBoxString(hStringHandle: INT32, fFillGaps: BOOLEAN): void {
-  UINT32 uiCounter = 0;
+  let uiCounter: UINT32 = 0;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -972,7 +973,7 @@ function RemoveOneCurrentBoxString(hStringHandle: INT32, fFillGaps: BOOLEAN): vo
 }
 
 function RemoveAllCurrentBoxStrings(): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   if ((guiCurrentBox < 0) || (guiCurrentBox >= MAX_POPUP_BOX_COUNT))
     return;
@@ -982,7 +983,7 @@ function RemoveAllCurrentBoxStrings(): void {
 }
 
 function RemoveBox(hBoxHandle: INT32): void {
-  INT32 hOldBoxHandle;
+  let hOldBoxHandle: INT32;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -1037,7 +1038,7 @@ function GetCurrentBox(hBoxHandle: Pointer<INT32>): void {
 }
 
 function DisplayBoxes(uiBuffer: UINT32): void {
-  UINT32 uiCounter;
+  let uiCounter: UINT32;
 
   for (uiCounter = 0; uiCounter < MAX_POPUP_BOX_COUNT; uiCounter++) {
     DisplayOnePopupBox(uiCounter, uiBuffer);
@@ -1069,18 +1070,20 @@ function ForceUpDateOfBox(uiIndex: UINT32): void {
 
 function DrawBox(uiCounter: UINT32): BOOLEAN {
   // will build pop up box in usTopX, usTopY with dimensions usWidth and usHeight
-  UINT32 uiNumTilesWide;
-  UINT32 uiNumTilesHigh;
-  UINT32 uiCount = 0;
-  HVOBJECT hBoxHandle;
-  HVSURFACE hSrcVSurface;
-  UINT32 uiDestPitchBYTES;
-  UINT32 uiSrcPitchBYTES;
-  UINT16 *pDestBuf;
-  UINT8 *pSrcBuf;
-  SGPRect clip;
-  UINT16 usTopX, usTopY;
-  UINT16 usWidth, usHeight;
+  let uiNumTilesWide: UINT32;
+  let uiNumTilesHigh: UINT32;
+  let uiCount: UINT32 = 0;
+  let hBoxHandle: HVOBJECT;
+  let hSrcVSurface: HVSURFACE;
+  let uiDestPitchBYTES: UINT32;
+  let uiSrcPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT16>;
+  let pSrcBuf: Pointer<UINT8>;
+  let clip: SGPRect;
+  let usTopX: UINT16;
+  let usTopY: UINT16;
+  let usWidth: UINT16;
+  let usHeight: UINT16;
 
   if ((uiCounter < 0) || (uiCounter >= MAX_POPUP_BOX_COUNT))
     return FALSE;
@@ -1167,9 +1170,10 @@ function DrawBox(uiCounter: UINT32): BOOLEAN {
 }
 
 function DrawBoxText(uiCounter: UINT32): BOOLEAN {
-  UINT32 uiCount = 0;
-  INT16 uX, uY;
-  wchar_t sString[100];
+  let uiCount: UINT32 = 0;
+  let uX: INT16;
+  let uY: INT16;
+  let sString: wchar_t[] /* [100] */;
 
   if ((uiCounter < 0) || (uiCounter >= MAX_POPUP_BOX_COUNT))
     return FALSE;
@@ -1269,10 +1273,10 @@ function DrawBoxText(uiCounter: UINT32): BOOLEAN {
 function ResizeBoxToText(hBoxHandle: INT32): void {
   // run through lines of text in box and size box width to longest line plus margins
   // height is sum of getfontheight of each line+ spacing
-  INT32 iWidth = 0;
-  INT32 iHeight = 0;
-  INT32 iCurrString = 0;
-  INT32 iSecondColumnLength = 0;
+  let iWidth: INT32 = 0;
+  let iHeight: INT32 = 0;
+  let iCurrString: INT32 = 0;
+  let iSecondColumnLength: INT32 = 0;
 
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
@@ -1319,7 +1323,7 @@ function IsBoxShown(uiHandle: UINT32): BOOLEAN {
 }
 
 function MarkAllBoxesAsAltered(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // mark all boxes as altered
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_COUNT; iCounter++) {
@@ -1330,7 +1334,7 @@ function MarkAllBoxesAsAltered(): void {
 }
 
 function HideAllBoxes(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // hide all the boxes that are shown
   for (iCounter = 0; iCounter < MAX_POPUP_BOX_COUNT; iCounter++) {

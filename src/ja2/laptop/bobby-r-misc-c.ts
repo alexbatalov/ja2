@@ -1,11 +1,11 @@
-UINT32 guiMiscBackground;
-UINT32 guiMiscGrid;
+let guiMiscBackground: UINT32;
+let guiMiscGrid: UINT32;
 
 function GameInitBobbyRMisc(): void {
 }
 
 function EnterBobbyRMisc(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -43,7 +43,7 @@ function HandleBobbyRMisc(): void {
 }
 
 function RenderBobbyRMisc(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiMiscBackground);
 

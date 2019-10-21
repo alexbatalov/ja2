@@ -4,8 +4,10 @@ function MarkMapIndexDirty(iMapIndex: INT32): void {
 }
 
 function CenterScreenAtMapIndex(iMapIndex: INT32): void {
-  INT16 sWorldX, sWorldY;
-  INT16 sCellX, sCellY;
+  let sWorldX: INT16;
+  let sWorldY: INT16;
+  let sCellX: INT16;
+  let sCellY: INT16;
 
   // Get X, Y world GRID Coordinates
   sWorldY = (iMapIndex / WORLD_COLS);

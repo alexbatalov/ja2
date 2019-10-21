@@ -7,16 +7,16 @@ const SQUAD_WINDOW_TM_Y = () => RADAR_WINDOW_TM_Y + GetFontHeight(SQUAD_FONT());
 // subtractor for squad list from size of radar view region height
 const SUBTRACTOR_FOR_SQUAD_LIST = 0;
 
-INT16 gsRadarX;
-INT16 gsRadarY;
-UINT32 gusRadarImage;
-BOOLEAN fImageLoaded = FALSE;
-BOOLEAN fRenderRadarScreen = TRUE;
-INT16 sSelectedSquadLine = -1;
+let gsRadarX: INT16;
+let gsRadarY: INT16;
+let gusRadarImage: UINT32;
+let fImageLoaded: BOOLEAN = FALSE;
+let fRenderRadarScreen: BOOLEAN = TRUE;
+let sSelectedSquadLine: INT16 = -1;
 
-BOOLEAN gfRadarCurrentGuyFlash = FALSE;
+let gfRadarCurrentGuyFlash: BOOLEAN = FALSE;
 
-MOUSE_REGION gRadarRegionSquadList[NUMBER_OF_SQUADS];
+let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */;
 
 function InitRadarScreen(): BOOLEAN {
   // Add region for radar
@@ -35,10 +35,10 @@ function InitRadarScreen(): BOOLEAN {
 }
 
 function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  CHAR8 zFilename[260];
-  INT32 cnt;
-  HVOBJECT hVObject;
+  let VObjectDesc: VOBJECT_DESC;
+  let zFilename: CHAR8[] /* [260] */;
+  let cnt: INT32;
+  let hVObject: HVOBJECT;
 
   strcpy(zFilename, aFilename);
 
@@ -116,7 +116,8 @@ function MoveRadarScreen(): void {
 }
 
 function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT16 sRadarX, sRadarY;
+  let sRadarX: INT16;
+  let sRadarY: INT16;
 
   // check if we are allowed to do anything?
   if (fRenderRadarScreen == FALSE) {
@@ -137,7 +138,8 @@ function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
 }
 
 function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT16 sRadarX, sRadarY;
+  let sRadarX: INT16;
+  let sRadarY: INT16;
 
   // check if we are allowed to do anything?
   if (fRenderRadarScreen == FALSE) {
@@ -164,29 +166,47 @@ function RadarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function RenderRadarScreen(): void {
-  INT16 sRadarTLX, sRadarTLY;
-  INT16 sRadarBRX, sRadarBRY;
-  INT16 sRadarCX, sRadarCY;
-  INT32 iItemNumber = 0;
+  let sRadarTLX: INT16;
+  let sRadarTLY: INT16;
+  let sRadarBRX: INT16;
+  let sRadarBRY: INT16;
+  let sRadarCX: INT16;
+  let sRadarCY: INT16;
+  let iItemNumber: INT32 = 0;
 
-  INT16 sX_S, sY_S;
-  INT16 sScreenCenterX, sScreenCenterY;
-  INT16 sDistToCenterY, sDistToCenterX;
-  INT16 sTopLeftWorldX, sTopLeftWorldY;
-  INT16 sTopRightWorldX, sTopRightWorldY;
-  INT16 sBottomLeftWorldX, sBottomLeftWorldY;
-  INT16 sBottomRightWorldX, sBottomRightWorldY;
+  let sX_S: INT16;
+  let sY_S: INT16;
+  let sScreenCenterX: INT16;
+  let sScreenCenterY: INT16;
+  let sDistToCenterY: INT16;
+  let sDistToCenterX: INT16;
+  let sTopLeftWorldX: INT16;
+  let sTopLeftWorldY: INT16;
+  let sTopRightWorldX: INT16;
+  let sTopRightWorldY: INT16;
+  let sBottomLeftWorldX: INT16;
+  let sBottomLeftWorldY: INT16;
+  let sBottomRightWorldX: INT16;
+  let sBottomRightWorldY: INT16;
 
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
-  INT16 sXSoldPos, sYSoldPos, sXSoldScreen, sYSoldScreen, sXSoldRadar, sYSoldRadar;
+  let sXSoldPos: INT16;
+  let sYSoldPos: INT16;
+  let sXSoldScreen: INT16;
+  let sYSoldScreen: INT16;
+  let sXSoldRadar: INT16;
+  let sYSoldRadar: INT16;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
-  UINT32 cnt;
-  INT16 sHeight, sWidth, sX, sY;
-  INT32 iCounter = 0;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
+  let cnt: UINT32;
+  let sHeight: INT16;
+  let sWidth: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let iCounter: INT32 = 0;
 
   // create / destroy squad list regions as nessacary
   CreateDestroyMouseRegionsForSquadList();
@@ -286,7 +306,7 @@ function RenderRadarScreen(): void {
   }
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) && (fShowMapInventoryPool == TRUE)) {
-    INT32 iNumberOfItems = 0;
+    let iNumberOfItems: INT32 = 0;
 
     iNumberOfItems = GetTotalNumberOfItems();
 
@@ -415,10 +435,14 @@ function RenderRadarScreen(): void {
 }
 
 function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void {
-  INT16 sScreenX, sScreenY;
-  INT16 sTempX_W, sTempY_W;
-  INT16 sNewCenterWorldX, sNewCenterWorldY;
-  INT16 sNumXSteps, sNumYSteps;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sTempX_W: INT16;
+  let sTempY_W: INT16;
+  let sNewCenterWorldX: INT16;
+  let sNewCenterWorldY: INT16;
+  let sNumXSteps: INT16;
+  let sNumYSteps: INT16;
 
   // Use radar scale values to get screen values, then convert ot map values, rounding to nearest middle tile
   sScreenX = (INT16)(sRadarX / gdScaleX);
@@ -470,11 +494,11 @@ function ToggleRadarScreenRender(): void {
 
 function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
   // will check the state of renderradarscreen flag and decide if we need to create mouse regions for
-  static BOOLEAN fCreated = FALSE;
-  INT16 sCounter = 0;
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hHandle;
-  UINT32 uiHandle;
+  /* static */ let fCreated: BOOLEAN = FALSE;
+  let sCounter: INT16 = 0;
+  let VObjectDesc: VOBJECT_DESC;
+  let hHandle: HVOBJECT;
+  let uiHandle: UINT32;
 
   if ((fRenderRadarScreen == FALSE) && (fCreated == FALSE)) {
     // create regions
@@ -540,8 +564,9 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
 
 function RenderSquadList(): void {
   // show list of squads
-  INT16 sCounter = 0;
-  INT16 sX, sY;
+  let sCounter: INT16 = 0;
+  let sX: INT16;
+  let sY: INT16;
 
   // clear region
   RestoreExternBackgroundRect(RADAR_WINDOW_X, gsRadarY, RADAR_WINDOW_WIDTH, SQUAD_REGION_HEIGHT);
@@ -587,7 +612,7 @@ function RenderSquadList(): void {
 }
 
 function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -605,7 +630,7 @@ function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
 
 function TacticalSquadListBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   // btn callback handler for team list info region
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   iValue = MSYS_GetRegionUserData(pRegion, 0);
 

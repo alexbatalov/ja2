@@ -8,12 +8,12 @@
 // supported.  Just remove the commented line of code (search for UNCOMMENT), and it's fixed -- it is
 // currently disabled.
 
-CurrentPopupMenuInformation gPopup;
+let gPopup: CurrentPopupMenuInformation;
 
-MOUSE_REGION popupRegion;
+let popupRegion: MOUSE_REGION;
 
-UINT16 gusEntryHeight;
-BOOLEAN fWaitingForLButtonRelease = FALSE;
+let gusEntryHeight: UINT16;
+let fWaitingForLButtonRelease: BOOLEAN = FALSE;
 
 // Finds the string for any popup menu in JA2 -- the strings are stored
 // in different ways in each instance.
@@ -55,13 +55,15 @@ returns the menu entry number starting from 1.
 */
 
 function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT8): void {
-  UINT16 usX, usY;
-  UINT16 usMenuHeight;
-  UINT16 usMenuWidth = 0;
-  UINT16 usCurrStrWidth;
-  UINT8 ubColumn, ubEntry;
-  UINT8 ubCounter;
-  GUI_BUTTON *button;
+  let usX: UINT16;
+  let usY: UINT16;
+  let usMenuHeight: UINT16;
+  let usMenuWidth: UINT16 = 0;
+  let usCurrStrWidth: UINT16;
+  let ubColumn: UINT8;
+  let ubEntry: UINT8;
+  let ubCounter: UINT8;
+  let button: Pointer<GUI_BUTTON>;
   // calculate the location of the menu based on the button position.
   // This also calculates the menu's direction based on position.
 
@@ -191,13 +193,16 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
 }
 
 function RenderPopupMenu(): void {
-  UINT16 usX, usY;
-  UINT8 ubColumn, ubEntry, ubCounter;
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  UINT16 usLineColor;
-  UINT16 usStringWidth;
-  UINT16 usStart;
+  let usX: UINT16;
+  let usY: UINT16;
+  let ubColumn: UINT8;
+  let ubEntry: UINT8;
+  let ubCounter: UINT8;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
+  let usLineColor: UINT16;
+  let usStringWidth: UINT16;
+  let usStart: UINT16;
 
   // Draw the menu
   ColorFillVideoSurfaceArea(FRAME_BUFFER, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, Get16BPPColor(FROMRGB(128, 128, 128)));
@@ -251,9 +256,9 @@ function RenderPopupMenu(): void {
 // is highlighted based on the mouse cursor position.  Returns 0 if the
 // mouse is out of the menu region.
 function GetPopupIndexFromMousePosition(): UINT8 {
-  UINT8 ubNumEntriesDown;
-  UINT16 usRelX;
-  UINT8 ubCount;
+  let ubNumEntriesDown: UINT8;
+  let usRelX: UINT16;
+  let ubCount: UINT8;
   if (gusMouseXPos >= gPopup.usLeft && gusMouseXPos <= gPopup.usRight && gusMouseYPos > gPopup.usTop // one pixel gap on top ignored
       && gusMouseYPos < gPopup.usBottom - 2) // two pixel gap on bottom ignored
   {
@@ -277,7 +282,7 @@ function GetPopupIndexFromMousePosition(): UINT8 {
 }
 
 function PopupMenuHandle(): void {
-  InputAtom InputEvent;
+  let InputEvent: InputAtom;
 
   if (gPopup.ubActiveType == POPUP_ACTIVETYPE_NOT_YET_DETERMINED) {
     // Attempt to determine if the menu will be persistant or not.

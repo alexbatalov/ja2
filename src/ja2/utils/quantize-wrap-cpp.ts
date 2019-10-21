@@ -5,7 +5,7 @@ interface RGBValues {
 }
 
 function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
-  INT16 sNumColors;
+  let sNumColors: INT16;
 
   // FIRST CREATE PALETTE
   CQuantizer q(255, 6);
@@ -26,12 +26,17 @@ function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT1
 }
 
 function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, sHeight: INT16, sNumColors: INT16, pTable: Pointer<SGPPaletteEntry>): void {
-  INT32 cX, cY, cnt, bBest;
-  real dLowestDist;
-  real dCubeDist;
-  vector_3 vTableVal, vSrcVal, vDiffVal;
-  UINT8 *pData;
-  RGBValues *pRGBData;
+  let cX: INT32;
+  let cY: INT32;
+  let cnt: INT32;
+  let bBest: INT32;
+  let dLowestDist: real;
+  let dCubeDist: real;
+  let vTableVal: vector_3;
+  let vSrcVal: vector_3;
+  let vDiffVal: vector_3;
+  let pData: Pointer<UINT8>;
+  let pRGBData: Pointer<RGBValues>;
 
   pRGBData = (RGBValues *)pSrc;
 

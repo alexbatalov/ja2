@@ -1,6 +1,6 @@
 // the buttons
-UINT32 giIMPAttributeEntranceButtonImage[1];
-UINT32 giIMPAttributeEntranceButton[1];
+let giIMPAttributeEntranceButtonImage: UINT32[] /* [1] */;
+let giIMPAttributeEntranceButton: UINT32[] /* [1] */;
 
 function EnterIMPAttributeEntrance(): void {
   CreateIMPAttributeEntranceButtons();

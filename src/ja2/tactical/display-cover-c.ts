@@ -32,13 +32,13 @@ const enum Enum205 {
 
 //******  Global Variables  *****************************************
 
-BEST_COVER_STRUCT gCoverRadius[DC_MAX_COVER_RANGE][DC_MAX_COVER_RANGE];
-INT16 gsLastCoverGridNo = NOWHERE;
-INT16 gsLastSoldierGridNo = NOWHERE;
-INT8 gbLastStance = -1;
+let gCoverRadius: BEST_COVER_STRUCT[][] /* [DC_MAX_COVER_RANGE][DC_MAX_COVER_RANGE] */;
+let gsLastCoverGridNo: INT16 = NOWHERE;
+let gsLastSoldierGridNo: INT16 = NOWHERE;
+let gbLastStance: INT8 = -1;
 
-VISIBLE_TO_SOLDIER_STRUCT gVisibleToSoldierStruct[DC__SOLDIER_VISIBLE_RANGE][DC__SOLDIER_VISIBLE_RANGE];
-INT16 gsLastVisibleToSoldierGridNo = NOWHERE;
+let gVisibleToSoldierStruct: VISIBLE_TO_SOLDIER_STRUCT[][] /* [DC__SOLDIER_VISIBLE_RANGE][DC__SOLDIER_VISIBLE_RANGE] */;
+let gsLastVisibleToSoldierGridNo: INT16 = NOWHERE;
 
 //*******  Function Prototypes ***************************************
 
@@ -47,8 +47,8 @@ INT16 gsLastVisibleToSoldierGridNo = NOWHERE;
 //*******  Functions **************************************************
 
 function DisplayCoverOfSelectedGridNo(): void {
-  INT16 sGridNo;
-  INT8 bStance;
+  let sGridNo: INT16;
+  let bStance: INT8;
 
   GetMouseMapPos(&sGridNo);
 
@@ -94,8 +94,9 @@ function DisplayCoverOfSelectedGridNo(): void {
 }
 
 function AddCoverTileToEachGridNo(): void {
-  UINT32 uiCntX, uiCntY;
-  BOOLEAN fRoof = (gsInterfaceLevel != I_GROUND_LEVEL);
+  let uiCntX: UINT32;
+  let uiCntY: UINT32;
+  let fRoof: BOOLEAN = (gsInterfaceLevel != I_GROUND_LEVEL);
 
   // loop through all the gridnos
   for (uiCntY = 0; uiCntY < DC_MAX_COVER_RANGE; uiCntY++) {
@@ -137,8 +138,9 @@ function AddCoverTileToEachGridNo(): void {
 }
 
 function RemoveCoverOfSelectedGridNo(): void {
-  UINT32 uiCntX, uiCntY;
-  BOOLEAN fRoof = (gsInterfaceLevel != I_GROUND_LEVEL);
+  let uiCntX: UINT32;
+  let uiCntY: UINT32;
+  let fRoof: BOOLEAN = (gsInterfaceLevel != I_GROUND_LEVEL);
 
   if (gsLastCoverGridNo == NOWHERE) {
     return;
@@ -193,12 +195,18 @@ function RemoveCoverOfSelectedGridNo(): void {
 }
 
 function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: INT8): void {
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  SOLDIERTYPE *pSoldier = NULL;
-  INT16 sGridNo;
-  INT16 sCounterX, sCounterY;
-  UINT8 ubID;
-  INT8 bStance;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sGridNo: INT16;
+  let sCounterX: INT16;
+  let sCounterY: INT16;
+  let ubID: UINT8;
+  let bStance: INT8;
   //	BOOLEAN fRoof;
 
   // clear out the array first
@@ -292,20 +300,20 @@ function CalculateCoverInRadiusAroundGridno(sTargetGridNo: INT16, bSearchRange: 
 }
 
 function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, bStance: INT8): INT8 {
-  INT32 iTotalCoverPoints = 0;
-  INT8 bNumEnemies = 0;
-  INT8 bPercentCoverForGridno = 0;
-  UINT32 uiLoop;
-  SOLDIERTYPE *pOpponent;
-  INT8 *pbPersOL;
-  INT8 *pbPublOL;
-  INT32 iGetThrough = 0;
-  INT32 iBulletGetThrough = 0;
-  INT32 iHighestValue = 0;
-  INT32 iCover = 0;
-  UINT16 usMaxRange;
-  UINT16 usRange;
-  UINT16 usSightLimit;
+  let iTotalCoverPoints: INT32 = 0;
+  let bNumEnemies: INT8 = 0;
+  let bPercentCoverForGridno: INT8 = 0;
+  let uiLoop: UINT32;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let iGetThrough: INT32 = 0;
+  let iBulletGetThrough: INT32 = 0;
+  let iHighestValue: INT32 = 0;
+  let iCover: INT32 = 0;
+  let usMaxRange: UINT16;
+  let usRange: UINT16;
+  let usSightLimit: UINT16;
 
   // loop through all the enemies and determine the cover
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
@@ -366,7 +374,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
   if (bNumEnemies == 0) {
     bPercentCoverForGridno = 100;
   } else {
-    INT32 iTemp;
+    let iTemp: INT32;
 
     bPercentCoverForGridno = (iTotalCoverPoints / bNumEnemies);
 
@@ -381,7 +389,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
 }
 
 function AddCoverObjectToWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BOOLEAN): void {
-  LEVELNODE *pNode;
+  let pNode: Pointer<LEVELNODE>;
 
   if (fRoof) {
     AddOnRoofToHead(sGridNo, usGraphic);
@@ -408,7 +416,7 @@ function RemoveCoverObjectFromWorld(sGridNo: INT16, usGraphic: UINT16, fRoof: BO
 }
 
 function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
   // Get a soldier that is on the player team
   if (gusSelectedSoldier != NOBODY) {
     GetSoldier(&pSoldier, gusSelectedSoldier);
@@ -419,8 +427,8 @@ function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
 }
 
 function GetCurrentMercForDisplayCoverStance(): INT8 {
-  INT8 bStance;
-  SOLDIERTYPE *pSoldier = NULL;
+  let bStance: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   pSoldier = GetCurrentMercForDisplayCover();
 
@@ -451,8 +459,8 @@ function GetCurrentMercForDisplayCoverStance(): INT8 {
 }
 
 function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): void {
-  UINT16 usRange = 0;
-  CHAR16 zOutputString[512];
+  let usRange: UINT16 = 0;
+  let zOutputString: CHAR16[] /* [512] */;
 
   if (sTargetGridNo == NOWHERE || sTargetGridNo == 0) {
     return;
@@ -486,7 +494,7 @@ function DisplayRangeToTarget(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT
 }
 
 function DisplayGridNoVisibleToSoldierGrid(): void {
-  INT16 sGridNo;
+  let sGridNo: INT16;
   //	INT8	bStance;
 
   GetMouseMapPos(&sGridNo);
@@ -527,11 +535,17 @@ function DisplayGridNoVisibleToSoldierGrid(): void {
 }
 
 function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRange: INT8): void {
-  INT16 sMaxLeft, sMaxRight, sMaxUp, sMaxDown, sXOffset, sYOffset;
-  SOLDIERTYPE *pSoldier = NULL;
-  INT16 sGridNo;
-  INT16 sCounterX, sCounterY;
-  BOOLEAN fRoof = FALSE;
+  let sMaxLeft: INT16;
+  let sMaxRight: INT16;
+  let sMaxUp: INT16;
+  let sMaxDown: INT16;
+  let sXOffset: INT16;
+  let sYOffset: INT16;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sGridNo: INT16;
+  let sCounterX: INT16;
+  let sCounterY: INT16;
+  let fRoof: BOOLEAN = FALSE;
 
   // clear out the struct
   memset(gVisibleToSoldierStruct, 0, sizeof(VISIBLE_TO_SOLDIER_STRUCT) * DC__SOLDIER_VISIBLE_RANGE * DC__SOLDIER_VISIBLE_RANGE);
@@ -614,10 +628,11 @@ function CalculateVisibleToSoldierAroundGridno(sTargetGridNo: INT16, bSearchRang
 }
 
 function AddVisibleToSoldierToEachGridNo(): void {
-  UINT32 uiCntX, uiCntY;
-  INT8 bVisibleToSoldier = 0;
-  BOOLEAN fRoof;
-  INT16 sGridNo;
+  let uiCntX: UINT32;
+  let uiCntY: UINT32;
+  let bVisibleToSoldier: INT8 = 0;
+  let fRoof: BOOLEAN;
+  let sGridNo: INT16;
 
   // loop through all the gridnos
   for (uiCntY = 0; uiCntY < DC_MAX_COVER_RANGE; uiCntY++) {
@@ -658,10 +673,11 @@ function AddVisibleToSoldierToEachGridNo(): void {
 }
 
 function RemoveVisibleGridNoAtSelectedGridNo(): void {
-  UINT32 uiCntX, uiCntY;
-  INT8 bVisibleToSoldier;
-  INT16 sGridNo;
-  BOOLEAN fRoof;
+  let uiCntX: UINT32;
+  let uiCntY: UINT32;
+  let bVisibleToSoldier: INT8;
+  let sGridNo: INT16;
+  let fRoof: BOOLEAN;
 
   // make sure to only remove it when its right
   if (gsLastVisibleToSoldierGridNo == NOWHERE) {
@@ -709,12 +725,13 @@ function RemoveVisibleGridNoAtSelectedGridNo(): void {
 }
 
 function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fRoof: BOOLEAN): INT8 {
-  INT8 bRetVal = 0;
-  INT32 iLosForGridNo = 0;
-  UINT16 usSightLimit = 0;
-  INT8 *pPersOL, *pbPublOL;
-  UINT8 ubID;
-  BOOLEAN bAware = FALSE;
+  let bRetVal: INT8 = 0;
+  let iLosForGridNo: INT32 = 0;
+  let usSightLimit: UINT16 = 0;
+  let pPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let ubID: UINT8;
+  let bAware: BOOLEAN = FALSE;
 
   if (fRoof) {
     ubID = WhoIsThere2(sTargetGridNo, 1);
@@ -762,7 +779,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
 }
 
 function IsTheRoofVisible(sGridNo: INT16): BOOLEAN {
-  UINT8 ubRoom;
+  let ubRoom: UINT8;
 
   if (InARoom(sGridNo, &ubRoom)) {
     if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {

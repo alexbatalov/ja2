@@ -2,11 +2,11 @@
 const NUM_BULLET_SLOTS = 50;
 
 // GLOBAL FOR FACES LISTING
-BULLET gBullets[NUM_BULLET_SLOTS];
-UINT32 guiNumBullets = 0;
+let gBullets: BULLET[] /* [NUM_BULLET_SLOTS] */;
+let guiNumBullets: UINT32 = 0;
 
 function GetFreeBullet(): INT32 {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
     if ((gBullets[uiCount].fAllocated == FALSE))
@@ -20,7 +20,7 @@ function GetFreeBullet(): INT32 {
 }
 
 function RecountBullets(): void {
-  INT32 uiCount;
+  let uiCount: INT32;
 
   for (uiCount = guiNumBullets - 1; (uiCount >= 0); uiCount--) {
     if ((gBullets[uiCount].fAllocated)) {
@@ -32,8 +32,8 @@ function RecountBullets(): void {
 }
 
 function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 {
-  INT32 iBulletIndex;
-  BULLET *pBullet;
+  let iBulletIndex: INT32;
+  let pBullet: Pointer<BULLET>;
 
   if ((iBulletIndex = GetFreeBullet()) == (-1))
     return -1;
@@ -59,10 +59,11 @@ function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 
 }
 
 function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
-  BULLET *pBullet;
-  ANITILE_PARAMS AniParams;
-  FLOAT dX, dY;
-  UINT8 ubDirection;
+  let pBullet: Pointer<BULLET>;
+  let AniParams: ANITILE_PARAMS;
+  let dX: FLOAT;
+  let dY: FLOAT;
+  let ubDirection: UINT8;
 
   pBullet = &(gBullets[iBulletIndex]);
 
@@ -161,9 +162,9 @@ function LocateBullet(iBulletIndex: INT32): void {
 }
 
 function UpdateBullets(): void {
-  UINT32 uiCount;
-  LEVELNODE *pNode;
-  BOOLEAN fDeletedSome = FALSE;
+  let uiCount: UINT32;
+  let pNode: Pointer<LEVELNODE>;
+  let fDeletedSome: BOOLEAN = FALSE;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
     if (gBullets[uiCount].fAllocated) {
@@ -251,7 +252,7 @@ function UpdateBullets(): void {
 }
 
 function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
-  BULLET *pBullet;
+  let pBullet: Pointer<BULLET>;
 
   CHECKN(iBullet < NUM_BULLET_SLOTS);
 
@@ -261,7 +262,7 @@ function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
 }
 
 function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXEDPT, qCurrZ: FIXEDPT): void {
-  ANITILE_PARAMS AniParams;
+  let AniParams: ANITILE_PARAMS;
 
   // If we are a small missle, don't show
   if (pBullet->usFlags & (BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT)) {
@@ -303,9 +304,9 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
 }
 
 function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT16 usCnt;
-  UINT32 uiBulletCount = 0;
+  let uiNumBytesWritten: UINT32;
+  let usCnt: UINT16;
+  let uiBulletCount: UINT32 = 0;
 
   // loop through and count the number of bullets
   for (usCnt = 0; usCnt < NUM_BULLET_SLOTS; usCnt++) {
@@ -338,8 +339,8 @@ function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  UINT16 usCnt;
+  let uiNumBytesRead: UINT32;
+  let usCnt: UINT16;
 
   // make sure the bullets are not allocated
   memset(gBullets, 0, NUM_BULLET_SLOTS * sizeof(BULLET));
@@ -382,7 +383,7 @@ function StopBullet(iBullet: INT32): void {
 }
 
 function DeleteAllBullets(): void {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
     if (gBullets[uiCount].fAllocated) {

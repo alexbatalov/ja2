@@ -11,8 +11,8 @@
 // this define should go in soldier control.h
 
 function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
-  UINT16 usInHand;
-  INT8 bPayloadPocket;
+  let usInHand: UINT16;
+  let bPayloadPocket: INT8;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
 
@@ -57,15 +57,24 @@ function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKTYPE>): void {
-  UINT32 uiLoop;
-  INT32 iAttackValue;
-  INT32 iThreatValue;
-  INT32 iHitRate, iBestHitRate, iPercentBetter;
-  INT32 iEstDamage;
-  UINT8 ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime, ubAimTime, ubBestAimTime;
-  UINT8 ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit, ubBestChanceToHit = 0;
-  SOLDIERTYPE *pOpponent;
-  UINT8 ubBurstAPs;
+  let uiLoop: UINT32;
+  let iAttackValue: INT32;
+  let iThreatValue: INT32;
+  let iHitRate: INT32;
+  let iBestHitRate: INT32;
+  let iPercentBetter: INT32;
+  let iEstDamage: INT32;
+  let ubRawAPCost: UINT8;
+  let ubMinAPcost: UINT8;
+  let ubMaxPossibleAimTime: UINT8;
+  let ubAimTime: UINT8;
+  let ubBestAimTime: UINT8;
+  let ubChanceToHit: UINT8;
+  let ubChanceToGetThrough: UINT8;
+  let ubChanceToReallyHit: UINT8;
+  let ubBestChanceToHit: UINT8 = 0;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let ubBurstAPs: UINT8;
 
   ubBestChanceToHit = ubBestAimTime = ubChanceToHit = 0;
 
@@ -121,15 +130,15 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
       continue; // next opponent
 
     if ((pSoldier->uiStatusFlags & SOLDIER_MONSTER) && (pSoldier->ubBodyType != QUEENMONSTER)) {
-      STRUCTURE_FILE_REF *pStructureFileRef;
-      UINT16 usAnimSurface;
+      let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+      let usAnimSurface: UINT16;
 
       usAnimSurface = DetermineSoldierAnimationSurface(pSoldier, pSoldier->usUIMovementMode);
       pStructureFileRef = GetAnimationStructureRef(pSoldier->ubID, usAnimSurface, pSoldier->usUIMovementMode);
 
       if (pStructureFileRef) {
-        UINT16 usStructureID;
-        INT8 bDir;
+        let usStructureID: UINT16;
+        let bDir: INT8;
 
         // must make sure that structure data can be added in the direction of the target
         bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pOpponent->sGridNo);
@@ -269,10 +278,13 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
 
 // JA2Gold: added
 function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
-  INT16 sTempGridNo;
-  INT8 bDirection;
-  INT16 sXPos, sYPos, sXPos2, sYPos2;
-  UINT8 ubMovementCost;
+  let sTempGridNo: INT16;
+  let bDirection: INT8;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sXPos2: INT16;
+  let sYPos2: INT16;
+  let ubMovementCost: UINT8;
 
   if (sGridNo == sGridNo2) {
     // checking the same space; if there is a closed door next to location in ANY direction then forget it
@@ -322,32 +334,55 @@ function CloseEnoughForGrenadeToss(sGridNo: INT16, sGridNo2: INT16): BOOLEAN {
 
 function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
   // September 9, 1998: added code for LAWs (CJC)
-  UINT8 ubLoop, ubLoop2;
-  INT32 iAttackValue;
-  INT32 iHitRate, iThreatValue, iTotalThreatValue, iOppThreatValue[MAXMERCS];
-  INT16 sGridNo, sEndGridNo, sFriendTile[MAXMERCS], sOpponentTile[MAXMERCS];
-  INT8 bFriendLevel[MAXMERCS], bOpponentLevel[MAXMERCS];
-  INT32 iEstDamage;
-  UINT8 ubFriendCnt = 0, ubOpponentCnt = 0, ubOpponentID[MAXMERCS];
-  UINT8 ubRawAPCost, ubMinAPcost, ubMaxPossibleAimTime;
-  UINT8 ubChanceToHit, ubChanceToGetThrough, ubChanceToReallyHit;
-  UINT32 uiPenalty;
-  UINT8 ubSearchRange;
-  UINT16 usOppDist;
-  BOOLEAN fFriendsNearby;
-  UINT16 usInHand, usGrenade;
-  UINT8 ubOppsInRange, ubOppsAdjacent;
-  BOOLEAN fSkipLocation;
-  INT8 bPayloadPocket;
-  INT8 bMaxLeft, bMaxRight, bMaxUp, bMaxDown, bXOffset, bYOffset;
-  INT8 bPersOL, bPublOL;
-  SOLDIERTYPE *pOpponent, *pFriend;
-  static INT16 sExcludeTile[100]; // This array is for storing tiles that we have
-  UINT8 ubNumExcludedTiles = 0; // already considered, to prevent duplication of effort
-  INT32 iTossRange;
-  UINT8 ubSafetyMargin = 0;
-  UINT8 ubDiff;
-  INT8 bEndLevel;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let iAttackValue: INT32;
+  let iHitRate: INT32;
+  let iThreatValue: INT32;
+  let iTotalThreatValue: INT32;
+  let iOppThreatValue: INT32[] /* [MAXMERCS] */;
+  let sGridNo: INT16;
+  let sEndGridNo: INT16;
+  let sFriendTile: INT16[] /* [MAXMERCS] */;
+  let sOpponentTile: INT16[] /* [MAXMERCS] */;
+  let bFriendLevel: INT8[] /* [MAXMERCS] */;
+  let bOpponentLevel: INT8[] /* [MAXMERCS] */;
+  let iEstDamage: INT32;
+  let ubFriendCnt: UINT8 = 0;
+  let ubOpponentCnt: UINT8 = 0;
+  let ubOpponentID: UINT8[] /* [MAXMERCS] */;
+  let ubRawAPCost: UINT8;
+  let ubMinAPcost: UINT8;
+  let ubMaxPossibleAimTime: UINT8;
+  let ubChanceToHit: UINT8;
+  let ubChanceToGetThrough: UINT8;
+  let ubChanceToReallyHit: UINT8;
+  let uiPenalty: UINT32;
+  let ubSearchRange: UINT8;
+  let usOppDist: UINT16;
+  let fFriendsNearby: BOOLEAN;
+  let usInHand: UINT16;
+  let usGrenade: UINT16;
+  let ubOppsInRange: UINT8;
+  let ubOppsAdjacent: UINT8;
+  let fSkipLocation: BOOLEAN;
+  let bPayloadPocket: INT8;
+  let bMaxLeft: INT8;
+  let bMaxRight: INT8;
+  let bMaxUp: INT8;
+  let bMaxDown: INT8;
+  let bXOffset: INT8;
+  let bYOffset: INT8;
+  let bPersOL: INT8;
+  let bPublOL: INT8;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let pFriend: Pointer<SOLDIERTYPE>;
+  /* static */ let sExcludeTile: INT16[] /* [100] */; // This array is for storing tiles that we have
+  let ubNumExcludedTiles: UINT8 = 0; // already considered, to prevent duplication of effort
+  let iTossRange: INT32;
+  let ubSafetyMargin: UINT8 = 0;
+  let ubDiff: UINT8;
+  let bEndLevel: INT8;
 
   usInHand = pSoldier->inv[HANDPOS].usItem;
   usGrenade = NOTHING;
@@ -874,14 +909,24 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
 }
 
 function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>, fBladeAttack: BOOLEAN): void {
-  UINT32 uiLoop;
-  INT32 iAttackValue;
-  INT32 iThreatValue, iHitRate, iBestHitRate, iPercentBetter, iEstDamage;
-  BOOLEAN fSurpriseStab;
-  UINT8 ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime, ubBestAimTime;
-  UINT8 ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
-  SOLDIERTYPE *pOpponent;
-  UINT16 usTrueMovementMode;
+  let uiLoop: UINT32;
+  let iAttackValue: INT32;
+  let iThreatValue: INT32;
+  let iHitRate: INT32;
+  let iBestHitRate: INT32;
+  let iPercentBetter: INT32;
+  let iEstDamage: INT32;
+  let fSurpriseStab: BOOLEAN;
+  let ubRawAPCost: UINT8;
+  let ubMinAPCost: UINT8;
+  let ubMaxPossibleAimTime: UINT8;
+  let ubAimTime: UINT8;
+  let ubBestAimTime: UINT8;
+  let ubChanceToHit: UINT8;
+  let ubChanceToReallyHit: UINT8;
+  let ubBestChanceToHit: UINT8 = 0;
+  let pOpponent: Pointer<SOLDIERTYPE>;
+  let usTrueMovementMode: UINT16;
 
   InitAttackType(pBestStab); // set all structure fields to defaults
 
@@ -1059,13 +1104,22 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
 }
 
 function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKTYPE>): void {
-  UINT32 uiLoop;
-  INT32 iAttackValue;
-  INT32 iThreatValue, iHitRate, iBestHitRate, iEstDamage;
-  BOOLEAN fSurpriseStab;
-  UINT8 ubRawAPCost, ubMinAPCost, ubMaxPossibleAimTime, ubAimTime, ubBestAimTime;
-  UINT8 ubChanceToHit, ubChanceToReallyHit, ubBestChanceToHit = 0;
-  SOLDIERTYPE *pOpponent;
+  let uiLoop: UINT32;
+  let iAttackValue: INT32;
+  let iThreatValue: INT32;
+  let iHitRate: INT32;
+  let iBestHitRate: INT32;
+  let iEstDamage: INT32;
+  let fSurpriseStab: BOOLEAN;
+  let ubRawAPCost: UINT8;
+  let ubMinAPCost: UINT8;
+  let ubMaxPossibleAimTime: UINT8;
+  let ubAimTime: UINT8;
+  let ubBestAimTime: UINT8;
+  let ubChanceToHit: UINT8;
+  let ubChanceToReallyHit: UINT8;
+  let ubBestChanceToHit: UINT8 = 0;
+  let pOpponent: Pointer<SOLDIERTYPE>;
 
   InitAttackType(pBestStab); // set all structure fields to defaults
 
@@ -1190,9 +1244,9 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
 }
 
 function NumMercsCloseTo(sGridNo: INT16, ubMaxDist: UINT8): UINT8 {
-  INT8 bNumber = 0;
-  UINT32 uiLoop;
-  SOLDIERTYPE *pSoldier;
+  let bNumber: INT8 = 0;
+  let uiLoop: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
     pSoldier = MercSlots[uiLoop];
@@ -1208,13 +1262,17 @@ function NumMercsCloseTo(sGridNo: INT16, ubMaxDist: UINT8): UINT8 {
 }
 
 function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8): INT32 {
-  INT32 iRange, iMaxRange, iPowerLost;
-  INT32 iDamage;
-  UINT8 ubBonus;
-  INT32 iHeadProt = 0, iTorsoProt = 0, iLegProt = 0;
-  INT32 iTotalProt;
-  INT8 bPlatePos;
-  UINT8 ubAmmoType;
+  let iRange: INT32;
+  let iMaxRange: INT32;
+  let iPowerLost: INT32;
+  let iDamage: INT32;
+  let ubBonus: UINT8;
+  let iHeadProt: INT32 = 0;
+  let iTorsoProt: INT32 = 0;
+  let iLegProt: INT32 = 0;
+  let iTotalProt: INT32;
+  let bPlatePos: INT8;
+  let ubAmmoType: UINT8;
 
   /*
           if ( pOpponent->uiStatusFlags & SOLDIER_VEHICLE )
@@ -1322,9 +1380,12 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 }
 
 function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, pOpponent: Pointer<SOLDIERTYPE>, sGridno: INT16): INT32 {
-  UINT8 ubExplosiveIndex;
-  INT32 iExplosDamage, iBreathDamage, iArmourAmount, iDamage = 0;
-  INT8 bSlot;
+  let ubExplosiveIndex: UINT8;
+  let iExplosDamage: INT32;
+  let iBreathDamage: INT32;
+  let iArmourAmount: INT32;
+  let iDamage: INT32 = 0;
+  let bSlot: INT8;
 
   switch (pSoldier->inv[ubItemPos].usItem) {
     case GL_SMOKE_GRENADE:
@@ -1397,9 +1458,11 @@ function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, p
 }
 
 function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDIERTYPE>, ubChanceToHit: UINT8, fBladeAttack: BOOLEAN): INT32 {
-  INT32 iImpact, iFluke, iBonus;
+  let iImpact: INT32;
+  let iFluke: INT32;
+  let iBonus: INT32;
 
-  UINT16 usItem;
+  let usItem: UINT16;
 
   usItem = pSoldier->inv[HANDPOS].usItem;
 
@@ -1445,8 +1508,8 @@ function EstimateStabDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 }
 
 function TryToReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bSlot;
-  WEAPONTYPE *pWeapon;
+  let bSlot: INT8;
+  let pWeapon: Pointer<WEAPONTYPE>;
 
   pWeapon = &(Weapon[pSoldier->inv[HANDPOS].usItem]);
   bSlot = FindAmmo(pSoldier, pWeapon->ubCalibre, pWeapon->ubMagSize, NO_SLOT);
@@ -1483,8 +1546,8 @@ INT8 TryToReloadLauncher( SOLDIERTYPE * pSoldier )
 */
 
 function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bCanAttack;
-  INT8 bWeaponIn;
+  let bCanAttack: INT8;
+  let bWeaponIn: INT8;
 
   // NEUTRAL civilians are not allowed to attack, but those that are not
   // neutral (KILLNPC mission guynums, escorted guys) can, if they're armed
@@ -1523,7 +1586,7 @@ function CanNPCAttack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTACKTYPE>): void {
-  UINT8 ubMinAPcost;
+  let ubMinAPcost: UINT8;
 
   if (TANK(pSoldier)) {
     pBestThrow->bWeaponIn = FindObj(pSoldier, TANK_CANNON);
@@ -1571,9 +1634,14 @@ function CheckIfTossPossible(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer
 function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT8 {
   // return the number of people next to this guy for burst-spread purposes
 
-  INT8 bDirLoop, bDir, bCheckDir, bTargetIndex, bTargets;
-  INT16 sTarget;
-  SOLDIERTYPE *pTarget, *pTargets[5] = { NULL };
+  let bDirLoop: INT8;
+  let bDir: INT8;
+  let bCheckDir: INT8;
+  let bTargetIndex: INT8;
+  let bTargets: INT8;
+  let sTarget: INT16;
+  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = { NULL };
 
   bTargetIndex = -1;
   bCheckDir = -1;
@@ -1684,10 +1752,17 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
 }
 
 function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bTargetLevel: INT8): INT16 {
-  INT8 bDirLoop, bDir, bCheckDir, bTargetIndex = 0, bLoop, bTargets;
-  INT16 sTarget;
-  SOLDIERTYPE *pTarget, *pTargets[5] = { NULL };
-  INT8 bAdjacents, bOtherAdjacents;
+  let bDirLoop: INT8;
+  let bDir: INT8;
+  let bCheckDir: INT8;
+  let bTargetIndex: INT8 = 0;
+  let bLoop: INT8;
+  let bTargets: INT8;
+  let sTarget: INT16;
+  let pTarget: Pointer<SOLDIERTYPE>;
+  let pTargets: Pointer<SOLDIERTYPE>[] /* [5] */ = { NULL };
+  let bAdjacents: INT8;
+  let bOtherAdjacents: INT8;
 
   bCheckDir = -1;
 
@@ -1836,8 +1911,9 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
 function AdvanceToFiringRange(pSoldier: Pointer<SOLDIERTYPE>, sClosestOpponent: INT16): INT16 {
   // see how far we can go down a path and still shoot
 
-  INT8 bAttackCost, bTrueActionPoints;
-  UINT16 usActionData;
+  let bAttackCost: INT8;
+  let bTrueActionPoints: INT8;
+  let usActionData: UINT16;
 
   bAttackCost = MinAPsToAttack(pSoldier, sClosestOpponent, ADDTURNCOST);
 

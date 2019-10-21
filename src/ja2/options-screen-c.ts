@@ -89,60 +89,60 @@ const OPT_FIRST_COLUMN_TOGGLE_CUT_OFF = 10; // 8
 //
 /////////////////////////////////
 
-UINT32 guiOptionBackGroundImage;
-UINT32 guiOptionsAddOnImages;
+let guiOptionBackGroundImage: UINT32;
+let guiOptionsAddOnImages: UINT32;
 
-UINT32 guiSoundEffectsSliderID;
-UINT32 guiSpeechSliderID;
-UINT32 guiMusicSliderID;
+let guiSoundEffectsSliderID: UINT32;
+let guiSpeechSliderID: UINT32;
+let guiMusicSliderID: UINT32;
 
-BOOLEAN gfOptionsScreenEntry = TRUE;
-BOOLEAN gfOptionsScreenExit = FALSE;
-BOOLEAN gfRedrawOptionsScreen = TRUE;
+let gfOptionsScreenEntry: BOOLEAN = TRUE;
+let gfOptionsScreenExit: BOOLEAN = FALSE;
+let gfRedrawOptionsScreen: BOOLEAN = TRUE;
 
-CHAR8 gzSavedGameName[128];
-BOOLEAN gfEnteredFromMapScreen = FALSE;
+let gzSavedGameName: CHAR8[] /* [128] */;
+let gfEnteredFromMapScreen: BOOLEAN = FALSE;
 
-UINT32 guiOptionsScreen = OPTIONS_SCREEN;
-UINT32 guiPreviousOptionScreen = OPTIONS_SCREEN;
+let guiOptionsScreen: UINT32 = OPTIONS_SCREEN;
+let guiPreviousOptionScreen: UINT32 = OPTIONS_SCREEN;
 
-BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
-BOOLEAN gfExitOptionsAfterMessageBox = FALSE;
+let gfExitOptionsDueToMessageBox: BOOLEAN = FALSE;
+let gfExitOptionsAfterMessageBox: BOOLEAN = FALSE;
 
-UINT32 guiSoundFxSliderMoving = 0xffffffff;
-UINT32 guiSpeechSliderMoving = 0xffffffff;
+let guiSoundFxSliderMoving: UINT32 = 0xffffffff;
+let guiSpeechSliderMoving: UINT32 = 0xffffffff;
 
-INT32 giOptionsMessageBox = -1; // Options pop up messages index value
+let giOptionsMessageBox: INT32 = -1; // Options pop up messages index value
 
-INT8 gbHighLightedOptionText = -1;
+let gbHighLightedOptionText: INT8 = -1;
 
-BOOLEAN gfHideBloodAndGoreOption = FALSE; // If a germany build we are to hide the blood and gore option
-UINT8 gubFirstColOfOptions = OPT_FIRST_COLUMN_TOGGLE_CUT_OFF;
+let gfHideBloodAndGoreOption: BOOLEAN = FALSE; // If a germany build we are to hide the blood and gore option
+let gubFirstColOfOptions: UINT8 = OPT_FIRST_COLUMN_TOGGLE_CUT_OFF;
 
-BOOLEAN gfSettingOfTreeTopStatusOnEnterOfOptionScreen;
-BOOLEAN gfSettingOfItemGlowStatusOnEnterOfOptionScreen;
-BOOLEAN gfSettingOfDontAnimateSmoke;
+let gfSettingOfTreeTopStatusOnEnterOfOptionScreen: BOOLEAN;
+let gfSettingOfItemGlowStatusOnEnterOfOptionScreen: BOOLEAN;
+let gfSettingOfDontAnimateSmoke: BOOLEAN;
 
-UINT32 guiOptGotoSaveGameBtn;
-INT32 giOptionsButtonImages;
+let guiOptGotoSaveGameBtn: UINT32;
+let giOptionsButtonImages: INT32;
 
-UINT32 guiOptGotoLoadGameBtn;
-INT32 giGotoLoadBtnImage;
+let guiOptGotoLoadGameBtn: UINT32;
+let giGotoLoadBtnImage: INT32;
 
-UINT32 guiQuitButton;
-INT32 giQuitBtnImage;
+let guiQuitButton: UINT32;
+let giQuitBtnImage: INT32;
 
-UINT32 guiDoneButton;
-INT32 giDoneBtnImage;
+let guiDoneButton: UINT32;
+let giDoneBtnImage: INT32;
 
 // checkbox to toggle tracking mode on or off
-UINT32 guiOptionsToggles[NUM_GAME_OPTIONS];
+let guiOptionsToggles: UINT32[] /* [NUM_GAME_OPTIONS] */;
 
 // Mouse regions for the name of the option
-MOUSE_REGION gSelectedOptionTextRegion[NUM_GAME_OPTIONS];
+let gSelectedOptionTextRegion: MOUSE_REGION[] /* [NUM_GAME_OPTIONS] */;
 
 // Mouse regions for the area around the toggle boxs
-MOUSE_REGION gSelectedToggleBoxAreaRegion;
+let gSelectedToggleBoxAreaRegion: MOUSE_REGION;
 
 /////////////////////////////////
 //
@@ -224,10 +224,11 @@ function OptionsScreenShutdown(): UINT32 {
 }
 
 function EnterOptionsScreen(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosY;
-  UINT8 cnt;
-  UINT16 usTextWidth, usTextHeight;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosY: UINT16;
+  let cnt: UINT8;
+  let usTextWidth: UINT16;
+  let usTextHeight: UINT16;
 
   // Default this to off
   gfHideBloodAndGoreOption = FALSE;
@@ -312,7 +313,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      UINT8 ubNumLines = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -348,7 +349,7 @@ function EnterOptionsScreen(): BOOLEAN {
 
     if (usTextWidth > OPT_TOGGLE_BOX_TEXT_WIDTH) {
       // Get how many lines will be used to display the string, without displaying the string
-      UINT8 ubNumLines = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
+      let ubNumLines: UINT8 = DisplayWrappedString(0, 0, OPT_TOGGLE_BOX_TEXT_WIDTH, 2, OPT_MAIN_FONT, OPT_HIGHLIGHT_COLOR, zOptionsToggleText[cnt], FONT_MCOLOR_BLACK, TRUE, LEFT_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(OPT_MAIN_FONT);
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
@@ -414,7 +415,7 @@ function EnterOptionsScreen(): BOOLEAN {
 }
 
 function ExitOptionsScreen(): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   if (gfExitOptionsDueToMessageBox) {
     gfOptionsScreenExit = FALSE;
@@ -499,10 +500,10 @@ function HandleOptionsScreen(): void {
 }
 
 function RenderOptionsScreen(): void {
-  HVOBJECT hPixHandle;
-  UINT16 usPosY;
-  UINT8 cnt;
-  UINT16 usWidth = 0;
+  let hPixHandle: HVOBJECT;
+  let usPosY: UINT16;
+  let cnt: UINT8;
+  let usWidth: UINT16 = 0;
 
   // Get and display the background image
   GetVideoObject(&hPixHandle, guiOptionBackGroundImage);
@@ -569,8 +570,8 @@ function RenderOptionsScreen(): void {
 }
 
 function GetOptionsScreenUserInput(): void {
-  InputAtom Event;
-  POINT MousePos;
+  let Event: InputAtom;
+  let MousePos: POINT;
 
   GetCursorPos(&MousePos);
 
@@ -707,7 +708,7 @@ function BtnDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT8 ubButton = (UINT8)MSYS_GetBtnUserData(btn, 0);
+  let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
@@ -734,8 +735,8 @@ function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 }
 
 function HandleOptionToggle(ubButton: UINT8, fState: BOOLEAN, fDown: BOOLEAN, fPlaySound: BOOLEAN): void {
-  static UINT32 uiOptionToggleSound = NO_SAMPLE;
-  UINT32 uiSideToPlaySoundOn = MIDDLEPAN;
+  /* static */ let uiOptionToggleSound: UINT32 = NO_SAMPLE;
+  let uiSideToPlaySoundOn: UINT32 = MIDDLEPAN;
   //	static	BOOLEAN	fCheckBoxDrawnDownLastTime = FALSE;
 
   if (fState) {
@@ -812,7 +813,7 @@ function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, ui
 }
 
 function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): BOOLEAN {
-  SGPRect CenteringRect = { 0, 0, 639, 479 };
+  let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // reset exit mode
   gfExitOptionsDueToMessageBox = TRUE;
@@ -840,7 +841,7 @@ function ConfirmQuitToMainMenuMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function SetOptionsScreenToggleBoxes(): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     if (gGameSettings.fOptions[cnt])
@@ -851,7 +852,7 @@ function SetOptionsScreenToggleBoxes(): void {
 }
 
 function GetOptionsScreenToggleBoxes(): void {
-  UINT8 cnt;
+  let cnt: UINT8;
 
   for (cnt = 0; cnt < NUM_GAME_OPTIONS; cnt++) {
     if (ButtonList[guiOptionsToggles[cnt]]->uiFlags & BUTTON_CLICKED_ON)
@@ -862,11 +863,11 @@ function GetOptionsScreenToggleBoxes(): void {
 }
 
 function HandleSliderBarMovementSounds(): void {
-  static UINT32 uiLastSoundFxTime = 0;
-  static UINT32 uiLastSpeechTime = 0;
-  UINT32 uiCurTime = GetJA2Clock();
-  static UINT32 uiLastPlayingSoundID = NO_SAMPLE;
-  static UINT32 uiLastPlayingSpeechID = NO_SAMPLE;
+  /* static */ let uiLastSoundFxTime: UINT32 = 0;
+  /* static */ let uiLastSpeechTime: UINT32 = 0;
+  let uiCurTime: UINT32 = GetJA2Clock();
+  /* static */ let uiLastPlayingSoundID: UINT32 = NO_SAMPLE;
+  /* static */ let uiLastPlayingSpeechID: UINT32 = NO_SAMPLE;
 
   if ((uiLastSoundFxTime - OPT_MUSIC_SLIDER_PLAY_SOUND_DELAY) > guiSoundFxSliderMoving) {
     guiSoundFxSliderMoving = 0xffffffff;
@@ -890,7 +891,7 @@ function HandleSliderBarMovementSounds(): void {
 }
 
 function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 ubButton = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+  let ubButton: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     HandleOptionToggle(ubButton, (BOOLEAN)(!gGameSettings.fOptions[ubButton]), FALSE, TRUE);
@@ -909,7 +910,7 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
-  INT8 bButton = (INT8)MSYS_GetRegionUserData(pRegion, 0);
+  let bButton: INT8 = (INT8)MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     HandleHighLightedText(FALSE);
@@ -925,13 +926,13 @@ function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>
 }
 
 function HandleHighLightedText(fHighLight: BOOLEAN): void {
-  UINT16 usPosX = 0;
-  UINT16 usPosY = 0;
-  UINT8 ubCnt;
-  INT8 bHighLight = -1;
-  UINT16 usWidth;
+  let usPosX: UINT16 = 0;
+  let usPosY: UINT16 = 0;
+  let ubCnt: UINT8;
+  let bHighLight: INT8 = -1;
+  let usWidth: UINT16;
 
-  static INT8 bLastRegion = -1;
+  /* static */ let bLastRegion: INT8 = -1;
 
   if (gbHighLightedOptionText == -1)
     fHighLight = FALSE;
@@ -1005,7 +1006,7 @@ function HandleHighLightedText(fHighLight: BOOLEAN): void {
 function SelectedToggleBoxAreaRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    UINT8 ubCnt;
+    let ubCnt: UINT8;
 
     // loop through all the toggle box's and remove the in area flag
     for (ubCnt = 0; ubCnt < NUM_GAME_OPTIONS; ubCnt++) {

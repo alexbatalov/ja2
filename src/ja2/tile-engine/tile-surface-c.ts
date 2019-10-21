@@ -1,17 +1,17 @@
-TILE_IMAGERY *gTileSurfaceArray[NUMBEROFTILETYPES];
-UINT8 gbDefaultSurfaceUsed[NUMBEROFTILETYPES];
-UINT8 gbSameAsDefaultSurfaceUsed[NUMBEROFTILETYPES];
+let gTileSurfaceArray: Pointer<TILE_IMAGERY>[] /* [NUMBEROFTILETYPES] */;
+let gbDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
+let gbSameAsDefaultSurfaceUsed: UINT8[] /* [NUMBEROFTILETYPES] */;
 
 function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   // Add tile surface
-  PTILE_IMAGERY pTileSurf = NULL;
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hVObject;
-  HIMAGE hImage;
-  SGPFILENAME cStructureFilename;
-  STR cEndOfName;
-  STRUCTURE_FILE_REF *pStructureFileRef;
-  BOOLEAN fOk;
+  let pTileSurf: PTILE_IMAGERY = NULL;
+  let VObjectDesc: VOBJECT_DESC;
+  let hVObject: HVOBJECT;
+  let hImage: HIMAGE;
+  let cStructureFilename: SGPFILENAME;
+  let cEndOfName: STR;
+  let pStructureFileRef: Pointer<STRUCTURE_FILE_REF>;
+  let fOk: BOOLEAN;
 
   hImage = CreateImage(cFilename, IMAGE_ALLDATA);
   if (hImage == NULL) {
@@ -112,9 +112,9 @@ function DeleteTileSurface(pTileSurf: PTILE_IMAGERY): void {
 }
 
 function SetRaisedObjectFlag(cFilename: Pointer<char>, pTileSurf: Pointer<TILE_IMAGERY>): void {
-  INT32 cnt = 0;
-  CHAR8 cRootFile[128];
-  UINT8 ubRaisedObjectFiles[][80] = {
+  let cnt: INT32 = 0;
+  let cRootFile: CHAR8[] /* [128] */;
+  let ubRaisedObjectFiles: UINT8[][] /* [][80] */ = {
     "bones",
     "bones2",
     "grass2",

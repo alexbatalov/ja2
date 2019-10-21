@@ -1,7 +1,7 @@
-DOOR_STATUS *gpDoorStatus = NULL;
-UINT8 gubNumDoorStatus = 0;
+let gpDoorStatus: Pointer<DOOR_STATUS> = NULL;
+let gubNumDoorStatus: UINT8 = 0;
 
-KEY KeyTable[NUM_KEYS] = {
+let KeyTable: KEY[] /* [NUM_KEYS] */ = {
   // Item #			Flags		Sector, Date Found
   //
   { KEY_1, 0, 0, 0 },
@@ -42,15 +42,15 @@ KEY KeyTable[NUM_KEYS] = {
 };
 
 // Current number of doors in world.
-UINT8 gubNumDoors = 0;
+let gubNumDoors: UINT8 = 0;
 
 // Current max number of doors.  This is only used by the editor.  When adding doors to the
 // world, we may run out of space in the DoorTable, so we will allocate a new array with extra slots,
 // then copy everything over again.  gubMaxDoors holds the arrays actual number of slots, even though
 // the current number (gubNumDoors) will be <= to it.
-UINT8 gubMaxDoors = 0;
+let gubMaxDoors: UINT8 = 0;
 
-LOCK LockTable[NUM_LOCKS] = { 0 };
+let LockTable: LOCK[] /* [NUM_LOCKS] */ = { 0 };
 
 /*
 LOCK LockTable[NUM_LOCKS] =
@@ -72,7 +72,7 @@ LOCK LockTable[NUM_LOCKS] =
 };
 */
 
-DOORTRAP DoorTrapTable[NUM_DOOR_TRAPS] = {
+let DoorTrapTable: DOORTRAP[] /* [NUM_DOOR_TRAPS] */ = {
   { 0 }, // nothing
   { DOOR_TRAP_STOPS_ACTION }, // explosion
   { DOOR_TRAP_STOPS_ACTION | DOOR_TRAP_RECURRING }, // electric
@@ -85,13 +85,13 @@ DOORTRAP DoorTrapTable[NUM_DOOR_TRAPS] = {
 // Dynamic array of Doors.  For general game purposes, the doors that are locked and/or trapped
 // are permanently saved within the map, and are loaded and allocated when the map is loaded.  Because
 // the editor allows more doors to be added, or removed, the actual size of the DoorTable may change.
-DOOR *DoorTable = NULL;
+let DoorTable: Pointer<DOOR> = NULL;
 
 function LoadLockTable(): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
-  UINT32 uiBytesToRead;
-  CHAR8 *pFileName = "BINARYDATA\\Locks.bin";
-  HWFILE hFile;
+  let uiNumBytesRead: UINT32 = 0;
+  let uiBytesToRead: UINT32;
+  let pFileName: Pointer<CHAR8> = "BINARYDATA\\Locks.bin";
+  let hFile: HWFILE;
 
   // Load the Lock Table
 
@@ -123,7 +123,7 @@ function SoldierHasKey(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): BOOLEAN 
 
 function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubPos: Pointer<UINT8>): BOOLEAN {
   // returns the index into the key ring where the key can be found
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   if (!(pSoldier->pKeyRing)) {
     // no key ring!
@@ -146,7 +146,7 @@ function KeyExistsInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8, pubP
 }
 
 function KeyExistsInInventory(pSoldier: Pointer<SOLDIERTYPE>, ubKeyID: UINT8): BOOLEAN {
-  UINT8 ubLoop;
+  let ubLoop: UINT8;
 
   for (ubLoop = 0; ubLoop < NUM_INV_SLOTS; ubLoop++) {
     if (Item[pSoldier->inv[ubLoop].usItem].usItemClass == IC_KEY) {
@@ -189,8 +189,8 @@ function DoUnlockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): BOOLEAN {
 }
 
 function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  UINT8 ubLoop;
-  UINT8 ubKeyID;
+  let ubLoop: UINT8;
+  let ubKeyID: UINT8;
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
     ubKeyID = pDoor->ubLockID;
@@ -212,8 +212,8 @@ function AttemptToUnlockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 }
 
 function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  UINT8 ubLoop;
-  UINT8 ubKeyID;
+  let ubLoop: UINT8;
+  let ubKeyID: UINT8;
 
   for (ubLoop = 0; ubLoop < MAX_KEYS_PER_LOCK; ubLoop++) {
     ubKeyID = pDoor->ubLockID;
@@ -232,8 +232,9 @@ function AttemptToLockDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
 }
 
 function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT32 iResult;
-  INT8 bStress, bSlot;
+  let iResult: INT32;
+  let bStress: INT8;
+  let bSlot: INT8;
 
   bSlot = FindUsableObj(pSoldier, CROWBAR);
   if (bSlot == ITEM_NOT_FOUND) {
@@ -305,9 +306,9 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
 }
 
 function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT32 iResult;
+  let iResult: INT32;
 
-  LOCK *pLock;
+  let pLock: Pointer<LOCK>;
 
   // generate a noise for thumping on the door
   MakeNoise(pSoldier->ubID, pSoldier->sGridNo, pSoldier->bLevel, gpWorldLevelData[pSoldier->sGridNo].ubTerrainID, SMASHING_DOOR_VOLUME, NOISE_DOOR_SMASHING);
@@ -368,9 +369,9 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
 }
 
 function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT32 iResult;
-  INT8 bReason;
-  LOCK *pLock;
+  let iResult: INT32;
+  let bReason: INT8;
+  let pLock: Pointer<LOCK>;
 
   if (pDoor->ubLockID == LOCK_UNOPENABLE) {
     // auto failure!
@@ -418,7 +419,7 @@ function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
 }
 
 function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT32 iResult;
+  let iResult: INT32;
 
   // See if we measure up to the task.
   if (pDoor->ubTrapID == EXPLOSION) {
@@ -440,7 +441,7 @@ function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
 function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   // Check to see if there is a trap or not on this door
-  INT8 bDetectLevel;
+  let bDetectLevel: INT8;
 
   if (pDoor->ubTrapID == NO_TRAP) {
     // No trap!
@@ -463,7 +464,7 @@ function ExamineDoorForTraps(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
 function HasDoorTrapGoneOff(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
   // Check to see if the soldier causes the trap to go off
-  INT8 bDetectLevel;
+  let bDetectLevel: INT8;
 
   if (pDoor->ubTrapID != NO_TRAP) {
     // one quick check to see if the guy sees the trap ahead of time!
@@ -549,8 +550,8 @@ function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): v
 }
 
 function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): BOOLEAN {
-  INT32 iResult;
-  INT8 bSlot = NO_SLOT;
+  let iResult: INT32;
+  let bSlot: INT8 = NO_SLOT;
 
   bSlot = FindObj(pSoldier, SHAPED_CHARGE);
   if (bSlot == NO_SLOT) {
@@ -561,9 +562,11 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
   if (iResult >= -20) {
     // Do explosive graphic....
     {
-      ANITILE_PARAMS AniParams;
-      INT16 sGridNo;
-      INT16 sX, sY, sZ;
+      let AniParams: ANITILE_PARAMS;
+      let sGridNo: INT16;
+      let sX: INT16;
+      let sY: INT16;
+      let sZ: INT16;
 
       // Get gridno
       sGridNo = pDoor->sGridNo;
@@ -623,7 +626,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 // File I/O for loading the door information from the map.  This automatically allocates
 // the exact number of slots when loading.
 function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
-  INT32 cnt;
+  let cnt: INT32;
 
   TrashDoorTable();
   LOADDATA(&gubNumDoors, *hBuffer, 1);
@@ -644,8 +647,8 @@ function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
 // door still exists.  Otherwise, it'll ignore it.  It is possible in the editor to delete doors in
 // many different ways, so I opted to put it in the saving routine.
 function SaveDoorTableToMap(fp: HWFILE): void {
-  INT32 i = 0;
-  UINT32 uiBytesWritten;
+  let i: INT32 = 0;
+  let uiBytesWritten: UINT32;
 
   while (i < gubNumDoors) {
     if (!OpenableAtGridNo(DoorTable[i].sGridNo))
@@ -660,7 +663,7 @@ function SaveDoorTableToMap(fp: HWFILE): void {
 // The editor adds locks to the world.  If the gridno already exists, then the currently existing door
 // information is overwritten.
 function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == pDoor->sGridNo) {
       memcpy(&DoorTable[i], pDoor, sizeof(DOOR));
@@ -673,7 +676,7 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
     gubNumDoors++;
   } else {
     // we need to allocate more memory, so add ten more slots.
-    DOOR *NewDoorTable;
+    let NewDoorTable: Pointer<DOOR>;
     gubMaxDoors += 10;
     // Allocate new table with max+10 doors.
     NewDoorTable = (DOOR *)MemAlloc(sizeof(DOOR) * gubMaxDoors);
@@ -694,8 +697,8 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
 // information.  If the entry is not the last entry, the last entry is move to it's current slot, to keep
 // everything contiguous.
 function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
-  INT32 i;
-  INT32 iNumDoorsToCopy;
+  let i: INT32;
+  let iNumDoorsToCopy: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex) {
       iNumDoorsToCopy = gubNumDoors - i - 1;
@@ -710,7 +713,7 @@ function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
 
 // This is the link to see if a door exists at a gridno.
 function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex)
       return &DoorTable[i];
@@ -743,10 +746,10 @@ function UpdateDoorPerceivedValue(pDoor: Pointer<DOOR>): void {
 }
 
 function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  UINT32 uiSizeToSave = 0;
-  CHAR8 zMapName[128];
-  HWFILE hFile;
+  let uiNumBytesWritten: UINT32;
+  let uiSizeToSave: UINT32 = 0;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
 
   //	return( TRUE );
 
@@ -801,9 +804,9 @@ function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSec
 }
 
 function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
-  UINT32 uiNumBytesRead;
-  HWFILE hFile;
-  CHAR8 zMapName[128];
+  let uiNumBytesRead: UINT32;
+  let hFile: HWFILE;
+  let zMapName: CHAR8[] /* [128] */;
 
   //	return( TRUE );
 
@@ -864,9 +867,9 @@ function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
 
 // fOpen is True if the door is open, false if it is closed
 function ModifyDoorStatus(sGridNo: INT16, fOpen: BOOLEAN, fPerceivedOpen: BOOLEAN): BOOLEAN {
-  UINT8 ubCnt;
-  STRUCTURE *pStructure;
-  STRUCTURE *pBaseStructure;
+  let ubCnt: UINT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
 
   // Set the gridno for the door
 
@@ -966,9 +969,9 @@ function TrashDoorStatusArray(): void {
 }
 
 function IsDoorOpen(sGridNo: INT16): BOOLEAN {
-  UINT8 ubCnt;
-  STRUCTURE *pStructure;
-  STRUCTURE *pBaseStructure;
+  let ubCnt: UINT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
 
   // Find the base tile for the door structure and use that gridno
   pStructure = FindStructure(sGridNo, STRUCTURE_ANYDOOR);
@@ -1001,9 +1004,9 @@ function IsDoorOpen(sGridNo: INT16): BOOLEAN {
 
 // Returns a doors status value, NULL if not found
 function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
-  UINT8 ubCnt;
-  STRUCTURE *pStructure;
-  STRUCTURE *pBaseStructure;
+  let ubCnt: UINT8;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
 
   // if there is an array
   if (gpDoorStatus) {
@@ -1032,8 +1035,9 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
 }
 
 function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
-  INT32 cnt, cnt2;
-  INT8 bDirs[8] = {
+  let cnt: INT32;
+  let cnt2: INT32;
+  let bDirs: INT8[] /* [8] */ = {
     NORTH,
     SOUTH,
     EAST,
@@ -1043,10 +1047,10 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
     SOUTHEAST,
     SOUTHWEST,
   };
-  SOLDIERTYPE *pSoldier;
-  INT16 sDistVisible;
-  DOOR_STATUS *pDoorStatus;
-  INT16 usNewGridNo;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sDistVisible: INT16;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let usNewGridNo: INT16;
 
   // Get door
   pDoorStatus = GetDoorStatus(sGridNo);
@@ -1101,11 +1105,12 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
 }
 
 function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN): BOOLEAN {
-  INT32 cnt, cnt2;
-  INT16 sDistVisible;
-  INT16 sGridNo;
-  DOOR_STATUS *pDoorStatus;
-  INT8 bDirs[8] = {
+  let cnt: INT32;
+  let cnt2: INT32;
+  let sDistVisible: INT16;
+  let sGridNo: INT16;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let bDirs: INT8[] /* [8] */ = {
     NORTH,
     SOUTH,
     EAST,
@@ -1115,7 +1120,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
     SOUTHEAST,
     SOUTHWEST,
   };
-  INT16 usNewGridNo;
+  let usNewGridNo: INT16;
 
   // Loop through all corpses....
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
@@ -1170,9 +1175,10 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
 }
 
 function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>): void {
-  STRUCTURE *pStructure, *pBaseStructure;
-  LEVELNODE *pNode;
-  INT16 sBaseGridNo = NOWHERE;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let pNode: Pointer<LEVELNODE>;
+  let sBaseGridNo: INT16 = NOWHERE;
 
   // First look for a door structure here...
   pStructure = FindStructure(pDoorStatus->sGridNo, STRUCTURE_ANYDOOR);
@@ -1215,8 +1221,8 @@ function SyncronizeDoorStatusToStructureData(pDoorStatus: Pointer<DOOR_STATUS>):
 }
 
 function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: BOOLEAN, fDirty: BOOLEAN): void {
-  INT32 cnt;
-  DOOR_STATUS *pDoorStatus;
+  let cnt: INT32;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
 
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
     pDoorStatus = &(gpDoorStatus[cnt]);
@@ -1229,13 +1235,14 @@ function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: BOOLEAN, fDirty: BOOL
 }
 
 function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, fUsePerceivedStatus: BOOLEAN, fDirty: BOOLEAN): void {
-  STRUCTURE *pStructure, *pBaseStructure;
-  INT32 cnt;
-  BOOLEAN fOpenedGraphic = FALSE;
-  LEVELNODE *pNode;
-  BOOLEAN fWantToBeOpen = FALSE;
-  BOOLEAN fDifferent = FALSE;
-  INT16 sBaseGridNo = NOWHERE;
+  let pStructure: Pointer<STRUCTURE>;
+  let pBaseStructure: Pointer<STRUCTURE>;
+  let cnt: INT32;
+  let fOpenedGraphic: BOOLEAN = FALSE;
+  let pNode: Pointer<LEVELNODE>;
+  let fWantToBeOpen: BOOLEAN = FALSE;
+  let fDifferent: BOOLEAN = FALSE;
+  let sBaseGridNo: INT16 = NOWHERE;
 
   // OK, look at perceived status and adjust graphic
   // First look for a door structure here...
@@ -1287,7 +1294,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
   // OK, we now need to test these things against the true structure data
   // we may need to only adjust the graphic here....
   if (fWantToBeOpen && (pStructure->fFlags & STRUCTURE_OPEN)) {
-    BOOLEAN fFound = FALSE;
+    let fFound: BOOLEAN = FALSE;
     // Adjust graphic....
 
     // Loop through and and find opened graphic for the closed one....
@@ -1316,7 +1323,7 @@ function InternalUpdateDoorGraphicFromStatus(pDoorStatus: Pointer<DOOR_STATUS>, 
 
   // If we want to be closed but structure is closed
   if (!fWantToBeOpen && !(pStructure->fFlags & STRUCTURE_OPEN)) {
-    BOOLEAN fFound = FALSE;
+    let fFound: BOOLEAN = FALSE;
     // Adjust graphic....
 
     // Loop through and and find closed graphic for the opend one....
@@ -1397,7 +1404,7 @@ function InternalUpdateDoorsPerceivedValue(pDoorStatus: Pointer<DOOR_STATUS>): v
 }
 
 function UpdateDoorStatusPerceivedValue(sGridNo: INT16): BOOLEAN {
-  DOOR_STATUS *pDoorStatus = NULL;
+  let pDoorStatus: Pointer<DOOR_STATUS> = NULL;
 
   pDoorStatus = GetDoorStatus(sGridNo);
   CHECKF(pDoorStatus != NULL);
@@ -1408,7 +1415,7 @@ function UpdateDoorStatusPerceivedValue(sGridNo: INT16): BOOLEAN {
 }
 
 function IsDoorPerceivedOpen(sGridNo: INT16): BOOLEAN {
-  DOOR_STATUS *pDoorStatus;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
@@ -1432,7 +1439,7 @@ function InternalSetDoorPerceivedOpenStatus(pDoorStatus: Pointer<DOOR_STATUS>, f
 }
 
 function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: BOOLEAN): BOOLEAN {
-  DOOR_STATUS *pDoorStatus = NULL;
+  let pDoorStatus: Pointer<DOOR_STATUS> = NULL;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
@@ -1442,7 +1449,7 @@ function SetDoorPerceivedOpenStatus(sGridNo: INT16, fPerceivedOpen: BOOLEAN): BO
 }
 
 function SetDoorOpenStatus(sGridNo: INT16, fOpen: BOOLEAN): BOOLEAN {
-  DOOR_STATUS *pDoorStatus;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
 
   pDoorStatus = GetDoorStatus(sGridNo);
 
@@ -1459,10 +1466,10 @@ function SetDoorOpenStatus(sGridNo: INT16, fOpen: BOOLEAN): BOOLEAN {
 }
 
 function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten;
-  UINT8 ubCnt;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32;
+  let ubCnt: UINT8;
 
   // Turn off any DOOR BUSY flags....
   for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
@@ -1512,10 +1519,10 @@ function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT1
 }
 
 function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
-  CHAR8 zMapName[128];
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
-  UINT8 ubLoop;
+  let zMapName: CHAR8[] /* [128] */;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
+  let ubLoop: UINT8;
 
   // Convert the current sector location into a file name
   //	GetMapFileName( gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTempName, FALSE );
@@ -1575,7 +1582,7 @@ function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
 }
 
 function SaveKeyTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten = 0;
+  let uiNumBytesWritten: UINT32 = 0;
 
   // Save the KeyTable
   FileWrite(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, &uiNumBytesWritten);
@@ -1587,7 +1594,7 @@ function SaveKeyTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesRead = 0;
+  let uiNumBytesRead: UINT32 = 0;
 
   // Load the KeyTable
   FileRead(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, &uiNumBytesRead);
@@ -1599,11 +1606,11 @@ function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function ExamineDoorsOnEnteringSector(): void {
-  INT32 cnt;
-  DOOR_STATUS *pDoorStatus;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fOK = FALSE;
-  INT8 bTownId;
+  let cnt: INT32;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fOK: BOOLEAN = FALSE;
+  let bTownId: INT8;
 
   // OK, only do this if conditions are met....
   // If this is any omerta tow, don't do it...
@@ -1646,12 +1653,12 @@ function ExamineDoorsOnEnteringSector(): void {
 }
 
 function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
-  INT32 cnt;
-  DOOR_STATUS *pDoorStatus;
-  SOLDIERTYPE *pSoldier;
-  BOOLEAN fOK = FALSE;
-  INT32 iNumNewMercs = 0;
-  INT8 bTownId;
+  let cnt: INT32;
+  let pDoorStatus: Pointer<DOOR_STATUS>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let fOK: BOOLEAN = FALSE;
+  let iNumNewMercs: INT32 = 0;
+  let bTownId: INT8;
 
   // OK, only do this if conditions are met....
 
@@ -1715,9 +1722,9 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
 }
 
 function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: INT8, bVisible: INT8, fAddToDropList: BOOLEAN, iDropListSlot: INT32, fUseUnLoaded: BOOLEAN): void {
-  UINT8 ubLoop;
-  UINT8 ubItem;
-  OBJECTTYPE Object;
+  let ubLoop: UINT8;
+  let ubItem: UINT8;
+  let Object: OBJECTTYPE;
 
   if (!(pSoldier->pKeyRing)) {
     // no key ring!

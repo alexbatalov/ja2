@@ -9,31 +9,31 @@ const MOVE_Y = 5;
 const STRAFE_DIST = 80;
 const BOMB_DIST = 150;
 
-BOOLEAN gfInAirRaid = FALSE;
-BOOLEAN gfAirRaidScheduled = FALSE;
-UINT8 gubAirRaidMode;
-UINT32 guiSoundSample;
-UINT32 guiRaidLastUpdate;
-BOOLEAN gfFadingRaidIn = FALSE;
-BOOLEAN gfQuoteSaid = FALSE;
-INT8 gbNumDives = 0;
-INT8 gbMaxDives = 0;
-BOOLEAN gfFadingRaidOut = FALSE;
-INT16 gsDiveX;
-INT16 gsDiveY;
-INT16 gsDiveTargetLocation;
-UINT8 gubDiveDirection;
-INT16 gsNumGridNosMoved;
-INT32 giNumTurnsSinceLastDive;
-INT32 giNumTurnsSinceDiveStarted;
-INT32 giNumGridNosMovedThisTurn;
-BOOLEAN gfAirRaidHasHadTurn = FALSE;
-UINT8 gubBeginTeamTurn = 0;
-BOOLEAN gfHaveTBBatton = FALSE;
-INT16 gsNotLocatedYet = FALSE;
-INT32 giNumFrames;
+let gfInAirRaid: BOOLEAN = FALSE;
+let gfAirRaidScheduled: BOOLEAN = FALSE;
+let gubAirRaidMode: UINT8;
+let guiSoundSample: UINT32;
+let guiRaidLastUpdate: UINT32;
+let gfFadingRaidIn: BOOLEAN = FALSE;
+let gfQuoteSaid: BOOLEAN = FALSE;
+let gbNumDives: INT8 = 0;
+let gbMaxDives: INT8 = 0;
+let gfFadingRaidOut: BOOLEAN = FALSE;
+let gsDiveX: INT16;
+let gsDiveY: INT16;
+let gsDiveTargetLocation: INT16;
+let gubDiveDirection: UINT8;
+let gsNumGridNosMoved: INT16;
+let giNumTurnsSinceLastDive: INT32;
+let giNumTurnsSinceDiveStarted: INT32;
+let giNumGridNosMovedThisTurn: INT32;
+let gfAirRaidHasHadTurn: BOOLEAN = FALSE;
+let gubBeginTeamTurn: UINT8 = 0;
+let gfHaveTBBatton: BOOLEAN = FALSE;
+let gsNotLocatedYet: INT16 = FALSE;
+let giNumFrames: INT32;
 
-AIR_RAID_DEFINITION gAirRaidDef;
+let gAirRaidDef: AIR_RAID_DEFINITION;
 
 interface AIR_RAID_SAVE_STRUCT {
   fInAirRaid: BOOLEAN;
@@ -78,7 +78,7 @@ interface AIR_RAID_SAVE_STRUCT {
 }
 
 // END SERIALIZATION
-SOLDIERTYPE *gpRaidSoldier;
+let gpRaidSoldier: Pointer<SOLDIERTYPE>;
 
 interface AIR_RAID_DIR {
   bDir1: INT8;
@@ -90,7 +90,7 @@ interface AIR_RAID_POS {
   bY: INT8;
 }
 
-AIR_RAID_DIR ubPerpDirections[] = {
+let ubPerpDirections: AIR_RAID_DIR[] /* [] */ = {
   { 2, 6 },
   { 3, 7 },
   { 0, 4 },
@@ -101,7 +101,7 @@ AIR_RAID_DIR ubPerpDirections[] = {
   { 1, 5 },
 };
 
-AIR_RAID_POS ubXYTragetInvFromDirection[] = {
+let ubXYTragetInvFromDirection: AIR_RAID_POS[] /* [] */ = {
   { 0, -1 },
   { 1, -1 },
   { 1, 0 },
@@ -127,9 +127,9 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
 }
 
 function BeginAirRaid(): BOOLEAN {
-  INT32 cnt;
-  BOOLEAN fOK = FALSE;
-  SOLDIERTYPE *pSoldier;
+  let cnt: INT32;
+  let fOK: BOOLEAN = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // OK, we have been told to start.....
 
@@ -208,11 +208,11 @@ function BeginAirRaid(): BOOLEAN {
 }
 
 function PickLocationNearAnyMercInSector(): INT16 {
-  UINT8 ubMercsInSector[20] = { 0 };
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32;
 
   // Loop through all our guys and randomly say one from someone in our sector
 
@@ -239,9 +239,12 @@ function PickLocationNearAnyMercInSector(): INT16 {
 }
 
 function PickRandomLocationAtMinSpacesAway(sGridNo: INT16, sMinValue: INT16, sRandomVar: INT16): INT16 {
-  INT16 sNewGridNo = NOWHERE;
+  let sNewGridNo: INT16 = NOWHERE;
 
-  INT16 sX, sY, sNewX, sNewY;
+  let sX: INT16;
+  let sY: INT16;
+  let sNewX: INT16;
+  let sNewY: INT16;
 
   sX = CenterX(sGridNo);
   sY = CenterY(sGridNo);
@@ -311,8 +314,8 @@ function AirRaidStart(): void {
 }
 
 function AirRaidLookForDive(): void {
-  BOOLEAN fDoDive = FALSE;
-  BOOLEAN fDoQuote = FALSE;
+  let fDoDive: BOOLEAN = FALSE;
+  let fDoQuote: BOOLEAN = FALSE;
 
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
     if (!gfQuoteSaid) {
@@ -403,8 +406,8 @@ function AirRaidStartEnding(): void {
 }
 
 function BeginBombing(): void {
-  INT16 sGridNo;
-  UINT32 iSoundStartDelay;
+  let sGridNo: INT16;
+  let iSoundStartDelay: UINT32;
 
   if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
     // Start diving sound...
@@ -446,8 +449,8 @@ function BeginBombing(): void {
 }
 
 function BeginDive(): void {
-  INT16 sGridNo;
-  UINT32 iSoundStartDelay;
+  let sGridNo: INT16;
+  let iSoundStartDelay: UINT32;
 
   // Start diving sound...
   PlayJA2Sample(S_RAID_DIVE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
@@ -490,7 +493,7 @@ function BeginDive(): void {
 }
 
 function MoveDiveAirplane(dAngle: FLOAT): void {
-  FLOAT dDeltaPos;
+  let dDeltaPos: FLOAT;
 
   // Find delta Movement for X pos
   dDeltaPos = MOVE_X * (FLOAT)sin(dAngle);
@@ -506,13 +509,21 @@ function MoveDiveAirplane(dAngle: FLOAT): void {
 }
 
 function DoDive(): void {
-  INT16 sRange;
-  INT16 sGridNo, sOldGridNo;
+  let sRange: INT16;
+  let sGridNo: INT16;
+  let sOldGridNo: INT16;
 
-  INT16 sTargetX, sTargetY;
-  INT16 sStrafeX, sStrafeY;
-  FLOAT dDeltaX, dDeltaY, dAngle, dDeltaXPos, dDeltaYPos;
-  INT16 sX, sY;
+  let sTargetX: INT16;
+  let sTargetY: INT16;
+  let sStrafeX: INT16;
+  let sStrafeY: INT16;
+  let dDeltaX: FLOAT;
+  let dDeltaY: FLOAT;
+  let dAngle: FLOAT;
+  let dDeltaXPos: FLOAT;
+  let dDeltaYPos: FLOAT;
+  let sX: INT16;
+  let sY: INT16;
 
   // Delay for a specific perion of time to allow sound to Q up...
   if (TIMECOUNTERDONE(giTimerAirRaidDiveStarted, 0)) {
@@ -654,14 +665,22 @@ function DoDive(): void {
 }
 
 function DoBombing(): void {
-  INT16 sRange;
-  INT16 sGridNo, sOldGridNo, sBombGridNo;
+  let sRange: INT16;
+  let sGridNo: INT16;
+  let sOldGridNo: INT16;
+  let sBombGridNo: INT16;
 
-  INT16 sTargetX, sTargetY;
-  UINT16 usItem;
-  INT16 sStrafeX, sStrafeY;
-  FLOAT dDeltaX, dDeltaY, dAngle, dDeltaXPos, dDeltaYPos;
-  BOOLEAN fLocate = FALSE;
+  let sTargetX: INT16;
+  let sTargetY: INT16;
+  let usItem: UINT16;
+  let sStrafeX: INT16;
+  let sStrafeY: INT16;
+  let dDeltaX: FLOAT;
+  let dDeltaY: FLOAT;
+  let dAngle: FLOAT;
+  let dDeltaXPos: FLOAT;
+  let dDeltaYPos: FLOAT;
+  let fLocate: BOOLEAN = FALSE;
 
   // Delay for a specific perion of time to allow sound to Q up...
   if (TIMECOUNTERDONE(giTimerAirRaidDiveStarted, 0)) {
@@ -772,8 +791,8 @@ function DoBombing(): void {
 }
 
 function HandleAirRaid(): void {
-  INT32 iVol;
-  UINT32 uiClock;
+  let iVol: INT32;
+  let uiClock: UINT32;
 
   // OK,
   if (gfInAirRaid) {
@@ -970,8 +989,8 @@ function HandleAirRaidEndTurn(ubTeam: UINT8): BOOLEAN {
 }
 
 function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
-  AIR_RAID_SAVE_STRUCT sAirRaidSaveStruct;
+  let uiNumBytesWritten: UINT32;
+  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
 
   // Put all the globals into the save struct
   sAirRaidSaveStruct.fInAirRaid = gfInAirRaid;
@@ -1028,8 +1047,8 @@ function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
-  AIR_RAID_SAVE_STRUCT sAirRaidSaveStruct;
-  UINT32 uiNumBytesRead;
+  let sAirRaidSaveStruct: AIR_RAID_SAVE_STRUCT;
+  let uiNumBytesRead: UINT32;
 
   // Load the number of REAL_OBJECTs in the array
   FileRead(hFile, &sAirRaidSaveStruct, sizeof(AIR_RAID_SAVE_STRUCT), &uiNumBytesRead);
@@ -1095,8 +1114,8 @@ function EndAirRaid(): void {
     SetMusicMode(MUSIC_TACTICAL_NOTHING);
 
     if (!gTacticalStatus.Team[ENEMY_TEAM].bTeamActive && !gTacticalStatus.Team[CREATURE_TEAM].bTeamActive) {
-      SOLDIERTYPE *pTeamSoldier;
-      INT32 cnt;
+      let pTeamSoldier: Pointer<SOLDIERTYPE>;
+      let cnt: INT32;
 
       // Loop through all militia and restore them to peaceful status
       cnt = gTacticalStatus.Team[MILITIA_TEAM].bFirstID;

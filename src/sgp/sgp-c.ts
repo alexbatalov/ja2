@@ -1,33 +1,33 @@
 // Prototype Declarations
 
-HINSTANCE ghInstance;
+let ghInstance: HINSTANCE;
 
 // Global Variable Declarations
 
 // moved from header file: 24mar98:HJH
-UINT32 giStartMem;
-UINT8 gbPixelDepth; // GLOBAL RUN-TIME SETTINGS
+let giStartMem: UINT32;
+let gbPixelDepth: UINT8; // GLOBAL RUN-TIME SETTINGS
 
-UINT32 guiMouseWheelMsg; // For mouse wheel messages
+let guiMouseWheelMsg: UINT32; // For mouse wheel messages
 
-BOOLEAN gfApplicationActive;
-BOOLEAN gfProgramIsRunning;
-BOOLEAN gfGameInitialized = FALSE;
-UINT32 giStartMem;
-BOOLEAN gfDontUseDDBlits = FALSE;
+let gfApplicationActive: BOOLEAN;
+let gfProgramIsRunning: BOOLEAN;
+let gfGameInitialized: BOOLEAN = FALSE;
+let giStartMem: UINT32;
+let gfDontUseDDBlits: BOOLEAN = FALSE;
 
 // There were TWO of them??!?! -- DB
 // CHAR8		gzCommandLine[ 100 ];
-CHAR8 gzCommandLine[100]; // Command line given
+let gzCommandLine: CHAR8[] /* [100] */; // Command line given
 
-CHAR8 gzErrorMsg[2048] = "";
-BOOLEAN gfIgnoreMessages = FALSE;
+let gzErrorMsg: CHAR8[] /* [2048] */ = "";
+let gfIgnoreMessages: BOOLEAN = FALSE;
 
 // GLOBAL VARIBLE, SET TO DEFAULT BUT CAN BE CHANGED BY THE GAME IF INIT FILE READ
-UINT8 gbPixelDepth = PIXEL_DEPTH;
+let gbPixelDepth: UINT8 = PIXEL_DEPTH;
 
 function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam: LPARAM): INT32 {
-  static fRestore = FALSE;
+  /* static */ let fRestore: BOOLEAN = FALSE;
 
   if (gfIgnoreMessages)
     return DefWindowProc(hWindow, Message, wParam, lParam);
@@ -92,7 +92,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
       break;
 
     case WM_DEVICECHANGE: {
-      DEV_BROADCAST_HDR *pHeader = (DEV_BROADCAST_HDR *)lParam;
+      let pHeader: Pointer<DEV_BROADCAST_HDR> = (DEV_BROADCAST_HDR *)lParam;
 
       // if a device has been removed
       if (wParam == DBT_DEVICEREMOVECOMPLETE) {
@@ -112,7 +112,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
 }
 
 function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: int): BOOLEAN {
-  FontTranslationTable *pFontTable;
+  let pFontTable: Pointer<FontTranslationTable>;
 
   // now required by all (even JA2) in order to call ShutdownSGP
   atexit(SGPExit);
@@ -279,8 +279,8 @@ function ShutdownStandardGamingPlatform(): void {
 }
 
 function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: LPSTR, sCommandShow: int): int {
-  MSG Message;
-  HWND hPrevInstanceWindow;
+  let Message: MSG;
+  let hPrevInstanceWindow: HWND;
 
   // Make sure that only one instance of this application is running at once
   // // Look for prev instance by searching for the window
@@ -367,8 +367,8 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
 }
 
 function SGPExit(): void {
-  static BOOLEAN fAlreadyExiting = FALSE;
-  BOOLEAN fUnloadScreens = TRUE;
+  /* static */ let fAlreadyExiting: BOOLEAN = FALSE;
+  let fUnloadScreens: BOOLEAN = TRUE;
 
   // helps prevent heap crashes when multiple assertions occur and call us
   if (fAlreadyExiting) {
@@ -387,8 +387,8 @@ function SGPExit(): void {
 
 function GetRuntimeSettings(): void {
   // Runtime settings - for now use INI file - later use registry
-  STRING512 ExeDir;
-  STRING512 INIFile;
+  let ExeDir: STRING512;
+  let INIFile: STRING512;
 
   // Get Executable Directory
   GetExecutableDirectory(ExeDir);
@@ -407,8 +407,9 @@ function ShutdownWithErrorBox(pcMessage: Pointer<CHAR8>): void {
 }
 
 function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>): void {
-  CHAR8 cSeparators[] = "\t =";
-  CHAR8 *pCopy = NULL, *pToken;
+  let cSeparators: CHAR8[] /* [] */ = "\t =";
+  let pCopy: Pointer<CHAR8> = NULL;
+  let pToken: Pointer<CHAR8>;
 
   pCopy = (CHAR8 *)MemAlloc(strlen(pCommandLine) + 1);
 

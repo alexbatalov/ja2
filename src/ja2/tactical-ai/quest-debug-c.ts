@@ -11,15 +11,15 @@ const enum Enum298 {
 }
 
 // Mode and priority for the Quest Debug Messages
-UINT8 gubQuestDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
+let gubQuestDebugOutPutLevel: UINT8 = QD_OUTPUT_LEVEL_ALL;
 
 // Mode and priority for the NPC interaction Debug Messages
-UINT8 gubNPCDebugOutPutLevel = QD_OUTPUT_LEVEL_ALL;
+let gubNPCDebugOutPutLevel: UINT8 = QD_OUTPUT_LEVEL_ALL;
 
 // set the current output mode for either the NPC or the quest output
 function ToggleQuestDebugModes(ubType: UINT8): void {
-  wchar_t sType[16];
-  UINT8 ubLevel;
+  let sType: wchar_t[] /* [16] */;
+  let ubLevel: UINT8;
 
   if (ubType == QD_NPC_MSG) {
     wcscpy(sType, L"NPC Debug:");
@@ -57,13 +57,13 @@ function ToggleQuestDebugModes(ubType: UINT8): void {
 }
 
 function QuestDebugFileMsg(ubQuoteType: UINT8, ubPriority: UINT8, pStringA: STR, ...args: any[]): void {
-  static BOOLEAN fFirstTimeIn = TRUE;
-  static UINT32 uiLineNumber = 1;
-  HWFILE hFile;
-  UINT32 uiByteWritten;
-  va_list argptr;
-  char TempString[1024];
-  char DestString[1024];
+  /* static */ let fFirstTimeIn: BOOLEAN = TRUE;
+  /* static */ let uiLineNumber: UINT32 = 1;
+  let hFile: HWFILE;
+  let uiByteWritten: UINT32;
+  let argptr: va_list;
+  let TempString: char[] /* [1024] */;
+  let DestString: char[] /* [1024] */;
 
   TempString[0] = '\0';
   DestString[0] = '\0';

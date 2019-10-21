@@ -2,18 +2,18 @@
 
 const HOW_MANY_ROLLS_FOR_SAME_SKILL_CHECK = 20;
 
-INT32 AttitudeList[ATTITUDE_LIST_SIZE];
-INT32 iLastElementInAttitudeList = 0;
+let AttitudeList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let iLastElementInAttitudeList: INT32 = 0;
 
-INT32 SkillsList[ATTITUDE_LIST_SIZE];
-INT32 BackupSkillsList[ATTITUDE_LIST_SIZE];
-INT32 iLastElementInSkillsList = 0;
+let SkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let BackupSkillsList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let iLastElementInSkillsList: INT32 = 0;
 
-INT32 PersonalityList[ATTITUDE_LIST_SIZE];
-INT32 iLastElementInPersonalityList = 0;
+let PersonalityList: INT32[] /* [ATTITUDE_LIST_SIZE] */;
+let iLastElementInPersonalityList: INT32 = 0;
 
 // positions of the face x and y for eyes and mouth for the 10 portraits
-INT16 sFacePositions[NUMBER_OF_PLAYER_PORTRAITS][4] = {
+let sFacePositions: INT16[][] /* [NUMBER_OF_PLAYER_PORTRAITS][4] */ = {
   { 0, 0, 0, 0 },
   { 0, 0, 0, 0 },
   { 0, 0, 0, 0 },
@@ -32,7 +32,7 @@ INT16 sFacePositions[NUMBER_OF_PLAYER_PORTRAITS][4] = {
   { 0, 0, 0, 0 },
 };
 
-STR8 pPlayerSelectedFaceFileNames[NUMBER_OF_PLAYER_PORTRAITS] = {
+let pPlayerSelectedFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = {
   "Faces\\200.sti",
   "Faces\\201.sti",
   "Faces\\202.sti",
@@ -51,7 +51,7 @@ STR8 pPlayerSelectedFaceFileNames[NUMBER_OF_PLAYER_PORTRAITS] = {
   "Faces\\215.sti",
 };
 
-STR8 pPlayerSelectedBigFaceFileNames[NUMBER_OF_PLAYER_PORTRAITS] = {
+let pPlayerSelectedBigFaceFileNames: STR8[] /* [NUMBER_OF_PLAYER_PORTRAITS] */ = {
   "Faces\\BigFaces\\200.sti",
   "Faces\\BigFaces\\201.sti",
   "Faces\\BigFaces\\202.sti",
@@ -153,12 +153,13 @@ if( iPersonality != NO_PERSONALITYTRAIT )
 
 function CreatePlayerAttitude(): void {
   // this function will 'roll a die' and decide if any attitude does exists
-  INT32 iDiceValue = 0;
-  INT32 iCounter = 0, iCounter2 = 0;
+  let iDiceValue: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let iCounter2: INT32 = 0;
 
-  INT32 iAttitudeHits[NUM_ATTITUDES] = { 0 };
-  INT32 iHighestHits = 0;
-  INT32 iNumAttitudesWithHighestHits = 0;
+  let iAttitudeHits: INT32[] /* [NUM_ATTITUDES] */ = { 0 };
+  let iHighestHits: INT32 = 0;
+  let iNumAttitudesWithHighestHits: INT32 = 0;
 
   iAttitude = ATT_NORMAL;
 
@@ -252,7 +253,7 @@ function AddSkillToSkillList(bSkill: INT8): void {
 }
 
 function RemoveSkillFromSkillsList(iIndex: INT32): void {
-  INT32 iLoop;
+  let iLoop: INT32;
 
   // remove a skill from the index given and shorten the list
   if (iIndex < iLastElementInSkillsList) {
@@ -275,7 +276,7 @@ function RemoveSkillFromSkillsList(iIndex: INT32): void {
 }
 
 function FindSkillInSkillsList(iSkill: INT32): INT32 {
-  INT32 iLoop;
+  let iLoop: INT32;
 
   for (iLoop = 0; iLoop < iLastElementInSkillsList; iLoop++) {
     if (SkillsList[iLoop] == iSkill) {
@@ -287,8 +288,9 @@ function FindSkillInSkillsList(iSkill: INT32): INT32 {
 }
 
 function ValidateSkillsList(): void {
-  INT32 iIndex, iValue;
-  MERCPROFILESTRUCT *pProfile;
+  let iIndex: INT32;
+  let iValue: INT32;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // remove from the generated traits list any traits that don't match
   // the character's skills
@@ -336,8 +338,8 @@ function ValidateSkillsList(): void {
 
 function CreatePlayerSkills(): void {
   // this function will 'roll a die' and decide if any attitude does exists
-  INT32 iDiceValue = 0;
-  INT32 iCounter = 0;
+  let iDiceValue: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   ValidateSkillsList();
 
@@ -546,7 +548,7 @@ function SetMercSkinAndHairColors(): void {
   };
 
   // skin strings
-  STR sSkinStrings[] = {
+  let sSkinStrings: STR[] /* [] */ = {
     "PINKSKIN",
     "TANSKIN",
     "DARKSKIN",
@@ -554,7 +556,7 @@ function SetMercSkinAndHairColors(): void {
   };
 
   // the hair colors
-  STR sHairStrings[] = {
+  let sHairStrings: STR[] /* [] */ = {
     "BROWNHEAD",
     "BLACKHEAD",
     "WHITEHEAD",
@@ -563,7 +565,8 @@ function SetMercSkinAndHairColors(): void {
   };
 
   // given the portrait number, set the merc's skin and hair color
-  INT16 sSkinColor = 0, sHairColor = 0;
+  let sSkinColor: INT16 = 0;
+  let sHairColor: INT16 = 0;
 
   switch (iPortraitNumber) {
     case (0):

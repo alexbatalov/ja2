@@ -1,14 +1,14 @@
-SGPPaletteEntry Shaded8BPPPalettes[HVOBJECT_SHADE_TABLES + 3][256];
-UINT8 ubColorTables[HVOBJECT_SHADE_TABLES + 3][256];
+let Shaded8BPPPalettes: SGPPaletteEntry[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
+let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 
-UINT16 IntensityTable[65536];
-UINT16 ShadeTable[65536];
-UINT16 White16BPPPalette[256];
-FLOAT guiShadePercent = (FLOAT)0.48;
-FLOAT guiBrightPercent = (FLOAT)1.1;
+let IntensityTable: UINT16[] /* [65536] */;
+let ShadeTable: UINT16[] /* [65536] */;
+let White16BPPPalette: UINT16[] /* [256] */;
+let guiShadePercent: FLOAT = (FLOAT)0.48;
+let guiBrightPercent: FLOAT = (FLOAT)1.1;
 
 function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
-  UINT32 uiCount;
+  let uiCount: UINT32;
 
   // Green palette
   ShadesCalculatePalette(p8BPPPalette, Shaded8BPPPalettes[0], 0, 255, 0, TRUE);
@@ -50,8 +50,11 @@ function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN 
 }
 
 function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPalette: Pointer<SGPPaletteEntry>, usRed: UINT16, usGreen: UINT16, usBlue: UINT16, fMono: BOOLEAN): BOOLEAN {
-  UINT32 cnt, lumin;
-  UINT32 rmod, gmod, bmod;
+  let cnt: UINT32;
+  let lumin: UINT32;
+  let rmod: UINT32;
+  let gmod: UINT32;
+  let bmod: UINT32;
 
   Assert(pSrcPalette != NULL);
   Assert(pDestPalette != NULL);
@@ -77,8 +80,10 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
 }
 
 function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointer<SGPPaletteEntry>, pTable: Pointer<UINT8>): void {
-  UINT16 usCurIndex, usCurDelta, usCurCount;
-  UINT32 *pSavedPtr;
+  let usCurIndex: UINT16;
+  let usCurDelta: UINT16;
+  let usCurCount: UINT16;
+  let pSavedPtr: Pointer<UINT32>;
 
   __asm {
     // Assumes:
@@ -169,8 +174,10 @@ function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointe
 
 **********************************************************************************************/
 function BuildShadeTable(): void {
-  UINT16 red, green, blue;
-  UINT16 index;
+  let red: UINT16;
+  let green: UINT16;
+  let blue: UINT16;
+  let index: UINT16;
 
   for (red = 0; red < 256; red += 4)
     for (green = 0; green < 256; green += 4)
@@ -194,9 +201,11 @@ function BuildShadeTable(): void {
 
 **********************************************************************************************/
 function BuildIntensityTable(): void {
-  UINT16 red, green, blue;
-  UINT16 index;
-  FLOAT dShadedPercent = (FLOAT)0.80;
+  let red: UINT16;
+  let green: UINT16;
+  let blue: UINT16;
+  let index: UINT16;
+  let dShadedPercent: FLOAT = (FLOAT)0.80;
 
   for (red = 0; red < 256; red += 4)
     for (green = 0; green < 256; green += 4)
@@ -212,8 +221,8 @@ function SetShadeTablePercent(uiShadePercent: FLOAT): void {
 }
 
 function Init8BitTables(): void {
-  SGPPaletteEntry Pal[256];
-  UINT32 uiCount;
+  let Pal: SGPPaletteEntry[] /* [256] */;
+  let uiCount: UINT32;
 
   // calculate a grey-scale table for the default palette
   for (uiCount = 0; uiCount < 256; uiCount++) {

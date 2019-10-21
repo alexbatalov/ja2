@@ -7,16 +7,17 @@ const DOWNARROW_Y_OFFSET = -10;
 const BUTTON_PANEL_WIDTH = 78;
 const BUTTON_PANEL_HEIGHT = 76;
 
-BOOLEAN gfInMovementMenu = FALSE;
-INT32 giMenuAnchorX, giMenuAnchorY;
+let gfInMovementMenu: BOOLEAN = FALSE;
+let giMenuAnchorX: INT32;
+let giMenuAnchorY: INT32;
 
 const PROG_BAR_START_X = 5;
 const PROG_BAR_START_Y = 2;
 const PROG_BAR_LENGTH = 627;
 
-BOOLEAN gfProgBarActive = FALSE;
-UINT8 gubProgNumEnemies = 0;
-UINT8 gubProgCurEnemy = 0;
+let gfProgBarActive: BOOLEAN = FALSE;
+let gubProgNumEnemies: UINT8 = 0;
+let gubProgCurEnemy: UINT8 = 0;
 
 interface TOP_MESSAGE {
   uiSurface: UINT32;
@@ -30,28 +31,30 @@ interface TOP_MESSAGE {
   sWorldRenderY: INT16;
 }
 
-TOP_MESSAGE gTopMessage;
-BOOLEAN gfTopMessageDirty = FALSE;
+let gTopMessage: TOP_MESSAGE;
+let gfTopMessageDirty: BOOLEAN = FALSE;
 
-MOUSE_REGION gMenuOverlayRegion;
+let gMenuOverlayRegion: MOUSE_REGION;
 
-UINT16 gusOldSelectedSoldier = NO_SOLDIER;
+let gusOldSelectedSoldier: UINT16 = NO_SOLDIER;
 
 // OVerlay ID
-INT32 giPopupSlideMessageOverlay = -1;
-UINT16 gusOverlayPopupBoxWidth, gusOverlayPopupBoxHeight;
-MercPopUpBox gpOverrideMercBox;
+let giPopupSlideMessageOverlay: INT32 = -1;
+let gusOverlayPopupBoxWidth: UINT16;
+let gusOverlayPopupBoxHeight: UINT16;
+let gpOverrideMercBox: MercPopUpBox;
 
-INT32 giUIMessageOverlay = -1;
-UINT16 gusUIMessageWidth, gusUIMessageHeight;
-MercPopUpBox gpUIMessageOverrideMercBox;
-UINT32 guiUIMessageTime = 0;
-INT32 iOverlayMessageBox = -1;
-INT32 iUIMessageBox = -1;
-UINT32 guiUIMessageTimeDelay = 0;
-BOOLEAN gfUseSkullIconMessage = FALSE;
+let giUIMessageOverlay: INT32 = -1;
+let gusUIMessageWidth: UINT16;
+let gusUIMessageHeight: UINT16;
+let gpUIMessageOverrideMercBox: MercPopUpBox;
+let guiUIMessageTime: UINT32 = 0;
+let iOverlayMessageBox: INT32 = -1;
+let iUIMessageBox: INT32 = -1;
+let guiUIMessageTimeDelay: UINT32 = 0;
+let gfUseSkullIconMessage: BOOLEAN = FALSE;
 
-BOOLEAN gfPanelAllocated = FALSE;
+let gfPanelAllocated: BOOLEAN = FALSE;
 
 const enum Enum208 {
   WALK_IMAGES = 0,
@@ -84,7 +87,7 @@ const enum Enum208 {
   NUM_ICON_IMAGES,
 }
 
-INT32 iIconImages[NUM_ICON_IMAGES];
+let iIconImages: INT32[] /* [NUM_ICON_IMAGES] */;
 
 const enum Enum209 {
   WALK_ICON,
@@ -110,50 +113,50 @@ const enum Enum209 {
   NUM_ICONS,
 }
 
-INT32 iActionIcons[NUM_ICONS];
+let iActionIcons: INT32[] /* [NUM_ICONS] */;
 
 // GLOBAL INTERFACE SURFACES
-UINT32 guiRENDERBUFFER;
-UINT32 guiINTEXT;
-UINT32 guiCLOSE;
-UINT32 guiDEAD;
-UINT32 guiHATCH;
-UINT32 guiGUNSM;
-UINT32 guiP1ITEMS;
-UINT32 guiP2ITEMS;
-UINT32 guiP3ITEMS;
-UINT32 guiBUTTONBORDER;
-UINT32 guiRADIO;
-UINT32 guiRADIO2;
-UINT32 guiCOMPANEL;
-UINT32 guiCOMPANELB;
-UINT32 guiAIMCUBES;
-UINT32 guiAIMBARS;
-UINT32 guiVEHINV;
-UINT32 guiBURSTACCUM;
-UINT32 guiITEMPOINTERHATCHES;
+let guiRENDERBUFFER: UINT32;
+let guiINTEXT: UINT32;
+let guiCLOSE: UINT32;
+let guiDEAD: UINT32;
+let guiHATCH: UINT32;
+let guiGUNSM: UINT32;
+let guiP1ITEMS: UINT32;
+let guiP2ITEMS: UINT32;
+let guiP3ITEMS: UINT32;
+let guiBUTTONBORDER: UINT32;
+let guiRADIO: UINT32;
+let guiRADIO2: UINT32;
+let guiCOMPANEL: UINT32;
+let guiCOMPANELB: UINT32;
+let guiAIMCUBES: UINT32;
+let guiAIMBARS: UINT32;
+let guiVEHINV: UINT32;
+let guiBURSTACCUM: UINT32;
+let guiITEMPOINTERHATCHES: UINT32;
 
 // UI Globals
-MOUSE_REGION gViewportRegion;
-MOUSE_REGION gRadarRegion;
+let gViewportRegion: MOUSE_REGION;
+let gRadarRegion: MOUSE_REGION;
 
-UINT16 gsUpArrowX;
-UINT16 gsUpArrowY;
-UINT16 gsDownArrowX;
-UINT16 gsDownArrowY;
+let gsUpArrowX: UINT16;
+let gsUpArrowY: UINT16;
+let gsDownArrowX: UINT16;
+let gsDownArrowY: UINT16;
 
-UINT32 giUpArrowRect;
-UINT32 giDownArrowRect;
+let giUpArrowRect: UINT32;
+let giDownArrowRect: UINT32;
 
-BOOLEAN fFirstTimeInGameScreen = TRUE;
-BOOLEAN fInterfacePanelDirty = DIRTYLEVEL2;
-INT16 gsInterfaceLevel = I_GROUND_LEVEL;
-INT16 gsCurrentSoldierGridNo = 0;
-INT16 gsCurInterfacePanel = TEAM_PANEL;
+let fFirstTimeInGameScreen: BOOLEAN = TRUE;
+let fInterfacePanelDirty: BOOLEAN = DIRTYLEVEL2;
+let gsInterfaceLevel: INT16 = I_GROUND_LEVEL;
+let gsCurrentSoldierGridNo: INT16 = 0;
+let gsCurInterfacePanel: INT16 = TEAM_PANEL;
 
 function InitializeTacticalInterface(): BOOLEAN {
-  VSURFACE_DESC vs_desc;
-  VOBJECT_DESC VObjectDesc;
+  let vs_desc: VSURFACE_DESC;
+  let VObjectDesc: VOBJECT_DESC;
 
   // Load button Interfaces
   iIconImages[WALK_IMAGES] = LoadButtonImage("INTERFACE\\newicons3.sti", -1, 3, 4, 5, -1);
@@ -329,7 +332,7 @@ function ShutdownTacticalInterface(): BOOLEAN {
 }
 
 function InitializeCurrentPanel(): BOOLEAN {
-  BOOLEAN fOK = FALSE;
+  let fOK: BOOLEAN = FALSE;
 
   MoveRadarScreen();
 
@@ -374,7 +377,7 @@ function ShutdownCurrentPanel(): void {
 }
 
 function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Disable faces
   SetAllAutoFacesInactive();
@@ -472,11 +475,12 @@ function BtnPositionCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iMenuAnchorX, iMenuAnchorY;
-  UINT32 uiActionImages;
-  INT16 zActionString[50];
-  BOOLEAN fDisableAction = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iMenuAnchorX: INT32;
+  let iMenuAnchorY: INT32;
+  let uiActionImages: UINT32;
+  let zActionString: INT16[] /* [50] */;
+  let fDisableAction: BOOLEAN = FALSE;
 
   // Erase other menus....
   EraseInterfaceMenus(TRUE);
@@ -766,8 +770,8 @@ function CancelMovementMenu(): void {
 }
 
 function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 uiBtnID;
-  UI_EVENT *pUIEvent;
+  let uiBtnID: INT32;
+  let pUIEvent: Pointer<UI_EVENT>;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -808,7 +812,7 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function HandleUpDownArrowBackgrounds(): void {
-  static UINT32 uiOldShowUpDownArrows = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
+  /* static */ let uiOldShowUpDownArrows: UINT32 = ARROWS_HIDE_UP | ARROWS_HIDE_DOWN;
 
   // Check for change in mode
   if (guiShowUPDownArrows != uiOldShowUpDownArrows || gfUIRefreshArrows) {
@@ -822,7 +826,7 @@ function HandleUpDownArrowBackgrounds(): void {
 }
 
 function RenderArrows(): void {
-  TILE_ELEMENT TileElem;
+  let TileElem: TILE_ELEMENT;
 
   if (guiShowUPDownArrows & ARROWS_HIDE_UP && guiShowUPDownArrows & ARROWS_HIDE_DOWN) {
     return;
@@ -939,9 +943,11 @@ function EraseRenderArrows(): void {
 }
 
 function GetArrowsBackground(): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sMercScreenX, sMercScreenY;
-  UINT16 sArrowHeight = ARROWS_HEIGHT, sArrowWidth = ARROWS_WIDTH;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sMercScreenX: INT16;
+  let sMercScreenY: INT16;
+  let sArrowHeight: UINT16 = ARROWS_HEIGHT;
+  let sArrowWidth: UINT16 = ARROWS_WIDTH;
 
   if (guiShowUPDownArrows & ARROWS_HIDE_UP && guiShowUPDownArrows & ARROWS_HIDE_DOWN) {
     return;
@@ -1032,12 +1038,15 @@ function GetArrowsBackground(): void {
 }
 
 function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointer<INT16>, psY: Pointer<INT16>, fRadio: BOOLEAN): void {
-  INT16 sMercScreenX, sMercScreenY;
-  INT16 sOffsetX, sOffsetY, sAddXOffset = 0;
-  UINT8 ubAnimUseHeight;
-  INT16 sStanceOffset = 0;
-  INT16 sBarBodyTypeYOffset = 55;
-  INT16 sTextBodyTypeYOffset = 62;
+  let sMercScreenX: INT16;
+  let sMercScreenY: INT16;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let sAddXOffset: INT16 = 0;
+  let ubAnimUseHeight: UINT8;
+  let sStanceOffset: INT16 = 0;
+  let sBarBodyTypeYOffset: INT16 = 55;
+  let sTextBodyTypeYOffset: INT16 = 62;
 
   // Find XY, dims, offsets
   GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
@@ -1115,16 +1124,18 @@ function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointe
 }
 
 function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
-  SOLDIERTYPE *pSoldier;
-  INT16 sXPos, sYPos;
-  INT16 sX, sY;
-  INT32 iBack;
-  TILE_ELEMENT TileElem;
-  UINT16 *pStr;
-  UINT16 NameStr[50];
-  UINT16 usGraphicToUse = THIRDPOINTERS1;
-  BOOLEAN fRaiseName = FALSE;
-  BOOLEAN fDoName = TRUE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sX: INT16;
+  let sY: INT16;
+  let iBack: INT32;
+  let TileElem: TILE_ELEMENT;
+  let pStr: Pointer<UINT16>;
+  let NameStr: UINT16[] /* [50] */;
+  let usGraphicToUse: UINT16 = THIRDPOINTERS1;
+  let fRaiseName: BOOLEAN = FALSE;
+  let fDoName: BOOLEAN = TRUE;
 
   GetSoldier(&pSoldier, usSoldierID);
 
@@ -1386,9 +1397,9 @@ function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
-  wchar_t SlideString[512];
+  let argptr: va_list;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let SlideString: wchar_t[] /* [512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(SlideString, pFontString, argptr); // process gprintf string (get output str)
@@ -1430,13 +1441,14 @@ function EndOverlayMessage(): void {
 }
 
 function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: INT16, sWidth: INT16, sHeight: INT16): void {
-  FLOAT dWidth, dPercentage;
+  let dWidth: FLOAT;
+  let dPercentage: FLOAT;
   // UINT16										 usLineColor;
 
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usLineColor;
-  INT8 bBandage;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usLineColor: UINT16;
+  let bBandage: INT8;
 
   // Draw breath points
 
@@ -1600,8 +1612,8 @@ function RestoreInterface(): void {
 }
 
 function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
 
   BltVideoSurface(pBlitter->uiDestBuff, guiINTEXT, 0, pBlitter->pBackground->sLeft, pBlitter->pBackground->sTop, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
@@ -1635,12 +1647,14 @@ interface OPENDOOR_MENU {
   fClosingDoor: BOOLEAN;
 }
 
-OPENDOOR_MENU gOpenDoorMenu;
-BOOLEAN gfInOpenDoorMenu = FALSE;
+let gOpenDoorMenu: OPENDOOR_MENU;
+let gfInOpenDoorMenu: BOOLEAN = FALSE;
 
 function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8, fClosingDoor: BOOLEAN): BOOLEAN {
-  INT16 sHeight, sWidth;
-  INT16 sScreenX, sScreenY;
+  let sHeight: INT16;
+  let sWidth: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
 
   // Erase other menus....
   EraseInterfaceMenus(TRUE);
@@ -1693,8 +1707,9 @@ function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<ST
 }
 
 function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
-  INT32 iMenuAnchorX, iMenuAnchorY;
-  INT16 zDisp[100];
+  let iMenuAnchorX: INT32;
+  let iMenuAnchorY: INT32;
+  let zDisp: INT16[] /* [100] */;
 
   iMenuAnchorX = gOpenDoorMenu.sX;
   iMenuAnchorY = gOpenDoorMenu.sY;
@@ -1952,7 +1967,7 @@ function CancelOpenDoorMenu(): void {
 }
 
 function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 uiBtnID;
+  let uiBtnID: INT32;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
@@ -2100,9 +2115,9 @@ function RenderUIMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 }
 
 function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
-  wchar_t MsgString[512];
+  let argptr: va_list;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let MsgString: wchar_t[] /* [512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
@@ -2153,8 +2168,8 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
 }
 
 function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  wchar_t MsgString[512];
+  let argptr: va_list;
+  let MsgString: wchar_t[] /* [512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
@@ -2164,9 +2179,9 @@ function BeginUIMessage(pFontString: Pointer<UINT16>, ...args: any[]): void {
 }
 
 function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...args: any[]): void {
-  va_list argptr;
-  VIDEO_OVERLAY_DESC VideoOverlayDesc;
-  wchar_t MsgString[512];
+  let argptr: va_list;
+  let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
+  let MsgString: wchar_t[] /* [512] */;
 
   memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
 
@@ -2211,7 +2226,7 @@ function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...a
 }
 
 function EndUIMessage(): void {
-  UINT32 uiClock = GetJA2Clock();
+  let uiClock: UINT32 = GetJA2Clock();
 
   if (giUIMessageOverlay != -1) {
     if (gfUseSkullIconMessage) {
@@ -2245,8 +2260,8 @@ const PLAYER_TEAM_TIMER_TIME_BETWEEN_BEEPS = (500);
 const PLAYER_TEAM_TIMER_TICKS_PER_ENEMY = (2000 / PLAYER_TEAM_TIMER_SEC_PER_TICKS);
 
 function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
-  UINT32 cnt;
-  BOOLEAN fFound = FALSE;
+  let cnt: UINT32;
+  let fFound: BOOLEAN = FALSE;
 
   // Set time of last update
   gTopMessage.uiTimeOfLastUpdate = GetJA2Clock();
@@ -2280,15 +2295,20 @@ function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
 }
 
 function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UINT16>): void {
-  UINT32 uiBAR, uiPLAYERBAR, uiINTBAR;
-  VOBJECT_DESC VObjectDesc;
-  INT16 sX, sY;
-  INT32 cnt2;
-  INT16 sBarX = 0;
-  UINT32 uiBarToUseInUpDate = 0;
-  BOOLEAN fDoLimitBar = FALSE;
+  let uiBAR: UINT32;
+  let uiPLAYERBAR: UINT32;
+  let uiINTBAR: UINT32;
+  let VObjectDesc: VOBJECT_DESC;
+  let sX: INT16;
+  let sY: INT16;
+  let cnt2: INT32;
+  let sBarX: INT16 = 0;
+  let uiBarToUseInUpDate: UINT32 = 0;
+  let fDoLimitBar: BOOLEAN = FALSE;
 
-  FLOAT dNumStepsPerEnemy, dLength, dCurSize;
+  let dNumStepsPerEnemy: FLOAT;
+  let dLength: FLOAT;
+  let dCurSize: FLOAT;
 
   memset(&VObjectDesc, 0, sizeof(VObjectDesc));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -2447,7 +2467,7 @@ function CheckForAndHandleEndPlayerTimeLimit(): void {
 
 function HandleTopMessages(): void {
   // UINT32		uiTime;
-  blt_vs_fx BltFx;
+  let BltFx: blt_vs_fx;
 
   // OK, is out current count > 0 ?
   if (gTacticalStatus.fInTopMessage) {
@@ -2654,9 +2674,10 @@ function UpdateEnemyUIBar(): void {
 }
 
 function InitPlayerUIBar(fInterrupt: BOOLEAN): void {
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt = 0;
-  INT8 bNumOK = 0, bNumNotOK = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
+  let bNumOK: INT8 = 0;
+  let bNumNotOK: INT8 = 0;
 
   if (!gGameOptions.fTurnTimeLimit) {
     if (fInterrupt == TRUE) {
@@ -2721,7 +2742,8 @@ function DoorMenuBackregionCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 }
 
 function GetSoldierHealthString(pSoldier: Pointer<SOLDIERTYPE>): Pointer<UINT16> {
-  INT32 cnt, cntStart;
+  let cnt: INT32;
+  let cntStart: INT32;
   if (pSoldier->bLife == pSoldier->bLifeMax) {
     cntStart = 4;
   } else {
@@ -2755,13 +2777,13 @@ interface AIMCUBE_UI_DATA {
   ubPowerIndex: UINT8;
 }
 
-static BOOLEAN gfInAimCubeUI = FALSE;
-static AIMCUBE_UI_DATA gCubeUIData;
+/* static */ let gfInAimCubeUI: BOOLEAN = FALSE;
+/* static */ let gCubeUIData: AIMCUBE_UI_DATA;
 
 const GET_CUBES_HEIGHT_FROM_UIHEIGHT = (h) => (32 + (h * 64));
 
 function CalculateAimCubeUIPhysics(): void {
-  UINT8 ubHeight;
+  let ubHeight: UINT8;
 
   ubHeight = GET_CUBES_HEIGHT_FROM_UIHEIGHT(gCubeUIData.bHeight);
 
@@ -2850,7 +2872,7 @@ function IncrementAimCubeUI(): void {
 
   if (gCubeUIData.fActivePowerBar) {
     if (gCubeUIData.ubPowerIndex == 10) {
-      UINT8 ubHeight;
+      let ubHeight: UINT8;
 
       ubHeight = GET_CUBES_HEIGHT_FROM_UIHEIGHT(gCubeUIData.bHeight);
 
@@ -2890,11 +2912,12 @@ function ResetAimCubeAI(): void {
 }
 
 function RenderAimCubeUI(): void {
-  INT16 sScreenX, sScreenY;
-  INT32 cnt;
-  INT16 sBarHeight;
-  INT32 iBack;
-  INT8 bGraphicNum;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let cnt: INT32;
+  let sBarHeight: INT16;
+  let iBack: INT32;
+  let bGraphicNum: INT8;
 
   if (gfInAimCubeUI) {
     // OK, given height
@@ -2944,10 +2967,10 @@ function RenderAimCubeUI(): void {
 function GetLaunchItemParamsFromUI(): void {
 }
 
-static BOOLEAN gfDisplayPhysicsUI = FALSE;
-static INT16 gsPhysicsImpactPointGridNo;
-static INT8 gbPhysicsImpactPointLevel;
-static BOOLEAN gfBadPhysicsCTGT = FALSE;
+/* static */ let gfDisplayPhysicsUI: BOOLEAN = FALSE;
+/* static */ let gsPhysicsImpactPointGridNo: INT16;
+/* static */ let gbPhysicsImpactPointLevel: INT8;
+/* static */ let gfBadPhysicsCTGT: BOOLEAN = FALSE;
 
 function BeginPhysicsTrajectoryUI(sGridNo: INT16, bLevel: INT8, fBadCTGT: BOOLEAN): void {
   gfDisplayPhysicsUI = TRUE;
@@ -3000,12 +3023,12 @@ function CalcUIMessageDuration(wString: STR16): UINT32 {
   return 1000 + 50 * wcslen(wString);
 }
 
-BOOLEAN gfMultipurposeLocatorOn = FALSE;
-UINT32 guiMultiPurposeLocatorLastUpdate;
-INT8 gbMultiPurposeLocatorFrame;
-INT16 gsMultiPurposeLocatorGridNo;
-INT8 gbMultiPurposeLocatorLevel;
-INT8 gbMultiPurposeLocatorCycles;
+let gfMultipurposeLocatorOn: BOOLEAN = FALSE;
+let guiMultiPurposeLocatorLastUpdate: UINT32;
+let gbMultiPurposeLocatorFrame: INT8;
+let gsMultiPurposeLocatorGridNo: INT16;
+let gbMultiPurposeLocatorLevel: INT8;
+let gbMultiPurposeLocatorCycles: INT8;
 
 function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: BOOLEAN): void {
   guiMultiPurposeLocatorLastUpdate = 0;
@@ -3032,7 +3055,7 @@ function BeginMultiPurposeLocator(sGridNo: INT16, bLevel: INT8, fSlideTo: BOOLEA
 }
 
 function HandleMultiPurposeLocator(): void {
-  UINT32 uiClock;
+  let uiClock: UINT32;
 
   if (!gfMultipurposeLocatorOn) {
     return;
@@ -3060,10 +3083,15 @@ function HandleMultiPurposeLocator(): void {
 }
 
 function RenderTopmostMultiPurposeLocator(): void {
-  FLOAT dOffsetX, dOffsetY;
-  FLOAT dTempX_S, dTempY_S;
-  INT16 sX, sY, sXPos, sYPos;
-  INT32 iBack;
+  let dOffsetX: FLOAT;
+  let dOffsetY: FLOAT;
+  let dTempX_S: FLOAT;
+  let dTempY_S: FLOAT;
+  let sX: INT16;
+  let sY: INT16;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let iBack: INT32;
 
   if (!gfMultipurposeLocatorOn) {
     return;

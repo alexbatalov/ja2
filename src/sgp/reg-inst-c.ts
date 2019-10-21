@@ -31,11 +31,11 @@ const REG_KEY_SIZE = 50;
 //**************************************************************************
 
 // INI strings are not localized
-static const TCHAR szSoftware[] = _T("Software");
+/* static */ const szSoftware: TCHAR[] /* [] */ = _T("Software");
 
-static CHAR gszRegistryKey[REG_KEY_SIZE];
-static CHAR gszAppName[REG_KEY_SIZE];
-static CHAR gszProfileName[REG_KEY_SIZE];
+/* static */ let gszRegistryKey: CHAR[] /* [REG_KEY_SIZE] */;
+/* static */ let gszAppName: CHAR[] /* [REG_KEY_SIZE] */;
+/* static */ let gszProfileName: CHAR[] /* [REG_KEY_SIZE] */;
 
 //**************************************************************************
 //
@@ -65,15 +65,15 @@ function InitializeRegistryKeys(lpszAppName: STR, lpszRegistryKey: STR): BOOLEAN
 // creating it if it doesn't exist
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
 function GetAppRegistryKey(): HKEY {
-  HKEY hAppKey = NULL;
-  HKEY hSoftKey = NULL;
-  HKEY hCompanyKey = NULL;
+  let hAppKey: HKEY = NULL;
+  let hSoftKey: HKEY = NULL;
+  let hCompanyKey: HKEY = NULL;
 
   assert(gszRegistryKey[0] != '\0');
   // assert(gpszProfileName != NULL);
 
   if (RegOpenKeyEx(HKEY_CURRENT_USER, szSoftware, 0, KEY_WRITE | KEY_READ, &hSoftKey) == ERROR_SUCCESS) {
-    DWORD dw;
+    let dw: DWORD;
     if (RegCreateKeyEx(hSoftKey, gszRegistryKey, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, &hCompanyKey, &dw) == ERROR_SUCCESS) {
       RegCreateKeyEx(hCompanyKey, gszProfileName, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, &hAppKey, &dw);
     }
@@ -91,9 +91,9 @@ function GetAppRegistryKey(): HKEY {
 // creating it if it doesn't exist.
 // responsibility of the caller to call RegCloseKey() on the returned HKEY
 function GetSectionKey(lpszSection: STR): HKEY {
-  HKEY hSectionKey = NULL;
-  HKEY hAppKey = GetAppRegistryKey();
-  DWORD dw;
+  let hSectionKey: HKEY = NULL;
+  let hAppKey: HKEY = GetAppRegistryKey();
+  let dw: DWORD;
 
   assert(lpszSection != NULL);
 
@@ -106,17 +106,17 @@ function GetSectionKey(lpszSection: STR): HKEY {
 }
 
 function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UINT {
-  DWORD dwValue;
-  DWORD dwType;
-  DWORD dwCount = sizeof(DWORD);
-  LONG lResult;
+  let dwValue: DWORD;
+  let dwType: DWORD;
+  let dwCount: DWORD = sizeof(DWORD);
+  let lResult: LONG;
 
   assert(lpszSection != NULL);
   assert(lpszEntry != NULL);
 
   if (gszRegistryKey[0] != '\0') // use registry
   {
-    HKEY hSecKey = GetSectionKey(lpszSection);
+    let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == NULL)
       return nDefault;
     lResult = RegQueryValueEx(hSecKey, (LPTSTR)lpszEntry, NULL, &dwType, (LPBYTE)&dwValue, &dwCount);
@@ -134,17 +134,18 @@ function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UIN
 }
 
 function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpszValue: STR): BOOLEAN {
-  DWORD dwType, dwCount;
-  LONG lResult;
-  BOOLEAN fRet = TRUE;
-  CHAR strValue[200];
+  let dwType: DWORD;
+  let dwCount: DWORD;
+  let lResult: LONG;
+  let fRet: BOOLEAN = TRUE;
+  let strValue: CHAR[] /* [200] */;
 
   assert(lpszSection != NULL);
   assert(lpszEntry != NULL);
   assert(lpszDefault != NULL);
 
   if (gszRegistryKey[0] != '\0') {
-    HKEY hSecKey = GetSectionKey(lpszSection);
+    let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == NULL) {
       strcpy(lpszValue, lpszDefault);
       return TRUE;
@@ -273,23 +274,23 @@ function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOO
   assert(lpszSection != NULL);
 
   if (gszRegistryKey[0] != '\0') {
-    LONG lResult;
+    let lResult: LONG;
     if (lpszEntry == NULL) // delete whole section
     {
-      HKEY hAppKey = GetAppRegistryKey();
+      let hAppKey: HKEY = GetAppRegistryKey();
       if (hAppKey == NULL)
         return FALSE;
       lResult = RegDeleteKey(hAppKey, lpszSection);
       RegCloseKey(hAppKey);
     } else if (lpszValue == NULL) {
-      HKEY hSecKey = GetSectionKey(lpszSection);
+      let hSecKey: HKEY = GetSectionKey(lpszSection);
       if (hSecKey == NULL)
         return FALSE;
       // necessary to cast away const below
       lResult = RegDeleteValue(hSecKey, (LPTSTR)lpszEntry);
       RegCloseKey(hSecKey);
     } else {
-      HKEY hSecKey = GetSectionKey(lpszSection);
+      let hSecKey: HKEY = GetSectionKey(lpszSection);
       if (hSecKey == NULL)
         return FALSE;
       lResult = RegSetValueEx(hSecKey, lpszEntry, 0, REG_SZ, (LPBYTE)lpszValue, (lstrlen(lpszValue) + 1) * sizeof(TCHAR));

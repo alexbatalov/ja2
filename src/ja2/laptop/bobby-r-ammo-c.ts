@@ -1,11 +1,11 @@
-UINT32 guiAmmoBackground;
-UINT32 guiAmmoGrid;
+let guiAmmoBackground: UINT32;
+let guiAmmoGrid: UINT32;
 
 function GameInitBobbyRAmmo(): void {
 }
 
 function EnterBobbyRAmmo(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -46,7 +46,7 @@ function HandleBobbyRAmmo(): void {
 }
 
 function RenderBobbyRAmmo(): void {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   WebPageTileBackground(BOBBYR_NUM_HORIZONTAL_TILES, BOBBYR_NUM_VERTICAL_TILES, BOBBYR_BACKGROUND_WIDTH, BOBBYR_BACKGROUND_HEIGHT, guiAmmoBackground);
 

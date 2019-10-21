@@ -16,18 +16,18 @@ const INS_CMNT_LINK_WIDTH = 90;
 const INS_CMNT_LINK_HEIGHT = 35;
 const INS_CMNT_LINK_OFFSET_X = 166;
 
-UINT32 guiInsCmntBulletImage;
+let guiInsCmntBulletImage: UINT32;
 
 // link to the varios pages
-MOUSE_REGION gSelectedInsuranceCommentLinkRegion[3];
+let gSelectedInsuranceCommentLinkRegion: MOUSE_REGION[] /* [3] */;
 
 function GameInitInsuranceComments(): void {
 }
 
 function EnterInsuranceComments(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT8 i;
-  UINT16 usPosX;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: UINT8;
+  let usPosX: UINT16;
 
   InitInsuranceDefaults();
 
@@ -51,7 +51,7 @@ function EnterInsuranceComments(): BOOLEAN {
 }
 
 function ExitInsuranceComments(): void {
-  UINT8 i;
+  let i: UINT8;
   RemoveInsuranceDefaults();
   DeleteVideoObjectFromIndex(guiInsCmntBulletImage);
 
@@ -64,8 +64,9 @@ function HandleInsuranceComments(): void {
 
 function RenderInsuranceComments(): void {
   //  HVOBJECT hPixHandle;
-  wchar_t sText[800];
-  UINT16 usPosX, usPosY;
+  let sText: wchar_t[] /* [800] */;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
 
   SetFontShadow(INS_FONT_SHADOW);
 
@@ -127,7 +128,7 @@ function RenderInsuranceComments(): void {
 function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    UINT32 uiInsuranceLink = MSYS_GetRegionUserData(pRegion, 0);
+    let uiInsuranceLink: UINT32 = MSYS_GetRegionUserData(pRegion, 0);
 
     if (uiInsuranceLink == 0)
       guiCurrentLaptopMode = LAPTOP_MODE_INSURANCE;
@@ -140,9 +141,9 @@ function SelectInsuranceCommentLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>
 }
 
 function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT16): BOOLEAN {
-  wchar_t sText[800];
-  HVOBJECT hPixHandle;
-  UINT16 sNumPixels = 0;
+  let sText: wchar_t[] /* [800] */;
+  let hPixHandle: HVOBJECT;
+  let sNumPixels: UINT16 = 0;
 
   // Get and display the insurance bullet
   GetVideoObject(&hPixHandle, guiInsCmntBulletImage);

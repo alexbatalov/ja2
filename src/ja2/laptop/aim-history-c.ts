@@ -36,20 +36,20 @@ const AIM_HISTORY_TOC_GAP_Y = 25;
 
 const AIM_HISTORY_SPACE_BETWEEN_PARAGRAPHS = 8;
 
-UINT32 guiBottomButton;
-UINT32 guiBottomButton2;
-UINT32 guiContentButton;
+let guiBottomButton: UINT32;
+let guiBottomButton2: UINT32;
+let guiContentButton: UINT32;
 
-UINT8 gubCurPageNum;
-BOOLEAN gfInToc = FALSE;
-UINT8 gubAimHistoryMenuButtonDown = 255;
-BOOLEAN gfExitingAimHistory;
-BOOLEAN AimHistorySubPagesVisitedFlag[NUM_AIM_HISTORY_PAGES];
+let gubCurPageNum: UINT8;
+let gfInToc: BOOLEAN = FALSE;
+let gubAimHistoryMenuButtonDown: UINT8 = 255;
+let gfExitingAimHistory: BOOLEAN;
+let AimHistorySubPagesVisitedFlag: BOOLEAN[] /* [NUM_AIM_HISTORY_PAGES] */;
 
-MOUSE_REGION gSelectedHistoryTocMenuRegion[NUM_AIM_HISTORY_PAGES];
+let gSelectedHistoryTocMenuRegion: MOUSE_REGION[] /* [NUM_AIM_HISTORY_PAGES] */;
 
-UINT32 guiHistoryMenuButton[AIM_HISTORY_MENU_BUTTON_AMOUNT];
-INT32 guiHistoryMenuButtonImage;
+let guiHistoryMenuButton: UINT32[] /* [AIM_HISTORY_MENU_BUTTON_AMOUNT] */;
+let guiHistoryMenuButtonImage: INT32;
 
 // These enums represent which paragraph they are located in the AimHist.edt file
 const enum Enum64 {
@@ -84,7 +84,7 @@ function EnterInitAimHistory(): void {
 }
 
 function EnterAimHistory(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   gfExitingAimHistory = FALSE;
   InitAimDefaults();
@@ -120,9 +120,9 @@ function HandleAimHistory(): void {
 }
 
 function RenderAimHistory(): void {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
-  UINT16 usPosY;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
+  let usPosY: UINT16;
 
   DrawAimDefaults();
   //	DrawAimHistoryMenuBar();
@@ -187,8 +187,9 @@ function RenderAimHistory(): void {
 }
 
 function InitAimHistoryMenuBar(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 i, usPosX;
+  let VObjectDesc: VOBJECT_DESC;
+  let i: UINT16;
+  let usPosX: UINT16;
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
@@ -219,7 +220,7 @@ function InitAimHistoryMenuBar(): BOOLEAN {
 }
 
 function ExitAimHistoryMenuBar(): BOOLEAN {
-  int i;
+  let i: int;
 
   //	DeleteVideoObjectFromIndex(guiHistoryMenuButtonImage);
   UnloadButtonImage(guiHistoryMenuButtonImage);
@@ -231,8 +232,8 @@ function ExitAimHistoryMenuBar(): BOOLEAN {
 }
 
 function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  UINT8 rValue;
-  static BOOLEAN fOnPage = TRUE;
+  let rValue: UINT8;
+  /* static */ let fOnPage: BOOLEAN = TRUE;
 
   if (fOnPage) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
@@ -275,10 +276,10 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 }
 
 function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): BOOLEAN {
-  wchar_t sText[400];
-  UINT32 uiStartLoc = 0;
-  UINT16 usPosY = 0;
-  UINT16 usNumPixels = 0;
+  let sText: wchar_t[] /* [400] */;
+  let uiStartLoc: UINT32 = 0;
+  let usPosY: UINT16 = 0;
+  let usNumPixels: UINT16 = 0;
 
   // title
   uiStartLoc = AIM_HISTORY_LINE_SIZE * ubPageNum;
@@ -314,12 +315,13 @@ function DisplayAimHistoryParagraph(ubPageNum: UINT8, ubNumParagraphs: UINT8): B
 }
 
 function InitTocMenu(): BOOLEAN {
-  UINT16 i, usPosY;
-  UINT16 usHeight;
-  UINT16 usWidth = 0;
-  UINT32 uiStartLoc = 0;
-  wchar_t sText[400];
-  UINT8 ubLocInFile[] = {
+  let i: UINT16;
+  let usPosY: UINT16;
+  let usHeight: UINT16;
+  let usWidth: UINT16 = 0;
+  let uiStartLoc: UINT32 = 0;
+  let sText: wchar_t[] /* [400] */;
+  let ubLocInFile: UINT8[] /* [] */ = {
     IN_THE_BEGINNING,
     THE_ISLAND_METAVIRA,
     GUS_TARBALLS,
@@ -327,7 +329,7 @@ function InitTocMenu(): BOOLEAN {
     INCORPORATION,
   };
 
-  HVOBJECT hContentButtonHandle;
+  let hContentButtonHandle: HVOBJECT;
 
   GetVideoObject(&hContentButtonHandle, guiContentButton);
 
@@ -357,7 +359,7 @@ function InitTocMenu(): BOOLEAN {
 }
 
 function ExitTocMenu(): BOOLEAN {
-  UINT16 i;
+  let i: UINT16;
 
   if (gfInToc) {
     gfInToc = FALSE;
@@ -385,7 +387,7 @@ function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
 }
 
 function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+  let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
   gubAimHistoryMenuButtonDown = 255;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
@@ -448,7 +450,7 @@ function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): 
 }
 
 function ResetAimHistoryButtons(): void {
-  int i = 0;
+  let i: int = 0;
 
   for (i = 0; i < AIM_HISTORY_MENU_BUTTON_AMOUNT; i++) {
     ButtonList[guiHistoryMenuButton[i]]->uiFlags &= ~BUTTON_CLICKED_ON;

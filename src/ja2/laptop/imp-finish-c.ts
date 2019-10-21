@@ -2,21 +2,21 @@
 const ANIMATE_MIN_TIME = 200;
 
 // buttons
-INT32 giIMPFinishButton[6];
-INT32 giIMPFinishButtonImage[6];
+let giIMPFinishButton: INT32[] /* [6] */;
+let giIMPFinishButtonImage: INT32[] /* [6] */;
 
 // we are in fact done
-BOOLEAN fFinishedCharGeneration = FALSE;
+let fFinishedCharGeneration: BOOLEAN = FALSE;
 
 // portrait position
-INT16 sFaceX = 253;
-INT16 sFaceY = 245;
+let sFaceX: INT16 = 253;
+let sFaceY: INT16 = 245;
 
 // what voice are we playing?
-UINT32 uiVoiceSound = 0;
+let uiVoiceSound: UINT32 = 0;
 
 // image handle
-UINT32 guiCHARACTERPORTRAIT;
+let guiCHARACTERPORTRAIT: UINT32;
 
 function EnterIMPFinish(): void {
   // load graphic for portrait
@@ -63,7 +63,7 @@ function HandleIMPFinish(): void {
 }
 
 function CreateIMPFinishButtons(): void {
-  CHAR16 sString[128];
+  let sString: CHAR16[] /* [128] */;
 
   // this function will create the buttons needed for th IMP about us page
   // the start over button button
@@ -203,10 +203,10 @@ function BtnIMPFinishDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
 
 function BtnIMPFinishPersonalityCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   // btn callback for Main Page Begin Profiling
-  static BOOLEAN fAnimateFlag = FALSE;
-  static UINT32 uiBaseTime = 0;
-  static BOOLEAN fState = 0;
-  INT32 iDifference = 0;
+  /* static */ let fAnimateFlag: BOOLEAN = FALSE;
+  /* static */ let uiBaseTime: UINT32 = 0;
+  /* static */ let fState: BOOLEAN = 0;
+  let iDifference: INT32 = 0;
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -321,9 +321,9 @@ function BtnIMPFinishVoiceCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 
 function RenderCharProfileFinishFace(): BOOLEAN {
   // render the portrait of the current picture
-  VOBJECT_DESC VObjectDesc;
-  HVOBJECT hHandle;
-  UINT32 uiGraphicHandle;
+  let VObjectDesc: VOBJECT_DESC;
+  let hHandle: HVOBJECT;
+  let uiGraphicHandle: UINT32;
 
   if (fCharacterIsMale == TRUE) {
     switch (LaptopSaveInfo.iVoiceId) {
@@ -440,8 +440,9 @@ function RenderCharProfileFinishFace(): BOOLEAN {
 }
 
 function RenderCharFullName(): void {
-  CHAR16 sString[64];
-  INT16 sX, sY;
+  let sString: CHAR16[] /* [64] */;
+  let sX: INT16;
+  let sY: INT16;
 
   // render the characters full name
   SetFont(FONT14ARIAL);
@@ -457,7 +458,7 @@ function RenderCharFullName(): void {
 
 function LoadCharacterPortrait(): BOOLEAN {
   // this function will load the character's portrait, to be used on portrait button
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   // load it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;

@@ -1,7 +1,7 @@
 function CallAvailableEnemiesTo(sGridNo: INT16): void {
-  INT32 iLoop;
-  INT32 iLoop2;
-  SOLDIERTYPE *pSoldier;
+  let iLoop: INT32;
+  let iLoop2: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // All enemy teams become aware of a very important "noise" coming from here!
   for (iLoop = 0; iLoop < LAST_TEAM; iLoop++) {
@@ -27,8 +27,8 @@ function CallAvailableEnemiesTo(sGridNo: INT16): void {
 }
 
 function CallAvailableTeamEnemiesTo(sGridno: INT16, bTeam: INT8): void {
-  INT32 iLoop2;
-  SOLDIERTYPE *pSoldier;
+  let iLoop2: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // All enemy teams become aware of a very important "noise" coming from here!
   // if this team is active
@@ -55,8 +55,8 @@ function CallAvailableKingpinMenTo(sGridNo: INT16): void {
   // like call all enemies, but only affects civgroup KINGPIN guys with
   // NO PROFILE
 
-  INT32 iLoop2;
-  SOLDIERTYPE *pSoldier;
+  let iLoop2: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // All enemy teams become aware of a very important "noise" coming from here!
   // if this team is active
@@ -78,7 +78,7 @@ function CallAvailableKingpinMenTo(sGridNo: INT16): void {
 
 function CallEldinTo(sGridNo: INT16): void {
   // like call all enemies, but only affects Eldin
-  SOLDIERTYPE *pSoldier;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Eldin becomes aware of a very important "noise" coming from here!
   // So long as he hasn't already heard a noise a sec ago...
@@ -110,19 +110,22 @@ function CallEldinTo(sGridNo: INT16): void {
 }
 
 function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Pointer<INT32>, pfClimbingNecessary: Pointer<BOOLEAN>, pfReachable: Pointer<BOOLEAN>): INT16 {
-  UINT32 uiLoop;
-  INT8 *pbPersOL, *pbPublOL;
-  INT16 *psLastLoc, *psNoiseGridNo;
-  INT8 *pbNoiseLevel;
-  INT8 *pbLastLevel;
-  UINT8 *pubNoiseVolume;
-  INT32 iDistAway;
-  INT32 iNoiseValue, iBestValue = -10000;
-  INT16 sBestGridNo = NOWHERE;
-  INT8 bBestLevel = 0;
-  INT16 sClimbingGridNo;
-  BOOLEAN fClimbingNecessary = FALSE;
-  SOLDIERTYPE *pTemp;
+  let uiLoop: UINT32;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let psLastLoc: Pointer<INT16>;
+  let psNoiseGridNo: Pointer<INT16>;
+  let pbNoiseLevel: Pointer<INT8>;
+  let pbLastLevel: Pointer<INT8>;
+  let pubNoiseVolume: Pointer<UINT8>;
+  let iDistAway: INT32;
+  let iNoiseValue: INT32;
+  let iBestValue: INT32 = -10000;
+  let sBestGridNo: INT16 = NOWHERE;
+  let bBestLevel: INT8 = 0;
+  let sClimbingGridNo: INT16;
+  let fClimbingNecessary: BOOLEAN = FALSE;
+  let pTemp: Pointer<SOLDIERTYPE>;
 
   pubNoiseVolume = &gubPublicNoiseVolume[pSoldier->bTeam];
   psNoiseGridNo = &gsPublicNoiseGridno[pSoldier->bTeam];
@@ -220,7 +223,8 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
 
     // make civs not walk to noises outside their room if on close patrol/onguard
     if (pSoldier->bOrders <= CLOSEPATROL && (pSoldier->bTeam == CIV_TEAM || pSoldier->ubProfile != NO_PROFILE)) {
-      UINT8 ubRoom, ubNewRoom;
+      let ubRoom: UINT8;
+      let ubNewRoom: UINT8;
 
       // any other combo uses the default of ubRoom == 0, set above
       if (InARoom(pSoldier->usPatrolGrid[0], &ubRoom)) {
@@ -260,10 +264,11 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
 }
 
 function WhatIKnowThatPublicDont(pSoldier: Pointer<SOLDIERTYPE>, ubInSightOnly: UINT8): INT16 {
-  UINT8 ubTotal = 0;
-  UINT32 uiLoop;
-  INT8 *pbPersOL, *pbPublOL;
-  SOLDIERTYPE *pTemp;
+  let ubTotal: UINT8 = 0;
+  let uiLoop: UINT32;
+  let pbPersOL: Pointer<INT8>;
+  let pbPublOL: Pointer<INT8>;
+  let pTemp: Pointer<SOLDIERTYPE>;
 
   // if merc knows of a more important misc. noise than his team does
   if (!(CREATURE_OR_BLOODCAT(pSoldier)) && (pSoldier->ubNoiseVolume > gubPublicNoiseVolume[pSoldier->bTeam])) {

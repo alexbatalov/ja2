@@ -56,8 +56,8 @@ const HARD_QUEEN_REPRODUCTION_BONUS = 3;
 // When either in a cave level with blue lights or there is a creature presence, then
 // we override the normal music with the creature music.  The conditions are maintained
 // inside the function PrepareCreaturesForBattle() in this module.
-BOOLEAN gfUseCreatureMusic = FALSE;
-BOOLEAN gfCreatureMeanwhileScenePlayed = FALSE;
+let gfUseCreatureMusic: BOOLEAN = FALSE;
+let gfCreatureMeanwhileScenePlayed: BOOLEAN = FALSE;
 const enum Enum128 {
   QUEEN_LAIR, // where the queen lives.  Highly protected
   LAIR, // part of the queen's lair -- lots of babies and defending mothers
@@ -73,27 +73,28 @@ interface CREATURE_DIRECTIVE {
   pLevel: Pointer<UNDERGROUND_SECTORINFO>;
 }
 
-CREATURE_DIRECTIVE *lair;
-INT32 giHabitatedDistance = 0;
-INT32 giPopulationModifier = 0;
-INT32 giLairID = 0;
-INT32 giDestroyedLairID = 0;
+let lair: Pointer<CREATURE_DIRECTIVE>;
+let giHabitatedDistance: INT32 = 0;
+let giPopulationModifier: INT32 = 0;
+let giLairID: INT32 = 0;
+let giDestroyedLairID: INT32 = 0;
 
 // various information required for keeping track of the battle sector involved for
 // prebattle interface, autoresolve, etc.
-INT16 gsCreatureInsertionCode = 0;
-INT16 gsCreatureInsertionGridNo = 0;
-UINT8 gubNumCreaturesAttackingTown = 0;
-UINT8 gubYoungMalesAttackingTown = 0;
-UINT8 gubYoungFemalesAttackingTown = 0;
-UINT8 gubAdultMalesAttackingTown = 0;
-UINT8 gubAdultFemalesAttackingTown = 0;
-UINT8 gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
-UINT8 gubSectorIDOfCreatureAttack = 0;
+let gsCreatureInsertionCode: INT16 = 0;
+let gsCreatureInsertionGridNo: INT16 = 0;
+let gubNumCreaturesAttackingTown: UINT8 = 0;
+let gubYoungMalesAttackingTown: UINT8 = 0;
+let gubYoungFemalesAttackingTown: UINT8 = 0;
+let gubAdultMalesAttackingTown: UINT8 = 0;
+let gubAdultFemalesAttackingTown: UINT8 = 0;
+let gubCreatureBattleCode: UINT8 = CREATURE_BATTLE_CODE_NONE;
+let gubSectorIDOfCreatureAttack: UINT8 = 0;
 
 function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UINT8): Pointer<CREATURE_DIRECTIVE> {
-  CREATURE_DIRECTIVE *curr;
-  UINT8 ubSectorX, ubSectorY;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let ubSectorX: UINT8;
+  let ubSectorY: UINT8;
   curr = (CREATURE_DIRECTIVE *)MemAlloc(sizeof(CREATURE_DIRECTIVE));
   Assert(curr);
   ubSectorX = (UINT8)((ubSectorID % 16) + 1);
@@ -111,7 +112,7 @@ function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UI
 }
 
 function InitLairDrassen(): void {
-  CREATURE_DIRECTIVE *curr;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 1;
   // initialize the linked list of lairs
   lair = NewDirective(SEC_F13, 3, QUEEN_LAIR);
@@ -133,7 +134,7 @@ function InitLairDrassen(): void {
 }
 
 function InitLairCambria(): void {
-  CREATURE_DIRECTIVE *curr;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 2;
   // initialize the linked list of lairs
   lair = NewDirective(SEC_J8, 3, QUEEN_LAIR);
@@ -155,7 +156,7 @@ function InitLairCambria(): void {
 }
 
 function InitLairAlma(): void {
-  CREATURE_DIRECTIVE *curr;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 3;
   // initialize the linked list of lairs
   lair = NewDirective(SEC_K13, 3, QUEEN_LAIR);
@@ -175,7 +176,7 @@ function InitLairAlma(): void {
 }
 
 function InitLairGrumm(): void {
-  CREATURE_DIRECTIVE *curr;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
   giLairID = 4;
   // initialize the linked list of lairs
   lair = NewDirective(SEC_G4, 3, QUEEN_LAIR);
@@ -197,13 +198,13 @@ function InitLairGrumm(): void {
 }
 
 function InitCreatureQuest(): void {
-  UNDERGROUND_SECTORINFO *curr;
-  BOOLEAN fPlayMeanwhile = FALSE;
-  INT32 i = -1;
-  INT32 iChosenMine;
-  INT32 iRandom;
-  INT32 iNumMinesInfectible;
-  BOOLEAN fMineInfectible[4];
+  let curr: Pointer<UNDERGROUND_SECTORINFO>;
+  let fPlayMeanwhile: BOOLEAN = FALSE;
+  let i: INT32 = -1;
+  let iChosenMine: INT32;
+  let iRandom: INT32;
+  let iNumMinesInfectible: INT32;
+  let fMineInfectible: BOOLEAN[] /* [4] */;
 
   if (giLairID) {
     return; // already active!
@@ -369,9 +370,9 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
     if (node->pLevel->ubNumCreatures < MAX_STRATEGIC_TEAM_SIZE || node->pLevel->ubNumCreatures < 32 && node->pLevel->ubCreatureHabitat == QUEEN_LAIR) {
       // there is ALWAYS a chance to habitate an interior sector, though the chances are slim for
       // highly occupied sectors.  This chance is modified by the type of area we are in.
-      INT32 iAbsoluteMaxPopulation;
-      INT32 iMaxPopulation = -1;
-      INT32 iChanceToPopulate;
+      let iAbsoluteMaxPopulation: INT32;
+      let iMaxPopulation: INT32 = -1;
+      let iChanceToPopulate: INT32;
       switch (node->pLevel->ubCreatureHabitat) {
         case QUEEN_LAIR: // Defend the queen bonus
           iAbsoluteMaxPopulation = 32;
@@ -439,7 +440,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
 }
 
 function SpreadCreatures(): void {
-  UINT16 usNewCreatures = 0;
+  let usNewCreatures: UINT16 = 0;
 
   if (giLairID == -1) {
     DecayCreatures();
@@ -472,11 +473,11 @@ function DecayCreatures(): void {
 }
 
 function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, ubNumAdultMales: UINT8, ubNumAdultFemales: UINT8): void {
-  INT32 iRandom;
-  SOLDIERTYPE *pSoldier;
-  MAPEDGEPOINTINFO MapEdgepointInfo;
-  UINT8 bDesiredDirection = 0;
-  UINT8 ubCurrSlot = 0;
+  let iRandom: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let MapEdgepointInfo: MAPEDGEPOINTINFO;
+  let bDesiredDirection: UINT8 = 0;
+  let ubCurrSlot: UINT8 = 0;
 
   switch (gsCreatureInsertionCode) {
     case INSERTION_CODE_NORTH:
@@ -561,8 +562,9 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
 }
 
 function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
-  INT32 iRandom;
-  UINT8 ubSectorX, ubSectorY;
+  let iRandom: INT32;
+  let ubSectorX: UINT8;
+  let ubSectorY: UINT8;
   ubSectorX = (UINT8)((ubSectorID % 16) + 1);
   ubSectorY = (UINT8)((ubSectorID / 16) + 1);
 
@@ -680,8 +682,9 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): vo
 
 function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   // This is the launching point of the creature attack.
-  UNDERGROUND_SECTORINFO *pSector;
-  UINT8 ubSectorX, ubSectorY;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let ubSectorX: UINT8;
+  let ubSectorY: UINT8;
 
   if (gfWorldLoaded && gTacticalStatus.fEnemyInSector) {
     // Battle currently in progress, repost the event
@@ -807,9 +810,9 @@ function ClearCreatureQuest(): void {
 }
 
 function EndCreatureQuest(): void {
-  CREATURE_DIRECTIVE *curr;
-  UNDERGROUND_SECTORINFO *pSector;
-  INT32 i;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let i: INT32;
 
   // By setting the lairID to -1, when it comes time to spread creatures,
   // They will get subtracted instead.
@@ -843,8 +846,9 @@ function EndCreatureQuest(): void {
 }
 
 function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT8 {
-  UNDERGROUND_SECTORINFO *pSector;
-  UINT8 ubSectorX, ubSectorY;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let ubSectorX: UINT8;
+  let ubSectorY: UINT8;
   ubSectorX = (UINT8)SECTORX(ubSectorID);
   ubSectorY = (UINT8)SECTORY(ubSectorID);
   pSector = FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
@@ -906,11 +910,12 @@ function MineClearOfMonsters(ubMineIndex: UINT8): BOOLEAN {
 }
 
 function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
-  INT32 i, iRandom;
-  UINT8 ubYoungMalePercentage = 10;
-  UINT8 ubYoungFemalePercentage = 65;
-  UINT8 ubAdultMalePercentage = 5;
-  UINT8 ubAdultFemalePercentage = 20;
+  let i: INT32;
+  let iRandom: INT32;
+  let ubYoungMalePercentage: UINT8 = 10;
+  let ubYoungFemalePercentage: UINT8 = 65;
+  let ubAdultMalePercentage: UINT8 = 5;
+  let ubAdultFemalePercentage: UINT8 = 20;
 
   // First step is to convert the percentages into the numbers we will use.
   ubYoungFemalePercentage += ubYoungMalePercentage;
@@ -935,9 +940,9 @@ function DetermineCreatureTownComposition(ubNumCreatures: UINT8, pubNumYoungMale
 }
 
 function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatures: Pointer<UINT8>, pubNumYoungMales: Pointer<UINT8>, pubNumYoungFemales: Pointer<UINT8>, pubNumAdultMales: Pointer<UINT8>, pubNumAdultFemales: Pointer<UINT8>): void {
-  SECTORINFO *pSector;
-  INT32 i;
-  SOLDIERTYPE *pSoldier;
+  let pSector: Pointer<SECTORINFO>;
+  let i: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
   *pubNumCreatures = 0;
@@ -969,26 +974,27 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
 }
 
 function PrepareCreaturesForBattle(): BOOLEAN {
-  UNDERGROUND_SECTORINFO *pSector;
-  INT32 i, iRandom;
-  SGPPaletteEntry LColors[3];
-  UINT8 ubNumColors;
-  BOOLEAN fQueen;
-  UINT8 ubLarvaePercentage;
-  UINT8 ubInfantPercentage;
-  UINT8 ubYoungMalePercentage;
-  UINT8 ubYoungFemalePercentage;
-  UINT8 ubAdultMalePercentage;
-  UINT8 ubAdultFemalePercentage;
-  UINT8 ubCreatureHabitat;
-  UINT8 ubNumLarvae = 0;
-  UINT8 ubNumInfants = 0;
-  UINT8 ubNumYoungMales = 0;
-  UINT8 ubNumYoungFemales = 0;
-  UINT8 ubNumAdultMales = 0;
-  UINT8 ubNumAdultFemales = 0;
-  UINT8 ubPercentage = 0;
-  UINT8 ubNumCreatures;
+  let pSector: Pointer<UNDERGROUND_SECTORINFO>;
+  let i: INT32;
+  let iRandom: INT32;
+  let LColors: SGPPaletteEntry[] /* [3] */;
+  let ubNumColors: UINT8;
+  let fQueen: BOOLEAN;
+  let ubLarvaePercentage: UINT8;
+  let ubInfantPercentage: UINT8;
+  let ubYoungMalePercentage: UINT8;
+  let ubYoungFemalePercentage: UINT8;
+  let ubAdultMalePercentage: UINT8;
+  let ubAdultFemalePercentage: UINT8;
+  let ubCreatureHabitat: UINT8;
+  let ubNumLarvae: UINT8 = 0;
+  let ubNumInfants: UINT8 = 0;
+  let ubNumYoungMales: UINT8 = 0;
+  let ubNumYoungFemales: UINT8 = 0;
+  let ubNumAdultMales: UINT8 = 0;
+  let ubNumAdultFemales: UINT8 = 0;
+  let ubPercentage: UINT8 = 0;
+  let ubNumCreatures: UINT8;
 
   if (!gubCreatureBattleCode) {
     ubNumColors = LightGetColors(LColors);
@@ -1105,7 +1111,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
   }
 
   if (gbWorldSectorZ) {
-    UNDERGROUND_SECTORINFO *pUndergroundSector;
+    let pUndergroundSector: Pointer<UNDERGROUND_SECTORINFO>;
     pUndergroundSector = FindUnderGroundSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
     if (!pUndergroundSector) {
       // No info?!!!!!
@@ -1114,7 +1120,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
     }
     pUndergroundSector->ubCreaturesInBattle = pUndergroundSector->ubNumCreatures;
   } else {
-    SECTORINFO *pSector;
+    let pSector: Pointer<SECTORINFO>;
     pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
     pSector->ubNumCreatures = ubNumCreatures;
     pSector->ubCreaturesInBattle = ubNumCreatures;
@@ -1136,7 +1142,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
 
 function CreatureNightPlanning(): void {
   // Check the populations of the mine exits, and factor a chance for them to attack at night.
-  UINT8 ubNumCreatures;
+  let ubNumCreatures: UINT8;
   ubNumCreatures = CreaturesInUndergroundSector(SEC_H3, 1);
   if (ubNumCreatures > 1 && ubNumCreatures * 10 > (INT32)PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
@@ -1160,7 +1166,7 @@ function CreatureNightPlanning(): void {
 }
 
 function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): void {
-  UINT8 ubValidMines = 0;
+  let ubValidMines: UINT8 = 0;
   if (!gGameOptions.fSciFi)
     return; // No scifi, no creatures...
   if (giLairID)
@@ -1186,7 +1192,7 @@ function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: IN
 }
 
 function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
-  UINT32 uiNumBytesWritten;
+  let uiNumBytesWritten: UINT32;
 
   FileWrite(hFile, &giHabitatedDistance, 4, &uiNumBytesWritten);
   if (uiNumBytesWritten != sizeof(INT32)) {
@@ -1214,7 +1220,7 @@ function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
 }
 
 function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOLEAN {
-  UINT32 uiNumBytesRead;
+  let uiNumBytesRead: UINT32;
   FileRead(hFile, &giHabitatedDistance, 4, &uiNumBytesRead);
   if (uiNumBytesRead != sizeof(INT32)) {
     return FALSE;
@@ -1272,12 +1278,13 @@ function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
 }
 
 function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
-  CREATURE_DIRECTIVE *curr;
-  SOLDIERTYPE *pSoldier;
-  INT32 i;
-  INT16 sSectorX, sSectorY;
-  INT8 bSectorZ;
-  BOOLEAN fPlayerInSector = FALSE;
+  let curr: Pointer<CREATURE_DIRECTIVE>;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let i: INT32;
+  let sSectorX: INT16;
+  let sSectorY: INT16;
+  let bSectorZ: INT8;
+  let fPlayerInSector: BOOLEAN = FALSE;
 
   if (giLairID <= 0) {
     // Creature quest inactive
@@ -1307,7 +1314,7 @@ function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
 
 // Returns TRUE if valid and creature quest over, FALSE if creature quest active or not yet started
 function GetWarpOutOfMineCodes(psSectorX: Pointer<INT16>, psSectorY: Pointer<INT16>, pbSectorZ: Pointer<INT8>, psInsertionGridNo: Pointer<INT16>): BOOLEAN {
-  INT32 iSwitchValue;
+  let iSwitchValue: INT32;
 
   if (!gfWorldLoaded) {
     return FALSE;

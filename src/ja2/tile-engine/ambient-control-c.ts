@@ -1,10 +1,10 @@
-AMBIENTDATA_STRUCT gAmbData[MAX_AMBIENT_SOUNDS];
-INT16 gsNumAmbData = 0;
+let gAmbData: AMBIENTDATA_STRUCT[] /* [MAX_AMBIENT_SOUNDS] */;
+let gsNumAmbData: INT16 = 0;
 
-UINT8 gubCurrentSteadyStateAmbience = SSA_NONE;
-UINT8 gubCurrentSteadyStateSound = 0;
-UINT32 guiCurrentSteadyStateSoundHandle = NO_SAMPLE;
-STEADY_STATE_AMBIENCE gSteadyStateAmbientTable[NUM_STEADY_STATE_AMBIENCES] = {
+let gubCurrentSteadyStateAmbience: UINT8 = SSA_NONE;
+let gubCurrentSteadyStateSound: UINT8 = 0;
+let guiCurrentSteadyStateSoundHandle: UINT32 = NO_SAMPLE;
+let gSteadyStateAmbientTable: STEADY_STATE_AMBIENCE[] /* [NUM_STEADY_STATE_AMBIENCES] */ = {
   // NONE
   {
     // DAY
@@ -161,9 +161,9 @@ STEADY_STATE_AMBIENCE gSteadyStateAmbientTable[NUM_STEADY_STATE_AMBIENCES] = {
 };
 
 function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
-  SGPFILENAME zFilename;
-  HWFILE hFile;
-  INT32 cnt;
+  let zFilename: SGPFILENAME;
+  let hFile: HWFILE;
+  let cnt: INT32;
 
   // BUILD FILENAME
   sprintf(zFilename, "AMBIENT\\%d.bad", ubAmbientID);
@@ -226,7 +226,7 @@ function DeleteAllAmbients(): void {
 }
 
 function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
-  RANDOMPARMS rpParms;
+  let rpParms: RANDOMPARMS;
 
   memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
 
@@ -240,7 +240,7 @@ function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
 }
 
 function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 
@@ -252,10 +252,10 @@ function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
 }
 
 function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
-  BOOLEAN fInNight = FALSE;
-  INT32 cnt;
-  UINT8 ubNumSounds = 0;
-  UINT8 ubChosenSound;
+  let fInNight: BOOLEAN = FALSE;
+  let cnt: INT32;
+  let ubNumSounds: UINT8 = 0;
+  let ubChosenSound: UINT8;
 
   // Stop all ambients...
   if (guiCurrentSteadyStateSoundHandle != NO_SAMPLE) {

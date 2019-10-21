@@ -1,5 +1,5 @@
 function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
-  STRATEGICEVENT *pNewEvent;
+  let pNewEvent: Pointer<STRATEGICEVENT>;
   if (gTacticalStatus.fEnemyInSector) {
     pNewEvent = AddAdvancedStrategicEvent(pEvent->ubEventType, pEvent->ubCallbackID, pEvent->uiTimeStamp + 180 + Random(121), pEvent->uiParam);
     Assert(pNewEvent);
@@ -10,7 +10,7 @@ function DelayEventIfBattleInProgress(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN 
 }
 
 function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
-  BOOLEAN fOrigPreventFlag;
+  let fOrigPreventFlag: BOOLEAN;
 
   fOrigPreventFlag = gfPreventDeletionOfAnyEvent;
   gfPreventDeletionOfAnyEvent = TRUE;

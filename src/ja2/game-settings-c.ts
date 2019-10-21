@@ -4,15 +4,15 @@ const GAME_INI_FILE = "..\\Ja2.ini";
 
 const CD_ROOT_DIR = "DATA\\";
 
-GAME_SETTINGS gGameSettings;
-GAME_OPTIONS gGameOptions;
+let gGameSettings: GAME_SETTINGS;
+let gGameOptions: GAME_OPTIONS;
 
 // Change this number when we want any who gets the new build to reset the options
 const GAME_SETTING_CURRENT_VERSION = 522;
 
 function LoadGameSettings(): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesRead;
+  let hFile: HWFILE;
+  let uiNumBytesRead: UINT32;
 
   // if the game settings file does NOT exist, or if it is smaller then what it should be
   if (!FileExists(GAME_SETTINGS_FILE) || FileSize(GAME_SETTINGS_FILE) != sizeof(GAME_SETTINGS)) {
@@ -91,8 +91,8 @@ function LoadGameSettings(): BOOLEAN {
 }
 
 function SaveGameSettings(): BOOLEAN {
-  HWFILE hFile;
-  UINT32 uiNumBytesWritten;
+  let hFile: HWFILE;
+  let uiNumBytesWritten: UINT32;
 
   // create the file
   hFile = FileOpen(GAME_SETTINGS_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
@@ -184,10 +184,10 @@ function InitGameOptions(): void {
 }
 
 function GetCDLocation(): BOOLEAN {
-  UINT32 uiStrngLength = 0;
-  CHAR8 zCdLocation[SGPFILENAME_LEN];
-  UINT32 uiDriveType = 0;
-  UINT32 uiRetVal = 0;
+  let uiStrngLength: UINT32 = 0;
+  let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let uiDriveType: UINT32 = 0;
+  let uiRetVal: UINT32 = 0;
 
   // Do a crude check to make sure the Ja2.ini file is the right on
 
@@ -201,7 +201,7 @@ function GetCDLocation(): BOOLEAN {
 
     // Get the location of the cdrom drive
     if (GetCDromDriveLetter(zCdLocation)) {
-      CHAR8 *pTemp;
+      let pTemp: Pointer<CHAR8>;
 
       // if it succeeded
       pTemp = strrchr(zCdLocation, ':');
@@ -236,11 +236,11 @@ function GetCDLocation(): BOOLEAN {
 }
 
 function GetCDromDriveLetter(pString: STR8): BOOLEAN {
-  UINT32 uiSize = 0;
-  UINT8 ubCnt = 0;
-  CHAR8 zDriveLetters[512];
-  CHAR8 zDriveLetter[16];
-  UINT32 uiDriveType;
+  let uiSize: UINT32 = 0;
+  let ubCnt: UINT8 = 0;
+  let zDriveLetters: CHAR8[] /* [512] */;
+  let zDriveLetter: CHAR8[] /* [16] */;
+  let uiDriveType: UINT32;
 
   uiSize = GetLogicalDriveStrings(512, zDriveLetters);
 
@@ -331,18 +331,18 @@ function GetCDromDriveLetter(pString: STR8): BOOLEAN {
 */
 
 function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
-  CHAR8 zVolumeNameBuffer[512];
-  UINT32 uiVolumeSerialNumber = 0;
-  UINT32 uiMaxComponentLength = 0;
-  UINT32 uiFileSystemFlags = 0;
-  CHAR8 zFileSystemNameBuffer[512];
-  CHAR8 zCdLocation[SGPFILENAME_LEN];
-  CHAR8 zCdFile[SGPFILENAME_LEN];
+  let zVolumeNameBuffer: CHAR8[] /* [512] */;
+  let uiVolumeSerialNumber: UINT32 = 0;
+  let uiMaxComponentLength: UINT32 = 0;
+  let uiFileSystemFlags: UINT32 = 0;
+  let zFileSystemNameBuffer: CHAR8[] /* [512] */;
+  let zCdLocation: CHAR8[] /* [SGPFILENAME_LEN] */;
+  let zCdFile: CHAR8[] /* [SGPFILENAME_LEN] */;
 
-  CHAR8 zCdromRootDrive[512];
-  BOOLEAN fFailed = FALSE;
-  UINT32 uiVolumeReturnValue;
-  UINT32 uiLastError = ERROR_SUCCESS;
+  let zCdromRootDrive: CHAR8[] /* [512] */;
+  let fFailed: BOOLEAN = FALSE;
+  let uiVolumeReturnValue: UINT32;
+  let uiLastError: UINT32 = ERROR_SUCCESS;
 
   if (!GetCdromLocationFromIniFile(zCdromRootDrive))
     return FALSE;
@@ -358,7 +358,7 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
 
   // If the cdrom drive is no longer in the drive
   if (uiLastError == ERROR_NOT_READY || (!FileExists(zCdFile))) {
-    CHAR8 sString[512];
+    let sString: CHAR8[] /* [512] */;
 
     // if a game has been started, add the msg about saving the game to a different entry
     if (gTacticalStatus.fHasAGameBeenStarted) {
@@ -386,7 +386,7 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
 }
 
 function GetCdromLocationFromIniFile(pRootOfCdromDrive: STR): BOOLEAN {
-  UINT32 uiRetVal = 0;
+  let uiRetVal: UINT32 = 0;
 
   // Do a crude check to make sure the Ja2.ini file is the right on
 
@@ -416,8 +416,8 @@ function CDromEjectionErrorMessageBoxCallBack(bExitValue: UINT8): void {
 }
 
 function IsDriveLetterACDromDrive(pDriveLetter: STR): BOOLEAN {
-  UINT32 uiDriveType;
-  CHAR8 zRootName[512];
+  let uiDriveType: UINT32;
+  let zRootName: CHAR8[] /* [512] */;
 
   sprintf(zRootName, "%s:\\", pDriveLetter);
 
@@ -462,7 +462,7 @@ function DisplayGameSettings(): void {
 }
 
 function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
-  UINT32 uiCheckFlag;
+  let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
     return FALSE;
@@ -478,7 +478,7 @@ function MeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
 }
 
 function SetMeanwhileSceneSeen(ubMeanwhile: UINT8): BOOLEAN {
-  UINT32 uiCheckFlag;
+  let uiCheckFlag: UINT32;
 
   if (ubMeanwhile > 32 || ubMeanwhile > NUM_MEANWHILES) {
     // can't set such a flag!

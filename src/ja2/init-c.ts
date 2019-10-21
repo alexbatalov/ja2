@@ -74,7 +74,7 @@ function InitializeJA2(): UINT32 {
 }
 
 function ShutdownJA2(): void {
-  UINT32 uiIndex;
+  let uiIndex: UINT32;
 
   // Clear screen....
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));

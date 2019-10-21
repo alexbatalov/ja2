@@ -128,7 +128,7 @@ interface CDRT_FACE {
   uiEyesClosedTime: UINT32;
 }
 
-CDRT_FACE gCreditFaces[] = {
+let gCreditFaces: CDRT_FACE[] /* [] */ = {
   //  x		y				w		h
   { 298, 137, 37, 49, 310, 157, 304, 170, 2500, 0, 0 }, // Camfield
   { 348, 137, 43, 47, 354, 153, 354, 153, 3700, 0, 0 }, // Shawn
@@ -231,48 +231,48 @@ STR16	gzCreditNameFunny[]=
 
 // Global Variables
 
-MOUSE_REGION gCrdtMouseRegions[NUM_PEOPLE_IN_CREDITS];
+let gCrdtMouseRegions: MOUSE_REGION[] /* [NUM_PEOPLE_IN_CREDITS] */;
 
-UINT32 guiCreditBackGroundImage;
-UINT32 guiCreditFaces;
-BOOLEAN gfCreditsScreenEntry = TRUE;
-BOOLEAN gfCreditsScreenExit = FALSE;
-UINT32 guiCreditsExitScreen;
+let guiCreditBackGroundImage: UINT32;
+let guiCreditFaces: UINT32;
+let gfCreditsScreenEntry: BOOLEAN = TRUE;
+let gfCreditsScreenExit: BOOLEAN = FALSE;
+let guiCreditsExitScreen: UINT32;
 
-UINT8 gubCreditScreenRenderFlags = CRDT_RENDER_ALL;
+let gubCreditScreenRenderFlags: UINT8 = CRDT_RENDER_ALL;
 
-CRDT_NODE *gCrdtRootNode = NULL;
-CRDT_NODE *gCrdtLastAddedNode = NULL;
+let gCrdtRootNode: Pointer<CRDT_NODE> = NULL;
+let gCrdtLastAddedNode: Pointer<CRDT_NODE> = NULL;
 
-BOOLEAN gfCrdtHaveRenderedFirstFrameToSaveBuffer; // need to render background image to save buffer once
+let gfCrdtHaveRenderedFirstFrameToSaveBuffer: BOOLEAN; // need to render background image to save buffer once
 
-INT32 giCurrentlySelectedFace = -1;
+let giCurrentlySelectedFace: INT32 = -1;
 
 //
 // VAriables needed for processing of the nodes:
 //
 
-UINT32 guiCreditScreenActiveFont; // the font that is used
-UINT32 guiCreditScreenTitleFont; // the font that is used
-UINT8 gubCreditScreenActiveColor; // color of the font
-UINT8 gubCreditScreenTitleColor; // color of a Title node
+let guiCreditScreenActiveFont: UINT32; // the font that is used
+let guiCreditScreenTitleFont: UINT32; // the font that is used
+let gubCreditScreenActiveColor: UINT8; // color of the font
+let gubCreditScreenTitleColor: UINT8; // color of a Title node
 // UINT32		guiCreditScreenActiveDisplayFlags;	//
 
-UINT32 guiCrdtNodeScrollSpeed = CRDT_NODE_DELAY_AMOUNT; // speed credits go up at
+let guiCrdtNodeScrollSpeed: UINT32 = CRDT_NODE_DELAY_AMOUNT; // speed credits go up at
 // UINT32		guiCrdtTimeTillReadNextCredit = CRDT_DELAY_BN_SECTIONS;		//the delay before reading the next credit ( normall = guiCrdtDelayBetweenCreditSection or guiCrdtDelayBetweenNodes )
 // UINT32		guiCrdtDelayBetweenCreditSection = CRDT_DELAY_BN_SECTIONS;		//delay between major credits sections ( programming and art ) appearing on the screen
 // UINT32		guiCrdtDelayBetweenNodes = CRDT_DELAY_BN_NODES;		//delay between credits appearing on the screen
-UINT32 guiCrdtLastTimeUpdatingNode = 0; // the last time a node was read from the file
-UINT8 gubCrdtJustification = CENTER_JUSTIFIED; // the current justification
+let guiCrdtLastTimeUpdatingNode: UINT32 = 0; // the last time a node was read from the file
+let gubCrdtJustification: UINT8 = CENTER_JUSTIFIED; // the current justification
 
-UINT32 guiGapBetweenCreditSections = CRDT_SPACE_BN_SECTIONS;
-UINT32 guiGapBetweenCreditNodes = CRDT_SPACE_BN_NODES;
-UINT32 guiGapTillReadNextCredit = CRDT_SPACE_BN_NODES;
+let guiGapBetweenCreditSections: UINT32 = CRDT_SPACE_BN_SECTIONS;
+let guiGapBetweenCreditNodes: UINT32 = CRDT_SPACE_BN_NODES;
+let guiGapTillReadNextCredit: UINT32 = CRDT_SPACE_BN_NODES;
 
-UINT32 guiCurrentCreditRecord = 0;
-BOOLEAN gfPauseCreditScreen = FALSE;
+let guiCurrentCreditRecord: UINT32 = 0;
+let gfPauseCreditScreen: BOOLEAN = FALSE;
 
-HWFILE ghFile;
+let ghFile: HWFILE;
 
 // ggg
 
@@ -332,8 +332,8 @@ function CreditScreenShutdown(): UINT32 {
 
 // eee
 function EnterCreditsScreen(): BOOLEAN {
-  UINT32 uiCnt;
-  VOBJECT_DESC VObjectDesc;
+  let uiCnt: UINT32;
+  let VObjectDesc: VOBJECT_DESC;
   /*
 
           VSURFACE_DESC		vs_desc;
@@ -414,7 +414,7 @@ function EnterCreditsScreen(): BOOLEAN {
 }
 
 function ExitCreditScreen(): BOOLEAN {
-  UINT32 uiCnt;
+  let uiCnt: UINT32;
 
   // Blit the background image
   //	DeleteVideoSurfaceFromIndex( guiCreditBackGroundImage );
@@ -472,7 +472,7 @@ function HandleCreditScreen(): void {
 
 // rrr
 function RenderCreditScreen(): BOOLEAN {
-  HVOBJECT hPixHandle;
+  let hPixHandle: HVOBJECT;
 
   GetVideoObject(&hPixHandle, guiCreditBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -496,7 +496,7 @@ function RenderCreditScreen(): BOOLEAN {
 }
 
 function GetCreditScreenUserInput(): void {
-  InputAtom Event;
+  let Event: InputAtom;
 
   while (DequeueEvent(&Event)) {
     if (Event.usEvent == KEY_DOWN) {
@@ -526,8 +526,8 @@ function InitCreditNode(): BOOLEAN {
 }
 
 function ShutDownCreditList(): BOOLEAN {
-  CRDT_NODE *pNodeToDelete = NULL;
-  CRDT_NODE *pTemp = NULL;
+  let pNodeToDelete: Pointer<CRDT_NODE> = NULL;
+  let pTemp: Pointer<CRDT_NODE> = NULL;
 
   pNodeToDelete = gCrdtRootNode;
 
@@ -544,7 +544,7 @@ function ShutDownCreditList(): BOOLEAN {
 }
 
 function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
-  CRDT_NODE *pTempNode;
+  let pTempNode: Pointer<CRDT_NODE>;
 
   pTempNode = pNodeToDelete;
 
@@ -591,11 +591,11 @@ function DeleteNode(pNodeToDelete: Pointer<CRDT_NODE>): BOOLEAN {
 
 // aaa
 function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN {
-  CRDT_NODE *pNodeToAdd = NULL;
-  CRDT_NODE *pTemp = NULL;
-  UINT32 uiSizeOfString = (wcslen(pString) + 2) * 2;
-  UINT32 uiFontToUse;
-  UINT8 uiColorToUse;
+  let pNodeToAdd: Pointer<CRDT_NODE> = NULL;
+  let pTemp: Pointer<CRDT_NODE> = NULL;
+  let uiSizeOfString: UINT32 = (wcslen(pString) + 2) * 2;
+  let uiFontToUse: UINT32;
+  let uiColorToUse: UINT8;
 
   // if
   if (uiType == CRDT_NODE_NONE) {
@@ -662,7 +662,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
 
   // if the node can have something to display, Create a surface for it
   if (pNodeToAdd->uiType == CRDT_NODE_DEFAULT) {
-    VSURFACE_DESC vs_desc;
+    let vs_desc: VSURFACE_DESC;
 
     // Create a background video surface to blt the face onto
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -721,9 +721,9 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
 }
 
 function HandleCreditNodes(): void {
-  UINT32 uiCurrentTime = GetJA2Clock();
-  CRDT_NODE *pCurrent = NULL;
-  CRDT_NODE *pTemp = NULL;
+  let uiCurrentTime: UINT32 = GetJA2Clock();
+  let pCurrent: Pointer<CRDT_NODE> = NULL;
+  let pTemp: Pointer<CRDT_NODE> = NULL;
 
   if (gCrdtRootNode == NULL)
     return;
@@ -773,7 +773,7 @@ function HandleCurrentCreditNode(pCurrent: Pointer<CRDT_NODE>): void {
 }
 
 function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
-  UINT32 uiCurrentTime = GetJA2Clock();
+  let uiCurrentTime: UINT32 = GetJA2Clock();
 
   // if it is time to update the current node
   //	if( ( uiCurrentTime - pCurrent->uiLastTime ) > guiCrdtNodeScrollSpeed )
@@ -804,7 +804,7 @@ function HandleNode_Default(pCurrent: Pointer<CRDT_NODE>): void {
 }
 
 function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
-  HVSURFACE hVSurface;
+  let hVSurface: HVSURFACE;
 
   // Currently, we have no need to display a node that doesnt have a string
   if (pCurrent->pString == NULL)
@@ -822,7 +822,7 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
 
     // if the surface is at the bottom of the screen
     if (pCurrent->sOldPosY + pCurrent->sHeightOfString > CRDT_START_POS_Y) {
-      INT16 sHeight = 480 - pCurrent->sOldPosY;
+      let sHeight: INT16 = 480 - pCurrent->sOldPosY;
       RestoreExternBackgroundRect(pCurrent->sOldPosX, pCurrent->sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
     } else if (pCurrent->sOldPosY > CRDT_LINE_NODE_DISAPPEARS_AT) {
       RestoreExternBackgroundRect(pCurrent->sOldPosX, pCurrent->sOldPosY, CRDT_WIDTH_OF_TEXT_AREA, pCurrent->sHeightOfString);
@@ -830,7 +830,7 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
 
     // if the surface is at the top of the screen
     else {
-      INT16 sHeight = pCurrent->sOldPosY + pCurrent->sHeightOfString;
+      let sHeight: INT16 = pCurrent->sOldPosY + pCurrent->sHeightOfString;
 
       RestoreExternBackgroundRect(pCurrent->sOldPosX, CRDT_LINE_NODE_DISAPPEARS_AT, CRDT_WIDTH_OF_TEXT_AREA, sHeight);
     }
@@ -845,16 +845,16 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
 
 // return false from this function when there are no more items in the text file
 function GetNextCreditFromTextFile(): BOOLEAN {
-  BOOLEAN fDone = FALSE;
-  UINT32 uiStringWidth = 20;
-  CHAR16 zOriginalString[512];
-  CHAR16 zString[512];
-  CHAR16 zCodes[512];
-  STR16 pzNewCode = NULL;
-  UINT32 uiCodeType = 0;
-  UINT32 uiNodeType = 0;
-  UINT32 uiStartLoc = 0;
-  UINT32 uiFlags = 0;
+  let fDone: BOOLEAN = FALSE;
+  let uiStringWidth: UINT32 = 20;
+  let zOriginalString: CHAR16[] /* [512] */;
+  let zString: CHAR16[] /* [512] */;
+  let zCodes: CHAR16[] /* [512] */;
+  let pzNewCode: STR16 = NULL;
+  let uiCodeType: UINT32 = 0;
+  let uiNodeType: UINT32 = 0;
+  let uiStartLoc: UINT32 = 0;
+  let uiFlags: UINT32 = 0;
 
   // Get the current Credit record
   uiStartLoc = CREDITS_LINESIZE * guiCurrentCreditRecord;
@@ -872,10 +872,10 @@ function GetNextCreditFromTextFile(): BOOLEAN {
     wcscpy(zString, zOriginalString);
     uiNodeType = CRDT_NODE_DEFAULT;
   } else {
-    UINT32 uiSizeOfCodes = 0;
-    UINT32 uiSizeOfSubCode = 0;
-    STR16 pzEndCode = NULL;
-    UINT32 uiDistanceIntoCodes = 0;
+    let uiSizeOfCodes: UINT32 = 0;
+    let uiSizeOfSubCode: UINT32 = 0;
+    let pzEndCode: STR16 = NULL;
+    let uiDistanceIntoCodes: UINT32 = 0;
 
     // Retrive all the codes from the string
     pzEndCode = wcsstr(zOriginalString, CRDT_END_CODE);
@@ -947,7 +947,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 
   // if the code is to change the delay between strings
   if (pzCode[0] == CRDT_DELAY_BN_STRINGS_CODE) {
-    UINT32 uiNewDelay = 0;
+    let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
     swscanf(&pzCode[1], L"%d%*s", &uiNewDelay);
@@ -960,7 +960,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 
   // if the code is to change the delay between sections strings
   else if (pzCode[0] == CRDT_DELAY_BN_SECTIONS_CODE) {
-    UINT32 uiNewDelay = 0;
+    let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
     swscanf(&pzCode[1], L"%d%*s", &uiNewDelay);
@@ -972,7 +972,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
   }
 
   else if (pzCode[0] == CRDT_SCROLL_SPEED) {
-    UINT32 uiScrollSpeed = 0;
+    let uiScrollSpeed: UINT32 = 0;
 
     // Get the delay from the string
     swscanf(&pzCode[1], L"%d%*s", &uiScrollSpeed);
@@ -983,7 +983,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
   }
 
   else if (pzCode[0] == CRDT_FONT_JUSTIFICATION) {
-    UINT32 uiJustification = 0;
+    let uiJustification: UINT32 = 0;
 
     // Get the delay from the string
     swscanf(&pzCode[1], L"%d%*s", &uiJustification);
@@ -1044,8 +1044,8 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 }
 
 function CountNumberOfCreditNodes(): UINT32 {
-  UINT32 uiNumNodes = 0;
-  CRDT_NODE *pTempNode = gCrdtRootNode;
+  let uiNumNodes: UINT32 = 0;
+  let pTempNode: Pointer<CRDT_NODE> = gCrdtRootNode;
 
   while (pTempNode) {
     uiNumNodes++;
@@ -1057,8 +1057,8 @@ function CountNumberOfCreditNodes(): UINT32 {
 }
 
 function GetNextCreditCode(pString: STR16, pSizeOfCode: Pointer<UINT32>): STR16 {
-  STR16 pzNewCode = NULL;
-  UINT32 uiSizeOfCode = 0;
+  let pzNewCode: STR16 = NULL;
+  let uiSizeOfCode: UINT32 = 0;
 
   // get the new subcode out
   pzNewCode = wcsstr(pString, CRDT_SEPARATION_CODE);
@@ -1114,7 +1114,7 @@ function SelectCreditFaceMovementRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
 }
 
 function InitCreditEyeBlinking(): void {
-  UINT8 ubCnt;
+  let ubCnt: UINT8;
 
   for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     gCreditFaces[ubCnt].uiLastBlinkTime = GetJA2Clock() + Random(gCreditFaces[ubCnt].sBlinkFreq * 2);
@@ -1122,8 +1122,8 @@ function InitCreditEyeBlinking(): void {
 }
 
 function HandleCreditEyeBlinking(): void {
-  HVOBJECT hPixHandle;
-  UINT8 ubCnt;
+  let hPixHandle: HVOBJECT;
+  let ubCnt: UINT8;
 
   GetVideoObject(&hPixHandle, guiCreditFaces);
 

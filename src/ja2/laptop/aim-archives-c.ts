@@ -82,24 +82,24 @@ const AIM_ALUMNI_FILE_RECORD_SIZE = 80 * 8 * 2;
 //#define		AIM_ALUMNI_FILE_RECORD_SIZE			80 * 7 * 2
 const AIM_ALUMNI_FULL_NAME_SIZE = 80 * 2;
 
-UINT32 guiAlumniFrame;
-UINT32 guiOldAim;
-UINT32 guiPageButtons;
-UINT32 guiAlumniPopUp;
-UINT32 guiPopUpPic;
-UINT32 guiDoneButton;
+let guiAlumniFrame: UINT32;
+let guiOldAim: UINT32;
+let guiPageButtons: UINT32;
+let guiAlumniPopUp: UINT32;
+let guiPopUpPic: UINT32;
+let guiDoneButton: UINT32;
 
-UINT8 gubPageNum;
-UINT8 gunAlumniButtonDown = 255;
-BOOLEAN gfExitingAimArchives;
-UINT8 gubDrawOldMerc;
-UINT8 gfDrawPopUpBox = FALSE;
-BOOLEAN gfDestroyPopUpBox;
-BOOLEAN gfFaceMouseRegionsActive;
+let gubPageNum: UINT8;
+let gunAlumniButtonDown: UINT8 = 255;
+let gfExitingAimArchives: BOOLEAN;
+let gubDrawOldMerc: UINT8;
+let gfDrawPopUpBox: UINT8 = FALSE;
+let gfDestroyPopUpBox: BOOLEAN;
+let gfFaceMouseRegionsActive: BOOLEAN;
 // BOOLEAN		gfDestroyDoneRegion;
-BOOLEAN gfReDrawScreen = FALSE;
+let gfReDrawScreen: BOOLEAN = FALSE;
 
-BOOLEAN AimArchivesSubPagesVisitedFlag[3] = {
+let AimArchivesSubPagesVisitedFlag: BOOLEAN[] /* [3] */ = {
   0,
   0,
   0,
@@ -108,13 +108,13 @@ BOOLEAN AimArchivesSubPagesVisitedFlag[3] = {
 // Mouse Regions
 
 // Face regions
-MOUSE_REGION gMercAlumniFaceMouseRegions[MAX_NUMBER_OLD_MERCS_ON_PAGE];
+let gMercAlumniFaceMouseRegions: MOUSE_REGION[] /* [MAX_NUMBER_OLD_MERCS_ON_PAGE] */;
 
 // Done region
-MOUSE_REGION gDoneRegion;
+let gDoneRegion: MOUSE_REGION;
 
-UINT32 guiAlumniPageButton[3];
-INT32 guiAlumniPageButtonImage;
+let guiAlumniPageButton: UINT32[] /* [3] */;
+let guiAlumniPageButtonImage: INT32;
 
 function GameInitAimArchives(): void {
 }
@@ -128,8 +128,9 @@ function EnterInitAimArchives(): void {
 }
 
 function EnterAimArchives(): BOOLEAN {
-  VOBJECT_DESC VObjectDesc;
-  UINT16 usPosX, i;
+  let VObjectDesc: VOBJECT_DESC;
+  let usPosX: UINT16;
+  let i: UINT16;
 
   gfExitingAimArchives = FALSE;
   //	gubDrawOldMerc = 255;
@@ -191,7 +192,7 @@ function EnterAimArchives(): BOOLEAN {
 }
 
 function ExitAimArchives(): void {
-  UINT16 i;
+  let i: UINT16;
 
   gfExitingAimArchives = TRUE;
 
@@ -233,13 +234,17 @@ function HandleAimArchives(): void {
 }
 
 function RenderAimArchives(): void {
-  HVOBJECT hFrameHandle;
-  HVOBJECT hFaceHandle;
+  let hFrameHandle: HVOBJECT;
+  let hFaceHandle: HVOBJECT;
   //  HVOBJECT	hBottomButtonHandle;
-  UINT16 usPosX, usPosY, x, y, i = 0;
-  UINT8 ubNumRows = 0;
-  UINT32 uiStartLoc = 0;
-  wchar_t sText[400];
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let x: UINT16;
+  let y: UINT16;
+  let i: UINT16 = 0;
+  let ubNumRows: UINT8 = 0;
+  let uiStartLoc: UINT32 = 0;
+  let sText: wchar_t[] /* [400] */;
 
   DrawAimDefaults();
   DisableAimButton();
@@ -334,7 +339,7 @@ function SelectAlumniFaceRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  UINT8 ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+  let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -373,7 +378,7 @@ function BtnAlumniPageButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function ResetAimArchiveButtons(): void {
-  int i = 0;
+  let i: int = 0;
 
   for (i = 0; i < 3; i++) {
     ButtonList[guiAlumniPageButton[i]]->uiFlags &= ~BUTTON_CLICKED_ON;
@@ -394,19 +399,22 @@ function DisableAimArchiveButton(): void {
 }
 
 function DisplayAlumniOldMercPopUp(): void {
-  UINT8 i, ubNumLines = 11; // 17
-  UINT16 usPosY, usTextPosY;
-  UINT8 ubFontHeight, ubNumDescLines;
-  HVOBJECT hAlumniPopUpHandle;
-  HVOBJECT hDoneHandle;
-  HVOBJECT hFacePaneHandle;
-  HVOBJECT hFaceHandle;
+  let i: UINT8;
+  let ubNumLines: UINT8 = 11; // 17
+  let usPosY: UINT16;
+  let usTextPosY: UINT16;
+  let ubFontHeight: UINT8;
+  let ubNumDescLines: UINT8;
+  let hAlumniPopUpHandle: HVOBJECT;
+  let hDoneHandle: HVOBJECT;
+  let hFacePaneHandle: HVOBJECT;
+  let hFaceHandle: HVOBJECT;
   //	WRAPPED_STRING *pFirstWrappedString, *pTempWrappedString;
-  UINT16 usHeight = GetFontHeight(AIM_ALUMNI_POPUP_FONT);
-  wchar_t sName[AIM_ALUMNI_NAME_SIZE];
-  wchar_t sDesc[AIM_ALUMNI_DECRIPTION_SIZE];
-  UINT32 uiStartLoc;
-  UINT16 usStringPixLength;
+  let usHeight: UINT16 = GetFontHeight(AIM_ALUMNI_POPUP_FONT);
+  let sName: wchar_t[] /* [AIM_ALUMNI_NAME_SIZE] */;
+  let sDesc: wchar_t[] /* [AIM_ALUMNI_DECRIPTION_SIZE] */;
+  let uiStartLoc: UINT32;
+  let usStringPixLength: UINT16;
 
   GetVideoObject(&hAlumniPopUpHandle, guiAlumniPopUp);
   GetVideoObject(&hDoneHandle, guiDoneButton);
@@ -469,7 +477,12 @@ function DestroyPopUpBox(): void {
 }
 
 function InitAlumniFaceRegions(): void {
-  UINT16 usPosX, usPosY, i, x, y, usNumRows;
+  let usPosX: UINT16;
+  let usPosY: UINT16;
+  let i: UINT16;
+  let x: UINT16;
+  let y: UINT16;
+  let usNumRows: UINT16;
 
   if (gfFaceMouseRegionsActive)
     return;
@@ -508,8 +521,8 @@ function InitAlumniFaceRegions(): void {
 }
 
 function RemoveAimAlumniFaceRegion(): void {
-  UINT16 i;
-  UINT16 usNumber = 0;
+  let i: UINT16;
+  let usNumber: UINT16 = 0;
 
   if (!gfFaceMouseRegionsActive)
     return;
@@ -535,7 +548,7 @@ function RemoveAimAlumniFaceRegion(): void {
 }
 
 function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
-  static BOOLEAN DoneRegionCreated = FALSE;
+  /* static */ let DoneRegionCreated: BOOLEAN = FALSE;
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;

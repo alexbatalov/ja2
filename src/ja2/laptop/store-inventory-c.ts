@@ -1,4 +1,4 @@
-UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS] = {
+let StoreInventory: UINT8[][] /* [MAXITEMS][BOBBY_RAY_LISTS] */ = {
   //
   // The first column is for Bobby Rays new inventory,					BOBBY_RAY_NEW,
   // The second column is for Bobby Rays used inventory,				BOBBY_RAY_USED,
@@ -433,7 +433,7 @@ UINT8 StoreInventory[MAXITEMS][BOBBY_RAY_LISTS] = {
   { 0, 0 }, /* nothing */
 };
 
-INT16 WeaponROF[MAX_WEAPONS] = {
+let WeaponROF: INT16[] /* [MAX_WEAPONS] */ = {
   0, /* Nothing */
 
   40, /* Glock 17        */
@@ -511,9 +511,9 @@ INT16 WeaponROF[MAX_WEAPONS] = {
 
 // SetupStoreInventory sets up the initial quantity on hand for all of Bobby Ray's inventory items
 function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: BOOLEAN): void {
-  UINT16 i;
-  UINT16 usItemIndex;
-  UINT8 ubNumBought;
+  let i: UINT16;
+  let usItemIndex: UINT16;
+  let ubNumBought: UINT8;
 
   // loop through all items BR can stock to init a starting quantity on hand
   for (i = 0; i < LaptopSaveInfo.usInventoryListLength[fUsed]; i++) {
@@ -541,9 +541,9 @@ function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: B
 }
 
 function DoesGunOfSameClassExistInInventory(ubItemIndex: UINT8, ubDealerID: UINT8): BOOLEAN {
-  UINT16 i;
+  let i: UINT16;
 
-  STORE_INVENTORY *pInventoryArray;
+  let pInventoryArray: Pointer<STORE_INVENTORY>;
 
   pInventoryArray = GetPtrToStoreInventory(ubDealerID);
   if (pInventoryArray == NULL)

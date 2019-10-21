@@ -15,7 +15,7 @@ const GUI_BTN_NONE = 0;
 const GUI_BTN_DUPLICATE_VOBJ = 1;
 const GUI_BTN_EXTERNAL_VOBJ = 2;
 
-UINT8 str[128];
+let str: UINT8[] /* [128] */;
 
 // Kris:  December 2, 1997
 // Special internal debugging utilities that will ensure that you don't attempt to delete
@@ -28,50 +28,50 @@ UINT8 str[128];
 // When you click on a button, it get's anchored, until you release the mouse button.
 // When you move around, you don't want to select other buttons, even when you release
 // it.  This follows the Windows 95 convention.
-GUI_BUTTON *gpAnchoredButton;
-GUI_BUTTON *gpPrevAnchoredButton;
-BOOLEAN gfAnchoredState;
+let gpAnchoredButton: Pointer<GUI_BUTTON>;
+let gpPrevAnchoredButton: Pointer<GUI_BUTTON>;
+let gfAnchoredState: BOOLEAN;
 
-INT8 gbDisabledButtonStyle;
+let gbDisabledButtonStyle: INT8;
 
-GUI_BUTTON *gpCurrentFastHelpButton;
+let gpCurrentFastHelpButton: Pointer<GUI_BUTTON>;
 
-BOOLEAN gfRenderHilights = TRUE;
+let gfRenderHilights: BOOLEAN = TRUE;
 
-BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
-INT32 ButtonPicsLoaded;
+let ButtonPictures: BUTTON_PICS[] /* [MAX_BUTTON_PICS] */;
+let ButtonPicsLoaded: INT32;
 
-UINT32 ButtonDestBuffer = BACKBUFFER;
-UINT32 ButtonDestPitch = 640 * 2;
-UINT32 ButtonDestBPP = 16;
+let ButtonDestBuffer: UINT32 = BACKBUFFER;
+let ButtonDestPitch: UINT32 = 640 * 2;
+let ButtonDestBPP: UINT32 = 16;
 
-GUI_BUTTON *ButtonList[MAX_BUTTONS];
+let ButtonList: Pointer<GUI_BUTTON>[] /* [MAX_BUTTONS] */;
 
-INT32 ButtonsInList = 0;
+let ButtonsInList: INT32 = 0;
 
 function GetWidthOfButtonPic(usButtonPicID: UINT16, iSlot: INT32): UINT16 {
   return ButtonPictures[usButtonPicID].vobj->pETRLEObject[iSlot].usWidth;
 }
 
-HVOBJECT GenericButtonGrayed[MAX_GENERIC_PICS];
-HVOBJECT GenericButtonOffNormal[MAX_GENERIC_PICS];
-HVOBJECT GenericButtonOffHilite[MAX_GENERIC_PICS];
-HVOBJECT GenericButtonOnNormal[MAX_GENERIC_PICS];
-HVOBJECT GenericButtonOnHilite[MAX_GENERIC_PICS];
-HVOBJECT GenericButtonBackground[MAX_GENERIC_PICS];
-UINT16 GenericButtonFillColors[MAX_GENERIC_PICS];
-UINT16 GenericButtonBackgroundIndex[MAX_GENERIC_PICS];
-INT16 GenericButtonOffsetX[MAX_GENERIC_PICS];
-INT16 GenericButtonOffsetY[MAX_GENERIC_PICS];
+let GenericButtonGrayed: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOffNormal: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOffHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOnNormal: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOnHilite: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonBackground: HVOBJECT[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonFillColors: UINT16[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonBackgroundIndex: UINT16[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOffsetX: INT16[] /* [MAX_GENERIC_PICS] */;
+let GenericButtonOffsetY: INT16[] /* [MAX_GENERIC_PICS] */;
 
-HVOBJECT GenericButtonIcons[MAX_BUTTON_ICONS];
+let GenericButtonIcons: HVOBJECT[] /* [MAX_BUTTON_ICONS] */;
 
 // flag to state we wish to render buttons on the one after the next pass through render buttons
-BOOLEAN fPausedMarkButtonsDirtyFlag = FALSE;
-BOOLEAN fDisableHelpTextRestoreFlag = FALSE;
+let fPausedMarkButtonsDirtyFlag: BOOLEAN = FALSE;
+let fDisableHelpTextRestoreFlag: BOOLEAN = FALSE;
 
-BOOLEAN gfDelayButtonDeletion = FALSE;
-BOOLEAN gfPendingButtonDeletion = FALSE;
+let gfDelayButtonDeletion: BOOLEAN = FALSE;
+let gfPendingButtonDeletion: BOOLEAN = FALSE;
 
 //=============================================================================
 //	FindFreeButtonSlot
@@ -79,7 +79,7 @@ BOOLEAN gfPendingButtonDeletion = FALSE;
 //	Finds an available slot for loading button pictures
 //
 function FindFreeButtonSlot(): INT32 {
-  int slot;
+  let slot: int;
 
   // Are there any slots available?
   if (ButtonPicsLoaded >= MAX_BUTTON_PICS)
@@ -100,11 +100,16 @@ function FindFreeButtonSlot(): INT32 {
 //	Load images for use with QuickButtons.
 //
 function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
-  VOBJECT_DESC vo_desc;
-  UINT32 UseSlot;
-  ETRLEObject *pTrav;
-  UINT32 MaxHeight, MaxWidth, ThisHeight, ThisWidth;
-  UINT32 MemBefore, MemAfter, MemUsed;
+  let vo_desc: VOBJECT_DESC;
+  let UseSlot: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let MaxHeight: UINT32;
+  let MaxWidth: UINT32;
+  let ThisHeight: UINT32;
+  let ThisWidth: UINT32;
+  let MemBefore: UINT32;
+  let MemAfter: UINT32;
+  let MemUsed: UINT32;
 
   AssertMsg(filename != BUTTON_NO_FILENAME, "Attempting to LoadButtonImage() with null filename.");
   AssertMsg(strlen(filename), "Attempting to LoadButtonImage() with empty filename string.");
@@ -214,9 +219,12 @@ function LoadButtonImage(filename: Pointer<UINT8>, Grayed: INT32, OffNormal: INT
 //	The function simply duplicates the vobj!
 //
 function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
-  UINT32 UseSlot;
-  ETRLEObject *pTrav;
-  UINT32 MaxHeight, MaxWidth, ThisHeight, ThisWidth;
+  let UseSlot: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let MaxHeight: UINT32;
+  let MaxWidth: UINT32;
+  let ThisHeight: UINT32;
+  let ThisWidth: UINT32;
 
   // Is button image index given valid?
   if (ButtonPictures[LoadedImg].vobj == NULL) {
@@ -329,9 +337,12 @@ function UseLoadedButtonImage(LoadedImg: INT32, Grayed: INT32, OffNormal: INT32,
 //			the user to actually unload the image.
 //
 function UseVObjAsButtonImage(hVObject: HVOBJECT, Grayed: INT32, OffNormal: INT32, OffHilite: INT32, OnNormal: INT32, OnHilite: INT32): INT32 {
-  UINT32 UseSlot;
-  ETRLEObject *pTrav;
-  UINT32 MaxHeight, MaxWidth, ThisHeight, ThisWidth;
+  let UseSlot: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let MaxHeight: UINT32;
+  let MaxWidth: UINT32;
+  let ThisHeight: UINT32;
+  let ThisWidth: UINT32;
 
   // Is button image index given valid?
   if (hVObject == NULL) {
@@ -440,8 +451,8 @@ function SetButtonDestBuffer(DestBuffer: UINT32): BOOLEAN {
 
 // Removes a QuickButton image from the system.
 function UnloadButtonImage(Index: INT32): void {
-  INT32 x;
-  BOOLEAN fDone;
+  let x: INT32;
+  let fDone: BOOLEAN;
 
   if (Index < 0 || Index >= MAX_BUTTON_PICS) {
     sprintf(str, "Attempting to UnloadButtonImage with out of range index %d.", Index);
@@ -493,8 +504,8 @@ function UnloadButtonImage(Index: INT32): void {
 //	Enables an already created button.
 //
 function EnableButton(iButtonID: INT32): BOOLEAN {
-  GUI_BUTTON *b;
-  UINT32 OldState;
+  let b: Pointer<GUI_BUTTON>;
+  let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to EnableButton with out of range buttonID %d.", iButtonID);
@@ -524,8 +535,8 @@ function EnableButton(iButtonID: INT32): BOOLEAN {
 //	graphics for such are not available).
 //
 function DisableButton(iButtonID: INT32): BOOLEAN {
-  GUI_BUTTON *b;
-  UINT32 OldState;
+  let b: Pointer<GUI_BUTTON>;
+  let OldState: UINT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to DisableButton with out of range buttonID %d.", iButtonID);
@@ -553,9 +564,9 @@ function DisableButton(iButtonID: INT32): BOOLEAN {
 //	InitButtonSystem.
 //
 function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32, DefaultBPP: INT32): BOOLEAN {
-  VOBJECT_DESC vo_desc;
-  UINT8 Pix;
-  int x;
+  let vo_desc: VOBJECT_DESC;
+  let Pix: UINT8;
+  let x: int;
 
   // Set up the default settings
   if (DefaultBuffer != BUTTON_USE_DEFAULT)
@@ -651,7 +662,8 @@ function InitializeButtonImageManager(DefaultBuffer: INT32, DefaultPitch: INT32,
 //	Finds the next available slot for generic (TEXT and/or ICONIC) buttons.
 //
 function FindFreeGenericSlot(): INT16 {
-  INT16 slot, x;
+  let slot: INT16;
+  let x: INT16;
 
   slot = BUTTON_NO_SLOT;
   for (x = 0; x < MAX_GENERIC_PICS && slot < 0; x++) {
@@ -668,7 +680,8 @@ function FindFreeGenericSlot(): INT16 {
 //	Finds the next available slot for button icon images.
 //
 function FindFreeIconSlot(): INT16 {
-  INT16 slot, x;
+  let slot: INT16;
+  let x: INT16;
 
   slot = BUTTON_NO_SLOT;
   for (x = 0; x < MAX_BUTTON_ICONS && slot < 0; x++) {
@@ -685,8 +698,8 @@ function FindFreeIconSlot(): INT16 {
 //	Loads an image file for use as a button icon.
 //
 function LoadGenericButtonIcon(filename: Pointer<UINT8>): INT16 {
-  INT16 ImgSlot;
-  VOBJECT_DESC vo_desc;
+  let ImgSlot: INT16;
+  let vo_desc: VOBJECT_DESC;
 
   AssertMsg(filename != BUTTON_NO_FILENAME, "Attempting to LoadGenericButtonIcon() with null filename.");
 
@@ -737,7 +750,7 @@ function UnloadGenericButtonIcon(GenImg: INT16): BOOLEAN {
 //	image of iconic buttons. See above.
 //
 function UnloadGenericButtonImage(GenImg: INT16): BOOLEAN {
-  BOOLEAN fDeletedSomething = FALSE;
+  let fDeletedSomething: BOOLEAN = FALSE;
   if (GenImg < 0 || GenImg >= MAX_GENERIC_PICS) {
     sprintf(str, "Attempting to UnloadGenericButtonImage with out of range index %d.", GenImg);
     AssertMsg(0, str);
@@ -796,9 +809,9 @@ function UnloadGenericButtonImage(GenImg: INT16): BOOLEAN {
 //	Loads the image files required for displaying a generic button.
 //
 function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<UINT8>, OffHiliteName: Pointer<UINT8>, OnNormName: Pointer<UINT8>, OnHiliteName: Pointer<UINT8>, BkGrndName: Pointer<UINT8>, Index: INT16, OffsetX: INT16, OffsetY: INT16): INT16 {
-  INT16 ImgSlot;
-  VOBJECT_DESC vo_desc;
-  UINT8 Pix;
+  let ImgSlot: INT16;
+  let vo_desc: VOBJECT_DESC;
+  let Pix: UINT8;
 
   // if the images for Off-Normal and On-Normal don't exist, abort call
   if ((OffNormName == BUTTON_NO_FILENAME) || (OnNormName == BUTTON_NO_FILENAME)) {
@@ -905,7 +918,7 @@ function LoadGenericButtonImages(GrayName: Pointer<UINT8>, OffNormName: Pointer<
 //	This function is called by ShutdownButtonSystem.
 //
 function ShutdownButtonImageManager(): void {
-  int x;
+  let x: int;
 
   // Remove all QuickButton images
   for (x = 0; x < MAX_BUTTON_PICS; x++)
@@ -963,7 +976,7 @@ function ShutdownButtonImageManager(): void {
 //	any other button functions.
 //
 function InitButtonSystem(): BOOLEAN {
-  INT32 x;
+  let x: INT32;
 
   RegisterDebugTopic(TOPIC_BUTTON_HANDLER, "Button System & Button Image Manager");
 
@@ -991,7 +1004,7 @@ function InitButtonSystem(): BOOLEAN {
 //	this function.
 //
 function ShutdownButtonSystem(): void {
-  int x;
+  let x: int;
 
   // Kill off all buttons in the system
   for (x = 0; x < MAX_BUTTONS; x++) {
@@ -1005,7 +1018,7 @@ function ShutdownButtonSystem(): void {
 }
 
 function RemoveButtonsMarkedForDeletion(): void {
-  INT32 i;
+  let i: INT32;
   for (i = 0; i < MAX_BUTTONS; i++) {
     if (ButtonList[i] && ButtonList[i]->uiFlags & BUTTON_DELETION_PENDING) {
       RemoveButton(i);
@@ -1020,7 +1033,7 @@ function RemoveButtonsMarkedForDeletion(): void {
 //	button is released.
 //
 function RemoveButton(iButtonID: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to RemoveButton with out of range buttonID %d.", iButtonID);
@@ -1080,7 +1093,7 @@ function RemoveButton(iButtonID: INT32): void {
 //	Finds the next available button slot.
 //
 function GetNextButtonNumber(): INT32 {
-  INT32 x;
+  let x: INT32;
 
   for (x = 0; x < MAX_BUTTONS; x++) {
     if (ButtonList[x] == NULL)
@@ -1099,8 +1112,9 @@ function GetNextButtonNumber(): INT32 {
 //	call if a QuickButton is given.
 //
 function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
-  GUI_BUTTON *b;
-  INT32 xloc, yloc;
+  let b: Pointer<GUI_BUTTON>;
+  let xloc: INT32;
+  let yloc: INT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to resize button with out of range buttonID %d.", iButtonID);
@@ -1148,8 +1162,11 @@ function ResizeButton(iButtonID: INT32, w: INT16, h: INT16): void {
 //	to the top left corner of the button.
 //
 function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
-  GUI_BUTTON *b;
-  INT32 xloc, yloc, w, h;
+  let b: Pointer<GUI_BUTTON>;
+  let xloc: INT32;
+  let yloc: INT32;
+  let w: INT32;
+  let h: INT32;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to set button position with out of range buttonID %d.", iButtonID);
@@ -1194,7 +1211,7 @@ function SetButtonPosition(iButtonID: INT32, x: INT16, y: INT16): void {
 //	Calling this function with a button type other than Iconic has no effect.
 //
 function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   if (iButtonID < 0 || iButtonID >= MAX_BUTTONS) {
     sprintf(str, "Attempting to set button icon with out of range buttonID %d.", iButtonID);
@@ -1233,9 +1250,10 @@ function SetButtonIcon(iButtonID: INT32, Icon: INT16, IconIndex: INT16): INT32 {
 //	Creates an Iconic type button.
 //
 function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 ButtonNum;
-  INT32 BType, x;
+  let b: Pointer<GUI_BUTTON>;
+  let ButtonNum: INT32;
+  let BType: INT32;
+  let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
     sprintf(str, "Attempting to CreateIconButton with invalid position of %d,%d", xloc, yloc);
@@ -1345,9 +1363,10 @@ function CreateIconButton(Icon: INT16, IconIndex: INT16, GenImg: INT16, xloc: IN
 
 // Creates a generic button with text on it.
 function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, GenImg: INT16, xloc: INT16, yloc: INT16, w: INT16, h: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 ButtonNum;
-  INT32 BType, x;
+  let b: Pointer<GUI_BUTTON>;
+  let ButtonNum: INT32;
+  let BType: INT32;
+  let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
     sprintf(str, "Attempting to CreateTextButton with invalid position of %d,%d", xloc, yloc);
@@ -1468,9 +1487,10 @@ function CreateTextButton(string: Pointer<UINT16>, uiFont: UINT32, sForeColor: I
 //	them.
 //
 function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 ButtonNum;
-  INT16 BType, x;
+  let b: Pointer<GUI_BUTTON>;
+  let ButtonNum: INT32;
+  let BType: INT16;
+  let x: INT16;
 
   if (xloc < 0 || yloc < 0 || Width < 0 || Height < 0) {
     sprintf(str, "Attempting to CreateHotSpot with invalid coordinates: %d,%d, width: %d, and height: %d.", xloc, yloc, Width, Height);
@@ -1542,7 +1562,7 @@ function CreateHotSpot(xloc: INT16, yloc: INT16, Width: INT16, Height: INT16, Pr
 // SetButtonCursor
 // will simply set the cursor for the mouse region the button occupies
 function SetButtonCursor(iBtnId: INT32, crsr: UINT16): BOOLEAN {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   b = ButtonList[iBtnId];
   if (!b)
     return FALSE;
@@ -1557,9 +1577,10 @@ function SetButtonCursor(iBtnId: INT32, crsr: UINT16): BOOLEAN {
 //	them. They cannot be re-sized, nor can the graphic be changed.
 //
 function QuickCreateButton(Image: UINT32, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 ButtonNum;
-  INT32 BType, x;
+  let b: Pointer<GUI_BUTTON>;
+  let ButtonNum: INT32;
+  let BType: INT32;
+  let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
     sprintf(str, "Attempting to QuickCreateButton with invalid position of %d,%d", xloc, yloc);
@@ -1697,7 +1718,8 @@ function CreateEasyButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: IN
 
 // Same as above, but accepts priority specification.
 function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: INT32, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
-  INT32 ButPic, ButNum;
+  let ButPic: INT32;
+  let ButNum: INT32;
 
   if (!filename || !strlen(filename))
     AssertMsg(0, "Attempting to CreateSimpleButton with null filename.");
@@ -1719,9 +1741,10 @@ function CreateSimpleButton(x: INT32, y: INT32, filename: Pointer<UINT8>, Type: 
 }
 
 function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: UINT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8, xloc: INT16, yloc: INT16, Type: INT32, Priority: INT16, MoveCallback: GUI_CALLBACK, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 iButtonID;
-  INT32 BType, x;
+  let b: Pointer<GUI_BUTTON>;
+  let iButtonID: INT32;
+  let BType: INT32;
+  let x: INT32;
 
   if (xloc < 0 || yloc < 0) {
     sprintf(str, "Attempting to CreateIconAndTextButton with invalid position of %d,%d", xloc, yloc);
@@ -1829,7 +1852,7 @@ function CreateIconAndTextButton(Image: INT32, string: Pointer<UINT16>, uiFont: 
 
 // New functions
 function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -1852,7 +1875,7 @@ function SpecifyButtonText(iButtonID: INT32, string: Pointer<UINT16>): void {
 }
 
 function SpecifyButtonMultiColorFont(iButtonID: INT32, fMultiColor: BOOLEAN): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1862,7 +1885,7 @@ function SpecifyButtonMultiColorFont(iButtonID: INT32, fMultiColor: BOOLEAN): vo
 }
 
 function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1872,7 +1895,7 @@ function SpecifyButtonFont(iButtonID: INT32, uiFont: UINT32): void {
 }
 
 function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowColor: INT16): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1883,7 +1906,7 @@ function SpecifyButtonUpTextColors(iButtonID: INT32, sForeColor: INT16, sShadowC
 }
 
 function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sShadowColorDown: INT16): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1894,7 +1917,7 @@ function SpecifyButtonDownTextColors(iButtonID: INT32, sForeColorDown: INT16, sS
 }
 
 function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT16, sShadowColorHilited: INT16): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1905,7 +1928,7 @@ function SpecifyButtonHilitedTextColors(iButtonID: INT32, sForeColorHilited: INT
 }
 
 function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1918,7 +1941,7 @@ function SpecifyButtonTextJustification(iButtonID: INT32, bJustification: INT8):
 }
 
 function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16, sForeColorDown: INT16, sShadowColorDown: INT16, bJustification: INT8): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1938,7 +1961,7 @@ function SpecifyFullButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT1
 }
 
 function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UINT16>, uiFont: INT32, sForeColor: INT16, sShadowColor: INT16): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1952,7 +1975,7 @@ function SpecifyGeneralButtonTextAttributes(iButtonID: INT32, string: Pointer<UI
 }
 
 function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: BOOLEAN): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1964,7 +1987,7 @@ function SpecifyButtonTextOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOf
 }
 
 function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bTextYOffset: INT8, fShiftText: BOOLEAN): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1976,7 +1999,7 @@ function SpecifyButtonTextSubOffsets(iButtonID: INT32, bTextXOffset: INT8, bText
 }
 
 function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -1986,7 +2009,7 @@ function SpecifyButtonTextWrappedWidth(iButtonID: INT32, sWrappedWidth: INT16): 
 }
 
 function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -2001,7 +2024,7 @@ function SpecifyDisabledButtonStyle(iButtonID: INT32, bStyle: INT8): void {
 // If fShiftImage is true, then the image will shift down one pixel and right one pixel
 // just like the text does.
 function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjectIndex: UINT16, bXOffset: INT8, bYOffset: INT8, fShiftImage: BOOLEAN): BOOLEAN {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2024,7 +2047,7 @@ function SpecifyButtonIcon(iButtonID: INT32, iVideoObjectID: INT32, usVideoObjec
 }
 
 function RemoveTextFromButton(iButtonID: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2051,7 +2074,7 @@ function RemoveTextFromButton(iButtonID: INT32): void {
 }
 
 function RemoveIconFromButton(iButtonID: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2066,7 +2089,7 @@ function RemoveIconFromButton(iButtonID: INT32): void {
 }
 
 function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: BOOLEAN): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2082,7 +2105,7 @@ function AllowDisabledButtonFastHelp(iButtonID: INT32, fAllow: BOOLEAN): void {
 //	Set the text that will be displayed as the FastHelp
 //
 function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
   b = ButtonList[iButton];
@@ -2091,7 +2114,7 @@ function SetButtonFastHelpText(iButton: INT32, Text: Pointer<UINT16>): void {
 }
 
 function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_CALLBACK): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   if (iButton < 0 || iButton > MAX_BUTTONS)
     return;
   b = ButtonList[iButton];
@@ -2107,8 +2130,8 @@ function SetBtnHelpEndCallback(iButton: INT32, CallbackFxn: MOUSE_HELPTEXT_DONE_
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
 function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  GUI_BUTTON *b;
-  INT32 iButtonID;
+  let b: Pointer<GUI_BUTTON>;
+  let iButtonID: INT32;
 
   Assert(reg != NULL);
 
@@ -2183,10 +2206,11 @@ function QuickButtonCallbackMMove(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 //	called by the Mouse System. *DO NOT CALL DIRECTLY*
 //
 function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
-  GUI_BUTTON *b;
-  INT32 iButtonID;
-  BOOLEAN MouseBtnDown;
-  BOOLEAN StateBefore, StateAfter;
+  let b: Pointer<GUI_BUTTON>;
+  let iButtonID: INT32;
+  let MouseBtnDown: BOOLEAN;
+  let StateBefore: BOOLEAN;
+  let StateAfter: BOOLEAN;
 
   Assert(reg != NULL);
 
@@ -2322,9 +2346,10 @@ function QuickButtonCallbackMButn(reg: Pointer<MOUSE_REGION>, reason: INT32): vo
 }
 
 function RenderButtons(): void {
-  INT32 iButtonID;
-  BOOLEAN fOldButtonDown, fOldEnabled;
-  GUI_BUTTON *b;
+  let iButtonID: INT32;
+  let fOldButtonDown: BOOLEAN;
+  let fOldEnabled: BOOLEAN;
+  let b: Pointer<GUI_BUTTON>;
 
   SaveFontSettings();
   for (iButtonID = 0; iButtonID < MAX_BUTTONS; iButtonID++) {
@@ -2400,7 +2425,7 @@ function MarkAButtonDirty(iButtonNum: INT32): void {
 //	MarkButtonsDirty
 //
 function MarkButtonsDirty(): void {
-  INT32 x;
+  let x: INT32;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
     if (ButtonList[x]) {
@@ -2417,7 +2442,7 @@ function UnMarkButtonDirty(iButtonIndex: INT32): void {
 }
 
 function UnmarkButtonsDirty(): void {
-  INT32 x;
+  let x: INT32;
   for (x = 0; x < MAX_BUTTONS; x++) {
     // If the button exists, and it's not owned by another object, draw it
     if (ButtonList[x]) {
@@ -2520,7 +2545,7 @@ function DrawButtonFromPtr(b: Pointer<GUI_BUTTON>): void {
 //	Draws a QuickButton type button on the screen.
 //
 function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
-  INT32 UseImage;
+  let UseImage: INT32;
   UseImage = 0;
   // Is button Enabled, or diabled but no "Grayed" image associated with this QuickButton?
   if (b->uiFlags & BUTTON_ENABLED) {
@@ -2559,9 +2584,9 @@ function DrawQuickButton(b: Pointer<GUI_BUTTON>): void {
 }
 
 function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  SGPRect ClipRect;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
+  let ClipRect: SGPRect;
   ClipRect.iLeft = b->Area.RegionTopLeftX;
   ClipRect.iRight = b->Area.RegionBottomRightX - 1;
   ClipRect.iTop = b->Area.RegionTopLeftY;
@@ -2572,9 +2597,9 @@ function DrawHatchOnButton(b: Pointer<GUI_BUTTON>): void {
 }
 
 function DrawShadeOnButton(b: Pointer<GUI_BUTTON>): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  SGPRect ClipRect;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
+  let ClipRect: SGPRect;
   ClipRect.iLeft = b->Area.RegionTopLeftX;
   ClipRect.iRight = b->Area.RegionBottomRightX - 1;
   ClipRect.iTop = b->Area.RegionTopLeftY;
@@ -2585,8 +2610,8 @@ function DrawShadeOnButton(b: Pointer<GUI_BUTTON>): void {
 }
 
 function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
   pDestBuf = LockVideoSurface(ButtonDestBuffer, &uiDestPitchBYTES);
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   if (b->bDefaultStatus == DEFAULT_STATUS_DARKBORDER || b->bDefaultStatus == DEFAULT_STATUS_WINDOWS95) {
@@ -2609,8 +2634,8 @@ function DrawDefaultOnButton(b: Pointer<GUI_BUTTON>): void {
 }
 
 function DrawCheckBoxButtonOn(iButtonID: INT32): void {
-  GUI_BUTTON *b;
-  BOOLEAN fLeftButtonState = gfLeftButtonState;
+  let b: Pointer<GUI_BUTTON>;
+  let fLeftButtonState: BOOLEAN = gfLeftButtonState;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2626,8 +2651,8 @@ function DrawCheckBoxButtonOn(iButtonID: INT32): void {
 }
 
 function DrawCheckBoxButtonOff(iButtonID: INT32): void {
-  GUI_BUTTON *b;
-  BOOLEAN fLeftButtonState = gfLeftButtonState;
+  let b: Pointer<GUI_BUTTON>;
+  let fLeftButtonState: BOOLEAN = gfLeftButtonState;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -2643,7 +2668,7 @@ function DrawCheckBoxButtonOff(iButtonID: INT32): void {
 }
 
 function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
-  INT32 UseImage;
+  let UseImage: INT32;
 
   UseImage = 0;
   // Is button Enabled, or diabled but no "Grayed" image associated with this QuickButton?
@@ -2687,11 +2712,18 @@ function DrawCheckBoxButton(b: Pointer<GUI_BUTTON>): void {
 }
 
 function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
-  INT32 xp, yp, width, height, IconX, IconY;
-  INT32 IconW, IconH;
-  SGPRect NewClip, OldClip;
-  ETRLEObject *pTrav;
-  HVOBJECT hvObject;
+  let xp: INT32;
+  let yp: INT32;
+  let width: INT32;
+  let height: INT32;
+  let IconX: INT32;
+  let IconY: INT32;
+  let IconW: INT32;
+  let IconH: INT32;
+  let NewClip: SGPRect;
+  let OldClip: SGPRect;
+  let pTrav: Pointer<ETRLEObject>;
+  let hvObject: HVOBJECT;
 
   // If there's an actual icon on this button, try to show it.
   if (b->iIconID >= 0) {
@@ -2787,9 +2819,15 @@ function DrawIconOnButton(b: Pointer<GUI_BUTTON>): void {
 
 // If a button has text attached to it, then it'll draw it last.
 function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
-  INT32 xp, yp, width, height, TextX, TextY;
-  SGPRect NewClip, OldClip;
-  INT16 sForeColor;
+  let xp: INT32;
+  let yp: INT32;
+  let width: INT32;
+  let height: INT32;
+  let TextX: INT32;
+  let TextY: INT32;
+  let NewClip: SGPRect;
+  let OldClip: SGPRect;
+  let sForeColor: INT16;
 
   // If this button actually has a string to print
   if (b->string) {
@@ -2896,7 +2934,7 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
       yp++;
     }
     if (b->sWrappedWidth != -1) {
-      UINT8 bJustified = 0;
+      let bJustified: UINT8 = 0;
       switch (b->bJustification) {
         case BUTTON_TEXT_LEFT:
           bJustified = LEFT_JUSTIFIED;
@@ -2954,14 +2992,25 @@ function DrawTextOnButton(b: Pointer<GUI_BUTTON>): void {
 //	routines to draw the borders and background of the buttons.
 //
 function DrawGenericButton(b: Pointer<GUI_BUTTON>): void {
-  INT32 NumChunksWide, NumChunksHigh, cx, cy, width, height, hremain, wremain;
-  INT32 q, ImgNum, ox, oy;
-  INT32 iBorderHeight, iBorderWidth;
-  HVOBJECT BPic;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  SGPRect ClipRect;
-  ETRLEObject *pTrav;
+  let NumChunksWide: INT32;
+  let NumChunksHigh: INT32;
+  let cx: INT32;
+  let cy: INT32;
+  let width: INT32;
+  let height: INT32;
+  let hremain: INT32;
+  let wremain: INT32;
+  let q: INT32;
+  let ImgNum: INT32;
+  let ox: INT32;
+  let oy: INT32;
+  let iBorderHeight: INT32;
+  let iBorderWidth: INT32;
+  let BPic: HVOBJECT;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let ClipRect: SGPRect;
+  let pTrav: Pointer<ETRLEObject>;
 
   // Select the graphics to use depending on the current state of the button
   if (b->uiFlags & BUTTON_ENABLED) {
@@ -3202,15 +3251,20 @@ const DLG_OPTIONS = 9;
 const DLG_SIZE = 10;
 
 function SetDialogAttributes(pDlgInfo: Pointer<CreateDlgInfo>, iAttrib: INT32, ...args: any[]): BOOLEAN {
-  va_list arg;
-  INT32 iFont, iFontOptions;
-  UINT16 *zString;
-  INT32 iX, iY, iW, iH;
-  INT32 iIndex;
-  HVOBJECT hVObj;
-  INT32 iButnImg;
-  INT32 iFlags;
-  UINT8 ubFGrnd, ubBGrnd;
+  let arg: va_list;
+  let iFont: INT32;
+  let iFontOptions: INT32;
+  let zString: Pointer<UINT16>;
+  let iX: INT32;
+  let iY: INT32;
+  let iW: INT32;
+  let iH: INT32;
+  let iIndex: INT32;
+  let hVObj: HVOBJECT;
+  let iButnImg: INT32;
+  let iFlags: INT32;
+  let ubFGrnd: UINT8;
+  let ubBGrnd: UINT8;
 
   // Set up for var args
   va_start(arg, iAttrib); // Init variable argument list
@@ -3341,8 +3395,9 @@ function DrawDialogBox(iDlgBox: INT32): void {
 //------------------------------------------------------------------------------------------------------
 
 function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Priority: INT16, ClickCallback: GUI_CALLBACK): INT32 {
-  GUI_BUTTON *b;
-  INT32 ButPic, iButtonID;
+  let b: Pointer<GUI_BUTTON>;
+  let ButPic: INT32;
+  let iButtonID: INT32;
   Assert(filename != NULL);
   Assert(strlen(filename));
   if ((ButPic = LoadButtonImage(filename, -1, 0, 1, 2, 3)) == -1) {
@@ -3365,7 +3420,7 @@ function CreateCheckBoxButton(x: INT16, y: INT16, filename: Pointer<UINT8>, Prio
 
 // Added Oct17, 97 Carter - kind of mindless, but might as well have it
 function MSYS_SetBtnUserData(iButtonNum: INT32, index: INT32, userdata: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   b = ButtonList[iButtonNum];
   if (index < 0 || index > 3)
     return;
@@ -3420,8 +3475,11 @@ function ReleaseAnchorMode(): void {
 
 // Used to setup a dirtysaved region for buttons
 function SetButtonSavedRect(iButton: INT32): BOOLEAN {
-  GUI_BUTTON *b;
-  INT32 xloc, yloc, w, h;
+  let b: Pointer<GUI_BUTTON>;
+  let xloc: INT32;
+  let yloc: INT32;
+  let w: INT32;
+  let h: INT32;
 
   Assert(iButton >= 0);
   Assert(iButton < MAX_BUTTONS);
@@ -3443,7 +3501,7 @@ function SetButtonSavedRect(iButton: INT32): BOOLEAN {
 }
 
 function FreeButtonSavedRect(iButton: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButton >= 0);
   Assert(iButton < MAX_BUTTONS);
@@ -3459,7 +3517,7 @@ function FreeButtonSavedRect(iButton: INT32): void {
 // Kris:
 // Yet new logical additions to the winbart library.
 function HideButton(iButtonNum: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonNum >= 0);
   Assert(iButtonNum < MAX_BUTTONS);
@@ -3474,7 +3532,7 @@ function HideButton(iButtonNum: INT32): void {
 }
 
 function ShowButton(iButtonNum: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonNum >= 0);
   Assert(iButtonNum < MAX_BUTTONS);
@@ -3497,7 +3555,7 @@ function EnableButtonHelpTextRestore(): void {
 }
 
 function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -3512,7 +3570,7 @@ function GiveButtonDefaultStatus(iButtonID: INT32, iDefaultStatus: INT32): void 
 }
 
 function RemoveButtonDefaultStatus(iButtonID: INT32): void {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
   b = ButtonList[iButtonID];
@@ -3525,7 +3583,7 @@ function RemoveButtonDefaultStatus(iButtonID: INT32): void {
 }
 
 function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3546,7 +3604,7 @@ function GetButtonArea(iButtonID: INT32, pRect: Pointer<SGPRect>): BOOLEAN {
 }
 
 function GetButtonWidth(iButtonID: INT32): INT32 {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3561,7 +3619,7 @@ function GetButtonWidth(iButtonID: INT32): INT32 {
 }
 
 function GetButtonHeight(iButtonID: INT32): INT32 {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3576,7 +3634,7 @@ function GetButtonHeight(iButtonID: INT32): INT32 {
 }
 
 function GetButtonX(iButtonID: INT32): INT32 {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);
@@ -3591,7 +3649,7 @@ function GetButtonX(iButtonID: INT32): INT32 {
 }
 
 function GetButtonY(iButtonID: INT32): INT32 {
-  GUI_BUTTON *b;
+  let b: Pointer<GUI_BUTTON>;
 
   Assert(iButtonID >= 0);
   Assert(iButtonID < MAX_BUTTONS);

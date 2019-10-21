@@ -1,15 +1,19 @@
 // internal variables.
-INT32 iMsgBoxNum;
-INT32 iMsgBoxOkImg, iMsgBoxCancelImg;
-INT32 iMsgBoxBgrnd, iMsgBoxOk, iMsgBoxCancel;
-SGPRect MsgBoxRect;
+let iMsgBoxNum: INT32;
+let iMsgBoxOkImg: INT32;
+let iMsgBoxCancelImg: INT32;
+let iMsgBoxBgrnd: INT32;
+let iMsgBoxOk: INT32;
+let iMsgBoxCancel: INT32;
+let MsgBoxRect: SGPRect;
 
-BOOLEAN gfMessageBoxResult = FALSE;
-UINT8 gubMessageBoxStatus = MESSAGEBOX_NONE;
+let gfMessageBoxResult: BOOLEAN = FALSE;
+let gubMessageBoxStatus: UINT8 = MESSAGEBOX_NONE;
 
 function CreateMessageBox(wzString: Pointer<UINT16>): void {
-  INT16 sPixLen;
-  INT16 sStartX, sStartY;
+  let sPixLen: INT16;
+  let sStartX: INT16;
+  let sStartY: INT16;
 
   sPixLen = StringPixLength(wzString, (UINT16)gpLargeFontType1) + 10;
   if (sPixLen > 600)
@@ -43,7 +47,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
 }
 
 function MessageBoxHandled(): BOOLEAN {
-  InputAtom DummyEvent;
+  let DummyEvent: InputAtom;
 
   while (DequeueEvent(&DummyEvent)) {
     if (DummyEvent.usEvent == KEY_DOWN) {

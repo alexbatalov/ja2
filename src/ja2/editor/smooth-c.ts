@@ -1,4 +1,4 @@
-INT16 gbSmoothStruct[] = {
+let gbSmoothStruct: INT16[] /* [] */ = {
   3, 2, 12, 27, 12, 0,
   5, 2, 15, 30, 39, 0,
   7, 2, 17, 32, 41, 0,
@@ -27,7 +27,7 @@ INT16 gbSmoothStruct[] = {
 // FIRST			ENTRY			MAJIC NUMBER CALCULATED
 // 2nd				ENTRY			# OF VARIATIONS
 // 3rd, 4rth  ENTRY			TILE NUMBERS ( entry 1, entry 2 )
-INT16 gbSmoothWaterStruct[] = {
+let gbSmoothWaterStruct: INT16[] /* [] */ = {
   1020, 1, 11, 0,
   1000, 1, 12, 0,
   510, 2, 13, 43,
@@ -69,19 +69,20 @@ INT16 gbSmoothWaterStruct[] = {
 };
 
 function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
-  int temp = 0, type = 0;
-  int FullTile = FALSE;
-  UINT16 usOldIndex;
-  UINT16 usTempIndex;
-  UINT32 cnt;
-  BOOLEAN fFound;
-  UINT32 uiTempIndex;
-  UINT16 usTileIndex;
-  UINT16 land = 0;
-  UINT32 uiTopType;
-  BOOLEAN fSameTile;
+  let temp: int = 0;
+  let type: int = 0;
+  let FullTile: int = FALSE;
+  let usOldIndex: UINT16;
+  let usTempIndex: UINT16;
+  let cnt: UINT32;
+  let fFound: BOOLEAN;
+  let uiTempIndex: UINT32;
+  let usTileIndex: UINT16;
+  let land: UINT16 = 0;
+  let uiTopType: UINT32;
+  let fSameTile: BOOLEAN;
 
-  INT16 *pSmoothStruct;
+  let pSmoothStruct: Pointer<INT16>;
   // Check to see if the orginal texture was water, is so, smooth square/hex with
   // SmoothWaterTerrain rather than the proceeding method
   if (origType == REGWATERTEXTURE) {
@@ -191,9 +192,11 @@ function SmoothTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT16>, f
 }
 
 function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
-  LEVELNODE *pShadow;
-  INT16 x, y;
-  INT16 centerX, centerY;
+  let pShadow: Pointer<LEVELNODE>;
+  let x: INT16;
+  let y: INT16;
+  let centerX: INT16;
+  let centerY: INT16;
 
   ConvertGridNoToXY(sMapIndex, &centerX, &centerY);
 
@@ -202,7 +205,7 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
       sMapIndex = y * WORLD_COLS + x;
       if (GridNoOnVisibleWorldTile(sMapIndex)) {
         if (GetExitGridLevelNode(sMapIndex, &pShadow)) {
-          UINT16 usIndex;
+          let usIndex: UINT16;
           SmoothExitGrid(sMapIndex, &usIndex, TRUE);
           if (usIndex != NO_TILE && usIndex != pShadow->usIndex) {
             AddToUndoList(sMapIndex);
@@ -215,18 +218,19 @@ function SmoothExitGridRadius(sMapIndex: INT16, ubRadius: UINT8): void {
 }
 
 function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: BOOLEAN): void {
-  int temp = 0, type = 0;
-  int FullTile = FALSE;
-  UINT16 usOldIndex;
-  UINT16 usTempIndex;
-  UINT32 cnt;
-  BOOLEAN fFound;
-  UINT32 uiTempIndex;
-  UINT16 usTileIndex;
-  UINT16 usExitGridIndex = 0;
-  BOOLEAN fSameTile;
+  let temp: int = 0;
+  let type: int = 0;
+  let FullTile: int = FALSE;
+  let usOldIndex: UINT16;
+  let usTempIndex: UINT16;
+  let cnt: UINT32;
+  let fFound: BOOLEAN;
+  let uiTempIndex: UINT32;
+  let usTileIndex: UINT16;
+  let usExitGridIndex: UINT16 = 0;
+  let fSameTile: BOOLEAN;
 
-  INT16 *pSmoothStruct;
+  let pSmoothStruct: Pointer<INT16>;
 
   pSmoothStruct = gbSmoothStruct;
 
@@ -329,9 +333,9 @@ function SmoothExitGrid(gridno: int, piNewTile: Pointer<UINT16>, fForceSmooth: B
 }
 
 function SmoothTerrainWorld(uiCheckType: UINT32): void {
-  int cnt;
-  UINT16 usIndex;
-  UINT16 NewTile;
+  let cnt: int;
+  let usIndex: UINT16;
+  let NewTile: UINT16;
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (TypeExistsInLandLayer(cnt, uiCheckType, &usIndex)) {
@@ -346,10 +350,10 @@ function SmoothTerrainWorld(uiCheckType: UINT32): void {
 }
 
 function SmoothAllTerrainWorld(): void {
-  int cnt;
-  UINT16 usIndex;
-  UINT16 NewTile;
-  UINT32 uiCheckType;
+  let cnt: int;
+  let usIndex: UINT16;
+  let NewTile: UINT16;
+  let uiCheckType: UINT32;
   // Smooth out entire world surrounding tiles
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     for (uiCheckType = FIRSTTEXTURE; uiCheckType <= SEVENTHTEXTURE; uiCheckType++) {
@@ -366,13 +370,16 @@ function SmoothAllTerrainWorld(): void {
 }
 
 function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  UINT16 NewTile;
-  UINT16 usIndex;
-  INT32 leftmost;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let NewTile: UINT16;
+  let usIndex: UINT16;
+  let leftmost: INT32;
   // Don't bother to smooth floors, they don't need them
   if (uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR)
     return;
@@ -401,13 +408,17 @@ function SmoothTerrainRadius(iMapIndex: UINT32, uiCheckType: UINT32, ubRadius: U
 }
 
 function SmoothAllTerrainTypeRadius(iMapIndex: UINT32, ubRadius: UINT8, fForceSmooth: BOOLEAN): void {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2, cnt3;
-  INT32 iNewIndex;
-  UINT16 NewTile;
-  UINT16 usIndex;
-  INT32 leftmost;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let cnt3: INT16;
+  let iNewIndex: INT32;
+  let NewTile: UINT16;
+  let usIndex: UINT16;
+  let leftmost: INT32;
   // Determine start end end indicies and num rows
   sTop = ubRadius;
   sBottom = -ubRadius;
@@ -436,18 +447,19 @@ function SmoothWaterTerrain(gridno: int, origType: int, piNewTile: Pointer<UINT1
   // This procedure will calculate the approriate smooth texture for a water texture
   // based on the surrounding water textures. This is done via masking bits within
   // a temp variable, then searching for the right texture and inserting it
-  int temp = 0, type = 0;
-  int FullTile = FALSE;
-  UINT16 usOldIndex;
-  UINT16 usTempIndex;
-  UINT32 cnt;
-  BOOLEAN fFound;
-  UINT32 uiTempIndex;
-  UINT16 usTileIndex;
-  UINT16 land = 0;
-  UINT32 uiTopType;
-  BOOLEAN fSameTile;
-  INT16 *pSmoothStruct;
+  let temp: int = 0;
+  let type: int = 0;
+  let FullTile: int = FALSE;
+  let usOldIndex: UINT16;
+  let usTempIndex: UINT16;
+  let cnt: UINT32;
+  let fFound: BOOLEAN;
+  let uiTempIndex: UINT32;
+  let usTileIndex: UINT16;
+  let land: UINT16 = 0;
+  let uiTopType: UINT32;
+  let fSameTile: BOOLEAN;
+  let pSmoothStruct: Pointer<INT16>;
 
   pSmoothStruct = gbSmoothWaterStruct;
   // Get land index value for given level and adjust according to type

@@ -1,7 +1,7 @@
-UINT8 gubScreenCount = 0;
+let gubScreenCount: UINT8 = 0;
 
 function InitNPCs(): void {
-  MERCPROFILESTRUCT *pProfile;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // add the pilot at a random location!
   pProfile = &(gMercProfiles[SKYRIDER]);
@@ -111,7 +111,7 @@ function InitNPCs(): void {
     SectorInfo[SECTOR(pProfile->sSectorX, pProfile->sSectorY)].uiFlags |= SF_USE_ALTERNATE_MAP;
   } else {
     // not scifi, so use alternate map in Tixa's b1 level that doesn't have the stairs going down to the caves.
-    UNDERGROUND_SECTORINFO *pSector;
+    let pSector: Pointer<UNDERGROUND_SECTORINFO>;
     pSector = FindUnderGroundSector(9, 10, 1); // j9_b1
     if (pSector) {
       pSector->uiFlags |= SF_USE_ALTERNATE_MAP;
@@ -128,7 +128,7 @@ function InitNPCs(): void {
 }
 
 function InitBloodCatSectors(): void {
-  INT32 i;
+  let i: INT32;
   // Hard coded table of bloodcat populations.  We don't have
   // access to the real population (if different) until we physically
   // load the map.  If the real population is different, then an error
@@ -242,7 +242,7 @@ function ShutdownStrategicLayer(): void {
 }
 
 function InitNewGame(fReset: BOOLEAN): BOOLEAN {
-  INT32 iStartingCash;
+  let iStartingCash: INT32;
 
   //	static fScreenCount = 0;
 
@@ -322,7 +322,7 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
     AddTransactionToPlayersBook(ANONYMOUS_DEPOSIT, 0, GetWorldTotalMin(), iStartingCash);
 
     {
-      UINT32 uiDaysTimeMercSiteAvailable = Random(2) + 1;
+      let uiDaysTimeMercSiteAvailable: UINT32 = Random(2) + 1;
 
       // schedule email for message from spec at 7am 3 days in the future
       AddFutureDayStrategicEvent(EVENT_DAY3_ADD_EMAIL_FROM_SPECK, 60 * 7, 0, uiDaysTimeMercSiteAvailable);
@@ -388,9 +388,9 @@ function InitNewGame(fReset: BOOLEAN): BOOLEAN {
 }
 
 function AnyMercsHired(): BOOLEAN {
-  INT32 cnt;
-  SOLDIERTYPE *pTeamSoldier;
-  INT16 bLastTeamID;
+  let cnt: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let bLastTeamID: INT16;
 
   // Find first guy availible in team
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
@@ -408,9 +408,10 @@ function AnyMercsHired(): BOOLEAN {
 }
 
 function QuickStartGame(): void {
-  INT32 cnt;
-  UINT16 usVal;
-  UINT8 ub1 = 0, ub2 = 0;
+  let cnt: INT32;
+  let usVal: UINT16;
+  let ub1: UINT8 = 0;
+  let ub2: UINT8 = 0;
 
   for (cnt = 0; cnt < 3; cnt++) {
     if (cnt == 0) {
@@ -538,7 +539,7 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
 }
 
 function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
-  MERC_HIRE_STRUCT HireMercStruct;
+  let HireMercStruct: MERC_HIRE_STRUCT;
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
 
@@ -577,7 +578,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
 
 // This function is called when the game is REstarted.  Things that need to be reinited are placed in here
 function ReStartingGame(): void {
-  UINT16 cnt;
+  let cnt: UINT16;
 
   // Pause the game
   gfGamePaused = TRUE;

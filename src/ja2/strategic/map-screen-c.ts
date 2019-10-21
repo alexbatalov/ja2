@@ -257,7 +257,7 @@ type PopUpBoxPtr = Pointer<PopUpBox>;
 
 // TABLES
 
-RGBCOLOR GlowColorsA[] = {
+let GlowColorsA: RGBCOLOR[] /* [] */ = {
   { 0, 0, 0 },
   { 25, 0, 0 },
   { 50, 0, 0 },
@@ -299,7 +299,7 @@ RGBCOLOR GlowColorsC[]={
 };
 */
 
-SGPPoint gMapSortButtons[MAX_SORT_METHODS] = {
+let gMapSortButtons: SGPPoint[] /* [MAX_SORT_METHODS] */ = {
   { 12, 125 },
   { 68, 125 },
   { 124, 125 },
@@ -309,7 +309,7 @@ SGPPoint gMapSortButtons[MAX_SORT_METHODS] = {
 };
 
 // map screen's inventory panel pockets - top right corner coordinates
-INV_REGION_DESC gMapScreenInvPocketXY[] = {
+let gMapScreenInvPocketXY: INV_REGION_DESC[] /* [] */ = {
   { 204, 116 }, // HELMETPOS
   { 204, 145 }, // VESTPOS
   { 204, 205 }, // LEGPOS,
@@ -331,82 +331,82 @@ INV_REGION_DESC gMapScreenInvPocketXY[] = {
   { 60, 323 }, // SMALLPOCK8
 };
 
-INV_REGION_DESC gSCamoXY = {
+let gSCamoXY: INV_REGION_DESC = {
   INV_BODY_X, INV_BODY_Y // X, Y Location of Map screen's Camouflage region
 };
 
 // GLOBAL VARIABLES (OURS)
 
-BOOLEAN fFlashAssignDone = FALSE;
-BOOLEAN fInMapMode = FALSE;
-BOOLEAN fMapPanelDirty = TRUE;
-BOOLEAN fTeamPanelDirty = TRUE;
-BOOLEAN fCharacterInfoPanelDirty = TRUE;
-BOOLEAN gfLoadPending = FALSE;
-BOOLEAN fReDrawFace = FALSE;
-BOOLEAN fFirstTimeInMapScreen = TRUE;
-BOOLEAN fShowInventoryFlag = FALSE;
-BOOLEAN fMapInventoryItem = FALSE;
-BOOLEAN fShowDescriptionFlag = FALSE;
+let fFlashAssignDone: BOOLEAN = FALSE;
+let fInMapMode: BOOLEAN = FALSE;
+let fMapPanelDirty: BOOLEAN = TRUE;
+let fTeamPanelDirty: BOOLEAN = TRUE;
+let fCharacterInfoPanelDirty: BOOLEAN = TRUE;
+let gfLoadPending: BOOLEAN = FALSE;
+let fReDrawFace: BOOLEAN = FALSE;
+let fFirstTimeInMapScreen: BOOLEAN = TRUE;
+let fShowInventoryFlag: BOOLEAN = FALSE;
+let fMapInventoryItem: BOOLEAN = FALSE;
+let fShowDescriptionFlag: BOOLEAN = FALSE;
 
 // are the graphics for mapscreen preloaded?
-BOOLEAN fPreLoadedMapGraphics = FALSE;
+let fPreLoadedMapGraphics: BOOLEAN = FALSE;
 
-BOOLEAN gfHotKeyEnterSector = FALSE;
-BOOLEAN fOneFrame = FALSE;
-BOOLEAN fShowFaceHightLight = FALSE;
-BOOLEAN fShowItemHighLight = FALSE;
-BOOLEAN gfAllowSkyriderTooFarQuote = FALSE;
-BOOLEAN fJustFinishedPlotting = FALSE;
+let gfHotKeyEnterSector: BOOLEAN = FALSE;
+let fOneFrame: BOOLEAN = FALSE;
+let fShowFaceHightLight: BOOLEAN = FALSE;
+let fShowItemHighLight: BOOLEAN = FALSE;
+let gfAllowSkyriderTooFarQuote: BOOLEAN = FALSE;
+let fJustFinishedPlotting: BOOLEAN = FALSE;
 
 // for the flashing of the contract departure time...for when mercs are leaving in an hour or less
-BOOLEAN fFlashContractFlag = FALSE;
+let fFlashContractFlag: BOOLEAN = FALSE;
 
-BOOLEAN fShowTrashCanHighLight = FALSE;
+let fShowTrashCanHighLight: BOOLEAN = FALSE;
 
 // the flags for display of pop up boxes/menus
-BOOLEAN fEndPlotting = FALSE;
+let fEndPlotting: BOOLEAN = FALSE;
 
-BOOLEAN gfInConfirmMapMoveMode = FALSE;
-BOOLEAN gfInChangeArrivalSectorMode = FALSE;
+let gfInConfirmMapMoveMode: BOOLEAN = FALSE;
+let gfInChangeArrivalSectorMode: BOOLEAN = FALSE;
 
 // redraw character list
-BOOLEAN fDrawCharacterList = TRUE;
+let fDrawCharacterList: BOOLEAN = TRUE;
 
 // was the cursor set to the checkmark?
-BOOLEAN fCheckCursorWasSet = FALSE;
+let fCheckCursorWasSet: BOOLEAN = FALSE;
 
-BOOLEAN fShowingMapDisableBox = FALSE;
-BOOLEAN fShowFrameRate = FALSE;
+let fShowingMapDisableBox: BOOLEAN = FALSE;
+let fShowFrameRate: BOOLEAN = FALSE;
 // BOOLEAN fMapExitDueToMessageBox = FALSE;
-BOOLEAN fEndShowInventoryFlag = FALSE;
+let fEndShowInventoryFlag: BOOLEAN = FALSE;
 
 // draw the temp path
-BOOLEAN fDrawTempPath = TRUE;
+let fDrawTempPath: BOOLEAN = TRUE;
 
-BOOLEAN gfCharacterListInited = FALSE;
+let gfCharacterListInited: BOOLEAN = FALSE;
 
-BOOLEAN gfGlowTimerExpired = FALSE;
+let gfGlowTimerExpired: BOOLEAN = FALSE;
 
 // not required to be saved.  The flag is set to allow mapscreen to render once, then transition the
 // current tactical battle into autoresolve.
-BOOLEAN gfTransitionMapscreenToAutoResolve = FALSE;
+let gfTransitionMapscreenToAutoResolve: BOOLEAN = FALSE;
 
-BOOLEAN gfSkyriderEmptyHelpGiven = FALSE;
+let gfSkyriderEmptyHelpGiven: BOOLEAN = FALSE;
 
-BOOLEAN gfRequestGiveSkyriderNewDestination = FALSE;
+let gfRequestGiveSkyriderNewDestination: BOOLEAN = FALSE;
 
-BOOLEAN gfFirstMapscreenFrame = FALSE;
+let gfFirstMapscreenFrame: BOOLEAN = FALSE;
 
-BOOLEAN gfMapPanelWasRedrawn = FALSE;
+let gfMapPanelWasRedrawn: BOOLEAN = FALSE;
 
-UINT8 gubMAP_HandInvDispText[NUM_INV_SLOTS];
+let gubMAP_HandInvDispText: UINT8[] /* [NUM_INV_SLOTS] */;
 
 // currently selected character's list index
-INT8 bSelectedInfoChar = -1;
+let bSelectedInfoChar: INT8 = -1;
 
 // map sort button images
-INT32 giMapSortButtonImage[MAX_SORT_METHODS] = {
+let giMapSortButtonImage: INT32[] /* [MAX_SORT_METHODS] */ = {
   -1,
   -1,
   -1,
@@ -414,7 +414,7 @@ INT32 giMapSortButtonImage[MAX_SORT_METHODS] = {
   -1,
   -1,
 };
-INT32 giMapSortButton[MAX_SORT_METHODS] = {
+let giMapSortButton: INT32[] /* [MAX_SORT_METHODS] */ = {
   -1,
   -1,
   -1,
@@ -423,60 +423,60 @@ INT32 giMapSortButton[MAX_SORT_METHODS] = {
   -1,
 };
 
-INT32 giCharInfoButtonImage[2];
-INT32 giCharInfoButton[2] = {
+let giCharInfoButtonImage: INT32[] /* [2] */;
+let giCharInfoButton: INT32[] /* [2] */ = {
   -1,
   -1,
 };
 
-INT32 giMapInvButtonDoneImage;
-INT32 giMapInvDoneButton = -1;
+let giMapInvButtonDoneImage: INT32;
+let giMapInvDoneButton: INT32 = -1;
 
-INT32 giMapContractButton = -1;
-INT32 giMapContractButtonImage;
+let giMapContractButton: INT32 = -1;
+let giMapContractButtonImage: INT32;
 
 // INT32 giMapInvButton = -1;
 // INT32 giMapInvButtonImage;
 
-INT32 giSortStateForMapScreenList = 0;
+let giSortStateForMapScreenList: INT32 = 0;
 
-INT32 giCommonGlowBaseTime = 0;
-INT32 giFlashAssignBaseTime = 0;
-INT32 giFlashContractBaseTime = 0;
-UINT32 guiFlashCursorBaseTime = 0;
-INT32 giPotCharPathBaseTime = 0;
+let giCommonGlowBaseTime: INT32 = 0;
+let giFlashAssignBaseTime: INT32 = 0;
+let giFlashContractBaseTime: INT32 = 0;
+let guiFlashCursorBaseTime: UINT32 = 0;
+let giPotCharPathBaseTime: INT32 = 0;
 
-UINT32 guiCHARLIST;
-UINT32 guiCHARINFO;
-UINT32 guiSleepIcon;
-UINT32 guiCROSS;
-UINT32 guiMAPINV;
-UINT32 guiMapInvSecondHandBlockout;
-UINT32 guiULICONS;
-UINT32 guiNewMailIcons;
-UINT32 guiLEVELMARKER; // the white rectangle highlighting the current level on the map border
+let guiCHARLIST: UINT32;
+let guiCHARINFO: UINT32;
+let guiSleepIcon: UINT32;
+let guiCROSS: UINT32;
+let guiMAPINV: UINT32;
+let guiMapInvSecondHandBlockout: UINT32;
+let guiULICONS: UINT32;
+let guiNewMailIcons: UINT32;
+let guiLEVELMARKER: UINT32; // the white rectangle highlighting the current level on the map border
 
 // misc mouse regions
-MOUSE_REGION gCharInfoFaceRegion;
-MOUSE_REGION gCharInfoHandRegion;
-MOUSE_REGION gMPanelRegion;
-MOUSE_REGION gMapViewRegion;
-MOUSE_REGION gMapScreenMaskRegion;
-MOUSE_REGION gTrashCanRegion;
+let gCharInfoFaceRegion: MOUSE_REGION;
+let gCharInfoHandRegion: MOUSE_REGION;
+let gMPanelRegion: MOUSE_REGION;
+let gMapViewRegion: MOUSE_REGION;
+let gMapScreenMaskRegion: MOUSE_REGION;
+let gTrashCanRegion: MOUSE_REGION;
 
 // mouse regions for team info panel
-MOUSE_REGION gTeamListNameRegion[MAX_CHARACTER_COUNT];
-MOUSE_REGION gTeamListAssignmentRegion[MAX_CHARACTER_COUNT];
-MOUSE_REGION gTeamListSleepRegion[MAX_CHARACTER_COUNT];
-MOUSE_REGION gTeamListLocationRegion[MAX_CHARACTER_COUNT];
-MOUSE_REGION gTeamListDestinationRegion[MAX_CHARACTER_COUNT];
-MOUSE_REGION gTeamListContractRegion[MAX_CHARACTER_COUNT];
+let gTeamListNameRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListAssignmentRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListSleepRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListLocationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListDestinationRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
+let gTeamListContractRegion: MOUSE_REGION[] /* [MAX_CHARACTER_COUNT] */;
 
-OBJECTTYPE gItemPointer;
-SOLDIERTYPE *gpItemPointerSoldier;
+let gItemPointer: OBJECTTYPE;
+let gpItemPointerSoldier: Pointer<SOLDIERTYPE>;
 
-PathStPtr gpCharacterPreviousMercPath[MAX_CHARACTER_COUNT];
-PathStPtr gpHelicopterPreviousMercPath = NULL;
+let gpCharacterPreviousMercPath: PathStPtr[] /* [MAX_CHARACTER_COUNT] */;
+let gpHelicopterPreviousMercPath: PathStPtr = NULL;
 
 // GLOBAL VARIABLES (EXTERNAL)
 
@@ -490,7 +490,7 @@ PathStPtr gpHelicopterPreviousMercPath = NULL;
 
 // the tries to select a mapscreen character by his soldier ID
 function SetInfoChar(ubID: UINT8): BOOLEAN {
-  INT8 bCounter;
+  let bCounter: INT8;
 
   for (bCounter = 0; bCounter < MAX_CHARACTER_COUNT; bCounter++) {
     // skip invalid characters
@@ -507,9 +507,10 @@ function SetInfoChar(ubID: UINT8): BOOLEAN {
 
 function DisplayDestinationOfCurrentDestMerc(): void {
   // will display the dest of the current dest merc
-  CHAR16 sString[32];
-  INT16 sX, sY;
-  INT16 sSector;
+  let sString: CHAR16[] /* [32] */;
+  let sX: INT16;
+  let sY: INT16;
+  let sSector: INT16;
 
   SetFont(MAP_SCREEN_FONT);
 
@@ -588,13 +589,13 @@ function ContractBoxGlow(): void {
 }
 
 function ContractListRegionBoxGlow(usCount: UINT16): void {
-  static INT32 iColorNum = 10;
-  static BOOLEAN fDelta = FALSE;
-  UINT16 usColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  INT16 usY = 0;
-  INT16 sYAdd = 0;
+  /* static */ let iColorNum: INT32 = 10;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  let usColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usY: INT16 = 0;
+  let sYAdd: INT16 = 0;
 
   // if not glowing right now, leave
   if ((giContractHighLine == -1) || (fResetContractGlow == TRUE) || fShowInventoryFlag) {
@@ -643,13 +644,13 @@ function ContractListRegionBoxGlow(usCount: UINT16): void {
 }
 
 function GlowFace(): void {
-  static INT32 iColorNum = 10;
-  static BOOLEAN fDelta = FALSE;
-  static BOOLEAN fOldFaceGlow = FALSE;
-  UINT16 usColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  INT16 usY = 0;
+  /* static */ let iColorNum: INT32 = 10;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let fOldFaceGlow: BOOLEAN = FALSE;
+  let usColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usY: INT16 = 0;
 
   // not glowing right now, leave
   if (fShowFaceHightLight == FALSE) {
@@ -695,13 +696,13 @@ function GlowFace(): void {
 }
 
 function GlowItem(): void {
-  static INT32 iColorNum = 10;
-  static BOOLEAN fDelta = FALSE;
-  static BOOLEAN fOldItemGlow = FALSE;
-  UINT16 usColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  INT16 usY = 0;
+  /* static */ let iColorNum: INT32 = 10;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let fOldItemGlow: BOOLEAN = FALSE;
+  let usColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usY: INT16 = 0;
 
   // not glowing right now, leave
   if (fShowItemHighLight == FALSE) {
@@ -749,13 +750,13 @@ function GlowItem(): void {
 }
 
 function GlowTrashCan(): void {
-  static INT32 iColorNum = 10;
-  static BOOLEAN fDelta = FALSE;
-  static BOOLEAN fOldTrashCanGlow = FALSE;
-  UINT16 usColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  INT16 usY = 0;
+  /* static */ let iColorNum: INT32 = 10;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let fOldTrashCanGlow: BOOLEAN = FALSE;
+  let usColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usY: INT16 = 0;
 
   if (fShowInventoryFlag == FALSE) {
     fShowTrashCanHighLight = FALSE;
@@ -794,8 +795,8 @@ function GlowTrashCan(): void {
 }
 
 function DrawFace(sCharNumber: INT16): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  static INT16 sOldId = -1;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  /* static */ let sOldId: INT16 = -1;
 
   // draws the face of the currently selected merc, being displayed int he upper left hand corner
 
@@ -828,7 +829,7 @@ function DrawFace(sCharNumber: INT16): void {
 }
 
 function RenderHandPosItem(): void {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
   // renders the inventory item in char's right hand
 
   // ARM: if already in the inventory panel, don't show the item again here, seeing it twice is confusing
@@ -860,7 +861,7 @@ function RenderHandPosItem(): void {
 }
 
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   GetVideoObject(&hHandle, guiULICONS);
 
@@ -885,10 +886,11 @@ function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
 
 function DrawPay(sCharNumber: INT16): void {
   // will draw the pay
-  INT32 uiSalary;
-  wchar_t sString[7];
-  UINT16 usX, usY;
-  INT16 usMercProfileID;
+  let uiSalary: INT32;
+  let sString: wchar_t[] /* [7] */;
+  let usX: UINT16;
+  let usY: UINT16;
+  let usMercProfileID: INT16;
 
   // get merc id
   usMercProfileID = MercPtrs[gCharactersList[sCharNumber].usSolID]->ubProfile;
@@ -911,8 +913,8 @@ function DrawPay(sCharNumber: INT16): void {
 }
 
 function DrawCharBars(): void {
-  UINT16 usSoldierID;
-  SOLDIERTYPE *pSoldier;
+  let usSoldierID: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // will draw the heath, morale and breath bars for a character being displayed in the upper left hand corner
 
@@ -961,10 +963,11 @@ function DrawCharBars(): void {
 
 function DrawCharStats(sCharNum: INT16): void {
   // will draw the characters stats, max life, strength, dex, and skills
-  wchar_t sString[9];
-  UINT16 usX, usY;
+  let sString: wchar_t[] /* [9] */;
+  let usX: UINT16;
+  let usY: UINT16;
   // HVOBJECT hCrossHandle;
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   pSoldier = &Menptr[gCharactersList[sCharNum].usSolID];
 
@@ -1149,10 +1152,11 @@ function DrawCharStats(sCharNum: INT16): void {
 }
 
 function DrawCharHealth(sCharNum: INT16): void {
-  UINT32 uiHealthPercent = 0;
-  wchar_t sString[9];
-  UINT16 usX, usY;
-  SOLDIERTYPE *pSoldier = NULL;
+  let uiHealthPercent: UINT32 = 0;
+  let sString: wchar_t[] /* [9] */;
+  let usX: UINT16;
+  let usY: UINT16;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   pSoldier = &Menptr[gCharactersList[sCharNum].usSolID];
 
@@ -1217,14 +1221,15 @@ function DrawCharHealth(sCharNum: INT16): void {
 
 // "character" refers to hired people AND vehicles
 function DrawCharacterInfo(sCharNumber: INT16): void {
-  wchar_t sString[80];
-  UINT16 usX, usY;
-  INT16 usMercProfileID;
-  INT32 iTimeRemaining = 0;
-  INT8 bMorale = 0;
-  INT32 iDailyCost = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-  UINT32 uiArrivalTime;
+  let sString: wchar_t[] /* [80] */;
+  let usX: UINT16;
+  let usY: UINT16;
+  let usMercProfileID: INT16;
+  let iTimeRemaining: INT32 = 0;
+  let bMorale: INT8 = 0;
+  let iDailyCost: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let uiArrivalTime: UINT32;
 
   if (gCharactersList[sCharNumber].fValid == FALSE) {
     return;
@@ -1352,7 +1357,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   }
   // what kind of merc
   else if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC || pSoldier->ubProfile == SLAY) {
-    FLOAT dTimeLeft = 0.0;
+    let dTimeLeft: FLOAT = 0.0;
 
     // amount of time left on contract
     iTimeRemaining = pSoldier->iEndofContractTime - GetWorldTotalMin();
@@ -1379,7 +1384,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     } else {
       // less than a day, display hours left in red
       if (iTimeRemaining > 5) {
-        BOOLEAN fNeedToIncrement = FALSE;
+        let fNeedToIncrement: BOOLEAN = FALSE;
 
         if (iTimeRemaining % 60 != 0)
           fNeedToIncrement = TRUE;
@@ -1399,7 +1404,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
       swprintf(sString, L"%d%s/%d%s", iTimeRemaining, gpStrategicString[STR_PB_HOURS_ABBREVIATION], pSoldier->iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
     }
   } else if (pSoldier->ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
-    INT32 iBeenHiredFor = (GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier->iStartContractTime;
+    let iBeenHiredFor: INT32 = (GetWorldTotalMin() / NUM_MIN_IN_DAY) - pSoldier->iStartContractTime;
 
     swprintf(sString, L"%d%s/%d%s", gMercProfiles[pSoldier->ubProfile].iMercMercContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION], iBeenHiredFor, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
   } else {
@@ -1526,12 +1531,12 @@ function DisplayCharacterInfo(): void {
 }
 
 function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
-  INT32 iTravelTime = 0;
-  WAYPOINT pCurrent;
-  WAYPOINT pNext;
-  GROUP *pGroup;
-  UINT8 ubGroupId = 0;
-  BOOLEAN fSkipFirstNode = FALSE;
+  let iTravelTime: INT32 = 0;
+  let pCurrent: WAYPOINT;
+  let pNext: WAYPOINT;
+  let pGroup: Pointer<GROUP>;
+  let ubGroupId: UINT8 = 0;
+  let fSkipFirstNode: BOOLEAN = FALSE;
 
   if ((bSelectedDestChar == -1) && (fPlotForHelicopter == FALSE)) {
     return 0;
@@ -1616,7 +1621,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
 }
 
 function DisplayGroundEta(): void {
-  UINT32 iTotalTime = 0;
+  let iTotalTime: UINT32 = 0;
 
   if (fPlotForHelicopter == TRUE) {
     return;
@@ -1651,15 +1656,15 @@ function DisplayGroundEta(): void {
 }
 
 function HighLightAssignLine(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usColor;
-  static INT32 iColorNum = STARTING_COLOR_NUM;
-  static BOOLEAN fDelta = FALSE;
-  static INT32 uiOldHighlight = MAX_CHARACTER_COUNT + 1;
-  INT16 usCount = 0;
-  UINT16 usX;
-  UINT16 usY;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usColor: UINT16;
+  /* static */ let iColorNum: INT32 = STARTING_COLOR_NUM;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
+  let usCount: INT16 = 0;
+  let usX: UINT16;
+  let usY: UINT16;
 
   // is this a valid line?
   if ((giAssignHighLine == -1) || fShowInventoryFlag) {
@@ -1726,15 +1731,15 @@ function HighLightAssignLine(): void {
 }
 
 function HighLightDestLine(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usColor;
-  static INT32 iColorNum = STARTING_COLOR_NUM;
-  static BOOLEAN fDelta = FALSE;
-  static INT32 uiOldHighlight = MAX_CHARACTER_COUNT + 1;
-  UINT16 usCount = 0;
-  UINT16 usX;
-  UINT16 usY;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usColor: UINT16;
+  /* static */ let iColorNum: INT32 = STARTING_COLOR_NUM;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
+  let usCount: UINT16 = 0;
+  let usX: UINT16;
+  let usY: UINT16;
 
   if ((giDestHighLine == -1) || fShowInventoryFlag) {
     uiOldHighlight = MAX_CHARACTER_COUNT + 1;
@@ -1794,15 +1799,16 @@ function HighLightDestLine(): void {
 }
 
 function HighLightSleepLine(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  UINT16 usColor;
-  static INT32 iColorNum = STARTING_COLOR_NUM;
-  static BOOLEAN fDelta = FALSE;
-  static INT32 uiOldHighlight = MAX_CHARACTER_COUNT + 1;
-  UINT16 usCount = 0;
-  UINT16 usX, usX2;
-  UINT16 usY;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let usColor: UINT16;
+  /* static */ let iColorNum: INT32 = STARTING_COLOR_NUM;
+  /* static */ let fDelta: BOOLEAN = FALSE;
+  /* static */ let uiOldHighlight: INT32 = MAX_CHARACTER_COUNT + 1;
+  let usCount: UINT16 = 0;
+  let usX: UINT16;
+  let usX2: UINT16;
+  let usY: UINT16;
 
   // is this a valid line?
   if ((giSleepHighLine == -1) || fShowInventoryFlag) {
@@ -1863,8 +1869,9 @@ function HighLightSleepLine(): void {
 }
 
 function AddCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
-  UINT16 usCount = 0;
-  UINT16 usVehicleCount = 0, usVehicleLoop = 0;
+  let usCount: UINT16 = 0;
+  let usVehicleCount: UINT16 = 0;
+  let usVehicleLoop: UINT16 = 0;
 
   // is character valid?
   if (pCharacter == NULL) {
@@ -1936,9 +1943,10 @@ void RemoveCharacter(UINT16 uiCharPosition)
 */
 
 function LoadCharacters(): void {
-  UINT16 uiCount = 0;
-  SOLDIERTYPE *pSoldier, *pTeamSoldier;
-  INT32 cnt = 0;
+  let uiCount: UINT16 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: INT32 = 0;
 
   pSoldier = MercPtrs[0];
 
@@ -1969,8 +1977,8 @@ function LoadCharacters(): void {
 }
 
 function DisplayCharacterList(): void {
-  INT16 sCount = 0;
-  UINT8 ubForegroundColor = 0;
+  let sCount: INT16 = 0;
+  let ubForegroundColor: UINT8 = 0;
 
   if ((fShowAssignmentMenu == TRUE) && (fTeamPanelDirty == FALSE)) {
     SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
@@ -2029,7 +2037,7 @@ function DisplayCharacterList(): void {
 
 // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL STARTUP
 function MapScreenInit(): UINT32 {
-  VOBJECT_DESC VObjectDesc;
+  let VObjectDesc: VOBJECT_DESC;
 
   SetUpBadSectorsList();
 
@@ -2072,16 +2080,16 @@ function MapScreenShutdown(): UINT32 {
 }
 
 function MapScreenHandle(): UINT32 {
-  UINT32 uiNewScreen;
-  INT32 found = FALSE;
-  UINT32 uiMins = 0;
-  UINT32 uiHours = 0;
-  UINT32 uiDays = 0;
-  VSURFACE_DESC vs_desc;
-  VOBJECT_DESC VObjectDesc;
+  let uiNewScreen: UINT32;
+  let found: INT32 = FALSE;
+  let uiMins: UINT32 = 0;
+  let uiHours: UINT32 = 0;
+  let uiDays: UINT32 = 0;
+  let vs_desc: VSURFACE_DESC;
+  let VObjectDesc: VOBJECT_DESC;
   //	static BOOLEAN fSecondFrame = FALSE;
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // DO NOT MOVE THIS FUNCTION CALL!!!
   // This determines if the help screen should be active
@@ -2975,10 +2983,10 @@ function DrawString(pString: STR16, uiX: UINT16, uiY: UINT16, uiFont: UINT32): v
 
 function SetDayAlternate(pStringA: STR16, ...args: any[]): void {
   // this sets the clock counter, unwind loop
-  UINT16 uiX = 0;
-  UINT16 uiY = 0;
-  wchar_t String[80];
-  va_list argptr;
+  let uiX: UINT16 = 0;
+  let uiY: UINT16 = 0;
+  let String: wchar_t[] /* [80] */;
+  let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
   vswprintf(String, pStringA, argptr); // process gprintf string (get output str)
@@ -3005,10 +3013,10 @@ function SetDayAlternate(pStringA: STR16, ...args: any[]): void {
 
 function SetHourAlternate(pStringA: STR16, ...args: any[]): void {
   // this sets the clock counter, unwind loop
-  UINT16 uiX = 0;
-  UINT16 uiY = 0;
-  wchar_t String[80];
-  va_list argptr;
+  let uiX: UINT16 = 0;
+  let uiY: UINT16 = 0;
+  let String: wchar_t[] /* [80] */;
+  let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
   vswprintf(String, pStringA, argptr); // process gprintf string (get output str)
@@ -3036,10 +3044,10 @@ function SetHourAlternate(pStringA: STR16, ...args: any[]): void {
 
 function SetClockHour(pStringA: STR16, ...args: any[]): void {
   // this sets the clock counter, unwind loop
-  UINT16 uiX = 0;
-  UINT16 uiY = 0;
-  wchar_t String[80];
-  va_list argptr;
+  let uiX: UINT16 = 0;
+  let uiY: UINT16 = 0;
+  let String: wchar_t[] /* [80] */;
+  let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
   vswprintf(String, pStringA, argptr); // process gprintf string (get output str)
@@ -3064,8 +3072,8 @@ function SetClockHour(pStringA: STR16, ...args: any[]): void {
 
 function SetClockMin(pStringA: STR16, ...args: any[]): void {
   // this sets the clock counter, unwind loop
-  wchar_t String[10];
-  va_list argptr;
+  let String: wchar_t[] /* [10] */;
+  let argptr: va_list;
 
   va_start(argptr, pStringA); // Set up variable argument pointer
   vswprintf(String, pStringA, argptr); // process gprintf string (get output str)
@@ -3088,8 +3096,8 @@ function SetClockMin(pStringA: STR16, ...args: any[]): void {
 }
 
 function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
-  UINT16 usX = 0;
-  UINT16 usY = 0;
+  let usX: UINT16 = 0;
+  let usY: UINT16 = 0;
 
   if (sRowIndex < FIRST_VEHICLE) {
     FindFontCenterCoordinates((short)NAME_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE)), (short)NAME_WIDTH, (short)Y_SIZE, pName, (long)iFont, &usX, &usY);
@@ -3102,9 +3110,9 @@ function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
 }
 
 function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
-  UINT16 usX = 0;
-  UINT16 usY = 0;
-  wchar_t sString[32];
+  let usX: UINT16 = 0;
+  let usY: UINT16 = 0;
+  let sString: wchar_t[] /* [32] */;
 
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3125,9 +3133,9 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
 }
 
 function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
-  UINT16 usX = 0;
-  UINT16 usY = 0;
-  wchar_t sString[32];
+  let usX: UINT16 = 0;
+  let usY: UINT16 = 0;
+  let sString: wchar_t[] /* [32] */;
 
   GetMapscreenMercLocationString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3145,9 +3153,9 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 }
 
 function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
-  UINT16 usX = 0;
-  UINT16 usY = 0;
-  wchar_t sString[32];
+  let usX: UINT16 = 0;
+  let usY: UINT16 = 0;
+  let sString: wchar_t[] /* [32] */;
 
   GetMapscreenMercDestinationString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
@@ -3167,9 +3175,9 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
 }
 
 function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8): void {
-  UINT16 usX = 0;
-  UINT16 usY = 0;
-  wchar_t sString[32];
+  let usX: UINT16 = 0;
+  let usY: UINT16 = 0;
+  let sString: wchar_t[] /* [32] */;
 
   GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString, &ubFontColor);
 
@@ -3192,15 +3200,17 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
 }
 
 function RenderMapCursorsIndexesAnims(): void {
-  BOOLEAN fSelectedSectorHighlighted = FALSE;
-  BOOLEAN fSelectedCursorIsYellow = TRUE;
-  UINT16 usCursorColor;
-  UINT32 uiDeltaTime;
-  static INT16 sPrevHighlightedMapX = -1, sPrevHighlightedMapY = -1;
-  static INT16 sPrevSelectedMapX = -1, sPrevSelectedMapY = -1;
-  static BOOLEAN fFlashCursorIsYellow = FALSE;
-  BOOLEAN fDrawCursors;
-  BOOLEAN fHighlightChanged = FALSE;
+  let fSelectedSectorHighlighted: BOOLEAN = FALSE;
+  let fSelectedCursorIsYellow: BOOLEAN = TRUE;
+  let usCursorColor: UINT16;
+  let uiDeltaTime: UINT32;
+  /* static */ let sPrevHighlightedMapX: INT16 = -1;
+  /* static */ let sPrevHighlightedMapY: INT16 = -1;
+  /* static */ let sPrevSelectedMapX: INT16 = -1;
+  /* static */ let sPrevSelectedMapY: INT16 = -1;
+  /* static */ let fFlashCursorIsYellow: BOOLEAN = FALSE;
+  let fDrawCursors: BOOLEAN;
+  let fHighlightChanged: BOOLEAN = FALSE;
 
   HandleAnimationOfSectors();
 
@@ -3302,16 +3312,18 @@ function RenderMapCursorsIndexesAnims(): void {
 }
 
 function HandleMapUI(): UINT32 {
-  UINT32 uiNewEvent = MAP_EVENT_NONE;
-  INT16 sMapX = 0, sMapY = 0;
-  INT8 bMapZ = 0;
-  INT16 sX, sY;
-  UINT8 ubCount = 0;
-  PathStPtr pNode = NULL;
-  BOOLEAN fVehicle = FALSE;
-  POINT MousePos;
-  UINT32 uiNewScreen = MAP_SCREEN;
-  BOOLEAN fWasAlreadySelected;
+  let uiNewEvent: UINT32 = MAP_EVENT_NONE;
+  let sMapX: INT16 = 0;
+  let sMapY: INT16 = 0;
+  let bMapZ: INT8 = 0;
+  let sX: INT16;
+  let sY: INT16;
+  let ubCount: UINT8 = 0;
+  let pNode: PathStPtr = NULL;
+  let fVehicle: BOOLEAN = FALSE;
+  let MousePos: POINT;
+  let uiNewScreen: UINT32 = MAP_SCREEN;
+  let fWasAlreadySelected: BOOLEAN;
 
   // Get Input from keyboard
   GetMapKeyboardInput(&uiNewEvent);
@@ -3476,7 +3488,8 @@ function HandleMapUI(): UINT32 {
           if (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[THROUGH_STRATEGIC_MOVE] != GROUNDBARRIER) {
             // if it's not enemy air controlled
             if (StrategicMap[CALCULATE_STRATEGIC_INDEX(sMapX, sMapY)].fEnemyAirControlled == FALSE) {
-              CHAR16 sMsgString[128], sMsgSubString[64];
+              let sMsgString: CHAR16[] /* [128] */;
+              let sMsgSubString: CHAR16[] /* [64] */;
 
               // move the landing zone over here
               gsMercArriveSectorX = sMapX;
@@ -3598,13 +3611,15 @@ function HandleMapUI(): UINT32 {
 }
 
 function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
-  InputAtom InputEvent;
-  POINT MousePos;
-  INT8 bSquadNumber;
-  UINT8 ubGroupId = 0;
-  BOOLEAN fCtrl, fAlt;
+  let InputEvent: InputAtom;
+  let MousePos: POINT;
+  let bSquadNumber: INT8;
+  let ubGroupId: UINT8 = 0;
+  let fCtrl: BOOLEAN;
+  let fAlt: BOOLEAN;
 
-  INT16 sMapX, sMapY;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   fCtrl = _KeyDown(CTRL);
   fAlt = _KeyDown(ALT);
@@ -4097,9 +4112,11 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if ((fCtrl) && (CHEATER_CHEAT_LEVEL())) {
             // check if selected dest char,
             if ((bSelectedDestChar != -1) && (fPlotForHelicopter == FALSE) && (iCurrentMapSectorZ == 0) && (GetMouseMapXY(&sMapX, &sMapY))) {
-              INT16 sDeltaX, sDeltaY;
-              INT16 sPrevX, sPrevY;
-              SOLDIERTYPE *pSoldier = MercPtrs[gCharactersList[bSelectedDestChar].usSolID];
+              let sDeltaX: INT16;
+              let sDeltaY: INT16;
+              let sPrevX: INT16;
+              let sPrevY: INT16;
+              let pSoldier: Pointer<SOLDIERTYPE> = MercPtrs[gCharactersList[bSelectedDestChar].usSolID];
 
               // can't teleport to where we already are
               if ((sMapX == pSoldier->sSectorX) && (sMapY == pSoldier->sSectorY))
@@ -4475,8 +4492,8 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
   UpdatePausedStatesDueToTimeCompression();
 
   if (!gfDontStartTransitionFromLaptop) {
-    VOBJECT_DESC VObjectDesc;
-    UINT32 uiLaptopOn;
+    let VObjectDesc: VOBJECT_DESC;
+    let uiLaptopOn: UINT32;
 
     // Load a tiny graphic of the on screen and draw it to the buffer.
     PlayJA2SampleFromFile("SOUNDS\\Initial Power Up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
@@ -4501,7 +4518,7 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
 }
 
 function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): BOOLEAN {
-  POINT MousePos;
+  let MousePos: POINT;
 
   if (IsMapScreenHelpTextUp()) {
     // don't show highlight while global help text is up
@@ -4527,7 +4544,8 @@ function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>)
 }
 
 function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): BOOLEAN {
-  INT16 sMapX, sMapY;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   // Subtract start of map view
   sMapX = sX - MAP_VIEW_START_X; //+2*MAP_GRID_X;
@@ -4556,9 +4574,10 @@ function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY
 }
 
 function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fStationary: BOOLEAN): void {
-  INT16 sScreenX, sScreenY;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
 
   Assert((sMapX >= 1) && (sMapX <= 16));
   Assert((sMapY >= 1) && (sMapY <= 16));
@@ -4621,8 +4640,9 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
 }
 
 function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
-  static BOOLEAN fLBBeenPressedInMapView = FALSE;
-  INT16 sMapX, sMapY;
+  /* static */ let fLBBeenPressedInMapView: BOOLEAN = FALSE;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   // if the mouse is currently over the MAP area
   if (gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -4717,8 +4737,9 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
 }
 
 function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
-  static BOOLEAN fRBBeenPressedInMapView = FALSE;
-  INT16 sMapX, sMapY;
+  /* static */ let fRBBeenPressedInMapView: BOOLEAN = FALSE;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   // if the mouse is currently over the MAP area
   if (gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -4815,11 +4836,12 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
 }
 
 function PopupText(pFontString: Pointer<UINT16>, ...args: any[]): void {
-  UINT8 *pDestBuf;
-  UINT32 uiDestPitchBYTES;
-  va_list argptr;
-  INT16 sX, sY;
-  wchar_t PopupString[512];
+  let pDestBuf: Pointer<UINT8>;
+  let uiDestPitchBYTES: UINT32;
+  let argptr: va_list;
+  let sX: INT16;
+  let sY: INT16;
+  let PopupString: wchar_t[] /* [512] */;
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(PopupString, pFontString, argptr); // process gprintf string (get output str)
@@ -4886,7 +4908,7 @@ void BtnINVCallback(GUI_BUTTON *btn,INT32 reason)
 */
 
 function CreateDestroyMapInvButton(): void {
-  static BOOLEAN fOldShowInventoryFlag = FALSE;
+  /* static */ let fOldShowInventoryFlag: BOOLEAN = FALSE;
 
   if (fShowInventoryFlag && !fOldShowInventoryFlag) {
     // create inventory button
@@ -4927,13 +4949,14 @@ function CreateDestroyMapInvButton(): void {
 }
 
 function BltCharInvPanel(): void {
-  UINT32 uiDestPitchBYTES;
-  UINT16 *pDestBuf;
-  HVOBJECT hCharListHandle;
-  SOLDIERTYPE *pSoldier;
-  CHAR16 sString[32];
-  UINT16 usX, usY;
-  INT32 iCounter = 0;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT16>;
+  let hCharListHandle: HVOBJECT;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let sString: CHAR16[] /* [32] */;
+  let usX: UINT16;
+  let usY: UINT16;
+  let iCounter: INT32 = 0;
 
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
@@ -5042,8 +5065,8 @@ function MAPInvMoveCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
 
 // this is Map Screen's version of SMInvMoveCallback()
 function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiHandPos;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiHandPos: UINT32;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -5082,7 +5105,7 @@ function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
 // mapscreen wrapper to init the item description box
 function MAPInternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, ubStatusIndex: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  BOOLEAN fRet;
+  let fRet: BOOLEAN;
 
   fRet = InternalInitItemDescriptionBox(pObject, MAP_ITEMDESC_START_X, MAP_ITEMDESC_START_Y, ubStatusIndex, pSoldier);
 
@@ -5095,10 +5118,11 @@ function MAPInternalInitItemDescriptionBox(pObject: Pointer<OBJECTTYPE>, ubStatu
 
 // this is Map Screen's version of SMInvClickCallback()
 function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiHandPos;
-  UINT16 usOldItemIndex, usNewItemIndex;
-  static BOOLEAN fRightDown = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiHandPos: UINT32;
+  let usOldItemIndex: UINT16;
+  let usNewItemIndex: UINT16;
+  /* static */ let fRightDown: BOOLEAN = FALSE;
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
     return;
@@ -5297,7 +5321,7 @@ function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function MAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): void {
-  BOOLEAN fOk;
+  let fOk: BOOLEAN;
 
   // If not null return
   if (gpItemPointer != NULL) {
@@ -5359,8 +5383,8 @@ function HandleMapInventoryCursor(): void {
 
 // will place down the upper left hand corner attribute strings
 function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32): void {
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid)) {
     pSoldier = MercPtrs[gCharactersList[bSelectedInfoChar].usSolID];
@@ -5400,9 +5424,10 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
 
 function DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInterface(sMapX: INT16, sMapY: INT16): void {
   // simply check if we want to refresh the screen to display path
-  static INT8 bOldDestChar = -1;
-  static INT16 sPrevMapX, sPrevMapY;
-  INT32 iDifference = 0;
+  /* static */ let bOldDestChar: INT8 = -1;
+  /* static */ let sPrevMapX: INT16;
+  /* static */ let sPrevMapY: INT16;
+  let iDifference: INT32 = 0;
 
   if (bOldDestChar != bSelectedDestChar) {
     bOldDestChar = bSelectedDestChar;
@@ -5530,7 +5555,7 @@ function AbortMovementPlottingMode(): void {
 }
 
 function CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting(): void {
-  static BOOLEAN fInArea = FALSE;
+  /* static */ let fInArea: BOOLEAN = FALSE;
 
   if ((gMapViewRegion.uiFlags & MSYS_MOUSE_IN_AREA) == 0) {
     if (fInArea == TRUE) {
@@ -5559,7 +5584,7 @@ function CheckToSeeIfMouseHasLeftMapRegionDuringPathPlotting(): void {
 }
 
 function BlitBackgroundToSaveBuffer(): void {
-  INT8 bTempDestChar = -1;
+  let bTempDestChar: INT8 = -1;
 
   // render map
   RenderMapRegionBackground();
@@ -5583,8 +5608,8 @@ function BlitBackgroundToSaveBuffer(): void {
 
 function CreateMouseRegionsForTeamList(): void {
   // will create mouse regions for assignments, path plotting, character info selection
-  INT16 sCounter = 0;
-  INT16 sYAdd = 0;
+  let sCounter: INT16 = 0;
+  let sYAdd: INT16 = 0;
 
   // the info region...is the background for the list itself
 
@@ -5634,7 +5659,7 @@ function CreateMouseRegionsForTeamList(): void {
 
 function DestroyMouseRegionsForTeamList(): void {
   // will destroy mouse regions overlaying the team list area
-  INT32 sCounter = 0;
+  let sCounter: INT32 = 0;
 
   for (sCounter = 0; sCounter < MAX_CHARACTER_COUNT; sCounter++) {
     MSYS_RemoveRegion(&gTeamListNameRegion[sCounter]);
@@ -5703,8 +5728,8 @@ function ContractButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5805,7 +5830,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 }
 
 function TeamListInfoRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5825,8 +5850,8 @@ function TeamListInfoRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 }
 
 function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5908,7 +5933,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
 }
 
 function TeamListAssignmentRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -5948,7 +5973,7 @@ function TeamListAssignmentRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
 }
 
 function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive || fShowMapInventoryPool) {
     return;
@@ -6050,7 +6075,7 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
 }
 
 function TeamListDestinationRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6085,8 +6110,8 @@ function TeamListDestinationRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iR
 }
 
 function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iValue: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6149,7 +6174,7 @@ function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6186,7 +6211,7 @@ function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 }
 
 function TeamListContractRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6219,7 +6244,7 @@ function TeamListContractRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 }
 
 function TeamListContractRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   if (fLockOutMapScreenInterface || gfPreBattleInterfaceActive) {
     return;
@@ -6260,9 +6285,9 @@ function TeamListContractRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 }
 
 function GetIndexForThisSoldier(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
-  INT32 iLastGuy;
-  INT32 iIndex = 0;
-  INT32 iCounter = 0;
+  let iLastGuy: INT32;
+  let iIndex: INT32 = 0;
+  let iCounter: INT32 = 0;
 
   // get the index into the characters list for this soldier type
   iLastGuy = gTacticalStatus.Team[OUR_TEAM].bLastID;
@@ -6279,7 +6304,7 @@ function GetIndexForThisSoldier(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 }
 
 function IsCursorWithInRegion(sLeft: INT16, sRight: INT16, sTop: INT16, sBottom: INT16): BOOLEAN {
-  POINT MousePos;
+  let MousePos: POINT;
 
   // get cursor position
   GetCursorPos(&MousePos);
@@ -6325,7 +6350,8 @@ function PlotPermanentPaths(): void {
 }
 
 function PlotTemporaryPaths(): void {
-  INT16 sMapX, sMapY;
+  let sMapX: INT16;
+  let sMapY: INT16;
 
   // check to see if we have in fact moved are are plotting a path?
   if (GetMouseMapXY(&sMapX, &sMapY)) {
@@ -6438,7 +6464,7 @@ function RenderMapRegionBackground(): void {
 }
 
 function RenderTeamRegionBackground(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // renders to save buffer when dirty flag set
   if (fTeamPanelDirty == FALSE) {
@@ -6483,7 +6509,7 @@ function RenderTeamRegionBackground(): void {
 }
 
 function RenderCharacterInfoBackground(): void {
-  HVOBJECT hHandle;
+  let hHandle: HVOBJECT;
 
   // will render the background for the character info panel
 
@@ -6576,7 +6602,7 @@ function CheckIfPlottingForCharacterWhileAirCraft(): void {
 }
 
 function ContractRegionBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // btn callback handler for contract region
 
@@ -6656,8 +6682,8 @@ function ContractRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT3
 }
 
 function HandleShadingOfLinesForContractMenu(): void {
-  SOLDIERTYPE *pSoldier;
-  MERCPROFILESTRUCT *pProfile;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   if ((fShowContractMenu == FALSE) || (ghContractBox == -1)) {
     return;
@@ -6719,7 +6745,7 @@ function HandleShadingOfLinesForContractMenu(): void {
 
 function ReBuildCharactersList(): void {
   // rebuild character's list
-  INT16 sCount = 0;
+  let sCount: INT16 = 0;
 
   // add in characters
   for (sCount = 0; sCount < MAX_CHARACTER_COUNT; sCount++) {
@@ -6755,7 +6781,7 @@ function ReBuildCharactersList(): void {
 }
 
 function HandleChangeOfInfoChar(): void {
-  static INT8 bOldInfoChar = -1;
+  /* static */ let bOldInfoChar: INT8 = -1;
 
   if (bSelectedInfoChar != bOldInfoChar) {
     // set auto faces inactive
@@ -6788,7 +6814,7 @@ function RebuildContractBoxForMerc(pCharacter: Pointer<SOLDIERTYPE>): void {
 }
 
 function TestMessageSystem(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 300; iCounter++) {
     MapScreenMessage(FONT_MCOLOR_DKRED, MSG_INTERFACE, L"%d", iCounter);
@@ -6800,7 +6826,7 @@ function TestMessageSystem(): void {
 
 function EnableDisableTeamListRegionsAndHelpText(): void {
   // check if valid character here, if so, then do nothing..other wise set help text timer to a gazillion
-  INT8 bCharNum;
+  let bCharNum: INT8;
 
   for (bCharNum = 0; bCharNum < MAX_CHARACTER_COUNT; bCharNum++) {
     if (gCharactersList[bCharNum].fValid == FALSE) {
@@ -6923,10 +6949,10 @@ function UpdatePausedStatesDueToTimeCompression(): void {
 
 function ContinueDialogue(pSoldier: Pointer<SOLDIERTYPE>, fDone: BOOLEAN): BOOLEAN {
   // continue this grunts dialogue, restore when done
-  static INT8 bOldSelectedInfoChar = -1;
-  static BOOLEAN fTalkingingGuy = FALSE;
+  /* static */ let bOldSelectedInfoChar: INT8 = -1;
+  /* static */ let fTalkingingGuy: BOOLEAN = FALSE;
 
-  INT8 bCounter = 0;
+  let bCounter: INT8 = 0;
 
   if (fDone == TRUE) {
     if (fTalkingingGuy == TRUE) {
@@ -6982,10 +7008,10 @@ function HandleSpontanousTalking(): void {
 }
 
 function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
-  PathStPtr *ppMovePath = NULL;
-  BOOLEAN fLastSectorInPath = FALSE;
-  INT32 iVehicleId = -1;
-  PathStPtr pPreviousMercPath = NULL;
+  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let fLastSectorInPath: BOOLEAN = FALSE;
+  let iVehicleId: INT32 = -1;
+  let pPreviousMercPath: PathStPtr = NULL;
 
   // see if we have clicked on the last sector in the characters path
 
@@ -7074,12 +7100,12 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
 
 function RebuildWayPointsForAllSelectedCharsGroups(): void {
   // rebuild the waypoints for everyone in the selected character list
-  INT32 iCounter = 0;
-  BOOLEAN fGroupIDRebuilt[256];
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iVehicleId;
-  PathStPtr *ppMovePath = NULL;
-  UINT8 ubGroupId;
+  let iCounter: INT32 = 0;
+  let fGroupIDRebuilt: BOOLEAN[] /* [256] */;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iVehicleId: INT32;
+  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let ubGroupId: UINT8;
 
   memset(fGroupIDRebuilt, FALSE, sizeof(fGroupIDRebuilt));
 
@@ -7119,7 +7145,8 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
 }
 
 function UpdateCursorIfInLastSector(): void {
-  INT16 sMapX = 0, sMapY = 0;
+  let sMapX: INT16 = 0;
+  let sMapY: INT16 = 0;
 
   // check to see if we are plotting a path, if so, see if we are highlighting the last sector int he path, if so, change the cursor
   if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
@@ -7229,7 +7256,7 @@ function ItemRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 }
 
 function HandleChangeOfHighLightedLine(): void {
-  static INT32 iOldHighLine;
+  /* static */ let iOldHighLine: INT32;
 
   if (fShowInventoryFlag) {
     return;
@@ -7347,8 +7374,8 @@ function MapInvDoneButtonfastHelpCall(): void {
 }
 
 function UpdateStatusOfMapSortButtons(): void {
-  INT32 iCounter = 0;
-  static fShownLastTime = FALSE;
+  let iCounter: INT32 = 0;
+  /* static */ let fShownLastTime: BOOLEAN = FALSE;
 
   if ((gfPreBattleInterfaceActive) || fShowInventoryFlag) {
     if (fShownLastTime) {
@@ -7377,7 +7404,8 @@ function UpdateStatusOfMapSortButtons(): void {
 }
 
 function GetLastValidCharacterInTeamPanelList(): INT8 {
-  INT8 iCounter = 0, iValue = 0;
+  let iCounter: INT8 = 0;
+  let iValue: INT8 = 0;
 
   // run through the list and find the last valid guy in the list
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -7505,7 +7533,7 @@ INT8 GetNextValidCharacterInTeamPanelList( INT8 bCurrentIndex )
 */
 
 function CreateDestroyTrashCanRegion(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   if (fShowInventoryFlag && (fCreated == FALSE)) {
     fCreated = TRUE;
@@ -7577,7 +7605,7 @@ function DoneInventoryMapBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function StartConfirmMapMoveMode(sMapY: INT16): void {
-  UINT8 ubPosition = (sMapY < 8) ? MSG_MAP_UI_POSITION_LOWER : MSG_MAP_UI_POSITION_UPPER;
+  let ubPosition: UINT8 = (sMapY < 8) ? MSG_MAP_UI_POSITION_LOWER : MSG_MAP_UI_POSITION_UPPER;
 
   // tell player what to do - to click again to confirm move
   MapScreenMessage(FONT_MCOLOR_LTYELLOW, ubPosition, pMapPlotStrings[0]);
@@ -7629,7 +7657,7 @@ function HandlePreBattleInterfaceWithInventoryPanelUp(): void {
 
 // this puts anyone who is on NO_ASSIGNMENT onto a free squad
 function UpdateBadAssignments(): void {
-  UINT32 iCounter;
+  let iCounter: UINT32;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
@@ -7653,7 +7681,7 @@ function InterruptTimeForMenus(): void {
 }
 
 function HandleContractTimeFlashForMercThatIsAboutLeave(): void {
-  INT32 iCurrentTime;
+  let iCurrentTime: INT32;
 
   // grab the current time
   iCurrentTime = GetJA2Clock();
@@ -7673,9 +7701,9 @@ function HandleContractTimeFlashForMercThatIsAboutLeave(): void {
 }
 
 function AnyMercsLeavingRealSoon(): BOOLEAN {
-  UINT32 uiCounter = 0;
-  UINT32 uiTimeInMin = GetWorldTotalMin();
-  BOOLEAN fFoundOne = FALSE;
+  let uiCounter: UINT32 = 0;
+  let uiTimeInMin: UINT32 = GetWorldTotalMin();
+  let fFoundOne: BOOLEAN = FALSE;
 
   for (uiCounter = 0; uiCounter < MAX_CHARACTER_COUNT; uiCounter++) {
     if (gCharactersList[uiCounter].fValid == TRUE) {
@@ -7691,8 +7719,8 @@ function AnyMercsLeavingRealSoon(): BOOLEAN {
 
 function HandlePreloadOfMapGraphics(): BOOLEAN {
   // check amt of memory, if above required amt...use it
-  VSURFACE_DESC vs_desc;
-  VOBJECT_DESC VObjectDesc;
+  let vs_desc: VSURFACE_DESC;
+  let VObjectDesc: VOBJECT_DESC;
 
   fPreLoadedMapGraphics = TRUE;
 
@@ -7912,7 +7940,7 @@ function HandleRemovalOfPreLoadedMapGraphics(): void {
 }
 
 function CharacterIsInLoadedSectorAndWantsToMoveInventoryButIsNotAllowed(bCharId: INT8): BOOLEAN {
-  UINT16 usSoldierId = 0;
+  let usSoldierId: UINT16 = 0;
 
   // invalid char id
   if (bCharId == -1) {
@@ -8006,7 +8034,7 @@ function NextInventoryMapBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
 }
 
 function CreateDestroyMapCharacterScrollButtons(): void {
-  static BOOLEAN fCreated = FALSE;
+  /* static */ let fCreated: BOOLEAN = FALSE;
 
   if ((fInMapMode == TRUE) && (fCreated == FALSE)) {
     // set the button image
@@ -8057,8 +8085,8 @@ function TellPlayerWhyHeCantCompressTime(): void {
   // KM:  Except if we are in a creature lair and haven't loaded the sector yet (no battle yet)
   else if (gTacticalStatus.uiFlags & INCOMBAT || gTacticalStatus.fEnemyInSector) {
     if (OnlyHostileCivsInSector()) {
-      UINT16 str[256];
-      UINT16 pSectorString[128];
+      let str: UINT16[] /* [256] */;
+      let pSectorString: UINT16[] /* [128] */;
       GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, pSectorString, TRUE);
       swprintf(str, gzLateLocalizedString[27], pSectorString);
       DoMapMessageBox(MSG_BOX_BASIC_STYLE, str, MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -8083,7 +8111,7 @@ function MapScreenDefaultOkBoxCallback(bExitValue: UINT8): void {
 }
 
 function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   // grab the button index value for the sort buttons
   iValue = MSYS_GetBtnUserData(btn, 0);
@@ -8106,9 +8134,9 @@ function MapSortBtnCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function AddTeamPanelSortButtonsForMapScreen(): void {
-  INT32 iCounter = 0;
-  SGPFILENAME filename;
-  INT32 iImageIndex[MAX_SORT_METHODS] = {
+  let iCounter: INT32 = 0;
+  let filename: SGPFILENAME;
+  let iImageIndex: INT32[] /* [MAX_SORT_METHODS] */ = {
     0,
     1,
     5,
@@ -8133,13 +8161,16 @@ function AddTeamPanelSortButtonsForMapScreen(): void {
 }
 
 function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
-  INT32 iCounter = 0, iCounterA = 0;
-  INT16 sEndSectorA, sEndSectorB;
-  INT32 iExpiryTime, iExpiryTimeA;
-  BOOLEAN fEntrySelected = FALSE;
-  SOLDIERTYPE *pSelectedSoldier[MAX_CHARACTER_COUNT];
-  SOLDIERTYPE *pCurrentSoldier = NULL;
-  SOLDIERTYPE *pPreviousSelectedInfoChar = NULL;
+  let iCounter: INT32 = 0;
+  let iCounterA: INT32 = 0;
+  let sEndSectorA: INT16;
+  let sEndSectorB: INT16;
+  let iExpiryTime: INT32;
+  let iExpiryTimeA: INT32;
+  let fEntrySelected: BOOLEAN = FALSE;
+  let pSelectedSoldier: Pointer<SOLDIERTYPE>[] /* [MAX_CHARACTER_COUNT] */;
+  let pCurrentSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let pPreviousSelectedInfoChar: Pointer<SOLDIERTYPE> = NULL;
 
   if (fRetainSelectedMercs) {
     // if we have anyone valid selected
@@ -8342,7 +8373,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
 }
 
 function SwapCharactersInList(iCharA: INT32, iCharB: INT32): void {
-  UINT16 usTempSoldID;
+  let usTempSoldID: UINT16;
 
   // swap
   usTempSoldID = gCharactersList[iCharA].usSolID;
@@ -8351,7 +8382,7 @@ function SwapCharactersInList(iCharA: INT32, iCharB: INT32): void {
 }
 
 function RemoveTeamPanelSortButtonsForMapScreen(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_SORT_METHODS; iCounter++) {
     UnloadButtonImage(giMapSortButtonImage[iCounter]);
@@ -8364,7 +8395,7 @@ function RemoveTeamPanelSortButtonsForMapScreen(): void {
 }
 
 function HandleCommonGlowTimer(): void {
-  INT32 iCurrentTime = 0;
+  let iCurrentTime: INT32 = 0;
 
   // grab the current time
   iCurrentTime = GetJA2Clock();
@@ -8383,8 +8414,9 @@ function HandleCommonGlowTimer(): void {
 
 function HandleAssignmentsDoneAndAwaitingFurtherOrders(): void {
   // run through list of grunts and handle awating further orders
-  INT32 iCounter = 0, iCurrentTime = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let iCurrentTime: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // update "nothing to do" flags if necessary
   if (gfReEvaluateEveryonesNothingToDo) {
@@ -8420,9 +8452,9 @@ function HandleAssignmentsDoneAndAwaitingFurtherOrders(): void {
 
 function DisplayIconsForMercsAsleep(): void {
   // run throught he list of grunts to see who is asleep and who isn't
-  HVOBJECT hHandle;
-  INT32 iCounter;
-  SOLDIERTYPE *pSoldier;
+  let hHandle: HVOBJECT;
+  let iCounter: INT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // if we are in inventory
   if (fShowInventoryFlag == TRUE) {
@@ -8455,9 +8487,9 @@ function CheckForAndRenderNewMailOverlay(): void {
         // button is up, so draw the icon normally
         BltVideoObjectFromIndex(FRAME_BUFFER, guiNewMailIcons, 0, 464, 417, VO_BLT_SRCTRANSPARENCY, NULL);
         if (!(ButtonList[guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP]]->uiFlags & BUTTON_ENABLED)) {
-          UINT32 uiDestPitchBYTES;
-          UINT8 *pDestBuf;
-          SGPRect area = { 463, 417, 477, 425 };
+          let uiDestPitchBYTES: UINT32;
+          let pDestBuf: Pointer<UINT8>;
+          let area: SGPRect = { 463, 417, 477, 425 };
 
           pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
           Blt16BPPBufferHatchRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &area);
@@ -8473,7 +8505,7 @@ function CheckForAndRenderNewMailOverlay(): void {
 }
 
 function CanToggleSelectedCharInventory(): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (gfPreBattleInterfaceActive == TRUE) {
     return FALSE;
@@ -8509,7 +8541,7 @@ function CanToggleSelectedCharInventory(): BOOLEAN {
 }
 
 function MapCharacterHasAccessibleInventory(bCharNumber: INT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   Assert(bCharNumber >= 0);
   Assert(bCharNumber < MAX_CHARACTER_COUNT);
@@ -8585,8 +8617,8 @@ function ChangeSelectedMapSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void 
 }
 
 function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: BOOLEAN): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT8 bErrorNumber = -1;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let bErrorNumber: INT8 = -1;
 
   if (bCharNumber == -1)
     return FALSE;
@@ -8614,7 +8646,7 @@ function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: B
 }
 
 function CanExtendContractForCharSlot(bCharNumber: INT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (bCharNumber == -1)
     return FALSE;
@@ -8641,7 +8673,7 @@ function CanExtendContractForCharSlot(bCharNumber: INT8): BOOLEAN {
 }
 
 function CanChangeSleepStatusForCharSlot(bCharNumber: INT8): BOOLEAN {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (bCharNumber == -1)
     return FALSE;
@@ -8695,8 +8727,9 @@ function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
 }
 
 function CancelOrShortenPlottedPath(): void {
-  INT16 sMapX, sMapY;
-  UINT32 uiReturnValue;
+  let sMapX: INT16;
+  let sMapY: INT16;
+  let uiReturnValue: UINT32;
 
   GetMouseMapXY(&sMapX, &sMapY);
 
@@ -8856,8 +8889,8 @@ function ChangeSelectedInfoChar(bCharNumber: INT8, fResetSelectedList: BOOLEAN):
 }
 
 function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // run through list and copy paths for each selected character
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -8881,9 +8914,9 @@ function CopyPathToAllSelectedCharacters(pPath: PathStPtr): void {
 }
 
 function CancelPathsOfAllSelectedCharacters(): void {
-  INT8 bCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-  BOOLEAN fSkyriderMsgShown = FALSE;
+  let bCounter: INT8 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let fSkyriderMsgShown: BOOLEAN = FALSE;
 
   // cancel destination for the clicked and ALL other valid & selected characters with a route set
   for (bCounter = 0; bCounter < MAX_CHARACTER_COUNT; bCounter++) {
@@ -8917,7 +8950,9 @@ function CancelPathsOfAllSelectedCharacters(): void {
 }
 
 function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32, sString: STR16): void {
-  UINT32 uiDay, uiHour, uiMin;
+  let uiDay: UINT32;
+  let uiHour: UINT32;
+  let uiMin: UINT32;
 
   uiDay = (uiTimeInMin / NUM_MIN_IN_DAY);
   uiHour = (uiTimeInMin - (uiDay * NUM_MIN_IN_DAY)) / NUM_MIN_IN_HOUR;
@@ -8930,7 +8965,7 @@ function ConvertMinTimeToETADayHourMinString(uiTimeInMin: UINT32, sString: STR16
 }
 
 function GetGroundTravelTimeOfCharacter(bCharNumber: INT8): INT32 {
-  INT32 iTravelTime = 0;
+  let iTravelTime: INT32 = 0;
 
   if (bCharNumber == -1)
     return 0;
@@ -8948,8 +8983,8 @@ function GetGroundTravelTimeOfCharacter(bCharNumber: INT8): INT32 {
 }
 
 function CalcLocationValueForChar(iCounter: INT32): INT16 {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT16 sLocValue = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let sLocValue: INT16 = 0;
 
   Assert(iCounter < MAX_CHARACTER_COUNT);
 
@@ -8979,7 +9014,7 @@ function CancelChangeArrivalSectorMode(): void {
 }
 
 function MakeMapModesSuitableForDestPlotting(bCharNumber: INT8): void {
-  SOLDIERTYPE *pSoldier = NULL;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (gCharactersList[bCharNumber].fValid == TRUE) {
     pSoldier = MercPtrs[gCharactersList[bCharNumber].usSolID];
@@ -9009,9 +9044,10 @@ function MakeMapModesSuitableForDestPlotting(bCharNumber: INT8): void {
 }
 
 function AnyMovableCharsInOrBetweenThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
-  INT32 iFirstId = 0, iLastId = 0;
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iFirstId: INT32 = 0;
+  let iLastId: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // to speed it up a little?
   iFirstId = gTacticalStatus.Team[OUR_TEAM].bFirstID;
@@ -9119,7 +9155,7 @@ function ExplainWhySkyriderCantFly(): void {
 }
 
 function PlayerMercsInHelicopterSector(): UINT8 {
-  GROUP *pGroup = NULL;
+  let pGroup: Pointer<GROUP> = NULL;
 
   Assert(iHelicopterVehicleId != -1);
   pGroup = GetGroup(pVehicleList[iHelicopterVehicleId].ubMovementGroup);
@@ -9132,7 +9168,7 @@ function PlayerMercsInHelicopterSector(): UINT8 {
 }
 
 function HandleNewDestConfirmation(sMapX: INT16, sMapY: INT16): void {
-  UINT8 ubCurrentProgress;
+  let ubCurrentProgress: UINT8;
 
   // if moving the chopper itself, or moving a character aboard the chopper
   if (fPlotForHelicopter) {
@@ -9177,12 +9213,12 @@ function HandleNewDestConfirmation(sMapX: INT16, sMapY: INT16): void {
 }
 
 function RandomAwakeSelectedMercConfirmsStrategicMove(): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iCounter;
-  UINT8 ubSelectedMercID[20];
-  UINT8 ubSelectedMercIndex[20];
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iCounter: INT32;
+  let ubSelectedMercID: UINT8[] /* [20] */;
+  let ubSelectedMercIndex: UINT8[] /* [20] */;
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if ((fSelectedListOfMercsForMapScreen[iCounter] == TRUE)) {
@@ -9226,9 +9262,9 @@ function DestinationPlottingCompleted(): void {
 }
 
 function HandleMilitiaRedistributionClick(): void {
-  INT8 bTownId;
-  BOOLEAN fTownStillHidden;
-  CHAR16 sString[128];
+  let bTownId: INT8;
+  let fTownStillHidden: BOOLEAN;
+  let sString: CHAR16[] /* [128] */;
 
   // if on the surface
   if (iCurrentMapSectorZ == 0) {
@@ -9315,9 +9351,9 @@ function BullsEyeOrChopperSelectionPopupCallback(ubExitValue: UINT8): void {
 
 // wake up anybody who needs to be awake to travel
 function WakeUpAnySleepingSelectedMercsOnFootOrDriving(): void {
-  SOLDIERTYPE *pSoldier = NULL;
-  INT32 iCounter;
-  BOOLEAN fSuccess = FALSE;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let iCounter: INT32;
+  let fSuccess: BOOLEAN = FALSE;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if ((fSelectedListOfMercsForMapScreen[iCounter] == TRUE)) {
@@ -9360,7 +9396,7 @@ function HandlePostAutoresolveMessages(): void {
     fMapPanelDirty = TRUE;
     gsEnemyGainedControlOfSectorID = -1;
   } else if (gbMilitiaPromotions) {
-    UINT16 str[512];
+    let str: UINT16[] /* [512] */;
     BuildMilitiaPromotionsString(str);
     DoScreenIndependantMessageBox(str, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
   }
@@ -9375,7 +9411,7 @@ function GetMapscreenMercAssignmentString(pSoldier: Pointer<SOLDIERTYPE>, sStrin
 }
 
 function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
-  wchar_t pTempString[32];
+  let pTempString: wchar_t[] /* [32] */;
 
   if (pSoldier->bAssignment == IN_TRANSIT) {
     // show blank
@@ -9398,9 +9434,10 @@ function GetMapscreenMercLocationString(pSoldier: Pointer<SOLDIERTYPE>, sString:
 }
 
 function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */): void {
-  INT32 iSectorX, iSectorY;
-  INT16 sSector = 0;
-  GROUP *pGroup = NULL;
+  let iSectorX: INT32;
+  let iSectorY: INT32;
+  let sSector: INT16 = 0;
+  let pGroup: Pointer<GROUP> = NULL;
 
   // by default, show nothing
   wcscpy(sString, L"");
@@ -9441,9 +9478,9 @@ function GetMapscreenMercDestinationString(pSoldier: Pointer<SOLDIERTYPE>, sStri
 }
 
 function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString: wchar_t[] /* [] */, pubFontColor: Pointer<UINT8>): void {
-  INT32 iMinsRemaining = 0;
-  INT32 iDaysRemaining = 0;
-  INT32 iHoursRemaining = 0;
+  let iMinsRemaining: INT32 = 0;
+  let iDaysRemaining: INT32 = 0;
+  let iHoursRemaining: INT32 = 0;
 
   if ((pSoldier->ubWhatKindOfMercAmI != MERC_TYPE__AIM_MERC && pSoldier->ubProfile != SLAY) || pSoldier->bLife == 0) {
     swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
@@ -9486,7 +9523,7 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
 }
 
 function InitPreviousPaths(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // init character previous paths
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -9498,8 +9535,8 @@ function InitPreviousPaths(): void {
 }
 
 function RememberPreviousPathForAllSelectedChars(): void {
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
@@ -9512,11 +9549,11 @@ function RememberPreviousPathForAllSelectedChars(): void {
 }
 
 function RestorePreviousPaths(): void {
-  INT32 iCounter = 0;
-  SOLDIERTYPE *pSoldier = NULL;
-  PathStPtr *ppMovePath = NULL;
-  UINT8 ubGroupId = 0;
-  BOOLEAN fPathChanged = FALSE;
+  let iCounter: INT32 = 0;
+  let pSoldier: Pointer<SOLDIERTYPE> = NULL;
+  let ppMovePath: Pointer<PathStPtr> = NULL;
+  let ubGroupId: UINT8 = 0;
+  let fPathChanged: BOOLEAN = FALSE;
 
   // invalid if we're not plotting movement
   Assert((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE));
@@ -9610,7 +9647,7 @@ function RestorePreviousPaths(): void {
 }
 
 function ClearPreviousPaths(): void {
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
@@ -9621,9 +9658,9 @@ function ClearPreviousPaths(): void {
 }
 
 function SelectAllCharactersInSquad(bSquadNumber: INT8): void {
-  INT8 bCounter;
-  BOOLEAN fFirstOne = TRUE;
-  SOLDIERTYPE *pSoldier;
+  let bCounter: INT8;
+  let fFirstOne: BOOLEAN = TRUE;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // ignore if that squad is empty
   if (SquadIsEmpty(bSquadNumber) == TRUE) {
@@ -9668,7 +9705,8 @@ function CanDrawSectorCursor(): BOOLEAN {
 }
 
 function RestoreMapSectorCursor(sMapX: INT16, sMapY: INT16): void {
-  INT16 sScreenX, sScreenY;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
 
   Assert((sMapX >= 1) && (sMapX <= 16));
   Assert((sMapY >= 1) && (sMapY <= 16));

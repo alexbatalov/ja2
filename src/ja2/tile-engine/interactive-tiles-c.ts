@@ -19,17 +19,17 @@ interface INTERACTIVE_TILE_STACK_TYPE {
   bCur: INT8;
 }
 
-INTERACTIVE_TILE_STACK_TYPE gCurIntTileStack;
-BOOLEAN gfCycleIntTile = FALSE;
+let gCurIntTileStack: INTERACTIVE_TILE_STACK_TYPE;
+let gfCycleIntTile: BOOLEAN = FALSE;
 
-CUR_INTERACTIVE_TILE gCurIntTile;
-BOOLEAN gfOverIntTile = FALSE;
+let gCurIntTile: CUR_INTERACTIVE_TILE;
+let gfOverIntTile: BOOLEAN = FALSE;
 
 // Values to determine if we should check or not
-INT16 gsINTOldRenderCenterX = 0;
-INT16 gsINTOldRenderCenterY = 0;
-UINT16 gusINTOldMousePosX = 0;
-UINT16 gusINTOldMousePosY = 0;
+let gsINTOldRenderCenterX: INT16 = 0;
+let gsINTOldRenderCenterY: INT16 = 0;
+let gusINTOldMousePosX: UINT16 = 0;
+let gusINTOldMousePosY: UINT16 = 0;
 
 function InitInteractiveTileManagement(): BOOLEAN {
   return TRUE;
@@ -43,7 +43,7 @@ function AddInteractiveTile(sGridNo: INT16, pLevelNode: Pointer<LEVELNODE>, uiFl
 }
 
 function StartInteractiveObject(sGridNo: INT16, usStructureID: UINT16, pSoldier: Pointer<SOLDIERTYPE>, ubDirection: UINT8): BOOLEAN {
-  STRUCTURE *pStructure;
+  let pStructure: Pointer<STRUCTURE>;
 
   // ATE: Patch fix: Don't allow if alreay in animation
   if (pSoldier->usAnimState == OPEN_STRUCT || pSoldier->usAnimState == OPEN_STRUCT_CROUCHED || pSoldier->usAnimState == BEGIN_OPENSTRUCT || pSoldier->usAnimState == BEGIN_OPENSTRUCT_CROUCHED) {
@@ -99,7 +99,7 @@ function CalcInteractiveObjectAPs(sGridNo: INT16, pStructure: Pointer<STRUCTURE>
 }
 
 function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<STRUCTURE>, ubDirection: UINT8): BOOLEAN {
-  BOOLEAN fDoor = FALSE;
+  let fDoor: BOOLEAN = FALSE;
 
   if (pStructure == NULL) {
     return FALSE;
@@ -115,9 +115,9 @@ function InteractWithInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>, pStructur
 }
 
 function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
-  STRUCTURE *pStructure;
-  UINT16 usStructureID;
-  INT16 sGridNo;
+  let pStructure: Pointer<STRUCTURE>;
+  let usStructureID: UINT16;
+  let sGridNo: INT16;
 
   sGridNo = pSoldier->sPendingActionData2;
   usStructureID = (UINT16)pSoldier->uiPendingActionData1;
@@ -133,10 +133,12 @@ function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
 }
 
 function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): void {
-  STRUCTURE *pStructure, *pNewStructure;
-  INT16 sAPCost = 0, sBPCost = 0;
-  ITEM_POOL *pItemPool;
-  BOOLEAN fDidMissingQuote = FALSE;
+  let pStructure: Pointer<STRUCTURE>;
+  let pNewStructure: Pointer<STRUCTURE>;
+  let sAPCost: INT16 = 0;
+  let sBPCost: INT16 = 0;
+  let pItemPool: Pointer<ITEM_POOL>;
+  let fDidMissingQuote: BOOLEAN = FALSE;
 
   pStructure = FindStructure(sGridNo, STRUCTURE_OPENABLE);
 
@@ -170,8 +172,8 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     if (GetItemPool((INT16)sGridNo, &pItemPool, pSoldier->bLevel)) {
       // Update visiblity....
       if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
-        BOOLEAN fDoHumm = TRUE;
-        BOOLEAN fDoLocators = TRUE;
+        let fDoHumm: BOOLEAN = TRUE;
+        let fDoLocators: BOOLEAN = TRUE;
 
         if (pSoldier->bTeam != gbPlayerNum) {
           fDoHumm = FALSE;
@@ -230,9 +232,9 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
 }
 
 function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT32 {
-  LEVELNODE *pIntNode;
-  STRUCTURE *pStructure;
-  INT16 sGridNo;
+  let pIntNode: Pointer<LEVELNODE>;
+  let pStructure: Pointer<STRUCTURE>;
+  let sGridNo: INT16;
 
   // OK, first see if we have an in tile...
   pIntNode = GetCurInteractiveTileGridNoAndStructure(&sGridNo, &pStructure);
@@ -264,9 +266,9 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
 }
 
 function SetActionModeDoorCursorText(): void {
-  LEVELNODE *pIntNode;
-  STRUCTURE *pStructure;
-  INT16 sGridNo;
+  let pIntNode: Pointer<LEVELNODE>;
+  let pStructure: Pointer<STRUCTURE>;
+  let sGridNo: INT16;
 
   // If we are over a merc, don't
   if (gfUIFullTargetFound) {
@@ -284,12 +286,16 @@ function SetActionModeDoorCursorText(): void {
 }
 
 function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRect>, sXPos: INT16, sYPos: INT16, sGridNo: INT16): void {
-  INT16 sScreenX, sScreenY;
-  INT16 sOffsetX, sOffsetY;
-  INT16 sTempX_S, sTempY_S;
-  ETRLEObject *pTrav;
-  UINT32 usHeight, usWidth;
-  TILE_ELEMENT *TileElem;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let sTempX_S: INT16;
+  let sTempY_S: INT16;
+  let pTrav: Pointer<ETRLEObject>;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   // Get 'TRUE' merc position
   sOffsetX = sXPos - gsRenderCenterX;
@@ -352,9 +358,12 @@ function CompileInteractiveTiles(): void {
 }
 
 function LogMouseOverInteractiveTile(sGridNo: INT16): void {
-  SGPRect aRect;
-  INT16 sXMapPos, sYMapPos, sScreenX, sScreenY;
-  LEVELNODE *pNode;
+  let aRect: SGPRect;
+  let sXMapPos: INT16;
+  let sYMapPos: INT16;
+  let sScreenX: INT16;
+  let sScreenY: INT16;
+  let pNode: Pointer<LEVELNODE>;
 
   // OK, for now, don't allow any interactive tiles on higher interface level!
   if (gsInterfaceLevel > 0) {
@@ -417,8 +426,8 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
 }
 
 function InternalGetCurInteractiveTile(fRejectItemsOnTop: BOOLEAN): Pointer<LEVELNODE> {
-  LEVELNODE *pNode = NULL;
-  STRUCTURE *pStructure = NULL;
+  let pNode: Pointer<LEVELNODE> = NULL;
+  let pStructure: Pointer<STRUCTURE> = NULL;
 
   // OK, Look for our tile!
 
@@ -461,7 +470,7 @@ function GetCurInteractiveTile(): Pointer<LEVELNODE> {
 }
 
 function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNODE> {
-  LEVELNODE *pNode;
+  let pNode: Pointer<LEVELNODE>;
 
   pNode = GetCurInteractiveTile();
 
@@ -475,8 +484,8 @@ function GetCurInteractiveTileGridNo(psGridNo: Pointer<INT16>): Pointer<LEVELNOD
 }
 
 function ConditionalGetCurInteractiveTileGridNoAndStructure(psGridNo: Pointer<INT16>, ppStructure: Pointer<Pointer<STRUCTURE>>, fRejectOnTopItems: BOOLEAN): Pointer<LEVELNODE> {
-  LEVELNODE *pNode;
-  STRUCTURE *pStructure;
+  let pNode: Pointer<LEVELNODE>;
+  let pStructure: Pointer<STRUCTURE>;
 
   *ppStructure = NULL;
 
@@ -523,7 +532,7 @@ function BeginCurInteractiveTileCheck(bCheckFlags: UINT8): void {
 }
 
 function EndCurInteractiveTileCheck(): void {
-  CUR_INTERACTIVE_TILE *pCurIntTile;
+  let pCurIntTile: Pointer<CUR_INTERACTIVE_TILE>;
 
   if (gCurIntTile.fFound) {
     // Set our currently cycled guy.....
@@ -555,8 +564,8 @@ function EndCurInteractiveTileCheck(): void {
 }
 
 function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN {
-  TILE_ELEMENT *TileElem;
-  STRUCTURE *pStructure;
+  let TileElem: Pointer<TILE_ELEMENT>;
+  let pStructure: Pointer<STRUCTURE>;
 
   if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
     return FALSE;
@@ -606,7 +615,7 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
       // IF we are a switch, reject in another direction...
       if (pStructure->fFlags & STRUCTURE_SWITCH) {
         // Find a new gridno based on switch's orientation...
-        INT16 sNewGridNo = NOWHERE;
+        let sNewGridNo: INT16 = NOWHERE;
 
         switch (pStructure->pDBStructureRef->pDBStructure->ubWallOrientation) {
           case OUTSIDE_TOP_LEFT:
@@ -651,7 +660,7 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
 }
 
 function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT16, sSrcX: INT16, sSrcY: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN {
-  TILE_ELEMENT *TileElem;
+  let TileElem: Pointer<TILE_ELEMENT>;
 
   if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
     // Check it!
@@ -678,13 +687,15 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
 // This function will check the video object at SrcX and SrcY for the lack of transparency
 // will return true if data found, else false
 function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: UINT16, iTestX: INT32, iTestY: INT32): BOOLEAN {
-  UINT32 uiOffset;
-  UINT32 usHeight, usWidth;
-  UINT8 *SrcPtr;
-  UINT32 LineSkip;
-  ETRLEObject *pTrav;
-  BOOLEAN fDataFound = FALSE;
-  INT32 iTestPos, iStartPos;
+  let uiOffset: UINT32;
+  let usHeight: UINT32;
+  let usWidth: UINT32;
+  let SrcPtr: Pointer<UINT8>;
+  let LineSkip: UINT32;
+  let pTrav: Pointer<ETRLEObject>;
+  let fDataFound: BOOLEAN = FALSE;
+  let iTestPos: INT32;
+  let iStartPos: INT32;
 
   // Assertions
   Assert(hSrcVObject != NULL);
@@ -813,7 +824,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
 }
 
 function ShouldCheckForMouseDetections(): BOOLEAN {
-  BOOLEAN fOK = FALSE;
+  let fOK: BOOLEAN = FALSE;
 
   if (gsINTOldRenderCenterX != gsRenderCenterX || gsINTOldRenderCenterY != gsRenderCenterY || gusINTOldMousePosX != gusMouseXPos || gusINTOldMousePosY != gusMouseYPos) {
     fOK = TRUE;

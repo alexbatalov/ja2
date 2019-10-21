@@ -1,10 +1,10 @@
 function HandleRPCDescription(): void {
-  UINT8 ubMercsInSector[20] = { 0 };
-  UINT8 ubNumMercs = 0;
-  UINT8 ubChosenMerc;
-  SOLDIERTYPE *pTeamSoldier;
-  INT32 cnt2;
-  BOOLEAN fSAMSite = FALSE;
+  let ubMercsInSector: UINT8[] /* [20] */ = { 0 };
+  let ubNumMercs: UINT8 = 0;
+  let ubChosenMerc: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let cnt2: INT32;
+  let fSAMSite: BOOLEAN = FALSE;
 
   if (!gTacticalStatus.fCountingDownForGuideDescription) {
     return;
@@ -67,10 +67,10 @@ function HandleRPCDescription(): void {
 }
 
 function HandleTacticalEndTurn(): void {
-  UINT32 cnt;
-  SOLDIERTYPE *pSoldier;
-  UINT32 uiTime;
-  static UINT32 uiTimeSinceLastStrategicUpdate = 0;
+  let cnt: UINT32;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let uiTime: UINT32;
+  /* static */ let uiTimeSinceLastStrategicUpdate: UINT32 = 0;
 
   // OK, Do a number of things here....
   // Every few turns......

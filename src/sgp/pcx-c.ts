@@ -16,7 +16,7 @@ const PCX_INVALIDLEN = 4;
 const PCX_OUTOFMEMORY = 8;
 
 function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
-  PcxObject *pPcxObject;
+  let pPcxObject: Pointer<PcxObject>;
 
   // First Load a PCX Image
   pPcxObject = LoadPcx(hImage->ImageFile);
@@ -57,11 +57,11 @@ function LoadPCXFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 }
 
 function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
-  PcxHeader Header;
-  PcxObject *pCurrentPcxObject;
-  HWFILE hFileHandle;
-  UINT32 uiFileSize;
-  UINT8 *pPcxBuffer;
+  let Header: PcxHeader;
+  let pCurrentPcxObject: Pointer<PcxObject>;
+  let hFileHandle: HWFILE;
+  let uiFileSize: UINT32;
+  let pPcxBuffer: Pointer<UINT8>;
 
   // Open and read in the file
   if ((hFileHandle = FileOpen(pFilename, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE)) == 0) {
@@ -123,15 +123,20 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
 }
 
 function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer<UINT8>, usBufferWidth: UINT16, usBufferHeight: UINT16, usX: UINT16, usY: UINT16, fTransp: BOOLEAN): BOOLEAN {
-  UINT8 *pPcxBuffer;
-  UINT8 ubRepCount;
-  UINT16 usMaxX, usMaxY;
-  UINT32 uiImageSize;
-  UINT8 ubCurrentByte = 0;
-  UINT8 ubMode;
-  UINT16 usCurrentX, usCurrentY;
-  UINT32 uiOffset, uiIndex;
-  UINT32 uiNextLineOffset, uiStartOffset, uiCurrentOffset;
+  let pPcxBuffer: Pointer<UINT8>;
+  let ubRepCount: UINT8;
+  let usMaxX: UINT16;
+  let usMaxY: UINT16;
+  let uiImageSize: UINT32;
+  let ubCurrentByte: UINT8 = 0;
+  let ubMode: UINT8;
+  let usCurrentX: UINT16;
+  let usCurrentY: UINT16;
+  let uiOffset: UINT32;
+  let uiIndex: UINT32;
+  let uiNextLineOffset: UINT32;
+  let uiStartOffset: UINT32;
+  let uiCurrentOffset: UINT32;
 
   pPcxBuffer = pCurrentPcxObject->pPcxBuffer;
 
@@ -282,8 +287,8 @@ function BlitPcxToBuffer(pCurrentPcxObject: Pointer<PcxObject>, pBuffer: Pointer
 }
 
 function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): BOOLEAN {
-  UINT16 Index;
-  UINT8 *pubPalette;
+  let Index: UINT16;
+  let pubPalette: Pointer<UINT8>;
 
   pubPalette = &(pCurrentPcxObject->ubPalette[0]);
 

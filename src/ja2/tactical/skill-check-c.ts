@@ -1,6 +1,6 @@
 function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT8 bBandaged;
-  INT32 iEffStrength;
+  let bBandaged: INT8;
+  let iEffStrength: INT32;
 
   // Effective strength is:
   // 1/2 full strength
@@ -16,7 +16,7 @@ function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffWisdom;
+  let iEffWisdom: INT32;
 
   iEffWisdom = pSoldier->bWisdom;
 
@@ -26,7 +26,7 @@ function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffAgility;
+  let iEffAgility: INT32;
 
   iEffAgility = pSoldier->bAgility;
 
@@ -40,7 +40,7 @@ function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffMechanical;
+  let iEffMechanical: INT32;
 
   iEffMechanical = pSoldier->bMechanical;
 
@@ -50,7 +50,7 @@ function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffExplosive;
+  let iEffExplosive: INT32;
 
   iEffExplosive = pSoldier->bExplosive;
 
@@ -60,7 +60,7 @@ function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffMedical;
+  let iEffMedical: INT32;
 
   iEffMedical = pSoldier->bMedical;
 
@@ -70,8 +70,8 @@ function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffLeadership;
-  INT8 bDrunkLevel;
+  let iEffLeadership: INT32;
+  let bDrunkLevel: INT8;
 
   iEffLeadership = pSoldier->bLeadership;
 
@@ -86,9 +86,9 @@ function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffExpLevel;
-  INT8 bDrunkLevel;
-  INT32 iExpModifier[] = {
+  let iEffExpLevel: INT32;
+  let bDrunkLevel: INT8;
+  let iExpModifier: INT32[] /* [] */ = {
     0, // SOBER
     0, // Feeling good
     -1, // Borderline
@@ -118,7 +118,7 @@ function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffMarksmanship;
+  let iEffMarksmanship: INT32;
 
   iEffMarksmanship = pSoldier->bMarksmanship;
 
@@ -128,7 +128,7 @@ function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
-  INT32 iEffDexterity;
+  let iEffDexterity: INT32;
 
   iEffDexterity = pSoldier->bDexterity;
 
@@ -138,7 +138,7 @@ function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 }
 
 function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
-  UINT8 ubPercentPenalty;
+  let ubPercentPenalty: UINT8;
 
   if (pSoldier->bBreathMax >= 85)
     ubPercentPenalty = 0;
@@ -168,14 +168,16 @@ function GetSkillCheckPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>, iSkill: 
 }
 
 function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: INT8): INT32 {
-  INT32 iSkill;
-  INT32 iChance, iReportChance;
-  INT32 iRoll, iMadeItBy;
-  INT8 bSlot;
-  INT32 iLoop;
-  SOLDIERTYPE *pTeamSoldier;
-  INT8 bBuddyIndex;
-  BOOLEAN fForceDamnSound = FALSE;
+  let iSkill: INT32;
+  let iChance: INT32;
+  let iReportChance: INT32;
+  let iRoll: INT32;
+  let iMadeItBy: INT32;
+  let bSlot: INT8;
+  let iLoop: INT32;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let bBuddyIndex: INT8;
+  let fForceDamnSound: BOOLEAN = FALSE;
 
   iReportChance = -1;
 
@@ -420,7 +422,7 @@ function SkillCheck(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, bChanceMod: I
 function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: BOOLEAN): INT8 {
   // return the level of trap which the guy is able to detect
 
-  INT8 bDetectLevel;
+  let bDetectLevel: INT8;
 
   // formula: 1 pt for every exp_level
   //     plus 1 pt for every 40 explosives

@@ -1,19 +1,20 @@
 const CLOCK_X = 554;
 const CLOCK_Y = 459;
-SGPRect gOldClippingRect, gOldDirtyClippingRect;
+let gOldClippingRect: SGPRect;
+let gOldDirtyClippingRect: SGPRect;
 
-UINT32 guiTacticalInterfaceFlags;
+let guiTacticalInterfaceFlags: UINT32;
 
-UINT16 gusUICurIntTileEffectIndex;
-INT16 gsUICurIntTileEffectGridNo;
-UINT8 gsUICurIntTileOldShade;
+let gusUICurIntTileEffectIndex: UINT16;
+let gsUICurIntTileEffectGridNo: INT16;
+let gsUICurIntTileOldShade: UINT8;
 
-BOOLEAN gfRerenderInterfaceFromHelpText = FALSE;
+let gfRerenderInterfaceFromHelpText: BOOLEAN = FALSE;
 
-MOUSE_REGION gLockPanelOverlayRegion;
+let gLockPanelOverlayRegion: MOUSE_REGION;
 
-BOOLEAN gfPausedTacticalRenderInterfaceFlags = FALSE;
-BOOLEAN gfPausedTacticalRenderFlags = FALSE;
+let gfPausedTacticalRenderInterfaceFlags: BOOLEAN = FALSE;
+let gfPausedTacticalRenderFlags: BOOLEAN = FALSE;
 
 function SetTacticalInterfaceFlags(uiFlags: UINT32): void {
   guiTacticalInterfaceFlags = uiFlags;
@@ -92,8 +93,8 @@ function RenderTacticalInterfaceWhileScrolling(): void {
 }
 
 function SetUpInterface(): void {
-  SOLDIERTYPE *pSoldier;
-  LEVELNODE *pIntTile;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pIntTile: Pointer<LEVELNODE>;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     return;
@@ -206,7 +207,7 @@ function SetUpInterface(): void {
 }
 
 function ResetInterface(): void {
-  LEVELNODE *pNode;
+  let pNode: Pointer<LEVELNODE>;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     return;
@@ -263,7 +264,7 @@ function ResetInterface(): void {
   }
 }
 
-UINT32 guiColors[12] = {
+let guiColors: UINT32[] /* [12] */ = {
   FROMRGB(198, 163, 0),
   FROMRGB(185, 150, 0),
   FROMRGB(172, 136, 0),
@@ -279,13 +280,16 @@ UINT32 guiColors[12] = {
 };
 
 function RenderRubberBanding(): void {
-  UINT16 usLineColor;
-  UINT32 uiDestPitchBYTES;
-  UINT8 *pDestBuf;
-  INT16 iLeft, iRight, iTop, iBottom;
-  INT32 iBack = -1;
-  static INT32 iFlashColor = 0;
-  static INT32 uiTimeOfLastUpdate = 0;
+  let usLineColor: UINT16;
+  let uiDestPitchBYTES: UINT32;
+  let pDestBuf: Pointer<UINT8>;
+  let iLeft: INT16;
+  let iRight: INT16;
+  let iTop: INT16;
+  let iBottom: INT16;
+  let iBack: INT32 = -1;
+  /* static */ let iFlashColor: INT32 = 0;
+  /* static */ let uiTimeOfLastUpdate: INT32 = 0;
 
   if (!gRubberBandActive)
     return;
@@ -372,14 +376,18 @@ function RenderRubberBanding(): void {
 }
 
 function RenderTopmostTacticalInterface(): void {
-  SOLDIERTYPE *pSoldier;
-  UINT32 cnt;
-  static UINT32 uiBogTarget = 0;
-  VOBJECT_DESC VObjectDesc;
-  INT16 sX, sY;
-  INT16 sOffsetX, sOffsetY, sTempY_S, sTempX_S;
-  UINT16 usMapPos;
-  ITEM_POOL *pItemPool;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let cnt: UINT32;
+  /* static */ let uiBogTarget: UINT32 = 0;
+  let VObjectDesc: VOBJECT_DESC;
+  let sX: INT16;
+  let sY: INT16;
+  let sOffsetX: INT16;
+  let sOffsetY: INT16;
+  let sTempY_S: INT16;
+  let sTempX_S: INT16;
+  let usMapPos: UINT16;
+  let pItemPool: Pointer<ITEM_POOL>;
 
   if (gfRerenderInterfaceFromHelpText == TRUE) {
     fInterfacePanelDirty = DIRTYLEVEL2;
@@ -498,7 +506,12 @@ function RenderTopmostTacticalInterface(): void {
         // Display damage
 
         // Use world coordinates!
-        INT16 sMercScreenX, sMercScreenY, sOffsetX, sOffsetY, sDamageX, sDamageY;
+        let sMercScreenX: INT16;
+        let sMercScreenY: INT16;
+        let sOffsetX: INT16;
+        let sOffsetY: INT16;
+        let sDamageX: INT16;
+        let sDamageY: INT16;
 
         if (pSoldier->sGridNo != NOWHERE && pSoldier->bVisible != -1) {
           GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
@@ -562,10 +575,10 @@ function RenderTopmostTacticalInterface(): void {
       if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
         // Check if we are over an item pool
         if (GetItemPool(gfUIOverItemPoolGridNo, &pItemPool, pSoldier->bLevel)) {
-          STRUCTURE *pStructure = NULL;
-          INT16 sIntTileGridNo;
-          INT8 bZLevel = 0;
-          INT16 sActionGridNo = usMapPos;
+          let pStructure: Pointer<STRUCTURE> = NULL;
+          let sIntTileGridNo: INT16;
+          let bZLevel: INT8 = 0;
+          let sActionGridNo: INT16 = usMapPos;
 
           // Get interactive tile...
           if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {
@@ -581,7 +594,7 @@ function RenderTopmostTacticalInterface(): void {
             RemoveFlashItemSlot(pItemPool);
           }
         } else {
-          INT8 bCheckLevel;
+          let bCheckLevel: INT8;
 
           // ATE: Allow to see list if a different level....
           if (pSoldier->bLevel == 0) {
@@ -592,10 +605,10 @@ function RenderTopmostTacticalInterface(): void {
 
           // Check if we are over an item pool
           if (GetItemPool(gfUIOverItemPoolGridNo, &pItemPool, bCheckLevel)) {
-            STRUCTURE *pStructure = NULL;
-            INT16 sIntTileGridNo;
-            INT8 bZLevel = 0;
-            INT16 sActionGridNo = usMapPos;
+            let pStructure: Pointer<STRUCTURE> = NULL;
+            let sIntTileGridNo: INT16;
+            let bZLevel: INT8 = 0;
+            let sActionGridNo: INT16 = usMapPos;
 
             // Get interactive tile...
             if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {

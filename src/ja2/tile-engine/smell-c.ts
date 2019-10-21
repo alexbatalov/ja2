@@ -42,7 +42,7 @@
 
 // LUT for which graphic to use based on strength
 //															 0  1,  2,  3,  4,  5,  6, 7
-UINT8 ubBloodGraphicLUT[] = {
+let ubBloodGraphicLUT: UINT8[] /* [] */ = {
   3,
   3,
   2,
@@ -68,7 +68,7 @@ const BLOOD_DELAY_TIME = (b) => (b & 0x03);
 const NO_BLOOD_STRENGTH = (b) => ((b & 0xFC) == 0);
 
 const DECAY_SMELL_STRENGTH = (s) => {
-  UINT8 ubStrength = SMELL_STRENGTH((s));
+  let ubStrength: UINT8 = SMELL_STRENGTH((s));
   ubStrength--;
   ubStrength = ubStrength << SMELL_TYPE_NUM_BITS;
   (s) = SMELL_TYPE_BITS((s)) | ubStrength;
@@ -96,14 +96,14 @@ const SET_BLOOD_ROOF_STRENGTH = (b, nb) => {
 };
 
 const DECAY_BLOOD_FLOOR_STRENGTH = (b) => {
-  UINT8 ubFloorStrength;
+  let ubFloorStrength: UINT8;
   ubFloorStrength = BLOOD_FLOOR_STRENGTH((b));
   ubFloorStrength--;
   SET_BLOOD_FLOOR_STRENGTH(b, ubFloorStrength);
 };
 
 const DECAY_BLOOD_ROOF_STRENGTH = (b) => {
-  UINT8 ubRoofStrength;
+  let ubRoofStrength: UINT8;
   ubRoofStrength = BLOOD_ROOF_STRENGTH((b));
   ubRoofStrength--;
   SET_BLOOD_FLOOR_STRENGTH(b, ubRoofStrength);
@@ -130,8 +130,8 @@ function RemoveBlood(sGridNo: INT16, bLevel: INT8): void {
 }
 
 function DecaySmells(): void {
-  UINT32 uiLoop;
-  MAP_ELEMENT *pMapElement;
+  let uiLoop: UINT32;
+  let pMapElement: Pointer<MAP_ELEMENT>;
 
   // return;
 
@@ -148,8 +148,8 @@ function DecaySmells(): void {
 }
 
 function DecayBlood(): void {
-  UINT32 uiLoop;
-  MAP_ELEMENT *pMapElement;
+  let uiLoop: UINT32;
+  let pMapElement: Pointer<MAP_ELEMENT>;
 
   for (uiLoop = 0, pMapElement = gpWorldLevelData; uiLoop < WORLD_MAX; uiLoop++, pMapElement++) {
     if (pMapElement->ubBloodInfo) {
@@ -196,7 +196,7 @@ function DecayBlood(): void {
 }
 
 function DecayBloodAndSmells(uiTime: UINT32): void {
-  UINT32 uiCheckTime;
+  let uiCheckTime: UINT32;
 
   if (!gfWorldLoaded) {
     return;
@@ -229,11 +229,11 @@ function DecayBloodAndSmells(uiTime: UINT32): void {
 }
 
 function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
-  MAP_ELEMENT *pMapElement;
-  UINT8 ubOldSmell;
-  UINT8 ubOldStrength;
-  UINT8 ubSmell;
-  UINT8 ubStrength;
+  let pMapElement: Pointer<MAP_ELEMENT>;
+  let ubOldSmell: UINT8;
+  let ubOldStrength: UINT8;
+  let ubSmell: UINT8;
+  let ubStrength: UINT8;
 
   /*
    *  Here we are creating a new smell on the ground.  If there is blood in
@@ -293,9 +293,9 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStrength: UINT8, bVisible: INT8): void {
-  MAP_ELEMENT *pMapElement;
-  UINT8 ubOldStrength = 0;
-  UINT8 ubNewStrength = 0;
+  let pMapElement: Pointer<MAP_ELEMENT>;
+  let ubOldStrength: UINT8 = 0;
+  let ubNewStrength: UINT8 = 0;
 
   /*
    * Dropping some blood;
@@ -379,9 +379,9 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
 }
 
 function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: INT8): void {
-  UINT8 ubType;
-  UINT8 ubOldStrength = 0;
-  UINT8 ubNewStrength = 0;
+  let ubType: UINT8;
+  let ubOldStrength: UINT8 = 0;
+  let ubNewStrength: UINT8 = 0;
 
   /*
    * Dropping some blood;
@@ -403,9 +403,10 @@ function DropBlood(pSoldier: Pointer<SOLDIERTYPE>, ubStrength: UINT8, bVisible: 
 }
 
 function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
-  MAP_ELEMENT *pMapElement;
-  INT8 bValue;
-  UINT16 usIndex, usNewIndex;
+  let pMapElement: Pointer<MAP_ELEMENT>;
+  let bValue: INT8;
+  let usIndex: UINT16;
+  let usNewIndex: UINT16;
 
   // OK, based on level, type, display graphics for blood
   pMapElement = &(gpWorldLevelData[sGridNo]);

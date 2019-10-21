@@ -94,16 +94,16 @@ FAST HELP TEXT -- Explains how the syntax of fast help text works.
 
 */
 
-UINT16 ItemNames[MAXITEMS][80] = { L"" };
+let ItemNames: UINT16[][] /* [MAXITEMS][80] */ = { L"" };
 
-UINT16 ShortItemNames[MAXITEMS][80] = { L"" };
+let ShortItemNames: UINT16[][] /* [MAXITEMS][80] */ = { L"" };
 
 // Different weapon calibres
 // CAWS is Close Assault Weapon System and should probably be left as it is
 // NATO is the North Atlantic Treaty Organization
 // WP is Warsaw Pact
 // cal is an abbreviation for calibre
-UINT16 AmmoCaliber[][20] = {
+let AmmoCaliber: UINT16[][] /* [][20] */ = {
   L"0",
   L".38 kal",
   L"9mm",
@@ -130,7 +130,7 @@ UINT16 AmmoCaliber[][20] = {
 // NATO is the North Atlantic Treaty Organization
 // WP is Warsaw Pact
 // cal is an abbreviation for calibre
-UINT16 BobbyRayAmmoCaliber[][20] = {
+let BobbyRayAmmoCaliber: UINT16[][] /* [][20] */ = {
   L"0",
   L".38 kal",
   L"9mm",
@@ -149,7 +149,7 @@ UINT16 BobbyRayAmmoCaliber[][20] = {
   L"", // dart
 };
 
-UINT16 WeaponType[][30] = {
+let WeaponType: UINT16[][] /* [][30] */ = {
   L"Other",
   L"Pistol",
   L"Machine pistol",
@@ -161,7 +161,7 @@ UINT16 WeaponType[][30] = {
   L"Shotgun",
 };
 
-UINT16 TeamTurnString[][STRING_LENGTH] = {
+let TeamTurnString: UINT16[][] /* [][STRING_LENGTH] */ = {
   L"Beurt speler",
   L"Beurt opponent",
   L"Beurt beest",
@@ -170,7 +170,7 @@ UINT16 TeamTurnString[][STRING_LENGTH] = {
   // planning turn
 };
 
-UINT16 Message[][STRING_LENGTH] = {
+let Message: UINT16[][] /* [][STRING_LENGTH] */ = {
   L"",
 
   // In the following 8 strings, the %s is the merc's name, and the %d (if any) is a number.
@@ -267,7 +267,7 @@ UINT16 Message[][STRING_LENGTH] = {
 
 // the names of the towns in the game
 
-STR16 pTownNames[] = {
+let pTownNames: STR16[] /* [] */ = {
   L"",
   L"Omerta",
   L"Drassen",
@@ -286,7 +286,7 @@ STR16 pTownNames[] = {
 // the types of time compression. For example: is the timer paused? at normal speed, 5 minutes per second, etc.
 // min is an abbreviation for minutes
 
-STR16 sTimeStrings[] = {
+let sTimeStrings: STR16[] /* [] */ = {
   L"Pause",
   L"Normal",
   L"5 min",
@@ -298,7 +298,7 @@ STR16 sTimeStrings[] = {
 // Assignment Strings: what assignment does the merc  have right now? For example, are they on a squad, training,
 // administering medical aid (doctor) or training a town. All are abbreviated. 8 letters is the longest it can be.
 
-STR16 pAssignmentStrings[] = {
+let pAssignmentStrings: STR16[] /* [] */ = {
   L"Team 1",
   L"Team 2",
   L"Team 3",
@@ -336,18 +336,18 @@ STR16 pAssignmentStrings[] = {
   L"Leeg", // Vehicle is empty
 };
 
-STR16 pMilitiaString[] = {
+let pMilitiaString: STR16[] /* [] */ = {
   L"Militie", // the title of the militia box
   L"Unassigned", // the number of unassigned militia troops
   L"Milities kunnen niet herplaatst worden als er nog vijanden in de buurt zijn!",
 };
 
-STR16 pMilitiaButtonString[] = {
+let pMilitiaButtonString: STR16[] /* [] */ = {
   L"Auto", // auto place the militia troops for the player
   L"OK", // done placing militia troops
 };
 
-STR16 pConditionStrings[] = {
+let pConditionStrings: STR16[] /* [] */ = {
   L"Excellent", // the state of a soldier .. excellent health
   L"Good", // good health
   L"Fair", // fair health
@@ -359,7 +359,7 @@ STR16 pConditionStrings[] = {
   L"Dead", // dead
 };
 
-STR16 pEpcMenuStrings[] = {
+let pEpcMenuStrings: STR16[] /* [] */ = {
   L"On duty", // set merc on active duty
   L"Patient", // set as a patient to receive medical aid
   L"Vehicle", // tell merc to enter vehicle
@@ -369,7 +369,7 @@ STR16 pEpcMenuStrings[] = {
 
 // look at pAssignmentString above for comments
 
-STR16 pPersonnelAssignmentStrings[] = {
+let pPersonnelAssignmentStrings: STR16[] /* [] */ = {
   L"Team 1",
   L"Team 2",
   L"Team 3",
@@ -409,7 +409,7 @@ STR16 pPersonnelAssignmentStrings[] = {
 
 // refer to above for comments
 
-STR16 pLongAssignmentStrings[] = {
+let pLongAssignmentStrings: STR16[] /* [] */ = {
   L"Team 1",
   L"Team 2",
   L"Team 3",
@@ -449,7 +449,7 @@ STR16 pLongAssignmentStrings[] = {
 
 // the contract options
 
-STR16 pContractStrings[] = {
+let pContractStrings: STR16[] /* [] */ = {
   L"Contract Opties:",
   L"", // a blank line, required
   L"Voor een dag", // offer merc a one day contract extension
@@ -459,12 +459,12 @@ STR16 pContractStrings[] = {
   L"Stop", // stop showing this menu
 };
 
-STR16 pPOWStrings[] = {
+let pPOWStrings: STR16[] /* [] */ = {
   L"POW", // an acronym for Prisoner of War
   L"??",
 };
 
-STR16 pLongAttributeStrings[] = {
+let pLongAttributeStrings: STR16[] /* [] */ = {
   L"KRACHT",
   L"HANDIGHEID",
   L"BEWEEGLIJKHEID",
@@ -477,13 +477,13 @@ STR16 pLongAttributeStrings[] = {
   L"NIVEAU",
 };
 
-STR16 pInvPanelTitleStrings[] = {
+let pInvPanelTitleStrings: STR16[] /* [] */ = {
   L"Wapen", // the armor rating of the merc
   L"Gew.", // the weight the merc is carrying
   L"Camo", // the merc's camouflage rating
 };
 
-STR16 pShortAttributeStrings[] = {
+let pShortAttributeStrings: STR16[] /* [] */ = {
   L"Bew", // the abbreviated version of : agility
   L"Han", // dexterity
   L"Kra", // strength
@@ -496,7 +496,7 @@ STR16 pShortAttributeStrings[] = {
   L"Med", // medical skill
 };
 
-STR16 pUpperLeftMapScreenStrings[] = {
+let pUpperLeftMapScreenStrings: STR16[] /* [] */ = {
   L"Opdracht", // the mercs current assignment
   L"Contract", // the contract info about the merc
   L"Gezond", // the health level of the current merc
@@ -505,14 +505,14 @@ STR16 pUpperLeftMapScreenStrings[] = {
   L"Tank", // the fuel level of the current vehicle
 };
 
-STR16 pTrainingStrings[] = {
+let pTrainingStrings: STR16[] /* [] */ = {
   L"Oefen", // tell merc to train self
   L"Militie", // tell merc to train town
   L"Trainer", // tell merc to act as trainer
   L"Student", // tell merc to be train by other
 };
 
-STR16 pGuardMenuStrings[] = {
+let pGuardMenuStrings: STR16[] /* [] */ = {
   L"Schietniveau:", // the allowable rate of fire for a merc who is guarding
   L" Agressief vuren", // the merc can be aggressive in their choice of fire rates
   L" Spaar Munitie", // conserve ammo
@@ -527,7 +527,7 @@ STR16 pGuardMenuStrings[] = {
 
 // This string has the same comments as above, however the * denotes the option has been selected by the player
 
-STR16 pOtherGuardMenuStrings[] = {
+let pOtherGuardMenuStrings: STR16[] /* [] */ = {
   L"Schietniveau:",
   L" *Agressief vuren*",
   L" *Spaar Munitie*",
@@ -540,7 +540,7 @@ STR16 pOtherGuardMenuStrings[] = {
   L"Stop",
 };
 
-STR16 pAssignMenuStrings[] = {
+let pAssignMenuStrings: STR16[] /* [] */ = {
   L"On duty", // merc is on active duty
   L"Doctor", // the merc is acting as a doctor
   L"Patient", // the merc is receiving medical attention
@@ -550,12 +550,12 @@ STR16 pAssignMenuStrings[] = {
   L"Stop", // cancel this menu
 };
 
-STR16 pRemoveMercStrings[] = {
+let pRemoveMercStrings: STR16[] /* [] */ = {
   L"Verw.Huurl.", // remove dead merc from current team
   L"Stop",
 };
 
-STR16 pAttributeMenuStrings[] = {
+let pAttributeMenuStrings: STR16[] /* [] */ = {
   L"Kracht",
   L"Behendigheid",
   L"Lenigheid",
@@ -584,7 +584,7 @@ STR16 pAttributeMenuStrings[] =
 };
 */
 
-STR16 pTrainingMenuStrings[] = {
+let pTrainingMenuStrings: STR16[] /* [] */ = {
   L"Oefenen", // train yourself
   L"Militie", // train the town
   L"Trainer", // train your teammates
@@ -592,7 +592,7 @@ STR16 pTrainingMenuStrings[] = {
   L"Stop", // cancel this menu
 };
 
-STR16 pSquadMenuStrings[] = {
+let pSquadMenuStrings: STR16[] /* [] */ = {
   L"Team  1",
   L"Team  2",
   L"Team  3",
@@ -616,11 +616,11 @@ STR16 pSquadMenuStrings[] = {
   L"Stop",
 };
 
-STR16 pPersonnelTitle[] = {
+let pPersonnelTitle: STR16[] /* [] */ = {
   L"Dossiers", // the title for the personnel screen/program application
 };
 
-STR16 pPersonnelScreenStrings[] = {
+let pPersonnelScreenStrings: STR16[] /* [] */ = {
   L"Gezondheid: ", // health of merc
   L"Beweeglijkheid: ",
   L"Handigheid: ",
@@ -648,7 +648,7 @@ STR16 pPersonnelScreenStrings[] = {
 };
 
 // These string correspond to enums used in by the SkillTrait enums in SoldierProfileType.h
-STR16 gzMercSkillText[] = {
+let gzMercSkillText: STR16[] /* [] */ = {
   L"No Skill",
   L"Forceer slot",
   L"Man-tot-man",
@@ -670,7 +670,7 @@ STR16 gzMercSkillText[] = {
 
 // This is pop up help text for the options that are available to the merc
 
-STR16 pTacticalPopupButtonStrings[] = {
+let pTacticalPopupButtonStrings: STR16[] /* [] */ = {
   L"|Staan/Lopen",
   L"Hurken/Gehurkt lopen (|C)",
   L"Staan/|Rennen",
@@ -696,7 +696,7 @@ STR16 pTacticalPopupButtonStrings[] = {
 
 // Door Traps. When we examine a door, it could have a particular trap on it. These are the traps.
 
-STR16 pDoorTrapStrings[] = {
+let pDoorTrapStrings: STR16[] /* [] */ = {
   L"geen val",
   L"een explosie",
   L"een elektrische val",
@@ -706,7 +706,7 @@ STR16 pDoorTrapStrings[] = {
 
 // Contract Extension. These are used for the contract extension with AIM mercenaries.
 
-STR16 pContractExtendStrings[] = {
+let pContractExtendStrings: STR16[] /* [] */ = {
   L"dag",
   L"week",
   L"twee weken",
@@ -714,7 +714,7 @@ STR16 pContractExtendStrings[] = {
 
 // On the map screen, there are four columns. This text is popup help text that identifies the individual columns.
 
-STR16 pMapScreenMouseRegionHelpText[] = {
+let pMapScreenMouseRegionHelpText: STR16[] /* [] */ = {
   L"Selecteer Karakter",
   L"Contracteer huurling",
   L"Plan Route",
@@ -725,7 +725,7 @@ STR16 pMapScreenMouseRegionHelpText[] = {
 
 // volumes of noises
 
-STR16 pNoiseVolStr[] = {
+let pNoiseVolStr: STR16[] /* [] */ = {
   L"VAAG",
   L"ZEKER",
   L"HARD",
@@ -735,7 +735,7 @@ STR16 pNoiseVolStr[] = {
 // types of noises
 
 // OBSOLETE
-STR16 pNoiseTypeStr[] = {
+let pNoiseTypeStr: STR16[] /* [] */ = {
   L"ONBEKEND",
   L"geluid van BEWEGING",
   L"GEKRAAK",
@@ -752,7 +752,7 @@ STR16 pNoiseTypeStr[] = {
 
 // Directions that are used to report noises
 
-STR16 pDirectionStr[] = {
+let pDirectionStr: STR16[] /* [] */ = {
   L"het NOORDOOSTEN",
   L"het OOSTEN",
   L"het ZUIDOOSTEN",
@@ -765,7 +765,7 @@ STR16 pDirectionStr[] = {
 
 // These are the different terrain types.
 
-STR16 pLandTypeStrings[] = {
+let pLandTypeStrings: STR16[] /* [] */ = {
   L"Stad",
   L"Weg",
   L"Vlaktes",
@@ -812,7 +812,7 @@ STR16 pLandTypeStrings[] = {
   L"", // Unused
 };
 
-STR16 gpStrategicString[] = {
+let gpStrategicString: STR16[] /* [] */ = {
   L"", // Unused
   L"%s zijn ontdekt in sector %c%d en een ander team arriveert binnenkort.", // STR_DETECTED_SINGULAR
   L"%s zijn ontdekt in sector %c%d en andere teams arriveren binnenkort.", // STR_DETECTED_PLURAL
@@ -948,21 +948,21 @@ STR16 gpStrategicString[] = {
   L"Beesten vallen je huurlingen aan in sector %s. Geen enkele huurling kan vechten!",
 };
 
-STR16 gpGameClockString[] = {
+let gpGameClockString: STR16[] /* [] */ = {
   // This is the day represented in the game clock.  Must be very short, 4 characters max.
   L"Dag",
 };
 
 // When the merc finds a key, they can get a description of it which
 // tells them where and when they found it.
-STR16 sKeyDescriptionStrings[2] = {
+let sKeyDescriptionStrings: STR16[] /* [2] */ = {
   L"Sector gevonden:",
   L"Dag gevonden:",
 };
 
 // The headers used to describe various weapon statistics.
 
-INT16 gWeaponStatsDesc[][14] = {
+let gWeaponStatsDesc: INT16[][] /* [][14] */ = {
   L"Gewicht (%s):",
   L"Status:",
   L"Munitie:", // Number of bullets left in a magazine
@@ -976,7 +976,7 @@ INT16 gWeaponStatsDesc[][14] = {
 
 // The headers used for the merc's money.
 
-INT16 gMoneyStatsDesc[][13] = {
+let gMoneyStatsDesc: INT16[][] /* [][13] */ = {
   L"Bedrag",
   L"Restbedrag:", // this is the overall balance
   L"Bedrag",
@@ -991,7 +991,7 @@ INT16 gMoneyStatsDesc[][13] = {
 // The health of various creatures, enemies, characters in the game. The numbers following each are for comment
 // only, but represent the precentage of points remaining.
 
-UINT16 zHealthStr[][13] = {
+let zHealthStr: UINT16[][] /* [][13] */ = {
   L"STERVEND", //	>= 0
   L"KRITIEK", //	>= 15
   L"SLECHT", //	>= 30
@@ -1001,7 +1001,7 @@ UINT16 zHealthStr[][13] = {
   L"EXCELLENT", // 	>= 90
 };
 
-STR16 gzMoneyAmounts[6] = {
+let gzMoneyAmounts: STR16[] /* [6] */ = {
   L"$1000",
   L"$100",
   L"$10",
@@ -1011,12 +1011,12 @@ STR16 gzMoneyAmounts[6] = {
 };
 
 // short words meaning "Advantages" for "Pros" and "Disadvantages" for "Cons."
-INT16 gzProsLabel[10] = { L"Voor:" };
+let gzProsLabel: INT16[] /* [10] */ = { L"Voor:" };
 
-INT16 gzConsLabel[10] = { L"Tegen:" };
+let gzConsLabel: INT16[] /* [10] */ = { L"Tegen:" };
 
 // Conversation options a player has when encountering an NPC
-UINT16 zTalkMenuStrings[6][SMALL_STRING_LENGTH] = {
+let zTalkMenuStrings: UINT16[][] /* [6][SMALL_STRING_LENGTH] */ = {
   L"Wat?", // meaning "Repeat yourself"
   L"Aardig", // approach in a friendly
   L"Direct", // approach directly - let's get down to business
@@ -1026,20 +1026,20 @@ UINT16 zTalkMenuStrings[6][SMALL_STRING_LENGTH] = {
 };
 
 // Some NPCs buy, sell or repair items. These different options are available for those NPCs as well.
-UINT16 zDealerStrings[4][SMALL_STRING_LENGTH] = {
+let zDealerStrings: UINT16[][] /* [4][SMALL_STRING_LENGTH] */ = {
   L"Koop/Verkoop", // Buy/Sell
   L"Koop", // Buy
   L"Verkoop", // Sell
   L"Repareer", // Repair
 };
 
-UINT16 zDialogActions[1][SMALL_STRING_LENGTH] = {
+let zDialogActions: UINT16[][] /* [1][SMALL_STRING_LENGTH] */ = {
   L"OK",
 };
 
 // These are vehicles in the game.
 
-STR16 pVehicleStrings[] = {
+let pVehicleStrings: STR16[] /* [] */ = {
   L"Eldorado",
   L"Hummer", // a hummer jeep/truck -- military vehicle
   L"Koeltruck", // Icecream Truck
@@ -1048,7 +1048,7 @@ STR16 pVehicleStrings[] = {
   L"Helikopter",
 };
 
-STR16 pShortVehicleStrings[] = {
+let pShortVehicleStrings: STR16[] /* [] */ = {
   L"Eldor.",
   L"Hummer", // the HMVV
   L"Truck",
@@ -1057,7 +1057,7 @@ STR16 pShortVehicleStrings[] = {
   L"Heli", // the helicopter
 };
 
-STR16 zVehicleName[] = {
+let zVehicleName: STR16[] /* [] */ = {
   L"Eldorado",
   L"Hummer", // a military jeep. This is a brand name.
   L"Truck", // Ice cream truck
@@ -1068,7 +1068,7 @@ STR16 zVehicleName[] = {
 
 // These are messages Used in the Tactical Screen
 
-UINT16 TacticalStr[][MED_STRING_LENGTH] = {
+let TacticalStr: UINT16[][] /* [][MED_STRING_LENGTH] */ = {
   L"Luchtaanval",
   L"Automatisch EHBO toepassen?",
 
@@ -1266,7 +1266,7 @@ UINT16 TacticalStr[][MED_STRING_LENGTH] = {
 };
 
 // Varying helptext explains (for the "Go to Sector/Map" checkbox) what will happen given different circumstances in the "exiting sector" interface.
-STR16 pExitingSectorHelpText[] = {
+let pExitingSectorHelpText: STR16[] /* [] */ = {
   // Helptext for the "Go to Sector" checkbox button, that explains what will happen when the box is checked.
   L"Als aangekruist, dan wordt de aanliggende sector meteen geladen.",
   L"Als aangekruist, dan worden de huurlingen automatisch op de\nkaart geplaatst rekening houdend met reistijden.",
@@ -1309,7 +1309,7 @@ STR16 pExitingSectorHelpText[] = {
   L"%s wordt geëscorteerd door jouw huurlingen en kan de sector niet alleen verlaten. Je huurlingen moeten eerst in de buurt zijn.",
 };
 
-STR16 pRepairStrings[] = {
+let pRepairStrings: STR16[] /* [] */ = {
   L"Items", // tell merc to repair items in inventory
   L"SAM-Stelling", // tell merc to repair SAM site - SAM is an acronym for Surface to Air Missile
   L"Stop", // cancel this menu
@@ -1319,7 +1319,7 @@ STR16 pRepairStrings[] = {
 // NOTE: combine prestatbuildstring with statgain to get a line like the example below.
 // "John has gained 3 points of marksmanship skill."
 
-STR16 sPreStatBuildString[] = {
+let sPreStatBuildString: STR16[] /* [] */ = {
   L"verliest", // the merc has lost a statistic
   L"krijgt", // the merc has gained a statistic
   L"punt voor", // singular
@@ -1328,7 +1328,7 @@ STR16 sPreStatBuildString[] = {
   L"niveaus voor", // plural
 };
 
-STR16 sStatGainStrings[] = {
+let sStatGainStrings: STR16[] /* [] */ = {
   L"gezondheid.",
   L"beweeglijkheid.",
   L"handigheid.",
@@ -1342,7 +1342,7 @@ STR16 sStatGainStrings[] = {
   L"leiderschap.",
 };
 
-STR16 pHelicopterEtaStrings[] = {
+let pHelicopterEtaStrings: STR16[] /* [] */ = {
   L"Totale Afstand: ", // total distance for helicopter to travel
   L" Veilig: ", // distance to travel to destination
   L" Onveilig:", // distance to return from destination to airport
@@ -1355,21 +1355,21 @@ STR16 pHelicopterEtaStrings[] = {
   L"Aanvoer", // L"Arrivals",
 };
 
-STR16 sMapLevelString[] = {
+let sMapLevelString: STR16[] /* [] */ = {
   L"Subniv.:", // what level below the ground is the player viewing in mapscreen ("Sublevel:")
 };
 
-STR16 gsLoyalString[] = {
+let gsLoyalString: STR16[] /* [] */ = {
   L"Loyaal", // the loyalty rating of a town ie : Loyal 53%
 };
 
 // error message for when player is trying to give a merc a travel order while he's underground.
 
-STR16 gsUndergroundString[] = {
+let gsUndergroundString: STR16[] /* [] */ = {
   L"kan geen reisorders ondergronds ontvangen.", // L"can't get travel orders underground.",
 };
 
-STR16 gsTimeStrings[] = {
+let gsTimeStrings: STR16[] /* [] */ = {
   L"u", // hours abbreviation
   L"m", // minutes abbreviation
   L"s", // seconds abbreviation
@@ -1378,7 +1378,7 @@ STR16 gsTimeStrings[] = {
 
 // text for the various facilities in the sector
 
-STR16 sFacilitiesStrings[] = {
+let sFacilitiesStrings: STR16[] /* [] */ = {
   L"Geen",
   L"Ziekenhuis",
   L"Industrie",
@@ -1390,14 +1390,14 @@ STR16 sFacilitiesStrings[] = {
 
 // text for inventory pop up button
 
-STR16 pMapPopUpInventoryText[] = {
+let pMapPopUpInventoryText: STR16[] /* [] */ = {
   L"Inventaris",
   L"OK",
 };
 
 // town strings
 
-STR16 pwTownInfoStrings[] = {
+let pwTownInfoStrings: STR16[] /* [] */ = {
   L"Grootte", // 0 // size of the town in sectors
   L"", // blank line, required
   L"Gezag", // how much of town is controlled
@@ -1414,7 +1414,7 @@ STR16 pwTownInfoStrings[] = {
 
 // Mine strings
 
-STR16 pwMineStrings[] = {
+let pwMineStrings: STR16[] /* [] */ = {
   L"Mijn", // 0
   L"Zilver",
   L"Goud",
@@ -1434,7 +1434,7 @@ STR16 pwMineStrings[] = {
 
 // blank sector strings
 
-STR16 pwMiscSectorStrings[] = {
+let pwMiscSectorStrings: STR16[] /* [] */ = {
   L"Vijandelijke troepen",
   L"Sector",
   L"# Items",
@@ -1446,7 +1446,7 @@ STR16 pwMiscSectorStrings[] = {
 
 // error strings for inventory
 
-STR16 pMapInventoryErrorString[] = {
+let pMapInventoryErrorString: STR16[] /* [] */ = {
   L"%s is niet dichtbij genoeg.", // Merc is in sector with item but not close enough
   L"Kan huurling niet selecteren.", // MARK CARTER
   L"%s is niet in de sector om dat item te pakken.",
@@ -1455,14 +1455,14 @@ STR16 pMapInventoryErrorString[] = {
   L"%s is niet in de sector om dat item neer te leggen.",
 };
 
-STR16 pMapInventoryStrings[] = {
+let pMapInventoryStrings: STR16[] /* [] */ = {
   L"Locatie", // sector these items are in
   L"Aantal Items", // total number of items in sector
 };
 
 // help text for the user
 
-STR16 pMapScreenFastHelpTextList[] = {
+let pMapScreenFastHelpTextList: STR16[] /* [] */ = {
   L"Om de taken van een huurling te veranderen, zoals team, dokter of repareren, klik dan in de 'Toewijzen'-kolom",
   L"Om een huurling een ander doel te geven, klik dan in de 'Doel'-kolom",
   L"Op het moment dat een huurling een reis-order gekregen heeft, kan deze met de tijd-versneller in beweging worden gezet.",
@@ -1477,14 +1477,14 @@ STR16 pMapScreenFastHelpTextList[] = {
 
 // movement menu text
 
-STR16 pMovementMenuStrings[] = {
+let pMovementMenuStrings: STR16[] /* [] */ = {
   L"Huurlingen in Sector", // title for movement box
   L"Teken Reisroute", // done with movement menu, start plotting movement
   L"Stop", // cancel this menu
   L"Anders", // title for group of mercs not on squads nor in vehicles
 };
 
-STR16 pUpdateMercStrings[] = {
+let pUpdateMercStrings: STR16[] /* [] */ = {
   L"Oeps:", // an error has occured
   L"Contract Huurling verlopen:", // this pop up came up due to a merc contract ending
   L"Huurling Taak Volbracht:", // this pop up....due to more than one merc finishing assignments
@@ -1495,7 +1495,7 @@ STR16 pUpdateMercStrings[] = {
 
 // map screen map border buttons help text
 
-STR16 pMapScreenBorderButtonHelpText[] = {
+let pMapScreenBorderButtonHelpText: STR16[] /* [] */ = {
   L"Toon Dorpen (|W)",
   L"Toon |Mijnen",
   L"Toon |Teams & Vijanden",
@@ -1504,7 +1504,7 @@ STR16 pMapScreenBorderButtonHelpText[] = {
   L"Toon Milities & Vijanden (|Z)",
 };
 
-STR16 pMapScreenBottomFastHelp[] = {
+let pMapScreenBottomFastHelp: STR16[] /* [] */ = {
   L"|Laptop",
   L"Tactisch (|E|s|c)",
   L"|Opties",
@@ -1515,21 +1515,21 @@ STR16 pMapScreenBottomFastHelp[] = {
   L"Start/Stop Tijd (|S|p|a|c|e)", // start/stop time compression
 };
 
-STR16 pMapScreenBottomText[] = {
+let pMapScreenBottomText: STR16[] /* [] */ = {
   L"Huidig Saldo", // current balance in player bank account
 };
 
-STR16 pMercDeadString[] = {
+let pMercDeadString: STR16[] /* [] */ = {
   L"%s is dood.",
 };
 
-STR16 pDayStrings[] = {
+let pDayStrings: STR16[] /* [] */ = {
   L"Dag",
 };
 
 // the list of email sender names
 
-STR16 pSenderNameList[] = {
+let pSenderNameList: STR16[] /* [] */ = {
   L"Enrico",
   L"Psych Pro Inc",
   L"Help Desk",
@@ -1586,27 +1586,27 @@ STR16 pSenderNameList[] = {
 
 // next/prev strings
 
-STR16 pTraverseStrings[] = {
+let pTraverseStrings: STR16[] /* [] */ = {
   L"Vorige",
   L"Volgende",
 };
 
 // new mail notify string
 
-STR16 pNewMailStrings[] = {
+let pNewMailStrings: STR16[] /* [] */ = {
   L"Je hebt nieuwe berichten...",
 };
 
 // confirm player's intent to delete messages
 
-STR16 pDeleteMailStrings[] = {
+let pDeleteMailStrings: STR16[] /* [] */ = {
   L"Bericht verwijderen?",
   L"ONGELEZEN bericht(en) verwijderen?",
 };
 
 // the sort header strings
 
-STR16 pEmailHeaders[] = {
+let pEmailHeaders: STR16[] /* [] */ = {
   L"Van:",
   L"Subject:",
   L"Dag:",
@@ -1614,16 +1614,16 @@ STR16 pEmailHeaders[] = {
 
 // email titlebar text
 
-STR16 pEmailTitleText[] = {
+let pEmailTitleText: STR16[] /* [] */ = {
   L"Postvak",
 };
 
 // the financial screen strings
-STR16 pFinanceTitle[] = {
+let pFinanceTitle: STR16[] /* [] */ = {
   L"Account Plus", // the name we made up for the financial program in the game
 };
 
-STR16 pFinanceSummary[] = {
+let pFinanceSummary: STR16[] /* [] */ = {
   L"Credit:", // credit (subtract from) to player's account
   L"Debet:", // debit (add to) to player's account
   L"Saldo Gisteren:",
@@ -1640,7 +1640,7 @@ STR16 pFinanceSummary[] = {
 
 // headers to each list in financial screen
 
-STR16 pFinanceHeaders[] = {
+let pFinanceHeaders: STR16[] /* [] */ = {
   L"Dag", // the day column
   L"Credit", // the credits column (to ADD money to your account)
   L"Debet", // the debits column (to SUBTRACT money from your account)
@@ -1650,7 +1650,7 @@ STR16 pFinanceHeaders[] = {
   L"Dag(en)", // the day(s) of transactions this page displays
 };
 
-STR16 pTransactionText[] = {
+let pTransactionText: STR16[] /* [] */ = {
   L"Toegenomen Interest", // interest the player has accumulated so far
   L"Anonieme Storting",
   L"Transactiekosten",
@@ -1681,7 +1681,7 @@ STR16 pTransactionText[] = {
   L"%s heeft geld gestort.",
 };
 
-STR16 pTransactionAlternateText[] = {
+let pTransactionAlternateText: STR16[] /* [] */ = {
   L"Verzekering voor", // insurance for a merc
   L"Contract %s verl. met 1 dag.", // entend mercs contract by a day
   L"Contract %s verl. met 1 week.",
@@ -1690,7 +1690,7 @@ STR16 pTransactionAlternateText[] = {
 
 // helicopter pilot payment
 
-STR16 pSkyriderText[] = {
+let pSkyriderText: STR16[] /* [] */ = {
   L"Skyrider is $%d betaald.", // skyrider was paid an amount of money
   L"Skyrider heeft $%d tegoed.", // skyrider is still owed an amount of money
   L"Skyrider is klaar met tanken", // skyrider has finished refueling
@@ -1702,7 +1702,7 @@ STR16 pSkyriderText[] = {
 
 // strings for different levels of merc morale
 
-STR16 pMoralStrings[] = {
+let pMoralStrings: STR16[] /* [] */ = {
   L"Super",
   L"Goed",
   L"Stabiel",
@@ -1713,14 +1713,14 @@ STR16 pMoralStrings[] = {
 
 // Mercs equipment has now arrived and is now available in Omerta or Drassen.
 
-STR16 pLeftEquipmentString[] = {
+let pLeftEquipmentString: STR16[] /* [] */ = {
   L"%s's uitrusting is nu beschikbaar in Omerta (A9).",
   L"%s's uitrusting is nu beschikbaar in Drassen (B13).",
 };
 
 // Status that appears on the Map Screen
 
-STR16 pMapScreenStatusStrings[] = {
+let pMapScreenStatusStrings: STR16[] /* [] */ = {
   L"Gezondheid",
   L"Energie",
   L"Moraal",
@@ -1728,21 +1728,21 @@ STR16 pMapScreenStatusStrings[] = {
   L"Brandstof", // the fuel level of the current vehicle (its "energy")
 };
 
-STR16 pMapScreenPrevNextCharButtonHelpText[] = {
+let pMapScreenPrevNextCharButtonHelpText: STR16[] /* [] */ = {
   L"Vorige Huurling (|L|e|f|t)", // previous merc in the list
   L"Volgende Huurling (|R|i|g|h|t)", // next merc in the list
 };
 
-STR16 pEtaString[] = {
+let pEtaString: STR16[] /* [] */ = {
   L"aank:", // eta is an acronym for Estimated Time of Arrival
 };
 
-STR16 pTrashItemText[] = {
+let pTrashItemText: STR16[] /* [] */ = {
   L"Je bent het voor altijd kwijt. Zeker weten?", // do you want to continue and lose the item forever
   L"Dit item ziet er HEEL belangrijk uit. Weet je HEEL, HEEL zeker dat je het wil weggooien?", // does the user REALLY want to trash this item
 };
 
-STR16 pMapErrorString[] = {
+let pMapErrorString: STR16[] /* [] */ = {
   L"Team kan niet verder reizen met een slapende huurling.",
 
   // 1-5
@@ -1807,7 +1807,7 @@ STR16 pMapErrorString[] = {
 };
 
 // help text used during strategic route plotting
-STR16 pMapPlotStrings[] = {
+let pMapPlotStrings: STR16[] /* [] */ = {
   L"Klik nogmaals op de bestemming om de route te bevestigen, of klik op een andere sector om meer routepunten te plaatsen.",
   L"Route bevestigd.",
   L"Bestemming onveranderd.",
@@ -1816,7 +1816,7 @@ STR16 pMapPlotStrings[] = {
 };
 
 // help text used when moving the merc arrival sector
-STR16 pBullseyeStrings[] = {
+let pBullseyeStrings: STR16[] /* [] */ = {
   L"Klik op de sector waar de huurlingen in plaats daarvan moeten arriveren.",
   L"OK. Arriverende huurlingen worden afgezet in %s",
   L"Huurlingen kunnen hier niet ingevlogen worden, het luchtruim is onveilig!",
@@ -1826,14 +1826,14 @@ STR16 pBullseyeStrings[] = {
 
 // help text for mouse regions
 
-STR16 pMiscMapScreenMouseRegionHelpText[] = {
+let pMiscMapScreenMouseRegionHelpText: STR16[] /* [] */ = {
   L"Naar Inventaris (|E|n|t|e|r)",
   L"Gooi Item Weg",
   L"Verlaat Inventaris (|E|n|t|e|r)",
 };
 
 // male version of where equipment is left
-STR16 pMercHeLeaveString[] = {
+let pMercHeLeaveString: STR16[] /* [] */ = {
   L"Laat %s zijn uitrusting achterlaten waar hij nu is (%s) of in Drassen (B13) bij het nemen van de vlucht uit Arulco?",
   L"Laat %s zijn uitrusting achterlaten waar hij nu is (%s) of later in Omerta (A9) bij het nemen van de vlucht uit Arulco?",
   L"gaat binnenkort weg en laat zijn uitrusting achter in Omerta (A9).",
@@ -1842,7 +1842,7 @@ STR16 pMercHeLeaveString[] = {
 };
 
 // female version
-STR16 pMercSheLeaveString[] = {
+let pMercSheLeaveString: STR16[] /* [] */ = {
   L"Laat %s haar uitrusting achterlaten waar ze nu is (%s) of in Drassen (B13) bij het nemen van de vlucht uit Arulco?",
   L"Laat %s haar uitrusting achterlaten waar ze nu is (%s) of later in Omerta (A9) bij het nemen van de vlucht uit Arulco?",
   L"gaat binnenkort weg en laat haar uitrusting achter in Omerta (A9).",
@@ -1850,7 +1850,7 @@ STR16 pMercSheLeaveString[] = {
   L"%s gaat binnenkort weg en laat haar uitrusting achter in %s.",
 };
 
-STR16 pMercContractOverStrings[] = {
+let pMercContractOverStrings: STR16[] /* [] */ = {
   L"'s contract is geëindigd, hij is dus naar huis.", // merc's contract is over and has departed
   L"'s contract is geëindigd, ze is dus naar huis.", // merc's contract is over and has departed
   L"'s contract is opgezegd, hij is dus weg.", // merc's contract has been terminated
@@ -1860,7 +1860,7 @@ STR16 pMercContractOverStrings[] = {
 
 // Text used on IMP Web Pages
 
-STR16 pImpPopUpStrings[] = {
+let pImpPopUpStrings: STR16[] /* [] */ = {
   L"Ongeldige Autorisatiecode",
   L"Je wil het gehele persoonlijkheidsonderzoek te herstarten. Zeker weten?",
   L"Vul alsjeblieft de volledige naam en geslacht in",
@@ -1872,7 +1872,7 @@ STR16 pImpPopUpStrings[] = {
 
 // button labels used on the IMP site
 
-STR16 pImpButtonText[] = {
+let pImpButtonText: STR16[] /* [] */ = {
   L"Info", // about the IMP site ("About Us")
   L"BEGIN", // begin profiling ("BEGIN")
   L"Persoonlijkheid", // personality section ("Personality")
@@ -1901,18 +1901,18 @@ STR16 pImpButtonText[] = {
   L"Stem", // "Voice"
 };
 
-STR16 pExtraIMPStrings[] = {
+let pExtraIMPStrings: STR16[] /* [] */ = {
   L"Selecteer Persoonlijkheid om eigenlijke onderzoek te starten.",
   L"Nu het onderzoek compleet is, selecteer je eigenschappen.",
   L"Nu de eigenschappen gekozen zijn, kun je verder gaan met de portretselectie.",
   L"Selecteer de stem die het best bij je past om het proces te voltooien.",
 };
 
-STR16 pFilesTitle[] = {
+let pFilesTitle: STR16[] /* [] */ = {
   L"Bestanden Bekijken", // ("File Viewer")
 };
 
-STR16 pFilesSenderList[] = {
+let pFilesSenderList: STR16[] /* [] */ = {
   L"Int. Verslag", // the recon report sent to the player. Recon is an abbreviation for reconissance
   L"Intercept.#1", // first intercept file .. Intercept is the title of the organization sending the file...similar in function to INTERPOL/CIA/KGB..refer to fist record in files.txt for the translated title
   L"Intercept.#2", // second intercept file
@@ -1924,11 +1924,11 @@ STR16 pFilesSenderList[] = {
 
 // Text having to do with the History Log
 
-STR16 pHistoryTitle[] = {
+let pHistoryTitle: STR16[] /* [] */ = {
   L"Geschiedenis",
 };
 
-STR16 pHistoryHeaders[] = {
+let pHistoryHeaders: STR16[] /* [] */ = {
   L"Dag", // the day the history event occurred
   L"Pag.", // the current page in the history report we are in
   L"Dag", // the days the history report occurs over
@@ -1942,7 +1942,7 @@ STR16 pHistoryHeaders[] = {
 // IS TO TURN "CHEAT MODE" ON AND USE CONTROL-R IN THE TACTICAL SCREEN, THEN
 // GO INTO THE LAPTOP/HISTORY LOG AND CHECK OUT THE STRINGS. CONTROL-R INSERTS
 // MANY (NOT ALL) OF THE STRINGS IN THE FOLLOWING LIST INTO THE GAME.
-STR16 pHistoryStrings[] = {
+let pHistoryStrings: STR16[] /* [] */ = {
   L"", // leave this line blank
   // 1-5
   L"%s ingehuurd via A.I.M.", // merc was hired from the aim site
@@ -2038,13 +2038,13 @@ STR16 pHistoryStrings[] = {
   L"%s vermoord", // ("Killed %s")
 };
 
-STR16 pHistoryLocations[] = {
+let pHistoryLocations: STR16[] /* [] */ = {
   L"Nvt", // N/A is an acronym for Not Applicable
 };
 
 // icon text strings that appear on the laptop
 
-STR16 pLaptopIcons[] = {
+let pLaptopIcons: STR16[] /* [] */ = {
   L"E-mail",
   L"Web",
   L"Financieel",
@@ -2058,7 +2058,7 @@ STR16 pLaptopIcons[] = {
 // bookmarks for different websites
 // IMPORTANT make sure you move down the Cancel string as bookmarks are being added
 
-STR16 pBookMarkStrings[] = {
+let pBookMarkStrings: STR16[] /* [] */ = {
   L"A.I.M.",
   L"Bobby Ray's",
   L"I.M.P",
@@ -2069,21 +2069,21 @@ STR16 pBookMarkStrings[] = {
   L"Stop",
 };
 
-STR16 pBookmarkTitle[] = {
+let pBookmarkTitle: STR16[] /* [] */ = {
   L"Bladwijzer",
   L"Rechter muisklik om dit menu op te roepen.",
 };
 
 // When loading or download a web page
 
-STR16 pDownloadString[] = {
+let pDownloadString: STR16[] /* [] */ = {
   L"Laden",
   L"Herladen",
 };
 
 // This is the text used on the bank machines, here called ATMs for Automatic Teller Machine
 
-STR16 gsAtmSideButtonText[] = {
+let gsAtmSideButtonText: STR16[] /* [] */ = {
   L"OK",
   L"Neem", // take money from merc
   L"Geef", // give money to merc
@@ -2091,14 +2091,14 @@ STR16 gsAtmSideButtonText[] = {
   L"Leeg", // clear amount being displayed on the screen
 };
 
-STR16 gsAtmStartButtonText[] = {
+let gsAtmStartButtonText: STR16[] /* [] */ = {
   L"Maak over $", // transfer money to merc -- short form
   L"Info", // view stats of the merc
   L"Inventaris", // view the inventory of the merc
   L"Werk",
 };
 
-STR16 sATMText[] = {
+let sATMText: STR16[] /* [] */ = {
   L"Overmaken geld?", // transfer funds to merc?
   L"Ok?", // are we certain?
   L"Geef bedrag", // enter the amount you want to transfer to merc
@@ -2111,7 +2111,7 @@ STR16 sATMText[] = {
 // DNS is the acronym for Domain Name Server
 // URL is the acronym for Uniform Resource Locator
 
-STR16 pErrorStrings[] = {
+let pErrorStrings: STR16[] /* [] */ = {
   L"Fout",
   L"Server heeft geen DNS ingang.",
   L"Controleer URL adres en probeer opnieuw.",
@@ -2119,17 +2119,17 @@ STR16 pErrorStrings[] = {
   L"Periodieke verbinding met host. Houdt rekening met lange wachttijden.",
 };
 
-STR16 pPersonnelString[] = {
+let pPersonnelString: STR16[] /* [] */ = {
   L"Huurlingen:", // mercs we have
 };
 
-STR16 pWebTitle[] = {
+let pWebTitle: STR16[] /* [] */ = {
   L"sir-FER 4.0", // our name for the version of the browser, play on company name
 };
 
 // The titles for the web program title bar, for each page loaded
 
-STR16 pWebPagesTitles[] = {
+let pWebPagesTitles: STR16[] /* [] */ = {
   L"A.I.M.",
   L"A.I.M. Leden",
   L"A.I.M. Portretten", // a mug shot is another name for a portrait
@@ -2168,12 +2168,12 @@ STR16 pWebPagesTitles[] = {
   L"",
 };
 
-STR16 pShowBookmarkString[] = {
+let pShowBookmarkString: STR16[] /* [] */ = {
   L"Sir-Help",
   L"Klik opnieuw voor Bookmarks.",
 };
 
-STR16 pLaptopTitles[] = {
+let pLaptopTitles: STR16[] /* [] */ = {
   L"E-Mail",
   L"Bestanden bekijken",
   L"Persoonlijk",
@@ -2181,7 +2181,7 @@ STR16 pLaptopTitles[] = {
   L"Geschiedenis",
 };
 
-STR16 pPersonnelDepartedStateStrings[] = {
+let pPersonnelDepartedStateStrings: STR16[] /* [] */ = {
   // reasons why a merc has left.
   L"Omgekomen tijdens gevechten",
   L"Weggestuurd",
@@ -2192,7 +2192,7 @@ STR16 pPersonnelDepartedStateStrings[] = {
 };
 // personnel strings appearing in the Personnel Manager on the laptop
 
-STR16 pPersonelTeamStrings[] = {
+let pPersonelTeamStrings: STR16[] /* [] */ = {
   L"Huidig Team",
   L"Vertrekken",
   L"Dag. Kosten:",
@@ -2203,13 +2203,13 @@ STR16 pPersonelTeamStrings[] = {
   L"Anders:",
 };
 
-STR16 pPersonnelCurrentTeamStatsStrings[] = {
+let pPersonnelCurrentTeamStatsStrings: STR16[] /* [] */ = {
   L"Laagste",
   L"Gemiddeld",
   L"Hoogste",
 };
 
-STR16 pPersonnelTeamStatsStrings[] = {
+let pPersonnelTeamStatsStrings: STR16[] /* [] */ = {
   L"GZND",
   L"BEW",
   L"HAN",
@@ -2225,7 +2225,7 @@ STR16 pPersonnelTeamStatsStrings[] = {
 
 // horizontal and vertical indices on the map screen
 
-STR16 pMapVertIndex[] = {
+let pMapVertIndex: STR16[] /* [] */ = {
   L"X",
   L"A",
   L"B",
@@ -2245,7 +2245,7 @@ STR16 pMapVertIndex[] = {
   L"P",
 };
 
-STR16 pMapHortIndex[] = {
+let pMapHortIndex: STR16[] /* [] */ = {
   L"X",
   L"1",
   L"2",
@@ -2265,7 +2265,7 @@ STR16 pMapHortIndex[] = {
   L"16",
 };
 
-STR16 pMapDepthIndex[] = {
+let pMapDepthIndex: STR16[] /* [] */ = {
   L"",
   L"-1",
   L"-2",
@@ -2274,20 +2274,20 @@ STR16 pMapDepthIndex[] = {
 
 // text that appears on the contract button
 
-STR16 pContractButtonString[] = {
+let pContractButtonString: STR16[] /* [] */ = {
   L"Contract",
 };
 
 // text that appears on the update panel buttons
 
-STR16 pUpdatePanelButtons[] = {
+let pUpdatePanelButtons: STR16[] /* [] */ = {
   L"Doorgaan",
   L"Stop",
 };
 
 // Text which appears when everyone on your team is incapacitated and incapable of battle
 
-UINT16 LargeTacticalStr[][LARGE_STRING_LENGTH] = {
+let LargeTacticalStr: UINT16[][] /* [][LARGE_STRING_LENGTH] */ = {
   L"Je bent verslagen in deze sector!",
   L"De vijand, geen genade kennende, slacht ieder teamlid af!",
   L"Je bewusteloze teamleden zijn gevangen genomen!",
@@ -2297,7 +2297,7 @@ UINT16 LargeTacticalStr[][LARGE_STRING_LENGTH] = {
 // Insurance Contract.c
 // The text on the buttons at the bottom of the screen.
 
-STR16 InsContractText[] = {
+let InsContractText: STR16[] /* [] */ = {
   L"Vorige",
   L"Volgende",
   L"OK",
@@ -2307,14 +2307,14 @@ STR16 InsContractText[] = {
 // Insurance Info
 // Text on the buttons on the bottom of the screen
 
-STR16 InsInfoText[] = {
+let InsInfoText: STR16[] /* [] */ = {
   L"Vorige",
   L"Volgende",
 };
 
 // For use at the M.E.R.C. web site. Text relating to the player's account with MERC
 
-STR16 MercAccountText[] = {
+let MercAccountText: STR16[] /* [] */ = {
   // Text on the buttons on the bottom of the screen
   L"Autoriseer",
   L"Thuis",
@@ -2329,7 +2329,7 @@ STR16 MercAccountText[] = {
 
 // For use at the M.E.R.C. web site. Text relating a MERC mercenary
 
-STR16 MercInfo[] = {
+let MercInfo: STR16[] /* [] */ = {
   L"Gezondheid",
   L"Beweeglijkheid",
   L"Handigheid",
@@ -2358,7 +2358,7 @@ STR16 MercInfo[] = {
 
 // For use at the M.E.R.C. web site. Text relating to opening an account with MERC
 
-STR16 MercNoAccountText[] = {
+let MercNoAccountText: STR16[] /* [] */ = {
   // Text on the buttons at the bottom of the screen
   L"Open Rekening",
   L"Afbreken",
@@ -2367,7 +2367,7 @@ STR16 MercNoAccountText[] = {
 
 // For use at the M.E.R.C. web site. MERC Homepage
 
-STR16 MercHomePageText[] = {
+let MercHomePageText: STR16[] /* [] */ = {
   // Description of various parts on the MERC page
   L"Speck T. Kline, oprichter en bezitter",
   L"Om een rekening te open, klik hier",
@@ -2379,7 +2379,7 @@ STR16 MercHomePageText[] = {
 
 // For use at MiGillicutty's Web Page.
 
-STR16 sFuneralString[] = {
+let sFuneralString: STR16[] /* [] */ = {
   L"McGillicutty's Mortuarium: Helpt families rouwen sinds 1983.",
   L"Begrafenisondernemer en voormalig A.I.M. huurling Murray \"Pops\" McGillicutty is een kundig en ervaren begrafenisondernemer.",
   L"Pops weet hoe moeilijk de dood kan zijn, in heel zijn leven heeft hij te maken gehad met de dood en sterfgevallen.",
@@ -2400,7 +2400,7 @@ STR16 sFuneralString[] = {
 
 // Text for the florist Home page
 
-STR16 sFloristText[] = {
+let sFloristText: STR16[] /* [] */ = {
   // Text on the button on the bottom of the page
 
   L"Etalage",
@@ -2427,7 +2427,7 @@ STR16 sFloristText[] = {
 
 // Florist OrderForm
 
-STR16 sOrderFormText[] = {
+let sOrderFormText: STR16[] /* [] */ = {
   // Text on the buttons
 
   L"Terug",
@@ -2461,7 +2461,7 @@ STR16 sOrderFormText[] = {
 
 // Florist Gallery.c
 
-STR16 sFloristGalleryText[] = {
+let sFloristGalleryText: STR16[] /* [] */ = {
   // text on the buttons
 
   L"Back", // abbreviation for previous
@@ -2477,14 +2477,14 @@ STR16 sFloristGalleryText[] = {
 
 // Florist Cards
 
-STR16 sFloristCards[] = {
+let sFloristCards: STR16[] /* [] */ = {
   L"Klik op je selectie",
   L"Terug",
 };
 
 // Text for Bobby Ray's Mail Order Site
 
-STR16 BobbyROrderFormText[] = {
+let BobbyROrderFormText: STR16[] /* [] */ = {
   L"Bestelformulier", // Title of the page
   L"Hvl", // The number of items ordered
   L"Gewicht(%s)", // The weight of the item
@@ -2515,7 +2515,7 @@ STR16 BobbyROrderFormText[] = {
 
 // This text is used when on the various Bobby Ray Web site pages that sell items
 
-STR16 BobbyRText[] = {
+let BobbyRText: STR16[] /* [] */ = {
   L"Bestelling", // Title
   // instructions on how to order
   L"Klik op de item(s). Voor meer dan één, blijf dan klikken. Rechtsklikken voor minder. Als je alles geselecteerd hebt, dat je wil bestellen, ga dan naar het bestelformulier.",
@@ -2570,7 +2570,7 @@ STR16 BobbyRText[] = {
 
 // Text for Bobby Ray's Home Page
 
-STR16 BobbyRaysFrontText[] = {
+let BobbyRaysFrontText: STR16[] /* [] */ = {
   // Details on the web site
 
   L"Hier moet je zijn voor de nieuwste en beste wapens en militaire goederen",
@@ -2593,7 +2593,7 @@ STR16 BobbyRaysFrontText[] = {
 // Text for the AIM page.
 // This is the text used when the user selects the way to sort the aim mercanaries on the AIM mug shot page
 
-STR16 AimSortText[] = {
+let AimSortText: STR16[] /* [] */ = {
   L"A.I.M. Leden", // Title
   // Title for the way to sort
   L"Sort. op:",
@@ -2622,7 +2622,7 @@ STR16 AimSortText[] = {
 // Aim Policies.c
 // The page in which the AIM policies and regulations are displayed
 
-STR16 AimPolicyText[] = {
+let AimPolicyText: STR16[] /* [] */ = {
   // The text on the buttons at the bottom of the page
 
   L"Previous",
@@ -2638,7 +2638,7 @@ STR16 AimPolicyText[] = {
 
 // Instructions to the user to either start video conferencing with the merc, or to go the mug shot index
 
-STR16 AimMemberText[] = {
+let AimMemberText: STR16[] /* [] */ = {
   L"Klik Links",
   L"voor Verbinding met Huurl.",
   L"Klik Rechts",
@@ -2648,7 +2648,7 @@ STR16 AimMemberText[] = {
 // Aim Member.c
 // The page in which the players hires AIM mercenaries
 
-STR16 CharacterInfo[] = {
+let CharacterInfo: STR16[] /* [] */ = {
   // The various attributes of the merc
 
   L"Gezondheid",
@@ -2689,7 +2689,7 @@ STR16 CharacterInfo[] = {
 
 // The following text is used with the video conference popup
 
-STR16 VideoConfercingText[] = {
+let VideoConfercingText: STR16[] /* [] */ = {
   L"Contractkosten:", // Title beside the cost of hiring the merc
 
   // Text on the buttons to select the length of time the merc can be hired
@@ -2725,7 +2725,7 @@ STR16 VideoConfercingText[] = {
 
 // The text that pops up when you select the TRANSFER FUNDS button
 
-STR16 AimPopUpText[] = {
+let AimPopUpText: STR16[] /* [] */ = {
   L"BEDRAG OVERGEBOEKT", // You hired the merc
   L"OVERMAKEN NIET MOGELIJK", // Player doesn't have enough money, message 1
   L"ONVOLDOENDE GELD", // Player doesn't have enough money, message 2
@@ -2746,7 +2746,7 @@ STR16 AimPopUpText[] = {
 
 // AIM Link.c
 
-STR16 AimLinkText[] = {
+let AimLinkText: STR16[] /* [] */ = {
   L"A.I.M. Links", // The title of the AIM links page
 };
 
@@ -2754,7 +2754,7 @@ STR16 AimLinkText[] = {
 
 // This page displays the history of AIM
 
-STR16 AimHistoryText[] = {
+let AimHistoryText: STR16[] /* [] */ = {
   L"A.I.M. Geschiedenis", // Title
 
   // Text on the buttons at the bottom of the page
@@ -2769,7 +2769,7 @@ STR16 AimHistoryText[] = {
 
 // The page in which all the AIM members' portraits are displayed in the order selected by the AIM sort page.
 
-STR16 AimFiText[] = {
+let AimFiText: STR16[] /* [] */ = {
   // displays the way in which the mercs were sorted
 
   L"Prijs",
@@ -2801,7 +2801,7 @@ STR16 AimFiText[] = {
 // AimArchives.
 // The page that displays information about the older AIM alumni merc... mercs who are no longer with AIM
 
-STR16 AimAlumniText[] = {
+let AimAlumniText: STR16[] /* [] */ = {
   // Text of the buttons
 
   L"PAG. 1",
@@ -2815,7 +2815,7 @@ STR16 AimAlumniText[] = {
 
 // AIM Home Page
 
-STR16 AimScreenText[] = {
+let AimScreenText: STR16[] /* [] */ = {
   // AIM disclaimers
 
   L"A.I.M. en A.I.M.-logo zijn geregistreerde handelsmerken in de meeste landen.",
@@ -2833,7 +2833,7 @@ STR16 AimScreenText[] = {
 
 // Aim Home Page
 
-STR16 AimBottomMenuText[] = {
+let AimBottomMenuText: STR16[] /* [] */ = {
   // Text for the links at the bottom of all AIM pages
   L"Home",
   L"Leden",
@@ -2847,7 +2847,7 @@ STR16 AimBottomMenuText[] = {
 // The shopkeeper interface is displayed when the merc wants to interact with
 // the various store clerks scattered through out the game.
 
-STR16 SKI_Text[] = {
+let SKI_Text: STR16[] /* [] */ = {
   L"HANDELSWAAR OP VOORRAAD", // Header for the merchandise available
   L"PAG.", // The current store inventory page being displayed
   L"TOTALE KOSTEN", // The total cost of the the items in the Dealer inventory area
@@ -2867,7 +2867,7 @@ STR16 SKI_Text[] = {
 // ShopKeeper Interface
 // for the bank machine panels. Referenced here is the acronym ATM, which means Automatic Teller Machine
 
-STR16 SkiAtmText[] = {
+let SkiAtmText: STR16[] /* [] */ = {
   // Text on buttons on the banking machine, displayed at the bottom of the page
   L"0",
   L"1",
@@ -2887,7 +2887,7 @@ STR16 SkiAtmText[] = {
 };
 
 // Shopkeeper Interface
-STR16 gzSkiAtmText[] = {
+let gzSkiAtmText: STR16[] /* [] */ = {
   // Text on the bank machine panel that....
   L"Selecteer Type", // tells the user to select either to give or take from the merc
   L"Voer Bedrag In", // Enter the amount to transfer
@@ -2897,7 +2897,7 @@ STR16 gzSkiAtmText[] = {
   L"Saldo", // Display the amount of money the player currently has
 };
 
-STR16 SkiMessageBoxText[] = {
+let SkiMessageBoxText: STR16[] /* [] */ = {
   L"Wil je %s aftrekken van je hoofdrekening om het verschil op te vangen?",
   L"Niet genoeg geld. Je komt %s tekort",
   L"Wil je %s aftrekken van je hoofdrekening om de kosten te dekken?",
@@ -2909,7 +2909,7 @@ STR16 SkiMessageBoxText[] = {
 
 // OptionScreen.c
 
-STR16 zOptionsText[] = {
+let zOptionsText: STR16[] /* [] */ = {
   // button Text
   L"Spel Bewaren",
   L"Spel Laden",
@@ -2928,7 +2928,7 @@ STR16 zOptionsText[] = {
 };
 
 // SaveLoadScreen
-STR16 zSaveLoadText[] = {
+let zSaveLoadText: STR16[] /* [] */ = {
   L"Spel Bewaren",
   L"Spel Laden",
   L"Stop",
@@ -2971,7 +2971,7 @@ STR16 zSaveLoadText[] = {
 };
 
 // MapScreen
-STR16 zMarksMapScreenText[] = {
+let zMarksMapScreenText: STR16[] /* [] */ = {
   L"Kaartniveau",
   L"Je hebt geen militie. Je moet stadsburgers trainen om een stadsmilitie te krijgen.",
   L"Dagelijks Inkomen",
@@ -3002,12 +3002,12 @@ STR16 zMarksMapScreenText[] = {
   L"Contract Huurling is niet verzekerd",
 };
 
-STR16 pLandMarkInSectorString[] = {
+let pLandMarkInSectorString: STR16[] /* [] */ = {
   L"Team %d is heeft iemand ontdekt in sector %s",
 };
 
 // confirm the player wants to pay X dollars to build a militia force in town
-STR16 pMilitiaConfirmStrings[] = {
+let pMilitiaConfirmStrings: STR16[] /* [] */ = {
   L"Een stadsmilitie trainen kost $", // telling player how much it will cost
   L"Uitgave goedkeuren?", // asking player if they wish to pay the amount requested
   L"je kunt dit niet betalen.", // telling the player they can't afford to train this town
@@ -3022,17 +3022,17 @@ STR16 pMilitiaConfirmStrings[] = {
 };
 
 // Strings used in the popup box when withdrawing, or depositing money from the $ sign at the bottom of the single merc panel
-STR16 gzMoneyWithdrawMessageText[] = {
+let gzMoneyWithdrawMessageText: STR16[] /* [] */ = {
   L"Je kunt maximaal $20.000 in één keer opnemen.",
   L"Weet je zeker dat je %s wil storten op je rekening?",
 };
 
-STR16 gzCopyrightText[] = {
+let gzCopyrightText: STR16[] /* [] */ = {
   L"Copyright (C) 1999 Sir-tech Canada Ltd.  All rights reserved.",
 };
 
 // option Text
-STR16 zOptionsToggleText[] = {
+let zOptionsToggleText: STR16[] /* [] */ = {
   L"Spraak",
   L"Bevestigingen uit",
   L"Ondertitels",
@@ -3056,7 +3056,7 @@ STR16 zOptionsToggleText[] = {
 };
 
 // This is the help text associated with the above toggles.
-STR16 zOptionsScreenHelpText[] = {
+let zOptionsScreenHelpText: STR16[] /* [] */ = {
   // speech
   L"Schakel deze optie IN als je de karakter-dialogen wil horen.",
 
@@ -3117,7 +3117,7 @@ STR16 zOptionsScreenHelpText[] = {
   L"Wanneer INGESCHAKELD wordt de cursor in 3D getoond. (|Home)",
 };
 
-STR16 gzGIOScreenText[] = {
+let gzGIOScreenText: STR16[] /* [] */ = {
   L"SPEL-INSTELLINGEN",
   L"Speelstijl",
   L"Realistisch",
@@ -3137,7 +3137,7 @@ STR16 gzGIOScreenText[] = {
   L"Niet mogelijk bij Demo",
 };
 
-STR16 pDeliveryLocationStrings[] = {
+let pDeliveryLocationStrings: STR16[] /* [] */ = {
   L"Austin", // Austin, Texas, USA
   L"Baghdad", // Baghdad, Iraq (Suddam Hussein's home)
   L"Drassen", // The main place in JA2 that you can receive items.  The other towns are dummy names...
@@ -3157,48 +3157,48 @@ STR16 pDeliveryLocationStrings[] = {
   L"Vancouver", // Vancouver, British Columbia, Canada (west coast near US border)
 };
 
-STR16 pSkillAtZeroWarning[] = {
+let pSkillAtZeroWarning: STR16[] /* [] */ = {
   // This string is used in the IMP character generation.  It is possible to select 0 ability
   // in a skill meaning you can't use it.  This text is confirmation to the player.
   L"Are you sure? A value of zero means NO ability in this skill.",
 };
 
-STR16 pIMPBeginScreenStrings[] = {
+let pIMPBeginScreenStrings: STR16[] /* [] */ = {
   L"( 8 Karakters Max )",
 };
 
-STR16 pIMPFinishButtonText[1] = {
+let pIMPFinishButtonText: STR16[] /* [1] */ = {
   L"Analiseren",
 };
 
-STR16 pIMPFinishStrings[] = {
+let pIMPFinishStrings: STR16[] /* [] */ = {
   L"Bedankt, %s", //%s is the name of the merc
 };
 
 // the strings for imp voices screen
-STR16 pIMPVoicesStrings[] = {
+let pIMPVoicesStrings: STR16[] /* [] */ = {
   L"Stem",
 };
 
-STR16 pDepartedMercPortraitStrings[] = {
+let pDepartedMercPortraitStrings: STR16[] /* [] */ = {
   L"Gedood tijdens gevecht",
   L"Ontslagen",
   L"Anders",
 };
 
 // title for program
-STR16 pPersTitleText[] = {
+let pPersTitleText: STR16[] /* [] */ = {
   L"Personeelsmanager",
 };
 
 // paused game strings
-STR16 pPausedGameText[] = {
+let pPausedGameText: STR16[] /* [] */ = {
   L"Spel Gepauzeerd",
   L"Doorgaan (|P|a|u|s|e)",
   L"Pauze Spel (|P|a|u|s|e)",
 };
 
-STR16 pMessageStrings[] = {
+let pMessageStrings: STR16[] /* [] */ = {
   L"Spel verlaten?",
   L"OK",
   L"JA",
@@ -3302,7 +3302,7 @@ STR16 pMessageStrings[] = {
   L"Geschiedenisverslag bijgewerkt.",
 };
 
-UINT16 ItemPickupHelpPopup[][40] = {
+let ItemPickupHelpPopup: UINT16[][] /* [][40] */ = {
   L"OK",
   L"Scroll Omhoog",
   L"Selecteer Alles",
@@ -3310,28 +3310,28 @@ UINT16 ItemPickupHelpPopup[][40] = {
   L"Stop",
 };
 
-STR16 pDoctorWarningString[] = {
+let pDoctorWarningString: STR16[] /* [] */ = {
   L"%s is niet dichtbij genoeg om te worden genezen.",
   L"Je medici waren niet in staat om iedereen te verbinden.",
 };
 
-STR16 pMilitiaButtonsHelpText[] = {
+let pMilitiaButtonsHelpText: STR16[] /* [] */ = {
   L"Raap op(Klik Rechts)/drop(Klik links) Groene Troepen", // button help text informing player they can pick up or drop militia with this button
   L"Raap op(Klik Rechts)/drop(Klik links) Normale Troepen",
   L"Raap op(Klik Rechts)/drop(Klik links) Veteranentroepen",
   L"Verspreidt beschikbare milities evenredig over alle sectoren",
 };
 
-STR16 pMapScreenJustStartedHelpText[] = {
+let pMapScreenJustStartedHelpText: STR16[] /* [] */ = {
   L"Ga naar AIM en huur wat huurlingen in ( *Hint* dat kan bij Laptop )",
   L"Als je klaar bent om naar Arulco te gaan, klik dan op TijdVersneller onder rechts op het scherm.", // to inform the player to hit time compression to get the game underway
 };
 
-STR16 pAntiHackerString[] = {
+let pAntiHackerString: STR16[] /* [] */ = {
   L"Fout. Bestanden missen of zijn beschadigd. Spel wordt beëindigd.",
 };
 
-STR16 gzLaptopHelpText[] = {
+let gzLaptopHelpText: STR16[] /* [] */ = {
   // Buttons:
   L"Lees E-mail",
   L"Bekijk web-pagina's",
@@ -3355,11 +3355,11 @@ STR16 gzLaptopHelpText[] = {
   L"Verzekeringsagenten voor A.I.M. contracten",
 };
 
-STR16 gzHelpScreenText[] = {
+let gzHelpScreenText: STR16[] /* [] */ = {
   L"Verlaat help-scherm",
 };
 
-STR16 gzNonPersistantPBIText[] = {
+let gzNonPersistantPBIText: STR16[] /* [] */ = {
   L"Er is een gevecht gaande. Je kan alleen terugtrekken m.b.v. het tactische scherm.",
   L"B|etreedt sector om door te gaan met het huidige gevecht.",
   L"Los huidige gevecht |automatisch op.",
@@ -3372,7 +3372,7 @@ STR16 gzNonPersistantPBIText[] = {
   L"je kan je op dit moment niet terugtrekken.",
 };
 
-STR16 gzMiscString[] = {
+let gzMiscString: STR16[] /* [] */ = {
   L"Je militie vecht door zonder hulp van je huurlingen...",
   L"Het voertuig heeft geen brandstof meer nodig.",
   L"De brandstoftank is voor %d%% gevuld.",
@@ -3380,7 +3380,7 @@ STR16 gzMiscString[] = {
   L"Je hebt een tankplaats verloren.",
 };
 
-STR16 gzIntroScreen[] = {
+let gzIntroScreen: STR16[] /* [] */ = {
   L"Kan intro video niet vinden",
 };
 
@@ -3388,7 +3388,7 @@ STR16 gzIntroScreen[] = {
 // and a direction (either "above", "below", or a string from pDirectionStr) to
 // report a noise.
 // e.g. "Sidney hears a loud sound of MOVEMENT coming from the SOUTH."
-STR16 pNewNoiseStr[] = {
+let pNewNoiseStr: STR16[] /* [] */ = {
   L"%s hoort een %s geluid uit %s.",
   L"%s hoort een %s geluid van BEWEGING uit %s.",
   L"%s hoort een %s KRAKEND geluid uit %s.",
@@ -3402,7 +3402,7 @@ STR16 pNewNoiseStr[] = {
   L"%s hoort een %s KLAP uit %s.",
 };
 
-STR16 wMapScreenSortButtonHelpText[] = {
+let wMapScreenSortButtonHelpText: STR16[] /* [] */ = {
   L"Sorteer op Naam (|F|1)",
   L"Sorteer op Taak (|F|2)",
   L"Sorteer op Slaapstatus (|F|3)",
@@ -3411,19 +3411,19 @@ STR16 wMapScreenSortButtonHelpText[] = {
   L"Sorteer op Vertrektijd (|F|6)",
 };
 
-STR16 BrokenLinkText[] = {
+let BrokenLinkText: STR16[] /* [] */ = {
   L"Fout 404",
   L"Site niet gevonden.",
 };
 
-STR16 gzBobbyRShipmentText[] = {
+let gzBobbyRShipmentText: STR16[] /* [] */ = {
   L"Recentelijke ladingen",
   L"Order #",
   L"Aantal Items",
   L"Besteld op",
 };
 
-STR16 gzCreditNames[] = {
+let gzCreditNames: STR16[] /* [] */ = {
   L"Chris Camfield",
   L"Shaun Lyng",
   L"Kris Märnes",
@@ -3441,7 +3441,7 @@ STR16 gzCreditNames[] = {
   L"Joey \"Joeker\" Whelan",
 };
 
-STR16 gzCreditNameTitle[] = {
+let gzCreditNameTitle: STR16[] /* [] */ = {
   L"Spel Programmeur", // Chris Camfield "Game Internals Programmer"
   L"Co-ontwerper/Schrijver", // Shaun Lyng "Co-designer/Writer"
   L"Strategische Systemen & Programmeur", // Kris Marnes "Strategic Systems & Editor Programmer"
@@ -3459,7 +3459,7 @@ STR16 gzCreditNameTitle[] = {
   L"Portret-Artiest", // Joey \"Joeker\" Whelan",
 };
 
-STR16 gzCreditNameFunny[] = {
+let gzCreditNameFunny: STR16[] /* [] */ = {
   L"", // Chris Camfield
   L"(leert nog steeds interpunctie)", // Shaun Lyng
   L"(\"Het is klaar. Ben er mee bezig\")", // Kris \"The Cow Rape Man\" Marnes
@@ -3477,7 +3477,7 @@ STR16 gzCreditNameFunny[] = {
   L"(deed items en schermen-laden ook!)", // Joey \"Joeker\" Whelan",
 };
 
-STR16 sRepairsDoneString[] = {
+let sRepairsDoneString: STR16[] /* [] */ = {
   L"%s is klaar met reparatie van eigen items",
   L"%s is klaar met reparatie van ieders wapens en bepantering",
   L"%s is klaar met reparatie van ieders uitrusting",
@@ -3492,13 +3492,13 @@ STR16 sRepairsDoneString[] = {
 };
 */
 
-STR16 zGioDifConfirmText[] = {
+let zGioDifConfirmText: STR16[] /* [] */ = {
   L"Je hebt de NOVICE-modus geselecteerd. Deze instelling is geschikt voor diegenen die Jagged Alliance voor de eerste keer spelen, voor diegenen die nog niet zo bekend zijn met strategy games, of voor diegenen die kortere gevechten in de game willen hebben.", // Je keuze beïnvloedt dingen in het hele verloop van de game, dus weet wat je doet. Weet je zeker dat je in de Novice-modus wilt spelen?",
   L"Je hebt de EXPERIENCED-modus geselecteerd. Deze instelling is geschikt voor diegenen die al bekend zijn met Jagged Alliance of dergelijke games. Je keuze beïnvloedt dingen in het hele verloop van de game, dus weet wat je doet. Weet je zeker dat je in de Experienced-modus wilt spelen ?",
   L"Je hebt de EXPERT-modus geselecteerd. We hebben je gewaarschuwd. Geef ons niet de schuld als je in een kist terugkomt. Je keuze beïnvloedt dingen in het hele verloop van de game, dus weet wat je doet. Weet je zeker dat je in de Expert-modus wilt spelen?",
 };
 
-STR16 gzLateLocalizedString[] = {
+let gzLateLocalizedString: STR16[] /* [] */ = {
   L"%S laadscherm-data niet gevonden...",
 
   // 1-5

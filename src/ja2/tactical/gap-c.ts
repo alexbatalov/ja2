@@ -5,16 +5,17 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
   // while counting the number of elements loaded
 
   //	FILE *pFile;
-  HWFILE pFile;
-  STR pSourceFileName;
-  STR pDestFileName;
-  char sFileName[256];
-  UINT8 counter = 0;
-  AUDIO_GAP *pCurrentGap, *pPreviousGap;
-  UINT32 Start;
-  UINT32 uiNumBytesRead;
+  let pFile: HWFILE;
+  let pSourceFileName: STR;
+  let pDestFileName: STR;
+  let sFileName: char[] /* [256] */;
+  let counter: UINT8 = 0;
+  let pCurrentGap: Pointer<AUDIO_GAP>;
+  let pPreviousGap: Pointer<AUDIO_GAP>;
+  let Start: UINT32;
+  let uiNumBytesRead: UINT32;
 
-  UINT32 End;
+  let End: UINT32;
 
   pSourceFileName = zSoundFile;
   pDestFileName = sFileName;
@@ -90,7 +91,8 @@ function AudioGapListDone(pGapList: Pointer<AudioGapList>): void {
   // This procedure will go through the  AudioGapList and free space/nullify pointers
   // for any allocated elements
 
-  AUDIO_GAP *pCurrent, *pNext;
+  let pCurrent: Pointer<AUDIO_GAP>;
+  let pNext: Pointer<AUDIO_GAP>;
   if (pGapList->pHead != 0) {
     pCurrent = pGapList->pHead;
     pNext = pCurrent->pNext;
@@ -120,8 +122,8 @@ function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): voi
   // ...if next elements uiStart is larger than current_time, or no more elements..
   // set flag FALSE
 
-  UINT32 time;
-  AUDIO_GAP *pCurrent;
+  let time: UINT32;
+  let pCurrent: Pointer<AUDIO_GAP>;
 
   if (!pGapList) {
     // no gap list, return
@@ -169,7 +171,7 @@ function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): voi
 }
 
 function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
-  SOUNDPARMS spParms;
+  let spParms: SOUNDPARMS;
 
   memset(&spParms, 0xff, sizeof(SOUNDPARMS));
 

@@ -1,4 +1,4 @@
-StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
+let StrategicMap: StrategicMapElement[] /* [MAP_WORLD_X * MAP_WORLD_Y] */;
 
 function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // add the guy to the dead list
@@ -59,9 +59,9 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function HandleSoldierDeadComments(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 cnt = 0;
-  SOLDIERTYPE *pTeamSoldier;
-  INT8 bBuddyIndex;
+  let cnt: INT32 = 0;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let bBuddyIndex: INT8;
 
   // IF IT'S THE SELECTED GUY, MAKE ANOTHER SELECTED!
   cnt = gTacticalStatus.Team[pSoldier->bTeam].bFirstID;

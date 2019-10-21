@@ -1,12 +1,12 @@
-BOOLEAN gfWarning = FALSE;
+let gfWarning: BOOLEAN = FALSE;
 
-BOOLEAN gfDoFill = FALSE;
-UINT16 CurrentPaste = NO_TILE;
-UINT16 gDebrisPaste = NO_TILE;
-UINT16 gChangeElevation = FALSE;
-UINT16 CurrentStruct = NO_TILE;
-UINT32 gDoBanks = NO_BANKS;
-UINT32 gDoCliffs = NO_CLIFFS;
+let gfDoFill: BOOLEAN = FALSE;
+let CurrentPaste: UINT16 = NO_TILE;
+let gDebrisPaste: UINT16 = NO_TILE;
+let gChangeElevation: UINT16 = FALSE;
+let CurrentStruct: UINT16 = NO_TILE;
+let gDoBanks: UINT32 = NO_BANKS;
+let gDoCliffs: UINT32 = NO_CLIFFS;
 
 //---------------------------------------------------------------------------------------------------------------
 //	QuickEraseMapTile
@@ -53,8 +53,8 @@ function DeleteStuffFromMapTile(iMapIndex: UINT32): void {
 //	Generic tile erasing function. Erases things from the world depending on the current drawing mode
 //
 function EraseMapTile(iMapIndex: UINT32): void {
-  INT32 iEraseMode;
-  UINT32 uiCheckType;
+  let iEraseMode: INT32;
+  let uiCheckType: UINT32;
   if (iMapIndex >= 0x8000)
     return;
 
@@ -172,9 +172,9 @@ function EraseMapTile(iMapIndex: UINT32): void {
 //	the current brush size is larger than 1 tile.
 //
 function PasteDebris(iMapIndex: UINT32): void {
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
-  INT32 iRandSelIndex;
+  let usUseIndex: UINT16;
+  let usUseObjIndex: UINT16;
+  let iRandSelIndex: INT32;
 
   // Get selection list for debris
   pSelList = SelDebris;
@@ -232,7 +232,10 @@ function PasteRoomNumber(iMapIndex: UINT32, ubRoomNumber: UINT8): void {
 }
 
 function PasteSingleBrokenWall(iMapIndex: UINT32): void {
-  UINT16 usIndex, usObjIndex, usTileIndex, usWallOrientation;
+  let usIndex: UINT16;
+  let usObjIndex: UINT16;
+  let usTileIndex: UINT16;
+  let usWallOrientation: UINT16;
 
   pSelList = SelSingleBrokenWall;
   pNumSelList = &iNumBrokenWallsSelected;
@@ -280,9 +283,9 @@ function PasteSingleToilet(iMapIndex: UINT32): void {
 //	PasteSingleDecor (above).
 //
 function PasteSingleWallCommon(iMapIndex: UINT32): void {
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
-  UINT16 usTempIndex;
+  let usUseIndex: UINT16;
+  let usUseObjIndex: UINT16;
+  let usTempIndex: UINT16;
 
   if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
@@ -358,10 +361,10 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
 //	Returns a randomly picked object index given the current selection list, and the type or types of objects we want
 //	from that list. If no such objects are in the list, we return 0xffff (-1).
 function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
-  UINT16 usPickList[50];
-  UINT16 usNumInPickList;
-  UINT16 usWhich;
-  UINT16 usObject;
+  let usPickList: UINT16[] /* [50] */;
+  let usNumInPickList: UINT16;
+  let usWhich: UINT16;
+  let usObject: UINT16;
   // Get a list of valid object to select from
   usNumInPickList = 0;
   for (usWhich = 0; usWhich < *pNumSelList; usWhich++) {
@@ -375,11 +378,11 @@ function GetRandomIndexByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16
 }
 
 function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 {
-  UINT16 usPickList[50];
-  UINT16 usNumInPickList;
-  UINT16 i;
-  UINT16 usObject;
-  UINT32 uiType;
+  let usPickList: UINT16[] /* [50] */;
+  let usNumInPickList: UINT16;
+  let i: UINT16;
+  let usObject: UINT16;
+  let uiType: UINT32;
   // Get a list of valid object to select from
   usNumInPickList = 0;
   for (i = 0; i < *pNumSelList; i++) {
@@ -436,12 +439,12 @@ function PasteStructure2(iMapIndex: UINT32): void {
 //	each use different selection lists. Other than that, they are COMPLETELY identical.
 //
 function PasteStructureCommon(iMapIndex: UINT32): void {
-  BOOLEAN fDoPaste = FALSE;
-  UINT32 fHeadType;
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
-  INT32 iRandSelIndex;
-  BOOLEAN fOkayToAdd;
+  let fDoPaste: BOOLEAN = FALSE;
+  let fHeadType: UINT32;
+  let usUseIndex: UINT16;
+  let usUseObjIndex: UINT16;
+  let iRandSelIndex: INT32;
+  let fOkayToAdd: BOOLEAN;
 
   if (iMapIndex < 0x8000) {
     /*
@@ -489,10 +492,10 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
 //	Places a river bank or cliff into the world
 //
 function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN): void {
-  BOOLEAN fDoPaste = FALSE;
-  UINT16 usUseIndex;
-  UINT16 usUseObjIndex;
-  UINT16 usIndex;
+  let fDoPaste: BOOLEAN = FALSE;
+  let usUseIndex: UINT16;
+  let usUseObjIndex: UINT16;
+  let usIndex: UINT16;
 
   pSelList = SelBanks;
   pNumSelList = &iNumBanksSelected;
@@ -535,7 +538,7 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
 }
 
 function PasteRoads(iMapIndex: UINT32): void {
-  UINT16 usUseIndex;
+  let usUseIndex: UINT16;
 
   pSelList = SelRoads;
   pNumSelList = &iNumRoadsSelected;
@@ -564,8 +567,8 @@ function PasteTexture(iMapIndex: UINT32): void {
 //	stack as the same undo command.
 //
 function PasteTextureCommon(iMapIndex: UINT32): void {
-  UINT8 ubLastHighLevel;
-  UINT16 usTileIndex;
+  let ubLastHighLevel: UINT8;
+  let usTileIndex: UINT16;
   // UINT16					Dummy;
 
   if (CurrentPaste != NO_TILE && iMapIndex < 0x8000) {
@@ -610,11 +613,11 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
 //	This function performs the appropriate actions.
 //
 function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
-  UINT16 NewTile;
-  UINT8 ubLastHighLevel;
-  UINT32 *puiDeletedTypes = NULL;
-  UINT8 ubNumTypes;
-  UINT8 cnt;
+  let NewTile: UINT16;
+  let ubLastHighLevel: UINT8;
+  let puiDeletedTypes: Pointer<UINT32> = NULL;
+  let ubNumTypes: UINT8;
+  let cnt: UINT8;
 
   // Here we do the following:
   // - Remove old type from layer
@@ -664,11 +667,15 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
 //	Like above function except it performs it's operation on a redial area.
 //
 function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8): BOOLEAN {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  INT32 iXPos, iYPos;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let iXPos: INT32;
+  let iYPos: INT32;
 
   // Determine start and end indicies and num rows
   sTop = ubRadius;
@@ -709,8 +716,8 @@ function PasteHigherTextureFromRadius(iMapIndex: INT32, uiNewType: UINT32, ubRad
 //	PasteExistingTexture
 //
 function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
-  UINT32 uiNewType;
-  UINT16 usNewIndex;
+  let uiNewType: UINT32;
+  let usNewIndex: UINT16;
   // UINT16					Dummy;
 
   // If here, we want to make, esentially, what is a type in
@@ -754,11 +761,14 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 //	As above, but on a radial area
 //
 function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRadius: UINT8): BOOLEAN {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  INT32 leftmost;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let leftmost: INT32;
 
   // Determine start end end indicies and num rows
   sTop = ubRadius;
@@ -791,18 +801,21 @@ function PasteExistingTextureFromRadius(iMapIndex: INT32, usIndex: UINT16, ubRad
 //	Puts a land index "under" an existing ground texture. Affects a radial area.
 //
 function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadius: UINT8, fReplace: BOOLEAN): BOOLEAN {
-  UINT16 usTempIndex;
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  BOOLEAN fDoPaste = FALSE;
-  INT32 leftmost;
-  UINT8 ubLastHighLevel;
-  UINT32 *puiSmoothTiles = NULL;
-  INT16 sNumSmoothTiles = 0;
-  UINT16 usTemp;
-  UINT16 NewTile; //,Dummy;
+  let usTempIndex: UINT16;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let fDoPaste: BOOLEAN = FALSE;
+  let leftmost: INT32;
+  let ubLastHighLevel: UINT8;
+  let puiSmoothTiles: Pointer<UINT32> = NULL;
+  let sNumSmoothTiles: INT16 = 0;
+  let usTemp: UINT16;
+  let NewTile: UINT16; //,Dummy;
 
   // Determine start end end indicies and num rows
   sTop = ubRadius;
@@ -874,9 +887,9 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 
 // ATE FIXES
 function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
-  UINT16 usIndex;
-  UINT8 ubTypeLevel;
-  UINT16 NewTile;
+  let usIndex: UINT16;
+  let ubTypeLevel: UINT8;
+  let NewTile: UINT16;
 
   // CHECK IF THIS TEXTURE EXISTS!
   if (TypeExistsInLandLayer(sGridNo, usType, &usIndex)) {
@@ -895,11 +908,14 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
 }
 
 function PasteTextureFromRadiusEx(sGridNo: INT16, usType: UINT16, ubRadius: UINT8): void {
-  INT16 sTop, sBottom;
-  INT16 sLeft, sRight;
-  INT16 cnt1, cnt2;
-  INT32 iNewIndex;
-  INT32 leftmost;
+  let sTop: INT16;
+  let sBottom: INT16;
+  let sLeft: INT16;
+  let sRight: INT16;
+  let cnt1: INT16;
+  let cnt2: INT16;
+  let iNewIndex: INT32;
+  let leftmost: INT32;
 
   // Determine start end end indicies and num rows
   sTop = ubRadius;
@@ -932,20 +948,21 @@ const LAND_DROP_3 = FIRSTCLIFF12;
 const LAND_DROP_4 = FIRSTCLIFF15;
 const LAND_DROP_5 = FIRSTCLIFF8;
 function RaiseWorldLand(): void {
-  INT32 cnt;
-  UINT32 sTempGridNo;
-  LEVELNODE *pStruct;
-  TILE_ELEMENT *pTileElement;
-  BOOLEAN fRaise;
-  BOOLEAN fRaiseSet;
-  BOOLEAN fSomethingRaised = FALSE;
-  UINT8 ubLoop;
-  UINT16 usIndex;
-  BOOLEAN fStopRaise = FALSE;
-  INT32 iCounterA = 0, iCounterB = 0;
-  INT32 iStartNumberOfRaises = 0;
-  INT32 iNumberOfRaises = 0;
-  BOOLEAN fAboutToRaise = FALSE;
+  let cnt: INT32;
+  let sTempGridNo: UINT32;
+  let pStruct: Pointer<LEVELNODE>;
+  let pTileElement: Pointer<TILE_ELEMENT>;
+  let fRaise: BOOLEAN;
+  let fRaiseSet: BOOLEAN;
+  let fSomethingRaised: BOOLEAN = FALSE;
+  let ubLoop: UINT8;
+  let usIndex: UINT16;
+  let fStopRaise: BOOLEAN = FALSE;
+  let iCounterA: INT32 = 0;
+  let iCounterB: INT32 = 0;
+  let iStartNumberOfRaises: INT32 = 0;
+  let iNumberOfRaises: INT32 = 0;
+  let fAboutToRaise: BOOLEAN = FALSE;
 
   fRaise = FALSE;
   fRaiseSet = FALSE;
@@ -1131,10 +1148,14 @@ function RaiseWorldLand(): void {
 }
 
 function EliminateObjectLayerRedundancy(): void {
-  INT32 i, numRoads, numAnothers;
-  UINT32 uiType;
-  LEVELNODE *pObject, *pValidRoad, *pValidAnother;
-  UINT16 usIndex;
+  let i: INT32;
+  let numRoads: INT32;
+  let numAnothers: INT32;
+  let uiType: UINT32;
+  let pObject: Pointer<LEVELNODE>;
+  let pValidRoad: Pointer<LEVELNODE>;
+  let pValidAnother: Pointer<LEVELNODE>;
+  let usIndex: UINT16;
 
   for (i = 0; i < WORLD_MAX; i++) {
     // Eliminate all but the last ROADPIECE and ANOTHERDEBRIS

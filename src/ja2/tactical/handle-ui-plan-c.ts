@@ -1,7 +1,7 @@
-UINT8 gubNumUIPlannedMoves = 0;
-SOLDIERTYPE *gpUIPlannedSoldier = NULL;
-SOLDIERTYPE *gpUIStartPlannedSoldier = NULL;
-BOOLEAN gfInUIPlanMode = FALSE;
+let gubNumUIPlannedMoves: UINT8 = 0;
+let gpUIPlannedSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gpUIStartPlannedSoldier: Pointer<SOLDIERTYPE> = NULL;
+let gfInUIPlanMode: BOOLEAN = FALSE;
 
 function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   gubNumUIPlannedMoves = 0;
@@ -17,13 +17,14 @@ function BeginUIPlan(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
-  SOLDIERTYPE *pPlanSoldier;
-  INT16 sXPos, sYPos;
-  INT16 sAPCost = 0;
-  INT8 bDirection;
-  INT32 iLoop;
-  SOLDIERCREATE_STRUCT MercCreateStruct;
-  UINT8 ubNewIndex;
+  let pPlanSoldier: Pointer<SOLDIERTYPE>;
+  let sXPos: INT16;
+  let sYPos: INT16;
+  let sAPCost: INT16 = 0;
+  let bDirection: INT8;
+  let iLoop: INT32;
+  let MercCreateStruct: SOLDIERCREATE_STRUCT;
+  let ubNewIndex: UINT8;
 
   // Depeding on stance and direction facing, add guy!
 
@@ -191,8 +192,8 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 }
 
 function EndUIPlan(): void {
-  int cnt;
-  SOLDIERTYPE *pSoldier;
+  let cnt: int;
+  let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Zero out any planned soldiers
   for (cnt = MAX_NUM_SOLDIERS; cnt < TOTAL_SOLDIERS; cnt++) {

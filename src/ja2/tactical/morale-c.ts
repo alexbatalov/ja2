@@ -10,7 +10,7 @@ const PHOBIC_LIMIT = -20;
 // macros
 const SOLDIER_IN_SECTOR = (pSoldier, sX, sY, bZ) => (!pSoldier->fBetweenSectors && (pSoldier->sSectorX == sX) && (pSoldier->sSectorY == sY) && (pSoldier->bSectorZ == bZ));
 
-MoraleEvent gbMoraleEvent[NUM_MORALE_EVENTS] = {
+let gbMoraleEvent: MoraleEvent[] /* [NUM_MORALE_EVENTS] */ = {
   // TACTICAL = Short Term Effect, STRATEGIC = Long Term Effect
   { TACTICAL_MORALE_EVENT, +4 }, //	MORALE_KILLED_ENEMY
   { TACTICAL_MORALE_EVENT, -5 }, //	MORALE_SQUADMATE_DIED,		// in same sector (not really squad)... IN ADDITION to strategic loss of morale
@@ -49,7 +49,7 @@ MoraleEvent gbMoraleEvent[NUM_MORALE_EVENTS] = {
   { STRATEGIC_MORALE_EVENT, +5 }, //  MORALE_SEX,
 };
 
-BOOLEAN gfSomeoneSaidMoraleQuote = FALSE;
+let gfSomeoneSaidMoraleQuote: BOOLEAN = FALSE;
 
 function GetMoraleModifier(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   if (pSoldier->uiStatusFlags & SOLDIER_PC) {
@@ -99,9 +99,10 @@ function DecayStrategicMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function DecayTacticalMoraleModifiers(): void {
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubLoop, ubLoop2;
-  BOOLEAN fHandleNervous;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubLoop: UINT8;
+  let ubLoop2: UINT8;
+  let fHandleNervous: BOOLEAN;
 
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
@@ -173,8 +174,8 @@ function DecayTacticalMoraleModifiers(): void {
 }
 
 function DecayStrategicMoraleModifiers(): void {
-  SOLDIERTYPE *pSoldier;
-  UINT8 ubLoop;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let ubLoop: UINT8;
 
   ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   for (pSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pSoldier++) {
@@ -193,7 +194,7 @@ function DecayStrategicMoraleModifiers(): void {
 }
 
 function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
-  INT32 iActualMorale;
+  let iActualMorale: INT32;
 
   if (pSoldier->fMercAsleep) {
     // delay this till later!
@@ -216,8 +217,8 @@ function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
 }
 
 function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMoraleMod: INT8): void {
-  MERCPROFILESTRUCT *pProfile;
-  INT32 iMoraleModTotal;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let iMoraleModTotal: INT32;
 
   if (!pSoldier->bActive || (pSoldier->bLife < CONSCIOUSNESS) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier) || AM_AN_EPC(pSoldier)) {
     return;
@@ -321,9 +322,9 @@ function HandleMoraleEventForSoldier(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEven
 }
 
 function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
-  UINT8 ubLoop;
-  SOLDIERTYPE *pTeamSoldier;
-  MERCPROFILESTRUCT *pProfile;
+  let ubLoop: UINT8;
+  let pTeamSoldier: Pointer<SOLDIERTYPE>;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   gfSomeoneSaidMoraleQuote = FALSE;
 
@@ -575,21 +576,23 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
 }
 
 function HourlyMoraleUpdate(): void {
-  INT8 bMercID, bOtherID;
-  INT8 bActualTeamOpinion;
-  INT8 bTeamMoraleModChange, bTeamMoraleModDiff;
-  INT8 bOpinion = -1;
-  INT32 iTotalOpinions;
-  INT8 bNumTeamMembers;
-  INT8 bHighestTeamLeadership = 0;
-  INT8 bLastTeamID;
-  SOLDIERTYPE *pSoldier;
-  SOLDIERTYPE *pOtherSoldier;
-  MERCPROFILESTRUCT *pProfile;
-  BOOLEAN fSameGroupOnly;
-  static INT8 bStrategicMoraleUpdateCounter = 0;
-  BOOLEAN fFoundHated = FALSE;
-  INT8 bHated;
+  let bMercID: INT8;
+  let bOtherID: INT8;
+  let bActualTeamOpinion: INT8;
+  let bTeamMoraleModChange: INT8;
+  let bTeamMoraleModDiff: INT8;
+  let bOpinion: INT8 = -1;
+  let iTotalOpinions: INT32;
+  let bNumTeamMembers: INT8;
+  let bHighestTeamLeadership: INT8 = 0;
+  let bLastTeamID: INT8;
+  let pSoldier: Pointer<SOLDIERTYPE>;
+  let pOtherSoldier: Pointer<SOLDIERTYPE>;
+  let pProfile: Pointer<MERCPROFILESTRUCT>;
+  let fSameGroupOnly: BOOLEAN;
+  /* static */ let bStrategicMoraleUpdateCounter: INT8 = 0;
+  let fFoundHated: BOOLEAN = FALSE;
+  let bHated: INT8;
 
   bMercID = gTacticalStatus.Team[gbPlayerNum].bFirstID;
   bLastTeamID = gTacticalStatus.Team[gbPlayerNum].bLastID;

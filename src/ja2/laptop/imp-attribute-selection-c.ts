@@ -27,58 +27,58 @@ const enum Enum85 {
 }
 
 // the skills as they stand
-INT32 iCurrentStrength = 55;
-INT32 iCurrentAgility = 55;
-INT32 iCurrentDexterity = 55;
-INT32 iCurrentHealth = 55;
-INT32 iCurrentLeaderShip = 55;
-INT32 iCurrentWisdom = 55;
-INT32 iCurrentMarkmanship = 55;
-INT32 iCurrentMechanical = 55;
-INT32 iCurrentMedical = 55;
-INT32 iCurrentExplosives = 55;
+let iCurrentStrength: INT32 = 55;
+let iCurrentAgility: INT32 = 55;
+let iCurrentDexterity: INT32 = 55;
+let iCurrentHealth: INT32 = 55;
+let iCurrentLeaderShip: INT32 = 55;
+let iCurrentWisdom: INT32 = 55;
+let iCurrentMarkmanship: INT32 = 55;
+let iCurrentMechanical: INT32 = 55;
+let iCurrentMedical: INT32 = 55;
+let iCurrentExplosives: INT32 = 55;
 
 // which stat is message about stat at zero about
-INT32 iCurrentStatAtZero = 0;
+let iCurrentStatAtZero: INT32 = 0;
 
 // total number of bonus points
-INT32 iCurrentBonusPoints = 40;
+let iCurrentBonusPoints: INT32 = 40;
 
 // diplsay the 0 skill point warning..if skill set to 0, warn character
-BOOLEAN fSkillAtZeroWarning = FALSE;
+let fSkillAtZeroWarning: BOOLEAN = FALSE;
 
 // is the sliding of the sliding bar active right now?
-BOOLEAN fSlideIsActive = TRUE;
+let fSlideIsActive: BOOLEAN = TRUE;
 
 // first time in game
-BOOLEAN fFirstIMPAttribTime = TRUE;
+let fFirstIMPAttribTime: BOOLEAN = TRUE;
 
 // review mode
-BOOLEAN fReviewStats = FALSE;
+let fReviewStats: BOOLEAN = FALSE;
 
 // buttons
-UINT32 giIMPAttributeSelectionButton[1];
-UINT32 giIMPAttributeSelectionButtonImage[1];
+let giIMPAttributeSelectionButton: UINT32[] /* [1] */;
+let giIMPAttributeSelectionButtonImage: UINT32[] /* [1] */;
 
 // slider buttons
-UINT32 giIMPAttributeSelectionSliderButton[20];
-UINT32 giIMPAttributeSelectionSliderButtonImage[20];
+let giIMPAttributeSelectionSliderButton: UINT32[] /* [20] */;
+let giIMPAttributeSelectionSliderButtonImage: UINT32[] /* [20] */;
 
 // mouse regions
-MOUSE_REGION pSliderRegions[10];
-MOUSE_REGION pSliderBarRegions[10];
+let pSliderRegions: MOUSE_REGION[] /* [10] */;
+let pSliderBarRegions: MOUSE_REGION[] /* [10] */;
 
 // The currently "anchored scroll bar"
-MOUSE_REGION *gpCurrentScrollBox = NULL;
-INT32 giCurrentlySelectedStat = -1;
+let gpCurrentScrollBox: Pointer<MOUSE_REGION> = NULL;
+let giCurrentlySelectedStat: INT32 = -1;
 
 // has any of the sliding bars moved?...for re-rendering puposes
-BOOLEAN fHasAnySlidingBarMoved = FALSE;
+let fHasAnySlidingBarMoved: BOOLEAN = FALSE;
 
-INT32 uiBarToReRender = -1;
+let uiBarToReRender: INT32 = -1;
 
 // are we actually coming back to edit, or are we restarting?
-BOOLEAN fReturnStatus = FALSE;
+let fReturnStatus: BOOLEAN = FALSE;
 
 function EnterIMPAttributeSelection(): void {
   // set attributes and skills
@@ -182,10 +182,10 @@ function HandleIMPAttributeSelection(): void {
     else if (gusMouseXPos > (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH)) {
       IncrementStat(giCurrentlySelectedStat);
     } else {
-      INT32 iCurrentAttributeValue;
-      INT32 sNewX = gusMouseXPos;
-      INT32 iNewValue;
-      INT32 iCounter;
+      let iCurrentAttributeValue: INT32;
+      let sNewX: INT32 = gusMouseXPos;
+      let iNewValue: INT32;
+      let iCounter: INT32;
 
       // get old stat value
       iCurrentAttributeValue = GetCurrentAttributeValue(giCurrentlySelectedStat);
@@ -671,12 +671,12 @@ function BtnIMPAttributeFinishCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 function RenderAttributeBoxes(): void {
   // this function will render the boxes in the sliding attribute bar, based on position
-  INT32 iCnt = STRENGTH_ATTRIBUTE;
-  INT16 sX = 0;
-  INT16 sY = 0;
-  INT16 sTempY = 0;
-  INT16 sTempX = 0;
-  CHAR16 sString[3];
+  let iCnt: INT32 = STRENGTH_ATTRIBUTE;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  let sTempY: INT16 = 0;
+  let sTempX: INT16 = 0;
+  let sString: CHAR16[] /* [3] */;
 
   // set last char to null
   sString[2] = 0;
@@ -882,7 +882,7 @@ function RenderAttributeBoxes(): void {
 function CreateAttributeSliderButtons(): void {
   // this function will create the buttons for the attribute slider
   // the finished button
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   giIMPAttributeSelectionSliderButtonImage[0] = LoadButtonImage("LAPTOP\\AttributeArrows.sti", -1, 0, -1, 1, -1);
   giIMPAttributeSelectionSliderButtonImage[1] = LoadButtonImage("LAPTOP\\AttributeArrows.sti", -1, 3, -1, 4, -1);
@@ -906,7 +906,7 @@ function CreateAttributeSliderButtons(): void {
 
 function DestroyAttributeSliderButtons(): void {
   // this function will destroy the buttons used for attribute manipulation
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // get rid of image
   UnloadButtonImage(giIMPAttributeSelectionSliderButtonImage[0]);
@@ -921,7 +921,7 @@ function DestroyAttributeSliderButtons(): void {
 }
 
 function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -949,7 +949,7 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
 }
 
 function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  INT32 iValue = -1;
+  let iValue: INT32 = -1;
 
   // btn callback for IMP personality quiz answer button
   if (!(btn->uiFlags & BUTTON_ENABLED))
@@ -978,7 +978,7 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
 
 function CreateSlideRegionMouseRegions(): void {
   // this function will create that mouse regions on the sliding area, that, if the player clicks on, the bar will automatically jump to
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
@@ -995,8 +995,8 @@ function CreateSlideRegionMouseRegions(): void {
 
 function CreateSliderBarMouseRegions(): void {
   // this function will create that mouse regions on the sliding bars, that, if the player clicks on, the bar will automatically jump to
-  INT32 iCounter = 0;
-  INT16 sX = 0;
+  let iCounter: INT32 = 0;
+  let sX: INT16 = 0;
 
   // set the starting X
   sX = (((55 - 35) * BASE_SKILL_PIXEL_UNIT_SIZE) / 50) + SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X;
@@ -1016,7 +1016,7 @@ function CreateSliderBarMouseRegions(): void {
 
 function DestroySlideRegionMouseRegions(): void {
   // this function will destroy the regions user for the slider ' jumping'
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
@@ -1028,7 +1028,7 @@ function DestroySlideRegionMouseRegions(): void {
 
 function DestroySlideBarMouseRegions(): void {
   // this function will destroy the regions user for the slider ' jumping'
-  INT32 iCounter = 0;
+  let iCounter: INT32 = 0;
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
@@ -1039,18 +1039,18 @@ function DestroySlideBarMouseRegions(): void {
 }
 
 function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  INT32 iCurrentAttributeValue = 0;
-  INT32 iNewAttributeValue = 0;
-  INT32 iAttributeDelta = 0;
-  INT32 iCounter = 0;
-  INT16 sX = 0;
-  INT16 sY = 0;
-  static INT16 sOldX = -1;
-  static INT16 sOldY = -1;
-  static INT32 iAttribute = -1;
-  INT32 iNewValue = 0;
-  INT32 iCurrentValue = 0;
-  INT16 sNewX = -1;
+  let iCurrentAttributeValue: INT32 = 0;
+  let iNewAttributeValue: INT32 = 0;
+  let iAttributeDelta: INT32 = 0;
+  let iCounter: INT32 = 0;
+  let sX: INT16 = 0;
+  let sY: INT16 = 0;
+  /* static */ let sOldX: INT16 = -1;
+  /* static */ let sOldY: INT16 = -1;
+  /* static */ let iAttribute: INT32 = -1;
+  let iNewValue: INT32 = 0;
+  let iCurrentValue: INT32 = 0;
+  let sNewX: INT16 = -1;
 
   // if we already have an anchored slider bar
   if (gpCurrentScrollBox != pRegion && gpCurrentScrollBox != NULL)
@@ -1213,7 +1213,7 @@ function SliderBarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: 
 
 function GetCurrentAttributeValue(iAttribute: INT32): INT32 {
   // this function will get the value of the attribute that was passed to this fucntion via iAttribute
-  INT32 iValue = 0;
+  let iValue: INT32 = 0;
 
   switch (iAttribute) {
     case (STRENGTH_ATTRIBUTE):
@@ -1296,7 +1296,7 @@ function SetAttributes(): void {
 
 function DrawBonusPointsRemaining(): void {
   // draws the amount of points remaining player has
-  CHAR16 sString[64];
+  let sString: CHAR16[] /* [64] */;
 
   // just reviewing, don't blit stats
   if (fReviewStats == TRUE) {
