@@ -1259,7 +1259,7 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
           if (pSoldier.value.sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, "Main edgepoint search failed for %s -- substituting entrypoint.", pSoldier.value.name);
             pSoldier.value.ubStrategicInsertionCode = pSoldier.value.usStrategicInsertionData;
-            goto MAPEDGEPOINT_SEARCH_FAILED;
+            goto("MAPEDGEPOINT_SEARCH_FAILED");
           }
           break;
         case INSERTION_CODE_SECONDARY_EDGEINDEX:
@@ -1267,7 +1267,7 @@ function UpdateMercInSector(pSoldier: Pointer<SOLDIERTYPE>, sSectorX: INT16, sSe
           if (pSoldier.value.sInsertionGridNo == NOWHERE) {
             ScreenMsg(FONT_RED, MSG_ERROR, "Isolated edgepont search failed for %s -- substituting entrypoint.", pSoldier.value.name);
             pSoldier.value.ubStrategicInsertionCode = pSoldier.value.usStrategicInsertionData;
-            goto MAPEDGEPOINT_SEARCH_FAILED;
+            goto("MAPEDGEPOINT_SEARCH_FAILED");
           }
           break;
 
@@ -1804,7 +1804,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
     while (curr) {
       if (!OK_CONTROLLABLE_MERC(curr.value.pSoldier)) {
         RemoveCharacterFromSquads(curr.value.pSoldier);
-        goto BEGINNING_LOOP;
+        goto("BEGINNING_LOOP");
       }
       curr = curr.value.next;
     }

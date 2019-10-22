@@ -318,7 +318,7 @@ function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: 
     // Set thefact that the user broughtthe help screen up
     gHelpScreen.fForceHelpScreenToComeUp = TRUE;
 
-    goto HELP_SCREEN_SHOULD_COME_UP;
+    goto("HELP_SCREEN_SHOULD_COME_UP");
   }
 
   // if we are already in the help system, return true
@@ -328,7 +328,7 @@ function ShouldTheHelpScreenComeUp(ubScreenID: UINT8, fForceHelpScreenToComeUp: 
 
   // has the player been in the screen before
   if ((gHelpScreen.usHasPlayerSeenHelpScreenInCurrentScreen >> ubScreenID) & 0x01) {
-    goto HELP_SCREEN_WAIT_1_FRAME;
+    goto("HELP_SCREEN_WAIT_1_FRAME");
   }
 
   // if we have already been in the screen, and the user DIDNT press 'h', leave

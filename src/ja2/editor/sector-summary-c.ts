@@ -850,7 +850,7 @@ function RenderSummaryWindow(): void {
         if (gfTempFile) {
           SetFontForeground(FONT_YELLOW);
           mprintf(10, 30, "Entering a temp file name that doesn't follow campaign editor conventions...");
-          goto SPECIALCASE_LABEL; // OUCH!!!
+          goto("SPECIALCASE_LABEL"); // OUCH!!!
         } else if (!gfWorldLoaded) {
           SetFontForeground(FONT_YELLOW);
           mprintf(10, 30, "You need to either load an existing map or create a new map before being");

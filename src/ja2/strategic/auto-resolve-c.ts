@@ -3583,7 +3583,7 @@ function ProcessBattleFrame(): void {
   if (fContinue) {
     gpAR.value.uiCurrTime = GetJA2Clock();
     fContinue = FALSE;
-    goto CONTINUE_BATTLE;
+    goto("CONTINUE_BATTLE");
   }
   // determine how much real-time has passed since the last frame
   if (gpAR.value.uiCurrTime) {

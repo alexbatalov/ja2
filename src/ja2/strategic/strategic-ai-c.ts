@@ -1857,7 +1857,7 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
     iSrcGarrisonID = ChooseSuitableGarrisonToProvideReinforcements(iDstGarrisonID, iReinforcementsRequested);
     if (iSrcGarrisonID == -1) {
       ValidateWeights(15);
-      goto QUEEN_POOL;
+      goto("QUEEN_POOL");
     }
 
     ubSrcSectorX = (gGarrisonGroup[iSrcGarrisonID].ubSectorID % 16) + 1;

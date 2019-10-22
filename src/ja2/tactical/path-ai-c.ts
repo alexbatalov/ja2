@@ -716,7 +716,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
     DELQUENODE(pCurrPtr);
 
     if (trailCostUsed[curLoc] == gubGlobalPathCount && trailCost[curLoc] < curCost)
-      goto NEXTDIR;
+      goto("NEXTDIR");
 
     // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String( "PATHAI %d", curLoc ) );
 
@@ -776,7 +776,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
                 // when we go to the bottom of the loop, iLoopIncrement will be added to iCnt
                 // which is good since it avoids duplication of effort
                 iCnt = iLoopStart;
-                goto NEXTDIR;
+                goto("NEXTDIR");
               } else if (bLoopState == LOOPING_COUNTERCLOCKWISE && !fCheckedBehind) {
                 // check rear dir
                 bLoopState = LOOPING_REVERSE;
@@ -787,17 +787,17 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
                 iLoopEnd = (iLoopStart + 2) % MAXDIR;
                 iCnt = iLoopStart;
                 fCheckedBehind = TRUE;
-                goto NEXTDIR;
+                goto("NEXTDIR");
               } else {
                 // done
-                goto ENDOFLOOP;
+                goto("ENDOFLOOP");
               }
             }
           }
         } else if (pStructureFileRef) {
           // check to make sure it's okay for us to turn to the new direction in our current tile
           if (!OkayToAddStructureToWorld(curLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
-            goto NEXTDIR;
+            goto("NEXTDIR");
           }
         }
       }
@@ -806,31 +806,31 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
       if (fVisitSpotsOnlyOnce && trailCostUsed[newLoc] == gubGlobalPathCount) {
         // on a "reachable" test, never revisit locations!
-        goto NEXTDIR;
+        goto("NEXTDIR");
       }
 
       // if (gpWorldLevelData[newLoc].sHeight != ubLevel)
       // ATE: Movement onto cliffs? Check vs the soldier's gridno height
       // CJC: PREVIOUS LOCATION's height
       if (gpWorldLevelData[newLoc].sHeight != gpWorldLevelData[curLoc].sHeight) {
-        goto NEXTDIR;
+        goto("NEXTDIR");
       }
 
       if (gubNPCDistLimit) {
         if (gfNPCCircularDistLimit) {
           if (PythSpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
-            goto NEXTDIR;
+            goto("NEXTDIR");
           }
         } else {
           if (SpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
-            goto NEXTDIR;
+            goto("NEXTDIR");
           }
         }
       }
 
       // AI check for mines
       if (gpWorldLevelData[newLoc].uiFlags & MAPELEMENT_ENEMY_MINE_PRESENT && s.value.bSide != 0) {
-        goto NEXTDIR;
+        goto("NEXTDIR");
       }
 
       /*
@@ -885,11 +885,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
             nextCost = gTileTypeMovementCost[gpWorldLevelData[newLoc].ubTerrainID];
           }
         } else if (nextCost == TRAVELCOST_FENCE && fNonFenceJumper) {
-          goto NEXTDIR;
+          goto("NEXTDIR");
         } else if (IS_TRAVELCOST_DOOR(nextCost)) {
           // don't let anyone path diagonally through doors!
           if (iCnt & 1) {
-            goto NEXTDIR;
+            goto("NEXTDIR");
           }
 
           switch (nextCost) {
@@ -1032,14 +1032,14 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
         // Apr. '96 - moved up be ahead of AP_Budget stuff
         if ((nextCost >= NOPASS)) // || ( nextCost == TRAVELCOST_DOOR ) )
-          goto NEXTDIR;
+          goto("NEXTDIR");
       } else {
         nextCost = TRAVELCOST_FLAT;
       }
 
       if (newLoc > GRIDSIZE) {
         // WHAT THE??? hack.
-        goto NEXTDIR;
+        goto("NEXTDIR");
       }
 
       // if contemplated tile is NOT final dest and someone there, disqualify route
@@ -1052,7 +1052,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           // Check for movement....
           // if ( fTurnBased || ( (Menptr[ ubMerc ].sFinalDestination == Menptr[ ubMerc ].sGridNo) || (Menptr[ ubMerc ].fDelayedMovement) ) )
           //{
-          goto NEXTDIR;
+          goto("NEXTDIR");
           //}
           //	else
           //{
@@ -1071,7 +1071,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         // ATE: Send in our existing structure ID so it's ignored!
 
         if (!OkayToAddStructureToWorld(newLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
-          goto NEXTDIR;
+          goto("NEXTDIR");
         }
 
         /*
@@ -1179,7 +1179,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
           case TRAVELCOST_OBSTACLE:
           default:
-            goto NEXTDIR; // Cost too much to be considered!
+            goto("NEXTDIR"); // Cost too much to be considered!
             break;
         }
 
@@ -1235,7 +1235,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
             case CRAWLING:
 
               // Can't do it here.....
-              goto NEXTDIR;
+              goto("NEXTDIR");
           }
         } else if (nextCost == TRAVELCOST_NOT_STANDING) {
           switch (usMovementModeToUseForAPs) {
@@ -1256,7 +1256,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         ubNewAPCost = ubCurAPCost + ubAPCost;
 
         if (ubNewAPCost > gubNPCAPBudget)
-          goto NEXTDIR;
+          goto("NEXTDIR");
       }
 
       // ATE: Uncommented out for doors, if we are at a door but not dest, continue!

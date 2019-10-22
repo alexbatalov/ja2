@@ -1291,7 +1291,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       }
     } while (ReturnCode != DD_OK);
@@ -1341,7 +1341,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
             DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
             if (ReturnCode == DDERR_SURFACELOST) {
-              goto ENDOFLOOP;
+              goto("ENDOFLOOP");
             }
           }
         } while (ReturnCode != DD_OK);
@@ -1359,7 +1359,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
             }
 
             if (ReturnCode == DDERR_SURFACELOST) {
-              goto ENDOFLOOP;
+              goto("ENDOFLOOP");
             }
           } while (ReturnCode != DD_OK);
         }
@@ -1386,7 +1386,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
             }
 
             if (ReturnCode == DDERR_SURFACELOST) {
-              goto ENDOFLOOP;
+              goto("ENDOFLOOP");
             }
           } while (ReturnCode != DD_OK);
         }
@@ -1656,7 +1656,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
           }
 
           if (ReturnCode == DDERR_SURFACELOST) {
-            goto ENDOFLOOP;
+            goto("ENDOFLOOP");
           }
         } while (ReturnCode != DD_OK);
 
@@ -1676,7 +1676,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
           }
 
           if (ReturnCode == DDERR_SURFACELOST) {
-            goto ENDOFLOOP;
+            goto("ENDOFLOOP");
           }
         } while (ReturnCode != DD_OK);
       } else {
@@ -1722,7 +1722,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
       if (ReturnCode == DDERR_SURFACELOST) {
-        goto ENDOFLOOP;
+        goto("ENDOFLOOP");
       }
     }
   } while (ReturnCode != DD_OK);
@@ -1742,7 +1742,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       }
     } while (ReturnCode != DD_OK);
@@ -1769,7 +1769,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       }
     } while (ReturnCode != DD_OK);
@@ -1785,7 +1785,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       }
     } while (ReturnCode != DD_OK);
@@ -1806,7 +1806,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       }
     } while (ReturnCode != DD_OK);
@@ -1828,7 +1828,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         }
 
         if (ReturnCode == DDERR_SURFACELOST) {
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
       } while (ReturnCode != DD_OK);
     }
@@ -1855,7 +1855,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       }
 
       if (ReturnCode == DDERR_SURFACELOST) {
-        goto ENDOFLOOP;
+        goto("ENDOFLOOP");
       }
     } while (ReturnCode != DD_OK);
   }

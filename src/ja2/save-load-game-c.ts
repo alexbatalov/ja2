@@ -317,7 +317,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // Save the current sectors open temp files to the disk
   if (!SaveCurrentSectorsInformationToTempItemFile()) {
     ScreenMsg(FONT_MCOLOR_WHITE, MSG_TESTVERSION, "ERROR in SaveCurrentSectorsInformationToTempItemFile()");
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // if we are saving the quick save,
@@ -333,7 +333,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   if (FileGetAttributes(saveDir) == 0xFFFFFFFF) {
     // ok the direcotry doesnt exist, create it
     if (!MakeFileManDirectory(saveDir)) {
-      goto FAILED_TO_SAVE;
+      goto("FAILED_TO_SAVE");
     }
   }
 
@@ -343,14 +343,14 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // if the file already exists, delete it
   if (FileExists(zSaveGameName)) {
     if (!FileDelete(zSaveGameName)) {
-      goto FAILED_TO_SAVE;
+      goto("FAILED_TO_SAVE");
     }
   }
 
   // create the save game file
   hFile = FileOpen(zSaveGameName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
   if (!hFile) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   //
@@ -458,7 +458,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   FileWrite(hFile, addressof(SaveGameHeader), sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(SAVED_GAME_HEADER)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   guiJA2EncryptionSet = CalcJA2EncryptionSet(addressof(SaveGameHeader));
@@ -467,213 +467,213 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // Save the gTactical Status array, plus the curent secotr location
   //
   if (!SaveTacticalStatusToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // save the game clock info
   if (!SaveGameClock(hFile, fPausedStateBeforeSaving, fLockPauseStateBeforeSaving)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // save the strategic events
   if (!SaveStrategicEventsToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveLaptopInfoToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   //
   // Save the merc profiles
   //
   if (!SaveMercProfiles(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   //
   // Save the soldier structure
   //
   if (!SaveSoldierStructure(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save the Finaces Data file
   if (!SaveFilesToSavedGame(FINANCES_DATA_FILE, hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save the history file
   if (!SaveFilesToSavedGame(HISTORY_DATA_FILE, hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save the Laptop File file
   if (!SaveFilesToSavedGame(FILES_DAT_FILE, hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save email stuff to save file
   if (!SaveEmailToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save the strategic information
   if (!SaveStrategicInfoToSavedFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // save the underground information
   if (!SaveUnderGroundSectorInfoToSaveGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // save the squad info
   if (!SaveSquadInfoToSavedGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveStrategicMovementGroupsToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save all the map temp files from the maps\temp directory into the saved game file
   if (!SaveMapTempFilesToSavedGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveQuestInfoToSavedGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveOppListInfoToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveMapScreenMessagesToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveNPCInfoToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveKeyTableToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveTempNpcQuoteArrayToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SavePreRandomNumbersToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveSmokeEffectsToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveArmsDealerInventoryToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveGeneralInfo(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveMineStatusToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveStrategicTownLoyaltyToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveVehicleInformationToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveBulletStructureToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SavePhysicsTableToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveAirRaidInfoToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveTeamTurnsToTheSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveExplosionTableToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveCreatureDirectives(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveStrategicStatusToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveStrategicAI(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveLightEffectsToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveWatchedLocsToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveItemCursorToSavedGame(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveCivQuotesToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveBackupNPCInfoToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   if (!SaveMeanwhileDefsFromSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // save meanwhiledefs
 
   if (!SaveSchedules(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save extra vehicle info
   if (!NewSaveVehicleMovementInfoToSavedGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save contract renewal sequence stuff
   if (!SaveContractRenewalDataToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // Save leave list stuff
   if (!SaveLeaveItemList(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // do the new way of saving bobbyr mail order items
   if (!NewWayOfSavingBobbyRMailOrdersToSaveGameFile(hFile)) {
-    goto FAILED_TO_SAVE;
+    goto("FAILED_TO_SAVE");
   }
 
   // sss

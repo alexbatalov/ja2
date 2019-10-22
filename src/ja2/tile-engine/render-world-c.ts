@@ -5648,7 +5648,7 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
         // ATE: Don;t let any vehicle sit here....
         if (FindStructure(usTileIndex, (STRUCTURE_MOBILE))) {
           // Continue...
-          goto ENDOFLOOP;
+          goto("ENDOFLOOP");
         }
 
         sX = sTempPosX_S;

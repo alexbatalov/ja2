@@ -1672,7 +1672,7 @@ function DoneFadeOutForSaveLoadScreen(): void {
         NextLoopCheckForEnoughFreeHardDriveSpace();
       } else {
         gfSchedulesHosed = FALSE;
-        goto SUCCESSFULLY_CORRECTED_SAVE;
+        goto("SUCCESSFULLY_CORRECTED_SAVE");
       }
       gfSchedulesHosed = FALSE;
     } else {
