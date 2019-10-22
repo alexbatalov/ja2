@@ -52,7 +52,7 @@ function LoadCarPortraitValues(): BOOLEAN {
   for (iCounter = 0; iCounter < NUMBER_CAR_PORTRAITS; iCounter++) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, pbCarPortraitFileNames[iCounter]);
-    CHECKF(AddVideoObject(&VObjectDesc, &giCarPortraits[iCounter]));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(giCarPortraits[iCounter])));
   }
   return TRUE;
 }
@@ -93,7 +93,7 @@ function DrawLifeUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
     return;
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO MAX LIFE
@@ -176,7 +176,7 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
   dStart = sYPos;
 
   // brown guy
-  GetVideoObject(&hHandle, guiBrownBackgroundForTeamPanel);
+  GetVideoObject(addressof(hHandle), guiBrownBackgroundForTeamPanel);
 
   // DO MAX BREATH
   if (guiCurrentScreen != MAP_SCREEN) {
@@ -192,7 +192,7 @@ function DrawBreathUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
     BltVideoObject(uiBuffer, hHandle, 0, sXPos, (sYPos - sHeight), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   if (pSoldier.value.bBreathMax <= 97) {
@@ -261,7 +261,7 @@ function DrawMoraleUIBarEx(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: 
     return;
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO BREATH
@@ -321,7 +321,7 @@ function DrawItemUIBarEx(pObject: Pointer<OBJECTTYPE>, ubStatus: UINT8, sXPos: I
     // RestoreExternBackgroundRect( sXPos, (INT16)(sYPos - sHeight), sWidth, (INT16)(sHeight + 1 ) );
   }
 
-  pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // FIRST DO BREATH

@@ -57,17 +57,17 @@ function DisplayFrameRate(): void {
 
   if (gbFPSDisplay == SHOW_FULL_FPS) {
     // FRAME RATE
-    memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+    memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
     swprintf(VideoOverlayDesc.pzText, "%ld", __min(uiFPS, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(&VideoOverlayDesc, giFPSOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, FALSE);
 
     // TIMER COUNTER
     swprintf(VideoOverlayDesc.pzText, "%ld", __min(giTimerDiag, 1000));
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_TEXT;
-    UpdateVideoOverlay(&VideoOverlayDesc, giCounterPeriodOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, FALSE);
 
-    if (GetMouseMapPos(&usMapPos)) {
+    if (GetMouseMapPos(addressof(usMapPos))) {
       // gprintfdirty( 0, 315, L"(%d)",usMapPos);
       // mprintf( 0,315,L"(%d)",usMapPos);
     } else {
@@ -149,7 +149,7 @@ function ErrorScreenHandle(): UINT32 {
   EndFrameBufferRender();
 
   // Check for esc
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     if (InputEvent.usEvent == KEY_DOWN) {
       if (InputEvent.usParam == ESC || InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN) {
         // Exit the program
@@ -204,7 +204,7 @@ function InitScreenHandle(): UINT32 {
 
     strcpy(vs_desc.ImageFile, "ja2_logo.STI");
 
-    hVSurface = CreateVideoSurface(&vs_desc);
+    hVSurface = CreateVideoSurface(addressof(vs_desc));
     if (!hVSurface)
       AssertMsg(0, "Failed to load ja2_logo.sti!");
 
@@ -305,7 +305,7 @@ function PalEditRenderHook(): void {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     // Set to current
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     DisplayPaletteRep(pSoldier.value.HeadPal, 50, 10, FRAME_BUFFER);
     DisplayPaletteRep(pSoldier.value.PantsPal, 50, 50, FRAME_BUFFER);
@@ -333,10 +333,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'h')) {
     // Get Soldier
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep)));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -360,10 +360,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'v')) {
     // Get Soldier
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep)));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -387,10 +387,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 'p')) {
     // Get Soldier
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep)));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -414,10 +414,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
   if ((pInputEvent.value.usEvent == KEY_DOWN) && (pInputEvent.value.usParam == 's')) {
     // Get Soldier
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get index of current
-    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep));
+    CHECKF(GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep)));
     ubType = gpPalRep[ubPaletteRep].ubType;
 
     ubPaletteRep++;
@@ -585,7 +585,7 @@ function SexScreenHandle(): UINT32 {
     // Load face....
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\luckysmile.sti", VObjectDesc.ImageFile);
-    if (!AddVideoObject(&VObjectDesc, &guiSMILY))
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSMILY)))
       AssertMsg(0, "Missing INTERFACE\\luckysmile.sti");
 
     // Init screen
@@ -636,8 +636,8 @@ function SexScreenHandle(): UINT32 {
   }
 
   // Calculate smily face positions...
-  GetVideoObject(&hVObject, guiSMILY);
-  pTrav = &(hVObject.value.pETRLEObject[0]);
+  GetVideoObject(addressof(hVObject), guiSMILY);
+  pTrav = addressof(hVObject.value.pETRLEObject[0]);
 
   sX = ((640 - pTrav.value.usWidth) / 2);
   sY = ((480 - pTrav.value.usHeight) / 2);

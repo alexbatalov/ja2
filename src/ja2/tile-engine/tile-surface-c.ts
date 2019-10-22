@@ -23,7 +23,7 @@ function LoadTileSurface(cFilename: Pointer<char>): Pointer<TILE_IMAGERY> {
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
   VObjectDesc.hImage = hImage;
 
-  hVObject = CreateVideoObject(&VObjectDesc);
+  hVObject = CreateVideoObject(addressof(VObjectDesc));
 
   if (hVObject == NULL) {
     // Report error

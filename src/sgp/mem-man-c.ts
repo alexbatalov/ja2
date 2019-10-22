@@ -214,7 +214,7 @@ function MemGetFree(): UINT32 {
   let ms: MEMORYSTATUS;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
-  GlobalMemoryStatus(&ms);
+  GlobalMemoryStatus(addressof(ms));
 
   return ms.dwAvailPhys;
 }
@@ -237,7 +237,7 @@ function MemGetTotalSystem(): UINT32 {
   let ms: MEMORYSTATUS;
 
   ms.dwLength = sizeof(MEMORYSTATUS);
-  GlobalMemoryStatus(&ms);
+  GlobalMemoryStatus(addressof(ms));
 
   return ms.dwTotalPhys;
 }

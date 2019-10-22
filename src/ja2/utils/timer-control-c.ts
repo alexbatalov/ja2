@@ -128,7 +128,7 @@ function InitializeJA2Clock(): BOOLEAN {
   }
 
   // First get timer resolutions
-  mmResult = timeGetDevCaps(&tc, sizeof(tc));
+  mmResult = timeGetDevCaps(addressof(tc), sizeof(tc));
 
   if (mmResult != TIMERR_NOERROR) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not get timer properties");
@@ -156,7 +156,7 @@ function InitializeJA2TimerCallback(uiDelay: UINT32, TimerProc: LPTIMECALLBACK, 
   let TimerID: MMRESULT;
 
   // First get timer resolutions
-  mmResult = timeGetDevCaps(&tc, sizeof(tc));
+  mmResult = timeGetDevCaps(addressof(tc), sizeof(tc));
 
   if (mmResult != TIMERR_NOERROR) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not get timer properties");

@@ -170,7 +170,7 @@ function CreateTileDatabase(): void {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Type: %s Size: %d Index: %d", gTileSurfaceName[cnt1], gNumTilesPerType[cnt1], gTileDatabaseSize));
 
       for (cnt2 = 0; cnt2 < NumRegions; cnt2++) {
-        memset(&TileElement, 0, sizeof(TileElement));
+        memset(addressof(TileElement), 0, sizeof(TileElement));
         TileElement.usRegionIndex = cnt2;
         TileElement.hTileSurface = TileSurf.value.vo;
         TileElement.sBuddyNum = -1;
@@ -191,7 +191,7 @@ function CreateTileDatabase(): void {
         // Structure database stuff!
         if (TileSurf.value.pStructureFileRef != NULL && TileSurf.value.pStructureFileRef.value.pubStructureData != NULL) {
           if (TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2].pDBStructure != NULL) {
-            TileElement.pDBStructureRef = &(TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2]);
+            TileElement.pDBStructureRef = addressof(TileSurf.value.pStructureFileRef.value.pDBStructureRef[cnt2]);
 
             if (TileElement.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_HIDDEN) {
               // ATE: These are ignored!
@@ -210,7 +210,7 @@ function CreateTileDatabase(): void {
           }
           if (TileSurf.value.pAuxData[cnt2].fFlags & AUX_ANIMATED_TILE) {
             // Allocate Animated tile data
-            AllocateAnimTileData(&TileElement, TileSurf.value.pAuxData[cnt2].ubNumberOfFrames);
+            AllocateAnimTileData(addressof(TileElement), TileSurf.value.pAuxData[cnt2].ubNumberOfFrames);
 
             // Set values into tile element
             TileElement.pAnimData.value.bCurrentFrame = TileSurf.value.pAuxData[cnt2].ubCurrentFrame;
@@ -245,7 +245,7 @@ function CreateTileDatabase(): void {
           }
         }
 
-        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, &TileElement, TileSurf.value.bRaisedObjectType);
+        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, addressof(TileElement), TileSurf.value.bRaisedObjectType);
 
         gTileDatabase[gTileDatabaseSize] = TileElement;
         gTileDatabaseSize++;
@@ -258,7 +258,7 @@ function CreateTileDatabase(): void {
 
         // Do underflows here
         for (cnt2 = NumRegions; cnt2 < gNumTilesPerType[cnt1]; cnt2++) {
-          memset(&TileElement, 0, sizeof(TileElement));
+          memset(addressof(TileElement), 0, sizeof(TileElement));
           TileElement.usRegionIndex = 0;
           TileElement.hTileSurface = TileSurf.value.vo;
           TileElement.fType = TileSurf.value.fType;
@@ -288,7 +288,7 @@ function DeallocateTileDatabase(): void {
   for (cnt = 0; cnt < NUMBEROFTILES; cnt++) {
     // Check if an existing set of animated tiles are in place, remove if found
     if (gTileDatabase[cnt].pAnimData != NULL) {
-      FreeAnimTileData(&gTileDatabase[cnt]);
+      FreeAnimTileData(addressof(gTileDatabase[cnt]));
     }
   }
 
@@ -320,9 +320,9 @@ function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDel
     return TRUE;
   }
 
-  if (AnyHeigherLand(iMapIndex, uiNewType, &ubLastHighLevel)) {
+  if (AnyHeigherLand(iMapIndex, uiNewType, addressof(ubLastHighLevel))) {
     // Check if type exists and get it's index if so
-    if (TypeExistsInLandLayer(iMapIndex, uiNewType, &usTempIndex)) {
+    if (TypeExistsInLandLayer(iMapIndex, uiNewType, addressof(usTempIndex))) {
       // Replace with new index
       return ReplaceLandIndex(iMapIndex, usTempIndex, usIndex);
     } else {
@@ -330,7 +330,7 @@ function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDel
     }
   } else {
     // Check if type exists and get it's index if so
-    if (TypeExistsInLandLayer(iMapIndex, uiNewType, &usTempIndex)) {
+    if (TypeExistsInLandLayer(iMapIndex, uiNewType, addressof(usTempIndex))) {
       // Replace with new index
       return ReplaceLandIndex(iMapIndex, usTempIndex, usIndex);
     } else {
@@ -372,12 +372,12 @@ function SetLandIndexWithRadius(iMapIndex: INT32, usIndex: UINT16, uiNewType: UI
         if (fReplace) {
           fDoPaste = TRUE;
         } else {
-          if (!TypeExistsInLandLayer(iNewIndex, uiNewType, &usTempIndex)) {
+          if (!TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
             fDoPaste = TRUE;
           }
         }
 
-        if (fDoPaste && ((uiNewType >= FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, FIRSTFLOOR, LASTFLOOR, &Dummy)))) {
+        if (fDoPaste && ((uiNewType >= FIRSTFLOOR && uiNewType <= LASTFLOOR) || ((uiNewType < FIRSTFLOOR || uiNewType > LASTFLOOR) && !TypeRangeExistsInLandLayer(iNewIndex, FIRSTFLOOR, LASTFLOOR, addressof(Dummy))))) {
           SetLandIndex(iNewIndex, usIndex, uiNewType, FALSE);
         }
       }
@@ -396,7 +396,7 @@ function GetTypeLandLevel(iMapIndex: UINT32, uiNewType: UINT32, pubLevel: Pointe
 
   while (pLand != NULL) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, &fTileType);
+      GetTileType(pLand.value.usIndex, addressof(fTileType));
 
       if (fTileType == uiNewType) {
         *pubLevel = level;
@@ -427,7 +427,7 @@ function GetLandLevelDepth(iMapIndex: UINT32): UINT8 {
 
 function GetSubIndexFromTileIndex(usTileIndex: UINT16, pusSubIndex: Pointer<UINT16>): BOOLEAN {
   let uiType: UINT32 = 0;
-  if (GetTileType(usTileIndex, &uiType)) {
+  if (GetTileType(usTileIndex, addressof(uiType))) {
     *pusSubIndex = usTileIndex - gTileTypeStartIndex[uiType] + 1;
     return TRUE;
   }
@@ -512,8 +512,8 @@ function LandTypeHeigher(uiDestType: UINT32, uiSrcType: UINT32): BOOLEAN {
   let ubSrcLogHeight: UINT8;
 
   // Get logical height of type at head and type we wish to paste
-  GetTileTypeLogicalHeight(uiDestType, &ubDestLogHeight);
-  GetTileTypeLogicalHeight(uiSrcType, &ubSrcLogHeight);
+  GetTileTypeLogicalHeight(uiDestType, addressof(ubDestLogHeight));
+  GetTileTypeLogicalHeight(uiSrcType, addressof(ubSrcLogHeight));
 
   return ubDestLogHeight > ubSrcLogHeight;
 }
@@ -528,10 +528,10 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
-  GetTileTypeLogicalHeight(uiSrcType, &ubSrcLogHeight);
+  GetTileTypeLogicalHeight(uiSrcType, addressof(ubSrcLogHeight));
 
   // Check that src type is not head
-  if (GetTypeLandLevel(iMapIndex, uiSrcType, &ubSrcTypeLevel)) {
+  if (GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel))) {
     if (ubSrcTypeLevel == LANDHEAD) {
       return FALSE;
     }
@@ -541,7 +541,7 @@ function AnyHeigherLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Poin
 
   while (pLand != NULL) {
     // Get type and height
-    GetTileType(pLand.value.usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     if (gTileTypeLogicalHeight[fTileType] > ubSrcLogHeight) {
       *pubLastLevel = level;
@@ -568,14 +568,14 @@ function AnyLowerLand(iMapIndex: UINT32, uiSrcType: UINT32, pubLastLevel: Pointe
 
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
-  GetTileTypeLogicalHeight(uiSrcType, &ubSrcLogHeight);
+  GetTileTypeLogicalHeight(uiSrcType, addressof(ubSrcLogHeight));
 
-  GetTypeLandLevel(iMapIndex, uiSrcType, &ubSrcTypeLevel);
+  GetTypeLandLevel(iMapIndex, uiSrcType, addressof(ubSrcTypeLevel));
 
   // Look through all objects and Search for type
   while (pLand != NULL) {
     // Get type and height
-    GetTileType(pLand.value.usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       *pubLastLevel = level;
@@ -623,7 +623,7 @@ function ContainsWallOrientation(iMapIndex: INT32, uiType: UINT32, usWallOrienta
   // Look through all objects and Search for type
 
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrient);
+    GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrient));
 
     if (usCheckWallOrient == usWallOrientation) {
       *pubLevel = level;
@@ -651,7 +651,7 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
   // Traverse all of the pStructs
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrientation);
+    GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrientation));
     if (ubFinalWallOrientation == NO_ORIENTATION) {
       // Get the first valid orientation.
       ubFinalWallOrientation = usCheckWallOrientation;

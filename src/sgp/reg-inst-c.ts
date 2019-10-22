@@ -72,10 +72,10 @@ function GetAppRegistryKey(): HKEY {
   assert(gszRegistryKey[0] != '\0');
   // assert(gpszProfileName != NULL);
 
-  if (RegOpenKeyEx(HKEY_CURRENT_USER, szSoftware, 0, KEY_WRITE | KEY_READ, &hSoftKey) == ERROR_SUCCESS) {
+  if (RegOpenKeyEx(HKEY_CURRENT_USER, szSoftware, 0, KEY_WRITE | KEY_READ, addressof(hSoftKey)) == ERROR_SUCCESS) {
     let dw: DWORD;
-    if (RegCreateKeyEx(hSoftKey, gszRegistryKey, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, &hCompanyKey, &dw) == ERROR_SUCCESS) {
-      RegCreateKeyEx(hCompanyKey, gszProfileName, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, &hAppKey, &dw);
+    if (RegCreateKeyEx(hSoftKey, gszRegistryKey, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, addressof(hCompanyKey), addressof(dw)) == ERROR_SUCCESS) {
+      RegCreateKeyEx(hCompanyKey, gszProfileName, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, addressof(hAppKey), addressof(dw));
     }
   }
   if (hSoftKey != NULL)
@@ -100,7 +100,7 @@ function GetSectionKey(lpszSection: STR): HKEY {
   if (hAppKey == NULL)
     return NULL;
 
-  RegCreateKeyEx(hAppKey, lpszSection, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, &hSectionKey, &dw);
+  RegCreateKeyEx(hAppKey, lpszSection, 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, NULL, addressof(hSectionKey), addressof(dw));
   RegCloseKey(hAppKey);
   return hSectionKey;
 }
@@ -119,7 +119,7 @@ function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UIN
     let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == NULL)
       return nDefault;
-    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, &dwValue, &dwCount);
+    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, addressof(dwType), addressof(dwValue), addressof(dwCount));
     RegCloseKey(hSecKey);
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_DWORD);
@@ -150,10 +150,10 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
       strcpy(lpszValue, lpszDefault);
       return TRUE;
     }
-    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, NULL, &dwCount);
+    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, addressof(dwType), NULL, addressof(dwCount));
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_SZ);
-      lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, strValue, &dwCount);
+      lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, addressof(dwType), strValue, addressof(dwCount));
     }
     RegCloseKey(hSecKey);
     if (lResult == ERROR_SUCCESS) {

@@ -76,18 +76,18 @@ function EnterInsurance(): BOOLEAN {
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_INSURANCETITLE);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceTitleImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceTitleImage)));
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceBulletImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBulletImage)));
 
   usPosX = INSURANCE_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(&gSelectedInsuranceLinkRegion[i], usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
-    MSYS_AddRegion(&gSelectedInsuranceLinkRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedInsuranceLinkRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceLinkRegion[i]), usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedInsuranceLinkRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedInsuranceLinkRegion[i]), 0, i);
 
     usPosX += INSURANCE_BOTTOM_LINK_RED_BAR_OFFSET;
   }
@@ -109,7 +109,7 @@ function ExitInsurance(): void {
   DeleteVideoObjectFromIndex(guiInsuranceBulletImage);
 
   for (i = 0; i < 3; i++)
-    MSYS_RemoveRegion(&gSelectedInsuranceLinkRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedInsuranceLinkRegion[i]));
 }
 
 function HandleInsurance(): void {
@@ -124,7 +124,7 @@ function RenderInsurance(): void {
   SetFontShadow(INS_FONT_SHADOW);
 
   // Get and display the insurance title
-  GetVideoObject(&hPixHandle, guiInsuranceTitleImage);
+  GetVideoObject(addressof(hPixHandle), guiInsuranceTitleImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_BIG_TITLE_X, INSURANCE_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the title slogan
@@ -136,7 +136,7 @@ function RenderInsurance(): void {
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X, INSURANCE_SUBTITLE_Y, 0, INS_FONT_BIG, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Display the bulleted text 1
-  GetVideoObject(&hPixHandle, guiInsuranceBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiInsuranceBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SUBTITLE_X, INSURANCE_BULLET_TEXT_1_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   GetInsuranceText(INS_MLTI_EMPLOY_HIGH_RISK, sText);
   DrawTextToScreen(sText, INSURANCE_SUBTITLE_X + INSURANCE_BULLET_TEXT_OFFSET_X, INSURANCE_BULLET_TEXT_1_Y, 0, INS_FONT_MED, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
@@ -186,28 +186,28 @@ function InitInsuranceDefaults(): BOOLEAN {
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BackGroundTile.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceBackGround));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBackGround)));
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LeftTile.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceRedBarImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceRedBarImage)));
 
   // load the red bar on the side of the page and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LargeBar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceBigRedLineImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceBigRedLineImage)));
 
   // if it is not the first page, display the small title
   if (guiCurrentLaptopMode != LAPTOP_MODE_INSURANCE) {
     // load the small title for the every page other then the first page
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, MLG_SMALLTITLE);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceSmallTitleImage));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceSmallTitleImage)));
 
     // create the link to the home page on the small titles
-    MSYS_DefineRegion(&gSelectedInsuranceTitleLinkRegion, INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
-    MSYS_AddRegion(&gSelectedInsuranceTitleLinkRegion);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceTitleLinkRegion), INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedInsuranceTitleLinkRegion));
   }
 
   return TRUE;
@@ -222,7 +222,7 @@ function DisplayInsuranceDefaults(): void {
 
   usPosY = INSURANCE_RED_BAR_Y;
 
-  GetVideoObject(&hPixHandle, guiInsuranceRedBarImage);
+  GetVideoObject(addressof(hPixHandle), guiInsuranceRedBarImage);
   for (i = 0; i < 4; i++) {
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_RED_BAR_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
     usPosY += INSURANCE_BACKGROUND_HEIGHT;
@@ -234,7 +234,7 @@ function DisplayInsuranceDefaults(): void {
       usPosY = INSURANCE_TOP_RED_BAR_Y;
 
       // display the top red bar
-      GetVideoObject(&hPixHandle, guiInsuranceBigRedLineImage);
+      GetVideoObject(addressof(hPixHandle), guiInsuranceBigRedLineImage);
       BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_TOP_RED_BAR_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
       break;
@@ -246,13 +246,13 @@ function DisplayInsuranceDefaults(): void {
   }
 
   // display the Bottom red bar
-  GetVideoObject(&hPixHandle, guiInsuranceBigRedLineImage);
+  GetVideoObject(addressof(hPixHandle), guiInsuranceBigRedLineImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_TOP_RED_BAR_X, INSURANCE_BOTTOM_RED_BAR_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // if it is not the first page, display the small title
   if (guiCurrentLaptopMode != LAPTOP_MODE_INSURANCE) {
     // display the small title bar
-    GetVideoObject(&hPixHandle, guiInsuranceSmallTitleImage);
+    GetVideoObject(addressof(hPixHandle), guiInsuranceSmallTitleImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INSURANCE_SMALL_TITLE_X, INSURANCE_SMALL_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 }
@@ -265,7 +265,7 @@ function RemoveInsuranceDefaults(): void {
   // if it is not the first page, display the small title
   if (guiPreviousLaptopMode != LAPTOP_MODE_INSURANCE) {
     DeleteVideoObjectFromIndex(guiInsuranceSmallTitleImage);
-    MSYS_RemoveRegion(&gSelectedInsuranceTitleLinkRegion);
+    MSYS_RemoveRegion(addressof(gSelectedInsuranceTitleLinkRegion));
   }
 }
 
@@ -273,7 +273,7 @@ function DisplaySmallRedLineWithShadow(usStartX: UINT16, usStartY: UINT16, EndX:
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 

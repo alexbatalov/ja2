@@ -105,7 +105,7 @@ function HandleLoadOfMapBottomGraphics(): void {
   // will create buttons for interface bottom
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_screen_bottom.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiMAPBOTTOMPANEL))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMAPBOTTOMPANEL)))
     return;
 
   // load slider bar icon
@@ -153,7 +153,7 @@ function RenderMapScreenInterfaceBottom(): void {
   // render whole panel
   if (fMapScreenBottomDirty == TRUE) {
     // get and blt panel
-    GetVideoObject(&hHandle, guiMAPBOTTOMPANEL);
+    GetVideoObject(addressof(hHandle), guiMAPBOTTOMPANEL);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
     if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE) {
@@ -389,7 +389,7 @@ function DrawNameOfLoadedSector(): void {
   GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, TRUE);
   ReduceStringLength(sString, 80, COMPFONT);
 
-  VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT, &sFontX, &sFontY, sString);
+  VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
   mprintf(sFontX, sFontY, "%s", sString);
 }
 
@@ -622,9 +622,9 @@ function EnableDisableMessageScrollButtonsAndRegions(): void {
   }
 
   if (ubNumMessages <= MAX_MESSAGES_ON_MAP_BOTTOM) {
-    MSYS_DisableRegion(&gMapMessageScrollBarRegion);
+    MSYS_DisableRegion(addressof(gMapMessageScrollBarRegion));
   } else {
-    MSYS_EnableRegion(&gMapMessageScrollBarRegion);
+    MSYS_EnableRegion(addressof(gMapMessageScrollBarRegion));
   }
 }
 
@@ -663,20 +663,20 @@ function DisplayCompressMode(): void {
 
   SetFontForeground(usColor);
   SetFontBackground(FONT_BLACK);
-  FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT, &sX, &sY);
+  FindFontCenterCoordinates(489, 456, 522 - 489, 467 - 454, sString, COMPFONT, addressof(sX), addressof(sY));
   mprintf(sX, sY, sString);
 
   return;
 }
 
 function CreateCompressModePause(): void {
-  MSYS_DefineRegion(&gMapPauseRegion, 487, 456, 522, 467, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressModeClickCallback);
+  MSYS_DefineRegion(addressof(gMapPauseRegion), 487, 456, 522, 467, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressModeClickCallback);
 
-  SetRegionFastHelpText(&gMapPauseRegion, pMapScreenBottomFastHelp[7]);
+  SetRegionFastHelpText(addressof(gMapPauseRegion), pMapScreenBottomFastHelp[7]);
 }
 
 function RemoveCompressModePause(): void {
-  MSYS_RemoveRegion(&gMapPauseRegion);
+  MSYS_RemoveRegion(addressof(gMapPauseRegion));
 }
 
 function LoadMessageSliderBar(): void {
@@ -685,7 +685,7 @@ function LoadMessageSliderBar(): void {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_screen_bottom_arrows.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiSliderBar))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSliderBar)))
     return;
 }
 
@@ -695,11 +695,11 @@ function DeleteMessageSliderBar(): void {
 }
 
 function CreateMapScreenBottomMessageScrollBarRegion(): void {
-  MSYS_DefineRegion(&gMapMessageScrollBarRegion, MESSAGE_SCROLL_AREA_START_X, MESSAGE_SCROLL_AREA_START_Y, MESSAGE_SCROLL_AREA_END_X, MESSAGE_SCROLL_AREA_END_Y, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenMessageScrollBarCallBack);
+  MSYS_DefineRegion(addressof(gMapMessageScrollBarRegion), MESSAGE_SCROLL_AREA_START_X, MESSAGE_SCROLL_AREA_START_Y, MESSAGE_SCROLL_AREA_END_X, MESSAGE_SCROLL_AREA_END_Y, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenMessageScrollBarCallBack);
 }
 
 function DeleteMapScreenBottomMessageScrollRegion(): void {
-  MSYS_RemoveRegion(&gMapMessageScrollBarRegion);
+  MSYS_RemoveRegion(addressof(gMapMessageScrollBarRegion));
 }
 
 function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -720,7 +720,7 @@ function MapScreenMessageScrollBarCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
     // region is supposed to be disabled if there aren't enough messages to scroll.  Formulas assume this
     if (ubNumMessages > MAX_MESSAGES_ON_MAP_BOTTOM) {
       // where is the mouse?
-      GetCursorPos(&MousePos);
+      GetCursorPos(addressof(MousePos));
 
       ubMouseYOffset = MousePos.y - MESSAGE_SCROLL_AREA_START_Y;
 
@@ -764,7 +764,7 @@ function DisplayScrollBarSlider(): void {
     // calculate where slider should be positioned
     ubSliderOffset = (SLIDER_BAR_RANGE * gubFirstMapscreenMessageIndex) / (ubNumMessages - MAX_MESSAGES_ON_MAP_BOTTOM);
 
-    GetVideoObject(&hHandle, guiSliderBar);
+    GetVideoObject(addressof(hHandle), guiSliderBar);
     BltVideoObject(FRAME_BUFFER, hHandle, 8, MESSAGE_SCROLL_AREA_START_X + 2, MESSAGE_SCROLL_AREA_START_Y + ubSliderOffset, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 }
@@ -1008,7 +1008,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   swprintf(sString, "%s", pMapScreenBottomText[0]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
+  VarFindFontCenterCoordinates(359, 387 - 14, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1016,7 +1016,7 @@ function DisplayCurrentBalanceTitleForMapBottom(): void {
   swprintf(sString, "%s", zMarksMapScreenText[2]);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
+  VarFindFontCenterCoordinates(359, 433 - 14, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1048,7 +1048,7 @@ function DisplayCurrentBalanceForMapBottom(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
+  VarFindFontCenterCoordinates(359, 387 + 2, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1073,20 +1073,20 @@ function CreateDestroyMouseRegionMasksForTimeCompressionButtons(): void {
   // check if disabled and not created, create
   if ((fDisabled) && (fCreated == FALSE)) {
     // mask over compress more button
-    MSYS_DefineRegion(&gTimeCompressionMask[0], 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(addressof(gTimeCompressionMask[0]), 528, 456, 528 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     // mask over compress less button
-    MSYS_DefineRegion(&gTimeCompressionMask[1], 466, 456, 466 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(addressof(gTimeCompressionMask[1]), 466, 456, 466 + 13, 456 + 14, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     // mask over pause game button
-    MSYS_DefineRegion(&gTimeCompressionMask[2], 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
+    MSYS_DefineRegion(addressof(gTimeCompressionMask[2]), 487, 456, 522, 467, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, CompressMaskClickCallback);
 
     fCreated = TRUE;
   } else if ((fDisabled == FALSE) && (fCreated)) {
     // created and no longer need to disable
-    MSYS_RemoveRegion(&gTimeCompressionMask[0]);
-    MSYS_RemoveRegion(&gTimeCompressionMask[1]);
-    MSYS_RemoveRegion(&gTimeCompressionMask[2]);
+    MSYS_RemoveRegion(addressof(gTimeCompressionMask[0]));
+    MSYS_RemoveRegion(addressof(gTimeCompressionMask[1]));
+    MSYS_RemoveRegion(addressof(gTimeCompressionMask[2]));
     fCreated = FALSE;
   }
 }
@@ -1131,7 +1131,7 @@ function DisplayProjectedDailyMineIncome(): void {
   InsertDollarSignInToString(sString);
 
   // center it
-  VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT, &sFontX, &sFontY, sString);
+  VarFindFontCenterCoordinates(359, 433 + 2, 437 - 359, 10, COMPFONT, addressof(sFontX), addressof(sFontY), sString);
 
   // print it
   mprintf(sFontX, sFontY, "%s", sString);
@@ -1165,7 +1165,7 @@ function AnyUsableRealMercenariesOnTeam(): BOOLEAN {
 
   // get number of mercs on team who are not vehicles or robot, POWs or EPCs
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if ((pSoldier.value.bActive) && (pSoldier.value.bLife > 0) && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && (pSoldier.value.bAssignment != ASSIGNMENT_POW) && (pSoldier.value.bAssignment != ASSIGNMENT_DEAD) && (pSoldier.value.ubWhatKindOfMercAmI != MERC_TYPE__EPC)) {
       return TRUE;

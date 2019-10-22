@@ -707,7 +707,7 @@ function LineOfSightTest(dStartX: FLOAT, dStartY: FLOAT, dStartZ: FLOAT, dEndX: 
 
     // retrieve values from world for this particular tile
     iGridNo = iCurrTileX + iCurrTileY * WORLD_COLS;
-    pMapElement = &(gpWorldLevelData[iGridNo]);
+    pMapElement = addressof(gpWorldLevelData[iGridNo]);
     qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
 
@@ -1224,7 +1224,7 @@ function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pE
   // TO ADD: if in tear gas, reduce sight limit to 2 tiles
   CHECKF(pStartSoldier);
   CHECKF(pEndSoldier);
-  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, &dStartZPos);
+  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, addressof(dStartZPos));
   CHECKF(fOk);
 
   if (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_N) {
@@ -1247,7 +1247,7 @@ function SoldierToSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, pE
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pEndSoldier.value.sGridNo].sHeight);
     fSmell = TRUE;
   } else {
-    fOk = CalculateSoldierZPos(pEndSoldier, LOS_POS, &dEndZPos);
+    fOk = CalculateSoldierZPos(pEndSoldier, LOS_POS, addressof(dEndZPos));
     CHECKF(fOk);
     fSmell = FALSE;
   }
@@ -1323,13 +1323,13 @@ function SoldierToLocationWindowTest(pStartSoldier: Pointer<SOLDIERTYPE>, sEndGr
   dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pStartSoldier.value.sGridNo].sHeight);
   dEndZPos = dStartZPos;
 
-  ConvertGridNoToXY(sEndGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(sEndGridNo, addressof(sXPos), addressof(sYPos));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
   // We don't want to consider distance limits here so pass in tile sight limit of 255
   // and consider trees as little as possible
-  iRet = LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, TRUE, 0, FALSE, &sWindowGridNo);
+  iRet = LineOfSightTest(CenterX(pStartSoldier.value.sGridNo), CenterY(pStartSoldier.value.sGridNo), dStartZPos, sXPos, sYPos, dEndZPos, 255, 0, TRUE, 0, FALSE, addressof(sWindowGridNo));
 
   return sWindowGridNo;
 }
@@ -1365,7 +1365,7 @@ function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>,
 
   CHECKF(pStartSoldier);
 
-  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, &dStartZPos);
+  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, addressof(dStartZPos));
   CHECKF(fOk);
 
   if (bCubeLevel > 0) {
@@ -1384,7 +1384,7 @@ function SoldierTo3DLocationLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>,
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
   }
 
-  ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1410,7 +1410,7 @@ function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, s
 
   CHECKF(pStartSoldier);
 
-  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, &dStartZPos);
+  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, addressof(dStartZPos));
   CHECKF(fOk);
 
   switch (ubAimLocation) {
@@ -1428,12 +1428,12 @@ function SoldierToBodyPartLineOfSightTest(pStartSoldier: Pointer<SOLDIERTYPE>, s
       break;
   }
 
-  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, &dEndZPos);
+  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
   if (!fOk) {
     return FALSE;
   }
 
-  ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1449,7 +1449,7 @@ function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
 
   CHECKF(pStartSoldier);
 
-  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, &dStartZPos);
+  fOk = CalculateSoldierZPos(pStartSoldier, LOS_POS, addressof(dStartZPos));
   CHECKF(fOk);
 
   // manually calculate destination Z position.
@@ -1472,7 +1472,7 @@ function SoldierToVirtualSoldierLineOfSightTest(pStartSoldier: Pointer<SOLDIERTY
     dEndZPos += WALL_HEIGHT_UNITS;
   }
 
-  ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
   sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1502,7 +1502,7 @@ function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT
   // add in ground height
   dStartZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sStartGridNo].sHeight);
 
-  ConvertGridNoToXY(sStartGridNo, &sStartXPos, &sStartYPos);
+  ConvertGridNoToXY(sStartGridNo, addressof(sStartXPos), addressof(sStartYPos));
   sStartXPos = sStartXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sStartYPos = sStartYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1510,7 +1510,7 @@ function LocationToLocationLineOfSightTest(sStartGridNo: INT16, bStartLevel: INT
   // add in ground height
   dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sEndGridNo].sHeight);
 
-  ConvertGridNoToXY(sEndGridNo, &sEndXPos, &sEndYPos);
+  ConvertGridNoToXY(sEndGridNo, addressof(sEndXPos), addressof(sEndYPos));
   sEndXPos = sEndXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
   sEndYPos = sEndYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -1561,14 +1561,14 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
     bSlot = FindEmptySlotWithin(pTarget, BIGPOCK1POS, SMALLPOCK8POS);
     if (bSlot == NO_SLOT) {
       // Add item
-      CreateItem(THROWING_KNIFE, pBullet.value.ubItemStatus, &Object);
+      CreateItem(THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(Object));
 
-      AddItemToPool(pTarget.value.sGridNo, &Object, -1, pTarget.value.bLevel, 0, 0);
+      AddItemToPool(pTarget.value.sGridNo, addressof(Object), -1, pTarget.value.bLevel, 0, 0);
 
       // Make team look for items
       NotifySoldiersToLookforItems();
     } else {
-      CreateItem(BLOODY_THROWING_KNIFE, pBullet.value.ubItemStatus, &(pTarget.value.inv[bSlot]));
+      CreateItem(BLOODY_THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(pTarget.value.inv[bSlot]));
     }
 
     ubAmmoType = AMMO_KNIFE;
@@ -1693,7 +1693,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       // shouldn't happen but
       iImpact = 0;
     }
-    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, &ubSpecial);
+    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
     // handle hit here...
     if ((pFirer.value.bTeam == 0)) {
       gMercProfiles[pFirer.value.ubProfile].usShotsHit++;
@@ -1715,7 +1715,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       // shouldn't happen but
       iImpact = 0;
     }
-    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, &ubSpecial);
+    iDamage = BulletImpact(pFirer, pTarget, ubHitLocation, iImpact, sHitBy, addressof(ubSpecial));
 
     // accidentally shot
     pTarget.value.fIntendedTarget = FALSE;
@@ -1726,7 +1726,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
       pTarget.value.inv[bHeadSlot].bStatus[0] -= ((iImpact / 2) + Random((iImpact / 2)));
       if (pTarget.value.inv[bHeadSlot].bStatus[0] <= USABLE) {
         if (pTarget.value.inv[bHeadSlot].bStatus[0] <= 0) {
-          DeleteObj(&(pTarget.value.inv[bHeadSlot]));
+          DeleteObj(addressof(pTarget.value.inv[bHeadSlot]));
           DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
         }
         // say curse?
@@ -1761,7 +1761,7 @@ function BulletHitMerc(pBullet: Pointer<BULLET>, pStructure: Pointer<STRUCTURE>,
   }
 
   // Send event for getting hit
-  memset(&(SWeaponHit), 0, sizeof(SWeaponHit));
+  memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
   SWeaponHit.usSoldierID = pTarget.value.ubID;
   SWeaponHit.uiUniqueId = pTarget.value.uiUniqueSoldierIdValue;
   SWeaponHit.usWeaponIndex = pFirer.value.usAttackingWeapon;
@@ -2118,7 +2118,7 @@ function CalcChanceToGetThrough(pBullet: Pointer<BULLET>): UINT8 {
     // retrieve values from world for this particular tile
     iGridNo = pBullet.value.iCurrTileX + pBullet.value.iCurrTileY * WORLD_COLS;
     DebugLOS(String("CTGT now at %ld", iGridNo));
-    pMapElement = &(gpWorldLevelData[iGridNo]);
+    pMapElement = addressof(gpWorldLevelData[iGridNo]);
     qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
     qWindowBottomHeight = gqStandardWindowBottomHeight + qLandHeight;
@@ -2443,7 +2443,7 @@ function SoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>,
   }
   CHECKF(pStartSoldier);
   CHECKF(pEndSoldier);
-  fOk = CalculateSoldierZPos(pEndSoldier, TARGET_POS, &dEndZPos);
+  fOk = CalculateSoldierZPos(pEndSoldier, TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
     return FALSE;
   }
@@ -2480,7 +2480,7 @@ function SoldierToSoldierBodyPartChanceToGetThrough(pStartSoldier: Pointer<SOLDI
       break;
   }
 
-  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, &dEndZPos);
+  fOk = CalculateSoldierZPos(pEndSoldier, ubPosType, addressof(dEndZPos));
   if (!fOk) {
     return FALSE;
   }
@@ -2522,7 +2522,7 @@ function SoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE>
     }
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
-    ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+    ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
     sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
     sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -2545,7 +2545,7 @@ function AISoldierToSoldierChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYPE
   }
   CHECKF(pStartSoldier);
   CHECKF(pEndSoldier);
-  fOk = CalculateSoldierZPos(pEndSoldier, TARGET_POS, &dEndZPos);
+  fOk = CalculateSoldierZPos(pEndSoldier, TARGET_POS, addressof(dEndZPos));
   if (!fOk) {
     return FALSE;
   }
@@ -2595,7 +2595,7 @@ function AISoldierToLocationChanceToGetThrough(pStartSoldier: Pointer<SOLDIERTYP
     }
 
     dEndZPos += CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[sGridNo].sHeight);
-    ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+    ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
     sXPos = sXPos * CELL_X_SIZE + (CELL_X_SIZE / 2);
     sYPos = sYPos * CELL_Y_SIZE + (CELL_Y_SIZE / 2);
 
@@ -2785,7 +2785,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
   let ubSpreadIndex: UINT8 = 0;
   let usBulletFlags: UINT16 = 0;
 
-  CalculateSoldierZPos(pFirer, FIRING_POS, &dStartZ);
+  CalculateSoldierZPos(pFirer, FIRING_POS, addressof(dStartZ));
 
   dStartX = CenterX(pFirer.value.sGridNo);
   dStartY = CenterY(pFirer.value.sGridNo);
@@ -2834,7 +2834,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
         if (sHitBy > 0) {
           sHitBy = sHitBy / 2;
         }
-        if (FindAttachment(&(pFirer.value.inv[pFirer.value.ubAttackingHand]), DUCKBILL) != NO_SLOT) {
+        if (FindAttachment(addressof(pFirer.value.inv[pFirer.value.ubAttackingHand]), DUCKBILL) != NO_SLOT) {
           ubSpreadIndex = 1;
         }
         if (pFirer.value.ubTargetID != NOBODY) {
@@ -2885,7 +2885,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
         ddAdjustedHorizAngle = ddHorizAngle;
         ddAdjustedVerticAngle = ddVerticAngle;
       } else {
-        CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, &ddAdjustedHorizAngle, &ddAdjustedVerticAngle);
+        CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, addressof(ddAdjustedHorizAngle), addressof(ddAdjustedVerticAngle));
       }
     } else {
       // temporarily set bullet's sHitBy value to 0 to get unadjusted angles
@@ -2894,7 +2894,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
       ddHorizAngle = ddAdjustedHorizAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][0];
       ddVerticAngle = ddAdjustedVerticAngle + ddShotgunSpread[ubSpreadIndex][ubLoop][1];
 
-      CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, &ddDummyHorizAngle, &ddDummyVerticAngle);
+      CalculateFiringIncrements(ddHorizAngle, ddVerticAngle, d2DDistance, pBullet, addressof(ddDummyHorizAngle), addressof(ddDummyVerticAngle));
       pBullet.value.sHitBy = sHitBy;
     }
 
@@ -2927,7 +2927,7 @@ function FireBulletGivenTarget(pFirer: Pointer<SOLDIERTYPE>, dEndX: FLOAT, dEndY
 
     pBullet.value.iImpact = ubImpact;
 
-    pBullet.value.iRange = GunRange(&(pFirer.value.inv[pFirer.value.ubAttackingHand]));
+    pBullet.value.iRange = GunRange(addressof(pFirer.value.inv[pFirer.value.ubAttackingHand]));
     pBullet.value.sTargetGridNo = (dEndX) / CELL_X_SIZE + (dEndY) / CELL_Y_SIZE * WORLD_COLS;
 
     pBullet.value.bStartCubesAboveLevelZ = CONVERT_HEIGHTUNITS_TO_INDEX(dStartZ - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pFirer.value.sGridNo].sHeight));
@@ -3048,7 +3048,7 @@ function MoveBullet(iBullet: INT32): void {
       return;
     }
 
-    pMapElement = &(gpWorldLevelData[iGridNo]);
+    pMapElement = addressof(gpWorldLevelData[iGridNo]);
     qLandHeight = INT32_TO_FIXEDPT(CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight));
     qWallHeight = gqStandardWallHeight + qLandHeight;
     qWindowBottomHeight = gqStandardWindowBottomHeight + qLandHeight;
@@ -3432,13 +3432,13 @@ function MoveBullet(iBullet: INT32): void {
                     if (pBullet.value.usFlags & BULLET_FLAG_KNIFE) {
                       // knives do get stopped by windows!
 
-                      iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, &fHitStructure);
+                      iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
                       if (iRemainingImpact <= 0) {
                         // check angle of knife and place on ground appropriately
                         let Object: OBJECTTYPE;
                         let iKnifeGridNo: INT32;
 
-                        CreateItem(THROWING_KNIFE, pBullet.value.ubItemStatus, &Object);
+                        CreateItem(THROWING_KNIFE, pBullet.value.ubItemStatus, addressof(Object));
 
                         // by default knife at same tile as window
                         iKnifeGridNo = iGridNo;
@@ -3459,9 +3459,9 @@ function MoveBullet(iBullet: INT32): void {
                         }
 
                         if (sDesiredLevel == STRUCTURE_ON_GROUND) {
-                          AddItemToPool(iKnifeGridNo, &Object, -1, 0, 0, 0);
+                          AddItemToPool(iKnifeGridNo, addressof(Object), -1, 0, 0, 0);
                         } else {
-                          AddItemToPool(iKnifeGridNo, &Object, -1, 0, 1, 0);
+                          AddItemToPool(iKnifeGridNo, addressof(Object), -1, 0, 1, 0);
                         }
 
                         // Make team look for items
@@ -3507,7 +3507,7 @@ function MoveBullet(iBullet: INT32): void {
                   }
 
                   if (fResolveHit) {
-                    iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, &fHitStructure);
+                    iRemainingImpact = HandleBulletStructureInteraction(pBullet, pStructure, addressof(fHitStructure));
                     if (fHitStructure) {
                       // ATE: NOT if we are a special bullet like a LAW trail...
                       if (pStructure.value.fFlags & STRUCTURE_CORPSE && !(pBullet.value.usFlags & (BULLET_FLAG_MISSILE | BULLET_FLAG_SMALL_MISSILE | BULLET_FLAG_TANK_CANNON | BULLET_FLAG_FLAME | BULLET_FLAG_CREATURE_SPIT))) {
@@ -3671,7 +3671,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
 
   // check a particular tile
   // retrieve values from world for this particular tile
-  pMapElement = &(gpWorldLevelData[sX + sY * WORLD_COLS]);
+  pMapElement = addressof(gpWorldLevelData[sX + sY * WORLD_COLS]);
   iLandHeight = CONVERT_PIXELS_TO_HEIGHTUNITS(pMapElement.value.sHeight);
 
   // Calculate old height and new hieght in pixels
@@ -3697,7 +3697,7 @@ function CheckForCollision(dX: FLOAT, dY: FLOAT, dZ: FLOAT, dDeltaX: FLOAT, dDel
     dTargetX = pTarget.value.dXPos;
     dTargetY = pTarget.value.dYPos;
     dTargetZMin = 0.0f;
-    CalculateSoldierZPos(pTarget, HEIGHT, &dTargetZMax);
+    CalculateSoldierZPos(pTarget, HEIGHT, addressof(dTargetZMax));
     if (pTarget.value.bLevel > 0) {
       // on roof
       dTargetZMin += WALL_HEIGHT_UNITS;
@@ -3950,7 +3950,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   vIncident.y = dDeltaY;
   vIncident.z = 0;
   // Nomralize
-  vIncident = VGetNormal(&vIncident);
+  vIncident = VGetNormal(addressof(vIncident));
 
   vAveNormal.x = 0;
   vAveNormal.y = 0;
@@ -4033,11 +4033,11 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
           //}
 
           // 2) Calculate Normal from cross product
-          vNormal = VCrossProduct(&vTemp2, &vZ);
+          vNormal = VCrossProduct(addressof(vTemp2), addressof(vZ));
 
-          if (VGetLength(&vNormal) > 0) {
+          if (VGetLength(addressof(vNormal)) > 0) {
             // Nomralize
-            vNormal = VGetNormal(&vNormal);
+            vNormal = VGetNormal(addressof(vNormal));
 
             // CHECK ANGLE BRTWEEN INCIDENNCE AND NORMAL
             // if ( VDotProduct( &vNormal, &vIncident ) > 0 )
@@ -4045,11 +4045,11 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
               bNumNormals++;
 
               // Average normal!
-              vTemp = VAdd(&vNormal, &vAveNormal);
-              vAveNormal = VSetEqual(&vTemp);
-              vAveNormal = VDivScalar(&vAveNormal, bNumNormals);
+              vTemp = VAdd(addressof(vNormal), addressof(vAveNormal));
+              vAveNormal = VSetEqual(addressof(vTemp));
+              vAveNormal = VDivScalar(addressof(vAveNormal), bNumNormals);
               // Nomralize
-              vAveNormal = VGetNormal(&vAveNormal);
+              vAveNormal = VGetNormal(addressof(vAveNormal));
             }
           }
         }
@@ -4068,7 +4068,7 @@ function CalculateLOSNormal(pStructure: Pointer<STRUCTURE>, bLOSX: INT8, bLOSY: 
   }
 
   // Average angle
-  if (VGetLength(&vAveNormal) > 0) {
+  if (VGetLength(addressof(vAveNormal)) > 0) {
     *pdNormalX = vAveNormal.x;
     *pdNormalY = vAveNormal.y;
 

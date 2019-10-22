@@ -57,7 +57,7 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     strcpy(VObjectDesc.ImageFile, cAdjustedFile);
-    hVObject = CreateVideoObject(&VObjectDesc);
+    hVObject = CreateVideoObject(addressof(VObjectDesc));
 
     if (hVObject == NULL) {
       // TRY loading from default directory
@@ -68,13 +68,13 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
       // LOAD ONE WE KNOW ABOUT!
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       strcpy(VObjectDesc.ImageFile, cAdjustedFile);
-      hVObject = CreateVideoObject(&VObjectDesc);
+      hVObject = CreateVideoObject(addressof(VObjectDesc));
 
       if (hVObject == NULL) {
         // LOAD ONE WE KNOW ABOUT!
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         strcpy(VObjectDesc.ImageFile, "TILESETS\\0\\T\\grass.sti");
-        hVObject = CreateVideoObject(&VObjectDesc);
+        hVObject = CreateVideoObject(addressof(VObjectDesc));
       }
     }
 
@@ -125,8 +125,8 @@ function InitNewOverheadDB(ubTilesetID: UINT8): void {
     let sX2: INT16;
     let sY2: INT16;
 
-    CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &gsStartRestrictedY, 640, 320);
-    CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &gsStartRestrictedX, &sY2, 640, 320);
+    CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(gsStartRestrictedY), 640, 320);
+    CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(gsStartRestrictedX), addressof(sY2), 640, 320);
   }
 
   // Copy over shade tables from main tileset
@@ -172,7 +172,7 @@ function GetClosestItemPool(sSweetGridNo: INT16, ppReturnedItemPool: Pointer<Poi
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
         // Go on sweet stop
-        if (GetItemPool(sGridNo, &pItemPool, bLevel)) {
+        if (GetItemPool(sGridNo, addressof(pItemPool), bLevel)) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSweetGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {
@@ -241,7 +241,7 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sY: INT16;
 
   // Get Screen position of guy.....
-  GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), &sWorldScreenX, &sWorldScreenY);
+  GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), addressof(sWorldScreenX), addressof(sWorldScreenY));
 
   sWorldScreenX = gsStartRestrictedX + (sWorldScreenX / 5) + 5;
   sWorldScreenY = gsStartRestrictedY + (sWorldScreenY / 5) + (pSoldier.value.sHeightAdjustment / 5) + (gpWorldLevelData[pSoldier.value.sGridNo].sHeight / 5) - 8;
@@ -254,7 +254,7 @@ function DisplayMercNameInOverhead(pSoldier: Pointer<SOLDIERTYPE>): void {
   SetFontForeground(FONT_MCOLOR_WHITE);
 
   // Center here....
-  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates(sWorldScreenX, sWorldScreenY, (1), 1, pSoldier.value.name, TINYFONT1, addressof(sX), addressof(sY));
 
   // OK, selected guy is here...
   gprintfdirty(sX, sY, pSoldier.value.name);
@@ -330,16 +330,16 @@ function HandleOverheadMap(): void {
 
     HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
 
-    if (GetOverheadMouseGridNo(&usMapPos)) {
+    if (GetOverheadMouseGridNo(addressof(usMapPos))) {
       // ATE: Find the closest item pool within 5 tiles....
-      if (GetClosestItemPool(usMapPos, &pItemPool, 1, 0)) {
+      if (GetClosestItemPool(usMapPos, addressof(pItemPool), 1, 0)) {
         let pStructure: Pointer<STRUCTURE> = NULL;
         let sIntTileGridNo: INT16;
         let bZLevel: INT8 = 0;
         let sActionGridNo: INT16 = usMapPos;
 
         // Get interactive tile...
-        if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {
+        if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
           sActionGridNo = sIntTileGridNo;
         }
 
@@ -353,7 +353,7 @@ function HandleOverheadMap(): void {
         }
       }
 
-      if (GetClosestItemPool(usMapPos, &pItemPool, 1, 1)) {
+      if (GetClosestItemPool(usMapPos, addressof(pItemPool), 1, 1)) {
         let bZLevel: INT8 = 0;
         let sActionGridNo: INT16 = usMapPos;
 
@@ -366,8 +366,8 @@ function HandleOverheadMap(): void {
       }
     }
 
-    if (GetOverheadMouseGridNoForFullSoldiersGridNo(&usMapPos)) {
-      if (GetClosestMercInOverheadMap(usMapPos, &pSoldier, 1)) {
+    if (GetOverheadMouseGridNoForFullSoldiersGridNo(addressof(usMapPos))) {
+      if (GetClosestMercInOverheadMap(usMapPos, addressof(pSoldier), 1)) {
         if (pSoldier.value.bTeam == gbPlayerNum) {
           gfUIHandleSelectionAboveGuy = TRUE;
           gsSelectedGuy = pSoldier.value.ubID;
@@ -409,28 +409,28 @@ function GoIntoOverheadMap(): void {
 
   gfInOverheadMap = TRUE;
 
-  MSYS_DefineRegion(&OverheadBackgroundRegion, 0, 0, 640, 360, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(OverheadBackgroundRegion), 0, 0, 640, 360, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(&OverheadBackgroundRegion);
+  MSYS_AddRegion(addressof(OverheadBackgroundRegion));
 
-  MSYS_DefineRegion(&OverheadRegion, 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
+  MSYS_DefineRegion(addressof(OverheadRegion), 0, 0, gsVIEWPORT_END_X, 320, MSYS_PRIORITY_HIGH, CURSOR_NORMAL, MoveOverheadRegionCallback, ClickOverheadRegionCallback);
   // Add region
-  MSYS_AddRegion(&OverheadRegion);
+  MSYS_AddRegion(addressof(OverheadRegion));
 
   // LOAD CLOSE ANIM
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\MAP_BORD.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &uiOVERMAP))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiOVERMAP)))
     AssertMsg(0, "Missing INTERFACE\\MAP_BORD.sti");
 
   // LOAD PERSONS
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\PERSONS.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &uiPERSONS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPERSONS)))
     AssertMsg(0, "Missing INTERFACE\\PERSONS.sti");
 
   // Add shades to persons....
-  GetVideoObject(&hVObject, uiPERSONS);
+  GetVideoObject(addressof(hVObject), uiPERSONS);
   hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 256, 256, 256, FALSE);
   hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 310, 310, 310, FALSE);
   hVObject.value.pShades[2] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 0, 0, 0, FALSE);
@@ -461,7 +461,7 @@ function HandleOverheadUI(): void {
   let ubID: UINT8;
 
   // CHECK FOR MOUSE OVER REGIONS...
-  if (GetOverheadMouseGridNo(&sMousePos)) {
+  if (GetOverheadMouseGridNo(addressof(sMousePos))) {
     // Look quickly for a soldier....
     ubID = QuickFindSoldier(sMousePos);
 
@@ -472,7 +472,7 @@ function HandleOverheadUI(): void {
     }
   }
 
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     if ((InputEvent.usEvent == KEY_DOWN)) {
       switch (InputEvent.usParam) {
         case (ESC):
@@ -496,8 +496,8 @@ function KillOverheadMap(): void {
   SetRenderFlags(RENDER_FLAG_FULL);
   RenderWorld();
 
-  MSYS_RemoveRegion(&OverheadRegion);
-  MSYS_RemoveRegion(&OverheadBackgroundRegion);
+  MSYS_RemoveRegion(addressof(OverheadRegion));
+  MSYS_RemoveRegion(addressof(OverheadBackgroundRegion));
 
   DeleteVideoObjectFromIndex(uiOVERMAP);
   DeleteVideoObjectFromIndex(uiPERSONS);
@@ -558,7 +558,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
   // Get video object for persons...
   if (!fFromMapUtility) {
-    GetVideoObject(&hVObject, uiPERSONS);
+    GetVideoObject(addressof(hVObject), uiPERSONS);
   }
 
   if (gfOverheadMapDirty) {
@@ -577,7 +577,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
     // Zero out area!
     // ColorFillVideoSurfaceArea( FRAME_BUFFER, 0, 0, (INT16)(640), (INT16)(gsVIEWPORT_WINDOW_END_Y), Get16BPPColor( FROMRGB( 0, 0, 0 ) ) );
 
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
     do {
       fEndRenderRow = FALSE;
@@ -597,7 +597,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
           pNode = gpWorldLevelData[usTileIndex].pLandStart;
           while (pNode != NULL) {
-            pTile = &(gSmTileDB[pNode.value.usIndex]);
+            pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
             sX = sTempPosX_S;
             sY = sTempPosY_S - sHeight + (gsRenderHeight / 5);
@@ -667,7 +667,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
             if (pNode.value.usIndex < NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
-                pTile = &(gSmTileDB[pNode.value.usIndex]);
+                pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
                 sX = sTempPosX_S;
                 sY = sTempPosY_S;
@@ -693,7 +693,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
           pNode = gpWorldLevelData[usTileIndex].pShadowHead;
           while (pNode != NULL) {
             if (pNode.value.usIndex < NUMBEROFTILES) {
-              pTile = &(gSmTileDB[pNode.value.usIndex]);
+              pTile = addressof(gSmTileDB[pNode.value.usIndex]);
               sX = sTempPosX_S;
               sY = sTempPosY_S - sHeight;
 
@@ -714,7 +714,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
             if (pNode.value.usIndex < NUMBEROFTILES) {
               // Don't render itempools!
               if (!(pNode.value.uiFlags & LEVELNODE_ITEM)) {
-                pTile = &(gSmTileDB[pNode.value.usIndex]);
+                pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
                 sX = sTempPosX_S;
                 sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5);
@@ -793,7 +793,7 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
             while (pNode != NULL) {
               if (pNode.value.usIndex < NUMBEROFTILES) {
                 if (!(pNode.value.uiFlags & LEVELNODE_HIDDEN)) {
-                  pTile = &(gSmTileDB[pNode.value.usIndex]);
+                  pTile = addressof(gSmTileDB[pNode.value.usIndex]);
 
                   sX = sTempPosX_S;
                   sY = sTempPosY_S - (gTileDatabase[pNode.value.usIndex].sOffsetHeight / 5) - sHeight;
@@ -840,16 +840,16 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
 
     // OK, blacken out edges of smaller maps...
     if (gMapInformation.ubRestrictedScrollID != 0) {
-      CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &sY2, sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &sX2, &sY2, sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(SOUTH, &sX1, &sY1, &sX2, &sY2, sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(SOUTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
 
-      CalculateRestrictedMapCoords(EAST, &sX1, &sY1, &sX2, &sY2, sEndXS, sEndYS);
+      CalculateRestrictedMapCoords(EAST, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sY2), sEndXS, sEndYS);
       ColorFillVideoSurfaceArea(FRAME_BUFFER, sX1, sY1, sX2, sY2, Get16BPPColor(FROMRGB(0, 0, 0)));
     }
 
@@ -869,10 +869,10 @@ function RenderOverheadMap(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartP
       let ubBitDepth: UINT8;
 
       // Update saved buffer - do for the viewport size ony!
-      GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+      GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
 
-      pSrcBuf = LockVideoSurface(guiRENDERBUFFER, &uiSrcPitchBYTES);
-      pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
+      pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
+      pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
 
       if (gbPixelDepth == 16) {
         // BLIT HERE
@@ -898,8 +898,8 @@ function RenderOverheadOverlays(): void {
   let pDestBuf: Pointer<UINT8>;
   let ubPassengers: UINT8 = 0;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-  GetVideoObject(&hVObject, uiPERSONS);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  GetVideoObject(addressof(hVObject), uiPERSONS);
 
   // SOLDIER OVERLAY
   if (gfTacticalPlacementGUIActive) {
@@ -915,7 +915,7 @@ function RenderOverheadOverlays(): void {
     if (!pSoldier.value.bActive || !pSoldier.value.bInSector)
       continue;
     // Soldier is here.  Calculate his screen position based on his current gridno.
-    GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo, &sX, &sY);
+    GetOverheadScreenXYFromGridNo(pSoldier.value.sGridNo, addressof(sX), addressof(sY));
     // Now, draw his "doll"
 
     // adjust for position.
@@ -992,12 +992,12 @@ function RenderOverheadOverlays(): void {
   // ITEMS OVERLAY
   if (!gfTacticalPlacementGUIActive) {
     for (i = 0; i < guiNumWorldItems; i++) {
-      pWorldItem = &gWorldItems[i];
+      pWorldItem = addressof(gWorldItems[i]);
       if (!pWorldItem || !pWorldItem.value.fExists || pWorldItem.value.bVisible != VISIBLE && !(gTacticalStatus.uiFlags & SHOW_ALL_ITEMS)) {
         continue;
       }
 
-      GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo, &sX, &sY);
+      GetOverheadScreenXYFromGridNo(pWorldItem.value.sGridNo, addressof(sX), addressof(sY));
 
       // adjust for position.
       // sX += 2;
@@ -1247,7 +1247,7 @@ function ClickOverheadRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT32):
     sWorldScreenY = (gusMouseYPos - gsStartRestrictedY) * 5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(&uiCellX, &uiCellY, sWorldScreenX, sWorldScreenY);
+    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     SetRenderCenter(uiCellX, uiCellY);
 
@@ -1284,7 +1284,7 @@ function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
     sWorldScreenY = gsStartRestrictedY + (gusMouseYPos - 8) * 5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(&uiCellX, &uiCellY, sWorldScreenX, sWorldScreenY);
+    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
     (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1292,7 +1292,7 @@ function GetOverheadMouseGridNo(psGridNo: Pointer<INT16>): BOOLEAN {
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(*psGridNo)].sHeight;
 
-    GetFromAbsoluteScreenXYWorldXY(&uiCellX, &uiCellY, sWorldScreenX, sWorldScreenY);
+    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
     (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1315,7 +1315,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     sWorldScreenY = gsStartRestrictedY + (gusMouseYPos)*5;
 
     // Get new proposed center location.
-    GetFromAbsoluteScreenXYWorldXY(&uiCellX, &uiCellY, sWorldScreenX, sWorldScreenY);
+    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
     (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));
@@ -1323,7 +1323,7 @@ function GetOverheadMouseGridNoForFullSoldiersGridNo(psGridNo: Pointer<INT16>): 
     // Adjust for height.....
     sWorldScreenY = sWorldScreenY + gpWorldLevelData[(*psGridNo)].sHeight;
 
-    GetFromAbsoluteScreenXYWorldXY(&uiCellX, &uiCellY, sWorldScreenX, sWorldScreenY);
+    GetFromAbsoluteScreenXYWorldXY(addressof(uiCellX), addressof(uiCellY), sWorldScreenX, sWorldScreenY);
 
     // Get gridNo
     (*psGridNo) = MAPROWCOLTOPOS((uiCellY / CELL_Y_SIZE), (uiCellX / CELL_X_SIZE));

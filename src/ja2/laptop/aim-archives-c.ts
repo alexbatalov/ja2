@@ -123,7 +123,7 @@ function EnterInitAimArchives(): void {
   gfDrawPopUpBox = FALSE;
   gfDestroyPopUpBox = FALSE;
 
-  memset(&AimArchivesSubPagesVisitedFlag, 0, 3);
+  memset(addressof(AimArchivesSubPagesVisitedFlag), 0, 3);
   AimArchivesSubPagesVisitedFlag[0] = TRUE;
 }
 
@@ -145,32 +145,32 @@ function EnterAimArchives(): BOOLEAN {
   // load the Alumni Frame and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AlumniFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAlumniFrame));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniFrame)));
 
   // load the 1st set of faces and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Old_Aim.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiOldAim));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOldAim)));
 
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPageButtons));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPageButtons)));
 
   // load the PopupPic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\PopupPicFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPopUpPic));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpPic)));
 
   // load the AlumniPopUp graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AlumniPopUp.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAlumniPopUp));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAlumniPopUp)));
 
   // load the Done Button graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\DoneButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiDoneButton));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiDoneButton)));
 
   InitAlumniFaceRegions();
 
@@ -253,8 +253,8 @@ function RenderAimArchives(): void {
   DrawTextToScreen(AimAlumniText[AIM_ALUMNI_ALUMNI], AIM_ALUMNI_TITLE_X, AIM_ALUMNI_TITLE_Y, AIM_ALUMNI_TITLE_WIDTH, AIM_ALUMNI_TITLE_FONT, AIM_ALUMNI_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Draw the mug shot border and face
-  GetVideoObject(&hFrameHandle, guiAlumniFrame);
-  GetVideoObject(&hFaceHandle, guiOldAim);
+  GetVideoObject(addressof(hFrameHandle), guiAlumniFrame);
+  GetVideoObject(addressof(hFaceHandle), guiOldAim);
 
   switch (gubPageNum) {
     case 0:
@@ -416,10 +416,10 @@ function DisplayAlumniOldMercPopUp(): void {
   let uiStartLoc: UINT32;
   let usStringPixLength: UINT16;
 
-  GetVideoObject(&hAlumniPopUpHandle, guiAlumniPopUp);
-  GetVideoObject(&hDoneHandle, guiDoneButton);
-  GetVideoObject(&hFacePaneHandle, guiPopUpPic);
-  GetVideoObject(&hFaceHandle, guiOldAim);
+  GetVideoObject(addressof(hAlumniPopUpHandle), guiAlumniPopUp);
+  GetVideoObject(addressof(hDoneHandle), guiDoneButton);
+  GetVideoObject(addressof(hFacePaneHandle), guiPopUpPic);
+  GetVideoObject(addressof(hFaceHandle), guiOldAim);
 
   ubFontHeight = GetFontHeight(AIM_ALUMNI_POPUP_FONT);
 
@@ -497,10 +497,10 @@ function InitAlumniFaceRegions(): void {
   i = 0;
   for (y = 0; y < usNumRows; y++) {
     for (x = 0; x < AIM_ALUMNI_NUM_FACE_COLS; x++) {
-      MSYS_DefineRegion(&gMercAlumniFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+      MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
       // Add region
-      MSYS_AddRegion(&gMercAlumniFaceMouseRegions[i]);
-      MSYS_SetRegionUserData(&gMercAlumniFaceMouseRegions[i], 0, i + (20 * gubPageNum));
+      MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
+      MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
 
       usPosX += AIM_ALUMNI_GRID_OFFSET_X;
       i++;
@@ -511,10 +511,10 @@ function InitAlumniFaceRegions(): void {
 
   // the 3rd page now has an additional row with 1 merc on it, so add a new row
   if (gubPageNum == 2) {
-    MSYS_DefineRegion(&gMercAlumniFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
+    MSYS_DefineRegion(addressof(gMercAlumniFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_ALUMNI_ALUMNI_FACE_WIDTH), (usPosY + AIM_ALUMNI_ALUMNI_FACE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniFaceRegionCallBack);
     // Add region
-    MSYS_AddRegion(&gMercAlumniFaceMouseRegions[i]);
-    MSYS_SetRegionUserData(&gMercAlumniFaceMouseRegions[i], 0, i + (20 * gubPageNum));
+    MSYS_AddRegion(addressof(gMercAlumniFaceMouseRegions[i]));
+    MSYS_SetRegionUserData(addressof(gMercAlumniFaceMouseRegions[i]), 0, i + (20 * gubPageNum));
   }
 
   gfFaceMouseRegionsActive = TRUE;
@@ -542,7 +542,7 @@ function RemoveAimAlumniFaceRegion(): void {
   }
 
   for (i = 0; i < usNumber; i++) {
-    MSYS_RemoveRegion(&gMercAlumniFaceMouseRegions[i]);
+    MSYS_RemoveRegion(addressof(gMercAlumniFaceMouseRegions[i]));
   }
   gfFaceMouseRegionsActive = FALSE;
 }
@@ -552,14 +552,14 @@ function CreateDestroyDoneMouseRegion(usPosY: UINT16): void {
 
   if ((!DoneRegionCreated) && (usPosY != 0)) {
     usPosY -= AIM_ALUMNI_DONE_HEIGHT;
-    MSYS_DefineRegion(&gDoneRegion, AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
+    MSYS_DefineRegion(addressof(gDoneRegion), AIM_ALUMNI_DONE_X - 2, usPosY, (AIM_ALUMNI_DONE_X - 2 + AIM_ALUMNI_DONE_WIDTH), (usPosY + AIM_ALUMNI_DONE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAlumniDoneRegionCallBack);
     // Add region
-    MSYS_AddRegion(&gDoneRegion);
+    MSYS_AddRegion(addressof(gDoneRegion));
     DoneRegionCreated = TRUE;
   }
 
   if (DoneRegionCreated && usPosY == 0) {
-    MSYS_RemoveRegion(&gDoneRegion);
+    MSYS_RemoveRegion(addressof(gDoneRegion));
     DoneRegionCreated = FALSE;
     //		gfDestroyDoneRegion = FALSE;
   }

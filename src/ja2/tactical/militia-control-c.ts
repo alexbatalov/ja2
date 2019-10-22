@@ -38,7 +38,7 @@ function PrepareMilitiaForTactical(): void {
   if (gWorldSectorX == 0 && gWorldSectorY == 0)
     return;
 
-  pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
   ubGreen = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA];
   ubRegs = pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA];
   ubElites = pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA];

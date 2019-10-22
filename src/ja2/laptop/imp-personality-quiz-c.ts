@@ -37,7 +37,7 @@ let iNumberOfPersonaButtons: INT32 = 0;
 
 function EnterIMPPersonalityQuiz(): void {
   // void answers out the quiz
-  memset(&iQuizAnswerList, -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
+  memset(addressof(iQuizAnswerList), -1, sizeof(INT32) * MAX_NUMBER_OF_IMP_QUESTIONS);
 
   // if we are entering for first time, reset
   if (giCurrentPersonalityQuizQuestion == MAX_NUMBER_OF_IMP_QUESTIONS) {
@@ -1301,9 +1301,9 @@ function HandleIMPQuizKeyBoard(): void {
   let MousePos: POINT;
   let fSkipFrame: BOOLEAN = FALSE;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
-  while ((DequeueEvent(&InputEvent) == TRUE)) {
+  while ((DequeueEvent(addressof(InputEvent)) == TRUE)) {
     if (fSkipFrame == FALSE) {
       // HOOK INTO MOUSE HOOKS
 

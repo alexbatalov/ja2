@@ -20,13 +20,13 @@ let gRadarRegionSquadList: MOUSE_REGION[] /* [NUMBER_OF_SQUADS] */;
 
 function InitRadarScreen(): BOOLEAN {
   // Add region for radar
-  MSYS_DefineRegion(&gRadarRegion, RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
+  MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, RADAR_WINDOW_TM_Y, RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, RADAR_WINDOW_TM_Y + RADAR_WINDOW_HEIGHT, MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
   // Add region
-  MSYS_AddRegion(&gRadarRegion);
+  MSYS_AddRegion(addressof(gRadarRegion));
 
   // disable the radar map
-  MSYS_DisableRegion(&gRadarRegion);
+  MSYS_DisableRegion(addressof(gRadarRegion));
 
   gsRadarX = RADAR_WINDOW_X;
   gsRadarY = RADAR_WINDOW_TM_Y;
@@ -65,11 +65,11 @@ function LoadRadarScreenBitmap(aFilename: Pointer<CHAR8>): BOOLEAN {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, "RADARMAPS\\%s.STI", zFilename);
 
-    CHECKF(AddVideoObject(&VObjectDesc, &gusRadarImage));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gusRadarImage)));
 
     fImageLoaded = TRUE;
 
-    if (GetVideoObject(&hVObject, gusRadarImage)) {
+    if (GetVideoObject(addressof(hVObject), gusRadarImage)) {
       // ATE: Add a shade table!
       hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
       hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 100, 100, 100, FALSE);
@@ -97,7 +97,7 @@ function MoveRadarScreen(): void {
   }
 
   // Remove old region
-  MSYS_RemoveRegion(&gRadarRegion);
+  MSYS_RemoveRegion(addressof(gRadarRegion));
 
   // Add new one
 
@@ -109,10 +109,10 @@ function MoveRadarScreen(): void {
   }
 
   // Add region for radar
-  MSYS_DefineRegion(&gRadarRegion, RADAR_WINDOW_X, (gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
+  MSYS_DefineRegion(addressof(gRadarRegion), RADAR_WINDOW_X, (gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
   // Add region
-  MSYS_AddRegion(&gRadarRegion);
+  MSYS_AddRegion(addressof(gRadarRegion));
 }
 
 function RadarRegionMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -246,7 +246,7 @@ function RenderRadarScreen(): void {
   sDistToCenterY = gsRenderCenterY - gCenterWorldY;
 
   // From render center in world coords, convert to render center in "screen" coords
-  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, &sScreenCenterX, &sScreenCenterY);
+  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, addressof(sScreenCenterX), addressof(sScreenCenterY));
 
   // Subtract screen center
   sScreenCenterX += gsCX;
@@ -283,7 +283,7 @@ function RenderRadarScreen(): void {
   sRadarBRX = ((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
   sRadarBRY = ((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, RADAR_WINDOW_X, gsRadarY, (RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1), (gsRadarY + RADAR_WINDOW_HEIGHT - 1));
 
@@ -318,8 +318,8 @@ function RenderRadarScreen(): void {
         continue;
       }
 
-      ConvertGridNoToXY(pInventoryPoolList[iItemNumber].sGridNo, &sXSoldPos, &sYSoldPos);
-      GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, &sXSoldScreen, &sYSoldScreen);
+      ConvertGridNoToXY(pInventoryPoolList[iItemNumber].sGridNo, addressof(sXSoldPos), addressof(sYSoldPos));
+      GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, addressof(sXSoldScreen), addressof(sYSoldScreen));
 
       // get radar x and y postion
       sXSoldRadar = (sXSoldScreen * gdScaleX);
@@ -368,8 +368,8 @@ function RenderRadarScreen(): void {
 
         // Get FULL screen coordinate for guy's position
         // Getxy from gridno
-        ConvertGridNoToXY(pSoldier.value.sGridNo, &sXSoldPos, &sYSoldPos);
-        GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, &sXSoldScreen, &sYSoldScreen);
+        ConvertGridNoToXY(pSoldier.value.sGridNo, addressof(sXSoldPos), addressof(sYSoldPos));
+        GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, addressof(sXSoldScreen), addressof(sYSoldScreen));
 
         sXSoldRadar = (sXSoldScreen * gdScaleX);
         sYSoldRadar = (sYSoldScreen * gdScaleY);
@@ -468,7 +468,7 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
   // sScreenY += gsCY;
 
   // Convert these into world coordinates
-  FromScreenToCellCoordinates(sScreenX, sScreenY, &sTempX_W, &sTempY_W);
+  FromScreenToCellCoordinates(sScreenX, sScreenY, addressof(sTempX_W), addressof(sTempY_W));
 
   // Adjust these to world center
   sNewCenterWorldX = (gCenterWorldX + sTempX_W);
@@ -505,9 +505,9 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     // load graphics
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\squadpanel.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &uiHandle));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiHandle)));
 
-    GetVideoObject(&hHandle, uiHandle);
+    GetVideoObject(addressof(hHandle), uiHandle);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
     RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (480 - gsVIEWPORT_END_Y));
@@ -516,14 +516,14 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
       // run through list of squads and place appropriatly
       if (sCounter < NUMBER_OF_SQUADS / 2) {
         // left half of list
-        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       } else {
         // right half of list
-        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(addressof(gRadarRegionSquadList[sCounter]), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       }
 
       // set user data
-      MSYS_SetRegionUserData(&gRadarRegionSquadList[sCounter], 0, sCounter);
+      MSYS_SetRegionUserData(addressof(gRadarRegionSquadList[sCounter]), 0, sCounter);
     }
 
     DeleteVideoObjectFromIndex(uiHandle);
@@ -537,7 +537,7 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     // destroy regions
 
     for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
-      MSYS_RemoveRegion(&gRadarRegionSquadList[sCounter]);
+      MSYS_RemoveRegion(addressof(gRadarRegionSquadList[sCounter]));
     }
 
     // set fact regions are destroyed
@@ -580,9 +580,9 @@ function RenderSquadList(): void {
   for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
     // run through list of squads and place appropriatly
     if (sCounter < NUMBER_OF_SQUADS / 2) {
-      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
     } else {
-      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, addressof(sX), addressof(sY));
     }
 
     // highlight line?

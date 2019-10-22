@@ -10,12 +10,12 @@ function EnterBobbyRMisc(): BOOLEAN {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\miscbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMiscBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMiscBackground)));
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\miscgrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMiscGrid));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMiscGrid)));
 
   InitBobbyBrTitle();
   // Draw menu bar
@@ -51,7 +51,7 @@ function RenderBobbyRMisc(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(&hPixHandle, guiMiscGrid);
+  GetVideoObject(addressof(hPixHandle), guiMiscGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   DisplayItemInfo(IC_BOBBY_MISC);

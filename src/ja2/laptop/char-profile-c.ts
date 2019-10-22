@@ -407,8 +407,8 @@ function ResetCharacterStats(): void {
   iAttitude = 0;
 
   // names
-  memset(&pFullName, 0, sizeof(pFullName));
-  memset(&pNickName, 0, sizeof(pNickName));
+  memset(addressof(pFullName), 0, sizeof(pFullName));
+  memset(addressof(pNickName), 0, sizeof(pNickName));
 }
 
 function LoadImpGraphics(): void {

@@ -606,79 +606,79 @@ function UpdateClock(): void {
 function SaveGameClock(hFile: HWFILE, fGamePaused: BOOLEAN, fLockPauseState: BOOLEAN): BOOLEAN {
   let uiNumBytesWritten: UINT32 = 0;
 
-  FileWrite(hFile, &giTimeCompressMode, sizeof(INT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32))
     return FALSE;
 
-  FileWrite(hFile, &gubClockResolution, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubClockResolution), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
     return FALSE;
 
-  FileWrite(hFile, &fGamePaused, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(fGamePaused), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &gfTimeInterrupt, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfTimeInterrupt), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &fSuperCompression, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(fSuperCompression), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &guiGameClock, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiGameClock), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &guiGameSecondsPerRealSecond, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiGameSecondsPerRealSecond), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &ubAmbientLightLevel, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(ubAmbientLightLevel), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
     return FALSE;
 
-  FileWrite(hFile, &guiEnvTime, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiEnvTime), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &guiEnvDay, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiEnvDay), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &gubEnvLightValue, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubEnvLightValue), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8))
     return FALSE;
 
-  FileWrite(hFile, &guiTimeOfLastEventQuery, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiTimeOfLastEventQuery), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &fLockPauseState, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(fLockPauseState), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &gfPauseDueToPlayerGamePause, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfPauseDueToPlayerGamePause), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &gfResetAllPlayerKnowsEnemiesFlags, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfResetAllPlayerKnowsEnemiesFlags), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &gfTimeCompressionOn, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfTimeCompressionOn), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN))
     return FALSE;
 
-  FileWrite(hFile, &guiPreviousGameClock, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiPreviousGameClock), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, &guiLockPauseStateLastReasonId, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiLockPauseStateLastReasonId), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32))
     return FALSE;
 
-  FileWrite(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, &uiNumBytesWritten);
+  FileWrite(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != TIME_PADDINGBYTES)
     return FALSE;
   return TRUE;
@@ -687,79 +687,79 @@ function SaveGameClock(hFile: HWFILE, fGamePaused: BOOLEAN, fLockPauseState: BOO
 function LoadGameClock(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
-  FileRead(hFile, &giTimeCompressMode, sizeof(INT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(giTimeCompressMode), sizeof(INT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32))
     return FALSE;
 
-  FileRead(hFile, &gubClockResolution, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubClockResolution), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
     return FALSE;
 
-  FileRead(hFile, &gfGamePaused, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfGamePaused), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &gfTimeInterrupt, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfTimeInterrupt), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &fSuperCompression, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(fSuperCompression), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &guiGameClock, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiGameClock), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &guiGameSecondsPerRealSecond, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiGameSecondsPerRealSecond), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &ubAmbientLightLevel, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(ubAmbientLightLevel), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
     return FALSE;
 
-  FileRead(hFile, &guiEnvTime, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiEnvTime), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &guiEnvDay, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiEnvDay), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &gubEnvLightValue, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubEnvLightValue), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8))
     return FALSE;
 
-  FileRead(hFile, &guiTimeOfLastEventQuery, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiTimeOfLastEventQuery), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &gfLockPauseState, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfLockPauseState), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &gfPauseDueToPlayerGamePause, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfPauseDueToPlayerGamePause), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &gfResetAllPlayerKnowsEnemiesFlags, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfResetAllPlayerKnowsEnemiesFlags), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &gfTimeCompressionOn, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(gfTimeCompressionOn), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN))
     return FALSE;
 
-  FileRead(hFile, &guiPreviousGameClock, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiPreviousGameClock), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, &guiLockPauseStateLastReasonId, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiLockPauseStateLastReasonId), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32))
     return FALSE;
 
-  FileRead(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, &uiNumBytesRead);
+  FileRead(hFile, gubUnusedTimePadding, TIME_PADDINGBYTES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != TIME_PADDINGBYTES)
     return FALSE;
 
@@ -779,14 +779,14 @@ function LoadGameClock(hFile: HWFILE): BOOLEAN {
 function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
   if (fClockMouseRegionCreated == FALSE) {
     // create a mouse region for pausing of game clock
-    MSYS_DefineRegion(&gClockMouseRegion, (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
+    MSYS_DefineRegion(addressof(gClockMouseRegion), (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
 
     fClockMouseRegionCreated = TRUE;
 
     if (gfGamePaused == FALSE) {
-      SetRegionFastHelpText(&gClockMouseRegion, pPausedGameText[2]);
+      SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[2]);
     } else {
-      SetRegionFastHelpText(&gClockMouseRegion, pPausedGameText[1]);
+      SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
     }
   }
 }
@@ -794,7 +794,7 @@ function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
 function RemoveMouseRegionForPauseOfClock(): void {
   // remove pause region
   if (fClockMouseRegionCreated == TRUE) {
-    MSYS_RemoveRegion(&gClockMouseRegion);
+    MSYS_RemoveRegion(addressof(gClockMouseRegion));
     fClockMouseRegionCreated = FALSE;
   }
 }
@@ -844,7 +844,7 @@ function CreateDestroyScreenMaskForPauseGame(): void {
 
   if (((fClockMouseRegionCreated == FALSE) || (gfGamePaused == FALSE) || (gfPauseDueToPlayerGamePause == FALSE)) && (fCreated == TRUE)) {
     fCreated = FALSE;
-    MSYS_RemoveRegion(&gClockScreenMaskMouseRegion);
+    MSYS_RemoveRegion(addressof(gClockScreenMaskMouseRegion));
     RemoveMercPopupBoxFromIndex(iPausedPopUpBox);
     iPausedPopUpBox = -1;
     SetRenderFlags(RENDER_FLAG_FULL);
@@ -856,25 +856,25 @@ function CreateDestroyScreenMaskForPauseGame(): void {
     SetRenderFlags(RENDER_FLAG_FULL);
   } else if ((gfPauseDueToPlayerGamePause == TRUE) && (fCreated == FALSE)) {
     // create a mouse region for pausing of game clock
-    MSYS_DefineRegion(&gClockScreenMaskMouseRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, 0, MSYS_NO_CALLBACK, ScreenMaskForGamePauseBtnCallBack);
+    MSYS_DefineRegion(addressof(gClockScreenMaskMouseRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, 0, MSYS_NO_CALLBACK, ScreenMaskForGamePauseBtnCallBack);
     fCreated = TRUE;
 
     // get region x and y values
-    sX = (&gClockMouseRegion).value.RegionTopLeftX;
-    sY = (&gClockMouseRegion).value.RegionTopLeftY;
+    sX = (addressof(gClockMouseRegion)).value.RegionTopLeftX;
+    sY = (addressof(gClockMouseRegion)).value.RegionTopLeftY;
 
     // re create region on top of this
     RemoveMouseRegionForPauseOfClock();
     CreateMouseRegionForPauseOfClock(sX, sY);
 
-    SetRegionFastHelpText(&gClockMouseRegion, pPausedGameText[1]);
+    SetRegionFastHelpText(addressof(gClockMouseRegion), pPausedGameText[1]);
 
     fMapScreenBottomDirty = TRUE;
 
     // UnMarkButtonsDirty( );
 
     // now create the pop up box to say the game is paused
-    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, &usPausedActualWidth, &usPausedActualHeight);
+    iPausedPopUpBox = PrepareMercPopupBox(iPausedPopUpBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pPausedGameText[0], 300, 0, 0, 0, addressof(usPausedActualWidth), addressof(usPausedActualHeight));
   }
 }
 

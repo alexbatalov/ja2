@@ -145,7 +145,7 @@ function GameInitAimPolicies(): void {
 }
 
 function EnterInitAimPolicies(): void {
-  memset(&AimPoliciesSubPagesVisitedFlag, 0, NUM_AIM_POLICY_PAGES);
+  memset(addressof(AimPoliciesSubPagesVisitedFlag), 0, NUM_AIM_POLICY_PAGES);
 }
 
 function EnterAimPolicies(): BOOLEAN {
@@ -169,16 +169,16 @@ function EnterAimPolicies(): BOOLEAN {
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBottomButton));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBottomButton2));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2)));
 
   // load the Content Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ContentButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiContentButton));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton)));
 
   RenderAimPolicies();
   return TRUE;
@@ -395,7 +395,7 @@ function DrawAimPolicyMenu(): BOOLEAN {
     POLICY_MEDICAL,
   ];
 
-  GetVideoObject(&hContentButtonHandle, guiContentButton);
+  GetVideoObject(addressof(hContentButtonHandle), guiContentButton);
 
   usHeight = GetFontHeight(AIM_POLICY_TOC_FONT);
   usPosY = AIM_POLICY_TOC_Y;
@@ -426,9 +426,9 @@ function InitAimPolicyTocMenu(): BOOLEAN {
   usPosY = AIM_POLICY_TOC_Y;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++) {
     // Mouse region for the toc buttons
-    MSYS_DefineRegion(&gSelectedPolicyTocMenuRegion[i], AIM_POLICY_TOC_X, usPosY, (AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
-    MSYS_AddRegion(&gSelectedPolicyTocMenuRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedPolicyTocMenuRegion[i], 0, i + 2);
+    MSYS_DefineRegion(addressof(gSelectedPolicyTocMenuRegion[i]), AIM_POLICY_TOC_X, usPosY, (AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedPolicyTocMenuRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedPolicyTocMenuRegion[i]), 0, i + 2);
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
   }
@@ -442,7 +442,7 @@ function ExitAimPolicyTocMenu(): BOOLEAN {
 
   gfInPolicyToc = FALSE;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++)
-    MSYS_RemoveRegion(&gSelectedPolicyTocMenuRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedPolicyTocMenuRegion[i]));
 
   return TRUE;
 }

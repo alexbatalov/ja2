@@ -450,75 +450,75 @@ function EnterAIMMembers(): BOOLEAN {
   vs_desc.usWidth = AIM_MEMBER_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = AIM_MEMBER_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &guiVideoFaceBackground));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoFaceBackground)));
 
   // load the stats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\stats.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiStats));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStats)));
 
   // load the Price graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\price.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPrice));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPrice)));
 
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\portrait.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPortrait));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPortrait)));
 
   // load the WeaponBox graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\weaponbox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiWeaponBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWeaponBox)));
 
   // load the videoconf Popup graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoConfPopup.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiVideoConfPopup));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfPopup)));
 
   // load the video conf terminal graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoConfTerminal.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiVideoConfTerminal));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoConfTerminal)));
 
   // load the background snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BWSnow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBWSnow));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBWSnow)));
 
   // load the fuzzy line for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FuzzLine.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFuzzLine));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuzzLine)));
 
   // load the line distortion for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LineInterference.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiStraightLine));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStraightLine)));
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\TransSnow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTransSnow));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTransSnow)));
 
   // load the translucent snow for the video conf terminal
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\VideoContractCharge.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiVideoContractCharge));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiVideoContractCharge)));
 
   //** Mouse Regions **
-  MSYS_DefineRegion(&gSelectedFaceRegion, PORTRAIT_X, PORTRAIT_Y, PORTRAIT_X + PORTRAIT_WIDTH, PORTRAIT_Y + PORTRAIT_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, SelectFaceMovementRegionCallBack, SelectFaceRegionCallBack);
-  MSYS_AddRegion(&gSelectedFaceRegion);
+  MSYS_DefineRegion(addressof(gSelectedFaceRegion), PORTRAIT_X, PORTRAIT_Y, PORTRAIT_X + PORTRAIT_WIDTH, PORTRAIT_Y + PORTRAIT_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, SelectFaceMovementRegionCallBack, SelectFaceRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedFaceRegion));
 
   // Set the fast help for the mouse region
   //	SetRegionFastHelpText( &gSelectedFaceRegion, AimMemberText[ AIM_MEMBER_CLICK_INSTRUCTIONS ] );
 
   // if user clicks in the area, the merc will shut up!
-  MSYS_DefineRegion(&gSelectedShutUpMercRegion, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectShutUpMercRegionCallBack);
-  MSYS_AddRegion(&gSelectedShutUpMercRegion);
+  MSYS_DefineRegion(addressof(gSelectedShutUpMercRegion), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectShutUpMercRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedShutUpMercRegion));
   // have it disbled at first
-  MSYS_DisableRegion(&gSelectedShutUpMercRegion);
+  MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
 
   // Button Regions
   giXToCloseVideoConfButtonImage = LoadButtonImage("LAPTOP\\x_button.sti", -1, 0, -1, 1, -1);
@@ -596,8 +596,8 @@ function ExitAIMMembers(): void {
   RemoveButton(giContactButton);
   RemoveButton(giNextButton);
 
-  MSYS_RemoveRegion(&gSelectedFaceRegion);
-  MSYS_RemoveRegion(&gSelectedShutUpMercRegion);
+  MSYS_RemoveRegion(addressof(gSelectedFaceRegion));
+  MSYS_RemoveRegion(addressof(gSelectedShutUpMercRegion));
 
   ExitAimMenuBar();
 
@@ -701,15 +701,15 @@ function RenderAIMMembers(): BOOLEAN {
   DrawAimDefaults();
 
   // Stats
-  GetVideoObject(&hStatsHandle, guiStats);
+  GetVideoObject(addressof(hStatsHandle), guiStats);
   BltVideoObject(FRAME_BUFFER, hStatsHandle, 0, STATS_X, STATS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Price
-  GetVideoObject(&hPriceHandle, guiPrice);
+  GetVideoObject(addressof(hPriceHandle), guiPrice);
   BltVideoObject(FRAME_BUFFER, hPriceHandle, 0, PRICE_X, PRICE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // WeaponBox
-  GetVideoObject(&hWeaponBoxHandle, guiWeaponBox);
+  GetVideoObject(addressof(hWeaponBoxHandle), guiWeaponBox);
 
   uiPosX = WEAPONBOX_X;
   for (x = 0; x < WEAPONBOX_NUMBER; x++) {
@@ -884,7 +884,7 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): B
     return FALSE;
   }
 
-  if (!FileRead(hFile, pInfoString, SIZE_MERC_BIO_INFO, &uiBytesRead)) {
+  if (!FileRead(hFile, pInfoString, SIZE_MERC_BIO_INFO, addressof(uiBytesRead))) {
     return FALSE;
   }
 
@@ -961,7 +961,7 @@ function LoadMercBioInfo(ubIndex: UINT8, pInfoString: STR16, pAddInfo: STR16): B
     return FALSE;
   }
 
-  if (!FileRead(hFile, pAddInfo, SIZE_MERC_ADDITIONAL_INFO, &uiBytesRead)) {
+  if (!FileRead(hFile, pAddInfo, SIZE_MERC_ADDITIONAL_INFO, addressof(uiBytesRead))) {
     return FALSE;
   }
 
@@ -1066,9 +1066,9 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
       // increase the item count
       ubItemCount++;
 
-      pItem = &Item[usItem];
-      GetVideoObject(&hVObject, GetInterfaceGraphicForItem(pItem));
-      pTrav = &(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
+      pItem = addressof(Item[usItem]);
+      GetVideoObject(addressof(hVObject), GetInterfaceGraphicForItem(pItem));
+      pTrav = addressof(hVObject.value.pETRLEObject[pItem.value.ubGraphicNum]);
 
       usHeight = pTrav.value.usHeight;
       usWidth = pTrav.value.usWidth;
@@ -1206,17 +1206,17 @@ function DisplayMercsFace(): BOOLEAN {
   pSoldier = FindSoldierByProfileID(gbCurrentSoldier, TRUE);
 
   // Portrait Frame
-  GetVideoObject(&hPortraitHandle, guiPortrait);
+  GetVideoObject(addressof(hPortraitHandle), guiPortrait);
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, PORTRAIT_X, PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // load the Face graphic and add it
   sprintf(sTemp, "%s%02d.sti", sFaceLoc, gbCurrentSoldier);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFace));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFace)));
 
   // Blt face to screen
-  GetVideoObject(&hFaceHandle, guiFace);
+  GetVideoObject(addressof(hFaceHandle), guiFace);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, FACE_X, FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // if the merc is dead
@@ -1225,7 +1225,7 @@ function DisplayMercsFace(): BOOLEAN {
     hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
 
     // get the face object
-    GetVideoObject(&hFaceHandle, guiFace);
+    GetVideoObject(addressof(hFaceHandle), guiFace);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiFace, 0);
@@ -1514,7 +1514,7 @@ function AimMemberHireMerc(): INT8 {
     return FALSE;
   }
 
-  memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
+  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
   HireMercStruct.ubProfileID = ubCurrentSoldier;
 
@@ -1550,7 +1550,7 @@ function AimMemberHireMerc(): INT8 {
   //	LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = HireMercStruct.uiTimeTillMercArrives;
 
   // if we succesfully hired the merc
-  bReturnCode = HireMerc(&HireMercStruct);
+  bReturnCode = HireMerc(addressof(HireMercStruct));
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     // display a warning saying u cant hire more then 20 mercs
     DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, AimPopUpText[AIM_MEMBER_ALREADY_HAVE_20_MERCS], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);
@@ -1613,7 +1613,7 @@ function DisplayVideoConferencingDisplay(): BOOLEAN {
 
     SET_USE_WINFONTS(TRUE);
     SET_WINFONT(giSubTitleWinFont);
-    iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, &usActualWidth, &usActualHeight);
+    iAimMembersBoxId = PrepareMercPopupBox(iAimMembersBoxId, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gsTalkingMercText, 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
     SET_USE_WINFONTS(FALSE);
 
     usPosX = (LAPTOP_SCREEN_LR_X - usActualWidth) / 2;
@@ -1635,7 +1635,7 @@ function DisplayMercsVideoFace(): BOOLEAN {
   let sFaceLoc: STR = "FACES\\";
 
   // Get and Blt Terminal Frame
-  GetVideoObject(&hTerminalHandle, guiVideoConfTerminal);
+  GetVideoObject(addressof(hTerminalHandle), guiVideoConfTerminal);
   ShadowVideoSurfaceImage(FRAME_BUFFER, hTerminalHandle, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y);
   BltVideoObject(FRAME_BUFFER, hTerminalHandle, 0, AIM_MEMBER_VIDEO_CONF_TERMINAL_X, AIM_MEMBER_VIDEO_CONF_TERMINAL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -1699,7 +1699,7 @@ function DisplayMercChargeAmount(): UINT32 {
     return 0;
 
   // Display the 'black hole'for the contract charge  in the video conference terminal
-  GetVideoObject(&hImageHandle, guiVideoContractCharge);
+  GetVideoObject(addressof(hImageHandle), guiVideoContractCharge);
   BltVideoObject(FRAME_BUFFER, hImageHandle, 0, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_X, AIM_MEMBER_VIDEO_CONF_CONTRACT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (FindSoldierByProfileID(gbCurrentSoldier, TRUE) == NULL) {
@@ -1780,9 +1780,9 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       // load the popup box graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("LAPTOP\\VideoConfPopUp.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiPopUpBox));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPopUpBox)));
 
-      GetVideoObject(&hPopupBoxHandle, guiPopUpBox);
+      GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
       BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // Create the popup boxes button
@@ -1815,7 +1815,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
         return FALSE;
 
       // load and display the popup box graphic
-      GetVideoObject(&hPopupBoxHandle, guiPopUpBox);
+      GetVideoObject(addressof(hPopupBoxHandle), guiPopUpBox);
       BltVideoObject(FRAME_BUFFER, hPopupBoxHandle, 0, usPopUpBoxPosX, usPopUpBoxPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
       SetFontShadow(AIM_M_VIDEO_NAME_SHADOWCOLOR);
@@ -2012,7 +2012,7 @@ function InitVideoFaceTalking(ubMercID: UINT8, usQuoteNum: UINT16): BOOLEAN {
   }
 
   // Enables it so if a player clicks, he will shutup the merc
-  MSYS_EnableRegion(&gSelectedShutUpMercRegion);
+  MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
 
   gfIsShutUpMouseRegionActive = TRUE;
   gfMercIsTalking = TRUE;
@@ -2050,7 +2050,7 @@ function DisplayTalkingMercFaceForVideoPopUp(iFaceIndex: INT32): BOOLEAN {
   //	if( !gfIsAnsweringMachineActive )
   {
     // Blt the face surface to the video background surface
-    if (!BltStretchVideoSurface(FRAME_BUFFER, guiVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DestRect))
+    if (!BltStretchVideoSurface(FRAME_BUFFER, guiVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
       return FALSE;
 
     // if the merc is not at home and the players is leaving a message, shade the players face
@@ -2273,7 +2273,7 @@ function DisplaySnowBackground(): BOOLEAN {
     guiLastHandleMercTime = uiCurrentTime;
   }
   // Get the snow background, and blit it
-  GetVideoObject(&hSnowHandle, guiBWSnow);
+  GetVideoObject(addressof(hSnowHandle), guiBWSnow);
   BltVideoObject(FRAME_BUFFER, hSnowHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH, AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);
@@ -2445,7 +2445,7 @@ function DisplayTransparentSnow(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxI
     bCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
-  GetVideoObject(&hFuzzLineHandle, uiImageIdentifier);
+  GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
   BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, bCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (bForward) {
@@ -2484,7 +2484,7 @@ function DisplayDistortionLine(ubMode: UINT8, uiImageIdentifier: UINT32, ubMaxIm
     ubCount = ubMaxImages - 1;
 
   // Get the snow background, and blit it
-  GetVideoObject(&hFuzzLineHandle, uiImageIdentifier);
+  GetVideoObject(addressof(hFuzzLineHandle), uiImageIdentifier);
   BltVideoObject(FRAME_BUFFER, hFuzzLineHandle, ubCount, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (ubCount == ubMaxImages - 1) {
@@ -2572,7 +2572,7 @@ function HandleMercAttitude(): void {
 
 function StopMercTalking(): void {
   if (gfIsShutUpMouseRegionActive) {
-    MSYS_DisableRegion(&gSelectedShutUpMercRegion);
+    MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
 
     ShutupaYoFace(giMercFaceIndex);
     gfMercIsTalking = FALSE;
@@ -2627,7 +2627,7 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       SpecifyDisabledButtonStyle(giXToCloseVideoConfButton, DISABLED_STYLE_NONE);
       fXRegionActive = TRUE;
 
-      MSYS_DisableRegion(&gSelectedFaceRegion);
+      MSYS_DisableRegion(addressof(gSelectedFaceRegion));
     }
   }
 
@@ -2654,10 +2654,10 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       fXRegionActive = FALSE;
     }
 
-    MSYS_DisableRegion(&gSelectedShutUpMercRegion);
+    MSYS_DisableRegion(addressof(gSelectedShutUpMercRegion));
 
     // Enable the ability to click on the BIG face to go to different screen
-    MSYS_EnableRegion(&gSelectedFaceRegion);
+    MSYS_EnableRegion(addressof(gSelectedFaceRegion));
 
     //		EnableDisableCurrentVideoConferenceButtons(FALSE);
     if (gubVideoConferencingPreviousMode == AIM_VIDEO_HIRE_MERC_MODE) {
@@ -2681,18 +2681,18 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
       // load the answering machine graphic and add it
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("LAPTOP\\VideoTitleBar.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiVideoBackgroundGraphic));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic)));
 
       // Create a background video surface to blt the face onto
       vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
       vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
       vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
       vs_desc.ubBitDepth = 16;
-      CHECKF(AddVideoSurface(&vs_desc, &guiVideoTitleBar));
+      CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
 
       gfAimMemberCanMercSayOpeningQuote = TRUE;
 
-      GetVideoObject(&hImageHandle, uiVideoBackgroundGraphic);
+      GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
       BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
       DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);
@@ -2872,16 +2872,16 @@ function InitDeleteVideoConferencePopUp(): BOOLEAN {
     // load the Video conference background graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\VideoTitleBar.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &uiVideoBackgroundGraphic));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiVideoBackgroundGraphic)));
 
     // Create a background video surface to blt the face onto
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = AIM_MEMBER_VIDEO_TITLE_BAR_WIDTH;
     vs_desc.usHeight = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
     vs_desc.ubBitDepth = 16;
-    CHECKF(AddVideoSurface(&vs_desc, &guiVideoTitleBar));
+    CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiVideoTitleBar)));
 
-    GetVideoObject(&hImageHandle, uiVideoBackgroundGraphic);
+    GetVideoObject(addressof(hImageHandle), uiVideoBackgroundGraphic);
     BltVideoObject(guiVideoTitleBar, hImageHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
     DeleteVideoObjectFromIndex(uiVideoBackgroundGraphic);
@@ -3323,7 +3323,7 @@ function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
     }
   }
 
-  BltStretchVideoSurface(FRAME_BUFFER, guiVideoTitleBar, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DestRect);
+  BltStretchVideoSurface(FRAME_BUFFER, guiVideoTitleBar, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect));
 
   InvalidateRegion(DestRect.iLeft, DestRect.iTop, DestRect.iRight, DestRect.iBottom);
   InvalidateRegion(LastRect.iLeft, LastRect.iTop, LastRect.iRight, LastRect.iBottom);
@@ -3392,7 +3392,7 @@ function WaitForMercToFinishTalkingOrUserToClick(): void {
   // if the region is not active
   if (!gfIsShutUpMouseRegionActive) {
     // Enables it so if a player clicks, he will shutup the merc
-    MSYS_EnableRegion(&gSelectedShutUpMercRegion);
+    MSYS_EnableRegion(addressof(gSelectedShutUpMercRegion));
     gfIsShutUpMouseRegionActive = TRUE;
   }
 

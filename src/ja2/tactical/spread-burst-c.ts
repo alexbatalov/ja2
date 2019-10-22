@@ -27,7 +27,7 @@ function AccumulateBurstLocation(sGridNo: INT16): void {
     gsBurstLocations[gbNumBurstLocations].sGridNo = sGridNo;
 
     // Get cell X, Y from mouse...
-    GetMouseWorldCoords(&(gsBurstLocations[gbNumBurstLocations].sX), &(gsBurstLocations[gbNumBurstLocations].sY));
+    GetMouseWorldCoords(addressof(gsBurstLocations[gbNumBurstLocations].sX), addressof(gsBurstLocations[gbNumBurstLocations].sY));
 
     gbNumBurstLocations++;
   }
@@ -109,7 +109,7 @@ function RenderAccumulatedBurstLocations(): void {
   }
 
   // Loop through each location...
-  GetVideoObject(&hVObject, guiBURSTACCUM);
+  GetVideoObject(addressof(hVObject), guiBURSTACCUM);
 
   // If on screen, render
 
@@ -130,7 +130,7 @@ function RenderAccumulatedBurstLocations(): void {
       dOffsetY = (gsBurstLocations[cnt].sY - gsRenderCenterY);
 
       // Calculate guy's position
-      FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
+      FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
 
       sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
       sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[sGridNo].sHeight;

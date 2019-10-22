@@ -25,7 +25,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
   //  pNullString[0]=L' ';
   //	pNullString[1]=0;
 
-  memset(&FirstWrappedString, 0, sizeof(WRAPPED_STRING));
+  memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
 
   *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
 
@@ -58,7 +58,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
     // If we are at the end of the string
     if (TempString[usCurIndex] == 0) {
       // get to next WrappedString structure
-      pWrappedString = &FirstWrappedString;
+      pWrappedString = addressof(FirstWrappedString);
       while (pWrappedString.value.pNextWrappedString != NULL)
         pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -84,7 +84,7 @@ function LineWrapForSingleCharWords(ulFont: UINT32, usLineWidthPixels: UINT16, p
       DestString[usDestIndex + 1] = '\0';
 
       // get to next WrappedString structure
-      pWrappedString = &FirstWrappedString;
+      pWrappedString = addressof(FirstWrappedString);
       while (pWrappedString.value.pNextWrappedString != NULL)
         pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -134,7 +134,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
   pNullString[0] = ' ';
   pNullString[1] = 0;
 
-  memset(&FirstWrappedString, 0, sizeof(WRAPPED_STRING));
+  memset(addressof(FirstWrappedString), 0, sizeof(WRAPPED_STRING));
 
   *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
 
@@ -172,7 +172,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
     // If we are at the end of the string
     if (TempString[usCurIndex] == 0) {
       // get to next WrappedString structure
-      pWrappedString = &FirstWrappedString;
+      pWrappedString = addressof(FirstWrappedString);
       while (pWrappedString.value.pNextWrappedString != NULL)
         pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -212,7 +212,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
       DestString[usEndIndex] = 0;
 
       // get to next WrappedString structure
-      pWrappedString = &FirstWrappedString;
+      pWrappedString = addressof(FirstWrappedString);
       while (pWrappedString.value.pNextWrappedString != NULL)
         pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -231,7 +231,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
         usCurIndex++;
         usEndIndex = usCurIndex;
 
-        pCurrentStringLoc = &TempString[usEndIndex];
+        pCurrentStringLoc = addressof(TempString[usEndIndex]);
         // if last line, put line into string structure
         if (WFStringPixLength(pCurrentStringLoc, ulFont) < usLineWidthPixels) {
           // run until end of DestString
@@ -247,7 +247,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
           }
 
           // get to next WrappedString structure
-          pWrappedString = &FirstWrappedString;
+          pWrappedString = addressof(FirstWrappedString);
           while (pWrappedString.value.pNextWrappedString != NULL)
             pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -260,7 +260,7 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
           wcscpy(pWrappedString.value.pNextWrappedString.value.sString, DestString);
           pWrappedString.value.pNextWrappedString.value.pNextWrappedString = NULL;
           if (fNewLine) {
-            pWrappedString = &FirstWrappedString;
+            pWrappedString = addressof(FirstWrappedString);
             while (pWrappedString.value.pNextWrappedString != NULL)
               pWrappedString = pWrappedString.value.pNextWrappedString;
 
@@ -278,12 +278,12 @@ function LineWrap(ulFont: UINT32, usLineWidthPixels: UINT16, pusLineWidthIfWordI
       } else {
         let zText: CHAR[] /* [1024] */;
 
-        sprintf(zText, "LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, &TempString[usCurIndex], usLineWidthPixels);
+        sprintf(zText, "LineWrap() Error!  The string ( %S ) has a word ( %S ) that is too long to fit into the required width of %d!  Please fix!!", pString, addressof(TempString[usCurIndex]), usLineWidthPixels);
 
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, zText);
 
         // error
-        usLineWidthPixels = 1 + WFStringPixLength(&TempString[usCurIndex], ulFont);
+        usLineWidthPixels = 1 + WFStringPixLength(addressof(TempString[usCurIndex]), ulFont);
 
         *pusLineWidthIfWordIsWiderThenWidth = usLineWidthPixels;
 
@@ -316,9 +316,9 @@ function DisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, u
 
   // If we are to a Single char for a word ( like in Taiwan )
   if (gfUseSingleCharWordsForWordWrap) {
-    pFirstWrappedString = LineWrapForSingleCharWords(uiFont, usWidth, &usLineWidthIfWordIsWiderThenWidth, pString);
+    pFirstWrappedString = LineWrapForSingleCharWords(uiFont, usWidth, addressof(usLineWidthIfWordIsWiderThenWidth), pString);
   } else {
-    pFirstWrappedString = LineWrap(uiFont, usWidth, &usLineWidthIfWordIsWiderThenWidth, pString);
+    pFirstWrappedString = LineWrap(uiFont, usWidth, addressof(usLineWidthIfWordIsWiderThenWidth), pString);
   }
 
   // if an error occured and a word was bigger then the width passed in, reset the width
@@ -388,16 +388,16 @@ function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: 
     usPosX = usLocX;
     usPosY = usLocY;
   } else if (ulFlags & CENTER_JUSTIFIED) {
-    VarFindFontCenterCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, &usPosX, &usPosY, pStr);
+    VarFindFontCenterCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, addressof(usPosX), addressof(usPosY), pStr);
   } else if (ulFlags & RIGHT_JUSTIFIED) {
-    VarFindFontRightCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, &usPosX, &usPosY, pStr);
+    VarFindFontRightCoordinates(usLocX, usLocY, usWidth, WFGetFontHeight(ulFont), ulFont, addressof(usPosX), addressof(usPosY), pStr);
   }
 
   SetFont(ulFont);
 
   if (USE_WINFONTS()) {
     let Color: COLORVAL = FROMRGB(255, 255, 255);
-    SetWinFontForeColor(GET_WINFONT(), &Color);
+    SetWinFontForeColor(GET_WINFONT(), addressof(Color));
   } else {
     SetFontForeground(ubColor);
     SetFontBackground(ubBackGroundColor);

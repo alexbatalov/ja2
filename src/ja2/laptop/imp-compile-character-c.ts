@@ -294,7 +294,7 @@ function ValidateSkillsList(): void {
 
   // remove from the generated traits list any traits that don't match
   // the character's skills
-  pProfile = &(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId]);
+  pProfile = addressof(gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId]);
   if (pProfile.value.bMechanical == 0) {
     // without mechanical, electronics is useless
     iIndex = FindSkillInSkillsList(ELECTRONICS);

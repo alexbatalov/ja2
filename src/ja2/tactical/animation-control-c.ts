@@ -2942,7 +2942,7 @@ function LoadAnimationStateInstructions(): BOOLEAN {
   }
 
   // Read in block
-  if (!FileRead(hFile, gusAnimInst, sizeof(gusAnimInst), &uiBytesRead)) {
+  if (!FileRead(hFile, gusAnimInst, sizeof(gusAnimInst), addressof(uiBytesRead))) {
     return FALSE;
   }
 
@@ -3177,7 +3177,7 @@ function LoadSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnimState
 
   if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
     // Ensure that it's been loaded!
-    if (GetCachedAnimationSurface(pSoldier.value.ubID, &(pSoldier.value.AnimCache), usAnimSurface, pSoldier.value.usAnimState) == FALSE) {
+    if (GetCachedAnimationSurface(pSoldier.value.ubID, addressof(pSoldier.value.AnimCache), usAnimSurface, pSoldier.value.usAnimState) == FALSE) {
       usAnimSurface = INVALID_ANIMATION_SURFACE;
     }
   }
@@ -3208,7 +3208,7 @@ function DetermineSoldierAnimationSurface(pSoldier: Pointer<SOLDIERTYPE>, usAnim
 
   ubBodyType = pSoldier.value.ubBodyType;
 
-  if (SubstituteBodyTypeAnimation(pSoldier, usAnimState, &usNewAnimState)) {
+  if (SubstituteBodyTypeAnimation(pSoldier, usAnimState, addressof(usNewAnimState))) {
     usAnimState = usNewAnimState;
   }
 

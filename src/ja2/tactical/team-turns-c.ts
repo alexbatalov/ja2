@@ -30,7 +30,7 @@ interface TEAM_TURN_SAVE_STRUCT {
 const MIN_APS_TO_INTERRUPT = 4;
 
 function ClearIntList(): void {
-  memset(&gubOutOfTurnOrder, 0, MAXMERCS);
+  memset(addressof(gubOutOfTurnOrder), 0, MAXMERCS);
   gubOutOfTurnOrder[0] = END_OF_INTERRUPTS;
   gubOutOfTurnPersons = 0;
 }
@@ -1528,7 +1528,7 @@ function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): BOOLEAN {
   let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
   // Save the gubTurn Order Array
-  FileWrite(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, &uiNumBytesWritten);
+  FileWrite(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8) * MAXMERCS) {
     return FALSE;
   }
@@ -1542,7 +1542,7 @@ function SaveTeamTurnsToTheSaveGameFile(hFile: HWFILE): BOOLEAN {
   TeamTurnStruct.ubLastInterruptedGuy = gubLastInterruptedGuy;
 
   // Save the Team turn save structure
-  FileWrite(hFile, &TeamTurnStruct, sizeof(TEAM_TURN_SAVE_STRUCT), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(TeamTurnStruct), sizeof(TEAM_TURN_SAVE_STRUCT), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(TEAM_TURN_SAVE_STRUCT)) {
     return FALSE;
   }
@@ -1555,13 +1555,13 @@ function LoadTeamTurnsFromTheSavedGameFile(hFile: HWFILE): BOOLEAN {
   let TeamTurnStruct: TEAM_TURN_SAVE_STRUCT;
 
   // Load the gubTurn Order Array
-  FileRead(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, &uiNumBytesRead);
+  FileRead(hFile, gubOutOfTurnOrder, sizeof(UINT8) * MAXMERCS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8) * MAXMERCS) {
     return FALSE;
   }
 
   // Load the Team turn save structure
-  FileRead(hFile, &TeamTurnStruct, sizeof(TEAM_TURN_SAVE_STRUCT), &uiNumBytesRead);
+  FileRead(hFile, addressof(TeamTurnStruct), sizeof(TEAM_TURN_SAVE_STRUCT), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(TEAM_TURN_SAVE_STRUCT)) {
     return FALSE;
   }

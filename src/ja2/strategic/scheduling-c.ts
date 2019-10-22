@@ -270,20 +270,20 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     DestroyAllSchedules();
   }
 
-  LOADDATA(&ubNum, *hBuffer, sizeof(UINT8));
+  LOADDATA(addressof(ubNum), *hBuffer, sizeof(UINT8));
   gubScheduleID = 1;
   while (ubNum) {
-    LOADDATA(&temp, *hBuffer, sizeof(SCHEDULENODE));
+    LOADDATA(addressof(temp), *hBuffer, sizeof(SCHEDULENODE));
 
     if (gpScheduleList) {
       pSchedule.value.next = MemAlloc(sizeof(SCHEDULENODE));
       Assert(pSchedule.value.next);
       pSchedule = pSchedule.value.next;
-      memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
+      memcpy(pSchedule, addressof(temp), sizeof(SCHEDULENODE));
     } else {
       gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
       Assert(gpScheduleList);
-      memcpy(gpScheduleList, &temp, sizeof(SCHEDULENODE));
+      memcpy(gpScheduleList, addressof(temp), sizeof(SCHEDULENODE));
       pSchedule = gpScheduleList;
     }
     pSchedule.value.ubScheduleID = gubScheduleID;
@@ -306,7 +306,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
 
   // LOADDATA( &ubNum, *hBuffer, sizeof( UINT8 ) );
   uiNumBytesToRead = sizeof(UINT8);
-  FileRead(hFile, &ubNum, uiNumBytesToRead, &uiNumBytesRead);
+  FileRead(hFile, addressof(ubNum), uiNumBytesToRead, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiNumBytesToRead) {
     FileClose(hFile);
     return FALSE;
@@ -318,7 +318,7 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
   gubScheduleID = 1;
   while (ubRealNum) {
     uiNumBytesToRead = sizeof(SCHEDULENODE);
-    FileRead(hFile, &temp, uiNumBytesToRead, &uiNumBytesRead);
+    FileRead(hFile, addressof(temp), uiNumBytesToRead, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiNumBytesToRead) {
       FileClose(hFile);
       return FALSE;
@@ -329,11 +329,11 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
       pSchedule.value.next = MemAlloc(sizeof(SCHEDULENODE));
       Assert(pSchedule.value.next);
       pSchedule = pSchedule.value.next;
-      memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
+      memcpy(pSchedule, addressof(temp), sizeof(SCHEDULENODE));
     } else {
       gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
       Assert(gpScheduleList);
-      memcpy(gpScheduleList, &temp, sizeof(SCHEDULENODE));
+      memcpy(gpScheduleList, addressof(temp), sizeof(SCHEDULENODE));
       pSchedule = gpScheduleList;
     }
 
@@ -414,7 +414,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
   }
   ubNum = ((iNum >= 32) ? 32 : iNum);
 
-  FileWrite(hFile, &ubNum, sizeof(UINT8), &uiBytesWritten);
+  FileWrite(hFile, addressof(ubNum), sizeof(UINT8), addressof(uiBytesWritten));
   if (uiBytesWritten != sizeof(UINT8)) {
     return FALSE;
   }
@@ -428,7 +428,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
       if (ubNumFucker > ubNum) {
         return TRUE;
       }
-      FileWrite(hFile, curr, sizeof(SCHEDULENODE), &uiBytesWritten);
+      FileWrite(hFile, curr, sizeof(SCHEDULENODE), addressof(uiBytesWritten));
       if (uiBytesWritten != sizeof(SCHEDULENODE)) {
         return FALSE;
       }
@@ -507,14 +507,14 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   pSoldier = MercPtrs[ubID];
 
   // what if the existing merc is prone?
-  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, STANDING, 5, &ubDir, 1, pSoldier);
+  sNewGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, STANDING, 5, addressof(ubDir), 1, pSoldier);
   // sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, sGridNo, 10, &ubDir );
 
   if (sNewGridNo == NOWHERE) {
     return FALSE;
   }
 
-  ConvertGridNoToCellXY(sNewGridNo, &sCellX, &sCellY);
+  ConvertGridNoToCellXY(sNewGridNo, addressof(sCellX), addressof(sCellY));
   EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
   return TRUE;
@@ -552,10 +552,10 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
     case SCHEDULE_ACTION_CLOSEDOOR:
       PerformActionOnDoorAdjacentToGridNo(pSchedule.value.ubAction[index], pSchedule.value.usData1[index]);
       BumpAnyExistingMerc(pSchedule.value.usData2[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData2[index], &sCellX, &sCellY);
+      ConvertGridNoToCellXY(pSchedule.value.usData2[index], addressof(sCellX), addressof(sCellY));
 
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
-      if (GridNoOnEdgeOfMap(pSchedule.value.usData2[index], &bDirection)) {
+      if (GridNoOnEdgeOfMap(pSchedule.value.usData2[index], addressof(bDirection))) {
         // civ should go off map; this tells us where the civ will return
         pSoldier.value.sOffWorldGridNo = pSchedule.value.usData2[index];
         MoveSoldierFromMercToAwaySlot(pSoldier);
@@ -567,7 +567,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       break;
     case SCHEDULE_ACTION_GRIDNO:
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
@@ -578,7 +578,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
         break;
       }
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       MoveSoldierFromAwayToMercSlot(pSoldier);
       pSoldier.value.bInSector = TRUE;
@@ -587,7 +587,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       break;
     case SCHEDULE_ACTION_WAKE:
       BumpAnyExistingMerc(pSoldier.value.sInitialGridNo);
-      ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo, &sCellX, &sCellY);
+      ConvertGridNoToCellXY(pSoldier.value.sInitialGridNo, addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier.value.usPatrolGrid[0] = pSoldier.value.sInitialGridNo;
@@ -596,19 +596,19 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       pSoldier.value.fAIFlags |= AI_ASLEEP;
       // check for someone else in the location
       BumpAnyExistingMerc(pSchedule.value.usData1[index]);
-      ConvertGridNoToCellXY(pSchedule.value.usData1[index], &sCellX, &sCellY);
+      ConvertGridNoToCellXY(pSchedule.value.usData1[index], addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       pSoldier.value.usPatrolGrid[0] = pSchedule.value.usData1[index];
       break;
     case SCHEDULE_ACTION_LEAVESECTOR:
       sGridNo = FindNearestEdgePoint(pSoldier.value.sGridNo);
       BumpAnyExistingMerc(sGridNo);
-      ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
+      ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
-      sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, &bDirection);
+      sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, addressof(bDirection));
       BumpAnyExistingMerc(sGridNo);
-      ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
+      ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
       EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       // ok, that tells us where the civ will return
@@ -1088,7 +1088,7 @@ function SecureSleepSpot(pSoldier: Pointer<SOLDIERTYPE>, usSleepSpot: UINT16): v
         if (usSleepSpot2 == usSleepSpot) {
           // conflict!
           // usNewSleepSpot = (INT16) FindGridNoFromSweetSpotWithStructData( pSoldier2, pSoldier2->usAnimState, usSleepSpot2, 3, &ubDirection, FALSE );
-          usNewSleepSpot = FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier2, usSleepSpot2, 3, &ubDirection);
+          usNewSleepSpot = FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier2, usSleepSpot2, 3, addressof(ubDirection));
           if (usNewSleepSpot != NOWHERE) {
             ReplaceSleepSpot(pSchedule, usNewSleepSpot);
           }

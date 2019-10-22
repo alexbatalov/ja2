@@ -242,9 +242,9 @@ function InitializeMouseRegions(): void {
 
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
-    MSYS_DefineRegion(&pEmailRegions[iCounter], MIDDLE_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), MIDDLE_X + LINE_WIDTH, (MIDDLE_Y + iCounter * MIDDLE_WIDTH + MIDDLE_WIDTH), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, EmailMvtCallBack, EmailBtnCallBack);
-    MSYS_AddRegion(&pEmailRegions[iCounter]);
-    MSYS_SetRegionUserData(&pEmailRegions[iCounter], 0, iCounter);
+    MSYS_DefineRegion(addressof(pEmailRegions[iCounter]), MIDDLE_X, ((MIDDLE_Y + iCounter * MIDDLE_WIDTH)), MIDDLE_X + LINE_WIDTH, (MIDDLE_Y + iCounter * MIDDLE_WIDTH + MIDDLE_WIDTH), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, EmailMvtCallBack, EmailBtnCallBack);
+    MSYS_AddRegion(addressof(pEmailRegions[iCounter]));
+    MSYS_SetRegionUserData(addressof(pEmailRegions[iCounter]), 0, iCounter);
   }
 
   // SetUpSortRegions();
@@ -257,7 +257,7 @@ function DeleteEmailMouseRegions(): void {
   let iCounter: INT32 = 0;
 
   for (iCounter = 0; iCounter < MAX_MESSAGES_PAGE; iCounter++) {
-    MSYS_RemoveRegion(&pEmailRegions[iCounter]);
+    MSYS_RemoveRegion(addressof(pEmailRegions[iCounter]));
   }
   // DeleteSortRegions();
   CreateDestroyNextPreviousRegions();
@@ -287,27 +287,27 @@ function EnterEmail(): BOOLEAN {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiEmailTitle));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailTitle)));
 
   // the list background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Mailwindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiEmailBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailBackground)));
 
   // the indication/notification box
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MailIndicator.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiEmailIndicator));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailIndicator)));
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\emailviewer.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiEmailMessage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiEmailMessage)));
 
   // the message background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\maillistdivider.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAILDIVIDER));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAILDIVIDER)));
 
   // AddEmail(IMP_EMAIL_PROFILE_RESULTS, IMP_EMAIL_PROFILE_RESULTS_LENGTH, IMP_PROFILE_RESULTS, GetWorldTotalMin( ) );
   // initialize mouse regions
@@ -478,11 +478,11 @@ function RenderEmail(): void {
   let iCounter: INT32 = 0;
 
   // get and blt the email list background
-  GetVideoObject(&hHandle, guiEmailBackground);
+  GetVideoObject(addressof(hHandle), guiEmailBackground);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, EMAIL_LIST_WINDOW_Y + LAPTOP_SCREEN_UL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // get and blt the email title bar
-  GetVideoObject(&hHandle, guiEmailTitle);
+  GetVideoObject(addressof(hHandle), guiEmailTitle);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_UL_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // show text on titlebar
@@ -504,7 +504,7 @@ function RenderEmail(): void {
   DisplayEmailHeaders();
 
   // display border
-  GetVideoObject(&hHandle, guiLaptopBACKGROUND);
+  GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
 
   ReDisplayBoxes();
@@ -536,7 +536,7 @@ function AddEmailWithSpecialData(iMessageOffset: INT32, iMessageLength: INT32, u
   FakeEmail.uiSecondData = uiSecondData;
 
   // Replace the $mercname$ with the actual mercname
-  ReplaceMercNameAndAmountWithProperData(pSubject, &FakeEmail);
+  ReplaceMercNameAndAmountWithProperData(pSubject, addressof(FakeEmail));
 
   // add message to list
   AddEmailMessage(iMessageOffset, iMessageLength, pSubject, iDate, ubSender, FALSE, iFirstData, uiSecondData);
@@ -1105,7 +1105,7 @@ function DrawLetterIcon(iCounter: INT32, fRead: BOOLEAN): void {
   // will draw the icon for letter in mail list depending if the mail has been read or not
 
   // grab video object
-  GetVideoObject(&hHandle, guiEmailIndicator);
+  GetVideoObject(addressof(hHandle), guiEmailIndicator);
 
   // is it read or not?
   if (fRead)
@@ -1446,7 +1446,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   // is there any special event meant for this mail?..if so, handle it
   HandleAnySpecialEmailMessageEvents(iOffSet);
 
-  HandleMailSpecialMessages((iOffSet), &iViewerPositionY, pMail);
+  HandleMailSpecialMessages((iOffSet), addressof(iViewerPositionY), pMail);
 
   PreProcessEmail(pMail);
 
@@ -1454,7 +1454,7 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
 
   // blt in top line of message as a blank graphic
   // get a handle to the bitmap of EMAIL VIEWER Background
-  GetVideoObject(&hHandle, guiEmailMessage);
+  GetVideoObject(addressof(hHandle), guiEmailMessage);
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, VIEWER_MESSAGE_BODY_START_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1464,13 +1464,13 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   SetFontShadow(NO_SHADOW);
 
   // get a handle to the bitmap of EMAIL VIEWER
-  GetVideoObject(&hHandle, guiEmailMessage);
+  GetVideoObject(addressof(hHandle), guiEmailMessage);
 
   // place the graphic on the frame buffer
   BltVideoObject(FRAME_BUFFER, hHandle, 0, VIEWER_X, VIEWER_Y + iViewerPositionY, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // the icon for the title of this box
-  GetVideoObject(&hHandle, guiTITLEBARICONS);
+  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, VIEWER_X + 5, VIEWER_Y + iViewerPositionY + 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // display header text
@@ -1483,14 +1483,14 @@ function DisplayEmailMessage(pMail: EmailPtr): INT32 {
   // now blit the text background based on height
   for (iCounter = 2; iCounter < ((iTotalHeight) / (GetFontHeight(MESSAGE_FONT))); iCounter++) {
     // get a handle to the bitmap of EMAIL VIEWER Background
-    GetVideoObject(&hHandle, guiEmailMessage);
+    GetVideoObject(addressof(hHandle), guiEmailMessage);
 
     // place the graphic on the frame buffer
     BltVideoObject(FRAME_BUFFER, hHandle, 1, VIEWER_X, iViewerPositionY + VIEWER_MESSAGE_BODY_START_Y + ((GetFontHeight(MESSAGE_FONT)) * (iCounter)), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   // now the bottom piece to the message viewer
-  GetVideoObject(&hHandle, guiEmailMessage);
+  GetVideoObject(addressof(hHandle), guiEmailMessage);
 
   if (giNumberOfPagesToCurrentEmail <= 2) {
     // place the graphic on the frame buffer
@@ -1719,8 +1719,8 @@ function CreateDestroyNewMailButton(): void {
     SetButtonCursor(giNewMailButton[0], CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask region
-    MSYS_DefineRegion(&pScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
-    MSYS_AddRegion(&pScreenMask);
+    MSYS_DefineRegion(addressof(pScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_AddRegion(addressof(pScreenMask));
     MarkAButtonDirty(giNewMailButton[0]);
     fReDrawScreenFlag = TRUE;
   } else if ((!fNewMailFlag) && (fOldNewMailFlag)) {
@@ -1732,7 +1732,7 @@ function CreateDestroyNewMailButton(): void {
     UnloadButtonImage(giNewMailButtonImage[0]);
 
     // remove screen mask
-    MSYS_RemoveRegion(&pScreenMask);
+    MSYS_RemoveRegion(addressof(pScreenMask));
 
     // re draw screen
     fReDraw = TRUE;
@@ -1766,11 +1766,11 @@ function DisplayNewMailBox(): BOOLEAN {
   // if( ( fNewMailFlag ) && ( fOldNewMailFlag ) )
   //	return ( FALSE );
 
-  GetVideoObject(&hHandle, guiEmailWarning);
+  GetVideoObject(addressof(hHandle), guiEmailWarning);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X, EMAIL_WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // the icon for the title of this box
-  GetVideoObject(&hHandle, guiTITLEBARICONS);
+  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X + 5, EMAIL_WARNING_Y + 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
@@ -2080,8 +2080,8 @@ function CreateDestroyDeleteNoticeMailButton(): void {
     SetButtonCursor(giDeleteMailButton[1], CURSOR_LAPTOP_SCREEN);
 
     // set up screen mask to prevent other actions while delete mail box is destroyed
-    MSYS_DefineRegion(&pDeleteScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
-    MSYS_AddRegion(&pDeleteScreenMask);
+    MSYS_DefineRegion(addressof(pDeleteScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, LapTopScreenCallBack);
+    MSYS_AddRegion(addressof(pDeleteScreenMask));
 
     // force update
     fReDrawScreenFlag = TRUE;
@@ -2094,7 +2094,7 @@ function CreateDestroyDeleteNoticeMailButton(): void {
     UnloadButtonImage(giDeleteMailButtonImage[1]);
 
     // the region
-    MSYS_RemoveRegion(&pDeleteScreenMask);
+    MSYS_RemoveRegion(addressof(pDeleteScreenMask));
 
     // force refresh
     fReDrawScreenFlag = TRUE;
@@ -2119,7 +2119,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
 
   // load graphics
 
-  GetVideoObject(&hHandle, guiEmailWarning);
+  GetVideoObject(addressof(hHandle), guiEmailWarning);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X, EMAIL_WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // font stuff
@@ -2129,7 +2129,7 @@ function DisplayDeleteNotice(pMail: EmailPtr): BOOLEAN {
   SetFontShadow(DEFAULT_SHADOW);
 
   // the icon for the title of this box
-  GetVideoObject(&hHandle, guiTITLEBARICONS);
+  GetVideoObject(addressof(hHandle), guiTITLEBARICONS);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, EMAIL_WARNING_X + 5, EMAIL_WARNING_Y + 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // title
@@ -2397,14 +2397,14 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   // all headers, but not info are right justified
 
   // print from
-  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, (MESSAGE_FROM_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_FROM_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[0], MESSAGE_FONT, &usX, &usY);
+  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, (MESSAGE_FROM_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_FROM_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[0], MESSAGE_FONT, addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_FROM_Y + iViewerY, pEmailHeaders[0]);
 
   // the actual from info
   mprintf(MESSAGE_HEADER_X + MESSAGE_HEADER_WIDTH - 13, MESSAGE_FROM_Y + iViewerY, pSenderNameList[pMail.value.ubSender]);
 
   // print date
-  FindFontRightCoordinates(MESSAGE_HEADER_X + 168, (MESSAGE_DATE_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_DATE_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[2], MESSAGE_FONT, &usX, &usY);
+  FindFontRightCoordinates(MESSAGE_HEADER_X + 168, (MESSAGE_DATE_Y + iViewerY), MESSAGE_HEADER_WIDTH, (MESSAGE_DATE_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[2], MESSAGE_FONT, addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_DATE_Y + iViewerY, pEmailHeaders[2]);
 
   // the actual date info
@@ -2412,7 +2412,7 @@ function DisplayEmailMessageSubjectDateFromLines(pMail: EmailPtr, iViewerY: INT3
   mprintf(MESSAGE_HEADER_X + 235, MESSAGE_DATE_Y + iViewerY, sString);
 
   // print subject
-  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, MESSAGE_SUBJECT_Y, MESSAGE_HEADER_WIDTH, (MESSAGE_SUBJECT_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[1], MESSAGE_FONT, &usX, &usY);
+  FindFontRightCoordinates(MESSAGE_HEADER_X - 20, MESSAGE_SUBJECT_Y, MESSAGE_HEADER_WIDTH, (MESSAGE_SUBJECT_Y + GetFontHeight(MESSAGE_FONT)), pEmailHeaders[1], MESSAGE_FONT, addressof(usX), addressof(usY));
   mprintf(usX, MESSAGE_SUBJECT_Y + iViewerY, pEmailHeaders[1]);
 
   // the actual subject info
@@ -2444,7 +2444,7 @@ function DrawLineDividers(): void {
   let hHandle: HVOBJECT;
 
   for (iCounter = 1; iCounter < 19; iCounter++) {
-    GetVideoObject(&hHandle, guiMAILDIVIDER);
+    GetVideoObject(addressof(hHandle), guiMAILDIVIDER);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, INDIC_X - 10, (MIDDLE_Y + iCounter * MIDDLE_WIDTH - 1), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
@@ -3897,7 +3897,7 @@ function DisplayNumberOfPagesToThisEmail(iViewerY: INT32): BOOLEAN {
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
-  FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, sString, FONT12ARIAL, &sX, &sY);
+  FindFontCenterCoordinates(VIEWER_X + INDENT_X_OFFSET, 0, INDENT_X_WIDTH, 0, sString, FONT12ARIAL, addressof(sX), addressof(sY));
   mprintf(sX, VIEWER_Y + iViewerY + INDENT_Y_OFFSET - 2, sString);
 
   // restore shadows
@@ -4199,9 +4199,9 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
     pSubString = NULL;
 
     // Find out if the $MERCNAME$ is in the string
-    pMercNameString = wcsstr(&pTempString[iCurLocInSourceString], sMercName);
+    pMercNameString = wcsstr(addressof(pTempString[iCurLocInSourceString]), sMercName);
 
-    pAmountString = wcsstr(&pTempString[iCurLocInSourceString], sAmount);
+    pAmountString = wcsstr(addressof(pTempString[iCurLocInSourceString]), sAmount);
 
     if (pMercNameString != NULL && pAmountString != NULL) {
       if (pMercNameString < pAmountString) {
@@ -4227,10 +4227,10 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
 
     // if there is a substring
     if (pSubString != NULL) {
-      iLength = pSubString - &pTempString[iCurLocInSourceString];
+      iLength = pSubString - addressof(pTempString[iCurLocInSourceString]);
 
       // Copy the part of the source string upto the keyword
-      wcsncat(pFinishedString, &pTempString[iCurLocInSourceString], iLength);
+      wcsncat(pFinishedString, addressof(pTempString[iCurLocInSourceString]), iLength);
 
       // increment the source string counter by how far in the keyword is and by the length of the keyword
       iCurLocInSourceString += iLength + wcslen(sSearchString);
@@ -4251,9 +4251,9 @@ function ReplaceMercNameAndAmountWithProperData(pFinishedString: Pointer<CHAR16>
       }
     } else {
       // add the rest of the string
-      wcscat(pFinishedString, &pTempString[iCurLocInSourceString]);
+      wcscat(pFinishedString, addressof(pTempString[iCurLocInSourceString]));
 
-      iCurLocInSourceString += wcslen(&pTempString[iCurLocInSourceString]);
+      iCurLocInSourceString += wcslen(addressof(pTempString[iCurLocInSourceString]));
     }
   }
 

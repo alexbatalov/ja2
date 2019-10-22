@@ -18,7 +18,7 @@ function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
   // Check reality vs what the player knows....
   if (pSoldier.value.bTeam == gbPlayerNum) {
     // Is this obstcale a hidden tile that has not been revealed yet?
-    if (DoesGridnoContainHiddenStruct(sGridno, &fHiddenStructVisible)) {
+    if (DoesGridnoContainHiddenStruct(sGridno, addressof(fHiddenStructVisible))) {
       // Are we not visible, if so use terrain costs!
       if (!fHiddenStructVisible) {
         // Set cost of terrain!
@@ -590,7 +590,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
     sBreathChange = 3 * sBreathPerAP;
 
     // Adjust for on drugs
-    HandleBPEffectDueToDrugs(pSold, &sBreathChange);
+    HandleBPEffectDueToDrugs(pSold, addressof(sBreathChange));
 
     if (sBreathChange > 0) {
       sBreathChange = 0;
@@ -648,7 +648,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
       sBreathChange = 0;
     }
     // Adjust for on drugs
-    HandleBPEffectDueToDrugs(pSold, &sBreathChange);
+    HandleBPEffectDueToDrugs(pSold, addressof(sBreathChange));
 
     // adjust breath only, don't touch action points!
     DeductPoints(pSold, 0, sBreathChange);
@@ -754,7 +754,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
     sAPCost = MinAPsToAttack(pSoldier, sGridNo, ubAddTurningCost);
 
     if (pSoldier.value.bDoBurst) {
-      sAPCost += CalcAPsToBurst(CalcActionPoints(pSoldier), &(pSoldier.value.inv[HANDPOS]));
+      sAPCost += CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[HANDPOS]));
     } else {
       sAPCost += bAimTime;
     }
@@ -788,17 +788,17 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
           pTarget = MercPtrs[ubGuyThere];
 
           if (pSoldier.value.ubBodyType == BLOODCAT) {
-            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
+            sGotLocation = FindNextToAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
             if (sGotLocation == -1) {
               sGotLocation = NOWHERE;
             }
           } else {
-            sGotLocation = FindAdjacentPunchTarget(pSoldier, pTarget, &sAdjustedGridNo, &ubDirection);
+            sGotLocation = FindAdjacentPunchTarget(pSoldier, pTarget, addressof(sAdjustedGridNo), addressof(ubDirection));
           }
         }
 
         if (sGotLocation == NOWHERE && pSoldier.value.ubBodyType != BLOODCAT) {
-          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
+          sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
 
           if (sActionGridNo == -1) {
             sGotLocation = NOWHERE;
@@ -851,7 +851,7 @@ function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTur
     let bAttachSlot: INT8;
     // look for an attached grenade launcher
 
-    bAttachSlot = FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
     if (bAttachSlot == NO_SLOT) {
       // default to hand
       // LOOK IN BUDDY'S HAND TO DETERMINE WHAT TO DO HERE
@@ -930,7 +930,7 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
     // OK, get a direction and see if we need to turn...
     if (ubAddTurningCost) {
       // Given a gridno here, check if we are on a guy - if so - get his gridno
-      if (FindSoldier(sGridNo, &usTargID, &uiMercFlags, FIND_SOLDIER_GRIDNO)) {
+      if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
         sGridNo = MercPtrs[usTargID].value.sGridNo;
       }
 
@@ -976,7 +976,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
     usItem = pSoldier.value.inv[HANDPOS].usItem;
   }
 
-  GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sGridNo, ubAddTurningCost, &fAddingTurningCost, &fAddingRaiseGunCost);
+  GetAPChargeForShootOrStabWRTGunRaises(pSoldier, sGridNo, ubAddTurningCost, addressof(fAddingTurningCost), addressof(fAddingRaiseGunCost));
 
   if (Item[usItem].usItemClass == IC_THROWING_KNIFE) {
     // Do we need to stand up?
@@ -1015,7 +1015,7 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
 
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
-    if (FindSoldier(sGridNo, &usTargID, &uiMercFlags, FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usTargID].value.sGridNo;
     }
   }
@@ -1034,22 +1034,22 @@ function MinAPsToShootOrStab(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubA
     let GrenadeLauncher: OBJECTTYPE;
 
     // look for an attached grenade launcher
-    bAttachSlot = FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+    bAttachSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
 
     // create temporary grenade launcher and use that
     if (bAttachSlot != NO_SLOT) {
-      CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bAttachSlot], &GrenadeLauncher);
+      CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bAttachSlot], addressof(GrenadeLauncher));
     } else {
       // fake it, use a 100 status...
-      CreateItem(UNDER_GLAUNCHER, 100, &GrenadeLauncher);
+      CreateItem(UNDER_GLAUNCHER, 100, addressof(GrenadeLauncher));
     }
 
-    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, &GrenadeLauncher);
+    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(GrenadeLauncher));
   } else if (IsValidSecondHandShot(pSoldier)) {
     // charge the maximum of the two
-    bAPCost += __max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, &(pSoldier.value.inv[HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, &(pSoldier.value.inv[SECONDHANDPOS])));
+    bAPCost += __max(BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[HANDPOS])), BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[SECONDHANDPOS])));
   } else {
-    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, &(pSoldier.value.inv[HANDPOS]));
+    bAPCost += BaseAPsToShootOrStab(bFullAPs, bAimSkill, addressof(pSoldier.value.inv[HANDPOS]));
   }
 
   // the minimum AP cost of ANY shot can NEVER be more than merc's maximum APs!
@@ -1205,12 +1205,12 @@ function EnoughAmmo(pSoldier: Pointer<SOLDIERTYPE>, fDisplay: BOOLEAN, bInvPos: 
       }
 
       if (Item[pSoldier.value.inv[bInvPos].usItem].usItemClass == IC_LAUNCHER || pSoldier.value.inv[bInvPos].usItem == TANK_CANNON) {
-        if (FindAttachmentByClass(&(pSoldier.value.inv[bInvPos]), IC_GRENADE) != ITEM_NOT_FOUND) {
+        if (FindAttachmentByClass(addressof(pSoldier.value.inv[bInvPos]), IC_GRENADE) != ITEM_NOT_FOUND) {
           return TRUE;
         }
 
         // ATE: Did an else if here...
-        if (FindAttachmentByClass(&(pSoldier.value.inv[bInvPos]), IC_BOMB) != ITEM_NOT_FOUND) {
+        if (FindAttachmentByClass(addressof(pSoldier.value.inv[bInvPos]), IC_BOMB) != ITEM_NOT_FOUND) {
           return TRUE;
         }
 
@@ -1244,7 +1244,7 @@ function DeductAmmo(pSoldier: Pointer<SOLDIERTYPE>, bInvPos: INT8): void {
     return;
   }
 
-  pObj = &(pSoldier.value.inv[bInvPos]);
+  pObj = addressof(pSoldier.value.inv[bInvPos]);
   if (pObj.value.usItem != NOTHING) {
     if (pObj.value.usItem == TANK_CANNON) {
     } else if (Item[pObj.value.usItem].usItemClass == IC_GUN && pObj.value.usItem != TANK_CANNON) {
@@ -1280,7 +1280,7 @@ function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): U
   let sActionGridNo: INT16;
 
   // Check if we are over an item pool
-  if (GetItemPool(usMapPos, &pItemPool, pSoldier.value.bLevel)) {
+  if (GetItemPool(usMapPos, addressof(pItemPool), pSoldier.value.bLevel)) {
     // If we are in the same tile, just return pickup cost
     sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, usMapPos);
 
@@ -1338,17 +1338,17 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ;
 
   CHECKF(pSoldier);
-  pObj = &(pSoldier.value.inv[HANDPOS]);
+  pObj = addressof(pSoldier.value.inv[HANDPOS]);
 
   if (Item[pObj.value.usItem].usItemClass == IC_GUN || Item[pObj.value.usItem].usItemClass == IC_LAUNCHER) {
     bSlot = FindAmmoToReload(pSoldier, HANDPOS, NO_SLOT);
     if (bSlot != NO_SLOT) {
       // we would reload using this ammo!
-      bAPCost += GetAPsToReloadGunWithAmmo(pObj, &(pSoldier.value.inv[bSlot]));
+      bAPCost += GetAPsToReloadGunWithAmmo(pObj, addressof(pSoldier.value.inv[bSlot]));
     }
 
     if (IsValidSecondHandShotForReloadingPurposes(pSoldier)) {
-      pObj = &(pSoldier.value.inv[SECONDHANDPOS]);
+      pObj = addressof(pSoldier.value.inv[SECONDHANDPOS]);
       bExcludeSlot = NO_SLOT;
       bSlot2 = NO_SLOT;
 
@@ -1369,7 +1369,7 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       if (bSlot2 != NO_SLOT) {
         // we would reload using this ammo!
-        bAPCost2 = GetAPsToReloadGunWithAmmo(pObj, &(pSoldier.value.inv[bSlot2]));
+        bAPCost2 = GetAPsToReloadGunWithAmmo(pObj, addressof(pSoldier.value.inv[bSlot2]));
         if (EnoughPoints(pSoldier, (bAPCost + bAPCost2), 0, FALSE)) {
           // we can afford to reload both guns; otherwise display just for 1 gun
           bAPCost += bAPCost2;
@@ -1387,7 +1387,7 @@ function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOL
   let ubDirection: UINT8;
   let sAdjustedGridNo: INT16;
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.value.sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot.value.sGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), TRUE, FALSE);
 
   sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier.value.usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier.value.bActionPoints);
 
@@ -1621,7 +1621,7 @@ function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
 
   if (sGridNo != NOWHERE) {
     // Given a gridno here, check if we are on a guy - if so - get his gridno
-    if (FindSoldier(sGridNo, &usTargID, &uiMercFlags, FIND_SOLDIER_GRIDNO)) {
+    if (FindSoldier(sGridNo, addressof(usTargID), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
       sGridNo = MercPtrs[usTargID].value.sGridNo;
     }
 

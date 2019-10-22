@@ -105,7 +105,7 @@ function ExecuteStrategicEvent(pEvent: Pointer<STRATEGICEVENT>): BOOLEAN {
     case EVENT_ADDSOLDIER_TO_UPDATE_BOX:
       // if the grunt is currently active, add to update box
       if (Menptr[pEvent.value.uiParam].bActive) {
-        AddSoldierToWaitingListQueue(&(Menptr[pEvent.value.uiParam]));
+        AddSoldierToWaitingListQueue(addressof(Menptr[pEvent.value.uiParam]));
       }
       break;
     case EVENT_SET_MENU_REASON:

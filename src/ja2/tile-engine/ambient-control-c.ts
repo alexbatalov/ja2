@@ -175,13 +175,13 @@ function LoadAmbientControlFile(ubAmbientID: UINT8): BOOLEAN {
   }
 
   // READ #
-  if (!FileRead(hFile, &gsNumAmbData, sizeof(INT16), NULL)) {
+  if (!FileRead(hFile, addressof(gsNumAmbData), sizeof(INT16), NULL)) {
     return FALSE;
   }
 
   // LOOP FOR OTHERS
   for (cnt = 0; cnt < gsNumAmbData; cnt++) {
-    if (!FileRead(hFile, &(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), NULL)) {
+    if (!FileRead(hFile, addressof(gAmbData[cnt]), sizeof(AMBIENTDATA_STRUCT), NULL)) {
       return FALSE;
     }
 
@@ -228,7 +228,7 @@ function DeleteAllAmbients(): void {
 function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
   let rpParms: RANDOMPARMS;
 
-  memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
+  memset(addressof(rpParms), 0xff, sizeof(RANDOMPARMS));
 
   rpParms.uiTimeMin = gAmbData[uiAmbientID].uiMinTime;
   rpParms.uiTimeMax = gAmbData[uiAmbientID].uiMaxTime;
@@ -236,19 +236,19 @@ function SetupNewAmbientSound(uiAmbientID: UINT32): UINT32 {
   rpParms.uiVolMax = CalculateSoundEffectsVolume(gAmbData[uiAmbientID].uiVol);
   rpParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlayRandom(gAmbData[uiAmbientID].zFilename, &rpParms);
+  return SoundPlayRandom(gAmbData[uiAmbientID].zFilename, addressof(rpParms));
 }
 
 function StartSteadyStateAmbient(ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], &spParms);
+  return SoundPlay(gSteadyStateAmbientTable[gubCurrentSteadyStateAmbience].zSoundNames[gubCurrentSteadyStateSound], addressof(spParms));
 }
 
 function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {

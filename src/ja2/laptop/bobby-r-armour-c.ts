@@ -10,12 +10,12 @@ function EnterBobbyRArmour(): BOOLEAN {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Armourbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiArmourBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiArmourBackground)));
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Armourgrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiArmourGrid));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiArmourGrid)));
 
   InitBobbyBrTitle();
   // Draw menu bar
@@ -53,7 +53,7 @@ function RenderBobbyRArmour(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(&hPixHandle, guiArmourGrid);
+  GetVideoObject(addressof(hPixHandle), guiArmourGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   DisplayItemInfo(IC_ARMOUR);

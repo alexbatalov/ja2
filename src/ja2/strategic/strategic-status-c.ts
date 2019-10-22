@@ -1,7 +1,7 @@
 let gStrategicStatus: STRATEGIC_STATUS;
 
 function InitStrategicStatus(): void {
-  memset(&gStrategicStatus, 0, sizeof(STRATEGIC_STATUS));
+  memset(addressof(gStrategicStatus), 0, sizeof(STRATEGIC_STATUS));
   // Add special non-zero start conditions here...
 
   InitArmyGunTypes();
@@ -11,7 +11,7 @@ function SaveStrategicStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the Strategic Status structure to the saved game file
-  FileWrite(hFile, &gStrategicStatus, sizeof(STRATEGIC_STATUS), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(STRATEGIC_STATUS)) {
     return FALSE;
   }
@@ -23,7 +23,7 @@ function LoadStrategicStatusFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Load the Strategic Status structure from the saved game file
-  FileRead(hFile, &gStrategicStatus, sizeof(STRATEGIC_STATUS), &uiNumBytesRead);
+  FileRead(hFile, addressof(gStrategicStatus), sizeof(STRATEGIC_STATUS), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(STRATEGIC_STATUS)) {
     return FALSE;
   }

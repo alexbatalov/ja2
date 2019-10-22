@@ -192,113 +192,113 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
       pDSpec = OStructs;
       usNSpecs = gusNumOStructs; // OSTRUCTS_NUMELEMENTS;
       pSelList = SelOStructs;
-      pNumSelList = &iNumOStructsSelected;
+      pNumSelList = addressof(iNumOStructsSelected);
       break;
 
     case SELWIN_OSTRUCTS1:
       pDSpec = OStructs1;
       usNSpecs = OSTRUCTS1_NUMELEMENTS;
       pSelList = SelOStructs1;
-      pNumSelList = &iNumOStructs1Selected;
+      pNumSelList = addressof(iNumOStructs1Selected);
       break;
 
     case SELWIN_OSTRUCTS2:
       pDSpec = OStructs2;
       usNSpecs = OSTRUCTS2_NUMELEMENTS;
       pSelList = SelOStructs2;
-      pNumSelList = &iNumOStructs2Selected;
+      pNumSelList = addressof(iNumOStructs2Selected);
       break;
 
     case SELWIN_BANKS:
       pDSpec = BanksList;
       usNSpecs = BANKSLIST_NUMELEMENTS;
       pSelList = SelBanks;
-      pNumSelList = &iNumBanksSelected;
+      pNumSelList = addressof(iNumBanksSelected);
       break;
 
     case SELWIN_ROADS:
       pDSpec = RoadsList;
       usNSpecs = ROADSLIST_NUMELEMENTS;
       pSelList = SelRoads;
-      pNumSelList = &iNumRoadsSelected;
+      pNumSelList = addressof(iNumRoadsSelected);
       break;
 
     case SELWIN_DEBRIS:
       pDSpec = DebrisList;
       usNSpecs = DEBRISLIST_NUMELEMENTS;
       pSelList = SelDebris;
-      pNumSelList = &iNumDebrisSelected;
+      pNumSelList = addressof(iNumDebrisSelected);
       break;
 
     case SELWIN_SINGLEWALL:
       pDSpec = SingleWall;
       usNSpecs = SINGLEWALL_NUMELEMENTS;
       pSelList = SelSingleWall;
-      pNumSelList = &iNumWallsSelected;
+      pNumSelList = addressof(iNumWallsSelected);
       break;
     case SELWIN_SINGLEDOOR:
       pDSpec = SingleDoor;
       usNSpecs = SINGLEDOOR_NUMELEMENTS;
       pSelList = SelSingleDoor;
-      pNumSelList = &iNumDoorsSelected;
+      pNumSelList = addressof(iNumDoorsSelected);
       break;
     case SELWIN_SINGLEWINDOW:
       pDSpec = SingleWindow;
       usNSpecs = SINGLEWINDOW_NUMELEMENTS;
       pSelList = SelSingleWindow;
-      pNumSelList = &iNumWindowsSelected;
+      pNumSelList = addressof(iNumWindowsSelected);
       break;
     case SELWIN_SINGLEROOF:
       pDSpec = SingleRoof;
       usNSpecs = SINGLEROOF_NUMELEMENTS;
       pSelList = SelSingleRoof;
-      pNumSelList = &iNumRoofsSelected;
+      pNumSelList = addressof(iNumRoofsSelected);
       break;
     case SELWIN_SINGLENEWROOF:
       pDSpec = SingleNewRoof;
       usNSpecs = SINGLENEWROOF_NUMELEMENTS;
       pSelList = SelSingleNewRoof;
-      pNumSelList = &iNumNewRoofsSelected;
+      pNumSelList = addressof(iNumNewRoofsSelected);
       break;
     case SELWIN_SINGLEBROKENWALL:
       pDSpec = SingleBrokenWall;
       usNSpecs = SINGLEBROKENWALL_NUMELEMENTS;
       pSelList = SelSingleBrokenWall;
-      pNumSelList = &iNumBrokenWallsSelected;
+      pNumSelList = addressof(iNumBrokenWallsSelected);
       break;
     case SELWIN_SINGLEDECOR:
       pDSpec = SingleDecor;
       usNSpecs = SINGLEDECOR_NUMELEMENTS;
       pSelList = SelSingleDecor;
-      pNumSelList = &iNumDecorSelected;
+      pNumSelList = addressof(iNumDecorSelected);
       break;
     case SELWIN_SINGLEDECAL:
       pDSpec = SingleDecal;
       usNSpecs = SINGLEDECAL_NUMELEMENTS;
       pSelList = SelSingleDecal;
-      pNumSelList = &iNumDecalsSelected;
+      pNumSelList = addressof(iNumDecalsSelected);
       break;
     case SELWIN_SINGLEFLOOR:
       pDSpec = SingleFloor;
       usNSpecs = SINGLEFLOOR_NUMELEMENTS;
       pSelList = SelSingleFloor;
-      pNumSelList = &iNumFloorsSelected;
+      pNumSelList = addressof(iNumFloorsSelected);
       break;
     case SELWIN_SINGLETOILET:
       pDSpec = SingleToilet;
       usNSpecs = SINGLETOILET_NUMELEMENTS;
       pSelList = SelSingleToilet;
-      pNumSelList = &iNumToiletsSelected;
+      pNumSelList = addressof(iNumToiletsSelected);
       break;
     case SELWIN_ROOM:
       pDSpec = Room;
       usNSpecs = ROOM_NUMELEMENTS;
       pSelList = SelRoom;
-      pNumSelList = &iNumRoomsSelected;
+      pNumSelList = addressof(iNumRoomsSelected);
       break;
   }
 
-  BuildDisplayWindow(pDSpec, usNSpecs, &pDispList, &SelWinStartPoint, &SelWinEndPoint, &SelWinSpacing, CLEAR_BACKGROUND);
+  BuildDisplayWindow(pDSpec, usNSpecs, addressof(pDispList), addressof(SelWinStartPoint), addressof(SelWinEndPoint), addressof(SelWinSpacing), CLEAR_BACKGROUND);
 }
 
 // The selection window method is initialized here.  This is where all the graphics for all
@@ -1290,19 +1290,19 @@ function DrawSelections(): void {
   NewRect.iRight = SelWinEndPoint.iX;
   NewRect.iBottom = SelWinEndPoint.iY;
 
-  GetClippingRect(&ClipRect);
-  SetClippingRect(&NewRect);
+  GetClippingRect(addressof(ClipRect));
+  SetClippingRect(addressof(NewRect));
 
   //	SetFont( gpSmallFont );
   SetFont(gpLargeFontType1);
   SetObjectShade(gvoLargeFontType1, 0);
   //	SetObjectShade( gvoLargeFont, 0 );
 
-  DisplayWindowFunc(pDispList, iTopWinCutOff, iBotWinCutOff, &SelWinStartPoint, CLEAR_BACKGROUND);
+  DisplayWindowFunc(pDispList, iTopWinCutOff, iBotWinCutOff, addressof(SelWinStartPoint), CLEAR_BACKGROUND);
 
   SetObjectShade(gvoLargeFontType1, 4);
 
-  SetClippingRect(&ClipRect);
+  SetClippingRect(addressof(ClipRect));
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1326,7 +1326,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
   SaveSelectionList();
 
   for (usSpecLoop = 0; usSpecLoop < usNumSpecs; usSpecLoop++) {
-    pDisplaySpec = &(pDisplaySpecs[usSpecLoop]);
+    pDisplaySpec = addressof(pDisplaySpecs[usSpecLoop]);
     if (pDisplaySpec.value.ubType == DISPLAY_GRAPHIC) {
       if (!pDisplaySpec.value.hVObject)
         return FALSE;
@@ -1344,7 +1344,7 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
         return FALSE;
 
       for (usETRLELoop = usETRLEStart; usETRLELoop <= usETRLEEnd; usETRLELoop++) {
-        pETRLEObject = &(pDisplaySpec.value.hVObject.value.pETRLEObject[usETRLELoop]);
+        pETRLEObject = addressof(pDisplaySpec.value.hVObject.value.pETRLEObject[usETRLELoop]);
 
         if ((iCurrX + pETRLEObject.value.usWidth > pBottomRight.value.iX) || (fFlags & ONE_COLUMN)) {
           if (fFlags & ONE_ROW) {
@@ -1415,7 +1415,7 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
     if (iCurrY > iBottomCutOff)
       return TRUE;
 
-    pETRLEObject = &(pNode.value.hObj.value.pETRLEObject[pNode.value.uiIndex]);
+    pETRLEObject = addressof(pNode.value.hObj.value.pETRLEObject[pNode.value.uiIndex]);
 
     // We have to store the offset data in temp variables before zeroing them and blitting
     sTempOffsetX = pETRLEObject.value.sOffsetX;

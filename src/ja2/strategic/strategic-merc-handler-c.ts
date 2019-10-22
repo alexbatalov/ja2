@@ -277,7 +277,7 @@ function MercDailyUpdate(): void {
 
   // Loop through all the profiles
   for (cnt = 0; cnt < NUM_PROFILES; cnt++) {
-    pProfile = &(gMercProfiles[cnt]);
+    pProfile = addressof(gMercProfiles[cnt]);
 
     // dead guys don't do nuthin' !
     if (pProfile.value.bMercStatus == MERC_IS_DEAD) {
@@ -489,7 +489,7 @@ void HandleMercsAboutToLeave( SOLDIERTYPE *pMercList )
 function MercsContractIsFinished(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = &Menptr[ubID];
+  pSoldier = addressof(Menptr[ubID]);
 
   // if the soldier was removed before getting into this function, return
   if (!pSoldier.value.bActive)
@@ -535,7 +535,7 @@ function MercsContractIsFinished(ubID: UINT8): void {
 function RPCWhineAboutNoPay(ubID: UINT8): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = &Menptr[ubID];
+  pSoldier = addressof(Menptr[ubID]);
 
   // if the soldier was removed before getting into this function, return
   if (!pSoldier.value.bActive)
@@ -645,7 +645,7 @@ function UpdateBuddyAndHatedCounters(): void {
 
     // if the merc is active and on a combat assignment
     if (pSoldier.value.bActive && pSoldier.value.bAssignment < ON_DUTY) {
-      pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+      pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
       // if we're moving, we only check vs other people in our squad
       if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {

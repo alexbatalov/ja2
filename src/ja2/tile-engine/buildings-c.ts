@@ -14,7 +14,7 @@ function CreateNewBuilding(pubBuilding: Pointer<UINT8>): Pointer<BUILDING> {
   gBuildings[gubNumberOfBuildings].ubNumClimbSpots = 0;
   *pubBuilding = gubNumberOfBuildings;
   // return pointer (have to subtract 1 since we just added 1
-  return &(gBuildings[gubNumberOfBuildings]);
+  return addressof(gBuildings[gubNumberOfBuildings]);
 }
 
 function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
@@ -38,13 +38,13 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
   let pBuilding: Pointer<BUILDING>;
   let ubBuildingID: UINT8 = 0;
 
-  pBuilding = CreateNewBuilding(&ubBuildingID);
+  pBuilding = CreateNewBuilding(addressof(ubBuildingID));
   if (!pBuilding) {
     return NULL;
   }
 
   // set up fake soldier for location testing
-  memset(&FakeSoldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(FakeSoldier), 0, sizeof(SOLDIERTYPE));
   FakeSoldier.sGridNo = sDesiredSpot;
   FakeSoldier.bLevel = 1;
   FakeSoldier.bTeam = 1;
@@ -191,7 +191,7 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
           bSkipSpots--;
         } else if (Random(uiChanceIn) == 0) {
           // don't consider people as obstacles
-          if (NewOKDestination(&FakeSoldier, sCurrGridNo, FALSE, 0)) {
+          if (NewOKDestination(addressof(FakeSoldier), sCurrGridNo, FALSE, 0)) {
             pBuilding.value.sUpClimbSpots[pBuilding.value.ubNumClimbSpots] = sCurrGridNo;
             pBuilding.value.sDownClimbSpots[pBuilding.value.ubNumClimbSpots] = sRightGridNo;
             pBuilding.value.ubNumClimbSpots++;
@@ -280,7 +280,7 @@ function FindBuilding(sGridNo: INT16): Pointer<BUILDING> {
     return NULL;
   }
 
-  return &(gBuildings[ubBuildingID]);
+  return addressof(gBuildings[ubBuildingID]);
 }
 
 function InBuilding(sGridNo: INT16): BOOLEAN {
@@ -294,8 +294,8 @@ function GenerateBuildings(): void {
   let uiLoop: UINT32;
 
   // init building structures and variables
-  memset(&gubBuildingInfo, 0, WORLD_MAX * sizeof(UINT8));
-  memset(&gBuildings, 0, MAX_BUILDINGS * sizeof(BUILDING));
+  memset(addressof(gubBuildingInfo), 0, WORLD_MAX * sizeof(UINT8));
+  memset(addressof(gBuildings), 0, MAX_BUILDINGS * sizeof(BUILDING));
   gubNumberOfBuildings = 0;
 
   if ((gbWorldSectorZ > 0) || gfEditMode) {

@@ -282,10 +282,10 @@ function GetPlayerKeyBoardInputForIMPBeginScreen(): void {
   let MousePos: POINT;
 
   // get the current curosr position, might just need it.
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   // handle input events
-  while (DequeueEvent(&InputEvent)) {
+  while (DequeueEvent(addressof(InputEvent))) {
     /*
            // HOOK INTO MOUSE HOOKS
 switch(InputEvent.usEvent)
@@ -305,7 +305,7 @@ switch(InputEvent.usEvent)
               break;
            }
            */
-    if (!HandleTextInput(&InputEvent) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT)) {
+    if (!HandleTextInput(addressof(InputEvent)) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT)) {
       switch (InputEvent.usParam) {
         case ((ENTER)):
           // check to see if gender was highlighted..if so, select it
@@ -411,7 +411,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
                 uiFullNameCharacterPosition = 0;
               }
               // make sure we haven't moved too far
-              if ((uiFullNameCursorPosition + StringPixLength(&(uiKey), FONT14ARIAL)) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiFullNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL)) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
@@ -440,7 +440,7 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               }
 
               // make sure we haven't moved too far
-              if ((uiNickNameCursorPosition + StringPixLength(&(uiKey), FONT14ARIAL)) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiNickNameCursorPosition + StringPixLength(addressof(uiKey), FONT14ARIAL)) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
@@ -506,7 +506,7 @@ function DisplayFullNameStringCursor(): void {
     uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
@@ -556,7 +556,7 @@ function DisplayNickNameStringCursor(): void {
     uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
@@ -658,7 +658,7 @@ function DisplayMaleGlowCursor(): void {
     uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
@@ -708,7 +708,7 @@ function DisplayFemaleGlowCursor(): void {
     uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw rectangle
@@ -789,22 +789,22 @@ function CreateIMPBeginScreenMouseRegions(): void {
     return;
 
   // full name region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[0], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[0]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
 
   // nick name region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[1], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[1]), LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
 
   // IMP_MALE gender area
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[2], MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[2]), MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
 
   // IMP_FEMALE gender region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[3], FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
+  MSYS_DefineRegion(addressof(gIMPBeginScreenMouseRegions[3]), FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
 
   // add regions
-  MSYS_AddRegion(&gIMPBeginScreenMouseRegions[0]);
-  MSYS_AddRegion(&gIMPBeginScreenMouseRegions[1]);
-  MSYS_AddRegion(&gIMPBeginScreenMouseRegions[2]);
-  MSYS_AddRegion(&gIMPBeginScreenMouseRegions[3]);
+  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[0]));
+  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[1]));
+  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[2]));
+  MSYS_AddRegion(addressof(gIMPBeginScreenMouseRegions[3]));
 
   return;
 }
@@ -817,10 +817,10 @@ function DestroyIMPBeginScreenMouseRegions(): void {
     return;
 
   // remove regions
-  MSYS_RemoveRegion(&gIMPBeginScreenMouseRegions[0]);
-  MSYS_RemoveRegion(&gIMPBeginScreenMouseRegions[1]);
-  MSYS_RemoveRegion(&gIMPBeginScreenMouseRegions[2]);
-  MSYS_RemoveRegion(&gIMPBeginScreenMouseRegions[3]);
+  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[0]));
+  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[1]));
+  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[2]));
+  MSYS_RemoveRegion(addressof(gIMPBeginScreenMouseRegions[3]));
 
   return;
 }

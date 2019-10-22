@@ -76,8 +76,8 @@ function InitializeOneArmsDealer(ubArmsDealer: UINT8): void {
   let usItemIndex: UINT16;
   let ubNumItems: UINT8 = 0;
 
-  memset(&(gArmsDealerStatus[ubArmsDealer]), 0, sizeof(ARMS_DEALER_STATUS));
-  memset(&(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * MAXITEMS);
+  memset(addressof(gArmsDealerStatus[ubArmsDealer]), 0, sizeof(ARMS_DEALER_STATUS));
+  memset(addressof(gArmsDealersInventory[ubArmsDealer]), 0, sizeof(DEALER_ITEM_HEADER) * MAXITEMS);
 
   // Reset the arms dealers cash on hand to the default initial value
   gArmsDealerStatus[ubArmsDealer].uiArmsDealersCash = ArmsDealerInfo[ubArmsDealer].iInitialCash;
@@ -111,7 +111,7 @@ function ShutDownArmsDealers(): void {
     // loop through all the item types
     for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
-        FreeSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex]);
+        FreeSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]));
       }
     }
   }
@@ -123,12 +123,12 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let usItemIndex: UINT16;
 
   // Save the arms dealers status
-  if (!FileWrite(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), &uiNumBytesWritten)) {
+  if (!FileWrite(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), addressof(uiNumBytesWritten))) {
     return FALSE;
   }
 
   // save the dealers inventory item headers (all at once)
-  if (!FileWrite(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), &uiNumBytesWritten)) {
+  if (!FileWrite(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), addressof(uiNumBytesWritten))) {
     return FALSE;
   }
 
@@ -138,7 +138,7 @@ function SaveArmsDealerInventoryToSaveGameFile(hFile: HWFILE): BOOLEAN {
     for (usItemIndex = 1; usItemIndex < MAXITEMS; usItemIndex++) {
       // if there are any special item elements allocated for this item, save them
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
-        if (!FileWrite(hFile, &gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0], sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, &uiNumBytesWritten)) {
+        if (!FileWrite(hFile, addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0]), sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, addressof(uiNumBytesWritten))) {
           return FALSE;
         }
       }
@@ -162,12 +162,12 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
     // info for all dealers is in the save file
 
     // Load the arms dealers status
-    if (!FileRead(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), &uiNumBytesRead)) {
+    if (!FileRead(hFile, gArmsDealerStatus, sizeof(gArmsDealerStatus), addressof(uiNumBytesRead))) {
       return FALSE;
     }
 
     // load the dealers inventory item headers (all at once)
-    if (!FileRead(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), &uiNumBytesRead)) {
+    if (!FileRead(hFile, gArmsDealersInventory, sizeof(gArmsDealersInventory), addressof(uiNumBytesRead))) {
       return FALSE;
     }
   } else {
@@ -183,10 +183,10 @@ function LoadArmsDealerInventoryFromSavedGameFile(hFile: HWFILE, fIncludesElgin:
       // if there are any elements allocated for this item, load them
       if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced > 0) {
         // Allocate memory for the inventory
-        if (!AllocMemsetSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced))
+        if (!AllocMemsetSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]), gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced))
           return FALSE;
 
-        if (!FileRead(hFile, &gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0], sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, &uiNumBytesRead)) {
+        if (!FileRead(hFile, addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[0]), sizeof(DEALER_SPECIAL_ITEM) * gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced, addressof(uiNumBytesRead))) {
           return FALSE;
         }
       }
@@ -240,9 +240,9 @@ function SimulateArmsDealerCustomer(): void {
         }
         if (ubItemsSold > 0) {
           // create item info describing a perfect item
-          SetSpecialItemInfoToDefaults(&SpclItemInfo);
+          SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
           // Now remove that many NEW ones (condition 100) of that item
-          RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, ubItemsSold);
+          RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), ubItemsSold);
         }
 
         // next, try to sell all the used ones, gotta do these one at a time so we can remove them by element
@@ -350,10 +350,10 @@ function ConvertCreatureBloodToElixir(): void {
     ubAmountToConvert = ubBloodAvailable;
 
     // create item info describing a perfect item
-    SetSpecialItemInfoToDefaults(&SpclItemInfo);
+    SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
 
     // Now remove that many NEW ones (condition 100) of that item
-    RemoveItemFromArmsDealerInventory(ARMS_DEALER_GABBY, JAR_CREATURE_BLOOD, &SpclItemInfo, ubAmountToConvert);
+    RemoveItemFromArmsDealerInventory(ARMS_DEALER_GABBY, JAR_CREATURE_BLOOD, addressof(SpclItemInfo), ubAmountToConvert);
 
     ArmsDealerGetsFreshStock(ARMS_DEALER_GABBY, JAR_ELIXIR, ubAmountToConvert);
   }
@@ -445,9 +445,9 @@ function LimitArmsDealersInventory(ubArmsDealer: UINT8, uiDealerItemType: UINT32
           if (uiDealerItemType == ARMS_DEALER_AMMO) {
             // remove all of them, since each ammo item counts as only one "item" here
             // create item info describing a perfect item
-            SetSpecialItemInfoToDefaults(&SpclItemInfo);
+            SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
             // ammo will always be only condition 100, there's never any in special slots
-            RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
+            RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
           } else {
             // pick 1 random one, don't care about its condition
             RemoveRandomItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, 1);
@@ -985,7 +985,7 @@ function ResizeSpecialItemArray(pDealerItem: Pointer<DEALER_ITEM_HEADER>, ubElem
   // if adding more elements
   if (ubElementsNeeded > pDealerItem.value.ubElementsAlloced) {
     // zero them out (they're inactive until an item is actually added)
-    memset(&(pDealerItem.value.SpecialItem[pDealerItem.value.ubElementsAlloced]), 0, sizeof(DEALER_SPECIAL_ITEM) * (ubElementsNeeded - pDealerItem.value.ubElementsAlloced));
+    memset(addressof(pDealerItem.value.SpecialItem[pDealerItem.value.ubElementsAlloced]), 0, sizeof(DEALER_SPECIAL_ITEM) * (ubElementsNeeded - pDealerItem.value.ubElementsAlloced));
   }
 
   pDealerItem.value.ubElementsAlloced = ubElementsNeeded;
@@ -1014,7 +1014,7 @@ function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNu
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
   // create item info describing a perfect item
-  SetSpecialItemInfoToDefaults(&SpclItemInfo);
+  SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
 
   // determine the condition of each one, counting up new ones, but adding damaged ones right away
   for (ubCnt = 0; ubCnt < ubNumItems; ubCnt++) {
@@ -1026,14 +1026,14 @@ function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNu
     } else {
       // add a used item with that condition to his inventory
       SpclItemInfo.bItemCondition = ubItemCondition;
-      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, 1);
+      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), 1);
     }
   }
 
   // now add all the perfect ones, in one shot
   if (ubPerfectOnes > 0) {
     SpclItemInfo.bItemCondition = 100;
-    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, ubPerfectOnes);
+    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), ubPerfectOnes);
   }
 }
 
@@ -1174,14 +1174,14 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
   let ubCnt: UINT8;
   let SpclItemInfo: SPECIAL_ITEM_INFO;
 
-  SetSpecialItemInfoFromObject(&SpclItemInfo, pObject);
+  SetSpecialItemInfoFromObject(addressof(SpclItemInfo), pObject);
 
   // split up all the components of an objecttype and add them as seperate items into the dealer's inventory
   switch (Item[pObject.value.usItem].usItemClass) {
     case IC_GUN:
       // add the gun (keeps the object's status and imprintID)
       // if the gun was jammed, this will forget about the jam (i.e. dealer immediately unjams anything he buys)
-      AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, 1);
+      AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, addressof(SpclItemInfo), 1);
 
       // if any GunAmmoItem is specified
       if (pObject.value.usGunAmmoItem != NONE) {
@@ -1195,7 +1195,7 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
         } else // assume it's attached ammo (mortar shells, grenades)
         {
           // add the launchable item (can't be imprinted, or have attachments!)
-          SetSpecialItemInfoToDefaults(&SpclItemInfo);
+          SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
           SpclItemInfo.bItemCondition = pObject.value.bGunAmmoStatus;
 
           // if the gun it was in was jammed, get rid of the negative status now
@@ -1203,7 +1203,7 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
             SpclItemInfo.bItemCondition *= -1;
           }
 
-          AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usGunAmmoItem, &SpclItemInfo, 1);
+          AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usGunAmmoItem, addressof(SpclItemInfo), 1);
         }
       }
       break;
@@ -1219,7 +1219,7 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
       // add each object seperately (multiple objects may have vastly different statuses, keep any imprintID)
       for (ubCnt = 0; ubCnt < pObject.value.ubNumberOfObjects; ubCnt++) {
         SpclItemInfo.bItemCondition = pObject.value.bStatus[ubCnt];
-        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, 1);
+        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usItem, addressof(SpclItemInfo), 1);
       }
       break;
   }
@@ -1231,9 +1231,9 @@ function AddObjectToArmsDealerInventory(ubArmsDealer: UINT8, pObject: Pointer<OB
       // If the attachment is detachable
       if (!(Item[pObject.value.usAttachItem[ubCnt]].fFlags & ITEM_INSEPARABLE)) {
         // add this particular attachment (they can't be imprinted, or themselves have attachments!)
-        SetSpecialItemInfoToDefaults(&SpclItemInfo);
+        SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
         SpclItemInfo.bItemCondition = pObject.value.bAttachStatus[ubCnt];
-        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usAttachItem[ubCnt], &SpclItemInfo, 1);
+        AddItemToArmsDealerInventory(ubArmsDealer, pObject.value.usAttachItem[ubCnt], addressof(SpclItemInfo), 1);
       }
     }
   }
@@ -1261,21 +1261,21 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
 
   if (ubShotsLeft >= ubMagCapacity) {
     // add however many FULL magazines the #shot left represents
-    SetSpecialItemInfoToDefaults(&SpclItemInfo);
-    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (ubShotsLeft / ubMagCapacity));
+    SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
+    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), (ubShotsLeft / ubMagCapacity));
     ubShotsLeft %= ubMagCapacity;
   }
 
   // any shots left now are "strays" - not enough to completely fill a magazine of this type
   if (ubShotsLeft > 0) {
     // handle "stray" ammo - add it to the dealer's stray pile
-    pubStrayAmmo = &(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubStrayAmmo);
+    pubStrayAmmo = addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubStrayAmmo);
     *pubStrayAmmo += ubShotsLeft;
 
     // if dealer has accumulated enough stray ammo to make another full magazine, convert it!
     if (*pubStrayAmmo >= ubMagCapacity) {
-      SetSpecialItemInfoToDefaults(&SpclItemInfo);
-      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (*pubStrayAmmo / ubMagCapacity));
+      SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
+      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), (*pubStrayAmmo / ubMagCapacity));
       *pubStrayAmmo = *pubStrayAmmo % ubMagCapacity;
     }
     // I know, I know, this is getting pretty anal...  But what the hell, it was easy enough to do.  ARM.
@@ -1328,10 +1328,10 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
         // if there aren't any allocated at all right now
         if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced == 0) {
           // allocate new memory for the real buffer
-          fSuccess = AllocMemsetSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], ubElementsToAdd);
+          fSuccess = AllocMemsetSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]), ubElementsToAdd);
         } else {
           // we have some allocated, but they're all full and we need more.  MemRealloc existing amount + # addition elements
-          fSuccess = ResizeSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced + ubElementsToAdd));
+          fSuccess = ResizeSpecialItemArray(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex]), (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced + ubElementsToAdd));
         }
 
         if (!fSuccess) {
@@ -1365,7 +1365,7 @@ function AddSpecialItemToArmsDealerInventoryAtElement(ubArmsDealer: UINT8, usIte
   // Store the special values in that element, and make it active
   gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive = TRUE;
 
-  memcpy(&(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO));
+  memcpy(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO));
 
   // increase the total items
   gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems++;
@@ -1386,12 +1386,12 @@ function RemoveItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UIN
   if (IsItemInfoSpecial(pSpclItemInfo)) {
     // look through the elements, trying to find special items matching the specifications
     for (ubElement = 0; ubElement < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
-      pSpecialItem = &(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]);
+      pSpecialItem = addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]);
 
       // if this element is in use
       if (pSpecialItem.value.fActive) {
         // and its contents are exactly what we're looking for
-        if (memcmp(&(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO)) == 0) {
+        if (memcmp(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].Info), pSpclItemInfo, sizeof(SPECIAL_ITEM_INFO)) == 0) {
           // Got one!  Remove it
           RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer, usItemIndex, ubElement);
 
@@ -1434,9 +1434,9 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
     // if we picked one of the perfect ones...
     if (ubWhichOne < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems) {
       // create item info describing a perfect item
-      SetSpecialItemInfoToDefaults(&SpclItemInfo);
+      SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
       // then that's easy, its condition is 100, so remove one of those
-      RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, 1);
+      RemoveItemFromArmsDealerInventory(ubArmsDealer, usItemIndex, addressof(SpclItemInfo), 1);
     } else {
       // Yikes!  Gotta look through the special items.  We already know it's not any of the perfect ones, subtract those
       ubWhichOne -= gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems;
@@ -1476,7 +1476,7 @@ function RemoveSpecialItemFromArmsDealerInventoryAtElement(ubArmsDealer: UINT8, 
   Assert(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement].fActive == TRUE);
 
   // wipe it out (turning off fActive)
-  memset(&(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]), 0, sizeof(DEALER_SPECIAL_ITEM));
+  memset(addressof(gArmsDealersInventory[ubArmsDealer][usItemIndex].SpecialItem[ubElement]), 0, sizeof(DEALER_SPECIAL_ITEM));
 
   // one fewer item remains...
   gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems--;
@@ -1529,7 +1529,7 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
         }
 
         // create item info describing a perfect item
-        SetSpecialItemInfoToDefaults(&SpclItemInfo);
+        SetSpecialItemInfoToDefaults(addressof(SpclItemInfo));
 
         ubLeftToDrop = gArmsDealersInventory[bArmsDealer][usItemIndex].ubPerfectItems;
 
@@ -1538,30 +1538,30 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
         while (ubLeftToDrop > 0) {
           ubNowDropping = min(ubLeftToDrop, ubHowManyMaxAtATime);
 
-          MakeObjectOutOfDealerItems(usItemIndex, &SpclItemInfo, &TempObject, ubNowDropping);
-          AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
+          MakeObjectOutOfDealerItems(usItemIndex, addressof(SpclItemInfo), addressof(TempObject), ubNowDropping);
+          AddItemToPool(pSoldier.value.sInitialGridNo, addressof(TempObject), INVISIBLE, 0, 0, 0);
 
           ubLeftToDrop -= ubNowDropping;
         }
 
         // remove them all from his inventory
-        RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, &SpclItemInfo, gArmsDealersInventory[bArmsDealer][usItemIndex].ubPerfectItems);
+        RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, addressof(SpclItemInfo), gArmsDealersInventory[bArmsDealer][usItemIndex].ubPerfectItems);
       }
 
       // then drop all the special items
       for (ubElement = 0; ubElement < gArmsDealersInventory[bArmsDealer][usItemIndex].ubElementsAlloced; ubElement++) {
-        pSpecialItem = &(gArmsDealersInventory[bArmsDealer][usItemIndex].SpecialItem[ubElement]);
+        pSpecialItem = addressof(gArmsDealersInventory[bArmsDealer][usItemIndex].SpecialItem[ubElement]);
 
         if (pSpecialItem.value.fActive) {
-          MakeObjectOutOfDealerItems(usItemIndex, &(pSpecialItem.value.Info), &TempObject, 1);
-          AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
-          RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, &(pSpecialItem.value.Info), 1);
+          MakeObjectOutOfDealerItems(usItemIndex, addressof(pSpecialItem.value.Info), addressof(TempObject), 1);
+          AddItemToPool(pSoldier.value.sInitialGridNo, addressof(TempObject), INVISIBLE, 0, 0, 0);
+          RemoveItemFromArmsDealerInventory(bArmsDealer, usItemIndex, addressof(pSpecialItem.value.Info), 1);
         }
       }
 
       // release any memory allocated for special items, he won't need it now...
       if (gArmsDealersInventory[bArmsDealer][usItemIndex].ubElementsAlloced > 0) {
-        FreeSpecialItemArray(&gArmsDealersInventory[bArmsDealer][usItemIndex]);
+        FreeSpecialItemArray(addressof(gArmsDealersInventory[bArmsDealer][usItemIndex]));
       }
     }
   }
@@ -1569,13 +1569,13 @@ function AddDeadArmsDealerItemsToWorld(ubMercID: UINT8): BOOLEAN {
   // if the dealer has money
   if (gArmsDealerStatus[bArmsDealer].uiArmsDealersCash > 0) {
     // Create the object
-    memset(&TempObject, 0, sizeof(OBJECTTYPE));
-    if (!CreateMoney(gArmsDealerStatus[bArmsDealer].uiArmsDealersCash, &TempObject)) {
+    memset(addressof(TempObject), 0, sizeof(OBJECTTYPE));
+    if (!CreateMoney(gArmsDealerStatus[bArmsDealer].uiArmsDealersCash, addressof(TempObject))) {
       return FALSE;
     }
 
     // add the money item to the dealers feet
-    AddItemToPool(pSoldier.value.sInitialGridNo, &TempObject, INVISIBLE, 0, 0, 0);
+    AddItemToPool(pSoldier.value.sInitialGridNo, addressof(TempObject), INVISIBLE, 0, 0, 0);
 
     gArmsDealerStatus[bArmsDealer].uiArmsDealersCash = 0;
   }
@@ -1662,11 +1662,11 @@ function GiveObjectToArmsDealerForRepair(ubArmsDealer: UINT8, pObject: Pointer<O
     }
   }
 
-  SetSpecialItemInfoFromObject(&SpclItemInfo, pObject);
+  SetSpecialItemInfoFromObject(addressof(SpclItemInfo), pObject);
 
   // ok, given all that, now everything is easy!
   // if the gun was jammed, this will forget about the jam (i.e. dealer immediately unjams anything he will be repairing)
-  GiveItemToArmsDealerforRepair(ubArmsDealer, pObject.value.usItem, &SpclItemInfo, ubOwnerProfileId);
+  GiveItemToArmsDealerforRepair(ubArmsDealer, pObject.value.usItem, addressof(SpclItemInfo), ubOwnerProfileId);
 }
 
 // PLEASE: Use GiveObjectToArmsDealerForRepair() instead of this when repairing a item in OBJECTTYPE format.
@@ -2085,12 +2085,12 @@ function LoadIncompleteArmsDealersStatus(hFile: HWFILE, fIncludesElgin: BOOLEAN,
   }
 
   // read in all other dealer's status
-  if (!FileRead(hFile, gArmsDealerStatus, uiDealersSaved * sizeof(ARMS_DEALER_STATUS), &uiNumBytesRead)) {
+  if (!FileRead(hFile, gArmsDealerStatus, uiDealersSaved * sizeof(ARMS_DEALER_STATUS), addressof(uiNumBytesRead))) {
     return FALSE;
   }
 
   // read in all other dealer's inventory
-  if (!FileRead(hFile, gArmsDealersInventory, uiDealersSaved * sizeof(DEALER_ITEM_HEADER) * MAXITEMS, &uiNumBytesRead)) {
+  if (!FileRead(hFile, gArmsDealersInventory, uiDealersSaved * sizeof(DEALER_ITEM_HEADER) * MAXITEMS, addressof(uiNumBytesRead))) {
     return FALSE;
   }
 
@@ -2168,7 +2168,7 @@ function CalculateOvernightRepairDelay(ubArmsDealer: UINT8, uiTimeWhenFreeToStar
   // convert world time into 24hr military time for the day he's gonna start on it
   uiTimeWhenFreeToStartIt = uiTimeWhenFreeToStartIt % NUM_MIN_IN_DAY;
 
-  if (GetArmsDealerShopHours(ubArmsDealer, &uiOpeningTime, &uiClosingTime) == FALSE) {
+  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == FALSE) {
     return 0;
   }
 
@@ -2202,7 +2202,7 @@ function CalculateMinutesClosedBetween(ubArmsDealer: UINT8, uiStartTime: UINT32,
 
   Assert(uiStartTime <= uiEndTime);
 
-  if (GetArmsDealerShopHours(ubArmsDealer, &uiOpeningTime, &uiClosingTime) == FALSE) {
+  if (GetArmsDealerShopHours(ubArmsDealer, addressof(uiOpeningTime), addressof(uiClosingTime)) == FALSE) {
     return 0;
   }
 

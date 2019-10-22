@@ -258,12 +258,12 @@ function EnterOptionsScreen(): BOOLEAN {
   // load the options screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\OptionScreenBase.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiOptionBackGroundImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOptionBackGroundImage)));
 
   // load button, title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_OPTIONHEADER);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiOptionsAddOnImages));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiOptionsAddOnImages)));
 
   // Save game button
   giOptionsButtonImages = LoadButtonImage("INTERFACE\\OptionScreenAddons.sti", -1, 2, -1, 3, -1);
@@ -318,17 +318,17 @@ function EnterOptionsScreen(): BOOLEAN {
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
-      MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
+      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     } else {
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
-      MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
+      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     }
 
-    SetRegionFastHelpText(&gSelectedOptionTextRegion[cnt], zOptionsScreenHelpText[cnt]);
+    SetRegionFastHelpText(addressof(gSelectedOptionTextRegion[cnt]), zOptionsScreenHelpText[cnt]);
     SetButtonFastHelpText(guiOptionsToggles[cnt], zOptionsScreenHelpText[cnt]);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
@@ -353,24 +353,24 @@ function EnterOptionsScreen(): BOOLEAN {
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
-      MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
+      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     } else {
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
-      MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
-      MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
+      MSYS_DefineRegion(addressof(gSelectedOptionTextRegion[cnt]), OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedOptionTextRegion[cnt]));
+      MSYS_SetRegionUserData(addressof(gSelectedOptionTextRegion[cnt]), 0, cnt);
     }
 
-    SetRegionFastHelpText(&gSelectedOptionTextRegion[cnt], zOptionsScreenHelpText[cnt]);
+    SetRegionFastHelpText(addressof(gSelectedOptionTextRegion[cnt]), zOptionsScreenHelpText[cnt]);
     SetButtonFastHelpText(guiOptionsToggles[cnt], zOptionsScreenHelpText[cnt]);
 
     usPosY += OPT_GAP_BETWEEN_TOGGLE_BOXES;
   }
 
   // Create a mouse region so when the user leaves a togglebox text region we can detect it then unselect the region
-  MSYS_DefineRegion(&gSelectedToggleBoxAreaRegion, 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
-  MSYS_AddRegion(&gSelectedToggleBoxAreaRegion);
+  MSYS_DefineRegion(addressof(gSelectedToggleBoxAreaRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, SelectedToggleBoxAreaRegionMovementCallBack, MSYS_NO_CALLBACK);
+  MSYS_AddRegion(addressof(gSelectedToggleBoxAreaRegion));
 
   // Render the scene before adding the slider boxes
   RenderOptionsScreen();
@@ -460,7 +460,7 @@ function ExitOptionsScreen(): void {
 
     RemoveButton(guiOptionsToggles[cnt]);
 
-    MSYS_RemoveRegion(&gSelectedOptionTextRegion[cnt]);
+    MSYS_RemoveRegion(addressof(gSelectedOptionTextRegion[cnt]));
   }
 
   // REmove the slider bars
@@ -468,7 +468,7 @@ function ExitOptionsScreen(): void {
   RemoveSliderBar(guiSpeechSliderID);
   RemoveSliderBar(guiMusicSliderID);
 
-  MSYS_RemoveRegion(&gSelectedToggleBoxAreaRegion);
+  MSYS_RemoveRegion(addressof(gSelectedToggleBoxAreaRegion));
 
   ShutDownSlider();
 
@@ -506,11 +506,11 @@ function RenderOptionsScreen(): void {
   let usWidth: UINT16 = 0;
 
   // Get and display the background image
-  GetVideoObject(&hPixHandle, guiOptionBackGroundImage);
+  GetVideoObject(addressof(hPixHandle), guiOptionBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Get and display the titla image
-  GetVideoObject(&hPixHandle, guiOptionsAddOnImages);
+  GetVideoObject(addressof(hPixHandle), guiOptionsAddOnImages);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 1, 0, 434, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -573,9 +573,9 @@ function GetOptionsScreenUserInput(): void {
   let Event: InputAtom;
   let MousePos: POINT;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -598,7 +598,7 @@ function GetOptionsScreenUserInput(): void {
         break;
     }
 
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
           SetOptionsExitScreen(guiPreviousOptionScreen);
@@ -819,7 +819,7 @@ function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScre
   gfExitOptionsDueToMessageBox = TRUE;
 
   // do message box and return
-  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
 
   // send back return state
   return giOptionsMessageBox != -1;

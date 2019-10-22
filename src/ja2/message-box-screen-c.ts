@@ -48,7 +48,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   let usCursor: UINT16;
   let iId: INT32 = -1;
 
-  GetMousePos(&pOldMousePosition);
+  GetMousePos(addressof(pOldMousePosition));
 
   // this variable can be unset if ur in a non gamescreen and DONT want the msg box to use the save buffer
   gfDontOverRideSaveBuffer = TRUE;
@@ -166,7 +166,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   gMsgBox.bHandled = 0;
 
   // Init message box
-  gMsgBox.iBoxId = PrepareMercPopupBox(iId, ubMercBoxBackground, ubMercBoxBorder, zString, MSGBOX_DEFAULT_WIDTH, 40, 10, 30, &usTextBoxWidth, &usTextBoxHeight);
+  gMsgBox.iBoxId = PrepareMercPopupBox(iId, ubMercBoxBackground, ubMercBoxBorder, zString, MSGBOX_DEFAULT_WIDTH, 40, 10, 30, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
 
   if (gMsgBox.iBoxId == -1) {
     return 0;
@@ -199,13 +199,13 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   vs_desc.usHeight = usTextBoxHeight;
   vs_desc.ubBitDepth = 16;
 
-  if (AddVideoSurface(&vs_desc, &gMsgBox.uiSaveBuffer) == FALSE) {
+  if (AddVideoSurface(addressof(vs_desc), addressof(gMsgBox.uiSaveBuffer)) == FALSE) {
     return -1;
   }
 
   // Save what we have under here...
-  pDestBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
 
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0, 0, gMsgBox.sX, gMsgBox.sY, usTextBoxWidth, usTextBoxHeight);
 
@@ -213,7 +213,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   UnLockVideoSurface(FRAME_BUFFER);
 
   // Create top-level mouse region
-  MSYS_DefineRegion(&(gMsgBox.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, usCursor, MSYS_NO_CALLBACK, MsgBoxClickCallback);
+  MSYS_DefineRegion(addressof(gMsgBox.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, usCursor, MSYS_NO_CALLBACK, MsgBoxClickCallback);
 
   if (gGameSettings.fOptions[TOPTION_DONT_MOVE_MOUSE] == FALSE) {
     if (usFlags & MSG_BOX_FLAG_OK) {
@@ -224,12 +224,12 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   }
 
   // Add region
-  MSYS_AddRegion(&(gMsgBox.BackRegion));
+  MSYS_AddRegion(addressof(gMsgBox.BackRegion));
 
   // findout if cursor locked, if so, store old params and store, restore when done
   if (IsCursorRestricted()) {
     fCursorLockedToArea = TRUE;
-    GetRestrictedClipCursor(&MessageBoxRestrictedCursorRegion);
+    GetRestrictedClipCursor(addressof(MessageBoxRestrictedCursorRegion));
     FreeMouseCursor();
   }
 
@@ -414,7 +414,7 @@ function DoMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UIN
   PauseTime(TRUE);
 
   // Save mouse restriction region...
-  GetRestrictedClipCursor(&gOldCursorLimitRectangle);
+  GetRestrictedClipCursor(addressof(gOldCursorLimitRectangle));
   FreeMouseCursor();
 
   gfNewMessageBox = TRUE;
@@ -599,7 +599,7 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   PauseTime(FALSE);
 
   // Restore mouse restriction region...
-  RestrictMouseCursor(&gOldCursorLimitRectangle);
+  RestrictMouseCursor(addressof(gOldCursorLimitRectangle));
 
   gfInMsgBox = FALSE;
 
@@ -611,8 +611,8 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   // if ur in a non gamescreen and DONT want the msg box to use the save buffer, unset gfDontOverRideSaveBuffer in ur callback
   if (((gMsgBox.uiExitScreen != GAME_SCREEN) || (fRestoreBackgroundForMessageBox == TRUE)) && gfDontOverRideSaveBuffer) {
     // restore what we have under here...
-    pSrcBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, &uiSrcPitchBYTES);
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pSrcBuf = LockVideoSurface(gMsgBox.uiSaveBuffer, addressof(uiSrcPitchBYTES));
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, gMsgBox.sX, gMsgBox.sY, 0, 0, gMsgBox.usWidth, gMsgBox.usHeight);
 
@@ -626,18 +626,18 @@ function ExitMsgBox(ubExitCode: INT8): UINT32 {
   gfDontOverRideSaveBuffer = TRUE;
 
   if (fCursorLockedToArea == TRUE) {
-    GetMousePos(&pPosition);
+    GetMousePos(addressof(pPosition));
 
     if ((pPosition.iX > MessageBoxRestrictedCursorRegion.iRight) || (pPosition.iX > MessageBoxRestrictedCursorRegion.iLeft) && (pPosition.iY < MessageBoxRestrictedCursorRegion.iTop) && (pPosition.iY > MessageBoxRestrictedCursorRegion.iBottom)) {
       SimulateMouseMovement(pOldMousePosition.iX, pOldMousePosition.iY);
     }
 
     fCursorLockedToArea = FALSE;
-    RestrictMouseCursor(&MessageBoxRestrictedCursorRegion);
+    RestrictMouseCursor(addressof(MessageBoxRestrictedCursorRegion));
   }
 
   // Remove region
-  MSYS_RemoveRegion(&(gMsgBox.BackRegion));
+  MSYS_RemoveRegion(addressof(gMsgBox.BackRegion));
 
   // Remove save buffer!
   DeleteVideoSurfaceFromIndex(gMsgBox.uiSaveBuffer);
@@ -781,7 +781,7 @@ function MessageBoxScreenHandle(): UINT32 {
 
   // carter, need key shortcuts for clearing up message boxes
   // Check for esc
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     if (InputEvent.usEvent == KEY_UP) {
       if ((InputEvent.usParam == ESC) || (InputEvent.usParam == 'n')) {
         if (gMsgBox.usFlags & MSG_BOX_FLAG_YESNO) {
@@ -856,19 +856,19 @@ function MessageBoxScreenShutdown(): UINT32 {
 // a basic box that don't care what screen we came from
 function DoScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y ];
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
 // a basic box that don't care what screen we came from
 function DoUpperScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, 0, 640, INV_INTERFACE_START_Y / 2 ];
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
 // a basic box that don't care what screen we came from
 function DoLowerScreenIndependantMessageBox(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK): void {
   let CenteringRect: SGPRect = [ 0, INV_INTERFACE_START_Y / 2, 640, INV_INTERFACE_START_Y ];
-  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, &CenteringRect);
+  DoScreenIndependantMessageBoxWithRect(zString, usFlags, ReturnCallback, addressof(CenteringRect));
 }
 
 function DoScreenIndependantMessageBoxWithRect(zString: Pointer<INT16>, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): void {

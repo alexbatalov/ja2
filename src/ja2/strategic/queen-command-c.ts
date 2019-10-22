@@ -34,7 +34,7 @@ function NumHostilesInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
     let pGroup: Pointer<GROUP>;
 
     // Count stationary hostiles
-    pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
     ubNumHostiles = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites + pSector.value.ubNumCreatures);
 
     // Count mobile enemies
@@ -68,7 +68,7 @@ function NumEnemiesInAnySector(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
     let pGroup: Pointer<GROUP>;
 
     // Count stationary enemies
-    pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
     ubNumEnemies = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
 
     // Count mobile enemies
@@ -90,7 +90,7 @@ function NumEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   let ubNumTroops: UINT8;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
-  pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
   ubNumTroops = (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
 
   pGroup = gpGroupList;
@@ -107,7 +107,7 @@ function NumStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
   let pSector: Pointer<SECTORINFO>;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
-  pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
 
   if (pSector.value.ubGarrisonID == NO_GARRISON) {
     // If no garrison, no stationary.
@@ -139,7 +139,7 @@ function NumMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16): UINT8 {
     pGroup = pGroup.value.next;
   }
 
-  pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
   if (pSector.value.ubGarrisonID == ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
     ubNumTroops += (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites);
@@ -166,7 +166,7 @@ function GetNumberOfMobileEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubN
     pGroup = pGroup.value.next;
   }
 
-  pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
   if (pSector.value.ubGarrisonID == ROADBLOCK) {
     // consider these troops as mobile troops even though they are in a garrison
     *pubNumAdmins += pSector.value.ubNumAdmins;
@@ -179,7 +179,7 @@ function GetNumberOfStationaryEnemiesInSector(sSectorX: INT16, sSectorY: INT16, 
   let pSector: Pointer<SECTORINFO>;
   Assert(sSectorX >= 1 && sSectorX <= 16);
   Assert(sSectorY >= 1 && sSectorY <= 16);
-  pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
 
   // grab the number of each type in the stationary sector
   *pubNumAdmins = pSector.value.ubNumAdmins;
@@ -194,7 +194,7 @@ function GetNumberOfEnemiesInSector(sSectorX: INT16, sSectorY: INT16, pubNumAdmi
 
   GetNumberOfStationaryEnemiesInSector(sSectorX, sSectorY, pubNumAdmins, pubNumTroops, pubNumElites);
 
-  GetNumberOfMobileEnemiesInSector(sSectorX, sSectorY, &ubNumAdmins, &ubNumTroops, &ubNumElites);
+  GetNumberOfMobileEnemiesInSector(sSectorX, sSectorY, addressof(ubNumAdmins), addressof(ubNumTroops), addressof(ubNumElites));
 
   *pubNumAdmins += ubNumAdmins;
   *pubNumTroops += ubNumTroops;
@@ -216,7 +216,7 @@ function EndTacticalBattleForEnemy(): void {
     pSector.value.ubElitesInBattle = 0;
   } else if (!gbWorldSectorZ) {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
     // grab the number of each type in the stationary sector
     pSector.value.ubAdminsInBattle = 0;
     pSector.value.ubTroopsInBattle = 0;
@@ -264,7 +264,7 @@ function NumFreeEnemySlots(): UINT8 {
   let pSoldier: Pointer<SOLDIERTYPE>;
   // Count the number of free enemy slots.  It is possible to have multiple groups exceed the maximum.
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
-    pSoldier = &Menptr[i];
+    pSoldier = addressof(Menptr[i]);
     if (!pSoldier.value.bActive)
       ubNumFreeSlots++;
   }
@@ -316,7 +316,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
     }
   }
 
-  pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
   if (pSector.value.uiFlags & SF_USE_MAP_SETTINGS) {
     // count the number of enemy placements in a map and use those
     let curr: Pointer<SOLDIERINITNODE>;
@@ -448,7 +448,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
   pGroup = gpGroupList;
   while (pGroup && sNumSlots) {
     i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID;
-    pSoldier = &Menptr[i];
+    pSoldier = addressof(Menptr[i]);
     if (!pGroup.value.fPlayer && !pGroup.value.fVehicle && pGroup.value.ubSectorX == gWorldSectorX && pGroup.value.ubSectorY == gWorldSectorY && !gbWorldSectorZ) {
       num = pGroup.value.ubGroupSize;
       ubNumAdmins = pGroup.value.pEnemyGroup.value.ubAdminsInBattle;
@@ -456,7 +456,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
       ubNumElites = pGroup.value.pEnemyGroup.value.ubElitesInBattle;
       while (num && sNumSlots && i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID) {
         while (!pSoldier.value.bActive || pSoldier.value.ubGroupID) {
-          pSoldier = &Menptr[++i];
+          pSoldier = addressof(Menptr[++i]);
           if (i > gTacticalStatus.Team[ENEMY_TEAM].bLastID) {
             AssertMsg(0, "Failed to assign battle counters for enemies properly. Please send save. KM:0.");
           }
@@ -487,7 +487,7 @@ function PrepareEnemyForSectorBattle(): BOOLEAN {
             }
             break;
         }
-        pSoldier = &Menptr[++i];
+        pSoldier = addressof(Menptr[++i]);
       }
     }
     pGroup = pGroup.value.next;
@@ -542,7 +542,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
         break;
       }
       if (!pSoldier.value.bSectorZ) {
-        pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
+        pSector = addressof(SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)]);
         if (pSector.value.ubNumElites) {
           pSector.value.ubNumElites--;
         }
@@ -615,9 +615,9 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
       let pSector: Pointer<SECTORINFO>;
 
       if (!IsAutoResolveActive()) {
-        pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
+        pSector = addressof(SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)]);
       } else {
-        pSector = &SectorInfo[GetAutoResolveSectorID()];
+        pSector = addressof(SectorInfo[GetAutoResolveSectorID()]);
       }
 
       switch (pSoldier.value.ubSoldierClass) {
@@ -722,7 +722,7 @@ function ProcessQueenCmdImplicationsOfDeath(pSoldier: Pointer<SOLDIERTYPE>): voi
     }
   }
   if (!pSoldier.value.bSectorZ) {
-    pSector = &SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(pSoldier.value.sSectorX, pSoldier.value.sSectorY)]);
     iNumEnemiesInSector = NumEnemiesInSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY);
     if (iNumEnemiesInSector) {
       if (pSector.value.bLastKnownEnemies >= 0) {
@@ -898,7 +898,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
   if (fMagicallyAppeared) {
     // update the strategic counters
     if (!gbWorldSectorZ) {
-      let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+      let pSector: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
       pSector.value.ubNumAdmins += ubNumAdmins;
       pSector.value.ubAdminsInBattle += ubNumAdmins;
       pSector.value.ubNumTroops += ubNumTroops;
@@ -922,7 +922,7 @@ function AddEnemiesToBattle(pGroup: Pointer<GROUP>, ubStrategicInsertionCode: UI
 
   ubTotalSoldiers = ubNumAdmins + ubNumTroops + ubNumElites;
 
-  ChooseMapEdgepoints(&MapEdgepointInfo, ubStrategicInsertionCode, (ubNumAdmins + ubNumElites + ubNumTroops));
+  ChooseMapEdgepoints(addressof(MapEdgepointInfo), ubStrategicInsertionCode, (ubNumAdmins + ubNumElites + ubNumTroops));
   ubCurrSlot = 0;
   while (ubTotalSoldiers) {
     if (ubNumElites && Random(ubTotalSoldiers) < ubNumElites) {
@@ -998,7 +998,7 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
   }
 
   // Write how many nodes there are
-  FileWrite(hFile, &uiNumOfRecords, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumOfRecords), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -1007,7 +1007,7 @@ function SaveUnderGroundSectorInfoToSaveGame(hFile: HWFILE): BOOLEAN {
 
   // Go through each node and save it.
   while (TempNode) {
-    FileWrite(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), &uiNumBytesWritten);
+    FileWrite(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UNDERGROUND_SECTORINFO)) {
       return FALSE;
     }
@@ -1029,7 +1029,7 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
   TrashUndergroundSectorInfo();
 
   // Read in the number of nodes stored
-  FileRead(hFile, &uiNumOfRecords, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumOfRecords), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
@@ -1041,7 +1041,7 @@ function LoadUnderGroundSectorInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
       return FALSE;
 
     // read in the new node
-    FileRead(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), &uiNumBytesRead);
+    FileRead(hFile, TempNode, sizeof(UNDERGROUND_SECTORINFO), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UNDERGROUND_SECTORINFO)) {
       return FALSE;
     }
@@ -1115,7 +1115,7 @@ function EndCaptureSequence(): void {
         MeanwhileDef.usTriggerEvent = 0;
         MeanwhileDef.ubMeanwhileID = INTERROGATION;
 
-        ScheduleMeanwhileEvent(&MeanwhileDef, 10);
+        ScheduleMeanwhileEvent(addressof(MeanwhileDef), 10);
       }
     }
     // CJC Dec 1 2002: fixing multiple captures
@@ -1164,7 +1164,7 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   // If this is an EPC , just kill them...
   if (AM_AN_EPC(pSoldier)) {
     pSoldier.value.bLife = 0;
-    HandleSoldierDeath(pSoldier, &fMadeCorpse);
+    HandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
     return;
   }
 
@@ -1220,10 +1220,10 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
         WorldItem.bVisible = FALSE;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
-        memcpy(&(WorldItem.o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
+        memcpy(addressof(WorldItem.o), addressof(pSoldier.value.inv[i]), sizeof(OBJECTTYPE));
 
-        AddWorldItemsToUnLoadedSector(13, 9, 0, sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, &WorldItem, FALSE);
-        DeleteObj(&(pSoldier.value.inv[i]));
+        AddWorldItemsToUnLoadedSector(13, 9, 0, sAlmaCaptureItemsGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), FALSE);
+        DeleteObj(addressof(pSoldier.value.inv[i]));
       }
     }
 
@@ -1250,10 +1250,10 @@ function EnemyCapturesPlayerSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
         WorldItem.bVisible = FALSE;
         WorldItem.bRenderZHeightAboveLevel = 0;
 
-        memcpy(&(WorldItem.o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
+        memcpy(addressof(WorldItem.o), addressof(pSoldier.value.inv[i]), sizeof(OBJECTTYPE));
 
-        AddWorldItemsToUnLoadedSector(7, 14, 0, sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, &WorldItem, FALSE);
-        DeleteObj(&(pSoldier.value.inv[i]));
+        AddWorldItemsToUnLoadedSector(7, 14, 0, sInterrogationItemGridNo[gStrategicStatus.ubNumCapturedForRescue], 1, addressof(WorldItem), FALSE);
+        DeleteObj(addressof(pSoldier.value.inv[i]));
       }
     }
 
@@ -1298,7 +1298,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   for (i = gTacticalStatus.Team[ENEMY_TEAM].bFirstID; i <= gTacticalStatus.Team[ENEMY_TEAM].bLastID; i++) {
     if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
       MercPtrs[i].value.bLife = 0;
-      HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
+      HandleSoldierDeath(MercPtrs[i], addressof(fMadeCorpse));
       bKilledEnemies++;
     }
   }
@@ -1306,7 +1306,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   for (i = gTacticalStatus.Team[CREATURE_TEAM].bFirstID; i <= gTacticalStatus.Team[CREATURE_TEAM].bLastID; i++) {
     if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
       MercPtrs[i].value.bLife = 0;
-      HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
+      HandleSoldierDeath(MercPtrs[i], addressof(fMadeCorpse));
       bKilledCreatures++;
     }
   }
@@ -1314,7 +1314,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   for (i = gTacticalStatus.Team[MILITIA_TEAM].bFirstID; i <= gTacticalStatus.Team[MILITIA_TEAM].bLastID; i++) {
     if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
       MercPtrs[i].value.bLife = 0;
-      HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
+      HandleSoldierDeath(MercPtrs[i], addressof(fMadeCorpse));
       bKilledRebels++;
     }
   }
@@ -1322,7 +1322,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
   for (i = gTacticalStatus.Team[CIV_TEAM].bFirstID; i <= gTacticalStatus.Team[CIV_TEAM].bLastID; i++) {
     if (MercPtrs[i].value.bActive && MercPtrs[i].value.bLife < OKLIFE && MercPtrs[i].value.bLife) {
       MercPtrs[i].value.bLife = 0;
-      HandleSoldierDeath(MercPtrs[i], &fMadeCorpse);
+      HandleSoldierDeath(MercPtrs[i], addressof(fMadeCorpse));
       bKilledCivilians++;
     }
   }
@@ -1339,7 +1339,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
 
   if (!gbWorldSectorZ) {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
     pSector.value.ubAdminsInBattle = 0;
     pSector.value.ubTroopsInBattle = 0;
     pSector.value.ubElitesInBattle = 0;
@@ -1359,7 +1359,7 @@ function HandleEnemyStatusInCurrentMapBeforeLoadingNewMap(): void {
 
 function PlayerSectorDefended(ubSectorID: UINT8): BOOLEAN {
   let pSector: Pointer<SECTORINFO>;
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA]) {
     // militia in sector
     return TRUE;

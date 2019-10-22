@@ -133,7 +133,7 @@ function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   swprintf(VideoOverlayDesc.pzText, pStringSt.value.pString16);
   VideoOverlayDesc.BltCallback = BlitString;
-  pStringSt.value.iVideoOverlay = RegisterVideoOverlay((VOVERLAY_DIRTYBYTEXT), &VideoOverlayDesc);
+  pStringSt.value.iVideoOverlay = RegisterVideoOverlay((VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 
   if (pStringSt.value.iVideoOverlay == -1) {
     return FALSE;
@@ -155,7 +155,7 @@ function RemoveStringVideoOverlay(pStringSt: ScrollStringStPtr): void {
 function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16, usY: UINT16): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   // Donot update if not allocated!
   if (pStringSt.value.iVideoOverlay != -1) {
@@ -164,7 +164,7 @@ function SetStringVideoOverlayPosition(pStringSt: ScrollStringStPtr, usX: UINT16
     VideoOverlayDesc.sTop = usY;
     VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
-    UpdateVideoOverlay(&VideoOverlayDesc, pStringSt.value.iVideoOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), pStringSt.value.iVideoOverlay, FALSE);
   }
 }
 
@@ -179,7 +179,7 @@ function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
     return;
   }
 
-  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
   SetFont(pBlitter.value.uiFontID);
 
   SetFontBackground(pBlitter.value.ubFontBack);
@@ -192,12 +192,12 @@ function BlitString(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 function EnableStringVideoOverlay(pStringSt: ScrollStringStPtr, fEnable: BOOLEAN): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   if (pStringSt.value.iVideoOverlay != -1) {
     VideoOverlayDesc.fDisabled = !fEnable;
     VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
-    UpdateVideoOverlay(&VideoOverlayDesc, pStringSt.value.iVideoOverlay, FALSE);
+    UpdateVideoOverlay(addressof(VideoOverlayDesc), pStringSt.value.iVideoOverlay, FALSE);
   }
 }
 
@@ -357,7 +357,7 @@ function HideMessagesDuringNPCDialogue(): void {
 
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   VideoOverlayDesc.fDisabled = TRUE;
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
@@ -368,7 +368,7 @@ function HideMessagesDuringNPCDialogue(): void {
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
       RestoreExternBackgroundRectGivenID(gVideoOverlays[gpDisplayList[cnt].value.iVideoOverlay].uiBackground);
-      UpdateVideoOverlay(&VideoOverlayDesc, gpDisplayList[cnt].value.iVideoOverlay, FALSE);
+      UpdateVideoOverlay(addressof(VideoOverlayDesc), gpDisplayList[cnt].value.iVideoOverlay, FALSE);
     }
   }
 
@@ -379,7 +379,7 @@ function UnHideMessagesDuringNPCDialogue(): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let cnt: INT32 = 0;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   VideoOverlayDesc.fDisabled = FALSE;
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
@@ -388,7 +388,7 @@ function UnHideMessagesDuringNPCDialogue(): void {
   for (cnt = 0; cnt < MAX_LINE_COUNT; cnt++) {
     if (gpDisplayList[cnt] != NULL) {
       gpDisplayList[cnt].value.uiTimeOfLastUpdate += GetJA2Clock() - uiStartOfPauseTime;
-      UpdateVideoOverlay(&VideoOverlayDesc, gpDisplayList[cnt].value.iVideoOverlay, FALSE);
+      UpdateVideoOverlay(addressof(VideoOverlayDesc), gpDisplayList[cnt].value.iVideoOverlay, FALSE);
     }
   }
 
@@ -556,7 +556,7 @@ function TacticalScreenMsg(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, 
     usColor = INTERFACE_COLOR;
   }
 
-  pStringWrapperHead = LineWrap(uiFont, LINE_WIDTH, &usLineWidthIfWordIsWiderThenWidth, DestString);
+  pStringWrapperHead = LineWrap(uiFont, LINE_WIDTH, addressof(usLineWidthIfWordIsWiderThenWidth), DestString);
   pStringWrapper = pStringWrapperHead;
   if (!pStringWrapper)
     return;
@@ -718,7 +718,7 @@ function MapScreenMessage(usColor: UINT16, ubPriority: UINT8, pStringA: STR16, .
     usColor = INTERFACE_COLOR;
   }
 
-  pStringWrapperHead = LineWrap(uiFont, MAP_LINE_WIDTH, &usLineWidthIfWordIsWiderThenWidth, DestString);
+  pStringWrapperHead = LineWrap(uiFont, MAP_LINE_WIDTH, addressof(usLineWidthIfWordIsWiderThenWidth), DestString);
   pStringWrapper = pStringWrapperHead;
   if (!pStringWrapper)
     return;
@@ -870,18 +870,18 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let StringSave: StringSaveStruct;
 
   //	write to the begining of the message list
-  FileWrite(hFile, &gubEndOfMapScreenMessageList, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubEndOfMapScreenMessageList), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     return FALSE;
   }
 
-  FileWrite(hFile, &gubStartOfMapScreenMessageList, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubStartOfMapScreenMessageList), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     return FALSE;
   }
 
   //	write the current message string
-  FileWrite(hFile, &gubCurrentMapMessageString, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubCurrentMapMessageString), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     return FALSE;
   }
@@ -894,7 +894,7 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
       uiSizeOfString = 0;
 
     //	write to the file the size of the message
-    FileWrite(hFile, &uiSizeOfString, sizeof(UINT32), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(uiSizeOfString), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
       return FALSE;
     }
@@ -902,7 +902,7 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
     // if there is a message
     if (uiSizeOfString) {
       //	write the message to the file
-      FileWrite(hFile, gMapScreenMessageList[uiCount].value.pString16, uiSizeOfString, &uiNumBytesWritten);
+      FileWrite(hFile, gMapScreenMessageList[uiCount].value.pString16, uiSizeOfString, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != uiSizeOfString) {
         return FALSE;
       }
@@ -915,7 +915,7 @@ function SaveMapScreenMessagesToSaveGameFile(hFile: HWFILE): BOOLEAN {
       StringSave.uiFlags = gMapScreenMessageList[uiCount].value.uiFlags;
 
       // Write the rest of the message information to the saved game file
-      FileWrite(hFile, &StringSave, sizeof(StringSaveStruct), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(StringSave), sizeof(StringSaveStruct), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(StringSaveStruct)) {
         return FALSE;
       }
@@ -940,19 +940,19 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   gubCurrentMapMessageString = 0;
 
   //	Read to the begining of the message list
-  FileRead(hFile, &gubEndOfMapScreenMessageList, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubEndOfMapScreenMessageList), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     return FALSE;
   }
 
   //	Read the current message string
-  FileRead(hFile, &gubStartOfMapScreenMessageList, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubStartOfMapScreenMessageList), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     return FALSE;
   }
 
   //	Read the current message string
-  FileRead(hFile, &gubCurrentMapMessageString, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubCurrentMapMessageString), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     return FALSE;
   }
@@ -960,7 +960,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   // Loopthrough all the messages
   for (uiCount = 0; uiCount < 256; uiCount++) {
     //	Read to the file the size of the message
-    FileRead(hFile, &uiSizeOfString, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(uiSizeOfString), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       return FALSE;
     }
@@ -968,7 +968,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
     // if there is a message
     if (uiSizeOfString) {
       //	Read the message from the file
-      FileRead(hFile, SavedString, uiSizeOfString, &uiNumBytesRead);
+      FileRead(hFile, SavedString, uiSizeOfString, addressof(uiNumBytesRead));
       if (uiNumBytesRead != uiSizeOfString) {
         return FALSE;
       }
@@ -1003,7 +1003,7 @@ function LoadMapScreenMessagesFromSaveGameFile(hFile: HWFILE): BOOLEAN {
       wcscpy(gMapScreenMessageList[uiCount].value.pString16, SavedString);
 
       // Read the rest of the message information to the saved game file
-      FileRead(hFile, &StringSave, sizeof(StringSaveStruct), &uiNumBytesRead);
+      FileRead(hFile, addressof(StringSave), sizeof(StringSaveStruct), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(StringSaveStruct)) {
         return FALSE;
       }

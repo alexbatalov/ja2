@@ -202,7 +202,7 @@ function DrawUICursor(): BOOLEAN {
 
   // OK, WE OVERRIDE HERE CURSOR DRAWING FOR THINGS LIKE
   if (gpItemPointer != NULL) {
-    MSYS_ChangeRegionCursor(&gViewportRegion, VIDEO_NO_CURSOR);
+    MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
 
     // Check if we are in the viewport region...
     if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
@@ -213,11 +213,11 @@ function DrawUICursor(): BOOLEAN {
     return TRUE;
   }
 
-  if (GetMouseMapPos(&usMapPos)) {
+  if (GetMouseMapPos(addressof(usMapPos))) {
     gusCurMousePos = usMapPos;
 
     if (guiCurUICursor == NO_UICURSOR) {
-      MSYS_ChangeRegionCursor(&gViewportRegion, VIDEO_NO_CURSOR);
+      MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
       return TRUE;
     }
 
@@ -299,7 +299,7 @@ function DrawUICursor(): BOOLEAN {
     // If snapping - remove from main viewport
     if (gUICursors[guiCurUICursor].uiFlags & UICURSOR_SNAPPING) {
       // Hide mouse region cursor
-      MSYS_ChangeRegionCursor(&gViewportRegion, VIDEO_NO_CURSOR);
+      MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
 
       // Set Snapping Cursor
       DrawSnappingCursor();
@@ -344,10 +344,10 @@ function DrawUICursor(): BOOLEAN {
       fHideCursor = FALSE;
 
       if (!fHideCursor) {
-        MSYS_ChangeRegionCursor(&gViewportRegion, gUICursors[guiCurUICursor].usFreeCursorName);
+        MSYS_ChangeRegionCursor(addressof(gViewportRegion), gUICursors[guiCurUICursor].usFreeCursorName);
       } else {
         // Hide
-        MSYS_ChangeRegionCursor(&gViewportRegion, VIDEO_NO_CURSOR);
+        MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
       }
     }
 
@@ -411,7 +411,7 @@ function DrawSnappingCursor(): void {
   /* static */ let fShowAP: BOOLEAN = TRUE;
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
   }
 
   // If we are in draw item mode, do nothing here but call the fuctiuon
@@ -429,9 +429,9 @@ function DrawSnappingCursor(): void {
     case ALL_MOVE_RUN_UICURSOR:
     case CONFIRM_MOVE_RUN_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, GOODRUN1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODRUN1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
       } else {
-        AddUIElem(gusCurMousePos, GOODRUN1, 0, 0, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODRUN1, 0, 0, addressof(pNewUIElem));
       }
       pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -440,9 +440,9 @@ function DrawSnappingCursor(): void {
     case ALL_MOVE_WALK_UICURSOR:
     case CONFIRM_MOVE_WALK_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, GOODWALK1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODWALK1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
       } else {
-        AddUIElem(gusCurMousePos, GOODWALK1, 0, 0, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODWALK1, 0, 0, addressof(pNewUIElem));
       }
       pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -451,9 +451,9 @@ function DrawSnappingCursor(): void {
     case ALL_MOVE_SWAT_UICURSOR:
     case CONFIRM_MOVE_SWAT_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, GOODSWAT1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODSWAT1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
       } else {
-        AddUIElem(gusCurMousePos, GOODSWAT1, 0, 0, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODSWAT1, 0, 0, addressof(pNewUIElem));
       }
       pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -462,9 +462,9 @@ function DrawSnappingCursor(): void {
     case ALL_MOVE_PRONE_UICURSOR:
     case CONFIRM_MOVE_PRONE_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, GOODPRONE1, 0, -WALL_HEIGHT - 8 - 6, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODPRONE1, 0, -WALL_HEIGHT - 8 - 6, addressof(pNewUIElem));
       } else {
-        AddUIElem(gusCurMousePos, GOODPRONE1, 0, -6, &pNewUIElem);
+        AddUIElem(gusCurMousePos, GOODPRONE1, 0, -6, addressof(pNewUIElem));
       }
       pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -473,9 +473,9 @@ function DrawSnappingCursor(): void {
     case ALL_MOVE_VEHICLE_UICURSOR:
     case CONFIRM_MOVE_VEHICLE_UICURSOR:
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, VEHICLEMOVE1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
+        AddUIElem(gusCurMousePos, VEHICLEMOVE1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
       } else {
-        AddUIElem(gusCurMousePos, VEHICLEMOVE1, 0, 0, &pNewUIElem);
+        AddUIElem(gusCurMousePos, VEHICLEMOVE1, 0, 0, addressof(pNewUIElem));
       }
       pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
       pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -487,7 +487,7 @@ function DrawSnappingCursor(): void {
     case CANNOT_MOVE_UICURSOR:
 
       if (gsInterfaceLevel > 0) {
-        AddUIElem(gusCurMousePos, BADMARKER1, 0, -WALL_HEIGHT - 8, &pNewUIElem);
+        AddUIElem(gusCurMousePos, BADMARKER1, 0, -WALL_HEIGHT - 8, addressof(pNewUIElem));
         pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
         pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
 
@@ -527,9 +527,9 @@ function DrawSnappingCursor(): void {
     }
 
     if (gsInterfaceLevel > 0) {
-      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL - WALL_HEIGHT - 10, &pNewUIElem);
+      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL - WALL_HEIGHT - 10, addressof(pNewUIElem));
     } else {
-      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL, &pNewUIElem);
+      AddUIElem(gusCurMousePos, DISPLAY_AP_INDEX, SNAPCURSOR_AP_X_STARTVAL, SNAPCURSOR_AP_Y_STARTVAL, addressof(pNewUIElem));
     }
     pNewUIElem.value.uiFlags |= LEVELNODE_DISPLAY_AP;
     pNewUIElem.value.uiAPCost = gsCurrentActionPoints;
@@ -568,7 +568,7 @@ function HandleLooseCursorDraw(): void {
   }
 
   if (gfLooseCursorOn) {
-    AddUIElem(gsLooseCursorGridNo, FIRSTPOINTERS4, 0, 0, &pNewUIElem);
+    AddUIElem(gsLooseCursorGridNo, FIRSTPOINTERS4, 0, 0, addressof(pNewUIElem));
     pNewUIElem.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
     pNewUIElem.value.ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
   }

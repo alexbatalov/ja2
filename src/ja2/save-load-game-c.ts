@@ -267,7 +267,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
     return (FALSE); // ddd
 
   // clear out the save game header
-  memset(&SaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
+  memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
 
   if (!GamePaused()) {
     PauseBeforeSaveGame();
@@ -275,7 +275,7 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   }
 
   // Place a message on the screen telling the user that we are saving the game
-  iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, zSaveLoadText[SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, &usActualWidth, &usActualHeight);
+  iSaveLoadGameMessageBoxID = PrepareMercPopupBox(iSaveLoadGameMessageBoxID, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, zSaveLoadText[SLG_SAVING_GAME_MESSAGE], 300, 0, 0, 0, addressof(usActualWidth), addressof(usActualHeight));
   usPosX = (640 - usActualWidth) / 2;
 
   RenderMercPopUpBoxFromIndex(iSaveLoadGameMessageBoxID, usPosX, 160, FRAME_BUFFER);
@@ -376,10 +376,10 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   SaveGameHeader.ubMin = guiMin;
 
   // copy over the initial game options
-  memcpy(&SaveGameHeader.sInitialGameOptions, &gGameOptions, sizeof(GAME_OPTIONS));
+  memcpy(addressof(SaveGameHeader.sInitialGameOptions), addressof(gGameOptions), sizeof(GAME_OPTIONS));
 
   // Get the sector value to save.
-  GetBestPossibleSectorXYZValues(&SaveGameHeader.sSectorX, &SaveGameHeader.sSectorY, &SaveGameHeader.bSectorZ);
+  GetBestPossibleSectorXYZValues(addressof(SaveGameHeader.sSectorX), addressof(SaveGameHeader.sSectorY), addressof(SaveGameHeader.bSectorZ));
 
   /*
 
@@ -456,12 +456,12 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
   // Save the Save Game header file
   //
 
-  FileWrite(hFile, &SaveGameHeader, sizeof(SAVED_GAME_HEADER), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(SaveGameHeader), sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(SAVED_GAME_HEADER)) {
     goto FAILED_TO_SAVE;
   }
 
-  guiJA2EncryptionSet = CalcJA2EncryptionSet(&SaveGameHeader);
+  guiJA2EncryptionSet = CalcJA2EncryptionSet(addressof(SaveGameHeader));
 
   //
   // Save the gTactical Status array, plus the curent secotr location
@@ -811,13 +811,13 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   }
 
   // Load the Save Game header file
-  FileRead(hFile, &SaveGameHeader, sizeof(SAVED_GAME_HEADER), &uiNumBytesRead);
+  FileRead(hFile, addressof(SaveGameHeader), sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(SAVED_GAME_HEADER)) {
     FileClose(hFile);
     return FALSE;
   }
 
-  guiJA2EncryptionSet = CalcJA2EncryptionSet(&SaveGameHeader);
+  guiJA2EncryptionSet = CalcJA2EncryptionSet(addressof(SaveGameHeader));
 
   guiBrokenSaveGameVersion = SaveGameHeader.uiSavedGameVersion;
 
@@ -1393,7 +1393,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
       return FALSE;
     }
   } else {
-    memcpy(&gMeanwhileDef[gCurrentMeanwhileDef.ubMeanwhileID], &gCurrentMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+    memcpy(addressof(gMeanwhileDef[gCurrentMeanwhileDef.ubMeanwhileID]), addressof(gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
   }
 
   uiRelEndPerc += 1;
@@ -1619,7 +1619,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
       }
 
       // add the pilot at a random location!
-      pProfile = &(gMercProfiles[SKYRIDER]);
+      pProfile = addressof(gMercProfiles[SKYRIDER]);
       switch (Random(4)) {
         case 0:
           pProfile.value.sSectorX = 15;
@@ -1716,11 +1716,11 @@ function SaveMercProfiles(hFile: HWFILE): BOOLEAN {
 
   // Lopp through all the profiles to save
   for (cnt = 0; cnt < NUM_PROFILES; cnt++) {
-    gMercProfiles[cnt].uiProfileChecksum = ProfileChecksum(&(gMercProfiles[cnt]));
+    gMercProfiles[cnt].uiProfileChecksum = ProfileChecksum(addressof(gMercProfiles[cnt]));
     if (guiSavedGameVersion < 87) {
-      JA2EncryptedFileWrite(hFile, &gMercProfiles[cnt], uiSaveSize, &uiNumBytesWritten);
+      JA2EncryptedFileWrite(hFile, addressof(gMercProfiles[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
     } else {
-      NewJA2EncryptedFileWrite(hFile, &gMercProfiles[cnt], uiSaveSize, &uiNumBytesWritten);
+      NewJA2EncryptedFileWrite(hFile, addressof(gMercProfiles[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
     }
     if (uiNumBytesWritten != uiSaveSize) {
       return FALSE;
@@ -1737,14 +1737,14 @@ function LoadSavedMercProfiles(hFile: HWFILE): BOOLEAN {
   // Lopp through all the profiles to Load
   for (cnt = 0; cnt < NUM_PROFILES; cnt++) {
     if (guiSaveGameVersion < 87) {
-      JA2EncryptedFileRead(hFile, &gMercProfiles[cnt], sizeof(MERCPROFILESTRUCT), &uiNumBytesRead);
+      JA2EncryptedFileRead(hFile, addressof(gMercProfiles[cnt]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead));
     } else {
-      NewJA2EncryptedFileRead(hFile, &gMercProfiles[cnt], sizeof(MERCPROFILESTRUCT), &uiNumBytesRead);
+      NewJA2EncryptedFileRead(hFile, addressof(gMercProfiles[cnt]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead));
     }
     if (uiNumBytesRead != sizeof(MERCPROFILESTRUCT)) {
       return FALSE;
     }
-    if (gMercProfiles[cnt].uiProfileChecksum != ProfileChecksum(&(gMercProfiles[cnt]))) {
+    if (gMercProfiles[cnt].uiProfileChecksum != ProfileChecksum(addressof(gMercProfiles[cnt]))) {
       return FALSE;
     }
   }
@@ -1783,7 +1783,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
     // if the soldier isnt active, dont add them to the saved game file.
     if (!Menptr[cnt].bActive) {
       // Save the byte specifing to NOT load the soldiers
-      FileWrite(hFile, &ubZero, 1, &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubZero), 1, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != 1) {
         return FALSE;
       }
@@ -1791,18 +1791,18 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
 
     else {
       // Save the byte specifing to load the soldiers
-      FileWrite(hFile, &ubOne, 1, &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubOne), 1, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != 1) {
         return FALSE;
       }
 
       // calculate checksum for soldier
-      Menptr[cnt].uiMercChecksum = MercChecksum(&(Menptr[cnt]));
+      Menptr[cnt].uiMercChecksum = MercChecksum(addressof(Menptr[cnt]));
       // Save the soldier structure
       if (guiSavedGameVersion < 87) {
-        JA2EncryptedFileWrite(hFile, &Menptr[cnt], uiSaveSize, &uiNumBytesWritten);
+        JA2EncryptedFileWrite(hFile, addressof(Menptr[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
       } else {
-        NewJA2EncryptedFileWrite(hFile, &Menptr[cnt], uiSaveSize, &uiNumBytesWritten);
+        NewJA2EncryptedFileWrite(hFile, addressof(Menptr[cnt]), uiSaveSize, addressof(uiNumBytesWritten));
       }
       if (uiNumBytesWritten != uiSaveSize) {
         return FALSE;
@@ -1822,19 +1822,19 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
 
       if (Menptr[cnt].pKeyRing != NULL) {
         // write to the file saying we have the ....
-        FileWrite(hFile, &ubOne, 1, &uiNumBytesWritten);
+        FileWrite(hFile, addressof(ubOne), 1, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 1) {
           return FALSE;
         }
 
         // Now save the ....
-        FileWrite(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), &uiNumBytesWritten);
+        FileWrite(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != NUM_KEYS * sizeof(KEY_ON_RING)) {
           return FALSE;
         }
       } else {
         // write to the file saying we DO NOT have the Key ring
-        FileWrite(hFile, &ubZero, 1, &uiNumBytesWritten);
+        FileWrite(hFile, addressof(ubZero), 1, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 1) {
           return FALSE;
         }
@@ -1870,7 +1870,7 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
     RenderProgressBar(0, uiPercentage);
 
     // Read in a byte to tell us whether or not there is a soldier loaded here.
-    FileRead(hFile, &ubActive, 1, &uiNumBytesRead);
+    FileRead(hFile, addressof(ubActive), 1, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 1) {
       return FALSE;
     }
@@ -1884,15 +1884,15 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
     else {
       // Read in the saved soldier info into a Temp structure
       if (guiSaveGameVersion < 87) {
-        JA2EncryptedFileRead(hFile, &SavedSoldierInfo, uiSaveSize, &uiNumBytesRead);
+        JA2EncryptedFileRead(hFile, addressof(SavedSoldierInfo), uiSaveSize, addressof(uiNumBytesRead));
       } else {
-        NewJA2EncryptedFileRead(hFile, &SavedSoldierInfo, uiSaveSize, &uiNumBytesRead);
+        NewJA2EncryptedFileRead(hFile, addressof(SavedSoldierInfo), uiSaveSize, addressof(uiNumBytesRead));
       }
       if (uiNumBytesRead != uiSaveSize) {
         return FALSE;
       }
       // check checksum
-      if (MercChecksum(&SavedSoldierInfo) != SavedSoldierInfo.uiMercChecksum) {
+      if (MercChecksum(addressof(SavedSoldierInfo)) != SavedSoldierInfo.uiMercChecksum) {
         return FALSE;
       }
 
@@ -1919,13 +1919,13 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       //	continue;
 
       // Create the new merc
-      memset(&CreateStruct, 0, sizeof(SOLDIERCREATE_STRUCT));
+      memset(addressof(CreateStruct), 0, sizeof(SOLDIERCREATE_STRUCT));
       CreateStruct.bTeam = SavedSoldierInfo.bTeam;
       CreateStruct.ubProfile = SavedSoldierInfo.ubProfile;
       CreateStruct.fUseExistingSoldier = TRUE;
-      CreateStruct.pExistingSoldier = &SavedSoldierInfo;
+      CreateStruct.pExistingSoldier = addressof(SavedSoldierInfo);
 
-      if (!TacticalCreateSoldier(&CreateStruct, &ubId))
+      if (!TacticalCreateSoldier(addressof(CreateStruct), addressof(ubId)))
         return FALSE;
 
       // Load the pMercPath
@@ -1937,14 +1937,14 @@ function LoadSoldierStructure(hFile: HWFILE): BOOLEAN {
       //
 
       // Read the file to see if we have to load the keys
-      FileRead(hFile, &ubOne, 1, &uiNumBytesRead);
+      FileRead(hFile, addressof(ubOne), 1, addressof(uiNumBytesRead));
       if (uiNumBytesRead != 1) {
         return FALSE;
       }
 
       if (ubOne) {
         // Now Load the ....
-        FileRead(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), &uiNumBytesRead);
+        FileRead(hFile, Menptr[cnt].pKeyRing, NUM_KEYS * sizeof(KEY_ON_RING), addressof(uiNumBytesRead));
         if (uiNumBytesRead != NUM_KEYS * sizeof(KEY_ON_RING)) {
           return FALSE;
         }
@@ -2116,7 +2116,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
     return FALSE;
 
   // Write the the size of the file to the saved game file
-  FileWrite(hFile, &uiFileSize, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiFileSize), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2128,7 +2128,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   memset(pData, 0, uiFileSize);
 
   // Read the saource file into the buffer
-  FileRead(hSrcFile, pData, uiFileSize, &uiNumBytesRead);
+  FileRead(hSrcFile, pData, uiFileSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiFileSize) {
     // Free the buffer
     MemFree(pData);
@@ -2137,7 +2137,7 @@ function SaveFilesToSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   }
 
   // Write the buffer to the saved game file
-  FileWrite(hFile, pData, uiFileSize, &uiNumBytesWritten);
+  FileWrite(hFile, pData, uiFileSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiFileSize) {
     // Free the buffer
     MemFree(pData);
@@ -2177,7 +2177,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   }
 
   // Read the size of the data
-  FileRead(hFile, &uiFileSize, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiFileSize), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hSrcFile);
 
@@ -2198,7 +2198,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   }
 
   // Read into the buffer
-  FileRead(hFile, pData, uiFileSize, &uiNumBytesRead);
+  FileRead(hFile, pData, uiFileSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiFileSize) {
     FileClose(hSrcFile);
 
@@ -2209,7 +2209,7 @@ function LoadFilesFromSavedGame(pSrcFileName: STR, hFile: HWFILE): BOOLEAN {
   }
 
   // Write the buffer to the new file
-  FileWrite(hSrcFile, pData, uiFileSize, &uiNumBytesWritten);
+  FileWrite(hSrcFile, pData, uiFileSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiFileSize) {
     FileClose(hSrcFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to Write to the %s File", pSrcFileName));
@@ -2248,7 +2248,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
   uiSizeOfEmails = sizeof(Email) * uiNumOfEmails;
 
   // write the number of email messages
-  FileWrite(hFile, &uiNumOfEmails, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumOfEmails), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2260,13 +2260,13 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     uiStringLength = (wcslen(pEmail.value.pSubject) + 1) * 2;
 
     // write the length of the current emails subject to the saved game file
-    FileWrite(hFile, &uiStringLength, sizeof(UINT32), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(uiStringLength), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
       return FALSE;
     }
 
     // write the subject of the current email to the saved game file
-    FileWrite(hFile, pEmail.value.pSubject, uiStringLength, &uiNumBytesWritten);
+    FileWrite(hFile, pEmail.value.pSubject, uiStringLength, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiStringLength) {
       return FALSE;
     }
@@ -2287,7 +2287,7 @@ function SaveEmailToSavedGame(hFile: HWFILE): BOOLEAN {
     SavedEmail.uiSixData = pEmail.value.uiSixData;
 
     // write the email header to the saved game file
-    FileWrite(hFile, &SavedEmail, sizeof(SavedEmailStruct), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(SavedEmail), sizeof(SavedEmailStruct), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(SavedEmailStruct)) {
       return FALSE;
     }
@@ -2321,7 +2321,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   memset(pEmailList, 0, sizeof(Email));
 
   // read in the number of email messages
-  FileRead(hFile, &uiNumOfEmails, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumOfEmails), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2330,7 +2330,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
   pEmail = pEmailList;
   for (cnt = 0; cnt < uiNumOfEmails; cnt++) {
     // get the length of the email subject
-    FileRead(hFile, &uiSizeOfSubject, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(uiSizeOfSubject), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       return FALSE;
     }
@@ -2342,13 +2342,13 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     memset(pData, 0, EMAIL_SUBJECT_LENGTH * sizeof(wchar_t));
 
     // Get the subject
-    FileRead(hFile, pData, uiSizeOfSubject, &uiNumBytesRead);
+    FileRead(hFile, pData, uiSizeOfSubject, addressof(uiNumBytesRead));
     if (uiNumBytesRead != uiSizeOfSubject) {
       return FALSE;
     }
 
     // get the rest of the data from the email
-    FileRead(hFile, &SavedEmail, sizeof(SavedEmailStruct), &uiNumBytesRead);
+    FileRead(hFile, addressof(SavedEmail), sizeof(SavedEmailStruct), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SavedEmailStruct)) {
       return FALSE;
     }
@@ -2407,7 +2407,7 @@ function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // write the gTacticalStatus to the saved game file
-  FileWrite(hFile, &gTacticalStatus, sizeof(TacticalStatusType), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gTacticalStatus), sizeof(TacticalStatusType), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(TacticalStatusType)) {
     return FALSE;
   }
@@ -2417,19 +2417,19 @@ function SaveTacticalStatusToSavedGame(hFile: HWFILE): BOOLEAN {
   //
 
   // save gWorldSectorX
-  FileWrite(hFile, &gWorldSectorX, sizeof(gWorldSectorX), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gWorldSectorX), sizeof(gWorldSectorX), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gWorldSectorX)) {
     return FALSE;
   }
 
   // save gWorldSectorY
-  FileWrite(hFile, &gWorldSectorY, sizeof(gWorldSectorY), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gWorldSectorY), sizeof(gWorldSectorY), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gWorldSectorY)) {
     return FALSE;
   }
 
   // save gbWorldSectorZ
-  FileWrite(hFile, &gbWorldSectorZ, sizeof(gbWorldSectorZ), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gbWorldSectorZ), sizeof(gbWorldSectorZ), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gbWorldSectorZ)) {
     return FALSE;
   }
@@ -2441,7 +2441,7 @@ function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Read the gTacticalStatus to the saved game file
-  FileRead(hFile, &gTacticalStatus, sizeof(TacticalStatusType), &uiNumBytesRead);
+  FileRead(hFile, addressof(gTacticalStatus), sizeof(TacticalStatusType), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(TacticalStatusType)) {
     return FALSE;
   }
@@ -2451,19 +2451,19 @@ function LoadTacticalStatusFromSavedGame(hFile: HWFILE): BOOLEAN {
   //
 
   // Load gWorldSectorX
-  FileRead(hFile, &gWorldSectorX, sizeof(gWorldSectorX), &uiNumBytesRead);
+  FileRead(hFile, addressof(gWorldSectorX), sizeof(gWorldSectorX), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gWorldSectorX)) {
     return FALSE;
   }
 
   // Load gWorldSectorY
-  FileRead(hFile, &gWorldSectorY, sizeof(gWorldSectorY), &uiNumBytesRead);
+  FileRead(hFile, addressof(gWorldSectorY), sizeof(gWorldSectorY), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gWorldSectorY)) {
     return FALSE;
   }
 
   // Load gbWorldSectorZ
-  FileRead(hFile, &gbWorldSectorZ, sizeof(gbWorldSectorZ), &uiNumBytesRead);
+  FileRead(hFile, addressof(gbWorldSectorZ), sizeof(gbWorldSectorZ), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gbWorldSectorZ)) {
     return FALSE;
   }
@@ -2507,56 +2507,56 @@ function SaveOppListInfoToSavedGame(hFile: HWFILE): BOOLEAN {
 
   // Save the Public Opplist
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gbPublicOpplist, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gbPublicOpplist, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Seen Oppenents
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gbSeenOpponents, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gbSeenOpponents, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Last Known Opp Locations
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gsLastKnownOppLoc, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gsLastKnownOppLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Last Known Opp Level
   uiSaveSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gbLastKnownOppLevel, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gbLastKnownOppLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Public Last Known Opp Locations
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gsPublicLastKnownOppLoc, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gsPublicLastKnownOppLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Public Last Known Opp Level
   uiSaveSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileWrite(hFile, gbPublicLastKnownOppLevel, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gbPublicLastKnownOppLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Public Noise Volume
   uiSaveSize = MAXTEAMS;
-  FileWrite(hFile, gubPublicNoiseVolume, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gubPublicNoiseVolume, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save the Public Last Noise Gridno
   uiSaveSize = MAXTEAMS;
-  FileWrite(hFile, gsPublicNoiseGridno, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gsPublicNoiseGridno, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
@@ -2570,56 +2570,56 @@ function LoadOppListInfoFromSavedGame(hFile: HWFILE): BOOLEAN {
 
   // Load the Public Opplist
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileRead(hFile, gbPublicOpplist, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gbPublicOpplist, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Seen Oppenents
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileRead(hFile, gbSeenOpponents, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gbSeenOpponents, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Last Known Opp Locations
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileRead(hFile, gsLastKnownOppLoc, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gsLastKnownOppLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Last Known Opp Level
   uiLoadSize = TOTAL_SOLDIERS * TOTAL_SOLDIERS;
-  FileRead(hFile, gbLastKnownOppLevel, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gbLastKnownOppLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Public Last Known Opp Locations
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileRead(hFile, gsPublicLastKnownOppLoc, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gsPublicLastKnownOppLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Public Last Known Opp Level
   uiLoadSize = MAXTEAMS * TOTAL_SOLDIERS;
-  FileRead(hFile, gbPublicLastKnownOppLevel, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gbPublicLastKnownOppLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Public Noise Volume
   uiLoadSize = MAXTEAMS;
-  FileRead(hFile, gubPublicNoiseVolume, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gubPublicNoiseVolume, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   // Load the Public Last Noise Gridno
   uiLoadSize = MAXTEAMS;
-  FileRead(hFile, gsPublicNoiseGridno, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gsPublicNoiseGridno, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
@@ -2636,24 +2636,24 @@ function SaveWatchedLocsToSavedGame(hFile: HWFILE): BOOLEAN {
 
   // save locations of watched points
   uiSaveSize = uiArraySize * sizeof(INT16);
-  FileWrite(hFile, gsWatchedLoc, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gsWatchedLoc, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   uiSaveSize = uiArraySize * sizeof(INT8);
 
-  FileWrite(hFile, gbWatchedLocLevel, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gbWatchedLocLevel, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
-  FileWrite(hFile, gubWatchedLocPoints, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gubWatchedLocPoints, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
-  FileWrite(hFile, gfWatchedLocReset, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, gfWatchedLocReset, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
@@ -2669,23 +2669,23 @@ function LoadWatchedLocsFromSavedGame(hFile: HWFILE): BOOLEAN {
   uiArraySize = TOTAL_SOLDIERS * NUM_WATCHED_LOCS;
 
   uiLoadSize = uiArraySize * sizeof(INT16);
-  FileRead(hFile, gsWatchedLoc, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gsWatchedLoc, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
   uiLoadSize = uiArraySize * sizeof(INT8);
-  FileRead(hFile, gbWatchedLocLevel, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gbWatchedLocLevel, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
-  FileRead(hFile, gubWatchedLocPoints, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gubWatchedLocPoints, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
 
-  FileRead(hFile, gfWatchedLocReset, uiLoadSize, &uiNumBytesRead);
+  FileRead(hFile, gfWatchedLocReset, uiLoadSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiLoadSize) {
     return FALSE;
   }
@@ -2729,7 +2729,7 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   }
 
   // Save the number of the nodes
-  FileWrite(hFile, &uiNumOfNodes, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumOfNodes), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2740,7 +2740,7 @@ function SaveMercPathFromSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   // loop through nodes and save all the nodes
   while (pTempPath) {
     // Save the number of the nodes
-    FileWrite(hFile, pTempPath, sizeof(PathSt), &uiNumBytesWritten);
+    FileWrite(hFile, pTempPath, sizeof(PathSt), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(PathSt)) {
       return FALSE;
     }
@@ -2778,7 +2778,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
   */
 
   // Load the number of the nodes
-  FileRead(hFile, &uiNumOfNodes, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumOfNodes), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2792,7 +2792,7 @@ function LoadMercPathToSoldierStruct(hFile: HWFILE, ubID: UINT8): BOOLEAN {
     memset(pTemp, 0, sizeof(PathSt));
 
     // Load the node
-    FileRead(hFile, pTemp, sizeof(PathSt), &uiNumBytesRead);
+    FileRead(hFile, pTemp, sizeof(PathSt), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(PathSt)) {
       return FALSE;
     }
@@ -2825,7 +2825,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   let sGeneralInfo: GENERAL_SAVE_INFO;
-  memset(&sGeneralInfo, 0, sizeof(GENERAL_SAVE_INFO));
+  memset(addressof(sGeneralInfo), 0, sizeof(GENERAL_SAVE_INFO));
 
   sGeneralInfo.ubMusicMode = gubMusicMode;
   sGeneralInfo.uiCurrentUniqueSoldierId = guiCurrentUniqueSoldierId;
@@ -2896,7 +2896,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   else
     sGeneralInfo.sContractRehireSoldierID = -1;
 
-  memcpy(&sGeneralInfo.GameOptions, &gGameOptions, sizeof(GAME_OPTIONS));
+  memcpy(addressof(sGeneralInfo.GameOptions), addressof(gGameOptions), sizeof(GAME_OPTIONS));
 
   // Save the Ja2Clock()
   sGeneralInfo.uiBaseJA2Clock = guiBaseJA2Clock;
@@ -2918,9 +2918,9 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.fDisableMapInterfaceDueToBattle = fDisableMapInterfaceDueToBattle;
 
   // Save boxing info
-  memcpy(&sGeneralInfo.sBoxerGridNo, &gsBoxerGridNo, NUM_BOXERS * sizeof(INT16));
-  memcpy(&sGeneralInfo.ubBoxerID, &gubBoxerID, NUM_BOXERS * sizeof(INT8));
-  memcpy(&sGeneralInfo.fBoxerFought, &gfBoxerFought, NUM_BOXERS * sizeof(BOOLEAN));
+  memcpy(addressof(sGeneralInfo.sBoxerGridNo), addressof(gsBoxerGridNo), NUM_BOXERS * sizeof(INT16));
+  memcpy(addressof(sGeneralInfo.ubBoxerID), addressof(gubBoxerID), NUM_BOXERS * sizeof(INT8));
+  memcpy(addressof(sGeneralInfo.fBoxerFought), addressof(gfBoxerFought), NUM_BOXERS * sizeof(BOOLEAN));
 
   // Save the helicopter status
   sGeneralInfo.fHelicopterDestroyed = fHelicopterDestroyed;
@@ -2932,19 +2932,19 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
   sGeneralInfo.uiTimeOfLastSkyriderMonologue = guiTimeOfLastSkyriderMonologue;
   sGeneralInfo.fSkyRiderSetUp = fSkyRiderSetUp;
 
-  memcpy(&sGeneralInfo.fRefuelingSiteAvailable, &fRefuelingSiteAvailable, NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
+  memcpy(addressof(sGeneralInfo.fRefuelingSiteAvailable), addressof(fRefuelingSiteAvailable), NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
 
   // Meanwhile stuff
-  memcpy(&sGeneralInfo.gCurrentMeanwhileDef, &gCurrentMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+  memcpy(addressof(sGeneralInfo.gCurrentMeanwhileDef), addressof(gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
   // sGeneralInfo.gfMeanwhileScheduled = gfMeanwhileScheduled;
   sGeneralInfo.gfMeanwhileTryingToStart = gfMeanwhileTryingToStart;
   sGeneralInfo.gfInMeanwhile = gfInMeanwhile;
 
   // list of dead guys for squads...in id values -> -1 means no one home
-  memcpy(&sGeneralInfo.sDeadMercs, &sDeadMercs, sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
+  memcpy(addressof(sGeneralInfo.sDeadMercs), addressof(sDeadMercs), sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
 
   // level of public noises
-  memcpy(&sGeneralInfo.gbPublicNoiseLevel, &gbPublicNoiseLevel, sizeof(INT8) * MAXTEAMS);
+  memcpy(addressof(sGeneralInfo.gbPublicNoiseLevel), addressof(gbPublicNoiseLevel), sizeof(INT8) * MAXTEAMS);
 
   // The screen count for the initscreen
   sGeneralInfo.gubScreenCount = gubScreenCount;
@@ -2970,7 +2970,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   sGeneralInfo.fLastBoxingMatchWonByPlayer = gfLastBoxingMatchWonByPlayer;
 
-  memcpy(&sGeneralInfo.fSamSiteFound, &fSamSiteFound, NUMBER_OF_SAMS * sizeof(BOOLEAN));
+  memcpy(addressof(sGeneralInfo.fSamSiteFound), addressof(fSamSiteFound), NUMBER_OF_SAMS * sizeof(BOOLEAN));
 
   sGeneralInfo.ubNumTerrorists = gubNumTerrorists;
   sGeneralInfo.ubCambriaMedicalObjects = gubCambriaMedicalObjects;
@@ -3020,7 +3020,7 @@ function SaveGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   // Setup the
   // Save the current music mode
-  FileWrite(hFile, &sGeneralInfo, sizeof(GENERAL_SAVE_INFO), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(sGeneralInfo), sizeof(GENERAL_SAVE_INFO), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(GENERAL_SAVE_INFO)) {
     FileClose(hFile);
     return FALSE;
@@ -3033,10 +3033,10 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   let sGeneralInfo: GENERAL_SAVE_INFO;
-  memset(&sGeneralInfo, 0, sizeof(GENERAL_SAVE_INFO));
+  memset(addressof(sGeneralInfo), 0, sizeof(GENERAL_SAVE_INFO));
 
   // Load the current music mode
-  FileRead(hFile, &sGeneralInfo, sizeof(GENERAL_SAVE_INFO), &uiNumBytesRead);
+  FileRead(hFile, addressof(sGeneralInfo), sizeof(GENERAL_SAVE_INFO), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(GENERAL_SAVE_INFO)) {
     FileClose(hFile);
     return FALSE;
@@ -3116,9 +3116,9 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   if (sGeneralInfo.sContractRehireSoldierID == -1)
     pContractReHireSoldier = NULL;
   else
-    pContractReHireSoldier = &Menptr[sGeneralInfo.sContractRehireSoldierID];
+    pContractReHireSoldier = addressof(Menptr[sGeneralInfo.sContractRehireSoldierID]);
 
-  memcpy(&gGameOptions, &sGeneralInfo.GameOptions, sizeof(GAME_OPTIONS));
+  memcpy(addressof(gGameOptions), addressof(sGeneralInfo.GameOptions), sizeof(GAME_OPTIONS));
 
   // Restore the JA2 Clock
   guiBaseJA2Clock = sGeneralInfo.uiBaseJA2Clock;
@@ -3130,7 +3130,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   if (sGeneralInfo.ubSMCurrentMercID == 255)
     gpSMCurrentMerc = NULL;
   else
-    gpSMCurrentMerc = &Menptr[sGeneralInfo.ubSMCurrentMercID];
+    gpSMCurrentMerc = addressof(Menptr[sGeneralInfo.ubSMCurrentMercID]);
 
   // Set the interface panel to the team panel
   ShutdownCurrentPanel();
@@ -3157,9 +3157,9 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   fDisableDueToBattleRoster = sGeneralInfo.fDisableDueToBattleRoster;
   fDisableMapInterfaceDueToBattle = sGeneralInfo.fDisableMapInterfaceDueToBattle;
 
-  memcpy(&gsBoxerGridNo, &sGeneralInfo.sBoxerGridNo, NUM_BOXERS * sizeof(INT16));
-  memcpy(&gubBoxerID, &sGeneralInfo.ubBoxerID, NUM_BOXERS * sizeof(INT8));
-  memcpy(&gfBoxerFought, &sGeneralInfo.fBoxerFought, NUM_BOXERS * sizeof(BOOLEAN));
+  memcpy(addressof(gsBoxerGridNo), addressof(sGeneralInfo.sBoxerGridNo), NUM_BOXERS * sizeof(INT16));
+  memcpy(addressof(gubBoxerID), addressof(sGeneralInfo.ubBoxerID), NUM_BOXERS * sizeof(INT8));
+  memcpy(addressof(gfBoxerFought), addressof(sGeneralInfo.fBoxerFought), NUM_BOXERS * sizeof(BOOLEAN));
 
   // Load the helicopter status
   fHelicopterDestroyed = sGeneralInfo.fHelicopterDestroyed;
@@ -3171,19 +3171,19 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
   guiTimeOfLastSkyriderMonologue = sGeneralInfo.uiTimeOfLastSkyriderMonologue;
   fSkyRiderSetUp = sGeneralInfo.fSkyRiderSetUp;
 
-  memcpy(&fRefuelingSiteAvailable, &sGeneralInfo.fRefuelingSiteAvailable, NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
+  memcpy(addressof(fRefuelingSiteAvailable), addressof(sGeneralInfo.fRefuelingSiteAvailable), NUMBER_OF_REFUEL_SITES * sizeof(BOOLEAN));
 
   // Meanwhile stuff
-  memcpy(&gCurrentMeanwhileDef, &sGeneralInfo.gCurrentMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+  memcpy(addressof(gCurrentMeanwhileDef), addressof(sGeneralInfo.gCurrentMeanwhileDef), sizeof(MEANWHILE_DEFINITION));
   //	gfMeanwhileScheduled = sGeneralInfo.gfMeanwhileScheduled;
   gfMeanwhileTryingToStart = sGeneralInfo.gfMeanwhileTryingToStart;
   gfInMeanwhile = sGeneralInfo.gfInMeanwhile;
 
   // list of dead guys for squads...in id values -> -1 means no one home
-  memcpy(&sDeadMercs, &sGeneralInfo.sDeadMercs, sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
+  memcpy(addressof(sDeadMercs), addressof(sGeneralInfo.sDeadMercs), sizeof(INT16) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD);
 
   // level of public noises
-  memcpy(&gbPublicNoiseLevel, &sGeneralInfo.gbPublicNoiseLevel, sizeof(INT8) * MAXTEAMS);
+  memcpy(addressof(gbPublicNoiseLevel), addressof(sGeneralInfo.gbPublicNoiseLevel), sizeof(INT8) * MAXTEAMS);
 
   // the screen count for the init screen
   gubScreenCount = sGeneralInfo.gubScreenCount;
@@ -3207,7 +3207,7 @@ function LoadGeneralInfo(hFile: HWFILE): BOOLEAN {
 
   gfLastBoxingMatchWonByPlayer = sGeneralInfo.fLastBoxingMatchWonByPlayer;
 
-  memcpy(&fSamSiteFound, &sGeneralInfo.fSamSiteFound, NUMBER_OF_SAMS * sizeof(BOOLEAN));
+  memcpy(addressof(fSamSiteFound), addressof(sGeneralInfo.fSamSiteFound), NUMBER_OF_SAMS * sizeof(BOOLEAN));
 
   gubNumTerrorists = sGeneralInfo.ubNumTerrorists;
   gubCambriaMedicalObjects = sGeneralInfo.ubCambriaMedicalObjects;
@@ -3268,13 +3268,13 @@ function SavePreRandomNumbersToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the Prerandom number index
-  FileWrite(hFile, &guiPreRandomIndex, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(guiPreRandomIndex), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
 
   // Save the Prerandom number index
-  FileWrite(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, &uiNumBytesWritten);
+  FileWrite(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32) * MAX_PREGENERATED_NUMS) {
     return FALSE;
   }
@@ -3286,13 +3286,13 @@ function LoadPreRandomNumbersFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Load the Prerandom number index
-  FileRead(hFile, &guiPreRandomIndex, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiPreRandomIndex), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
 
   // Load the Prerandom number index
-  FileRead(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, &uiNumBytesRead);
+  FileRead(hFile, guiPreRandomNums, sizeof(UINT32) * MAX_PREGENERATED_NUMS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32) * MAX_PREGENERATED_NUMS) {
     return FALSE;
   }
@@ -3305,15 +3305,15 @@ function LoadMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
 
   if (guiSaveGameVersion < 72) {
     // Load the array of meanwhile defs
-    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * (NUM_MEANWHILES - 1), &uiNumBytesRead);
+    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * (NUM_MEANWHILES - 1), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * (NUM_MEANWHILES - 1)) {
       return FALSE;
     }
     // and set the last one
-    memset(&(gMeanwhileDef[NUM_MEANWHILES - 1]), 0, sizeof(MEANWHILE_DEFINITION));
+    memset(addressof(gMeanwhileDef[NUM_MEANWHILES - 1]), 0, sizeof(MEANWHILE_DEFINITION));
   } else {
     // Load the array of meanwhile defs
-    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, &uiNumBytesRead);
+    FileRead(hFile, gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES) {
       return FALSE;
     }
@@ -3326,7 +3326,7 @@ function SaveMeanwhileDefsFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the array of meanwhile defs
-  FileWrite(hFile, &gMeanwhileDef, sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gMeanwhileDef), sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(MEANWHILE_DEFINITION) * NUM_MEANWHILES) {
     return FALSE;
   }
@@ -3433,7 +3433,7 @@ function TruncateStrategicGroupSizes(): void {
   let pSector: Pointer<SECTORINFO>;
   let i: INT32;
   for (i = SEC_A1; i < SEC_P16; i++) {
-    pSector = &SectorInfo[i];
+    pSector = addressof(SectorInfo[i]);
     if (pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites > MAX_STRATEGIC_TEAM_SIZE) {
       if (pSector.value.ubNumAdmins > pSector.value.ubNumTroops) {
         if (pSector.value.ubNumAdmins > pSector.value.ubNumElites) {
@@ -3585,7 +3585,7 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
   if (FileExists(zFileName1)) {
     hFile = FileOpen(zFileName1, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
 
-    GetFileManFileTime(hFile, &CreationTime1, &LastAccessedTime1, &LastWriteTime1);
+    GetFileManFileTime(hFile, addressof(CreationTime1), addressof(LastAccessedTime1), addressof(LastWriteTime1));
 
     FileClose(hFile);
 
@@ -3595,7 +3595,7 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
   if (FileExists(zFileName2)) {
     hFile = FileOpen(zFileName2, FILE_ACCESS_READ | FILE_OPEN_EXISTING, FALSE);
 
-    GetFileManFileTime(hFile, &CreationTime2, &LastAccessedTime2, &LastWriteTime2);
+    GetFileManFileTime(hFile, addressof(CreationTime2), addressof(LastAccessedTime2), addressof(LastWriteTime2));
 
     FileClose(hFile);
 
@@ -3615,7 +3615,7 @@ function GetNumberForAutoSave(fLatestAutoSave: BOOLEAN): INT8 {
     else
       return -1;
   } else {
-    if (CompareSGPFileTimes(&LastWriteTime1, &LastWriteTime2) > 0)
+    if (CompareSGPFileTimes(addressof(LastWriteTime1), addressof(LastWriteTime2)) > 0)
       return 0;
     else
       return 1;

@@ -23,11 +23,11 @@ function InitTileCache(): BOOLEAN {
 
   // OK, look for JSD files in the tile cache directory and
   // load any we find....
-  if (GetFileFirst("TILECACHE\\*.jsd", &FileInfo)) {
-    while (GetFileNext(&FileInfo)) {
+  if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
+    while (GetFileNext(addressof(FileInfo))) {
       sFiles++;
     }
-    GetFileClose(&FileInfo);
+    GetFileClose(addressof(FileInfo));
   }
 
   // Allocate memory...
@@ -39,8 +39,8 @@ function InitTileCache(): BOOLEAN {
     gpTileCacheStructInfo = MemAlloc(sizeof(TILE_CACHE_STRUCT) * sFiles);
 
     // Loop through and set filenames
-    if (GetFileFirst("TILECACHE\\*.jsd", &FileInfo)) {
-      while (GetFileNext(&FileInfo)) {
+    if (GetFileFirst("TILECACHE\\*.jsd", addressof(FileInfo))) {
+      while (GetFileNext(addressof(FileInfo))) {
         sprintf(gpTileCacheStructInfo[cnt].Filename, "TILECACHE\\%s", FileInfo.zFileName);
 
         // Get root name
@@ -55,7 +55,7 @@ function InitTileCache(): BOOLEAN {
 
         cnt++;
       }
-      GetFileClose(&FileInfo);
+      GetFileClose(addressof(FileInfo));
     }
   }
 
@@ -242,12 +242,12 @@ function CheckForAndAddTileCacheStructInfo(pNode: Pointer<LEVELNODE>, sGridNo: I
   pStructureFileRef = GetCachedTileStructureRef(usIndex);
 
   if (pStructureFileRef != NULL) {
-    if (!AddStructureToWorld(sGridNo, 0, &(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode)) {
+    if (!AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode)) {
       if (giDefaultStructIndex != -1) {
         pStructureFileRef = gpTileCacheStructInfo[giDefaultStructIndex].pStructureFileRef;
 
         if (pStructureFileRef != NULL) {
-          AddStructureToWorld(sGridNo, 0, &(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode);
+          AddStructureToWorld(sGridNo, 0, addressof(pStructureFileRef.value.pDBStructureRef[usSubIndex]), pNode);
         }
       }
     }

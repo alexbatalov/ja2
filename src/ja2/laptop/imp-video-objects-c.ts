@@ -50,7 +50,7 @@ function LoadProfileBackGround(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MetalBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBACKGROUND));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBACKGROUND)));
 
   return TRUE;
 }
@@ -70,7 +70,7 @@ function RenderProfileBackGround(): void {
   // this procedure will render the generic backgound to the screen
 
   // get the video object
-  GetVideoObject(&hHandle, guiBACKGROUND);
+  GetVideoObject(addressof(hHandle), guiBACKGROUND);
 
   // render each row 5 times wide, 5 tiles high
   for (iCounter = 0; iCounter < 4; iCounter++) {
@@ -96,7 +96,7 @@ function LoadIMPSymbol(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_IMPSYMBOL);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiIMPSYMBOL));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiIMPSYMBOL)));
 
   return TRUE;
 }
@@ -112,7 +112,7 @@ function RenderIMPSymbol(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiIMPSYMBOL);
+  GetVideoObject(addressof(hHandle), guiIMPSYMBOL);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -126,7 +126,7 @@ function LoadBeginIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BeginScreenIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBEGININDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBEGININDENT)));
 
   return TRUE;
 }
@@ -143,7 +143,7 @@ function RenderBeginIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiBEGININDENT);
+  GetVideoObject(addressof(hHandle), guiBEGININDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -157,7 +157,7 @@ function LoadActivationIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ActivationIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiACTIVATIONINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiACTIVATIONINDENT)));
 
   return TRUE;
 }
@@ -173,7 +173,7 @@ function RenderActivationIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiACTIVATIONINDENT);
+  GetVideoObject(addressof(hHandle), guiACTIVATIONINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -187,7 +187,7 @@ function LoadFrontPageIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FrontPageIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFRONTPAGEINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFRONTPAGEINDENT)));
 
   return TRUE;
 }
@@ -203,7 +203,7 @@ function RenderFrontPageIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiFRONTPAGEINDENT);
+  GetVideoObject(addressof(hHandle), guiFRONTPAGEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -217,7 +217,7 @@ function LoadAnalyse(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Analyze.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiANALYSE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiANALYSE)));
 
   return TRUE;
 }
@@ -233,7 +233,7 @@ function RenderAnalyse(sX: INT16, sY: INT16, bImageNumber: INT8): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiANALYSE);
+  GetVideoObject(addressof(hHandle), guiANALYSE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, bImageNumber, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -247,7 +247,7 @@ function LoadAttributeGraph(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Attributegraph.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiATTRIBUTEGRAPH));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPH)));
 
   return TRUE;
 }
@@ -263,7 +263,7 @@ function RenderAttributeGraph(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiATTRIBUTEGRAPH);
+  GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPH);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -277,7 +277,7 @@ function LoadAttributeGraphBar(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AttributegraphBar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiATTRIBUTEGRAPHBAR));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEGRAPHBAR)));
 
   return TRUE;
 }
@@ -293,7 +293,7 @@ function RenderAttributeBarGraph(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiATTRIBUTEGRAPHBAR);
+  GetVideoObject(addressof(hHandle), guiATTRIBUTEGRAPHBAR);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -307,7 +307,7 @@ function LoadFullNameIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FullNameIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFULLNAMEINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFULLNAMEINDENT)));
 
   return TRUE;
 }
@@ -323,7 +323,7 @@ function RenderFullNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiFULLNAMEINDENT);
+  GetVideoObject(addressof(hHandle), guiFULLNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -337,7 +337,7 @@ function LoadNickNameIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NickName.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiNICKNAMEINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNICKNAMEINDENT)));
 
   return TRUE;
 }
@@ -353,7 +353,7 @@ function RenderNickNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiNICKNAMEINDENT);
+  GetVideoObject(addressof(hHandle), guiNICKNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -367,7 +367,7 @@ function LoadNameIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NameIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiNAMEINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNAMEINDENT)));
 
   return TRUE;
 }
@@ -383,7 +383,7 @@ function RenderNameIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiNAMEINDENT);
+  GetVideoObject(addressof(hHandle), guiNAMEINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -397,7 +397,7 @@ function LoadGenderIndent(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\GenderIndent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiGENDERINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGENDERINDENT)));
 
   return TRUE;
 }
@@ -413,7 +413,7 @@ function RenderGenderIndent(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiGENDERINDENT);
+  GetVideoObject(addressof(hHandle), guiGENDERINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -427,7 +427,7 @@ function LoadSmallFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSMALLFRAME));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLFRAME)));
 
   return TRUE;
 }
@@ -443,7 +443,7 @@ function RenderSmallFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSMALLFRAME);
+  GetVideoObject(addressof(hHandle), guiSMALLFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -457,7 +457,7 @@ function LoadSmallSilhouette(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SmallSilhouette.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSMALLSILHOUETTE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMALLSILHOUETTE)));
 
   return TRUE;
 }
@@ -473,7 +473,7 @@ function RenderSmallSilhouette(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSMALLSILHOUETTE);
+  GetVideoObject(addressof(hHandle), guiSMALLSILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -487,7 +487,7 @@ function LoadLargeSilhouette(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\largesilhouette.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLARGESILHOUETTE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLARGESILHOUETTE)));
 
   return TRUE;
 }
@@ -503,7 +503,7 @@ function RenderLargeSilhouette(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiLARGESILHOUETTE);
+  GetVideoObject(addressof(hHandle), guiLARGESILHOUETTE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -517,7 +517,7 @@ function LoadAttributeFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeframe.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiATTRIBUTEFRAME));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiATTRIBUTEFRAME)));
 
   return TRUE;
 }
@@ -535,7 +535,7 @@ function RenderAttributeFrame(sX: INT16, sY: INT16): void {
   let sCurrentY: INT16 = 0;
 
   // get the video object
-  GetVideoObject(&hHandle, guiATTRIBUTEFRAME);
+  GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -567,7 +567,7 @@ function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void
   sCurrentY = (10 + (iIndex * 20));
 
   // get the video object
-  GetVideoObject(&hHandle, guiATTRIBUTEFRAME);
+  GetVideoObject(addressof(hHandle), guiATTRIBUTEFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 2, LAPTOP_SCREEN_UL_X + sX + 134, LAPTOP_SCREEN_WEB_UL_Y + sY + sCurrentY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -591,7 +591,7 @@ function LoadSliderBar(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributeslider.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSLIDERBAR));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSLIDERBAR)));
 
   return TRUE;
 }
@@ -607,7 +607,7 @@ function RenderSliderBar(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSLIDERBAR);
+  GetVideoObject(addressof(hHandle), guiSLIDERBAR);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -621,7 +621,7 @@ function LoadButton2Image(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBUTTON2IMAGE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON2IMAGE)));
 
   return TRUE;
 }
@@ -637,7 +637,7 @@ function RenderButton2Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiBUTTON2IMAGE);
+  GetVideoObject(addressof(hHandle), guiBUTTON2IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -651,7 +651,7 @@ function LoadButton4Image(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_4.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBUTTON4IMAGE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON4IMAGE)));
 
   return TRUE;
 }
@@ -667,7 +667,7 @@ function RenderButton4Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiBUTTON4IMAGE);
+  GetVideoObject(addressof(hHandle), guiBUTTON4IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -681,7 +681,7 @@ function LoadButton1Image(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\button_1.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBUTTON1IMAGE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTON1IMAGE)));
 
   return TRUE;
 }
@@ -697,7 +697,7 @@ function RenderButton1Image(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiBUTTON1IMAGE);
+  GetVideoObject(addressof(hHandle), guiBUTTON1IMAGE);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -711,7 +711,7 @@ function LoadPortraitFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Voice_PortraitFrame.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPORTRAITFRAME));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPORTRAITFRAME)));
 
   return TRUE;
 }
@@ -727,7 +727,7 @@ function RenderPortraitFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiPORTRAITFRAME);
+  GetVideoObject(addressof(hHandle), guiPORTRAITFRAME);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -741,7 +741,7 @@ function LoadMainIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\mainprofilepageindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAININDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAININDENT)));
 
   return TRUE;
 }
@@ -757,7 +757,7 @@ function RenderMainIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiMAININDENT);
+  GetVideoObject(addressof(hHandle), guiMAININDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -771,7 +771,7 @@ function LoadQtnLongIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLONGINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGINDENT)));
 
   return TRUE;
 }
@@ -787,7 +787,7 @@ function RenderQtnLongIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiLONGINDENT);
+  GetVideoObject(addressof(hHandle), guiLONGINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -801,7 +801,7 @@ function LoadQtnShortIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSHORTINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTINDENT)));
 
   return TRUE;
 }
@@ -817,7 +817,7 @@ function RenderQtnShortIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSHORTINDENT);
+  GetVideoObject(addressof(hHandle), guiSHORTINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -831,7 +831,7 @@ function LoadQtnLongIndentHighFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\longindenthigh.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLONGHINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGHINDENT)));
 
   return TRUE;
 }
@@ -847,7 +847,7 @@ function RenderQtnLongIndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiLONGHINDENT);
+  GetVideoObject(addressof(hHandle), guiLONGHINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -861,7 +861,7 @@ function LoadQtnShortIndentHighFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindenthigh.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSHORTHINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORTHINDENT)));
 
   return TRUE;
 }
@@ -877,7 +877,7 @@ function RenderQtnShortIndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSHORTHINDENT);
+  GetVideoObject(addressof(hHandle), guiSHORTHINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -891,7 +891,7 @@ function LoadQtnIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\questionindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiQINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiQINDENT)));
 
   return TRUE;
 }
@@ -907,7 +907,7 @@ function RenderQtnIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiQINDENT);
+  GetVideoObject(addressof(hHandle), guiQINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -921,7 +921,7 @@ function LoadAttrib1IndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_1.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiA1INDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiA1INDENT)));
 
   return TRUE;
 }
@@ -937,7 +937,7 @@ function RenderAttrib1IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiA1INDENT);
+  GetVideoObject(addressof(hHandle), guiA1INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -951,7 +951,7 @@ function LoadAttrib2IndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\attributescreenindent_2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiA2INDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiA2INDENT)));
 
   return TRUE;
 }
@@ -967,7 +967,7 @@ function RenderAttrib2IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiA2INDENT);
+  GetVideoObject(addressof(hHandle), guiA2INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -981,7 +981,7 @@ function LoadAvgMercIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\anaveragemercindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAVGMERCINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAVGMERCINDENT)));
 
   return TRUE;
 }
@@ -997,7 +997,7 @@ function RenderAvgMercIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiAVGMERCINDENT);
+  GetVideoObject(addressof(hHandle), guiAVGMERCINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1011,7 +1011,7 @@ function LoadAboutUsIndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\aboutusindent.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiABOUTUSINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiABOUTUSINDENT)));
 
   return TRUE;
 }
@@ -1027,7 +1027,7 @@ function RenderAboutUsIndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiABOUTUSINDENT);
+  GetVideoObject(addressof(hHandle), guiABOUTUSINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1041,7 +1041,7 @@ function LoadQtnShort2IndentFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSHORT2INDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2INDENT)));
 
   return TRUE;
 }
@@ -1057,7 +1057,7 @@ function RenderQtnShort2IndentFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSHORT2INDENT);
+  GetVideoObject(addressof(hHandle), guiSHORT2INDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1071,7 +1071,7 @@ function LoadQtnShort2IndentHighFrame(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\shortindent2High.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSHORT2HINDENT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHORT2HINDENT)));
 
   return TRUE;
 }
@@ -1087,7 +1087,7 @@ function RenderQtnShort2IndentHighFrame(sX: INT16, sY: INT16): void {
   let hHandle: HVOBJECT;
 
   // get the video object
-  GetVideoObject(&hHandle, guiSHORT2HINDENT);
+  GetVideoObject(addressof(hHandle), guiSHORT2HINDENT);
 
   // blt to sX, sY relative to upper left corner
   BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sX, LAPTOP_SCREEN_WEB_UL_Y + sY, VO_BLT_SRCTRANSPARENCY, NULL);

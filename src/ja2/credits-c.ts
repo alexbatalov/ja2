@@ -350,11 +350,11 @@ function EnterCreditsScreen(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Credits.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCreditBackGroundImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCreditBackGroundImage)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Credit Faces.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCreditFaces));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCreditFaces)));
 
   // Initialize the root credit node
   InitCreditNode();
@@ -383,12 +383,12 @@ function EnterCreditsScreen(): BOOLEAN {
 
   for (uiCnt = 0; uiCnt < NUM_PEOPLE_IN_CREDITS; uiCnt++) {
     // Make a mouse region
-    MSYS_DefineRegion(&gCrdtMouseRegions[uiCnt], gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
+    MSYS_DefineRegion(addressof(gCrdtMouseRegions[uiCnt]), gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
 
     // Add region
-    MSYS_AddRegion(&gCrdtMouseRegions[uiCnt]);
+    MSYS_AddRegion(addressof(gCrdtMouseRegions[uiCnt]));
 
-    MSYS_SetRegionUserData(&gCrdtMouseRegions[uiCnt], 0, uiCnt);
+    MSYS_SetRegionUserData(addressof(gCrdtMouseRegions[uiCnt]), 0, uiCnt);
   }
 
   // Test Node
@@ -426,7 +426,7 @@ function ExitCreditScreen(): BOOLEAN {
   ShutDownCreditList();
 
   for (uiCnt = 0; uiCnt < NUM_PEOPLE_IN_CREDITS; uiCnt++) {
-    MSYS_RemoveRegion(&gCrdtMouseRegions[uiCnt]);
+    MSYS_RemoveRegion(addressof(gCrdtMouseRegions[uiCnt]));
   }
 
   /*
@@ -474,7 +474,7 @@ function HandleCreditScreen(): void {
 function RenderCreditScreen(): BOOLEAN {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(&hPixHandle, guiCreditBackGroundImage);
+  GetVideoObject(addressof(hPixHandle), guiCreditBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
   /*
           HVSURFACE hVSurface;
@@ -498,7 +498,7 @@ function RenderCreditScreen(): BOOLEAN {
 function GetCreditScreenUserInput(): void {
   let Event: InputAtom;
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
@@ -670,7 +670,7 @@ function AddCreditNode(uiType: UINT32, uiFlags: UINT32, pString: STR16): BOOLEAN
     vs_desc.usHeight = pNodeToAdd.value.sHeightOfString;
     vs_desc.ubBitDepth = 16;
 
-    if (AddVideoSurface(&vs_desc, &pNodeToAdd.value.uiVideoSurfaceImage) == 0) {
+    if (AddVideoSurface(addressof(vs_desc), addressof(pNodeToAdd.value.uiVideoSurfaceImage)) == 0) {
       return FALSE;
     }
 
@@ -836,7 +836,7 @@ function DisplayCreditNode(pCurrent: Pointer<CRDT_NODE>): BOOLEAN {
     }
   }
 
-  GetVideoSurface(&hVSurface, pCurrent.value.uiVideoSurfaceImage);
+  GetVideoSurface(addressof(hVSurface), pCurrent.value.uiVideoSurfaceImage);
 
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, pCurrent.value.sPosX, pCurrent.value.sPosY, VS_BLT_CLIPPED | VS_BLT_USECOLORKEY, NULL);
 
@@ -902,7 +902,7 @@ function GetNextCreditFromTextFile(): BOOLEAN {
     // else there is a string aswell
     else {
       // copy the main string
-      wcscpy(zString, &zOriginalString[uiSizeOfCodes]);
+      wcscpy(zString, addressof(zOriginalString[uiSizeOfCodes]));
 
       uiNodeType = CRDT_NODE_DEFAULT;
     }
@@ -915,10 +915,10 @@ function GetNextCreditFromTextFile(): BOOLEAN {
     // loop through the string of codes to get all the control codes out
     while (uiDistanceIntoCodes < uiSizeOfCodes) {
       // Determine what kind of code it is, and handle it
-      uiFlags |= GetAndHandleCreditCodeFromCodeString(&zCodes[uiDistanceIntoCodes]);
+      uiFlags |= GetAndHandleCreditCodeFromCodeString(addressof(zCodes[uiDistanceIntoCodes]));
 
       // get the next code from the string of codes, returns NULL when done
-      pzNewCode = GetNextCreditCode(&zCodes[uiDistanceIntoCodes], &uiSizeOfSubCode);
+      pzNewCode = GetNextCreditCode(addressof(zCodes[uiDistanceIntoCodes]), addressof(uiSizeOfSubCode));
 
       // if we are done getting the sub codes
       if (pzNewCode == NULL) {
@@ -950,7 +950,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], "%d%*s", &uiNewDelay);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(uiNewDelay));
 
     //		guiCrdtDelayBetweenNodes = uiNewDelay;
     guiGapBetweenCreditNodes = uiNewDelay;
@@ -963,7 +963,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiNewDelay: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], "%d%*s", &uiNewDelay);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(uiNewDelay));
 
     //		guiCrdtDelayBetweenCreditSection = uiNewDelay;
     guiGapBetweenCreditSections = uiNewDelay;
@@ -975,7 +975,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiScrollSpeed: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], "%d%*s", &uiScrollSpeed);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(uiScrollSpeed));
 
     guiCrdtNodeScrollSpeed = uiScrollSpeed;
 
@@ -986,7 +986,7 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
     let uiJustification: UINT32 = 0;
 
     // Get the delay from the string
-    swscanf(&pzCode[1], "%d%*s", &uiJustification);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(uiJustification));
 
     // get the justification
     switch (uiJustification) {
@@ -1008,14 +1008,14 @@ function GetAndHandleCreditCodeFromCodeString(pzCode: STR16): UINT32 {
 
   else if (pzCode[0] == CRDT_TITLE_FONT_COLOR) {
     // Get the new color for the title
-    swscanf(&pzCode[1], "%d%*s", &gubCreditScreenTitleColor);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(gubCreditScreenTitleColor));
 
     return CRDT_NODE_NONE;
   }
 
   else if (pzCode[0] == CRDT_ACTIVE_FONT_COLOR) {
     // Get the new color for the active text
-    swscanf(&pzCode[1], "%d%*s", &gubCreditScreenActiveColor);
+    swscanf(addressof(pzCode[1]), "%d%*s", addressof(gubCreditScreenActiveColor));
 
     return CRDT_NODE_NONE;
   }
@@ -1125,7 +1125,7 @@ function HandleCreditEyeBlinking(): void {
   let hPixHandle: HVOBJECT;
   let ubCnt: UINT8;
 
-  GetVideoObject(&hPixHandle, guiCreditFaces);
+  GetVideoObject(addressof(hPixHandle), guiCreditFaces);
 
   for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
     if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > gCreditFaces[ubCnt].sBlinkFreq) {

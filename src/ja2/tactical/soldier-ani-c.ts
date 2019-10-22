@@ -185,7 +185,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let sYPos: INT16;
 
             // usNewGridNo = NewGridNo( (UINT16)pSoldier->sGridNo, (UINT16)DirectionInc( pSoldier->bDirection ) );
-            ConvertMapPosToWorldTileCenter(pSoldier.value.sTempNewGridNo, &sXPos, &sYPos);
+            ConvertMapPosToWorldTileCenter(pSoldier.value.sTempNewGridNo, addressof(sXPos), addressof(sYPos));
             EVENT_SetSoldierPosition(pSoldier, sXPos, sYPos);
           }
           // Move two CC directions
@@ -269,7 +269,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           SFireWeapon.sTargetGridNo = pSoldier.value.sTargetGridNo;
           SFireWeapon.bTargetLevel = pSoldier.value.bTargetLevel;
           SFireWeapon.bTargetCubeLevel = pSoldier.value.bTargetCubeLevel;
-          AddGameEvent(S_FIREWEAPON, 0, &SFireWeapon);
+          AddGameEvent(S_FIREWEAPON, 0, addressof(SFireWeapon));
           break;
 
         case 431:
@@ -376,7 +376,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               SoundStop(pSoldier.value.uiPendingActionData1);
             }
 
-            CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
+            CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
 
             if (fMadeCorpse) {
               return FALSE;
@@ -409,7 +409,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let sYPos: INT16;
 
             usNewGridNo = NewGridNo(pSoldier.value.sGridNo, DirectionInc(pSoldier.value.bDirection));
-            ConvertGridNoToCenterCellXY(usNewGridNo, &sXPos, &sYPos);
+            ConvertGridNoToCenterCellXY(usNewGridNo, addressof(sXPos), addressof(sYPos));
             LightSpritePosition(pSoldier.value.iMuzFlash, (sXPos / CELL_X_SIZE), (sYPos / CELL_Y_SIZE));
 
             // Start count
@@ -823,7 +823,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             sTempGridNo = NewGridNo(pSoldier.value.sGridNo, (DirectionInc(pSoldier.value.bDirection)));
 
             // Get center XY
-            ConvertGridNoToCenterCellXY(sTempGridNo, &sNewX, &sNewY);
+            ConvertGridNoToCenterCellXY(sTempGridNo, addressof(sNewX), addressof(sNewY));
 
             // Set position
             EVENT_SetSoldierPosition(pSoldier, sNewX, sNewY);
@@ -887,7 +887,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           //	sNewGridNo =  FindGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 5, &ubNewDirection );
           // sNewGridNo =  FindRandomGridNoFromSweetSpotExcludingSweetSpot( pSoldier, pSoldier->sGridNo, 3, &ubNewDirection );
 
-          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.value.sGridNo, 3, &ubNewDirection, SOUTHEAST);
+          sNewGridNo = FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier, pSoldier.value.sGridNo, 3, addressof(ubNewDirection), SOUTHEAST);
 
           // Check for merc arrives quotes...
           HandleMercArrivesQuotes(pSoldier);
@@ -1281,7 +1281,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
                 // Check which animation to play....
                 for (cnt = 0; cnt < MAX_RANDOM_ANIMS_PER_BODYTYPE; cnt++) {
-                  pAnimDef = &(gRandomAnimDefs[pSoldier.value.ubBodyType][cnt]);
+                  pAnimDef = addressof(gRandomAnimDefs[pSoldier.value.ubBodyType][cnt]);
 
                   if (pAnimDef.value.sAnimID != 0) {
                     // If it's an injured animation and we are not in the threashold....
@@ -1372,8 +1372,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let uiMercFlags: UINT32;
             let usSoldierIndex: UINT16;
 
-            if (FindSoldier(pSoldier.value.sTargetGridNo, &usSoldierIndex, &uiMercFlags, FIND_SOLDIER_GRIDNO)) {
-              GetSoldier(&pTSoldier, usSoldierIndex);
+            if (FindSoldier(pSoldier.value.sTargetGridNo, addressof(usSoldierIndex), addressof(uiMercFlags), FIND_SOLDIER_GRIDNO)) {
+              GetSoldier(addressof(pTSoldier), usSoldierIndex);
 
               // IF WE ARE AN ANIMAL, CAR, MONSTER, DONT'T DODGE
               if (IS_MERC_BODY_TYPE(pTSoldier)) {
@@ -1557,7 +1557,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             } else {
               let fMadeCorpse: BOOLEAN;
 
-              CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
+              CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
 
               // ATE: Needs to be FALSE!
               return FALSE;
@@ -2094,7 +2094,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             if (ubPerson != NOBODY && MercPtrs[ubPerson].value.uiStatusFlags & SOLDIER_ROBOT) {
               pRobot = MercPtrs[ubPerson];
 
-              ReloadGun(pRobot, &(pRobot.value.inv[HANDPOS]), pSoldier.value.pTempObject);
+              ReloadGun(pRobot, addressof(pRobot.value.inv[HANDPOS]), pSoldier.value.pTempObject);
 
               // OK, check what was returned and place in inventory if it's non-zero
               if (pSoldier.value.pTempObject.value.usItem != NOTHING) {
@@ -3066,14 +3066,14 @@ function CheckForAndHandleSoldierDyingNotFromHit(pSoldier: Pointer<SOLDIERTYPE>)
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Soldier Control: Death state %d has no death hit", pSoldier.value.usAnimState));
           {
             let fMadeCorpse: BOOLEAN;
-            CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
+            CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
           }
           break;
       }
     } else {
       let fMadeCorpse: BOOLEAN;
 
-      CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
+      CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
     }
     return TRUE;
   }
@@ -3205,7 +3205,7 @@ function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel:
     // and use that gridno
     sTestGridNo = NewGridNo(sGridNo, (DirectionInc(gOppositeDirection[bTestDirection])));
 
-    if (!OkayToAddStructureToWorld(sTestGridNo, bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bTestDirection]]), usStructureID)) {
+    if (!OkayToAddStructureToWorld(sTestGridNo, bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bTestDirection]]), usStructureID)) {
       // can't go in that dir!
       return FALSE;
     }

@@ -48,7 +48,7 @@ function CreateNewAIListEntry(ubNewEntry: UINT8, ubID: UINT8, bPriority: INT8): 
   gAIList[ubNewEntry].ubID = ubID;
   gAIList[ubNewEntry].bPriority = bPriority;
   gAIList[ubNewEntry].pNext = NULL;
-  return &(gAIList[ubNewEntry]);
+  return addressof(gAIList[ubNewEntry]);
 }
 
 function RemoveFirstAIListEntry(): UINT8 {
@@ -264,7 +264,7 @@ function BuildAIListForTeam(bTeam: INT8): BOOLEAN {
     // non-null merc slot ensures active
     pSoldier = MercSlots[uiLoop];
     if (pSoldier && pSoldier.value.bTeam == bTeam) {
-      if (!SatisfiesAIListConditions(pSoldier, &ubDoneCount, TRUE)) {
+      if (!SatisfiesAIListConditions(pSoldier, addressof(ubDoneCount), TRUE)) {
         continue;
       }
 

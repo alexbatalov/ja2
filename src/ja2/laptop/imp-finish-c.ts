@@ -333,10 +333,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\00.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -349,10 +349,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\01.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -365,10 +365,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\02.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -384,10 +384,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\03.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -400,10 +400,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\04.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -416,10 +416,10 @@ function RenderCharProfileFinishFace(): BOOLEAN {
         // load it
         VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
         FilenameForBPP("Faces\\SmallFaces\\05.sti", VObjectDesc.ImageFile);
-        CHECKF(AddVideoObject(&VObjectDesc, &uiGraphicHandle));
+        CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiGraphicHandle)));
 
         // show it
-        GetVideoObject(&hHandle, uiGraphicHandle);
+        GetVideoObject(addressof(hHandle), uiGraphicHandle);
         BltVideoObject(FRAME_BUFFER, hHandle, 0, LAPTOP_SCREEN_UL_X + sFaceX, LAPTOP_SCREEN_WEB_UL_Y + sFaceY, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // and kick it's sorry ..umm never mind, outta here
@@ -451,7 +451,7 @@ function RenderCharFullName(): void {
 
   swprintf(sString, pIMPFinishStrings[0], pFullName);
 
-  FindFontCenterCoordinates(LAPTOP_SCREEN_UL_X, 0, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, 0, sString, FONT14ARIAL, &sX, &sY);
+  FindFontCenterCoordinates(LAPTOP_SCREEN_UL_X, 0, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, 0, sString, FONT14ARIAL, addressof(sX), addressof(sY));
   mprintf(sX, LAPTOP_SCREEN_WEB_DELTA_Y + 33, sString);
   return;
 }
@@ -463,7 +463,7 @@ function LoadCharacterPortrait(): BOOLEAN {
   // load it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARACTERPORTRAIT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAIT)));
 
   return TRUE;
 }

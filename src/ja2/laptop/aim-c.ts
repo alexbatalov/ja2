@@ -173,77 +173,77 @@ function EnterAIM(): BOOLEAN {
   // load the MemberShipcard graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\membercard.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMemberCard));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMemberCard)));
 
   // load the Policies graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Policies.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPolicies));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPolicies)));
 
   // load the Links graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Links.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLinks));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLinks)));
 
   // load the History graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_HISTORY);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiHistory));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHistory)));
 
   // load the Wanring graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_WARNING);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiWarning));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiWarning)));
 
   // load the flower advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\flowerad_16.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFlowerAdvertisement));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerAdvertisement)));
 
   // load the your ad advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_YOURAD13);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAdForAdsImages));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAdForAdsImages)));
 
   // load the insurance advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_INSURANCEAD10);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceAdImages));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsuranceAdImages)));
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_FUNERALAD9);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFuneralAdImages));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFuneralAdImages)));
 
   // load the funeral advertisment and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_BOBBYRAYAD21);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBobbyRAdImages));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRAdImages)));
 
   //** Mouse Regions **
 
   // Mouse region for the MebershipCard
-  MSYS_DefineRegion(&gSelectedMemberCardRegion, MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
-  MSYS_AddRegion(&gSelectedMemberCardRegion);
+  MSYS_DefineRegion(addressof(gSelectedMemberCardRegion), MEMBERCARD_X, MEMBERCARD_Y, (MEMBERCARD_X + LINK_SIZE_X), (MEMBERCARD_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectMemberCardRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedMemberCardRegion));
 
   // Mouse region for the Policies
-  MSYS_DefineRegion(&gSelectedPoliciesRegion, POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
-  MSYS_AddRegion(&gSelectedPoliciesRegion);
+  MSYS_DefineRegion(addressof(gSelectedPoliciesRegion), POLICIES_X, POLICIES_Y, (POLICIES_X + LINK_SIZE_X), (POLICIES_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPoliciesRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedPoliciesRegion));
 
   // Mouse region for the History
-  MSYS_DefineRegion(&gSelectedHistoryRegion, HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
-  MSYS_AddRegion(&gSelectedHistoryRegion);
+  MSYS_DefineRegion(addressof(gSelectedHistoryRegion), HISTORY_X, HISTORY_Y, (HISTORY_X + LINK_SIZE_X), (HISTORY_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedHistoryRegion));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(&gSelectedLinksRegion, LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
-  MSYS_AddRegion(&gSelectedLinksRegion);
+  MSYS_DefineRegion(addressof(gSelectedLinksRegion), LINKS_X, LINKS_Y, (LINKS_X + LINK_SIZE_X), (LINKS_Y + LINK_SIZE_Y), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinksRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedLinksRegion));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(&gSelectedBannerRegion, AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
-  MSYS_AddRegion(&gSelectedBannerRegion);
+  MSYS_DefineRegion(addressof(gSelectedBannerRegion), AIM_AD_TOP_LEFT_X, AIM_AD_TOP_LEFT_Y, AIM_AD_BOTTOM_RIGHT_X, AIM_AD_BOTTOM_RIGHT_Y, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBannerRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedBannerRegion));
 
   // disable the region because only certain banners will be 'clickable'
-  MSYS_DisableRegion(&gSelectedBannerRegion);
+  MSYS_DisableRegion(addressof(gSelectedBannerRegion));
 
   gubAimMenuButtonDown = 255;
 
@@ -272,11 +272,11 @@ function ExitAIM(): void {
   DeleteVideoObjectFromIndex(guiBobbyRAdImages);
 
   // Remove Mouse Regions
-  MSYS_RemoveRegion(&gSelectedMemberCardRegion);
-  MSYS_RemoveRegion(&gSelectedPoliciesRegion);
-  MSYS_RemoveRegion(&gSelectedLinksRegion);
-  MSYS_RemoveRegion(&gSelectedHistoryRegion);
-  MSYS_RemoveRegion(&gSelectedBannerRegion);
+  MSYS_RemoveRegion(addressof(gSelectedMemberCardRegion));
+  MSYS_RemoveRegion(addressof(gSelectedPoliciesRegion));
+  MSYS_RemoveRegion(addressof(gSelectedLinksRegion));
+  MSYS_RemoveRegion(addressof(gSelectedHistoryRegion));
+  MSYS_RemoveRegion(addressof(gSelectedBannerRegion));
 }
 
 function HandleAIM(): void {
@@ -294,19 +294,19 @@ function RenderAIM(): void {
   DrawAimDefaults();
 
   // MemberCard
-  GetVideoObject(&hMemberCardHandle, guiMemberCard);
+  GetVideoObject(addressof(hMemberCardHandle), guiMemberCard);
   BltVideoObject(FRAME_BUFFER, hMemberCardHandle, 0, MEMBERCARD_X, MEMBERCARD_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Policies
-  GetVideoObject(&hPoliciesHandle, guiPolicies);
+  GetVideoObject(addressof(hPoliciesHandle), guiPolicies);
   BltVideoObject(FRAME_BUFFER, hPoliciesHandle, 0, POLICIES_X, POLICIES_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Links
-  GetVideoObject(&hLinksHandle, guiLinks);
+  GetVideoObject(addressof(hLinksHandle), guiLinks);
   BltVideoObject(FRAME_BUFFER, hLinksHandle, 0, LINKS_X, LINKS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // History
-  GetVideoObject(&hHistoryHandle, guiHistory);
+  GetVideoObject(addressof(hHistoryHandle), guiHistory);
   BltVideoObject(FRAME_BUFFER, hHistoryHandle, 0, HISTORY_X, HISTORY_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Draw the aim slogan under the symbol
@@ -370,16 +370,16 @@ function InitAimDefaults(): BOOLEAN {
   // load the Rust bacground graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\rustbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiRustBackGround));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiRustBackGround)));
 
   // load the Aim Symbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_AIMSYMBOL);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAimSymbol));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAimSymbol)));
 
   // Mouse region for the Links
-  MSYS_DefineRegion(&gSelectedAimLogo, AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
-  MSYS_AddRegion(&gSelectedAimLogo);
+  MSYS_DefineRegion(addressof(gSelectedAimLogo), AIM_SYMBOL_X, AIM_SYMBOL_Y, AIM_SYMBOL_X + AIM_SYMBOL_WIDTH, AIM_SYMBOL_Y + AIM_SYMBOL_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectAimLogoRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedAimLogo));
 
   return TRUE;
 }
@@ -387,7 +387,7 @@ function InitAimDefaults(): BOOLEAN {
 function RemoveAimDefaults(): BOOLEAN {
   DeleteVideoObjectFromIndex(guiRustBackGround);
   DeleteVideoObjectFromIndex(guiAimSymbol);
-  MSYS_RemoveRegion(&gSelectedAimLogo);
+  MSYS_RemoveRegion(addressof(gSelectedAimLogo));
 
   return TRUE;
 }
@@ -401,7 +401,7 @@ function DrawAimDefaults(): BOOLEAN {
   let uiPosY: UINT16;
 
   // Blt the rust background
-  GetVideoObject(&hRustBackGroundHandle, guiRustBackGround);
+  GetVideoObject(addressof(hRustBackGroundHandle), guiRustBackGround);
 
   uiPosY = RUSTBACKGROUND_1_Y;
   for (y = 0; y < 4; y++) {
@@ -414,7 +414,7 @@ function DrawAimDefaults(): BOOLEAN {
   }
 
   // Aim Symbol
-  GetVideoObject(&hAimSymbolHandle, guiAimSymbol);
+  GetVideoObject(addressof(hAimSymbolHandle), guiAimSymbol);
   BltVideoObject(FRAME_BUFFER, hAimSymbolHandle, 0, AIM_SYMBOL_X, AIM_SYMBOL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   return TRUE;
@@ -600,7 +600,7 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
 
   switch (gubCurrentAdvertisment) {
     case AIM_AD_WARNING_BOX:
-      MSYS_DisableRegion(&gSelectedBannerRegion);
+      MSYS_DisableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DrawWarningBox(fInit, fRedraw);
       break;
 
@@ -610,22 +610,22 @@ function HandleAdAndWarningArea(fInit: BOOLEAN, fRedraw: BOOLEAN): void {
 
     case AIM_AD_FOR_ADS:
       // disable the region because only certain banners will be 'clickable'
-      MSYS_DisableRegion(&gSelectedBannerRegion);
+      MSYS_DisableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FOR_ADS_DELAY, AIM_AD_FOR_ADS__NUM_SUBIMAGES, guiAdForAdsImages);
       break;
 
     case AIM_AD_INSURANCE_AD:
-      MSYS_EnableRegion(&gSelectedBannerRegion);
+      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_INSURANCE_AD_DELAY, AIM_AD_INSURANCE_AD__NUM_SUBIMAGES, guiInsuranceAdImages);
       break;
 
     case AIM_AD_FUNERAL_ADS:
-      MSYS_EnableRegion(&gSelectedBannerRegion);
+      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       ubPreviousAdvertisment = DisplayAd(fInit, fRedraw, AIM_AD_FUNERAL_AD_DELAY, AIM_AD_FUNERAL_AD__NUM_SUBIMAGES, guiFuneralAdImages);
       break;
 
     case AIM_AD_BOBBY_RAY_AD:
-      MSYS_EnableRegion(&gSelectedBannerRegion);
+      MSYS_EnableRegion(addressof(gSelectedBannerRegion));
       //			ubPreviousAdvertisment = DisplayAd( fInit, fRedraw, AIM_AD_BOBBYR_AD_DELAY, AIM_AD_BOBBYR_AD__NUM_SUBIMAGES, guiBobbyRAdImages );
       ubPreviousAdvertisment = DisplayBobbyRAd(fInit, fRedraw);
       break;
@@ -642,7 +642,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     uiLastTime = 0;
     ubSubImage = 0;
     ubCount = 0;
-    MSYS_EnableRegion(&gSelectedBannerRegion);
+    MSYS_EnableRegion(addressof(gSelectedBannerRegion));
   }
 
   if (((uiCurTime - uiLastTime) > AIM_FLOWER_AD_DELAY) || fRedraw) {
@@ -651,7 +651,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     if (ubSubImage == AIM_FLOWER_NUM_SUBIMAGES) {
       if (ubCount == 0 || fRedraw) {
         // Blit the blue sky frame with text on top
-        GetVideoObject(&hAdHandle, guiFlowerAdvertisement);
+        GetVideoObject(addressof(hAdHandle), guiFlowerAdvertisement);
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // redraw new mail warning, and create new mail button, if nessacary
@@ -676,7 +676,7 @@ function DisplayFlowerAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
       } else
         return AIM_AD_NOT_DONE;
     } else {
-      GetVideoObject(&hAdHandle, guiFlowerAdvertisement);
+      GetVideoObject(addressof(hAdHandle), guiFlowerAdvertisement);
       BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // redraw new mail warning, and create new mail button, if nessacary
@@ -703,7 +703,7 @@ function DrawWarningBox(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     let hWarningHandle: HVOBJECT;
 
     // Warning
-    GetVideoObject(&hWarningHandle, guiWarning);
+    GetVideoObject(addressof(hWarningHandle), guiWarning);
     BltVideoObject(FRAME_BUFFER, hWarningHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
     uiStartLoc = AIM_HISTORY_LINE_SIZE * AIM_WARNING_1;
@@ -762,7 +762,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
     if (ubSubImage == 0) {
       if (ubCount == 0 || fRedraw) {
         // Blit the ad
-        GetVideoObject(&hAdHandle, uiAdImageIdentifier);
+        GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
         BltVideoObject(FRAME_BUFFER, hAdHandle, 0, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // redraw new mail warning, and create new mail button, if nessacary
@@ -784,7 +784,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
     } else if (ubSubImage == usNumberOfSubImages - 1) {
       if (ubCount == 0 || fRedraw) {
         // Blit the ad
-        GetVideoObject(&hAdHandle, uiAdImageIdentifier);
+        GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
         BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
         // redraw new mail warning, and create new mail button, if nessacary
@@ -801,7 +801,7 @@ function DisplayAd(fInit: BOOLEAN, fRedraw: BOOLEAN, usDelay: UINT16, usNumberOf
         ubRetVal = AIM_AD_DONE;
       }
     } else {
-      GetVideoObject(&hAdHandle, uiAdImageIdentifier);
+      GetVideoObject(addressof(hAdHandle), uiAdImageIdentifier);
       BltVideoObject(FRAME_BUFFER, hAdHandle, ubSubImage, WARNING_X, WARNING_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // redraw new mail warning, and create new mail button, if nessacary
@@ -885,7 +885,7 @@ function DisplayBobbyRAd(fInit: BOOLEAN, fRedraw: BOOLEAN): BOOLEAN {
     let hAdHandle: HVOBJECT;
 
     // Loop through the first 6 images twice, then start into the later ones
-    GetVideoObject(&hAdHandle, guiBobbyRAdImages);
+    GetVideoObject(addressof(hAdHandle), guiBobbyRAdImages);
 
     // if we are still looping through the first 6 animations
     if (ubDuckCount < 2) {

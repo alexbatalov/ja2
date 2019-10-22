@@ -514,13 +514,13 @@ function DisplayDestinationOfCurrentDestMerc(): void {
 
   SetFont(MAP_SCREEN_FONT);
 
-  sSector = GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]);
+  sSector = GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
   SetBoxForeground(ghVehicleBox, FONT_LTGREEN);
   SetBoxBackground(ghVehicleBox, FONT_BLACK);
 
   swprintf(sString, "%s%s", pMapVertIndex[sSector / MAP_WORLD_X], pMapHortIndex[sSector % MAP_WORLD_X]);
-  FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT), sString, MAP_SCREEN_FONT, &sX, &sY);
+  FindFontCenterCoordinates(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT), sString, MAP_SCREEN_FONT, addressof(sX), addressof(sY));
 
   RestoreExternBackgroundRect(DEST_PLOT_X, DEST_PLOT_Y, 70, GetFontHeight(MAP_SCREEN_FONT));
   mprintf(sX, sY, sString);
@@ -630,7 +630,7 @@ function ContractListRegionBoxGlow(usCount: UINT16): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, TIME_REMAINING_X, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
   InvalidateRegion(TIME_REMAINING_X - 1, usY, TIME_REMAINING_X + TIME_REMAINING_WIDTH + 1, usY + GetFontHeight(MAP_SCREEN_FONT) + 3);
@@ -684,7 +684,7 @@ function GlowFace(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, 9, 18, 60, 63, usColor, pDestBuf);
   InvalidateRegion(9, 18, 61, 64);
@@ -742,7 +742,7 @@ function GlowItem(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, 3, 80, 64, 104, usColor, pDestBuf);
   InvalidateRegion(3, 80, 65, 105);
@@ -783,7 +783,7 @@ function GlowTrashCan(): void {
 
   // glow contract box
   usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, usColor, pDestBuf);
   InvalidateRegion(TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH + 1, TRASH_CAN_Y + TRASH_CAN_HEIGHT + 1);
@@ -803,7 +803,7 @@ function DrawFace(sCharNumber: INT16): void {
   // grab the soldier
   if (bSelectedInfoChar != -1) {
     if (gCharactersList[bSelectedInfoChar].fValid) {
-      GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
+      GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
     }
   }
 
@@ -840,7 +840,7 @@ function RenderHandPosItem(): void {
   // grab the soldier
   if (bSelectedInfoChar != -1) {
     if (gCharactersList[bSelectedInfoChar].fValid) {
-      GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
+      GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
     }
   }
 
@@ -857,13 +857,13 @@ function RenderHandPosItem(): void {
   SetFontForeground(CHAR_INFO_PANEL_BLOCK_COLOR);
   SetFontBackground(FONT_BLACK);
 
-  INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier.value.inv[HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, NULL, 0, FALSE, 0);
+  INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[HANDPOS]), SOLDIER_HAND_X, SOLDIER_HAND_Y, 58, 23, DIRTYLEVEL2, NULL, 0, FALSE, 0);
 }
 
 function RenderIconsForUpperLeftCornerPiece(bCharNumber: INT8): void {
   let hHandle: HVOBJECT;
 
-  GetVideoObject(&hHandle, guiULICONS);
+  GetVideoObject(addressof(hHandle), guiULICONS);
 
   // if merc is an AIM merc
   if (Menptr[gCharactersList[bCharNumber].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
@@ -906,7 +906,7 @@ function DrawPay(sCharNumber: INT16): void {
   swprintf(sString, "%d", uiSalary);
 
   // right justify salary
-  FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(CHAR_PAY_X, CHAR_PAY_Y, CHAR_PAY_WID, CHAR_PAY_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
 
   // draw salary
   DrawString(sString, usX, usY, CHAR_FONT);
@@ -930,7 +930,7 @@ function DrawCharBars(): void {
     }
 
     // grab soldier's id number
-    GetSoldier(&pSoldier, usSoldierID);
+    GetSoldier(addressof(pSoldier), usSoldierID);
 
     if (pSoldier == NULL) {
       // no soldier
@@ -969,7 +969,7 @@ function DrawCharStats(sCharNum: INT16): void {
   // HVOBJECT hCrossHandle;
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
-  pSoldier = &Menptr[gCharactersList[sCharNum].usSolID];
+  pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
   // set up font
   SetFont(CHAR_FONT);
@@ -990,7 +990,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(STR_X, STR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, STR_Y, CHAR_FONT);
 
   // dexterity
@@ -1007,7 +1007,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(DEX_X, DEX_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, DEX_Y, CHAR_FONT);
 
   // agility
@@ -1024,7 +1024,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(AGL_X, AGL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, AGL_Y, CHAR_FONT);
 
   // wisdom
@@ -1041,7 +1041,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(WIS_X, WIS_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, WIS_Y, CHAR_FONT);
 
   // leadership
@@ -1058,7 +1058,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(LDR_X, LDR_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, LDR_Y, CHAR_FONT);
 
   // experience level
@@ -1075,7 +1075,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(LVL_X, LVL_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, LVL_Y, CHAR_FONT);
 
   // marksmanship
@@ -1092,7 +1092,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(MRK_X, MRK_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, MRK_Y, CHAR_FONT);
 
   // explosives
@@ -1109,7 +1109,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(EXP_X, EXP_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, EXP_Y, CHAR_FONT);
 
   // mechanical
@@ -1126,7 +1126,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(MEC_X, MEC_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, MEC_Y, CHAR_FONT);
 
   // medical
@@ -1143,7 +1143,7 @@ function DrawCharStats(sCharNum: INT16): void {
   }
 
   // right justify
-  FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(MED_X, MED_Y, STAT_WID, STAT_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, MED_Y, CHAR_FONT);
 
   SetFontForeground(CHAR_TEXT_FONT_COLOR);
@@ -1158,12 +1158,12 @@ function DrawCharHealth(sCharNum: INT16): void {
   let usY: UINT16;
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
-  pSoldier = &Menptr[gCharactersList[sCharNum].usSolID];
+  pSoldier = addressof(Menptr[gCharactersList[sCharNum].usSolID]);
 
   if (pSoldier.value.bAssignment != ASSIGNMENT_POW) {
     // find starting X coordinate by centering all 3 substrings together, then print them separately (different colors)!
     swprintf(sString, "%d/%d", pSoldier.value.bLife, pSoldier.value.bLifeMax);
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, &usX, &usY);
+    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
 
     if (pSoldier.value.bLifeMax > 0) {
       uiHealthPercent = (pSoldier.value.bLife * 100) / pSoldier.value.bLifeMax;
@@ -1212,7 +1212,7 @@ function DrawCharHealth(sCharNum: INT16): void {
     // POW - health unknown
     SetFontForeground(CHAR_TEXT_FONT_COLOR);
     swprintf(sString, pPOWStrings[1]);
-    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, &usX, &usY);
+    FindFontCenterCoordinates(CHAR_HP_X, CHAR_HP_Y, CHAR_HP_WID, CHAR_HP_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
     DrawString(sString, usX, CHAR_HP_Y, CHAR_FONT);
   }
 
@@ -1260,7 +1260,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, gMercProfiles[usMercProfileID].zNickname);
   }
 
-  FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontCenterCoordinates(PIC_NAME_X, PIC_NAME_Y, PIC_NAME_WID, PIC_NAME_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // Full name (Top Box)
@@ -1272,7 +1272,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, gMercProfiles[usMercProfileID].zName);
   }
 
-  FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontCenterCoordinates(CHAR_NAME_X, CHAR_NAME_Y, CHAR_NAME_WID, CHAR_NAME_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // Assignment
@@ -1283,7 +1283,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     wcscpy(sString, pAssignmentStrings[pSoldier.value.bAssignment]);
   }
 
-  FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN1_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // second assignment line
@@ -1333,7 +1333,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   }
 
   if (wcslen(sString) > 0) {
-    FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, &usX, &usY);
+    FindFontCenterCoordinates(CHAR_ASSIGN_X, CHAR_ASSIGN2_Y, CHAR_ASSIGN_WID, CHAR_ASSIGN_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
     DrawString(sString, usX, usY, CHAR_FONT);
   }
 
@@ -1416,7 +1416,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   SetFontBackground(FONT_BLACK);
 
   // center and draw
-  FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontCenterCoordinates(CHAR_TIME_REMAINING_X, CHAR_TIME_REMAINING_Y, CHAR_TIME_REMAINING_WID, CHAR_TIME_REMAINING_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // salary
@@ -1440,7 +1440,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
   InsertCommasForDollarFigure(sString);
   InsertDollarSignInToString(sString);
 
-  FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontRightCoordinates(CHAR_SALARY_X, CHAR_SALARY_Y, CHAR_SALARY_WID, CHAR_SALARY_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, usY, CHAR_FONT);
 
   // medical deposit
@@ -1451,7 +1451,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI, sString, CHAR_FONT, &usX, &usY);
+    FindFontRightCoordinates(CHAR_MEDICAL_X, CHAR_MEDICAL_Y, CHAR_MEDICAL_WID, CHAR_MEDICAL_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
     DrawString(sString, usX, CHAR_MEDICAL_Y, CHAR_FONT);
   }
 
@@ -1476,7 +1476,7 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     swprintf(sString, pPOWStrings[1]);
   }
 
-  FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT, &usX, &usY);
+  FindFontCenterCoordinates(CHAR_MORALE_X, CHAR_MORALE_Y, CHAR_MORALE_WID, CHAR_MORALE_HEI, sString, CHAR_FONT, addressof(usX), addressof(usY));
   DrawString(sString, usX, CHAR_MORALE_Y, CHAR_FONT);
 
   return;
@@ -1559,7 +1559,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       pGroup = GetGroup(ubGroupId);
 
       if (pGroup == NULL) {
-        SetUpMvtGroupForVehicle(&(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
+        SetUpMvtGroupForVehicle(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
         // get vehicle id
         ubGroupId = pVehicleList[Menptr[gCharactersList[bSelectedDestChar].usSolID].iVehicleId].ubMovementGroup;
@@ -1570,7 +1570,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       pGroup = GetGroup(ubGroupId);
 
       if (pGroup == NULL) {
-        SetUpMvtGroupForVehicle(&(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
+        SetUpMvtGroupForVehicle(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
         // get vehicle id
         ubGroupId = pVehicleList[Menptr[gCharactersList[bSelectedDestChar].usSolID].bVehicleID].ubMovementGroup;
@@ -1609,7 +1609,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       pNext.x = (pPath.value.pNext.value.uiSectorId % MAP_WORLD_X);
       pNext.y = (pPath.value.pNext.value.uiSectorId / MAP_WORLD_X);
 
-      iTravelTime += FindTravelTimeBetweenWaypoints(&pCurrent, &pNext, pGroup);
+      iTravelTime += FindTravelTimeBetweenWaypoints(addressof(pCurrent), addressof(pNext), pGroup);
     } else {
       fSkipFirstNode = FALSE;
     }
@@ -1699,7 +1699,7 @@ function HighLightAssignLine(): void {
     usY += 6;
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -1766,7 +1766,7 @@ function HighLightDestLine(): void {
   else
     iColorNum--;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -1836,7 +1836,7 @@ function HighLightSleepLine(): void {
   else
     iColorNum--;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   for (usCount = 0; usCount < MAX_CHARACTER_COUNT; usCount++) {
@@ -2055,11 +2055,11 @@ function MapScreenInit(): UINT32 {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\group_confirm.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiUpdatePanel));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanel)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\group_confirm_tactical.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiUpdatePanelTactical));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiUpdatePanelTactical)));
 
   return TRUE;
 }
@@ -2179,33 +2179,33 @@ function MapScreenHandle(): UINT32 {
       // Grab the Map image
 
       strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
-      CHECKF(AddVideoSurface(&vs_desc, &guiBIGMAP));
+      CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP)));
 
       strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
-      CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
+      CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\SAM.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSAMICON));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON)));
 
       // VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       // FilenameForBPP("INTERFACE\\s_map.sti", VObjectDesc.ImageFile);
       // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMAPCURSORS));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Mine_1.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel1));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Mine_2.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel2));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Mine_3.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel3));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3)));
       // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
       // FilenameForBPP("INTERFACE\\addonslcp.sti", VObjectDesc.ImageFile);
       // CHECKF(AddVideoObject(&VObjectDesc, &guiCORNERADDONS));
@@ -2216,17 +2216,17 @@ function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\sleepicon.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSleepIcon));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\charinfo.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCHARINFO));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO)));
       /*strcpy(vs_desc.ImageFile, "INTERFACE\\playlist3.pcx");
       CHECKF(AddVideoSurface( &vs_desc, &guiCHARLIST ));*/
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\newgoldpiece3.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCHARLIST));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST)));
 
       // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
       // FilenameForBPP("INTERFACE\\mapbordercorner.sti", VObjectDesc.ImageFile);
@@ -2238,76 +2238,76 @@ function MapScreenHandle(): UINT32 {
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\boxes.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCHARICONS));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\incross.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCROSS));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\mapinv.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMAPINV));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMapInvSecondHandBlockout));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout)));
 
       // the upper left corner piece icons
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\top_left_corner_icons.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiULICONS));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\map_item.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiORTAICON));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\prison.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiTIXAICON));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCHARBETWEENSECTORICONS));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiCHARBETWEENSECTORICONSCLOSE));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\GreenArr.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiLEVELMARKER));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\Helicop.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiHelicopterIcon));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\eta_pop_up.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMapBorderEtaPopUp));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\pos2.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMapBorderHeliSectors));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSecItemHiddenVO));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\selectedchararrow.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiSelectedCharArrow));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\mine.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiMINEICON));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON)));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       sprintf(VObjectDesc.ImageFile, "INTERFACE\\hilite.sti");
-      AddVideoObject(&VObjectDesc, &guiSectorLocatorGraphicID);
+      AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("INTERFACE\\BullsEye.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &guiBULLSEYE));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE)));
 
       HandleLoadOfMapBottomGraphics();
 
@@ -2320,7 +2320,7 @@ function MapScreenHandle(): UINT32 {
       // Kris:  Added this because I need to blink the icons button.
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       sprintf(VObjectDesc.ImageFile, "INTERFACE\\newemail.sti");
-      AddVideoObject(&VObjectDesc, &guiNewMailIcons);
+      AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
     }
 
     // create buttons
@@ -2347,7 +2347,7 @@ function MapScreenHandle(): UINT32 {
 
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiBrownBackgroundForTeamPanel));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
 
     // we are in fact in the map, do not repeat this sequence
     fInMapMode = TRUE;
@@ -2396,16 +2396,16 @@ function MapScreenHandle(): UINT32 {
     LoadCharacters();
 
     // set up regions
-    MSYS_DefineRegion(&gMapViewRegion, MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 1 + 8, MSYS_PRIORITY_HIGH - 3, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-    MSYS_DefineRegion(&gCharInfoHandRegion, ((4)), ((81)), ((62)), ((103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
-    MSYS_DefineRegion(&gCharInfoFaceRegion, PLAYER_INFO_FACE_START_X, PLAYER_INFO_FACE_START_Y, PLAYER_INFO_FACE_END_X, PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
+    MSYS_DefineRegion(addressof(gMapViewRegion), MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 1 + 8, MSYS_PRIORITY_HIGH - 3, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gCharInfoHandRegion), ((4)), ((81)), ((62)), ((103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
+    MSYS_DefineRegion(addressof(gCharInfoFaceRegion), PLAYER_INFO_FACE_START_X, PLAYER_INFO_FACE_START_Y, PLAYER_INFO_FACE_END_X, PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
 
-    MSYS_DefineRegion(&gMPanelRegion, INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gMPanelRegion), INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
     // screen mask for animated cursors
-    MSYS_DefineRegion(&gMapScreenMaskRegion, 0, 0, 640, 480, MSYS_PRIORITY_LOW, CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
+    MSYS_DefineRegion(addressof(gMapScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_LOW, CURSOR_NORMAL, MSYS_NO_CALLBACK, MapScreenMarkRegionBtnCallback);
 
     // set help text for item glow region
-    SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
 
     // init the timer menus
     InitTimersForMoveMenuMouseRegions();
@@ -2432,14 +2432,14 @@ function MapScreenHandle(): UINT32 {
     CreateMapStatusBarsRegion();
 
     // Add region
-    MSYS_AddRegion(&gMapViewRegion);
-    MSYS_AddRegion(&gCharInfoFaceRegion);
-    MSYS_AddRegion(&gMPanelRegion);
+    MSYS_AddRegion(addressof(gMapViewRegion));
+    MSYS_AddRegion(addressof(gCharInfoFaceRegion));
+    MSYS_AddRegion(addressof(gMPanelRegion));
 
     if (!gfFadeOutDone && !gfFadeIn) {
       MSYS_SetCurrentCursor(SCREEN_CURSOR);
     }
-    MSYS_DisableRegion(&gMPanelRegion);
+    MSYS_DisableRegion(addressof(gMPanelRegion));
 
     // create contract box
     CreateContractBox(NULL);
@@ -2801,7 +2801,7 @@ function MapScreenHandle(): UINT32 {
     } else {
       fShowInventoryFlag = FALSE;
       // set help text for item glow region
-      SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
     }
 
     fTeamPanelDirty = TRUE;
@@ -3100,9 +3100,9 @@ function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
   let usY: UINT16 = 0;
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE)), NAME_WIDTH, Y_SIZE, pName, iFont, &usX, &usY);
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE)), NAME_WIDTH, Y_SIZE, pName, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), NAME_WIDTH, Y_SIZE, pName, iFont, &usX, &usY);
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), NAME_WIDTH, Y_SIZE, pName, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(NAME_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), NAME_WIDTH, Y_SIZE);
@@ -3117,9 +3117,9 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE)), ASSIGN_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE)), ASSIGN_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), ASSIGN_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), ASSIGN_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   }
 
   if (fFlashAssignDone == TRUE) {
@@ -3141,9 +3141,9 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 
   if (sRowIndex < FIRST_VEHICLE) {
     // center
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE)), LOC_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE)), LOC_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), LOC_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), LOC_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   }
   // restore background
   // RestoreExternBackgroundRect(LOC_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), LOC_WIDTH, Y_SIZE);
@@ -3164,9 +3164,9 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
   }
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE)), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE)), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(DEST_ETA_X+1, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), DEST_ETA_WIDTH-1, Y_SIZE);
@@ -3179,7 +3179,7 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   let usY: UINT16 = 0;
   let sString: wchar_t[] /* [32] */;
 
-  GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString, &ubFontColor);
+  GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString, addressof(ubFontColor));
 
   // if merc is highlighted, override the color decided above with bright white
   if (sCharNumber == giHighLine) {
@@ -3190,9 +3190,9 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   SetFontForeground(ubFontColor);
 
   if (sCharNumber < FIRST_VEHICLE) {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE)), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE)), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   } else {
-    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE) + 6), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE) + 6), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, addressof(usX), addressof(usY));
   }
 
   // RestoreExternBackgroundRect(TIME_REMAINING_X, ((UINT16)(usY+(Y_OFFSET*sCharNumber+1))), TIME_REMAINING_WIDTH, Y_SIZE);
@@ -3221,7 +3221,7 @@ function RenderMapCursorsIndexesAnims(): void {
   fDrawCursors = CanDrawSectorCursor();
 
   // if mouse cursor is over a map sector
-  if (fDrawCursors && (GetMouseMapXY(&gsHighlightSectorX, &gsHighlightSectorY))) {
+  if (fDrawCursors && (GetMouseMapXY(addressof(gsHighlightSectorX), addressof(gsHighlightSectorY)))) {
     // handle highlighting of sector pointed at ( WHITE )
 
     // if we're over a different sector than when we previously blitted this
@@ -3326,13 +3326,13 @@ function HandleMapUI(): UINT32 {
   let fWasAlreadySelected: BOOLEAN;
 
   // Get Input from keyboard
-  GetMapKeyboardInput(&uiNewEvent);
+  GetMapKeyboardInput(addressof(uiNewEvent));
 
   CreateDestroyMapInvButton();
 
   // Get mouse
-  PollLeftButtonInMapView(&uiNewEvent);
-  PollRightButtonInMapView(&uiNewEvent);
+  PollLeftButtonInMapView(addressof(uiNewEvent));
+  PollRightButtonInMapView(addressof(uiNewEvent));
 
   // Switch on event
   switch (uiNewEvent) {
@@ -3340,7 +3340,7 @@ function HandleMapUI(): UINT32 {
       break;
 
     case MAP_EVENT_PLOT_PATH:
-      GetMouseMapXY(&sMapX, &sMapY);
+      GetMouseMapXY(addressof(sMapX), addressof(sMapY));
 
       /*
                                                        // translate screen values to map grid values for zoomed in
@@ -3378,10 +3378,10 @@ function HandleMapUI(): UINT32 {
           break;
 
         // check if last sector in character's path is same as where mouse is
-        if (GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]) != (sMapX + (sMapY * MAP_WORLD_X))) {
-          sX = (GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]) % MAP_WORLD_X);
-          sY = (GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]) / MAP_WORLD_X);
-          GetCursorPos(&MousePos);
+        if (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) != (sMapX + (sMapY * MAP_WORLD_X))) {
+          sX = (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) % MAP_WORLD_X);
+          sY = (GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])) / MAP_WORLD_X);
+          GetCursorPos(addressof(MousePos));
           RestoreBackgroundForMapGrid(sX, sY);
           // fMapPanelDirty = TRUE;
         }
@@ -3391,7 +3391,7 @@ function HandleMapUI(): UINT32 {
         if ((IsTheCursorAllowedToHighLightThisSector(sMapX, sMapY) == TRUE) && (SectorInfo[(SECTOR(sMapX, sMapY))].ubTraversability[THROUGH_STRATEGIC_MOVE] != GROUNDBARRIER)) {
           // Can we get go there?  (NULL temp character path)
           if (GetLengthOfPath(pTempCharacterPath) > 0) {
-            PlotPathForCharacter(&Menptr[gCharactersList[bSelectedDestChar].usSolID], sMapX, sMapY, FALSE);
+            PlotPathForCharacter(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]), sMapX, sMapY, FALSE);
 
             // copy the path to every other selected character
             CopyPathToAllSelectedCharacters(GetSoldierMercPathPtr(MercPtrs[gCharactersList[bSelectedDestChar].usSolID]));
@@ -3436,7 +3436,7 @@ function HandleMapUI(): UINT32 {
     case MAP_EVENT_CLICK_SECTOR:
 
       // Get Current mouse position
-      if (GetMouseMapXY(&sMapX, &sMapY)) {
+      if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
         /*
                                         if( fZoomFlag == TRUE )
                                         {
@@ -3624,10 +3624,10 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
   fCtrl = _KeyDown(CTRL);
   fAlt = _KeyDown(ALT);
 
-  while (DequeueEvent(&InputEvent))
+  while (DequeueEvent(addressof(InputEvent)))
   //		while( DequeueSpecificEvent( &InputEvent, KEY_DOWN ) )		// doesn't work for some reason
   {
-    GetCursorPos(&MousePos);
+    GetCursorPos(addressof(MousePos));
 
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
@@ -4111,7 +4111,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           // Teleport: CTRL-T
           if ((fCtrl) && (CHEATER_CHEAT_LEVEL())) {
             // check if selected dest char,
-            if ((bSelectedDestChar != -1) && (fPlotForHelicopter == FALSE) && (iCurrentMapSectorZ == 0) && (GetMouseMapXY(&sMapX, &sMapY))) {
+            if ((bSelectedDestChar != -1) && (fPlotForHelicopter == FALSE) && (iCurrentMapSectorZ == 0) && (GetMouseMapXY(addressof(sMapX), addressof(sMapY)))) {
               let sDeltaX: INT16;
               let sDeltaY: INT16;
               let sPrevX: INT16;
@@ -4304,11 +4304,11 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
 
   DestroyMouseRegionsForTeamList();
 
-  MSYS_RemoveRegion(&gMapViewRegion);
-  MSYS_RemoveRegion(&gCharInfoFaceRegion);
-  MSYS_RemoveRegion(&gCharInfoHandRegion);
-  MSYS_RemoveRegion(&gMPanelRegion);
-  MSYS_RemoveRegion(&gMapScreenMaskRegion);
+  MSYS_RemoveRegion(addressof(gMapViewRegion));
+  MSYS_RemoveRegion(addressof(gCharInfoFaceRegion));
+  MSYS_RemoveRegion(addressof(gCharInfoHandRegion));
+  MSYS_RemoveRegion(addressof(gMPanelRegion));
+  MSYS_RemoveRegion(addressof(gMapScreenMaskRegion));
   fInMapMode = FALSE;
 
   // remove team panel sort button
@@ -4499,7 +4499,7 @@ function EndMapScreen(fDuringFade: BOOLEAN): void {
     PlayJA2SampleFromFile("SOUNDS\\Initial Power Up (8-11).wav", RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, "INTERFACE\\LaptopOn.sti");
-    if (!AddVideoObject(&VObjectDesc, &uiLaptopOn))
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiLaptopOn)))
       AssertMsg(0, "Failed to load data\\Interface\\LaptopOn.sti");
     BltVideoObjectFromIndex(FRAME_BUFFER, uiLaptopOn, 0, 465, 417, VO_BLT_SRCTRANSPARENCY, NULL);
     InvalidateRegion(465, 417, 480, 427);
@@ -4525,7 +4525,7 @@ function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>)
     return FALSE;
   }
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   if (fZoomFlag) {
     if (MousePos.x > MAP_GRID_X + MAP_VIEW_START_X)
@@ -4603,7 +4603,7 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
   */
 
   //	if((!fStationary)||(!fZoomFlag))
-  { GetScreenXYFromMapXY(sMapX, sMapY, &sScreenX, &sScreenY); }
+  { GetScreenXYFromMapXY(sMapX, sMapY, addressof(sScreenX), addressof(sScreenY)); }
   /*
     else
           {
@@ -4612,7 +4612,7 @@ function RenderMapHighlight(sMapX: INT16, sMapY: INT16, usLineColor: UINT16, fSt
   */
 
   // blit in the highlighted sector
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   // clip to view region
   ClipBlitsToMapViewRegionForRectangleAndABit(uiDestPitchBYTES);
@@ -4693,7 +4693,7 @@ function PollLeftButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
         if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
           fEndPlotting = FALSE;
 
-          GetMouseMapXY(&sMapX, &sMapY);
+          GetMouseMapXY(addressof(sMapX), addressof(sMapY));
 
           /*
                                                   // translate screen values to map grid values for zoomed in
@@ -4791,7 +4791,7 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
           // cancel/shorten the path
           *puiNewEvent = MAP_EVENT_CANCEL_PATH;
         } else {
-          if (GetMouseMapXY(&sMapX, &sMapY)) {
+          if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
             /*
                                                             if(fZoomFlag)
                                                             {
@@ -4847,11 +4847,11 @@ function PopupText(pFontString: Pointer<UINT16>, ...args: any[]): void {
   vswprintf(PopupString, pFontString, argptr); // process gprintf string (get output str)
   va_end(argptr);
 
-  FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1, &sX, &sY);
+  FindFontCenterCoordinates(0, 0, SCREEN_WIDTH, INTERFACE_START_Y, PopupString, LARGEFONT1, addressof(sX), addressof(sY));
 
   BltVideoSurface(FRAME_BUFFER, guiINTEXT, 0, 85, 160, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   SetFont(LARGEFONT1);
   SetFontBackground(FONT_MCOLOR_BLACK);
@@ -4920,11 +4920,11 @@ function CreateDestroyMapInvButton(): void {
     // disable allmouse regions in this space
     fTeamPanelDirty = TRUE;
 
-    InitInvSlotInterface(gMapScreenInvPocketXY, &gSCamoXY, MAPInvMoveCallback, MAPInvClickCallback, MAPInvMoveCamoCallback, MAPInvClickCamoCallback, FALSE);
-    MSYS_EnableRegion(&gMPanelRegion);
+    InitInvSlotInterface(gMapScreenInvPocketXY, addressof(gSCamoXY), MAPInvMoveCallback, MAPInvClickCallback, MAPInvMoveCamoCallback, MAPInvClickCamoCallback, FALSE);
+    MSYS_EnableRegion(addressof(gMPanelRegion));
 
     // switch hand region help text to "Exit Inventory"
-    SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
+    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
 
     // reset inventory item help text
     memset(gubMAP_HandInvDispText, 0, sizeof(gubMAP_HandInvDispText));
@@ -4938,10 +4938,10 @@ function CreateDestroyMapInvButton(): void {
     // RemoveButton( giMapInvButton );
     // UnloadButtonImage( giMapInvButtonImage );
     fTeamPanelDirty = TRUE;
-    MSYS_DisableRegion(&gMPanelRegion);
+    MSYS_DisableRegion(addressof(gMPanelRegion));
 
     // switch hand region help text to "Enter Inventory"
-    SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
 
     // force immediate reblit of item in HANDPOS now that it's not blitted while in inventory mode
     fCharacterInfoPanelDirty = TRUE;
@@ -4961,10 +4961,10 @@ function BltCharInvPanel(): void {
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
+  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
 
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
-  GetVideoObject(&hCharListHandle, guiMAPINV);
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  GetVideoObject(addressof(hCharListHandle), guiMAPINV);
   Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hCharListHandle, PLAYER_INFO_X, PLAYER_INFO_Y, 0);
   UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -5015,17 +5015,17 @@ function BltCharInvPanel(): void {
 
   // display armor value
   swprintf(sString, "%3d", ArmourPercent(pSoldier));
-  FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+  FindFontRightCoordinates(MAP_ARMOR_X, MAP_ARMOR_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display weight value
   swprintf(sString, "%3d", CalculateCarriedWeight(pSoldier));
-  FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+  FindFontRightCoordinates(MAP_WEIGHT_X, MAP_WEIGHT_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   // Display camo value
   swprintf(sString, "%3d", pSoldier.value.bCamo);
-  FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+  FindFontRightCoordinates(MAP_CAMMO_X, MAP_CAMMO_Y, MAP_PERCENT_WIDTH, MAP_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
   mprintf(usX, usY, sString);
 
   if (InKeyRingPopup()) {
@@ -5049,7 +5049,7 @@ function HandleCursorOverRifleAmmo(): void {
   }
 
   if (gfCheckForMouseOverItem) {
-    if (HandleCompatibleAmmoUI(&Menptr[gCharactersList[bSelectedInfoChar].usSolID], gbCheckForMouseOverItemPos, TRUE)) {
+    if (HandleCompatibleAmmoUI(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]), gbCheckForMouseOverItemPos, TRUE)) {
       if ((GetJA2Clock() - guiMouseOverItemTime) > 100) {
         fTeamPanelDirty = TRUE;
       }
@@ -5075,7 +5075,7 @@ function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
+  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5131,7 +5131,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
   // make sure we're here legally
   Assert(MapCharacterHasAccessibleInventory(bSelectedInfoChar));
 
-  GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
+  GetSoldier(addressof(pSoldier), gCharactersList[bSelectedInfoChar].usSolID);
 
   uiHandPos = MSYS_GetRegionUserData(pRegion, 0);
 
@@ -5149,7 +5149,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(&(pSoldier.value.inv[uiHandPos]), NULL);
+        CleanUpStack(addressof(pSoldier.value.inv[uiHandPos]), NULL);
       }
 
       // remember what it was
@@ -5181,7 +5181,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(&(pSoldier.value.inv[uiHandPos]), gpItemPointer);
+        CleanUpStack(addressof(pSoldier.value.inv[uiHandPos]), gpItemPointer);
         if (gpItemPointer.value.ubNumberOfObjects == 0) {
           MAPEndItemPointer();
         }
@@ -5194,14 +5194,14 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
         if (ValidAttachment(usNewItemIndex, usOldItemIndex)) {
           // it's an attempt to attach; bring up the inventory panel
           if (!InItemDescriptionBox()) {
-            MAPInternalInitItemDescriptionBox(&(pSoldier.value.inv[uiHandPos]), 0, pSoldier);
+            MAPInternalInitItemDescriptionBox(addressof(pSoldier.value.inv[uiHandPos]), 0, pSoldier);
           }
           return;
         } else if (ValidMerge(usNewItemIndex, usOldItemIndex)) {
           // bring up merge requestor
           // TOO PAINFUL TO DO!! --CC
           if (!InItemDescriptionBox()) {
-            MAPInternalInitItemDescriptionBox(&(pSoldier.value.inv[uiHandPos]), 0, pSoldier);
+            MAPInternalInitItemDescriptionBox(addressof(pSoldier.value.inv[uiHandPos]), 0, pSoldier);
           }
 
           /*
@@ -5232,10 +5232,10 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
         } else // items swapped
         {
           // Update mouse cursor
-          guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer.value.usItem]));
+          guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
           gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-          MSYS_ChangeRegionCursor(&gMPanelRegion, EXTERN_CURSOR);
+          MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
           MSYS_SetCurrentCursor(EXTERN_CURSOR);
           fMapInventoryItem = TRUE;
           fTeamPanelDirty = TRUE;
@@ -5301,14 +5301,14 @@ function InternalMAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // Set global indicator
-  gpItemPointer = &gItemPointer;
+  gpItemPointer = addressof(gItemPointer);
   gpItemPointerSoldier = pSoldier;
 
   // Set mouse
-  guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer.value.usItem]));
+  guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
   gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-  MSYS_ChangeRegionCursor(&gMPanelRegion, EXTERN_CURSOR);
+  MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
   fMapInventoryItem = TRUE;
   fTeamPanelDirty = TRUE;
@@ -5330,9 +5330,9 @@ function MAPBeginItemPointer(pSoldier: Pointer<SOLDIERTYPE>, ubHandPos: UINT8): 
 
   if (_KeyDown(SHIFT)) {
     // Remove all from soldier's slot
-    fOk = RemoveObjectFromSlot(pSoldier, ubHandPos, &gItemPointer);
+    fOk = RemoveObjectFromSlot(pSoldier, ubHandPos, addressof(gItemPointer));
   } else {
-    GetObjFrom(&(pSoldier.value.inv[ubHandPos]), 0, &gItemPointer);
+    GetObjFrom(addressof(pSoldier.value.inv[ubHandPos]), 0, addressof(gItemPointer));
     fOk = (gItemPointer.ubNumberOfObjects == 1);
   }
 
@@ -5348,10 +5348,10 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
   }
 
   // Set mouse
-  guiExternVo = GetInterfaceGraphicForItem(&(Item[gpItemPointer.value.usItem]));
+  guiExternVo = GetInterfaceGraphicForItem(addressof(Item[gpItemPointer.value.usItem]));
   gusExternVoSubIndex = Item[gpItemPointer.value.usItem].ubGraphicNum;
 
-  MSYS_ChangeRegionCursor(&gMPanelRegion, EXTERN_CURSOR);
+  MSYS_ChangeRegionCursor(addressof(gMPanelRegion), EXTERN_CURSOR);
   MSYS_SetCurrentCursor(EXTERN_CURSOR);
   fMapInventoryItem = TRUE;
   fTeamPanelDirty = TRUE;
@@ -5360,7 +5360,7 @@ function MAPBeginKeyRingItemPointer(pSoldier: Pointer<SOLDIERTYPE>, uiKeySlot: U
 function MAPEndItemPointer(): void {
   if (gpItemPointer != NULL) {
     gpItemPointer = NULL;
-    MSYS_ChangeRegionCursor(&gMPanelRegion, CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(addressof(gMPanelRegion), CURSOR_NORMAL);
     MSYS_SetCurrentCursor(CURSOR_NORMAL);
     fMapInventoryItem = FALSE;
     fTeamPanelDirty = TRUE;
@@ -5621,37 +5621,37 @@ function CreateMouseRegionsForTeamList(): void {
     }
 
     // name region
-    MSYS_DefineRegion(&gTeamListNameRegion[sCounter], NAME_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListNameRegion[sCounter]), NAME_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // assignment region
-    MSYS_DefineRegion(&gTeamListAssignmentRegion[sCounter], ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListAssignmentRegion[sCounter]), ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
 
     // location region (same function as name regions, so uses the same callbacks)
-    MSYS_DefineRegion(&gTeamListLocationRegion[sCounter], LOC_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListLocationRegion[sCounter]), LOC_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // destination region
-    MSYS_DefineRegion(&gTeamListDestinationRegion[sCounter], DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListDestinationRegion[sCounter]), DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(&gTeamListContractRegion[sCounter], TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListContractRegion[sCounter]), TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(&gTeamListSleepRegion[sCounter], SLEEP_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
+    MSYS_DefineRegion(addressof(gTeamListSleepRegion[sCounter]), SLEEP_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
 
-    MSYS_SetRegionUserData(&gTeamListNameRegion[sCounter], 0, sCounter);
-    MSYS_SetRegionUserData(&gTeamListAssignmentRegion[sCounter], 0, sCounter);
-    MSYS_SetRegionUserData(&gTeamListSleepRegion[sCounter], 0, sCounter);
-    MSYS_SetRegionUserData(&gTeamListLocationRegion[sCounter], 0, sCounter);
-    MSYS_SetRegionUserData(&gTeamListDestinationRegion[sCounter], 0, sCounter);
-    MSYS_SetRegionUserData(&gTeamListContractRegion[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListNameRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListAssignmentRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListSleepRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListLocationRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListDestinationRegion[sCounter]), 0, sCounter);
+    MSYS_SetRegionUserData(addressof(gTeamListContractRegion[sCounter]), 0, sCounter);
 
     // set up help boxes
-    SetRegionFastHelpText(&gTeamListNameRegion[sCounter], pMapScreenMouseRegionHelpText[0]);
-    SetRegionFastHelpText(&gTeamListAssignmentRegion[sCounter], pMapScreenMouseRegionHelpText[1]);
-    SetRegionFastHelpText(&gTeamListSleepRegion[sCounter], pMapScreenMouseRegionHelpText[5]);
-    SetRegionFastHelpText(&gTeamListLocationRegion[sCounter], pMapScreenMouseRegionHelpText[0]);
-    SetRegionFastHelpText(&gTeamListDestinationRegion[sCounter], pMapScreenMouseRegionHelpText[2]);
-    SetRegionFastHelpText(&gTeamListContractRegion[sCounter], pMapScreenMouseRegionHelpText[3]);
+    SetRegionFastHelpText(addressof(gTeamListNameRegion[sCounter]), pMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[sCounter]), pMapScreenMouseRegionHelpText[1]);
+    SetRegionFastHelpText(addressof(gTeamListSleepRegion[sCounter]), pMapScreenMouseRegionHelpText[5]);
+    SetRegionFastHelpText(addressof(gTeamListLocationRegion[sCounter]), pMapScreenMouseRegionHelpText[0]);
+    SetRegionFastHelpText(addressof(gTeamListDestinationRegion[sCounter]), pMapScreenMouseRegionHelpText[2]);
+    SetRegionFastHelpText(addressof(gTeamListContractRegion[sCounter]), pMapScreenMouseRegionHelpText[3]);
   }
 
   return;
@@ -5662,12 +5662,12 @@ function DestroyMouseRegionsForTeamList(): void {
   let sCounter: INT32 = 0;
 
   for (sCounter = 0; sCounter < MAX_CHARACTER_COUNT; sCounter++) {
-    MSYS_RemoveRegion(&gTeamListNameRegion[sCounter]);
-    MSYS_RemoveRegion(&gTeamListAssignmentRegion[sCounter]);
-    MSYS_RemoveRegion(&gTeamListSleepRegion[sCounter]);
-    MSYS_RemoveRegion(&gTeamListDestinationRegion[sCounter]);
-    MSYS_RemoveRegion(&gTeamListLocationRegion[sCounter]);
-    MSYS_RemoveRegion(&gTeamListContractRegion[sCounter]);
+    MSYS_RemoveRegion(addressof(gTeamListNameRegion[sCounter]));
+    MSYS_RemoveRegion(addressof(gTeamListAssignmentRegion[sCounter]));
+    MSYS_RemoveRegion(addressof(gTeamListSleepRegion[sCounter]));
+    MSYS_RemoveRegion(addressof(gTeamListDestinationRegion[sCounter]));
+    MSYS_RemoveRegion(addressof(gTeamListLocationRegion[sCounter]));
+    MSYS_RemoveRegion(addressof(gTeamListContractRegion[sCounter]));
   }
 }
 
@@ -5752,7 +5752,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
 
       ChangeSelectedInfoChar(iValue, TRUE);
 
-      pSoldier = &Menptr[gCharactersList[iValue].usSolID];
+      pSoldier = addressof(Menptr[gCharactersList[iValue].usSolID]);
 
       // highlight
       giDestHighLine = -1;
@@ -5793,7 +5793,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
     }
 
     if (gCharactersList[iValue].fValid == TRUE) {
-      pSoldier = &Menptr[gCharactersList[iValue].usSolID];
+      pSoldier = addressof(Menptr[gCharactersList[iValue].usSolID]);
 
       // select this character
       ChangeSelectedInfoChar(iValue, TRUE);
@@ -5875,7 +5875,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
       // reset list if the clicked character isn't also selected
       ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
-      pSoldier = &Menptr[gCharactersList[iValue].usSolID];
+      pSoldier = addressof(Menptr[gCharactersList[iValue].usSolID]);
 
       // if alive (dead guys keep going, use remove menu instead),
       // and it's between sectors and it can be reassigned (non-vehicles)
@@ -5997,7 +5997,7 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
       ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
       // deselect any characters/vehicles that can't accompany the clicked merc
-      DeselectSelectedListMercsWhoCantMoveWithThisGuy(&(Menptr[gCharactersList[iValue].usSolID]));
+      DeselectSelectedListMercsWhoCantMoveWithThisGuy(addressof(Menptr[gCharactersList[iValue].usSolID]));
 
       // select all characters/vehicles that MUST accompany the clicked merc (same squad/vehicle)
       SelectUnselectedMercsWhoMustMoveWithThisGuy();
@@ -6138,7 +6138,7 @@ function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
 
       // if this slot's sleep status can be changed
       if (CanChangeSleepStatusForCharSlot(iValue)) {
-        pSoldier = &Menptr[gCharactersList[iValue].usSolID];
+        pSoldier = addressof(Menptr[gCharactersList[iValue].usSolID]);
 
         if (pSoldier.value.fMercAsleep == TRUE) {
           // try to wake him up
@@ -6294,7 +6294,7 @@ function GetIndexForThisSoldier(pSoldier: Pointer<SOLDIERTYPE>): INT32 {
 
   for (iCounter = 0; iCounter < iLastGuy; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
-      if ((&Menptr[gCharactersList[iCounter].usSolID]) == pSoldier) {
+      if ((addressof(Menptr[gCharactersList[iCounter].usSolID])) == pSoldier) {
         iIndex = iCounter;
         iCounter = iLastGuy;
       }
@@ -6307,7 +6307,7 @@ function IsCursorWithInRegion(sLeft: INT16, sRight: INT16, sTop: INT16, sBottom:
   let MousePos: POINT;
 
   // get cursor position
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   // is it within region?
 
@@ -6345,7 +6345,7 @@ function PlotPermanentPaths(): void {
   if (fPlotForHelicopter == TRUE) {
     DisplayHelicopterPath();
   } else if (bSelectedDestChar != -1) {
-    DisplaySoldierPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]);
+    DisplaySoldierPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
   }
 }
 
@@ -6354,7 +6354,7 @@ function PlotTemporaryPaths(): void {
   let sMapY: INT16;
 
   // check to see if we have in fact moved are are plotting a path?
-  if (GetMouseMapXY(&sMapX, &sMapY)) {
+  if (GetMouseMapXY(addressof(sMapX), addressof(sMapY))) {
     if (fPlotForHelicopter == TRUE) {
       Assert(fShowAircraftFlag == TRUE);
       /*
@@ -6396,7 +6396,7 @@ function PlotTemporaryPaths(): void {
                               }
       */
 
-      PlotATemporaryPathForCharacter(&Menptr[gCharactersList[bSelectedDestChar].usSolID], sMapX, sMapY);
+      PlotATemporaryPathForCharacter(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]), sMapX, sMapY);
 
       // check to see if we are drawing path
       DisplayThePotentialPathForCurrentDestinationCharacterForMapScreenInterface(sMapX, sMapY);
@@ -6406,7 +6406,7 @@ function PlotTemporaryPaths(): void {
         // clip region
         ClipBlitsToMapViewRegion();
         // blit
-        DisplaySoldierTempPath(&Menptr[gCharactersList[bSelectedDestChar].usSolID]);
+        DisplaySoldierTempPath(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
         // restore
         RestoreClipRegionToFullScreen();
       }
@@ -6474,7 +6474,7 @@ function RenderTeamRegionBackground(): void {
 
   // show inventory or the team list?
   if (fShowInventoryFlag == FALSE) {
-    GetVideoObject(&hHandle, guiCHARLIST);
+    GetVideoObject(addressof(hHandle), guiCHARLIST);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, PLAYER_INFO_X, PLAYER_INFO_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
     BltCharInvPanel();
@@ -6519,7 +6519,7 @@ function RenderCharacterInfoBackground(): void {
   }
 
   // the upleft hand corner character info panel
-  GetVideoObject(&hHandle, guiCHARINFO);
+  GetVideoObject(addressof(hHandle), guiCHARINFO);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, TOWN_INFO_X, TOWN_INFO_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   UpdateHelpTextForMapScreenMercIcons();
@@ -6702,11 +6702,11 @@ function HandleShadingOfLinesForContractMenu(): void {
   Assert(CanExtendContractForCharSlot(bSelectedContractChar));
 
   // grab the character
-  pSoldier = &Menptr[gCharactersList[bSelectedContractChar].usSolID];
+  pSoldier = addressof(Menptr[gCharactersList[bSelectedContractChar].usSolID]);
 
   // is guy in AIM? and well enough to talk and make such decisions?
   if ((pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) && (pSoldier.value.bLife >= OKLIFE)) {
-    pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+    pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
     // one day
     if (pProfile.value.sSalary > LaptopSaveInfo.iCurrentBalance) {
@@ -6756,7 +6756,7 @@ function ReBuildCharactersList(): void {
 
   for (sCount = 0; sCount < MAX_CHARACTER_COUNT; sCount++) {
     // add character into the cleared slot
-    AddCharacter(&Menptr[gTacticalStatus.Team[OUR_TEAM].bFirstID + sCount]);
+    AddCharacter(addressof(Menptr[gTacticalStatus.Team[OUR_TEAM].bFirstID + sCount]));
   }
 
   // sort them according to current sorting method
@@ -6777,7 +6777,7 @@ function ReBuildCharactersList(): void {
   // exit inventory mode
   fShowInventoryFlag = FALSE;
   // switch hand region help text to "Enter Inventory"
-  SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+  SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
 }
 
 function HandleChangeOfInfoChar(): void {
@@ -6831,53 +6831,53 @@ function EnableDisableTeamListRegionsAndHelpText(): void {
   for (bCharNum = 0; bCharNum < MAX_CHARACTER_COUNT; bCharNum++) {
     if (gCharactersList[bCharNum].fValid == FALSE) {
       // disable regions in all team list columns
-      MSYS_DisableRegion(&gTeamListNameRegion[bCharNum]);
-      MSYS_DisableRegion(&gTeamListAssignmentRegion[bCharNum]);
-      MSYS_DisableRegion(&gTeamListLocationRegion[bCharNum]);
-      MSYS_DisableRegion(&gTeamListSleepRegion[bCharNum]);
-      MSYS_DisableRegion(&gTeamListDestinationRegion[bCharNum]);
-      MSYS_DisableRegion(&gTeamListContractRegion[bCharNum]);
+      MSYS_DisableRegion(addressof(gTeamListNameRegion[bCharNum]));
+      MSYS_DisableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
+      MSYS_DisableRegion(addressof(gTeamListLocationRegion[bCharNum]));
+      MSYS_DisableRegion(addressof(gTeamListSleepRegion[bCharNum]));
+      MSYS_DisableRegion(addressof(gTeamListDestinationRegion[bCharNum]));
+      MSYS_DisableRegion(addressof(gTeamListContractRegion[bCharNum]));
     } else {
       // always enable Name and Location regions
-      MSYS_EnableRegion(&gTeamListNameRegion[bCharNum]);
-      MSYS_EnableRegion(&gTeamListLocationRegion[bCharNum]);
+      MSYS_EnableRegion(addressof(gTeamListNameRegion[bCharNum]));
+      MSYS_EnableRegion(addressof(gTeamListLocationRegion[bCharNum]));
 
       // valid character.  If it's a vehicle, however
       if (Menptr[gCharactersList[bCharNum].usSolID].uiStatusFlags & SOLDIER_VEHICLE) {
         // Can't change assignment for vehicles
-        MSYS_DisableRegion(&gTeamListAssignmentRegion[bCharNum]);
+        MSYS_DisableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
       } else {
-        MSYS_EnableRegion(&gTeamListAssignmentRegion[bCharNum]);
+        MSYS_EnableRegion(addressof(gTeamListAssignmentRegion[bCharNum]));
 
         // POW or dead ?
         if ((Menptr[gCharactersList[bCharNum].usSolID].bAssignment == ASSIGNMENT_POW) || (Menptr[gCharactersList[bCharNum].usSolID].bLife == 0)) {
           // "Remove Merc"
-          SetRegionFastHelpText(&gTeamListAssignmentRegion[bCharNum], pRemoveMercStrings[0]);
+          SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[bCharNum]), pRemoveMercStrings[0]);
 
-          SetRegionFastHelpText(&gTeamListDestinationRegion[bCharNum], "");
+          SetRegionFastHelpText(addressof(gTeamListDestinationRegion[bCharNum]), "");
         } else {
           // "Assign Merc"
-          SetRegionFastHelpText(&gTeamListAssignmentRegion[bCharNum], pMapScreenMouseRegionHelpText[1]);
+          SetRegionFastHelpText(addressof(gTeamListAssignmentRegion[bCharNum]), pMapScreenMouseRegionHelpText[1]);
           // "Plot Travel Route"
-          SetRegionFastHelpText(&gTeamListDestinationRegion[bCharNum], pMapScreenMouseRegionHelpText[2]);
+          SetRegionFastHelpText(addressof(gTeamListDestinationRegion[bCharNum]), pMapScreenMouseRegionHelpText[2]);
         }
       }
 
       if (CanExtendContractForCharSlot(bCharNum)) {
-        MSYS_EnableRegion(&gTeamListContractRegion[bCharNum]);
+        MSYS_EnableRegion(addressof(gTeamListContractRegion[bCharNum]));
       } else {
-        MSYS_DisableRegion(&gTeamListContractRegion[bCharNum]);
+        MSYS_DisableRegion(addressof(gTeamListContractRegion[bCharNum]));
       }
 
       if (CanChangeSleepStatusForCharSlot(bCharNum)) {
-        MSYS_EnableRegion(&gTeamListSleepRegion[bCharNum]);
+        MSYS_EnableRegion(addressof(gTeamListSleepRegion[bCharNum]));
       } else {
-        MSYS_DisableRegion(&gTeamListSleepRegion[bCharNum]);
+        MSYS_DisableRegion(addressof(gTeamListSleepRegion[bCharNum]));
       }
 
       // destination region is always enabled for all valid character slots.
       // if the character can't move at this time, then the region handler must be able to tell the player why not
-      MSYS_EnableRegion(&gTeamListDestinationRegion[bCharNum]);
+      MSYS_EnableRegion(addressof(gTeamListDestinationRegion[bCharNum]));
     }
   }
 }
@@ -6981,7 +6981,7 @@ function ContinueDialogue(pSoldier: Pointer<SOLDIERTYPE>, fDone: BOOLEAN): BOOLE
   // otherwise, find this character
   for (bCounter = 0; bCounter < MAX_CHARACTER_COUNT; bCounter++) {
     if (gCharactersList[bCounter].fValid == TRUE) {
-      if ((&Menptr[gCharactersList[bCounter].usSolID]) == pSoldier) {
+      if ((addressof(Menptr[gCharactersList[bCounter].usSolID])) == pSoldier) {
         if (bSelectedInfoChar != bCounter) {
           bOldSelectedInfoChar = bSelectedInfoChar;
           ChangeSelectedInfoChar(bCounter, TRUE);
@@ -7000,7 +7000,7 @@ function HandleSpontanousTalking(): void {
 
   if (DialogueActive() == FALSE) {
     if ((bSelectedInfoChar != -1) && (bSelectedInfoChar < MAX_CHARACTER_COUNT)) {
-      ContinueDialogue((&Menptr[gCharactersList[bSelectedInfoChar].usSolID]), TRUE);
+      ContinueDialogue((addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID])), TRUE);
     }
   }
 
@@ -7022,7 +7022,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
       TakeOffHelicopter();
 
       // rebuild waypoints - helicopter
-      ppMovePath = &(pVehicleList[iHelicopterVehicleId].pMercPath);
+      ppMovePath = addressof(pVehicleList[iHelicopterVehicleId].pMercPath);
       RebuildWayPointsForGroupPath(*ppMovePath, pVehicleList[iHelicopterVehicleId].ubMovementGroup);
 
       // pointer to previous helicopter path
@@ -7043,7 +7043,7 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
       return FALSE;
     }
 
-    if (sX + (sY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((&Menptr[gCharactersList[bSelectedDestChar].usSolID]))) {
+    if (sX + (sY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])))) {
       // clicked on last sector, reset plotting mode
 
       // if he's IN a vehicle or IS a vehicle
@@ -7057,10 +7057,10 @@ function CheckIfClickOnLastSectorInPath(sX: INT16, sY: INT16): BOOLEAN {
         }
 
         // rebuild waypoints - vehicles
-        ppMovePath = &(pVehicleList[iVehicleId].pMercPath);
+        ppMovePath = addressof(pVehicleList[iVehicleId].pMercPath);
       } else {
         // rebuild waypoints - mercs on foot
-        ppMovePath = &(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
+        ppMovePath = addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
       }
 
       RebuildWayPointsForAllSelectedCharsGroups();
@@ -7124,11 +7124,11 @@ function RebuildWayPointsForAllSelectedCharsGroups(): void {
         }
 
         // vehicles
-        ppMovePath = &(pVehicleList[iVehicleId].pMercPath);
+        ppMovePath = addressof(pVehicleList[iVehicleId].pMercPath);
         ubGroupId = pVehicleList[iVehicleId].ubMovementGroup;
       } else {
         // mercs on foot
-        ppMovePath = &(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
+        ppMovePath = addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID].pMercPath);
         ubGroupId = pSoldier.value.ubGroupID;
       }
 
@@ -7150,7 +7150,7 @@ function UpdateCursorIfInLastSector(): void {
 
   // check to see if we are plotting a path, if so, see if we are highlighting the last sector int he path, if so, change the cursor
   if ((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE)) {
-    GetMouseMapXY(&sMapX, &sMapY);
+    GetMouseMapXY(addressof(sMapX), addressof(sMapY));
 
     // translate screen values to map grid values for zoomed in
     if (fZoomFlag) {
@@ -7163,7 +7163,7 @@ function UpdateCursorIfInLastSector(): void {
     if (fShowAircraftFlag == FALSE) {
       if (bSelectedDestChar != -1) {
         // c heck if we are in the last sector of the characters path?
-        if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((&Menptr[gCharactersList[bSelectedDestChar].usSolID]))) {
+        if (sMapX + (sMapY * MAP_WORLD_X) == GetLastSectorIdInCharactersPath((addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID])))) {
           // set cursor to checkmark
           ChangeMapScreenMaskCursor(CURSOR_CHECKMARK);
         } else if (fCheckCursorWasSet) {
@@ -7332,7 +7332,7 @@ function TrashItemMessageBoxCallBack(bExitValue: UINT8): void {
     DestroyTheItemInCursor();
 
     // reset cursor
-    MSYS_ChangeRegionCursor(&gSMPanelRegion, CURSOR_NORMAL);
+    MSYS_ChangeRegionCursor(addressof(gSMPanelRegion), CURSOR_NORMAL);
     SetCurrentCursorFromDatabase(CURSOR_NORMAL);
 
     HandleButtonStatesWhileMapInventoryActive();
@@ -7539,14 +7539,14 @@ function CreateDestroyTrashCanRegion(): void {
     fCreated = TRUE;
 
     // trash can
-    MSYS_DefineRegion(&gTrashCanRegion, TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, TrashCanMoveCallback, TrashCanBtnCallback);
+    MSYS_DefineRegion(addressof(gTrashCanRegion), TRASH_CAN_X, TRASH_CAN_Y, TRASH_CAN_X + TRASH_CAN_WIDTH, TRASH_CAN_Y + TRASH_CAN_HEIGHT, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, TrashCanMoveCallback, TrashCanBtnCallback);
 
     // done inventory button define
     giMapInvButtonDoneImage = LoadButtonImage("INTERFACE\\done_button2.sti", -1, 0, -1, 1, -1);
     giMapInvDoneButton = QuickCreateButton(giMapInvButtonDoneImage, INV_BTN_X, INV_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DoneInventoryMapBtnCallback);
 
     SetButtonFastHelpText(giMapInvDoneButton, pMiscMapScreenMouseRegionHelpText[2]);
-    SetRegionFastHelpText(&gTrashCanRegion, pMiscMapScreenMouseRegionHelpText[1]);
+    SetRegionFastHelpText(addressof(gTrashCanRegion), pMiscMapScreenMouseRegionHelpText[1]);
 
     InitMapKeyRingInterface(KeyRingItemPanelButtonCallback);
     /*
@@ -7568,7 +7568,7 @@ function CreateDestroyTrashCanRegion(): void {
   } else if ((fShowInventoryFlag == FALSE) && (fCreated == TRUE)) {
     // trash can region
     fCreated = FALSE;
-    MSYS_RemoveRegion(&gTrashCanRegion);
+    MSYS_RemoveRegion(addressof(gTrashCanRegion));
 
     // map inv done button
     RemoveButton(giMapInvDoneButton);
@@ -7661,7 +7661,7 @@ function UpdateBadAssignments(): void {
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
-      CheckIfSoldierUnassigned(&Menptr[gCharactersList[iCounter].usSolID]);
+      CheckIfSoldierUnassigned(addressof(Menptr[gCharactersList[iCounter].usSolID]));
     }
   }
 
@@ -7726,28 +7726,28 @@ function HandlePreloadOfMapGraphics(): BOOLEAN {
 
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   strcpy(vs_desc.ImageFile, "INTERFACE\\b_map.pcx");
-  CHECKF(AddVideoSurface(&vs_desc, &guiBIGMAP));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiBIGMAP)));
   // strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
   // CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAPCURSORS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\SAM.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSAMICON));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSAMICON)));
 
   // VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   // FilenameForBPP("INTERFACE\\s_map.sti", VObjectDesc.ImageFile);
   // CHECKF( AddVideoObject( &VObjectDesc, &guiMAP ) );
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAPCURSORS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\sleepicon.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSleepIcon));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSleepIcon)));
 
   // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
   // FilenameForBPP("INTERFACE\\addonslcp.sti", VObjectDesc.ImageFile);
@@ -7759,13 +7759,13 @@ function HandlePreloadOfMapGraphics(): BOOLEAN {
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\charinfo.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARINFO));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARINFO)));
   /*strcpy(vs_desc.ImageFile, "INTERFACE\\playlist3.pcx");
   CHECKF(AddVideoSurface( &vs_desc, &guiCHARLIST ));*/
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\newgoldpiece3.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARLIST));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARLIST)));
 
   // VObjectDesc.fCreateFlags=VOBJECT_CREATE_FROMFILE;
   // FilenameForBPP("INTERFACE\\mapbordercorner.sti", VObjectDesc.ImageFile);
@@ -7778,99 +7778,99 @@ function HandlePreloadOfMapGraphics(): BOOLEAN {
   // the sublevels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Mine_1.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel1));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel1)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Mine_2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel2));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel2)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Mine_3.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSubLevel3));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSubLevel3)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\boxes.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARICONS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARICONS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\incross.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCROSS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCROSS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mapinv.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAPINV));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPINV)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_inv_2nd_gun_cover.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMapInvSecondHandBlockout));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapInvSecondHandBlockout)));
 
   // the upper left corner piece icons
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\top_left_corner_icons.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiULICONS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiULICONS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\prison.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTIXAICON));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTIXAICON)));
 
   HandleLoadOfMapBottomGraphics();
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\map_item.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiORTAICON));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiORTAICON)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mapcursr.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMAPCURSORS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMAPCURSORS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\merc_between_sector_icons.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARBETWEENSECTORICONS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONS)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\merc_mvt_green_arrows.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCHARBETWEENSECTORICONSCLOSE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARBETWEENSECTORICONSCLOSE)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\GreenArr.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLEVELMARKER));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLEVELMARKER)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Helicop.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiHelicopterIcon));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHelicopterIcon)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\eta_pop_up.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMapBorderEtaPopUp));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderEtaPopUp)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\pos2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMapBorderHeliSectors));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorderHeliSectors)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSecItemHiddenVO));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\selectedchararrow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSelectedCharArrow));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSelectedCharArrow)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mine.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMINEICON));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMINEICON)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "INTERFACE\\hilite.sti");
-  AddVideoObject(&VObjectDesc, &guiSectorLocatorGraphicID);
+  AddVideoObject(addressof(VObjectDesc), addressof(guiSectorLocatorGraphicID));
 
   // Kris:  Added this because I need to blink the icons button.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "INTERFACE\\newemail.sti");
-  AddVideoObject(&VObjectDesc, &guiNewMailIcons);
+  AddVideoObject(addressof(VObjectDesc), addressof(guiNewMailIcons));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\BullsEye.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBULLSEYE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBULLSEYE)));
 
   // graphic for pool inventory
   LoadInventoryPoolGraphic();
@@ -8175,7 +8175,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
   if (fRetainSelectedMercs) {
     // if we have anyone valid selected
     if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid)) {
-      pPreviousSelectedInfoChar = &Menptr[gCharactersList[bSelectedInfoChar].usSolID];
+      pPreviousSelectedInfoChar = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
     }
 
     for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
@@ -8188,7 +8188,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
       }
 
       // get soldier assoc. with entry
-      pCurrentSoldier = &Menptr[gCharactersList[iCounter].usSolID];
+      pCurrentSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
       // check if soldier is active
       if (pCurrentSoldier.value.bActive == FALSE) {
@@ -8283,7 +8283,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
         if (GetLengthOfMercPath(MercPtrs[gCharactersList[iCounter].usSolID]) == 0) {
           sEndSectorA = 9999;
         } else {
-          sEndSectorA = GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[iCounter].usSolID]);
+          sEndSectorA = GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[iCounter].usSolID]));
         }
 
         for (iCounterA = 0; iCounterA < FIRST_VEHICLE; iCounterA++) {
@@ -8294,7 +8294,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
           if (GetLengthOfMercPath(MercPtrs[gCharactersList[iCounterA].usSolID]) == 0) {
             sEndSectorB = 9999;
           } else {
-            sEndSectorB = GetLastSectorIdInCharactersPath(&Menptr[gCharactersList[iCounterA].usSolID]);
+            sEndSectorB = GetLastSectorIdInCharactersPath(addressof(Menptr[gCharactersList[iCounterA].usSolID]));
           }
 
           if ((sEndSectorB > sEndSectorA) && (iCounterA < iCounter)) {
@@ -8304,7 +8304,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
         break;
 
       case (5):
-        iExpiryTime = GetContractExpiryTime(&(Menptr[gCharactersList[iCounter].usSolID]));
+        iExpiryTime = GetContractExpiryTime(addressof(Menptr[gCharactersList[iCounter].usSolID]));
 
         // by contract expiry
         for (iCounterA = 0; iCounterA < FIRST_VEHICLE; iCounterA++) {
@@ -8312,7 +8312,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
             break;
           }
 
-          iExpiryTimeA = GetContractExpiryTime(&(Menptr[gCharactersList[iCounterA].usSolID]));
+          iExpiryTimeA = GetContractExpiryTime(addressof(Menptr[gCharactersList[iCounterA].usSolID]));
 
           if ((iExpiryTimeA > iExpiryTime) && (iCounterA < iCounter)) {
             SwapCharactersInList(iCounter, iCounterA);
@@ -8340,7 +8340,7 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
           }
 
           // grab current soldier
-          pCurrentSoldier = &Menptr[gCharactersList[iCounterA].usSolID];
+          pCurrentSoldier = addressof(Menptr[gCharactersList[iCounterA].usSolID]);
 
           // check if soldier is active
           if (pCurrentSoldier.value.bActive == FALSE) {
@@ -8436,7 +8436,7 @@ function HandleAssignmentsDoneAndAwaitingFurtherOrders(): void {
         break;
       }
 
-      pSoldier = &(Menptr[gCharactersList[iCounter].usSolID]);
+      pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
       // toggle and redraw if flash was left ON even though the flag is OFF
       if (pSoldier.value.fDoneAssignmentAndNothingToDoFlag || fFlashAssignDone) {
@@ -8461,7 +8461,7 @@ function DisplayIconsForMercsAsleep(): void {
     return;
   }
 
-  GetVideoObject(&hHandle, guiSleepIcon);
+  GetVideoObject(addressof(hHandle), guiSleepIcon);
 
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
@@ -8491,8 +8491,8 @@ function CheckForAndRenderNewMailOverlay(): void {
           let pDestBuf: Pointer<UINT8>;
           let area: SGPRect = [ 463, 417, 477, 425 ];
 
-          pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-          Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, &area);
+          pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+          Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(area));
           UnLockVideoSurface(FRAME_BUFFER);
         }
         InvalidateRegion(463, 417, 481, 430);
@@ -8571,7 +8571,7 @@ function CheckForInventoryModeCancellation(): void {
       // get out of inventory mode if it's on!  (could have just bled below OKLIFE)
       if (fShowInventoryFlag) {
         fShowInventoryFlag = FALSE;
-        SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
         fTeamPanelDirty = TRUE;
       }
 
@@ -8632,7 +8632,7 @@ function CanChangeDestinationForCharSlot(bCharNumber: INT8, fShowErrorMessage: B
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
 
-  if (CanEntireMovementGroupMercIsInMove(pSoldier, &bErrorNumber)) {
+  if (CanEntireMovementGroupMercIsInMove(pSoldier, addressof(bErrorNumber))) {
     return TRUE;
   } else {
     // function may fail without returning any specific error # (-1).
@@ -8708,7 +8708,7 @@ function CanChangeSleepStatusForSoldier(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
 
 function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
   MSYS_SetCurrentCursor(usCursor);
-  MSYS_ChangeRegionCursor(&gMapScreenMaskRegion, usCursor);
+  MSYS_ChangeRegionCursor(addressof(gMapScreenMaskRegion), usCursor);
 
   if (usCursor == CURSOR_CHECKMARK)
     fCheckCursorWasSet = TRUE;
@@ -8722,7 +8722,7 @@ function ChangeMapScreenMaskCursor(usCursor: UINT16): void {
     }
   } else {
     // restrict mouse cursor to the map area
-    RestrictMouseCursor(&MapScreenRect);
+    RestrictMouseCursor(addressof(MapScreenRect));
   }
 }
 
@@ -8731,7 +8731,7 @@ function CancelOrShortenPlottedPath(): void {
   let sMapY: INT16;
   let uiReturnValue: UINT32;
 
-  GetMouseMapXY(&sMapX, &sMapY);
+  GetMouseMapXY(addressof(sMapX), addressof(sMapY));
 
   /*
           // translate zoom in to zoom out coords
@@ -8765,7 +8765,7 @@ function CancelOrShortenPlottedPath(): void {
       return;
 
     // try to delete portion of path AFTER the current sector for the helicopter
-    uiReturnValue = ClearPathAfterThisSectorForCharacter(&Menptr[gCharactersList[bSelectedDestChar].usSolID], sMapX, sMapY);
+    uiReturnValue = ClearPathAfterThisSectorForCharacter(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]), sMapX, sMapY);
   }
 
   switch (uiReturnValue) {
@@ -8940,7 +8940,7 @@ function CancelPathsOfAllSelectedCharacters(): void {
 
         // cancel the entire path (also clears vehicles for any passengers selected, and handles reversing directions)
         if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-          CancelPathForVehicle(&(pVehicleList[pSoldier.value.bVehicleID]), FALSE);
+          CancelPathForVehicle(addressof(pVehicleList[pSoldier.value.bVehicleID]), FALSE);
         } else {
           CancelPathForCharacter(pSoldier);
         }
@@ -9055,7 +9055,7 @@ function AnyMovableCharsInOrBetweenThisSector(sSectorX: INT16, sSectorY: INT16, 
 
   for (iCounter = iFirstId; iCounter <= iLastId; iCounter++) {
     // get the soldier
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     // is the soldier active
     if (pSoldier.value.bActive == FALSE) {
@@ -9559,7 +9559,7 @@ function RestorePreviousPaths(): void {
   Assert((bSelectedDestChar != -1) || (fPlotForHelicopter == TRUE));
 
   if (fPlotForHelicopter == TRUE) {
-    ppMovePath = &(pVehicleList[iHelicopterVehicleId].pMercPath);
+    ppMovePath = addressof(pVehicleList[iHelicopterVehicleId].pMercPath);
     ubGroupId = pVehicleList[iHelicopterVehicleId].ubMovementGroup;
 
     // if the helicopter had a previous path
@@ -9599,13 +9599,13 @@ function RestorePreviousPaths(): void {
         pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
 
         if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-          ppMovePath = &(pVehicleList[pSoldier.value.bVehicleID].pMercPath);
+          ppMovePath = addressof(pVehicleList[pSoldier.value.bVehicleID].pMercPath);
           ubGroupId = pVehicleList[pSoldier.value.bVehicleID].ubMovementGroup;
         } else if (pSoldier.value.bAssignment == VEHICLE) {
-          ppMovePath = &(pVehicleList[pSoldier.value.iVehicleId].pMercPath);
+          ppMovePath = addressof(pVehicleList[pSoldier.value.iVehicleId].pMercPath);
           ubGroupId = pVehicleList[pSoldier.value.iVehicleId].ubMovementGroup;
         } else if (pSoldier.value.bAssignment < ON_DUTY) {
-          ppMovePath = &(pSoldier.value.pMercPath);
+          ppMovePath = addressof(pSoldier.value.pMercPath);
           ubGroupId = pSoldier.value.ubGroupID;
         } else {
           // invalid pSoldier - that guy can't possibly be moving, he's on a non-vehicle assignment!
@@ -9711,7 +9711,7 @@ function RestoreMapSectorCursor(sMapX: INT16, sMapY: INT16): void {
   Assert((sMapX >= 1) && (sMapX <= 16));
   Assert((sMapY >= 1) && (sMapY <= 16));
 
-  GetScreenXYFromMapXY(sMapX, sMapY, &sScreenX, &sScreenY);
+  GetScreenXYFromMapXY(sMapX, sMapY, addressof(sScreenX), addressof(sScreenY));
 
   sScreenY -= 1;
 
@@ -9747,9 +9747,9 @@ function RequestToggleMercInventoryPanel(): void {
 
     // set help text for item glow region
     if (fShowInventoryFlag) {
-      SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
+      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
     } else {
-      SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+      SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
     }
   }
 
@@ -9776,7 +9776,7 @@ function RequestContractMenu(): void {
 
   if (CanExtendContractForCharSlot(bSelectedInfoChar)) {
     // create
-    RebuildContractBoxForMerc(&Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
+    RebuildContractBoxForMerc(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]));
 
     // reset selected characters
     ResetAllSelectedCharacterModes();

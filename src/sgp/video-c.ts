@@ -201,7 +201,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   WindowClass.hbrBackground = NULL;
   WindowClass.lpszMenuName = NULL;
   WindowClass.lpszClassName = ClassName;
-  RegisterClass(&WindowClass);
+  RegisterClass(addressof(WindowClass));
 
   //
   // Get a window handle for our application (gotta have on of those)
@@ -240,13 +240,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   // Create the Direct Draw Object
   //
 
-  ReturnCode = DirectDrawCreate(NULL, &_gpDirectDrawObject, NULL);
+  ReturnCode = DirectDrawCreate(NULL, addressof(_gpDirectDrawObject), NULL);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
-  ReturnCode = IDirectDraw_QueryInterface(_gpDirectDrawObject, &IID_IDirectDraw2, &gpDirectDrawObject);
+  ReturnCode = IDirectDraw_QueryInterface(_gpDirectDrawObject, addressof(IID_IDirectDraw2), addressof(gpDirectDrawObject));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -290,20 +290,20 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
   SurfaceDescription.dwBackBufferCount = 1;
 
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpPrimarySurface, NULL);
+  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpPrimarySurface), NULL);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpPrimarySurface, &IID_IDirectDrawSurface2, &gpPrimarySurface);
+  ReturnCode = IDirectDrawSurface_QueryInterface(_gpPrimarySurface, addressof(IID_IDirectDrawSurface2), addressof(gpPrimarySurface));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
   SurfaceCaps.dwCaps = DDSCAPS_BACKBUFFER;
-  ReturnCode = IDirectDrawSurface2_GetAttachedSurface(gpPrimarySurface, &SurfaceCaps, &gpBackBuffer);
+  ReturnCode = IDirectDrawSurface2_GetAttachedSurface(gpPrimarySurface, addressof(SurfaceCaps), addressof(gpBackBuffer));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -319,13 +319,13 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
   SurfaceDescription.dwWidth = SCREEN_WIDTH;
   SurfaceDescription.dwHeight = SCREEN_HEIGHT;
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpFrameBuffer, NULL);
+  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpFrameBuffer), NULL);
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpFrameBuffer, &IID_IDirectDrawSurface2, &gpFrameBuffer);
+  ReturnCode = IDirectDrawSurface_QueryInterface(_gpFrameBuffer, addressof(IID_IDirectDrawSurface2), addressof(gpFrameBuffer));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -335,7 +335,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   // Blank out the frame buffer
   //
 
-  pTmpPointer = LockFrameBuffer(&uiPitch);
+  pTmpPointer = LockFrameBuffer(addressof(uiPitch));
   memset(pTmpPointer, 0, 480 * uiPitch);
   UnlockFrameBuffer();
 
@@ -350,14 +350,14 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
   SurfaceDescription.dwWidth = MAX_CURSOR_WIDTH;
   SurfaceDescription.dwHeight = MAX_CURSOR_HEIGHT;
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpMouseCursor, NULL);
+  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpMouseCursor), NULL);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create MouseCursor witd %ld", ReturnCode & 0x0f));
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursor, &IID_IDirectDrawSurface2, &gpMouseCursor);
+  ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursor, addressof(IID_IDirectDrawSurface2), addressof(gpMouseCursor));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -365,7 +365,7 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
 
   ColorKey.dwColorSpaceLowValue = 0;
   ColorKey.dwColorSpaceHighValue = 0;
-  ReturnCode = IDirectDrawSurface2_SetColorKey(gpMouseCursor, DDCKEY_SRCBLT, &ColorKey);
+  ReturnCode = IDirectDrawSurface2_SetColorKey(gpMouseCursor, DDCKEY_SRCBLT, addressof(ColorKey));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -381,14 +381,14 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
   SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
   SurfaceDescription.dwWidth = MAX_CURSOR_WIDTH;
   SurfaceDescription.dwHeight = MAX_CURSOR_HEIGHT;
-  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_gpMouseCursorOriginal, NULL);
+  ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_gpMouseCursorOriginal), NULL);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create MouseCursorOriginal");
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
   }
 
-  ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursorOriginal, &IID_IDirectDrawSurface2, &gpMouseCursorOriginal);
+  ReturnCode = IDirectDrawSurface_QueryInterface(_gpMouseCursorOriginal, addressof(IID_IDirectDrawSurface2), addressof(gpMouseCursorOriginal));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -417,14 +417,14 @@ function InitializeVideoManager(hInstance: HINSTANCE, usCommandShow: UINT16, Win
     SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
     SurfaceDescription.dwWidth = MAX_CURSOR_WIDTH;
     SurfaceDescription.dwHeight = MAX_CURSOR_HEIGHT;
-    ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &(gMouseCursorBackground[uiIndex]._pSurface), NULL);
+    ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(gMouseCursorBackground[uiIndex]._pSurface), NULL);
     if (ReturnCode != DD_OK) {
       DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to create MouseCursorBackground");
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       return FALSE;
     }
 
-    ReturnCode = IDirectDrawSurface_QueryInterface(gMouseCursorBackground[uiIndex]._pSurface, &IID_IDirectDrawSurface2, &(gMouseCursorBackground[uiIndex].pSurface));
+    ReturnCode = IDirectDrawSurface_QueryInterface(gMouseCursorBackground[uiIndex]._pSurface, addressof(IID_IDirectDrawSurface2), addressof(gMouseCursorBackground[uiIndex].pSurface));
     if (ReturnCode != DD_OK) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       return FALSE;
@@ -819,7 +819,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
   let sShiftY: INT16;
   let uiCountY: INT32;
 
-  GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
   usHeight = (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y);
 
   StripRegions[0].left = gsVIEWPORT_START_X;
@@ -848,7 +848,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -877,7 +877,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -913,7 +913,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight - sScrollYIncrement;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -948,7 +948,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -985,7 +985,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight - sScrollYIncrement;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1021,7 +1021,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight - sScrollYIncrement;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y + sScrollYIncrement, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1057,7 +1057,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, sScrollXIncrement, gsVIEWPORT_WINDOW_START_Y, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1094,7 +1094,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       Region.bottom = gsVIEWPORT_WINDOW_START_Y + usHeight;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, 0, gsVIEWPORT_WINDOW_START_Y, pSource, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1132,7 +1132,7 @@ function ScrollJA2Background(uiDirection: UINT32, sScrollXIncrement: INT16, sScr
       // ExamineZBufferRect( (INT16)StripRegions[ cnt ].left, (INT16)StripRegions[ cnt ].top, (INT16)StripRegions[ cnt ].right, (INT16)StripRegions[ cnt ].bottom );
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, StripRegions[cnt].left, StripRegions[cnt].top, gpFrameBuffer,  & (StripRegions[cnt]), DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(pDest, StripRegions[cnt].left, StripRegions[cnt].top, gpFrameBuffer,  addressof(StripRegions[cnt]), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
         }
@@ -1270,7 +1270,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
   // Get the current mouse position
   //
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   //
@@ -1286,7 +1286,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region.bottom = gMouseCursorBackground[CURRENT_MOUSE_DATA].usBottom;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].pSurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].pSurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1297,7 +1297,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     } while (ReturnCode != DD_OK);
 
     // Save position into other background region
-    memcpy(&(gMouseCursorBackground[PREVIOUS_MOUSE_DATA]), &(gMouseCursorBackground[CURRENT_MOUSE_DATA]), sizeof(MouseCursorBackground));
+    memcpy(addressof(gMouseCursorBackground[PREVIOUS_MOUSE_DATA]), addressof(gMouseCursorBackground[CURRENT_MOUSE_DATA]), sizeof(MouseCursorBackground));
   }
 
   //
@@ -1336,7 +1336,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         Region.bottom = usScreenHeight;
 
         do {
-          ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpFrameBuffer, &Region, DDBLTFAST_NOCOLORKEY);
+          ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpFrameBuffer, addressof(Region), DDBLTFAST_NOCOLORKEY);
           if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
             DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1353,7 +1353,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
           Region.bottom = gListOfDirtyRegions[uiIndex].iBottom;
 
           do {
-            ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpFrameBuffer, &Region, DDBLTFAST_NOCOLORKEY);
+            ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpFrameBuffer, addressof(Region), DDBLTFAST_NOCOLORKEY);
             if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
               DirectXAttempt(ReturnCode, __LINE__, __FILE__);
             }
@@ -1380,7 +1380,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
           }
 
           do {
-            ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpFrameBuffer, &Region, DDBLTFAST_NOCOLORKEY);
+            ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpFrameBuffer, addressof(Region), DDBLTFAST_NOCOLORKEY);
             if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
               DirectXAttempt(ReturnCode, __LINE__, __FILE__);
             }
@@ -1440,12 +1440,12 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     SurfaceDescription.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
     SurfaceDescription.dwWidth = usScreenWidth;
     SurfaceDescription.dwHeight = usScreenHeight;
-    ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, &SurfaceDescription, &_pTmpBuffer, NULL);
+    ReturnCode = IDirectDraw2_CreateSurface(gpDirectDrawObject, addressof(SurfaceDescription), addressof(_pTmpBuffer), NULL);
     if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     }
 
-    ReturnCode = IDirectDrawSurface_QueryInterface(_pTmpBuffer, &IID_IDirectDrawSurface2, &pTmpBuffer);
+    ReturnCode = IDirectDrawSurface_QueryInterface(_pTmpBuffer, addressof(IID_IDirectDrawSurface2), addressof(pTmpBuffer));
     if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     }
@@ -1460,7 +1460,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region.bottom = usScreenHeight;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(pTmpBuffer, 0, 0, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(pTmpBuffer, 0, 0, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       }
@@ -1480,7 +1480,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
 
       ZEROMEM(SurfaceDescription);
       SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-      ReturnCode = IDirectDrawSurface2_Lock(pTmpBuffer, NULL, &SurfaceDescription, 0, NULL);
+      ReturnCode = IDirectDrawSurface2_Lock(pTmpBuffer, NULL, addressof(SurfaceDescription), 0, NULL);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       }
@@ -1524,7 +1524,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
 
       ZEROMEM(SurfaceDescription);
       SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-      ReturnCode = IDirectDrawSurface2_Unlock(pTmpBuffer, &SurfaceDescription);
+      ReturnCode = IDirectDrawSurface2_Unlock(pTmpBuffer, addressof(SurfaceDescription));
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       }
@@ -1557,7 +1557,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region.bottom = gusMouseCursorHeight;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpMouseCursor, 0, 0, gpMouseCursorOriginal, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpMouseCursor, 0, 0, gpMouseCursorOriginal, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       }
@@ -1650,7 +1650,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         //
 
         do {
-          ReturnCode = IDirectDrawSurface2_SGPBltFast(gMouseCursorBackground[CURRENT_MOUSE_DATA].pSurface, gMouseCursorBackground[CURRENT_MOUSE_DATA].usLeft, gMouseCursorBackground[CURRENT_MOUSE_DATA].usTop, gpBackBuffer, &Region, DDBLTFAST_NOCOLORKEY);
+          ReturnCode = IDirectDrawSurface2_SGPBltFast(gMouseCursorBackground[CURRENT_MOUSE_DATA].pSurface, gMouseCursorBackground[CURRENT_MOUSE_DATA].usLeft, gMouseCursorBackground[CURRENT_MOUSE_DATA].usTop, gpBackBuffer, addressof(Region), DDBLTFAST_NOCOLORKEY);
           if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
             DirectXAttempt(ReturnCode, __LINE__, __FILE__);
           }
@@ -1670,7 +1670,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
         Region.bottom = gMouseCursorBackground[CURRENT_MOUSE_DATA].usBottom;
 
         do {
-          ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gpMouseCursor, &Region, DDBLTFAST_SRCCOLORKEY);
+          ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gpMouseCursor, addressof(Region), DDBLTFAST_SRCCOLORKEY);
           if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
             DirectXAttempt(ReturnCode, __LINE__, __FILE__);
           }
@@ -1737,7 +1737,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region.bottom = 360;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1764,7 +1764,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region = gMouseCursorBackground[PREVIOUS_MOUSE_DATA].Region;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[PREVIOUS_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[PREVIOUS_MOUSE_DATA].usMouseYPos, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[PREVIOUS_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[PREVIOUS_MOUSE_DATA].usMouseYPos, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if (ReturnCode != DD_OK && ReturnCode != DDERR_WASSTILLDRAWING) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1780,7 +1780,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region = gMouseCursorBackground[CURRENT_MOUSE_DATA].Region;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseXPos, gMouseCursorBackground[CURRENT_MOUSE_DATA].usMouseYPos, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1801,7 +1801,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     Region.bottom = SCREEN_HEIGHT;
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, 0, 0, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
 
@@ -1822,7 +1822,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
       Region.bottom = gListOfDirtyRegions[uiIndex].iBottom;
 
       do {
-        ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+        ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
         if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
           DirectXAttempt(ReturnCode, __LINE__, __FILE__);
         }
@@ -1849,7 +1849,7 @@ function RefreshScreen(DummyVariable: Pointer<void>): void {
     }
 
     do {
-      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpPrimarySurface, &Region, DDBLTFAST_NOCOLORKEY);
+      ReturnCode = IDirectDrawSurface2_SGPBltFast(gpBackBuffer, Region.left, Region.top, gpPrimarySurface, addressof(Region), DDBLTFAST_NOCOLORKEY);
       if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
         DirectXAttempt(ReturnCode, __LINE__, __FILE__);
       }
@@ -1925,7 +1925,7 @@ function LockPrimarySurface(uiPitch: Pointer<UINT32>): PTR {
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
 
   do {
-    ReturnCode = IDirectDrawSurface2_Lock(gpPrimarySurface, NULL, &SurfaceDescription, 0, NULL);
+    ReturnCode = IDirectDrawSurface2_Lock(gpPrimarySurface, NULL, addressof(SurfaceDescription), 0, NULL);
     if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
       DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to lock backbuffer");
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
@@ -1945,7 +1945,7 @@ function UnlockPrimarySurface(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Unlock(gpPrimarySurface, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_Unlock(gpPrimarySurface, addressof(SurfaceDescription));
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
   }
@@ -1969,7 +1969,7 @@ function LockBackBuffer(uiPitch: Pointer<UINT32>): PTR {
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
 
   do {
-    ReturnCode = IDirectDrawSurface2_Lock(gpBackBuffer, NULL, &SurfaceDescription, 0, NULL);
+    ReturnCode = IDirectDrawSurface2_Lock(gpBackBuffer, NULL, addressof(SurfaceDescription), 0, NULL);
     if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
       DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to lock backbuffer");
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
@@ -1997,7 +1997,7 @@ function UnlockBackBuffer(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Unlock(gpBackBuffer, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_Unlock(gpBackBuffer, addressof(SurfaceDescription));
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
   }
@@ -2013,7 +2013,7 @@ function LockFrameBuffer(uiPitch: Pointer<UINT32>): PTR {
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
 
   do {
-    ReturnCode = IDirectDrawSurface2_Lock(gpFrameBuffer, NULL, &SurfaceDescription, 0, NULL);
+    ReturnCode = IDirectDrawSurface2_Lock(gpFrameBuffer, NULL, addressof(SurfaceDescription), 0, NULL);
     if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
       DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Failed to lock backbuffer");
       DirectXAttempt(ReturnCode, __LINE__, __FILE__);
@@ -2034,7 +2034,7 @@ function UnlockFrameBuffer(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Unlock(gpFrameBuffer, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_Unlock(gpFrameBuffer, addressof(SurfaceDescription));
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
   }
@@ -2048,7 +2048,7 @@ function LockMouseBuffer(uiPitch: Pointer<UINT32>): PTR {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Lock(gpMouseCursorOriginal, NULL, &SurfaceDescription, 0, NULL);
+  ReturnCode = IDirectDrawSurface2_Lock(gpMouseCursorOriginal, NULL, addressof(SurfaceDescription), 0, NULL);
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return NULL;
@@ -2067,7 +2067,7 @@ function UnlockMouseBuffer(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Unlock(gpMouseCursorOriginal, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_Unlock(gpMouseCursorOriginal, addressof(SurfaceDescription));
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
   }
@@ -2094,7 +2094,7 @@ function GetRGBDistribution(): BOOLEAN {
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
   SurfaceDescription.dwFlags = DDSD_PIXELFORMAT;
-  ReturnCode = IDirectDrawSurface2_GetSurfaceDesc(gpPrimarySurface, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_GetSurfaceDesc(gpPrimarySurface, addressof(SurfaceDescription));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return FALSE;
@@ -2161,7 +2161,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
   // Erase cursor background
   //
 
-  pTmpPointer = LockMouseBuffer(&uiPitch);
+  pTmpPointer = LockMouseBuffer(addressof(uiPitch));
   memset(pTmpPointer, 0, MAX_CURSOR_HEIGHT * uiPitch);
   UnlockMouseBuffer();
 
@@ -2172,7 +2172,7 @@ function SetMouseCursorFromObject(uiVideoObjectHandle: UINT32, usVideoObjectSubI
   ReturnValue = BltVideoObjectFromIndex(MOUSE_BUFFER, uiVideoObjectHandle, usVideoObjectSubIndex, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
   guiMouseBufferState = BUFFER_DIRTY;
 
-  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObjectHandle, &pETRLEPointer, usVideoObjectSubIndex)) {
+  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObjectHandle, addressof(pETRLEPointer), usVideoObjectSubIndex)) {
     gsMouseCursorXOffset = usOffsetX;
     gsMouseCursorYOffset = usOffsetY;
     gusMouseCursorWidth = pETRLEPointer.usWidth + pETRLEPointer.sOffsetX;
@@ -2196,7 +2196,7 @@ function EraseMouseCursor(): BOOLEAN {
   // Erase cursor background
   //
 
-  pTmpPointer = LockMouseBuffer(&uiPitch);
+  pTmpPointer = LockMouseBuffer(addressof(uiPitch));
   memset(pTmpPointer, 0, MAX_CURSOR_HEIGHT * uiPitch);
   UnlockMouseBuffer();
 
@@ -2260,7 +2260,7 @@ function LoadCursorFile(pFilename: PTR): BOOLEAN {
 
   VideoObjectDescription.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(VideoObjectDescription.ImageFile, pFilename);
-  gpCursorStore = CreateVideoObject(&VideoObjectDescription);
+  gpCursorStore = CreateVideoObject(addressof(VideoObjectDescription));
 
   //
   // Were we successful in creating the cursor store ?
@@ -2297,7 +2297,7 @@ function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOf
   // Erase cursor background
   //
 
-  pTmpPointer = LockMouseBuffer(&uiPitch);
+  pTmpPointer = LockMouseBuffer(addressof(uiPitch));
   memset(pTmpPointer, 0, MAX_CURSOR_HEIGHT * uiPitch);
   UnlockMouseBuffer();
 
@@ -2308,7 +2308,7 @@ function SetCurrentCursor(usVideoObjectSubIndex: UINT16, usOffsetX: UINT16, usOf
   ReturnValue = BltVideoObject(MOUSE_BUFFER, gpCursorStore, usVideoObjectSubIndex, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
   guiMouseBufferState = BUFFER_DIRTY;
 
-  if (GetVideoObjectETRLEProperties(gpCursorStore, &pETRLEPointer, usVideoObjectSubIndex)) {
+  if (GetVideoObjectETRLEProperties(gpCursorStore, addressof(pETRLEPointer), usVideoObjectSubIndex)) {
     gsMouseCursorXOffset = usOffsetX;
     gsMouseCursorYOffset = usOffsetY;
     gusMouseCursorWidth = pETRLEPointer.usWidth + pETRLEPointer.sOffsetX;
@@ -2351,7 +2351,7 @@ function Set8BPPPalette(pPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   // If we are in 256 colors, then we have to initialize the palette system to 0 (faded out)
   memcpy(gSgpPalette, pPalette, sizeof(SGPPaletteEntry) * 256);
 
-  ReturnCode = IDirectDraw_CreatePalette(gpDirectDrawObject, (DDPCAPS_8BIT | DDPCAPS_ALLOW256), (&gSgpPalette[0]), &gpDirectDrawPalette, NULL);
+  ReturnCode = IDirectDraw_CreatePalette(gpDirectDrawObject, (DDPCAPS_8BIT | DDPCAPS_ALLOW256), (addressof(gSgpPalette[0])), addressof(gpDirectDrawPalette), NULL);
   if (ReturnCode != DD_OK) {
     DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, String("Failed to create palette (Rc = %d)", ReturnCode));
     return FALSE;
@@ -2436,7 +2436,7 @@ function SnapshotSmall(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Lock(gpPrimarySurface, NULL, &SurfaceDescription, 0, NULL);
+  ReturnCode = IDirectDrawSurface2_Lock(gpPrimarySurface, NULL, addressof(SurfaceDescription), 0, NULL);
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     return;
   }
@@ -2486,7 +2486,7 @@ function SnapshotSmall(): void {
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_Unlock(gpPrimarySurface, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_Unlock(gpPrimarySurface, addressof(SurfaceDescription));
   if ((ReturnCode != DD_OK) && (ReturnCode != DDERR_WASSTILLDRAWING)) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
   }
@@ -2543,14 +2543,14 @@ function RefreshMovieCache(): void {
     if ((disk = fopen(cFilename, "wb")) == NULL)
       return;
 
-    memset(&Header, 0, sizeof(TARGA_HEADER));
+    memset(addressof(Header), 0, sizeof(TARGA_HEADER));
 
     Header.ubTargaType = 2; // Uncompressed 16/24/32 bit
     Header.usImageWidth = 640;
     Header.usImageHeight = 480;
     Header.ubBitsPerPixel = 16;
 
-    fwrite(&Header, sizeof(TARGA_HEADER), 1, disk);
+    fwrite(addressof(Header), sizeof(TARGA_HEADER), 1, disk);
 
     pDest = gpFrameData[cnt];
 

@@ -127,9 +127,9 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   let fClimbingNecessary: BOOLEAN = FALSE;
   let pTemp: Pointer<SOLDIERTYPE>;
 
-  pubNoiseVolume = &gubPublicNoiseVolume[pSoldier.value.bTeam];
-  psNoiseGridNo = &gsPublicNoiseGridno[pSoldier.value.bTeam];
-  pbNoiseLevel = &gbPublicNoiseLevel[pSoldier.value.bTeam];
+  pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.value.bTeam]);
+  psNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.value.bTeam]);
+  pbNoiseLevel = addressof(gbPublicNoiseLevel[pSoldier.value.bTeam]);
 
   psLastLoc = gsLastKnownOppLoc[pSoldier.value.ubID];
 
@@ -227,8 +227,8 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
       let ubNewRoom: UINT8;
 
       // any other combo uses the default of ubRoom == 0, set above
-      if (InARoom(pSoldier.value.usPatrolGrid[0], &ubRoom)) {
-        if (!InARoom(pSoldier.value.usPatrolGrid[0], &ubNewRoom) || ubRoom != ubNewRoom) {
+      if (InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoom))) {
+        if (!InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubNewRoom)) || ubRoom != ubNewRoom) {
           *pfReachable = FALSE;
         }
       }
@@ -237,7 +237,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
     if (*pfReachable) {
       // if there is a climb involved then we should store the location
       // of where we have to climb to instead
-      sClimbingGridNo = GetInterveningClimbingLocation(pSoldier, sBestGridNo, bBestLevel, &fClimbingNecessary);
+      sClimbingGridNo = GetInterveningClimbingLocation(pSoldier, sBestGridNo, bBestLevel, addressof(fClimbingNecessary));
       if (fClimbingNecessary) {
         if (sClimbingGridNo == NOWHERE) {
           // can't investigate!
@@ -277,8 +277,8 @@ function WhatIKnowThatPublicDont(pSoldier: Pointer<SOLDIERTYPE>, ubInSightOnly: 
   }
 
   // hang pointers at start of this guy's personal and public opponent opplists
-  pbPersOL = &(pSoldier.value.bOppList[0]);
-  pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][0]);
+  pbPersOL = addressof(pSoldier.value.bOppList[0]);
+  pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][0]);
 
   // for every opponent
   //	for (iLoop = 0; iLoop < MAXMERCS; iLoop++,pbPersOL++,pbPublOL++)

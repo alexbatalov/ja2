@@ -77,7 +77,7 @@ function GetLoadScreenID(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): UINT
             return LOADINGSCREEN_NIGHTMINE;
           return LOADINGSCREEN_DAYMINE;
       }
-      pSector = &SectorInfo[ubSectorID];
+      pSector = addressof(SectorInfo[ubSectorID]);
       switch (pSector.value.ubTraversability[4]) {
         case TOWN:
           if (fNight) {
@@ -318,9 +318,9 @@ function DisplayLoadScreenWithID(ubLoadScreenID: UINT8): void {
     SetFontShadow(FONT_NEARBLACK);
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, 0);
     mprintf(5, 5, "Error loading save, attempting to patch save to version 1.02...", vs_desc.ImageFile);
-  } else if (AddVideoSurface(&vs_desc, &uiLoadScreen)) {
+  } else if (AddVideoSurface(addressof(vs_desc), addressof(uiLoadScreen))) {
     // Blit the background image
-    GetVideoSurface(&hVSurface, uiLoadScreen);
+    GetVideoSurface(addressof(hVSurface), uiLoadScreen);
     BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, 0, 0, 0, NULL);
     DeleteVideoSurfaceFromIndex(uiLoadScreen);
   } else {

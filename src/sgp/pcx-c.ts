@@ -89,7 +89,7 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   }
 
   // Ok we now have a file handle, so let's read in the data
-  FileRead(hFileHandle, &Header, sizeof(PcxHeader), NULL);
+  FileRead(hFileHandle, addressof(Header), sizeof(PcxHeader), NULL);
   if ((Header.ubManufacturer != 10) || (Header.ubEncoding != 1)) {
     // We have an invalid pcx format
     // Delete the object
@@ -114,7 +114,7 @@ function LoadPcx(pFilename: Pointer<UINT8>): Pointer<PcxObject> {
   FileRead(hFileHandle, pPcxBuffer, pCurrentPcxObject.value.uiBufferSize, NULL);
 
   // Read in the palette
-  FileRead(hFileHandle, &(pCurrentPcxObject.value.ubPalette[0]), 768, NULL);
+  FileRead(hFileHandle, addressof(pCurrentPcxObject.value.ubPalette[0]), 768, NULL);
 
   // Close file
   FileClose(hFileHandle);
@@ -290,7 +290,7 @@ function SetPcxPalette(pCurrentPcxObject: Pointer<PcxObject>, hImage: HIMAGE): B
   let Index: UINT16;
   let pubPalette: Pointer<UINT8>;
 
-  pubPalette = &(pCurrentPcxObject.value.ubPalette[0]);
+  pubPalette = addressof(pCurrentPcxObject.value.ubPalette[0]);
 
   // Allocate memory for palette
   hImage.value.pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);

@@ -96,9 +96,9 @@ function NewSmokeEffect(sGridNo: INT16, usItem: UINT16, bLevel: INT8, ubOwner: U
   if ((iSmokeIndex = GetFreeSmokeEffect()) == (-1))
     return -1;
 
-  memset(&gSmokeEffectData[iSmokeIndex], 0, sizeof(SMOKEEFFECT));
+  memset(addressof(gSmokeEffectData[iSmokeIndex]), 0, sizeof(SMOKEEFFECT));
 
-  pSmoke = &gSmokeEffectData[iSmokeIndex];
+  pSmoke = addressof(gSmokeEffectData[iSmokeIndex]);
 
   // Set some values...
   pSmoke.value.sGridNo = sGridNo;
@@ -189,7 +189,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   let pSmoke: Pointer<SMOKEEFFECT>;
   let fDissipating: BOOLEAN = FALSE;
 
-  pSmoke = &gSmokeEffectData[iSmokeEffectID];
+  pSmoke = addressof(gSmokeEffectData[iSmokeEffectID]);
 
   if ((pSmoke.value.ubDuration - pSmoke.value.bAge) < 2) {
     fDissipating = TRUE;
@@ -203,7 +203,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   }
 
   // OK,  Create anitile....
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = sGridNo;
 
   if (bLevel == 0) {
@@ -290,7 +290,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
   }
 
   // Create tile...
-  pAniTile = CreateAnimationTile(&AniParams);
+  pAniTile = CreateAnimationTile(addressof(AniParams));
 
   // Set world flags
   gpWorldLevelData[sGridNo].ubExtFlags[bLevel] |= FromSmokeTypeToWorldFlags(bType);
@@ -350,7 +350,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
     fSpreadEffect = TRUE;
 
-    pSmoke = &gSmokeEffectData[cnt];
+    pSmoke = addressof(gSmokeEffectData[cnt]);
 
     if (pSmoke.value.fAllocated) {
       if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
@@ -417,7 +417,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
   }
 
   for (cnt = 0; cnt < guiNumSmokeEffects; cnt++) {
-    pSmoke = &gSmokeEffectData[cnt];
+    pSmoke = addressof(gSmokeEffectData[cnt]);
 
     if (pSmoke.value.fAllocated) {
       if (pSmoke.value.bFlags & SMOKE_EFFECT_ON_ROOF) {
@@ -493,7 +493,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     memset(gSmokeEffectData, 0, sizeof(SMOKEEFFECT) * NUM_SMOKE_EFFECT_SLOTS);
 
     // Load the Number of Smoke Effects
-    FileRead(hFile, &guiNumSmokeEffects, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       return FALSE;
     }
@@ -501,7 +501,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     // This is a TEMP hack to allow us to use the saves
     if (guiSaveGameVersion < 37 && guiNumSmokeEffects == 0) {
       // Load the Smoke effect Data
-      FileRead(hFile, gSmokeEffectData, sizeof(SMOKEEFFECT), &uiNumBytesRead);
+      FileRead(hFile, gSmokeEffectData, sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
         return FALSE;
       }
@@ -510,7 +510,7 @@ function LoadSmokeEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     // loop through and load the list
     for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
       // Load the Smoke effect Data
-      FileRead(hFile, &gSmokeEffectData[uiCnt], sizeof(SMOKEEFFECT), &uiNumBytesRead);
+      FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
         return FALSE;
       }
@@ -572,7 +572,7 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
   }
 
   // Save the Number of Smoke Effects
-  FileWrite(hFile, &uiNumSmokeEffects, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Close the file
     FileClose(hFile);
@@ -585,7 +585,7 @@ function SaveSmokeEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // if the smoke is active
     if (gSmokeEffectData[uiCnt].fAllocated) {
       // Save the Smoke effect Data
-      FileWrite(hFile, &gSmokeEffectData[uiCnt], sizeof(SMOKEEFFECT), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(SMOKEEFFECT)) {
         // Close the file
         FileClose(hFile);
@@ -625,7 +625,7 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   ResetSmokeEffects();
 
   // Load the Number of Smoke Effects
-  FileRead(hFile, &guiNumSmokeEffects, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiNumSmokeEffects), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hFile);
     return FALSE;
@@ -634,7 +634,7 @@ function LoadSmokeEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   // loop through and load the list
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
     // Load the Smoke effect Data
-    FileRead(hFile, &gSmokeEffectData[uiCnt], sizeof(SMOKEEFFECT), &uiNumBytesRead);
+    FileRead(hFile, addressof(gSmokeEffectData[uiCnt]), sizeof(SMOKEEFFECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SMOKEEFFECT)) {
       FileClose(hFile);
       return FALSE;
@@ -673,7 +673,7 @@ function UpdateSmokeEffectGraphics(): void {
 
   // loop through and save the number of smoke effects
   for (uiCnt = 0; uiCnt < guiNumSmokeEffects; uiCnt++) {
-    pSmoke = &gSmokeEffectData[uiCnt];
+    pSmoke = addressof(gSmokeEffectData[uiCnt]);
 
     // if the smoke is active
     if (gSmokeEffectData[uiCnt].fAllocated) {

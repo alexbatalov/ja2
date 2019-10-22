@@ -147,8 +147,8 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
     }
 
     // reset the help text for mouse regions
-    SetRegionFastHelpText(&gCharInfoHandRegion, "");
-    SetRegionFastHelpText(&gMapStatusBarsRegion, "");
+    SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
+    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), "");
 
     gfDisplayPotentialRetreatPaths = FALSE;
 
@@ -180,7 +180,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
       gubExplicitEnemyEncounterCode = HOSTILE_BLOODCATS_CODE;
     } else if (gbWorldSectorZ) {
       // We are underground, so no autoresolve allowed
-      pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
+      pSector = addressof(SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)]);
       if (pSector.value.ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
       } else if (pSector.value.ubAdminsInBattle || pSector.value.ubTroopsInBattle || pSector.value.ubElitesInBattle) {
@@ -209,12 +209,12 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   }
 
   // Define the blanket region to cover all of the other regions used underneath the panel.
-  MSYS_DefineRegion(&PBInterfaceBlanket, 0, 0, 261, 359, MSYS_PRIORITY_HIGHEST - 5, 0, 0, 0);
+  MSYS_DefineRegion(addressof(PBInterfaceBlanket), 0, 0, 261, 359, MSYS_PRIORITY_HIGHEST - 5, 0, 0, 0);
 
   // Create the panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_PREBATTLEPANEL);
-  if (!AddVideoObject(&VObjectDesc, &uiInterfaceImages))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiInterfaceImages)))
     AssertMsg(0, "Failed to load interface\\PreBattlePanel.sti");
 
   // Create the 3 buttons
@@ -327,7 +327,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
             // if the enemy outnumbers the players, then there is a small chance of the enemies ambushing the group
             if (ubNumMobileEnemies > ubNumMercs) {
               let iChance: INT32;
-              pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
+              pSector = addressof(SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)]);
               if (!(pSector.value.uiFlags & SF_ALREADY_VISITED)) {
                 iChance = (4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
                 if (pSector.value.uiFlags & SF_ENEMY_AMBUSH_LOCATION) {
@@ -395,7 +395,7 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
   if (gubEnemyEncounterCode == ENEMY_ENCOUNTER_CODE) {
     // we know how many enemies are here, so until we leave the sector, we will continue to display the value.
     // the flag will get cleared when time advances after the fEnemyInSector flag is clear.
-    pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)]);
 
     // ALWAYS use these 2 statements together, without setting the boolean, the flag will never be cleaned up!
     pSector.value.uiFlags |= SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
@@ -514,7 +514,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
   iPercentage = 0;
   uiStartTime = GetJA2Clock();
 
-  GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY, &sStartLeft, &sStartTop);
+  GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY, addressof(sStartLeft), addressof(sStartTop));
   sStartLeft += MAP_GRID_X / 2;
   sStartTop += MAP_GRID_Y / 2;
   sEndLeft = 131;
@@ -575,7 +575,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     DstRect.iTop = iTop - iHeight * iPercentage / 200;
     DstRect.iBottom = DstRect.iTop + max(iHeight * iPercentage / 100, 1);
 
-    BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, &PBIRect, &DstRect);
+    BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(PBIRect), addressof(DstRect));
 
     InvalidateScreen();
     RefreshScreen(NULL);
@@ -591,7 +591,7 @@ function KillPreBattleInterface(): void {
     return;
 
   fDisableMapInterfaceDueToBattle = FALSE;
-  MSYS_RemoveRegion(&PBInterfaceBlanket);
+  MSYS_RemoveRegion(addressof(PBInterfaceBlanket));
 
   // The panel
   DeleteVideoObjectFromIndex(uiInterfaceImages);
@@ -736,12 +736,12 @@ function RenderPreBattleInterface(): void {
     }
 
     gfRenderPBInterface = FALSE;
-    GetVideoObject(&hVObject, uiInterfaceImages);
+    GetVideoObject(addressof(hVObject), uiInterfaceImages);
     // main panel
     BltVideoObject(guiSAVEBUFFER, hVObject, MAINPANEL, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
     // main title
 
-    RenderPBHeader(&x, &width);
+    RenderPBHeader(addressof(x), addressof(width));
     // now draw the title bars up to the text.
     for (i = x - 12; i > 20; i -= 10) {
       BltVideoObject(guiSAVEBUFFER, hVObject, TITLE_BAR_PIECE, i, 6, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -864,7 +864,7 @@ function RenderPreBattleInterface(): void {
           x = 72 + (54 - StringPixLength(str, BLOCKFONT2)) / 2;
           mprintf(x, y, str);
           // COND
-          GetSoldierConditionInfo(MercPtrs[i], str, &ubHPPercent, &ubBPPercent);
+          GetSoldierConditionInfo(MercPtrs[i], str, addressof(ubHPPercent), addressof(ubBPPercent));
           x = 129 + (58 - StringPixLength(str, BLOCKFONT2)) / 2;
           mprintf(x, y, str);
           // HP
@@ -922,7 +922,7 @@ function RenderPreBattleInterface(): void {
               mprintf(x, y, str);
             }
             // DEP
-            GetMapscreenMercDepartureString(MercPtrs[i], str, &ubJunk);
+            GetMapscreenMercDepartureString(MercPtrs[i], str, addressof(ubJunk));
             x = 208 + (34 - StringPixLength(str, BLOCKFONT2)) / 2;
             mprintf(x, y, str);
             line++;
@@ -939,7 +939,7 @@ function RenderPreBattleInterface(): void {
     // restore font destinanation buffer to the frame buffer
     SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
   } else if (gfBlinkHeader) {
-    RenderPBHeader(&x, &width); // the text is important enough to blink.
+    RenderPBHeader(addressof(x), addressof(width)); // the text is important enough to blink.
   }
 
   // InvalidateRegion( 0, 0, 261, 359 );
@@ -1303,7 +1303,7 @@ function CalculateNonPersistantPBIInfo(): void {
         gubEnemyEncounterCode = ENTERING_ENEMY_SECTOR_CODE;
       }
     } else {
-      let pSector: Pointer<SECTORINFO> = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+      let pSector: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
       Assert(pSector);
       if (pSector.value.ubCreaturesInBattle) {
         gubExplicitEnemyEncounterCode = FIGHTING_CREATURES_CODE;
@@ -1423,7 +1423,7 @@ function WakeUpAllMercsInSectorUnderAttack(): void {
 
   // any mercs not on duty should be added to the first avail squad
   for (iCounter = 0; iCounter < iNumberOfMercsOnTeam; iCounter++) {
-    pSoldier = &(Menptr[iCounter]);
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive && pSoldier.value.bLife && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
       // if involved, but asleep
@@ -1508,7 +1508,7 @@ function CurrentBattleSectorIs(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16
   let sBattleSectorZ: INT16;
   let fSuccess: BOOLEAN;
 
-  fSuccess = GetCurrentBattleSectorXYZ(&sBattleSectorX, &sBattleSectorY, &sBattleSectorZ);
+  fSuccess = GetCurrentBattleSectorXYZ(addressof(sBattleSectorX), addressof(sBattleSectorY), addressof(sBattleSectorZ));
   Assert(fSuccess);
 
   if ((sSectorX == sBattleSectorX) && (sSectorY == sBattleSectorY) && (sSectorZ == sBattleSectorZ)) {
@@ -1543,7 +1543,7 @@ function LogBattleResults(ubVictoryCode: UINT8): void {
   let sSectorX: INT16;
   let sSectorY: INT16;
   let sSectorZ: INT16;
-  GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
+  GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
   if (ubVictoryCode == LOG_VICTORY) {
     switch (gubEnemyEncounterCode) {
       case ENEMY_INVASION_CODE:

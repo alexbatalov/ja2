@@ -904,7 +904,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
   // if unloaded sector
   if (gWorldSectorX != sSectorX || gWorldSectorY != sSectorY || gbWorldSectorZ != sSectorZ) {
     // if the player has never been there, there's no temp file, and 0 items will get returned, preventing any stealing
-    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, &uiNumberOfItems, FALSE);
+    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, addressof(uiNumberOfItems), FALSE);
 
     if (uiNumberOfItems == 0) {
       return;
@@ -1039,7 +1039,7 @@ function ReadInDistancesBetweenTowns(): void {
 
   hFileHandle = FileOpen("BinaryData\\TownDistances.dat", FILE_ACCESS_READ, FALSE);
 
-  FileRead(hFileHandle, &(iTownDistances), (sizeof(INT32) * NUM_TOWNS * NUM_TOWNS), NULL);
+  FileRead(hFileHandle, addressof(iTownDistances), (sizeof(INT32) * NUM_TOWNS * NUM_TOWNS), NULL);
 
   // close file
   FileClose(hFileHandle);
@@ -1106,7 +1106,7 @@ function SaveStrategicTownLoyaltyToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the Town Loyalty
-  FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, &uiNumBytesWritten);
+  FileWrite(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(TOWN_LOYALTY) * NUM_TOWNS) {
     return FALSE;
   }
@@ -1118,7 +1118,7 @@ function LoadStrategicTownLoyaltyFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Restore the Town Loyalty
-  FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, &uiNumBytesRead);
+  FileRead(hFile, gTownLoyalty, sizeof(TOWN_LOYALTY) * NUM_TOWNS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(TOWN_LOYALTY) * NUM_TOWNS) {
     return FALSE;
   }

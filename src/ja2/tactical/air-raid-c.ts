@@ -119,7 +119,7 @@ function ScheduleAirRaid(pAirRaidDef: Pointer<AIR_RAID_DEFINITION>): void {
   }
 
   // Copy definiaiotn structure into global struct....
-  memcpy(&gAirRaidDef, pAirRaidDef, sizeof(AIR_RAID_DEFINITION));
+  memcpy(addressof(gAirRaidDef), pAirRaidDef, sizeof(AIR_RAID_DEFINITION));
 
   AddSameDayStrategicEvent(EVENT_BEGIN_AIR_RAID, (GetWorldMinutesInDay() + pAirRaidDef.value.ubNumMinsFromCurrentTime), 0);
 
@@ -1035,10 +1035,10 @@ function SaveAirRaidInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
   } else
     sAirRaidSaveStruct.sRaidSoldierID = -1;
 
-  memcpy(&sAirRaidSaveStruct.AirRaidDef, &gAirRaidDef, sizeof(AIR_RAID_DEFINITION));
+  memcpy(addressof(sAirRaidSaveStruct.AirRaidDef), addressof(gAirRaidDef), sizeof(AIR_RAID_DEFINITION));
 
   // Save the Air Raid Save Struct
-  FileWrite(hFile, &sAirRaidSaveStruct, sizeof(AIR_RAID_SAVE_STRUCT), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(AIR_RAID_SAVE_STRUCT)) {
     return FALSE;
   }
@@ -1051,7 +1051,7 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Load the number of REAL_OBJECTs in the array
-  FileRead(hFile, &sAirRaidSaveStruct, sizeof(AIR_RAID_SAVE_STRUCT), &uiNumBytesRead);
+  FileRead(hFile, addressof(sAirRaidSaveStruct), sizeof(AIR_RAID_SAVE_STRUCT), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(AIR_RAID_SAVE_STRUCT)) {
     return FALSE;
   }
@@ -1083,7 +1083,7 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   giNumFrames = sAirRaidSaveStruct.iNumFrames;
 
   if (sAirRaidSaveStruct.sRaidSoldierID != -1) {
-    gpRaidSoldier = &Menptr[sAirRaidSaveStruct.sRaidSoldierID];
+    gpRaidSoldier = addressof(Menptr[sAirRaidSaveStruct.sRaidSoldierID]);
 
     gpRaidSoldier.value.bLevel = sAirRaidSaveStruct.bLevel;
     gpRaidSoldier.value.bTeam = sAirRaidSaveStruct.bTeam;
@@ -1098,7 +1098,7 @@ function LoadAirRaidInfoFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   } else
     gpRaidSoldier = NULL;
 
-  memcpy(&gAirRaidDef, &sAirRaidSaveStruct.AirRaidDef, sizeof(AIR_RAID_DEFINITION));
+  memcpy(addressof(gAirRaidDef), addressof(sAirRaidSaveStruct.AirRaidDef), sizeof(AIR_RAID_DEFINITION));
 
   return TRUE;
 }

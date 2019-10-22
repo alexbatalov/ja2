@@ -473,7 +473,7 @@ function CheckHostileOrSayQuoteList(): void {
       // unpause all AI
       UnPauseAI();
       // reset the list
-      memset(&gubShouldBecomeHostileOrSayQuote, NOBODY, SHOULD_BECOME_HOSTILE_SIZE);
+      memset(addressof(gubShouldBecomeHostileOrSayQuote), NOBODY, SHOULD_BECOME_HOSTILE_SIZE);
       gubNumShouldBecomeHostileOrSayQuote = 0;
       // and return/go into combat
       if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -879,7 +879,7 @@ function EndMuzzleFlash(pSoldier: Pointer<SOLDIERTYPE>): void {
         if (pOtherSoldier.value.sGridNo != NOWHERE) {
           if (PythSpacesAway(pOtherSoldier.value.sGridNo, pSoldier.value.sGridNo) > DistanceVisible(pOtherSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pSoldier.value.sGridNo, pSoldier.value.bLevel)) {
             // if this guy can no longer see us, change to seen this turn
-            HandleManNoLongerSeen(pOtherSoldier, pSoldier, &(pOtherSoldier.value.bOppList[pSoldier.value.ubID]), &(gbPublicOpplist[pOtherSoldier.value.bTeam][pSoldier.value.ubID]));
+            HandleManNoLongerSeen(pOtherSoldier, pSoldier, addressof(pOtherSoldier.value.bOppList[pSoldier.value.ubID]), addressof(gbPublicOpplist[pOtherSoldier.value.bTeam][pSoldier.value.ubID]));
           }
           // else this person is still seen, if the looker is on our side or the militia the person should stay visible
           else if (pOtherSoldier.value.bTeam == gbPlayerNum || pOtherSoldier.value.bTeam == MILITIA_TEAM)
@@ -1131,7 +1131,7 @@ fprintf(OpplistFile,"ManLooksForMan: changing personalOpplist to %d for guynum %
   if ((pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) && (pOpponent.value.bTeam == gbPlayerNum)) {
     let ubRoom: UINT8;
 
-    if (InARoom(pOpponent.value.sGridNo, &ubRoom) && IN_BROTHEL(ubRoom) && (IN_BROTHEL_GUARD_ROOM(ubRoom))) {
+    if (InARoom(pOpponent.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom) && (IN_BROTHEL_GUARD_ROOM(ubRoom))) {
       // unauthorized!
       // make guard run to block guard room
       CancelAIAction(pSoldier, TRUE);
@@ -1297,8 +1297,8 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
    }
  */
 
-  pPersOL = &(pSoldier.value.bOppList[pOpponent.value.ubID]);
-  pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
+  pPersOL = addressof(pSoldier.value.bOppList[pOpponent.value.ubID]);
+  pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
 
   // if soldier is known about (SEEN or HEARD within last few turns)
   if (*pPersOL || *pbPublOL) {
@@ -1471,7 +1471,7 @@ PopMessage(tempstr);
                   let ubRoom: UINT8 = 0;
                   // if player is in behind the ropes of the museum display
                   // or if alarm has gone off (status red)
-                  InARoom(pOpponent.value.sGridNo, &ubRoom);
+                  InARoom(pOpponent.value.sGridNo, addressof(ubRoom));
 
                   if ((CheckFact(FACT_MUSEUM_OPEN, 0) == FALSE && ubRoom >= 22 && ubRoom <= 41) || CheckFact(FACT_MUSEUM_ALARM_WENT_OFF, 0) || (ubRoom == 39 || ubRoom == 40) || (FindObj(pOpponent, CHALICE) != NO_SLOT)) {
                     SetFactTrue(FACT_MUSEUM_ALARM_WENT_OFF);
@@ -1563,7 +1563,7 @@ PopMessage(tempstr);
 
               // JA2 Gold: only go hostile if see player IN guard room
               // if ( InARoom( pOpponent->sGridNo, &ubRoom ) && IN_BROTHEL( ubRoom ) && ( gMercProfiles[ MADAME ].bNPCData == 0 || IN_BROTHEL_GUARD_ROOM( ubRoom ) ) )
-              if (InARoom(pOpponent.value.sGridNo, &ubRoom) && IN_BROTHEL_GUARD_ROOM(ubRoom)) {
+              if (InARoom(pOpponent.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL_GUARD_ROOM(ubRoom)) {
                 // unauthorized!
                 MakeCivHostile(pSoldier, 2);
                 if (!(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -1585,7 +1585,7 @@ PopMessage(tempstr);
                 EnterCombatMode(pSoldier.value.bTeam);
 
                 LocateSoldier(pSoldier.value.ubID, TRUE);
-                GetSoldierScreenPos(pSoldier, &sX, &sY);
+                GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
                 // begin quote
                 BeginCivQuote(pSoldier, CIV_QUOTE_HICKS_SEE_US_AT_NIGHT, 0, sX, sY);
               }
@@ -2009,7 +2009,7 @@ function UpdatePublic(ubTeam: UINT8, ubID: UINT8, bNewOpplist: INT8, sGridno: IN
   let ubMadeDifference: UINT8 = FALSE;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pbPublOL = &(gbPublicOpplist[ubTeam][ubID]);
+  pbPublOL = addressof(gbPublicOpplist[ubTeam][ubID]);
 
   // if new opplist is more up-to-date, or we are just wiping it for some reason
   if ((gubKnowledgeValue[*pbPublOL - OLDEST_HEARD_VALUE][bNewOpplist - OLDEST_HEARD_VALUE] > 0) || (bNewOpplist == NOT_HEARD_OR_SEEN)) {
@@ -2442,10 +2442,10 @@ function RadioSightings(pSoldier: Pointer<SOLDIERTYPE>, ubAbout: UINT8, ubTeamTo
   }
 
   // hang a pointer to the start of our this guy's personal opplist
-  pPersOL = &(pSoldier.value.bOppList[start]);
+  pPersOL = addressof(pSoldier.value.bOppList[start]);
 
   // hang a pointer to the start of this guy's opponents in the public opplist
-  pbPublOL = &(gbPublicOpplist[ubTeamToRadioTo][start]);
+  pbPublOL = addressof(gbPublicOpplist[ubTeamToRadioTo][start]);
 
   pOpponent = MercPtrs[start];
 
@@ -2613,9 +2613,9 @@ function DebugSoldierPage1(): void {
   let usMapPos: UINT16;
   let ubLine: UINT8 = 0;
 
-  if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+  if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
     // Get Soldier
-    GetSoldier(&pSoldier, usSoldierIndex);
+    GetSoldier(addressof(pSoldier), usSoldierIndex);
 
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG SOLDIER PAGE ONE, GRIDNO %d", pSoldier.value.sGridNo);
@@ -2768,7 +2768,7 @@ function DebugSoldierPage1(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     gprintf(400, LINE_HEIGHT * ubLine, "%d", pSoldier.value.bHasKeys);
     ubLine++;
-  } else if (GetMouseMapPos(&usMapPos)) {
+  } else if (GetMouseMapPos(addressof(usMapPos))) {
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG LAND PAGE ONE");
     SetFont(LARGEFONT1);
@@ -2791,9 +2791,9 @@ function DebugSoldierPage2(): void {
   let pNode: Pointer<LEVELNODE>;
   let ubLine: UINT8;
 
-  if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+  if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
     // Get Soldier
-    GetSoldier(&pSoldier, usSoldierIndex);
+    GetSoldier(addressof(pSoldier), usSoldierIndex);
 
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG SOLDIER PAGE TWO, GRIDNO %d", pSoldier.value.sGridNo);
@@ -2913,14 +2913,14 @@ function DebugSoldierPage2(): void {
     gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SECONDHANDPOS].usItem]);
     ubLine++;
 
-    if (GetMouseMapPos(&usMapPos)) {
+    if (GetMouseMapPos(addressof(usMapPos))) {
       SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
       gprintf(0, LINE_HEIGHT * ubLine, "CurrGridNo:");
       SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
       gprintf(150, LINE_HEIGHT * ubLine, "%d", usMapPos);
       ubLine++;
     }
-  } else if (GetMouseMapPos(&usMapPos)) {
+  } else if (GetMouseMapPos(addressof(usMapPos))) {
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG LAND PAGE TWO");
     SetFont(LARGEFONT1);
@@ -3033,9 +3033,9 @@ function DebugSoldierPage3(): void {
   let usMapPos: UINT16;
   let ubLine: UINT8;
 
-  if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+  if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
     // Get Soldier
-    GetSoldier(&pSoldier, usSoldierIndex);
+    GetSoldier(addressof(pSoldier), usSoldierIndex);
 
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG SOLDIER PAGE THREE, GRIDNO %d", pSoldier.value.sGridNo);
@@ -3212,7 +3212,7 @@ function DebugSoldierPage3(): void {
       gprintf(150, LINE_HEIGHT * ubLine, "%d", gMercProfiles[pSoldier.value.ubProfile].bMercOpinion[MercPtrs[gusSelectedSoldier].value.ubProfile]);
       ubLine++;
     }
-  } else if (GetMouseMapPos(&usMapPos)) {
+  } else if (GetMouseMapPos(addressof(usMapPos))) {
     let pDoorStatus: Pointer<DOOR_STATUS>;
     let pStructure: Pointer<STRUCTURE>;
 
@@ -3364,9 +3364,9 @@ function DebugSoldierPage4(): void {
   let usSoldierIndex: UINT16;
   let ubLine: UINT8;
 
-  if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+  if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
     // Get Soldier
-    GetSoldier(&pSoldier, usSoldierIndex);
+    GetSoldier(addressof(pSoldier), usSoldierIndex);
 
     SetFont(LARGEFONT1);
     gprintf(0, 0, "DEBUG SOLDIER PAGE FOUR, GRIDNO %d", pSoldier.value.sGridNo);
@@ -3487,7 +3487,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[HELMETPOS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HELMETPOS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[HELMETPOS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HELMETPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3495,7 +3495,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[VESTPOS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[VESTPOS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[VESTPOS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[VESTPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3503,7 +3503,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[LEGPOS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[LEGPOS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[LEGPOS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[LEGPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3511,7 +3511,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[HEAD1POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HEAD1POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[HEAD1POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HEAD1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3519,7 +3519,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[HEAD2POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HEAD2POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[HEAD2POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HEAD2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3527,7 +3527,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[HANDPOS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[HANDPOS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[HANDPOS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[HANDPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3535,7 +3535,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SECONDHANDPOS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SECONDHANDPOS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SECONDHANDPOS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SECONDHANDPOS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3543,7 +3543,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[BIGPOCK1POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK1POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[BIGPOCK1POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3551,7 +3551,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[BIGPOCK2POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK2POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[BIGPOCK2POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3559,7 +3559,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[BIGPOCK3POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK3POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[BIGPOCK3POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK3POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3567,7 +3567,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[BIGPOCK4POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[BIGPOCK4POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[BIGPOCK4POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[BIGPOCK4POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3575,7 +3575,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK1POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK1POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK1POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK1POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3583,7 +3583,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK2POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK2POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK2POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK2POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3591,7 +3591,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK3POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK3POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK3POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK3POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3599,7 +3599,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK4POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK4POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK4POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK4POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3607,7 +3607,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK5POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK5POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK5POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK5POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3615,7 +3615,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK6POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK6POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK6POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK6POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3623,7 +3623,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK7POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK7POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK7POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK7POS]), LINE_HEIGHT * ubLine);
     ubLine++;
 
     SetFontShade(LARGEFONT1, FONT_SHADE_GREEN);
@@ -3631,7 +3631,7 @@ function DebugSoldierPage4(): void {
     SetFontShade(LARGEFONT1, FONT_SHADE_NEUTRAL);
     if (pSoldier.value.inv[SMALLPOCK8POS].usItem)
       gprintf(150, LINE_HEIGHT * ubLine, "%s", ShortItemNames[pSoldier.value.inv[SMALLPOCK8POS].usItem]);
-    WriteQuantityAndAttachments(&pSoldier.value.inv[SMALLPOCK8POS], LINE_HEIGHT * ubLine);
+    WriteQuantityAndAttachments(addressof(pSoldier.value.inv[SMALLPOCK8POS]), LINE_HEIGHT * ubLine);
     ubLine++;
   } else {
     SetFont(LARGEFONT1);
@@ -3809,7 +3809,7 @@ function MakeNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrType
 
   if (gTacticalStatus.ubAttackBusyCount) {
     // delay these events until the attack is over!
-    AddGameEvent(S_NOISE, DEMAND_EVENT_DELAY, &SNoise);
+    AddGameEvent(S_NOISE, DEMAND_EVENT_DELAY, addressof(SNoise));
   } else {
     // AddGameEvent( S_NOISE, 0, &SNoise );
 
@@ -4194,7 +4194,7 @@ function ProcessNoise(ubNoiseMaker: UINT8, sGridNo: INT16, bLevel: INT8, ubTerrT
 
       if (ubEffVolume > 0) {
         // ALL RIGHT!  Passed all the tests, this listener hears this noise!!!
-        HearNoise(pSoldier, ubSource, sGridNo, bLevel, ubEffVolume, ubNoiseType, &bSeen);
+        HearNoise(pSoldier, ubSource, sGridNo, bLevel, ubEffVolume, ubNoiseType, addressof(bSeen));
 
         bHeard = TRUE;
 
@@ -4792,7 +4792,7 @@ function DecayIndividualOpplist(pSoldier: Pointer<SOLDIERTYPE>): void {
     // must make sure that public opplist is kept to match...
     for (uiLoop = 0; uiLoop < TOTAL_SOLDIERS; uiLoop++) {
       if (pSoldier.value.bOppList[uiLoop] == SEEN_CURRENTLY) {
-        HandleManNoLongerSeen(pSoldier, MercPtrs[uiLoop], &(pSoldier.value.bOppList[uiLoop]), &(gbPublicOpplist[pSoldier.value.bTeam][uiLoop]));
+        HandleManNoLongerSeen(pSoldier, MercPtrs[uiLoop], addressof(pSoldier.value.bOppList[uiLoop]), addressof(gbPublicOpplist[pSoldier.value.bTeam][uiLoop]));
       }
     }
     // void HandleManNoLongerSeen( SOLDIERTYPE * pSoldier, SOLDIERTYPE * pOpponent, INT8 * pPersOL, INT8 * pbPublOL )
@@ -4930,7 +4930,7 @@ function DecayPublicOpplist(bTeam: INT8): void {
     // for every active, living soldier on ANOTHER team
     if (pSoldier && pSoldier.value.bLife && (pSoldier.value.bTeam != bTeam)) {
       // hang a pointer to the byte holding team's public opplist for this merc
-      pbPublOL = &gbPublicOpplist[bTeam][pSoldier.value.ubID];
+      pbPublOL = addressof(gbPublicOpplist[bTeam][pSoldier.value.ubID]);
 
       if (*pbPublOL == NOT_HEARD_OR_SEEN) {
         continue;

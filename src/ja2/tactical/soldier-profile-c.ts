@@ -154,7 +154,7 @@ function LoadMercProfiles(): BOOLEAN {
   }
 
   for (uiLoop = 0; uiLoop < NUM_PROFILES; uiLoop++) {
-    if (JA2EncryptedFileRead(fptr, &gMercProfiles[uiLoop], sizeof(MERCPROFILESTRUCT), &uiNumBytesRead) != 1) {
+    if (JA2EncryptedFileRead(fptr, addressof(gMercProfiles[uiLoop]), sizeof(MERCPROFILESTRUCT), addressof(uiNumBytesRead)) != 1) {
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("FAILED to Read Merc Profiles from File %d %s", uiLoop, pFileName));
       FileClose(fptr);
       return FALSE;
@@ -168,7 +168,7 @@ function LoadMercProfiles(): BOOLEAN {
 
     // if the merc has a medical deposit
     if (gMercProfiles[uiLoop].bMedicalDeposit) {
-      gMercProfiles[uiLoop].sMedicalDepositAmount = CalcMedicalDeposit(&gMercProfiles[uiLoop]);
+      gMercProfiles[uiLoop].sMedicalDepositAmount = CalcMedicalDeposit(addressof(gMercProfiles[uiLoop]));
     } else
       gMercProfiles[uiLoop].sMedicalDepositAmount = 0;
 
@@ -425,7 +425,7 @@ function MakeRemainingTerroristsTougher(): void {
     usNewItem = HAND_GRENADE;
   }
 
-  DeleteObj(&Object);
+  DeleteObj(addressof(Object));
   Object.usItem = usNewItem;
   Object.bStatus[0] = 100;
 
@@ -441,7 +441,7 @@ function MakeRemainingTerroristsTougher(): void {
       if (usOldItem != NOTHING) {
         RemoveObjectFromSoldierProfile(gubTerrorists[ubLoop], usOldItem);
       }
-      PlaceObjectInSoldierProfile(gubTerrorists[ubLoop], &Object);
+      PlaceObjectInSoldierProfile(gubTerrorists[ubLoop], addressof(Object));
     }
   }
 }
@@ -535,7 +535,7 @@ function MakeRemainingAssassinsTougher(): void {
     usNewItem = HAND_GRENADE;
   }
 
-  DeleteObj(&Object);
+  DeleteObj(addressof(Object));
   Object.usItem = usNewItem;
   Object.bStatus[0] = 100;
 
@@ -544,7 +544,7 @@ function MakeRemainingAssassinsTougher(): void {
       if (usOldItem != NOTHING) {
         RemoveObjectFromSoldierProfile(gubAssassins[ubLoop], usOldItem);
       }
-      PlaceObjectInSoldierProfile(gubAssassins[ubLoop], &Object);
+      PlaceObjectInSoldierProfile(gubAssassins[ubLoop], addressof(Object));
     }
   }
 }
@@ -556,7 +556,7 @@ function StartSomeMercsOnAssignment(): void {
 
   // some randomly picked A.I.M. mercs will start off "on assignment" at the beginning of each new game
   for (uiCnt = 0; uiCnt < AIM_AND_MERC_MERCS; uiCnt++) {
-    pProfile = &(gMercProfiles[uiCnt]);
+    pProfile = addressof(gMercProfiles[uiCnt]);
 
     // calc chance to start on assignment
     uiChance = 5 * pProfile.value.bExpLevel;
@@ -665,7 +665,7 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
   InternalTacticalRemoveSoldier(ubID, FALSE);
 
   // Create a new one!
-  memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+  memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.bTeam = ubTeam;
   MercCreateStruct.ubProfile = pSoldier.value.ubProfile;
   MercCreateStruct.bBodyType = pSoldier.value.ubBodyType;
@@ -685,7 +685,7 @@ function ChangeSoldierTeam(pSoldier: Pointer<SOLDIERTYPE>, ubTeam: UINT8): Point
     MercCreateStruct.fPlayerMerc = TRUE;
   }
 
-  if (TacticalCreateSoldier(&MercCreateStruct, &ubID)) {
+  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
     pNewSoldier = MercPtrs[ubID];
 
     // Copy vital stats back!
@@ -809,11 +809,11 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
       if (Item[pNewSoldier.value.inv[bSlot].usItem].fFlags & ITEM_TWO_HANDED) {
         if (bSlot != SECONDHANDPOS && pNewSoldier.value.inv[SECONDHANDPOS].usItem != NOTHING) {
           // need to move second hand item out first
-          AutoPlaceObject(pNewSoldier, &(pNewSoldier.value.inv[SECONDHANDPOS]), FALSE);
+          AutoPlaceObject(pNewSoldier, addressof(pNewSoldier.value.inv[SECONDHANDPOS]), FALSE);
         }
       }
       // swap item to hand
-      SwapObjs(&(pNewSoldier.value.inv[bSlot]), &(pNewSoldier.value.inv[HANDPOS]));
+      SwapObjs(addressof(pNewSoldier.value.inv[bSlot]), addressof(pNewSoldier.value.inv[HANDPOS]));
     }
   }
 
@@ -941,7 +941,7 @@ function WhichBuddy(ubCharNum: UINT8, ubBuddy: UINT8): INT8 {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
   let bLoop: INT8;
 
-  pProfile = &(gMercProfiles[ubCharNum]);
+  pProfile = addressof(gMercProfiles[ubCharNum]);
 
   for (bLoop = 0; bLoop < 3; bLoop++) {
     if (pProfile.value.bBuddy[bLoop] == ubBuddy) {
@@ -955,7 +955,7 @@ function WhichHated(ubCharNum: UINT8, ubHated: UINT8): INT8 {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
   let bLoop: INT8;
 
-  pProfile = &(gMercProfiles[ubCharNum]);
+  pProfile = addressof(gMercProfiles[ubCharNum]);
 
   for (bLoop = 0; bLoop < 3; bLoop++) {
     if (pProfile.value.bHated[bLoop] == ubHated) {
@@ -1007,7 +1007,7 @@ function UpdateSoldierPointerDataIntoProfile(fPlayerMercs: BOOLEAN): void {
 
         if (fDoCopy) {
           // get profile...
-          pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+          pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
           // Copy....
           pProfile.value.bLife = pSoldier.value.bLife;
@@ -1076,7 +1076,7 @@ function SwapLarrysProfiles(pSoldier: Pointer<SOLDIERTYPE>): Pointer<SOLDIERTYPE
     return pSoldier;
   }
 
-  pNewProfile = &gMercProfiles[ubDestProfile];
+  pNewProfile = addressof(gMercProfiles[ubDestProfile]);
   pNewProfile.value.ubMiscFlags2 = gMercProfiles[ubSrcProfile].ubMiscFlags2;
   pNewProfile.value.ubMiscFlags = gMercProfiles[ubSrcProfile].ubMiscFlags;
   pNewProfile.value.sSectorX = gMercProfiles[ubSrcProfile].sSectorX;

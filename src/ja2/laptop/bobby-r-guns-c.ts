@@ -163,13 +163,13 @@ let guiTempCurrentMode: UINT32;
 function GameInitBobbyRGuns(): void {
   guiTempCurrentMode = 0;
 
-  memset(&BobbyRayPurchases, 0, MAX_PURCHASE_AMOUNT);
+  memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
 }
 
 function EnterInitBobbyRGuns(): void {
   guiTempCurrentMode = 0;
 
-  memset(&BobbyRayPurchases, 0, MAX_PURCHASE_AMOUNT);
+  memset(addressof(BobbyRayPurchases), 0, MAX_PURCHASE_AMOUNT);
 }
 
 function EnterBobbyRGuns(): BOOLEAN {
@@ -180,12 +180,12 @@ function EnterBobbyRGuns(): BOOLEAN {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\gunbackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiGunBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGunBackground)));
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\gunsgrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiGunsGrid));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGunsGrid)));
 
   InitBobbyBrTitle();
 
@@ -231,7 +231,7 @@ function RenderBobbyRGuns(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(&hPixHandle, guiGunsGrid);
+  GetVideoObject(addressof(hPixHandle), guiGunsGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   //	DeleteMouseRegionForBigImage();
@@ -246,7 +246,7 @@ function DisplayBobbyRBrTitle(): BOOLEAN {
   let hPixHandle: HVOBJECT;
 
   // BR title
-  GetVideoObject(&hPixHandle, guiBrTitle);
+  GetVideoObject(addressof(hPixHandle), guiBrTitle);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // To Order Text
@@ -267,11 +267,11 @@ function InitBobbyBrTitle(): BOOLEAN {
   // load the br title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\br.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBrTitle));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrTitle)));
 
   // initialize the link to the homepage by clicking on the title
-  MSYS_DefineRegion(&gSelectedTitleImageLinkRegion, BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH), (BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);
-  MSYS_AddRegion(&gSelectedTitleImageLinkRegion);
+  MSYS_DefineRegion(addressof(gSelectedTitleImageLinkRegion), BOBBYR_BRTITLE_X, BOBBYR_BRTITLE_Y, (BOBBYR_BRTITLE_X + BOBBYR_BRTITLE_WIDTH), (BOBBYR_BRTITLE_Y + BOBBYR_BRTITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectTitleImageLinkRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedTitleImageLinkRegion));
 
   gusOldItemNumOnTopOfPage = 65535;
 
@@ -281,7 +281,7 @@ function InitBobbyBrTitle(): BOOLEAN {
 function DeleteBobbyBrTitle(): BOOLEAN {
   DeleteVideoObjectFromIndex(guiBrTitle);
 
-  MSYS_RemoveRegion(&gSelectedTitleImageLinkRegion);
+  MSYS_RemoveRegion(addressof(gSelectedTitleImageLinkRegion));
 
   DeleteMouseRegionForBigImage();
 
@@ -697,11 +697,11 @@ function DisplayBigItemImage(usIndex: UINT16, PosY: UINT16): BOOLEAN {
 
   PosX = BOBBYR_GRID_PIC_X;
 
-  pItem = &Item[usIndex];
-  LoadTileGraphicForItem(pItem, &uiImage);
+  pItem = addressof(Item[usIndex]);
+  LoadTileGraphicForItem(pItem, addressof(uiImage));
 
-  GetVideoObject(&hPixHandle, uiImage);
-  pTrav = &(hPixHandle.value.pETRLEObject[0]);
+  GetVideoObject(addressof(hPixHandle), uiImage);
+  pTrav = addressof(hPixHandle.value.pETRLEObject[0]);
 
   // center picture in frame
   usHeight = pTrav.value.usHeight;
@@ -1071,9 +1071,9 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
 
   for (i = 0; i < ubCount; i++) {
     // Mouse region for the Big Item Image
-    MSYS_DefineRegion(&gSelectedBigImageRegion[i], BOBBYR_GRID_PIC_X, usPosY, (BOBBYR_GRID_PIC_X + BOBBYR_GRID_PIC_WIDTH), (usPosY + BOBBYR_GRID_PIC_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBigImageRegionCallBack);
-    MSYS_AddRegion(&gSelectedBigImageRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedBigImageRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedBigImageRegion[i]), BOBBYR_GRID_PIC_X, usPosY, (BOBBYR_GRID_PIC_X + BOBBYR_GRID_PIC_WIDTH), (usPosY + BOBBYR_GRID_PIC_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectBigImageRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedBigImageRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedBigImageRegion[i]), 0, i);
 
     // specify the help text only if the items is ammo
     if (Item[pItemNumbers[i]].usItemClass == IC_AMMO) {
@@ -1086,8 +1086,8 @@ function CreateMouseRegionForBigImage(usPosY: UINT16, ubCount: UINT8, pItemNumbe
     } else
       zItemName[0] = '\0';
 
-    SetRegionFastHelpText(&gSelectedBigImageRegion[i], zItemName);
-    SetRegionHelpEndCallback(&gSelectedBigImageRegion[i], BobbyrRGunsHelpTextDoneCallBack);
+    SetRegionFastHelpText(addressof(gSelectedBigImageRegion[i]), zItemName);
+    SetRegionHelpEndCallback(addressof(gSelectedBigImageRegion[i]), BobbyrRGunsHelpTextDoneCallBack);
 
     usPosY += BOBBYR_GRID_OFFSET;
   }
@@ -1103,7 +1103,7 @@ function DeleteMouseRegionForBigImage(): void {
     return;
 
   for (i = 0; i < gubNumItemsOnScreen; i++)
-    MSYS_RemoveRegion(&gSelectedBigImageRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedBigImageRegion[i]));
 
   gfBigImageMouseRegionCreated = FALSE;
   gusOldItemNumOnTopOfPage = 65535;

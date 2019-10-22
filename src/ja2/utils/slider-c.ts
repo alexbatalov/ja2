@@ -79,7 +79,7 @@ function InitSlider(): BOOLEAN {
   // load Slider Box Graphic graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\SliderBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSliderBoxImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSliderBoxImage)));
 
   gfSliderInited = TRUE;
 
@@ -162,8 +162,8 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
       pNewSlider.value.ubSliderWidth = STEEL_SLIDER_WIDTH;
       pNewSlider.value.ubSliderHeight = STEEL_SLIDER_HEIGHT;
 
-      MSYS_DefineRegion(&pNewSlider.value.ScrollAreaMouseRegion, (usPosX - pNewSlider.value.usWidth / 2), usPosY, (usPosX + pNewSlider.value.usWidth / 2), (pNewSlider.value.usPosY + pNewSlider.value.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(&pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(addressof(pNewSlider.value.ScrollAreaMouseRegion), (usPosX - pNewSlider.value.usWidth / 2), usPosY, (usPosX + pNewSlider.value.usWidth / 2), (pNewSlider.value.usPosY + pNewSlider.value.usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(addressof(pNewSlider.value.ScrollAreaMouseRegion), 1, pNewSlider.value.uiSliderID);
       break;
 
     case SLIDER_DEFAULT_STYLE:
@@ -173,8 +173,8 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
       pNewSlider.value.usWidth = usWidth;
       pNewSlider.value.usHeight = DEFUALT_SLIDER_SIZE;
 
-      MSYS_DefineRegion(&pNewSlider.value.ScrollAreaMouseRegion, usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.value.usPosX + pNewSlider.value.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
-      MSYS_SetRegionUserData(&pNewSlider.value.ScrollAreaMouseRegion, 1, pNewSlider.value.uiSliderID);
+      MSYS_DefineRegion(addressof(pNewSlider.value.ScrollAreaMouseRegion), usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider.value.usPosX + pNewSlider.value.usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_SetRegionUserData(addressof(pNewSlider.value.ScrollAreaMouseRegion), 1, pNewSlider.value.uiSliderID);
       break;
   }
 
@@ -301,14 +301,14 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
 
   if (pSlider.value.uiFlags & SLIDER_VERTICAL) {
     // display the slider box
-    GetVideoObject(&hPixHandle, guiSliderBoxImage);
+    GetVideoObject(addressof(hPixHandle), guiSliderBoxImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // invalidate the area
     InvalidateRegion(pSlider.value.LastRect.iLeft, pSlider.value.LastRect.iTop, pSlider.value.LastRect.iRight, pSlider.value.LastRect.iBottom);
   } else {
     // display the slider box
-    GetVideoObject(&hPixHandle, guiSliderBoxImage);
+    GetVideoObject(addressof(hPixHandle), guiSliderBoxImage);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, pSlider.value.usCurrentSliderBoxPosition, pSlider.value.usPosY - DEFUALT_SLIDER_SIZE, VO_BLT_SRCTRANSPARENCY, NULL);
 
     // invalidate the area
@@ -346,7 +346,7 @@ function RemoveSliderBar(uiSliderID: UINT32): void {
   if (pTemp.value.pPrev)
     pTemp.value.pPrev.value.pNext = pTemp.value.pNext;
 
-  MSYS_RemoveRegion(&pNodeToRemove.value.ScrollAreaMouseRegion);
+  MSYS_RemoveRegion(addressof(pNodeToRemove.value.ScrollAreaMouseRegion));
 
   // if its the last node
   if (pNodeToRemove == pSliderHead)
@@ -530,7 +530,7 @@ function OptDisplayLine(usStartX: UINT16, usStartY: UINT16, EndX: UINT16, EndY: 
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 

@@ -15,7 +15,7 @@ function LoadEncryptedDataFromFile(pFileName: STR, pDestString: STR16, uiSeekFro
     return FALSE;
   }
 
-  if (!FileRead(hFile, pDestString, uiSeekAmount, &uiBytesRead)) {
+  if (!FileRead(hFile, pDestString, uiSeekAmount, addressof(uiBytesRead))) {
     FileClose(hFile);
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "LoadEncryptedDataFromFile: Failed FileRead");
     return FALSE;

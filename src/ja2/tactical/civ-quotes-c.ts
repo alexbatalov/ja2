@@ -163,7 +163,7 @@ function ShutDownQuoteBox(fForce: BOOLEAN): void {
     RemoveVideoOverlay(gCivQuoteData.iVideoOverlay);
 
     // Remove mouse region...
-    MSYS_RemoveRegion(&(gCivQuoteData.MouseRegion));
+    MSYS_RemoveRegion(addressof(gCivQuoteData.MouseRegion));
 
     RemoveMercPopupBoxFromIndex(gCivQuoteData.iDialogueBox);
     gCivQuoteData.iDialogueBox = -1;
@@ -293,12 +293,12 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   }
 
   // Create video oeverlay....
-  memset(&VideoOverlayDesc, 0, sizeof(VIDEO_OVERLAY_DESC));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Prepare text box
   SET_USE_WINFONTS(TRUE);
   SET_WINFONT(giSubTitleWinFont);
-  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, &gusCivQuoteBoxWidth, &gusCivQuoteBoxHeight);
+  gCivQuoteData.iDialogueBox = PrepareMercPopupBox(gCivQuoteData.iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gzCivQuote, DIALOGUE_DEFAULT_WIDTH, 0, 0, 0, addressof(gusCivQuoteBoxWidth), addressof(gusCivQuoteBoxHeight));
   SET_USE_WINFONTS(FALSE);
 
   // OK, find center for box......
@@ -335,12 +335,12 @@ function BeginCivQuote(pCiv: Pointer<SOLDIERTYPE>, ubCivQuoteID: UINT8, ubEntryI
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   VideoOverlayDesc.BltCallback = RenderCivQuoteBoxOverlay;
 
-  gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+  gCivQuoteData.iVideoOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
 
   // Define main region
-  MSYS_DefineRegion(&(gCivQuoteData.MouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
+  MSYS_DefineRegion(addressof(gCivQuoteData.MouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, QuoteOverlayClickCallback);
   // Add region
-  MSYS_AddRegion(&(gCivQuoteData.MouseRegion));
+  MSYS_AddRegion(addressof(gCivQuoteData.MouseRegion));
 
   gCivQuoteData.bActive = TRUE;
 
@@ -597,10 +597,10 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
     // CAN'T USE HINTS, since we just did one...
     pCiv.value.bCurrentCivQuote = -1;
     pCiv.value.bCurrentCivQuoteDelta = 0;
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, &ubCivHintToUse, FALSE);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), FALSE);
   } else {
     // Determine which quote to say.....
-    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, &ubCivHintToUse, TRUE);
+    ubCivQuoteID = DetermineCivQuoteEntry(pCiv, addressof(ubCivHintToUse), TRUE);
   }
 
   // Determine entry id
@@ -623,7 +623,7 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 
   // Determine location...
   // Get location of civ on screen.....
-  GetSoldierScreenPos(pCiv, &sScreenX, &sScreenY);
+  GetSoldierScreenPos(pCiv, addressof(sScreenX), addressof(sScreenY));
   sX = sScreenX;
   sY = sScreenY;
 
@@ -641,10 +641,10 @@ function StartCivQuote(pCiv: Pointer<SOLDIERTYPE>): void {
 }
 
 function InitCivQuoteSystem(): void {
-  memset(&gCivQuotes, 0, sizeof(gCivQuotes));
+  memset(addressof(gCivQuotes), 0, sizeof(gCivQuotes));
   CopyNumEntriesIntoQuoteStruct();
 
-  memset(&gCivQuoteData, 0, sizeof(gCivQuoteData));
+  memset(addressof(gCivQuoteData), 0, sizeof(gCivQuoteData));
   gCivQuoteData.bActive = FALSE;
   gCivQuoteData.iVideoOverlay = -1;
   gCivQuoteData.iDialogueBox = -1;
@@ -653,7 +653,7 @@ function InitCivQuoteSystem(): void {
 function SaveCivQuotesToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
-  FileWrite(hFile, &gCivQuotes, sizeof(gCivQuotes), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(gCivQuotes)) {
     return FALSE;
   }
@@ -664,7 +664,7 @@ function SaveCivQuotesToSaveGameFile(hFile: HWFILE): BOOLEAN {
 function LoadCivQuotesFromLoadGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
-  FileRead(hFile, &gCivQuotes, sizeof(gCivQuotes), &uiNumBytesRead);
+  FileRead(hFile, addressof(gCivQuotes), sizeof(gCivQuotes), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(gCivQuotes)) {
     return FALSE;
   }

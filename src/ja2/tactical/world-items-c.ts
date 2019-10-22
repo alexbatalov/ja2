@@ -24,7 +24,7 @@ function GetFreeWorldBombIndex(): INT32 {
   }
 
   // Clear the rest of the new array
-  memset(&newWorldBombs[uiOldNumWorldBombs], 0, sizeof(WORLDBOMB) * (guiNumWorldBombs - uiOldNumWorldBombs));
+  memset(addressof(newWorldBombs[uiOldNumWorldBombs]), 0, sizeof(WORLDBOMB) * (guiNumWorldBombs - uiOldNumWorldBombs));
   gWorldBombs = newWorldBombs;
 
   // Return uiCount.....
@@ -102,7 +102,7 @@ function FindPanicBombsAndTriggers(): void {
 
   for (uiBombIndex = 0; uiBombIndex < guiNumWorldBombs; uiBombIndex++) {
     if (gWorldBombs[uiBombIndex].fExists) {
-      pObj = &(gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o);
+      pObj = addressof(gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].o);
       if (pObj.value.bFrequency == PANIC_FREQUENCY || pObj.value.bFrequency == PANIC_FREQUENCY_2 || pObj.value.bFrequency == PANIC_FREQUENCY_3) {
         if (pObj.value.usItem == SWITCH) {
           sGridNo = gWorldItems[gWorldBombs[uiBombIndex].iItemIndex].sGridNo;
@@ -177,7 +177,7 @@ function GetFreeWorldItemIndex(): INT32 {
   }
 
   // Clear the rest of the new array
-  memset(&newWorldItems[uiOldNumWorldItems], 0, sizeof(WORLDITEM) * (guiNumWorldItems - uiOldNumWorldItems));
+  memset(addressof(newWorldItems[uiOldNumWorldItems]), 0, sizeof(WORLDITEM) * (guiNumWorldItems - uiOldNumWorldItems));
   gWorldItems = newWorldItems;
 
   // Return uiCount.....
@@ -222,7 +222,7 @@ function AddItemToWorld(sGridNo: INT16, pObject: Pointer<OBJECTTYPE>, ubLevel: U
   gWorldItems[iItemIndex].bVisible = bVisible;
   gWorldItems[iItemIndex].bRenderZHeightAboveLevel = bRenderZHeightAboveLevel;
 
-  memcpy(&(gWorldItems[iItemIndex].o), pObject, sizeof(OBJECTTYPE));
+  memcpy(addressof(gWorldItems[iItemIndex].o), pObject, sizeof(OBJECTTYPE));
 
   // Add a bomb reference if needed
   if (usFlags & WORLD_ITEM_ARMED_BOMB) {
@@ -272,11 +272,11 @@ function SaveWorldItemsToMap(fp: HWFILE): void {
 
   uiActualNumWorldItems = GetNumUsedWorldItems();
 
-  FileWrite(fp, &uiActualNumWorldItems, 4, &uiBytesWritten);
+  FileWrite(fp, addressof(uiActualNumWorldItems), 4, addressof(uiBytesWritten));
 
   for (i = 0; i < guiNumWorldItems; i++) {
     if (gWorldItems[i].fExists)
-      FileWrite(fp, &gWorldItems[i], sizeof(WORLDITEM), &uiBytesWritten);
+      FileWrite(fp, addressof(gWorldItems[i]), sizeof(WORLDITEM), addressof(uiBytesWritten));
   }
 }
 
@@ -293,7 +293,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   TrashWorldItems();
 
   // Read the number of items that were saved in the map.
-  LOADDATA(&uiNumWorldItems, *hBuffer, 4);
+  LOADDATA(addressof(uiNumWorldItems), *hBuffer, 4);
 
   if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME && !gfEditMode) {
     // The sector has already been visited.  The items are saved in a different format that will be
@@ -304,7 +304,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
     for (i = 0; i < uiNumWorldItems; i++) {
       // Add all of the items to the world indirectly through AddItemToPool, but only if the chance
       // associated with them succeed.
-      LOADDATA(&dummyItem, *hBuffer, sizeof(WORLDITEM));
+      LOADDATA(addressof(dummyItem), *hBuffer, sizeof(WORLDITEM));
       if (dummyItem.o.usItem == OWNERSHIP) {
         dummyItem.ubNonExistChance = 0;
       }
@@ -363,7 +363,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
         }
 
         else if (dummyItem.bVisible == HIDDEN_ITEM && dummyItem.o.bTrap > 0 && (dummyItem.o.usItem == MINE || dummyItem.o.usItem == TRIP_FLARE || dummyItem.o.usItem == TRIP_KLAXON)) {
-          ArmBomb(&dummyItem.o, BOMB_PRESSURE);
+          ArmBomb(addressof(dummyItem.o), BOMB_PRESSURE);
           dummyItem.usFlags |= WORLD_ITEM_ARMED_BOMB;
           // this is coming from the map so the enemy must know about it.
           gpWorldLevelData[dummyItem.sGridNo].uiFlags |= MAPELEMENT_ENEMY_MINE_PRESENT;
@@ -373,7 +373,7 @@ function LoadWorldItemsFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
           // all armed bombs are buried
           dummyItem.bVisible = BURIED;
         }
-        AddItemToPoolAndGetIndex(dummyItem.sGridNo, &dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, &iItemIndex);
+        AddItemToPoolAndGetIndex(dummyItem.sGridNo, addressof(dummyItem.o), dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel, addressof(iItemIndex));
         gWorldItems[iItemIndex].ubNonExistChance = dummyItem.ubNonExistChance;
       }
     }
@@ -475,9 +475,9 @@ function RefreshWorldItemsIntoItemPools(pItemList: Pointer<WORLDITEM>, iNumberOf
 
   for (i = 0; i < iNumberOfItems; i++) {
     if (pItemList[i].fExists) {
-      memcpy(&dummyItem, &(pItemList[i]), sizeof(WORLDITEM));
+      memcpy(addressof(dummyItem), addressof(pItemList[i]), sizeof(WORLDITEM));
 
-      AddItemToPool(dummyItem.sGridNo, &dummyItem.o, dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel);
+      AddItemToPool(dummyItem.sGridNo, addressof(dummyItem.o), dummyItem.bVisible, dummyItem.ubLevel, dummyItem.usFlags, dummyItem.bRenderZHeightAboveLevel);
     }
   }
 }

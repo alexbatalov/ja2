@@ -277,7 +277,7 @@ function PrintIMPPersonalityQuizQuestionAndAnsers(): void {
 
   // handle any female specifc questions
   if (fCharacterIsMale == FALSE) {
-    OffSetQuestionForFemaleSpecificQuestions(&iOffset);
+    OffSetQuestionForFemaleSpecificQuestions(addressof(iOffset));
   }
 
   // how many answers are there?

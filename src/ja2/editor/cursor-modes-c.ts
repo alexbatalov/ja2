@@ -113,7 +113,7 @@ function UpdateCursorAreas(): void {
   EnsureSelectionType();
 
   // Determine if the mouse is currently in the world.
-  if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA && GetMouseXY(&sGridX, &sGridY)) {
+  if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA && GetMouseXY(addressof(sGridX), addressof(sGridY))) {
     iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
     if (gpBuildingLayoutList) {
       gSelectRegion.iLeft = gSelectRegion.iRight = sGridX;

@@ -18,7 +18,7 @@ function DoesO3SectorStatueExistHere(sGridNo: INT16): BOOLEAN {
   if (gWorldSectorX == 3 && gWorldSectorY == MAP_ROW_O && gbWorldSectorZ == 0) {
     // Check for exitence of and exit grid here...
     // ( if it doesn't then the change has already taken place )
-    if (!GetExitGrid(13669, &ExitGrid)) {
+    if (!GetExitGrid(13669, addressof(ExitGrid))) {
       for (cnt = 0; cnt < 4; cnt++) {
         if (sStatueGridNos[cnt] == sGridNo) {
           return TRUE;
@@ -41,15 +41,15 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   ApplyMapChangesToMapTempFile(TRUE);
   // Remove it!
   // Get index for it...
-  GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (5), &usTileIndex);
+  GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (5), addressof(usTileIndex));
   RemoveStruct(13830, usTileIndex);
 
   // Add new one...
   if (fFromExplosion) {
     // Use damaged peice
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (7), &usTileIndex);
+    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (7), addressof(usTileIndex));
   } else {
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (8), &usTileIndex);
+    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (8), addressof(usTileIndex));
     // Play sound...
 
     PlayJA2Sample(OPEN_STATUE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
@@ -62,7 +62,7 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   ExitGrid.ubGotoSectorZ = 1;
   ExitGrid.usGridNo = 13037;
 
-  AddExitGridToWorld(13669, &ExitGrid);
+  AddExitGridToWorld(13669, addressof(ExitGrid));
   gpWorldLevelData[13669].uiFlags |= MAPELEMENT_REVEALED;
 
   // Turn off permenant changes....
@@ -75,7 +75,7 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   SetRenderFlags(RENDER_FLAG_FULL);
 
   // Redo movement costs....
-  ConvertGridNoToXY(13830, &sX, &sY);
+  ConvertGridNoToXY(13830, addressof(sX), addressof(sY));
 
   RecompileLocalMovementCostsFromRadius(13830, 5);
 }

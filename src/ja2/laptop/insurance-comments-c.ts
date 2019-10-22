@@ -34,13 +34,13 @@ function EnterInsuranceComments(): BOOLEAN {
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsCmntBulletImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsCmntBulletImage)));
 
   usPosX = INS_CMNT_FIRST_BULLET_X - 6;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(&gSelectedInsuranceCommentLinkRegion[i], usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
-    MSYS_AddRegion(&gSelectedInsuranceCommentLinkRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedInsuranceCommentLinkRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]), usPosX, INS_CMNT_LINK_Y - 1, (usPosX + INS_CMNT_LINK_WIDTH), INS_CMNT_LINK_Y + INS_CMNT_LINK_HEIGHT + 1, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceCommentLinkRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedInsuranceCommentLinkRegion[i]), 0, i);
 
     usPosX += INS_CMNT_LINK_OFFSET_X;
   }
@@ -56,7 +56,7 @@ function ExitInsuranceComments(): void {
   DeleteVideoObjectFromIndex(guiInsCmntBulletImage);
 
   for (i = 0; i < 3; i++)
-    MSYS_RemoveRegion(&gSelectedInsuranceCommentLinkRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedInsuranceCommentLinkRegion[i]));
 }
 
 function HandleInsuranceComments(): void {
@@ -146,7 +146,7 @@ function DisplayComment(ubCommentorsName: UINT8, ubComment: UINT8, usPosY: UINT1
   let sNumPixels: UINT16 = 0;
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiInsCmntBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiInsCmntBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CMNT_FIRST_BULLET_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the commenters comment

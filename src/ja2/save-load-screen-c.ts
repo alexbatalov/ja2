@@ -339,12 +339,12 @@ function EnterSaveLoadScreen(): BOOLEAN {
   // load Main background  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\LoadScreen.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSlgBackGroundImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSlgBackGroundImage)));
 
   // load Load Screen Add ons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_LOADSAVEHEADER);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBackGroundAddOns));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBackGroundAddOns)));
 
   guiSlgButtonImage = LoadButtonImage("INTERFACE\\LoadScreenAddOns.sti", -1, 6, -1, 9, -1);
   //	guiSlgButtonImage = UseLoadedButtonImage( guiBackGroundAddOns, -1,9,-1,6,-1 );
@@ -381,15 +381,15 @@ function EnterSaveLoadScreen(): BOOLEAN {
   usPosX = SLG_FIRST_SAVED_SPOT_X;
   usPosY = SLG_FIRST_SAVED_SPOT_Y;
   for (i = 0; i < NUM_SAVE_GAMES; i++) {
-    MSYS_DefineRegion(&gSelectedSaveRegion[i], usPosX, usPosY, (usPosX + SLG_SAVELOCATION_WIDTH), (usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
-    MSYS_AddRegion(&gSelectedSaveRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedSaveRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedSaveRegion[i]), usPosX, usPosY, (usPosX + SLG_SAVELOCATION_WIDTH), (usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedSaveRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedSaveRegion[i]), 0, i);
 
     // if we are to Load a game
     if (!gfSaveGame) {
       // We cannot load a game that hasnt been saved
       if (!gbSaveGameArray[i])
-        MSYS_DisableRegion(&gSelectedSaveRegion[i]);
+        MSYS_DisableRegion(addressof(gSelectedSaveRegion[i]));
     }
 
     usPosY += SLG_GAP_BETWEEN_LOCATIONS;
@@ -404,8 +404,8 @@ function EnterSaveLoadScreen(): BOOLEAN {
   */
 
   // Create the screen mask to enable ability to righ click to cancel the sace game
-  MSYS_DefineRegion(&gSLSEntireScreenRegion, 0, 0, 639, 479, MSYS_PRIORITY_HIGH - 10, CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectedSLSEntireRegionCallBack);
-  MSYS_AddRegion(&gSLSEntireScreenRegion);
+  MSYS_DefineRegion(addressof(gSLSEntireScreenRegion), 0, 0, 639, 479, MSYS_PRIORITY_HIGH - 10, CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectedSLSEntireRegionCallBack);
+  MSYS_AddRegion(addressof(gSLSEntireScreenRegion));
 
   // Reset the regions
   //	for( i=0; i<NUM_SAVE_GAMES; i++)
@@ -435,7 +435,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
       if (gbSaveGameArray[gGameSettings.bLastSavedGameSlot]) {
         let SaveGameHeader: SAVED_GAME_HEADER;
 
-        memset(&SaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
+        memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
 
         // if it is not the Quick Save slot, and we are loading
         if (!gfSaveGame || gfSaveGame && gGameSettings.bLastSavedGameSlot != 0) {
@@ -445,8 +445,8 @@ function EnterSaveLoadScreen(): BOOLEAN {
           // load the save gamed header string
 
           // Get the heade for the saved game
-          if (!LoadSavedGameHeader(gbSelectedSaveLocation, &SaveGameHeader)) {
-            memset(&SaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
+          if (!LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader))) {
+            memset(addressof(SaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
             gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
             gbSaveGameArray[gbSelectedSaveLocation] = FALSE;
             gbSelectedSaveLocation = gGameSettings.bLastSavedGameSlot = -1;
@@ -498,12 +498,12 @@ function EnterSaveLoadScreen(): BOOLEAN {
     ButtonList[guiSlgSaveLoadBtn].value.uiFlags |= BUTTON_FORCE_UNDIRTY;
 
     // CLEAR THE FRAME BUFFER
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
     UnLockVideoSurface(FRAME_BUFFER);
 
     // CLEAR THE guiRENDERBUFFER
-    pDestBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
     memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
     UnLockVideoSurface(guiRENDERBUFFER);
   }
@@ -537,7 +537,7 @@ function ExitSaveLoadScreen(): void {
   }
 
   for (i = 0; i < NUM_SAVE_GAMES; i++) {
-    MSYS_RemoveRegion(&gSelectedSaveRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedSaveRegion[i]));
   }
 
   DeleteVideoObjectFromIndex(guiSlgBackGroundImage);
@@ -546,7 +546,7 @@ function ExitSaveLoadScreen(): void {
   // Destroy the text fields ( if created )
   DestroySaveLoadTextInputBoxes();
 
-  MSYS_RemoveRegion(&gSLSEntireScreenRegion);
+  MSYS_RemoveRegion(addressof(gSLSEntireScreenRegion));
 
   gfSaveLoadScreenEntry = TRUE;
   gfSaveLoadScreenExit = FALSE;
@@ -575,7 +575,7 @@ function RenderSaveLoadScreen(): void {
     return;
   }
 
-  GetVideoObject(&hPixHandle, guiSlgBackGroundImage);
+  GetVideoObject(addressof(hPixHandle), guiSlgBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (gfSaveGame) {
@@ -583,13 +583,13 @@ function RenderSaveLoadScreen(): void {
 
     // Display the Title
     //		DrawTextToScreen( zSaveLoadText[SLG_SAVE_GAME], 0, 10, 639, SAVE_LOAD_TITLE_FONT, SAVE_LOAD_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
-    GetVideoObject(&hPixHandle, guiBackGroundAddOns);
+    GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 1, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
     // If we are Loading a game
 
     // Display the Title
-    GetVideoObject(&hPixHandle, guiBackGroundAddOns);
+    GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, SLG_TITLE_POS_X, SLG_TITLE_POS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
@@ -620,7 +620,7 @@ function GetSaveLoadScreenUserInput(): void {
   let bActiveTextField: INT8;
   /* static */ let fWasCtrlHeldDownLastFrame: BOOLEAN = FALSE;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   // if we are going to be instantly leaving the screen, dont draw the numbers
   if (gfLoadGameUponEntry) {
@@ -639,7 +639,7 @@ function GetSaveLoadScreenUserInput(): void {
 
   fWasCtrlHeldDownLastFrame = gfKeyState[CTRL];
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -662,7 +662,7 @@ function GetSaveLoadScreenUserInput(): void {
         break;
     }
 
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_DOWN) {
+    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case '1':
           SetSelection(1);
@@ -860,7 +860,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
 
   // send back return state
   return giSaveLoadMessageBox != -1;
@@ -876,7 +876,7 @@ function InitSaveGameArray(): BOOLEAN {
 
     if (FileExists(zSaveGameName)) {
       // Get the header for the saved game
-      if (!LoadSavedGameHeader(cnt, &SaveGameHeader))
+      if (!LoadSavedGameHeader(cnt, addressof(SaveGameHeader)))
         gbSaveGameArray[cnt] = FALSE;
       else
         gbSaveGameArray[cnt] = TRUE;
@@ -928,7 +928,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
     return TRUE;
 
   // background
-  GetVideoObject(&hPixHandle, guiBackGroundAddOns);
+  GetVideoObject(addressof(hPixHandle), guiBackGroundAddOns);
   BltVideoObject(FRAME_BUFFER, hPixHandle, gbSaveGameSelectedLocation[bEntryID], usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
   //
@@ -995,7 +995,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       SaveGameHeader.ubMin = guiMin;
 
       // Get the sector value to save.
-      GetBestPossibleSectorXYZValues(&SaveGameHeader.sSectorX, &SaveGameHeader.sSectorY, &SaveGameHeader.bSectorZ);
+      GetBestPossibleSectorXYZValues(addressof(SaveGameHeader.sSectorX), addressof(SaveGameHeader.sSectorY), addressof(SaveGameHeader.bSectorZ));
 
       //			SaveGameHeader.sSectorX = gWorldSectorX;
       //			SaveGameHeader.sSectorY = gWorldSectorY;
@@ -1005,11 +1005,11 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       wcscpy(SaveGameHeader.sSavedGameDesc, gzGameDescTextField);
 
       // copy over the initial game options
-      memcpy(&SaveGameHeader.sInitialGameOptions, &gGameOptions, sizeof(GAME_OPTIONS));
+      memcpy(addressof(SaveGameHeader.sInitialGameOptions), addressof(gGameOptions), sizeof(GAME_OPTIONS));
     } else {
       // Get the header for the specified saved game
-      if (!LoadSavedGameHeader(bEntryID, &SaveGameHeader)) {
-        memset(&SaveGameHeader, 0, sizeof(SaveGameHeader));
+      if (!LoadSavedGameHeader(bEntryID, addressof(SaveGameHeader))) {
+        memset(addressof(SaveGameHeader), 0, sizeof(SaveGameHeader));
         return FALSE;
       }
     }
@@ -1129,7 +1129,7 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
 
   // make sure the entry is valid
   if (bEntry < 0 || bEntry > NUM_SAVE_GAMES) {
-    memset(&pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
+    memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
     return FALSE;
   }
 
@@ -1146,7 +1146,7 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
     }
 
     // Load the Save Game header file
-    FileRead(hFile, pSaveGameHeader, sizeof(SAVED_GAME_HEADER), &uiNumBytesRead);
+    FileRead(hFile, pSaveGameHeader, sizeof(SAVED_GAME_HEADER), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SAVED_GAME_HEADER)) {
       FileClose(hFile);
       gbSaveGameArray[bEntry] = FALSE;
@@ -1173,7 +1173,7 @@ function LoadSavedGameHeader(bEntry: INT8, pSaveGameHeader: Pointer<SAVED_GAME_H
       return FALSE;
     }
   } else {
-    memset(&pSaveGameHeader, 0, sizeof(SAVED_GAME_HEADER));
+    memset(addressof(pSaveGameHeader), 0, sizeof(SAVED_GAME_HEADER));
   }
 
   return TRUE;
@@ -1445,7 +1445,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
     if (gzGameDescTextField[0] != '\0') {
     } else {
       // Get the header for the specified saved game
-      LoadSavedGameHeader(gbSelectedSaveLocation, &SaveGameHeader);
+      LoadSavedGameHeader(gbSelectedSaveLocation, addressof(SaveGameHeader));
       wcscpy(gzGameDescTextField, SaveGameHeader.sSavedGameDesc);
     }
   } else
@@ -1480,7 +1480,7 @@ function SetSelection(ubNewSelection: UINT8): void {
     gbSaveGameSelectedLocation[gbSelectedSaveLocation] = SLG_UNSELECTED_SLOT_GRAPHICS_NUMBER;
 
     // reset the slots help text
-    SetRegionFastHelpText(&gSelectedSaveRegion[gbSelectedSaveLocation], "\0");
+    SetRegionFastHelpText(addressof(gSelectedSaveRegion[gbSelectedSaveLocation]), "\0");
   }
 
   gfRedrawSaveLoadScreen = TRUE;
@@ -1557,7 +1557,7 @@ function CompareSaveGameVersion(bSaveGameID: INT8): UINT8 {
   let SaveGameHeader: SAVED_GAME_HEADER;
 
   // Get the heade for the saved game
-  LoadSavedGameHeader(bSaveGameID, &SaveGameHeader);
+  LoadSavedGameHeader(bSaveGameID, addressof(SaveGameHeader));
 
   // check to see if the saved game version in the header is the same as the current version
   if (SaveGameHeader.uiSavedGameVersion != guiSavedGameVersion) {

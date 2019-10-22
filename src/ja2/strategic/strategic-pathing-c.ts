@@ -1667,7 +1667,7 @@ function ClearMercPathsAndWaypointsForAllInGroup(pGroup: Pointer<GROUP>): void {
     iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
     Assert(iVehicleId != -1);
 
-    pVehicle = &(pVehicleList[iVehicleId]);
+    pVehicle = addressof(pVehicleList[iVehicleId]);
 
     // clear the path for that vehicle
     pVehicle.value.pMercPath = ClearStrategicPathList(pVehicle.value.pMercPath, pVehicle.value.ubMovementGroup);
@@ -1688,11 +1688,11 @@ function ClearPathForSoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   // if a vehicle
   if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    pVehicle = &(pVehicleList[pSoldier.value.bVehicleID]);
+    pVehicle = addressof(pVehicleList[pSoldier.value.bVehicleID]);
   }
   // or in a vehicle
   else if (pSoldier.value.bAssignment == VEHICLE) {
-    pVehicle = &(pVehicleList[pSoldier.value.iVehicleId]);
+    pVehicle = addressof(pVehicleList[pSoldier.value.iVehicleId]);
   }
 
   // if there's an associate vehicle structure
@@ -1711,7 +1711,7 @@ function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>,
     pSoldier = pPlayer.value.pSoldier;
 
     if (pSoldier != NULL) {
-      AddSectorToFrontOfMercPath(&(pSoldier.value.pMercPath), ubSectorX, ubSectorY);
+      AddSectorToFrontOfMercPath(addressof(pSoldier.value.pMercPath), ubSectorX, ubSectorY);
     }
 
     pPlayer = pPlayer.value.next;
@@ -1725,10 +1725,10 @@ function AddSectorToFrontOfMercPathForAllSoldiersInGroup(pGroup: Pointer<GROUP>,
     iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
     Assert(iVehicleId != -1);
 
-    pVehicle = &(pVehicleList[iVehicleId]);
+    pVehicle = addressof(pVehicleList[iVehicleId]);
 
     // add it to that vehicle's path
-    AddSectorToFrontOfMercPath(&(pVehicle.value.pMercPath), ubSectorX, ubSectorY);
+    AddSectorToFrontOfMercPath(addressof(pVehicle.value.pMercPath), ubSectorX, ubSectorY);
   }
 }
 

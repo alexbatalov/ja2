@@ -48,9 +48,9 @@ function CreateSGPPaletteFromCOLFile(pPalette: Pointer<SGPPaletteEntry>, ColFile
 
   // Read in a palette entry at a time
   for (cnt = 0; cnt < 256; cnt++) {
-    FileRead(hFileHandle, &pPalette[cnt].peRed, sizeof(UINT8), NULL);
-    FileRead(hFileHandle, &pPalette[cnt].peGreen, sizeof(UINT8), NULL);
-    FileRead(hFileHandle, &pPalette[cnt].peBlue, sizeof(UINT8), NULL);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peRed), sizeof(UINT8), NULL);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peGreen), sizeof(UINT8), NULL);
+    FileRead(hFileHandle, addressof(pPalette[cnt].peBlue), sizeof(UINT8), NULL);
   }
 
   // Close file
@@ -71,7 +71,7 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
   let ubPaletteRep: UINT8;
 
   // Create 16BPP Palette
-  CHECKF(GetPaletteRepIndexFromID(aPalRep, &ubPaletteRep));
+  CHECKF(GetPaletteRepIndexFromID(aPalRep, addressof(ubPaletteRep)));
 
   SetFont(LARGEFONT1);
 
@@ -129,7 +129,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
 
           pStr[uiNewLet] = '\0';
 
-          wcscpy(pStr2, &(pStr[uiNewLet + 1]));
+          wcscpy(pStr2, addressof(pStr[uiNewLet + 1]));
         }
 
         if (fLineSplit)
@@ -140,7 +140,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
       }
       if (!fLineSplit) {
         // We completed the check for a space, but failed, so use the hyphen method.
-        swprintf(pStr2, "-%s", &(pStr[uiHyphenLet]));
+        swprintf(pStr2, "-%s", addressof(pStr[uiHyphenLet]));
         pStr[uiHyphenLet] = '/0';
         fLineSplit = TRUE; // hyphen method
         break;
@@ -162,7 +162,7 @@ function IfWinNT(): BOOLEAN {
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-  GetVersionEx(&OsVerInfo);
+  GetVersionEx(addressof(OsVerInfo));
 
   if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
     return TRUE;
@@ -175,7 +175,7 @@ function IfWin95(): BOOLEAN {
 
   OsVerInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-  GetVersionEx(&OsVerInfo);
+  GetVersionEx(addressof(OsVerInfo));
 
   if (OsVerInfo.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS)
     return TRUE;
@@ -202,7 +202,7 @@ function HandleLimitedNumExecutions(): void {
     }
 
     // Read value
-    FileRead(hFileHandle, &bNumRuns, sizeof(bNumRuns), NULL);
+    FileRead(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), NULL);
 
     // Close file
     FileClose(hFileHandle);
@@ -225,7 +225,7 @@ function HandleLimitedNumExecutions(): void {
   }
 
   // Write value
-  FileWrite(hFileHandle, &bNumRuns, sizeof(bNumRuns), NULL);
+  FileWrite(hFileHandle, addressof(bNumRuns), sizeof(bNumRuns), NULL);
 
   // Close file
   FileClose(hFileHandle);

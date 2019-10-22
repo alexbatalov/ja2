@@ -45,7 +45,7 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
       // OK, FOR EACH PALETTE ENTRY, FIND CLOSEST
       bBest = 0;
       dLowestDist = 9999999;
-      pData = &(pSrc[(cY * sWidth) + cX]);
+      pData = addressof(pSrc[(cY * sWidth) + cX]);
 
       for (cnt = 0; cnt < sNumColors; cnt++) {
         vSrcVal.x = pRGBData[(cY * sWidth) + cX].r;
@@ -57,10 +57,10 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
         vTableVal.z = pTable[cnt].peBlue;
 
         // Get Dist
-        vDiffVal = VSubtract(&vSrcVal, &vTableVal);
+        vDiffVal = VSubtract(addressof(vSrcVal), addressof(vTableVal));
 
         // Get mag dist
-        dCubeDist = VGetLength(&(vDiffVal));
+        dCubeDist = VGetLength(addressof(vDiffVal));
 
         if (dCubeDist < dLowestDist) {
           dLowestDist = dCubeDist;
@@ -70,7 +70,7 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
 
       // Now we have the lowest value
       // Set into dest
-      pData = &(pDest[(cY * sWidth) + cX]);
+      pData = addressof(pDest[(cY * sWidth) + cX]);
 
       // Set!
       *pData = bBest;

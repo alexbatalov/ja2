@@ -26,7 +26,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
 
   // LEFT MOUSE BUTTON
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    if (!GetMouseMapPos(&usMapPos) && !gfUIShowExitSouth) {
+    if (!GetMouseMapPos(addressof(usMapPos)) && !gfUIShowExitSouth) {
       return;
     }
 
@@ -49,7 +49,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
               case ACTION_MODE:
 
                 if (gusSelectedSoldier != NOBODY) {
-                  if (GetSoldier(&pSoldier, gusSelectedSoldier) && gpItemPointer == NULL) {
+                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier) && gpItemPointer == NULL) {
                     // OK, check for needing ammo
                     if (HandleUIReloading(pSoldier)) {
                       gfRTClickLeftHoldIntercepted = TRUE;
@@ -145,7 +145,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
             case CONFIRM_MOVE_MODE:
 
               // First check if we clicked on a guy, if so, make selected if it's ours
-              if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+              if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
                 // Select guy
                 if ((uiMercFlags & SELECTED_MERC) && !(uiMercFlags & UNCONSCIOUS_MERC) && !(MercPtrs[usSoldierIndex].value.uiStatusFlags & SOLDIER_VEHICLE)) {
                   *puiNewEvent = M_CHANGE_TO_ADJPOS_MODE;
@@ -248,7 +248,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                 case CONFIRM_ACTION_MODE:
                 case ACTION_MODE:
 
-                  if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
                     if (pSoldier.value.bDoBurst) {
                       pSoldier.value.sEndGridNo = usMapPos;
 
@@ -301,7 +301,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                           case IDLE_MODE:
 
                             // First check if we clicked on a guy, if so, make selected if it's ours
-                            if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags)) {
+                            if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags))) {
                               // Select guy
                               if (uiMercFlags & OWNED_MERC) {
                                 *puiNewEvent = I_SELECT_MERC;
@@ -371,7 +371,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                               if (gfUIFullTargetFound && (guiUIFullTargetFlags & OWNED_MERC)) {
                                 if (!(guiUIFullTargetFlags & UNCONSCIOUS_MERC)) {
                                   // Select guy
-                                  if (GetSoldier(&pSoldier, gusUIFullTargetID) && gpItemPointer == NULL) {
+                                  if (GetSoldier(addressof(pSoldier), gusUIFullTargetID) && gpItemPointer == NULL) {
                                     if (pSoldier.value.bAssignment >= ON_DUTY && !(pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
                                       PopupAssignmentMenuInTactical(pSoldier);
                                     } else {
@@ -441,13 +441,13 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                   {
                                     let sIntTileGridNo: INT16;
 
-                                    if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+                                    if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
                                       BeginDisplayTimedCursor(GetInteractiveTileCursor(guiCurrentUICursor, TRUE), 300);
 
                                       if (pSoldier.value.usAnimState != RUNNING) {
                                         *puiNewEvent = C_MOVE_MERC;
                                       } else {
-                                        if (GetCurInteractiveTileGridNo(&sIntTileGridNo) != NULL) {
+                                        if (GetCurInteractiveTileGridNo(addressof(sIntTileGridNo)) != NULL) {
                                           pSoldier.value.fUIMovementFast = TRUE;
                                           *puiNewEvent = C_MOVE_MERC;
                                         }
@@ -456,9 +456,9 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
                                     }
                                   }
                                 } else if (bReturnCode == 0) {
-                                  if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+                                  if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
                                     // First check if we clicked on a guy, if so, make selected if it's ours
-                                    if (FindSoldierFromMouse(&usSoldierIndex, &uiMercFlags) && (uiMercFlags & OWNED_MERC)) {
+                                    if (FindSoldierFromMouse(addressof(usSoldierIndex), addressof(uiMercFlags)) && (uiMercFlags & OWNED_MERC)) {
                                       // Select guy
                                       *puiNewEvent = I_SELECT_MERC;
                                       gfRTClickLeftHoldIntercepted = TRUE;
@@ -609,7 +609,7 @@ function QueryRTLeftButton(puiNewEvent: Pointer<UINT32>): void {
     // OK, handle special cases like if we are dragging and holding for a burst spread and
     // release mouse over another mouse region
     if (gfBeginBurstSpreadTracking) {
-      if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
         pSoldier.value.fDoSpread = FALSE;
       }
       gfBeginBurstSpreadTracking = FALSE;
@@ -628,7 +628,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
   let usMapPos: UINT16;
 
   if (gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) {
-    if (!GetMouseMapPos(&usMapPos)) {
+    if (!GetMouseMapPos(addressof(usMapPos))) {
       return;
     }
 
@@ -698,7 +698,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
               case TALKCURSOR_MODE:
               case MOVE_MODE:
 
-                if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+                if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
                   if ((guiUIFullTargetFlags & OWNED_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC) && !(pSoldier ? pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE : 0)) {
                     // if( pSoldier->bAssignment >= ON_DUTY )
                     {
@@ -815,7 +815,7 @@ function QueryRTRightButton(puiNewEvent: Pointer<UINT32>): void {
 
                     case CONFIRM_ACTION_MODE:
 
-                      if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+                      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
                         HandleRightClickAdjustCursor(pSoldier, usMapPos);
                       }
                       fClickIntercepted = TRUE;
@@ -869,7 +869,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   /* static */ let fOnValidGuy: BOOLEAN = FALSE;
 
-  if (!GetMouseMapPos(&usMapPos)) {
+  if (!GetMouseMapPos(addressof(usMapPos))) {
     return;
   }
 
@@ -977,7 +977,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
         uiMoveTargetSoldierId = NO_SOLDIER;
 
         // Check for being on terrain
-        if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+        if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
           let usItem: UINT16;
           let ubItemCursor: UINT8;
 
@@ -1065,7 +1065,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
       case CONFIRM_ACTION_MODE:
 
         // DONOT CANCEL IF BURST
-        if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+        if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
           if (pSoldier.value.bDoBurst) {
             pSoldier.value.sEndGridNo = usMapPos;
 

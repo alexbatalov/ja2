@@ -126,7 +126,7 @@ function LoadQuoteFile(ubNPC: UINT8): Pointer<NPCQuoteInfo> {
   uiFileSize = sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS;
   pFileData = MemAlloc(uiFileSize);
   if (pFileData) {
-    if (!FileRead(hFile, pFileData, uiFileSize, &uiBytesRead) || uiBytesRead != uiFileSize) {
+    if (!FileRead(hFile, pFileData, uiFileSize, addressof(uiBytesRead)) || uiBytesRead != uiFileSize) {
       MemFree(pFileData);
       pFileData = NULL;
     }
@@ -242,7 +242,7 @@ function RefreshNPCScriptRecord(ubNPC: UINT8, ubRecord: UINT8): BOOLEAN {
 
     pNewArray = LoadQuoteFile(ubNPC);
     if (pNewArray) {
-      memcpy(&(gpNPCQuoteInfoArray[ubNPC][ubRecord]), &(pNewArray[ubRecord]), sizeof(NPCQuoteInfo));
+      memcpy(addressof(gpNPCQuoteInfoArray[ubNPC][ubRecord]), addressof(pNewArray[ubRecord]), sizeof(NPCQuoteInfo));
       MemFree(pNewArray);
     }
   }
@@ -274,7 +274,7 @@ function LoadCivQuoteFile(ubIndex: UINT8): Pointer<NPCQuoteInfo> {
   uiFileSize = sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS;
   pFileData = MemAlloc(uiFileSize);
   if (pFileData) {
-    if (!FileRead(hFile, pFileData, uiFileSize, &uiBytesRead) || uiBytesRead != uiFileSize) {
+    if (!FileRead(hFile, pFileData, uiFileSize, addressof(uiBytesRead)) || uiBytesRead != uiFileSize) {
       MemFree(pFileData);
       pFileData = NULL;
     }
@@ -415,8 +415,8 @@ function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
   let pNPCProfile: Pointer<MERCPROFILESTRUCT>;
   let pMercProfile: Pointer<MERCPROFILESTRUCT>;
 
-  pNPCProfile = &(gMercProfiles[ubNPC]);
-  pMercProfile = &(gMercProfiles[ubMerc]);
+  pNPCProfile = addressof(gMercProfiles[ubNPC]);
+  pMercProfile = addressof(gMercProfiles[ubMerc]);
 
   iPersonalVal = 50 + pNPCProfile.value.bMercOpinion[ubMerc]; /* + pNPCProfile->bMercTownReputation[ pNPCProfile->bTown ] */
   ;
@@ -497,7 +497,7 @@ function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubReco
   }
 
   if (bApproach <= NUM_REAL_APPROACHES) {
-    pNPCProfile = &(gMercProfiles[ubNPC]);
+    pNPCProfile = addressof(gMercProfiles[ubNPC]);
     // What's our willingness to divulge?
     ubTalkDesire = CalcDesireToTalk(ubNPC, ubMerc, bApproach);
     if (bApproach < NUM_REAL_APPROACHES && !(pNPCProfile.value.bApproached & gbFirstApproachFlags[bApproach - 1])) {
@@ -505,7 +505,7 @@ function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubReco
     }
   } else if (ubNPC == PABLO && bApproach == APPROACH_SECTOR_NOT_SAFE) // for Pablo, consider as threaten
   {
-    pNPCProfile = &(gMercProfiles[ubNPC]);
+    pNPCProfile = addressof(gMercProfiles[ubNPC]);
     // What's our willingness to divulge?
     ubTalkDesire = CalcDesireToTalk(ubNPC, ubMerc, APPROACH_THREATEN);
     if (pNPCProfile.value.bApproached & gbFirstApproachFlags[APPROACH_THREATEN - 1]) {
@@ -533,7 +533,7 @@ function NPCConsiderTalking(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, ubReco
   uiDay = GetWorldDay();
 
   for (ubLoop = ubFirstQuoteRecord; ubLoop <= ubLastQuoteRecord; ubLoop++) {
-    pNPCQuoteInfo = &(pNPCQuoteInfoArray[ubLoop]);
+    pNPCQuoteInfo = addressof(pNPCQuoteInfoArray[ubLoop]);
 
     // Check if we have the item / are in right spot
     if (pNPCQuoteInfo.value.sRequiredItem > 0) {
@@ -611,7 +611,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
     return 0;
   }
 
-  pNPCProfile = &(gMercProfiles[ubNPC]);
+  pNPCProfile = addressof(gMercProfiles[ubNPC]);
 
   // How much do we want to talk with this merc?
 
@@ -664,7 +664,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
   }
 
   for (ubLoop = ubFirstQuoteRecord; ubLoop <= ubLastQuoteRecord; ubLoop++) {
-    pNPCQuoteInfo = &(pNPCQuoteInfoArray[ubLoop]);
+    pNPCQuoteInfo = addressof(pNPCQuoteInfoArray[ubLoop]);
 
     // First see if we want that item....
     if (pNPCQuoteInfo.value.sRequiredItem > 0 && (pNPCQuoteInfo.value.sRequiredItem == usItemToConsider || pNPCQuoteInfo.value.sRequiredItem == ACCEPT_ANY_ITEM)) {
@@ -675,12 +675,12 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
             if (usItemToConsider == MONEY && pNPCQuoteInfo.value.sActionData == NPC_ACTION_DARREN_GIVEN_CASH) {
               if (pObj.value.uiMoneyAmount < 1000) {
                 // refuse, bet too low - record 15
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[15];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[15]);
                 (*pubQuoteNum) = 15;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               } else if (pObj.value.uiMoneyAmount > 5000) {
                 // refuse, bet too high - record 16
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[16];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[16]);
                 (*pubQuoteNum) = 16;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               } else {
@@ -707,7 +707,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 // else use record 18
                 if (!(gpNPCQuoteInfoArray[DARREN][17].fFlags & QUOTE_FLAG_SAID)) // record 17 not used
                 {
-                  (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[17];
+                  (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[17]);
                   (*pubQuoteNum) = 17;
                 } else {
                   // find Kingpin, if he's in his house, invoke the script to move him to the bar
@@ -715,17 +715,17 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                   let ubKingpinRoom: UINT8;
 
                   pKingpin = FindSoldierByProfileID(KINGPIN, FALSE);
-                  if (pKingpin && InARoom(pKingpin.value.sGridNo, &ubKingpinRoom)) {
+                  if (pKingpin && InARoom(pKingpin.value.sGridNo, addressof(ubKingpinRoom))) {
                     if (IN_KINGPIN_HOUSE(ubKingpinRoom)) {
                       // first boxer, bring kingpin over
-                      (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[17];
+                      (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[17]);
                       (*pubQuoteNum) = 17;
                     } else {
-                      (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[31];
+                      (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[31]);
                       (*pubQuoteNum) = 31;
                     }
                   } else {
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[31];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[31]);
                     (*pubQuoteNum) = 31;
                   }
                 }
@@ -738,17 +738,17 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
             if (usItemToConsider == MONEY && pNPCQuoteInfo.value.sActionData == NPC_ACTION_ANGEL_GIVEN_CASH) {
               if (pObj.value.uiMoneyAmount < Item[LEATHER_JACKET_W_KEVLAR].usPrice) {
                 // refuse, bet too low - record 8
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[8];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[8]);
                 (*pubQuoteNum) = 8;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               } else if (pObj.value.uiMoneyAmount > Item[LEATHER_JACKET_W_KEVLAR].usPrice) {
                 // refuse, bet too high - record 9
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[9];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[9]);
                 (*pubQuoteNum) = 9;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               } else {
                 // accept - record 10
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[10];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[10]);
                 (*pubQuoteNum) = 10;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               }
@@ -758,7 +758,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
             if (usItemToConsider == MONEY) {
               if (gMercProfiles[ubMerc].bSex == FEMALE) {
                 // say quote about not catering to women!
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[5];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[5]);
                 (*pubQuoteNum) = 5;
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               }
@@ -770,7 +770,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                     TriggerNPCRecord(MADAME, 16);
                   } else {
                     // see default case
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[25];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[25]);
                     (*pubQuoteNum) = 25;
                     return (*ppResultQuoteInfo).value.ubOpinionRequired;
                   }
@@ -782,7 +782,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                     TriggerNPCRecord(MADAME, 17);
                   } else {
                     // see default case
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[25];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[25]);
                     (*pubQuoteNum) = 25;
                     return (*ppResultQuoteInfo).value.ubOpinionRequired;
                   }
@@ -794,7 +794,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                     TriggerNPCRecord(MADAME, 18);
                   } else {
                     // see default case
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[25];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[25]);
                     (*pubQuoteNum) = 25;
                     return (*ppResultQuoteInfo).value.ubOpinionRequired;
                   }
@@ -807,7 +807,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                     break;
                   } else {
                     // see default case
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[25];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[25]);
                     (*pubQuoteNum) = 25;
                     return (*ppResultQuoteInfo).value.ubOpinionRequired;
                   }
@@ -815,7 +815,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 default:
                   // play quotes 39-42 (plus 44 if quest 22 on) plus 43 if >1 PC
                   // and return money
-                  (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[25];
+                  (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[25]);
                   (*pubQuoteNum) = 25;
                   return (*ppResultQuoteInfo).value.ubOpinionRequired;
               }
@@ -848,21 +848,21 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 } else if (CheckFact(FACT_VINCE_EXPECTING_MONEY, ubNPC) == FALSE && pNPCQuoteInfo.value.sActionData != NPC_ACTION_DONT_ACCEPT_ITEM) {
                   // just accept cash!
                   if (ubNPC == VINCE) {
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[8];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[8]);
                   } else {
-                    (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[7];
+                    (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[7]);
                   }
                   return (*ppResultQuoteInfo).value.ubOpinionRequired;
                 } else {
                   // handle the player giving NPC some money
                   HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.value.uiMoneyAmount, pubQuoteNum);
-                  (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[*pubQuoteNum];
+                  (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[*pubQuoteNum]);
                   return (*ppResultQuoteInfo).value.ubOpinionRequired;
                 }
               } else {
                 // handle the player giving NPC some money
                 HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.value.uiMoneyAmount, pubQuoteNum);
-                (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[*pubQuoteNum];
+                (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[*pubQuoteNum]);
                 return (*ppResultQuoteInfo).value.ubOpinionRequired;
               }
             }
@@ -870,7 +870,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
           case KINGPIN:
             if (usItemToConsider == MONEY && gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) {
               HandleNPCBeingGivenMoneyByPlayer(ubNPC, pObj.value.uiMoneyAmount, pubQuoteNum);
-              (*ppResultQuoteInfo) = &pNPCQuoteInfoArray[*pubQuoteNum];
+              (*ppResultQuoteInfo) = addressof(pNPCQuoteInfoArray[*pubQuoteNum]);
               return (*ppResultQuoteInfo).value.ubOpinionRequired;
             }
             break;
@@ -986,13 +986,13 @@ function NPCConsiderQuote(ubNPC: UINT8, ubMerc: UINT8, ubApproach: UINT8, ubQuot
   if (ubNPC == NO_PROFILE) {
     pNPCProfile = NULL;
   } else {
-    pNPCProfile = &(gMercProfiles[ubNPC]);
+    pNPCProfile = addressof(gMercProfiles[ubNPC]);
   }
 
   // How much do we want to talk with this merc?
   uiDay = GetWorldDay();
 
-  pNPCQuoteInfo = &(pNPCQuoteInfoArray[ubQuoteNum]);
+  pNPCQuoteInfo = addressof(pNPCQuoteInfoArray[ubQuoteNum]);
 
   if (CHECK_FLAG(pNPCQuoteInfo.value.fFlags, QUOTE_FLAG_SAID)) {
     // skip quotes already said
@@ -1086,7 +1086,7 @@ function ReplaceLocationInNPCData(pNPCQuoteInfoArray: Pointer<NPCQuoteInfo>, sOl
   ubFirstQuoteRecord = 0;
   ubLastQuoteRecord = NUM_NPC_QUOTE_RECORDS - 1;
   for (ubLoop = ubFirstQuoteRecord; ubLoop <= ubLastQuoteRecord; ubLoop++) {
-    pNPCQuoteInfo = &(pNPCQuoteInfoArray[ubLoop]);
+    pNPCQuoteInfo = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (sOldGridNo == -pNPCQuoteInfo.value.sRequiredGridno) {
       pNPCQuoteInfo.value.sRequiredGridno = -sNewGridNo;
     }
@@ -1163,7 +1163,7 @@ function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproac
 
 function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: UINT32): void {
   let QuoteInfo: NPCQuoteInfo;
-  let pQuotePtr: Pointer<NPCQuoteInfo> = &(QuoteInfo);
+  let pQuotePtr: Pointer<NPCQuoteInfo> = addressof(QuoteInfo);
   let pNPCQuoteInfoArray: Pointer<NPCQuoteInfo> = NULL;
   let pProfile: Pointer<MERCPROFILESTRUCT> = NULL;
   let ubLoop: UINT8;
@@ -1208,7 +1208,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
   }
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
-  pProfile = &(gMercProfiles[ubNPC]);
+  pProfile = addressof(gMercProfiles[ubNPC]);
   switch (bApproach) {
     case NPC_INITIAL_QUOTE:
       // reset stuff
@@ -1229,7 +1229,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
         uiDay = GetWorldDay();
         if (uiDay > pProfile.value.ubLastDateSpokenTo)
         {
-          NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+          NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
           if (pQuotePtr != NULL) {
             // converse using this approach instead!
             if (fAttemptingToGiveItem) {
@@ -1249,7 +1249,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
         }
       } else {
         // try special initial quote first
-        NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+        NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
         if (pQuotePtr != NULL) {
           // converse using this approach instead!
           if (fAttemptingToGiveItem) {
@@ -1259,7 +1259,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
           return;
         }
 
-        NPCConsiderTalking(ubNPC, ubMerc, APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+        NPCConsiderTalking(ubNPC, ubMerc, APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
         if (pQuotePtr != NULL) {
           // converse using this approach instead!
           if (fAttemptingToGiveItem) {
@@ -1287,7 +1287,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
         TalkingMenuDialogue(QUOTE_INTRO);
       } else {
         if (pProfile.value.bLastQuoteSaidWasSpecial) {
-          pQuotePtr = &(pNPCQuoteInfoArray[pProfile.value.ubLastQuoteSaid]);
+          pQuotePtr = addressof(pNPCQuoteInfoArray[pProfile.value.ubLastQuoteSaid]);
           // say quote and following consecutive quotes
           for (ubLoop = 0; ubLoop < pQuotePtr.value.ubNumQuotes; ubLoop++) {
             // say quote #(pQuotePtr->ubQuoteNum + ubLoop)
@@ -1305,7 +1305,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
           if (pProfile.value.ubLastDateSpokenTo > 0) {
             uiDay = GetWorldDay();
             if (uiDay > pProfile.value.ubLastDateSpokenTo) {
-              NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+              NPCConsiderTalking(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
               if (pQuotePtr != NULL) {
                 // converse using this approach instead!
                 Converse(ubNPC, ubMerc, APPROACH_SPECIAL_INITIAL_QUOTE, 0);
@@ -1318,7 +1318,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
               }
             }
           } else {
-            NPCConsiderTalking(ubNPC, ubMerc, APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+            NPCConsiderTalking(ubNPC, ubMerc, APPROACH_INITIAL_QUOTE, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
             if (pQuotePtr != NULL) {
               // converse using this approach instead!
               Converse(ubNPC, ubMerc, APPROACH_INITIAL_QUOTE, 0);
@@ -1327,15 +1327,15 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
 
           // If we are approaching because we want to give an item, do something different
           pObj = uiApproachData;
-          NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+          NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
           break;
         case TRIGGER_NPC:
           // if triggering, pass in the approach data as the record to consider
           DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
-          NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+          NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
           break;
         default:
-          NPCConsiderTalking(ubNPC, ubMerc, bApproach, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+          NPCConsiderTalking(ubNPC, ubMerc, bApproach, 0, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubRecordNum));
           break;
       }
       if (pQuotePtr == NULL) {
@@ -1457,7 +1457,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
 
               bSlot = FindExactObj(pSoldier, pObj);
               if (bSlot != NO_SLOT) {
-                RemoveObjs(&(pSoldier.value.inv[bSlot]), pObj.value.ubNumberOfObjects);
+                RemoveObjs(addressof(pSoldier.value.inv[bSlot]), pObj.value.ubNumberOfObjects);
                 DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
               }
             } else {
@@ -1554,7 +1554,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
 
             AssertMsg(bInvPos != NO_SLOT, "NPC.C:  Gift item does not exist in NPC.");
 
-            TalkingMenuGiveItem(ubNPC, &(pSoldier.value.inv[bInvPos]), bInvPos);
+            TalkingMenuGiveItem(ubNPC, addressof(pSoldier.value.inv[bInvPos]), bInvPos);
           }
         }
         // Action before movement?
@@ -1805,7 +1805,7 @@ function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: BOOLEA
   }
 
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
-  pQuotePtr = &(pNPCQuoteInfoArray[ubQuoteRecord]);
+  pQuotePtr = addressof(pNPCQuoteInfoArray[ubQuoteRecord]);
   // either we are supposed to consider a new quote record
   // (indicated by a negative gridno in the has-item field)
   // or an action to perform once we reached this gridno
@@ -1818,7 +1818,7 @@ function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: BOOLEA
   }
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (pNPC.value.sGridNo == -(pQuotePtr.value.sRequiredGridno)) {
       if (NPCConsiderQuote(ubNPC, 0, TRIGGER_NPC, ubLoop, 0, pNPCQuoteInfoArray)) {
         if (fAlreadyThere) {
@@ -1842,7 +1842,7 @@ function TriggerNPCRecord(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8): void {
     // error!!!
     return;
   }
-  pQuotePtr = &(gpNPCQuoteInfoArray[ubTriggerNPC][ubTriggerNPCRec]);
+  pQuotePtr = addressof(gpNPCQuoteInfoArray[ubTriggerNPC][ubTriggerNPCRec]);
   if (pQuotePtr.value.ubQuoteNum == IRRELEVANT) {
     fDisplayDialogue = FALSE;
   }
@@ -1864,7 +1864,7 @@ function TriggerNPCRecordImmediately(ubTriggerNPC: UINT8, ubTriggerNPCRec: UINT8
     // error!!!
     return;
   }
-  pQuotePtr = &(gpNPCQuoteInfoArray[ubTriggerNPC][ubTriggerNPCRec]);
+  pQuotePtr = addressof(gpNPCQuoteInfoArray[ubTriggerNPC][ubTriggerNPCRec]);
   if (pQuotePtr.value.ubQuoteNum == IRRELEVANT) {
     fDisplayDialogue = FALSE;
   }
@@ -1899,7 +1899,7 @@ function PCsNearNPC(ubNPC: UINT8): void {
   pSoldier.value.ubQuoteRecord = 0;
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (pSoldier.value.sGridNo == -(pQuotePtr.value.sRequiredGridno)) {
       if (NPCConsiderQuote(ubNPC, 0, TRIGGER_NPC, ubLoop, 0, pNPCQuoteInfoArray)) {
         // trigger this quote IMMEDIATELY!
@@ -1934,7 +1934,7 @@ function PCDoesFirstAidOnNPC(ubNPC: UINT8): BOOLEAN {
   gMercProfiles[ubNPC].ubMiscFlags2 |= PROFILE_MISC_FLAG2_BANDAGED_TODAY;
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (pQuotePtr.value.ubApproachRequired == APPROACH_GIVEFIRSTAID) {
       if (NPCConsiderQuote(ubNPC, 0, TRIGGER_NPC, ubLoop, 0, pNPCQuoteInfoArray)) {
         // trigger this quote IMMEDIATELY!
@@ -2003,7 +2003,7 @@ function TriggerNPCWithIHateYouQuote(ubTriggerNPC: UINT8): BOOLEAN {
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubTriggerNPC];
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (NPCConsiderQuote(ubTriggerNPC, 0, APPROACH_DECLARATION_OF_HOSTILITY, ubLoop, 0, pNPCQuoteInfoArray)) {
       // trigger this quote!
       // reset approach required value so that we can trigger it
@@ -2030,7 +2030,7 @@ function NPCHasUnusedRecordWithGivenApproach(ubNPC: UINT8, ubApproach: UINT8): B
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (NPCConsiderQuote(ubNPC, 0, ubApproach, ubLoop, 0, pNPCQuoteInfoArray)) {
       return TRUE;
     }
@@ -2054,7 +2054,7 @@ function NPCHasUnusedHostileRecord(ubNPC: UINT8, ubApproach: UINT8): BOOLEAN {
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (NPCConsiderQuote(ubNPC, 0, ubApproach, ubLoop, 0, pNPCQuoteInfoArray)) {
       if (pQuotePtr.value.usFactMustBeTrue == FACT_NPC_HOSTILE_OR_PISSED_OFF) {
         continue;
@@ -2079,7 +2079,7 @@ function NPCWillingToAcceptItem(ubNPC: UINT8, ubMerc: UINT8, pObj: Pointer<OBJEC
 
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
-  ubOpinion = NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, &pQuotePtr, &ubQuoteNum);
+  ubOpinion = NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, addressof(pQuotePtr), addressof(ubQuoteNum));
 
   if (pQuotePtr) {
     return TRUE;
@@ -2102,7 +2102,7 @@ function GetInfoForAbandoningEPC(ubNPC: UINT8, pusQuoteNum: Pointer<UINT16>, pus
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (NPCConsiderQuote(ubNPC, 0, APPROACH_EPC_IN_WRONG_SECTOR, ubLoop, 0, pNPCQuoteInfoArray)) {
       *pusQuoteNum = pNPCQuoteInfoArray[ubLoop].ubQuoteNum;
       *pusFactToSetTrue = pNPCQuoteInfoArray[ubLoop].usSetFactTrue;
@@ -2127,7 +2127,7 @@ function TriggerNPCWithGivenApproach(ubTriggerNPC: UINT8, ubApproach: UINT8, fSh
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubTriggerNPC];
 
   for (ubLoop = 0; ubLoop < NUM_NPC_QUOTE_RECORDS; ubLoop++) {
-    pQuotePtr = &(pNPCQuoteInfoArray[ubLoop]);
+    pQuotePtr = addressof(pNPCQuoteInfoArray[ubLoop]);
     if (NPCConsiderQuote(ubTriggerNPC, 0, ubApproach, ubLoop, 0, pNPCQuoteInfoArray)) {
       if (pQuotePtr.value.ubQuoteNum == IRRELEVANT) {
         fShowPanel = FALSE;
@@ -2156,19 +2156,19 @@ function SaveNPCInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
     // if there is a npc qutoe
     if (gpNPCQuoteInfoArray[cnt]) {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubOne, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubOne), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
 
       // Save the NPC quote entry
-      FileWrite(hFile, gpNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesWritten);
+      FileWrite(hFile, gpNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
         return FALSE;
       }
     } else {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubZero, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubZero), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
@@ -2179,19 +2179,19 @@ function SaveNPCInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
     // if there is a civ quote
     if (gpCivQuoteInfoArray[cnt]) {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubOne, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubOne), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
 
       // Save the NPC quote entry
-      FileWrite(hFile, gpCivQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesWritten);
+      FileWrite(hFile, gpCivQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
         return FALSE;
       }
     } else {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubZero, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubZero), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
@@ -2217,7 +2217,7 @@ function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32):
   // Loop through all the NPC quotes
   for (cnt = 0; cnt < uiNumberToLoad; cnt++) {
     // Load a byte specify that there is an npc quote Loadd
-    FileRead(hFile, &ubLoadQuote, sizeof(UINT8), &uiNumBytesRead);
+    FileRead(hFile, addressof(ubLoadQuote), sizeof(UINT8), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT8)) {
       return FALSE;
     }
@@ -2241,7 +2241,7 @@ function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32):
       }
 
       // Load the NPC quote entry
-      FileRead(hFile, gpNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesRead);
+      FileRead(hFile, gpNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
         return FALSE;
       }
@@ -2251,7 +2251,7 @@ function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32):
 
   if (uiSaveGameVersion >= 56) {
     for (cnt = 0; cnt < NUM_CIVQUOTE_SECTORS; cnt++) {
-      FileRead(hFile, &ubLoadQuote, sizeof(UINT8), &uiNumBytesRead);
+      FileRead(hFile, addressof(ubLoadQuote), sizeof(UINT8), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(UINT8)) {
         return FALSE;
       }
@@ -2275,7 +2275,7 @@ function LoadNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UINT32):
         }
 
         // Load the civ quote entry
-        FileRead(hFile, gpCivQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesRead);
+        FileRead(hFile, gpCivQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
           return FALSE;
         }
@@ -2355,19 +2355,19 @@ function SaveBackupNPCInfoToSaveGameFile(hFile: HWFILE): BOOLEAN {
     // if there is a npc qutoe
     if (gpBackupNPCQuoteInfoArray[cnt]) {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubOne, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubOne), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
 
       // Save the NPC quote entry
-      FileWrite(hFile, gpBackupNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesWritten);
+      FileWrite(hFile, gpBackupNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
         return FALSE;
       }
     } else {
       // save a byte specify that there is an npc quote saved
-      FileWrite(hFile, &ubZero, sizeof(UINT8), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(ubZero), sizeof(UINT8), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT8)) {
         return FALSE;
       }
@@ -2388,7 +2388,7 @@ function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UI
   // Loop through all the NPC quotes
   for (cnt = 0; cnt < uiNumberOfProfilesToLoad; cnt++) {
     // Load a byte specify that there is an npc quote Loadd
-    FileRead(hFile, &ubLoadQuote, sizeof(UINT8), &uiNumBytesRead);
+    FileRead(hFile, addressof(ubLoadQuote), sizeof(UINT8), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT8)) {
       return FALSE;
     }
@@ -2412,7 +2412,7 @@ function LoadBackupNPCInfoFromSavedGameFile(hFile: HWFILE, uiSaveGameVersion: UI
       }
 
       // Load the NPC quote entry
-      FileRead(hFile, gpBackupNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, &uiNumBytesRead);
+      FileRead(hFile, gpBackupNPCQuoteInfoArray[cnt], sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS, addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(NPCQuoteInfo) * NUM_NPC_QUOTE_RECORDS) {
         return FALSE;
       }
@@ -2487,7 +2487,7 @@ function ActionIDForMovementRecord(ubNPC: UINT8, ubRecord: UINT8): UINT8 {
 
   pNPCQuoteInfoArray = gpNPCQuoteInfoArray[ubNPC];
 
-  pQuotePtr = &(pNPCQuoteInfoArray[ubRecord]);
+  pQuotePtr = addressof(pNPCQuoteInfoArray[ubRecord]);
 
   switch (pQuotePtr.value.sActionData) {
     case NPC_ACTION_TRAVERSE_MAP_EAST:
@@ -2606,10 +2606,10 @@ function UpdateDarrelScriptToGoTo(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // find a spot to an alternate location nearby
-  sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.value.sGridNo, 5, &ubDummyDirection);
+  sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.value.sGridNo, 5, addressof(ubDummyDirection));
   if (sAdjustedGridNo == NOWHERE) {
     // yikes! try again with a bigger radius!
-    sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.value.sGridNo, 10, &ubDummyDirection);
+    sAdjustedGridNo = FindGridNoFromSweetSpotExcludingSweetSpot(pDarrel, pSoldier.value.sGridNo, 10, addressof(ubDummyDirection));
     if (sAdjustedGridNo == NOWHERE) {
       // ok, now we're completely foobar
       return;

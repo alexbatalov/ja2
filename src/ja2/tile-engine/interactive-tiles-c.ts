@@ -169,7 +169,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     }
 
     // LOOK for item pool here...
-    if (GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel)) {
+    if (GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
       // Update visiblity....
       if (!(pStructure.value.fFlags & STRUCTURE_OPEN)) {
         let fDoHumm: BOOLEAN = TRUE;
@@ -237,7 +237,7 @@ function GetInteractiveTileCursor(uiOldCursor: UINT32, fConfirm: BOOLEAN): UINT3
   let sGridNo: INT16;
 
   // OK, first see if we have an in tile...
-  pIntNode = GetCurInteractiveTileGridNoAndStructure(&sGridNo, &pStructure);
+  pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
   if (pIntNode != NULL && pStructure != NULL) {
     if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
@@ -276,7 +276,7 @@ function SetActionModeDoorCursorText(): void {
   }
 
   // OK, first see if we have an in tile...
-  pIntNode = GetCurInteractiveTileGridNoAndStructure(&sGridNo, &pStructure);
+  pIntNode = GetCurInteractiveTileGridNoAndStructure(addressof(sGridNo), addressof(pStructure));
 
   if (pIntNode != NULL && pStructure != NULL) {
     if (pStructure.value.fFlags & STRUCTURE_ANYDOOR) {
@@ -301,25 +301,25 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   sOffsetX = sXPos - gsRenderCenterX;
   sOffsetY = sYPos - gsRenderCenterY;
 
-  FromCellToScreenCoordinates(sOffsetX, sOffsetY, &sTempX_S, &sTempY_S);
+  FromCellToScreenCoordinates(sOffsetX, sOffsetY, addressof(sTempX_S), addressof(sTempY_S));
 
   if (pNode.value.uiFlags & LEVELNODE_CACHEDANITILE) {
-    pTrav = &(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo.value.pETRLEObject[pNode.value.pAniTile.value.sCurrentFrame]);
+    pTrav = addressof(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo.value.pETRLEObject[pNode.value.pAniTile.value.sCurrentFrame]);
   } else {
-    TileElem = &(gTileDatabase[pNode.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
 
     // Adjust for current frames and animations....
     if (TileElem.value.uiFlags & ANIMATED_TILE) {
       Assert(TileElem.value.pAnimData != NULL);
-      TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]];
+      TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
     } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
       if (pNode.value.sCurrentFrame != -1) {
         Assert(TileElem.value.pAnimData != NULL);
-        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]];
+        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
       }
     }
 
-    pTrav = &(TileElem.value.hTileSurface.value.pETRLEObject[TileElem.value.usRegionIndex]);
+    pTrav = addressof(TileElem.value.hTileSurface.value.pETRLEObject[TileElem.value.usRegionIndex]);
   }
 
   sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
@@ -376,7 +376,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
   }
 
   // Get World XY From gridno
-  ConvertGridNoToCellXY(sGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToCellXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // Set mouse stuff
   sScreenX = gusMouseXPos;
@@ -386,10 +386,10 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
 
   while (pNode != NULL) {
     {
-      GetLevelNodeScreenRect(pNode, &aRect, sXMapPos, sYMapPos, sGridNo);
+      GetLevelNodeScreenRect(pNode, addressof(aRect), sXMapPos, sYMapPos, sGridNo);
 
       // Make sure we are always on guy if we are on same gridno
-      if (IsPointInScreenRect(sScreenX, sScreenY, &aRect)) {
+      if (IsPointInScreenRect(sScreenX, sScreenY, addressof(aRect))) {
         // OK refine it!
         if (RefinePointCollisionOnStruct(sGridNo, sScreenX, sScreenY, aRect.iLeft, aRect.iBottom, pNode)) {
           // Do some additional checks here!
@@ -538,10 +538,10 @@ function EndCurInteractiveTileCheck(): void {
     // Set our currently cycled guy.....
     if (gfCycleIntTile) {
       // OK, we're over this cycled node
-      pCurIntTile = &(gCurIntTileStack.bTiles[gCurIntTileStack.bCur]);
+      pCurIntTile = addressof(gCurIntTileStack.bTiles[gCurIntTileStack.bCur]);
     } else {
       // OK, we're over this levelnode,
-      pCurIntTile = &gCurIntTile;
+      pCurIntTile = addressof(gCurIntTile);
     }
 
     gCurIntTile.sGridNo = pCurIntTile.value.sFoundGridNo;
@@ -571,7 +571,7 @@ function RefineLogicOnStruct(sGridNo: INT16, pNode: Pointer<LEVELNODE>): BOOLEAN
     return FALSE;
   }
 
-  TileElem = &(gTileDatabase[pNode.value.usIndex]);
+  TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
 
   if (gCurIntTile.ubFlags == INTILE_CHECK_SELECTIVE) {
     // See if we are on an interactable tile!
@@ -666,16 +666,16 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
     // Check it!
     return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode.value.pAniTile.value.sCachedTileID].pImagery.value.vo, pNode.value.pAniTile.value.sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   } else {
-    TileElem = &(gTileDatabase[pNode.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
 
     // Adjust for current frames and animations....
     if (TileElem.value.uiFlags & ANIMATED_TILE) {
       Assert(TileElem.value.pAnimData != NULL);
-      TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]];
+      TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
     } else if ((pNode.value.uiFlags & LEVELNODE_ANIMATION)) {
       if (pNode.value.sCurrentFrame != -1) {
         Assert(TileElem.value.pAnimData != NULL);
-        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]];
+        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
       }
     }
 
@@ -701,7 +701,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;

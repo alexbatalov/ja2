@@ -254,7 +254,7 @@ let gfAtLeastOneMercWasHired: BOOLEAN = FALSE;
 
 function InitalizeVehicleAndCharacterList(): void {
   // will init the vehicle and character lists to zero
-  memset(&gCharactersList, 0, sizeof(gCharactersList));
+  memset(addressof(gCharactersList), 0, sizeof(gCharactersList));
 
   return;
 }
@@ -279,7 +279,7 @@ function ResetEntryForSelectedList(bEntry: INT8): void {
 
 function ResetSelectedListForMapScreen(): void {
   // set all the entries int he selected list to false
-  memset(&fSelectedListOfMercsForMapScreen, FALSE, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
+  memset(addressof(fSelectedListOfMercsForMapScreen), FALSE, MAX_CHARACTER_COUNT * sizeof(BOOLEAN));
 
   // if we still have a valid dude selected
   if ((bSelectedInfoChar != -1) && (gCharactersList[bSelectedInfoChar].fValid == TRUE)) {
@@ -359,7 +359,7 @@ function ResetAssignmentsForMercsTrainingUnpaidSectorsInSelectedList(bAssignment
       continue;
     }
 
-    pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
+    pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
     if (pSoldier.value.bActive == FALSE) {
       continue;
@@ -384,7 +384,7 @@ function ResetAssignmentOfMercsThatWereTrainingMilitiaInThisSector(sSectorX: INT
       continue;
     }
 
-    pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
+    pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
     if (pSoldier.value.bActive == FALSE) {
       continue;
@@ -423,7 +423,7 @@ function DeselectSelectedListMercsWhoCantMoveWithThisGuy(pSoldier: Pointer<SOLDI
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
       if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
-        pSoldier2 = &(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // skip the guy we are
         if (pSoldier == pSoldier2) {
@@ -494,7 +494,7 @@ function SelectUnselectedMercsWhoMustMoveWithThisGuy(): void {
     if (gCharactersList[iCounter].fValid == TRUE) {
       // if not already selected
       if (fSelectedListOfMercsForMapScreen[iCounter] == FALSE) {
-        pSoldier = &(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // if on a squad or in a vehicle
         if ((pSoldier.value.bAssignment < ON_DUTY) || (pSoldier.value.bAssignment == VEHICLE)) {
@@ -517,7 +517,7 @@ function AnyMercInSameSquadOrVehicleIsSelected(pSoldier: Pointer<SOLDIERTYPE>): 
     if (gCharactersList[iCounter].fValid == TRUE) {
       // if selected
       if (fSelectedListOfMercsForMapScreen[iCounter] == TRUE) {
-        pSoldier2 = &(Menptr[gCharactersList[iCounter].usSolID]);
+        pSoldier2 = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
         // if they have the same assignment
         if (pSoldier.value.bAssignment == pSoldier2.value.bAssignment) {
@@ -869,7 +869,7 @@ function DoMapMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
   giHighLine = -1;
 
   // do message box and return
-  return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  return DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
 }
 
 function GoDownOneLevelInMap(): void {
@@ -985,7 +985,7 @@ function HandleDisplayOfSelectedMercArrows(): void {
     sYPosition += 6;
   }
 
-  GetVideoObject(&hHandle, guiSelectedCharArrow);
+  GetVideoObject(addressof(hHandle), guiSelectedCharArrow);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, SELECTED_CHAR_ARROW_X, sYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // now run through the selected list of guys, an arrow for each
@@ -998,7 +998,7 @@ function HandleDisplayOfSelectedMercArrows(): void {
           sYPosition += 6;
         }
 
-        GetVideoObject(&hHandle, guiSelectedCharArrow);
+        GetVideoObject(addressof(hHandle), guiSelectedCharArrow);
         BltVideoObject(guiSAVEBUFFER, hHandle, 0, SELECTED_CHAR_ARROW_X, sYPosition, VO_BLT_SRCTRANSPARENCY, NULL);
       }
     }
@@ -1020,7 +1020,7 @@ function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: IN
     if (gCharactersList[bSelectedInfoChar].fValid == TRUE) {
       if ((Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorX == sMapX) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].sSectorY == sMapY) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bSectorZ == sMapZ) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bActive) && (Menptr[gCharactersList[bSelectedInfoChar].usSolID].bLife >= OKLIFE)) {
         // valid character
-        InitializeItemPickupMenu(&(Menptr[gCharactersList[bSelectedInfoChar].usSolID]), NOWHERE, pItemPool, MAP_INVEN_POOL_X, MAP_INVEN_POOL_Y, -1);
+        InitializeItemPickupMenu(addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]), NOWHERE, pItemPool, MAP_INVEN_POOL_X, MAP_INVEN_POOL_Y, -1);
         fWasInited = TRUE;
 
         CreateScreenMaskForInventoryPoolPopUp();
@@ -1050,12 +1050,12 @@ function HandleDisplayOfItemPopUpForSector(sMapX: INT16, sMapY: INT16, sMapZ: IN
 
 function CreateScreenMaskForInventoryPoolPopUp(): void {
   //  a screen mask for the inventory pop up
-  MSYS_DefineRegion(&gInventoryScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InventoryScreenMaskBtnCallback);
+  MSYS_DefineRegion(addressof(gInventoryScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InventoryScreenMaskBtnCallback);
 }
 
 function RemoveScreenMaskForInventoryPoolPopUp(): void {
   // remove screen mask
-  MSYS_RemoveRegion(&gInventoryScreenMask);
+  MSYS_RemoveRegion(addressof(gInventoryScreenMask));
 }
 
 // invnetory screen mask btn callback
@@ -1122,9 +1122,9 @@ function HandleLeavingOfEquipmentInCurrentSector(uiMercId: UINT32): void {
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       if (Menptr[uiMercId].sSectorX != gWorldSectorX || Menptr[uiMercId].sSectorY != gWorldSectorY || Menptr[uiMercId].bSectorZ != gbWorldSectorZ) {
         // Set flag for item...
-        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, &(Menptr[uiMercId].inv[iCounter]), Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+        AddItemsToUnLoadedSector(Menptr[uiMercId].sSectorX, Menptr[uiMercId].sSectorY, Menptr[uiMercId].bSectorZ, sGridNo, 1, addressof(Menptr[uiMercId].inv[iCounter]), Menptr[uiMercId].bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, 1, FALSE);
       } else {
-        AddItemToPool(sGridNo, &(Menptr[uiMercId].inv[iCounter]), 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
+        AddItemToPool(sGridNo, addressof(Menptr[uiMercId].inv[iCounter]), 1, Menptr[uiMercId].bLevel, WORLD_ITEM_REACHABLE, 0);
       }
     }
   }
@@ -1179,9 +1179,9 @@ function HandleEquipmentLeftInOmerta(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != OMERTA_LEAVE_EQUIP_SECTOR_X || gWorldSectorY != OMERTA_LEAVE_EQUIP_SECTOR_Y || gbWorldSectorZ != OMERTA_LEAVE_EQUIP_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, &(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+      AddItemsToUnLoadedSector(OMERTA_LEAVE_EQUIP_SECTOR_X, OMERTA_LEAVE_EQUIP_SECTOR_Y, OMERTA_LEAVE_EQUIP_SECTOR_Z, OMERTA_LEAVE_EQUIP_GRIDNO, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
     } else {
-      AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, &(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
+      AddItemToPool(OMERTA_LEAVE_EQUIP_GRIDNO, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
     pItem = pItem.value.pNext;
   }
@@ -1210,9 +1210,9 @@ function HandleEquipmentLeftInDrassen(uiSlotIndex: UINT32): void {
   while (pItem) {
     if (gWorldSectorX != BOBBYR_SHIPPING_DEST_SECTOR_X || gWorldSectorY != BOBBYR_SHIPPING_DEST_SECTOR_Y || gbWorldSectorZ != BOBBYR_SHIPPING_DEST_SECTOR_Z) {
       // given this slot value, add to sector item list
-      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, &(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
+      AddItemsToUnLoadedSector(BOBBYR_SHIPPING_DEST_SECTOR_X, BOBBYR_SHIPPING_DEST_SECTOR_Y, BOBBYR_SHIPPING_DEST_SECTOR_Z, 10433, 1, addressof(pItem.value.o), 0, WORLD_ITEM_REACHABLE, 0, 1, FALSE);
     } else {
-      AddItemToPool(10433, &(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
+      AddItemToPool(10433, addressof(pItem.value.o), 1, 0, WORLD_ITEM_REACHABLE, 0);
     }
     pItem = pItem.value.pNext;
   }
@@ -1255,7 +1255,7 @@ function AddItemToLeaveIndex(o: Pointer<OBJECTTYPE>, uiSlotIndex: UINT32): BOOLE
   pItem = MemAlloc(sizeof(MERC_LEAVE_ITEM));
 
   // copy object
-  memcpy(&(pItem.value.o), o, sizeof(OBJECTTYPE));
+  memcpy(addressof(pItem.value.o), o, sizeof(OBJECTTYPE));
 
   // nobody afterwards
   pItem.value.pNext = NULL;
@@ -1325,7 +1325,7 @@ function SetUpDropItemListForMerc(uiMercId: UINT32): INT32 {
     // check if actual item
     if (Menptr[uiMercId].inv[iCounter].ubNumberOfObjects > 0) {
       // make a linked list of the items left behind, with the ptr to its head in this free slot
-      AddItemToLeaveIndex(&(Menptr[uiMercId].inv[iCounter]), iSlotIndex);
+      AddItemToLeaveIndex(addressof(Menptr[uiMercId].inv[iCounter]), iSlotIndex);
 
       // store owner's profile id for the items added to this leave slot index
       SetUpMercAboutToLeaveEquipment(Menptr[uiMercId].ubProfile, iSlotIndex);
@@ -1514,14 +1514,14 @@ INT32 GetNumberOfCharactersOnPlayersTeam( void )
 
 function CreateMapStatusBarsRegion(): void {
   // create the status region over the bSelectedCharacter info region, to get quick rundown of merc's status
-  MSYS_DefineRegion(&gMapStatusBarsRegion, BAR_INFO_X - 3, BAR_INFO_Y - 42, (BAR_INFO_X + 17), (BAR_INFO_Y), MSYS_PRIORITY_HIGH + 5, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gMapStatusBarsRegion), BAR_INFO_X - 3, BAR_INFO_Y - 42, (BAR_INFO_X + 17), (BAR_INFO_Y), MSYS_PRIORITY_HIGH + 5, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   return;
 }
 
 function RemoveMapStatusBarsRegion(): void {
   // remove the bSelectedInfoCharacter helath, breath and morale bars info region
-  MSYS_RemoveRegion(&gMapStatusBarsRegion);
+  MSYS_RemoveRegion(addressof(gMapStatusBarsRegion));
 
   return;
 }
@@ -1557,7 +1557,7 @@ function UpdateCharRegionHelpText(): void {
       swprintf(sString, "%s: ??, %s: ??, %s: ??", pMapScreenStatusStrings[0], pMapScreenStatusStrings[1], pMapScreenStatusStrings[2]);
     }
 
-    SetRegionFastHelpText(&gMapStatusBarsRegion, sString);
+    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), sString);
 
     // update CONTRACT button help text
     if (CanExtendContractForCharSlot(bSelectedInfoChar)) {
@@ -1571,19 +1571,19 @@ function UpdateCharRegionHelpText(): void {
     if (CanToggleSelectedCharInventory()) {
       // inventory
       if (fShowInventoryFlag) {
-        SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[2]);
+        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[2]);
       } else {
-        SetRegionFastHelpText(&gCharInfoHandRegion, pMiscMapScreenMouseRegionHelpText[0]);
+        SetRegionFastHelpText(addressof(gCharInfoHandRegion), pMiscMapScreenMouseRegionHelpText[0]);
       }
     } else // can't toggle it, don't show any inventory help text
     {
-      SetRegionFastHelpText(&gCharInfoHandRegion, "");
+      SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
     }
   } else {
     // invalid soldier
-    SetRegionFastHelpText(&(gMapStatusBarsRegion), "");
+    SetRegionFastHelpText(addressof(gMapStatusBarsRegion), "");
     SetButtonFastHelpText(giMapContractButton, "");
-    SetRegionFastHelpText(&gCharInfoHandRegion, "");
+    SetRegionFastHelpText(addressof(gCharInfoHandRegion), "");
     DisableButton(giMapContractButton);
   }
 }
@@ -1663,19 +1663,19 @@ function UpdateMapScreenAssignmentPositions(): void {
   SquadPosition.iY = AssignmentPosition.iY;
 
   if (fShowAssignmentMenu) {
-    GetBoxPosition(ghAssignmentBox, &pPoint);
+    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
     pPoint.iY = giBoxY;
 
     SetBoxPosition(ghAssignmentBox, pPoint);
 
-    GetBoxPosition(ghEpcBox, &pPoint);
+    GetBoxPosition(ghEpcBox, addressof(pPoint));
     pPoint.iY = giBoxY;
 
     SetBoxPosition(ghEpcBox, pPoint);
   }
 
   if (fShowAttributeMenu) {
-    GetBoxPosition(ghAttributeBox, &pPoint);
+    GetBoxPosition(ghAttributeBox, addressof(pPoint));
 
     pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_TRAIN;
 
@@ -1683,7 +1683,7 @@ function UpdateMapScreenAssignmentPositions(): void {
   }
 
   if (fShowRepairMenu) {
-    GetBoxPosition(ghRepairBox, &pPoint);
+    GetBoxPosition(ghRepairBox, addressof(pPoint));
     pPoint.iY = giBoxY + (GetFontHeight(MAP_SCREEN_FONT) + 2) * ASSIGN_MENU_REPAIR;
 
     SetBoxPosition(ghRepairBox, pPoint);
@@ -2051,7 +2051,7 @@ function DisplayFastHelpRegions(pRegion: Pointer<FASTHELPREGION>, iSize: INT32):
 
   // run through and show all the regions
   for (iCounter = 0; iCounter < iSize; iCounter++) {
-    DisplayUserDefineHelpTextRegions(&(pRegion[iCounter]));
+    DisplayUserDefineHelpTextRegions(addressof(pRegion[iCounter]));
   }
 
   return;
@@ -2099,7 +2099,7 @@ function DisplayUserDefineHelpTextRegions(pRegion: Pointer<FASTHELPREGION>): voi
   if ((iY + iH) >= SCREEN_HEIGHT)
     iY = (SCREEN_HEIGHT - iH - 15);
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
   RectangleDraw(TRUE, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);
@@ -2142,7 +2142,7 @@ function DisplayFastHelpForInitialTripInToMapScreen(pRegion: Pointer<FASTHELPREG
 function DisplayMapScreenFastHelpList(): void {
   let iCounter: INT32 = 0;
 
-  DisplayFastHelpForInitialTripInToMapScreen(&pFastHelpMapScreenList[iCounter]);
+  DisplayFastHelpForInitialTripInToMapScreen(addressof(pFastHelpMapScreenList[iCounter]));
 
   return;
 }
@@ -2189,14 +2189,14 @@ function SetUpShutDownMapScreenHelpTextScreenMask(): void {
   // create or destroy the screen mask as needed
   if (((fShowMapScreenHelpText == TRUE) || (fInterfaceFastHelpTextActive == TRUE)) && (fCreated == FALSE)) {
     if (gTacticalStatus.fDidGameJustStart) {
-      MSYS_DefineRegion(&gMapScreenHelpTextMask, (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
+      MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), (pMapScreenFastHelpLocationList[9].iX), (pMapScreenFastHelpLocationList[9].iY), (pMapScreenFastHelpLocationList[9].iX + pMapScreenFastHelpWidthList[9]), (pMapScreenFastHelpLocationList[9].iY + iHeightOfInitFastHelpText), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     } else {
-      MSYS_DefineRegion(&gMapScreenHelpTextMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
+      MSYS_DefineRegion(addressof(gMapScreenHelpTextMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MapScreenHelpTextScreenMaskBtnCallback);
     }
 
     fCreated = TRUE;
   } else if ((fShowMapScreenHelpText == FALSE) && (fInterfaceFastHelpTextActive == FALSE) && (fCreated == TRUE)) {
-    MSYS_RemoveRegion(&gMapScreenHelpTextMask);
+    MSYS_RemoveRegion(addressof(gMapScreenHelpTextMask));
 
     fCreated = FALSE;
   }
@@ -2681,7 +2681,7 @@ function CreatePopUpBoxForMovementBox(): void {
   // create the pop up box and mouse regions for movement list
 
   // create basic box
-  CreatePopUpBox(&ghMoveBox, AssignmentDimensions, MovePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghMoveBox), AssignmentDimensions, MovePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghMoveBox, FRAME_BUFFER);
@@ -2732,8 +2732,8 @@ function CreatePopUpBoxForMovementBox(): void {
   // resize box to text
   ResizeBoxToText(ghMoveBox);
 
-  GetBoxPosition(ghMoveBox, &Position);
-  GetBoxSize(ghMoveBox, &Dimensions);
+  GetBoxPosition(ghMoveBox, addressof(Position));
+  GetBoxSize(ghMoveBox, addressof(Dimensions));
 
   // adjust position to try to keep it in the map area as best as possible
   if (Position.iX + Dimensions.iRight >= (MAP_VIEW_START_X + MAP_VIEW_WIDTH)) {
@@ -2764,10 +2764,10 @@ function AddStringsToMoveBox(): void {
   // add title
   GetShortSectorString(sSelMapX, sSelMapY, sStringB);
   swprintf(sString, "%s %s", pMovementMenuStrings[0], sStringB);
-  AddMonoString(&hStringHandle, sString);
+  AddMonoString(addressof(hStringHandle), sString);
 
   // blank line
-  AddMonoString(&hStringHandle, "");
+  AddMonoString(addressof(hStringHandle), "");
 
   // add squads
   for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
@@ -2777,7 +2777,7 @@ function AddStringsToMoveBox(): void {
     } else {
       swprintf(sString, "%s", pSquadMenuStrings[iSquadMovingList[iCount]]);
     }
-    AddMonoString(&hStringHandle, sString);
+    AddMonoString(addressof(hStringHandle), sString);
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
@@ -2788,7 +2788,7 @@ function AddStringsToMoveBox(): void {
         } else {
           swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
         }
-        AddMonoString(&hStringHandle, sString);
+        AddMonoString(addressof(hStringHandle), sString);
       }
     }
   }
@@ -2801,7 +2801,7 @@ function AddStringsToMoveBox(): void {
     } else {
       swprintf(sString, "%s", pVehicleStrings[pVehicleList[iVehicleMovingList[iCount]].ubVehicleType]);
     }
-    AddMonoString(&hStringHandle, sString);
+    AddMonoString(addressof(hStringHandle), sString);
 
     // now add all the grunts in it
     for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
@@ -2812,7 +2812,7 @@ function AddStringsToMoveBox(): void {
         } else {
           swprintf(sString, "   %s", pSoldierMovingList[iCountB].value.name);
         }
-        AddMonoString(&hStringHandle, sString);
+        AddMonoString(addressof(hStringHandle), sString);
       }
     }
   }
@@ -2830,7 +2830,7 @@ function AddStringsToMoveBox(): void {
         } else {
           swprintf(sString, "%s", pMovementMenuStrings[3]);
         }
-        AddMonoString(&hStringHandle, sString);
+        AddMonoString(addressof(hStringHandle), sString);
 
         fFirstOne = FALSE;
       }
@@ -2841,25 +2841,25 @@ function AddStringsToMoveBox(): void {
       } else {
         swprintf(sString, "   %s ( %s )", pSoldierMovingList[iCount].value.name, pAssignmentStrings[pSoldierMovingList[iCount].value.bAssignment]);
       }
-      AddMonoString(&hStringHandle, sString);
+      AddMonoString(addressof(hStringHandle), sString);
     }
   }
 
   // blank line
-  AddMonoString(&hStringHandle, "");
+  AddMonoString(addressof(hStringHandle), "");
 
   if (IsAnythingSelectedForMoving()) {
     // add PLOT MOVE line
     swprintf(sString, "%s", pMovementMenuStrings[1]);
-    AddMonoString(&hStringHandle, sString);
+    AddMonoString(addressof(hStringHandle), sString);
   } else {
     // blank line
-    AddMonoString(&hStringHandle, "");
+    AddMonoString(addressof(hStringHandle), "");
   }
 
   // add cancel line
   swprintf(sString, "%s", pMovementMenuStrings[2]);
-  AddMonoString(&hStringHandle, sString);
+  AddMonoString(addressof(hStringHandle), sString);
 
   return;
 }
@@ -2881,14 +2881,14 @@ function BuildMouseRegionsForMoveBox(): void {
   iFontHeight = GetLineSpace(ghMoveBox) + GetFontHeight(GetBoxFont(ghMoveBox));
 
   // get x.y position of box
-  GetBoxPosition(ghMoveBox, &pPosition);
+  GetBoxPosition(ghMoveBox, addressof(pPosition));
 
   // grab box x and y position
   iBoxXPosition = pPosition.iX;
   iBoxYPosition = pPosition.iY + GetTopMarginSize(ghMoveBox) - 2; // -2 to improve highlighting accuracy between lines
 
   // get dimensions..mostly for width
-  GetBoxSize(ghMoveBox, &Dimensions);
+  GetBoxSize(ghMoveBox, addressof(Dimensions));
 
   // get width
   iBoxWidth = Dimensions.iRight;
@@ -2896,11 +2896,11 @@ function BuildMouseRegionsForMoveBox(): void {
   SetCurrentBox(ghMoveBox);
 
   // box heading
-  MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   // blank line
-  MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   // calc total number of "moving" lines in the box
@@ -2912,22 +2912,22 @@ function BuildMouseRegionsForMoveBox(): void {
   while (iCounter < iTotalNumberOfLines) {
     // define regions for squad lines
     for (iCount = 0; iCount < giNumberOfSquadsInSectorMoving; iCount++) {
-      MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, SQUAD_REGION);
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, iCount);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SQUAD_REGION);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
         if (pSoldierMovingList[iCountB].value.bAssignment == iSquadMovingList[iCount]) {
-          MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, SOLDIER_REGION);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, iCountB);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
           iCounter++;
         }
       }
@@ -2935,22 +2935,22 @@ function BuildMouseRegionsForMoveBox(): void {
 
     for (iCount = 0; iCount < giNumberOfVehiclesInSectorMoving; iCount++) {
       // define regions for vehicle lines
-      MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, VEHICLE_REGION);
-      MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, iCount);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, VEHICLE_REGION);
+      MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
       iCounter++;
 
       for (iCountB = 0; iCountB < giNumberOfSoldiersInSectorMoving; iCountB++) {
         if ((pSoldierMovingList[iCountB].value.bAssignment == VEHICLE) && (pSoldierMovingList[iCountB].value.iVehicleId == iVehicleMovingList[iCount])) {
-          MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, SOLDIER_REGION);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, iCountB);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCountB);
           iCounter++;
         }
       }
@@ -2962,54 +2962,54 @@ function BuildMouseRegionsForMoveBox(): void {
       if ((pSoldierMovingList[iCount].value.bAssignment >= ON_DUTY) && (pSoldierMovingList[iCount].value.bAssignment != VEHICLE)) {
         // this line gets place only once...
         if (!fDefinedOtherRegion) {
-          MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+          MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
           // set user defines
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, OTHER_REGION);
-          MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, 0);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, OTHER_REGION);
+          MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
           iCounter++;
 
           fDefinedOtherRegion = TRUE;
         }
 
-        MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+        MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
         // set user defines
-        MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-        MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, SOLDIER_REGION);
-        MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, iCount);
+        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, SOLDIER_REGION);
+        MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, iCount);
         iCounter++;
       }
     }
   }
 
   // blank line
-  MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iCounter++;
 
   if (IsAnythingSelectedForMoving()) {
     // DONE line
-    MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+    MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
     // set user defines
-    MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-    MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, DONE_REGION);
-    MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, 0);
+    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, DONE_REGION);
+    MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
     iCounter++;
   } else {
     // blank line
-    MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     iCounter++;
   }
 
   // CANCEL line
-  MSYS_DefineRegion(&gMoveMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
+  MSYS_DefineRegion(addressof(gMoveMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + iFontHeight * iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + iFontHeight * (iCounter + 1)), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MoveMenuMvtCallback, MoveMenuBtnCallback);
 
   // set user defines
-  MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 0, iCounter);
-  MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 1, CANCEL_REGION);
-  MSYS_SetRegionUserData(&gMoveMenuRegion[iCounter], 2, 0);
+  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 0, iCounter);
+  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 1, CANCEL_REGION);
+  MSYS_SetRegionUserData(addressof(gMoveMenuRegion[iCounter]), 2, 0);
   iCounter++;
 }
 
@@ -3019,7 +3019,7 @@ function ClearMouseRegionsForMoveBox(): void {
   // run through list of mouse regions
   for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghMoveBox); iCounter++) {
     // remove this region
-    MSYS_RemoveRegion(&gMoveMenuRegion[iCounter]);
+    MSYS_RemoveRegion(addressof(gMoveMenuRegion[iCounter]));
   }
 
   return;
@@ -3180,7 +3180,7 @@ function CanMoveBoxSoldierMoveStrategically(pSoldier: Pointer<SOLDIERTYPE>, fSho
   Assert(pSoldier);
   Assert(pSoldier.value.bActive);
 
-  if (CanCharacterMoveInStrategic(pSoldier, &bErrorNumber)) {
+  if (CanCharacterMoveInStrategic(pSoldier, addressof(bErrorNumber))) {
     return TRUE;
   } else {
     // function may fail without returning any specific error # (-1).
@@ -3346,7 +3346,7 @@ function HandleSettingTheSelectedListOfMercs(): void {
     fMapPanelDirty = TRUE;
     fCharacterInfoPanelDirty = TRUE;
 
-    DeselectSelectedListMercsWhoCantMoveWithThisGuy(&(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
+    DeselectSelectedListMercsWhoCantMoveWithThisGuy(addressof(Menptr[gCharactersList[bSelectedDestChar].usSolID]));
 
     // remember the current paths for all selected characters so we can restore them if need be
     RememberPreviousPathForAllSelectedChars();
@@ -3400,7 +3400,7 @@ function IsThisSquadInThisSector(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT
   // check if the squad is empty
   if (SquadIsEmpty(bSquadValue) == FALSE) {
     // now grab the squad location
-    GetLocationOfSquad(&sX, &sY, &bZ, bSquadValue);
+    GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
 
     // check if this non-empty squad is in this sector
     if ((sX == sSectorX) && (sY == sSectorY) && (bSectorZ == bZ)) {
@@ -3464,7 +3464,7 @@ function ReBuildMoveBox(): void {
 function CreateScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == FALSE) {
     // set up the screen mask
-    MSYS_DefineRegion(&gMoveBoxScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
+    MSYS_DefineRegion(addressof(gMoveBoxScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MoveScreenMaskBtnCallback);
 
     fScreenMaskForMoveCreated = TRUE;
   }
@@ -3473,7 +3473,7 @@ function CreateScreenMaskForMoveBox(): void {
 function RemoveScreenMaskForMoveBox(): void {
   if (fScreenMaskForMoveCreated == TRUE) {
     // remove the screen mask
-    MSYS_RemoveRegion(&gMoveBoxScreenMask);
+    MSYS_RemoveRegion(addressof(gMoveBoxScreenMask));
     fScreenMaskForMoveCreated = FALSE;
   }
 }
@@ -3590,7 +3590,7 @@ function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
   // if update
   if (pUpdateSoldierBox[iCounter] == NULL) {
     sprintf(VObjectDesc.ImageFile, "Interface\\panels.sti");
-    if (!AddVideoObject(&VObjectDesc, &giMercPanelImage)) {
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
       AssertMsg(0, "Failed to load Interface\\panels.sti");
     }
   }
@@ -3611,7 +3611,7 @@ function AddSoldierToUpdateBox(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // load the face
-      AddVideoObject(&VObjectDesc, &giUpdateSoldierFaces[iCounter]);
+      AddVideoObject(addressof(VObjectDesc), addressof(giUpdateSoldierFaces[iCounter]));
 
       return;
     }
@@ -3721,7 +3721,7 @@ function DisplaySoldierUpdateBox(): void {
   // Have the bottom of the box ALWAYS a set distance from the bottom of the map ( so user doesnt have to move mouse far )
   iY = 280 - iUpdatePanelHeight;
 
-  GetVideoObject(&hBackGroundHandle, guiUpdatePanelTactical);
+  GetVideoObject(addressof(hBackGroundHandle), guiUpdatePanelTactical);
 
   // Display the 2 TOP corner pieces
   BltVideoObject(guiSAVEBUFFER, hBackGroundHandle, 0, iX - 4, iY - 4, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -4173,29 +4173,29 @@ function InitTimersForMoveMenuMouseRegions(): void {
 
 function UpdateHelpTextForMapScreenMercIcons(): void {
   if ((bSelectedInfoChar == -1) || (gCharactersList[bSelectedInfoChar].fValid == FALSE)) {
-    SetRegionFastHelpText(&(gContractIconRegion), "");
-    SetRegionFastHelpText(&(gInsuranceIconRegion), "");
-    SetRegionFastHelpText(&(gDepositIconRegion), "");
+    SetRegionFastHelpText(addressof(gContractIconRegion), "");
+    SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
+    SetRegionFastHelpText(addressof(gDepositIconRegion), "");
   } else {
     // if merc is an AIM merc
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
-      SetRegionFastHelpText(&(gContractIconRegion), zMarksMapScreenText[22]);
+      SetRegionFastHelpText(addressof(gContractIconRegion), zMarksMapScreenText[22]);
     } else {
-      SetRegionFastHelpText(&(gContractIconRegion), "");
+      SetRegionFastHelpText(addressof(gContractIconRegion), "");
     }
 
     // if merc has life insurance
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usLifeInsurance > 0) {
-      SetRegionFastHelpText(&(gInsuranceIconRegion), zMarksMapScreenText[3]);
+      SetRegionFastHelpText(addressof(gInsuranceIconRegion), zMarksMapScreenText[3]);
     } else {
-      SetRegionFastHelpText(&(gInsuranceIconRegion), "");
+      SetRegionFastHelpText(addressof(gInsuranceIconRegion), "");
     }
 
     // if merc has a medical deposit
     if (Menptr[gCharactersList[bSelectedInfoChar].usSolID].usMedicalDeposit > 0) {
-      SetRegionFastHelpText(&(gDepositIconRegion), zMarksMapScreenText[12]);
+      SetRegionFastHelpText(addressof(gDepositIconRegion), zMarksMapScreenText[12]);
     } else {
-      SetRegionFastHelpText(&(gDepositIconRegion), "");
+      SetRegionFastHelpText(addressof(gDepositIconRegion), "");
     }
   }
 }
@@ -4204,17 +4204,17 @@ function CreateDestroyInsuranceMouseRegionForMercs(fCreate: BOOLEAN): void {
   /* static */ let fCreated: BOOLEAN = FALSE;
 
   if ((fCreated == FALSE) && (fCreate == TRUE)) {
-    MSYS_DefineRegion(&gContractIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gContractIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    MSYS_DefineRegion(&gInsuranceIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gInsuranceIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING, CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + CHAR_ICON_SPACING + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
-    MSYS_DefineRegion(&gDepositIconRegion, CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gDepositIconRegion), CHAR_ICON_X, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING), CHAR_ICON_X + CHAR_ICON_WIDTH, CHAR_ICON_CONTRACT_Y + (2 * CHAR_ICON_SPACING) + CHAR_ICON_HEIGHT, MSYS_PRIORITY_HIGH - 1, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     fCreated = TRUE;
   } else if ((fCreated == TRUE) && (fCreate == FALSE)) {
-    MSYS_RemoveRegion(&gContractIconRegion);
-    MSYS_RemoveRegion(&gInsuranceIconRegion);
-    MSYS_RemoveRegion(&gDepositIconRegion);
+    MSYS_RemoveRegion(addressof(gContractIconRegion));
+    MSYS_RemoveRegion(addressof(gInsuranceIconRegion));
+    MSYS_RemoveRegion(addressof(gDepositIconRegion));
     fCreated = FALSE;
   }
 }
@@ -4580,7 +4580,7 @@ function CanCharacterMoveInStrategic(pSoldier: Pointer<SOLDIERTYPE>, pbErrorNumb
     let cnt: UINT8;
     let pSoldier2: Pointer<SOLDIERTYPE>;
 
-    if (InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom >= 22 && ubRoom <= 41) {
+    if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom >= 22 && ubRoom <= 41) {
       cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
 
       for (pSoldier2 = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pSoldier2++) {
@@ -4690,7 +4690,7 @@ function CanEntireMovementGroupMercIsInMove(pSoldier: Pointer<SOLDIERTYPE>, pbEr
   for (iCounter = 0; iCounter < MAX_CHARACTER_COUNT; iCounter++) {
     if (gCharactersList[iCounter].fValid == TRUE) {
       // get soldier
-      pCurrentSoldier = &(Menptr[gCharactersList[iCounter].usSolID]);
+      pCurrentSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
       // skip inactive grunts
       if (pCurrentSoldier.value.bActive == FALSE) {
@@ -4821,8 +4821,8 @@ function CanSoldierMoveWithVehicleId(pSoldier: Pointer<SOLDIERTYPE>, iVehicle1Id
       return FALSE;
     }
 
-    pVehicle1 = &(pVehicleList[iVehicle1Id]);
-    pVehicle2 = &(pVehicleList[iVehicle2Id]);
+    pVehicle1 = addressof(pVehicleList[iVehicle1Id]);
+    pVehicle2 = addressof(pVehicleList[iVehicle2Id]);
 
     // as long as they're in the same location, amd neither is between sectors, different vehicles is also ok
     if ((pVehicle1.value.sSectorX == pVehicle2.value.sSectorX) && (pVehicle1.value.sSectorY == pVehicle2.value.sSectorY) && (pVehicle1.value.sSectorZ == pVehicle2.value.sSectorZ) && !pVehicle1.value.fBetweenSectors && !pVehicle2.value.fBetweenSectors) {
@@ -4848,7 +4848,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
       fNodeExists = TRUE;
 
       // Save the to specify that a node DOES exist
-      FileWrite(hFile, &fNodeExists, sizeof(BOOLEAN), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(BOOLEAN)) {
         return FALSE;
       }
@@ -4863,7 +4863,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
       }
 
       // Save the number specifing how many items there are in the list
-      FileWrite(hFile, &uiCount, sizeof(UINT32), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT32)) {
         return FALSE;
       }
@@ -4873,7 +4873,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
       // loop through all the nodes to see how many there are
       for (uiCnt = 0; uiCnt < uiCount; uiCnt++) {
         // Save the items
-        FileWrite(hFile, pCurrentItem, sizeof(MERC_LEAVE_ITEM), &uiNumBytesWritten);
+        FileWrite(hFile, pCurrentItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(MERC_LEAVE_ITEM)) {
           return FALSE;
         }
@@ -4883,7 +4883,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
     } else {
       fNodeExists = FALSE;
       // Save the to specify that a node DOENST exist
-      FileWrite(hFile, &fNodeExists, sizeof(BOOLEAN), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(BOOLEAN)) {
         return FALSE;
       }
@@ -4892,7 +4892,7 @@ function SaveLeaveItemList(hFile: HWFILE): BOOLEAN {
 
   // Save the leave list profile id's
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
-    FileWrite(hFile, &guiLeaveListOwnerProfileId[iCounter], sizeof(UINT32), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
       return FALSE;
     }
@@ -4919,7 +4919,7 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
   // loop through all the lists
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
     // load the flag that specifis that a node DOES exist
-    FileRead(hFile, &fNodeExists, sizeof(BOOLEAN), &uiNumBytesRead);
+    FileRead(hFile, addressof(fNodeExists), sizeof(BOOLEAN), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BOOLEAN)) {
       return FALSE;
     }
@@ -4927,7 +4927,7 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
     // if a root node is supposed to exist
     if (fNodeExists) {
       // load the number specifing how many items there are in the list
-      FileRead(hFile, &uiCount, sizeof(UINT32), &uiNumBytesRead);
+      FileRead(hFile, addressof(uiCount), sizeof(UINT32), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(UINT32)) {
         return FALSE;
       }
@@ -4950,7 +4950,7 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
         memset(pItem, 0, sizeof(MERC_LEAVE_ITEM));
 
         // Load the items
-        FileRead(hFile, pItem, sizeof(MERC_LEAVE_ITEM), &uiNumBytesRead);
+        FileRead(hFile, pItem, sizeof(MERC_LEAVE_ITEM), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(MERC_LEAVE_ITEM)) {
           return FALSE;
         }
@@ -4971,7 +4971,7 @@ function LoadLeaveItemList(hFile: HWFILE): BOOLEAN {
 
   // Load the leave list profile id's
   for (iCounter = 0; iCounter < NUM_LEAVE_LIST_SLOTS; iCounter++) {
-    FileRead(hFile, &guiLeaveListOwnerProfileId[iCounter], sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(guiLeaveListOwnerProfileId[iCounter]), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       return FALSE;
     }
@@ -5039,7 +5039,7 @@ function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSector
     return;
   }
 
-  GetVideoObject(&hHandle, guiSectorLocatorGraphicID);
+  GetVideoObject(addressof(hHandle), guiSectorLocatorGraphicID);
 
   switch (ubLocatorID) {
     // grab zoomed out icon
@@ -5057,7 +5057,7 @@ function HandleBlitOfSectorLocatorIcon(sSectorX: INT16, sSectorY: INT16, sSector
   }
 
   // Convert the sector value into screen values.
-  GetScreenXYFromMapXY(sSectorX, sSectorY, &sScreenX, &sScreenY);
+  GetScreenXYFromMapXY(sSectorX, sSectorY, addressof(sScreenX), addressof(sScreenY));
   // make sure we are on the border
   if (sScreenX < MAP_GRID_X) {
     sScreenX = MAP_GRID_X;

@@ -157,7 +157,7 @@ function LoadShadeTablesFromTextFile(): void {
       for (i = 0; i < 16; i++) {
         for (j = 0; j < 3; j++) {
           fscanf(fp, "%s", str);
-          sscanf(str, "%d", &num);
+          sscanf(str, "%d", addressof(num));
           gusShadeLevels[i][j] = num;
         }
       }
@@ -191,7 +191,7 @@ function InitLightingSystem(): BOOLEAN {
 
   // init all light sprites
   for (uiCount = 0; uiCount < MAX_LIGHT_SPRITES; uiCount++)
-    memset(&LightSprites[uiCount], 0, sizeof(LIGHT_SPRITE));
+    memset(addressof(LightSprites[uiCount]), 0, sizeof(LIGHT_SPRITE));
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
     DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
@@ -212,7 +212,7 @@ function SetDefaultWorldLightingColors(): BOOLEAN {
   pPal[1].peGreen = 0;
   pPal[1].peBlue = 128;
 
-  LightSetColors(&pPal[0], 1);
+  LightSetColors(addressof(pPal[0]), 1);
 
   return TRUE;
 }
@@ -251,7 +251,7 @@ function LightReset(): BOOLEAN {
 
   // init all light sprites
   for (uiCount = 0; uiCount < MAX_LIGHT_SPRITES; uiCount++)
-    memset(&LightSprites[uiCount], 0, sizeof(LIGHT_SPRITE));
+    memset(addressof(LightSprites[uiCount]), 0, sizeof(LIGHT_SPRITE));
 
   if (LightLoad("TRANSLUC.LHT") != 0) {
     DebugMsg(TOPIC_GAME, DBG_LEVEL_0, String("Failed to load translucency template"));
@@ -1967,7 +1967,7 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case INSIDE_TOP_RIGHT:
       case OUTSIDE_TOP_RIGHT:
@@ -1986,7 +1986,7 @@ function LightRevealWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOL
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
@@ -2039,7 +2039,7 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case INSIDE_TOP_RIGHT:
       case OUTSIDE_TOP_RIGHT:
@@ -2058,7 +2058,7 @@ function LightHideWall(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLEA
 
   pStruct = gpWorldLevelData[uiTile].pStructHead;
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
@@ -2137,7 +2137,7 @@ function LightGreenTile(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
     fThroughWall = TRUE;
 
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
@@ -2234,7 +2234,7 @@ function LightHideGreen(sX: INT16, sY: INT16, sSrcX: INT16, sSrcY: INT16): BOOLE
   pStruct = gpWorldLevelData[uiTile].pStructHead;
 
   while (pStruct != NULL) {
-    TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+    TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
     switch (TileElem.value.usWallOrientation) {
       case NO_ORIENTATION:
         break;
@@ -2353,7 +2353,7 @@ function LightTranslucentTrees(iX: INT16, iY: INT16): BOOLEAN {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != NULL) {
-        GetTileFlags(pNode.value.usIndex, &fTileFlags);
+        GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
 
         if (fTileFlags & FULL3D_TILE) {
           if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
@@ -2395,7 +2395,7 @@ function LightHideTrees(iX: INT16, iY: INT16): BOOLEAN {
       uiTile = MAPROWCOLTOPOS(iCountY, iCountX);
       pNode = gpWorldLevelData[uiTile].pStructHead;
       while (pNode != NULL) {
-        GetTileFlags(pNode.value.usIndex, &fTileFlags);
+        GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
 
         if (fTileFlags & FULL3D_TILE) {
           if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
@@ -2525,7 +2525,7 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
     }
   }
 
-  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), &sDummy, &sYValue);
+  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), addressof(sDummy), addressof(sYValue));
 
   LightMapLeft[iLight] = MaxRect.iLeft;
   LightMapTop[iLight] = MaxRect.iTop;
@@ -2535,14 +2535,14 @@ function LightCalcRect(iLight: INT32): BOOLEAN {
   LightHeight[iLight] = -sYValue;
   LightYOffset[iLight] = sYValue;
 
-  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), &sDummy, &sYValue);
+  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), addressof(sDummy), addressof(sYValue));
   LightHeight[iLight] += sYValue;
 
-  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), &sXValue, &sDummy);
+  FromCellToScreenCoordinates((MaxRect.iLeft * CELL_X_SIZE), (MaxRect.iBottom * CELL_Y_SIZE), addressof(sXValue), addressof(sDummy));
   LightWidth[iLight] = -sXValue;
   LightXOffset[iLight] = sXValue;
 
-  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), &sXValue, &sDummy);
+  FromCellToScreenCoordinates((MaxRect.iRight * CELL_X_SIZE), (MaxRect.iTop * CELL_Y_SIZE), addressof(sXValue), addressof(sDummy));
   LightWidth[iLight] += sXValue;
 
   LightHeight[iLight] += WORLD_TILE_X * 2;
@@ -2573,9 +2573,9 @@ function LightSave(iLight: INT32, pFilename: STR): BOOLEAN {
       pName = pFilename;
 
     if ((hFile = FileOpen(pName, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE)) != 0) {
-      FileWrite(hFile, &usTemplateSize[iLight], sizeof(UINT16), NULL);
+      FileWrite(hFile, addressof(usTemplateSize[iLight]), sizeof(UINT16), NULL);
       FileWrite(hFile, pLightList[iLight], sizeof(LIGHT_NODE) * usTemplateSize[iLight], NULL);
-      FileWrite(hFile, &usRaySize[iLight], sizeof(UINT16), NULL);
+      FileWrite(hFile, addressof(usRaySize[iLight]), sizeof(UINT16), NULL);
       FileWrite(hFile, pLightRayList[iLight], sizeof(UINT16) * usRaySize[iLight], NULL);
 
       FileClose(hFile);
@@ -2602,14 +2602,14 @@ function LightLoad(pFilename: STR): INT32 {
     return -1;
   else {
     if ((hFile = FileOpen(pFilename, FILE_ACCESS_READ, FALSE)) != 0) {
-      FileRead(hFile, &usTemplateSize[iLight], sizeof(UINT16), NULL);
+      FileRead(hFile, addressof(usTemplateSize[iLight]), sizeof(UINT16), NULL);
       if ((pLightList[iLight] = MemAlloc(usTemplateSize[iLight] * sizeof(LIGHT_NODE))) == NULL) {
         usTemplateSize[iLight] = 0;
         return -1;
       }
       FileRead(hFile, pLightList[iLight], sizeof(LIGHT_NODE) * usTemplateSize[iLight], NULL);
 
-      FileRead(hFile, &usRaySize[iLight], sizeof(UINT16), NULL);
+      FileRead(hFile, addressof(usRaySize[iLight]), sizeof(UINT16), NULL);
       if ((pLightRayList[iLight] = MemAlloc(usRaySize[iLight] * sizeof(UINT16))) == NULL) {
         usTemplateSize[iLight] = 0;
         usRaySize[iLight] = 0;
@@ -2649,7 +2649,7 @@ function LightLoadCachedTemplate(pFilename: STR): INT32 {
 
 function LightGetColors(pPal: Pointer<SGPPaletteEntry>): UINT8 {
   if (pPal != NULL)
-    memcpy(pPal, &gpOrigLights[0], sizeof(SGPPaletteEntry) * gubNumLightColors);
+    memcpy(pPal, addressof(gpOrigLights[0]), sizeof(SGPPaletteEntry) * gubNumLightColors);
 
   return gubNumLightColors;
 }
@@ -2680,8 +2680,8 @@ function LightSetColors(pPal: Pointer<SGPPaletteEntry>, ubNumColors: UINT8): BOO
   DestroyTileShadeTables();
 
   // we will have at least one light color
-  memcpy(&gpLightColors[0], &pPal[0], sizeof(SGPPaletteEntry));
-  memcpy(&gpOrigLights[0], &pPal[0], sizeof(SGPPaletteEntry) * 2);
+  memcpy(addressof(gpLightColors[0]), addressof(pPal[0]), sizeof(SGPPaletteEntry));
+  memcpy(addressof(gpOrigLights[0]), addressof(pPal[0]), sizeof(SGPPaletteEntry) * 2);
 
   gubNumLightColors = ubNumColors;
 
@@ -2749,7 +2749,7 @@ function LightSpriteCreate(pName: STR, uiLightType: UINT32): INT32 {
   let iSprite: INT32;
 
   if ((iSprite = LightSpriteGetFree()) != (-1)) {
-    memset(&LightSprites[iSprite], 0, sizeof(LIGHT_SPRITE));
+    memset(addressof(LightSprites[iSprite]), 0, sizeof(LIGHT_SPRITE));
     LightSprites[iSprite].iX = WORLD_COLS + 1;
     LightSprites[iSprite].iY = WORLD_ROWS + 1;
     LightSprites[iSprite].iOldX = WORLD_COLS + 1;

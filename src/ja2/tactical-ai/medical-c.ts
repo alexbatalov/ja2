@@ -204,14 +204,14 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
       if (bPatientPriority >= bBestPriority) {
         if (!ClimbingNecessary(pSoldier, pPatient.value.sGridNo, pPatient.value.bLevel)) {
           sPatientGridNo = pPatient.value.sGridNo;
-          sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, &ubDirection, &sAdjustedGridNo, FALSE, FALSE);
+          sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), FALSE, FALSE);
           if (sAdjacentGridNo == -1 && gAnimControl[pPatient.value.usAnimState].ubEndHeight == ANIM_PRONE) {
             // prone; could be the base tile is inaccessible but the rest isn't...
             for (cnt2 = 0; cnt2 < NUM_WORLD_DIRECTIONS; cnt2++) {
               sPatientGridNo = pPatient.value.sGridNo + DirectionInc(cnt2);
               if (WhoIsThere2(sPatientGridNo, pPatient.value.bLevel) == pPatient.value.ubID) {
                 // patient is also here, try this location
-                sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, &ubDirection, &sAdjustedGridNo, FALSE, FALSE);
+                sAdjacentGridNo = FindAdjacentGridEx(pSoldier, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), FALSE, FALSE);
                 if (sAdjacentGridNo != -1) {
                   break;
                 }
@@ -233,7 +233,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
                 // only switch to this patient if our distance is closer than
                 // the other medic's
                 pOtherMedic = MercPtrs[pPatient.value.ubAutoBandagingMedic];
-                sOtherAdjacentGridNo = FindAdjacentGridEx(pOtherMedic, sPatientGridNo, &ubDirection, &sAdjustedGridNo, FALSE, FALSE);
+                sOtherAdjacentGridNo = FindAdjacentGridEx(pOtherMedic, sPatientGridNo, addressof(ubDirection), addressof(sAdjustedGridNo), FALSE, FALSE);
                 if (sOtherAdjacentGridNo != -1) {
                   if (sOtherAdjacentGridNo == pOtherMedic.value.sGridNo) {
                     sOtherMedicPathCost = 1;
@@ -265,7 +265,7 @@ function FindBestPatient(pSoldier: Pointer<SOLDIERTYPE>, pfDoClimb: Pointer<BOOL
         } else {
           sClimbGridNo = NOWHERE;
           // see if guy on another building etc and we need to climb somewhere
-          sPathCost = EstimatePathCostToLocation(pSoldier, pPatient.value.sGridNo, pPatient.value.bLevel, FALSE, &fClimbingNecessary, &sClimbGridNo);
+          sPathCost = EstimatePathCostToLocation(pSoldier, pPatient.value.sGridNo, pPatient.value.bLevel, FALSE, addressof(fClimbingNecessary), addressof(sClimbGridNo));
           // if we can get there
           if (sPathCost != 0 && fClimbingNecessary && sPathCost < sShortestClimbPath) {
             sBestClimbGridNo = sClimbGridNo;
@@ -322,7 +322,7 @@ function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     if (bSlot != HANDPOS) {
       pSoldier.value.bSlotItemTakenFrom = bSlot;
 
-      SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[bSlot]));
+      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
       /*
       memset( &TempObj, 0, sizeof( OBJECTTYPE ) );
       // move the med kit out to temp obj
@@ -337,13 +337,13 @@ function DecideAutoBandage(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   //	pSoldier->usActionData = FindClosestPatient( pSoldier );
-  pSoldier.value.bAction = FindBestPatient(pSoldier, &fDoClimb);
+  pSoldier.value.bAction = FindBestPatient(pSoldier, addressof(fDoClimb));
   if (pSoldier.value.bAction != AI_ACTION_NONE) {
     pSoldier.value.usUIMovementMode = RUNNING;
     if (bSlot != HANDPOS) {
       pSoldier.value.bSlotItemTakenFrom = bSlot;
 
-      SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[bSlot]));
+      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]));
     }
     return pSoldier.value.bAction;
   }

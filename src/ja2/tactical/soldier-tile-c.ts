@@ -364,19 +364,19 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         } else if (!NewOKDestination(pSoldier, pSoldier.value.sFinalDestination, TRUE, pSoldier.value.bLevel)) {
           if (pSoldier.value.fDelayedMovement >= 150) {
             // OK, look around dest for the first one!
-            sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sFinalDestination, 6, &ubDirection);
+            sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sFinalDestination, 6, addressof(ubDirection));
 
             if (sCheckGridNo == NOWHERE) {
               // If this is nowhere, try harder!
-              sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sFinalDestination, 16, &ubDirection);
+              sCheckGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sFinalDestination, 16, addressof(ubDirection));
             }
           } else {
             // OK, look around dest for the first one!
-            sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.value.sFinalDestination, 6, &ubDirection);
+            sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.value.sFinalDestination, 6, addressof(ubDirection));
 
             if (sCheckGridNo == NOWHERE) {
               // If this is nowhere, try harder!
-              sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.value.sFinalDestination, 16, &ubDirection);
+              sCheckGridNo = FindGridNoFromSweetSpotThroughPeople(pSoldier, pSoldier.value.sFinalDestination, 16, addressof(ubDirection));
             }
           }
         } else {

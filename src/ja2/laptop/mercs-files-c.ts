@@ -102,17 +102,17 @@ function EnterMercsFiles(): BOOLEAN {
   // load the stats box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_STATSBOX);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiStatsBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiStatsBox)));
 
   // load the Portrait box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\PortraitBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiPortraitBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPortraitBox)));
 
   // load the bio box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BioBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBioBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBioBox)));
 
   // Prev Box button
   guiButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);
@@ -165,15 +165,15 @@ function RenderMercsFiles(): void {
   DrawMecBackGround();
 
   // Portrait Box
-  GetVideoObject(&hPixHandle, guiPortraitBox);
+  GetVideoObject(addressof(hPixHandle), guiPortraitBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Stats Box
-  GetVideoObject(&hPixHandle, guiStatsBox);
+  GetVideoObject(addressof(hPixHandle), guiStatsBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_STATS_BOX_X, MERC_FILES_STATS_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // bio box
-  GetVideoObject(&hPixHandle, guiBioBox);
+  GetVideoObject(addressof(hPixHandle), guiBioBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILES_BIO_BOX_X + 1, MERC_FILES_BIO_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the mercs face
@@ -315,10 +315,10 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   // Portrait Frame
-  GetVideoObject(&hPortraitHandle, guiPortraitBox);
+  GetVideoObject(addressof(hPortraitHandle), guiPortraitBox);
   BltVideoObject(FRAME_BUFFER, hPortraitHandle, 0, MERC_FILES_PORTRAIT_BOX_X, MERC_FILES_PORTRAIT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-  pMerc = &gMercProfiles[ubMercID];
+  pMerc = addressof(gMercProfiles[ubMercID]);
 
   // See if the merc is currently hired
   pSoldier = FindSoldierByProfileID(ubMercID, TRUE);
@@ -327,10 +327,10 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
   sprintf(sTemp, "%s%02d.sti", sFaceLoc, ubMercID);
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMercFace));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercFace)));
 
   // Blt face to screen
-  GetVideoObject(&hFaceHandle, guiMercFace);
+  GetVideoObject(addressof(hFaceHandle), guiMercFace);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, MERC_FACE_X, MERC_FACE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // if the merc is dead, shadow the face red and put text over top saying the merc is dead
@@ -339,7 +339,7 @@ function DisplayMercFace(ubMercID: UINT8): BOOLEAN {
     hFaceHandle.value.pShades[0] = Create16BPPPaletteShaded(hFaceHandle.value.pPaletteEntry, DEAD_MERC_COLOR_RED, DEAD_MERC_COLOR_GREEN, DEAD_MERC_COLOR_BLUE, TRUE);
 
     // get the face object
-    GetVideoObject(&hFaceHandle, guiMercFace);
+    GetVideoObject(addressof(hFaceHandle), guiMercFace);
 
     // set the red pallete to the face
     SetObjectHandleShade(guiMercFace, 0);
@@ -471,7 +471,7 @@ function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   let HireMercStruct: MERC_HIRE_STRUCT;
   let bReturnCode: INT8;
 
-  memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
+  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
   // if the ALT key is down
   if (gfKeyState[ALT] && CHEATER_CHEAT_LEVEL()) {
@@ -511,7 +511,7 @@ function MercFilesHireMerc(ubMercID: UINT8): BOOLEAN {
   //	LaptopSaveInfo.sLastHiredMerc.iIdOfMerc = HireMercStruct.ubProfileID;
   //	LaptopSaveInfo.sLastHiredMerc.uiArrivalTime = HireMercStruct.uiTimeTillMercArrives;
 
-  bReturnCode = HireMerc(&HireMercStruct);
+  bReturnCode = HireMerc(addressof(HireMercStruct));
   // already have 20 mercs on the team
   if (bReturnCode == MERC_HIRE_OVER_20_MERCS_HIRED) {
     DoLapTopMessageBox(MSG_BOX_LAPTOP_DEFAULT, MercInfo[MERC_FILES_HIRE_TO_MANY_PEOPLE_WARNING], LAPTOP_SCREEN, MSG_BOX_FLAG_OK, NULL);

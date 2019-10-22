@@ -703,7 +703,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentStrength);
@@ -718,7 +718,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentDexterity);
@@ -734,7 +734,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentAgility);
@@ -750,7 +750,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentWisdom);
@@ -764,7 +764,7 @@ function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentLeaderShip);
@@ -779,7 +779,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentHealth);
@@ -799,7 +799,7 @@ function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentMarkmanship);
@@ -820,7 +820,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentMedical);
@@ -841,7 +841,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentMechanical);
@@ -862,7 +862,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(addressof(pSliderBarRegions[iCnt]), (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, "%d", iCurrentExplosives);
@@ -982,12 +982,12 @@ function CreateSlideRegionMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(&pSliderRegions[iCounter], (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
+    MSYS_DefineRegion(addressof(pSliderRegions[iCounter]), (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
 
     // define user data
-    MSYS_SetRegionUserData(&pSliderRegions[iCounter], 0, iCounter);
+    MSYS_SetRegionUserData(addressof(pSliderRegions[iCounter]), 0, iCounter);
     // now add it
-    MSYS_AddRegion(&pSliderRegions[iCounter]);
+    MSYS_AddRegion(addressof(pSliderRegions[iCounter]));
   }
 
   return;
@@ -1003,12 +1003,12 @@ function CreateSliderBarMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(&pSliderBarRegions[iCounter], (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
+    MSYS_DefineRegion(addressof(pSliderBarRegions[iCounter]), (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
 
     // define user data
-    MSYS_SetRegionUserData(&pSliderBarRegions[iCounter], 0, iCounter);
+    MSYS_SetRegionUserData(addressof(pSliderBarRegions[iCounter]), 0, iCounter);
     // now add it
-    MSYS_AddRegion(&pSliderBarRegions[iCounter]);
+    MSYS_AddRegion(addressof(pSliderBarRegions[iCounter]));
   }
 
   return;
@@ -1020,7 +1020,7 @@ function DestroySlideRegionMouseRegions(): void {
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
-    MSYS_RemoveRegion(&pSliderRegions[iCounter]);
+    MSYS_RemoveRegion(addressof(pSliderRegions[iCounter]));
   }
 
   return;
@@ -1032,7 +1032,7 @@ function DestroySlideBarMouseRegions(): void {
 
   // delete the regions
   for (iCounter = 0; iCounter < 10; iCounter++) {
-    MSYS_RemoveRegion(&pSliderBarRegions[iCounter]);
+    MSYS_RemoveRegion(addressof(pSliderBarRegions[iCounter]));
   }
 
   return;
@@ -1204,7 +1204,7 @@ function SliderRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 function SliderBarRegionButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     fSlideIsActive = TRUE;
-    SliderRegionButtonCallback(&pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)], MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
+    SliderRegionButtonCallback(addressof(pSliderRegions[MSYS_GetRegionUserData(pRegion, 0)]), MSYS_CALLBACK_REASON_LBUTTON_REPEAT);
   }
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     fSlideIsActive = FALSE;

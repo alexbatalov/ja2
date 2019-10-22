@@ -48,15 +48,15 @@ function DetermineRGBDistributionSettings(): void {
       if (!hfile) {
         AssertMsg(0, "Couldn't open RGBDist.dat, even though it exists!");
       }
-      FileRead(hfile, &uiPrevRBitMask, sizeof(UINT32), &uiNumBytesRead);
-      FileRead(hfile, &uiPrevGBitMask, sizeof(UINT32), &uiNumBytesRead);
-      FileRead(hfile, &uiPrevBBitMask, sizeof(UINT32), &uiNumBytesRead);
+      FileRead(hfile, addressof(uiPrevRBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+      FileRead(hfile, addressof(uiPrevGBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+      FileRead(hfile, addressof(uiPrevBBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
       fLoadedPrevRGBDist = TRUE;
       FileClose(hfile);
     }
   }
 
-  if (!GetPrimaryRGBDistributionMasks(&uiRBitMask, &uiGBitMask, &uiBBitMask)) {
+  if (!GetPrimaryRGBDistributionMasks(addressof(uiRBitMask), addressof(uiGBitMask), addressof(uiBBitMask))) {
     AssertMsg(0, "Failed to extract the current RGB distribution masks.");
   }
   if (fLoadedPrevRGBDist) {
@@ -83,9 +83,9 @@ function DetermineRGBDistributionSettings(): void {
     if (!hfile) {
       AssertMsg(0, "Couldn't create RGBDist.dat for writing!");
     }
-    FileWrite(hfile, &uiRBitMask, sizeof(UINT32), &uiNumBytesRead);
-    FileWrite(hfile, &uiGBitMask, sizeof(UINT32), &uiNumBytesRead);
-    FileWrite(hfile, &uiBBitMask, sizeof(UINT32), &uiNumBytesRead);
+    FileWrite(hfile, addressof(uiRBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+    FileWrite(hfile, addressof(uiGBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
+    FileWrite(hfile, addressof(uiBBitMask), sizeof(UINT32), addressof(uiNumBytesRead));
     FileClose(hfile);
   }
 
@@ -124,7 +124,7 @@ function LoadShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
   for (i = 0; i < 16; i++) {
     pObj.value.pShades[i] = MemAlloc(512);
     Assert(pObj.value.pShades[i]);
-    FileRead(hfile, pObj.value.pShades[i], 512, &uiNumBytesRead);
+    FileRead(hfile, pObj.value.pShades[i], 512, addressof(uiNumBytesRead));
   }
 
   // The file exists, now make sure the
@@ -157,7 +157,7 @@ function SaveShadeTable(pObj: HVOBJECT, uiTileTypeIndex: UINT32): BOOLEAN {
     return FALSE;
   }
   for (i = 0; i < 16; i++) {
-    FileWrite(hfile, pObj.value.pShades[i], 512, &uiNumBytesWritten);
+    FileWrite(hfile, pObj.value.pShades[i], 512, addressof(uiNumBytesWritten));
   }
 
   FileClose(hfile);

@@ -85,7 +85,7 @@ function ConsiderProne(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     return FALSE;
   }
   // We don't want to go prone if there is a nearby enemy
-  ClosestKnownOpponent(pSoldier, &sOpponentGridNo, &bOpponentLevel);
+  ClosestKnownOpponent(pSoldier, addressof(sOpponentGridNo), addressof(bOpponentLevel));
   iRange = GetRangeFromGridNoDiff(pSoldier.value.sGridNo, sOpponentGridNo);
   if (iRange > 10) {
     return TRUE;
@@ -450,7 +450,7 @@ function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   let pFriend: Pointer<SOLDIERTYPE>;
 
   // obtain maximum roaming distance from soldier's origin
-  usMaxDist = RoamingRange(pSoldier, &usOrigin);
+  usMaxDist = RoamingRange(pSoldier, addressof(usOrigin));
 
   // if our movement range is restricted
 
@@ -590,11 +590,11 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     ubTriesLeft = 1;
   }
 
-  usMaxDist = RoamingRange(pSoldier, &usOrigin);
+  usMaxDist = RoamingRange(pSoldier, addressof(usOrigin));
 
   if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
     // any other combo uses the default of ubRoom == 0, set above
-    if (!InARoom(pSoldier.value.usPatrolGrid[0], &ubRoom)) {
+    if (!InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoom))) {
       ubRoom = 0;
     }
   }
@@ -659,7 +659,7 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         sRandDest = PreRandom(GRIDSIZE);
       }
 
-      if (ubRoom && InARoom(sRandDest, &ubTempRoom) && ubTempRoom != ubRoom) {
+      if (ubRoom && InARoom(sRandDest, addressof(ubTempRoom)) && ubTempRoom != ubRoom) {
         // outside of room available for patrol!
         sRandDest = NOWHERE;
         continue;
@@ -711,9 +711,9 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
 
   *pfChangeLevel = FALSE;
 
-  pubNoiseVolume = &gubPublicNoiseVolume[pSoldier.value.bTeam];
-  pusNoiseGridNo = &gsPublicNoiseGridno[pSoldier.value.bTeam];
-  pbNoiseLevel = &gbPublicNoiseLevel[pSoldier.value.bTeam];
+  pubNoiseVolume = addressof(gubPublicNoiseVolume[pSoldier.value.bTeam]);
+  pusNoiseGridNo = addressof(gsPublicNoiseGridno[pSoldier.value.bTeam]);
+  pbNoiseLevel = addressof(gbPublicNoiseLevel[pSoldier.value.bTeam]);
 
   // hang pointers at start of this guy's personal and public opponent opplists
   //	pbPersOL = &pSoldier->bOppList[0];
@@ -784,7 +784,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
   }
 
   if (sClosestEnemy != NOWHERE) {
-    iPathCost = EstimatePathCostToLocation(pSoldier, sClosestEnemy, bClosestLevel, FALSE, &fClimbingNecessary, &sClimbGridNo);
+    iPathCost = EstimatePathCostToLocation(pSoldier, sClosestEnemy, bClosestLevel, FALSE, addressof(fClimbingNecessary), addressof(sClimbGridNo));
     // if we can get there
     if (iPathCost != 0) {
       if (fClimbingNecessary) {
@@ -809,7 +809,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
       pSoldier.value.ubNoiseVolume = 0;
     } else {
       // get the AP cost to get to the location of the noise
-      iPathCost = EstimatePathCostToLocation(pSoldier, sGridNo, bLevel, FALSE, &fClimbingNecessary, &sClimbGridNo);
+      iPathCost = EstimatePathCostToLocation(pSoldier, sGridNo, bLevel, FALSE, addressof(fClimbingNecessary), addressof(sClimbGridNo));
       // if we can get there
       if (iPathCost != 0) {
         if (fClimbingNecessary) {
@@ -835,7 +835,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
     //	if (sGridNo != pSoldier->sGridNo)
     {
       // get the AP cost to get to the location of the noise
-      iPathCost = EstimatePathCostToLocation(pSoldier, sGridNo, bLevel, FALSE, &fClimbingNecessary, &sClimbGridNo);
+      iPathCost = EstimatePathCostToLocation(pSoldier, sGridNo, bLevel, FALSE, addressof(fClimbingNecessary), addressof(sClimbGridNo));
       // if we can get there
       if (iPathCost != 0) {
         if (fClimbingNecessary) {
@@ -872,11 +872,11 @@ function ClosestKnownOpponent(pSoldier: Pointer<SOLDIERTYPE>, psGridNo: Pointer<
   bClosestLevel = -1;
 
   // NOTE: THIS FUNCTION ALLOWS RETURN OF UNCONSCIOUS AND UNREACHABLE OPPONENTS
-  psLastLoc = &(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
+  psLastLoc = addressof(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
 
   // hang pointers at start of this guy's personal and public opponent opplists
-  pbPersOL = &pSoldier.value.bOppList[0];
-  pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][0]);
+  pbPersOL = addressof(pSoldier.value.bOppList[0]);
+  pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][0]);
 
   // look through this man's personal & public opplists for opponents known
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
@@ -1084,7 +1084,7 @@ function FindClosestClimbPointAvailableToAI(pSoldier: Pointer<SOLDIERTYPE>, sSta
     sRoamingOrigin = pSoldier.value.sGridNo;
     sRoamingRange = 99;
   } else {
-    sRoamingRange = RoamingRange(pSoldier, &sRoamingOrigin);
+    sRoamingRange = RoamingRange(pSoldier, addressof(sRoamingOrigin));
   }
 
   // since climbing necessary involves going an extra tile, we compare against 1 less than the roam range...
@@ -1278,7 +1278,7 @@ function ClosestReachableFriendInTrouble(pSoldier: Pointer<SOLDIERTYPE>, pfClimb
     }
 
     // get the AP cost to go to this friend's gridno
-    sPathCost = EstimatePathCostToLocation(pSoldier, pFriend.value.sGridNo, pFriend.value.bLevel, TRUE, &fClimbingNecessary, &sClimbGridNo);
+    sPathCost = EstimatePathCostToLocation(pSoldier, pFriend.value.sGridNo, pFriend.value.bLevel, TRUE, addressof(fClimbingNecessary), addressof(sClimbGridNo));
 
     // if we can get there
     if (sPathCost != 0) {
@@ -1484,7 +1484,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   // hang pointers to my personal opplist, my team's public opplist, and my
   // list of previously seen opponents
-  pSeenOpp = &(gbSeenOpponents[pSoldier.value.ubID][0]);
+  pSeenOpp = addressof(gbSeenOpponents[pSoldier.value.ubID][0]);
 
   // loop through every one of my possible opponents
   for (uiLoop = 0; uiLoop < guiNumMercSlots; uiLoop++) {
@@ -1850,7 +1850,7 @@ function RoamingRange(pSoldier: Pointer<SOLDIERTYPE>, pusFromGridNo: Pointer<INT
 
 function RearrangePocket(pSoldier: Pointer<SOLDIERTYPE>, bPocket1: INT8, bPocket2: INT8, bPermanent: UINT8): void {
   // NB there's no such thing as a temporary swap for now...
-  SwapObjs(&(pSoldier.value.inv[bPocket1]), &(pSoldier.value.inv[bPocket2]));
+  SwapObjs(addressof(pSoldier.value.inv[bPocket1]), addressof(pSoldier.value.inv[bPocket2]));
 }
 
 function FindBetterSpotForItem(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {

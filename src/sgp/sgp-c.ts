@@ -331,15 +331,15 @@ function WinMain(hInstance: HINSTANCE, hPrevInstance: HINSTANCE, pCommandLine: L
   // At this point the SGP is set up, which means all I/O, Memory, tools, etc... are available. All we need to do is
   // attend to the gaming mechanics themselves
   while (gfProgramIsRunning) {
-    if (PeekMessage(&Message, NULL, 0, 0, PM_NOREMOVE)) {
+    if (PeekMessage(addressof(Message), NULL, 0, 0, PM_NOREMOVE)) {
       // We have a message on the WIN95 queue, let's get it
-      if (!GetMessage(&Message, NULL, 0, 0)) {
+      if (!GetMessage(addressof(Message), NULL, 0, 0)) {
         // It's quitting time
         return Message.wParam;
       }
       // Ok, now that we have the message, let's handle it
-      TranslateMessage(&Message);
-      DispatchMessage(&Message);
+      TranslateMessage(addressof(Message));
+      DispatchMessage(addressof(Message));
     } else {
       // Windows hasn't processed any messages, therefore we handle the rest
       if (gfApplicationActive == FALSE) {

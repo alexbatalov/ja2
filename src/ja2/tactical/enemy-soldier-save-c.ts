@@ -80,7 +80,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -92,7 +92,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -100,17 +100,17 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &slots, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -163,13 +163,13 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
     ubStrategicCreatures = pSector.value.ubNumCreatures;
   } else {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
     ubStrategicCreatures = pSector.value.ubNumCreatures;
-    GetNumberOfEnemiesInSector(sSectorX, sSectorY, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
+    GetNumberOfEnemiesInSector(sSectorX, sSectorY, addressof(ubStrategicAdmins), addressof(ubStrategicTroops), addressof(ubStrategicElites));
   }
 
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
       goto FAIL_LOAD;
     }
@@ -184,7 +184,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
               curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             }
             // now replace the map pristine placement info with the temp map file version..
-            memcpy(curr.value.pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+            memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
             curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
             curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
@@ -200,7 +200,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
             curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
             memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
 
-            FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
+            FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
             if (uiNumBytesRead != 2) {
               goto FAIL_LOAD;
             }
@@ -251,7 +251,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
     }
   }
 
-  FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -427,7 +427,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     // advance for bytes and read the #of slots already used
     FileSeek(hfile, 4, FILE_SEEK_FROM_START);
 
-    FileRead(hfile, &iSlotsAlreadyInUse, 4, &uiNumBytesWritten);
+    FileRead(hfile, addressof(iSlotsAlreadyInUse), 4, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 4) {
       goto FAIL_SAVE;
     }
@@ -445,7 +445,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 
     // advance for bytes and read the #of slots already used
     FileSeek(hfile, 4, FILE_SEEK_FROM_START);
-    FileWrite(hfile, &slots, 4, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 4) {
       goto FAIL_SAVE;
     }
@@ -462,7 +462,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
 
   // if we are to append to the file
   if (!fAppendToFile) {
-    FileWrite(hfile, &sSectorY, 2, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(sSectorY), 2, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 2) {
       goto FAIL_SAVE;
     }
@@ -470,7 +470,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
     // STEP THREE:  Save the data
     SaveSoldierInitListLinks(hfile);
 
-    FileWrite(hfile, &sSectorX, 2, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(sSectorX), 2, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 2) {
       goto FAIL_SAVE;
     }
@@ -482,18 +482,18 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
       slots = 0;
     }
 
-    FileWrite(hfile, &slots, 4, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 4) {
       goto FAIL_SAVE;
     }
 
     uiTimeStamp = GetWorldTotalMin();
-    FileWrite(hfile, &uiTimeStamp, 4, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 4) {
       goto FAIL_SAVE;
     }
 
-    FileWrite(hfile, &bSectorZ, 1, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 1) {
       goto FAIL_SAVE;
     }
@@ -518,13 +518,13 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
       }
       if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
         // found a match.
-        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesWritten);
+        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(SOLDIERCREATE_STRUCT)) {
           goto FAIL_SAVE;
         }
         // insert a checksum equation (anti-hack)
         usCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
-        FileWrite(hfile, &usCheckSum, 2, &uiNumBytesWritten);
+        FileWrite(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 2) {
           goto FAIL_SAVE;
         }
@@ -535,7 +535,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
   // if we are to append to the file
   if (!fAppendToFile) {
     ubSectorID = SECTOR(sSectorX, sSectorY);
-    FileWrite(hfile, &ubSectorID, 1, &uiNumBytesWritten);
+    FileWrite(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != 1) {
       goto FAIL_SAVE;
     }
@@ -596,7 +596,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     }
   } else {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
 
     ubNumElites = pSector.value.ubNumElites;
     ubNumTroops = pSector.value.ubNumTroops;
@@ -606,7 +606,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {
     // Get the number of enemies form the temp file
-    CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(&ubStrategicElites, &ubStrategicTroops, &ubStrategicAdmins, &ubStrategicCreatures);
+    CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(addressof(ubStrategicElites), addressof(ubStrategicTroops), addressof(ubStrategicAdmins), addressof(ubStrategicCreatures));
 
     // If any of the counts differ from what is in memory
     if (ubStrategicElites != ubNumElites || ubStrategicTroops != ubNumTroops || ubStrategicAdmins != ubNumAdmins || ubStrategicCreatures != ubNumCreatures) {
@@ -629,7 +629,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -642,7 +642,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -650,17 +650,17 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &slots, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -713,13 +713,13 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     ubStrategicCreatures = pSector.value.ubNumCreatures;
   } else {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(sSectorX, sSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(sSectorX, sSectorY)]);
     ubStrategicCreatures = pSector.value.ubNumCreatures;
-    GetNumberOfEnemiesInSector(sSectorX, sSectorY, &ubStrategicAdmins, &ubStrategicTroops, &ubStrategicElites);
+    GetNumberOfEnemiesInSector(sSectorX, sSectorY, addressof(ubStrategicAdmins), addressof(ubStrategicTroops), addressof(ubStrategicElites));
   }
 
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
       goto FAIL_LOAD;
     }
@@ -733,7 +733,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
             curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
           }
           // now replace the map pristine placement info with the temp map file version..
-          memcpy(curr.value.pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+          memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
           curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
           curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
@@ -749,7 +749,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
           curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
           memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
 
-          FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
+          FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
           if (uiNumBytesRead != 2) {
             goto FAIL_LOAD;
           }
@@ -794,7 +794,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     }
   }
 
-  FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -829,7 +829,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
     }
   } else {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
     /*
                     pSector->ubElitesInBattle = ubStrategicElites;
                     pSector->ubTroopsInBattle = ubStrategicTroops;
@@ -898,7 +898,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -910,7 +910,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   NewWayOfLoadingCivilianInitListLinks(hfile);
 
   // STEP THREE:  read the data
-  FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -918,19 +918,19 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &slots, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
   uiTimeSinceLastLoaded = GetWorldTotalMin() - uiTimeStamp;
 
-  FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -962,7 +962,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
   }
 
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
       goto FAIL_LOAD;
     }
@@ -978,7 +978,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
               curr.value.pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             }
             // now replace the map pristine placement info with the temp map file version..
-            memcpy(curr.value.pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+            memcpy(curr.value.pDetailedPlacement, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
 
             curr.value.pBasicPlacement.value.fPriorityExistance = TRUE;
             curr.value.pBasicPlacement.value.bDirection = curr.value.pDetailedPlacement.value.bDirection;
@@ -994,7 +994,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
             curr.value.pBasicPlacement.value.bPatrolCnt = curr.value.pDetailedPlacement.value.bPatrolCnt;
             memcpy(curr.value.pBasicPlacement.value.sPatrolGrid, curr.value.pDetailedPlacement.value.sPatrolGrid, sizeof(INT16) * curr.value.pBasicPlacement.value.bPatrolCnt);
 
-            FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
+            FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
             if (uiNumBytesRead != 2) {
               goto FAIL_LOAD;
             }
@@ -1048,7 +1048,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
     }
   }
 
-  FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -1233,7 +1233,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
     return FALSE;
   }
 
-  FileWrite(hfile, &sSectorY, 2, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(sSectorY), 2, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 2) {
     goto FAIL_SAVE;
   }
@@ -1243,7 +1243,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
   // this works for both civs and enemies
   SaveSoldierInitListLinks(hfile);
 
-  FileWrite(hfile, &sSectorX, 2, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(sSectorX), 2, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 2) {
     goto FAIL_SAVE;
   }
@@ -1255,18 +1255,18 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
     slots = 0;
   }
 
-  FileWrite(hfile, &slots, 4, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(slots), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4) {
     goto FAIL_SAVE;
   }
 
   uiTimeStamp = GetWorldTotalMin();
-  FileWrite(hfile, &uiTimeStamp, 4, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4) {
     goto FAIL_SAVE;
   }
 
-  FileWrite(hfile, &bSectorZ, 1, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1) {
     goto FAIL_SAVE;
   }
@@ -1296,13 +1296,13 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
       }
       if (curr && curr.value.pSoldier == pSoldier && pSoldier.value.ubProfile == NO_PROFILE) {
         // found a match.
-        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesWritten);
+        FileWrite(hfile, curr.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(SOLDIERCREATE_STRUCT)) {
           goto FAIL_SAVE;
         }
         // insert a checksum equation (anti-hack)
         usCheckSum = curr.value.pDetailedPlacement.value.bLife * 7 + curr.value.pDetailedPlacement.value.bLifeMax * 8 - curr.value.pDetailedPlacement.value.bAgility * 2 + curr.value.pDetailedPlacement.value.bDexterity * 1 + curr.value.pDetailedPlacement.value.bExpLevel * 5 - curr.value.pDetailedPlacement.value.bMarksmanship * 9 + curr.value.pDetailedPlacement.value.bMedical * 10 + curr.value.pDetailedPlacement.value.bMechanical * 3 + curr.value.pDetailedPlacement.value.bExplosive * 4 + curr.value.pDetailedPlacement.value.bLeadership * 5 + curr.value.pDetailedPlacement.value.bStrength * 7 + curr.value.pDetailedPlacement.value.bWisdom * 11 + curr.value.pDetailedPlacement.value.bMorale * 7 + curr.value.pDetailedPlacement.value.bAIMorale * 3 - curr.value.pDetailedPlacement.value.bBodyType * 7 + 4 * 6 + curr.value.pDetailedPlacement.value.sSectorX * 7 - curr.value.pDetailedPlacement.value.ubSoldierClass * 4 + curr.value.pDetailedPlacement.value.bTeam * 7 + curr.value.pDetailedPlacement.value.bDirection * 5 + curr.value.pDetailedPlacement.value.fOnRoof * 17 + curr.value.pDetailedPlacement.value.sInsertionGridNo * 1 + 3;
-        FileWrite(hfile, &usCheckSum, 2, &uiNumBytesWritten);
+        FileWrite(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != 2) {
           goto FAIL_SAVE;
         }
@@ -1311,7 +1311,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
   }
 
   ubSectorID = SECTOR(sSectorX, sSectorY);
-  FileWrite(hfile, &ubSectorID, 1, &uiNumBytesWritten);
+  FileWrite(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1) {
     goto FAIL_SAVE;
   }
@@ -1374,7 +1374,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   // STEP TWO:  determine whether or not we should use this data.
   // because it is the demo, it is automatically used.
 
-  FileRead(hfile, &sSectorY, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorY), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -1387,7 +1387,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
 
   // STEP THREE:  read the data
 
-  FileRead(hfile, &sSectorX, 2, &uiNumBytesRead);
+  FileRead(hfile, addressof(sSectorX), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2) {
     goto FAIL_LOAD;
   }
@@ -1395,17 +1395,17 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &slots, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(slots), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &uiTimeStamp, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(uiTimeStamp), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     goto FAIL_LOAD;
   }
 
-  FileRead(hfile, &bSectorZ, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(bSectorZ), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }
@@ -1453,7 +1453,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
   */
 
   for (i = 0; i < slots; i++) {
-    FileRead(hfile, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(tempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
       goto FAIL_LOAD;
     }
@@ -1474,7 +1474,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
         break;
     }
 
-    FileRead(hfile, &usCheckSum, 2, &uiNumBytesRead);
+    FileRead(hfile, addressof(usCheckSum), 2, addressof(uiNumBytesRead));
     if (uiNumBytesRead != 2) {
       goto FAIL_LOAD;
     }
@@ -1589,7 +1589,7 @@ function CountNumberOfElitesRegularsAdminsAndCreaturesFromEnemySoldiersTempFile(
     */
   }
 
-  FileRead(hfile, &ubSectorID, 1, &uiNumBytesRead);
+  FileRead(hfile, addressof(ubSectorID), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1) {
     goto FAIL_LOAD;
   }

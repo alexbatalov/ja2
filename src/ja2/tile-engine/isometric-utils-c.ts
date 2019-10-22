@@ -207,7 +207,7 @@ function GetMouseXY(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>): BOOLEAN
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  if (!GetMouseWorldCoords(&sWorldX, &sWorldY)) {
+  if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
     (*psMouseX) = 0;
     (*psMouseY) = 0;
     return FALSE;
@@ -224,7 +224,7 @@ function GetMouseXYWithRemainder(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  if (!GetMouseWorldCoords(&sWorldX, &sWorldY)) {
+  if (!GetMouseWorldCoords(addressof(sWorldX), addressof(sWorldY))) {
     return FALSE;
   }
 
@@ -261,7 +261,7 @@ function GetMouseWorldCoords(psMouseX: Pointer<INT16>, psMouseY: Pointer<INT16>)
     // sOffsetY -= 50;
   }
 
-  FromScreenToCellCoordinates(sOffsetX, sOffsetY, &sTempPosX_W, &sTempPosY_W);
+  FromScreenToCellCoordinates(sOffsetX, sOffsetY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
   // World start point is Render center plus this distance
   sStartPointX_W = gsRenderCenterX + sTempPosX_W;
@@ -288,7 +288,7 @@ function GetMouseWorldCoordsInCenter(psMouseX: Pointer<INT16>, psMouseY: Pointer
   let sMouseY: INT16;
 
   // Get grid position
-  if (!GetMouseXY(&sMouseX, &sMouseY)) {
+  if (!GetMouseXY(addressof(sMouseX), addressof(sMouseY))) {
     return FALSE;
   }
 
@@ -318,7 +318,7 @@ function GetMouseMapPos(psMapPos: Pointer<INT16>): BOOLEAN {
   uiOldFrameNumber = guiGameCycleCounter;
   guiForceRefreshMousePositionCalculation = FALSE;
 
-  if (GetMouseXY(&sWorldX, &sWorldY)) {
+  if (GetMouseXY(addressof(sWorldX), addressof(sWorldY))) {
     *psMapPos = MAPROWCOLTOPOS(sWorldY, sWorldX);
     sSameCursorPos = (*psMapPos);
     return TRUE;
@@ -362,7 +362,7 @@ function GetScreenXYWorldCoords(sScreenX: INT16, sScreenY: INT16, psWorldX: Poin
   sOffsetX = sScreenX - (gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2;
   sOffsetY = sScreenY - (gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2;
 
-  FromScreenToCellCoordinates(sOffsetX, sOffsetY, &sTempPosX_W, &sTempPosY_W);
+  FromScreenToCellCoordinates(sOffsetX, sOffsetY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
   // World start point is Render center plus this distance
   sStartPointX_W = gsRenderCenterX + sTempPosX_W;
@@ -379,7 +379,7 @@ function GetScreenXYWorldCell(sScreenX: INT16, sScreenY: INT16, psWorldCellX: Po
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  GetScreenXYWorldCoords(sScreenX, sScreenY, &sWorldX, &sWorldY);
+  GetScreenXYWorldCoords(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
 
   // Find start block
   (*psWorldCellX) = (sWorldX / CELL_X_SIZE);
@@ -390,7 +390,7 @@ function GetScreenXYGridNo(sScreenX: INT16, sScreenY: INT16, psMapPos: Pointer<I
   let sWorldX: INT16;
   let sWorldY: INT16;
 
-  GetScreenXYWorldCell(sScreenX, sScreenY, &sWorldX, &sWorldY);
+  GetScreenXYWorldCell(sScreenX, sScreenY, addressof(sWorldX), addressof(sWorldY));
 
   *psMapPos = MAPROWCOLTOPOS(sWorldY, sWorldX);
 }
@@ -505,7 +505,7 @@ function CellXYToScreenXY(sCellX: INT16, sCellY: INT16, sScreenX: Pointer<INT16>
   sDeltaCellX = sCellX - gsRenderCenterX;
   sDeltaCellY = sCellY - gsRenderCenterY;
 
-  FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY, &sDeltaScreenX, &sDeltaScreenY);
+  FromCellToScreenCoordinates(sDeltaCellX, sDeltaCellY, addressof(sDeltaScreenX), addressof(sDeltaScreenY));
 
   *sScreenX = (((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sDeltaScreenX);
   *sScreenY = (((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sDeltaScreenY);
@@ -542,10 +542,10 @@ function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   let sYPos2: INT16;
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo1, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo1, addressof(sXPos), addressof(sYPos));
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo2, &sXPos2, &sYPos2);
+  ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
 
   uiDist = sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
 
@@ -559,10 +559,10 @@ function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): I
   let sYPos2: INT16;
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo1, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo1, addressof(sXPos), addressof(sYPos));
 
   // Convert our grid-not into an XY
-  ConvertGridNoToXY(sGridNo2, &sXPos2, &sYPos2);
+  ConvertGridNoToXY(sGridNo2, addressof(sXPos2), addressof(sYPos2));
 
   return (sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
@@ -838,10 +838,10 @@ function GridNoOnVisibleWorldTile(sGridNo: INT16): BOOLEAN {
   let sYMapPos: INT16;
 
   // Check for valid gridno...
-  ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 20 && sWorldY < (gsBLY - gsTLY - 20)) {
     return TRUE;
@@ -860,10 +860,10 @@ function GridNoOnVisibleWorldTileGivenYLimits(sGridNo: INT16): BOOLEAN {
   let sYMapPos: INT16;
 
   // Check for valid gridno...
-  ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   if (sWorldX > 0 && sWorldX < (gsTRX - gsTLX - 20) && sWorldY > 40 && sWorldY < (gsBLY - gsTLY - 20)) {
     return TRUE;

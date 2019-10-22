@@ -560,14 +560,14 @@ function UpdateForContOverPortrait(pSoldier: Pointer<SOLDIERTYPE>, fOn: BOOLEAN)
   if (gsCurInterfacePanel == SM_PANEL) {
     if (gpSMCurrentMerc != NULL) {
       // Check if mouse is in region and if so, adjust...
-      if (IsMouseInRegion(&gSM_SELMERCPanelRegion)) {
+      if (IsMouseInRegion(addressof(gSM_SELMERCPanelRegion))) {
         HandleMouseOverSoldierFaceForContMove(gpSMCurrentMerc, fOn);
       }
     }
   } else {
     for (cnt = 0; cnt < 6; cnt++) {
       if (gTeamPanel[cnt].ubID == pSoldier.value.ubID) {
-        if (IsMouseInRegion(&gTEAM_FaceRegions[cnt])) {
+        if (IsMouseInRegion(addressof(gTEAM_FaceRegions[cnt]))) {
           HandleMouseOverSoldierFaceForContMove(pSoldier, fOn);
         }
       }
@@ -699,7 +699,7 @@ function UpdateSMPanel(): void {
 
   DisableButton(iSMPanelButtons[CLIMB_BUTTON]);
 
-  GetMercClimbDirection(gpSMCurrentMerc.value.ubID, &fNearLowerLevel, &fNearHeigherLevel);
+  GetMercClimbDirection(gpSMCurrentMerc.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
   if (fNearLowerLevel || fNearHeigherLevel) {
     if (fNearLowerLevel) {
@@ -715,7 +715,7 @@ function UpdateSMPanel(): void {
     }
   }
 
-  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, &bDirection)) {
+  if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, addressof(bDirection))) {
     EnableButton(iSMPanelButtons[CLIMB_BUTTON]);
   }
 
@@ -780,7 +780,7 @@ function UpdateSMPanel(): void {
     }
   } else {
     // Enable some buttons!
-    if (IsGunBurstCapable(gpSMCurrentMerc, HANDPOS, FALSE) || FindAttachment(&(gpSMCurrentMerc.value.inv[HANDPOS]), UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
+    if (IsGunBurstCapable(gpSMCurrentMerc, HANDPOS, FALSE) || FindAttachment(addressof(gpSMCurrentMerc.value.inv[HANDPOS]), UNDER_GLAUNCHER) != ITEM_NOT_FOUND) {
       EnableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
     } else {
       DisableButton(iSMPanelButtons[BURSTMODE_BUTTON]);
@@ -902,7 +902,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
         }
 
         // enable the radar map region
-        MSYS_EnableRegion(&gRadarRegion);
+        MSYS_EnableRegion(addressof(gRadarRegion));
 
         gfSMDisableForItems = FALSE;
 
@@ -935,7 +935,7 @@ function EnableSMPanelButtons(fEnable: BOOLEAN, fFromItemPickup: BOOLEAN): void 
       DisableButton(iSMPanelButtons[SM_MAP_SCREEN_BUTTON]);
 
       // disable the radar map
-      MSYS_DisableRegion(&gRadarRegion);
+      MSYS_DisableRegion(addressof(gRadarRegion));
     }
 
     gfAllDisabled = !fEnable;
@@ -952,23 +952,23 @@ function InitializeSMPanel(): BOOLEAN {
   // failing the CHECKF after this will cause you to lose your mouse
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   strcpy(VObjectDesc.ImageFile, "INTERFACE\\inventory_bottom_panel.STI");
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSMPanel));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMPanel)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\inventory_gold_front.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSMObjects));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\inv_frn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSMObjects2));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSMObjects2)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\secondary_gun_hidden.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSecItemHiddenVO));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSecItemHiddenVO)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBrownBackgroundForTeamPanel));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
 
   // Clear inv display stuff
   memset(gfSM_HandInvDispText, 0, sizeof(gfSM_HandInvDispText));
@@ -976,47 +976,47 @@ function InitializeSMPanel(): BOOLEAN {
   // INit viewport region
   // Set global mouse regions
   // Define region for viewport
-  MSYS_DefineRegion(&gViewportRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gViewportRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(&gViewportRegion);
+  MSYS_AddRegion(addressof(gViewportRegion));
 
   // Create buttons
   CHECKF(CreateSMPanelButtons());
 
   // Set viewports
   // Define region for panel
-  MSYS_DefineRegion(&gSMPanelRegion, 0, INV_INTERFACE_START_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, InvPanelButtonClickCallback);
+  MSYS_DefineRegion(addressof(gSMPanelRegion), 0, INV_INTERFACE_START_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, InvPanelButtonClickCallback);
   // Add region
-  MSYS_AddRegion(&gSMPanelRegion);
+  MSYS_AddRegion(addressof(gSMPanelRegion));
 
   // DEfine region for selected guy panel
-  MSYS_DefineRegion(&gSM_SELMERCPanelRegion, SM_SELMERC_FACE_X, SM_SELMERC_FACE_Y, SM_SELMERC_FACE_X + SM_SELMERC_FACE_WIDTH, SM_SELMERC_FACE_Y + SM_SELMERC_FACE_HEIGHT, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, SelectedMercButtonMoveCallback, SelectedMercButtonCallback);
+  MSYS_DefineRegion(addressof(gSM_SELMERCPanelRegion), SM_SELMERC_FACE_X, SM_SELMERC_FACE_Y, SM_SELMERC_FACE_X + SM_SELMERC_FACE_WIDTH, SM_SELMERC_FACE_Y + SM_SELMERC_FACE_HEIGHT, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, SelectedMercButtonMoveCallback, SelectedMercButtonCallback);
   // Add region
-  MSYS_AddRegion(&gSM_SELMERCPanelRegion);
+  MSYS_AddRegion(addressof(gSM_SELMERCPanelRegion));
 
   // DEfine region for selected guy panel
-  MSYS_DefineRegion(&gSM_SELMERCEnemyIndicatorRegion, SM_SELMERC_FACE_X + 1, SM_SELMERC_FACE_Y + 1, SM_SELMERC_FACE_X + INDICATOR_BOX_WIDTH, SM_SELMERC_FACE_Y + INDICATOR_BOX_HEIGHT, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectedMercEnemyIndicatorCallback);
+  MSYS_DefineRegion(addressof(gSM_SELMERCEnemyIndicatorRegion), SM_SELMERC_FACE_X + 1, SM_SELMERC_FACE_Y + 1, SM_SELMERC_FACE_X + INDICATOR_BOX_WIDTH, SM_SELMERC_FACE_Y + INDICATOR_BOX_HEIGHT, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectedMercEnemyIndicatorCallback);
   // Add region
-  MSYS_AddRegion(&gSM_SELMERCEnemyIndicatorRegion);
+  MSYS_AddRegion(addressof(gSM_SELMERCEnemyIndicatorRegion));
 
   // DEfine region for money button
-  MSYS_DefineRegion(&gSM_SELMERCMoneyRegion, MONEY_X, MONEY_Y, MONEY_X + MONEY_WIDTH, MONEY_Y + MONEY_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SMInvMoneyButtonCallback);
+  MSYS_DefineRegion(addressof(gSM_SELMERCMoneyRegion), MONEY_X, MONEY_Y, MONEY_X + MONEY_WIDTH, MONEY_Y + MONEY_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SMInvMoneyButtonCallback);
   // Add region
-  MSYS_AddRegion(&gSM_SELMERCMoneyRegion);
+  MSYS_AddRegion(addressof(gSM_SELMERCMoneyRegion));
 
-  SetRegionFastHelpText(&(gSM_SELMERCMoneyRegion), TacticalStr[MONEY_BUTTON_HELP_TEXT]);
+  SetRegionFastHelpText(addressof(gSM_SELMERCMoneyRegion), TacticalStr[MONEY_BUTTON_HELP_TEXT]);
 
   // Check if mouse is in region and if so, adjust...
-  if (IsMouseInRegion(&gSM_SELMERCPanelRegion)) {
+  if (IsMouseInRegion(addressof(gSM_SELMERCPanelRegion))) {
     HandleMouseOverSoldierFaceForContMove(gpSMCurrentMerc, TRUE);
   }
 
   // DEfine region for selected guy panel
-  MSYS_DefineRegion(&gSM_SELMERCBarsRegion, 62, 342, 85, 391, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectedMercButtonCallback);
+  MSYS_DefineRegion(addressof(gSM_SELMERCBarsRegion), 62, 342, 85, 391, MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectedMercButtonCallback);
   // Add region
-  MSYS_AddRegion(&gSM_SELMERCBarsRegion);
+  MSYS_AddRegion(addressof(gSM_SELMERCBarsRegion));
 
-  InitInvSlotInterface(gSMInvPocketXY, &gSMCamoXY, SMInvMoveCallback, SMInvClickCallback, SMInvMoveCammoCallback, SMInvClickCamoCallback, FALSE);
+  InitInvSlotInterface(gSMInvPocketXY, addressof(gSMCamoXY), SMInvMoveCallback, SMInvClickCallback, SMInvMoveCammoCallback, SMInvClickCamoCallback, FALSE);
 
   InitKeyRingInterface(KeyRingItemPanelButtonCallback);
 
@@ -1240,15 +1240,15 @@ function ShutdownSMPanel(): BOOLEAN {
   // shutdown keyring interface
   ShutdownKeyRingInterface();
 
-  MSYS_RemoveRegion(&gSMPanelRegion);
-  MSYS_RemoveRegion(&gSM_SELMERCPanelRegion);
-  MSYS_RemoveRegion(&gSM_SELMERCBarsRegion);
-  MSYS_RemoveRegion(&gSM_SELMERCMoneyRegion);
-  MSYS_RemoveRegion(&gSM_SELMERCEnemyIndicatorRegion);
+  MSYS_RemoveRegion(addressof(gSMPanelRegion));
+  MSYS_RemoveRegion(addressof(gSM_SELMERCPanelRegion));
+  MSYS_RemoveRegion(addressof(gSM_SELMERCBarsRegion));
+  MSYS_RemoveRegion(addressof(gSM_SELMERCMoneyRegion));
+  MSYS_RemoveRegion(addressof(gSM_SELMERCEnemyIndicatorRegion));
 
   HandleMouseOverSoldierFaceForContMove(gpSMCurrentMerc, FALSE);
 
-  MSYS_RemoveRegion(&gViewportRegion);
+  MSYS_RemoveRegion(addressof(gViewportRegion));
 
   RemoveSMPanelButtons();
 
@@ -1369,61 +1369,61 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeAgilityTime, (gpSMCurrentMerc.value.usValueGoneUp & AGIL_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bAgility);
-      FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_AGI_X, SM_AGI_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeDexterityTime, (gpSMCurrentMerc.value.usValueGoneUp & DEX_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bDexterity);
-      FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_DEX_X, SM_DEX_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeStrengthTime, (gpSMCurrentMerc.value.usValueGoneUp & STRENGTH_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bStrength);
-      FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_STR_X, SM_STR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLeadershipTime, (gpSMCurrentMerc.value.usValueGoneUp & LDR_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bLeadership);
-      FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_CHAR_X, SM_CHAR_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeWisdomTime, (gpSMCurrentMerc.value.usValueGoneUp & WIS_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bWisdom);
-      FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_WIS_X, SM_WIS_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeLevelTime, (gpSMCurrentMerc.value.usValueGoneUp & LVL_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bExpLevel);
-      FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_EXPLVL_X, SM_EXPLVL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMarksmanshipTime, (gpSMCurrentMerc.value.usValueGoneUp & MRK_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMarksmanship);
-      FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_MRKM_X, SM_MRKM_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeExplosivesTime, (gpSMCurrentMerc.value.usValueGoneUp & EXP_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bExplosive);
-      FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_EXPL_X, SM_EXPL_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMechanicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MECH_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMechanical);
-      FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_MECH_X, SM_MECH_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       UpdateStatColor(gpSMCurrentMerc.value.uiChangeMedicalTime, (gpSMCurrentMerc.value.usValueGoneUp & MED_INCREASE ? TRUE : FALSE));
 
       swprintf(sString, "%2d", gpSMCurrentMerc.value.bMedical);
-      FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_MED_X, SM_MED_Y, SM_STATS_WIDTH, SM_STATS_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       if (gpSMCurrentMerc.value.bLife >= OKLIFE) {
@@ -1436,17 +1436,17 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
 
       // Display armour value!
       swprintf(sString, "%3d", ArmourPercent(gpSMCurrentMerc));
-      FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_ARMOR_X, SM_ARMOR_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display wieght value!
       swprintf(sString, "%3d", CalculateCarriedWeight(gpSMCurrentMerc));
-      FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_WEIGHT_X, SM_WEIGHT_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // Display cammo value!
       swprintf(sString, "%3d", gpSMCurrentMerc.value.bCamo);
-      FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, &usX, &usY);
+      FindFontRightCoordinates(SM_CAMMO_X, SM_CAMMO_Y, SM_PERCENT_WIDTH, SM_PERCENT_HEIGHT, sString, BLOCKFONT2, addressof(usX), addressof(usY));
       mprintf(usX, usY, sString);
 
       // reset to frame buffer!
@@ -1469,7 +1469,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     }
 
     RestoreExternBackgroundRect(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT);
-    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, &sFontX, &sFontY, "%s", gpSMCurrentMerc.value.name);
+    VarFindFontCenterCoordinates(SM_SELMERCNAME_X, SM_SELMERCNAME_Y, SM_SELMERCNAME_WIDTH, SM_SELMERCNAME_HEIGHT, SMALLFONT1, addressof(sFontX), addressof(sFontY), "%s", gpSMCurrentMerc.value.name);
     mprintf(sFontX + 5, sFontY, "%s", gpSMCurrentMerc.value.name);
   }
 
@@ -1478,22 +1478,22 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     if (gpSMCurrentMerc.value.bLife != 0) {
       if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_VEHICLE) {
         swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax);
-        SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), pStr);
+        SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       } else if (gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_ROBOT) {
         swprintf(pStr, gzLateLocalizedString[16], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax);
-        SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
+        SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
       } else {
         GetMoraleString(gpSMCurrentMerc, pMoraleStr);
         swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], gpSMCurrentMerc.value.bLife, gpSMCurrentMerc.value.bLifeMax, gpSMCurrentMerc.value.bBreath, gpSMCurrentMerc.value.bBreathMax, pMoraleStr);
-        SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), pStr);
+        SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), pStr);
       }
     } else {
-      SetRegionFastHelpText(&(gSM_SELMERCBarsRegion), "");
+      SetRegionFastHelpText(addressof(gSM_SELMERCBarsRegion), "");
     }
 
     // if we are in the shop keeper interface
     if (guiTacticalInterfaceFlags & INTERFACE_SHOPKEEP_INTERFACE)
-      SetRegionHelpEndCallback(&gSM_SELMERCBarsRegion, SkiHelpTextDoneCallBack);
+      SetRegionHelpEndCallback(addressof(gSM_SELMERCBarsRegion), SkiHelpTextDoneCallBack);
 
     // display AP
     if (!(gpSMCurrentMerc.value.uiStatusFlags & SOLDIER_DEAD)) {
@@ -1517,7 +1517,7 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
         }
 
         gprintfRestore(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, "%2d", GetUIApsToDisplay(gpSMCurrentMerc));
-        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
+        VarFindFontCenterCoordinates(SM_SELMERC_AP_X, SM_SELMERC_AP_Y, SM_SELMERC_AP_WIDTH, SM_SELMERC_AP_HEIGHT, TINYFONT1, addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(gpSMCurrentMerc));
         mprintf(sFontX, SM_SELMERC_AP_Y, "%d", GetUIApsToDisplay(gpSMCurrentMerc));
       }
 
@@ -1549,8 +1549,8 @@ function RenderSMPanel(pfDirty: Pointer<BOOLEAN>): void {
     ClipRect.iRight = 536;
     ClipRect.iTop = INV_INTERFACE_START_Y;
     ClipRect.iBottom = 480;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
     UnLockVideoSurface(FRAME_BUFFER);
   }
 }
@@ -1654,7 +1654,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
           // usNewItemIndex = gpItemPointer->usItem;
 
           // Try to apply camo....
-          if (ApplyCammo(gpSMCurrentMerc, gpItemPointer, &fGoodAPs)) {
+          if (ApplyCammo(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
             if (fGoodAPs) {
               // Dirty
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1668,7 +1668,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
               // Say OK acknowledge....
               DoMercBattleSound(gpSMCurrentMerc, BATTLE_SOUND_COOL1);
             }
-          } else if (ApplyCanteen(gpSMCurrentMerc, gpItemPointer, &fGoodAPs)) {
+          } else if (ApplyCanteen(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
             // Dirty
             if (fGoodAPs) {
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1679,7 +1679,7 @@ function SMInvClickCamoCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
                 EndItemPointer();
               }
             }
-          } else if (ApplyElixir(gpSMCurrentMerc, gpItemPointer, &fGoodAPs)) {
+          } else if (ApplyElixir(gpSMCurrentMerc, gpItemPointer, addressof(fGoodAPs))) {
             if (fGoodAPs) {
               // Dirty
               fInterfacePanelDirty = DIRTYLEVEL2;
@@ -1759,7 +1759,7 @@ function HandleNailsVestFetish(pSoldier: Pointer<SOLDIERTYPE>, uiHandPos: UINT32
 
 function UIHandleItemPlacement(ubHandPos: UINT8, usOldItemIndex: UINT16, usNewItemIndex: UINT16, fDeductPoints: BOOLEAN): BOOLEAN {
   if (_KeyDown(CTRL)) {
-    CleanUpStack(&(gpSMCurrentMerc.value.inv[ubHandPos]), gpItemPointer);
+    CleanUpStack(addressof(gpSMCurrentMerc.value.inv[ubHandPos]), gpItemPointer);
     if (gpItemPointer.value.ubNumberOfObjects == 0) {
       EndItemPointer();
     }
@@ -1863,7 +1863,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
       }
 
       if (_KeyDown(CTRL)) {
-        CleanUpStack(&(gpSMCurrentMerc.value.inv[uiHandPos]), NULL);
+        CleanUpStack(addressof(gpSMCurrentMerc.value.inv[uiHandPos]), NULL);
         return;
       }
 
@@ -1977,7 +1977,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
             // and the cursor is now empty
             if (gpItemPointer == NULL) {
               // clean up
-              memset(&gMoveingItem, 0, sizeof(INVENTORY_IN_SLOT));
+              memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
               SetSkiCursor(CURSOR_NORMAL);
             } else {
               // if we're holding something else in the pointer now
@@ -2075,7 +2075,7 @@ function SMInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
 
 function MergeMessageBoxCallBack(ubExitValue: UINT8): void {
   if (ubExitValue == MSG_BOX_RETURN_YES) {
-    AttachObject(gpItemPointerSoldier, &(gpSMCurrentMerc.value.inv[gubHandPos]), gpItemPointer);
+    AttachObject(gpItemPointerSoldier, addressof(gpSMCurrentMerc.value.inv[gubHandPos]), gpItemPointer);
 
     // re-evaluate repairs
     gfReEvaluateEveryonesNothingToDo = TRUE;
@@ -2103,7 +2103,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
     if (CheckForMercContMove(pSoldier)) {
       // Display 'cont' on face....
       // Get face
-      pFace = &gFacesData[pSoldier.value.iFaceIndex];
+      pFace = addressof(gFacesData[pSoldier.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
       wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
@@ -2120,7 +2120,7 @@ function HandleMouseOverSoldierFaceForContMove(pSoldier: Pointer<SOLDIERTYPE>, f
   } else {
     // Remove 'cont' on face....
     // Get face
-    pFace = &gFacesData[pSoldier.value.iFaceIndex];
+    pFace = addressof(gFacesData[pSoldier.value.iFaceIndex]);
 
     pFace.value.fDisplayTextOver = FACE_ERASE_TEXT_OVER;
 
@@ -2278,7 +2278,7 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   } else if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     btn.value.uiFlags &= (~BUTTON_CLICKED_ON);
 
-    GetMercClimbDirection(gpSMCurrentMerc.value.ubID, &fNearLowerLevel, &fNearHeigherLevel);
+    GetMercClimbDirection(gpSMCurrentMerc.value.ubID, addressof(fNearLowerLevel), addressof(fNearHeigherLevel));
 
     if (fNearLowerLevel) {
       BeginSoldierClimbDownRoof(gpSMCurrentMerc);
@@ -2287,7 +2287,7 @@ function BtnClimbCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       BeginSoldierClimbUpRoof(gpSMCurrentMerc);
     }
 
-    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, &bDirection)) {
+    if (FindFenceJumpDirection(gpSMCurrentMerc, gpSMCurrentMerc.value.sGridNo, gpSMCurrentMerc.value.bDirection, addressof(bDirection))) {
       BeginSoldierClimbFence(gpSMCurrentMerc);
     }
   } else if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
@@ -2343,7 +2343,7 @@ function BtnHandCursorCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ToggleHandCursorMode(&guiCurrentEvent);
+    ToggleHandCursorMode(addressof(guiCurrentEvent));
   }
 }
 
@@ -2352,7 +2352,7 @@ function BtnTalkCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    ToggleTalkCursorMode(&guiCurrentEvent);
+    ToggleTalkCursorMode(addressof(guiCurrentEvent));
   }
 }
 
@@ -2547,24 +2547,24 @@ function InitializeTEAMPanel(): BOOLEAN {
   // INit viewport region
   // Set global mouse regions
   // Define region for viewport
-  MSYS_DefineRegion(&gViewportRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gViewportRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_NORMAL, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(&gViewportRegion);
+  MSYS_AddRegion(addressof(gViewportRegion));
 
   // Load interface panels
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\bottom_bar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTEAMPanel));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMPanel)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\gold_front.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTEAMObjects));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTEAMObjects)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\Bars.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBrownBackgroundForTeamPanel));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBrownBackgroundForTeamPanel)));
 
   // Clear inv display stuff
   memset(gfTEAM_HandInvDispText, 0, sizeof(gfTEAM_HandInvDispText));
@@ -2574,50 +2574,50 @@ function InitializeTEAMPanel(): BOOLEAN {
 
   // Set viewports
   // Define region for panel
-  MSYS_DefineRegion(&gTEAM_PanelRegion, 0, gsVIEWPORT_END_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gTEAM_PanelRegion), 0, gsVIEWPORT_END_Y, 640, 480, MSYS_PRIORITY_NORMAL, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(&gTEAM_PanelRegion);
+  MSYS_AddRegion(addressof(gTEAM_PanelRegion));
 
   for (posIndex = 0, cnt = 0; cnt < 6; cnt++, posIndex += 2) {
-    MSYS_DefineRegion(&gTEAM_FaceRegions[cnt], sTEAMFacesXY[posIndex], sTEAMFacesXY[posIndex + 1], (sTEAMFacesXY[posIndex] + TM_FACE_WIDTH), (sTEAMFacesXY[posIndex + 1] + TM_FACE_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MercFacePanelMoveCallback, MercFacePanelCallback);
+    MSYS_DefineRegion(addressof(gTEAM_FaceRegions[cnt]), sTEAMFacesXY[posIndex], sTEAMFacesXY[posIndex + 1], (sTEAMFacesXY[posIndex] + TM_FACE_WIDTH), (sTEAMFacesXY[posIndex + 1] + TM_FACE_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MercFacePanelMoveCallback, MercFacePanelCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_FaceRegions[cnt]);
-    MSYS_SetRegionUserData(&gTEAM_FaceRegions[cnt], 0, cnt);
+    MSYS_AddRegion(addressof(gTEAM_FaceRegions[cnt]));
+    MSYS_SetRegionUserData(addressof(gTEAM_FaceRegions[cnt]), 0, cnt);
 
-    MSYS_DefineRegion(&gTEAM_EnemyIndicator[cnt], (sTEAMFacesXY[posIndex] + 1), (sTEAMFacesXY[posIndex + 1] + 1), (sTEAMFacesXY[posIndex] + INDICATOR_BOX_WIDTH), (sTEAMFacesXY[posIndex + 1] + INDICATOR_BOX_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, EnemyIndicatorClickCallback);
+    MSYS_DefineRegion(addressof(gTEAM_EnemyIndicator[cnt]), (sTEAMFacesXY[posIndex] + 1), (sTEAMFacesXY[posIndex + 1] + 1), (sTEAMFacesXY[posIndex] + INDICATOR_BOX_WIDTH), (sTEAMFacesXY[posIndex + 1] + INDICATOR_BOX_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, EnemyIndicatorClickCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_EnemyIndicator[cnt]);
-    MSYS_SetRegionUserData(&gTEAM_EnemyIndicator[cnt], 0, cnt);
+    MSYS_AddRegion(addressof(gTEAM_EnemyIndicator[cnt]));
+    MSYS_SetRegionUserData(addressof(gTEAM_EnemyIndicator[cnt]), 0, cnt);
 
-    if (IsMouseInRegion(&gTEAM_FaceRegions[cnt])) {
+    if (IsMouseInRegion(addressof(gTEAM_FaceRegions[cnt]))) {
       if (gTeamPanel[cnt].ubID != NOBODY) {
         HandleMouseOverSoldierFaceForContMove(MercPtrs[gTeamPanel[cnt].ubID], TRUE);
       }
     }
 
-    MSYS_DefineRegion(&gTEAM_BarsRegions[cnt], sTEAMBarsXY[posIndex], sTEAMBarsXY[posIndex + 1], (sTEAMBarsXY[posIndex] + TM_BARS_REGION_WIDTH), (sTEAMBarsXY[posIndex + 1] + TM_BARS_REGION_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MercFacePanelCallback);
+    MSYS_DefineRegion(addressof(gTEAM_BarsRegions[cnt]), sTEAMBarsXY[posIndex], sTEAMBarsXY[posIndex + 1], (sTEAMBarsXY[posIndex] + TM_BARS_REGION_WIDTH), (sTEAMBarsXY[posIndex + 1] + TM_BARS_REGION_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MercFacePanelCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_BarsRegions[cnt]);
-    MSYS_SetRegionUserData(&gTEAM_BarsRegions[cnt], 0, cnt);
+    MSYS_AddRegion(addressof(gTEAM_BarsRegions[cnt]));
+    MSYS_SetRegionUserData(addressof(gTEAM_BarsRegions[cnt]), 0, cnt);
 
-    MSYS_DefineRegion(&gTEAM_LeftBarsRegions[cnt], (sTEAMFacesXY[posIndex] - 8), sTEAMFacesXY[posIndex + 1], (sTEAMFacesXY[posIndex]), (sTEAMFacesXY[posIndex + 1] + TM_BARS_REGION_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MercFacePanelCallback);
+    MSYS_DefineRegion(addressof(gTEAM_LeftBarsRegions[cnt]), (sTEAMFacesXY[posIndex] - 8), sTEAMFacesXY[posIndex + 1], (sTEAMFacesXY[posIndex]), (sTEAMFacesXY[posIndex + 1] + TM_BARS_REGION_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MercFacePanelCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_LeftBarsRegions[cnt]);
-    MSYS_SetRegionUserData(&gTEAM_LeftBarsRegions[cnt], 0, cnt);
+    MSYS_AddRegion(addressof(gTEAM_LeftBarsRegions[cnt]));
+    MSYS_SetRegionUserData(addressof(gTEAM_LeftBarsRegions[cnt]), 0, cnt);
 
-    MSYS_DefineRegion(&gTEAM_FirstHandInv[cnt], sTEAMHandInvXY[posIndex], sTEAMHandInvXY[posIndex + 1], (sTEAMHandInvXY[posIndex] + TM_INV_WIDTH), (sTEAMHandInvXY[posIndex + 1] + TM_INV_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, TMClickFirstHandInvCallback);
+    MSYS_DefineRegion(addressof(gTEAM_FirstHandInv[cnt]), sTEAMHandInvXY[posIndex], sTEAMHandInvXY[posIndex + 1], (sTEAMHandInvXY[posIndex] + TM_INV_WIDTH), (sTEAMHandInvXY[posIndex + 1] + TM_INV_HEIGHT), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, TMClickFirstHandInvCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_FirstHandInv[cnt]);
+    MSYS_AddRegion(addressof(gTEAM_FirstHandInv[cnt]));
 
     // Add user data
-    MSYS_SetRegionUserData(&gTEAM_FirstHandInv[cnt], 0, cnt);
+    MSYS_SetRegionUserData(addressof(gTEAM_FirstHandInv[cnt]), 0, cnt);
 
-    MSYS_DefineRegion(&gTEAM_SecondHandInv[cnt], sTEAMHandInvXY[posIndex], (sTEAMHandInvXY[posIndex + 1] + 24), (sTEAMHandInvXY[posIndex] + TM_INV_WIDTH), (sTEAMHandInvXY[posIndex + 1] + TM_INV_HEIGHT + 24), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, TMClickSecondHandInvCallback);
+    MSYS_DefineRegion(addressof(gTEAM_SecondHandInv[cnt]), sTEAMHandInvXY[posIndex], (sTEAMHandInvXY[posIndex + 1] + 24), (sTEAMHandInvXY[posIndex] + TM_INV_WIDTH), (sTEAMHandInvXY[posIndex + 1] + TM_INV_HEIGHT + 24), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, TMClickSecondHandInvCallback);
     // Add region
-    MSYS_AddRegion(&gTEAM_SecondHandInv[cnt]);
+    MSYS_AddRegion(addressof(gTEAM_SecondHandInv[cnt]));
 
     // Add user data
-    MSYS_SetRegionUserData(&gTEAM_SecondHandInv[cnt], 0, cnt);
+    MSYS_SetRegionUserData(addressof(gTEAM_SecondHandInv[cnt]), 0, cnt);
   }
 
   // DEfine region for selected guy panel
@@ -2639,18 +2639,18 @@ function ShutdownTEAMPanel(): BOOLEAN {
   DeleteVideoObjectFromIndex(guiTEAMObjects);
   DeleteVideoObjectFromIndex(guiBrownBackgroundForTeamPanel);
 
-  MSYS_RemoveRegion(&gTEAM_PanelRegion);
+  MSYS_RemoveRegion(addressof(gTEAM_PanelRegion));
 
   // Remove viewport
-  MSYS_RemoveRegion(&gViewportRegion);
+  MSYS_RemoveRegion(addressof(gViewportRegion));
 
   for (cnt = 0; cnt < 6; cnt++) {
-    MSYS_RemoveRegion(&gTEAM_EnemyIndicator[cnt]);
-    MSYS_RemoveRegion(&gTEAM_FaceRegions[cnt]);
-    MSYS_RemoveRegion(&gTEAM_BarsRegions[cnt]);
-    MSYS_RemoveRegion(&gTEAM_LeftBarsRegions[cnt]);
-    MSYS_RemoveRegion(&gTEAM_FirstHandInv[cnt]);
-    MSYS_RemoveRegion(&gTEAM_SecondHandInv[cnt]);
+    MSYS_RemoveRegion(addressof(gTEAM_EnemyIndicator[cnt]));
+    MSYS_RemoveRegion(addressof(gTEAM_FaceRegions[cnt]));
+    MSYS_RemoveRegion(addressof(gTEAM_BarsRegions[cnt]));
+    MSYS_RemoveRegion(addressof(gTEAM_LeftBarsRegions[cnt]));
+    MSYS_RemoveRegion(addressof(gTEAM_FirstHandInv[cnt]));
+    MSYS_RemoveRegion(addressof(gTEAM_SecondHandInv[cnt]));
 
     if (gTeamPanel[cnt].ubID != NOBODY) {
       HandleMouseOverSoldierFaceForContMove(MercPtrs[gTeamPanel[cnt].ubID], FALSE);
@@ -2721,25 +2721,25 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
           // OK, for each item, set dirty text if applicable!
           swprintf(pStr, TacticalStr[DRIVER_POPUPTEXT], pVehicle.value.bLife, pVehicle.value.bLifeMax, pVehicle.value.bBreath, pVehicle.value.bBreathMax);
-          SetRegionFastHelpText(&(gTEAM_FirstHandInv[cnt]), pStr);
+          SetRegionFastHelpText(addressof(gTEAM_FirstHandInv[cnt]), pStr);
         }
         // Add text for first hand popup
         else {
-          GetHelpTextForItem(pStr, &(pSoldier.value.inv[HANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[HANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
-          SetRegionFastHelpText(&(gTEAM_FirstHandInv[cnt]), pStr);
+          SetRegionFastHelpText(addressof(gTEAM_FirstHandInv[cnt]), pStr);
         }
 
         // Add text for seonc hand popup
         if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
           // OK, for each item, set dirty text if applicable!
-          SetRegionFastHelpText(&(gTEAM_SecondHandInv[cnt]), TacticalStr[EXIT_VEHICLE_POPUPTEXT]);
+          SetRegionFastHelpText(addressof(gTEAM_SecondHandInv[cnt]), TacticalStr[EXIT_VEHICLE_POPUPTEXT]);
         } else {
-          GetHelpTextForItem(pStr, &(pSoldier.value.inv[SECONDHANDPOS]), pSoldier);
+          GetHelpTextForItem(pStr, addressof(pSoldier.value.inv[SECONDHANDPOS]), pSoldier);
 
           // OK, for each item, set dirty text if applicable!
-          SetRegionFastHelpText(&(gTEAM_SecondHandInv[cnt]), pStr);
+          SetRegionFastHelpText(addressof(gTEAM_SecondHandInv[cnt]), pStr);
         }
 
         // Render Selected guy if selected
@@ -2784,7 +2784,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
 
         // RENDER ON SAVE BUFFER!
         SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
-        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier.value.name);
+        VarFindFontCenterCoordinates((sTEAMNamesXY[posIndex] + 2), (sTEAMNamesXY[posIndex + 1]), TM_NAME_WIDTH, TM_NAME_HEIGHT, BLOCKFONT2, addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
         mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
         gprintfRestore(sFontX, sFontY, "%s", pSoldier.value.name);
         // reset to frame buffer!
@@ -2813,17 +2813,17 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
           if (pSoldier.value.bLife != 0) {
             if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
               swprintf(pStr, TacticalStr[VEHICLE_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax);
-              SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
+              SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else if (pSoldier.value.uiStatusFlags & SOLDIER_ROBOT) {
               swprintf(pStr, gzLateLocalizedString[16], pSoldier.value.bLife, pSoldier.value.bLifeMax);
-              SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
+              SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             } else {
               GetMoraleString(pSoldier, pMoraleStr);
               swprintf(pStr, TacticalStr[MERC_VITAL_STATS_POPUPTEXT], pSoldier.value.bLife, pSoldier.value.bLifeMax, pSoldier.value.bBreath, pSoldier.value.bBreathMax, pMoraleStr);
-              SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), pStr);
+              SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), pStr);
             }
           } else {
-            SetRegionFastHelpText(&(gTEAM_BarsRegions[cnt]), "");
+            SetRegionFastHelpText(addressof(gTEAM_BarsRegions[cnt]), "");
           }
         }
 
@@ -2858,7 +2858,7 @@ function RenderTEAMPanel(fDirty: BOOLEAN): void {
             RestoreExternBackgroundRect(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT);
 
             if (gTacticalStatus.uiFlags & INCOMBAT) {
-              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1, &sFontX, &sFontY, "%d", GetUIApsToDisplay(pSoldier));
+              VarFindFontCenterCoordinates(sTEAMApXY[posIndex], sTEAMApXY[posIndex + 1], TM_AP_WIDTH, TM_AP_HEIGHT, TINYFONT1, addressof(sFontX), addressof(sFontY), "%d", GetUIApsToDisplay(pSoldier));
               mprintf(sFontX, sTEAMApXY[posIndex + 1], "%d", GetUIApsToDisplay(pSoldier));
             }
           }
@@ -3010,31 +3010,31 @@ function UpdateTEAMPanel(): void {
 
     // OK, disable item regions.......
     for (cnt = 0; cnt < 6; cnt++) {
-      MSYS_DisableRegion(&gTEAM_EnemyIndicator[cnt]);
+      MSYS_DisableRegion(addressof(gTEAM_EnemyIndicator[cnt]));
 
-      MSYS_DisableRegion(&gTEAM_FirstHandInv[cnt]);
+      MSYS_DisableRegion(addressof(gTEAM_FirstHandInv[cnt]));
 
-      MSYS_DisableRegion(&gTEAM_SecondHandInv[cnt]);
+      MSYS_DisableRegion(addressof(gTEAM_SecondHandInv[cnt]));
     }
 
     // disable the radar map region
     // If NOT in overhead map
     if (!InOverheadMap()) {
-      MSYS_DisableRegion(&gRadarRegion);
+      MSYS_DisableRegion(addressof(gRadarRegion));
     }
   } else {
     EnableButton(iTEAMPanelButtons[CHANGE_SQUAD_BUTTON]);
 
     for (cnt = 0; cnt < 6; cnt++) {
-      MSYS_EnableRegion(&gTEAM_EnemyIndicator[cnt]);
+      MSYS_EnableRegion(addressof(gTEAM_EnemyIndicator[cnt]));
 
-      MSYS_EnableRegion(&gTEAM_FirstHandInv[cnt]);
+      MSYS_EnableRegion(addressof(gTEAM_FirstHandInv[cnt]));
 
-      MSYS_EnableRegion(&gTEAM_SecondHandInv[cnt]);
+      MSYS_EnableRegion(addressof(gTEAM_SecondHandInv[cnt]));
     }
 
     // Enable the radar map region
-    MSYS_EnableRegion(&gRadarRegion);
+    MSYS_EnableRegion(addressof(gRadarRegion));
   }
 }
 
@@ -3046,7 +3046,7 @@ function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
     if (CheckForMercContMove(gpSMCurrentMerc)) {
       // Display 'cont' on face....
       // Get face
-      pFace = &gFacesData[gpSMCurrentMerc.value.iFaceIndex];
+      pFace = addressof(gFacesData[gpSMCurrentMerc.value.iFaceIndex]);
 
       pFace.value.fDisplayTextOver = FACE_DRAW_TEXT_OVER;
       wcscpy(pFace.value.zDisplayText, TacticalStr[CONTINUE_OVER_FACE_STR]);
@@ -3057,7 +3057,7 @@ function HandleMouseOverTeamFaceForContMove(fOn: BOOLEAN): void {
   } else {
     // Remove 'cont' on face....
     // Get face
-    pFace = &gFacesData[gpSMCurrentMerc.value.iFaceIndex];
+    pFace = addressof(gFacesData[gpSMCurrentMerc.value.iFaceIndex]);
 
     pFace.value.fDisplayTextOver = FACE_ERASE_TEXT_OVER;
 
@@ -3504,7 +3504,7 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
       RestoreExternBackgroundRect(sX, sY, (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Look in primary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier.value.inv[HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][HANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[HANDPOS]), sX, sY, TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][HANDPOS]), 0, FALSE, 0);
     }
 
     if (pSoldier.value.uiStatusFlags & (SOLDIER_PASSENGER | SOLDIER_DRIVER)) {
@@ -3512,7 +3512,7 @@ function RenderSoldierTeamInv(pSoldier: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT
       RestoreExternBackgroundRect(sX, (sY + TM_INV_HAND_SEPY), (TM_INV_WIDTH), (TM_INV_HEIGHT));
     } else {
       // Do secondary hand
-      INVRenderItem(guiSAVEBUFFER, pSoldier, &(pSoldier.value.inv[SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, &(gfTEAM_HandInvDispText[ubPanelNum][SECONDHANDPOS]), 0, FALSE, 0);
+      INVRenderItem(guiSAVEBUFFER, pSoldier, addressof(pSoldier.value.inv[SECONDHANDPOS]), sX, (sY + TM_INV_HAND_SEPY), TM_INV_WIDTH, TM_INV_HEIGHT, fDirty, addressof(gfTEAM_HandInvDispText[ubPanelNum][SECONDHANDPOS]), 0, FALSE, 0);
     }
   }
 }
@@ -3680,8 +3680,8 @@ function AddPlayerToInterfaceTeamSlot(ubID: UINT8): void {
         gTeamPanel[cnt].fOccupied = TRUE;
         gTeamPanel[cnt].ubID = ubID;
 
-        MSYS_SetRegionUserData(&gTEAM_FirstHandInv[cnt], 0, cnt);
-        MSYS_SetRegionUserData(&gTEAM_FaceRegions[cnt], 0, cnt);
+        MSYS_SetRegionUserData(addressof(gTEAM_FirstHandInv[cnt]), 0, cnt);
+        MSYS_SetRegionUserData(addressof(gTEAM_FaceRegions[cnt]), 0, cnt);
 
         // DIRTY INTERFACE
         fInterfacePanelDirty = DIRTYLEVEL2;
@@ -3744,8 +3744,8 @@ function RemovePlayerFromInterfaceTeamSlot(ubPanelSlot: UINT8): BOOLEAN {
     gTeamPanel[ubPanelSlot].fOccupied = FALSE;
     gTeamPanel[ubPanelSlot].ubID = NOBODY;
 
-    MSYS_SetRegionUserData(&gTEAM_FirstHandInv[ubPanelSlot], 0, NOBODY);
-    MSYS_SetRegionUserData(&gTEAM_FaceRegions[ubPanelSlot], 0, NOBODY);
+    MSYS_SetRegionUserData(addressof(gTEAM_FirstHandInv[ubPanelSlot]), 0, NOBODY);
+    MSYS_SetRegionUserData(addressof(gTEAM_FaceRegions[ubPanelSlot]), 0, NOBODY);
 
     // DIRTY INTERFACE
     fInterfacePanelDirty = DIRTYLEVEL2;
@@ -3768,7 +3768,7 @@ function RenderTownIDString(): void {
 
   GetSectorIDString(gWorldSectorX, gWorldSectorY, gbWorldSectorZ, zTownIDString, TRUE);
   ReduceStringLength(zTownIDString, 80, COMPFONT);
-  VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT, &sFontX, &sFontY, zTownIDString);
+  VarFindFontCenterCoordinates(548, 425, 80, 16, COMPFONT, addressof(sFontX), addressof(sFontY), zTownIDString);
   mprintf(sFontX, sFontY, "%s", zTownIDString);
 }
 
@@ -3924,7 +3924,7 @@ function KeyRingItemPanelButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason:
       return;
     }
 
-    pSoldier = &(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
+    pSoldier = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
     sStartYPosition = MAP_START_KEYRING_Y;
     sWidth = 261;
     sHeight = (359 - 107);
@@ -3988,9 +3988,9 @@ function KeyRingSlotInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: IN
 
       if (gMoveingItem.sItemIndex == 0) {
         // Delete the contents of the item cursor
-        memset(&gMoveingItem, 0, sizeof(INVENTORY_IN_SLOT));
+        memset(addressof(gMoveingItem), 0, sizeof(INVENTORY_IN_SLOT));
       } else {
-        memset(&InvSlot, 0, sizeof(INVENTORY_IN_SLOT));
+        memset(addressof(InvSlot), 0, sizeof(INVENTORY_IN_SLOT));
 
         // Return if empty
         // if ( gpSMCurrentMerc->inv[ uiHandPos ].usItem == NOTHING )
@@ -4300,9 +4300,9 @@ function SMInvMoneyButtonCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
       //			if( LaptopSaveInfo.iCurrentBalance > MAX_MONEY_PER_SLOT )
       //				CreateMoney( MAX_MONEY_PER_SLOT, &gItemPointer );
       //			else
-      CreateMoney(LaptopSaveInfo.iCurrentBalance, &gItemPointer);
+      CreateMoney(LaptopSaveInfo.iCurrentBalance, addressof(gItemPointer));
 
-      InternalInitItemDescriptionBox(&gItemPointer, SM_ITEMDESC_START_X, SM_ITEMDESC_START_Y, 0, gpSMCurrentMerc);
+      InternalInitItemDescriptionBox(addressof(gItemPointer), SM_ITEMDESC_START_X, SM_ITEMDESC_START_Y, 0, gpSMCurrentMerc);
     }
   }
 }
@@ -4357,7 +4357,7 @@ function GoToMapScreenFromTactical(): void {
 
 function HandleTacticalEffectsOfEquipmentChange(pSoldier: Pointer<SOLDIERTYPE>, uiInvPos: UINT32, usOldItem: UINT16, usNewItem: UINT16): void {
   // if in attached weapon mode and don't have weapon with GL attached in hand, reset weapon mode
-  if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == NO_SLOT) {
+  if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == NO_SLOT) {
     pSoldier.value.bWeaponMode = WM_NORMAL;
     pSoldier.value.bDoBurst = FALSE;
   }

@@ -27,12 +27,12 @@ const AIRPORT_Y = 2;
 function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
-  FileWrite(hFile, ContractRenewalList, sizeof(ContractRenewalList), &uiNumBytesWritten);
+  FileWrite(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(ContractRenewalList)) {
     return FALSE;
   }
 
-  FileWrite(hFile, &ubNumContractRenewals, sizeof(ubNumContractRenewals), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(ubNumContractRenewals), sizeof(ubNumContractRenewals), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(ubNumContractRenewals)) {
     return FALSE;
   }
@@ -43,12 +43,12 @@ function SaveContractRenewalDataToSaveGameFile(hFile: HWFILE): BOOLEAN {
 function LoadContractRenewalDataFromSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
-  FileRead(hFile, ContractRenewalList, sizeof(ContractRenewalList), &uiNumBytesRead);
+  FileRead(hFile, ContractRenewalList, sizeof(ContractRenewalList), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(ContractRenewalList)) {
     return FALSE;
   }
 
-  FileRead(hFile, &ubNumContractRenewals, sizeof(ubNumContractRenewals), &uiNumBytesRead);
+  FileRead(hFile, addressof(ubNumContractRenewals), sizeof(ubNumContractRenewals), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(ubNumContractRenewals)) {
     return FALSE;
   }
@@ -882,9 +882,9 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   } else {
     if (fInSector == FALSE) {
       // set up for all otherscreens
-      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, addressof(pCenteringRect));
     } else {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, addressof(pCenteringRect));
     }
   }
 
@@ -978,7 +978,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
 
   gfFirstMercSayQuote = FALSE;
 
-  pSoldier = &Menptr[0];
+  pSoldier = addressof(Menptr[0]);
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   // run through list of grunts whoose contract are up in the next 2 hours
@@ -988,7 +988,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   // is any merc that does not want to stay and only display that quote
   // if they are the only one here....
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     // valid soldier?
     if ((pSoldier.value.bActive == FALSE) || (pSoldier.value.bLife == 0) || (pSoldier.value.bAssignment == IN_TRANSIT) || (pSoldier.value.bAssignment == ASSIGNMENT_POW)) {

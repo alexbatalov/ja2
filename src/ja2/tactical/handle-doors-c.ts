@@ -267,7 +267,7 @@ function ProcessImplicationsOfPCMessingWithDoor(pSoldier: Pointer<SOLDIERTYPE>):
   let ubRoom: UINT8;
   let pGoon: Pointer<SOLDIERTYPE>;
   // if player is hacking at a door in the brothel and a kingpin guy can see him
-  if ((InARoom(pSoldier.value.sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) || (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 && (pSoldier.value.sGridNo == 11010 || pSoldier.value.sGridNo == 11177 || pSoldier.value.sGridNo == 11176))) {
+  if ((InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) || (gWorldSectorX == 5 && gWorldSectorY == MAP_ROW_D && gbWorldSectorZ == 0 && (pSoldier.value.sGridNo == 11010 || pSoldier.value.sGridNo == 11177 || pSoldier.value.sGridNo == 11176))) {
     let ubLoop: UINT8;
 
     // see if a kingpin goon can see us
@@ -803,7 +803,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       ModifyDoorStatus(sGridNo, DONTSETDOORSTATUS, TRUE);
 
       if (fOpenedGraphic) {
-        memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
         AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
@@ -813,9 +813,9 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_FORWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        CreateAnimationTile(&AniParams);
+        CreateAnimationTile(addressof(AniParams));
       } else {
-        memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
         AniParams.usTileType = gTileDatabase[pNode.value.usIndex].fType;
@@ -825,7 +825,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
         AniParams.uiFlags = ANITILE_DOOR | ANITILE_BACKWARD | ANITILE_EXISTINGTILE;
         AniParams.pGivenLevelNode = pNode;
 
-        CreateAnimationTile(&AniParams);
+        CreateAnimationTile(addressof(AniParams));
       }
     }
 
@@ -896,7 +896,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       // Update perceived value
       ModifyDoorStatus(sGridNo, DONTSETDOORSTATUS, FALSE);
 
-      memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+      memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 
       // ATE; Default to normal door...
       uiSoundID = (DRCLOSE_1 + Random(2));
@@ -932,7 +932,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 
         AniParams.ubKeyFrame1 = pNode.value.sCurrentFrame - 2;
 
-        CreateAnimationTile(&AniParams);
+        CreateAnimationTile(addressof(AniParams));
       } else {
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
@@ -945,7 +945,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
 
         AniParams.ubKeyFrame1 = pNode.value.sCurrentFrame + 2;
 
-        CreateAnimationTile(&AniParams);
+        CreateAnimationTile(addressof(AniParams));
       }
     }
 

@@ -87,12 +87,12 @@ function GameLoop(): void {
   let MousePos: POINT;
   let uiOldScreen: UINT32 = guiCurrentScreen;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
   // Hook into mouse stuff for MOVEMENT MESSAGES
   MouseSystemHook(MOUSE_POS, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
   MusicPoll(FALSE);
 
-  while (DequeueSpecificEvent(&InputEvent, LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == TRUE) {
+  while (DequeueSpecificEvent(addressof(InputEvent), LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == TRUE) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -230,7 +230,7 @@ function HandleShortCutExitState(): void {
   }
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
     return;
   }
 
@@ -253,7 +253,7 @@ function HandleShortCutExitState(): void {
     }
 
     // set up for all otherscreens
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, addressof(pCenteringRect));
   }
 }
 

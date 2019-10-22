@@ -17,15 +17,15 @@ function InitializeGameVideoObjects(): BOOLEAN {
   let ubBitDepth: UINT8;
 
   // Create render buffer
-  GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = usWidth;
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = ubBitDepth;
 
-  CHECKF(AddVideoSurface(&vs_desc, &guiSAVEBUFFER));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiSAVEBUFFER)));
 
-  CHECKF(AddVideoSurface(&vs_desc, &guiEXTRABUFFER));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiEXTRABUFFER)));
   gfExtraBuffer = TRUE;
 
   guiRENDERBUFFER = FRAME_BUFFER;

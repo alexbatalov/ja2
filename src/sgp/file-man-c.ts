@@ -467,7 +467,7 @@ function FileClose(hFile: HWFILE): void {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its the 'real file' library
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -527,7 +527,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
   // init the variables
   dwNumBytesToRead = dwNumBytesRead = 0;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   dwNumBytesToRead = uiBytesToRead;
 
@@ -537,7 +537,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
     if (uiFileNum != 0) {
       hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
-      fRet = ReadFile(hRealFile, pDest, dwNumBytesToRead, &dwNumBytesRead, NULL);
+      fRet = ReadFile(hRealFile, pDest, dwNumBytesToRead, addressof(dwNumBytesRead), NULL);
       if (dwNumBytesToRead != dwNumBytesRead) {
         let uiLastError: UINT32 = GetLastError();
         let zString: char[] /* [1024] */;
@@ -557,7 +557,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
         // if the file is opened
         if (gFileDataBase.pLibraries[sLibraryID].pOpenFiles[uiFileNum].uiFileID != 0) {
           // read the data from the library
-          fRet = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead, &dwNumBytesRead);
+          fRet = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead, addressof(dwNumBytesRead));
           if (puiBytesRead) {
             *puiBytesRead = dwNumBytesRead;
           }
@@ -604,7 +604,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -613,7 +613,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
     // get the real file handle to the file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
-    fRet = WriteFile(hRealFile, pDest, dwNumBytesToWrite, &dwNumBytesWritten, NULL);
+    fRet = WriteFile(hRealFile, pDest, dwNumBytesToWrite, addressof(dwNumBytesWritten), NULL);
 
     if (dwNumBytesToWrite != dwNumBytesWritten)
       fRet = FALSE;
@@ -658,7 +658,7 @@ function FileLoad(strFilename: STR, pDest: PTR, uiBytesToRead: UINT32, puiBytesR
 
   hFile = FileOpen(strFilename, FILE_ACCESS_READ, FALSE);
   if (hFile) {
-    fRet = FileRead(hFile, pDest, uiBytesToRead, &uiNumBytesRead);
+    fRet = FileRead(hFile, pDest, uiBytesToRead, addressof(uiNumBytesRead));
     FileClose(hFile);
 
     if (uiBytesToRead != uiNumBytesRead)
@@ -706,7 +706,7 @@ function FilePrintf(hFile: HWFILE, strFormatted: Pointer<UINT8>, ...args: any[])
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -757,7 +757,7 @@ function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -818,7 +818,7 @@ function FileGetPos(hFile: HWFILE): INT32 {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -874,7 +874,7 @@ function FileGetSize(hFile: HWFILE): UINT32 {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -933,7 +933,7 @@ function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): H
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1166,16 +1166,16 @@ function GetFilesInDirectory(hStack: HCONTAINER, pcDir: Pointer<CHAR>, hFile: HA
 
         inFind.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_ATTRIBUTE_DIRECTORY;
         strcpy(cDir, pcDir);
-        strcpy(&(cDir[strlen(cDir) - 3]), pFind.value.cFileName);
-        strcpy(&(cDir[strlen(cDir)]), "\\*.*\0");
-        hFileIn = FindFirstFile(cDir, &inFind);
-        iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, &inFind);
+        strcpy(addressof(cDir[strlen(cDir) - 3]), pFind.value.cFileName);
+        strcpy(addressof(cDir[strlen(cDir)]), "\\*.*\0");
+        hFileIn = FindFirstFile(cDir, addressof(inFind));
+        iNumFiles += GetFilesInDirectory(hStack, cDir, hFileIn, addressof(inFind));
         FindClose(hFileIn);
       }
     } else {
       iNumFiles++;
       strcpy(cName, pcDir);
-      strcpy(&(cName[strlen(cName) - 3]), pFind.value.cFileName);
+      strcpy(addressof(cName[strlen(cName) - 3]), pFind.value.cFileName);
       CharLower(cName);
       hStack = Push(hStack, cName);
     }
@@ -1246,7 +1246,7 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
   }
 
   // If there are files in the directory, DELETE THEM
-  SearchHandle = FindFirstFile(pFileSpec, &sFindData);
+  SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
   if (SearchHandle != INVALID_HANDLE_VALUE) {
     fDone = FALSE;
     do {
@@ -1270,7 +1270,7 @@ function RemoveFileManDirectory(pcDirectory: STRING512, fRecursive: BOOLEAN): BO
       }
 
       // find the next file in the directory
-      fRetval = FindNextFile(SearchHandle, &sFindData);
+      fRetval = FindNextFile(SearchHandle, addressof(sFindData));
       if (fRetval == 0) {
         fDone = TRUE;
       }
@@ -1313,7 +1313,7 @@ function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
   }
 
   // If there are files in the directory, DELETE THEM
-  SearchHandle = FindFirstFile(pFileSpec, &sFindData);
+  SearchHandle = FindFirstFile(pFileSpec, addressof(sFindData));
   if (SearchHandle != INVALID_HANDLE_VALUE) {
     fDone = FALSE;
     do {
@@ -1323,7 +1323,7 @@ function EraseDirectory(pcDirectory: STRING512): BOOLEAN {
       }
 
       // find the next file in the directory
-      if (!FindNextFile(SearchHandle, &sFindData)) {
+      if (!FindNextFile(SearchHandle, addressof(sFindData))) {
         fDone = TRUE;
       }
     } while (!fDone);
@@ -1382,13 +1382,13 @@ function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>):
 
   pGFStruct.value.iFindHandle = iWhich;
 
-  hFindInfoHandle[iWhich] = FindFirstFile(pSpec, &Win32FindInfo[iWhich]);
+  hFindInfoHandle[iWhich] = FindFirstFile(pSpec, addressof(Win32FindInfo[iWhich]));
 
   if (hFindInfoHandle[iWhich] == INVALID_HANDLE_VALUE)
     return FALSE;
   fFindInfoInUse[iWhich] = TRUE;
 
-  W32toSGPFileFind(pGFStruct, &Win32FindInfo[iWhich]);
+  W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[iWhich]));
 
   return TRUE;
 }
@@ -1396,8 +1396,8 @@ function GetFileFirst(pSpec: Pointer<CHAR8>, pGFStruct: Pointer<GETFILESTRUCT>):
 function GetFileNext(pGFStruct: Pointer<GETFILESTRUCT>): BOOLEAN {
   CHECKF(pGFStruct != NULL);
 
-  if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], &Win32FindInfo[pGFStruct.value.iFindHandle])) {
-    W32toSGPFileFind(pGFStruct, &Win32FindInfo[pGFStruct.value.iFindHandle]);
+  if (FindNextFile(hFindInfoHandle[pGFStruct.value.iFindHandle], addressof(Win32FindInfo[pGFStruct.value.iFindHandle]))) {
+    W32toSGPFileFind(pGFStruct, addressof(Win32FindInfo[pGFStruct.value.iFindHandle]));
     return TRUE;
   }
   return FALSE;
@@ -1629,7 +1629,7 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
   let uiEndOfFilePtrLoc: UINT32 = 0;
   let temp: UINT32 = 0;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1694,7 +1694,7 @@ function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>,
   memset(pLastAccessedTime, 0, sizeof(SGP_FILETIME));
   memset(pLastWriteTime, 0, sizeof(SGP_FILETIME));
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1702,16 +1702,16 @@ function GetFileManFileTime(hFile: HWFILE, pCreationTime: Pointer<SGP_FILETIME>,
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
     // Gets the UTC file time for the 'real' file
-    GetFileTime(hRealFile, &sCreationUtcFileTime, &sLastAccessedUtcFileTime, &sLastWriteUtcFileTime);
+    GetFileTime(hRealFile, addressof(sCreationUtcFileTime), addressof(sLastAccessedUtcFileTime), addressof(sLastWriteUtcFileTime));
 
     // converts the creation UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(&sCreationUtcFileTime, pCreationTime);
+    FileTimeToLocalFileTime(addressof(sCreationUtcFileTime), pCreationTime);
 
     // converts the accessed UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(&sLastAccessedUtcFileTime, pLastAccessedTime);
+    FileTimeToLocalFileTime(addressof(sLastAccessedUtcFileTime), pLastAccessedTime);
 
     // converts the write UTC file time to the current time used for the file
-    FileTimeToLocalFileTime(&sLastWriteUtcFileTime, pLastWriteTime);
+    FileTimeToLocalFileTime(addressof(sLastWriteUtcFileTime), pLastWriteTime);
   } else {
     // if the database is initialized
     if (gFileDataBase.fInitialized) {
@@ -1751,7 +1751,7 @@ function GetRealFileHandleFromFileManFileHandle(hFile: HWFILE): HANDLE {
   let sLibraryID: INT16;
   let uiFileNum: UINT32;
 
-  GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
+  GetLibraryAndFileIDFromLibraryFileHandle(hFile, addressof(sLibraryID), addressof(uiFileNum));
 
   // if its the 'real file' library
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -1861,7 +1861,7 @@ function GetFreeSpaceOnHardDrive(pzDriveLetter: STR): UINT32 {
   let uiNumberOfFreeClusters: UINT32 = 0;
   let uiTotalNumberOfClusters: UINT32 = 0;
 
-  if (!GetDiskFreeSpace(pzDriveLetter, &uiSectorsPerCluster, &uiBytesPerSector, &uiNumberOfFreeClusters, &uiTotalNumberOfClusters)) {
+  if (!GetDiskFreeSpace(pzDriveLetter, addressof(uiSectorsPerCluster), addressof(uiBytesPerSector), addressof(uiNumberOfFreeClusters), addressof(uiTotalNumberOfClusters))) {
     let uiLastError: UINT32 = GetLastError();
     let zString: char[] /* [1024] */;
     FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, 0, uiLastError, 0, zString, 1024, NULL);

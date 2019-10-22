@@ -176,7 +176,7 @@ function HourlyLarryUpdate(): void {
             bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
             if (bBoozeSlot != NO_SLOT) {
               // give Larry booze here
-              CreateItem(ALCOHOL, 100, &(pSoldier.value.inv[bBoozeSlot]));
+              CreateItem(ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
             }
             bSlot = bBoozeSlot;
             bLarryItemLoop = 1;
@@ -184,7 +184,7 @@ function HourlyLarryUpdate(): void {
           // ahhhh!!!
           SwapLarrysProfiles(pSoldier);
           if (bSlot != NO_SLOT) {
-            UseKitPoints(&(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
+            UseKitPoints(addressof(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
           }
         }
       } else {
@@ -202,14 +202,14 @@ function HourlyLarryUpdate(): void {
           bBoozeSlot = FindEmptySlotWithin(pSoldier, HANDPOS, SMALLPOCK8POS);
           if (bBoozeSlot != NO_SLOT) {
             // give Larry booze here
-            CreateItem(ALCOHOL, 100, &(pSoldier.value.inv[bBoozeSlot]));
+            CreateItem(ALCOHOL, 100, addressof(pSoldier.value.inv[bBoozeSlot]));
           }
           bSlot = bBoozeSlot;
           bLarryItemLoop = 1;
         }
         if (bSlot != NO_SLOT) {
           // ahhhh!!!
-          UseKitPoints(&(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
+          UseKitPoints(addressof(pSoldier.value.inv[bSlot]), LarryItems[bLarryItemLoop][2], pSoldier);
         }
       }
     } else if (pSoldier.value.ubProfile == LARRY_DRUNK) {

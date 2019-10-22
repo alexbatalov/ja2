@@ -9,7 +9,7 @@ const BOTTOM_EDGE = 4;
 const BOTTOM_RIGHT_CORNER = 3;
 
 function InitPopUpBoxList(): void {
-  memset(&PopUpBoxList, 0, sizeof(PopUpBoxPt));
+  memset(addressof(PopUpBoxList), 0, sizeof(PopUpBoxPt));
   return;
 }
 
@@ -988,7 +988,7 @@ function RemoveBox(hBoxHandle: INT32): void {
   if ((hBoxHandle < 0) || (hBoxHandle >= MAX_POPUP_BOX_COUNT))
     return;
 
-  GetCurrentBox(&hOldBoxHandle);
+  GetCurrentBox(addressof(hOldBoxHandle));
   SetCurrentBox(hBoxHandle);
 
   RemoveAllCurrentBoxStrings();
@@ -1127,13 +1127,13 @@ function DrawBox(uiCounter: UINT32): BOOLEAN {
 
   // blit in texture first, then borders
   // blit in surface
-  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer, &uiDestPitchBYTES);
-  CHECKF(GetVideoSurface(&hSrcVSurface, PopUpBoxList[uiCounter].value.iBackGroundSurface));
-  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface, &uiSrcPitchBYTES);
-  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, &clip);
+  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer, addressof(uiDestPitchBYTES));
+  CHECKF(GetVideoSurface(addressof(hSrcVSurface), PopUpBoxList[uiCounter].value.iBackGroundSurface));
+  pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface, addressof(uiSrcPitchBYTES));
+  Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, addressof(clip));
   UnLockVideoSurface(PopUpBoxList[uiCounter].value.iBackGroundSurface);
   UnLockVideoSurface(PopUpBoxList[uiCounter].value.uiBuffer);
-  GetVideoObject(&hBoxHandle, PopUpBoxList[uiCounter].value.iBorderObjectIndex);
+  GetVideoObject(addressof(hBoxHandle), PopUpBoxList[uiCounter].value.iBorderObjectIndex);
 
   // blit in 4 corners (they're 2x2 pixels)
   BltVideoObject(PopUpBoxList[uiCounter].value.uiBuffer, hBoxHandle, TOP_LEFT_CORNER, usTopX, usTopY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1213,7 +1213,7 @@ function DrawBoxText(uiCounter: UINT32): BOOLEAN {
 
       // cnetering?
       if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont), &uX, &uY);
+        FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont), addressof(uX), addressof(uY));
       } else {
         uX = ((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin));
         uY = ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.Text[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace));
@@ -1249,7 +1249,7 @@ function DrawBoxText(uiCounter: UINT32): BOOLEAN {
 
       // cnetering?
       if (PopUpBoxList[uiCounter].value.uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont), &uX, &uY);
+        FindFontCenterCoordinates(((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin)), ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace)), ((PopUpBoxList[uiCounter].value.Dimensions.iRight - (PopUpBoxList[uiCounter].value.uiRightMargin + PopUpBoxList[uiCounter].value.uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont)), (sString), (PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont), addressof(uX), addressof(uY));
       } else {
         uX = ((PopUpBoxList[uiCounter].value.Position.iX + PopUpBoxList[uiCounter].value.uiLeftMargin + PopUpBoxList[uiCounter].value.uiSecondColumnCurrentOffset));
         uY = ((PopUpBoxList[uiCounter].value.Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter].value.pSecondColumnString[uiCount].value.uiFont) + PopUpBoxList[uiCounter].value.uiTopMargin + uiCount * PopUpBoxList[uiCounter].value.uiLineSpace));

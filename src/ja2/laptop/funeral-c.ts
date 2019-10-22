@@ -93,52 +93,52 @@ function EnterFuneral(): BOOLEAN {
   // load the Closed graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_CLOSED);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiClosedSign));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiClosedSign)));
 
   // load the Left column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LeftColumn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLeftColumn));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLeftColumn)));
 
   // load the Link carving graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\LinkCarving.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLinkCarving));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLinkCarving)));
 
   // load the Marble graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Marble.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMarbleBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMarbleBackground)));
 
   // load the McGillicuttys sign graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_MCGILLICUTTYS);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMcGillicuttys));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMcGillicuttys)));
 
   // load the Mortuary  graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_MORTUARY);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMortuary));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMortuary)));
 
   // load the right column graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\RightColumn.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiRightColumn));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiRightColumn)));
 
   usPosX = FUNERAL_LINK_1_X;
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
     // Mouse region for the bottom links
 
-    MSYS_DefineRegion(&gSelectedFuneralLinkRegion[i], usPosX, FUNERAL_LINK_1_Y, (usPosX + FUNERAL_LINK_1_WIDTH), (FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFuneralLinkRegionCallBack);
-    MSYS_AddRegion(&gSelectedFuneralLinkRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedFuneralLinkRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedFuneralLinkRegion[i]), usPosX, FUNERAL_LINK_1_Y, (usPosX + FUNERAL_LINK_1_WIDTH), (FUNERAL_LINK_1_Y + FUNERAL_LINK_1_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFuneralLinkRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedFuneralLinkRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedFuneralLinkRegion[i]), 0, i);
 
     usPosX += FUNERAL_LINK_OFFSET_X;
   }
 
-  MSYS_DefineRegion(&gSelectedRipSignRegion, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, (FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH), (FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT), MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectRipSignRegionCallBack);
-  MSYS_AddRegion(&gSelectedRipSignRegion);
-  MSYS_DisableRegion(&gSelectedRipSignRegion);
+  MSYS_DefineRegion(addressof(gSelectedRipSignRegion), FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, (FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH), (FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT), MSYS_PRIORITY_HIGH + 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectRipSignRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedRipSignRegion));
+  MSYS_DisableRegion(addressof(gSelectedRipSignRegion));
 
   SetBookMark(FUNERAL_BOOKMARK);
 
@@ -157,10 +157,10 @@ function ExitFuneral(): void {
   DeleteVideoObjectFromIndex(guiRightColumn);
 
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
-    MSYS_RemoveRegion(&gSelectedFuneralLinkRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedFuneralLinkRegion[i]));
   }
 
-  MSYS_RemoveRegion(&gSelectedRipSignRegion);
+  MSYS_RemoveRegion(addressof(gSelectedRipSignRegion));
 }
 
 function HandleFuneral(): void {
@@ -175,23 +175,23 @@ function RenderFuneral(): void {
   WebPageTileBackground(4, 4, FUNERAL_MARBLE_WIDTH, FUNERAL_MARBLE_HEIGHT, guiMarbleBackground);
 
   // LeftColumn
-  GetVideoObject(&hPixHandle, guiLeftColumn);
+  GetVideoObject(addressof(hPixHandle), guiLeftColumn);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_LEFT_COLUMN_X, FUNERAL_LEFT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Mcgillicuttys
-  GetVideoObject(&hPixHandle, guiMcGillicuttys);
+  GetVideoObject(addressof(hPixHandle), guiMcGillicuttys);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MCGILICUTTYS_SIGN_X, FUNERAL_MCGILICUTTYS_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Mortuary
-  GetVideoObject(&hPixHandle, guiMortuary);
+  GetVideoObject(addressof(hPixHandle), guiMortuary);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_MORTUARY_SIGN_X, FUNERAL_MORTUARY_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // right column
-  GetVideoObject(&hPixHandle, guiRightColumn);
+  GetVideoObject(addressof(hPixHandle), guiRightColumn);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_RIGHT_COLUMN_X, FUNERAL_RIGHT_COLUMN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // LinkCarving
-  GetVideoObject(&hPixHandle, guiLinkCarving);
+  GetVideoObject(addressof(hPixHandle), guiLinkCarving);
 
   usPosX = FUNERAL_LINK_1_X;
   for (i = 0; i < FUNERAL_NUMBER_OF_LINKS; i++) {
@@ -234,7 +234,7 @@ function DisplayFuneralRipTombStone(): void {
   let hPixHandle: HVOBJECT;
 
   // rip tombstone
-  GetVideoObject(&hPixHandle, guiClosedSign);
+  GetVideoObject(addressof(hPixHandle), guiClosedSign);
   BltVideoObjectOutlineShadowFromIndex(FRAME_BUFFER, guiClosedSign, 0, FUNERAL_CLOSED_RIP_SIGN_X + 5, FUNERAL_CLOSED_RIP_SIGN_Y + 5);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -251,7 +251,7 @@ function DisplayFuneralRipTombStone(): void {
   InvalidateRegion(FUNERAL_CLOSED_RIP_SIGN_X, FUNERAL_CLOSED_RIP_SIGN_Y, FUNERAL_CLOSED_RIP_SIGN_X + FUNERAL_CLOSED_WIDTH + 5, FUNERAL_CLOSED_RIP_SIGN_Y + FUNERAL_CLOSED_HEIGHT + 5);
 
   // enable the region to make the sign disappear
-  MSYS_EnableRegion(&gSelectedRipSignRegion);
+  MSYS_EnableRegion(addressof(gSelectedRipSignRegion));
 }
 
 function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
@@ -274,7 +274,7 @@ function SelectFuneralLinkRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason
 function SelectRipSignRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    MSYS_DisableRegion(&gSelectedRipSignRegion);
+    MSYS_DisableRegion(addressof(gSelectedRipSignRegion));
     fPausedReDrawScreenFlag = TRUE;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
   }

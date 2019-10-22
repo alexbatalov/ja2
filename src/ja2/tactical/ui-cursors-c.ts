@@ -8,7 +8,7 @@ function GetMouseRecalcAndShowAPFlags(puiCursorFlags: Pointer<UINT32>, pfShowAPs
   let fShowAPs: BOOLEAN = FALSE;
 
   // SET FLAGS FOR CERTAIN MOUSE MOVEMENTS
-  GetCursorMovementFlags(&uiCursorFlags);
+  GetCursorMovementFlags(addressof(uiCursorFlags));
 
   // Force if we are currently cycling guys...
   if (gfUIForceReExamineCursorData) {
@@ -64,7 +64,7 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
 
   pSoldier = MercPtrs[ubSoldierID];
 
-  fRecalc = GetMouseRecalcAndShowAPFlags(&uiCursorFlags, &fShowAPs);
+  fRecalc = GetMouseRecalcAndShowAPFlags(addressof(uiCursorFlags), addressof(fShowAPs));
 
   // ATE: Update attacking weapon!
   // CC has added this attackingWeapon stuff and I need to update it constantly for
@@ -597,12 +597,12 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
     // ALWAYS SET AIM LOCATION TO NOTHING
     pSoldier.value.bAimShotLocation = AIM_SHOT_RANDOM;
 
-    if (!GetMouseMapPos(&usMapPos)) {
+    if (!GetMouseMapPos(addressof(usMapPos))) {
       return;
     }
 
     // Determine which body part it's on
-    pNode = GetAnimProfileFlags(usMapPos, &usFlags, &pTargetSoldier, NULL);
+    pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), NULL);
 
     while (pNode != NULL) {
       if (pTargetSoldier != NULL) {
@@ -616,7 +616,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_NORTH_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           if (sCellY > (CELL_Y_SIZE / 2)) {
             fOnGuy = FALSE;
@@ -625,7 +625,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_SOUTH_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           if (sCellY <= (CELL_Y_SIZE / 2)) {
             fOnGuy = FALSE;
@@ -634,7 +634,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         // Check if we have a half tile profile
         if (usFlags & TILE_FLAG_WEST_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           if (sCellX > (CELL_X_SIZE / 2)) {
             fOnGuy = FALSE;
@@ -642,7 +642,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         }
         if (usFlags & TILE_FLAG_EAST_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           if (sCellX <= (CELL_X_SIZE / 2)) {
             fOnGuy = FALSE;
@@ -650,10 +650,10 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         }
         if (usFlags & TILE_FLAG_TOP_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           // Convert these to screen corrdinates
-          FromCellToScreenCoordinates(sCellX, sCellY, &sScreenX, &sScreenY);
+          FromCellToScreenCoordinates(sCellX, sCellY, addressof(sScreenX), addressof(sScreenY));
 
           // Check for Below...
           if (sScreenX > (WORLD_TILE_Y / 2)) {
@@ -662,10 +662,10 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
         }
         if (usFlags & TILE_FLAG_BOTTOM_HALF) {
           // Check if we are in north half of tile!
-          GetMouseXYWithRemainder(&sMouseX, &sMouseY, &sCellX, &sCellY);
+          GetMouseXYWithRemainder(addressof(sMouseX), addressof(sMouseY), addressof(sCellX), addressof(sCellY));
 
           // Convert these to screen corrdinates
-          FromCellToScreenCoordinates(sCellX, sCellY, &sScreenX, &sScreenY);
+          FromCellToScreenCoordinates(sCellX, sCellY, addressof(sScreenX), addressof(sScreenY));
 
           // Check for Below...
           if (sScreenX <= (WORLD_TILE_Y / 2)) {
@@ -682,7 +682,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
       if (fOnGuy)
         break;
 
-      pNode = GetAnimProfileFlags(usMapPos, &usFlags, &pTargetSoldier, pNode);
+      pNode = GetAnimProfileFlags(usMapPos, addressof(usFlags), addressof(pTargetSoldier), pNode);
     }
 
     if (!fOnGuy) {
@@ -690,7 +690,7 @@ function DetermineCursorBodyLocation(ubSoldierID: UINT8, fDisplay: BOOLEAN, fRec
       if (gfUIFullTargetFound) {
         pTargetSoldier = MercPtrs[gusUIFullTargetID];
 
-        if (FindRelativeSoldierPosition(pTargetSoldier, &usFlags, gusMouseXPos, gusMouseYPos)) {
+        if (FindRelativeSoldierPosition(pTargetSoldier, addressof(usFlags), gusMouseXPos, gusMouseYPos)) {
           fOnGuy = TRUE;
         }
       }
@@ -1032,10 +1032,10 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
       fBadCTGH = FALSE;
     } else {
       // ATE: Find the object to use...
-      memcpy(&TempObject, &(pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(TempObject), addressof(pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
 
       // Do we have a launcable?
-      pObj = &(pSoldier.value.inv[HANDPOS]);
+      pObj = addressof(pSoldier.value.inv[HANDPOS]);
       for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
         if (pObj.value.usAttachItem[bAttachPos] != NOTHING) {
           if (Item[pObj.value.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
@@ -1044,16 +1044,16 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
         }
       }
       if (bAttachPos != MAX_ATTACHMENTS) {
-        CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], &TempObject);
+        CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], addressof(TempObject));
       }
 
-      if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) != NO_SLOT) {
-        bSlot = FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
+      if (pSoldier.value.bWeaponMode == WM_ATTACHED && FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) != NO_SLOT) {
+        bSlot = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER);
 
         if (bSlot != NO_SLOT) {
-          CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bSlot], &TempObject);
+          CreateItem(UNDER_GLAUNCHER, pSoldier.value.inv[HANDPOS].bAttachStatus[bSlot], addressof(TempObject));
 
-          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
+          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(TempObject), sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), addressof(sFinalGridNo), fArmed, addressof(bLevel), TRUE)) {
             fBadCTGH = TRUE;
           } else {
             fBadCTGH = FALSE;
@@ -1061,7 +1061,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
           BeginPhysicsTrajectoryUI(sFinalGridNo, bLevel, fBadCTGH);
         }
       } else {
-        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
+        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(TempObject), sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), addressof(sFinalGridNo), fArmed, addressof(bLevel), TRUE)) {
           fBadCTGH = TRUE;
         } else {
           fBadCTGH = FALSE;
@@ -1134,7 +1134,7 @@ function HandleTinCanCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, uiC
   HandleUIMovementCursor(pSoldier, uiCursorFlags, sGridNo, MOVEUI_TARGET_CAN);
 
   // Check if a door exists here.....
-  pIntTile = GetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure);
+  pIntTile = GetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure));
 
   // We should not have null here if we are given this flag...
   if (pIntTile != NULL) {
@@ -1227,7 +1227,7 @@ function HandleLeftClickCursor(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (!GetMouseMapPos(&sGridNo)) {
+  if (!GetMouseMapPos(addressof(sGridNo))) {
     return;
   }
 
@@ -1480,9 +1480,9 @@ function GetActionModeCursor(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   // OK, check if what is in our hands has a detonator attachment...
   // Detonators can only be on invalidcurs things...
   if (ubCursor == INVALIDCURS) {
-    if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
+    if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
       ubCursor = BOMBCURS;
-    } else if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
+    } else if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
       ubCursor = BOMBCURS;
     }
   }

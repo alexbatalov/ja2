@@ -117,7 +117,7 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
     if (Squad[bSquadValue][bCounter] == NULL) {
       // check if squad empty, if not check sector x,y,z are the same as this guys
       if (SquadIsEmpty(bSquadValue) == FALSE) {
-        GetLocationOfSquad(&sX, &sY, &bZ, bSquadValue);
+        GetLocationOfSquad(addressof(sX), addressof(sY), addressof(bZ), bSquadValue);
 
         // if not same, return false
         if ((pCharacter.value.sSectorX != sX) || (pCharacter.value.sSectorY != sY) || (pCharacter.value.bSectorZ != bZ)) {
@@ -857,13 +857,13 @@ function SaveSquadInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   // Save the squad info to the Saved Game File
   uiSaveSize = sizeof(SAVE_SQUAD_INFO_STRUCT) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
 
-  FileWrite(hFile, sSquadSaveStruct, uiSaveSize, &uiNumBytesWritten);
+  FileWrite(hFile, sSquadSaveStruct, uiSaveSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSaveSize) {
     return FALSE;
   }
 
   // Save all the squad movement id's
-  FileWrite(hFile, SquadMovementGroups, sizeof(INT8) * NUMBER_OF_SQUADS, &uiNumBytesWritten);
+  FileWrite(hFile, SquadMovementGroups, sizeof(INT8) * NUMBER_OF_SQUADS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT8) * NUMBER_OF_SQUADS) {
     return FALSE;
   }
@@ -891,7 +891,7 @@ function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   // Load in the squad info
   uiSaveSize = sizeof(SAVE_SQUAD_INFO_STRUCT) * NUMBER_OF_SQUADS * NUMBER_OF_SOLDIERS_PER_SQUAD;
 
-  FileRead(hFile, sSquadSaveStruct, uiSaveSize, &uiNumBytesRead);
+  FileRead(hFile, sSquadSaveStruct, uiSaveSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiSaveSize) {
     return FALSE;
   }
@@ -900,14 +900,14 @@ function LoadSquadInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   for (iCounter = 0; iCounter < NUMBER_OF_SQUADS; iCounter++) {
     for (iCounterB = 0; iCounterB < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounterB++) {
       if (sSquadSaveStruct[iCounter][iCounterB].uiID != -1)
-        Squad[iCounter][iCounterB] = &Menptr[sSquadSaveStruct[iCounter][iCounterB].uiID];
+        Squad[iCounter][iCounterB] = addressof(Menptr[sSquadSaveStruct[iCounter][iCounterB].uiID]);
       else
         Squad[iCounter][iCounterB] = NULL;
     }
   }
 
   // Load in the Squad movement id's
-  FileRead(hFile, SquadMovementGroups, sizeof(INT8) * NUMBER_OF_SQUADS, &uiNumBytesRead);
+  FileRead(hFile, SquadMovementGroups, sizeof(INT8) * NUMBER_OF_SQUADS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT8) * NUMBER_OF_SQUADS) {
     return FALSE;
   }

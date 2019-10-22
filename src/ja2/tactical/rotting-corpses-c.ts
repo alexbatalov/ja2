@@ -386,7 +386,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   if ((iIndex = GetFreeRottingCorpse()) == (-1))
     return -1;
 
-  pCorpse = &gRottingCorpse[iIndex];
+  pCorpse = addressof(gRottingCorpse[iIndex]);
 
   // Copy elements in
   memcpy(pCorpse, pCorpseDef, sizeof(ROTTING_CORPSE_DEFINITION));
@@ -428,7 +428,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
     ubLevelID = ANI_ONROOF_LEVEL;
   }
 
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = pCorpse.value.def.sGridNo;
   AniParams.ubLevelID = ubLevelID;
   AniParams.sDelay = (150);
@@ -445,7 +445,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
     strcpy(AniParams.zCachedFile, zCorpseFilenames[pCorpse.value.def.ubType]);
   }
 
-  pCorpse.value.pAniTile = CreateAnimationTile(&AniParams);
+  pCorpse.value.pAniTile = CreateAnimationTile(addressof(AniParams));
 
   if (pCorpse.value.pAniTile == NULL) {
     pCorpse.value.fActivated = FALSE;
@@ -511,7 +511,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   if (pStructureFileRef != NULL) {
     usStructIndex = GetCorpseStructIndex(pCorpseDef, TRUE);
 
-    pDBStructureRef = &(pStructureFileRef.value.pDBStructureRef[usStructIndex]);
+    pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[usStructIndex]);
 
     for (ubLoop = 0; ubLoop < pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles; ubLoop++) {
       ppTile = pDBStructureRef.value.ppTile;
@@ -560,7 +560,7 @@ function RemoveCorpse(iCorpseID: INT32): void {
 
   DeleteAniTile(gRottingCorpse[iCorpseID].pAniTile);
 
-  FreeCorpsePalettes(&(gRottingCorpse[iCorpseID]));
+  FreeCorpsePalettes(addressof(gRottingCorpse[iCorpseID]));
 }
 
 function CreateCorpsePalette(pCorpse: Pointer<ROTTING_CORPSE>): BOOLEAN {
@@ -635,7 +635,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   }
 
   // Setup some values!
-  memset(&Corpse, 0, sizeof(Corpse));
+  memset(addressof(Corpse), 0, sizeof(Corpse));
   Corpse.ubBodyType = pSoldier.value.ubBodyType;
   Corpse.sGridNo = pSoldier.value.sGridNo;
   Corpse.dXPos = pSoldier.value.dXPos;
@@ -706,14 +706,14 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
     sNewGridNo = pSoldier.value.sGridNo + (WORLD_COLS * 2);
 
     for (cnt = 0; cnt < ubNumGoo; cnt++) {
-      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, &ItemObject);
+      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, addressof(ItemObject));
 
-      AddItemToPool(sNewGridNo, &ItemObject, bVisible, pSoldier.value.bLevel, usItemFlags, -1);
+      AddItemToPool(sNewGridNo, addressof(ItemObject), bVisible, pSoldier.value.bLevel, usItemFlags, -1);
     }
   } else {
     // OK, Place what objects this guy was carrying on the ground!
     for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
-      pObj = &(pSoldier.value.inv[cnt]);
+      pObj = addressof(pSoldier.value.inv[cnt]);
 
       if (pObj.value.usItem != NOTHING) {
         // Check if it's supposed to be dropped
@@ -753,7 +753,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
     Corpse.ubType = ubType;
 
     // Add corpse!
-    iCorpseID = AddRottingCorpse(&Corpse);
+    iCorpseID = AddRottingCorpse(addressof(Corpse));
   } else {
     if (ubType == NO_CORPSE) {
       return TRUE;
@@ -763,12 +763,12 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
     Corpse.ubType = ubType;
 
     // Add corpse!
-    iCorpseID = AddRottingCorpse(&Corpse);
+    iCorpseID = AddRottingCorpse(addressof(Corpse));
   }
 
   // If this is our guy......make visible...
   // if ( pSoldier->bTeam == gbPlayerNum )
-  { MakeCorpseVisible(pSoldier, &(gRottingCorpse[iCorpseID])); }
+  { MakeCorpseVisible(pSoldier, addressof(gRottingCorpse[iCorpseID])); }
 
   return TRUE;
 }
@@ -782,7 +782,7 @@ function FindNearestRottingCorpse(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
   // OK, loop through our current listing of bodies
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-    pCorpse = &(gRottingCorpse[cnt]);
+    pCorpse = addressof(gRottingCorpse[cnt]);
 
     if (pCorpse.value.fActivated) {
       // Check rotting state
@@ -810,12 +810,12 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   let ubRoomNum: UINT8;
 
   // No crows inside :(
-  if (InARoom(pCorpse.value.def.sGridNo, &ubRoomNum)) {
+  if (InARoom(pCorpse.value.def.sGridNo, addressof(ubRoomNum))) {
     return;
   }
 
   // Put him flying over corpse pisition
-  memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+  memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.ubProfile = NO_PROFILE;
   MercCreateStruct.sSectorX = gWorldSectorX;
   MercCreateStruct.sSectorY = gWorldSectorY;
@@ -824,12 +824,12 @@ function AddCrowToCorpse(pCorpse: Pointer<ROTTING_CORPSE>): void {
   MercCreateStruct.bDirection = SOUTH;
   MercCreateStruct.bTeam = CIV_TEAM;
   MercCreateStruct.sInsertionGridNo = pCorpse.value.def.sGridNo;
-  RandomizeNewSoldierStats(&MercCreateStruct);
+  RandomizeNewSoldierStats(addressof(MercCreateStruct));
 
-  if (TacticalCreateSoldier(&MercCreateStruct, &iNewIndex) != NULL) {
+  if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex)) != NULL) {
     pSoldier = MercPtrs[iNewIndex];
 
-    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.value.def.sGridNo, 2, &ubDirection);
+    sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pCorpse.value.def.sGridNo, 2, addressof(ubDirection));
 
     if (sGridNo != NOWHERE) {
       pSoldier.value.ubStrategicInsertionCode = INSERTION_CODE_GRIDNO;
@@ -859,7 +859,7 @@ function HandleCrowLeave(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   // Check if this crow is still referencing the same corpse...
-  pCorpse = &(gRottingCorpse[pSoldier.value.uiPendingActionData1]);
+  pCorpse = addressof(gRottingCorpse[pSoldier.value.uiPendingActionData1]);
 
   // Double check grindo...
   if (pSoldier.value.sPendingActionData2 == pCorpse.value.def.sGridNo) {
@@ -881,7 +881,7 @@ function HandleCrowFlyAway(pSoldier: Pointer<SOLDIERTYPE>): void {
   pSoldier.value.sDesiredHeight = 100;
 
   // Change to fly animation
-  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.value.sGridNo, 5, &ubDirection);
+  sGridNo = FindRandomGridNoFromSweetSpot(pSoldier, pSoldier.value.sGridNo, 5, addressof(ubDirection));
   pSoldier.value.usUIMovementMode = CROW_FLY;
   SendGetNewSoldierPathEvent(pSoldier, sGridNo, pSoldier.value.usUIMovementMode);
 }
@@ -943,7 +943,7 @@ function HandleRottingCorpses(): void {
   {
     uiChosenCorpseID = Random(giNumRottingCorpse);
 
-    pCorpse = &(gRottingCorpse[uiChosenCorpseID]);
+    pCorpse = addressof(gRottingCorpse[uiChosenCorpseID]);
 
     if (pCorpse.value.fActivated) {
       if (!(pCorpse.value.def.usFlags & ROTTING_CORPSE_VEHICLE)) {
@@ -1031,7 +1031,7 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (Random(400) <= 2) {
     // Loop through all corpses....
     for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-      pCorpse = &(gRottingCorpse[cnt]);
+      pCorpse = addressof(gRottingCorpse[cnt]);
 
       if (!pCorpse.value.fActivated) {
         continue;
@@ -1071,7 +1071,7 @@ function RebuildAllCorpseShadeTables(): void {
 
   // Loop through all corpses....
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-    pCorpse = &(gRottingCorpse[cnt]);
+    pCorpse = addressof(gRottingCorpse[cnt]);
 
     // If this cump is already visible, continue
     if (pCorpse.value.def.bVisible == 1) {
@@ -1132,7 +1132,7 @@ function FindCorpseBasedOnStructure(sGridNo: INT16, pStructure: Pointer<STRUCTUR
 
   if (pLevelNode != NULL) {
     // Get our corpse....
-    pCorpse = &(gRottingCorpse[pLevelNode.value.pAniTile.value.uiUserData]);
+    pCorpse = addressof(gRottingCorpse[pLevelNode.value.pAniTile.value.uiUserData]);
   }
 
   return pCorpse;
@@ -1169,7 +1169,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
 
   if (GridNoOnScreen(sBaseGridNo)) {
     // Add explosion
-    memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+    memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
     AniParams.sGridNo = sBaseGridNo;
     AniParams.ubLevelID = ANI_STRUCT_LEVEL;
     AniParams.sDelay = (80);
@@ -1180,7 +1180,7 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     AniParams.sZ = pCorpse.value.def.sHeightAdjustment;
 
     strcpy(AniParams.zCachedFile, "TILECACHE\\GEN_BLOW.STI");
-    CreateAnimationTile(&AniParams);
+    CreateAnimationTile(addressof(AniParams));
 
     // Remove....
     RemoveCorpse(pCorpse.value.iID);
@@ -1238,7 +1238,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
 
@@ -1260,7 +1260,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, 0);
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, 0);
 
   uiLowestRange = 999999;
 
@@ -1271,7 +1271,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
       sGridNo = sSweetGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS) && gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REACHABLE) {
         // Go on sweet stop
-        if (NewOKDestination(&soldier, sGridNo, TRUE, soldier.bLevel)) {
+        if (NewOKDestination(addressof(soldier), sGridNo, TRUE, soldier.bLevel)) {
           let fDirectionFound: BOOLEAN = FALSE;
           let fCanSetDirection: BOOLEAN = FALSE;
 
@@ -1280,7 +1280,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
             fDirectionFound = TRUE;
           } else {
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld(sGridNo, pDef.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pDef.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
                 fDirectionFound = TRUE;
                 fCanSetDirection = TRUE;
                 break;
@@ -1362,7 +1362,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
   if (IsValidDecapitationCorpse(pCorpse)) {
     // Decapitate.....
     // Copy corpse definition...
-    memcpy(&CorpseDef, &(pCorpse.value.def), sizeof(ROTTING_CORPSE_DEFINITION));
+    memcpy(addressof(CorpseDef), addressof(pCorpse.value.def), sizeof(ROTTING_CORPSE_DEFINITION));
 
     // Add new one...
     CorpseDef.ubType = gDecapitatedCorpse[CorpseDef.ubType];
@@ -1373,7 +1373,7 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
       // Remove old one...
       RemoveCorpse(pCorpse.value.iID);
 
-      AddRottingCorpse(&CorpseDef);
+      AddRottingCorpse(addressof(CorpseDef));
     }
 
     // Add head item.....
@@ -1405,8 +1405,8 @@ function DecapitateCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel
         break;
     }
 
-    CreateItem(usHeadIndex, 100, &Object);
-    AddItemToPool(sGridNo, &Object, INVISIBLE, 0, 0, 0);
+    CreateItem(usHeadIndex, 100, addressof(Object));
+    AddItemToPool(sGridNo, addressof(Object), INVISIBLE, 0, 0, 0);
 
     // All teams lok for this...
     NotifySoldiersToLookforItems();
@@ -1419,7 +1419,7 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
   let Object: OBJECTTYPE;
 
   // OK, get corpse
-  pCorpse = &(gRottingCorpse[pSoldier.value.uiPendingActionData4]);
+  pCorpse = addressof(gRottingCorpse[pSoldier.value.uiPendingActionData4]);
 
   bObjSlot = FindObj(pSoldier, JAR);
 
@@ -1429,21 +1429,21 @@ function GetBloodFromCorpse(pSoldier: Pointer<SOLDIERTYPE>): void {
     case INFANTMONSTER_DEAD:
 
       // Can get creature blood....
-      CreateItem(JAR_CREATURE_BLOOD, 100, &Object);
+      CreateItem(JAR_CREATURE_BLOOD, 100, addressof(Object));
       break;
 
     case QUEEN_MONSTER_DEAD:
-      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, &Object);
+      CreateItem(JAR_QUEEN_CREATURE_BLOOD, 100, addressof(Object));
       break;
 
     default:
 
-      CreateItem(JAR_HUMAN_BLOOD, 100, &Object);
+      CreateItem(JAR_HUMAN_BLOOD, 100, addressof(Object));
       break;
   }
 
   if (bObjSlot != NO_SLOT) {
-    SwapObjs(&(pSoldier.value.inv[bObjSlot]), &Object);
+    SwapObjs(addressof(pSoldier.value.inv[bObjSlot]), addressof(Object));
   }
 }
 
@@ -1453,7 +1453,7 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
   Assert(pSoldier);
   Assert((iInvSlot >= 0) && (iInvSlot < NUM_INV_SLOTS));
 
-  pObj = &(pSoldier.value.inv[iInvSlot]);
+  pObj = addressof(pSoldier.value.inv[iInvSlot]);
 
   // if not a player soldier
   if (pSoldier.value.bTeam != gbPlayerNum) {
@@ -1524,7 +1524,7 @@ function GetGridNoOfCorpseGivenProfileID(ubProfileID: UINT8): INT16 {
 
   // Loop through all corpses....
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-    pCorpse = &(gRottingCorpse[cnt]);
+    pCorpse = addressof(gRottingCorpse[cnt]);
 
     if (pCorpse.value.fActivated) {
       if (pCorpse.value.def.ubProfile == ubProfileID) {
@@ -1541,7 +1541,7 @@ function DecayRottingCorpseAIWarnings(): void {
   let pCorpse: Pointer<ROTTING_CORPSE>;
 
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-    pCorpse = &(gRottingCorpse[cnt]);
+    pCorpse = addressof(gRottingCorpse[cnt]);
 
     if (pCorpse.value.fActivated && pCorpse.value.def.ubAIWarningValue > 0) {
       pCorpse.value.def.ubAIWarningValue--;
@@ -1555,7 +1555,7 @@ function GetNearestRottingCorpseAIWarning(sGridNo: INT16): UINT8 {
   let ubHighestWarning: UINT8 = 0;
 
   for (cnt = 0; cnt < giNumRottingCorpse; cnt++) {
-    pCorpse = &(gRottingCorpse[cnt]);
+    pCorpse = addressof(gRottingCorpse[cnt]);
 
     if (pCorpse.value.fActivated && pCorpse.value.def.ubAIWarningValue > 0) {
       if (PythSpacesAway(sGridNo, pCorpse.value.def.sGridNo) <= CORPSE_WARNING_DIST) {

@@ -47,7 +47,7 @@ function RenderTacticalInterface(): void {
 
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
-      RenderSMPanel(&fInterfacePanelDirty);
+      RenderSMPanel(addressof(fInterfacePanelDirty));
       break;
 
     case TEAM_PANEL:
@@ -80,7 +80,7 @@ function RenderTacticalInterfaceWhileScrolling(): void {
 
   switch (gsCurInterfacePanel) {
     case SM_PANEL:
-      RenderSMPanel(&fInterfacePanelDirty);
+      RenderSMPanel(addressof(fInterfacePanelDirty));
       break;
 
     case TEAM_PANEL:
@@ -111,7 +111,7 @@ function SetUpInterface(): void {
   }
 
   if (gusSelectedSoldier != NO_SOLDIER) {
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
   }
 
   if (gCurrentUIMode == OPENDOOR_MENU_MODE) {
@@ -193,7 +193,7 @@ function SetUpInterface(): void {
 
   // Check if we are over an interactive tile...
   if (gfUIShowCurIntTile) {
-    pIntTile = GetCurInteractiveTileGridNo(&gsUICurIntTileEffectGridNo);
+    pIntTile = GetCurInteractiveTileGridNo(addressof(gsUICurIntTileEffectGridNo));
 
     if (pIntTile != NULL) {
       gusUICurIntTileEffectIndex = pIntTile.value.usIndex;
@@ -313,7 +313,7 @@ function RenderRubberBanding(): void {
   }
 
   // Draw rectangle.....
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_WINDOW_END_Y);
 
   usLineColor = Get16BPPColor(guiColors[iFlashColor]);
@@ -394,7 +394,7 @@ function RenderTopmostTacticalInterface(): void {
 
     switch (gsCurInterfacePanel) {
       case SM_PANEL:
-        RenderSMPanel(&fInterfacePanelDirty);
+        RenderSMPanel(addressof(fInterfacePanelDirty));
         break;
 
       case TEAM_PANEL:
@@ -444,7 +444,7 @@ function RenderTopmostTacticalInterface(): void {
             // Loadup cursor!
             VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
             FilenameForBPP("CURSORS\\targblak.sti", VObjectDesc.ImageFile);
-            AddVideoObject(&VObjectDesc, &uiBogTarget);
+            AddVideoObject(addressof(VObjectDesc), addressof(uiBogTarget));
           }
 
           if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt].value.sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt].value.sPlannedTargetX / CELL_X_SIZE)))) {
@@ -452,7 +452,7 @@ function RenderTopmostTacticalInterface(): void {
             sOffsetX = (MercPtrs[cnt].value.sPlannedTargetX - gsRenderCenterX);
             sOffsetY = (MercPtrs[cnt].value.sPlannedTargetY - gsRenderCenterY);
 
-            FromCellToScreenCoordinates(sOffsetX, sOffsetY, &sTempX_S, &sTempY_S);
+            FromCellToScreenCoordinates(sOffsetX, sOffsetY, addressof(sTempX_S), addressof(sTempY_S));
 
             sX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
             sY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
@@ -514,8 +514,8 @@ function RenderTopmostTacticalInterface(): void {
         let sDamageY: INT16;
 
         if (pSoldier.value.sGridNo != NOWHERE && pSoldier.value.bVisible != -1) {
-          GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
-          GetSoldierAnimOffsets(pSoldier, &sOffsetX, &sOffsetY);
+          GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
+          GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
 
           if (pSoldier.value.ubBodyType == QUEENMONSTER) {
             sDamageX = sMercScreenX + pSoldier.value.sDamageX - pSoldier.value.sBoundingBoxOffsetX;
@@ -570,18 +570,18 @@ function RenderTopmostTacticalInterface(): void {
   }
 
   // CHECK IF OUR CURSOR IS OVER AN INV POOL
-  if (GetMouseMapPos(&usMapPos)) {
+  if (GetMouseMapPos(addressof(usMapPos))) {
     if (gfUIOverItemPool) {
-      if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
+      if (GetSoldier(addressof(pSoldier), gusSelectedSoldier)) {
         // Check if we are over an item pool
-        if (GetItemPool(gfUIOverItemPoolGridNo, &pItemPool, pSoldier.value.bLevel)) {
+        if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), pSoldier.value.bLevel)) {
           let pStructure: Pointer<STRUCTURE> = NULL;
           let sIntTileGridNo: INT16;
           let bZLevel: INT8 = 0;
           let sActionGridNo: INT16 = usMapPos;
 
           // Get interactive tile...
-          if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {
+          if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
             sActionGridNo = sIntTileGridNo;
           }
 
@@ -604,14 +604,14 @@ function RenderTopmostTacticalInterface(): void {
           }
 
           // Check if we are over an item pool
-          if (GetItemPool(gfUIOverItemPoolGridNo, &pItemPool, bCheckLevel)) {
+          if (GetItemPool(gfUIOverItemPoolGridNo, addressof(pItemPool), bCheckLevel)) {
             let pStructure: Pointer<STRUCTURE> = NULL;
             let sIntTileGridNo: INT16;
             let bZLevel: INT8 = 0;
             let sActionGridNo: INT16 = usMapPos;
 
             // Get interactive tile...
-            if (ConditionalGetCurInteractiveTileGridNoAndStructure(&sIntTileGridNo, &pStructure, FALSE)) {
+            if (ConditionalGetCurInteractiveTileGridNoAndStructure(addressof(sIntTileGridNo), addressof(pStructure), FALSE)) {
               sActionGridNo = sIntTileGridNo;
             }
 
@@ -682,10 +682,10 @@ function RenderTopmostTacticalInterface(): void {
 function StartViewportOverlays(): void {
   // Set Clipping Rect to be the viewscreen
   // Save old one
-  memcpy(&gOldClippingRect, &ClippingRect, sizeof(gOldClippingRect));
+  memcpy(addressof(gOldClippingRect), addressof(ClippingRect), sizeof(gOldClippingRect));
 
   // Save old dirty clipping rect
-  memcpy(&gOldDirtyClippingRect, &ClippingRect, sizeof(gOldDirtyClippingRect));
+  memcpy(addressof(gOldDirtyClippingRect), addressof(ClippingRect), sizeof(gOldDirtyClippingRect));
 
   // Set bottom clipping value for blitter clipping rect
   ClippingRect.iLeft = INTERFACE_START_X;
@@ -705,8 +705,8 @@ function StartViewportOverlays(): void {
 
 function EndViewportOverlays(): void {
   // Reset clipping rect
-  memcpy(&ClippingRect, &gOldClippingRect, sizeof(gOldClippingRect));
-  memcpy(&gDirtyClipRect, &gOldDirtyClippingRect, sizeof(gOldDirtyClippingRect));
+  memcpy(addressof(ClippingRect), addressof(gOldClippingRect), sizeof(gOldClippingRect));
+  memcpy(addressof(gDirtyClipRect), addressof(gOldDirtyClippingRect), sizeof(gOldDirtyClippingRect));
   RestoreFontSettings();
 }
 
@@ -715,9 +715,9 @@ function LockTacticalInterface(): void {
   // 1) create a mouse region over the entrie interface panel
   // 2) set flag for use in tactical to indicate we are locked
   if (!(guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
-    MSYS_DefineRegion(&gLockPanelOverlayRegion, 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gLockPanelOverlayRegion), 0, gsVIEWPORT_WINDOW_END_Y, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
     // Add region
-    MSYS_AddRegion(&gLockPanelOverlayRegion);
+    MSYS_AddRegion(addressof(gLockPanelOverlayRegion));
 
     guiTacticalInterfaceFlags |= INTERFACE_LOCKEDLEVEL1;
   }
@@ -726,7 +726,7 @@ function LockTacticalInterface(): void {
 function UnLockTacticalInterface(): void {
   if ((guiTacticalInterfaceFlags & INTERFACE_LOCKEDLEVEL1)) {
     // Remove region
-    MSYS_RemoveRegion(&gLockPanelOverlayRegion);
+    MSYS_RemoveRegion(addressof(gLockPanelOverlayRegion));
 
     guiTacticalInterfaceFlags &= (~INTERFACE_LOCKEDLEVEL1);
   }

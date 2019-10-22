@@ -217,7 +217,7 @@ function RenderFiles(): void {
   BlitTitleBarIcons();
 
   // display border
-  GetVideoObject(&hHandle, guiLaptopBACKGROUND);
+  GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
@@ -227,13 +227,13 @@ function RenderFilesBackGround(): void {
   let iCounter: INT32 = 0;
 
   // get title bar object
-  GetVideoObject(&hHandle, guiTITLE);
+  GetVideoObject(addressof(hHandle), guiTITLE);
 
   // blt title bar to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // get and blt the top part of the screen, video object and blt to screen
-  GetVideoObject(&hHandle, guiTOP);
+  GetVideoObject(addressof(hHandle), guiTOP);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
 
   return;
@@ -260,22 +260,22 @@ function LoadFiles(): BOOLEAN {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTITLE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\fileviewer.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTOP));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTOP)));
 
   // the highlight
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\highlight.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiHIGHLIGHT));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHIGHLIGHT)));
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\fileviewerwhite.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFileBack));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFileBack)));
 
   return TRUE;
 }
@@ -408,17 +408,17 @@ function OpenAndReadFilesFile(): void {
   // file exists, read in data, continue until file end
   while (FileGetSize(hFileHandle) > uiByteCount) {
     // read in data
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
 
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
 
-    FileRead(hFileHandle, &pFirstFilePath, 128, &iBytesRead);
+    FileRead(hFileHandle, addressof(pFirstFilePath), 128, addressof(iBytesRead));
 
-    FileRead(hFileHandle, &pSecondFilePath, 128, &iBytesRead);
+    FileRead(hFileHandle, addressof(pSecondFilePath), 128, addressof(iBytesRead));
 
-    FileRead(hFileHandle, &ubFormat, sizeof(UINT8), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubFormat), sizeof(UINT8), addressof(iBytesRead));
 
-    FileRead(hFileHandle, &fRead, sizeof(UINT8), &iBytesRead);
+    FileRead(hFileHandle, addressof(fRead), sizeof(UINT8), addressof(iBytesRead));
     // add transaction
     ProcessAndEnterAFilesRecord(ubCode, uiDate, ubFormat, pFirstFilePath, pSecondFilePath, fRead);
 
@@ -440,8 +440,8 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   let pFirstFilePath: CHAR8[] /* [128] */;
   let pSecondFilePath: CHAR8[] /* [128] */;
 
-  memset(&pFirstFilePath, 0, sizeof(pFirstFilePath));
-  memset(&pSecondFilePath, 0, sizeof(pSecondFilePath));
+  memset(addressof(pFirstFilePath), 0, sizeof(pFirstFilePath));
+  memset(addressof(pSecondFilePath), 0, sizeof(pSecondFilePath));
 
   if (pFilesList != NULL) {
     if (pFilesList.value.pPicFileNameList[0]) {
@@ -462,12 +462,12 @@ function OpenAndWriteFilesFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pFilesList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, &(pFilesList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pFilesList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, &(pFirstFilePath), 128, NULL);
-    FileWrite(hFileHandle, &(pSecondFilePath), 128, NULL);
-    FileWrite(hFileHandle, &(pFilesList.value.ubFormat), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pFilesList.value.fRead), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pFilesList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pFilesList.value.uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, addressof(pFirstFilePath), 128, NULL);
+    FileWrite(hFileHandle, addressof(pSecondFilePath), 128, NULL);
+    FileWrite(hFileHandle, addressof(pFilesList.value.ubFormat), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pFilesList.value.fRead), sizeof(UINT8), NULL);
 
     // next element in list
     pFilesList = pFilesList.value.Next;
@@ -536,7 +536,7 @@ function DisplayFilesList(): void {
   {
     if (iCounter == iHighLightFileLine) {
       // render highlight
-      GetVideoObject(&hHandle, guiHIGHLIGHT);
+      GetVideoObject(addressof(hHandle), guiHIGHLIGHT);
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILES_SENDER_TEXT_X - 5, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 4, VO_BLT_SRCTRANSPARENCY, NULL);
     }
     mprintf(FILES_SENDER_TEXT_X, ((iCounter + 9) * BLOCK_HEIGHT) + (iCounter * 2) - 2, pFilesSenderList[pFilesList.value.ubCode]);
@@ -569,9 +569,9 @@ function InitializeFilesMouseRegions(): void {
   let iCounter: INT32 = 0;
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
-    MSYS_DefineRegion(&pFilesRegions[iCounter], FILES_LIST_X, (FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
-    MSYS_AddRegion(&pFilesRegions[iCounter]);
-    MSYS_SetRegionUserData(&pFilesRegions[iCounter], 0, iCounter);
+    MSYS_DefineRegion(addressof(pFilesRegions[iCounter]), FILES_LIST_X, (FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
+    MSYS_AddRegion(addressof(pFilesRegions[iCounter]));
+    MSYS_SetRegionUserData(addressof(pFilesRegions[iCounter]), 0, iCounter);
   }
 
   return;
@@ -580,7 +580,7 @@ function InitializeFilesMouseRegions(): void {
 function RemoveFilesMouseRegions(): void {
   let iCounter: INT32 = 0;
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
-    MSYS_RemoveRegion(&pFilesRegions[iCounter]);
+    MSYS_RemoveRegion(addressof(pFilesRegions[iCounter]));
   }
 }
 
@@ -663,7 +663,7 @@ function DisplayFormattedText(): BOOLEAN {
 
   // clear the file string structure list
   // get file background object
-  GetVideoObject(&hHandle, guiFileBack);
+  GetVideoObject(addressof(hHandle), guiFileBack);
 
   // blt background to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X, FILE_VIEWER_Y - 4, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -713,12 +713,12 @@ function DisplayFormattedText(): BOOLEAN {
       // load graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(pFilesList.value.pPicFileNameList[0], VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiFirstTempPicture));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiFirstTempPicture)));
 
-      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, &usFirstWidth, &usFirstHeight);
+      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, addressof(usFirstWidth), addressof(usFirstHeight));
 
       // get file background object
-      GetVideoObject(&hHandle, uiFirstTempPicture);
+      GetVideoObject(addressof(hHandle), uiFirstTempPicture);
 
       // blt background to screen
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + 4 + (FILE_VIEWER_WIDTH - usFirstWidth) / 2, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -747,28 +747,28 @@ function DisplayFormattedText(): BOOLEAN {
       // load first graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(pFilesList.value.pPicFileNameList[0], VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiFirstTempPicture));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiFirstTempPicture)));
 
       // load second graphic
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(pFilesList.value.pPicFileNameList[1], VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiSecondTempPicture));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiSecondTempPicture)));
 
-      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, &usFirstWidth, &usFirstHeight);
-      GetVideoObjectETRLESubregionProperties(uiSecondTempPicture, 0, &usSecondWidth, &usSecondHeight);
+      GetVideoObjectETRLESubregionProperties(uiFirstTempPicture, 0, addressof(usFirstWidth), addressof(usFirstHeight));
+      GetVideoObjectETRLESubregionProperties(uiSecondTempPicture, 0, addressof(usSecondWidth), addressof(usSecondHeight));
 
       // get free space;
       usFreeSpace = FILE_VIEWER_WIDTH - usFirstWidth - usSecondWidth;
 
       usFreeSpace /= 3;
       // get file background object
-      GetVideoObject(&hHandle, uiFirstTempPicture);
+      GetVideoObject(addressof(hHandle), uiFirstTempPicture);
 
       // blt background to screen
       BltVideoObject(FRAME_BUFFER, hHandle, 0, FILE_VIEWER_X + usFreeSpace, FILE_VIEWER_Y + 10, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // get file background object
-      GetVideoObject(&hHandle, uiSecondTempPicture);
+      GetVideoObject(addressof(hHandle), uiSecondTempPicture);
 
       // get position for second picture
       usFreeSpace *= 2;
@@ -955,10 +955,10 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     // title bar
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\ArucoFilesMap.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &uiPicture));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiPicture)));
 
     // get title bar object
-    GetVideoObject(&hHandle, uiPicture);
+    GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 300, 270, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -968,10 +968,10 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     // kid pic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\Enrico_Y.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &uiPicture));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiPicture)));
 
     // get title bar object
-    GetVideoObject(&hHandle, uiPicture);
+    GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 225, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -981,10 +981,10 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
     // wedding pic
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("LAPTOP\\Enrico_W.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &uiPicture));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiPicture)));
 
     // get title bar object
-    GetVideoObject(&hHandle, uiPicture);
+    GetVideoObject(addressof(hHandle), uiPicture);
 
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, 260, 85, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -1413,10 +1413,10 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiPicture));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiPicture)));
 
       // Blt face to screen to
-      GetVideoObject(&hHandle, uiPicture);
+      GetVideoObject(addressof(hHandle), uiPicture);
 
       // def: 3/24/99
       //				BltVideoObject(FRAME_BUFFER, hHandle, 0,( INT16 ) (  FILE_VIEWER_X +  30 ), ( INT16 ) ( iYPositionOnPage + 5), VO_BLT_SRCTRANSPARENCY,NULL);
@@ -1426,10 +1426,10 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP("LAPTOP\\InterceptBorder.sti", VObjectDesc.ImageFile);
-      CHECKF(AddVideoObject(&VObjectDesc, &uiPicture));
+      CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiPicture)));
 
       // Blt face to screen to
-      GetVideoObject(&hHandle, uiPicture);
+      GetVideoObject(addressof(hHandle), uiPicture);
 
       BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 25), (iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, NULL);
 

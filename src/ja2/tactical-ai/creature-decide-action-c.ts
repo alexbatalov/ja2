@@ -400,7 +400,7 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   // determine the most important noise heard, and its relative value
-  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, &iNoiseValue, &fClimb, &fReachable);
+  sNoiseGridNo = MostImportantNoiseHeard(pSoldier, addressof(iNoiseValue), addressof(fClimb), addressof(fReachable));
   // NumMessage("iNoiseValue = ",iNoiseValue);
 
   if (sNoiseGridNo == NOWHERE) {
@@ -663,7 +663,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
     }
 
     // get the location of the closest reachable opponent
-    sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, &fChangeLevel);
+    sClosestDisturbance = ClosestReachableDisturbance(pSoldier, ubUnconsciousOK, addressof(fChangeLevel));
     // if there is an opponent reachable
     if (sClosestDisturbance != NOWHERE) {
       //////////////////////////////////////////////////////////////////////
@@ -688,7 +688,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
       if (PythSpacesAway(pSoldier.value.sGridNo, pSoldier.value.usActionData) < MAX_EAT_DIST) {
         let sGridNo: INT16;
 
-        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.value.usActionData, &ubOpponentDir, &sAdjustedGridNo, FALSE, FALSE);
+        sGridNo = FindAdjacentGridEx(pSoldier, pSoldier.value.usActionData, addressof(ubOpponentDir), addressof(sAdjustedGridNo), FALSE, FALSE);
 
         if (sGridNo != -1) {
           pSoldier.value.usActionData = sGridNo;
@@ -941,7 +941,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           // if we have enough action points to shoot with this gun
           if (pSoldier.value.bActionPoints >= ubMinAPCost) {
             // look around for a worthy target (which sets BestShot.ubPossible)
-            CalcBestShot(pSoldier, &BestShot);
+            CalcBestShot(pSoldier, addressof(BestShot));
 
             if (BestShot.ubPossible) {
               BestShot.bWeaponIn = bWeaponIn;
@@ -953,7 +953,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
                 // if our attitude is NOT aggressive
                 if (pSoldier.value.bAttitude != AGGRESSIVE) {
                   // get the location of the closest CONSCIOUS reachable opponent
-                  sClosestDisturbance = ClosestReachableDisturbance(pSoldier, FALSE, &fChangeLevel);
+                  sClosestDisturbance = ClosestReachableDisturbance(pSoldier, FALSE, addressof(fChangeLevel));
 
                   // if we found one
                   if (sClosestDisturbance != NOWHERE) {
@@ -1026,9 +1026,9 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         // then look around for a worthy target (which sets BestStab.ubPossible)
 
         if (pSoldier.value.ubBodyType == QUEENMONSTER) {
-          CalcTentacleAttack(pSoldier, &CurrStab);
+          CalcTentacleAttack(pSoldier, addressof(CurrStab));
         } else {
-          CalcBestStab(pSoldier, &CurrStab, TRUE);
+          CalcBestStab(pSoldier, addressof(CurrStab), TRUE);
         }
 
         if (CurrStab.ubPossible) {
@@ -1043,7 +1043,7 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
         if (CurrStab.iAttackValue > BestStab.iAttackValue) {
           CurrStab.bWeaponIn = bWeaponIn;
-          memcpy(&BestStab, &CurrStab, sizeof(BestStab));
+          memcpy(addressof(BestStab), addressof(CurrStab), sizeof(BestStab));
         }
       }
     }
@@ -1068,11 +1068,11 @@ function CreatureDecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // copy the information on the best action selected into BestAttack struct
       switch (ubBestAttackAction) {
         case AI_ACTION_FIRE_GUN:
-          memcpy(&BestAttack, &BestShot, sizeof(BestAttack));
+          memcpy(addressof(BestAttack), addressof(BestShot), sizeof(BestAttack));
           break;
 
         case AI_ACTION_KNIFE_MOVE:
-          memcpy(&BestAttack, &BestStab, sizeof(BestAttack));
+          memcpy(addressof(BestAttack), addressof(BestStab), sizeof(BestAttack));
           break;
       }
 
@@ -1256,7 +1256,7 @@ function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
           // if we are NOT aware of any uninvestigated noises right now
           // and we are not currently in the middle of an action
           // (could still be on his way heading to investigate a noise!)
-          if ((MostImportantNoiseHeard(pSoldier, &iDummy, &fClimbDummy, &fReachableDummy) == NOWHERE) && !pSoldier.value.bActionInProgress) {
+          if ((MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE) && !pSoldier.value.bActionInProgress) {
             // then drop back to GREEN status
             pSoldier.value.bAlertStatus = STATUS_GREEN;
           }
@@ -1269,7 +1269,7 @@ function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
           pSoldier.value.bAlertStatus = STATUS_RED;
         } else {
           // if we ARE aware of any uninvestigated noises right now
-          if (MostImportantNoiseHeard(pSoldier, &iDummy, &fClimbDummy, &fReachableDummy) != NOWHERE) {
+          if (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) != NOWHERE) {
             // then move up to YELLOW status
             pSoldier.value.bAlertStatus = STATUS_YELLOW;
           }
@@ -1303,7 +1303,7 @@ function CreatureDecideAlertStatus(pSoldier: Pointer<SOLDIERTYPE>): void {
         SetNewSituation(pSoldier);
 
         // current action will be canceled. if noise is no longer important
-        if ((pSoldier.value.bAlertStatus == STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, &iDummy, &fClimbDummy, &fReachableDummy) == NOWHERE)) {
+        if ((pSoldier.value.bAlertStatus == STATUS_YELLOW) && (MostImportantNoiseHeard(pSoldier, addressof(iDummy), addressof(fClimbDummy), addressof(fReachableDummy)) == NOWHERE)) {
           // then drop back to GREEN status
           pSoldier.value.bAlertStatus = STATUS_GREEN;
           CheckForChangingOrders(pSoldier);
@@ -1349,7 +1349,7 @@ function CrowDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       }
     } else {
       // Walk to nearest one!
-      pSoldier.value.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, &ubDirection);
+      pSoldier.value.usActionData = FindGridNoFromSweetSpot(pSoldier, sCorpseGridNo, 4, addressof(ubDirection));
       if (pSoldier.value.usActionData != NOWHERE) {
         return AI_ACTION_GET_CLOSER;
       }

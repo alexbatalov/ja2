@@ -32,7 +32,7 @@ function EnterMercsNoAccount(): BOOLEAN {
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\NoAccountBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiNoAccountImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiNoAccountImage)));
 
   // Open Accouint button
   guiOpenAccountBoxButtonImage = LoadButtonImage("LAPTOP\\BigButtons.sti", -1, 0, -1, 1, -1);
@@ -69,7 +69,7 @@ function RenderMercsNoAccount(): void {
   DrawMecBackGround();
 
   // Title
-  GetVideoObject(&hPixHandle, guiNoAccountImage);
+  GetVideoObject(addressof(hPixHandle), guiNoAccountImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_NO_ACCOUNT_IMAGE_X, MERC_NO_ACCOUNT_IMAGE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the sentence

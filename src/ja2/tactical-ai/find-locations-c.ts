@@ -163,7 +163,7 @@ function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo
 
           // NOTE: GOTTA SET THESE 3 FIELDS *BACK* AFTER USING THIS FUNCTION!!!
           pSoldier.value.sGridNo = sAdjSpot; // pretend he's standing at 'sAdjSpot'
-          AICenterXY(sAdjSpot, &(pSoldier.value.dXPos), &(pSoldier.value.dYPos));
+          AICenterXY(sAdjSpot, addressof(pSoldier.value.dXPos), addressof(pSoldier.value.dYPos));
           bThisCTGT = CalcWorstCTGTForPosition(pSoldier, ubOppID, sOppGridNo, bLevel, iMyAPsLeft);
           if (bThisCTGT > bBestCTGT) {
             bBestCTGT = bThisCTGT;
@@ -220,7 +220,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     dMyY = pMe.value.dYPos;
 
     pMe.value.sGridNo = sMyGridNo; // but pretend I'm standing at sMyGridNo
-    ConvertGridNoToCenterCellXY(sMyGridNo, &sTempX, &sTempY);
+    ConvertGridNoToCenterCellXY(sMyGridNo, addressof(sTempX), addressof(sTempY));
     pMe.value.dXPos = sTempX;
     pMe.value.dYPos = sTempY;
   }
@@ -232,7 +232,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     dHisY = pHim.value.dYPos;
 
     pHim.value.sGridNo = sHisGridNo; // but pretend he's standing at sHisGridNo
-    ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
+    ConvertGridNoToCenterCellXY(sHisGridNo, addressof(sTempX), addressof(sTempY));
     pHim.value.dXPos = sTempX;
     pHim.value.dYPos = sTempY;
   }
@@ -277,7 +277,7 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     // put him at sHisGridNo if necessary!
     if (pHim.value.sGridNo != sHisGridNo) {
       pHim.value.sGridNo = sHisGridNo;
-      ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
+      ConvertGridNoToCenterCellXY(sHisGridNo, addressof(sTempX), addressof(sTempY));
       pHim.value.dXPos = sTempX;
       pHim.value.dYPos = sTempY;
     }
@@ -478,12 +478,12 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
 
   // BUILD A LIST OF THREATENING GRID #s FROM PERSONAL & PUBLIC opplists
 
-  pusLastLoc = &(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
+  pusLastLoc = addressof(gsLastKnownOppLoc[pSoldier.value.ubID][0]);
 
   // hang a pointer into personal opplist
-  pbPersOL = &(pSoldier.value.bOppList[0]);
+  pbPersOL = addressof(pSoldier.value.bOppList[0]);
   // hang a pointer into public opplist
-  pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][0]);
+  pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][0]);
 
   // decide how far we're gonna be looking
   iSearchRange = gbDiff[DIFF_MAX_COVER_RANGE][SoldierDifficultyLevel(pSoldier)];
@@ -632,7 +632,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
     // if this threat is CURRENTLY within 20 tiles
     if (Threat[uiLoop].iOrigRange <= MAX_THREAT_RANGE) {
       // add this opponent's cover value to our current total cover value
-      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier.value.sGridNo, iMyThreatValue, pSoldier.value.bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, &iCurrentScale);
+      iCurrentCoverValue += CalcCoverValue(pSoldier, pSoldier.value.sGridNo, iMyThreatValue, pSoldier.value.bActionPoints, uiLoop, Threat[uiLoop].iOrigRange, morale, addressof(iCurrentScale));
     }
     // sprintf(tempstr,"iCurrentCoverValue after opponent %d is now %d",iLoop,iCurrentCoverValue);
     // PopMessage(tempstr);
@@ -652,7 +652,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   sMaxDown = min(iSearchRange, MAXROW - ((pSoldier.value.sGridNo / MAXROW) + 1));
   // NumMessage("sMaxDown = ",sMaxDown);
 
-  iRoamRange = RoamingRange(pSoldier, &sOrigin);
+  iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
 
   // if status isn't black (life & death combat), and roaming range is limited
   if ((pSoldier.value.bAlertStatus != STATUS_BLACK) && (iRoamRange < MAX_ROAMING_RANGE) && (sOrigin != NOWHERE)) {
@@ -779,7 +779,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
         iThreatRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, Threat[uiLoop].sGridNo);
         // if this threat would be within 20 tiles, count it
         if (iThreatRange <= MAX_THREAT_RANGE) {
-          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier.value.bActionPoints - iPathCost), uiLoop, iThreatRange, morale, &iCoverScale);
+          iCoverValue += CalcCoverValue(pSoldier, sGridNo, iMyThreatValue, (pSoldier.value.bActionPoints - iPathCost), uiLoop, iThreatRange, morale, addressof(iCoverScale));
         }
 
         // sprintf(tempstr,"iCoverValue after opponent %d is now %d",iLoop,iCoverValue);
@@ -905,8 +905,8 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       continue; // next merc
     }
 
-    pbPersOL = &(pSoldier.value.bOppList[pOpponent.value.ubID]);
-    pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
+    pbPersOL = addressof(pSoldier.value.bOppList[pOpponent.value.ubID]);
+    pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][pOpponent.value.ubID]);
 
     // if this opponent is unknown personally and publicly
     if ((*pbPersOL == NOT_HEARD_OR_SEEN) && (*pbPublOL == NOT_HEARD_OR_SEEN)) {
@@ -953,7 +953,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
   // get roaming range here; for civilians, running away is limited by roam range
   if (pSoldier.value.bTeam == CIV_TEAM) {
-    iRoamRange = RoamingRange(pSoldier, &sOrigin);
+    iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
     if (iRoamRange == 0) {
       return sBestSpot;
     }
@@ -1057,7 +1057,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       }
 
       if (pSoldier.value.bTeam == CIV_TEAM) {
-        iRoamRange = RoamingRange(pSoldier, &sOrigin);
+        iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
         if (PythSpacesAway(sOrigin, sGridNo) > iRoamRange) {
           continue;
         }
@@ -1073,7 +1073,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
       iSpotClosestThreatRange = 1500;
 
-      if (pSoldier.value.bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, &bEscapeDirection)) {
+      if (pSoldier.value.bTeam == ENEMY_TEAM && GridNoOnEdgeOfMap(sGridNo, addressof(bEscapeDirection))) {
         // We can escape!  This is better than anything else except a closer spot which we can
         // cross over from.
 
@@ -1246,7 +1246,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 
   bCurrLightLevel = LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel);
 
-  iRoamRange = RoamingRange(pSoldier, &sOrigin);
+  iRoamRange = RoamingRange(pSoldier, addressof(sOrigin));
 
   // start with a small search area, and expand it if we're unsuccessful
   // this should almost never need to search farther than 5 or 10 squares...
@@ -1479,13 +1479,13 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
         }
 
         iValue = 0;
-        GetItemPool(sGridNo, &pItemPool, pSoldier.value.bLevel);
+        GetItemPool(sGridNo, addressof(pItemPool), pSoldier.value.bLevel);
         switch (bReason) {
           case SEARCH_AMMO:
             // we are looking for ammo to match the gun in usItem
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
-              pItem = &(Item[pObj.value.usItem]);
+              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass == IC_GUN && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 // maybe this gun has ammo (adjust for whether it is better than ours!)
                 if (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || (pObj.value.usItem == ROCKET_RIFLE && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID)) {
@@ -1507,8 +1507,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
             break;
           case SEARCH_WEAPONS:
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
-              pItem = &(Item[pObj.value.usItem]);
+              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == ROCKET_RIFLE || pObj.value.usItem == AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
                   // jammed or out of ammo, skip it!
@@ -1534,8 +1534,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
             break;
           default:
             while (pItemPool) {
-              pObj = &(gWorldItems[pItemPool.value.iItemIndex].o);
-              pItem = &(Item[pObj.value.usItem]);
+              pObj = addressof(gWorldItems[pItemPool.value.iItemIndex].o);
+              pItem = addressof(Item[pObj.value.usItem]);
               if (pItem.value.usItemClass & IC_WEAPON && pObj.value.bStatus[0] >= MINIMUM_REQUIRED_STATUS) {
                 if ((pItem.value.usItemClass & IC_GUN) && (pObj.value.bGunAmmoStatus < 0 || pObj.value.ubGunShotsLeft == 0 || ((pObj.value.usItem == ROCKET_RIFLE || pObj.value.usItem == AUTO_ROCKET_RIFLE) && pObj.value.ubImprintID != NOBODY && pObj.value.ubImprintID != pSoldier.value.ubID))) {
                   // jammed or out of ammo, skip it!
@@ -1554,8 +1554,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
                   case ARMOURCLASS_HELMET:
                     if (pSoldier.value.inv[HELMETPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[HELMETPOS]));
+                    } else if (EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS]));
                     } else {
                       iTempValue = 0;
                     }
@@ -1563,8 +1563,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
                   case ARMOURCLASS_VEST:
                     if (pSoldier.value.inv[VESTPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[VESTPOS]));
+                    } else if (EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(addressof(pSoldier.value.inv[VESTPOS]));
                     } else {
                       iTempValue = 0;
                     }
@@ -1572,8 +1572,8 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
                   case ARMOURCLASS_LEGGINGS:
                     if (pSoldier.value.inv[LEGPOS].usItem == NOTHING) {
                       iTempValue = 200 + EffectiveArmour(pObj);
-                    } else if (EffectiveArmour(&(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
-                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(&(pSoldier.value.inv[LEGPOS]));
+                    } else if (EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS])) > EffectiveArmour(pObj)) {
+                      iTempValue = 100 * EffectiveArmour(pObj) / EffectiveArmour(addressof(pSoldier.value.inv[LEGPOS]));
                     } else {
                       iTempValue = 0;
                     }
@@ -1613,7 +1613,7 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
         if (pSoldier.value.inv[HANDPOS].fFlags & OBJECT_UNDROPPABLE) {
           // destroy this item!
           DebugAI(String("%d decides he must drop %S first so destroys it", pSoldier.value.ubID, ItemNames[pSoldier.value.inv[HANDPOS].usItem]));
-          DeleteObj(&(pSoldier.value.inv[HANDPOS]));
+          DeleteObj(addressof(pSoldier.value.inv[HANDPOS]));
           DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
         } else {
           // we want to drop this item!
@@ -1739,8 +1739,8 @@ function FindNearestEdgePoint(sGridNo: INT16): INT16 {
   let sClosestDist: INT16 = 0x7FFF;
   let sTempDist: INT16;
 
-  ConvertGridNoToXY(sGridNo, &sGridX, &sGridY);
-  GetWorldXYAbsoluteScreenXY(sGridX, sGridY, &sScreenX, &sScreenY);
+  ConvertGridNoToXY(sGridNo, addressof(sGridX), addressof(sGridY));
+  GetWorldXYAbsoluteScreenXY(sGridX, sGridY, addressof(sScreenX), addressof(sScreenY));
 
   sMaxScreenX = gsBRX - gsTLX;
   sMaxScreenY = gsBRY - gsTLY;
@@ -1866,7 +1866,7 @@ function FindNearbyPointOnEdgeOfMap(pSoldier: Pointer<SOLDIERTYPE>, pbDirection:
         continue;
       }
 
-      if (GridNoOnEdgeOfMap(sGridNo, &bDirection)) {
+      if (GridNoOnEdgeOfMap(sGridNo, addressof(bDirection))) {
         iPathCost = PythSpacesAway(pSoldier.value.sGridNo, sGridNo);
 
         if (iPathCost < iClosestPathCost) {
@@ -1934,7 +1934,7 @@ function FindClosestBoxingRingSpot(pSoldier: Pointer<SOLDIERTYPE>, fInRing: BOOL
     for (sXOffset = -sMaxLeft; sXOffset <= sMaxRight; sXOffset++) {
       // calculate the next potential gridno
       sGridNo = pSoldier.value.sGridNo + sXOffset + (MAXCOL * sYOffset);
-      if (InARoom(sGridNo, &ubRoom)) {
+      if (InARoom(sGridNo, addressof(ubRoom))) {
         if ((fInRing && ubRoom == BOXING_RING) || (!fInRing && ubRoom != BOXING_RING) && LegalNPCDestination(pSoldier, sGridNo, IGNORE_PATH, NOWATER, 0)) {
           iDistance = abs(sXOffset) + abs(sYOffset);
           if (iDistance < iClosestDistance && WhoIsThere2(sGridNo, 0) == NOBODY) {

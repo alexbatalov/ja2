@@ -276,7 +276,7 @@ function FadeFrameBufferVersionOne(): void {
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -324,8 +324,8 @@ function FadeInBackBufferVersionOne(): void {
   let s16BPPSrc: UINT16;
   let bFadeVal: INT16 = (gsFadeLimit - gsFadeCount) * gbFadeValue;
 
-  pDestBuf = LockVideoSurface(BACKBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(BACKBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -373,7 +373,7 @@ function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   iStartX = gsFadeCount % 2;
   iStartY = 0;
@@ -494,7 +494,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iRight != BltFx.SrcRect.iLeft) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, &BltFx);
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
   }
 
   iX1 = giX2;
@@ -508,7 +508,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iRight != BltFx.SrcRect.iLeft) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, &BltFx);
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
   }
 
   iX1 = giX1;
@@ -522,7 +522,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iBottom != BltFx.SrcRect.iTop) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, &BltFx);
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
   }
 
   iX1 = giX1;
@@ -536,7 +536,7 @@ function FadeInBackBufferSquare(): void {
   BltFx.SrcRect.iBottom = iY2;
 
   if (BltFx.SrcRect.iBottom != BltFx.SrcRect.iTop) {
-    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, &BltFx);
+    BltVideoSurface(BACKBUFFER, FRAME_BUFFER, 0, iX1, iY1, VS_BLT_SRCSUBRECT, addressof(BltFx));
   }
 
   giX1 -= sFadeXMove;
@@ -581,10 +581,10 @@ function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
   let ubBitDepth: UINT8;
 
   // Update saved buffer - do for the viewport size ony!
-  GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
 
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
 
   if (gbPixelDepth == 16) {
     // BLIT HERE

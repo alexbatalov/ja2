@@ -76,12 +76,12 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   if ((iObjectIndex = GetFreeObjectSlot()) == (-1))
     return -1;
 
-  pObject = &(ObjectSlots[iObjectIndex]);
+  pObject = addressof(ObjectSlots[iObjectIndex]);
 
   memset(pObject, 0, sizeof(REAL_OBJECT));
 
   // OK, GET OBJECT DATA AND COPY
-  memcpy(&(pObject.value.Obj), pGameObj, sizeof(OBJECTTYPE));
+  memcpy(addressof(pObject.value.Obj), pGameObj, sizeof(OBJECTTYPE));
 
   // Get mass
   mass = CALCULATE_OBJECT_MASS(Item[pGameObj.value.usItem].ubWeight);
@@ -121,8 +121,8 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   pObject.value.InitialForce.y = SCALE_VERT_VAL_TO_HORZ(yForce);
   pObject.value.InitialForce.z = zForce;
 
-  pObject.value.InitialForce = VDivScalar(&(pObject.value.InitialForce), TIME_MULTI);
-  pObject.value.InitialForce = VMultScalar(&(pObject.value.InitialForce), 1.5);
+  pObject.value.InitialForce = VDivScalar(addressof(pObject.value.InitialForce), TIME_MULTI);
+  pObject.value.InitialForce = VMultScalar(addressof(pObject.value.InitialForce), 1.5);
 
   // Calculate gridNo
   pObject.value.sGridNo = MAPROWCOLTOPOS((yPos / CELL_Y_SIZE), (xPos / CELL_X_SIZE));
@@ -162,7 +162,7 @@ function SimulateWorld(): void {
       // CHECK FOR ALLOCATED
       if (ObjectSlots[cnt].fAllocated) {
         // Get object
-        pObject = &(ObjectSlots[cnt]);
+        pObject = addressof(ObjectSlots[cnt]);
 
         SimulateObject(pObject, DELTA_T);
       }
@@ -176,7 +176,7 @@ function RemoveAllPhysicsObjects(): void {
   for (cnt = 0; cnt < guiNumObjectSlots; cnt++) {
     // CHECK FOR ALLOCATED
     if (ObjectSlots[cnt].fAllocated) {
-      PhysicsDeleteObject(&(ObjectSlots[cnt]));
+      PhysicsDeleteObject(addressof(ObjectSlots[cnt]));
     }
   }
 }
@@ -209,7 +209,7 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
         break;
       }
 
-      if (!PhysicsHandleCollisions(pObject, &iCollisionID, DeltaTime)) {
+      if (!PhysicsHandleCollisions(pObject, addressof(iCollisionID), DeltaTime)) {
         fEndThisObject = TRUE;
         break;
       }
@@ -235,7 +235,7 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   let vTemp: vector_3;
 
   // Calculate forces
-  pObject.value.Force = VSetEqual(&(pObject.value.InitialForce));
+  pObject.value.Force = VSetEqual(addressof(pObject.value.InitialForce));
 
   // Note: Only apply gravity if we are not resting on some structure surface
   if (!pObject.value.fZOnRest) {
@@ -243,18 +243,18 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   }
 
   // Set intial force to zero
-  pObject.value.InitialForce = VMultScalar(&(pObject.value.InitialForce), 0);
+  pObject.value.InitialForce = VMultScalar(addressof(pObject.value.InitialForce), 0);
 
   if (pObject.value.fApplyFriction) {
-    vTemp = VMultScalar(&(pObject.value.Velocity), -pObject.value.AppliedMu);
-    pObject.value.Force = VAdd(&(vTemp), &(pObject.value.Force));
+    vTemp = VMultScalar(addressof(pObject.value.Velocity), -pObject.value.AppliedMu);
+    pObject.value.Force = VAdd(addressof(vTemp), addressof(pObject.value.Force));
 
     pObject.value.fApplyFriction = FALSE;
   }
 
   if (fDampingActive) {
-    vTemp = VMultScalar(&(pObject.value.Velocity), -Kdl);
-    pObject.value.Force = VAdd(&(vTemp), &(pObject.value.Force));
+    vTemp = VMultScalar(addressof(pObject.value.Velocity), -Kdl);
+    pObject.value.Force = VAdd(addressof(vTemp), addressof(pObject.value.Force));
   }
 
   return TRUE;
@@ -298,7 +298,7 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
 
             // ATE; If an armed object, don't add....
             if (pObject.value.ubActionCode != THROW_ARM_ITEM) {
-              AddItemToPool(pObject.value.sGridNo, &(pObject.value.Obj), 1, bLevel, 0, -1);
+              AddItemToPool(pObject.value.sGridNo, addressof(pObject.value.Obj), 1, bLevel, 0, -1);
             }
           }
         }
@@ -357,19 +357,19 @@ function PhysicsIntegrate(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOLE
   let vTemp: vector_3;
 
   // Save old position
-  pObject.value.OldPosition = VSetEqual(&(pObject.value.Position));
-  pObject.value.OldVelocity = VSetEqual(&(pObject.value.Velocity));
+  pObject.value.OldPosition = VSetEqual(addressof(pObject.value.Position));
+  pObject.value.OldVelocity = VSetEqual(addressof(pObject.value.Velocity));
 
-  vTemp = VMultScalar(&(pObject.value.Velocity), DeltaTime);
-  pObject.value.Position = VAdd(&(pObject.value.Position), &vTemp);
+  vTemp = VMultScalar(addressof(pObject.value.Velocity), DeltaTime);
+  pObject.value.Position = VAdd(addressof(pObject.value.Position), addressof(vTemp));
 
   // Save test TargetPosition
   if (pObject.value.fTestPositionNotSet) {
-    pObject.value.TestTargetPosition = VSetEqual(&(pObject.value.Position));
+    pObject.value.TestTargetPosition = VSetEqual(addressof(pObject.value.Position));
   }
 
-  vTemp = VMultScalar(&(pObject.value.Force), (DeltaTime * pObject.value.OneOverMass));
-  pObject.value.Velocity = VAdd(&(pObject.value.Velocity), &vTemp);
+  vTemp = VMultScalar(addressof(pObject.value.Force), (DeltaTime * pObject.value.OneOverMass));
+  pObject.value.Velocity = VAdd(addressof(pObject.value.Velocity), addressof(vTemp));
 
   if (pObject.value.fPotentialForDebug) {
     PhysicsDebugMsg(String("Object %d: Force		%f %f %f", pObject.value.iID, pObject.value.Force.x, pObject.value.Force.y, pObject.value.Force.z));
@@ -421,13 +421,13 @@ function PhysicsHandleCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID: P
       *piCollisionID = COLLISION_NONE;
     } else {
       // Set position back to before collision
-      pObject.value.Position = VSetEqual(&(pObject.value.OldPosition));
+      pObject.value.Position = VSetEqual(addressof(pObject.value.OldPosition));
       // Set old position!
       pObject.value.OldPosition.x = pObject.value.Position.y - dDeltaX;
       pObject.value.OldPosition.y = pObject.value.Position.x - dDeltaY;
       pObject.value.OldPosition.z = pObject.value.Position.z - dDeltaZ;
 
-      PhysicsResolveCollision(pObject, &(pObject.value.CollisionVelocity), &(pObject.value.CollisionNormal), pObject.value.CollisionElasticity);
+      PhysicsResolveCollision(pObject, addressof(pObject.value.CollisionVelocity), addressof(pObject.value.CollisionNormal), pObject.value.CollisionElasticity);
     }
 
     if (pObject.value.Position.z < 0) {
@@ -518,7 +518,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
   // SKIP FIRST GRIDNO, WE'LL COLLIDE WITH OURSELVES....
   if (pObject.value.fTestObject != TEST_OBJECT_NO_COLLISIONS) {
-    iCollisionCode = CheckForCollision(dX, dY, dZ, dDeltaX, dDeltaY, dDeltaZ, &usStructureID, &dNormalX, &dNormalY, &dNormalZ);
+    iCollisionCode = CheckForCollision(dX, dY, dZ, dDeltaX, dDeltaY, dDeltaZ, addressof(usStructureID), addressof(dNormalX), addressof(dNormalY), addressof(dNormalZ));
   } else if (pObject.value.fTestObject == TEST_OBJECT_NO_COLLISIONS) {
     iCollisionCode = COLLISION_NONE;
 
@@ -579,13 +579,13 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
           if (!pObject.value.fEndedWithCollisionPositionSet) {
             pObject.value.fEndedWithCollisionPositionSet = TRUE;
-            pObject.value.EndedWithCollisionPosition = VSetEqual(&(pObject.value.Position));
+            pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
           }
           iCollisionCode = COLLISION_NONE;
         } else {
           if (!pObject.value.fEndedWithCollisionPositionSet) {
             pObject.value.fEndedWithCollisionPositionSet = TRUE;
-            pObject.value.EndedWithCollisionPosition = VSetEqual(&(pObject.value.Position));
+            pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
           }
         }
         break;
@@ -594,7 +594,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
         if (!pObject.value.fEndedWithCollisionPositionSet) {
           pObject.value.fEndedWithCollisionPositionSet = TRUE;
-          pObject.value.EndedWithCollisionPosition = VSetEqual(&(pObject.value.Position));
+          pObject.value.EndedWithCollisionPosition = VSetEqual(addressof(pObject.value.Position));
         }
         break;
 
@@ -717,7 +717,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
           pObject.value.fInWater = TRUE;
 
           // Make ripple
-          memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+          memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = sGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
           AniParams.usTileType = THIRDMISS;
@@ -733,7 +733,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
             AniParams.ubUserData2 = pObject.value.ubOwner;
           }
 
-          pNode = CreateAnimationTile(&AniParams);
+          pNode = CreateAnimationTile(addressof(AniParams));
 
           // Adjust for absolute positioning
           pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
@@ -809,7 +809,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vIncident.z = 0;
       // Nomralize
 
-      vIncident = VGetNormal(&vIncident);
+      vIncident = VGetNormal(addressof(vIncident));
 
       // vTemp.x = -1;
       // vTemp.y = 0;
@@ -831,7 +831,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       pObject.value.iOldCollisionCode = iCollisionCode;
 
       // Save collision velocity
-      pObject.value.CollisionVelocity = VSetEqual(&(pObject.value.OldVelocity));
+      pObject.value.CollisionVelocity = VSetEqual(addressof(pObject.value.OldVelocity));
 
       if (pObject.value.fPotentialForDebug) {
         PhysicsDebugMsg(String("Object %d: Collision %d", pObject.value.iID, iCollisionCode));
@@ -863,7 +863,7 @@ function PhysicsResolveCollision(pObject: Pointer<REAL_OBJECT>, pVelocity: Point
 
   vTemp = VMultScalar(pNormal, Impulse);
 
-  pObject.value.Velocity = VAdd(&(pObject.value.Velocity), &vTemp);
+  pObject.value.Velocity = VAdd(addressof(pObject.value.Velocity), addressof(vTemp));
 }
 
 function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
@@ -912,7 +912,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
           strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMK.STI");
 
-          CreateAnimationTile(&AniParams);
+          CreateAnimationTile(addressof(AniParams));
         }
       } else if (pObject.value.uiNumTilesMoved > 0) {
         if (sNewGridNo != pObject.value.sGridNo) {
@@ -927,7 +927,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
           }
 
           // Now get graphic index
-          sTileIndex = GetTileGraphicForItem(&(Item[pObject.value.Obj.usItem]));
+          sTileIndex = GetTileGraphicForItem(addressof(Item[pObject.value.Obj.usItem]));
           // sTileIndex = BULLETTILE1;
 
           // Set new gridno, add
@@ -983,7 +983,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
       if (pObject.value.pNode != NULL) {
         // OK, get offsets
         hVObject = gTileDatabase[pObject.value.pNode.value.usIndex].hTileSurface;
-        pTrav = &(hVObject.value.pETRLEObject[gTileDatabase[pObject.value.pNode.value.usIndex].usRegionIndex]);
+        pTrav = addressof(hVObject.value.pETRLEObject[gTileDatabase[pObject.value.pNode.value.usIndex].usRegionIndex]);
 
         // Add new object / update position
         // Update position data
@@ -1029,8 +1029,8 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(sSrcGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1043,7 +1043,7 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dzDegrees);
@@ -1064,7 +1064,7 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
     vForce.y = dForce * vDirNormal.y;
     vForce.z = dForce * vDirNormal.z;
 
-    dTestRange = CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psGridNo);
+    dTestRange = CalculateObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psGridNo);
 
     // What's the diff?
     dTestDiff = dTestRange - dRange;
@@ -1111,8 +1111,8 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   let sEndGridNo: INT16;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(sSrcGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1125,7 +1125,7 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dzDegrees);
@@ -1138,7 +1138,7 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   vForce.y = dForce * vDirNormal.y;
   vForce.z = dForce * vDirNormal.z;
 
-  CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, &sEndGridNo);
+  CalculateObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), addressof(sEndGridNo));
 
   return sEndGridNo;
 }
@@ -1159,8 +1159,8 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let iNumChecks: INT32 = 0;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(sSrcGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1173,7 +1173,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dzDegrees);
@@ -1191,7 +1191,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
     vForce.y = dForce * vDirNormal.y;
     vForce.z = dForce * vDirNormal.z;
 
-    dTestRange = CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psGridNo);
+    dTestRange = CalculateObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psGridNo);
 
     // What's the diff?
     dTestDiff = dTestRange - dRange;
@@ -1222,7 +1222,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
       vForce.x = dForce * vDirNormal.x;
       vForce.y = dForce * vDirNormal.y;
       vForce.z = dForce * vDirNormal.z;
-      dTestRange = CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psGridNo);
+      dTestRange = CalculateObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psGridNo);
       return (dzDegrees);
     }
 
@@ -1249,8 +1249,8 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   let sSrcY: INT16;
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(sSrcGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(sSrcGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1263,7 +1263,7 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dzDegrees);
@@ -1273,7 +1273,7 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   vForce.y = dForce * vDirNormal.y;
   vForce.z = dForce * vDirNormal.z;
 
-  CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psGridNo);
+  CalculateObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psGridNo);
 }
 
 // OK, this will, given a target Z, INVTYPE, source, target gridnos, initial force vector, will
@@ -1297,7 +1297,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
     return -1;
   }
 
-  pObject = &(ObjectSlots[iID]);
+  pObject = addressof(ObjectSlots[iID]);
 
   // Set some special values...
   pObject.value.fTestObject = TEST_OBJECT_NO_COLLISIONS;
@@ -1337,7 +1337,7 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
     return -1;
   }
 
-  pObject = &(ObjectSlots[iID]);
+  pObject = addressof(ObjectSlots[iID]);
 
   // Set some special values...
   pObject.value.fTestObject = TEST_OBJECT_NOTWALLROOF_COLLISIONS;
@@ -1378,7 +1378,7 @@ function CalculateLaunchItemAngle(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
   let sSrcX: INT16;
   let sSrcY: INT16;
 
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
 
   dAngle = FindBestAngleForTrajectory(pSoldier.value.sGridNo, sGridNo, GET_SOLDIER_THROW_HEIGHT(pSoldier.value.bLevel), ubHeight, dForce, pItem, psGridNo);
 
@@ -1469,7 +1469,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
 
   if (!fLauncher) {
     // Find force for basic
-    FindBestForceForTrajectory(pSoldier.value.sGridNo, sGridNo, sStartZ, sEndZ, dDegrees, pItem, psFinalGridNo, &dMagForce);
+    FindBestForceForTrajectory(pSoldier.value.sGridNo, sGridNo, sStartZ, sEndZ, dDegrees, pItem, psFinalGridNo, addressof(dMagForce));
 
     // Adjust due to max range....
     dMaxForce = CalculateSoldierMaxForce(pSoldier, dDegrees, pItem, fArmed);
@@ -1541,11 +1541,11 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
   let vDirNormal: vector_3;
 
   // Ge7t basic launch params...
-  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, &dForce, &dDegrees, psFinalGridNo, fArmed);
+  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), psFinalGridNo, fArmed);
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // Set position
   vPosition.x = sSrcX;
@@ -1558,7 +1558,7 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dDegrees);
@@ -1569,7 +1569,7 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
   vForce.z = dForce * vDirNormal.z;
 
   // OK, we have our force, calculate change to get through without collide
-  if (ChanceToGetThroughObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psFinalGridNo, pbLevel, fFromUI) == 0) {
+  if (ChanceToGetThroughObjectTrajectory(sEndZ, pItem, addressof(vPosition), addressof(vForce), psFinalGridNo, pbLevel, fFromUI) == 0) {
     return FALSE;
   }
 
@@ -1597,9 +1597,9 @@ function CalculateForceFromRange(sRange: INT16, dDegrees: FLOAT): FLOAT {
   sDestGridNo = 4408 + (sRange * WORLD_COLS);
 
   // Use a grenade objecttype
-  CreateItem(HAND_GRENADE, 100, &Object);
+  CreateItem(HAND_GRENADE, 100, addressof(Object));
 
-  FindBestForceForTrajectory(sSrcGridNo, sDestGridNo, GET_SOLDIER_THROW_HEIGHT(0), 0, dDegrees, &Object, &sFinalGridNo, &dMagForce);
+  FindBestForceForTrajectory(sSrcGridNo, sDestGridNo, GET_SOLDIER_THROW_HEIGHT(0), 0, dDegrees, addressof(Object), addressof(sFinalGridNo), addressof(dMagForce));
 
   return dMagForce;
 }
@@ -1697,11 +1697,11 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   }
 
   // Get basic launch params...
-  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, &dForce, &dDegrees, &sFinalGridNo, fArmed);
+  CalculateLaunchItemBasicParams(pSoldier, pItem, sGridNo, ubLevel, sEndZ, addressof(dForce), addressof(dDegrees), addressof(sFinalGridNo), fArmed);
 
   // Get XY from gridno
-  ConvertGridNoToCenterCellXY(sGridNo, &sDestX, &sDestY);
-  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, &sSrcX, &sSrcY);
+  ConvertGridNoToCenterCellXY(sGridNo, addressof(sDestX), addressof(sDestY));
+  ConvertGridNoToCenterCellXY(pSoldier.value.sGridNo, addressof(sSrcX), addressof(sSrcY));
 
   // OK, get direction normal
   vDirNormal.x = (sDestX - sSrcX);
@@ -1709,7 +1709,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   vDirNormal.z = 0;
 
   // NOmralize
-  vDirNormal = VGetNormal(&vDirNormal);
+  vDirNormal = VGetNormal(addressof(vDirNormal));
 
   // From degrees, calculate Z portion of normal
   vDirNormal.z = sin(dDegrees);
@@ -1884,7 +1884,7 @@ function DoCatchObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   usItem = pObject.value.Obj.usItem;
 
   // Transfer object
-  fGoodCatch = AutoPlaceObject(pSoldier, &(pObject.value.Obj), TRUE);
+  fGoodCatch = AutoPlaceObject(pSoldier, addressof(pObject.value.Obj), TRUE);
 
   // Report success....
   if (fGoodCatch) {
@@ -1911,7 +1911,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   sZ = CONVERT_HEIGHTUNITS_TO_PIXELS((pObject.value.Position.z)) - gpWorldLevelData[pObject.value.sGridNo].sHeight;
 
   // get OBJECTTYPE
-  pObj = &(pObject.value.Obj);
+  pObj = addressof(pObject.value.Obj);
 
   // ATE: Make sure number of objects is 1...
   pObj.value.ubNumberOfObjects = 1;
@@ -2006,7 +2006,7 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // Save the number of REAL_OBJECTs in the array
-  FileWrite(hFile, &usPhysicsCount, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(usPhysicsCount), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2016,7 +2016,7 @@ function SavePhysicsTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
       // if the REAL_OBJECT is active, save it
       if (ObjectSlots[usCnt].fAllocated) {
         // Save the the REAL_OBJECT structure
-        FileWrite(hFile, &ObjectSlots[usCnt], sizeof(REAL_OBJECT), &uiNumBytesWritten);
+        FileWrite(hFile, addressof(ObjectSlots[usCnt]), sizeof(REAL_OBJECT), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(REAL_OBJECT)) {
           return FALSE;
         }
@@ -2035,7 +2035,7 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   memset(ObjectSlots, 0, NUM_OBJECT_SLOTS * sizeof(REAL_OBJECT));
 
   // Load the number of REAL_OBJECTs in the array
-  FileRead(hFile, &guiNumObjectSlots, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiNumObjectSlots), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
@@ -2043,7 +2043,7 @@ function LoadPhysicsTableFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   // loop through and add the objects
   for (usCnt = 0; usCnt < guiNumObjectSlots; usCnt++) {
     // Load the the REAL_OBJECT structure
-    FileRead(hFile, &ObjectSlots[usCnt], sizeof(REAL_OBJECT), &uiNumBytesRead);
+    FileRead(hFile, addressof(ObjectSlots[usCnt]), sizeof(REAL_OBJECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(REAL_OBJECT)) {
       return FALSE;
     }

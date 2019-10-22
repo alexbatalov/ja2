@@ -14,7 +14,7 @@ function InitializeMutexManager(): BOOLEAN {
   //
 
   for (uiIndex = 0; uiIndex < MAX_MUTEX_HANDLES; uiIndex++) {
-    InitializeCriticalSection(&MutexTable[uiIndex]);
+    InitializeCriticalSection(addressof(MutexTable[uiIndex]));
   }
 
   RegisterDebugTopic(TOPIC_MUTEX, "Mutex Manager");
@@ -32,7 +32,7 @@ function ShutdownMutexManager(): void {
   //
 
   for (uiIndex = 0; uiIndex < MAX_MUTEX_HANDLES; uiIndex++) {
-    DeleteCriticalSection(&MutexTable[uiIndex]);
+    DeleteCriticalSection(addressof(MutexTable[uiIndex]));
   }
 
   UnRegisterDebugTopic(TOPIC_MUTEX, "Mutex Manager");
@@ -51,17 +51,17 @@ function DeleteMutex(uiMutexIndex: UINT32): BOOLEAN {
 }
 
 function EnterMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: Pointer<char>): BOOLEAN {
-  EnterCriticalSection(&MutexTable[uiMutexIndex]);
+  EnterCriticalSection(addressof(MutexTable[uiMutexIndex]));
   return TRUE;
 }
 
 function EnterMutexWithTimeout(uiMutexIndex: UINT32, uiTimeout: UINT32, nLine: INT32, szFilename: Pointer<char>): BOOLEAN {
-  EnterCriticalSection(&MutexTable[uiMutexIndex]);
+  EnterCriticalSection(addressof(MutexTable[uiMutexIndex]));
   return TRUE;
 }
 
 function LeaveMutex(uiMutexIndex: UINT32, nLine: INT32, szFilename: Pointer<char>): BOOLEAN {
-  LeaveCriticalSection(&MutexTable[uiMutexIndex]);
+  LeaveCriticalSection(addressof(MutexTable[uiMutexIndex]));
 
   return TRUE;
 }

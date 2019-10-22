@@ -361,7 +361,7 @@ function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iLeg: INT32;
 
   if (pSoldier.value.inv[VESTPOS].usItem) {
-    iVest = EffectiveArmour(&(pSoldier.value.inv[VESTPOS]));
+    iVest = EffectiveArmour(addressof(pSoldier.value.inv[VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iVest = 65 * iVest / (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection);
   } else {
@@ -369,7 +369,7 @@ function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   if (pSoldier.value.inv[HELMETPOS].usItem) {
-    iHelmet = EffectiveArmour(&(pSoldier.value.inv[HELMETPOS]));
+    iHelmet = EffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iHelmet = 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection;
   } else {
@@ -377,7 +377,7 @@ function ArmourPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   if (pSoldier.value.inv[LEGPOS].usItem) {
-    iLeg = EffectiveArmour(&(pSoldier.value.inv[LEGPOS]));
+    iLeg = EffectiveArmour(addressof(pSoldier.value.inv[LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iLeg = 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection;
   } else {
@@ -419,7 +419,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let iLeg: INT32;
 
   if (pSoldier.value.inv[VESTPOS].usItem) {
-    iVest = ExplosiveEffectiveArmour(&(pSoldier.value.inv[VESTPOS]));
+    iVest = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[VESTPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iVest = __min(65, 65 * iVest / (Armour[Item[SPECTRA_VEST_18].ubClassIndex].ubProtection + Armour[Item[CERAMIC_PLATES].ubClassIndex].ubProtection));
   } else {
@@ -427,7 +427,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   if (pSoldier.value.inv[HELMETPOS].usItem) {
-    iHelmet = ExplosiveEffectiveArmour(&(pSoldier.value.inv[HELMETPOS]));
+    iHelmet = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[HELMETPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iHelmet = __min(15, 15 * iHelmet / Armour[Item[SPECTRA_HELMET_18].ubClassIndex].ubProtection);
   } else {
@@ -435,7 +435,7 @@ function ArmourVersusExplosivesPercent(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   }
 
   if (pSoldier.value.inv[LEGPOS].usItem) {
-    iLeg = ExplosiveEffectiveArmour(&(pSoldier.value.inv[LEGPOS]));
+    iLeg = ExplosiveEffectiveArmour(addressof(pSoldier.value.inv[LEGPOS]));
     // convert to % of best; ignoring bug-treated stuff
     iLeg = __min(25, 25 * iLeg / Armour[Item[SPECTRA_LEGGINGS_18].ubClassIndex].ubProtection);
   } else {
@@ -474,7 +474,7 @@ function CheckForGunJam(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // should jams apply to enemies?
   if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
     if (Item[pSoldier.value.usAttackingWeapon].usItemClass == IC_GUN && !EXPLOSIVE_GUN(pSoldier.value.usAttackingWeapon)) {
-      pObj = &(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
+      pObj = addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
       if (pObj.value.bGunAmmoStatus > 0) {
         // gun might jam, figure out the chance
         iChance = (80 - pObj.value.bGunStatus);
@@ -662,22 +662,22 @@ function GetTargetWorldPositions(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: 
 
     switch (pSoldier.value.bAimShotLocation) {
       case AIM_SHOT_HEAD:
-        CalculateSoldierZPos(pTargetSoldier, HEAD_TARGET_POS, &dTargetZ);
+        CalculateSoldierZPos(pTargetSoldier, HEAD_TARGET_POS, addressof(dTargetZ));
         break;
       case AIM_SHOT_TORSO:
-        CalculateSoldierZPos(pTargetSoldier, TORSO_TARGET_POS, &dTargetZ);
+        CalculateSoldierZPos(pTargetSoldier, TORSO_TARGET_POS, addressof(dTargetZ));
         break;
       case AIM_SHOT_LEGS:
-        CalculateSoldierZPos(pTargetSoldier, LEGS_TARGET_POS, &dTargetZ);
+        CalculateSoldierZPos(pTargetSoldier, LEGS_TARGET_POS, addressof(dTargetZ));
         break;
       default:
         // %)@#&(%?
-        CalculateSoldierZPos(pTargetSoldier, TARGET_POS, &dTargetZ);
+        CalculateSoldierZPos(pTargetSoldier, TARGET_POS, addressof(dTargetZ));
         break;
     }
   } else {
     // GET TARGET XY VALUES
-    ConvertGridNoToCenterCellXY(sTargetGridNo, &sXMapPos, &sYMapPos);
+    ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
     // fire at centre of tile
     dTargetX = sXMapPos;
@@ -739,7 +739,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     if (pSoldier.value.bDoBurst == 1) {
       if (Weapon[usItemNum].sBurstSound != NO_WEAPON_SOUND) {
         // IF we are silenced?
-        if (FindAttachment(&(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
+        if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
           // Pick sound file baed on how many bullets we are going to fire...
           sprintf(zBurstString, "SOUNDS\\WEAPONS\\SILENCER BURST %d.wav", pSoldier.value.bBulletsLeft);
 
@@ -776,7 +776,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     // ( For throwing knife.. it's earlier in the animation
     if (Weapon[usItemNum].sSound != NO_WEAPON_SOUND && Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
       // Switch on silencer...
-      if (FindAttachment(&(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
+      if (FindAttachment(addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]), SILENCER) != NO_SLOT) {
         let uiSound: INT32;
 
         if (Weapon[usItemNum].ubCalibre == AMMO9 || Weapon[usItemNum].ubCalibre == AMMO38 || Weapon[usItemNum].ubCalibre == AMMO57) {
@@ -810,11 +810,11 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   fGonnaHit = uiDiceRoll <= uiHitChance;
 
   // GET TARGET XY VALUES
-  ConvertGridNoToCenterCellXY(sTargetGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // ATE; Moved a whole blotch if logic code for finding target positions to a function
   // so other places can use it
-  GetTargetWorldPositions(pSoldier, sTargetGridNo, &dTargetX, &dTargetY, &dTargetZ);
+  GetTargetWorldPositions(pSoldier, sTargetGridNo, addressof(dTargetX), addressof(dTargetY), addressof(dTargetZ));
 
   // Some things we don't do for knives...
   if (Item[usItemNum].usItemClass != IC_THROWING_KNIFE) {
@@ -938,8 +938,8 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
   }
 
   if (usItemNum == ROCKET_LAUNCHER) {
-    if (WillExplosiveWeaponFail(pSoldier, &(pSoldier.value.inv[HANDPOS]))) {
-      CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], &(pSoldier.value.inv[HANDPOS]));
+    if (WillExplosiveWeaponFail(pSoldier, addressof(pSoldier.value.inv[HANDPOS]))) {
+      CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], addressof(pSoldier.value.inv[HANDPOS]));
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
       IgniteExplosion(pSoldier.value.ubID, CenterX(pSoldier.value.sGridNo), CenterY(pSoldier.value.sGridNo), 0, pSoldier.value.sGridNo, C1, pSoldier.value.bLevel);
@@ -959,10 +959,10 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
 
   if (Item[usItemNum].usItemClass == IC_THROWING_KNIFE) {
     // Here, remove the knife...	or (for now) rocket launcher
-    RemoveObjs(&(pSoldier.value.inv[HANDPOS]), 1);
+    RemoveObjs(addressof(pSoldier.value.inv[HANDPOS]), 1);
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   } else if (usItemNum == ROCKET_LAUNCHER) {
-    CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], &(pSoldier.value.inv[HANDPOS]));
+    CreateItem(DISCARDED_LAW, pSoldier.value.inv[HANDPOS].bStatus[0], addressof(pSoldier.value.inv[HANDPOS]));
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
 
     // Direction to center of explosion
@@ -983,7 +983,7 @@ function UseGun(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN {
     }
   } else {
     // if the weapon has a silencer attached
-    bSilencerPos = FindAttachment(&(pSoldier.value.inv[HANDPOS]), SILENCER);
+    bSilencerPos = FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), SILENCER);
     if (bSilencerPos != -1) {
       // reduce volume by a percentage equal to silencer's work %age (min 1)
       ubVolume = 1 + ((100 - WEAPON_STATUS_MOD(pSoldier.value.inv[HANDPOS].bAttachStatus[bSilencerPos])) / (100 / (ubVolume - 1)));
@@ -1033,7 +1033,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
   DeductPoints(pSoldier, sAPCost, 0);
 
   // GET TARGET XY VALUES
-  ConvertGridNoToCenterCellXY(sTargetGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // See if a guy is here!
   pTargetSoldier = SimpleFindSoldier(sTargetGridNo, pSoldier.value.bTargetLevel);
@@ -1069,7 +1069,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       iImpact = (iImpact * WEAPON_STATUS_MOD(pSoldier.value.inv[pSoldier.value.ubAttackingHand].bStatus[0])) / 100;
 
       // modify by hit location
-      AdjustImpactByHitLocation(iImpact, pSoldier.value.bAimShotLocation, &iImpact, &iImpactForCrits);
+      AdjustImpactByHitLocation(iImpact, pSoldier.value.bAimShotLocation, addressof(iImpact), addressof(iImpactForCrits));
 
       // bonus for surprise
       if (fSurpriseAttack) {
@@ -1094,7 +1094,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       }
 
       // Send event for getting hit
-      memset(&(SWeaponHit), 0, sizeof(SWeaponHit));
+      memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
       SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
       SWeaponHit.uiUniqueId = pTargetSoldier.value.uiUniqueSoldierIdValue;
       SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
@@ -1107,7 +1107,7 @@ function UseBlade(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEAN
       SWeaponHit.ubAttackerID = pSoldier.value.ubID;
       SWeaponHit.fHit = TRUE;
       SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-      AddGameEvent(S_WEAPONHIT, 20, &SWeaponHit);
+      AddGameEvent(S_WEAPONHIT, 20, addressof(SWeaponHit));
     } else {
       // if it was another team shooting at someone under our control
       if ((pSoldier.value.bTeam != Menptr[pTargetSoldier.value.ubID].bTeam)) {
@@ -1217,7 +1217,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
     // sprintf( gDebugStr, "Hit Chance: %d %d", (int)uiHitChance, uiDiceRoll );
 
     // GET TARGET XY VALUES
-    ConvertGridNoToCenterCellXY(sTargetGridNo, &sXMapPos, &sYMapPos);
+    ConvertGridNoToCenterCellXY(sTargetGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
     if (fStealing) {
       if (pTargetSoldier.value.inv[HANDPOS].usItem != NOTHING) {
@@ -1234,13 +1234,13 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
 
           if (iDiceRoll <= iHitChance * 2 / 3) {
             // Grabbed item
-            if (AutoPlaceObject(pSoldier, &(pTargetSoldier.value.inv[HANDPOS]), TRUE)) {
+            if (AutoPlaceObject(pSoldier, addressof(pTargetSoldier.value.inv[HANDPOS]), TRUE)) {
               // Item transferred; remove it from the target's inventory
-              DeleteObj(&(pTargetSoldier.value.inv[HANDPOS]));
+              DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
             } else {
               // No room to hold it so the item should drop in our tile again
-              AddItemToPool(pSoldier.value.sGridNo, &(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
-              DeleteObj(&(pTargetSoldier.value.inv[HANDPOS]));
+              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
             }
           } else {
             if (pSoldier.value.bTeam == gbPlayerNum) {
@@ -1251,12 +1251,12 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
             iDiceRoll = PreRandom(100);
             if (iDiceRoll < iHitChance) {
               // Drop item in the our tile
-              AddItemToPool(pSoldier.value.sGridNo, &(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
             } else {
               // Drop item in the target's tile
-              AddItemToPool(pTargetSoldier.value.sGridNo, &(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
+              AddItemToPool(pTargetSoldier.value.sGridNo, addressof(pTargetSoldier.value.inv[HANDPOS]), 1, pSoldier.value.bLevel, 0, -1);
             }
-            DeleteObj(&(pTargetSoldier.value.inv[HANDPOS]));
+            DeleteObj(addressof(pTargetSoldier.value.inv[HANDPOS]));
           }
 
           // Reload buddy's animation...
@@ -1319,7 +1319,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
         iImpact = HTHImpact(pSoldier, pTargetSoldier, (iHitChance - iDiceRoll), FALSE);
 
         // Send event for getting hit
-        memset(&(SWeaponHit), 0, sizeof(SWeaponHit));
+        memset(addressof(SWeaponHit), 0, sizeof(SWeaponHit));
         SWeaponHit.usSoldierID = pTargetSoldier.value.ubID;
         SWeaponHit.usWeaponIndex = pSoldier.value.usAttackingWeapon;
         SWeaponHit.sDamage = iImpact;
@@ -1331,7 +1331,7 @@ function UseHandToHand(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16, fSt
         SWeaponHit.ubAttackerID = pSoldier.value.ubID;
         SWeaponHit.fHit = TRUE;
         SWeaponHit.ubSpecial = FIRE_WEAPON_NO_SPECIAL;
-        AddGameEvent(S_WEAPONHIT, 20, &SWeaponHit);
+        AddGameEvent(S_WEAPONHIT, 20, addressof(SWeaponHit));
       } else {
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - missed in HTH attack"));
         FreeUpAttacker(pSoldier.value.ubID);
@@ -1400,12 +1400,12 @@ function UseThrown(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOLEA
     }
   }
 
-  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.value.bTargetLevel, (pSoldier.value.bTargetLevel * 256), &(pSoldier.value.inv[HANDPOS]), (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, sTargetGridNo, pSoldier.value.bTargetLevel, (pSoldier.value.bTargetLevel * 256), addressof(pSoldier.value.inv[HANDPOS]), (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
 
   // OK, goto throw animation
   HandleSoldierThrowItem(pSoldier, pSoldier.value.sTargetGridNo);
 
-  RemoveObjs(&(pSoldier.value.inv[HANDPOS]), 1);
+  RemoveObjs(addressof(pSoldier.value.inv[HANDPOS]), 1);
 
   return TRUE;
 }
@@ -1427,7 +1427,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
     return FALSE;
   }
 
-  pObj = &(pSoldier.value.inv[HANDPOS]);
+  pObj = addressof(pSoldier.value.inv[HANDPOS]);
   for (bAttachPos = 0; bAttachPos < MAX_ATTACHMENTS; bAttachPos++) {
     if (pObj.value.usAttachItem[bAttachPos] != NOTHING) {
       if (Item[pObj.value.usAttachItem[bAttachPos]].usItemClass & IC_EXPLOSV) {
@@ -1440,7 +1440,7 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
     return FALSE;
   }
 
-  CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], &Launchable);
+  CreateItem(pObj.value.usAttachItem[bAttachPos], pObj.value.bAttachStatus[bAttachPos], addressof(Launchable));
 
   if (pSoldier.value.usAttackingWeapon == pObj.value.usItem) {
     DeductAmmo(pSoldier, HANDPOS);
@@ -1487,11 +1487,11 @@ function UseLauncher(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo: INT16): BOOL
 
   DeductPoints(pSoldier, sAPCost, 0);
 
-  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel, 0, &Launchable, (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
+  CalculateLaunchItemParamsForThrow(pSoldier, pSoldier.value.sTargetGridNo, pSoldier.value.bTargetLevel, 0, addressof(Launchable), (uiDiceRoll - uiHitChance), THROW_ARM_ITEM, 0);
 
   iID = CreatePhysicalObject(pSoldier.value.pTempObject, pSoldier.value.pThrowParams.value.dLifeSpan, pSoldier.value.pThrowParams.value.dX, pSoldier.value.pThrowParams.value.dY, pSoldier.value.pThrowParams.value.dZ, pSoldier.value.pThrowParams.value.dForceX, pSoldier.value.pThrowParams.value.dForceY, pSoldier.value.pThrowParams.value.dForceZ, pSoldier.value.ubID, pSoldier.value.pThrowParams.value.ubActionCode, pSoldier.value.pThrowParams.value.uiActionData);
 
-  pObject = &(ObjectSlots[iID]);
+  pObject = addressof(ObjectSlots[iID]);
   // pObject->fPotentialForDebug = TRUE;
 
   MemFree(pSoldier.value.pTempObject);
@@ -1511,7 +1511,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
   ubAmmoType = MercPtrs[ubAttackerID].value.inv[MercPtrs[ubAttackerID].value.ubAttackingHand].ubGunAmmoType;
   usItem = MercPtrs[ubAttackerID].value.inv[MercPtrs[ubAttackerID].value.ubAttackingHand].usItem;
 
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 
   if (ubAmmoType == AMMO_HE || ubAmmoType == AMMO_HEAT) {
     if (!fSoundOnly) {
@@ -1526,7 +1526,7 @@ function DoSpecialEffectAmmoMiss(ubAttackerID: UINT8, sGridNo: INT16, sXPos: INT
 
       strcpy(AniParams.zCachedFile, "TILECACHE\\MINIBOOM.STI");
 
-      CreateAnimationTile(&AniParams);
+      CreateAnimationTile(addressof(AniParams));
 
       if (fFreeupAttacker) {
         RemoveBullet(iBullet);
@@ -1731,9 +1731,9 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
         // OK, have we hit ground?
         if (usStructureID == INVALID_STRUCTURE_ID) {
           // Add item
-          CreateItem(THROWING_KNIFE, bWeaponStatus, &Object);
+          CreateItem(THROWING_KNIFE, bWeaponStatus, addressof(Object));
 
-          AddItemToPool(sGridNo, &Object, -1, 0, 0, -1);
+          AddItemToPool(sGridNo, addressof(Object), -1, 0, 0, -1);
 
           // Make team look for items
           NotifySoldiersToLookforItems();
@@ -1788,7 +1788,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
           usMissTileType = SECONDMISS;
 
           // Add ripple
-          memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+          memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = sGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
           AniParams.usTileType = THIRDMISS;
@@ -1797,7 +1797,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
           AniParams.sStartFrame = 0;
           AniParams.uiFlags = ANITILE_FORWARD;
 
-          pNode = CreateAnimationTile(&AniParams);
+          pNode = CreateAnimationTile(addressof(AniParams));
 
           // Adjust for absolute positioning
           pNode.value.pLevelNode.value.uiFlags |= LEVELNODE_USEABSOLUTEPOS;
@@ -1806,7 +1806,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
           pNode.value.pLevelNode.value.sRelativeZ = sZPos;
         }
 
-        memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+        memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
         AniParams.usTileType = usMissTileType;
@@ -1821,7 +1821,7 @@ function StructureHit(iBullet: INT32, usWeaponIndex: UINT16, bWeaponStatus: INT8
         // Save bullet ID!
         AniParams.uiUserData3 = iBullet;
 
-        pNode = CreateAnimationTile(&AniParams);
+        pNode = CreateAnimationTile(addressof(AniParams));
 
         // Set attacker ID
         pNode.value.usMissAnimationPlayed = usMissTileType;
@@ -1939,7 +1939,7 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
     }
   }
 
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = sShatterGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
   AniParams.usTileType = WINDOWSHATTER;
@@ -1948,7 +1948,7 @@ function WindowHit(sGridNo: INT16, usStructureID: UINT16, fBlowWindowSouth: BOOL
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_FORWARD;
 
-  pNode = CreateAnimationTile(&AniParams);
+  pNode = CreateAnimationTile(addressof(AniParams));
 
   PlayJA2Sample(GLASS_SHATTER1 + Random(2), RATE_11025, MIDVOLUME, 1, SoundDir(sGridNo));
 }
@@ -1970,7 +1970,7 @@ function InRange(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): BOOLEAN {
       }
     } else {
       // For given weapon, check range
-      if (sRange <= GunRange(&(pSoldier.value.inv[HANDPOS]))) {
+      if (sRange <= GunRange(addressof(pSoldier.value.inv[HANDPOS]))) {
         return TRUE;
       }
     }
@@ -2004,7 +2004,7 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
   }
 
   // make sure the guy's actually got a weapon in his hand!
-  pInHand = &(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
+  pInHand = addressof(pSoldier.value.inv[pSoldier.value.ubAttackingHand]);
   usInHand = pSoldier.value.usAttackingWeapon;
 
   // DETERMINE BASE CHANCE OF HITTING
@@ -2190,12 +2190,12 @@ function CalcChanceToHitGun(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, ubA
 
         // since barrel extenders are not removable we cannot call RemoveAttachment here
         // and must create the item by hand
-        CreateItem(GUN_BARREL_EXTENDER, pInHand.value.bAttachStatus[bAttachPos], &Temp);
+        CreateItem(GUN_BARREL_EXTENDER, pInHand.value.bAttachStatus[bAttachPos], addressof(Temp));
         pInHand.value.usAttachItem[bAttachPos] = NOTHING;
         pInHand.value.bAttachStatus[bAttachPos] = 0;
 
         // drop it to ground
-        AddItemToPool(pSoldier.value.sGridNo, &Temp, 1, pSoldier.value.bLevel, 0, -1);
+        AddItemToPool(pSoldier.value.sGridNo, addressof(Temp), 1, pSoldier.value.bLevel, 0, -1);
 
         // big penalty to hit
         iChance -= 30;
@@ -2582,7 +2582,7 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
 
     // bDummyStatus = (INT8) pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ];
 
-    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.value.bVehicleID].sArmourType, &bDummyStatus, iImpact, ubAmmoType);
+    iTotalProtection += ArmourProtection(pTarget, pVehicleList[pTarget.value.bVehicleID].sArmourType, addressof(bDummyStatus), iImpact, ubAmmoType);
 
     // pVehicleList[ pTarget->bVehicleID ].sExternalArmorLocationsStatus[ ubHitLocation ] = bDummyStatus;
   } else {
@@ -2602,14 +2602,14 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
         break;
     }
 
-    pArmour = &(pTarget.value.inv[iSlot]);
+    pArmour = addressof(pTarget.value.inv[iSlot]);
     if (pArmour.value.usItem != NOTHING) {
       // check plates first
       if (iSlot == VESTPOS) {
         bPlatePos = FindAttachment(pArmour, CERAMIC_PLATES);
         if (bPlatePos != -1) {
           // bullet got through jacket; apply ceramic plate armour
-          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usAttachItem[bPlatePos]].ubClassIndex, &(pArmour.value.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
+          iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usAttachItem[bPlatePos]].ubClassIndex, addressof(pArmour.value.bAttachStatus[bPlatePos]), iImpact, ubAmmoType);
           if (pArmour.value.bAttachStatus[bPlatePos] < USABLE) {
             // destroy plates!
             pArmour.value.usAttachItem[bPlatePos] = NOTHING;
@@ -2628,7 +2628,7 @@ function TotalArmourProtection(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SO
 
       // if the plate didn't stop the bullet...
       if (iImpact > iTotalProtection) {
-        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usItem].ubClassIndex, &(pArmour.value.bStatus[0]), iImpact, ubAmmoType);
+        iTotalProtection += ArmourProtection(pTarget, Item[pArmour.value.usItem].ubClassIndex, addressof(pArmour.value.bStatus[0]), iImpact, ubAmmoType);
         if (pArmour.value.bStatus[0] < USABLE) {
           DeleteObj(pArmour);
           DirtyMercPanelInterface(pTarget, DIRTYLEVEL2);
@@ -2730,7 +2730,7 @@ function BulletImpact(pFirer: Pointer<SOLDIERTYPE>, pTarget: Pointer<SOLDIERTYPE
       iImpact = AMMO_DAMAGE_ADJUSTMENT_HP(iImpact);
     }
 
-    AdjustImpactByHitLocation(iImpact, ubHitLocation, &iImpact, &iImpactForCrits);
+    AdjustImpactByHitLocation(iImpact, ubHitLocation, addressof(iImpact), addressof(iImpactForCrits));
 
     switch (ubHitLocation) {
       case AIM_SHOT_HEAD:
@@ -3564,7 +3564,7 @@ function ChangeWeaponMode(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
   }
 
-  if (FindAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(&(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
+  if (FindAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND || FindLaunchableAttachment(addressof(pSoldier.value.inv[HANDPOS]), UNDER_GLAUNCHER) == ITEM_NOT_FOUND) {
     // swap between single/burst fire
     if (IsGunBurstCapable(pSoldier, HANDPOS, TRUE)) {
       pSoldier.value.bWeaponMode++;

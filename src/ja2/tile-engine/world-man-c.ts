@@ -45,7 +45,7 @@ function CountLevelNodes(): void {
   }
 
   for (uiLoop = 0; uiLoop < WORLD_MAX; uiLoop++) {
-    pME = &(gpWorldLevelData[uiLoop]);
+    pME = addressof(gpWorldLevelData[uiLoop]);
     // start at 1 to skip land head ptr; 0 stores total
     for (uiLoop2 = 1; uiLoop2 < 9; uiLoop2++) {
       pLN = pME.value.pLevelNodes[uiLoop2];
@@ -79,7 +79,7 @@ function TypeExistsInLevel(pStartNode: Pointer<LEVELNODE>, fType: UINT32, pusInd
   // Look through all objects and Search for type
   while (pStartNode != NULL) {
     if (pStartNode.value.usIndex != NO_TILE && pStartNode.value.usIndex < NUMBEROFTILES) {
-      GetTileType(pStartNode.value.usIndex, &fTileType);
+      GetTileType(pStartNode.value.usIndex, addressof(fTileType));
 
       if (fTileType == fType) {
         *pusIndex = pStartNode.value.usIndex;
@@ -160,14 +160,14 @@ function AddObjectToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
 
   // If we're at the head, set here
   if (pObject == NULL) {
-    CHECKF(CreateLevelNode(&pNextObject) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pNextObject)) != FALSE);
     pNextObject.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pObjectHead = pNextObject;
   } else {
     while (pObject != NULL) {
       if (pObject.value.pNext == NULL) {
-        CHECKF(CreateLevelNode(&pNextObject) != FALSE);
+        CHECKF(CreateLevelNode(addressof(pNextObject)) != FALSE);
         pObject.value.pNext = pNextObject;
 
         pNextObject.value.pNext = NULL;
@@ -192,7 +192,7 @@ function AddObjectToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   pObject = gpWorldLevelData[iMapIndex].pObjectHead;
 
-  CHECKF(CreateLevelNode(&pNextObject) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextObject)) != FALSE);
 
   pNextObject.value.pNext = pObject;
   pNextObject.value.usIndex = usIndex;
@@ -266,7 +266,7 @@ function TypeRangeExistsInObjectLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
     pObject = pObject.value.pNext;
 
     if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
-      GetTileType(pOldObject.value.usIndex, &fTileType);
+      GetTileType(pOldObject.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         *pusObjectIndex = pOldObject.value.usIndex;
@@ -320,7 +320,7 @@ function RemoveAllObjectsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
     pObject = pObject.value.pNext;
 
     if (pOldObject.value.usIndex != NO_TILE && pOldObject.value.usIndex < NUMBEROFTILES) {
-      GetTileType(pOldObject.value.usIndex, &fTileType);
+      GetTileType(pOldObject.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
@@ -344,14 +344,14 @@ function AddLandToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
 
   // If we're at the head, set here
   if (pLand == NULL) {
-    CHECKF(CreateLevelNode(&pNextLand) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pNextLand)) != FALSE);
     pNextLand.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pLandHead = pNextLand;
   } else {
     while (pLand != NULL) {
       if (pLand.value.pNext == NULL) {
-        CHECKF(CreateLevelNode(&pNextLand) != FALSE);
+        CHECKF(CreateLevelNode(addressof(pNextLand)) != FALSE);
         pLand.value.pNext = pNextLand;
 
         pNextLand.value.pNext = NULL;
@@ -377,7 +377,7 @@ function AddLandToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(&pNextLand) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextLand)) != FALSE);
 
   pNextLand.value.pNext = pLand;
   pNextLand.value.pPrevNode = NULL;
@@ -543,7 +543,7 @@ function TypeRangeExistsInLandLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
 
   while (pLand != NULL) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, &fTileType);
+      GetTileType(pLand.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldLand = pLand;
@@ -571,7 +571,7 @@ function TypeRangeExistsInLandHead(iMapIndex: UINT32, fStartType: UINT32, fEndTy
   // Look through all objects and Search for type
 
   if (pLand.value.usIndex != NO_TILE) {
-    GetTileType(pLand.value.usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     // Advance to next
     pOldLand = pLand;
@@ -599,7 +599,7 @@ function TypeRangeExistsInStructLayer(iMapIndex: UINT32, fStartType: UINT32, fEn
 
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, &fTileType);
+      GetTileType(pStruct.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -629,7 +629,7 @@ function RemoveAllLandsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEndTy
 
   while (pLand != NULL) {
     if (pLand.value.usIndex != NO_TILE) {
-      GetTileType(pLand.value.usIndex, &fTileType);
+      GetTileType(pLand.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldLand = pLand;
@@ -701,7 +701,7 @@ function InsertLandIndexAtLevel(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UIN
   }
 
   // Allocate memory for new item
-  CHECKF(CreateLevelNode(&pNextLand) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextLand)) != FALSE);
   pNextLand.value.usIndex = usIndex;
 
   // Move to index before insertion
@@ -758,11 +758,11 @@ function RemoveHigherLandLevels(iMapIndex: UINT32, fSrcType: UINT32, puiHigherTy
   pLand = pOldLand;
 
   // Get src height
-  GetTileTypeLogicalHeight(fSrcType, &ubSrcLogHeight);
+  GetTileTypeLogicalHeight(fSrcType, addressof(ubSrcLogHeight));
 
   // Look through all objects and Search for height
   while (pLand != NULL) {
-    GetTileType(pLand.value.usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     // Advance to next
     pOldLand = pLand;
@@ -796,11 +796,11 @@ function SetLowerLandLevels(iMapIndex: UINT32, fSrcType: UINT32, usIndex: UINT16
   pLand = gpWorldLevelData[iMapIndex].pLandHead;
 
   // Get src height
-  GetTileTypeLogicalHeight(fSrcType, &ubSrcLogHeight);
+  GetTileTypeLogicalHeight(fSrcType, addressof(ubSrcLogHeight));
 
   // Look through all objects and Search for height
   while (pLand != NULL) {
-    GetTileType(pLand.value.usIndex, &fTileType);
+    GetTileType(pLand.value.usIndex, addressof(fTileType));
 
     // Advance to next
     pOldLand = pLand;
@@ -808,7 +808,7 @@ function SetLowerLandLevels(iMapIndex: UINT32, fSrcType: UINT32, usIndex: UINT16
 
     if (gTileTypeLogicalHeight[fTileType] < ubSrcLogHeight) {
       // Set item
-      GetTileIndexFromTypeSubIndex(fTileType, usIndex, &NewTile);
+      GetTileIndexFromTypeSubIndex(fTileType, usIndex, addressof(NewTile));
 
       // Set as normal
       SetLandIndex(iMapIndex, NewTile, fTileType, FALSE);
@@ -843,7 +843,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
 
   // Do we have an empty list?
   if (pStruct == NULL) {
-    CHECKF(CreateLevelNode(&pNextStruct) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
     if (fAddStructDBInfo) {
       if (usIndex < NUMBEROFTILES) {
@@ -871,7 +871,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
       pStruct = pStruct.value.pNext;
     }
 
-    CHECKN(CreateLevelNode(&pNextStruct) != FALSE);
+    CHECKN(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
     if (fAddStructDBInfo) {
       if (usIndex < NUMBEROFTILES) {
@@ -931,7 +931,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
-  CHECKF(CreateLevelNode(&pNextStruct) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -996,7 +996,7 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
   }
 
   // Allocate memory for new item
-  CHECKF(CreateLevelNode(&pNextStruct) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextStruct)) != FALSE);
 
   pNextStruct.value.usIndex = usIndex;
 
@@ -1220,7 +1220,7 @@ function RemoveAllStructsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
 
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, &fTileType);
+      GetTileType(pStruct.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1283,11 +1283,11 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
   pStruct = gpWorldLevelData[iMapIndex].pStructHead;
 
   // Get orientation of peice we want to add
-  GetWallOrientation(usIndex, &usWallOrientation);
+  GetWallOrientation(usIndex, addressof(usWallOrientation));
 
   // Look through all objects and Search for orientation
   while (pStruct != NULL) {
-    GetWallOrientation(pStruct.value.usIndex, &usCheckWallOrient);
+    GetWallOrientation(pStruct.value.usIndex, addressof(usCheckWallOrient));
     // OLD CASE
     // if ( usCheckWallOrient > usWallOrientation )
     // Kris:
@@ -1299,7 +1299,7 @@ function AddWallToStructLayer(iMapIndex: INT32, usIndex: UINT16, fReplace: BOOLE
       }
     }
 
-    GetTileType(pStruct.value.usIndex, &uiCheckType);
+    GetTileType(pStruct.value.usIndex, addressof(uiCheckType));
 
     //		if ( uiCheckType >= FIRSTFLOOR && uiCheckType <= LASTFLOOR )
     if (uiCheckType >= FIRSTROOF && uiCheckType <= LASTROOF) {
@@ -1382,7 +1382,7 @@ function SetStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32,
 
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, &fTileType);
+      GetTileType(pStruct.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1418,7 +1418,7 @@ function RemoveStructIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT
 
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileType(pStruct.value.usIndex, &fTileType);
+      GetTileType(pStruct.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -1442,14 +1442,14 @@ function AddShadowToTail(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   // If we're at the head, set here
   if (pShadow == NULL) {
-    CHECKF(CreateLevelNode(&pShadow) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pShadow)) != FALSE);
     pShadow.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pShadowHead = pShadow;
   } else {
     while (pShadow != NULL) {
       if (pShadow.value.pNext == NULL) {
-        CHECKF(CreateLevelNode(&pNextShadow) != FALSE);
+        CHECKF(CreateLevelNode(addressof(pNextShadow)) != FALSE);
         pShadow.value.pNext = pNextShadow;
         pNextShadow.value.pNext = NULL;
         pNextShadow.value.usIndex = usIndex;
@@ -1487,7 +1487,7 @@ function AddShadowToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   pShadow = gpWorldLevelData[iMapIndex].pShadowHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(&pNextShadow) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextShadow)) != FALSE);
   pNextShadow.value.pNext = pShadow;
   pNextShadow.value.usIndex = usIndex;
 
@@ -1615,7 +1615,7 @@ function RemoveAllShadowsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
 
   while (pShadow != NULL) {
     if (pShadow.value.usIndex != NO_TILE) {
-      GetTileType(pShadow.value.usIndex, &fTileType);
+      GetTileType(pShadow.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldShadow = pShadow;
@@ -1672,7 +1672,7 @@ function AddMercToHead(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fAddSt
   pMerc = gpWorldLevelData[iMapIndex].pMercHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(&pNextMerc) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextMerc)) != FALSE);
   pNextMerc.value.pNext = pMerc;
   pNextMerc.value.pSoldier = pSoldier;
   pNextMerc.value.uiFlags |= LEVELNODE_SOLDIER;
@@ -1728,9 +1728,9 @@ function AddMercStructureInfoFromAnimSurface(sGridNo: INT16, pSoldier: Pointer<S
   if (pStructureFileRef != NULL) {
     if (pSoldier.value.ubBodyType == QUEENMONSTER) {
       // Queen uses onely one direction....
-      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[0]), pSoldier.value.pLevelNode);
+      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[0]), pSoldier.value.pLevelNode);
     } else {
-      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[pSoldier.value.bDirection]]), pSoldier.value.pLevelNode);
+      fReturn = AddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[pSoldier.value.bDirection]]), pSoldier.value.pLevelNode);
     }
     /*
                     if ( fReturn == FALSE )
@@ -1794,7 +1794,7 @@ function OKToAddMercToWorld(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): B
         usOKToAddStructID = INVALID_STRUCTURE_ID;
       }
 
-      if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, &(pStructFileRef.value.pDBStructureRef[gOneCDirection[bDirection]]), usOKToAddStructID)) {
+      if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, addressof(pStructFileRef.value.pDBStructureRef[gOneCDirection[bDirection]]), usOKToAddStructID)) {
         return FALSE;
       }
     }
@@ -1889,7 +1889,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
 
   // If we're at the head, set here
   if (pRoof == NULL) {
-    CHECKF(CreateLevelNode(&pRoof) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pRoof)) != FALSE);
 
     if (usIndex < NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -1908,7 +1908,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
   } else {
     while (pRoof != NULL) {
       if (pRoof.value.pNext == NULL) {
-        CHECKF(CreateLevelNode(&pNextRoof) != FALSE);
+        CHECKF(CreateLevelNode(addressof(pNextRoof)) != FALSE);
 
         if (usIndex < NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -1942,7 +1942,7 @@ function AddRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   pRoof = gpWorldLevelData[iMapIndex].pRoofHead;
 
-  CHECKF(CreateLevelNode(&pNextRoof) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextRoof)) != FALSE);
 
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -2018,7 +2018,7 @@ function TypeRangeExistsInRoofLayer(iMapIndex: UINT32, fStartType: UINT32, fEndT
 
   while (pRoof != NULL) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, &fTileType);
+      GetTileType(pRoof.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2084,7 +2084,7 @@ function RemoveAllRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEndTy
 
   while (pRoof != NULL) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, &fTileType);
+      GetTileType(pRoof.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2114,7 +2114,7 @@ function RemoveRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32
 
   while (pRoof != NULL) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, &fTileType);
+      GetTileType(pRoof.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2138,7 +2138,7 @@ function SetRoofIndexFlagsFromTypeRange(iMapIndex: UINT32, fStartType: UINT32, f
 
   while (pRoof != NULL) {
     if (pRoof.value.usIndex != NO_TILE) {
-      GetTileType(pRoof.value.usIndex, &fTileType);
+      GetTileType(pRoof.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldRoof = pRoof;
@@ -2162,7 +2162,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
 
   // If we're at the head, set here
   if (pOnRoof == NULL) {
-    CHECKF(CreateLevelNode(&pOnRoof) != FALSE);
+    CHECKF(CreateLevelNode(addressof(pOnRoof)) != FALSE);
 
     if (usIndex < NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -2182,7 +2182,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
   } else {
     while (pOnRoof != NULL) {
       if (pOnRoof.value.pNext == NULL) {
-        CHECKF(CreateLevelNode(&pNextOnRoof) != FALSE);
+        CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != FALSE);
 
         if (usIndex < NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
@@ -2215,7 +2215,7 @@ function AddOnRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   pOnRoof = gpWorldLevelData[iMapIndex].pOnRoofHead;
 
-  CHECKF(CreateLevelNode(&pNextOnRoof) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextOnRoof)) != FALSE);
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
       if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
@@ -2342,7 +2342,7 @@ function RemoveAllOnRoofsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEnd
 
   while (pOnRoof != NULL) {
     if (pOnRoof.value.usIndex != NO_TILE) {
-      GetTileType(pOnRoof.value.usIndex, &fTileType);
+      GetTileType(pOnRoof.value.usIndex, addressof(fTileType));
 
       // Advance to next
       pOldOnRoof = pOnRoof;
@@ -2369,14 +2369,14 @@ function AddTopmostToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE
 
   // If we're at the head, set here
   if (pTopmost == NULL) {
-    CHECKN(CreateLevelNode(&pNextTopmost) != FALSE);
+    CHECKN(CreateLevelNode(addressof(pNextTopmost)) != FALSE);
     pNextTopmost.value.usIndex = usIndex;
 
     gpWorldLevelData[iMapIndex].pTopmostHead = pNextTopmost;
   } else {
     while (pTopmost != NULL) {
       if (pTopmost.value.pNext == NULL) {
-        CHECKN(CreateLevelNode(&pNextTopmost) != FALSE);
+        CHECKN(CreateLevelNode(addressof(pNextTopmost)) != FALSE);
         pTopmost.value.pNext = pNextTopmost;
         pNextTopmost.value.pNext = NULL;
         pNextTopmost.value.usIndex = usIndex;
@@ -2423,7 +2423,7 @@ function AddTopmostToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   pTopmost = gpWorldLevelData[iMapIndex].pTopmostHead;
 
   // Allocate head
-  CHECKF(CreateLevelNode(&pNextTopmost) != FALSE);
+  CHECKF(CreateLevelNode(addressof(pNextTopmost)) != FALSE);
   pNextTopmost.value.pNext = pTopmost;
   pNextTopmost.value.usIndex = usIndex;
 
@@ -2523,7 +2523,7 @@ function RemoveAllTopmostsOfTypeRange(iMapIndex: UINT32, fStartType: UINT32, fEn
     pTopmost = pTopmost.value.pNext;
 
     if (pOldTopmost.value.usIndex != NO_TILE && pOldTopmost.value.usIndex < NUMBEROFTILES) {
-      GetTileType(pOldTopmost.value.usIndex, &fTileType);
+      GetTileType(pOldTopmost.value.usIndex, addressof(fTileType));
 
       if (fTileType >= fStartType && fTileType <= fEndType) {
         // Remove Item
@@ -2693,7 +2693,7 @@ function Water(sGridNo: INT16): BOOLEAN {
     return FALSE;
   }
 
-  pMapElement = &(gpWorldLevelData[sGridNo]);
+  pMapElement = addressof(gpWorldLevelData[sGridNo]);
   if (pMapElement.value.ubTerrainID == LOW_WATER || pMapElement.value.ubTerrainID == MED_WATER || pMapElement.value.ubTerrainID == DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
@@ -2705,7 +2705,7 @@ function Water(sGridNo: INT16): BOOLEAN {
 function DeepWater(sGridNo: INT16): BOOLEAN {
   let pMapElement: Pointer<MAP_ELEMENT>;
 
-  pMapElement = &(gpWorldLevelData[sGridNo]);
+  pMapElement = addressof(gpWorldLevelData[sGridNo]);
   if (pMapElement.value.ubTerrainID == DEEP_WATER) {
     // check for a bridge!  otherwise...
     return TRUE;
@@ -2728,7 +2728,7 @@ function SetStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
   // Look through all Roofs and Search for type
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileFlags(pStruct.value.usIndex, &uiTileFlags);
+      GetTileFlags(pStruct.value.usIndex, addressof(uiTileFlags));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -2751,7 +2751,7 @@ function RemoveStructAframeFlags(iMapIndex: UINT32, uiFlags: UINT32): void {
   // Look through all Roofs and Search for type
   while (pStruct != NULL) {
     if (pStruct.value.usIndex != NO_TILE) {
-      GetTileFlags(pStruct.value.usIndex, &uiTileFlags);
+      GetTileFlags(pStruct.value.usIndex, addressof(uiTileFlags));
 
       // Advance to next
       pOldStruct = pStruct;
@@ -2838,7 +2838,7 @@ function WorldHideTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != NULL) {
-      GetTileFlags(pNode.value.usIndex, &fTileFlags);
+      GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
 
       if (fTileFlags & FULL3D_TILE) {
         if (!(pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {
@@ -2863,7 +2863,7 @@ function WorldShowTrees(): void {
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     pNode = gpWorldLevelData[cnt].pStructHead;
     while (pNode != NULL) {
-      GetTileFlags(pNode.value.usIndex, &fTileFlags);
+      GetTileFlags(pNode.value.usIndex, addressof(fTileFlags));
 
       if (fTileFlags & FULL3D_TILE) {
         if ((pNode.value.uiFlags & LEVELNODE_REVEALTREES)) {

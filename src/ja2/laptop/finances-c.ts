@@ -402,7 +402,7 @@ function RenderFinances(): void {
   DisplayFinancePageNumberAndDateRange();
 
   // display border
-  GetVideoObject(&hHandle, guiLaptopBACKGROUND);
+  GetVideoObject(addressof(hHandle), guiLaptopBACKGROUND);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, 108, 23, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // title bar icon
@@ -418,27 +418,27 @@ function LoadFinances(): BOOLEAN {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTITLE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Financeswindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTOP));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTOP)));
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLONGLINE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE)));
 
   // the records columns
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\recordcolumns.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLISTCOLUMNS));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLISTCOLUMNS)));
 
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLINE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLINE)));
 
   return TRUE;
 }
@@ -460,11 +460,11 @@ function RenderBackGround(): void {
   let iCounter: INT32 = 0;
 
   // get title bar object
-  GetVideoObject(&hHandle, guiTITLE);
+  GetVideoObject(addressof(hHandle), guiTITLE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // get and blt the top part of the screen, video object and blt to screen
-  GetVideoObject(&hHandle, guiTOP);
+  GetVideoObject(addressof(hHandle), guiTOP);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
   DrawFinanceTitleText();
   return;
@@ -483,7 +483,7 @@ function DrawSummaryLines(): void {
   let hHandle: HVOBJECT;
 
   // the summary LINE object handle
-  GetVideoObject(&hHandle, guiLINE);
+  GetVideoObject(addressof(hHandle), guiLINE);
 
   // blit summary LINE object to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, DIVLINE_X, TOP_DIVLINE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -526,16 +526,16 @@ function DrawRecordsBackGround(): void {
   // now the columns
   for (iCounter; iCounter < 35; iCounter++) {
     // get and blt middle background to screen
-    GetVideoObject(&hHandle, guiLISTCOLUMNS);
+    GetVideoObject(addressof(hHandle), guiLISTCOLUMNS);
     BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 18 + (iCounter * BLOCK_HEIGHT) + 1, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   // the divisorLines
-  GetVideoObject(&hHandle, guiLONGLINE);
+  GetVideoObject(addressof(hHandle), guiLONGLINE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 17 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
-  GetVideoObject(&hHandle, guiLONGLINE);
+  GetVideoObject(addressof(hHandle), guiLONGLINE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + (6 * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
-  GetVideoObject(&hHandle, guiLONGLINE);
+  GetVideoObject(addressof(hHandle), guiLONGLINE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 10, TOP_Y + 19 + ((iCounter) * (BLOCK_HEIGHT)), VO_BLT_SRCTRANSPARENCY, NULL);
 
   // the header text
@@ -556,23 +556,23 @@ function DrawRecordsColumnHeadersText(): void {
   SetFontShadow(NO_SHADOW);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, pFinanceHeaders[0], FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, pFinanceHeaders[0], FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[0]);
 
   // debit header
-  FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, pFinanceHeaders[1], FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, pFinanceHeaders[1], FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[1]);
 
   // credit header
-  FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, pFinanceHeaders[2], FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, pFinanceHeaders[2], FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[2]);
 
   // balance header
-  FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, pFinanceHeaders[4], FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, pFinanceHeaders[4], FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[4]);
 
   // transaction header
-  FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, pFinanceHeaders[3], FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, pFinanceHeaders[3], FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pFinanceHeaders[3]);
 
   SetFontShadow(DEFAULT_SHADOW);
@@ -615,7 +615,7 @@ function DrawRecordsText(): void {
     // get and write the date
     swprintf(sString, "%d", pCurFinance.value.uiDate / (24 * 60));
 
-    FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
+    FindFontCenterCoordinates(RECORD_DATE_X, 0, RECORD_DATE_WIDTH, 0, sString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
 
     // get and write debit/ credit
@@ -629,7 +629,7 @@ function DrawRecordsText(): void {
       //		 if( iCounter == 0 )
       { InsertDollarSignInToString(sString); }
 
-      FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
+      FindFontCenterCoordinates(RECORD_DEBIT_X, 0, RECORD_DEBIT_WIDTH, 0, sString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
     } else {
       // decrease in asset - credit
@@ -641,7 +641,7 @@ function DrawRecordsText(): void {
       //		 if( iCounter == 0 )
       { InsertDollarSignInToString(sString); }
 
-      FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
+      FindFontCenterCoordinates(RECORD_CREDIT_X, 0, RECORD_CREDIT_WIDTH, 0, sString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
       mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
       SetFontForeground(FONT_BLACK);
     }
@@ -659,7 +659,7 @@ function DrawRecordsText(): void {
 
     // transaction string
     ProcessTransactionString(sString, pCurFinance);
-    FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
+    FindFontCenterCoordinates(RECORD_TRANSACTION_X, 0, RECORD_TRANSACTION_WIDTH, 0, sString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
 
     // print the balance string
@@ -670,7 +670,7 @@ function DrawRecordsText(): void {
     //		if( iCounter == 0 )
     { InsertDollarSignInToString(sString); }
 
-    FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, sString, FINANCE_TEXT_FONT, &usX, &usY);
+    FindFontCenterCoordinates(RECORD_BALANCE_X, 0, RECORD_BALANCE_WIDTH, 0, sString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
     mprintf(usX, 12 + RECORD_Y + (iCounter * (GetFontHeight(FINANCE_TEXT_FONT) + 6)), sString);
 
     // restore font color
@@ -748,7 +748,7 @@ function DrawSummaryText(): void {
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
 
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, YESTERDAYS_INCOME, pString);
 
@@ -761,7 +761,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, YESTERDAYS_OTHER, pString);
 
@@ -779,7 +779,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, YESTERDAYS_DEBITS, pString);
 
@@ -797,7 +797,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, YESTERDAYS_BALANCE, pString);
 
@@ -810,7 +810,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, TODAYS_INCOME, pString);
 
@@ -823,7 +823,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, TODAYS_OTHER, pString);
 
@@ -842,7 +842,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, TODAYS_DEBITS, pString);
 
@@ -862,7 +862,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, TODAYS_CURRENT_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
 
@@ -873,7 +873,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
 
   mprintf(usX, TODAYS_CURRENT_FORCAST_INCOME, pString);
 
@@ -893,7 +893,7 @@ function DrawSummaryText(): void {
   InsertCommasForDollarFigure(pString);
   if (iBalance != 0)
     InsertDollarSignInToString(pString);
-  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, &usX, &usY);
+  FindFontRightCoordinates(0, 0, 580, 0, pString, FINANCE_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, TODAYS_CURRENT_FORCAST_BALANCE, pString);
   SetFontForeground(FONT_BLACK);
 
@@ -940,7 +940,7 @@ function OpenAndReadFinancesFile(): void {
 
   // read in balance
   // write balance to disk first
-  FileRead(hFileHandle, &(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), &iBytesRead);
+  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
   uiByteCount += sizeof(INT32);
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
@@ -948,11 +948,11 @@ function OpenAndReadFinancesFile(): void {
   // file exists, read in data, continue until file end
   while (FileGetSize(hFileHandle) > uiByteCount) {
     // read in other data
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -1333,7 +1333,7 @@ function WriteBalanceToDisk(): BOOLEAN {
   hFileHandle = FileOpen(FINANCES_DATA_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
 
   // write balance to disk
-  FileWrite(hFileHandle, &(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), NULL);
 
   // close file
   FileClose(hFileHandle);
@@ -1363,7 +1363,7 @@ function GetBalanceFromDisk(): void {
   FileSeek(hFileHandle, 0, FILE_SEEK_FROM_START);
 
   // get balance from disk first
-  FileRead(hFileHandle, &(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), &iBytesRead);
+  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -1399,11 +1399,11 @@ function AppendFinanceToEndOfFile(pFinance: FinanceUnitPtr): BOOLEAN {
 
   // write finance to disk
   // now write date and amount, and code
-  FileWrite(hFileHandle, &(pFinanceList.value.ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pFinanceList.value.ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pFinanceList.value.uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, &(pFinanceList.value.iAmount), sizeof(INT32), NULL);
-  FileWrite(hFileHandle, &(pFinanceList.value.iBalanceToDate), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.ubCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.ubSecondCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.uiDate), sizeof(UINT32), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.iAmount), sizeof(INT32), NULL);
+  FileWrite(hFileHandle, addressof(pFinanceList.value.iBalanceToDate), sizeof(INT32), NULL);
 
   // close file
   FileClose(hFileHandle);
@@ -1569,11 +1569,11 @@ function LoadInRecords(uiPage: UINT32): BOOLEAN {
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue) && (uiByteCount < FileGetSize(hFileHandle))) {
     // read in data
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
 
@@ -1713,7 +1713,7 @@ function GetPreviousBalanceToDate(): INT32 {
   FileSeek(hFileHandle, (sizeof(INT32)), FILE_SEEK_FROM_END);
 
   // get balnce to date
-  FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+  FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
   FileClose(hFileHandle);
 
@@ -1765,11 +1765,11 @@ function GetPreviousDaysBalance(): INT32 {
     // incrment byte count
     iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     // check to see if we are far enough
     if ((uiDate / (24 * 60)) == (iDateInMinutes / (24 * 60)) - 2) {
@@ -1845,11 +1845,11 @@ function GetTodaysBalance(): INT32 {
     // incrment byte count
     iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -1923,11 +1923,11 @@ function GetPreviousDaysIncome(): INT32 {
 
     FileGetPos(hFileHandle);
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2009,11 +2009,11 @@ function GetTodaysDaysIncome(): INT32 {
     // incrment byte count
     iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2123,11 +2123,11 @@ function GetTodaysOtherDeposits(): INT32 {
     // incrment byte count
     iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2211,11 +2211,11 @@ function GetYesterdaysOtherDeposits(): INT32 {
     // incrment byte count
     iByteCount += RECORD_SIZE;
 
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &iAmount, sizeof(INT32), &iBytesRead);
-    FileRead(hFileHandle, &iBalanceToDate, sizeof(INT32), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iAmount), sizeof(INT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(iBalanceToDate), sizeof(INT32), addressof(iBytesRead));
 
     AssertMsg(iBytesRead, "Failed To Read Data Entry");
     // check to see if we are far enough
@@ -2290,7 +2290,7 @@ function LoadCurrentBalance(): void {
   }
 
   FileSeek(hFileHandle, 0, FILE_SEEK_FROM_START);
-  FileRead(hFileHandle, &LaptopSaveInfo.iCurrentBalance, sizeof(INT32), &iBytesRead);
+  FileRead(hFileHandle, addressof(LaptopSaveInfo.iCurrentBalance), sizeof(INT32), addressof(iBytesRead));
 
   AssertMsg(iBytesRead, "Failed To Read Data Entry");
   // close file

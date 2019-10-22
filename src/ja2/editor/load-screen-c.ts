@@ -83,14 +83,14 @@ function LoadSaveScreenEntry(): void {
     TrashFDlgList(FileList);
 
   iTopFileShown = iTotalFiles = 0;
-  if (GetFileFirst("MAPS\\*.dat", &FileInfo)) {
-    FileList = AddToFDlgList(FileList, &FileInfo);
+  if (GetFileFirst("MAPS\\*.dat", addressof(FileInfo))) {
+    FileList = AddToFDlgList(FileList, addressof(FileInfo));
     iTotalFiles++;
-    while (GetFileNext(&FileInfo)) {
-      FileList = AddToFDlgList(FileList, &FileInfo);
+    while (GetFileNext(addressof(FileInfo))) {
+      FileList = AddToFDlgList(FileList, addressof(FileInfo));
       iTotalFiles++;
     }
-    GetFileClose(&FileInfo);
+    GetFileClose(addressof(FileInfo));
   }
 
   swprintf(zOrigName, "%s Map (*.dat)", iCurrentAction == ACTION_SAVE_MAP ? "Save" : "Load");
@@ -150,7 +150,7 @@ function ProcessLoadSaveScreenMessageBoxResult(): UINT32 {
           SetInputFieldStringWith16BitString(0, "");
           wcscpy(gzFilename, "");
         }
-        RemoveFromFDlgList(&FileList, curr);
+        RemoveFromFDlgList(addressof(FileList), curr);
         iTotalFiles--;
         if (!iTotalFiles) {
           gfNoFiles = TRUE;
@@ -221,9 +221,9 @@ function LoadSaveScreenHandle(): UINT32 {
   }
 
   // handle all key input.
-  while (DequeueEvent(&DialogEvent)) {
-    if (!HandleTextInput(&DialogEvent) && (DialogEvent.usEvent == KEY_DOWN || DialogEvent.usEvent == KEY_REPEAT)) {
-      HandleMainKeyEvents(&DialogEvent);
+  while (DequeueEvent(addressof(DialogEvent))) {
+    if (!HandleTextInput(addressof(DialogEvent)) && (DialogEvent.usEvent == KEY_DOWN || DialogEvent.usEvent == KEY_REPEAT)) {
+      HandleMainKeyEvents(addressof(DialogEvent));
     }
   }
 
@@ -268,7 +268,7 @@ function LoadSaveScreenHandle(): UINT32 {
       return EDIT_SCREEN;
     case DIALOG_DELETE:
       sprintf(gszCurrFilename, "MAPS\\%S", gzFilename);
-      if (GetFileFirst(gszCurrFilename, &FileInfo)) {
+      if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
         let str: UINT16[] /* [40] */;
         if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_HIDDEN | FILE_IS_SYSTEM)) {
           swprintf(str, " Delete READ-ONLY file %s? ", gzFilename);
@@ -290,10 +290,10 @@ function LoadSaveScreenHandle(): UINT32 {
       if (FileExists(gszCurrFilename)) {
         gfFileExists = TRUE;
         gfReadOnly = FALSE;
-        if (GetFileFirst(gszCurrFilename, &FileInfo)) {
+        if (GetFileFirst(gszCurrFilename, addressof(FileInfo))) {
           if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_DIRECTORY | FILE_IS_HIDDEN | FILE_IS_SYSTEM | FILE_IS_OFFLINE | FILE_IS_TEMPORARY))
             gfReadOnly = TRUE;
-          GetFileClose(&FileInfo);
+          GetFileClose(addressof(FileInfo));
         }
         if (gfReadOnly)
           CreateMessageBox(" File is read only!  Choose a different name? ");
@@ -330,7 +330,7 @@ function CreateFileDialog(zTitle: Pointer<UINT16>): void {
 
   DisableEditorTaskbar();
 
-  MSYS_DefineRegion(&BlanketRegion, 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_HIGH - 5, 0, 0, 0);
+  MSYS_DefineRegion(addressof(BlanketRegion), 0, 0, gsVIEWPORT_END_X, gsVIEWPORT_END_Y, MSYS_PRIORITY_HIGH - 5, 0, 0, 0);
 
   // Okay and cancel buttons
   iFileDlgButtons[0] = CreateTextButton("Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 354, 225, 50, 30, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, FDlgOkCallback);
@@ -396,7 +396,7 @@ function FileDialogModeCallback(ubID: UINT8, fEntering: BOOLEAN): void {
 function RemoveFileDialog(): void {
   let x: INT32;
 
-  MSYS_RemoveRegion(&BlanketRegion);
+  MSYS_RemoveRegion(addressof(BlanketRegion));
 
   for (x = 0; x < 6; x++) {
     RemoveButton(iFileDlgButtons[x]);
@@ -689,7 +689,7 @@ function InitErrorCatchDialog(): void {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giErrorCatchMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, gzErrorCatchString, EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, &CenteringRect);
+  giErrorCatchMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, gzErrorCatchString, EDIT_SCREEN, MSG_BOX_FLAG_OK, NULL, addressof(CenteringRect));
   gfErrorCatch = FALSE;
 }
 

@@ -222,7 +222,7 @@ function ShowExitGrids(): void {
     return;
   gfShowExitGrids = TRUE;
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGridLevelNode(i, &pLevelNode)) {
+    if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
       AddTopmostToTail(i, FIRSTPOINTERS8);
     }
   }
@@ -235,7 +235,7 @@ function HideExitGrids(): void {
     return;
   gfShowExitGrids = FALSE;
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGridLevelNode(i, &pLevelNode)) {
+    if (GetExitGridLevelNode(i, addressof(pLevelNode))) {
       pLevelNode = gpWorldLevelData[i].pTopmostHead;
       while (pLevelNode) {
         if (pLevelNode.value.usIndex == FIRSTPOINTERS8) {

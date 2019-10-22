@@ -174,7 +174,7 @@ function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLef
   if ((iBackIndex = GetFreeBackgroundBuffer()) == (-1))
     return -1;
 
-  memset(&gBackSaves[iBackIndex], 0, sizeof(BACKGROUND_SAVE));
+  memset(addressof(gBackSaves[iBackIndex]), 0, sizeof(BACKGROUND_SAVE));
 
   gBackSaves[iBackIndex].fZBuffer = FALSE;
 
@@ -227,8 +227,8 @@ function RestoreBackgroundRects(): BOOLEAN {
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
 
-  pDestBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSrcPitchBYTES));
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if (gBackSaves[uiCount].fFilled && (!gBackSaves[uiCount].fDisabled)) {
@@ -317,8 +317,8 @@ function SaveBackgroundRects(): BOOLEAN {
   let pDestBuf: Pointer<UINT8>;
   let pSrcBuf: Pointer<UINT8>;
 
-  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
+  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSrcPitchBYTES));
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if (gBackSaves[uiCount].fAllocated && (!gBackSaves[uiCount].fDisabled)) {
@@ -438,10 +438,10 @@ function UpdateSaveBuffer(): BOOLEAN {
   let ubBitDepth: UINT8;
 
   // Update saved buffer - do for the viewport size ony!
-  GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
 
-  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, &uiSrcPitchBYTES);
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
+  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
 
   if (gbPixelDepth == 16) {
     // BLIT HERE
@@ -465,8 +465,8 @@ function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, s
 
   Assert((sLeft >= 0) && (sTop >= 0) && (sLeft + sWidth <= 640) && (sTop + sHeight <= 480));
 
-  pDestBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSrcPitchBYTES));
 
   if (gbPixelDepth == 16) {
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
@@ -503,8 +503,8 @@ function RestoreExternBackgroundRectGivenID(iBack: INT32): BOOLEAN {
 
   Assert((sLeft >= 0) && (sTop >= 0) && (sLeft + sWidth <= 640) && (sTop + sHeight <= 480));
 
-  pDestBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSrcPitchBYTES));
 
   if (gbPixelDepth == 16) {
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
@@ -528,8 +528,8 @@ function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
 
   Assert((sLeft >= 0) && (sTop >= 0) && (sLeft + sWidth <= 640) && (sTop + sHeight <= 480));
 
-  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiSrcPitchBYTES));
 
   if (gbPixelDepth == 16) {
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
@@ -682,12 +682,12 @@ function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERL
     return -1;
 
   // Init new blitter
-  memset(&gVideoOverlays[iBlitterIndex], 0, sizeof(VIDEO_OVERLAY));
+  memset(addressof(gVideoOverlays[iBlitterIndex]), 0, sizeof(VIDEO_OVERLAY));
 
   gVideoOverlays[iBlitterIndex].uiFlags = uiFlags;
   gVideoOverlays[iBlitterIndex].fAllocated = 2;
   gVideoOverlays[iBlitterIndex].uiBackground = iBackIndex;
-  gVideoOverlays[iBlitterIndex].pBackground = &(gBackSaves[iBackIndex]);
+  gVideoOverlays[iBlitterIndex].pBackground = addressof(gBackSaves[iBackIndex]);
   gVideoOverlays[iBlitterIndex].BltCallback = pTopmostDesc.value.BltCallback;
 
   // Update blitter info
@@ -815,7 +815,7 @@ function ExecuteVideoOverlays(): void {
         // ATE: Wait a frame before executing!
         if (gVideoOverlays[uiCount].fAllocated == 1) {
           // Call Blit Function
-          (*(gVideoOverlays[uiCount].BltCallback))(&(gVideoOverlays[uiCount]));
+          (*(gVideoOverlays[uiCount].BltCallback))(addressof(gVideoOverlays[uiCount]));
         } else if (gVideoOverlays[uiCount].fAllocated == 2) {
           gVideoOverlays[uiCount].fAllocated = 1;
         }
@@ -842,7 +842,7 @@ function ExecuteVideoOverlaysToAlternateBuffer(uiNewDestBuffer: UINT32): void {
         gVideoOverlays[uiCount].uiDestBuff = uiNewDestBuffer;
 
         // Call Blit Function
-        (*(gVideoOverlays[uiCount].BltCallback))(&(gVideoOverlays[uiCount]));
+        (*(gVideoOverlays[uiCount].BltCallback))(addressof(gVideoOverlays[uiCount]));
 
         gVideoOverlays[uiCount].uiDestBuff = uiOldDestBuffer;
       }
@@ -900,7 +900,7 @@ function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
   let uiSrcPitchBYTES: UINT32;
   let pSrcBuf: Pointer<UINT8>;
 
-  pSrcBuf = LockVideoSurface(uiSrcBuffer, &uiSrcPitchBYTES);
+  pSrcBuf = LockVideoSurface(uiSrcBuffer, addressof(uiSrcPitchBYTES));
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
@@ -926,7 +926,7 @@ function SaveVideoOverlayArea(uiSrcBuffer: UINT32, uiCount: UINT32): void {
   let uiSrcPitchBYTES: UINT32;
   let pSrcBuf: Pointer<UINT8>;
 
-  pSrcBuf = LockVideoSurface(uiSrcBuffer, &uiSrcPitchBYTES);
+  pSrcBuf = LockVideoSurface(uiSrcBuffer, addressof(uiSrcPitchBYTES));
 
   if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
     // OK, if our saved area is null, allocate it here!
@@ -996,7 +996,7 @@ function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): BOOLEAN {
   ClipX2 = 640;
   ClipY2 = gsVIEWPORT_WINDOW_END_Y - 1;
 
-  pDestBuf = LockVideoSurface(BACKBUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(BACKBUFFER, addressof(uiDestPitchBYTES));
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if (gVideoOverlays[uiCount].fAllocated && !gVideoOverlays[uiCount].fDisabled) {
@@ -1075,7 +1075,7 @@ function BlitMFont(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   let pDestBuf: Pointer<UINT8>;
   let uiDestPitchBYTES: UINT32;
 
-  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
 
   SetFont(pBlitter.value.uiFontID);
   SetFontBackground(pBlitter.value.ubFontBack);
@@ -1093,8 +1093,8 @@ function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: U
   let pSrcBuf: Pointer<UINT8>;
   let fRetVal: BOOLEAN;
 
-  pDestBuf = LockVideoSurface(uiDestBuffer, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(uiSrcBuffer, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(uiDestBuffer, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(uiSrcBuffer, addressof(uiSrcPitchBYTES));
 
   fRetVal = Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, usSrcX, usSrcY, usSrcX, usSrcY, usWidth, usHeight);
 
@@ -1107,7 +1107,7 @@ function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: U
 function EnableVideoOverlay(fEnable: BOOLEAN, iOverlayIndex: INT32): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   // enable or disable
   VideoOverlayDesc.fDisabled = !fEnable;
@@ -1115,5 +1115,5 @@ function EnableVideoOverlay(fEnable: BOOLEAN, iOverlayIndex: INT32): void {
   // go play with enable/disable state
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
-  UpdateVideoOverlay(&VideoOverlayDesc, iOverlayIndex, FALSE);
+  UpdateVideoOverlay(addressof(VideoOverlayDesc), iOverlayIndex, FALSE);
 }

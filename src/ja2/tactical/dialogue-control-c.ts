@@ -292,7 +292,7 @@ function HandleDialogueUIAdjustments(): void {
             giTextBoxOverlay = -1;
 
             if (fTextBoxMouseRegionCreated) {
-              MSYS_RemoveRegion(&gTextBoxMouseRegion);
+              MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
               fTextBoxMouseRegionCreated = FALSE;
             }
 
@@ -401,7 +401,7 @@ function HandleDialogue(): void {
 
           if (fExternFaceBoxRegionCreated) {
             fExternFaceBoxRegionCreated = FALSE;
-            MSYS_RemoveRegion(&(gFacePopupMouseRegion));
+            MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
           }
 
           // Set face inactive....
@@ -494,7 +494,7 @@ function HandleDialogue(): void {
   // If here, pick current one from queue and play
 
   // Get new one
-  RemfromQueue(ghDialogueQ, &QItem);
+  RemfromQueue(ghDialogueQ, addressof(QItem));
 
   // If we are in auto bandage, ignore any quotes!
   if (gTacticalStatus.fAutoBandageMode) {
@@ -517,7 +517,7 @@ function HandleDialogue(): void {
     if (gTacticalStatus.ubCurrentTeam != gbPlayerNum) {
       // Place back in!
       // Add to queue
-      ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+      ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
       return;
     }
@@ -530,7 +530,7 @@ function HandleDialogue(): void {
       if ((GetJA2Clock() - QItem.value.iTimeStamp) < QItem.value.uiSpecialEventData2) {
         // Place back in!
         // Add to queue
-        ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+        ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
         return;
       }
@@ -544,7 +544,7 @@ function HandleDialogue(): void {
     if (SoundIsPlaying(pSoldier.value.uiBattleSoundID)) {
       // Place back in!
       // Add to queue
-      ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+      ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
       return;
     }
@@ -583,7 +583,7 @@ function HandleDialogue(): void {
     gTacticalStatus.ubLastQuoteProfileNUm = QItem.value.ubCharacterNum;
 
     // Setup face pointer
-    gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+    gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
     gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
     ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
@@ -616,7 +616,7 @@ function HandleDialogue(): void {
       gfUseAlternateDialogueFile = TRUE;
 
       // Setup face pointer
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
@@ -626,7 +626,7 @@ function HandleDialogue(): void {
     // We could have a special flag, but dialogue as well
     else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
       // Setup face pointer
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
@@ -663,7 +663,7 @@ function HandleDialogue(): void {
       // Slide to location!
       SlideToLocation(0, QItem.value.uiSpecialEventData);
 
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
@@ -686,7 +686,7 @@ function HandleDialogue(): void {
 
       switch (iReason) {
         case (UPDATE_BOX_REASON_ADDSOLDIER):
-          pUpdateSoldier = &Menptr[QItem.value.uiSpecialEventData2];
+          pUpdateSoldier = addressof(Menptr[QItem.value.uiSpecialEventData2]);
           if (pUpdateSoldier.value.bActive == TRUE) {
             AddSoldierToUpdateBox(pUpdateSoldier);
           }
@@ -701,7 +701,7 @@ function HandleDialogue(): void {
     }
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE) {
       // Setup face pointer
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       ExecuteCharacterDialogue(QItem.value.ubCharacterNum, QItem.value.usQuoteNum, QItem.value.iFaceIndex, QItem.value.bUIHandlerID, QItem.value.fFromSoldier);
@@ -794,7 +794,7 @@ function HandleDialogue(): void {
     */
     else if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_SKYRIDERMAPSCREENEVENT) {
       // Setup face pointer
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       // handle the monologue event
@@ -803,7 +803,7 @@ function HandleDialogue(): void {
 
     if (QItem.value.uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_MINESECTOREVENT) {
       // Setup face pointer
-      gpCurrentTalkingFace = &gFacesData[QItem.value.iFaceIndex];
+      gpCurrentTalkingFace = addressof(gFacesData[QItem.value.iFaceIndex]);
       gubCurrentTalkingID = QItem.value.ubCharacterNum;
 
       // set up the mine highlgith events
@@ -1065,7 +1065,7 @@ function CharacterDialogueWithSpecialEvent(ubCharacterNum: UINT8, usQuoteNum: UI
   QItem.value.uiSpecialEventData2 = uiData2;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+  ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
   if (uiFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
     // Increment refrence count...
@@ -1097,7 +1097,7 @@ function CharacterDialogueWithSpecialEventEx(ubCharacterNum: UINT8, usQuoteNum: 
   QItem.value.uiSpecialEventData3 = uiData3;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+  ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
   if (uiFlag & DIALOGUE_SPECIAL_EVENT_PCTRIGGERNPC) {
     // Increment refrence count...
@@ -1130,7 +1130,7 @@ function CharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFaceIndex
   fPausedTimeDuringQuote = FALSE;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+  ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
   return TRUE;
 }
@@ -1158,7 +1158,7 @@ function SpecialCharacterDialogueEvent(uiSpecialEventFlag: UINT32, uiSpecialEven
   fPausedTimeDuringQuote = FALSE;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+  ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
   return TRUE;
 }
@@ -1187,7 +1187,7 @@ function SpecialCharacterDialogueEventWithExtraParam(uiSpecialEventFlag: UINT32,
   fPausedTimeDuringQuote = FALSE;
 
   // Add to queue
-  ghDialogueQ = AddtoQueue(ghDialogueQ, &QItem);
+  ghDialogueQ = AddtoQueue(ghDialogueQ, addressof(QItem));
 
   return TRUE;
 }
@@ -1279,7 +1279,7 @@ function ExecuteCharacterDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iFa
   // Check face index
   CHECKF(iFaceIndex != -1);
 
-  if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, &uiSoundID, zSoundString)) {
+  if (!GetDialogue(ubCharacterNum, usQuoteNum, DIALOGUESIZE, gzQuoteStr, addressof(uiSoundID), zSoundString)) {
     return FALSE;
   }
 
@@ -1430,7 +1430,7 @@ function GetDialogue(ubCharacterNum: UINT8, usQuoteNum: UINT16, iDataSize: UINT3
   // first things first  - grab the text (if player has SUBTITLE PREFERENCE ON)
   // if ( gGameSettings.fOptions[ TOPTION_SUBTITLES ] )
   {
-    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, FALSE, &pFilename)) {
+    if (DialogueDataFileExistsForProfile(ubCharacterNum, 0, FALSE, addressof(pFilename))) {
       LoadEncryptedDataFromFile(pFilename, zDialogueText, usQuoteNum * iDataSize, iDataSize);
       if (zDialogueText[0] == 0) {
         swprintf(zDialogueText, "I have no text in the EDT file ( %d ) %S", usQuoteNum, pFilename);
@@ -1561,12 +1561,12 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
     return;
   }
 
-  memset(&VideoOverlayDesc, 0, sizeof(VIDEO_OVERLAY_DESC));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Prepare text box
   SET_USE_WINFONTS(TRUE);
   SET_WINFONT(giSubTitleWinFont);
-  iDialogueBox = PrepareMercPopupBox(iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, &gusSubtitleBoxWidth, &gusSubtitleBoxHeight);
+  iDialogueBox = PrepareMercPopupBox(iDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, pString, DIALOGUE_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(gusSubtitleBoxWidth), addressof(gusSubtitleBoxHeight));
   SET_USE_WINFONTS(FALSE);
 
   VideoOverlayDesc.sLeft = sLeftPosition;
@@ -1577,14 +1577,14 @@ function ExecuteTacticalTextBox(sLeftPosition: INT16, pString: STR16): void {
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   VideoOverlayDesc.BltCallback = RenderSubtitleBoxOverlay;
 
-  giTextBoxOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+  giTextBoxOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
 
   gsTopPosition = 20;
 
   // Define main region
-  MSYS_DefineRegion(&gTextBoxMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
+  MSYS_DefineRegion(addressof(gTextBoxMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextOverlayClickCallback);
   // Add region
-  MSYS_AddRegion(&(gTextBoxMouseRegion));
+  MSYS_AddRegion(addressof(gTextBoxMouseRegion));
 
   fTextBoxMouseRegionCreated = TRUE;
 }
@@ -1625,7 +1625,7 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
     VideoOverlayDesc.BltCallback = RenderFaceOverlay;
   }
 
-  iFaceOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+  iFaceOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
   gpCurrentTalkingFace.value.iVideoOverlay = iFaceOverlay;
 
   RenderAutoFace(iFaceIndex);
@@ -1635,9 +1635,9 @@ function HandleExternNPCSpeechFace(iIndex: INT32): void {
     fExternFaceBoxRegionCreated = TRUE;
 
     // Define main region
-    MSYS_DefineRegion(&gFacePopupMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+    MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
     // Add region
-    MSYS_AddRegion(&(gFacePopupMouseRegion));
+    MSYS_AddRegion(addressof(gFacePopupMouseRegion));
   }
 
   gfFacePanelActive = TRUE;
@@ -1651,7 +1651,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
   let pSoldier: Pointer<SOLDIERTYPE>;
   let fDoExternPanel: BOOLEAN = FALSE;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VIDEO_OVERLAY_DESC));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VIDEO_OVERLAY_DESC));
 
   // Get soldier pointer, if there is one...
   // Try to find soldier...
@@ -1691,7 +1691,7 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderFaceOverlay;
 
-    iFaceOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+    iFaceOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
     gpCurrentTalkingFace.value.iVideoOverlay = iFaceOverlay;
 
     RenderAutoFace(iFaceIndex);
@@ -1701,9 +1701,9 @@ function HandleTacticalSpeechUI(ubCharacterNum: UINT8, iFaceIndex: INT32): void 
       fExternFaceBoxRegionCreated = TRUE;
 
       // Define main region
-      MSYS_DefineRegion(&gFacePopupMouseRegion, VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
+      MSYS_DefineRegion(addressof(gFacePopupMouseRegion), VideoOverlayDesc.sLeft, VideoOverlayDesc.sTop, VideoOverlayDesc.sRight, VideoOverlayDesc.sBottom, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, FaceOverlayClickCallback);
       // Add region
-      MSYS_AddRegion(&(gFacePopupMouseRegion));
+      MSYS_AddRegion(addressof(gFacePopupMouseRegion));
     }
 
     gfFacePanelActive = TRUE;
@@ -1739,7 +1739,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
           if (fExternFaceBoxRegionCreated) {
             fExternFaceBoxRegionCreated = FALSE;
-            MSYS_RemoveRegion(&(gFacePopupMouseRegion));
+            MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
           }
         }
         break;
@@ -1752,7 +1752,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
         if (fExternFaceBoxRegionCreated) {
           fExternFaceBoxRegionCreated = FALSE;
-          MSYS_RemoveRegion(&(gFacePopupMouseRegion));
+          MSYS_RemoveRegion(addressof(gFacePopupMouseRegion));
         }
 
         break;
@@ -1773,7 +1773,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
             // reset box id
             iDialogueBox = -1;
-            MSYS_RemoveRegion(&gTextBoxMouseRegion);
+            MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
             fTextBoxMouseRegionCreated = FALSE;
           }
         }
@@ -1784,7 +1784,7 @@ function HandleDialogueEnd(pFace: Pointer<FACETYPE>): void {
 
         // Remove region
         if (gTalkPanel.fTextRegionOn) {
-          MSYS_RemoveRegion(&(gTalkPanel.TextRegion));
+          MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
           gTalkPanel.fTextRegionOn = FALSE;
         }
 
@@ -1844,7 +1844,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       // reset the font dest buffer
       SetFontDestBuffer(pBlitter.value.uiDestBuff, 0, 0, 640, 480, FALSE);
 
-      VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", pSoldier.value.name);
+      VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2, addressof(sFontX), addressof(sFontY), "%s", pSoldier.value.name);
       mprintf(sFontX, sFontY, "%s", pSoldier.value.name);
 
       // What sector are we in, ( and is it the same as ours? )
@@ -1853,7 +1853,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2);
 
-        VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 68), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", zTownIDString);
+        VarFindFontCenterCoordinates((pBlitter.value.sX + 12), (pBlitter.value.sY + 68), 73, 9, BLOCKFONT2, addressof(sFontX), addressof(sFontY), "%s", zTownIDString);
         mprintf(sFontX, sFontY, "%s", zTownIDString);
       }
 
@@ -1865,7 +1865,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       DrawBreathUIBarEx(pSoldier, (pBlitter.value.sX + 75), (pBlitter.value.sY + 47), 3, 42, FALSE, pBlitter.value.uiDestBuff);
       DrawMoraleUIBarEx(pSoldier, (pBlitter.value.sX + 81), (pBlitter.value.sY + 47), 3, 42, FALSE, pBlitter.value.uiDestBuff);
     } else {
-      VarFindFontCenterCoordinates((pBlitter.value.sX + 9), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
+      VarFindFontCenterCoordinates((pBlitter.value.sX + 9), (pBlitter.value.sY + 55), 73, 9, BLOCKFONT2, addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
       mprintf(sFontX, sFontY, "%s", gMercProfiles[gpCurrentTalkingFace.value.ubCharacterNum].zNickname);
     }
 
@@ -1873,8 +1873,8 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
     // BlinkAutoFace( gpCurrentTalkingFace->iID );
     // MouthAutoFace( gpCurrentTalkingFace->iID );
 
-    pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, &uiDestPitchBYTES);
-    pSrcBuf = LockVideoSurface(gpCurrentTalkingFace.value.uiAutoDisplayBuffer, &uiSrcPitchBYTES);
+    pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
+    pSrcBuf = LockVideoSurface(gpCurrentTalkingFace.value.uiAutoDisplayBuffer, addressof(uiSrcPitchBYTES));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (pBlitter.value.sX + 14), (pBlitter.value.sY + 6), 0, 0, gpCurrentTalkingFace.value.usFaceWidth, gpCurrentTalkingFace.value.usFaceHeight);
 
@@ -2099,7 +2099,7 @@ function ShutDownLastQuoteTacticalTextBox(): void {
     giTextBoxOverlay = -1;
 
     if (fTextBoxMouseRegionCreated) {
-      MSYS_RemoveRegion(&gTextBoxMouseRegion);
+      MSYS_RemoveRegion(addressof(gTextBoxMouseRegion));
       fTextBoxMouseRegionCreated = FALSE;
     }
 

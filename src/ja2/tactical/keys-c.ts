@@ -102,7 +102,7 @@ function LoadLockTable(): BOOLEAN {
   }
 
   uiBytesToRead = sizeof(LOCK) * NUM_LOCKS;
-  FileRead(hFile, LockTable, uiBytesToRead, &uiNumBytesRead);
+  FileRead(hFile, LockTable, uiBytesToRead, addressof(uiNumBytesRead));
 
   FileClose(hFile);
 
@@ -266,7 +266,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
   // possibly damage crowbar
   bStress = __min(EffectiveStrength(pSoldier), LockTable[pDoor.value.ubLockID].ubSmashDifficulty + 30);
   // reduce crowbar status by random % between 0 and 5%
-  DamageObj(&(pSoldier.value.inv[bSlot]), PreRandom(bStress / 20));
+  DamageObj(addressof(pSoldier.value.inv[bSlot]), PreRandom(bStress / 20));
 
   // did we succeed?
 
@@ -331,7 +331,7 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
     return FALSE;
   }
 
-  pLock = &(LockTable[pDoor.value.ubLockID]);
+  pLock = addressof(LockTable[pDoor.value.ubLockID]);
 
   // did we succeed?
   if (pLock.value.ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
@@ -378,7 +378,7 @@ function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
     return FALSE;
   }
 
-  pLock = &(LockTable[pDoor.value.ubLockID]);
+  pLock = addressof(LockTable[pDoor.value.ubLockID]);
 
   // look up the type of lock to see if it is electronic or not
   if (pLock.value.ubLockType == LOCK_CARD || pLock.value.ubLockType == LOCK_ELECTRONIC) {
@@ -589,14 +589,14 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
       strcpy(AniParams.zCachedFile, "TILECACHE\\MINIBOOM.STI");
 
-      CreateAnimationTile(&AniParams);
+      CreateAnimationTile(addressof(AniParams));
 
       PlayJA2Sample(SMALL_EXPLODE_1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 
       // Remove the explosive.....
       bSlot = FindObj(pSoldier, SHAPED_CHARGE);
       if (bSlot != NO_SLOT) {
-        RemoveObjs(&(pSoldier.value.inv[bSlot]), 1);
+        RemoveObjs(addressof(pSoldier.value.inv[bSlot]), 1);
         DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
       }
     }
@@ -613,7 +613,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
   } else {
     bSlot = FindObj(pSoldier, SHAPED_CHARGE);
     if (bSlot != NO_SLOT) {
-      RemoveObjs(&(pSoldier.value.inv[bSlot]), 1);
+      RemoveObjs(addressof(pSoldier.value.inv[bSlot]), 1);
       DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
     }
 
@@ -629,7 +629,7 @@ function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   let cnt: INT32;
 
   TrashDoorTable();
-  LOADDATA(&gubNumDoors, *hBuffer, 1);
+  LOADDATA(addressof(gubNumDoors), *hBuffer, 1);
 
   gubMaxDoors = gubNumDoors;
   DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
@@ -656,8 +656,8 @@ function SaveDoorTableToMap(fp: HWFILE): void {
     else
       i++;
   }
-  FileWrite(fp, &gubNumDoors, 1, &uiBytesWritten);
-  FileWrite(fp, DoorTable, sizeof(DOOR) * gubNumDoors, &uiBytesWritten);
+  FileWrite(fp, addressof(gubNumDoors), 1, addressof(uiBytesWritten));
+  FileWrite(fp, DoorTable, sizeof(DOOR) * gubNumDoors, addressof(uiBytesWritten));
 }
 
 // The editor adds locks to the world.  If the gridno already exists, then the currently existing door
@@ -666,13 +666,13 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == pDoor.value.sGridNo) {
-      memcpy(&DoorTable[i], pDoor, sizeof(DOOR));
+      memcpy(addressof(DoorTable[i]), pDoor, sizeof(DOOR));
       return;
     }
   }
   // no existing door found, so add a new one.
   if (gubNumDoors < gubMaxDoors) {
-    memcpy(&DoorTable[gubNumDoors], pDoor, sizeof(DOOR));
+    memcpy(addressof(DoorTable[gubNumDoors]), pDoor, sizeof(DOOR));
     gubNumDoors++;
   } else {
     // we need to allocate more memory, so add ten more slots.
@@ -688,7 +688,7 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
     // Assign the new door table as the existing door table
     DoorTable = NewDoorTable;
     // Add the new door info to the table.
-    memcpy(&DoorTable[gubNumDoors], pDoor, sizeof(DOOR));
+    memcpy(addressof(DoorTable[gubNumDoors]), pDoor, sizeof(DOOR));
     gubNumDoors++;
   }
 }
@@ -703,7 +703,7 @@ function RemoveDoorInfoFromTable(iMapIndex: INT32): void {
     if (DoorTable[i].sGridNo == iMapIndex) {
       iNumDoorsToCopy = gubNumDoors - i - 1;
       if (iNumDoorsToCopy) {
-        memmove(&DoorTable[i], &DoorTable[i + 1], sizeof(DOOR) * iNumDoorsToCopy);
+        memmove(addressof(DoorTable[i]), addressof(DoorTable[i + 1]), sizeof(DOOR) * iNumDoorsToCopy);
       }
       gubNumDoors--;
       return;
@@ -716,7 +716,7 @@ function FindDoorInfoAtGridNo(iMapIndex: INT32): Pointer<DOOR> {
   let i: INT32;
   for (i = 0; i < gubNumDoors; i++) {
     if (DoorTable[i].sGridNo == iMapIndex)
-      return &DoorTable[i];
+      return addressof(DoorTable[i]);
   }
   return NULL;
 }
@@ -779,7 +779,7 @@ function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSec
   }
 
   // Save the number of doors
-  FileWrite(hFile, &gubNumDoors, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubNumDoors), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     FileClose(hFile);
     return FALSE;
@@ -788,7 +788,7 @@ function SaveDoorTableToDoorTableTempFile(sSectorX: INT16, sSectorY: INT16, bSec
   // if there are doors to save
   if (uiSizeToSave != 0) {
     // Save the door table
-    FileWrite(hFile, DoorTable, uiSizeToSave, &uiNumBytesWritten);
+    FileWrite(hFile, DoorTable, uiSizeToSave, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiSizeToSave) {
       FileClose(hFile);
       return FALSE;
@@ -835,7 +835,7 @@ function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
   }
 
   // Read in the number of doors
-  FileRead(hFile, &gubMaxDoors, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubMaxDoors), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     FileClose(hFile);
     return FALSE;
@@ -853,7 +853,7 @@ function LoadDoorTableFromDoorTableTempFile(): BOOLEAN {
     }
 
     // Read in the number of doors
-    FileRead(hFile, DoorTable, sizeof(DOOR) * gubMaxDoors, &uiNumBytesRead);
+    FileRead(hFile, DoorTable, sizeof(DOOR) * gubMaxDoors, addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(DOOR) * gubMaxDoors) {
       FileClose(hFile);
       return FALSE;
@@ -1026,7 +1026,7 @@ function GetDoorStatus(sGridNo: INT16): Pointer<DOOR_STATUS> {
     for (ubCnt = 0; ubCnt < gubNumDoorStatus; ubCnt++) {
       // if this is the door
       if (gpDoorStatus[ubCnt].sGridNo == pBaseStructure.value.sGridNo) {
-        return &(gpDoorStatus[ubCnt]);
+        return addressof(gpDoorStatus[ubCnt]);
       }
     }
   }
@@ -1124,7 +1124,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
 
   // Loop through all corpses....
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-    pDoorStatus = &(gpDoorStatus[cnt]);
+    pDoorStatus = addressof(gpDoorStatus[cnt]);
 
     if (!InternalIsPerceivedDifferentThanReality(pDoorStatus)) {
       continue;
@@ -1225,7 +1225,7 @@ function UpdateDoorGraphicsFromStatus(fUsePerceivedStatus: BOOLEAN, fDirty: BOOL
   let pDoorStatus: Pointer<DOOR_STATUS>;
 
   for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-    pDoorStatus = &(gpDoorStatus[cnt]);
+    pDoorStatus = addressof(gpDoorStatus[cnt]);
 
     // ATE: Make sure door status flag and struct info are syncronized....
     SyncronizeDoorStatusToStructureData(pDoorStatus);
@@ -1492,7 +1492,7 @@ function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT1
   }
 
   // Save the number of elements in the door array
-  FileWrite(hFile, &gubNumDoorStatus, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubNumDoorStatus), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -1502,7 +1502,7 @@ function SaveDoorStatusArrayToDoorStatusTempFile(sSectorX: INT16, sSectorY: INT1
   // if there is some to save
   if (gubNumDoorStatus != 0) {
     // Save the door array
-    FileWrite(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), &uiNumBytesWritten);
+    FileWrite(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != (sizeof(DOOR_STATUS) * gubNumDoorStatus)) {
       // Error Writing size of array to disk
       FileClose(hFile);
@@ -1543,7 +1543,7 @@ function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
   }
 
   // Load the number of elements in the door status array
-  FileRead(hFile, &gubNumDoorStatus, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(gubNumDoorStatus), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     FileClose(hFile);
     return FALSE;
@@ -1561,7 +1561,7 @@ function LoadDoorStatusArrayFromDoorStatusTempFile(): BOOLEAN {
   memset(gpDoorStatus, 0, sizeof(DOOR_STATUS) * gubNumDoorStatus);
 
   // Load the number of elements in the door status array
-  FileRead(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), &uiNumBytesRead);
+  FileRead(hFile, gpDoorStatus, (sizeof(DOOR_STATUS) * gubNumDoorStatus), addressof(uiNumBytesRead));
   if (uiNumBytesRead != (sizeof(DOOR_STATUS) * gubNumDoorStatus)) {
     FileClose(hFile);
     return FALSE;
@@ -1585,7 +1585,7 @@ function SaveKeyTableToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32 = 0;
 
   // Save the KeyTable
-  FileWrite(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, &uiNumBytesWritten);
+  FileWrite(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(KEY) * NUM_KEYS) {
     return FALSE;
   }
@@ -1597,7 +1597,7 @@ function LoadKeyTableFromSaveedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32 = 0;
 
   // Load the KeyTable
-  FileRead(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, &uiNumBytesRead);
+  FileRead(hFile, KeyTable, sizeof(KEY) * NUM_KEYS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(KEY) * NUM_KEYS) {
     return FALSE;
   }
@@ -1641,7 +1641,7 @@ function ExamineDoorsOnEnteringSector(): void {
   // Let's do it!
   if (fOK) {
     for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-      pDoorStatus = &(gpDoorStatus[cnt]);
+      pDoorStatus = addressof(gpDoorStatus[cnt]);
 
       // Get status of door....
       if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
@@ -1702,7 +1702,7 @@ function HandleDoorsChangeWhenEnteringSectorCurrentlyLoaded(): void {
   // Let's do it!
   if (fOK) {
     for (cnt = 0; cnt < gubNumDoorStatus; cnt++) {
-      pDoorStatus = &(gpDoorStatus[cnt]);
+      pDoorStatus = addressof(gpDoorStatus[cnt]);
 
       // Get status of door....
       if (pDoorStatus.value.ubFlags & DOOR_OPEN) {
@@ -1734,21 +1734,21 @@ function DropKeysInKeyRing(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLeve
     ubItem = pSoldier.value.pKeyRing[ubLoop].ubKeyID;
 
     if (pSoldier.value.pKeyRing[ubLoop].ubNumber > 0) {
-      CreateKeyObject(&Object, pSoldier.value.pKeyRing[ubLoop].ubNumber, ubItem);
+      CreateKeyObject(addressof(Object), pSoldier.value.pKeyRing[ubLoop].ubNumber, ubItem);
 
       // Zero out entry
       pSoldier.value.pKeyRing[ubLoop].ubNumber = 0;
       pSoldier.value.pKeyRing[ubLoop].ubKeyID = INVALID_KEY_NUMBER;
 
       if (fAddToDropList) {
-        AddItemToLeaveIndex(&Object, iDropListSlot);
+        AddItemToLeaveIndex(addressof(Object), iDropListSlot);
       } else {
         if (pSoldier.value.sSectorX != gWorldSectorX || pSoldier.value.sSectorY != gWorldSectorY || pSoldier.value.bSectorZ != gbWorldSectorZ || fUseUnLoaded) {
           // Set flag for item...
-          AddItemsToUnLoadedSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, sGridNo, 1, &Object, bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, bVisible, FALSE);
+          AddItemsToUnLoadedSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ, sGridNo, 1, addressof(Object), bLevel, WOLRD_ITEM_FIND_SWEETSPOT_FROM_GRIDNO | WORLD_ITEM_REACHABLE, 0, bVisible, FALSE);
         } else {
           // Add to pool
-          AddItemToPool(sGridNo, &Object, bVisible, bLevel, 0, 0);
+          AddItemToPool(sGridNo, addressof(Object), bVisible, bLevel, 0, 0);
         }
       }
     }

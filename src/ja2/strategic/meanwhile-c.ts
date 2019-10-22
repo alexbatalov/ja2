@@ -250,7 +250,7 @@ function ScheduleMeanwhileEvent(pMeanwhileDef: Pointer<MEANWHILE_DEFINITION>, ui
   ubCurrentMeanWhileId = pMeanwhileDef.value.ubMeanwhileID;
 
   // Copy definiaiotn structure into position in global array....
-  memcpy(&(gMeanwhileDef[pMeanwhileDef.value.ubMeanwhileID]), pMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
+  memcpy(addressof(gMeanwhileDef[pMeanwhileDef.value.ubMeanwhileID]), pMeanwhileDef, sizeof(MEANWHILE_DEFINITION));
 
   // A meanwhile.. poor elliot!
   // increment his slapped count...
@@ -267,7 +267,7 @@ function BeginMeanwhile(ubMeanwhileID: UINT8): BOOLEAN {
   let cnt: INT32;
 
   // copy meanwhile data from array to structure for current
-  memcpy(&gCurrentMeanwhileDef, &(gMeanwhileDef[ubMeanwhileID]), sizeof(MEANWHILE_DEFINITION));
+  memcpy(addressof(gCurrentMeanwhileDef), addressof(gMeanwhileDef[ubMeanwhileID]), sizeof(MEANWHILE_DEFINITION));
 
   gfMeanwhileTryingToStart = TRUE;
   PauseGame();
@@ -770,7 +770,7 @@ function HandleCreatureRelease(): void {
   MeanwhileDef.ubMeanwhileID = CREATURES;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
@@ -819,7 +819,7 @@ function HandleMeanWhileEventPostingForTownLiberation(bTownId: UINT8): void {
     MeanwhileDef.ubMeanwhileID = ubId;
 
     // schedule the event
-    ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+    ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
   }
 }
 
@@ -842,7 +842,7 @@ function HandleMeanWhileEventPostingForTownLoss(bTownId: UINT8): void {
   MeanwhileDef.ubMeanwhileID = LOST_TOWN;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
@@ -889,7 +889,7 @@ function HandleMeanWhileEventPostingForSAMLiberation(bSamId: INT8): void {
     MeanwhileDef.ubMeanwhileID = ubId;
 
     // schedule the event
-    ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+    ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
   }
 }
 
@@ -920,7 +920,7 @@ function HandleFlowersMeanwhileScene(bTimeCode: INT8): void {
   MeanwhileDef.ubMeanwhileID = FLOWERS;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleOutskirtsOfMedunaMeanwhileScene(): void {
@@ -943,7 +943,7 @@ function HandleOutskirtsOfMedunaMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = OUTSKIRTS_MEDUNA;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleKillChopperMeanwhileScene(): void {
@@ -966,7 +966,7 @@ function HandleKillChopperMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = KILL_CHOPPER;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleScientistAWOLMeanwhileScene(): void {
@@ -989,7 +989,7 @@ function HandleScientistAWOLMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = AWOL_SCIENTIST;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleInterrogationMeanwhileScene(): void {
@@ -1012,7 +1012,7 @@ function HandleInterrogationMeanwhileScene(): void {
   MeanwhileDef.ubMeanwhileID = INTERROGATION;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleFirstBattleVictory(): void {
@@ -1036,7 +1036,7 @@ function HandleFirstBattleVictory(): void {
   MeanwhileDef.ubMeanwhileID = ubId;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleDelayedFirstBattleVictory(): void {
@@ -1065,7 +1065,7 @@ function HandleDelayedFirstBattleVictory(): void {
   MeanwhileDef.ubMeanwhileID = ubId;
 
   // schedule the event
-  ScheduleMeanwhileEvent(&MeanwhileDef, uiTime);
+  ScheduleMeanwhileEvent(addressof(MeanwhileDef), uiTime);
 }
 
 function HandleFirstBattleEndingWhileInTown(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT16, fFromAutoResolve: BOOLEAN): void {

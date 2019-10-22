@@ -301,7 +301,7 @@ let guiHelpScreenScrollArrowImage: UINT32[] /* [2] */;
 
 function InitHelpScreenSystem(): void {
   // set some values
-  memset(&gHelpScreen, 0, sizeof(gHelpScreen));
+  memset(addressof(gHelpScreen), 0, sizeof(gHelpScreen));
 
   // set it up so we can enter the screen
   gfHelpScreenEntry = TRUE;
@@ -450,8 +450,8 @@ function EnterHelpScreen(): BOOLEAN {
   SetSizeAndPropertiesOfHelpScreen();
 
   // Create a mouse region 'mask' the entrire screen
-  MSYS_DefineRegion(&gHelpScreenFullScreenMask, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-  MSYS_AddRegion(&gHelpScreenFullScreenMask);
+  MSYS_DefineRegion(addressof(gHelpScreenFullScreenMask), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_AddRegion(addressof(gHelpScreenFullScreenMask));
 
   // Create the exit button
   if (gHelpScreen.bNumberOfButtons != 0)
@@ -508,7 +508,7 @@ function EnterHelpScreen(): BOOLEAN {
   // load the help screen background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\HelpScreen.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiHelpScreenBackGround));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHelpScreenBackGround)));
 
   // create the text buffer
   CreateHelpScreenTextBuffer();
@@ -622,7 +622,7 @@ function ExitHelpScreen(): void {
   gHelpScreen.uiFlags &= ~HELP_SCREEN_ACTIVE;
 
   // remove the mouse region that blankets
-  MSYS_RemoveRegion(&gHelpScreenFullScreenMask);
+  MSYS_RemoveRegion(addressof(gHelpScreenFullScreenMask));
 
   // checkbox to toggle show help again toggle
   //	MSYS_RemoveRegion( &HelpScreenDontShowHelpAgainToggleTextRegion );
@@ -667,7 +667,7 @@ function DrawHelpScreenBackGround(): BOOLEAN {
   let usPosX: UINT16;
 
   // Get and display the background image
-  GetVideoObject(&hPixHandle, guiHelpScreenBackGround);
+  GetVideoObject(addressof(hPixHandle), guiHelpScreenBackGround);
 
   usPosX = gHelpScreen.usScreenLocX;
 
@@ -799,9 +799,9 @@ function GetHelpScreenUserInput(): void {
   let Event: InputAtom;
   let MousePos: POINT;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
@@ -824,7 +824,7 @@ function GetHelpScreenUserInput(): void {
         break;
     }
 
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_UP) {
+    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_UP) {
       switch (Event.usParam) {
         case ESC:
           PrepareToExitHelpScreen();
@@ -868,7 +868,7 @@ function GetHelpScreenUserInput(): void {
       }
     }
 
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_REPEAT) {
+    if (!HandleTextInput(addressof(Event)) && Event.usEvent == KEY_REPEAT) {
       switch (Event.usParam) {
         case DNARROW: {
           ChangeTopLineInTextBufferByAmount(1);
@@ -1286,7 +1286,7 @@ function RenderLaptopHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1391,7 +1391,7 @@ function RenderMapScreenNoOneHiredYetHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1428,7 +1428,7 @@ function RenderMapScreenNotYetInArulcoHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1464,7 +1464,7 @@ function RenderMapScreenSectorInventoryHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1501,7 +1501,7 @@ function RenderTacticalHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1605,7 +1605,7 @@ function RenderMapScreenHelpScreen(): UINT16 {
   }
 
   // Get the position for the text
-  GetHelpScreenTextPositions(&usPosX, &usPosY, &usWidth);
+  GetHelpScreenTextPositions(addressof(usPosX), addressof(usPosY), addressof(usWidth));
 
   // switch on the current screen
   switch (gHelpScreen.bCurrentHelpScreenActiveSubPage) {
@@ -1767,7 +1767,7 @@ function CreateHelpScreenTextBuffer(): BOOLEAN {
   vs_desc.usWidth = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   vs_desc.usHeight = HLP_SCRN__HEIGHT_OF_TEXT_BUFFER;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &guiHelpScreenTextBufferSurface));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiHelpScreenTextBufferSurface)));
 
   return TRUE;
 }
@@ -1792,15 +1792,15 @@ function RenderTextBufferToScreen(): void {
   let hSrcVSurface: HVSURFACE;
   let SrcRect: SGPRect;
 
-  GetVideoSurface(&hDestVSurface, guiRENDERBUFFER);
-  GetVideoSurface(&hSrcVSurface, guiHelpScreenTextBufferSurface);
+  GetVideoSurface(addressof(hDestVSurface), guiRENDERBUFFER);
+  GetVideoSurface(addressof(hSrcVSurface), guiHelpScreenTextBufferSurface);
 
   SrcRect.iLeft = 0;
   SrcRect.iTop = gHelpScreen.iLineAtTopOfTextBuffer * HLP_SCRN__HEIGHT_OF_1_LINE_IN_BUFFER;
   SrcRect.iRight = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   SrcRect.iBottom = SrcRect.iTop + HLP_SCRN__HEIGHT_OF_TEXT_AREA - (2 * 8);
 
-  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), &SrcRect);
+  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), addressof(SrcRect));
 
   DisplayHelpScreenTextBufferScrollBox();
 }
@@ -1826,7 +1826,7 @@ function ClearHelpScreenTextBuffer(): void {
   let pDestBuf: Pointer<UINT8>;
 
   // CLEAR THE FRAME BUFFER
-  pDestBuf = LockVideoSurface(guiHelpScreenTextBufferSurface, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(guiHelpScreenTextBufferSurface, addressof(uiDestPitchBYTES));
   memset(pDestBuf, 0, HLP_SCRN__HEIGHT_OF_TEXT_BUFFER * uiDestPitchBYTES);
   UnLockVideoSurface(guiHelpScreenTextBufferSurface);
   InvalidateScreen();
@@ -1887,7 +1887,7 @@ function DisplayHelpScreenTextBufferScrollBox(): void {
   // first calculate the height of the scroll box
   //
 
-  CalculateHeightAndPositionForHelpScreenScrollBox(&iSizeOfBox, &iTopPosScrollBox);
+  CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iSizeOfBox), addressof(iTopPosScrollBox));
 
   //
   // next draw the box
@@ -1898,7 +1898,7 @@ function DisplayHelpScreenTextBufferScrollBox(): void {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(227, 198, 88)));
 
     // display the line
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
     // draw the gold highlite line on the top and left
@@ -1930,11 +1930,11 @@ function CreateScrollAreaButtons(): void {
   usWidth = HLP_SCRN__WIDTH_OF_SCROLL_AREA;
 
   // Get the height and position of the scroll box
-  CalculateHeightAndPositionForHelpScreenScrollBox(&iHeight, &iPosY);
+  CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iHeight), addressof(iPosY));
 
   // Create a mouse region 'mask' the entrire screen
-  MSYS_DefineRegion(&gHelpScreenScrollArea, usPosX, iPosY, (usPosX + usWidth), (iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
-  MSYS_AddRegion(&gHelpScreenScrollArea);
+  MSYS_DefineRegion(addressof(gHelpScreenScrollArea), usPosX, iPosY, (usPosX + usWidth), (iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
+  MSYS_AddRegion(addressof(gHelpScreenScrollArea));
 
   guiHelpScreenScrollArrowImage[0] = LoadButtonImage("INTERFACE\\HelpScreen.sti", 14, 10, 11, 12, 13);
   guiHelpScreenScrollArrowImage[1] = UseLoadedButtonImage(guiHelpScreenScrollArrowImage[0], 19, 15, 16, 17, 18);
@@ -1962,7 +1962,7 @@ function CreateScrollAreaButtons(): void {
 function DeleteScrollArrowButtons(): void {
   let i: INT8;
   // remove the mouse region that blankets
-  MSYS_RemoveRegion(&gHelpScreenScrollArea);
+  MSYS_RemoveRegion(addressof(gHelpScreenScrollArea));
 
   for (i = 0; i < 2; i++) {
     RemoveButton(giHelpScreenScrollArrows[i]);
@@ -2033,7 +2033,7 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
   let dTemp: FLOAT;
   let iNewPosition: INT32;
 
-  CalculateHeightAndPositionForHelpScreenScrollBox(&iHeight, &iPosY);
+  CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iHeight), addressof(iPosY));
 
   if (AreWeClickingOnScrollBar(usMousePosY) || gHelpScreen.iLastMouseClickY != -1) {
     if (gHelpScreen.iLastMouseClickY == -1)
@@ -2117,7 +2117,7 @@ function AreWeClickingOnScrollBar(usMousePosY: INT32): BOOLEAN {
   let iPosY: INT32;
   let iHeight: INT32;
 
-  CalculateHeightAndPositionForHelpScreenScrollBox(&iHeight, &iPosY);
+  CalculateHeightAndPositionForHelpScreenScrollBox(addressof(iHeight), addressof(iPosY));
 
   if (usMousePosY >= iPosY && usMousePosY < (iPosY + iHeight))
     return TRUE;

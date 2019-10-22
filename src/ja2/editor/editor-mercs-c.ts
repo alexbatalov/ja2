@@ -100,7 +100,7 @@ let gbMercSlotTypes: INT8[] /* [9] */ = [
 ];
 // returns the usItem index of specified slot in the currently selected merc.
 const GetSelectedMercSlotItemIndex = (x) => (gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]].usItem);
-const GetSelectedMercSlot = (x) => (&gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]);
+const GetSelectedMercSlot = (x) => (addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[x]]));
 // values indicating which merc inventory slot is hilited and which slot is selected.
 let gbCurrHilite: INT8 = -1;
 let gbCurrSelect: INT8 = -1;
@@ -306,7 +306,7 @@ function GameInitEditorMercsInfo(): void {
   // Initialize the placement list
   InitSoldierInitList();
   gMapInformation.ubNumIndividuals = 0;
-  memset(&gCurrSchedule, 0, sizeof(SCHEDULENODE));
+  memset(addressof(gCurrSchedule), 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
     gCurrSchedule.usTime[i] = 0xffff;
     gCurrSchedule.usData1[i] = 0xffff;
@@ -349,7 +349,7 @@ function ProcessMercEditing(): void {
   if (iEditMercMode == EDIT_MERC_NONE) {
     return;
   }
-  GetSoldier(&pSoldier, gsSelectedMercID);
+  GetSoldier(addressof(pSoldier), gsSelectedMercID);
 
   switch (iEditMercMode) {
     case EDIT_MERC_PREV_COLOR:
@@ -358,7 +358,7 @@ function ProcessMercEditing(): void {
       switch (iEditWhichStat) {
         case 0:
           ubType = EDIT_COLOR_HEAD;
-          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep));
 
           ubPaletteRep--;
           if ((ubPaletteRep < iEditColorStart[ubType]) || (ubPaletteRep > (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType])))
@@ -370,7 +370,7 @@ function ProcessMercEditing(): void {
           break;
         case 1:
           ubType = EDIT_COLOR_HEAD;
-          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep));
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
@@ -383,7 +383,7 @@ function ProcessMercEditing(): void {
 
         case 2:
           ubType = EDIT_COLOR_SKIN;
-          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep));
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
@@ -395,7 +395,7 @@ function ProcessMercEditing(): void {
           break;
         case 3:
           ubType = EDIT_COLOR_SKIN;
-          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep));
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
@@ -408,7 +408,7 @@ function ProcessMercEditing(): void {
 
         case 4:
           ubType = EDIT_COLOR_VEST;
-          GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep));
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
@@ -420,7 +420,7 @@ function ProcessMercEditing(): void {
           break;
         case 5:
           ubType = EDIT_COLOR_VEST;
-          GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep));
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
@@ -433,7 +433,7 @@ function ProcessMercEditing(): void {
 
         case 6:
           ubType = EDIT_COLOR_PANTS;
-          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep));
 
           ubPaletteRep--;
           if (ubPaletteRep < iEditColorStart[ubType])
@@ -445,7 +445,7 @@ function ProcessMercEditing(): void {
           break;
         case 7:
           ubType = EDIT_COLOR_PANTS;
-          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
+          GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep));
 
           ubPaletteRep++;
           if (ubPaletteRep >= (iEditColorStart[ubType] + gubpNumReplacementsPerRange[ubType]))
@@ -465,7 +465,7 @@ function AddMercToWorld(iMapIndex: INT32): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
   let i: INT32;
 
-  memset(&gTempBasicPlacement, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(gTempBasicPlacement), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
 
   gTempBasicPlacement.bBodyType = -1;
 
@@ -501,7 +501,7 @@ function AddMercToWorld(iMapIndex: INT32): void {
     let sSectorY: INT16;
     let pNode: Pointer<SOLDIERINITNODE>;
 
-    GetCurrentWorldSector(&sSectorX, &sSectorY);
+    GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
 
     // Set up some general information.
     gTempBasicPlacement.fDetailedPlacement = FALSE;
@@ -514,19 +514,19 @@ function AddMercToWorld(iMapIndex: INT32): void {
     gTempBasicPlacement.bDirection = gbDefaultDirection;
 
     // Generate detailed placement information given the temp placement information.
-    CreateDetailedPlacementGivenBasicPlacementInfo(&gTempDetailedPlacement, &gTempBasicPlacement);
+    CreateDetailedPlacementGivenBasicPlacementInfo(addressof(gTempDetailedPlacement), addressof(gTempBasicPlacement));
 
     // Set the sector information -- probably unnecessary.
     gTempDetailedPlacement.sSectorX = sSectorX;
     gTempDetailedPlacement.sSectorY = sSectorY;
 
     // Create the soldier, but don't place it yet.
-    if (pSoldier = TacticalCreateSoldier(&gTempDetailedPlacement, &ubID)) {
+    if (pSoldier = TacticalCreateSoldier(addressof(gTempDetailedPlacement), addressof(ubID))) {
       pSoldier.value.bVisible = 1;
       pSoldier.value.bLastRenderVisibleValue = 1;
       // Set up the soldier in the list, so we can track the soldier in the
       // future (saving, loading, strategic AI)
-      pNode = AddBasicPlacementToSoldierInitList(&gTempBasicPlacement);
+      pNode = AddBasicPlacementToSoldierInitList(addressof(gTempBasicPlacement));
       Assert(pNode);
       pNode.value.pSoldier = pSoldier;
 
@@ -555,7 +555,7 @@ function HandleRightClickOnMerc(iMapIndex: INT32): void {
   let sCellX: INT16;
   let sCellY: INT16;
 
-  ConvertGridNoToCellXY(iMapIndex, &sCellX, &sCellY);
+  ConvertGridNoToCellXY(iMapIndex, addressof(sCellX), addressof(sCellY));
 
   sThisMercID = IsMercHere(iMapIndex);
 
@@ -751,7 +751,7 @@ function DisplayEditMercWindow(): void {
     return;
   }
 
-  GetSoldier(&pSoldier, gsSelectedMercID);
+  GetSoldier(addressof(pSoldier), gsSelectedMercID);
 
   //	usFillColorBack = GenericButtonFillColors[0];
   usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
@@ -836,7 +836,7 @@ function IsMercHere(iMapIndex: INT32): INT32 {
   RetIDNumber = -1;
   fSoldierFound = FALSE;
   for (IDNumber = 0; IDNumber < MAX_NUM_SOLDIERS && !fSoldierFound; IDNumber++) {
-    if (GetSoldier(&pSoldier, IDNumber)) {
+    if (GetSoldier(addressof(pSoldier), IDNumber)) {
       if (pSoldier.value.sGridNo == iMapIndex) {
         fSoldierFound = TRUE;
         RetIDNumber = IDNumber;
@@ -1082,7 +1082,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (!strlen(pSoldier.value.HeadPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier.value.HeadPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.HeadPal, addressof(ubPaletteRep));
   }
   ShowEditMercColorSet(ubPaletteRep, 0);
 
@@ -1090,7 +1090,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (!strlen(pSoldier.value.SkinPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier.value.SkinPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.SkinPal, addressof(ubPaletteRep));
   }
   ShowEditMercColorSet(ubPaletteRep, 1);
 
@@ -1098,7 +1098,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (!strlen(pSoldier.value.VestPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier.value.VestPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.VestPal, addressof(ubPaletteRep));
   }
   ShowEditMercColorSet(ubPaletteRep, 2);
 
@@ -1106,7 +1106,7 @@ function ShowEditMercPalettes(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (!strlen(pSoldier.value.VestPal))
       ubPaletteRep = 0xff;
     else
-      GetPaletteRepIndexFromID(pSoldier.value.PantsPal, &ubPaletteRep);
+      GetPaletteRepIndexFromID(pSoldier.value.PantsPal, addressof(ubPaletteRep));
   }
   ShowEditMercColorSet(ubPaletteRep, 3);
 }
@@ -1191,7 +1191,7 @@ function DisplayWayPoints(): void {
   if (gsSelectedMercID == -1 || (gsSelectedMercID <= gTacticalStatus.Team[OUR_TEAM].bLastID) || gsSelectedMercID >= MAXMERCS)
     return;
 
-  GetSoldier(&pSoldier, gsSelectedMercID);
+  GetSoldier(addressof(pSoldier), gsSelectedMercID);
   if (pSoldier == NULL || !pSoldier.value.bActive)
     return;
 
@@ -1208,12 +1208,12 @@ function DisplayWayPoints(): void {
       continue;
 
     // Convert it's location to screen coordinates
-    ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
+    ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
     dOffsetX = (sXMapPos * CELL_X_SIZE) - gsRenderCenterX;
     dOffsetY = (sYMapPos * CELL_Y_SIZE) - gsRenderCenterY;
 
-    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &ScrnX, &ScrnY);
+    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(ScrnX), addressof(ScrnY));
 
     sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
     sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
@@ -1232,7 +1232,7 @@ function DisplayWayPoints(): void {
       } else
         SetFontBackground(FONT_LTRED);
       SetFontForeground(FONT_WHITE);
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, &sX, &sY, "%d", bPoint);
+      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, addressof(sX), addressof(sY), "%d", bPoint);
       mprintf(sX, sY, "%d", bPoint);
     }
   }
@@ -1251,7 +1251,7 @@ function CreateEditMercWindow(): void {
   iYPos = 0;
   iXPos = 0;
 
-  GetSoldier(&pSoldier, gsSelectedMercID);
+  GetSoldier(addressof(pSoldier), gsSelectedMercID);
   iEditMercLocation = pSoldier.value.sGridNo;
   gpWorldLevelData[iEditMercLocation].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
 
@@ -1754,9 +1754,9 @@ function ExtractAndUpdateMercSchedule(): void {
     // The soldier doesn't actually have a schedule yet, so create one if necessary (not blank)
     if (fValidSchedule) {
       // create a new schedule
-      if (SortSchedule(&gCurrSchedule))
+      if (SortSchedule(addressof(gCurrSchedule)))
         fScheduleNeedsUpdate = TRUE;
-      CopyScheduleToList(&gCurrSchedule, gpSelected);
+      CopyScheduleToList(addressof(gCurrSchedule), gpSelected);
       ShowEditorButton(MERCS_GLOWSCHEDULE);
       HideEditorButton(MERCS_SCHEDULE);
     }
@@ -1773,10 +1773,10 @@ function ExtractAndUpdateMercSchedule(): void {
     if (fValidSchedule) {
       // overwrite the existing schedule with the new one.
       gCurrSchedule.ubScheduleID = gpSelected.value.pSoldier.value.ubScheduleID;
-      if (SortSchedule(&gCurrSchedule))
+      if (SortSchedule(addressof(gCurrSchedule)))
         fScheduleNeedsUpdate = TRUE;
       pNext = pSchedule.value.next;
-      memcpy(pSchedule, &gCurrSchedule, sizeof(SCHEDULENODE));
+      memcpy(pSchedule, addressof(gCurrSchedule), sizeof(SCHEDULENODE));
       pSchedule.value.next = pNext;
     } else {
       // remove the existing schedule, as the new one is blank.
@@ -1969,22 +1969,22 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
   }
   switch (iDrawMode) {
     case DRAW_MODE_NORTHPOINT:
-      psEntryGridNo = &gMapInformation.sNorthGridNo;
+      psEntryGridNo = addressof(gMapInformation.sNorthGridNo);
       break;
     case DRAW_MODE_WESTPOINT:
-      psEntryGridNo = &gMapInformation.sWestGridNo;
+      psEntryGridNo = addressof(gMapInformation.sWestGridNo);
       break;
     case DRAW_MODE_EASTPOINT:
-      psEntryGridNo = &gMapInformation.sEastGridNo;
+      psEntryGridNo = addressof(gMapInformation.sEastGridNo);
       break;
     case DRAW_MODE_SOUTHPOINT:
-      psEntryGridNo = &gMapInformation.sSouthGridNo;
+      psEntryGridNo = addressof(gMapInformation.sSouthGridNo);
       break;
     case DRAW_MODE_CENTERPOINT:
-      psEntryGridNo = &gMapInformation.sCenterGridNo;
+      psEntryGridNo = addressof(gMapInformation.sCenterGridNo);
       break;
     case DRAW_MODE_ISOLATEDPOINT:
-      psEntryGridNo = &gMapInformation.sIsolatedGridNo;
+      psEntryGridNo = addressof(gMapInformation.sIsolatedGridNo);
       break;
     default:
       return;
@@ -2000,7 +2000,7 @@ function SpecifyEntryPoint(iMapIndex: UINT32): void {
     AddTopmostToTail(*psEntryGridNo, FIRSTPOINTERS2);
   } else {
     let usDummy: UINT16;
-    if (TypeExistsInTopmostLayer(iMapIndex, FIRSTPOINTERS, &usDummy)) {
+    if (TypeExistsInTopmostLayer(iMapIndex, FIRSTPOINTERS, addressof(usDummy))) {
       AddToUndoList(iMapIndex);
       RemoveAllTopmostsOfTypeRange(iMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
       *psEntryGridNo = -1;
@@ -2515,7 +2515,7 @@ function PointInRect(pRect: Pointer<SGPRect>, x: INT32, y: INT32): BOOLEAN {
 function DrawRect(pRect: Pointer<SGPRect>, color: INT16): void {
   let uiDestPitchBYTES: UINT32;
   let pDestBuf: Pointer<UINT8>;
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, pRect.value.iLeft + MERCPANEL_X, pRect.value.iTop + MERCPANEL_Y, pRect.value.iRight + MERCPANEL_X, pRect.value.iBottom + MERCPANEL_Y, color, pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
@@ -2539,8 +2539,8 @@ function RenderSelectedMercsInventory(): void {
       // Render the current image.
       xp = mercRects[i].iLeft + 4 + MERCPANEL_X;
       yp = mercRects[i].iTop + MERCPANEL_Y;
-      pDst = LockVideoSurface(FRAME_BUFFER, &uiDstPitchBYTES);
-      pSrc = LockVideoSurface(guiMercInvPanelBuffers[i], &uiSrcPitchBYTES);
+      pDst = LockVideoSurface(FRAME_BUFFER, addressof(uiDstPitchBYTES));
+      pSrc = LockVideoSurface(guiMercInvPanelBuffers[i], addressof(uiSrcPitchBYTES));
       Blt16BPPTo16BPPTrans(pDst, uiDstPitchBYTES, pSrc, uiSrcPitchBYTES, xp, yp, 0, 0, i < 3 ? 22 : 44, 15, 0);
       UnLockVideoSurface(FRAME_BUFFER);
       UnLockVideoSurface(guiMercInvPanelBuffers[i]);
@@ -2625,9 +2625,9 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
     fUnDroppable = gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags & OBJECT_UNDROPPABLE ? TRUE : FALSE;
 
     if (Item[gusMercsNewItemIndex].usItemClass == IC_KEY) {
-      CreateKeyObject(&gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]], 1, eInfo.sSelItemIndex);
+      CreateKeyObject(addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]), 1, eInfo.sSelItemIndex);
     } else {
-      CreateItem(gusMercsNewItemIndex, 100, &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]);
+      CreateItem(gusMercsNewItemIndex, 100, addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]));
     }
     if (fUnDroppable) {
       gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]].fFlags |= OBJECT_UNDROPPABLE;
@@ -2642,7 +2642,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
     }
   }
   // allow the slot to point to the selected merc's inventory for editing/rendering purposes.
-  gpMercSlotItem[gbCurrSelect] = &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]];
+  gpMercSlotItem[gbCurrSelect] = addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[gbCurrSelect]]);
 
   if (!fCreate) {
     // it is possible to have a null item which we don't want to blit!  Also, we need to set the
@@ -2682,13 +2682,13 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
     return;
 
   // now draw the fullsize item into the temp buffer
-  item = &Item[gusMercsNewItemIndex];
+  item = addressof(Item[gusMercsNewItemIndex]);
   uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-  GetVideoObject(&hVObject, uiVideoObjectIndex);
+  GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
   BltVideoObjectOutlineFromIndex(uiSrcID, uiVideoObjectIndex, item.value.ubGraphicNum, 0, 0, 0, FALSE);
 
   // crop the source image
-  pObject = &hVObject.value.pETRLEObject[item.value.ubGraphicNum];
+  pObject = addressof(hVObject.value.pETRLEObject[item.value.ubGraphicNum]);
   iSrcWidth = pObject.value.usWidth;
   iSrcHeight = pObject.value.usHeight;
   SrcRect.iLeft += pObject.value.sOffsetX;
@@ -2739,7 +2739,7 @@ function AddNewItemToSelectedMercsInventory(fCreate: BOOLEAN): void {
   DstRect.iBottom = DstRect.iTop + iDstHeight;
 
   // scale the item down to the smaller buffer.
-  BltStretchVideoSurface(uiDstID, uiSrcID, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DstRect);
+  BltStretchVideoSurface(uiDstID, uiSrcID, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DstRect));
 
   // invalidate the mercs new item index
   gusMercsNewItemIndex = 0xffff;
@@ -2755,9 +2755,9 @@ function RenderMercInventoryPanel(): void {
   }
   RenderButtons();
   if (gbCurrHilite != -1)
-    DrawRect(&mercRects[gbCurrHilite], Get16BPPColor(FROMRGB(200, 200, 0)));
+    DrawRect(addressof(mercRects[gbCurrHilite]), Get16BPPColor(FROMRGB(200, 200, 0)));
   if (gbCurrSelect != -1)
-    DrawRect(&mercRects[gbCurrSelect], Get16BPPColor(FROMRGB(200, 0, 0)));
+    DrawRect(addressof(mercRects[gbCurrSelect]), Get16BPPColor(FROMRGB(200, 0, 0)));
   RenderSelectedMercsInventory();
   InvalidateRegion(MERCPANEL_X, MERCPANEL_Y, 475, 460);
   UpdateItemStatsPanel();
@@ -2780,7 +2780,7 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
       // user is moving the mouse around the panel, so determine which slot
       // needs to be hilighted yellow.
       for (x = 0; x < 9; x++) {
-        if (PointInRect(&mercRects[x], sX, sY)) {
+        if (PointInRect(addressof(mercRects[x]), sX, sY)) {
           if (gbCurrHilite != x) // only render if the slot isn't the same one.
             gfRenderMercInfo = TRUE;
           gbCurrHilite = x;
@@ -2800,7 +2800,7 @@ function HandleMercInventoryPanel(sX: INT16, sY: INT16, bEvent: INT8): void {
       // a slot.  Left click selects the slot for editing, right clicking enables
       // the user to choose an item for that slot.
       for (x = 0; x < 9; x++) {
-        if (PointInRect(&mercRects[x], sX, sY)) {
+        if (PointInRect(addressof(mercRects[x]), sX, sY)) {
           if (gbCurrSelect != x) // only if it isn't the same slot.
           {
             gfRenderMercInfo = TRUE;
@@ -2845,7 +2845,7 @@ function SetDroppableCheckboxesBasedOnMercsInventory(): void {
   let i: INT32;
   if (gpSelected && gpSelected.value.pDetailedPlacement) {
     for (i = 0; i < 9; i++) {
-      pItem = &gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[i]];
+      pItem = addressof(gpSelected.value.pDetailedPlacement.value.Inv[gbMercSlotTypes[i]]);
       if (pItem.value.fFlags & OBJECT_UNDROPPABLE) {
         // check box is clear
         UnclickEditorButton(MERCS_HEAD_SLOT + i);
@@ -2955,13 +2955,13 @@ function RenderMercStrings(): void {
     if (curr.value.pSoldier && curr.value.pSoldier.value.bVisible == 1) {
       // Render the health text
       pSoldier = curr.value.pSoldier;
-      GetSoldierAboveGuyPositions(pSoldier, &sXPos, &sYPos, FALSE);
+      GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
       // Display name
       SetFont(TINYFONT1);
       SetFontBackground(FONT_BLACK);
       SetFontForeground(FONT_WHITE);
       if (pSoldier.value.ubProfile != NO_PROFILE) {
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pSoldier.value.name, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pSoldier.value.name);
           mprintf(sX, sY, pSoldier.value.name);
@@ -2974,7 +2974,7 @@ function RenderMercStrings(): void {
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -2983,7 +2983,7 @@ function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         swprintf(str, "Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -2996,7 +2996,7 @@ function RenderMercStrings(): void {
         SetFontBackground(FONT_BLACK);
         SetFontForeground(FONT_RED);
 
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, pStr);
           mprintf(sX, sY, pStr);
@@ -3005,7 +3005,7 @@ function RenderMercStrings(): void {
 
         SetFontForeground(FONT_GRAY2);
         swprintf(str, "Slot #%d", pSoldier.value.ubID);
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3020,7 +3020,7 @@ function RenderMercStrings(): void {
           else
             SetFontForeground(FONT_RED);
           swprintf(str, "Patrol orders with no waypoints");
-          FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
+          FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
           if (sY < 352) {
             gprintfdirty(sX, sY, str);
             mprintf(sX, sY, str);
@@ -3033,7 +3033,7 @@ function RenderMercStrings(): void {
         else
           SetFontForeground(FONT_RED);
         swprintf(str, "Waypoints with no patrol orders");
-        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, 80, 1, str, TINYFONT1, addressof(sX), addressof(sY));
         if (sY < 352) {
           gprintfdirty(sX, sY, str);
           mprintf(sX, sY, str);
@@ -3265,7 +3265,7 @@ function FindScheduleGridNo(ubScheduleData: UINT8): void {
 
 function ClearCurrentSchedule(): void {
   let i: UINT8;
-  memset(&gCurrSchedule, 0, sizeof(SCHEDULENODE));
+  memset(addressof(gCurrSchedule), 0, sizeof(SCHEDULENODE));
   for (i = 0; i < 4; i++) {
     MSYS_SetBtnUserData(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], 0, 0);
     SpecifyButtonText(iEditorButton[MERCS_SCHEDULE_ACTION1 + i], "No action");
@@ -3310,12 +3310,12 @@ function RenderCurrentSchedule(): void {
       continue;
 
     // Convert it's location to screen coordinates
-    ConvertGridNoToXY(iMapIndex, &sXMapPos, &sYMapPos);
+    ConvertGridNoToXY(iMapIndex, addressof(sXMapPos), addressof(sYMapPos));
 
     dOffsetX = (sXMapPos * CELL_X_SIZE) - gsRenderCenterX;
     dOffsetY = (sYMapPos * CELL_Y_SIZE) - gsRenderCenterY;
 
-    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &ScrnX, &ScrnY);
+    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(ScrnX), addressof(ScrnY));
 
     sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + ScrnX;
     sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + ScrnY;
@@ -3331,7 +3331,7 @@ function RenderCurrentSchedule(): void {
       SetFontBackground(FONT_LTKHAKI);
       SetFontForeground(FONT_WHITE);
       swprintf(str, "%d%c", i / 2 + 1, 'A' + (i % 2));
-      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, &sX, &sY, str);
+      VarFindFontCenterCoordinates(sScreenX, sScreenY, 1, 1, TINYFONT1, addressof(sX), addressof(sY), str);
       mprintf(sX, sY, str);
     }
   }
@@ -3376,7 +3376,7 @@ function UpdateScheduleInfo(): void {
       ClickEditorButton(MERCS_SCHEDULE_VARIANCE4);
 
     // Copy the schedule over to the current global schedule used for editing purposes.
-    memcpy(&gCurrSchedule, pSchedule, sizeof(SCHEDULENODE));
+    memcpy(addressof(gCurrSchedule), pSchedule, sizeof(SCHEDULENODE));
     DetermineScheduleEditability();
   } else {
     ClearCurrentSchedule();
@@ -3392,9 +3392,9 @@ function CopyMercPlacement(iMapIndex: INT32): void {
     return;
   }
   gfSaveBuffer = TRUE;
-  memcpy(&gSaveBufferBasicPlacement, gpSelected.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memcpy(addressof(gSaveBufferBasicPlacement), gpSelected.value.pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
   if (gSaveBufferBasicPlacement.fDetailedPlacement) {
-    memcpy(&gSaveBufferDetailedPlacement, gpSelected.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+    memcpy(addressof(gSaveBufferDetailedPlacement), gpSelected.value.pDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
   }
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, "Placement copied.");
 }
@@ -3409,7 +3409,7 @@ function PasteMercPlacement(iMapIndex: INT32): void {
     return;
   }
 
-  memcpy(&gTempBasicPlacement, &gSaveBufferBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memcpy(addressof(gTempBasicPlacement), addressof(gSaveBufferBasicPlacement), sizeof(BASIC_SOLDIERCREATE_STRUCT));
 
   gTempBasicPlacement.bBodyType = -1;
 
@@ -3445,7 +3445,7 @@ function PasteMercPlacement(iMapIndex: INT32): void {
     let sSectorY: INT16;
     let pNode: Pointer<SOLDIERINITNODE>;
 
-    GetCurrentWorldSector(&sSectorX, &sSectorY);
+    GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
 
     // Set up some general information.
     // gTempBasicPlacement.fDetailedPlacement = TRUE;
@@ -3453,9 +3453,9 @@ function PasteMercPlacement(iMapIndex: INT32): void {
 
     // Generate detailed placement information given the temp placement information.
     if (gTempBasicPlacement.fDetailedPlacement) {
-      memcpy(&gTempDetailedPlacement, &gSaveBufferDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+      memcpy(addressof(gTempDetailedPlacement), addressof(gSaveBufferDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
     } else {
-      CreateDetailedPlacementGivenBasicPlacementInfo(&gTempDetailedPlacement, &gTempBasicPlacement);
+      CreateDetailedPlacementGivenBasicPlacementInfo(addressof(gTempDetailedPlacement), addressof(gTempBasicPlacement));
     }
 
     // Set the sector information -- probably unnecessary.
@@ -3463,18 +3463,18 @@ function PasteMercPlacement(iMapIndex: INT32): void {
     gTempDetailedPlacement.sSectorY = sSectorY;
 
     if (gTempBasicPlacement.fDetailedPlacement) {
-      CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(&tempDetailedPlacement, &gTempDetailedPlacement, &gTempBasicPlacement);
+      CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInfo(addressof(tempDetailedPlacement), addressof(gTempDetailedPlacement), addressof(gTempBasicPlacement));
     } else {
-      memcpy(&tempDetailedPlacement, &gTempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+      memcpy(addressof(tempDetailedPlacement), addressof(gTempDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
     }
 
     // Create the soldier, but don't place it yet.
-    if (pSoldier = TacticalCreateSoldier(&tempDetailedPlacement, &ubID)) {
+    if (pSoldier = TacticalCreateSoldier(addressof(tempDetailedPlacement), addressof(ubID))) {
       pSoldier.value.bVisible = 1;
       pSoldier.value.bLastRenderVisibleValue = 1;
       // Set up the soldier in the list, so we can track the soldier in the
       // future (saving, loading, strategic AI)
-      pNode = AddBasicPlacementToSoldierInitList(&gTempBasicPlacement);
+      pNode = AddBasicPlacementToSoldierInitList(addressof(gTempBasicPlacement));
       Assert(pNode);
       pNode.value.pSoldier = pSoldier;
       if (gSaveBufferBasicPlacement.fDetailedPlacement) {
@@ -3489,7 +3489,7 @@ function PasteMercPlacement(iMapIndex: INT32): void {
           return;
         }
         // copy the file information from temp var to node in list.
-        memcpy(pNode.value.pDetailedPlacement, &gSaveBufferDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
+        memcpy(pNode.value.pDetailedPlacement, addressof(gSaveBufferDetailedPlacement), sizeof(SOLDIERCREATE_STRUCT));
       }
 
       // Add the soldier to physically appear on the map now.

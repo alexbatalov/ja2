@@ -76,7 +76,7 @@ function LoadMapBorderGraphics(): BOOLEAN {
   // will load map border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\MBS.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMapBorder));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMapBorder)));
 
   /* corner was removed along with the Zoom feature
           // will load map border corner
@@ -117,7 +117,7 @@ function RenderMapBorder(): void {
   }
 
   // get and blt border
-  GetVideoObject(&hHandle, guiMapBorder);
+  GetVideoObject(addressof(hHandle), guiMapBorder);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BORDER_X, MAP_BORDER_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // show the level marker
@@ -174,7 +174,7 @@ function RenderMapBorderEtaPopUp(): void {
   }
 
   // get and blt ETA box
-  GetVideoObject(&hHandle, guiMapBorderEtaPopUp);
+  GetVideoObject(addressof(hHandle), guiMapBorderEtaPopUp);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, MAP_BORDER_X + 215, 291, VO_BLT_SRCTRANSPARENCY, NULL);
 
   InvalidateRegion(MAP_BORDER_X + 215, 291, MAP_BORDER_X + 215 + 100, 310);
@@ -951,7 +951,7 @@ function DisplayCurrentLevelMarker(): void {
   */
 
   // it's actually a white rectangle, not a green arrow!
-  GetVideoObject(&hHandle, guiLEVELMARKER);
+  GetVideoObject(addressof(hHandle), guiLEVELMARKER);
   BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_LEVEL_MARKER_X + 1, MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * iCurrentMapSectorZ), VO_BLT_SRCTRANSPARENCY, NULL);
 
   return;
@@ -962,12 +962,12 @@ function CreateMouseRegionsForLevelMarkers(): void {
   let sString: CHAR16[] /* [64] */;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
-    MSYS_DefineRegion(&LevelMouseRegions[sCounter], MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
+    MSYS_DefineRegion(addressof(LevelMouseRegions[sCounter]), MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
 
-    MSYS_SetRegionUserData(&LevelMouseRegions[sCounter], 0, sCounter);
+    MSYS_SetRegionUserData(addressof(LevelMouseRegions[sCounter]), 0, sCounter);
 
     swprintf(sString, "%s %d", zMarksMapScreenText[0], sCounter + 1);
-    SetRegionFastHelpText(&LevelMouseRegions[sCounter], sString);
+    SetRegionFastHelpText(addressof(LevelMouseRegions[sCounter]), sString);
   }
 }
 
@@ -975,7 +975,7 @@ function DeleteMouseRegionsForLevelMarkers(): void {
   let sCounter: INT16 = 0;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
-    MSYS_RemoveRegion(&LevelMouseRegions[sCounter]);
+    MSYS_RemoveRegion(addressof(LevelMouseRegions[sCounter]));
   }
 }
 

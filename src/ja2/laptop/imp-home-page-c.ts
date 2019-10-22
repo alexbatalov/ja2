@@ -164,7 +164,7 @@ function DisplayActivationStringCursor(): void {
     uiBaseTime = GetJA2Clock();
   }
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
@@ -182,9 +182,9 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
   let InputEvent: InputAtom;
   let MousePos: POINT;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     // HOOK INTO MOUSE HOOKS
     /*
     switch(InputEvent.usEvent)
@@ -203,7 +203,7 @@ function GetPlayerKeyBoardInputForIMPHomePage(): void {
                     break;
 }
 */
-    if (!HandleTextInput(&InputEvent) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT || InputEvent.usEvent == KEY_UP)) {
+    if (!HandleTextInput(addressof(InputEvent)) && (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT || InputEvent.usEvent == KEY_UP)) {
       switch (InputEvent.usParam) {
         case ((ENTER)):
           if ((InputEvent.usEvent == KEY_UP)) {

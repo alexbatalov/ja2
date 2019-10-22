@@ -1087,8 +1087,8 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
         if (!gfAttachment[i]) {
           gfAttachment[i] = TRUE;
           btn.value.uiFlags |= BUTTON_CLICKED_ON;
-          CreateItem(usAttachment, gpItem.value.bGunStatus, &temp);
-          AttachObject(NULL, gpItem, &temp);
+          CreateItem(usAttachment, gpItem.value.bGunStatus, addressof(temp));
+          AttachObject(NULL, gpItem, addressof(temp));
         } else {
           // Button is out, so remove the attachment
           let slot: INT8;
@@ -1096,7 +1096,7 @@ function ToggleAttachment(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
           btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
           slot = FindAttachment(gpItem, usAttachment);
           if (slot != -1)
-            RemoveAttachment(gpItem, slot, &temp);
+            RemoveAttachment(gpItem, slot, addressof(temp));
         }
       }
     }
@@ -1110,14 +1110,14 @@ function ToggleCeramicPlates(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     gfCeramicPlates ^= TRUE;
     if (gfCeramicPlates) {
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(CERAMIC_PLATES, gpItem.value.bStatus[0], &temp);
-      AttachObject(NULL, gpItem, &temp);
+      CreateItem(CERAMIC_PLATES, gpItem.value.bStatus[0], addressof(temp));
+      AttachObject(NULL, gpItem, addressof(temp));
     } else {
       let slot: INT8;
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, CERAMIC_PLATES);
       if (slot != -1)
-        RemoveAttachment(gpItem, slot, &temp);
+        RemoveAttachment(gpItem, slot, addressof(temp));
     }
   }
 }
@@ -1128,8 +1128,8 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     if (!gfDetonator) {
       gfDetonator = TRUE;
       btn.value.uiFlags |= BUTTON_CLICKED_ON;
-      CreateItem(DETONATOR, gpItem.value.bStatus[0], &temp);
-      AttachObject(NULL, gpItem, &temp);
+      CreateItem(DETONATOR, gpItem.value.bStatus[0], addressof(temp));
+      AttachObject(NULL, gpItem, addressof(temp));
     } else {
       // Button is out, so remove the attachment
       let slot: INT8;
@@ -1137,7 +1137,7 @@ function ToggleDetonator(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       btn.value.uiFlags &= ~BUTTON_CLICKED_ON;
       slot = FindAttachment(gpItem, DETONATOR);
       if (slot != -1)
-        RemoveAttachment(gpItem, slot, &temp);
+        RemoveAttachment(gpItem, slot, addressof(temp));
     }
   }
 }

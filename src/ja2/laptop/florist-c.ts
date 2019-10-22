@@ -68,7 +68,7 @@ function EnterFlorist(): BOOLEAN {
   // load the handbullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\HandBullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiHandBullet));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiHandBullet)));
 
   guiGalleryButtonImage = LoadButtonImage("LAPTOP\\FloristButtons.sti", -1, 0, -1, 1, -1);
 
@@ -112,7 +112,7 @@ function RenderFlorist(): void {
   let usPosY: UINT16;
   let ubTextCounter: UINT8;
 
-  GetVideoObject(&hPixHandle, guiHandBullet);
+  GetVideoObject(addressof(hPixHandle), guiHandBullet);
 
   DisplayFloristDefaults();
 
@@ -147,23 +147,23 @@ function InitFloristDefaults(): BOOLEAN {
   // load the Florist background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\leafback.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFloristBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFloristBackground)));
 
   // if its the first page
   if (guiCurrentLaptopMode == LAPTOP_MODE_FLORIST) {
     // load the small title graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, MLG_LARGEFLORISTSYMBOL);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiLargeTitleSymbol));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLargeTitleSymbol)));
   } else {
     // load the leaf back graphic and add it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     GetMLGFilename(VObjectDesc.ImageFile, MLG_SMALLFLORISTSYMBOL);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiSmallTitleSymbol));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSmallTitleSymbol)));
 
     // flower title homepage link
-    MSYS_DefineRegion(&gSelectedFloristTitleHomeLinkRegion, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
-    MSYS_AddRegion(&gSelectedFloristTitleHomeLinkRegion);
+    MSYS_DefineRegion(addressof(gSelectedFloristTitleHomeLinkRegion), FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, (FLORIST_SMALL_TITLE_X + FLORIST_SMALL_TITLE_WIDTH), (FLORIST_SMALL_TITLE_Y + FLORIST_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristTitleHomeLinkRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
   }
 
   return TRUE;
@@ -177,11 +177,11 @@ function DisplayFloristDefaults(): void {
   // if its the first page
   if (guiCurrentLaptopMode == LAPTOP_MODE_FLORIST) {
     gfHomePageActive = TRUE;
-    GetVideoObject(&hPixHandle, guiLargeTitleSymbol);
+    GetVideoObject(addressof(hPixHandle), guiLargeTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_BIG_TITLE_X, FLORIST_BIG_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
     gfHomePageActive = FALSE;
-    GetVideoObject(&hPixHandle, guiSmallTitleSymbol);
+    GetVideoObject(addressof(hPixHandle), guiSmallTitleSymbol);
     BltVideoObject(FRAME_BUFFER, hPixHandle, 0, FLORIST_SMALL_TITLE_X, FLORIST_SMALL_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 }
@@ -197,7 +197,7 @@ function RemoveFloristDefaults(): void {
     // delete the little title
     DeleteVideoObjectFromIndex(guiSmallTitleSymbol);
 
-    MSYS_RemoveRegion(&gSelectedFloristTitleHomeLinkRegion);
+    MSYS_RemoveRegion(addressof(gSelectedFloristTitleHomeLinkRegion));
   }
 }
 

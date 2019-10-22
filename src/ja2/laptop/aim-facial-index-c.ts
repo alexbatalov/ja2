@@ -52,22 +52,22 @@ function EnterAimFacialIndex(): BOOLEAN {
   // load the Portait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MugShotBorder3.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMugShotBorder));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMugShotBorder)));
 
   usPosX = AIM_FI_FIRST_MUGSHOT_X;
   usPosY = AIM_FI_FIRST_MUGSHOT_Y;
   i = 0;
   for (y = 0; y < AIM_FI_NUM_MUHSHOTS_Y; y++) {
     for (x = 0; x < AIM_FI_NUM_MUHSHOTS_X; x++) {
-      MSYS_DefineRegion(&gMercFaceMouseRegions[i], usPosX, usPosY, (usPosX + AIM_FI_PORTRAIT_WIDTH), (usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, SelectMercFaceMoveRegionCallBack, SelectMercFaceRegionCallBack);
+      MSYS_DefineRegion(addressof(gMercFaceMouseRegions[i]), usPosX, usPosY, (usPosX + AIM_FI_PORTRAIT_WIDTH), (usPosY + AIM_FI_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, SelectMercFaceMoveRegionCallBack, SelectMercFaceRegionCallBack);
       // Add region
-      MSYS_AddRegion(&gMercFaceMouseRegions[i]);
-      MSYS_SetRegionUserData(&gMercFaceMouseRegions[i], 0, i);
+      MSYS_AddRegion(addressof(gMercFaceMouseRegions[i]));
+      MSYS_SetRegionUserData(addressof(gMercFaceMouseRegions[i]), 0, i);
 
       sprintf(sTemp, "%s%02d.sti", sFaceLoc, AimMercArray[i]);
       VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
       FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-      if (!AddVideoObject(&VObjectDesc, &guiAimFiFace[i]))
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAimFiFace[i])))
         return FALSE;
 
       usPosX += AIM_FI_PORTRAIT_WIDTH + AIM_FI_MUGSHOT_GAP_X;
@@ -77,9 +77,9 @@ function EnterAimFacialIndex(): BOOLEAN {
     usPosY += AIM_FI_PORTRAIT_HEIGHT + AIM_FI_MUGSHOT_GAP_Y;
   }
 
-  MSYS_DefineRegion(&gScreenMouseRegions, LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectScreenRegionCallBack);
+  MSYS_DefineRegion(addressof(gScreenMouseRegions), LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y, MSYS_PRIORITY_HIGH - 1, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, SelectScreenRegionCallBack);
   // Add region
-  MSYS_AddRegion(&gScreenMouseRegions);
+  MSYS_AddRegion(addressof(gScreenMouseRegions));
 
   InitAimMenuBar();
   InitAimDefaults();
@@ -98,11 +98,11 @@ function ExitAimFacialIndex(): void {
 
   for (i = 0; i < MAX_NUMBER_MERCS; i++) {
     DeleteVideoObjectFromIndex(guiAimFiFace[i]);
-    MSYS_RemoveRegion(&gMercFaceMouseRegions[i]);
+    MSYS_RemoveRegion(addressof(gMercFaceMouseRegions[i]));
   }
   ExitAimMenuBar();
 
-  MSYS_RemoveRegion(&gScreenMouseRegions);
+  MSYS_RemoveRegion(addressof(gScreenMouseRegions));
 }
 
 function HandleAimFacialIndex(): void {
@@ -223,16 +223,16 @@ function DrawMercsFaceToScreen(ubMercID: UINT8, usPosX: UINT16, usPosY: UINT16, 
   pSoldier = FindSoldierByProfileID(AimMercArray[ubMercID], TRUE);
 
   // Blt the portrait background
-  GetVideoObject(&hMugShotBorderHandle, guiMugShotBorder);
+  GetVideoObject(addressof(hMugShotBorderHandle), guiMugShotBorder);
   BltVideoObject(FRAME_BUFFER, hMugShotBorderHandle, ubImage, usPosX, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Blt face to screen
-  GetVideoObject(&hFaceHandle, guiAimFiFace[ubMercID]);
+  GetVideoObject(addressof(hFaceHandle), guiAimFiFace[ubMercID]);
   BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, usPosX + AIM_FI_FACE_OFFSET, usPosY + AIM_FI_FACE_OFFSET, VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (IsMercDead(AimMercArray[ubMercID])) {
     // get the face object
-    GetVideoObject(&hFaceHandle, guiAimFiFace[ubMercID]);
+    GetVideoObject(addressof(hFaceHandle), guiAimFiFace[ubMercID]);
 
     // if the merc is dead
     // shade the face red, (to signif that he is dead)

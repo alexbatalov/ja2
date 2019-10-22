@@ -177,7 +177,7 @@ function HandleAutoBandage(): BOOLEAN {
     // Deque all game events
     DequeAllGameEvents(TRUE);
 
-    while (DequeueEvent(&InputEvent) == TRUE) {
+    while (DequeueEvent(addressof(InputEvent)) == TRUE) {
       if (InputEvent.usEvent == KEY_UP) {
         if (((InputEvent.usParam == ESC) && (fAutoBandageComplete == FALSE)) || (((InputEvent.usParam == ENTER) || (InputEvent.usParam == SPACE)) && (fAutoBandageComplete == TRUE))) {
           AutoBandage(FALSE);
@@ -298,7 +298,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "Begin auto bandage.");
 
     if (CreateAutoBandageString()) {
-      giBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, &gusTextBoxWidth, &gusTextBoxHeight);
+      giBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, sAutoBandageString, 200, 40, 10, 30, addressof(gusTextBoxWidth), addressof(gusTextBoxHeight));
     }
 
     aRect.iTop = 0;
@@ -311,7 +311,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     gsY = ((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
 
     // build a mask
-    MSYS_DefineRegion(&gAutoBandageRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+    MSYS_DefineRegion(addressof(gAutoBandageRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
     gfBeginningAutoBandage = TRUE;
   } else {
@@ -325,7 +325,7 @@ function AutoBandage(fStart: BOOLEAN): void {
         ActionDone(pSoldier);
         if (pSoldier.value.bSlotItemTakenFrom != NO_SLOT) {
           // swap our old hand item back to the main hand
-          SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
+          SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[pSoldier.value.bSlotItemTakenFrom]));
         }
 
         // ATE: Mkae everyone stand up!
@@ -366,7 +366,7 @@ function AutoBandage(fStart: BOOLEAN): void {
     ScreenMsg(MSG_FONT_RED, MSG_DEBUG, "End auto bandage.");
 
     // build a mask
-    MSYS_RemoveRegion(&gAutoBandageRegion);
+    MSYS_RemoveRegion(addressof(gAutoBandageRegion));
 
     // clear faces for auto bandage
     RemoveFacesForAutoBandage();
@@ -407,7 +407,7 @@ function SetUpAutoBandageUpdatePanel(): void {
 
   // run through mercs on squad...if they can doctor, add to list
   for (iCounterA = 0; iCounterA < iNumberOnTeam; iCounterA++) {
-    if (CanCharacterAutoBandageTeammate(&Menptr[iCounterA])) {
+    if (CanCharacterAutoBandageTeammate(addressof(Menptr[iCounterA]))) {
       // add to list, up the count
       iDoctorList[iNumberDoctoring] = iCounterA;
       iNumberDoctoring++;
@@ -416,7 +416,7 @@ function SetUpAutoBandageUpdatePanel(): void {
 
   // run through mercs on squad, if they can patient, add to list
   for (iCounterA = 0; iCounterA < iNumberOnTeam; iCounterA++) {
-    if (CanCharacterBeAutoBandagedByTeammate(&Menptr[iCounterA])) {
+    if (CanCharacterBeAutoBandagedByTeammate(addressof(Menptr[iCounterA]))) {
       // add to list, up the count
       iPatientList[iNumberPatienting] = iCounterA;
       iNumberPatienting++;
@@ -551,7 +551,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   sYPosition = (INV_INTERFACE_START_Y - iTotalPixelsHigh) / 2;
 
   // now blit down the background
-  GetVideoObject(&hBackGroundHandle, guiUpdatePanelTactical);
+  GetVideoObject(addressof(hBackGroundHandle), guiUpdatePanelTactical);
 
   // first the doctors on top
   for (iCounterA = 0; iCounterA < iNumberDoctorsHigh; iCounterA++) {
@@ -573,7 +573,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, "%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -607,7 +607,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
   swprintf(sString, "%s", zMarksMapScreenText[13]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
   // print medic
   mprintf(sX, sYPosition - 7, sString);
 
@@ -635,7 +635,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, "%s", (Menptr[iPatientList[iIndex]]).name);
-        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -697,7 +697,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   SetFontBackground(FONT_BLACK);
 
   swprintf(sString, "%s", zMarksMapScreenText[14]);
-  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, addressof(sX), addressof(sY));
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);
 
@@ -800,7 +800,7 @@ function AddFacesToAutoBandageBox(): BOOLEAN {
   let VObjectDesc: VOBJECT_DESC;
 
   // reset
-  memset(&giAutoBandagesSoldierFaces, -1, 2 * MAX_CHARACTER_COUNT);
+  memset(addressof(giAutoBandagesSoldierFaces), -1, 2 * MAX_CHARACTER_COUNT);
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
 
@@ -816,7 +816,7 @@ function AddFacesToAutoBandageBox(): BOOLEAN {
       }
 
       // load the face
-      AddVideoObject(&VObjectDesc, &giAutoBandagesSoldierFaces[iCounter]);
+      AddVideoObject(addressof(VObjectDesc), addressof(giAutoBandagesSoldierFaces[iCounter]));
       iNumberOfDoctors++;
     }
   }
@@ -833,14 +833,14 @@ function AddFacesToAutoBandageBox(): BOOLEAN {
       }
 
       // load the face
-      AddVideoObject(&VObjectDesc, &giAutoBandagesSoldierFaces[iCounter + iNumberOfDoctors]);
+      AddVideoObject(addressof(VObjectDesc), addressof(giAutoBandagesSoldierFaces[iCounter + iNumberOfDoctors]));
     }
   }
 
   // grab panels
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "Interface\\panels.sti");
-  if (!AddVideoObject(&VObjectDesc, &giMercPanelImage)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 
@@ -881,7 +881,7 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   let hHandle: HVOBJECT;
 
   // grab the video object
-  GetVideoObject(&hHandle, giAutoBandagesSoldierFaces[iIndex]);
+  GetVideoObject(addressof(hHandle), giAutoBandagesSoldierFaces[iIndex]);
 
   // fill the background for the info bars black
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, sCurrentYPosition + 2, sCurrentXPosition + 44, sCurrentYPosition + 30, 0);
@@ -902,10 +902,10 @@ function RenderSoldierSmallFaceForAutoBandagePanel(iIndex: INT32, sCurrentXPosit
   // see if we are looking into doctor or patient lists?
   if (iIndexCount > iIndex) {
     // HEALTH BAR
-    pSoldier = &Menptr[iDoctorList[iIndex]];
+    pSoldier = addressof(Menptr[iDoctorList[iIndex]]);
   } else {
     // HEALTH BAR
-    pSoldier = &Menptr[iPatientList[iIndex - iIndexCount]];
+    pSoldier = addressof(Menptr[iPatientList[iIndex - iIndexCount]]);
   }
 
   // is the merc alive?

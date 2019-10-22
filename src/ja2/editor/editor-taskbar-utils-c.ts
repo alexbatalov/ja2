@@ -25,13 +25,13 @@ function EnableEditorRegion(bRegionID: INT8): void {
     case 6:
     case 7:
     case 8:
-      MSYS_EnableRegion(&TerrainTileButtonRegion[bRegionID]);
+      MSYS_EnableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
       break;
     case ITEM_REGION_ID:
-      MSYS_EnableRegion(&ItemsRegion);
+      MSYS_EnableRegion(addressof(ItemsRegion));
       break;
     case MERC_REGION_ID:
-      MSYS_EnableRegion(&MercRegion);
+      MSYS_EnableRegion(addressof(MercRegion));
       break;
   }
 }
@@ -46,25 +46,25 @@ function DisableEditorRegion(bRegionID: INT8): void {
     case 5:
     case 6:
     case 7:
-      MSYS_DisableRegion(&TerrainTileButtonRegion[bRegionID]);
+      MSYS_DisableRegion(addressof(TerrainTileButtonRegion[bRegionID]));
       break;
     case ITEM_REGION_ID:
-      MSYS_DisableRegion(&ItemsRegion);
+      MSYS_DisableRegion(addressof(ItemsRegion));
       break;
     case MERC_REGION_ID:
-      MSYS_DisableRegion(&MercRegion);
+      MSYS_DisableRegion(addressof(MercRegion));
       break;
   }
 }
 
 function RemoveEditorRegions(): void {
   let x: INT32;
-  MSYS_RemoveRegion(&EditorRegion);
+  MSYS_RemoveRegion(addressof(EditorRegion));
   for (x = BASE_TERRAIN_TILE_REGION_ID; x < NUM_TERRAIN_TILE_REGIONS; x++) {
-    MSYS_RemoveRegion(&TerrainTileButtonRegion[x]);
+    MSYS_RemoveRegion(addressof(TerrainTileButtonRegion[x]));
   }
-  MSYS_RemoveRegion(&ItemsRegion);
-  MSYS_RemoveRegion(&MercRegion);
+  MSYS_RemoveRegion(addressof(ItemsRegion));
+  MSYS_RemoveRegion(addressof(MercRegion));
 }
 
 function InitEditorRegions(): void {
@@ -73,23 +73,23 @@ function InitEditorRegions(): void {
   // By doing this, all of the buttons underneath are blanketed and can't be used anymore.
   // Any new buttons will cover this up as well.  Think of it as a barrier between the editor buttons,
   // and the game's interface panel buttons and regions.
-  MSYS_DefineRegion(&EditorRegion, 0, 360, 640, 480, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(EditorRegion), 0, 360, 640, 480, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   // Create the regions for the terrain tile selections
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
-    MSYS_DefineRegion(&TerrainTileButtonRegion[x], (261 + x * 42), 369, (303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, TerrainTileButtonRegionCallback);
-    MSYS_SetRegionUserData(&TerrainTileButtonRegion[x], 0, x);
-    MSYS_DisableRegion(&TerrainTileButtonRegion[x]);
+    MSYS_DefineRegion(addressof(TerrainTileButtonRegion[x]), (261 + x * 42), 369, (303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, TerrainTileButtonRegionCallback);
+    MSYS_SetRegionUserData(addressof(TerrainTileButtonRegion[x]), 0, x);
+    MSYS_DisableRegion(addressof(TerrainTileButtonRegion[x]));
   }
   gfShowTerrainTileButtons = FALSE;
 
   // Create the region for the items selection window.
-  MSYS_DefineRegion(&ItemsRegion, 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, MouseMovedInItemsRegion, MouseClickedInItemsRegion);
-  MSYS_DisableRegion(&ItemsRegion);
+  MSYS_DefineRegion(addressof(ItemsRegion), 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, MouseMovedInItemsRegion, MouseClickedInItemsRegion);
+  MSYS_DisableRegion(addressof(ItemsRegion));
 
   // Create the region for the merc inventory panel.
-  MSYS_DefineRegion(&MercRegion, 175, 361, 450, 460, MSYS_PRIORITY_NORMAL, 0, MouseMovedInMercRegion, MouseClickedInMercRegion);
-  MSYS_DisableRegion(&MercRegion);
+  MSYS_DefineRegion(addressof(MercRegion), 175, 361, 450, 460, MSYS_PRIORITY_NORMAL, 0, MouseMovedInMercRegion, MouseClickedInMercRegion);
+  MSYS_DisableRegion(addressof(MercRegion));
 }
 
 function LoadEditorImages(): void {
@@ -98,11 +98,11 @@ function LoadEditorImages(): void {
   // Set up the merc inventory panel
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "EDITOR\\InvPanel.sti");
-  if (!AddVideoObject(&VObjectDesc, &guiMercInventoryPanel))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiMercInventoryPanel)))
     AssertMsg(0, "Failed to load data\\editor\\InvPanel.sti");
   // Set up small omerta map
   sprintf(VObjectDesc.ImageFile, "EDITOR\\omerta.sti");
-  if (!AddVideoObject(&VObjectDesc, &guiOmertaMap))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiOmertaMap)))
     AssertMsg(0, "Failed to load data\\editor\\omerta.sti");
   // Set up the merc directional buttons.
   giEditMercDirectionIcons[0] = LoadGenericButtonIcon("EDITOR//arrowsoff.sti");
@@ -112,10 +112,10 @@ function LoadEditorImages(): void {
   giEditMercImage[1] = LoadButtonImage("EDITOR\\rightarrow.sti", 0, 1, 2, 3, 4);
 
   sprintf(VObjectDesc.ImageFile, "EDITOR\\Exclamation.sti");
-  if (!AddVideoObject(&VObjectDesc, &guiExclamation))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiExclamation)))
     AssertMsg(0, "Failed to load data\\editor\\Exclamation.sti");
   sprintf(VObjectDesc.ImageFile, "EDITOR\\KeyImage.sti");
-  if (!AddVideoObject(&VObjectDesc, &guiKeyImage))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiKeyImage)))
     AssertMsg(0, "Failed to load data\\editor\\KeyImage.sti");
 }
 
@@ -141,19 +141,19 @@ function CreateEditorBuffers(): void {
   // create buffer for the transition slot for merc items.  This slot contains the newly
   // selected item graphic in it's inventory size version.  This buffer is then scaled down
   // into the associated merc inventory panel slot buffer which is approximately 20% smaller.
-  GetCurrentVideoSettings(&usUselessWidth, &usUselessHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usUselessWidth), addressof(usUselessHeight), addressof(ubBitDepth));
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = 60;
   vs_desc.usHeight = 25;
   vs_desc.ubBitDepth = ubBitDepth;
-  if (!AddVideoSurface(&vs_desc, &guiMercTempBuffer))
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercTempBuffer)))
     AssertMsg(0, "Failed to allocate memory for merc tempitem buffer.");
 
   // create the nine buffers for the merc's inventory slots.
   vs_desc.usHeight = MERCINV_SLOT_HEIGHT;
   for (i = 0; i < 9; i++) {
     vs_desc.usWidth = i < 3 ? MERCINV_SMSLOT_WIDTH : MERCINV_LGSLOT_WIDTH;
-    if (!AddVideoSurface(&vs_desc, &guiMercInvPanelBuffers[i]))
+    if (!AddVideoSurface(addressof(vs_desc), addressof(guiMercInvPanelBuffers[i])))
       AssertMsg(0, "Failed to allocate memory for merc item[] buffers.");
   }
 }
@@ -560,42 +560,42 @@ function RenderMapEntryPointsAndLights(): void {
   SetFontShadow(FONT_NEARBLACK);
   sGridNo = gMapInformation.sNorthGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "North Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sWestGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "West Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sEastGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "East Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sSouthGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "South Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sCenterGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "Center Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sIsolatedGridNo;
   if (sGridNo != -1) {
-    GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
       DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, "Isolated Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
@@ -604,7 +604,7 @@ function RenderMapEntryPointsAndLights(): void {
   for (i = 0; i < MAX_LIGHT_SPRITES; i++) {
     if (LightSprites[i].uiFlags & LIGHT_SPR_ACTIVE) {
       sGridNo = LightSprites[i].iY * WORLD_COLS + LightSprites[i].iX;
-      GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
+      GetGridNoScreenPos(sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
       if (sScreenY >= -50 && sScreenY < 300 && sScreenX >= -40 && sScreenX < 640) {
         if (LightSprites[i].uiFlags & LIGHT_PRIMETIME)
           DisplayWrappedString(sScreenX, (sScreenY - 5), 50, 2, FONT10ARIAL, FONT_ORANGE, "Prime", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
@@ -650,7 +650,7 @@ function RenderDoorLockInfo(): void {
   let sScreenY: INT16;
   let str: UINT16[] /* [50] */;
   for (i = 0; i < gubNumDoors; i++) {
-    GetGridNoScreenPos(DoorTable[i].sGridNo, 0, &sScreenX, &sScreenY);
+    GetGridNoScreenPos(DoorTable[i].sGridNo, 0, addressof(sScreenX), addressof(sScreenY));
     if (sScreenY > 390)
       continue;
     if (DoorTable[i].ubLockID != 255)
@@ -706,14 +706,14 @@ function RenderSelectedItemBlownUp(): void {
   let sOffsetX: INT16;
   let sOffsetY: INT16;
 
-  GetGridNoScreenPos(gsItemGridNo, 0, &sScreenX, &sScreenY);
+  GetGridNoScreenPos(gsItemGridNo, 0, addressof(sScreenX), addressof(sScreenY));
 
   if (sScreenY > 340)
     return;
 
   // Display the enlarged item graphic
-  uiVideoObjectIndex = GetInterfaceGraphicForItem(&Item[gpItem.value.usItem]);
-  GetVideoObject(&hVObject, uiVideoObjectIndex);
+  uiVideoObjectIndex = GetInterfaceGraphicForItem(addressof(Item[gpItem.value.usItem]));
+  GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
 
   sWidth = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].usWidth;
   sOffsetX = hVObject.value.pETRLEObject[Item[gpItem.value.usItem].ubGraphicNum].sOffsetX;
@@ -753,7 +753,7 @@ function RenderSelectedItemBlownUp(): void {
 
   // Count the number of items in the current pool, and display that.
   i = 0;
-  GetItemPool(gsItemGridNo, &pItemPool, 0);
+  GetItemPool(gsItemGridNo, addressof(pItemPool), 0);
   Assert(pItemPool);
   while (pItemPool) {
     i++;
@@ -784,7 +784,7 @@ function RenderEditorInfo(): void {
   SetFontBackground(FONT_BLACK);
 
   // Display the mapindex position
-  if (GetMouseMapPos(&iMapIndex))
+  if (GetMouseMapPos(addressof(iMapIndex)))
     swprintf(FPSText, "   (%d)   ", iMapIndex);
   else
     swprintf(FPSText, "          ");

@@ -293,16 +293,16 @@ function PlayVoice(): UINT32 {
 
 function CreateIMPVoiceMouseRegions(): void {
   // will create mouse regions needed for the IMP voices page
-  MSYS_DefineRegion(&gVoicePortraitRegion, LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176, LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, IMPPortraitRegionButtonCallback);
+  MSYS_DefineRegion(addressof(gVoicePortraitRegion), LAPTOP_SCREEN_UL_X + 200, LAPTOP_SCREEN_WEB_UL_Y + 176, LAPTOP_SCREEN_UL_X + 200 + 100, LAPTOP_SCREEN_WEB_UL_Y + 176 + 100, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, IMPPortraitRegionButtonCallback);
 
-  MSYS_AddRegion(&gVoicePortraitRegion);
+  MSYS_AddRegion(addressof(gVoicePortraitRegion));
 
   return;
 }
 
 function DestroyIMPVoiceMouseRegions(): void {
   // will destroy already created mouse reiogns for IMP voices page
-  MSYS_RemoveRegion(&gVoicePortraitRegion);
+  MSYS_RemoveRegion(addressof(gVoicePortraitRegion));
 
   return;
 }
@@ -330,7 +330,7 @@ function RenderVoiceIndex(): void {
   // render the voice index value on the the blank portrait
   swprintf(sString, "%s %d", pIMPVoicesStrings[0], iCurrentVoices + 1);
 
-  FindFontCenterCoordinates(290 + LAPTOP_UL_X, 0, 100, 0, sString, FONT12ARIAL, &sX, &sY);
+  FindFontCenterCoordinates(290 + LAPTOP_UL_X, 0, 100, 0, sString, FONT12ARIAL, addressof(sX), addressof(sY));
 
   SetFont(FONT12ARIAL);
   SetFontForeground(FONT_WHITE);

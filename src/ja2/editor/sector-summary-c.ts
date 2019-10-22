@@ -189,7 +189,7 @@ function CreateSummaryWindow(): void {
   DisableEditorTaskbar();
   DisableAllTextFields();
 
-  GetCurrentWorldSector(&gsSectorX, &gsSectorY);
+  GetCurrentWorldSector(addressof(gsSectorX), addressof(gsSectorY));
   gsSelSectorX = gsSectorX;
   gsSelSectorY = gsSectorY;
   gfSummaryWindowActive = TRUE;
@@ -267,8 +267,8 @@ function CreateSummaryWindow(): void {
   for (i = 1; i < NUM_SUMMARY_BUTTONS; i++)
     HideButton(iSummaryButton[i]);
 
-  MSYS_DefineRegion(&MapRegion, MAP_LEFT, MAP_TOP, MAP_RIGHT, MAP_BOTTOM, MSYS_PRIORITY_HIGH, 0, MapMoveCallback, MapClickCallback);
-  MSYS_DisableRegion(&MapRegion);
+  MSYS_DefineRegion(addressof(MapRegion), MAP_LEFT, MAP_TOP, MAP_RIGHT, MAP_BOTTOM, MSYS_PRIORITY_HIGH, 0, MapMoveCallback, MapClickCallback);
+  MSYS_DisableRegion(addressof(MapRegion));
 
   // if( gfItemDetailsMode )
   //	{
@@ -313,7 +313,7 @@ function ReleaseSummaryWindow(): void {
     HideButton(iSummaryButton[SUMMARY_REAL]);
     HideButton(iSummaryButton[SUMMARY_SCIFI]);
     HideButton(iSummaryButton[SUMMARY_ENEMY]);
-    MSYS_EnableRegion(&MapRegion);
+    MSYS_EnableRegion(addressof(MapRegion));
     gfPersistantSummary = TRUE;
     gfOverrideDirty = TRUE;
     gfRenderSummary = TRUE;
@@ -330,7 +330,7 @@ function DestroySummaryWindow(): void {
     RemoveButton(iSummaryButton[i]);
   }
 
-  MSYS_RemoveRegion(&MapRegion);
+  MSYS_RemoveRegion(addressof(MapRegion));
 
   gfSummaryWindowActive = FALSE;
   gfPersistantSummary = FALSE;
@@ -371,7 +371,7 @@ function RenderSectorInformation(): void {
   SetFontShadow(FONT_NEARBLACK);
 
   s = gpCurrentSectorSummary;
-  m = &gpCurrentSectorSummary.value.MapInfo;
+  m = addressof(gpCurrentSectorSummary.value.MapInfo);
 
   if (m.value.sNorthGridNo != -1)
     ePoints++;
@@ -559,7 +559,7 @@ function RenderItemDetails(): void {
         if (index == SWITCH || index == ACTION_ITEM) {
           if (gpWorldItemsSummaryArray[i].o.usItem == index) {
             if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
-              pItem = &gpWorldItemsSummaryArray[i].o;
+              pItem = addressof(gpWorldItemsSummaryArray[i].o);
               if (!pItem.value.bFrequency)
                 bFreqIndex = 7;
               else if (pItem.value.bFrequency == PANIC_FREQUENCY)
@@ -591,7 +591,7 @@ function RenderItemDetails(): void {
         }
         if (gpWorldItemsSummaryArray[i].o.usItem == index) {
           if (gubSummaryItemMode == ITEMMODE_SCIFI && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_REALISTIC_ONLY) || gubSummaryItemMode == ITEMMODE_REAL && !(gpWorldItemsSummaryArray[i].usFlags & WORLD_ITEM_SCIFI_ONLY)) {
-            pItem = &gpWorldItemsSummaryArray[i].o;
+            pItem = addressof(gpWorldItemsSummaryArray[i].o);
             uiExistChance += (100 - gpWorldItemsSummaryArray[i].ubNonExistChance) * pItem.value.ubNumberOfObjects;
             uiStatus += pItem.value.bStatus[0];
             uiQuantity += pItem.value.ubNumberOfObjects;
@@ -695,7 +695,7 @@ function RenderItemDetails(): void {
         uiStatus = 0;
         for (i = 0; i < gusPEnemyItemsSummaryArraySize; i++) {
           if (gpPEnemyItemsSummaryArray[i].usItem == index) {
-            pItem = &gpPEnemyItemsSummaryArray[i];
+            pItem = addressof(gpPEnemyItemsSummaryArray[i]);
             uiExistChance += 100 * pItem.value.ubNumberOfObjects;
             uiStatus += pItem.value.bStatus[0];
             uiQuantity += pItem.value.ubNumberOfObjects;
@@ -754,7 +754,7 @@ function RenderItemDetails(): void {
       uiStatus = 0;
       for (i = 0; i < gusNEnemyItemsSummaryArraySize; i++) {
         if (gpNEnemyItemsSummaryArray[i].usItem == index) {
-          pItem = &gpNEnemyItemsSummaryArray[i];
+          pItem = addressof(gpNEnemyItemsSummaryArray[i]);
           uiExistChance += 100 * pItem.value.ubNumberOfObjects;
           uiStatus += pItem.value.bStatus[0];
           uiQuantity += pItem.value.ubNumberOfObjects;
@@ -1128,7 +1128,7 @@ function RenderSummaryWindow(): void {
     // Draw the mode tabs
     SetFontForeground(FONT_YELLOW);
     mprintf(354, 18, "Summary");
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, 350, 15, 405, 28, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -1143,7 +1143,7 @@ function RenderSummaryWindow(): void {
       SetFontForeground(FONT_RED);
     }
     mprintf(354, 33, "Items");
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, 350, 30, 405, 43, 0, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -1179,7 +1179,7 @@ function RenderSummaryWindow(): void {
     }
     if (gfRenderGrid) {
       let pos: UINT16;
-      pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+      pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       for (i = 1; i <= 15; i++) {
         // draw vertical lines
@@ -1244,10 +1244,10 @@ function RenderSummaryWindow(): void {
           }
           ClipRect.iLeft = MAP_LEFT + x * 13;
           ClipRect.iRight = ClipRect.iLeft + 12;
-          pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-          Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+          pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+          Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
           if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-            Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+            Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
           UnLockVideoSurface(FRAME_BUFFER);
         }
       }
@@ -1255,7 +1255,7 @@ function RenderSummaryWindow(): void {
   }
 
   if (gfGlobalSummaryExists) {
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     // Render the grid for the map currently residing in memory (blue).
     if (gfWorldLoaded && !gfTempFile && gsSectorX) {
@@ -1874,8 +1874,8 @@ function CalculateOverrideStatus(): void {
       sprintf(ptr, ".dat");
   } else
     sprintf(szFilename, "MAPS\\%S", gszFilename);
-  swprintf(gszDisplayName, "%S", &(szFilename[5]));
-  if (GetFileFirst(szFilename, &FileInfo)) {
+  swprintf(gszDisplayName, "%S", addressof(szFilename[5]));
+  if (GetFileFirst(szFilename, addressof(FileInfo))) {
     if (gfWorldLoaded) {
       if (FileInfo.uiFileAttribs & (FILE_IS_READONLY | FILE_IS_SYSTEM))
         gubOverrideStatus = READONLY;
@@ -1883,7 +1883,7 @@ function CalculateOverrideStatus(): void {
         gubOverrideStatus = OVERWRITE;
       ShowButton(iSummaryButton[SUMMARY_OVERRIDE]);
       ButtonList[iSummaryButton[SUMMARY_OVERRIDE]].value.uiFlags &= (~BUTTON_CLICKED_ON);
-      GetFileClose(&FileInfo);
+      GetFileClose(addressof(FileInfo));
       DisableButton(iSummaryButton[SUMMARY_SAVE]);
     }
     if (gfTempFile)
@@ -1945,7 +1945,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= GROUND_LEVEL_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 0, dMajorVersion);
       } else {
@@ -1959,7 +1959,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT1_LEVEL_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 1, dMajorVersion);
       } else {
@@ -1973,7 +1973,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT2_LEVEL_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 2, dMajorVersion);
       } else {
@@ -1987,7 +1987,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= BASEMENT3_LEVEL_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 3, dMajorVersion);
       } else {
@@ -2001,7 +2001,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_GROUND_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 4, dMajorVersion);
       } else {
@@ -2015,7 +2015,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 5, dMajorVersion);
       } else {
@@ -2029,7 +2029,7 @@ function LoadGlobalSummary(): void {
       SetFileManCurrentDirectory(DevInfoDir);
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B2_MASK;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 6, dMajorVersion);
       } else {
@@ -2044,7 +2044,7 @@ function LoadGlobalSummary(): void {
       if (hfile) {
         gbSectorLevels[x][y] |= ALTERNATE_B1_MASK;
         ;
-        FileRead(hfile, &dMajorVersion, sizeof(FLOAT), &uiNumBytesRead);
+        FileRead(hfile, addressof(dMajorVersion), sizeof(FLOAT), addressof(uiNumBytesRead));
         FileClose(hfile);
         LoadSummary(szSector, 7, dMajorVersion);
       } else {
@@ -2180,13 +2180,13 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
     return;
   }
-  fread(&temp, 1, sizeof(SUMMARYFILE), fp);
+  fread(addressof(temp), 1, sizeof(SUMMARYFILE), fp);
   if (temp.ubSummaryVersion < MINIMUMVERSION || dMajorMapVersion < gdMajorMapVersion) {
     gusNumberOfMapsToBeForceUpdated++;
     gfMustForceUpdateAllMaps = TRUE;
   }
   temp.dMajorMapVersion = dMajorMapVersion;
-  UpdateSummaryInfo(&temp);
+  UpdateSummaryInfo(addressof(temp));
   // even if the info is outdated (but existing), allocate the structure, but indicate that the info
   // is bad.
   y = pSector[0] - 'A';
@@ -2200,7 +2200,7 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
   }
   gpSectorSummary[x][y][ubLevel] = MemAlloc(sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel])
-    memcpy(gpSectorSummary[x][y][ubLevel], &temp, sizeof(SUMMARYFILE));
+    memcpy(gpSectorSummary[x][y][ubLevel], addressof(temp), sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel].value.ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
 
@@ -2517,7 +2517,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     return;
   }
   // Now load the number of world items from the map.
-  FileRead(hfile, &uiNumItems, 4, &uiNumBytesRead);
+  FileRead(hfile, addressof(uiNumItems), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4) {
     // Invalid situation.
     FileClose(hfile);
@@ -2538,7 +2538,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   ShowButton(iSummaryButton[SUMMARY_ENEMY]);
   gpWorldItemsSummaryArray = MemAlloc(sizeof(WORLDITEM) * uiNumItems);
   gusWorldItemsSummaryArraySize = gpCurrentSectorSummary.value.usNumItems;
-  FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, &uiNumBytesRead);
+  FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, addressof(uiNumBytesRead));
 
   // NOW, do the enemy's items!
   // We need to do two passes.  The first pass simply processes all the enemies and counts all the droppable items
@@ -2554,7 +2554,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     return;
   }
   for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
-    FileRead(hfile, &basic, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(basic), sizeof(BASIC_SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
       // Invalid situation.
       FileClose(hfile);
@@ -2562,7 +2562,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     }
     if (basic.fDetailedPlacement) {
       // skip static priority placement
-      FileRead(hfile, &priority, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+      FileRead(hfile, addressof(priority), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
         // Invalid situation.
         FileClose(hfile);
@@ -2576,7 +2576,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
       // Count the items that this enemy placement drops
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
-        pItem = &priority.Inv[gbMercSlotTypes[j]];
+        pItem = addressof(priority.Inv[gbMercSlotTypes[j]]);
         if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
           usNumItems++;
         }
@@ -2608,7 +2608,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     return;
   }
   for (i = 0; i < gpCurrentSectorSummary.value.MapInfo.ubNumIndividuals; i++) {
-    FileRead(hfile, &basic, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+    FileRead(hfile, addressof(basic), sizeof(BASIC_SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BASIC_SOLDIERCREATE_STRUCT)) {
       // Invalid situation.
       FileClose(hfile);
@@ -2616,7 +2616,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
     }
     if (basic.fDetailedPlacement) {
       // skip static priority placement
-      FileRead(hfile, &priority, sizeof(SOLDIERCREATE_STRUCT), &uiNumBytesRead);
+      FileRead(hfile, addressof(priority), sizeof(SOLDIERCREATE_STRUCT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(SOLDIERCREATE_STRUCT)) {
         // Invalid situation.
         FileClose(hfile);
@@ -2630,13 +2630,13 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
       // Copy the items that this enemy placement drops
       usNumItems = 0;
       for (j = 0; j < 9; j++) {
-        pItem = &priority.Inv[gbMercSlotTypes[j]];
+        pItem = addressof(priority.Inv[gbMercSlotTypes[j]]);
         if (pItem.value.usItem != NOTHING && !(pItem.value.fFlags & OBJECT_UNDROPPABLE)) {
           if (basic.fPriorityExistance) {
-            memcpy(&(gpPEnemyItemsSummaryArray[usPEnemyIndex]), pItem, sizeof(OBJECTTYPE));
+            memcpy(addressof(gpPEnemyItemsSummaryArray[usPEnemyIndex]), pItem, sizeof(OBJECTTYPE));
             usPEnemyIndex++;
           } else {
-            memcpy(&(gpNEnemyItemsSummaryArray[usNEnemyIndex]), pItem, sizeof(OBJECTTYPE));
+            memcpy(addressof(gpNEnemyItemsSummaryArray[usNEnemyIndex]), pItem, sizeof(OBJECTTYPE));
             usNEnemyIndex++;
           }
         }

@@ -84,10 +84,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
   else {
     te = 0.0f;
     tl = 1.0f;
-    if (Clipt(dx, giClipXMin - x0, &te, &tl)) {
-      if (Clipt(-dx, x0 - giClipXMax, &te, &tl)) {
-        if (Clipt(dy, giClipYMin - y0, &te, &tl)) {
-          if (Clipt(-dy, y0 - giClipYMax, &te, &tl)) {
+    if (Clipt(dx, giClipXMin - x0, addressof(te), addressof(tl))) {
+      if (Clipt(-dx, x0 - giClipXMax, addressof(te), addressof(tl))) {
+        if (Clipt(dy, giClipYMin - y0, addressof(te), addressof(tl))) {
+          if (Clipt(-dy, y0 - giClipYMax, addressof(te), addressof(tl))) {
             visible = TRUE;
             if (tl < 1.0f) {
               x1 = x0 + tl * dx;
@@ -130,7 +130,7 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
   let col1: char = Color & 0x00FF;
 
   if (fClip) {
-    if (!Clip2D(&XStart, &YStart, &XEnd, &YEnd))
+    if (!Clip2D(addressof(XStart), addressof(YStart), addressof(XEnd), addressof(YEnd)))
       return;
   }
 
@@ -228,7 +228,7 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
       ErrorTerm += YDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawHorizontalRun(&ScreenPtr, XAdvance, InitialPixelCount, Color, ScreenWidth);
+    DrawHorizontalRun(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
     /* Draw all full runs */
     for (i = 0; i < (YDelta - 1); i++) {
       RunLength = WholeStep; /* run is at least this long */
@@ -239,10 +239,10 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawHorizontalRun(&ScreenPtr, XAdvance, RunLength, Color, ScreenWidth);
+      DrawHorizontalRun(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawHorizontalRun(&ScreenPtr, XAdvance, FinalPixelCount, Color, ScreenWidth);
+    DrawHorizontalRun(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   } else {
     /* Y major line */
@@ -282,7 +282,7 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
       ErrorTerm += XDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawVerticalRun(&ScreenPtr, XAdvance, InitialPixelCount, Color, ScreenWidth);
+    DrawVerticalRun(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
 
     /* Draw all full runs */
     for (i = 0; i < (XDelta - 1); i++) {
@@ -294,10 +294,10 @@ function LineDraw(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, C
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawVerticalRun(&ScreenPtr, XAdvance, RunLength, Color, ScreenWidth);
+      DrawVerticalRun(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawVerticalRun(&ScreenPtr, XAdvance, FinalPixelCount, Color, ScreenWidth);
+    DrawVerticalRun(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   }
 }
@@ -398,7 +398,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
   let col1: char = Color & 0x00FF;
 
   if (fClip) {
-    if (!Clip2D(&XStart, &YStart, &XEnd, &YEnd))
+    if (!Clip2D(addressof(XStart), addressof(YStart), addressof(XEnd), addressof(YEnd)))
       return;
   }
 
@@ -493,7 +493,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
       ErrorTerm += YDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawHorizontalRun8(&ScreenPtr, XAdvance, InitialPixelCount, Color, ScreenWidth);
+    DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
     /* Draw all full runs */
     for (i = 0; i < (YDelta - 1); i++) {
       RunLength = WholeStep; /* run is at least this long */
@@ -504,10 +504,10 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawHorizontalRun8(&ScreenPtr, XAdvance, RunLength, Color, ScreenWidth);
+      DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawHorizontalRun8(&ScreenPtr, XAdvance, FinalPixelCount, Color, ScreenWidth);
+    DrawHorizontalRun8(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   } else {
     /* Y major line */
@@ -547,7 +547,7 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
       ErrorTerm += XDelta;
     }
     /* Draw the first, partial run of pixels */
-    DrawVerticalRun8(&ScreenPtr, XAdvance, InitialPixelCount, Color, ScreenWidth);
+    DrawVerticalRun8(addressof(ScreenPtr), XAdvance, InitialPixelCount, Color, ScreenWidth);
 
     /* Draw all full runs */
     for (i = 0; i < (XDelta - 1); i++) {
@@ -559,10 +559,10 @@ function LineDraw8(fClip: BOOL, XStart: int, YStart: int, XEnd: int, YEnd: int, 
         ErrorTerm -= AdjDown; /* reset the error term */
       }
       /* Draw this scan line's run */
-      DrawVerticalRun8(&ScreenPtr, XAdvance, RunLength, Color, ScreenWidth);
+      DrawVerticalRun8(addressof(ScreenPtr), XAdvance, RunLength, Color, ScreenWidth);
     }
     /* Draw the final run of pixels */
-    DrawVerticalRun8(&ScreenPtr, XAdvance, FinalPixelCount, Color, ScreenWidth);
+    DrawVerticalRun8(addressof(ScreenPtr), XAdvance, FinalPixelCount, Color, ScreenWidth);
     return;
   }
 }

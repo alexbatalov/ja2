@@ -41,7 +41,7 @@ function RealtimeDelay(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
     if (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
       let ubRoom: UINT8;
 
-      if (InARoom(pSoldier.value.sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) {
+      if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
         return (REALTIME_AI_DELAY / 3);
       }
     }
@@ -148,7 +148,7 @@ function RTHandleAI(pSoldier: Pointer<SOLDIERTYPE>): void {
         if (pSoldier.value.ubCivilianGroup == KINGPIN_CIV_GROUP) {
           let ubRoom: UINT8;
 
-          if (InARoom(pSoldier.value.sGridNo, &ubRoom) && IN_BROTHEL(ubRoom)) {
+          if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && IN_BROTHEL(ubRoom)) {
             pSoldier.value.usActionData /= 3;
           }
         }

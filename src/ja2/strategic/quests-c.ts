@@ -25,7 +25,7 @@ function CheckForNewShipment(): BOOLEAN {
   let pItemPool: Pointer<ITEM_POOL>;
 
   if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
-    if (GetItemPool(BOBBYR_SHIPPING_DEST_GRIDNO, &pItemPool, 0)) {
+    if (GetItemPool(BOBBYR_SHIPPING_DEST_GRIDNO, addressof(pItemPool), 0)) {
       return !(ITEMPOOL_VISIBLE(pItemPool));
     }
   }
@@ -1097,13 +1097,13 @@ function SaveQuestInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save all the states if the Quests
-  FileWrite(hFile, gubQuest, MAX_QUESTS, &uiNumBytesWritten);
+  FileWrite(hFile, gubQuest, MAX_QUESTS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != MAX_QUESTS) {
     return FALSE;
   }
 
   // Save all the states for the facts
-  FileWrite(hFile, gubFact, NUM_FACTS, &uiNumBytesWritten);
+  FileWrite(hFile, gubFact, NUM_FACTS, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != NUM_FACTS) {
     return FALSE;
   }
@@ -1115,13 +1115,13 @@ function LoadQuestInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Save all the states if the Quests
-  FileRead(hFile, gubQuest, MAX_QUESTS, &uiNumBytesRead);
+  FileRead(hFile, gubQuest, MAX_QUESTS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != MAX_QUESTS) {
     return FALSE;
   }
 
   // Save all the states for the facts
-  FileRead(hFile, gubFact, NUM_FACTS, &uiNumBytesRead);
+  FileRead(hFile, gubFact, NUM_FACTS, addressof(uiNumBytesRead));
   if (uiNumBytesRead != NUM_FACTS) {
     return FALSE;
   }

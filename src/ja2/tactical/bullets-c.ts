@@ -38,9 +38,9 @@ function CreateBullet(ubFirerID: UINT8, fFake: BOOLEAN, usFlags: UINT16): INT32 
   if ((iBulletIndex = GetFreeBullet()) == (-1))
     return -1;
 
-  memset(&gBullets[iBulletIndex], 0, sizeof(BULLET));
+  memset(addressof(gBullets[iBulletIndex]), 0, sizeof(BULLET));
 
-  pBullet = &gBullets[iBulletIndex];
+  pBullet = addressof(gBullets[iBulletIndex]);
 
   pBullet.value.iBullet = iBulletIndex;
   pBullet.value.fAllocated = TRUE;
@@ -65,9 +65,9 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
   let dY: FLOAT;
   let ubDirection: UINT8;
 
-  pBullet = &(gBullets[iBulletIndex]);
+  pBullet = addressof(gBullets[iBulletIndex]);
 
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
 
   if (pBullet.value.fReal) {
     // Create ani tile if this is a spit!
@@ -96,13 +96,13 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
 
       AniParams.uiUserData3 = ubDirection;
 
-      pBullet.value.pAniTile = CreateAnimationTile(&AniParams);
+      pBullet.value.pAniTile = CreateAnimationTile(addressof(AniParams));
 
       // IF we are anything that needs a shadow.. set it here....
       if (pBullet.value.usFlags & (BULLET_FLAG_KNIFE)) {
         AniParams.ubLevelID = ANI_SHADOW_LEVEL;
         AniParams.sZ = 0;
-        pBullet.value.pShadowAniTile = CreateAnimationTile(&AniParams);
+        pBullet.value.pShadowAniTile = CreateAnimationTile(addressof(AniParams));
       }
     }
   }
@@ -256,7 +256,7 @@ function GetBulletPtr(iBullet: INT32): Pointer<BULLET> {
 
   CHECKN(iBullet < NUM_BULLET_SLOTS);
 
-  pBullet = &gBullets[iBullet];
+  pBullet = addressof(gBullets[iBullet]);
 
   return pBullet;
 }
@@ -279,7 +279,7 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
     //}
   }
 
-  memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+  memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = pBullet.value.sGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
   AniParams.sDelay = (100 + Random(100));
@@ -300,7 +300,7 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
     AniParams.sDelay = (100);
   }
 
-  CreateAnimationTile(&AniParams);
+  CreateAnimationTile(addressof(AniParams));
 }
 
 function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
@@ -317,7 +317,7 @@ function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // Save the number of Bullets in the array
-  FileWrite(hFile, &uiBulletCount, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiBulletCount), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -327,7 +327,7 @@ function SaveBulletStructureToSaveGameFile(hFile: HWFILE): BOOLEAN {
       // if the bullet is active, save it
       if (gBullets[usCnt].fAllocated) {
         // Save the the Bullet structure
-        FileWrite(hFile, &gBullets[usCnt], sizeof(BULLET), &uiNumBytesWritten);
+        FileWrite(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(BULLET)) {
           return FALSE;
         }
@@ -346,14 +346,14 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   memset(gBullets, 0, NUM_BULLET_SLOTS * sizeof(BULLET));
 
   // Load the number of Bullets in the array
-  FileRead(hFile, &guiNumBullets, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiNumBullets), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
 
   for (usCnt = 0; usCnt < guiNumBullets; usCnt++) {
     // Load the the Bullet structure
-    FileRead(hFile, &gBullets[usCnt], sizeof(BULLET), &uiNumBytesRead);
+    FileRead(hFile, addressof(gBullets[usCnt]), sizeof(BULLET), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(BULLET)) {
       return FALSE;
     }
@@ -361,7 +361,7 @@ function LoadBulletStructureFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     // Set some parameters
     gBullets[usCnt].uiLastUpdate = 0;
     if (gBullets[usCnt].ubFirerID != NOBODY)
-      gBullets[usCnt].pFirer = &Menptr[gBullets[usCnt].ubFirerID];
+      gBullets[usCnt].pFirer = addressof(Menptr[gBullets[usCnt].ubFirerID]);
     else
       gBullets[usCnt].pFirer = NULL;
 

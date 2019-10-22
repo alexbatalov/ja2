@@ -81,9 +81,9 @@ let top: Pointer<MapIndexBinaryTree> = NULL;
 // Recursively deletes all nodes below the node passed including itself.
 function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
   if ((*node).value.left)
-    DeleteTreeNode(&((*node).value.left));
+    DeleteTreeNode(addressof((*node).value.left));
   if ((*node).value.right)
-    DeleteTreeNode(&((*node).value.right));
+    DeleteTreeNode(addressof((*node).value.right));
   MemFree(*node);
   *node = NULL;
 }
@@ -91,7 +91,7 @@ function DeleteTreeNode(node: Pointer<Pointer<MapIndexBinaryTree>>): void {
 // Recursively delete all nodes (from the top down).
 function ClearUndoMapIndexTree(): void {
   if (top)
-    DeleteTreeNode(&top);
+    DeleteTreeNode(addressof(top));
 }
 
 function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
@@ -505,7 +505,7 @@ function ExecuteUndoList(): BOOLEAN {
       // Turn on this flag so that the following code, when executed, doesn't attempt to
       // add lights to the undo list.  That would cause problems...
       gfIgnoreUndoCmdsForLights = TRUE;
-      ConvertGridNoToXY(iUndoMapIndex, &sX, &sY);
+      ConvertGridNoToXY(iUndoMapIndex, addressof(sX), addressof(sY));
       if (!gpTileUndoStack.value.pData.value.ubLightRadius)
         RemoveLight(sX, sY);
       else
@@ -566,7 +566,7 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     // nothing in the old tile, so smooth the entire land in world's tile
     pLand = gpWorldLevelData[iWorldTile].pLandHead;
     while (pLand != NULL) {
-      GetTileType(pLand.value.usIndex, &uiCheckType);
+      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, TRUE);
       pLand = pLand.value.pNext;
     }
@@ -574,19 +574,19 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
     // Nothing in world's tile, so smooth out the land in the old tile.
     pLand = pUndoLand;
     while (pLand != NULL) {
-      GetTileType(pLand.value.usIndex, &uiCheckType);
+      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
       SmoothTerrainRadius(iWorldTile, uiCheckType, 1, TRUE);
       pLand = pLand.value.pNext;
     }
   } else {
     pLand = pUndoLand;
     while (pLand != NULL) {
-      GetTileType(pLand.value.usIndex, &uiCheckType);
+      GetTileType(pLand.value.usIndex, addressof(uiCheckType));
 
       fFound = FALSE;
       pWLand = pWorldLand;
       while (pWLand != NULL && !fFound) {
-        GetTileType(pWLand.value.usIndex, &uiWCheckType);
+        GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
 
         if (uiCheckType == uiWCheckType)
           fFound = TRUE;
@@ -602,12 +602,12 @@ function SmoothUndoMapTileTerrain(iWorldTile: INT32, pUndoTile: Pointer<MAP_ELEM
 
     pWLand = pWorldLand;
     while (pWLand != NULL) {
-      GetTileType(pWLand.value.usIndex, &uiWCheckType);
+      GetTileType(pWLand.value.usIndex, addressof(uiWCheckType));
 
       fFound = FALSE;
       pLand = pUndoLand;
       while (pLand != NULL && !fFound) {
-        GetTileType(pLand.value.usIndex, &uiCheckType);
+        GetTileType(pLand.value.usIndex, addressof(uiCheckType));
 
         if (uiCheckType == uiWCheckType)
           fFound = TRUE;
@@ -683,7 +683,7 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
   let pOldStructure: Pointer<STRUCTURE>;
 
   // Get a pointer to the current map index
-  pOldMapElement = &gpWorldLevelData[iMapIndex];
+  pOldMapElement = addressof(gpWorldLevelData[iMapIndex]);
 
   // Save the structure information from the mapelement
   pOldStructure = pOldMapElement.value.pStructureHead;
@@ -833,7 +833,7 @@ function SwapMapElementWithWorld(iMapIndex: INT32, pUndoMapElement: Pointer<MAP_
   let pCurrentMapElement: Pointer<MAP_ELEMENT>;
   let TempMapElement: MAP_ELEMENT;
 
-  pCurrentMapElement = &gpWorldLevelData[iMapIndex];
+  pCurrentMapElement = addressof(gpWorldLevelData[iMapIndex]);
 
   // Transfer the merc level node from the current world to the undo mapelement
   // that will replace it.  We do this, because mercs aren't associated with

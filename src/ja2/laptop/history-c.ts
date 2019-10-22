@@ -236,17 +236,17 @@ function LoadHistory(): BOOLEAN {
   // title bar
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\programtitlebar.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTITLE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTITLE)));
 
   // top portion of the screen background
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\historywindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiTOP));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiTOP)));
 
   // shaded line
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\historylines.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSHADELINE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSHADELINE)));
 
   /*
   Not being used???  DF commented out
@@ -258,7 +258,7 @@ function LoadHistory(): BOOLEAN {
   // black divider line - long ( 480 length)
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\divisionline480.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiLONGLINE));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiLONGLINE)));
 
   return TRUE;
 }
@@ -279,13 +279,13 @@ function RenderHistoryBackGround(): void {
   let iCounter: INT32 = 0;
 
   // get title bar object
-  GetVideoObject(&hHandle, guiTITLE);
+  GetVideoObject(addressof(hHandle), guiTITLE);
 
   // blt title bar to screen
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y - 2, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // get and blt the top part of the screen, video object and blt to screen
-  GetVideoObject(&hHandle, guiTOP);
+  GetVideoObject(addressof(hHandle), guiTOP);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X, TOP_Y + 22, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // display background for history list
@@ -521,13 +521,13 @@ function OpenAndReadHistoryFile(): void {
   // file exists, read in data, continue until file end
   while (FileGetSize(hFileHandle) > uiByteCount) {
     // read in other data
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &sSectorX, sizeof(INT16), &iBytesRead);
-    FileRead(hFileHandle, &sSectorY, sizeof(INT16), &iBytesRead);
-    FileRead(hFileHandle, &bSectorZ, sizeof(INT8), &iBytesRead);
-    FileRead(hFileHandle, &ubColor, sizeof(UINT8), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(sSectorX), sizeof(INT16), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(sSectorY), sizeof(INT16), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(bSectorZ), sizeof(INT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubColor), sizeof(UINT8), addressof(iBytesRead));
 
     // add transaction
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
@@ -559,13 +559,13 @@ function OpenAndWriteHistoryFile(): BOOLEAN {
   // write info, while there are elements left in the list
   while (pHistoryList) {
     // now write date and amount, and code
-    FileWrite(hFileHandle, &(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, &(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
+    FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
 
     // next element in list
     pHistoryList = pHistoryList.value.Next;
@@ -613,15 +613,15 @@ function DisplayHistoryListHeaders(): void {
   SetFontShadow(NO_SHADOW);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, pHistoryHeaders[0], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[0]);
 
   // the date header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[3]);
 
   // event header
-  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, &usX, &usY);
+  FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH + RECORD_LOCATION_WIDTH + 5, 0, RECORD_LOCATION_WIDTH, 0, pHistoryHeaders[3], HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
   mprintf(usX, RECORD_HEADER_Y, pHistoryHeaders[4]);
   // reset shadow
   SetFontShadow(DEFAULT_SHADOW);
@@ -634,14 +634,14 @@ function DisplayHistoryListBackground(): void {
   let iCounter: INT32 = 0;
 
   // get shaded line object
-  GetVideoObject(&hHandle, guiSHADELINE);
+  GetVideoObject(addressof(hHandle), guiSHADELINE);
   for (iCounter = 0; iCounter < 11; iCounter++) {
     // blt title bar to screen
     BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 15, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * iCounter), VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
   // the long hortizontal line int he records list display region
-  GetVideoObject(&hHandle, guiLONGLINE);
+  GetVideoObject(addressof(hHandle), guiLONGLINE);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y), VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(FRAME_BUFFER, hHandle, 0, TOP_X + 9, (TOP_DIVLINE_Y + BOX_HEIGHT * 2 * 11), VO_BLT_SRCTRANSPARENCY, NULL);
 
@@ -679,7 +679,7 @@ function DrawHistoryRecordsText(): void {
     }
     // get and write the date
     swprintf(sString, "%d", (pCurHistory.value.uiDate / (24 * 60)));
-    FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT, &usX, &usY);
+    FindFontCenterCoordinates(RECORD_DATE_X + 5, 0, RECORD_DATE_WIDTH, 0, sString, HISTORY_TEXT_FONT, addressof(usX), addressof(usY));
     mprintf(usX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, sString);
 
     // now the actual history text
@@ -690,11 +690,11 @@ function DrawHistoryRecordsText(): void {
 
     // no location
     if ((pCurHistory.value.sSectorX == -1) || (pCurHistory.value.sSectorY == -1)) {
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, pHistoryLocations[0], HISTORY_TEXT_FONT, addressof(sX), addressof(sY));
       mprintf(sX, RECORD_Y + (iCounter * (BOX_HEIGHT)) + 3, pHistoryLocations[0]);
     } else {
       GetSectorIDString(pCurHistory.value.sSectorX, pCurHistory.value.sSectorY, pCurHistory.value.bSectorZ, sString, TRUE);
-      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RECORD_DATE_X + RECORD_DATE_WIDTH, 0, RECORD_LOCATION_WIDTH + 10, 0, sString, HISTORY_TEXT_FONT, addressof(sX), addressof(sY));
 
       ReduceStringLength(sString, RECORD_LOCATION_WIDTH + 10, HISTORY_TEXT_FONT);
 
@@ -1063,13 +1063,13 @@ function LoadInHistoryRecords(uiPage: UINT32): BOOLEAN {
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
     // read in other data
-    FileRead(hFileHandle, &ubCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &ubSecondCode, sizeof(UINT8), &iBytesRead);
-    FileRead(hFileHandle, &uiDate, sizeof(UINT32), &iBytesRead);
-    FileRead(hFileHandle, &sSectorX, sizeof(INT16), &iBytesRead);
-    FileRead(hFileHandle, &sSectorY, sizeof(INT16), &iBytesRead);
-    FileRead(hFileHandle, &bSectorZ, sizeof(INT8), &iBytesRead);
-    FileRead(hFileHandle, &ubColor, sizeof(UINT8), &iBytesRead);
+    FileRead(hFileHandle, addressof(ubCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubSecondCode), sizeof(UINT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(uiDate), sizeof(UINT32), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(sSectorX), sizeof(INT16), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(sSectorY), sizeof(INT16), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(bSectorZ), sizeof(INT8), addressof(iBytesRead));
+    FileRead(hFileHandle, addressof(ubColor), sizeof(UINT8), addressof(iBytesRead));
 
     // add transaction
     ProcessAndEnterAHistoryRecord(ubCode, uiDate, ubSecondCode, sSectorX, sSectorY, bSectorZ, ubColor);
@@ -1151,13 +1151,13 @@ function WriteOutHistoryRecords(uiPage: UINT32): BOOLEAN {
   uiByteCount = /*sizeof( INT32 )+ */ (uiPage - 1) * NUM_RECORDS_PER_PAGE * SIZE_OF_HISTORY_FILE_RECORD;
   // file exists, read in data, continue until end of page
   while ((iCount < NUM_RECORDS_PER_PAGE) && (fOkToContinue)) {
-    FileWrite(hFileHandle, &(pList.value.ubCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pList.value.ubSecondCode), sizeof(UINT8), NULL);
-    FileWrite(hFileHandle, &(pList.value.uiDate), sizeof(UINT32), NULL);
-    FileWrite(hFileHandle, &(pList.value.sSectorX), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pList.value.sSectorY), sizeof(INT16), NULL);
-    FileWrite(hFileHandle, &(pList.value.bSectorZ), sizeof(INT8), NULL);
-    FileWrite(hFileHandle, &(pList.value.ubColor), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.ubCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.ubSecondCode), sizeof(UINT8), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.uiDate), sizeof(UINT32), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.sSectorX), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.sSectorY), sizeof(INT16), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.bSectorZ), sizeof(INT8), NULL);
+    FileWrite(hFileHandle, addressof(pList.value.ubColor), sizeof(UINT8), NULL);
 
     pList = pList.value.Next;
 
@@ -1301,13 +1301,13 @@ function AppendHistoryToEndOfFile(pHistory: HistoryUnitPtr): BOOLEAN {
   }
 
   // now write date and amount, and code
-  FileWrite(hFileHandle, &(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
-  FileWrite(hFileHandle, &(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubSecondCode), sizeof(UINT8), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.uiDate), sizeof(UINT32), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorX), sizeof(INT16), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.sSectorY), sizeof(INT16), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.bSectorZ), sizeof(INT8), NULL);
+  FileWrite(hFileHandle, addressof(pHistoryList.value.ubColor), sizeof(UINT8), NULL);
 
   // close file
   FileClose(hFileHandle);

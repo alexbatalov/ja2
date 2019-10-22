@@ -837,7 +837,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
     VObjectDesc.hImage = hImage;
 
-    hVObject = CreateVideoObject(&VObjectDesc);
+    hVObject = CreateVideoObject(addressof(VObjectDesc));
 
     if (hVObject == NULL) {
       // Report error
@@ -965,7 +965,7 @@ function LoadAnimationProfiles(): BOOLEAN {
 
   // Writeout profile data!
   //	if ( fread( &gubNumAnimProfiles, sizeof( gubNumAnimProfiles ), 1, pInput ) != 1 )
-  if (FileRead(pInput, &gubNumAnimProfiles, sizeof(gubNumAnimProfiles), &uiBytesRead) != 1) {
+  if (FileRead(pInput, addressof(gubNumAnimProfiles), sizeof(gubNumAnimProfiles), addressof(uiBytesRead)) != 1) {
     return FALSE;
   }
 
@@ -975,16 +975,16 @@ function LoadAnimationProfiles(): BOOLEAN {
   // Loop profiles
   for (iProfileCount = 0; iProfileCount < gubNumAnimProfiles; iProfileCount++) {
     // Get profile pointer
-    pProfile = &(gpAnimProfiles[iProfileCount]);
+    pProfile = addressof(gpAnimProfiles[iProfileCount]);
 
     // Loop directions
     for (iDirectionCount = 0; iDirectionCount < 8; iDirectionCount++) {
       // Get prodile direction pointer
-      pProfileDirs = &(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
+      pProfileDirs = addressof(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
 
       // Read # tiles
       //			if ( fread( &pProfileDirs->ubNumTiles, sizeof( UINT8 ), 1, pInput ) != 1 )
-      if (FileRead(pInput, &pProfileDirs.value.ubNumTiles, sizeof(UINT8), &uiBytesRead) != 1) {
+      if (FileRead(pInput, addressof(pProfileDirs.value.ubNumTiles), sizeof(UINT8), addressof(uiBytesRead)) != 1) {
         return FALSE;
       }
 
@@ -994,17 +994,17 @@ function LoadAnimationProfiles(): BOOLEAN {
       // Loop tiles
       for (iTileCount = 0; iTileCount < pProfileDirs.value.ubNumTiles; iTileCount++) {
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].usTileFlags, sizeof( UINT16 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].usTileFlags, sizeof(UINT16), &uiBytesRead) != 1) {
+        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].usTileFlags), sizeof(UINT16), addressof(uiBytesRead)) != 1) {
           return FALSE;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileX, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].bTileX, sizeof(INT8), &uiBytesRead) != 1) {
+        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileX), sizeof(INT8), addressof(uiBytesRead)) != 1) {
           return FALSE;
         }
 
         //				if ( fread( &pProfileDirs->pTiles[ iTileCount ].bTileY, sizeof( INT8 ), 1, pInput ) != 1 )
-        if (FileRead(pInput, &pProfileDirs.value.pTiles[iTileCount].bTileY, sizeof(INT8), &uiBytesRead) != 1) {
+        if (FileRead(pInput, addressof(pProfileDirs.value.pTiles[iTileCount].bTileY), sizeof(INT8), addressof(uiBytesRead)) != 1) {
           return FALSE;
         }
       }
@@ -1026,12 +1026,12 @@ function DeleteAnimationProfiles(): void {
   // Loop profiles
   for (iProfileCount = 0; iProfileCount < gubNumAnimProfiles; iProfileCount++) {
     // Get profile pointer
-    pProfile = &(gpAnimProfiles[iProfileCount]);
+    pProfile = addressof(gpAnimProfiles[iProfileCount]);
 
     // Loop directions
     for (iDirectionCount = 0; iDirectionCount < 8; iDirectionCount++) {
       // Get prodile direction pointer
-      pProfileDir = &(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
+      pProfileDir = addressof(gpAnimProfiles[iProfileCount].Dirs[iDirectionCount]);
 
       // Free tile
       MemFree(pProfileDir.value.pTiles);

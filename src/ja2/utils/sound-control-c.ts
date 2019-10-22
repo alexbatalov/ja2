@@ -412,7 +412,7 @@ function ShutdownJA2Sound(): BOOLEAN {
 function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -420,13 +420,13 @@ function PlayJA2Sample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops:
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlay(szSoundEffects[usNum], &spParms);
+  return SoundPlay(szSoundEffects[usNum], addressof(spParms));
 }
 
 function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -434,7 +434,7 @@ function PlayJA2StreamingSample(usNum: UINT32, usRate: UINT32, ubVolume: UINT32,
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlayStreamedFile(szSoundEffects[usNum], &spParms);
+  return SoundPlayStreamedFile(szSoundEffects[usNum], addressof(spParms));
 }
 
 function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): UINT32 {
@@ -442,7 +442,7 @@ function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT3
 
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -450,7 +450,7 @@ function PlayJA2SampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT3
   spParms.uiPan = uiPan;
   spParms.uiPriority = GROUP_PLAYER;
 
-  return SoundPlay(szFileName, &spParms);
+  return SoundPlay(szFileName, addressof(spParms));
 }
 
 function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, EndsCallback: SOUND_STOP_CALLBACK): UINT32 {
@@ -458,7 +458,7 @@ function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolu
 
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -467,25 +467,25 @@ function PlayJA2StreamingSampleFromFile(szFileName: STR8, usRate: UINT32, ubVolu
   spParms.uiPriority = GROUP_PLAYER;
   spParms.EOSCallback = EndsCallback;
 
-  return SoundPlayStreamedFile(szFileName, &spParms);
+  return SoundPlayStreamedFile(szFileName, addressof(spParms));
 }
 
 function PlayJA2Ambient(usNum: UINT32, ubVolume: UINT32, ubLoops: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
   spParms.uiLoop = ubLoops;
   spParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlay(szAmbientEffects[usNum], &spParms);
+  return SoundPlay(szAmbientEffects[usNum], addressof(spParms));
 }
 
 function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT32): UINT32 {
   let rpParms: RANDOMPARMS;
 
-  memset(&rpParms, 0xff, sizeof(RANDOMPARMS));
+  memset(addressof(rpParms), 0xff, sizeof(RANDOMPARMS));
 
   rpParms.uiTimeMin = uiTimeMin;
   rpParms.uiTimeMax = uiTimeMax;
@@ -493,7 +493,7 @@ function PlayJA2AmbientRandom(usNum: UINT32, uiTimeMin: UINT32, uiTimeMax: UINT3
   rpParms.uiVolMax = CalculateSoundEffectsVolume(AmbientVols[usNum]);
   rpParms.uiPriority = GROUP_AMBIENT;
 
-  return SoundPlayRandom(szAmbientEffects[usNum], &rpParms);
+  return SoundPlayRandom(szAmbientEffects[usNum], addressof(rpParms));
 }
 
 function PlaySoldierJA2Sample(usID: UINT16, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, fCheck: BOOLEAN): UINT32 {
@@ -545,10 +545,10 @@ function SoundDir(sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
+  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -595,10 +595,10 @@ function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
+  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -623,7 +623,7 @@ function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
 }
 
 function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): void {
-  memset(&gDelayedSoundParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(gDelayedSoundParms), 0xff, sizeof(SOUNDPARMS));
 
   gDelayedSoundParms.uiSpeed = usRate;
   gDelayedSoundParms.uiVolume = CalculateSoundEffectsVolume(ubVolume);
@@ -640,7 +640,7 @@ function PlayDelayedJA2Sample(uiDelay: UINT32, usNum: UINT32, usRate: UINT32, ub
 }
 
 function DelayedSoundTimerCallback(): void {
-  SoundPlay(szSoundEffects[guiDelayedSoundNum], &gDelayedSoundParms);
+  SoundPlay(szSoundEffects[guiDelayedSoundNum], addressof(gDelayedSoundParms));
 }
 
 /////////////////////////////////////////////////////////
@@ -698,9 +698,9 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
   if ((iPositionSndIndex = GetFreePositionSnd()) == (-1))
     return -1;
 
-  memset(&gPositionSndData[iPositionSndIndex], 0, sizeof(POSITIONSND));
+  memset(addressof(gPositionSndData[iPositionSndIndex]), 0, sizeof(POSITIONSND));
 
-  pPositionSnd = &gPositionSndData[iPositionSndIndex];
+  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
 
   // Default to inactive
 
@@ -724,7 +724,7 @@ function NewPositionSnd(sGridNo: INT16, uiFlags: UINT32, uiData: UINT32, iSoundT
 function DeletePositionSnd(iPositionSndIndex: INT32): void {
   let pPositionSnd: Pointer<POSITIONSND>;
 
-  pPositionSnd = &gPositionSndData[iPositionSndIndex];
+  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
 
   if (pPositionSnd.value.fAllocated) {
     // Turn inactive first...
@@ -744,7 +744,7 @@ function DeletePositionSnd(iPositionSndIndex: INT32): void {
 function SetPositionSndGridNo(iPositionSndIndex: INT32, sGridNo: INT16): void {
   let pPositionSnd: Pointer<POSITIONSND>;
 
-  pPositionSnd = &gPositionSndData[iPositionSndIndex];
+  pPositionSnd = addressof(gPositionSndData[iPositionSndIndex]);
 
   if (pPositionSnd.value.fAllocated) {
     pPositionSnd.value.sGridNo = sGridNo;
@@ -760,7 +760,7 @@ function SetPositionSndsActive(): void {
   gfPositionSoundsActive = TRUE;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = &gPositionSndData[cnt];
+    pPositionSnd = addressof(gPositionSndData[cnt]);
 
     if (pPositionSnd.value.fAllocated) {
       if (pPositionSnd.value.fInActive) {
@@ -781,7 +781,7 @@ function SetPositionSndsInActive(): void {
   gfPositionSoundsActive = FALSE;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = &gPositionSndData[cnt];
+    pPositionSnd = addressof(gPositionSndData[cnt]);
 
     if (pPositionSnd.value.fAllocated) {
       pPositionSnd.value.fInActive = TRUE;
@@ -809,10 +809,10 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
+  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -863,10 +863,10 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // OK, get screen position of gridno.....
-  ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
+  ConvertGridNoToXY(sGridNo, addressof(sWorldX), addressof(sWorldY));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), addressof(sScreenX), addressof(sScreenY));
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -904,7 +904,7 @@ function SetPositionSndsVolumeAndPanning(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   for (cnt = 0; cnt < guiNumPositionSnds; cnt++) {
-    pPositionSnd = &gPositionSndData[cnt];
+    pPositionSnd = addressof(gPositionSndData[cnt]);
 
     if (pPositionSnd.value.fAllocated) {
       if (!pPositionSnd.value.fInActive) {

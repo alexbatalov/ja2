@@ -38,7 +38,7 @@ function BltToMouseCursorFromVObjectWithOutline(hVObject: HVOBJECT, usVideoObjec
   let sYPos: INT16;
 
   // Adjust for offsets
-  pTrav = &(hVObject.value.pETRLEObject[usVideoObjectSubIndex]);
+  pTrav = addressof(hVObject.value.pETRLEObject[usVideoObjectSubIndex]);
 
   sXPos = 0;
   sYPos = 0;
@@ -81,10 +81,10 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
   let sMaxWidth: INT16 = -1;
   let pTrav: Pointer<ETRLEObject>;
 
-  pCurData = &(gpCursorDatabase[uiCursorIndex]);
+  pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
   for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-    pCurImage = &(pCurData.value.Composites[cnt]);
+    pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].fLoaded == FALSE) {
       //
@@ -110,7 +110,7 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
         VideoObjectDescription.fCreateFlags = VOBJECT_CREATE_FROMHIMAGE;
         VideoObjectDescription.hImage = hImage;
 
-        if (!AddVideoObject(&VideoObjectDescription, &(gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex))) {
+        if (!AddVideoObject(addressof(VideoObjectDescription), addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex))) {
           return FALSE;
         }
 
@@ -129,14 +129,14 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
         DestroyImage(hImage);
 
         // Save hVObject....
-        GetVideoObject(&(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject), gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex);
+        GetVideoObject(addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject), gpCursorFileDatabase[pCurImage.value.uiFileIndex].uiIndex);
       }
 
       gpCursorFileDatabase[pCurImage.value.uiFileIndex].fLoaded = TRUE;
     }
 
     // Get ETRLE Data for this video object
-    pTrav = &(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject.value.pETRLEObject[pCurImage.value.uiSubIndex]);
+    pTrav = addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject.value.pETRLEObject[pCurImage.value.uiSubIndex]);
 
     if (!pTrav) {
       return FALSE;
@@ -181,10 +181,10 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
 
   // Adjust relative offsets
   for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-    pCurImage = &(pCurData.value.Composites[cnt]);
+    pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     // Get ETRLE Data for this video object
-    pTrav = &(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject.value.pETRLEObject[pCurImage.value.uiSubIndex]);
+    pTrav = addressof(gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject.value.pETRLEObject[pCurImage.value.uiSubIndex]);
 
     if (!pTrav) {
       return FALSE;
@@ -214,10 +214,10 @@ function UnLoadCursorData(uiCursorIndex: UINT32): void {
   let pCurImage: Pointer<CursorImage>;
   let cnt: UINT32;
 
-  pCurData = &(gpCursorDatabase[uiCursorIndex]);
+  pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
   for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-    pCurImage = &(pCurData.value.Composites[cnt]);
+    pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].fLoaded) {
       if (!(gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR)) {
@@ -287,12 +287,12 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
 
         if (uiCursorIndex == EXTERN2_CURSOR) {
           // Get ETRLE values
-          GetVideoObject(&hVObject, guiExtern2Vo);
-          pTrav = &(hVObject.value.pETRLEObject[gusExtern2VoSubIndex]);
+          GetVideoObject(addressof(hVObject), guiExtern2Vo);
+          pTrav = addressof(hVObject.value.pETRLEObject[gusExtern2VoSubIndex]);
         } else {
           // Get ETRLE values
-          GetVideoObject(&hVObject, guiExternVo);
-          pTrav = &(hVObject.value.pETRLEObject[gusExternVoSubIndex]);
+          GetVideoObject(addressof(hVObject), guiExternVo);
+          pTrav = addressof(hVObject.value.pETRLEObject[gusExternVoSubIndex]);
         }
 
         // Determine center
@@ -308,8 +308,8 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
           BltVideoObjectOutlineFromIndex(MOUSE_BUFFER, guiExtern2Vo, gusExtern2VoSubIndex, 0, 0, 0, FALSE);
 
           // Get ETRLE values
-          GetVideoObject(&hVObjectTemp, guiExternVo);
-          pTravTemp = &(hVObjectTemp.value.pETRLEObject[gusExternVoSubIndex]);
+          GetVideoObject(addressof(hVObjectTemp), guiExternVo);
+          pTravTemp = addressof(hVObjectTemp.value.pETRLEObject[gusExternVoSubIndex]);
 
           sSubX = (pTrav.value.usWidth - pTravTemp.value.usWidth - pTravTemp.value.sOffsetX) / 2;
           sSubY = (pTrav.value.usHeight - pTravTemp.value.usHeight - pTravTemp.value.sOffsetY) / 2;
@@ -327,7 +327,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
         SetMouseCursorProperties((usEffWidth / 2), (usEffHeight / 2), (usEffHeight), (usEffWidth));
         DirtyCursor();
       } else {
-        pCurData = &(gpCursorDatabase[uiCursorIndex]);
+        pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
         // First check if we are a differnet curosr...
         if (uiCursorIndex != guiOldSetCursor) {
@@ -359,7 +359,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
         // Erase old cursor
         EraseMouseCursor();
         // NOW ACCOMODATE COMPOSITE CURSORS
-        pCurData = &(gpCursorDatabase[uiCursorIndex]);
+        pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
         for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
           // Check if we are a flashing cursor!
@@ -396,7 +396,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
             }
           }
 
-          pCurImage = &(pCurData.value.Composites[cnt]);
+          pCurImage = addressof(pCurData.value.Composites[cnt]);
 
           // Adjust sub-index if cursor is animated
           if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & ANIMATED_CURSOR) {
@@ -462,10 +462,10 @@ function SetExternVOData(uiCursorIndex: UINT32, hVObject: HVOBJECT, usSubIndex: 
   let pCurImage: Pointer<CursorImage>;
   let cnt: UINT32;
 
-  pCurData = &(gpCursorDatabase[uiCursorIndex]);
+  pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
   for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-    pCurImage = &(pCurData.value.Composites[cnt]);
+    pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR) {
       // OK, set Video Object here....
@@ -488,10 +488,10 @@ function RemoveExternVOData(uiCursorIndex: UINT32): void {
   let pCurImage: Pointer<CursorImage>;
   let cnt: UINT32;
 
-  pCurData = &(gpCursorDatabase[uiCursorIndex]);
+  pCurData = addressof(gpCursorDatabase[uiCursorIndex]);
 
   for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-    pCurImage = &(pCurData.value.Composites[cnt]);
+    pCurImage = addressof(pCurData.value.Composites[cnt]);
 
     if (gpCursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & USE_EXTERN_VO_CURSOR) {
       gpCursorFileDatabase[pCurImage.value.uiFileIndex].hVObject = NULL;

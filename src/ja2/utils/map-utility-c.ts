@@ -93,25 +93,25 @@ function MapUtilScreenHandle(): UINT32 {
     fNewMap = FALSE;
 
     // Create render buffer
-    GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = 88;
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = ubBitDepth;
 
-    if (AddVideoSurface(&vs_desc, &giMiniMap) == FALSE) {
+    if (AddVideoSurface(addressof(vs_desc), addressof(giMiniMap)) == FALSE) {
       return ERROR_SCREEN;
     }
 
     // USING BRET's STUFF FOR LOOPING FILES/CREATING LIST, hence AddToFDlgList.....
-    if (GetFileFirst("MAPS\\*.dat", &FileInfo)) {
-      FileList = AddToFDlgList(FileList, &FileInfo);
+    if (GetFileFirst("MAPS\\*.dat", addressof(FileInfo))) {
+      FileList = AddToFDlgList(FileList, addressof(FileInfo));
       sFiles++;
-      while (GetFileNext(&FileInfo)) {
-        FileList = AddToFDlgList(FileList, &FileInfo);
+      while (GetFileNext(addressof(FileInfo))) {
+        FileList = AddToFDlgList(FileList, addressof(FileInfo));
         sFiles++;
       }
-      GetFileClose(&FileInfo);
+      GetFileClose(addressof(FileInfo));
     }
 
     FListNode = FileList;
@@ -126,10 +126,10 @@ function MapUtilScreenHandle(): UINT32 {
     vs_desc.usHeight = 44;
     vs_desc.ubBitDepth = 8;
 
-    if (AddVideoSurface(&vs_desc, &gi8BitMiniMap) == FALSE) {
+    if (AddVideoSurface(addressof(vs_desc), addressof(gi8BitMiniMap)) == FALSE) {
       return ERROR_SCREEN;
     }
-    GetVideoSurface(&ghvSurface, gi8BitMiniMap);
+    GetVideoSurface(addressof(ghvSurface), gi8BitMiniMap);
   }
 
   // OK, we are here, now loop through files
@@ -161,10 +161,10 @@ function MapUtilScreenHandle(): UINT32 {
 
   // Adjust if we are using a restricted map...
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    CalculateRestrictedMapCoords(NORTH, &sX1, &sY1, &sX2, &sTop, 640, 320);
-    CalculateRestrictedMapCoords(SOUTH, &sX1, &sBottom, &sX2, &sY2, 640, 320);
-    CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &sLeft, &sY2, 640, 320);
-    CalculateRestrictedMapCoords(EAST, &sRight, &sY1, &sX2, &sY2, 640, 320);
+    CalculateRestrictedMapCoords(NORTH, addressof(sX1), addressof(sY1), addressof(sX2), addressof(sTop), 640, 320);
+    CalculateRestrictedMapCoords(SOUTH, addressof(sX1), addressof(sBottom), addressof(sX2), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(WEST, addressof(sX1), addressof(sY1), addressof(sLeft), addressof(sY2), 640, 320);
+    CalculateRestrictedMapCoords(EAST, addressof(sRight), addressof(sY1), addressof(sX2), addressof(sY2), 640, 320);
 
     gdXStep = (sRight - sLeft) / 88;
     gdYStep = (sBottom - sTop) / 44;
@@ -178,8 +178,8 @@ function MapUtilScreenHandle(): UINT32 {
   dX = dStartX;
   dY = dStartY;
 
-  pDestBuf = LockVideoSurface(giMiniMap, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(giMiniMap, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
 
   for (iX = 0; iX < 88; iX++) {
     dY = dStartY;
@@ -244,8 +244,8 @@ function MapUtilScreenHandle(): UINT32 {
   BltVideoSurface(FRAME_BUFFER, giMiniMap, 0, 20, 360, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
   // QUantize!
-  pDataPtr = LockVideoSurface(gi8BitMiniMap, &uiSrcPitchBYTES);
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDataPtr = LockVideoSurface(gi8BitMiniMap, addressof(uiSrcPitchBYTES));
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   QuantizeImage(pDataPtr, p24BitDest, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
   SetVideoSurfacePalette(ghvSurface, pPalette);
   // Blit!
@@ -292,7 +292,7 @@ function MapUtilScreenHandle(): UINT32 {
 
   InvalidateScreen();
 
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == ESC)) {
       // Exit the program
       gfProgramIsRunning = FALSE;

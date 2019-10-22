@@ -45,16 +45,16 @@ function EnterFloristCards(): BOOLEAN {
   // load the Flower Account Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\CardBlank.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiCardBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCardBackground)));
 
   ubCount = 0;
   usPosY = FLORIST_CARD_FIRST_POS_Y;
   for (j = 0; j < 3; j++) {
     usPosX = FLORIST_CARD_FIRST_POS_X;
     for (i = 0; i < 3; i++) {
-      MSYS_DefineRegion(&gSelectedFloristCardsRegion[ubCount], usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
-      MSYS_AddRegion(&gSelectedFloristCardsRegion[ubCount]);
-      MSYS_SetRegionUserData(&gSelectedFloristCardsRegion[ubCount], 0, ubCount);
+      MSYS_DefineRegion(addressof(gSelectedFloristCardsRegion[ubCount]), usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedFloristCardsRegion[ubCount]));
+      MSYS_SetRegionUserData(addressof(gSelectedFloristCardsRegion[ubCount]), 0, ubCount);
       ubCount++;
       usPosX += FLORIST_CARD_FIRST_OFFSET_X;
     }
@@ -81,7 +81,7 @@ function ExitFloristCards(): void {
 
   // card gallery
   for (i = 0; i < 9; i++)
-    MSYS_RemoveRegion(&gSelectedFloristCardsRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedFloristCardsRegion[i]));
 
   UnloadButtonImage(guiFlowerCardsButtonImage);
   RemoveButton(guiFlowerCardsBackButton);
@@ -105,7 +105,7 @@ function RenderFloristCards(): void {
 
   DrawTextToScreen(sFloristCards[FLORIST_CARDS_CLICK_SELECTION], FLORIST_CARD_TITLE_SENTENCE_X, FLORIST_CARD_TITLE_SENTENCE_Y, FLORIST_CARD_TITLE_SENTENCE_WIDTH, FONT10ARIAL, FLORIST_CARDS_SENTENCE_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
-  GetVideoObject(&hPixHandle, guiCardBackground);
+  GetVideoObject(addressof(hPixHandle), guiCardBackground);
   usPosY = FLORIST_CARD_FIRST_POS_Y;
   ubCount = 0;
   for (j = 0; j < 3; j++) {

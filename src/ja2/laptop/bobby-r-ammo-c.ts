@@ -10,12 +10,12 @@ function EnterBobbyRAmmo(): BOOLEAN {
   // load the background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ammobackground.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAmmoBackground)));
 
   // load the gunsgrid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ammogrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAmmoGrid));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAmmoGrid)));
 
   InitBobbyBrTitle();
 
@@ -54,7 +54,7 @@ function RenderBobbyRAmmo(): void {
   DisplayBobbyRBrTitle();
 
   // GunForm
-  GetVideoObject(&hPixHandle, guiAmmoGrid);
+  GetVideoObject(addressof(hPixHandle), guiAmmoGrid);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_GRIDLOC_X, BOBBYR_GRIDLOC_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   DisplayItemInfo(IC_AMMO);

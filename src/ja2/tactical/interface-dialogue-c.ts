@@ -222,11 +222,11 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
   // Get XY values
   {
     // Get XY locations for gridno.
-    ConvertGridNoToXY(sGridNo, &sXMapPos, &sYMapPos);
+    ConvertGridNoToXY(sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
     // Get screen XY pos from map XY
     // Be carefull to convert to cell cords
-    CellXYToScreenXY(((sXMapPos * CELL_X_SIZE)), ((sYMapPos * CELL_Y_SIZE)), &sScreenX, &sScreenY);
+    CellXYToScreenXY(((sXMapPos * CELL_X_SIZE)), ((sYMapPos * CELL_Y_SIZE)), addressof(sScreenX), addressof(sScreenY));
 
     // First get mouse xy screen location
     sX = sScreenX;
@@ -264,12 +264,12 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "INTERFACE\\talkbox1.sti");
   // Load
-  if (AddVideoObject(&VObjectDesc, &(gTalkPanel.uiPanelVO)) == FALSE) {
+  if (AddVideoObject(addressof(VObjectDesc), addressof(gTalkPanel.uiPanelVO)) == FALSE) {
     return 0;
   }
 
   // Get ETRLE Properties
-  GetVideoObjectETRLESubregionProperties(gTalkPanel.uiPanelVO, 0, &usWidth, &usHeight);
+  GetVideoObjectETRLESubregionProperties(gTalkPanel.uiPanelVO, 0, addressof(usWidth), addressof(usHeight));
 
   // Set values into structure
   gTalkPanel.usWidth = usWidth;
@@ -323,33 +323,33 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   gTalkPanel.iFaceIndex = iFaceIndex;
 
   // Init face to auto..., create video overlay....
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Create mouse regions...
   sX = gTalkPanel.sX + TALK_PANEL_REGION_STARTX;
   sY = gTalkPanel.sY + TALK_PANEL_REGION_STARTY;
 
   // Define main region
-  MSYS_DefineRegion(&(gTalkPanel.ScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gTalkPanel.ScreenRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Add region
-  MSYS_AddRegion(&(gTalkPanel.ScreenRegion));
+  MSYS_AddRegion(addressof(gTalkPanel.ScreenRegion));
 
   // Define main region
-  MSYS_DefineRegion(&(gTalkPanel.BackRegion), (gTalkPanel.sX), (gTalkPanel.sY), (gTalkPanel.sX + gTalkPanel.usWidth), (gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
+  MSYS_DefineRegion(addressof(gTalkPanel.BackRegion), (gTalkPanel.sX), (gTalkPanel.sY), (gTalkPanel.sX + gTalkPanel.usWidth), (gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
   // Add region
-  MSYS_AddRegion(&(gTalkPanel.BackRegion));
+  MSYS_AddRegion(addressof(gTalkPanel.BackRegion));
 
   // Define name region
-  MSYS_DefineRegion(&(gTalkPanel.NameRegion), (gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), (gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
+  MSYS_DefineRegion(addressof(gTalkPanel.NameRegion), (gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), (gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
   // Add region
-  MSYS_AddRegion(&(gTalkPanel.NameRegion));
+  MSYS_AddRegion(addressof(gTalkPanel.NameRegion));
 
   for (cnt = 0; cnt < 6; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(&(gTalkPanel.Regions[cnt]), (sX), (sY), (sX + TALK_PANEL_REGION_WIDTH), (sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
+    MSYS_DefineRegion(addressof(gTalkPanel.Regions[cnt]), (sX), (sY), (sX + TALK_PANEL_REGION_WIDTH), (sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
     // Add region
-    MSYS_AddRegion(&(gTalkPanel.Regions[cnt]));
-    MSYS_SetRegionUserData(&(gTalkPanel.Regions[cnt]), 0, cnt);
+    MSYS_AddRegion(addressof(gTalkPanel.Regions[cnt]));
+    MSYS_SetRegionUserData(addressof(gTalkPanel.Regions[cnt]), 0, cnt);
 
     sY += TALK_PANEL_REGION_SPACEY;
   }
@@ -361,7 +361,7 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   vs_desc.usWidth = pFace.value.usFaceWidth;
   vs_desc.usHeight = pFace.value.usFaceHeight;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &(gTalkPanel.uiSaveBuffer)));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gTalkPanel.uiSaveBuffer)));
 
   // Set face to auto
   SetAutoFaceActive(gTalkPanel.uiSaveBuffer, FACE_AUTO_RESTORE_BUFFER, iFaceIndex, 0, 0);
@@ -412,22 +412,22 @@ function DeleteTalkingMenu(): void {
   ShutupaYoFace(gTalkPanel.iFaceIndex);
 
   // Delete screen region
-  MSYS_RemoveRegion(&(gTalkPanel.ScreenRegion));
+  MSYS_RemoveRegion(addressof(gTalkPanel.ScreenRegion));
 
   // Delete main region
-  MSYS_RemoveRegion(&(gTalkPanel.BackRegion));
+  MSYS_RemoveRegion(addressof(gTalkPanel.BackRegion));
 
   // Delete name region
-  MSYS_RemoveRegion(&(gTalkPanel.NameRegion));
+  MSYS_RemoveRegion(addressof(gTalkPanel.NameRegion));
 
   // Delete mouse regions
   for (cnt = 0; cnt < 6; cnt++) {
-    MSYS_RemoveRegion(&(gTalkPanel.Regions[cnt]));
+    MSYS_RemoveRegion(addressof(gTalkPanel.Regions[cnt]));
   }
 
   if (gTalkPanel.fTextRegionOn) {
     // Remove
-    MSYS_RemoveRegion(&(gTalkPanel.TextRegion));
+    MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
     gTalkPanel.fTextRegionOn = FALSE;
   }
 
@@ -526,7 +526,7 @@ function RenderTalkingMenu(): void {
     return;
   }
 
-  pFace = &gFacesData[gTalkPanel.iFaceIndex];
+  pFace = addressof(gFacesData[gTalkPanel.iFaceIndex]);
 
   if (gTalkPanel.fDirtyLevel == DIRTYLEVEL2) {
     SetFont(MILITARYFONT1);
@@ -542,14 +542,14 @@ function RenderTalkingMenu(): void {
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(33);
     }
-    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
+    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
     mprintf(sFontX, sFontY, "%s", gMercProfiles[ubCharacterNum].zNickname);
 
     // Set font settings back
     SetFontShadow(DEFAULT_SHADOW);
 
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    pSrcBuf = LockVideoSurface(gTalkPanel.uiSaveBuffer, &uiSrcPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    pSrcBuf = LockVideoSurface(gTalkPanel.uiSaveBuffer, addressof(uiSrcPitchBYTES));
 
     Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (gTalkPanel.sX + TALK_PANEL_FACE_X), (gTalkPanel.sY + TALK_PANEL_FACE_Y), 0, 0, pFace.value.usFaceWidth, pFace.value.usFaceHeight);
 
@@ -564,7 +564,7 @@ function RenderTalkingMenu(): void {
 
       // Disable mouse regions....
       for (cnt = 0; cnt < 6; cnt++) {
-        MSYS_DisableRegion(&(gTalkPanel.Regions[cnt]));
+        MSYS_DisableRegion(addressof(gTalkPanel.Regions[cnt]));
       }
 
       DisableButton(gTalkPanel.uiCancelButton);
@@ -573,7 +573,7 @@ function RenderTalkingMenu(): void {
     } else {
       // Enable mouse regions....
       for (cnt = 0; cnt < 6; cnt++) {
-        MSYS_EnableRegion(&(gTalkPanel.Regions[cnt]));
+        MSYS_EnableRegion(addressof(gTalkPanel.Regions[cnt]));
       }
 
       // Restore selection....
@@ -593,7 +593,7 @@ function RenderTalkingMenu(): void {
 
       SET_USE_WINFONTS(TRUE);
       SET_WINFONT(giSubTitleWinFont);
-      iInterfaceDialogueBox = PrepareMercPopupBox(iInterfaceDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gTalkPanel.zQuoteStr, TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, &usTextBoxWidth, &usTextBoxHeight);
+      iInterfaceDialogueBox = PrepareMercPopupBox(iInterfaceDialogueBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gTalkPanel.zQuoteStr, TALK_PANEL_DEFAULT_SUBTITLE_WIDTH, 0, 0, 0, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
       SET_USE_WINFONTS(FALSE);
 
       gTalkPanel.fSetupSubTitles = FALSE;
@@ -604,13 +604,13 @@ function RenderTalkingMenu(): void {
       // Define main region
       if (gTalkPanel.fTextRegionOn) {
         // Remove
-        MSYS_RemoveRegion(&(gTalkPanel.TextRegion));
+        MSYS_RemoveRegion(addressof(gTalkPanel.TextRegion));
         gTalkPanel.fTextRegionOn = FALSE;
       }
 
-      MSYS_DefineRegion(&(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
+      MSYS_DefineRegion(addressof(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
       // Add region
-      MSYS_AddRegion(&(gTalkPanel.TextRegion));
+      MSYS_AddRegion(addressof(gTalkPanel.TextRegion));
 
       // Set to true
       gTalkPanel.fTextRegionOn = TRUE;
@@ -646,7 +646,7 @@ function RenderTalkingMenu(): void {
         {
           switch (cnt) {
             case 0:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTalkMenuStrings[cnt]);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
               mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
               break;
             case 4:
@@ -661,11 +661,11 @@ function RenderTalkingMenu(): void {
               } else
                 wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTempString);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTempString);
               mprintf(sFontX, sFontY, "%s", zTempString);
               break;
             default:
-              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
+              VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s (%d)", zTalkMenuStrings[cnt], ubTalkMenuApproachIDs[cnt]);
               mprintf(sFontX, sFontY, "%s (%d)", zTalkMenuStrings[cnt], CalcDesireToTalk(ubCharacterNum, gubSrcSoldierProfile, ubTalkMenuApproachIDs[cnt]));
               break;
           }
@@ -682,10 +682,10 @@ function RenderTalkingMenu(): void {
             } else
               wcscpy(zTempString, zTalkMenuStrings[cnt]);
 
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTempString);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTempString);
             mprintf(sFontX, sFontY, "%s", zTempString);
           } else {
-            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, "%s", zTalkMenuStrings[cnt]);
+            VarFindFontCenterCoordinates(sX, sY, TALK_PANEL_MENUTEXT_WIDTH, TALK_PANEL_MENUTEXT_HEIGHT, MILITARYFONT1, addressof(sFontX), addressof(sFontY), "%s", zTalkMenuStrings[cnt]);
             mprintf(sFontX, sFontY, "%s", zTalkMenuStrings[cnt]);
           }
         }
@@ -870,7 +870,7 @@ function HandleTalkingMenuEscape(fCanDelete: BOOLEAN, fFromEscKey: BOOLEAN): BOO
     return FALSE;
   }
 
-  pFace = &gFacesData[gTalkPanel.iFaceIndex];
+  pFace = addressof(gFacesData[gTalkPanel.iFaceIndex]);
 
   // If we are in the process of speaking, stop this quote an move on...
   // If we have been 'handled' by an outside source, check what was our talking value at the time
@@ -917,7 +917,7 @@ function HandleTalkingMenuBackspace(): void {
     return;
   }
 
-  pFace = &gFacesData[gTalkPanel.iFaceIndex];
+  pFace = addressof(gFacesData[gTalkPanel.iFaceIndex]);
 
   // If we are in the process of speaking, stop this quote an move on...
   // If we have been 'handled' by an outside source, check what was our talking value at the time
@@ -1117,7 +1117,7 @@ function HandleNPCItemGiven(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos:
 
     pNPC = FindSoldierByProfileID(ubNPC, FALSE);
     if (pNPC) {
-      AddItemToPool(pNPC.value.sGridNo, &(pNPC.value.inv[bInvPos]), TRUE, 0, 0, 0);
+      AddItemToPool(pNPC.value.sGridNo, addressof(pNPC.value.inv[bInvPos]), TRUE, 0, 0, 0);
       TriggerNPCWithGivenApproach(ubNPC, APPROACH_DONE_GIVING_ITEM, TRUE);
     }
   } else {
@@ -1419,7 +1419,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         ExitGrid.usGridNo = 12722;
 
         ApplyMapChangesToMapTempFile(TRUE);
-        AddExitGridToWorld(7887, &ExitGrid);
+        AddExitGridToWorld(7887, addressof(ExitGrid));
         ApplyMapChangesToMapTempFile(FALSE);
 
         // For one, loop through our current squad and move them over
@@ -1495,7 +1495,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           AssertMsg(bInvPos != NO_SLOT, "Interface Dialogue.C:  Gift item does not exist in NPC.");
 
-          SoldierGiveItem(pSoldier, pSoldier2, &(pSoldier.value.inv[bInvPos]), bInvPos);
+          SoldierGiveItem(pSoldier, pSoldier2, addressof(pSoldier.value.inv[bInvPos]), bInvPos);
         }
         break;
 
@@ -1545,7 +1545,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
           usGun = pSoldier.value.inv[HANDPOS].usItem;
 
           ReLoadSoldierAnimationDueToHandItemChange(pSoldier, pSoldier.value.inv[HANDPOS].usItem, NOTHING);
-          AutoPlaceObject(pSoldier, &(pSoldier.value.inv[HANDPOS]), FALSE);
+          AutoPlaceObject(pSoldier, addressof(pSoldier.value.inv[HANDPOS]), FALSE);
 
           bNewSlot = FindObj(pSoldier, usGun);
           if (bNewSlot != NO_SLOT && gMercProfiles[ubTargetNPC].inv[bNewSlot] == NOTHING) {
@@ -1800,7 +1800,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
         bItemIn = FindAIUsableObjClass(pSoldier, IC_GUN);
         if (bItemIn != NO_SLOT && bItemIn != HANDPOS) {
-          SwapObjs(&(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[bItemIn]));
+          SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bItemIn]));
           sGridNo = pSoldier.value.sGridNo + DirectionInc(pSoldier.value.bDirection);
           SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), FALSE);
         }
@@ -1925,9 +1925,9 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
           if (pSoldier) {
-            CreateItem(MONEY, 1, &Object);
+            CreateItem(MONEY, 1, addressof(Object));
             Object.uiMoneyAmount = 10000;
-            AddItemToPoolAndGetIndex(sGridNo, &Object, -1, pSoldier.value.bLevel, 0, 0, &iWorldItem);
+            AddItemToPoolAndGetIndex(sGridNo, addressof(Object), -1, pSoldier.value.bLevel, 0, 0, addressof(iWorldItem));
 
             // shouldn't have any current action but make sure everything
             // is clear... and set pending action so the guy won't move
@@ -2224,8 +2224,8 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (pSoldier) {
           bItemIn = FindObj(pSoldier, DEED);
           if (bItemIn != NO_SLOT) {
-            AddItemToPool(12541, &(pSoldier.value.inv[bItemIn]), -1, 0, 0, 0);
-            DeleteObj(&(pSoldier.value.inv[bItemIn]));
+            AddItemToPool(12541, addressof(pSoldier.value.inv[bItemIn]), -1, 0, 0, 0);
+            DeleteObj(addressof(pSoldier.value.inv[bItemIn]));
             RemoveObjectFromSoldierProfile(ubTargetNPC, DEED);
           }
         }
@@ -2506,7 +2506,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           bSlot = FindObjClass(pSoldier, IC_GUN);
           if (bSlot != NO_SLOT) {
-            AutoPlaceObject(pSoldier2, &(pSoldier.value.inv[bSlot]), FALSE);
+            AutoPlaceObject(pSoldier2, addressof(pSoldier.value.inv[bSlot]), FALSE);
           }
         }
         // Allow robot to be controlled by remote!
@@ -2561,14 +2561,14 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             // have to separate out money from Darren's stash equal to the amount of the bet
             // times 2 (returning the player's money, after all!)
             if (bMoneySlot != NO_SLOT && bEmptySlot != NO_SLOT) {
-              CreateMoney(gMercProfiles[ubTargetNPC].iBalance * 2, &(pSoldier.value.inv[bEmptySlot]));
+              CreateMoney(gMercProfiles[ubTargetNPC].iBalance * 2, addressof(pSoldier.value.inv[bEmptySlot]));
               pSoldier.value.inv[bMoneySlot].uiMoneyAmount -= gMercProfiles[ubTargetNPC].iBalance * 2;
               if (bMoneySlot < bEmptySlot) {
                 // move main stash to later in inventory!
-                SwapObjs(&(pSoldier.value.inv[bEmptySlot]), &(pSoldier.value.inv[bMoneySlot]));
-                SoldierGiveItem(pSoldier, pSoldier2, &(pSoldier.value.inv[bMoneySlot]), bMoneySlot);
+                SwapObjs(addressof(pSoldier.value.inv[bEmptySlot]), addressof(pSoldier.value.inv[bMoneySlot]));
+                SoldierGiveItem(pSoldier, pSoldier2, addressof(pSoldier.value.inv[bMoneySlot]), bMoneySlot);
               } else {
-                SoldierGiveItem(pSoldier, pSoldier2, &(pSoldier.value.inv[bEmptySlot]), bEmptySlot);
+                SoldierGiveItem(pSoldier, pSoldier2, addressof(pSoldier.value.inv[bEmptySlot]), bEmptySlot);
               }
             }
           }
@@ -2581,7 +2581,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (pSoldier) {
           let ubRoom: UINT8;
 
-          if (InARoom(pSoldier.value.sGridNo, &ubRoom) && (ubRoom == 1 || ubRoom == 2 || ubRoom == 3)) {
+          if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && (ubRoom == 1 || ubRoom == 2 || ubRoom == 3)) {
             // Kingpin is in the club
             TriggerNPCRecord(DARREN, 31);
             break;
@@ -2726,7 +2726,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             pSoldier.value.bAimShotLocation = AIM_SHOT_HEAD;
 
             // Add gun to inventory.....
-            CreateItem((DESERTEAGLE), 100, &(pSoldier.value.inv[HANDPOS]));
+            CreateItem((DESERTEAGLE), 100, addressof(pSoldier.value.inv[HANDPOS]));
 
             // Make shoot
             pSoldier.value.bNextAction = AI_ACTION_FIRE_GUN;
@@ -3460,7 +3460,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (gpSrcSoldier) {
           let ubRoom: UINT8;
 
-          if (InARoom(gpSrcSoldier.value.sGridNo, &ubRoom) && (ubRoom == 49)) {
+          if (InARoom(gpSrcSoldier.value.sGridNo, addressof(ubRoom)) && (ubRoom == 49)) {
             TriggerNPCRecord(HANS, 18);
           } else {
             TriggerNPCRecord(HANS, 14);
@@ -3891,8 +3891,8 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
         if (pSoldier) {
           let Key: OBJECTTYPE;
 
-          CreateKeyObject(&Key, 1, 38);
-          AutoPlaceObject(pSoldier, &Key, FALSE);
+          CreateKeyObject(addressof(Key), 1, 38);
+          AutoPlaceObject(pSoldier, addressof(Key), FALSE);
         }
         TriggerNPCRecord(DARYL, 11);
       } else {
@@ -4023,7 +4023,7 @@ function NPCOpenThing(pSoldier: Pointer<SOLDIERTYPE>, fDoor: BOOLEAN): BOOLEAN {
     pDoor.value.fLocked = FALSE;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, &ubDirection, NULL, FALSE, TRUE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sStructGridNo, addressof(ubDirection), NULL, FALSE, TRUE);
   if (sActionGridNo == -1) {
     return FALSE;
   }

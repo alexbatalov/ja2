@@ -117,7 +117,7 @@ let gubEncryptionArray3: UINT8[][] /* [BASE_NUMBER_OF_ROTATION_ARRAYS * 3][NEW_R
 function InitStrategicRowA(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_A1];
+  pSector = addressof(SectorInfo[SEC_A1]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -125,7 +125,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_A2];
+  pSector = addressof(SectorInfo[SEC_A2]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -133,7 +133,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_A3];
+  pSector = addressof(SectorInfo[SEC_A3]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -141,7 +141,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_A4];
+  pSector = addressof(SectorInfo[SEC_A4]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -149,7 +149,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_A5];
+  pSector = addressof(SectorInfo[SEC_A5]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -157,7 +157,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_A6];
+  pSector = addressof(SectorInfo[SEC_A6]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -165,7 +165,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_A7];
+  pSector = addressof(SectorInfo[SEC_A7]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = HILLS;
@@ -173,7 +173,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_A8];
+  pSector = addressof(SectorInfo[SEC_A8]);
   pSector.value.ubTravelRating = 14;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -181,7 +181,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_A9];
+  pSector = addressof(SectorInfo[SEC_A9]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -189,7 +189,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_A10];
+  pSector = addressof(SectorInfo[SEC_A10]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -197,7 +197,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_A11];
+  pSector = addressof(SectorInfo[SEC_A11]);
   pSector.value.ubTravelRating = 18;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -205,7 +205,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_A12];
+  pSector = addressof(SectorInfo[SEC_A12]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -213,7 +213,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_A13];
+  pSector = addressof(SectorInfo[SEC_A13]);
   pSector.value.ubTravelRating = 14;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -221,7 +221,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_A14];
+  pSector = addressof(SectorInfo[SEC_A14]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -229,7 +229,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_A15];
+  pSector = addressof(SectorInfo[SEC_A15]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -237,7 +237,7 @@ function InitStrategicRowA(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_A16];
+  pSector = addressof(SectorInfo[SEC_A16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -249,7 +249,7 @@ function InitStrategicRowA(): void {
 function InitStrategicRowB(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_B1];
+  pSector = addressof(SectorInfo[SEC_B1]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -257,7 +257,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_B2];
+  pSector = addressof(SectorInfo[SEC_B2]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -265,7 +265,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_B3];
+  pSector = addressof(SectorInfo[SEC_B3]);
   pSector.value.ubTravelRating = 6;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -273,7 +273,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_B4];
+  pSector = addressof(SectorInfo[SEC_B4]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -281,7 +281,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_B5];
+  pSector = addressof(SectorInfo[SEC_B5]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -289,7 +289,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_B6];
+  pSector = addressof(SectorInfo[SEC_B6]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -297,7 +297,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_B7];
+  pSector = addressof(SectorInfo[SEC_B7]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -305,7 +305,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_B8];
+  pSector = addressof(SectorInfo[SEC_B8]);
   pSector.value.ubTravelRating = 20;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -313,7 +313,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_B9];
+  pSector = addressof(SectorInfo[SEC_B9]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -321,7 +321,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_B10];
+  pSector = addressof(SectorInfo[SEC_B10]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -329,7 +329,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_B11];
+  pSector = addressof(SectorInfo[SEC_B11]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -337,7 +337,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_B12];
+  pSector = addressof(SectorInfo[SEC_B12]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -345,7 +345,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND_ROAD;
 
-  pSector = &SectorInfo[SEC_B13];
+  pSector = addressof(SectorInfo[SEC_B13]);
   pSector.value.ubTravelRating = 85;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -353,7 +353,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_B14];
+  pSector = addressof(SectorInfo[SEC_B14]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -361,7 +361,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = WATER;
 
-  pSector = &SectorInfo[SEC_B15];
+  pSector = addressof(SectorInfo[SEC_B15]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -369,7 +369,7 @@ function InitStrategicRowB(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_B16];
+  pSector = addressof(SectorInfo[SEC_B16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -381,7 +381,7 @@ function InitStrategicRowB(): void {
 function InitStrategicRowC(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_C1];
+  pSector = addressof(SectorInfo[SEC_C1]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -389,7 +389,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_C2];
+  pSector = addressof(SectorInfo[SEC_C2]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -397,7 +397,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS_ROAD;
 
-  pSector = &SectorInfo[SEC_C3];
+  pSector = addressof(SectorInfo[SEC_C3]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -405,7 +405,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_C4];
+  pSector = addressof(SectorInfo[SEC_C4]);
   pSector.value.ubTravelRating = 20;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -413,7 +413,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_C5];
+  pSector = addressof(SectorInfo[SEC_C5]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -421,7 +421,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_C6];
+  pSector = addressof(SectorInfo[SEC_C6]);
   pSector.value.ubTravelRating = 75;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -429,7 +429,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_C7];
+  pSector = addressof(SectorInfo[SEC_C7]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -437,7 +437,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_C8];
+  pSector = addressof(SectorInfo[SEC_C8]);
   pSector.value.ubTravelRating = 48;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -445,7 +445,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_C9];
+  pSector = addressof(SectorInfo[SEC_C9]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -453,7 +453,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_C10];
+  pSector = addressof(SectorInfo[SEC_C10]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -461,7 +461,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_C11];
+  pSector = addressof(SectorInfo[SEC_C11]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -469,7 +469,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_C12];
+  pSector = addressof(SectorInfo[SEC_C12]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -477,7 +477,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_C13];
+  pSector = addressof(SectorInfo[SEC_C13]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -485,7 +485,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_C14];
+  pSector = addressof(SectorInfo[SEC_C14]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -493,7 +493,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = WATER;
 
-  pSector = &SectorInfo[SEC_C15];
+  pSector = addressof(SectorInfo[SEC_C15]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -501,7 +501,7 @@ function InitStrategicRowC(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_C16];
+  pSector = addressof(SectorInfo[SEC_C16]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -513,7 +513,7 @@ function InitStrategicRowC(): void {
 function InitStrategicRowD(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_D1];
+  pSector = addressof(SectorInfo[SEC_D1]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -521,7 +521,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_D2];
+  pSector = addressof(SectorInfo[SEC_D2]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -529,7 +529,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN; // TROPICS_SAMSITE;
 
-  pSector = &SectorInfo[SEC_D3];
+  pSector = addressof(SectorInfo[SEC_D3]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -537,7 +537,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_D4];
+  pSector = addressof(SectorInfo[SEC_D4]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -545,7 +545,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_D5];
+  pSector = addressof(SectorInfo[SEC_D5]);
   pSector.value.ubTravelRating = 49;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -553,7 +553,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_D6];
+  pSector = addressof(SectorInfo[SEC_D6]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -561,7 +561,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_D7];
+  pSector = addressof(SectorInfo[SEC_D7]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -569,7 +569,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE_ROAD;
 
-  pSector = &SectorInfo[SEC_D8];
+  pSector = addressof(SectorInfo[SEC_D8]);
   pSector.value.ubTravelRating = 16;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -577,7 +577,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_D9];
+  pSector = addressof(SectorInfo[SEC_D9]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -585,7 +585,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_D10];
+  pSector = addressof(SectorInfo[SEC_D10]);
   pSector.value.ubTravelRating = 11;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -593,7 +593,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_D11];
+  pSector = addressof(SectorInfo[SEC_D11]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -601,7 +601,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_D12];
+  pSector = addressof(SectorInfo[SEC_D12]);
   pSector.value.ubTravelRating = 11;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -609,7 +609,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_D13];
+  pSector = addressof(SectorInfo[SEC_D13]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -617,7 +617,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_D14];
+  pSector = addressof(SectorInfo[SEC_D14]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -625,7 +625,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = WATER;
 
-  pSector = &SectorInfo[SEC_D15];
+  pSector = addressof(SectorInfo[SEC_D15]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -633,7 +633,7 @@ function InitStrategicRowD(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_D16];
+  pSector = addressof(SectorInfo[SEC_D16]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -645,7 +645,7 @@ function InitStrategicRowD(): void {
 function InitStrategicRowE(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_E1];
+  pSector = addressof(SectorInfo[SEC_E1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -653,7 +653,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_E2];
+  pSector = addressof(SectorInfo[SEC_E2]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -661,7 +661,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_E3];
+  pSector = addressof(SectorInfo[SEC_E3]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -669,7 +669,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_E4];
+  pSector = addressof(SectorInfo[SEC_E4]);
   pSector.value.ubTravelRating = 11;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = HILLS;
@@ -677,7 +677,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_E5];
+  pSector = addressof(SectorInfo[SEC_E5]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -685,7 +685,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_E6];
+  pSector = addressof(SectorInfo[SEC_E6]);
   pSector.value.ubTravelRating = 11;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -693,7 +693,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_E7];
+  pSector = addressof(SectorInfo[SEC_E7]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -701,7 +701,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND_ROAD;
 
-  pSector = &SectorInfo[SEC_E8];
+  pSector = addressof(SectorInfo[SEC_E8]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -709,7 +709,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_E9];
+  pSector = addressof(SectorInfo[SEC_E9]);
   pSector.value.ubTravelRating = 56;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -717,7 +717,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND_ROAD;
 
-  pSector = &SectorInfo[SEC_E10];
+  pSector = addressof(SectorInfo[SEC_E10]);
   pSector.value.ubTravelRating = 11;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -725,7 +725,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_E11];
+  pSector = addressof(SectorInfo[SEC_E11]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -733,7 +733,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_E12];
+  pSector = addressof(SectorInfo[SEC_E12]);
   pSector.value.ubTravelRating = 35;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -741,7 +741,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_E13];
+  pSector = addressof(SectorInfo[SEC_E13]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -749,7 +749,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = WATER;
 
-  pSector = &SectorInfo[SEC_E14];
+  pSector = addressof(SectorInfo[SEC_E14]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -757,7 +757,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_E15];
+  pSector = addressof(SectorInfo[SEC_E15]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -765,7 +765,7 @@ function InitStrategicRowE(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE_ROAD;
 
-  pSector = &SectorInfo[SEC_E16];
+  pSector = addressof(SectorInfo[SEC_E16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -777,7 +777,7 @@ function InitStrategicRowE(): void {
 function InitStrategicRowF(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_F1];
+  pSector = addressof(SectorInfo[SEC_F1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -785,7 +785,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_F2];
+  pSector = addressof(SectorInfo[SEC_F2]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = NS_RIVER;
@@ -793,7 +793,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL;
 
-  pSector = &SectorInfo[SEC_F3];
+  pSector = addressof(SectorInfo[SEC_F3]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -801,7 +801,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = NS_RIVER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_F4];
+  pSector = addressof(SectorInfo[SEC_F4]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = HILLS;
@@ -809,7 +809,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_F5];
+  pSector = addressof(SectorInfo[SEC_F5]);
   pSector.value.ubTravelRating = 6;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = HILLS;
@@ -817,7 +817,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_F6];
+  pSector = addressof(SectorInfo[SEC_F6]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -825,7 +825,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_F7];
+  pSector = addressof(SectorInfo[SEC_F7]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -833,7 +833,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS_ROAD;
 
-  pSector = &SectorInfo[SEC_F8];
+  pSector = addressof(SectorInfo[SEC_F8]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -841,7 +841,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_F9];
+  pSector = addressof(SectorInfo[SEC_F9]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -849,7 +849,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_F10];
+  pSector = addressof(SectorInfo[SEC_F10]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -857,7 +857,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_F11];
+  pSector = addressof(SectorInfo[SEC_F11]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -865,7 +865,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_F12];
+  pSector = addressof(SectorInfo[SEC_F12]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -873,7 +873,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_F13];
+  pSector = addressof(SectorInfo[SEC_F13]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -881,7 +881,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_F14];
+  pSector = addressof(SectorInfo[SEC_F14]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -889,7 +889,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_F15];
+  pSector = addressof(SectorInfo[SEC_F15]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -897,7 +897,7 @@ function InitStrategicRowF(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE_ROAD;
 
-  pSector = &SectorInfo[SEC_F16];
+  pSector = addressof(SectorInfo[SEC_F16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -909,7 +909,7 @@ function InitStrategicRowF(): void {
 function InitStrategicRowG(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_G1];
+  pSector = addressof(SectorInfo[SEC_G1]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -917,7 +917,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_G2];
+  pSector = addressof(SectorInfo[SEC_G2]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -925,7 +925,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_G3];
+  pSector = addressof(SectorInfo[SEC_G3]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -933,7 +933,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_G4];
+  pSector = addressof(SectorInfo[SEC_G4]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -941,7 +941,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS_ROAD;
 
-  pSector = &SectorInfo[SEC_G5];
+  pSector = addressof(SectorInfo[SEC_G5]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -949,7 +949,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS_ROAD;
 
-  pSector = &SectorInfo[SEC_G6];
+  pSector = addressof(SectorInfo[SEC_G6]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -957,7 +957,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS_ROAD;
 
-  pSector = &SectorInfo[SEC_G7];
+  pSector = addressof(SectorInfo[SEC_G7]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -965,7 +965,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND_ROAD;
 
-  pSector = &SectorInfo[SEC_G8];
+  pSector = addressof(SectorInfo[SEC_G8]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -973,7 +973,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_G9];
+  pSector = addressof(SectorInfo[SEC_G9]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -981,7 +981,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_G10];
+  pSector = addressof(SectorInfo[SEC_G10]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -989,7 +989,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND_ROAD;
 
-  pSector = &SectorInfo[SEC_G11];
+  pSector = addressof(SectorInfo[SEC_G11]);
   pSector.value.ubTravelRating = 25;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -997,7 +997,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND_ROAD;
 
-  pSector = &SectorInfo[SEC_G12];
+  pSector = addressof(SectorInfo[SEC_G12]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1005,7 +1005,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_G13];
+  pSector = addressof(SectorInfo[SEC_G13]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1013,7 +1013,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_G14];
+  pSector = addressof(SectorInfo[SEC_G14]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1021,7 +1021,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_G15];
+  pSector = addressof(SectorInfo[SEC_G15]);
   pSector.value.ubTravelRating = 16;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1029,7 +1029,7 @@ function InitStrategicRowG(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_G16];
+  pSector = addressof(SectorInfo[SEC_G16]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1041,7 +1041,7 @@ function InitStrategicRowG(): void {
 function InitStrategicRowH(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_H1];
+  pSector = addressof(SectorInfo[SEC_H1]);
   pSector.value.ubTravelRating = 67;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1049,7 +1049,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H2];
+  pSector = addressof(SectorInfo[SEC_H2]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1057,7 +1057,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H3];
+  pSector = addressof(SectorInfo[SEC_H3]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1065,7 +1065,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H4];
+  pSector = addressof(SectorInfo[SEC_H4]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1073,7 +1073,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_H5];
+  pSector = addressof(SectorInfo[SEC_H5]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1081,7 +1081,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS;
 
-  pSector = &SectorInfo[SEC_H6];
+  pSector = addressof(SectorInfo[SEC_H6]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = HILLS;
@@ -1089,7 +1089,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = HILLS_ROAD;
 
-  pSector = &SectorInfo[SEC_H7];
+  pSector = addressof(SectorInfo[SEC_H7]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1097,7 +1097,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = HILLS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_H8];
+  pSector = addressof(SectorInfo[SEC_H8]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1105,7 +1105,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H9];
+  pSector = addressof(SectorInfo[SEC_H9]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1113,7 +1113,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_H10];
+  pSector = addressof(SectorInfo[SEC_H10]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1121,7 +1121,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_H11];
+  pSector = addressof(SectorInfo[SEC_H11]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1129,7 +1129,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_H12];
+  pSector = addressof(SectorInfo[SEC_H12]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1137,7 +1137,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_H13];
+  pSector = addressof(SectorInfo[SEC_H13]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1145,7 +1145,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H14];
+  pSector = addressof(SectorInfo[SEC_H14]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1153,7 +1153,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_H15];
+  pSector = addressof(SectorInfo[SEC_H15]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1161,7 +1161,7 @@ function InitStrategicRowH(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_H16];
+  pSector = addressof(SectorInfo[SEC_H16]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1173,7 +1173,7 @@ function InitStrategicRowH(): void {
 function InitStrategicRowI(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_I1];
+  pSector = addressof(SectorInfo[SEC_I1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1181,7 +1181,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_I2];
+  pSector = addressof(SectorInfo[SEC_I2]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1189,7 +1189,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_I3];
+  pSector = addressof(SectorInfo[SEC_I3]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1197,7 +1197,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_I4];
+  pSector = addressof(SectorInfo[SEC_I4]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -1205,7 +1205,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_I5];
+  pSector = addressof(SectorInfo[SEC_I5]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -1213,7 +1213,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_I6];
+  pSector = addressof(SectorInfo[SEC_I6]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1221,7 +1221,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_I7];
+  pSector = addressof(SectorInfo[SEC_I7]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1229,7 +1229,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_I8];
+  pSector = addressof(SectorInfo[SEC_I8]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1237,7 +1237,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_I9];
+  pSector = addressof(SectorInfo[SEC_I9]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1245,7 +1245,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_I10];
+  pSector = addressof(SectorInfo[SEC_I10]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1253,7 +1253,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_I11];
+  pSector = addressof(SectorInfo[SEC_I11]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1261,7 +1261,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_I12];
+  pSector = addressof(SectorInfo[SEC_I12]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -1269,7 +1269,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_I13];
+  pSector = addressof(SectorInfo[SEC_I13]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1277,7 +1277,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_I14];
+  pSector = addressof(SectorInfo[SEC_I14]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1285,7 +1285,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_I15];
+  pSector = addressof(SectorInfo[SEC_I15]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1293,7 +1293,7 @@ function InitStrategicRowI(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_I16];
+  pSector = addressof(SectorInfo[SEC_I16]);
   pSector.value.ubTravelRating = 2;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1305,7 +1305,7 @@ function InitStrategicRowI(): void {
 function InitStrategicRowJ(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_J1];
+  pSector = addressof(SectorInfo[SEC_J1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1313,7 +1313,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_J2];
+  pSector = addressof(SectorInfo[SEC_J2]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1321,7 +1321,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_J3];
+  pSector = addressof(SectorInfo[SEC_J3]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1329,7 +1329,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_J4];
+  pSector = addressof(SectorInfo[SEC_J4]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1337,7 +1337,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_J5];
+  pSector = addressof(SectorInfo[SEC_J5]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -1345,7 +1345,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_J6];
+  pSector = addressof(SectorInfo[SEC_J6]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -1353,7 +1353,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_J7];
+  pSector = addressof(SectorInfo[SEC_J7]);
   pSector.value.ubTravelRating = 6;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1361,7 +1361,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_J8];
+  pSector = addressof(SectorInfo[SEC_J8]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1369,7 +1369,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_J9];
+  pSector = addressof(SectorInfo[SEC_J9]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1377,7 +1377,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_J10];
+  pSector = addressof(SectorInfo[SEC_J10]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1385,7 +1385,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_J11];
+  pSector = addressof(SectorInfo[SEC_J11]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1393,7 +1393,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_J12];
+  pSector = addressof(SectorInfo[SEC_J12]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -1401,7 +1401,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_J13];
+  pSector = addressof(SectorInfo[SEC_J13]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SPARSE;
@@ -1409,7 +1409,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_J14];
+  pSector = addressof(SectorInfo[SEC_J14]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1417,7 +1417,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SPARSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND_ROAD;
 
-  pSector = &SectorInfo[SEC_J15];
+  pSector = addressof(SectorInfo[SEC_J15]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1425,7 +1425,7 @@ function InitStrategicRowJ(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_J16];
+  pSector = addressof(SectorInfo[SEC_J16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1437,7 +1437,7 @@ function InitStrategicRowJ(): void {
 function InitStrategicRowK(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_K1];
+  pSector = addressof(SectorInfo[SEC_K1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1445,7 +1445,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_K2];
+  pSector = addressof(SectorInfo[SEC_K2]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1453,7 +1453,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_K3];
+  pSector = addressof(SectorInfo[SEC_K3]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1461,7 +1461,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_K4];
+  pSector = addressof(SectorInfo[SEC_K4]);
   pSector.value.ubTravelRating = 45;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1469,7 +1469,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_K5];
+  pSector = addressof(SectorInfo[SEC_K5]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = DENSE;
@@ -1477,7 +1477,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_K6];
+  pSector = addressof(SectorInfo[SEC_K6]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1485,7 +1485,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_K7];
+  pSector = addressof(SectorInfo[SEC_K7]);
   pSector.value.ubTravelRating = 60;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1493,7 +1493,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND_ROAD;
 
-  pSector = &SectorInfo[SEC_K8];
+  pSector = addressof(SectorInfo[SEC_K8]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1501,7 +1501,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND_ROAD;
 
-  pSector = &SectorInfo[SEC_K9];
+  pSector = addressof(SectorInfo[SEC_K9]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1509,7 +1509,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND_ROAD;
 
-  pSector = &SectorInfo[SEC_K10];
+  pSector = addressof(SectorInfo[SEC_K10]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1517,7 +1517,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_K11];
+  pSector = addressof(SectorInfo[SEC_K11]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1525,7 +1525,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_K12];
+  pSector = addressof(SectorInfo[SEC_K12]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1533,7 +1533,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_K13];
+  pSector = addressof(SectorInfo[SEC_K13]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1541,7 +1541,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_K14];
+  pSector = addressof(SectorInfo[SEC_K14]);
   pSector.value.ubTravelRating = 50;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1549,7 +1549,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_K15];
+  pSector = addressof(SectorInfo[SEC_K15]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1557,7 +1557,7 @@ function InitStrategicRowK(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_K16];
+  pSector = addressof(SectorInfo[SEC_K16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1569,7 +1569,7 @@ function InitStrategicRowK(): void {
 function InitStrategicRowL(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_L1];
+  pSector = addressof(SectorInfo[SEC_L1]);
   pSector.value.ubTravelRating = 4;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1577,7 +1577,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL;
 
-  pSector = &SectorInfo[SEC_L2];
+  pSector = addressof(SectorInfo[SEC_L2]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1585,7 +1585,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_L3];
+  pSector = addressof(SectorInfo[SEC_L3]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SWAMP;
@@ -1593,7 +1593,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_L4];
+  pSector = addressof(SectorInfo[SEC_L4]);
   pSector.value.ubTravelRating = 15;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1601,7 +1601,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_L5];
+  pSector = addressof(SectorInfo[SEC_L5]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = DENSE;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1609,7 +1609,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_L6];
+  pSector = addressof(SectorInfo[SEC_L6]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1617,7 +1617,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS_ROAD;
 
-  pSector = &SectorInfo[SEC_L7];
+  pSector = addressof(SectorInfo[SEC_L7]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1625,7 +1625,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_L8];
+  pSector = addressof(SectorInfo[SEC_L8]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = SAND;
@@ -1633,7 +1633,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SAND;
 
-  pSector = &SectorInfo[SEC_L9];
+  pSector = addressof(SectorInfo[SEC_L9]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1641,7 +1641,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_L10];
+  pSector = addressof(SectorInfo[SEC_L10]);
   pSector.value.ubTravelRating = 9;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1649,7 +1649,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE_ROAD;
 
-  pSector = &SectorInfo[SEC_L11];
+  pSector = addressof(SectorInfo[SEC_L11]);
   pSector.value.ubTravelRating = 17;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1657,7 +1657,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_L12];
+  pSector = addressof(SectorInfo[SEC_L12]);
   pSector.value.ubTravelRating = 55;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1665,7 +1665,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_L13];
+  pSector = addressof(SectorInfo[SEC_L13]);
   pSector.value.ubTravelRating = 18;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1673,7 +1673,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL;
 
-  pSector = &SectorInfo[SEC_L14];
+  pSector = addressof(SectorInfo[SEC_L14]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1681,7 +1681,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_L15];
+  pSector = addressof(SectorInfo[SEC_L15]);
   pSector.value.ubTravelRating = 3;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1689,7 +1689,7 @@ function InitStrategicRowL(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE;
 
-  pSector = &SectorInfo[SEC_L16];
+  pSector = addressof(SectorInfo[SEC_L16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1701,7 +1701,7 @@ function InitStrategicRowL(): void {
 function InitStrategicRowM(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_M1];
+  pSector = addressof(SectorInfo[SEC_M1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1709,7 +1709,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_M2];
+  pSector = addressof(SectorInfo[SEC_M2]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1717,7 +1717,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_M3];
+  pSector = addressof(SectorInfo[SEC_M3]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SWAMP;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1725,7 +1725,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP_ROAD;
 
-  pSector = &SectorInfo[SEC_M4];
+  pSector = addressof(SectorInfo[SEC_M4]);
   pSector.value.ubTravelRating = 38;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1733,7 +1733,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = FARMLAND;
 
-  pSector = &SectorInfo[SEC_M5];
+  pSector = addressof(SectorInfo[SEC_M5]);
   pSector.value.ubTravelRating = 70;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1741,7 +1741,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE_ROAD;
 
-  pSector = &SectorInfo[SEC_M6];
+  pSector = addressof(SectorInfo[SEC_M6]);
   pSector.value.ubTravelRating = 65;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1749,7 +1749,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = DENSE_ROAD;
 
-  pSector = &SectorInfo[SEC_M7];
+  pSector = addressof(SectorInfo[SEC_M7]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1757,7 +1757,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_M8];
+  pSector = addressof(SectorInfo[SEC_M8]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = SAND;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1765,7 +1765,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_M9];
+  pSector = addressof(SectorInfo[SEC_M9]);
   pSector.value.ubTravelRating = 8;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1773,7 +1773,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = PLAINS;
 
-  pSector = &SectorInfo[SEC_M10];
+  pSector = addressof(SectorInfo[SEC_M10]);
   pSector.value.ubTravelRating = 7;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1781,7 +1781,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS_ROAD;
 
-  pSector = &SectorInfo[SEC_M11];
+  pSector = addressof(SectorInfo[SEC_M11]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1789,7 +1789,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_M12];
+  pSector = addressof(SectorInfo[SEC_M12]);
   pSector.value.ubTravelRating = 12;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1797,7 +1797,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_M13];
+  pSector = addressof(SectorInfo[SEC_M13]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -1805,7 +1805,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SPARSE;
 
-  pSector = &SectorInfo[SEC_M14];
+  pSector = addressof(SectorInfo[SEC_M14]);
   pSector.value.ubTravelRating = 2;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1813,7 +1813,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = SWAMP;
 
-  pSector = &SectorInfo[SEC_M15];
+  pSector = addressof(SectorInfo[SEC_M15]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1821,7 +1821,7 @@ function InitStrategicRowM(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_M16];
+  pSector = addressof(SectorInfo[SEC_M16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1833,7 +1833,7 @@ function InitStrategicRowM(): void {
 function InitStrategicRowN(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_N1];
+  pSector = addressof(SectorInfo[SEC_N1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1841,7 +1841,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_N2];
+  pSector = addressof(SectorInfo[SEC_N2]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1849,7 +1849,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_N3];
+  pSector = addressof(SectorInfo[SEC_N3]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1857,7 +1857,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_N4];
+  pSector = addressof(SectorInfo[SEC_N4]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1865,7 +1865,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_N5];
+  pSector = addressof(SectorInfo[SEC_N5]);
   pSector.value.ubTravelRating = 80;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1873,7 +1873,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_N6];
+  pSector = addressof(SectorInfo[SEC_N6]);
   pSector.value.ubTravelRating = 40;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1881,7 +1881,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS_ROAD;
 
-  pSector = &SectorInfo[SEC_N7];
+  pSector = addressof(SectorInfo[SEC_N7]);
   pSector.value.ubTravelRating = 20;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1889,7 +1889,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_N8];
+  pSector = addressof(SectorInfo[SEC_N8]);
   pSector.value.ubTravelRating = 10;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1897,7 +1897,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = COASTAL_ROAD;
 
-  pSector = &SectorInfo[SEC_N9];
+  pSector = addressof(SectorInfo[SEC_N9]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = ROAD;
@@ -1905,7 +1905,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS_ROAD;
 
-  pSector = &SectorInfo[SEC_N10];
+  pSector = addressof(SectorInfo[SEC_N10]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1913,7 +1913,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = ROAD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS_ROAD;
 
-  pSector = &SectorInfo[SEC_N11];
+  pSector = addressof(SectorInfo[SEC_N11]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1921,7 +1921,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_N12];
+  pSector = addressof(SectorInfo[SEC_N12]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1929,7 +1929,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_N13];
+  pSector = addressof(SectorInfo[SEC_N13]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1937,7 +1937,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_N14];
+  pSector = addressof(SectorInfo[SEC_N14]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1945,7 +1945,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_N15];
+  pSector = addressof(SectorInfo[SEC_N15]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1953,7 +1953,7 @@ function InitStrategicRowN(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_N16];
+  pSector = addressof(SectorInfo[SEC_N16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -1965,7 +1965,7 @@ function InitStrategicRowN(): void {
 function InitStrategicRowO(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_O1];
+  pSector = addressof(SectorInfo[SEC_O1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1973,7 +1973,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O2];
+  pSector = addressof(SectorInfo[SEC_O2]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1981,7 +1981,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O3];
+  pSector = addressof(SectorInfo[SEC_O3]);
   pSector.value.ubTravelRating = 90;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = TOWN;
@@ -1989,7 +1989,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_O4];
+  pSector = addressof(SectorInfo[SEC_O4]);
   pSector.value.ubTravelRating = 90;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -1997,7 +1997,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_O5];
+  pSector = addressof(SectorInfo[SEC_O5]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2005,7 +2005,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O6];
+  pSector = addressof(SectorInfo[SEC_O6]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2013,7 +2013,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O7];
+  pSector = addressof(SectorInfo[SEC_O7]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2021,7 +2021,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O8];
+  pSector = addressof(SectorInfo[SEC_O8]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = PLAINS;
@@ -2029,7 +2029,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_O9];
+  pSector = addressof(SectorInfo[SEC_O9]);
   pSector.value.ubTravelRating = 5;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2037,7 +2037,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = PLAINS;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TROPICS;
 
-  pSector = &SectorInfo[SEC_O10];
+  pSector = addressof(SectorInfo[SEC_O10]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2045,7 +2045,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O11];
+  pSector = addressof(SectorInfo[SEC_O11]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2053,7 +2053,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O12];
+  pSector = addressof(SectorInfo[SEC_O12]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2061,7 +2061,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O13];
+  pSector = addressof(SectorInfo[SEC_O13]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2069,15 +2069,7 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_O14];
-  pSector.value.ubTravelRating = 0;
-  pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
-  pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
-  pSector.value.ubTraversability[SOUTH_STRATEGIC_MOVE] = EDGEOFWORLD;
-  pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
-  pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
-
-  pSector = &SectorInfo[SEC_O15];
+  pSector = addressof(SectorInfo[SEC_O14]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2085,7 +2077,15 @@ function InitStrategicRowO(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_O16];
+  pSector = addressof(SectorInfo[SEC_O15]);
+  pSector.value.ubTravelRating = 0;
+  pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
+  pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
+  pSector.value.ubTraversability[SOUTH_STRATEGIC_MOVE] = EDGEOFWORLD;
+  pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
+  pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
+
+  pSector = addressof(SectorInfo[SEC_O16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2097,7 +2097,7 @@ function InitStrategicRowO(): void {
 function InitStrategicRowP(): void {
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[SEC_P1];
+  pSector = addressof(SectorInfo[SEC_P1]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2106,7 +2106,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
   //	pSector->ubTraversability[ THROUGH_STRATEGIC_MOVE ] = WATER; //keep as water so we can teleport to demo maps.
 
-  pSector = &SectorInfo[SEC_P2];
+  pSector = addressof(SectorInfo[SEC_P2]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2114,7 +2114,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P3];
+  pSector = addressof(SectorInfo[SEC_P3]);
   pSector.value.ubTravelRating = 100;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = TOWN;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2122,7 +2122,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = TOWN;
 
-  pSector = &SectorInfo[SEC_P4];
+  pSector = addressof(SectorInfo[SEC_P4]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2130,7 +2130,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P5];
+  pSector = addressof(SectorInfo[SEC_P5]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2138,7 +2138,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P6];
+  pSector = addressof(SectorInfo[SEC_P6]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2146,7 +2146,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P7];
+  pSector = addressof(SectorInfo[SEC_P7]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2154,7 +2154,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P8];
+  pSector = addressof(SectorInfo[SEC_P8]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2162,7 +2162,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P9];
+  pSector = addressof(SectorInfo[SEC_P9]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2170,7 +2170,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P10];
+  pSector = addressof(SectorInfo[SEC_P10]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2178,7 +2178,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P11];
+  pSector = addressof(SectorInfo[SEC_P11]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2186,7 +2186,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P12];
+  pSector = addressof(SectorInfo[SEC_P12]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = GROUNDBARRIER;
@@ -2194,7 +2194,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P13];
+  pSector = addressof(SectorInfo[SEC_P13]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2202,7 +2202,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = GROUNDBARRIER;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = GROUNDBARRIER;
 
-  pSector = &SectorInfo[SEC_P14];
+  pSector = addressof(SectorInfo[SEC_P14]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2210,7 +2210,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_P15];
+  pSector = addressof(SectorInfo[SEC_P15]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;
@@ -2218,7 +2218,7 @@ function InitStrategicRowP(): void {
   pSector.value.ubTraversability[WEST_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[THROUGH_STRATEGIC_MOVE] = EDGEOFWORLD;
 
-  pSector = &SectorInfo[SEC_P16];
+  pSector = addressof(SectorInfo[SEC_P16]);
   pSector.value.ubTravelRating = 0;
   pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] = EDGEOFWORLD;
   pSector.value.ubTraversability[EAST_STRATEGIC_MOVE] = EDGEOFWORLD;

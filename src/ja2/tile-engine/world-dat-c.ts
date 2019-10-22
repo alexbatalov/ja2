@@ -22,7 +22,7 @@ function InitEngineTilesets(): void {
 
   // READ # TILESETS and compare
   //	fread( &ubNumSets, sizeof( ubNumSets ), 1, hfile );
-  FileRead(hfile, &ubNumSets, sizeof(ubNumSets), &uiNumBytesRead);
+  FileRead(hfile, addressof(ubNumSets), sizeof(ubNumSets), addressof(uiNumBytesRead));
   // CHECK
   if (ubNumSets != NUM_TILESETS) {
     // Report error
@@ -32,7 +32,7 @@ function InitEngineTilesets(): void {
 
   // READ #files
   //	fread( &uiNumFiles, sizeof( uiNumFiles ), 1, hfile );
-  FileRead(hfile, &uiNumFiles, sizeof(uiNumFiles), &uiNumBytesRead);
+  FileRead(hfile, addressof(uiNumFiles), sizeof(uiNumFiles), addressof(uiNumBytesRead));
 
   // COMPARE
   if (uiNumFiles != NUMBEROFTILETYPES) {
@@ -45,11 +45,11 @@ function InitEngineTilesets(): void {
   for (cnt = 0; cnt < NUM_TILESETS; cnt++) {
     // Read name
     //		fread( &zName, sizeof( zName ), 1, hfile );
-    FileRead(hfile, &zName, sizeof(zName), &uiNumBytesRead);
+    FileRead(hfile, addressof(zName), sizeof(zName), addressof(uiNumBytesRead));
 
     // Read ambience value
     //		fread( &(gTilesets[ cnt ].ubAmbientID), sizeof( UINT8), 1, hfile );
-    FileRead(hfile, &(gTilesets[cnt].ubAmbientID), sizeof(UINT8), &uiNumBytesRead);
+    FileRead(hfile, addressof(gTilesets[cnt].ubAmbientID), sizeof(UINT8), addressof(uiNumBytesRead));
 
     // Set into tileset
     swprintf(gTilesets[cnt].zName, "%S", zName);
@@ -58,7 +58,7 @@ function InitEngineTilesets(): void {
     for (cnt2 = 0; cnt2 < uiNumFiles; cnt2++) {
       // Read file name
       //			fread( &zName, sizeof( zName ), 1, hfile );
-      FileRead(hfile, &zName, sizeof(zName), &uiNumBytesRead);
+      FileRead(hfile, addressof(zName), sizeof(zName), addressof(uiNumBytesRead));
 
       // Set into database
       strcpy(gTilesets[cnt].TileSurfaceFilenames[cnt2], zName);

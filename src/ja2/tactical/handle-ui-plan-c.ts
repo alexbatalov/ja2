@@ -44,7 +44,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
     }
 
     if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, FALSE)) {
-      memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+      memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
       MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
       MercCreateStruct.ubProfile = NO_PROFILE;
       MercCreateStruct.fPlayerPlan = TRUE;
@@ -52,9 +52,9 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       MercCreateStruct.sInsertionGridNo = sGridNo;
 
       // Get Grid Corrdinates of mouse
-      if (TacticalCreateSoldier(&MercCreateStruct, &ubNewIndex)) {
+      if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubNewIndex))) {
         // Get pointer to soldier
-        GetSoldier(&pPlanSoldier, ubNewIndex);
+        GetSoldier(addressof(pPlanSoldier), ubNewIndex);
 
         pPlanSoldier.value.sPlannedTargetX = -1;
         pPlanSoldier.value.sPlannedTargetY = -1;
@@ -68,7 +68,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         }
 
         // Get XY from Gridno
-        ConvertGridNoToCenterCellXY(sGridNo, &sXPos, &sYPos);
+        ConvertGridNoToCenterCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
 
         EVENT_SetSoldierPosition(pPlanSoldier, sXPos, sYPos);
         EVENT_SetSoldierDestination(pPlanSoldier, sGridNo);
@@ -108,13 +108,13 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
     sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier.value.bShownAimTime / 2));
 
     // Get XY from Gridno
-    ConvertGridNoToCenterCellXY(sGridNo, &sXPos, &sYPos);
+    ConvertGridNoToCenterCellXY(sGridNo, addressof(sXPos), addressof(sYPos));
 
     // If this is a player guy, show message about no APS
     if (EnoughPoints(gpUIPlannedSoldier, sAPCost, 0, FALSE)) {
       // CHECK IF WE ARE A PLANNED SOLDIER OR NOT< IF SO< CREATE!
       if (gpUIPlannedSoldier.value.ubID < MAX_NUM_SOLDIERS) {
-        memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+        memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
         MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
         MercCreateStruct.ubProfile = NO_PROFILE;
         MercCreateStruct.fPlayerPlan = TRUE;
@@ -122,9 +122,9 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         MercCreateStruct.sInsertionGridNo = sGridNo;
 
         // Get Grid Corrdinates of mouse
-        if (TacticalCreateSoldier(&MercCreateStruct, &ubNewIndex)) {
+        if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubNewIndex))) {
           // Get pointer to soldier
-          GetSoldier(&pPlanSoldier, ubNewIndex);
+          GetSoldier(addressof(pPlanSoldier), ubNewIndex);
 
           pPlanSoldier.value.sPlannedTargetX = -1;
           pPlanSoldier.value.sPlannedTargetY = -1;

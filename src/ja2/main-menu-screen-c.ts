@@ -190,13 +190,13 @@ function InitMainMenu(): BOOLEAN {
   // load background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LOADSCREENS\\MainMenuBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMainMenuBackGroundImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMainMenuBackGroundImage)));
 
   // load ja2 logo graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   //	FilenameForBPP("INTERFACE\\Ja2_2.sti", VObjectDesc.ImageFile);
   FilenameForBPP("LOADSCREENS\\Ja2Logo.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiJa2LogoImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiJa2LogoImage)));
 
   /*
           // Gray out some buttons based on status of game!
@@ -296,7 +296,7 @@ function HandleMainMenuInput(): void {
   let InputEvent: InputAtom;
 
   // Check for esc
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     if (InputEvent.usEvent == KEY_UP) {
       switch (InputEvent.usParam) {
         /*
@@ -329,7 +329,7 @@ function HandleHelpScreenInput(): void {
   let InputEvent: InputAtom;
 
   // Check for key
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     switch (InputEvent.usEvent) {
       case KEY_UP:
         SetMainMenuExitScreen(INIT_SCREEN);
@@ -343,7 +343,7 @@ function ClearMainMenu(): void {
   let pDestBuf: Pointer<UINT8>;
 
   // CLEAR THE FRAME BUFFER
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   memset(pDestBuf, 0, SCREEN_HEIGHT * uiDestPitchBYTES);
   UnLockVideoSurface(FRAME_BUFFER);
   InvalidateScreen();
@@ -385,16 +385,16 @@ function CreateDestroyBackGroundMouseMask(fCreate: BOOLEAN): void {
       return;
 
     // Make a mouse region
-    MSYS_DefineRegion(&(gBackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectMainMenuBackGroundRegionCallBack);
+    MSYS_DefineRegion(addressof(gBackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, SelectMainMenuBackGroundRegionCallBack);
     // Add region
-    MSYS_AddRegion(&(gBackRegion));
+    MSYS_AddRegion(addressof(gBackRegion));
 
     fRegionCreated = TRUE;
   } else {
     if (!fRegionCreated)
       return;
 
-    MSYS_RemoveRegion(&gBackRegion);
+    MSYS_RemoveRegion(addressof(gBackRegion));
     fRegionCreated = FALSE;
   }
 }
@@ -482,11 +482,11 @@ function RenderMainMenu(): void {
   let hPixHandle: HVOBJECT;
 
   // Get and display the background image
-  GetVideoObject(&hPixHandle, guiMainMenuBackGroundImage);
+  GetVideoObject(addressof(hPixHandle), guiMainMenuBackGroundImage);
   BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
-  GetVideoObject(&hPixHandle, guiJa2LogoImage);
+  GetVideoObject(addressof(hPixHandle), guiJa2LogoImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, NULL);
   BltVideoObject(guiSAVEBUFFER, hPixHandle, 0, 188, 15, VO_BLT_SRCTRANSPARENCY, NULL);
 

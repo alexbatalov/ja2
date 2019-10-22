@@ -25,33 +25,33 @@ function InitKnowFacilitiesFlags(): void {
   let pSector: Pointer<SECTORINFO>;
 
   // Cambria hospital
-  pSector = &SectorInfo[SEC_G8];
+  pSector = addressof(SectorInfo[SEC_G8]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = &SectorInfo[SEC_F8];
+  pSector = addressof(SectorInfo[SEC_F8]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = &SectorInfo[SEC_G9];
+  pSector = addressof(SectorInfo[SEC_G9]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
-  pSector = &SectorInfo[SEC_F9];
+  pSector = addressof(SectorInfo[SEC_F9]);
   pSector.value.uiFacilitiesFlags |= SFCF_HOSPITAL;
 
   // Drassen airport
-  pSector = &SectorInfo[SEC_B13];
+  pSector = addressof(SectorInfo[SEC_B13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_C13];
+  pSector = addressof(SectorInfo[SEC_C13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_D13];
+  pSector = addressof(SectorInfo[SEC_D13]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   // Meduna airport & military complex
-  pSector = &SectorInfo[SEC_N3];
+  pSector = addressof(SectorInfo[SEC_N3]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_N4];
+  pSector = addressof(SectorInfo[SEC_N4]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_N5];
+  pSector = addressof(SectorInfo[SEC_N5]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_O3];
+  pSector = addressof(SectorInfo[SEC_O3]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
-  pSector = &SectorInfo[SEC_O4];
+  pSector = addressof(SectorInfo[SEC_O4]);
   pSector.value.uiFacilitiesFlags |= SFCF_AIRPORT;
 
   return;
@@ -61,28 +61,28 @@ function InitMiningLocations(): void {
   let pSector: Pointer<SECTORINFO>;
   // Set up mining sites
 
-  pSector = &SectorInfo[SEC_D4];
+  pSector = addressof(SectorInfo[SEC_D4]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 33;
 
-  pSector = &SectorInfo[SEC_D13];
+  pSector = addressof(SectorInfo[SEC_D13]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 41;
 
-  pSector = &SectorInfo[SEC_B2];
+  pSector = addressof(SectorInfo[SEC_B2]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 20;
 
-  pSector = &SectorInfo[SEC_H8];
+  pSector = addressof(SectorInfo[SEC_H8]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 64;
 
-  pSector = &SectorInfo[SEC_I14];
+  pSector = addressof(SectorInfo[SEC_I14]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 80;
 
   // Grumm
-  pSector = &SectorInfo[SEC_H3];
+  pSector = addressof(SectorInfo[SEC_H3]);
   pSector.value.uiFlags |= SF_MINING_SITE;
   //	pSector->ubIncomeValue = 100;
 }
@@ -310,7 +310,7 @@ function BuildUndergroundSectorInfoList(): void {
 function InitNewCampaign(): void {
   // First clear all the sector information of all enemy existance.  Conveniently, the
   // ubGroupType is also cleared, which is perceived to be an empty group.
-  memset(&SectorInfo, 0, sizeof(SECTORINFO) * 256);
+  memset(addressof(SectorInfo), 0, sizeof(SECTORINFO) * 256);
   InitStrategicMovementCosts();
   RemoveAllGroups();
 

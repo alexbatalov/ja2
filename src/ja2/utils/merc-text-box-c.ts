@@ -102,13 +102,13 @@ function InitMercPopupBox(): BOOLEAN {
   // LOAD STOP ICON...
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\msgboxicons.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiBoxIcons))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBoxIcons)))
     AssertMsg(0, "Missing INTERFACE\\msgboxicons.sti");
 
   // LOAD SKULL ICON...
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\msgboxiconskull.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiSkullIcons))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiSkullIcons)))
     AssertMsg(0, "Missing INTERFACE\\msgboxiconskull.sti");
 
   return TRUE;
@@ -134,12 +134,12 @@ function LoadTextMercPopupImages(ubBackgroundIndex: UINT8, ubBorderIndex: UINT8)
   // the background
   vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
   strcpy(vs_desc.ImageFile, zMercBackgroundPopupFilenames[ubBackgroundIndex]);
-  CHECKF(AddVideoSurface(&vs_desc, &gPopUpTextBox.value.uiMercTextPopUpBackground));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gPopUpTextBox.value.uiMercTextPopUpBackground)));
 
   // border
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP(zMercBorderPopupFilenames[ubBorderIndex], VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &gPopUpTextBox.value.uiMercTextPopUpBorder));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(gPopUpTextBox.value.uiMercTextPopUpBorder)));
 
   gPopUpTextBox.value.fMercTextPopupInitialized = TRUE;
 
@@ -362,12 +362,12 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     return -1;
   }
   // Create a background video surface to blt the face onto
-  memset(&vs_desc, 0, sizeof(VSURFACE_DESC));
+  memset(addressof(vs_desc), 0, sizeof(VSURFACE_DESC));
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = usWidth;
   vs_desc.usHeight = usHeight;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &pPopUpTextBox.value.uiSourceBufferIndex));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(pPopUpTextBox.value.uiSourceBufferIndex)));
   pPopUpTextBox.value.fMercTextPopupSurfaceInitialized = TRUE;
 
   pPopUpTextBox.value.sWidth = usWidth;
@@ -386,7 +386,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     // Set source transparcenty
     SetVideoSurfaceTransparency(pPopUpTextBox.value.uiSourceBufferIndex, FROMRGB(255, 255, 0));
 
-    pDestBuf = LockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex, addressof(uiDestPitchBYTES));
 
     usColorVal = Get16BPPColor(FROMRGB(255, 255, 0));
     usLoopEnd = (usWidth * usHeight);
@@ -397,20 +397,20 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 
     UnLockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex);
   } else {
-    if (!GetVideoSurface(&hSrcVSurface, pPopUpTextBox.value.uiMercTextPopUpBackground)) {
+    if (!GetVideoSurface(addressof(hSrcVSurface), pPopUpTextBox.value.uiMercTextPopUpBackground)) {
       AssertMsg(0, String("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox.value.uiMercTextPopUpBackground));
     }
 
-    pDestBuf = LockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex, &uiDestPitchBYTES);
-    pSrcBuf = LockVideoSurface(pPopUpTextBox.value.uiMercTextPopUpBackground, &uiSrcPitchBYTES);
+    pDestBuf = LockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex, addressof(uiDestPitchBYTES));
+    pSrcBuf = LockVideoSurface(pPopUpTextBox.value.uiMercTextPopUpBackground, addressof(uiSrcPitchBYTES));
 
-    Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, 0, 0, &DestRect);
+    Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, 0, 0, addressof(DestRect));
 
     UnLockVideoSurface(pPopUpTextBox.value.uiMercTextPopUpBackground);
     UnLockVideoSurface(pPopUpTextBox.value.uiSourceBufferIndex);
   }
 
-  GetVideoObject(&hImageHandle, pPopUpTextBox.value.uiMercTextPopUpBorder);
+  GetVideoObject(addressof(hImageHandle), pPopUpTextBox.value.uiMercTextPopUpBorder);
 
   usPosX = usPosY = 0;
   // blit top row of images
@@ -447,7 +447,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   }
 
   // Get the font and shadow colors
-  GetMercPopupBoxFontColor(ubBackgroundIndex, &ubFontColor, &ubFontShadowColor);
+  GetMercPopupBoxFontColor(ubBackgroundIndex, addressof(ubFontColor), addressof(ubFontShadowColor));
 
   SetFontShadow(ubFontShadowColor);
   SetFontDestBuffer(pPopUpTextBox.value.uiSourceBufferIndex, 0, 0, usWidth, usHeight, FALSE);

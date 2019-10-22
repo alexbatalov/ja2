@@ -429,7 +429,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1, &sX, &sY);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzLocation, TINYFONT1, addressof(sX), addressof(sY));
     SetFont(TINYFONT1);
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -444,7 +444,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1, &sX, &sY);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation, TINYFONT1, addressof(sX), addressof(sY));
     SetFont(TINYFONT1);
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -459,7 +459,7 @@ function DrawMouseText(): void {
     // Set dest for gprintf to be different
     SetFontDestBuffer(MOUSE_BUFFER, 0, 0, 64, 64, FALSE);
 
-    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1, &sX, &sY);
+    FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, gzIntTileLocation2, TINYFONT1, addressof(sX), addressof(sY));
     SetFont(TINYFONT1);
 
     SetFontBackground(FONT_MCOLOR_BLACK);
@@ -502,9 +502,9 @@ function DrawMouseText(): void {
       swprintf(pStr, "%d", gsCurrentActionPoints);
 
       if (gfUIDisplayActionPointsCenter) {
-        FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(0, 0, gsCurMouseWidth, gsCurMouseHeight, pStr, TINYFONT1, addressof(sX), addressof(sY));
       } else {
-        FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(gUIDisplayActionPointsOffX, gUIDisplayActionPointsOffY, 1, 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
       }
 
       SetFont(TINYFONT1);
@@ -548,10 +548,10 @@ function UpdateAnimatedCursorFrames(uiCursorIndex: UINT32): void {
   let cnt: UINT32;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
-    pCurData = &(CursorDatabase[uiCursorIndex]);
+    pCurData = addressof(CursorDatabase[uiCursorIndex]);
 
     for (cnt = 0; cnt < pCurData.value.usNumComposites; cnt++) {
-      pCurImage = &(pCurData.value.Composites[cnt]);
+      pCurImage = addressof(pCurData.value.Composites[cnt]);
 
       if (CursorFileDatabase[pCurImage.value.uiFileIndex].ubFlags & ANIMATED_CURSOR) {
         pCurImage.value.uiCurrentFrame++;
@@ -568,7 +568,7 @@ function UpdateFlashingCursorFrames(uiCursorIndex: UINT32): void {
   let pCurData: Pointer<CursorData>;
 
   if (uiCursorIndex != VIDEO_NO_CURSOR) {
-    pCurData = &(CursorDatabase[uiCursorIndex]);
+    pCurData = addressof(CursorDatabase[uiCursorIndex]);
 
     if ((pCurData.value.bFlags & (CURSOR_TO_FLASH | CURSOR_TO_FLASH2))) {
       pCurData.value.bFlashIndex = !pCurData.value.bFlashIndex;

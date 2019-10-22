@@ -144,92 +144,92 @@ function EnterAimSort(): BOOLEAN {
   // load the SortBy box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SortBy.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSortByBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSortByBox)));
 
   // load the ToAlumni graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_TOALUMNI);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiToAlumni));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiToAlumni)));
 
   // load the ToMugShots graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_TOMUGSHOTS);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiToMugShots));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiToMugShots)));
 
   // load the ToStats graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   GetMLGFilename(VObjectDesc.ImageFile, MLG_TOSTATS);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiToStats));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiToStats)));
 
   // load the SelectLight graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SelectLight.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSelectLight));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSelectLight)));
 
   //** Mouse Regions **
 
   // Mouse region for the ToMugShotRegion
-  MSYS_DefineRegion(&gSelectedToMugShotRegion, AIM_SORT_TO_MUGSHOTS_X, AIM_SORT_TO_MUGSHOTS_Y, (AIM_SORT_TO_MUGSHOTS_X + AIM_SORT_TO_MUGSHOTS_SIZE), (AIM_SORT_TO_MUGSHOTS_Y + AIM_SORT_TO_MUGSHOTS_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToMugShotRegionCallBack);
-  MSYS_AddRegion(&gSelectedToMugShotRegion);
+  MSYS_DefineRegion(addressof(gSelectedToMugShotRegion), AIM_SORT_TO_MUGSHOTS_X, AIM_SORT_TO_MUGSHOTS_Y, (AIM_SORT_TO_MUGSHOTS_X + AIM_SORT_TO_MUGSHOTS_SIZE), (AIM_SORT_TO_MUGSHOTS_Y + AIM_SORT_TO_MUGSHOTS_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToMugShotRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedToMugShotRegion));
 
   // Mouse region for the ToStatsRegion
-  MSYS_DefineRegion(&gSelectedToStatsRegion, AIM_SORT_TO_STATS_X, AIM_SORT_TO_STATS_Y, (AIM_SORT_TO_STATS_X + AIM_SORT_TO_STATS_SIZE), (AIM_SORT_TO_STATS_Y + AIM_SORT_TO_STATS_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToStatsRegionCallBack);
-  MSYS_AddRegion(&gSelectedToStatsRegion);
+  MSYS_DefineRegion(addressof(gSelectedToStatsRegion), AIM_SORT_TO_STATS_X, AIM_SORT_TO_STATS_Y, (AIM_SORT_TO_STATS_X + AIM_SORT_TO_STATS_SIZE), (AIM_SORT_TO_STATS_Y + AIM_SORT_TO_STATS_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToStatsRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedToStatsRegion));
 
   // Mouse region for the ToArhciveRegion
-  MSYS_DefineRegion(&gSelectedToArchiveRegion, AIM_SORT_TO_ALUMNI_X, AIM_SORT_TO_ALUMNI_Y, (AIM_SORT_TO_ALUMNI_X + AIM_SORT_TO_ALUMNI_SIZE), (AIM_SORT_TO_ALUMNI_Y + AIM_SORT_TO_ALUMNI_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToArchiveRegionCallBack);
-  MSYS_AddRegion(&gSelectedToArchiveRegion);
+  MSYS_DefineRegion(addressof(gSelectedToArchiveRegion), AIM_SORT_TO_ALUMNI_X, AIM_SORT_TO_ALUMNI_Y, (AIM_SORT_TO_ALUMNI_X + AIM_SORT_TO_ALUMNI_SIZE), (AIM_SORT_TO_ALUMNI_Y + AIM_SORT_TO_ALUMNI_SIZE), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectToArchiveRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedToArchiveRegion));
 
   // CURSOR_WWW MSYS_NO_CURSOR
   ubCurNumber = 0;
   // Mouse region for the Price Check Box
   ubWidth = StringPixLength(AimSortText[PRICE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
-  MSYS_DefineRegion(&gSelectedPriceBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectPriceBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedPriceBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedPriceBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectPriceBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedPriceBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[EXPERIENCE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Experience Check Box
-  MSYS_DefineRegion(&gSelectedExpBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExpBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedExpBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedExpBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExpBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedExpBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMARKSMANSHIP], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Markmanship Check Box
-  MSYS_DefineRegion(&gSelectedMarkBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMarkBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedMarkBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedMarkBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMarkBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedMarkBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMEDICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Medical  Check Box
-  MSYS_DefineRegion(&gSelectedMedicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMedicalBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedMedicalBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedMedicalBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMedicalBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedMedicalBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[EXPLOSIVES], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Explosive  Check Box
-  MSYS_DefineRegion(&gSelectedExplosiveBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExplosiveBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedExplosiveBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedExplosiveBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExplosiveBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedExplosiveBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMECHANICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Mechanical Check Box
-  MSYS_DefineRegion(&gSelectedMechanicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMechanicalBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedMechanicalBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedMechanicalBoxRegion), AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMechanicalBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedMechanicalBoxRegion));
 
   ubCurNumber += 2;
 
   ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[ASCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
   // Mouse region for the Ascend Check Box
-  MSYS_DefineRegion(&gSelectedAscendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectAscendBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedAscendBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedAscendBoxRegion), ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectAscendBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedAscendBoxRegion));
 
   ubCurNumber += 2;
   ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[DESCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
 
   // Mouse region for the Descend Check Box
-  MSYS_DefineRegion(&gSelectedDescendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectDescendBoxRegionCallBack);
-  MSYS_AddRegion(&gSelectedDescendBoxRegion);
+  MSYS_DefineRegion(addressof(gSelectedDescendBoxRegion), ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectDescendBoxRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedDescendBoxRegion));
 
   InitAimMenuBar();
 
@@ -249,18 +249,18 @@ function ExitAimSort(): void {
   DeleteVideoObjectFromIndex(guiToStats);
   DeleteVideoObjectFromIndex(guiSelectLight);
 
-  MSYS_RemoveRegion(&gSelectedToMugShotRegion);
-  MSYS_RemoveRegion(&gSelectedToStatsRegion);
-  MSYS_RemoveRegion(&gSelectedToArchiveRegion);
+  MSYS_RemoveRegion(addressof(gSelectedToMugShotRegion));
+  MSYS_RemoveRegion(addressof(gSelectedToStatsRegion));
+  MSYS_RemoveRegion(addressof(gSelectedToArchiveRegion));
 
-  MSYS_RemoveRegion(&gSelectedPriceBoxRegion);
-  MSYS_RemoveRegion(&gSelectedExpBoxRegion);
-  MSYS_RemoveRegion(&gSelectedMarkBoxRegion);
-  MSYS_RemoveRegion(&gSelectedMedicalBoxRegion);
-  MSYS_RemoveRegion(&gSelectedExplosiveBoxRegion);
-  MSYS_RemoveRegion(&gSelectedMechanicalBoxRegion);
-  MSYS_RemoveRegion(&gSelectedAscendBoxRegion);
-  MSYS_RemoveRegion(&gSelectedDescendBoxRegion);
+  MSYS_RemoveRegion(addressof(gSelectedPriceBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedExpBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedMarkBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedMedicalBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedExplosiveBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedMechanicalBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedAscendBoxRegion));
+  MSYS_RemoveRegion(addressof(gSelectedDescendBoxRegion));
   ExitAimMenuBar();
 }
 
@@ -275,19 +275,19 @@ function RenderAimSort(): void {
 
   DrawAimDefaults();
   // SortBy
-  GetVideoObject(&hSortByHandle, guiSortByBox);
+  GetVideoObject(addressof(hSortByHandle), guiSortByBox);
   BltVideoObject(FRAME_BUFFER, hSortByHandle, 0, AIM_SORT_SORT_BY_X, AIM_SORT_SORT_BY_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // To MugShots
-  GetVideoObject(&hToMugShotHandle, guiToMugShots);
+  GetVideoObject(addressof(hToMugShotHandle), guiToMugShots);
   BltVideoObject(FRAME_BUFFER, hToMugShotHandle, 0, AIM_SORT_TO_MUGSHOTS_X, AIM_SORT_TO_MUGSHOTS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // To stats
-  GetVideoObject(&hToStatsHandle, guiToStats);
+  GetVideoObject(addressof(hToStatsHandle), guiToStats);
   BltVideoObject(FRAME_BUFFER, hToStatsHandle, 0, AIM_SORT_TO_STATS_X, AIM_SORT_TO_STATS_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // To Alumni
-  GetVideoObject(&hToAlumniHandle, guiToAlumni);
+  GetVideoObject(addressof(hToAlumniHandle), guiToAlumni);
   BltVideoObject(FRAME_BUFFER, hToAlumniHandle, 0, AIM_SORT_TO_ALUMNI_X, AIM_SORT_TO_ALUMNI_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Draw the aim slogan under the symbol
@@ -460,7 +460,7 @@ function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
 
   ubMode *= 2;
 
-  GetVideoObject(&hSelectLightHandle, guiSelectLight);
+  GetVideoObject(addressof(hSelectLightHandle), guiSelectLight);
   BltVideoObject(FRAME_BUFFER, hSelectLightHandle, ubImage, (AimSortCheckBoxLoc[ubMode]), (AimSortCheckBoxLoc[ubMode + 1]), VO_BLT_SRCTRANSPARENCY, NULL);
 
   //  InvalidateRegion(LAPTOP_SCREEN_UL_X,LAPTOP_SCREEN_WEB_UL_Y,LAPTOP_SCREEN_LR_X,LAPTOP_SCREEN_WEB_LR_Y);

@@ -49,7 +49,7 @@ function LoadWeaponIfNeeded(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
   // if there's only one in payload pocket (only/last grenade, or any shell)
   if ((Item[pSoldier.value.inv[bPayloadPocket].usItem].ubPerPocket == 1) || (pSoldier.value.inv[bPayloadPocket].ubNumberOfObjects == 1)) {
-    DeleteObj(&(pSoldier.value.inv[bPayloadPocket]));
+    DeleteObj(addressof(pSoldier.value.inv[bPayloadPocket]));
   } else // multiple grenades, remove one of them
   {
     pSoldier.value.inv[bPayloadPocket].ubNumberOfObjects--;
@@ -80,7 +80,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
 
   pSoldier.value.usAttackingWeapon = pSoldier.value.inv[HANDPOS].usItem;
 
-  ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), &(pSoldier.value.inv[HANDPOS]));
+  ubBurstAPs = CalcAPsToBurst(CalcActionPoints(pSoldier), addressof(pSoldier.value.inv[HANDPOS]));
 
   InitAttackType(pBestShot); // set all structure fields to defaults
 
@@ -150,7 +150,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
           usStructureID = INVALID_STRUCTURE_ID;
         }
 
-        if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bDir]]), usStructureID)) {
+        if (!OkayToAddStructureToWorld(pSoldier.value.sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bDir]]), usStructureID)) {
           // can't turn in that dir.... next opponent
           continue;
         }
@@ -794,7 +794,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
             continue; // next gridno
           }
         } else {
-          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, &(pSoldier.value.inv[HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, &sEndGridNo, TRUE, &bEndLevel, FALSE); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
+          ubChanceToGetThrough = 100 * CalculateLaunchItemChanceToGetThrough(pSoldier, addressof(pSoldier.value.inv[HANDPOS]), sGridNo, bOpponentLevel[ubLoop], 0, addressof(sEndGridNo), TRUE, addressof(bEndLevel), FALSE); // NumMessage("Chance to get through = ",ubChanceToGetThrough);
           // if we can't possibly get through all the cover
           if (ubChanceToGetThrough == 0) {
             if (bEndLevel == bOpponentLevel[ubLoop] && ubSafetyMargin > 1) {
@@ -1317,7 +1317,7 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
   }
 
   // check for ceramic plates; these do affect monster spit
-  bPlatePos = FindAttachment(&(pOpponent.value.inv[VESTPOS]), CERAMIC_PLATES);
+  bPlatePos = FindAttachment(addressof(pOpponent.value.inv[VESTPOS]), CERAMIC_PLATES);
   if (bPlatePos != -1) {
     iTorsoProt += Armour[Item[pOpponent.value.inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent.value.inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
   }
@@ -1511,10 +1511,10 @@ function TryToReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let bSlot: INT8;
   let pWeapon: Pointer<WEAPONTYPE>;
 
-  pWeapon = &(Weapon[pSoldier.value.inv[HANDPOS].usItem]);
+  pWeapon = addressof(Weapon[pSoldier.value.inv[HANDPOS].usItem]);
   bSlot = FindAmmo(pSoldier, pWeapon.value.ubCalibre, pWeapon.value.ubMagSize, NO_SLOT);
   if (bSlot != NO_SLOT) {
-    if (ReloadGun(pSoldier, &(pSoldier.value.inv[HANDPOS]), &(pSoldier.value.inv[bSlot]))) {
+    if (ReloadGun(pSoldier, addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bSlot]))) {
       return TRUE;
     }
   }

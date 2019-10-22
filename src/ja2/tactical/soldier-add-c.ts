@@ -44,7 +44,7 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -70,7 +70,7 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -137,7 +137,7 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = pSoldier.value.bTeam;
   soldier.sGridNo = sSweetGridNo;
@@ -163,7 +163,7 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -229,7 +229,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -261,7 +261,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -299,7 +299,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 
           // Check each struct in each direction
           for (cnt3 = 0; cnt3 < 8; cnt3++) {
-            if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+            if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
               fDirectionFound = TRUE;
               break;
             }
@@ -367,7 +367,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -399,7 +399,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -436,14 +436,14 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
           }
 
           // OK, check the perfered given direction first
-          if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bGivenDirection]]), usOKToAddStructID)) {
+          if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[bGivenDirection]]), usOKToAddStructID)) {
             fDirectionFound = TRUE;
             cnt3 = bGivenDirection;
           } else {
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
               if (cnt3 != bGivenDirection) {
-                if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+                if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
                   fDirectionFound = TRUE;
                   break;
                 }
@@ -516,7 +516,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -541,7 +541,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
   }
 
   // Now, find out which of these gridnos are reachable
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   uiLowestRange = 999999;
 
@@ -572,7 +572,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
 
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, &(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pSoldier.value.bLevel, addressof(pStructureFileRef.value.pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
                 fDirectionFound = TRUE;
                 break;
               }
@@ -743,7 +743,7 @@ function CanSoldierReachGridNoInGivenTileLimit(pSoldier: Pointer<SOLDIERTYPE>, s
     return FALSE;
   }
 
-  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, &ubDirection, NULL, FALSE, FALSE);
+  sActionGridNo = FindAdjacentGridEx(pSoldier, sGridNo, addressof(ubDirection), NULL, FALSE, FALSE);
 
   if (sActionGridNo == -1) {
     sActionGridNo = sGridNo;
@@ -790,7 +790,7 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = sSweetGridNo;
@@ -814,7 +814,7 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   do {
     sX = Random(ubRadius);
@@ -829,7 +829,7 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
       if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel)) {
         // If we are a crow, we need this additional check
         if (pSoldier.value.ubBodyType == CROW) {
-          if (!InARoom(sGridNo, &ubRoomNum)) {
+          if (!InARoom(sGridNo, addressof(ubRoomNum))) {
             fFound = TRUE;
           }
         } else {
@@ -938,7 +938,7 @@ function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: BOOLEAN, f
 
     // Add to interface if the are ours
     if (pSoldier.value.bTeam == CREATURE_TEAM) {
-      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, STANDING, pSoldier.value.sInsertionGridNo, 7, &ubCalculatedDirection, FALSE);
+      sGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, STANDING, pSoldier.value.sInsertionGridNo, 7, addressof(ubCalculatedDirection), FALSE);
       if (fCalculateDirection)
         ubDirection = ubCalculatedDirection;
       else
@@ -948,11 +948,11 @@ function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: BOOLEAN, f
         // Add the soldier to the respective entrypoint.  This is an error condition.
       }
       if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
-        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, STANDING, pSoldier.value.sInsertionGridNo, 12, &ubCalculatedDirection, FALSE, pSoldier.value.ubInsertionDirection);
+        sGridNo = FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier, STANDING, pSoldier.value.sInsertionGridNo, 12, addressof(ubCalculatedDirection), FALSE, pSoldier.value.ubInsertionDirection);
         // ATE: Override insertion direction
         pSoldier.value.ubInsertionDirection = ubCalculatedDirection;
       } else {
-        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 7, &ubCalculatedDirection);
+        sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 7, addressof(ubCalculatedDirection));
 
         // ATE: Error condition - if nowhere use insertion gridno!
         if (sGridNo == NOWHERE) {
@@ -1029,7 +1029,7 @@ function InternalSoldierInSectorSleep(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, usAnim, sGridNo, 5, &ubNewDirection, FALSE);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, usAnim, sGridNo, 5, addressof(ubNewDirection), FALSE);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1063,7 +1063,7 @@ function SoldierInSectorIncompaciated(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, STAND_FALLFORWARD_STOP, sGridNo, 5, &ubNewDirection, FALSE);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, STAND_FALLFORWARD_STOP, sGridNo, 5, addressof(ubNewDirection), FALSE);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1096,7 +1096,7 @@ function SoldierInSectorPatient(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_PATIENT, sGridNo, 5, &ubNewDirection, FALSE);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_PATIENT, sGridNo, 5, addressof(ubNewDirection), FALSE);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1126,7 +1126,7 @@ function SoldierInSectorDoctor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_DOCTOR, sGridNo, 5, &ubNewDirection, FALSE);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_DOCTOR, sGridNo, 5, addressof(ubNewDirection), FALSE);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1156,7 +1156,7 @@ function SoldierInSectorRepair(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): 
   }
 
   // OK, look for sutable placement....
-  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_REPAIRMAN, sGridNo, 5, &ubNewDirection, FALSE);
+  sGoodGridNo = FindGridNoFromSweetSpotWithStructData(pSoldier, BEING_REPAIRMAN, sGridNo, 5, addressof(ubNewDirection), FALSE);
 
   sWorldX = CenterX(sGoodGridNo);
   sWorldY = CenterY(sGoodGridNo);
@@ -1240,7 +1240,7 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
     // If just arriving, set a destination to walk into from!
     if (ubInsertionCode == INSERTION_CODE_ARRIVING_GAME) {
       // Find a sweetspot near...
-      sNewGridNo = FindGridNoFromSweetSpot(pSoldier, gMapInformation.sNorthGridNo, 4, &ubNewDirection);
+      sNewGridNo = FindGridNoFromSweetSpot(pSoldier, gMapInformation.sNorthGridNo, 4, addressof(ubNewDirection));
       EVENT_GetNewSoldierPath(pSoldier, sNewGridNo, WALKING);
     }
 

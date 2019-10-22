@@ -57,7 +57,7 @@ function GameInitInsuranceInfo(): void {
 }
 
 function EnterInitInsuranceInfo(): void {
-  memset(&InsuranceInfoSubPagesVisitedFlag, 0, INS_INFO_LAST_PAGE - 1);
+  memset(addressof(InsuranceInfoSubPagesVisitedFlag), 0, INS_INFO_LAST_PAGE - 1);
 }
 
 function EnterInsuranceInfo(): BOOLEAN {
@@ -69,7 +69,7 @@ function EnterInsuranceInfo(): BOOLEAN {
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBulletImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBulletImage)));
 
   // left arrow
   guiInsPrevButtonImage = LoadButtonImage("LAPTOP\\InsLeftButton.sti", 2, 0, -1, 1, -1);
@@ -86,12 +86,12 @@ function EnterInsuranceInfo(): BOOLEAN {
   usPosX = INS_INFO_LINK_START_X;
   // link to go to the contract page
   // link to go to the home page
-  MSYS_DefineRegion(&gSelectedInsuranceInfoHomeLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
-  MSYS_AddRegion(&gSelectedInsuranceInfoHomeLinkRegion);
+  MSYS_DefineRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion), usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion));
 
   usPosX += INS_INFO_LINK_START_OFFSET + INS_INFO_LINK_TO_CONTRACT_WIDTH;
-  MSYS_DefineRegion(&gSelectedInsuranceInfoLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
-  MSYS_AddRegion(&gSelectedInsuranceInfoLinkRegion);
+  MSYS_DefineRegion(addressof(gSelectedInsuranceInfoLinkRegion), usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
+  MSYS_AddRegion(addressof(gSelectedInsuranceInfoLinkRegion));
 
   gubCurrentInsInfoSubPage = INS_INFO_INFO_TOC;
 
@@ -109,8 +109,8 @@ function ExitInsuranceInfo(): void {
   UnloadButtonImage(guiInsNextButtonImage);
   RemoveButton(guiInsNextBackButton);
 
-  MSYS_RemoveRegion(&gSelectedInsuranceInfoLinkRegion);
-  MSYS_RemoveRegion(&gSelectedInsuranceInfoHomeLinkRegion);
+  MSYS_RemoveRegion(addressof(gSelectedInsuranceInfoLinkRegion));
+  MSYS_RemoveRegion(addressof(gSelectedInsuranceInfoHomeLinkRegion));
 
   DeleteVideoObjectFromIndex(guiBulletImage);
 }
@@ -292,7 +292,7 @@ function DisplayPremiumPage(): void {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, NULL);
 
   GetInsuranceText(INS_MLTI_LENGTH_OF_EMPLOYMENT_CONTRACT, sText);
@@ -300,7 +300,7 @@ function DisplayPremiumPage(): void {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, NULL);
 
   GetInsuranceText(INS_MLTI_EMPLOYEES_AGE_AND_HEALTH, sText);
@@ -308,7 +308,7 @@ function DisplayPremiumPage(): void {
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, NULL);
 
   GetInsuranceText(INS_MLTI_EMPLOOYEES_TRAINING_AND_EXP, sText);
@@ -436,7 +436,7 @@ function DisplayInfoTocPage(): void {
   //
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, NULL);
 
   GetInsuranceText(INS_MLTI_REASONABLE_AND_FLEXIBLE, sText);
@@ -448,7 +448,7 @@ function DisplayInfoTocPage(): void {
   //
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_INFO_FIRST_PARAGRAPH_X, usNewLineOffset, VO_BLT_SRCTRANSPARENCY, NULL);
 
   GetInsuranceText(INS_MLTI_QUICKLY_AND_EFFICIENT, sText);

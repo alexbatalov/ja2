@@ -4,7 +4,7 @@ function VSetEqual(a: Pointer<vector_3>): vector_3 {
   //	c.x = a->x;
   //	c.y = a->y;
   //	c.z = a->z;
-  memcpy(&c, a, sizeof(vector_3));
+  memcpy(addressof(c), a, sizeof(vector_3));
 
   return c;
 }

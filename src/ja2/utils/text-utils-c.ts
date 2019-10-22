@@ -20,7 +20,7 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
     return FALSE;
   }
 
-  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, &uiBytesRead)) {
+  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
     FileClose(hFile);
     return FALSE;
   }
@@ -103,7 +103,7 @@ function LoadItemInfo(ubIndex: UINT16, pNameString: STR16, pInfoString: STR16): 
       return FALSE;
     }
 
-    if (!FileRead(hFile, pInfoString, SIZE_ITEM_INFO, &uiBytesRead)) {
+    if (!FileRead(hFile, pInfoString, SIZE_ITEM_INFO, addressof(uiBytesRead))) {
       FileClose(hFile);
       return FALSE;
     }
@@ -200,7 +200,7 @@ function LoadShortNameItemInfo(ubIndex: UINT16, pNameString: STR16): BOOLEAN {
     return FALSE;
   }
 
-  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, &uiBytesRead)) {
+  if (!FileRead(hFile, pNameString, SIZE_ITEM_NAME, addressof(uiBytesRead))) {
     FileClose(hFile);
     return FALSE;
   }

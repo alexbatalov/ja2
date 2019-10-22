@@ -21,7 +21,7 @@ function InitializeProfilesForTownReputation(): void {
 
   // initialize the town opinion values in each recruitable merc's profile structure
   for (uiProfileId = 0; uiProfileId < FIRST_NPC; uiProfileId++) {
-    memset(&(gMercProfiles[uiProfileId].bMercTownReputation), INITIAL_TOWN_REPUTATION, sizeof(gMercProfiles[uiProfileId].bMercTownReputation));
+    memset(addressof(gMercProfiles[uiProfileId].bMercTownReputation), INITIAL_TOWN_REPUTATION, sizeof(gMercProfiles[uiProfileId].bMercTownReputation));
   }
 }
 

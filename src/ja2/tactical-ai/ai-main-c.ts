@@ -1553,8 +1553,8 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       break;
 
     case AI_ACTION_DROP_ITEM: // drop item in hand
-      SoldierDropItem(pSoldier, &(pSoldier.value.inv[HANDPOS]));
-      DeleteObj(&(pSoldier.value.inv[HANDPOS]));
+      SoldierDropItem(pSoldier, addressof(pSoldier.value.inv[HANDPOS]));
+      DeleteObj(addressof(pSoldier.value.inv[HANDPOS]));
       pSoldier.value.bAction = AI_ACTION_PENDING_ACTION;
       break;
 

@@ -80,7 +80,7 @@ function GameInitAimHistory(): void {
 }
 
 function EnterInitAimHistory(): void {
-  memset(&AimHistorySubPagesVisitedFlag, 0, NUM_AIM_HISTORY_PAGES);
+  memset(addressof(AimHistorySubPagesVisitedFlag), 0, NUM_AIM_HISTORY_PAGES);
 }
 
 function EnterAimHistory(): BOOLEAN {
@@ -93,7 +93,7 @@ function EnterAimHistory(): BOOLEAN {
   // load the Content Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\ContentButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiContentButton));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiContentButton)));
 
   gubCurPageNum = giCurrentSubPage;
   RenderAimHistory();
@@ -194,11 +194,11 @@ function InitAimHistoryMenuBar(): BOOLEAN {
   // load the Bottom Buttons graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBottomButton));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton)));
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BottomButton2.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBottomButton2));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBottomButton2)));
 
   guiHistoryMenuButtonImage = LoadButtonImage("LAPTOP\\BottomButtons2.sti", -1, 0, -1, 1, -1);
   usPosX = AIM_HISTORY_MENU_X;
@@ -331,7 +331,7 @@ function InitTocMenu(): BOOLEAN {
 
   let hContentButtonHandle: HVOBJECT;
 
-  GetVideoObject(&hContentButtonHandle, guiContentButton);
+  GetVideoObject(addressof(hContentButtonHandle), guiContentButton);
 
   usHeight = GetFontHeight(AIM_HISTORY_TOC_TEXT_FONT);
   usPosY = AIM_HISTORY_CONTENTBUTTON_Y;
@@ -344,9 +344,9 @@ function InitTocMenu(): BOOLEAN {
     // if the mouse regions havent been inited, init them
     if (!gfInToc) {
       // Mouse region for the history toc buttons
-      MSYS_DefineRegion(&gSelectedHistoryTocMenuRegion[i], AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
-      MSYS_AddRegion(&gSelectedHistoryTocMenuRegion[i]);
-      MSYS_SetRegionUserData(&gSelectedHistoryTocMenuRegion[i], 0, i + 1);
+      MSYS_DefineRegion(addressof(gSelectedHistoryTocMenuRegion[i]), AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
+      MSYS_AddRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
+      MSYS_SetRegionUserData(addressof(gSelectedHistoryTocMenuRegion[i]), 0, i + 1);
     }
 
     BltVideoObject(FRAME_BUFFER, hContentButtonHandle, 0, AIM_HISTORY_TOC_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -364,7 +364,7 @@ function ExitTocMenu(): BOOLEAN {
   if (gfInToc) {
     gfInToc = FALSE;
     for (i = 0; i < NUM_AIM_HISTORY_PAGES; i++)
-      MSYS_RemoveRegion(&gSelectedHistoryTocMenuRegion[i]);
+      MSYS_RemoveRegion(addressof(gSelectedHistoryTocMenuRegion[i]));
   }
 
   return TRUE;

@@ -340,7 +340,7 @@ function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, u
   }
 
   // Save the size of the ITem table
-  FileWrite(hFile, &uiNumberOfItems, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -350,7 +350,7 @@ function SaveWorldItemsToTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8, u
   // if there are items to save..
   if (uiNumberOfItems != 0) {
     // Save the ITem array
-    FileWrite(hFile, pData, uiNumberOfItems * sizeof(WORLDITEM), &uiNumBytesWritten);
+    FileWrite(hFile, pData, uiNumberOfItems * sizeof(WORLDITEM), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiNumberOfItems * sizeof(WORLDITEM)) {
       // Error Writing size of array to disk
       FileClose(hFile);
@@ -389,7 +389,7 @@ function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
   }
 
   // Load the size of the World ITem table
-  FileRead(hFile, &uiNumberOfItems, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -397,7 +397,7 @@ function LoadWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
   }
 
   // Load the World ITem table
-  FileRead(hFile, pData, uiNumberOfItems * sizeof(WORLDITEM), &uiNumBytesRead);
+  FileRead(hFile, pData, uiNumberOfItems * sizeof(WORLDITEM), addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiNumberOfItems * sizeof(WORLDITEM)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -434,7 +434,7 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
       memset(TempWorldItems, 0, (sizeof(WORLDITEM) * 10));
 
       // write the the number of item in the maps item file
-      FileWrite(hFile, &uiNumberOfItems, sizeof(UINT32), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT32)) {
         // Error Writing size of array to disk
         FileClose(hFile);
@@ -442,7 +442,7 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
       }
 
       // write the the number of item in the maps item file
-      FileWrite(hFile, TempWorldItems, uiNumberOfItems * sizeof(WORLDITEM), &uiNumBytesWritten);
+      FileWrite(hFile, TempWorldItems, uiNumberOfItems * sizeof(WORLDITEM), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != uiNumberOfItems * sizeof(WORLDITEM)) {
         // Error Writing size of array to disk
         FileClose(hFile);
@@ -467,7 +467,7 @@ function GetNumberOfWorldItemsFromTempItemFile(sMapX: INT16, sMapY: INT16, bMapZ
   }
 
   // Load the size of the World ITem table
-  FileRead(hFile, &uiNumberOfItems, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfItems), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -487,7 +487,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
   let cnt: UINT32;
   let uiLoop1: UINT32 = 0;
 
-  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &uiNumberOfItems, TRUE)) {
+  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), TRUE)) {
     // Errror getting the numbers of the items from the sector
     return FALSE;
   }
@@ -559,7 +559,7 @@ function AddItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, sGrid
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, "Error: Trying to add item ( %d: %s ) to invalid gridno in unloaded sector. Please Report.", pWorldItems[cnt].o.usItem, ItemNames[pWorldItems[cnt].o.usItem]);
     }
 
-    memcpy(&(pWorldItems[cnt].o), &pObject[uiLoop1], sizeof(OBJECTTYPE));
+    memcpy(addressof(pWorldItems[cnt].o), addressof(pObject[uiLoop1]), sizeof(OBJECTTYPE));
   }
 
   // Save the Items to the the file
@@ -948,7 +948,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
   let sNewGridNo: INT16;
 
   // Get the number of items from the file
-  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &uiNumberOfItems, TRUE)) {
+  if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), TRUE)) {
     // Error getting the numbers of the items from the sector
     return FALSE;
   }
@@ -1021,7 +1021,7 @@ function LoadAndAddWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT
       }
 
       // add the item to the world
-      AddItemToPool(pWorldItems[cnt].sGridNo, &pWorldItems[cnt].o, pWorldItems[cnt].bVisible, pWorldItems[cnt].ubLevel, pWorldItems[cnt].usFlags, pWorldItems[cnt].bRenderZHeightAboveLevel);
+      AddItemToPool(pWorldItems[cnt].sGridNo, addressof(pWorldItems[cnt].o), pWorldItems[cnt].bVisible, pWorldItems[cnt].ubLevel, pWorldItems[cnt].usFlags, pWorldItems[cnt].bRenderZHeightAboveLevel);
     }
   }
 
@@ -1112,7 +1112,7 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
   }
 
   // Save the number of the Rotting Corpses array table
-  FileWrite(hFile, &uiNumberOfCorpses, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfCorpses), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -1123,7 +1123,7 @@ function SaveRottingCorpsesToTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ: I
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
     if (gRottingCorpse[iCount].fActivated == TRUE) {
       // Save the RottingCorpse info array
-      FileWrite(hFile, &gRottingCorpse[iCount].def, sizeof(ROTTING_CORPSE_DEFINITION), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(gRottingCorpse[iCount].def), sizeof(ROTTING_CORPSE_DEFINITION), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(ROTTING_CORPSE_DEFINITION)) {
         // Error Writing size of array to disk
         FileClose(hFile);
@@ -1203,7 +1203,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
   }
 
   // Load the number of Rotting corpses
-  FileRead(hFile, &uiNumberOfCorpses, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfCorpses), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -1217,7 +1217,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
     fDontAddCorpse = FALSE;
 
     // Load the Rotting corpses info
-    FileRead(hFile, &def, sizeof(ROTTING_CORPSE_DEFINITION), &uiNumBytesRead);
+    FileRead(hFile, addressof(def), sizeof(ROTTING_CORPSE_DEFINITION), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(ROTTING_CORPSE_DEFINITION)) {
       // Error Writing size of array to disk
       FileClose(hFile);
@@ -1226,9 +1226,9 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
 
     // Check the flags to see if we have to find a gridno to place the rotting corpses at
     if (def.usFlags & ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO) {
-      def.sGridNo = FindNearestAvailableGridNoForCorpse(&def, 5);
+      def.sGridNo = FindNearestAvailableGridNoForCorpse(addressof(def), 5);
       if (def.sGridNo == NOWHERE)
-        def.sGridNo = FindNearestAvailableGridNoForCorpse(&def, 15);
+        def.sGridNo = FindNearestAvailableGridNoForCorpse(addressof(def), 15);
 
       // ATE: Here we still could have a bad location, but send in NOWHERE
       // to corpse function anyway, 'cause it will iwth not drop it or use
@@ -1266,7 +1266,7 @@ function LoadRottingCorpsesFromTempCorpseFile(sMapX: INT16, sMapY: INT16, bMapZ:
 
     if (!fDontAddCorpse) {
       // add the rotting corpse info
-      if (AddRottingCorpse(&def) == -1) {
+      if (AddRottingCorpse(addressof(def)) == -1) {
         DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Failed to add a corpse to GridNo # %d", def.sGridNo));
 
         /*
@@ -1293,7 +1293,7 @@ function AddWorldItemsToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8, 
   for (uiLoop = 0; uiLoop < uiNumberOfItems; uiLoop++) {
     // If the item exists
     if (pWorldItem[uiLoop].fExists) {
-      AddItemsToUnLoadedSector(sMapX, sMapY, bMapZ, pWorldItem[uiLoop].sGridNo, 1, &pWorldItem[uiLoop].o, pWorldItem[uiLoop].ubLevel, pWorldItem[uiLoop].usFlags, pWorldItem[uiLoop].bRenderZHeightAboveLevel, pWorldItem[uiLoop].bVisible, fLoop);
+      AddItemsToUnLoadedSector(sMapX, sMapY, bMapZ, pWorldItem[uiLoop].sGridNo, 1, addressof(pWorldItem[uiLoop].o), pWorldItem[uiLoop].ubLevel, pWorldItem[uiLoop].usFlags, pWorldItem[uiLoop].bRenderZHeightAboveLevel, pWorldItem[uiLoop].bVisible, fLoop);
 
       fLoop = FALSE;
     }
@@ -1322,7 +1322,7 @@ function SaveNPCInformationToProfileStruct(): void {
       // Save Temp Npc Quote Info array
       SaveTempNpcQuoteInfoForNPCToTempFile(pSoldier.value.ubProfile);
 
-      pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+      pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
       pProfile.value.ubQuoteActionID = pSoldier.value.ubQuoteActionID;
       pProfile.value.ubQuoteRecord = pSoldier.value.ubQuoteRecord;
@@ -1382,7 +1382,7 @@ function LoadNPCInformationFromProfileStruct(): void {
       continue;
 
     // if we cant get a pointer to the soldier, continue
-    if (!GetSoldier(&pSoldier, sSoldierID))
+    if (!GetSoldier(addressof(pSoldier), sSoldierID))
       continue;
 
     // load quote info if it exists
@@ -1524,7 +1524,7 @@ function GetNumberOfActiveWorldItemsFromTempFile(sMapX: INT16, sMapY: INT16, bMa
 
   if (fFileLoaded) {
     // Get the number of items from the file
-    if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &uiNumberOfItems, TRUE)) {
+    if (!GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiNumberOfItems), TRUE)) {
       // Error getting the numbers of the items from the sector
       return FALSE;
     }
@@ -1628,7 +1628,7 @@ function InitTempNpcQuoteInfoForNPCFromTempFile(): BOOLEAN {
     }
 
     // Save the array to a temp file
-    FileWrite(hFile, TempNpcQuote, uiSizeOfTempArray, &uiNumBytesWritten);
+    FileWrite(hFile, TempNpcQuote, uiSizeOfTempArray, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiSizeOfTempArray) {
       FileClose(hFile);
       return FALSE;
@@ -1670,7 +1670,7 @@ function SaveTempNpcQuoteInfoForNPCToTempFile(ubNpcId: UINT8): BOOLEAN {
     FileSeek(hFile, uiSpotInFile * uiSizeOfTempArray, FILE_SEEK_FROM_START);
 
     // Save the array to a temp file
-    FileWrite(hFile, TempNpcQuote, uiSizeOfTempArray, &uiNumBytesWritten);
+    FileWrite(hFile, TempNpcQuote, uiSizeOfTempArray, addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != uiSizeOfTempArray) {
       FileClose(hFile);
       return FALSE;
@@ -1715,7 +1715,7 @@ function LoadTempNpcQuoteInfoForNPCFromTempFile(ubNpcId: UINT8): BOOLEAN {
   FileSeek(hFile, uiSpotInFile * uiSizeOfTempArray, FILE_SEEK_FROM_START);
 
   // Save the array to a temp file
-  FileRead(hFile, TempNpcQuote, uiSizeOfTempArray, &uiNumBytesRead);
+  FileRead(hFile, TempNpcQuote, uiSizeOfTempArray, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiSizeOfTempArray) {
     FileClose(hFile);
     return FALSE;
@@ -1783,7 +1783,7 @@ function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16, sMapY:
     }
 
     // Load the number of Rotting corpses
-    FileRead(hFile, &uiNumberOfCorpses, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(uiNumberOfCorpses), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       // Error Writing size of array to disk
       FileClose(hFile);
@@ -1805,7 +1805,7 @@ function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16, sMapY:
   // Add on to the number and save it back to disk
   uiNumberOfCorpses++;
 
-  FileWrite(hFile, &uiNumberOfCorpses, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfCorpses), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -1816,7 +1816,7 @@ function AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX: INT16, sMapY:
   FileSeek(hFile, 0, FILE_SEEK_FROM_END);
 
   // Append the new rotting corpse def to the end of the file
-  FileWrite(hFile, pRottingCorpseDef, sizeof(ROTTING_CORPSE_DEFINITION), &uiNumBytesWritten);
+  FileWrite(hFile, pRottingCorpseDef, sizeof(ROTTING_CORPSE_DEFINITION), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(ROTTING_CORPSE_DEFINITION)) {
     // Error Writing size of array to disk
     FileClose(hFile);
@@ -2021,7 +2021,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
           pWorldItems[bCount].bVisible = TRUE;
           pWorldItems[bCount].bRenderZHeightAboveLevel = 0;
 
-          memcpy(&(pWorldItems[bCount].o), &pSoldier.value.inv[i], sizeof(OBJECTTYPE));
+          memcpy(addressof(pWorldItems[bCount].o), addressof(pSoldier.value.inv[i]), sizeof(OBJECTTYPE));
           bCount++;
         }
       }
@@ -2037,13 +2037,13 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   // Convert the soldier into a rottng corpse
   //
 
-  memset(&Corpse, 0, sizeof(ROTTING_CORPSE_DEFINITION));
+  memset(addressof(Corpse), 0, sizeof(ROTTING_CORPSE_DEFINITION));
 
   // Setup some values!
   Corpse.ubBodyType = pSoldier.value.ubBodyType;
   Corpse.sGridNo = sGridNo;
 
-  ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(sGridNo, addressof(sXPos), addressof(sYPos));
 
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
@@ -2074,7 +2074,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
   Corpse.usFlags |= usFlagsForRottingCorpse;
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
-  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX, sMapY, bMapZ, &Corpse);
+  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sMapX, sMapY, bMapZ, addressof(Corpse));
 
   // FRee the memory used for the pWorldItem array
   MemFree(pWorldItems);
@@ -2102,7 +2102,7 @@ function InitExitGameDialogBecauseFileHackDetected(): void {
   let CenteringRect: SGPRect = [ 0, 0, 639, 479 ];
 
   // do message box and return
-  giErrorMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, pAntiHackerString[ANTIHACKERSTR_EXITGAME], GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, &CenteringRect);
+  giErrorMessageBox = DoMessageBox(MSG_BOX_BASIC_STYLE, pAntiHackerString[ANTIHACKERSTR_EXITGAME], GAME_SCREEN, MSG_BOX_FLAG_OK, TempFileLoadErrorMessageReturnCallback, addressof(CenteringRect));
 }
 
 function MercChecksum(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
@@ -2479,10 +2479,10 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
   let fReturn: BOOLEAN;
 
   // get total number, visable and invisible
-  fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, bMapZ, &(uiTotalNumberOfRealItems));
+  fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, bMapZ, addressof(uiTotalNumberOfRealItems));
   Assert(fReturn);
 
-  fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, &(uiTotalNumberOfItems), FALSE);
+  fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, bMapZ, addressof(uiTotalNumberOfItems), FALSE);
   Assert(fReturn);
 
   if (uiTotalNumberOfItems > 0) {
@@ -2496,7 +2496,7 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
   // now run through list and
   for (iCounter = 0; (iCounter) < uiTotalNumberOfRealItems; iCounter++) {
     // if visible to player, then state fact
-    if (IsMapScreenWorldItemVisibleInMapInventory(&pTotalSectorList[iCounter])) {
+    if (IsMapScreenWorldItemVisibleInMapInventory(addressof(pTotalSectorList[iCounter]))) {
       uiItemCount += pTotalSectorList[iCounter].o.ubNumberOfObjects;
     }
   }
@@ -2521,7 +2521,7 @@ function UpdateLoadedSectorsItemInventory(sMapX: INT16, sMapY: INT16, bMapZ: INT
   // loop through all the world items
   for (uiCounter = 0; uiCounter < guiNumWorldItems; uiCounter++) {
     // if the item CAN be visible in mapscreen sector inventory
-    if (IsMapScreenWorldItemVisibleInMapInventory(&gWorldItems[uiCounter])) {
+    if (IsMapScreenWorldItemVisibleInMapInventory(addressof(gWorldItems[uiCounter]))) {
       // increment
       uiItemCounter += gWorldItems[uiCounter].o.ubNumberOfObjects;
     }

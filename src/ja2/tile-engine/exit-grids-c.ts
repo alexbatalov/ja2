@@ -101,7 +101,7 @@ function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): voi
 
 function RemoveExitGridFromWorld(iMapIndex: INT32): void {
   let usDummy: UINT16;
-  if (TypeExistsInShadowLayer(iMapIndex, MOCKFLOOR, &usDummy)) {
+  if (TypeExistsInShadowLayer(iMapIndex, MOCKFLOOR, addressof(usDummy))) {
     RemoveAllShadowsOfTypeRange(iMapIndex, MOCKFLOOR, MOCKFLOOR);
   }
 }
@@ -111,11 +111,11 @@ function SaveExitGrids(fp: HWFILE, usNumExitGrids: UINT16): void {
   let usNumSaved: UINT16 = 0;
   let x: UINT16;
   let uiBytesWritten: UINT32;
-  FileWrite(fp, &usNumExitGrids, 2, &uiBytesWritten);
+  FileWrite(fp, addressof(usNumExitGrids), 2, addressof(uiBytesWritten));
   for (x = 0; x < WORLD_MAX; x++) {
-    if (GetExitGrid(x, &exitGrid)) {
-      FileWrite(fp, &x, 2, &uiBytesWritten);
-      FileWrite(fp, &exitGrid, 5, &uiBytesWritten);
+    if (GetExitGrid(x, addressof(exitGrid))) {
+      FileWrite(fp, addressof(x), 2, addressof(uiBytesWritten));
+      FileWrite(fp, addressof(exitGrid), 5, addressof(uiBytesWritten));
       usNumSaved++;
     }
   }
@@ -129,14 +129,14 @@ function LoadExitGrids(hBuffer: Pointer<Pointer<INT8>>): void {
   let usNumSaved: UINT16;
   let usMapIndex: UINT16;
   gfLoadingExitGrids = TRUE;
-  LOADDATA(&usNumSaved, *hBuffer, 2);
+  LOADDATA(addressof(usNumSaved), *hBuffer, 2);
   // FileRead( hfile, &usNumSaved, 2, NULL);
   for (x = 0; x < usNumSaved; x++) {
-    LOADDATA(&usMapIndex, *hBuffer, 2);
+    LOADDATA(addressof(usMapIndex), *hBuffer, 2);
     // FileRead( hfile, &usMapIndex, 2, NULL);
-    LOADDATA(&exitGrid, *hBuffer, 5);
+    LOADDATA(addressof(exitGrid), *hBuffer, 5);
     // FileRead( hfile, &exitGrid, 5, NULL);
-    AddExitGridToWorld(usMapIndex, &exitGrid);
+    AddExitGridToWorld(usMapIndex, addressof(exitGrid));
   }
   gfLoadingExitGrids = FALSE;
 }
@@ -158,7 +158,7 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
   }
   ubLookForLevel = (gbWorldSectorZ + bRelativeZLevel);
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetExitGrid(i, &gExitGrid)) {
+    if (GetExitGrid(i, addressof(gExitGrid))) {
       if (gExitGrid.ubGotoSectorZ == ubLookForLevel) {
         // found an exit grid leading to the goal sector!
         gfOverrideInsertionWithExitGrid = TRUE;
@@ -210,13 +210,13 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
 
   // create dummy soldier, and use the pathing to determine which nearby slots are
   // reachable.
-  memset(&soldier, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(soldier), 0, sizeof(SOLDIERTYPE));
   soldier.bLevel = 0;
   soldier.bTeam = 1;
   soldier.sGridNo = pSoldier.value.sGridNo;
 
   // OK, Get an exit grid ( if possible )
-  if (!GetExitGrid(sSweetGridNo, &ExitGrid)) {
+  if (!GetExitGrid(sSweetGridNo, addressof(ExitGrid))) {
     return NOWHERE;
   }
 
@@ -243,7 +243,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
 
   // Now, find out which of these gridnos are reachable
   //(use the fake soldier and the pathing settings)
-  FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(soldier), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
 
   uiLowestRange = 999999;
 
@@ -257,7 +257,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
         // ATE: Added this check because for all intensive purposes, cavewalls will be not an OKDEST
         // but we want thenm too...
         if (NewOKDestination(pSoldier, sGridNo, TRUE, pSoldier.value.bLevel)) {
-          if (GetExitGrid(sGridNo, &ExitGrid)) {
+          if (GetExitGrid(sGridNo, addressof(ExitGrid))) {
             // Is it the same exitgrid?
             if (ExitGrid.ubGotoSectorX == ubGotoSectorX && ExitGrid.ubGotoSectorY == ubGotoSectorY && ExitGrid.ubGotoSectorZ == ubGotoSectorZ) {
               uiRange = GetRangeInCellCoordsFromGridNoDiff(pSoldier.value.sGridNo, sGridNo);
@@ -316,7 +316,7 @@ function FindClosestExitGrid(pSoldier: Pointer<SOLDIERTYPE>, sSrcGridNo: INT16, 
     for (cnt2 = sLeft; cnt2 <= sRight; cnt2++) {
       sGridNo = sSrcGridNo + (WORLD_COLS * cnt1) + cnt2;
       if (sGridNo >= 0 && sGridNo < WORLD_MAX && sGridNo >= leftmost && sGridNo < (leftmost + WORLD_COLS)) {
-        if (GetExitGrid(sGridNo, &ExitGrid)) {
+        if (GetExitGrid(sGridNo, addressof(ExitGrid))) {
           uiRange = GetRangeInCellCoordsFromGridNoDiff(sSrcGridNo, sGridNo);
 
           if (uiRange < uiLowestRange) {

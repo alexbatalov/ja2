@@ -156,7 +156,7 @@ function KillTextInputMode(): void {
     if (curr.value.szString) {
       MemFree(curr.value.szString);
       curr.value.szString = NULL;
-      MSYS_RemoveRegion(&curr.value.region);
+      MSYS_RemoveRegion(addressof(curr.value.region));
     }
     MemFree(curr);
     curr = gpTextInputHead;
@@ -236,8 +236,8 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   pNode.value.fUserField = FALSE;
   pNode.value.fEnabled = TRUE;
   // Setup the region.
-  MSYS_DefineRegion(&pNode.value.region, sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
-  MSYS_SetRegionUserData(&pNode.value.region, 0, pNode.value.ubID);
+  MSYS_DefineRegion(addressof(pNode.value.region), sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
+  MSYS_SetRegionUserData(addressof(pNode.value.region), 0, pNode.value.ubID);
 }
 
 // This allows you to insert special processing functions and modes that can't be determined here.  An example
@@ -293,7 +293,7 @@ function RemoveTextInputField(ubField: UINT8): void {
       if (curr.value.szString) {
         MemFree(curr.value.szString);
         curr.value.szString = NULL;
-        MSYS_RemoveRegion(&curr.value.region);
+        MSYS_RemoveRegion(addressof(curr.value.region));
       }
       MemFree(curr);
       curr = NULL;
@@ -1142,8 +1142,8 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
     ClipRect.iRight = pNode.value.region.RegionBottomRightX;
     ClipRect.iTop = pNode.value.region.RegionTopLeftY;
     ClipRect.iBottom = pNode.value.region.RegionBottomRightY;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
     UnLockVideoSurface(FRAME_BUFFER);
   }
 }
@@ -1182,7 +1182,7 @@ function EnableTextField(ubID: UINT8): void {
       if (!curr.value.fEnabled) {
         if (!gpActive)
           gpActive = curr;
-        MSYS_EnableRegion(&curr.value.region);
+        MSYS_EnableRegion(addressof(curr.value.region));
         curr.value.fEnabled = TRUE;
       } else
         return;
@@ -1199,7 +1199,7 @@ function DisableTextField(ubID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (curr.value.fEnabled) {
-        MSYS_DisableRegion(&curr.value.region);
+        MSYS_DisableRegion(addressof(curr.value.region));
         curr.value.fEnabled = FALSE;
       } else
         return;
@@ -1216,7 +1216,7 @@ function EnableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (!curr.value.fEnabled) {
-        MSYS_EnableRegion(&curr.value.region);
+        MSYS_EnableRegion(addressof(curr.value.region));
         curr.value.fEnabled = TRUE;
       }
     }
@@ -1232,7 +1232,7 @@ function DisableTextFields(ubFirstID: UINT8, ubLastID: UINT8): void {
       if (gpActive == curr)
         SelectNextField();
       if (curr.value.fEnabled) {
-        MSYS_DisableRegion(&curr.value.region);
+        MSYS_DisableRegion(addressof(curr.value.region));
         curr.value.fEnabled = FALSE;
       }
     }
@@ -1245,7 +1245,7 @@ function EnableAllTextFields(): void {
   curr = gpTextInputHead;
   while (curr) {
     if (!curr.value.fEnabled) {
-      MSYS_EnableRegion(&curr.value.region);
+      MSYS_EnableRegion(addressof(curr.value.region));
       curr.value.fEnabled = TRUE;
     }
     curr = curr.value.next;
@@ -1259,7 +1259,7 @@ function DisableAllTextFields(): void {
   curr = gpTextInputHead;
   while (curr) {
     if (curr.value.fEnabled) {
-      MSYS_DisableRegion(&curr.value.region);
+      MSYS_DisableRegion(addressof(curr.value.region));
       curr.value.fEnabled = FALSE;
     }
     curr = curr.value.next;

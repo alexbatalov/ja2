@@ -98,7 +98,7 @@ function InitializeHelicopter(): void {
   fSkyRiderAvailable = FALSE;
   fSkyRiderSetUp = FALSE;
   pSkyRider = NULL;
-  memset(&SoldierSkyRider, 0, sizeof(SoldierSkyRider));
+  memset(addressof(SoldierSkyRider), 0, sizeof(SoldierSkyRider));
 
   fHelicopterIsAirBorne = FALSE;
   fHeliReturnStraightToBase = FALSE;
@@ -715,11 +715,11 @@ function SetUpHelicopterForPlayer(sX: INT16, sY: INT16): void {
 
     Assert(iHelicopterVehicleId != -1);
 
-    memset(&SoldierSkyRider, 0, sizeof(SOLDIERTYPE));
+    memset(addressof(SoldierSkyRider), 0, sizeof(SOLDIERTYPE));
     SoldierSkyRider.ubProfile = SKYRIDER;
     SoldierSkyRider.bLife = 80;
 
-    pSkyRider = &(SoldierSkyRider);
+    pSkyRider = addressof(SoldierSkyRider);
 
     // set up for movement
     SetUpHelicopterForMovement();
@@ -913,7 +913,7 @@ function HandleSkyRiderMonologueAboutOtherSAMSites(uiSpecialCode: UINT32): void 
   switch (uiSpecialCode) {
     case (0):
       // do quote 21
-      gpCurrentTalkingFace = &gFacesData[uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE]];
+      gpCurrentTalkingFace = addressof(gFacesData[uiExternalStaticNPCFaces[SKYRIDER_EXTERNAL_FACE]]);
       gubCurrentTalkingID = SKYRIDER;
 
       // if special event data 2 is true, then do dialogue, else this is just a trigger for an event
@@ -1538,7 +1538,7 @@ function AddHeliPeice(sGridNo: INT16, sOStruct: UINT16): void {
   let usDummy: UINT16;
 
   // ATE: Check first if already exists....
-  if (!TypeExistsInStructLayer(sGridNo, sOStruct, &usDummy)) {
+  if (!TypeExistsInStructLayer(sGridNo, sOStruct, addressof(usDummy))) {
     // place in the world
     AddStructToTail(sGridNo, sOStruct);
   }
@@ -1575,7 +1575,7 @@ function AddHelicopterToMaps(fAdd: BOOLEAN, ubSite: UINT8): void {
     SetRenderFlags(RENDER_FLAG_FULL);
 
     // ATE: If any mercs here, bump them off!
-    ConvertGridNoToXY(sGridNo, &sCentreGridX, &sCentreGridY);
+    ConvertGridNoToXY(sGridNo, addressof(sCentreGridX), addressof(sCentreGridY));
 
     for (sGridY = sCentreGridY - 5; sGridY < sCentreGridY + 5; sGridY++) {
       for (sGridX = sCentreGridX - 5; sGridX < sCentreGridX + 5; sGridX++) {

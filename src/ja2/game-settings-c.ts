@@ -29,7 +29,7 @@ function LoadGameSettings(): BOOLEAN {
       return FALSE;
     }
 
-    FileRead(hFile, &gGameSettings, sizeof(GAME_SETTINGS), &uiNumBytesRead);
+    FileRead(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(GAME_SETTINGS)) {
       FileClose(hFile);
       InitGameSettings();
@@ -112,7 +112,7 @@ function SaveGameSettings(): BOOLEAN {
   gGameSettings.uiSettingsVersionNumber = GAME_SETTING_CURRENT_VERSION;
 
   // Write the game settings to disk
-  FileWrite(hFile, &gGameSettings, sizeof(GAME_SETTINGS), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gGameSettings), sizeof(GAME_SETTINGS), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(GAME_SETTINGS)) {
     FileClose(hFile);
     return FALSE;
@@ -124,7 +124,7 @@ function SaveGameSettings(): BOOLEAN {
 }
 
 function InitGameSettings(): void {
-  memset(&gGameSettings, 0, sizeof(GAME_SETTINGS));
+  memset(addressof(gGameSettings), 0, sizeof(GAME_SETTINGS));
 
   // Init the Game Settings
   gGameSettings.bLastSavedGameSlot = -1;
@@ -173,7 +173,7 @@ function InitGameSettings(): void {
 }
 
 function InitGameOptions(): void {
-  memset(&gGameOptions, 0, sizeof(GAME_OPTIONS));
+  memset(addressof(gGameOptions), 0, sizeof(GAME_OPTIONS));
 
   // Init the game options
   gGameOptions.fGunNut = FALSE;
@@ -347,7 +347,7 @@ function CheckIfGameCdromIsInCDromDrive(): BOOLEAN {
   if (!GetCdromLocationFromIniFile(zCdromRootDrive))
     return FALSE;
 
-  uiVolumeReturnValue = GetVolumeInformation(zCdromRootDrive, zVolumeNameBuffer, 512, &uiVolumeSerialNumber, &uiMaxComponentLength, &uiFileSystemFlags, zFileSystemNameBuffer, 512);
+  uiVolumeReturnValue = GetVolumeInformation(zCdromRootDrive, zVolumeNameBuffer, 512, addressof(uiVolumeSerialNumber), addressof(uiMaxComponentLength), addressof(uiFileSystemFlags), zFileSystemNameBuffer, 512);
 
   if (!uiVolumeReturnValue) {
     uiLastError = GetLastError();

@@ -196,114 +196,114 @@ function InitializeTacticalInterface(): BOOLEAN {
     strcpy(vs_desc.ImageFile, "INTERFACE\\IN_TEXT.STI");
   }
 
-  if (!AddVideoSurface(&vs_desc, &guiINTEXT))
+  if (!AddVideoSurface(addressof(vs_desc), addressof(guiINTEXT)))
     AssertMsg(0, "Missing INTERFACE\\In_text.sti");
   SetVideoSurfaceTransparency(guiINTEXT, FROMRGB(255, 0, 0));
 
   // LOAD CLOSE ANIM
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\p_close.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiCLOSE))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCLOSE)))
     AssertMsg(0, "Missing INTERFACE\\p_close.sti");
 
   // LOAD DEAD ANIM
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\p_dead.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiDEAD))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiDEAD)))
     AssertMsg(0, "Missing INTERFACE\\p_dead.sti");
 
   // LOAD HATCH
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\hatch.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiHATCH))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiHATCH)))
     AssertMsg(0, "Missing INTERFACE\\hatch.sti");
 
   // LOAD INTERFACE GUN PICTURES
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mdguns.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiGUNSM))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiGUNSM)))
     AssertMsg(0, "Missing INTERFACE\\mdguns.sti");
 
   // LOAD INTERFACE ITEM PICTURES
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mdp1items.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiP1ITEMS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiP1ITEMS)))
     AssertMsg(0, "Missing INTERFACE\\mdplitems.sti");
 
   // LOAD INTERFACE ITEM PICTURES
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mdp2items.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiP2ITEMS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiP2ITEMS)))
     AssertMsg(0, "Missing INTERFACE\\mdp2items.sti");
 
   // LOAD INTERFACE ITEM PICTURES
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\mdp3items.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiP3ITEMS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiP3ITEMS)))
     AssertMsg(0, "Missing INTERFACE\\mdp3items.sti");
 
   // LOAD INTERFACE BUTTON BORDER
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\button_frame.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiBUTTONBORDER))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBUTTONBORDER)))
     AssertMsg(0, "Missing INTERFACE\\button_frame.sti");
 
   // LOAD AIM CUBES
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\aimcubes.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiAIMCUBES))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAIMCUBES)))
     AssertMsg(0, "Missing INTERFACE\\aimcubes.sti");
 
   // LOAD AIM BARS
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\aimbars.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiAIMBARS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiAIMBARS)))
     AssertMsg(0, "Missing INTERFACE\\aimbars.sti");
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\inventor.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiVEHINV))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiVEHINV)))
     AssertMsg(0, "Missing INTERFACE\\inventor.sti");
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\burst1.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiBURSTACCUM))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiBURSTACCUM)))
     AssertMsg(0, "Missing INTERFACE\\burst1.sti");
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\portraiticons.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiPORTRAITICONS))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiPORTRAITICONS)))
     AssertMsg(0, "Missing INTERFACE\\portraiticons.sti");
 
   // LOAD RADIO
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\radio.sti", VObjectDesc.ImageFile);
 
-  if (!AddVideoObject(&VObjectDesc, &guiRADIO))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRADIO)))
     //	AssertMsg(0, "Missing INTERFACE\\bracket.sti" );
     AssertMsg(0, "Missing INTERFACE\\radio.sti");
 
   // LOAD RADIO2
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\radio2.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiRADIO2))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiRADIO2)))
     AssertMsg(0, "Missing INTERFACE\\radio2.sti");
 
   // LOAD com panel 2
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\communicationpopup.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiCOMPANEL))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCOMPANEL)))
     AssertMsg(0, "Missing INTERFACE\\communicationpopup.sti");
 
   // LOAD ITEM GRIDS....
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\itemgrid.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiITEMPOINTERHATCHES))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiITEMPOINTERHATCHES)))
     AssertMsg(0, "Missing INTERFACE\\itemgrid.sti");
 
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("INTERFACE\\communicationpopup_2.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &guiCOMPANELB))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(guiCOMPANELB)))
     AssertMsg(0, "Missing INTERFACE\\communicationpopup_2.sti");
 
   // Alocate message surfaces
@@ -311,7 +311,7 @@ function InitializeTacticalInterface(): BOOLEAN {
   vs_desc.usWidth = 640;
   vs_desc.usHeight = 20;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &(gTopMessage.uiSurface)));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(gTopMessage.uiSurface)));
 
   InitItemInterface();
 
@@ -498,9 +498,9 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   }
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(&gMenuOverlayRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
+  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MovementMenuBackregionCallback);
   // Add region
-  MSYS_AddRegion(&gMenuOverlayRegion);
+  MSYS_AddRegion(addressof(gMenuOverlayRegion));
 
   // OK, CHECK FOR BOUNDARIES!
   if ((giMenuAnchorX + BUTTON_PANEL_WIDTH) > 640) {
@@ -738,7 +738,7 @@ function PopDownMovementMenu(): void {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // UnLockTacticalInterface( );
-    MSYS_RemoveRegion(&gMenuOverlayRegion);
+    MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
   }
 
   gfInMovementMenu = FALSE;
@@ -955,10 +955,10 @@ function GetArrowsBackground(): void {
 
   if (gusSelectedSoldier != NO_SOLDIER) {
     // Get selected soldier
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
 
     // Get screen position of our guy
-    GetSoldierTRUEScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
+    GetSoldierTRUEScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
 
     if (guiShowUPDownArrows & ARROWS_SHOW_UP_BESIDE) {
       // Setup blt rect
@@ -1049,8 +1049,8 @@ function GetSoldierAboveGuyPositions(pSoldier: Pointer<SOLDIERTYPE>, psX: Pointe
   let sTextBodyTypeYOffset: INT16 = 62;
 
   // Find XY, dims, offsets
-  GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
-  GetSoldierAnimOffsets(pSoldier, &sOffsetX, &sOffsetY);
+  GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
+  GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
 
   // OK, first thing to do is subtract offsets ( because GetSoldierScreenPos adds them... )
   sMercScreenX -= sOffsetX;
@@ -1137,7 +1137,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   let fRaiseName: BOOLEAN = FALSE;
   let fDoName: BOOLEAN = TRUE;
 
-  GetSoldier(&pSoldier, usSoldierID);
+  GetSoldier(addressof(pSoldier), usSoldierID);
 
   if (pSoldier.value.bVisible == -1 && !(gTacticalStatus.uiFlags & SHOW_ALL_MERCS)) {
     return;
@@ -1184,7 +1184,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       // if ( pSoldier->fShowLocator )
       {
         // Render the beastie
-        GetSoldierAboveGuyPositions(pSoldier, &sXPos, &sYPos, TRUE);
+        GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), TRUE);
 
         // Adjust for bars!
         sXPos += 25;
@@ -1244,7 +1244,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     return;
   }
 
-  GetSoldierAboveGuyPositions(pSoldier, &sXPos, &sYPos, FALSE);
+  GetSoldierAboveGuyPositions(pSoldier, addressof(sXPos), addressof(sYPos), FALSE);
 
   // Display name
   SetFont(TINYFONT1);
@@ -1254,32 +1254,32 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   if (pSoldier.value.ubProfile != NO_PROFILE || (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE)) {
     if (gfUIMouseOnValidCatcher == 1 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[CATCH_STR]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[RELOAD_STR]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier.value.ubID == gubUIValidCatcherID) {
       swprintf(NameStr, pMessageStrings[MSG_PASS]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier.value.bAssignment >= ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       swprintf(NameStr, "(%s)", pAssignmentStrings[pSoldier.value.bAssignment]);
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier.value.bTeam == gbPlayerNum && pSoldier.value.bAssignment < ON_DUTY && pSoldier.value.bAssignment != CurrentSquad() && !(pSoldier.value.uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       swprintf(NameStr, gzLateLocalizedString[34], (pSoldier.value.bAssignment + 1));
-      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
@@ -1299,12 +1299,12 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     if (fDoName) {
       if (fRaiseName) {
         swprintf(NameStr, "%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
         swprintf(NameStr, "%s", pSoldier.value.name);
-        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       }
@@ -1344,7 +1344,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
         SetFontForeground(FONT_MCOLOR_WHITE);
 
         swprintf(NameStr, TacticalStr[GIVE_STR]);
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
@@ -1354,7 +1354,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
         pStr = GetSoldierHealthString(pSoldier);
 
-        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
         gprintfdirty(sX, sY, pStr);
         mprintf(sX, sY, pStr);
       }
@@ -1367,7 +1367,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       SetFontForeground(FONT_YELLOW);
 
       swprintf(NameStr, gzLateLocalizedString[15]);
-      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, addressof(sX), addressof(sY));
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
     }
@@ -1378,7 +1378,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKRED);
 
-    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1, &sX, &sY);
+    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1, addressof(sX), addressof(sY));
     gprintfdirty(sX, sY, pStr);
     mprintf(sX, sY, pStr);
   }
@@ -1386,7 +1386,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
 function RenderOverlayMessage(pBlitter: Pointer<VIDEO_OVERLAY>): void {
   // Override it!
-  OverrideMercPopupBox(&gpOverrideMercBox);
+  OverrideMercPopupBox(addressof(gpOverrideMercBox));
 
   RenderMercPopupBox(pBlitter.value.sX, pBlitter.value.sY, pBlitter.value.uiDestBuff);
 
@@ -1406,12 +1406,12 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...ar
   va_end(argptr);
 
   // Override it!
-  OverrideMercPopupBox(&gpOverrideMercBox);
+  OverrideMercPopupBox(addressof(gpOverrideMercBox));
 
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, BASIC_MERC_POPUP_BACKGROUND, RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, &gusOverlayPopupBoxWidth, &gusOverlayPopupBoxHeight);
+  iOverlayMessageBox = PrepareMercPopupBox(iOverlayMessageBox, BASIC_MERC_POPUP_BACKGROUND, RED_MERC_POPUP_BORDER, SlideString, 200, 50, 0, 0, addressof(gusOverlayPopupBoxWidth), addressof(gusOverlayPopupBoxHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -1426,7 +1426,7 @@ function BeginOverlayMessage(uiFont: UINT32, pFontString: Pointer<UINT16>, ...ar
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderOverlayMessage;
 
-    giPopupSlideMessageOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+    giPopupSlideMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
   }
 }
 
@@ -1453,7 +1453,7 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
   // Draw breath points
 
   // Draw new size
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 640, (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y));
 
   // get amt bandaged
@@ -1587,11 +1587,11 @@ function ClearInterface(): void {
   // Erase Interface cursors
   HideUICursor();
 
-  MSYS_ChangeRegionCursor(&gViewportRegion, VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(addressof(gViewportRegion), VIDEO_NO_CURSOR);
 
   // Hide lock UI cursors...
-  MSYS_ChangeRegionCursor(&gDisableRegion, VIDEO_NO_CURSOR);
-  MSYS_ChangeRegionCursor(&gUserTurnRegion, VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(addressof(gDisableRegion), VIDEO_NO_CURSOR);
+  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), VIDEO_NO_CURSOR);
 
   // Remove special thing for south arrow...
   if (gsGlobalCursorYOffset == (480 - gsVIEWPORT_WINDOW_END_Y)) {
@@ -1607,8 +1607,8 @@ function RestoreInterface(): void {
   gfUIRefreshArrows = TRUE;
 
   // SHow lock UI cursors...
-  MSYS_ChangeRegionCursor(&gDisableRegion, CURSOR_WAIT);
-  MSYS_ChangeRegionCursor(&gUserTurnRegion, CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(addressof(gDisableRegion), CURSOR_WAIT);
+  MSYS_ChangeRegionCursor(addressof(gUserTurnRegion), CURSOR_WAIT);
 }
 
 function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
@@ -1617,7 +1617,7 @@ function BlitPopupText(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
   BltVideoSurface(pBlitter.value.uiDestBuff, guiINTEXT, 0, pBlitter.value.pBackground.value.sLeft, pBlitter.value.pBackground.value.sTop, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
-  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(pBlitter.value.uiDestBuff, addressof(uiDestPitchBYTES));
 
   SetFont(pBlitter.value.uiFontID);
   SetFontBackground(pBlitter.value.ubFontBack);
@@ -1674,8 +1674,8 @@ function InitDoorOpenMenu(pSoldier: Pointer<SOLDIERTYPE>, pStructure: Pointer<ST
   // Center on guy
   // Locate to guy first.....
   LocateSoldier(pSoldier.value.ubID, FALSE);
-  GetSoldierAnimDims(pSoldier, &sHeight, &sWidth);
-  GetSoldierScreenPos(pSoldier, &sScreenX, &sScreenY);
+  GetSoldierAnimDims(pSoldier, addressof(sHeight), addressof(sWidth));
+  GetSoldierScreenPos(pSoldier, addressof(sScreenX), addressof(sScreenY));
   gOpenDoorMenu.sX = sScreenX - ((BUTTON_PANEL_WIDTH - sWidth) / 2);
   gOpenDoorMenu.sY = sScreenY - ((BUTTON_PANEL_HEIGHT - sHeight) / 2);
 
@@ -1720,9 +1720,9 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   iMenuAnchorY = gOpenDoorMenu.sY + 8;
 
   // Create mouse region over all area to facilitate clicking to end
-  MSYS_DefineRegion(&gMenuOverlayRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
+  MSYS_DefineRegion(addressof(gMenuOverlayRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, DoorMenuBackregionCallback);
   // Add region
-  MSYS_AddRegion(&gMenuOverlayRegion);
+  MSYS_AddRegion(addressof(gMenuOverlayRegion));
 
   iActionIcons[USE_KEYRING_ICON] = QuickCreateButton(iIconImages[USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[USE_KEYRING_ICON] == -1) {
@@ -1931,7 +1931,7 @@ function PopDownOpenDoorMenu(): void {
     fInterfacePanelDirty = DIRTYLEVEL2;
 
     // UnLockTacticalInterface( );
-    MSYS_RemoveRegion(&gMenuOverlayRegion);
+    MSYS_RemoveRegion(addressof(gMenuOverlayRegion));
   }
 
   gfInOpenDoorMenu = FALSE;
@@ -2127,7 +2127,7 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
 
   // Override it!
-  OverrideMercPopupBox(&gpUIMessageOverrideMercBox);
+  OverrideMercPopupBox(addressof(gpUIMessageOverrideMercBox));
 
   // SetPrepareMercPopupFlags( MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS );
 
@@ -2138,7 +2138,7 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
   }
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, &gusUIMessageWidth, &gusUIMessageHeight);
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2150,7 +2150,7 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
   }
 
   if (giUIMessageOverlay == -1) {
-    memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+    memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
     // Set Overlay
     VideoOverlayDesc.sLeft = (640 - gusUIMessageWidth) / 2;
@@ -2161,7 +2161,7 @@ function InternalBeginUIMessage(fUseSkullIcon: BOOLEAN, pFontString: Pointer<UIN
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderUIMessage;
 
-    giUIMessageOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+    giUIMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
   }
 
   gfUseSkullIconMessage = fUseSkullIcon;
@@ -2183,7 +2183,7 @@ function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...a
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
   let MsgString: wchar_t[] /* [512] */;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   va_start(argptr, pFontString); // Set up variable argument pointer
   vswprintf(MsgString, pFontString, argptr); // process gprintf string (get output str)
@@ -2193,12 +2193,12 @@ function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...a
   guiUIMessageTimeDelay = CalcUIMessageDuration(MsgString);
 
   // Override it!
-  OverrideMercPopupBox(&gpUIMessageOverrideMercBox);
+  OverrideMercPopupBox(addressof(gpUIMessageOverrideMercBox));
 
   SetPrepareMercPopupFlags(MERC_POPUP_PREPARE_FLAGS_TRANS_BACK | MERC_POPUP_PREPARE_FLAGS_MARGINS);
 
   // Prepare text box
-  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, &gusUIMessageWidth, &gusUIMessageHeight);
+  iUIMessageBox = PrepareMercPopupBox(iUIMessageBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, MsgString, 200, 10, 0, 0, addressof(gusUIMessageWidth), addressof(gusUIMessageHeight));
 
   // Set it back!
   ResetOverrideMercPopupBox();
@@ -2221,7 +2221,7 @@ function BeginMapUIMessage(ubPosition: UINT8, pFontString: Pointer<UINT16>, ...a
     VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
     VideoOverlayDesc.BltCallback = RenderUIMessage;
 
-    giUIMessageOverlay = RegisterVideoOverlay(0, &VideoOverlayDesc);
+    giUIMessageOverlay = RegisterVideoOverlay(0, addressof(VideoOverlayDesc));
   }
 }
 
@@ -2310,23 +2310,23 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   let dLength: FLOAT;
   let dCurSize: FLOAT;
 
-  memset(&VObjectDesc, 0, sizeof(VObjectDesc));
+  memset(addressof(VObjectDesc), 0, sizeof(VObjectDesc));
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
 
   FilenameForBPP("INTERFACE\\rect.sti", VObjectDesc.ImageFile);
 
-  if (!AddVideoObject(&VObjectDesc, &uiBAR))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiBAR)))
     AssertMsg(0, "Missing INTERFACE\\rect.sti");
 
   // if ( gGameOptions.fTurnTimeLimit )
   {
     FilenameForBPP("INTERFACE\\timebargreen.sti", VObjectDesc.ImageFile);
-    if (!AddVideoObject(&VObjectDesc, &uiPLAYERBAR))
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(uiPLAYERBAR)))
       AssertMsg(0, "Missing INTERFACE\\timebargreen.sti");
   }
 
   FilenameForBPP("INTERFACE\\timebaryellow.sti", VObjectDesc.ImageFile);
-  if (!AddVideoObject(&VObjectDesc, &uiINTBAR))
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(uiINTBAR)))
     AssertMsg(0, "Missing INTERFACE\\timebaryellow.sti");
 
   // Change dest buffer
@@ -2429,7 +2429,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   { DeleteVideoObjectFromIndex(uiPLAYERBAR); }
 
   // Draw text....
-  FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates(320, 7, 1, 1, psString, TINYFONT1, addressof(sX), addressof(sY));
   mprintf(sX, sY, psString);
 
   // Change back...
@@ -2560,7 +2560,7 @@ function HandleTopMessages(): void {
       BltFx.SrcRect.iRight = 640;
       BltFx.SrcRect.iBottom = 20;
 
-      BltVideoSurface(FRAME_BUFFER, gTopMessage.uiSurface, 0, 0, 0, VS_BLT_SRCSUBRECT, &BltFx);
+      BltVideoSurface(FRAME_BUFFER, gTopMessage.uiSurface, 0, 0, 0, VS_BLT_SRCSUBRECT, addressof(BltFx));
 
       // Save to save buffer....
       BltFx.SrcRect.iLeft = 0;
@@ -2568,7 +2568,7 @@ function HandleTopMessages(): void {
       BltFx.SrcRect.iRight = 640;
       BltFx.SrcRect.iBottom = 20;
 
-      BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 0, VS_BLT_SRCSUBRECT, &BltFx);
+      BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, 0, VS_BLT_SRCSUBRECT, addressof(BltFx));
 
       InvalidateRegion(0, 0, 640, 20);
 
@@ -2801,7 +2801,7 @@ function CalculateAimCubeUIPhysics(): void {
       gCubeUIData.dForce = gCubeUIData.dMaxForce;
     }
 
-    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, &(gCubeUIData.pSoldier.value.inv[HANDPOS]), &(gCubeUIData.sTargetGridNo));
+    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, addressof(gCubeUIData.pSoldier.value.inv[HANDPOS]), addressof(gCubeUIData.sTargetGridNo));
   }
 }
 
@@ -2923,7 +2923,7 @@ function RenderAimCubeUI(): void {
     // OK, given height
     if (gCubeUIData.fShowHeight) {
       // Determine screen location....
-      GetGridNoScreenPos(gCubeUIData.sGridNo, gCubeUIData.ubLevel, &sScreenX, &sScreenY);
+      GetGridNoScreenPos(gCubeUIData.sGridNo, gCubeUIData.ubLevel, addressof(sScreenX), addressof(sScreenY));
 
       // Save background
       iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sScreenX, (sScreenY - 70), (sScreenX + 40), (sScreenY + 50));
@@ -3097,13 +3097,13 @@ function RenderTopmostMultiPurposeLocator(): void {
     return;
   }
 
-  ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo, &sX, &sY);
+  ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo, addressof(sX), addressof(sY));
 
   dOffsetX = (sX - gsRenderCenterX);
   dOffsetY = (sY - gsRenderCenterY);
 
   // Calculate guy's position
-  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
+  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
 
   sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
   sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;

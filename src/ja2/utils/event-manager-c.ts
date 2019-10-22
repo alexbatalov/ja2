@@ -69,7 +69,7 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
 
   // Add event to queue
   hQueue = GetQueue(ubQueueID);
-  hQueue = AddtoList(hQueue, &pEvent, ListSize(hQueue));
+  hQueue = AddtoList(hQueue, addressof(pEvent), ListSize(hQueue));
   SetQueue(ubQueueID, hQueue);
 
   return TRUE;

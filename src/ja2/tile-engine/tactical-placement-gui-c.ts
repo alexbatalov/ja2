@@ -64,11 +64,11 @@ function InitTacticalPlacementGUI(): void {
   // Load the images
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "Interface\\OverheadInterface.sti");
-  if (!AddVideoObject(&VObjectDesc, &giOverheadPanelImage)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(giOverheadPanelImage))) {
     AssertMsg(0, "Failed to load Interface\\OverheadInterface.sti");
   }
   sprintf(VObjectDesc.ImageFile, "Interface\\panels.sti");
-  if (!AddVideoObject(&VObjectDesc, &giMercPanelImage)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(giMercPanelImage))) {
     AssertMsg(0, "Failed to load Interface\\panels.sti");
   }
 
@@ -163,15 +163,15 @@ function InitTacticalPlacementGUI(): void {
         sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%03d.sti", ubFaceIndex);
     }
 
-    if (!AddVideoObject(&VObjectDesc, &gMercPlacement[i].uiVObjectID)) {
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(gMercPlacement[i].uiVObjectID))) {
       sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\speck.sti");
-      if (!AddVideoObject(&VObjectDesc, &gMercPlacement[i].uiVObjectID)) {
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(gMercPlacement[i].uiVObjectID))) {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%03d.sti or it's placeholder, speck.sti", gMercProfiles[gMercPlacement[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }
     xp = 91 + (i / 2) * 54;
     yp = (i % 2) ? 412 : 361;
-    MSYS_DefineRegion(&gMercPlacement[i].region, xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
+    MSYS_DefineRegion(addressof(gMercPlacement[i].region), xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
   }
 
   PlaceMercs();
@@ -311,8 +311,8 @@ function RenderTacticalPlacementGUI(): void {
           break;
       }
     }
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, &gTPClipRect, usHatchColor);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, addressof(gTPClipRect), usHatchColor);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -383,7 +383,7 @@ function TacticalPlacementHandle(): void {
     gpTacticalPlacementSelectedSoldier = NULL;
   }
 
-  while (DequeueEvent(&InputEvent)) {
+  while (DequeueEvent(addressof(InputEvent))) {
     if (InputEvent.usEvent == KEY_DOWN) {
       switch (InputEvent.usParam) {
         case ENTER:
@@ -477,7 +477,7 @@ function KillTacticalPlacementGUI(): void {
   // Delete faces and regions
   for (i = 0; i < giPlacements; i++) {
     DeleteVideoObjectFromIndex(gMercPlacement[i].uiVObjectID);
-    MSYS_RemoveRegion(&gMercPlacement[i].region);
+    MSYS_RemoveRegion(addressof(gMercPlacement[i].region));
   }
 
   if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= NUM_UI_PANELS)
@@ -488,7 +488,7 @@ function KillTacticalPlacementGUI(): void {
   // Leave the overhead map.
   KillOverheadMap();
   // Recreate the tactical panel.
-  MSYS_EnableRegion(&gRadarRegion);
+  MSYS_EnableRegion(addressof(gRadarRegion));
   SetCurrentInterfacePanel(TEAM_PANEL);
   // Initialize the rest of the map (AI, enemies, civs, etc.)
 
@@ -589,7 +589,7 @@ function MercMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reg.value.uiFlags & MSYS_MOUSE_IN_AREA) {
     let i: INT8;
     for (i = 0; i < giPlacements; i++) {
-      if (&gMercPlacement[i].region == reg) {
+      if (addressof(gMercPlacement[i].region == reg)) {
         if (gbHilightedMercID != i) {
           gbHilightedMercID = i;
           if (gubDefaultButton == GROUP_BUTTON)
@@ -607,7 +607,7 @@ function MercClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     let i: INT8;
     for (i = 0; i < giPlacements; i++) {
-      if (&gMercPlacement[i].region == reg) {
+      if (addressof(gMercPlacement[i].region == reg)) {
         if (gbSelectedMercID != i) {
           gbSelectedMercID = i;
           gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
@@ -671,7 +671,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
     // if we have a selected merc, move him to the new closest map edgepoint of his side.
     if (gfValidCursor) {
       if (gbSelectedMercID != -1) {
-        if (GetOverheadMouseGridNo(&sGridNo)) {
+        if (GetOverheadMouseGridNo(addressof(sGridNo))) {
           // we have clicked within a valid part of the map.
           BeginMapEdgepointSearch();
 
@@ -721,7 +721,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
           if (fInvalidArea) {
             // Report error due to invalid placement.
             let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
-            DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, &CenterRect);
+            DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INACCESSIBLE_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
           } else {
             // Placement successful, so select the next unplaced unit (single or group).
             SelectNextUnplacedUnit();
@@ -732,7 +732,7 @@ function HandleTacticalPlacementClicksInOverheadMap(reg: Pointer<MOUSE_REGION>, 
       // not a valid cursor location...
       if (gbCursorMercID != -1) {
         let CenterRect: SGPRect = [ 220, 120, 420, 200 ];
-        DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, &CenterRect);
+        DoMessageBox(MSG_BOX_BASIC_STYLE, gpStrategicString[STR_TP_INVALID_MESSAGE], guiCurrentScreen, MSG_BOX_FLAG_OK | MSG_BOX_FLAG_USE_CENTERING_RECT, DialogRemoved, addressof(CenterRect));
       }
     }
   }
@@ -776,9 +776,9 @@ function PutDownMercPiece(iPlacement: INT32): void {
   }
   if (gMercPlacement[iPlacement].fPlaced)
     PickUpMercPiece(iPlacement);
-  sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 4, &ubDirection);
+  sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier.value.sInsertionGridNo, 4, addressof(ubDirection));
   if (sGridNo != NOWHERE) {
-    ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
+    ConvertGridNoToCellXY(sGridNo, addressof(sCellX), addressof(sCellY));
     EVENT_SetSoldierPosition(pSoldier, sCellX, sCellY);
     EVENT_SetSoldierDirection(pSoldier, ubDirection);
     pSoldier.value.ubInsertionDirection = pSoldier.value.bDirection;

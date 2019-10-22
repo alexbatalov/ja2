@@ -67,18 +67,18 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
   if (*sGridNo < 0)
     return FALSE; // entry point is non-existant
 
-  ConvertGridNoToXY(*sGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToXY(*sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   sTopLimit = 80;
   sBottomLimit = gsBRY - gsTLY - 40;
 
   // Get screen coordinates for current gridno
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   if (sWorldY < sTopLimit) {
-    GetFromAbsoluteScreenXYWorldXY(&iNewMapX, &iNewMapY, sWorldX, sTopLimit);
+    GetFromAbsoluteScreenXYWorldXY(addressof(iNewMapX), addressof(iNewMapY), sWorldX, sTopLimit);
   } else if (sWorldY > sBottomLimit) {
-    GetFromAbsoluteScreenXYWorldXY(&iNewMapX, &iNewMapY, sWorldX, sBottomLimit);
+    GetFromAbsoluteScreenXYWorldXY(addressof(iNewMapX), addressof(iNewMapY), sWorldX, sBottomLimit);
   } else {
     return FALSE; // already valid
   }
@@ -92,11 +92,11 @@ function SaveMapInformation(fp: HWFILE): void {
   let uiBytesWritten: UINT32;
 
   gMapInformation.ubMapVersion = MINOR_MAP_VERSION;
-  FileWrite(fp, &gMapInformation, sizeof(MAPCREATE_STRUCT), &uiBytesWritten);
+  FileWrite(fp, addressof(gMapInformation), sizeof(MAPCREATE_STRUCT), addressof(uiBytesWritten));
 }
 
 function LoadMapInformation(hBuffer: Pointer<Pointer<INT8>>): void {
-  LOADDATA(&gMapInformation, *hBuffer, sizeof(MAPCREATE_STRUCT));
+  LOADDATA(addressof(gMapInformation), *hBuffer, sizeof(MAPCREATE_STRUCT));
   // FileRead( hfile, &gMapInformation, sizeof( MAPCREATE_STRUCT ), &uiBytesRead);
 
   // ATE: OK, do some handling here for basement level scroll restrictions
@@ -137,12 +137,12 @@ function UpdateOldVersionMap(): void {
   if (gMapInformation.ubMapVersion < 20) {
     // validate the map entry points as the world boundaries have changed.
     gMapInformation.ubMapVersion = 20;
-    ValidateEntryPointGridNo(&gMapInformation.sNorthGridNo);
-    ValidateEntryPointGridNo(&gMapInformation.sEastGridNo);
-    ValidateEntryPointGridNo(&gMapInformation.sSouthGridNo);
-    ValidateEntryPointGridNo(&gMapInformation.sWestGridNo);
-    ValidateEntryPointGridNo(&gMapInformation.sCenterGridNo);
-    ValidateEntryPointGridNo(&gMapInformation.sIsolatedGridNo);
+    ValidateEntryPointGridNo(addressof(gMapInformation.sNorthGridNo));
+    ValidateEntryPointGridNo(addressof(gMapInformation.sEastGridNo));
+    ValidateEntryPointGridNo(addressof(gMapInformation.sSouthGridNo));
+    ValidateEntryPointGridNo(addressof(gMapInformation.sWestGridNo));
+    ValidateEntryPointGridNo(addressof(gMapInformation.sCenterGridNo));
+    ValidateEntryPointGridNo(addressof(gMapInformation.sIsolatedGridNo));
   }
   if (gMapInformation.ubMapVersion < 21) {
     let curr: Pointer<SOLDIERINITNODE>;
@@ -208,7 +208,7 @@ function AutoCalculateItemNoOverwriteStatus(): void {
   while (curr) {
     if (curr.value.pDetailedPlacement) {
       for (i = 0; i < NUM_INV_SLOTS; i++) {
-        pItem = &curr.value.pDetailedPlacement.value.Inv[i];
+        pItem = addressof(curr.value.pDetailedPlacement.value.Inv[i]);
         if (pItem.value.usItem != NONE) {
           // case 1 (see above)
           pItem.value.fFlags |= OBJECT_NO_OVERWRITE;

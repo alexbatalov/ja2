@@ -158,7 +158,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
       // IF NOT REVEALED AND HIDDEN....
       if (!(gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) && pNode.value.uiFlags & LEVELNODE_HIDDEN) {
         // Add graphic if one does not already exist....
-        if (!TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, &usIndex)) {
+        if (!TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, addressof(usIndex))) {
           // Add
           AddRoofToHead(sGridNo, SLANTROOFCEILING1);
           fChanged = TRUE;
@@ -168,7 +168,7 @@ function ExamineGridNoForSlantRoofExtraGraphic(sCheckGridNo: UINT16): void {
       // Revealed?
       if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
         /// Remove any slant roof items if they exist
-        if (TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, &usIndex)) {
+        if (TypeExistsInRoofLayer(sGridNo, SLANTROOFCEILING, addressof(usIndex))) {
           RemoveRoof(sGridNo, usIndex);
           fChanged = TRUE;
         }
@@ -201,7 +201,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
       RemoveRoofIndexFlagsFromTypeRange(cnt, FIRSTROOF, SECONDSLANTROOF, LEVELNODE_REVEAL);
 
       // Reveal any items if here!
-      if (GetItemPool(cnt, &pItemPool, 0)) {
+      if (GetItemPool(cnt, addressof(pItemPool), 0)) {
         // Set visible! ( only if invisible... )
         if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, TRUE)) {
           if (!fSaidItemSeenQuote) {
@@ -216,7 +216,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
 
       // OK, re-set writeframes ( in a radius )
       // Get XY
-      ConvertGridNoToXY(cnt, &sX, &sY);
+      ConvertGridNoToXY(cnt, addressof(sX), addressof(sY));
       SetRecalculateWireFrameFlagRadius(sX, sY, 2);
     }
   }

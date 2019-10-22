@@ -130,7 +130,7 @@ function ExtractAndUpdateMapInfo(): void {
   }
   if (fUpdateLight1) {
     gfEditorForceShadeTableRebuild = TRUE;
-    LightSetColors(&gEditorLightColor, 1);
+    LightSetColors(addressof(gEditorLightColor), 1);
     gfEditorForceShadeTableRebuild = FALSE;
   }
 
@@ -192,14 +192,14 @@ function LocateNextExitGrid(): void {
   let ExitGrid: EXITGRID;
   let i: UINT16;
   for (i = usCurrentExitGridNo + 1; i < WORLD_MAX; i++) {
-    if (GetExitGrid(i, &ExitGrid)) {
+    if (GetExitGrid(i, addressof(ExitGrid))) {
       usCurrentExitGridNo = i;
       CenterScreenAtMapIndex(i);
       return;
     }
   }
   for (i = 0; i < usCurrentExitGridNo; i++) {
-    if (GetExitGrid(i, &ExitGrid)) {
+    if (GetExitGrid(i, addressof(ExitGrid))) {
       usCurrentExitGridNo = i;
       CenterScreenAtMapIndex(i);
       return;

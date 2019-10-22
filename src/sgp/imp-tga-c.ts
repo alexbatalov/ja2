@@ -57,11 +57,11 @@ function LoadTGAFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   hFile = FileOpen(hImage.value.ImageFile, FILE_ACCESS_READ, FALSE);
   CHECKF(hFile);
 
-  if (!FileRead(hFile, &uiImgID, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiImgID), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiColMap, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiColMap), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiType, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiType), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
 
   switch (uiType) {
@@ -142,24 +142,24 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
   let g: UINT8;
   let b: UINT8;
 
-  if (!FileRead(hFile, &uiColMapOrigin, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiColMapOrigin), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiColMapLength, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiColMapLength), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiColMapEntrySize, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiColMapEntrySize), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
 
-  if (!FileRead(hFile, &uiXOrg, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiXOrg), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiYOrg, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiYOrg), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiWidth, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiWidth), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiHeight, sizeof(UINT16), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiHeight), sizeof(UINT16), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiImagePixelSize, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiImagePixelSize), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
-  if (!FileRead(hFile, &uiImageDescriptor, sizeof(UINT8), &uiBytesRead))
+  if (!FileRead(hFile, addressof(uiImageDescriptor), sizeof(UINT8), addressof(uiBytesRead)))
     goto end;
 
   // skip the id
@@ -195,13 +195,13 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
 
       // Data is stored top-bottom - reverse for SGP HIMAGE format
       for (cnt = 0; cnt < uiHeight - 1; cnt++) {
-        if (!FileRead(hFile, pBMData, uiWidth * 2, &uiBytesRead))
+        if (!FileRead(hFile, pBMData, uiWidth * 2, addressof(uiBytesRead)))
           goto freeEnd;
 
         pBMData -= uiWidth * 2;
       }
       // Do first row
-      if (!FileRead(hFile, pBMData, uiWidth * 2, &uiBytesRead))
+      if (!FileRead(hFile, pBMData, uiWidth * 2, addressof(uiBytesRead)))
         goto freeEnd;
 
       // Convert TGA 5,5,5 16 BPP data into current system 16 BPP Data
@@ -226,11 +226,11 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
 
       for (cnt = 0; cnt < uiHeight; cnt++) {
         for (i = 0; i < uiWidth; i++) {
-          if (!FileRead(hFile, &b, sizeof(UINT8), &uiBytesRead))
+          if (!FileRead(hFile, addressof(b), sizeof(UINT8), addressof(uiBytesRead)))
             goto freeEnd;
-          if (!FileRead(hFile, &g, sizeof(UINT8), &uiBytesRead))
+          if (!FileRead(hFile, addressof(g), sizeof(UINT8), addressof(uiBytesRead)))
             goto freeEnd;
-          if (!FileRead(hFile, &r, sizeof(UINT8), &uiBytesRead))
+          if (!FileRead(hFile, addressof(r), sizeof(UINT8), addressof(uiBytesRead)))
             goto freeEnd;
 
           pBMPtr[i * 3] = r;

@@ -320,7 +320,7 @@ function DeleteAniTile(pAniTile: Pointer<ANITILE>): void {
           FreeUpAttacker(pAniNode.value.ubAttackerMissed);
         }
       } else {
-        TileElem = &(gTileDatabase[pAniNode.value.usTileIndex]);
+        TileElem = addressof(gTileDatabase[pAniNode.value.usTileIndex]);
 
         // OK, update existing tile usIndex....
         Assert(TileElem.value.pAnimData != NULL);

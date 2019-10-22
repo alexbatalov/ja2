@@ -64,7 +64,7 @@ function GameInitFloristGallery(): void {
 }
 
 function EnterInitFloristGallery(): void {
-  memset(&FloristGallerySubPagesVisitedFlag, 0, 4);
+  memset(addressof(FloristGallerySubPagesVisitedFlag), 0, 4);
 }
 
 function EnterFloristGallery(): BOOLEAN {
@@ -225,7 +225,7 @@ function InitFlowerButtons(): BOOLEAN {
     sprintf(sTemp, "LAPTOP\\Flower_%d.sti", count);
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiFlowerImages[i]));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFlowerImages[i])));
     count++;
   }
 
@@ -295,7 +295,7 @@ function DisplayFloralDescriptions(): BOOLEAN {
     // Display Flower Price
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
-    swscanf(sTemp, "%hu", &usPrice);
+    swscanf(sTemp, "%hu", addressof(usPrice));
     swprintf(sTemp, "$%d.00 %s", usPrice, pMessageStrings[MSG_USDOLLAR_ABBREVIATION]);
     DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT, FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 

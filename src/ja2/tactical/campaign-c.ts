@@ -24,7 +24,7 @@ function StatChange(pSoldier: Pointer<SOLDIERTYPE>, ubStat: UINT8, usNumChances:
   if (pSoldier.value.bLife < CONSCIOUSNESS)
     return;
 
-  ProcessStatChange(&(gMercProfiles[pSoldier.value.ubProfile]), ubStat, usNumChances, ubReason);
+  ProcessStatChange(addressof(gMercProfiles[pSoldier.value.ubProfile]), ubStat, usNumChances, ubReason);
 
   // Update stats....right away... ATE
   UpdateStats(pSoldier);
@@ -75,62 +75,62 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
   switch (ubStat) {
     case HEALTHAMT:
       bCurrentRating = pProfile.value.bLifeMax;
-      psStatGainPtr = &(pProfile.value.sLifeGain);
+      psStatGainPtr = addressof(pProfile.value.sLifeGain);
       // NB physical stat checks not affected by wisdom, unless training is going on
       fAffectedByWisdom = FALSE;
       break;
 
     case AGILAMT:
       bCurrentRating = pProfile.value.bAgility;
-      psStatGainPtr = &(pProfile.value.sAgilityGain);
+      psStatGainPtr = addressof(pProfile.value.sAgilityGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case DEXTAMT:
       bCurrentRating = pProfile.value.bDexterity;
-      psStatGainPtr = &(pProfile.value.sDexterityGain);
+      psStatGainPtr = addressof(pProfile.value.sDexterityGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case WISDOMAMT:
       bCurrentRating = pProfile.value.bWisdom;
-      psStatGainPtr = &(pProfile.value.sWisdomGain);
+      psStatGainPtr = addressof(pProfile.value.sWisdomGain);
       break;
 
     case MEDICALAMT:
       bCurrentRating = pProfile.value.bMedical;
-      psStatGainPtr = &(pProfile.value.sMedicalGain);
+      psStatGainPtr = addressof(pProfile.value.sMedicalGain);
       break;
 
     case EXPLODEAMT:
       bCurrentRating = pProfile.value.bExplosive;
-      psStatGainPtr = &(pProfile.value.sExplosivesGain);
+      psStatGainPtr = addressof(pProfile.value.sExplosivesGain);
       break;
 
     case MECHANAMT:
       bCurrentRating = pProfile.value.bMechanical;
-      psStatGainPtr = &(pProfile.value.sMechanicGain);
+      psStatGainPtr = addressof(pProfile.value.sMechanicGain);
       break;
 
     case MARKAMT:
       bCurrentRating = pProfile.value.bMarksmanship;
-      psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
+      psStatGainPtr = addressof(pProfile.value.sMarksmanshipGain);
       break;
 
     case EXPERAMT:
       bCurrentRating = pProfile.value.bExpLevel;
-      psStatGainPtr = &(pProfile.value.sExpLevelGain);
+      psStatGainPtr = addressof(pProfile.value.sExpLevelGain);
       break;
 
     case STRAMT:
       bCurrentRating = pProfile.value.bStrength;
-      psStatGainPtr = &(pProfile.value.sStrengthGain);
+      psStatGainPtr = addressof(pProfile.value.sStrengthGain);
       fAffectedByWisdom = FALSE;
       break;
 
     case LDRAMT:
       bCurrentRating = pProfile.value.bLeadership;
-      psStatGainPtr = &(pProfile.value.sLeadershipGain);
+      psStatGainPtr = addressof(pProfile.value.sLeadershipGain);
       break;
 
     default:
@@ -281,7 +281,7 @@ function ProcessStatChange(pProfile: Pointer<MERCPROFILESTRUCT>, ubStat: UINT8, 
 
 // convert hired mercs' stats subpoint changes into actual point changes where warranted
 function UpdateStats(pSoldier: Pointer<SOLDIERTYPE>): void {
-  ProcessUpdateStats(&(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
+  ProcessUpdateStats(addressof(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
 }
 
 // UpdateStats version for mercs not currently on player's team
@@ -308,69 +308,69 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
   // build ptrs to appropriate profiletype stat fields
   switch (ubStat) {
     case HEALTHAMT:
-      psStatGainPtr = &(pProfile.value.sLifeGain);
-      pbStatDeltaPtr = &(pProfile.value.bLifeDelta);
-      pbStatPtr = &(pProfile.value.bLifeMax);
+      psStatGainPtr = addressof(pProfile.value.sLifeGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bLifeDelta);
+      pbStatPtr = addressof(pProfile.value.bLifeMax);
       break;
 
     case AGILAMT:
-      psStatGainPtr = &(pProfile.value.sAgilityGain);
-      pbStatDeltaPtr = &(pProfile.value.bAgilityDelta);
-      pbStatPtr = &(pProfile.value.bAgility);
+      psStatGainPtr = addressof(pProfile.value.sAgilityGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bAgilityDelta);
+      pbStatPtr = addressof(pProfile.value.bAgility);
       break;
 
     case DEXTAMT:
-      psStatGainPtr = &(pProfile.value.sDexterityGain);
-      pbStatDeltaPtr = &(pProfile.value.bDexterityDelta);
-      pbStatPtr = &(pProfile.value.bDexterity);
+      psStatGainPtr = addressof(pProfile.value.sDexterityGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bDexterityDelta);
+      pbStatPtr = addressof(pProfile.value.bDexterity);
       break;
 
     case WISDOMAMT:
-      psStatGainPtr = &(pProfile.value.sWisdomGain);
-      pbStatDeltaPtr = &(pProfile.value.bWisdomDelta);
-      pbStatPtr = &(pProfile.value.bWisdom);
+      psStatGainPtr = addressof(pProfile.value.sWisdomGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bWisdomDelta);
+      pbStatPtr = addressof(pProfile.value.bWisdom);
       break;
 
     case MEDICALAMT:
-      psStatGainPtr = &(pProfile.value.sMedicalGain);
-      pbStatDeltaPtr = &(pProfile.value.bMedicalDelta);
-      pbStatPtr = &(pProfile.value.bMedical);
+      psStatGainPtr = addressof(pProfile.value.sMedicalGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bMedicalDelta);
+      pbStatPtr = addressof(pProfile.value.bMedical);
       break;
 
     case EXPLODEAMT:
-      psStatGainPtr = &(pProfile.value.sExplosivesGain);
-      pbStatDeltaPtr = &(pProfile.value.bExplosivesDelta);
-      pbStatPtr = &(pProfile.value.bExplosive);
+      psStatGainPtr = addressof(pProfile.value.sExplosivesGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bExplosivesDelta);
+      pbStatPtr = addressof(pProfile.value.bExplosive);
       break;
 
     case MECHANAMT:
-      psStatGainPtr = &(pProfile.value.sMechanicGain);
-      pbStatDeltaPtr = &(pProfile.value.bMechanicDelta);
-      pbStatPtr = &(pProfile.value.bMechanical);
+      psStatGainPtr = addressof(pProfile.value.sMechanicGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bMechanicDelta);
+      pbStatPtr = addressof(pProfile.value.bMechanical);
       break;
 
     case MARKAMT:
-      psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
-      pbStatDeltaPtr = &(pProfile.value.bMarksmanshipDelta);
-      pbStatPtr = &(pProfile.value.bMarksmanship);
+      psStatGainPtr = addressof(pProfile.value.sMarksmanshipGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bMarksmanshipDelta);
+      pbStatPtr = addressof(pProfile.value.bMarksmanship);
       break;
 
     case EXPERAMT:
-      psStatGainPtr = &(pProfile.value.sExpLevelGain);
-      pbStatDeltaPtr = &(pProfile.value.bExpLevelDelta);
-      pbStatPtr = &(pProfile.value.bExpLevel);
+      psStatGainPtr = addressof(pProfile.value.sExpLevelGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bExpLevelDelta);
+      pbStatPtr = addressof(pProfile.value.bExpLevel);
       break;
 
     case STRAMT:
-      psStatGainPtr = &(pProfile.value.sStrengthGain);
-      pbStatDeltaPtr = &(pProfile.value.bStrengthDelta);
-      pbStatPtr = &(pProfile.value.bStrength);
+      psStatGainPtr = addressof(pProfile.value.sStrengthGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bStrengthDelta);
+      pbStatPtr = addressof(pProfile.value.bStrength);
       break;
 
     case LDRAMT:
-      psStatGainPtr = &(pProfile.value.sLeadershipGain);
-      pbStatDeltaPtr = &(pProfile.value.bLeadershipDelta);
-      pbStatPtr = &(pProfile.value.bLeadership);
+      psStatGainPtr = addressof(pProfile.value.sLeadershipGain);
+      pbStatDeltaPtr = addressof(pProfile.value.bLeadershipDelta);
+      pbStatPtr = addressof(pProfile.value.bLeadership);
       break;
   }
 
@@ -379,68 +379,68 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
     // build ptrs to appropriate soldiertype stat fields
     switch (ubStat) {
       case HEALTHAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bLifeMax);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeHealthTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bLifeMax);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeHealthTime);
         usIncreaseValue = HEALTH_INCREASE;
         break;
 
       case AGILAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bAgility);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeAgilityTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bAgility);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeAgilityTime);
         usIncreaseValue = AGIL_INCREASE;
         break;
 
       case DEXTAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bDexterity);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeDexterityTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bDexterity);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeDexterityTime);
         usIncreaseValue = DEX_INCREASE;
         break;
 
       case WISDOMAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bWisdom);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeWisdomTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bWisdom);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeWisdomTime);
         usIncreaseValue = WIS_INCREASE;
         break;
 
       case MEDICALAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bMedical);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeMedicalTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bMedical);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeMedicalTime);
         usIncreaseValue = MED_INCREASE;
         break;
 
       case EXPLODEAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bExplosive);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeExplosivesTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bExplosive);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeExplosivesTime);
         usIncreaseValue = EXP_INCREASE;
         break;
 
       case MECHANAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bMechanical);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeMechanicalTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bMechanical);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeMechanicalTime);
         usIncreaseValue = MECH_INCREASE;
         break;
 
       case MARKAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bMarksmanship);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeMarksmanshipTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bMarksmanship);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeMarksmanshipTime);
         usIncreaseValue = MRK_INCREASE;
         break;
 
       case EXPERAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bExpLevel);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeLevelTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bExpLevel);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeLevelTime);
         usIncreaseValue = LVL_INCREASE;
         break;
 
       case STRAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bStrength);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeStrengthTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bStrength);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeStrengthTime);
         usIncreaseValue = STRENGTH_INCREASE;
         break;
 
       case LDRAMT:
-        pbSoldierStatPtr = &(pSoldier.value.bLeadership);
-        puiStatTimerPtr = &(pSoldier.value.uiChangeLeadershipTime);
+        pbSoldierStatPtr = addressof(pSoldier.value.bLeadership);
+        puiStatTimerPtr = addressof(pSoldier.value.uiChangeLeadershipTime);
         usIncreaseValue = LDR_INCREASE;
         break;
     }
@@ -653,70 +653,70 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
     // build ptrs to appropriate profiletype stat fields
     switch (ubStat) {
       case HEALTHAMT:
-        psStatGainPtr = &(pProfile.value.sLifeGain);
-        pbStatPtr = &(pProfile.value.bLifeMax);
+        psStatGainPtr = addressof(pProfile.value.sLifeGain);
+        pbStatPtr = addressof(pProfile.value.bLifeMax);
 
         bMinStatValue = OKLIFE;
         break;
 
       case AGILAMT:
-        psStatGainPtr = &(pProfile.value.sAgilityGain);
-        pbStatPtr = &(pProfile.value.bAgility);
+        psStatGainPtr = addressof(pProfile.value.sAgilityGain);
+        pbStatPtr = addressof(pProfile.value.bAgility);
         break;
 
       case DEXTAMT:
-        psStatGainPtr = &(pProfile.value.sDexterityGain);
-        pbStatPtr = &(pProfile.value.bDexterity);
+        psStatGainPtr = addressof(pProfile.value.sDexterityGain);
+        pbStatPtr = addressof(pProfile.value.bDexterity);
         break;
 
       case WISDOMAMT:
-        psStatGainPtr = &(pProfile.value.sWisdomGain);
-        pbStatPtr = &(pProfile.value.bWisdom);
+        psStatGainPtr = addressof(pProfile.value.sWisdomGain);
+        pbStatPtr = addressof(pProfile.value.bWisdom);
         break;
 
       case MEDICALAMT:
-        psStatGainPtr = &(pProfile.value.sMedicalGain);
-        pbStatPtr = &(pProfile.value.bMedical);
+        psStatGainPtr = addressof(pProfile.value.sMedicalGain);
+        pbStatPtr = addressof(pProfile.value.bMedical);
 
         bMinStatValue = 0;
         break;
 
       case EXPLODEAMT:
-        psStatGainPtr = &(pProfile.value.sExplosivesGain);
-        pbStatPtr = &(pProfile.value.bExplosive);
+        psStatGainPtr = addressof(pProfile.value.sExplosivesGain);
+        pbStatPtr = addressof(pProfile.value.bExplosive);
 
         bMinStatValue = 0;
         break;
 
       case MECHANAMT:
-        psStatGainPtr = &(pProfile.value.sMechanicGain);
-        pbStatPtr = &(pProfile.value.bMechanical);
+        psStatGainPtr = addressof(pProfile.value.sMechanicGain);
+        pbStatPtr = addressof(pProfile.value.bMechanical);
 
         bMinStatValue = 0;
         break;
 
       case MARKAMT:
-        psStatGainPtr = &(pProfile.value.sMarksmanshipGain);
-        pbStatPtr = &(pProfile.value.bMarksmanship);
+        psStatGainPtr = addressof(pProfile.value.sMarksmanshipGain);
+        pbStatPtr = addressof(pProfile.value.bMarksmanship);
 
         bMinStatValue = 0;
         break;
 
       case EXPERAMT:
-        psStatGainPtr = &(pProfile.value.sExpLevelGain);
-        pbStatPtr = &(pProfile.value.bExpLevel);
+        psStatGainPtr = addressof(pProfile.value.sExpLevelGain);
+        pbStatPtr = addressof(pProfile.value.bExpLevel);
 
         bMaxStatValue = MAXEXPLEVEL;
         break;
 
       case STRAMT:
-        psStatGainPtr = &(pProfile.value.sStrengthGain);
-        pbStatPtr = &(pProfile.value.bStrength);
+        psStatGainPtr = addressof(pProfile.value.sStrengthGain);
+        pbStatPtr = addressof(pProfile.value.bStrength);
         break;
 
       case LDRAMT:
-        psStatGainPtr = &(pProfile.value.sLeadershipGain);
-        pbStatPtr = &(pProfile.value.bLeadership);
+        psStatGainPtr = addressof(pProfile.value.sLeadershipGain);
+        pbStatPtr = addressof(pProfile.value.bLeadership);
         break;
     }
 
@@ -725,47 +725,47 @@ function ProcessUpdateStats(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Poin
       // build ptrs to appropriate soldiertype stat fields
       switch (ubStat) {
         case HEALTHAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bLifeMax);
+          pbSoldierStatPtr = addressof(pSoldier.value.bLifeMax);
           break;
 
         case AGILAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bAgility);
+          pbSoldierStatPtr = addressof(pSoldier.value.bAgility);
           break;
 
         case DEXTAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bDexterity);
+          pbSoldierStatPtr = addressof(pSoldier.value.bDexterity);
           break;
 
         case WISDOMAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bWisdom);
+          pbSoldierStatPtr = addressof(pSoldier.value.bWisdom);
           break;
 
         case MEDICALAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bMedical);
+          pbSoldierStatPtr = addressof(pSoldier.value.bMedical);
           break;
 
         case EXPLODEAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bExplosive);
+          pbSoldierStatPtr = addressof(pSoldier.value.bExplosive);
           break;
 
         case MECHANAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bMechanical);
+          pbSoldierStatPtr = addressof(pSoldier.value.bMechanical);
           break;
 
         case MARKAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bMarksmanship);
+          pbSoldierStatPtr = addressof(pSoldier.value.bMarksmanship);
           break;
 
         case EXPERAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bExpLevel);
+          pbSoldierStatPtr = addressof(pSoldier.value.bExpLevel);
           break;
 
         case STRAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bStrength);
+          pbSoldierStatPtr = addressof(pSoldier.value.bStrength);
           break;
 
         case LDRAMT:
-          pbSoldierStatPtr = &(pSoldier.value.bLeadership);
+          pbSoldierStatPtr = addressof(pSoldier.value.bLeadership);
           break;
       }
     }
@@ -804,7 +804,7 @@ function HandleAnyStatChangesAfterAttack(): void {
   // must check everyone on player's team, not just the shooter
   for (cnt = 0, pSoldier = MercPtrs[0]; cnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; cnt++, pSoldier++) {
     if (pSoldier.value.bActive) {
-      ProcessUpdateStats(&(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
+      ProcessUpdateStats(addressof(gMercProfiles[pSoldier.value.ubProfile]), pSoldier);
     }
   }
 }
@@ -956,7 +956,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
 function HandleUnhiredMercDeaths(iProfileID: INT32): void {
   let ubMaxDeaths: UINT8;
   let sChance: INT16;
-  let pProfile: Pointer<MERCPROFILESTRUCT> = &(gMercProfiles[iProfileID]);
+  let pProfile: Pointer<MERCPROFILESTRUCT> = addressof(gMercProfiles[iProfileID]);
 
   // if the player has never yet had the chance to hire this merc
   if (!(pProfile.value.ubMiscFlags3 & PROFILE_MISC_FLAG3_PLAYER_HAD_CHANCE_TO_HIRE)) {

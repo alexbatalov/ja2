@@ -43,7 +43,7 @@ function SmkPollFlics(): BOOLEAN {
       fFlicStatus = TRUE;
       if (!fSuspendFlics) {
         if (!SmackWait(SmkList[uiCount].SmackHandle)) {
-          DDLockSurface(SmkList[uiCount].lpDDS, NULL, &SurfaceDescription, 0, NULL);
+          DDLockSurface(SmkList[uiCount].lpDDS, NULL, addressof(SurfaceDescription), 0, NULL);
           SmackToBuffer(SmkList[uiCount].SmackHandle, SmkList[uiCount].uiLeft, SmkList[uiCount].uiTop, SurfaceDescription.lPitch, SmkList[uiCount].SmackHandle.value.Height, SurfaceDescription.lpSurface, guiSmackPixelFormat);
           SmackDoFrame(SmkList[uiCount].SmackHandle);
           DDUnlockSurface(SmkList[uiCount].lpDDS, SurfaceDescription.lpSurface);
@@ -56,7 +56,7 @@ function SmkPollFlics(): BOOLEAN {
             if (SmkList[uiCount].uiFlags & SMK_FLIC_LOOP)
               SmackGoto(SmkList[uiCount].SmackHandle, 0);
             else if (SmkList[uiCount].uiFlags & SMK_FLIC_AUTOCLOSE)
-              SmkCloseFlic(&SmkList[uiCount]);
+              SmkCloseFlic(addressof(SmkList[uiCount]));
           } else
             SmackNextFrame(SmkList[uiCount].SmackHandle);
         }
@@ -97,7 +97,7 @@ function SmkShutdown(): void {
   // Close and deallocate any open flics
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++) {
     if (SmkList[uiCount].uiFlags & SMK_FLIC_OPEN)
-      SmkCloseFlic(&SmkList[uiCount]);
+      SmkCloseFlic(addressof(SmkList[uiCount]));
   }
 }
 
@@ -188,7 +188,7 @@ function SmkGetFreeFlic(): Pointer<SMKFLIC> {
 
   for (uiCount = 0; uiCount < SMK_NUM_FLICS; uiCount++)
     if (!(SmkList[uiCount].uiFlags & SMK_FLIC_OPEN))
-      return &SmkList[uiCount];
+      return addressof(SmkList[uiCount]);
 
   return NULL;
 }
@@ -204,12 +204,12 @@ function SmkSetupVideo(): void {
   // DEF:
   //	lpVideoPlayback2=CinematicModeOn();
 
-  GetVideoSurface(&hVSurface, FRAME_BUFFER);
+  GetVideoSurface(addressof(hVSurface), FRAME_BUFFER);
   lpVideoPlayback2 = GetVideoSurfaceDDSurface(hVSurface);
 
   ZEROMEM(SurfaceDescription);
   SurfaceDescription.dwSize = sizeof(DDSURFACEDESC);
-  ReturnCode = IDirectDrawSurface2_GetSurfaceDesc(lpVideoPlayback2, &SurfaceDescription);
+  ReturnCode = IDirectDrawSurface2_GetSurfaceDesc(lpVideoPlayback2, addressof(SurfaceDescription));
   if (ReturnCode != DD_OK) {
     DirectXAttempt(ReturnCode, __LINE__, __FILE__);
     return;

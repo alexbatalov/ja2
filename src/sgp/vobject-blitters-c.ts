@@ -51,7 +51,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -316,7 +316,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(hSrcVObject != NULL);
   Assert(pBuffer != NULL);
 
-  p16BPPObject = &(hSrcVObject.value.p16BPPObject[usIndex]);
+  p16BPPObject = addressof(hSrcVObject.value.p16BPPObject[usIndex]);
 
   // Get Offsets from Index into structure
   usHeight = p16BPPObject.value.usHeight;
@@ -579,7 +579,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -831,7 +831,7 @@ function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -968,7 +968,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -1223,7 +1223,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -1354,7 +1354,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -1682,7 +1682,7 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -1791,7 +1791,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -1930,7 +1930,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -2188,7 +2188,7 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -2315,7 +2315,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -2451,7 +2451,7 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -2724,7 +2724,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -2987,7 +2987,7 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3250,7 +3250,7 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3398,7 +3398,7 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3624,7 +3624,7 @@ function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBY
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3737,7 +3737,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3868,7 +3868,7 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4124,7 +4124,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4377,7 +4377,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4624,7 +4624,7 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4735,7 +4735,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4857,7 +4857,7 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5112,7 +5112,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5353,7 +5353,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5476,7 +5476,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5608,7 +5608,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5873,7 +5873,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -6117,7 +6117,7 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -6268,7 +6268,7 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -6549,7 +6549,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -7096,7 +7096,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -7226,7 +7226,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -7383,7 +7383,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -7642,7 +7642,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -7783,7 +7783,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8039,7 +8039,7 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8154,7 +8154,7 @@ function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8267,7 +8267,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8383,7 +8383,7 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8490,7 +8490,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8609,7 +8609,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8730,7 +8730,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -8886,7 +8886,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -9147,7 +9147,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -9396,7 +9396,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -9660,7 +9660,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -9946,7 +9946,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -10195,7 +10195,7 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -10317,7 +10317,7 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -10557,7 +10557,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -10677,7 +10677,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -10928,7 +10928,7 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -11181,7 +11181,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -11433,7 +11433,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -12082,13 +12082,13 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
 
   // Get Offsets from Index into structure for mask
-  pTrav = &(hMaskObject.value.pETRLEObject[usMask]);
+  pTrav = addressof(hMaskObject.value.pETRLEObject[usMask]);
   usMHeight = pTrav.value.usHeight;
   usMWidth = pTrav.value.usWidth;
   uiMOffset = pTrav.value.uiDataOffset;
@@ -12210,13 +12210,13 @@ function SetClippingRect(clip: Pointer<SGPRect>): void {
   Assert(clip.value.iLeft < clip.value.iRight);
   Assert(clip.value.iTop < clip.value.iBottom);
 
-  memcpy(&ClippingRect, clip, sizeof(SGPRect));
+  memcpy(addressof(ClippingRect), clip, sizeof(SGPRect));
 }
 
 function GetClippingRect(clip: Pointer<SGPRect>): void {
   Assert(clip != NULL);
 
-  memcpy(clip, &ClippingRect, sizeof(SGPRect));
+  memcpy(clip, addressof(ClippingRect), sizeof(SGPRect));
 }
 
 /**********************************************************************************************
@@ -12397,7 +12397,7 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -12537,7 +12537,7 @@ function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -12686,7 +12686,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -12852,7 +12852,7 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -13120,7 +13120,7 @@ function BltIsClipped(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, usIndex: UINT
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
 
@@ -13192,7 +13192,7 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -13591,7 +13591,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -14205,7 +14205,7 @@ function BltIsClippedOrOffScreen(hSrcVObject: HVOBJECT, iX: INT32, iY: INT32, us
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
 
@@ -14275,7 +14275,7 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -14390,7 +14390,7 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -14635,7 +14635,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -14899,7 +14899,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15174,7 +15174,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15277,7 +15277,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15540,7 +15540,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15664,7 +15664,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15810,7 +15810,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -15941,7 +15941,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -16063,7 +16063,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -16303,7 +16303,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -16423,7 +16423,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -16670,7 +16670,7 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -16933,7 +16933,7 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -17091,7 +17091,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UIN
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;

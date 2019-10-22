@@ -61,9 +61,9 @@ function NewLightEffect(sGridNo: INT16, bType: INT8): INT32 {
   if ((iLightIndex = GetFreeLightEffect()) == (-1))
     return -1;
 
-  memset(&gLightEffectData[iLightIndex], 0, sizeof(LIGHTEFFECT));
+  memset(addressof(gLightEffectData[iLightIndex]), 0, sizeof(LIGHTEFFECT));
 
-  pLight = &gLightEffectData[iLightIndex];
+  pLight = addressof(gLightEffectData[iLightIndex]);
 
   // Set some values...
   pLight.value.sGridNo = sGridNo;
@@ -98,7 +98,7 @@ function RemoveLightEffectFromTile(sGridNo: INT16): void {
 
   // Set to unallocated....
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
-    pLight = &gLightEffectData[cnt];
+    pLight = addressof(gLightEffectData[cnt]);
 
     if (pLight.value.fAllocated) {
       if (pLight.value.sGridNo == sGridNo) {
@@ -123,7 +123,7 @@ function DecayLightEffects(uiTime: UINT32): void {
 
   // age all active tear gas clouds, deactivate those that are just dispersing
   for (cnt = 0; cnt < guiNumLightEffects; cnt++) {
-    pLight = &gLightEffectData[cnt];
+    pLight = addressof(gLightEffectData[cnt]);
 
     fDelete = FALSE;
 
@@ -226,7 +226,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     memset(gLightEffectData, 0, sizeof(LIGHTEFFECT) * NUM_LIGHT_EFFECT_SLOTS);
 
     // Load the Number of Light Effects
-    FileRead(hFile, &guiNumLightEffects, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       return FALSE;
     }
@@ -236,7 +236,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
       // loop through and apply the light effects to the map
       for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
         // Load the Light effect Data
-        FileRead(hFile, &gLightEffectData[uiCount], sizeof(LIGHTEFFECT), &uiNumBytesRead);
+        FileRead(hFile, addressof(gLightEffectData[uiCount]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
           return FALSE;
         }
@@ -246,7 +246,7 @@ function LoadLightEffectsFromLoadGameFile(hFile: HWFILE): BOOLEAN {
     // loop through and apply the light effects to the map
     for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
       if (gLightEffectData[uiCount].fAllocated)
-        UpdateLightingSprite(&(gLightEffectData[uiCount]));
+        UpdateLightingSprite(addressof(gLightEffectData[uiCount]));
     }
   }
 
@@ -288,7 +288,7 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
   }
 
   // Save the Number of Light Effects
-  FileWrite(hFile, &uiNumLightEffects, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Close the file
     FileClose(hFile);
@@ -301,7 +301,7 @@ function SaveLightEffectsToMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8):
     // if the Light is active
     if (gLightEffectData[uiCnt].fAllocated) {
       // Save the Light effect Data
-      FileWrite(hFile, &gLightEffectData[uiCnt], sizeof(LIGHTEFFECT), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(gLightEffectData[uiCnt]), sizeof(LIGHTEFFECT), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(LIGHTEFFECT)) {
         // Close the file
         FileClose(hFile);
@@ -340,7 +340,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   ResetLightEffects();
 
   // Load the Number of Light Effects
-  FileRead(hFile, &guiNumLightEffects, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(guiNumLightEffects), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     FileClose(hFile);
     return FALSE;
@@ -349,7 +349,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   // loop through and load the list
   for (uiCnt = 0; uiCnt < guiNumLightEffects; uiCnt++) {
     // Load the Light effect Data
-    FileRead(hFile, &gLightEffectData[uiCnt], sizeof(LIGHTEFFECT), &uiNumBytesRead);
+    FileRead(hFile, addressof(gLightEffectData[uiCnt]), sizeof(LIGHTEFFECT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(LIGHTEFFECT)) {
       FileClose(hFile);
       return FALSE;
@@ -359,7 +359,7 @@ function LoadLightEffectsFromMapTempFile(sMapX: INT16, sMapY: INT16, bMapZ: INT8
   // loop through and apply the light effects to the map
   for (uiCount = 0; uiCount < guiNumLightEffects; uiCount++) {
     if (gLightEffectData[uiCount].fAllocated)
-      UpdateLightingSprite(&(gLightEffectData[uiCount]));
+      UpdateLightingSprite(addressof(gLightEffectData[uiCount]));
   }
 
   FileClose(hFile);

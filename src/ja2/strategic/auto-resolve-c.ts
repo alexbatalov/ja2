@@ -253,7 +253,7 @@ function EliminateAllMercs(): void {
   if (gpAR) {
     for (i = 0; i < gpAR.value.ubEnemies; i++) {
       if (gpEnemies[i].pSoldier.value.bLife) {
-        pAttacker = &gpEnemies[i];
+        pAttacker = addressof(gpEnemies[i]);
         break;
       }
     }
@@ -297,12 +297,12 @@ function EliminateAllEnemies(ubSectorX: UINT8, ubSectorY: UINT8): void {
   gfBlitBattleSectorLocator = FALSE;
 
   pGroup = gpGroupList;
-  pSector = &SectorInfo[SECTOR(ubSectorX, ubSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(ubSectorX, ubSectorY)]);
 
   // if we're doing this from the Pre-Battle interface, gpAR is NULL, and RemoveAutoResolveInterface(0 won't happen, so
   // we must process the enemies killed right here & give out loyalty bonuses as if the battle had been fought & won
   if (!gpAR) {
-    GetNumberOfEnemiesInSector(ubSectorX, ubSectorY, &ubNumEnemies[0], &ubNumEnemies[1], &ubNumEnemies[2]);
+    GetNumberOfEnemiesInSector(ubSectorX, ubSectorY, addressof(ubNumEnemies[0]), addressof(ubNumEnemies[1]), addressof(ubNumEnemies[2]));
 
     for (ubRankIndex = 0; ubRankIndex < NUM_ENEMY_RANKS; ubRankIndex++) {
       for (i = 0; i < ubNumEnemies[ubRankIndex]; i++) {
@@ -431,7 +431,7 @@ function DoTransitionFromPreBattleInterfaceToAutoResolve(): void {
     DstRect.iTop = iTop - iHeight * iPercentage / 200;
     DstRect.iBottom = DstRect.iTop + max(iHeight * iPercentage / 100, 1);
 
-    BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, &SrcRect, &DstRect);
+    BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(SrcRect), addressof(DstRect));
     InvalidateScreen();
     RefreshScreen(NULL);
 
@@ -518,8 +518,8 @@ function AutoResolveScreenHandle(): UINT32 {
     ClipRect.iTop = 0;
     ClipRect.iRight = 640;
     ClipRect.iBottom = 480;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
     UnLockVideoSurface(FRAME_BUFFER);
     BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
     KillPreBattleInterface();
@@ -583,7 +583,7 @@ function AssociateEnemiesWithStrategicGroups(): void {
   if (gubEnemyEncounterCode == CREATURE_ATTACK_CODE)
     return;
 
-  pSector = &SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(gpAR.value.ubSectorX, gpAR.value.ubSectorY)]);
 
   // grab the number of each type in the stationary sector
   ubNumAdmins = pSector.value.ubNumAdmins;
@@ -800,8 +800,8 @@ function RenderSoldierCell(pCell: Pointer<SOLDIERCELL>): void {
     ClipRect.iTop = pCell.value.yp + 3;
     ClipRect.iRight = pCell.value.xp + 33 + x;
     ClipRect.iBottom = pCell.value.yp + 29;
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, addressof(ClipRect));
     UnLockVideoSurface(FRAME_BUFFER);
   }
 
@@ -881,16 +881,16 @@ function BuildInterfaceBuffer(): void {
   // create buffer for the transition slot for merc items.  This slot contains the newly
   // selected item graphic in it's inventory size version.  This buffer is then scaled down
   // into the associated merc inventory panel slot buffer which is approximately 20% smaller.
-  GetCurrentVideoSettings(&usUselessWidth, &usUselessHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usUselessWidth), addressof(usUselessHeight), addressof(ubBitDepth));
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = gpAR.value.sWidth;
   vs_desc.usHeight = gpAR.value.sHeight;
   vs_desc.ubBitDepth = ubBitDepth;
-  if (!AddVideoSurface(&vs_desc, &gpAR.value.iInterfaceBuffer))
+  if (!AddVideoSurface(addressof(vs_desc), addressof(gpAR.value.iInterfaceBuffer)))
     AssertMsg(0, "Failed to allocate memory for autoresolve interface buffer.");
 
-  GetClippingRect(&ClipRect);
-  SetClippingRect(&DestRect);
+  GetClippingRect(addressof(ClipRect));
+  SetClippingRect(addressof(DestRect));
 
   // Blit the back panels...
   for (y = DestRect.iTop; y < DestRect.iBottom; y += 40) {
@@ -930,7 +930,7 @@ function BuildInterfaceBuffer(): void {
   y = gpAR.value.sHeight - 40;
   BltVideoObjectFromIndex(gpAR.value.iInterfaceBuffer, gpAR.value.iPanelImages, BOT_MIDDLE, x, y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-  SetClippingRect(&ClipRect);
+  SetClippingRect(addressof(ClipRect));
 }
 
 function ExpandWindow(): void {
@@ -1010,7 +1010,7 @@ function ExpandWindow(): void {
   }
 
   // The new rect now determines the state of the current rectangle.
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   RectangleDraw(TRUE, gpAR.value.ExRect.iLeft, gpAR.value.ExRect.iTop, gpAR.value.ExRect.iRight, gpAR.value.ExRect.iBottom, Get16BPPColor(FROMRGB(200, 200, 100)), pDestBuf);
   UnLockVideoSurface(FRAME_BUFFER);
@@ -1179,7 +1179,7 @@ function FindMedicalKit(): Pointer<OBJECTTYPE> {
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     iSlot = FindObjClass(gpMercs[i].pSoldier, IC_MEDKIT);
     if (iSlot != NO_SLOT) {
-      return &gpMercs[i].pSoldier.value.inv[iSlot];
+      return addressof(gpMercs[i].pSoldier.value.inv[iSlot]);
     }
   }
   return NULL;
@@ -1209,7 +1209,7 @@ function AutoBandageMercs(): UINT32 {
       uiCurrPointsUsed = 0;
       cnt = 0;
       while (gpMercs[i].pSoldier.value.bBleeding) {
-        pKit = &gpMercs[i].pSoldier.value.inv[bSlot];
+        pKit = addressof(gpMercs[i].pSoldier.value.inv[bSlot]);
         usKitPts = TotalPoints(pKit);
         if (!usKitPts) {
           // attempt to find another kit before stopping
@@ -1310,34 +1310,34 @@ function RenderAutoResolve(): void {
     // update the dirty cells only
     for (i = 0; i < gpAR.value.ubMercs; i++) {
       if (gpMercs[i].uiFlags & CELL_DIRTY) {
-        RenderSoldierCell(&gpMercs[i]);
+        RenderSoldierCell(addressof(gpMercs[i]));
       }
     }
     for (i = 0; i < gpAR.value.ubCivs; i++) {
       if (gpCivs[i].uiFlags & CELL_DIRTY) {
-        RenderSoldierCell(&gpCivs[i]);
+        RenderSoldierCell(addressof(gpCivs[i]));
       }
     }
     for (i = 0; i < gpAR.value.ubEnemies; i++) {
       if (gpEnemies[i].uiFlags & CELL_DIRTY) {
-        RenderSoldierCell(&gpEnemies[i]);
+        RenderSoldierCell(addressof(gpEnemies[i]));
       }
     }
     return;
   }
   gpAR.value.fRenderAutoResolve = FALSE;
 
-  GetVideoSurface(&hVSurface, gpAR.value.iInterfaceBuffer);
+  GetVideoSurface(addressof(hVSurface), gpAR.value.iInterfaceBuffer);
   BltVideoSurfaceToVideoSurface(ghFrameBuffer, hVSurface, 0, gpAR.value.Rect.iLeft, gpAR.value.Rect.iTop, VO_BLT_SRCTRANSPARENCY, 0);
 
   for (i = 0; i < gpAR.value.ubMercs; i++) {
-    RenderSoldierCell(&gpMercs[i]);
+    RenderSoldierCell(addressof(gpMercs[i]));
   }
   for (i = 0; i < gpAR.value.ubCivs; i++) {
-    RenderSoldierCell(&gpCivs[i]);
+    RenderSoldierCell(addressof(gpCivs[i]));
   }
   for (i = 0; i < gpAR.value.ubEnemies; i++) {
-    RenderSoldierCell(&gpEnemies[i]);
+    RenderSoldierCell(addressof(gpEnemies[i]));
   }
 
   // Render the titles
@@ -1518,14 +1518,14 @@ function CreateAutoResolveInterface(): void {
   let ubRegMilitia: UINT8;
   let ubEliteMilitia: UINT8;
   // Setup new autoresolve blanket interface.
-  MSYS_DefineRegion(&gpAR.value.AutoResolveRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(gpAR.value.AutoResolveRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   gpAR.value.fRenderAutoResolve = TRUE;
   gpAR.value.fExitAutoResolve = FALSE;
 
   // Load the general panel image pieces, to be combined to make the dynamically sized window.
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(VObjectDesc.ImageFile, "Interface\\AutoResolve.sti");
-  if (!AddVideoObject(&VObjectDesc, &gpAR.value.iPanelImages)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iPanelImages))) {
     AssertMsg(0, "Failed to load Interface\\AutoResolve.sti");
   }
 
@@ -1564,17 +1564,17 @@ function CreateAutoResolveInterface(): void {
 
   // Load the generic faces for civs and enemies
   sprintf(VObjectDesc.ImageFile, "Interface\\SmFaces.sti");
-  if (!AddVideoObject(&VObjectDesc, &gpAR.value.iFaces)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iFaces))) {
     AssertMsg(0, "Failed to load Interface\\SmFaces.sti");
   }
-  if (GetVideoObject(&hVObject, gpAR.value.iFaces)) {
+  if (GetVideoObject(addressof(hVObject), gpAR.value.iFaces)) {
     hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
     hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, TRUE);
   }
 
   // Add the battle over panels
   sprintf(VObjectDesc.ImageFile, "Interface\\indent.sti");
-  if (!AddVideoObject(&VObjectDesc, &gpAR.value.iIndent)) {
+  if (!AddVideoObject(addressof(VObjectDesc), addressof(gpAR.value.iIndent))) {
     AssertMsg(0, "Failed to load Interface\\indent.sti");
   }
 
@@ -1584,13 +1584,13 @@ function CreateAutoResolveInterface(): void {
     // Load the face
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\%02d.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex);
-    if (!AddVideoObject(&VObjectDesc, &gpMercs[i].uiVObjectID)) {
+    if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
       sprintf(VObjectDesc.ImageFile, "Faces\\65Face\\speck.sti");
-      if (!AddVideoObject(&VObjectDesc, &gpMercs[i].uiVObjectID)) {
+      if (!AddVideoObject(addressof(VObjectDesc), addressof(gpMercs[i].uiVObjectID))) {
         AssertMsg(0, String("Failed to load %Faces\\65Face\\%02d.sti or it's placeholder, speck.sti", gMercProfiles[gpMercs[i].pSoldier.value.ubProfile].ubFaceIndex));
       }
     }
-    if (GetVideoObject(&hVObject, gpMercs[i].uiVObjectID)) {
+    if (GetVideoObject(addressof(hVObject), gpMercs[i].uiVObjectID)) {
       hVObject.value.pShades[0] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 255, 255, 255, FALSE);
       hVObject.value.pShades[1] = Create16BPPPaletteShaded(hVObject.value.pPaletteEntry, 250, 25, 25, TRUE);
     }
@@ -1765,7 +1765,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
 
   // VtResumeSampling();
 
-  MSYS_RemoveRegion(&gpAR.value.AutoResolveRegion);
+  MSYS_RemoveRegion(addressof(gpAR.value.AutoResolveRegion));
   DeleteVideoObjectFromIndex(gpAR.value.iPanelImages);
   DeleteVideoObjectFromIndex(gpAR.value.iFaces);
   DeleteVideoObjectFromIndex(gpAR.value.iIndent);
@@ -1888,7 +1888,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
         }
       }
       TacticalRemoveSoldierPointer(gpCivs[i].pSoldier, FALSE);
-      memset(&gpCivs[i], 0, sizeof(SOLDIERCELL));
+      memset(addressof(gpCivs[i]), 0, sizeof(SOLDIERCELL));
     }
   }
 
@@ -1921,7 +1921,7 @@ function RemoveAutoResolveInterface(fDeleteForGood: BOOLEAN): void {
   for (i = 0; i < 32; i++) {
     if (gpEnemies[i].pSoldier) {
       TacticalRemoveSoldierPointer(gpEnemies[i].pSoldier, FALSE);
-      memset(&gpEnemies[i], 0, sizeof(SOLDIERCELL));
+      memset(addressof(gpEnemies[i]), 0, sizeof(SOLDIERCELL));
     }
   }
 
@@ -2102,7 +2102,7 @@ function MercCellMouseMoveCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): v
   let pCell: Pointer<SOLDIERCELL> = NULL;
   for (i = 0; i < gpAR.value.ubMercs; i++) {
     if (gpMercs[i].pRegion == reg) {
-      pCell = &gpMercs[i];
+      pCell = addressof(gpMercs[i]);
       break;
     }
   }
@@ -2137,7 +2137,7 @@ function MercCellMouseClickCallback(reg: Pointer<MOUSE_REGION>, reason: INT32): 
 
     for (i = 0; i < gpAR.value.ubMercs; i++) {
       if (gpMercs[i].pRegion == reg) {
-        pCell = &gpMercs[i];
+        pCell = addressof(gpMercs[i]);
         break;
       }
     }
@@ -2192,13 +2192,13 @@ function CalculateAutoResolveInfo(): void {
   Assert(gpAR.value.ubSectorY >= 1 && gpAR.value.ubSectorY <= 16);
 
   if (gubEnemyEncounterCode != CREATURE_ATTACK_CODE) {
-    GetNumberOfEnemiesInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, &gpAR.value.ubAdmins, &gpAR.value.ubTroops, &gpAR.value.ubElites);
+    GetNumberOfEnemiesInSector(gpAR.value.ubSectorX, gpAR.value.ubSectorY, addressof(gpAR.value.ubAdmins), addressof(gpAR.value.ubTroops), addressof(gpAR.value.ubElites));
     gpAR.value.ubEnemies = min(gpAR.value.ubAdmins + gpAR.value.ubTroops + gpAR.value.ubElites, 32);
   } else {
     if (gfTransferTacticalOppositionToAutoResolve) {
-      DetermineCreatureTownCompositionBasedOnTacticalInformation(&gubNumCreaturesAttackingTown, &gpAR.value.ubYMCreatures, &gpAR.value.ubYFCreatures, &gpAR.value.ubAMCreatures, &gpAR.value.ubAFCreatures);
+      DetermineCreatureTownCompositionBasedOnTacticalInformation(addressof(gubNumCreaturesAttackingTown), addressof(gpAR.value.ubYMCreatures), addressof(gpAR.value.ubYFCreatures), addressof(gpAR.value.ubAMCreatures), addressof(gpAR.value.ubAFCreatures));
     } else {
-      DetermineCreatureTownComposition(gubNumCreaturesAttackingTown, &gpAR.value.ubYMCreatures, &gpAR.value.ubYFCreatures, &gpAR.value.ubAMCreatures, &gpAR.value.ubAFCreatures);
+      DetermineCreatureTownComposition(gubNumCreaturesAttackingTown, addressof(gpAR.value.ubYMCreatures), addressof(gpAR.value.ubYFCreatures), addressof(gpAR.value.ubAMCreatures), addressof(gpAR.value.ubAFCreatures));
     }
     gpAR.value.ubEnemies = min(gpAR.value.ubYMCreatures + gpAR.value.ubYFCreatures + gpAR.value.ubAMCreatures + gpAR.value.ubAFCreatures, 32);
   }
@@ -2223,7 +2223,7 @@ function CalculateAutoResolveInfo(): void {
             gpAR.value.fCaptureNotPermittedDueToEPCs = TRUE;
           }
           if (AM_A_ROBOT(pPlayer.value.pSoldier)) {
-            gpAR.value.pRobotCell = &gpMercs[gpAR.value.ubMercs - 1];
+            gpAR.value.pRobotCell = addressof(gpMercs[gpAR.value.ubMercs - 1]);
             UpdateRobotControllerGivenRobot(gpAR.value.pRobotCell.value.pSoldier);
           }
         }
@@ -2445,7 +2445,7 @@ function CalculateRowsAndColumns(): void {
 function HandleAutoResolveInput(): void {
   let InputEvent: InputAtom;
   let fResetAutoResolve: BOOLEAN = FALSE;
-  while (DequeueEvent(&InputEvent)) {
+  while (DequeueEvent(addressof(InputEvent))) {
     if (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT) {
       switch (InputEvent.usParam) {
         case SPACE:
@@ -2488,8 +2488,8 @@ function RenderSoldierCellHealth(pCell: Pointer<SOLDIERCELL>): void {
 
   SetFont(SMALLCOMPFONT);
   // Restore the background before drawing text.
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(gpAR.value.iInterfaceBuffer, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(gpAR.value.iInterfaceBuffer, addressof(uiSrcPitchBYTES));
   xp = pCell.value.xp + 2;
   yp = pCell.value.yp + 32;
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, xp, yp, xp - gpAR.value.Rect.iLeft, yp - gpAR.value.Rect.iTop, 46, 10);
@@ -2587,7 +2587,7 @@ function CreateTempPlayerMerc(): void {
   let ubID: UINT8;
 
   // Init the merc create structure with basic information
-  memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+  memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
   MercCreateStruct.ubProfile = GetUnusedMercProfileID();
   MercCreateStruct.sSectorX = gpAR.value.ubSectorX;
@@ -2598,7 +2598,7 @@ function CreateTempPlayerMerc(): void {
 
   // Create the player soldier
 
-  gpMercs[gpAR.value.iNumMercFaces].pSoldier = TacticalCreateSoldier(&MercCreateStruct, &ubID);
+  gpMercs[gpAR.value.iNumMercFaces].pSoldier = TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID));
   if (gpMercs[gpAR.value.iNumMercFaces].pSoldier) {
     gpAR.value.iNumMercFaces++;
   }
@@ -2614,13 +2614,13 @@ function DetermineTeamLeader(fFriendlyTeam: BOOLEAN): void {
     for (i = 0; i < gpAR.value.ubMercs; i++) {
       if (gpMercs[i].pSoldier.value.bLeadership > gpAR.value.ubPlayerLeadership) {
         gpAR.value.ubPlayerLeadership = gpMercs[i].pSoldier.value.bLeadership;
-        pBestLeaderCell = &gpMercs[i];
+        pBestLeaderCell = addressof(gpMercs[i]);
       }
     }
     for (i = 0; i < gpAR.value.ubCivs; i++) {
       if (gpCivs[i].pSoldier.value.bLeadership > gpAR.value.ubPlayerLeadership) {
         gpAR.value.ubPlayerLeadership = gpCivs[i].pSoldier.value.bLeadership;
-        pBestLeaderCell = &gpCivs[i];
+        pBestLeaderCell = addressof(gpCivs[i]);
       }
     }
 
@@ -2635,7 +2635,7 @@ function DetermineTeamLeader(fFriendlyTeam: BOOLEAN): void {
   for (i = 0; i < gpAR.value.ubEnemies; i++) {
     if (gpEnemies[i].pSoldier.value.bLeadership > gpAR.value.ubEnemyLeadership) {
       gpAR.value.ubEnemyLeadership = gpEnemies[i].pSoldier.value.bLeadership;
-      pBestLeaderCell = &gpEnemies[i];
+      pBestLeaderCell = addressof(gpEnemies[i]);
     }
   }
   if (pBestLeaderCell) {
@@ -2674,7 +2674,7 @@ function CalculateAttackValues(): void {
   //}
 
   for (i = 0; i < gpAR.value.ubMercs; i++) {
-    pCell = &gpMercs[i];
+    pCell = addressof(gpMercs[i]);
     pSoldier = pCell.value.pSoldier;
     if (!pSoldier.value.bLife)
       continue;
@@ -2719,7 +2719,7 @@ function CalculateAttackValues(): void {
   }
   // CIVS
   for (i = 0; i < gpAR.value.ubCivs; i++) {
-    pCell = &gpCivs[i];
+    pCell = addressof(gpCivs[i]);
     pSoldier = pCell.value.pSoldier;
     pCell.value.usAttack = pSoldier.value.bStrength + pSoldier.value.bDexterity + pSoldier.value.bWisdom + pSoldier.value.bMarksmanship + pSoldier.value.bMorale;
     pCell.value.usAttack = pCell.value.usAttack * pSoldier.value.bBreath / 100;
@@ -2757,7 +2757,7 @@ function CalculateAttackValues(): void {
   //}
 
   for (i = 0; i < gpAR.value.ubEnemies; i++) {
-    pCell = &gpEnemies[i];
+    pCell = addressof(gpEnemies[i]);
     pSoldier = pCell.value.pSoldier;
     pCell.value.usAttack = pSoldier.value.bStrength + pSoldier.value.bDexterity + pSoldier.value.bWisdom + pSoldier.value.bMarksmanship + pSoldier.value.bMorale;
     pCell.value.usAttack = pCell.value.usAttack * pSoldier.value.bBreath / 100;
@@ -2852,7 +2852,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
     index = 0;
     usSavedDefence = gpAR.value.usPlayerDefence;
     while (iAvailableTargets) {
-      pTarget = (index < gpAR.value.ubMercs) ? &gpMercs[index] : &gpCivs[index - gpAR.value.ubMercs];
+      pTarget = (index < gpAR.value.ubMercs) ? addressof(gpMercs[index]) : addressof(gpCivs[index - gpAR.value.ubMercs]);
       if (!pTarget.value.pSoldier.value.bLife || pTarget.value.uiFlags & CELL_RETREATED) {
         index++;
         iAvailableTargets--;
@@ -2876,7 +2876,7 @@ function ChooseTarget(pAttacker: Pointer<SOLDIERCELL>): Pointer<SOLDIERCELL> {
     index = 0;
     usSavedDefence = gpAR.value.usEnemyDefence;
     while (iAvailableTargets) {
-      pTarget = &gpEnemies[index];
+      pTarget = addressof(gpEnemies[index]);
       if (!pTarget.value.pSoldier.value.bLife) {
         index++;
         iAvailableTargets--;
@@ -2909,7 +2909,7 @@ function FireAShot(pAttacker: Pointer<SOLDIERCELL>): BOOLEAN {
     return TRUE;
   }
   for (i = 0; i < NUM_INV_SLOTS; i++) {
-    pItem = &pSoldier.value.inv[i];
+    pItem = addressof(pSoldier.value.inv[i]);
 
     if (Item[pItem.value.usItem].usItemClass == IC_GUN) {
       pAttacker.value.bWeaponSlot = i;
@@ -2956,7 +2956,7 @@ function TargetHasLoadedGun(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let i: INT32;
   let pItem: Pointer<OBJECTTYPE>;
   for (i = 0; i < NUM_INV_SLOTS; i++) {
-    pItem = &pSoldier.value.inv[i];
+    pItem = addressof(pSoldier.value.inv[i]);
     if (Item[pItem.value.usItem].usItemClass == IC_GUN) {
       if (gpAR.value.fUnlimitedAmmo) {
         return TRUE;
@@ -3085,18 +3085,18 @@ function AttackTarget(pAttacker: Pointer<SOLDIERCELL>, pTarget: Pointer<SOLDIERC
     // Determine attacking weapon.
     pAttacker.value.pSoldier.value.usAttackingWeapon = 0;
     if (pAttacker.value.bWeaponSlot != -1) {
-      pItem = &pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot];
+      pItem = addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]);
       if (Item[pItem.value.usItem].usItemClass & IC_WEAPON)
         pAttacker.value.pSoldier.value.usAttackingWeapon = pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot].usItem;
     }
 
     if (pAttacker.value.bWeaponSlot != HANDPOS) {
       // switch items
-      memcpy(&tempItem, &pAttacker.value.pSoldier.value.inv[HANDPOS], sizeof(OBJECTTYPE));
-      memcpy(&pAttacker.value.pSoldier.value.inv[HANDPOS], &pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot], sizeof(OBJECTTYPE));
+      memcpy(addressof(tempItem), addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), sizeof(OBJECTTYPE));
       iImpact = HTHImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubAccuracy, (fKnife | fClaw));
-      memcpy(&pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot], &pAttacker.value.pSoldier.value.inv[HANDPOS], sizeof(OBJECTTYPE));
-      memcpy(&pAttacker.value.pSoldier.value.inv[HANDPOS], &tempItem, sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[pAttacker.value.bWeaponSlot]), addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), sizeof(OBJECTTYPE));
+      memcpy(addressof(pAttacker.value.pSoldier.value.inv[HANDPOS]), addressof(tempItem), sizeof(OBJECTTYPE));
     } else {
       iImpact = HTHImpact(pAttacker.value.pSoldier, pTarget.value.pSoldier, ubAccuracy, (fKnife || fClaw));
     }
@@ -3641,7 +3641,7 @@ function ProcessBattleFrame(): void {
         iMercsLeft--;
         while (!found) {
           iRandom = PreRandom(iMercs);
-          pAttacker = &gpMercs[iRandom];
+          pAttacker = addressof(gpMercs[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
             found = TRUE;
@@ -3651,7 +3651,7 @@ function ProcessBattleFrame(): void {
         iCivsLeft--;
         while (!found) {
           iRandom = PreRandom(iCivs);
-          pAttacker = &gpCivs[iRandom];
+          pAttacker = addressof(gpCivs[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
             found = TRUE;
@@ -3661,7 +3661,7 @@ function ProcessBattleFrame(): void {
         iEnemiesLeft--;
         while (!found) {
           iRandom = PreRandom(iEnemies);
-          pAttacker = &gpEnemies[iRandom];
+          pAttacker = addressof(gpEnemies[iRandom]);
           if (!(pAttacker.value.uiFlags & CELL_PROCESSED)) {
             pAttacker.value.uiFlags |= CELL_PROCESSED;
             found = TRUE;

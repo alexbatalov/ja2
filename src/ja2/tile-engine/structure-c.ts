@@ -206,7 +206,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
   if (hInput == 0) {
     return FALSE;
   }
-  fOk = FileRead(hInput, &Header, sizeof(STRUCTURE_FILE_HEADER), &uiBytesRead);
+  fOk = FileRead(hInput, addressof(Header), sizeof(STRUCTURE_FILE_HEADER), addressof(uiBytesRead));
   if (!fOk || uiBytesRead != sizeof(STRUCTURE_FILE_HEADER) || strncmp(Header.szId, STRUCTURE_FILE_ID, STRUCTURE_FILE_ID_LEN) != 0 || Header.usNumberOfStructures == 0) {
     FileClose(hInput);
     return FALSE;
@@ -219,7 +219,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
       FileClose(hInput);
       return FALSE;
     }
-    fOk = FileRead(hInput, pFileRef.value.pAuxData, uiDataSize, &uiBytesRead);
+    fOk = FileRead(hInput, pFileRef.value.pAuxData, uiDataSize, addressof(uiBytesRead));
     if (!fOk || uiBytesRead != uiDataSize) {
       MemFree(pFileRef.value.pAuxData);
       FileClose(hInput);
@@ -233,7 +233,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
         FileClose(hInput);
         return FALSE;
       }
-      fOk = FileRead(hInput, pFileRef.value.pTileLocData, uiDataSize, &uiBytesRead);
+      fOk = FileRead(hInput, pFileRef.value.pTileLocData, uiDataSize, addressof(uiBytesRead));
       if (!fOk || uiBytesRead != uiDataSize) {
         MemFree(pFileRef.value.pAuxData);
         FileClose(hInput);
@@ -257,7 +257,7 @@ function LoadStructureData(szFileName: STR, pFileRef: Pointer<STRUCTURE_FILE_REF
       }
       return FALSE;
     }
-    fOk = FileRead(hInput, pFileRef.value.pubStructureData, uiDataSize, &uiBytesRead);
+    fOk = FileRead(hInput, pFileRef.value.pubStructureData, uiDataSize, addressof(uiBytesRead));
     if (!fOk || uiBytesRead != uiDataSize) {
       MemFree(pFileRef.value.pubStructureData);
       if (pFileRef.value.pAuxData != NULL) {
@@ -353,7 +353,7 @@ function LoadStructureFile(szFileName: STR): Pointer<STRUCTURE_FILE_REF> {
     return NULL;
   }
   memset(pFileRef, 0, sizeof(STRUCTURE_FILE_REF));
-  fOk = LoadStructureData(szFileName, pFileRef, &uiDataSize);
+  fOk = LoadStructureData(szFileName, pFileRef, addressof(uiDataSize));
   if (!fOk) {
     MemFree(pFileRef);
     return NULL;
@@ -400,7 +400,7 @@ function CreateStructureFromDB(pDBStructureRef: Pointer<DB_STRUCTURE_REF>, ubTil
 
   // setup
   pStructure.value.fFlags = pDBStructure.value.fFlags;
-  pStructure.value.pShape = &(pTile.value.Shape);
+  pStructure.value.pShape = addressof(pTile.value.Shape);
   pStructure.value.pDBStructureRef = pDBStructureRef;
   if (pTile.value.sPosRelToBase == 0) {
     // base tile
@@ -782,16 +782,16 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
       if (gpWorldLevelData[sGridNo].sHeight != sBaseTileHeight) {
         // not level ground! abort!
         for (ubLoop2 = BASE_TILE; ubLoop2 < ubLoop; ubLoop2++) {
-          DeleteStructureFromTile(&(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
+          DeleteStructureFromTile(addressof(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
         }
         MemFree(ppStructure);
         return NULL;
       }
     }
-    if (AddStructureToTile(&(gpWorldLevelData[sGridNo]), ppStructure[ubLoop], usStructureID) == FALSE) {
+    if (AddStructureToTile(addressof(gpWorldLevelData[sGridNo]), ppStructure[ubLoop], usStructureID) == FALSE) {
       // error! abort!
       for (ubLoop2 = BASE_TILE; ubLoop2 < ubLoop; ubLoop2++) {
-        DeleteStructureFromTile(&(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
+        DeleteStructureFromTile(addressof(gpWorldLevelData[ppStructure[ubLoop2].value.sGridNo]), ppStructure[ubLoop2]);
       }
       MemFree(ppStructure);
       return NULL;
@@ -883,7 +883,7 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
     fRecompileExtraRadius = FALSE;
   }
 
-  pBaseMapElement = &gpWorldLevelData[pBaseStructure.value.sGridNo];
+  pBaseMapElement = addressof(gpWorldLevelData[pBaseStructure.value.sGridNo]);
   ppTile = pBaseStructure.value.pDBStructureRef.value.ppTile;
   sBaseGridNo = pBaseStructure.value.sGridNo;
   ubNumberOfTiles = pBaseStructure.value.pDBStructureRef.value.pDBStructure.value.ubNumberOfTiles;
@@ -894,7 +894,7 @@ function DeleteStructureFromWorld(pStructure: Pointer<STRUCTURE>): BOOLEAN {
     // delete one on each pass
     pCurrent = FindStructureByID(sGridNo, usStructureID);
     if (pCurrent) {
-      DeleteStructureFromTile(&gpWorldLevelData[sGridNo], pCurrent);
+      DeleteStructureFromTile(addressof(gpWorldLevelData[sGridNo]), pCurrent);
     }
 
     if (!gfEditMode && (fRecompileMPs)) {
@@ -1376,7 +1376,7 @@ function DebugStructurePage1(): void {
 
   SetFont(LARGEFONT1);
   gprintf(0, 0, "DEBUG STRUCTURES PAGE 1 OF 1");
-  if (GetMouseMapPos(&sGridNo) == FALSE) {
+  if (GetMouseMapPos(addressof(sGridNo)) == FALSE) {
     return;
     // gprintf( 0, LINE_HEIGHT * 1, L"No structure selected" );
   }
@@ -1431,7 +1431,7 @@ function DebugStructurePage1(): void {
     bHeight = StructureHeight(pStructure);
     pBase = FindBaseStructure(pStructure);
     gprintf(0, LINE_HEIGHT * 2, "Structure height %d, cube offset %d, armour %d, HP %d", bHeight, pStructure.value.sCubeOffset, gubMaterialArmour[pStructure.value.pDBStructureRef.value.pDBStructure.value.ubArmour], pBase.value.ubHitPoints);
-    if (StructureDensity(pStructure, &bDens0, &bDens1, &bDens2, &bDens3) == TRUE) {
+    if (StructureDensity(pStructure, addressof(bDens0), addressof(bDens1), addressof(bDens2), addressof(bDens3)) == TRUE) {
       gprintf(0, LINE_HEIGHT * 3, "Structure fill %d%%/%d%%/%d%%/%d%% density %d", bDens0, bDens1, bDens2, bDens3, pStructure.value.pDBStructureRef.value.pDBStructure.value.ubDensity);
     }
 
@@ -1477,7 +1477,7 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
     return TRUE;
   }
   for (uiLoop = 0; uiLoop < pStructureFileRef.value.usNumberOfStructures; uiLoop++) {
-    pDBStructureRef = &(pStructureFileRef.value.pDBStructureRef[uiLoop]);
+    pDBStructureRef = addressof(pStructureFileRef.value.pDBStructureRef[uiLoop]);
     pDBStructure = pDBStructureRef.value.pDBStructure;
     // if (pDBStructure != NULL && pDBStructure->ubNumberOfTiles > 1 && !(pDBStructure->fFlags & STRUCTURE_WALLSTUFF) )
     if (pDBStructure != NULL && pDBStructure.value.ubNumberOfTiles > 1) {

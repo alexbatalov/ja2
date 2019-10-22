@@ -247,7 +247,7 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
   DeleteAllLandLayers(iDstGridNo);
 
   // Get a pointer to the src mapelement
-  pSrcMapElement = &gpWorldLevelData[iSrcGridNo];
+  pSrcMapElement = addressof(gpWorldLevelData[iSrcGridNo]);
 
   // Go through each levelnode, and paste the info into the new gridno
   pNode = pSrcMapElement.value.pLandHead;
@@ -432,7 +432,7 @@ function InitDoorEditing(iMapIndex: INT32): void {
   gfEditingDoor = TRUE;
   iDoorMapIndex = iMapIndex;
   DisableEditorTaskbar();
-  MSYS_DefineRegion(&DoorRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(DoorRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH - 2, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   iDoorButton[DOOR_BACKGROUND] = CreateTextButton(0, 0, 0, 0, BUTTON_USE_DEFAULT, 200, 130, 240, 100, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH - 1, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iDoorButton[DOOR_BACKGROUND]);
   SpecifyDisabledButtonStyle(iDoorButton[DOOR_BACKGROUND], DISABLED_STYLE_NONE);
@@ -464,7 +464,7 @@ function ExtractAndUpdateDoorInfo(): void {
   let fCursor: BOOLEAN = FALSE;
   let fCursorExists: BOOLEAN = FALSE;
 
-  memset(&door, 0, sizeof(DOOR));
+  memset(addressof(door), 0, sizeof(DOOR));
 
   door.sGridNo = iDoorMapIndex;
 
@@ -508,7 +508,7 @@ function ExtractAndUpdateDoorInfo(): void {
     if (!fCursorExists)
       AddTopmostToHead(iDoorMapIndex, ROTATINGKEY1);
     // If the door already exists, the new information will replace it.
-    AddDoorInfoToTable(&door);
+    AddDoorInfoToTable(addressof(door));
   } else {
     // if a door exists here, remove it.
     if (fCursorExists)
@@ -556,7 +556,7 @@ function RenderDoorEditingWindow(): void {
 function KillDoorEditing(): void {
   let i: INT32;
   EnableEditorTaskbar();
-  MSYS_RemoveRegion(&DoorRegion);
+  MSYS_RemoveRegion(addressof(DoorRegion));
   for (i = 0; i < NUM_DOOR_BUTTONS; i++)
     RemoveButton(iDoorButton[i]);
   gfEditingDoor = FALSE;
@@ -584,7 +584,7 @@ function AddLockedDoorCursors(): void {
   let pDoor: Pointer<DOOR>;
   let i: INT;
   for (i = 0; i < gubNumDoors; i++) {
-    pDoor = &DoorTable[i];
+    pDoor = addressof(DoorTable[i]);
     AddTopmostToHead(pDoor.value.sGridNo, ROTATINGKEY1);
   }
 }
@@ -595,7 +595,7 @@ function RemoveLockedDoorCursors(): void {
   let pNode: Pointer<LEVELNODE>;
   let pTemp: Pointer<LEVELNODE>;
   for (i = 0; i < gubNumDoors; i++) {
-    pDoor = &DoorTable[i];
+    pDoor = addressof(DoorTable[i]);
     pNode = gpWorldLevelData[pDoor.value.sGridNo].pTopmostHead;
     while (pNode) {
       if (pNode.value.usIndex == ROTATINGKEY1) {

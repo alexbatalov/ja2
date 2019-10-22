@@ -368,7 +368,7 @@ function StartHelicopterRun(sGridNoSweetSpot: INT16): void {
   PauseGame();
   LockPauseState(20);
 
-  ConvertGridNoToCenterCellXY(sGridNoSweetSpot, &sX, &sY);
+  ConvertGridNoToCenterCellXY(sGridNoSweetSpot, addressof(sX), addressof(sY));
 
   gsHeliXPos = sX - (2 * CELL_X_SIZE);
   gsHeliYPos = sY - (10 * CELL_Y_SIZE);
@@ -605,7 +605,7 @@ function HandleHeliDrop(): void {
         case HELI_SHOW_HELI:
 
           // Start animation
-          memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
+          memset(addressof(AniParams), 0, sizeof(ANITILE_PARAMS));
           AniParams.sGridNo = gsGridNoSweetSpot;
           AniParams.ubLevelID = ANI_SHADOW_LEVEL;
           AniParams.sDelay = 90;
@@ -616,7 +616,7 @@ function HandleHeliDrop(): void {
           AniParams.sZ = gdHeliZPos;
           strcpy(AniParams.zCachedFile, "TILECACHE\\HELI_SH.STI");
 
-          gpHeli = CreateAnimationTile(&AniParams);
+          gpHeli = CreateAnimationTile(addressof(AniParams));
           break;
 
         case HELI_GOTO_DROP:
@@ -649,7 +649,7 @@ function HandleHeliDrop(): void {
             let sX: INT16;
             let sY: INT16;
 
-            ConvertGridNoToCenterCellXY(gsGridNoSweetSpot, &sX, &sY);
+            ConvertGridNoToCenterCellXY(gsGridNoSweetSpot, addressof(sX), addressof(sY));
 
             gsHeliXPos = sX - (2 * CELL_X_SIZE);
             gsHeliYPos = sY - (10 * CELL_Y_SIZE);

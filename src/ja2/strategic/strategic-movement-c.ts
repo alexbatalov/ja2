@@ -1068,7 +1068,7 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   let sXPos: INT16;
   let sYPos: INT16;
 
-  memset(&Corpse, 0, sizeof(ROTTING_CORPSE_DEFINITION));
+  memset(addressof(Corpse), 0, sizeof(ROTTING_CORPSE_DEFINITION));
 
   // Setup some values!
   Corpse.ubBodyType = REGMALE;
@@ -1091,30 +1091,30 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
 
   // 1st gridno
   Corpse.sGridNo = 14319;
-  ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
-  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
+  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, addressof(Corpse));
 
   // 2nd gridno
   Corpse.sGridNo = 9835;
-  ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
-  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
+  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, addressof(Corpse));
 
   // 3rd gridno
   Corpse.sGridNo = 11262;
-  ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
+  ConvertGridNoToXY(Corpse.sGridNo, addressof(sXPos), addressof(sYPos));
   Corpse.dXPos = (CenterX(sXPos));
   Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
-  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
+  AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, addressof(Corpse));
 }
 
 // ARRIVALCALLBACK
@@ -2140,7 +2140,7 @@ function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
     pDest.y = pNode.value.y;
 
     // update eta time by the path between these 2 waypts
-    uiEtaTime += FindTravelTimeBetweenWaypoints(&pCurrent, &pDest, pGroup);
+    uiEtaTime += FindTravelTimeBetweenWaypoints(addressof(pCurrent), addressof(pDest), pGroup);
 
     pCurrent.x = pNode.value.x;
     pCurrent.y = pNode.value.y;
@@ -2493,7 +2493,7 @@ function GetTravelTimeForFootTeam(ubSector: UINT8, ubDirection: UINT8): INT32 {
   // group going on foot
   Group.ubTransportationMask = FOOT;
 
-  return GetSectorMvtTimeForGroup(ubSector, ubDirection, &(Group));
+  return GetSectorMvtTimeForGroup(ubSector, ubDirection, addressof(Group));
 }
 
 // Add this group to the current battle fray!
@@ -2548,7 +2548,7 @@ function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
     AddPossiblePendingEnemiesToBattle();
   }
   // Update the known number of enemies in the sector.
-  pSector = &SectorInfo[SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY)]);
   iNumEnemiesInSector = NumEnemiesInSector(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
   if (iNumEnemiesInSector) {
     if (pSector.value.bLastKnownEnemies >= 0) {
@@ -2755,7 +2755,7 @@ function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // Save the number of movement groups to the saved game file
-  FileWrite(hFile, &uiNumberOfGroups, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfGroups), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -2766,7 +2766,7 @@ function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   // Loop through the linked lists and add each node
   while (pGroup) {
     // Save each node in the LL
-    FileWrite(hFile, pGroup, sizeof(GROUP), &uiNumBytesWritten);
+    FileWrite(hFile, pGroup, sizeof(GROUP), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(GROUP)) {
       // Error Writing group node to disk
       return FALSE;
@@ -2799,7 +2799,7 @@ function SaveStrategicMovementGroupsToSaveGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // Save the unique id mask
-  FileWrite(hFile, uniqueIDMask, sizeof(UINT32) * 8, &uiNumBytesWritten);
+  FileWrite(hFile, uniqueIDMask, sizeof(UINT32) * 8, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32) * 8) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -2828,7 +2828,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     RemoveGroupFromList(gpGroupList);
 
   // load the number of nodes in the list
-  FileRead(hFile, &uiNumberOfGroups, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfGroups), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -2845,7 +2845,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
     memset(pTemp, 0, sizeof(GROUP));
 
     // Read in the node
-    FileRead(hFile, pTemp, sizeof(GROUP), &uiNumBytesRead);
+    FileRead(hFile, pTemp, sizeof(GROUP), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(GROUP)) {
       // Error Writing size of L.L. to disk
       return FALSE;
@@ -2859,7 +2859,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
       // if there is a player list, add it
       if (pTemp.value.ubGroupSize) {
         // Save the player group list
-        LoadPlayerGroupList(hFile, &pTemp);
+        LoadPlayerGroupList(hFile, addressof(pTemp));
       }
     } else // else its an enemy group
     {
@@ -2884,7 +2884,7 @@ function LoadStrategicMovementGroupsFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   }
 
   // Load the unique id mask
-  FileRead(hFile, uniqueIDMask, sizeof(UINT32) * 8, &uiNumBytesRead);
+  FileRead(hFile, uniqueIDMask, sizeof(UINT32) * 8, addressof(uiNumBytesRead));
 
   //@@@ TEMP!
   // Rebuild the uniqueIDMask as a very old bug broke the uniqueID assignments in extremely rare cases.
@@ -2936,7 +2936,7 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   }
 
   // Save the number of nodes in the list
-  FileWrite(hFile, &uiNumberOfNodesInList, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfNodesInList), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -2948,7 +2948,7 @@ function SavePlayerGroupList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   while (pTemp) {
     // Save the ubProfile ID for this node
     uiProfileID = pTemp.value.ubProfileID;
-    FileWrite(hFile, &uiProfileID, sizeof(UINT32), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(uiProfileID), sizeof(UINT32), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(UINT32)) {
       // Error Writing size of L.L. to disk
       return FALSE;
@@ -2976,7 +2976,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
   //	pHead = *pGroup->pPlayerList;
 
   // Load the number of nodes in the player list
-  FileRead(hFile, &uiNumberOfNodes, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfNodes), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -2990,7 +2990,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
       return FALSE;
 
     // Load the ubProfile ID for this node
-    FileRead(hFile, &uiProfileID, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(hFile, addressof(uiProfileID), sizeof(UINT32), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(UINT32)) {
       // Error Writing size of L.L. to disk
       return FALSE;
@@ -3004,7 +3004,7 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
     // Assert( sTempID != -1 );
     pTemp.value.ubID = sTempID;
 
-    pTemp.value.pSoldier = &Menptr[pTemp.value.ubID];
+    pTemp.value.pSoldier = addressof(Menptr[pTemp.value.ubID]);
 
     pTemp.value.next = NULL;
 
@@ -3028,7 +3028,7 @@ function SaveEnemyGroupStruct(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let uiNumBytesWritten: UINT32 = 0;
 
   // Save the enemy struct info to the saved game file
-  FileWrite(hFile, pGroup.value.pEnemyGroup, sizeof(ENEMYGROUP), &uiNumBytesWritten);
+  FileWrite(hFile, pGroup.value.pEnemyGroup, sizeof(ENEMYGROUP), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(ENEMYGROUP)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -3049,7 +3049,7 @@ function LoadEnemyGroupStructFromSavedGame(hFile: HWFILE, pGroup: Pointer<GROUP>
   memset(pEnemyGroup, 0, sizeof(ENEMYGROUP));
 
   // Load the enemy struct
-  FileRead(hFile, pEnemyGroup, sizeof(ENEMYGROUP), &uiNumBytesRead);
+  FileRead(hFile, pEnemyGroup, sizeof(ENEMYGROUP), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(ENEMYGROUP)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -3116,7 +3116,7 @@ function SaveWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   }
 
   // Save the number of waypoints
-  FileWrite(hFile, &uiNumberOfWayPoints, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumberOfWayPoints), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -3126,7 +3126,7 @@ function SaveWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
     pWayPoints = pGroup.value.pWaypoints;
     for (cnt = 0; cnt < uiNumberOfWayPoints; cnt++) {
       // Save the waypoint node
-      FileWrite(hFile, pWayPoints, sizeof(WAYPOINT), &uiNumBytesWritten);
+      FileWrite(hFile, pWayPoints, sizeof(WAYPOINT), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(WAYPOINT)) {
         // Error Writing size of L.L. to disk
         return FALSE;
@@ -3148,7 +3148,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
   let pTemp: Pointer<WAYPOINT> = NULL;
 
   // Load the number of waypoints
-  FileRead(hFile, &uiNumberOfWayPoints, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumberOfWayPoints), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     // Error Writing size of L.L. to disk
     return FALSE;
@@ -3164,7 +3164,7 @@ function LoadWayPointList(hFile: HWFILE, pGroup: Pointer<GROUP>): BOOLEAN {
       memset(pTemp, 0, sizeof(WAYPOINT));
 
       // Load the waypoint node
-      FileRead(hFile, pTemp, sizeof(WAYPOINT), &uiNumBytesRead);
+      FileRead(hFile, pTemp, sizeof(WAYPOINT), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(WAYPOINT)) {
         // Error Writing size of L.L. to disk
         return FALSE;
@@ -3194,7 +3194,7 @@ function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
   let uiSectorID: UINT32;
 
   uiSectorID = SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
-  pSector = &SectorInfo[uiSectorID];
+  pSector = addressof(SectorInfo[uiSectorID]);
 
   if (pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] != GROUNDBARRIER && pSector.value.ubTraversability[NORTH_STRATEGIC_MOVE] != EDGEOFWORLD) {
     pGroup.value.ubPrevX = pGroup.value.ubSectorX;
@@ -3374,7 +3374,7 @@ function ResetMovementForEnemyGroupsInLocation(ubSectorX: UINT8, ubSectorY: UINT
   let sSectorY: INT16;
   let sSectorZ: INT16;
 
-  GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
+  GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
   pGroup = gpGroupList;
   while (pGroup) {
     next = pGroup.value.next;
@@ -3592,7 +3592,7 @@ function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLD
   let sFuelNeeded: INT16;
   let sFuelAvailable: INT16;
   let sFuelAdded: INT16;
-  pItem = &pSoldier.value.inv[HANDPOS];
+  pItem = addressof(pSoldier.value.inv[HANDPOS]);
   if (pItem.value.usItem != GAS_CAN) {
     return;
   }
@@ -3651,7 +3651,7 @@ function SetLocationOfAllPlayerSoldiersInGroup(pGroup: Pointer<GROUP>, sSectorX:
     iVehicleId = GivenMvtGroupIdFindVehicleId(pGroup.value.ubGroupID);
     Assert(iVehicleId != -1);
 
-    pVehicle = &(pVehicleList[iVehicleId]);
+    pVehicle = addressof(pVehicleList[iVehicleId]);
 
     pVehicle.value.sSectorX = sSectorX;
     pVehicle.value.sSectorY = sSectorY;
@@ -3756,7 +3756,7 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
   }
 
   ubSectorID = SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY);
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
 
   ubChance = 5 * gGameOptions.ubDifficultyLevel;
 
@@ -4021,7 +4021,7 @@ function WildernessSectorWithAllProfiledNPCsNotSpokenWith(sSectorX: INT16, sSect
   let fFoundSomebody: BOOLEAN = FALSE;
 
   for (ubProfile = FIRST_RPC; ubProfile < NUM_PROFILES; ubProfile++) {
-    pProfile = &gMercProfiles[ubProfile];
+    pProfile = addressof(gMercProfiles[ubProfile]);
 
     // skip stiffs
     if ((pProfile.value.bMercStatus == MERC_IS_DEAD) || (pProfile.value.bLife <= 0)) {

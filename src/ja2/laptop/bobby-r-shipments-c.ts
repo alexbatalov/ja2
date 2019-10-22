@@ -76,7 +76,7 @@ function EnterBobbyRShipments(): BOOLEAN {
   // load the Order Grid graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\BobbyRay_OnOrder.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiBobbyRShipmentGrid));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiBobbyRShipmentGrid)));
 
   guiBobbyRShipmentBackImage = LoadButtonImage("LAPTOP\\CatalogueButton.sti", -1, 0, -1, 1, -1);
   guiBobbyRShipmetBack = CreateIconAndTextButton(guiBobbyRShipmentBackImage, BobbyROrderFormText[BOBBYR_BACK], BOBBYR_GUNS_BUTTON_FONT, BOBBYR_GUNS_TEXT_COLOR_ON, BOBBYR_GUNS_SHADOW_COLOR, BOBBYR_GUNS_TEXT_COLOR_OFF, BOBBYR_GUNS_SHADOW_COLOR, TEXT_CJUSTIFIED, BOBBYR_SHIPMENT_BACK_BUTTON_X, BOBBYR_SHIPMENT_BACK_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnBobbyRShipmentBackCallback);
@@ -142,7 +142,7 @@ function RenderBobbyRShipments(): void {
 
   if (giBobbyRShipmentSelectedShipment != -1 && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fActive && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fDisplayedInShipmentPage) {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], FALSE );
-    DisplayPurchasedItems(FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], FALSE, giBobbyRShipmentSelectedShipment);
+    DisplayPurchasedItems(FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, addressof(gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0]), FALSE, giBobbyRShipmentSelectedShipment);
   } else {
     //		DisplayPurchasedItems( FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, &LaptopSaveInfo.BobbyRayOrdersOnDeliveryArray[giBobbyRShipmentSelectedShipment].BobbyRayPurchase[0], TRUE );
     DisplayPurchasedItems(FALSE, BOBBYR_SHIPMENT_ORDER_GRID_X, BOBBYR_SHIPMENT_ORDER_GRID_Y, NULL, TRUE, giBobbyRShipmentSelectedShipment);
@@ -195,7 +195,7 @@ function BtnBobbyRShipmentHomeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 function DisplayShipmentGrid(): void {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(&hPixHandle, guiBobbyRShipmentGrid);
+  GetVideoObject(addressof(hPixHandle), guiBobbyRShipmentGrid);
 
   // Shipment Order Grid
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, BOBBYR_SHIPMENT_DELIVERY_GRID_X, BOBBYR_SHIPMENT_DELIVERY_GRID_Y, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -259,9 +259,9 @@ function CreatePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_DefineRegion(&gSelectedPreviousShipmentsRegion[uiCnt], BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
-    MSYS_AddRegion(&gSelectedPreviousShipmentsRegion[uiCnt]);
-    MSYS_SetRegionUserData(&gSelectedPreviousShipmentsRegion[uiCnt], 0, uiCnt);
+    MSYS_DefineRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]));
+    MSYS_SetRegionUserData(addressof(gSelectedPreviousShipmentsRegion[uiCnt]), 0, uiCnt);
 
     usPosY += BOBBYR_SHIPMENT_GAP_BTN_LINES;
   }
@@ -272,7 +272,7 @@ function RemovePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_RemoveRegion(&gSelectedPreviousShipmentsRegion[uiCnt]);
+    MSYS_RemoveRegion(addressof(gSelectedPreviousShipmentsRegion[uiCnt]));
   }
 }
 

@@ -201,7 +201,7 @@ function AddSlantRoofFOVSlot(sGridNo: INT16): void {
   iSlantRoofSlot = GetFreeSlantRoof();
 
   if (iSlantRoofSlot != -1) {
-    pSlantRoof = &gSlantRoofData[iSlantRoofSlot];
+    pSlantRoof = addressof(gSlantRoofData[iSlantRoofSlot]);
     pSlantRoof.value.sGridNo = sGridNo;
     pSlantRoof.value.fAllocated = TRUE;
   }
@@ -300,7 +300,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
     range = (AdjustMaxSightRangeForEnvEffects(pSoldier, LightTrueLevel(pSoldier.value.sGridNo, pSoldier.value.bLevel), range) + range) / 2;
   }
 
-  BuildSightDir(dir, &Dir[0], &Dir[1], &Dir[2], &Dir[3], &Dir[4]);
+  BuildSightDir(dir, addressof(Dir[0]), addressof(Dir[1]), addressof(Dir[2]), addressof(Dir[3]), addressof(Dir[4]));
   for (cnt = 0; cnt < 5; cnt++)
     Inc[cnt] = DirectionInc(Dir[cnt]);
 
@@ -399,7 +399,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
       }
 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), &iDoorGridNo);
+        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier.value.bTeam == gbPlayerNum), addressof(iDoorGridNo));
         pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
         if (pStructure != NULL && pStructure.value.fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
@@ -471,11 +471,11 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // GET INDEX FOR ITEM HERE
           // if there IS a direction after this one, nextdir WILL NOT be 99
           if (nextDir != 99) {
-            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], Dir[nextDir], ubLevel, &bStructHeight, &pDummy, FALSE);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], Dir[nextDir], ubLevel, addressof(bStructHeight), addressof(pDummy), FALSE);
           } else // no "next" direction, so pass in a NOWHERE so that
           // "SpecialViewObstruction" will know not to take it UINT32o consideration
           {
-            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], 30, ubLevel, &bStructHeight, &pDummy, FALSE);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], 30, ubLevel, addressof(bStructHeight), addressof(pDummy), FALSE);
           }
 
           if (gfCaves) {
@@ -527,7 +527,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               // OK, look for corpses...
               LookForAndMayCommentOnSeeingCorpse(pSoldier, marker, ubLevel);
 
-              if (GetItemPool(marker, &pItemPool, ubLevel)) {
+              if (GetItemPool(marker, addressof(pItemPool), ubLevel)) {
                 itemVisible = pItemPool.value.bVisible;
 
                 if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, fShowLocators)) {
@@ -587,7 +587,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // CHECK FOR HIDDEN STRUCTS
           // IF we had a hidden struct here that is not visible ( which will still be true because
           // we set it revealed below...
-          if (DoesGridnoContainHiddenStruct(marker, &fHiddenStructVisible)) {
+          if (DoesGridnoContainHiddenStruct(marker, addressof(fHiddenStructVisible))) {
             if (!fHiddenStructVisible) {
               gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REDRAW;
               SetRenderFlags(RENDER_FLAG_MARKED);
@@ -632,7 +632,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               // OK, if we are underground, we don't want to reveal stuff if
               // 1 ) there is a roof over us and
               // 2 ) we are not in a room
-              if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, FIRSTROOF, FOURTHROOF, &usIndex)) {
+              if (gubWorldRoomInfo[marker] == NO_ROOM && TypeRangeExistsInRoofLayer(marker, FIRSTROOF, FOURTHROOF, addressof(usIndex))) {
                 let i: int = 0;
               } else {
                 gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REVEALED;
@@ -647,7 +647,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
             // CHECK FOR ROOMS
             // if ( fCheckForRooms )
             {
-              if (InAHiddenRoom(marker, &ubRoomNo)) {
+              if (InAHiddenRoom(marker, addressof(ubRoomNo))) {
                 RemoveRoomRoof(marker, ubRoomNo, pSoldier);
                 if (ubRoomNo == ROOM_SURROUNDING_BOXING_RING && gWorldSectorX == BOXING_SECTOR_X && gWorldSectorY == BOXING_SECTOR_Y && gbWorldSectorZ == BOXING_SECTOR_Z) {
                   // reveal boxing ring at same time

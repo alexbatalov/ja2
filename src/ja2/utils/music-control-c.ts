@@ -73,13 +73,13 @@ function MusicPlay(uiNum: UINT32): BOOLEAN {
   if (fMusicPlaying)
     MusicStop();
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
   spParms.uiPriority = PRIORITY_MAX;
   spParms.uiVolume = 0;
 
   spParms.EOSCallback = MusicStopCallback;
 
-  uiMusicHandle = SoundPlayStreamedFile(szMusicList[uiNum], &spParms);
+  uiMusicHandle = SoundPlayStreamedFile(szMusicList[uiNum], addressof(spParms));
 
   if (uiMusicHandle != SOUND_ERROR) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Music PLay %d %d", uiMusicHandle, gubMusicMode));

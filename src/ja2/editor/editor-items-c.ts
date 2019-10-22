@@ -19,7 +19,7 @@ function BuildItemPoolList(): void {
   let i: UINT16;
   KillItemPoolList();
   for (i = 0; i < WORLD_MAX; i++) {
-    if (GetItemPool(i, &temp, 0)) {
+    if (GetItemPool(i, addressof(temp), 0)) {
       if (!pIPHead) {
         pIPHead = MemAlloc(sizeof(IPListNode));
         Assert(pIPHead);
@@ -71,13 +71,13 @@ function EntryInitEditorItemsInfo(): void {
   eInfo.pusItemIndex = NULL;
   if (eInfo.fGameInit) {
     // This only gets called one time in game execution.
-    memset(&eInfo, 0, sizeof(EditorItemsInfo));
+    memset(addressof(eInfo), 0, sizeof(EditorItemsInfo));
     eInfo.sHilitedItemIndex = -1;
     eInfo.uiItemType = TBAR_MODE_ITEM_WEAPONS;
     // Pre-calculate the number of each item type.
     eInfo.sNumTriggers = NUMBER_TRIGGERS;
     for (i = 0; i < MAXITEMS; i++) {
-      item = &Item[i];
+      item = addressof(Item[i]);
       if (Item[i].fFlags & ITEM_NOT_EDITOR)
         continue;
       if (i == SWITCH || i == ACTION_ITEM) {
@@ -233,21 +233,21 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   eInfo.sWidth = (eInfo.sNumItems > 12) ? ((eInfo.sNumItems + 1) / 2) * 60 : 360;
   eInfo.sHeight = 80;
   // Create item buffer
-  GetCurrentVideoSettings(&usUselessWidth, &usUselessHeight, &ubBitDepth);
+  GetCurrentVideoSettings(addressof(usUselessWidth), addressof(usUselessHeight), addressof(ubBitDepth));
   vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
   vs_desc.usWidth = eInfo.sWidth;
   vs_desc.usHeight = eInfo.sHeight;
   vs_desc.ubBitDepth = ubBitDepth;
 
   //!!!Memory check.  Create the item buffer
-  if (!AddVideoSurface(&vs_desc, &eInfo.uiBuffer)) {
+  if (!AddVideoSurface(addressof(vs_desc), addressof(eInfo.uiBuffer))) {
     eInfo.fKill = TRUE;
     eInfo.fActive = FALSE;
     return;
   }
 
-  pDestBuf = LockVideoSurface(eInfo.uiBuffer, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(eInfo.uiBuffer, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiSrcPitchBYTES));
 
   // copy a blank chunk of the editor interface to the new buffer.
   for (i = 0; i < eInfo.sWidth; i += 60) {
@@ -264,14 +264,14 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
   NewRect.iBottom = eInfo.sHeight;
   NewRect.iLeft = 0;
   NewRect.iRight = eInfo.sWidth;
-  GetClippingRect(&SaveRect);
-  SetClippingRect(&NewRect);
+  GetClippingRect(addressof(SaveRect));
+  SetClippingRect(addressof(NewRect));
   if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
     // Keys use a totally different method for determining
     for (i = 0; i < eInfo.sNumItems; i++) {
-      item = &Item[KeyTable[0].usItem + LockTable[i].usKeyItem];
+      item = addressof(Item[KeyTable[0].usItem + LockTable[i].usKeyItem]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(&hVObject, uiVideoObjectIndex);
+      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
 
       // Store these item pointers for later when rendering selected items.
       eInfo.pusItemIndex[i] = KeyTable[0].usItem + LockTable[i].usKeyItem;
@@ -301,7 +301,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
     for (i = 0; i < eInfo.sNumItems; i++) {
       fTypeMatch = FALSE;
       while (usCounter < MAXITEMS && !fTypeMatch) {
-        item = &Item[usCounter];
+        item = addressof(Item[usCounter]);
         if (Item[usCounter].fFlags & ITEM_NOT_EDITOR) {
           usCounter++;
           continue;
@@ -312,7 +312,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           else
             usCounter = ACTION_ITEM;
           fTypeMatch = TRUE;
-          item = &Item[usCounter];
+          item = addressof(Item[usCounter]);
         } else
           switch (item.value.usItemClass) {
             case IC_GUN:
@@ -357,7 +357,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
           }
         if (fTypeMatch) {
           uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-          GetVideoObject(&hVObject, uiVideoObjectIndex);
+          GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
 
           // Store these item pointers for later when rendering selected items.
           eInfo.pusItemIndex[i] = usCounter;
@@ -416,7 +416,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       }
     }
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
-  SetClippingRect(&SaveRect);
+  SetClippingRect(addressof(SaveRect));
   gfRenderTaskbar = TRUE;
 }
 
@@ -460,8 +460,8 @@ function RenderEditorItemsInfo(): void {
     // Mouse has moved out of the items display region -- so nothing can be highlighted.
     eInfo.sHilitedItemIndex = -1;
   }
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(eInfo.uiBuffer, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(eInfo.uiBuffer, addressof(uiSrcPitchBYTES));
 
   // copy the items buffer to the editor bar
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 110, 360, 60 * eInfo.sScrollIndex, 0, 360, 80);
@@ -477,9 +477,9 @@ function RenderEditorItemsInfo(): void {
   // draw the hilighted item if applicable.
   if (eInfo.sHilitedItemIndex >= minIndex && eInfo.sHilitedItemIndex <= maxIndex) {
     if (eInfo.pusItemIndex) {
-      item = &Item[eInfo.pusItemIndex[eInfo.sHilitedItemIndex]];
+      item = addressof(Item[eInfo.pusItemIndex[eInfo.sHilitedItemIndex]]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(&hVObject, uiVideoObjectIndex);
+      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
       x = (eInfo.sHilitedItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sHilitedItemIndex % 2) * 40;
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -493,9 +493,9 @@ function RenderEditorItemsInfo(): void {
   // draw the selected item
   if (eInfo.sSelItemIndex >= minIndex && eInfo.sSelItemIndex <= maxIndex) {
     if (eInfo.pusItemIndex) {
-      item = &Item[eInfo.pusItemIndex[eInfo.sSelItemIndex]];
+      item = addressof(Item[eInfo.pusItemIndex[eInfo.sSelItemIndex]]);
       uiVideoObjectIndex = GetInterfaceGraphicForItem(item);
-      GetVideoObject(&hVObject, uiVideoObjectIndex);
+      GetVideoObject(addressof(hVObject), uiVideoObjectIndex);
       x = (eInfo.sSelItemIndex / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (eInfo.sSelItemIndex % 2) * 40;
       sWidth = hVObject.value.pETRLEObject[item.value.ubGraphicNum].usWidth;
@@ -509,7 +509,7 @@ function RenderEditorItemsInfo(): void {
   // draw the numbers of each visible item that currently resides in the world.
   maxIndex = min(maxIndex, eInfo.sNumItems - 1);
   for (i = minIndex; i <= maxIndex; i++) {
-    usNumItems = CountNumberOfEditorPlacementsInWorld(i, &usQuantity);
+    usNumItems = CountNumberOfEditorPlacementsInWorld(i, addressof(usQuantity));
     if (usNumItems) {
       x = (i / 2 - eInfo.sScrollIndex) * 60 + 110;
       y = 360 + (i % 2) * 40;
@@ -623,7 +623,7 @@ function HandleItemsPanel(usScreenX: UINT16, usScreenY: UINT16, bEvent: INT8): v
       } else if (sIndex < eInfo.sNumItems) {
         eInfo.sSelItemIndex = sIndex;
         gfRenderTaskbar = TRUE;
-        if (CountNumberOfEditorPlacementsInWorld(eInfo.sSelItemIndex, &usQuantity)) {
+        if (CountNumberOfEditorPlacementsInWorld(eInfo.sSelItemIndex, addressof(usQuantity))) {
           FindNextItemOfSelectedType();
         }
       }
@@ -648,7 +648,7 @@ function HideItemCursor(iMapIndex: INT32): void {
 
 function TriggerAtGridNo(sGridNo: INT16): BOOLEAN {
   let pItemPool: Pointer<ITEM_POOL>;
-  if (!GetItemPool(sGridNo, &pItemPool, 0)) {
+  if (!GetItemPool(sGridNo, addressof(pItemPool), 0)) {
     return FALSE;
   }
   while (pItemPool) {
@@ -677,9 +677,9 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
 
   // memset( &tempObject, 0, sizeof( OBJECTTYPE ) );
   if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
-    CreateKeyObject(&tempObject, 1, eInfo.sSelItemIndex);
+    CreateKeyObject(addressof(tempObject), 1, eInfo.sSelItemIndex);
   } else {
-    CreateItem(eInfo.pusItemIndex[eInfo.sSelItemIndex], 100, &tempObject);
+    CreateItem(eInfo.pusItemIndex[eInfo.sSelItemIndex], 100, addressof(tempObject));
   }
   usFlags = 0;
   switch (tempObject.usItem) {
@@ -735,7 +735,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
         tempObject.bDetonatorType = BOMB_PRESSURE;
         tempObject.bDelay = 0;
       }
-      ChangeActionItem(&tempObject, gbActionItemIndex);
+      ChangeActionItem(addressof(tempObject), gbActionItemIndex);
       tempObject.fFlags |= OBJECT_ARMED_BOMB;
       if (gbActionItemIndex == ACTIONITEM_SMPIT)
         Add3X3Pit(sGridNo);
@@ -745,14 +745,14 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
       break;
   }
 
-  pObject = InternalAddItemToPool(&sGridNo, &tempObject, bVisibility, 0, usFlags, 0, &iItemIndex);
+  pObject = InternalAddItemToPool(addressof(sGridNo), addressof(tempObject), bVisibility, 0, usFlags, 0, addressof(iItemIndex));
   if (tempObject.usItem != OWNERSHIP) {
     gWorldItems[iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
   } else {
     gWorldItems[iItemIndex].ubNonExistChance = 0;
   }
 
-  pItem = &(Item[pObject.value.usItem]);
+  pItem = addressof(Item[pObject.value.usItem]);
   if (pItem.value.usItemClass == IC_AMMO) {
     if (Random(2)) {
       pObject.value.ubShotsLeft[0] = Magazine[pItem.value.ubClassIndex].ubMagSize;
@@ -770,10 +770,10 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     }
   }
 
-  if (!GetItemPool(sGridNo, &pItemPool, 0))
+  if (!GetItemPool(sGridNo, addressof(pItemPool), 0))
     Assert(0);
   while (pItemPool) {
-    if (&(gWorldItems[pItemPool.value.iItemIndex].o) == pObject) {
+    if (addressof((gWorldItems[pItemPool.value.iItemIndex].o) == pObject)) {
       fFound = TRUE;
       // ShowSelectedItem();
       break;
@@ -827,9 +827,9 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
     pItemPool = gpItemPool.value.pNext;
     if (!pItemPool) {
       // currently selected item was last node, so select the head node even if it is the same.
-      GetItemPool(sGridNo, &pItemPool, 0);
+      GetItemPool(sGridNo, addressof(pItemPool), 0);
     }
-  } else if (!GetItemPool(sGridNo, &pItemPool, 0)) {
+  } else if (!GetItemPool(sGridNo, addressof(pItemPool), 0)) {
     // possibly relocate selected item to this gridno?
     return;
   }
@@ -847,7 +847,7 @@ function HandleRightClickOnItem(sGridNo: INT16): void {
     pIPCurr = pIPCurr.value.next;
   }
   Assert(gpCurrItemPoolNode);
-  SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
+  SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
 }
 
 function DeleteSelectedItem(): void {
@@ -862,7 +862,7 @@ function DeleteSelectedItem(): void {
     let sGridNo: INT16;
     // save the mapindex
     if (gpItemPool.value.pNext) {
-      SpecifyItemToEdit(&gWorldItems[gpItemPool.value.pNext.value.iItemIndex].o, gpItemPool.value.sGridNo);
+      SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.pNext.value.iItemIndex].o), gpItemPool.value.sGridNo);
     }
     sGridNo = gpItemPool.value.sGridNo;
     // remove the item
@@ -877,7 +877,7 @@ function DeleteSelectedItem(): void {
     RemoveItemFromPool(sGridNo, gpItemPool.value.iItemIndex, 0);
     gpItemPool = NULL;
     // determine if there are still any items at this location
-    if (!GetItemPool(sGridNo, &gpItemPool, 0)) {
+    if (!GetItemPool(sGridNo, addressof(gpItemPool), 0)) {
       // no items left, so remove the node from the list.
       let pIPPrev: Pointer<IPListNode>;
       let pIPCurr: Pointer<IPListNode>;
@@ -895,7 +895,7 @@ function DeleteSelectedItem(): void {
           else
             gpCurrItemPoolNode = pIPHead;
           if (gpCurrItemPoolNode) {
-            GetItemPool(gpCurrItemPoolNode.value.sGridNo, &gpItemPool, 0);
+            GetItemPool(gpCurrItemPoolNode.value.sGridNo, addressof(gpItemPool), 0);
             Assert(gpItemPool);
           }
           // remove node
@@ -939,9 +939,9 @@ function SelectNextItemPool(): void {
   else
     gpCurrItemPoolNode = pIPHead;
   // get the item pool at this node's gridno.
-  GetItemPool(gpCurrItemPoolNode.value.sGridNo, &gpItemPool, 0);
+  GetItemPool(gpCurrItemPoolNode.value.sGridNo, addressof(gpItemPool), 0);
   MarkMapIndexDirty(gpItemPool.value.sGridNo);
-  SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
+  SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
   if (gsItemGridNo != -1) {
     CenterScreenAtMapIndex(gsItemGridNo);
   }
@@ -952,9 +952,9 @@ function SelectNextItemInPool(): void {
     if (gpItemPool.value.pNext) {
       gpItemPool = gpItemPool.value.pNext;
     } else {
-      GetItemPool(gpItemPool.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(gpItemPool.value.sGridNo, addressof(gpItemPool), 0);
     }
-    SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
+    SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
     MarkWorldDirty();
   }
 }
@@ -964,12 +964,12 @@ function SelectPrevItemInPool(): void {
     if (gpItemPool.value.pPrev) {
       gpItemPool = gpItemPool.value.pPrev;
     } else {
-      GetItemPool(gpItemPool.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(gpItemPool.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool.value.pNext) {
         gpItemPool = gpItemPool.value.pNext;
       }
     }
-    SpecifyItemToEdit(&gWorldItems[gpItemPool.value.iItemIndex].o, gpItemPool.value.sGridNo);
+    SpecifyItemToEdit(addressof(gWorldItems[gpItemPool.value.iItemIndex].o), gpItemPool.value.sGridNo);
     MarkWorldDirty();
   }
 }
@@ -1009,7 +1009,7 @@ function SelectNextItemOfType(usItem: UINT16): void {
       if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
         gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
           if (pObject.value.usItem == usItem) {
             SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
@@ -1024,9 +1024,9 @@ function SelectNextItemOfType(usItem: UINT16): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == usItem) {
           SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
@@ -1040,9 +1040,9 @@ function SelectNextItemOfType(usItem: UINT16): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == usItem) {
         SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
@@ -1064,7 +1064,7 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
       if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
         gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
           if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
             SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
@@ -1079,9 +1079,9 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
           SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
@@ -1095,9 +1095,9 @@ function SelectNextKeyOfType(ubKeyID: UINT8): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (Item[pObject.value.usItem].usItemClass == IC_KEY && pObject.value.ubKeyID == ubKeyID) {
         SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
@@ -1119,7 +1119,7 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
       if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
         gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
           if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
             SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
@@ -1134,9 +1134,9 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
           SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
@@ -1150,9 +1150,9 @@ function SelectNextTriggerWithFrequency(usItem: UINT16, bFrequency: INT8): void 
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == usItem && pObject.value.bFrequency == bFrequency) {
         SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
@@ -1174,7 +1174,7 @@ function SelectNextPressureAction(): void {
       if (curr.value.sGridNo == gWorldItems[gpItemPool.value.iItemIndex].sGridNo) {
         gpItemPool = gpItemPool.value.pNext;
         while (gpItemPool) {
-          pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+          pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
           if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
             SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
             CenterScreenAtMapIndex(gsItemGridNo);
@@ -1189,9 +1189,9 @@ function SelectNextPressureAction(): void {
     }
     while (curr) {
       // search to the end of the list
-      GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+      GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
       while (gpItemPool) {
-        pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+        pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
         if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
           SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
           CenterScreenAtMapIndex(gsItemGridNo);
@@ -1205,9 +1205,9 @@ function SelectNextPressureAction(): void {
   curr = pIPHead;
   while (curr) {
     // search to the end of the list
-    GetItemPool(curr.value.sGridNo, &gpItemPool, 0);
+    GetItemPool(curr.value.sGridNo, addressof(gpItemPool), 0);
     while (gpItemPool) {
-      pObject = &gWorldItems[gpItemPool.value.iItemIndex].o;
+      pObject = addressof(gWorldItems[gpItemPool.value.iItemIndex].o);
       if (pObject.value.usItem == ACTION_ITEM && pObject.value.bDetonatorType == BOMB_PRESSURE) {
         SpecifyItemToEdit(pObject, gWorldItems[gpItemPool.value.iItemIndex].sGridNo);
         CenterScreenAtMapIndex(gsItemGridNo);
@@ -1226,7 +1226,7 @@ function CountNumberOfItemPlacementsInWorld(usItem: UINT16, pusQuantity: Pointer
   *pusQuantity = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
       if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem) {
         num++;
@@ -1245,7 +1245,7 @@ function CountNumberOfItemsWithFrequency(usItem: UINT16, bFrequency: INT8): UINT
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
       if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == usItem && gWorldItems[pItemPool.value.iItemIndex].o.bFrequency == bFrequency) {
         num++;
@@ -1263,7 +1263,7 @@ function CountNumberOfPressureActionsInWorld(): UINT16 {
   let num: UINT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
       if (gWorldItems[pItemPool.value.iItemIndex].o.usItem == ACTION_ITEM && gWorldItems[pItemPool.value.iItemIndex].o.bDetonatorType == BOMB_PRESSURE) {
         num++;
@@ -1310,7 +1310,7 @@ function CountNumberOfKeysOfTypeInWorld(ubKeyID: UINT8): UINT16 {
   let num: INT16 = 0;
   pIPCurr = pIPHead;
   while (pIPCurr) {
-    GetItemPool(pIPCurr.value.sGridNo, &pItemPool, 0);
+    GetItemPool(pIPCurr.value.sGridNo, addressof(pItemPool), 0);
     while (pItemPool) {
       if (Item[gWorldItems[pItemPool.value.iItemIndex].o.usItem].usItemClass == IC_KEY) {
         if (gWorldItems[pItemPool.value.iItemIndex].o.ubKeyID == ubKeyID) {
@@ -1344,7 +1344,7 @@ function DisplayItemStatistics(): void {
   if (!eInfo.pusItemIndex)
     return;
   usItemIndex = eInfo.pusItemIndex[fUseSelectedItem ? eInfo.sSelItemIndex : eInfo.sHilitedItemIndex];
-  pItem = &Item[usItemIndex];
+  pItem = addressof(Item[usItemIndex]);
   LoadItemInfo(usItemIndex, pItemName, NULL);
 
   mprintf(50 - StringPixLength(pItemName, SMALLCOMPFONT) / 2, 403, pItemName);

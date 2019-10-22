@@ -194,12 +194,12 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   }
 
   // Load
-  if (AddVideoObject(&VObjectDesc, &uiVideoObject) == FALSE) {
+  if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == FALSE) {
     // If we are a big face, use placeholder...
     if (uiInitFlags & FACE_BIGFACE) {
       sprintf(VObjectDesc.ImageFile, "FACES\\placeholder.sti");
 
-      if (AddVideoObject(&VObjectDesc, &uiVideoObject) == FALSE) {
+      if (AddVideoObject(addressof(VObjectDesc), addressof(uiVideoObject)) == FALSE) {
         return -1;
       }
     } else {
@@ -207,9 +207,9 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
     }
   }
 
-  memset(&gFacesData[iFaceIndex], 0, sizeof(FACETYPE));
+  memset(addressof(gFacesData[iFaceIndex]), 0, sizeof(FACETYPE));
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Get profile data and set into face data
   pFace.value.ubSoldierID = ubSoldierID;
@@ -234,7 +234,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   pFace.value.uiFlags = uiInitFlags;
 
   // Set palette
-  if (GetVideoObject(&hVObject, uiVideoObject)) {
+  if (GetVideoObject(addressof(hVObject), uiVideoObject)) {
     // Build a grayscale palette! ( for testing different looks )
     for (uiCount = 0; uiCount < 256; uiCount++) {
       Pal[uiCount].peRed = 255;
@@ -257,7 +257,7 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
   }
 
   // Get FACE height, width
-  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, &ETRLEObject, 0) == FALSE) {
+  if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 0) == FALSE) {
     return -1;
   }
   pFace.value.usFaceWidth = ETRLEObject.usWidth;
@@ -268,14 +268,14 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
     pFace.value.fInvalidAnim = FALSE;
 
     // Get EYE height, width
-    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, &ETRLEObject, 1) == FALSE) {
+    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 1) == FALSE) {
       return -1;
     }
     pFace.value.usEyesWidth = ETRLEObject.usWidth;
     pFace.value.usEyesHeight = ETRLEObject.usHeight;
 
     // Get Mouth height, width
-    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, &ETRLEObject, 5) == FALSE) {
+    if (GetVideoObjectETRLEPropertiesFromIndex(uiVideoObject, addressof(ETRLEObject), 5) == FALSE) {
       return -1;
     }
     pFace.value.usMouthWidth = ETRLEObject.usWidth;
@@ -302,7 +302,7 @@ function DeleteFace(iFaceIndex: INT32): void {
   // Check face index
   CHECKV(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
   CHECKV(pFace.value.fAllocated != FALSE);
@@ -387,9 +387,9 @@ function SetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UINT32, iFa
   // Check face index
   CHECKV(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
-  GetFaceRelativeCoordinates(pFace, &usEyesX, &usEyesY, &usMouthX, &usMouthY);
+  GetFaceRelativeCoordinates(pFace, addressof(usEyesX), addressof(usEyesY), addressof(usMouthX), addressof(usMouthY));
 
   InternalSetAutoFaceActive(uiDisplayBuffer, uiRestoreBuffer, iFaceIndex, usFaceX, usFaceY, usEyesX, usEyesY, usMouthX, usMouthY);
 }
@@ -405,7 +405,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
   // Check face index
   CHECKV(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // IF we are already being contained elsewhere, return without doing anything!
 
@@ -421,7 +421,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   if (uiRestoreBuffer == FACE_AUTO_RESTORE_BUFFER) {
     // BUILD A BUFFER
-    GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
     // OK, ignore screen widths, height, only use BPP
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = pFace.value.usFaceWidth;
@@ -430,7 +430,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.value.fAutoRestoreBuffer = TRUE;
 
-    CHECKV(AddVideoSurface(&vs_desc, &(pFace.value.uiAutoRestoreBuffer)));
+    CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoRestoreBuffer)));
   } else {
     pFace.value.fAutoRestoreBuffer = FALSE;
     pFace.value.uiAutoRestoreBuffer = uiRestoreBuffer;
@@ -438,7 +438,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
   if (uiDisplayBuffer == FACE_AUTO_DISPLAY_BUFFER) {
     // BUILD A BUFFER
-    GetCurrentVideoSettings(&usWidth, &usHeight, &ubBitDepth);
+    GetCurrentVideoSettings(addressof(usWidth), addressof(usHeight), addressof(ubBitDepth));
     // OK, ignore screen widths, height, only use BPP
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
     vs_desc.usWidth = pFace.value.usFaceWidth;
@@ -447,7 +447,7 @@ function InternalSetAutoFaceActive(uiDisplayBuffer: UINT32, uiRestoreBuffer: UIN
 
     pFace.value.fAutoDisplayBuffer = TRUE;
 
-    CHECKV(AddVideoSurface(&vs_desc, &(pFace.value.uiAutoDisplayBuffer)));
+    CHECKV(AddVideoSurface(addressof(vs_desc), addressof(pFace.value.uiAutoDisplayBuffer)));
   } else {
     pFace.value.fAutoDisplayBuffer = FALSE;
     pFace.value.uiAutoDisplayBuffer = uiDisplayBuffer;
@@ -501,7 +501,7 @@ function SetAutoFaceInActive(iFaceIndex: INT32): void {
   // Check face index
   CHECKV(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
   CHECKV(pFace.value.fAllocated != FALSE);
@@ -553,7 +553,7 @@ function SetAllAutoFacesInactive(): void {
 
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
     if (gFacesData[uiCount].fAllocated) {
-      pFace = &gFacesData[uiCount];
+      pFace = addressof(gFacesData[uiCount]);
 
       SetAutoFaceInActive(uiCount);
     }
@@ -566,7 +566,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
   let fDoBlink: BOOLEAN = FALSE;
 
   if (gFacesData[iFaceIndex].fAllocated && !gFacesData[iFaceIndex].fDisabled && !gFacesData[iFaceIndex].fInvalidAnim) {
-    pFace = &gFacesData[iFaceIndex];
+    pFace = addressof(gFacesData[iFaceIndex]);
 
     // CHECK IF BUDDY IS DEAD, UNCONSCIOUS, ASLEEP, OR POW!
     if (pFace.value.ubSoldierID != NOBODY) {
@@ -660,7 +660,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
       // If we are highlighted, do this now!
       if ((pFace.value.uiFlags & FACE_SHOW_WHITE_HILIGHT)) {
         // Lock buffer
-        pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+        pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.value.usFaceWidth + 4, sFaceY + pFace.value.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(255, 255, 255));
@@ -673,7 +673,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
         if (pFace.value.ubSoldierID != NOBODY) {
           if (MercPtrs[pFace.value.ubSoldierID].value.bLife >= OKLIFE) {
             // Lock buffer
-            pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+            pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
             SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.value.usFaceWidth + 4, sFaceY + pFace.value.usFaceHeight + 4);
 
             if (MercPtrs[pFace.value.ubSoldierID].value.bStealthMode) {
@@ -691,7 +691,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
       } else {
         // ATE: Zero out any highlight boxzes....
         // Lock buffer
-        pDestBuf = LockVideoSurface(pFace.value.uiAutoDisplayBuffer, &uiDestPitchBYTES);
+        pDestBuf = LockVideoSurface(pFace.value.uiAutoDisplayBuffer, addressof(uiDestPitchBYTES));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, pFace.value.usFaceX - 2, pFace.value.usFaceY - 1, pFace.value.usFaceX + pFace.value.usFaceWidth + 4, pFace.value.usFaceY + pFace.value.usFaceHeight + 4);
 
         usLineColor = Get16BPPColor(FROMRGB(0, 0, 0));
@@ -706,7 +706,7 @@ function HandleFaceHilights(pFace: Pointer<FACETYPE>, uiBuffer: UINT32, sFaceX: 
 
   if ((pFace.value.fCompatibleItems && !gFacesData[iFaceIndex].fDisabled)) {
     // Lock buffer
-    pDestBuf = LockVideoSurface(uiBuffer, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(uiBuffer, addressof(uiDestPitchBYTES));
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, sFaceX - 2, sFaceY - 1, sFaceX + pFace.value.usFaceWidth + 4, sFaceY + pFace.value.usFaceHeight + 4);
 
     usLineColor = Get16BPPColor(FROMRGB(255, 0, 0));
@@ -723,7 +723,7 @@ function MouthAutoFace(iFaceIndex: INT32): void {
   let sFrame: INT16;
 
   if (gFacesData[iFaceIndex].fAllocated) {
-    pFace = &gFacesData[iFaceIndex];
+    pFace = addressof(gFacesData[iFaceIndex]);
 
     // Remove video overlay is present....
     if (pFace.value.uiFlags & FACE_DESTROY_OVERLAY) {
@@ -743,7 +743,7 @@ function MouthAutoFace(iFaceIndex: INT32): void {
     if (pFace.value.fTalking) {
       if (!gFacesData[iFaceIndex].fDisabled && !gFacesData[iFaceIndex].fInvalidAnim) {
         if (pFace.value.fAnimatingTalking) {
-          PollAudioGap(pFace.value.uiSoundID, &(pFace.value.GapList));
+          PollAudioGap(pFace.value.uiSoundID, addressof(pFace.value.GapList));
 
           // Check if we have an audio gap
           if (pFace.value.GapList.audio_gap_active) {
@@ -800,7 +800,7 @@ function HandleTalkingAutoFace(iFaceIndex: INT32): void {
   let pFace: Pointer<FACETYPE>;
 
   if (gFacesData[iFaceIndex].fAllocated) {
-    pFace = &gFacesData[iFaceIndex];
+    pFace = addressof(gFacesData[iFaceIndex]);
 
     if (pFace.value.fTalking) {
       // Check if we are done!	( Check this first! )
@@ -826,7 +826,7 @@ function HandleTalkingAutoFace(iFaceIndex: INT32): void {
           pFace.value.fAnimatingTalking = FALSE;
 
           // Remove gap info
-          AudioGapListDone(&(pFace.value.GapList));
+          AudioGapListDone(addressof(pFace.value.GapList));
 
           // Remove video overlay is present....
           if (pFace.value.iVideoOverlay != -1) {
@@ -883,8 +883,8 @@ function GetXYForIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, sFaceX
   let hVObject: HVOBJECT;
 
   // Get height, width of icon...
-  GetVideoObject(&hVObject, guiPORTRAITICONS);
-  pTrav = &(hVObject.value.pETRLEObject[ubIndex]);
+  GetVideoObject(addressof(hVObject), guiPORTRAITICONS);
+  pTrav = addressof(hVObject.value.pETRLEObject[ubIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
 
@@ -904,8 +904,8 @@ function GetXYForRightIconPlacement(pFace: Pointer<FACETYPE>, ubIndex: UINT16, s
   let hVObject: HVOBJECT;
 
   // Get height, width of icon...
-  GetVideoObject(&hVObject, guiPORTRAITICONS);
-  pTrav = &(hVObject.value.pETRLEObject[ubIndex]);
+  GetVideoObject(addressof(hVObject), guiPORTRAITICONS);
+  pTrav = addressof(hVObject.value.pETRLEObject[ubIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
 
@@ -921,7 +921,7 @@ function DoRightIcon(uiRenderBuffer: UINT32, pFace: Pointer<FACETYPE>, sFaceX: I
   let sIconY: INT16;
 
   // Find X, y for placement
-  GetXYForRightIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, &sIconX, &sIconY, bNumIcons);
+  GetXYForRightIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, addressof(sIconX), addressof(sIconY), bNumIcons);
   BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
@@ -1024,7 +1024,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
         // Draw box
-        pDestBuf = LockVideoSurface(uiRenderBuffer, &uiDestPitchBYTES);
+        pDestBuf = LockVideoSurface(uiRenderBuffer, addressof(uiDestPitchBYTES));
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
         usLineColor = Get16BPPColor(FROMRGB(105, 8, 9));
@@ -1047,7 +1047,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
           SetFontDestBuffer(uiRenderBuffer, 0, 0, 640, 480, FALSE);
 
-          VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1, &sFontX, &sFontY, pFace.value.zDisplayText);
+          VarFindFontCenterCoordinates(sFaceX, sFaceY, pFace.value.usFaceWidth, pFace.value.usFaceHeight, TINYFONT1, addressof(sFontX), addressof(sFontY), pFace.value.zDisplayText);
 
           if (pFace.value.fDisplayTextOver == FACE_DRAW_TEXT_OVER) {
             gprintfinvalidate(sFontX, sFontY, pFace.value.zDisplayText);
@@ -1098,7 +1098,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
         sIconIndex = 1;
         fDoIcon = TRUE;
-        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.value.ubSoldierID], &usMaximumPts, FALSE);
+        sPtsAvailable = CalculateHealingPointsForDoctor(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), FALSE);
         fShowNumber = TRUE;
         fShowMaximum = TRUE;
 
@@ -1133,19 +1133,19 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
         switch (MercPtrs[pFace.value.ubSoldierID].value.bAssignment) {
           case (TRAIN_SELF):
-            sPtsAvailable = GetSoldierTrainingPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, &usMaximumPts);
+            sPtsAvailable = GetSoldierTrainingPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
           case (TRAIN_BY_OTHER):
-            sPtsAvailable = GetSoldierStudentPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, &usMaximumPts);
+            sPtsAvailable = GetSoldierStudentPts(MercPtrs[pFace.value.ubSoldierID], MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
           case (TRAIN_TOWN):
-            sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.value.ubSoldierID], &usMaximumPts);
+            sPtsAvailable = GetTownTrainPtsForCharacter(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts));
             // divide both amounts by 10 to make the displayed numbers a little more user-palatable (smaller)
             sPtsAvailable = (sPtsAvailable + 5) / 10;
             usMaximumPts = (usMaximumPts + 5) / 10;
             break;
           case (TRAIN_TEAMMATE):
-            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.value.ubSoldierID], NULL, MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, &usMaximumPts);
+            sPtsAvailable = GetBonusTrainingPtsDueToInstructor(MercPtrs[pFace.value.ubSoldierID], NULL, MercPtrs[pFace.value.ubSoldierID].value.bTrainStat, fAtGunRange, addressof(usMaximumPts));
             break;
         }
         break;
@@ -1154,7 +1154,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
         sIconIndex = 0;
         fDoIcon = TRUE;
-        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.value.ubSoldierID], &usMaximumPts, FALSE);
+        sPtsAvailable = CalculateRepairPointsForRepairman(MercPtrs[pFace.value.ubSoldierID], addressof(usMaximumPts), FALSE);
         fShowNumber = TRUE;
         fShowMaximum = TRUE;
 
@@ -1183,7 +1183,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
 
     if (fDoIcon) {
       // Find X, y for placement
-      GetXYForIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, &sIconX, &sIconY);
+      GetXYForIconPlacement(pFace, sIconIndex, sFaceX, sFaceY, addressof(sIconX), addressof(sIconY));
       BltVideoObjectFromIndex(uiRenderBuffer, guiPORTRAITICONS, sIconIndex, sIconX, sIconY, VO_BLT_SRCTRANSPARENCY, NULL);
 
       // ATE: Show numbers only in mapscreen
@@ -1222,7 +1222,7 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
   // Check face index
   CHECKF(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
   CHECKF(pFace.value.fAllocated != FALSE);
@@ -1273,7 +1273,7 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
   // Check face index
   CHECKF(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Check for a valid slot!
   CHECKF(pFace.value.fAllocated != FALSE);
@@ -1288,7 +1288,7 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
   // Blit face to save buffer!
   BltVideoObjectFromIndex(uiBuffer, pFace.value.uiVideoObject, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
 
-  GetFaceRelativeCoordinates(pFace, &usEyesX, &usEyesY, &usMouthX, &usMouthY);
+  GetFaceRelativeCoordinates(pFace, addressof(usEyesX), addressof(usEyesY), addressof(usMouthX), addressof(usMouthY));
 
   HandleRenderFaceAdjustments(pFace, FALSE, TRUE, uiBuffer, sX, sY, (sX + usEyesX), (sY + usEyesY));
 
@@ -1441,7 +1441,7 @@ function HandleAutoFaces(): void {
 
     // OK, NOW, check if our bLife status has changed, re-render if so!
     if (gFacesData[uiCount].fAllocated) {
-      pFace = &gFacesData[uiCount];
+      pFace = addressof(gFacesData[uiCount]);
 
       // Are we a soldier?
       if (pFace.value.ubSoldierID != NOBODY) {
@@ -1624,7 +1624,7 @@ function HandleTalkingAutoFaces(): void {
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
     // OK, NOW, check if our bLife status has changed, re-render if so!
     if (gFacesData[uiCount].fAllocated) {
-      pFace = &gFacesData[uiCount];
+      pFace = addressof(gFacesData[uiCount]);
 
       HandleTalkingAutoFace(uiCount);
     }
@@ -1641,15 +1641,15 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   // Check face index
   CHECKF(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // DOn't continue if we do not want the resotre to happen ( ei blitting entrie thing every frame...
   if (pFace.value.uiAutoRestoreBuffer == FACE_NO_RESTORE_BUFFER) {
     return FALSE;
   }
 
-  pDestBuf = LockVideoSurface(pFace.value.uiAutoDisplayBuffer, &uiDestPitchBYTES);
-  pSrcBuf = LockVideoSurface(pFace.value.uiAutoRestoreBuffer, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(pFace.value.uiAutoDisplayBuffer, addressof(uiDestPitchBYTES));
+  pSrcBuf = LockVideoSurface(pFace.value.uiAutoRestoreBuffer, addressof(uiSrcPitchBYTES));
 
   Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sDestLeft, sDestTop, sSrcLeft, sSrcTop, sWidth, sHeight);
 
@@ -1666,7 +1666,7 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
 function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextString: STR16, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32): BOOLEAN {
   let pFace: Pointer<FACETYPE>;
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Set face to talking
   pFace.value.fTalking = TRUE;
@@ -1679,7 +1679,7 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
 
   // Play sample
   if (gGameSettings.fOptions[TOPTION_SPEECH])
-    pFace.value.uiSoundID = PlayJA2GapSample(zSoundFile, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, &(pFace.value.GapList));
+    pFace.value.uiSoundID = PlayJA2GapSample(zSoundFile, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN, addressof(pFace.value.GapList));
   else
     pFace.value.uiSoundID = SOUND_ERROR;
 
@@ -1702,7 +1702,7 @@ function SetFaceTalking(iFaceIndex: INT32, zSoundFile: Pointer<CHAR8>, zTextStri
 function ExternSetFaceTalking(iFaceIndex: INT32, uiSoundID: UINT32): BOOLEAN {
   let pFace: Pointer<FACETYPE>;
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   // Set face to talki	ng
   pFace.value.fTalking = TRUE;
@@ -1721,7 +1721,7 @@ function InternalShutupaYoFace(iFaceIndex: INT32, fForce: BOOLEAN): void {
   // Check face index
   CHECKV(iFaceIndex != -1);
 
-  pFace = &gFacesData[iFaceIndex];
+  pFace = addressof(gFacesData[iFaceIndex]);
 
   if (pFace.value.fTalking) {
     // OK, only do this if we have been talking for a min. amount fo time...
@@ -1734,7 +1734,7 @@ function InternalShutupaYoFace(iFaceIndex: INT32, fForce: BOOLEAN): void {
     }
 
     // Remove gap info
-    AudioGapListDone(&(pFace.value.GapList));
+    AudioGapListDone(addressof(pFace.value.GapList));
 
     // Shutup mouth!
     pFace.value.sMouthFrame = 0;

@@ -385,39 +385,39 @@ function UpDateIMPMainPageButtons(): void {
   }
 
   for (iCount = 0; iCount < 4; iCount++) {
-    MSYS_DisableRegion(&pIMPMainPageMouseRegions[iCount]);
+    MSYS_DisableRegion(addressof(pIMPMainPageMouseRegions[iCount]));
   }
   // enable
   switch (iCurrentProfileMode) {
     case 0:
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[0]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[1]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[2]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[3]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[0]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[1]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[2]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[3]));
       break;
     case (1):
       EnableButton(giIMPMainPageButton[2]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[1]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[2]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[3]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[1]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[2]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[3]));
       break;
     case (2):
       EnableButton(giIMPMainPageButton[3]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[0]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[2]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[3]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[0]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[2]));
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[3]));
       break;
     case (3):
       EnableButton(giIMPMainPageButton[3]);
       EnableButton(giIMPMainPageButton[4]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[0]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[0]));
       // MSYS_EnableRegion( &pIMPMainPageMouseRegions[ 1 ]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[3]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[3]));
 
       break;
     case (4):
       // MSYS_EnableRegion( &pIMPMainPageMouseRegions[ 1 ]);
-      MSYS_EnableRegion(&pIMPMainPageMouseRegions[0]);
+      MSYS_EnableRegion(addressof(pIMPMainPageMouseRegions[0]));
       EnableButton(giIMPMainPageButton[3]);
       EnableButton(giIMPMainPageButton[4]);
       EnableButton(giIMPMainPageButton[5]);
@@ -444,16 +444,16 @@ function CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
   // this procedure will create masks for the char generation main page
 
   // mask for personality page button
-  MSYS_DefineRegion(&pIMPMainPageMouseRegions[0], LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 13 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[0]), LAPTOP_SCREEN_UL_X + 13, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 13 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for attrib page button
-  MSYS_DefineRegion(&pIMPMainPageMouseRegions[1], LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 133 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[1]), LAPTOP_SCREEN_UL_X + 133, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 133 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for portrait page button
-  MSYS_DefineRegion(&pIMPMainPageMouseRegions[2], LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 253 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[2]), LAPTOP_SCREEN_UL_X + 253, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 253 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   // mask for voice page button
-  MSYS_DefineRegion(&pIMPMainPageMouseRegions[3], LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 373 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
+  MSYS_DefineRegion(addressof(pIMPMainPageMouseRegions[3]), LAPTOP_SCREEN_UL_X + 373, LAPTOP_SCREEN_WEB_UL_Y + (245), LAPTOP_SCREEN_UL_X + 373 + 115, LAPTOP_SCREEN_WEB_UL_Y + (245) + 93, MSYS_PRIORITY_HIGH + 5, CURSOR_WWW, MSYS_NO_CALLBACK, IMPMainPageNotSelectableBtnCallback);
 
   return;
 }
@@ -461,13 +461,13 @@ function CreateMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
 function DestoryMouseRegionsForIMPMainPageBasedOnCharGenStatus(): void {
   // will destroy button masks for the char gen pages
 
-  MSYS_RemoveRegion(&pIMPMainPageMouseRegions[0]);
+  MSYS_RemoveRegion(addressof(pIMPMainPageMouseRegions[0]));
 
-  MSYS_RemoveRegion(&pIMPMainPageMouseRegions[1]);
+  MSYS_RemoveRegion(addressof(pIMPMainPageMouseRegions[1]));
 
-  MSYS_RemoveRegion(&pIMPMainPageMouseRegions[2]);
+  MSYS_RemoveRegion(addressof(pIMPMainPageMouseRegions[2]));
 
-  MSYS_RemoveRegion(&pIMPMainPageMouseRegions[3]);
+  MSYS_RemoveRegion(addressof(pIMPMainPageMouseRegions[3]));
 
   return;
 }
@@ -492,7 +492,7 @@ function LoadCharacterPortraitForMainPage(): BOOLEAN {
     // load it
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP(pPlayerSelectedFaceFileNames[iPortraitNumber], VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiCHARACTERPORTRAITFORMAINPAGE));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiCHARACTERPORTRAITFORMAINPAGE)));
 
     // now specify
     SpecifyButtonIcon(giIMPMainPageButton[4], guiCHARACTERPORTRAITFORMAINPAGE, 0, 33, 23, FALSE);

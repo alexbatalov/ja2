@@ -122,7 +122,7 @@ function MSYS_Init(): INT32 {
   MSYS_SystemBaseRegion.prev = NULL;
 
   // Add the base region to the list
-  MSYS_AddRegionToList(&MSYS_SystemBaseRegion);
+  MSYS_AddRegionToList(addressof(MSYS_SystemBaseRegion));
 
   MSYS_UseMouseHandlerHook = TRUE;
 
@@ -410,7 +410,7 @@ function MSYS_DeleteRegionFromList(region: Pointer<MOUSE_REGION>): void {
   }
 
   // Is only the system background region remaining?
-  if (MSYS_RegList == &MSYS_SystemBaseRegion) {
+  if (MSYS_RegList == addressof(MSYS_SystemBaseRegion)) {
     // Yup, so let's reset the ID values!
     MSYS_CurrentID = MSYS_ID_BASE;
     MSYS_ScanForID = FALSE;
@@ -1037,7 +1037,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
     } else {
       let pDestBuf: Pointer<UINT8>;
       let uiDestPitchBYTES: UINT32;
-      pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+      pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       RectangleDraw(TRUE, iX + 1, iY + 1, iX + iW - 1, iY + iH - 1, Get16BPPColor(FROMRGB(65, 57, 15)), pDestBuf);
       RectangleDraw(TRUE, iX, iY, iX + iW - 2, iY + iH - 2, Get16BPPColor(FROMRGB(227, 198, 88)), pDestBuf);

@@ -151,7 +151,7 @@ function InitializeSoundManager(): BOOLEAN {
     ShutdownSoundManager();
 
   for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
-    memset(&pSoundList[uiCount], 0, sizeof(SOUNDTAG));
+    memset(addressof(pSoundList[uiCount]), 0, sizeof(SOUNDTAG));
 
   if (gfEnableStartup && SoundInitHardware())
     fSoundSystemInit = TRUE;
@@ -989,7 +989,7 @@ function SoundStartRandom(uiSample: UINT32): UINT32 {
   let spParms: SOUNDPARMS;
 
   if ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR) {
-    memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+    memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
     //		spParms.uiSpeed=pSampleList[uiSample].uiSpeedMin+Random(pSampleList[uiSample].uiSpeedMax-pSampleList[uiSample].uiSpeedMin);
     spParms.uiVolume = pSampleList[uiSample].uiVolMin + Random(pSampleList[uiSample].uiVolMax - pSampleList[uiSample].uiVolMin);
@@ -997,7 +997,7 @@ function SoundStartRandom(uiSample: UINT32): UINT32 {
     spParms.uiLoop = 1;
     spParms.uiPriority = pSampleList[uiSample].uiPriority;
 
-    if ((uiSoundID = SoundStartSample(uiSample, uiChannel, &spParms)) != SOUND_ERROR) {
+    if ((uiSoundID = SoundStartSample(uiSample, uiChannel, addressof(spParms))) != SOUND_ERROR) {
       pSampleList[uiSample].uiTimeNext = GetTickCount() + pSampleList[uiSample].uiTimeMin + Random(pSampleList[uiSample].uiTimeMax - pSampleList[uiSample].uiTimeMin);
       pSampleList[uiSample].uiInstances++;
       return uiSoundID;
@@ -1227,7 +1227,7 @@ function SoundInitCache(): BOOLEAN {
   let uiCount: UINT32;
 
   for (uiCount = 0; uiCount < SOUND_MAX_CACHED; uiCount++)
-    memset(&pSampleList[uiCount], 0, sizeof(SAMPLETAG));
+    memset(addressof(pSampleList[uiCount]), 0, sizeof(SAMPLETAG));
 
   return TRUE;
 }
@@ -1451,7 +1451,7 @@ function SoundLoadDisk(pFilename: STR): UINT32 {
       return NO_SAMPLE;
     }
 
-    memset(&pSampleList[uiSample], 0, sizeof(SAMPLETAG));
+    memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
 
     if ((pSampleList[uiSample].pData = AIL_mem_alloc_lock(uiSize)) == NULL) {
       FastDebugMsg(String("SoundLoadDisk:  ERROR: Trying to play %s, AIL channels are full\n", pFilename));
@@ -1564,7 +1564,7 @@ function SoundProcessWAVHeader(uiSample: UINT32): BOOLEAN {
   let ailInfo: AILSOUNDINFO;
 
   pChunk = pSampleList[uiSample].pData;
-  if (!AIL_WAV_info(pChunk, &ailInfo))
+  if (!AIL_WAV_info(pChunk, addressof(ailInfo)))
     return FALSE;
 
   pSampleList[uiSample].uiSpeed = ailInfo.rate;
@@ -1595,7 +1595,7 @@ function SoundFreeSampleIndex(uiSample: UINT32): UINT32 {
       AIL_mem_free_lock(pSampleList[uiSample].pData);
     }
 
-    memset(&pSampleList[uiSample], 0, sizeof(SAMPLETAG));
+    memset(addressof(pSampleList[uiSample]), 0, sizeof(SAMPLETAG));
     return uiSample;
   }
 
@@ -1689,7 +1689,7 @@ function SoundInitHardware(): BOOLEAN {
 
   if (hSoundDriver != NULL) {
     for (uiCount = 0; uiCount < SOUND_MAX_CHANNELS; uiCount++)
-      memset(&pSoundList[uiCount], 0, sizeof(SOUNDTAG));
+      memset(addressof(pSoundList[uiCount]), 0, sizeof(SOUNDTAG));
 
     return TRUE;
   }
@@ -1743,7 +1743,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
   let DIG: HDIGDRIVER;
   let cBuf: CHAR8[] /* [128] */;
 
-  memset(&sPCMWF, 0, sizeof(PCMWAVEFORMAT));
+  memset(addressof(sPCMWF), 0, sizeof(PCMWAVEFORMAT));
   sPCMWF.wf.wFormatTag = WAVE_FORMAT_PCM;
   sPCMWF.wf.nChannels = uiChans;
   sPCMWF.wf.nSamplesPerSec = uiRate;
@@ -1751,7 +1751,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
   sPCMWF.wf.nBlockAlign = (uiBits / 8) * uiChans;
   sPCMWF.wBitsPerSample = uiBits;
 
-  if (AIL_waveOutOpen(&DIG, NULL, 0, &sPCMWF))
+  if (AIL_waveOutOpen(addressof(DIG), NULL, 0, addressof(sPCMWF)))
     return NULL;
 
   memset(cBuf, 0, 128);
@@ -2307,7 +2307,7 @@ function Sound3DInitProvider(pProviderName: Pointer<CHAR8>): BOOLEAN {
     return TRUE;
 
   while (!fDone) {
-    if (!AIL_enumerate_3D_providers(&hEnum, &hProvider, &pName))
+    if (!AIL_enumerate_3D_providers(addressof(hEnum), addressof(hProvider), addressof(pName)))
       fDone = TRUE;
     else if (hProvider) {
       if (strcmp(pProviderName, pName) == 0) {
@@ -2323,7 +2323,7 @@ function Sound3DInitProvider(pProviderName: Pointer<CHAR8>): BOOLEAN {
           }
           Sound3DSetListener(0.0f, 0.0f, 0.0f);
 
-          AIL_3D_provider_attribute(gh3DProvider, "EAX environment selection", &iResult);
+          AIL_3D_provider_attribute(gh3DProvider, "EAX environment selection", addressof(iResult));
           if (iResult != (-1))
             gfUsingEAX = TRUE;
 
@@ -2707,7 +2707,7 @@ function Sound3DStartRandom(uiSample: UINT32, pPos: Pointer<SOUND3DPOS>): UINT32
   let sp3DParms: SOUND3DPARMS;
 
   if (pPos && ((uiChannel = SoundGetFreeChannel()) != SOUND_ERROR)) {
-    memset(&sp3DParms, 0xff, sizeof(SOUND3DPARMS));
+    memset(addressof(sp3DParms), 0xff, sizeof(SOUND3DPARMS));
 
     //		sp3DParms.uiSpeed=pSampleList[uiSample].uiSpeedMin+Random(pSampleList[uiSample].uiSpeedMax-pSampleList[uiSample].uiSpeedMin);
     sp3DParms.uiLoop = 1;
@@ -2737,7 +2737,7 @@ function Sound3DStartRandom(uiSample: UINT32, pPos: Pointer<SOUND3DPOS>): UINT32
     sp3DParms.Pos.uiVolume = pPos.value.uiVolume;
     sp3DParms.uiVolume = pPos.value.uiVolume;
 
-    if ((uiSoundID = Sound3DStartSample(uiSample, uiChannel, &sp3DParms)) != SOUND_ERROR) {
+    if ((uiSoundID = Sound3DStartSample(uiSample, uiChannel, addressof(sp3DParms))) != SOUND_ERROR) {
       pSampleList[uiSample].uiTimeNext = GetTickCount() + pSampleList[uiSample].uiTimeMin + Random(pSampleList[uiSample].uiTimeMax - pSampleList[uiSample].uiTimeMin);
       pSampleList[uiSample].uiInstances++;
       return uiSoundID;
@@ -2765,7 +2765,7 @@ function Sound3DSetRoomType(uiRoomType: UINT32): void {
 
     sprintf(cName, "EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
 
-    AIL_set_3D_provider_preference(gh3DProvider, cName, (&uiRoomType));
+    AIL_set_3D_provider_preference(gh3DProvider, cName, (addressof(uiRoomType)));
     guiRoomTypeIndex = uiRoomType;
   }
 }

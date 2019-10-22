@@ -952,7 +952,7 @@ function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (gsSelectedMercID == -1)
       return;
-    GetSoldier(&pSoldier, gsSelectedMercID);
+    GetSoldier(addressof(pSoldier), gsSelectedMercID);
     if (!pSoldier)
       return;
     CenterScreenAtMapIndex(pSoldier.value.sGridNo);

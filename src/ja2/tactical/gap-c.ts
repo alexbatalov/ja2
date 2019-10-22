@@ -47,13 +47,13 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
     // now read in the AUDIO_GAPs
 
     // fread(&Start,sizeof(UINT32), 1, pFile);
-    FileRead(pFile, &Start, sizeof(UINT32), &uiNumBytesRead);
+    FileRead(pFile, addressof(Start), sizeof(UINT32), addressof(uiNumBytesRead));
 
     //	while ( !feof(pFile) )
     while (!FileCheckEndOfFile(pFile)) {
       // can read the first element, there exists a second
       // fread(&End, sizeof(UINT32),1,pFile);
-      FileRead(pFile, &End, sizeof(UINT32), &uiNumBytesRead);
+      FileRead(pFile, addressof(End), sizeof(UINT32), addressof(uiNumBytesRead));
 
       // allocate space for AUDIO_GAP
       pCurrentGap = MemAlloc(sizeof(AUDIO_GAP));
@@ -75,7 +75,7 @@ function AudioGapListInit(zSoundFile: Pointer<CHAR8>, pGapList: Pointer<AudioGap
       pPreviousGap = pCurrentGap;
 
       //	fread(&Start,sizeof(UINT32), 1, pFile);
-      FileRead(pFile, &Start, sizeof(UINT32), &uiNumBytesRead);
+      FileRead(pFile, addressof(Start), sizeof(UINT32), addressof(uiNumBytesRead));
     }
 
     pGapList.value.audio_gap_active = FALSE;
@@ -173,7 +173,7 @@ function PollAudioGap(uiSampleNum: UINT32, pGapList: Pointer<AudioGapList>): voi
 function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: UINT32, ubLoops: UINT32, uiPan: UINT32, pData: Pointer<AudioGapList>): UINT32 {
   let spParms: SOUNDPARMS;
 
-  memset(&spParms, 0xff, sizeof(SOUNDPARMS));
+  memset(addressof(spParms), 0xff, sizeof(SOUNDPARMS));
 
   spParms.uiSpeed = usRate;
   spParms.uiVolume = ((ubVolume / HIGHVOLUME) * GetSpeechVolume());
@@ -185,5 +185,5 @@ function PlayJA2GapSample(zSoundFile: Pointer<CHAR8>, usRate: UINT32, ubVolume: 
   if (pData != NULL)
     AudioGapListInit(zSoundFile, pData);
 
-  return SoundPlayStreamedFile(zSoundFile, &spParms);
+  return SoundPlayStreamedFile(zSoundFile, addressof(spParms));
 }

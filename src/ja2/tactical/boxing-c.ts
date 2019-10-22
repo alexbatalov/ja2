@@ -34,7 +34,7 @@ function ExitBoxing(): void {
       pSoldier = MercPtrs[uiLoop];
 
       if (pSoldier != NULL) {
-        if ((pSoldier.value.uiStatusFlags & SOLDIER_BOXER) && InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
+        if ((pSoldier.value.uiStatusFlags & SOLDIER_BOXER) && InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
           if (pSoldier.value.uiStatusFlags & SOLDIER_PC) {
             if (ubPass == 0) // pass 0, only handle AI
             {
@@ -138,7 +138,7 @@ function CountPeopleInBoxingRing(): UINT8 {
     pSoldier = MercSlots[uiLoop];
 
     if (pSoldier != NULL) {
-      if (InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
+      if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
         ubTotalInRing++;
       }
     }
@@ -163,7 +163,7 @@ function CountPeopleInBoxingRingAndDoActions(): void {
     pSoldier = MercSlots[uiLoop];
 
     if (pSoldier != NULL) {
-      if (InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
+      if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
         if (ubTotalInRing < 2) {
           pInRing[ubTotalInRing] = pSoldier;
         }
@@ -365,7 +365,7 @@ function AnotherFightPossible(): BOOLEAN {
 function BoxingMovementCheck(pSoldier: Pointer<SOLDIERTYPE>): void {
   let ubRoom: UINT8;
 
-  if (InARoom(pSoldier.value.sGridNo, &ubRoom) && ubRoom == BOXING_RING) {
+  if (InARoom(pSoldier.value.sGridNo, addressof(ubRoom)) && ubRoom == BOXING_RING) {
     // someone moving in/into the ring
     CountPeopleInBoxingRingAndDoActions();
   } else if ((gTacticalStatus.bBoxingState == BOXING) && (pSoldier.value.uiStatusFlags & SOLDIER_BOXER)) {

@@ -14,7 +14,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   let pMerc: Pointer<MERCPROFILESTRUCT>;
   let MercCreateStruct: SOLDIERCREATE_STRUCT;
   let fReturn: BOOLEAN = FALSE;
-  pMerc = &gMercProfiles[ubCurrentSoldier];
+  pMerc = addressof(gMercProfiles[ubCurrentSoldier]);
 
 // If we are to disregard the ststus of the merc
     // If the merc is away, Dont hire him, or if the merc is only slightly annoyed at the player
@@ -33,7 +33,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   }
 
   // BUILD STRUCTURES
-  memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+  memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
   MercCreateStruct.ubProfile = ubCurrentSoldier;
   MercCreateStruct.fPlayerMerc = TRUE;
   MercCreateStruct.sSectorX = pHireMerc.value.sSectorX;
@@ -42,7 +42,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   MercCreateStruct.bTeam = SOLDIER_CREATE_AUTO_TEAM;
   MercCreateStruct.fCopyProfileItemsOver = pHireMerc.value.fCopyProfileItemsOver;
 
-  if (!TacticalCreateSoldier(&MercCreateStruct, &iNewIndex)) {
+  if (!TacticalCreateSoldier(addressof(MercCreateStruct), addressof(iNewIndex))) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "TacticalCreateSoldier in HireMerc():  Failed to Add Merc");
     return MERC_HIRE_FAILED;
   }
@@ -54,12 +54,12 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
       let Object: OBJECTTYPE;
 
       // make an objecttype
-      memset(&Object, 0, sizeof(OBJECTTYPE));
+      memset(addressof(Object), 0, sizeof(OBJECTTYPE));
       Object.usItem = LETTER;
       Object.ubNumberOfObjects = 1;
       Object.bStatus[0] = 100;
       // Give it
-      fReturn = AutoPlaceObject(MercPtrs[iNewIndex], &Object, FALSE);
+      fReturn = AutoPlaceObject(MercPtrs[iNewIndex], addressof(Object), FALSE);
       Assert(fReturn);
     }
 
@@ -72,7 +72,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   // record how long the merc will be gone for
   pMerc.value.bMercStatus = pHireMerc.value.iTotalContractLength;
 
-  pSoldier = &Menptr[iNewIndex];
+  pSoldier = addressof(Menptr[iNewIndex]);
 
   // Copy over insertion data....
   pSoldier.value.ubStrategicInsertionCode = pHireMerc.value.ubInsertionCode;
@@ -201,9 +201,9 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
   // stop time compression until player restarts it
   StopTimeCompression();
 
-  pSoldier = &Menptr[ubSoldierID];
+  pSoldier = addressof(Menptr[ubSoldierID]);
 
-  pMerc = &gMercProfiles[pSoldier.value.ubProfile];
+  pMerc = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
   // add the guy to a squad
   AddCharacterToAnySquad(pSoldier);

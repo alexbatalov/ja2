@@ -93,7 +93,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
     // In the beginning of the game, series of events are created that are placed in the list
     // BEFORE the start time.  Those events will be processed without influencing the actual time.
     if (curr.value.uiTimeStamp > guiGameClock && ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
-      AdjustClockToEventStamp(curr, &uiAdjustment);
+      AdjustClockToEventStamp(curr, addressof(uiAdjustment));
     }
     // Process the event
     if (ubWarpCode != WARPTIME_PROCESS_TARGET_TIME_FIRST) {
@@ -102,7 +102,7 @@ function ProcessPendingGameEvents(uiAdjustment: UINT32, ubWarpCode: UINT8): void
       // if we are warping to the target time to process that event first,
       if (!curr.value.next || curr.value.next.value.uiTimeStamp > guiGameClock + uiAdjustment) {
         // make sure that we are processing the last event for that second
-        AdjustClockToEventStamp(curr, &uiAdjustment);
+        AdjustClockToEventStamp(curr, addressof(uiAdjustment));
 
         fDeleteEvent = ExecuteStrategicEvent(curr);
 
@@ -442,7 +442,7 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
   }
 
   // write the number of strategic events
-  FileWrite(hFile, &uiNumGameEvents, sizeof(UINT32), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(uiNumGameEvents), sizeof(UINT32), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT32)) {
     return FALSE;
   }
@@ -451,10 +451,10 @@ function SaveStrategicEventsToSavedGame(hFile: HWFILE): BOOLEAN {
   pTempEvent = gpEventList;
   while (pTempEvent) {
     // save the current structure
-    memcpy(&sGameEvent, pTempEvent, sizeof(STRATEGICEVENT));
+    memcpy(addressof(sGameEvent), pTempEvent, sizeof(STRATEGICEVENT));
 
     // write the current strategic event
-    FileWrite(hFile, &sGameEvent, sizeof(STRATEGICEVENT), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(sGameEvent), sizeof(STRATEGICEVENT), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(STRATEGICEVENT)) {
       return FALSE;
     }
@@ -476,7 +476,7 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
   DeleteAllStrategicEvents();
 
   // Read the number of strategic events
-  FileRead(hFile, &uiNumGameEvents, sizeof(UINT32), &uiNumBytesRead);
+  FileRead(hFile, addressof(uiNumGameEvents), sizeof(UINT32), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT32)) {
     return FALSE;
   }
@@ -493,12 +493,12 @@ function LoadStrategicEventsFromSavedGame(hFile: HWFILE): BOOLEAN {
       return FALSE;
 
     // Read the current strategic event
-    FileRead(hFile, &sGameEvent, sizeof(STRATEGICEVENT), &uiNumBytesRead);
+    FileRead(hFile, addressof(sGameEvent), sizeof(STRATEGICEVENT), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(STRATEGICEVENT)) {
       return FALSE;
     }
 
-    memcpy(pTempEvent, &sGameEvent, sizeof(STRATEGICEVENT));
+    memcpy(pTempEvent, addressof(sGameEvent), sizeof(STRATEGICEVENT));
 
     // Add the new node to the list
 

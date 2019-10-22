@@ -343,7 +343,7 @@ function QueueEvent(ubInputEvent: UINT16, usParam: UINT32, uiParam: UINT32): voi
 function DequeueSpecificEvent(Event: Pointer<InputAtom>, uiMaskFlags: UINT32): BOOLEAN {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
-    memcpy(Event, &(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
+    memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
 
     // Check if it has the masks!
     if ((Event.value.usEvent & uiMaskFlags)) {
@@ -360,7 +360,7 @@ function DequeueEvent(Event: Pointer<InputAtom>): BOOLEAN {
   // Is there an event to dequeue
   if (gusQueueCount > 0) {
     // We have an event, so we dequeue it
-    memcpy(Event, &(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
+    memcpy(Event, addressof(gEventQueue[gusHeadIndex]), sizeof(InputAtom));
 
     if (gusHeadIndex == 255) {
       gusHeadIndex = 0;
@@ -702,7 +702,7 @@ function KeyChange(usParam: UINT32, uiParam: UINT32, ufKeyState: UINT8): void {
     }
   }
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
   uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
 
   if (ufKeyState == TRUE) {
@@ -826,7 +826,7 @@ function DisableDoubleClk(): void {
 function GetMousePos(Point: Pointer<SGPPoint>): void {
   let MousePos: POINT;
 
-  GetCursorPos(&MousePos);
+  GetCursorPos(addressof(MousePos));
 
   Point.value.iX = MousePos.x;
   Point.value.iY = MousePos.y;
@@ -1198,12 +1198,12 @@ function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UIN
   TempRect.iRight = usX2;
   TempRect.iBottom = usY2;
 
-  RestrictMouseCursor(&TempRect);
+  RestrictMouseCursor(addressof(TempRect));
 }
 
 function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
   // Make a copy of our rect....
-  memcpy(&gCursorClipRect, pRectangle, sizeof(gCursorClipRect));
+  memcpy(addressof(gCursorClipRect), pRectangle, sizeof(gCursorClipRect));
   ClipCursor(pRectangle);
   fCursorWasClipped = TRUE;
 }
@@ -1215,7 +1215,7 @@ function FreeMouseCursor(): void {
 
 function RestoreCursorClipRect(): void {
   if (fCursorWasClipped) {
-    ClipCursor(&gCursorClipRect);
+    ClipCursor(addressof(gCursorClipRect));
   }
 }
 
@@ -1263,11 +1263,11 @@ function DequeueAllKeyBoardEvents(): void {
   let KeyMessage: MSG;
 
   // dequeue all the events waiting in the windows queue
-  while (PeekMessage(&KeyMessage, ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
+  while (PeekMessage(addressof(KeyMessage), ghWindow, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE))
     ;
 
   // Deque all the events waiting in the SGP queue
-  while (DequeueEvent(&InputEvent) == TRUE) {
+  while (DequeueEvent(addressof(InputEvent)) == TRUE) {
     // dont do anything
   }
 }
@@ -1283,7 +1283,7 @@ function HandleSingleClicksAndButtonRepeats(): void {
       let uiTmpLParam: UINT32;
       let MousePos: POINT;
 
-      GetCursorPos(&MousePos);
+      GetCursorPos(addressof(MousePos));
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
       QueueEvent(LEFT_BUTTON_REPEAT, 0, uiTmpLParam);
       guiLeftButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
@@ -1298,7 +1298,7 @@ function HandleSingleClicksAndButtonRepeats(): void {
       let uiTmpLParam: UINT32;
       let MousePos: POINT;
 
-      GetCursorPos(&MousePos);
+      GetCursorPos(addressof(MousePos));
       uiTmpLParam = ((MousePos.y << 16) & 0xffff0000) | (MousePos.x & 0x0000ffff);
       QueueEvent(RIGHT_BUTTON_REPEAT, 0, uiTmpLParam);
       guiRightButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;

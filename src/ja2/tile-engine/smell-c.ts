@@ -241,7 +241,7 @@ function DropSmell(pSoldier: Pointer<SOLDIERTYPE>): void {
    */
 
   if (pSoldier.value.bLevel == 0) {
-    pMapElement = &(gpWorldLevelData[pSoldier.value.sGridNo]);
+    pMapElement = addressof(gpWorldLevelData[pSoldier.value.sGridNo]);
     if (pMapElement.value.ubBloodInfo) {
       // blood here, don't drop any smell
       return;
@@ -315,7 +315,7 @@ function InternalDropBlood(sGridNo: INT16, bLevel: INT8, ubType: UINT8, ubStreng
   // ensure max strength is okay
   ubStrength = __min(ubStrength, BLOOD_STRENGTH_MAX);
 
-  pMapElement = &(gpWorldLevelData[sGridNo]);
+  pMapElement = addressof(gpWorldLevelData[sGridNo]);
   if (bLevel == 0) {
     // dropping blood on ground
     ubOldStrength = BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo);
@@ -409,7 +409,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
   let usNewIndex: UINT16;
 
   // OK, based on level, type, display graphics for blood
-  pMapElement = &(gpWorldLevelData[sGridNo]);
+  pMapElement = addressof(gpWorldLevelData[sGridNo]);
 
   // CHECK FOR BLOOD OPTION
   if (!gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
@@ -425,7 +425,7 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
       bValue = BLOOD_FLOOR_STRENGTH(pMapElement.value.ubBloodInfo);
 
       // OK, remove tile graphic if one exists....
-      if (TypeRangeExistsInObjectLayer(sGridNo, HUMANBLOOD, CREATUREBLOOD, &usIndex)) {
+      if (TypeRangeExistsInObjectLayer(sGridNo, HUMANBLOOD, CREATUREBLOOD, addressof(usIndex))) {
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.
         // Set a flag indicating that the following changes are to go the the maps temp file
         // ApplyMapChangesToMapTempFile( TRUE );
@@ -442,9 +442,9 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
         usIndex = ((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
 
         if (BLOOD_FLOOR_TYPE(pMapElement.value.ubSmellInfo) == 0) {
-          GetTileIndexFromTypeSubIndex(HUMANBLOOD, (usIndex + 1), &usNewIndex);
+          GetTileIndexFromTypeSubIndex(HUMANBLOOD, (usIndex + 1), addressof(usNewIndex));
         } else {
-          GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (usIndex + 1), &usNewIndex);
+          GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (usIndex + 1), addressof(usNewIndex));
         }
 
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.

@@ -569,7 +569,7 @@ function RevealWalls(sX: INT16, sY: INT16, sRadius: INT16): BOOLEAN {
       pStruct = gpWorldLevelData[uiTile].pStructHead;
 
       while (pStruct != NULL) {
-        TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+        TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
         switch (TileElem.value.usWallOrientation) {
           case NO_ORIENTATION:
             break;
@@ -616,7 +616,7 @@ function ConcealWalls(sX: INT16, sY: INT16, sRadius: INT16): BOOLEAN {
       pStruct = gpWorldLevelData[uiTile].pStructHead;
 
       while (pStruct != NULL) {
-        TileElem = &(gTileDatabase[pStruct.value.usIndex]);
+        TileElem = addressof(gTileDatabase[pStruct.value.usIndex]);
         switch (TileElem.value.usWallOrientation) {
           case NO_ORIENTATION:
             break;
@@ -804,7 +804,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   iAnchorPosY_S = iStartPointY_S;
 
   if (!(uiFlags & TILES_DIRTY))
-    pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   if (uiFlags & TILES_DYNAMIC_CHECKFOR_INT_TILE) {
     if (ShouldCheckForMouseDetections()) {
@@ -819,7 +819,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
   }
 
   // if((uiFlags&TILES_TYPE_MASK)==TILES_STATIC_LAND)
-  GetMouseXY(&sMouseX_M, &sMouseY_M);
+  GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M));
 
   pDirtyBackPtr = NULL;
 
@@ -967,9 +967,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
               if (!fMerc) {
                 if (!(uiLevelNodeFlags & (LEVELNODE_ROTTINGCORPSE | LEVELNODE_CACHEDANITILE))) {
                   if ((uiLevelNodeFlags & LEVELNODE_REVEALTREES)) {
-                    TileElem = &(gTileDatabase[pNode.value.usIndex + 2]);
+                    TileElem = addressof(gTileDatabase[pNode.value.usIndex + 2]);
                   } else {
-                    TileElem = &(gTileDatabase[pNode.value.usIndex]);
+                    TileElem = addressof(gTileDatabase[pNode.value.usIndex]);
                   }
 
                   // HANDLE INDEPENDANT-PER-TILE ANIMATIONS ( IE: DOORS, EXPLODING THINGS, ETC )
@@ -977,7 +977,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if ((uiLevelNodeFlags & LEVELNODE_ANIMATION)) {
                       if (pNode.value.sCurrentFrame != -1) {
                         Assert(TileElem.value.pAnimData != NULL);
-                        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]];
+                        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[pNode.value.sCurrentFrame]]);
                       }
                     }
                   }
@@ -1008,7 +1008,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                       //	else if((TileElem->uiFlags&ANIMATED_TILE) )
                       {
                         Assert(TileElem.value.pAnimData != NULL);
-                        TileElem = &gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]];
+                        TileElem = addressof(gTileDatabase[TileElem.value.pAnimData.value.pusFrames[TileElem.value.pAnimData.value.bCurrentFrame]]);
                         uiTileElemFlags = TileElem.value.uiFlags;
                       }
                     }
@@ -1079,7 +1079,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                     // Position corpse based on it's float position
                     if ((uiLevelNodeFlags & LEVELNODE_ROTTINGCORPSE)) {
-                      pCorpse = &(gRottingCorpse[pNode.value.pAniTile.value.uiUserData]);
+                      pCorpse = addressof(gRottingCorpse[pNode.value.pAniTile.value.uiUserData]);
 
                       pShadeTable = pCorpse.value.pShades[pNode.value.ubShadeLevel];
 
@@ -1104,7 +1104,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     }
 
                     // Calculate guy's position
-                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
+                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
 
                     sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
                     sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
@@ -1151,7 +1151,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
                     dOffsetX -= CELL_Y_SIZE;
 
-                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
+                    FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
 
                     sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + SHORT_ROUND(dTempX_S);
                     sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + SHORT_ROUND(dTempY_S);
@@ -1421,7 +1421,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   dOffsetY = pSoldier.value.dYPos - gsRenderCenterY;
 
                   // Calculate guy's position
-                  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
+                  FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, addressof(dTempX_S), addressof(dTempY_S));
 
                   sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
                   sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - sTileHeight;
@@ -1462,9 +1462,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                       }
 
                       if (pSoldier.value.bLevel == 0) {
-                        pShadeStart = &(pSoldier.value.pGlowShades[0]);
+                        pShadeStart = addressof(pSoldier.value.pGlowShades[0]);
                       } else {
-                        pShadeStart = &(pSoldier.value.pShades[20]);
+                        pShadeStart = addressof(pSoldier.value.pShades[20]);
                       }
 
                       // Set shade
@@ -1579,7 +1579,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   // if ( hVObject->ppZStripInfo != NULL )
                   {
-                    sMultiTransShadowZBlitterIndex = GetCorpseStructIndex(&(pCorpse.value.def), TRUE);
+                    sMultiTransShadowZBlitterIndex = GetCorpseStructIndex(addressof(pCorpse.value.def), TRUE);
                     fMultiTransShadowZBlitter = TRUE;
                   }
                 }
@@ -1610,7 +1610,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                 // RENDER
                 if (fTileInvisible) {
                 } else if (uiLevelNodeFlags & LEVELNODE_DISPLAY_AP && !(uiFlags & TILES_DIRTY)) {
-                  pTrav = &(hVObject.value.pETRLEObject[usImageIndex]);
+                  pTrav = addressof(hVObject.value.pETRLEObject[usImageIndex]);
                   sXPos += pTrav.value.sOffsetX;
                   sYPos += pTrav.value.sOffsetY;
 
@@ -1629,7 +1629,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
 
                   SetFont(TINYFONT1);
                   SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
-                  VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, "%d", pNode.value.uiAPCost);
+                  VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, addressof(sX), addressof(sY), "%d", pNode.value.uiAPCost);
                   mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, "%d", pNode.value.uiAPCost);
                   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
                 } else if ((uiLevelNodeFlags & LEVELNODE_ERASEZ) && !(uiFlags & TILES_DIRTY)) {
@@ -1669,7 +1669,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   //	bItemOutline = TRUE;
                   //}
 
-                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
 
                   if (bBlitClipVal == FALSE) {
                     if (fZBlit) {
@@ -1684,12 +1684,12 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   } else if (bBlitClipVal == TRUE) {
                     if (fZBlit) {
                       if (fObscuredBlitter) {
-                        Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, &gClippingRect);
+                        Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
                       } else {
-                        Blt8BPPDataTo16BPPBufferOutlineZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, &gClippingRect);
+                        Blt8BPPDataTo16BPPBufferOutlineZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
                       }
                     } else {
-                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, &gClippingRect);
+                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
                     }
                   }
                 }
@@ -1701,24 +1701,24 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     bItemOutline = FALSE;
                   }
 
-                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                  bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
 
                   if (fShadowBlitter) {
                     if (bBlitClipVal == FALSE) {
                       Blt8BPPDataTo16BPPBufferShadowZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
                     } else {
-                      Blt8BPPDataTo16BPPBufferShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                      Blt8BPPDataTo16BPPBufferShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                     }
                   } else {
                     if (bBlitClipVal == FALSE) {
                       Blt8BPPDataTo16BPPBufferOutlineZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline);
                     } else if (bBlitClipVal == TRUE) {
-                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, &gClippingRect);
+                      Blt8BPPDataTo16BPPBufferOutlineClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, usOutlineColor, bItemOutline, addressof(gClippingRect));
                     }
                   }
                 } else if (uiFlags & TILES_DIRTY) {
                   if (!(uiLevelNodeFlags & LEVELNODE_LASTDYNAMIC)) {
-                    pTrav = &(hVObject.value.pETRLEObject[usImageIndex]);
+                    pTrav = addressof(hVObject.value.pETRLEObject[usImageIndex]);
                     uiBrushHeight = pTrav.value.usHeight;
                     uiBrushWidth = pTrav.value.usWidth;
                     sXPos += pTrav.value.sOffsetX;
@@ -1744,9 +1744,9 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if (fMultiTransShadowZBlitter) {
                       if (fZBlitter) {
                         if (fObscuredBlitter) {
-                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, sMultiTransShadowZBlitterIndex, pShadeTable);
+                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), sMultiTransShadowZBlitterIndex, pShadeTable);
                         } else {
-                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, sMultiTransShadowZBlitterIndex, pShadeTable);
+                          Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), sMultiTransShadowZBlitterIndex, pShadeTable);
                         }
                       } else {
                         // Blt8BPPDataTo16BPPBufferTransparentClip((UINT16*)pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect );
@@ -1754,19 +1754,19 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     } else if (fMultiZBlitter) {
                       if (fZBlitter) {
                         if (fObscuredBlitter) {
-                          Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                         } else {
                           if (fWallTile) {
-                            Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransZIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZIncClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           }
                         }
                       } else {
-                        Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                        Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                       }
                     } else {
-                      bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                      bBlitClipVal = BltIsClippedOrOffScreen(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
 
                       if (bBlitClipVal == TRUE) {
                         if (fPixelate) {
@@ -1774,30 +1774,30 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             // if(fZWrite)
                             //	Blt8BPPDataTo16BPPBufferTransZClipTranslucent((UINT16*)pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
                             // else
-                            Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           } else {
                             // if(fZWrite)
                             //	Blt8BPPDataTo16BPPBufferTransZClipPixelate((UINT16*)pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
                             // else
-                            Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           }
                         } else if (fMerc) {
                           if (fZBlitter) {
                             if (fZWrite) {
-                              Blt8BPPDataTo16BPPBufferTransShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                              Blt8BPPDataTo16BPPBufferTransShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
                             } else {
                               if (fObscuredBlitter) {
-                                Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                                Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
                               } else {
-                                Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                                Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
                               }
                             }
 
                             if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, &uiSaveBufferPitchBYTES);
+                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                               // BLIT HERE
-                              Blt8BPPDataTo16BPPBufferTransShadowClip(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                              Blt8BPPDataTo16BPPBufferTransShadowClip(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
 
                               UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -1805,42 +1805,42 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                               pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                             }
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                            Blt8BPPDataTo16BPPBufferTransShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
                           }
                         } else if (fShadowBlitter) {
                           if (fZBlitter) {
                             if (fZWrite)
-                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                             else
-                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           } else {
-                            Blt8BPPDataTo16BPPBufferShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferShadowClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           }
                         } else if (fIntensityBlitter) {
                           if (fZBlitter) {
                             if (fZWrite)
-                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                             else
-                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferIntensityZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           } else {
-                            Blt8BPPDataTo16BPPBufferIntensityClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferIntensityClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           }
                         } else if (fZBlitter) {
                           if (fZWrite) {
                             if (fObscuredBlitter) {
-                              Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                             } else {
-                              Blt8BPPDataTo16BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                              Blt8BPPDataTo16BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                             }
                           } else {
-                            Blt8BPPDataTo16BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                           }
 
                           if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, &uiSaveBufferPitchBYTES);
+                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                             // BLIT HERE
-                            Blt8BPPDataTo16BPPBufferTransZClip(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                            Blt8BPPDataTo16BPPBufferTransZClip(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
 
                             UnLockVideoSurface(guiSAVEBUFFER);
 
@@ -1848,7 +1848,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             pNode.value.uiFlags &= (~LEVELNODE_UPDATESAVEBUFFERONCE);
                           }
                         } else
-                          Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                       } else if (bBlitClipVal == FALSE) {
                         if (fPixelate) {
                           if (fTranslucencyType) {
@@ -1875,7 +1875,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             }
 
                             if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, &uiSaveBufferPitchBYTES);
+                              pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                               // BLIT HERE
                               Blt8BPPDataTo16BPPBufferTransShadow(pSaveBuf, uiSaveBufferPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
@@ -1920,7 +1920,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                             Blt8BPPDataTo16BPPBufferTransZNB(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
 
                           if ((uiLevelNodeFlags & LEVELNODE_UPDATESAVEBUFFERONCE)) {
-                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, &uiSaveBufferPitchBYTES);
+                            pSaveBuf = LockVideoSurface(guiSAVEBUFFER, addressof(uiSaveBufferPitchBYTES));
 
                             // BLIT HERE
                             Blt8BPPDataTo16BPPBufferTransZ(pSaveBuf, uiSaveBufferPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex);
@@ -1938,25 +1938,25 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   {
                     if (fPixelate) {
                       if (fZWrite)
-                        Blt8BPPDataTo8BPPBufferTransZClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                        Blt8BPPDataTo8BPPBufferTransZClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                       else
-                        Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
-                    } else if (BltIsClipped(hVObject, sXPos, sYPos, usImageIndex, &gClippingRect)) {
+                        Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
+                    } else if (BltIsClipped(hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect))) {
                       if (fMerc) {
-                        Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect, pShadeTable);
+                        Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect), pShadeTable);
                       } else if (fShadowBlitter)
                         if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                         else
-                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo8BPPBufferShadowZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
 
                       else if (fZBlitter) {
                         if (fZWrite)
-                          Blt8BPPDataTo8BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo8BPPBufferTransZClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                         else
-                          Blt8BPPDataTo8BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                          Blt8BPPDataTo8BPPBufferTransZNBClip(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                       } else
-                        Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, &gClippingRect);
+                        Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, hVObject, sXPos, sYPos, usImageIndex, addressof(gClippingRect));
                     } else {
                       if (fMerc) {
                         Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pDestBuf, uiDestPitchBYTES, gpZBuffer, sZLevel, hVObject, sXPos, sYPos, usImageIndex, pShadeTable);
@@ -1988,7 +1988,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                     if (pSoldier != NULL && pSoldier.value.ubID >= MAX_NUM_SOLDIERS) {
                       SetFont(TINYFONT1);
                       SetFontDestBuffer(guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, 640, gsVIEWPORT_WINDOW_END_Y, FALSE);
-                      VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, &sX, &sY, "%d", pSoldier.value.ubPlannedUIAPCost);
+                      VarFindFontCenterCoordinates(sXPos, sYPos, 1, 1, TINYFONT1, addressof(sX), addressof(sY), "%d", pSoldier.value.ubPlannedUIAPCost);
                       mprintf_buffer(pDestBuf, uiDestPitchBYTES, TINYFONT1, sX, sY, "%d", pSoldier.value.ubPlannedUIAPCost);
                       SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
                     }
@@ -2021,7 +2021,7 @@ function RenderTiles(uiFlags: UINT32, iStartPointX_M: INT32, iStartPointY_M: INT
                   UnLockVideoSurface(FRAME_BUFFER);
                 ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, (iTempPosX_S + 40), (min(iTempPosY_S + 20, 360)), Get16BPPColor(FROMRGB(0, 0, 0)));
                 if (!(uiFlags & TILES_DIRTY))
-                  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+                  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
               }
             }
           }
@@ -2147,7 +2147,7 @@ function RenderWorld(): void {
     RESETCOUNTER(ANIMATETILES);
 
     while (cnt < gusNumAnimatedTiles) {
-      TileElem = &(gTileDatabase[gusAnimatedTiles[cnt]]);
+      TileElem = addressof(gTileDatabase[gusAnimatedTiles[cnt]]);
 
       pAnimData = TileElem.value.pAnimData;
 
@@ -2244,7 +2244,7 @@ function RenderWorld(): void {
     let cnt: UINT32;
     let zVal: INT16;
 
-    pDestBuf = LockVideoSurface(guiRENDERBUFFER, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(guiRENDERBUFFER, addressof(uiDestPitchBYTES));
 
     for (cnt = 0; cnt < (640 * 480); cnt++) {
       // Get Z value
@@ -2568,7 +2568,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   // This checking sequence just validates the values!
   if (ScrollFlags & SCROLL_LEFT) {
-    FromScreenToCellCoordinates(-sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2583,7 +2583,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_RIGHT) {
-    FromScreenToCellCoordinates(sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
@@ -2597,7 +2597,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_UP) {
-    FromScreenToCellCoordinates(0, -sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
@@ -2611,7 +2611,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
   }
 
   if (ScrollFlags & SCROLL_DOWN) {
-    FromScreenToCellCoordinates(0, sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fMovedPos = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
@@ -2626,19 +2626,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_UPLEFT) {
     // Check up
-    FromScreenToCellCoordinates(0, -sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fUpOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     // Check left
-    FromScreenToCellCoordinates(-sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fLeftOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     if (fLeftOK && fUpOK) {
-      FromScreenToCellCoordinates(-sScrollXStep, -sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(-sScrollXStep, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2649,7 +2649,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fUpOK) {
       fAGoodMove = TRUE;
 
-      FromScreenToCellCoordinates(0, -sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2659,7 +2659,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fLeftOK) {
       fAGoodMove = TRUE;
 
-      FromScreenToCellCoordinates(-sScrollXStep, 0, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2671,19 +2671,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_UPRIGHT) {
     // Check up
-    FromScreenToCellCoordinates(0, -sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fUpOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     // Check right
-    FromScreenToCellCoordinates(sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fRightOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     if (fUpOK && fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, -sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(sScrollXStep, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2694,7 +2694,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fUpOK) {
       fAGoodMove = TRUE;
 
-      FromScreenToCellCoordinates(0, -sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(0, -sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2704,7 +2704,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
     } else if (fRightOK) {
       fAGoodMove = TRUE;
 
-      FromScreenToCellCoordinates(sScrollXStep, 0, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2716,20 +2716,20 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_DOWNLEFT) {
     // Check down......
-    FromScreenToCellCoordinates(0, sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fDownOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     // Check left.....
-    FromScreenToCellCoordinates(-sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fLeftOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     if (fLeftOK && fDownOK) {
       fAGoodMove = TRUE;
-      FromScreenToCellCoordinates(-sScrollXStep, sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(-sScrollXStep, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
 
@@ -2737,7 +2737,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWNLEFT, sScrollXStep, sScrollYStep);
       }
     } else if (fLeftOK) {
-      FromScreenToCellCoordinates(-sScrollXStep, 0, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(-sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2746,7 +2746,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_LEFT, sScrollXStep, sScrollYStep);
       }
     } else if (fDownOK) {
-      FromScreenToCellCoordinates(0, sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2759,19 +2759,19 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
 
   if (ScrollFlags & SCROLL_DOWNRIGHT) {
     // Check right
-    FromScreenToCellCoordinates(sScrollXStep, 0, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fRightOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     // Check down
-    FromScreenToCellCoordinates(0, sScrollYStep, &sTempX_W, &sTempY_W);
+    FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
     sTempRenderCenterX = gsRenderCenterX + sTempX_W;
     sTempRenderCenterY = gsRenderCenterY + sTempY_W;
     fDownOK = ApplyScrolling(sTempRenderCenterX, sTempRenderCenterY, FALSE, fCheckOnly);
 
     if (fDownOK && fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(sScrollXStep, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2780,7 +2780,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWNRIGHT, sScrollXStep, sScrollYStep);
       }
     } else if (fDownOK) {
-      FromScreenToCellCoordinates(0, sScrollYStep, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(0, sScrollYStep, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2789,7 +2789,7 @@ function HandleScrollDirections(ScrollFlags: UINT32, sScrollXStep: INT16, sScrol
         ScrollBackground(SCROLL_DOWN, sScrollXStep, sScrollYStep);
       }
     } else if (fRightOK) {
-      FromScreenToCellCoordinates(sScrollXStep, 0, &sTempX_W, &sTempY_W);
+      FromScreenToCellCoordinates(sScrollXStep, 0, addressof(sTempX_W), addressof(sTempY_W));
       sTempRenderCenterX = gsRenderCenterX + sTempX_W;
       sTempRenderCenterY = gsRenderCenterY + sTempY_W;
       fAGoodMove = TRUE;
@@ -2862,7 +2862,7 @@ function ScrollWorld(): void {
         ScrollFlags = 0;
         fDoScroll = FALSE;
         //
-        if (SoldierLocationRelativeToScreen(gTacticalStatus.sSlideTarget, gTacticalStatus.sSlideReason, &bDirection, &ScrollFlags) && GridNoOnVisibleWorldTile(gTacticalStatus.sSlideTarget)) {
+        if (SoldierLocationRelativeToScreen(gTacticalStatus.sSlideTarget, gTacticalStatus.sSlideReason, addressof(bDirection), addressof(ScrollFlags)) && GridNoOnVisibleWorldTile(gTacticalStatus.sSlideTarget)) {
           ScrollFlags = gScrollDirectionFlags[bDirection];
           fDoScroll = TRUE;
           fIgnoreInput = TRUE;
@@ -2971,7 +2971,7 @@ function ScrollWorld(): void {
       ScrollFlags = SCROLL_DOWNRIGHT;
     }
 
-    fAGoodMove = HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, &sTempRenderCenterX, &sTempRenderCenterY, TRUE);
+    fAGoodMove = HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, addressof(sTempRenderCenterX), addressof(sTempRenderCenterY), TRUE);
   }
 
   // Has this been an OK scroll?
@@ -2998,7 +2998,7 @@ function ScrollWorld(): void {
       gfScrollInertia++;
 
       // Now we actually begin our scrolling
-      HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, &sTempRenderCenterX, &sTempRenderCenterY, FALSE);
+      HandleScrollDirections(ScrollFlags, sScrollXStep, sScrollYStep, addressof(sTempRenderCenterX), addressof(sTempRenderCenterY), FALSE);
     }
   } else {
     // ATE: Also if scroll pending never got to scroll....
@@ -3077,11 +3077,11 @@ function InitRenderParams(ubRestrictionID: UINT8): void {
   gCenterWorldY = (WORLD_COLS) / 2 * CELL_Y_SIZE;
 
   // Convert Bounding box into screen coords
-  FromCellToScreenCoordinates(gTopLeftWorldLimitX, gTopLeftWorldLimitY, &gsTLX, &gsTLY);
-  FromCellToScreenCoordinates(gTopRightWorldLimitX, gTopRightWorldLimitY, &gsTRX, &gsTRY);
-  FromCellToScreenCoordinates(gBottomLeftWorldLimitX, gBottomLeftWorldLimitY, &gsBLX, &gsBLY);
-  FromCellToScreenCoordinates(gBottomRightWorldLimitX, gBottomRightWorldLimitY, &gsBRX, &gsBRY);
-  FromCellToScreenCoordinates(gCenterWorldX, gCenterWorldY, &gsCX, &gsCY);
+  FromCellToScreenCoordinates(gTopLeftWorldLimitX, gTopLeftWorldLimitY, addressof(gsTLX), addressof(gsTLY));
+  FromCellToScreenCoordinates(gTopRightWorldLimitX, gTopRightWorldLimitY, addressof(gsTRX), addressof(gsTRY));
+  FromCellToScreenCoordinates(gBottomLeftWorldLimitX, gBottomLeftWorldLimitY, addressof(gsBLX), addressof(gsBLY));
+  FromCellToScreenCoordinates(gBottomRightWorldLimitX, gBottomRightWorldLimitY, addressof(gsBRX), addressof(gsBRY));
+  FromCellToScreenCoordinates(gCenterWorldX, gCenterWorldY, addressof(gsCX), addressof(gsCY));
 
   // Adjust for interface height tabbing!
   gsTLY += ROOF_LEVEL_HEIGHT;
@@ -3174,7 +3174,7 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
   sDistToCenterY = sTempRenderCenterY - gCenterWorldY;
 
   // From render center in world coords, convert to render center in "screen" coords
-  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, &sScreenCenterX, &sScreenCenterY);
+  FromCellToScreenCoordinates(sDistToCenterX, sDistToCenterY, addressof(sScreenCenterX), addressof(sScreenCenterY));
 
   // Subtract screen center
   sScreenCenterX += gsCX;
@@ -3276,8 +3276,8 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
     if (fForceAdjust) {
       if (fOutTop) {
         // Adjust screen coordinates on the Y!
-        CorrectRenderCenter(sScreenCenterX, (gsTLY + sY_S), &sNewScreenX, &sNewScreenY);
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+        CorrectRenderCenter(sScreenCenterX, (gsTLY + sY_S), addressof(sNewScreenX), addressof(sNewScreenY));
+        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3286,8 +3286,8 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
 
       if (fOutBottom) {
         // OK, Ajust this since we get rounding errors in our two different calculations.
-        CorrectRenderCenter(sScreenCenterX, (gsBLY - sY_S - 50), &sNewScreenX, &sNewScreenY);
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+        CorrectRenderCenter(sScreenCenterX, (gsBLY - sY_S - 50), addressof(sNewScreenX), addressof(sNewScreenY));
+        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3295,8 +3295,8 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       }
 
       if (fOutLeft) {
-        CorrectRenderCenter((gsTLX + sX_S), sScreenCenterY, &sNewScreenX, &sNewScreenY);
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+        CorrectRenderCenter((gsTLX + sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
+        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3304,8 +3304,8 @@ function ApplyScrolling(sTempRenderCenterX: INT16, sTempRenderCenterY: INT16, fF
       }
 
       if (fOutRight) {
-        CorrectRenderCenter((gsTRX - sX_S), sScreenCenterY, &sNewScreenX, &sNewScreenY);
-        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, &sTempPosX_W, &sTempPosY_W);
+        CorrectRenderCenter((gsTRX - sX_S), sScreenCenterY, addressof(sNewScreenX), addressof(sNewScreenY));
+        FromScreenToCellCoordinates(sNewScreenX, sNewScreenY, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
         sTempRenderCenterX = sTempPosX_W;
         sTempRenderCenterY = sTempPosY_W;
@@ -3462,7 +3462,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -3859,7 +3859,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4260,7 +4260,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -4675,7 +4675,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5133,7 +5133,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5516,7 +5516,7 @@ function RenderRoomInfo(sStartPointX_M: INT16, sStartPointY_M: INT16, sStartPoin
   sAnchorPosX_S = sStartPointX_S;
   sAnchorPosY_S = sStartPointY_S;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   do {
     fEndRenderRow = FALSE;
@@ -5626,10 +5626,10 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
   sAnchorPosX_S = sStartPointX_S;
   sAnchorPosY_S = sStartPointY_S;
 
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
 
   // Get VObject for firt land peice!
-  TileElem = &(gTileDatabase[FIRSTTEXTURE1]);
+  TileElem = addressof(gTileDatabase[FIRSTTEXTURE1]);
 
   do {
     fEndRenderRow = FALSE;
@@ -5659,14 +5659,14 @@ function ExamineZBufferForHiddenTiles(sStartPointX_M: INT16, sStartPointY_M: INT
 
         // Caluluate zvalue
         // Look for anything less than struct layer!
-        GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M, &sWorldX, &sZLevel);
+        GetWorldXYAbsoluteScreenXY(sTempPosX_M, sTempPosY_M, addressof(sWorldX), addressof(sZLevel));
 
         sZLevel += gsRenderHeight;
 
         sZLevel = (sZLevel * Z_SUBLAYERS) + STRUCT_Z_LEVEL;
 
         if (gpWorldLevelData[usTileIndex].uiFlags & MAPELEMENT_REEVALUATE_REDUNDENCY) {
-          bBlitClipVal = BltIsClippedOrOffScreen(TileElem.value.hTileSurface, sX, sY, TileElem.value.usRegionIndex, &gClippingRect);
+          bBlitClipVal = BltIsClippedOrOffScreen(TileElem.value.hTileSurface, sX, sY, TileElem.value.usRegionIndex, addressof(gClippingRect));
 
           if (bBlitClipVal == FALSE) {
             // Set flag to not evaluate again!
@@ -5745,7 +5745,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   gsStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
-  FromScreenToCellCoordinates(gsStartPointX_S, gsStartPointY_S, &sTempPosX_W, &sTempPosY_W);
+  FromScreenToCellCoordinates(gsStartPointX_S, gsStartPointY_S, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
   // c) World start point is Render center minus this distance
   gsStartPointX_W = sRenderCenterX_W - sTempPosX_W;
@@ -5769,7 +5769,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   sOffsetX_W = abs(gsStartPointX_W) - (abs((gsStartPointX_M * CELL_X_SIZE)));
   sOffsetY_W = abs(gsStartPointY_W) - (abs((gsStartPointY_M * CELL_Y_SIZE)));
 
-  FromCellToScreenCoordinates(sOffsetX_W, sOffsetY_W, &sOffsetX_S, &sOffsetY_S);
+  FromCellToScreenCoordinates(sOffsetX_W, sOffsetY_W, addressof(sOffsetX_S), addressof(sOffsetY_S));
 
   if (gsStartPointY_W < 0) {
     gsStartPointY_S += 0; //(sOffsetY_S/2);
@@ -5798,7 +5798,7 @@ function CalcRenderParameters(sLeft: INT16, sTop: INT16, sRight: INT16, sBottom:
   gsLStartPointY_S = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) - (sTop - LARGER_VIEWPORT_YOFFSET_S);
 
   // b) Convert these distances into world distances
-  FromScreenToCellCoordinates(gsLStartPointX_S, gsLStartPointY_S, &sTempPosX_W, &sTempPosY_W);
+  FromScreenToCellCoordinates(gsLStartPointX_S, gsLStartPointY_S, addressof(sTempPosX_W), addressof(sTempPosY_W));
 
   // c) World start point is Render center minus this distance
   gsLStartPointX_W = sRenderCenterX_W - sTempPosX_W;
@@ -5849,7 +5849,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -5967,7 +5967,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   Assert(pBuffer != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;
@@ -6071,7 +6071,7 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   Assert(hSrcVObject != NULL);
 
   // Get Offsets from Index into structure
-  pTrav = &(hSrcVObject.value.pETRLEObject[usIndex]);
+  pTrav = addressof(hSrcVObject.value.pETRLEObject[usIndex]);
   usHeight = pTrav.value.usHeight;
   usWidth = pTrav.value.usWidth;
   uiOffset = pTrav.value.uiDataOffset;

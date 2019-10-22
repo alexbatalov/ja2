@@ -84,7 +84,7 @@ function EraseMapTile(iMapIndex: UINT32): void {
       if (gpWorldLevelData[iMapIndex].pLandHead.value.pNext == NULL)
         break;
       AddToUndoList(iMapIndex);
-      GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, &uiCheckType);
+      GetTileType(gpWorldLevelData[iMapIndex].pLandHead.value.usIndex, addressof(uiCheckType));
       RemoveLand(iMapIndex, gpWorldLevelData[iMapIndex].pLandHead.value.usIndex);
       SmoothTerrainRadius(iMapIndex, uiCheckType, 1, TRUE);
       break;
@@ -178,7 +178,7 @@ function PasteDebris(iMapIndex: UINT32): void {
 
   // Get selection list for debris
   pSelList = SelDebris;
-  pNumSelList = &iNumDebrisSelected;
+  pNumSelList = addressof(iNumDebrisSelected);
 
   if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
@@ -202,25 +202,25 @@ function PasteDebris(iMapIndex: UINT32): void {
 
 function PasteSingleWall(iMapIndex: UINT32): void {
   pSelList = SelSingleWall;
-  pNumSelList = &iNumWallsSelected;
+  pNumSelList = addressof(iNumWallsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleDoor(iMapIndex: UINT32): void {
   pSelList = SelSingleDoor;
-  pNumSelList = &iNumDoorsSelected;
+  pNumSelList = addressof(iNumDoorsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleWindow(iMapIndex: UINT32): void {
   pSelList = SelSingleWindow;
-  pNumSelList = &iNumWindowsSelected;
+  pNumSelList = addressof(iNumWindowsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleRoof(iMapIndex: UINT32): void {
   pSelList = SelSingleRoof;
-  pNumSelList = &iNumRoofsSelected;
+  pNumSelList = addressof(iNumRoofsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
@@ -238,12 +238,12 @@ function PasteSingleBrokenWall(iMapIndex: UINT32): void {
   let usWallOrientation: UINT16;
 
   pSelList = SelSingleBrokenWall;
-  pNumSelList = &iNumBrokenWallsSelected;
+  pNumSelList = addressof(iNumBrokenWallsSelected);
 
   usIndex = pSelList[iCurBank].usIndex;
   usObjIndex = pSelList[iCurBank].uiObject;
-  usTileIndex = GetTileIndexFromTypeSubIndex(usObjIndex, usIndex, &usTileIndex);
-  GetWallOrientation(usTileIndex, &usWallOrientation);
+  usTileIndex = GetTileIndexFromTypeSubIndex(usObjIndex, usIndex, addressof(usTileIndex));
+  GetWallOrientation(usTileIndex, addressof(usWallOrientation));
   if (usWallOrientation == INSIDE_TOP_LEFT || usWallOrientation == INSIDE_TOP_RIGHT)
     EraseHorizontalWall(iMapIndex);
   else
@@ -254,25 +254,25 @@ function PasteSingleBrokenWall(iMapIndex: UINT32): void {
 
 function PasteSingleDecoration(iMapIndex: UINT32): void {
   pSelList = SelSingleDecor;
-  pNumSelList = &iNumDecorSelected;
+  pNumSelList = addressof(iNumDecorSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleDecal(iMapIndex: UINT32): void {
   pSelList = SelSingleDecal;
-  pNumSelList = &iNumDecalsSelected;
+  pNumSelList = addressof(iNumDecalsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleFloor(iMapIndex: UINT32): void {
   pSelList = SelSingleFloor;
-  pNumSelList = &iNumFloorsSelected;
+  pNumSelList = addressof(iNumFloorsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
 function PasteSingleToilet(iMapIndex: UINT32): void {
   pSelList = SelSingleToilet;
-  pNumSelList = &iNumToiletsSelected;
+  pNumSelList = addressof(iNumToiletsSelected);
   PasteSingleWallCommon(iMapIndex);
 }
 
@@ -337,7 +337,7 @@ function PasteSingleWallCommon(iMapIndex: UINT32): void {
       AddRoofToTail(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
     } else if ((usUseObjIndex >= FIRSTFLOOR) && (usUseObjIndex <= LASTFLOOR)) {
       // Drop a floor on this tile
-      if (TypeExistsInLandLayer(iMapIndex, usUseObjIndex, &usTempIndex))
+      if (TypeExistsInLandLayer(iMapIndex, usUseObjIndex, addressof(usTempIndex)))
         RemoveLand(iMapIndex, usTempIndex);
 
       AddLandToHead(iMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
@@ -388,7 +388,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
   for (i = 0; i < *pNumSelList; i++) {
     usObject = pSelList[i].uiObject;
     if ((usObject >= usRangeStart) && (usObject <= usRangeEnd)) {
-      GetTileType(usObject, &uiType);
+      GetTileType(usObject, addressof(uiType));
       usPickList[usNumInPickList] = uiType;
       usNumInPickList++;
     }
@@ -403,7 +403,7 @@ function GetRandomTypeByRange(usRangeStart: UINT16, usRangeEnd: UINT16): UINT16 
 //
 function PasteStructure(iMapIndex: UINT32): void {
   pSelList = SelOStructs;
-  pNumSelList = &iNumOStructsSelected;
+  pNumSelList = addressof(iNumOStructsSelected);
 
   PasteStructureCommon(iMapIndex);
 }
@@ -415,7 +415,7 @@ function PasteStructure(iMapIndex: UINT32): void {
 //
 function PasteStructure1(iMapIndex: UINT32): void {
   pSelList = SelOStructs1;
-  pNumSelList = &iNumOStructs1Selected;
+  pNumSelList = addressof(iNumOStructs1Selected);
 
   PasteStructureCommon(iMapIndex);
 }
@@ -427,7 +427,7 @@ function PasteStructure1(iMapIndex: UINT32): void {
 //
 function PasteStructure2(iMapIndex: UINT32): void {
   pSelList = SelOStructs2;
-  pNumSelList = &iNumOStructs2Selected;
+  pNumSelList = addressof(iNumOStructs2Selected);
 
   PasteStructureCommon(iMapIndex);
 }
@@ -477,7 +477,7 @@ function PasteStructureCommon(iMapIndex: UINT32): void {
         // For now, adjust to shadows by a hard-coded amount,
 
         // Add mask if in long grass
-        GetLandHeadType(iMapIndex, &fHeadType);
+        GetLandHeadType(iMapIndex, addressof(fHeadType));
       }
     }
   } else if (CurrentStruct == ERASE_TILE && iMapIndex < 0x8000) {
@@ -498,7 +498,7 @@ function PasteBanks(iMapIndex: UINT32, usStructIndex: UINT16, fReplace: BOOLEAN)
   let usIndex: UINT16;
 
   pSelList = SelBanks;
-  pNumSelList = &iNumBanksSelected;
+  pNumSelList = addressof(iNumBanksSelected);
 
   usUseIndex = pSelList[iCurBank].usIndex;
   usUseObjIndex = pSelList[iCurBank].uiObject;
@@ -541,7 +541,7 @@ function PasteRoads(iMapIndex: UINT32): void {
   let usUseIndex: UINT16;
 
   pSelList = SelRoads;
-  pNumSelList = &iNumRoadsSelected;
+  pNumSelList = addressof(iNumRoadsSelected);
 
   usUseIndex = pSelList[iCurBank].usIndex;
 
@@ -577,7 +577,7 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
 
     if (CurrentPaste == DEEPWATERTEXTURE) {
       // IF WE ARE PASTING DEEP WATER AND WE ARE NOT OVER WATER, IGNORE!
-      if (TypeExistsInLandLayer(iMapIndex, REGWATERTEXTURE, &usTileIndex)) {
+      if (TypeExistsInLandLayer(iMapIndex, REGWATERTEXTURE, addressof(usTileIndex))) {
         if (!gTileDatabase[usTileIndex].ubFullTile) {
           return;
         }
@@ -587,12 +587,12 @@ function PasteTextureCommon(iMapIndex: UINT32): void {
     }
 
     // Don't draw over floors
-    if (TypeRangeExistsInLandLayer(iMapIndex, FIRSTFLOOR, FOURTHFLOOR, &usTileIndex)) {
+    if (TypeRangeExistsInLandLayer(iMapIndex, FIRSTFLOOR, FOURTHFLOOR, addressof(usTileIndex))) {
       return;
     }
 
     // Compare heights and do appropriate action
-    if (AnyHeigherLand(iMapIndex, CurrentPaste, &ubLastHighLevel)) {
+    if (AnyHeigherLand(iMapIndex, CurrentPaste, addressof(ubLastHighLevel))) {
       // Here we do the following:
       // - Remove old type from layer
       // - Smooth World with old type
@@ -630,11 +630,11 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   // I don't know is the right way to do it!
   // return;
 
-  if (iMapIndex < 0x8000 && AnyHeigherLand(iMapIndex, fNewType, &ubLastHighLevel)) {
+  if (iMapIndex < 0x8000 && AnyHeigherLand(iMapIndex, fNewType, addressof(ubLastHighLevel))) {
     AddToUndoList(iMapIndex);
 
     // - For all heigher level, remove
-    RemoveHigherLandLevels(iMapIndex, fNewType, &puiDeletedTypes, &ubNumTypes);
+    RemoveHigherLandLevels(iMapIndex, fNewType, addressof(puiDeletedTypes), addressof(ubNumTypes));
 
     // Set with a radius of 1 and smooth according to height difference
     SetLowerLandIndexWithRadius(iMapIndex, fNewType, 1, TRUE);
@@ -648,11 +648,11 @@ function PasteHigherTexture(iMapIndex: UINT32, fNewType: UINT32): void {
   } else if (iMapIndex < 0x8000) {
     AddToUndoList(iMapIndex);
 
-    GetTileIndexFromTypeSubIndex(fNewType, REQUIRES_SMOOTHING_TILE, &NewTile);
+    GetTileIndexFromTypeSubIndex(fNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
     SetLandIndex(iMapIndex, NewTile, fNewType, FALSE);
 
     // Smooth item then adding here
-    SmoothTerrain(iMapIndex, fNewType, &NewTile, FALSE);
+    SmoothTerrain(iMapIndex, fNewType, addressof(NewTile), FALSE);
 
     if (NewTile != NO_TILE) {
       // Change tile
@@ -734,7 +734,7 @@ function PasteExistingTexture(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   // Get top tile index
   // Remove all land peices except
-  GetTileType(usIndex, &uiNewType);
+  GetTileType(usIndex, addressof(uiNewType));
 
   DeleteAllLandLayers(iMapIndex);
 
@@ -836,7 +836,7 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
         if (fReplace) {
           fDoPaste = TRUE;
         } else {
-          if (TypeExistsInLandLayer(iNewIndex, uiNewType, &usTempIndex)) {
+          if (TypeExistsInLandLayer(iNewIndex, uiNewType, addressof(usTempIndex))) {
             fDoPaste = TRUE;
           }
         }
@@ -848,20 +848,20 @@ function SetLowerLandIndexWithRadius(iMapIndex: INT32, uiNewType: UINT32, ubRadi
 
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
-            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, &NewTile);
+            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
             SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
-          } else if (AnyHeigherLand(iNewIndex, uiNewType, &ubLastHighLevel)) {
+          } else if (AnyHeigherLand(iNewIndex, uiNewType, addressof(ubLastHighLevel))) {
             AddToUndoList(iMapIndex);
 
             // Force middle one to NOT smooth, and set to random 'full' tile
             usTemp = (rand() % 10) + 1;
-            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, &NewTile);
+            GetTileIndexFromTypeSubIndex(uiNewType, usTemp, addressof(NewTile));
             SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
           } else {
             AddToUndoList(iMapIndex);
 
             // Set tile to 'smooth target' tile
-            GetTileIndexFromTypeSubIndex(uiNewType, REQUIRES_SMOOTHING_TILE, &NewTile);
+            GetTileIndexFromTypeSubIndex(uiNewType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
             SetLandIndex(iNewIndex, NewTile, uiNewType, FALSE);
 
             // If we are top-most, add to smooth list
@@ -892,8 +892,8 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
   let NewTile: UINT16;
 
   // CHECK IF THIS TEXTURE EXISTS!
-  if (TypeExistsInLandLayer(sGridNo, usType, &usIndex)) {
-    if (GetTypeLandLevel(sGridNo, usType, &ubTypeLevel)) {
+  if (TypeExistsInLandLayer(sGridNo, usType, addressof(usIndex))) {
+    if (GetTypeLandLevel(sGridNo, usType, addressof(ubTypeLevel))) {
       // If top-land , do not change
       if (ubTypeLevel != LANDHEAD) {
         PasteExistingTexture(sGridNo, usIndex);
@@ -901,7 +901,7 @@ function PasteTextureEx(sGridNo: INT16, usType: UINT16): void {
     }
   } else {
     // Fill with just first tile, smoothworld() will pick proper piece later
-    GetTileIndexFromTypeSubIndex(usType, REQUIRES_SMOOTHING_TILE, &NewTile);
+    GetTileIndexFromTypeSubIndex(usType, REQUIRES_SMOOTHING_TILE, addressof(NewTile));
 
     SetLandIndex(sGridNo, NewTile, usType, FALSE);
   }
@@ -978,7 +978,7 @@ function RaiseWorldLand(): void {
     gpWorldLevelData[cnt].sHeight = 0;
 
     while (pStruct) {
-      pTileElement = &(gTileDatabase[pStruct.value.usIndex]);
+      pTileElement = addressof(gTileDatabase[pStruct.value.usIndex]);
       if (pTileElement.value.fType == FIRSTCLIFF) {
         fSomethingRaised = TRUE;
         // DebugMsg(TOPIC_JA2,DBG_LEVEL_3,String("Cliff found at count=%d",cnt));
@@ -1163,7 +1163,7 @@ function EliminateObjectLayerRedundancy(): void {
     pValidRoad = pValidAnother = NULL;
     numRoads = numAnothers = 0;
     while (pObject) {
-      GetTileType(pObject.value.usIndex, &uiType);
+      GetTileType(pObject.value.usIndex, addressof(uiType));
       if (uiType == ROADPIECES) {
         // keep track of the last valid road piece, and count the total
         pValidRoad = pObject;

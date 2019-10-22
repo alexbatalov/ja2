@@ -232,7 +232,7 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
     return;
   }
 
-  pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+  pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
   if (bMoraleMod > 0) {
     switch (pProfile.value.bAttitude) {
@@ -457,7 +457,7 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
       ubLoop = gTacticalStatus.Team[gbPlayerNum].bFirstID;
       for (pTeamSoldier = MercPtrs[ubLoop]; ubLoop <= gTacticalStatus.Team[gbPlayerNum].bLastID; ubLoop++, pTeamSoldier++) {
         if (pTeamSoldier.value.bActive && pTeamSoldier.value.ubProfile != NO_PROFILE) {
-          pProfile = &(gMercProfiles[pTeamSoldier.value.ubProfile]);
+          pProfile = addressof(gMercProfiles[pTeamSoldier.value.ubProfile]);
 
           if (HATED_MERC(pProfile, pSoldier.value.ubProfile)) {
             // yesss!
@@ -602,7 +602,7 @@ function HourlyMoraleUpdate(): void {
     // if the merc is active, in Arulco, and conscious, not POW
     if (pSoldier.value.bActive && pSoldier.value.ubProfile != NO_PROFILE && !(pSoldier.value.bAssignment == IN_TRANSIT || pSoldier.value.fMercAsleep == TRUE || pSoldier.value.bAssignment == ASSIGNMENT_DEAD || pSoldier.value.bAssignment == ASSIGNMENT_POW)) {
       // calculate the guy's opinion of the people he is with
-      pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+      pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
       // if we're moving
       if (pSoldier.value.ubGroupID != 0 && PlayerIDGroupInMotion(pSoldier.value.ubGroupID)) {

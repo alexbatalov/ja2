@@ -144,7 +144,7 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
 
   HandleMercStatsForChangesInFace();
 
-  memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
+  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
   HireMercStruct.ubProfileID = (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
@@ -168,7 +168,7 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
   SetProfileFaceData(HireMercStruct.ubProfileID, (200 + iPortraitNumber), uiEyeXPositions[iPortraitNumber], uiEyeYPositions[iPortraitNumber], uiMouthXPositions[iPortraitNumber], uiMouthYPositions[iPortraitNumber]);
 
   // if we succesfully hired the merc
-  if (!HireMerc(&HireMercStruct)) {
+  if (!HireMerc(addressof(HireMercStruct))) {
     return FALSE;
   } else {
     return TRUE;
@@ -300,7 +300,7 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
   // gives starting items to merc
   // NOTE: Any guns should probably be from those available in regular gun set
 
-  pProfile = &(gMercProfiles[ubProfileId]);
+  pProfile = addressof(gMercProfiles[ubProfileId]);
 
   // STANDARD EQUIPMENT
 
@@ -430,17 +430,17 @@ function WriteOutCurrentImpCharacter(iProfileId: INT32): void {
   hFile = FileOpen(IMP_MERC_FILE, FILE_ACCESS_WRITE | FILE_CREATE_ALWAYS, FALSE);
 
   // write out the profile id
-  if (!FileWrite(hFile, &iProfileId, sizeof(INT32), &uiBytesWritten)) {
+  if (!FileWrite(hFile, addressof(iProfileId), sizeof(INT32), addressof(uiBytesWritten))) {
     return;
   }
 
   // write out the portrait id
-  if (!FileWrite(hFile, &iPortraitNumber, sizeof(INT32), &uiBytesWritten)) {
+  if (!FileWrite(hFile, addressof(iPortraitNumber), sizeof(INT32), addressof(uiBytesWritten))) {
     return;
   }
 
   // write out the profile itself
-  if (!FileWrite(hFile, &gMercProfiles[iProfileId], sizeof(MERCPROFILESTRUCT), &uiBytesWritten)) {
+  if (!FileWrite(hFile, addressof(gMercProfiles[iProfileId]), sizeof(MERCPROFILESTRUCT), addressof(uiBytesWritten))) {
     return;
   }
 
@@ -464,17 +464,17 @@ function LoadInCurrentImpCharacter(): void {
   }
 
   // read in the profile
-  if (!FileRead(hFile, &iProfileId, sizeof(INT32), &uiBytesRead)) {
+  if (!FileRead(hFile, addressof(iProfileId), sizeof(INT32), addressof(uiBytesRead))) {
     return;
   }
 
   // read in the portrait
-  if (!FileRead(hFile, &iPortraitNumber, sizeof(INT32), &uiBytesRead)) {
+  if (!FileRead(hFile, addressof(iPortraitNumber), sizeof(INT32), addressof(uiBytesRead))) {
     return;
   }
 
   // read in the profile
-  if (!FileRead(hFile, &gMercProfiles[iProfileId], sizeof(MERCPROFILESTRUCT), &uiBytesRead)) {
+  if (!FileRead(hFile, addressof(gMercProfiles[iProfileId]), sizeof(MERCPROFILESTRUCT), addressof(uiBytesRead))) {
     return;
   }
 

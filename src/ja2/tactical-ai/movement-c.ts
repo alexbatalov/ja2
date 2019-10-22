@@ -297,10 +297,10 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
   sTempDest = -1;
 
   // obtain maximum roaming distance from soldier's sOrigin
-  usMaxDist = RoamingRange(pSoldier, &sOrigin);
+  usMaxDist = RoamingRange(pSoldier, addressof(sOrigin));
 
   if (pSoldier.value.bOrders <= CLOSEPATROL && (pSoldier.value.bTeam == CIV_TEAM || pSoldier.value.ubProfile != NO_PROFILE)) {
-    if (InARoom(pSoldier.value.usPatrolGrid[0], &ubRoomRequired)) {
+    if (InARoom(pSoldier.value.usPatrolGrid[0], addressof(ubRoomRequired))) {
       // make sure this doesn't interfere with pathing for scripts
       if (pSoldier.value.sAbsoluteFinalDestination != NOWHERE) {
         ubRoomRequired = 0;
@@ -424,7 +424,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
       break; // quit here, sGoToGrid is where we are going
 
     if (ubRoomRequired) {
-      if (!(InARoom(sTempDest, &ubTempRoom) && ubTempRoom == ubRoomRequired)) {
+      if (!(InARoom(sTempDest, addressof(ubTempRoom)) && ubTempRoom == ubRoomRequired)) {
         // quit here, limited by room!
         break;
       }
@@ -692,7 +692,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
         }
         if (LegalNPCDestination(pSoldier, pSoldier.value.usActionData, ENSURE_PATH, WATEROK, 0)) {
           // check this location out
-          pMapElement = &(gpWorldLevelData[iGridNo]);
+          pMapElement = addressof(gpWorldLevelData[iGridNo]);
           if (pMapElement.value.ubSmellInfo && (SMELL_TYPE(pMapElement.value.ubSmellInfo) == ubSoughtSmell)) {
             ubStrength = SMELL_STRENGTH(pMapElement.value.ubSmellInfo);
             if (ubStrength > ubBestStrength) {

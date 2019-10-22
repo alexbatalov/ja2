@@ -60,7 +60,7 @@ function GetWinFont(iFont: INT32): Pointer<HWINFONT> {
   if (WinFonts[iFont].hFont == NULL) {
     return NULL;
   } else {
-    return &(WinFonts[iFont]);
+    return addressof(WinFonts[iFont]);
   }
 }
 
@@ -85,7 +85,7 @@ function CreateWinFont(iHeight: INT32, iWidth: INT32, iEscapement: INT32, iWeigh
   if (DoesWinFontExistOnSystem(szFontName, iCharSet)) {
     gLogFont.lfHeight = iHeight;
     gLogFont.lfWidth = 0;
-    hFont = CreateFontIndirect(&gLogFont);
+    hFont = CreateFontIndirect(addressof(gLogFont));
   } else {
     FatalError("Cannot load subtitle Windows Font: %S.", szFontName);
     return -1;
@@ -156,20 +156,20 @@ function PrintWinFont(uiDestBuf: UINT32, iFont: INT32, x: INT32, y: INT32, pFont
   sprintf(string, "%S", string2);
 
   // Get surface...
-  GetVideoSurface(&hVSurface, uiDestBuf);
+  GetVideoSurface(addressof(hVSurface), uiDestBuf);
 
   pDDSurface = GetVideoSurfaceDDSurface(hVSurface);
 
-  IDirectDrawSurface2_GetDC(pDDSurface, &hdc);
+  IDirectDrawSurface2_GetDC(pDDSurface, addressof(hdc));
 
   SelectObject(hdc, pWinFont.value.hFont);
   SetTextColor(hdc, pWinFont.value.ForeColor);
   SetBkColor(hdc, pWinFont.value.BackColor);
   SetBkMode(hdc, TRANSPARENT);
 
-  GetTextExtentPoint32(hdc, string, len, &RectSize);
-  SetRect(&rc, x, y, x + RectSize.cx, y + RectSize.cy);
-  ExtTextOut(hdc, x, y, ETO_OPAQUE, &rc, string, len, NULL);
+  GetTextExtentPoint32(hdc, string, len, addressof(RectSize));
+  SetRect(addressof(rc), x, y, x + RectSize.cx, y + RectSize.cy);
+  ExtTextOut(hdc, x, y, ETO_OPAQUE, addressof(rc), string, len, NULL);
   IDirectDrawSurface2_ReleaseDC(pDDSurface, hdc);
 }
 
@@ -189,7 +189,7 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 
   hdc = GetDC(NULL);
   SelectObject(hdc, pWinFont.value.hFont);
-  GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
+  GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
   ReleaseDC(NULL, hdc);
 
   return RectSize.cx;
@@ -211,7 +211,7 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
 
   hdc = GetDC(NULL);
   SelectObject(hdc, pWinFont.value.hFont);
-  GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
+  GetTextExtentPoint32(hdc, string, strlen(string), addressof(RectSize));
   ReleaseDC(NULL, hdc);
 
   return RectSize.cy;
@@ -242,7 +242,7 @@ function EnumFontFamExProc(lpelfe: Pointer<ENUMLOGFONTEX>, lpntme: Pointer<NEWTE
   sprintf(szFontName, "%S", gzFontName);
   if (!strcmp(szFontName, lpelfe.value.elfFullName)) {
     gfEnumSucceed = TRUE;
-    memcpy(&gLogFont, &(lpelfe.value.elfLogFont), sizeof(LOGFONT));
+    memcpy(addressof(gLogFont), addressof(lpelfe.value.elfLogFont), sizeof(LOGFONT));
   }
 
   return TRUE;
@@ -258,11 +258,11 @@ function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEA
   // Copy into 8-bit!
   sprintf(string, "%S", pTypeFaceName);
 
-  memset(&LogFont, 0, sizeof(LOGFONT));
+  memset(addressof(LogFont), 0, sizeof(LOGFONT));
   LogFont.lfCharSet = iCharSet;
-  lstrcpy(&LogFont.lfFaceName, string);
+  lstrcpy(addressof(LogFont.lfFaceName), string);
 
-  EnumFontFamiliesEx(hdc, &LogFont, EnumFontFamExProc, 0, 0);
+  EnumFontFamiliesEx(hdc, addressof(LogFont), EnumFontFamExProc, 0, 0);
 
   ReleaseDC(NULL, hdc);
 

@@ -259,7 +259,7 @@ function RemoveVehicleFromList(iId: INT32): BOOLEAN {
   }
 
   // zero out mem
-  memset(&(pVehicleList[iId]), 0, sizeof(VEHICLETYPE));
+  memset(addressof(pVehicleList[iId]), 0, sizeof(VEHICLETYPE));
 
   return TRUE;
 }
@@ -548,7 +548,7 @@ function RemoveSoldierFromVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): B
         // and he has a route set
         if (GetLengthOfMercPath(pVehicleSoldier) > 0) {
           // cancel the entire path (also handles reversing directions)
-          CancelPathForVehicle(&(pVehicleList[iId]), FALSE);
+          CancelPathForVehicle(addressof(pVehicleList[iId]), FALSE);
         }
 
         // if the vehicle was abandoned between sectors
@@ -1211,11 +1211,11 @@ function ExitVehicle(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
   // TEST IF IT'S VALID...
   if (pVehicle.value.uiStatusFlags & SOLDIER_VEHICLE) {
-    sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, &ubDirection, 3, pVehicle);
+    sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 5, addressof(ubDirection), 3, pVehicle);
 
     if (sGridNo == NOWHERE) {
       // ATE: BUT we need a place, widen the search
-      sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 20, &ubDirection, 3, pVehicle);
+      sGridNo = FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier, pSoldier.value.usUIMovementMode, 20, addressof(ubDirection), 3, pVehicle);
     }
 
     // OK, remove....
@@ -1330,8 +1330,8 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
       pSoldier.value.fDisplayDamage = TRUE;
       pSoldier.value.bDisplayDamageCount = 0;
 
-      GetSoldierScreenPos(pSoldier, &sMercScreenX, &sMercScreenY);
-      GetSoldierAnimOffsets(pSoldier, &sOffsetX, &sOffsetY);
+      GetSoldierScreenPos(pSoldier, addressof(sMercScreenX), addressof(sMercScreenY));
+      GetSoldierAnimOffsets(pSoldier, addressof(sOffsetX), addressof(sOffsetY));
       pSoldier.value.sDamageX = sOffsetX;
       pSoldier.value.sDamageY = sOffsetY;
     }
@@ -1348,7 +1348,7 @@ function HandleCriticalHitForVehicleInLocation(ubID: UINT8, sDmg: INT16, sGridNo
       // EVENT_InitNewSoldierAnim( pSoldier, VEHICLE_DIE, 0, FALSE );
       // TacticalRemoveSoldier( pSoldier->ubID );
 
-      CheckForAndHandleSoldierDeath(pSoldier, &fMadeCorpse);
+      CheckForAndHandleSoldierDeath(pSoldier, addressof(fMadeCorpse));
     }
 
     // Kill all in vehicle...
@@ -1447,7 +1447,7 @@ function GetSoldierStructureForVehicle(iId: INT32): Pointer<SOLDIERTYPE> {
   iNumberOnTeam = TOTAL_SOLDIERS; // gTacticalStatus.Team[ OUR_TEAM ].bLastID;
 
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive) {
       if (pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) {
@@ -1521,7 +1521,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let ubPassengerCnt: UINT8 = 0;
 
   // Save the number of elements
-  FileWrite(hFile, &ubNumberOfVehicles, sizeof(UINT8), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(ubNumberOfVehicles), sizeof(UINT8), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(UINT8)) {
     return FALSE;
   }
@@ -1529,7 +1529,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
   // loop through all the vehicles and save each one
   for (cnt = 0; cnt < ubNumberOfVehicles; cnt++) {
     // save if the vehicle spot is valid
-    FileWrite(hFile, &pVehicleList[cnt].fValid, sizeof(BOOLEAN), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(pVehicleList[cnt].fValid), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(BOOLEAN)) {
       return FALSE;
     }
@@ -1537,7 +1537,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
     if (pVehicleList[cnt].fValid) {
       // copy the node into the temp vehicle buffer ( need to do this because we cant save the pointers
       // to the soldier, therefore save the soldier ubProfile
-      memcpy(&TempVehicle, &pVehicleList[cnt], sizeof(VEHICLETYPE));
+      memcpy(addressof(TempVehicle), addressof(pVehicleList[cnt]), sizeof(VEHICLETYPE));
 
       // loop through the passengers
       for (ubPassengerCnt = 0; ubPassengerCnt < 10; ubPassengerCnt++) {
@@ -1555,7 +1555,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
       }
 
       // save the vehicle info
-      FileWrite(hFile, &TempVehicle, sizeof(VEHICLETYPE), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(TempVehicle), sizeof(VEHICLETYPE), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(VEHICLETYPE)) {
         return FALSE;
       }
@@ -1568,7 +1568,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
       }
 
       // Save the number of nodes
-      FileWrite(hFile, &uiNodeCount, sizeof(UINT32), &uiNumBytesWritten);
+      FileWrite(hFile, addressof(uiNodeCount), sizeof(UINT32), addressof(uiNumBytesWritten));
       if (uiNumBytesWritten != sizeof(UINT32)) {
         return FALSE;
       }
@@ -1577,7 +1577,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
       pTempPathPtr = pVehicleList[cnt].pMercPath;
       while (pTempPathPtr) {
         // Save the node
-        FileWrite(hFile, pTempPathPtr, sizeof(PathSt), &uiNumBytesWritten);
+        FileWrite(hFile, pTempPathPtr, sizeof(PathSt), addressof(uiNumBytesWritten));
         if (uiNumBytesWritten != sizeof(PathSt)) {
           return FALSE;
         }
@@ -1603,7 +1603,7 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
   ClearOutVehicleList();
 
   // Load the number of elements
-  FileRead(hFile, &ubNumberOfVehicles, sizeof(UINT8), &uiNumBytesRead);
+  FileRead(hFile, addressof(ubNumberOfVehicles), sizeof(UINT8), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(UINT8)) {
     return FALSE;
   }
@@ -1618,14 +1618,14 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
     // loop through all the vehicles and load each one
     for (cnt = 0; cnt < ubNumberOfVehicles; cnt++) {
       // Load if the vehicle spot is valid
-      FileRead(hFile, &pVehicleList[cnt].fValid, sizeof(BOOLEAN), &uiNumBytesRead);
+      FileRead(hFile, addressof(pVehicleList[cnt].fValid), sizeof(BOOLEAN), addressof(uiNumBytesRead));
       if (uiNumBytesRead != sizeof(BOOLEAN)) {
         return FALSE;
       }
 
       if (pVehicleList[cnt].fValid) {
         // load the vehicle info
-        FileRead(hFile, &pVehicleList[cnt], sizeof(VEHICLETYPE), &uiNumBytesRead);
+        FileRead(hFile, addressof(pVehicleList[cnt]), sizeof(VEHICLETYPE), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(VEHICLETYPE)) {
           return FALSE;
         }
@@ -1654,7 +1654,7 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
         }
 
         // Load the number of nodes
-        FileRead(hFile, &uiTotalNodeCount, sizeof(UINT32), &uiNumBytesRead);
+        FileRead(hFile, addressof(uiTotalNodeCount), sizeof(UINT32), addressof(uiNumBytesRead));
         if (uiNumBytesRead != sizeof(UINT32)) {
           return FALSE;
         }
@@ -1673,7 +1673,7 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
             memset(pTempPath, 0, sizeof(PathSt));
 
             // Load all the nodes
-            FileRead(hFile, pTempPath, sizeof(PathSt), &uiNumBytesRead);
+            FileRead(hFile, pTempPath, sizeof(PathSt), addressof(uiNumBytesRead));
             if (uiNumBytesRead != sizeof(PathSt)) {
               return FALSE;
             }
@@ -1742,7 +1742,7 @@ function SaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiSaveSize: UINT32 = 0;
 
   // Save all the vehicle movement id's
-  FileWrite(hFile, gubVehicleMovementGroups, sizeof(INT8) * 5, &uiNumBytesWritten);
+  FileWrite(hFile, gubVehicleMovementGroups, sizeof(INT8) * 5, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT8) * 5) {
     return FALSE;
   }
@@ -1757,7 +1757,7 @@ function LoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiSaveSize: UINT32 = 0;
 
   // Load in the Squad movement id's
-  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * 5, &uiNumBytesRead);
+  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * 5, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT8) * 5) {
     return FALSE;
   }
@@ -1779,7 +1779,7 @@ function NewSaveVehicleMovementInfoToSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiSaveSize: UINT32 = 0;
 
   // Save all the vehicle movement id's
-  FileWrite(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES, &uiNumBytesWritten);
+  FileWrite(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT8) * MAX_VEHICLES) {
     return FALSE;
   }
@@ -1792,7 +1792,7 @@ function NewLoadVehicleMovementInfoFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiSaveSize: UINT32 = 0;
 
   // Load in the Squad movement id's
-  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES, &uiNumBytesRead);
+  FileRead(hFile, gubVehicleMovementGroups, sizeof(INT8) * MAX_VEHICLES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT8) * MAX_VEHICLES) {
     return FALSE;
   }
@@ -1950,7 +1950,7 @@ function OnlyThisSoldierCanDriveVehicle(pThisSoldier: Pointer<SOLDIERTYPE>, iVeh
 
   for (iCounter = gTacticalStatus.Team[OUR_TEAM].bFirstID; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     // get the current soldier
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     // skip checking THIS soldier, we wanna know about everyone else
     if (pSoldier == pThisSoldier) {

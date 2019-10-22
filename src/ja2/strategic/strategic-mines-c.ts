@@ -79,7 +79,7 @@ function InitializeMines(): void {
 
   // set up initial mine status
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
-    pMineStatus = &(gMineStatus[ubMineIndex]);
+    pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
     memset(pMineStatus, 0, sizeof(*pMineStatus));
 
@@ -133,7 +133,7 @@ function InitializeMines(): void {
   } while (gMineStatus[ubDepletedMineIndex].fEmpty || (ubDepletedMineIndex == MINE_ALMA));
 
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
-    pMineStatus = &(gMineStatus[ubMineIndex]);
+    pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
     if (ubMineIndex == ubDepletedMineIndex) {
       if (ubDepletedMineIndex == MINE_DRASSEN) {
@@ -166,7 +166,7 @@ function HourlyMinesUpdate(): void {
 
   // check every non-empty mine
   for (ubMineIndex = 0; ubMineIndex < MAX_NUMBER_OF_MINES; ubMineIndex++) {
-    pMineStatus = &(gMineStatus[ubMineIndex]);
+    pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
     if (pMineStatus.value.fEmpty) {
       // nobody is working that mine, so who cares
@@ -317,7 +317,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
     gMineStatus[bMineIndex].fRunningOut = FALSE;
 
     // tell the strategic AI about this, that mine's and town's value is greatly reduced
-    GetMineSector(bMineIndex, &sSectorX, &sSectorY);
+    GetMineSector(bMineIndex, addressof(sSectorX), addressof(sSectorY));
     StrategicHandleMineThatRanOut(SECTOR(sSectorX, sSectorY));
 
     AddHistoryToPlayersLog(HISTORY_MINE_RAN_OUT, gMineLocation[bMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY);
@@ -642,7 +642,7 @@ function SaveMineStatusToSaveGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
   // Save the MineStatus
-  FileWrite(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, &uiNumBytesWritten);
+  FileWrite(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES) {
     return FALSE;
   }
@@ -654,7 +654,7 @@ function LoadMineStatusFromSavedGameFile(hFile: HWFILE): BOOLEAN {
   let uiNumBytesRead: UINT32;
 
   // Load the MineStatus
-  FileRead(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, &uiNumBytesRead);
+  FileRead(hFile, gMineStatus, sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(MINE_STATUS_TYPE) * MAX_NUMBER_OF_MINES) {
     return FALSE;
   }
@@ -1009,7 +1009,7 @@ function PlayerForgotToTakeOverMine(ubMineIndex: UINT8): BOOLEAN {
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 
-  pMineStatus = &(gMineStatus[ubMineIndex]);
+  pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
   // mine surface sector is player controlled
   // mine not empty
@@ -1028,7 +1028,7 @@ function AreThereMinersInsideThisMine(ubMineIndex: UINT8): BOOLEAN {
 
   Assert((ubMineIndex >= 0) && (ubMineIndex < MAX_NUMBER_OF_MINES));
 
-  pMineStatus = &(gMineStatus[ubMineIndex]);
+  pMineStatus = addressof(gMineStatus[ubMineIndex]);
 
   // mine not empty
   // mine clear of any monsters

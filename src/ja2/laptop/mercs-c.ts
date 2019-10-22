@@ -262,32 +262,32 @@ function EnterMercs(): BOOLEAN {
   // load the Account box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\AccountBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiAccountBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiAccountBox)));
 
   // load the files Box graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\FilesBox.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiFilesBox));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiFilesBox)));
 
   // load the MercSymbol graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MERCSymbol.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMercSymbol));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercSymbol)));
 
   // load the SpecPortrait graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SpecPortrait.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiSpecPortrait));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiSpecPortrait)));
 
   // load the Arrow graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\Arrow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiArrow));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiArrow)));
 
   // load the Merc video conf background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\SpeckComWindow.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMercVideoPopupBackground));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercVideoPopupBackground)));
 
   // Account Box button
   guiAccountBoxButtonImage = LoadButtonImage("LAPTOP\\SmallButtons.sti", -1, 0, -1, 1, -1);
@@ -314,7 +314,7 @@ function EnterMercs(): BOOLEAN {
   vs_desc.usWidth = MERC_VIDEO_FACE_WIDTH;
   vs_desc.usHeight = MERC_VIDEO_FACE_HEIGHT;
   vs_desc.ubBitDepth = 16;
-  CHECKF(AddVideoSurface(&vs_desc, &guiMercVideoFaceBackground));
+  CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiMercVideoFaceBackground)));
 
   RenderMercs();
 
@@ -456,19 +456,19 @@ function RenderMercs(): void {
   DrawMecBackGround();
 
   // Title
-  GetVideoObject(&hPixHandle, guiMercSymbol);
+  GetVideoObject(addressof(hPixHandle), guiMercSymbol);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_TITLE_X, MERC_TITLE_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Speck Portrait
-  GetVideoObject(&hPixHandle, guiSpecPortrait);
+  GetVideoObject(addressof(hPixHandle), guiSpecPortrait);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_PORTRAIT_X, MERC_PORTRAIT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Account Box
-  GetVideoObject(&hPixHandle, guiAccountBox);
+  GetVideoObject(addressof(hPixHandle), guiAccountBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_ACCOUNT_BOX_X, MERC_ACCOUNT_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Files Box
-  GetVideoObject(&hPixHandle, guiFilesBox);
+  GetVideoObject(addressof(hPixHandle), guiFilesBox);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_FILE_BOX_X, MERC_FILE_BOX_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Text on the Speck Portrait
@@ -508,7 +508,7 @@ function InitMercBackGround(): BOOLEAN {
   // load the Merc background graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\MERCBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiMercBackGround));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiMercBackGround)));
 
   return TRUE;
 }
@@ -896,7 +896,7 @@ function HandleSpeckTalking(fReset: BOOLEAN): BOOLEAN {
   HandleTalkingAutoFaces();
 
   // Blt the face surface to the video background surface
-  if (!BltStretchVideoSurface(FRAME_BUFFER, guiMercVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, &SrcRect, &DestRect))
+  if (!BltStretchVideoSurface(FRAME_BUFFER, guiMercVideoFaceBackground, 0, 0, VO_BLT_SRCTRANSPARENCY, addressof(SrcRect), addressof(DestRect)))
     return FALSE;
 
   // HandleCurrentMercDistortion();
@@ -988,7 +988,7 @@ function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, us
   let fReturnStatus: BOOLEAN = FALSE;
   i = 0;
 
-  pBuffer = LockVideoSurface(FRAME_BUFFER, &uiPitch);
+  pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
   Assert(pBuffer);
 
   if (ubPixelationAmount == 255) {
@@ -1063,7 +1063,7 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   let uiReturnValue: UINT8;
   let usEndOnLine: UINT16 = 0;
 
-  pBuffer = LockVideoSurface(FRAME_BUFFER, &uiPitch);
+  pBuffer = LockVideoSurface(FRAME_BUFFER, addressof(uiPitch));
   Assert(pBuffer);
 
   uiPitch /= 2;
@@ -1302,7 +1302,7 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
   // Create the popup box
   SET_USE_WINFONTS(TRUE);
   SET_WINFONT(giSubTitleWinFont);
-  iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, &gusSpeckDialogueActualWidth, &usActualHeight);
+  iMercPopUpBox = PrepareMercPopupBox(iMercPopUpBox, BASIC_MERC_POPUP_BACKGROUND, BASIC_MERC_POPUP_BORDER, gsSpeckDialogueTextPopUp, 300, 0, 0, 0, addressof(gusSpeckDialogueActualWidth), addressof(usActualHeight));
   SET_USE_WINFONTS(FALSE);
 
   gusSpeckDialogueX = (LAPTOP_SCREEN_LR_X - gusSpeckDialogueActualWidth - LAPTOP_SCREEN_UL_X) / 2 + LAPTOP_SCREEN_UL_X;
@@ -1312,8 +1312,8 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
 
   // check to make sure the region is not already initialized
   if (!(gMercSiteSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)) {
-    MSYS_DefineRegion(&gMercSiteSubTitleMouseRegion, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (gusSpeckDialogueX + gusSpeckDialogueActualWidth), (MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
-    MSYS_AddRegion(&gMercSiteSubTitleMouseRegion);
+    MSYS_DefineRegion(addressof(gMercSiteSubTitleMouseRegion), gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (gusSpeckDialogueX + gusSpeckDialogueActualWidth), (MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
+    MSYS_AddRegion(addressof(gMercSiteSubTitleMouseRegion));
   }
 }
 
@@ -1651,7 +1651,7 @@ function RemoveSpeckPopupTextBox(): void {
     return;
 
   if (gMercSiteSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)
-    MSYS_RemoveRegion(&gMercSiteSubTitleMouseRegion);
+    MSYS_RemoveRegion(addressof(gMercSiteSubTitleMouseRegion));
 
   if (RemoveMercPopupBoxFromIndex(iMercPopUpBox)) {
     iMercPopUpBox = -1;
@@ -1909,7 +1909,7 @@ function GetMercSiteBackOnline(): void {
 function DrawMercVideoBackGround(): void {
   let hPixHandle: HVOBJECT;
 
-  GetVideoObject(&hPixHandle, guiMercVideoPopupBackground);
+  GetVideoObject(addressof(hPixHandle), guiMercVideoPopupBackground);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, MERC_VIDEO_BACKGROUND_X, MERC_VIDEO_BACKGROUND_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // put the title on the window

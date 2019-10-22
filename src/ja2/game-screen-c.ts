@@ -60,7 +60,7 @@ function MainGameScreenInit(): UINT32 {
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   swprintf(VideoOverlayDesc.pzText, "90");
   VideoOverlayDesc.BltCallback = BlitMFont;
-  giFPSOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), &VideoOverlayDesc);
+  giFPSOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 
   // SECOND, PERIOD COUNTER
   VideoOverlayDesc.sLeft = 30;
@@ -69,7 +69,7 @@ function MainGameScreenInit(): UINT32 {
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   swprintf(VideoOverlayDesc.pzText, "Levelnodes: 100000");
   VideoOverlayDesc.BltCallback = BlitMFont;
-  giCounterPeriodOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), &VideoOverlayDesc);
+  giCounterPeriodOverlay = RegisterVideoOverlay((VOVERLAY_STARTDISABLED | VOVERLAY_DIRTYBYTEXT), addressof(VideoOverlayDesc));
 
   // register debug topics
   RegisterJA2DebugTopic(TOPIC_JA2, "Reg JA2 Debug");
@@ -132,9 +132,9 @@ function EnterTacticalScreen(): void {
   }
 
   if (!gfTacticalPlacementGUIActive) {
-    MSYS_EnableRegion(&gRadarRegion);
+    MSYS_EnableRegion(addressof(gRadarRegion));
   }
-  MSYS_EnableRegion(&gViewportRegion);
+  MSYS_EnableRegion(addressof(gViewportRegion));
 
   // set default squad on sector entry
   // ATE: moved these 2 call after initalizing the interface!
@@ -220,7 +220,7 @@ function InternalLeaveTacticalScreen(uiNewScreen: UINT32): void {
   ShutdownCurrentPanel();
 
   // disable the radar map
-  MSYS_DisableRegion(&gRadarRegion);
+  MSYS_DisableRegion(addressof(gRadarRegion));
   // MSYS_DisableRegion( &gViewportRegion );
 
   // We are leaving... turn off pedning autobadage...
@@ -597,13 +597,13 @@ function SetRenderHook(pRenderOverride: RENDER_HOOK): void {
 function DisableFPSOverlay(fEnable: BOOLEAN): void {
   let VideoOverlayDesc: VIDEO_OVERLAY_DESC;
 
-  memset(&VideoOverlayDesc, 0, sizeof(VideoOverlayDesc));
+  memset(addressof(VideoOverlayDesc), 0, sizeof(VideoOverlayDesc));
 
   VideoOverlayDesc.fDisabled = fEnable;
   VideoOverlayDesc.uiFlags = VOVERLAY_DESC_DISABLED;
 
-  UpdateVideoOverlay(&VideoOverlayDesc, giFPSOverlay, FALSE);
-  UpdateVideoOverlay(&VideoOverlayDesc, giCounterPeriodOverlay, FALSE);
+  UpdateVideoOverlay(addressof(VideoOverlayDesc), giFPSOverlay, FALSE);
+  UpdateVideoOverlay(addressof(VideoOverlayDesc), giCounterPeriodOverlay, FALSE);
 }
 
 function TacticalScreenLocateToSoldier(): void {
@@ -668,9 +668,9 @@ function EnterModalTactical(bMode: INT8): void {
     if (!gfTacticalDisableRegionActive) {
       gfTacticalDisableRegionActive = TRUE;
 
-      MSYS_DefineRegion(&gTacticalDisableRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGH, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+      MSYS_DefineRegion(addressof(gTacticalDisableRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGH, VIDEO_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
       // Add region
-      MSYS_AddRegion(&gTacticalDisableRegion);
+      MSYS_AddRegion(addressof(gTacticalDisableRegion));
     }
   }
 
@@ -679,7 +679,7 @@ function EnterModalTactical(bMode: INT8): void {
 
 function EndModalTactical(): void {
   if (gfTacticalDisableRegionActive) {
-    MSYS_RemoveRegion(&gTacticalDisableRegion);
+    MSYS_RemoveRegion(addressof(gTacticalDisableRegion));
 
     gfTacticalDisableRegionActive = FALSE;
   }

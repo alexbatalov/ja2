@@ -500,7 +500,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   }
 
   if (gsCreatureInsertionCode != INSERTION_CODE_GRIDNO) {
-    ChooseMapEdgepoints(&MapEdgepointInfo, gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
+    ChooseMapEdgepoints(addressof(MapEdgepointInfo), gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
     ubCurrSlot = 0;
   }
   while (ubNumYoungMales || ubNumYoungFemales || ubNumAdultMales || ubNumAdultFemales) {
@@ -789,7 +789,7 @@ function ChooseCreatureQuestStartDay(): void {
 
 function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
   if ((*node).value.next)
-    DeleteDirectiveNode(&((*node).value.next));
+    DeleteDirectiveNode(addressof((*node).value.next));
   MemFree(*node);
   *node = NULL;
 }
@@ -797,7 +797,7 @@ function DeleteDirectiveNode(node: Pointer<Pointer<CREATURE_DIRECTIVE>>): void {
 // Recursively delete all nodes (from the top down).
 function DeleteCreatureDirectives(): void {
   if (lair)
-    DeleteDirectiveNode(&lair);
+    DeleteDirectiveNode(addressof(lair));
   giLairID = 0;
 }
 
@@ -944,7 +944,7 @@ function DetermineCreatureTownCompositionBasedOnTacticalInformation(pubNumCreatu
   let i: INT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+  pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
   *pubNumCreatures = 0;
   pSector.value.ubNumCreatures = 0;
   pSector.value.ubCreaturesInBattle = 0;
@@ -1121,7 +1121,7 @@ function PrepareCreaturesForBattle(): BOOLEAN {
     pUndergroundSector.value.ubCreaturesInBattle = pUndergroundSector.value.ubNumCreatures;
   } else {
     let pSector: Pointer<SECTORINFO>;
-    pSector = &SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)];
+    pSector = addressof(SectorInfo[SECTOR(gWorldSectorX, gWorldSectorY)]);
     pSector.value.ubNumCreatures = ubNumCreatures;
     pSector.value.ubCreaturesInBattle = ubNumCreatures;
   }
@@ -1194,24 +1194,24 @@ function CheckConditionsForTriggeringCreatureQuest(sSectorX: INT16, sSectorY: IN
 function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
 
-  FileWrite(hFile, &giHabitatedDistance, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
     return FALSE;
   }
 
-  FileWrite(hFile, &giPopulationModifier, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
     return FALSE;
   }
-  FileWrite(hFile, &giLairID, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giLairID), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
     return FALSE;
   }
-  FileWrite(hFile, &gfUseCreatureMusic, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN)) {
     return FALSE;
   }
-  FileWrite(hFile, &giDestroyedLairID, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(INT32)) {
     return FALSE;
   }
@@ -1221,27 +1221,27 @@ function SaveCreatureDirectives(hFile: HWFILE): BOOLEAN {
 
 function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOLEAN {
   let uiNumBytesRead: UINT32;
-  FileRead(hFile, &giHabitatedDistance, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giHabitatedDistance), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
     return FALSE;
   }
 
-  FileRead(hFile, &giPopulationModifier, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giPopulationModifier), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
     return FALSE;
   }
-  FileRead(hFile, &giLairID, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giLairID), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(INT32)) {
     return FALSE;
   }
 
-  FileRead(hFile, &gfUseCreatureMusic, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfUseCreatureMusic), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN)) {
     return FALSE;
   }
 
   if (uiSavedGameVersion >= 82) {
-    FileRead(hFile, &giDestroyedLairID, 4, &uiNumBytesRead);
+    FileRead(hFile, addressof(giDestroyedLairID), 4, addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(INT32)) {
       return FALSE;
     }

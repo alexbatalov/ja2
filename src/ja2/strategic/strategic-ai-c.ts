@@ -347,7 +347,7 @@ function GarrisonReinforcementsRequested(iGarrisonID: INT32, pubExtraReinforceme
   let iExistingForces: INT32;
   let pSector: Pointer<SECTORINFO>;
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   iExistingForces = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
   iReinforcementsRequested = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation - iExistingForces;
 
@@ -380,7 +380,7 @@ function ReinforcementsAvailable(iGarrisonID: INT32): INT32 {
   let pSector: Pointer<SECTORINFO>;
   let iReinforcementsAvailable: INT32;
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   iReinforcementsAvailable = pSector.value.ubNumTroops + pSector.value.ubNumElites + pSector.value.ubNumAdmins;
   iReinforcementsAvailable -= gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation;
 
@@ -408,7 +408,7 @@ function PlayerForceTooStrong(ubSectorID: UINT8, usOffensePoints: UINT16, pusDef
 
   ubSectorX = SECTORX(ubSectorID);
   ubSectorY = SECTORY(ubSectorID);
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
 
   *pusDefencePoints = pSector.value.ubNumberOfCivsAtLevel[GREEN_MILITIA] * 1 + pSector.value.ubNumberOfCivsAtLevel[REGULAR_MILITIA] * 2 + pSector.value.ubNumberOfCivsAtLevel[ELITE_MILITIA] * 3 + PlayerMercsInSector(ubSectorX, ubSectorY, 0) * 5;
   if (*pusDefencePoints > usOffensePoints) {
@@ -439,7 +439,7 @@ function AdjacentSectorIsImportantAndUndefended(ubSectorID: UINT8): BOOLEAN {
       // These sectors aren't important.
       return FALSE;
   }
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.ubNumTroops || pSector.value.ubNumElites || pSector.value.ubNumAdmins) {
     return FALSE;
   }
@@ -469,7 +469,7 @@ function ValidateGroup(pGroup: Pointer<GROUP>): void {
     if (!pGroup.value.fPlayer && pGroup.value.pEnemyGroup.value.ubIntention != STAGING && pGroup.value.pEnemyGroup.value.ubIntention != REINFORCEMENTS) {
       if (gTacticalStatus.uiFlags & LOADING_SAVED_GAME) {
         ClearPreviousAIGroupAssignment(pGroup);
-        ReassignAIGroup(&pGroup);
+        ReassignAIGroup(addressof(pGroup));
         return;
       }
     }
@@ -619,7 +619,7 @@ function InitStrategicAI(): void {
 
   // Now, initialize the garrisons based on the initial sizes (all variances are plus or minus 1).
   for (i = 0; i < giGarrisonArraySize; i++) {
-    pSector = &SectorInfo[gGarrisonGroup[i].ubSectorID];
+    pSector = addressof(SectorInfo[gGarrisonGroup[i].ubSectorID]);
     pSector.value.ubGarrisonID = i;
     iStartPop = gArmyComp[gGarrisonGroup[i].ubComposition].bStartPopulation;
     iDesiredPop = gArmyComp[gGarrisonGroup[i].ubComposition].bDesiredPopulation;
@@ -769,19 +769,19 @@ function InitStrategicAI(): void {
   // changing MAX_STRATEGIC_TEAM_SIZE may require changes to to the defending force here.
   switch (Random(5)) {
     case 0:
-      pSector = &SectorInfo[SEC_E11];
+      pSector = addressof(SectorInfo[SEC_E11]);
       break;
     case 1:
-      pSector = &SectorInfo[SEC_H5];
+      pSector = addressof(SectorInfo[SEC_H5]);
       break;
     case 2:
-      pSector = &SectorInfo[SEC_H10];
+      pSector = addressof(SectorInfo[SEC_H10]);
       break;
     case 3:
-      pSector = &SectorInfo[SEC_J12];
+      pSector = addressof(SectorInfo[SEC_J12]);
       break;
     case 4:
-      pSector = &SectorInfo[SEC_M9];
+      pSector = addressof(SectorInfo[SEC_M9]);
       break;
   }
   pSector.value.uiFlags |= SF_USE_ALTERNATE_MAP;
@@ -812,7 +812,7 @@ function KillStrategicAI(): void {
 
 function OkayForEnemyToMoveThroughSector(ubSectorID: UINT8): BOOLEAN {
   let pSector: Pointer<SECTORINFO>;
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.uiTimeLastPlayerLiberated && pSector.value.uiTimeLastPlayerLiberated + (gubHoursGracePeriod * 3600) > GetWorldTotalSeconds()) {
     return FALSE;
   }
@@ -823,7 +823,7 @@ function EnemyPermittedToAttackSector(pGroup: Pointer<Pointer<GROUP>>, ubSectorI
   let pSector: Pointer<SECTORINFO>;
   let fPermittedToAttack: BOOLEAN = TRUE;
 
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   fPermittedToAttack = OkayForEnemyToMoveThroughSector(ubSectorID);
   if (pGroup && *pGroup && pSector.value.ubGarrisonID != NO_GARRISON) {
     if (gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
@@ -892,15 +892,15 @@ function HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup: Pointer<GROUP>, pEn
 
   ubSectorID = SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY);
   usOffensePoints = pEnemyGroup.value.pEnemyGroup.value.ubNumAdmins * 2 + pEnemyGroup.value.pEnemyGroup.value.ubNumTroops * 4 + pEnemyGroup.value.pEnemyGroup.value.ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, &usDefencePoints)) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return FALSE;
   }
   // For now, automatically attack.
   if (pPlayerGroup.value.ubNextX) {
-    MoveSAIGroupToSector(&pEnemyGroup, SECTOR(pPlayerGroup.value.ubNextX, pPlayerGroup.value.ubNextY), DIRECT, PURSUIT);
+    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubNextX, pPlayerGroup.value.ubNextY), DIRECT, PURSUIT);
   } else {
-    MoveSAIGroupToSector(&pEnemyGroup, SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, PURSUIT);
+    MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, PURSUIT);
   }
   return TRUE;
 }
@@ -912,13 +912,13 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: Pointer<GROUP>, ubSect
   let usOffensePoints: UINT16;
   let usDefencePoints: UINT16;
   let ubEnemies: UINT8;
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   // First check to see if the player is at his final destination.
   if (!GroupAtFinalDestination(pPlayerGroup)) {
     return;
   }
   usOffensePoints = pSector.value.ubNumAdmins * 2 + pSector.value.ubNumTroops * 4 + pSector.value.ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, &usDefencePoints)) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return;
   }
@@ -933,7 +933,7 @@ function HandlePlayerGroupNoticedByGarrison(pPlayerGroup: Pointer<GROUP>, ubSect
 
       ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition);
 
-      MoveSAIGroupToSector(&pGroup, SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY), DIRECT, REINFORCEMENTS);
 
       RemoveSoldiersFromGarrisonBasedOnComposition(pSector.value.ubGarrisonID, pGroup.value.ubGroupSize);
 
@@ -950,12 +950,12 @@ function HandleMilitiaNoticedByPatrolGroup(ubSectorID: UINT8, pEnemyGroup: Point
   let ubSectorX: UINT8 = (ubSectorID % 16) + 1;
   let ubSectorY: UINT8 = (ubSectorID / 16) + 1;
   usOffensePoints = pEnemyGroup.value.pEnemyGroup.value.ubNumAdmins * 2 + pEnemyGroup.value.pEnemyGroup.value.ubNumTroops * 4 + pEnemyGroup.value.pEnemyGroup.value.ubNumElites * 6;
-  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, &usDefencePoints)) {
+  if (PlayerForceTooStrong(ubSectorID, usOffensePoints, addressof(usDefencePoints))) {
     RequestAttackOnSector(ubSectorID, usDefencePoints);
     return FALSE;
   }
 
-  MoveSAIGroupToSector(&pEnemyGroup, SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
+  MoveSAIGroupToSector(addressof(pEnemyGroup), SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
 
   return FALSE;
 }
@@ -1040,7 +1040,7 @@ function HandleEmptySectorNoticedByPatrolGroup(pGroup: Pointer<GROUP>, ubEmptySe
   ClearPreviousAIGroupAssignment(pGroup);
 
   gGarrisonGroup[ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-  MoveSAIGroupToSector(&pGroup, SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
+  MoveSAIGroupToSector(addressof(pGroup), SECTOR(ubSectorX, ubSectorY), DIRECT, REINFORCEMENTS);
 
   return TRUE;
 }
@@ -1053,7 +1053,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
   let ubDstGarrisonID: UINT8 = 255;
 
   // Make sure that the destination sector doesn't already have a pending group.
-  pSector = &SectorInfo[ubEmptySectorID];
+  pSector = addressof(SectorInfo[ubEmptySectorID]);
 
   ubSrcGarrisonID = SectorInfo[ubGarrisonSectorID].ubGarrisonID;
   ubDstGarrisonID = SectorInfo[ubEmptySectorID].ubGarrisonID;
@@ -1069,7 +1069,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
   }
 
   // An opportunity has arisen, where the enemy has noticed an important sector that is undefended.
-  pSector = &SectorInfo[ubGarrisonSectorID];
+  pSector = addressof(SectorInfo[ubGarrisonSectorID]);
   ubAvailableTroops = pSector.value.ubNumTroops + pSector.value.ubNumElites + pSector.value.ubNumAdmins;
 
   if (ubAvailableTroops >= gubMinEnemyGroupSize * 2) {
@@ -1078,7 +1078,7 @@ function HandleEmptySectorNoticedByGarrison(ubGarrisonSectorID: UINT8, ubEmptySe
     ConvertGroupTroopsToComposition(pGroup, gGarrisonGroup[ubDstGarrisonID].ubComposition);
     RemoveSoldiersFromGarrisonBasedOnComposition(ubSrcGarrisonID, pGroup.value.ubGroupSize);
     gGarrisonGroup[ubDstGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-    MoveSAIGroupToSector(&pGroup, ubEmptySectorID, DIRECT, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), ubEmptySectorID, DIRECT, REINFORCEMENTS);
   }
 }
 
@@ -1088,7 +1088,7 @@ function ReinforcementsApproved(iGarrisonID: INT32, pusDefencePoints: Pointer<UI
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   ubSectorX = SECTORX(gGarrisonGroup[iGarrisonID].ubSectorID);
   ubSectorY = SECTORY(gGarrisonGroup[iGarrisonID].ubSectorID);
 
@@ -1129,14 +1129,14 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): BOOLEAN {
   Assert(!pGroup.value.fPlayer);
   if (pGroup.value.pEnemyGroup.value.ubIntention == PURSUIT) {
     // Lost the player group that he was going to attack.  Return to original position.
-    ReassignAIGroup(&pGroup);
+    ReassignAIGroup(addressof(pGroup));
     return TRUE;
   } else if (pGroup.value.pEnemyGroup.value.ubIntention == REINFORCEMENTS) {
     // The group has arrived at the location where he is supposed to reinforce.
     // Step 1 -- Check for matching garrison location
     for (i = 0; i < giGarrisonArraySize; i++) {
       if (gGarrisonGroup[i].ubSectorID == SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) && gGarrisonGroup[i].ubPendingGroupID == pGroup.value.ubGroupID) {
-        pSector = &SectorInfo[SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY)];
+        pSector = addressof(SectorInfo[SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY)]);
 
         if (gGarrisonGroup[i].ubSectorID != SEC_P3) {
           EliminateSurplusTroopsForGarrison(pGroup, pSector);
@@ -1234,7 +1234,7 @@ function EvaluateGroupSituation(pGroup: Pointer<GROUP>): BOOLEAN {
   } else {
     // This is a floating group at his final destination...
     if (pGroup.value.pEnemyGroup.value.ubIntention != STAGING && pGroup.value.pEnemyGroup.value.ubIntention != REINFORCEMENTS) {
-      ReassignAIGroup(&pGroup);
+      ReassignAIGroup(addressof(pGroup));
       return TRUE;
     }
   }
@@ -1261,7 +1261,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         // Wake up the queen now, if she hasn't woken up already.
         WakeUpQueen();
         if (pGroup.value.ubSectorX == 9 && pGroup.value.ubSectorY == 1 || pGroup.value.ubSectorX == 3 && pGroup.value.ubSectorY == 16) {
-          SendGroupToPool(&pGroup);
+          SendGroupToPool(addressof(pGroup));
           if (!pGroup) {
             // Group was transferred to the pool
             return TRUE;
@@ -1283,7 +1283,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
       return EvaluateGroupSituation(pEnemyGroup);
     }
     ubSectorID = SECTOR(pEnemyGroup.value.ubSectorX, pEnemyGroup.value.ubSectorY);
-    if (pEnemyGroup && pEnemyGroup.value.ubSectorY > 1 && EnemyPermittedToAttackSector(&pEnemyGroup, (ubSectorID - 16))) {
+    if (pEnemyGroup && pEnemyGroup.value.ubSectorY > 1 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID - 16))) {
       pPlayerGroup = FindMovementGroupInSector(pEnemyGroup.value.ubSectorX, (pEnemyGroup.value.ubSectorY - 1), TRUE);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1293,7 +1293,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID - 16));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.value.ubSectorX > 1 && EnemyPermittedToAttackSector(&pEnemyGroup, (ubSectorID - 1))) {
+    if (pEnemyGroup && pEnemyGroup.value.ubSectorX > 1 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID - 1))) {
       pPlayerGroup = FindMovementGroupInSector((pEnemyGroup.value.ubSectorX - 1), pEnemyGroup.value.ubSectorY, TRUE);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1303,7 +1303,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID - 1));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.value.ubSectorY < 16 && EnemyPermittedToAttackSector(&pEnemyGroup, (ubSectorID + 16))) {
+    if (pEnemyGroup && pEnemyGroup.value.ubSectorY < 16 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID + 16))) {
       pPlayerGroup = FindMovementGroupInSector(pEnemyGroup.value.ubSectorX, (pEnemyGroup.value.ubSectorY + 1), TRUE);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1313,7 +1313,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         return HandleEmptySectorNoticedByPatrolGroup(pEnemyGroup, (ubSectorID + 16));
       }
     }
-    if (pEnemyGroup && pEnemyGroup.value.ubSectorX < 16 && EnemyPermittedToAttackSector(&pEnemyGroup, (ubSectorID + 1))) {
+    if (pEnemyGroup && pEnemyGroup.value.ubSectorX < 16 && EnemyPermittedToAttackSector(addressof(pEnemyGroup), (ubSectorID + 1))) {
       pPlayerGroup = FindMovementGroupInSector((pEnemyGroup.value.ubSectorX + 1), pEnemyGroup.value.ubSectorY, TRUE);
       if (pPlayerGroup && AttemptToNoticeAdjacentGroupSucceeds()) {
         return HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
@@ -1346,7 +1346,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
         return FALSE;
       }
-      pSector = &SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY - 1)];
+      pSector = addressof(SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY - 1)]);
       ubNumEnemies = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
       if (ubNumEnemies && pSector.value.ubGarrisonID != NO_GARRISON && AttemptToNoticeAdjacentGroupSucceeds()) {
         HandlePlayerGroupNoticedByGarrison(pPlayerGroup, SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY - 1));
@@ -1359,7 +1359,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
         return FALSE;
       }
-      pSector = &SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX - 1, pPlayerGroup.value.ubSectorY)];
+      pSector = addressof(SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX - 1, pPlayerGroup.value.ubSectorY)]);
       ubNumEnemies = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
       if (ubNumEnemies && pSector.value.ubGarrisonID != NO_GARRISON && AttemptToNoticeAdjacentGroupSucceeds()) {
         HandlePlayerGroupNoticedByGarrison(pPlayerGroup, SECTOR(pPlayerGroup.value.ubSectorX - 1, pPlayerGroup.value.ubSectorY));
@@ -1372,7 +1372,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
         return FALSE;
       }
-      pSector = &SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY + 1)];
+      pSector = addressof(SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY + 1)]);
       ubNumEnemies = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
       if (ubNumEnemies && pSector.value.ubGarrisonID != NO_GARRISON && AttemptToNoticeAdjacentGroupSucceeds()) {
         HandlePlayerGroupNoticedByGarrison(pPlayerGroup, SECTOR(pPlayerGroup.value.ubSectorX, pPlayerGroup.value.ubSectorY + 1));
@@ -1385,7 +1385,7 @@ function StrategicAILookForAdjacentGroups(pGroup: Pointer<GROUP>): BOOLEAN {
         HandlePlayerGroupNoticedByPatrolGroup(pPlayerGroup, pEnemyGroup);
         return FALSE;
       }
-      pSector = &SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX + 1, pPlayerGroup.value.ubSectorY)];
+      pSector = addressof(SectorInfo[SECTOR(pPlayerGroup.value.ubSectorX + 1, pPlayerGroup.value.ubSectorY)]);
       ubNumEnemies = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
       if (ubNumEnemies && pSector.value.ubGarrisonID != NO_GARRISON && AttemptToNoticeAdjacentGroupSucceeds()) {
         HandlePlayerGroupNoticedByGarrison(pPlayerGroup, SECTOR(pPlayerGroup.value.ubSectorX + 1, pPlayerGroup.value.ubSectorY));
@@ -1405,7 +1405,7 @@ function CheckEnemyControlledSector(ubSectorID: UINT8): void {
     return;
   }
   // First, determine if the sector is still owned by the enemy.
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.ubGarrisonID != NO_GARRISON) {
     if (gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
       // Look for a staging group.
@@ -1430,7 +1430,7 @@ function CheckEnemyControlledSector(ubSectorID: UINT8): void {
             }
             // RequestHighPriorityStagingGroupReinforcements( pGroup );
           } else if (SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY) != gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID) {
-            MoveSAIGroupToSector(&pGroup, gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID, DIRECT, pGroup.value.pEnemyGroup.value.ubIntention);
+            MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[pSector.value.ubGarrisonID].ubSectorID, DIRECT, pGroup.value.pEnemyGroup.value.ubIntention);
           }
         }
         // else the group is on route to stage hopefully...
@@ -1570,7 +1570,7 @@ function RecalculateGarrisonWeight(iGarrisonID: INT32): void {
 
   ValidateWeights(6);
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   iDesiredPop = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation;
   iCurrentPop = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
   iPriority = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bPriority;
@@ -1761,9 +1761,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
   if (gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_B13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_C13 || gGarrisonGroup[iDstGarrisonID].ubSectorID == SEC_D13) {
     pSector = NULL;
   }
-  pSector = &SectorInfo[gGarrisonGroup[iDstGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iDstGarrisonID].ubSectorID]);
   // Determine how many units the garrison needs.
-  iReinforcementsRequested = GarrisonReinforcementsRequested(iDstGarrisonID, &ubNumExtraReinforcements);
+  iReinforcementsRequested = GarrisonReinforcementsRequested(iDstGarrisonID, addressof(ubNumExtraReinforcements));
 
   // The maximum number of reinforcements can't be offsetted past a certain point based on the
   // priority of the garrison.
@@ -1847,9 +1847,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
     ubGroupSize = (pGroup.value.pEnemyGroup.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumElites + pGroup.value.pEnemyGroup.value.ubNumAdmins);
 
     if (ubNumExtraReinforcements) {
-      MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
     } else {
-      MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
     }
     ValidateWeights(14);
     return;
@@ -1906,9 +1906,9 @@ function SendReinforcementsForGarrison(iDstGarrisonID: INT32, usDefencePoints: U
       if (ubNumExtraReinforcements) {
         pGroup.value.pEnemyGroup.value.ubPendingReinforcements = ubNumExtraReinforcements;
 
-        MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
+        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, STAGING);
       } else {
-        MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
+        MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iDstGarrisonID].ubSectorID, STAGE, REINFORCEMENTS);
       }
 
       ValidateWeights(19);
@@ -1966,7 +1966,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
     gPatrolGroup[iPatrolID].ubPendingGroupID = pGroup.value.ubGroupID;
 
-    MoveSAIGroupToSector(&pGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
 
     ValidateWeights(23);
     return;
@@ -1993,7 +1993,7 @@ function SendReinforcementsForPatrol(iPatrolID: INT32, pOptionalGroup: Pointer<P
 
             RemoveSoldiersFromGarrisonBasedOnComposition(iSrcGarrisonID, pGroup.value.ubGroupSize);
 
-            MoveSAIGroupToSector(&pGroup, gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
+            MoveSAIGroupToSector(addressof(pGroup), gPatrolGroup[iPatrolID].ubSectorID[1], EVASIVE, REINFORCEMENTS);
 
             ValidateWeights(24);
 
@@ -2083,7 +2083,7 @@ function EvaluateQueenSituation(): void {
 
       if (iRandom < iWeight && !gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(NULL, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
         // This is the group that gets the reinforcements!
-        if (ReinforcementsApproved(i, &usDefencePoints)) {
+        if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
           SendReinforcementsForGarrison(i, usDefencePoints, NULL);
         } else {
         }
@@ -2119,110 +2119,110 @@ function SaveStrategicAI(hFile: HWFILE): BOOLEAN {
   let uiNumBytesWritten: UINT32;
   let i: INT32;
 
-  memset(&gTempPatrolGroup, 0, sizeof(PATROL_GROUP));
-  memset(&gTempArmyComp, 0, sizeof(ARMY_COMPOSITION));
+  memset(addressof(gTempPatrolGroup), 0, sizeof(PATROL_GROUP));
+  memset(addressof(gTempArmyComp), 0, sizeof(ARMY_COMPOSITION));
 
-  FileWrite(hFile, gbPadding2, 3, &uiNumBytesWritten);
+  FileWrite(hFile, gbPadding2, 3, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 3)
     return FALSE;
-  FileWrite(hFile, &gfExtraElites, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfExtraElites), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &giGarrisonArraySize, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giGarrisonArraySize), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giPatrolArraySize, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giPatrolArraySize), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giReinforcementPool, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giReinforcementPool), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giForcePercentage, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giForcePercentage), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giArmyAlertness, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giArmyAlertness), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giArmyAlertnessDecay, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giArmyAlertnessDecay), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &gfQueenAIAwake, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfQueenAIAwake), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &giReinforcementPoints, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giReinforcementPoints), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &giRequestPoints, 4, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(giRequestPoints), 4, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 4)
     return FALSE;
-  FileWrite(hFile, &gubNumAwareBattles, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubNumAwareBattles), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gubSAIVersion, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubSAIVersion), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gubQueenPriorityPhase, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubQueenPriorityPhase), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gfFirstBattleMeanwhileScenePending, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfFirstBattleMeanwhileScenePending), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gfMassFortificationOrdered, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfMassFortificationOrdered), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gubMinEnemyGroupSize, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubMinEnemyGroupSize), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gubHoursGracePeriod, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gubHoursGracePeriod), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, &gusPlayerBattleVictories, 2, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gusPlayerBattleVictories), 2, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 2)
     return FALSE;
-  FileWrite(hFile, &gfUseAlternateQueenPosition, 1, &uiNumBytesWritten);
+  FileWrite(hFile, addressof(gfUseAlternateQueenPosition), 1, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != 1)
     return FALSE;
-  FileWrite(hFile, gbPadding, SAI_PADDING_BYTES, &uiNumBytesWritten);
+  FileWrite(hFile, gbPadding, SAI_PADDING_BYTES, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != SAI_PADDING_BYTES)
     return FALSE;
   // Save the army composition (which does get modified)
-  FileWrite(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), &uiNumBytesWritten);
+  FileWrite(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
     return FALSE;
   i = SAVED_ARMY_COMPOSITIONS - NUM_ARMY_COMPOSITIONS;
   while (i--) {
-    FileWrite(hFile, &gTempArmyComp, sizeof(ARMY_COMPOSITION), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(gTempArmyComp), sizeof(ARMY_COMPOSITION), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(ARMY_COMPOSITION))
       return FALSE;
   }
   // Save the patrol group definitions
-  FileWrite(hFile, gPatrolGroup, giPatrolArraySize * sizeof(PATROL_GROUP), &uiNumBytesWritten);
+  FileWrite(hFile, gPatrolGroup, giPatrolArraySize * sizeof(PATROL_GROUP), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != giPatrolArraySize * sizeof(PATROL_GROUP))
     return FALSE;
   i = SAVED_PATROL_GROUPS - giPatrolArraySize;
   while (i--) {
-    FileWrite(hFile, &gTempPatrolGroup, sizeof(PATROL_GROUP), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(gTempPatrolGroup), sizeof(PATROL_GROUP), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(PATROL_GROUP))
       return FALSE;
   }
   // Save the garrison information!
-  memset(&gTempGarrisonGroup, 0, sizeof(GARRISON_GROUP));
-  FileWrite(hFile, gGarrisonGroup, giGarrisonArraySize * sizeof(GARRISON_GROUP), &uiNumBytesWritten);
+  memset(addressof(gTempGarrisonGroup), 0, sizeof(GARRISON_GROUP));
+  FileWrite(hFile, gGarrisonGroup, giGarrisonArraySize * sizeof(GARRISON_GROUP), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != giGarrisonArraySize * sizeof(GARRISON_GROUP))
     return FALSE;
   i = SAVED_GARRISON_GROUPS - giGarrisonArraySize;
   while (i--) {
-    FileWrite(hFile, &gTempGarrisonGroup, sizeof(GARRISON_GROUP), &uiNumBytesWritten);
+    FileWrite(hFile, addressof(gTempGarrisonGroup), sizeof(GARRISON_GROUP), addressof(uiNumBytesWritten));
     if (uiNumBytesWritten != sizeof(GARRISON_GROUP))
       return FALSE;
   }
 
-  FileWrite(hFile, gubPatrolReinforcementsDenied, giPatrolArraySize, &uiNumBytesWritten);
+  FileWrite(hFile, gubPatrolReinforcementsDenied, giPatrolArraySize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != giPatrolArraySize) {
     return FALSE;
   }
 
-  FileWrite(hFile, gubGarrisonReinforcementsDenied, giGarrisonArraySize, &uiNumBytesWritten);
+  FileWrite(hFile, gubGarrisonReinforcementsDenied, giGarrisonArraySize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != giGarrisonArraySize) {
     return FALSE;
   }
@@ -2240,76 +2240,76 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
   let i: INT32;
   let ubSAIVersion: UINT8;
 
-  FileRead(hFile, gbPadding2, 3, &uiNumBytesRead);
+  FileRead(hFile, gbPadding2, 3, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 3)
     return FALSE;
-  FileRead(hFile, &gfExtraElites, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfExtraElites), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &giGarrisonArraySize, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giGarrisonArraySize), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giPatrolArraySize, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giPatrolArraySize), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giReinforcementPool, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giReinforcementPool), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giForcePercentage, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giForcePercentage), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giArmyAlertness, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giArmyAlertness), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giArmyAlertnessDecay, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giArmyAlertnessDecay), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &gfQueenAIAwake, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfQueenAIAwake), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &giReinforcementPoints, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giReinforcementPoints), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &giRequestPoints, 4, &uiNumBytesRead);
+  FileRead(hFile, addressof(giRequestPoints), 4, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 4)
     return FALSE;
-  FileRead(hFile, &gubNumAwareBattles, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gubNumAwareBattles), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &ubSAIVersion, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(ubSAIVersion), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gubQueenPriorityPhase, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gubQueenPriorityPhase), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gfFirstBattleMeanwhileScenePending, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfFirstBattleMeanwhileScenePending), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gfMassFortificationOrdered, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfMassFortificationOrdered), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gubMinEnemyGroupSize, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gubMinEnemyGroupSize), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gubHoursGracePeriod, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gubHoursGracePeriod), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, &gusPlayerBattleVictories, 2, &uiNumBytesRead);
+  FileRead(hFile, addressof(gusPlayerBattleVictories), 2, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 2)
     return FALSE;
-  FileRead(hFile, &gfUseAlternateQueenPosition, 1, &uiNumBytesRead);
+  FileRead(hFile, addressof(gfUseAlternateQueenPosition), 1, addressof(uiNumBytesRead));
   if (uiNumBytesRead != 1)
     return FALSE;
-  FileRead(hFile, gbPadding, SAI_PADDING_BYTES, &uiNumBytesRead);
+  FileRead(hFile, gbPadding, SAI_PADDING_BYTES, addressof(uiNumBytesRead));
   if (uiNumBytesRead != SAI_PADDING_BYTES)
     return FALSE;
   // Restore the army composition
-  FileRead(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), &uiNumBytesRead);
+  FileRead(hFile, gArmyComp, NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION), addressof(uiNumBytesRead));
   if (uiNumBytesRead != NUM_ARMY_COMPOSITIONS * sizeof(ARMY_COMPOSITION))
     return FALSE;
   i = SAVED_ARMY_COMPOSITIONS - NUM_ARMY_COMPOSITIONS;
   while (i--) {
-    FileRead(hFile, &gTempArmyComp, sizeof(ARMY_COMPOSITION), &uiNumBytesRead);
+    FileRead(hFile, addressof(gTempArmyComp), sizeof(ARMY_COMPOSITION), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(ARMY_COMPOSITION))
       return FALSE;
   }
@@ -2319,12 +2319,12 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     MemFree(gPatrolGroup);
   }
   gPatrolGroup = MemAlloc(giPatrolArraySize * sizeof(PATROL_GROUP));
-  FileRead(hFile, gPatrolGroup, giPatrolArraySize * sizeof(PATROL_GROUP), &uiNumBytesRead);
+  FileRead(hFile, gPatrolGroup, giPatrolArraySize * sizeof(PATROL_GROUP), addressof(uiNumBytesRead));
   if (uiNumBytesRead != giPatrolArraySize * sizeof(PATROL_GROUP))
     return FALSE;
   i = SAVED_PATROL_GROUPS - giPatrolArraySize;
   while (i--) {
-    FileRead(hFile, &gTempPatrolGroup, sizeof(PATROL_GROUP), &uiNumBytesRead);
+    FileRead(hFile, addressof(gTempPatrolGroup), sizeof(PATROL_GROUP), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(PATROL_GROUP))
       return FALSE;
   }
@@ -2335,13 +2335,13 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     MemFree(gGarrisonGroup);
   }
   gGarrisonGroup = MemAlloc(giGarrisonArraySize * sizeof(GARRISON_GROUP));
-  FileRead(hFile, gGarrisonGroup, giGarrisonArraySize * sizeof(GARRISON_GROUP), &uiNumBytesRead);
+  FileRead(hFile, gGarrisonGroup, giGarrisonArraySize * sizeof(GARRISON_GROUP), addressof(uiNumBytesRead));
   if (uiNumBytesRead != giGarrisonArraySize * sizeof(GARRISON_GROUP)) {
     return FALSE;
   }
   i = SAVED_GARRISON_GROUPS - giGarrisonArraySize;
   while (i--) {
-    FileRead(hFile, &gTempGarrisonGroup, sizeof(GARRISON_GROUP), &uiNumBytesRead);
+    FileRead(hFile, addressof(gTempGarrisonGroup), sizeof(GARRISON_GROUP), addressof(uiNumBytesRead));
     if (uiNumBytesRead != sizeof(GARRISON_GROUP)) {
       return FALSE;
     }
@@ -2353,7 +2353,7 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     gubPatrolReinforcementsDenied = NULL;
   }
   gubPatrolReinforcementsDenied = MemAlloc(giPatrolArraySize);
-  FileRead(hFile, gubPatrolReinforcementsDenied, giPatrolArraySize, &uiNumBytesRead);
+  FileRead(hFile, gubPatrolReinforcementsDenied, giPatrolArraySize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != giPatrolArraySize) {
     return FALSE;
   }
@@ -2364,7 +2364,7 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
     gubGarrisonReinforcementsDenied = NULL;
   }
   gubGarrisonReinforcementsDenied = MemAlloc(giGarrisonArraySize);
-  FileRead(hFile, gubGarrisonReinforcementsDenied, giGarrisonArraySize, &uiNumBytesRead);
+  FileRead(hFile, gubGarrisonReinforcementsDenied, giGarrisonArraySize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != giGarrisonArraySize) {
     return FALSE;
   }
@@ -2575,7 +2575,7 @@ function LoadStrategicAI(hFile: HWFILE): BOOLEAN {
         let pSector: Pointer<SECTORINFO> = NULL;
 
         // Change the garrison composition to LEVEL1_DEFENCE from LEVEL2_DEFENCE
-        pSector = &SectorInfo[SEC_N7];
+        pSector = addressof(SectorInfo[SEC_N7]);
         gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition = LEVEL1_DEFENCE;
 
         iStartPop = gArmyComp[gGarrisonGroup[pSector.value.ubGarrisonID].ubComposition].bStartPopulation;
@@ -2783,7 +2783,7 @@ function EvolveQueenPriorityPhase(fForceChange: BOOLEAN): void {
           // don't consider these compositions
           continue;
       }
-      pSector = &SectorInfo[gGarrisonGroup[i].ubSectorID];
+      pSector = addressof(SectorInfo[gGarrisonGroup[i].ubSectorID]);
       if (ubTotal[index]) {
         iFactor = (ubOwned[index] * 100 / ubTotal[index]) - 50;
       } else {
@@ -2876,7 +2876,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
 
-      MoveSAIGroupToSector(&pGroup, ubSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
 
       break;
     case NPC_ACTION_SEND_SOLDIERS_TO_BATTLE_LOCATION:
@@ -2884,7 +2884,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       // Send 4, 8, or 12 troops (based on difficulty) to the location of the first battle.  If nobody is there when they arrive,
       // those troops will get reassigned.
       ubSectorID = STRATEGIC_INDEX_TO_SECTOR_INFO(sWorldSectorLocationOfFirstBattle);
-      pSector = &SectorInfo[ubSectorID];
+      pSector = addressof(SectorInfo[ubSectorID]);
       ubNumSoldiers = (gGameOptions.ubDifficultyLevel * 4);
       pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, ubNumSoldiers, 0);
       giReinforcementPool -= ubNumSoldiers;
@@ -2902,13 +2902,13 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
             if (!gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
               // the garrison doesn't have reinforcements already on route.
               gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID = pGroup.value.ubGroupID;
-              MoveSAIGroupToSector(&pGroup, ubSectorID, STAGE, REINFORCEMENTS);
+              MoveSAIGroupToSector(addressof(pGroup), ubSectorID, STAGE, REINFORCEMENTS);
               break;
             }
           }
         }
       } else {
-        MoveSAIGroupToSector(&pGroup, ubSectorID, EVASIVE, PURSUIT);
+        MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, PURSUIT);
       }
 
       break;
@@ -2926,7 +2926,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
         ubSectorID = SEC_A10;
       }
 
-      MoveSAIGroupToSector(&pGroup, ubSectorID, EVASIVE, PURSUIT);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, EVASIVE, PURSUIT);
 
       ValidateGroup(pGroup);
       break;
@@ -2936,7 +2936,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
       giReinforcementPool -= ubNumSoldiers;
       giReinforcementPool = max(giReinforcementPool, 0);
       pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_P3, 0, 0, ubNumSoldiers);
-      MoveSAIGroupToSector(&pGroup, ubSectorID, STAGE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), ubSectorID, STAGE, REINFORCEMENTS);
 
       if (gGarrisonGroup[SectorInfo[ubSectorID].ubGarrisonID].ubPendingGroupID) {
         // Clear the pending group's assignment.
@@ -2950,7 +2950,7 @@ function ExecuteStrategicAIAction(usActionCode: UINT16, sSectorX: INT16, sSector
 
       if (pPendingGroup) {
         // Reassign the pending group
-        ReassignAIGroup(&pPendingGroup);
+        ReassignAIGroup(addressof(pPendingGroup));
       }
 
       break;
@@ -3113,7 +3113,7 @@ function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: IN
   }
 
   ubSectorID = SECTOR(sSectorX, sSectorY);
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
 
   // Keep track of victories and wake up the queen after x number of battles.
   gusPlayerBattleVictories++;
@@ -3139,7 +3139,7 @@ function StrategicHandleQueenLosingControlOfSector(sSectorX: INT16, sSectorY: IN
       let pGroup: Pointer<GROUP>;
       pGroup = GetGroup(gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID);
       if (pGroup) {
-        ReassignAIGroup(&pGroup);
+        ReassignAIGroup(addressof(pGroup));
       }
       gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID = 0;
     }
@@ -3337,7 +3337,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       gGarrisonGroup[iGarrisonID].ubPendingGroupID = pNewGroup.value.ubGroupID;
       RecalculatePatrolWeight(iBestIndex);
 
-      MoveSAIGroupToSector(&pNewGroup, gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pNewGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
     } else {
       // Send the whole group and kill it's patrol assignment.
       gPatrolGroup[iBestIndex].ubGroupID = 0;
@@ -3348,7 +3348,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
       // don't work if this is the case.  Teleporting them to their previous sector is the best and easiest way to deal with this.
       SetEnemyGroupSector(pGroup, SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY));
 
-      MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+      MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
       ValidateGroup(pGroup);
     }
   } else {
@@ -3360,7 +3360,7 @@ function RequestHighPriorityGarrisonReinforcements(iGarrisonID: INT32, ubSoldier
     pGroup.value.ubOriginalSector = SECTOR(ubDstSectorX, ubDstSectorY);
     giReinforcementPool -= ubSoldiersRequested;
 
-    MoveSAIGroupToSector(&pGroup, gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
+    MoveSAIGroupToSector(addressof(pGroup), gGarrisonGroup[iGarrisonID].ubSectorID, EVASIVE, REINFORCEMENTS);
     ValidateGroup(pGroup);
   }
 }
@@ -3380,7 +3380,7 @@ function MassFortifyTowns(): void {
   let ubNumTroops: UINT8;
   let ubDesiredTroops: UINT8;
   for (i = 0; i < giGarrisonArraySize; i++) {
-    pSector = &SectorInfo[gGarrisonGroup[i].ubSectorID];
+    pSector = addressof(SectorInfo[gGarrisonGroup[i].ubSectorID]);
     ubNumTroops = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
     ubDesiredTroops = gArmyComp[gGarrisonGroup[i].ubComposition].bDesiredPopulation;
     if (ubNumTroops < ubDesiredTroops) {
@@ -3390,14 +3390,14 @@ function MassFortifyTowns(): void {
     }
   }
   // Convert the garrison sitting in Omerta (if alive), and reassign them
-  pSector = &SectorInfo[SEC_A9];
+  pSector = addressof(SectorInfo[SEC_A9]);
   if (pSector.value.ubNumTroops) {
     pGroup = CreateNewEnemyGroupDepartingFromSector(SEC_A9, 0, pSector.value.ubNumTroops, 0);
     Assert(pGroup);
     pSector.value.ubNumTroops = 0;
     pGroup.value.pEnemyGroup.value.ubIntention = PATROL;
     pGroup.value.ubMoveType = ONE_WAY;
-    ReassignAIGroup(&pGroup);
+    ReassignAIGroup(addressof(pGroup));
     ValidateGroup(pGroup);
     RecalculateSectorWeight(SEC_A9);
   }
@@ -3462,7 +3462,7 @@ function GarrisonCanProvideMinimumReinforcements(iGarrisonID: INT32): BOOLEAN {
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
 
   iAvailable = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
   iDesired = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation;
@@ -3489,7 +3489,7 @@ function GarrisonRequestingMinimumReinforcements(iGarrisonID: INT32): BOOLEAN {
     return FALSE;
   }
 
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   iAvailable = pSector.value.ubNumAdmins + pSector.value.ubNumTroops + pSector.value.ubNumElites;
   iDesired = gArmyComp[gGarrisonGroup[iGarrisonID].ubComposition].bDesiredPopulation;
 
@@ -3598,7 +3598,7 @@ function UpgradeAdminsToTroops(): void {
       continue;
     }
 
-    pSector = &SectorInfo[gGarrisonGroup[i].ubSectorID];
+    pSector = addressof(SectorInfo[gGarrisonGroup[i].ubSectorID]);
 
     // if there are any admins currently in this garrison
     if (pSector.value.ubNumAdmins > 0) {
@@ -3768,7 +3768,7 @@ function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
       if (iRandom < iWeight) {
         if (!gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(NULL, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
           // This is the group that gets the reinforcements!
-          if (ReinforcementsApproved(i, &usDefencePoints)) {
+          if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
             SendReinforcementsForGarrison(i, usDefencePoints, pGroup);
             return;
           }
@@ -3794,7 +3794,7 @@ function ReassignAIGroup(pGroup: Pointer<Pointer<GROUP>>): void {
         // if group is requesting reinforcements.
         if (!gGarrisonGroup[i].ubPendingGroupID && EnemyPermittedToAttackSector(NULL, gGarrisonGroup[i].ubSectorID) && GarrisonRequestingMinimumReinforcements(i)) {
           // This is the group that gets the reinforcements!
-          if (ReinforcementsApproved(i, &usDefencePoints)) {
+          if (ReinforcementsApproved(i, addressof(usDefencePoints))) {
             SendReinforcementsForGarrison(i, usDefencePoints, pGroup);
             return;
           }
@@ -3937,7 +3937,7 @@ function CalcNumTroopsBasedOnComposition(pubNumTroops: Pointer<UINT8>, pubNumEli
 function ConvertGroupTroopsToComposition(pGroup: Pointer<GROUP>, iCompositionID: INT32): void {
   Assert(pGroup);
   Assert(!pGroup.value.fPlayer);
-  CalcNumTroopsBasedOnComposition(&pGroup.value.pEnemyGroup.value.ubNumTroops, &pGroup.value.pEnemyGroup.value.ubNumElites, pGroup.value.ubGroupSize, iCompositionID);
+  CalcNumTroopsBasedOnComposition(addressof(pGroup.value.pEnemyGroup.value.ubNumTroops), addressof(pGroup.value.pEnemyGroup.value.ubNumElites), pGroup.value.ubGroupSize, iCompositionID);
   pGroup.value.pEnemyGroup.value.ubNumAdmins = 0;
   pGroup.value.ubGroupSize = pGroup.value.pEnemyGroup.value.ubNumTroops + pGroup.value.pEnemyGroup.value.ubNumElites;
   ValidateLargeGroup(pGroup);
@@ -3959,8 +3959,8 @@ function RemoveSoldiersFromGarrisonBasedOnComposition(iGarrisonID: INT32, ubSize
 
   iCompositionID = gGarrisonGroup[iGarrisonID].ubComposition;
 
-  CalcNumTroopsBasedOnComposition(&ubNumTroops, &ubNumElites, ubSize, iCompositionID);
-  pSector = &SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID];
+  CalcNumTroopsBasedOnComposition(addressof(ubNumTroops), addressof(ubNumElites), ubSize, iCompositionID);
+  pSector = addressof(SectorInfo[gGarrisonGroup[iGarrisonID].ubSectorID]);
   // if there are administrators in this sector, remove them first.
 
   ubOrigNumElites = ubNumElites;
@@ -4073,7 +4073,7 @@ function RedirectEnemyGroupsMovingThroughSector(ubSectorX: UINT8, ubSectorY: UIN
         Assert(pWaypoint);
         ubDestSectorID = SECTOR(pWaypoint.value.x, pWaypoint.value.y);
         SetEnemyGroupSector(pGroup, SECTOR(pGroup.value.ubSectorX, pGroup.value.ubSectorY));
-        MoveSAIGroupToSector(&pGroup, ubDestSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
+        MoveSAIGroupToSector(addressof(pGroup), ubDestSectorID, EVASIVE, pGroup.value.pEnemyGroup.value.ubIntention);
         ubNumGroupsRedirected++;
       }
     }
@@ -4110,8 +4110,8 @@ function ReinitializeUnvisitedGarrisons(): void {
       // unbalance the difficulty.
       continue;
     }
-    pSector = &SectorInfo[gGarrisonGroup[i].ubSectorID];
-    pArmyComp = &gArmyComp[gGarrisonGroup[i].ubComposition];
+    pSector = addressof(SectorInfo[gGarrisonGroup[i].ubSectorID]);
+    pArmyComp = addressof(gArmyComp[gGarrisonGroup[i].ubComposition]);
     if (!(pSector.value.uiFlags & SF_ALREADY_VISITED)) {
       pSector.value.ubNumAdmins = 0;
       pSector.value.ubNumTroops = 0;
@@ -4153,7 +4153,7 @@ function ReinitializeUnvisitedGarrisons(): void {
 function FindPendingGroupForGarrisonSector(ubSectorID: UINT8): Pointer<GROUP> {
   let pGroup: Pointer<GROUP>;
   let pSector: Pointer<SECTORINFO>;
-  pSector = &SectorInfo[ubSectorID];
+  pSector = addressof(SectorInfo[ubSectorID]);
   if (pSector.value.ubGarrisonID != NO_GARRISON) {
     if (gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID) {
       pGroup = GetGroup(gGarrisonGroup[pSector.value.ubGarrisonID].ubPendingGroupID);

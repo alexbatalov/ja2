@@ -182,7 +182,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   }
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(hFile, &LibFileHeader, sizeof(LIBHEADER), &uiNumBytesRead, NULL))
+  if (!ReadFile(hFile, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), NULL))
     return FALSE;
 
   if (uiNumBytesRead != sizeof(LIBHEADER)) {
@@ -198,7 +198,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   usNumEntries = 0;
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, &DirEntry, sizeof(DIRENTRY), &uiNumBytesRead, NULL))
+    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), NULL))
       return FALSE;
 
     if (DirEntry.ubState == FILE_OK)
@@ -215,7 +215,7 @@ function InitializeLibrary(pLibraryName: STR, pLibHeader: Pointer<LibraryHeaderS
   uiCount = 0;
   for (uiLoop = 0; uiLoop < LibFileHeader.iEntries; uiLoop++) {
     // read in the file header
-    if (!ReadFile(hFile, &DirEntry, sizeof(DIRENTRY), &uiNumBytesRead, NULL))
+    if (!ReadFile(hFile, addressof(DirEntry), sizeof(DIRENTRY), addressof(uiNumBytesRead), NULL))
       return FALSE;
 
     if (DirEntry.ubState == FILE_OK) {
@@ -301,7 +301,7 @@ function LoadDataFromLibrary(sLibraryID: INT16, uiFileNum: UINT32, pData: PTR, u
   }
 
   // get the data
-  if (!ReadFile(hLibraryFile, pData, uiBytesToRead, &uiNumBytesRead, NULL))
+  if (!ReadFile(hLibraryFile, pData, uiBytesToRead, addressof(uiNumBytesRead), NULL))
     return FALSE;
 
   if (uiBytesToRead != uiNumBytesRead) {
@@ -339,7 +339,7 @@ function CheckIfFileExistInLibrary(pFileName: STR): BOOLEAN {
     return FALSE;
   }
 
-  if (GetFileHeaderFromLibrary(sLibraryID, pFileName, &pFileHeader))
+  if (GetFileHeaderFromLibrary(sLibraryID, pFileName, addressof(pFileHeader)))
     return TRUE;
   else
     return FALSE;
@@ -404,7 +404,7 @@ function GetFileHeaderFromLibrary(sLibraryID: INT16, pstrFileName: STR, pFileHea
   gsCurrentLibrary = sLibraryID;
 
   /* try to find the filename using a binary search algorithm: */
-  ppFileHeader = bsearch(&sFileNameWithPath, gFileDataBase.pLibraries[sLibraryID].pFileHeader, gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries, sizeof(FileHeaderStruct), CompareFileNames);
+  ppFileHeader = bsearch(addressof(sFileNameWithPath), gFileDataBase.pLibraries[sLibraryID].pFileHeader, gFileDataBase.pLibraries[sLibraryID].usNumberOfEntries, sizeof(FileHeaderStruct), CompareFileNames);
 
   if (ppFileHeader) {
     *pFileHeader = ppFileHeader;
@@ -495,7 +495,7 @@ function OpenFileFromLibrary(pName: STR): HWFILE {
       return 0;
 
     // if the file is in a library, get the file
-    if (GetFileHeaderFromLibrary(sLibraryID, pName, &pFileHeader)) {
+    if (GetFileHeaderFromLibrary(sLibraryID, pName, addressof(pFileHeader))) {
       // increment the number of open files
       gFileDataBase.pLibraries[sLibraryID].iNumFilesOpen++;
 
@@ -582,7 +582,7 @@ function CreateRealFileHandle(hFile: HANDLE): HWFILE {
     CHECKF(gFileDataBase.RealFiles.pRealFilesOpen);
 
     // Clear out the new part of the array
-    memset(&gFileDataBase.RealFiles.pRealFilesOpen[gFileDataBase.RealFiles.iSizeOfOpenFileArray], 0, (NUM_FILES_TO_ADD_AT_A_TIME * sizeof(RealFileOpenStruct)));
+    memset(addressof(gFileDataBase.RealFiles.pRealFilesOpen[gFileDataBase.RealFiles.iSizeOfOpenFileArray]), 0, (NUM_FILES_TO_ADD_AT_A_TIME * sizeof(RealFileOpenStruct)));
 
     gFileDataBase.RealFiles.iSizeOfOpenFileArray += NUM_FILES_TO_ADD_AT_A_TIME;
   }
@@ -700,7 +700,7 @@ function OpenLibrary(sLibraryID: INT16): BOOLEAN {
     return FALSE;
 
   // if we cant open the library
-  if (!InitializeLibrary(gGameLibaries[sLibraryID].sLibraryName, &gFileDataBase.pLibraries[sLibraryID], gGameLibaries[sLibraryID].fOnCDrom))
+  if (!InitializeLibrary(gGameLibaries[sLibraryID].sLibraryName, addressof(gFileDataBase.pLibraries[sLibraryID]), gGameLibaries[sLibraryID].fOnCDrom))
     return FALSE;
 
   return TRUE;
@@ -821,7 +821,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
   SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, 0, NULL, FILE_BEGIN);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, &LibFileHeader, sizeof(LIBHEADER), &uiNumBytesRead, NULL))
+  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, addressof(LibFileHeader), sizeof(LIBHEADER), addressof(uiNumBytesRead), NULL))
     return FALSE;
   if (uiNumBytesRead != sizeof(LIBHEADER)) {
     // Error Reading the file database header.
@@ -843,7 +843,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
   SetFilePointer(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, iFilePos, NULL, FILE_END);
 
   // Read in the library header ( at the begining of the library )
-  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, pAllEntries, (sizeof(DIRENTRY) * LibFileHeader.iEntries), &uiNumBytesRead, NULL))
+  if (!ReadFile(gFileDataBase.pLibraries[sLibraryID].hLibraryHandle, pAllEntries, (sizeof(DIRENTRY) * LibFileHeader.iEntries), addressof(uiNumBytesRead), NULL))
     return FALSE;
   if (uiNumBytesRead != (sizeof(DIRENTRY) * LibFileHeader.iEntries)) {
     // Error Reading the file database header.
@@ -859,7 +859,7 @@ function GetLibraryFileTime(sLibraryID: INT16, uiFileNum: UINT32, pLastWriteTime
     return FALSE;
 
   // Copy the dir entry time over to the passed in time
-  memcpy(pLastWriteTime, &pDirEntry.value.sFileTime, sizeof(SGP_FILETIME));
+  memcpy(pLastWriteTime, addressof(pDirEntry.value.sFileTime), sizeof(SGP_FILETIME));
 
   MemFree(pAllEntries);
   pAllEntries = NULL;

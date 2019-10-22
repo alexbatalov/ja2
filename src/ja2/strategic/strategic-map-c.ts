@@ -256,7 +256,7 @@ function BeginLoadScreen(): void {
       SrcRect.iRight = 640 - iPercentage / 20;
       SrcRect.iTop = 367 * iPercentage / 100;
       SrcRect.iBottom = 480 - 39 * iPercentage / 100;
-      BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, &SrcRect, &DstRect);
+      BltStretchVideoSurface(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 0, addressof(SrcRect), addressof(DstRect));
       InvalidateScreen();
       RefreshScreen(NULL);
     }
@@ -683,7 +683,7 @@ function SetCurrentWorldSector(sMapX: INT16, sMapY: INT16, bMapZ: INT8): BOOLEAN
       let bWarpWorldZ: INT8;
       let sWarpGridNo: INT16;
 
-      if (GetWarpOutOfMineCodes(&sWarpWorldX, &sWarpWorldY, &bWarpWorldZ, &sWarpGridNo) && gbWorldSectorZ >= 2) {
+      if (GetWarpOutOfMineCodes(addressof(sWarpWorldX), addressof(sWarpWorldY), addressof(bWarpWorldZ), addressof(sWarpGridNo)) && gbWorldSectorZ >= 2) {
         gTacticalStatus.uiFlags |= IN_CREATURE_LAIR;
       } else {
         gTacticalStatus.uiFlags &= (~IN_CREATURE_LAIR);
@@ -903,7 +903,7 @@ function HandleQuestCodeOnSectorEntry(sNewSectorX: INT16, sNewSectorY: INT16, bN
             ubMiner = Random(RANDOM_HEAD_MINERS);
           } while (ubRandomMiner[ubMiner] == 0);
 
-          GetMineSector(ubMine, &(gMercProfiles[ubRandomMiner[ubMiner]].sSectorX), &(gMercProfiles[ubRandomMiner[ubMiner]].sSectorY));
+          GetMineSector(ubMine, addressof(gMercProfiles[ubRandomMiner[ubMiner]].sSectorX), addressof(gMercProfiles[ubRandomMiner[ubMiner]].sSectorY));
           gMercProfiles[ubRandomMiner[ubMiner]].bSectorZ = 0;
           gMercProfiles[ubRandomMiner[ubMiner]].bTown = gMineLocation[ubMine].bAssociatedTown;
 
@@ -1414,7 +1414,7 @@ function GetSectorIDString(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8, zSt
   } else {
     bTownNameID = StrategicMap[CALCULATE_STRATEGIC_INDEX(sSectorX, sSectorY)].bNameId;
     ubSectorID = SECTOR(sSectorX, sSectorY);
-    pSector = &SectorInfo[ubSectorID];
+    pSector = addressof(SectorInfo[ubSectorID]);
     ubLandType = pSector.value.ubTraversability[4];
     swprintf(zString, "%c%d: ", 'A' + sSectorY - 1, sSectorX);
 
@@ -1522,7 +1522,7 @@ function SetInsertionDataFromAdjacentMoveDirection(pSoldier: Pointer<SOLDIERTYPE
       // OK, we are using an exit grid - set insertion values...
 
     case 255:
-      if (!GetExitGrid(sAdditionalData, &ExitGrid)) {
+      if (!GetExitGrid(sAdditionalData, addressof(ExitGrid))) {
         AssertMsg(0, String("No valid Exit grid can be found when one was expected: SetInsertionDataFromAdjacentMoveDirection."));
       }
       ubDirection = 255;
@@ -1735,7 +1735,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
     gbAdjacentSectorZ = pValidSoldier.value.bSectorZ;
   } else {
     // Take directions from exit grid info!
-    if (!GetExitGrid(sAdditionalData, &ExitGrid)) {
+    if (!GetExitGrid(sAdditionalData, addressof(ExitGrid))) {
       AssertMsg(0, String("Told to use exit grid at %d but one does not exist", sAdditionalData));
     }
 
@@ -1772,7 +1772,7 @@ function JumpIntoAdjacentSector(ubTacticalDirection: UINT8, ubJumpCode: UINT8, s
           EVENT_GetNewSoldierPath(curr.value.pSoldier, sGridNo, WALKING);
         } else {
           // Here, get closest location for exit grid....
-          sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(curr.value.pSoldier, sAdditionalData, 10, &ubDirection);
+          sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(curr.value.pSoldier, sAdditionalData, 10, addressof(ubDirection));
 
           // curr->pSoldier->
           if (sGridNo != NOWHERE) {
@@ -2145,7 +2145,7 @@ function SetupTacticalTraversalInformation(): void {
     if (guiAdjacentTraverseTime <= 5) {
       // Determine 'mirror' gridno...
       // Convert to absolute xy
-      GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), &sScreenX, &sScreenY);
+      GetWorldXYAbsoluteScreenXY((pSoldier.value.sX / CELL_X_SIZE), (pSoldier.value.sY / CELL_Y_SIZE), addressof(sScreenX), addressof(sScreenY));
 
       // Get 'mirror', depending on what direction...
       switch (gubTacticalDirection) {
@@ -2164,7 +2164,7 @@ function SetupTacticalTraversalInformation(): void {
       }
 
       // Convert into a gridno again.....
-      GetFromAbsoluteScreenXYWorldXY(&sWorldX, &sWorldY, sScreenX, sScreenY);
+      GetFromAbsoluteScreenXYWorldXY(addressof(sWorldX), addressof(sWorldY), sScreenX, sScreenY);
       sNewGridNo = GETWORLDINDEXFROMWORLDCOORDS(sWorldY, sWorldX);
 
       // Save this gridNo....
@@ -2321,7 +2321,7 @@ function DoneFadeOutAdjacentSector(): void {
     while (curr) {
       if (!(curr.value.pSoldier.value.uiStatusFlags & SOLDIER_IS_TACTICALLY_VALID)) {
         if (curr.value.pSoldier.value.sGridNo != NOWHERE) {
-          sGridNo = PickGridNoToWalkIn(curr.value.pSoldier, ubDirection, &uiAttempts);
+          sGridNo = PickGridNoToWalkIn(curr.value.pSoldier, ubDirection, addressof(uiAttempts));
 
           // If the search algorithm failed due to too many attempts, simply reset the
           // the gridno as the destination is a reserved gridno and we will place the
@@ -2375,10 +2375,10 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
     return FALSE;
 
   // get world absolute XY
-  ConvertGridNoToXY(pSoldier.value.sGridNo, &sXMapPos, &sYMapPos);
+  ConvertGridNoToXY(pSoldier.value.sGridNo, addressof(sXMapPos), addressof(sYMapPos));
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY(sXMapPos, sYMapPos, addressof(sWorldX), addressof(sWorldY));
 
   // Check direction
   switch (bExitDirection) {
@@ -2424,7 +2424,7 @@ function SoldierOKForSectorExit(pSoldier: Pointer<SOLDIERTYPE>, bExitDirection: 
         pSoldier.value.usUIMovementMode = GetMoveStateBasedOnStance(pSoldier, gAnimControl[pSoldier.value.usAnimState].ubEndHeight);
       }
 
-      sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(pSoldier, usAdditionalData, 10, &ubDirection);
+      sGridNo = FindGridNoFromSweetSpotCloseToExitGrid(pSoldier, usAdditionalData, 10, addressof(ubDirection));
 
       if (sGridNo == NOWHERE) {
         return FALSE;
@@ -2748,7 +2748,7 @@ function UpdateAirspaceControl(): void {
       ubControllingSAM = ubSAMControlledSectors[iCounterB][iCounterA];
 
       if ((ubControllingSAM >= 1) && (ubControllingSAM <= NUMBER_OF_SAMS)) {
-        pSAMStrategicMap = &(StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(pSamList[ubControllingSAM - 1])]);
+        pSAMStrategicMap = addressof(StrategicMap[SECTOR_INFO_TO_STRATEGIC_INDEX(pSamList[ubControllingSAM - 1])]);
 
         // if the enemies own the controlling SAM site, and it's in working condition
         if ((pSAMStrategicMap.value.fEnemyControlled) && (pSAMStrategicMap.value.bSAMCondition >= MIN_CONDITION_FOR_SAM_SITE_TO_WORK)) {
@@ -2848,14 +2848,14 @@ function SaveStrategicInfoToSavedFile(hFile: HWFILE): BOOLEAN {
   let uiSize: UINT32 = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
 
   // Save the strategic map information
-  FileWrite(hFile, StrategicMap, uiSize, &uiNumBytesWritten);
+  FileWrite(hFile, StrategicMap, uiSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSize) {
     return FALSE;
   }
 
   // Save the Sector Info
   uiSize = sizeof(SECTORINFO) * 256;
-  FileWrite(hFile, SectorInfo, uiSize, &uiNumBytesWritten);
+  FileWrite(hFile, SectorInfo, uiSize, addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != uiSize) {
     return FALSE;
   }
@@ -2872,7 +2872,7 @@ function SaveStrategicInfoToSavedFile(hFile: HWFILE): BOOLEAN {
   FileSeek(hFile, uiSize, FILE_SEEK_FROM_CURRENT);
 
   // Save the fFoundOrta
-  FileWrite(hFile, &fFoundOrta, sizeof(BOOLEAN), &uiNumBytesWritten);
+  FileWrite(hFile, addressof(fFoundOrta), sizeof(BOOLEAN), addressof(uiNumBytesWritten));
   if (uiNumBytesWritten != sizeof(BOOLEAN)) {
     return FALSE;
   }
@@ -2885,14 +2885,14 @@ function LoadStrategicInfoFromSavedFile(hFile: HWFILE): BOOLEAN {
   let uiSize: UINT32 = sizeof(StrategicMapElement) * (MAP_WORLD_X * MAP_WORLD_Y);
 
   // Load the strategic map information
-  FileRead(hFile, StrategicMap, uiSize, &uiNumBytesRead);
+  FileRead(hFile, StrategicMap, uiSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiSize) {
     return FALSE;
   }
 
   // Load the Sector Info
   uiSize = sizeof(SECTORINFO) * 256;
-  FileRead(hFile, SectorInfo, uiSize, &uiNumBytesRead);
+  FileRead(hFile, SectorInfo, uiSize, addressof(uiNumBytesRead));
   if (uiNumBytesRead != uiSize) {
     return FALSE;
   }
@@ -2909,7 +2909,7 @@ function LoadStrategicInfoFromSavedFile(hFile: HWFILE): BOOLEAN {
   FileSeek(hFile, uiSize, FILE_SEEK_FROM_CURRENT);
 
   // Load the fFoundOrta
-  FileRead(hFile, &fFoundOrta, sizeof(BOOLEAN), &uiNumBytesRead);
+  FileRead(hFile, addressof(fFoundOrta), sizeof(BOOLEAN), addressof(uiNumBytesRead));
   if (uiNumBytesRead != sizeof(BOOLEAN)) {
     return FALSE;
   }
@@ -3650,7 +3650,7 @@ function CheckAndHandleUnloadingOfCurrentWorld(): BOOLEAN {
     return FALSE;
   }
 
-  GetCurrentBattleSectorXYZ(&sBattleSectorX, &sBattleSectorY, &sBattleSectorZ);
+  GetCurrentBattleSectorXYZ(addressof(sBattleSectorX), addressof(sBattleSectorY), addressof(sBattleSectorZ));
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
     // The user has decided to let the game autoresolve the current battle.

@@ -364,8 +364,8 @@ function InitPathAI(): BOOLEAN {
   if (!pathQ || !trailCost || !trailCostUsed || !trailTree) {
     return FALSE;
   }
-  pQueueHead = &(pathQ[QHEADNDX]);
-  pClosedHead = &(pathQ[QPOOLNDX]);
+  pQueueHead = addressof(pathQ[QHEADNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX]);
   memset(trailCostUsed, 0, MAPLENGTH);
   return TRUE;
 }
@@ -387,7 +387,7 @@ function ReconfigurePathAI(iNewMaxSkipListLevel: INT32, iNewMaxTrailTree: INT32,
   iMaxTrailTree = iNewMaxTrailTree;
   iMaxPathQ = iNewMaxPathQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = &(pathQ[QPOOLNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX]);
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
@@ -396,7 +396,7 @@ function RestorePathAIToDefaults(): void {
   iMaxTrailTree = MAX_TRAIL_TREE;
   iMaxPathQ = MAX_PATHQ;
   // relocate the head of the closed list to the end of the array portion being used
-  pClosedHead = &(pathQ[QPOOLNDX]);
+  pClosedHead = addressof(pathQ[QPOOLNDX]);
   memset(pClosedHead, 0, sizeof(path_t));
 }
 
@@ -679,12 +679,12 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   if (fCopyReachable) {
     pathQ[1].usCostToGo = 100;
   } else {
-    pathQ[1].usCostToGo = REMAININGCOST(&(pathQ[1]));
+    pathQ[1].usCostToGo = REMAININGCOST(addressof(pathQ[1]));
   }
   pathQ[1].usTotalCost = pathQ[1].usCostSoFar + pathQ[1].usCostToGo;
   pathQ[1].ubLegDistance = LEGDISTANCE(iLocX, iLocY, iDestX, iDestY);
   pathQ[1].bLevel = 1;
-  pQueueHead.value.pNext[0] = &(pathQ[1]);
+  pQueueHead.value.pNext[0] = addressof(pathQ[1]);
   iSkipListSize++;
 
   trailTreeNdx = 0;
@@ -766,7 +766,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       if (fMultiTile) {
         if (fContinuousTurnNeeded) {
           if (iCnt != iLastDir) {
-            if (!OkayToAddStructureToWorld(curLoc, ubLevel, &(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+            if (!OkayToAddStructureToWorld(curLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
               // we have to abort this loop and possibly reset the loop conditions to
               // search in the other direction (if we haven't already done the other dir)
               if (bLoopState == LOOPING_CLOCKWISE) {
@@ -796,7 +796,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           }
         } else if (pStructureFileRef) {
           // check to make sure it's okay for us to turn to the new direction in our current tile
-          if (!OkayToAddStructureToWorld(curLoc, ubLevel, &(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+          if (!OkayToAddStructureToWorld(curLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
             goto NEXTDIR;
           }
         }
@@ -868,7 +868,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         if (nextCost == TRAVELCOST_HIDDENOBSTACLE) {
           if (fPathingForPlayer) {
             // Is this obstcale a hidden tile that has not been revealed yet?
-            if (DoesGridnoContainHiddenStruct(newLoc, &fHiddenStructVisible)) {
+            if (DoesGridnoContainHiddenStruct(newLoc, addressof(fHiddenStructVisible))) {
               // Are we not visible, if so use terrain costs!
               if (!fHiddenStructVisible) {
                 // Set cost of terrain!
@@ -1070,7 +1070,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         // then 0 1 2 3 4 5 6), we must subtract 1 from the direction
         // ATE: Send in our existing structure ID so it's ignored!
 
-        if (!OkayToAddStructureToWorld(newLoc, ubLevel, &(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+        if (!OkayToAddStructureToWorld(newLoc, ubLevel, addressof(pStructureFileRef.value.pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
           goto NEXTDIR;
         }
 
@@ -1550,7 +1550,7 @@ function GlobalReachableTest(sStartGridNo: INT16): void {
   let s: SOLDIERTYPE;
   let iCurrentGridNo: INT32 = 0;
 
-  memset(&s, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
   s.bLevel = 0;
   s.bTeam = 1;
@@ -1561,7 +1561,7 @@ function GlobalReachableTest(sStartGridNo: INT16): void {
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(&s, NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   RestorePathAIToDefaults();
 }
 
@@ -1571,7 +1571,7 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   let iX: INT32;
   let iY: INT32;
 
-  memset(&s, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
 
   // if we are moving on the gorund level
@@ -1596,7 +1596,7 @@ function LocalReachableTest(sStartGridNo: INT16, bRadius: INT8): void {
   // set the dist limit
   gubNPCDistLimit = bRadius;
   // make the function call
-  FindBestPath(&s, NOWHERE, s.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, s.bLevel, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   // reset dist limit
   gubNPCDistLimit = 0;
 }
@@ -1605,7 +1605,7 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
   let s: SOLDIERTYPE;
   let iCurrentGridNo: INT32 = 0;
 
-  memset(&s, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo1;
   s.bLevel = 0;
   s.bTeam = 1;
@@ -1616,10 +1616,10 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
   }
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(&s, NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+  FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   if (sStartGridNo2 != NOWHERE) {
     s.sGridNo = sStartGridNo2;
-    FindBestPath(&s, NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
+    FindBestPath(addressof(s), NOWHERE, 0, WALKING, COPYREACHABLE, PATH_THROUGH_PEOPLE);
   }
   RestorePathAIToDefaults();
 }
@@ -1627,7 +1627,7 @@ function GlobalItemsReachableTest(sStartGridNo1: INT16, sStartGridNo2: INT16): v
 function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   let s: SOLDIERTYPE;
 
-  memset(&s, 0, sizeof(SOLDIERTYPE));
+  memset(addressof(s), 0, sizeof(SOLDIERTYPE));
   s.sGridNo = sStartGridNo;
   s.bLevel = 1;
   s.bTeam = 1;
@@ -1635,7 +1635,7 @@ function RoofReachableTest(sStartGridNo: INT16, ubBuildingID: UINT8): void {
   gubBuildingInfoToSet = ubBuildingID;
 
   ReconfigurePathAI(ABSMAX_SKIPLIST_LEVEL, ABSMAX_TRAIL_TREE, ABSMAX_PATHQ);
-  FindBestPath(&s, NOWHERE, 1, WALKING, COPYREACHABLE, 0);
+  FindBestPath(addressof(s), NOWHERE, 1, WALKING, COPYREACHABLE, 0);
   RestorePathAIToDefaults();
 
   // set start position to reachable since path code sets it unreachable
@@ -1952,7 +1952,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
             }
           }
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, &usTileIndex);
+          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, addressof(usTileIndex));
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -1998,7 +1998,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // this is a LEAVING footstep which is always the second set of 8
           usTileNum += 8;
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, &usTileIndex);
+          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, addressof(usTileIndex));
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {

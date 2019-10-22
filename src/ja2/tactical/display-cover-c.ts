@@ -50,7 +50,7 @@ function DisplayCoverOfSelectedGridNo(): void {
   let sGridNo: INT16;
   let bStance: INT8;
 
-  GetMouseMapPos(&sGridNo);
+  GetMouseMapPos(addressof(sGridNo));
 
   // Only allowed in if there is someone selected
   if (gusSelectedSoldier == NOBODY) {
@@ -353,7 +353,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     //	iBulletGetThrough = CalcChanceToHitGun( pOpponent, sTargetGridNo, AP_MAX_AIM_ATTACK, AIM_SHOT_TORSO );
 
     if (WeaponInHand(pOpponent)) {
-      usMaxRange = GunRange(&pOpponent.value.inv[HANDPOS]);
+      usMaxRange = GunRange(addressof(pOpponent.value.inv[HANDPOS]));
     } else {
       usMaxRange = Weapon[GLOCK_18].usRange;
     }
@@ -419,7 +419,7 @@ function GetCurrentMercForDisplayCover(): Pointer<SOLDIERTYPE> {
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
   // Get a soldier that is on the player team
   if (gusSelectedSoldier != NOBODY) {
-    GetSoldier(&pSoldier, gusSelectedSoldier);
+    GetSoldier(addressof(pSoldier), gusSelectedSoldier);
   } else {
     Assert(0);
   }
@@ -497,7 +497,7 @@ function DisplayGridNoVisibleToSoldierGrid(): void {
   let sGridNo: INT16;
   //	INT8	bStance;
 
-  GetMouseMapPos(&sGridNo);
+  GetMouseMapPos(addressof(sGridNo));
 
   // Only allowed in if there is someone selected
   if (gusSelectedSoldier == NOBODY) {
@@ -740,8 +740,8 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   }
 
   if (ubID != NOBODY) {
-    pPersOL = &(pSoldier.value.bOppList[ubID]);
-    pbPublOL = &(gbPublicOpplist[pSoldier.value.bTeam][ubID]);
+    pPersOL = addressof(pSoldier.value.bOppList[ubID]);
+    pbPublOL = addressof(gbPublicOpplist[pSoldier.value.bTeam][ubID]);
 
     // if soldier is known about (SEEN or HEARD within last few turns)
     if (*pPersOL || *pbPublOL) {
@@ -781,7 +781,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
 function IsTheRoofVisible(sGridNo: INT16): BOOLEAN {
   let ubRoom: UINT8;
 
-  if (InARoom(sGridNo, &ubRoom)) {
+  if (InARoom(sGridNo, addressof(ubRoom))) {
     if (gpWorldLevelData[sGridNo].uiFlags & MAPELEMENT_REVEALED) {
       if (gTacticalStatus.uiFlags & SHOW_ALL_ROOFS)
         return TRUE;

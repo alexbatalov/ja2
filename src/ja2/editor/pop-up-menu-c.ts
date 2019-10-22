@@ -71,7 +71,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
-  MSYS_DisableRegion(&gBottomPanalRegion);
+  MSYS_DisableRegion(addressof(gBottomPanalRegion));
 
   switch (ubDirection) {
     case DIR_UPRIGHT:
@@ -115,7 +115,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
-  MSYS_DisableRegion(&gBottomPanalRegion);
+  MSYS_DisableRegion(addressof(gBottomPanalRegion));
 
   gPopup.ubPopupMenuID = ubPopupMenuID;
   gPopup.ubSelectedIndex = 0;
@@ -187,7 +187,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
       gPopup.usBottom = usY + usMenuHeight + 1;
       break;
   }
-  MSYS_DefineRegion(&popupRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(popupRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
 
   RenderPopupMenu();
 }
@@ -206,7 +206,7 @@ function RenderPopupMenu(): void {
 
   // Draw the menu
   ColorFillVideoSurfaceArea(FRAME_BUFFER, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, Get16BPPColor(FROMRGB(128, 128, 128)));
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
   usLineColor = Get16BPPColor(FROMRGB(64, 64, 64));
   RectangleDraw(TRUE, gPopup.usLeft, gPopup.usTop, gPopup.usRight, gPopup.usBottom, usLineColor, pDestBuf);
@@ -326,13 +326,13 @@ function PopupMenuHandle(): void {
       ProcessPopupMenuSelection();
     }
     gPopup.fActive = FALSE;
-    MSYS_RemoveRegion(&popupRegion);
+    MSYS_RemoveRegion(addressof(popupRegion));
     gfRenderWorld = TRUE;
     gfRenderTaskbar = TRUE;
     return;
   }
   // Use keyboard input as well.
-  while (DequeueEvent(&InputEvent)) {
+  while (DequeueEvent(addressof(InputEvent))) {
     switch (InputEvent.usEvent) {
       case KEY_DOWN:
         switch (InputEvent.usParam) {
@@ -357,14 +357,14 @@ function PopupMenuHandle(): void {
             break;
           case ESC:
             gPopup.fActive = FALSE;
-            MSYS_RemoveRegion(&popupRegion);
+            MSYS_RemoveRegion(addressof(popupRegion));
             gfRenderWorld = TRUE;
             gfRenderTaskbar = TRUE;
             break;
           case ENTER:
             ProcessPopupMenuSelection();
             gPopup.fActive = FALSE;
-            MSYS_RemoveRegion(&popupRegion);
+            MSYS_RemoveRegion(addressof(popupRegion));
             gfRenderWorld = TRUE;
             gfRenderTaskbar = TRUE;
             break;

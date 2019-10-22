@@ -137,18 +137,18 @@ function EnterInsuranceContract(): BOOLEAN {
   // load the Insurance title graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\InsOrderGrid.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsOrderGridImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderGridImage)));
 
   // load the Insurance bullet graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("LAPTOP\\bullet.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiInsOrderBulletImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiInsOrderBulletImage)));
 
   usPosX = INS_CTRCT_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 2; i++) {
-    MSYS_DefineRegion(&gSelectedInsuranceContractLinkRegion[i], usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
-    MSYS_AddRegion(&gSelectedInsuranceContractLinkRegion[i]);
-    MSYS_SetRegionUserData(&gSelectedInsuranceContractLinkRegion[i], 0, i);
+    MSYS_DefineRegion(addressof(gSelectedInsuranceContractLinkRegion[i]), usPosX, INS_CTRCT_BOTTON_LINK_RED_BAR_Y - 37, (usPosX + INS_CTRCT_BOTTOM_LINK_RED_WIDTH), INS_CTRCT_BOTTON_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceContractRegionCallBack);
+    MSYS_AddRegion(addressof(gSelectedInsuranceContractLinkRegion[i]));
+    MSYS_SetRegionUserData(addressof(gSelectedInsuranceContractLinkRegion[i]), 0, i);
 
     usPosX += INS_CTRCT_BOTTOM_LINK_RED_BAR_OFFSET;
   }
@@ -182,7 +182,7 @@ function ExitInsuranceContract(): void {
   DeleteVideoObjectFromIndex(guiInsOrderBulletImage);
 
   for (i = 0; i < 2; i++)
-    MSYS_RemoveRegion(&gSelectedInsuranceContractLinkRegion[i]);
+    MSYS_RemoveRegion(addressof(gSelectedInsuranceContractLinkRegion[i]));
 
   // the previous button
   UnloadButtonImage(guiInsContractPrevButtonImage);
@@ -257,7 +257,7 @@ function RenderInsuranceContract(): void {
   DrawTextToScreen(sText, LAPTOP_SCREEN_UL_X, INS_CTRCT_TITLE_Y, LAPTOP_SCREEN_LR_X - LAPTOP_SCREEN_UL_X, INS_FONT_BIG, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiInsOrderBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the first instruction sentence
@@ -265,7 +265,7 @@ function RenderInsuranceContract(): void {
   DisplayWrappedString(INS_CTRCT_FIRST_BULLET_TEXT_X + INSURANCE_BULLET_TEXT_OFFSET_X, INS_CTRCT_FIRST_BULLET_TEXT_Y, INS_CTRCT_INTSRUCTION_TEXT_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Get and display the insurance bullet
-  GetVideoObject(&hPixHandle, guiInsOrderBulletImage);
+  GetVideoObject(addressof(hPixHandle), guiInsOrderBulletImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, INS_CTRCT_FIRST_BULLET_TEXT_X, INS_CTRCT_SECOND_BULLET_TEXT_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Display the second instruction sentence
@@ -279,7 +279,7 @@ function RenderInsuranceContract(): void {
   while ((ubCount < gubNumberofDisplayedInsuranceGrids) && (sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID)) {
     sMercID = gubInsuranceMercArray[sNextMercID];
 
-    pSoldier = &Menptr[GetSoldierIDFromMercID(sMercID)];
+    pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sMercID)]);
 
     if ((sMercID != -1) && MercIsInsurable(pSoldier)) {
       DisplayOrderGrid(ubCount, sMercID);
@@ -369,7 +369,7 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
 
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = &Menptr[GetSoldierIDFromMercID(ubMercID)];
+  pSoldier = addressof(Menptr[GetSoldierIDFromMercID(ubMercID)]);
 
   usPosX = usPosY = 0;
 
@@ -399,17 +399,17 @@ function DisplayOrderGrid(ubGridNumber: UINT8, ubMercID: UINT8): BOOLEAN {
   }
 
   // Get and display the insurance order grid #1
-  GetVideoObject(&hPixHandle, guiInsOrderGridImage);
+  GetVideoObject(addressof(hPixHandle), guiInsOrderGridImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, usPosX, INS_CTRCT_ORDER_GRID1_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // load the mercs face graphic and add it
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   sprintf(sTemp, "FACES\\%02d.sti", ubMercID);
   FilenameForBPP(sTemp, VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &uiInsMercFaceImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(uiInsMercFaceImage)));
 
   // Get the merc's face
-  GetVideoObject(&hPixHandle, uiInsMercFaceImage);
+  GetVideoObject(addressof(hPixHandle), uiInsMercFaceImage);
 
   // if the merc is dead, shade the face red
   if (IsMercDead(ubMercID)) {
@@ -822,7 +822,7 @@ function HandleAcceptButton(ubSoldierID: UINT8, ubFormID: UINT8): void {
   // passed in either 1,2,3 should be 0,1,2
   ubFormID--;
 
-  PurchaseOrExtendInsuranceForSoldier(&Menptr[ubSoldierID], CalculateSoldiersInsuranceContractLength(&Menptr[ubSoldierID]));
+  PurchaseOrExtendInsuranceForSoldier(addressof(Menptr[ubSoldierID]), CalculateSoldiersInsuranceContractLength(addressof(Menptr[ubSoldierID])));
 
   RenderInsuranceContract();
 }
@@ -873,7 +873,7 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
   let uiTotalInsurancePremium: UINT32;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  pSoldier = &Menptr[GetSoldierIDFromMercID(ubMercID)];
+  pSoldier = addressof(Menptr[GetSoldierIDFromMercID(ubMercID)]);
 
   // only mercs with at least 2 days to go on their employment contract are insurable
   // def: 2/5/99.  However if they already have insurance is SHOULD be ok
@@ -895,7 +895,7 @@ function CalculateInsuranceContractCost(iLength: INT32, ubMercID: UINT8): INT32 
           }
           */
 
-  pProfile = &gMercProfiles[ubMercID];
+  pProfile = addressof(gMercProfiles[ubMercID]);
 
   // calculate the degree of training
   sTotalSkill = (pProfile.value.bMarksmanship + pProfile.value.bMedical + pProfile.value.bMechanical + pProfile.value.bExplosive + pProfile.value.bLeadership) / 5;
@@ -986,7 +986,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   Assert(pSoldier != NULL);
   Assert(pSoldier.value.ubProfile != NO_PROFILE);
 
-  pProfile = &(gMercProfiles[pSoldier.value.ubProfile]);
+  pProfile = addressof(gMercProfiles[pSoldier.value.ubProfile]);
 
   // if we need to add more array elements
   if (LaptopSaveInfo.ubNumberLifeInsurancePayouts <= LaptopSaveInfo.ubNumberLifeInsurancePayoutUsed) {
@@ -995,7 +995,7 @@ function AddLifeInsurancePayout(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if (LaptopSaveInfo.pLifeInsurancePayouts == NULL)
       return FALSE;
 
-    memset(&LaptopSaveInfo.pLifeInsurancePayouts[LaptopSaveInfo.ubNumberLifeInsurancePayouts - 1], 0, sizeof(LIFE_INSURANCE_PAYOUT));
+    memset(addressof(LaptopSaveInfo.pLifeInsurancePayouts[LaptopSaveInfo.ubNumberLifeInsurancePayouts - 1]), 0, sizeof(LIFE_INSURANCE_PAYOUT));
   }
 
   for (ubPayoutID = 0; ubPayoutID < LaptopSaveInfo.ubNumberLifeInsurancePayouts; ubPayoutID++) {
@@ -1149,17 +1149,17 @@ function MercIsInsurable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 function EnableDisableInsuranceContractAcceptButtons(): void {
   // If it is the first grid
   if (gubNumberofDisplayedInsuranceGrids >= 1) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm1, &guiInsuranceAcceptClearForm1Button);
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm1, addressof(guiInsuranceAcceptClearForm1Button));
   }
 
   // If it is the 2nd grid
   if (gubNumberofDisplayedInsuranceGrids >= 2) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm2, &guiInsuranceAcceptClearForm2Button);
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm2, addressof(guiInsuranceAcceptClearForm2Button));
   }
 
   // If it is the 3rd grid
   if (gubNumberofDisplayedInsuranceGrids >= 3) {
-    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm3, &guiInsuranceAcceptClearForm3Button);
+    EnableDisableIndividualInsuranceContractButton(gubMercIDForMercInForm3, addressof(guiInsuranceAcceptClearForm3Button));
   }
 }
 
@@ -1171,7 +1171,7 @@ function EnableDisableIndividualInsuranceContractButton(ubMercIDForMercInForm: U
     return;
 
   // if the soldiers contract can be extended, enable the button
-  if (CanSoldierExtendInsuranceContract(&Menptr[sSoldierID]))
+  if (CanSoldierExtendInsuranceContract(addressof(Menptr[sSoldierID])))
     EnableButton(*puiAcceptButton);
 
   // else the soldier cant extend their insurance contract, disable the button
@@ -1372,7 +1372,7 @@ function AreAnyAimMercsOnTeam(): BOOLEAN {
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   for (sNextMercID = 0; sNextMercID <= gTacticalStatus.Team[gbPlayerNum].bLastID; sNextMercID++) {
-    pSoldier = &Menptr[GetSoldierIDFromMercID(sNextMercID)];
+    pSoldier = addressof(Menptr[GetSoldierIDFromMercID(sNextMercID)]);
 
     // check to see if any of the mercs are AIM mercs
     if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {

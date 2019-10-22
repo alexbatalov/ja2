@@ -15,7 +15,7 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
   hFile = FileOpen(TempImage.ImageFile, FILE_ACCESS_READ, FALSE);
   CHECKF(hFile);
 
-  if (!FileRead(hFile, &Header, STCI_HEADER_SIZE, &uiBytesRead) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
+  if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");
     FileClose(hFile);
     return FALSE;
@@ -23,13 +23,13 @@ function LoadSTCIFileToImage(hImage: HIMAGE, fContents: UINT16): BOOLEAN {
 
   // Determine from the header the data stored in the file. and run the appropriate loader
   if (Header.fFlags & STCI_RGB) {
-    if (!STCILoadRGB(&TempImage, fContents, hFile, &Header)) {
+    if (!STCILoadRGB(addressof(TempImage), fContents, hFile, addressof(Header))) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading RGB image.");
       FileClose(hFile);
       return FALSE;
     }
   } else if (Header.fFlags & STCI_INDEXED) {
-    if (!STCILoadIndexed(&TempImage, fContents, hFile, &Header)) {
+    if (!STCILoadIndexed(addressof(TempImage), fContents, hFile, addressof(Header))) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading palettized image.");
       FileClose(hFile);
       return FALSE;
@@ -70,7 +70,7 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
     hImage.value.pImageData = MemAlloc(pHeader.value.uiStoredSize);
     if (hImage.value.pImageData == NULL) {
       return FALSE;
-    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiStoredSize) {
+    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiStoredSize) {
       MemFree(hImage.value.pImageData);
       return FALSE;
     }
@@ -135,7 +135,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
     memset(pSTCIPalette, 0, uiFileSectionSize);
 
     // Read in the palette
-    if (!FileRead(hFile, pSTCIPalette, uiFileSectionSize, &uiBytesRead) || uiBytesRead != uiFileSectionSize) {
+    if (!FileRead(hFile, pSTCIPalette, uiFileSectionSize, addressof(uiBytesRead)) || uiBytesRead != uiFileSectionSize) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem loading palette!");
       FileClose(hFile);
       MemFree(pSTCIPalette);
@@ -173,7 +173,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
         }
         return FALSE;
       }
-      if (!FileRead(hFile, hImage.value.pETRLEObject, uiFileSectionSize, &uiBytesRead) || uiBytesRead != uiFileSectionSize) {
+      if (!FileRead(hFile, hImage.value.pETRLEObject, uiFileSectionSize, addressof(uiBytesRead)) || uiBytesRead != uiFileSectionSize) {
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading subimage structures!");
         FileClose(hFile);
         if (fContents & IMAGE_PALETTE) {
@@ -197,7 +197,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
         MemFree(hImage.value.pETRLEObject);
       }
       return FALSE;
-    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiStoredSize) {
+    } else if (!FileRead(hFile, hImage.value.pImageData, pHeader.value.uiStoredSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiStoredSize) {
       // Problem reading in the image data!
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading image data!");
       FileClose(hFile);
@@ -238,7 +238,7 @@ function STCILoadIndexed(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHead
       }
       return FALSE;
     }
-    if (!FileRead(hFile, hImage.value.pAppData, pHeader.value.uiAppDataSize, &uiBytesRead) || uiBytesRead != pHeader.value.uiAppDataSize) {
+    if (!FileRead(hFile, hImage.value.pAppData, pHeader.value.uiAppDataSize, addressof(uiBytesRead)) || uiBytesRead != pHeader.value.uiAppDataSize) {
       DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Error loading application-specific data!");
       FileClose(hFile);
       MemFree(hImage.value.pAppData);
@@ -299,7 +299,7 @@ function IsSTCIETRLEFile(ImageFile: Pointer<CHAR8>): BOOLEAN {
   hFile = FileOpen(ImageFile, FILE_ACCESS_READ, FALSE);
   CHECKF(hFile);
 
-  if (!FileRead(hFile, &Header, STCI_HEADER_SIZE, &uiBytesRead) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
+  if (!FileRead(hFile, addressof(Header), STCI_HEADER_SIZE, addressof(uiBytesRead)) || uiBytesRead != STCI_HEADER_SIZE || memcmp(Header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
     DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Problem reading STCI header.");
     FileClose(hFile);
     return FALSE;

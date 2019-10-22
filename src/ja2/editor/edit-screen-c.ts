@@ -202,7 +202,7 @@ function EditModeInit(): BOOLEAN {
 
   // Remove the radar from the interface.
   RemoveCurrentTacticalPanelButtons();
-  MSYS_DisableRegion(&gRadarRegion);
+  MSYS_DisableRegion(addressof(gRadarRegion));
 
   CreateEditorTaskbar();
 
@@ -365,7 +365,7 @@ function EditModeShutdown(): BOOLEAN {
   ExecuteBaseDirtyRectQueue();
   EndFrameBufferRender();
 
-  MSYS_EnableRegion(&gRadarRegion);
+  MSYS_EnableRegion(addressof(gRadarRegion));
   CreateCurrentTacticalPanelButtons();
 
   // Make sure to turn off demo mode!
@@ -439,7 +439,7 @@ function SetBackgroundTexture(): void {
     usIndex += gTileTypeStartIndex[gCurrentBackground];
 
     // Set land index
-    if (TypeRangeExistsInLandLayer(cnt, FIRSTFLOOR, LASTFLOOR, &Dummy))
+    if (TypeRangeExistsInLandLayer(cnt, FIRSTFLOOR, LASTFLOOR, addressof(Dummy)))
       AddLandToTail(cnt, usIndex); // show the land below the floor.
     else
       AddLandToHead(cnt, usIndex); // no floor so no worries.
@@ -504,91 +504,91 @@ function DrawTempMouseCursorObject(): BOOLEAN {
   switch (iDrawMode) {
     case DRAW_MODE_ROOM:
       pSelList = SelRoom;
-      pNumSelList = &iNumRoomsSelected;
+      pNumSelList = addressof(iNumRoomsSelected);
       return FALSE; // a special case where we just want to get the info and not display a cursor.
     case DRAW_MODE_NEWROOF:
       pSelList = SelSingleNewRoof;
-      pNumSelList = &iNumNewRoofsSelected;
+      pNumSelList = addressof(iNumNewRoofsSelected);
       break;
     case DRAW_MODE_WALLS:
       pSelList = SelSingleWall;
-      pNumSelList = &iNumWallsSelected;
+      pNumSelList = addressof(iNumWallsSelected);
       break;
     case DRAW_MODE_DOORS:
       pSelList = SelSingleDoor;
-      pNumSelList = &iNumDoorsSelected;
+      pNumSelList = addressof(iNumDoorsSelected);
       break;
     case DRAW_MODE_WINDOWS:
       pSelList = SelSingleWindow;
-      pNumSelList = &iNumWindowsSelected;
+      pNumSelList = addressof(iNumWindowsSelected);
       break;
     case DRAW_MODE_ROOFS:
       pSelList = SelSingleRoof;
-      pNumSelList = &iNumRoofsSelected;
+      pNumSelList = addressof(iNumRoofsSelected);
       break;
     case DRAW_MODE_BROKEN_WALLS:
       pSelList = SelSingleBrokenWall;
-      pNumSelList = &iNumBrokenWallsSelected;
+      pNumSelList = addressof(iNumBrokenWallsSelected);
       break;
     case DRAW_MODE_DECOR:
       pSelList = SelSingleDecor;
-      pNumSelList = &iNumDecorSelected;
+      pNumSelList = addressof(iNumDecorSelected);
       break;
     case DRAW_MODE_DECALS:
       pSelList = SelSingleDecal;
-      pNumSelList = &iNumDecalsSelected;
+      pNumSelList = addressof(iNumDecalsSelected);
       break;
     case DRAW_MODE_FLOORS:
       pSelList = SelSingleFloor;
-      pNumSelList = &iNumFloorsSelected;
+      pNumSelList = addressof(iNumFloorsSelected);
       break;
     case DRAW_MODE_TOILET:
       pSelList = SelSingleToilet;
-      pNumSelList = &iNumToiletsSelected;
+      pNumSelList = addressof(iNumToiletsSelected);
       break;
     case DRAW_MODE_BANKS:
       pSelList = SelBanks;
-      pNumSelList = &iNumBanksSelected;
+      pNumSelList = addressof(iNumBanksSelected);
       break;
     case DRAW_MODE_ROADS:
       pSelList = SelRoads;
-      pNumSelList = &iNumRoadsSelected;
+      pNumSelList = addressof(iNumRoadsSelected);
       break;
     case DRAW_MODE_OSTRUCTS:
       pSelList = SelOStructs;
-      pNumSelList = &iNumOStructsSelected;
+      pNumSelList = addressof(iNumOStructsSelected);
       break;
     case DRAW_MODE_OSTRUCTS1:
       pSelList = SelOStructs1;
-      pNumSelList = &iNumOStructs1Selected;
+      pNumSelList = addressof(iNumOStructs1Selected);
       break;
     case DRAW_MODE_OSTRUCTS2:
       pSelList = SelOStructs2;
-      pNumSelList = &iNumOStructs2Selected;
+      pNumSelList = addressof(iNumOStructs2Selected);
       break;
     case DRAW_MODE_DEBRIS:
       pSelList = SelDebris;
-      pNumSelList = &iNumDebrisSelected;
+      pNumSelList = addressof(iNumDebrisSelected);
       break;
   }
 
-  if (GetMouseXY(&sMouseX_M, &sMouseY_M)) {
+  if (GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M))) {
     if ((iCurBankMapIndex = MAPROWCOLTOPOS(sMouseY_M, sMouseX_M)) < 0x8000) {
       // Hook into the smart methods to override the selection window methods.
       if (iDrawMode == DRAW_MODE_SMART_WALLS) {
-        if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, &usUseObjIndex, &usUseIndex)) {
+        if (!CalcWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
       } else if (iDrawMode == DRAW_MODE_SMART_DOORS) {
-        if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, &usUseObjIndex, &usUseIndex)) {
+        if (!CalcDoorInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
       } else if (iDrawMode == DRAW_MODE_SMART_WINDOWS) {
-        if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, &usUseObjIndex, &usUseIndex)) {
+        if (!CalcWindowInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
       } else if (iDrawMode == DRAW_MODE_SMART_BROKEN_WALLS) {
-        if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, &usUseObjIndex, &usUseIndex)) {
+        if (!CalcBrokenWallInfoUsingSmartMethod(iCurBankMapIndex, addressof(usUseObjIndex), addressof(usUseIndex))) {
           return FALSE;
         }
         if (usUseObjIndex == 0xffff || usUseIndex == 0xffff) {
@@ -634,8 +634,8 @@ function ShowCurrentDrawingMode(): void {
   NewRect.iRight = 100;
   NewRect.iBottom = 458;
 
-  GetClippingRect(&ClipRect);
-  SetClippingRect(&NewRect);
+  GetClippingRect(addressof(ClipRect));
+  SetClippingRect(addressof(NewRect));
 
   // Clear it out
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 400, 100, 458, 0);
@@ -769,36 +769,36 @@ function ShowCurrentDrawingMode(): void {
       }
       break;
     case DRAW_MODE_SMART_WALLS:
-      if (GetMouseXY(&sGridX, &sGridY)) {
+      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcWallInfoUsingSmartMethod(iMapIndex, &usObjIndex, &usUseIndex))
+        if (CalcWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
           break;
       }
-      CalcSmartWallDefault(&usObjIndex, &usUseIndex);
+      CalcSmartWallDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
     case DRAW_MODE_SMART_DOORS:
-      if (GetMouseXY(&sGridX, &sGridY)) {
+      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcDoorInfoUsingSmartMethod(iMapIndex, &usObjIndex, &usUseIndex))
+        if (CalcDoorInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
           break;
       }
-      CalcSmartDoorDefault(&usObjIndex, &usUseIndex);
+      CalcSmartDoorDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
     case DRAW_MODE_SMART_WINDOWS:
-      if (GetMouseXY(&sGridX, &sGridY)) {
+      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcWindowInfoUsingSmartMethod(iMapIndex, &usObjIndex, &usUseIndex))
+        if (CalcWindowInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
           break;
       }
-      CalcSmartWindowDefault(&usObjIndex, &usUseIndex);
+      CalcSmartWindowDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
     case DRAW_MODE_SMART_BROKEN_WALLS:
-      if (GetMouseXY(&sGridX, &sGridY)) {
+      if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
-        if (CalcBrokenWallInfoUsingSmartMethod(iMapIndex, &usObjIndex, &usUseIndex))
+        if (CalcBrokenWallInfoUsingSmartMethod(iMapIndex, addressof(usObjIndex), addressof(usUseIndex)))
           break;
       }
-      CalcSmartBrokenWallDefault(&usObjIndex, &usUseIndex);
+      CalcSmartBrokenWallDefault(addressof(usObjIndex), addressof(usUseIndex));
       break;
 
     case DRAW_MODE_PLACE_ITEM:
@@ -808,7 +808,7 @@ function ShowCurrentDrawingMode(): void {
 
   // If we actually have something to draw, draw it
   if ((usUseIndex != 0xffff) && (usObjIndex != 0xffff)) {
-    pETRLEObject = &(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex]);
+    pETRLEObject = addressof(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface.value.pETRLEObject[usUseIndex]);
 
     iPicWidth = pETRLEObject.value.usWidth;
     iPicHeight = pETRLEObject.value.usHeight;
@@ -834,7 +834,7 @@ function ShowCurrentDrawingMode(): void {
 
   // Set the color for the window's border. Blueish color = Normal, Red = Fake lighting is turned on
   usFillColor = GenericButtonFillColors[0];
-  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, addressof(uiDestPitchBYTES));
   if (gbPixelDepth == 16)
     RectangleDraw(FALSE, 0, 400, 99, 458, usFillColor, pDestBuf);
   else if (gbPixelDepth == 8)
@@ -843,7 +843,7 @@ function ShowCurrentDrawingMode(): void {
   UnLockVideoSurface(FRAME_BUFFER);
 
   InvalidateRegion(0, 400, 100, 458);
-  SetClippingRect(&ClipRect);
+  SetClippingRect(addressof(ClipRect));
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1117,8 +1117,8 @@ function HandleJA2ToolbarSelection(): void {
 function HandleKeyboardShortcuts(): void {
   /* static */ let iSavedMode: INT32;
   /* static */ let fShowTrees: BOOLEAN = TRUE;
-  while (DequeueEvent(&EditorInputEvent)) {
-    if (!HandleSummaryInput(&EditorInputEvent) && !HandleTextInput(&EditorInputEvent) && EditorInputEvent.usEvent == KEY_DOWN) {
+  while (DequeueEvent(addressof(EditorInputEvent))) {
+    if (!HandleSummaryInput(addressof(EditorInputEvent)) && !HandleTextInput(addressof(EditorInputEvent)) && EditorInputEvent.usEvent == KEY_DOWN) {
       if (gfGotoGridNoUI) {
         switch (EditorInputEvent.usParam) {
           case ESC:
@@ -1334,7 +1334,7 @@ function HandleKeyboardShortcuts(): void {
               let usRoofType: UINT16;
               let usTileIndex: UINT16;
               pSelList = SelSingleRoof;
-              pNumSelList = &iNumRoofsSelected;
+              pNumSelList = addressof(iNumRoofsSelected);
               usRoofType = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
               if (usRoofType == 0xffff)
                 usRoofType = FIRSTROOF;
@@ -1345,7 +1345,7 @@ function HandleKeyboardShortcuts(): void {
                   RemoveAllOnRoofsOfTypeRange(i, FIRSTTEXTURE, LASTITEM);
                   RemoveAllShadowsOfTypeRange(i, FIRSTROOF, LASTSLANTROOF);
                   usRoofIndex = 9 + (rand() % 3);
-                  GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex, &usTileIndex);
+                  GetTileIndexFromTypeSubIndex(usRoofType, usRoofIndex, addressof(usTileIndex));
                   AddRoofToHead(i, usTileIndex);
                 }
               }
@@ -1677,7 +1677,7 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case ACTION_QUICK_ERASE:
-      if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) && GetMouseXY(&sGridX, &sGridY)) {
+      if ((gViewportRegion.uiFlags & MSYS_MOUSE_IN_AREA) && GetMouseXY(addressof(sGridX), addressof(sGridY))) {
         iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
         if (iMapIndex < 0x8000) {
@@ -1944,12 +1944,12 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case ACTION_COPY_MERC_PLACEMENT:
-      GetMouseXY(&sGridX, &sGridY);
+      GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       CopyMercPlacement(iMapIndex);
       break;
     case ACTION_PASTE_MERC_PLACEMENT:
-      GetMouseXY(&sGridX, &sGridY);
+      GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
       PasteMercPlacement(iMapIndex);
       break;
@@ -2006,14 +2006,14 @@ function PerformSelectedAction(): UINT32 {
       break;
 
     case ACTION_WALL_PASTE1: // Doors		//** Changes needed
-      GetMouseXY(&sGridX, &sGridY);
+      GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
       AddWallToStructLayer(iMapIndex, FIRSTWALL18, TRUE);
       break;
 
     case ACTION_WALL_PASTE2: // Windows	//** Changes Needed
-      GetMouseXY(&sGridX, &sGridY);
+      GetMouseXY(addressof(sGridX), addressof(sGridY));
       iMapIndex = MAPROWCOLTOPOS(sGridY, sGridX);
 
       AddWallToStructLayer(iMapIndex, FIRSTWALL19, TRUE);
@@ -2058,7 +2058,7 @@ function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
-      GetTileIndexFromTypeSubIndex(FIRSTROOF, (9 + Random(3)), &usIndex);
+      GetTileIndexFromTypeSubIndex(FIRSTROOF, (9 + Random(3)), addressof(usIndex));
       AddRoofToHead(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_BASEMENT);
@@ -2067,7 +2067,7 @@ function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
-      GetTileIndexFromTypeSubIndex(FIRSTWALL, (60 + Random(6)), &usIndex);
+      GetTileIndexFromTypeSubIndex(FIRSTWALL, (60 + Random(6)), addressof(usIndex));
       AddCave(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_CAVES);
@@ -2210,7 +2210,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 
   fLeaveScreen = FALSE;
 
-  while (DequeueEvent(&DummyEvent) == TRUE) {
+  while (DequeueEvent(addressof(DummyEvent)) == TRUE) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
@@ -2226,7 +2226,7 @@ function WaitForHelpScreenResponse(): UINT32 {
   if ((_LeftButtonDown) || (_RightButtonDown) || fLeaveScreen) {
     fHelpScreen = FALSE;
 
-    while (DequeueEvent(&DummyEvent))
+    while (DequeueEvent(addressof(DummyEvent)))
       continue;
 
     EnableEditorTaskbar();
@@ -2247,7 +2247,7 @@ function WaitForHelpScreenResponse(): UINT32 {
 function WaitForSelectionWindowResponse(): UINT32 {
   let DummyEvent: InputAtom;
 
-  while (DequeueEvent(&DummyEvent) == TRUE) {
+  while (DequeueEvent(addressof(DummyEvent)) == TRUE) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case SPACE:
@@ -2275,7 +2275,7 @@ function WaitForSelectionWindowResponse(): UINT32 {
     fSelectionWindow = FALSE;
     ShutdownJA2SelectionWindow();
     // Quick hack to trash the mouse event queue.
-    while (DequeueEvent(&DummyEvent))
+    while (DequeueEvent(addressof(DummyEvent)))
       continue;
 
     iCurBank = 0;
@@ -2341,7 +2341,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   iWinWidth = WinRect.iRight - WinRect.iLeft;
   iWinHeight = WinRect.iBottom - WinRect.iTop;
 
-  GetVideoSurface(&hvSurface, vSurface);
+  GetVideoSurface(addressof(hvSurface), vSurface);
 
   iPicWidth = hvSurface.value.usWidth;
   iPicHeight = hvSurface.value.usHeight;
@@ -2367,7 +2367,7 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
   }
 
   vSfx.SrcRect = ClipRect;
-  BltVideoSurface(FRAME_BUFFER, vSurface, 0, iStartX, iStartY, VS_BLT_SRCSUBRECT, &vSfx);
+  BltVideoSurface(FRAME_BUFFER, vSurface, 0, iStartX, iStartY, VS_BLT_SRCSUBRECT, addressof(vSfx));
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2397,10 +2397,10 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   iWinWidth = NewRect.iRight - NewRect.iLeft;
   iWinHeight = NewRect.iBottom - NewRect.iTop;
 
-  GetClippingRect(&ClipRect);
-  SetClippingRect(&NewRect);
+  GetClippingRect(addressof(ClipRect));
+  SetClippingRect(addressof(NewRect));
 
-  pETRLEObject = &(hVObj.value.pETRLEObject[0]);
+  pETRLEObject = addressof(hVObj.value.pETRLEObject[0]);
 
   iPicWidth = pETRLEObject.value.usWidth;
   iPicHeight = pETRLEObject.value.usHeight;
@@ -2422,7 +2422,7 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
   pETRLEObject.value.sOffsetX = sTempOffsetX;
   pETRLEObject.value.sOffsetY = sTempOffsetY;
 
-  SetClippingRect(&ClipRect);
+  SetClippingRect(addressof(ClipRect));
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2484,7 +2484,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
   }
 
   iMapIndex = (iMapY * WORLD_COLS) + iMapX;
-  if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
+  if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, addressof(usTmpIndex))) {
     AddObjectToHead(iMapIndex, GOODRING1);
     gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
   }
@@ -2522,7 +2522,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
         // Found a light, so let's see if it belong to a merc!
         fSoldierLight = FALSE;
         for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-          if (GetSoldier(&pSoldier, cnt)) {
+          if (GetSoldier(addressof(pSoldier), cnt)) {
             if (pSoldier.value.iLight == iCount)
               fSoldierLight = TRUE;
           }
@@ -2573,7 +2573,7 @@ function ShowLightPositionHandles(): void {
       // Found a light, so let's see if it belong to a merc!
       fSoldierLight = FALSE;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-        if (GetSoldier(&pSoldier, cnt)) {
+        if (GetSoldier(addressof(pSoldier), cnt)) {
           if (pSoldier.value.iLight == iCount)
             fSoldierLight = TRUE;
         }
@@ -2581,7 +2581,7 @@ function ShowLightPositionHandles(): void {
 
       if (!fSoldierLight) {
         iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
-        if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
+        if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, addressof(usTmpIndex))) {
           AddObjectToHead(iMapIndex, GOODRING1);
           gpWorldLevelData[iMapIndex].pObjectHead.value.ubShadeLevel = DEFAULT_SHADE_LEVEL;
         }
@@ -2608,7 +2608,7 @@ function RemoveLightPositionHandles(): void {
       // Found a light, so let's see if it belong to a merc!
       fSoldierLight = FALSE;
       for (cnt = 0; cnt < MAX_NUM_SOLDIERS && !fSoldierLight; cnt++) {
-        if (GetSoldier(&pSoldier, cnt)) {
+        if (GetSoldier(addressof(pSoldier), cnt)) {
           if (pSoldier.value.iLight == iCount)
             fSoldierLight = TRUE;
         }
@@ -2641,7 +2641,7 @@ function CheckForSlantRoofs(): BOOLEAN {
   let usCheck: UINT16;
 
   pSelList = SelRoom;
-  pNumSelList = &iNumRoomsSelected;
+  pNumSelList = addressof(iNumRoomsSelected);
 
   usCheck = GetRandomIndexByRange(FIRSTROOF, LASTROOF);
   if (usCheck != 0xffff)
@@ -2681,12 +2681,12 @@ function CheckForFences(): BOOLEAN {
   let T: Pointer<TILE_ELEMENT>;
 
   pSelList = SelOStructs2;
-  pNumSelList = &iNumOStructs2Selected;
+  pNumSelList = addressof(iNumOStructs2Selected);
 
   fFence = TRUE;
 
   for (usCheck = 0; usCheck < iNumOStructs2Selected; usCheck++) {
-    T = &gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]];
+    T = addressof(gTileDatabase[gTileTypeStartIndex[pSelList[usCheck].uiObject]]);
     if (T.value.pDBStructureRef == NULL)
       fFence = FALSE;
     else if (!(T.value.pDBStructureRef.value.pDBStructure.value.fFlags & STRUCTURE_ANYFENCE))
@@ -2731,7 +2731,7 @@ function HandleMouseClicksInGameScreen(): void {
   let sX: INT16;
   let sY: INT16;
   let fPrevState: BOOLEAN;
-  if (!GetMouseXY(&sGridX, &sGridY))
+  if (!GetMouseXY(addressof(sGridX), addressof(sGridY)))
     return;
   if (iCurrentTaskbar == TASK_OPTIONS || iCurrentTaskbar == TASK_NONE) {
     // if in taskbar modes which don't process clicks in the world.
@@ -2978,7 +2978,7 @@ function HandleMouseClicksInGameScreen(): void {
         RestoreWalls(iMapIndex);
         break;
       case DRAW_MODE_EXITGRID:
-        if (GetExitGrid(iMapIndex, &gExitGrid))
+        if (GetExitGrid(iMapIndex, addressof(gExitGrid)))
           ApplyNewExitGridValuesToTextFields();
         break;
       default:
@@ -3007,7 +3007,7 @@ function DoIRenderASpecialMouseCursor(): BOOLEAN {
   let sMouseY_M: INT16;
 
   // Draw basic mouse
-  if (GetMouseXY(&sMouseX_M, &sMouseY_M)) {
+  if (GetMouseXY(addressof(sMouseX_M), addressof(sMouseY_M))) {
     if ((gsCursorGridNo = MAPROWCOLTOPOS(sMouseY_M, sMouseX_M)) < 0x8000) {
       // Add basic cursor
       // gBasicCursorNode = AddTopmostToTail( gsCursorGridNo, FIRSTPOINTERS1 );
@@ -3117,16 +3117,16 @@ function ProcessAreaSelection(fWithLeftButton: BOOLEAN): void {
   switch (iDrawMode) {
     case DRAW_MODE_ROOM:
     case DRAW_MODE_SLANTED_ROOF:
-      AddBuildingSectionToWorld(&gSelectRegion);
+      AddBuildingSectionToWorld(addressof(gSelectRegion));
       break;
     case DRAW_MODE_SAW_ROOM:
-      RemoveBuildingSectionFromWorld(&gSelectRegion);
+      RemoveBuildingSectionFromWorld(addressof(gSelectRegion));
       break;
     case DRAW_MODE_CAVES:
       if (fWithLeftButton)
-        AddCaveSectionToWorld(&gSelectRegion);
+        AddCaveSectionToWorld(addressof(gSelectRegion));
       else
-        RemoveCaveSectionFromWorld(&gSelectRegion);
+        RemoveCaveSectionFromWorld(addressof(gSelectRegion));
       break;
     case DRAW_MODE_ROOMNUM:
       DrawObjectsBasedOnSelectionRegion();
@@ -3186,7 +3186,7 @@ function DrawObjectsBasedOnSelectionRegion(): void {
         switch (iDrawMode) {
           case DRAW_MODE_EXITGRID:
             AddToUndoList(iMapIndex);
-            AddExitGridToWorld(iMapIndex, &gExitGrid);
+            AddExitGridToWorld(iMapIndex, addressof(gExitGrid));
             AddTopmostToTail(iMapIndex, FIRSTPOINTERS8);
             break;
           case DRAW_MODE_DEBRIS:
@@ -3248,7 +3248,7 @@ function EditScreenHandle(): UINT32 {
   }
 
   // Calculate general mouse information
-  GetMouseXY(&sGridX, &sGridY);
+  GetMouseXY(addressof(sGridX), addressof(sGridY));
   iMapIndex = sGridY * WORLD_COLS + sGridX;
 
   DetermineUndoState();
@@ -3366,7 +3366,7 @@ function CreateGotoGridNoUI(): void {
   SpecifyButtonTextOffsets(guiGotoGridNoUIButtonID, 5, 5, FALSE);
   DisableButton(guiGotoGridNoUIButtonID);
   // Create a blanket region so nobody can use
-  MSYS_DefineRegion(&GotoGridNoUIRegion, 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
+  MSYS_DefineRegion(addressof(GotoGridNoUIRegion), 0, 0, 640, 480, MSYS_PRIORITY_NORMAL + 1, 0, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
   // Init a text input field.
   InitTextInputModeWithScheme(DEFAULT_SCHEME);
   AddTextInputField(300, 180, 40, 18, MSYS_PRIORITY_HIGH, "", 6, INPUTTYPE_NUMERICSTRICT);
@@ -3380,7 +3380,7 @@ function RemoveGotoGridNoUI(): void {
   RemoveButton(guiGotoGridNoUIButtonID);
   iMapIndex = GetNumericStrictValueFromField(0);
   KillTextInputMode();
-  MSYS_RemoveRegion(&GotoGridNoUIRegion);
+  MSYS_RemoveRegion(addressof(GotoGridNoUIRegion));
   if (iMapIndex != -1) {
     // Warp the screen to the location of this gridno.
     CenterScreenAtMapIndex(iMapIndex);

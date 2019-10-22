@@ -4,7 +4,7 @@ function InitNPCs(): void {
   let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   // add the pilot at a random location!
-  pProfile = &(gMercProfiles[SKYRIDER]);
+  pProfile = addressof(gMercProfiles[SKYRIDER]);
   switch (Random(4)) {
     case 0:
       pProfile.value.sSectorX = 15;
@@ -51,7 +51,7 @@ function InitNPCs(): void {
 
   // add Micky in random location
 
-  pProfile = &(gMercProfiles[MICKY]);
+  pProfile = addressof(gMercProfiles[MICKY]);
   switch (Random(5)) {
     case 0:
       pProfile.value.sSectorX = 9;
@@ -87,13 +87,13 @@ function InitNPCs(): void {
 
   if (gGameOptions.fSciFi) {
     // add Bob
-    pProfile = &(gMercProfiles[BOB]);
+    pProfile = addressof(gMercProfiles[BOB]);
     pProfile.value.sSectorX = 8;
     pProfile.value.sSectorY = MAP_ROW_F;
     pProfile.value.bSectorZ = 0;
 
     // add Gabby in random location
-    pProfile = &(gMercProfiles[GABBY]);
+    pProfile = addressof(gMercProfiles[GABBY]);
     switch (Random(2)) {
       case 0:
         pProfile.value.sSectorX = 11;
@@ -541,7 +541,7 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
 function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   let HireMercStruct: MERC_HIRE_STRUCT;
 
-  memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
+  memset(addressof(HireMercStruct), 0, sizeof(MERC_HIRE_STRUCT));
 
   HireMercStruct.ubProfileID = ubCurrentSoldier;
 
@@ -558,7 +558,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   HireMercStruct.uiTimeTillMercArrives = 0;
 
   // if we succesfully hired the merc
-  if (!HireMerc(&HireMercStruct)) {
+  if (!HireMerc(addressof(HireMercStruct))) {
     return FALSE;
   }
 

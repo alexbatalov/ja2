@@ -66,7 +66,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   let OkExitCode: BOOLEAN;
 
   // STEP 1:  Calculate the information for the exit gui
-  memset(&gExitDialog, 0, sizeof(EXIT_DIALOG_STRUCT));
+  memset(addressof(gExitDialog), 0, sizeof(EXIT_DIALOG_STRUCT));
   gExitDialog.bSingleMoveWillIsolateEPC = -1;
 
   // OK, bring up dialogue... first determine some logic here...
@@ -89,7 +89,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
       break;
   }
 
-  OkExitCode = OKForSectorExit(bExitCode, usMapPos, &uiTraverseTimeInMinutes);
+  OkExitCode = OKForSectorExit(bExitCode, usMapPos, addressof(uiTraverseTimeInMinutes));
 
   if (uiTraverseTimeInMinutes <= 5) {
     // if the traverse time is short, then traversal is percieved to be instantaneous.
@@ -223,7 +223,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
   gExitDialog.ubDirection = ubDirection;
   gExitDialog.sAdditionalData = sAdditionalData;
 
-  gExitDialog.iBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, TacticalStr[EXIT_GUI_TITLE_STR], 100, 85, 2, 75, &usTextBoxWidth, &usTextBoxHeight);
+  gExitDialog.iBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, TacticalStr[EXIT_GUI_TITLE_STR], 100, 85, 2, 75, addressof(usTextBoxWidth), addressof(usTextBoxHeight));
 
   gExitDialog.sX = ((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
   gExitDialog.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
@@ -235,18 +235,18 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gfInSectorExitMenu = TRUE;
 
-  MSYS_DefineRegion(&(gExitDialog.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, SectorExitBackgroundCallback);
+  MSYS_DefineRegion(addressof(gExitDialog.BackRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, SectorExitBackgroundCallback);
 
   gExitDialog.iButtonImages = LoadButtonImage("INTERFACE\\popupbuttons.sti", -1, 0, -1, 1, -1);
 
-  MSYS_DefineRegion(&gExitDialog.SingleRegion, (gExitDialog.sX + 20), (gExitDialog.sY + 37), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 37 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, SingleRegionMoveCallback, SingleRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(&gExitDialog.SingleRegion, TRUE);
+  MSYS_DefineRegion(addressof(gExitDialog.SingleRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 37), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 37 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, SingleRegionMoveCallback, SingleRegionCallback);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.SingleRegion), TRUE);
 
-  MSYS_DefineRegion(&(gExitDialog.AllRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 57), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 57 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, AllRegionMoveCallback, AllRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(&gExitDialog.AllRegion, TRUE);
+  MSYS_DefineRegion(addressof(gExitDialog.AllRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 57), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 57 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, AllRegionMoveCallback, AllRegionCallback);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.AllRegion), TRUE);
 
-  MSYS_DefineRegion(&(gExitDialog.LoadRegion), (gExitDialog.sX + 155), (gExitDialog.sY + 45), (gExitDialog.sX + 180 + 85), (gExitDialog.sY + 45 + 15), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, LoadRegionMoveCallback, LoadRegionCallback);
-  MSYS_AllowDisabledRegionFastHelp(&gExitDialog.LoadRegion, TRUE);
+  MSYS_DefineRegion(addressof(gExitDialog.LoadRegion), (gExitDialog.sX + 155), (gExitDialog.sY + 45), (gExitDialog.sX + 180 + 85), (gExitDialog.sY + 45 + 15), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, LoadRegionMoveCallback, LoadRegionCallback);
+  MSYS_AllowDisabledRegionFastHelp(addressof(gExitDialog.LoadRegion), TRUE);
 
   gExitDialog.uiLoadCheckButton = CreateCheckBoxButton((gExitDialog.sX + 155), (gExitDialog.sY + 43), "INTERFACE\\popupcheck.sti", MSYS_PRIORITY_HIGHEST, CheckLoadMapCallback);
 
@@ -327,7 +327,7 @@ function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN
   gsExitGUIAdditionalData = sAdditionalData;
 
   if (gbWorldSectorZ >= 2 && gubQuest[QUEST_CREATURES] == QUESTDONE) {
-    if (GetWarpOutOfMineCodes(&gsWarpWorldX, &gsWarpWorldY, &gbWarpWorldZ, &gsWarpGridNo)) {
+    if (GetWarpOutOfMineCodes(addressof(gsWarpWorldX), addressof(gsWarpWorldY), addressof(gbWarpWorldZ), addressof(gsWarpGridNo))) {
       // ATE: Check if we are in a creature lair and bring up box if so....
       DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, NULL);
 
@@ -359,43 +359,43 @@ function UpdateSectorExitMenu(): void {
 
   if (gExitDialog.fGotoSectorDisabled) {
     DisableButton(gExitDialog.uiLoadCheckButton);
-    MSYS_DisableRegion(&(gExitDialog.LoadRegion));
+    MSYS_DisableRegion(addressof(gExitDialog.LoadRegion));
     if (gExitDialog.fMultipleSquadsInSector && gExitDialog.fGotoSectorText && gTacticalStatus.fEnemyInSector) {
       // We have multiple squads in a hostile sector.  That means that we can't load the adjacent sector.
       SetButtonFastHelpText(gExitDialog.uiLoadCheckButton, pExitingSectorHelpText[EXIT_GUI_CANT_LEAVE_HOSTILE_SECTOR_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.LoadRegion, pExitingSectorHelpText[EXIT_GUI_CANT_LEAVE_HOSTILE_SECTOR_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.LoadRegion), pExitingSectorHelpText[EXIT_GUI_CANT_LEAVE_HOSTILE_SECTOR_HELPTEXT]);
     } else if (gExitDialog.fGotoSectorText) {
       // travesal is quick enough to allow the player to "warp" to the next sector and we MUST load it.
       SetButtonFastHelpText(gExitDialog.uiLoadCheckButton, pExitingSectorHelpText[EXIT_GUI_MUST_LOAD_ADJACENT_SECTOR_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.LoadRegion, pExitingSectorHelpText[EXIT_GUI_MUST_LOAD_ADJACENT_SECTOR_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.LoadRegion), pExitingSectorHelpText[EXIT_GUI_MUST_LOAD_ADJACENT_SECTOR_HELPTEXT]);
     } else {
       // traversal takes too long to warrant instant travel (we MUST go to mapscreen)
       SetButtonFastHelpText(gExitDialog.uiLoadCheckButton, pExitingSectorHelpText[EXIT_GUI_MUST_GOTO_MAPSCREEN_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.LoadRegion, pExitingSectorHelpText[EXIT_GUI_MUST_GOTO_MAPSCREEN_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.LoadRegion), pExitingSectorHelpText[EXIT_GUI_MUST_GOTO_MAPSCREEN_HELPTEXT]);
     }
   } else {
     EnableButton(gExitDialog.uiLoadCheckButton);
-    MSYS_EnableRegion(&(gExitDialog.LoadRegion));
+    MSYS_EnableRegion(addressof(gExitDialog.LoadRegion));
     if (gExitDialog.fGotoSectorText) {
       // travesal is quick enough to allow the player to "warp" to the next sector and we load it.
       SetButtonFastHelpText(gExitDialog.uiLoadCheckButton, pExitingSectorHelpText[EXIT_GUI_LOAD_ADJACENT_SECTOR_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.LoadRegion, pExitingSectorHelpText[EXIT_GUI_LOAD_ADJACENT_SECTOR_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.LoadRegion), pExitingSectorHelpText[EXIT_GUI_LOAD_ADJACENT_SECTOR_HELPTEXT]);
     } else {
       // traversal takes too long to warrant instant travel (we go to mapscreen)
       SetButtonFastHelpText(gExitDialog.uiLoadCheckButton, pExitingSectorHelpText[EXIT_GUI_GOTO_MAPSCREEN_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.LoadRegion, pExitingSectorHelpText[EXIT_GUI_GOTO_MAPSCREEN_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.LoadRegion), pExitingSectorHelpText[EXIT_GUI_GOTO_MAPSCREEN_HELPTEXT]);
     }
   }
 
   if (gExitDialog.fSingleMoveDisabled) {
     DisableButton(gExitDialog.uiSingleMoveButton);
-    MSYS_DisableRegion(&(gExitDialog.SingleRegion));
+    MSYS_DisableRegion(addressof(gExitDialog.SingleRegion));
     if (gExitDialog.fSelectedMercIsEPC) {
       // EPCs cannot leave the sector alone and must be escorted
       let str: UINT16[] /* [256] */;
       swprintf(str, pExitingSectorHelpText[EXIT_GUI_ESCORTED_CHARACTERS_MUST_BE_ESCORTED_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
-      SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
+      SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
     } else if (gExitDialog.bSingleMoveWillIsolateEPC != -1) {
       // It has been previously determined that there are only two mercs in the squad, the selected merc
       // isn't an EPC, but the other merc is.  That means that this merc cannot leave the sector alone
@@ -419,32 +419,32 @@ function UpdateSectorExitMenu(): void {
         }
       }
       SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
-      SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
+      SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
     }
   } else {
     let str: UINT16[] /* [256] */;
     EnableButton(gExitDialog.uiSingleMoveButton);
-    MSYS_EnableRegion(&(gExitDialog.SingleRegion));
+    MSYS_EnableRegion(addressof(gExitDialog.SingleRegion));
     swprintf(str, pExitingSectorHelpText[EXIT_GUI_SINGLE_TRAVERSAL_WILL_SEPARATE_SQUADS_HELPTEXT], MercPtrs[gusSelectedSoldier].value.name);
     SetButtonFastHelpText(gExitDialog.uiSingleMoveButton, str);
-    SetRegionFastHelpText(&gExitDialog.SingleRegion, str);
+    SetRegionFastHelpText(addressof(gExitDialog.SingleRegion), str);
   }
 
   if (gExitDialog.fAllMoveDisabled) {
     DisableButton(gExitDialog.uiAllMoveButton);
-    MSYS_DisableRegion(&(gExitDialog.AllRegion));
+    MSYS_DisableRegion(addressof(gExitDialog.AllRegion));
     if (gExitDialog.fUncontrolledRobotInSquad) {
       SetButtonFastHelpText(gExitDialog.uiAllMoveButton, gzLateLocalizedString[1]);
-      SetRegionFastHelpText(&gExitDialog.AllRegion, gzLateLocalizedString[1]);
+      SetRegionFastHelpText(addressof(gExitDialog.AllRegion), gzLateLocalizedString[1]);
     } else {
       SetButtonFastHelpText(gExitDialog.uiAllMoveButton, pExitingSectorHelpText[EXIT_GUI_ALL_MERCS_MUST_BE_TOGETHER_TO_ALLOW_HELPTEXT]);
-      SetRegionFastHelpText(&gExitDialog.AllRegion, pExitingSectorHelpText[EXIT_GUI_ALL_MERCS_MUST_BE_TOGETHER_TO_ALLOW_HELPTEXT]);
+      SetRegionFastHelpText(addressof(gExitDialog.AllRegion), pExitingSectorHelpText[EXIT_GUI_ALL_MERCS_MUST_BE_TOGETHER_TO_ALLOW_HELPTEXT]);
     }
   } else {
     EnableButton(gExitDialog.uiAllMoveButton);
-    MSYS_EnableRegion(&(gExitDialog.AllRegion));
+    MSYS_EnableRegion(addressof(gExitDialog.AllRegion));
     SetButtonFastHelpText(gExitDialog.uiAllMoveButton, pExitingSectorHelpText[EXIT_GUI_ALL_TRAVERSAL_WILL_MOVE_CURRENT_SQUAD_HELPTEXT]);
-    SetRegionFastHelpText(&gExitDialog.AllRegion, pExitingSectorHelpText[EXIT_GUI_ALL_TRAVERSAL_WILL_MOVE_CURRENT_SQUAD_HELPTEXT]);
+    SetRegionFastHelpText(addressof(gExitDialog.AllRegion), pExitingSectorHelpText[EXIT_GUI_ALL_TRAVERSAL_WILL_MOVE_CURRENT_SQUAD_HELPTEXT]);
   }
 }
 
@@ -456,7 +456,7 @@ function RenderSectorExitMenu(): void {
   gsGlobalCursorYOffset = 0;
   SetCurrentCursorFromDatabase(CURSOR_NORMAL);
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
@@ -539,10 +539,10 @@ function RemoveSectorExitMenu(fOk: BOOLEAN): void {
 
     UnloadButtonImage(gExitDialog.iButtonImages);
 
-    MSYS_RemoveRegion(&(gExitDialog.BackRegion));
-    MSYS_RemoveRegion(&(gExitDialog.SingleRegion));
-    MSYS_RemoveRegion(&(gExitDialog.AllRegion));
-    MSYS_RemoveRegion(&(gExitDialog.LoadRegion));
+    MSYS_RemoveRegion(addressof(gExitDialog.BackRegion));
+    MSYS_RemoveRegion(addressof(gExitDialog.SingleRegion));
+    MSYS_RemoveRegion(addressof(gExitDialog.AllRegion));
+    MSYS_RemoveRegion(addressof(gExitDialog.LoadRegion));
 
     // Remove the popup box
     RemoveMercPopupBoxFromIndex(gExitDialog.iBoxId);

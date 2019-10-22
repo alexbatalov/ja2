@@ -233,7 +233,7 @@ function EnterGIOScreen(): BOOLEAN {
   // load the Main trade screen backgroiund image
   VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
   FilenameForBPP("InterFace\\OptionsScreenBackGround.sti", VObjectDesc.ImageFile);
-  CHECKF(AddVideoObject(&VObjectDesc, &guiGIOMainBackGroundImage));
+  CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiGIOMainBackGroundImage)));
 
   // Ok button
   giGIODoneBtnImage = LoadButtonImage("INTERFACE\\PreferencesButtons.sti", -1, 0, -1, 2, -1);
@@ -441,7 +441,7 @@ function RenderGIOScreen(): BOOLEAN {
   let usPosY: UINT16;
 
   // Get the main background screen graphic and blt it
-  GetVideoObject(&hPixHandle, guiGIOMainBackGroundImage);
+  GetVideoObject(addressof(hPixHandle), guiGIOMainBackGroundImage);
   BltVideoObject(FRAME_BUFFER, hPixHandle, 0, 0, 0, VO_BLT_SRCTRANSPARENCY, NULL);
 
   // Shade the background
@@ -523,7 +523,7 @@ function GetGIOScreenUserInput(): void {
 
   //	GetCursorPos(&MousePos);
 
-  while (DequeueEvent(&Event)) {
+  while (DequeueEvent(addressof(Event))) {
     if (Event.usEvent == KEY_DOWN) {
       switch (Event.usParam) {
         case ESC:
@@ -874,7 +874,7 @@ function DoGioMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
   //	gfExitGioDueToMessageBox = TRUE;
 
   // do message box and return
-  giGioMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  giGioMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, addressof(CenteringRect));
 
   // send back return state
   return giGioMessageBox != -1;

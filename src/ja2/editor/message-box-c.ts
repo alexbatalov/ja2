@@ -41,7 +41,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   MsgBoxRect.iRight = sStartX + sPixLen;
   MsgBoxRect.iBottom = sStartY + 96;
 
-  RestrictMouseCursor(&MsgBoxRect);
+  RestrictMouseCursor(addressof(MsgBoxRect));
 
   gubMessageBoxStatus = MESSAGEBOX_WAIT;
 }
@@ -49,7 +49,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
 function MessageBoxHandled(): BOOLEAN {
   let DummyEvent: InputAtom;
 
-  while (DequeueEvent(&DummyEvent)) {
+  while (DequeueEvent(addressof(DummyEvent))) {
     if (DummyEvent.usEvent == KEY_DOWN) {
       switch (DummyEvent.usParam) {
         case ENTER:
@@ -69,7 +69,7 @@ function MessageBoxHandled(): BOOLEAN {
   }
 
   if (gubMessageBoxStatus == MESSAGEBOX_DONE) {
-    while (DequeueEvent(&DummyEvent))
+    while (DequeueEvent(addressof(DummyEvent)))
       continue;
   }
   MarkButtonsDirty();

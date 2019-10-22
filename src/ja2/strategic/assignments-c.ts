@@ -201,7 +201,7 @@ BOOLEAN IsSoldierCloseEnoughToADoctor( SOLDIERTYPE *pPatient );
 
 function InitSectorsWithSoldiersList(): void {
   // init list of sectors
-  memset(&fSectorsWithSoldiers, 0, sizeof(fSectorsWithSoldiers));
+  memset(addressof(fSectorsWithSoldiers), 0, sizeof(fSectorsWithSoldiers));
 
   return;
 }
@@ -356,7 +356,7 @@ function CanCharacterDoctor(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // find med kit
   for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
     // doctoring is allowed using either type of med kit (but first aid kit halves doctoring effectiveness)
-    if (IsMedicalKitItem(&(pSoldier.value.inv[bPocket]))) {
+    if (IsMedicalKitItem(addressof(pSoldier.value.inv[bPocket]))) {
       fFoundMedKit = TRUE;
       break;
     }
@@ -449,7 +449,7 @@ function DoesCharacterHaveAnyItemsToRepair(pSoldier: Pointer<SOLDIERTYPE>, bHigh
 
   // now check for items to repair
   for (bPocket = HELMETPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-    pObj = &(pSoldier.value.inv[bPocket]);
+    pObj = addressof(pSoldier.value.inv[bPocket]);
 
     ubItemsInPocket = pObj.value.ubNumberOfObjects;
 
@@ -1282,7 +1282,7 @@ function CanCharacterSquad(pSoldier: Pointer<SOLDIERTYPE>, bSquadValue: INT8): I
   */
 
   // see if the squad us at the same x,y,z
-  SectorSquadIsIn(bSquadValue, &sX, &sY, &sZ);
+  SectorSquadIsIn(bSquadValue, addressof(sX), addressof(sY), addressof(sZ));
 
   // check sector x y and z, if not same, cannot join squad
   if ((sX != pSoldier.value.sSectorX) || (sY != pSoldier.value.sSectorY) || (sZ != pSoldier.value.bSectorZ)) {
@@ -1475,7 +1475,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
   *pusMaxPts = (pDoctor.value.bMedical * ((pDoctor.value.bDexterity + pDoctor.value.bWisdom) / 2) * (100 + (5 * pDoctor.value.bExpLevel))) / DOCTORING_RATE_DIVISOR;
 
   // adjust for fatigue
-  ReducePointsForFatigue(pDoctor, &usHealPts);
+  ReducePointsForFatigue(pDoctor, addressof(usHealPts));
 
   // count how much medical supplies we have
   usKitPts = 100 * TotalMedicalKitPoints(pDoctor);
@@ -1486,7 +1486,7 @@ function CalculateHealingPointsForDoctor(pDoctor: Pointer<SOLDIERTYPE>, pusMaxPt
   }
 
   // get the type of medkit being used
-  bMedFactor = IsMedicalKitItem(&(pDoctor.value.inv[HANDPOS]));
+  bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[HANDPOS]));
 
   if (bMedFactor != 0) {
     // no med kit left?
@@ -1525,7 +1525,7 @@ function CalculateRepairPointsForRepairman(pSoldier: Pointer<SOLDIERTYPE>, pusMa
   *pusMaxPts = (pSoldier.value.bMechanical * pSoldier.value.bDexterity * (100 + (5 * pSoldier.value.bExpLevel))) / (REPAIR_RATE_DIVISOR * ASSIGNMENT_UNITS_PER_DAY);
 
   // adjust for fatigue
-  ReducePointsForFatigue(pSoldier, &usRepairPts);
+  ReducePointsForFatigue(pSoldier, addressof(usRepairPts));
 
   // figure out what shape his "equipment" is in ("coming" in JA3: Viagra - improves the "shape" your "equipment" is in)
   usKitPts = ToolKitPoints(pSoldier);
@@ -1555,7 +1555,7 @@ function ToolKitPoints(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   // add up kit points
   for (ubPocket = HANDPOS; ubPocket <= SMALLPOCK8POS; ubPocket++) {
     if (pSoldier.value.inv[ubPocket].usItem == TOOLKIT) {
-      usKitpts += TotalPoints(&(pSoldier.value.inv[ubPocket]));
+      usKitpts += TotalPoints(addressof(pSoldier.value.inv[ubPocket]));
     }
   }
 
@@ -1569,8 +1569,8 @@ function TotalMedicalKitPoints(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
   // add up kit points of all medkits
   for (ubPocket = HANDPOS; ubPocket <= SMALLPOCK8POS; ubPocket++) {
     // NOTE: Here, we don't care whether these are MEDICAL BAGS or FIRST AID KITS!
-    if (IsMedicalKitItem(&(pSoldier.value.inv[ubPocket]))) {
-      usKitpts += TotalPoints(&(pSoldier.value.inv[ubPocket]));
+    if (IsMedicalKitItem(addressof(pSoldier.value.inv[ubPocket]))) {
+      usKitpts += TotalPoints(addressof(pSoldier.value.inv[ubPocket]));
     }
   }
 
@@ -1659,7 +1659,7 @@ function HealCharacters(pDoctor: Pointer<SOLDIERTYPE>, sX: INT16, sY: INT16, bZ:
   // if there is anybody who can be healed right now
   if (ubTotalNumberOfPatients > 0) {
     // get available healing pts
-    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, &usMax, TRUE);
+    usAvailableHealingPts = CalculateHealingPointsForDoctor(pDoctor, addressof(usMax), TRUE);
     usRemainingHealingPts = usAvailableHealingPts;
 
     // find how many healing points can be evenly distributed to each wounded, healable merc
@@ -1931,13 +1931,13 @@ function HealPatient(pPatient: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYP
     // go through doctor's pockets and heal, starting at with his in-hand item
     // the healing pts are based on what type of medkit is in his hand, so we HAVE to start there first!
     for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-      bMedFactor = IsMedicalKitItem(&(pDoctor.value.inv[bPocket]));
+      bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[bPocket]));
       if (bMedFactor > 0) {
         // ok, we have med kit in this pocket, use it
 
         // The medFactor here doesn't affect how much the doctor can heal (that's already factored into lower healing pts)
         // but it does effect how fast the medkit is used up!  First aid kits disappear at double their doctoring rate!
-        bPointsUsed = UseKitPoints(&(pDoctor.value.inv[bPocket]), (bPointsToUse * bMedFactor), pDoctor);
+        bPointsUsed = UseKitPoints(addressof(pDoctor.value.inv[bPocket]), (bPointsToUse * bMedFactor), pDoctor);
         bPointsHealed = bPointsUsed / bMedFactor;
 
         bPointsToUse -= bPointsHealed;
@@ -1968,13 +1968,13 @@ function HealPatient(pPatient: Pointer<SOLDIERTYPE>, pDoctor: Pointer<SOLDIERTYP
     // go through doctor's pockets and heal, starting at with his in-hand item
     // the healing pts are based on what type of medkit is in his hand, so we HAVE to start there first!
     for (bPocket = HANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
-      bMedFactor = IsMedicalKitItem(&(pDoctor.value.inv[bPocket]));
+      bMedFactor = IsMedicalKitItem(addressof(pDoctor.value.inv[bPocket]));
       if (bMedFactor > 0) {
         // ok, we have med kit in this pocket, use it  (use only half if it's worth double)
 
         // The medFactor here doesn't affect how much the doctor can heal (that's already factored into lower healing pts)
         // but it does effect how fast the medkit is used up!  First aid kits disappear at double their doctoring rate!
-        bPointsUsed = UseKitPoints(&(pDoctor.value.inv[bPocket]), (bPointsToUse * bMedFactor), pDoctor);
+        bPointsUsed = UseKitPoints(addressof(pDoctor.value.inv[bPocket]), (bPointsToUse * bMedFactor), pDoctor);
         bPointsHealed = bPointsUsed / bMedFactor;
 
         bPointsToUse -= bPointsHealed;
@@ -2187,13 +2187,13 @@ function FindRepairableItemOnOtherSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubPass
 
   Assert(ubPassType < NUM_REPAIR_PASS_TYPES);
 
-  pPassList = &(gRepairPassSlotList[ubPassType]);
+  pPassList = addressof(gRepairPassSlotList[ubPassType]);
 
   for (bLoop = 0; bLoop < pPassList.value.ubChoices; bLoop++) {
     bSlotToCheck = pPassList.value.bSlot[bLoop];
     Assert(bSlotToCheck != -1);
 
-    pObj = &(pSoldier.value.inv[bSlotToCheck]);
+    pObj = addressof(pSoldier.value.inv[bSlotToCheck]);
     for (bLoop2 = 0; bLoop2 < pSoldier.value.inv[bSlotToCheck].ubNumberOfObjects; bLoop2++) {
       if (IsItemRepairable(pObj.value.usItem, pObj.value.bStatus[bLoop2])) {
         return bSlotToCheck;
@@ -2275,7 +2275,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
       // repairable, try to repair it
 
       // void DoActualRepair( SOLDIERTYPE * pSoldier, UINT16 usItem, INT8 * pbStatus, UINT8 * pubRepairPtsLeft )
-      DoActualRepair(pSoldier, pObj.value.usItem, &(pObj.value.bStatus[ubLoop]), pubRepairPtsLeft);
+      DoActualRepair(pSoldier, pObj.value.usItem, addressof(pObj.value.bStatus[ubLoop]), pubRepairPtsLeft);
 
       fSomethingWasRepaired = TRUE;
 
@@ -2302,7 +2302,7 @@ function RepairObject(pSoldier: Pointer<SOLDIERTYPE>, pOwner: Pointer<SOLDIERTYP
       if (IsItemRepairable(pObj.value.usAttachItem[ubLoop], pObj.value.bAttachStatus[ubLoop])) {
         // repairable, try to repair it
 
-        DoActualRepair(pSoldier, pObj.value.usAttachItem[ubLoop], &(pObj.value.bAttachStatus[ubLoop]), pubRepairPtsLeft);
+        DoActualRepair(pSoldier, pObj.value.usAttachItem[ubLoop], addressof(pObj.value.bAttachStatus[ubLoop]), pubRepairPtsLeft);
 
         fSomethingWasRepaired = TRUE;
 
@@ -2343,7 +2343,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   let pObj: Pointer<OBJECTTYPE>;
 
   // grab max number of repair pts open to this soldier
-  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, &usMax, TRUE);
+  ubRepairPtsLeft = CalculateRepairPointsForRepairman(pSoldier, addressof(usMax), TRUE);
 
   // no points
   if (ubRepairPtsLeft == 0) {
@@ -2358,7 +2358,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier.value.bVehicleUnderRepairID != -1) {
     if (CanCharacterRepairVehicle(pSoldier, pSoldier.value.bVehicleUnderRepairID)) {
       // attempt to fix vehicle
-      ubRepairPtsLeft -= RepairVehicle(pSoldier.value.bVehicleUnderRepairID, ubRepairPtsLeft, &fNothingLeftToRepair);
+      ubRepairPtsLeft -= RepairVehicle(pSoldier.value.bVehicleUnderRepairID, ubRepairPtsLeft, addressof(fNothingLeftToRepair));
     }
   }
   // check if we are repairing a robot
@@ -2374,10 +2374,10 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // robot
-      ubRepairPtsLeft -= HandleRepairOfRobotBySoldier(pSoldier, ubRepairPtsLeft, &fNothingLeftToRepair);
+      ubRepairPtsLeft -= HandleRepairOfRobotBySoldier(pSoldier, ubRepairPtsLeft, addressof(fNothingLeftToRepair));
     }
   } else {
-    fAnyOfSoldiersOwnItemsWereFixed = UnjamGunsOnSoldier(pSoldier, pSoldier, &ubRepairPtsLeft);
+    fAnyOfSoldiersOwnItemsWereFixed = UnjamGunsOnSoldier(pSoldier, pSoldier, addressof(ubRepairPtsLeft));
 
     // repair items on self
     for (bLoop = 0; bLoop < 2; bLoop++) {
@@ -2391,9 +2391,9 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
 
       // now repair objects running from left hand to small pocket
       for (bPocket = bLoopStart; bPocket <= bLoopEnd; bPocket++) {
-        pObj = &(pSoldier.value.inv[bPocket]);
+        pObj = addressof(pSoldier.value.inv[bPocket]);
 
-        if (RepairObject(pSoldier, pSoldier, pObj, &ubRepairPtsLeft)) {
+        if (RepairObject(pSoldier, pSoldier, pObj, addressof(ubRepairPtsLeft))) {
           fAnyOfSoldiersOwnItemsWereFixed = TRUE;
 
           // quit looking if we're already out
@@ -2412,7 +2412,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     }
 
     // repair items on others
-    RepairItemsOnOthers(pSoldier, &ubRepairPtsLeft);
+    RepairItemsOnOthers(pSoldier, addressof(ubRepairPtsLeft));
   }
 
   // what are the total amount of pts used by character?
@@ -2426,7 +2426,7 @@ function HandleRepairBySoldier(pSoldier: Pointer<SOLDIERTYPE>): void {
     if ((Random(100)) < (ubRepairPtsUsed * 5)) // CJC: added a x5 as this wasn't going down anywhere fast enough
     {
       // kit item damaged/depleted, burn up points of toolkit..which is in right hand
-      UseKitPoints(&(pSoldier.value.inv[HANDPOS]), 1, pSoldier);
+      UseKitPoints(addressof(pSoldier.value.inv[HANDPOS]), 1, pSoldier);
     }
   }
 
@@ -2647,7 +2647,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
         // if he's training teammates in this stat
         if ((pTrainer.value.bAssignment == TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == ubStat) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
-          sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, NULL, ubStat, fAtGunRange, &usMaxPts);
+          sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, NULL, ubStat, fAtGunRange, addressof(usMaxPts));
 
           // if he's the best trainer so far for this stat
           if (sTrainingPtsDueToInstructor > sBestTrainingPts) {
@@ -2668,7 +2668,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
       if ((pStudent.value.bAssignment == TRAIN_SELF) || (pStudent.value.bAssignment == TRAIN_BY_OTHER)) {
         if (EnoughTimeOnAssignment(pStudent) && (pStudent.value.fMercAsleep == FALSE)) {
           // figure out how much the grunt can learn in one training period
-          sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.value.bTrainStat, fAtGunRange, &usMaxPts);
+          sTotalTrainingPts = GetSoldierTrainingPts(pStudent, pStudent.value.bTrainStat, fAtGunRange, addressof(usMaxPts));
 
           // if he's getting help
           if (pStudent.value.bAssignment == TRAIN_BY_OTHER) {
@@ -2686,7 +2686,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
               // if ( EnoughTimeOnAssignment( pTrainer ) )
               {
                 // valid trainer is available, this gives the student a large training bonus!
-                sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pStudent, pStudent.value.bTrainStat, fAtGunRange, &usMaxPts);
+                sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pStudent, pStudent.value.bTrainStat, fAtGunRange, addressof(usMaxPts));
 
                 // add the bonus to what merc can learn on his own
                 sTotalTrainingPts += sTrainingPtsDueToInstructor;
@@ -2711,7 +2711,7 @@ function HandleTrainingInSector(sMapX: INT16, sMapY: INT16, bZ: INT8): void {
     for (uiCnt = 0, pTrainer = MercPtrs[uiCnt]; uiCnt <= gTacticalStatus.Team[MercPtrs[0].value.bTeam].bLastID; uiCnt++, pTrainer++) {
       if (pTrainer.value.bActive && (pTrainer.value.sSectorX == sMapX) && (pTrainer.value.sSectorY == sMapY) && (pTrainer.value.bSectorZ == bZ)) {
         if ((pTrainer.value.bAssignment == TRAIN_TOWN) && (EnoughTimeOnAssignment(pTrainer)) && (pTrainer.value.fMercAsleep == FALSE)) {
-          sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, &usMaxPts);
+          sTownTrainingPts = GetTownTrainPtsForCharacter(pTrainer, addressof(usMaxPts));
 
           // if he's actually worth anything
           if (sTownTrainingPts > 0) {
@@ -2917,7 +2917,7 @@ function GetBonusTrainingPtsDueToInstructor(pInstructor: Pointer<SOLDIERTYPE>, p
   sTrainingPts += (((bTrainingBonus + bOpinionFactor) * sTrainingPts) / 100);
 
   // adjust for instructor fatigue
-  ReducePointsForFatigue(pInstructor, &sTrainingPts);
+  ReducePointsForFatigue(pInstructor, addressof(sTrainingPts));
 
   return sTrainingPts;
 }
@@ -2984,7 +2984,7 @@ function GetSoldierTrainingPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8,
   sTrainingPts += ((bTrainingBonus * sTrainingPts) / 100);
 
   // adjust for fatigue
-  ReducePointsForFatigue(pSoldier, &sTrainingPts);
+  ReducePointsForFatigue(pSoldier, addressof(sTrainingPts));
 
   return sTrainingPts;
 }
@@ -3058,7 +3058,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
   sTrainingPts += ((bTrainingBonus * sTrainingPts) / 100);
 
   // adjust for fatigue
-  ReducePointsForFatigue(pSoldier, &sTrainingPts);
+  ReducePointsForFatigue(pSoldier, addressof(sTrainingPts));
 
   // now add in stuff for trainer
 
@@ -3071,7 +3071,7 @@ function GetSoldierStudentPts(pSoldier: Pointer<SOLDIERTYPE>, bTrainStat: INT8, 
       // if he's training teammates in this stat
       // NB skip the EnoughTime requirement to display what the value should be even if haven't been training long yet...
       if ((pTrainer.value.bAssignment == TRAIN_TEAMMATE) && (pTrainer.value.bTrainStat == bTrainStat) && (pTrainer.value.fMercAsleep == FALSE)) {
-        sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, &usMaxTrainerPts);
+        sTrainingPtsDueToInstructor = GetBonusTrainingPtsDueToInstructor(pTrainer, pSoldier, bTrainStat, fAtGunRange, addressof(usMaxTrainerPts));
 
         // if he's the best trainer so far for this stat
         if (sTrainingPtsDueToInstructor > sBestTrainingPts) {
@@ -3139,7 +3139,7 @@ function TrainSoldierWithPts(pSoldier: Pointer<SOLDIERTYPE>, sTrainPts: INT16): 
 
 // will train a town in sector by character
 function TrainTownInSector(pTrainer: Pointer<SOLDIERTYPE>, sMapX: INT16, sMapY: INT16, sTrainingPts: INT16): BOOLEAN {
-  let pSectorInfo: Pointer<SECTORINFO> = &(SectorInfo[SECTOR(sMapX, sMapY)]);
+  let pSectorInfo: Pointer<SECTORINFO> = addressof(SectorInfo[SECTOR(sMapX, sMapY)]);
   let ubTownId: UINT8 = 0;
   let sCnt: INT16 = 0;
   let bChance: INT8 = 0;
@@ -3217,7 +3217,7 @@ function GetTownTrainPtsForCharacter(pTrainer: Pointer<SOLDIERTYPE>, pusMaxPts: 
   *pusMaxPts += ((bTrainingBonus * *pusMaxPts) / 100);
 
   // adjust for fatigue of trainer
-  ReducePointsForFatigue(pTrainer, &sTotalTrainingPts);
+  ReducePointsForFatigue(pTrainer, addressof(sTotalTrainingPts));
 
   /* ARM: Decided this didn't make much sense - the guys I'm training damn well BETTER be loyal - and screw the rest!
           // get town index
@@ -3560,14 +3560,14 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
       iFontHeight = GetLineSpace(ghEpcBox) + GetFontHeight(GetBoxFont(ghEpcBox));
 
       // get x.y position of box
-      GetBoxPosition(ghEpcBox, &pPosition);
+      GetBoxPosition(ghEpcBox, addressof(pPosition));
 
       // grab box x and y position
       iBoxXPosition = pPosition.iX;
       iBoxYPosition = pPosition.iY;
 
       // get dimensions..mostly for width
-      GetBoxSize(ghEpcBox, &pDimensions);
+      GetBoxSize(ghEpcBox, addressof(pDimensions));
 
       // get width
       iBoxWidth = pDimensions.iRight;
@@ -3578,14 +3578,14 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
       iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
       // get x.y position of box
-      GetBoxPosition(ghAssignmentBox, &pPosition);
+      GetBoxPosition(ghAssignmentBox, addressof(pPosition));
 
       // grab box x and y position
       iBoxXPosition = pPosition.iX;
       iBoxYPosition = pPosition.iY;
 
       // get dimensions..mostly for width
-      GetBoxSize(ghAssignmentBox, &pDimensions);
+      GetBoxSize(ghAssignmentBox, addressof(pDimensions));
 
       // get width
       iBoxWidth = pDimensions.iRight;
@@ -3596,9 +3596,9 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
     // define regions
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       // add mouse region for each line of text..and set user data
-      MSYS_DefineRegion(&gAssignmentMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gAssignmentMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
 
-      MSYS_SetRegionUserData(&gAssignmentMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gAssignmentMenuRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -3612,7 +3612,7 @@ function CreateDestroyMouseRegionsForAssignmentMenu(): void {
   } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
-      MSYS_RemoveRegion(&gAssignmentMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
     }
 
     fShownAssignmentMenu = FALSE;
@@ -3638,10 +3638,10 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if (fShowVehicleMenu) {
-    GetBoxPosition(ghAssignmentBox, &pPoint);
+    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAssignmentBox, &pDimensions);
+    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
 
     // vehicle position
     VehiclePosition.iX = pPoint.iX + pDimensions.iRight;
@@ -3654,14 +3654,14 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     iFontHeight = GetLineSpace(ghVehicleBox) + GetFontHeight(GetBoxFont(ghVehicleBox));
 
     // get x.y position of box
-    GetBoxPosition(ghVehicleBox, &pPosition);
+    GetBoxPosition(ghVehicleBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghVehicleBox, &pDimensions);
+    GetBoxSize(ghVehicleBox, addressof(pDimensions));
     SetBoxSecondaryShade(ghVehicleBox, FONT_YELLOW);
 
     // get width
@@ -3676,11 +3676,11 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
       if (pVehicleList[iVehicleId].fValid == TRUE) {
         if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleId)) {
           // add mouse region for each accessible vehicle
-          MSYS_DefineRegion(&gVehicleMenuRegion[uiMenuLine], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
+          MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
 
-          MSYS_SetRegionUserData(&gVehicleMenuRegion[uiMenuLine], 0, uiMenuLine);
+          MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, uiMenuLine);
           // store vehicle ID in the SECOND user data
-          MSYS_SetRegionUserData(&gVehicleMenuRegion[uiMenuLine], 1, iVehicleId);
+          MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 1, iVehicleId);
 
           uiMenuLine++;
         }
@@ -3688,8 +3688,8 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
     }
 
     // cancel line
-    MSYS_DefineRegion(&gVehicleMenuRegion[uiMenuLine], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
-    MSYS_SetRegionUserData(&gVehicleMenuRegion[uiMenuLine], 0, VEHICLE_MENU_CANCEL);
+    MSYS_DefineRegion(addressof(gVehicleMenuRegion[uiMenuLine]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*uiMenuLine), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (uiMenuLine + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, VehicleMenuMvtCallback, VehicleMenuBtnCallback);
+    MSYS_SetRegionUserData(addressof(gVehicleMenuRegion[uiMenuLine]), 0, VEHICLE_MENU_CANCEL);
 
     // created
     fCreated = TRUE;
@@ -3708,7 +3708,7 @@ function CreateDestroyMouseRegionForVehicleMenu(): void {
 
     // remove these regions
     for (uiMenuLine = 0; uiMenuLine < GetNumberOfLinesOfTextInBox(ghVehicleBox); uiMenuLine++) {
-      MSYS_RemoveRegion(&gVehicleMenuRegion[uiMenuLine]);
+      MSYS_RemoveRegion(addressof(gVehicleMenuRegion[uiMenuLine]));
     }
 
     fShowVehicleMenu = FALSE;
@@ -3847,7 +3847,7 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         // don't even list the helicopter, because it's NEVER repairable...
         if (iVehicleIndex != iHelicopterVehicleId) {
           if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
-            AddMonoString(&hStringHandle, pVehicleStrings[pVehicleList[iVehicleIndex].ubVehicleType]);
+            AddMonoString(addressof(hStringHandle), pVehicleStrings[pVehicleList[iVehicleIndex].ubVehicleType]);
           }
         }
       }
@@ -3866,14 +3866,14 @@ function DisplayRepairMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   // is the ROBOT here?
   if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
     // robot
-    AddMonoString(&hStringHandle, pRepairStrings[3]);
+    AddMonoString(addressof(hStringHandle), pRepairStrings[3]);
   }
 
   // items
-  AddMonoString(&hStringHandle, pRepairStrings[0]);
+  AddMonoString(addressof(hStringHandle), pRepairStrings[0]);
 
   // cancel
-  AddMonoString(&hStringHandle, pRepairStrings[2]);
+  AddMonoString(addressof(hStringHandle), pRepairStrings[2]);
 
   SetBoxFont(ghRepairBox, MAP_SCREEN_FONT);
   SetBoxHighLight(ghRepairBox, FONT_WHITE);
@@ -3994,14 +3994,14 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
     iFontHeight = GetLineSpace(ghRepairBox) + GetFontHeight(GetBoxFont(ghRepairBox));
 
     // get x.y position of box
-    GetBoxPosition(ghRepairBox, &pPosition);
+    GetBoxPosition(ghRepairBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghRepairBox, &pDimensions);
+    GetBoxSize(ghRepairBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4022,11 +4022,11 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
             // other vehicles *in the sector* are listed, but later shaded dark if they're not repairable
             if (IsThisVehicleAccessibleToSoldier(pSoldier, iVehicleIndex)) {
               // add mouse region for each line of text..and set user data
-              MSYS_DefineRegion(&gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+              MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-              MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 0, iCount);
+              MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
               // 2nd user data is the vehicle index, which can easily be different from the region index!
-              MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 1, iVehicleIndex);
+              MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, iVehicleIndex);
               iCount++;
             }
           }
@@ -4048,25 +4048,25 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
 
     // robot
     if (IsRobotInThisSector(pSoldier.value.sSectorX, pSoldier.value.sSectorY, pSoldier.value.bSectorZ)) {
-      MSYS_DefineRegion(&gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-      MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 0, iCount);
-      MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 1, REPAIR_MENU_ROBOT);
+      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
+      MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_ROBOT);
       iCount++;
     }
 
     // items
-    MSYS_DefineRegion(&gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+    MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-    MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 0, iCount);
-    MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 1, REPAIR_MENU_ITEMS);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_ITEMS);
     iCount++;
 
     // cancel
-    MSYS_DefineRegion(&gRepairMenuRegion[iCount], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
+    MSYS_DefineRegion(addressof(gRepairMenuRegion[iCount]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCount), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCount + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, RepairMenuMvtCallback, RepairMenuBtnCallback);
 
-    MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 0, iCount);
-    MSYS_SetRegionUserData(&gRepairMenuRegion[iCount], 1, REPAIR_MENU_CANCEL);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 0, iCount);
+    MSYS_SetRegionUserData(addressof(gRepairMenuRegion[iCount]), 1, REPAIR_MENU_CANCEL);
 
     PauseGame();
 
@@ -4079,7 +4079,7 @@ function CreateDestroyMouseRegionForRepairMenu(): void {
 
     // remove these regions
     for (uiCounter = 0; uiCounter < GetNumberOfLinesOfTextInBox(ghRepairBox); uiCounter++) {
-      MSYS_RemoveRegion(&gRepairMenuRegion[uiCounter]);
+      MSYS_RemoveRegion(addressof(gRepairMenuRegion[uiCounter]));
     }
 
     fShowRepairMenu = FALSE;
@@ -4251,7 +4251,7 @@ function MakeSureToolKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): void {
     // run through rest of inventory looking for toolkits, swap the first one into hand if found
     for (bPocket = SECONDHANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
       if (pSoldier.value.inv[bPocket].usItem == TOOLKIT) {
-        SwapObjs(&pSoldier.value.inv[HANDPOS], &pSoldier.value.inv[bPocket]);
+        SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
         break;
       }
     }
@@ -4273,7 +4273,7 @@ function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   for (bPocket = SECONDHANDPOS; bPocket <= SMALLPOCK8POS; bPocket++) {
     if (pSoldier.value.inv[bPocket].usItem == MEDICKIT) {
       fCharacterInfoPanelDirty = TRUE;
-      SwapObjs(&pSoldier.value.inv[HANDPOS], &pSoldier.value.inv[bPocket]);
+      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
       return TRUE;
     }
   }
@@ -4288,14 +4288,14 @@ function MakeSureMedKitIsInHand(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if (pSoldier.value.inv[bPocket].usItem == FIRSTAIDKIT) {
       if ((Item[pSoldier.value.inv[HANDPOS].usItem].fFlags & IF_TWOHANDED_GUN) && (bPocket >= SMALLPOCK1POS)) {
         // first move from hand to second hand
-        SwapObjs(&pSoldier.value.inv[HANDPOS], &pSoldier.value.inv[SECONDHANDPOS]);
+        SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[SECONDHANDPOS]));
 
         // dirty mapscreen and squad panels
         fCharacterInfoPanelDirty = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
 
-      SwapObjs(&pSoldier.value.inv[HANDPOS], &pSoldier.value.inv[bPocket]);
+      SwapObjs(addressof(pSoldier.value.inv[HANDPOS]), addressof(pSoldier.value.inv[bPocket]));
 
       return TRUE;
     }
@@ -4616,17 +4616,17 @@ function CreateDestroyScreenMaskForAssignmentAndContractMenus(): void {
 
   // not created, create
   if ((fCreated == FALSE) && ((fShowAssignmentMenu == TRUE) || (fShowContractMenu == TRUE) || (fShowTownInfo == TRUE))) {
-    MSYS_DefineRegion(&gAssignmentScreenMaskRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, AssignmentScreenMaskBtnCallback);
+    MSYS_DefineRegion(addressof(gAssignmentScreenMaskRegion), 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, AssignmentScreenMaskBtnCallback);
 
     // created
     fCreated = TRUE;
 
     if (!(guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-      MSYS_ChangeRegionCursor(&gAssignmentScreenMaskRegion, 0);
+      MSYS_ChangeRegionCursor(addressof(gAssignmentScreenMaskRegion), 0);
     }
   } else if ((fCreated == TRUE) && (fShowAssignmentMenu == FALSE) && (fShowContractMenu == FALSE) && (fShowTownInfo == FALSE)) {
     // created, get rid of it
-    MSYS_RemoveRegion(&gAssignmentScreenMaskRegion);
+    MSYS_RemoveRegion(addressof(gAssignmentScreenMaskRegion));
 
     // not created
     fCreated = FALSE;
@@ -4716,14 +4716,14 @@ function CreateDestroyMouseRegions(): void {
     iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
     // get x.y position of box
-    GetBoxPosition(ghAssignmentBox, &pPosition);
+    GetBoxPosition(ghAssignmentBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAssignmentBox, &pDimensions);
+    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4734,10 +4734,10 @@ function CreateDestroyMouseRegions(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(&gAssignmentMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gAssignmentMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAssignmentBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, AssignmentMenuMvtCallBack, AssignmentMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gAssignmentMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gAssignmentMenuRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -4756,7 +4756,7 @@ function CreateDestroyMouseRegions(): void {
   } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAssignmentBox); iCounter++) {
-      MSYS_RemoveRegion(&gAssignmentMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gAssignmentMenuRegion[iCounter]));
     }
 
     RestorePopUpBoxes();
@@ -4819,14 +4819,14 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
     iFontHeight = GetLineSpace(ghContractBox) + GetFontHeight(GetBoxFont(ghContractBox));
 
     // get x.y position of box
-    GetBoxPosition(ghContractBox, &pPosition);
+    GetBoxPosition(ghContractBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghContractBox, &pDimensions);
+    GetBoxSize(ghContractBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -4837,10 +4837,10 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghContractBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(&gContractMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, ContractMenuMvtCallback, ContractMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gContractMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghContractBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 4, MSYS_NO_CURSOR, ContractMenuMvtCallback, ContractMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gContractMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gContractMenuRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -4854,7 +4854,7 @@ function CreateDestroyMouseRegionsForContractMenu(): void {
   } else if ((fShowContractMenu == FALSE) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghContractBox); iCounter++) {
-      MSYS_RemoveRegion(&gContractMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gContractMenuRegion[iCounter]));
     }
 
     fShownContractMenu = FALSE;
@@ -4905,14 +4905,14 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
     iFontHeight = GetLineSpace(ghTrainingBox) + GetFontHeight(GetBoxFont(ghTrainingBox));
 
     // get x.y position of box
-    GetBoxPosition(ghTrainingBox, &pPosition);
+    GetBoxPosition(ghTrainingBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghTrainingBox, &pDimensions);
+    GetBoxSize(ghTrainingBox, addressof(pDimensions));
     SetBoxSecondaryShade(ghTrainingBox, FONT_YELLOW);
 
     // get width
@@ -4924,10 +4924,10 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghTrainingBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(&gTrainingMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, TrainingMenuMvtCallBack, TrainingMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gTrainingMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghTrainingBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 3, MSYS_NO_CURSOR, TrainingMenuMvtCallBack, TrainingMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gTrainingMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gTrainingMenuRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -4938,7 +4938,7 @@ function CreateDestroyMouseRegionsForTrainingMenu(): void {
   } else if (((fShowAssignmentMenu == FALSE) || (fShowTrainingMenu == FALSE)) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghTrainingBox); iCounter++) {
-      MSYS_RemoveRegion(&gTrainingMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gTrainingMenuRegion[iCounter]));
     }
 
     // stop showing training menu
@@ -4989,14 +4989,14 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
     iFontHeight = GetLineSpace(ghAttributeBox) + GetFontHeight(GetBoxFont(ghAttributeBox));
 
     // get x.y position of box
-    GetBoxPosition(ghAttributeBox, &pPosition);
+    GetBoxPosition(ghAttributeBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghAttributeBox, &pDimensions);
+    GetBoxSize(ghAttributeBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -5007,10 +5007,10 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAttributeBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(&gAttributeMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, AttributeMenuMvtCallBack, AttributesMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gAttributeMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, AttributeMenuMvtCallBack, AttributesMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gAttributeMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gAttributeMenuRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -5021,7 +5021,7 @@ function CreateDestroyMouseRegionsForAttributeMenu(): void {
   } else if (((fShowAssignmentMenu == FALSE) || (fShowTrainingMenu == FALSE) || (fShowAttributeMenu == FALSE)) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghAttributeBox); iCounter++) {
-      MSYS_RemoveRegion(&gAttributeMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gAttributeMenuRegion[iCounter]));
     }
 
     // stop showing training menu
@@ -5081,14 +5081,14 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
     iFontHeight = GetLineSpace(ghRemoveMercAssignBox) + GetFontHeight(GetBoxFont(ghRemoveMercAssignBox));
 
     // get x.y position of box
-    GetBoxPosition(ghRemoveMercAssignBox, &pPosition);
+    GetBoxPosition(ghRemoveMercAssignBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghRemoveMercAssignBox, &pDimensions);
+    GetBoxSize(ghRemoveMercAssignBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -5099,10 +5099,10 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghRemoveMercAssignBox); iCounter++) {
       // add mouse region for each line of text..and set user data
 
-      MSYS_DefineRegion(&gRemoveMercAssignRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, RemoveMercMenuMvtCallBack, RemoveMercMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gRemoveMercAssignRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghAttributeBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, RemoveMercMenuMvtCallBack, RemoveMercMenuBtnCallback);
 
       // set user defines
-      MSYS_SetRegionUserData(&gRemoveMercAssignRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gRemoveMercAssignRegion[iCounter]), 0, iCounter);
     }
 
     // created
@@ -5113,7 +5113,7 @@ function CreateDestroyMouseRegionsForRemoveMenu(): void {
   } else if ((fShowAssignmentMenu == FALSE) && (fCreated == TRUE) && (fShowContractMenu == FALSE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghRemoveMercAssignBox); iCounter++) {
-      MSYS_RemoveRegion(&gRemoveMercAssignRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gRemoveMercAssignRegion[iCounter]));
     }
 
     fShownContractMenu = FALSE;
@@ -5157,7 +5157,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
   if ((fShowSquadMenu == TRUE) && (fCreated == FALSE)) {
     // create squad box
     CreateSquadBox();
-    GetBoxSize(ghAssignmentBox, &pDimensions);
+    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
 
     CheckAndUpdateTacticalAssignmentPopUpPositions();
 
@@ -5165,14 +5165,14 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
     iFontHeight = GetLineSpace(ghSquadBox) + GetFontHeight(GetBoxFont(ghSquadBox));
 
     // get x.y position of box
-    GetBoxPosition(ghSquadBox, &pPosition);
+    GetBoxPosition(ghSquadBox, addressof(pPosition));
 
     // grab box x and y position
     iBoxXPosition = pPosition.iX;
     iBoxYPosition = pPosition.iY;
 
     // get dimensions..mostly for width
-    GetBoxSize(ghSquadBox, &pDimensions);
+    GetBoxSize(ghSquadBox, addressof(pDimensions));
 
     // get width
     iBoxWidth = pDimensions.iRight;
@@ -5182,15 +5182,15 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
     // define regions
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghSquadBox) - 1; iCounter++) {
       // add mouse region for each line of text..and set user data
-      MSYS_DefineRegion(&gSquadMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
+      MSYS_DefineRegion(addressof(gSquadMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
 
-      MSYS_SetRegionUserData(&gSquadMenuRegion[iCounter], 0, iCounter);
+      MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, iCounter);
     }
 
     // now create cancel region
-    MSYS_DefineRegion(&gSquadMenuRegion[iCounter], (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
+    MSYS_DefineRegion(addressof(gSquadMenuRegion[iCounter]), (iBoxXPosition), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight)*iCounter), (iBoxXPosition + iBoxWidth), (iBoxYPosition + GetTopMarginSize(ghSquadBox) + (iFontHeight) * (iCounter + 1)), MSYS_PRIORITY_HIGHEST - 2, MSYS_NO_CURSOR, SquadMenuMvtCallBack, SquadMenuBtnCallback);
 
-    MSYS_SetRegionUserData(&gSquadMenuRegion[iCounter], 0, SQUAD_MENU_CANCEL);
+    MSYS_SetRegionUserData(addressof(gSquadMenuRegion[iCounter]), 0, SQUAD_MENU_CANCEL);
 
     // created
     fCreated = TRUE;
@@ -5206,7 +5206,7 @@ function CreateDestroyMouseRegionsForSquadMenu(fPositionBox: BOOLEAN): void {
   } else if (((fShowAssignmentMenu == FALSE) || (fShowSquadMenu == FALSE)) && (fCreated == TRUE)) {
     // destroy
     for (iCounter = 0; iCounter < GetNumberOfLinesOfTextInBox(ghSquadBox); iCounter++) {
-      MSYS_RemoveRegion(&gSquadMenuRegion[iCounter]);
+      MSYS_RemoveRegion(addressof(gSquadMenuRegion[iCounter]));
     }
 
     fShowSquadMenu = FALSE;
@@ -5470,7 +5470,7 @@ function ContractMenuBtnCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32)
   let pSoldier: Pointer<SOLDIERTYPE> = NULL;
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-    pSoldier = &Menptr[gCharactersList[bSelectedInfoChar].usSolID];
+    pSoldier = addressof(Menptr[gCharactersList[bSelectedInfoChar].usSolID]);
   } else {
     // can't renew contracts from tactical!
   }
@@ -6266,7 +6266,7 @@ function CreateSquadBox(): void {
   let uiMaxSquad: UINT32;
 
   // create basic box
-  CreatePopUpBox(&ghSquadBox, SquadDimensions, SquadPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghSquadBox), SquadDimensions, SquadPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghSquadBox, FRAME_BUFFER);
@@ -6292,14 +6292,14 @@ function CreateSquadBox(): void {
   for (uiCounter = 0; uiCounter <= uiMaxSquad; uiCounter++) {
     // get info about current squad and put in  string
     swprintf(sString, "%s ( %d/%d )", pSquadMenuStrings[uiCounter], NumberOfPeopleInSquad(uiCounter), NUMBER_OF_SOLDIERS_PER_SQUAD);
-    AddMonoString(&hStringHandle, sString);
+    AddMonoString(addressof(hStringHandle), sString);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
   }
 
   // add cancel line
-  AddMonoString(&hStringHandle, pSquadMenuStrings[NUMBER_OF_SQUADS]);
+  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[NUMBER_OF_SQUADS]);
 
   // set font type
   SetBoxFont(ghSquadBox, MAP_SCREEN_FONT);
@@ -6324,8 +6324,8 @@ function CreateSquadBox(): void {
 
   DetermineBoxPositions();
 
-  GetBoxPosition(ghSquadBox, &pPoint);
-  GetBoxSize(ghSquadBox, &pDimensions);
+  GetBoxPosition(ghSquadBox, addressof(pPoint));
+  GetBoxSize(ghSquadBox, addressof(pDimensions));
 
   if (giBoxY + pDimensions.iBottom > 479) {
     pPoint.iY = SquadPosition.iY = 479 - pDimensions.iBottom;
@@ -6342,7 +6342,7 @@ function CreateEPCBox(): void {
   let iCount: INT32;
 
   // create basic box
-  CreatePopUpBox(&ghEpcBox, SquadDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE | POPUP_BOX_FLAG_CENTER_TEXT));
+  CreatePopUpBox(addressof(ghEpcBox), SquadDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE | POPUP_BOX_FLAG_CENTER_TEXT));
 
   // which buffer will box render to
   SetBoxBuffer(ghEpcBox, FRAME_BUFFER);
@@ -6363,7 +6363,7 @@ function CreateEPCBox(): void {
   SetCurrentBox(ghEpcBox);
 
   for (iCount = 0; iCount < MAX_EPC_MENU_STRING_COUNT; iCount++) {
-    AddMonoString(&hStringHandle, pEpcMenuStrings[iCount]);
+    AddMonoString(addressof(hStringHandle), pEpcMenuStrings[iCount]);
   }
 
   // set font type
@@ -6384,9 +6384,9 @@ function CreateEPCBox(): void {
   // resize box to text
   ResizeBoxToText(ghEpcBox);
 
-  GetBoxPosition(ghEpcBox, &pPoint);
+  GetBoxPosition(ghEpcBox, addressof(pPoint));
 
-  GetBoxSize(ghEpcBox, &pDimensions);
+  GetBoxSize(ghEpcBox, addressof(pDimensions));
 
   if (giBoxY + pDimensions.iBottom > 479) {
     pPoint.iY = AssignmentPosition.iY = 479 - pDimensions.iBottom;
@@ -6466,14 +6466,14 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   for (iCounter = 0; iCounter < ubNumberOfVehicles; iCounter++) {
     if (pVehicleList[iCounter].fValid == TRUE) {
       if (IsThisVehicleAccessibleToSoldier(pSoldier, iCounter)) {
-        AddMonoString(&hStringHandle, pVehicleStrings[pVehicleList[iCounter].ubVehicleType]);
+        AddMonoString(addressof(hStringHandle), pVehicleStrings[pVehicleList[iCounter].ubVehicleType]);
         fVehiclePresent = TRUE;
       }
     }
   }
 
   // cancel string (borrow the one in the squad menu)
-  AddMonoString(&hStringHandle, pSquadMenuStrings[SQUAD_MENU_CANCEL]);
+  AddMonoString(addressof(hStringHandle), pSquadMenuStrings[SQUAD_MENU_CANCEL]);
 
   SetBoxFont(ghVehicleBox, MAP_SCREEN_FONT);
   SetBoxHighLight(ghVehicleBox, FONT_WHITE);
@@ -6484,7 +6484,7 @@ function DisplayVehicleMenu(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 }
 
 function CreateVehicleBox(): void {
-  CreatePopUpBox(&ghVehicleBox, VehicleDimensions, VehiclePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghVehicleBox), VehicleDimensions, VehiclePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghVehicleBox, FRAME_BUFFER);
   SetBorderType(ghVehicleBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghVehicleBox, guiPOPUPTEX);
@@ -6493,7 +6493,7 @@ function CreateVehicleBox(): void {
 }
 
 function CreateRepairBox(): void {
-  CreatePopUpBox(&ghRepairBox, RepairDimensions, RepairPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghRepairBox), RepairDimensions, RepairPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghRepairBox, FRAME_BUFFER);
   SetBorderType(ghRepairBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghRepairBox, guiPOPUPTEX);
@@ -6513,7 +6513,7 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
     ContractPosition.iX = giBoxY;
   }
 
-  CreatePopUpBox(&ghContractBox, ContractDimensions, ContractPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghContractBox), ContractDimensions, ContractPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_RESIZE));
   SetBoxBuffer(ghContractBox, FRAME_BUFFER);
   SetBorderType(ghContractBox, guiPOPUPBORDERS);
   SetBackGroundSurface(ghContractBox, guiPOPUPTEX);
@@ -6536,7 +6536,7 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
                                            swprintf( sString, L"%s %s",  pContractStrings[uiCounter], sDollarString );
                                            AddMonoString(&hStringHandle, sString);
           */
-          AddMonoString(&hStringHandle, pContractStrings[uiCounter]);
+          AddMonoString(addressof(hStringHandle), pContractStrings[uiCounter]);
           break;
         case (CONTRACT_MENU_DAY):
 
@@ -6548,7 +6548,7 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
           swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(&hStringHandle, sString);
+          AddMonoString(addressof(hStringHandle), sString);
           break;
         case (CONTRACT_MENU_WEEK):
 
@@ -6561,7 +6561,7 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
           swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(&hStringHandle, sString);
+          AddMonoString(addressof(hStringHandle), sString);
           break;
         case (CONTRACT_MENU_TWO_WEEKS):
 
@@ -6574,10 +6574,10 @@ function CreateContractBox(pCharacter: Pointer<SOLDIERTYPE>): void {
           InsertCommasForDollarFigure(sDollarString);
           InsertDollarSignInToString(sDollarString);
           swprintf(sString, "%s ( %s )", pContractStrings[uiCounter], sDollarString);
-          AddMonoString(&hStringHandle, sString);
+          AddMonoString(addressof(hStringHandle), sString);
           break;
         default:
-          AddMonoString(&hStringHandle, pContractStrings[uiCounter]);
+          AddMonoString(addressof(hStringHandle), pContractStrings[uiCounter]);
           break;
       }
       UnHighLightLine(hStringHandle);
@@ -6617,7 +6617,7 @@ function CreateAttributeBox(): void {
   UpdateMapScreenAssignmentPositions();
 
   // create basic box
-  CreatePopUpBox(&ghAttributeBox, AttributeDimensions, AttributePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghAttributeBox), AttributeDimensions, AttributePosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghAttributeBox, FRAME_BUFFER);
@@ -6639,7 +6639,7 @@ function CreateAttributeBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < MAX_ATTRIBUTE_STRING_COUNT; uiCounter++) {
-    AddMonoString(&hStringHandle, pAttributeMenuStrings[uiCounter]);
+    AddMonoString(addressof(hStringHandle), pAttributeMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6677,7 +6677,7 @@ function CreateTrainingBox(): void {
   }
 
   // create basic box
-  CreatePopUpBox(&ghTrainingBox, TrainDimensions, TrainPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghTrainingBox), TrainDimensions, TrainPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghTrainingBox, FRAME_BUFFER);
@@ -6699,7 +6699,7 @@ function CreateTrainingBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < MAX_TRAIN_STRING_COUNT; uiCounter++) {
-    AddMonoString(&hStringHandle, pTrainingMenuStrings[uiCounter]);
+    AddMonoString(addressof(hStringHandle), pTrainingMenuStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6744,7 +6744,7 @@ function CreateAssignmentsBox(): void {
   // pSoldier NULL is legal here!  Gets called during every mapscreen initialization even when nobody is assign char
 
   // create basic box
-  CreatePopUpBox(&ghAssignmentBox, AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghAssignmentBox), AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghAssignmentBox, FRAME_BUFFER);
@@ -6774,7 +6774,7 @@ function CreateAssignmentsBox(): void {
       swprintf(sString, pAssignMenuStrings[uiCounter]);
     }
 
-    AddMonoString(&hStringHandle, sString);
+    AddMonoString(addressof(hStringHandle), sString);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6808,7 +6808,7 @@ function CreateMercRemoveAssignBox(): void {
   let hStringHandle: UINT32;
   let uiCounter: UINT32;
   // create basic box
-  CreatePopUpBox(&ghRemoveMercAssignBox, AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
+  CreatePopUpBox(addressof(ghRemoveMercAssignBox), AssignmentDimensions, AssignmentPosition, (POPUP_BOX_FLAG_CLIP_TEXT | POPUP_BOX_FLAG_CENTER_TEXT | POPUP_BOX_FLAG_RESIZE));
 
   // which buffer will box render to
   SetBoxBuffer(ghRemoveMercAssignBox, FRAME_BUFFER);
@@ -6830,7 +6830,7 @@ function CreateMercRemoveAssignBox(): void {
 
   // add strings for box
   for (uiCounter = 0; uiCounter < MAX_REMOVE_MERC_COUNT; uiCounter++) {
-    AddMonoString(&hStringHandle, pRemoveMercStrings[uiCounter]);
+    AddMonoString(addressof(hStringHandle), pRemoveMercStrings[uiCounter]);
 
     // make sure it is unhighlighted
     UnHighLightLine(hStringHandle);
@@ -6863,11 +6863,11 @@ function CreateDestroyAssignmentPopUpBoxes(): BOOLEAN {
   if ((fShowAssignmentMenu == TRUE) && (fCreated == FALSE)) {
     VObjectDesc.fCreateFlags = VOBJECT_CREATE_FROMFILE;
     FilenameForBPP("INTERFACE\\popup.sti", VObjectDesc.ImageFile);
-    CHECKF(AddVideoObject(&VObjectDesc, &guiPOPUPBORDERS));
+    CHECKF(AddVideoObject(addressof(VObjectDesc), addressof(guiPOPUPBORDERS)));
 
     vs_desc.fCreateFlags = VSURFACE_CREATE_FROMFILE | VSURFACE_SYSTEM_MEM_USAGE;
     strcpy(vs_desc.ImageFile, "INTERFACE\\popupbackground.pcx");
-    CHECKF(AddVideoSurface(&vs_desc, &guiPOPUPTEX));
+    CHECKF(AddVideoSurface(addressof(vs_desc), addressof(guiPOPUPTEX)));
 
     // these boxes are always created while in mapscreen...
     CreateEPCBox();
@@ -6928,7 +6928,7 @@ function DetermineBoxPositions(): void {
   }
 
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
-    GetBoxPosition(ghAssignmentBox, &pPoint);
+    GetBoxPosition(ghAssignmentBox, addressof(pPoint));
     gsAssignmentBoxesX = pPoint.iX;
     gsAssignmentBoxesY = pPoint.iY;
   }
@@ -6938,10 +6938,10 @@ function DetermineBoxPositions(): void {
 
   if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
     SetBoxPosition(ghEpcBox, pPoint);
-    GetBoxSize(ghEpcBox, &pDimensions);
+    GetBoxSize(ghEpcBox, addressof(pDimensions));
   } else {
     SetBoxPosition(ghAssignmentBox, pPoint);
-    GetBoxSize(ghAssignmentBox, &pDimensions);
+    GetBoxSize(ghAssignmentBox, addressof(pDimensions));
   }
 
   // hang it right beside the assignment/EPC box menu
@@ -6967,8 +6967,8 @@ function DetermineBoxPositions(): void {
     OrigTrainPosition.iY = pNewPoint.iY;
     OrigTrainPosition.iX = pNewPoint.iX;
 
-    GetBoxSize(ghTrainingBox, &pDimensions);
-    GetBoxPosition(ghTrainingBox, &pPoint);
+    GetBoxSize(ghTrainingBox, addressof(pDimensions));
+    GetBoxPosition(ghTrainingBox, addressof(pPoint));
 
     if ((fShowAttributeMenu == TRUE) && (ghAttributeBox != -1)) {
       // hang it right beside the training box menu
@@ -6990,7 +6990,7 @@ function SetTacticalPopUpAssignmentBoxXY(): void {
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
   // grab soldier's x,y screen position
-  GetSoldierScreenPos(pSoldier, &sX, &sY);
+  GetSoldierScreenPos(pSoldier, addressof(sX), addressof(sY));
 
   if (sX < 0) {
     sX = 0;
@@ -7059,13 +7059,13 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
   pSoldier = GetSelectedAssignSoldier(FALSE);
 
   if (pSoldier.value.ubWhatKindOfMercAmI == MERC_TYPE__EPC) {
-    GetBoxSize(ghEpcBox, &pDimensions2);
+    GetBoxSize(ghEpcBox, addressof(pDimensions2));
   } else {
-    GetBoxSize(ghAssignmentBox, &pDimensions2);
+    GetBoxSize(ghAssignmentBox, addressof(pDimensions2));
   }
 
   if (fShowRepairMenu == TRUE) {
-    GetBoxSize(ghRepairBox, &pDimensions);
+    GetBoxSize(ghRepairBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7088,7 +7088,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghRepairBox, pPoint);
   } else if (fShowSquadMenu == TRUE) {
-    GetBoxSize(ghSquadBox, &pDimensions);
+    GetBoxSize(ghSquadBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7111,8 +7111,8 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghSquadBox, pPoint);
   } else if (fShowAttributeMenu == TRUE) {
-    GetBoxSize(ghTrainingBox, &pDimensions);
-    GetBoxSize(ghAttributeBox, &pDimensions3);
+    GetBoxSize(ghTrainingBox, addressof(pDimensions));
+    GetBoxSize(ghAttributeBox, addressof(pDimensions3));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight + pDimensions3.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight + pDimensions3.iRight));
@@ -7137,7 +7137,7 @@ function CheckAndUpdateTacticalAssignmentPopUpPositions(): void {
 
     SetBoxPosition(ghTrainingBox, pPoint);
   } else if (fShowTrainingMenu == TRUE) {
-    GetBoxSize(ghTrainingBox, &pDimensions);
+    GetBoxSize(ghTrainingBox, addressof(pDimensions));
 
     if (gsAssignmentBoxesX + pDimensions2.iRight + pDimensions.iRight >= 640) {
       gsAssignmentBoxesX = (639 - (pDimensions2.iRight + pDimensions.iRight));
@@ -7186,10 +7186,10 @@ function PositionCursorForTacticalAssignmentBox(): void {
   let iFontHeight: INT32;
 
   // get x.y position of box
-  GetBoxPosition(ghAssignmentBox, &pPosition);
+  GetBoxPosition(ghAssignmentBox, addressof(pPosition));
 
   // get dimensions..mostly for width
-  GetBoxSize(ghAssignmentBox, &pDimensions);
+  GetBoxSize(ghAssignmentBox, addressof(pDimensions));
 
   iFontHeight = GetLineSpace(ghAssignmentBox) + GetFontHeight(GetBoxFont(ghAssignmentBox));
 
@@ -7210,7 +7210,7 @@ function HandleRestFatigueAndSleepStatus(): void {
 
   // run through all player characters and handle their rest, fatigue, and going to sleep
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive) {
       if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier)) {
@@ -7308,7 +7308,7 @@ function HandleRestFatigueAndSleepStatus(): void {
 
   // now handle waking (needs seperate list queue, that's why it has its own loop)
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive) {
       if ((pSoldier.value.uiStatusFlags & SOLDIER_VEHICLE) || AM_A_ROBOT(pSoldier)) {
@@ -8105,7 +8105,7 @@ function ResetAssignmentsForAllSoldiersInSectorWhoAreTrainingTown(pSoldier: Poin
   iNumberOnTeam = gTacticalStatus.Team[OUR_TEAM].bLastID;
 
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pCurSoldier = &Menptr[iCounter];
+    pCurSoldier = addressof(Menptr[iCounter]);
 
     if ((pCurSoldier.value.bActive) && (pCurSoldier.value.bLife >= OKLIFE)) {
       if (pCurSoldier.value.bAssignment == TRAIN_TOWN) {
@@ -8129,7 +8129,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
 
   // check for each instructor
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pTeamSoldier = &Menptr[iCounter];
+    pTeamSoldier = addressof(Menptr[iCounter]);
 
     if ((pTeamSoldier.value.bAssignment == TRAIN_TEAMMATE) && (pTeamSoldier.value.bLife > 0)) {
       if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, TRAIN_BY_OTHER, pTeamSoldier.value.bTrainStat)) {
@@ -8140,7 +8140,7 @@ function ReportTrainersTraineesWithoutPartners(): void {
 
   // check each trainee
   for (iCounter = 0; iCounter < iNumberOnTeam; iCounter++) {
-    pTeamSoldier = &Menptr[iCounter];
+    pTeamSoldier = addressof(Menptr[iCounter]);
 
     if ((pTeamSoldier.value.bAssignment == TRAIN_BY_OTHER) && (pTeamSoldier.value.bLife > 0)) {
       if (!ValidTrainingPartnerInSameSectorOnAssignmentFound(pTeamSoldier, TRAIN_TEAMMATE, pTeamSoldier.value.bTrainStat)) {
@@ -8391,7 +8391,7 @@ function HandleSelectedMercsBeingPutAsleep(fWakeUp: BOOLEAN, fDisplayWarning: BO
     // if the current character in the list is valid...then grab soldier pointer for the character
     if (gCharactersList[iCounter].fValid) {
       // get the soldier pointer
-      pSoldier = &Menptr[gCharactersList[iCounter].usSolID];
+      pSoldier = addressof(Menptr[gCharactersList[iCounter].usSolID]);
 
       if (pSoldier.value.bActive == FALSE) {
         continue;
@@ -8453,7 +8453,7 @@ function IsAnyOneOnPlayersTeamOnThisAssignment(bAssignment: INT8): BOOLEAN {
 
   for (iCounter = gTacticalStatus.Team[OUR_TEAM].bFirstID; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     // get the current soldier
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     // active?
     if (pSoldier.value.bActive == FALSE) {
@@ -8490,7 +8490,7 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
 
   for (iCounter = gTacticalStatus.Team[OUR_TEAM].bFirstID; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
     // get the soldier
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     // check if the soldier is currently active?
     if (pSoldier.value.bActive == FALSE) {
@@ -8518,7 +8518,7 @@ function BandageBleedingDyingPatientsBeingTreated(): void {
           if (pDoctor != NULL) {
             iKitSlot = FindObjClass(pDoctor, IC_MEDKIT);
             if (iKitSlot != NO_SLOT) {
-              pKit = &(pDoctor.value.inv[iKitSlot]);
+              pKit = addressof(pDoctor.value.inv[iKitSlot]);
 
               usKitPts = TotalPoints(pKit);
               if (usKitPts) {
@@ -8551,7 +8551,7 @@ function ReEvaluateEveryonesNothingToDo(): void {
   let fNothingToDo: BOOLEAN;
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive) {
       switch (pSoldier.value.bAssignment) {
@@ -8633,7 +8633,7 @@ function SetAssignmentForList(bAssignment: INT8, bParam: INT8): void {
   // pSelectedSoldier is currently used only for REPAIR, and this block of code is copied from RepairMenuBtnCallback()
   if (bSelectedAssignChar != -1) {
     if (gCharactersList[bSelectedAssignChar].fValid == TRUE) {
-      pSelectedSoldier = &Menptr[gCharactersList[bSelectedAssignChar].usSolID];
+      pSelectedSoldier = addressof(Menptr[gCharactersList[bSelectedAssignChar].usSolID]);
     }
   }
 
@@ -8850,7 +8850,7 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
   Assert((bTargetAssignment == TRAIN_TEAMMATE) || (bTargetAssignment == TRAIN_BY_OTHER));
 
   for (iCounter = 0; iCounter <= gTacticalStatus.Team[OUR_TEAM].bLastID; iCounter++) {
-    pSoldier = &Menptr[iCounter];
+    pSoldier = addressof(Menptr[iCounter]);
 
     if (pSoldier.value.bActive) {
       // if the guy is not the target, has the assignment we want, is training the same stat, and is in our sector, alive
@@ -8869,10 +8869,10 @@ function ValidTrainingPartnerInSameSectorOnAssignmentFound(pTargetSoldier: Point
 
         if (pSoldier.value.bAssignment == TRAIN_TEAMMATE) {
           // pSoldier is the instructor, target is the student
-          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pSoldier, pTargetSoldier, bTargetStat, fAtGunRange, &usMaxPts);
+          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pSoldier, pTargetSoldier, bTargetStat, fAtGunRange, addressof(usMaxPts));
         } else {
           // target is the instructor, pSoldier is the student
-          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pTargetSoldier, pSoldier, bTargetStat, fAtGunRange, &usMaxPts);
+          sTrainingPts = GetBonusTrainingPtsDueToInstructor(pTargetSoldier, pSoldier, bTargetStat, fAtGunRange, addressof(usMaxPts));
         }
 
         if (sTrainingPts > 0) {
@@ -8895,7 +8895,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
 
     SetupProfileInsertionDataForSoldier(pSoldier);
 
-    fGotInfo = GetInfoForAbandoningEPC(pSoldier.value.ubProfile, &usQuoteNum, &usFactToSetToTrue);
+    fGotInfo = GetInfoForAbandoningEPC(pSoldier.value.ubProfile, addressof(usQuoteNum), addressof(usFactToSetToTrue));
     if (fGotInfo) {
       // say quote usQuoteNum
       gMercProfiles[pSoldier.value.ubProfile].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
@@ -8915,7 +8915,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
       pSoldier2 = FindSoldierByProfileID(MARY, TRUE);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(MARY, &usQuoteNum, &usFactToSetToTrue);
+        fGotInfo = GetInfoForAbandoningEPC(MARY, addressof(usQuoteNum), addressof(usFactToSetToTrue));
         if (fGotInfo) {
           // say quote usQuoteNum
           gMercProfiles[MARY].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
@@ -8934,7 +8934,7 @@ function UnEscortEPC(pSoldier: Pointer<SOLDIERTYPE>): void {
       pSoldier2 = FindSoldierByProfileID(JOHN, TRUE);
       if (pSoldier2) {
         SetupProfileInsertionDataForSoldier(pSoldier2);
-        fGotInfo = GetInfoForAbandoningEPC(JOHN, &usQuoteNum, &usFactToSetToTrue);
+        fGotInfo = GetInfoForAbandoningEPC(JOHN, addressof(usQuoteNum), addressof(usFactToSetToTrue));
         if (fGotInfo) {
           // say quote usQuoteNum
           gMercProfiles[JOHN].ubMiscFlags |= PROFILE_MISC_FLAG_FORCENPCQUOTE;
@@ -9067,11 +9067,11 @@ function GetSelectedAssignSoldier(fNullOK: BOOLEAN): Pointer<SOLDIERTYPE> {
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     // mapscreen version
     if ((bSelectedAssignChar >= 0) && (bSelectedAssignChar < MAX_CHARACTER_COUNT) && (gCharactersList[bSelectedAssignChar].fValid)) {
-      pSoldier = &Menptr[gCharactersList[bSelectedAssignChar].usSolID];
+      pSoldier = addressof(Menptr[gCharactersList[bSelectedAssignChar].usSolID]);
     }
   } else {
     // tactical version
-    pSoldier = &Menptr[gusUIFullTargetID];
+    pSoldier = addressof(Menptr[gusUIFullTargetID]);
   }
 
   if (!fNullOK) {
@@ -9190,7 +9190,7 @@ function RepairItemsOnOthers(pSoldier: Pointer<SOLDIERTYPE>, pubRepairPtsLeft: P
         do {
           bPocket = FindRepairableItemOnOtherSoldier(pBestOtherSoldier, ubPassType);
           if (bPocket != NO_SLOT) {
-            if (RepairObject(pSoldier, pBestOtherSoldier, &(pBestOtherSoldier.value.inv[bPocket]), pubRepairPtsLeft)) {
+            if (RepairObject(pSoldier, pBestOtherSoldier, addressof(pBestOtherSoldier.value.inv[bPocket]), pubRepairPtsLeft)) {
               fSomethingWasRepairedThisPass = TRUE;
             }
           }

@@ -81,7 +81,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
   }
 
   // Some values initialized here but could be changed before going to the common one
-  InitSoldierStruct(&Soldier);
+  InitSoldierStruct(addressof(Soldier));
 
   Soldier.uiUniqueSoldierIdValue = guiCurrentUniqueSoldierId;
 
@@ -90,9 +90,9 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
   // OK, CHECK IF WE HAVE A VALID PROFILE ID!
   if (pCreateStruct.value.ubProfile != NO_PROFILE) {
     // We have a merc created by profile, do this!
-    TacticalCopySoldierFromProfile(&Soldier, pCreateStruct);
+    TacticalCopySoldierFromProfile(addressof(Soldier), pCreateStruct);
   } else {
-    TacticalCopySoldierFromCreateStruct(&Soldier, pCreateStruct);
+    TacticalCopySoldierFromCreateStruct(addressof(Soldier), pCreateStruct);
   }
 
   // If we are NOT creating an existing soldier ( ie, this is not from a save game ), create soldier normally
@@ -166,7 +166,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
 
     // Copy the items over for thew soldier, only if we have a valid profile id!
     if (pCreateStruct.value.ubProfile != NO_PROFILE)
-      CopyProfileItems(&Soldier, pCreateStruct);
+      CopyProfileItems(addressof(Soldier), pCreateStruct);
 
     // Given team, get an ID for this guy!
 
@@ -203,10 +203,10 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
 
     // LOAD MERC's FACE!
     if (pCreateStruct.value.ubProfile != NO_PROFILE && Soldier.bTeam == OUR_TEAM) {
-      Soldier.iFaceIndex = InitSoldierFace(&Soldier);
+      Soldier.iFaceIndex = InitSoldierFace(addressof(Soldier));
     }
 
-    Soldier.bActionPoints = CalcActionPoints(&Soldier);
+    Soldier.bActionPoints = CalcActionPoints(addressof(Soldier));
     Soldier.bInitialActionPoints = Soldier.bActionPoints;
     Soldier.bSide = gTacticalStatus.Team[Soldier.bTeam].bSide;
     Soldier.bActive = TRUE;
@@ -299,13 +299,13 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
           if (!fSecondFaceItem) {
             // Don't check for compatibility...  automatically assume there are no head positions filled.
             fSecondFaceItem = TRUE;
-            memcpy(&Soldier.inv[HEAD1POS], &Soldier.inv[i], sizeof(OBJECTTYPE));
-            memset(&Soldier.inv[i], 0, sizeof(OBJECTTYPE));
+            memcpy(addressof(Soldier.inv[HEAD1POS]), addressof(Soldier.inv[i]), sizeof(OBJECTTYPE));
+            memset(addressof(Soldier.inv[i]), 0, sizeof(OBJECTTYPE));
           } else {
             // if there is a second item, compare it to the first one we already added.
             if (CompatibleFaceItem(Soldier.inv[HEAD1POS].usItem, Soldier.inv[i].usItem)) {
-              memcpy(&Soldier.inv[HEAD2POS], &Soldier.inv[i], sizeof(OBJECTTYPE));
-              memset(&Soldier.inv[i], 0, sizeof(OBJECTTYPE));
+              memcpy(addressof(Soldier.inv[HEAD2POS]), addressof(Soldier.inv[i]), sizeof(OBJECTTYPE));
+              memset(addressof(Soldier.inv[i]), 0, sizeof(OBJECTTYPE));
               break;
             }
           }
@@ -315,9 +315,9 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       if (guiCurrentScreen != AUTORESOLVE_SCREEN) {
         // also, if an army guy has camouflage, roll to determine whether they start camouflaged
         if (Soldier.bTeam == ENEMY_TEAM) {
-          i = FindObj(&Soldier, CAMOUFLAGEKIT);
+          i = FindObj(addressof(Soldier), CAMOUFLAGEKIT);
 
-          if (i != NO_SLOT && Random(5) < SoldierDifficultyLevel(&Soldier)) {
+          if (i != NO_SLOT && Random(5) < SoldierDifficultyLevel(addressof(Soldier))) {
             // start camouflaged
             Soldier.bCamo = 100;
           }
@@ -345,7 +345,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
         break;
 
       case BLOODCAT:
-        AssignCreatureInventory(&Soldier);
+        AssignCreatureInventory(addressof(Soldier));
         Soldier.bNormalSmell = NORMAL_HUMAN_SMELL_STRENGTH;
         Soldier.uiStatusFlags |= SOLDIER_ANIMAL;
         break;
@@ -358,7 +358,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       case INFANT_MONSTER:
       case QUEENMONSTER:
 
-        AssignCreatureInventory(&Soldier);
+        AssignCreatureInventory(addressof(Soldier));
         Soldier.ubCaller = NOBODY;
         if (!gfEditMode) {
           Soldier.bOrders = FARPATROL;
@@ -428,7 +428,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
           // Add vehicle to list....
           Soldier.bVehicleID = AddVehicleToList(Soldier.sSectorX, Soldier.sSectorY, Soldier.bSectorZ, ubVehicleID);
         }
-        SetVehicleValuesIntoSoldierType(&Soldier);
+        SetVehicleValuesIntoSoldierType(addressof(Soldier));
         break;
 
       default:
@@ -438,18 +438,18 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
 
     if (guiCurrentScreen != AUTORESOLVE_SCREEN) {
       // Copy into merc struct
-      memcpy(MercPtrs[Soldier.ubID], &Soldier, sizeof(SOLDIERTYPE));
+      memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
       // Alrighty then, we are set to create the merc, stuff after here can fail!
       CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, STANDING) != FALSE);
     }
   } else {
     // Copy the data from the existing soldier struct to the new soldier struct
-    if (!CopySavedSoldierInfoToNewSoldier(&Soldier, pCreateStruct.value.pExistingSoldier))
+    if (!CopySavedSoldierInfoToNewSoldier(addressof(Soldier), pCreateStruct.value.pExistingSoldier))
       return FALSE;
 
     // Reset the face index
     Soldier.iFaceIndex = -1;
-    Soldier.iFaceIndex = InitSoldierFace(&Soldier);
+    Soldier.iFaceIndex = InitSoldierFace(addressof(Soldier));
 
     // ATE: Reset soldier's light value to -1....
     Soldier.iLight = -1;
@@ -459,7 +459,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     }
 
     // Copy into merc struct
-    memcpy(MercPtrs[Soldier.ubID], &Soldier, sizeof(SOLDIERTYPE));
+    memcpy(MercPtrs[Soldier.ubID], addressof(Soldier), sizeof(SOLDIERTYPE));
 
     // Alrighty then, we are set to create the merc, stuff after here can fail!
     CHECKF(CreateSoldierCommon(Soldier.ubBodyType, MercPtrs[Soldier.ubID], Soldier.ubID, Menptr[Soldier.ubID].usAnimState) != FALSE);
@@ -492,7 +492,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
     if (!pSoldier)
       return NULL;
-    memcpy(pSoldier, &Soldier, sizeof(SOLDIERTYPE));
+    memcpy(pSoldier, addressof(Soldier), sizeof(SOLDIERTYPE));
     pSoldier.value.ubID = 255;
     pSoldier.value.sSectorX = SECTORX(ubSectorID);
     pSoldier.value.sSectorY = SECTORY(ubSectorID);
@@ -507,7 +507,7 @@ function TacticalCopySoldierFromProfile(pSoldier: Pointer<SOLDIERTYPE>, pCreateS
   let pProfile: Pointer<MERCPROFILESTRUCT>;
 
   ubProfileIndex = pCreateStruct.value.ubProfile;
-  pProfile = &(gMercProfiles[ubProfileIndex]);
+  pProfile = addressof(gMercProfiles[ubProfileIndex]);
 
   SET_PALETTEREP_ID(pSoldier.value.HeadPal, pProfile.value.HAIR);
   SET_PALETTEREP_ID(pSoldier.value.VestPal, pProfile.value.VEST);
@@ -1422,7 +1422,7 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
   pp.value.bMorale = (bBaseAttribute + Random(9) + Random(8));
 
   // CJC: now calculate the REAL experience level if in the really upper end
-  ReduceHighExpLevels(&(pp.value.bExpLevel));
+  ReduceHighExpLevels(addressof(pp.value.bExpLevel));
 
   pp.value.fVisible = 0;
 
@@ -1503,7 +1503,7 @@ function CreateStaticDetailedPlacementGivenBasicPlacementInfo(spp: Pointer<SOLDI
 
   // Starts with nothing
   for (i = 0; i < NUM_INV_SLOTS; i++) {
-    memset(&(spp.value.Inv[i]), 0, sizeof(OBJECTTYPE));
+    memset(addressof(spp.value.Inv[i]), 0, sizeof(OBJECTTYPE));
     spp.value.Inv[i].usItem = NOTHING;
     spp.value.Inv[i].fFlags |= OBJECT_UNDROPPABLE;
   }
@@ -1588,7 +1588,7 @@ function CreateDetailedPlacementGivenStaticDetailedPlacementAndBasicPlacementInf
   for (i = 0; i < NUM_INV_SLOTS; i++) {
     // copy over static items and empty slots that are droppable (signifies a forced empty slot)
     if (spp.value.Inv[i].fFlags & OBJECT_NO_OVERWRITE) {
-      memcpy(&pp.value.Inv[i], &spp.value.Inv[i], sizeof(OBJECTTYPE));
+      memcpy(addressof(pp.value.Inv[i]), addressof(spp.value.Inv[i]), sizeof(OBJECTTYPE));
       // memcpy( pp->Inv, spp->Inv, sizeof( OBJECTTYPE ) * NUM_INV_SLOTS );
       // return;
     }
@@ -1692,7 +1692,7 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIE
 
   spp.value.ubProfile = ubProfile;
 
-  pProfile = &(gMercProfiles[ubProfile]);
+  pProfile = addressof(gMercProfiles[ubProfile]);
 
   SET_PALETTEREP_ID(spp.value.HeadPal, pProfile.value.HAIR);
   SET_PALETTEREP_ID(spp.value.VestPal, pProfile.value.VEST);
@@ -1718,7 +1718,7 @@ function UpdateStaticDetailedPlacementWithProfileInformation(spp: Pointer<SOLDIE
 
   // Copy over inv if we want to
   for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
-    CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], &(spp.value.Inv[cnt]));
+    CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(spp.value.Inv[cnt]));
   }
 }
 
@@ -1757,10 +1757,10 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
 function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
   let CreateStruct: SOLDIERCREATE_STRUCT;
 
-  memset(&CreateStruct, 0, sizeof(CreateStruct));
+  memset(addressof(CreateStruct), 0, sizeof(CreateStruct));
   CreateStruct.ubProfile = ubProfileID;
 
-  TacticalCopySoldierFromProfile(pSoldier, &CreateStruct);
+  TacticalCopySoldierFromProfile(pSoldier, addressof(CreateStruct));
 
   // Delete face and re-create
   DeleteSoldierFace(pSoldier);
@@ -1828,17 +1828,17 @@ function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ADMINISTRATOR);
   }
 
-  memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(&(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ADMINISTRATOR);
-  RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ADMINISTRATOR);
+  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
+  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ADMINISTRATOR);
+  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ADMINISTRATOR);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
   bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
-  CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
-  pSoldier = TacticalCreateSoldier(&pp, &ubID);
+  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1858,17 +1858,17 @@ function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ARMY);
   }
 
-  memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(&(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ARMY);
-  RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ARMY);
+  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
+  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ARMY);
+  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ARMY);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
   bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ARMY;
-  CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
-  pSoldier = TacticalCreateSoldier(&pp, &ubID);
+  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1888,26 +1888,26 @@ function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_ELITE);
   }
 
-  memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
+  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
 
-  RandomizeRelativeLevel(&(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ELITE);
-  RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ELITE);
+  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), SOLDIER_CLASS_ELITE);
+  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ELITE);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
   bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ELITE;
-  CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
+  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
 
   // SPECIAL!  Certain events in the game can cause profiled NPCs to become enemies.  The two cases are
   // adding Mike and Iggy.  We will only add one NPC in any given combat and the conditions for setting
   // the associated facts are done elsewhere.  There is also another place where NPCs can get added, which
   // is in AddPlacementToWorld() used for inserting defensive enemies.
   // NOTE:  We don't want to add Mike or Iggy if this is being called from autoresolve!
-  OkayToUpgradeEliteToSpecialProfiledEnemy(&pp);
+  OkayToUpgradeEliteToSpecialProfiledEnemy(addressof(pp));
 
-  pSoldier = TacticalCreateSoldier(&pp, &ubID);
+  pSoldier = TacticalCreateSoldier(addressof(pp), addressof(ubID));
   if (pSoldier) {
     // send soldier to centre of map, roughly
     pSoldier.value.sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
@@ -1921,18 +1921,18 @@ function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   let pp: SOLDIERCREATE_STRUCT;
   let ubID: UINT8;
 
-  memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(&(bp.bRelativeAttributeLevel), ubMilitiaClass);
-  RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), ubMilitiaClass);
+  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
+  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), ubMilitiaClass);
+  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), ubMilitiaClass);
   bp.bTeam = MILITIA_TEAM;
   bp.ubSoldierClass = ubMilitiaClass;
   bp.bOrders = STATIONARY;
   bp.bAttitude = Random(MAXATTITUDES);
   // bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = -1;
-  CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
-  return TacticalCreateSoldier(&pp, &ubID);
+  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
 function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
@@ -1944,17 +1944,17 @@ function TacticalCreateCreature(bCreatureBodyType: INT8): Pointer<SOLDIERTYPE> {
     return ReserveTacticalSoldierForAutoresolve(SOLDIER_CLASS_CREATURE);
   }
 
-  memset(&bp, 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
-  memset(&pp, 0, sizeof(SOLDIERCREATE_STRUCT));
-  RandomizeRelativeLevel(&(bp.bRelativeAttributeLevel), SOLDIER_CLASS_CREATURE);
-  RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_CREATURE);
+  memset(addressof(bp), 0, sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  memset(addressof(pp), 0, sizeof(SOLDIERCREATE_STRUCT));
+  RandomizeRelativeLevel(addressof(bp.bRelativeAttributeLevel), SOLDIER_CLASS_CREATURE);
+  RandomizeRelativeLevel(addressof(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_CREATURE);
   bp.bTeam = CREATURE_TEAM;
   bp.ubSoldierClass = SOLDIER_CLASS_CREATURE;
   bp.bOrders = SEEKENEMY;
   bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = bCreatureBodyType;
-  CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
-  return TacticalCreateSoldier(&pp, &ubID);
+  CreateDetailedPlacementGivenBasicPlacementInfo(addressof(pp), addressof(bp));
+  return TacticalCreateSoldier(addressof(pp), addressof(ubID));
 }
 
 function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8): void {
@@ -2060,13 +2060,13 @@ function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
   let ubID: UINT8;
   let usMapPos: UINT16;
 
-  if (GetMouseXY(&sGridX, &sGridY)) {
+  if (GetMouseXY(addressof(sGridX), addressof(sGridY))) {
     usMapPos = MAPROWCOLTOPOS(sGridY, sGridX);
     // Get Grid Coordinates of mouse
-    if (GetMouseWorldCoordsInCenter(&sWorldX, &sWorldY)) {
-      GetCurrentWorldSector(&sSectorX, &sSectorY);
+    if (GetMouseWorldCoordsInCenter(addressof(sWorldX), addressof(sWorldY))) {
+      GetCurrentWorldSector(addressof(sSectorX), addressof(sSectorY));
 
-      memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
+      memset(addressof(MercCreateStruct), 0, sizeof(MercCreateStruct));
       MercCreateStruct.bTeam = bTeam;
       MercCreateStruct.ubProfile = ubProfileID;
       MercCreateStruct.sSectorX = sSectorX;
@@ -2074,9 +2074,9 @@ function QuickCreateProfileMerc(bTeam: INT8, ubProfileID: UINT8): void {
       MercCreateStruct.bSectorZ = gbWorldSectorZ;
       MercCreateStruct.sInsertionGridNo = usMapPos;
 
-      RandomizeNewSoldierStats(&MercCreateStruct);
+      RandomizeNewSoldierStats(addressof(MercCreateStruct));
 
-      if (TacticalCreateSoldier(&MercCreateStruct, &ubID)) {
+      if (TacticalCreateSoldier(addressof(MercCreateStruct), addressof(ubID))) {
         AddSoldierToSector(ubID);
 
         // So we can see them!
@@ -2095,7 +2095,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
   let uiMoneyLimitInSlot: UINT32;
   let bSlot: INT8;
 
-  pProfile = &(gMercProfiles[pCreateStruct.value.ubProfile]);
+  pProfile = addressof(gMercProfiles[pCreateStruct.value.ubProfile]);
 
   // Copy over inv if we want to
   if (pCreateStruct.value.fCopyProfileItemsOver || pSoldier.value.bTeam != OUR_TEAM) {
@@ -2105,21 +2105,21 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
       memset(pSoldier.value.inv, 0, NUM_INV_SLOTS * sizeof(OBJECTTYPE));
       for (cnt = 0; cnt < NUM_INV_SLOTS; cnt++) {
         if (pProfile.value.inv[cnt] != NOTHING) {
-          CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], &Obj);
+          CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(Obj));
           if (Item[Obj.usItem].fFlags & ITEM_ATTACHMENT) {
             // try to find the appropriate item to attach to!
             for (cnt2 = 0; cnt2 < NUM_INV_SLOTS; cnt2++) {
               if (pSoldier.value.inv[cnt2].usItem != NOTHING && ValidAttachment(Obj.usItem, pSoldier.value.inv[cnt2].usItem)) {
-                AttachObject(NULL, &(pSoldier.value.inv[cnt2]), &Obj);
+                AttachObject(NULL, addressof(pSoldier.value.inv[cnt2]), addressof(Obj));
                 break;
               }
             }
             if (cnt2 == NUM_INV_SLOTS) {
               // oh well, couldn't find anything to attach to!
-              AutoPlaceObject(pSoldier, &Obj, FALSE);
+              AutoPlaceObject(pSoldier, addressof(Obj), FALSE);
             }
           } else {
-            AutoPlaceObject(pSoldier, &Obj, FALSE);
+            AutoPlaceObject(pSoldier, addressof(Obj), FALSE);
           }
         }
       }
@@ -2134,31 +2134,31 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             switch (pCreateStruct.value.ubProfile) {
               case BREWSTER:
                 if (pProfile.value.inv[cnt] >= KEY_1 && pProfile.value.inv[cnt] <= KEY_32) {
-                  CreateKeyObject(&(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 19);
+                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 19);
                 } else {
-                  memset(&(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
                 }
                 break;
               case SKIPPER:
                 if (pProfile.value.inv[cnt] >= KEY_1 && pProfile.value.inv[cnt] <= KEY_32) {
-                  CreateKeyObject(&(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 11);
+                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 11);
                 } else {
-                  memset(&(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
                 }
                 break;
               case DOREEN:
                 if (pProfile.value.inv[cnt] >= KEY_1 && pProfile.value.inv[cnt] <= KEY_32) {
-                  CreateKeyObject(&(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 32);
+                  CreateKeyObject(addressof(pSoldier.value.inv[cnt]), pProfile.value.bInvNumber[cnt], 32);
                 } else {
-                  memset(&(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                  memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
                 }
                 break;
               default:
-                memset(&(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+                memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
                 break;
             }
           } else {
-            CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], &(pSoldier.value.inv[cnt]));
+            CreateItems(pProfile.value.inv[cnt], pProfile.value.bInvStatus[cnt], pProfile.value.bInvNumber[cnt], addressof(pSoldier.value.inv[cnt]));
           }
           if (pProfile.value.inv[cnt] == ROCKET_RIFLE || pProfile.value.inv[cnt] == AUTO_ROCKET_RIFLE) {
             pSoldier.value.inv[cnt].ubImprintID = pSoldier.value.ubProfile;
@@ -2169,7 +2169,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             }
           }
         } else {
-          memset(&(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
+          memset(addressof(pSoldier.value.inv[cnt]), 0, sizeof(OBJECTTYPE));
         }
       }
       if (pProfile.value.uiMoney > 0) {
@@ -2183,7 +2183,7 @@ function CopyProfileItems(pSoldier: Pointer<SOLDIERTYPE>, pCreateStruct: Pointer
             uiMoneyLimitInSlot /= 2;
           }
 
-          CreateItem(MONEY, 100, &(pSoldier.value.inv[bSlot]));
+          CreateItem(MONEY, 100, addressof(pSoldier.value.inv[bSlot]));
           if (uiMoneyLeft > uiMoneyLimitInSlot) {
             // fill pocket with money
             pSoldier.value.inv[bSlot].uiMoneyAmount = uiMoneyLimitInSlot;
@@ -2244,7 +2244,7 @@ function GetLocationModifier(ubSoldierClass: UINT8): UINT8 {
   let fSuccess: BOOLEAN;
 
   // where is all this taking place?
-  fSuccess = GetCurrentBattleSectorXYZ(&sSectorX, &sSectorY, &sSectorZ);
+  fSuccess = GetCurrentBattleSectorXYZ(addressof(sSectorX), addressof(sSectorY), addressof(sSectorZ));
   Assert(fSuccess);
 
   // ignore sSectorZ - treat any underground enemies as if they were on the surface!
