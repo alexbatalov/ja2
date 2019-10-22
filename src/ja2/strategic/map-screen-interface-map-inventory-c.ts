@@ -190,12 +190,12 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
   GetVideoObject(&hHandle, GetInterfaceGraphicForItem(&(Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem])));
 
   pTrav = &(hHandle->pETRLEObject[Item[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem].ubGraphicNum]);
-  usHeight = (UINT16)pTrav->usHeight;
-  usWidth = (UINT16)pTrav->usWidth;
+  usHeight = pTrav->usHeight;
+  usWidth = pTrav->usWidth;
 
   // set sx and sy
-  sX = (INT16)(MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS)));
-  sY = (INT16)(MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
+  sX = (MAP_INVENTORY_POOL_SLOT_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS)));
+  sY = (MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS))));
 
   // CENTER IN SLOT!
   sCenX = sX + (abs(MAP_INVEN_SPACE_BTWN_SLOTS - usWidth) / 2) - pTrav->sOffsetX;
@@ -211,7 +211,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
-  INVRenderItem(guiSAVEBUFFER, NULL, &(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (INT16)(sX + 7), sY, 60, 25, DIRTYLEVEL2, NULL, 0, fOutLine, sOutLine); // 67
+  INVRenderItem(guiSAVEBUFFER, NULL, &(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), (sX + 7), sY, 60, 25, DIRTYLEVEL2, NULL, 0, fOutLine, sOutLine); // 67
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
@@ -223,7 +223,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
 
   // now draw bar for condition
   // Display ststus
-  DrawItemUIBarEx(&(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (INT16)(ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (INT16)(ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR), Get16BPPColor(DESC_STATUS_BAR_SHADOW), TRUE, guiSAVEBUFFER);
+  DrawItemUIBarEx(&(pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o), 0, (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_X + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), (ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), ITEMDESC_ITEM_STATUS_WIDTH_INV_POOL, ITEMDESC_ITEM_STATUS_HEIGHT_INV_POOL, Get16BPPColor(DESC_STATUS_BAR), Get16BPPColor(DESC_STATUS_BAR_SHADOW), TRUE, guiSAVEBUFFER);
 
   //
   // if the item is not reachable, or if the selected merc is not in the current sector
@@ -238,10 +238,10 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
   wcscpy(sString, ShortItemNames[pInventoryPoolList[iCurrentSlot + iFirstSlotOnPage].o.usItem]);
 
   if (StringPixLength(sString, MAP_IVEN_FONT) >= (MAP_INVEN_SLOT_WIDTH)) {
-    ReduceStringLength(sString, (INT16)(MAP_INVEN_SLOT_WIDTH - StringPixLength(L" ...", MAP_IVEN_FONT)), MAP_IVEN_FONT);
+    ReduceStringLength(sString, (MAP_INVEN_SLOT_WIDTH - StringPixLength(L" ...", MAP_IVEN_FONT)), MAP_IVEN_FONT);
   }
 
-  FindFontCenterCoordinates((INT16)(4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT, &sWidth, &sHeight);
+  FindFontCenterCoordinates((4 + MAP_INVENTORY_POOL_SLOT_START_X + ((MAP_INVEN_SPACE_BTWN_SLOTS) * (iCurrentSlot / MAP_INV_SLOT_COLS))), 0, MAP_INVEN_SLOT_WIDTH, 0, sString, MAP_IVEN_FONT, &sWidth, &sHeight);
 
   SetFontDestBuffer(guiSAVEBUFFER, 0, 0, 640, 480, FALSE);
 
@@ -249,7 +249,7 @@ function RenderItemInPoolSlot(iCurrentSlot: INT32, iFirstSlotOnPage: INT32): BOO
   SetFontForeground(FONT_WHITE);
   SetFontBackground(FONT_BLACK);
 
-  mprintf(sWidth, (INT16)(3 + ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), sString);
+  mprintf(sWidth, (3 + ITEMDESC_ITEM_STATUS_INV_POOL_OFFSET_Y + MAP_INVENTORY_POOL_SLOT_START_Y + ((MAP_INVEN_SLOT_HEIGHT) * (iCurrentSlot % (MAP_INV_SLOT_COLS)))), sString);
 
   /*
           if( pInventoryPoolList[ iCurrentSlot + iFirstSlotOnPage ].o.ubNumberOfObjects > 1 )
@@ -332,7 +332,7 @@ function CreateDestroyMapInventoryPoolButtons(fExitFromMapScreen: BOOLEAN): void
     CreateMapInventoryButtons();
 
     // build stash
-    BuildStashForSelectedSector(sSelMapX, sSelMapY, (INT16)(iCurrentMapSectorZ));
+    BuildStashForSelectedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ));
 
     CreateMapInventoryPoolDoneButton();
 
@@ -435,24 +435,24 @@ function SaveSeenAndUnseenItems(): void {
   }
 
   // if this is the loaded sector handle here
-  if ((gWorldSectorX == sSelMapX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == (INT8)(iCurrentMapSectorZ))) {
+  if ((gWorldSectorX == sSelMapX) && (gWorldSectorY == sSelMapY) && (gbWorldSectorZ == (iCurrentMapSectorZ))) {
     ReBuildWorldItemStashForLoadedSector(iItemCount, uiNumberOfUnSeenItems, pSeenItemsList, pSaveList);
   } else {
     // now copy over unseen and seen
     if (uiNumberOfUnSeenItems > 0) {
       // over write file and copy unseen
-      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (INT8)(iCurrentMapSectorZ), 0, uiNumberOfUnSeenItems, pSaveList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, uiNumberOfUnSeenItems, pSaveList, TRUE);
 
       // check if seen items exist too
       if (iItemCount > 0) {
-        AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (INT8)(iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, FALSE);
+        AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, FALSE);
       }
     } else if (iItemCount > 0) {
       // copy only seen items
-      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (INT8)(iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, iItemCount, pSeenItemsList, TRUE);
     } else {
       // get rid of the file
-      SaveWorldItemsToTempItemFile(sSelMapX, sSelMapY, (INT8)(iCurrentMapSectorZ), 0, NULL);
+      SaveWorldItemsToTempItemFile(sSelMapX, sSelMapY, (iCurrentMapSectorZ), 0, NULL);
       return;
     }
   }
@@ -505,11 +505,11 @@ function CreateMapInventoryPoolSlots(): void {
     sULX = MAP_INVENTORY_POOL_SLOT_START_X + 4;
     sULY = MAP_INVENTORY_POOL_SLOT_START_Y + 1;
 
-    sULX += (INT16)(sX * MAP_INVEN_SPACE_BTWN_SLOTS);
-    sULY += (INT16)((sY * MAP_INVEN_SLOT_HEIGHT));
+    sULX += (sX * MAP_INVEN_SPACE_BTWN_SLOTS);
+    sULY += ((sY * MAP_INVEN_SLOT_HEIGHT));
 
-    sBRX = (INT16)(MAP_INVENTORY_POOL_SLOT_START_X + (sXA * MAP_INVEN_SPACE_BTWN_SLOTS));
-    sBRY = (INT16)(MAP_INVENTORY_POOL_SLOT_START_Y + (sYA * MAP_INVEN_SLOT_HEIGHT)) - 1;
+    sBRX = (MAP_INVENTORY_POOL_SLOT_START_X + (sXA * MAP_INVEN_SPACE_BTWN_SLOTS));
+    sBRY = (MAP_INVENTORY_POOL_SLOT_START_Y + (sYA * MAP_INVEN_SLOT_HEIGHT)) - 1;
 
     MSYS_DefineRegion(&MapInventoryPoolSlots[iCounter], sULX, sULY, sBRX, sBRY, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MapInvenPoolSlotsMove, MapInvenPoolSlots);
 
@@ -699,10 +699,10 @@ function MapInvenPoolSlots(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void
 
 function CreateMapInventoryButtons(): void {
   guiMapInvenButtonImage[0] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 10, 1, -1, 3, -1);
-  guiMapInvenButton[0] = QuickCreateButton(guiMapInvenButtonImage[0], 559, 336, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)MapInventoryPoolNextBtn);
+  guiMapInvenButton[0] = QuickCreateButton(guiMapInvenButtonImage[0], 559, 336, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, MapInventoryPoolNextBtn);
 
   guiMapInvenButtonImage[1] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 9, 0, -1, 2, -1);
-  guiMapInvenButton[1] = QuickCreateButton(guiMapInvenButtonImage[1], 487, 336, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)MapInventoryPoolPrevBtn);
+  guiMapInvenButton[1] = QuickCreateButton(guiMapInvenButtonImage[1], 487, 336, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, MapInventoryPoolPrevBtn);
 
   // reset the current inventory page to be the first page
   iCurrentInventoryPoolPage = 0;
@@ -753,7 +753,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   // now laod these items into memory, based on fact if sector is in fact loaded
   if ((sMapX == gWorldSectorX) && (gWorldSectorY == sMapY) && (gbWorldSectorZ == sMapZ)) {
     // sector loaded, just copy from list
-    for (iCounter = 0; (UINT32)(iCounter) < guiNumWorldItems; iCounter++) {
+    for (iCounter = 0; (iCounter) < guiNumWorldItems; iCounter++) {
       // check if visible, if so, then copy over object type
       // if visible to player, then state fact
 
@@ -779,7 +779,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
       uiItemCount = 0;
 
       // now copy over
-      for (iCounter = 0; (UINT32)iCounter < guiNumWorldItems; iCounter++) {
+      for (iCounter = 0; iCounter < guiNumWorldItems; iCounter++) {
         //				if( ( gWorldItems[ iCounter ].bVisible  != 1 ) &&
         //						( gWorldItems[ iCounter ].o.ubNumberOfObjects > 0 ) &&
         //							gWorldItems[ iCounter ].fExists )
@@ -797,10 +797,10 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
   } else {
     // not loaded, load
     // get total number, visable and invisible
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (INT8)(sMapZ), &(uiTotalNumberOfItems), FALSE);
+    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), &(uiTotalNumberOfItems), FALSE);
     Assert(fReturn);
 
-    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (INT8)(sMapZ), &(uiTotalNumberOfRealItems));
+    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), &(uiTotalNumberOfRealItems));
     Assert(fReturn);
 
     if (uiTotalNumberOfRealItems > 0) {
@@ -808,11 +808,11 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
       pTotalSectorList = MemAlloc(sizeof(WORLDITEM) * uiTotalNumberOfItems);
 
       // now load into mem
-      LoadWorldItemsFromTempItemFile(sMapX, sMapY, (INT8)(sMapZ), pTotalSectorList);
+      LoadWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), pTotalSectorList);
     }
 
     // now run through list and
-    for (iCounter = 0; (UINT32)(iCounter) < uiTotalNumberOfRealItems; iCounter++) {
+    for (iCounter = 0; (iCounter) < uiTotalNumberOfRealItems; iCounter++) {
       // if visible to player, then state fact
       /*
                               if( pTotalSectorList[ iCounter].bVisible == 1 &&
@@ -843,7 +843,7 @@ function BuildStashForSelectedSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16): 
       uiItemCount = 0;
 
       // now copy over
-      for (iCounter = 0; (UINT32)iCounter < uiTotalNumberOfItems; iCounter++) {
+      for (iCounter = 0; iCounter < uiTotalNumberOfItems; iCounter++) {
         /*
                                         if( ( pTotalSectorList[ iCounter].bVisible  != 1 ) &&
                                                         ( pTotalSectorList[ iCounter].o.ubNumberOfObjects > 0 ) &&
@@ -983,7 +983,7 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     uiTotalNumberOfItems = guiNumWorldItems;
 
     // now run through list and
-    for (iCounter = 0; (UINT32)(iCounter) < uiTotalNumberOfItems; iCounter++) {
+    for (iCounter = 0; (iCounter) < uiTotalNumberOfItems; iCounter++) {
       // if visible to player, then state fact
       //			if( gWorldItems[ iCounter ].bVisible == 1 && gWorldItems[ iCounter ].fExists )
       if (IsMapScreenWorldItemVisibleInMapInventory(&gWorldItems[iCounter])) {
@@ -997,10 +997,10 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
     }
   } else {
     // get total number, visable and invisible
-    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (INT8)(sMapZ), &(uiTotalNumberOfRealItems));
+    fReturn = GetNumberOfActiveWorldItemsFromTempFile(sMapX, sMapY, (sMapZ), &(uiTotalNumberOfRealItems));
     Assert(fReturn);
 
-    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (INT8)(sMapZ), &(uiTotalNumberOfItems), FALSE);
+    fReturn = GetNumberOfWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), &(uiTotalNumberOfItems), FALSE);
     Assert(fReturn);
 
     if (uiTotalNumberOfItems > 0) {
@@ -1008,11 +1008,11 @@ function GetSizeOfStashInSector(sMapX: INT16, sMapY: INT16, sMapZ: INT16, fCount
       pTotalSectorList = MemAlloc(sizeof(WORLDITEM) * uiTotalNumberOfItems);
 
       // now load into mem
-      LoadWorldItemsFromTempItemFile(sMapX, sMapY, (INT8)(sMapZ), pTotalSectorList);
+      LoadWorldItemsFromTempItemFile(sMapX, sMapY, (sMapZ), pTotalSectorList);
     }
 
     // now run through list and
-    for (iCounter = 0; (UINT32)(iCounter) < uiTotalNumberOfRealItems; iCounter++) {
+    for (iCounter = 0; (iCounter) < uiTotalNumberOfRealItems; iCounter++) {
       // if visible to player, then state fact
       //			if( pTotalSectorList[ iCounter ].bVisible == 1 && pTotalSectorList[ iCounter ].fExists )
       if (IsMapScreenWorldItemVisibleInMapInventory(&pTotalSectorList[iCounter])) {
@@ -1155,7 +1155,7 @@ function PlaceObjectInInventoryStash(pInventorySlot: Pointer<OBJECTTYPE>, pItemP
       if (pItemPtr->usItem == MONEY) {
         // always allow money to be combined!
         // average out the status values using a weighted average...
-        pInventorySlot->bStatus[0] = (INT8)(((UINT32)pInventorySlot->bMoneyStatus * pInventorySlot->uiMoneyAmount + (UINT32)pItemPtr->bMoneyStatus * pItemPtr->uiMoneyAmount) / (pInventorySlot->uiMoneyAmount + pItemPtr->uiMoneyAmount));
+        pInventorySlot->bStatus[0] = ((pInventorySlot->bMoneyStatus * pInventorySlot->uiMoneyAmount + pItemPtr->bMoneyStatus * pItemPtr->uiMoneyAmount) / (pInventorySlot->uiMoneyAmount + pItemPtr->uiMoneyAmount));
         pInventorySlot->uiMoneyAmount += pItemPtr->uiMoneyAmount;
 
         DeleteObj(pItemPtr);
@@ -1343,7 +1343,7 @@ function DrawNumberOfIventoryPoolItems(): void {
 function CreateMapInventoryPoolDoneButton(): void {
   // create done button
   guiMapInvenButtonImage[2] = LoadButtonImage("INTERFACE\\done_button.sti", -1, 0, -1, 1, -1);
-  guiMapInvenButton[2] = QuickCreateButton(guiMapInvenButtonImage[2], 587, 333, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)MapInventoryPoolDoneBtn);
+  guiMapInvenButton[2] = QuickCreateButton(guiMapInvenButtonImage[2], 587, 333, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, MapInventoryPoolDoneBtn);
 
   return;
 }
@@ -1412,11 +1412,11 @@ function DrawTextOnMapInventoryBackground(): void {
 
   // Calculate the height of the string, as it needs to be vertically centered.
   usStringHeight = DisplayWrappedString(268, 342, 53, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(268, (UINT16)(342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DisplayWrappedString(268, (342 - (usStringHeight / 2)), 53, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[0], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   // Calculate the height of the string, as it needs to be vertically centered.
   usStringHeight = DisplayWrappedString(369, 342, 65, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED | DONT_DISPLAY_TEXT);
-  DisplayWrappedString(369, (UINT16)(342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
+  DisplayWrappedString(369, (342 - (usStringHeight / 2)), 65, 1, MAP_IVEN_FONT, FONT_BEIGE, pMapInventoryStrings[1], FONT_BLACK, FALSE, RIGHT_JUSTIFIED);
 
   DrawTextOnSectorInventory();
 
@@ -1631,7 +1631,7 @@ function CheckGridNoOfItemsInMapScreenMapInventory(): void {
   }
 
   // loop through all the UNSEEN items
-  for (iCnt = 0; iCnt < (INT32)uiNumberOfUnSeenItems; iCnt++) {
+  for (iCnt = 0; iCnt < uiNumberOfUnSeenItems; iCnt++) {
     if (pUnSeenItems[iCnt].sGridNo == NOWHERE && !(pUnSeenItems[iCnt].usFlags & WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT)) {
       // set the flag
       pUnSeenItems[iCnt].usFlags |= WORLD_ITEM_GRIDNO_NOT_SET_USE_ENTRY_POINT;
@@ -1643,12 +1643,12 @@ function CheckGridNoOfItemsInMapScreenMapInventory(): void {
 }
 
 function SortSectorInventory(pInventory: Pointer<WORLDITEM>, uiSizeOfArray: UINT32): void {
-  qsort((LPVOID)pInventory, (size_t)uiSizeOfArray, sizeof(WORLDITEM), MapScreenSectorInventoryCompare);
+  qsort(pInventory, uiSizeOfArray, sizeof(WORLDITEM), MapScreenSectorInventoryCompare);
 }
 
 function MapScreenSectorInventoryCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  let pFirst: Pointer<WORLDITEM> = (WORLDITEM *)pNum1;
-  let pSecond: Pointer<WORLDITEM> = (WORLDITEM *)pNum2;
+  let pFirst: Pointer<WORLDITEM> = pNum1;
+  let pSecond: Pointer<WORLDITEM> = pNum2;
   let usItem1Index: UINT16;
   let usItem2Index: UINT16;
   let ubItem1Quality: UINT8;

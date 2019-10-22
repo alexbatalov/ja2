@@ -300,7 +300,7 @@ function ForecastDayEvents(): void {
       if (Random(100) < 20) {
         // Add rain!
         // Between 6:00 and 10:00
-        uiStartTime = (UINT32)(360 + Random(1080));
+        uiStartTime = (360 + Random(1080));
         // Between 5 - 15 miniutes
         uiEndTime = uiStartTime + (5 + Random(10));
 
@@ -356,7 +356,7 @@ function EnvDoLightning(): void {
       PlayJA2Ambient(LIGHTNING_1 + Random(2), HIGHVOLUME, 1);
     }
 
-    while (uiCount > ((UINT32)ubLightningTable[uiStrike][uiIndex][0] + uiFrameNext))
+    while (uiCount > (ubLightningTable[uiStrike][uiIndex][0] + uiFrameNext))
       uiIndex++;
 
     ubLastLevel = ubLevel;
@@ -367,11 +367,11 @@ function EnvDoLightning(): void {
     } else {
       if (ubLastLevel != ubLevel) {
         if (ubLevel > ubLastLevel) {
-          LightAddBaseLevel(0, (UINT8)(ubLevel - ubLastLevel));
+          LightAddBaseLevel(0, (ubLevel - ubLastLevel));
           if (ubLevel > 0)
             RenderSetShadows(TRUE);
         } else {
-          LightSubtractBaseLevel(0, (UINT8)(ubLastLevel - ubLevel));
+          LightSubtractBaseLevel(0, (ubLastLevel - ubLevel));
           if (ubLevel > 0)
             RenderSetShadows(TRUE);
         }

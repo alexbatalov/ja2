@@ -17,4 +17,4 @@ const ADJUST_Y_FOR_HEIGHT = (pos, y) => (y -= gpWorldLevelData[pos].sHeight);
 //                                                |Check for map bounds------------------------------------------|   |Invalid-|   |Valid-------------------|
 const MAPROWCOLTOPOS = (r, c) => (((r < 0) || (r >= WORLD_ROWS) || (c < 0) || (c >= WORLD_COLS)) ? (0xffff) : ((r) * WORLD_COLS + (c)));
 
-const GETWORLDINDEXFROMWORLDCOORDS = (r, c) => ((INT16)(r / CELL_X_SIZE)) * WORLD_COLS + ((INT16)(c / CELL_Y_SIZE));
+const GETWORLDINDEXFROMWORLDCOORDS = (r, c) => ((r / CELL_X_SIZE)) * WORLD_COLS + ((c / CELL_Y_SIZE));

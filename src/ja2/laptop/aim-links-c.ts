@@ -68,7 +68,7 @@ function EnterAimLinks(): BOOLEAN {
 
   usPosY = AIM_LINK_BOBBY_LINK_Y;
   for (i = 0; i < AIM_LINK_NUM_LINKS; i++) {
-    MSYS_DefineRegion(&gSelectedLinkRegion[i], AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (UINT16)(usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
+    MSYS_DefineRegion(&gSelectedLinkRegion[i], AIM_LINK_BOBBY_LINK_X, usPosY, AIM_LINK_BOBBY_LINK_X + AIM_LINK_LINK_WIDTH, (usPosY + AIM_LINK_LINK_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectLinkRegionCallBack);
     MSYS_AddRegion(&gSelectedLinkRegion[i]);
     MSYS_SetRegionUserData(&gSelectedLinkRegion[i], 0, gubLinkPages[i]);
     usPosY += AIM_LINK_LINK_OFFSET_Y;

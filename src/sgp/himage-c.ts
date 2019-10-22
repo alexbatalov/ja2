@@ -69,7 +69,7 @@ function CreateImage(ImageFile: SGPFILENAME, fContents: UINT16): HIMAGE {
   }
 
   // Create memory for image structure
-  hImage = (HIMAGE)MemAlloc(sizeof(image_type));
+  hImage = MemAlloc(sizeof(image_type));
 
   AssertMsg(hImage, "Failed to allocate memory for hImage in CreateImage");
   // Initialize some values
@@ -235,7 +235,7 @@ function Copy8BPPImageTo8BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usDe
   Assert(usDestHeight >= uiNumLines);
 
   // Copy line by line
-  pDest = (UINT8 *)pDestBuf + uiDestStart;
+  pDest = pDestBuf + uiDestStart;
   pSrc = hImage->p8BPPData + uiSrcStart;
 
   for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
@@ -279,7 +279,7 @@ function Copy16BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, us
   CHECKF(usDestHeight >= uiNumLines);
 
   // Copy line by line
-  pDest = (UINT16 *)pDestBuf + uiDestStart;
+  pDest = pDestBuf + uiDestStart;
   pSrc = hImage->p16BPPData + uiSrcStart;
 
   for (cnt = 0; cnt < uiNumLines - 1; cnt++) {
@@ -339,7 +339,7 @@ function Copy8BPPImageTo16BPPBuffer(hImage: HIMAGE, pDestBuf: Pointer<BYTE>, usD
   CHECKF(usDestHeight >= uiNumLines);
 
   // Convert to Pixel specification
-  pDest = (UINT16 *)pDestBuf + uiDestStart;
+  pDest = pDestBuf + uiDestStart;
   pSrc = hImage->p8BPPData + uiSrcStart;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, String("Start Copying at %p", pDest));
 
@@ -384,19 +384,19 @@ function Create16BPPPalette(pPalette: Pointer<SGPPaletteEntry>): Pointer<UINT16>
     b = pPalette[cnt].peBlue;
 
     if (gusRedShift < 0)
-      r16 = ((UINT16)r >> abs(gusRedShift));
+      r16 = (r >> abs(gusRedShift));
     else
-      r16 = ((UINT16)r << gusRedShift);
+      r16 = (r << gusRedShift);
 
     if (gusGreenShift < 0)
-      g16 = ((UINT16)g >> abs(gusGreenShift));
+      g16 = (g >> abs(gusGreenShift));
     else
-      g16 = ((UINT16)g << gusGreenShift);
+      g16 = (g << gusGreenShift);
 
     if (gusBlueShift < 0)
-      b16 = ((UINT16)b >> abs(gusBlueShift));
+      b16 = (b >> abs(gusBlueShift));
     else
-      b16 = ((UINT16)b << gusBlueShift);
+      b16 = (b << gusBlueShift);
 
     usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
 
@@ -467,24 +467,24 @@ function Create16BPPPaletteShaded(pPalette: Pointer<SGPPaletteEntry>, rscale: UI
       bmod = (bscale * pPalette[cnt].peBlue / 256);
     }
 
-    r = (UINT8)__min(rmod, 255);
-    g = (UINT8)__min(gmod, 255);
-    b = (UINT8)__min(bmod, 255);
+    r = __min(rmod, 255);
+    g = __min(gmod, 255);
+    b = __min(bmod, 255);
 
     if (gusRedShift < 0)
-      r16 = ((UINT16)r >> (-gusRedShift));
+      r16 = (r >> (-gusRedShift));
     else
-      r16 = ((UINT16)r << gusRedShift);
+      r16 = (r << gusRedShift);
 
     if (gusGreenShift < 0)
-      g16 = ((UINT16)g >> (-gusGreenShift));
+      g16 = (g >> (-gusGreenShift));
     else
-      g16 = ((UINT16)g << gusGreenShift);
+      g16 = (g << gusGreenShift);
 
     if (gusBlueShift < 0)
-      b16 = ((UINT16)b >> (-gusBlueShift));
+      b16 = (b >> (-gusBlueShift));
     else
-      b16 = ((UINT16)b << gusBlueShift);
+      b16 = (b << gusBlueShift);
 
     // Prevent creation of pure black color
     usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
@@ -515,19 +515,19 @@ function Get16BPPColor(RGBValue: UINT32): UINT16 {
   b = SGPGetBValue(RGBValue);
 
   if (gusRedShift < 0)
-    r16 = ((UINT16)r >> abs(gusRedShift));
+    r16 = (r >> abs(gusRedShift));
   else
-    r16 = ((UINT16)r << gusRedShift);
+    r16 = (r << gusRedShift);
 
   if (gusGreenShift < 0)
-    g16 = ((UINT16)g >> abs(gusGreenShift));
+    g16 = (g >> abs(gusGreenShift));
   else
-    g16 = ((UINT16)g << gusGreenShift);
+    g16 = (g << gusGreenShift);
 
   if (gusBlueShift < 0)
-    b16 = ((UINT16)b >> abs(gusBlueShift));
+    b16 = (b >> abs(gusBlueShift));
   else
-    b16 = ((UINT16)b << gusBlueShift);
+    b16 = (b << gusBlueShift);
 
   usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
 
@@ -559,19 +559,19 @@ function GetRGBColor(Value16BPP: UINT16): UINT32 {
   b16 = Value16BPP & gusBlueMask;
 
   if (gusRedShift < 0)
-    r = ((UINT32)r16 << abs(gusRedShift));
+    r = (r16 << abs(gusRedShift));
   else
-    r = ((UINT32)r16 >> gusRedShift);
+    r = (r16 >> gusRedShift);
 
   if (gusGreenShift < 0)
-    g = ((UINT32)g16 << abs(gusGreenShift));
+    g = (g16 << abs(gusGreenShift));
   else
-    g = ((UINT32)g16 >> gusGreenShift);
+    g = (g16 >> gusGreenShift);
 
   if (gusBlueShift < 0)
-    b = ((UINT32)b16 << abs(gusBlueShift));
+    b = (b16 << abs(gusBlueShift));
   else
-    b = ((UINT32)b16 >> gusBlueShift);
+    b = (b16 >> gusBlueShift);
 
   r &= 0x000000ff;
   g &= 0x000000ff;
@@ -600,7 +600,7 @@ function ConvertRGBToPaletteEntry(sbStart: UINT8, sbEnd: UINT8, pOldPalette: Poi
   let pPalEntry: Pointer<SGPPaletteEntry>;
   let pInitEntry: Pointer<SGPPaletteEntry>;
 
-  pPalEntry = (SGPPaletteEntry *)MemAlloc(sizeof(SGPPaletteEntry) * 256);
+  pPalEntry = MemAlloc(sizeof(SGPPaletteEntry) * 256);
   pInitEntry = pPalEntry;
   DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_0, "Converting RGB palette to SGPPaletteEntry");
   for (Index = 0; Index <= (sbEnd - sbStart); Index++) {

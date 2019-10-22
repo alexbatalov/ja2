@@ -12,7 +12,7 @@ function EffectiveStrength(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   // ATE: Make sure at least 2...
   iEffStrength = __max(iEffStrength, 2);
 
-  return (INT8)iEffStrength;
+  return iEffStrength;
 }
 
 function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -22,7 +22,7 @@ function EffectiveWisdom(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffWisdom = EffectStatForBeingDrunk(pSoldier, iEffWisdom);
 
-  return (INT8)iEffWisdom;
+  return iEffWisdom;
 }
 
 function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -36,7 +36,7 @@ function EffectiveAgility(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     iEffAgility = (iEffAgility * 100) / pSoldier->sWeightCarriedAtTurnStart;
   }
 
-  return (INT8)iEffAgility;
+  return iEffAgility;
 }
 
 function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -46,7 +46,7 @@ function EffectiveMechanical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffMechanical = EffectStatForBeingDrunk(pSoldier, iEffMechanical);
 
-  return (INT8)iEffMechanical;
+  return iEffMechanical;
 }
 
 function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -56,7 +56,7 @@ function EffectiveExplosive(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffExplosive = EffectStatForBeingDrunk(pSoldier, iEffExplosive);
 
-  return (INT8)iEffExplosive;
+  return iEffExplosive;
 }
 
 function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -66,7 +66,7 @@ function EffectiveMedical(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffMedical = EffectStatForBeingDrunk(pSoldier, iEffMedical);
 
-  return (INT8)iEffMedical;
+  return iEffMedical;
 }
 
 function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -82,7 +82,7 @@ function EffectiveLeadership(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     iEffLeadership = (iEffLeadership * 120 / 100);
   }
 
-  return (INT8)iEffLeadership;
+  return iEffLeadership;
 }
 
 function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -113,7 +113,7 @@ function EffectiveExpLevel(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // can't go below 1
     return 1;
   } else {
-    return (INT8)iEffExpLevel;
+    return iEffExpLevel;
   }
 }
 
@@ -124,7 +124,7 @@ function EffectiveMarksmanship(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffMarksmanship = EffectStatForBeingDrunk(pSoldier, iEffMarksmanship);
 
-  return (INT8)iEffMarksmanship;
+  return iEffMarksmanship;
 }
 
 function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -134,7 +134,7 @@ function EffectiveDexterity(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
   iEffDexterity = EffectStatForBeingDrunk(pSoldier, iEffDexterity);
 
-  return (INT8)iEffDexterity;
+  return iEffDexterity;
 }
 
 function GetPenaltyForFatigue(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
@@ -435,12 +435,12 @@ function CalcTrapDetectLevel(pSoldier: Pointer<SOLDIERTYPE>, fExamining: BOOLEAN
   // if the examining flag is true, this isn't just a casual glance
   // and the merc should have a higher chance
   if (fExamining) {
-    bDetectLevel += (INT8)PreRandom(bDetectLevel / 3 + 2);
+    bDetectLevel += PreRandom(bDetectLevel / 3 + 2);
   }
 
   // if substantially bleeding, or still in serious shock, randomly lower value
   if ((pSoldier->bBleeding > 20) || (pSoldier->bShock > 1)) {
-    bDetectLevel -= (INT8)PreRandom(3);
+    bDetectLevel -= PreRandom(3);
   }
 
   if (bDetectLevel < 1) {

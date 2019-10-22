@@ -372,8 +372,8 @@ function SaveGame(ubSaveGameID: UINT8, pGameDesc: STR16): BOOLEAN {
 
   // The following will be used to quickly access info to display in the save/load screen
   SaveGameHeader.uiDay = GetWorldDay();
-  SaveGameHeader.ubHour = (UINT8)GetWorldHour();
-  SaveGameHeader.ubMin = (UINT8)guiMin;
+  SaveGameHeader.ubHour = GetWorldHour();
+  SaveGameHeader.ubMin = guiMin;
 
   // copy over the initial game options
   memcpy(&SaveGameHeader.sInitialGameOptions, &gGameOptions, sizeof(GAME_OPTIONS));
@@ -1158,7 +1158,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   RenderProgressBar(0, 100);
   uiRelStartPerc = uiRelEndPerc;
 
-  if (!LoadArmsDealerInventoryFromSavedGameFile(hFile, (BOOLEAN)(SaveGameHeader.uiSavedGameVersion >= 54), (BOOLEAN)(SaveGameHeader.uiSavedGameVersion >= 55))) {
+  if (!LoadArmsDealerInventoryFromSavedGameFile(hFile, (SaveGameHeader.uiSavedGameVersion >= 54), (SaveGameHeader.uiSavedGameVersion >= 55))) {
     FileClose(hFile);
     guiSaveGameVersion = 0;
     return FALSE;
@@ -1550,7 +1550,7 @@ function LoadSavedGame(ubSavedGameID: UINT8): BOOLEAN {
   // if the UI was locked in the saved game file
   if (gTacticalStatus.ubAttackBusyCount > 1) {
     // Lock the ui
-    SetUIBusy((UINT8)gusSelectedSoldier);
+    SetUIBusy(gusSelectedSoldier);
   }
 
   // Reset the shadow
@@ -1813,7 +1813,7 @@ function SaveSoldierStructure(hFile: HWFILE): BOOLEAN {
       //
 
       // Save the pMercPath
-      if (!SaveMercPathFromSoldierStruct(hFile, (UINT8)cnt))
+      if (!SaveMercPathFromSoldierStruct(hFile, cnt))
         return FALSE;
 
       //
@@ -2370,7 +2370,7 @@ function LoadEmailFromSavedGame(hFile: HWFILE): BOOLEAN {
     pTempEmail->iId = SavedEmail.iId;
     pTempEmail->fRead = SavedEmail.fRead;
     pTempEmail->fNew = SavedEmail.fNew;
-    pTempEmail->pSubject = (STR16)pData;
+    pTempEmail->pSubject = pData;
     pTempEmail->iFirstData = SavedEmail.iFirstData;
     pTempEmail->uiSecondData = SavedEmail.uiSecondData;
     pTempEmail->iThirdData = SavedEmail.iThirdData;

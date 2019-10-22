@@ -103,9 +103,9 @@ function SaveGameSettings(): BOOLEAN {
 
   // Record the current settings into the game settins structure
 
-  gGameSettings.ubSoundEffectsVolume = (UINT8)GetSoundEffectsVolume();
-  gGameSettings.ubSpeechVolume = (UINT8)GetSpeechVolume();
-  gGameSettings.ubMusicVolumeSetting = (UINT8)MusicGetVolume();
+  gGameSettings.ubSoundEffectsVolume = GetSoundEffectsVolume();
+  gGameSettings.ubSpeechVolume = GetSpeechVolume();
+  gGameSettings.ubMusicVolumeSetting = MusicGetVolume();
 
   strcpy(gGameSettings.zVersionNumber, czVersionNumber);
 

@@ -217,11 +217,11 @@ function AddCharacterToSquad(pCharacter: Pointer<SOLDIERTYPE>, bSquadValue: INT8
       }
 
       // if current tactical sqaud...upadte panel
-      if (NumberOfPeopleInSquad((INT8)iCurrentTacticalSquad) == 0) {
+      if (NumberOfPeopleInSquad(iCurrentTacticalSquad) == 0) {
         SetCurrentSquad(bSquadValue, TRUE);
       }
 
-      if (bSquadValue == (INT8)iCurrentTacticalSquad) {
+      if (bSquadValue == iCurrentTacticalSquad) {
         CheckForAndAddMercToTeamPanel(Squad[iCurrentTacticalSquad][bCounter]);
       }
 
@@ -333,13 +333,13 @@ function RemoveCharacterFromSquads(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
         pCharacter->ubGroupID = 0;
 
         if ((pCharacter->fBetweenSectors) && (pCharacter->uiStatusFlags & SOLDIER_VEHICLE)) {
-          ubGroupId = CreateNewPlayerGroupDepartingFromSector((INT8)(pCharacter->sSectorX), (INT8)(pCharacter->sSectorY));
+          ubGroupId = CreateNewPlayerGroupDepartingFromSector((pCharacter->sSectorX), (pCharacter->sSectorY));
 
           // assign to a group
           AddPlayerToGroup(ubGroupId, pCharacter);
         }
 
-        RebuildSquad((INT8)iCounterA);
+        RebuildSquad(iCounterA);
 
         if (pCharacter->bLife == 0) {
           AddDeadCharacterToSquadDeadGuys(pCharacter, iCounterA);
@@ -347,7 +347,7 @@ function RemoveCharacterFromSquads(pCharacter: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         // if we are not loading a saved game
         if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME) && guiCurrentScreen == GAME_SCREEN) {
-          UpdateCurrentlySelectedMerc(pCharacter, (INT8)iCounterA);
+          UpdateCurrentlySelectedMerc(pCharacter, iCounterA);
         }
 
         return TRUE;
@@ -515,7 +515,7 @@ function SectorSquadIsIn(bSquadValue: INT8, sMapX: Pointer<INT16>, sMapY: Pointe
     if (Squad[bSquadValue][bCounter] != NULL) {
       *sMapX = Squad[bSquadValue][bCounter]->sSectorX;
       *sMapY = Squad[bSquadValue][bCounter]->sSectorY;
-      *sMapZ = (INT16)Squad[bSquadValue][bCounter]->bSectorZ;
+      *sMapZ = Squad[bSquadValue][bCounter]->bSectorZ;
 
       return TRUE;
     }
@@ -682,7 +682,7 @@ function RebuildCurrentSquad(): void {
 
     for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
       if (sDeadMercs[iCurrentTacticalSquad][iCounter] != -1) {
-        pDeadSoldier = FindSoldierByProfileID((UINT8)(sDeadMercs[iCurrentTacticalSquad][iCounter]), TRUE);
+        pDeadSoldier = FindSoldierByProfileID((sDeadMercs[iCurrentTacticalSquad][iCounter]), TRUE);
 
         if (pDeadSoldier) {
           // squad set, now add soldiers in
@@ -1050,7 +1050,7 @@ function AddDeadCharacterToSquadDeadGuys(pSoldier: Pointer<SOLDIERTYPE>, iSquadV
   for (iCounter = 0; iCounter < NUMBER_OF_SOLDIERS_PER_SQUAD; iCounter++) {
     // valid soldier?
     if (sDeadMercs[iSquadValue][iCounter] != -1) {
-      pTempSoldier = FindSoldierByProfileID((UINT8)(sDeadMercs[iSquadValue][iCounter]), TRUE);
+      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), TRUE);
 
       if (pSoldier == pTempSoldier) {
         return TRUE;
@@ -1063,7 +1063,7 @@ function AddDeadCharacterToSquadDeadGuys(pSoldier: Pointer<SOLDIERTYPE>, iSquadV
     // valid soldier?
     if (sDeadMercs[iSquadValue][iCounter] != -1) {
       // yep
-      pTempSoldier = FindSoldierByProfileID((UINT8)(sDeadMercs[iSquadValue][iCounter]), TRUE);
+      pTempSoldier = FindSoldierByProfileID((sDeadMercs[iSquadValue][iCounter]), TRUE);
 
       // valid soldier?
       if (pTempSoldier == NULL) {

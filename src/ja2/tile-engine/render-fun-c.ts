@@ -22,7 +22,7 @@ function SetTileRangeRoomNum(pSelectRegion: Pointer<SGPRect>, ubRoomNum: UINT8):
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
-      gubWorldRoomInfo[(INT16)MAPROWCOLTOPOS(cnt1, cnt2)] = ubRoomNum;
+      gubWorldRoomInfo[MAPROWCOLTOPOS(cnt1, cnt2)] = ubRoomNum;
     }
   }
 }
@@ -97,7 +97,7 @@ function SetGridNoRevealedFlag(sGridNo: UINT16): void {
 
   // ATE: If there are any structs here, we can render them with the obscured flag!
   // Look for anything but walls pn this gridno!
-  pStructure = gpWorldLevelData[(INT16)sGridNo].pStructureHead;
+  pStructure = gpWorldLevelData[sGridNo].pStructureHead;
 
   while (pStructure != NULL) {
     if (pStructure->sCubeOffset == STRUCTURE_ON_GROUND || (pStructure->fFlags & STRUCTURE_SLANTED_ROOF)) {
@@ -196,19 +196,19 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
   // LOOP THORUGH WORLD AND CHECK ROOM INFO
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (gubWorldRoomInfo[cnt] == bRoomNum) {
-      SetGridNoRevealedFlag((UINT16)cnt);
+      SetGridNoRevealedFlag(cnt);
 
       RemoveRoofIndexFlagsFromTypeRange(cnt, FIRSTROOF, SECONDSLANTROOF, LEVELNODE_REVEAL);
 
       // Reveal any items if here!
-      if (GetItemPool((INT16)cnt, &pItemPool, 0)) {
+      if (GetItemPool(cnt, &pItemPool, 0)) {
         // Set visible! ( only if invisible... )
         if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, TRUE)) {
           if (!fSaidItemSeenQuote) {
             fSaidItemSeenQuote = TRUE;
 
             if (pSoldier != NULL) {
-              TacticalCharacterDialogue(pSoldier, (UINT16)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+              TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
             }
           }
         }
@@ -216,7 +216,7 @@ function RemoveRoomRoof(sGridNo: UINT16, bRoomNum: UINT8, pSoldier: Pointer<SOLD
 
       // OK, re-set writeframes ( in a radius )
       // Get XY
-      ConvertGridNoToXY((INT16)cnt, &sX, &sY);
+      ConvertGridNoToXY(cnt, &sX, &sY);
       SetRecalculateWireFrameFlagRadius(sX, sY, 2);
     }
   }
@@ -242,7 +242,7 @@ function AddSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
-      AddObjectToHead((INT16)MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
+      AddObjectToHead(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
     }
   }
 
@@ -255,7 +255,7 @@ function RemoveSpecialTileRange(pSelectRegion: Pointer<SGPRect>): BOOLEAN {
 
   for (cnt1 = pSelectRegion->iTop; cnt1 <= pSelectRegion->iBottom; cnt1++) {
     for (cnt2 = pSelectRegion->iLeft; cnt2 <= pSelectRegion->iRight; cnt2++) {
-      RemoveObject((INT16)MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
+      RemoveObject(MAPROWCOLTOPOS(cnt1, cnt2), SPECIALTILE_MAPEXIT);
     }
   }
 

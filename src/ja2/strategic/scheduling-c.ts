@@ -15,7 +15,7 @@ let gubScheduleID: UINT8 = 0;
 function CopyScheduleToList(pSchedule: Pointer<SCHEDULENODE>, pNode: Pointer<SOLDIERINITNODE>): void {
   let curr: Pointer<SCHEDULENODE>;
   curr = gpScheduleList;
-  gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+  gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
   memcpy(gpScheduleList, pSchedule, sizeof(SCHEDULENODE));
   gpScheduleList->next = curr;
   gubScheduleID++;
@@ -276,12 +276,12 @@ function LoadSchedules(hBuffer: Pointer<Pointer<INT8>>): void {
     LOADDATA(&temp, *hBuffer, sizeof(SCHEDULENODE));
 
     if (gpScheduleList) {
-      pSchedule->next = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+      pSchedule->next = MemAlloc(sizeof(SCHEDULENODE));
       Assert(pSchedule->next);
       pSchedule = pSchedule->next;
       memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
     } else {
-      gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+      gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
       Assert(gpScheduleList);
       memcpy(gpScheduleList, &temp, sizeof(SCHEDULENODE));
       pSchedule = gpScheduleList;
@@ -326,12 +326,12 @@ function LoadSchedulesFromSave(hFile: HWFILE): BOOLEAN {
     // LOADDATA( &temp, *hBuffer, sizeof( SCHEDULENODE ) );
 
     if (gpScheduleList) {
-      pSchedule->next = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+      pSchedule->next = MemAlloc(sizeof(SCHEDULENODE));
       Assert(pSchedule->next);
       pSchedule = pSchedule->next;
       memcpy(pSchedule, &temp, sizeof(SCHEDULENODE));
     } else {
-      gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+      gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
       Assert(gpScheduleList);
       memcpy(gpScheduleList, &temp, sizeof(SCHEDULENODE));
       pSchedule = gpScheduleList;
@@ -412,7 +412,7 @@ function SaveSchedules(hFile: HWFILE): BOOLEAN {
     }
     curr = curr->next;
   }
-  ubNum = (UINT8)((iNum >= 32) ? 32 : iNum);
+  ubNum = ((iNum >= 32) ? 32 : iNum);
 
   FileWrite(hFile, &ubNum, sizeof(UINT8), &uiBytesWritten);
   if (uiBytesWritten != sizeof(UINT8)) {
@@ -515,7 +515,7 @@ function BumpAnyExistingMerc(sGridNo: INT16): BOOLEAN {
   }
 
   ConvertGridNoToCellXY(sNewGridNo, &sCellX, &sCellY);
-  EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+  EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
   return TRUE;
 }
@@ -554,7 +554,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       BumpAnyExistingMerc(pSchedule->usData2[index]);
       ConvertGridNoToCellXY(pSchedule->usData2[index], &sCellX, &sCellY);
 
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       if (GridNoOnEdgeOfMap(pSchedule->usData2[index], &bDirection)) {
         // civ should go off map; this tells us where the civ will return
         pSoldier->sOffWorldGridNo = pSchedule->usData2[index];
@@ -568,7 +568,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
     case SCHEDULE_ACTION_GRIDNO:
       BumpAnyExistingMerc(pSchedule->usData1[index]);
       ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier->usPatrolGrid[0] = pSchedule->usData1[index];
       break;
@@ -579,7 +579,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       }
       BumpAnyExistingMerc(pSchedule->usData1[index]);
       ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       MoveSoldierFromAwayToMercSlot(pSoldier);
       pSoldier->bInSector = TRUE;
       // let this person patrol from here from now on
@@ -588,7 +588,7 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
     case SCHEDULE_ACTION_WAKE:
       BumpAnyExistingMerc(pSoldier->sInitialGridNo);
       ConvertGridNoToCellXY(pSoldier->sInitialGridNo, &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       // let this person patrol from here from now on
       pSoldier->usPatrolGrid[0] = pSoldier->sInitialGridNo;
       break;
@@ -597,19 +597,19 @@ function AutoProcessSchedule(pSchedule: Pointer<SCHEDULENODE>, index: INT32): vo
       // check for someone else in the location
       BumpAnyExistingMerc(pSchedule->usData1[index]);
       ConvertGridNoToCellXY(pSchedule->usData1[index], &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
       pSoldier->usPatrolGrid[0] = pSchedule->usData1[index];
       break;
     case SCHEDULE_ACTION_LEAVESECTOR:
       sGridNo = FindNearestEdgePoint(pSoldier->sGridNo);
       BumpAnyExistingMerc(sGridNo);
       ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       sGridNo = FindNearbyPointOnEdgeOfMap(pSoldier, &bDirection);
       BumpAnyExistingMerc(sGridNo);
       ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
-      EVENT_SetSoldierPositionForceDelete(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+      EVENT_SetSoldierPositionForceDelete(pSoldier, sCellX, sCellY);
 
       // ok, that tells us where the civ will return
       pSoldier->sOffWorldGridNo = sGridNo;
@@ -650,7 +650,7 @@ function PostSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
       SecureSleepSpot(pSoldier, pSchedule->usData1[i]);
 
       if (pSchedule->usTime[i] == 0xffff) {
-        pSchedule->usTime[i] = (UINT16)((21 * 60) + Random((3 * 60))); // 9PM - 11:59PM
+        pSchedule->usTime[i] = ((21 * 60) + Random((3 * 60))); // 9PM - 11:59PM
 
         if (ScheduleHasMorningNonSleepEntries(pSchedule)) {
           // this guy will sleep until the next non-sleep event
@@ -781,7 +781,7 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   // Create a new node at the head of the list.  The head will become the new schedule
   // we are about to add.
   curr = gpScheduleList;
-  gpScheduleList = (SCHEDULENODE *)MemAlloc(sizeof(SCHEDULENODE));
+  gpScheduleList = MemAlloc(sizeof(SCHEDULENODE));
   memset(gpScheduleList, 0, sizeof(SCHEDULENODE));
   gpScheduleList->next = curr;
   gubScheduleID++;
@@ -798,11 +798,11 @@ function PostDefaultSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
   // Have the default schedule enter between 7AM and 8AM
   gpScheduleList->ubAction[0] = SCHEDULE_ACTION_ENTERSECTOR;
-  gpScheduleList->usTime[0] = (UINT16)(420 + Random(61));
+  gpScheduleList->usTime[0] = (420 + Random(61));
   gpScheduleList->usData1[0] = pSoldier->sInitialGridNo;
   // Have the default schedule leave between 6PM and 8PM
   gpScheduleList->ubAction[1] = SCHEDULE_ACTION_LEAVESECTOR;
-  gpScheduleList->usTime[1] = (UINT16)(1080 + Random(121));
+  gpScheduleList->usTime[1] = (1080 + Random(121));
   gpScheduleList->usFlags |= SCHEDULE_FLAGS_TEMPORARY;
 
   if (gubScheduleID == 255) {
@@ -844,7 +844,7 @@ function PerformActionOnDoorAdjacentToGridNo(ubScheduleAction: UINT8, usGridNo: 
   let sDoorGridNo: INT16;
   let pDoor: Pointer<DOOR>;
 
-  sDoorGridNo = FindDoorAtGridNoOrAdjacent((INT16)usGridNo);
+  sDoorGridNo = FindDoorAtGridNoOrAdjacent(usGridNo);
   if (sDoorGridNo != NOWHERE) {
     switch (ubScheduleAction) {
       case SCHEDULE_ACTION_LOCKDOOR:
@@ -884,7 +884,7 @@ function PostNextSchedule(pSoldier: Pointer<SOLDIERTYPE>): void {
     // post default?
     return;
   }
-  usTime = (UINT16)GetWorldMinutesInDay();
+  usTime = GetWorldMinutesInDay();
   usBestTime = 0xffff;
   iBestIndex = -1;
   for (i = 0; i < MAX_SCHEDULE_ACTIONS; i++) {

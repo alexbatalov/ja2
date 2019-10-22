@@ -95,10 +95,10 @@ function NewDirective(ubSectorID: UINT8, ubSectorZ: UINT8, ubCreatureHabitat: UI
   let curr: Pointer<CREATURE_DIRECTIVE>;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
-  curr = (CREATURE_DIRECTIVE *)MemAlloc(sizeof(CREATURE_DIRECTIVE));
+  curr = MemAlloc(sizeof(CREATURE_DIRECTIVE));
   Assert(curr);
-  ubSectorX = (UINT8)((ubSectorID % 16) + 1);
-  ubSectorY = (UINT8)((ubSectorID / 16) + 1);
+  ubSectorX = ((ubSectorID % 16) + 1);
+  ubSectorY = ((ubSectorID / 16) + 1);
   curr->pLevel = FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
   if (!curr->pLevel) {
     AssertMsg(0, String("Could not find underground sector node (%c%db_%d) that should exist.", ubSectorY + 'A' - 1, ubSectorX, ubSectorZ));
@@ -353,7 +353,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
     // we have reached the distance limitation for the spreading.  We will determine if
     // the area is populated enough to spread further.  The minimum population must be 4 before
     // spreading is even considered.
-    if (node->pLevel->ubNumCreatures * 10 - 10 <= (INT32)Random(60)) {
+    if (node->pLevel->ubNumCreatures * 10 - 10 <= Random(60)) {
       // x<=1   100%
       // x==2		 83%
       // x==3		 67%
@@ -423,7 +423,7 @@ function PlaceNewCreature(node: Pointer<CREATURE_DIRECTIVE>, iDistance: INT32): 
       // the ratio of current population to the max population.
       iChanceToPopulate = 100 - node->pLevel->ubNumCreatures * 100 / iMaxPopulation;
 
-      if (!node->pLevel->ubNumCreatures || iChanceToPopulate > (INT32)Random(100) && iMaxPopulation > node->pLevel->ubNumCreatures) {
+      if (!node->pLevel->ubNumCreatures || iChanceToPopulate > Random(100) && iMaxPopulation > node->pLevel->ubNumCreatures) {
         AddCreatureToNode(node);
         return TRUE;
       }
@@ -450,13 +450,13 @@ function SpreadCreatures(): void {
   // queen just produced a litter of creature larvae.  Let's do some spreading now.
   switch (gGameOptions.ubDifficultyLevel) {
     case DIF_LEVEL_EASY:
-      usNewCreatures = (UINT16)(EASY_QUEEN_REPRODUCTION_BASE + Random(1 + EASY_QUEEN_REPRODUCTION_BONUS));
+      usNewCreatures = (EASY_QUEEN_REPRODUCTION_BASE + Random(1 + EASY_QUEEN_REPRODUCTION_BONUS));
       break;
     case DIF_LEVEL_MEDIUM:
-      usNewCreatures = (UINT16)(NORMAL_QUEEN_REPRODUCTION_BASE + Random(1 + NORMAL_QUEEN_REPRODUCTION_BONUS));
+      usNewCreatures = (NORMAL_QUEEN_REPRODUCTION_BASE + Random(1 + NORMAL_QUEEN_REPRODUCTION_BONUS));
       break;
     case DIF_LEVEL_HARD:
-      usNewCreatures = (UINT16)(HARD_QUEEN_REPRODUCTION_BASE + Random(1 + HARD_QUEEN_REPRODUCTION_BONUS));
+      usNewCreatures = (HARD_QUEEN_REPRODUCTION_BASE + Random(1 + HARD_QUEEN_REPRODUCTION_BONUS));
       break;
   }
 
@@ -500,21 +500,21 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
   }
 
   if (gsCreatureInsertionCode != INSERTION_CODE_GRIDNO) {
-    ChooseMapEdgepoints(&MapEdgepointInfo, (UINT8)gsCreatureInsertionCode, (UINT8)(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
+    ChooseMapEdgepoints(&MapEdgepointInfo, gsCreatureInsertionCode, (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales));
     ubCurrSlot = 0;
   }
   while (ubNumYoungMales || ubNumYoungFemales || ubNumAdultMales || ubNumAdultFemales) {
-    iRandom = (INT32)Random(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales);
-    if (ubNumYoungMales && iRandom < (INT32)ubNumYoungMales) {
+    iRandom = Random(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales);
+    if (ubNumYoungMales && iRandom < ubNumYoungMales) {
       ubNumYoungMales--;
       pSoldier = TacticalCreateCreature(YAM_MONSTER);
-    } else if (ubNumYoungFemales && iRandom < (INT32)(ubNumYoungMales + ubNumYoungFemales)) {
+    } else if (ubNumYoungFemales && iRandom < (ubNumYoungMales + ubNumYoungFemales)) {
       ubNumYoungFemales--;
       pSoldier = TacticalCreateCreature(YAF_MONSTER);
-    } else if (ubNumAdultMales && iRandom < (INT32)(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales)) {
+    } else if (ubNumAdultMales && iRandom < (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales)) {
       ubNumAdultMales--;
       pSoldier = TacticalCreateCreature(AM_MONSTER);
-    } else if (ubNumAdultFemales && iRandom < (INT32)(ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales)) {
+    } else if (ubNumAdultFemales && iRandom < (ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales)) {
       ubNumAdultFemales--;
       pSoldier = TacticalCreateCreature(ADULTFEMALEMONSTER);
     } else {
@@ -542,7 +542,7 @@ function AddCreaturesToBattle(ubNumYoungMales: UINT8, ubNumYoungFemales: UINT8, 
         pSoldier->usStrategicInsertionData = MapEdgepointInfo.sGridNo[ubCurrSlot++];
       } else {
         // no edgepoints left, so put him at the entrypoint.
-        pSoldier->ubStrategicInsertionCode = (UINT8)gsCreatureInsertionCode;
+        pSoldier->ubStrategicInsertionCode = gsCreatureInsertionCode;
       }
     } else {
       pSoldier->usStrategicInsertionData = gsCreatureInsertionGridNo;
@@ -565,8 +565,8 @@ function ChooseTownSectorToAttack(ubSectorID: UINT8, fOverrideTest: BOOLEAN): vo
   let iRandom: INT32;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
-  ubSectorX = (UINT8)((ubSectorID % 16) + 1);
-  ubSectorY = (UINT8)((ubSectorID / 16) + 1);
+  ubSectorX = ((ubSectorID % 16) + 1);
+  ubSectorY = ((ubSectorID / 16) + 1);
 
   if (!fOverrideTest) {
     iRandom = PreRandom(100);
@@ -694,8 +694,8 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
 
   gubCreatureBattleCode = CREATURE_BATTLE_CODE_NONE;
 
-  ubSectorX = (UINT8)((ubSectorID % 16) + 1);
-  ubSectorY = (UINT8)((ubSectorID / 16) + 1);
+  ubSectorX = ((ubSectorID % 16) + 1);
+  ubSectorY = ((ubSectorID / 16) + 1);
 
   if (!fOverrideTest) {
     // Record the number of creatures in the sector.
@@ -715,8 +715,8 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
     // Choose one of the town sectors to attack.  Sectors closer to
     // the mine entrance have a greater chance of being chosen.
     ChooseTownSectorToAttack(ubSectorID, FALSE);
-    ubSectorX = (UINT8)((gubSectorIDOfCreatureAttack % 16) + 1);
-    ubSectorY = (UINT8)((gubSectorIDOfCreatureAttack / 16) + 1);
+    ubSectorX = ((gubSectorIDOfCreatureAttack % 16) + 1);
+    ubSectorY = ((gubSectorIDOfCreatureAttack / 16) + 1);
   } else {
     ChooseTownSectorToAttack(ubSectorID, TRUE);
     gubNumCreaturesAttackingTown = 5;
@@ -742,14 +742,14 @@ function CreatureAttackTown(ubSectorID: UINT8, fOverrideTest: BOOLEAN): void {
   } else if (!StrategicMap[ubSectorX + MAP_WORLD_X * ubSectorY].fEnemyControlled) {
     // player controlled sector -- eat some civilians
     AdjustLoyaltyForCivsEatenByMonsters(ubSectorX, ubSectorY, gubNumCreaturesAttackingTown);
-    SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = (UINT8)GetWorldDay();
+    SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = GetWorldDay();
     return;
   } else {
     // enemy controlled sectors don't get attacked.
     return;
   }
 
-  SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = (UINT8)GetWorldDay();
+  SectorInfo[ubSectorID].ubDayOfLastCreatureAttack = GetWorldDay();
   switch (gubCreatureBattleCode) {
     case CREATURE_BATTLE_CODE_PREBATTLEINTERFACE:
       InitPreBattleInterface(NULL, TRUE);
@@ -849,8 +849,8 @@ function CreaturesInUndergroundSector(ubSectorID: UINT8, ubSectorZ: UINT8): UINT
   let pSector: Pointer<UNDERGROUND_SECTORINFO>;
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
-  ubSectorX = (UINT8)SECTORX(ubSectorID);
-  ubSectorY = (UINT8)SECTORY(ubSectorID);
+  ubSectorX = SECTORX(ubSectorID);
+  ubSectorY = SECTORY(ubSectorID);
   pSector = FindUnderGroundSector(ubSectorX, ubSectorY, ubSectorZ);
   if (pSector)
     return pSector->ubNumCreatures;
@@ -1144,22 +1144,22 @@ function CreatureNightPlanning(): void {
   // Check the populations of the mine exits, and factor a chance for them to attack at night.
   let ubNumCreatures: UINT8;
   ubNumCreatures = CreaturesInUndergroundSector(SEC_H3, 1);
-  if (ubNumCreatures > 1 && ubNumCreatures * 10 > (INT32)PreRandom(100)) {
+  if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
     AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_H3);
   }
   ubNumCreatures = CreaturesInUndergroundSector(SEC_D13, 1);
-  if (ubNumCreatures > 1 && ubNumCreatures * 10 > (INT32)PreRandom(100)) {
+  if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
     AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_D13);
   }
   ubNumCreatures = CreaturesInUndergroundSector(SEC_I14, 1);
-  if (ubNumCreatures > 1 && ubNumCreatures * 10 > (INT32)PreRandom(100)) {
+  if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
     AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_I14);
   }
   ubNumCreatures = CreaturesInUndergroundSector(SEC_H8, 1);
-  if (ubNumCreatures > 1 && ubNumCreatures * 10 > (INT32)PreRandom(100)) {
+  if (ubNumCreatures > 1 && ubNumCreatures * 10 > PreRandom(100)) {
     // 10% chance for each creature to decide it's time to attack.
     AddStrategicEvent(EVENT_CREATURE_ATTACK, GetWorldTotalMin() + 1 + PreRandom(429), SEC_H8);
   }
@@ -1274,7 +1274,7 @@ function LoadCreatureDirectives(hFile: HWFILE, uiSavedGameVersion: UINT32): BOOL
 }
 
 function ForceCreaturesToAvoidMineTemporarily(ubMineIndex: UINT8): void {
-  gMineStatus[MINE_GRUMM].usValidDayCreaturesCanInfest = (UINT16)(GetWorldDay() + 2);
+  gMineStatus[MINE_GRUMM].usValidDayCreaturesCanInfest = (GetWorldDay() + 2);
 }
 
 function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
@@ -1296,7 +1296,7 @@ function PlayerGroupIsInACreatureInfestedMine(): BOOLEAN {
   while (curr) {
     sSectorX = curr->pLevel->ubSectorX;
     sSectorY = curr->pLevel->ubSectorY;
-    bSectorZ = (INT8)curr->pLevel->ubSectorZ;
+    bSectorZ = curr->pLevel->ubSectorZ;
     // Loop through all the creature directives (mine sectors that are infectible) and
     // see if players are there.
     for (i = gTacticalStatus.Team[OUR_TEAM].bFirstID; i <= gTacticalStatus.Team[OUR_TEAM].bLastID; i++) {

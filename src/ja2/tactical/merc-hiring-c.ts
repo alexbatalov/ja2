@@ -70,7 +70,7 @@ function HireMerc(pHireMerc: Pointer<MERC_HIRE_STRUCT>): INT8 {
   }
 
   // record how long the merc will be gone for
-  pMerc->bMercStatus = (UINT8)pHireMerc->iTotalContractLength;
+  pMerc->bMercStatus = pHireMerc->iTotalContractLength;
 
   pSoldier = &Menptr[iNewIndex];
 
@@ -191,7 +191,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
     // Seeing we don't support entry into a hostile sector (except for the beginning),
     // we will nuke any enemies in this sector first.
     if (gWorldSectorX != 9 || gWorldSectorY != 1 || gbWorldSectorZ) {
-      EliminateAllEnemies((UINT8)gsMercArriveSectorX, (UINT8)gsMercArriveSectorY);
+      EliminateAllEnemies(gsMercArriveSectorX, gsMercArriveSectorY);
     }
   }
 
@@ -259,7 +259,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
   }
 
   // record how long the merc will be gone for
-  pMerc->bMercStatus = (UINT8)pSoldier->iTotalContractLength;
+  pMerc->bMercStatus = pSoldier->iTotalContractLength;
 
   // remember when excatly he ARRIVED in Arulco, in case he gets fired early
   pSoldier->uiTimeOfLastContractUpdate = GetWorldTotalMin();
@@ -285,7 +285,7 @@ function MercArrivesCallback(ubSoldierID: UINT8): void {
   fTeamPanelDirty = TRUE;
 
   // if the currently selected sector has no one in it, select this one instead
-  if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ)) {
+  if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
     ChangeSelectedMapSector(pSoldier->sSectorX, pSoldier->sSectorY, 0);
   }
 
@@ -437,7 +437,7 @@ function StrategicPythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = (INT16)sqrt((sRows * sRows) + (sCols * sCols));
+  sResult = sqrt((sRows * sRows) + (sCols * sCols));
 
   return sResult;
 }

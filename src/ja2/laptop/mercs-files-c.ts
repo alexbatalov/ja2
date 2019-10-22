@@ -183,7 +183,7 @@ function RenderMercsFiles(): void {
   DrawTextToScreen(gMercProfiles[GetMercIDFromMERCArray(gubCurMercIndex)].zName, MERC_NAME_X, MERC_NAME_Y, 0, MERC_NAME_FONT, MERC_NAME_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   // Load and display the mercs bio
-  LoadAndDisplayMercBio((UINT8)(GetMercIDFromMERCArray(gubCurMercIndex) - BIFF));
+  LoadAndDisplayMercBio((GetMercIDFromMERCArray(gubCurMercIndex) - BIFF));
 
   // Display the mercs statistic
   DisplayMercsStats(GetMercIDFromMERCArray(gubCurMercIndex));

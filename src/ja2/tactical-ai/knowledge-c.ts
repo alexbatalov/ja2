@@ -86,7 +86,7 @@ function CallEldinTo(sGridNo: INT16): void {
     // new situation for Eldin
     pSoldier = FindSoldierByProfileID(ELDIN, FALSE);
     if (pSoldier && pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife >= OKLIFE && (pSoldier->bAlertStatus == STATUS_GREEN || pSoldier->ubNoiseVolume < (MAX_MISC_NOISE_DURATION / 2))) {
-      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, (UINT8)MaxDistanceVisible(), TRUE)) {
+      if (SoldierToLocationLineOfSightTest(pSoldier, sGridNo, MaxDistanceVisible(), TRUE)) {
         // sees the player now!
         TriggerNPCWithIHateYouQuote(ELDIN);
         SetNewSituation(pSoldier);
@@ -183,7 +183,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
 
   // if any "misc. noise" was also heard recently
   if (pSoldier->sNoiseGridno != NOWHERE) {
-    if (pSoldier->bNoiseLevel != pSoldier->bLevel || PythSpacesAway(pSoldier->sGridNo, pSoldier->sNoiseGridno) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, pSoldier->sNoiseGridno, pSoldier->bNoiseLevel, 0, (UINT8)MaxDistanceVisible(), FALSE) == 0) {
+    if (pSoldier->bNoiseLevel != pSoldier->bLevel || PythSpacesAway(pSoldier->sGridNo, pSoldier->sNoiseGridno) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, pSoldier->sNoiseGridno, pSoldier->bNoiseLevel, 0, MaxDistanceVisible(), FALSE) == 0) {
       // calculate how far this noise was, and its relative "importance"
       iDistAway = SpacesAway(pSoldier->sGridNo, pSoldier->sNoiseGridno);
       iNoiseValue = ((pSoldier->ubNoiseVolume / 2) - 6) * iDistAway;
@@ -204,7 +204,7 @@ function MostImportantNoiseHeard(pSoldier: Pointer<SOLDIERTYPE>, piRetValue: Poi
   if ((pSoldier->bTeam != CIV_TEAM) || (pSoldier->ubCivilianGroup == KINGPIN_CIV_GROUP)) {
     if (*psNoiseGridNo != NOWHERE) {
       // if we are NOT there (at the noise gridno)
-      if (*pbNoiseLevel != pSoldier->bLevel || PythSpacesAway(pSoldier->sGridNo, *psNoiseGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, *psNoiseGridNo, *pbNoiseLevel, 0, (UINT8)MaxDistanceVisible(), FALSE) == 0) {
+      if (*pbNoiseLevel != pSoldier->bLevel || PythSpacesAway(pSoldier->sGridNo, *psNoiseGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, *psNoiseGridNo, *pbNoiseLevel, 0, MaxDistanceVisible(), FALSE) == 0) {
         // calculate how far this noise was, and its relative "importance"
         iDistAway = SpacesAway(pSoldier->sGridNo, *psNoiseGridNo);
         iNoiseValue = ((*pubNoiseVolume / 2) - 6) * iDistAway;

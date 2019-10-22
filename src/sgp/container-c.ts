@@ -89,7 +89,7 @@ function CreateStack(uiNum_items: UINT32, uiSiz_each: UINT32): HSTACK {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Could not allocate stack container memory");
     return NULL;
   }
-  pStack = (StackHeader *)hStack;
+  pStack = hStack;
   // initialize the header variables
   pStack->uiMax_size = uiAmount + sizeof(StackHeader);
   pStack->uiTotal_items = 0;
@@ -134,7 +134,7 @@ function CreateQueue(uiNum_items: UINT32, uiSiz_each: UINT32): HQUEUE {
     return NULL;
   }
 
-  pQueue = (QueueHeader *)hQueue;
+  pQueue = hQueue;
   // initialize the queue structure
 
   pQueue->uiMax_size = uiAmount + sizeof(QueueHeader);
@@ -179,7 +179,7 @@ function CreateList(uiNum_items: UINT32, uiSiz_each: UINT32): HLIST {
     return 0;
   }
 
-  pList = (ListHeader *)hList;
+  pList = hList;
   // initialize the list structure
 
   pList->uiMax_size = uiAmount + sizeof(ListHeader);
@@ -226,7 +226,7 @@ function CreateOrdList(uiNum_items: UINT32, uiSiz_each: UINT32, compare: (a: Poi
     return 0;
   }
 
-  pOrdList = (OrdListHeader *)hOrdList;
+  pOrdList = hOrdList;
   // initialize the list structure
 
   pOrdList->uiMax_size = uiAmount + sizeof(OrdListHeader);
@@ -276,7 +276,7 @@ function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
   }
 
   // perform operations to calculate offset and decide if the container has to resized
-  pTemp_cont = (StackHeader *)hStack;
+  pTemp_cont = hStack;
   uiOffset = (pTemp_cont->uiSiz_of_elem * pTemp_cont->uiTotal_items) + sizeof(StackHeader);
 
   if ((uiOffset + pTemp_cont->uiSiz_of_elem) > pTemp_cont->uiMax_size) {
@@ -286,11 +286,11 @@ function Push(hStack: HSTACK, pdata: Pointer<void>): HSTACK {
       DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Could not resize stack container memory");
       return NULL;
     }
-    pTemp_cont = (StackHeader *)hStack;
+    pTemp_cont = hStack;
   }
-  pbyte = (BYTE *)hStack;
+  pbyte = hStack;
   pbyte += uiOffset;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   // copy data from pdata to pvoid - the stack
   memmove(pvoid, pdata, pTemp_cont->uiSiz_of_elem);
   pTemp_cont->uiTotal_items++;
@@ -330,7 +330,7 @@ function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Variable where data is to be stored is NULL");
     return FALSE;
   }
-  pTemp_cont = (StackHeader *)hStack;
+  pTemp_cont = hStack;
   uiTotal = pTemp_cont->uiTotal_items;
   uiSize_of_each = pTemp_cont->uiSiz_of_elem;
   if (uiTotal == 0) {
@@ -341,9 +341,9 @@ function Pop(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
   // calculate offsets to decide if the page should be rezied
   uiOffset = (uiSize_of_each * uiTotal) + sizeof(StackHeader);
   uiOffset -= uiSize_of_each;
-  pbyte = (BYTE *)hStack;
+  pbyte = hStack;
   pbyte += uiOffset;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   // get the data from pvoid and store in pdata
   memmove(pdata, pvoid, uiSize_of_each);
   pTemp_cont->uiTotal_items--;
@@ -380,7 +380,7 @@ function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
     DbgMessage(TOPIC_STACK_CONTAINERS, DBG_LEVEL_0, "Variable where data is to be stored is NULL");
     return FALSE;
   }
-  pTemp_cont = (StackHeader *)hStack;
+  pTemp_cont = hStack;
   uiTotal = pTemp_cont->uiTotal_items;
   uiSize_of_each = pTemp_cont->uiSiz_of_elem;
   if (uiTotal == 0) {
@@ -391,9 +391,9 @@ function PeekStack(hStack: HSTACK, pdata: Pointer<void>): BOOLEAN {
   // calculate offsets to decide if the page should be rezied
   uiOffset = (uiSize_of_each * uiTotal) + sizeof(StackHeader);
   uiOffset -= uiSize_of_each;
-  pbyte = (BYTE *)hStack;
+  pbyte = hStack;
   pbyte += uiOffset;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   // get the data from pvoid and store in pdata
   memmove(pdata, pvoid, uiSize_of_each);
   return TRUE;
@@ -554,7 +554,7 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   }
 
   // assign to temporary variables
-  pTemp_cont = (QueueHeader *)hQueue;
+  pTemp_cont = hQueue;
 
   // if theres no elements to remove return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -564,9 +564,9 @@ function PeekQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
 
   // copy the element pointed to by uiHead
 
-  pbyte = (BYTE *)hQueue;
+  pbyte = hQueue;
   pbyte += pTemp_cont->uiHead;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pdata, pvoid, pTemp_cont->uiSiz_of_elem);
 
   return TRUE;
@@ -604,7 +604,7 @@ function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   }
 
   // assign to temporary variables
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
 
   // if theres no elements to peek return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -621,9 +621,9 @@ function PeekList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN {
   if (uiOffsetSrc >= pTemp_cont->uiMax_size)
     uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - pTemp_cont->uiMax_size);
 
-  pbyte = (BYTE *)hList;
+  pbyte = hList;
   pbyte += uiOffsetSrc;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pdata, pvoid, pTemp_cont->uiSiz_of_elem);
 
   return TRUE;
@@ -667,7 +667,7 @@ function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEA
   }
 
   // assign to temporary variables
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
 
   // if theres no elements to peek return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -684,7 +684,7 @@ function SwapListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEA
   if (uiOffsetSrc >= pTemp_cont->uiMax_size)
     uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - pTemp_cont->uiMax_size);
 
-  pbyte = (BYTE *)hList;
+  pbyte = hList;
   pbyte += uiOffsetSrc;
   pvoid = pbyte;
   pSrc = pdata;
@@ -731,7 +731,7 @@ function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLE
   }
 
   // assign to temporary variables
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
 
   // if theres no elements to peek return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -748,7 +748,7 @@ function StoreListNode(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLE
   if (uiOffsetSrc >= pTemp_cont->uiMax_size)
     uiOffsetSrc = sizeof(ListHeader) + (uiOffsetSrc - pTemp_cont->uiMax_size);
 
-  pbyte = (BYTE *)hList;
+  pbyte = hList;
   pbyte += uiOffsetSrc;
 
   memmove(pbyte, pdata, pTemp_cont->uiSiz_of_elem);
@@ -789,7 +789,7 @@ function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): B
   }
 
   // assign to temporary variables
-  pTemp_cont = (OrdListHeader *)hOrdList;
+  pTemp_cont = hOrdList;
 
   // if theres no elements to peek return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -806,9 +806,9 @@ function PeekOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32): B
   if (uiOffsetSrc >= pTemp_cont->uiMax_size)
     uiOffsetSrc = sizeof(OrdListHeader) + (uiOffsetSrc - pTemp_cont->uiMax_size);
 
-  pbyte = (BYTE *)hOrdList;
+  pbyte = hOrdList;
   pbyte += uiOffsetSrc;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pdata, pvoid, pTemp_cont->uiSiz_of_elem);
 
   return TRUE;
@@ -844,7 +844,7 @@ function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
   }
 
   // assign to temporary variables
-  pTemp_cont = (QueueHeader *)hQueue;
+  pTemp_cont = hQueue;
 
   // if theres no elements to remove return error
   if (pTemp_cont->uiTotal_items == 0) {
@@ -854,9 +854,9 @@ function RemfromQueue(hQueue: HQUEUE, pdata: Pointer<void>): BOOLEAN {
 
   // remove the element pointed to by uiHead
 
-  pbyte = (BYTE *)hQueue;
+  pbyte = hQueue;
   pbyte += pTemp_cont->uiHead;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pdata, pvoid, pTemp_cont->uiSiz_of_elem);
   pTemp_cont->uiTotal_items--;
   pTemp_cont->uiHead += pTemp_cont->uiSiz_of_elem;
@@ -919,7 +919,7 @@ function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
 
   // assign some temporary variables
   fresize = FALSE;
-  pTemp_cont = (QueueHeader *)hQueue;
+  pTemp_cont = hQueue;
   uiTotal = pTemp_cont->uiTotal_items;
   uiSize_of_each = pTemp_cont->uiSiz_of_elem;
   uiMax_size = pTemp_cont->uiMax_size;
@@ -939,18 +939,18 @@ function AddtoQueue(hQueue: HQUEUE, pdata: Pointer<void>): HQUEUE {
     // copy memory from beginning of container to end of container
     // so that all the data is in one continuous block
 
-    pTemp_cont = (QueueHeader *)hQueue;
-    presize = (BYTE *)hQueue;
-    pmaxsize = (BYTE *)hQueue;
+    pTemp_cont = hQueue;
+    presize = hQueue;
+    pmaxsize = hQueue;
     presize += sizeof(QueueHeader);
     pmaxsize += uiMax_size;
     if (uiHead > sizeof(QueueHeader))
       memmove(pmaxsize, presize, uiHead - sizeof(QueueHeader));
     pTemp_cont->uiTail = uiMax_size + (uiHead - sizeof(QueueHeader));
   }
-  pbyte = (BYTE *)hQueue;
+  pbyte = hQueue;
   pbyte += pTemp_cont->uiTail;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pvoid, pdata, uiSize_of_each);
   pTemp_cont->uiTotal_items++;
   pTemp_cont->uiTail += uiSize_of_each;
@@ -985,12 +985,12 @@ function do_copy(pmem_void: Pointer<void>, uiSourceOfst: UINT32, uiDestOfst: UIN
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer passed to do_copy");
     return FALSE;
   }
-  pOffsetSrc = (BYTE *)pmem_void;
+  pOffsetSrc = pmem_void;
   pOffsetSrc += uiSourceOfst;
-  pOffsetDst = (BYTE *)pmem_void;
+  pOffsetDst = pmem_void;
   pOffsetDst += uiDestOfst;
-  pvoid_src = (void *)pOffsetSrc;
-  pvoid_dest = (void *)pOffsetDst;
+  pvoid_src = pOffsetSrc;
+  pvoid_dest = pOffsetDst;
   memmove(pvoid_dest, pvoid_src, uiSize);
   return TRUE;
 }
@@ -1020,9 +1020,9 @@ function do_copy_data(pmem_void: Pointer<void>, data: Pointer<void>, uiSrcOfst: 
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Invalid pointer passed to do_copy_data");
     return FALSE;
   }
-  pOffsetSrc = (BYTE *)pmem_void;
+  pOffsetSrc = pmem_void;
   pOffsetSrc += uiSrcOfst;
-  pvoid_src = (void *)pOffsetSrc;
+  pvoid_src = pOffsetSrc;
   memmove(data, pvoid_src, uiSize);
   return TRUE;
 }
@@ -1045,7 +1045,7 @@ function StackSize(hStack: HSTACK): UINT32 {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Stack pointer is NULL");
     return 0;
   }
-  pTemp_cont = (StackHeader *)hStack;
+  pTemp_cont = hStack;
   return pTemp_cont->uiTotal_items;
 }
 //*****************************************************************************
@@ -1067,7 +1067,7 @@ function QueueSize(hQueue: HQUEUE): UINT32 {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Queue pointer is NULL");
     return 0;
   }
-  pTemp_cont = (QueueHeader *)hQueue;
+  pTemp_cont = hQueue;
   return pTemp_cont->uiTotal_items;
 }
 //*****************************************************************************
@@ -1089,7 +1089,7 @@ function ListSize(hList: HLIST): UINT32 {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "List pointer is NULL");
     return 0;
   }
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
   return pTemp_cont->uiTotal_items;
 }
 //*****************************************************************************
@@ -1111,7 +1111,7 @@ function OrdListSize(hOrdList: HORDLIST): UINT32 {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Ordered List pointer is NULL");
     return 0;
   }
-  pTemp_cont = (OrdListHeader *)hOrdList;
+  pTemp_cont = hOrdList;
   return pTemp_cont->uiTotal_items;
 }
 //*****************************************************************************
@@ -1164,7 +1164,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
 
   // assign some temporary variables
 
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
   if (uiPos > pTemp_cont->uiTotal_items) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "There are not enough elements in the list");
     return NULL;
@@ -1238,7 +1238,7 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
       DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not resize list container memory");
       return NULL;
     }
-    pTemp_cont = (ListHeader *)hList;
+    pTemp_cont = hList;
     if (do_copy(hList, sizeof(ListHeader), uiMax_size, uiHead - sizeof(ListHeader)) == FALSE) {
       DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Could not copy list container memory");
       return NULL;
@@ -1259,13 +1259,13 @@ function AddtoList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): HLIST {
 
   // finally insert data at position uiFinalLoc
 
-  pbyte = (BYTE *)hList;
+  pbyte = hList;
   if (uiFinalLoc == 0) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "This should never happen! report this problem!");
     return NULL;
   }
   pbyte += uiFinalLoc;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
 
   memmove(pvoid, pdata, pTemp_cont->uiSiz_of_elem);
   pTemp_cont->uiTotal_items++;
@@ -1320,7 +1320,7 @@ function RemfromList(hList: HLIST, pdata: Pointer<void>, uiPos: UINT32): BOOLEAN
   }
 
   // assign some temporary variables
-  pTemp_cont = (ListHeader *)hList;
+  pTemp_cont = hList;
 
   if (uiPos >= pTemp_cont->uiTotal_items) {
     DbgMessage(TOPIC_LIST_CONTAINERS, DBG_LEVEL_0, "Cannot delete at the specified position");
@@ -1446,7 +1446,7 @@ function RemfromOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
 
   // assign some temporary variables
 
-  pTemp_cont = (OrdListHeader *)hOrdList;
+  pTemp_cont = hOrdList;
   if (uiPos >= pTemp_cont->uiTotal_items) {
     DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Cannot delete at the specified position");
     return FALSE;
@@ -1578,7 +1578,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
   }
 
   // assign some temporary variables
-  pTemp_cont = (OrdListHeader *)hOrdList;
+  pTemp_cont = hOrdList;
 
   // check for invalid position
   if (uiPos > pTemp_cont->uiTotal_items) {
@@ -1671,7 +1671,7 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
       return NULL;
     }
 
-    pTemp_cont = (OrdListHeader *)hOrdList;
+    pTemp_cont = hOrdList;
 
     if (do_copy(hOrdList, sizeof(OrdListHeader), uiMax_size, uiHead - sizeof(OrdListHeader)) == FALSE) {
       DbgMessage(TOPIC_ORDLIST_CONTAINERS, DBG_LEVEL_0, "Could not copy ordered list container memory");
@@ -1699,9 +1699,9 @@ function StoreinOrdList(hOrdList: HORDLIST, pdata: Pointer<void>, uiPos: UINT32)
   }
 
   // finally insert data at position uiFinalLoc
-  pbyte = (BYTE *)hOrdList;
+  pbyte = hOrdList;
   pbyte += uiFinalLoc;
-  pvoid = (void *)pbyte;
+  pvoid = pbyte;
   memmove(pvoid, pdata, pTemp_cont->uiSiz_of_elem);
   pTemp_cont->uiTotal_items++;
 
@@ -1737,7 +1737,7 @@ function AddtoOrdList(hOrdList: HORDLIST, pdata: Pointer<void>): HORDLIST {
   let uiPosition: UINT32;
 
   // get a pointer into the list header
-  pOrdList = (OrdListHeader *)hOrdList;
+  pOrdList = hOrdList;
 
   // if the list is empty or full)
   if (pOrdList->uiHead == pOrdList->uiTail) {
@@ -1846,8 +1846,8 @@ function Compare(p: Pointer<void>, q: Pointer<void>, size: UINT32): INT8 {
   let temp1: Pointer<TEST>;
   let temp2: Pointer<TEST>;
 
-  temp1 = (TEST *)p;
-  temp2 = (TEST *)q;
+  temp1 = p;
+  temp2 = q;
 
   if (temp1->me < temp2->me)
     return ORDLIST_LEFT_LESS;

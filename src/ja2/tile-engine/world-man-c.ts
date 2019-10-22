@@ -485,7 +485,7 @@ function AdjustForFullTile(iMapIndex: UINT32): BOOLEAN {
     let NewIndex: UINT16;
     let pNewNode: Pointer<LEVELNODE>;
 
-    NewIndex = (UINT16)(Random(10));
+    NewIndex = (Random(10));
 
     // Adjust for type
     NewIndex += gTileTypeStartIndex[gCurrentBackground];
@@ -848,7 +848,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
     if (fAddStructDBInfo) {
       if (usIndex < NUMBEROFTILES) {
         if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-          if (AddStructureToWorld((INT16)iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
+          if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
             MemFree(pNextStruct);
             guiLevelNodes--;
             return NULL;
@@ -876,7 +876,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
     if (fAddStructDBInfo) {
       if (usIndex < NUMBEROFTILES) {
         if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-          if (AddStructureToWorld((INT16)iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
+          if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
             MemFree(pNextStruct);
             guiLevelNodes--;
             return NULL;
@@ -907,7 +907,7 @@ function AddStructToTailCommon(iMapIndex: UINT32, usIndex: UINT16, fAddStructDBI
       gpWorldLevelData[iMapIndex].ubExtFlags[0] &= (~MAPELEMENT_EXT_NOBURN_STRUCT);
 
       // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
-      if (!FindStructure((INT16)iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
+      if (!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
         // Set flag...
         gpWorldLevelData[iMapIndex].ubExtFlags[0] |= MAPELEMENT_EXT_NOBURN_STRUCT;
       }
@@ -935,7 +935,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      if (AddStructureToWorld((INT16)iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
+      if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
         MemFree(pNextStruct);
         guiLevelNodes--;
         return FALSE;
@@ -949,7 +949,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   // Set head
   gpWorldLevelData[iMapIndex].pStructHead = pNextStruct;
 
-  SetWorldFlagsFromNewNode((UINT16)iMapIndex, pNextStruct->usIndex);
+  SetWorldFlagsFromNewNode(iMapIndex, pNextStruct->usIndex);
 
   if (usIndex < NUMBEROFTILES) {
     // Check flags for tiledat and set a shadow if we have a buddy
@@ -966,7 +966,7 @@ function AddStructToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
       gpWorldLevelData[iMapIndex].ubExtFlags[0] &= (~MAPELEMENT_EXT_NOBURN_STRUCT);
 
       // If we are NOT a wall and NOT multi-tiles, set mapelement flag...
-      if (!!FindStructure((INT16)iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
+      if (!!FindStructure(iMapIndex, STRUCTURE_WALLSTUFF) && pDBStructure->ubNumberOfTiles == 1) {
         // Set flag...
         gpWorldLevelData[iMapIndex].ubExtFlags[0] |= MAPELEMENT_EXT_NOBURN_STRUCT;
       }
@@ -1020,7 +1020,7 @@ function InsertStructIndex(iMapIndex: UINT32, usIndex: UINT16, ubLevel: UINT8): 
 
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      if (AddStructureToWorld((INT16)iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
+      if (AddStructureToWorld(iMapIndex, 0, gTileDatabase[usIndex].pDBStructureRef, pNextStruct) == FALSE) {
         MemFree(pNextStruct);
         guiLevelNodes--;
         return FALSE;
@@ -1152,7 +1152,7 @@ function RemoveStruct(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   }
 
   // Could not find it, return FALSE
-  RemoveWorldFlagsFromNewNode((UINT16)iMapIndex, usIndex);
+  RemoveWorldFlagsFromNewNode(iMapIndex, usIndex);
 
   return FALSE;
 }
@@ -1202,7 +1202,7 @@ function RemoveStructFromLevelNode(iMapIndex: UINT32, pNode: Pointer<LEVELNODE>)
   }
 
   // Could not find it, return FALSE
-  RemoveWorldFlagsFromNewNode((UINT16)iMapIndex, usIndex);
+  RemoveWorldFlagsFromNewNode(iMapIndex, usIndex);
 
   return FALSE;
 }
@@ -1682,7 +1682,7 @@ function AddMercToHead(iMapIndex: UINT32, pSoldier: Pointer<SOLDIERTYPE>, fAddSt
     // Set soldier's levelnode
     pSoldier->pLevelNode = pNextMerc;
 
-    AddMercStructureInfo((UINT16)iMapIndex, pSoldier);
+    AddMercStructureInfo(iMapIndex, pSoldier);
   }
 
   // Set head
@@ -1893,7 +1893,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
 
     if (usIndex < NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-        if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pRoof) == FALSE) {
+        if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pRoof) == FALSE) {
           MemFree(pRoof);
           guiLevelNodes--;
           return FALSE;
@@ -1912,7 +1912,7 @@ function AddRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE> {
 
         if (usIndex < NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-            if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
+            if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
               MemFree(pNextRoof);
               guiLevelNodes--;
               return FALSE;
@@ -1946,7 +1946,7 @@ function AddRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
 
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
+      if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextRoof) == FALSE) {
         MemFree(pNextRoof);
         guiLevelNodes--;
         return FALSE;
@@ -2166,7 +2166,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
 
     if (usIndex < NUMBEROFTILES) {
       if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-        if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pOnRoof) == FALSE) {
+        if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pOnRoof) == FALSE) {
           MemFree(pOnRoof);
           guiLevelNodes--;
           return FALSE;
@@ -2186,7 +2186,7 @@ function AddOnRoofToTail(iMapIndex: UINT32, usIndex: UINT16): Pointer<LEVELNODE>
 
         if (usIndex < NUMBEROFTILES) {
           if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-            if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
+            if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
               MemFree(pNextOnRoof);
               guiLevelNodes--;
               return NULL;
@@ -2218,7 +2218,7 @@ function AddOnRoofToHead(iMapIndex: UINT32, usIndex: UINT16): BOOLEAN {
   CHECKF(CreateLevelNode(&pNextOnRoof) != FALSE);
   if (usIndex < NUMBEROFTILES) {
     if (gTileDatabase[usIndex].pDBStructureRef != NULL) {
-      if (AddStructureToWorld((INT16)iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
+      if (AddStructureToWorld(iMapIndex, 1, gTileDatabase[usIndex].pDBStructureRef, pNextOnRoof) == FALSE) {
         MemFree(pNextOnRoof);
         guiLevelNodes--;
         return FALSE;
@@ -2652,14 +2652,14 @@ function WhoIsThere2(sGridNo: INT16, bLevel: INT8): UINT8 {
         if ((bLevel == 0 && pStructure->sCubeOffset == 0) || (bLevel > 0 && pStructure->sCubeOffset > 0)) {
           // found a person, on the right level!
           // structure ID and merc ID are identical for merc structures
-          return (UINT8)pStructure->usStructureID;
+          return pStructure->usStructureID;
         }
       }
       pStructure = pStructure->pNext;
     }
   }
 
-  return (UINT8)NOBODY;
+  return NOBODY;
 }
 
 function GetTerrainType(sGridNo: INT16): UINT8 {

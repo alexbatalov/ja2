@@ -39,23 +39,23 @@ function CalcDeathRate(): UINT8 {
   // give the player a grace period of 1 day
   if (gStrategicStatus.uiManDaysPlayed > 0) {
     // calculates the player's current death rate
-    uiDeathRate = (UINT32)((gStrategicStatus.ubMercDeaths * DEATH_RATE_SEVERITY * 100) / gStrategicStatus.uiManDaysPlayed);
+    uiDeathRate = ((gStrategicStatus.ubMercDeaths * DEATH_RATE_SEVERITY * 100) / gStrategicStatus.uiManDaysPlayed);
   }
 
-  return (UINT8)uiDeathRate;
+  return uiDeathRate;
 }
 
 function ModifyPlayerReputation(bRepChange: INT8): void {
   let iNewBadRep: INT32;
 
   // subtract, so that a negative reputation change results in an increase in bad reputation
-  iNewBadRep = (INT32)gStrategicStatus.ubBadReputation - bRepChange;
+  iNewBadRep = gStrategicStatus.ubBadReputation - bRepChange;
 
   // keep within a 0-100 range (0 = Saint, 100 = Satan)
   iNewBadRep = __max(0, iNewBadRep);
   iNewBadRep = __min(100, iNewBadRep);
 
-  gStrategicStatus.ubBadReputation = (UINT8)iNewBadRep;
+  gStrategicStatus.ubBadReputation = iNewBadRep;
 }
 
 function MercThinksDeathRateTooHigh(ubProfileID: UINT8): BOOLEAN {
@@ -184,7 +184,7 @@ function HandleEnricoEmail(): void {
       if ((ubHighestProgress == ubCurrentProgress) && (gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_MINOR_SETBACK)) {
     // remember that the original setback has been overcome, so another one can generate another E-mail
     gStrategicStatus.usEnricoEmailFlags |= ENRICO_EMAIL_FLAG_SETBACK_OVER;
-  } else if (GetWorldDay() > (UINT32)(gStrategicStatus.usLastDayOfPlayerActivity)) {
+  } else if (GetWorldDay() > (gStrategicStatus.usLastDayOfPlayerActivity)) {
     let bComplaint: INT8 = 0;
     let ubTolerance: UINT8;
 
@@ -201,7 +201,7 @@ function HandleEnricoEmail(): void {
         } else if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS3)) {
           bComplaint = 3;
         }
-      } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == (UINT32)ubTolerance * 2) {
+      } else if (gStrategicStatus.ubNumberOfDaysOfInactivity == ubTolerance * 2) {
         // six days? send 2nd or 3rd message possibly
         if (!(gStrategicStatus.usEnricoEmailFlags & ENRICO_EMAIL_SENT_LACK_PROGRESS2)) {
           bComplaint = 2;

@@ -87,7 +87,7 @@ function MapUtilScreenHandle(): UINT32 {
   bAvR = bAvG = bAvB = 0;
 
   // Zero out area!
-  ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, (INT16)(640), (INT16)(480), Get16BPPColor(FROMRGB(0, 0, 0)));
+  ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, (640), (480), Get16BPPColor(FROMRGB(0, 0, 0)));
 
   if (fNewMap) {
     fNewMap = FALSE;
@@ -118,7 +118,7 @@ function MapUtilScreenHandle(): UINT32 {
 
     // Allocate 24 bit Surface
     p24BitValues = MemAlloc(MINIMAP_X_SIZE * MINIMAP_Y_SIZE * sizeof(RGBValues));
-    p24BitDest = (UINT8 *)p24BitValues;
+    p24BitDest = p24BitValues;
 
     // Allocate 8-bit surface
     vs_desc.fCreateFlags = VSURFACE_CREATE_DEFAULT | VSURFACE_SYSTEM_MEM_USAGE;
@@ -146,7 +146,7 @@ function MapUtilScreenHandle(): UINT32 {
   }
 
   // Render small map
-  InitNewOverheadDB((UINT8)giCurrentTilesetID);
+  InitNewOverheadDB(giCurrentTilesetID);
 
   gfOverheadMapDirty = TRUE;
 
@@ -155,8 +155,8 @@ function MapUtilScreenHandle(): UINT32 {
   TrashOverheadMap();
 
   // OK, NOW PROCESS OVERHEAD MAP ( SHOUIDL BE ON THE FRAMEBUFFER )
-  gdXStep = (float)640 / (float)88;
-  gdYStep = (float)320 / (float)44;
+  gdXStep = 640 / 88;
+  gdYStep = 320 / 44;
   dStartX = dStartY = 0;
 
   // Adjust if we are using a restricted map...
@@ -166,8 +166,8 @@ function MapUtilScreenHandle(): UINT32 {
     CalculateRestrictedMapCoords(WEST, &sX1, &sY1, &sLeft, &sY2, 640, 320);
     CalculateRestrictedMapCoords(EAST, &sRight, &sY1, &sX2, &sY2, 640, 320);
 
-    gdXStep = (float)(sRight - sLeft) / (float)88;
-    gdYStep = (float)(sBottom - sTop) / (float)44;
+    gdXStep = (sRight - sLeft) / 88;
+    gdYStep = (sBottom - sTop) / 44;
 
     dStartX = sLeft;
     dStartY = sTop;
@@ -178,21 +178,21 @@ function MapUtilScreenHandle(): UINT32 {
   dX = dStartX;
   dY = dStartY;
 
-  pDestBuf = (UINT16 *)LockVideoSurface(giMiniMap, &uiDestPitchBYTES);
-  pSrcBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(giMiniMap, &uiDestPitchBYTES);
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
 
   for (iX = 0; iX < 88; iX++) {
     dY = dStartY;
 
     for (iY = 0; iY < 44; iY++) {
       // OK, AVERAGE PIXELS
-      iSubX1 = (INT32)dX - WINDOW_SIZE;
+      iSubX1 = dX - WINDOW_SIZE;
 
-      iSubX2 = (INT32)dX + WINDOW_SIZE;
+      iSubX2 = dX + WINDOW_SIZE;
 
-      iSubY1 = (INT32)dY - WINDOW_SIZE;
+      iSubY1 = dY - WINDOW_SIZE;
 
-      iSubY2 = (INT32)dY + WINDOW_SIZE;
+      iSubY2 = dY + WINDOW_SIZE;
 
       iCount = 0;
       bR = bG = bB = 0;
@@ -215,9 +215,9 @@ function MapUtilScreenHandle(): UINT32 {
       }
 
       if (iCount > 0) {
-        bAvR = bR / (UINT8)iCount;
-        bAvG = bG / (UINT8)iCount;
-        bAvB = bB / (UINT8)iCount;
+        bAvR = bR / iCount;
+        bAvG = bG / iCount;
+        bAvB = bB / iCount;
 
         sDest16BPPColor = Get16BPPColor(FROMRGB(bAvR, bAvG, bAvB));
       }
@@ -225,9 +225,9 @@ function MapUtilScreenHandle(): UINT32 {
       // Write into dest!
       pDestBuf[(iY * (uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
 
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].r = (UINT8)bAvR;
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].g = (UINT8)bAvG;
-      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].b = (UINT8)bAvB;
+      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].r = bAvR;
+      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].g = bAvG;
+      p24BitValues[(iY * (uiDestPitchBYTES / 2)) + iX].b = bAvB;
 
       // Increment
       dY += gdYStep;
@@ -244,8 +244,8 @@ function MapUtilScreenHandle(): UINT32 {
   BltVideoSurface(FRAME_BUFFER, giMiniMap, 0, 20, 360, VS_BLT_FAST | VS_BLT_USECOLORKEY, NULL);
 
   // QUantize!
-  pDataPtr = (UINT8 *)LockVideoSurface(gi8BitMiniMap, &uiSrcPitchBYTES);
-  pDestBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDataPtr = LockVideoSurface(gi8BitMiniMap, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
   QuantizeImage(pDataPtr, p24BitDest, MINIMAP_X_SIZE, MINIMAP_Y_SIZE, pPalette);
   SetVideoSurfacePalette(ghvSurface, pPalette);
   // Blit!
@@ -262,9 +262,9 @@ function MapUtilScreenHandle(): UINT32 {
 
     for (cnt = 0; cnt < 256; cnt++) {
       usLineColor = Get16BPPColor(FROMRGB(pPalette[cnt].peRed, pPalette[cnt].peGreen, pPalette[cnt].peBlue));
-      RectangleDraw(TRUE, sX, sY, sX, (INT16)(sY + 10), usLineColor, (UINT8 *)pDestBuf);
+      RectangleDraw(TRUE, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
       sX++;
-      RectangleDraw(TRUE, sX, sY, sX, (INT16)(sY + 10), usLineColor, (UINT8 *)pDestBuf);
+      RectangleDraw(TRUE, sX, sY, sX, (sY + 10), usLineColor, pDestBuf);
       sX++;
     }
   }

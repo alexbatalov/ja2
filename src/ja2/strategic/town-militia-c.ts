@@ -233,7 +233,7 @@ function CheckOneMilitiaForPromotion(sMapX: INT16, sMapY: INT16, ubCurrentRank: 
     if (ubCurrentRank == GREEN_MILITIA) {
       // Attempt yet another level up if sufficient points
       if (ubRecentKillPts > 2) {
-        if (CheckOneMilitiaForPromotion(sMapX, sMapY, REGULAR_MILITIA, (UINT8)(ubRecentKillPts - 2))) {
+        if (CheckOneMilitiaForPromotion(sMapX, sMapY, REGULAR_MILITIA, (ubRecentKillPts - 2))) {
           // success, this militia was promoted twice
           return 2;
         }

@@ -110,7 +110,7 @@ const DECAY_BLOOD_ROOF_STRENGTH = (b) => {
 };
 
 const SET_BLOOD_DELAY_TIME = (b) => {
-  (b) = BLOOD_DELAY_TIME((UINT8)Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC);
+  (b) = BLOOD_DELAY_TIME(Random(BLOOD_DELAY_MAX) + 1) | (b & 0xFC);
 };
 
 const SET_BLOOD_FLOOR_TYPE = (s, ntg) => {
@@ -439,12 +439,12 @@ function UpdateBloodGraphics(sGridNo: INT16, bLevel: INT8): void {
       // OK, pick new one. based on strength and randomness
 
       if (bValue > 0) {
-        usIndex = (UINT16)((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
+        usIndex = ((Random(4) * 4) + ubBloodGraphicLUT[bValue]);
 
         if (BLOOD_FLOOR_TYPE(pMapElement->ubSmellInfo) == 0) {
-          GetTileIndexFromTypeSubIndex(HUMANBLOOD, (UINT16)(usIndex + 1), &usNewIndex);
+          GetTileIndexFromTypeSubIndex(HUMANBLOOD, (usIndex + 1), &usNewIndex);
         } else {
-          GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (UINT16)(usIndex + 1), &usNewIndex);
+          GetTileIndexFromTypeSubIndex(CREATUREBLOOD, (usIndex + 1), &usNewIndex);
         }
 
         // This has been removed and it is handled by the ubBloodInfo level when restoring a saved game.

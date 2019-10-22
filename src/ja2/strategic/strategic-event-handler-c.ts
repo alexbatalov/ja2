@@ -150,7 +150,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
 
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
-            Object.bStatus[0] = (INT8)(((70 + Random(11)) * (INT32)Object.bStatus[0]) / 100);
+            Object.bStatus[0] = (((70 + Random(11)) * Object.bStatus[0]) / 100);
             // make damn sure it can't hit 0
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;
@@ -175,7 +175,7 @@ function BobbyRayPurchaseEventCallback(ubOrderID: UINT8): void {
 
           if (usStandardMapPos == LOST_SHIPMENT_GRIDNO) {
             // damage the item a random amount!
-            Object.bStatus[0] = (INT8)(((70 + Random(11)) * (INT32)Object.bStatus[0]) / 100);
+            Object.bStatus[0] = (((70 + Random(11)) * Object.bStatus[0]) / 100);
             // make damn sure it can't hit 0
             if (Object.bStatus[0] == 0) {
               Object.bStatus[0] = 1;
@@ -313,25 +313,25 @@ function HandleDelayedItemsArrival(uiReason: UINT32): void {
       switch (Random(10)) {
         case 0:
           // 1 in 10 chance of a badly damaged gas mask
-          CreateItem(GASMASK, (INT8)(20 + Random(10)), &Object);
+          CreateItem(GASMASK, (20 + Random(10)), &Object);
           break;
         case 1:
         case 2:
           // 2 in 10 chance of a battered Desert Eagle
-          CreateItem(DESERTEAGLE, (INT8)(40 + Random(10)), &Object);
+          CreateItem(DESERTEAGLE, (40 + Random(10)), &Object);
           break;
         case 3:
         case 4:
         case 5:
           // 3 in 10 chance of a stun grenade
-          CreateItem(STUN_GRENADE, (INT8)(70 + Random(10)), &Object);
+          CreateItem(STUN_GRENADE, (70 + Random(10)), &Object);
           break;
         case 6:
         case 7:
         case 8:
         case 9:
           // 4 in 10 chance of two 38s!
-          CreateItems(SW38, (INT8)(90 + Random(10)), 2, &Object);
+          CreateItems(SW38, (90 + Random(10)), 2, &Object);
           break;
       }
       if ((gWorldSectorX == BOBBYR_SHIPPING_DEST_SECTOR_X) && (gWorldSectorY == BOBBYR_SHIPPING_DEST_SECTOR_Y) && (gbWorldSectorZ == BOBBYR_SHIPPING_DEST_SECTOR_Z)) {
@@ -450,7 +450,7 @@ function CheckForKingpinsMoneyMissing(fFirstCheck: BOOLEAN): void {
     AddFutureDayStrategicEvent(EVENT_SET_BY_NPC_SYSTEM, Random(120), FACT_KINGPIN_KNOWS_MONEY_GONE, 1);
 
     // the sector is unloaded NOW so set Kingpin's balance and remove the cash
-    gMercProfiles[KINGPIN].iBalance = -(30000 - (INT32)uiTotalCash);
+    gMercProfiles[KINGPIN].iBalance = -(30000 - uiTotalCash);
     // remove all money from map
     for (uiLoop = 0; uiLoop < guiNumWorldItems; uiLoop++) {
       // loop through all items, look for ownership
@@ -489,7 +489,7 @@ function HandleNPCSystemEvent(uiEvent: UINT32): void {
       case FACT_SHIPMENT_DELAYED_24_HOURS:
       case FACT_24_HOURS_SINCE_DOCTOR_TALKED_TO:
       case FACT_24_HOURS_SINCE_JOEY_RESCUED:
-        SetFactTrue((UINT16)uiEvent);
+        SetFactTrue(uiEvent);
         break;
 
       case FACT_KINGPIN_KNOWS_MONEY_GONE:
@@ -607,7 +607,7 @@ function HandleEarlyMorningEvents(): void {
     gMercProfiles[cnt].ubMiscFlags2 &= (~PROFILE_MISC_FLAG2_BANDAGED_TODAY);
   }
   // reset Father Walker's drunkenness level!
-  gMercProfiles[FATHER].bNPCData = (INT8)Random(4);
+  gMercProfiles[FATHER].bNPCData = Random(4);
   // set Walker's location
   if (Random(2)) {
     // move the father to the other sector, provided neither are loaded
@@ -750,7 +750,7 @@ function HandleEarlyMorningEvents(): void {
       gMercProfiles[CARMEN].bNPCData2 = 0;
 
       for (cnt = HEAD_1; cnt <= HEAD_7; cnt++) {
-        RemoveObjectFromSoldierProfile(CARMEN, (UINT8)cnt);
+        RemoveObjectFromSoldierProfile(CARMEN, cnt);
       }
     }
   } else {

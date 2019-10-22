@@ -164,11 +164,11 @@ function GenerateBuilding(sDesiredSpot: INT16): Pointer<BUILDING> {
           bDesiredOrientation = OUTSIDE_TOP_LEFT;
           break;
         case SOUTH:
-          sWallGridNo = (INT16)(sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
+          sWallGridNo = (sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
           bDesiredOrientation = OUTSIDE_TOP_RIGHT;
           break;
         case WEST:
-          sWallGridNo = (INT16)(sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
+          sWallGridNo = (sCurrGridNo + DirectionInc(gTwoCDirection[bDirection]));
           bDesiredOrientation = OUTSIDE_TOP_LEFT;
           break;
         default:
@@ -314,8 +314,8 @@ function GenerateBuildings(): void {
   // for each location in a room try to find building info
 
   for (uiLoop = 0; uiLoop < WORLD_MAX; uiLoop++) {
-    if ((gubWorldRoomInfo[uiLoop] != NO_ROOM) && (gubBuildingInfo[uiLoop] == NO_BUILDING) && (FindStructure((INT16)uiLoop, STRUCTURE_NORMAL_ROOF) != NULL)) {
-      GenerateBuilding((INT16)uiLoop);
+    if ((gubWorldRoomInfo[uiLoop] != NO_ROOM) && (gubBuildingInfo[uiLoop] == NO_BUILDING) && (FindStructure(uiLoop, STRUCTURE_NORMAL_ROOF) != NULL)) {
+      GenerateBuilding(uiLoop);
     }
   }
 }
@@ -362,5 +362,5 @@ function SameBuilding(sGridNo1: INT16, sGridNo2: INT16): BOOLEAN {
   if (gubBuildingInfo[sGridNo2] == NO_BUILDING) {
     return FALSE;
   }
-  return (BOOLEAN)(gubBuildingInfo[sGridNo1] == gubBuildingInfo[sGridNo2]);
+  return (gubBuildingInfo[sGridNo1] == gubBuildingInfo[sGridNo2]);
 }

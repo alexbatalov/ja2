@@ -19,10 +19,10 @@ let gfDoTitleAnimation: BOOLEAN = FALSE;
 let gfStartTitleAnimation: BOOLEAN = FALSE;
 
 let gDebugRenderOverride: RENDER_HOOK[] /* [MAX_DEBUG_PAGES] */ = {
-  (RENDER_HOOK)DefaultDebugPage1,
-  (RENDER_HOOK)DefaultDebugPage2,
-  (RENDER_HOOK)DefaultDebugPage3,
-  (RENDER_HOOK)DefaultDebugPage4,
+  DefaultDebugPage1,
+  DefaultDebugPage2,
+  DefaultDebugPage3,
+  DefaultDebugPage4,
 };
 
 function DisplayFrameRate(): void {
@@ -277,16 +277,16 @@ function PalEditScreenHandle(): UINT32 {
     gfExitPalEditScreen = FALSE;
     FirstTime = TRUE;
     FreeBackgroundRect(guiBackgroundRect);
-    SetRenderHook((RENDER_HOOK)NULL);
-    SetUIKeyboardHook((UIKEYBOARD_HOOK)NULL);
+    SetRenderHook(NULL);
+    SetUIKeyboardHook(NULL);
     return GAME_SCREEN;
   }
 
   if (FirstTime) {
     FirstTime = FALSE;
 
-    SetRenderHook((RENDER_HOOK)PalEditRenderHook);
-    SetUIKeyboardHook((UIKEYBOARD_HOOK)PalEditKeyboardHook);
+    SetRenderHook(PalEditRenderHook);
+    SetUIKeyboardHook(PalEditKeyboardHook);
 
     guiBackgroundRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, 50, 10, 600, 400);
   } else {
@@ -343,10 +343,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     // Count start and end index
     for (cnt = 0; cnt < ubType; cnt++) {
-      ubStartRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[cnt]);
+      ubStartRep = (ubStartRep + gubpNumReplacementsPerRange[cnt]);
     }
 
-    ubEndRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[ubType]);
+    ubEndRep = (ubStartRep + gubpNumReplacementsPerRange[ubType]);
 
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
@@ -370,10 +370,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     // Count start and end index
     for (cnt = 0; cnt < ubType; cnt++) {
-      ubStartRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[cnt]);
+      ubStartRep = (ubStartRep + gubpNumReplacementsPerRange[cnt]);
     }
 
-    ubEndRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[ubType]);
+    ubEndRep = (ubStartRep + gubpNumReplacementsPerRange[ubType]);
 
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
@@ -397,10 +397,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     // Count start and end index
     for (cnt = 0; cnt < ubType; cnt++) {
-      ubStartRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[cnt]);
+      ubStartRep = (ubStartRep + gubpNumReplacementsPerRange[cnt]);
     }
 
-    ubEndRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[ubType]);
+    ubEndRep = (ubStartRep + gubpNumReplacementsPerRange[ubType]);
 
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
@@ -424,10 +424,10 @@ function PalEditKeyboardHook(pInputEvent: Pointer<InputAtom>): BOOLEAN {
 
     // Count start and end index
     for (cnt = 0; cnt < ubType; cnt++) {
-      ubStartRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[cnt]);
+      ubStartRep = (ubStartRep + gubpNumReplacementsPerRange[cnt]);
     }
 
-    ubEndRep = (UINT8)(ubStartRep + gubpNumReplacementsPerRange[ubType]);
+    ubEndRep = (ubStartRep + gubpNumReplacementsPerRange[ubType]);
 
     if (ubPaletteRep == ubEndRep) {
       ubPaletteRep = ubStartRep;
@@ -452,8 +452,8 @@ function CheckForAndExitTacticalDebug(): BOOLEAN {
     gfInitRect = TRUE;
     gfExitDebugScreen = FALSE;
     FreeBackgroundRect(guiBackgroundRect);
-    SetRenderHook((RENDER_HOOK)NULL);
-    SetUIKeyboardHook((UIKEYBOARD_HOOK)NULL);
+    SetRenderHook(NULL);
+    SetUIKeyboardHook(NULL);
 
     return TRUE;
   }
@@ -482,8 +482,8 @@ function DebugScreenHandle(): UINT32 {
   if (FirstTime) {
     FirstTime = FALSE;
 
-    SetRenderHook((RENDER_HOOK)DebugRenderHook);
-    SetUIKeyboardHook((UIKEYBOARD_HOOK)DebugKeyboardHook);
+    SetRenderHook(DebugRenderHook);
+    SetUIKeyboardHook(DebugKeyboardHook);
   } else {
     (*(GameScreens[GAME_SCREEN].HandleScreen))();
   }
@@ -639,16 +639,16 @@ function SexScreenHandle(): UINT32 {
   GetVideoObject(&hVObject, guiSMILY);
   pTrav = &(hVObject->pETRLEObject[0]);
 
-  sX = (INT16)((640 - pTrav->usWidth) / 2);
-  sY = (INT16)((480 - pTrav->usHeight) / 2);
+  sX = ((640 - pTrav->usWidth) / 2);
+  sY = ((480 - pTrav->usHeight) / 2);
 
   if (bCurFrame < 24) {
     BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, 0, sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
   } else {
-    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (INT8)(bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObjectFromIndex(FRAME_BUFFER, guiSMILY, (bCurFrame % 8), sX, sY, VO_BLT_SRCTRANSPARENCY, NULL);
   }
 
-  InvalidateRegion(sX, sY, (INT16)(sX + pTrav->usWidth), (INT16)(sY + pTrav->usHeight));
+  InvalidateRegion(sX, sY, (sX + pTrav->usWidth), (sY + pTrav->usHeight));
 
   return SEX_SCREEN;
 }

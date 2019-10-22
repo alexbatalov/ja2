@@ -41,15 +41,15 @@ function ChangeO3SectorStatue(fFromExplosion: BOOLEAN): void {
   ApplyMapChangesToMapTempFile(TRUE);
   // Remove it!
   // Get index for it...
-  GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (INT8)(5), &usTileIndex);
+  GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (5), &usTileIndex);
   RemoveStruct(13830, usTileIndex);
 
   // Add new one...
   if (fFromExplosion) {
     // Use damaged peice
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (INT8)(7), &usTileIndex);
+    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (7), &usTileIndex);
   } else {
-    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (INT8)(8), &usTileIndex);
+    GetTileIndexFromTypeSubIndex(EIGHTOSTRUCT, (8), &usTileIndex);
     // Play sound...
 
     PlayJA2Sample(OPEN_STATUE, RATE_11025, HIGHVOLUME, 1, MIDDLEPAN);
@@ -125,7 +125,7 @@ function HandleDeidrannaDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
             TacticalCharacterDialogue(pTeamSoldier, QUOTE_KILLING_DEIDRANNA);
           }
         }
@@ -376,7 +376,7 @@ function HandleQueenBitchDeath(pKillerSoldier: Pointer<SOLDIERTYPE>, sGridNo: IN
           // Can we see location?
           sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
             TacticalCharacterDialogue(pTeamSoldier, QUOTE_KILLING_QUEEN);
           }
         }

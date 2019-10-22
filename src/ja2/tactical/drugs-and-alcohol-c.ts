@@ -148,7 +148,7 @@ function ApplyDrugs(pSoldier: Pointer<SOLDIERTYPE>, pObject: Pointer<OBJECTTYPE>
       // are there fractional %s left over?
       if ((pObject->bStatus[0] % (100 / REGEN_POINTS_PER_BOOSTER)) != 0) {
         // chance of an extra point
-        if (PreRandom(100 / REGEN_POINTS_PER_BOOSTER) < (UINT32)(pObject->bStatus[0] % (100 / REGEN_POINTS_PER_BOOSTER))) {
+        if (PreRandom(100 / REGEN_POINTS_PER_BOOSTER) < (pObject->bStatus[0] % (100 / REGEN_POINTS_PER_BOOSTER))) {
           bRegenPointsGained++;
         }
       }
@@ -304,7 +304,7 @@ function HandleAPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, pubPoints: Poi
     }
   }
 
-  (*pubPoints) = (UINT8)sPoints;
+  (*pubPoints) = sPoints;
 }
 
 function HandleBPEffectDueToDrugs(pSoldier: Pointer<SOLDIERTYPE>, psPointReduction: Pointer<INT16>): void {

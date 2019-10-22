@@ -61,7 +61,7 @@ function SetCurrentPopUpBox(uiId: UINT32): BOOLEAN {
   // given id of the box, find it in the list and set to current
 
   // make sure the box id is valid
-  if (uiId == (UINT32)-1) {
+  if (uiId == -1) {
     // ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"Error: Trying to set Current Popup Box using -1 as an ID" );
     return FALSE;
   }
@@ -204,7 +204,7 @@ function RenderMercPopupBox(sDestX: INT16, sDestY: INT16, uiBuffer: UINT32): BOO
 
   // Invalidate!
   if (uiBuffer == FRAME_BUFFER) {
-    InvalidateRegion(sDestX, sDestY, (INT16)(sDestX + gPopUpTextBox->sWidth), (INT16)(sDestY + gPopUpTextBox->sHeight));
+    InvalidateRegion(sDestX, sDestY, (sDestX + gPopUpTextBox->sWidth), (sDestY + gPopUpTextBox->sHeight));
   }
 
   // unlock the video surfaces
@@ -386,7 +386,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
     // Set source transparcenty
     SetVideoSurfaceTransparency(pPopUpTextBox->uiSourceBufferIndex, FROMRGB(255, 255, 0));
 
-    pDestBuf = (UINT16 *)LockVideoSurface(pPopUpTextBox->uiSourceBufferIndex, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(pPopUpTextBox->uiSourceBufferIndex, &uiDestPitchBYTES);
 
     usColorVal = Get16BPPColor(FROMRGB(255, 255, 0));
     usLoopEnd = (usWidth * usHeight);
@@ -401,7 +401,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
       AssertMsg(0, String("Failed to GetVideoSurface for PrepareMercPopupBox.  VSurfaceID:  %d", pPopUpTextBox->uiMercTextPopUpBackground));
     }
 
-    pDestBuf = (UINT16 *)LockVideoSurface(pPopUpTextBox->uiSourceBufferIndex, &uiDestPitchBYTES);
+    pDestBuf = LockVideoSurface(pPopUpTextBox->uiSourceBufferIndex, &uiDestPitchBYTES);
     pSrcBuf = LockVideoSurface(pPopUpTextBox->uiMercTextPopUpBackground, &uiSrcPitchBYTES);
 
     Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, 0, 0, &DestRect);
@@ -453,7 +453,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
   SetFontDestBuffer(pPopUpTextBox->uiSourceBufferIndex, 0, 0, usWidth, usHeight, FALSE);
 
   // Display the text
-  sDispTextXPos = (INT16)((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X + usMarginX));
+  sDispTextXPos = ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_X + usMarginX));
 
   if (pPopUpTextBox->uiFlags & (MERC_POPUP_PREPARE_FLAGS_STOPICON | MERC_POPUP_PREPARE_FLAGS_SKULLICON)) {
     sDispTextXPos += 30;
@@ -461,7 +461,7 @@ function PrepareMercPopupBox(iBoxId: INT32, ubBackgroundIndex: UINT8, ubBorderIn
 
   {
     // Display the text
-    DisplayWrappedString(sDispTextXPos, (INT16)((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT, ubFontColor, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(sDispTextXPos, ((MERC_TEXT_POPUP_WINDOW_TEXT_OFFSET_Y + usMarginTopY)), usTextWidth, 2, MERC_TEXT_FONT, ubFontColor, pString, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 
   SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);

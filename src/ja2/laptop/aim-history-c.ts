@@ -95,7 +95,7 @@ function EnterAimHistory(): BOOLEAN {
   FilenameForBPP("LAPTOP\\ContentButton.sti", VObjectDesc.ImageFile);
   CHECKF(AddVideoObject(&VObjectDesc, &guiContentButton));
 
-  gubCurPageNum = (UINT8)giCurrentSubPage;
+  gubCurPageNum = giCurrentSubPage;
   RenderAimHistory();
 
   DisableAimHistoryButton();
@@ -238,7 +238,7 @@ function SelectHistoryMenuButtonsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, 
   if (fOnPage) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      rValue = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+      rValue = MSYS_GetRegionUserData(pRegion, 0);
       // Previous Page
       if (rValue == 1) {
         if (gubCurPageNum > 0) {
@@ -344,13 +344,13 @@ function InitTocMenu(): BOOLEAN {
     // if the mouse regions havent been inited, init them
     if (!gfInToc) {
       // Mouse region for the history toc buttons
-      MSYS_DefineRegion(&gSelectedHistoryTocMenuRegion[i], AIM_HISTORY_TOC_X, usPosY, (UINT16)(AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (UINT16)(usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
+      MSYS_DefineRegion(&gSelectedHistoryTocMenuRegion[i], AIM_HISTORY_TOC_X, usPosY, (AIM_HISTORY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectHistoryTocMenuRegionCallBack);
       MSYS_AddRegion(&gSelectedHistoryTocMenuRegion[i]);
       MSYS_SetRegionUserData(&gSelectedHistoryTocMenuRegion[i], 0, i + 1);
     }
 
     BltVideoObject(FRAME_BUFFER, hContentButtonHandle, 0, AIM_HISTORY_TOC_X, usPosY, VO_BLT_SRCTRANSPARENCY, NULL);
-    DrawTextToScreen(sText, AIM_HISTORY_TOC_X, (UINT16)(usPosY + AIM_HISTORY_TOC_Y), AIM_CONTENTBUTTON_WIDTH, AIM_HISTORY_TOC_TEXT_FONT, AIM_HISTORY_TOC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_HISTORY_TOC_X, (usPosY + AIM_HISTORY_TOC_Y), AIM_CONTENTBUTTON_WIDTH, AIM_HISTORY_TOC_TEXT_FONT, AIM_HISTORY_TOC_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
     usPosY += AIM_HISTORY_TOC_GAP_Y;
   }
@@ -374,7 +374,7 @@ function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
   if (gfInToc) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      gubCurPageNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+      gubCurPageNum = MSYS_GetRegionUserData(pRegion, 0);
       ChangingAimHistorySubPage(gubCurPageNum);
 
       ExitTocMenu();
@@ -387,7 +387,7 @@ function SelectHistoryTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iRea
 }
 
 function BtnHistoryMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+  let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
   gubAimHistoryMenuButtonDown = 255;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {

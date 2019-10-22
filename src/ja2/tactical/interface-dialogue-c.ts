@@ -226,7 +226,7 @@ function InitTalkingMenu(ubCharacterNum: UINT8, sGridNo: INT16): BOOLEAN {
 
     // Get screen XY pos from map XY
     // Be carefull to convert to cell cords
-    CellXYToScreenXY((INT16)((sXMapPos * CELL_X_SIZE)), (INT16)((sYMapPos * CELL_Y_SIZE)), &sScreenX, &sScreenY);
+    CellXYToScreenXY(((sXMapPos * CELL_X_SIZE)), ((sYMapPos * CELL_Y_SIZE)), &sScreenX, &sScreenY);
 
     // First get mouse xy screen location
     sX = sScreenX;
@@ -335,18 +335,18 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   MSYS_AddRegion(&(gTalkPanel.ScreenRegion));
 
   // Define main region
-  MSYS_DefineRegion(&(gTalkPanel.BackRegion), (INT16)(gTalkPanel.sX), (INT16)(gTalkPanel.sY), (INT16)(gTalkPanel.sX + gTalkPanel.usWidth), (INT16)(gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
+  MSYS_DefineRegion(&(gTalkPanel.BackRegion), (gTalkPanel.sX), (gTalkPanel.sY), (gTalkPanel.sX + gTalkPanel.usWidth), (gTalkPanel.sY + gTalkPanel.usHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TalkPanelBaseRegionClickCallback);
   // Add region
   MSYS_AddRegion(&(gTalkPanel.BackRegion));
 
   // Define name region
-  MSYS_DefineRegion(&(gTalkPanel.NameRegion), (INT16)(gTalkPanel.sX + TALK_PANEL_NAME_X), (INT16)(gTalkPanel.sY + TALK_PANEL_NAME_Y), (INT16)(gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (INT16)(gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
+  MSYS_DefineRegion(&(gTalkPanel.NameRegion), (gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), (gTalkPanel.sX + TALK_PANEL_NAME_WIDTH + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_HEIGHT + TALK_PANEL_NAME_Y), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelNameRegionMoveCallback, TalkPanelNameRegionClickCallback);
   // Add region
   MSYS_AddRegion(&(gTalkPanel.NameRegion));
 
   for (cnt = 0; cnt < 6; cnt++) {
     // Build a mouse region here that is over any others.....
-    MSYS_DefineRegion(&(gTalkPanel.Regions[cnt]), (INT16)(sX), (INT16)(sY), (INT16)(sX + TALK_PANEL_REGION_WIDTH), (INT16)(sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
+    MSYS_DefineRegion(&(gTalkPanel.Regions[cnt]), (sX), (sY), (sX + TALK_PANEL_REGION_WIDTH), (sY + TALK_PANEL_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, TalkPanelMoveCallback, TalkPanelClickCallback);
     // Add region
     MSYS_AddRegion(&(gTalkPanel.Regions[cnt]));
     MSYS_SetRegionUserData(&(gTalkPanel.Regions[cnt]), 0, cnt);
@@ -371,7 +371,7 @@ function InternalInitTalkingMenu(ubCharacterNum: UINT8, sX: INT16, sY: INT16): B
   sprintf(ubString, "INTERFACE\\talkbox2.sti");
   gTalkPanel.iButtonImages = LoadButtonImage(ubString, -1, 3, -1, 4, -1);
 
-  gTalkPanel.uiCancelButton = CreateIconAndTextButton(gTalkPanel.iButtonImages, zDialogActions[DIALOG_DONE], MILITARYFONT1, 33, DEFAULT_SHADOW, 33, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (INT16)(gTalkPanel.sX + TALK_PANEL_BUTTON_X), (INT16)(gTalkPanel.sY + TALK_PANEL_BUTTON_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)DoneTalkingButtonClickCallback);
+  gTalkPanel.uiCancelButton = CreateIconAndTextButton(gTalkPanel.iButtonImages, zDialogActions[DIALOG_DONE], MILITARYFONT1, 33, DEFAULT_SHADOW, 33, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gTalkPanel.sX + TALK_PANEL_BUTTON_X), (gTalkPanel.sY + TALK_PANEL_BUTTON_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, DoneTalkingButtonClickCallback);
 
   SpecifyButtonHilitedTextColors(gTalkPanel.uiCancelButton, FONT_MCOLOR_WHITE, DEFAULT_SHADOW);
 
@@ -542,7 +542,7 @@ function RenderTalkingMenu(): void {
       SetFontBackground(FONT_MCOLOR_BLACK);
       SetFontForeground(33);
     }
-    VarFindFontCenterCoordinates((INT16)(gTalkPanel.sX + TALK_PANEL_NAME_X), (INT16)(gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
+    VarFindFontCenterCoordinates((gTalkPanel.sX + TALK_PANEL_NAME_X), (gTalkPanel.sY + TALK_PANEL_NAME_Y), TALK_PANEL_NAME_WIDTH, TALK_PANEL_NAME_HEIGHT, MILITARYFONT1, &sFontX, &sFontY, L"%s", gMercProfiles[gTalkPanel.ubCharNum].zNickname);
     mprintf(sFontX, sFontY, L"%s", gMercProfiles[ubCharacterNum].zNickname);
 
     // Set font settings back
@@ -551,7 +551,7 @@ function RenderTalkingMenu(): void {
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
     pSrcBuf = LockVideoSurface(gTalkPanel.uiSaveBuffer, &uiSrcPitchBYTES);
 
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, (INT16)(gTalkPanel.sX + TALK_PANEL_FACE_X), (INT16)(gTalkPanel.sY + TALK_PANEL_FACE_Y), 0, 0, pFace->usFaceWidth, pFace->usFaceHeight);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (gTalkPanel.sX + TALK_PANEL_FACE_X), (gTalkPanel.sY + TALK_PANEL_FACE_Y), 0, 0, pFace->usFaceWidth, pFace->usFaceHeight);
 
     UnLockVideoSurface(FRAME_BUFFER);
     UnLockVideoSurface(gTalkPanel.uiSaveBuffer);
@@ -560,7 +560,7 @@ function RenderTalkingMenu(): void {
 
     // If guy is talking.... shadow area
     if (pFace->fTalking || !DialogueQueueIsEmpty()) {
-      ShadowVideoSurfaceRect(FRAME_BUFFER, (INT16)(gTalkPanel.sX + TALK_PANEL_SHADOW_AREA_X), (INT16)(gTalkPanel.sY + TALK_PANEL_SHADOW_AREA_Y), (INT16)(gTalkPanel.sX + TALK_PANEL_SHADOW_AREA_X + TALK_PANEL_SHADOW_AREA_WIDTH), (INT16)(gTalkPanel.sY + TALK_PANEL_SHADOW_AREA_Y + TALK_PANEL_SHADOW_AREA_HEIGHT));
+      ShadowVideoSurfaceRect(FRAME_BUFFER, (gTalkPanel.sX + TALK_PANEL_SHADOW_AREA_X), (gTalkPanel.sY + TALK_PANEL_SHADOW_AREA_Y), (gTalkPanel.sX + TALK_PANEL_SHADOW_AREA_X + TALK_PANEL_SHADOW_AREA_WIDTH), (gTalkPanel.sY + TALK_PANEL_SHADOW_AREA_Y + TALK_PANEL_SHADOW_AREA_HEIGHT));
 
       // Disable mouse regions....
       for (cnt = 0; cnt < 6; cnt++) {
@@ -608,7 +608,7 @@ function RenderTalkingMenu(): void {
         gTalkPanel.fTextRegionOn = FALSE;
       }
 
-      MSYS_DefineRegion(&(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (INT16)(gTalkPanel.sPopupX + usTextBoxWidth), (INT16)(gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
+      MSYS_DefineRegion(&(gTalkPanel.TextRegion), gTalkPanel.sPopupX, gTalkPanel.sPopupY, (gTalkPanel.sPopupX + usTextBoxWidth), (gTalkPanel.sPopupY + usTextBoxHeight), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, MSYS_NO_CALLBACK, TextRegionClickCallback);
       // Add region
       MSYS_AddRegion(&(gTalkPanel.TextRegion));
 
@@ -708,7 +708,7 @@ function TalkPanelMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): 
 
   if (iReason & MSYS_CALLBACK_REASON_MOVE) {
     // Set current selected guy....
-    gTalkPanel.bCurSelect = (INT8)uiItemPos;
+    gTalkPanel.bCurSelect = uiItemPos;
     gTalkPanel.bOldCurSelect = gTalkPanel.bCurSelect;
   } else if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gTalkPanel.bCurSelect = -1;
@@ -755,7 +755,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
           // open inv panel...
           gfSwitchPanel = TRUE;
           gbNewPanel = SM_PANEL;
-          gubNewPanelParam = (UINT8)gpSrcSoldier->ubID;
+          gubNewPanelParam = gpSrcSoldier->ubID;
 
           // Wait!
           gpDestSoldier->bNextAction = AI_ACTION_WAIT;
@@ -770,7 +770,7 @@ function TalkPanelClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
       } else {
         if (fDoConverse) {
           // Speak
-          Converse(gTalkPanel.ubCharNum, gubSrcSoldierProfile, (INT8)ubTalkMenuApproachIDs[uiItemPos], 0);
+          Converse(gTalkPanel.ubCharNum, gubSrcSoldierProfile, ubTalkMenuApproachIDs[uiItemPos], 0);
         }
       }
     }
@@ -1043,7 +1043,7 @@ function CalculatePopupTextPosition(sWidth: INT16, sHeight: INT16): void {
 }
 
 function TalkingMenuGiveItem(ubNPC: UINT8, pObject: Pointer<OBJECTTYPE>, bInvPos: INT8): BOOLEAN {
-  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, (UINT32)ubNPC, (UINT32)pObject, (UINT32)bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
+  CHECKF(SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_GIVE_ITEM, ubNPC, pObject, bInvPos, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI) != FALSE);
 
   return TRUE;
 }
@@ -1171,7 +1171,7 @@ function HandleNPCTriggerNPC(ubTargetNPC: UINT8, ubTargetRecord: UINT8, fShowDia
     guiWaitingForTriggerTime = GetJA2Clock();
 
     // Setup locator!
-    ShowRadioLocator((UINT8)pSoldier->ubID, SHOW_LOCATOR_FAST);
+    ShowRadioLocator(pSoldier->ubID, SHOW_LOCATOR_FAST);
 
     // If he's visible, locate...
     if (pSoldier->bVisible != -1) {
@@ -1392,7 +1392,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
   // Switch on action code!
   if (usActionCode > NPC_ACTION_TURN_TO_FACE_NEAREST_MERC && usActionCode < NPC_ACTION_LAST_TURN_TO_FACE_PROFILE) {
     pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
-    pSoldier2 = FindSoldierByProfileID((UINT8)(usActionCode - NPC_ACTION_TURN_TO_FACE_NEAREST_MERC), FALSE);
+    pSoldier2 = FindSoldierByProfileID((usActionCode - NPC_ACTION_TURN_TO_FACE_NEAREST_MERC), FALSE);
     if (pSoldier && pSoldier2) {
       // see if we are facing this person
       ubDesiredMercDir = atan8(CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), CenterX(pSoldier2->sGridNo), CenterY(pSoldier2->sGridNo));
@@ -1569,7 +1569,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
         if (pSoldier && pSoldier->inv[HANDPOS].usItem != NOTHING) {
           sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
-          SoldierReadyWeapon(pSoldier, (INT16)(sGridNo % WORLD_COLS), (INT16)(sGridNo / WORLD_COLS), FALSE);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), FALSE);
         }
         break;
 
@@ -1619,7 +1619,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         pSoldier = FindSoldierByProfileID(ubTargetNPC, FALSE);
         if (pSoldier) {
           // screen NORTHEAST corresponds to in-game NORTH
-          SendSoldierSetDesiredDirectionEvent(pSoldier, (UINT16)(NORTH + (usActionCode - NPC_ACTION_FACE_NORTH_EAST)));
+          SendSoldierSetDesiredDirectionEvent(pSoldier, (NORTH + (usActionCode - NPC_ACTION_FACE_NORTH_EAST)));
         }
         break;
 
@@ -1802,7 +1802,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
         if (bItemIn != NO_SLOT && bItemIn != HANDPOS) {
           SwapObjs(&(pSoldier->inv[HANDPOS]), &(pSoldier->inv[bItemIn]));
           sGridNo = pSoldier->sGridNo + DirectionInc(pSoldier->bDirection);
-          SoldierReadyWeapon(pSoldier, (INT16)(sGridNo % WORLD_COLS), (INT16)(sGridNo / WORLD_COLS), FALSE);
+          SoldierReadyWeapon(pSoldier, (sGridNo % WORLD_COLS), (sGridNo / WORLD_COLS), FALSE);
         }
         // fall through so that the person faces the nearest merc!
       case NPC_ACTION_TURN_TO_FACE_NEAREST_MERC:
@@ -1975,7 +1975,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
       case NPC_ACTION_MARK_KINGPIN_QUOTE_0_USED:
         // set Kingpin's quote 0 as used so he doesn't introduce himself
-        gMercProfiles[86].ubLastDateSpokenTo = (UINT8)GetWorldDay();
+        gMercProfiles[86].ubLastDateSpokenTo = GetWorldDay();
         break;
 
       case NPC_ACTION_TRIGGER_LAYLA_13_14_OR_15:
@@ -2703,7 +2703,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
             pSoldier->uiStatusFlags |= SOLDIER_NPC_DOING_PUNCH;
           } else {
-            TriggerNPCWithGivenApproach(pSoldier->ubProfile, (UINT8)pSoldier->uiPendingActionData4, FALSE);
+            TriggerNPCWithGivenApproach(pSoldier->ubProfile, pSoldier->uiPendingActionData4, FALSE);
           }
         }
         break;
@@ -2726,7 +2726,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
             pSoldier->bAimShotLocation = AIM_SHOT_HEAD;
 
             // Add gun to inventory.....
-            CreateItem((UINT16)(DESERTEAGLE), 100, &(pSoldier->inv[HANDPOS]));
+            CreateItem((DESERTEAGLE), 100, &(pSoldier->inv[HANDPOS]));
 
             // Make shoot
             pSoldier->bNextAction = AI_ACTION_FIRE_GUN;
@@ -2799,7 +2799,7 @@ function HandleNPCDoAction(ubTargetNPC: UINT8, usActionCode: UINT16, ubQuoteNum:
 
           if (cnt == 3) {
             // If here, nobody was found...
-            TriggerNPCWithGivenApproach(pSoldier->ubProfile, (UINT8)pSoldier->uiPendingActionData4, FALSE);
+            TriggerNPCWithGivenApproach(pSoldier->ubProfile, pSoldier->uiPendingActionData4, FALSE);
           }
         }
         break;
@@ -3617,13 +3617,13 @@ function PlayerTeamHasTwoSpotsLeft(): BOOLEAN {
   let uiCount: UINT32 = 0;
   let pSoldier: Pointer<SOLDIERTYPE>;
 
-  for (cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[cnt]; cnt <= (UINT32)(gTacticalStatus.Team[gbPlayerNum].bLastID - 2); cnt++, pSoldier++) {
+  for (cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID, pSoldier = MercPtrs[cnt]; cnt <= (gTacticalStatus.Team[gbPlayerNum].bLastID - 2); cnt++, pSoldier++) {
     if (pSoldier->bActive) {
       uiCount++;
     }
   }
 
-  if (uiCount <= (UINT32)(gTacticalStatus.Team[gbPlayerNum].bLastID - 2) - 2) {
+  if (uiCount <= (gTacticalStatus.Team[gbPlayerNum].bLastID - 2) - 2) {
     return TRUE;
   } else {
     return FALSE;
@@ -3643,7 +3643,7 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       } else {
         swprintf(zTemp, TacticalStr[ESCORT_PROMPT], gMercProfiles[ubProfileID].zNickname);
       }
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_ASK_ABOUT_PAYING_RPC:
     case NPC_ACTION_ASK_ABOUT_PAYING_RPC_WITH_DAILY_SALARY:
@@ -3651,27 +3651,27 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       swprintf(zTemp2, L"%d", gMercProfiles[ubProfileID].sSalary);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[HIRE_PROMPT], gMercProfiles[ubProfileID].zNickname, zTemp2);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_DARREN_REQUESTOR:
     case NPC_ACTION_FIGHT_AGAIN_REQUESTOR:
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BOXING_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BOXING_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_BUY_LEATHER_KEVLAR_VEST:
       swprintf(zTemp2, L"%d", Item[LEATHER_JACKET_W_KEVLAR].usPrice);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[BUY_VEST_PROMPT], ItemNames[LEATHER_JACKET_W_KEVLAR], zTemp2);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_PROMPT_PLAYER_TO_LIE:
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[YESNOLIE_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNOLIE, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[YESNOLIE_STR], GAME_SCREEN, MSG_BOX_FLAG_YESNOLIE, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_MEDICAL_REQUESTOR_2:
       swprintf(zTemp, TacticalStr[FREE_MEDICAL_PROMPT]);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_MEDICAL_REQUESTOR:
-      iTemp = (INT32)CalcMedicalCost(ubProfileID);
+      iTemp = CalcMedicalCost(ubProfileID);
       if (giHospitalRefund > iTemp) {
         iTemp = 10;
       } else {
@@ -3681,22 +3681,22 @@ function StartDialogueMessageBox(ubProfileID: UINT8, usMessageBoxType: UINT16): 
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[PAY_MONEY_PROMPT], zTemp2);
 
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_BUY_VEHICLE_REQUESTOR:
       swprintf(zTemp2, L"%ld", 10000);
       InsertDollarSignInToString(zTemp2);
       swprintf(zTemp, TacticalStr[PAY_MONEY_PROMPT], zTemp2);
 
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_TRIGGER_MARRY_DARYL_PROMPT:
       swprintf(zTemp, TacticalStr[MARRY_DARYL_PROMPT]);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     case NPC_ACTION_KROTT_REQUESTOR:
       swprintf(zTemp, TacticalStr[SPARE_KROTT_PROMPT]);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zTemp, GAME_SCREEN, MSG_BOX_FLAG_YESNO, DialogueMessageBoxCallBack, NULL);
       break;
     default:
       break;
@@ -3784,9 +3784,9 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
       break;
     case NPC_ACTION_PROMPT_PLAYER_TO_LIE:
       if (ubExitValue == MSG_BOX_RETURN_YES) {
-        TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 1));
+        TriggerNPCRecord(ubProfile, (ubRecordThatTriggeredLiePrompt + 1));
       } else if (ubExitValue == MSG_BOX_RETURN_NO) {
-        TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 2));
+        TriggerNPCRecord(ubProfile, (ubRecordThatTriggeredLiePrompt + 2));
       } else {
         // He tried to lie.....
         // Find the best conscious merc with a chance....
@@ -3805,10 +3805,10 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
 
         if (pLier && SkillCheck(pLier, LIE_TO_QUEEN_CHECK, 0) >= 0) {
           // SUCCESS..
-          TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 4));
+          TriggerNPCRecord(ubProfile, (ubRecordThatTriggeredLiePrompt + 4));
         } else {
           // NAUGHY BOY
-          TriggerNPCRecord(ubProfile, (UINT8)(ubRecordThatTriggeredLiePrompt + 3));
+          TriggerNPCRecord(ubProfile, (ubRecordThatTriggeredLiePrompt + 3));
         }
       }
       break;
@@ -3884,7 +3884,7 @@ function DialogueMessageBoxCallBack(ubExitValue: UINT8): void {
     case NPC_ACTION_TRIGGER_MARRY_DARYL_PROMPT:
       gMercProfiles[gpSrcSoldier->ubProfile].ubMiscFlags2 |= PROFILE_MISC_FLAG2_ASKED_BY_HICKS;
       if (ubExitValue == MSG_BOX_RETURN_YES) {
-        gMercProfiles[DARYL].bNPCData = (INT8)gpSrcSoldier->ubProfile;
+        gMercProfiles[DARYL].bNPCData = gpSrcSoldier->ubProfile;
 
         // create key for Daryl to give to player
         pSoldier = FindSoldierByProfileID(DARYL, FALSE);

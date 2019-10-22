@@ -63,7 +63,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xe1:
     case 0xf1:
       usType = SECONDWALL;
-      usIndex = 1 + (UINT16)Random(4);
+      usIndex = 1 + Random(4);
       break;
     case 0x02:
     case 0x12:
@@ -82,7 +82,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xe2:
     case 0xf2:
       usType = SECONDWALL;
-      usIndex = 5 + (UINT16)Random(4);
+      usIndex = 5 + Random(4);
       break;
     case 0x03:
     case 0x13:
@@ -111,7 +111,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xe4:
     case 0xf4:
       usType = SECONDWALL;
-      usIndex = 9 + (UINT16)Random(4);
+      usIndex = 9 + Random(4);
       break;
     case 0x05:
     case 0x15:
@@ -129,7 +129,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd5:
     case 0xe5:
     case 0xf5:
-      usIndex = 2 + (UINT16)Random(2);
+      usIndex = 2 + Random(2);
       break;
     case 0x06:
     case 0x16:
@@ -164,7 +164,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xe8:
     case 0xf8:
       usType = SECONDWALL;
-      usIndex = 13 + (UINT16)Random(4);
+      usIndex = 13 + Random(4);
       break;
     case 0x09:
     case 0x29:
@@ -192,7 +192,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xda:
     case 0xea:
     case 0xfa:
-      usIndex = 7 + (UINT16)Random(2);
+      usIndex = 7 + Random(2);
       break;
     case 0x0b:
     case 0x4b:
@@ -233,7 +233,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xb9:
     case 0xd9:
     case 0xf9:
-      usIndex = 14 + (UINT16)Random(2);
+      usIndex = 14 + Random(2);
       break;
     case 0x1b:
     case 0x5b:
@@ -258,7 +258,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xb3:
     case 0xe3:
     case 0xf3:
-      usIndex = 19 + (UINT16)Random(2);
+      usIndex = 19 + Random(2);
       break;
     case 0x27:
     case 0x37:
@@ -279,7 +279,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0x7b:
     case 0xbb:
     case 0xfb:
-      usIndex = 24 + (UINT16)Random(3);
+      usIndex = 24 + Random(3);
       break;
     case 0x3f:
       usIndex = 27;
@@ -292,7 +292,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xd6:
     case 0xe6:
     case 0xf6:
-      usIndex = 28 + (UINT16)Random(2);
+      usIndex = 28 + Random(2);
       break;
     case 0x47:
     case 0x57:
@@ -316,13 +316,13 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0x77:
     case 0xe7:
     case 0xf7:
-      usIndex = 34 + (UINT16)Random(3);
+      usIndex = 34 + Random(3);
       break;
     case 0x6f:
       usIndex = 37;
       break;
     case 0x7f:
-      usIndex = 38 + (UINT16)Random(2);
+      usIndex = 38 + Random(2);
       break;
     case 0x8c:
     case 0x9c:
@@ -332,7 +332,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xdc:
     case 0xec:
     case 0xfc:
-      usIndex = 40 + (UINT16)Random(2);
+      usIndex = 40 + Random(2);
       break;
     case 0x8d:
     case 0xad:
@@ -353,7 +353,7 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
     case 0xbd:
     case 0xdd:
     case 0xfd:
-      usIndex = 45 + (UINT16)Random(3);
+      usIndex = 45 + Random(3);
       break;
     case 0x9f:
       usIndex = 48;
@@ -362,25 +362,25 @@ function GetCaveTileIndexFromPerimeterValue(ubTotal: UINT8): UINT16 {
       usIndex = 49;
       break;
     case 0xbf:
-      usIndex = 50 + (UINT16)Random(2);
+      usIndex = 50 + Random(2);
       break;
     case 0xce:
     case 0xde:
     case 0xee:
     case 0xfe:
-      usIndex = 52 + (UINT16)Random(3);
+      usIndex = 52 + Random(3);
       break;
     case 0xcf:
       usIndex = 55;
       break;
     case 0xdf:
-      usIndex = 56 + (UINT16)Random(2);
+      usIndex = 56 + Random(2);
       break;
     case 0xef:
-      usIndex = 58 + (UINT16)Random(2);
+      usIndex = 58 + Random(2);
       break;
     case 0xff:
-      usIndex = 60 + (UINT16)Random(6);
+      usIndex = 60 + Random(6);
       break;
   }
   GetTileIndexFromTypeSubIndex(usType, usIndex, &usTileIndex);
@@ -1074,7 +1074,7 @@ function RemoveBuildingSectionFromWorld(pSelectRegion: Pointer<SGPRect>): void {
       for (x = left; x <= right; x++) {
         iMapIndex = y * WORLD_COLS + x;
         GetTileIndexFromTypeSubIndex(usFloorType, 1, &usTileIndex);
-        AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+        AddLandToHead(iMapIndex, (usTileIndex + Random(FLOOR_VARIANTS)));
       }
   }
   for (y = top - 1; y <= bottom + 1; y++)
@@ -1121,7 +1121,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         iMapIndex = y * WORLD_COLS + x;
         EraseFloor(iMapIndex);
         GetTileIndexFromTypeSubIndex(usFloorType, 1, &usTileIndex);
-        AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+        AddLandToHead(iMapIndex, (usTileIndex + Random(FLOOR_VARIANTS)));
       }
     // we are done!
     return;
@@ -1145,7 +1145,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
         while (pFloor) {
           GetTileType(pFloor->usIndex, &uiTileType);
           if (uiTileType >= FIRSTFLOOR && uiTileType <= LASTFLOOR) {
-            usFloorType = (UINT16)uiTileType;
+            usFloorType = uiTileType;
             break;
           }
         }
@@ -1259,7 +1259,7 @@ function AddBuildingSectionToWorld(pSelectRegion: Pointer<SGPRect>): void {
           RebuildRoof(iMapIndex, usRoofType);
         if (usFloorType != 0xffff && !gfBasement) {
           GetTileIndexFromTypeSubIndex(usFloorType, 1, &usTileIndex);
-          AddLandToHead(iMapIndex, (UINT16)(usTileIndex + Random(FLOOR_VARIANTS)));
+          AddLandToHead(iMapIndex, (usTileIndex + Random(FLOOR_VARIANTS)));
         }
       }
     }

@@ -117,7 +117,7 @@ function LoadCursorData(uiCursorIndex: UINT32): BOOLEAN {
         // Check for animated tile
         if (hImage->uiAppDataSize > 0) {
           // Valid auxiliary data, so get # od frames from data
-          pAuxData = (AuxObjectData *)hImage->pAppData;
+          pAuxData = hImage->pAppData;
 
           if (pAuxData->fFlags & AUX_ANIMATED_TILE) {
             gpCursorFileDatabase[pCurImage->uiFileIndex].ubFlags |= ANIMATED_CURSOR;
@@ -324,7 +324,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
           gMouseBltOverride();
         }
 
-        SetMouseCursorProperties((INT16)(usEffWidth / 2), (INT16)(usEffHeight / 2), (UINT16)(usEffHeight), (UINT16)(usEffWidth));
+        SetMouseCursorProperties((usEffWidth / 2), (usEffHeight / 2), (usEffHeight), (usEffWidth));
         DirtyCursor();
       } else {
         pCurData = &(gpCursorDatabase[uiCursorIndex]);
@@ -400,7 +400,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
 
           // Adjust sub-index if cursor is animated
           if (gpCursorFileDatabase[pCurImage->uiFileIndex].ubFlags & ANIMATED_CURSOR) {
-            usSubIndex = (UINT16)pCurImage->uiCurrentFrame;
+            usSubIndex = pCurImage->uiCurrentFrame;
           } else {
             usSubIndex = pCurImage->uiSubIndex;
           }
@@ -431,7 +431,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
         sCenterValX = pCurData->sOffsetX;
         sCenterValY = pCurData->sOffsetY;
 
-        SetMouseCursorProperties(sCenterValX, (INT16)(sCenterValY + gsGlobalCursorYOffset), pCurData->usHeight, pCurData->usWidth);
+        SetMouseCursorProperties(sCenterValX, (sCenterValY + gsGlobalCursorYOffset), pCurData->usHeight, pCurData->usWidth);
         DirtyCursor();
       }
     }
@@ -444,7 +444,7 @@ function SetCurrentCursorFromDatabase(uiCursorIndex: UINT32): BOOLEAN {
 
       // EnableCursor( FALSE );
     } else {
-      SetCurrentCursor((UINT16)uiCursorIndex, 0, 0);
+      SetCurrentCursor(uiCursorIndex, 0, 0);
       ReturnValue = TRUE;
     }
   }

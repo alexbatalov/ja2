@@ -95,7 +95,7 @@ const NEWQUENODE = () => {
 const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
 const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
 const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATEn = () => ((int)(FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATEn = () => ((FLATCOST * sqrt(dx * dx + dy * dy)));
 const ESTIMATE = () => ESTIMATE1();
 
 const REMAININGCOST = (ndx) => ((locY = pathQB[ndx].location / MAP_WIDTH), (locX = pathQB[ndx].location % MAP_WIDTH), (dy = abs(iDestY - locY)), (dx = abs(iDestX - locX)), ESTIMATE);
@@ -161,7 +161,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   // so this is just to keep things happy!
 
   // for player groups only!
-  pGroup = GetGroup((UINT8)sMvtGroupNumber);
+  pGroup = GetGroup(sMvtGroupNumber);
   if (pGroup->fPlayer) {
     // if player is holding down SHIFT key, find the shortest route instead of the quickest route!
     if (_KeyDown(SHIFT)) {
@@ -185,7 +185,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
   memset(pathQB, 0, sizeof(pathQB));
 
   // FOLLOWING LINE COMMENTED OUT ON MARCH 7/97 BY IC
-  memset(gusMapPathingData, ((UINT16)sStart), sizeof(gusMapPathingData));
+  memset(gusMapPathingData, (sStart), sizeof(gusMapPathingData));
   trailStratTreedxB = 0;
 
   // set up common info
@@ -226,7 +226,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
     curLoc = pathQB[ndx].location;
     curCost = pathQB[ndx].costSoFar;
     // = totAPCostB[ndx];
-    DELQUENODE((INT16)ndx);
+    DELQUENODE(ndx);
 
     if (trailCostB[curLoc] < curCost)
       continue;
@@ -242,8 +242,8 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       }
 
       if (gfPlotToAvoidPlayerInfuencedSectors && newLoc != sDestination) {
-        sSectorX = (INT16)(newLoc % MAP_WORLD_X);
-        sSectorY = (INT16)(newLoc / MAP_WORLD_X);
+        sSectorX = (newLoc % MAP_WORLD_X);
+        sSectorY = (newLoc / MAP_WORLD_X);
 
         if (IsThereASoldierInThisSector(sSectorX, sSectorY, 0)) {
           continue;
@@ -251,7 +251,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
         if (GetNumberOfMilitiaInSector(sSectorX, sSectorY, 0)) {
           continue;
         }
-        if (!OkayForEnemyToMoveThroughSector((UINT8)SECTOR(sSectorX, sSectorY))) {
+        if (!OkayForEnemyToMoveThroughSector(SECTOR(sSectorX, sSectorY))) {
           continue;
         }
       }
@@ -259,7 +259,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       // are we plotting path or checking for existance of one?
       if (sMvtGroupNumber != 0) {
         if (iHelicopterVehicleId != -1) {
-          nextCost = GetTravelTimeForGroup((UINT8)(SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (UINT8)(iCnt / 2), (UINT8)sMvtGroupNumber);
+          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (iCnt / 2), sMvtGroupNumber);
           if (nextCost != 0xffffffff && sMvtGroupNumber == pVehicleList[iHelicopterVehicleId].ubMovementGroup) {
             // is a heli, its pathing is determined not by time (it's always the same) but by total cost
             // Skyrider will avoid uncontrolled airspace as much as possible...
@@ -270,10 +270,10 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
             }
           }
         } else {
-          nextCost = GetTravelTimeForGroup((UINT8)(SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (UINT8)(iCnt / 2), (UINT8)sMvtGroupNumber);
+          nextCost = GetTravelTimeForGroup((SECTOR((curLoc % MAP_WORLD_X), (curLoc / MAP_WORLD_X))), (iCnt / 2), sMvtGroupNumber);
         }
       } else {
-        nextCost = GetTravelTimeForFootTeam((UINT8)(SECTOR(curLoc % MAP_WORLD_X, curLoc / MAP_WORLD_X)), (UINT8)(iCnt / 2));
+        nextCost = GetTravelTimeForFootTeam((SECTOR(curLoc % MAP_WORLD_X, curLoc / MAP_WORLD_X)), (iCnt / 2));
       }
 
       if (nextCost == 0xffffffff) {
@@ -286,7 +286,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       if (fTacticalTraversal) {
         // if it's the first sector only (no cost yet)
         if (curCost == 0 && (newLoc == sDestination)) {
-          if (GetTraversability((INT16)(SECTOR(curLoc % 18, curLoc / 18)), (INT16)(SECTOR(newLoc % 18, newLoc / 18))) != GROUNDBARRIER) {
+          if (GetTraversability((SECTOR(curLoc % 18, curLoc / 18)), (SECTOR(newLoc % 18, newLoc / 18))) != GROUNDBARRIER) {
             nextCost = 0;
           }
         }
@@ -324,7 +324,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
 
         // make new path to current location
         trailStratTreeB[trailStratTreedxB].nextLink = pathQB[ndx].pathNdx;
-        trailStratTreeB[trailStratTreedxB].diStratDelta = (INT16)iCnt;
+        trailStratTreeB[trailStratTreedxB].diStratDelta = iCnt;
         pathQB[qNewNdx].pathNdx = trailStratTreedxB;
         trailStratTreedxB++;
 
@@ -332,13 +332,13 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
           return 0;
         }
 
-        pathQB[qNewNdx].location = (INT16)newLoc;
+        pathQB[qNewNdx].location = newLoc;
         pathQB[qNewNdx].costSoFar = newTotCost;
         pathQB[qNewNdx].costToGo = REMAININGCOST(qNewNdx);
         trailCostB[newLoc] = newTotCost;
         // do a sorted que insert of the new path
         QUESEARCH(qNewNdx, insertNdx);
-        INSQUENODEPREV((INT16)qNewNdx, (INT16)insertNdx);
+        INSQUENODEPREV(qNewNdx, insertNdx);
       }
     }
   } while (pathQNotEmpty && pathNotYetFound);
@@ -370,7 +370,7 @@ function FindStratPath(sStart: INT16, sDestination: INT16, sMvtGroupNumber: INT1
       z = trailStratTreeB[z].nextLink;
     }
 
-    gusPathDataSize = (UINT16)iCnt;
+    gusPathDataSize = iCnt;
 
     // return path length : serves as a "successful" flag and a path length counter
     return iCnt;
@@ -411,7 +411,7 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
   if (iEndSectorNum < MAP_WORLD_X - 1)
     return NULL;
 
-  iPathLength = ((INT32)FindStratPath(((INT16)iStartSectorNum), ((INT16)iEndSectorNum), sMvtGroupNumber, fTacticalTraversal));
+  iPathLength = (FindStratPath((iStartSectorNum), (iEndSectorNum), sMvtGroupNumber, fTacticalTraversal));
   while (iPathLength > iCount) {
     switch (gusMapPathingData[iCount]) {
       case (NORTH):
@@ -431,7 +431,7 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
     // create new node
     iCurrentSectorNum += iDelta;
 
-    if (!AddSectorToPathList(pHeadOfPathList, (UINT16)iCurrentSectorNum)) {
+    if (!AddSectorToPathList(pHeadOfPathList, iCurrentSectorNum)) {
       pNode = pHeadOfPathList;
       // intersected previous node, delete path to date
       if (!pNode)
@@ -439,7 +439,7 @@ function BuildAStrategicPath(pPath: PathStPtr, iStartSectorNum: INT16, iEndSecto
       while (pNode->pNext)
         pNode = pNode->pNext;
       // start backing up
-      while (pNode->uiSectorId != (UINT32)iStartSectorNum) {
+      while (pNode->uiSectorId != iStartSectorNum) {
         pDeleteNode = pNode;
         pNode = pNode->pPrev;
         pNode->pNext = NULL;
@@ -756,7 +756,7 @@ function ClearStrategicPathList(pHeadOfPath: PathStPtr, sMvtGroup: INT16): PathS
 
   if ((sMvtGroup != -1) && (sMvtGroup != 0)) {
     // clear this groups mvt pathing
-    RemoveGroupWaypoints((UINT8)sMvtGroup);
+    RemoveGroupWaypoints(sMvtGroup);
   }
 
   return pNode;
@@ -782,7 +782,7 @@ function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16
   pNode = MoveToEndOfPathList(pNode);
 
   // get current sector value
-  sCurrentSector = (INT16)pNode->uiSectorId;
+  sCurrentSector = pNode->uiSectorId;
 
   // move through list
   while ((pNode) && (sSector != sCurrentSector)) {
@@ -791,7 +791,7 @@ function ClearStrategicPathListAfterThisSector(pHeadOfPath: PathStPtr, sX: INT16
 
     // get current sector value
     if (pNode != NULL) {
-      sCurrentSector = (INT16)pNode->uiSectorId;
+      sCurrentSector = pNode->uiSectorId;
     }
   }
 
@@ -954,7 +954,7 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
   }
 
   // get current sector value
-  sCurrentSector = (INT16)pNode->uiSectorId;
+  sCurrentSector = pNode->uiSectorId;
 
   // move to end of list
   pNode = MoveToEndOfPathList(pNode);
@@ -968,7 +968,7 @@ function RemoveSectorFromStrategicPathList(pList: PathStPtr, sX: INT16, sY: INT1
     pNode = pNode->pPrev;
 
     // get current sector value
-    sCurrentSector = (INT16)pNode->uiSectorId;
+    sCurrentSector = pNode->uiSectorId;
   }
 
   // no list left, sector not found
@@ -998,7 +998,7 @@ function GetLastSectorIdInCharactersPath(pCharacter: Pointer<SOLDIERTYPE>): INT1
   pNode = GetSoldierMercPathPtr(pCharacter);
 
   while (pNode) {
-    sLastSector = (INT16)(pNode->uiSectorId);
+    sLastSector = (pNode->uiSectorId);
     pNode = pNode->pNext;
   }
 
@@ -1024,7 +1024,7 @@ function GetLastSectorIdInVehiclePath(iId: INT32): INT16 {
   pNode = pVehicleList[iId].pMercPath;
 
   while (pNode) {
-    sLastSector = (INT16)(pNode->uiSectorId);
+    sLastSector = (pNode->uiSectorId);
     pNode = pNode->pNext;
   }
 
@@ -1089,9 +1089,9 @@ function GetStrategicMvtSpeed(pCharacter: Pointer<SOLDIERTYPE>): INT32 {
 
   // avg of strength and agility * percentage health..very simple..replace later
 
-  iSpeed = (INT32)((pCharacter->bAgility + pCharacter->bStrength) / 2);
-  iSpeed *= (INT32)((pCharacter->bLife));
-  iSpeed /= (INT32)pCharacter->bLifeMax;
+  iSpeed = ((pCharacter->bAgility + pCharacter->bStrength) / 2);
+  iSpeed *= ((pCharacter->bLife));
+  iSpeed /= pCharacter->bLifeMax;
 
   return iSpeed;
 }
@@ -1320,13 +1320,13 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
     return;
   }
 
-  pGroup = GetGroup((UINT8)sMvtGroup);
+  pGroup = GetGroup(sMvtGroup);
 
   // KRIS!  Added this because it was possible to plot a new course to the same destination, and the
   //       group would add new arrival events without removing the existing one(s).
   DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, sMvtGroup);
 
-  RemoveGroupWaypoints((UINT8)sMvtGroup);
+  RemoveGroupWaypoints(sMvtGroup);
 
   if (pGroup->fPlayer) {
     // update the destination(s) in the team list
@@ -1387,7 +1387,7 @@ function RebuildWayPointsForGroupPath(pHeadOfPath: PathStPtr, sMvtGroup: INT16):
   // at this point, the final sector in the path must be identical to this group's last waypoint
   wp = GetFinalWaypoint(pGroup);
   AssertMsg(wp, "Path exists, but no waypoints were added!  AM-0");
-  AssertMsg(pNode->uiSectorId == (UINT32)CALCULATE_STRATEGIC_INDEX(wp->x, wp->y), "Last waypoint differs from final path sector!  AM-0");
+  AssertMsg(pNode->uiSectorId == CALCULATE_STRATEGIC_INDEX(wp->x, wp->y), "Last waypoint differs from final path sector!  AM-0");
 
   // see if we've already reached the first sector in the path (we never actually left the sector and reversed back to it)
   if (pGroup->uiArrivalTime == GetWorldTotalMin()) {
@@ -1414,7 +1414,7 @@ function MoveGroupFromSectorToSector(ubGroupID: UINT8, sStartX: INT16, sStartY: 
   let pNode: PathStPtr = NULL;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, (INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
 
   if (pNode == NULL) {
     return FALSE;
@@ -1435,7 +1435,7 @@ function MoveGroupFromSectorToSectorButAvoidLastSector(ubGroupID: UINT8, sStartX
   let pNode: PathStPtr = NULL;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, (INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE*/);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE*/);
 
   if (pNode == NULL) {
     return FALSE;
@@ -1468,7 +1468,7 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectors(ubGroupID: U
   gfPlotToAvoidPlayerInfuencedSectors = TRUE;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, (INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
 
   // turn off the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = FALSE;
@@ -1505,7 +1505,7 @@ function MoveGroupFromSectorToSectorButAvoidPlayerInfluencedSectorsAndStopOneSec
   gfPlotToAvoidPlayerInfuencedSectors = TRUE;
 
   // build the path
-  pNode = BuildAStrategicPath(pNode, (INT16)CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), (INT16)CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
+  pNode = BuildAStrategicPath(pNode, CALCULATE_STRATEGIC_INDEX(sStartX, sStartY), CALCULATE_STRATEGIC_INDEX(sDestX, sDestY), ubGroupID, FALSE /*, FALSE */);
 
   // turn off the avoid flag
   gfPlotToAvoidPlayerInfuencedSectors = FALSE;

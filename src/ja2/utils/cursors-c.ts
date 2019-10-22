@@ -377,7 +377,7 @@ let CursorDatabase: CursorData[] /* [] */ = {
 function InitCursors(): void {
   InitCursorDatabase(CursorFileDatabase, CursorDatabase, NUM_CURSOR_FILES);
 
-  SetMouseBltHook((MOUSEBLT_HOOK)BltJA2CursorData);
+  SetMouseBltHook(BltJA2CursorData);
 }
 
 function HandleAnimatedCursors(): void {

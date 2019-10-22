@@ -202,7 +202,7 @@ function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // CJC, April 19, 1999: added up to 20% morale boost according to progress
-  iActualMorale = DEFAULT_MORALE + (INT32)pSoldier->bTeamMoraleMod + (INT32)pSoldier->bTacticalMoraleMod + (INT32)pSoldier->bStrategicMoraleMod + (INT32)(CurrentPlayerProgressPercentage() / 5);
+  iActualMorale = DEFAULT_MORALE + pSoldier->bTeamMoraleMod + pSoldier->bTacticalMoraleMod + pSoldier->bStrategicMoraleMod + (CurrentPlayerProgressPercentage() / 5);
 
   // ATE: Modify morale based on drugs....
   iActualMorale += ((pSoldier->bDrugEffect[DRUG_TYPE_ADRENALINE] * DRUG_EFFECT_MORALE_MOD) / 100);
@@ -210,7 +210,7 @@ function RefreshSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   iActualMorale = __min(100, iActualMorale);
   iActualMorale = __max(0, iActualMorale);
-  pSoldier->bMorale = (INT8)iActualMorale;
+  pSoldier->bMorale = iActualMorale;
 
   // update mapscreen as needed
   fCharacterInfoPanelDirty = TRUE;
@@ -275,22 +275,22 @@ function UpdateSoldierMorale(pSoldier: Pointer<SOLDIERTYPE>, ubType: UINT8, bMor
   }
   // apply change!
   if (ubType == TACTICAL_MORALE_EVENT) {
-    iMoraleModTotal = (INT32)pSoldier->bTacticalMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = pSoldier->bTacticalMoraleMod + bMoraleMod;
     iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bTacticalMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bTacticalMoraleMod = iMoraleModTotal;
   } else if (gTacticalStatus.fEnemyInSector && !pSoldier->bInSector) // delayed strategic
   {
-    iMoraleModTotal = (INT32)pSoldier->bDelayedStrategicMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = pSoldier->bDelayedStrategicMoraleMod + bMoraleMod;
     iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bDelayedStrategicMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bDelayedStrategicMoraleMod = iMoraleModTotal;
   } else // strategic
   {
-    iMoraleModTotal = (INT32)pSoldier->bStrategicMoraleMod + (INT32)bMoraleMod;
+    iMoraleModTotal = pSoldier->bStrategicMoraleMod + bMoraleMod;
     iMoraleModTotal = __min(iMoraleModTotal, MORALE_MOD_MAX);
     iMoraleModTotal = __max(iMoraleModTotal, -MORALE_MOD_MAX);
-    pSoldier->bStrategicMoraleMod = (INT8)iMoraleModTotal;
+    pSoldier->bStrategicMoraleMod = iMoraleModTotal;
   }
 
   RefreshSoldierMorale(pSoldier);
@@ -553,11 +553,11 @@ function HandleMoraleEvent(pSoldier: Pointer<SOLDIERTYPE>, bMoraleEvent: INT8, s
       break;
     case MORALE_TEAMMATE_DIED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((UINT8)(pSoldier->bExpLevel * REPUTATION_SOLDIER_DIED));
+      ModifyPlayerReputation((pSoldier->bExpLevel * REPUTATION_SOLDIER_DIED));
       break;
     case MORALE_MERC_CAPTURED:
       // impact depends on that dude's level of experience
-      ModifyPlayerReputation((UINT8)(pSoldier->bExpLevel * REPUTATION_SOLDIER_CAPTURED));
+      ModifyPlayerReputation((pSoldier->bExpLevel * REPUTATION_SOLDIER_CAPTURED));
       break;
     case MORALE_KILLED_CIVILIAN:
       ModifyPlayerReputation(REPUTATION_KILLED_CIVILIAN);
@@ -652,7 +652,7 @@ function HourlyMoraleUpdate(): void {
               // scale according to how close to we are to snapping
               // KM : Divide by 0 error found.  Wrapped into an if statement.
               if (pProfile->bHatedTime[bHated]) {
-                bOpinion = ((INT32)bOpinion) * (pProfile->bHatedTime[bHated] - pProfile->bHatedCount[bHated]) / pProfile->bHatedTime[bHated];
+                bOpinion = (bOpinion) * (pProfile->bHatedTime[bHated] - pProfile->bHatedCount[bHated]) / pProfile->bHatedTime[bHated];
               }
 
               if (pProfile->bHatedCount[bHated] <= pProfile->bHatedTime[bHated] / 2) {
@@ -675,7 +675,7 @@ function HourlyMoraleUpdate(): void {
         // If teamed with someone we hated, team opinion is automatically minimum
         bActualTeamOpinion = HATED_OPINION;
       } else if (bNumTeamMembers > 0) {
-        bActualTeamOpinion = (INT8)(iTotalOpinions / bNumTeamMembers);
+        bActualTeamOpinion = (iTotalOpinions / bNumTeamMembers);
         // give bonus/penalty for highest leadership value on team
         bActualTeamOpinion += (bHighestTeamLeadership - 50) / 10;
       } else // alone

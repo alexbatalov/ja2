@@ -214,10 +214,10 @@ function IncrementTownLoyalty(bTownId: INT8, uiLoyaltyIncrease: UINT32): void {
   // only do a maximum of 10000 pts at a time...
   uiRemainingIncrement = uiLoyaltyIncrease;
   while (uiRemainingIncrement) {
-    sThisIncrement = (INT16)min(uiRemainingIncrement, 10000);
+    sThisIncrement = min(uiRemainingIncrement, 10000);
 
     // up the gain value
-    gTownLoyalty[bTownId].sChange += (INT16)sThisIncrement;
+    gTownLoyalty[bTownId].sChange += sThisIncrement;
     // update town value now
     UpdateTownLoyaltyRating(bTownId);
 
@@ -248,7 +248,7 @@ function DecrementTownLoyalty(bTownId: INT8, uiLoyaltyDecrease: UINT32): void {
   // only do a maximum of 10000 pts at a time...
   uiRemainingDecrement = uiLoyaltyDecrease;
   while (uiRemainingDecrement) {
-    sThisDecrement = (INT16)min(uiRemainingDecrement, 10000);
+    sThisDecrement = min(uiRemainingDecrement, 10000);
 
     // down the gain value
     gTownLoyalty[bTownId].sChange -= sThisDecrement;
@@ -894,17 +894,17 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
   let wSectorName: CHAR16[] /* [128] */;
 
   // stealing should fail anyway 'cause there shouldn't be a temp file for unvisited sectors, but let's check anyway
-  Assert(GetSectorFlagStatus(sSectorX, sSectorY, (UINT8)sSectorZ, SF_ALREADY_VISITED) == TRUE);
+  Assert(GetSectorFlagStatus(sSectorX, sSectorY, sSectorZ, SF_ALREADY_VISITED) == TRUE);
 
   // get sector name string
-  GetSectorIDString(sSectorX, sSectorY, (INT8)sSectorZ, wSectorName, TRUE);
+  GetSectorIDString(sSectorX, sSectorY, sSectorZ, wSectorName, TRUE);
 
   // go through list of items in sector and randomly remove them
 
   // if unloaded sector
   if (gWorldSectorX != sSectorX || gWorldSectorY != sSectorY || gbWorldSectorZ != sSectorZ) {
     // if the player has never been there, there's no temp file, and 0 items will get returned, preventing any stealing
-    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, (UINT8)sSectorZ, &uiNumberOfItems, FALSE);
+    GetNumberOfWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, &uiNumberOfItems, FALSE);
 
     if (uiNumberOfItems == 0) {
       return;
@@ -913,7 +913,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
     pItemList = MemAlloc(sizeof(WORLDITEM) * uiNumberOfItems);
 
     // now load items
-    LoadWorldItemsFromTempItemFile(sSectorX, sSectorY, (UINT8)sSectorZ, pItemList);
+    LoadWorldItemsFromTempItemFile(sSectorX, sSectorY, sSectorZ, pItemList);
     uiNewTotal = uiNumberOfItems;
 
     // set up item list ptrs
@@ -933,7 +933,7 @@ function RemoveRandomItemsInSector(sSectorX: INT16, sSectorY: INT16, sSectorZ: I
 
     // only save if something was stolen
     if (uiNewTotal < uiNumberOfItems) {
-      AddWorldItemsToUnLoadedSector(sSectorX, sSectorY, (UINT8)sSectorZ, 0, uiNumberOfItems, pItemList, TRUE);
+      AddWorldItemsToUnLoadedSector(sSectorX, sSectorY, sSectorZ, 0, uiNumberOfItems, pItemList, TRUE);
     }
 
     // mem free
@@ -1140,7 +1140,7 @@ function ReduceLoyaltyForRebelsBetrayed(): void {
       }
     } else {
       // loyalty in other places is also strongly affected by this falling out with rebels, but this is not permanent
-      SetTownLoyalty(bTownId, (UINT8)(gTownLoyalty[bTownId].ubRating / 3));
+      SetTownLoyalty(bTownId, (gTownLoyalty[bTownId].ubRating / 3));
     }
   }
 }
@@ -1327,17 +1327,17 @@ function AffectAllTownsLoyaltyByDistanceFrom(iLoyaltyChange: INT32, sSectorX: IN
   sEventSector = sSectorX + (MAP_WORLD_X * sSectorY);
 
   // need a temporary group create to use for laying down distance paths
-  ubTempGroupId = CreateNewPlayerGroupDepartingFromSector((UINT8)sSectorX, (UINT8)sSectorY);
+  ubTempGroupId = CreateNewPlayerGroupDepartingFromSector(sSectorX, sSectorY);
 
   // calc distance to the event sector from EACH SECTOR of each town, keeping only the shortest one for every town
   uiIndex = 0;
   while (pTownNamesList[uiIndex] != 0) {
-    bTownId = (UINT8)pTownNamesList[uiIndex];
+    bTownId = pTownNamesList[uiIndex];
 
     // skip path test if distance is already known to be zero to speed this up a bit
     if (iShortestDistance[bTownId] > 0) {
       // calculate across how many sectors the fastest travel path from event to this town sector
-      iThisDistance = FindStratPath(sEventSector, (INT16)pTownLocationsList[uiIndex], ubTempGroupId, FALSE);
+      iThisDistance = FindStratPath(sEventSector, pTownLocationsList[uiIndex], ubTempGroupId, FALSE);
 
       if (iThisDistance < iShortestDistance[bTownId]) {
         iShortestDistance[bTownId] = iThisDistance;
@@ -1412,9 +1412,9 @@ function CheckIfEntireTownHasBeenLiberated(bTownId: INT8, sSectorX: INT16, sSect
 
     // even taking over non-trainable "towns" like Orta/Tixa for the first time should count as "player activity"
     if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
-      UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 4));
+      UpdateLastDayOfPlayerActivity((GetWorldDay() + 4));
     } else {
-      UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 2));
+      UpdateLastDayOfPlayerActivity((GetWorldDay() + 2));
     }
 
     // set flag even for towns where you can't train militia, useful for knowing Orta/Tixa were previously controlled
@@ -1490,7 +1490,7 @@ function DidFirstBattleTakePlaceInThisTown(bTownId: INT8): BOOLEAN {
   let bTownBattleId: INT8 = 0;
 
   // get town id for sector
-  bTownBattleId = GetTownIdForSector((INT16)(sWorldSectorLocationOfFirstBattle % MAP_WORLD_X), (INT16)(sWorldSectorLocationOfFirstBattle / MAP_WORLD_X));
+  bTownBattleId = GetTownIdForSector((sWorldSectorLocationOfFirstBattle % MAP_WORLD_X), (sWorldSectorLocationOfFirstBattle / MAP_WORLD_X));
 
   return bTownId == bTownBattleId;
 }
@@ -1538,17 +1538,17 @@ function EnemyStrength(): UINT32 {
 function HandleLoyaltyImplicationsOfMercRetreat(bRetreatCode: INT8, sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16): void {
   if (CountAllMilitiaInSector(sSectorX, sSectorY)) {
     // Big morale penalty!
-    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, (INT8)sSectorZ);
+    HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_ABANDON_MILITIA, sSectorX, sSectorY, sSectorZ);
   }
 
   // Standard retreat penalty
   if (bRetreatCode == RETREAT_TACTICAL_TRAVERSAL) {
     // if not worse than 2:1 odds, then penalize morale
     if (gTacticalStatus.fEnemyInSector && (PlayerStrength() * 2 >= EnemyStrength())) {
-      HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, (INT8)sSectorZ);
+      HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
     }
   } else {
-    HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, (INT8)sSectorZ);
+    HandleMoraleEvent(NULL, MORALE_RAN_AWAY, sSectorX, sSectorY, sSectorZ);
   }
 }
 

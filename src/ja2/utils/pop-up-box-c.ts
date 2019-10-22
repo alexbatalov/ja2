@@ -1102,14 +1102,14 @@ function DrawBox(uiCounter: UINT32): BOOLEAN {
     ResizeBoxToText(uiCounter);
   }
 
-  usTopX = (UINT16)PopUpBoxList[uiCounter]->Position.iX;
-  usTopY = (UINT16)PopUpBoxList[uiCounter]->Position.iY;
-  usWidth = ((UINT16)(PopUpBoxList[uiCounter]->Dimensions.iRight - PopUpBoxList[uiCounter]->Dimensions.iLeft));
-  usHeight = ((UINT16)(PopUpBoxList[uiCounter]->Dimensions.iBottom - PopUpBoxList[uiCounter]->Dimensions.iTop));
+  usTopX = PopUpBoxList[uiCounter]->Position.iX;
+  usTopY = PopUpBoxList[uiCounter]->Position.iY;
+  usWidth = ((PopUpBoxList[uiCounter]->Dimensions.iRight - PopUpBoxList[uiCounter]->Dimensions.iLeft));
+  usHeight = ((PopUpBoxList[uiCounter]->Dimensions.iBottom - PopUpBoxList[uiCounter]->Dimensions.iTop));
 
   // check if we have a min width, if so then update box for such
   if ((PopUpBoxList[uiCounter]->uiBoxMinWidth) && (usWidth < PopUpBoxList[uiCounter]->uiBoxMinWidth)) {
-    usWidth = (INT16)(PopUpBoxList[uiCounter]->uiBoxMinWidth);
+    usWidth = (PopUpBoxList[uiCounter]->uiBoxMinWidth);
   }
 
   // make sure it will fit on screen!
@@ -1127,7 +1127,7 @@ function DrawBox(uiCounter: UINT32): BOOLEAN {
 
   // blit in texture first, then borders
   // blit in surface
-  pDestBuf = (UINT16 *)LockVideoSurface(PopUpBoxList[uiCounter]->uiBuffer, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(PopUpBoxList[uiCounter]->uiBuffer, &uiDestPitchBYTES);
   CHECKF(GetVideoSurface(&hSrcVSurface, PopUpBoxList[uiCounter]->iBackGroundSurface));
   pSrcBuf = LockVideoSurface(PopUpBoxList[uiCounter]->iBackGroundSurface, &uiSrcPitchBYTES);
   Blt8BPPDataSubTo16BPPBuffer(pDestBuf, uiDestPitchBYTES, hSrcVSurface, pSrcBuf, uiSrcPitchBYTES, usTopX, usTopY, &clip);
@@ -1213,10 +1213,10 @@ function DrawBoxText(uiCounter: UINT32): BOOLEAN {
 
       // cnetering?
       if (PopUpBoxList[uiCounter]->uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        FindFontCenterCoordinates(((INT16)(PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin)), ((INT16)(PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace)), ((INT16)(PopUpBoxList[uiCounter]->Dimensions.iRight - (PopUpBoxList[uiCounter]->uiRightMargin + PopUpBoxList[uiCounter]->uiLeftMargin + 2))), ((INT16)GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont)), (sString), ((INT32)PopUpBoxList[uiCounter]->Text[uiCount]->uiFont), &uX, &uY);
+        FindFontCenterCoordinates(((PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin)), ((PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace)), ((PopUpBoxList[uiCounter]->Dimensions.iRight - (PopUpBoxList[uiCounter]->uiRightMargin + PopUpBoxList[uiCounter]->uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont)), (sString), (PopUpBoxList[uiCounter]->Text[uiCount]->uiFont), &uX, &uY);
       } else {
-        uX = ((INT16)(PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin));
-        uY = ((INT16)(PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace));
+        uX = ((PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin));
+        uY = ((PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->Text[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace));
       }
 
       // print
@@ -1249,10 +1249,10 @@ function DrawBoxText(uiCounter: UINT32): BOOLEAN {
 
       // cnetering?
       if (PopUpBoxList[uiCounter]->uiFlags & POPUP_BOX_FLAG_CENTER_TEXT) {
-        FindFontCenterCoordinates(((INT16)(PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin)), ((INT16)(PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace)), ((INT16)(PopUpBoxList[uiCounter]->Dimensions.iRight - (PopUpBoxList[uiCounter]->uiRightMargin + PopUpBoxList[uiCounter]->uiLeftMargin + 2))), ((INT16)GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont)), (sString), ((INT32)PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont), &uX, &uY);
+        FindFontCenterCoordinates(((PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin)), ((PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace)), ((PopUpBoxList[uiCounter]->Dimensions.iRight - (PopUpBoxList[uiCounter]->uiRightMargin + PopUpBoxList[uiCounter]->uiLeftMargin + 2))), (GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont)), (sString), (PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont), &uX, &uY);
       } else {
-        uX = ((INT16)(PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin + PopUpBoxList[uiCounter]->uiSecondColumnCurrentOffset));
-        uY = ((INT16)(PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace));
+        uX = ((PopUpBoxList[uiCounter]->Position.iX + PopUpBoxList[uiCounter]->uiLeftMargin + PopUpBoxList[uiCounter]->uiSecondColumnCurrentOffset));
+        uY = ((PopUpBoxList[uiCounter]->Position.iY + uiCount * GetFontHeight(PopUpBoxList[uiCounter]->pSecondColumnString[uiCount]->uiFont) + PopUpBoxList[uiCounter]->uiTopMargin + uiCount * PopUpBoxList[uiCounter]->uiLineSpace));
       }
 
       // print
@@ -1292,12 +1292,12 @@ function ResizeBoxToText(hBoxHandle: INT32): void {
     if (PopUpBoxList[hBoxHandle]->Text[iCurrString] != NULL) {
       if (PopUpBoxList[hBoxHandle]->pSecondColumnString[iCurrString] != NULL) {
         iSecondColumnLength = StringPixLength(PopUpBoxList[hBoxHandle]->pSecondColumnString[iCurrString]->pString, PopUpBoxList[hBoxHandle]->pSecondColumnString[iCurrString]->uiFont);
-        if (PopUpBoxList[hBoxHandle]->uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin > ((UINT32)iWidth)) {
+        if (PopUpBoxList[hBoxHandle]->uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin > (iWidth)) {
           iWidth = PopUpBoxList[hBoxHandle]->uiSecondColumnCurrentOffset + iSecondColumnLength + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin;
         }
       }
 
-      if ((StringPixLength(PopUpBoxList[hBoxHandle]->Text[iCurrString]->pString, PopUpBoxList[hBoxHandle]->Text[iCurrString]->uiFont) + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin) > ((UINT32)iWidth))
+      if ((StringPixLength(PopUpBoxList[hBoxHandle]->Text[iCurrString]->pString, PopUpBoxList[hBoxHandle]->Text[iCurrString]->uiFont) + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin) > (iWidth))
         iWidth = StringPixLength(PopUpBoxList[hBoxHandle]->Text[iCurrString]->pString, PopUpBoxList[hBoxHandle]->Text[iCurrString]->uiFont) + PopUpBoxList[hBoxHandle]->uiLeftMargin + PopUpBoxList[hBoxHandle]->uiRightMargin;
 
       // vertical

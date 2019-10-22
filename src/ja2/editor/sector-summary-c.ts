@@ -207,11 +207,11 @@ function CreateSummaryWindow(): void {
   iSummaryButton[SUMMARY_OKAY] = CreateTextButton(L"Okay", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 585, 325, 50, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryOkayCallback);
   // GiveButtonDefaultStatus( iSummaryButton[ SUMMARY_OKAY ], DEFAULT_STATUS_WINDOWS95 );
 
-  iSummaryButton[SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (INT16)(MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
+  iSummaryButton[SUMMARY_GRIDCHECKBOX] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleGridCallback);
   ButtonList[iSummaryButton[SUMMARY_GRIDCHECKBOX]]->uiFlags |= BUTTON_CLICKED_ON;
   gfRenderGrid = TRUE;
 
-  iSummaryButton[SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((INT16)(MAP_LEFT + 50), (INT16)(MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
+  iSummaryButton[SUMMARY_PROGRESSCHECKBOX] = CreateCheckBoxButton((MAP_LEFT + 50), (MAP_BOTTOM + 5), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleProgressCallback);
   ButtonList[iSummaryButton[SUMMARY_PROGRESSCHECKBOX]]->uiFlags |= BUTTON_CLICKED_ON;
   gfRenderProgress = TRUE;
 
@@ -231,13 +231,13 @@ function CreateSummaryWindow(): void {
   if (giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
     ButtonList[iSummaryButton[SUMMARY_B3]]->uiFlags |= BUTTON_CLICKED_ON;
 
-  iSummaryButton[SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (INT16)(MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
+  iSummaryButton[SUMMARY_ALTERNATE] = CreateCheckBoxButton(MAP_LEFT, (MAP_BOTTOM + 25), "EDITOR//smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryToggleAlternateCallback);
   if (gfAlternateMaps)
     ButtonList[iSummaryButton[SUMMARY_ALTERNATE]]->uiFlags |= BUTTON_CLICKED_ON;
 
   iSummaryButton[SUMMARY_LOAD] = CreateTextButton(L"LOAD", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryLoadMapCallback);
   iSummaryButton[SUMMARY_SAVE] = CreateTextButton(L"SAVE", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, MAP_LEFT + 55, MAP_BOTTOM + 45, 50, 26, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummarySaveMapCallback);
-  iSummaryButton[SUMMARY_OVERRIDE] = CreateCheckBoxButton((INT16)(MAP_LEFT + 110), (INT16)(MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
+  iSummaryButton[SUMMARY_OVERRIDE] = CreateCheckBoxButton((MAP_LEFT + 110), (MAP_BOTTOM + 59), "EDITOR\\smcheckbox.sti", MSYS_PRIORITY_HIGH, SummaryOverrideCallback);
 
   iSummaryButton[SUMMARY_UPDATE] = CreateTextButton(L"Update", FONT12POINT1, FONT_BLACK, FONT_BLACK, BUTTON_USE_DEFAULT, 255, 15, 40, 16, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SummaryUpdateCallback);
 
@@ -390,7 +390,7 @@ function RenderSectorInformation(): void {
   mprintf(10, 32, L"Tileset:  %s", gTilesets[s->ubTilesetID].zName);
   if (m->ubMapVersion < 10)
     SetFontForeground(FONT_RED);
-  mprintf(10, 42, L"Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion, (INT32)s->dMajorMapVersion, m->ubMapVersion);
+  mprintf(10, 42, L"Version Info:  Summary:  1.%02d,  Map:  %d.%02d", s->ubSummaryVersion, s->dMajorMapVersion, m->ubMapVersion);
   SetFontForeground(FONT_GRAY2);
   mprintf(10, 55, L"Number of items:  %d", s->usNumItems);
   mprintf(10, 65, L"Number of lights:  %d", s->usNumLights);
@@ -604,10 +604,10 @@ function RenderItemDetails(): void {
         else
           SetFontForeground(FONT_GRAY2);
         // calc averages
-        dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-        dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+        dAvgExistChance = (uiExistChance / 100.0);
+        dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
-        LoadShortNameItemInfo((UINT16)index, str);
+        LoadShortNameItemInfo(index, str);
         mprintf(xp, yp, L"%s", str);
         mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
         mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
@@ -659,11 +659,11 @@ function RenderItemDetails(): void {
             break;
         }
         if (i < 7) {
-          dAvgExistChance = (FLOAT)(uiTriggerExistChance[i] / 100.0);
-          dAvgStatus = (FLOAT)(uiActionExistChance[i] / 100.0);
+          dAvgExistChance = (uiTriggerExistChance[i] / 100.0);
+          dAvgStatus = (uiActionExistChance[i] / 100.0);
           mprintf(xp, yp, L"%s:  %3.02f trigger(s), %3.02f action(s)", str, dAvgExistChance, dAvgStatus);
         } else {
-          dAvgExistChance = (FLOAT)(uiActionExistChance[i] / 100.0);
+          dAvgExistChance = (uiActionExistChance[i] / 100.0);
           mprintf(xp, yp, L"%s:  %3.02f", str, dAvgExistChance);
         }
         yp += 10;
@@ -707,10 +707,10 @@ function RenderItemDetails(): void {
           else
             SetFontForeground(FONT_GRAY2);
           // calc averages
-          dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-          dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+          dAvgExistChance = (uiExistChance / 100.0);
+          dAvgStatus = uiStatus / uiQuantity;
           // Display stats.
-          LoadShortNameItemInfo((UINT16)index, str);
+          LoadShortNameItemInfo(index, str);
           mprintf(xp, yp, L"%s", str);
           mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
           mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
@@ -766,10 +766,10 @@ function RenderItemDetails(): void {
         else
           SetFontForeground(FONT_GRAY2);
         // calc averages
-        dAvgExistChance = (FLOAT)(uiExistChance / 100.0);
-        dAvgStatus = uiStatus / (FLOAT)uiQuantity;
+        dAvgExistChance = (uiExistChance / 100.0);
+        dAvgStatus = uiStatus / uiQuantity;
         // Display stats.
-        LoadShortNameItemInfo((UINT16)index, str);
+        LoadShortNameItemInfo(index, str);
         mprintf(xp, yp, L"%s", str);
         mprintf(xp + 85, yp, L"%3.02f", dAvgExistChance);
         mprintf(xp + 110, yp, L"@ %3.02f%%", dAvgStatus);
@@ -1097,10 +1097,10 @@ function RenderSummaryWindow(): void {
             SetFontForeground(FONT_LTBLUE);
           mprintf(MAP_LEFT + 110, MAP_BOTTOM + 46, L"FILE:  %s", gszDisplayName);
           if (gubOverrideStatus == READONLY) {
-            SetFontForeground((UINT8)(gfOverride ? FONT_YELLOW : FONT_LTRED));
+            SetFontForeground((gfOverride ? FONT_YELLOW : FONT_LTRED));
             mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, L"Override READONLY");
           } else {
-            SetFontForeground((UINT8)(gfOverride ? FONT_YELLOW : FONT_ORANGE));
+            SetFontForeground((gfOverride ? FONT_YELLOW : FONT_ORANGE));
             mprintf(MAP_LEFT + 124, MAP_BOTTOM + 61, L"Overwrite File");
           }
         }
@@ -1183,10 +1183,10 @@ function RenderSummaryWindow(): void {
       SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
       for (i = 1; i <= 15; i++) {
         // draw vertical lines
-        pos = (UINT16)(i * 13 + MAP_LEFT);
+        pos = (i * 13 + MAP_LEFT);
         LineDraw(TRUE, pos, MAP_TOP, pos, MAP_BOTTOM - 1, 0, pDestBuf);
         // draw horizontal lines
-        pos = (UINT16)(i * 13 + MAP_TOP);
+        pos = (i * 13 + MAP_TOP);
         LineDraw(TRUE, MAP_LEFT, pos, MAP_RIGHT - 1, pos, 0, pDestBuf);
       }
       UnLockVideoSurface(FRAME_BUFFER);
@@ -1245,9 +1245,9 @@ function RenderSummaryWindow(): void {
           ClipRect.iLeft = MAP_LEFT + x * 13;
           ClipRect.iRight = ClipRect.iLeft + 12;
           pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-          Blt16BPPBufferShadowRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &ClipRect);
+          Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
           if (giCurrentViewLevel == BASEMENT1_LEVEL_MASK || giCurrentViewLevel == BASEMENT2_LEVEL_MASK || giCurrentViewLevel == BASEMENT3_LEVEL_MASK || giCurrentViewLevel == ALTERNATE_B1_MASK || giCurrentViewLevel == ALTERNATE_B2_MASK || giCurrentViewLevel == ALTERNATE_B3_MASK)
-            Blt16BPPBufferShadowRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &ClipRect);
+            Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
           UnLockVideoSurface(FRAME_BUFFER);
         }
       }
@@ -1403,7 +1403,7 @@ function UpdateSectorSummary(gszFilename: Pointer<UINT16>, fUpdate: BOOLEAN): vo
     else
       szCoord[2] = '\0';
     gusNumEntriesWithOutdatedOrNoSummaryInfo++;
-    EvaluateWorld(szCoord, (UINT8)giCurrLevel);
+    EvaluateWorld(szCoord, giCurrLevel);
 
     RemoveProgressBar(0);
   } else
@@ -1418,7 +1418,7 @@ function SummaryOkayCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryToggleGridCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderGrid = (BOOLEAN)(btn->uiFlags & BUTTON_CLICKED_ON);
+    gfRenderGrid = (btn->uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = TRUE;
   }
 }
@@ -1474,7 +1474,7 @@ function SummaryEnemyCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
 function SummaryToggleProgressCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gfRenderProgress = (BOOLEAN)(btn->uiFlags & BUTTON_CLICKED_ON);
+    gfRenderProgress = (btn->uiFlags & BUTTON_CLICKED_ON);
     gfRenderMap = TRUE;
   }
 }
@@ -2198,7 +2198,7 @@ function LoadSummary(pSector: Pointer<UINT8>, ubLevel: UINT8, dMajorMapVersion: 
     MemFree(gpSectorSummary[x][y][ubLevel]);
     gpSectorSummary[x][y][ubLevel] = NULL;
   }
-  gpSectorSummary[x][y][ubLevel] = (SUMMARYFILE *)MemAlloc(sizeof(SUMMARYFILE));
+  gpSectorSummary[x][y][ubLevel] = MemAlloc(sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel])
     memcpy(gpSectorSummary[x][y][ubLevel], &temp, sizeof(SUMMARYFILE));
   if (gpSectorSummary[x][y][ubLevel]->ubSummaryVersion < GLOBAL_SUMMARY_VERSION)
@@ -2212,14 +2212,14 @@ let MasterEnd: double;
 
 function UpdateMasterProgress(): void {
   if (gfUpdatingNow && gusTotal) {
-    MasterStart = (gusCurrent / (double)gusTotal) * 100.0;
+    MasterStart = (gusCurrent / gusTotal) * 100.0;
     gusCurrent++;
-    MasterEnd = (gusCurrent / (double)gusTotal) * 100.0;
+    MasterEnd = (gusCurrent / gusTotal) * 100.0;
     if (gfMajorUpdate) {
-      SetRelativeStartAndEndPercentage(2, (UINT16)MasterStart, (UINT16)MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(2, MasterStart, MasterEnd, NULL);
       RenderProgressBar(2, 0);
     } else
-      SetRelativeStartAndEndPercentage(1, (UINT16)MasterStart, (UINT16)MasterEnd, NULL);
+      SetRelativeStartAndEndPercentage(1, MasterStart, MasterEnd, NULL);
   }
 }
 
@@ -2328,7 +2328,7 @@ function SummaryUpdateCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
     }
 
     sprintf(str, "%c%d", gsSelSectorY + 'A' - 1, gsSelSectorX);
-    EvaluateWorld(str, (UINT8)giCurrLevel);
+    EvaluateWorld(str, giCurrLevel);
 
     gpSectorSummary[gsSelSectorX][gsSelSectorY][giCurrLevel] = gpCurrentSectorSummary;
 
@@ -2536,7 +2536,7 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
   ShowButton(iSummaryButton[SUMMARY_SCIFI]);
   ShowButton(iSummaryButton[SUMMARY_REAL]);
   ShowButton(iSummaryButton[SUMMARY_ENEMY]);
-  gpWorldItemsSummaryArray = (WORLDITEM *)MemAlloc(sizeof(WORLDITEM) * uiNumItems);
+  gpWorldItemsSummaryArray = MemAlloc(sizeof(WORLDITEM) * uiNumItems);
   gusWorldItemsSummaryArraySize = gpCurrentSectorSummary->usNumItems;
   FileRead(hfile, gpWorldItemsSummaryArray, sizeof(WORLDITEM) * uiNumItems, &uiNumBytesRead);
 
@@ -2591,11 +2591,11 @@ function SetupItemDetailsMode(fAllowRecursion: BOOLEAN): void {
 
   // Pass 1 completed, so now allocate enough space to hold all the items
   if (gusPEnemyItemsSummaryArraySize) {
-    gpPEnemyItemsSummaryArray = (OBJECTTYPE *)MemAlloc(sizeof(OBJECTTYPE) * gusPEnemyItemsSummaryArraySize);
+    gpPEnemyItemsSummaryArray = MemAlloc(sizeof(OBJECTTYPE) * gusPEnemyItemsSummaryArraySize);
     memset(gpPEnemyItemsSummaryArray, 0, sizeof(OBJECTTYPE) * gusPEnemyItemsSummaryArraySize);
   }
   if (gusNEnemyItemsSummaryArraySize) {
-    gpNEnemyItemsSummaryArray = (OBJECTTYPE *)MemAlloc(sizeof(OBJECTTYPE) * gusNEnemyItemsSummaryArraySize);
+    gpNEnemyItemsSummaryArray = MemAlloc(sizeof(OBJECTTYPE) * gusNEnemyItemsSummaryArraySize);
     memset(gpNEnemyItemsSummaryArray, 0, sizeof(OBJECTTYPE) * gusNEnemyItemsSummaryArraySize);
   }
 

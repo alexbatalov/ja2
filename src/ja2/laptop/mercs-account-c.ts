@@ -212,7 +212,7 @@ function DisplayHiredMercs(): void {
     usMercID = GetMercIDFromMERCArray(i);
 
     // is the merc on the team, or is owed money
-    if (IsMercOnTeam((UINT8)usMercID) || gMercProfiles[usMercID].iMercMercContractLength != 0) {
+    if (IsMercOnTeam(usMercID) || gMercProfiles[usMercID].iMercMercContractLength != 0) {
       // if the merc is dead, make the color red, else white
       if (IsMercDead(usMercID))
         ubFontColor = MERC_ACCOUNT_DEAD_TEXT_COLOR;
@@ -256,7 +256,7 @@ function SettleMercAccounts(): void {
 
   // loop through all the MERC mercs the player has on the team
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
-    ubMercID = GetMercIDFromMERCArray((UINT8)i);
+    ubMercID = GetMercIDFromMERCArray(i);
 
     // if the merc is on the team, or does the player owe money for a fired merc
     if (IsMercOnTeam(ubMercID) || (gMercProfiles[ubMercID].iMercMercContractLength != 0)) {

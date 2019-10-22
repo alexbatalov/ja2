@@ -702,7 +702,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
   usPosX = QUEST_DBS_FIRST_COL_NUMBER_X;
   usPosY = QUEST_DBS_FIRST_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET;
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_QUESTS; i++) {
-    MSYS_DefineRegion(&gQuestListRegion[i], usPosX, usPosY, (UINT16)(usPosX + QUEST_DBS_FIRST_SECTION_WIDTH), (UINT16)(usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollQuestListRegionCallBack); // CURSOR_LAPTOP_SCREEN
+    MSYS_DefineRegion(&gQuestListRegion[i], usPosX, usPosY, (usPosX + QUEST_DBS_FIRST_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollQuestListRegionCallBack); // CURSOR_LAPTOP_SCREEN
     // Add region
     MSYS_AddRegion(&gQuestListRegion[i]);
     MSYS_SetRegionUserData(&gQuestListRegion[i], 0, i);
@@ -714,7 +714,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
   usPosX = QUEST_DBS_SECOND_COL_NUMBER_X;
   usPosY = QUEST_DBS_SECOND_COL_NUMBER_Y + QUEST_DBS_LIST_TEXT_OFFSET + QUEST_DBS_FACT_LIST_OFFSET;
   for (i = 0; i < QUEST_DBS_NUM_DISPLAYED_FACTS; i++) {
-    MSYS_DefineRegion(&gFactListRegion[i], usPosX, usPosY, (UINT16)(usPosX + QUEST_DBS_SECOND_SECTION_WIDTH), (UINT16)(usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollFactListRegionCallBack); // CURSOR_LAPTOP_SCREEN
+    MSYS_DefineRegion(&gFactListRegion[i], usPosX, usPosY, (usPosX + QUEST_DBS_SECOND_SECTION_WIDTH), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollFactListRegionCallBack); // CURSOR_LAPTOP_SCREEN
     // Add region
     MSYS_AddRegion(&gFactListRegion[i]);
     MSYS_SetRegionUserData(&gFactListRegion[i], 0, i);
@@ -756,7 +756,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
       swprintf(zItemDesc, L"%d - %s", giHaveSelectedNPC, gMercProfiles[giHaveSelectedNPC].zNickname);
     SpecifyButtonText(guiQuestDebugCurNPCButton, zItemDesc);
 
-    gNpcListBox.sCurSelectedItem = (INT16)giHaveSelectedNPC;
+    gNpcListBox.sCurSelectedItem = giHaveSelectedNPC;
 
     EnableQDSButtons();
   }
@@ -770,7 +770,7 @@ function EnterQuestDebugSystem(): BOOLEAN {
     swprintf(zItemDesc, L"%d - %s", giHaveSelectedItem, zItemName);
     SpecifyButtonText(guiQuestDebugCurItemButton, zItemDesc);
 
-    gItemListBox.sCurSelectedItem = (INT16)giHaveSelectedItem;
+    gItemListBox.sCurSelectedItem = giHaveSelectedItem;
 
     EnableQDSButtons();
   }
@@ -953,7 +953,7 @@ function GetUserInput(): void {
 
         case SPACE:
           if (giSelectedMercCurrentQuote != -1)
-            SetTalkingMercPauseState((BOOLEAN)!gfPauseTalkingMercPopup);
+            SetTalkingMercPauseState(!gfPauseTalkingMercPopup);
           break;
 
         case LEFTARROW:
@@ -1010,25 +1010,25 @@ function GetUserInput(): void {
 
         case PGDN:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
         case PGUP:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
         case DNARROW:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem + 1));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem + 1));
           }
           break;
 
         case UPARROW:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem - 1));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem - 1));
           }
           break;
 
@@ -1047,25 +1047,25 @@ function GetUserInput(): void {
       switch (Event.usParam) {
         case PGDN:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
         case PGUP:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
         case DNARROW:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem + 1));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem + 1));
           }
           break;
 
         case UPARROW:
           if (gfInDropDownBox) {
-            IncrementActiveDropDownBox((INT16)(gpActiveListBox->sCurSelectedItem - 1));
+            IncrementActiveDropDownBox((gpActiveListBox->sCurSelectedItem - 1));
           }
           break;
 
@@ -1346,7 +1346,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
 
       // create the scroll regions
       for (i = 0; i < gpActiveListBox->usNumDisplayedItems; i++) {
-        MSYS_DefineRegion(&gSelectedNpcListRegion[i], usPosX, (UINT16)(usPosY), (UINT16)(usPosX + gpActiveListBox->usScrollWidth), (UINT16)(usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, SelectNpcListMovementCallBack, SelectNpcListRegionCallBack);
+        MSYS_DefineRegion(&gSelectedNpcListRegion[i], usPosX, (usPosY), (usPosX + gpActiveListBox->usScrollWidth), (usPosY + usFontHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, SelectNpcListMovementCallBack, SelectNpcListRegionCallBack);
         MSYS_AddRegion(&gSelectedNpcListRegion[i]);
         MSYS_SetRegionUserData(&gSelectedNpcListRegion[i], 0, i);
 
@@ -1363,7 +1363,7 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
       usPosY = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollArrowHeight + 2;
 
       for (i = 0; i < QUEST_DBS_NUM_INCREMENTS_IN_SCROLL_BAR; i++) {
-        MSYS_DefineRegion(&gScrollAreaRegion[i], usPosX, usPosY, (UINT16)(usPosX + gpActiveListBox->usScrollBarWidth), (UINT16)(usPosY + gpActiveListBox->usScrollBarHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, ScrollAreaMovementCallBack, ScrollAreaRegionCallBack);
+        MSYS_DefineRegion(&gScrollAreaRegion[i], usPosX, usPosY, (usPosX + gpActiveListBox->usScrollBarWidth), (usPosY + gpActiveListBox->usScrollBarHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, ScrollAreaMovementCallBack, ScrollAreaRegionCallBack);
         MSYS_AddRegion(&gScrollAreaRegion[i]);
         MSYS_SetRegionUserData(&gScrollAreaRegion[i], 0, i);
       }
@@ -1372,14 +1372,14 @@ function CreateDestroyDisplaySelectNpcDropDownBox(): BOOLEAN {
       usPosX = gpActiveListBox->usScrollPosX + gpActiveListBox->usScrollWidth;
       usPosY = gpActiveListBox->usScrollPosY + 2;
 
-      MSYS_DefineRegion(&gScrollArrowsRegion[0], usPosX, (UINT16)(usPosY), (UINT16)(usPosX + gpActiveListBox->usScrollBarWidth), (UINT16)(usPosY + gpActiveListBox->usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
+      MSYS_DefineRegion(&gScrollArrowsRegion[0], usPosX, (usPosY), (usPosX + gpActiveListBox->usScrollBarWidth), (usPosY + gpActiveListBox->usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
       MSYS_AddRegion(&gScrollArrowsRegion[0]);
       MSYS_SetRegionUserData(&gScrollArrowsRegion[0], 0, 0);
 
       // Bottom Scroll arrow
       usPosY = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollHeight - gpActiveListBox->usScrollArrowHeight - 2;
 
-      MSYS_DefineRegion(&gScrollArrowsRegion[1], usPosX, usPosY, (UINT16)(usPosX + gpActiveListBox->usScrollBarWidth), (UINT16)(usPosY + gpActiveListBox->usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
+      MSYS_DefineRegion(&gScrollArrowsRegion[1], usPosX, usPosY, (usPosX + gpActiveListBox->usScrollBarWidth), (usPosY + gpActiveListBox->usScrollArrowHeight), MSYS_PRIORITY_HIGH + 20, CURSOR_WWW, MSYS_NO_CALLBACK, ScrollArrowsRegionCallBack);
       MSYS_AddRegion(&gScrollArrowsRegion[1]);
       MSYS_SetRegionUserData(&gScrollArrowsRegion[1], 0, 1);
 
@@ -1453,7 +1453,7 @@ function DisplaySelectedListBox(): void {
       else
         gpActiveListBox->sCurSelectedItem = 0;
 
-      if ((INT16)(gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usNumDisplayedItems - 1) < 0)
+      if ((gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usNumDisplayedItems - 1) < 0)
         gpActiveListBox->usItemDisplayedOnTopOfList = 0;
       else
         gpActiveListBox->usItemDisplayedOnTopOfList = gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usNumDisplayedItems - 1;
@@ -1524,7 +1524,7 @@ function DisplaySelectedNPC(): void {
     FindFontRightCoordinates(gpActiveListBox->usScrollPosX, usPosY, gpActiveListBox->usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT, &usLocationX, &usLocationY);
 
     // the location value
-    DrawTextToScreen(sTempString, (UINT16)(usLocationX - 2), usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTempString, (usLocationX - 2), usPosY, 0, QUEST_DBS_FONT_DYNAMIC_TEXT, QUEST_DBS_COLOR_DYNAMIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     usPosY += usFontHeight;
   }
@@ -1543,21 +1543,21 @@ function DisplaySelectedNPC(): void {
 
     // the highlighted name
     if (gfUseLocalNPCs) {
-      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem]].zNickname, gpActiveListBox->usScrollPosX, (UINT16)(usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem]].zNickname, gpActiveListBox->usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
       GetDebugLocationString(gubCurrentNpcInSector[gpActiveListBox->sCurSelectedItem], sTempString);
 
       //			GetShortSectorString( gMercProfiles[ gubCurrentNpcInSector[ gpActiveListBox->sCurSelectedItem ] ].sSectorX, gMercProfiles[ gubCurrentNpcInSector[ gpActiveListBox->sCurSelectedItem ] ].sSectorY, sTempString );
     } else {
-      DrawTextToScreen(gMercProfiles[gpActiveListBox->sCurSelectedItem].zNickname, gpActiveListBox->usScrollPosX, (UINT16)(usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[gpActiveListBox->sCurSelectedItem].zNickname, gpActiveListBox->usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
       GetDebugLocationString(gpActiveListBox->sCurSelectedItem, sTempString);
       //			GetShortSectorString( gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorX, gMercProfiles[ gpActiveListBox->sCurSelectedItem ].sSectorY, sTempString );
     }
 
-    FindFontRightCoordinates(gpActiveListBox->usScrollPosX, (UINT16)(usPosY), gpActiveListBox->usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT, &usLocationX, &usLocationY);
+    FindFontRightCoordinates(gpActiveListBox->usScrollPosX, (usPosY), gpActiveListBox->usScrollWidth, 0, sTempString, QUEST_DBS_FONT_LISTBOX_TEXT, &usLocationX, &usLocationY);
 
     // the location value
-    DrawTextToScreen(sTempString, usLocationX, (UINT16)(usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTempString, usLocationX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     SetFontShadow(DEFAULT_SHADOW);
 
@@ -1614,7 +1614,7 @@ function DisplaySelectedItem(): void {
     if (zItemName[0] == '\0')
       wcscpy(zItemName, QuestDebugText[QUEST_DBS_NO_ITEM]);
 
-    DrawTextToScreen(zItemName, gpActiveListBox->usScrollPosX, (UINT16)(usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(zItemName, gpActiveListBox->usScrollPosX, (usPosY), 0, QUEST_DBS_FONT_LISTBOX_TEXT, 2, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     SetFontShadow(DEFAULT_SHADOW);
 
     swprintf(zButtonName, L"%d - %s", gpActiveListBox->sCurSelectedItem, zItemName);
@@ -1628,7 +1628,7 @@ function DisplaySelectedItem(): void {
 function SelectNpcListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let ubSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
     gpActiveListBox->ubCurScrollBoxAction = QD_DROP_DOWN_DESTROY; // qq
     gpActiveListBox->sCurSelectedItem = ubSelected + gpActiveListBox->usItemDisplayedOnTopOfList;
@@ -1644,7 +1644,7 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    let sSelected: INT16 = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
+    let sSelected: INT16 = MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
     pRegion->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1662,7 +1662,7 @@ function SelectNpcListMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: I
 
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   } else if (reason & MSYS_CALLBACK_REASON_MOVE) {
-    let sSelected: INT16 = (INT16)MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
+    let sSelected: INT16 = MSYS_GetRegionUserData(pRegion, 0); // + gubCityAtTopOfList;
 
     pRegion->uiFlags &= (~BUTTON_CLICKED_ON);
 
@@ -1694,10 +1694,10 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
   usPosX = gpActiveListBox->usScrollPosX + gpActiveListBox->usScrollWidth;
   usWidth = gpActiveListBox->usScrollBarWidth;
 
-  usHeight = (UINT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(usNumEntries) + .5); // qq+ 1 );
+  usHeight = (gpActiveListBox->usScrollBarHeight / (usNumEntries) + .5); // qq+ 1 );
 
   if (usNumEntries > gpActiveListBox->usMaxNumDisplayedItems)
-    usPosY = usTempPosY + (UINT16)((gpActiveListBox->usScrollBarHeight / (FLOAT)(usNumEntries + 1)) * (gpActiveListBox->sCurSelectedItem - gpActiveListBox->usStartIndex));
+    usPosY = usTempPosY + ((gpActiveListBox->usScrollBarHeight / (usNumEntries + 1)) * (gpActiveListBox->sCurSelectedItem - gpActiveListBox->usStartIndex));
   else
     usPosY = usTempPosY;
 
@@ -1731,7 +1731,7 @@ function DrawQdsScrollRectangle(): void // INT16 sSelectedEntry, UINT16 usStartP
 function ScrollArrowsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) || (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
-    let ubSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
     // if down arrow
     if (ubSelected) {
@@ -1799,7 +1799,7 @@ function CalcPositionOfNewScrollBoxLocation(): void {
   let dValue: FLOAT;
   let sHeight: INT16 = 0;
   //	INT16	sHeightOfScrollBox = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex ) + .5);
-  let sHeightOfScrollBox: INT16 = (INT16)(gpActiveListBox->usScrollBarHeight / (FLOAT)(gpActiveListBox->usMaxArrayIndex) + .5);
+  let sHeightOfScrollBox: INT16 = (gpActiveListBox->usScrollBarHeight / (gpActiveListBox->usMaxArrayIndex) + .5);
   let sStartPosOfScrollArea: INT16 = gpActiveListBox->usScrollPosY + gpActiveListBox->usScrollArrowHeight;
 
   sMouseXPos = gusMouseXPos;
@@ -1810,8 +1810,8 @@ function CalcPositionOfNewScrollBoxLocation(): void {
     // Calculate the number of items we have to move
     sHeight = sMouseYPos - sStartPosOfScrollArea;
 
-    dValue = sHeight / (FLOAT)(gpActiveListBox->usScrollBarHeight);
-    sIncrementValue = (INT16)((dValue) * (gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex) + .5) + gpActiveListBox->usStartIndex;
+    dValue = sHeight / (gpActiveListBox->usScrollBarHeight);
+    sIncrementValue = ((dValue) * (gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex) + .5) + gpActiveListBox->usStartIndex;
     //		sIncrementValue = (INT16)( ( dValue ) * ( gpActiveListBox->usMaxArrayIndex - gpActiveListBox->usStartIndex ) + .5 );
 
     IncrementActiveDropDownBox(sIncrementValue);
@@ -1947,7 +1947,7 @@ function BtnQuestDebugGiveItemToNPCButtonCallback(btn: Pointer<GUI_BUTTON>, reas
     if (gfUseLocalNPCs)
       pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
     else
-      pSoldier = FindSoldierByProfileID((UINT8)gNpcListBox.sCurSelectedItem, FALSE);
+      pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
 
     if (!pSoldier) {
       // Failed to get npc, put error message
@@ -2070,8 +2070,8 @@ function BtnQuestDebugNPCRefreshButtonButtonCallback(btn: Pointer<GUI_BUTTON>, r
     } else {
       if (gNpcListBox.sCurSelectedItem != -1) {
         // NB ubMercID is really profile ID
-        ubMercID = (UINT8)gNpcListBox.sCurSelectedItem;
-        fRetVal = ReloadQuoteFile((UINT8)gNpcListBox.sCurSelectedItem);
+        ubMercID = gNpcListBox.sCurSelectedItem;
+        fRetVal = ReloadQuoteFile(gNpcListBox.sCurSelectedItem);
         gMercProfiles[ubMercID].ubLastDateSpokenTo = 0;
       }
     }
@@ -2246,7 +2246,7 @@ function ScrollQuestListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let String: wchar_t[] /* [512] */;
 
-    gubCurQuestSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gubCurQuestSelected = MSYS_GetRegionUserData(pRegion, 0);
 
     // qqq
     swprintf(String, L"%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_QUEST_NUM], gubCurQuestSelected, QuestDescText[gubCurQuestSelected], QuestDebugText[QUEST_DBS_0_1_2]);
@@ -2261,7 +2261,7 @@ function ScrollFactListRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: I
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let String: wchar_t[] /* [512] */;
 
-    gusCurFactSelected = (UINT8)MSYS_GetRegionUserData(pRegion, 0) + gusFactAtTopOfList;
+    gusCurFactSelected = MSYS_GetRegionUserData(pRegion, 0) + gusFactAtTopOfList;
 
     if (FactDescText[gusCurFactSelected][0] == '\0')
       swprintf(String, L"%s %s %d \"%s\" ( %s )", QuestDebugText[QUEST_DBS_ENTER_NEW_VALUE], QuestDebugText[QUEST_DBS_FACT_NUM], gusCurFactSelected, QuestDebugText[QUEST_DBS_NO_TEXT], QuestDebugText[QUEST_DBS_0_1]);
@@ -2279,7 +2279,7 @@ function InitQuestDebugTextInputBoxes(): void {
   //	wchar_t	sText[ 640 ];
 
   InitTextInputMode();
-  SetTextInputFont((UINT16)FONT12ARIAL);
+  SetTextInputFont(FONT12ARIAL);
   Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(255, 255, 255)));
   SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(2, FONT_WHITE);
@@ -2315,11 +2315,11 @@ function AddNPCToGridNo(iGridNo: INT32): void {
 
   memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
   MercCreateStruct.bTeam = CIV_TEAM;
-  MercCreateStruct.ubProfile = (UINT8)gpActiveListBox->sCurSelectedItem;
+  MercCreateStruct.ubProfile = gpActiveListBox->sCurSelectedItem;
   MercCreateStruct.sSectorX = sSectorX;
   MercCreateStruct.sSectorY = sSectorY;
   MercCreateStruct.bSectorZ = gbWorldSectorZ;
-  MercCreateStruct.sInsertionGridNo = (UINT16)iGridNo;
+  MercCreateStruct.sInsertionGridNo = iGridNo;
 
   //	RandomizeNewSoldierStats( &MercCreateStruct );
 
@@ -2333,23 +2333,23 @@ function AddNPCToGridNo(iGridNo: INT32): void {
   // Add all the npc in the current sectory the npc array
   AddNPCsInSectorToArray();
 
-  gsQdsEnteringGridNo = (INT16)iGridNo;
+  gsQdsEnteringGridNo = iGridNo;
 }
 
 function AddItemToGridNo(iGridNo: INT32): void {
   let Object: OBJECTTYPE;
 
-  gsQdsEnteringGridNo = (INT16)iGridNo;
+  gsQdsEnteringGridNo = iGridNo;
 
   if (Item[gItemListBox.sCurSelectedItem].usItemClass == IC_KEY) {
     gfAddKeyNextPass = TRUE;
     //		swprintf( zTemp, L"Please enter the Key ID" );
     //		TextEntryBox( zTemp, AddKeyToGridNo );
   } else {
-    CreateItem(gItemListBox.sCurSelectedItem, (UINT8)(gfDropDamagedItems ? (20 + Random(60)) : 100), &Object);
+    CreateItem(gItemListBox.sCurSelectedItem, (gfDropDamagedItems ? (20 + Random(60)) : 100), &Object);
 
     // add the item to the world
-    AddItemToPool((UINT16)iGridNo, &Object, -1, 0, 0, 0);
+    AddItemToPool(iGridNo, &Object, -1, 0, 0, 0);
   }
 }
 
@@ -2357,7 +2357,7 @@ function AddKeyToGridNo(iKeyID: INT32): void {
   let Object: OBJECTTYPE;
 
   if (iKeyID < NUM_KEYS) {
-    CreateKeyObject(&Object, 1, (UINT8)iKeyID);
+    CreateKeyObject(&Object, 1, iKeyID);
 
     // add the item to the world
     AddItemToPool(gsQdsEnteringGridNo, &Object, -1, 0, 0, 0);
@@ -2399,7 +2399,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       if (gfUseLocalNPCs)
         pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
       else
-        pSoldier = FindSoldierByProfileID((UINT8)gNpcListBox.sCurSelectedItem, FALSE);
+        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
 
       if (!pSoldier) {
         // qq Display error box
@@ -2449,7 +2449,7 @@ function CreateDestroyDisplayNPCInventoryPopup(ubAction: UINT8): void {
       if (gfUseLocalNPCs)
         pSoldier = FindSoldierByProfileID(gubCurrentNpcInSector[gNpcListBox.sCurSelectedItem], FALSE);
       else
-        pSoldier = FindSoldierByProfileID((UINT8)gNpcListBox.sCurSelectedItem, FALSE);
+        pSoldier = FindSoldierByProfileID(gNpcListBox.sCurSelectedItem, FALSE);
 
       if (pSoldier) {
         // color the background of the popup
@@ -2568,19 +2568,19 @@ function AddNPCsInSectorToArray(): void {
       }
     }
   }
-  gubNumNPCinSector = (UINT8)i;
+  gubNumNPCinSector = i;
 }
 
 function ChangeQuestState(iNumber: INT32): void {
   if ((iNumber >= 0) && (iNumber <= 2)) {
-    gubQuest[gubCurQuestSelected] = (UINT8)iNumber;
+    gubQuest[gubCurQuestSelected] = iNumber;
     gfRedrawQuestDebugSystem = TRUE;
   }
 }
 
 function ChangeFactState(iNumber: INT32): void {
   if ((iNumber >= 0) && (iNumber <= 1)) {
-    gubFact[gusCurFactSelected] = (UINT8)iNumber;
+    gubFact[gusCurFactSelected] = iNumber;
     gfRedrawQuestDebugSystem = TRUE;
   }
 }
@@ -2814,7 +2814,7 @@ function DoQDSMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: 
   gfQuestDebugEntry = TRUE;
 
   // do message box and return
-  giQdsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT8)(ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &pCenteringRect);
+  giQdsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &pCenteringRect);
 
   // send back return state
   return giQdsMessageBox != -1;
@@ -2989,12 +2989,12 @@ function HandleQDSTalkingMerc(): void {
 
         // Start the merc talking
         if (ubPanelMercShouldUse == QDS_REGULAR_PANEL)
-          TacticalCharacterDialogue(gTalkingMercSoldier, (UINT16)giSelectedMercCurrentQuote);
+          TacticalCharacterDialogue(gTalkingMercSoldier, giSelectedMercCurrentQuote);
         else if (gfRpcToSaySectorDesc && gTalkingMercSoldier->ubProfile >= 57 && gTalkingMercSoldier->ubProfile <= 60) {
           // ATE: Trigger the sector desc here
-          CharacterDialogueWithSpecialEvent(gTalkingMercSoldier->ubProfile, (UINT16)giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, TRUE, FALSE, DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES, FALSE, FALSE);
+          CharacterDialogueWithSpecialEvent(gTalkingMercSoldier->ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, TRUE, FALSE, DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES, FALSE, FALSE);
         } else
-          CharacterDialogue(gTalkingMercSoldier->ubProfile, (UINT16)giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, FALSE, FALSE);
+          CharacterDialogue(gTalkingMercSoldier->ubProfile, giSelectedMercCurrentQuote, gTalkPanel.iFaceIndex, DIALOGUE_NPC_UI, FALSE, FALSE);
 
         // Incremenet the current quote number
         giSelectedMercCurrentQuote++;
@@ -3038,7 +3038,7 @@ function SetQDSMercProfile(): void {
   // Get selected soldier
   if (GetSoldier(&gTalkingMercSoldier, gusSelectedSoldier)) {
     // Change guy!
-    ForceSoldierProfileID(gTalkingMercSoldier, (UINT8)gNpcListBox.sCurSelectedItem);
+    ForceSoldierProfileID(gTalkingMercSoldier, gNpcListBox.sCurSelectedItem);
 
     // if it is an rpc
     if (gTalkingMercSoldier->ubProfile >= 57 && gTalkingMercSoldier->ubProfile <= 72) {
@@ -3143,7 +3143,7 @@ function EnableFactMouseRegions(): void {
 
 function GetMaxNumberOfQuotesToPlay(): INT32 {
   let iNumberOfQuotes: INT32 = 0;
-  let ubProfileID: UINT8 = (UINT8)gNpcListBox.sCurSelectedItem;
+  let ubProfileID: UINT8 = gNpcListBox.sCurSelectedItem;
 
   // if it is the RPCs and they are to say the sector descs
   if (gfRpcToSaySectorDesc && ubProfileID >= 57 && ubProfileID <= 60) {
@@ -3173,7 +3173,7 @@ function GetDebugLocationString(usProfileID: UINT16, pzText: STR16): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   // Get a soldier pointer
-  pSoldier = FindSoldierByProfileID((UINT8)usProfileID, FALSE);
+  pSoldier = FindSoldierByProfileID(usProfileID, FALSE);
 
   // if their is a soldier, the soldier is alive and the soldier is off the map
   if (pSoldier != NULL && pSoldier->bActive && pSoldier->uiStatusFlags & SOLDIER_OFF_MAP) {

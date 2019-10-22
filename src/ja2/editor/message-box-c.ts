@@ -15,7 +15,7 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   let sStartX: INT16;
   let sStartY: INT16;
 
-  sPixLen = StringPixLength(wzString, (UINT16)gpLargeFontType1) + 10;
+  sPixLen = StringPixLength(wzString, gpLargeFontType1) + 10;
   if (sPixLen > 600)
     sPixLen = 600;
 
@@ -25,16 +25,16 @@ function CreateMessageBox(wzString: Pointer<UINT16>): void {
   gfMessageBoxResult = FALSE;
 
   // Fake button for background w/ text
-  iMsgBoxBgrnd = CreateTextButton(wzString, (UINT16)gpLargeFontType1, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, sStartX, sStartY, sPixLen, 96, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
+  iMsgBoxBgrnd = CreateTextButton(wzString, gpLargeFontType1, FONT_LTKHAKI, FONT_DKKHAKI, BUTTON_USE_DEFAULT, sStartX, sStartY, sPixLen, 96, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BUTTON_NO_CALLBACK, BUTTON_NO_CALLBACK);
   DisableButton(iMsgBoxBgrnd);
   SpecifyDisabledButtonStyle(iMsgBoxBgrnd, DISABLED_STYLE_NONE);
 
   iMsgBoxOkImg = LoadButtonImage("EDITOR//ok.sti", 0, 1, 2, 3, 4);
   iMsgBoxCancelImg = LoadButtonImage("EDITOR//cancel.sti", 0, 1, 2, 3, 4);
 
-  iMsgBoxOk = QuickCreateButton(iMsgBoxOkImg, (INT16)(sStartX + (sPixLen / 2) - 35), (INT16)(sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, (GUI_CALLBACK)MsgBoxOkClkCallback);
+  iMsgBoxOk = QuickCreateButton(iMsgBoxOkImg, (sStartX + (sPixLen / 2) - 35), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxOkClkCallback);
 
-  iMsgBoxCancel = QuickCreateButton(iMsgBoxCancelImg, (INT16)(sStartX + (sPixLen / 2) + 5), (INT16)(sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, (GUI_CALLBACK)MsgBoxCnclClkCallback);
+  iMsgBoxCancel = QuickCreateButton(iMsgBoxCancelImg, (sStartX + (sPixLen / 2) + 5), (sStartY + 58), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BUTTON_NO_CALLBACK, MsgBoxCnclClkCallback);
 
   MsgBoxRect.iLeft = sStartX;
   MsgBoxRect.iTop = sStartY;

@@ -120,7 +120,7 @@ function SoldierHandleInteractiveObject(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN
   let sGridNo: INT16;
 
   sGridNo = pSoldier->sPendingActionData2;
-  usStructureID = (UINT16)pSoldier->uiPendingActionData1;
+  usStructureID = pSoldier->uiPendingActionData1;
 
   // HANDLE SOLDIER ACTIONS
   pStructure = FindStructureByID(sGridNo, usStructureID);
@@ -169,7 +169,7 @@ function HandleStructChangeFromGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
     }
 
     // LOOK for item pool here...
-    if (GetItemPool((INT16)sGridNo, &pItemPool, pSoldier->bLevel)) {
+    if (GetItemPool(sGridNo, &pItemPool, pSoldier->bLevel)) {
       // Update visiblity....
       if (!(pStructure->fFlags & STRUCTURE_OPEN)) {
         let fDoHumm: BOOLEAN = TRUE;
@@ -322,8 +322,8 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
     pTrav = &(TileElem->hTileSurface->pETRLEObject[TileElem->usRegionIndex]);
   }
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)sTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)sTempY_S;
+  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
+  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
 
   // Adjust for offset position on screen
   sScreenX -= gsRenderWorldOffsetX;
@@ -338,8 +338,8 @@ function GetLevelNodeScreenRect(pNode: Pointer<LEVELNODE>, pRect: Pointer<SGPRec
   // Adjust for render height
   sScreenY += gsRenderHeight;
 
-  usHeight = (UINT32)pTrav->usHeight;
-  usWidth = (UINT32)pTrav->usWidth;
+  usHeight = pTrav->usHeight;
+  usWidth = pTrav->usWidth;
 
   // Add to start position of dest buffer
   sScreenX += (pTrav->sOffsetX - (WORLD_TILE_X / 2));
@@ -391,7 +391,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
       // Make sure we are always on guy if we are on same gridno
       if (IsPointInScreenRect(sScreenX, sScreenY, &aRect)) {
         // OK refine it!
-        if (RefinePointCollisionOnStruct(sGridNo, sScreenX, sScreenY, (INT16)aRect.iLeft, (INT16)aRect.iBottom, pNode)) {
+        if (RefinePointCollisionOnStruct(sGridNo, sScreenX, sScreenY, aRect.iLeft, aRect.iBottom, pNode)) {
           // Do some additional checks here!
           if (RefineLogicOnStruct(sGridNo, pNode)) {
             gCurIntTile.fFound = TRUE;
@@ -405,7 +405,7 @@ function LogMouseOverInteractiveTile(sGridNo: INT16): void {
 
               // Determine if it's the best one
               if (aRect.iBottom > gCurIntTile.sHeighestScreenY) {
-                gCurIntTile.sMaxScreenY = (UINT16)aRect.iBottom;
+                gCurIntTile.sMaxScreenY = aRect.iBottom;
                 gCurIntTile.sHeighestScreenY = gCurIntTile.sMaxScreenY;
 
                 // Set it!
@@ -664,7 +664,7 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
 
   if (pNode->uiFlags & LEVELNODE_CACHEDANITILE) {
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode->pAniTile->sCachedTileID].pImagery->vo, pNode->pAniTile->sCurrentFrame, (INT32)(sTestX - sSrcX), (INT32)(-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData(gpTileCache[pNode->pAniTile->sCachedTileID].pImagery->vo, pNode->pAniTile->sCurrentFrame, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   } else {
     TileElem = &(gTileDatabase[pNode->usIndex]);
 
@@ -680,7 +680,7 @@ function RefinePointCollisionOnStruct(sGridNo: INT16, sTestX: INT16, sTestY: INT
     }
 
     // Check it!
-    return CheckVideoObjectScreenCoordinateInData(TileElem->hTileSurface, TileElem->usRegionIndex, (INT32)(sTestX - sSrcX), (INT32)(-1 * (sTestY - sSrcY)));
+    return CheckVideoObjectScreenCoordinateInData(TileElem->hTileSurface, TileElem->usRegionIndex, (sTestX - sSrcX), (-1 * (sTestY - sSrcY)));
   }
 }
 
@@ -702,8 +702,8 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
 
   // Get Offsets from Index into structure
   pTrav = &(hSrcVObject->pETRLEObject[usIndex]);
-  usHeight = (UINT32)pTrav->usHeight;
-  usWidth = (UINT32)pTrav->usWidth;
+  usHeight = pTrav->usHeight;
+  usWidth = pTrav->usWidth;
   uiOffset = pTrav->uiDataOffset;
 
   // Calculate test position we are looking for!
@@ -712,7 +712,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
   iStartPos = 0;
   LineSkip = usWidth;
 
-  SrcPtr = (UINT8 *)hSrcVObject->pPixData + uiOffset;
+  SrcPtr = hSrcVObject->pPixData + uiOffset;
 
   __asm {
     mov esi, SrcPtr

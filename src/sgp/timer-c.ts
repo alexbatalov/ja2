@@ -15,7 +15,7 @@ function Clock(hWindow: HWND, uMessage: UINT, idEvent: UINT, dwTime: DWORD): voi
 function InitializeClockManager(): BOOLEAN {
   // Register the start time (use WIN95 API call)
   guiCurrentTime = guiStartupTime = GetTickCount();
-  SetTimer(ghWindow, MAIN_TIMER_ID, 10, (TIMERPROC)Clock);
+  SetTimer(ghWindow, MAIN_TIMER_ID, 10, Clock);
 
   return TRUE;
 }

@@ -38,7 +38,7 @@ function BeginAutoBandage(): void {
 
   // If we are in combat, we con't...
   if ((gTacticalStatus.uiFlags & INCOMBAT) || (NumEnemyInSector() != 0)) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_SECTOR_NOT_CLEARED], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, Message[STR_SECTOR_NOT_CLEARED], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
     return;
   }
 
@@ -66,15 +66,15 @@ function BeginAutoBandage(): void {
   }
 
   if (!fFoundAGuy) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[AUTOBANDAGE_NOT_NEEDED], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[AUTOBANDAGE_NOT_NEEDED], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
   } else if (!fFoundAMedKit) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[9], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
   } else {
     if (!CanAutoBandage(FALSE)) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[CANT_AUTOBANDAGE_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[CANT_AUTOBANDAGE_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
     } else {
       // Confirm if we want to start or not....
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BEGIN_AUTOBANDAGE_PROMPT_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[BEGIN_AUTOBANDAGE_PROMPT_STR], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BeginAutoBandageCallBack, NULL);
     }
   }
 }
@@ -307,8 +307,8 @@ function AutoBandage(fStart: BOOLEAN): void {
     aRect.iRight = 640;
 
     // Determine position ( centered in rect )
-    gsX = (INT16)((((aRect.iRight - aRect.iLeft) - gusTextBoxWidth) / 2) + aRect.iLeft);
-    gsY = (INT16)((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
+    gsX = ((((aRect.iRight - aRect.iLeft) - gusTextBoxWidth) / 2) + aRect.iLeft);
+    gsY = ((((aRect.iBottom - aRect.iTop) - gusTextBoxHeight) / 2) + aRect.iTop);
 
     // build a mask
     MSYS_DefineRegion(&gAutoBandageRegion, 0, 0, 640, 480, MSYS_PRIORITY_HIGHEST - 1, CURSOR_NORMAL, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
@@ -573,7 +573,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, L"%s", (Menptr[iDoctorList[iCounterA * iNumberDoctorsWide + iCounterB]]).name);
-        FindFontCenterCoordinates((INT16)(sCurrentXPosition), (INT16)(sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -607,7 +607,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   iCurPixelY = sYPosition + ((iCounterA - 1) * TACT_UPDATE_MERC_FACE_X_HEIGHT);
 
   swprintf(sString, L"%s", zMarksMapScreenText[13]);
-  FindFontCenterCoordinates((INT16)(sXPosition), (INT16)(sCurrentYPosition), (INT16)(iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
   // print medic
   mprintf(sX, sYPosition - 7, sString);
 
@@ -635,7 +635,7 @@ function DisplayAutoBandageUpdatePanel(): void {
 
         // display the mercs name
         swprintf(sString, L"%s", (Menptr[iPatientList[iIndex]]).name);
-        FindFontCenterCoordinates((INT16)(sCurrentXPosition), (INT16)(sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates((sCurrentXPosition), (sCurrentYPosition), (TACT_UPDATE_MERC_FACE_X_WIDTH - 25), 0, sString, TINYFONT1, &sX, &sY);
         SetFont(TINYFONT1);
         SetFontForeground(FONT_LTRED);
         SetFontBackground(FONT_BLACK);
@@ -686,10 +686,10 @@ function DisplayAutoBandageUpdatePanel(): void {
 
   if (iNumberPatientsWide == 2) {
     BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
-    CreateTerminateAutoBandageButton((INT16)(sXPosition), (INT16)(sYPosition + iTotalPixelsHigh + 3));
+    CreateTerminateAutoBandageButton((sXPosition), (sYPosition + iTotalPixelsHigh + 3));
   } else {
     BltVideoObject(FRAME_BUFFER, hBackGroundHandle, 6, sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH - 4, sYPosition + iTotalPixelsHigh, VO_BLT_SRCTRANSPARENCY, NULL);
-    CreateTerminateAutoBandageButton((INT16)(sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH), (INT16)(sYPosition + iTotalPixelsHigh + 3));
+    CreateTerminateAutoBandageButton((sXPosition + TACT_UPDATE_MERC_FACE_X_WIDTH), (sYPosition + iTotalPixelsHigh + 3));
   }
 
   SetFont(TINYFONT1);
@@ -697,7 +697,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   SetFontBackground(FONT_BLACK);
 
   swprintf(sString, L"%s", zMarksMapScreenText[14]);
-  FindFontCenterCoordinates((INT16)(sXPosition), (INT16)(sCurrentYPosition), (INT16)(iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
+  FindFontCenterCoordinates((sXPosition), (sCurrentYPosition), (iTotalPixelsWide), 0, sString, TINYFONT1, &sX, &sY);
   // print patient
   mprintf(sX, iCurPixelY + (TACT_UPDATE_MERC_FACE_X_HEIGHT) + 2, sString);
 
@@ -719,7 +719,7 @@ function DisplayAutoBandageUpdatePanel(): void {
   }
 
   // now make sure it goes to the screen
-  InvalidateRegion(sXPosition - 4, sYPosition - 18, (INT16)(sXPosition + iTotalPixelsWide + 4), (INT16)(sYPosition + iTotalPixelsHigh));
+  InvalidateRegion(sXPosition - 4, sYPosition - 18, (sXPosition + iTotalPixelsWide + 4), (sYPosition + iTotalPixelsHigh));
 
   return;
 }
@@ -739,14 +739,14 @@ function CreateTerminateAutoBandageButton(sX: INT16, sY: INT16): void {
   iEndAutoBandageButtonImage[0] = LoadButtonImage("INTERFACE\\group_confirm_tactical.sti", -1, 7, -1, 8, -1);
 
   // grab the button
-  iEndAutoBandageButton[0] = QuickCreateButton(iEndAutoBandageButtonImage[0], sX, sY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)StopAutoBandageButtonCallback);
+  iEndAutoBandageButton[0] = QuickCreateButton(iEndAutoBandageButtonImage[0], sX, sY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, StopAutoBandageButtonCallback);
 
   // the cancel button
   // grab the image
   iEndAutoBandageButtonImage[1] = LoadButtonImage("INTERFACE\\group_confirm_tactical.sti", -1, 7, -1, 8, -1);
 
   // grab the button
-  iEndAutoBandageButton[1] = QuickCreateButton(iEndAutoBandageButtonImage[1], (INT16)(sX + 70), sY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)StopAutoBandageButtonCallback);
+  iEndAutoBandageButton[1] = QuickCreateButton(iEndAutoBandageButtonImage[1], (sX + 70), sY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, StopAutoBandageButtonCallback);
 
   SpecifyButtonText(iEndAutoBandageButton[0], zMarksMapScreenText[15]);
   SpecifyButtonFont(iEndAutoBandageButton[0], MAP_SCREEN_FONT);

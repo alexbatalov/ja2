@@ -219,27 +219,27 @@ function CreateButtonsForMapBorder(): BOOLEAN {
 
   // towns
   giMapBorderButtonsImage[MAP_BORDER_TOWN_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 5, -1, 14, -1);
-  giMapBorderButtons[MAP_BORDER_TOWN_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_TOWN_BTN], 299, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnTownCallback);
+  giMapBorderButtons[MAP_BORDER_TOWN_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_TOWN_BTN], 299, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnTownCallback);
 
   // mines
   giMapBorderButtonsImage[MAP_BORDER_MINE_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 4, -1, 13, -1);
-  giMapBorderButtons[MAP_BORDER_MINE_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_MINE_BTN], 342, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnMineCallback);
+  giMapBorderButtons[MAP_BORDER_MINE_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_MINE_BTN], 342, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnMineCallback);
 
   // people
   giMapBorderButtonsImage[MAP_BORDER_TEAMS_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 3, -1, 12, -1);
-  giMapBorderButtons[MAP_BORDER_TEAMS_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_TEAMS_BTN], 385, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnTeamCallback);
+  giMapBorderButtons[MAP_BORDER_TEAMS_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_TEAMS_BTN], 385, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnTeamCallback);
 
   // militia
   giMapBorderButtonsImage[MAP_BORDER_MILITIA_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 8, -1, 17, -1);
-  giMapBorderButtons[MAP_BORDER_MILITIA_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_MILITIA_BTN], 428, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnMilitiaCallback);
+  giMapBorderButtons[MAP_BORDER_MILITIA_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_MILITIA_BTN], 428, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnMilitiaCallback);
 
   // airspace
   giMapBorderButtonsImage[MAP_BORDER_AIRSPACE_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 2, -1, 11, -1);
-  giMapBorderButtons[MAP_BORDER_AIRSPACE_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_AIRSPACE_BTN], 471, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnAircraftCallback);
+  giMapBorderButtons[MAP_BORDER_AIRSPACE_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_AIRSPACE_BTN], 471, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnAircraftCallback);
 
   // items
   giMapBorderButtonsImage[MAP_BORDER_ITEM_BTN] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 1, -1, 10, -1);
-  giMapBorderButtons[MAP_BORDER_ITEM_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_ITEM_BTN], 514, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)MSYS_NO_CALLBACK, (GUI_CALLBACK)BtnItemCallback);
+  giMapBorderButtons[MAP_BORDER_ITEM_BTN] = QuickCreateButton(giMapBorderButtonsImage[MAP_BORDER_ITEM_BTN], 514, 323, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, MSYS_NO_CALLBACK, BtnItemCallback);
 
   // raise and lower view level
 
@@ -952,7 +952,7 @@ function DisplayCurrentLevelMarker(): void {
 
   // it's actually a white rectangle, not a green arrow!
   GetVideoObject(&hHandle, guiLEVELMARKER);
-  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_LEVEL_MARKER_X + 1, MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (INT16)iCurrentMapSectorZ), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_LEVEL_MARKER_X + 1, MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * iCurrentMapSectorZ), VO_BLT_SRCTRANSPARENCY, NULL);
 
   return;
 }
@@ -962,7 +962,7 @@ function CreateMouseRegionsForLevelMarkers(): void {
   let sString: CHAR16[] /* [64] */;
 
   for (sCounter = 0; sCounter < 4; sCounter++) {
-    MSYS_DefineRegion(&LevelMouseRegions[sCounter], MAP_LEVEL_MARKER_X, (INT16)(MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (INT16)(MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
+    MSYS_DefineRegion(&LevelMouseRegions[sCounter], MAP_LEVEL_MARKER_X, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * sCounter)), MAP_LEVEL_MARKER_X + MAP_LEVEL_MARKER_WIDTH, (MAP_LEVEL_MARKER_Y + (MAP_LEVEL_MARKER_DELTA * (sCounter + 1))), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, LevelMarkerBtnCallback);
 
     MSYS_SetRegionUserData(&LevelMouseRegions[sCounter], 0, sCounter);
 

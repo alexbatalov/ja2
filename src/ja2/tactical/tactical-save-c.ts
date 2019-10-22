@@ -1375,7 +1375,7 @@ function LoadNPCInformationFromProfileStruct(): void {
       continue;
     }
 
-    sSoldierID = GetSoldierIDFromAnyMercID((UINT8)cnt);
+    sSoldierID = GetSoldierIDFromAnyMercID(cnt);
 
     // if the soldier is not loaded, return
     if (sSoldierID == -1)
@@ -1387,7 +1387,7 @@ function LoadNPCInformationFromProfileStruct(): void {
 
     // load quote info if it exists
     if (gMercProfiles[cnt].ubMiscFlags & PROFILE_MISC_FLAG_TEMP_NPC_QUOTE_DATA_EXISTS) {
-      LoadTempNpcQuoteInfoForNPCFromTempFile((UINT8)cnt);
+      LoadTempNpcQuoteInfoForNPCFromTempFile(cnt);
     }
 
     // load insertion info
@@ -1835,7 +1835,7 @@ function SetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ: U
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == (UINT8)sSectorX) && (pTempNode->ubSectorY == (UINT8)sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
       pTempNode->uiFlags |= uiFlagToSet;
 
@@ -1854,7 +1854,7 @@ function ReSetUnderGroundSectorFlag(sSectorX: INT16, sSectorY: INT16, ubSectorZ:
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == (UINT8)sSectorX) && (pTempNode->ubSectorY == (UINT8)sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
       pTempNode->uiFlags &= ~(uiFlagToSet);
 
@@ -1873,7 +1873,7 @@ function GetUnderGroundSectorFlagStatus(sSectorX: INT16, sSectorY: INT16, ubSect
 
   // loop through and look for the right underground sector
   while (pTempNode) {
-    if ((pTempNode->ubSectorX == (UINT8)sSectorX) && (pTempNode->ubSectorY == (UINT8)sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
+    if ((pTempNode->ubSectorX == sSectorX) && (pTempNode->ubSectorY == sSectorY) && (pTempNode->ubSectorZ == ubSectorZ)) {
       // set the flag indicating that ther is a temp item file exists for the sector
       if (pTempNode->uiFlags & uiFlagToCheck)
         return TRUE;
@@ -1906,7 +1906,7 @@ function SetSectorFlag(sMapX: INT16, sMapY: INT16, bMapZ: UINT8, uiFlagToSet: UI
       gStrategicStatus.ubNumNewSectorsVisitedToday++;
       if (gStrategicStatus.ubNumNewSectorsVisitedToday == NEW_SECTORS_EQUAL_TO_ACTIVITY) {
         // visited enough to count as an active day
-        UpdateLastDayOfPlayerActivity((UINT16)GetWorldDay());
+        UpdateLastDayOfPlayerActivity(GetWorldDay());
       }
     }
   }
@@ -2016,7 +2016,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
           pWorldItems[bCount].fExists = TRUE;
           pWorldItems[bCount].sGridNo = sGridNo;
-          pWorldItems[bCount].ubLevel = (UINT8)pSoldier->bLevel;
+          pWorldItems[bCount].ubLevel = pSoldier->bLevel;
           pWorldItems[bCount].usFlags = uiFlagsForWorldItems;
           pWorldItems[bCount].bVisible = TRUE;
           pWorldItems[bCount].bRenderZHeightAboveLevel = 0;
@@ -2045,8 +2045,8 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
 
   ConvertGridNoToXY(sGridNo, &sXPos, &sYPos);
 
-  Corpse.dXPos = (FLOAT)(CenterX(sXPos));
-  Corpse.dYPos = (FLOAT)(CenterY(sYPos));
+  Corpse.dXPos = (CenterX(sXPos));
+  Corpse.dYPos = (CenterY(sYPos));
   Corpse.sHeightAdjustment = pSoldier->sHeightAdjustment;
   Corpse.bVisible = TRUE;
 
@@ -2069,7 +2069,7 @@ function AddDeadSoldierToUnLoadedSector(sMapX: INT16, sMapY: INT16, bMapZ: UINT8
     uiDeathAnim = uiPossibleDeathAnims[Random(4)];
 
   // Set type
-  Corpse.ubType = (UINT8)gubAnimSurfaceCorpseID[pSoldier->ubBodyType][uiDeathAnim];
+  Corpse.ubType = gubAnimSurfaceCorpseID[pSoldier->ubBodyType][uiDeathAnim];
 
   Corpse.usFlags |= usFlagsForRottingCorpse;
 
@@ -2210,7 +2210,7 @@ function NewJA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UIN
   let fRet: BOOLEAN;
   let pubRotationArray: Pointer<UINT8>;
 
-  pMemBlock = (UINT8 *)MemAlloc(uiBytesToWrite);
+  pMemBlock = MemAlloc(uiBytesToWrite);
 
   if (!pMemBlock) {
     return FALSE;
@@ -2320,7 +2320,7 @@ function JA2EncryptedFileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32
   let pMemBlock: Pointer<UINT8>;
   let fRet: BOOLEAN;
 
-  pMemBlock = (UINT8 *)MemAlloc(uiBytesToWrite);
+  pMemBlock = MemAlloc(uiBytesToWrite);
 
   if (!pMemBlock) {
     return FALSE;
@@ -2494,7 +2494,7 @@ function SynchronizeItemTempFileVisbleItemsToSectorInfoVisbleItems(sMapX: INT16,
   }
 
   // now run through list and
-  for (iCounter = 0; (UINT32)(iCounter) < uiTotalNumberOfRealItems; iCounter++) {
+  for (iCounter = 0; (iCounter) < uiTotalNumberOfRealItems; iCounter++) {
     // if visible to player, then state fact
     if (IsMapScreenWorldItemVisibleInMapInventory(&pTotalSectorList[iCounter])) {
       uiItemCount += pTotalSectorList[iCounter].o.ubNumberOfObjects;

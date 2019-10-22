@@ -4,7 +4,7 @@ let guiPreRandomNums: UINT32[] /* [MAX_PREGENERATED_NUMS] */;
 function InitializeRandom(): void {
   // Seed the random-number generator with current time so that
   // the numbers will be different every time we run.
-  srand((unsigned)time(NULL));
+  srand(time(NULL));
   // Pregenerate all of the random numbers.
   for (guiPreRandomIndex = 0; guiPreRandomIndex < MAX_PREGENERATED_NUMS; guiPreRandomIndex++) {
     guiPreRandomNums[guiPreRandomIndex] = rand();
@@ -22,7 +22,7 @@ function Random(uiRange: UINT32): UINT32 {
 }
 
 function Chance(uiChance: UINT32): BOOLEAN {
-  return (BOOLEAN)(Random(100) < uiChance);
+  return (Random(100) < uiChance);
 }
 
 function PreRandom(uiRange: UINT32): UINT32 {
@@ -38,11 +38,11 @@ function PreRandom(uiRange: UINT32): UINT32 {
 
   // Go to the next index.
   guiPreRandomIndex++;
-  if (guiPreRandomIndex >= (UINT32)MAX_PREGENERATED_NUMS)
+  if (guiPreRandomIndex >= MAX_PREGENERATED_NUMS)
     guiPreRandomIndex = 0;
   return uiNum;
 }
 
 function PreChance(uiChance: UINT32): BOOLEAN {
-  return (BOOLEAN)(PreRandom(100) < uiChance);
+  return (PreRandom(100) < uiChance);
 }

@@ -806,7 +806,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
         memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = (UINT16)gTileDatabase[pNode->usIndex].fType;
+        AniParams.usTileType = gTileDatabase[pNode->usIndex].fType;
         AniParams.usTileIndex = pNode->usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
         AniParams.sStartFrame = pNode->sCurrentFrame;
@@ -818,7 +818,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
         memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = (UINT16)gTileDatabase[pNode->usIndex].fType;
+        AniParams.usTileType = gTileDatabase[pNode->usIndex].fType;
         AniParams.usTileIndex = pNode->usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
         AniParams.sStartFrame = pNode->sCurrentFrame;
@@ -923,7 +923,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       if (fOpenedGraphic) {
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = (UINT16)gTileDatabase[pNode->usIndex].fType;
+        AniParams.usTileType = gTileDatabase[pNode->usIndex].fType;
         AniParams.usTileIndex = pNode->usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
         AniParams.sStartFrame = pNode->sCurrentFrame;
@@ -936,7 +936,7 @@ function HandleDoorsOpenClose(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, pS
       } else {
         AniParams.sGridNo = sGridNo;
         AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-        AniParams.usTileType = (UINT16)gTileDatabase[pNode->usIndex].fType;
+        AniParams.usTileType = gTileDatabase[pNode->usIndex].fType;
         AniParams.usTileIndex = pNode->usIndex;
         AniParams.sDelay = INTTILE_DOOR_OPENSPEED;
         AniParams.sStartFrame = pNode->sCurrentFrame;

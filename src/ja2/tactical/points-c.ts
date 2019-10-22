@@ -18,7 +18,7 @@ function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
   // Check reality vs what the player knows....
   if (pSoldier->bTeam == gbPlayerNum) {
     // Is this obstcale a hidden tile that has not been revealed yet?
-    if (DoesGridnoContainHiddenStruct((UINT16)sGridno, &fHiddenStructVisible)) {
+    if (DoesGridnoContainHiddenStruct(sGridno, &fHiddenStructVisible)) {
       // Are we not visible, if so use terrain costs!
       if (!fHiddenStructVisible) {
         // Set cost of terrain!
@@ -30,7 +30,7 @@ function TerrainActionPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
     // use the cost of the terrain!
     sSwitchValue = gTileTypeMovementCost[gpWorldLevelData[sGridno].ubTerrainID];
   } else if (IS_TRAVELCOST_DOOR(sSwitchValue)) {
-    sSwitchValue = DoorTravelCost(pSoldier, sGridno, (UINT8)sSwitchValue, (BOOLEAN)(pSoldier->bTeam == gbPlayerNum), NULL);
+    sSwitchValue = DoorTravelCost(pSoldier, sGridno, sSwitchValue, (pSoldier->bTeam == gbPlayerNum), NULL);
   }
 
   if (sSwitchValue >= TRAVELCOST_BLOCKED && sSwitchValue != TRAVELCOST_DOOR) {
@@ -114,7 +114,7 @@ function BreathPointAdjustmentForCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): 
       // so at 250% weight, we pay 400% breath!
     }
   }
-  return (INT16)uiPercentCost;
+  return uiPercentCost;
 }
 
 function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
@@ -200,10 +200,10 @@ function TerrainBreathPoints(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, bDi
   // ATE: Adjust these by realtime movement
   if (!(gTacticalStatus.uiFlags & TURNBASED) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
     // ATE: ADJUST FOR RT - MAKE BREATH GO A LITTLE FASTER!
-    iPoints = (INT32)(iPoints * TB_BREATH_DEDUCT_MODIFIER);
+    iPoints = (iPoints * TB_BREATH_DEDUCT_MODIFIER);
   }
 
-  return (INT16)iPoints;
+  return iPoints;
 }
 
 function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: INT8, usMovementMode: UINT16): INT16 {
@@ -235,7 +235,7 @@ function ActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bDir: I
       case RUNNING:
       case ADULTMONSTER_WALKING:
       case BLOODCAT_RUN:
-        sPoints = (INT16)(DOUBLE)((sTileCost / RUNDIVISOR));
+        sPoints = ((sTileCost / RUNDIVISOR));
         break;
 
       case CROW_FLY:
@@ -302,7 +302,7 @@ function EstimateActionPointCost(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16,
       case RUNNING:
       case ADULTMONSTER_WALKING:
       case BLOODCAT_RUN:
-        sPoints = (INT16)(DOUBLE)((sTileCost / RUNDIVISOR));
+        sPoints = ((sTileCost / RUNDIVISOR));
         break;
 
       case CROW_FLY:
@@ -441,7 +441,7 @@ function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
     sNewAP = 0;
   }
 
-  pSoldier->bActionPoints = (INT8)sNewAP;
+  pSoldier->bActionPoints = sNewAP;
 
   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Deduct Points (%d at %d) %d %d", pSoldier->ubID, pSoldier->sGridNo, sAPCost, sBPCost));
 
@@ -469,7 +469,7 @@ function DeductPoints(pSoldier: Pointer<SOLDIERTYPE>, sAPCost: INT16, sBPCost: I
     }
 
     // Get new breath
-    bNewBreath = (UINT8)(pSoldier->bBreathMax - ((FLOAT)pSoldier->sBreathRed / (FLOAT)100));
+    bNewBreath = (pSoldier->bBreathMax - (pSoldier->sBreathRed / 100));
 
     if (bNewBreath > 100) {
       bNewBreath = 100;
@@ -621,7 +621,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
     sBreathChange *= TB_BREATH_RECOVER_MODIFIER;
 
     // adjust breath only, don't touch action points!
-    DeductPoints(pSold, 0, (INT16)sBreathChange);
+    DeductPoints(pSold, 0, sBreathChange);
 
     // Reset value for RT breath update
     pSold->ubTilesMovedPerRTBreathUpdate = 0;
@@ -651,7 +651,7 @@ function UnusedAPsToBreath(pSold: Pointer<SOLDIERTYPE>): void {
     HandleBPEffectDueToDrugs(pSold, &sBreathChange);
 
     // adjust breath only, don't touch action points!
-    DeductPoints(pSold, 0, (INT16)sBreathChange);
+    DeductPoints(pSold, 0, sBreathChange);
   }
 }
 
@@ -773,7 +773,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
       // OK, in order to avoid path calculations here all the time... save and check if it's changed!
       if (pSoldier->sWalkToAttackGridNo == sGridNo) {
         sAdjustedGridNo = sGridNo;
-        sAPCost += (UINT8)(pSoldier->sWalkToAttackWalkToCost);
+        sAPCost += (pSoldier->sWalkToAttackWalkToCost);
       } else {
         // INT32		cnt;
         // INT16		sSpot;
@@ -813,7 +813,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
             pSoldier->sWalkToAttackWalkToCost = 0;
           } else {
             // Save for next time...
-            pSoldier->sWalkToAttackWalkToCost = PlotPath(pSoldier, sGotLocation, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+            pSoldier->sWalkToAttackWalkToCost = PlotPath(pSoldier, sGotLocation, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
             if (pSoldier->sWalkToAttackWalkToCost == 0) {
               return 99;
@@ -840,7 +840,7 @@ function CalcTotalAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ub
     sAPCost += bAimTime;
   }
 
-  return (INT8)sAPCost;
+  return sAPCost;
 }
 
 function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTurningCost: UINT8): UINT8 {
@@ -872,7 +872,7 @@ function MinAPsToAttack(pSoldier: Pointer<SOLDIERTYPE>, sGridno: INT16, ubAddTur
     sAPCost = MinAPsToPunch(pSoldier, sGridno, ubAddTurningCost);
   }
 
-  return (UINT8)sAPCost;
+  return sAPCost;
 }
 
 function CalcAimSkill(pSoldier: Pointer<SOLDIERTYPE>, usWeapon: UINT16): INT8 {
@@ -934,7 +934,7 @@ function GetAPChargeForShootOrStabWRTGunRaises(pSoldier: Pointer<SOLDIERTYPE>, s
         sGridNo = MercPtrs[usTargID]->sGridNo;
       }
 
-      ubDirection = (UINT8)GetDirectionFromGridNo(sGridNo, pSoldier);
+      ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
 
       // Is it the same as he's facing?
       if (ubDirection != pSoldier->bDirection) {
@@ -1093,7 +1093,7 @@ function MinAPsToPunch(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
     if (ubAddTurningCost) {
       if (pSoldier->sGridNo == sGridNo) {
         // ATE: Use standing turn cost....
-        ubDirection = (UINT8)GetDirectionFromGridNo(sGridNo, pSoldier);
+        ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
 
         // Is it the same as he's facing?
         if (ubDirection != pSoldier->bDirection) {
@@ -1116,18 +1116,18 @@ function MinPtsToMove(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   let sCost: INT16;
 
   if (TANK(pSoldier)) {
-    return (INT8)sLowest;
+    return sLowest;
   }
 
   for (cnt = 0; cnt <= 7; cnt++) {
-    sGridno = NewGridNo(pSoldier->sGridNo, DirectionInc((INT16)cnt));
+    sGridno = NewGridNo(pSoldier->sGridNo, DirectionInc(cnt));
     if (sGridno != pSoldier->sGridNo) {
-      if ((sCost = ActionPointCost(pSoldier, sGridno, (UINT8)cnt, pSoldier->usUIMovementMode)) < sLowest) {
+      if ((sCost = ActionPointCost(pSoldier, sGridno, cnt, pSoldier->usUIMovementMode)) < sLowest) {
         sLowest = sCost;
       }
     }
   }
-  return (INT8)sLowest;
+  return sLowest;
 }
 
 function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): INT8 {
@@ -1136,7 +1136,7 @@ function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): I
   let bOverTerrainType: INT8;
   let usMoveModeToUse: UINT16;
 
-  sGridno = NewGridNo(pSoldier->sGridNo, DirectionInc((INT16)bDirection));
+  sGridno = NewGridNo(pSoldier->sGridNo, DirectionInc(bDirection));
 
   usMoveModeToUse = pSoldier->usUIMovementMode;
 
@@ -1155,7 +1155,7 @@ function PtsToMoveDirection(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8): I
     }
   }
 
-  return (INT8)sCost;
+  return sCost;
 }
 
 function MinAPsToStartMovement(pSoldier: Pointer<SOLDIERTYPE>, usMovementMode: UINT16): INT8 {
@@ -1285,7 +1285,7 @@ function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): U
     sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, usMapPos);
 
     if (pSoldier->sGridNo != sActionGridNo) {
-      sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       // If point cost is zero, return 0
       if (sAPCost != 0) {
@@ -1303,7 +1303,7 @@ function GetAPsToPickupItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): U
 function GetAPsToGiveItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16): UINT16 {
   let sAPCost: UINT16 = 0;
 
-  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   // If point cost is zero, return 0
   if (sAPCost != 0 || pSoldier->sGridNo == usMapPos) {
@@ -1370,7 +1370,7 @@ function GetAPsToAutoReload(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (bSlot2 != NO_SLOT) {
         // we would reload using this ammo!
         bAPCost2 = GetAPsToReloadGunWithAmmo(pObj, &(pSoldier->inv[bSlot2]));
-        if (EnoughPoints(pSoldier, (INT16)(bAPCost + bAPCost2), 0, FALSE)) {
+        if (EnoughPoints(pSoldier, (bAPCost + bAPCost2), 0, FALSE)) {
           // we can afford to reload both guns; otherwise display just for 1 gun
           bAPCost += bAPCost2;
         }
@@ -1389,7 +1389,7 @@ function GetAPsToReloadRobot(pSoldier: Pointer<SOLDIERTYPE>, pRobot: Pointer<SOL
 
   sActionGridNo = FindAdjacentGridEx(pSoldier, pRobot->sGridNo, &ubDirection, &sAdjustedGridNo, TRUE, FALSE);
 
-  sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPCost = PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   // If point cost is zero, return 0
   if (sAPCost != 0 || sActionGridNo == pSoldier->sGridNo) {
@@ -1517,7 +1517,7 @@ function CheckForMercContMove(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // get a path to dest...
           if (FindBestPath(pSoldier, sGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, 0)) {
-            sAPCost = PtsToMoveDirection(pSoldier, (UINT8)guiPathingData[0]);
+            sAPCost = PtsToMoveDirection(pSoldier, guiPathingData[0]);
 
             if (EnoughPoints(pSoldier, sAPCost, 0, FALSE)) {
               return TRUE;
@@ -1563,10 +1563,10 @@ function GetAPsToReadyWeapon(pSoldier: Pointer<SOLDIERTYPE>, usAnimState: UINT16
 function GetAPsToClimbRoof(pSoldier: Pointer<SOLDIERTYPE>, fClimbDown: BOOLEAN): INT8 {
   if (!fClimbDown) {
     // OK, add aps to goto stand stance...
-    return (INT8)(AP_CLIMBROOF + GetAPsToChangeStance(pSoldier, ANIM_STAND));
+    return (AP_CLIMBROOF + GetAPsToChangeStance(pSoldier, ANIM_STAND));
   } else {
     // Add aps to goto crouch
-    return (INT8)(AP_CLIMBOFFROOF + GetAPsToChangeStance(pSoldier, ANIM_CROUCH));
+    return (AP_CLIMBOFFROOF + GetAPsToChangeStance(pSoldier, ANIM_CROUCH));
   }
 }
 
@@ -1627,7 +1627,7 @@ function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
 
     // OK, get a direction and see if we need to turn...
     if (ubAddTurningCost) {
-      ubDirection = (UINT8)GetDirectionFromGridNo(sGridNo, pSoldier);
+      ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
 
       // Is it the same as he's facing?
       if (ubDirection != pSoldier->bDirection) {
@@ -1674,7 +1674,7 @@ function MinAPsToThrow(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubAddTurn
   if (iAPCost < 1)
     iAPCost = 1;
 
-  return (INT16)iAPCost;
+  return iAPCost;
 }
 
 function GetAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
@@ -1684,7 +1684,7 @@ function GetAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
 function GetTotalAPsToDropBomb(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): UINT16 {
   let sAPs: INT16 = 0;
 
-  sAPs = PlotPath(pSoldier, sGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPs = PlotPath(pSoldier, sGridNo, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   if (sAPs > 0) {
     sAPs += AP_DROP_BOMB;
@@ -1700,7 +1700,7 @@ function GetAPsToUseRemote(pSoldier: Pointer<SOLDIERTYPE>): UINT16 {
 function GetAPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   let sAPCost: UINT16 = 0;
 
-  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   // ADD APS TO PICKUP
   sAPCost += AP_STEAL_ITEM;
@@ -1710,7 +1710,7 @@ function GetAPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT
     sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
   }
 
-  return (INT8)sAPCost;
+  return sAPCost;
 }
 
 function GetBPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
@@ -1720,7 +1720,7 @@ function GetBPsToStealItem(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 function GetAPsToUseJar(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   let sAPCost: UINT16 = 0;
 
-  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   // If point cost is zero, return 0
   if (sAPCost != 0) {
@@ -1728,13 +1728,13 @@ function GetAPsToUseJar(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
     sAPCost += AP_TAKE_BLOOD;
   }
 
-  return (INT8)sAPCost;
+  return sAPCost;
 }
 
 function GetAPsToUseCan(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
   let sAPCost: UINT16 = 0;
 
-  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+  sAPCost = PlotPath(pSoldier, usMapPos, NO_COPYROUTE, NO_PLOT, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
   // If point cost is zero, return 0
   if (sAPCost != 0) {
@@ -1742,7 +1742,7 @@ function GetAPsToUseCan(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: INT16): INT8 {
     sAPCost += AP_ATTACH_CAN;
   }
 
-  return (INT8)sAPCost;
+  return sAPCost;
 }
 
 function GetAPsToJumpOver(pSoldier: Pointer<SOLDIERTYPE>): INT8 {

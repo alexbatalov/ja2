@@ -104,7 +104,7 @@ function FindGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGridNo: I
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -192,7 +192,7 @@ function FindGridNoFromSweetSpotThroughPeople(pSoldier: Pointer<SOLDIERTYPE>, sS
   gubNPCDistLimit = ubSaveNPCDistLimit;
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;
@@ -299,7 +299,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
 
           // Check each struct in each direction
           for (cnt3 = 0; cnt3 < 8; cnt3++) {
-            if (OkayToAddStructureToWorld((INT16)sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+            if (OkayToAddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
               fDirectionFound = TRUE;
               break;
             }
@@ -317,7 +317,7 @@ function FindGridNoFromSweetSpotWithStructData(pSoldier: Pointer<SOLDIERTYPE>, u
             }
 
             if (uiRange < uiLowestRange) {
-              ubBestDirection = (UINT8)cnt3;
+              ubBestDirection = cnt3;
               sLowestGridNo = sGridNo;
               uiLowestRange = uiRange;
               fFound = TRUE;
@@ -436,14 +436,14 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
           }
 
           // OK, check the perfered given direction first
-          if (OkayToAddStructureToWorld((INT16)sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[bGivenDirection]]), usOKToAddStructID)) {
+          if (OkayToAddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[bGivenDirection]]), usOKToAddStructID)) {
             fDirectionFound = TRUE;
             cnt3 = bGivenDirection;
           } else {
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
               if (cnt3 != bGivenDirection) {
-                if (OkayToAddStructureToWorld((INT16)sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+                if (OkayToAddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
                   fDirectionFound = TRUE;
                   break;
                 }
@@ -463,7 +463,7 @@ function FindGridNoFromSweetSpotWithStructDataUsingGivenDirectionFirst(pSoldier:
             }
 
             if (uiRange < uiLowestRange) {
-              ubBestDirection = (UINT8)cnt3;
+              ubBestDirection = cnt3;
               sLowestGridNo = sGridNo;
               uiLowestRange = uiRange;
               fFound = TRUE;
@@ -572,14 +572,14 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
 
             // Check each struct in each direction
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld((INT16)sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pSoldier->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), usOKToAddStructID)) {
                 fDirectionFound = TRUE;
                 break;
               }
             }
           } else {
             fDirectionFound = TRUE;
-            cnt3 = (UINT8)Random(8);
+            cnt3 = Random(8);
           }
 
           if (fDirectionFound) {
@@ -593,7 +593,7 @@ function FindGridNoFromSweetSpotWithStructDataFromSoldier(pSoldier: Pointer<SOLD
             }
 
             if (uiRange < uiLowestRange || (uiRange == uiLowestRange && PythSpacesAway(pSoldier->sGridNo, sGridNo) < PythSpacesAway(pSoldier->sGridNo, sLowestGridNo))) {
-              ubBestDirection = (UINT8)cnt3;
+              ubBestDirection = cnt3;
               sLowestGridNo = sGridNo;
               uiLowestRange = uiRange;
               fFound = TRUE;
@@ -664,7 +664,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDIERTYPE
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -726,7 +726,7 @@ function FindGridNoFromSweetSpotExcludingSweetSpotInQuardent(pSoldier: Pointer<S
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
     return sLowestGridNo;
   } else {
@@ -817,8 +817,8 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
   FindBestPath(&soldier, NOWHERE, 0, WALKING, COPYREACHABLE, (PATH_IGNORE_PERSON_AT_DEST | PATH_THROUGH_PEOPLE));
 
   do {
-    sX = (UINT16)Random(ubRadius);
-    sY = (UINT16)Random(ubRadius);
+    sX = Random(ubRadius);
+    sY = Random(ubRadius);
 
     leftmost = ((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
 
@@ -846,7 +846,7 @@ function FindRandomGridNoFromSweetSpot(pSoldier: Pointer<SOLDIERTYPE>, sSweetGri
   } while (!fFound);
 
   // Set direction to center of map!
-  *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  *pubDirection = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
   gubNPCAPBudget = ubSaveNPCAPBudget;
   gubNPCDistLimit = ubSaveNPCDistLimit;
@@ -863,8 +863,8 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
   let cnt: UINT32 = 0;
 
   do {
-    sX = (UINT16)Random(ubRadius);
-    sY = (UINT16)Random(ubRadius);
+    sX = Random(ubRadius);
+    sY = Random(ubRadius);
 
     leftmost = ((sSweetGridNo + (WORLD_COLS * sY)) / WORLD_COLS) * WORLD_COLS;
 
@@ -889,7 +889,7 @@ function FindRandomGridNoFromSweetSpotExcludingSweetSpot(pSoldier: Pointer<SOLDI
   } while (!fFound);
 
   // Set direction to center of map!
-  *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+  *pubDirection = GetDirectionToGridNoFromGridNo(sGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
 
   return sGridNo;
 }
@@ -979,7 +979,7 @@ function InternalAddSoldierToSector(ubID: UINT8, fCalculateDirection: BOOLEAN, f
           if (sExitGridNo != NOWHERE) {
             // We found one
             // Calculate direction...
-            ubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sExitGridNo, sGridNo);
+            ubDirection = GetDirectionToGridNoFromGridNo(sExitGridNo, sGridNo);
           }
         }
       } else {
@@ -1260,7 +1260,7 @@ function AddSoldierToSectorGridNo(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16
       // ATE: Double check if we are on the roof that there is a roof there!
       if (pSoldier->bLevel == 1) {
         if (!FindStructure(pSoldier->sGridNo, STRUCTURE_ROOF)) {
-          SetSoldierHeight(pSoldier, (FLOAT)(0));
+          SetSoldierHeight(pSoldier, (0));
         }
       }
 

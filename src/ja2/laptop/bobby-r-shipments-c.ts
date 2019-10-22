@@ -225,7 +225,7 @@ function DisplayPreviousShipments(): void {
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
     // if it is a valid shipment, and can be displayed at bobby r
     if (gpNewBobbyrShipments[uiCnt].fActive && gpNewBobbyrShipments[giBobbyRShipmentSelectedShipment].fDisplayedInShipmentPage) {
-      if (uiCnt == (UINT32)giBobbyRShipmentSelectedShipment) {
+      if (uiCnt == giBobbyRShipmentSelectedShipment) {
         ubFontColor = FONT_MCOLOR_WHITE;
       } else {
         ubFontColor = BOBBYR_SHIPMENT_STATIC_TEXT_COLOR;
@@ -259,7 +259,7 @@ function CreatePreviousShipmentsMouseRegions(): void {
   let uiNumItems: UINT32 = CountNumberOfBobbyPurchasesThatAreInTransit();
 
   for (uiCnt = 0; uiCnt < uiNumItems; uiCnt++) {
-    MSYS_DefineRegion(&gSelectedPreviousShipmentsRegion[uiCnt], BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (UINT16)(BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (UINT16)(usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
+    MSYS_DefineRegion(&gSelectedPreviousShipmentsRegion[uiCnt], BOBBYR_SHIPMENT_ORDER_NUM_X, usPosY, (BOBBYR_SHIPMENT_ORDER_NUM_X + usWidth), (usPosY + usHeight), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPreviousShipmentsRegionCallBack);
     MSYS_AddRegion(&gSelectedPreviousShipmentsRegion[uiCnt]);
     MSYS_SetRegionUserData(&gSelectedPreviousShipmentsRegion[uiCnt], 0, uiCnt);
 

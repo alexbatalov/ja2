@@ -18,10 +18,10 @@ function Add3X3Pit(iMapIndex: INT32): void {
   AddObjectToTail(iMapIndex - 159, REGWATERTEXTURE9);
   if (!gfEditMode) {
     // Add the exitgrids associated with the pit.
-    ExitGrid.ubGotoSectorX = (UINT8)gWorldSectorX;
-    ExitGrid.ubGotoSectorY = (UINT8)gWorldSectorY;
-    ExitGrid.ubGotoSectorZ = (UINT8)(gbWorldSectorZ + 1);
-    ExitGrid.usGridNo = (UINT16)iMapIndex;
+    ExitGrid.ubGotoSectorX = gWorldSectorX;
+    ExitGrid.ubGotoSectorY = gWorldSectorY;
+    ExitGrid.ubGotoSectorZ = (gbWorldSectorZ + 1);
+    ExitGrid.usGridNo = iMapIndex;
     AddExitGridToWorld(iMapIndex + 159, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 1, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 161, &ExitGrid);
@@ -31,7 +31,7 @@ function Add3X3Pit(iMapIndex: INT32): void {
     AddExitGridToWorld(iMapIndex + 161, &ExitGrid);
     AddExitGridToWorld(iMapIndex + 1, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 159, &ExitGrid);
-    RecompileLocalMovementCostsFromRadius((INT16)iMapIndex, 2);
+    RecompileLocalMovementCostsFromRadius(iMapIndex, 2);
   }
 
   MarkWorldDirty();
@@ -70,10 +70,10 @@ function Add5X5Pit(iMapIndex: INT32): void {
   AddObjectToTail(iMapIndex - 318, REGWATERTEXTURE34);
   if (!gfEditMode) {
     // Add the exitgrids associated with the pit.
-    ExitGrid.ubGotoSectorX = (UINT8)gWorldSectorX;
-    ExitGrid.ubGotoSectorY = (UINT8)gWorldSectorY;
-    ExitGrid.ubGotoSectorZ = (UINT8)(gbWorldSectorZ + 1);
-    ExitGrid.usGridNo = (UINT16)iMapIndex;
+    ExitGrid.ubGotoSectorX = gWorldSectorX;
+    ExitGrid.ubGotoSectorY = gWorldSectorY;
+    ExitGrid.ubGotoSectorZ = (gbWorldSectorZ + 1);
+    ExitGrid.usGridNo = iMapIndex;
     AddExitGridToWorld(iMapIndex + 318, &ExitGrid);
     AddExitGridToWorld(iMapIndex + 158, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 2, &ExitGrid);
@@ -99,7 +99,7 @@ function Add5X5Pit(iMapIndex: INT32): void {
     AddExitGridToWorld(iMapIndex + 2, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 158, &ExitGrid);
     AddExitGridToWorld(iMapIndex - 318, &ExitGrid);
-    RecompileLocalMovementCostsFromRadius((INT16)iMapIndex, 3);
+    RecompileLocalMovementCostsFromRadius(iMapIndex, 3);
   }
   MarkWorldDirty();
   if (!gfEditMode)
@@ -208,7 +208,7 @@ function HandleFallIntoPitFromAnimation(ubID: UINT8): void {
   let sPitGridNo: INT16;
   // OK, get exit grid...
 
-  sPitGridNo = (INT16)pSoldier->uiPendingActionData4;
+  sPitGridNo = pSoldier->uiPendingActionData4;
 
   GetExitGrid(sPitGridNo, &ExitGrid);
 

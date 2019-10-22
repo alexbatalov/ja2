@@ -1023,11 +1023,11 @@ function BobbyRayItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): i
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = ((STORE_INVENTORY *)pArg1)->usItemIndex;
-  usItem2Index = ((STORE_INVENTORY *)pArg2)->usItemIndex;
+  usItem1Index = (pArg1)->usItemIndex;
+  usItem2Index = (pArg2)->usItemIndex;
 
-  ubItem1Quality = ((STORE_INVENTORY *)pArg1)->ubItemQuality;
-  ubItem2Quality = ((STORE_INVENTORY *)pArg2)->ubItemQuality;
+  ubItem1Quality = (pArg1)->ubItemQuality;
+  ubItem2Quality = (pArg2)->ubItemQuality;
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
@@ -1038,11 +1038,11 @@ function ArmsDealerItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>):
   let ubItem1Quality: UINT8;
   let ubItem2Quality: UINT8;
 
-  usItem1Index = ((INVENTORY_IN_SLOT *)pArg1)->sItemIndex;
-  usItem2Index = ((INVENTORY_IN_SLOT *)pArg2)->sItemIndex;
+  usItem1Index = (pArg1)->sItemIndex;
+  usItem2Index = (pArg2)->sItemIndex;
 
-  ubItem1Quality = ((INVENTORY_IN_SLOT *)pArg1)->ItemObject.bStatus[0];
-  ubItem2Quality = ((INVENTORY_IN_SLOT *)pArg2)->ItemObject.bStatus[0];
+  ubItem1Quality = (pArg1)->ItemObject.bStatus[0];
+  ubItem2Quality = (pArg2)->ItemObject.bStatus[0];
 
   return CompareItemsForSorting(usItem1Index, usItem2Index, ubItem1Quality, ubItem2Quality);
 }
@@ -1053,8 +1053,8 @@ function RepairmanItemQsortCompare(pArg1: Pointer<void>, pArg2: Pointer<void>): 
   let uiRepairTime1: UINT32;
   let uiRepairTime2: UINT32;
 
-  pInvSlot1 = (INVENTORY_IN_SLOT *)pArg1;
-  pInvSlot2 = (INVENTORY_IN_SLOT *)pArg2;
+  pInvSlot1 = pArg1;
+  pInvSlot2 = pArg2;
 
   Assert(pInvSlot1->sSpecialItemElement != -1);
   Assert(pInvSlot2->sSpecialItemElement != -1);

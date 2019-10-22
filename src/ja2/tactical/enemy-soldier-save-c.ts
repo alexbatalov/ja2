@@ -181,7 +181,7 @@ function LoadEnemySoldiersFromTempFile(): BOOLEAN {
             curr->pBasicPlacement->fPriorityExistance = TRUE;
             if (!curr->pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+              curr->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             }
             // now replace the map pristine placement info with the temp map file version..
             memcpy(curr->pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
@@ -316,7 +316,7 @@ function SaveEnemySoldiersToTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ:
           if (!curr->pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
             curr->pBasicPlacement->fDetailedPlacement = TRUE;
-            curr->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+            curr->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             memset(curr->pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
           }
 
@@ -730,7 +730,7 @@ function NewWayOfLoadingEnemySoldiersFromTempFile(): BOOLEAN {
           curr->pBasicPlacement->fPriorityExistance = TRUE;
           if (!curr->pDetailedPlacement) {
             // need to upgrade the placement to detailed placement
-            curr->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+            curr->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
           }
           // now replace the map pristine placement info with the temp map file version..
           memcpy(curr->pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
@@ -975,7 +975,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
 
             if (!curr->pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
-              curr->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+              curr->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
             }
             // now replace the map pristine placement info with the temp map file version..
             memcpy(curr->pDetailedPlacement, &tempDetailedPlacement, sizeof(SOLDIERCREATE_STRUCT));
@@ -1010,7 +1010,7 @@ function NewWayOfLoadingCiviliansFromTempFile(): BOOLEAN {
               let iNewLife: INT32;
               iNewLife = curr->pDetailedPlacement->bLife + uiTimeSinceLastLoaded / 15;
               iNewLife = min(curr->pDetailedPlacement->bLifeMax, iNewLife);
-              curr->pDetailedPlacement->bLife = (INT8)iNewLife;
+              curr->pDetailedPlacement->bLife = iNewLife;
             }
 
             if (curr->pBasicPlacement->bTeam == CIV_TEAM) {
@@ -1126,7 +1126,7 @@ function NewWayOfSavingEnemyAndCivliansToTempFile(sSectorX: INT16, sSectorY: INT
             if (!curr->pDetailedPlacement) {
               // need to upgrade the placement to detailed placement
               curr->pBasicPlacement->fDetailedPlacement = TRUE;
-              curr->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+              curr->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
               memset(curr->pDetailedPlacement, 0, sizeof(SOLDIERCREATE_STRUCT));
             }
 

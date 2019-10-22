@@ -31,13 +31,13 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
   // If we have a planned action here, ignore!
 
   // If not OK Dest, ignore!
-  if (!NewOKDestination(gpUIPlannedSoldier, sGridNo, FALSE, (INT8)gsInterfaceLevel)) {
+  if (!NewOKDestination(gpUIPlannedSoldier, sGridNo, FALSE, gsInterfaceLevel)) {
     return FALSE;
   }
 
   if (ubPlanID == UIPLAN_ACTION_MOVETO) {
     // Calculate cost to move here
-    sAPCost = PlotPath(gpUIPlannedSoldier, sGridNo, COPYROUTE, NO_PLOT, TEMPORARY, (UINT16)gpUIPlannedSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, gpUIPlannedSoldier->bActionPoints);
+    sAPCost = PlotPath(gpUIPlannedSoldier, sGridNo, COPYROUTE, NO_PLOT, TEMPORARY, gpUIPlannedSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, gpUIPlannedSoldier->bActionPoints);
     // Adjust for running if we are not already running
     if (gpUIPlannedSoldier->usUIMovementMode == RUNNING) {
       sAPCost += AP_START_RUN_COST;
@@ -54,7 +54,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       // Get Grid Corrdinates of mouse
       if (TacticalCreateSoldier(&MercCreateStruct, &ubNewIndex)) {
         // Get pointer to soldier
-        GetSoldier(&pPlanSoldier, (UINT16)ubNewIndex);
+        GetSoldier(&pPlanSoldier, ubNewIndex);
 
         pPlanSoldier->sPlannedTargetX = -1;
         pPlanSoldier->sPlannedTargetY = -1;
@@ -77,10 +77,10 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
         pPlanSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
 
-        pPlanSoldier->ubPlannedUIAPCost = (UINT8)pPlanSoldier->bActionPoints;
+        pPlanSoldier->ubPlannedUIAPCost = pPlanSoldier->bActionPoints;
 
         // Get direction
-        bDirection = (INT8)gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
+        bDirection = gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
 
         // Set direction
         pPlanSoldier->bDirection = bDirection;
@@ -90,7 +90,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         ChangeSoldierState(pPlanSoldier, pPlanSoldier->usUIMovementMode, 0, FALSE);
 
         // Change selected soldier
-        gusSelectedSoldier = (UINT16)pPlanSoldier->ubID;
+        gusSelectedSoldier = pPlanSoldier->ubID;
 
         // Change global planned mode to this guy!
         gpUIPlannedSoldier = pPlanSoldier;
@@ -105,7 +105,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
       ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Merc will not have enough action points");
     }
   } else if (ubPlanID == UIPLAN_ACTION_FIRE) {
-    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (INT8)(gpUIPlannedSoldier->bShownAimTime / 2));
+    sAPCost = CalcTotalAPsToAttack(gpUIPlannedSoldier, sGridNo, TRUE, (gpUIPlannedSoldier->bShownAimTime / 2));
 
     // Get XY from Gridno
     ConvertGridNoToCenterCellXY(sGridNo, &sXPos, &sYPos);
@@ -124,7 +124,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
         // Get Grid Corrdinates of mouse
         if (TacticalCreateSoldier(&MercCreateStruct, &ubNewIndex)) {
           // Get pointer to soldier
-          GetSoldier(&pPlanSoldier, (UINT16)ubNewIndex);
+          GetSoldier(&pPlanSoldier, ubNewIndex);
 
           pPlanSoldier->sPlannedTargetX = -1;
           pPlanSoldier->sPlannedTargetY = -1;
@@ -144,10 +144,10 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
           pPlanSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
 
-          pPlanSoldier->ubPlannedUIAPCost = (UINT8)pPlanSoldier->bActionPoints;
+          pPlanSoldier->ubPlannedUIAPCost = pPlanSoldier->bActionPoints;
 
           // Get direction
-          bDirection = (INT8)gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
+          bDirection = gpUIPlannedSoldier->usPathingData[gpUIPlannedSoldier->usPathDataSize - 1];
 
           // Set direction
           pPlanSoldier->bDirection = bDirection;
@@ -157,7 +157,7 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
           ChangeSoldierState(pPlanSoldier, pPlanSoldier->usUIMovementMode, 0, FALSE);
 
           // Change selected soldier
-          gusSelectedSoldier = (UINT16)pPlanSoldier->ubID;
+          gusSelectedSoldier = pPlanSoldier->ubID;
 
           // Change global planned mode to this guy!
           gpUIPlannedSoldier = pPlanSoldier;
@@ -168,10 +168,10 @@ function AddUIPlan(sGridNo: UINT16, ubPlanID: UINT8): BOOLEAN {
 
       gpUIPlannedSoldier->bActionPoints = gpUIPlannedSoldier->bActionPoints - sAPCost;
 
-      gpUIPlannedSoldier->ubPlannedUIAPCost = (UINT8)gpUIPlannedSoldier->bActionPoints;
+      gpUIPlannedSoldier->ubPlannedUIAPCost = gpUIPlannedSoldier->bActionPoints;
 
       // Get direction from gridno
-      bDirection = (INT8)GetDirectionFromGridNo(sGridNo, gpUIPlannedSoldier);
+      bDirection = GetDirectionFromGridNo(sGridNo, gpUIPlannedSoldier);
 
       // Set direction
       gpUIPlannedSoldier->bDirection = bDirection;

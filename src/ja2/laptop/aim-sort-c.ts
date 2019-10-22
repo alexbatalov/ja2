@@ -184,51 +184,51 @@ function EnterAimSort(): BOOLEAN {
   ubCurNumber = 0;
   // Mouse region for the Price Check Box
   ubWidth = StringPixLength(AimSortText[PRICE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
-  MSYS_DefineRegion(&gSelectedPriceBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectPriceBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedPriceBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectPriceBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedPriceBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[EXPERIENCE], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Experience Check Box
-  MSYS_DefineRegion(&gSelectedExpBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExpBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedExpBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExpBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedExpBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMARKSMANSHIP], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_PRICE_TEXT_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Markmanship Check Box
-  MSYS_DefineRegion(&gSelectedMarkBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMarkBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedMarkBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMarkBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedMarkBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMEDICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Medical  Check Box
-  MSYS_DefineRegion(&gSelectedMedicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMedicalBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedMedicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMedicalBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedMedicalBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[EXPLOSIVES], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Explosive  Check Box
-  MSYS_DefineRegion(&gSelectedExplosiveBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExplosiveBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedExplosiveBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectExplosiveBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedExplosiveBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = StringPixLength(AimSortText[AIMMECHANICAL], AIM_SORT_FONT_SORT_TEXT) + AimSortCheckBoxLoc[ubCurNumber] + (AIM_SORT_MEDICAL_X - AimSortCheckBoxLoc[ubCurNumber]) - 3;
   // Mouse region for the Mechanical Check Box
-  MSYS_DefineRegion(&gSelectedMechanicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)ubWidth, (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMechanicalBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedMechanicalBoxRegion, AimSortCheckBoxLoc[ubCurNumber], AimSortCheckBoxLoc[ubCurNumber + 1], ubWidth, (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectMechanicalBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedMechanicalBoxRegion);
 
   ubCurNumber += 2;
 
   ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[ASCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
   // Mouse region for the Ascend Check Box
-  MSYS_DefineRegion(&gSelectedAscendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)(AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectAscendBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedAscendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectAscendBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedAscendBoxRegion);
 
   ubCurNumber += 2;
   ubWidth = AimSortCheckBoxLoc[ubCurNumber] - StringPixLength(AimSortText[DESCENDING], AIM_SORT_FONT_SORT_TEXT) - 6;
 
   // Mouse region for the Descend Check Box
-  MSYS_DefineRegion(&gSelectedDescendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (UINT16)(AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (UINT16)(AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectDescendBoxRegionCallBack);
+  MSYS_DefineRegion(&gSelectedDescendBoxRegion, ubWidth, AimSortCheckBoxLoc[ubCurNumber + 1], (AimSortCheckBoxLoc[ubCurNumber] + AIM_SORT_CHECKBOX_SIZE), (AimSortCheckBoxLoc[ubCurNumber + 1] + AIM_SORT_CHECKBOX_SIZE), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, SelectDescendBoxRegionCallBack);
   MSYS_AddRegion(&gSelectedDescendBoxRegion);
 
   InitAimMenuBar();
@@ -469,39 +469,39 @@ function DrawSelectLight(ubMode: UINT8, ubImage: UINT8): void {
 }
 
 function SortMercArray(): BOOLEAN {
-  qsort((LPVOID)AimMercArray, (size_t)MAX_NUMBER_MERCS, sizeof(UINT8), QsortCompare);
+  qsort(AimMercArray, MAX_NUMBER_MERCS, sizeof(UINT8), QsortCompare);
 
   return TRUE;
 }
 
 function QsortCompare(pNum1: Pointer<void>, pNum2: Pointer<void>): INT32 {
-  let Num1: UINT8 = *(UINT8 *)pNum1;
-  let Num2: UINT8 = *(UINT8 *)pNum2;
+  let Num1: UINT8 = *pNum1;
+  let Num2: UINT8 = *pNum2;
 
   switch (gubCurrentSortMode) {
     // Price						INT16	uiWeeklySalary
     case 0:
-      return CompareValue((INT32)gMercProfiles[Num1].uiWeeklySalary, (INT32)gMercProfiles[Num2].uiWeeklySalary);
+      return CompareValue(gMercProfiles[Num1].uiWeeklySalary, gMercProfiles[Num2].uiWeeklySalary);
       break;
     // Experience			INT16	bExpLevel
     case 1:
-      return CompareValue((INT32)gMercProfiles[Num1].bExpLevel, (INT32)gMercProfiles[Num2].bExpLevel);
+      return CompareValue(gMercProfiles[Num1].bExpLevel, gMercProfiles[Num2].bExpLevel);
       break;
     // Marksmanship		INT16	bMarksmanship
     case 2:
-      return CompareValue((INT32)gMercProfiles[Num1].bMarksmanship, (INT32)gMercProfiles[Num2].bMarksmanship);
+      return CompareValue(gMercProfiles[Num1].bMarksmanship, gMercProfiles[Num2].bMarksmanship);
       break;
     // Medical					INT16	bMedical
     case 3:
-      return CompareValue((INT32)gMercProfiles[Num1].bMedical, (INT32)gMercProfiles[Num2].bMedical);
+      return CompareValue(gMercProfiles[Num1].bMedical, gMercProfiles[Num2].bMedical);
       break;
     // Explosives			INT16	bExplosive
     case 4:
-      return CompareValue((INT32)gMercProfiles[Num1].bExplosive, (INT32)gMercProfiles[Num2].bExplosive);
+      return CompareValue(gMercProfiles[Num1].bExplosive, gMercProfiles[Num2].bExplosive);
       break;
     // Mechanical			INT16	bMechanical
     case 5:
-      return CompareValue((INT32)gMercProfiles[Num1].bMechanical, (INT32)gMercProfiles[Num2].bMechanical);
+      return CompareValue(gMercProfiles[Num1].bMechanical, gMercProfiles[Num2].bMechanical);
       break;
 
     default:

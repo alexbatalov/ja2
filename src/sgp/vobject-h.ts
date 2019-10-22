@@ -50,7 +50,7 @@ interface SixteenBPPObjectInfo {
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw compatiblity )
 // From RGB to COLORVAL
-const FROMRGB = (r, g, b) => ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)));
+const FROMRGB = (r, g, b) => ((((r) | ((g) << 8)) | (((b)) << 16)));
 
 // Video object creation flags
 // Used in the VOBJECT_DESC structure to describe creation flags

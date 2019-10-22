@@ -131,7 +131,7 @@ function CreateIMPPortraitButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitNextCallback );
 */
-  giIMPPortraitButton[0] = CreateIconAndTextButton(giIMPPortraitButtonImage[0], pImpButtonText[13], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (343), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitNextCallback);
+  giIMPPortraitButton[0] = CreateIconAndTextButton(giIMPPortraitButtonImage[0], pImpButtonText[13], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (343), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPortraitNextCallback);
 
   // previous button
   giIMPPortraitButtonImage[1] = LoadButtonImage("LAPTOP\\voicearrows.sti", -1, 0, -1, 2, -1);
@@ -139,7 +139,7 @@ function CreateIMPPortraitButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitPreviousCallback );
     */
-  giIMPPortraitButton[1] = CreateIconAndTextButton(giIMPPortraitButtonImage[1], pImpButtonText[12], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (93), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitPreviousCallback);
+  giIMPPortraitButton[1] = CreateIconAndTextButton(giIMPPortraitButtonImage[1], pImpButtonText[12], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (93), LAPTOP_SCREEN_WEB_UL_Y + (205), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPortraitPreviousCallback);
 
   // done button
   giIMPPortraitButtonImage[2] = LoadButtonImage("LAPTOP\\button_5.sti", -1, 0, -1, 1, -1);
@@ -147,7 +147,7 @@ function CreateIMPPortraitButtons(): void {
                                                                           BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitDoneCallback );
 */
-  giIMPPortraitButton[2] = CreateIconAndTextButton(giIMPPortraitButtonImage[2], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPPortraitDoneCallback);
+  giIMPPortraitButton[2] = CreateIconAndTextButton(giIMPPortraitButtonImage[2], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (187), LAPTOP_SCREEN_WEB_UL_Y + (330), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPPortraitDoneCallback);
 
   SetButtonCursor(giIMPPortraitButton[0], CURSOR_WWW);
   SetButtonCursor(giIMPPortraitButton[1], CURSOR_WWW);

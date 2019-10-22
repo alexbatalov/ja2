@@ -59,14 +59,14 @@ function CreateNewPlayerGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: UI
   let pNew: Pointer<GROUP>;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewPlayerGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewPlayerGroup with out of range sectorY value of %d", ubSectorY));
-  pNew = (GROUP *)MemAlloc(sizeof(GROUP));
+  pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewPlayerGroup.");
   memset(pNew, 0, sizeof(GROUP));
   pNew->pPlayerList = NULL;
   pNew->pWaypoints = NULL;
   pNew->ubSectorX = pNew->ubNextX = ubSectorX;
   pNew->ubSectorY = pNew->ubNextY = ubSectorY;
-  pNew->ubOriginalSector = (UINT8)SECTOR(ubSectorX, ubSectorY);
+  pNew->ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
   pNew->fPlayer = TRUE;
   pNew->ubMoveType = ONE_WAY;
   pNew->ubNextWaypointID = 0;
@@ -84,13 +84,13 @@ function CreateNewVehicleGroupDepartingFromSector(ubSectorX: UINT8, ubSectorY: U
   let pNew: Pointer<GROUP>;
   AssertMsg(ubSectorX >= 1 && ubSectorX <= 16, String("CreateNewVehicleGroup with out of range sectorX value of %d", ubSectorX));
   AssertMsg(ubSectorY >= 1 && ubSectorY <= 16, String("CreateNewVehicleGroup with out of range sectorY value of %d", ubSectorY));
-  pNew = (GROUP *)MemAlloc(sizeof(GROUP));
+  pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewVehicleGroup.");
   memset(pNew, 0, sizeof(GROUP));
   pNew->pWaypoints = NULL;
   pNew->ubSectorX = pNew->ubNextX = ubSectorX;
   pNew->ubSectorY = pNew->ubNextY = ubSectorY;
-  pNew->ubOriginalSector = (UINT8)SECTOR(ubSectorX, ubSectorY);
+  pNew->ubOriginalSector = SECTOR(ubSectorX, ubSectorY);
   pNew->ubMoveType = ONE_WAY;
   pNew->ubNextWaypointID = 0;
   pNew->ubFatigueLevel = 100;
@@ -114,7 +114,7 @@ function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOO
   let curr: Pointer<PLAYERGROUP>;
   pGroup = GetGroup(ubGroupID);
   Assert(pGroup);
-  pPlayer = (PLAYERGROUP *)MemAlloc(sizeof(PLAYERGROUP));
+  pPlayer = MemAlloc(sizeof(PLAYERGROUP));
   Assert(pPlayer);
   AssertMsg(pGroup->fPlayer, "Attempting AddPlayerToGroup() on an ENEMY group!");
   pPlayer->pSoldier = pSoldier;
@@ -126,11 +126,11 @@ function AddPlayerToGroup(ubGroupID: UINT8, pSoldier: Pointer<SOLDIERTYPE>): BOO
   if (!pGroup->pPlayerList) {
     pGroup->pPlayerList = pPlayer;
     pGroup->ubGroupSize = 1;
-    pGroup->ubPrevX = (UINT8)((pSoldier->ubPrevSectorID % 16) + 1);
-    pGroup->ubPrevY = (UINT8)((pSoldier->ubPrevSectorID / 16) + 1);
-    pGroup->ubSectorX = (UINT8)pSoldier->sSectorX;
-    pGroup->ubSectorY = (UINT8)pSoldier->sSectorY;
-    pGroup->ubSectorZ = (UINT8)pSoldier->bSectorZ;
+    pGroup->ubPrevX = ((pSoldier->ubPrevSectorID % 16) + 1);
+    pGroup->ubPrevY = ((pSoldier->ubPrevSectorID / 16) + 1);
+    pGroup->ubSectorX = pSoldier->sSectorX;
+    pGroup->ubSectorY = pSoldier->sSectorY;
+    pGroup->ubSectorZ = pSoldier->bSectorZ;
 
     // set group id
     pSoldier->ubGroupID = ubGroupID;
@@ -177,7 +177,7 @@ function RemoveAllPlayersFromPGroup(pGroup: Pointer<GROUP>): BOOLEAN {
   while (curr) {
     pGroup->pPlayerList = pGroup->pPlayerList->next;
 
-    curr->pSoldier->ubPrevSectorID = (UINT8)SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
+    curr->pSoldier->ubPrevSectorID = SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
     curr->pSoldier->ubGroupID = 0;
 
     MemFree(curr);
@@ -216,7 +216,7 @@ function RemovePlayerFromPGroup(pGroup: Pointer<GROUP>, pSoldier: Pointer<SOLDIE
 
     // process info for soldier
     pGroup->ubGroupSize--;
-    pSoldier->ubPrevSectorID = (UINT8)SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
+    pSoldier->ubPrevSectorID = SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
     pSoldier->ubGroupID = 0;
 
     // if there's nobody left in the group
@@ -246,7 +246,7 @@ function RemovePlayerFromPGroup(pGroup: Pointer<GROUP>, pSoldier: Pointer<SOLDIE
       // process info for soldier
       pSoldier->ubGroupID = 0;
       pGroup->ubGroupSize--;
-      pSoldier->ubPrevSectorID = (UINT8)SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
+      pSoldier->ubPrevSectorID = SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
 
       return TRUE;
     }
@@ -447,11 +447,11 @@ function AddWaypointToPGroup(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ubSectorY
 
   if (!pWay) {
     // We are adding the first waypoint.
-    pGroup->pWaypoints = (WAYPOINT *)MemAlloc(sizeof(WAYPOINT));
+    pGroup->pWaypoints = MemAlloc(sizeof(WAYPOINT));
     pWay = pGroup->pWaypoints;
   } else {
     // Add the waypoint to the end of the list
-    pWay->next = (WAYPOINT *)MemAlloc(sizeof(WAYPOINT));
+    pWay->next = MemAlloc(sizeof(WAYPOINT));
     pWay = pWay->next;
   }
 
@@ -516,8 +516,8 @@ function AddWaypointStrategicIDToGroup(ubGroupID: UINT8, uiSectorID: UINT32): BO
 function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT32): BOOLEAN {
   let ubSectorX: UINT8;
   let ubSectorY: UINT8;
-  ubSectorX = (UINT8)GET_X_FROM_STRATEGIC_INDEX(uiSectorID);
-  ubSectorY = (UINT8)GET_Y_FROM_STRATEGIC_INDEX(uiSectorID);
+  ubSectorX = GET_X_FROM_STRATEGIC_INDEX(uiSectorID);
+  ubSectorY = GET_Y_FROM_STRATEGIC_INDEX(uiSectorID);
   return AddWaypointToPGroup(pGroup, ubSectorX, ubSectorY);
 }
 
@@ -526,16 +526,16 @@ function AddWaypointStrategicIDToPGroup(pGroup: Pointer<GROUP>, uiSectorID: UINT
 function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: UINT8, ubNumTroops: UINT8, ubNumElites: UINT8): Pointer<GROUP> {
   let pNew: Pointer<GROUP>;
   AssertMsg(uiSector >= 0 && uiSector <= 255, String("CreateNewEnemyGroup with out of range value of %d", uiSector));
-  pNew = (GROUP *)MemAlloc(sizeof(GROUP));
+  pNew = MemAlloc(sizeof(GROUP));
   AssertMsg(pNew, "MemAlloc failure during CreateNewEnemyGroup.");
   memset(pNew, 0, sizeof(GROUP));
-  pNew->pEnemyGroup = (ENEMYGROUP *)MemAlloc(sizeof(ENEMYGROUP));
+  pNew->pEnemyGroup = MemAlloc(sizeof(ENEMYGROUP));
   AssertMsg(pNew->pEnemyGroup, "MemAlloc failure during enemy group creation.");
   memset(pNew->pEnemyGroup, 0, sizeof(ENEMYGROUP));
   pNew->pWaypoints = NULL;
-  pNew->ubSectorX = (UINT8)SECTORX(uiSector);
-  pNew->ubSectorY = (UINT8)SECTORY(uiSector);
-  pNew->ubOriginalSector = (UINT8)uiSector;
+  pNew->ubSectorX = SECTORX(uiSector);
+  pNew->ubSectorY = SECTORY(uiSector);
+  pNew->ubOriginalSector = uiSector;
   pNew->fPlayer = FALSE;
   pNew->ubMoveType = CIRCULAR;
   pNew->ubNextWaypointID = 0;
@@ -544,7 +544,7 @@ function CreateNewEnemyGroupDepartingFromSector(uiSector: UINT32, ubNumAdmins: U
   pNew->pEnemyGroup->ubNumAdmins = ubNumAdmins;
   pNew->pEnemyGroup->ubNumTroops = ubNumTroops;
   pNew->pEnemyGroup->ubNumElites = ubNumElites;
-  pNew->ubGroupSize = (UINT8)(ubNumTroops + ubNumElites);
+  pNew->ubGroupSize = (ubNumTroops + ubNumElites);
   pNew->ubTransportationMask = FOOT;
   pNew->fVehicle = FALSE;
   pNew->ubCreatedSectorID = pNew->ubOriginalSector;
@@ -671,10 +671,10 @@ function HandleImportantPBIQuote(pSoldier: Pointer<SOLDIERTYPE>, pInitiatingBatt
   // wake merc up for THIS quote
   if (pSoldier->fMercAsleep) {
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 0, 0);
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, (UINT32)pInitiatingBattleGroup, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
     TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_SLEEP, 1, 0);
   } else {
-    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, (UINT32)pInitiatingBattleGroup, 0);
+    TacticalCharacterDialogueWithSpecialEvent(pSoldier, QUOTE_ENEMY_PRESENCE, DIALOGUE_SPECIAL_EVENT_BEGINPREBATTLEINTERFACE, pInitiatingBattleGroup, 0);
   }
 }
 
@@ -723,7 +723,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
         gfCantRetreatInPBI = TRUE;
       }
 
-      ubChosenMerc = (UINT8)Random(ubNumMercs);
+      ubChosenMerc = Random(ubNumMercs);
 
       pSoldier = MercPtrs[ubMercsInGroup[ubChosenMerc]];
       gpTacticalTraversalChosenSoldier = pSoldier;
@@ -748,7 +748,7 @@ function PrepareForPreBattleInterface(pPlayerDialogGroup: Pointer<GROUP>, pIniti
       gfCantRetreatInPBI = TRUE;
     }
 
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     pSoldier = MercPtrs[ubMercsInGroup[ubChosenMerc]];
 
@@ -780,8 +780,8 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
 
   if (gfWorldLoaded) {
     // look for people arriving in the currently loaded sector.  This handles reinforcements.
-    curr = FindMovementGroupInSector((UINT8)gWorldSectorX, (UINT8)gWorldSectorY, TRUE);
-    if (!gbWorldSectorZ && PlayerMercsInSector((UINT8)gWorldSectorX, (UINT8)gWorldSectorY, gbWorldSectorZ) && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && curr) {
+    curr = FindMovementGroupInSector(gWorldSectorX, gWorldSectorY, TRUE);
+    if (!gbWorldSectorZ && PlayerMercsInSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ) && pGroup->ubSectorX == gWorldSectorX && pGroup->ubSectorY == gWorldSectorY && curr) {
       // Reinforcements have arrived!
       if (gTacticalStatus.fEnemyInSector) {
         HandleArrivalOfReinforcements(pGroup);
@@ -922,7 +922,7 @@ function CheckConditionsForBattle(pGroup: Pointer<GROUP>): BOOLEAN {
 
 function TriggerPrebattleInterface(ubResult: UINT8): void {
   StopTimeCompression();
-  SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE, (UINT32)gpInitPrebattleGroup, 0, 0, 0, 0);
+  SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE, gpInitPrebattleGroup, 0, 0, 0, 0);
   gpInitPrebattleGroup = NULL;
 }
 
@@ -1047,7 +1047,7 @@ function AwardExperienceForTravelling(pGroup: Pointer<GROUP>): void {
         // but changed to flat rate since StatChange makes roll vs 100-lifemax as well!
         uiPoints = pGroup->uiTraverseTime / (450 / 100 - pSoldier->bLifeMax);
         if (uiPoints > 0) {
-          StatChange(pSoldier, HEALTHAMT, (UINT8)uiPoints, FALSE);
+          StatChange(pSoldier, HEALTHAMT, uiPoints, FALSE);
         }
       }
 
@@ -1055,7 +1055,7 @@ function AwardExperienceForTravelling(pGroup: Pointer<GROUP>): void {
         uiCarriedPercent = CalculateCarriedWeight(pSoldier);
         if (uiCarriedPercent > 50) {
           uiPoints = pGroup->uiTraverseTime / (450 / (100 - pSoldier->bStrength));
-          StatChange(pSoldier, STRAMT, (UINT16)(uiPoints * (uiCarriedPercent - 50) / 100), FALSE);
+          StatChange(pSoldier, STRAMT, (uiPoints * (uiCarriedPercent - 50) / 100), FALSE);
         }
       }
     }
@@ -1080,20 +1080,20 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   SET_PALETTEREP_ID(Corpse.SkinPal, "PINKSKIN");
   SET_PALETTEREP_ID(Corpse.PantsPal, "GREENPANTS");
 
-  Corpse.bDirection = (INT8)Random(8);
+  Corpse.bDirection = Random(8);
 
   // Set time of death
   // Make sure they will be rotting!
   Corpse.uiTimeOfDeath = GetWorldTotalMin() - (2 * NUM_SEC_IN_DAY / 60);
   // Set type
-  Corpse.ubType = (UINT8)SMERC_JFK;
+  Corpse.ubType = SMERC_JFK;
   Corpse.usFlags = ROTTING_CORPSE_FIND_SWEETSPOT_FROM_GRIDNO;
 
   // 1st gridno
   Corpse.sGridNo = 14319;
   ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
-  Corpse.dXPos = (FLOAT)(CenterX(sXPos));
-  Corpse.dYPos = (FLOAT)(CenterY(sYPos));
+  Corpse.dXPos = (CenterX(sXPos));
+  Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
   AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
@@ -1101,8 +1101,8 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   // 2nd gridno
   Corpse.sGridNo = 9835;
   ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
-  Corpse.dXPos = (FLOAT)(CenterX(sXPos));
-  Corpse.dYPos = (FLOAT)(CenterY(sYPos));
+  Corpse.dXPos = (CenterX(sXPos));
+  Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
   AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
@@ -1110,8 +1110,8 @@ function AddCorpsesToBloodcatLair(sSectorX: INT16, sSectorY: INT16): void {
   // 3rd gridno
   Corpse.sGridNo = 11262;
   ConvertGridNoToXY(Corpse.sGridNo, &sXPos, &sYPos);
-  Corpse.dXPos = (FLOAT)(CenterX(sXPos));
-  Corpse.dYPos = (FLOAT)(CenterY(sYPos));
+  Corpse.dXPos = (CenterX(sXPos));
+  Corpse.dYPos = (CenterY(sYPos));
 
   // Add the rotting corpse info to the sectors unloaded rotting corpse file
   AddRottingCorpseToUnloadedSectorsRottingCorpseFile(sSectorX, sSectorY, 0, &Corpse);
@@ -1184,7 +1184,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
   }
   // First check if the group arriving is going to queue another battle.
   // NOTE:  We can't have more than one battle ongoing at a time.
-  if (fExceptionQueue || fCheckForBattle && gTacticalStatus.fEnemyInSector && FindMovementGroupInSector((UINT8)gWorldSectorX, (UINT8)gWorldSectorY, TRUE) && (pGroup->ubNextX != gWorldSectorX || pGroup->ubNextY != gWorldSectorY || gbWorldSectorZ > 0) || AreInMeanwhile() ||
+  if (fExceptionQueue || fCheckForBattle && gTacticalStatus.fEnemyInSector && FindMovementGroupInSector(gWorldSectorX, gWorldSectorY, TRUE) && (pGroup->ubNextX != gWorldSectorX || pGroup->ubNextY != gWorldSectorY || gbWorldSectorZ > 0) || AreInMeanwhile() ||
       // KM : Aug 11, 1999 -- Patch fix:  Added additional checks to prevent a 2nd battle in the case
       //     where the player is involved in a potential battle with bloodcats/civilians
       fCheckForBattle && HostileCiviliansPresent() || fCheckForBattle && HostileBloodcatsPresent()) {
@@ -1236,7 +1236,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
       pSoldier = GetSoldierStructureForVehicle(iVehicleID);
       AssertMsg(pSoldier, "GroupArrival for vehicle group.  Invalid soldier pointer.");
 
-      SpendVehicleFuel(pSoldier, (INT16)(pGroup->uiTraverseTime * 6));
+      SpendVehicleFuel(pSoldier, (pGroup->uiTraverseTime * 6));
 
       if (!VehicleFuelRemaining(pSoldier)) {
         ReportVehicleOutOfGas(iVehicleID, pGroup->ubSectorX, pGroup->ubSectorY);
@@ -1300,7 +1300,7 @@ function GroupArrivedAtSector(ubGroupID: UINT8, fCheckForBattle: BOOLEAN, fNever
         curr->pSoldier->sSectorX = pGroup->ubSectorX;
         curr->pSoldier->sSectorY = pGroup->ubSectorY;
         curr->pSoldier->bSectorZ = pGroup->ubSectorZ;
-        curr->pSoldier->ubPrevSectorID = (UINT8)SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
+        curr->pSoldier->ubPrevSectorID = SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
         curr->pSoldier->ubInsertionDirection = ubInsertionDirection;
 
         // don't override if a tactical traversal
@@ -1484,7 +1484,7 @@ function HandleNonCombatGroupArrival(pGroup: Pointer<GROUP>, fMainGroup: BOOLEAN
     // if this is the last sector along their movement path (no more waypoints)
     if (GroupAtFinalDestination(pGroup)) {
       // if currently selected sector has nobody in it
-      if (PlayerMercsInSector((UINT8)sSelMapX, (UINT8)sSelMapY, (UINT8)iCurrentMapSectorZ) == 0) {
+      if (PlayerMercsInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ) == 0) {
         // make this sector strategically selected
         ChangeSelectedMapSector(pGroup->ubSectorX, pGroup->ubSectorY, pGroup->ubSectorZ);
       }
@@ -1526,11 +1526,11 @@ function HandleOtherGroupsArrivingSimultaneously(ubSectorX: UINT8, ubSectorY: UI
   gubNumGroupsArrivedSimultaneously = 0;
   while (pEvent && pEvent->uiTimeStamp <= uiCurrTimeStamp) {
     if (pEvent->ubCallbackID == EVENT_GROUP_ARRIVAL && !(pEvent->ubFlags & SEF_DELETION_PENDING)) {
-      pGroup = GetGroup((UINT8)pEvent->uiParam);
+      pGroup = GetGroup(pEvent->uiParam);
       Assert(pGroup);
       if (pGroup->ubNextX == ubSectorX && pGroup->ubNextY == ubSectorY && pGroup->ubSectorZ == ubSectorZ) {
         if (pGroup->fBetweenSectors) {
-          GroupArrivedAtSector((UINT8)pEvent->uiParam, FALSE, FALSE);
+          GroupArrivedAtSector(pEvent->uiParam, FALSE, FALSE);
           pGroup->uiFlags |= GROUPFLAG_GROUP_ARRIVED_SIMULTANEOUSLY;
           gubNumGroupsArrivedSimultaneously++;
           DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup->ubGroupID);
@@ -1768,10 +1768,10 @@ function InitiateGroupMovementToNextSector(pGroup: Pointer<GROUP>): void {
     return;
   }
   // All conditions for moving to the next waypoint are now good.
-  pGroup->ubNextX = (UINT8)(dx + pGroup->ubSectorX);
-  pGroup->ubNextY = (UINT8)(dy + pGroup->ubSectorY);
+  pGroup->ubNextX = (dx + pGroup->ubSectorX);
+  pGroup->ubNextY = (dy + pGroup->ubSectorY);
   // Calc time to get to next waypoint...
-  ubSector = (UINT8)SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
+  ubSector = SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
   if (!pGroup->ubSectorZ) {
     let fCalcRegularTime: BOOLEAN = TRUE;
     if (!pGroup->fPlayer) {
@@ -2018,13 +2018,13 @@ function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, 
   RemovePGroupWaypoints(pGroup);
 
   // set sector x and y to passed values
-  pGroup->ubSectorX = pGroup->ubNextX = (UINT8)sSectorX;
-  pGroup->ubSectorY = pGroup->ubNextY = (UINT8)sSectorY;
-  pGroup->ubSectorZ = (UINT8)sSectorZ;
+  pGroup->ubSectorX = pGroup->ubNextX = sSectorX;
+  pGroup->ubSectorY = pGroup->ubNextY = sSectorY;
+  pGroup->ubSectorZ = sSectorZ;
   pGroup->fBetweenSectors = FALSE;
 
   // set next sectors same as current
-  pGroup->ubOriginalSector = (UINT8)SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
+  pGroup->ubOriginalSector = SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
   DeleteStrategicEvent(EVENT_GROUP_ARRIVAL, pGroup->ubGroupID);
 
   // set all of the mercs in the group so that they are in the new sector too.
@@ -2032,7 +2032,7 @@ function SetGroupSectorValue(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16, 
   while (pPlayer) {
     pPlayer->pSoldier->sSectorX = sSectorX;
     pPlayer->pSoldier->sSectorY = sSectorY;
-    pPlayer->pSoldier->bSectorZ = (UINT8)sSectorZ;
+    pPlayer->pSoldier->bSectorZ = sSectorZ;
     pPlayer->pSoldier->fBetweenSectors = FALSE;
     pPlayer->pSoldier->uiStatusFlags &= ~SOLDIER_SHOULD_BE_TACTICALLY_VALID;
     pPlayer = pPlayer->next;
@@ -2052,8 +2052,8 @@ function SetEnemyGroupSector(pGroup: Pointer<GROUP>, ubSectorID: UINT8): void {
   }
 
   // set sector x and y to passed values
-  pGroup->ubSectorX = pGroup->ubNextX = (UINT8)SECTORX(ubSectorID);
-  pGroup->ubSectorY = pGroup->ubNextY = (UINT8)SECTORY(ubSectorID);
+  pGroup->ubSectorX = pGroup->ubNextX = SECTORX(ubSectorID);
+  pGroup->ubSectorY = pGroup->ubNextY = SECTORY(ubSectorID);
   pGroup->ubSectorZ = 0;
   pGroup->fBetweenSectors = FALSE;
   // pGroup->fWaypointsCancelled = FALSE;
@@ -2072,12 +2072,12 @@ function SetGroupNextSectorValue(sSectorX: INT16, sSectorY: INT16, ubGroupID: UI
   RemovePGroupWaypoints(pGroup);
 
   // set sector x and y to passed values
-  pGroup->ubNextX = (UINT8)sSectorX;
-  pGroup->ubNextY = (UINT8)sSectorY;
+  pGroup->ubNextX = sSectorX;
+  pGroup->ubNextY = sSectorY;
   pGroup->fBetweenSectors = FALSE;
 
   // set next sectors same as current
-  pGroup->ubOriginalSector = (UINT8)SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
+  pGroup->ubOriginalSector = SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
 }
 
 // get eta of the group with this id
@@ -2112,7 +2112,7 @@ function CalculateTravelTimeOfGroup(pGroup: Pointer<GROUP>): INT32 {
   pNode = pGroup->pWaypoints;
 
   // now get the delta in current sector and next sector
-  iDelta = (INT32)(SECTOR(pGroup->ubSectorX, pGroup->ubSectorY) - SECTOR(pGroup->ubNextX, pGroup->ubNextY));
+  iDelta = (SECTOR(pGroup->ubSectorX, pGroup->ubSectorY) - SECTOR(pGroup->ubNextX, pGroup->ubNextY));
 
   if (iDelta == 0) {
     // not going anywhere...return current time
@@ -2177,7 +2177,7 @@ function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Point
     return iCurrentCostInTime;
   }
 
-  iDelta = (INT32)(ubEnd - ubStart);
+  iDelta = (ubEnd - ubStart);
 
   // which direction are we moving?
   if (iDelta > 0) {
@@ -2198,7 +2198,7 @@ function FindTravelTimeBetweenWaypoints(pSource: Pointer<WAYPOINT>, pDest: Point
     }
   }
 
-  for (ubCurrentSector = ubStart; ubCurrentSector != ubEnd; ubCurrentSector += (INT8)iDelta) {
+  for (ubCurrentSector = ubStart; ubCurrentSector != ubEnd; ubCurrentSector += iDelta) {
     // find diff between current and next
     iThisCostInTime = GetSectorMvtTimeForGroup(ubCurrentSector, ubDirection, pGroup);
 
@@ -2239,11 +2239,11 @@ function GetSectorMvtTimeForGroup(ubSector: UINT8, ubDirection: UINT8, pGroup: P
 
   // Determine the group's method(s) of tranportation.  If more than one,
   // we will always use the highest time.
-  fFoot = (UINT8)(pGroup->ubTransportationMask & FOOT);
-  fCar = (UINT8)(pGroup->ubTransportationMask & CAR);
-  fTruck = (UINT8)(pGroup->ubTransportationMask & TRUCK);
-  fTracked = (UINT8)(pGroup->ubTransportationMask & TRACKED);
-  fAir = (UINT8)(pGroup->ubTransportationMask & AIR);
+  fFoot = (pGroup->ubTransportationMask & FOOT);
+  fCar = (pGroup->ubTransportationMask & CAR);
+  fTruck = (pGroup->ubTransportationMask & TRUCK);
+  fTracked = (pGroup->ubTransportationMask & TRACKED);
+  fAir = (pGroup->ubTransportationMask & AIR);
 
   ubTraverseType = SectorInfo[ubSector].ubTraversability[ubDirection];
 
@@ -2552,7 +2552,7 @@ function HandleArrivalOfReinforcements(pGroup: Pointer<GROUP>): void {
   iNumEnemiesInSector = NumEnemiesInSector(pGroup->ubSectorX, pGroup->ubSectorY);
   if (iNumEnemiesInSector) {
     if (pSector->bLastKnownEnemies >= 0) {
-      pSector->bLastKnownEnemies = (INT8)iNumEnemiesInSector;
+      pSector->bLastKnownEnemies = iNumEnemiesInSector;
     }
     // if we don't know how many enemies there are, then we can't update this value.
   } else {
@@ -2575,7 +2575,7 @@ function PlayersBetweenTheseSectors(sSource: INT16, sDest: INT16, iCountEnter: P
 
   if (gpBattleGroup) {
     // Assert( gfPreBattleInterfaceActive );
-    sBattleSector = (INT16)SECTOR(gpBattleGroup->ubSectorX, gpBattleGroup->ubSectorY);
+    sBattleSector = SECTOR(gpBattleGroup->ubSectorX, gpBattleGroup->ubSectorY);
   }
 
   // debug only
@@ -2997,12 +2997,12 @@ function LoadPlayerGroupList(hFile: HWFILE, pGroup: Pointer<Pointer<GROUP>>): BO
     }
 
     // Set up the current node
-    pTemp->ubProfileID = (UINT8)uiProfileID;
+    pTemp->ubProfileID = uiProfileID;
     sTempID = GetSoldierIDFromMercID(pTemp->ubProfileID);
 
     // Should never happen
     // Assert( sTempID != -1 );
-    pTemp->ubID = (UINT8)sTempID;
+    pTemp->ubID = sTempID;
 
     pTemp->pSoldier = &Menptr[pTemp->ubID];
 
@@ -3217,7 +3217,7 @@ function CalculateGroupRetreatSector(pGroup: Pointer<GROUP>): void {
     let pPlayer: Pointer<PLAYERGROUP>;
     pPlayer = pGroup->pPlayerList;
     while (pPlayer) {
-      pPlayer->pSoldier->ubPrevSectorID = (UINT8)SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
+      pPlayer->pSoldier->ubPrevSectorID = SECTOR(pGroup->ubPrevX, pGroup->ubPrevY);
       pPlayer = pPlayer->next;
     }
   }
@@ -3260,7 +3260,7 @@ function RetreatGroupToPreviousSector(pGroup: Pointer<GROUP>): void {
   }
 
   // Calc time to get to next waypoint...
-  ubSector = (UINT8)SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
+  ubSector = SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
   pGroup->uiTraverseTime = GetSectorMvtTimeForGroup(ubSector, ubDirection, pGroup);
   if (pGroup->uiTraverseTime == 0xffffffff) {
     AssertMsg(0, String("Group %d (%s) attempting illegal move from %c%d to %c%d (%s).", pGroup->ubGroupID, (pGroup->fPlayer) ? "Player" : "AI", pGroup->ubSectorY + 'A', pGroup->ubSectorX, pGroup->ubNextY + 'A', pGroup->ubNextX, gszTerrain[SectorInfo[ubSector].ubTraversability[ubDirection]]));
@@ -3428,7 +3428,7 @@ function UpdatePersistantGroupsFromOldSave(uiSavedGameVersion: UINT32): void {
   if (uiSavedGameVersion < 61) {
     for (cnt = 0; cnt < 55; cnt++) {
       // create mvt groups
-      pGroup = GetGroup((UINT8)cnt);
+      pGroup = GetGroup(cnt);
 
       if (pGroup != NULL && pGroup->fPlayer) {
         pGroup->fPersistant = TRUE;
@@ -3545,8 +3545,8 @@ function GroupWillMoveThroughSector(pGroup: Pointer<GROUP>, ubSectorX: UINT8, ub
         return TRUE;
       }
       // Advance the sector value
-      pGroup->ubSectorX = (UINT8)(dx + pGroup->ubSectorX);
-      pGroup->ubSectorY = (UINT8)(dy + pGroup->ubSectorY);
+      pGroup->ubSectorX = (dx + pGroup->ubSectorX);
+      pGroup->ubSectorY = (dy + pGroup->ubSectorY);
       // Check to see if it the sector we are checking to see if this group will be moving through.
       if (pGroup->ubSectorX == ubSectorX && pGroup->ubSectorY == ubSectorY) {
         pGroup->ubSectorX = ubOrigX;
@@ -3582,8 +3582,8 @@ function VehicleFuelRemaining(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
 function SpendVehicleFuel(pSoldier: Pointer<SOLDIERTYPE>, sFuelSpent: INT16): BOOLEAN {
   Assert(pSoldier->uiStatusFlags & SOLDIER_VEHICLE);
   pSoldier->sBreathRed -= sFuelSpent;
-  pSoldier->sBreathRed = (INT16)max(0, pSoldier->sBreathRed);
-  pSoldier->bBreath = (INT8)((pSoldier->sBreathRed + 99) / 100);
+  pSoldier->sBreathRed = max(0, pSoldier->sBreathRed);
+  pSoldier->bBreath = ((pSoldier->sBreathRed + 99) / 100);
   return FALSE;
 }
 
@@ -3609,9 +3609,9 @@ function AddFuelToVehicle(pSoldier: Pointer<SOLDIERTYPE>, pVehicle: Pointer<SOLD
     sFuelAdded = min(sFuelNeeded, sFuelAvailable);
     // Add to vehicle
     pVehicle->sBreathRed += sFuelAdded;
-    pVehicle->bBreath = (INT8)(pVehicle->sBreathRed / 100);
+    pVehicle->bBreath = (pVehicle->sBreathRed / 100);
     // Subtract from item
-    pItem->bStatus[0] = (INT8)(pItem->bStatus[0] - sFuelAdded / 50);
+    pItem->bStatus[0] = (pItem->bStatus[0] - sFuelAdded / 50);
     if (!pItem->bStatus[0]) {
       // Gas can is empty, so toast the item.
       DeleteObj(pItem);
@@ -3697,10 +3697,10 @@ function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   }
   // double it (they go back and forth) -- it's using zero based indices, so you have to add one to get the number of actual
   // waypoints in one direction.
-  ubTotalWaypoints = (UINT8)((ubMaxWaypointID)*2);
+  ubTotalWaypoints = ((ubMaxWaypointID)*2);
 
   // pick the waypoint they start at
-  ubChosen = (UINT8)Random(ubTotalWaypoints);
+  ubChosen = Random(ubTotalWaypoints);
 
   if (ubChosen >= ubMaxWaypointID) {
     // They chose a waypoint going in the reverse direction, so translate it
@@ -3725,7 +3725,7 @@ function RandomizePatrolGroupLocation(pGroup: Pointer<GROUP>): void {
   Assert(wp);
 
   // Move the group to the location of this chosen waypoint.
-  ubSectorID = (UINT8)SECTOR(wp->x, wp->y);
+  ubSectorID = SECTOR(wp->x, wp->y);
 
   // Set up this global var to randomize the arrival time of the group from
   // 1 minute to actual traverse time between the sectors.
@@ -3755,7 +3755,7 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
     return FALSE;
   }
 
-  ubSectorID = (UINT8)SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
+  ubSectorID = SECTOR(pGroup->ubSectorX, pGroup->ubSectorY);
   pSector = &SectorInfo[ubSectorID];
 
   ubChance = 5 * gGameOptions.ubDifficultyLevel;
@@ -3770,32 +3770,32 @@ function TestForBloodcatAmbush(pGroup: Pointer<GROUP>): BOOLEAN {
       // come back up to the maximum if left long enough.
       let iBloodCatDiff: INT32;
       iBloodCatDiff = pSector->bBloodCatPlacements - pSector->bBloodCats;
-      pSector->bBloodCats += (INT8)min(iHoursElapsed / 18, iBloodCatDiff);
+      pSector->bBloodCats += min(iHoursElapsed / 18, iBloodCatDiff);
     }
     // Once 0, the bloodcats will never recupe.
   } else if (pSector->bBloodCats == -1) {
     // If we haven't been ambushed by bloodcats yet...
     if (gfAutoAmbush || PreChance(ubChance)) {
       // randomly choose from 5-8, 7-10, 9-12 bloodcats based on easy, normal, and hard, respectively
-      bDifficultyMaxCats = (INT8)(Random(4) + gGameOptions.ubDifficultyLevel * 2 + 3);
+      bDifficultyMaxCats = (Random(4) + gGameOptions.ubDifficultyLevel * 2 + 3);
 
       // maximum of 3 bloodcats or 1 for every 6%, 5%, 4% progress based on easy, normal, and hard, respectively
-      bProgressMaxCats = (INT8)max(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
+      bProgressMaxCats = max(CurrentPlayerProgressPercentage() / (7 - gGameOptions.ubDifficultyLevel), 3);
 
       // make sure bloodcats don't outnumber mercs by a factor greater than 2
-      bNumMercMaxCats = (INT8)(PlayerMercsInSector(pGroup->ubSectorX, pGroup->ubSectorY, pGroup->ubSectorZ) * 2);
+      bNumMercMaxCats = (PlayerMercsInSector(pGroup->ubSectorX, pGroup->ubSectorY, pGroup->ubSectorZ) * 2);
 
       // choose the lowest number of cats calculated by difficulty and progress.
-      pSector->bBloodCats = (INT8)min(bDifficultyMaxCats, bProgressMaxCats);
+      pSector->bBloodCats = min(bDifficultyMaxCats, bProgressMaxCats);
 
       if (gGameOptions.ubDifficultyLevel != DIF_LEVEL_HARD) {
         // if not hard difficulty, ensure cats never outnumber mercs by a factor of 2 (min 3 bloodcats)
-        pSector->bBloodCats = (INT8)min(pSector->bBloodCats, bNumMercMaxCats);
-        pSector->bBloodCats = (INT8)max(pSector->bBloodCats, 3);
+        pSector->bBloodCats = min(pSector->bBloodCats, bNumMercMaxCats);
+        pSector->bBloodCats = max(pSector->bBloodCats, 3);
       }
 
       // ensure that there aren't more bloodcats than placements
-      pSector->bBloodCats = (INT8)min(pSector->bBloodCats, pSector->bBloodCatPlacements);
+      pSector->bBloodCats = min(pSector->bBloodCats, pSector->bBloodCatPlacements);
     }
   } else if (ubSectorID != SEC_I16) {
     if (!gfAutoAmbush && PreChance(95)) {
@@ -3843,7 +3843,7 @@ function PlaceGroupInSector(ubGroupID: UINT8, sPrevX: INT16, sPrevY: INT16, sNex
   ClearMercPathsAndWaypointsForAllInGroup(GetGroup(ubGroupID));
 
   // change where they are and where they're going
-  SetGroupPrevSectors(ubGroupID, (UINT8)sPrevX, (UINT8)sPrevY);
+  SetGroupPrevSectors(ubGroupID, sPrevX, sPrevY);
   SetGroupSectorValue(sPrevX, sPrevY, bZ, ubGroupID);
   SetGroupNextSectorValue(sNextX, sNextY, ubGroupID);
 
@@ -4129,7 +4129,7 @@ function NumberMercsInVehicleGroup(pGroup: Pointer<GROUP>): UINT8 {
   iVehicleID = GivenMvtGroupIdFindVehicleId(pGroup->ubGroupID);
   Assert(iVehicleID != -1);
   if (iVehicleID != -1) {
-    return (UINT8)GetNumberInVehicle(iVehicleID);
+    return GetNumberInVehicle(iVehicleID);
   }
   return 0;
 }

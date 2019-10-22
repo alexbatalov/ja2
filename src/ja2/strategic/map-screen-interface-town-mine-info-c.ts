@@ -25,8 +25,8 @@ function DisplayTownInfo(sMapX: INT16, sMapY: INT16, bMapZ: INT8): void {
 
   // set current sector
   if ((bCurrentTownMineSectorX != sMapX) || (bCurrentTownMineSectorY != sMapY) || (bCurrentTownMineSectorZ != bMapZ)) {
-    bCurrentTownMineSectorX = (INT8)sMapX;
-    bCurrentTownMineSectorY = (INT8)sMapY;
+    bCurrentTownMineSectorX = sMapX;
+    bCurrentTownMineSectorY = sMapY;
     bCurrentTownMineSectorZ = bMapZ;
   }
 
@@ -144,7 +144,7 @@ function CreateDestroyTownInfoBox(): void {
     RemoveInventoryButtonForMapPopUpBox();
 
     // restore background
-    RestoreExternBackgroundRect((INT16)pPosition.iX, (INT16)pPosition.iY, (INT16)(pDimensions.iRight - pDimensions.iLeft), (INT16)(pDimensions.iBottom - pDimensions.iTop + 3));
+    RestoreExternBackgroundRect(pPosition.iX, pPosition.iY, (pDimensions.iRight - pDimensions.iLeft), (pDimensions.iBottom - pDimensions.iTop + 3));
 
     fCreated = FALSE;
   }
@@ -267,7 +267,7 @@ function AddTextToTownBox(): void {
     // Associated Mine: Sector
     swprintf(wString, L"%s:", pwTownInfoStrings[4]);
     AddMonoString(&hStringHandle, wString);
-    GetShortSectorString((INT16)(sMineSector % MAP_WORLD_X), (INT16)(sMineSector / MAP_WORLD_X), wString);
+    GetShortSectorString((sMineSector % MAP_WORLD_X), (sMineSector / MAP_WORLD_X), wString);
     AddSecondColumnMonoString(&hStringHandle, wString);
   }
 }
@@ -623,14 +623,14 @@ function AddInventoryButtonForMapPopUpBox(): void {
 
   guiMapButtonInventoryImage[0] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 0, -1, 2, -1);
 
-  guiMapButtonInventory[0] = CreateIconAndTextButton(guiMapButtonInventoryImage[0], pMapPopUpInventoryText[0], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (INT16)(sX), (INT16)(sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)MapTownMineInventoryButtonCallBack);
+  guiMapButtonInventory[0] = CreateIconAndTextButton(guiMapButtonInventoryImage[0], pMapPopUpInventoryText[0], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, MapTownMineInventoryButtonCallBack);
 
   sX = sX + sWidthA + (pDimensions.iRight - sTotalBoxWidth) / 3;
   sY = pPosition.iY + pDimensions.iBottom - ((BOX_BUTTON_HEIGHT + 5));
 
   guiMapButtonInventoryImage[1] = LoadButtonImage("INTERFACE\\mapinvbtns.sti", -1, 1, -1, 3, -1);
 
-  guiMapButtonInventory[1] = CreateIconAndTextButton(guiMapButtonInventoryImage[1], pMapPopUpInventoryText[1], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (INT16)(sX), (INT16)(sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)MapTownMineExitButtonCallBack);
+  guiMapButtonInventory[1] = CreateIconAndTextButton(guiMapButtonInventoryImage[1], pMapPopUpInventoryText[1], BLOCKFONT2, FONT_WHITE, FONT_BLACK, FONT_WHITE, FONT_BLACK, TEXT_CJUSTIFIED, (sX), (sY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, MapTownMineExitButtonCallBack);
 
   // delete video object
   DeleteVideoObjectFromIndex(uiObject);

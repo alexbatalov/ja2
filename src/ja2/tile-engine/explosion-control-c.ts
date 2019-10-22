@@ -83,11 +83,11 @@ function GetFreeExplosion(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumExplosions; uiCount++) {
     if ((gExplosionData[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumExplosions < NUM_EXPLOSION_SLOTS)
-    return (INT32)guiNumExplosions++;
+    return guiNumExplosions++;
 
   return -1;
 }
@@ -97,7 +97,7 @@ function RecountExplosions(): void {
 
   for (uiCount = guiNumExplosions - 1; (uiCount >= 0); uiCount--) {
     if ((gExplosionData[uiCount].fAllocated)) {
-      guiNumExplosions = (UINT32)(uiCount + 1);
+      guiNumExplosions = (uiCount + 1);
       break;
     }
   }
@@ -279,7 +279,7 @@ function GenerateExplosionFromExplosionPointer(pExplosion: Pointer<EXPLOSIONTYPE
       if ((pExplosion->iLightID = LightSpriteCreate("L-R04.LHT", 0)) != (-1)) {
         LightSpritePower(pExplosion->iLightID, TRUE);
 
-        LightSpritePosition(pExplosion->iLightID, (INT16)(sX / CELL_X_SIZE), (INT16)(sY / CELL_Y_SIZE));
+        LightSpritePosition(pExplosion->iLightID, (sX / CELL_X_SIZE), (sY / CELL_Y_SIZE));
       }
     }
   }
@@ -333,7 +333,7 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
       bFenceDestructionPartner = -1 * (pFenceBaseStructure->pDBStructureRef->pDBStructure->bDestructionPartner);
 
       // Get new index
-      GetTileIndexFromTypeSubIndex(uiFenceType, (INT8)(bFenceDestructionPartner), &usTileIndex);
+      GetTileIndexFromTypeSubIndex(uiFenceType, (bFenceDestructionPartner), &usTileIndex);
 
       // Set a flag indicating that the following changes are to go the the maps, temp file
       ApplyMapChangesToMapTempFile(TRUE);
@@ -342,7 +342,7 @@ function HandleFencePartnerCheck(sStructGridNo: INT16): void {
       RemoveStructFromLevelNode(pFenceBaseStructure->sGridNo, pFenceNode);
 
       // Add it!
-      AddStructToHead(pFenceBaseStructure->sGridNo, (UINT16)(usTileIndex));
+      AddStructToHead(pFenceBaseStructure->sGridNo, (usTileIndex));
 
       ApplyMapChangesToMapTempFile(FALSE);
     }
@@ -405,7 +405,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
     }
   } else if (!(pCurrent->fFlags & STRUCTURE_PERSON)) {
     // Damage structure!
-    if ((bDamageReturnVal = DamageStructure(pCurrent, (UINT8)sWoundAmt, STRUCTURE_DAMAGE_EXPLOSION, sGridNo, sX, sY, NOBODY)) != 0) {
+    if ((bDamageReturnVal = DamageStructure(pCurrent, sWoundAmt, STRUCTURE_DAMAGE_EXPLOSION, sGridNo, sX, sY, NOBODY)) != 0) {
       fContinue = FALSE;
 
       pBase = FindBaseStructure(pCurrent);
@@ -468,7 +468,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
           // OK, destrcution index is , as default, the partner, until we go over the first set of explsion
           // debris...
           if (bDestructionPartner > 39) {
-            GetTileIndexFromTypeSubIndex(SECONDEXPLDEBRIS, (INT8)(bDestructionPartner - 40), &usTileIndex);
+            GetTileIndexFromTypeSubIndex(SECONDEXPLDEBRIS, (bDestructionPartner - 40), &usTileIndex);
           } else {
             GetTileIndexFromTypeSubIndex(FIRSTEXPLDEBRIS, bDestructionPartner, &usTileIndex);
           }
@@ -484,7 +484,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                 // Set a flag indicating that the following changes are to go the the maps, temp file
                 ApplyMapChangesToMapTempFile(TRUE);
 
-                AddObjectToHead(sStructGridNo, (UINT16)(usTileIndex + Random(3)));
+                AddObjectToHead(sStructGridNo, (usTileIndex + Random(3)));
 
                 ApplyMapChangesToMapTempFile(FALSE);
               }
@@ -502,7 +502,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(TRUE);
 
-                  AddObjectToHead(sStructGridNo, (UINT16)(usTileIndex + Random(3)));
+                  AddObjectToHead(sStructGridNo, (usTileIndex + Random(3)));
 
                   ApplyMapChangesToMapTempFile(FALSE);
                 }
@@ -516,7 +516,7 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
                   // Set a flag indicating that the following changes are to go the the maps, temp file
                   ApplyMapChangesToMapTempFile(TRUE);
 
-                  AddObjectToHead(sStructGridNo, (UINT16)(usTileIndex + Random(3)));
+                  AddObjectToHead(sStructGridNo, (usTileIndex + Random(3)));
 
                   ApplyMapChangesToMapTempFile(FALSE);
                 }
@@ -783,10 +783,10 @@ function ExplosiveDamageStructureAtGridNo(pCurrent: Pointer<STRUCTURE>, ppNextCu
             fInRoom = InARoom(sGridNo, &ubRoom);
             if (!fInRoom) {
               // try to south
-              fInRoom = InARoom((INT16)(sGridNo + DirectionInc(SOUTH)), &ubRoom);
+              fInRoom = InARoom((sGridNo + DirectionInc(SOUTH)), &ubRoom);
               if (!fInRoom) {
                 // try to east
-                fInRoom = InARoom((INT16)(sGridNo + DirectionInc(EAST)), &ubRoom);
+                fInRoom = InARoom((sGridNo + DirectionInc(EAST)), &ubRoom);
               }
             }
 
@@ -1013,7 +1013,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   }
 
   // Direction to center of explosion
-  ubDirection = (UINT8)GetDirectionFromGridNo(sBombGridNo, pSoldier);
+  ubDirection = GetDirectionFromGridNo(sBombGridNo, pSoldier);
 
   // Increment attack counter...
   gTacticalStatus.ubAttackBusyCount++;
@@ -1023,7 +1023,7 @@ function DamageSoldierFromBlast(ubPerson: UINT8, ubOwner: UINT8, sBombGridNo: IN
   if (sNewWoundAmt < 0) {
     sNewWoundAmt = 0;
   }
-  EVENT_SoldierGotHit(pSoldier, usItem, sNewWoundAmt, sBreathAmt, ubDirection, (INT16)uiDist, ubOwner, 0, ANIM_CROUCH, sSubsequent, sBombGridNo);
+  EVENT_SoldierGotHit(pSoldier, usItem, sNewWoundAmt, sBreathAmt, ubDirection, uiDist, ubOwner, 0, ANIM_CROUCH, sSubsequent, sBombGridNo);
 
   pSoldier->ubMiscSoldierFlags |= SOLDIER_MISC_HURT_BY_EXPLOSION;
 
@@ -1093,20 +1093,20 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
 
         if (pSoldier->uiStatusFlags & SOLDIER_PC) {
           if (sWoundAmt > 1) {
-            pSoldier->inv[bPosOfMask].bStatus[0] -= (INT8)Random(4);
+            pSoldier->inv[bPosOfMask].bStatus[0] -= Random(4);
             sWoundAmt = (sWoundAmt * (100 - pSoldier->inv[bPosOfMask].bStatus[0])) / 100;
           } else if (sWoundAmt == 1) {
-            pSoldier->inv[bPosOfMask].bStatus[0] -= (INT8)Random(2);
+            pSoldier->inv[bPosOfMask].bStatus[0] -= Random(2);
           }
         }
       } else {
         sBreathAmt = 0;
         if (sWoundAmt > 0) {
           if (sWoundAmt == 1) {
-            pSoldier->inv[bPosOfMask].bStatus[0] -= (INT8)Random(2);
+            pSoldier->inv[bPosOfMask].bStatus[0] -= Random(2);
           } else {
             // use up gas mask
-            pSoldier->inv[bPosOfMask].bStatus[0] -= (INT8)Random(4);
+            pSoldier->inv[bPosOfMask].bStatus[0] -= Random(4);
           }
         }
         sWoundAmt = 0;
@@ -1131,7 +1131,7 @@ function DishOutGasDamage(pSoldier: Pointer<SOLDIERTYPE>, pExplosive: Pointer<EX
     // a gas effect, take damage directly...
     SoldierTakeDamage(pSoldier, ANIM_STAND, sWoundAmt, sBreathAmt, TAKE_DAMAGE_GAS, NOBODY, NOWHERE, 0, TRUE);
     if (pSoldier->bLife >= CONSCIOUSNESS) {
-      DoMercBattleSound(pSoldier, (INT8)(BATTLE_SOUND_HIT1 + Random(2)));
+      DoMercBattleSound(pSoldier, (BATTLE_SOUND_HIT1 + Random(2)));
     }
 
     if (ubOwner != NOBODY && MercPtrs[ubOwner]->bTeam == gbPlayerNum && pSoldier->bTeam != gbPlayerNum) {
@@ -1220,10 +1220,10 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   uiRoll = PreRandom(100);
 
   // Calculate wound amount
-  sWoundAmt = pExplosive->ubDamage + (INT16)((pExplosive->ubDamage * uiRoll) / 100);
+  sWoundAmt = pExplosive->ubDamage + ((pExplosive->ubDamage * uiRoll) / 100);
 
   // Calculate breath amount ( if stun damage applicable )
-  sBreathAmt = (pExplosive->ubStunDamage * 100) + (INT16)(((pExplosive->ubStunDamage / 2) * 100 * uiRoll) / 100);
+  sBreathAmt = (pExplosive->ubStunDamage * 100) + (((pExplosive->ubStunDamage / 2) * 100 * uiRoll) / 100);
 
   // ATE: Make sure guys get pissed at us!
   HandleBuldingDestruction(sGridNo, ubOwner);
@@ -1238,12 +1238,12 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       // leave as is, has to be at range 0 here
     } else if (uiDist < pExplosive->ubRadius) {
       // if radius is 5, go down by 5ths ~ 20%
-      sWoundAmt -= (INT16)(sWoundAmt * uiDist / pExplosive->ubRadius);
-      sBreathAmt -= (INT16)(sBreathAmt * uiDist / pExplosive->ubRadius);
+      sWoundAmt -= (sWoundAmt * uiDist / pExplosive->ubRadius);
+      sBreathAmt -= (sBreathAmt * uiDist / pExplosive->ubRadius);
     } else {
       // at the edge of the explosion, do half the previous damage
-      sWoundAmt = (INT16)((sWoundAmt / pExplosive->ubRadius) / 2);
-      sBreathAmt = (INT16)((sBreathAmt / pExplosive->ubRadius) / 2);
+      sWoundAmt = ((sWoundAmt / pExplosive->ubRadius) / 2);
+      sBreathAmt = ((sBreathAmt / pExplosive->ubRadius) / 2);
     }
 
     if (sWoundAmt < 0)
@@ -1253,7 +1253,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       sBreathAmt = 0;
 
     // damage structures
-    if (uiDist <= __max(1, (UINT32)(pExplosive->ubDamage / 30))) {
+    if (uiDist <= __max(1, (pExplosive->ubDamage / 30))) {
       if (Item[usItem].usItemClass & IC_GRENADE) {
         sStructDmgAmt = sWoundAmt / 3;
       } else // most explosives
@@ -1297,7 +1297,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
       while (pItemPool) {
         pItemPoolNext = pItemPool->pNext;
 
-        if (DamageItemOnGround(&(gWorldItems[pItemPool->iItemIndex].o), sGridNo, bLevel, (INT32)(sWoundAmt * 2), ubOwner)) {
+        if (DamageItemOnGround(&(gWorldItems[pItemPool->iItemIndex].o), sGridNo, bLevel, (sWoundAmt * 2), ubOwner)) {
           // item was destroyed
           RemoveItemFromPool(sGridNo, pItemPool->iItemIndex, bLevel);
         }
@@ -1341,7 +1341,7 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
   } else {
     // Drop blood ....
     // Get blood quantity....
-    InternalDropBlood(sGridNo, 0, 0, (UINT8)(__max((MAXBLOODQUANTITY - (uiDist * 2)), 0)), 1);
+    InternalDropBlood(sGridNo, 0, 0, (__max((MAXBLOODQUANTITY - (uiDist * 2)), 0)), 1);
   }
 
   if (sSubsequent != ERASE_SPREAD_EFFECT && sSubsequent != BLOOD_SPREAD_EFFECT) {
@@ -1357,9 +1357,9 @@ function ExpAffect(sBombGridNo: INT16, sGridNo: INT16, uiDist: UINT32, usItem: U
           if ((sWoundAmt / 2) > 20) {
             // debris damage!
             if ((sBreathAmt / 2) > 20) {
-              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, (INT16)Random((sWoundAmt / 2) - 20), (INT16)Random((sBreathAmt / 2) - 20), uiDist, usItem, sSubsequent);
+              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random((sWoundAmt / 2) - 20), Random((sBreathAmt / 2) - 20), uiDist, usItem, sSubsequent);
             } else {
-              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, (INT16)Random((sWoundAmt / 2) - 20), 1, uiDist, usItem, sSubsequent);
+              DamageSoldierFromBlast(ubPerson, ubOwner, sBombGridNo, Random((sWoundAmt / 2) - 20), 1, uiDist, usItem, sSubsequent);
             }
           }
         }
@@ -1537,7 +1537,7 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
     }
   }
 
-  Blocking = GetBlockingStructureInfo((INT16)uiNewSpot, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
+  Blocking = GetBlockingStructureInfo(uiNewSpot, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
 
   if (pBlockingStructure) {
     if (pBlockingStructure->fFlags & STRUCTURE_CAVEWALL) {
@@ -1561,9 +1561,9 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       if (fTravelCostObs) {
         // ATE: For windows, check to the west and north for a broken window, as movement costs
         // will override there...
-        sNewGridNo = NewGridNo((INT16)uiNewSpot, DirectionInc(WEST));
+        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(WEST));
 
-        BlockingTemp = GetBlockingStructureInfo((INT16)sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
+        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
           // If open, fTravelCostObs set to false and reduce range....
           fTravelCostObs = FALSE;
@@ -1576,9 +1576,9 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
       }
 
       if (fTravelCostObs) {
-        sNewGridNo = NewGridNo((INT16)uiNewSpot, DirectionInc(NORTH));
+        sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(NORTH));
 
-        BlockingTemp = GetBlockingStructureInfo((INT16)sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
+        BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
         if (BlockingTemp == BLOCKING_TOPRIGHT_OPEN_WINDOW || BlockingTemp == BLOCKING_TOPLEFT_OPEN_WINDOW) {
           // If open, fTravelCostObs set to false and reduce range....
           fTravelCostObs = FALSE;
@@ -1600,15 +1600,15 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         }
 
         if (pBlockingStructure != NULL) {
-          WindowHit((INT16)uiNewSpot, pBlockingStructure->usStructureID, fBlowWindowSouth, TRUE);
+          WindowHit(uiNewSpot, pBlockingStructure->usStructureID, fBlowWindowSouth, TRUE);
         }
       }
 
       // ATE: For windows, check to the west and north for a broken window, as movement costs
       // will override there...
-      sNewGridNo = NewGridNo((INT16)uiNewSpot, DirectionInc(WEST));
+      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(WEST));
 
-      BlockingTemp = GetBlockingStructureInfo((INT16)sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
+      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
       if (pBlockingStructure && pBlockingStructure->pDBStructureRef->pDBStructure->ubDensity <= 15) {
         fTravelCostObs = FALSE;
         fReduceRay = FALSE;
@@ -1619,8 +1619,8 @@ function GetRayStopInfo(uiNewSpot: UINT32, ubDir: UINT8, bLevel: INT8, fSmokeEff
         }
       }
 
-      sNewGridNo = NewGridNo((INT16)uiNewSpot, DirectionInc(NORTH));
-      BlockingTemp = GetBlockingStructureInfo((INT16)sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
+      sNewGridNo = NewGridNo(uiNewSpot, DirectionInc(NORTH));
+      BlockingTemp = GetBlockingStructureInfo(sNewGridNo, ubDir, 0, bLevel, &bStructHeight, &pBlockingStructure, TRUE);
 
       if (pBlockingStructure && pBlockingStructure->pDBStructureRef->pDBStructure->ubDensity <= 15) {
         fTravelCostObs = FALSE;
@@ -1738,7 +1738,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
     while (cnt <= uiTempRange) // end of range loop
     {
       // move one tile in direction
-      uiNewSpot = NewGridNo((INT16)uiTempSpot, DirectionInc(ubDir));
+      uiNewSpot = NewGridNo(uiTempSpot, DirectionInc(ubDir));
 
       // see if this was a different spot & if we should be able to reach
       // this spot
@@ -1754,12 +1754,12 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
 
         // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
         // ok, do what we do here...
-        if (ExpAffect(sGridNo, (INT16)uiNewSpot, cnt / 2, usItem, ubOwner, fSubsequent, &fAnyMercHit, bLevel, iSmokeEffectID)) {
+        if (ExpAffect(sGridNo, uiNewSpot, cnt / 2, usItem, ubOwner, fSubsequent, &fAnyMercHit, bLevel, iSmokeEffectID)) {
           fRecompileMovement = TRUE;
         }
 
         // how far should we branch out here?
-        ubBranchRange = (UINT8)(sRange - cnt);
+        ubBranchRange = (sRange - cnt);
 
         if (ubBranchRange) {
           // ok, there's a branch here. Mark where we start this branch.
@@ -1777,7 +1777,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
           while (branchCnt <= ubBranchRange) // end of range loop
           {
             ubKeepGoing = TRUE;
-            uiNewSpot = NewGridNo((INT16)uiBranchSpot, DirectionInc(ubBranchDir));
+            uiNewSpot = NewGridNo(uiBranchSpot, DirectionInc(ubBranchDir));
 
             if (uiNewSpot != uiBranchSpot) {
               // Check if struct is a tree, etc and reduce range...
@@ -1786,7 +1786,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
               if (ubKeepGoing) {
                 // ok, do what we do here
                 // DebugMsg( TOPIC_JA2, DBG_LEVEL_3, String("Explosion affects %d", uiNewSpot) );
-                if (ExpAffect(sGridNo, (INT16)uiNewSpot, (INT16)((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, &fAnyMercHit, bLevel, iSmokeEffectID)) {
+                if (ExpAffect(sGridNo, uiNewSpot, ((cnt + branchCnt) / 2), usItem, ubOwner, fSubsequent, &fAnyMercHit, bLevel, iSmokeEffectID)) {
                   fRecompileMovement = TRUE;
                 }
                 uiBranchSpot = uiNewSpot;
@@ -1829,7 +1829,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
     let sY: INT16;
 
     // DO wireframes as well
-    ConvertGridNoToXY((INT16)sGridNo, &sX, &sY);
+    ConvertGridNoToXY(sGridNo, &sX, &sY);
     SetRecalculateWireFrameFlagRadius(sX, sY, ubRadius);
     CalculateWorldWireFrameTiles(FALSE);
 
@@ -1857,7 +1857,7 @@ function SpreadEffect(sGridNo: INT16, ubRadius: UINT8, usItem: UINT16, ubOwner: 
 
   if (fAnyMercHit) {
     // reset explosion hit flag so we can damage mercs again
-    for (cnt = 0; cnt < (INT32)guiNumMercSlots; cnt++) {
+    for (cnt = 0; cnt < guiNumMercSlots; cnt++) {
       if (MercSlots[cnt]) {
         MercSlots[cnt]->ubMiscSoldierFlags &= ~SOLDIER_MISC_HURT_BY_EXPLOSION;
       }
@@ -2349,7 +2349,7 @@ function HandleExplosionQueue(): void {
 
         // bomb objects only store the SIDE who placed the bomb! :-(
         if (pObj->ubBombOwner > 1) {
-          IgniteExplosion((UINT8)(pObj->ubBombOwner - 2), CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj->usBombItem, ubLevel);
+          IgniteExplosion((pObj->ubBombOwner - 2), CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj->usBombItem, ubLevel);
         } else {
           // pre-placed
           IgniteExplosion(NOBODY, CenterX(sGridNo), CenterY(sGridNo), 0, sGridNo, pObj->usBombItem, ubLevel);
@@ -2427,7 +2427,7 @@ function DecayBombTimers(): void {
           AddBombToQueue(uiWorldBombIndex, uiTimeStamp);
           // ATE: CC black magic....
           if (pObj->ubBombOwner > 1) {
-            gubPersonToSetOffExplosions = (UINT8)(pObj->ubBombOwner - 2);
+            gubPersonToSetOffExplosions = (pObj->ubBombOwner - 2);
           } else {
             gubPersonToSetOffExplosions = NOBODY;
           }
@@ -2750,7 +2750,7 @@ function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
     // Are we i nthe same sector...
     if (pSamList[cnt] == sSectorNo) {
       // get graphic.......
-      GetTileIndexFromTypeSubIndex(EIGHTISTRUCT, (UINT16)(gbSAMGraphicList[cnt]), &usGoodGraphic);
+      GetTileIndexFromTypeSubIndex(EIGHTISTRUCT, (gbSAMGraphicList[cnt]), &usGoodGraphic);
 
       // Damaged one ( current ) is 2 less...
       usDamagedGraphic = usGoodGraphic - 2;
@@ -2770,9 +2770,9 @@ function UpdateSAMDoneRepair(sSectorX: INT16, sSectorY: INT16, sSectorZ: INT16):
       } else {
         // We add temp changes to map not loaded....
         // Remove old
-        RemoveStructFromUnLoadedMapTempFile(pSamGridNoAList[cnt], usDamagedGraphic, sSectorX, sSectorY, (UINT8)sSectorZ);
+        RemoveStructFromUnLoadedMapTempFile(pSamGridNoAList[cnt], usDamagedGraphic, sSectorX, sSectorY, sSectorZ);
         // Add new
-        AddStructToUnLoadedMapTempFile(pSamGridNoAList[cnt], usGoodGraphic, sSectorX, sSectorY, (UINT8)sSectorZ);
+        AddStructToUnLoadedMapTempFile(pSamGridNoAList[cnt], usGoodGraphic, sSectorX, sSectorY, sSectorZ);
       }
     }
   }

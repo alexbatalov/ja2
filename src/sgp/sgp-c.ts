@@ -92,7 +92,7 @@ function WindowProcedure(hWindow: HWND, Message: UINT16, wParam: WPARAM, lParam:
       break;
 
     case WM_DEVICECHANGE: {
-      let pHeader: Pointer<DEV_BROADCAST_HDR> = (DEV_BROADCAST_HDR *)lParam;
+      let pHeader: Pointer<DEV_BROADCAST_HDR> = lParam;
 
       // if a device has been removed
       if (wParam == DBT_DEVICEREMOVECOMPLETE) {
@@ -167,7 +167,7 @@ function InitializeStandardGamingPlatform(hInstance: HINSTANCE, sCommandShow: in
 
   FastDebugMsg("Initializing Video Manager");
   // Initialize DirectDraw (DirectX 2)
-  if (InitializeVideoManager(hInstance, (UINT16)sCommandShow, (void *)WindowProcedure) == FALSE) {
+  if (InitializeVideoManager(hInstance, sCommandShow, WindowProcedure) == FALSE) {
     // We were unable to initialize the video manager
     FastDebugMsg("FAILED : Initializing Video Manager");
     return FALSE;
@@ -411,7 +411,7 @@ function ProcessJa2CommandLineBeforeInitialization(pCommandLine: Pointer<CHAR8>)
   let pCopy: Pointer<CHAR8> = NULL;
   let pToken: Pointer<CHAR8>;
 
-  pCopy = (CHAR8 *)MemAlloc(strlen(pCommandLine) + 1);
+  pCopy = MemAlloc(strlen(pCommandLine) + 1);
 
   Assert(pCopy);
   if (!pCopy)

@@ -495,7 +495,7 @@ function SetInfoChar(ubID: UINT8): BOOLEAN {
   for (bCounter = 0; bCounter < MAX_CHARACTER_COUNT; bCounter++) {
     // skip invalid characters
     if (gCharactersList[bCounter].fValid == TRUE) {
-      if (gCharactersList[bCounter].usSolID == (UINT16)ubID) {
+      if (gCharactersList[bCounter].usSolID == ubID) {
         ChangeSelectedInfoChar(bCounter, TRUE);
         return TRUE;
       }
@@ -658,7 +658,7 @@ function GlowFace(): void {
     fDelta = TRUE;
 
     if (fOldFaceGlow == TRUE) {
-      RestoreExternBackgroundRect(9, 18, (UINT16)(61 - 9), (UINT16)(64 - 18));
+      RestoreExternBackgroundRect(9, 18, (61 - 9), (64 - 18));
     }
 
     fOldFaceGlow = FALSE;
@@ -692,7 +692,7 @@ function GlowFace(): void {
 
   // restore background
   if ((iColorNum == 0) || (iColorNum == 1))
-    RestoreExternBackgroundRect(9, 18, (UINT16)(61 - 9), (UINT16)(64 - 18));
+    RestoreExternBackgroundRect(9, 18, (61 - 9), (64 - 18));
 }
 
 function GlowItem(): void {
@@ -710,7 +710,7 @@ function GlowItem(): void {
     fDelta = TRUE;
 
     if (fOldItemGlow == TRUE) {
-      RestoreExternBackgroundRect(3, 80, (UINT16)(65 - 3), (UINT16)(105 - 80));
+      RestoreExternBackgroundRect(3, 80, (65 - 3), (105 - 80));
     }
 
     fOldItemGlow = FALSE;
@@ -736,7 +736,7 @@ function GlowItem(): void {
 
   // restore background
   if ((iColorNum == 0) || (iColorNum == 1)) {
-    RestoreExternBackgroundRect(3, 80, (UINT16)(65 - 3), (UINT16)(105 - 80));
+    RestoreExternBackgroundRect(3, 80, (65 - 3), (105 - 80));
     RenderHandPosItem();
   }
 
@@ -768,7 +768,7 @@ function GlowTrashCan(): void {
     fDelta = TRUE;
 
     if (fOldTrashCanGlow == TRUE) {
-      RestoreExternBackgroundRect(TRASH_CAN_X, TRASH_CAN_Y, (UINT16)(TRASH_CAN_WIDTH + 2), (UINT16)(TRASH_CAN_HEIGHT + 2));
+      RestoreExternBackgroundRect(TRASH_CAN_X, TRASH_CAN_Y, (TRASH_CAN_WIDTH + 2), (TRASH_CAN_HEIGHT + 2));
     }
 
     fOldTrashCanGlow = FALSE;
@@ -791,7 +791,7 @@ function GlowTrashCan(): void {
 
   // restore background
   if ((iColorNum == 0) || (iColorNum == 1))
-    RestoreExternBackgroundRect(TRASH_CAN_X, TRASH_CAN_Y, (UINT16)(TRASH_CAN_WIDTH + 2), (UINT16)(TRASH_CAN_HEIGHT + 2));
+    RestoreExternBackgroundRect(TRASH_CAN_X, TRASH_CAN_Y, (TRASH_CAN_WIDTH + 2), (TRASH_CAN_HEIGHT + 2));
 }
 
 function DrawFace(sCharNumber: INT16): void {
@@ -896,7 +896,7 @@ function DrawPay(sCharNumber: INT16): void {
   usMercProfileID = MercPtrs[gCharactersList[sCharNumber].usSolID]->ubProfile;
 
   // grab salary
-  uiSalary = ((UINT32)gMercProfiles[usMercProfileID].sSalary);
+  uiSalary = (gMercProfiles[usMercProfileID].sSalary);
 
   // font stuff
   SetFontForeground(CHAR_TITLE_FONT_COLOR);
@@ -1365,14 +1365,14 @@ function DrawCharacterInfo(sCharNumber: INT16): void {
     // if the merc is in transit
     if (pSoldier->bAssignment == IN_TRANSIT) {
       // and if the ttime left on the cotract is greater then the contract time
-      if (iTimeRemaining > (INT32)(pSoldier->iTotalContractLength * NUM_MIN_IN_DAY)) {
+      if (iTimeRemaining > (pSoldier->iTotalContractLength * NUM_MIN_IN_DAY)) {
         iTimeRemaining = (pSoldier->iTotalContractLength * NUM_MIN_IN_DAY);
       }
     }
 
     if (iTimeRemaining >= (24 * 60)) {
       // calculate the exact time left on the contract ( ex 1.8 days )
-      dTimeLeft = (FLOAT)(iTimeRemaining / (60 * 24.0));
+      dTimeLeft = (iTimeRemaining / (60 * 24.0));
 
       // more than a day, display in green
       iTimeRemaining /= (60 * 24);
@@ -1578,7 +1578,7 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
       }
     } else {
       ubGroupId = Menptr[gCharactersList[bSelectedDestChar].usSolID].ubGroupID;
-      pGroup = GetGroup((UINT8)(ubGroupId));
+      pGroup = GetGroup((ubGroupId));
     }
   } else {
     ubGroupId = pVehicleList[iHelicopterVehicleId].ubMovementGroup;
@@ -1602,12 +1602,12 @@ function GetPathTravelTimeDuringPlotting(pPath: PathStPtr): INT32 {
   while (pPath->pNext) {
     if (!fSkipFirstNode) {
       // grab the current location
-      pCurrent.x = (UINT8)(pPath->uiSectorId % MAP_WORLD_X);
-      pCurrent.y = (UINT8)(pPath->uiSectorId / MAP_WORLD_X);
+      pCurrent.x = (pPath->uiSectorId % MAP_WORLD_X);
+      pCurrent.y = (pPath->uiSectorId / MAP_WORLD_X);
 
       // grab the next location
-      pNext.x = (UINT8)(pPath->pNext->uiSectorId % MAP_WORLD_X);
-      pNext.y = (UINT8)(pPath->pNext->uiSectorId / MAP_WORLD_X);
+      pNext.x = (pPath->pNext->uiSectorId % MAP_WORLD_X);
+      pNext.y = (pPath->pNext->uiSectorId / MAP_WORLD_X);
 
       iTravelTime += FindTravelTimeBetweenWaypoints(&pCurrent, &pNext, pGroup);
     } else {
@@ -1715,11 +1715,11 @@ function HighLightAssignLine(): void {
 
       LineDraw(TRUE, usX, usY, usX, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
       LineDraw(TRUE, usX + ASSIGN_WIDTH, usY, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
-      if ((usCount == 0) || (usCount != 0 ? !(IsCharacterSelectedForAssignment((UINT16)(usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
+      if ((usCount == 0) || (usCount != 0 ? !(IsCharacterSelectedForAssignment((usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
         LineDraw(TRUE, usX, usY, usX + ASSIGN_WIDTH, usY, usColor, pDestBuf);
       }
 
-      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForAssignment((UINT16)(usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
+      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForAssignment((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
         LineDraw(TRUE, usX, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX + ASSIGN_WIDTH, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
       }
 
@@ -1780,10 +1780,10 @@ function HighLightDestLine(): void {
 
       usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
 
-      if ((usCount == 0) || (usCount != 0 ? !(CharacterIsGettingPathPlotted((UINT16)(usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
+      if ((usCount == 0) || (usCount != 0 ? !(CharacterIsGettingPathPlotted((usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
         LineDraw(TRUE, usX + 4, usY, usX + DEST_ETA_WIDTH + 4, usY, usColor, pDestBuf);
       }
-      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(CharacterIsGettingPathPlotted((UINT16)(usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
+      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(CharacterIsGettingPathPlotted((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
         LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX + DEST_ETA_WIDTH + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
       }
 
@@ -1852,10 +1852,10 @@ function HighLightSleepLine(): void {
 
       usColor = Get16BPPColor(FROMRGB(GlowColorsA[iColorNum].ubRed, GlowColorsA[iColorNum].ubGreen, GlowColorsA[iColorNum].ubBlue));
 
-      if ((usCount == 0) || (usCount != 0 ? !(IsCharacterSelectedForSleep((UINT16)(usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
+      if ((usCount == 0) || (usCount != 0 ? !(IsCharacterSelectedForSleep((usCount - 1))) : 0) || (usCount == FIRST_VEHICLE)) {
         LineDraw(TRUE, usX + 4, usY, usX2, usY, usColor, pDestBuf);
       }
-      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForSleep((UINT16)(usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
+      if (((usCount == MAX_CHARACTER_COUNT - 1)) || (usCount != (MAX_CHARACTER_COUNT - 1) ? !(IsCharacterSelectedForSleep((usCount + 1))) : 0) || (usCount == FIRST_VEHICLE - 1)) {
         LineDraw(TRUE, usX + 4, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usX2, usY + GetFontHeight(MAP_SCREEN_FONT) + 2, usColor, pDestBuf);
       }
 
@@ -1909,7 +1909,7 @@ function AddCharacter(pCharacter: Pointer<SOLDIERTYPE>): void {
   }
 
   // copy over soldier id value
-  gCharactersList[usCount].usSolID = (UINT16)pCharacter->ubID;
+  gCharactersList[usCount].usSolID = pCharacter->ubID;
 
   // valid character
   gCharactersList[usCount].fValid = TRUE;
@@ -1993,7 +1993,7 @@ function DisplayCharacterList(): void {
   for (sCount = 0; sCount < MAX_CHARACTER_COUNT; sCount++) {
     // skip invalid characters
     if (gCharactersList[sCount].fValid == TRUE) {
-      if (sCount == (INT16)giHighLine) {
+      if (sCount == giHighLine) {
         ubForegroundColor = FONT_WHITE;
       }
       // check to see if character is still alive
@@ -2105,7 +2105,7 @@ function MapScreenHandle(): UINT32 {
 
     // Load Sector
     // BigCheese
-    if (!SetCurrentWorldSector(sSelMapX, sSelMapY, (INT8)iCurrentMapSectorZ)) {
+    if (!SetCurrentWorldSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
       // Cannot load!
     } else {
       CreateDestroyMapInvButton();
@@ -2397,8 +2397,8 @@ function MapScreenHandle(): UINT32 {
 
     // set up regions
     MSYS_DefineRegion(&gMapViewRegion, MAP_VIEW_START_X + MAP_GRID_X, MAP_VIEW_START_Y + MAP_GRID_Y, MAP_VIEW_START_X + MAP_VIEW_WIDTH + MAP_GRID_X - 1, MAP_VIEW_START_Y + MAP_VIEW_HEIGHT - 1 + 8, MSYS_PRIORITY_HIGH - 3, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, MSYS_NO_CALLBACK);
-    MSYS_DefineRegion(&gCharInfoHandRegion, ((INT16)(4)), ((INT16)(81)), ((INT16)(62)), ((INT16)(103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
-    MSYS_DefineRegion(&gCharInfoFaceRegion, (INT16)PLAYER_INFO_FACE_START_X, (INT16)PLAYER_INFO_FACE_START_Y, (INT16)PLAYER_INFO_FACE_END_X, (INT16)PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
+    MSYS_DefineRegion(&gCharInfoHandRegion, ((4)), ((81)), ((62)), ((103)), MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, ItemRegionMvtCallback, ItemRegionBtnCallback);
+    MSYS_DefineRegion(&gCharInfoFaceRegion, PLAYER_INFO_FACE_START_X, PLAYER_INFO_FACE_START_Y, PLAYER_INFO_FACE_END_X, PLAYER_INFO_FACE_END_Y, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FaceRegionBtnCallback);
 
     MSYS_DefineRegion(&gMPanelRegion, INV_REGION_X, INV_REGION_Y, INV_REGION_X + INV_REGION_WIDTH, INV_REGION_Y + INV_REGION_HEIGHT, MSYS_PRIORITY_HIGH, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, InvmaskRegionBtnCallBack);
     // screen mask for animated cursors
@@ -2413,7 +2413,7 @@ function MapScreenHandle(): UINT32 {
     giMapContractButtonImage = LoadButtonImage("INTERFACE\\contractbutton.sti", -1, 0, -1, 1, -1);
 
     // buttonmake
-    giMapContractButton = QuickCreateButton(giMapContractButtonImage, CONTRACT_X + 5, CONTRACT_Y - 1, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)ContractButtonCallback);
+    giMapContractButton = QuickCreateButton(giMapContractButtonImage, CONTRACT_X + 5, CONTRACT_Y - 1, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, ContractButtonCallback);
 
     SpecifyButtonText(giMapContractButton, pContractButtonString[0]);
     SpecifyButtonFont(giMapContractButton, MAP_SCREEN_FONT);
@@ -2743,7 +2743,7 @@ function MapScreenHandle(): UINT32 {
   }
 
   // display town info
-  DisplayTownInfo(sSelMapX, sSelMapY, (INT8)iCurrentMapSectorZ);
+  DisplayTownInfo(sSelMapX, sSelMapY, iCurrentMapSectorZ);
 
   if (fShowTownInfo == TRUE) {
     // force update of town mine info boxes
@@ -3100,13 +3100,13 @@ function DrawName(pName: STR16, sRowIndex: INT16, iFont: INT32): void {
   let usY: UINT16 = 0;
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates((short)NAME_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE)), (short)NAME_WIDTH, (short)Y_SIZE, pName, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE)), NAME_WIDTH, Y_SIZE, pName, iFont, &usX, &usY);
   } else {
-    FindFontCenterCoordinates((short)NAME_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE) + 6), (short)NAME_WIDTH, (short)Y_SIZE, pName, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(NAME_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), NAME_WIDTH, Y_SIZE, pName, iFont, &usX, &usY);
   }
 
   // RestoreExternBackgroundRect(NAME_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), NAME_WIDTH, Y_SIZE);
-  DrawString(pName, (UINT16)usX, ((UINT16)(usY + (Y_OFFSET * sRowIndex + 1))), iFont);
+  DrawString(pName, usX, ((usY + (Y_OFFSET * sRowIndex + 1))), iFont);
 }
 
 function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
@@ -3117,9 +3117,9 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
   GetMapscreenMercAssignmentString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString);
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates((short)ASSIGN_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE)), (short)ASSIGN_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE)), ASSIGN_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   } else {
-    FindFontCenterCoordinates((short)ASSIGN_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE) + 6), (short)ASSIGN_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(ASSIGN_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), ASSIGN_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   }
 
   if (fFlashAssignDone == TRUE) {
@@ -3129,7 +3129,7 @@ function DrawAssignment(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): voi
   }
 
   // RestoreExternBackgroundRect(ASSIGN_X-2, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), ASSIGN_WIDTH+2, Y_SIZE);
-  DrawString(sString, (UINT16)usX, ((UINT16)(usY + (Y_OFFSET * sRowIndex + 1))), iFont);
+  DrawString(sString, usX, ((usY + (Y_OFFSET * sRowIndex + 1))), iFont);
 }
 
 function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
@@ -3141,15 +3141,15 @@ function DrawLocation(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void 
 
   if (sRowIndex < FIRST_VEHICLE) {
     // center
-    FindFontCenterCoordinates((short)LOC_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE)), (short)LOC_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE)), LOC_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   } else {
-    FindFontCenterCoordinates((short)LOC_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE) + 6), (short)LOC_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(LOC_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), LOC_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   }
   // restore background
   // RestoreExternBackgroundRect(LOC_X, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), LOC_WIDTH, Y_SIZE);
 
   // draw string
-  DrawString(sString, ((UINT16)(usX)), ((UINT16)(usY + (Y_OFFSET * sRowIndex + 1))), ((UINT32)iFont));
+  DrawString(sString, ((usX)), ((usY + (Y_OFFSET * sRowIndex + 1))), (iFont));
 }
 
 function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): void {
@@ -3164,14 +3164,14 @@ function DrawDestination(sCharNumber: INT16, sRowIndex: INT16, iFont: INT32): vo
   }
 
   if (sRowIndex < FIRST_VEHICLE) {
-    FindFontCenterCoordinates((short)DEST_ETA_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE)), (short)DEST_ETA_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE)), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   } else {
-    FindFontCenterCoordinates((short)DEST_ETA_X + 1, (short)(Y_START + (sRowIndex * Y_SIZE) + 6), (short)DEST_ETA_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(DEST_ETA_X + 1, (Y_START + (sRowIndex * Y_SIZE) + 6), DEST_ETA_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   }
 
   // RestoreExternBackgroundRect(DEST_ETA_X+1, ((UINT16)(usY+(Y_OFFSET*sRowIndex+1))), DEST_ETA_WIDTH-1, Y_SIZE);
   // ShowDestinationOfPlottedPath( sString );
-  DrawString(sString, ((UINT16)(usX)), ((UINT16)(usY + (Y_OFFSET * sRowIndex + 1))), ((UINT32)iFont));
+  DrawString(sString, ((usX)), ((usY + (Y_OFFSET * sRowIndex + 1))), (iFont));
 }
 
 function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8): void {
@@ -3182,7 +3182,7 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   GetMapscreenMercDepartureString(MercPtrs[gCharactersList[sCharNumber].usSolID], sString, &ubFontColor);
 
   // if merc is highlighted, override the color decided above with bright white
-  if (sCharNumber == (INT16)giHighLine) {
+  if (sCharNumber == giHighLine) {
     ubFontColor = FONT_WHITE;
   }
 
@@ -3190,13 +3190,13 @@ function DrawTimeRemaining(sCharNumber: INT16, iFont: INT32, ubFontColor: UINT8)
   SetFontForeground(ubFontColor);
 
   if (sCharNumber < FIRST_VEHICLE) {
-    FindFontCenterCoordinates((short)TIME_REMAINING_X + 1, (short)(Y_START + (sCharNumber * Y_SIZE)), (short)TIME_REMAINING_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE)), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   } else {
-    FindFontCenterCoordinates((short)TIME_REMAINING_X + 1, (short)(Y_START + (sCharNumber * Y_SIZE) + 6), (short)TIME_REMAINING_WIDTH, (short)Y_SIZE, sString, (long)iFont, &usX, &usY);
+    FindFontCenterCoordinates(TIME_REMAINING_X + 1, (Y_START + (sCharNumber * Y_SIZE) + 6), TIME_REMAINING_WIDTH, Y_SIZE, sString, iFont, &usX, &usY);
   }
 
   // RestoreExternBackgroundRect(TIME_REMAINING_X, ((UINT16)(usY+(Y_OFFSET*sCharNumber+1))), TIME_REMAINING_WIDTH, Y_SIZE);
-  DrawString(sString, ((UINT16)(usX)), ((UINT16)(usY + (Y_OFFSET * sCharNumber + 1))), ((UINT32)iFont));
+  DrawString(sString, ((usX)), ((usY + (Y_OFFSET * sCharNumber + 1))), (iFont));
 }
 
 function RenderMapCursorsIndexesAnims(): void {
@@ -3539,7 +3539,7 @@ function HandleMapUI(): UINT32 {
           fWasAlreadySelected = FALSE;
 
           // select the clicked sector, retaining the same sublevel depth
-          ChangeSelectedMapSector(sMapX, sMapY, (INT8)iCurrentMapSectorZ);
+          ChangeSelectedMapSector(sMapX, sMapY, iCurrentMapSectorZ);
         } else {
           fWasAlreadySelected = TRUE;
         }
@@ -3547,7 +3547,7 @@ function HandleMapUI(): UINT32 {
         // if showing item counts on the map, and not already in sector inventory
         if (fShowItemsFlag && !fShowMapInventoryPool) {
           // show sector inventory for this clicked sector
-          ChangeSelectedMapSector(sMapX, sMapY, (INT8)iCurrentMapSectorZ);
+          ChangeSelectedMapSector(sMapX, sMapY, iCurrentMapSectorZ);
 
           fShowMapInventoryPool = TRUE;
           CreateDestroyMapInventoryPoolButtons(TRUE);
@@ -3579,7 +3579,7 @@ function HandleMapUI(): UINT32 {
           // mercs in them without necessarily initiating movement right away.
           if (fWasAlreadySelected) {
             // if there are any movable characters here
-            if (AnyMovableCharsInOrBetweenThisSector(sMapX, sMapY, (INT8)iCurrentMapSectorZ)) {
+            if (AnyMovableCharsInOrBetweenThisSector(sMapX, sMapY, iCurrentMapSectorZ)) {
               // if showing the surface level map
               if (iCurrentMapSectorZ == 0) {
                 TurnOnShowTeamsMode();
@@ -3589,7 +3589,7 @@ function HandleMapUI(): UINT32 {
                 // This also allows all strategic movement error handling to be centralized in CanCharacterMoveInStrategic()
 
                 // start the move box menu
-                SetUpMovingListsForSector(sMapX, sMapY, (INT16)iCurrentMapSectorZ);
+                SetUpMovingListsForSector(sMapX, sMapY, iCurrentMapSectorZ);
               } else {
                 // no strategic movement is possible from underground sectors
                 DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMapErrorString[1], MAP_SCREEN, MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
@@ -3632,22 +3632,22 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -3907,7 +3907,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
         case '8':
         case '9':
           // multi-selects all characters in that squad.  SHIFT key and 1-0 for squads 11-20
-          bSquadNumber = (INT8)(InputEvent.usParam - '1'); // internal squad #s start at 0
+          bSquadNumber = (InputEvent.usParam - '1'); // internal squad #s start at 0
           SelectAllCharactersInSquad(bSquadNumber);
           break;
 
@@ -3950,14 +3950,14 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
           if (fAlt) {
             if (giHighLine != -1) {
               if (gCharactersList[giHighLine].fValid == TRUE) {
-                bSelectedAssignChar = (INT8)giHighLine;
+                bSelectedAssignChar = giHighLine;
                 RebuildAssignmentsBox();
-                ChangeSelectedInfoChar((INT8)giHighLine, FALSE);
+                ChangeSelectedInfoChar(giHighLine, FALSE);
                 fShowAssignmentMenu = TRUE;
               }
             } else if (bSelectedInfoChar != -1) {
               if (gCharactersList[bSelectedInfoChar].fValid == TRUE) {
-                bSelectedAssignChar = (INT8)bSelectedInfoChar;
+                bSelectedAssignChar = bSelectedInfoChar;
                 RebuildAssignmentsBox();
                 fShowAssignmentMenu = TRUE;
               }
@@ -4018,7 +4018,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             if (INFORMATION_CHEAT_LEVEL()) {
               // Toggle Frame Rate Display
               gbFPSDisplay = !gbFPSDisplay;
-              DisableFPSOverlay((BOOLEAN)!gbFPSDisplay);
+              DisableFPSOverlay(!gbFPSDisplay);
             }
           }
           break;
@@ -4145,7 +4145,7 @@ function GetMapKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
               // check to see if this person is moving, if not...then assign them to mvt group
               if (pSoldier->ubGroupID == 0) {
-                ubGroupId = CreateNewPlayerGroupDepartingFromSector((INT8)(pSoldier->sSectorX), (INT8)(pSoldier->sSectorY));
+                ubGroupId = CreateNewPlayerGroupDepartingFromSector((pSoldier->sSectorX), (pSoldier->sSectorY));
                 // assign to a group
                 AddPlayerToGroup(ubGroupId, pSoldier);
               }
@@ -4540,7 +4540,7 @@ function GetMouseMapXY(psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>)
       MousePos.y = -1;
   }
 
-  return GetMapXY((INT16)MousePos.x, (INT16)MousePos.y, psMapWorldX, psMapWorldY);
+  return GetMapXY(MousePos.x, MousePos.y, psMapWorldX, psMapWorldY);
 }
 
 function GetMapXY(sX: INT16, sY: INT16, psMapWorldX: Pointer<INT16>, psMapWorldY: Pointer<INT16>): BOOLEAN {
@@ -4803,7 +4803,7 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
             */
 
             if ((sSelMapX != sMapX) || (sSelMapY != sMapY)) {
-              ChangeSelectedMapSector(sMapX, sMapY, (INT8)iCurrentMapSectorZ);
+              ChangeSelectedMapSector(sMapX, sMapY, iCurrentMapSectorZ);
             }
           }
 
@@ -4814,7 +4814,7 @@ function PollRightButtonInMapView(puiNewEvent: Pointer<UINT32>): void {
             } else // show militia is OFF
             {
               // if on the surface, or a real underground sector (we've visited it)
-              if ((iCurrentMapSectorZ == 0) || (GetSectorFlagStatus(sMapX, sMapY, (UINT8)iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE)) {
+              if ((iCurrentMapSectorZ == 0) || (GetSectorFlagStatus(sMapX, sMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE)) {
                 // toggle sector info for this sector
                 fShowTownInfo = !fShowTownInfo;
                 fMapPanelDirty = TRUE;
@@ -4963,7 +4963,7 @@ function BltCharInvPanel(): void {
 
   GetSoldier(&pSoldier, gCharactersList[bSelectedInfoChar].usSolID);
 
-  pDestBuf = (UINT16 *)LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(guiSAVEBUFFER, &uiDestPitchBYTES);
   GetVideoObject(&hCharListHandle, guiMAPINV);
   Blt8BPPDataTo16BPPBufferTransparent(pDestBuf, uiDestPitchBYTES, hCharListHandle, PLAYER_INFO_X, PLAYER_INFO_Y, 0);
   UnLockVideoSurface(guiSAVEBUFFER);
@@ -4972,14 +4972,14 @@ function BltCharInvPanel(): void {
   CreateDestroyMapInvButton();
 
   if (gbCheckForMouseOverItemPos != -1) {
-    if (HandleCompatibleAmmoUIForMapScreen(pSoldier, (INT32)gbCheckForMouseOverItemPos, TRUE, TRUE) == TRUE) {
+    if (HandleCompatibleAmmoUIForMapScreen(pSoldier, gbCheckForMouseOverItemPos, TRUE, TRUE) == TRUE) {
       fMapPanelDirty = TRUE;
     }
   }
 
   if ((fShowMapInventoryPool)) {
     if (iCurrentlyHighLightedItem != -1) {
-      HandleCompatibleAmmoUIForMapScreen(pSoldier, (INT32)(iCurrentlyHighLightedItem + (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT)), TRUE, FALSE);
+      HandleCompatibleAmmoUIForMapScreen(pSoldier, (iCurrentlyHighLightedItem + (iCurrentInventoryPoolPage * MAP_INVENTORY_POOL_SLOT_COUNT)), TRUE, FALSE);
     }
   }
 
@@ -5049,7 +5049,7 @@ function HandleCursorOverRifleAmmo(): void {
   }
 
   if (gfCheckForMouseOverItem) {
-    if (HandleCompatibleAmmoUI(&Menptr[gCharactersList[bSelectedInfoChar].usSolID], (INT8)gbCheckForMouseOverItemPos, TRUE)) {
+    if (HandleCompatibleAmmoUI(&Menptr[gCharactersList[bSelectedInfoChar].usSolID], gbCheckForMouseOverItemPos, TRUE)) {
       if ((GetJA2Clock() - guiMouseOverItemTime) > 100) {
         fTeamPanelDirty = TRUE;
       }
@@ -5091,12 +5091,12 @@ function MAPInvMoveCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): voi
     gubMAP_HandInvDispText[uiHandPos] = 2;
     guiMouseOverItemTime = GetJA2Clock();
     gfCheckForMouseOverItem = TRUE;
-    HandleCompatibleAmmoUI(pSoldier, (INT8)uiHandPos, FALSE);
-    gbCheckForMouseOverItemPos = (INT8)uiHandPos;
+    HandleCompatibleAmmoUI(pSoldier, uiHandPos, FALSE);
+    gbCheckForMouseOverItemPos = uiHandPos;
   }
   if (iReason == MSYS_CALLBACK_REASON_LOST_MOUSE) {
     gubMAP_HandInvDispText[uiHandPos] = 1;
-    HandleCompatibleAmmoUI(pSoldier, (INT8)uiHandPos, FALSE);
+    HandleCompatibleAmmoUI(pSoldier, uiHandPos, FALSE);
     gfCheckForMouseOverItem = FALSE;
     fTeamPanelDirty = TRUE;
     gbCheckForMouseOverItemPos = -1;
@@ -5156,7 +5156,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       usOldItemIndex = pSoldier->inv[uiHandPos].usItem;
 
       // pick it up
-      MAPBeginItemPointer(pSoldier, (UINT8)uiHandPos);
+      MAPBeginItemPointer(pSoldier, uiHandPos);
 
       // remember which gridno the object came from
       sObjectSourceGridNo = pSoldier->sGridNo;
@@ -5218,7 +5218,7 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
       }
 
       // Else, try to place here
-      if (PlaceObject(pSoldier, (UINT8)uiHandPos, gpItemPointer)) {
+      if (PlaceObject(pSoldier, uiHandPos, gpItemPointer)) {
         HandleTacticalEffectsOfEquipmentChange(pSoldier, uiHandPos, usOldItemIndex, usNewItemIndex);
 
         // Dirty
@@ -5275,15 +5275,15 @@ function MAPInvClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): vo
 
     // Some global stuff here - for esc, etc
     // Check for # of slots in item
-    if ((pSoldier->inv[uiHandPos].ubNumberOfObjects > 1) && (ItemSlotLimit(pSoldier->inv[uiHandPos].usItem, (UINT8)uiHandPos) > 0)) {
+    if ((pSoldier->inv[uiHandPos].ubNumberOfObjects > 1) && (ItemSlotLimit(pSoldier->inv[uiHandPos].usItem, uiHandPos) > 0)) {
       if (!InItemStackPopup()) {
-        InitItemStackPopup(pSoldier, (UINT8)uiHandPos, 0, INV_REGION_Y, 261, 248);
+        InitItemStackPopup(pSoldier, uiHandPos, 0, INV_REGION_Y, 261, 248);
         fTeamPanelDirty = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
       }
     } else {
       if (!InItemDescriptionBox()) {
-        InitItemDescriptionBox(pSoldier, (UINT8)uiHandPos, MAP_ITEMDESC_START_X, MAP_ITEMDESC_START_Y, 0);
+        InitItemDescriptionBox(pSoldier, uiHandPos, MAP_ITEMDESC_START_X, MAP_ITEMDESC_START_Y, 0);
         fShowDescriptionFlag = TRUE;
         fTeamPanelDirty = TRUE;
         fInterfacePanelDirty = DIRTYLEVEL2;
@@ -5396,7 +5396,7 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
   SetFontDestBuffer(uiBufferToRenderTo, 0, 0, 640, 480, FALSE);
 
   // assignment strings
-  DrawString(pUpperLeftMapScreenStrings[0], (UINT16)(220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT) / 2), 6, CHAR_FONT);
+  DrawString(pUpperLeftMapScreenStrings[0], (220 - StringPixLength(pUpperLeftMapScreenStrings[0], CHAR_FONT) / 2), 6, CHAR_FONT);
 
   // vehicles and robot don't have attributes, contracts, or morale
   if ((pSoldier == NULL) || (!(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier))) {
@@ -5404,8 +5404,8 @@ function RenderAttributeStringsForUpperLeftHandCorner(uiBufferToRenderTo: UINT32
     DrawString(pUpperLeftMapScreenStrings[2], 87, 80, CHAR_FONT);
 
     for (iCounter = 0; iCounter < 5; iCounter++) {
-      DrawString(pShortAttributeStrings[iCounter], 88, (INT16)(22 + iCounter * 10), CHAR_FONT);
-      DrawString(pShortAttributeStrings[iCounter + 5], 133, (INT16)(22 + iCounter * 10), CHAR_FONT);
+      DrawString(pShortAttributeStrings[iCounter], 88, (22 + iCounter * 10), CHAR_FONT);
+      DrawString(pShortAttributeStrings[iCounter + 5], 133, (22 + iCounter * 10), CHAR_FONT);
     }
 
     // contract
@@ -5621,22 +5621,22 @@ function CreateMouseRegionsForTeamList(): void {
     }
 
     // name region
-    MSYS_DefineRegion(&gTeamListNameRegion[sCounter], NAME_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListNameRegion[sCounter], NAME_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), NAME_X + NAME_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // assignment region
-    MSYS_DefineRegion(&gTeamListAssignmentRegion[sCounter], ASSIGN_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListAssignmentRegion[sCounter], ASSIGN_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), ASSIGN_X + ASSIGN_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListAssignmentRegionMvtCallBack, TeamListAssignmentRegionBtnCallBack);
 
     // location region (same function as name regions, so uses the same callbacks)
-    MSYS_DefineRegion(&gTeamListLocationRegion[sCounter], LOC_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), LOC_X + LOC_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListLocationRegion[sCounter], LOC_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), LOC_X + LOC_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListInfoRegionMvtCallBack, TeamListInfoRegionBtnCallBack);
 
     // destination region
-    MSYS_DefineRegion(&gTeamListDestinationRegion[sCounter], DEST_ETA_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListDestinationRegion[sCounter], DEST_ETA_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), DEST_ETA_X + DEST_ETA_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListDestinationRegionMvtCallBack, TeamListDestinationRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(&gTeamListContractRegion[sCounter], TIME_REMAINING_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListContractRegion[sCounter], TIME_REMAINING_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), TIME_REMAINING_X + TIME_REMAINING_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListContractRegionMvtCallBack, TeamListContractRegionBtnCallBack);
 
     // contract region
-    MSYS_DefineRegion(&gTeamListSleepRegion[sCounter], SLEEP_X, (INT16)(Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (INT16)(145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
+    MSYS_DefineRegion(&gTeamListSleepRegion[sCounter], SLEEP_X, (Y_START + (sCounter) * (Y_SIZE + 2) + sYAdd), SLEEP_X + SLEEP_WIDTH, (145 + (sCounter + 1) * (Y_SIZE + 2) + sYAdd), MSYS_PRIORITY_NORMAL + 1, MSYS_NO_CURSOR, TeamListSleepRegionMvtCallBack, TeamListSleepRegionBtnCallBack);
 
     MSYS_SetRegionUserData(&gTeamListNameRegion[sCounter], 0, sCounter);
     MSYS_SetRegionUserData(&gTeamListAssignmentRegion[sCounter], 0, sCounter);
@@ -5746,11 +5746,11 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
     }
 
     if (gCharactersList[iValue].fValid == TRUE) {
-      if (HandleCtrlOrShiftInTeamPanel((INT8)iValue)) {
+      if (HandleCtrlOrShiftInTeamPanel(iValue)) {
         return;
       }
 
-      ChangeSelectedInfoChar((INT8)iValue, TRUE);
+      ChangeSelectedInfoChar(iValue, TRUE);
 
       pSoldier = &Menptr[gCharactersList[iValue].usSolID];
 
@@ -5796,7 +5796,7 @@ function TeamListInfoRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: 
       pSoldier = &Menptr[gCharactersList[iValue].usSolID];
 
       // select this character
-      ChangeSelectedInfoChar((INT8)iValue, TRUE);
+      ChangeSelectedInfoChar(iValue, TRUE);
 
       RequestToggleMercInventoryPanel();
 
@@ -5868,12 +5868,12 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
     }
 
     if (gCharactersList[iValue].fValid == TRUE) {
-      if (HandleCtrlOrShiftInTeamPanel((INT8)iValue)) {
+      if (HandleCtrlOrShiftInTeamPanel(iValue)) {
         return;
       }
 
       // reset list if the clicked character isn't also selected
-      ChangeSelectedInfoChar((INT8)iValue, (BOOLEAN)(IsEntryInSelectedListSet((INT8)iValue) == FALSE));
+      ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
       pSoldier = &Menptr[gCharactersList[iValue].usSolID];
 
@@ -5885,7 +5885,7 @@ function TeamListAssignmentRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iRe
         return;
       }
 
-      bSelectedAssignChar = (INT8)iValue;
+      bSelectedAssignChar = iValue;
       RebuildAssignmentsBox();
 
       // reset dest character
@@ -5989,12 +5989,12 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
     }
 
     if (gCharactersList[iValue].fValid == TRUE) {
-      if (HandleCtrlOrShiftInTeamPanel((INT8)iValue)) {
+      if (HandleCtrlOrShiftInTeamPanel(iValue)) {
         return;
       }
 
       // reset list if the clicked character isn't also selected
-      ChangeSelectedInfoChar((INT8)iValue, (BOOLEAN)(IsEntryInSelectedListSet((INT8)iValue) == FALSE));
+      ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
       // deselect any characters/vehicles that can't accompany the clicked merc
       DeselectSelectedListMercsWhoCantMoveWithThisGuy(&(Menptr[gCharactersList[iValue].usSolID]));
@@ -6004,9 +6004,9 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
 
       // Find out if this guy and everyone travelling with him is allowed to move strategically
       // NOTE: errors are reported within...
-      if (CanChangeDestinationForCharSlot((INT8)iValue, TRUE)) {
+      if (CanChangeDestinationForCharSlot(iValue, TRUE)) {
         // turn off sector inventory, turn on show teams filter, etc.
-        MakeMapModesSuitableForDestPlotting((INT8)iValue);
+        MakeMapModesSuitableForDestPlotting(iValue);
 
         // check if person is in a vehicle
         if (Menptr[gCharactersList[iValue].usSolID].bAssignment == VEHICLE) {
@@ -6021,7 +6021,7 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
         }
 
         // select this character as the one plotting strategic movement
-        bSelectedDestChar = (INT8)iValue;
+        bSelectedDestChar = iValue;
 
         // remember the current paths for all selected characters so we can restore them if need be
         RememberPreviousPathForAllSelectedChars();
@@ -6062,10 +6062,10 @@ function TeamListDestinationRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iR
   }
 
   if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
-    MakeMapModesSuitableForDestPlotting((INT8)iValue);
+    MakeMapModesSuitableForDestPlotting(iValue);
 
     // reset list if the clicked character isn't also selected
-    ChangeSelectedInfoChar((INT8)iValue, (BOOLEAN)(IsEntryInSelectedListSet((INT8)iValue) == FALSE));
+    ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
     CancelPathsOfAllSelectedCharacters();
 
@@ -6129,15 +6129,15 @@ function TeamListSleepRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
     }
 
     if ((gCharactersList[iValue].fValid == TRUE)) {
-      if (HandleCtrlOrShiftInTeamPanel((INT8)iValue)) {
+      if (HandleCtrlOrShiftInTeamPanel(iValue)) {
         return;
       }
 
       // reset list if the clicked character isn't also selected
-      ChangeSelectedInfoChar((INT8)iValue, (BOOLEAN)(IsEntryInSelectedListSet((INT8)iValue) == FALSE));
+      ChangeSelectedInfoChar(iValue, (IsEntryInSelectedListSet(iValue) == FALSE));
 
       // if this slot's sleep status can be changed
-      if (CanChangeSleepStatusForCharSlot((INT8)iValue)) {
+      if (CanChangeSleepStatusForCharSlot(iValue)) {
         pSoldier = &Menptr[gCharactersList[iValue].usSolID];
 
         if (pSoldier->fMercAsleep == TRUE) {
@@ -6186,7 +6186,7 @@ function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
     if (gCharactersList[iValue].fValid == TRUE) {
       giHighLine = iValue;
 
-      if (CanChangeSleepStatusForCharSlot((INT8)iValue)) {
+      if (CanChangeSleepStatusForCharSlot(iValue)) {
         giSleepHighLine = iValue;
       } else {
         giSleepHighLine = -1;
@@ -6203,7 +6203,7 @@ function TeamListSleepRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReason:
     // restore background
     RestoreBackgroundForSleepGlowRegionList();
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (CanChangeSleepStatusForCharSlot((INT8)iValue)) {
+    if (CanChangeSleepStatusForCharSlot(iValue)) {
       // play click
       PlayGlowRegionSound();
     }
@@ -6222,7 +6222,7 @@ function TeamListContractRegionBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   if (gCharactersList[iValue].fValid == TRUE) {
     if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
       // select ONLY this dude
-      ChangeSelectedInfoChar((INT8)iValue, TRUE);
+      ChangeSelectedInfoChar(iValue, TRUE);
 
       // reset character
       giDestHighLine = -1;
@@ -6256,7 +6256,7 @@ function TeamListContractRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
     if (gCharactersList[iValue].fValid == TRUE) {
       giHighLine = iValue;
 
-      if (CanExtendContractForCharSlot((INT8)iValue)) {
+      if (CanExtendContractForCharSlot(iValue)) {
         giContractHighLine = iValue;
       } else {
         giContractHighLine = -1;
@@ -6277,7 +6277,7 @@ function TeamListContractRegionMvtCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
     // restore background
     RestoreBackgroundForContractGlowRegionList();
   } else if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
-    if (CanExtendContractForCharSlot((INT8)iValue)) {
+    if (CanExtendContractForCharSlot(iValue)) {
       // play click
       PlayGlowRegionSound();
     }
@@ -6331,13 +6331,13 @@ function HandleHighLightingOfLinesInTeamPanel(): void {
   RestoreBackgroundForContractGlowRegionList();
   RestoreBackgroundForSleepGlowRegionList();
 
-  HighLightAssignLine((UINT16)giAssignHighLine);
-  HighLightDestLine((UINT16)giDestHighLine);
-  HighLightSleepLine((UINT16)giSleepHighLine);
+  HighLightAssignLine(giAssignHighLine);
+  HighLightDestLine(giDestHighLine);
+  HighLightSleepLine(giSleepHighLine);
 
   // contracts?
   if (giContractHighLine != -1) {
-    ContractListRegionBoxGlow((UINT16)giContractHighLine);
+    ContractListRegionBoxGlow(giContractHighLine);
   }
 }
 
@@ -6716,14 +6716,14 @@ function HandleShadingOfLinesForContractMenu(): void {
     }
 
     // one week
-    if ((INT32)(pProfile->uiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
+    if ((pProfile->uiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
       ShadeStringInBox(ghContractBox, CONTRACT_MENU_WEEK);
     } else {
       UnShadeStringInBox(ghContractBox, CONTRACT_MENU_WEEK);
     }
 
     // two weeks
-    if ((INT32)(pProfile->uiBiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
+    if ((pProfile->uiBiWeeklySalary) > LaptopSaveInfo.iCurrentBalance) {
       ShadeStringInBox(ghContractBox, CONTRACT_MENU_TWO_WEEKS);
     } else {
       UnShadeStringInBox(ghContractBox, CONTRACT_MENU_TWO_WEEKS);
@@ -7154,9 +7154,9 @@ function UpdateCursorIfInLastSector(): void {
 
     // translate screen values to map grid values for zoomed in
     if (fZoomFlag) {
-      sMapX = (UINT16)iZoomX / MAP_GRID_X + sMapX;
+      sMapX = iZoomX / MAP_GRID_X + sMapX;
       sMapX = sMapX / 2;
-      sMapY = (UINT16)iZoomY / MAP_GRID_Y + sMapY;
+      sMapY = iZoomY / MAP_GRID_Y + sMapY;
       sMapY = sMapY / 2;
     }
 
@@ -7412,7 +7412,7 @@ function GetLastValidCharacterInTeamPanelList(): INT8 {
     if (gCharactersList[iCounter].fValid == TRUE) {
       if ((Menptr[gCharactersList[iCounter].usSolID].bLife >= OKLIFE)) {
         if (fShowMapInventoryPool) {
-          if (Menptr[gCharactersList[iCounter].usSolID].sSectorX == sSelMapX && Menptr[gCharactersList[iCounter].usSolID].sSectorY == sSelMapY && Menptr[gCharactersList[iCounter].usSolID].bSectorZ == (INT8)(iCurrentMapSectorZ)) {
+          if (Menptr[gCharactersList[iCounter].usSolID].sSectorX == sSelMapX && Menptr[gCharactersList[iCounter].usSolID].sSectorY == sSelMapY && Menptr[gCharactersList[iCounter].usSolID].bSectorZ == (iCurrentMapSectorZ)) {
             iValue = iCounter;
           }
         } else {
@@ -7543,7 +7543,7 @@ function CreateDestroyTrashCanRegion(): void {
 
     // done inventory button define
     giMapInvButtonDoneImage = LoadButtonImage("INTERFACE\\done_button2.sti", -1, 0, -1, 1, -1);
-    giMapInvDoneButton = QuickCreateButton(giMapInvButtonDoneImage, INV_BTN_X, INV_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)DoneInventoryMapBtnCallback);
+    giMapInvDoneButton = QuickCreateButton(giMapInvButtonDoneImage, INV_BTN_X, INV_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DoneInventoryMapBtnCallback);
 
     SetButtonFastHelpText(giMapInvDoneButton, pMiscMapScreenMouseRegionHelpText[2]);
     SetRegionFastHelpText(&gTrashCanRegion, pMiscMapScreenMouseRegionHelpText[1]);
@@ -8041,12 +8041,12 @@ function CreateDestroyMapCharacterScrollButtons(): void {
     giCharInfoButtonImage[0] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 11, 4, -1, 6, -1);
 
     // set the button value
-    giCharInfoButton[0] = QuickCreateButton(giCharInfoButtonImage[0], 67, 69, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)PrevInventoryMapBtnCallback);
+    giCharInfoButton[0] = QuickCreateButton(giCharInfoButtonImage[0], 67, 69, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, PrevInventoryMapBtnCallback);
     // set the button image
     giCharInfoButtonImage[1] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 12, 5, -1, 7, -1);
 
     // set the button value
-    giCharInfoButton[1] = QuickCreateButton(giCharInfoButtonImage[1], 67, 87, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)NextInventoryMapBtnCallback);
+    giCharInfoButton[1] = QuickCreateButton(giCharInfoButtonImage[1], 67, 87, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, NextInventoryMapBtnCallback);
 
     SetButtonFastHelpText(giCharInfoButton[0], pMapScreenPrevNextCharButtonHelpText[0]);
     SetButtonFastHelpText(giCharInfoButton[1], pMapScreenPrevNextCharButtonHelpText[1]);
@@ -8151,7 +8151,7 @@ function AddTeamPanelSortButtonsForMapScreen(): void {
     giMapSortButtonImage[iCounter] = LoadButtonImage(filename, -1, iImageIndex[iCounter], -1, iImageIndex[iCounter] + 6, -1);
 
     // buttonmake
-    giMapSortButton[iCounter] = QuickCreateButton(giMapSortButtonImage[iCounter], (INT16)(gMapSortButtons[iCounter].iX), (INT16)(gMapSortButtons[iCounter].iY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)MapSortBtnCallback);
+    giMapSortButton[iCounter] = QuickCreateButton(giMapSortButtonImage[iCounter], (gMapSortButtons[iCounter].iX), (gMapSortButtons[iCounter].iY), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 5, BtnGenericMouseMoveButtonCallback, MapSortBtnCallback);
 
     MSYS_SetBtnUserData(giMapSortButton[iCounter], 0, iCounter);
 
@@ -8349,12 +8349,12 @@ function SortListOfMercsInTeamPanel(fRetainSelectedMercs: BOOLEAN): void {
 
           // this guy is selected
           if (pSelectedSoldier[iCounter] == pCurrentSoldier) {
-            SetEntryInSelectedCharacterList((INT8)iCounterA);
+            SetEntryInSelectedCharacterList(iCounterA);
           }
 
           // update who the currently selected info guy is
           if (pPreviousSelectedInfoChar == pCurrentSoldier) {
-            ChangeSelectedInfoChar((INT8)iCounterA, FALSE);
+            ChangeSelectedInfoChar(iCounterA, FALSE);
           }
         }
       }
@@ -8467,7 +8467,7 @@ function DisplayIconsForMercsAsleep(): void {
     if (gCharactersList[iCounter].fValid == TRUE) {
       pSoldier = MercPtrs[gCharactersList[iCounter].usSolID];
       if (pSoldier->bActive && pSoldier->fMercAsleep && CanChangeSleepStatusForSoldier(pSoldier)) {
-        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (INT16)(Y_START + (iCounter * (Y_SIZE + 2))), VO_BLT_SRCTRANSPARENCY, NULL);
+        BltVideoObject(guiSAVEBUFFER, hHandle, 0, 125, (Y_START + (iCounter * (Y_SIZE + 2))), VO_BLT_SRCTRANSPARENCY, NULL);
       }
     }
   }
@@ -8492,7 +8492,7 @@ function CheckForAndRenderNewMailOverlay(): void {
           let area: SGPRect = { 463, 417, 477, 425 };
 
           pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-          Blt16BPPBufferHatchRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &area);
+          Blt16BPPBufferHatchRect(pDestBuf, uiDestPitchBYTES, &area);
           UnLockVideoSurface(FRAME_BUFFER);
         }
         InvalidateRegion(463, 417, 481, 430);
@@ -9226,7 +9226,7 @@ function RandomAwakeSelectedMercConfirmsStrategicMove(): void {
 
       if (pSoldier->bLife >= OKLIFE && !(pSoldier->uiStatusFlags & SOLDIER_VEHICLE) && !AM_A_ROBOT(pSoldier) && !AM_AN_EPC(pSoldier) && !pSoldier->fMercAsleep) {
         ubSelectedMercID[ubNumMercs] = pSoldier->ubID;
-        ubSelectedMercIndex[ubNumMercs] = (UINT8)iCounter;
+        ubSelectedMercIndex[ubNumMercs] = iCounter;
 
         ubNumMercs++;
       }
@@ -9234,12 +9234,12 @@ function RandomAwakeSelectedMercConfirmsStrategicMove(): void {
   }
 
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     // select that merc so that when he speaks we're showing his portrait and not someone else
     ChangeSelectedInfoChar(ubSelectedMercIndex[ubChosenMerc], FALSE);
 
-    DoMercBattleSound(MercPtrs[ubSelectedMercID[ubChosenMerc]], (UINT8)(Random(2) ? BATTLE_SOUND_OK1 : BATTLE_SOUND_OK2));
+    DoMercBattleSound(MercPtrs[ubSelectedMercID[ubChosenMerc]], (Random(2) ? BATTLE_SOUND_OK1 : BATTLE_SOUND_OK2));
     // TacticalCharacterDialogue( MercPtrs[ ubSelectedMercID[ ubChosenMerc ] ], ubQuoteNum );
   }
 }
@@ -9272,7 +9272,7 @@ function HandleMilitiaRedistributionClick(): void {
     fTownStillHidden = ((bTownId == TIXA) && !fFoundTixa) || ((bTownId == ORTA) && !fFoundOrta);
 
     if ((bTownId != BLANK_SECTOR) && !fTownStillHidden) {
-      if (MilitiaTrainingAllowedInSector(sSelMapX, sSelMapY, (INT8)iCurrentMapSectorZ)) {
+      if (MilitiaTrainingAllowedInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
         if (fShowTownInfo == TRUE) {
           fShowTownInfo = FALSE;
         }
@@ -9381,7 +9381,7 @@ function HandlePostAutoresolveMessages(): void {
   // An additional case is when creatures kill all opposition in the sector.  For each surviving monster, civilians
   // are "virtually" murdered and loyalty hits will be processed.
   if (gsCiviliansEatenByMonsters >= 1) {
-    AdjustLoyaltyForCivsEatenByMonsters((UINT8)SECTORX(gsEnemyGainedControlOfSectorID), (UINT8)SECTORY(gsEnemyGainedControlOfSectorID), (UINT8)gsCiviliansEatenByMonsters);
+    AdjustLoyaltyForCivsEatenByMonsters(SECTORX(gsEnemyGainedControlOfSectorID), SECTORY(gsEnemyGainedControlOfSectorID), gsCiviliansEatenByMonsters);
     gsCiviliansEatenByMonsters = -2;
   } else if (gsCiviliansEatenByMonsters == -2) {
     fMapPanelDirty = TRUE;
@@ -9389,7 +9389,7 @@ function HandlePostAutoresolveMessages(): void {
     gsEnemyGainedControlOfSectorID = -1;
   } else if (gsEnemyGainedControlOfSectorID >= 0) {
     // bring up the dialog box
-    SetThisSectorAsEnemyControlled((UINT8)SECTORX(gsEnemyGainedControlOfSectorID), (UINT8)SECTORY(gsEnemyGainedControlOfSectorID), 0, TRUE);
+    SetThisSectorAsEnemyControlled(SECTORX(gsEnemyGainedControlOfSectorID), SECTORY(gsEnemyGainedControlOfSectorID), 0, TRUE);
     gsEnemyGainedControlOfSectorID = -2;
   } else if (gsEnemyGainedControlOfSectorID == -2) {
     // dirty the mapscreen after the dialog box goes away.
@@ -9490,7 +9490,7 @@ function GetMapscreenMercDepartureString(pSoldier: Pointer<SOLDIERTYPE>, sString
     // if the merc is in transit
     if (pSoldier->bAssignment == IN_TRANSIT) {
       // and if the time left on the cotract is greater then the contract time
-      if (iMinsRemaining > (INT32)(pSoldier->iTotalContractLength * NUM_MIN_IN_DAY)) {
+      if (iMinsRemaining > (pSoldier->iTotalContractLength * NUM_MIN_IN_DAY)) {
         iMinsRemaining = (pSoldier->iTotalContractLength * NUM_MIN_IN_DAY);
       }
     }

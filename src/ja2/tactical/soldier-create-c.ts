@@ -42,21 +42,21 @@ let gubItemDroppableFlag: UINT8[] /* [NUM_INV_SLOTS] */ = {
 };
 
 function RandomizeNewSoldierStats(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>): void {
-  pCreateStruct->bLifeMax = (UINT8)Random(50) + 50;
+  pCreateStruct->bLifeMax = Random(50) + 50;
   pCreateStruct->bLife = pCreateStruct->bLifeMax;
-  pCreateStruct->bAgility = (UINT8)Random(50) + 50;
-  pCreateStruct->bDexterity = (UINT8)Random(50) + 50;
-  pCreateStruct->bExpLevel = 1 + (UINT8)Random(4);
+  pCreateStruct->bAgility = Random(50) + 50;
+  pCreateStruct->bDexterity = Random(50) + 50;
+  pCreateStruct->bExpLevel = 1 + Random(4);
 
   // Randomize skills (for now)
-  pCreateStruct->bMarksmanship = (UINT8)Random(50) + 50;
-  pCreateStruct->bMedical = (UINT8)Random(50) + 50;
-  pCreateStruct->bMechanical = (UINT8)Random(50) + 50;
-  pCreateStruct->bExplosive = (UINT8)Random(50) + 50;
-  pCreateStruct->bLeadership = (UINT8)Random(50) + 50;
-  pCreateStruct->bStrength = (UINT8)Random(50) + 50;
-  pCreateStruct->bWisdom = (UINT8)Random(50) + 50;
-  pCreateStruct->bAttitude = (INT8)Random(MAXATTITUDES);
+  pCreateStruct->bMarksmanship = Random(50) + 50;
+  pCreateStruct->bMedical = Random(50) + 50;
+  pCreateStruct->bMechanical = Random(50) + 50;
+  pCreateStruct->bExplosive = Random(50) + 50;
+  pCreateStruct->bLeadership = Random(50) + 50;
+  pCreateStruct->bStrength = Random(50) + 50;
+  pCreateStruct->bWisdom = Random(50) + 50;
+  pCreateStruct->bAttitude = Random(MAXATTITUDES);
   pCreateStruct->bOrders = FARPATROL;
   pCreateStruct->bMorale = 50;
   pCreateStruct->bAIMorale = MORALE_FEARLESS;
@@ -197,7 +197,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       }
 
       // OK, set ID
-      Soldier.ubID = (UINT8)cnt;
+      Soldier.ubID = cnt;
       *pubID = Soldier.ubID;
     }
 
@@ -246,22 +246,22 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
             break;
           case FATCIV:
             // fat, so slower
-            Soldier.bAgility = (INT8)(30 + Random(26)); // 30 - 55
+            Soldier.bAgility = (30 + Random(26)); // 30 - 55
             break;
           case MANCIV:
-            Soldier.bLife = Soldier.bLifeMax = (INT8)(35 + Random(26)); // 35 - 60
+            Soldier.bLife = Soldier.bLifeMax = (35 + Random(26)); // 35 - 60
             break;
           case MINICIV:
           case DRESSCIV:
-            Soldier.bLife = Soldier.bLifeMax = (INT8)(30 + Random(16)); // 30 - 45
+            Soldier.bLife = Soldier.bLifeMax = (30 + Random(16)); // 30 - 45
             break;
           case HATKIDCIV:
           case KIDCIV:
-            Soldier.bLife = Soldier.bLifeMax = (INT8)(20 + Random(16)); // 20 - 35
+            Soldier.bLife = Soldier.bLifeMax = (20 + Random(16)); // 20 - 35
             break;
           case CRIPPLECIV:
-            Soldier.bLife = Soldier.bLifeMax = (INT8)(20 + Random(26)); // 20 - 45
-            Soldier.bAgility = (INT8)(30 + Random(16)); // 30 - 45
+            Soldier.bLife = Soldier.bLifeMax = (20 + Random(26)); // 20 - 45
+            Soldier.bAgility = (30 + Random(16)); // 30 - 45
             break;
         }
       }
@@ -275,12 +275,12 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     // OK, If not given a profile num, set a randomized defualt battle sound set
     // and then adjust it according to body type!
     if (Soldier.ubProfile == NO_PROFILE) {
-      Soldier.ubBattleSoundID = (UINT8)Random(3);
+      Soldier.ubBattleSoundID = Random(3);
     }
 
     // ATE: TEMP : No enemy women mercs (unless elite)!
     if (Soldier.ubProfile == NO_PROFILE && Soldier.bTeam == ENEMY_TEAM && Soldier.ubBodyType == REGFEMALE && Soldier.ubSoldierClass != SOLDIER_CLASS_ELITE) {
-      Soldier.ubBodyType = (UINT8)(REGMALE + Random(3));
+      Soldier.ubBodyType = (REGMALE + Random(3));
     }
 
     // ATE
@@ -333,14 +333,14 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
       case HATKIDCIV:
       case KIDCIV:
 
-        Soldier.ubBattleSoundID = (UINT8)Random(2);
+        Soldier.ubBattleSoundID = Random(2);
         break;
 
       case REGFEMALE:
       case MINICIV:
       case DRESSCIV:
 
-        Soldier.ubBattleSoundID = 7 + (UINT8)Random(2);
+        Soldier.ubBattleSoundID = 7 + Random(2);
         Soldier.bNormalSmell = NORMAL_HUMAN_SMELL_STRENGTH;
         break;
 
@@ -426,7 +426,7 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
           Soldier.bVehicleID = pCreateStruct->bUseGivenVehicleID;
         } else {
           // Add vehicle to list....
-          Soldier.bVehicleID = (INT8)AddVehicleToList(Soldier.sSectorX, Soldier.sSectorY, Soldier.bSectorZ, ubVehicleID);
+          Soldier.bVehicleID = AddVehicleToList(Soldier.sSectorX, Soldier.sSectorY, Soldier.bSectorZ, ubVehicleID);
         }
         SetVehicleValuesIntoSoldierType(&Soldier);
         break;
@@ -489,13 +489,13 @@ function TacticalCreateSoldier(pCreateStruct: Pointer<SOLDIERCREATE_STRUCT>, pub
     let pSoldier: Pointer<SOLDIERTYPE>;
     let ubSectorID: UINT8;
     ubSectorID = GetAutoResolveSectorID();
-    pSoldier = (SOLDIERTYPE *)MemAlloc(sizeof(SOLDIERTYPE));
+    pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
     if (!pSoldier)
       return NULL;
     memcpy(pSoldier, &Soldier, sizeof(SOLDIERTYPE));
     pSoldier->ubID = 255;
-    pSoldier->sSectorX = (INT16)SECTORX(ubSectorID);
-    pSoldier->sSectorY = (INT16)SECTORY(ubSectorID);
+    pSoldier->sSectorX = SECTORX(ubSectorID);
+    pSoldier->sSectorY = SECTORY(ubSectorID);
     pSoldier->bSectorZ = 0;
     *pubID = 255;
     return pSoldier;
@@ -639,7 +639,7 @@ function GeneratePaletteForSoldier(pSoldier: Pointer<SOLDIERTYPE>, ubSoldierClas
   hair = -1;
 
   // choose random skin tone which will limit the choice of hair colors.
-  skin = (INT8)Random(NUMSKINS);
+  skin = Random(NUMSKINS);
   switch (skin) {
     case PINKSKIN:
       SET_PALETTEREP_ID(pSoldier->SkinPal, "PINKSKIN");
@@ -1339,22 +1339,22 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
   // Set the experience level based on the soldier class and exp level modifier or relative attribute level
   switch (ubSoldierClass) {
     case SOLDIER_CLASS_ADMINISTRATOR:
-      pp->bExpLevel = (INT8)2 + bExpLevelModifier;
+      pp->bExpLevel = 2 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_ARMY:
-      pp->bExpLevel = (INT8)4 + bExpLevelModifier;
+      pp->bExpLevel = 4 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_ELITE:
-      pp->bExpLevel = (INT8)6 + bExpLevelModifier;
+      pp->bExpLevel = 6 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_GREEN_MILITIA:
-      pp->bExpLevel = (INT8)2 + bExpLevelModifier;
+      pp->bExpLevel = 2 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_REG_MILITIA:
-      pp->bExpLevel = (INT8)4 + bExpLevelModifier;
+      pp->bExpLevel = 4 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_ELITE_MILITIA:
-      pp->bExpLevel = (INT8)6 + bExpLevelModifier;
+      pp->bExpLevel = 6 + bExpLevelModifier;
       break;
     case SOLDIER_CLASS_MINER:
       pp->bExpLevel = bp->bRelativeAttributeLevel; // avg 2 (1-4)
@@ -1370,11 +1370,11 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
           break;
         case YAF_MONSTER:
         case YAM_MONSTER:
-          pp->bExpLevel = (INT8)(3 + Random(2) + bExpLevelModifier); // 3-4
+          pp->bExpLevel = (3 + Random(2) + bExpLevelModifier); // 3-4
           break;
         case ADULTFEMALEMONSTER:
         case AM_MONSTER:
-          pp->bExpLevel = (INT8)(5 + Random(2) + bExpLevelModifier); // 5-6
+          pp->bExpLevel = (5 + Random(2) + bExpLevelModifier); // 5-6
           break;
         case QUEENMONSTER:
           pp->bExpLevel = 7 + bExpLevelModifier;
@@ -1407,19 +1407,19 @@ function CreateDetailedPlacementGivenBasicPlacementInfo(pp: Pointer<SOLDIERCREAT
 
   // Roll soldier's statistics and skills
   // Stat range is currently 49-99, bell-curved around a range of 16 values dependent on the stats level
-  pp->bLifeMax = (INT8)(bBaseAttribute + Random(9) + Random(8));
+  pp->bLifeMax = (bBaseAttribute + Random(9) + Random(8));
   pp->bLife = pp->bLifeMax;
-  pp->bAgility = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bDexterity = (INT8)(bBaseAttribute + Random(9) + Random(8));
+  pp->bAgility = (bBaseAttribute + Random(9) + Random(8));
+  pp->bDexterity = (bBaseAttribute + Random(9) + Random(8));
 
-  pp->bMarksmanship = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bMedical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bMechanical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bExplosive = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bLeadership = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bStrength = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bWisdom = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  pp->bMorale = (INT8)(bBaseAttribute + Random(9) + Random(8));
+  pp->bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+  pp->bMedical = (bBaseAttribute + Random(9) + Random(8));
+  pp->bMechanical = (bBaseAttribute + Random(9) + Random(8));
+  pp->bExplosive = (bBaseAttribute + Random(9) + Random(8));
+  pp->bLeadership = (bBaseAttribute + Random(9) + Random(8));
+  pp->bStrength = (bBaseAttribute + Random(9) + Random(8));
+  pp->bWisdom = (bBaseAttribute + Random(9) + Random(8));
+  pp->bMorale = (bBaseAttribute + Random(9) + Random(8));
 
   // CJC: now calculate the REAL experience level if in the really upper end
   ReduceHighExpLevels(&(pp->bExpLevel));
@@ -1635,18 +1635,18 @@ function UpdateSoldierWithStaticDetailedInformation(s: Pointer<SOLDIERTYPE>, spp
 
     // Roll enemy's combat statistics, taking bExpLevel into account.
     // Stat range is currently 40-99, slightly bell-curved around the bExpLevel
-    s->bLifeMax = (INT8)(bBaseAttribute + Random(9) + Random(8));
+    s->bLifeMax = (bBaseAttribute + Random(9) + Random(8));
     s->bLife = s->bLifeMax;
-    s->bAgility = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bDexterity = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bMarksmanship = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bMedical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bMechanical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bExplosive = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bLeadership = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bStrength = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bWisdom = (INT8)(bBaseAttribute + Random(9) + Random(8));
-    s->bMorale = (INT8)(bBaseAttribute + Random(9) + Random(8));
+    s->bAgility = (bBaseAttribute + Random(9) + Random(8));
+    s->bDexterity = (bBaseAttribute + Random(9) + Random(8));
+    s->bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+    s->bMedical = (bBaseAttribute + Random(9) + Random(8));
+    s->bMechanical = (bBaseAttribute + Random(9) + Random(8));
+    s->bExplosive = (bBaseAttribute + Random(9) + Random(8));
+    s->bLeadership = (bBaseAttribute + Random(9) + Random(8));
+    s->bStrength = (bBaseAttribute + Random(9) + Random(8));
+    s->bWisdom = (bBaseAttribute + Random(9) + Random(8));
+    s->bMorale = (bBaseAttribute + Random(9) + Random(8));
   }
   // Replace any soldier attributes with any static values in the detailed placement.
   if (spp->bLife != -1)
@@ -1730,7 +1730,7 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
   // NOTE OF WARNING: THIS CURRENTLY IGNORES THE ENEMY CLASS (ADMIN/REG/ELITE) FOR CALCULATING LEVEL & ATTRIBUTES
 
   // Rel level 0: Lvl 1, 1: Lvl 2-3, 2: Lvl 4-5, 3: Lvl 6-7, 4: Lvl 8-9
-  s->bExpLevel = (INT8)(2 * bRelativeAttributeLevel + Random(2));
+  s->bExpLevel = (2 * bRelativeAttributeLevel + Random(2));
 
   s->bExpLevel = max(1, s->bExpLevel); // minimum level of 1
   s->bExpLevel = min(9, s->bExpLevel); // maximum level of 9
@@ -1740,18 +1740,18 @@ function ModifySoldierAttributesWithNewRelativeLevel(s: Pointer<SOLDIERTYPE>, bR
 
   // Roll enemy's combat statistics, taking bExpLevel into account.
   // Stat range is currently 40-99, slightly bell-curved around the bExpLevel
-  s->bLifeMax = (INT8)(bBaseAttribute + Random(9) + Random(8));
+  s->bLifeMax = (bBaseAttribute + Random(9) + Random(8));
   s->bLife = s->bLifeMax;
-  s->bAgility = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bDexterity = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bMarksmanship = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bMedical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bMechanical = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bExplosive = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bLeadership = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bStrength = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bWisdom = (INT8)(bBaseAttribute + Random(9) + Random(8));
-  s->bMorale = (INT8)(bBaseAttribute + Random(9) + Random(8));
+  s->bAgility = (bBaseAttribute + Random(9) + Random(8));
+  s->bDexterity = (bBaseAttribute + Random(9) + Random(8));
+  s->bMarksmanship = (bBaseAttribute + Random(9) + Random(8));
+  s->bMedical = (bBaseAttribute + Random(9) + Random(8));
+  s->bMechanical = (bBaseAttribute + Random(9) + Random(8));
+  s->bExplosive = (bBaseAttribute + Random(9) + Random(8));
+  s->bLeadership = (bBaseAttribute + Random(9) + Random(8));
+  s->bStrength = (bBaseAttribute + Random(9) + Random(8));
+  s->bWisdom = (bBaseAttribute + Random(9) + Random(8));
+  s->bMorale = (bBaseAttribute + Random(9) + Random(8));
 }
 
 function ForceSoldierProfileID(pSoldier: Pointer<SOLDIERTYPE>, ubProfileID: UINT8): void {
@@ -1803,7 +1803,7 @@ function ReserveTacticalSoldierForAutoresolve(ubSoldierClass: UINT8): Pointer<SO
         MercPtrs[i]->sGridNo = NOWHERE;
 
         // Allocate and copy the soldier
-        pSoldier = (SOLDIERTYPE *)MemAlloc(sizeof(SOLDIERTYPE));
+        pSoldier = MemAlloc(sizeof(SOLDIERTYPE));
         if (!pSoldier)
           return NULL;
         memcpy(pSoldier, MercPtrs[i], sizeof(SOLDIERTYPE));
@@ -1834,14 +1834,14 @@ function TacticalCreateAdministrator(): Pointer<SOLDIERTYPE> {
   RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ADMINISTRATOR);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
-  bp.bAttitude = (INT8)Random(MAXATTITUDES);
+  bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ADMINISTRATOR;
   CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
   pSoldier = TacticalCreateSoldier(&pp, &ubID);
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier->sNoiseGridno = (INT16)(CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier->sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
     pSoldier->ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
@@ -1864,14 +1864,14 @@ function TacticalCreateArmyTroop(): Pointer<SOLDIERTYPE> {
   RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ARMY);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
-  bp.bAttitude = (INT8)Random(MAXATTITUDES);
+  bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ARMY;
   CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
   pSoldier = TacticalCreateSoldier(&pp, &ubID);
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier->sNoiseGridno = (INT16)(CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier->sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
     pSoldier->ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
@@ -1895,7 +1895,7 @@ function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   RandomizeRelativeLevel(&(bp.bRelativeEquipmentLevel), SOLDIER_CLASS_ELITE);
   bp.bTeam = ENEMY_TEAM;
   bp.bOrders = SEEKENEMY;
-  bp.bAttitude = (INT8)Random(MAXATTITUDES);
+  bp.bAttitude = Random(MAXATTITUDES);
   bp.bBodyType = -1;
   bp.ubSoldierClass = SOLDIER_CLASS_ELITE;
   CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
@@ -1910,7 +1910,7 @@ function TacticalCreateEliteEnemy(): Pointer<SOLDIERTYPE> {
   pSoldier = TacticalCreateSoldier(&pp, &ubID);
   if (pSoldier) {
     // send soldier to centre of map, roughly
-    pSoldier->sNoiseGridno = (INT16)(CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
+    pSoldier->sNoiseGridno = (CENTRAL_GRIDNO + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) + (Random(CENTRAL_RADIUS * 2 + 1) - CENTRAL_RADIUS) * WORLD_COLS);
     pSoldier->ubNoiseVolume = MAX_MISC_NOISE_DURATION;
   }
   return pSoldier;
@@ -1928,7 +1928,7 @@ function TacticalCreateMilitia(ubMilitiaClass: UINT8): Pointer<SOLDIERTYPE> {
   bp.bTeam = MILITIA_TEAM;
   bp.ubSoldierClass = ubMilitiaClass;
   bp.bOrders = STATIONARY;
-  bp.bAttitude = (INT8)Random(MAXATTITUDES);
+  bp.bAttitude = Random(MAXATTITUDES);
   // bp.bAttitude = AGGRESSIVE;
   bp.bBodyType = -1;
   CreateDetailedPlacementGivenBasicPlacementInfo(&pp, &bp);
@@ -1971,10 +1971,10 @@ function RandomizeRelativeLevel(pbRelLevel: Pointer<INT8>, ubSoldierClass: UINT8
   ubLocationModifier = GetLocationModifier(ubSoldierClass);
 
   // convert to 0 to 10 (divide by 3), the subtract 5 to get a range of -5 to +5
-  bRollModifier = (INT8)(ubLocationModifier / (DIFF_FACTOR_PALACE_DISTANCE / 10)) - 5;
+  bRollModifier = (ubLocationModifier / (DIFF_FACTOR_PALACE_DISTANCE / 10)) - 5;
 
   // roll a number from 0 to 9
-  bRoll = (INT8)Random(10);
+  bRoll = Random(10);
 
   // adjust by the modifier (giving -5 to +14)
   bAdjustedRoll = bRoll + bRollModifier;
@@ -2229,7 +2229,7 @@ function TrashAllSoldiers(): void {
   for (pSoldier = MercPtrs[cnt]; cnt < MAX_NUM_SOLDIERS; pSoldier++, cnt++) {
     if (pSoldier->bActive) {
       // Delete from world
-      TacticalRemoveSoldier((UINT16)cnt);
+      TacticalRemoveSoldier(cnt);
     }
   }
 }
@@ -2285,17 +2285,17 @@ function GetPythDistanceFromPalace(sSectorX: INT16, sSectorY: INT16): UINT8 {
   let fValue: float = 0.0;
 
   // grab number of rows and cols
-  sRows = (INT16)(abs((sSectorX) - (PALACE_SECTOR_X)));
-  sCols = (INT16)(abs((sSectorY) - (PALACE_SECTOR_Y)));
+  sRows = (abs((sSectorX) - (PALACE_SECTOR_X)));
+  sCols = (abs((sSectorY) - (PALACE_SECTOR_Y)));
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  fValue = (float)sqrt((float)(sRows * sRows) + (float)(sCols * sCols));
+  fValue = sqrt((sRows * sRows) + (sCols * sCols));
 
   if (fmod(fValue, 1.0) >= 0.50) {
-    ubDistance = (UINT8)(1 + fValue);
+    ubDistance = (1 + fValue);
   } else {
-    ubDistance = (UINT8)fValue;
+    ubDistance = fValue;
   }
 
   return ubDistance;
@@ -2368,7 +2368,7 @@ function ReduceHighExpLevels(pbExpLevel: Pointer<INT8>): void {
       break;
   }
 
-  ubRoll = (UINT8)Random(100);
+  ubRoll = Random(100);
 
   if (ubRoll < ubChanceLvl8)
     *pbExpLevel = 8;

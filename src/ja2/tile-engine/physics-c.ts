@@ -3,16 +3,16 @@ const TEST_OBJECT_NO_COLLISIONS = 1;
 const TEST_OBJECT_ANY_COLLISION = 2;
 const TEST_OBJECT_NOTWALLROOF_COLLISIONS = 3;
 
-const OUTDOORS_START_ANGLE = (FLOAT)(PI / 4);
-const INDOORS_START_ANGLE = (FLOAT)(PI / 30);
+const OUTDOORS_START_ANGLE = (PI / 4);
+const INDOORS_START_ANGLE = (PI / 30);
 //#define INDOORS_START_ANGLE									(FLOAT)( 0 )
-const GLAUNCHER_START_ANGLE = (FLOAT)(PI / 8);
-const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (FLOAT)(PI / 6);
+const GLAUNCHER_START_ANGLE = (PI / 8);
+const GLAUNCHER_HIGHER_LEVEL_START_ANGLE = (PI / 6);
 
-const GET_THROW_HEIGHT = (l) => (INT16)((l * 256));
-const GET_SOLDIER_THROW_HEIGHT = (l) => (INT16)((l * 256) + STANDING_HEIGHT);
+const GET_THROW_HEIGHT = (l) => ((l * 256));
+const GET_SOLDIER_THROW_HEIGHT = (l) => ((l * 256) + STANDING_HEIGHT);
 
-const GET_OBJECT_LEVEL = (z) => ((INT8)((z + 10) / HEIGHT_UNITS));
+const GET_OBJECT_LEVEL = (z) => (((z + 10) / HEIGHT_UNITS));
 const OBJECT_DETONATE_ON_IMPACT = (o) => ((o->Obj.usItem == MORTAR_SHELL)); // && ( o->ubActionCode == THROW_ARM_ITEM || pObject->fTestObject ) )
 
 const MAX_INTEGRATIONS = 8;
@@ -30,13 +30,13 @@ let ObjectSlots: REAL_OBJECT[] /* [NUM_OBJECT_SLOTS] */;
 let guiNumObjectSlots: UINT32 = 0;
 let fDampingActive: BOOLEAN = FALSE;
 // real						Kdl	= (float)0.5;					// LINEAR DAMPENING ( WIND RESISTANCE )
-let Kdl: real = (float)(0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
+let Kdl: real = (0.1 * TIME_MULTI); // LINEAR DAMPENING ( WIND RESISTANCE )
 
 const EPSILONV = 0.5;
-const EPSILONP = () => (real)0.01;
+const EPSILONP = () => 0.01;
 const EPSILONPZ = 3;
 
-const CALCULATE_OBJECT_MASS = (m) => ((float)(m * 2));
+const CALCULATE_OBJECT_MASS = (m) => ((m * 2));
 const SCALE_VERT_VAL_TO_HORZ = (f) => ((f / HEIGHT_UNITS) * CELL_X_SIZE);
 const SCALE_HORZ_VAL_TO_VERT = (f) => ((f / CELL_X_SIZE) * HEIGHT_UNITS);
 
@@ -46,11 +46,11 @@ function GetFreeObjectSlot(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumObjectSlots; uiCount++) {
     if ((ObjectSlots[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumObjectSlots < NUM_OBJECT_SLOTS)
-    return (INT32)guiNumObjectSlots++;
+    return guiNumObjectSlots++;
 
   return -1;
 }
@@ -60,7 +60,7 @@ function RecountObjectSlots(): void {
 
   for (uiCount = guiNumObjectSlots - 1; (uiCount >= 0); uiCount--) {
     if ((ObjectSlots[uiCount].fAllocated)) {
-      guiNumObjectSlots = (UINT32)(uiCount + 1);
+      guiNumObjectSlots = (uiCount + 1);
       return;
     }
   }
@@ -121,11 +121,11 @@ function CreatePhysicalObject(pGameObj: Pointer<OBJECTTYPE>, dLifeLength: real, 
   pObject->InitialForce.y = SCALE_VERT_VAL_TO_HORZ(yForce);
   pObject->InitialForce.z = zForce;
 
-  pObject->InitialForce = VDivScalar(&(pObject->InitialForce), (float)TIME_MULTI);
+  pObject->InitialForce = VDivScalar(&(pObject->InitialForce), TIME_MULTI);
   pObject->InitialForce = VMultScalar(&(pObject->InitialForce), 1.5);
 
   // Calculate gridNo
-  pObject->sGridNo = MAPROWCOLTOPOS(((INT16)yPos / CELL_Y_SIZE), ((INT16)xPos / CELL_X_SIZE));
+  pObject->sGridNo = MAPROWCOLTOPOS((yPos / CELL_Y_SIZE), (xPos / CELL_X_SIZE));
   pObject->iID = iObjectIndex;
   pObject->pNode = NULL;
   pObject->pShadow = NULL;
@@ -164,7 +164,7 @@ function SimulateWorld(): void {
         // Get object
         pObject = &(ObjectSlots[cnt]);
 
-        SimulateObject(pObject, (real)DELTA_T);
+        SimulateObject(pObject, DELTA_T);
       }
     }
   }
@@ -188,16 +188,16 @@ function SimulateObject(pObject: Pointer<REAL_OBJECT>, deltaT: real): void {
   let iCollisionID: INT32;
   let fEndThisObject: BOOLEAN = FALSE;
 
-  if (!PhysicsUpdateLife(pObject, (float)deltaT)) {
+  if (!PhysicsUpdateLife(pObject, deltaT)) {
     return;
   }
 
   if (pObject->fAlive) {
     CurrentTime = 0;
-    TargetTime = (float)deltaT;
+    TargetTime = deltaT;
 
     // Do subtime here....
-    DeltaTime = (float)deltaT / (float)10;
+    DeltaTime = deltaT / 10;
 
     if (!PhysicsComputeForces(pObject)) {
       return;
@@ -239,7 +239,7 @@ function PhysicsComputeForces(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
   // Note: Only apply gravity if we are not resting on some structure surface
   if (!pObject->fZOnRest) {
-    pObject->Force.z -= (real)GRAVITY;
+    pObject->Force.z -= GRAVITY;
   }
 
   // Set intial force to zero
@@ -306,9 +306,9 @@ function PhysicsUpdateLife(pObject: Pointer<REAL_OBJECT>, DeltaTime: real): BOOL
 
       // Make impact noise....
       if (pObject->Obj.usItem == ROCK || pObject->Obj.usItem == ROCK2) {
-        MakeNoise(pObject->ubOwner, pObject->sGridNo, 0, gpWorldLevelData[pObject->sGridNo].ubTerrainID, (UINT8)(9 + PreRandom(9)), NOISE_ROCK_IMPACT);
+        MakeNoise(pObject->ubOwner, pObject->sGridNo, 0, gpWorldLevelData[pObject->sGridNo].ubTerrainID, (9 + PreRandom(9)), NOISE_ROCK_IMPACT);
       } else if (Item[pObject->Obj.usItem].usItemClass & IC_GRENADE) {
-        MakeNoise(pObject->ubOwner, pObject->sGridNo, 0, gpWorldLevelData[pObject->sGridNo].ubTerrainID, (UINT8)(9 + PreRandom(9)), NOISE_GRENADE_IMPACT);
+        MakeNoise(pObject->ubOwner, pObject->sGridNo, 0, gpWorldLevelData[pObject->sGridNo].ubTerrainID, (9 + PreRandom(9)), NOISE_GRENADE_IMPACT);
       }
 
       if (!pObject->fTestObject && pObject->iOldCollisionCode == COLLISION_GROUND) {
@@ -657,7 +657,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
         // Break window!
         PhysicsDebugMsg(String("Object %d: Collision Window", pObject->iID));
 
-        sGridNo = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
+        sGridNo = MAPROWCOLTOPOS((pObject->Position.y / CELL_Y_SIZE), (pObject->Position.x / CELL_X_SIZE));
 
         ObjectHitWindow(sGridNo, usStructureID, FALSE, TRUE);
       }
@@ -678,10 +678,10 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       pObject->fApplyFriction = TRUE;
       // pObject->AppliedMu			= (float)(0.54 * TIME_MULTI );
-      pObject->AppliedMu = (float)(0.34 * TIME_MULTI);
+      pObject->AppliedMu = (0.34 * TIME_MULTI);
 
       // dElasity = (float)1.5;
-      dElasity = (float)1.3;
+      dElasity = 1.3;
 
       fDoCollision = TRUE;
 
@@ -696,9 +696,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       // Continue going...
       pObject->fApplyFriction = TRUE;
-      pObject->AppliedMu = (float)(1.54 * TIME_MULTI);
+      pObject->AppliedMu = (1.54 * TIME_MULTI);
 
-      sGridNo = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
+      sGridNo = MAPROWCOLTOPOS((pObject->Position.y / CELL_Y_SIZE), (pObject->Position.x / CELL_X_SIZE));
 
       // Make thing unalive...
       pObject->fAlive = FALSE;
@@ -738,9 +738,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
           // Adjust for absolute positioning
           pNode->pLevelNode->uiFlags |= LEVELNODE_USEABSOLUTEPOS;
 
-          pNode->pLevelNode->sRelativeX = (INT16)pObject->Position.x;
-          pNode->pLevelNode->sRelativeY = (INT16)pObject->Position.y;
-          pNode->pLevelNode->sRelativeZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)pObject->Position.z);
+          pNode->pLevelNode->sRelativeX = pObject->Position.x;
+          pNode->pLevelNode->sRelativeY = pObject->Position.y;
+          pNode->pLevelNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject->Position.z);
         }
       }
     } else if (iCollisionCode == COLLISION_ROOF || iCollisionCode == COLLISION_INTERIOR_ROOF) {
@@ -749,9 +749,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.z = -1;
 
       pObject->fApplyFriction = TRUE;
-      pObject->AppliedMu = (float)(0.54 * TIME_MULTI);
+      pObject->AppliedMu = (0.54 * TIME_MULTI);
 
-      dElasity = (float)1.4;
+      dElasity = 1.4;
 
       fDoCollision = TRUE;
     }
@@ -781,9 +781,9 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
       vTemp.z = -1;
 
       pObject->fApplyFriction = TRUE;
-      pObject->AppliedMu = (float)(0.54 * TIME_MULTI);
+      pObject->AppliedMu = (0.54 * TIME_MULTI);
 
-      dElasity = (float)1.2;
+      dElasity = 1.2;
 
       fDoCollision = TRUE;
     } else if (iCollisionCode == COLLISION_WALL_SOUTHEAST || iCollisionCode == COLLISION_WALL_SOUTHWEST || iCollisionCode == COLLISION_WALL_NORTHEAST || iCollisionCode == COLLISION_WALL_NORTHWEST) {
@@ -794,7 +794,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       fDoCollision = TRUE;
 
-      dElasity = (float)1.1;
+      dElasity = 1.1;
     } else {
       let vIncident: vector_3;
 
@@ -820,7 +820,7 @@ function PhysicsCheckForCollisions(pObject: Pointer<REAL_OBJECT>, piCollisionID:
 
       fDoCollision = TRUE;
 
-      dElasity = (float)1.1;
+      dElasity = 1.1;
     }
 
     if (fDoCollision) {
@@ -874,7 +874,7 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
   let hVObject: HVOBJECT;
 
   // Determine new gridno
-  sNewGridNo = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
+  sNewGridNo = MAPROWCOLTOPOS((pObject->Position.y / CELL_Y_SIZE), (pObject->Position.x / CELL_X_SIZE));
 
   if (pObject->fFirstTimeMoved) {
     pObject->fFirstTimeMoved = FALSE;
@@ -901,14 +901,14 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
         if (sNewGridNo != pObject->sGridNo) {
           let AniParams: ANITILE_PARAMS;
 
-          AniParams.sGridNo = (INT16)sNewGridNo;
+          AniParams.sGridNo = sNewGridNo;
           AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-          AniParams.sDelay = (INT16)(100 + PreRandom(100));
+          AniParams.sDelay = (100 + PreRandom(100));
           AniParams.sStartFrame = 0;
           AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_ALWAYS_TRANSLUCENT;
-          AniParams.sX = (INT16)pObject->Position.x;
-          AniParams.sY = (INT16)pObject->Position.y;
-          AniParams.sZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)pObject->Position.z);
+          AniParams.sX = pObject->Position.x;
+          AniParams.sY = pObject->Position.y;
+          AniParams.sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject->Position.z);
 
           strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SMK.STI");
 
@@ -987,14 +987,14 @@ function PhysicsMoveObject(pObject: Pointer<REAL_OBJECT>): BOOLEAN {
 
         // Add new object / update position
         // Update position data
-        pObject->pNode->sRelativeX = (INT16)pObject->Position.x; // + pTrav->sOffsetX;
-        pObject->pNode->sRelativeY = (INT16)pObject->Position.y; // + pTrav->sOffsetY;
-        pObject->pNode->sRelativeZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)pObject->Position.z);
+        pObject->pNode->sRelativeX = pObject->Position.x; // + pTrav->sOffsetX;
+        pObject->pNode->sRelativeY = pObject->Position.y; // + pTrav->sOffsetY;
+        pObject->pNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject->Position.z);
 
         // Update position data
-        pObject->pShadow->sRelativeX = (INT16)pObject->Position.x; // + pTrav->sOffsetX;
-        pObject->pShadow->sRelativeY = (INT16)pObject->Position.y; // + pTrav->sOffsetY;
-        pObject->pShadow->sRelativeZ = (INT16)gpWorldLevelData[pObject->sGridNo].sHeight;
+        pObject->pShadow->sRelativeX = pObject->Position.x; // + pTrav->sOffsetX;
+        pObject->pShadow->sRelativeY = pObject->Position.y; // + pTrav->sOffsetY;
+        pObject->pShadow->sRelativeZ = gpWorldLevelData[pObject->sGridNo].sHeight;
       }
     }
   }
@@ -1038,21 +1038,21 @@ function FindBestForceForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vPosition.z = sStartZ;
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dzDegrees);
+  vDirNormal.z = sin(dzDegrees);
 
   // Get range
-  dRange = (float)GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
+  dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
 
   // calculate force needed
-  { dForce = (float)(12 * (sqrt((GRAVITY * dRange) / sin(2 * dzDegrees)))); }
+  { dForce = (12 * (sqrt((GRAVITY * dRange) / sin(2 * dzDegrees)))); }
 
   do {
     // This first force is just an estimate...
@@ -1120,18 +1120,18 @@ function FindFinalGridNoGivenDirectionGridNoForceAngle(sSrcGridNo: INT16, sGridN
   vPosition.z = sStartZ;
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dzDegrees);
+  vDirNormal.z = sin(dzDegrees);
 
   // Get range
-  dRange = (float)GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
+  dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
 
   // Now use a force
   vForce.x = dForce * vDirNormal.x;
@@ -1152,7 +1152,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   let sSrcX: INT16;
   let sSrcY: INT16;
   let dRange: real;
-  let dzDegrees: real = ((float)PI / 8);
+  let dzDegrees: real = (PI / 8);
   let dPercentDiff: real = 0;
   let dTestRange: real;
   let dTestDiff: real;
@@ -1168,18 +1168,18 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
   vPosition.z = sStartZ;
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dzDegrees);
+  vDirNormal.z = sin(dzDegrees);
 
   // Get range
-  dRange = (float)GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
+  dRange = GetRangeInCellCoordsFromGridNoDiff(sGridNo, sSrcGridNo);
 
   do {
     // This first direction is just an estimate...
@@ -1198,7 +1198,7 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
 
     // How have we done?
     // < 5% off...
-    if (fabs((FLOAT)(dTestDiff / dRange)) < .05) {
+    if (fabs((dTestDiff / dRange)) < .05) {
       break;
     }
 
@@ -1217,17 +1217,17 @@ function FindBestAngleForTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: 
       // Use 0.....
       dzDegrees = 0;
       // From degrees, calculate Z portion of normal
-      vDirNormal.z = (float)sin(dzDegrees);
+      vDirNormal.z = sin(dzDegrees);
       // Now use a force
       vForce.x = dForce * vDirNormal.x;
       vForce.y = dForce * vDirNormal.y;
       vForce.z = dForce * vDirNormal.z;
       dTestRange = CalculateObjectTrajectory(sEndZ, pItem, &vPosition, &vForce, psGridNo);
-      return (FLOAT)(dzDegrees);
+      return (dzDegrees);
     }
 
     // From degrees, calculate Z portion of normal
-    vDirNormal.z = (float)sin(dzDegrees);
+    vDirNormal.z = sin(dzDegrees);
   } while (TRUE);
 
   // OK, we have our force, calculate change to get through without collide
@@ -1258,15 +1258,15 @@ function FindTrajectory(sSrcGridNo: INT16, sGridNo: INT16, sStartZ: INT16, sEndZ
   vPosition.z = sStartZ;
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dzDegrees);
+  vDirNormal.z = sin(dzDegrees);
 
   // Now use a force
   vForce.x = dForce * vDirNormal.x;
@@ -1307,11 +1307,11 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
 
   // Alrighty, move this beast until it dies....
   while (pObject->fAlive) {
-    SimulateObject(pObject, (float)DELTA_T);
+    SimulateObject(pObject, DELTA_T);
   }
 
   // Calculate gridno from last position
-  sGridNo = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
+  sGridNo = MAPROWCOLTOPOS((pObject->Position.y / CELL_Y_SIZE), (pObject->Position.x / CELL_X_SIZE));
 
   PhysicsDeleteObject(pObject);
 
@@ -1323,7 +1323,7 @@ function CalculateObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, 
     (*psFinalGridNo) = sGridNo;
   }
 
-  return (FLOAT)sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
+  return sqrt((dDiffX * dDiffX) + (dDiffY * dDiffY));
 }
 
 function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJECTTYPE>, vPosition: Pointer<vector_3>, vForce: Pointer<vector_3>, psNewGridNo: Pointer<INT16>, pbLevel: Pointer<INT8>, fFromUI: BOOLEAN): INT32 {
@@ -1348,7 +1348,7 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
 
   // Alrighty, move this beast until it dies....
   while (pObject->fAlive) {
-    SimulateObject(pObject, (float)DELTA_T);
+    SimulateObject(pObject, DELTA_T);
   }
 
   if (psNewGridNo != NULL) {
@@ -1356,9 +1356,9 @@ function ChanceToGetThroughObjectTrajectory(sTargetZ: INT16, pItem: Pointer<OBJE
 
     // If NOT from UI, use exact collision position
     if (fFromUI) {
-      (*psNewGridNo) = MAPROWCOLTOPOS(((INT16)pObject->Position.y / CELL_Y_SIZE), ((INT16)pObject->Position.x / CELL_X_SIZE));
+      (*psNewGridNo) = MAPROWCOLTOPOS((pObject->Position.y / CELL_Y_SIZE), (pObject->Position.x / CELL_X_SIZE));
     } else {
-      (*psNewGridNo) = MAPROWCOLTOPOS(((INT16)pObject->EndedWithCollisionPosition.y / CELL_Y_SIZE), ((INT16)pObject->EndedWithCollisionPosition.x / CELL_X_SIZE));
+      (*psNewGridNo) = MAPROWCOLTOPOS((pObject->EndedWithCollisionPosition.y / CELL_Y_SIZE), (pObject->EndedWithCollisionPosition.x / CELL_X_SIZE));
     }
 
     (*pbLevel) = GET_OBJECT_LEVEL(pObject->EndedWithCollisionPosition.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[(*psNewGridNo)].sHeight));
@@ -1485,7 +1485,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     // ATE: If we are a mortar, make sure we are at min.
     if (fMortar || fGLauncher) {
       // find min force
-      dMinForce = CalculateForceFromRange((INT16)(sMinRange / 10), (FLOAT)(PI / 4));
+      dMinForce = CalculateForceFromRange((sMinRange / 10), (PI / 4));
 
       if (dMagForce < dMinForce) {
         dMagForce = dMinForce;
@@ -1501,7 +1501,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     dMagForce = CalculateSoldierMaxForce(pSoldier, dDegrees, pItem, fArmed);
 
     if (ubLevel == 0) {
-      dMagForce = (float)(dMagForce * 1.25);
+      dMagForce = (dMagForce * 1.25);
     }
 
     FindTrajectory(pSoldier->sGridNo, sGridNo, sStartZ, sEndZ, dMagForce, dDegrees, pItem, psFinalGridNo);
@@ -1509,7 +1509,7 @@ function CalculateLaunchItemBasicParams(pSoldier: Pointer<SOLDIERTYPE>, pItem: P
     if (ubLevel == 1 && !fThroughIntermediateGridNo) {
       // Is there a guy here...?
       if (WhoIsThere2(sGridNo, ubLevel) != NO_SOLDIER) {
-        dMagForce = (float)(dMagForce * 0.85);
+        dMagForce = (dMagForce * 0.85);
 
         // Yep, try to get angle...
         dNewDegrees = FindBestAngleForTrajectory(pSoldier->sGridNo, sGridNo, GET_SOLDIER_THROW_HEIGHT(pSoldier->bLevel), 150, dMagForce, pItem, psFinalGridNo);
@@ -1553,15 +1553,15 @@ function CalculateLaunchItemChanceToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, p
   vPosition.z = GET_SOLDIER_THROW_HEIGHT(pSoldier->bLevel);
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dDegrees);
+  vDirNormal.z = sin(dDegrees);
 
   // Do force....
   vForce.x = dForce * vDirNormal.x;
@@ -1608,11 +1608,11 @@ function CalculateSoldierMaxForce(pSoldier: Pointer<SOLDIERTYPE>, dDegrees: FLOA
   let uiMaxRange: INT32;
   let dMagForce: FLOAT;
 
-  dDegrees = (FLOAT)(PI / 4);
+  dDegrees = (PI / 4);
 
   uiMaxRange = CalcMaxTossRange(pSoldier, pItem->usItem, fArmed);
 
-  dMagForce = CalculateForceFromRange((INT16)uiMaxRange, dDegrees);
+  dMagForce = CalculateForceFromRange(uiMaxRange, dDegrees);
 
   return dMagForce;
 }
@@ -1669,14 +1669,14 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
     bMaxRadius = 5;
 
     // scale if pyth spaces away is too far
-    if (PythSpacesAway(sGridNo, pSoldier->sGridNo) < ((float)bMaxRadius / (float)1.5)) {
+    if (PythSpacesAway(sGridNo, pSoldier->sGridNo) < (bMaxRadius / 1.5)) {
       bMaxRadius = PythSpacesAway(sGridNo, pSoldier->sGridNo) / 2;
     }
 
     // Get radius
-    fScale = ((float)bMissBy / (float)MAX_MISS_BY);
+    fScale = (bMissBy / MAX_MISS_BY);
 
-    bMaxMissRadius = (INT8)(bMaxRadius * fScale);
+    bMaxMissRadius = (bMaxRadius * fScale);
 
     // Limit max radius...
     if (bMaxMissRadius > 4) {
@@ -1704,15 +1704,15 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   ConvertGridNoToCenterCellXY(pSoldier->sGridNo, &sSrcX, &sSrcY);
 
   // OK, get direction normal
-  vDirNormal.x = (float)(sDestX - sSrcX);
-  vDirNormal.y = (float)(sDestY - sSrcY);
+  vDirNormal.x = (sDestX - sSrcX);
+  vDirNormal.y = (sDestY - sSrcY);
   vDirNormal.z = 0;
 
   // NOmralize
   vDirNormal = VGetNormal(&vDirNormal);
 
   // From degrees, calculate Z portion of normal
-  vDirNormal.z = (float)sin(dDegrees);
+  vDirNormal.z = sin(dDegrees);
 
   // Do force....
   vForce.x = dForce * vDirNormal.x;
@@ -1726,8 +1726,8 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
   pSoldier->pTempObject = MemAlloc(sizeof(OBJECTTYPE));
 
   memcpy(pSoldier->pTempObject, pItem, sizeof(OBJECTTYPE));
-  pSoldier->pThrowParams->dX = (float)sSrcX;
-  pSoldier->pThrowParams->dY = (float)sSrcY;
+  pSoldier->pThrowParams->dX = sSrcX;
+  pSoldier->pThrowParams->dY = sSrcY;
 
   sStartZ = GET_SOLDIER_THROW_HEIGHT(pSoldier->bLevel);
   usLauncher = GetLauncherFromLaunchable(pItem->usItem);
@@ -1736,7 +1736,7 @@ function CalculateLaunchItemParamsForThrow(pSoldier: Pointer<SOLDIERTYPE>, sGrid
     sStartZ = (pSoldier->bLevel * 256) + 50;
   }
 
-  pSoldier->pThrowParams->dZ = (float)sStartZ;
+  pSoldier->pThrowParams->dZ = sStartZ;
   pSoldier->pThrowParams->dForceX = vForce.x;
   pSoldier->pThrowParams->dForceY = vForce.y;
   pSoldier->pThrowParams->dForceZ = vForce.z;
@@ -1776,7 +1776,7 @@ function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID:
   if (pObject->fTestObject == NO_TEST_OBJECT) {
     // Is it a guy?
     if (usStructureID < INVALID_STRUCTURE_ID) {
-      if (pObject->ubLastTargetTakenDamage != (UINT8)usStructureID) {
+      if (pObject->ubLastTargetTakenDamage != usStructureID) {
         pSoldier = MercPtrs[usStructureID];
 
         sDamage = 1;
@@ -1784,7 +1784,7 @@ function CheckForObjectHittingMerc(pObject: Pointer<REAL_OBJECT>, usStructureID:
 
         EVENT_SoldierGotHit(pSoldier, NOTHING, sDamage, sBreath, pSoldier->bDirection, 0, pObject->ubOwner, FIRE_WEAPON_TOSSED_OBJECT_SPECIAL, 0, 0, NOWHERE);
 
-        pObject->ubLastTargetTakenDamage = (UINT8)(usStructureID);
+        pObject->ubLastTargetTakenDamage = (usStructureID);
       }
     }
   }
@@ -1908,7 +1908,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
   let bLevel: INT8 = 0;
 
   // Calculate pixel position of z
-  sZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)(pObject->Position.z)) - gpWorldLevelData[pObject->sGridNo].sHeight;
+  sZ = CONVERT_HEIGHTUNITS_TO_PIXELS((pObject->Position.z)) - gpWorldLevelData[pObject->sGridNo].sHeight;
 
   // get OBJECTTYPE
   pObj = &(pObject->Obj);
@@ -1930,12 +1930,12 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
 
   if (fCheckForDuds) {
     // If we landed on anything other than the floor, always! go off...
-    if (sZ != 0 || pObject->fInWater || (pObj->bStatus[0] >= USABLE && (PreRandom(100) < (UINT32)pObj->bStatus[0] + PreRandom(50))))
+    if (sZ != 0 || pObject->fInWater || (pObj->bStatus[0] >= USABLE && (PreRandom(100) < pObj->bStatus[0] + PreRandom(50))))
     {
       fDoImpact = TRUE;
     } else // didn't go off!
     {
-      if (pObj->bStatus[0] >= USABLE && PreRandom(100) < (UINT32)pObj->bStatus[0] + PreRandom(50))
+      if (pObj->bStatus[0] >= USABLE && PreRandom(100) < pObj->bStatus[0] + PreRandom(50))
       {
         iTrapped = PreRandom(4) + 2;
       }
@@ -1945,7 +1945,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
         usFlags |= WORLD_ITEM_ARMED_BOMB;
 
         pObj->bDetonatorType = BOMB_TIMED;
-        pObj->bDelay = (INT8)(1 + PreRandom(2));
+        pObj->bDelay = (1 + PreRandom(2));
       }
 
       // ATE: If we have collided with roof last...
@@ -1960,7 +1960,7 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
       NotifySoldiersToLookforItems();
 
       if (pObject->ubOwner != NOBODY) {
-        DoMercBattleSound(MercPtrs[pObject->ubOwner], (INT8)(BATTLE_SOUND_CURSE1));
+        DoMercBattleSound(MercPtrs[pObject->ubOwner], (BATTLE_SOUND_CURSE1));
       }
     }
   } else {
@@ -1984,11 +1984,11 @@ function HandleArmedObjectImpact(pObject: Pointer<REAL_OBJECT>): void {
                               }
       */
 
-      IgniteExplosion(pObject->ubOwner, (INT16)pObject->Position.x, (INT16)pObject->Position.y, sZ, pObject->sGridNo, pObject->Obj.usItem, GET_OBJECT_LEVEL(pObject->Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject->sGridNo].sHeight)));
+      IgniteExplosion(pObject->ubOwner, pObject->Position.x, pObject->Position.y, sZ, pObject->sGridNo, pObject->Obj.usItem, GET_OBJECT_LEVEL(pObject->Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject->sGridNo].sHeight)));
     } else if (pObject->Obj.usItem == MORTAR_SHELL) {
-      sZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS((INT16)pObject->Position.z);
+      sZ = CONVERT_HEIGHTUNITS_TO_PIXELS(pObject->Position.z);
 
-      IgniteExplosion(pObject->ubOwner, (INT16)pObject->Position.x, (INT16)pObject->Position.y, sZ, pObject->sGridNo, pObject->Obj.usItem, GET_OBJECT_LEVEL(pObject->Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject->sGridNo].sHeight)));
+      IgniteExplosion(pObject->ubOwner, pObject->Position.x, pObject->Position.y, sZ, pObject->sGridNo, pObject->Obj.usItem, GET_OBJECT_LEVEL(pObject->Position.z - CONVERT_PIXELS_TO_HEIGHTUNITS(gpWorldLevelData[pObject->sGridNo].sHeight)));
     }
   }
 }
@@ -2069,8 +2069,8 @@ function RandomGridFromRadius(sSweetGridNo: INT16, ubMinRadius: INT8, ubMaxRadiu
   }
 
   do {
-    sX = (UINT16)PreRandom(ubMaxRadius);
-    sY = (UINT16)PreRandom(ubMaxRadius);
+    sX = PreRandom(ubMaxRadius);
+    sY = PreRandom(ubMaxRadius);
 
     if ((sX < ubMinRadius || sY < ubMinRadius) && ubMaxRadius != ubMinRadius) {
       continue;

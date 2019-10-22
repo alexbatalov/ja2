@@ -86,11 +86,11 @@ function EnterInsuranceInfo(): BOOLEAN {
   usPosX = INS_INFO_LINK_START_X;
   // link to go to the contract page
   // link to go to the home page
-  MSYS_DefineRegion(&gSelectedInsuranceInfoHomeLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (UINT16)(usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
+  MSYS_DefineRegion(&gSelectedInsuranceInfoHomeLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceInfoHomeLinkRegionCallBack);
   MSYS_AddRegion(&gSelectedInsuranceInfoHomeLinkRegion);
 
   usPosX += INS_INFO_LINK_START_OFFSET + INS_INFO_LINK_TO_CONTRACT_WIDTH;
-  MSYS_DefineRegion(&gSelectedInsuranceInfoLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (UINT16)(usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
+  MSYS_DefineRegion(&gSelectedInsuranceInfoLinkRegion, usPosX, INS_INFO_LINK_TO_CONTRACT_Y - 37, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceLinkRegionCallBack);
   MSYS_AddRegion(&gSelectedInsuranceInfoLinkRegion);
 
   gubCurrentInsInfoSubPage = INS_INFO_INFO_TOC;
@@ -157,13 +157,13 @@ function RenderInsuranceInfo(): void {
   usPosX = INS_INFO_LINK_START_X;
 
   // Display the red bar under the link at the bottom.  and the text
-  DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (UINT16)(usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
+  DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
   swprintf(sText, L"%s", pMessageStrings[MSG_HOMEPAGE]);
   DisplayWrappedString(usPosX, INS_INFO_LINK_TO_CONTRACT_TEXT_Y + 14, INS_INFO_LINK_TO_CONTRACT_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   usPosX += INS_INFO_LINK_START_OFFSET + INS_INFO_LINK_TO_CONTRACT_WIDTH;
 
   // Display the red bar under the link at the bottom.  and the text
-  DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (UINT16)(usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
+  DisplaySmallRedLineWithShadow(usPosX, INS_INFO_LINK_TO_CONTRACT_Y, (usPosX + INS_INFO_LINK_TO_CONTRACT_WIDTH), INS_INFO_LINK_TO_CONTRACT_Y);
   GetInsuranceText(INS_SNGL_TO_ENTER_REVIEW, sText);
   DisplayWrappedString(usPosX, INS_INFO_LINK_TO_CONTRACT_TEXT_Y, INS_INFO_LINK_TO_CONTRACT_WIDTH, 2, INS_FONT_MED, INS_FONT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
@@ -261,7 +261,7 @@ function DisplaySubmitClaimPage(): void {
 
   // display the BIG FRAUD
   GetInsuranceText(INS_SNGL_FRAUD, sText);
-  DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (UINT16)(usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG, INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG, INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   usPosX = INS_INFO_FIRST_PARAGRAPH_X + StringPixLength(sText, INS_FONT_BIG) + 2;
   GetInsuranceText(INS_MLTI_WE_RESERVE_THE_RIGHT, sText);
@@ -337,7 +337,7 @@ function DisplayRenewingPremiumPage(): void {
 
   // display the LOWER PREMIUM FOR RENWING EARLY
   GetInsuranceText(INS_SNGL_LOWER_PREMIUMS_4_RENEWING, sText);
-  DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (UINT16)(usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG, INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(INS_INFO_FIRST_PARAGRAPH_X, (usNewLineOffset - 1), INS_INFO_FIRST_PARAGRAPH_WIDTH, 2, INS_FONT_BIG, INS_INFO_FRAUD_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS + 2;
 
   /*
@@ -426,7 +426,7 @@ function DisplayInfoTocPage(): void {
   GetInsuranceText(INS_SNGL_WE_CAN_OFFER_U, sText);
   DrawTextToScreen(sText, INS_INFO_TOC_SUBTITLE_X, usNewLineOffset, 640 - INS_INFO_INFO_TOC_TITLE_X, INS_FONT_BIG, INS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   usPosY = usNewLineOffset + 12;
-  DisplaySmallRedLineWithShadow(INS_INFO_SUBTITLE_X, usPosY, (UINT16)(INS_INFO_SUBTITLE_X + INS_INFO_SUBTITLE_LINE_WIDTH), usPosY);
+  DisplaySmallRedLineWithShadow(INS_INFO_SUBTITLE_X, usPosY, (INS_INFO_SUBTITLE_X + INS_INFO_SUBTITLE_LINE_WIDTH), usPosY);
 
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;
   usNewLineOffset += INS_INFO_SPACE_BN_PARAGRAPHS;

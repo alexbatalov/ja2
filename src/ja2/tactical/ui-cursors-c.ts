@@ -115,7 +115,7 @@ function GetProperItemCursor(ubSoldierID: UINT8, ubItemIndex: UINT16, usMapPos: 
         // Alrighty, let's change the cursor!
         if (fRecalc && gfUIFullTargetFound) {
           // ATE: Check for ammo
-          if (IsValidTargetMerc((UINT8)gusUIFullTargetID) && EnoughAmmo(pSoldier, FALSE, HANDPOS)) {
+          if (IsValidTargetMerc(gusUIFullTargetID) && EnoughAmmo(pSoldier, FALSE, HANDPOS)) {
             // IF it's an ememy, goto confirm action mode
             if ((guiUIFullTargetFlags & ENEMY_MERC) && (guiUIFullTargetFlags & VISIBLE_MERC) && !(guiUIFullTargetFlags & DEAD_MERC) && !gfCannotGetThrough) {
               guiPendingOverrideEvent = A_CHANGE_TO_CONFIM_ACTION;
@@ -225,10 +225,10 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
   // Determine where we are shooting / aiming
   // if ( fRecalc )
-  { DetermineCursorBodyLocation((UINT8)gusSelectedSoldier, TRUE, TRUE); }
+  { DetermineCursorBodyLocation(gusSelectedSoldier, TRUE, TRUE); }
 
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (pSoldier->bShownAimTime / 2));
     gfUIDisplayActionPoints = TRUE;
     gfUIDisplayActionPointsCenter = TRUE;
 
@@ -238,13 +238,13 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
 
       fMaxPointLimitHit = TRUE;
     } else {
-      bFutureAim = (INT8)(pSoldier->bShownAimTime + 2);
+      bFutureAim = (pSoldier->bShownAimTime + 2);
 
       if (bFutureAim <= REFINE_AIM_5) {
         sAPCosts = MinAPsToAttack(pSoldier, usMapPos, TRUE) + (bFutureAim / 2);
 
         // Determine if we can afford!
-        if (!EnoughPoints(pSoldier, (INT16)sAPCosts, 0, FALSE)) {
+        if (!EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
           fEnoughPoints = FALSE;
         }
       }
@@ -282,7 +282,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
         gfCannotGetThrough = FALSE;
       }
     } else {
-      if (SoldierToLocationChanceToGetThrough(pSoldier, usMapPos, (INT8)gsInterfaceLevel, pSoldier->bTargetCubeLevel, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
+      if (SoldierToLocationChanceToGetThrough(pSoldier, usMapPos, gsInterfaceLevel, pSoldier->bTargetCubeLevel, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
         gfCannotGetThrough = TRUE;
       } else {
         gfCannotGetThrough = FALSE;
@@ -462,7 +462,7 @@ function HandleActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: U
       }
     }
   }
-  return (UINT8)usCursor;
+  return usCursor;
 }
 
 function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, fShowAPs: BOOLEAN, fRecalc: BOOLEAN, uiCursorFlags: UINT32): UINT8 {
@@ -473,7 +473,7 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
   if (Item[usInHand].usItemClass != IC_THROWING_KNIFE) {
     if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
       // DetermineCursorBodyLocation( (UINT8)gusSelectedSoldier, FALSE, fRecalc );
-      DetermineCursorBodyLocation((UINT8)gusSelectedSoldier, fShowAPs, fRecalc);
+      DetermineCursorBodyLocation(gusSelectedSoldier, fShowAPs, fRecalc);
 
       if (pSoldier->fReloading || pSoldier->fPauseAim) {
         return ACTION_TARGET_RELOADING;
@@ -501,9 +501,9 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
   }
 
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-    DetermineCursorBodyLocation((UINT8)gusSelectedSoldier, fShowAPs, fRecalc);
+    DetermineCursorBodyLocation(gusSelectedSoldier, fShowAPs, fRecalc);
 
-    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+    gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (pSoldier->bShownAimTime / 2));
 
     gfUIDisplayActionPoints = TRUE;
     gfUIDisplayActionPointsCenter = TRUE;
@@ -521,7 +521,7 @@ function HandleNonActivatedTargetCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos
   // if ( gTacticalStatus.uiFlags & TURNBASED && !(gTacticalStatus.uiFlags & INCOMBAT ) )
   {
     if (fRecalc) {
-      if (SoldierToLocationChanceToGetThrough(pSoldier, usMapPos, (INT8)gsInterfaceLevel, pSoldier->bTargetCubeLevel, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
+      if (SoldierToLocationChanceToGetThrough(pSoldier, usMapPos, gsInterfaceLevel, pSoldier->bTargetCubeLevel, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
         gfCannotGetThrough = TRUE;
       } else {
         gfCannotGetThrough = FALSE;
@@ -771,7 +771,7 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
 
     // Calculate action points
     if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (pSoldier->bShownAimTime / 2));
       gfUIDisplayActionPoints = TRUE;
       gfUIDisplayActionPointsCenter = TRUE;
 
@@ -784,12 +784,12 @@ function HandleKnifeCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
         }
       }
 
-      bFutureAim = (INT8)(REFINE_KNIFE_2);
+      bFutureAim = (REFINE_KNIFE_2);
 
-      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (INT8)(bFutureAim / 2));
+      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (bFutureAim / 2));
 
       // Determine if we can afford!
-      if (!EnoughPoints(pSoldier, (INT16)sAPCosts, 0, FALSE)) {
+      if (!EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
         fEnoughPoints = FALSE;
       }
     }
@@ -868,7 +868,7 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
 
     // Calculate action points
     if (gTacticalStatus.uiFlags & TURNBASED) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (pSoldier->bShownAimTime / 2));
       gfUIDisplayActionPoints = TRUE;
       gfUIDisplayActionPointsCenter = TRUE;
 
@@ -881,12 +881,12 @@ function HandlePunchCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: UINT16, fAct
         }
       }
 
-      bFutureAim = (INT8)(REFINE_PUNCH_2);
+      bFutureAim = (REFINE_PUNCH_2);
 
-      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (INT8)(bFutureAim / 2));
+      sAPCosts = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (bFutureAim / 2));
 
       // Determine if we can afford!
-      if (!EnoughPoints(pSoldier, (INT16)sAPCosts, 0, FALSE)) {
+      if (!EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
         fEnoughPoints = FALSE;
       }
     }
@@ -1005,7 +1005,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
   // Add APs....
   if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
     if (ubItemCursor == TRAJECTORYCURS) {
-      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+      gsCurrentActionPoints = CalcTotalAPsToAttack(pSoldier, sGridNo, TRUE, (pSoldier->bShownAimTime / 2));
     } else {
       gsCurrentActionPoints = MinAPsToThrow(pSoldier, sGridNo, TRUE);
     }
@@ -1053,7 +1053,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
         if (bSlot != NO_SLOT) {
           CreateItem(UNDER_GLAUNCHER, pSoldier->inv[HANDPOS].bAttachStatus[bSlot], &TempObject);
 
-          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, (INT8)gsInterfaceLevel, (INT16)(gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
+          if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
             fBadCTGH = TRUE;
           } else {
             fBadCTGH = FALSE;
@@ -1061,7 +1061,7 @@ function HandleNonActivatedTossCursor(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: U
           BeginPhysicsTrajectoryUI(sFinalGridNo, bLevel, fBadCTGH);
         }
       } else {
-        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, (INT8)gsInterfaceLevel, (INT16)(gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
+        if (!CalculateLaunchItemChanceToGetThrough(pSoldier, &TempObject, sGridNo, gsInterfaceLevel, (gsInterfaceLevel * 256), &sFinalGridNo, fArmed, &bLevel, TRUE)) {
           fBadCTGH = TRUE;
         } else {
           fBadCTGH = FALSE;
@@ -1314,7 +1314,7 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
         // pSoldier->bShownAimTime = REFINE_AIM_BURST;
       } else {
         sGridNo = usMapPos;
-        bTargetLevel = (INT8)gsInterfaceLevel;
+        bTargetLevel = gsInterfaceLevel;
 
         // Look for a target here...
         if (gfUIFullTargetFound) {
@@ -1328,10 +1328,10 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
           }
         }
 
-        bFutureAim = (INT8)(pSoldier->bShownAimTime + 2);
+        bFutureAim = (pSoldier->bShownAimTime + 2);
 
         if (bFutureAim <= REFINE_AIM_5) {
-          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+          sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (bFutureAim / 2));
 
           // Determine if we can afford!
           if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
@@ -1362,10 +1362,10 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
 
     case PUNCHCURS:
 
-      bFutureAim = (INT8)(pSoldier->bShownAimTime + REFINE_PUNCH_2);
+      bFutureAim = (pSoldier->bShownAimTime + REFINE_PUNCH_2);
 
       if (bFutureAim <= REFINE_PUNCH_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {
@@ -1396,10 +1396,10 @@ function HandleRightClickAdjustCursor(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: 
 
     case KNIFECURS:
 
-      bFutureAim = (INT8)(pSoldier->bShownAimTime + REFINE_KNIFE_2);
+      bFutureAim = (pSoldier->bShownAimTime + REFINE_KNIFE_2);
 
       if (bFutureAim <= REFINE_KNIFE_2) {
-        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (INT8)(bFutureAim / 2));
+        sAPCosts = CalcTotalAPsToAttack(pSoldier, usMapPos, TRUE, (bFutureAim / 2));
 
         // Determine if we can afford!
         if (EnoughPoints(pSoldier, sAPCosts, 0, FALSE)) {

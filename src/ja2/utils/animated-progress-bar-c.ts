@@ -26,7 +26,7 @@ function RemoveLoadingScreenProgressBar(): void {
 function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16, usRight: UINT16, usBottom: UINT16): BOOLEAN {
   let pNew: Pointer<PROGRESSBAR>;
   // Allocate new progress bar
-  pNew = (PROGRESSBAR *)MemAlloc(sizeof(PROGRESSBAR));
+  pNew = MemAlloc(sizeof(PROGRESSBAR));
   Assert(pNew);
 
   if (pBar[ubProgressBarID])
@@ -43,7 +43,7 @@ function CreateProgressBar(ubProgressBarID: UINT8, usLeft: UINT16, usTop: UINT16
   pNew->usBarBottom = usBottom;
   // Init default data
   pNew->fPanel = FALSE;
-  pNew->usMsgFont = (UINT16)FONT12POINT1;
+  pNew->usMsgFont = FONT12POINT1;
   pNew->ubMsgFontForeColor = FONT_BLACK;
   pNew->ubMsgFontShadowColor = 0;
   SetRelativeStartAndEndPercentage(pNew->ubProgressBarID, 0, 100, NULL);
@@ -75,8 +75,8 @@ function DefineProgressBarPanel(ubID: UINT32, r: UINT8, g: UINT8, b: UINT8, usLe
   pCurr->usPanelBottom = usBottom;
   pCurr->usColor = Get16BPPColor(FROMRGB(r, g, b));
   // Calculate the slightly lighter and darker versions of the same rgb color
-  pCurr->usLtColor = Get16BPPColor(FROMRGB((UINT8)min(255, (UINT16)(r * 1.33)), (UINT8)min(255, (UINT16)(g * 1.33)), (UINT8)min(255, (UINT16)(b * 1.33))));
-  pCurr->usDkColor = Get16BPPColor(FROMRGB((UINT8)(r * 0.75), (UINT8)(g * 0.75), (UINT8)(b * 0.75)));
+  pCurr->usLtColor = Get16BPPColor(FROMRGB(min(255, (r * 1.33)), min(255, (g * 1.33)), min(255, (b * 1.33))));
+  pCurr->usDkColor = Get16BPPColor(FROMRGB((r * 0.75), (g * 0.75), (b * 0.75)));
 }
 
 // Assigning a title for the panel will automatically position the text horizontally centered on the
@@ -92,10 +92,10 @@ function SetProgressBarTitle(ubID: UINT32, pString: Pointer<UINT16>, usFont: UIN
     pCurr->swzTitle = NULL;
   }
   if (pString && wcslen(pString)) {
-    pCurr->swzTitle = (UINT16 *)MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
+    pCurr->swzTitle = MemAlloc(sizeof(UINT16) * (wcslen(pString) + 1));
     swprintf(pCurr->swzTitle, pString);
   }
-  pCurr->usTitleFont = (UINT16)usFont;
+  pCurr->usTitleFont = usFont;
   pCurr->ubTitleFontForeColor = ubForeColor;
   pCurr->ubTitleFontShadowColor = ubShadowColor;
 }
@@ -108,7 +108,7 @@ function SetProgressBarMsgAttributes(ubID: UINT32, usFont: UINT32, ubForeColor: 
   pCurr = pBar[ubID];
   if (!pCurr)
     return;
-  pCurr->usMsgFont = (UINT16)usFont;
+  pCurr->usMsgFont = usFont;
   pCurr->ubMsgFontForeColor = ubForeColor;
   pCurr->ubMsgFontShadowColor = ubShadowColor;
 }
@@ -173,7 +173,7 @@ function SetRelativeStartAndEndPercentage(ubID: UINT8, uiRelStartPerc: UINT32, u
       if (pCurr->fUseSaveBuffer) {
         let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont);
 
-        RestoreExternBackgroundRect(pCurr->usBarLeft, pCurr->usBarBottom, (INT16)(pCurr->usBarRight - pCurr->usBarLeft), (INT16)(usFontHeight + 3));
+        RestoreExternBackgroundRect(pCurr->usBarLeft, pCurr->usBarBottom, (pCurr->usBarRight - pCurr->usBarLeft), (usFontHeight + 3));
       }
 
       SetFont(pCurr->usMsgFont);
@@ -209,9 +209,9 @@ function RenderProgressBar(ubID: UINT8, uiPercentage: UINT32): void {
       return;
     }
 
-    pCurr->rLastActual = (DOUBLE)((INT32)(rActual * 100) * 0.01);
+    pCurr->rLastActual = ((rActual * 100) * 0.01);
 
-    end = (INT32)(pCurr->usBarLeft + 2.0 + rActual * (pCurr->usBarRight - pCurr->usBarLeft - 4));
+    end = (pCurr->usBarLeft + 2.0 + rActual * (pCurr->usBarRight - pCurr->usBarLeft - 4));
     if (end < pCurr->usBarLeft + 2 || end > pCurr->usBarRight - 2) {
       return;
     }
@@ -274,6 +274,6 @@ function SetProgressBarTextDisplayFlag(ubID: UINT8, fDisplayText: BOOLEAN, fUseS
     let usFontHeight: UINT16 = GetFontHeight(pCurr->usMsgFont) + 3;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr->usBarLeft, pCurr->usBarBottom, (UINT16)(pCurr->usBarRight - pCurr->usBarLeft), usFontHeight);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, pCurr->usBarLeft, pCurr->usBarBottom, (pCurr->usBarRight - pCurr->usBarLeft), usFontHeight);
   }
 }

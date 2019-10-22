@@ -179,7 +179,7 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
           // record the slot of the epc.  If there are more than one EPCs, then
           // it doesn't matter.  This is used in building the text message explaining
           // why the selected merc can't leave.  This is how we extract the EPC's name.
-          gExitDialog.bSingleMoveWillIsolateEPC = (INT8)i;
+          gExitDialog.bSingleMoveWillIsolateEPC = i;
         } else {
           // We have more than one merc, so we will allow the selected merc to leave alone if
           // the user so desired.
@@ -225,8 +225,8 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gExitDialog.iBoxId = PrepareMercPopupBox(-1, DIALOG_MERC_POPUP_BACKGROUND, DIALOG_MERC_POPUP_BORDER, TacticalStr[EXIT_GUI_TITLE_STR], 100, 85, 2, 75, &usTextBoxWidth, &usTextBoxHeight);
 
-  gExitDialog.sX = (INT16)((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
-  gExitDialog.sY = (INT16)((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
+  gExitDialog.sX = ((((aRect.iRight - aRect.iLeft) - usTextBoxWidth) / 2) + aRect.iLeft);
+  gExitDialog.sY = ((((aRect.iBottom - aRect.iTop) - usTextBoxHeight) / 2) + aRect.iTop);
   gExitDialog.usWidth = usTextBoxWidth;
   gExitDialog.usHeight = usTextBoxHeight;
 
@@ -239,24 +239,24 @@ function InternalInitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16):
 
   gExitDialog.iButtonImages = LoadButtonImage("INTERFACE\\popupbuttons.sti", -1, 0, -1, 1, -1);
 
-  MSYS_DefineRegion(&gExitDialog.SingleRegion, (INT16)(gExitDialog.sX + 20), (INT16)(gExitDialog.sY + 37), (INT16)(gExitDialog.sX + 45 + 120), (INT16)(gExitDialog.sY + 37 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, SingleRegionMoveCallback, SingleRegionCallback);
+  MSYS_DefineRegion(&gExitDialog.SingleRegion, (gExitDialog.sX + 20), (gExitDialog.sY + 37), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 37 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, SingleRegionMoveCallback, SingleRegionCallback);
   MSYS_AllowDisabledRegionFastHelp(&gExitDialog.SingleRegion, TRUE);
 
-  MSYS_DefineRegion(&(gExitDialog.AllRegion), (INT16)(gExitDialog.sX + 20), (INT16)(gExitDialog.sY + 57), (INT16)(gExitDialog.sX + 45 + 120), (INT16)(gExitDialog.sY + 57 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, AllRegionMoveCallback, AllRegionCallback);
+  MSYS_DefineRegion(&(gExitDialog.AllRegion), (gExitDialog.sX + 20), (gExitDialog.sY + 57), (gExitDialog.sX + 45 + 120), (gExitDialog.sY + 57 + 12), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, AllRegionMoveCallback, AllRegionCallback);
   MSYS_AllowDisabledRegionFastHelp(&gExitDialog.AllRegion, TRUE);
 
-  MSYS_DefineRegion(&(gExitDialog.LoadRegion), (INT16)(gExitDialog.sX + 155), (INT16)(gExitDialog.sY + 45), (INT16)(gExitDialog.sX + 180 + 85), (INT16)(gExitDialog.sY + 45 + 15), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, LoadRegionMoveCallback, LoadRegionCallback);
+  MSYS_DefineRegion(&(gExitDialog.LoadRegion), (gExitDialog.sX + 155), (gExitDialog.sY + 45), (gExitDialog.sX + 180 + 85), (gExitDialog.sY + 45 + 15), MSYS_PRIORITY_HIGHEST, CURSOR_NORMAL, LoadRegionMoveCallback, LoadRegionCallback);
   MSYS_AllowDisabledRegionFastHelp(&gExitDialog.LoadRegion, TRUE);
 
-  gExitDialog.uiLoadCheckButton = CreateCheckBoxButton((INT16)(gExitDialog.sX + 155), (INT16)(gExitDialog.sY + 43), "INTERFACE\\popupcheck.sti", MSYS_PRIORITY_HIGHEST, CheckLoadMapCallback);
+  gExitDialog.uiLoadCheckButton = CreateCheckBoxButton((gExitDialog.sX + 155), (gExitDialog.sY + 43), "INTERFACE\\popupcheck.sti", MSYS_PRIORITY_HIGHEST, CheckLoadMapCallback);
 
-  gExitDialog.uiSingleMoveButton = CreateCheckBoxButton((INT16)(gExitDialog.sX + 20), (INT16)(gExitDialog.sY + 35), "INTERFACE\\popupradiobuttons.sti", MSYS_PRIORITY_HIGHEST, SingleMoveCallback);
+  gExitDialog.uiSingleMoveButton = CreateCheckBoxButton((gExitDialog.sX + 20), (gExitDialog.sY + 35), "INTERFACE\\popupradiobuttons.sti", MSYS_PRIORITY_HIGHEST, SingleMoveCallback);
 
-  gExitDialog.uiAllMoveButton = CreateCheckBoxButton((INT16)(gExitDialog.sX + 20), (INT16)(gExitDialog.sY + 55), "INTERFACE\\popupradiobuttons.sti", MSYS_PRIORITY_HIGHEST, AllMoveCallback);
+  gExitDialog.uiAllMoveButton = CreateCheckBoxButton((gExitDialog.sX + 20), (gExitDialog.sY + 55), "INTERFACE\\popupradiobuttons.sti", MSYS_PRIORITY_HIGHEST, AllMoveCallback);
 
-  gExitDialog.uiOKButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[OK_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (INT16)(gExitDialog.sX + 65), (INT16)(gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)OKCallback);
+  gExitDialog.uiOKButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[OK_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 65), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, OKCallback);
 
-  gExitDialog.uiCancelButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[CANCEL_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (INT16)(gExitDialog.sX + 135), (INT16)(gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)CancelCallback);
+  gExitDialog.uiCancelButton = CreateIconAndTextButton(gExitDialog.iButtonImages, TacticalStr[CANCEL_BUTTON_TEXT_STR], FONT12ARIAL, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, FONT_MCOLOR_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, (gExitDialog.sX + 135), (gExitDialog.sY + 78), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, CancelCallback);
 
   gfIgnoreScrolling = TRUE;
 
@@ -329,7 +329,7 @@ function InitSectorExitMenu(ubDirection: UINT8, sAdditionalData: INT16): BOOLEAN
   if (gbWorldSectorZ >= 2 && gubQuest[QUEST_CREATURES] == QUESTDONE) {
     if (GetWarpOutOfMineCodes(&gsWarpWorldX, &gsWarpWorldY, &gbWarpWorldZ, &gsWarpGridNo)) {
       // ATE: Check if we are in a creature lair and bring up box if so....
-      DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[33], GAME_SCREEN, MSG_BOX_FLAG_YESNO, WarpToSurfaceCallback, NULL);
 
       return TRUE;
     }
@@ -565,7 +565,7 @@ function RemoveSectorExitMenu(fOk: BOOLEAN): void {
       if (gExitDialog.ubNumPeopleOnSquad == 0) {
         swprintf(Str, pMessageStrings[MSG_EPC_CANT_TRAVERSE], MercPtrs[gusSelectedSoldier]->name);
 
-        DoMessageBox(MSG_BOX_BASIC_STYLE, Str, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+        DoMessageBox(MSG_BOX_BASIC_STYLE, Str, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
         return;
       }
     }

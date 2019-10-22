@@ -218,7 +218,7 @@ function RandomPointPatrolAI(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     bCnt = 0;
     do {
       // usPatrolGrid[0] gets used for centre of close etc patrols, so we have to add 1 to the Random #
-      bPatrolIndex = (INT8)PreRandom(pSoldier->bPatrolCnt) + 1;
+      bPatrolIndex = PreRandom(pSoldier->bPatrolCnt) + 1;
       sPatrolPoint = pSoldier->usPatrolGrid[bPatrolIndex];
       bCnt++;
     } while ((sPatrolPoint == pSoldier->sGridNo) || ((sPatrolPoint != NOWHERE) && (bCnt < pSoldier->bPatrolCnt) && (NewOKDestination(pSoldier, sPatrolPoint, IGNOREPEOPLE, pSoldier->bLevel) < 1)));
@@ -371,13 +371,13 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
         }
         // randomly select a direction which hasn't been 'checked' yet
         do {
-          ubDirection = (UINT8)Random(8);
+          ubDirection = Random(8);
         } while (ubDirChecked[ubDirection]);
 
         ubDirChecked[ubDirection] = TRUE;
 
         // determine the gridno 1 tile away from current friend in this direction
-        sTempDest = NewGridNo(sDesGrid, DirectionInc((INT16)(ubDirection + 1)));
+        sTempDest = NewGridNo(sDesGrid, DirectionInc((ubDirection + 1)));
 
         // if that's out of bounds, ignore it & check next direction
         if (sTempDest == sDesGrid)
@@ -411,7 +411,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
     // what is the next gridno in the path?
 
     // sTempDest = NewGridNo( sGoToGrid,DirectionInc( (INT16) (pSoldier->usPathingData[sLoop] + 1) ) );
-    sTempDest = NewGridNo(sGoToGrid, DirectionInc((INT16)(pSoldier->usPathingData[sLoop])));
+    sTempDest = NewGridNo(sGoToGrid, DirectionInc((pSoldier->usPathingData[sLoop])));
     // NumMessage("sTempDest = ",sTempDest);
 
     // this should NEVER be out of bounds
@@ -479,7 +479,7 @@ function InternalGoAsFarAsPossibleTowards(pSoldier: Pointer<SOLDIERTYPE>, sDesGr
       }
 
       // ATE: Direction here?
-      sAPCost += EstimateActionPointCost(pSoldier, sTempDest, (INT8)pSoldier->usPathingData[sLoop], pSoldier->usUIMovementMode, (INT8)sLoop, (INT8)pSoldier->usPathDataSize);
+      sAPCost += EstimateActionPointCost(pSoldier, sTempDest, pSoldier->usPathingData[sLoop], pSoldier->usUIMovementMode, sLoop, pSoldier->usPathDataSize);
 
       bAPsLeft = pSoldier->bActionPoints - sAPCost;
     }
@@ -561,10 +561,10 @@ function SoldierTriesToContinueAlongPath(pSoldier: Pointer<SOLDIERTYPE>): void {
     CancelAIAction(pSoldier, DONTFORCE);
   }
 
-  usNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)pSoldier->usPathingData[pSoldier->usPathIndex]));
+  usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(pSoldier->usPathingData[pSoldier->usPathIndex]));
 
   // Find out how much it takes to move here!
-  bAPCost = EstimateActionPointCost(pSoldier, usNewGridNo, (INT8)pSoldier->usPathingData[pSoldier->usPathIndex], pSoldier->usUIMovementMode, (INT8)pSoldier->usPathIndex, (INT8)pSoldier->usPathDataSize);
+  bAPCost = EstimateActionPointCost(pSoldier, usNewGridNo, pSoldier->usPathingData[pSoldier->usPathIndex], pSoldier->usUIMovementMode, pSoldier->usPathIndex, pSoldier->usPathDataSize);
 
   if (pSoldier->bActionPoints >= bAPCost) {
     // seems to have enough points...
@@ -698,7 +698,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
             if (ubStrength > ubBestStrength) {
               iBestGridNo = iGridNo;
               ubBestStrength = ubStrength;
-              bDir = atan8((INT16)iXStart, (INT16)iYStart, (INT16)(iXStart + iXDiff), (INT16)(iYStart + iYDiff));
+              bDir = atan8(iXStart, iYStart, (iXStart + iXDiff), (iYStart + iYDiff));
               // now convert it into a difference in degree between it and our current dir
               ubBestDirDiff = abs(pSoldier->bDirection - bDir);
               if (ubBestDirDiff > 4) // dir 0 compared with dir 6, for instance
@@ -713,7 +713,7 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
               } else {
                 // use directions to decide between the two
                 // start by calculating direction to the new gridno
-                bDir = atan8((INT16)iXStart, (INT16)iYStart, (INT16)(iXStart + iXDiff), (INT16)(iYStart + iYDiff));
+                bDir = atan8(iXStart, iYStart, (iXStart + iXDiff), (iYStart + iYDiff));
                 // now convert it into a difference in degree between it and our current dir
                 ubDirDiff = abs(pSoldier->bDirection - bDir);
                 if (ubDirDiff > 4) // dir 0 compared with dir 6, for instance
@@ -737,8 +737,8 @@ function TrackScent(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // who else can track?
   }
   if (iBestGridNo != NOWHERE) {
-    pSoldier->usActionData = (INT16)iBestGridNo;
-    return (INT16)iBestGridNo;
+    pSoldier->usActionData = iBestGridNo;
+    return iBestGridNo;
   }
   return 0;
 }

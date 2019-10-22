@@ -115,7 +115,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
       gsFadeRealCount = -1;
       gsFadeLimit = 8;
-      gFadeFunction = (FADE_FUNCTION)FadeInFrameBufferRealFade;
+      gFadeFunction = FadeInFrameBufferRealFade;
       gfFadeInVideo = FALSE;
 
       // Copy backbuffer to savebuffer
@@ -129,7 +129,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
       gsFadeRealCount = -1;
       gsFadeLimit = 10;
-      gFadeFunction = (FADE_FUNCTION)FadeFrameBufferRealFade;
+      gFadeFunction = FadeFrameBufferRealFade;
       gfFadeInVideo = FALSE;
 
       // Clear framebuffer
@@ -149,7 +149,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
       giX2 = 640;
       giY1 = 0;
       giY2 = 480;
-      gFadeFunction = (FADE_FUNCTION)FadeFrameBufferSquare;
+      gFadeFunction = FadeFrameBufferSquare;
 
       // Zero frame buffer
       ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -161,11 +161,11 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
     case FADE_IN_VERSION_ONE:
       gsFadeLimit = 255 / bFadeValue;
-      gFadeFunction = (FADE_FUNCTION)FadeInBackBufferVersionOne;
+      gFadeFunction = FadeInBackBufferVersionOne;
       break;
 
     case FADE_IN_SQUARE:
-      gFadeFunction = (FADE_FUNCTION)FadeInBackBufferSquare;
+      gFadeFunction = FadeInBackBufferSquare;
       giX1 = 320;
       giX2 = 320;
       giY1 = 240;
@@ -176,7 +176,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
 
     case FADE_OUT_VERSION_FASTER:
       gsFadeLimit = (255 / bFadeValue) * 2;
-      gFadeFunction = (FADE_FUNCTION)FadeFrameBufferVersionFaster;
+      gFadeFunction = FadeFrameBufferVersionFaster;
 
       // SetMusicFadeSpeed( 25 );
       // SetMusicMode( MUSIC_NONE );
@@ -185,7 +185,7 @@ function BeginFade(uiExitScreen: UINT32, bFadeValue: INT8, bType: INT8, uiDelay:
     case FADE_OUT_VERSION_SIDE:
       // Copy frame buffer to save buffer
       gsFadeLimit = (640 / 8);
-      gFadeFunction = (FADE_FUNCTION)FadeFrameBufferSide;
+      gFadeFunction = FadeFrameBufferSide;
 
       // SetMusicFadeSpeed( 25 );
       // SetMusicMode( MUSIC_NONE );
@@ -276,7 +276,7 @@ function FadeFrameBufferVersionOne(): void {
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -324,8 +324,8 @@ function FadeInBackBufferVersionOne(): void {
   let s16BPPSrc: UINT16;
   let bFadeVal: INT16 = (gsFadeLimit - gsFadeCount) * gbFadeValue;
 
-  pDestBuf = (UINT16 *)LockVideoSurface(BACKBUFFER, &uiDestPitchBYTES);
-  pSrcBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
+  pDestBuf = LockVideoSurface(BACKBUFFER, &uiDestPitchBYTES);
+  pSrcBuf = LockVideoSurface(FRAME_BUFFER, &uiSrcPitchBYTES);
 
   // LOCK FRAME BUFFER
   for (cX = 0; cX < 640; cX++) {
@@ -373,7 +373,7 @@ function FadeFrameBufferVersionFaster(bFadeValue: INT8): void {
   let uiRGBColor: UINT32;
   let s16BPPSrc: UINT16;
 
-  pBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
   iStartX = gsFadeCount % 2;
   iStartY = 0;
@@ -443,7 +443,7 @@ function FadeFrameBufferSquare(): void {
   let sFadeYMove: INT16;
 
   sFadeXMove = SQUARE_STEP;
-  sFadeYMove = (INT16)(sFadeXMove * .75);
+  sFadeYMove = (sFadeXMove * .75);
 
   iX1 = giX1;
   iX2 = giX1 + sFadeXMove;
@@ -477,7 +477,7 @@ function FadeInBackBufferSquare(): void {
   let BltFx: blt_vs_fx;
 
   sFadeXMove = SQUARE_STEP;
-  sFadeYMove = (INT16)(sFadeXMove * .75);
+  sFadeYMove = (sFadeXMove * .75);
 
   if (gsFadeCount == 0) {
     ColorFillVideoSurfaceArea(BACKBUFFER, 0, 0, 640, 480, Get16BPPColor(FROMRGB(0, 0, 0)));
@@ -588,7 +588,7 @@ function UpdateSaveBufferWithBackbuffer(): BOOLEAN {
 
   if (gbPixelDepth == 16) {
     // BLIT HERE
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 0, 0, 0, 0, 640, 480);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0, 0, 0, 0, 640, 480);
   }
 
   UnLockVideoSurface(FRAME_BUFFER);

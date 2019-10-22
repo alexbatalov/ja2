@@ -119,14 +119,14 @@ function AddStandardVideoObject(pVObjectDesc: Pointer<VOBJECT_DESC>, puiIndex: P
   // Set into video object list
   if (gpVObjectHead) {
     // Add node after tail
-    gpVObjectTail->next = (VOBJECT_NODE *)MemAlloc(sizeof(VOBJECT_NODE));
+    gpVObjectTail->next = MemAlloc(sizeof(VOBJECT_NODE));
     Assert(gpVObjectTail->next); // out of memory?
     gpVObjectTail->next->prev = gpVObjectTail;
     gpVObjectTail->next->next = NULL;
     gpVObjectTail = gpVObjectTail->next;
   } else {
     // new list
-    gpVObjectHead = (VOBJECT_NODE *)MemAlloc(sizeof(VOBJECT_NODE));
+    gpVObjectHead = MemAlloc(sizeof(VOBJECT_NODE));
     Assert(gpVObjectHead); // out of memory?
     gpVObjectHead->prev = gpVObjectHead->next = NULL;
     gpVObjectTail = gpVObjectHead;
@@ -175,7 +175,7 @@ function BltVideoObjectFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UINT32, u
   let hSrcVObject: HVOBJECT;
 
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
@@ -246,7 +246,7 @@ function BltVideoObject(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, usRegionI
   let uiPitch: UINT32;
 
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
@@ -608,7 +608,7 @@ function PixelateVideoObjectRect(uiDestVSurface: UINT32, X1: INT32, Y1: INT32, X
   };
 
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
@@ -749,7 +749,7 @@ function GetETRLEPixelValue(pDest: Pointer<UINT8>, hVObject: HVOBJECT, usETRLEIn
   CHECKF(usY < pETRLEObject->usHeight);
 
   // Assuming everything's okay, go ahead and look...
-  pCurrent = &((UINT8 *)hVObject->pPixData)[pETRLEObject->uiDataOffset];
+  pCurrent = &(hVObject->pPixData)[pETRLEObject->uiDataOffset];
 
   // Skip past all uninteresting scanlines
   while (usLoopY < usY) {
@@ -925,14 +925,14 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
 
   // get the palette
   p16BPPPalette = hVObject->pShades[ubShadeLevel];
-  pInput = (UINT8 *)hVObject->pPixData + hVObject->pETRLEObject[usRegionIndex].uiDataOffset;
+  pInput = hVObject->pPixData + hVObject->pETRLEObject[usRegionIndex].uiDataOffset;
 
   uiDataLength = hVObject->pETRLEObject[usRegionIndex].uiDataLength;
 
   // now actually do the conversion
 
   uiLen = 0;
-  pOutput = (UINT8 *)p16BPPObject->p16BPPData;
+  pOutput = p16BPPObject->p16BPPData;
   for (uiDataLoop = 0; uiDataLoop < uiDataLength; uiDataLoop++) {
     bData = *pInput;
     if (bData & 0x80) {
@@ -941,7 +941,7 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
       pOutput++;
       pInput++;
       // uiDataLoop++;
-      uiLen += (UINT32)(bData & 0x7f);
+      uiLen += (bData & 0x7f);
     } else if (bData > 0) {
       // nontransparent
       *pOutput = *pInput;
@@ -949,13 +949,13 @@ function ConvertVObjectRegionTo16BPP(hVObject: HVOBJECT, usRegionIndex: UINT16, 
       pInput++;
       // uiDataLoop++;
       for (ubRunLoop = 0; ubRunLoop < bData; ubRunLoop++) {
-        *((UINT16 *)pOutput) = p16BPPPalette[*pInput];
+        *(pOutput) = p16BPPPalette[*pInput];
         pOutput++;
         pOutput++;
         pInput++;
         uiDataLoop++;
       }
-      uiLen += (UINT32)bData;
+      uiLen += bData;
     } else {
       // eol
       *pOutput = *pInput;
@@ -1003,7 +1003,7 @@ function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UI
   let hSrcVObject: HVOBJECT;
 
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
@@ -1013,9 +1013,9 @@ function BltVideoObjectOutlineFromIndex(uiDestVSurface: UINT32, uiSrcVObject: UI
   CHECKF(GetVideoObject(&hSrcVObject, uiSrcVObject));
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
-    Blt8BPPDataTo16BPPBufferOutlineClip((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline, &ClippingRect);
+    Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline, &ClippingRect);
   } else {
-    Blt8BPPDataTo16BPPBufferOutline((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline);
+    Blt8BPPDataTo16BPPBufferOutline(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline);
   }
 
   // Now we have the video object and surface, call the VO blitter function
@@ -1028,16 +1028,16 @@ function BltVideoObjectOutline(uiDestVSurface: UINT32, hSrcVObject: HVOBJECT, us
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
   }
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
-    Blt8BPPDataTo16BPPBufferOutlineClip((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline, &ClippingRect);
+    Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline, &ClippingRect);
   } else {
-    Blt8BPPDataTo16BPPBufferOutline((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline);
+    Blt8BPPDataTo16BPPBufferOutline(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, s16BPPColor, fDoOutline);
   }
 
   // Now we have the video object and surface, call the VO blitter function
@@ -1052,7 +1052,7 @@ function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObje
   let hSrcVObject: HVOBJECT;
 
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
@@ -1062,9 +1062,9 @@ function BltVideoObjectOutlineShadowFromIndex(uiDestVSurface: UINT32, uiSrcVObje
   CHECKF(GetVideoObject(&hSrcVObject, uiSrcVObject));
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
-    Blt8BPPDataTo16BPPBufferOutlineShadowClip((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
+    Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
   } else {
-    Blt8BPPDataTo16BPPBufferOutlineShadow((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex);
+    Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex);
   }
 
   // Now we have the video object and surface, call the VO blitter function
@@ -1077,16 +1077,16 @@ function BltVideoObjectOutlineShadow(uiDestVSurface: UINT32, hSrcVObject: HVOBJE
   let pBuffer: Pointer<UINT16>;
   let uiPitch: UINT32;
   // Lock video surface
-  pBuffer = (UINT16 *)LockVideoSurface(uiDestVSurface, &uiPitch);
+  pBuffer = LockVideoSurface(uiDestVSurface, &uiPitch);
 
   if (pBuffer == NULL) {
     return FALSE;
   }
 
   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
-    Blt8BPPDataTo16BPPBufferOutlineShadowClip((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
+    Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect);
   } else {
-    Blt8BPPDataTo16BPPBufferOutlineShadow((UINT16 *)pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex);
+    Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex);
   }
 
   // Now we have the video object and surface, call the VO blitter function

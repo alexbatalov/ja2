@@ -271,7 +271,7 @@ function HandleTacticalUI(): UINT32 {
       gfUIInterfaceSetBusy = FALSE;
 
       // UNLOCK UI
-      UnSetUIBusy((UINT8)gusSelectedSoldier);
+      UnSetUIBusy(gusSelectedSoldier);
 
       // Decrease global busy  counter...
       gTacticalStatus.ubAttackBusyCount = 0;
@@ -362,7 +362,7 @@ function HandleTacticalUI(): UINT32 {
   if (uiNewEvent != guiOldEvent) {
     // Snap mouse back if it's that type
     if (gEvents[guiOldEvent].uiFlags & UIEVENT_SNAPMOUSE) {
-      SimulateMouseMovement((UINT32)gusSavedMouseX, (UINT32)gusSavedMouseY);
+      SimulateMouseMovement(gusSavedMouseX, gusSavedMouseY);
     }
 
     ClearEvent(&gEvents[uiNewEvent]);
@@ -589,7 +589,7 @@ function SetUIMouseCursor(): void {
           // ATE: Is this place revealed?
           if (!InARoom(usMapPos, &ubRoomNum) || (InARoom(usMapPos, &ubRoomNum) && gpWorldLevelData[usMapPos].uiFlags & MAPELEMENT_REVEALED)) {
             if (sOldExitGridNo != usMapPos) {
-              fOkForExit = OKForSectorExit((INT8)-1, usMapPos, &uiTraverseTimeInMinutes);
+              fOkForExit = OKForSectorExit(-1, usMapPos, &uiTraverseTimeInMinutes);
               sOldExitGridNo = usMapPos;
             }
 
@@ -723,7 +723,7 @@ function UIHandleNewBadMerc(pUIEvent: Pointer<UI_EVENT>): UINT32 {
       return GAME_SCREEN;
     }
 
-    usRandom = (UINT16)Random(10);
+    usRandom = Random(10);
     if (usRandom < 4)
       pSoldier = TacticalCreateAdministrator();
     else if (usRandom < 8)
@@ -932,11 +932,11 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // CHECK IF WE'RE ON A GUY ( EITHER SELECTED, OURS, OR THEIRS
   if (!UIHandleOnMerc(TRUE)) {
     // Are we over items...
-    if (GetItemPool(usMapPos, &pItemPool, (UINT8)gsInterfaceLevel) && ITEMPOOL_VISIBLE(pItemPool)) {
+    if (GetItemPool(usMapPos, &pItemPool, gsInterfaceLevel) && ITEMPOOL_VISIBLE(pItemPool)) {
       // Are we already in...
       if (fOverItems) {
         // Is this the same level & gridno...
-        if (gsInterfaceLevel == (INT16)bLevelForItemsOver && usMapPos == sGridNoForItemsOver) {
+        if (gsInterfaceLevel == bLevelForItemsOver && usMapPos == sGridNoForItemsOver) {
           // Check timer...
           if ((GetJA2Clock() - uiItemsOverTimer) > 1500) {
             // Change to hand curso mode
@@ -947,14 +947,14 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
           }
         } else {
           uiItemsOverTimer = GetJA2Clock();
-          bLevelForItemsOver = (INT8)gsInterfaceLevel;
+          bLevelForItemsOver = gsInterfaceLevel;
           sGridNoForItemsOver = usMapPos;
         }
       } else {
         fOverItems = TRUE;
 
         uiItemsOverTimer = GetJA2Clock();
-        bLevelForItemsOver = (INT8)gsInterfaceLevel;
+        bLevelForItemsOver = gsInterfaceLevel;
         sGridNoForItemsOver = usMapPos;
       }
     } else {
@@ -1003,7 +1003,7 @@ function UIHandleMOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
         ubID = FindNextActiveAndAliveMerc(pSoldier, FALSE, FALSE);
 
         if (ubID != NOBODY) {
-          SelectSoldier((INT16)ubID, FALSE, FALSE);
+          SelectSoldier(ubID, FALSE, FALSE);
         } else {
           gusSelectedSoldier = NO_SOLDIER;
           // Change UI mode to reflact that we are selected
@@ -1165,13 +1165,13 @@ function UIHandleAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
             // Set
             gsOutOfRangeGridNo = MercPtrs[gusUIFullTargetID]->sGridNo;
-            gubOutOfRangeMerc = (UINT8)gusSelectedSoldier;
+            gubOutOfRangeMerc = gusSelectedSoldier;
           }
         }
       }
     }
 
-    guiNewUICursor = GetProperItemCursor((UINT8)gusSelectedSoldier, pSoldier->inv[HANDPOS].usItem, usMapPos, FALSE);
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier->inv[HANDPOS].usItem, usMapPos, FALSE);
 
     // Show UI ON GUY
     UIHandleOnMerc(FALSE);
@@ -1594,7 +1594,7 @@ function UIHandleMAdjustStanceMode(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   // Check if delta X has changed alot since last time
-  iPosDiff = abs((INT32)(usOldMouseY - gusMouseYPos));
+  iPosDiff = abs((usOldMouseY - gusMouseYPos));
 
   // guiShowUPDownArrows = ARROWS_SHOW_DOWN_BESIDE | ARROWS_SHOW_UP_BESIDE;
   guiShowUPDownArrows = uiOldShowUPDownArrows;
@@ -1703,7 +1703,7 @@ function UIHandleCAOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
-    guiNewUICursor = GetProperItemCursor((UINT8)gusSelectedSoldier, pSoldier->inv[HANDPOS].usItem, usMapPos, TRUE);
+    guiNewUICursor = GetProperItemCursor(gusSelectedSoldier, pSoldier->inv[HANDPOS].usItem, usMapPos, TRUE);
 
     UIHandleOnMerc(FALSE);
   }
@@ -1748,7 +1748,7 @@ function UIHandleMercAttack(pSoldier: Pointer<SOLDIERTYPE>, pTargetSoldier: Poin
     bTargetLevel = pTargetSoldier->bLevel;
   } else {
     sTargetGridNo = usMapPos;
-    bTargetLevel = (INT8)gsInterfaceLevel;
+    bTargetLevel = gsInterfaceLevel;
 
     if (pIntNode != NULL) {
       // Change gridno....
@@ -1873,7 +1873,7 @@ function UIHandleCAMercShoot(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
           swprintf(zStr, TacticalStr[ATTACK_OWN_GUY_PROMPT], pTSoldier->name);
 
-          DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, AttackRequesterCallback, NULL);
+          DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, GAME_SCREEN, MSG_BOX_FLAG_YESNO, AttackRequesterCallback, NULL);
         }
       }
 
@@ -2060,21 +2060,21 @@ function AdjustSoldierCreationStartValues(): void {
   let pSoldier: Pointer<SOLDIERTYPE>;
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bFirstID;
-  guiCreateGuyIndex = (INT16)cnt;
+  guiCreateGuyIndex = cnt;
 
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; pSoldier++, cnt++) {
     if (!pSoldier->bActive) {
-      guiCreateGuyIndex = (INT16)cnt;
+      guiCreateGuyIndex = cnt;
       break;
     }
   }
 
   cnt = gTacticalStatus.Team[gbPlayerNum].bLastID + 1;
-  guiCreateBadGuyIndex = (INT16)cnt;
+  guiCreateBadGuyIndex = cnt;
 
   for (pSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[LAST_TEAM].bLastID; pSoldier++, cnt++) {
     if (!pSoldier->bActive && cnt > gTacticalStatus.Team[gbPlayerNum].bLastID) {
-      guiCreateBadGuyIndex = (INT16)cnt;
+      guiCreateBadGuyIndex = cnt;
       break;
     }
   }
@@ -2127,7 +2127,7 @@ function SelectedMercCanAffordAttack(): BOOLEAN {
           sTargetGridNo = usMapPos;
         }
 
-        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, TRUE, (INT8)(pSoldier->bShownAimTime / 2));
+        sAPCost = CalcTotalAPsToAttack(pSoldier, sTargetGridNo, TRUE, (pSoldier->bShownAimTime / 2));
 
         if (EnoughPoints(pSoldier, sAPCost, 0, TRUE)) {
           return TRUE;
@@ -2168,7 +2168,7 @@ function SelectedMercCanAffordMove(): BOOLEAN {
     }
 
     // Take the first direction!
-    sAPCost = PtsToMoveDirection(pSoldier, (UINT8)guiPathingData[0]);
+    sAPCost = PtsToMoveDirection(pSoldier, guiPathingData[0]);
 
     sAPCost += GetAPsToChangeStance(pSoldier, gAnimControl[pSoldier->usUIMovementMode].ubHeight);
 
@@ -2437,22 +2437,22 @@ function UIHandleILoadLevel(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 
 function UIHandleISoldierDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   // Use soldier display pages
-  SetDebugRenderHook((RENDER_HOOK)DebugSoldierPage1, 0);
-  SetDebugRenderHook((RENDER_HOOK)DebugSoldierPage2, 1);
-  SetDebugRenderHook((RENDER_HOOK)DebugSoldierPage3, 2);
-  SetDebugRenderHook((RENDER_HOOK)DebugSoldierPage4, 3);
+  SetDebugRenderHook(DebugSoldierPage1, 0);
+  SetDebugRenderHook(DebugSoldierPage2, 1);
+  SetDebugRenderHook(DebugSoldierPage3, 2);
+  SetDebugRenderHook(DebugSoldierPage4, 3);
   gCurDebugPage = 1;
 
   return DEBUG_SCREEN;
 }
 
 function UIHandleILOSDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  SetDebugRenderHook((RENDER_HOOK)DebugStructurePage1, 0);
+  SetDebugRenderHook(DebugStructurePage1, 0);
   return DEBUG_SCREEN;
 }
 
 function UIHandleILevelNodeDebug(pUIEvent: Pointer<UI_EVENT>): UINT32 {
-  SetDebugRenderHook((RENDER_HOOK)DebugLevelNodePage, 0);
+  SetDebugRenderHook(DebugLevelNodePage, 0);
   return DEBUG_SCREEN;
 }
 
@@ -2798,7 +2798,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       }
       CalcInteractiveObjectAPs(sIntTileGridNo, pStructure, &sAPCost, &sBPCost);
       // sAPCost += UIPlotPath( pSoldier, sActionGridNo, NO_COPYROUTE, PLOT, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (sActionGridNo != pSoldier->sGridNo) {
         gfUIHandleShowMoveGrid = TRUE;
@@ -2808,7 +2808,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       // Add cost for stance change....
       sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
     } else {
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
     }
   } else if (uiFlags == MOVEUI_TARGET_WIREFENCE) {
     sActionGridNo = FindAdjacentGridEx(pSoldier, usMapPos, &ubDirection, NULL, FALSE, TRUE);
@@ -2817,7 +2817,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
     } else {
       sAPCost = GetAPsToCutFence(pSoldier);
 
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (sActionGridNo != pSoldier->sGridNo) {
         gfUIHandleShowMoveGrid = TRUE;
@@ -2832,7 +2832,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToUseJar(pSoldier, sActionGridNo);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
     if (sActionGridNo != pSoldier->sGridNo) {
       gfUIHandleShowMoveGrid = TRUE;
@@ -2847,7 +2847,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       sActionGridNo = FindAdjacentGridEx(pSoldier, sIntTileGridNo, &ubDirection, NULL, FALSE, TRUE);
       if (sActionGridNo != -1) {
         sAPCost = AP_ATTACH_CAN;
-        sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+        sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
         if (sActionGridNo != pSoldier->sGridNo) {
           gfUIHandleShowMoveGrid = TRUE;
@@ -2855,7 +2855,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
         }
       }
     } else {
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
     }
   } else if (uiFlags == MOVEUI_TARGET_REPAIR) {
     // For repair, check if we are over a vehicle, then get gridnot to edge of that vehicle!
@@ -2877,7 +2877,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToBeginRepair(pSoldier);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
     if (sActionGridNo != pSoldier->sGridNo) {
       gfUIHandleShowMoveGrid = TRUE;
@@ -2903,7 +2903,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     sAPCost = GetAPsToRefuelVehicle(pSoldier);
 
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
     if (sActionGridNo != pSoldier->sGridNo) {
       gfUIHandleShowMoveGrid = TRUE;
@@ -2920,7 +2920,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       let ubGuyThere: UINT8;
 
       for (cnt = 0; cnt < NUM_WORLD_DIRECTIONS; cnt++) {
-        sSpot = (INT16)NewGridNo(pSoldier->sGridNo, DirectionInc((INT8)cnt));
+        sSpot = NewGridNo(pSoldier->sGridNo, DirectionInc(cnt));
 
         // Make sure movement costs are OK....
         if (gubWorldMovementCosts[sSpot][cnt][gsInterfaceLevel] >= TRAVELCOST_BLOCKED) {
@@ -2935,7 +2935,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
           // Who is the one we want......
           sGotLocation = sSpot;
           sAdjustedGridNo = MercPtrs[gusUIFullTargetID]->sGridNo;
-          ubDirection = (UINT8)cnt;
+          ubDirection = cnt;
           break;
         }
       }
@@ -2958,7 +2958,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
 
     if (sGotLocation != NOWHERE) {
       sAPCost += MinAPsToAttack(pSoldier, sAdjustedGridNo, TRUE);
-      sAPCost += UIPlotPath(pSoldier, sGotLocation, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sGotLocation, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (sGotLocation != pSoldier->sGridNo && fGotAdjacent) {
         gfUIHandleShowMoveGrid = TRUE;
@@ -2977,7 +2977,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       if (!(PTR_STANDING)) {
         sAPCost += GetAPsToChangeStance(pSoldier, ANIM_STAND);
       }
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (sActionGridNo != pSoldier->sGridNo) {
         gfUIHandleShowMoveGrid = TRUE;
@@ -2986,7 +2986,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
     }
   } else if (uiFlags == MOVEUI_TARGET_BOMB) {
     sAPCost += GetAPsToDropBomb(pSoldier);
-    sAPCost += UIPlotPath(pSoldier, usMapPos, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, usMapPos, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
     gfUIHandleShowMoveGrid = TRUE;
     gsUIHandleShowMoveGridLocation = usMapPos;
@@ -3003,7 +3003,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
         }
       }
       sAPCost += GetAPsToBeginFirstAid(pSoldier);
-      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
       if (sActionGridNo != pSoldier->sGridNo) {
         gfUIHandleShowMoveGrid = TRUE;
         gsUIHandleShowMoveGridLocation = sActionGridNo;
@@ -3017,7 +3017,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
         sActionGridNo = AdjustGridNoForItemPlacement(pSoldier, sActionGridNo);
 
         if (pSoldier->sGridNo != sActionGridNo) {
-          sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+          sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
           if (sAPCost != 0) {
             sAPCost += AP_PICKUP_ITEM;
           }
@@ -3032,7 +3032,7 @@ function DrawUIMovementPath(pSoldier: Pointer<SOLDIERTYPE>, usMapPos: UINT16, ui
       }
     }
   } else {
-    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, fPlot, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
   }
 
   if (gTacticalStatus.uiFlags & SHOW_AP_LEFT) {
@@ -3541,7 +3541,7 @@ function UIHandleTOnTerrain(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   }
 
   if (fValidTalkableGuy) {
-    if (!SoldierTo3DLocationLineOfSightTest(pSoldier, sTargetGridNo, pSoldier->bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+    if (!SoldierTo3DLocationLineOfSightTest(pSoldier, sTargetGridNo, pSoldier->bLevel, 3, sDistVisible, TRUE)) {
       //. ATE: Make range far, so we alternate cursors...
       guiNewUICursor = TALK_OUT_RANGE_A_UICURSOR;
     }
@@ -3689,8 +3689,8 @@ function GetGridNoScreenXY(sGridNo: INT16, pScreenX: Pointer<INT16>, pScreenY: P
 
   FromCellToScreenCoordinates(sOffsetX, sOffsetY, &sTempX_S, &sTempY_S);
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)sTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)sTempY_S;
+  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + sTempX_S;
+  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + sTempY_S;
 
   // Adjust for offset position on screen
   sScreenX -= gsRenderWorldOffsetX;
@@ -4002,7 +4002,7 @@ function UIHandleJumpOver(pUIEvent: Pointer<UI_EVENT>): UINT32 {
   pSoldier->ubPendingAction = NO_PENDING_ACTION;
 
   // Get direction to goto....
-  bDirection = (INT8)GetDirectionFromGridNo(usMapPos, pSoldier);
+  bDirection = GetDirectionFromGridNo(usMapPos, pSoldier);
 
   pSoldier->fDontChargeTurningAPs = TRUE;
   EVENT_InternalSetSoldierDesiredDirection(pSoldier, bDirection, FALSE, pSoldier->usAnimState);
@@ -4079,8 +4079,8 @@ function UIHandleLAEndLockOurTurn(pUIEvent: Pointer<UI_EVENT>): UINT32 {
 function IsValidTalkableNPCFromMouse(pubSoldierID: Pointer<UINT8>, fGive: BOOLEAN, fAllowMercs: BOOLEAN, fCheckCollapsed: BOOLEAN): BOOLEAN {
   // Check if there is a guy here to talk to!
   if (gfUIFullTargetFound) {
-    *pubSoldierID = (UINT8)gusUIFullTargetID;
-    return IsValidTalkableNPC((UINT8)gusUIFullTargetID, fGive, fAllowMercs, fCheckCollapsed);
+    *pubSoldierID = gusUIFullTargetID;
+    return IsValidTalkableNPC(gusUIFullTargetID, fGive, fAllowMercs, fCheckCollapsed);
   }
 
   return FALSE;
@@ -4186,7 +4186,7 @@ function HandleTalkInit(): BOOLEAN {
   // Check if there is a guy here to talk to!
   if (gfUIFullTargetFound) {
     // Is he a valid NPC?
-    if (IsValidTalkableNPC((UINT8)gusUIFullTargetID, FALSE, TRUE, FALSE)) {
+    if (IsValidTalkableNPC(gusUIFullTargetID, FALSE, TRUE, FALSE)) {
       GetSoldier(&pTSoldier, gusUIFullTargetID);
 
       if (pTSoldier->ubID != pSoldier->ubID) {
@@ -4195,7 +4195,7 @@ function HandleTalkInit(): BOOLEAN {
         sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pTSoldier->sGridNo, pTSoldier->bLevel);
 
         // Check LOS!
-        if (!SoldierTo3DLocationLineOfSightTest(pSoldier, pTSoldier->sGridNo, pTSoldier->bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+        if (!SoldierTo3DLocationLineOfSightTest(pSoldier, pTSoldier->sGridNo, pTSoldier->bLevel, 3, sDistVisible, TRUE)) {
           if (pTSoldier->ubProfile != NO_PROFILE) {
             ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_LOS_TO_TALK_TARGET], pSoldier->name, pTSoldier->name);
           } else {
@@ -4226,9 +4226,9 @@ function HandleTalkInit(): BOOLEAN {
 
         // If buddy had a social trait...
         if (gMercProfiles[pTSoldier->ubProfile].bAttitude != ATT_NORMAL) {
-          ubDiceRoll = (UINT8)Random(3);
+          ubDiceRoll = Random(3);
         } else {
-          ubDiceRoll = (UINT8)Random(2);
+          ubDiceRoll = Random(2);
         }
 
         // If we are a PC, only use 0
@@ -4291,7 +4291,7 @@ function HandleTalkInit(): BOOLEAN {
           return FALSE;
         }
 
-        if (UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints) == 0) {
+        if (UIPlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints) == 0) {
           ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_UI_FEEDBACK, TacticalStr[NO_PATH]);
           return FALSE;
         }
@@ -4720,7 +4720,7 @@ function ValidQuickExchangePosition(): BOOLEAN {
             // Check if we have LOS to them....
             sDistVisible = DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pOverSoldier->sGridNo, pOverSoldier->bLevel);
 
-            if (SoldierTo3DLocationLineOfSightTest(pSoldier, pOverSoldier->sGridNo, pOverSoldier->bLevel, (UINT8)3, (UINT8)sDistVisible, TRUE)) {
+            if (SoldierTo3DLocationLineOfSightTest(pSoldier, pOverSoldier->sGridNo, pOverSoldier->bLevel, 3, sDistVisible, TRUE)) {
               // ATE:
               // Check that the path is good!
               if (FindBestPath(pSoldier, pOverSoldier->sGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST) == 1) {
@@ -4783,7 +4783,7 @@ function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCh
     // ATE: Check our movement costs for going through walls!
     ubMovementCost = gubWorldMovementCosts[sIntSpot][sDirs[cnt]][pSoldier->bLevel];
     if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (BOOLEAN)(pSoldier->bTeam == gbPlayerNum), &iDoorGridNo);
+      ubMovementCost = DoorTravelCost(pSoldier, sIntSpot, ubMovementCost, (pSoldier->bTeam == gbPlayerNum), &iDoorGridNo);
     }
 
     // If we have hit an obstacle, STOP HERE
@@ -4801,7 +4801,7 @@ function IsValidJumpLocation(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fCh
     // Alright folks, here we are!
     if (ubGuyThere == pSoldier->ubID) {
       // Double check OK destination......
-      if (NewOKDestination(pSoldier, sGridNo, TRUE, (INT8)gsInterfaceLevel)) {
+      if (NewOKDestination(pSoldier, sGridNo, TRUE, gsInterfaceLevel)) {
         // If the soldier in the middle of doing stuff?
         if (!pSoldier->fTurningUntilDone) {
           // OK, NOW check if there is a guy in between us

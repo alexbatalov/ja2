@@ -46,7 +46,7 @@ function HandleStrategicDeath(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     HandleSoldierDeadComments(pSoldier);
 
     // put the dead guys down
-    AddDeadSoldierToUnLoadedSector((UINT8)(pSoldier->sSectorX), (UINT8)(pSoldier->sSectorY), pSoldier->bSectorZ, pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
+    AddDeadSoldierToUnLoadedSector((pSoldier->sSectorX), (pSoldier->sSectorY), pSoldier->bSectorZ, pSoldier, RandomGridNo(), ADD_DEAD_SOLDIER_TO_SWEETSPOT);
 
     fTeamPanelDirty = TRUE;
     fMapPanelDirty = TRUE;

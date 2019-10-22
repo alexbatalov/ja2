@@ -9,11 +9,11 @@ function GetFreeSmokeEffect(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumSmokeEffects; uiCount++) {
     if ((gSmokeEffectData[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumSmokeEffects < NUM_SMOKE_EFFECT_SLOTS)
-    return (INT32)guiNumSmokeEffects++;
+    return guiNumSmokeEffects++;
 
   return -1;
 }
@@ -23,7 +23,7 @@ function RecountSmokeEffects(): void {
 
   for (uiCount = guiNumSmokeEffects - 1; (uiCount >= 0); uiCount--) {
     if ((gSmokeEffectData[uiCount].fAllocated)) {
-      guiNumSmokeEffects = (UINT32)(uiCount + 1);
+      guiNumSmokeEffects = (uiCount + 1);
       break;
     }
   }
@@ -212,12 +212,12 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
     AniParams.ubLevelID = ANI_ONROOF_LEVEL;
   }
 
-  AniParams.sDelay = (INT16)(300 + Random(300));
+  AniParams.sDelay = (300 + Random(300));
 
   if (!(gGameSettings.fOptions[TOPTION_ANIMATE_SMOKE])) {
-    AniParams.sStartFrame = (INT16)0;
+    AniParams.sStartFrame = 0;
   } else {
-    AniParams.sStartFrame = (INT16)Random(5);
+    AniParams.sStartFrame = Random(5);
   }
 
   // Bare bones flags are...
@@ -232,7 +232,7 @@ function AddSmokeEffectToTile(iSmokeEffectID: INT32, bType: INT8, sGridNo: INT16
 
   AniParams.sX = CenterX(sGridNo);
   AniParams.sY = CenterY(sGridNo);
-  AniParams.sZ = (INT16)0;
+  AniParams.sZ = 0;
 
   // Use the right graphic based on type..
   switch (bType) {
@@ -368,7 +368,7 @@ function DecaySmokeEffects(uiTime: UINT32): void {
         if ((uiTime - pSmoke->uiTimeOfLastUpdate) > 10) {
           fUpdate = TRUE;
 
-          usNumUpdates = (UINT16)((uiTime - pSmoke->uiTimeOfLastUpdate) / 10);
+          usNumUpdates = ((uiTime - pSmoke->uiTimeOfLastUpdate) / 10);
         }
       }
 

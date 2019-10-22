@@ -14,7 +14,7 @@ function CycleAnimations(): void {
   // FInd the next animation with start height the same...
   for (cnt = usStartAnim + 1; cnt < NUMANIMATIONSTATES; cnt++) {
     if (gAnimControl[cnt].ubHeight == ubStartHeight) {
-      usStartAnim = (UINT8)cnt;
+      usStartAnim = cnt;
       EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
       return;
     }
@@ -230,7 +230,7 @@ function GetAnimStateFromName(zName: Pointer<INT8>): UINT16 {
   // FInd the next animation with start height the same...
   for (cnt = 0; cnt < NUMANIMATIONSTATES; cnt++) {
     if (stricmp(gAnimControl[cnt].zAnimStr, zName) == 0) {
-      return (UINT16)cnt;
+      return cnt;
     }
   }
 
@@ -276,11 +276,11 @@ function BuildListFile(): void {
 
     if (usState != 5555) {
       cnt++;
-      ubNumStates = (UINT8)cnt;
+      ubNumStates = cnt;
       pusStates[cnt] = usState;
     } else {
       swprintf(zError, L"Animation str %S is not known: ", currFilename);
-      DoMessageBox(MSG_BOX_BASIC_STYLE, zError, ANIEDIT_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, NULL, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, zError, ANIEDIT_SCREEN, MSG_BOX_FLAG_YESNO, NULL, NULL);
       fclose(infoFile);
       return;
     }

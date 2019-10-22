@@ -114,10 +114,10 @@ function CreateConfirmButtons(): void {
   // create buttons for confirm screen
 
   giIMPConfirmButtonImage[0] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
-  giIMPConfirmButton[0] = CreateIconAndTextButton(giIMPConfirmButtonImage[0], pImpButtonText[16], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (254), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPConfirmYes);
+  giIMPConfirmButton[0] = CreateIconAndTextButton(giIMPConfirmButtonImage[0], pImpButtonText[16], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (254), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPConfirmYes);
 
   giIMPConfirmButtonImage[1] = LoadButtonImage("LAPTOP\\button_2.sti", -1, 0, -1, 1, -1);
-  giIMPConfirmButton[1] = CreateIconAndTextButton(giIMPConfirmButtonImage[1], pImpButtonText[17], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPConfirmNo);
+  giIMPConfirmButton[1] = CreateIconAndTextButton(giIMPConfirmButtonImage[1], pImpButtonText[17], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPConfirmNo);
 
   SetButtonCursor(giIMPConfirmButton[0], CURSOR_WWW);
   SetButtonCursor(giIMPConfirmButton[1], CURSOR_WWW);
@@ -146,7 +146,7 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
 
   memset(&HireMercStruct, 0, sizeof(MERC_HIRE_STRUCT));
 
-  HireMercStruct.ubProfileID = (UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
+  HireMercStruct.ubProfileID = (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId);
 
   if (fLoadingCharacterForPreviousImpProfile == FALSE) {
     // give them items
@@ -165,7 +165,7 @@ function AddCharacterToPlayersTeam(): BOOLEAN {
   HireMercStruct.ubInsertionCode = INSERTION_CODE_ARRIVING_GAME;
   HireMercStruct.uiTimeTillMercArrives = GetMercArrivalTimeOfDay();
 
-  SetProfileFaceData(HireMercStruct.ubProfileID, (UINT8)(200 + iPortraitNumber), uiEyeXPositions[iPortraitNumber], uiEyeYPositions[iPortraitNumber], uiMouthXPositions[iPortraitNumber], uiMouthYPositions[iPortraitNumber]);
+  SetProfileFaceData(HireMercStruct.ubProfileID, (200 + iPortraitNumber), uiEyeXPositions[iPortraitNumber], uiEyeYPositions[iPortraitNumber], uiMouthXPositions[iPortraitNumber], uiMouthYPositions[iPortraitNumber]);
 
   // if we succesfully hired the merc
   if (!HireMerc(&HireMercStruct)) {
@@ -201,12 +201,12 @@ function BtnIMPConfirmYes(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       LaptopSaveInfo.fIMPCompletedFlag = TRUE;
 
       // charge the player
-      AddTransactionToPlayersBook(IMP_PROFILE, (UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId), GetWorldTotalMin(), -(COST_OF_PROFILE));
+      AddTransactionToPlayersBook(IMP_PROFILE, (PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId), GetWorldTotalMin(), -(COST_OF_PROFILE));
       AddHistoryToPlayersLog(HISTORY_CHARACTER_GENERATED, 0, GetWorldTotalMin(), -1, -1);
       AddCharacterToPlayersTeam();
 
       // write the created imp merc
-      WriteOutCurrentImpCharacter((UINT8)(PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
+      WriteOutCurrentImpCharacter((PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId));
 
       fButtonPendingFlag = TRUE;
       iCurrentImpPage = IMP_HOME_PAGE;
@@ -306,7 +306,7 @@ function GiveItemsToPC(ubProfileId: UINT8): void {
 
   // kevlar vest, leggings, & helmet
   MakeProfileInvItemThisSlot(pProfile, VESTPOS, FLAK_JACKET, 100, 1);
-  if (PreRandom(100) < (UINT32)pProfile->bWisdom) {
+  if (PreRandom(100) < pProfile->bWisdom) {
     MakeProfileInvItemThisSlot(pProfile, HELMETPOS, STEEL_HELMET, 100, 1);
   }
 

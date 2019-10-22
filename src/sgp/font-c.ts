@@ -64,8 +64,8 @@ function SetFontColors(usColors: UINT16): void {
   let ubForeground: UINT8;
   let ubBackground: UINT8;
 
-  ubForeground = (UINT8)(usColors & 0xff);
-  ubBackground = (UINT8)((usColors & 0xff00) >> 8);
+  ubForeground = (usColors & 0xff);
+  ubBackground = ((usColors & 0xff00) >> 8);
 
   SetFontForeground(ubForeground);
   SetFontBackground(ubBackground);
@@ -92,9 +92,9 @@ function SetFontForeground(ubForeground: UINT8): void {
 
   FontForeground8 = ubForeground;
 
-  uiRed = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubForeground].peRed;
-  uiGreen = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubForeground].peGreen;
-  uiBlue = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubForeground].peBlue;
+  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peRed;
+  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peGreen;
+  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubForeground].peBlue;
 
   FontForeground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -109,9 +109,9 @@ function SetFontShadow(ubShadow: UINT8): void {
 
   // FontForeground8=ubForeground;
 
-  uiRed = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubShadow].peRed;
-  uiGreen = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubShadow].peGreen;
-  uiBlue = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubShadow].peBlue;
+  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peRed;
+  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peGreen;
+  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubShadow].peBlue;
 
   FontShadow16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 
@@ -144,9 +144,9 @@ function SetFontBackground(ubBackground: UINT8): void {
 
   FontBackground8 = ubBackground;
 
-  uiRed = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubBackground].peRed;
-  uiGreen = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubBackground].peGreen;
-  uiBlue = (UINT32)FontObjs[FontDefault]->pPaletteEntry[ubBackground].peBlue;
+  uiRed = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peRed;
+  uiGreen = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peGreen;
+  uiBlue = FontObjs[FontDefault]->pPaletteEntry[ubBackground].peBlue;
 
   FontBackground16 = Get16BPPColor(FROMRGB(uiRed, uiGreen, uiBlue));
 }
@@ -342,7 +342,7 @@ function GetWidth(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 
   // Get Offsets from Index into structure
   pTrav = &(hSrcVObject->pETRLEObject[ssIndex]);
-  return (UINT32)(pTrav->usWidth + pTrav->sOffsetX);
+  return (pTrav->usWidth + pTrav->sOffsetX);
 }
 
 //*****************************************************************************
@@ -453,7 +453,7 @@ function StringNPixLength(string: Pointer<UINT16>, uiMaxCount: UINT32, UseFont: 
     Cur += GetWidth(FontObjs[UseFont], transletter);
     uiCharCount++;
   }
-  return (INT16)Cur;
+  return Cur;
 }
 
 //*****************************************************************************
@@ -479,7 +479,7 @@ function StringPixLength(string: Pointer<UINT16>, UseFont: INT32): INT16 {
     transletter = GetIndex(*curletter++);
     Cur += GetWidth(FontObjs[UseFont], transletter);
   }
-  return (INT16)Cur;
+  return Cur;
 }
 
 //*****************************************************************************
@@ -538,7 +538,7 @@ function GetHeight(hSrcVObject: HVOBJECT, ssIndex: INT16): UINT32 {
 
   // Get Offsets from Index into structure
   pTrav = &(hSrcVObject->pETRLEObject[ssIndex]);
-  return (UINT32)(pTrav->usHeight + pTrav->sOffsetY);
+  return (pTrav->usHeight + pTrav->sOffsetY);
 }
 
 //*****************************************************************************
@@ -553,7 +553,7 @@ function GetFontHeight(FontNum: INT32): UINT16 {
   Assert(FontNum <= MAX_FONTS);
   Assert(FontObjs[FontNum] != NULL);
 
-  return (UINT16)GetHeight(FontObjs[FontNum], 0);
+  return GetHeight(FontObjs[FontNum], 0);
 }
 
 //*****************************************************************************
@@ -667,7 +667,7 @@ function mprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
     if (gbPixelDepth == 8) {
       Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -766,9 +766,9 @@ function gprintf(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -813,9 +813,9 @@ function gprintfDirty(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args:
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -864,9 +864,9 @@ function gprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
 
     // Blit directly
     if (gbPixelDepth == 8) {
-      Blt8BPPDataTo8BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo8BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     } else {
-      Blt8BPPDataTo16BPPBufferTransparentClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
+      Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion);
     }
 
     destx += GetWidth(FontObjs[FontType], transletter);
@@ -906,7 +906,7 @@ function mprintf_buffer(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32, Font
     if (gbPixelDepth == 8) {
       Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -939,7 +939,7 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
   while ((*curletter) != 0) {
     if ((*curletter) == 180) {
       curletter++;
-      SetFontForeground((UINT8)(*curletter));
+      SetFontForeground((*curletter));
       curletter++;
     } else if ((*curletter) == 181) {
       FontForeground16 = usOldForeColor;
@@ -957,7 +957,7 @@ function mprintf_buffer_coded(pDestBuf: Pointer<UINT8>, uiDestPitchBYTES: UINT32
     if (gbPixelDepth == 8) {
       Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -995,7 +995,7 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
   while ((*curletter) != 0) {
     if ((*curletter) == 180) {
       curletter++;
-      SetFontForeground((UINT8)(*curletter));
+      SetFontForeground((*curletter));
       curletter++;
     } else if ((*curletter) == 181) {
       FontForeground16 = usOldForeColor;
@@ -1013,7 +1013,7 @@ function mprintf_coded(x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args
     if (gbPixelDepth == 8) {
       Blt8BPPDataTo8BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground8, FontBackground8);
     } else {
-      Blt8BPPDataTo16BPPBufferMonoShadowClip((UINT16 *)pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
+      Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, FontObjs[FontDefault], destx, desty, transletter, &FontDestRegion, FontForeground16, FontBackground16, FontShadow16);
     }
     destx += GetWidth(FontObjs[FontDefault], transletter);
   }
@@ -1046,9 +1046,9 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
   GetCurrentVideoSettings(&uiRight, &uiBottom, &uiPixelDepth);
   FontDestRegion.iLeft = 0;
   FontDestRegion.iTop = 0;
-  FontDestRegion.iRight = (INT32)uiRight;
-  FontDestRegion.iBottom = (INT32)uiBottom;
-  FontDestBPP = (UINT32)uiPixelDepth;
+  FontDestRegion.iRight = uiRight;
+  FontDestRegion.iBottom = uiBottom;
+  FontDestBPP = uiPixelDepth;
 
   FontDestWrap = FALSE;
 
@@ -1058,11 +1058,11 @@ function InitializeFontManager(usDefaultPixelDepth: UINT16, pTransTable: Pointer
   }
   RegisterDebugTopic(TOPIC_FONT_HANDLER, "Font Manager");
 
-  if ((pFManager = (FontManager *)MemAlloc(sizeof(FontManager))) == NULL) {
+  if ((pFManager = MemAlloc(sizeof(FontManager))) == NULL) {
     return FALSE;
   }
 
-  if ((pTransTab = (FontTranslationTable *)MemAlloc(sizeof(FontTranslationTable))) == NULL) {
+  if ((pTransTab = MemAlloc(sizeof(FontTranslationTable))) == NULL) {
     return FALSE;
   }
 
@@ -1124,10 +1124,10 @@ function CreateEnglishTransTable(): Pointer<FontTranslationTable> {
   let pTable: Pointer<FontTranslationTable> = NULL;
   let temp: Pointer<UINT16>;
 
-  pTable = (FontTranslationTable *)MemAlloc(sizeof(FontTranslationTable));
+  pTable = MemAlloc(sizeof(FontTranslationTable));
   // ha ha, we have more than Wizardry now (again)
   pTable->usNumberOfSymbols = 172;
-  pTable->DynamicArrayOf16BitValues = (UINT16 *)MemAlloc(pTable->usNumberOfSymbols * 2);
+  pTable->DynamicArrayOf16BitValues = MemAlloc(pTable->usNumberOfSymbols * 2);
   temp = pTable->DynamicArrayOf16BitValues;
 
   *temp = 'A';

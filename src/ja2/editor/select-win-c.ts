@@ -160,16 +160,16 @@ function CreateJA2SelectionWindow(sWhat: INT16): void {
 
   iSelectWin = CreateHotSpot(0, 0, 600, 360, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, SelWinClkCallback);
 
-  iCancelWin = CreateIconButton((INT16)iButtonIcons[CANCEL_ICON], 0, BUTTON_USE_DEFAULT, 600, 40, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, CnclClkCallback);
+  iCancelWin = CreateIconButton(iButtonIcons[CANCEL_ICON], 0, BUTTON_USE_DEFAULT, 600, 40, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, CnclClkCallback);
   SetButtonFastHelpText(iCancelWin, L"Cancel selections");
 
-  iOkWin = CreateIconButton((INT16)iButtonIcons[OK_ICON], 0, BUTTON_USE_DEFAULT, 600, 0, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, OkClkCallback);
+  iOkWin = CreateIconButton(iButtonIcons[OK_ICON], 0, BUTTON_USE_DEFAULT, 600, 0, 40, 40, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, OkClkCallback);
   SetButtonFastHelpText(iOkWin, L"Accept selections");
 
-  iScrollUp = CreateIconButton((INT16)iButtonIcons[UP_ICON], 0, BUTTON_USE_DEFAULT, 600, 80, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, UpClkCallback);
+  iScrollUp = CreateIconButton(iButtonIcons[UP_ICON], 0, BUTTON_USE_DEFAULT, 600, 80, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, UpClkCallback);
   SetButtonFastHelpText(iScrollUp, L"Scroll window up");
 
-  iScrollDown = CreateIconButton((INT16)iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DwnClkCallback);
+  iScrollDown = CreateIconButton(iButtonIcons[DOWN_ICON], 0, BUTTON_USE_DEFAULT, 600, 240, 40, 160, BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, DwnClkCallback);
   SetButtonFastHelpText(iScrollDown, L"Scroll window down");
 
   fButtonsPresent = TRUE;
@@ -325,8 +325,8 @@ function InitJA2SelectionWindow(): void {
     for (iCount2 = 0; iCount2 < usETRLEObjects; iCount2 += 3, iCount3++) {
       OStructs[iCount3].ubType = DISPLAY_GRAPHIC;
       OStructs[iCount3].hVObject = hVObject;
-      OStructs[iCount3].usStart = (UINT16)iCount2;
-      OStructs[iCount3].usEnd = (UINT16)iCount2;
+      OStructs[iCount3].usStart = iCount2;
+      OStructs[iCount3].usEnd = iCount2;
       OStructs[iCount3].uiObjIndx = (FIRSTFULLSTRUCT + iCount);
     }
   }
@@ -337,7 +337,7 @@ function InitJA2SelectionWindow(): void {
   OStructs[iCount3].usEnd = 0;
   OStructs[iCount3].uiObjIndx = SIXTHOSTRUCT;
 
-  gusNumOStructs = (UINT16)iCount3 + 1;
+  gusNumOStructs = iCount3 + 1;
 
   // Rocks & barrels! (the "1" button in the "terrain" toolbar)
   OStructs1[0].ubType = DISPLAY_GRAPHIC;
@@ -701,7 +701,7 @@ function ShutdownJA2SelectionWindow(): void {
   let x: INT16;
 
   for (x = 0; x < 4; x++)
-    UnloadGenericButtonIcon((INT16)iButtonIcons[x]);
+    UnloadGenericButtonIcon(iButtonIcons[x]);
 
   if (pDispList != NULL) {
     pDispList = TrashList(pDispList);
@@ -778,7 +778,7 @@ function RenderSelectionWindow(): void {
     if (button == NULL)
       return;
 
-    if ((abs(iStartClickX - button->Area.MouseXPos) > 9) || (abs(iStartClickY - (button->Area.MouseYPos + iTopWinCutOff - (INT16)SelWinStartPoint.iY)) > 9)) {
+    if ((abs(iStartClickX - button->Area.MouseXPos) > 9) || (abs(iStartClickY - (button->Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY)) > 9)) {
       //			iSX = (INT32)iStartClickX;
       //			iEX = (INT32)button->Area.MouseXPos;
       //			iSY = (INT32)iStartClickY;
@@ -840,7 +840,7 @@ function SelWinClkCallback(button: Pointer<GUI_BUTTON>, reason: INT32): void {
     return;
 
   iClickX = button->Area.MouseXPos;
-  iClickY = button->Area.MouseYPos + iTopWinCutOff - (INT16)SelWinStartPoint.iY;
+  iClickY = button->Area.MouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     button->uiFlags |= BUTTON_CLICKED_ON;
@@ -928,7 +928,7 @@ function DisplaySelectionWindowGraphicalInformation(): void {
   // iRelX = gusMouseXPos;
   // iRelY = gusMouseYPos + iTopWinCutOff - (INT16)SelWinStartPoint.iY;
 
-  y = gusMouseYPos + iTopWinCutOff - (UINT16)SelWinStartPoint.iY;
+  y = gusMouseYPos + iTopWinCutOff - SelWinStartPoint.iY;
   pNode = pDispList;
   fDone = FALSE;
   while ((pNode != NULL) && !fDone) {
@@ -1076,14 +1076,14 @@ function GetRandomSelection(): INT32 {
 
   iTotalCounts = 0;
   for (iIndex = 0; iIndex < (*pNumSelList); iIndex++)
-    iTotalCounts += (INT32)pSelList[iIndex].sCount;
+    iTotalCounts += pSelList[iIndex].sCount;
 
   iRandNum = Random(iTotalCounts);
 
   iSelectedIndex = -1;
   iNextCount = 0;
   for (iIndex = 0; iIndex < (*pNumSelList) && iSelectedIndex == -1; iIndex++) {
-    iNextCount += (INT32)pSelList[iIndex].sCount;
+    iNextCount += pSelList[iIndex].sCount;
     if (iRandNum < iNextCount)
       iSelectedIndex = iIndex;
   }
@@ -1355,11 +1355,11 @@ function BuildDisplayWindow(pDisplaySpecs: Pointer<DisplaySpec>, usNumSpecs: UIN
           usGreatestHeightInRow = 0;
         }
 
-        if ((pCurNode = (DisplayList *)MemAlloc(sizeof(DisplayList))) != FALSE) {
+        if ((pCurNode = MemAlloc(sizeof(DisplayList))) != FALSE) {
           pCurNode->hObj = pDisplaySpec->hVObject;
           pCurNode->uiIndex = usETRLELoop;
-          pCurNode->iX = (INT16)iCurrX;
-          pCurNode->iY = (INT16)iCurrY;
+          pCurNode->iX = iCurrX;
+          pCurNode->iY = iCurrY;
           pCurNode->iWidth = pETRLEObject->usWidth;
           pCurNode->iHeight = pETRLEObject->usHeight;
           pCurNode->pNext = *pDisplayList;
@@ -1438,7 +1438,7 @@ function DisplayWindowFunc(pNode: Pointer<DisplayList>, iTopCutOff: INT16, iBott
       sCount = pSelList[FindInSelectionList(pNode)].sCount;
 
     SetObjectShade(pNode->hObj, DEFAULT_SHADE_LEVEL);
-    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode->hObj, pNode->uiIndex, (UINT16)pNode->iX, (UINT16)iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
+    fReturnVal = BltVideoObject(FRAME_BUFFER, pNode->hObj, pNode->uiIndex, pNode->iX, iCurrY, VO_BLT_SRCTRANSPARENCY, NULL);
 
     if (sCount != 0) {
       gprintf(pNode->iX, iCurrY, L"%d", sCount);

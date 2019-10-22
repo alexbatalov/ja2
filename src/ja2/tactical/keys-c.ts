@@ -179,7 +179,7 @@ function DoUnlockDoor(pDoor: Pointer<DOOR>, ubKeyID: UINT8): BOOLEAN {
   // return true, otherwise return false
   if ((pDoor->fLocked) && ValidKey(pDoor, ubKeyID)) {
     // Play lockpicking
-    PlayJA2Sample(((UINT8)UNLOCK_DOOR_1), RATE_11025, SoundVolume(MIDVOLUME, pDoor->sGridNo), 1, SoundDir(pDoor->sGridNo));
+    PlayJA2Sample((UNLOCK_DOOR_1), RATE_11025, SoundVolume(MIDVOLUME, pDoor->sGridNo), 1, SoundDir(pDoor->sGridNo));
 
     pDoor->fLocked = FALSE;
     return TRUE;
@@ -253,7 +253,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample(((UINT8)BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+    PlayJA2Sample((BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
 
     return TRUE;
   }
@@ -266,16 +266,16 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
   // possibly damage crowbar
   bStress = __min(EffectiveStrength(pSoldier), LockTable[pDoor->ubLockID].ubSmashDifficulty + 30);
   // reduce crowbar status by random % between 0 and 5%
-  DamageObj(&(pSoldier->inv[bSlot]), (INT8)PreRandom(bStress / 20));
+  DamageObj(&(pSoldier->inv[bSlot]), PreRandom(bStress / 20));
 
   // did we succeed?
 
   if (LockTable[pDoor->ubLockID].ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (INT8)(-(INT8)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
+    iResult = SkillCheck(pSoldier, OPEN_WITH_CROWBAR, (-(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
   }
 
   if (iResult > 0) {
@@ -286,7 +286,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
     RemoveDoorInfoFromTable(pDoor->sGridNo);
 
     // Play lock busted sound
-    PlayJA2Sample(((UINT8)BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+    PlayJA2Sample((BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
 
     return TRUE;
   } else {
@@ -295,7 +295,7 @@ function AttemptToCrowbarLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOO
       StatChange(pSoldier, STRAMT, 5, FALSE);
 
       // we came close... so do some damage to the lock
-      pDoor->bLockDamage += (INT8)(10 + iResult);
+      pDoor->bLockDamage += (10 + iResult);
     } else if (iResult > -40 && pSoldier->sGridNo != pSoldier->sSkillCheckGridNo) {
       // give token point for effort :-)
       StatChange(pSoldier, STRAMT, 1, FALSE);
@@ -321,7 +321,7 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample(((UINT8)BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+    PlayJA2Sample((BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
 
     return TRUE;
   }
@@ -336,10 +336,10 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
   // did we succeed?
   if (pLock->ubSmashDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (INT8)(-(INT8)(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
+    iResult = SkillCheck(pSoldier, SMASH_DOOR_CHECK, (-(LockTable[pDoor->ubLockID].ubSmashDifficulty - pDoor->bLockDamage)));
   }
   if (iResult > 0) {
     // STR GAIN (20) - Pried open a lock
@@ -350,7 +350,7 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
     // award experience points?
 
     // Play lock busted sound
-    PlayJA2Sample(((UINT8)BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+    PlayJA2Sample((BREAK_LOCK), RATE_11025, SoundVolume(MIDVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
 
     return TRUE;
   } else {
@@ -359,7 +359,7 @@ function AttemptToSmashDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>
       StatChange(pSoldier, STRAMT, 5, FALSE);
 
       // we came close... so do some damage to the lock
-      pDoor->bLockDamage += (INT8)(10 + iResult);
+      pDoor->bLockDamage += (10 + iResult);
     } else if (iResult > -40 && pSoldier->sGridNo != pSoldier->sSkillCheckGridNo) {
       // give token point for effort :-)
       StatChange(pSoldier, STRAMT, 1, FALSE);
@@ -395,17 +395,17 @@ function AttemptToPickLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>)
   // The difficulty is negated here to make it a skill adjustment
   if (pLock->ubPickDifficulty == OPENING_NOT_POSSIBLE) {
     // do this to get 'can't do this' messages
-    iResult = SkillCheck(pSoldier, bReason, (INT8)(-100));
+    iResult = SkillCheck(pSoldier, bReason, (-100));
     iResult = -100;
   } else {
-    iResult = SkillCheck(pSoldier, bReason, (INT8)(-(INT8)(pLock->ubPickDifficulty)));
+    iResult = SkillCheck(pSoldier, bReason, (-(pLock->ubPickDifficulty)));
   }
   if (iResult > 0) {
     // MECHANICAL GAIN:  Picked open a lock
-    StatChange(pSoldier, MECHANAMT, (UINT16)(pLock->ubPickDifficulty / 5), FALSE);
+    StatChange(pSoldier, MECHANAMT, (pLock->ubPickDifficulty / 5), FALSE);
 
     // DEXTERITY GAIN:  Picked open a lock
-    StatChange(pSoldier, DEXTAMT, (UINT16)(pLock->ubPickDifficulty / 10), FALSE);
+    StatChange(pSoldier, DEXTAMT, (pLock->ubPickDifficulty / 10), FALSE);
 
     // succeeded!
     pDoor->fLocked = FALSE;
@@ -423,9 +423,9 @@ function AttemptToUntrapDoor(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
   // See if we measure up to the task.
   if (pDoor->ubTrapID == EXPLOSION) {
-    iResult = SkillCheck(pSoldier, DISARM_TRAP_CHECK, (INT8)(pDoor->ubTrapLevel * 7));
+    iResult = SkillCheck(pSoldier, DISARM_TRAP_CHECK, (pDoor->ubTrapLevel * 7));
   } else {
-    iResult = SkillCheck(pSoldier, DISARM_ELECTRONIC_TRAP_CHECK, (INT8)(pDoor->ubTrapLevel * 7));
+    iResult = SkillCheck(pSoldier, DISARM_ELECTRONIC_TRAP_CHECK, (pDoor->ubTrapLevel * 7));
   }
 
   if (iResult > 0) {
@@ -496,7 +496,7 @@ function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): v
   switch (pDoor->ubTrapID) {
     case EXPLOSION:
       // cause damage as a regular hand grenade
-      IgniteExplosion(NOBODY, CenterX(pSoldier->sGridNo), (INT16)CenterY(pSoldier->sGridNo), 25, pSoldier->sGridNo, HAND_GRENADE, 0);
+      IgniteExplosion(NOBODY, CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), 25, pSoldier->sGridNo, HAND_GRENADE, 0);
       break;
 
     case SIREN:
@@ -526,7 +526,7 @@ function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): v
       gTacticalStatus.ubAttackBusyCount++;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
-      SoldierTakeDamage(pSoldier, 0, (UINT16)(10 + PreRandom(10)), (UINT16)((3 + PreRandom(3) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor->sGridNo, 0, TRUE);
+      SoldierTakeDamage(pSoldier, 0, (10 + PreRandom(10)), ((3 + PreRandom(3) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor->sGridNo, 0, TRUE);
       break;
 
     case SUPER_ELECTRIC:
@@ -540,7 +540,7 @@ function HandleDoorTrap(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR>): v
       gTacticalStatus.ubAttackBusyCount++;
       DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("!!!!!!! Trap gone off %d", gTacticalStatus.ubAttackBusyCount));
 
-      SoldierTakeDamage(pSoldier, 0, (UINT16)(20 + PreRandom(20)), (UINT16)((6 + PreRandom(6) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor->sGridNo, 0, TRUE);
+      SoldierTakeDamage(pSoldier, 0, (20 + PreRandom(20)), ((6 + PreRandom(6) * 1000)), TAKE_DAMAGE_ELECTRICITY, NOBODY, pDoor->sGridNo, 0, TRUE);
       break;
 
     default:
@@ -580,7 +580,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
       AniParams.sGridNo = sGridNo;
       AniParams.ubLevelID = ANI_TOPMOST_LEVEL;
-      AniParams.sDelay = (INT16)(100);
+      AniParams.sDelay = (100);
       AniParams.sStartFrame = 0;
       AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_ALWAYS_TRANSLUCENT;
       AniParams.sX = sX;
@@ -591,7 +591,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
 
       CreateAnimationTile(&AniParams);
 
-      PlayJA2Sample(SMALL_EXPLODE_1, RATE_11025, SoundVolume((INT8)HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+      PlayJA2Sample(SMALL_EXPLODE_1, RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 
       // Remove the explosive.....
       bSlot = FindObj(pSoldier, SHAPED_CHARGE);
@@ -618,7 +618,7 @@ function AttemptToBlowUpLock(pSoldier: Pointer<SOLDIERTYPE>, pDoor: Pointer<DOOR
     }
 
     // OOPS! ... BOOM!
-    IgniteExplosion(NOBODY, pSoldier->sX, pSoldier->sY, (INT16)(gpWorldLevelData[pSoldier->sGridNo].sHeight), pSoldier->sGridNo, SHAPED_CHARGE, 0);
+    IgniteExplosion(NOBODY, pSoldier->sX, pSoldier->sY, (gpWorldLevelData[pSoldier->sGridNo].sHeight), pSoldier->sGridNo, SHAPED_CHARGE, 0);
   }
   return FALSE;
 }
@@ -632,7 +632,7 @@ function LoadDoorTableFromMap(hBuffer: Pointer<Pointer<INT8>>): void {
   LOADDATA(&gubNumDoors, *hBuffer, 1);
 
   gubMaxDoors = gubNumDoors;
-  DoorTable = (DOOR *)MemAlloc(sizeof(DOOR) * gubMaxDoors);
+  DoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
 
   LOADDATA(DoorTable, *hBuffer, sizeof(DOOR) * gubMaxDoors);
 
@@ -679,7 +679,7 @@ function AddDoorInfoToTable(pDoor: Pointer<DOOR>): void {
     let NewDoorTable: Pointer<DOOR>;
     gubMaxDoors += 10;
     // Allocate new table with max+10 doors.
-    NewDoorTable = (DOOR *)MemAlloc(sizeof(DOOR) * gubMaxDoors);
+    NewDoorTable = MemAlloc(sizeof(DOOR) * gubMaxDoors);
     // Copy contents of existing door table to new door table.
     memcpy(NewDoorTable, DoorTable, sizeof(DOOR) * gubNumDoors);
     // Deallocate the existing door table (possible to not have one).
@@ -1072,7 +1072,7 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
       if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, (UINT8)sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, sDistVisible, TRUE)) {
           // Update status...
           if (fUpdateValue) {
             InternalUpdateDoorsPerceivedValue(pDoorStatus);
@@ -1089,7 +1089,7 @@ function AllMercsLookForDoor(sGridNo: INT16, fUpdateValue: BOOLEAN): BOOLEAN {
         if (PythSpacesAway(pSoldier->sGridNo, usNewGridNo) <= sDistVisible) {
           // and we can trace a line of sight to his x,y coordinates?
           // (taking into account we are definitely aware of this guy now)
-          if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, (UINT8)sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, sDistVisible, TRUE)) {
             // Update status...
             if (fUpdateValue) {
               InternalUpdateDoorsPerceivedValue(pDoorStatus);
@@ -1138,7 +1138,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
     if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
       // and we can trace a line of sight to his x,y coordinates?
       // (taking into account we are definitely aware of this guy now)
-      if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, (UINT8)sDistVisible, TRUE)) {
+      if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, 0, 0, sDistVisible, TRUE)) {
         // OK, here... update perceived value....
         if (fUpdateValue) {
           InternalUpdateDoorsPerceivedValue(pDoorStatus);
@@ -1157,7 +1157,7 @@ function MercLooksForDoors(pSoldier: Pointer<SOLDIERTYPE>, fUpdateValue: BOOLEAN
       if (PythSpacesAway(pSoldier->sGridNo, usNewGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, (UINT8)sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, usNewGridNo, 0, 0, sDistVisible, TRUE)) {
           // Update status...
           if (fUpdateValue) {
             InternalUpdateDoorsPerceivedValue(pDoorStatus);

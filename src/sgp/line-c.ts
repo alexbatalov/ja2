@@ -70,10 +70,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
   let x1: FLOAT;
   let y1: FLOAT;
 
-  x0 = (FLOAT)*ix0;
-  x1 = (FLOAT)*ix1;
-  y0 = (FLOAT)*iy0;
-  y1 = (FLOAT)*iy1;
+  x0 = *ix0;
+  x1 = *ix1;
+  y0 = *iy0;
+  y1 = *iy1;
 
   dx = x1 - x0;
   dy = y1 - y0;
@@ -84,10 +84,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
   else {
     te = 0.0f;
     tl = 1.0f;
-    if (Clipt(dx, (FLOAT)giClipXMin - x0, &te, &tl)) {
-      if (Clipt(-dx, x0 - (FLOAT)giClipXMax, &te, &tl)) {
-        if (Clipt(dy, (FLOAT)giClipYMin - y0, &te, &tl)) {
-          if (Clipt(-dy, y0 - (FLOAT)giClipYMax, &te, &tl)) {
+    if (Clipt(dx, giClipXMin - x0, &te, &tl)) {
+      if (Clipt(-dx, x0 - giClipXMax, &te, &tl)) {
+        if (Clipt(dy, giClipYMin - y0, &te, &tl)) {
+          if (Clipt(-dy, y0 - giClipYMax, &te, &tl)) {
             visible = TRUE;
             if (tl < 1.0f) {
               x1 = x0 + tl * dx;
@@ -103,10 +103,10 @@ function Clip2D(ix0: Pointer<int>, iy0: Pointer<int>, ix1: Pointer<int>, iy1: Po
     }
   }
 
-  *ix0 = (int)x0;
-  *ix1 = (int)x1;
-  *iy0 = (int)y0;
-  *iy1 = (int)y1;
+  *ix0 = x0;
+  *ix1 = x1;
+  *iy0 = y0;
+  *iy1 = y1;
 
   return visible;
 }

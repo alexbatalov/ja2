@@ -1,7 +1,7 @@
 CQuantizer::CQuantizer(UINT nMaxColors, UINT nColorBits) {
   m_pTree = NULL;
   m_nLeafCount = 0;
-  for (int i = 0; i <= (int)nColorBits; i++)
+  for (int i = 0; i <= nColorBits; i++)
     m_pReducibleNodes[i] = NULL;
   m_nMaxColors = nMaxColors;
   m_nColorBits = nColorBits;
@@ -17,7 +17,7 @@ BOOL CQuantizer::ProcessImage(BYTE *pData, int iWidth, int iHeight) {
   BYTE r, g, b;
   int i, j;
 
-  pbBits = (BYTE *)pData;
+  pbBits = pData;
   for (i = 0; i < iHeight; i++) {
     for (j = 0; j < iWidth; j++) {
       b = *pbBits++;
@@ -93,7 +93,7 @@ void CQuantizer::AddColor(NODE **ppNode, BYTE r, BYTE g, BYTE b, UINT nColorBits
 NODE *CQuantizer::CreateNode(UINT nLevel, UINT nColorBits, UINT *pLeafCount, NODE **pReducibleNodes) {
   NODE *pNode;
 
-  if ((pNode = (NODE *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
+  if ((pNode = HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sizeof(NODE))) == NULL)
     return NULL;
 
   pNode->bIsLeaf = (nLevel == nColorBits) ? TRUE : FALSE;
@@ -154,9 +154,9 @@ void CQuantizer::DeleteTree(NODE **ppNode) {
 
 void CQuantizer::GetPaletteColors(NODE *pTree, RGBQUAD *prgb, UINT *pIndex) {
   if (pTree->bIsLeaf) {
-    prgb[*pIndex].rgbRed = (BYTE)((pTree->nRedSum) / (pTree->nPixelCount));
-    prgb[*pIndex].rgbGreen = (BYTE)((pTree->nGreenSum) / (pTree->nPixelCount));
-    prgb[*pIndex].rgbBlue = (BYTE)((pTree->nBlueSum) / (pTree->nPixelCount));
+    prgb[*pIndex].rgbRed = ((pTree->nRedSum) / (pTree->nPixelCount));
+    prgb[*pIndex].rgbGreen = ((pTree->nGreenSum) / (pTree->nPixelCount));
+    prgb[*pIndex].rgbBlue = ((pTree->nBlueSum) / (pTree->nPixelCount));
     prgb[*pIndex].rgbReserved = 0;
     (*pIndex)++;
   } else {

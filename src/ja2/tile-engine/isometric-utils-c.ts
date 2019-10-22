@@ -547,7 +547,7 @@ function GetRangeFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): INT32 {
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo2, &sXPos2, &sYPos2);
 
-  uiDist = (INT16)sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
+  uiDist = sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos));
 
   return uiDist;
 }
@@ -564,7 +564,7 @@ function GetRangeInCellCoordsFromGridNoDiff(sGridNo1: INT16, sGridNo2: INT16): I
   // Convert our grid-not into an XY
   ConvertGridNoToXY(sGridNo2, &sXPos2, &sYPos2);
 
-  return (INT32)(sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
+  return (sqrt((sXPos2 - sXPos) * (sXPos2 - sXPos) + (sYPos2 - sYPos) * (sYPos2 - sYPos))) * CELL_X_SIZE;
 }
 
 function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>): BOOLEAN {
@@ -578,7 +578,7 @@ function IsPointInScreenRect(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>
 function IsPointInScreenRectWithRelative(sXPos: INT16, sYPos: INT16, pRect: Pointer<SGPRect>, sXRel: Pointer<INT16>, sYRel: Pointer<INT16>): BOOLEAN {
   if ((sXPos >= pRect->iLeft) && (sXPos <= pRect->iRight) && (sYPos >= pRect->iTop) && (sYPos <= pRect->iBottom)) {
     (*sXRel) = pRect->iLeft - sXPos;
-    (*sYRel) = sYPos - (INT16)pRect->iTop;
+    (*sYRel) = sYPos - pRect->iTop;
 
     return TRUE;
   } else {
@@ -596,7 +596,7 @@ function PythSpacesAway(sOrigin: INT16, sDest: INT16): INT16 {
 
   // apply Pythagoras's theorem for right-handed triangle:
   // dist^2 = rows^2 + cols^2, so use the square root to get the distance
-  sResult = (INT16)sqrt((sRows * sRows) + (sCols * sCols));
+  sResult = sqrt((sRows * sRows) + (sCols * sCols));
 
   return sResult;
 }
@@ -620,7 +620,7 @@ function CardinalSpacesAway(sOrigin: INT16, sDest: INT16): INT16
   sRows = abs((sOrigin / MAXCOL) - (sDest / MAXCOL));
   sCols = abs((sOrigin % MAXROW) - (sDest % MAXROW));
 
-  return (INT16)(sRows + sCols);
+  return (sRows + sCols);
 }
 
 function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
@@ -653,7 +653,7 @@ function FindNumTurnsBetweenDirs(sDir1: INT8, sDir2: INT8): INT8 {
     }
   } while (TRUE);
 
-  return (INT8)sNumTurns;
+  return sNumTurns;
 }
 
 function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartingDir: INT8, pbDirection: Pointer<INT8>): BOOLEAN {
@@ -672,7 +672,7 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
 
   // LOOP THROUGH ALL 8 DIRECTIONS
   for (cnt = 0; cnt < 8; cnt += 2) {
-    sNewGridNo = NewGridNo((UINT16)sGridNo, (UINT16)DirectionInc((UINT8)cnt));
+    sNewGridNo = NewGridNo(sGridNo, DirectionInc(cnt));
 
     if (NewOKDestination(pSoldier, sNewGridNo, TRUE, 1)) {
       // Check if this tile has a higher level
@@ -680,11 +680,11 @@ function FindHeigherLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStart
         fFound = TRUE;
 
         // FInd how many turns we should go to get here
-        bNumTurns = FindNumTurnsBetweenDirs((INT8)cnt, bStartingDir);
+        bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
 
         if (bNumTurns < bMinNumTurns) {
           bMinNumTurns = bNumTurns;
-          bMinDirection = (INT8)cnt;
+          bMinDirection = cnt;
         }
       }
     }
@@ -708,7 +708,7 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
 
   // LOOP THROUGH ALL 8 DIRECTIONS
   for (cnt = 0; cnt < 8; cnt += 2) {
-    sNewGridNo = NewGridNo((UINT16)sGridNo, (UINT16)DirectionInc((UINT8)cnt));
+    sNewGridNo = NewGridNo(sGridNo, DirectionInc(cnt));
 
     // Make sure there is NOT a roof here...
     // Check OK destination
@@ -718,11 +718,11 @@ function FindLowerLevel(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bStartin
           fFound = TRUE;
 
           // FInd how many turns we should go to get here
-          bNumTurns = FindNumTurnsBetweenDirs((INT8)cnt, bStartingDir);
+          bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
 
           if (bNumTurns < bMinNumTurns) {
             bMinNumTurns = bNumTurns;
-            bMinDirection = (INT8)cnt;
+            bMinDirection = cnt;
           }
         }
       }
@@ -905,8 +905,8 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
   // LOOP THROUGH ALL 8 DIRECTIONS
   for (cnt = 0; cnt < 8; cnt += 2) {
     // go out *2* tiles
-    sNewGridNo = NewGridNo((UINT16)sGridNo, (UINT16)DirectionInc((UINT8)cnt));
-    sOtherSideOfFence = NewGridNo((UINT16)sNewGridNo, (UINT16)DirectionInc((UINT8)cnt));
+    sNewGridNo = NewGridNo(sGridNo, DirectionInc(cnt));
+    sOtherSideOfFence = NewGridNo(sNewGridNo, DirectionInc(cnt));
 
     if (NewOKDestination(pSoldier, sOtherSideOfFence, TRUE, 0)) {
       // ATE: Check if there is somebody waiting here.....
@@ -916,11 +916,11 @@ function FindFenceJumpDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
         fFound = TRUE;
 
         // FInd how many turns we should go to get here
-        bNumTurns = FindNumTurnsBetweenDirs((INT8)cnt, bStartingDir);
+        bNumTurns = FindNumTurnsBetweenDirs(cnt, bStartingDir);
 
         if (bNumTurns < bMinNumTurns) {
           bMinNumTurns = bNumTurns;
-          bMinDirection = (INT8)cnt;
+          bMinDirection = cnt;
         }
       }
     }
@@ -943,6 +943,6 @@ function RandomGridNo(): INT16 {
     iMapXPos = Random(WORLD_COLS);
     iMapYPos = Random(WORLD_ROWS);
     iMapIndex = iMapYPos * WORLD_COLS + iMapXPos;
-  } while (!GridNoOnVisibleWorldTile((INT16)iMapIndex));
-  return (INT16)iMapIndex;
+  } while (!GridNoOnVisibleWorldTile(iMapIndex));
+  return iMapIndex;
 }

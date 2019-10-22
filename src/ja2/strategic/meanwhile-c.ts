@@ -217,11 +217,11 @@ function GetFreeNPCSave(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumNPCSaves; uiCount++) {
     if ((gNPCSaveData[uiCount].ubProfile == NO_PROFILE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumNPCSaves < MAX_MEANWHILE_PROFILES)
-    return (INT32)guiNumNPCSaves++;
+    return guiNumNPCSaves++;
 
   return -1;
 }
@@ -231,7 +231,7 @@ function RecountNPCSaves(): void {
 
   for (uiCount = guiNumNPCSaves - 1; (uiCount >= 0); uiCount--) {
     if ((gNPCSaveData[uiCount].ubProfile != NO_PROFILE)) {
-      guiNumNPCSaves = (UINT32)(uiCount + 1);
+      guiNumNPCSaves = (uiCount + 1);
       break;
     }
   }
@@ -291,7 +291,7 @@ function BringupMeanwhileBox(): void {
   {
     DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OKSKIP, BeginMeanwhileCallBack, NULL);
   } else {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, (UINT8)MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, NULL);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, zStr, guiCurrentScreen, MSG_BOX_FLAG_OK, BeginMeanwhileCallBack, NULL);
   }
 }
 
@@ -339,7 +339,7 @@ function StartMeanwhile(): void {
 
   gsOldSelectedSectorX = sSelMapX;
   gsOldSelectedSectorY = sSelMapY;
-  gsOldSelectedSectorZ = (INT16)iCurrentMapSectorZ;
+  gsOldSelectedSectorZ = iCurrentMapSectorZ;
 
   gfInMeanwhile = TRUE;
 
@@ -349,7 +349,7 @@ function StartMeanwhile(): void {
   gfWorldWasLoaded = gfWorldLoaded;
 
   // OK, we have been told to start.....
-  SetCurrentInterfacePanel((UINT8)TEAM_PANEL);
+  SetCurrentInterfacePanel(TEAM_PANEL);
 
   // Setup NPC locations, depending on meanwhile type...
   switch (gCurrentMeanwhileDef.ubMeanwhileID) {
@@ -499,7 +499,7 @@ function DoneFadeInMeanwhile(): void {
       gTacticalStatus.uiFlags |= SHOW_ALL_MERCS;
     }
 
-    TriggerNPCRecordImmediately(gCurrentMeanwhileDef.ubNPCNumber, (UINT8)gCurrentMeanwhileDef.usTriggerEvent);
+    TriggerNPCRecordImmediately(gCurrentMeanwhileDef.ubNPCNumber, gCurrentMeanwhileDef.usTriggerEvent);
   }
 }
 
@@ -656,8 +656,8 @@ function EndMeanwhile(): void {
       if (ubProfile != NO_PROFILE) {
         gMercProfiles[ubProfile].sSectorX = gNPCSaveData[cnt].sX;
         gMercProfiles[ubProfile].sSectorY = gNPCSaveData[cnt].sY;
-        gMercProfiles[ubProfile].bSectorZ = (INT8)gNPCSaveData[cnt].sZ;
-        gMercProfiles[ubProfile].sGridNo = (INT8)gNPCSaveData[cnt].sGridNo;
+        gMercProfiles[ubProfile].bSectorZ = gNPCSaveData[cnt].sZ;
+        gMercProfiles[ubProfile].sGridNo = gNPCSaveData[cnt].sGridNo;
 
         // Ensure NPC files loaded...
         ReloadQuoteFile(ubProfile);
@@ -674,7 +674,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
   gfReloadingScreenFromMeanwhile = TRUE;
 
   if (gfWorldWasLoaded) {
-    SetCurrentWorldSector(gsOldSectorX, gsOldSectorY, (INT8)gsOldSectorZ);
+    SetCurrentWorldSector(gsOldSectorX, gsOldSectorY, gsOldSectorZ);
 
     ExamineCurrentSquadLights();
   } else {
@@ -685,7 +685,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
     gbWorldSectorZ = -1;
   }
 
-  ChangeSelectedMapSector(gsOldSelectedSectorX, gsOldSelectedSectorY, (INT8)gsOldSelectedSectorZ);
+  ChangeSelectedMapSector(gsOldSelectedSectorX, gsOldSelectedSectorY, gsOldSelectedSectorZ);
 
   gfReloadingScreenFromMeanwhile = FALSE;
 
@@ -696,8 +696,8 @@ function DoneFadeOutMeanwhileOnceDone(): void {
     if (ubProfile != NO_PROFILE) {
       gMercProfiles[ubProfile].sSectorX = gNPCSaveData[cnt].sX;
       gMercProfiles[ubProfile].sSectorY = gNPCSaveData[cnt].sY;
-      gMercProfiles[ubProfile].bSectorZ = (INT8)gNPCSaveData[cnt].sZ;
-      gMercProfiles[ubProfile].sGridNo = (INT8)gNPCSaveData[cnt].sGridNo;
+      gMercProfiles[ubProfile].bSectorZ = gNPCSaveData[cnt].sZ;
+      gMercProfiles[ubProfile].sGridNo = gNPCSaveData[cnt].sGridNo;
 
       // Ensure NPC files loaded...
       ReloadQuoteFile(ubProfile);
@@ -715,7 +715,7 @@ function DoneFadeOutMeanwhileOnceDone(): void {
 
     case GAME_SCREEN:
       // restore old interface panel flag
-      SetCurrentInterfacePanel((UINT8)TEAM_PANEL);
+      SetCurrentInterfacePanel(TEAM_PANEL);
       break;
   }
 

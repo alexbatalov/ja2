@@ -87,25 +87,25 @@ function CreateACharacterFromPlayerEnteredStats(): void {
   }
 
   // attributes
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLifeMax = (INT8)iHealth;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife = (INT8)iHealth;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility = (INT8)iAgility;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength = (INT8)iStrength;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity = (INT8)iDexterity;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom = (INT8)iWisdom;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership = (INT8)iLeadership;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLifeMax = iHealth;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLife = iHealth;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAgility = iAgility;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bStrength = iStrength;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bDexterity = iDexterity;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bWisdom = iWisdom;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bLeadership = iLeadership;
 
   // skills
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship = (INT8)iMarksmanship;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical = (INT8)iMedical;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical = (INT8)iMechanical;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive = (INT8)iExplosives;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMarksmanship = iMarksmanship;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMedical = iMedical;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bMechanical = iMechanical;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExplosive = iExplosives;
 
   // personality
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bPersonalityTrait = (INT8)iPersonality;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bPersonalityTrait = iPersonality;
 
   // attitude
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAttitude = (INT8)iAttitude;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bAttitude = iAttitude;
 
   gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bExpLevel = 1;
 
@@ -229,7 +229,7 @@ function AddAnAttitudeToAttitudeList(bAttitude: INT8): void {
 
   if (iLastElementInAttitudeList < ATTITUDE_LIST_SIZE) {
     // add element
-    AttitudeList[iLastElementInAttitudeList] = (INT32)bAttitude;
+    AttitudeList[iLastElementInAttitudeList] = bAttitude;
 
     // increment attitude list counter
     iLastElementInAttitudeList++;
@@ -243,7 +243,7 @@ function AddSkillToSkillList(bSkill: INT8): void {
 
   if (iLastElementInSkillsList < ATTITUDE_LIST_SIZE) {
     // add element
-    SkillsList[iLastElementInSkillsList] = (INT32)bSkill;
+    SkillsList[iLastElementInSkillsList] = bSkill;
 
     // increment attitude list counter
     iLastElementInSkillsList++;
@@ -407,7 +407,7 @@ function AddAPersonalityToPersonalityList(bPersonlity: INT8): void {
   // will add a persoanlity to persoanlity list
   if (iLastElementInPersonalityList < ATTITUDE_LIST_SIZE) {
     // add element
-    PersonalityList[iLastElementInPersonalityList] = (INT32)bPersonlity;
+    PersonalityList[iLastElementInPersonalityList] = bPersonlity;
 
     // increment attitude list counter
     iLastElementInPersonalityList++;
@@ -515,7 +515,7 @@ function SelectMercFace(): void {
   //  strcpy( gMercProfiles[ PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId ].ubUnusedFaceFileName , pPlayerSelectedFaceFileNames[ iPortraitNumber ]);
 
   // now the offsets
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubFaceIndex = 200 + (UINT8)iPortraitNumber;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].ubFaceIndex = 200 + iPortraitNumber;
 
   // eyes
   gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].usEyesX = sFacePositions[iPortraitNumber][0];
@@ -677,8 +677,8 @@ function HandleMercStatsForChangesInFace(): void {
   }
 
   // skill trait
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait = (INT8)iSkillA;
-  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 = (INT8)iSkillB;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait = iSkillA;
+  gMercProfiles[PLAYER_GENERATED_CHARACTER_ID + LaptopSaveInfo.iVoiceId].bSkillTrait2 = iSkillB;
 }
 
 function ShouldThisMercHaveABigBody(): BOOLEAN {

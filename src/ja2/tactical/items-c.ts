@@ -1209,7 +1209,7 @@ function GetAttachmentInfoIndex(usItem: UINT16): INT8 {
 
   while (1) {
     if (AttachmentInfo[iLoop].usItem == usItem) {
-      return (INT8)iLoop;
+      return iLoop;
     }
     iLoop++;
     if (AttachmentInfo[iLoop].usItem == 0) {
@@ -1488,7 +1488,7 @@ function EvaluateValidMerge(usMerge: UINT16, usItem: UINT16, pusResult: Pointer<
     }
   }
   *pusResult = Merge[iLoop][2];
-  *pubType = (UINT8)Merge[iLoop][3];
+  *pubType = Merge[iLoop][3];
   return TRUE;
 }
 
@@ -1525,7 +1525,7 @@ function CalculateObjectWeight(pObject: Pointer<OBJECTTYPE>): UINT8 {
   // make sure it really fits into that UINT8, in case we ever add anything real heavy with attachments/ammo
   Assert(usWeight <= 255);
 
-  return (UINT8)usWeight;
+  return usWeight;
 }
 
 function CalculateCarriedWeight(pSoldier: Pointer<SOLDIERTYPE>): UINT32 {
@@ -1699,7 +1699,7 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
   }
 
   if (pCursorObj && pCursorObj->usItem == pObj->usItem) {
-    for (bLoop = (INT8)pCursorObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+    for (bLoop = pCursorObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
       if (pCursorObj->bStatus[bLoop] > 0) {
         // take the points here and distribute over the lower #d items
         for (bLoop2 = pObj->ubNumberOfObjects - 1; bLoop2 >= 0; bLoop2--) {
@@ -1721,7 +1721,7 @@ function CleanUpStack(pObj: Pointer<OBJECTTYPE>, pCursorObj: Pointer<OBJECTTYPE>
     }
   }
 
-  for (bLoop = (INT8)pObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
+  for (bLoop = pObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
     if (pObj->bStatus[bLoop] > 0) {
       // take the points here and distribute over the lower #d items
       for (bLoop2 = bLoop - 1; bLoop2 >= 0; bLoop2--) {
@@ -1875,7 +1875,7 @@ function ReloadGun(pSoldier: Pointer<SOLDIERTYPE>, pGun: Pointer<OBJECTTYPE>, pA
           // Copying the old ammo to the cursor in turnbased could screw up for the player
           // (suppose his inventory is full!)
 
-          if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && !EnoughPoints(pSoldier, (INT8)(bAPs + AP_PICKUP_ITEM), 0, FALSE)) {
+          if ((gTacticalStatus.uiFlags & TURNBASED) && (gTacticalStatus.uiFlags & INCOMBAT) && !EnoughPoints(pSoldier, (bAPs + AP_PICKUP_ITEM), 0, FALSE)) {
             // try autoplace
             if (!AutoPlaceObject(pSoldier, &OldAmmo, FALSE)) {
               // put it on the ground
@@ -2100,7 +2100,7 @@ function AutoReload(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         if (bSlot != NO_SLOT) {
           // ce would reload using this ammo!
           bAPCost = GetAPsToReloadGunWithAmmo(pObj, &(pSoldier->inv[bSlot]));
-          if (EnoughPoints(pSoldier, (INT16)bAPCost, 0, FALSE)) {
+          if (EnoughPoints(pSoldier, bAPCost, 0, FALSE)) {
             // reload the 2nd gun too
             fRet = ReloadGun(pSoldier, pObj, &(pSoldier->inv[bSlot]));
           } else {
@@ -2177,7 +2177,7 @@ function PerformAttachmentComboMerge(pObj: Pointer<OBJECTTYPE>, bAttachmentCombo
   bNumStatusContributors++;
 
   pObj->usItem = AttachmentComboMerge[bAttachmentComboMerge].usResult;
-  pObj->bStatus[0] = (INT8)(uiStatusTotal / bNumStatusContributors);
+  pObj->bStatus[0] = (uiStatusTotal / bNumStatusContributors);
 }
 
 function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECTTYPE>, pAttachment: Pointer<OBJECTTYPE>): BOOLEAN {
@@ -2228,8 +2228,8 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
           iCheckResult = SkillCheck(pSoldier, AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheck, AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod);
           if (iCheckResult < 0) {
             // the attach failure damages both items
-            DamageObj(pTargetObj, (INT8)-iCheckResult);
-            DamageObj(pAttachment, (INT8)-iCheckResult);
+            DamageObj(pTargetObj, -iCheckResult);
+            DamageObj(pAttachment, -iCheckResult);
             // there should be a quote here!
             DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
             if (gfInItemDescBox) {
@@ -2289,7 +2289,7 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
       if (bAttachComboMerge != -1) {
         PerformAttachmentComboMerge(pTargetObj, bAttachComboMerge);
         if (bAttachInfoIndex != -1 && AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod < 20) {
-          StatChange(pSoldier, MECHANAMT, (INT8)(20 - AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod), FALSE);
+          StatChange(pSoldier, MECHANAMT, (20 - AttachmentInfo[bAttachInfoIndex].bAttachmentSkillCheckMod), FALSE);
         }
       }
 
@@ -2343,8 +2343,8 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
         if (pSoldier) {
           iCheckResult = SkillCheck(pSoldier, ATTACHING_SPECIAL_ELECTRONIC_ITEM_CHECK, -30);
           if (iCheckResult < 0) {
-            DamageObj(pTargetObj, (INT8)-iCheckResult);
-            DamageObj(pAttachment, (INT8)-iCheckResult);
+            DamageObj(pTargetObj, -iCheckResult);
+            DamageObj(pAttachment, -iCheckResult);
             DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
             return FALSE;
           }
@@ -2360,8 +2360,8 @@ function AttachObject(pSoldier: Pointer<SOLDIERTYPE>, pTargetObj: Pointer<OBJECT
             if (iCheckResult < 0) {
               // could have a chance of detonation
               // for now, damage both objects
-              DamageObj(pTargetObj, (INT8)-iCheckResult);
-              DamageObj(pAttachment, (INT8)-iCheckResult);
+              DamageObj(pTargetObj, -iCheckResult);
+              DamageObj(pAttachment, -iCheckResult);
               DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
               return FALSE;
             }
@@ -2515,7 +2515,7 @@ function PlaceObject(pSoldier: Pointer<SOLDIERTYPE>, bPos: INT8, pObj: Pointer<O
 
   if (Item[pObj->usItem].usItemClass == IC_KEY && pSoldier->uiStatusFlags & SOLDIER_PC) {
     if (KeyTable[pObj->ubKeyID].usDateFound == 0) {
-      KeyTable[pObj->ubKeyID].usDateFound = (UINT16)GetWorldDay();
+      KeyTable[pObj->ubKeyID].usDateFound = GetWorldDay();
       KeyTable[pObj->ubKeyID].usSectorFound = SECTOR(pSoldier->sSectorX, pSoldier->sSectorY);
     }
   }
@@ -2910,7 +2910,7 @@ function AddKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, p
   if (pSoldier->uiStatusFlags & SOLDIER_PC) // redundant but what the hey
   {
     if (KeyTable[pObj->ubKeyID].usDateFound == 0) {
-      KeyTable[pObj->ubKeyID].usDateFound = (UINT16)GetWorldDay();
+      KeyTable[pObj->ubKeyID].usDateFound = GetWorldDay();
       KeyTable[pObj->ubKeyID].usSectorFound = SECTOR(pSoldier->sSectorX, pSoldier->sSectorY);
     }
   }
@@ -2961,7 +2961,7 @@ function SwapKeysToSlot(pSoldier: Pointer<SOLDIERTYPE>, bKeyRingPosition: INT8, 
 function CreateKeyObject(pObj: Pointer<OBJECTTYPE>, ubNumberOfKeys: UINT8, ubKeyID: UINT8): BOOLEAN {
   let fRet: BOOLEAN;
 
-  fRet = CreateItems((UINT16)(FIRST_KEY + LockTable[ubKeyID].usKeyItem), 100, ubNumberOfKeys, pObj);
+  fRet = CreateItems((FIRST_KEY + LockTable[ubKeyID].usKeyItem), 100, ubNumberOfKeys, pObj);
   if (fRet) {
     pObj->ubKeyID = ubKeyID;
   }
@@ -3006,8 +3006,8 @@ function UseKitPoints(pObj: Pointer<OBJECTTYPE>, usPoints: UINT16, pSoldier: Poi
   let usOriginalPoints: UINT16 = usPoints;
 
   for (bLoop = pObj->ubNumberOfObjects - 1; bLoop >= 0; bLoop--) {
-    if (usPoints < (UINT16)pObj->bStatus[bLoop]) {
-      pObj->bStatus[bLoop] -= (INT8)usPoints;
+    if (usPoints < pObj->bStatus[bLoop]) {
+      pObj->bStatus[bLoop] -= usPoints;
       return usOriginalPoints;
     } else {
       // consume this kit totally
@@ -3108,7 +3108,7 @@ function DoChrisTest(pSoldier: Pointer<SOLDIERTYPE>): void {
       case HISTORY_SLAUGHTEREDBLOODCATS:
       case HISTORY_GAVE_CARMEN_HEAD:
       case HISTORY_SLAY_MYSTERIOUSLY_LEFT:
-        AddHistoryToPlayersLog((UINT8)uiLoop, 0, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
+        AddHistoryToPlayersLog(uiLoop, 0, GetWorldTotalMin(), gWorldSectorX, gWorldSectorY);
         break;
       default:
         break;
@@ -3274,7 +3274,7 @@ function RandomMagazine(usItem: UINT16, ubPercentStandard: UINT8): UINT16 {
       ubMagChosen = 0;
     } else {
       // pick a non-standard type instead
-      ubMagChosen = (UINT8)(1 + Random((UINT32)(usPossibleMagCnt - 1)));
+      ubMagChosen = (1 + Random((usPossibleMagCnt - 1)));
     }
 
     return MagazineClassIndexToItemType(usPossibleMagIndex[ubMagChosen]);
@@ -3731,7 +3731,7 @@ function CheckItemForDamage(usItem: UINT16, iMaxDamage: INT32): INT8 {
     iMaxDamage *= 2;
   }
   if (iMaxDamage > 0) {
-    bDamage = (INT8)PreRandom(iMaxDamage);
+    bDamage = PreRandom(iMaxDamage);
   }
   return bDamage;
 }
@@ -3750,7 +3750,7 @@ function CheckForChainReaction(usItem: UINT16, bStatus: INT8, bDamage: INT8, fOn
     }
 
     iChance = iChance * (100 + ((100 - bStatus) + bDamage) / 2) / 100;
-    if ((INT32)PreRandom(100) < iChance) {
+    if (PreRandom(100) < iChance) {
       return TRUE;
     }
   }
@@ -3781,7 +3781,7 @@ function DamageItem(pObject: Pointer<OBJECTTYPE>, iDamage: INT32, fOnGround: BOO
             break;
         }
         if (Item[pObject->usItem].usItemClass == IC_AMMO) {
-          if (PreRandom(100) < (UINT32)bDamage) {
+          if (PreRandom(100) < bDamage) {
             // destroy clip completely
             pObject->bStatus[bLoop] = 1;
           }
@@ -3973,7 +3973,7 @@ function WaterDamage(pSoldier: Pointer<SOLDIERTYPE>): void {
         // 10% chance of getting damage!
         if (uiRoll < 10) {
           // lose between 1 and 10 status points each time
-          bDamage = (INT8)(10 - uiRoll);
+          bDamage = (10 - uiRoll);
 
           // but don't let anything drop lower than 1%
           pSoldier->inv[bLoop].bStatus[0] -= bDamage;
@@ -4090,7 +4090,7 @@ function ApplyCanteen(pSoldier: Pointer<SOLDIERTYPE>, pObj: Pointer<OBJECTTYPE>,
   sPointsToUse = __min(20, usTotalKitPoints);
 
   // CJC Feb 9.  Canteens don't seem effective enough, so doubled return from them
-  DeductPoints(pSoldier, AP_DRINK, (INT16)(2 * sPointsToUse * -(100 - pSoldier->bBreath)));
+  DeductPoints(pSoldier, AP_DRINK, (2 * sPointsToUse * -(100 - pSoldier->bBreath)));
 
   UseKitPoints(pObj, sPointsToUse, pSoldier);
 
@@ -4137,7 +4137,7 @@ function ConvertProfileMoneyValueToObjectTypeMoneyValue(ubStatus: UINT8): UINT32
 }
 
 function ConvertObjectTypeMoneyValueToProfileMoneyValue(uiMoneyAmount: UINT32): UINT8 {
-  return (UINT8)(uiMoneyAmount / 50);
+  return (uiMoneyAmount / 50);
 }
 
 function ItemIsCool(pObj: Pointer<OBJECTTYPE>): BOOLEAN {
@@ -4170,7 +4170,7 @@ function ActivateXRayDevice(pSoldier: Pointer<SOLDIERTYPE>): void {
   }
 
   // use up 8-12 percent of batteries
-  pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] -= (INT8)(8 + Random(5));
+  pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] -= (8 + Random(5));
   if (pSoldier->inv[HANDPOS].bAttachStatus[bBatteries] <= 0) {
     // destroy batteries
     pSoldier->inv[HANDPOS].usAttachItem[bBatteries] = NOTHING;

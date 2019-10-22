@@ -69,7 +69,7 @@ let gusTextInputCursor: UINT16 = CURSOR_IBEAM;
 // one.
 function PushTextInputLevel(): void {
   let pNewLevel: Pointer<STACKTEXTINPUTNODE>;
-  pNewLevel = (STACKTEXTINPUTNODE *)MemAlloc(sizeof(STACKTEXTINPUTNODE));
+  pNewLevel = MemAlloc(sizeof(STACKTEXTINPUTNODE));
   Assert(pNewLevel);
   pNewLevel->head = gpTextInputHead;
   pNewLevel->pColors = pColors;
@@ -120,7 +120,7 @@ function InitTextInputMode(): void {
     // KillTextInputMode();
   }
   gpTextInputHead = NULL;
-  pColors = (TextInputColors *)MemAlloc(sizeof(TextInputColors));
+  pColors = MemAlloc(sizeof(TextInputColors));
   Assert(pColors);
   gfTextInputMode = TRUE;
   gfEditingText = FALSE;
@@ -135,7 +135,7 @@ function InitTextInputModeWithScheme(ubSchemeID: UINT8): void {
   InitTextInputMode();
   switch (ubSchemeID) {
     case DEFAULT_SCHEME: // yellow boxes with black text, with bluish bevelling
-      SetTextInputFont((UINT16)FONT12POINT1);
+      SetTextInputFont(FONT12POINT1);
       Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(250, 240, 188)));
       SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
       SetTextInputRegularColors(FONT_BLACK, FONT_BLACK);
@@ -190,7 +190,7 @@ function KillAllTextInputModes(): void {
 // function adds mouse regions and processes them for you, as well as deleting them when you are done.
 function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: INT16, bPriority: INT8, szInitText: Pointer<UINT16>, ubMaxChars: UINT8, usInputType: UINT16): void {
   let pNode: Pointer<TEXTINPUTNODE>;
-  pNode = (TEXTINPUTNODE *)MemAlloc(sizeof(TEXTINPUTNODE));
+  pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   memset(pNode, 0, sizeof(TEXTINPUTNODE));
   pNode->next = NULL;
@@ -205,7 +205,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   {
     gpTextInputTail->next = pNode;
     pNode->prev = gpTextInputTail;
-    pNode->ubID = (UINT8)(gpTextInputTail->ubID + 1);
+    pNode->ubID = (gpTextInputTail->ubID + 1);
     gpTextInputTail = gpTextInputTail->next;
   }
   // Setup the information for the node
@@ -214,10 +214,10 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   if (usInputType == INPUTTYPE_EXCLUSIVE_24HOURCLOCK)
     ubMaxChars = 6;
   // Allocate and copy the string.
-  pNode->szString = (UINT16 *)MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
+  pNode->szString = MemAlloc((ubMaxChars + 1) * sizeof(UINT16));
   Assert(pNode->szString);
   if (szInitText) {
-    pNode->ubStrLen = (UINT8)wcslen(szInitText);
+    pNode->ubStrLen = wcslen(szInitText);
     Assert(pNode->ubStrLen <= ubMaxChars);
     swprintf(pNode->szString, szInitText);
   } else {
@@ -236,7 +236,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
   pNode->fUserField = FALSE;
   pNode->fEnabled = TRUE;
   // Setup the region.
-  MSYS_DefineRegion(&pNode->region, sLeft, sTop, (INT16)(sLeft + sWidth), (INT16)(sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
+  MSYS_DefineRegion(&pNode->region, sLeft, sTop, (sLeft + sWidth), (sTop + sHeight), bPriority, gusTextInputCursor, MouseMovedInTextRegionCallback, MouseClickedInTextRegionCallback);
   MSYS_SetRegionUserData(&pNode->region, 0, pNode->ubID);
 }
 
@@ -249,7 +249,7 @@ function AddTextInputField(sLeft: INT16, sTop: INT16, sWidth: INT16, sHeight: IN
 // externally, except for the TAB keys.
 function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   let pNode: Pointer<TEXTINPUTNODE>;
-  pNode = (TEXTINPUTNODE *)MemAlloc(sizeof(TEXTINPUTNODE));
+  pNode = MemAlloc(sizeof(TEXTINPUTNODE));
   Assert(pNode);
   pNode->next = NULL;
   if (!gpTextInputHead) // first entry, so we don't start with text input.
@@ -263,7 +263,7 @@ function AddUserInputField(userFunction: INPUT_CALLBACK): void {
   {
     gpTextInputTail->next = pNode;
     pNode->prev = gpTextInputTail;
-    pNode->ubID = (UINT8)(gpTextInputTail->ubID + 1);
+    pNode->ubID = (gpTextInputTail->ubID + 1);
     gpTextInputTail = gpTextInputTail->next;
   }
   // Setup the information for the node
@@ -324,7 +324,7 @@ function SetInputFieldStringWith16BitString(ubField: UINT8, szNewText: Pointer<U
   while (curr) {
     if (curr->ubID == ubField) {
       if (szNewText) {
-        curr->ubStrLen = (UINT8)wcslen(szNewText);
+        curr->ubStrLen = wcslen(szNewText);
         Assert(curr->ubStrLen <= curr->ubMaxChars);
         swprintf(curr->szString, szNewText);
       } else if (!curr->fUserField) {
@@ -345,7 +345,7 @@ function SetInputFieldStringWith8BitString(ubField: UINT8, szNewText: Pointer<UI
   while (curr) {
     if (curr->ubID == ubField) {
       if (szNewText) {
-        curr->ubStrLen = (UINT8)strlen(szNewText);
+        curr->ubStrLen = strlen(szNewText);
         Assert(curr->ubStrLen <= curr->ubMaxChars);
         swprintf(curr->szString, L"%S", szNewText);
       } else if (!curr->fUserField) {
@@ -426,13 +426,13 @@ function SetInputFieldStringWithNumericStrictValue(ubField: UINT8, iNumber: INT3
       if (iNumber < 0) // negative number converts to blank string
         swprintf(curr->szString, L"");
       else {
-        let iMax: INT32 = (INT32)pow(10.0, curr->ubMaxChars);
+        let iMax: INT32 = pow(10.0, curr->ubMaxChars);
         if (iNumber > iMax) // set string to max value based on number of chars.
           swprintf(curr->szString, L"%d", iMax - 1);
         else // set string to the number given
           swprintf(curr->szString, L"%d", iNumber);
       }
-      curr->ubStrLen = (UINT8)wcslen(curr->szString);
+      curr->ubStrLen = wcslen(curr->szString);
       return;
     }
     curr = curr->next;
@@ -859,24 +859,24 @@ function AddChar(uiKey: UINT32): void {
   if (gpActive->ubStrLen >= gpActive->ubMaxChars) {
     // max length reached.  Just replace the last character with new one.
     gpActive->ubStrLen = gpActive->ubMaxChars;
-    gpActive->szString[gpActive->ubStrLen - 1] = (UINT16)uiKey;
+    gpActive->szString[gpActive->ubStrLen - 1] = uiKey;
     gpActive->szString[gpActive->ubStrLen] = '\0';
     return;
   } else if (gubCursorPos == gpActive->ubStrLen) {
     // add character to end
-    gpActive->szString[gpActive->ubStrLen] = (UINT16)uiKey;
+    gpActive->szString[gpActive->ubStrLen] = uiKey;
     gpActive->szString[gpActive->ubStrLen + 1] = '\0';
     gpActive->ubStrLen++;
     gubCursorPos = gpActive->ubStrLen;
   } else {
     // insert character after cursor
     let sChar: INT16;
-    sChar = (INT16)(gpActive->ubStrLen + 1);
+    sChar = (gpActive->ubStrLen + 1);
     while (sChar >= gubCursorPos) {
       gpActive->szString[sChar + 1] = gpActive->szString[sChar];
       sChar--;
     }
-    gpActive->szString[gubCursorPos] = (UINT16)uiKey;
+    gpActive->szString[gubCursorPos] = uiKey;
     gpActive->ubStrLen++;
     gubCursorPos++;
   }
@@ -895,7 +895,7 @@ function DeleteHilitedText(): void {
       ubStart = gubEndHilite;
       ubEnd = gubStartHilite;
     }
-    ubCount = (UINT8)(ubEnd - ubStart);
+    ubCount = (ubEnd - ubStart);
     while (ubCount--) {
       RemoveChar(ubStart);
     }
@@ -926,7 +926,7 @@ function MouseMovedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT3
       let iCurrCharPos: INT32;
       let iNextCharPos: INT32;
       let ubNewID: UINT8;
-      ubNewID = (UINT8)MSYS_GetRegionUserData(reg, 0);
+      ubNewID = MSYS_GetRegionUserData(reg, 0);
       if (ubNewID != gpActive->ubID) {
         // deselect the current text edit region if applicable, then find the new one.
         RenderInactiveTextFieldNode(gpActive);
@@ -976,7 +976,7 @@ function MouseClickedInTextRegionCallback(reg: Pointer<MOUSE_REGION>, reason: IN
     let iCurrCharPos: INT32;
     let iNextCharPos: INT32;
     let ubNewID: UINT8;
-    ubNewID = (UINT8)MSYS_GetRegionUserData(reg, 0);
+    ubNewID = MSYS_GetRegionUserData(reg, 0);
     if (ubNewID != gpActive->ubID) {
       // deselect the current text edit region if applicable, then find the new one.
       RenderInactiveTextFieldNode(gpActive);
@@ -1032,7 +1032,7 @@ function RenderActiveTextField(): void {
 
   SaveFontSettings();
   SetFont(pColors->usFont);
-  usOffset = (UINT16)((gpActive->region.RegionBottomRightY - gpActive->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
+  usOffset = ((gpActive->region.RegionBottomRightY - gpActive->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
   RenderBackgroundField(gpActive);
   if (gfHiliteMode && gubStartHilite != gubEndHilite) {
     // Some or all of the text is hilighted, so we will use a different method.
@@ -1103,7 +1103,7 @@ function RenderInactiveTextField(ubID: UINT8): void {
     return;
   SaveFontSettings();
   SetFont(pColors->usFont);
-  usOffset = (UINT16)((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
+  usOffset = ((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
   SetFontForeground(pColors->ubForeColor);
   SetFontShadow(pColors->ubShadowColor);
   SetFontBackground(0);
@@ -1128,7 +1128,7 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
     SetFontForeground(pColors->ubForeColor);
     SetFontShadow(pColors->ubShadowColor);
   }
-  usOffset = (UINT16)((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
+  usOffset = ((pNode->region.RegionBottomRightY - pNode->region.RegionTopLeftY - GetFontHeight(pColors->usFont)) / 2);
   SetFontBackground(0);
   RenderBackgroundField(pNode);
   DoublePercentileCharacterFromStringIntoString(pNode->szString, str);
@@ -1143,7 +1143,7 @@ function RenderInactiveTextFieldNode(pNode: Pointer<TEXTINPUTNODE>): void {
     ClipRect.iTop = pNode->region.RegionTopLeftY;
     ClipRect.iBottom = pNode->region.RegionBottomRightY;
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferShadowRect((UINT16 *)pDestBuf, uiDestPitchBYTES, &ClipRect);
+    Blt16BPPBufferShadowRect(pDestBuf, uiDestPitchBYTES, &ClipRect);
     UnLockVideoSurface(FRAME_BUFFER);
   }
 }
@@ -1304,8 +1304,8 @@ function ExecuteCopyCommand(): void {
       ubStart = gubEndHilite;
       ubEnd = gubStartHilite;
     }
-    ubCount = (UINT8)(ubEnd - ubStart);
-    szClipboard = (UINT16 *)MemAlloc((ubCount + 1) * 2);
+    ubCount = (ubEnd - ubStart);
+    szClipboard = MemAlloc((ubCount + 1) * 2);
     Assert(szClipboard);
     for (ubCount = ubStart; ubCount < ubEnd; ubCount++) {
       szClipboard[ubCount - ubStart] = gpActive->szString[ubCount];

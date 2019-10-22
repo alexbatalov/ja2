@@ -62,7 +62,7 @@ function AddEvent(uiEvent: UINT32, usDelay: UINT16, pEventData: PTR, uiDataSize:
   pEvent->uiEvent = uiEvent;
   pEvent->uiFlags = 0;
   pEvent->uiDataSize = uiDataSize;
-  pEvent->pData = (BYTE *)pEvent;
+  pEvent->pData = pEvent;
   pEvent->pData = pEvent->pData + uiEventSize;
 
   memcpy(pEvent->pData, pEventData, uiDataSize);

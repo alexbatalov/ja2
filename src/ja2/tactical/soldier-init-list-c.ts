@@ -38,12 +38,12 @@ function KillSoldierInitList(): void {
 function AddBasicPlacementToSoldierInitList(pBasicPlacement: Pointer<BASIC_SOLDIERCREATE_STRUCT>): Pointer<SOLDIERINITNODE> {
   let curr: Pointer<SOLDIERINITNODE>;
   // Allocate memory for node
-  curr = (SOLDIERINITNODE *)MemAlloc(sizeof(SOLDIERINITNODE));
+  curr = MemAlloc(sizeof(SOLDIERINITNODE));
   Assert(curr);
   memset(curr, 0, sizeof(SOLDIERINITNODE));
 
   // Allocate memory for basic placement
-  curr->pBasicPlacement = (BASIC_SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(BASIC_SOLDIERCREATE_STRUCT));
+  curr->pBasicPlacement = MemAlloc(sizeof(BASIC_SOLDIERCREATE_STRUCT));
   if (!curr->pBasicPlacement) {
     AssertMsg(0, "Failed to allocate memory for AddBasicPlacementToSoldierInitList.");
     return NULL;
@@ -146,7 +146,7 @@ function SaveSoldiersToMap(fp: HWFILE): BOOLEAN {
   for (i = 0; i < gMapInformation.ubNumIndividuals; i++) {
     if (!curr)
       return FALSE;
-    curr->ubNodeID = (UINT8)i;
+    curr->ubNodeID = i;
     FileWrite(fp, curr->pBasicPlacement, sizeof(BASIC_SOLDIERCREATE_STRUCT), &uiBytesWritten);
 
     if (curr->pBasicPlacement->fDetailedPlacement) {
@@ -194,7 +194,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
   for (i = 0; i < ubNumIndividuals; i++) {
     LOADDATA(&tempBasicPlacement, *hBuffer, sizeof(BASIC_SOLDIERCREATE_STRUCT));
     pNode = AddBasicPlacementToSoldierInitList(&tempBasicPlacement);
-    pNode->ubNodeID = (UINT8)i;
+    pNode->ubNodeID = i;
     if (!pNode) {
       AssertMsg(0, "Failed to allocate memory for new basic placement in LoadSoldiersFromMap.");
       return FALSE;
@@ -204,7 +204,7 @@ function LoadSoldiersFromMap(hBuffer: Pointer<Pointer<INT8>>): BOOLEAN {
       // read static detailed placement from file
       LOADDATA(&tempDetailedPlacement, *hBuffer, sizeof(SOLDIERCREATE_STRUCT));
       // allocate memory for new static detailed placement
-      pNode->pDetailedPlacement = (SOLDIERCREATE_STRUCT *)MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
+      pNode->pDetailedPlacement = MemAlloc(sizeof(SOLDIERCREATE_STRUCT));
       if (!pNode->pDetailedPlacement) {
         AssertMsg(0, "Failed to allocate memory for new detailed placement in LoadSoldiersFromMap.");
         return FALSE;
@@ -456,7 +456,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
         if (tempDetailedPlacement.ubCivilianGroup == KINGPIN_CIV_GROUP && (gTacticalStatus.fCivGroupHostile[KINGPIN_CIV_GROUP] == CIV_GROUP_WILL_BECOME_HOSTILE || ((gubQuest[QUEST_KINGPIN_MONEY] == QUESTINPROGRESS) && (CheckFact(FACT_KINGPIN_CAN_SEND_ASSASSINS, KINGPIN))))) {
           if (tempDetailedPlacement.ubProfile == NO_PROFILE) {
             // these guys should be guarding Tony!
-            tempDetailedPlacement.sInsertionGridNo = 13531 + (INT16)(PreRandom(8) * (PreRandom(1) ? -1 : 1) + PreRandom(8) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
+            tempDetailedPlacement.sInsertionGridNo = 13531 + (PreRandom(8) * (PreRandom(1) ? -1 : 1) + PreRandom(8) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
 
             switch (PreRandom(3)) {
               case 0:
@@ -471,7 +471,7 @@ function AddPlacementToWorld(curr: Pointer<SOLDIERINITNODE>): BOOLEAN {
             }
           } else if (tempDetailedPlacement.ubProfile == BILLY) {
             // billy should now be able to roam around
-            tempDetailedPlacement.sInsertionGridNo = 13531 + (INT16)(PreRandom(30) * (PreRandom(1) ? -1 : 1) + PreRandom(30) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
+            tempDetailedPlacement.sInsertionGridNo = 13531 + (PreRandom(30) * (PreRandom(1) ? -1 : 1) + PreRandom(30) * (PreRandom(1) ? -1 : 1) * WORLD_ROWS);
             tempDetailedPlacement.bOrders = SEEKENEMY;
           } else if (tempDetailedPlacement.ubProfile == MADAME) {
             // she shouldn't be here!
@@ -1053,7 +1053,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
       if (fDoPlacement) {
         curr->pBasicPlacement->bTeam = MILITIA_TEAM;
         curr->pBasicPlacement->bOrders = STATIONARY;
-        curr->pBasicPlacement->bAttitude = (INT8)Random(MAXATTITUDES);
+        curr->pBasicPlacement->bAttitude = Random(MAXATTITUDES);
         if (curr->pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr->pDetailedPlacement);
@@ -1185,7 +1185,7 @@ function AddSoldierInitListMilitia(ubNumGreen: UINT8, ubNumRegs: UINT8, ubNumEli
           Assert(0);
         curr->pBasicPlacement->bTeam = MILITIA_TEAM;
         curr->pBasicPlacement->bOrders = STATIONARY;
-        curr->pBasicPlacement->bAttitude = (INT8)Random(MAXATTITUDES);
+        curr->pBasicPlacement->bAttitude = Random(MAXATTITUDES);
         if (curr->pDetailedPlacement) {
           // delete the detailed placement information.
           MemFree(curr->pDetailedPlacement);
@@ -1218,7 +1218,7 @@ function AddSoldierInitListCreatures(fQueen: BOOLEAN, ubNumLarvae: UINT8, ubNumI
 
   // Okay, if we have a queen, place her first.  She MUST have a special placement, else
   // we can't use anything.
-  ubNumCreatures = (UINT8)(ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales);
+  ubNumCreatures = (ubNumLarvae + ubNumInfants + ubNumYoungMales + ubNumYoungFemales + ubNumAdultMales + ubNumAdultFemales);
   if (fQueen) {
     curr = gSoldierInitHead;
     while (curr) {
@@ -1504,7 +1504,7 @@ function AddSoldierInitListBloodcats(): void {
     return; // no bloodcats underground.
   }
 
-  ubSectorID = (UINT8)SECTOR(gWorldSectorX, gWorldSectorY);
+  ubSectorID = SECTOR(gWorldSectorX, gWorldSectorY);
   pSector = &SectorInfo[ubSectorID];
 
   if (!pSector->bBloodCatPlacements) {
@@ -1534,7 +1534,7 @@ function AddSoldierInitListBloodcats(): void {
   if (pSector->bBloodCats > 0) {
     // Add them to the world now...
     let ubNumAdded: UINT8 = 0;
-    let ubMaxNum: UINT8 = (UINT8)pSector->bBloodCats;
+    let ubMaxNum: UINT8 = pSector->bBloodCats;
     let mark: Pointer<SOLDIERINITNODE>;
     let ubSlotsToFill: UINT8;
     let ubSlotsAvailable: UINT8;
@@ -1645,7 +1645,7 @@ function AddProfilesUsingProfileInsertionData(): void {
           // Don't add, so skip to the next soldier.
       continue;
     }
-    pSoldier = FindSoldierByProfileID((UINT8)i, FALSE);
+    pSoldier = FindSoldierByProfileID(i, FALSE);
     if (!pSoldier) {
       // Create a new soldier, as this one doesn't exist
       let MercCreateStruct: SOLDIERCREATE_STRUCT;
@@ -1654,7 +1654,7 @@ function AddProfilesUsingProfileInsertionData(): void {
       // Set up the create struct so that we can properly create the profile soldier.
       memset(&MercCreateStruct, 0, sizeof(MercCreateStruct));
       MercCreateStruct.bTeam = CIV_TEAM;
-      MercCreateStruct.ubProfile = (UINT8)i;
+      MercCreateStruct.ubProfile = i;
       MercCreateStruct.sSectorX = gWorldSectorX;
       MercCreateStruct.sSectorY = gWorldSectorY;
       MercCreateStruct.bSectorZ = gbWorldSectorZ;

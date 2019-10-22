@@ -631,7 +631,7 @@ function CreateIMPAttributeSelectionButtons(): void {
                                                                                   BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1,
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeFinishCallback );
     */
-  giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(giIMPAttributeSelectionButtonImage[0], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeFinishCallback);
+  giIMPAttributeSelectionButton[0] = CreateIconAndTextButton(giIMPAttributeSelectionButtonImage[0], pImpButtonText[11], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (136), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeFinishCallback);
 
   SetButtonCursor(giIMPAttributeSelectionButton[0], CURSOR_WWW);
   return;
@@ -693,7 +693,7 @@ function RenderAttributeBoxes(): void {
     // unless 0, then it is 0 - for skills
 
     // get y position
-    sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * ((INT16)iCnt);
+    sY = SKILL_SLIDE_START_Y + SKILL_SLIDE_HEIGHT * (iCnt);
 
     switch (iCnt) {
       case (STRENGTH_ATTRIBUTE):
@@ -703,7 +703,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentStrength);
@@ -718,7 +718,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentDexterity);
@@ -734,7 +734,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentAgility);
@@ -750,7 +750,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentWisdom);
@@ -764,7 +764,7 @@ function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentLeaderShip);
@@ -779,7 +779,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentHealth);
@@ -799,7 +799,7 @@ function RenderAttributeBoxes(): void {
         sX += SKILL_SLIDE_START_X;
         RenderSliderBar(sX, sY);
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentMarkmanship);
@@ -820,7 +820,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentMedical);
@@ -841,7 +841,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentMechanical);
@@ -862,7 +862,7 @@ function RenderAttributeBoxes(): void {
         RenderSliderBar(sX, sY);
 
         // set sliderbar mouse region
-        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (INT16)(sX + LAPTOP_SCREEN_UL_X), (INT16)(sY + LAPTOP_SCREEN_WEB_UL_Y));
+        MSYS_MoveMouseRegionTo(&pSliderBarRegions[iCnt], (sX + LAPTOP_SCREEN_UL_X), (sY + LAPTOP_SCREEN_WEB_UL_Y));
 
         // the text
         swprintf(sString, L"%d", iCurrentExplosives);
@@ -889,10 +889,10 @@ function CreateAttributeSliderButtons(): void {
 
   for (iCounter = 0; iCounter < 20; iCounter += 2) {
     // left button - decrement stat
-    giIMPAttributeSelectionSliderButton[iCounter] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[0], LAPTOP_SCREEN_UL_X + (163), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeSliderLeftCallback);
+    giIMPAttributeSelectionSliderButton[iCounter] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[0], LAPTOP_SCREEN_UL_X + (163), (LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderLeftCallback);
 
     // right button - increment stat
-    giIMPAttributeSelectionSliderButton[iCounter + 1] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[1], LAPTOP_SCREEN_UL_X + (419), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAttributeSliderRightCallback);
+    giIMPAttributeSelectionSliderButton[iCounter + 1] = QuickCreateButton(giIMPAttributeSelectionSliderButtonImage[1], LAPTOP_SCREEN_UL_X + (419), (LAPTOP_SCREEN_WEB_UL_Y + (99 + iCounter / 2 * 20)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnIMPAttributeSliderRightCallback);
 
     SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter], CURSOR_WWW);
     SetButtonCursor(giIMPAttributeSelectionSliderButton[iCounter + 1], CURSOR_WWW);
@@ -927,7 +927,7 @@ function BtnIMPAttributeSliderLeftCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
-  iValue = (INT32)MSYS_GetBtnUserData(btn, 0);
+  iValue = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     DecrementStat(iValue);
@@ -955,7 +955,7 @@ function BtnIMPAttributeSliderRightCallback(btn: Pointer<GUI_BUTTON>, reason: IN
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
 
-  iValue = (INT32)MSYS_GetBtnUserData(btn, 0);
+  iValue = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
     IncrementStat(iValue);
@@ -982,7 +982,7 @@ function CreateSlideRegionMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(&pSliderRegions[iCounter], (INT16)(SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (INT16)(LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
+    MSYS_DefineRegion(&pSliderRegions[iCounter], (SKILL_SLIDE_START_X + LAPTOP_SCREEN_UL_X), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (LAPTOP_SCREEN_UL_X + SKILL_SLIDE_START_X + BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderRegionButtonCallback);
 
     // define user data
     MSYS_SetRegionUserData(&pSliderRegions[iCounter], 0, iCounter);
@@ -1003,7 +1003,7 @@ function CreateSliderBarMouseRegions(): void {
 
   for (iCounter = 0; iCounter < 10; iCounter++) {
     // define the region
-    MSYS_DefineRegion(&pSliderBarRegions[iCounter], (INT16)(sX), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (INT16)(sX + SLIDER_BAR_WIDTH), (INT16)(LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
+    MSYS_DefineRegion(&pSliderBarRegions[iCounter], (sX), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT), (sX + SLIDER_BAR_WIDTH), (LAPTOP_SCREEN_WEB_UL_Y + SKILL_SLIDE_START_Y + iCounter * SKILL_SLIDE_HEIGHT + 15), MSYS_PRIORITY_HIGH + 2, CURSOR_WWW, MSYS_NO_CALLBACK, SliderBarRegionButtonCallback);
 
     // define user data
     MSYS_SetRegionUserData(&pSliderBarRegions[iCounter], 0, iCounter);

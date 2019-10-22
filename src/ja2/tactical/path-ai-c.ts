@@ -98,7 +98,7 @@ const NOPASS = (TRAVELCOST_BLOCKED);
 const ESTIMATE0 = () => ((dx > dy) ? (dx) : (dy));
 const ESTIMATE1 = () => ((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
 const ESTIMATE2 = () => FLATCOST *((dx < dy) ? ((dx * 14) / 10 + dy) : ((dy * 14) / 10 + dx));
-const ESTIMATEn = () => ((int)(FLATCOST * sqrt(dx * dx + dy * dy)));
+const ESTIMATEn = () => ((FLATCOST * sqrt(dx * dx + dy * dy)));
 const ESTIMATEC = () => (((dx < dy) ? (TRAVELCOST_BUMPY * (dx * 14 + dy * 10) / 10) : (TRAVELCOST_BUMPY * (dy * 14 + dx * 10) / 10)));
 //#define ESTIMATEC (((dx<dy) ? ( (TRAVELCOST_FLAT * dx * 14) / 10 + dy) : (TRAVELCOST_FLAT * dy * 14 ) / 10 + dx) ) )
 const ESTIMATE = () => ESTIMATEC();
@@ -487,11 +487,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
   fVehicle = FALSE;
   iOriginationX = iOriginationY = 0;
-  iOrigination = (INT32)s->sGridNo;
+  iOrigination = s->sGridNo;
 
   if (iOrigination < 0 || iOrigination > WORLD_MAX) {
     return 0;
-  } else if (!GridNoOnVisibleWorldTile((INT16)iOrigination)) {
+  } else if (!GridNoOnVisibleWorldTile(iOrigination)) {
     return 0;
   } else if (s->bLevel != ubLevel) {
     // pathing to a different level... bzzzt!
@@ -515,13 +515,13 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
   fPathAroundPeople = ((fFlags & PATH_THROUGH_PEOPLE) == 0);
   fCloseGoodEnough = ((fFlags & PATH_CLOSE_GOOD_ENOUGH) != 0);
   if (fCloseGoodEnough) {
-    sClosePathLimit = __min(PythSpacesAway((INT16)s->sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
+    sClosePathLimit = __min(PythSpacesAway(s->sGridNo, sDestination) - 1, PATH_CLOSE_RADIUS);
     if (sClosePathLimit <= 0) {
       return 0;
     }
   }
 
-  fConsiderPersonAtDestAsObstacle = (BOOLEAN)(fPathingForPlayer && fPathAroundPeople && !(fFlags & PATH_IGNORE_PERSON_AT_DEST));
+  fConsiderPersonAtDestAsObstacle = (fPathingForPlayer && fPathAroundPeople && !(fFlags & PATH_IGNORE_PERSON_AT_DEST));
 
   if (bCopy >= COPYREACHABLE) {
     fCopyReachable = TRUE;
@@ -766,7 +766,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       if (fMultiTile) {
         if (fContinuousTurnNeeded) {
           if (iCnt != iLastDir) {
-            if (!OkayToAddStructureToWorld((INT16)curLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+            if (!OkayToAddStructureToWorld(curLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
               // we have to abort this loop and possibly reset the loop conditions to
               // search in the other direction (if we haven't already done the other dir)
               if (bLoopState == LOOPING_CLOCKWISE) {
@@ -796,7 +796,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           }
         } else if (pStructureFileRef) {
           // check to make sure it's okay for us to turn to the new direction in our current tile
-          if (!OkayToAddStructureToWorld((INT16)curLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+          if (!OkayToAddStructureToWorld(curLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
             goto NEXTDIR;
           }
         }
@@ -818,11 +818,11 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
       if (gubNPCDistLimit) {
         if (gfNPCCircularDistLimit) {
-          if (PythSpacesAway((INT16)iOrigination, (INT16)newLoc) > gubNPCDistLimit) {
+          if (PythSpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
             goto NEXTDIR;
           }
         } else {
-          if (SpacesAway((INT16)iOrigination, (INT16)newLoc) > gubNPCDistLimit) {
+          if (SpacesAway(iOrigination, newLoc) > gubNPCDistLimit) {
             goto NEXTDIR;
           }
         }
@@ -868,7 +868,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         if (nextCost == TRAVELCOST_HIDDENOBSTACLE) {
           if (fPathingForPlayer) {
             // Is this obstcale a hidden tile that has not been revealed yet?
-            if (DoesGridnoContainHiddenStruct((UINT16)newLoc, &fHiddenStructVisible)) {
+            if (DoesGridnoContainHiddenStruct(newLoc, &fHiddenStructVisible)) {
               // Are we not visible, if so use terrain costs!
               if (!fHiddenStructVisible) {
                 // Set cost of terrain!
@@ -971,7 +971,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
           if (fPathingForPlayer && gpWorldLevelData[iDoorGridNo].ubExtFlags[0] & MAPELEMENT_EXT_DOOR_STATUS_PRESENT) {
             // check door status
-            pDoorStatus = GetDoorStatus((INT16)iDoorGridNo);
+            pDoorStatus = GetDoorStatus(iDoorGridNo);
             if (pDoorStatus) {
               fDoorIsOpen = (pDoorStatus->ubFlags & DOOR_PERCEIVED_OPEN) != 0;
             } else {
@@ -980,7 +980,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
             }
           } else {
             // check door structure
-            pDoorStructure = FindStructure((INT16)iDoorGridNo, STRUCTURE_ANYDOOR);
+            pDoorStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
             if (pDoorStructure) {
               fDoorIsOpen = (pDoorStructure->fFlags & STRUCTURE_OPEN) != 0;
             } else {
@@ -1046,7 +1046,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       // when doing a reachable test, ignore all locations with people in them
       if (fPathAroundPeople && ((newLoc != iDestination) || fCopyReachable)) {
         // ATE: ONLY cancel if they are moving.....
-        ubMerc = WhoIsThere2((UINT16)newLoc, s->bLevel);
+        ubMerc = WhoIsThere2(newLoc, s->bLevel);
 
         if (ubMerc < NOBODY && ubMerc != s->ubID) {
           // Check for movement....
@@ -1070,7 +1070,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         // then 0 1 2 3 4 5 6), we must subtract 1 from the direction
         // ATE: Send in our existing structure ID so it's ignored!
 
-        if (!OkayToAddStructureToWorld((INT16)newLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
+        if (!OkayToAddStructureToWorld(newLoc, ubLevel, &(pStructureFileRef->pDBStructureRef[iStructIndex]), usOKToAddStructID)) {
           goto NEXTDIR;
         }
 
@@ -1203,7 +1203,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
           case RUNNING:
           case ADULTMONSTER_WALKING:
             // save on casting
-            ubAPCost = ubAPCost * 10 / ((UINT8)(RUNDIVISOR * 10));
+            ubAPCost = ubAPCost * 10 / ((RUNDIVISOR * 10));
             // ubAPCost = (INT16)(DOUBLE)( (sTileCost / RUNDIVISOR) );	break;
             break;
           case WALKING:
@@ -1289,10 +1289,10 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
               */
 
       if (fCloseGoodEnough) {
-        if (PythSpacesAway((INT16)newLoc, sDestination) <= sClosePathLimit) {
+        if (PythSpacesAway(newLoc, sDestination) <= sClosePathLimit) {
           // stop the path here!
           iDestination = newLoc;
-          sDestination = (INT16)newLoc;
+          sDestination = newLoc;
           fCloseGoodEnough = FALSE;
         }
       }
@@ -1379,13 +1379,13 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
 
         // make new path to current location
         trailTree[trailTreeNdx].nextLink = sCurPathNdx;
-        trailTree[trailTreeNdx].stepDir = (INT8)iCnt;
+        trailTree[trailTreeNdx].stepDir = iCnt;
         if (bLoopState == LOOPING_REVERSE) {
           trailTree[trailTreeNdx].fFlags = STEP_BACKWARDS;
         } else {
           trailTree[trailTreeNdx].fFlags = 0;
         }
-        trailTree[trailTreeNdx].sGridNo = (INT16)newLoc;
+        trailTree[trailTreeNdx].sGridNo = newLoc;
         pNewPtr->sPathNdx = trailTreeNdx;
         trailTreeNdx++;
 
@@ -1398,12 +1398,12 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         iLocY = newLoc / MAPWIDTH;
         iLocX = newLoc % MAPWIDTH;
         SETLOC(*pNewPtr, newLoc);
-        pNewPtr->usCostSoFar = (UINT16)newTotCost;
-        pNewPtr->usCostToGo = (UINT16)REMAININGCOST(pNewPtr);
+        pNewPtr->usCostSoFar = newTotCost;
+        pNewPtr->usCostToGo = REMAININGCOST(pNewPtr);
         if (fCopyReachable) {
           pNewPtr->usCostToGo = 100;
         } else {
-          pNewPtr->usCostToGo = (UINT16)REMAININGCOST(pNewPtr);
+          pNewPtr->usCostToGo = REMAININGCOST(pNewPtr);
         }
 
         pNewPtr->usTotalCost = newTotCost + pNewPtr->usCostToGo;
@@ -1421,7 +1421,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         }
 
         // update the trail map to reflect the newer shorter path
-        trailCost[newLoc] = (UINT16)newTotCost;
+        trailCost[newLoc] = newTotCost;
         trailCostUsed[newLoc] = gubGlobalPathCount;
 
         // do a sorted que insert of the new path
@@ -1492,7 +1492,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
     let _nextLink: INT16; //,tempgrid;
 
     _z = 0;
-    z = (INT16)pQueueHead->pNext[0]->sPathNdx;
+    z = pQueueHead->pNext[0]->sPathNdx;
 
     while (z) {
       _nextLink = trailTree[z].nextLink;
@@ -1508,13 +1508,13 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
       z = _z;
 
       for (iCnt = 0; z && (iCnt < MAX_PATH_LIST_SIZE); iCnt++) {
-        s->usPathingData[iCnt] = (INT16)trailTree[z].stepDir;
+        s->usPathingData[iCnt] = trailTree[z].stepDir;
 
         z = trailTree[z].nextLink;
       }
 
       s->usPathIndex = 0;
-      s->usPathDataSize = (UINT16)iCnt;
+      s->usPathDataSize = iCnt;
     } else if (bCopy == NO_COPYROUTE) {
       z = _z;
 
@@ -1524,7 +1524,7 @@ function FindBestPath(s: Pointer<SOLDIERTYPE>, sDestination: INT16, ubLevel: INT
         z = trailTree[z].nextLink;
       }
 
-      giPathDataSize = (UINT16)iCnt;
+      giPathDataSize = iCnt;
     }
 
 // return path length : serves as a "successful" flag and a path length counter
@@ -1731,7 +1731,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   }
 
   gusAPtsToMove = 0;
-  sTempGrid = (INT16)pSold->sGridNo;
+  sTempGrid = pSold->sGridNo;
 
   sFootOrderIndex = 0;
 
@@ -1739,7 +1739,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
   // distance limit to reduce the cost of plotting a path to a location we can't reach
 
   // For now, use known hight adjustment
-  if (gfRecalculatingExistingPathCost || FindBestPath(pSold, sDestGridno, (INT8)pSold->bLevel, usMovementMode, bCopyRoute, 0)) {
+  if (gfRecalculatingExistingPathCost || FindBestPath(pSold, sDestGridno, pSold->bLevel, usMovementMode, bCopyRoute, 0)) {
     // if soldier would be STARTING to run then he pays a penalty since it takes time to
     // run full speed
     if (pSold->usAnimState != RUNNING) {
@@ -1751,8 +1751,8 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
     sPoints += MinAPsToStartMovement(pSold, usMovementMode);
 
     // We should reduce points for starting to run if first tile is a fence...
-    sTestGridno = NewGridNo(pSold->sGridNo, (INT16)DirectionInc((UINT16)guiPathingData[0]));
-    if (gubWorldMovementCosts[sTestGridno][(INT8)guiPathingData[0]][pSold->bLevel] == TRAVELCOST_FENCE) {
+    sTestGridno = NewGridNo(pSold->sGridNo, DirectionInc(guiPathingData[0]));
+    if (gubWorldMovementCosts[sTestGridno][guiPathingData[0]][pSold->bLevel] == TRAVELCOST_FENCE) {
       if (usMovementMode == RUNNING && pSold->usAnimState != RUNNING) {
         sPoints -= AP_START_RUN_COST;
       }
@@ -1791,13 +1791,13 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
       // what is the next gridno in the path?
       sOldGrid = sTempGrid;
 
-      sTempGrid = NewGridNo(sTempGrid, (INT16)DirectionInc((UINT16)guiPathingData[iCnt]));
+      sTempGrid = NewGridNo(sTempGrid, DirectionInc(guiPathingData[iCnt]));
 
       // Get switch value...
-      sSwitchValue = gubWorldMovementCosts[sTempGrid][(INT8)guiPathingData[iCnt]][pSold->bLevel];
+      sSwitchValue = gubWorldMovementCosts[sTempGrid][guiPathingData[iCnt]][pSold->bLevel];
 
       // get the tile cost for that tile based on WALKING
-      sTileCost = TerrainActionPoints(pSold, sTempGrid, (INT8)guiPathingData[iCnt], pSold->bLevel);
+      sTileCost = TerrainActionPoints(pSold, sTempGrid, guiPathingData[iCnt], pSold->bLevel);
 
       usMovementModeToUseForAPs = usMovementMode;
 
@@ -1866,7 +1866,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // so, then we must modify it for other movement styles and accumulate
           switch (usMovementModeToUseForAPs) {
             case RUNNING:
-              sPoints += (INT16)(DOUBLE)((sTileCost / RUNDIVISOR)) + sExtraCostStand;
+              sPoints += ((sTileCost / RUNDIVISOR)) + sExtraCostStand;
               break;
             case WALKING:
               sPoints += (sTileCost + WALKCOST) + sExtraCostStand;
@@ -1900,7 +1900,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
         sPointsSwat += (sTileCost + SWATCOST) + sExtraCostSwat;
 
         // now get cost as if RUNNING
-        sPointsRun += (INT16)(DOUBLE)((sTileCost / RUNDIVISOR)) + sExtraCostStand;
+        sPointsRun += ((sTileCost / RUNDIVISOR)) + sExtraCostStand;
       }
 
       if (iCnt == 0 && bPlot) {
@@ -1917,7 +1917,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // we need a footstep graphic ENTERING the next tile
 
           // get the direction
-          usTileNum = (UINT16)guiPathingData[iCnt] + 2;
+          usTileNum = guiPathingData[iCnt] + 2;
           if (usTileNum > 8) {
             usTileNum = 1;
           }
@@ -1952,7 +1952,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
             }
           }
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, (UINT16)usTileNum, &usTileIndex);
+          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, &usTileIndex);
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -1990,7 +1990,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // we need a footstep graphic LEAVING this tile
 
           // get the direction using the NEXT tile (thus iCnt+1 as index)
-          usTileNum = (UINT16)guiPathingData[iCnt + 1] + 2;
+          usTileNum = guiPathingData[iCnt + 1] + 2;
           if (usTileNum > 8) {
             usTileNum = 1;
           }
@@ -1998,7 +1998,7 @@ function PlotPath(pSold: Pointer<SOLDIERTYPE>, sDestGridno: INT16, bCopyRoute: I
           // this is a LEAVING footstep which is always the second set of 8
           usTileNum += 8;
 
-          GetTileIndexFromTypeSubIndex(FOOTPRINTS, (UINT16)usTileNum, &usTileIndex);
+          GetTileIndexFromTypeSubIndex(FOOTPRINTS, usTileNum, &usTileIndex);
 
           // Adjust based on what mode we are in...
           if ((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT)) {
@@ -2192,7 +2192,7 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
 
     if (fReturnPerceivedValue && gpWorldLevelData[iDoorGridNo].ubExtFlags[0] & MAPELEMENT_EXT_DOOR_STATUS_PRESENT) {
       // check door status
-      pDoorStatus = GetDoorStatus((INT16)iDoorGridNo);
+      pDoorStatus = GetDoorStatus(iDoorGridNo);
       if (pDoorStatus) {
         fDoorIsOpen = (pDoorStatus->ubFlags & DOOR_PERCEIVED_OPEN) != 0;
       } else {
@@ -2201,7 +2201,7 @@ function InternalDoorTravelCost(pSoldier: Pointer<SOLDIERTYPE>, iGridNo: INT32, 
       }
     } else {
       // check door structure
-      pDoorStructure = FindStructure((INT16)iDoorGridNo, STRUCTURE_ANYDOOR);
+      pDoorStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
       if (pDoorStructure) {
         fDoorIsOpen = (pDoorStructure->fFlags & STRUCTURE_OPEN) != 0;
       } else {

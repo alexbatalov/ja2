@@ -111,9 +111,9 @@ interface image_type {
 
 type HIMAGE = Pointer<image_type>;
 
-const SGPGetRValue = (rgb) => ((BYTE)(rgb));
-const SGPGetBValue = (rgb) => ((BYTE)((rgb) >> 16));
-const SGPGetGValue = (rgb) => ((BYTE)(((UINT16)(rgb)) >> 8));
+const SGPGetRValue = (rgb) => ((rgb));
+const SGPGetBValue = (rgb) => (((rgb) >> 16));
+const SGPGetGValue = (rgb) => ((((rgb)) >> 8));
 
 // *****************************************************************************
 //

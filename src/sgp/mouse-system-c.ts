@@ -311,7 +311,7 @@ function MSYS_AddRegionToList(region: Pointer<MOUSE_REGION>): void {
   }
 
   // Set an ID number!
-  region->IDNumber = (UINT16)MSYS_GetNewID();
+  region->IDNumber = MSYS_GetNewID();
 
   region->next = NULL;
   region->prev = NULL;
@@ -960,7 +960,7 @@ function SetRegionFastHelpText(region: Pointer<MOUSE_REGION>, szText: Pointer<UI
     return; // blank (or clear)
 
   // Allocate memory for the button's FastHelp text string...
-  region->FastHelpText = (UINT16 *)MemAlloc((wcslen(szText) + 1) * sizeof(UINT16));
+  region->FastHelpText = MemAlloc((wcslen(szText) + 1) * sizeof(UINT16));
   Assert(region->FastHelpText);
 
   wcscpy(region->FastHelpText, szText);
@@ -1012,10 +1012,10 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
   if (region->uiFlags & MSYS_FASTHELP) {
     usFillColor = Get16BPPColor(FROMRGB(250, 240, 188));
 
-    iW = (INT32)GetWidthOfString(region->FastHelpText) + 10;
-    iH = (INT32)(GetNumberOfLinesInHeight(region->FastHelpText) * (GetFontHeight(FONT10ARIAL) + 1) + 8);
+    iW = GetWidthOfString(region->FastHelpText) + 10;
+    iH = (GetNumberOfLinesInHeight(region->FastHelpText) * (GetFontHeight(FONT10ARIAL) + 1) + 8);
 
-    iX = (INT32)region->RegionTopLeftX + 10;
+    iX = region->RegionTopLeftX + 10;
 
     if (iX < 0)
       iX = 0;
@@ -1023,7 +1023,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
     if ((iX + iW) >= SCREEN_WIDTH)
       iX = (SCREEN_WIDTH - iW - 4);
 
-    iY = (INT32)region->RegionTopLeftY - (iH * 3 / 4);
+    iY = region->RegionTopLeftY - (iH * 3 / 4);
     if (iY < 0)
       iY = 0;
 
@@ -1031,7 +1031,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
       iY = (SCREEN_HEIGHT - iH - 15);
 
     if (!(region->uiFlags & MSYS_GOT_BACKGROUND)) {
-      region->FastHelpRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, NULL, (INT16)iX, (INT16)iY, (INT16)(iX + iW), (INT16)(iY + iH));
+      region->FastHelpRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT | BGND_FLAG_SAVERECT, NULL, iX, iY, (iX + iW), (iY + iH));
       region->uiFlags |= MSYS_GOT_BACKGROUND;
       region->uiFlags |= MSYS_HAS_BACKRECT;
     } else {
@@ -1047,7 +1047,7 @@ function DisplayFastHelp(region: Pointer<MOUSE_REGION>): void {
 
       SetFont(FONT10ARIAL);
       SetFontShadow(FONT_NEARBLACK);
-      DisplayHelpTokenizedString(region->FastHelpText, (INT16)(iX + 5), (INT16)(iY + 5));
+      DisplayHelpTokenizedString(region->FastHelpText, (iX + 5), (iY + 5));
       InvalidateRegion(iX, iY, (iX + iW), (iY + iH));
     }
   }
@@ -1087,7 +1087,7 @@ function DisplayHelpTokenizedString(pStringA: STR16, sX: INT16, sY: INT16): void
   pToken = wcstok(pString, L"\n");
 
   while (pToken != NULL) {
-    iLength = (INT32)wcslen(pToken);
+    iLength = wcslen(pToken);
     for (i = 0; i < iLength; i++) {
       uiCursorXPos = StringPixLengthArgFastHelp(FONT10ARIAL, FONT10ARIALBOLD, i, pToken);
       if (pToken[i] == '|') {
@@ -1135,7 +1135,7 @@ function RenderFastHelp(): void {
       if (MSYS_CurrRegion->uiFlags & (MSYS_ALLOW_DISABLED_FASTHELP | MSYS_REGION_ENABLED)) {
         if (MSYS_CurrRegion->uiFlags & MSYS_MOUSE_IN_AREA && !MSYS_CurrRegion->ButtonState) // & (MSYS_LEFT_BUTTON|MSYS_RIGHT_BUTTON)) )
         {
-          MSYS_CurrRegion->FastHelpTimer -= (INT16)max(iTimeDifferential, 0);
+          MSYS_CurrRegion->FastHelpTimer -= max(iTimeDifferential, 0);
 
           if (MSYS_CurrRegion->FastHelpTimer < 0) {
             MSYS_CurrRegion->FastHelpTimer = 0;

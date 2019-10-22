@@ -850,7 +850,7 @@ function LoadAnimationSurface(usSoldierID: UINT16, usSurfaceIndex: UINT16, usAni
     // Get aux data
     if (hImage->uiAppDataSize == hVObject->usNumberOfObjects * sizeof(AuxObjectData)) {
       // Valid auxiliary data, so get # od frames from data
-      pAuxData = (AuxObjectData *)hImage->pAppData;
+      pAuxData = hImage->pAppData;
 
       gAnimSurfaceDatabase[usSurfaceIndex].uiNumFramesPerDir = pAuxData->ubNumberOfFrames;
     } else {

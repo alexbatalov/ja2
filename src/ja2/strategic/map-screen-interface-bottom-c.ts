@@ -156,8 +156,8 @@ function RenderMapScreenInterfaceBottom(): void {
     GetVideoObject(&hHandle, guiMAPBOTTOMPANEL);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, MAP_BOTTOM_X, MAP_BOTTOM_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    if (GetSectorFlagStatus(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE) {
-      GetMapFileName(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ, bFilename, TRUE, TRUE);
+    if (GetSectorFlagStatus(sSelMapX, sSelMapY, iCurrentMapSectorZ, SF_ALREADY_VISITED) == TRUE) {
+      GetMapFileName(sSelMapX, sSelMapY, iCurrentMapSectorZ, bFilename, TRUE, TRUE);
       LoadRadarScreenBitmap(bFilename);
     } else {
       ClearOutRadarMapImage();
@@ -210,16 +210,16 @@ function RenderMapScreenInterfaceBottom(): void {
 function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
   // laptop
   guiMapBottomExitButtonsImage[MAP_EXIT_TO_LAPTOP] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 6, -1, 15, -1);
-  guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_LAPTOP], 456, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnLaptopCallback);
+  guiMapBottomExitButtons[MAP_EXIT_TO_LAPTOP] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_LAPTOP], 456, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnLaptopCallback);
 
   // tactical
   guiMapBottomExitButtonsImage[MAP_EXIT_TO_TACTICAL] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 7, -1, 16, -1);
 
-  guiMapBottomExitButtons[MAP_EXIT_TO_TACTICAL] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_TACTICAL], 496, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnTacticalCallback);
+  guiMapBottomExitButtons[MAP_EXIT_TO_TACTICAL] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_TACTICAL], 496, 410, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnTacticalCallback);
 
   // options
   guiMapBottomExitButtonsImage[MAP_EXIT_TO_OPTIONS] = LoadButtonImage("INTERFACE\\map_border_buttons.sti", -1, 18, -1, 19, -1);
-  guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_OPTIONS], 458, 372, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnOptionsFromMapScreenCallback);
+  guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS] = QuickCreateButton(guiMapBottomExitButtonsImage[MAP_EXIT_TO_OPTIONS], 458, 372, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnOptionsFromMapScreenCallback);
 
   SetButtonFastHelpText(guiMapBottomExitButtons[0], pMapScreenBottomFastHelp[0]);
   SetButtonFastHelpText(guiMapBottomExitButtons[1], pMapScreenBottomFastHelp[1]);
@@ -231,10 +231,10 @@ function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
 
   // time compression buttons
   guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_MORE] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 10, 1, -1, 3, -1);
-  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_MORE], 528, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnTimeCompressMoreMapScreenCallback);
+  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_MORE] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_MORE], 528, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressMoreMapScreenCallback);
 
   guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_LESS] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 9, 0, -1, 2, -1);
-  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_LESS], 466, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnTimeCompressLessMapScreenCallback);
+  guiMapBottomTimeButtons[MAP_TIME_COMPRESS_LESS] = QuickCreateButton(guiMapBottomTimeButtonsImage[MAP_TIME_COMPRESS_LESS], 466, 456, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 2, BtnGenericMouseMoveButtonCallback, BtnTimeCompressLessMapScreenCallback);
 
   SetButtonFastHelpText(guiMapBottomTimeButtons[0], pMapScreenBottomFastHelp[3]);
   SetButtonFastHelpText(guiMapBottomTimeButtons[1], pMapScreenBottomFastHelp[4]);
@@ -245,10 +245,10 @@ function CreateButtonsForMapScreenInterfaceBottom(): BOOLEAN {
   // scroll buttons
 
   guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_UP] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 11, 4, -1, 6, -1);
-  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_UP], 331, 371, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnMessageUpMapScreenCallback);
+  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_UP] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_UP], 331, 371, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageUpMapScreenCallback);
 
   guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_DOWN] = LoadButtonImage("INTERFACE\\map_screen_bottom_arrows.sti", 12, 5, -1, 7, -1);
-  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_DOWN], 331, 452, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnMessageDownMapScreenCallback);
+  guiMapMessageScrollButtons[MAP_SCROLL_MESSAGE_DOWN] = QuickCreateButton(guiMapMessageScrollButtonsImage[MAP_SCROLL_MESSAGE_DOWN], 331, 452, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnMessageDownMapScreenCallback);
 
   SetButtonFastHelpText(guiMapMessageScrollButtons[0], pMapScreenBottomFastHelp[5]);
   SetButtonFastHelpText(guiMapMessageScrollButtons[1], pMapScreenBottomFastHelp[6]);
@@ -386,7 +386,7 @@ function DrawNameOfLoadedSector(): void {
   SetFontForeground(183);
   SetFontBackground(FONT_BLACK);
 
-  GetSectorIDString(sSelMapX, sSelMapY, (INT8)(iCurrentMapSectorZ), sString, TRUE);
+  GetSectorIDString(sSelMapX, sSelMapY, (iCurrentMapSectorZ), sString, TRUE);
   ReduceStringLength(sString, 80, COMPFONT);
 
   VarFindFontCenterCoordinates(548, 426, 80, 16, COMPFONT, &sFontX, &sFontY, sString);
@@ -1257,12 +1257,12 @@ function AllowedToExitFromMapscreenTo(bExitToWhere: INT8): BOOLEAN {
   // the following tests apply to going tactical screen only
   if (bExitToWhere == MAP_EXIT_TO_TACTICAL) {
     // if in battle or air raid, the ONLY sector we can go tactical in is the one that's loaded
-    if (((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector) /*|| InAirRaid( )*/) && ((sSelMapX != gWorldSectorX) || (sSelMapY != gWorldSectorY) || ((UINT8)iCurrentMapSectorZ) != gbWorldSectorZ)) {
+    if (((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector) /*|| InAirRaid( )*/) && ((sSelMapX != gWorldSectorX) || (sSelMapY != gWorldSectorY) || (iCurrentMapSectorZ) != gbWorldSectorZ)) {
       return FALSE;
     }
 
     // must have some mercs there
-    if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ)) {
+    if (!CanGoToTacticalInSector(sSelMapX, sSelMapY, iCurrentMapSectorZ)) {
       return FALSE;
     }
   }
@@ -1302,7 +1302,7 @@ function HandleExitsFromMapScreen(): void {
           break;
 
         case MAP_EXIT_TO_TACTICAL:
-          SetCurrentWorldSector(sSelMapX, sSelMapY, (UINT8)iCurrentMapSectorZ);
+          SetCurrentWorldSector(sSelMapX, sSelMapY, iCurrentMapSectorZ);
 
           break;
 
@@ -1346,7 +1346,7 @@ function MapScreenMsgScrollDown(ubLinesDown: UINT8): void {
   }
 
   if (ubLinesDown > 0) {
-    ChangeCurrentMapscreenMessageIndex((UINT8)(gubFirstMapscreenMessageIndex + ubLinesDown));
+    ChangeCurrentMapscreenMessageIndex((gubFirstMapscreenMessageIndex + ubLinesDown));
   }
 }
 
@@ -1361,7 +1361,7 @@ function MapScreenMsgScrollUp(ubLinesUp: UINT8): void {
   }
 
   if (ubLinesUp > 0) {
-    ChangeCurrentMapscreenMessageIndex((UINT8)(gubFirstMapscreenMessageIndex - ubLinesUp));
+    ChangeCurrentMapscreenMessageIndex((gubFirstMapscreenMessageIndex - ubLinesUp));
   }
 }
 

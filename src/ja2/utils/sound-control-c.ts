@@ -524,11 +524,11 @@ function GetSoundEffectsVolume(): UINT32 {
 }
 
 function CalculateSpeechVolume(uiVolume: UINT32): UINT32 {
-  return (UINT32)((uiVolume / (FLOAT)HIGHVOLUME) * guiSpeechVolume + .5);
+  return ((uiVolume / HIGHVOLUME) * guiSpeechVolume + .5);
 }
 
 function CalculateSoundEffectsVolume(uiVolume: UINT32): UINT32 {
-  return (UINT32)((uiVolume / (FLOAT)HIGHVOLUME) * guiSoundEffectsVolume + .5);
+  return ((uiVolume / HIGHVOLUME) * guiSoundEffectsVolume + .5);
 }
 
 function SoundDir(sGridNo: INT16): INT8 {
@@ -548,7 +548,7 @@ function SoundDir(sGridNo: INT16): INT8 {
   ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sWorldX), (INT16)(sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -598,7 +598,7 @@ function SoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sWorldX), (INT16)(sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -671,11 +671,11 @@ function GetFreePositionSnd(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumPositionSnds; uiCount++) {
     if ((gPositionSndData[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumPositionSnds < NUM_POSITION_SOUND_EFFECT_SLOTS)
-    return (INT32)guiNumPositionSnds++;
+    return guiNumPositionSnds++;
 
   return -1;
 }
@@ -685,7 +685,7 @@ function RecountPositionSnds(): void {
 
   for (uiCount = guiNumPositionSnds - 1; (uiCount >= 0); uiCount--) {
     if ((gPositionSndData[uiCount].fAllocated)) {
-      guiNumPositionSnds = (UINT32)(uiCount + 1);
+      guiNumPositionSnds = (uiCount + 1);
       break;
     }
   }
@@ -812,7 +812,7 @@ function PositionSoundDir(sGridNo: INT16): INT8 {
   ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sWorldX), (INT16)(sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -866,7 +866,7 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   ConvertGridNoToXY(sGridNo, &sWorldX, &sWorldY);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sWorldX), (INT16)(sWorldY), &sScreenX, &sScreenY);
+  GetWorldXYAbsoluteScreenXY((sWorldX), (sWorldY), &sScreenX, &sScreenY);
 
   // Get middle of where we are now....
   sMiddleX = gsTopLeftWorldX + (gsBottomRightWorldX - gsTopLeftWorldX) / 2;
@@ -878,11 +878,11 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   sAbsDifX = abs(sDifX);
   sAbsDifY = abs(sDifY);
 
-  sMaxDistX = (INT16)((gsBottomRightWorldX - gsTopLeftWorldX) * 1.5);
-  sMaxDistY = (INT16)((gsBottomRightWorldY - gsTopLeftWorldY) * 1.5);
+  sMaxDistX = ((gsBottomRightWorldX - gsTopLeftWorldX) * 1.5);
+  sMaxDistY = ((gsBottomRightWorldY - gsTopLeftWorldY) * 1.5);
 
-  sMaxSoundDist = sqrt((double)(sMaxDistX * sMaxDistX) + (sMaxDistY * sMaxDistY));
-  sSoundDist = sqrt((double)(sAbsDifX * sAbsDifX) + (sAbsDifY * sAbsDifY));
+  sMaxSoundDist = sqrt((sMaxDistX * sMaxDistX) + (sMaxDistY * sMaxDistY));
+  sSoundDist = sqrt((sAbsDifX * sAbsDifX) + (sAbsDifY * sAbsDifY));
 
   if (sSoundDist == 0) {
     return bInitialVolume;
@@ -893,7 +893,7 @@ function PositionSoundVolume(bInitialVolume: INT8, sGridNo: INT16): INT8 {
   }
 
   // Scale
-  return (INT8)(bInitialVolume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
+  return (bInitialVolume * ((sMaxSoundDist - sSoundDist) / sMaxSoundDist));
 }
 
 function SetPositionSndsVolumeAndPanning(): void {
@@ -912,7 +912,7 @@ function SetPositionSndsVolumeAndPanning(): void {
           bVolume = PositionSoundVolume(15, pPositionSnd->sGridNo);
 
           if (pPositionSnd->uiFlags & POSITION_SOUND_FROM_SOLDIER) {
-            pSoldier = (SOLDIERTYPE *)pPositionSnd->uiData;
+            pSoldier = pPositionSnd->uiData;
 
             if (pSoldier->bVisible == -1) {
               // Limit volume,,,

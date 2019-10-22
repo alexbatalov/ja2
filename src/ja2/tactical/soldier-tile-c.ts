@@ -128,14 +128,14 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
               pSoldier->fBlockedByAnotherMerc = FALSE;
 
               // Is the next tile blocked too?
-              sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)guiPathingData[0]));
+              sNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(guiPathingData[0]));
 
-              return TileIsClear(pSoldier, (UINT8)guiPathingData[0], sNewGridNo, pSoldier->bLevel);
+              return TileIsClear(pSoldier, guiPathingData[0], sNewGridNo, pSoldier->bLevel);
             } else {
               // Not for multi-tiled things...
               if (!(pSoldier->uiStatusFlags & SOLDIER_MULTITILE)) {
                 // Is the next movement cost for a door?
-                if (DoorTravelCost(pSoldier, sGridNo, gubWorldMovementCosts[sGridNo][bDirection][pSoldier->bLevel], (BOOLEAN)(pSoldier->bTeam == gbPlayerNum), NULL) == TRAVELCOST_DOOR) {
+                if (DoorTravelCost(pSoldier, sGridNo, gubWorldMovementCosts[sGridNo][bDirection][pSoldier->bLevel], (pSoldier->bTeam == gbPlayerNum), NULL) == TRAVELCOST_DOOR) {
                   fSwapInDoor = TRUE;
                 }
 
@@ -192,7 +192,7 @@ function TileIsClear(pSoldier: Pointer<SOLDIERTYPE>, bDirection: INT8, sGridNo: 
         gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_REVEALED;
         gpWorldLevelData[sGridNo].uiFlags |= MAPELEMENT_REDRAW;
         SetRenderFlags(RENDER_FLAG_MARKED);
-        RecompileLocalMovementCosts((UINT16)sGridNo);
+        RecompileLocalMovementCosts(sGridNo);
       }
 
       // Unset flag for blocked by soldier...
@@ -319,7 +319,7 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       RESETTIMECOUNTER(pSoldier->NextTileCounter, NEXT_TILE_CHECK_DELAY);
 
       // Get direction from gridno...
-      bCauseDirection = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pSoldier->sDelayedMovementCauseGridNo);
+      bCauseDirection = GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pSoldier->sDelayedMovementCauseGridNo);
 
       bBlocked = TileIsClear(pSoldier, bCauseDirection, pSoldier->sDelayedMovementCauseGridNo, pSoldier->bLevel);
 
@@ -389,15 +389,15 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           gfPlotPathToExitGrid = TRUE;
         }
 
-        sCost = (INT16)FindBestPath(pSoldier, sCheckGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, fFlags);
+        sCost = FindBestPath(pSoldier, sCheckGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, fFlags);
         gfPlotPathToExitGrid = FALSE;
 
         // Can we get there
         if (sCost > 0) {
           // Is the next tile blocked too?
-          sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)guiPathingData[0]));
+          sNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(guiPathingData[0]));
 
-          bPathBlocked = TileIsClear(pSoldier, (UINT8)guiPathingData[0], sNewGridNo, pSoldier->bLevel);
+          bPathBlocked = TileIsClear(pSoldier, guiPathingData[0], sNewGridNo, pSoldier->bLevel);
 
           if (bPathBlocked == MOVE_TILE_STATIONARY_BLOCKED) {
             // Try to path around everyone except dest person
@@ -406,14 +406,14 @@ function HandleNextTileWaiting(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               gfPlotPathToExitGrid = TRUE;
             }
 
-            sCost = (INT16)FindBestPath(pSoldier, sCheckGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST);
+            sCost = FindBestPath(pSoldier, sCheckGridNo, pSoldier->bLevel, pSoldier->usUIMovementMode, NO_COPYROUTE, PATH_IGNORE_PERSON_AT_DEST);
 
             gfPlotPathToExitGrid = FALSE;
 
             // Is the next tile in this new path blocked too?
-            sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc((UINT8)guiPathingData[0]));
+            sNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(guiPathingData[0]));
 
-            bPathBlocked = TileIsClear(pSoldier, (UINT8)guiPathingData[0], sNewGridNo, pSoldier->bLevel);
+            bPathBlocked = TileIsClear(pSoldier, guiPathingData[0], sNewGridNo, pSoldier->bLevel);
 
             // now working with a path which does not go through people
             pSoldier->ubDelayedMovementFlags &= (~DELAYED_MOVEMENT_FLAG_PATH_THROUGH_PEOPLE);
@@ -521,7 +521,7 @@ function TeleportSoldier(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, fForce:
     // TELEPORT TO THIS LOCATION!
     sX = CenterX(sGridNo);
     sY = CenterY(sGridNo);
-    EVENT_SetSoldierPosition(pSoldier, (FLOAT)sX, (FLOAT)sY);
+    EVENT_SetSoldierPosition(pSoldier, sX, sY);
 
     pSoldier->sFinalDestination = sGridNo;
 

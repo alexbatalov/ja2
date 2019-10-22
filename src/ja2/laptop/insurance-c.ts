@@ -85,7 +85,7 @@ function EnterInsurance(): BOOLEAN {
 
   usPosX = INSURANCE_BOTTOM_LINK_RED_BAR_X;
   for (i = 0; i < 3; i++) {
-    MSYS_DefineRegion(&gSelectedInsuranceLinkRegion[i], usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (UINT16)(usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
+    MSYS_DefineRegion(&gSelectedInsuranceLinkRegion[i], usPosX, INSURANCE_BOTTOM_LINK_RED_BAR_Y - 37, (usPosX + INSURANCE_BOTTOM_LINK_RED_BAR_WIDTH), INSURANCE_BOTTOM_LINK_RED_BAR_Y + 2, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceRegionCallBack);
     MSYS_AddRegion(&gSelectedInsuranceLinkRegion[i]);
     MSYS_SetRegionUserData(&gSelectedInsuranceLinkRegion[i], 0, i);
 
@@ -206,7 +206,7 @@ function InitInsuranceDefaults(): BOOLEAN {
     CHECKF(AddVideoObject(&VObjectDesc, &guiInsuranceSmallTitleImage));
 
     // create the link to the home page on the small titles
-    MSYS_DefineRegion(&gSelectedInsuranceTitleLinkRegion, INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (UINT16)(INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (UINT16)(INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
+    MSYS_DefineRegion(&gSelectedInsuranceTitleLinkRegion, INSURANCE_SMALL_TITLE_X + 85, INSURANCE_SMALL_TITLE_Y, (INSURANCE_SMALL_TITLE_X + INSURANCE_SMALL_TITLE_WIDTH), (INSURANCE_SMALL_TITLE_Y + INSURANCE_SMALL_TITLE_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectInsuranceTitleLinkRegionCallBack);
     MSYS_AddRegion(&gSelectedInsuranceTitleLinkRegion);
   }
 

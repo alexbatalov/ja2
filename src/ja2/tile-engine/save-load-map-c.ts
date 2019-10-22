@@ -196,8 +196,8 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
         let ExitGrid: EXITGRID;
         gfLoadingExitGrids = TRUE;
         ExitGrid.usGridNo = pMap->usSubImageIndex;
-        ExitGrid.ubGotoSectorX = (UINT8)pMap->usImageType;
-        ExitGrid.ubGotoSectorY = (UINT8)(pMap->usImageType >> 8);
+        ExitGrid.ubGotoSectorX = pMap->usImageType;
+        ExitGrid.ubGotoSectorY = (pMap->usImageType >> 8);
         ExitGrid.ubGotoSectorZ = pMap->ubExtra;
 
         AddExitGridToWorld(pMap->usGridNo, &ExitGrid);
@@ -211,7 +211,7 @@ function LoadAllMapChangesFromMapTempFileAndApplyThem(): BOOLEAN {
       } break;
 
       case SLM_OPENABLE_STRUCT:
-        SetOpenableStructStatusFromMapTempFile(pMap->usGridNo, (BOOLEAN)pMap->usImageType);
+        SetOpenableStructStatusFromMapTempFile(pMap->usGridNo, pMap->usImageType);
         break;
 
       case SLM_WINDOW_HIT:
@@ -260,9 +260,9 @@ function AddStructToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_STRUCT;
@@ -290,9 +290,9 @@ function AddObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void {
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_OBJECT;
@@ -320,9 +320,9 @@ function AddRemoveObjectToMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_REMOVE_OBJECT;
@@ -346,9 +346,9 @@ function RemoveStructFromMapTempFile(uiMapIndex: UINT32, usIndex: UINT16): void 
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex			= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_REMOVE_STRUCT;
@@ -448,7 +448,7 @@ function SaveBloodSmellAndRevealedStatesFromMapToTempFile(): void {
 
 // The BloodInfo is saved in the bottom byte and the smell info in the upper byte
 function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
-  gpWorldLevelData[pMap->usGridNo].ubBloodInfo = (UINT8)pMap->usImageType;
+  gpWorldLevelData[pMap->usGridNo].ubBloodInfo = pMap->usImageType;
 
   // if the blood and gore option IS set, add blood
   if (gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
@@ -459,7 +459,7 @@ function AddBloodOrSmellFromMapTempFileToMap(pMap: Pointer<MODIFY_MAP>): void {
     UpdateBloodGraphics(pMap->usGridNo, 1);
   }
 
-  gpWorldLevelData[pMap->usGridNo].ubSmellInfo = (UINT8)pMap->usSubImageIndex;
+  gpWorldLevelData[pMap->usGridNo].ubSmellInfo = pMap->usSubImageIndex;
 }
 
 function SaveRevealedStatusArrayToRevealedTempFile(sSectorX: INT16, sSectorY: INT16, bSectorZ: INT8): BOOLEAN {
@@ -599,21 +599,21 @@ function DamageStructsFromMapTempFile(pMap: Pointer<MODIFY_MAP>): void {
   let ubType: UINT8 = 0;
 
   // Find the base structure
-  pCurrent = FindStructure((INT16)pMap->usGridNo, STRUCTURE_BASE_TILE);
+  pCurrent = FindStructure(pMap->usGridNo, STRUCTURE_BASE_TILE);
 
   if (pCurrent == NULL)
     return;
 
   bLevel = pMap->ubExtra & ubBitToSet;
   ubWallOrientation = pMap->ubExtra & ~ubBitToSet;
-  ubType = (UINT8)pMap->usImageType;
+  ubType = pMap->usImageType;
 
   // Check to see if the desired strucure node is in this tile
   pCurrent = FindStructureBySavedInfo(pMap->usGridNo, ubType, ubWallOrientation, bLevel);
 
   if (pCurrent != NULL) {
     // Assign the hitpoints
-    pCurrent->ubHitPoints = (UINT8)(pMap->usSubImageIndex);
+    pCurrent->ubHitPoints = (pMap->usSubImageIndex);
 
     gpWorldLevelData[pCurrent->sGridNo].uiFlags |= MAPELEMENT_STRUCTURE_DAMAGED;
   }
@@ -634,9 +634,9 @@ function AddStructToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_STRUCT;
@@ -657,9 +657,9 @@ function AddObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16, sSe
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_OBJECT;
@@ -680,9 +680,9 @@ function RemoveStructFromUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT16
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex			= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_REMOVE_STRUCT;
@@ -703,9 +703,9 @@ function AddRemoveObjectToUnLoadedMapTempFile(uiMapIndex: UINT32, usIndex: UINT1
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   //	Map.usIndex		= usIndex;
-  Map.usImageType = (UINT16)uiType;
+  Map.usImageType = uiType;
   Map.usSubImageIndex = usSubIndex;
 
   Map.ubType = SLM_REMOVE_OBJECT;
@@ -823,7 +823,7 @@ function AddOpenableStructStatusToMapTempFile(uiMapIndex: UINT32, fOpened: BOOLE
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   Map.usImageType = fOpened;
 
   Map.ubType = SLM_OPENABLE_STRUCT;
@@ -836,7 +836,7 @@ function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
 
   memset(&Map, 0, sizeof(MODIFY_MAP));
 
-  Map.usGridNo = (UINT16)uiMapIndex;
+  Map.usGridNo = uiMapIndex;
   Map.ubType = SLM_WINDOW_HIT;
 
   SaveModifiedMapStructToMapTempFile(&Map, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
@@ -845,9 +845,9 @@ function AddWindowHitToMapTempFile(uiMapIndex: UINT32): void {
 function ModifyWindowStatus(uiMapIndex: UINT32): BOOLEAN {
   let pStructure: Pointer<STRUCTURE>;
 
-  pStructure = FindStructure((INT16)uiMapIndex, STRUCTURE_WALLNWINDOW);
+  pStructure = FindStructure(uiMapIndex, STRUCTURE_WALLNWINDOW);
   if (pStructure) {
-    SwapStructureForPartner((INT16)uiMapIndex, pStructure);
+    SwapStructureForPartner(uiMapIndex, pStructure);
     return TRUE;
   }
   // else forget it, window could be destroyed
@@ -859,9 +859,9 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
   let pBase: Pointer<STRUCTURE>;
   let fStatusOnTheMap: BOOLEAN;
   let pItemPool: Pointer<ITEM_POOL>;
-  let sBaseGridNo: INT16 = (INT16)uiMapIndex;
+  let sBaseGridNo: INT16 = uiMapIndex;
 
-  pStructure = FindStructure((UINT16)uiMapIndex, STRUCTURE_OPENABLE);
+  pStructure = FindStructure(uiMapIndex, STRUCTURE_OPENABLE);
 
   if (pStructure == NULL) {
     //		ScreenMsg( FONT_MCOLOR_WHITE, MSG_BETAVERSION, L"SetOpenableStructStatusFromMapTempFile( %d, %d ) failed to find the openable struct.  DF 1.", uiMapIndex, fOpened );
@@ -879,7 +879,7 @@ function SetOpenableStructStatusFromMapTempFile(uiMapIndex: UINT32, fOpened: BOO
       sBaseGridNo = pBase->sGridNo;
     }
 
-    if (SwapStructureForPartnerWithoutTriggeringSwitches((UINT16)uiMapIndex, pStructure) == NULL) {
+    if (SwapStructureForPartnerWithoutTriggeringSwitches(uiMapIndex, pStructure) == NULL) {
       // an error occured
     }
 

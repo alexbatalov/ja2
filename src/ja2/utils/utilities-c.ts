@@ -79,8 +79,8 @@ function DisplayPaletteRep(aPalRep: PaletteRepID, ubXPos: UINT8, ubYPos: UINT8, 
   ubSize = gpPalRep[ubPaletteRep].ubPaletteSize;
 
   for (cnt1 = 0; cnt1 < ubSize; cnt1++) {
-    sTLX = ubXPos + (UINT16)((cnt1 % 16) * 20);
-    sTLY = ubYPos + (UINT16)((cnt1 / 16) * 20);
+    sTLX = ubXPos + ((cnt1 % 16) * 20);
+    sTLY = ubYPos + ((cnt1 / 16) * 20);
     sBRX = sTLX + 20;
     sBRY = sTLY + 20;
 
@@ -127,7 +127,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
           // Split Line!
           fLineSplit = TRUE;
 
-          pStr[uiNewLet] = (INT16)'\0';
+          pStr[uiNewLet] = '\0';
 
           wcscpy(pStr2, &(pStr[uiNewLet + 1]));
         }
@@ -141,7 +141,7 @@ function WrapString(pStr: Pointer<INT16>, pStr2: Pointer<INT16>, usWidth: UINT16
       if (!fLineSplit) {
         // We completed the check for a space, but failed, so use the hyphen method.
         swprintf(pStr2, L"-%s", &(pStr[uiHyphenLet]));
-        pStr[uiHyphenLet] = (INT16)'/0';
+        pStr[uiHyphenLet] = '/0';
         fLineSplit = TRUE; // hyphen method
         break;
       }

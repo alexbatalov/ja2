@@ -7,7 +7,7 @@ let gubOutOfTurnOrder: UINT8[] /* [MAXMERCS] */ = {
 let gubOutOfTurnPersons: UINT8 = 0;
 
 const LATEST_INTERRUPT_GUY = () => (gubOutOfTurnOrder[gubOutOfTurnPersons]);
-const REMOVE_LATEST_INTERRUPT_GUY = () => (DeleteFromIntList((UINT8)(gubOutOfTurnPersons), TRUE));
+const REMOVE_LATEST_INTERRUPT_GUY = () => (DeleteFromIntList((gubOutOfTurnPersons), TRUE));
 const INTERRUPTS_OVER = () => (gubOutOfTurnPersons == 1);
 
 let InterruptOnlyGuynum: INT16 = NOBODY;
@@ -1100,7 +1100,7 @@ function CalcInterruptDuelPts(pSoldier: Pointer<SOLDIERTYPE>, ubOpponentID: UINT
   // if soldier is still in shock from recent injuries, that penalizes him
   bPoints -= pSoldier->bShock;
 
-  ubDistance = (UINT8)PythSpacesAway(pSoldier->sGridNo, MercPtrs[ubOpponentID]->sGridNo);
+  ubDistance = PythSpacesAway(pSoldier->sGridNo, MercPtrs[ubOpponentID]->sGridNo);
 
   // if we are in combat mode - thus doing an interrupt rather than determine who gets first turn -
   // then give bonus

@@ -563,7 +563,7 @@ function SoundSetDigitalVolume(uiVolume: UINT32): BOOLEAN {
 //*******************************************************************************
 function SoundGetDigitalVolume(uiVolume: UINT32): UINT32 {
   if (fSoundSystemInit)
-    return (UINT32)AIL_digital_master_volume(hSoundDriver);
+    return AIL_digital_master_volume(hSoundDriver);
   else
     return 0;
 }
@@ -844,13 +844,13 @@ function SoundGetVolume(uiSoundID: UINT32): UINT32 {
 function SoundGetVolumeIndex(uiChannel: UINT32): UINT32 {
   if (fSoundSystemInit) {
     if (pSoundList[uiChannel].hMSS != NULL)
-      return (UINT32)AIL_sample_volume(pSoundList[uiChannel].hMSS);
+      return AIL_sample_volume(pSoundList[uiChannel].hMSS);
 
     if (pSoundList[uiChannel].hMSSStream != NULL)
-      return (UINT32)AIL_stream_volume(pSoundList[uiChannel].hMSSStream);
+      return AIL_stream_volume(pSoundList[uiChannel].hMSSStream);
 
     if (pSoundList[uiChannel].hM3D != NULL)
-      return (UINT32)AIL_3D_sample_volume(pSoundList[uiChannel].hM3D);
+      return AIL_3D_sample_volume(pSoundList[uiChannel].hM3D);
   }
 
   return SOUND_ERROR;
@@ -869,10 +869,10 @@ function SoundGetPan(uiSoundID: UINT32): UINT32 {
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != NULL)
-        return (UINT32)AIL_sample_pan(pSoundList[uiSound].hMSS);
+        return AIL_sample_pan(pSoundList[uiSound].hMSS);
 
       if (pSoundList[uiSound].hMSSStream != NULL)
-        return (UINT32)AIL_stream_pan(pSoundList[uiSound].hMSSStream);
+        return AIL_stream_pan(pSoundList[uiSound].hMSSStream);
     }
   }
 
@@ -892,13 +892,13 @@ function SoundGetFrequency(uiSoundID: UINT32): UINT32 {
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != NULL)
-        return (UINT32)AIL_sample_playback_rate(pSoundList[uiSound].hMSS);
+        return AIL_sample_playback_rate(pSoundList[uiSound].hMSS);
 
       if (pSoundList[uiSound].hMSSStream != NULL)
-        return (UINT32)AIL_stream_playback_rate(pSoundList[uiSound].hMSSStream);
+        return AIL_stream_playback_rate(pSoundList[uiSound].hMSSStream);
 
       if (pSoundList[uiSound].hM3D != NULL)
-        return (UINT32)AIL_3D_sample_playback_rate(pSoundList[uiSound].hM3D);
+        return AIL_3D_sample_playback_rate(pSoundList[uiSound].hM3D);
     }
   }
 
@@ -918,13 +918,13 @@ function SoundGetLoop(uiSoundID: UINT32): UINT32 {
   if (fSoundSystemInit) {
     if ((uiSound = SoundGetIndexByID(uiSoundID)) != NO_SAMPLE) {
       if (pSoundList[uiSound].hMSS != NULL)
-        return (UINT32)AIL_sample_loop_count(pSoundList[uiSound].hMSS);
+        return AIL_sample_loop_count(pSoundList[uiSound].hMSS);
 
       if (pSoundList[uiSound].hMSSStream != NULL)
-        return (UINT32)AIL_stream_loop_count(pSoundList[uiSound].hMSSStream);
+        return AIL_stream_loop_count(pSoundList[uiSound].hMSSStream);
 
       if (pSoundList[uiSound].hM3D != NULL)
-        return (UINT32)AIL_3D_sample_loop_count(pSoundList[uiSound].hM3D);
+        return AIL_3D_sample_loop_count(pSoundList[uiSound].hM3D);
     }
   }
 
@@ -1563,15 +1563,15 @@ function SoundProcessWAVHeader(uiSample: UINT32): BOOLEAN {
   let pChunk: Pointer<CHAR8>;
   let ailInfo: AILSOUNDINFO;
 
-  pChunk = (CHAR8 *)pSampleList[uiSample].pData;
-  if (!AIL_WAV_info((void *)pChunk, &ailInfo))
+  pChunk = pSampleList[uiSample].pData;
+  if (!AIL_WAV_info(pChunk, &ailInfo))
     return FALSE;
 
   pSampleList[uiSample].uiSpeed = ailInfo.rate;
-  pSampleList[uiSample].fStereo = (BOOLEAN)(ailInfo.channels == 2);
-  pSampleList[uiSample].ubBits = (UINT8)ailInfo.bits;
+  pSampleList[uiSample].fStereo = (ailInfo.channels == 2);
+  pSampleList[uiSample].ubBits = ailInfo.bits;
 
-  pSampleList[uiSample].pSoundStart = (PTR)ailInfo.data_ptr;
+  pSampleList[uiSample].pSoundStart = ailInfo.data_ptr;
   pSampleList[uiSample].uiSoundSize = ailInfo.data_len;
 
   pSampleList[uiSample].uiAilWaveFormat = ailInfo.format;
@@ -1751,7 +1751,7 @@ function SoundInitDriver(uiRate: UINT32, uiBits: UINT16, uiChans: UINT16): HDIGD
   sPCMWF.wf.nBlockAlign = (uiBits / 8) * uiChans;
   sPCMWF.wBitsPerSample = uiBits;
 
-  if (AIL_waveOutOpen(&DIG, NULL, 0, (LPWAVEFORMAT)&sPCMWF))
+  if (AIL_waveOutOpen(&DIG, NULL, 0, &sPCMWF))
     return NULL;
 
   memset(cBuf, 0, 128);
@@ -1881,7 +1881,7 @@ function SoundStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer<S
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != NULL) && ((UINT32)pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != NULL) && (pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms->EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms->pCallbackData;
   } else {
@@ -1965,7 +1965,7 @@ function SoundStartStream(pFilename: STR, uiChannel: UINT32, pParms: Pointer<SOU
   else
     pSoundList[uiChannel].uiPriority = SOUND_PARMS_DEFAULT;
 
-  if ((pParms != NULL) && ((UINT32)pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != NULL) && (pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms->EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms->pCallbackData;
   } else {
@@ -2275,7 +2275,7 @@ function Sound3DSetProvider(pProviderName: Pointer<CHAR8>): void {
   Assert(pProviderName);
 
   if (pProviderName) {
-    gpProviderName = (CHAR8 *)MemAlloc(strlen(pProviderName) + 1);
+    gpProviderName = MemAlloc(strlen(pProviderName) + 1);
     strcpy(gpProviderName, pProviderName);
   }
 }
@@ -2522,7 +2522,7 @@ function Sound3DSetFalloff(uiSample: UINT32, flMax: FLOAT, flMin: FLOAT): void {
 // Created:  8/17/99 Derek Beland
 //*****************************************************************************************
 function Sound3DActiveSounds(): INT32 {
-  return (INT32)AIL_active_3D_sample_count(gh3DProvider);
+  return AIL_active_3D_sample_count(gh3DProvider);
 }
 
 //*****************************************************************************************
@@ -2648,7 +2648,7 @@ function Sound3DStartSample(uiSample: UINT32, uiChannel: UINT32, pParms: Pointer
   else
     pSoundList[uiChannel].uiPriority = PRIORITY_MAX;
 
-  if ((pParms != NULL) && ((UINT32)pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
+  if ((pParms != NULL) && (pParms->EOSCallback != SOUND_PARMS_DEFAULT)) {
     pSoundList[uiChannel].EOSCallback = pParms->EOSCallback;
     pSoundList[uiChannel].pCallbackData = pParms->pCallbackData;
   } else {
@@ -2765,7 +2765,7 @@ function Sound3DSetRoomType(uiRoomType: UINT32): void {
 
     sprintf(cName, "EAX_ENVIRONMENT_%s", pEAXRoomTypes[uiRoomType]);
 
-    AIL_set_3D_provider_preference(gh3DProvider, cName, (void *)(&uiRoomType));
+    AIL_set_3D_provider_preference(gh3DProvider, cName, (&uiRoomType));
     guiRoomTypeIndex = uiRoomType;
   }
 }

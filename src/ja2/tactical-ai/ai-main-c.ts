@@ -1034,7 +1034,7 @@ function ActionInProgress(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // this here should never happen, but it seems to (turns sometimes hang!)
   if ((pSoldier->bAction == AI_ACTION_CHANGE_FACING) && (pSoldier->bDesiredDirection != pSoldier->usActionData)) {
     // don't try to pay any more APs for this, it was paid for once already!
-    pSoldier->bDesiredDirection = (INT8)pSoldier->usActionData; // turn to face direction in actionData
+    pSoldier->bDesiredDirection = pSoldier->usActionData; // turn to face direction in actionData
     return TRUE;
   }
 
@@ -1647,7 +1647,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
             if (!ACTING_ON_SCHEDULE(pSoldier) && SpacesAway(pSoldier->sGridNo, pSoldier->sAbsoluteFinalDestination) < 4) {
               // This is close enough...
               ReplaceLocationInNPCDataFromProfileID(pSoldier->ubProfile, pSoldier->sAbsoluteFinalDestination, pSoldier->sGridNo);
-              NPCGotoGridNo(pSoldier->ubProfile, pSoldier->sGridNo, (UINT8)(pSoldier->ubQuoteRecord - 1));
+              NPCGotoGridNo(pSoldier->ubProfile, pSoldier->sGridNo, (pSoldier->ubQuoteRecord - 1));
             } else {
               // This is important, so try taking a path through people (and bumping them aside)
               if (LegalNPCDestination(pSoldier, pSoldier->usActionData, ENSURE_PATH, WATEROK, PATH_THROUGH_PEOPLE)) {
@@ -1656,7 +1656,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
               } else {
                 // Have buddy wait a while...
                 pSoldier->bNextAction = AI_ACTION_WAIT;
-                pSoldier->usNextActionData = (UINT16)REALTIME_AI_DELAY;
+                pSoldier->usNextActionData = REALTIME_AI_DELAY;
               }
             }
 
@@ -1698,7 +1698,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // make sure it worked (check that pSoldier->sDestination == pSoldier->usActionData)
       if (pSoldier->sFinalDestination != pSoldier->usActionData) {
         // temporarily black list this gridno to stop enemy from going there
-        pSoldier->sBlackList = (INT16)pSoldier->usActionData;
+        pSoldier->sBlackList = pSoldier->usActionData;
 
         DebugAI(String("Setting blacklist for %d to %d", pSoldier->ubID, pSoldier->sBlackList));
 
@@ -1762,7 +1762,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     case AI_ACTION_PULL_TRIGGER: // activate an adjacent panic trigger
 
       // turn to face trigger first
-      if (FindStructure((INT16)(pSoldier->sGridNo + DirectionInc(NORTH)), STRUCTURE_SWITCH)) {
+      if (FindStructure((pSoldier->sGridNo + DirectionInc(NORTH)), STRUCTURE_SWITCH)) {
         SendSoldierSetDesiredDirectionEvent(pSoldier, NORTH);
       } else {
         SendSoldierSetDesiredDirectionEvent(pSoldier, WEST);
@@ -1833,7 +1833,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       SkipCoverCheck = TRUE;
 
-      SendChangeSoldierStanceEvent(pSoldier, (UINT8)pSoldier->usActionData);
+      SendChangeSoldierStanceEvent(pSoldier, pSoldier->usActionData);
       break;
 
     case AI_ACTION_COWER:
@@ -1876,7 +1876,7 @@ function ExecuteAction(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       let bDirection: INT8;
       let sDoorGridNo: INT16;
 
-      bDirection = (INT8)GetDirectionFromGridNo(pSoldier->usActionData, pSoldier);
+      bDirection = GetDirectionFromGridNo(pSoldier->usActionData, pSoldier);
       if (bDirection == EAST || bDirection == SOUTH) {
         sDoorGridNo = pSoldier->sGridNo;
       } else {
@@ -2059,7 +2059,7 @@ function ManChecksOnFriends(pSoldier: Pointer<SOLDIERTYPE>): void {
     if (PythSpacesAway(pSoldier->sGridNo, pFriend->sGridNo) <= sDistVisible) {
       // and can trace a line of sight to his x,y coordinates
       // if (1) //*** SoldierToSoldierLineOfSightTest(pSoldier,pFriend,STRAIGHT,TRUE))
-      if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, (UINT8)sDistVisible, TRUE)) {
+      if (SoldierToSoldierLineOfSightTest(pSoldier, pFriend, sDistVisible, TRUE)) {
         // if my friend is in battle or something is clearly happening there
         if ((pFriend->bAlertStatus >= STATUS_RED) || pFriend->bUnderFire || (pFriend->bLife < OKLIFE)) {
           pSoldier->bAlertStatus = STATUS_RED;

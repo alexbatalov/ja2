@@ -309,11 +309,11 @@ function DrawHistoryTitleText(): void {
 function CreateHistoryButtons(): void {
   // the prev page button
   giHistoryButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
-  giHistoryButton[PREV_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnHistoryDisplayPrevPageCallBack);
+  giHistoryButton[PREV_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayPrevPageCallBack);
 
   // the next page button
   giHistoryButtonImage[NEXT_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 6, -1, 7, -1);
-  giHistoryButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnHistoryDisplayNextPageCallBack);
+  giHistoryButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giHistoryButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnHistoryDisplayNextPageCallBack);
 
   // set buttons
   SetButtonCursor(giHistoryButton[0], CURSOR_LAPTOP_SCREEN);
@@ -406,7 +406,7 @@ function IncrementCurrentPageHistoryDisplay(): BOOLEAN {
 
   // is the file long enough?
   //  if( ( FileGetSize( hFileHandle ) - 1 ) / ( NUM_RECORDS_PER_PAGE * ( sizeof( UINT8 ) + sizeof( UINT32 ) + 3*sizeof( UINT8 )+ sizeof(INT16) + sizeof( INT16 ) ) ) + 1 < ( UINT32 )( iCurrentHistoryPage + 1 ) )
-  if (uiFileSize / uiSizeOfRecordsOnEachPage + 1 < (UINT32)(iCurrentHistoryPage + 1)) {
+  if (uiFileSize / uiSizeOfRecordsOnEachPage + 1 < (iCurrentHistoryPage + 1)) {
     // nope
     FileClose(hFileHandle);
     return FALSE;
@@ -1432,7 +1432,7 @@ function GetNumberOfHistoryPages(): INT32 {
   uiFileSize = FileGetSize(hFileHandle) - 1;
   uiSizeOfRecordsOnEachPage = (NUM_RECORDS_PER_PAGE * (sizeof(UINT8) + sizeof(UINT32) + 3 * sizeof(UINT8) + sizeof(INT16) + sizeof(INT16)));
 
-  iNumberOfHistoryPages = (INT32)(uiFileSize / uiSizeOfRecordsOnEachPage);
+  iNumberOfHistoryPages = (uiFileSize / uiSizeOfRecordsOnEachPage);
 
   FileClose(hFileHandle);
 

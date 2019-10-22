@@ -22,7 +22,7 @@ const PROFILE = (x) => {
 
 const PROFILE_REPORT = () => {
   guiProfileTime = (GetTickCount() - guiProfileStart);
-  _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, (FLOAT)guiProfileTime / guiExecutions);
+  _RPT3(_CRT_WARN, "*** PROFILE REPORT: %d executions took %dms, average of %.2fms per iteration.\n", guiExecutions, guiProfileTime, guiProfileTime / guiExecutions);
 };
 
 const Assert = (a) => {};

@@ -461,7 +461,7 @@ function SelectFileDialogYPos(usRelativeYPos: UINT16): void {
   }
 
   for (x = iTopFileShown; x < (iTopFileShown + 8) && x < iTotalFiles && FListNode != NULL; x++) {
-    if ((INT32)sSelName == (x - iTopFileShown)) {
+    if (sSelName == (x - iTopFileShown)) {
       let iCurrClickTime: INT32;
       iCurrFileShown = x;
       FListNode->FileInfo.zFileName[30] = 0;
@@ -494,7 +494,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
 
   // Add to start of list
   if (pList == NULL) {
-    pNode = (FDLG_LIST *)MemAlloc(sizeof(FDLG_LIST));
+    pNode = MemAlloc(sizeof(FDLG_LIST));
     pNode->FileInfo = *pInfo;
     pNode->pPrev = pNode->pNext = NULL;
     return pNode;
@@ -503,7 +503,7 @@ function AddToFDlgList(pList: Pointer<FDLG_LIST>, pInfo: Pointer<GETFILESTRUCT>)
   // Add and sort alphabetically without regard to case -- function limited to 10 chars comparison
   if (stricmp(pList->FileInfo.zFileName, pInfo->zFileName) > 0) {
     // pInfo is smaller than pList (i.e. Insert before)
-    pNode = (FDLG_LIST *)MemAlloc(sizeof(FDLG_LIST));
+    pNode = MemAlloc(sizeof(FDLG_LIST));
     pNode->FileInfo = *pInfo;
     pNode->pNext = pList;
     pNode->pPrev = pList->pPrev;
@@ -638,7 +638,7 @@ function HandleMainKeyEvents(pEvent: Pointer<InputAtom>): void {
       if (pEvent->usParam >= 'a' && pEvent->usParam <= 'z' || pEvent->usParam >= 'A' && pEvent->usParam <= 'Z') {
         if (pEvent->usParam >= 'A' && pEvent->usParam <= 'Z') // convert upper case to lower case
           pEvent->usParam += 32; // A = 65, a = 97 (difference of 32)
-        SetTopFileToLetter((UINT16)pEvent->usParam);
+        SetTopFileToLetter(pEvent->usParam);
       }
       break;
   }
@@ -675,7 +675,7 @@ function SetGlobalSectorValues(szFilename: Pointer<UINT16>): void {
     pStr = wcsstr(gzFilename, L"_b");
     if (pStr) {
       if (pStr[2] >= '1' && pStr[2] <= '3') {
-        gbWorldSectorZ = (INT8)(pStr[2] - 0x30);
+        gbWorldSectorZ = (pStr[2] - 0x30);
       }
     }
   } else {
@@ -798,7 +798,7 @@ function ProcessFileIO(): UINT32 {
           LightSetBaseLevel(ubAmbientLightLevel);
         }
       } else
-        gusLightLevel = (UINT16)(EDITOR_LIGHT_MAX - ubAmbientLightLevel);
+        gusLightLevel = (EDITOR_LIGHT_MAX - ubAmbientLightLevel);
       gEditorLightColor = gpLightColors[0];
       gfRenderWorld = TRUE;
       gfRenderTaskbar = TRUE;

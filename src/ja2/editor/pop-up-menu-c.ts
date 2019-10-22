@@ -67,7 +67,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
   // calculate the location of the menu based on the button position.
   // This also calculates the menu's direction based on position.
 
-  gPopup.usFont = (UINT16)SMALLFONT1;
+  gPopup.usFont = SMALLFONT1;
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
@@ -111,7 +111,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
       return;
   }
 
-  gPopup.usFont = (UINT16)SMALLFONT1;
+  gPopup.usFont = SMALLFONT1;
   gusEntryHeight = GetFontHeight(gPopup.usFont);
 
   button = ButtonList[iButtonID];
@@ -153,7 +153,7 @@ function InitPopupMenu(iButtonID: INT32, ubPopupMenuID: UINT8, ubDirection: UINT
         break; // done (don't want to process undefined entries...)
       usCurrStrWidth = 16 + StringPixLength(GetPopupMenuString(ubCounter), gPopup.usFont);
       if (usCurrStrWidth > gPopup.ubColumnWidth[ubColumn]) {
-        gPopup.ubColumnWidth[ubColumn] = (UINT8)usCurrStrWidth;
+        gPopup.ubColumnWidth[ubColumn] = usCurrStrWidth;
       }
       ubCounter++;
     }
@@ -216,7 +216,7 @@ function RenderPopupMenu(): void {
     for (ubColumn = 1; ubColumn < gPopup.ubColumns; ubColumn++) {
       LineDraw(TRUE, usStart, gPopup.usTop, usStart, gPopup.usBottom, usLineColor, pDestBuf);
     }
-    usStart += (UINT16)gPopup.ubColumnWidth[ubColumn];
+    usStart += gPopup.ubColumnWidth[ubColumn];
   }
   UnLockVideoSurface(FRAME_BUFFER);
 
@@ -378,20 +378,20 @@ function ProcessPopupMenuSelection(): void {
   switch (gPopup.ubPopupMenuID) {
     case CHANGETSET_POPUP:
       // change the tileset here.
-      ReloadTileset((UINT8)(gPopup.ubSelectedIndex - 1));
+      ReloadTileset((gPopup.ubSelectedIndex - 1));
       InitJA2SelectionWindow();
       break;
     case CHANGECIVGROUP_POPUP:
-      ChangeCivGroup((UINT8)(gPopup.ubSelectedIndex - 1));
+      ChangeCivGroup((gPopup.ubSelectedIndex - 1));
       break;
     case SCHEDULEACTION_POPUP:
-      UpdateScheduleAction((UINT8)(gPopup.ubSelectedIndex - 1));
+      UpdateScheduleAction((gPopup.ubSelectedIndex - 1));
       break;
     case ACTIONITEM_POPUP:
-      UpdateActionItem((UINT8)(gPopup.ubSelectedIndex - 1));
+      UpdateActionItem((gPopup.ubSelectedIndex - 1));
       break;
     case OWNERSHIPGROUP_POPUP:
-      SetOwnershipGroup((UINT8)(gPopup.ubSelectedIndex - 1));
+      SetOwnershipGroup((gPopup.ubSelectedIndex - 1));
       break;
   }
 }

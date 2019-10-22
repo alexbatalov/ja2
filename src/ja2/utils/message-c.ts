@@ -128,7 +128,7 @@ function CreateStringVideoOverlay(pStringSt: ScrollStringStPtr, usX: UINT16, usY
   VideoOverlayDesc.sTop = usY;
   VideoOverlayDesc.uiFontID = pStringSt->uiFont;
   VideoOverlayDesc.ubFontBack = FONT_MCOLOR_BLACK;
-  VideoOverlayDesc.ubFontFore = (unsigned char)pStringSt->usColor;
+  VideoOverlayDesc.ubFontFore = pStringSt->usColor;
   VideoOverlayDesc.sX = VideoOverlayDesc.sLeft;
   VideoOverlayDesc.sY = VideoOverlayDesc.sTop;
   swprintf(VideoOverlayDesc.pzText, pStringSt->pString16);
@@ -273,7 +273,7 @@ function ScrollString(): void {
         gpDisplayList[cnt]->uiTimeOfLastUpdate = iMaxAge;
       }
       // CHECK IF WE HAVE AGED
-      if ((suiTimer - gpDisplayList[cnt]->uiTimeOfLastUpdate) > (UINT32)(iMaxAge - (1000 * iNumberOfMessagesOnQueue))) {
+      if ((suiTimer - gpDisplayList[cnt]->uiTimeOfLastUpdate) > (iMaxAge - (1000 * iNumberOfMessagesOnQueue))) {
         // Remove our sorry ass
         RemoveStringVideoOverlay(gpDisplayList[cnt]);
         MemFree(gpDisplayList[cnt]->pString16);
@@ -314,7 +314,7 @@ function ScrollString(): void {
       for (cnt = 0; cnt <= MAX_LINE_COUNT - 1; cnt++) {
         // Adjust position!
         if (gpDisplayList[cnt] != NULL) {
-          SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START, (INT16)((Y_START - ((cnt)*GetFontHeight(SMALLFONT1))) - (INT16)(WIDTH_BETWEEN_NEW_STRINGS * (iNumberOfNewStrings))));
+          SetStringVideoOverlayPosition(gpDisplayList[cnt], X_START, ((Y_START - ((cnt)*GetFontHeight(SMALLFONT1))) - (WIDTH_BETWEEN_NEW_STRINGS * (iNumberOfNewStrings))));
 
           // start of new string, increment count of new strings, for spacing purposes
           if (gpDisplayList[cnt]->fBeginningOfNewString == TRUE) {
@@ -817,7 +817,7 @@ function DisplayStringsInMapScreenMessageList(): void {
     }
 
     // set font color
-    SetFontForeground((UINT8)(gMapScreenMessageList[ubCurrentStringIndex]->usColor));
+    SetFontForeground((gMapScreenMessageList[ubCurrentStringIndex]->usColor));
 
     // print this line
     mprintf_coded(20, sY, gMapScreenMessageList[ubCurrentStringIndex]->pString16);

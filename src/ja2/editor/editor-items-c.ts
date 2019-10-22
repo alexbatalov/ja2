@@ -21,11 +21,11 @@ function BuildItemPoolList(): void {
   for (i = 0; i < WORLD_MAX; i++) {
     if (GetItemPool(i, &temp, 0)) {
       if (!pIPHead) {
-        pIPHead = (IPListNode *)MemAlloc(sizeof(IPListNode));
+        pIPHead = MemAlloc(sizeof(IPListNode));
         Assert(pIPHead);
         tail = pIPHead;
       } else {
-        tail->next = (IPListNode *)MemAlloc(sizeof(IPListNode));
+        tail->next = MemAlloc(sizeof(IPListNode));
         Assert(tail->next);
         tail = tail->next;
       }
@@ -222,7 +222,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       return;
   }
   // Allocate memory to store all the item pointers.
-  eInfo.pusItemIndex = (UINT16 *)MemAlloc(sizeof(UINT16) * eInfo.sNumItems);
+  eInfo.pusItemIndex = MemAlloc(sizeof(UINT16) * eInfo.sNumItems);
 
   // Disable the appropriate scroll buttons based on the saved scroll index if applicable
   // Left most scroll position
@@ -251,7 +251,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
 
   // copy a blank chunk of the editor interface to the new buffer.
   for (i = 0; i < eInfo.sWidth; i += 60) {
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 0 + i, 0, 100, 360, 60, 80);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0 + i, 0, 100, 360, 60, 80);
   }
 
   UnLockVideoSurface(eInfo.uiBuffer);
@@ -281,7 +281,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
       SetFontDestBuffer(eInfo.uiBuffer, 0, 0, eInfo.sWidth, eInfo.sHeight, FALSE);
 
       swprintf(pStr, L"%S", LockTable[i].ubEditorName);
-      DisplayWrappedString(x, (UINT16)(y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
       // Calculate the center position of the graphic in a 60 pixel wide area.
       sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
@@ -394,7 +394,7 @@ function InitEditorItemsInfo(uiItemType: UINT32): void {
                 swprintf(pStr, L"Action%d", (i - 4) / 2);
             }
           }
-          DisplayWrappedString(x, (UINT16)(y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(x, (y + 25), 60, 2, SMALLCOMPFONT, FONT_WHITE, pStr, FONT_BLACK, TRUE, CENTER_JUSTIFIED);
 
           // Calculate the center position of the graphic in a 60 pixel wide area.
           sWidth = hVObject->pETRLEObject[item->ubGraphicNum].usWidth;
@@ -464,7 +464,7 @@ function RenderEditorItemsInfo(): void {
   pSrcBuf = LockVideoSurface(eInfo.uiBuffer, &uiSrcPitchBYTES);
 
   // copy the items buffer to the editor bar
-  Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 110, 360, 60 * eInfo.sScrollIndex, 0, 360, 80);
+  Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 110, 360, 60 * eInfo.sScrollIndex, 0, 360, 80);
 
   UnLockVideoSurface(eInfo.uiBuffer);
   UnLockVideoSurface(FRAME_BUFFER);
@@ -677,7 +677,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
 
   // memset( &tempObject, 0, sizeof( OBJECTTYPE ) );
   if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
-    CreateKeyObject(&tempObject, 1, (UINT8)eInfo.sSelItemIndex);
+    CreateKeyObject(&tempObject, 1, eInfo.sSelItemIndex);
   } else {
     CreateItem(eInfo.pusItemIndex[eInfo.sSelItemIndex], 100, &tempObject);
   }
@@ -713,7 +713,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
       else if (eInfo.sSelItemIndex < 6)
         tempObject.bFrequency = PANIC_FREQUENCY_3;
       else
-        tempObject.bFrequency = (INT8)(FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+        tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
       usFlags |= WORLD_ITEM_ARMED_BOMB;
       break;
     case ACTION_ITEM:
@@ -730,7 +730,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
         else if (eInfo.sSelItemIndex < 6)
           tempObject.bFrequency = PANIC_FREQUENCY_3;
         else
-          tempObject.bFrequency = (INT8)(FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+          tempObject.bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
       } else {
         tempObject.bDetonatorType = BOMB_PRESSURE;
         tempObject.bDelay = 0;
@@ -747,7 +747,7 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
 
   pObject = InternalAddItemToPool(&sGridNo, &tempObject, bVisibility, 0, usFlags, 0, &iItemIndex);
   if (tempObject.usItem != OWNERSHIP) {
-    gWorldItems[iItemIndex].ubNonExistChance = (UINT8)(100 - giDefaultExistChance);
+    gWorldItems[iItemIndex].ubNonExistChance = (100 - giDefaultExistChance);
   } else {
     gWorldItems[iItemIndex].ubNonExistChance = 0;
   }
@@ -757,16 +757,16 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
     if (Random(2)) {
       pObject->ubShotsLeft[0] = Magazine[pItem->ubClassIndex].ubMagSize;
     } else {
-      pObject->ubShotsLeft[0] = (UINT8)Random(Magazine[pItem->ubClassIndex].ubMagSize);
+      pObject->ubShotsLeft[0] = Random(Magazine[pItem->ubClassIndex].ubMagSize);
     }
   } else {
-    pObject->bStatus[0] = (INT8)(70 + Random(26));
+    pObject->bStatus[0] = (70 + Random(26));
   }
   if (pItem->usItemClass & IC_GUN) {
     if (pObject->usItem == ROCKET_LAUNCHER) {
       pObject->ubGunShotsLeft = 1;
     } else {
-      pObject->ubGunShotsLeft = (UINT8)(Random(Weapon[pObject->usItem].ubMagSize));
+      pObject->ubGunShotsLeft = (Random(Weapon[pObject->usItem].ubMagSize));
     }
   }
 
@@ -802,14 +802,14 @@ function AddSelectedItemToWorld(sGridNo: INT16): void {
   // there isn't one, so we will add it now.
   ShowItemCursor(sGridNo);
   if (pIPPrev) {
-    pIPPrev->next = (IPListNode *)MemAlloc(sizeof(IPListNode));
+    pIPPrev->next = MemAlloc(sizeof(IPListNode));
     Assert(pIPPrev->next);
     pIPPrev = pIPPrev->next;
     pIPPrev->next = NULL;
     pIPPrev->sGridNo = sGridNo;
     gpCurrItemPoolNode = pIPPrev;
   } else {
-    pIPHead = (IPListNode *)MemAlloc(sizeof(IPListNode));
+    pIPHead = MemAlloc(sizeof(IPListNode));
     Assert(pIPHead);
     pIPHead->next = NULL;
     pIPHead->sGridNo = sGridNo;
@@ -987,13 +987,13 @@ function FindNextItemOfSelectedType(): void {
       else if (eInfo.sSelItemIndex < 6)
         bFrequency = PANIC_FREQUENCY_3;
       else
-        bFrequency = (INT8)(FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
+        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (eInfo.sSelItemIndex - 4) / 2);
       SelectNextTriggerWithFrequency(usItem, bFrequency);
     } else {
       SelectNextPressureAction();
     }
   } else if (Item[usItem].usItemClass == IC_KEY) {
-    SelectNextKeyOfType((UINT8)eInfo.sSelItemIndex);
+    SelectNextKeyOfType(eInfo.sSelItemIndex);
   } else {
     SelectNextItemOfType(usItem);
   }
@@ -1288,7 +1288,7 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
       else if (usEInfoIndex < 6)
         bFrequency = PANIC_FREQUENCY_3;
       else
-        bFrequency = (INT8)(FIRST_MAP_PLACED_FREQUENCY + (usEInfoIndex - 4) / 2);
+        bFrequency = (FIRST_MAP_PLACED_FREQUENCY + (usEInfoIndex - 4) / 2);
       usNumPlacements = CountNumberOfItemsWithFrequency(eInfo.pusItemIndex[usEInfoIndex], bFrequency);
       *pusQuantity = usNumPlacements;
     } else {
@@ -1296,7 +1296,7 @@ function CountNumberOfEditorPlacementsInWorld(usEInfoIndex: UINT16, pusQuantity:
       *pusQuantity = usNumPlacements;
     }
   } else if (eInfo.uiItemType == TBAR_MODE_ITEM_KEYS) {
-    usNumPlacements = CountNumberOfKeysOfTypeInWorld((UINT8)usEInfoIndex);
+    usNumPlacements = CountNumberOfKeysOfTypeInWorld(usEInfoIndex);
     *pusQuantity = usNumPlacements;
   } else {
     usNumPlacements = CountNumberOfItemPlacementsInWorld(eInfo.pusItemIndex[usEInfoIndex], pusQuantity);
@@ -1338,7 +1338,7 @@ function DisplayItemStatistics(): void {
   fUseSelectedItem = eInfo.sHilitedItemIndex == -1 || eInfo.sHilitedItemIndex == eInfo.sSelItemIndex;
 
   SetFont(SMALLCOMPFONT);
-  SetFontForeground((UINT8)(fUseSelectedItem ? FONT_LTRED : FONT_YELLOW));
+  SetFontForeground((fUseSelectedItem ? FONT_LTRED : FONT_YELLOW));
 
   // Extract all of the item information.
   if (!eInfo.pusItemIndex)

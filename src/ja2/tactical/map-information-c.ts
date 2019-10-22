@@ -83,7 +83,7 @@ function ValidateEntryPointGridNo(sGridNo: Pointer<INT16>): BOOLEAN {
     return FALSE; // already valid
   }
 
-  *sGridNo = (INT16)MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
+  *sGridNo = MAPROWCOLTOPOS(iNewMapY / 10, iNewMapX / 10);
 
   return TRUE; // modified
 }

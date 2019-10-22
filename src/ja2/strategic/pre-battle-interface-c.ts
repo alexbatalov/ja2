@@ -164,8 +164,8 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
       SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
       fMapPanelDirty = TRUE;
     } else {
-      gubPBSectorX = (UINT8)SECTORX(gubSectorIDOfCreatureAttack);
-      gubPBSectorY = (UINT8)SECTORY(gubSectorIDOfCreatureAttack);
+      gubPBSectorX = SECTORX(gubSectorIDOfCreatureAttack);
+      gubPBSectorY = SECTORY(gubSectorIDOfCreatureAttack);
       gubPBSectorZ = 0;
     }
   } else {
@@ -329,14 +329,14 @@ function InitPreBattleInterface(pBattleGroup: Pointer<GROUP>, fPersistantPBI: BO
               let iChance: INT32;
               pSector = &SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)];
               if (!(pSector->uiFlags & SF_ALREADY_VISITED)) {
-                iChance = (UINT8)(4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
+                iChance = (4 - bBestExpLevel + 2 * gGameOptions.ubDifficultyLevel + CurrentPlayerProgressPercentage() / 10);
                 if (pSector->uiFlags & SF_ENEMY_AMBUSH_LOCATION) {
                   iChance += 20;
                 }
                 if (gfCantRetreatInPBI) {
                   iChance += 20;
                 }
-                if ((INT32)PreRandom(100) < iChance) {
+                if (PreRandom(100) < iChance) {
                   gubEnemyEncounterCode = ENEMY_AMBUSH_CODE;
                 }
               }
@@ -559,9 +559,9 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     // Factor the percentage so that it is modified by a gravity falling acceleration effect.
     iFactor = (iPercentage - 50) * 2;
     if (iPercentage < 50)
-      iPercentage = (UINT32)(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+      iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
     else
-      iPercentage = (UINT32)(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
+      iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.05);
 
     // Calculate the center point.
     iLeft = sStartLeft - (sStartLeft - sEndLeft + 1) * iPercentage / 100;
@@ -581,7 +581,7 @@ function DoTransitionFromMapscreenToPreBattleInterface(): void {
     RefreshScreen(NULL);
 
     // Restore the previous rect.
-    BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, (UINT16)DstRect.iLeft, (UINT16)DstRect.iTop, (UINT16)(DstRect.iRight - DstRect.iLeft + 1), (UINT16)(DstRect.iBottom - DstRect.iTop + 1));
+    BlitBufferToBuffer(guiEXTRABUFFER, FRAME_BUFFER, DstRect.iLeft, DstRect.iTop, (DstRect.iRight - DstRect.iLeft + 1), (DstRect.iBottom - DstRect.iTop + 1));
   }
   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, 0, 640, 480);
 }
@@ -797,12 +797,12 @@ function RenderPreBattleInterface(): void {
     mprintf(224 - width, 38, str);
 
     // Draw the bottom columns
-    for (i = 0; i < (INT32)max(guiNumUninvolved, 1); i++) {
+    for (i = 0; i < max(guiNumUninvolved, 1); i++) {
       y = BOTTOM_Y - ROW_HEIGHT * (i + 1) + 1;
       BltVideoObject(guiSAVEBUFFER, hVObject, BOTTOM_COLUMN, 161, y, VO_BLT_SRCTRANSPARENCY, NULL);
     }
 
-    for (i = 0; i < (INT32)(21 - max(guiNumUninvolved, 1)); i++) {
+    for (i = 0; i < (21 - max(guiNumUninvolved, 1)); i++) {
       y = TOP_Y + ROW_HEIGHT * i;
       BltVideoObject(guiSAVEBUFFER, hVObject, TOP_COLUMN, 186, y, VO_BLT_SRCTRANSPARENCY, NULL);
     }
@@ -825,7 +825,7 @@ function RenderPreBattleInterface(): void {
       // know exactly how many
       i = NumEnemiesInSector(gubPBSectorX, gubPBSectorY);
       swprintf(str, L"%d", i);
-      SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = (INT8)i;
+      SectorInfo[SECTOR(gubPBSectorX, gubPBSectorY)].bLastKnownEnemies = i;
     }
     x = 57 + (27 - StringPixLength(str, FONT14ARIAL)) / 2;
     y = 36;
@@ -1085,7 +1085,7 @@ const enum Enum163 {
 
 function GetSoldierConditionInfo(pSoldier: Pointer<SOLDIERTYPE>, szCondition: Pointer<UINT16>, pubHPPercent: Pointer<UINT8>, pubBPPercent: Pointer<UINT8>): void {
   Assert(pSoldier);
-  *pubHPPercent = (UINT8)(pSoldier->bLife * 100 / pSoldier->bLifeMax);
+  *pubHPPercent = (pSoldier->bLife * 100 / pSoldier->bLifeMax);
   *pubBPPercent = pSoldier->bBreath;
   // Go from the worst condition to the best.
   if (!pSoldier->bLife) {
@@ -1314,9 +1314,9 @@ function CalculateNonPersistantPBIInfo(): void {
     }
     if (gubExplicitEnemyEncounterCode != NO_ENCOUNTER_CODE) {
       // Set up the location as well as turning on the blit flag.
-      gubPBSectorX = (UINT8)gWorldSectorX;
-      gubPBSectorY = (UINT8)gWorldSectorY;
-      gubPBSectorZ = (UINT8)gbWorldSectorZ;
+      gubPBSectorX = gWorldSectorX;
+      gubPBSectorY = gWorldSectorY;
+      gubPBSectorZ = gbWorldSectorZ;
       gfBlitBattleSectorLocator = TRUE;
     }
   }

@@ -4,8 +4,8 @@ let ubColorTables: UINT8[][] /* [HVOBJECT_SHADE_TABLES + 3][256] */;
 let IntensityTable: UINT16[] /* [65536] */;
 let ShadeTable: UINT16[] /* [65536] */;
 let White16BPPPalette: UINT16[] /* [256] */;
-let guiShadePercent: FLOAT = (FLOAT)0.48;
-let guiBrightPercent: FLOAT = (FLOAT)1.1;
+let guiShadePercent: FLOAT = 0.48;
+let guiBrightPercent: FLOAT = 1.1;
 
 function ShadesCalculateTables(p8BPPPalette: Pointer<SGPPaletteEntry>): BOOLEAN {
   let uiCount: UINT32;
@@ -71,9 +71,9 @@ function ShadesCalculatePalette(pSrcPalette: Pointer<SGPPaletteEntry>, pDestPale
       bmod = (usBlue * pSrcPalette[cnt].peBlue / 255);
     }
 
-    pDestPalette[cnt].peRed = (UINT8)__min(rmod, 255);
-    pDestPalette[cnt].peGreen = (UINT8)__min(gmod, 255);
-    pDestPalette[cnt].peBlue = (UINT8)__min(bmod, 255);
+    pDestPalette[cnt].peRed = __min(rmod, 255);
+    pDestPalette[cnt].peGreen = __min(gmod, 255);
+    pDestPalette[cnt].peBlue = __min(bmod, 255);
   }
 
   return TRUE;
@@ -205,7 +205,7 @@ function BuildIntensityTable(): void {
   let green: UINT16;
   let blue: UINT16;
   let index: UINT16;
-  let dShadedPercent: FLOAT = (FLOAT)0.80;
+  let dShadedPercent: FLOAT = 0.80;
 
   for (red = 0; red < 256; red += 4)
     for (green = 0; green < 256; green += 4)
@@ -226,9 +226,9 @@ function Init8BitTables(): void {
 
   // calculate a grey-scale table for the default palette
   for (uiCount = 0; uiCount < 256; uiCount++) {
-    Pal[uiCount].peRed = (UINT8)(uiCount % 128) + 128;
-    Pal[uiCount].peGreen = (UINT8)(uiCount % 128) + 128;
-    Pal[uiCount].peBlue = (UINT8)(uiCount % 128) + 128;
+    Pal[uiCount].peRed = (uiCount % 128) + 128;
+    Pal[uiCount].peGreen = (uiCount % 128) + 128;
+    Pal[uiCount].peBlue = (uiCount % 128) + 128;
   }
 
   Pal[0].peRed = 0;

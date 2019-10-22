@@ -569,7 +569,7 @@ function InitializeFilesMouseRegions(): void {
   let iCounter: INT32 = 0;
   // init mouseregions
   for (iCounter = 0; iCounter < MAX_FILES_PAGE; iCounter++) {
-    MSYS_DefineRegion(&pFilesRegions[iCounter], FILES_LIST_X, (INT16)(FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (INT16)(FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
+    MSYS_DefineRegion(&pFilesRegions[iCounter], FILES_LIST_X, (FILES_LIST_Y + iCounter * (BLOCK_HEIGHT + 2)), FILES_LIST_X + FILES_LIST_WIDTH, (FILES_LIST_Y + (iCounter + 1) * (BLOCK_HEIGHT + 2)), MSYS_PRIORITY_NORMAL + 2, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, FilesBtnCallBack);
     MSYS_AddRegion(&pFilesRegions[iCounter]);
     MSYS_SetRegionUserData(&pFilesRegions[iCounter], 0, iCounter);
   }
@@ -699,7 +699,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (UINT16)(FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -730,7 +730,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (UINT16)(FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -789,7 +789,7 @@ function DisplayFormattedText(): BOOLEAN {
         LoadEncryptedDataFromFile("BINARYDATA\\Files.edt", sString, FILE_STRING_SIZE * (iOffSet + iCounter) * 2, FILE_STRING_SIZE * 2);
 
         // display string and get height
-        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (UINT16)(FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
+        iHeight += IanDisplayWrappedString(FILE_VIEWER_X + 4, (FILE_VIEWER_Y + iHeight), FILE_VIEWER_WIDTH, FILE_GAP, FILES_TEXT_FONT, FILE_TEXT_COLOR, sString, 0, FALSE, 0);
 
         // increment file record counter
         iCounter++;
@@ -882,46 +882,46 @@ function HandleSpecialFiles(ubFormat: UINT8): BOOLEAN {
 
         // reset width
         iFileLineWidth = 350;
-        iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+        iFileStartX = (FILE_VIEWER_X + 10);
 
         // based on the record we are at, selected X start position and the width to wrap the line, to fit around pictures
 
         if (iCounter == 0) {
           // title
           iFileLineWidth = 350;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+          iFileStartX = (FILE_VIEWER_X + 10);
         } else if (iCounter == 1) {
           // opening on first page
           iFileLineWidth = 350;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+          iFileStartX = (FILE_VIEWER_X + 10);
         } else if ((iCounter > 1) && (iCounter < FILES_COUNTER_1_WIDTH)) {
           iFileLineWidth = 350;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+          iFileStartX = (FILE_VIEWER_X + 10);
         } else if (iCounter == FILES_COUNTER_1_WIDTH) {
           if (giFilesPage == 0) {
             iYPositionOnPage += (MAX_FILE_MESSAGE_PAGE_SIZE - iYPositionOnPage);
           }
           iFileLineWidth = 350;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+          iFileStartX = (FILE_VIEWER_X + 10);
         }
 
         else if (iCounter == FILES_COUNTER_2_WIDTH) {
           iFileLineWidth = 200;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 150);
+          iFileStartX = (FILE_VIEWER_X + 150);
         } else if (iCounter == FILES_COUNTER_3_WIDTH) {
           iFileLineWidth = 200;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 150);
+          iFileStartX = (FILE_VIEWER_X + 150);
         }
 
         else {
           iFileLineWidth = 350;
-          iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+          iFileStartX = (FILE_VIEWER_X + 10);
         }
         // not far enough, advance
 
-        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, (UINT16)iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
+        if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
           // now print it
-          iYPositionOnPage += (INT32)IanDisplayWrappedString((UINT16)(iFileStartX), (UINT16)(FILE_VIEWER_Y + iYPositionOnPage), (INT16)iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
+          iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
 
           fGoingOffCurrentPage = FALSE;
         } else {
@@ -1046,10 +1046,10 @@ function ClearFileStringList(): void {
 function CreateButtonsForFilesPage(): void {
   // will create buttons for the files page
   giFilesPageButtonsImage[0] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
-  giFilesPageButtons[0] = QuickCreateButton(giFilesPageButtonsImage[0], PREVIOUS_FILE_PAGE_BUTTON_X, PREVIOUS_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnPreviousFilePageCallback);
+  giFilesPageButtons[0] = QuickCreateButton(giFilesPageButtonsImage[0], PREVIOUS_FILE_PAGE_BUTTON_X, PREVIOUS_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnPreviousFilePageCallback);
 
   giFilesPageButtonsImage[1] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 6, -1, 7, -1);
-  giFilesPageButtons[1] = QuickCreateButton(giFilesPageButtonsImage[1], NEXT_FILE_PAGE_BUTTON_X, NEXT_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnNextFilePageCallback);
+  giFilesPageButtons[1] = QuickCreateButton(giFilesPageButtonsImage[1], NEXT_FILE_PAGE_BUTTON_X, NEXT_FILE_PAGE_BUTTON_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnNextFilePageCallback);
 
   SetButtonCursor(giFilesPageButtons[0], CURSOR_LAPTOP_SCREEN);
   SetButtonCursor(giFilesPageButtons[1], CURSOR_LAPTOP_SCREEN);
@@ -1300,7 +1300,7 @@ function CheckForUnreadFiles(): void {
 
   // if the old flag and the new flag arent the same, either create or destory the fast help region
   if (fNewFilesInFileViewer != fStatusOfNewFileFlag) {
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (BOOLEAN)!fNewFilesInFileViewer);
+    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, !fNewFilesInFileViewer);
   }
 }
 
@@ -1371,17 +1371,17 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
     if ((iCounter > 3) && (iCounter < 7)) {
       iFileLineWidth = 170;
-      iFileStartX = (UINT16)(FILE_VIEWER_X + 180);
+      iFileStartX = (FILE_VIEWER_X + 180);
     } else {
       // reset width
       iFileLineWidth = 350;
-      iFileStartX = (UINT16)(FILE_VIEWER_X + 10);
+      iFileStartX = (FILE_VIEWER_X + 10);
     }
 
     // based on the record we are at, selected X start position and the width to wrap the line, to fit around pictures
-    if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, (UINT16)iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
+    if ((iYPositionOnPage + IanWrappedStringHeight(0, 0, iFileLineWidth, FILE_GAP, uiFont, 0, sString, 0, 0, 0)) < MAX_FILE_MESSAGE_PAGE_SIZE) {
       // now print it
-      iYPositionOnPage += (INT32)IanDisplayWrappedString((UINT16)(iFileStartX), (UINT16)(FILE_VIEWER_Y + iYPositionOnPage), (INT16)iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
+      iYPositionOnPage += IanDisplayWrappedString((iFileStartX), (FILE_VIEWER_Y + iYPositionOnPage), iFileLineWidth, FILE_GAP, uiFont, FILE_TEXT_COLOR, sString, 0, FALSE, uiFlags);
 
       fGoingOffCurrentPage = FALSE;
     } else {
@@ -1420,7 +1420,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
 
       // def: 3/24/99
       //				BltVideoObject(FRAME_BUFFER, hHandle, 0,( INT16 ) (  FILE_VIEWER_X +  30 ), ( INT16 ) ( iYPositionOnPage + 5), VO_BLT_SRCTRANSPARENCY,NULL);
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(FILE_VIEWER_X + 30), (INT16)(iYPositionOnPage + 21), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 30), (iYPositionOnPage + 21), VO_BLT_SRCTRANSPARENCY, NULL);
 
       DeleteVideoObjectFromIndex(uiPicture);
 
@@ -1431,7 +1431,7 @@ function HandleSpecialTerroristFile(iFileNumber: INT32, sPictureName: STR): BOOL
       // Blt face to screen to
       GetVideoObject(&hHandle, uiPicture);
 
-      BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(FILE_VIEWER_X + 25), (INT16)(iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hHandle, 0, (FILE_VIEWER_X + 25), (iYPositionOnPage + 16), VO_BLT_SRCTRANSPARENCY, NULL);
 
       DeleteVideoObjectFromIndex(uiPicture);
     }
@@ -1452,7 +1452,7 @@ function AddFileAboutTerrorist(iProfileId: INT32): BOOLEAN {
   for (iCounter = 1; iCounter < 7; iCounter++) {
     if (usProfileIdsForTerroristFiles[iCounter] == iProfileId) {
       // checked, and this file is there
-      AddFilesToPlayersLog((UINT8)iCounter, 0, 3, NULL, NULL);
+      AddFilesToPlayersLog(iCounter, 0, 3, NULL, NULL);
       return TRUE;
     }
   }

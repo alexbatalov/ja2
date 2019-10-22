@@ -21,7 +21,7 @@ function UpdateRoofsView(): void {
   let usType: UINT16;
   for (x = 0; x < WORLD_MAX; x++) {
     for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
-      HideStructOfGivenType(x, usType, (BOOLEAN)(!fBuildingShowRoofs));
+      HideStructOfGivenType(x, usType, (!fBuildingShowRoofs));
     }
   }
   gfRenderWorld = TRUE;
@@ -31,9 +31,9 @@ function UpdateWallsView(): void {
   let cnt: INT32;
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
     if (fBuildingShowWalls) {
-      RemoveWallLevelnodeFlags((INT16)cnt, LEVELNODE_HIDDEN);
+      RemoveWallLevelnodeFlags(cnt, LEVELNODE_HIDDEN);
     } else {
-      SetWallLevelnodeFlags((INT16)cnt, LEVELNODE_HIDDEN);
+      SetWallLevelnodeFlags(cnt, LEVELNODE_HIDDEN);
     }
   }
   gfRenderWorld = TRUE;
@@ -79,13 +79,13 @@ function KillBuilding(iMapIndex: UINT32): void {
     return;
   }
 
-  if (GridNoOnVisibleWorldTile((UINT16)(iMapIndex - WORLD_COLS)))
+  if (GridNoOnVisibleWorldTile((iMapIndex - WORLD_COLS)))
     KillBuilding(iMapIndex - WORLD_COLS);
-  if (GridNoOnVisibleWorldTile((UINT16)(iMapIndex + WORLD_COLS)))
+  if (GridNoOnVisibleWorldTile((iMapIndex + WORLD_COLS)))
     KillBuilding(iMapIndex + WORLD_COLS);
-  if (GridNoOnVisibleWorldTile((UINT16)(iMapIndex + 1)))
+  if (GridNoOnVisibleWorldTile((iMapIndex + 1)))
     KillBuilding(iMapIndex + 1);
-  if (GridNoOnVisibleWorldTile((UINT16)(iMapIndex - 1)))
+  if (GridNoOnVisibleWorldTile((iMapIndex - 1)))
     KillBuilding(iMapIndex - 1);
 
   if (gfBasement)
@@ -128,14 +128,14 @@ function BuildLayout(iMapIndex: INT32, iOffset: INT32): void {
   // Now, check to make sure this gridno hasn't already been processed.
   curr = gpBuildingLayoutList;
   while (curr) {
-    if ((INT16)iMapIndex == curr->sGridNo)
+    if (iMapIndex == curr->sGridNo)
       return;
     curr = curr->next;
   }
   // Good, it hasn't, so process it and add it to the head of the list.
-  curr = (BUILDINGLAYOUTNODE *)MemAlloc(sizeof(BUILDINGLAYOUTNODE));
+  curr = MemAlloc(sizeof(BUILDINGLAYOUTNODE));
   Assert(curr);
-  curr->sGridNo = (INT16)iMapIndex;
+  curr->sGridNo = iMapIndex;
   curr->next = gpBuildingLayoutList;
   gpBuildingLayoutList = curr;
 
@@ -155,13 +155,13 @@ function CopyBuilding(iMapIndex: INT32): void {
     return;
   // Okay, a building does exist here to some undetermined capacity.
   // Allocate the basic structure, then calculate the layout.  The head node is
-  gpBuildingLayoutList = (BUILDINGLAYOUTNODE *)MemAlloc(sizeof(BUILDINGLAYOUTNODE));
+  gpBuildingLayoutList = MemAlloc(sizeof(BUILDINGLAYOUTNODE));
   Assert(gpBuildingLayoutList);
-  gpBuildingLayoutList->sGridNo = (INT16)iMapIndex;
+  gpBuildingLayoutList->sGridNo = iMapIndex;
   gpBuildingLayoutList->next = NULL;
 
   // Set the anchor point for this building -- this is where the user clicked.
-  gsBuildingLayoutAnchorGridNo = (INT16)iMapIndex;
+  gsBuildingLayoutAnchorGridNo = iMapIndex;
 
   // Now, recursively expand out while adding unique gridnos to our list.  The recursion will
   // terminate when complete.
@@ -290,7 +290,7 @@ function PasteMapElementToNewMapElement(iSrcGridNo: INT32, iDstGridNo: INT32): v
     pNode = pNode->pNext;
   }
   for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
-    HideStructOfGivenType(iDstGridNo, usType, (BOOLEAN)(!fBuildingShowRoofs));
+    HideStructOfGivenType(iDstGridNo, usType, (!fBuildingShowRoofs));
   }
 }
 
@@ -364,7 +364,7 @@ function ReplaceRoof(iMapIndex: INT32, usRoofType: UINT16): void {
     curr = curr->next;
   }
   // Good, it hasn't, so process it and add it to the head of the list.
-  curr = (ROOFNODE *)MemAlloc(sizeof(ROOFNODE));
+  curr = MemAlloc(sizeof(ROOFNODE));
   Assert(curr);
   curr->iMapIndex = iMapIndex;
   curr->next = gpRoofList;
@@ -389,10 +389,10 @@ function ReplaceBuildingWithNewRoof(iMapIndex: INT32): void {
   if (!FloorAtGridNo(iMapIndex))
     return;
   // Extract the selected roof type.
-  usRoofType = (UINT16)SelSingleNewRoof[iCurBank].uiObject;
+  usRoofType = SelSingleNewRoof[iCurBank].uiObject;
 
   // now start building a linked list of all nodes visited -- start the first node.
-  gpRoofList = (ROOFNODE *)MemAlloc(sizeof(ROOFNODE));
+  gpRoofList = MemAlloc(sizeof(ROOFNODE));
   Assert(gpRoofList);
   gpRoofList->iMapIndex = iMapIndex;
   gpRoofList->next = 0;
@@ -466,16 +466,16 @@ function ExtractAndUpdateDoorInfo(): void {
 
   memset(&door, 0, sizeof(DOOR));
 
-  door.sGridNo = (INT16)iDoorMapIndex;
+  door.sGridNo = iDoorMapIndex;
 
   num = min(GetNumericStrictValueFromField(0), NUM_LOCKS - 1);
-  door.ubLockID = (UINT8)num;
+  door.ubLockID = num;
   SetInputFieldStringWithNumericStrictValue(0, num);
   if (num >= 0)
     fCursor = TRUE;
 
   num = min(max(GetNumericStrictValueFromField(1), 0), 10);
-  door.ubTrapID = (UINT8)num;
+  door.ubTrapID = num;
   SetInputFieldStringWithNumericStrictValue(1, num);
   if (num)
     fCursor = TRUE;
@@ -483,7 +483,7 @@ function ExtractAndUpdateDoorInfo(): void {
   num = min(max(GetNumericStrictValueFromField(2), 0), 20);
   if (door.ubTrapID && !num)
     num = 1; // Can't have a trap without a traplevel!
-  door.ubTrapLevel = (UINT8)num;
+  door.ubTrapLevel = num;
   SetInputFieldStringWithNumericStrictValue(2, num);
   if (num)
     fCursor = TRUE;
@@ -622,7 +622,7 @@ function ExtractAndUpdateBuildingInfo(): void {
   // extract light1 colors
   temp = min(GetNumericStrictValueFromField(1), 255);
   if (temp != -1) {
-    gubCurrRoomNumber = (UINT8)temp;
+    gubCurrRoomNumber = temp;
   } else {
     gubCurrRoomNumber = 0;
   }

@@ -651,7 +651,7 @@ function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
               // ATE: Don't do this automatically for enemies......
               if (MercPtrs[gusUIFullTargetID]->bTeam != ENEMY_TEAM) {
                 uiMoveTargetSoldierId = gusUIFullTargetID;
-                if (IsValidTalkableNPC((UINT8)gusUIFullTargetID, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && !ValidQuickExchangePosition()) {
+                if (IsValidTalkableNPC(gusUIFullTargetID, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && !ValidQuickExchangePosition()) {
                   *puiNewEvent = T_CHANGE_TO_TALKING;
                   return;
                 }
@@ -673,7 +673,7 @@ function GetTBMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
         if (gfUIFullTargetFound)
         // if ( gfUIFullTargetFound )
         {
-          if (IsValidTargetMerc((UINT8)gusUIFullTargetID)) {
+          if (IsValidTargetMerc(gusUIFullTargetID)) {
             guiUITargetSoldierId = gusUIFullTargetID;
 
             if (MercPtrs[gusUIFullTargetID]->bTeam != gbPlayerNum) {
@@ -944,16 +944,16 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -1162,7 +1162,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
           for (x = 0; x < WORLD_MAX; x++) {
             for (usType = FIRSTROOF; usType <= LASTSLANTROOF; usType++) {
-              HideStructOfGivenType(x, usType, (BOOLEAN)(!fShowRoofs));
+              HideStructOfGivenType(x, usType, (!fShowRoofs));
             }
           }
           InvalidateWorldRedundency();
@@ -1235,7 +1235,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
 
             if (gsCurInterfacePanel == SM_PANEL) {
               // Remember soldier's new value
-              gpSMCurrentMerc->bUIInterfaceLevel = (INT8)gsInterfaceLevel;
+              gpSMCurrentMerc->bUIInterfaceLevel = gsInterfaceLevel;
             }
           }
           break;
@@ -1404,7 +1404,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 // Check if both OK....
                 if (pSoldier1->bLife >= OKLIFE && pSoldier2->ubID != gusSelectedSoldier) {
                   if (pSoldier2->bLife >= OKLIFE) {
-                    if (CanSoldierReachGridNoInGivenTileLimit(pSoldier1, pSoldier2->sGridNo, 1, (INT8)gsInterfaceLevel)) {
+                    if (CanSoldierReachGridNoInGivenTileLimit(pSoldier1, pSoldier2->sGridNo, 1, gsInterfaceLevel)) {
                       // Exclude enemies....
                       if (!pSoldier2->bNeutral && (pSoldier2->bSide != gbPlayerNum)) {
                       } else {
@@ -1579,7 +1579,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             if (INFORMATION_CHEAT_LEVEL()) {
               // Toggle Frame Rate Display
               gbFPSDisplay = !gbFPSDisplay;
-              DisableFPSOverlay((BOOLEAN)!gbFPSDisplay);
+              DisableFPSOverlay(!gbFPSDisplay);
               if (!gbFPSDisplay)
                 SetRenderFlags(RENDER_FLAG_FULL);
             }
@@ -1916,7 +1916,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
               if (!MercInWater(MercPtrs[gusSelectedSoldier]) && !(MercPtrs[gusSelectedSoldier]->uiStatusFlags & SOLDIER_ROBOT)) {
                 // change selected merc to run
                 if (MercPtrs[gusSelectedSoldier]->usUIMovementMode != WALKING && MercPtrs[gusSelectedSoldier]->usUIMovementMode != RUNNING) {
-                  UIHandleSoldierStanceChange((UINT8)gusSelectedSoldier, ANIM_STAND);
+                  UIHandleSoldierStanceChange(gusSelectedSoldier, ANIM_STAND);
                   MercPtrs[gusSelectedSoldier]->fUIMovementFast = 1;
                 } else {
                   MercPtrs[gusSelectedSoldier]->fUIMovementFast = 1;
@@ -1940,7 +1940,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 LeaveTacticalScreen(SAVE_LOAD_SCREEN);
               } else {
                 // Display a message saying the player cant save now
-                DoMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+                DoMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
               }
             }
           } else if (fAlt) {
@@ -1952,7 +1952,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
                 DoQuickSave();
               } else {
                 // Display a message saying the player cant save now
-                DoMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_OK, NULL, NULL);
+                DoMessageBox(MSG_BOX_BASIC_STYLE, zNewTacticalMessages[TCTL_MSG__IRON_MAN_CANT_SAVE_NOW], GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
               }
             }
           } else if (gusSelectedSoldier != NOBODY) {
@@ -2085,7 +2085,7 @@ function GetKeyboardInput(puiNewEvent: Pointer<UINT32>): void {
             }
 
             // Create object and set
-            CreateItem((UINT16)G41, 100, &Object);
+            CreateItem(G41, 100, &Object);
 
             pSoldier = FindSoldierByProfileID(ROBOT, FALSE);
 
@@ -2385,7 +2385,7 @@ function CreateRandomItem(): void {
   let Object: OBJECTTYPE;
   let usMapPos: UINT16;
   if (GetMouseMapPos(&usMapPos)) {
-    CreateItem((UINT16)(Random(35) + 1), 100, &Object);
+    CreateItem((Random(35) + 1), 100, &Object);
     AddItemToPool(usMapPos, &Object, -1, 0, 0, 0);
   }
 }
@@ -2396,7 +2396,7 @@ function MakeSelectedSoldierTired(): void {
   let Object: OBJECTTYPE;
   let usMapPos: UINT16;
   if (GetMouseMapPos(&usMapPos)) {
-    CreateItem((UINT16)TNT, 100, &Object);
+    CreateItem(TNT, 100, &Object);
     AddItemToPool(usMapPos, &Object, -1, 0, 0, 0);
   }
 
@@ -2493,7 +2493,7 @@ function CycleSelectedMercsItem(): void {
       usOldItem = 0;
     }
 
-    CreateItem((UINT16)usOldItem, 100, &(pSoldier->inv[HANDPOS]));
+    CreateItem(usOldItem, 100, &(pSoldier->inv[HANDPOS]));
 
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
   }
@@ -2562,7 +2562,7 @@ function ChangeSoldiersBodyType(ubBodyType: UINT8, fCreateNewPalette: BOOLEAN): 
             // pSoldier->inv[ HANDPOS ].usItem = TANK_CANNON;
 
             pSoldier->inv[HANDPOS].usItem = MINIMI;
-            pSoldier->bVehicleID = (INT8)AddVehicleToList(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, HUMMER);
+            pSoldier->bVehicleID = AddVehicleToList(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ, HUMMER);
 
             break;
         }
@@ -2688,7 +2688,7 @@ function RandomizeMercProfile(): void {
   // Get selected soldier
   if (GetSoldier(&pSoldier, gusSelectedSoldier)) {
     // Change guy!
-    ForceSoldierProfileID(pSoldier, (UINT8)Random(30));
+    ForceSoldierProfileID(pSoldier, Random(30));
 
     // Dirty interface
     DirtyMercPanelInterface(pSoldier, DIRTYLEVEL2);
@@ -2827,7 +2827,7 @@ function GrenadeTest1(): void {
     Object.usItem = MUSTARD_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;
-    CreatePhysicalObject(&Object, 60, (FLOAT)(sX * CELL_X_SIZE), (FLOAT)(sY * CELL_Y_SIZE), 256, -20, 20, 158, NOBODY, THROW_ARM_ITEM, 0);
+    CreatePhysicalObject(&Object, 60, (sX * CELL_X_SIZE), (sY * CELL_Y_SIZE), 256, -20, 20, 158, NOBODY, THROW_ARM_ITEM, 0);
   }
 }
 
@@ -2840,7 +2840,7 @@ function GrenadeTest2(): void {
     Object.usItem = HAND_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;
-    CreatePhysicalObject(&Object, 60, (FLOAT)(sX * CELL_X_SIZE), (FLOAT)(sY * CELL_Y_SIZE), 256, 0, -30, 158, NOBODY, THROW_ARM_ITEM, 0);
+    CreatePhysicalObject(&Object, 60, (sX * CELL_X_SIZE), (sY * CELL_Y_SIZE), 256, 0, -30, 158, NOBODY, THROW_ARM_ITEM, 0);
   }
 }
 
@@ -2853,7 +2853,7 @@ function GrenadeTest3(): void {
     Object.usItem = HAND_GRENADE;
     Object.bStatus[0] = 100;
     Object.ubNumberOfObjects = 1;
-    CreatePhysicalObject(&Object, 60, (FLOAT)(sX * CELL_X_SIZE), (FLOAT)(sY * CELL_Y_SIZE), 256, -10, 10, 158, NOBODY, THROW_ARM_ITEM, 0);
+    CreatePhysicalObject(&Object, 60, (sX * CELL_X_SIZE), (sY * CELL_Y_SIZE), 256, -10, 10, 158, NOBODY, THROW_ARM_ITEM, 0);
   }
 }
 
@@ -2905,7 +2905,7 @@ function CheckForAndHandleHandleVehicleInteractiveClick(pSoldier: Pointer<SOLDIE
         if (sActionGridNo != NOWHERE) {
           // Calculate AP costs...
           // sAPCost = GetAPsToBeginFirstAid( pSoldier );
-          sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+          sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
           if (EnoughPoints(pSoldier, sAPCost, 0, TRUE)) {
             DoMercBattleSound(pSoldier, BATTLE_SOUND_OK1);
@@ -3255,7 +3255,7 @@ function TestMeanWhile(iID: INT32): void {
   MeanwhileDef.sSectorY = 16;
   MeanwhileDef.ubNPCNumber = QUEEN;
   MeanwhileDef.usTriggerEvent = 0;
-  MeanwhileDef.ubMeanwhileID = (UINT8)iID;
+  MeanwhileDef.ubMeanwhileID = iID;
 
   if (iID == INTERROGATION) {
     MeanwhileDef.sSectorX = 7;
@@ -3281,7 +3281,7 @@ function TestMeanWhile(iID: INT32): void {
 
 function EscapeUILock(): void {
   // UNLOCK UI
-  UnSetUIBusy((UINT8)gusSelectedSoldier);
+  UnSetUIBusy(gusSelectedSoldier);
 
   // Decrease global busy  counter...
   gTacticalStatus.ubAttackBusyCount = 0;
@@ -3310,7 +3310,7 @@ function HandleStanceChangeFromUIKeys(ubAnimHeight: UINT8): void {
     }
   } else {
     if (gusSelectedSoldier != NO_SOLDIER)
-      UIHandleSoldierStanceChange((UINT8)gusSelectedSoldier, ubAnimHeight);
+      UIHandleSoldierStanceChange(gusSelectedSoldier, ubAnimHeight);
   }
 }
 

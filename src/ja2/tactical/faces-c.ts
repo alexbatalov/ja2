@@ -87,11 +87,11 @@ function GetFreeFace(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumFaces; uiCount++) {
     if ((gFacesData[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumFaces < NUM_FACE_SLOTS)
-    return (INT32)guiNumFaces++;
+    return guiNumFaces++;
 
   return -1;
 }
@@ -101,7 +101,7 @@ function RecountFaces(): void {
 
   for (uiCount = guiNumFaces - 1; (uiCount >= 0); uiCount--) {
     if ((gFacesData[uiCount].fAllocated)) {
-      guiNumFaces = (UINT32)(uiCount + 1);
+      guiNumFaces = (uiCount + 1);
       break;
     }
   }
@@ -249,9 +249,9 @@ function InternalInitFace(usMercProfileID: UINT8, ubSoldierID: UINT8, uiInitFlag
     hVObject->pShades[FLASH_PORTRAIT_LITESHADE] = Create16BPPPaletteShaded(hVObject->pPaletteEntry, 100, 100, 100, FALSE);
 
     for (uiCount = 0; uiCount < 256; uiCount++) {
-      Pal[uiCount].peRed = (UINT8)(uiCount % 128) + 128;
-      Pal[uiCount].peGreen = (UINT8)(uiCount % 128) + 128;
-      Pal[uiCount].peBlue = (UINT8)(uiCount % 128) + 128;
+      Pal[uiCount].peRed = (uiCount % 128) + 128;
+      Pal[uiCount].peGreen = (uiCount % 128) + 128;
+      Pal[uiCount].peBlue = (uiCount % 128) + 128;
     }
     hVObject->pShades[FLASH_PORTRAIT_GRAYSHADE] = Create16BPPPaletteShaded(Pal, 255, 255, 255, FALSE);
   }
@@ -624,7 +624,7 @@ function BlinkAutoFace(iFaceIndex: INT32): void {
 
         if (sFrame > 0) {
           // Blit Accordingly!
-          BltVideoObjectFromIndex(pFace->uiAutoDisplayBuffer, pFace->uiVideoObject, (INT16)(sFrame), pFace->usEyesX, pFace->usEyesY, VO_BLT_SRCTRANSPARENCY, NULL);
+          BltVideoObjectFromIndex(pFace->uiAutoDisplayBuffer, pFace->uiVideoObject, (sFrame), pFace->usEyesX, pFace->usEyesY, VO_BLT_SRCTRANSPARENCY, NULL);
 
           if (pFace->uiAutoDisplayBuffer == FRAME_BUFFER) {
             InvalidateRegion(pFace->usEyesX, pFace->usEyesY, pFace->usEyesX + pFace->usEyesWidth, pFace->usEyesY + pFace->usEyesHeight);
@@ -766,7 +766,7 @@ function MouthAutoFace(iFaceIndex: INT32): void {
 
               if (sFrame > 0) {
                 // Blit Accordingly!
-                BltVideoObjectFromIndex(pFace->uiAutoDisplayBuffer, pFace->uiVideoObject, (INT16)(sFrame + 4), pFace->usMouthX, pFace->usMouthY, VO_BLT_SRCTRANSPARENCY, NULL);
+                BltVideoObjectFromIndex(pFace->uiAutoDisplayBuffer, pFace->uiVideoObject, (sFrame + 4), pFace->usMouthX, pFace->usMouthY, VO_BLT_SRCTRANSPARENCY, NULL);
 
                 // Update rects
                 if (pFace->uiAutoDisplayBuffer == FRAME_BUFFER) {
@@ -1014,13 +1014,13 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         SetFontForeground(FONT_DKRED);
         SetFontBackground(FONT_NEARBLACK);
 
-        sX1 = (INT16)(sFaceX);
-        sY1 = (INT16)(sFaceY);
+        sX1 = (sFaceX);
+        sY1 = (sFaceY);
 
         sX2 = sX1 + StringPixLength(sString, TINYFONT1) + 1;
         sY2 = sY1 + GetFontHeight(TINYFONT1) - 1;
 
-        mprintf((INT16)(sX1 + 1), (INT16)(sY1 - 1), sString);
+        mprintf((sX1 + 1), (sY1 - 1), sString);
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
         // Draw box
@@ -1203,7 +1203,7 @@ function HandleRenderFaceAdjustments(pFace: Pointer<FACETYPE>, fDisplayBuffer: B
         SetFontForeground(FONT_YELLOW);
         SetFontBackground(FONT_BLACK);
 
-        mprintf(sFaceX + pFace->usFaceWidth - usTextWidth, (INT16)(sFaceY + 3), sString);
+        mprintf(sFaceX + pFace->usFaceWidth - usTextWidth, (sFaceY + 3), sString);
         SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
       }
     }
@@ -1248,7 +1248,7 @@ function RenderAutoFace(iFaceIndex: INT32): BOOLEAN {
 
   // Restore extern rect
   if (pFace->uiAutoRestoreBuffer == guiSAVEBUFFER) {
-    FaceRestoreSavedBackgroundRect(iFaceIndex, (INT16)(pFace->usFaceX), (INT16)(pFace->usFaceY), (INT16)(pFace->usFaceX), (INT16)(pFace->usFaceY), (INT16)(pFace->usFaceWidth), (INT16)(pFace->usFaceHeight));
+    FaceRestoreSavedBackgroundRect(iFaceIndex, (pFace->usFaceX), (pFace->usFaceY), (pFace->usFaceX), (pFace->usFaceY), (pFace->usFaceWidth), (pFace->usFaceHeight));
   } else {
     FaceRestoreSavedBackgroundRect(iFaceIndex, pFace->usFaceX, pFace->usFaceY, 0, 0, pFace->usFaceWidth, pFace->usFaceHeight);
   }
@@ -1290,7 +1290,7 @@ function ExternRenderFace(uiBuffer: UINT32, iFaceIndex: INT32, sX: INT16, sY: IN
 
   GetFaceRelativeCoordinates(pFace, &usEyesX, &usEyesY, &usMouthX, &usMouthY);
 
-  HandleRenderFaceAdjustments(pFace, FALSE, TRUE, uiBuffer, sX, sY, (UINT16)(sX + usEyesX), (UINT16)(sY + usEyesY));
+  HandleRenderFaceAdjustments(pFace, FALSE, TRUE, uiBuffer, sX, sY, (sX + usEyesX), (sY + usEyesY));
 
   // Restore extern rect
   if (uiBuffer == guiSAVEBUFFER) {
@@ -1359,7 +1359,7 @@ function NewEye(pFace: Pointer<FACETYPE>): void {
       pFace->sEyeFrame = 7;
       break;
     case 7:
-      pFace->sEyeFrame = (INT16)Random(2); // can stop frowning or continue
+      pFace->sEyeFrame = Random(2); // can stop frowning or continue
       // if (pFace->sEyeFrame && Talk.expression != DYING)
       //   pFace->sEyeFrame = 8;
       // else
@@ -1396,7 +1396,7 @@ function NewMouth(pFace: Pointer<FACETYPE>): void {
   do {
     // Talk.mouth = random(4);
 
-    pFace->sMouthFrame = (INT16)Random(6);
+    pFace->sMouthFrame = Random(6);
 
     if (pFace->sMouthFrame > 3) {
       pFace->sMouthFrame = 0;
@@ -1651,7 +1651,7 @@ function FaceRestoreSavedBackgroundRect(iFaceIndex: INT32, sDestLeft: INT16, sDe
   pDestBuf = LockVideoSurface(pFace->uiAutoDisplayBuffer, &uiDestPitchBYTES);
   pSrcBuf = LockVideoSurface(pFace->uiAutoRestoreBuffer, &uiSrcPitchBYTES);
 
-  Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, sDestLeft, sDestTop, sSrcLeft, sSrcTop, sWidth, sHeight);
+  Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sDestLeft, sDestTop, sSrcLeft, sSrcTop, sWidth, sHeight);
 
   UnLockVideoSurface(pFace->uiAutoDisplayBuffer);
   UnLockVideoSurface(pFace->uiAutoRestoreBuffer);

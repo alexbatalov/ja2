@@ -234,7 +234,7 @@ function SimulateArmsDealerCustomer(): void {
         // first, try to sell all the new (perfect) ones
         if (usItemIndex == JAR_ELIXIR) {
           // only allow selling of standard # of items so those converted from blood given by player will be available
-          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, (UINT8)__min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), FALSE);
+          ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, __min(3, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems), FALSE);
         } else {
           ubItemsSold = HowManyItemsAreSold(ubArmsDealer, usItemIndex, gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems, FALSE);
         }
@@ -291,7 +291,7 @@ function DailyCheckOnItemQuantities(): void {
           ubMaxSupply = GetDealersMaxItemAmount(ubArmsDealer, usItemIndex);
 
           // if the qty on hand is half the desired amount or fewer
-          if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems <= (UINT32)(ubMaxSupply / 2)) {
+          if (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems <= (ubMaxSupply / 2)) {
             // remember value of the "previously eligible" flag
             fPrevElig = gArmsDealersInventory[ubArmsDealer][usItemIndex].fPreviouslyEligible;
 
@@ -308,9 +308,9 @@ function DailyCheckOnItemQuantities(): void {
               } else {
                 if ((ubArmsDealer == ARMS_DEALER_TONY) || (ubArmsDealer == ARMS_DEALER_DEVIN)) {
                   // the stuff Tony and Devin sell is imported, so it takes longer to arrive (for game balance)
-                  ubReorderDays = (UINT8)(2 + Random(2)); // 2-3 days
+                  ubReorderDays = (2 + Random(2)); // 2-3 days
                 } else {
-                  ubReorderDays = (UINT8)(1 + Random(2)); // 1-2 days
+                  ubReorderDays = (1 + Random(2)); // 1-2 days
                 }
 
                 // Determine when the inventory should arrive
@@ -380,7 +380,7 @@ function AdjustCertainDealersInventory(): BOOLEAN {
 
   if (CheckFact(FACT_ESTONI_REFUELLING_POSSIBLE, 0)) {
     // gas is restocked regularly, unlike most items
-    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_JAKE, GAS_CAN, (UINT8)(4 + Random(3)));
+    GuaranteeAtLeastXItemsOfIndex(ARMS_DEALER_JAKE, GAS_CAN, (4 + Random(3)));
   }
 
   // If the player hasn't bought a video camera from Franz yet, make sure Franz has one to sell
@@ -594,7 +594,7 @@ function GuaranteeAtLeastXItemsOfIndex(ubArmsDealer: UINT8, usItemIndex: UINT16,
   //	if( GetDealersMaxItemAmount( ubArmsDealer, usItemIndex ) > 0)
   {
     // add the item
-    ArmsDealerGetsFreshStock(ubArmsDealer, usItemIndex, (UINT8)(ubHowMany - gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems));
+    ArmsDealerGetsFreshStock(ubArmsDealer, usItemIndex, (ubHowMany - gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems));
   }
 }
 
@@ -1025,7 +1025,7 @@ function ArmsDealerGetsFreshStock(ubArmsDealer: UINT8, usItemIndex: UINT16, ubNu
       ubPerfectOnes++;
     } else {
       // add a used item with that condition to his inventory
-      SpclItemInfo.bItemCondition = (INT8)ubItemCondition;
+      SpclItemInfo.bItemCondition = ubItemCondition;
       AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, 1);
     }
   }
@@ -1045,7 +1045,7 @@ function DetermineDealerItemCondition(ubArmsDealer: UINT8, usItemIndex: UINT16):
     // if he ONLY has used items, or 50% of the time if he carries both used & new items
     if ((ArmsDealerInfo[ubArmsDealer].uiFlags & ARMS_DEALER_ONLY_USED_ITEMS) || ((ArmsDealerInfo[ubArmsDealer].uiFlags & ARMS_DEALER_SOME_USED_ITEMS) && (Random(100) < 50))) {
       // make the item a used one
-      ubCondition = (UINT8)(20 + Random(60));
+      ubCondition = (20 + Random(60));
     }
   }
 
@@ -1262,7 +1262,7 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
   if (ubShotsLeft >= ubMagCapacity) {
     // add however many FULL magazines the #shot left represents
     SetSpecialItemInfoToDefaults(&SpclItemInfo);
-    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (UINT8)(ubShotsLeft / ubMagCapacity));
+    AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (ubShotsLeft / ubMagCapacity));
     ubShotsLeft %= ubMagCapacity;
   }
 
@@ -1275,7 +1275,7 @@ function AddAmmoToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
     // if dealer has accumulated enough stray ammo to make another full magazine, convert it!
     if (*pubStrayAmmo >= ubMagCapacity) {
       SetSpecialItemInfoToDefaults(&SpclItemInfo);
-      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (UINT8)(*pubStrayAmmo / ubMagCapacity));
+      AddItemToArmsDealerInventory(ubArmsDealer, usItemIndex, &SpclItemInfo, (*pubStrayAmmo / ubMagCapacity));
       *pubStrayAmmo = *pubStrayAmmo % ubMagCapacity;
     }
     // I know, I know, this is getting pretty anal...  But what the hell, it was easy enough to do.  ARM.
@@ -1331,7 +1331,7 @@ function AddItemToArmsDealerInventory(ubArmsDealer: UINT8, usItemIndex: UINT16, 
           fSuccess = AllocMemsetSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], ubElementsToAdd);
         } else {
           // we have some allocated, but they're all full and we need more.  MemRealloc existing amount + # addition elements
-          fSuccess = ResizeSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], (UINT8)(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced + ubElementsToAdd));
+          fSuccess = ResizeSpecialItemArray(&gArmsDealersInventory[ubArmsDealer][usItemIndex], (gArmsDealersInventory[ubArmsDealer][usItemIndex].ubElementsAlloced + ubElementsToAdd));
         }
 
         if (!fSuccess) {
@@ -1429,7 +1429,7 @@ function RemoveRandomItemFromArmsDealerInventory(ubArmsDealer: UINT8, usItemInde
 
   while (ubHowMany > 0) {
     // pick a random one to get rid of
-    ubWhichOne = (UINT8)Random(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
+    ubWhichOne = Random(gArmsDealersInventory[ubArmsDealer][usItemIndex].ubTotalItems);
 
     // if we picked one of the perfect ones...
     if (ubWhichOne < gArmsDealersInventory[ubArmsDealer][usItemIndex].ubPerfectItems) {
@@ -1786,7 +1786,7 @@ function CalculateSimpleItemRepairTime(ubArmsDealer: UINT8, usItemIndex: UINT16,
   // For a repairman, his BUY modifier controls his REPAIR SPEED (1.0 means minutes to repair = price in $)
   // with a REPAIR SPEED of 1.0, typical gun price of $2000, and a REPAIR COST of 0.5 this works out to 16.6 hrs
   //		 for a full 100% status repair...  Not bad.
-  uiTimeToRepair = (UINT32)(uiRepairCost * ArmsDealerInfo[ubArmsDealer].dRepairSpeed);
+  uiTimeToRepair = (uiRepairCost * ArmsDealerInfo[ubArmsDealer].dRepairSpeed);
 
   // repairs on electronic items take twice as long if the guy doesn't have the skill
   // for dealers, this means anyone but Fredo the Electronics guy takes twice as long (but doesn't charge double)
@@ -1849,7 +1849,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
 
   // figure out the full value of the item, modified by this dealer's personal Sell (i.e. repair cost) modifier
   // don't use CalcShopKeeperItemPrice - we want FULL value!!!
-  uiItemCost = (UINT32)((Item[usItemIndex].usPrice * ArmsDealerInfo[ubArmsDealer].dRepairCost));
+  uiItemCost = ((Item[usItemIndex].usPrice * ArmsDealerInfo[ubArmsDealer].dRepairCost));
 
   // get item's repair ease, for each + point is 10% easier, each - point is 10% harder to repair
   sRepairCostAdj = 100 - (10 * Item[usItemIndex].bRepairEase);
@@ -1860,7 +1860,7 @@ function CalculateSimpleItemRepairCost(ubArmsDealer: UINT8, usItemIndex: UINT16,
   }
 
   // calculate repair cost, the more broken it is the more it costs, and the difficulty of repair it is also a factor
-  uiRepairCost = (UINT32)(uiItemCost * (sRepairCostAdj * (100 - bItemCondition) / ((FLOAT)100 * 100)));
+  uiRepairCost = (uiItemCost * (sRepairCostAdj * (100 - bItemCondition) / (100 * 100)));
 
   /*
           //if the price is not diviseble by 10, make it so
@@ -2038,7 +2038,7 @@ function CalcValueOfItemToDealer(ubArmsDealer: UINT8, usItemIndex: UINT16, fDeal
 
   if (!fDealerSelling) {
     // junk dealer won't buy expensive stuff at all, expensive dealer won't buy junk at all
-    if (abs((INT8)ubDealerPriceClass - (INT8)ubItemPriceClass) == 2) {
+    if (abs(ubDealerPriceClass - ubItemPriceClass) == 2) {
       return 0;
     }
   }
@@ -2126,9 +2126,9 @@ function DealerItemIsSafeToStack(usItemIndex: UINT16): BOOLEAN {
 }
 
 function GuaranteeMinimumAlcohol(ubArmsDealer: UINT8): void {
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, BEER, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, BEER) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, WINE, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, WINE) / 3));
-  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, ALCOHOL, (UINT8)(GetDealersMaxItemAmount(ubArmsDealer, ALCOHOL) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, BEER, (GetDealersMaxItemAmount(ubArmsDealer, BEER) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, WINE, (GetDealersMaxItemAmount(ubArmsDealer, WINE) / 3));
+  GuaranteeAtLeastXItemsOfIndex(ubArmsDealer, ALCOHOL, (GetDealersMaxItemAmount(ubArmsDealer, ALCOHOL) / 3));
 }
 
 function ItemIsARocketRifle(sItemIndex: INT16): BOOLEAN {

@@ -109,7 +109,7 @@ function MoveRadarScreen(): void {
   }
 
   // Add region for radar
-  MSYS_DefineRegion(&gRadarRegion, RADAR_WINDOW_X, (UINT16)(gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (UINT16)(gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
+  MSYS_DefineRegion(&gRadarRegion, RADAR_WINDOW_X, (gsRadarY), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH, (gsRadarY + RADAR_WINDOW_HEIGHT), MSYS_PRIORITY_HIGHEST, 0, RadarRegionMoveCallback, RadarRegionButtonCallback);
 
   // Add region
   MSYS_AddRegion(&gRadarRegion);
@@ -270,18 +270,18 @@ function RenderRadarScreen(): void {
   sBottomRightWorldY = sScreenCenterY + sY_S;
 
   // Determine radar coordinates
-  sRadarCX = (INT16)(gsCX * gdScaleX);
-  sRadarCY = (INT16)(gsCY * gdScaleY);
+  sRadarCX = (gsCX * gdScaleX);
+  sRadarCY = (gsCY * gdScaleY);
 
   sWidth = (RADAR_WINDOW_WIDTH);
   sHeight = (RADAR_WINDOW_HEIGHT);
   sX = RADAR_WINDOW_X;
   sY = gsRadarY;
 
-  sRadarTLX = (INT16)((sTopLeftWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
-  sRadarTLY = (INT16)((sTopLeftWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
-  sRadarBRX = (INT16)((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
-  sRadarBRY = (INT16)((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
+  sRadarTLX = ((sTopLeftWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
+  sRadarTLY = ((sTopLeftWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
+  sRadarBRX = ((sBottomRightWorldX * gdScaleX) - sRadarCX + sX + (sWidth / 2));
+  sRadarBRY = ((sBottomRightWorldY * gdScaleY) - sRadarCY + gsRadarY + (sHeight / 2));
 
   pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
 
@@ -322,8 +322,8 @@ function RenderRadarScreen(): void {
       GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, &sXSoldScreen, &sYSoldScreen);
 
       // get radar x and y postion
-      sXSoldRadar = (INT16)(sXSoldScreen * gdScaleX);
-      sYSoldRadar = (INT16)(sYSoldScreen * gdScaleY);
+      sXSoldRadar = (sXSoldScreen * gdScaleX);
+      sYSoldRadar = (sYSoldScreen * gdScaleY);
 
       // Add starting relative to interface
       sXSoldRadar += RADAR_WINDOW_X;
@@ -371,8 +371,8 @@ function RenderRadarScreen(): void {
         ConvertGridNoToXY(pSoldier->sGridNo, &sXSoldPos, &sYSoldPos);
         GetWorldXYAbsoluteScreenXY(sXSoldPos, sYSoldPos, &sXSoldScreen, &sYSoldScreen);
 
-        sXSoldRadar = (INT16)(sXSoldScreen * gdScaleX);
-        sYSoldRadar = (INT16)(sYSoldScreen * gdScaleY);
+        sXSoldRadar = (sXSoldScreen * gdScaleX);
+        sYSoldRadar = (sYSoldScreen * gdScaleY);
 
         if (!SoldierOnVisibleWorldTile(pSoldier)) {
           continue;
@@ -445,8 +445,8 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
   let sNumYSteps: INT16;
 
   // Use radar scale values to get screen values, then convert ot map values, rounding to nearest middle tile
-  sScreenX = (INT16)(sRadarX / gdScaleX);
-  sScreenY = (INT16)(sRadarY / gdScaleY);
+  sScreenX = (sRadarX / gdScaleX);
+  sScreenY = (sRadarY / gdScaleY);
 
   // Adjust to viewport start!
   sScreenX -= ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2);
@@ -471,8 +471,8 @@ function AdjustWorldCenterFromRadarCoords(sRadarX: INT16, sRadarY: INT16): void 
   FromScreenToCellCoordinates(sScreenX, sScreenY, &sTempX_W, &sTempY_W);
 
   // Adjust these to world center
-  sNewCenterWorldX = (INT16)(gCenterWorldX + sTempX_W);
-  sNewCenterWorldY = (INT16)(gCenterWorldY + sTempY_W);
+  sNewCenterWorldX = (gCenterWorldX + sTempX_W);
+  sNewCenterWorldY = (gCenterWorldY + sTempY_W);
 
   SetRenderCenter(sNewCenterWorldX, sNewCenterWorldY);
 }
@@ -510,16 +510,16 @@ function CreateDestroyMouseRegionsForSquadList(): BOOLEAN {
     GetVideoObject(&hHandle, uiHandle);
     BltVideoObject(guiSAVEBUFFER, hHandle, 0, 538, 0 + gsVIEWPORT_END_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
-    RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (INT16)(480 - gsVIEWPORT_END_Y));
+    RestoreExternBackgroundRect(538, gsVIEWPORT_END_Y, (640 - 538), (480 - gsVIEWPORT_END_Y));
 
     for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
       // run through list of squads and place appropriatly
       if (sCounter < NUMBER_OF_SQUADS / 2) {
         // left half of list
-        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (INT16)(SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (INT16)(SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2 - 1, (SQUAD_WINDOW_TM_Y + ((sCounter + 1) * ((SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / (NUMBER_OF_SQUADS / 2)))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       } else {
         // right half of list
-        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (INT16)(SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (INT16)(SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
+        MSYS_DefineRegion(&gRadarRegionSquadList[sCounter], RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_X + RADAR_WINDOW_WIDTH - 1, (SQUAD_WINDOW_TM_Y + (((sCounter + 1) - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), MSYS_PRIORITY_HIGHEST, 0, TacticalSquadListMvtCallback, TacticalSquadListBtnCallBack);
       }
 
       // set user data
@@ -580,17 +580,17 @@ function RenderSquadList(): void {
   for (sCounter = 0; sCounter < NUMBER_OF_SQUADS; sCounter++) {
     // run through list of squads and place appropriatly
     if (sCounter < NUMBER_OF_SQUADS / 2) {
-      FindFontCenterCoordinates(RADAR_WINDOW_X, (INT16)(SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (INT16)(((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RADAR_WINDOW_X, (SQUAD_WINDOW_TM_Y + (sCounter * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
     } else {
-      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (INT16)(SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (INT16)(((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
+      FindFontCenterCoordinates(RADAR_WINDOW_X + RADAR_WINDOW_WIDTH / 2, (SQUAD_WINDOW_TM_Y + ((sCounter - (NUMBER_OF_SQUADS / 2)) * (2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), RADAR_WINDOW_WIDTH / 2 - 1, (((2 * (SQUAD_REGION_HEIGHT - SUBTRACTOR_FOR_SQUAD_LIST) / NUMBER_OF_SQUADS))), pSquadMenuStrings[sCounter], SQUAD_FONT, &sX, &sY);
     }
 
     // highlight line?
     if (sSelectedSquadLine == sCounter) {
       SetFontForeground(FONT_WHITE);
     } else {
-      if (IsSquadOnCurrentTacticalMap((INT32)sCounter) == TRUE) {
-        if (CurrentSquad() == (INT32)sCounter) {
+      if (IsSquadOnCurrentTacticalMap(sCounter) == TRUE) {
+        if (CurrentSquad() == sCounter) {
           SetFontForeground(FONT_LTGREEN);
         } else {
           SetFontForeground(FONT_DKGREEN);
@@ -618,7 +618,7 @@ function TacticalSquadListMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
 
   if (iReason & MSYS_CALLBACK_REASON_GAIN_MOUSE) {
     if (IsSquadOnCurrentTacticalMap(iValue) == TRUE) {
-      sSelectedSquadLine = (INT16)iValue;
+      sSelectedSquadLine = iValue;
     }
   }
   if (iReason & MSYS_CALLBACK_REASON_LOST_MOUSE) {

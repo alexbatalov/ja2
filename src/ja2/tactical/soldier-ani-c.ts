@@ -132,7 +132,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
     if (sNewAniFrame < 399) {
       // Adjust / set true ani frame
       // Use -1 because ani files are 1-based, these are 0-based
-      ConvertAniCodeToAniFrame(pSoldier, (INT16)(sNewAniFrame - 1));
+      ConvertAniCodeToAniFrame(pSoldier, (sNewAniFrame - 1));
 
       // Adjust frame control pos, and try again
       pSoldier->usAniCode++;
@@ -149,7 +149,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 403:
 
           // MOVE GUY FORWARD SOME VALUE
-          MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)0.7);
+          MoveMercFacingDirection(pSoldier, FALSE, 0.7);
 
           break;
 
@@ -157,7 +157,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // MOVE GUY BACKWARD SOME VALUE
           // Use same function as forward, but is -ve values!
-          MoveMercFacingDirection(pSoldier, TRUE, (FLOAT)1);
+          MoveMercFacingDirection(pSoldier, TRUE, 1);
           break;
 
         case 405:
@@ -168,9 +168,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // Move merc up
           if (pSoldier->bDirection == NORTH) {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->sHeightAdjustment + 2));
+            SetSoldierHeight(pSoldier, (pSoldier->sHeightAdjustment + 2));
           } else {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->sHeightAdjustment + 3));
+            SetSoldierHeight(pSoldier, (pSoldier->sHeightAdjustment + 3));
           }
           break;
 
@@ -186,7 +186,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // usNewGridNo = NewGridNo( (UINT16)pSoldier->sGridNo, (UINT16)DirectionInc( pSoldier->bDirection ) );
             ConvertMapPosToWorldTileCenter(pSoldier->sTempNewGridNo, &sXPos, &sYPos);
-            EVENT_SetSoldierPosition(pSoldier, (FLOAT)sXPos, (FLOAT)sYPos);
+            EVENT_SetSoldierPosition(pSoldier, sXPos, sYPos);
           }
           // Move two CC directions
           EVENT_SetSoldierDirection(pSoldier, gTwoCCDirection[pSoldier->bDirection]);
@@ -197,7 +197,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           pSoldier->ubDesiredHeight = ANIM_CROUCH;
 
           // Move merc up specific height
-          SetSoldierHeight(pSoldier, (FLOAT)50);
+          SetSoldierHeight(pSoldier, 50);
 
           // ATE: Change interface level.....
           // CJC: only if we are a player merc
@@ -226,13 +226,13 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 409:
 
           // CODE: MOVE DOWN
-          SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->sHeightAdjustment - 2));
+          SetSoldierHeight(pSoldier, (pSoldier->sHeightAdjustment - 2));
           break;
 
         case 410:
 
           // Move merc down specific height
-          SetSoldierHeight(pSoldier, (FLOAT)0);
+          SetSoldierHeight(pSoldier, 0);
           break;
 
         case 411:
@@ -243,21 +243,21 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier->bDirection);
           // Adjust height
-          SetSoldierHeight(pSoldier, (FLOAT)gClimbDownRoofStartDist[pSoldier->ubBodyType]);
+          SetSoldierHeight(pSoldier, gClimbDownRoofStartDist[pSoldier->ubBodyType]);
           // Adjust position
-          MoveMercFacingDirection(pSoldier, TRUE, (FLOAT)3.5);
+          MoveMercFacingDirection(pSoldier, TRUE, 3.5);
           break;
 
         case 412:
 
           // CODE: HANDLING PRONE DOWN - NEED TO MOVE GUY BACKWARDS!
-          MoveMercFacingDirection(pSoldier, FALSE, (FLOAT).2);
+          MoveMercFacingDirection(pSoldier, FALSE, .2);
           break;
 
         case 413:
 
           // CODE: HANDLING PRONE UP - NEED TO MOVE GUY FORWARDS!
-          MoveMercFacingDirection(pSoldier, TRUE, (FLOAT).2);
+          MoveMercFacingDirection(pSoldier, TRUE, .2);
           break;
 
         case 430:
@@ -324,7 +324,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             if (anAniFrame == 435) {
               // START PROCESSING HERE
-              ChangeSoldierState(pSoldier, (UINT16)uiJumpAddress, pSoldier->usAniCode, FALSE);
+              ChangeSoldierState(pSoldier, uiJumpAddress, pSoldier->usAniCode, FALSE);
               return TRUE;
             }
             // Adjust frame control pos, and try again
@@ -408,9 +408,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let sXPos: INT16;
             let sYPos: INT16;
 
-            usNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, DirectionInc(pSoldier->bDirection));
+            usNewGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(pSoldier->bDirection));
             ConvertGridNoToCenterCellXY(usNewGridNo, &sXPos, &sYPos);
-            LightSpritePosition(pSoldier->iMuzFlash, (INT16)(sXPos / CELL_X_SIZE), (INT16)(sYPos / CELL_Y_SIZE));
+            LightSpritePosition(pSoldier->iMuzFlash, (sXPos / CELL_X_SIZE), (sYPos / CELL_Y_SIZE));
 
             // Start count
             pSoldier->bMuzFlashCount = 1;
@@ -436,12 +436,12 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             case SOUTH:
             case EAST:
 
-              MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)gHopFenceForwardSEDist[pSoldier->ubBodyType]);
+              MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardSEDist[pSoldier->ubBodyType]);
               break;
 
             case NORTH:
             case WEST:
-              MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)gHopFenceForwardNWDist[pSoldier->ubBodyType]);
+              MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardNWDist[pSoldier->ubBodyType]);
               break;
           }
           break;
@@ -453,7 +453,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           sX = CenterX(pSoldier->sForcastGridno);
           sY = CenterY(pSoldier->sForcastGridno);
 
-          EVENT_InternalSetSoldierPosition(pSoldier, (FLOAT)sX, (FLOAT)sY, FALSE, FALSE, FALSE);
+          EVENT_InternalSetSoldierPosition(pSoldier, sX, sY, FALSE, FALSE, FALSE);
           EVENT_SetSoldierDirection(pSoldier, gTwoCDirection[pSoldier->bDirection]);
           pSoldier->sZLevelOverride = -1;
           EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier->bDirection);
@@ -494,13 +494,13 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             case SOUTH:
             case EAST:
 
-              MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)gHopFenceForwardFullSEDist[pSoldier->ubBodyType]);
+              MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardFullSEDist[pSoldier->ubBodyType]);
               break;
 
             case NORTH:
             case WEST:
 
-              MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)gHopFenceForwardFullNWDist[pSoldier->ubBodyType]);
+              MoveMercFacingDirection(pSoldier, FALSE, gHopFenceForwardFullNWDist[pSoldier->ubBodyType]);
               break;
           }
           break;
@@ -519,7 +519,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // TRY FORWARDS...
             // FIRST GRIDNO
-            sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)(DirectionInc(pSoldier->bDirection)));
+            sNewGridNo = NewGridNo(pSoldier->sGridNo, (DirectionInc(pSoldier->bDirection)));
 
             if (OKFallDirection(pSoldier, sNewGridNo, pSoldier->bLevel, pSoldier->bDirection, FALLFORWARD_HITDEATH_STOP)) {
               // SECOND GRIDNO
@@ -542,7 +542,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             }
             EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier->bDirection);
             sLastAniFrame = gusAnimInst[pSoldier->usAnimState][(pSoldier->usAniCode - 2)];
-            ConvertAniCodeToAniFrame(pSoldier, (INT16)(sLastAniFrame));
+            ConvertAniCodeToAniFrame(pSoldier, (sLastAniFrame));
 
             if (pSoldier->bDirection == pSoldier->bStartFallDir) {
               // GO FORWARD HERE...
@@ -613,7 +613,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
             // ATE; Reduce it due to animation being stopped...
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Freeing up attacker - Burst animation ended"));
-            ReduceAttackBusyCount((UINT8)pSoldier->ubID, FALSE);
+            ReduceAttackBusyCount(pSoldier->ubID, FALSE);
 
             if (CheckForImproperFireGunEnd(pSoldier)) {
               return TRUE;
@@ -644,7 +644,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // MOVETO CURRENT SPREAD LOCATION
           if (pSoldier->fDoSpread) {
             if (pSoldier->sSpreadLocations[pSoldier->fDoSpread - 1] != 0) {
-              EVENT_SetSoldierDirection(pSoldier, (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pSoldier->sSpreadLocations[pSoldier->fDoSpread - 1]));
+              EVENT_SetSoldierDirection(pSoldier, GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pSoldier->sSpreadLocations[pSoldier->fDoSpread - 1]));
               EVENT_SetSoldierDesiredDirection(pSoldier, pSoldier->bDirection);
             }
           }
@@ -662,8 +662,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: BEGINHOPFENCE
           // MOVE TWO FACGIN GRIDNOS
-          sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)(DirectionInc(pSoldier->bDirection)));
-          sNewGridNo = NewGridNo((UINT16)sNewGridNo, (UINT16)(DirectionInc(pSoldier->bDirection)));
+          sNewGridNo = NewGridNo(pSoldier->sGridNo, (DirectionInc(pSoldier->bDirection)));
+          sNewGridNo = NewGridNo(sNewGridNo, (DirectionInc(pSoldier->bDirection)));
           pSoldier->sForcastGridno = sNewGridNo;
           break;
 
@@ -701,7 +701,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // CODE: FALLOFF ROOF ( BACKWARDS ) - MOVE BACK SOME!
           // Use same function as forward, but is -ve values!
-          MoveMercFacingDirection(pSoldier, TRUE, (FLOAT)gFalloffBackwardsDist[pSoldier->ubBodyType]);
+          MoveMercFacingDirection(pSoldier, TRUE, gFalloffBackwardsDist[pSoldier->ubBodyType]);
           break;
 
         case 454:
@@ -709,19 +709,19 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // CODE: HANDLE CLIMBING ROOF,
           // Move merc up
           if (pSoldier->bDirection == NORTH) {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment + gClimbUpRoofDist[pSoldier->ubBodyType]));
+            SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment + gClimbUpRoofDist[pSoldier->ubBodyType]));
           } else {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment + gClimbUpRoofDist[pSoldier->ubBodyType]));
+            SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment + gClimbUpRoofDist[pSoldier->ubBodyType]));
           }
           break;
 
         case 455:
 
           // MOVE GUY FORWARD SOME VALUE
-          MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)gClimbUpRoofLATDist[pSoldier->ubBodyType]);
+          MoveMercFacingDirection(pSoldier, FALSE, gClimbUpRoofLATDist[pSoldier->ubBodyType]);
 
           // MOVE DOWN SOME VALUE TOO!
-          SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment - gClimbUpRoofDistGoingLower[pSoldier->ubBodyType]));
+          SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment - gClimbUpRoofDistGoingLower[pSoldier->ubBodyType]));
 
           break;
 
@@ -730,9 +730,9 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // CODE: HANDLE CLIMBING ROOF,
           // Move merc DOWN
           if (pSoldier->bDirection == NORTH) {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment - gClimbUpRoofDist[pSoldier->ubBodyType]));
+            SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment - gClimbUpRoofDist[pSoldier->ubBodyType]));
           } else {
-            SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment - gClimbUpRoofDist[pSoldier->ubBodyType]));
+            SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment - gClimbUpRoofDist[pSoldier->ubBodyType]));
           }
           break;
 
@@ -794,8 +794,8 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 462:
 
           // CODE: MOVE UP FROM CLIFF CLIMB
-          pSoldier->dHeightAdjustment += (float)2.1;
-          pSoldier->sHeightAdjustment = (INT16)pSoldier->dHeightAdjustment;
+          pSoldier->dHeightAdjustment += 2.1;
+          pSoldier->sHeightAdjustment = pSoldier->dHeightAdjustment;
           // Move over some...
           // MoveMercFacingDirection( pSoldier , FALSE, (FLOAT)0.5 );
           break;
@@ -804,14 +804,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // MOVE GUY FORWARD SOME VALUE
           // Creature move
-          MoveMercFacingDirection(pSoldier, FALSE, (FLOAT)1.5);
+          MoveMercFacingDirection(pSoldier, FALSE, 1.5);
           break;
 
         case 464:
 
           // CODE: END CLIFF CLIMB
-          pSoldier->dHeightAdjustment = (float)0;
-          pSoldier->sHeightAdjustment = (INT16)pSoldier->dHeightAdjustment;
+          pSoldier->dHeightAdjustment = 0;
+          pSoldier->sHeightAdjustment = pSoldier->dHeightAdjustment;
 
           // Set new gridno
           {
@@ -820,7 +820,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             let sNewY: INT16;
 
             // Get Next GridNo;
-            sTempGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (INT16)(DirectionInc(pSoldier->bDirection)));
+            sTempGridNo = NewGridNo(pSoldier->sGridNo, (DirectionInc(pSoldier->bDirection)));
 
             // Get center XY
             ConvertGridNoToCenterCellXY(sTempGridNo, &sNewX, &sNewY);
@@ -853,14 +853,14 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
             if (abs(sDiff) > 4) {
               if (sDiff > 0) {
                 // Adjust!
-                SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment - 2));
+                SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment - 2));
               } else {
                 // Adjust!
-                SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->dHeightAdjustment + 2));
+                SetSoldierHeight(pSoldier, (pSoldier->dHeightAdjustment + 2));
               }
             } else {
               // Adjust!
-              SetSoldierHeight(pSoldier, (FLOAT)(pSoldier->sDesiredHeight));
+              SetSoldierHeight(pSoldier, (pSoldier->sDesiredHeight));
             }
           } else {
             // Goto eating animation
@@ -912,7 +912,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               pSoldier->uiStatusFlags &= (~SOLDIER_NPC_DOING_PUNCH);
 
               // Trigger approach...
-              TriggerNPCWithGivenApproach(pSoldier->ubProfile, (UINT8)pSoldier->uiPendingActionData4, FALSE);
+              TriggerNPCWithGivenApproach(pSoldier->ubProfile, pSoldier->uiPendingActionData4, FALSE);
             }
 
             // Are we a martial artist?
@@ -1061,7 +1061,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 476:
 
           // CODE: GOTO PREVIOUS ANIMATION
-          ChangeSoldierState(pSoldier, (pSoldier->sPendingActionData2), (UINT8)(pSoldier->uiPendingActionData1 + 1), FALSE);
+          ChangeSoldierState(pSoldier, (pSoldier->sPendingActionData2), (pSoldier->uiPendingActionData1 + 1), FALSE);
           return TRUE;
           break;
 
@@ -1259,7 +1259,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
               // Don't do any in water!
               if (!MercInWater(pSoldier)) {
                 // OK, make a dice roll
-                ubDiceRoll = (UINT8)Random(100);
+                ubDiceRoll = Random(100);
 
                 // Determine what is in our hand;
                 usItem = pSoldier->inv[HANDPOS].usItem;
@@ -1406,7 +1406,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           // if ( pSoldier->ubPendingAction == MERC_PICKUPITEM )
           //{
           // DROP ITEM
-          HandleSoldierPickupItem(pSoldier, pSoldier->uiPendingActionData1, (INT16)(pSoldier->uiPendingActionData4), pSoldier->bPendingActionData3);
+          HandleSoldierPickupItem(pSoldier, pSoldier->uiPendingActionData1, (pSoldier->uiPendingActionData4), pSoldier->bPendingActionData3);
           // EVENT HAS BEEN HANDLED
           pSoldier->ubPendingAction = NO_PENDING_ACTION;
 
@@ -1767,21 +1767,21 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       pSoldier->usAniCode = sNewAniFrame - 501;
     } else if (sNewAniFrame > 599 && sNewAniFrame <= 699) {
       // Jump, to animation script
-      EVENT_InitNewSoldierAnim(pSoldier, (UINT16)(sNewAniFrame - 600), 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, (sNewAniFrame - 600), 0, FALSE);
       return TRUE;
     } else if (sNewAniFrame > 799 && sNewAniFrame <= 899) {
       // Jump, to animation script ( But in the 100's range )
-      EVENT_InitNewSoldierAnim(pSoldier, (UINT16)(sNewAniFrame - 700), 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, (sNewAniFrame - 700), 0, FALSE);
       return TRUE;
     } else if (sNewAniFrame > 899 && sNewAniFrame <= 999) {
       // Jump, to animation script ( But in the 200's range )
-      EVENT_InitNewSoldierAnim(pSoldier, (UINT16)(sNewAniFrame - 700), 0, FALSE);
+      EVENT_InitNewSoldierAnim(pSoldier, (sNewAniFrame - 700), 0, FALSE);
       return TRUE;
     } else if (sNewAniFrame > 699 && sNewAniFrame < 799) {
       switch (sNewAniFrame) {
         case 702:
           // Play fall to knees sound
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(FALL_1 + Random(2)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (FALL_1 + Random(2)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
           break;
 
         case 703:
@@ -1793,17 +1793,17 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 705:
           // PLay body splat sound
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)BODY_SPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, BODY_SPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 706:
           // PLay head splat
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)HEADSPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, HEADSPLAT_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 707:
           // PLay creature battle cry
-          PlayJA2StreamingSample((UINT8)CREATURE_BATTLECRY_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
+          PlayJA2StreamingSample(CREATURE_BATTLECRY_1, RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo));
           break;
 
         case 708:
@@ -1961,7 +1961,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 721:
           // Play fall from knees to ground...
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
           if (pSoldier->usAnimState == FALLFORWARD_FROMHIT_STAND) {
             CheckEquipmentForFragileItemDamage(pSoldier, 20);
           }
@@ -1969,7 +1969,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         case 722:
           // Play fall heavy
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(HEAVY_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (HEAVY_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), FALSE);
           if (pSoldier->usAnimState == FALLFORWARD_FROMHIT_CROUCH) {
             CheckEquipmentForFragileItemDamage(pSoldier, 15);
           }
@@ -1978,7 +1978,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 723:
 
           // Play armpit noise...
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(IDLE_ARMPIT), RATE_11025, SoundVolume(LOWVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (IDLE_ARMPIT), RATE_11025, SoundVolume(LOWVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 724:
@@ -1990,43 +1990,43 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
         case 725:
 
           // Play back crack
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(IDLE_BACKCRACK), RATE_11025, SoundVolume(LOWVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (IDLE_BACKCRACK), RATE_11025, SoundVolume(LOWVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 726:
 
           // Kickin door
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(KICKIN_DOOR), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (KICKIN_DOOR), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 727:
 
           // Swoosh
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(SWOOSH_1 + Random(6)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (SWOOSH_1 + Random(6)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 728:
 
           // Creature fall
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(ACR_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (ACR_FALL_1), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 729:
 
           // grab roof....
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(GRAB_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (GRAB_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 730:
 
           // end climb roof....
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(LAND_ON_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (LAND_ON_ROOF), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 731:
 
           // Stop climb roof..
-          PlaySoldierJA2Sample(pSoldier->ubID, (UINT8)(FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
+          PlaySoldierJA2Sample(pSoldier->ubID, (FALL_TO_GROUND_1 + Random(3)), RATE_11025, SoundVolume(HIGHVOLUME, pSoldier->sGridNo), 1, SoundDir(pSoldier->sGridNo), TRUE);
           break;
 
         case 732:
@@ -2062,12 +2062,12 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
           // code: freeup attcker
           DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count..., CODE FROM ANIMATION %s ( %d )", gAnimControl[pSoldier->usAnimState].zAnimStr, pSoldier->usAnimState));
-          ReduceAttackBusyCount((UINT8)pSoldier->ubID, FALSE);
+          ReduceAttackBusyCount(pSoldier->ubID, FALSE);
 
           // ATE: Here, reduce again if creaturequeen tentical attack...
           if (pSoldier->usAnimState == QUEEN_SWIPE) {
             DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("@@@@@@@ Reducing attacker busy count for end of queen swipe"));
-            ReduceAttackBusyCount((UINT8)pSoldier->ubID, FALSE);
+            ReduceAttackBusyCount(pSoldier->ubID, FALSE);
           }
           break;
 
@@ -2153,7 +2153,7 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
 
         {
           // Dish out damage!
-          EVENT_SoldierGotHit(MercPtrs[pSoldier->uiPendingActionData4], TAKE_DAMAGE_BLADE, (INT16)25, (INT16)25, gOppositeDirection[pSoldier->bDirection], 50, pSoldier->ubID, 0, ANIM_PRONE, 0, 0);
+          EVENT_SoldierGotHit(MercPtrs[pSoldier->uiPendingActionData4], TAKE_DAMAGE_BLADE, 25, 25, gOppositeDirection[pSoldier->bDirection], 50, pSoldier->ubID, 0, ANIM_PRONE, 0, 0);
         } break;
 
         case 762: {
@@ -2195,12 +2195,12 @@ function AdjustToNextAnimationFrame(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
           {
             let sNewGridNo: INT16;
 
-            InternalDropBlood(pSoldier->sGridNo, pSoldier->bLevel, 0, (UINT8)(MAXBLOODQUANTITY), 1);
+            InternalDropBlood(pSoldier->sGridNo, pSoldier->bLevel, 0, (MAXBLOODQUANTITY), 1);
 
             // Move forward one gridno....
-            sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)(DirectionInc(gOppositeDirection[pSoldier->bDirection])));
+            sNewGridNo = NewGridNo(pSoldier->sGridNo, (DirectionInc(gOppositeDirection[pSoldier->bDirection])));
 
-            InternalDropBlood(sNewGridNo, pSoldier->bLevel, 0, (UINT8)(MAXBLOODQUANTITY), 1);
+            InternalDropBlood(sNewGridNo, pSoldier->bLevel, 0, (MAXBLOODQUANTITY), 1);
           }
           break;
 
@@ -2457,18 +2457,18 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
         // TO LOS check to killed
         // Can we see location of killer?
         sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, pKillerSoldier->sGridNo, pKillerSoldier->bLevel);
-        if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, pKillerSoldier->sGridNo, pKillerSoldier->bLevel, (UINT8)3, (UINT8)sDistVisible, TRUE) == 0) {
+        if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, pKillerSoldier->sGridNo, pKillerSoldier->bLevel, 3, sDistVisible, TRUE) == 0) {
           continue;
         }
 
         // Can we see location of killed?
         sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
-        if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, (UINT8)3, (UINT8)sDistVisible, TRUE) == 0) {
+        if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE) == 0) {
           continue;
         }
 
         // OK, a good candidate...
-        ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+        ubMercsInSector[ubNumMercs] = cnt;
         bBuddyIndex[ubNumMercs] = bTempBuddyIndex;
         ubNumMercs++;
       }
@@ -2479,7 +2479,7 @@ function SayBuddyWitnessedQuoteFromKill(pKillerSoldier: Pointer<SOLDIERTYPE>, sG
   if (ubNumMercs > 0) {
     // Do random check here...
     if (Random(100) < 20) {
-      ubChosenMerc = (UINT8)Random(ubNumMercs);
+      ubChosenMerc = Random(ubNumMercs);
 
       switch (bBuddyIndex[ubChosenMerc]) {
         case 0:
@@ -2517,7 +2517,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
   // Can we see location?
   sDistVisible = DistanceVisible(pKillerSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-  fCanWeSeeLocation = (SoldierTo3DLocationLineOfSightTest(pKillerSoldier, sGridNo, bLevel, (UINT8)3, (UINT8)sDistVisible, TRUE) != 0);
+  fCanWeSeeLocation = (SoldierTo3DLocationLineOfSightTest(pKillerSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE) != 0);
 
   // Are we killing mike?
   if (pKilledSoldier->ubProfile == 149 && pKillerSoldier->ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
@@ -2564,8 +2564,8 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
               // Can we see location?
               sDistVisible = DistanceVisible(pTeamSoldier, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sGridNo, bLevel);
 
-              if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, (UINT8)sDistVisible, TRUE)) {
-                ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+              if (SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, bLevel, 3, sDistVisible, TRUE)) {
+                ubMercsInSector[ubNumMercs] = cnt;
                 ubNumMercs++;
               }
             }
@@ -2574,7 +2574,7 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
 
         // Did we find anybody?
         if (ubNumMercs > 0) {
-          ubChosenMerc = (UINT8)Random(ubNumMercs);
+          ubChosenMerc = Random(ubNumMercs);
 
           // We have a random chance of not saying our we killed a guy quote
           if (Random(100) < 50) {
@@ -2618,9 +2618,9 @@ function HandleKilledQuote(pKilledSoldier: Pointer<SOLDIERTYPE>, pKillerSoldier:
               }
             } else {
               if (Random(50) == 25) {
-                DoMercBattleSound(pKillerSoldier, (INT8)(BATTLE_SOUND_LAUGH1));
+                DoMercBattleSound(pKillerSoldier, (BATTLE_SOUND_LAUGH1));
               } else {
-                DoMercBattleSound(pKillerSoldier, (INT8)(BATTLE_SOUND_COOL1));
+                DoMercBattleSound(pKillerSoldier, (BATTLE_SOUND_COOL1));
               }
             }
           }
@@ -2913,7 +2913,7 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
         // CHECK IF WE HAVE AN ATTACKER, TAKE OPPOSITE DIRECTION!
         if (pSoldier->ubAttackerID != NOBODY) {
           // Find direction!
-          bTestDirection = (INT8)GetDirectionFromGridNo(MercPtrs[pSoldier->ubAttackerID]->sGridNo, pSoldier);
+          bTestDirection = GetDirectionFromGridNo(MercPtrs[pSoldier->ubAttackerID]->sGridNo, pSoldier);
           fForceDirection = TRUE;
         }
 
@@ -2921,7 +2921,7 @@ function CheckForAndHandleSoldierIncompacitated(pSoldier: Pointer<SOLDIERTYPE>):
 
         if (OKFallDirection(pSoldier, sNewGridNo, pSoldier->bLevel, bTestDirection, FALLBACK_HIT_STAND)) {
           // SECOND GRIDNO
-          sNewGridNo = NewGridNo((UINT16)sNewGridNo, DirectionInc(gOppositeDirection[bTestDirection]));
+          sNewGridNo = NewGridNo(sNewGridNo, DirectionInc(gOppositeDirection[bTestDirection]));
 
           if (OKFallDirection(pSoldier, sNewGridNo, pSoldier->bLevel, bTestDirection, FALLBACK_HIT_STAND)) {
             // ALL'S OK HERE..... IF WE FORCED DIRECTION, SET!
@@ -3203,7 +3203,7 @@ function OKFallDirection(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel:
     // work now.  The function is passing in an adjacent gridno but we need to place the structure
     // data in the tile BEFORE.  So we take one step back in the direction opposite to bTestDirection
     // and use that gridno
-    sTestGridNo = NewGridNo(sGridNo, (UINT16)(DirectionInc(gOppositeDirection[bTestDirection])));
+    sTestGridNo = NewGridNo(sGridNo, (DirectionInc(gOppositeDirection[bTestDirection])));
 
     if (!OkayToAddStructureToWorld(sTestGridNo, bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[bTestDirection]]), usStructureID)) {
       // can't go in that dir!
@@ -3338,7 +3338,7 @@ function KickOutWheelchair(pSoldier: Pointer<SOLDIERTYPE>): void {
   let sNewGridNo: INT16;
 
   // Move forward one gridno....
-  sNewGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)(DirectionInc(pSoldier->bDirection)));
+  sNewGridNo = NewGridNo(pSoldier->sGridNo, (DirectionInc(pSoldier->bDirection)));
 
   // ATE: Make sure that the gridno is unoccupied!
   if (!NewOKDestination(pSoldier, sNewGridNo, TRUE, pSoldier->bLevel)) {

@@ -1,5 +1,5 @@
 function SpecifyButtonSoundScheme(iButtonID: INT32, bSoundScheme: INT8): void {
-  ButtonList[iButtonID]->ubSoundSchemeID = (UINT8)bSoundScheme;
+  ButtonList[iButtonID]->ubSoundSchemeID = bSoundScheme;
   if (bSoundScheme == BUTTON_SOUND_SCHEME_GENERIC) {
     switch (guiCurrentScreen) {
       case MAINMENU_SCREEN:

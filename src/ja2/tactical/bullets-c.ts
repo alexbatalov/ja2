@@ -10,11 +10,11 @@ function GetFreeBullet(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumBullets; uiCount++) {
     if ((gBullets[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumBullets < NUM_BULLET_SLOTS)
-    return (INT32)guiNumBullets++;
+    return guiNumBullets++;
 
   return -1;
 }
@@ -24,7 +24,7 @@ function RecountBullets(): void {
 
   for (uiCount = guiNumBullets - 1; (uiCount >= 0); uiCount--) {
     if ((gBullets[uiCount].fAllocated)) {
-      guiNumBullets = (UINT32)(uiCount + 1);
+      guiNumBullets = (uiCount + 1);
       return;
     }
   }
@@ -72,7 +72,7 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
   if (pBullet->fReal) {
     // Create ani tile if this is a spit!
     if (pBullet->usFlags & (BULLET_FLAG_KNIFE)) {
-      AniParams.sGridNo = (INT16)pBullet->sGridNo;
+      AniParams.sGridNo = pBullet->sGridNo;
       AniParams.ubLevelID = ANI_STRUCT_LEVEL;
       AniParams.sDelay = 100;
       AniParams.sStartFrame = 3;
@@ -89,10 +89,10 @@ function HandleBulletSpecialFlags(iBulletIndex: INT32): void {
       }
 
       // Get direction to use for this guy....
-      dX = ((FLOAT)(pBullet->qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
-      dY = ((FLOAT)(pBullet->qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dX = ((pBullet->qIncrX) / FIXEDPT_FRACTIONAL_RESOLUTION);
+      dY = ((pBullet->qIncrY) / FIXEDPT_FRACTIONAL_RESOLUTION);
 
-      ubDirection = atan8(0, 0, (INT16)(dX * 100), (INT16)(dY * 100));
+      ubDirection = atan8(0, 0, (dX * 100), (dY * 100));
 
       AniParams.uiUserData3 = ubDirection;
 
@@ -153,7 +153,7 @@ function LocateBullet(iBulletIndex: INT32): void {
 
           // Only if we are in turnbased and noncombat
           if (gTacticalStatus.uiFlags & TURNBASED && (gTacticalStatus.uiFlags & INCOMBAT)) {
-            LocateGridNo((INT16)gBullets[iBulletIndex].sGridNo);
+            LocateGridNo(gBullets[iBulletIndex].sGridNo);
           }
         }
       }
@@ -206,13 +206,13 @@ function UpdateBullets(): void {
         {
           if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
             if (gBullets[uiCount].pAniTile != NULL) {
-              gBullets[uiCount].pAniTile->sRelativeX = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-              gBullets[uiCount].pAniTile->sRelativeY = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-              gBullets[uiCount].pAniTile->pLevelNode->sRelativeZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+              gBullets[uiCount].pAniTile->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+              gBullets[uiCount].pAniTile->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+              gBullets[uiCount].pAniTile->pLevelNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
               if (gBullets[uiCount].usFlags & (BULLET_FLAG_KNIFE)) {
-                gBullets[uiCount].pShadowAniTile->sRelativeX = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-                gBullets[uiCount].pShadowAniTile->sRelativeY = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+                gBullets[uiCount].pShadowAniTile->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+                gBullets[uiCount].pShadowAniTile->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
               }
             }
           }
@@ -223,18 +223,18 @@ function UpdateBullets(): void {
             pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode->uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode->sRelativeX = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode->sRelativeY = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode->sRelativeZ = (INT16)CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
+            pNode->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode->sRelativeZ = CONVERT_HEIGHTUNITS_TO_PIXELS(FIXEDPT_TO_INT32(gBullets[uiCount].qCurrZ));
 
             // Display shadow
             pNode = AddStructToTail(gBullets[uiCount].sGridNo, BULLETTILE2);
             pNode->ubShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode->ubNaturalShadeLevel = DEFAULT_SHADE_LEVEL;
             pNode->uiFlags |= (LEVELNODE_USEABSOLUTEPOS | LEVELNODE_IGNOREHEIGHT);
-            pNode->sRelativeX = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
-            pNode->sRelativeY = (INT16)FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
-            pNode->sRelativeZ = (INT16)gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
+            pNode->sRelativeX = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrX);
+            pNode->sRelativeY = FIXEDPT_TO_INT32(gBullets[uiCount].qCurrY);
+            pNode->sRelativeZ = gpWorldLevelData[gBullets[uiCount].sGridNo].sHeight;
           }
         }
       } else {
@@ -280,9 +280,9 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
   }
 
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
-  AniParams.sGridNo = (INT16)pBullet->sGridNo;
+  AniParams.sGridNo = pBullet->sGridNo;
   AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-  AniParams.sDelay = (INT16)(100 + Random(100));
+  AniParams.sDelay = (100 + Random(100));
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_ALWAYS_TRANSLUCENT;
   AniParams.sX = FIXEDPT_TO_INT32(qCurrX);
@@ -297,7 +297,7 @@ function AddMissileTrail(pBullet: Pointer<BULLET>, qCurrX: FIXEDPT, qCurrY: FIXE
     strcpy(AniParams.zCachedFile, "TILECACHE\\MSLE_SPT.STI");
   } else if (pBullet->usFlags & (BULLET_FLAG_FLAME)) {
     strcpy(AniParams.zCachedFile, "TILECACHE\\FLMTHR2.STI");
-    AniParams.sDelay = (INT16)(100);
+    AniParams.sDelay = (100);
   }
 
   CreateAnimationTile(&AniParams);

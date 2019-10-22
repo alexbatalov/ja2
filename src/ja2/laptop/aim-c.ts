@@ -497,14 +497,14 @@ function BtnAimBottomButtonsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
-    gubAimMenuButtonDown = (UINT8)MSYS_GetBtnUserData(btn, 1);
+    gubAimMenuButtonDown = MSYS_GetBtnUserData(btn, 1);
     InvalidateRegion(BOTTOM_BUTTON_START_X, BOTTOM_BUTTON_START_Y, BOTTOM_BUTTON_END_X, BOTTOM_BUTTON_END_Y);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
       ResetAimButtons(guiBottomButtons, NUM_AIM_BOTTOMBUTTONS);
 
-      guiCurrentLaptopMode = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      guiCurrentLaptopMode = MSYS_GetBtnUserData(btn, 0);
 
       InvalidateRegion(BOTTOM_BUTTON_START_X, BOTTOM_BUTTON_START_Y, BOTTOM_BUTTON_END_X, BOTTOM_BUTTON_END_Y);
     }

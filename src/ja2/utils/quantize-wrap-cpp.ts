@@ -16,7 +16,7 @@ function QuantizeImage(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT1
 
   memset(pPalette, 0, sizeof(SGPPaletteEntry) * 256);
 
-  q.GetColorTable((RGBQUAD *)pPalette);
+  q.GetColorTable(pPalette);
 
   // THEN MAP IMAGE TO PALETTE
   // OK, MAPIT!
@@ -38,13 +38,13 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
   let pData: Pointer<UINT8>;
   let pRGBData: Pointer<RGBValues>;
 
-  pRGBData = (RGBValues *)pSrc;
+  pRGBData = pSrc;
 
   for (cX = 0; cX < sWidth; cX++) {
     for (cY = 0; cY < sHeight; cY++) {
       // OK, FOR EACH PALETTE ENTRY, FIND CLOSEST
       bBest = 0;
-      dLowestDist = (float)9999999;
+      dLowestDist = 9999999;
       pData = &(pSrc[(cY * sWidth) + cX]);
 
       for (cnt = 0; cnt < sNumColors; cnt++) {
@@ -73,7 +73,7 @@ function MapPalette(pDest: Pointer<UINT8>, pSrc: Pointer<UINT8>, sWidth: INT16, 
       pData = &(pDest[(cY * sWidth) + cX]);
 
       // Set!
-      *pData = (UINT8)bBest;
+      *pData = bBest;
     }
   }
 }

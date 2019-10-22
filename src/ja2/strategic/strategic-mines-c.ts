@@ -117,7 +117,7 @@ function InitializeMines(): void {
   while (ubMineProductionIncreases > 0) {
     // pick a producing mine at random and increase its production
     do {
-      ubMineIndex = (UINT8)Random(MAX_NUMBER_OF_MINES);
+      ubMineIndex = Random(MAX_NUMBER_OF_MINES);
     } while (gMineStatus[ubMineIndex].fEmpty);
 
     // increase mine production by 20% of the base (minimum) rate
@@ -128,7 +128,7 @@ function InitializeMines(): void {
 
   // choose which mine will run out of production.  This will never be the Alma mine or an empty mine (San Mona)...
   do {
-    ubDepletedMineIndex = (UINT8)Random(MAX_NUMBER_OF_MINES);
+    ubDepletedMineIndex = Random(MAX_NUMBER_OF_MINES);
     // Alma mine can't run out for quest-related reasons (see Ian)
   } while (gMineStatus[ubDepletedMineIndex].fEmpty || (ubDepletedMineIndex == MINE_ALMA));
 
@@ -318,7 +318,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
 
     // tell the strategic AI about this, that mine's and town's value is greatly reduced
     GetMineSector(bMineIndex, &sSectorX, &sSectorY);
-    StrategicHandleMineThatRanOut((UINT8)SECTOR(sSectorX, sSectorY));
+    StrategicHandleMineThatRanOut(SECTOR(sSectorX, sSectorY));
 
     AddHistoryToPlayersLog(HISTORY_MINE_RAN_OUT, gMineLocation[bMineIndex].bAssociatedTown, GetWorldTotalMin(), gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY);
   } else // still some left after this extraction
@@ -332,7 +332,7 @@ function ExtractOreFromMine(bMineIndex: INT8, uiAmount: UINT32): UINT32 {
       gMineStatus[bMineIndex].fRunningOut = TRUE;
 
       // round all fractions UP to the next REMOVAL_RATE_INCREMENT
-      gMineStatus[bMineIndex].uiMaxRemovalRate = (UINT32)(((FLOAT)gMineStatus[bMineIndex].uiRemainingOreSupply / 10) / REMOVAL_RATE_INCREMENT + 0.9999) * REMOVAL_RATE_INCREMENT;
+      gMineStatus[bMineIndex].uiMaxRemovalRate = ((gMineStatus[bMineIndex].uiRemainingOreSupply / 10) / REMOVAL_RATE_INCREMENT + 0.9999) * REMOVAL_RATE_INCREMENT;
 
       // if we control it
       if (PlayerControlsMine(bMineIndex)) {
@@ -744,7 +744,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
   bQuoteNum = gHeadMinerData[ubHeadMinerIndex].bQuoteNum[ubQuoteType];
   Assert(bQuoteNum != -1);
 
-  ubFaceIndex = (UINT8)uiExternalStaticNPCFaces[gHeadMinerData[ubHeadMinerIndex].ubExternalFace];
+  ubFaceIndex = uiExternalStaticNPCFaces[gHeadMinerData[ubHeadMinerIndex].ubExternalFace];
 
   // transition to mapscreen is not necessary for "creatures gone" quote - player is IN that mine, so he'll know
   if (ubQuoteType != HEAD_MINER_STRATEGIC_QUOTE_CREATURES_GONE) {
@@ -780,7 +780,7 @@ function IssueHeadMinerQuote(bMineIndex: INT8, ubQuoteType: UINT8): void {
   SetExternMapscreenSpeechPanelXY(sXPos, sYPos);
 
   // cause this quote to come up for this profile id and an indicator to flash over the mine sector
-  HandleMinerEvent(gHeadMinerData[ubHeadMinerIndex].ubExternalFace, gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY, (INT16)bQuoteNum, fForceMapscreen);
+  HandleMinerEvent(gHeadMinerData[ubHeadMinerIndex].ubExternalFace, gMineLocation[bMineIndex].sSectorX, gMineLocation[bMineIndex].sSectorY, bQuoteNum, fForceMapscreen);
 
   // stop time compression with any miner quote - these are important events.
   StopTimeCompression();

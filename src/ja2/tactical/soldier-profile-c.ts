@@ -161,7 +161,7 @@ function LoadMercProfiles(): BOOLEAN {
     }
 
     // if the Dialogue exists for the merc, allow the merc to be hired
-    if (DialogueDataFileExistsForProfile((UINT8)uiLoop, 0, FALSE, NULL)) {
+    if (DialogueDataFileExistsForProfile(uiLoop, 0, FALSE, NULL)) {
       gMercProfiles[uiLoop].bMercStatus = 0;
     } else
       gMercProfiles[uiLoop].bMercStatus = MERC_HAS_NO_TEXT_FILE;
@@ -175,7 +175,7 @@ function LoadMercProfiles(): BOOLEAN {
     // ATE: New, face display indipendent of ID num now
     // Setup face index value
     // Default is the ubCharNum
-    gMercProfiles[uiLoop].ubFaceIndex = (UINT8)uiLoop;
+    gMercProfiles[uiLoop].ubFaceIndex = uiLoop;
 
     if (!gGameOptions.fGunNut) {
       // CJC: replace guns in profile if they aren't available
@@ -594,7 +594,7 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
   uiStats = ((2 * pProfile->bLifeMax) + pProfile->bStrength + pProfile->bAgility + pProfile->bDexterity + ((pProfile->bLeadership + pProfile->bWisdom) / 2)) / 3;
 
   // marksmanship is very important, count it double
-  uiSkills = (UINT32)((2 * (pow(pProfile->bMarksmanship, 3) / 10000)) + 1.5 * (pow(pProfile->bMedical, 3) / 10000) + (pow(pProfile->bMechanical, 3) / 10000) + (pow(pProfile->bExplosive, 3) / 10000));
+  uiSkills = ((2 * (pow(pProfile->bMarksmanship, 3) / 10000)) + 1.5 * (pow(pProfile->bMedical, 3) / 10000) + (pow(pProfile->bMechanical, 3) / 10000) + (pow(pProfile->bExplosive, 3) / 10000));
 
   // action points
   uiActionPoints = 5 + (((10 * pProfile->bExpLevel + 3 * pProfile->bAgility + 2 * pProfile->bLifeMax + 2 * pProfile->bDexterity) + 20) / 40);
@@ -602,7 +602,7 @@ function CalcCompetence(pProfile: Pointer<MERCPROFILESTRUCT>): UINT16 {
   // count how many he has, don't care what they are
   uiSpecialSkills = ((pProfile->bSkillTrait != 0) ? 1 : 0) + ((pProfile->bSkillTrait2 != 0) ? 1 : 0);
 
-  usCompetence = (UINT16)((pow(pProfile->bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * (FLOAT)uiSpecialSkills))) / 1000);
+  usCompetence = ((pow(pProfile->bExpLevel, 0.2) * uiStats * uiSkills * (uiActionPoints - 6) * (1 + (0.05 * uiSpecialSkills))) / 1000);
 
   // this currently varies from about 10 (Flo) to 1200 (Gus)
   return usCompetence;
@@ -792,7 +792,7 @@ function RecruitRPC(ubCharNum: UINT8): BOOLEAN {
   HandleTownLoyaltyForNPCRecruitment(pNewSoldier);
 
   // Try putting them into the current squad
-  if (AddCharacterToSquad(pNewSoldier, (INT8)CurrentSquad()) == FALSE) {
+  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
     AddCharacterToAnySquad(pNewSoldier);
   }
 
@@ -858,7 +858,7 @@ function RecruitEPC(ubCharNum: UINT8): BOOLEAN {
   pNewSoldier->ubWhatKindOfMercAmI = MERC_TYPE__EPC;
 
   // Try putting them into the current squad
-  if (AddCharacterToSquad(pNewSoldier, (INT8)CurrentSquad()) == FALSE) {
+  if (AddCharacterToSquad(pNewSoldier, CurrentSquad()) == FALSE) {
     AddCharacterToAnySquad(pNewSoldier);
   }
 

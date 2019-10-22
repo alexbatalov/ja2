@@ -97,7 +97,7 @@ function TerrainTileButtonRegionCallback(reg: Pointer<MOUSE_REGION>, reason: INT
     TerrainTileSelected = MSYS_GetRegionUserData(reg, 0);
     if (TerrainTileDrawMode == TERRAIN_TILES_FOREGROUND) {
       TerrainForegroundTile = TerrainTileSelected;
-      CurrentPaste = (UINT16)TerrainForegroundTile;
+      CurrentPaste = TerrainForegroundTile;
       // iEditorToolbarState = TBAR_MODE_DRAW;
       if (_KeyDown(SHIFT)) {
         fUseTerrainWeights = TRUE;
@@ -168,7 +168,7 @@ function Fill(x: INT32, y: INT32): void {
     maxCount = count;
 
   iMapIndex = y * WORLD_COLS + x;
-  if (!GridNoOnVisibleWorldTile((INT16)iMapIndex)) {
+  if (!GridNoOnVisibleWorldTile(iMapIndex)) {
     count--;
     return;
   }
@@ -201,7 +201,7 @@ function TerrainFill(iMapIndex: UINT32): void {
   if (guiSearchType == CurrentPaste)
     return;
 
-  ConvertGridNoToXY((INT16)iMapIndex, &sX, &sY);
+  ConvertGridNoToXY(iMapIndex, &sX, &sY);
 
   count = 0;
 

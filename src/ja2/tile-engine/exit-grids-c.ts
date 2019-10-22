@@ -16,10 +16,10 @@ function ConvertExitGridToINT32(pExitGrid: Pointer<EXITGRID>): INT32 {
 
 function ConvertINT32ToExitGrid(iExitGridInfo: INT32, pExitGrid: Pointer<EXITGRID>): void {
   // convert the int into 4 unsigned bytes.
-  pExitGrid->ubGotoSectorX = (UINT8)(((iExitGridInfo & 0xf0000000) >> 28) + 1);
-  pExitGrid->ubGotoSectorY = (UINT8)(((iExitGridInfo & 0x0f000000) >> 24) + 1);
-  pExitGrid->ubGotoSectorZ = (UINT8)((iExitGridInfo & 0x00f00000) >> 20);
-  pExitGrid->usGridNo = (UINT16)(iExitGridInfo & 0x0000ffff);
+  pExitGrid->ubGotoSectorX = (((iExitGridInfo & 0xf0000000) >> 28) + 1);
+  pExitGrid->ubGotoSectorY = (((iExitGridInfo & 0x0f000000) >> 24) + 1);
+  pExitGrid->ubGotoSectorZ = ((iExitGridInfo & 0x00f00000) >> 20);
+  pExitGrid->usGridNo = (iExitGridInfo & 0x0000ffff);
 }
 
 function GetExitGrid(usMapIndex: UINT16, pExitGrid: Pointer<EXITGRID>): BOOLEAN {
@@ -95,7 +95,7 @@ function AddExitGridToWorld(iMapIndex: INT32, pExitGrid: Pointer<EXITGRID>): voi
 
   // Add the exit grid to the sector, only if we call ApplyMapChangesToMapTempFile() first.
   if (!gfEditMode && !gfLoadingExitGrids) {
-    AddExitGridToMapTempFile((UINT16)iMapIndex, pExitGrid, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
+    AddExitGridToMapTempFile(iMapIndex, pExitGrid, gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
   }
 }
 
@@ -156,7 +156,7 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
     ScreenMsg(FONT_DKYELLOW, MSG_INTERFACE, pMessageStrings[MSG_CANT_GO_DOWN], ubLookForLevel);
     return;
   }
-  ubLookForLevel = (UINT8)(gbWorldSectorZ + bRelativeZLevel);
+  ubLookForLevel = (gbWorldSectorZ + bRelativeZLevel);
   for (i = 0; i < WORLD_MAX; i++) {
     if (GetExitGrid(i, &gExitGrid)) {
       if (gExitGrid.ubGotoSectorZ == ubLookForLevel) {
@@ -164,7 +164,7 @@ function AttemptToChangeFloorLevel(bRelativeZLevel: INT8): void {
         gfOverrideInsertionWithExitGrid = TRUE;
         // change all current mercs in the loaded sector, and move them
         // to the new sector.
-        MoveAllGroupsInCurrentSectorToSector((UINT8)gWorldSectorX, (UINT8)gWorldSectorY, ubLookForLevel);
+        MoveAllGroupsInCurrentSectorToSector(gWorldSectorX, gWorldSectorY, ubLookForLevel);
         if (ubLookForLevel)
           ScreenMsg(FONT_YELLOW, MSG_INTERFACE, pMessageStrings[MSG_ENTERING_LEVEL], ubLookForLevel);
         else
@@ -280,7 +280,7 @@ function FindGridNoFromSweetSpotCloseToExitGrid(pSoldier: Pointer<SOLDIERTYPE>, 
 
   if (fFound) {
     // Set direction to center of map!
-    *pubDirection = (UINT8)GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
+    *pubDirection = GetDirectionToGridNoFromGridNo(sLowestGridNo, (((WORLD_ROWS / 2) * WORLD_COLS) + (WORLD_COLS / 2)));
     return sLowestGridNo;
   } else {
     return NOWHERE;

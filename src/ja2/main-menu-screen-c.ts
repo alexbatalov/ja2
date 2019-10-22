@@ -254,7 +254,7 @@ function ExitMainMenu(): void {
 function MenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   let bID: INT8;
 
-  bID = (UINT8)btn->UserData[0];
+  bID = btn->UserData[0];
 
   if (!(btn->uiFlags & BUTTON_ENABLED))
     return;
@@ -427,22 +427,22 @@ function CreateDestroyMainMenuButtons(fCreate: BOOLEAN): BOOLEAN {
     for (cnt = 0; cnt < NUM_MENU_ITEMS; cnt++) {
       switch (cnt) {
         case NEW_GAME:
-          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic((UINT16)iMenuImages[cnt], sSlot);
+          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], sSlot);
           break;
         case LOAD_GAME:
-          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic((UINT16)iMenuImages[cnt], 3);
+          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], 3);
           break;
         case PREFERENCES:
-          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic((UINT16)iMenuImages[cnt], 7);
+          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], 7);
           break;
         case CREDITS:
-          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic((UINT16)iMenuImages[cnt], 10);
+          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], 10);
           break;
         case QUIT:
-          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic((UINT16)iMenuImages[cnt], 15);
+          gusMainMenuButtonWidths[cnt] = GetWidthOfButtonPic(iMenuImages[cnt], 15);
           break;
       }
-      iMenuButtons[cnt] = QuickCreateButton(iMenuImages[cnt], (INT16)(320 - gusMainMenuButtonWidths[cnt] / 2), (INT16)(MAINMENU_Y + (cnt * MAINMENU_Y_SPACE)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, MenuButtonCallback);
+      iMenuButtons[cnt] = QuickCreateButton(iMenuImages[cnt], (320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE)), BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, DEFAULT_MOVE_CALLBACK, MenuButtonCallback);
       if (iMenuButtons[cnt] == -1) {
         return FALSE;
       }
@@ -501,6 +501,6 @@ function RestoreButtonBackGrounds(): void {
   //	RestoreExternBackgroundRect( (UINT16)(320 - gusMainMenuButtonWidths[TITLE]/2), MAINMENU_TITLE_Y, gusMainMenuButtonWidths[TITLE], 23 );
 
   for (cnt = 0; cnt < NUM_MENU_ITEMS; cnt++) {
-    RestoreExternBackgroundRect((UINT16)(320 - gusMainMenuButtonWidths[cnt] / 2), (INT16)(MAINMENU_Y + (cnt * MAINMENU_Y_SPACE) - 1), (UINT16)(gusMainMenuButtonWidths[cnt] + 1), 23);
+    RestoreExternBackgroundRect((320 - gusMainMenuButtonWidths[cnt] / 2), (MAINMENU_Y + (cnt * MAINMENU_Y_SPACE) - 1), (gusMainMenuButtonWidths[cnt] + 1), 23);
   }
 }

@@ -144,7 +144,7 @@ function SmkOpenFlic(cFilename: Pointer<CHAR8>): Pointer<SMKFLIC> {
     return NULL;
   }
 
-  if (!(pSmack->SmackHandle = SmackOpen((CHAR8 *)hFile, SMACKFILEHANDLE | SMACKTRACKS, SMACKAUTOEXTRA)))
+  if (!(pSmack->SmackHandle = SmackOpen(hFile, SMACKFILEHANDLE | SMACKTRACKS, SMACKAUTOEXTRA)))
   //	if(!(pSmack->SmackHandle=SmackOpen(cFilename, SMACKTRACKS, SMACKAUTOEXTRA)))
   {
     ErrorMsg("SMK ERROR: Smacker won't open the SMK file");
@@ -215,9 +215,9 @@ function SmkSetupVideo(): void {
     return;
   }
 
-  usRed = (UINT16)SurfaceDescription.ddpfPixelFormat.dwRBitMask;
-  usGreen = (UINT16)SurfaceDescription.ddpfPixelFormat.dwGBitMask;
-  usBlue = (UINT16)SurfaceDescription.ddpfPixelFormat.dwBBitMask;
+  usRed = SurfaceDescription.ddpfPixelFormat.dwRBitMask;
+  usGreen = SurfaceDescription.ddpfPixelFormat.dwGBitMask;
+  usBlue = SurfaceDescription.ddpfPixelFormat.dwBBitMask;
 
   if ((usRed == 0xf800) && (usGreen == 0x07e0) && (usBlue == 0x001f))
     guiSmackPixelFormat = SMACKBUFFER565;

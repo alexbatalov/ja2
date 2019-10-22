@@ -166,7 +166,7 @@ function HourlyLarryUpdate(): void {
 
     if (usTemptation > 0) {
       if (pSoldier->ubProfile == LARRY_NORMAL) {
-        gMercProfiles[LARRY_NORMAL].bNPCData += (INT8)Random(usTemptation);
+        gMercProfiles[LARRY_NORMAL].bNPCData += Random(usTemptation);
         if (gMercProfiles[LARRY_NORMAL].bNPCData >= LARRY_FALLS_OFF_WAGON) {
           if (fBar) {
             // take $ from player's account
@@ -191,7 +191,7 @@ function HourlyLarryUpdate(): void {
         // NB store all drunkenness info in LARRY_NORMAL profile (to use same values)
         // so long as he keeps consuming, keep number above level at which he cracked
         gMercProfiles[LARRY_NORMAL].bNPCData = __max(gMercProfiles[LARRY_NORMAL].bNPCData, LARRY_FALLS_OFF_WAGON);
-        gMercProfiles[LARRY_NORMAL].bNPCData += (INT8)Random(usTemptation);
+        gMercProfiles[LARRY_NORMAL].bNPCData += Random(usTemptation);
         // allow value to keep going up to 24 (about 2 days since we subtract Random( 2 ) when he has no access )
         gMercProfiles[LARRY_NORMAL].bNPCData = __min(gMercProfiles[LARRY_NORMAL].bNPCData, 24);
         if (fBar) {
@@ -213,7 +213,7 @@ function HourlyLarryUpdate(): void {
         }
       }
     } else if (pSoldier->ubProfile == LARRY_DRUNK) {
-      gMercProfiles[LARRY_NORMAL].bNPCData -= (INT8)Random(2);
+      gMercProfiles[LARRY_NORMAL].bNPCData -= Random(2);
       if (gMercProfiles[LARRY_NORMAL].bNPCData <= 0) {
         // goes sober!
         SwapLarrysProfiles(pSoldier);
@@ -234,7 +234,7 @@ function HourlyCheckIfSlayAloneSoHeCanLeave(): void {
   if (!pSoldier->bActive || !pSoldier->bLife) {
     return;
   }
-  if (PlayerMercsInSector((UINT8)pSoldier->sSectorX, (UINT8)pSoldier->sSectorY, pSoldier->bSectorZ) == 1) {
+  if (PlayerMercsInSector(pSoldier->sSectorX, pSoldier->sSectorY, pSoldier->bSectorZ) == 1) {
     if (Chance(15)) {
       pSoldier->ubLeaveHistoryCode = HISTORY_SLAY_MYSTERIOUSLY_LEFT;
       TacticalCharacterDialogueWithSpecialEvent(pSoldier, 0, DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP, 0, 0);

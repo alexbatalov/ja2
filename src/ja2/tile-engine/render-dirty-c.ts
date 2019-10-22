@@ -92,11 +92,11 @@ function GetFreeBackgroundBuffer(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if ((gBackSaves[uiCount].fAllocated == FALSE) && (gBackSaves[uiCount].fFilled == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumBackSaves < BACKGROUND_BUFFERS)
-    return (INT32)guiNumBackSaves++;
+    return guiNumBackSaves++;
 
   return -1;
 }
@@ -106,7 +106,7 @@ function RecountBackgrounds(): void {
 
   for (uiCount = guiNumBackSaves - 1; (uiCount >= 0); uiCount--) {
     if ((gBackSaves[uiCount].fAllocated) || (gBackSaves[uiCount].fFilled)) {
-      guiNumBackSaves = (UINT32)(uiCount + 1);
+      guiNumBackSaves = (uiCount + 1);
       break;
     }
   }
@@ -148,24 +148,24 @@ function RegisterBackgroundRect(uiFlags: UINT32, pSaveArea: Pointer<INT16>, sLef
   iTempY = sTop;
 
   // Clip to rect
-  uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), (INT32)usWidth);
-  uiRightSkip = __min(max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-  uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
-  uiBottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+  uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
+  uiRightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+  uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
+  uiBottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
   // check if whole thing is clipped
-  if ((uiLeftSkip >= (INT32)usWidth) || (uiRightSkip >= (INT32)usWidth))
+  if ((uiLeftSkip >= usWidth) || (uiRightSkip >= usWidth))
     return -1;
 
   // check if whole thing is clipped
-  if ((uiTopSkip >= (INT32)usHeight) || (uiBottomSkip >= (INT32)usHeight))
+  if ((uiTopSkip >= usHeight) || (uiBottomSkip >= usHeight))
     return -1;
 
   // Set re-set values given based on clipping
-  sLeft = sLeft + (INT16)uiLeftSkip;
-  sRight = sRight - (INT16)uiRightSkip;
-  sTop = sTop + (INT16)uiTopSkip;
-  sBottom = sBottom - (INT16)uiBottomSkip;
+  sLeft = sLeft + uiLeftSkip;
+  sRight = sRight - uiRightSkip;
+  sTop = sTop + uiTopSkip;
+  sBottom = sBottom - uiBottomSkip;
 
   if (sLeft == 192 || sLeft == 188) {
     let i: int = 0;
@@ -234,16 +234,16 @@ function RestoreBackgroundRects(): BOOLEAN {
     if (gBackSaves[uiCount].fFilled && (!gBackSaves[uiCount].fDisabled)) {
       if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
         if (gBackSaves[uiCount].pSaveArea != NULL) {
-          Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, 0, 0, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
+          Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, 0, 0, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
 
           AddBaseDirtyRect(gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sRight, gBackSaves[uiCount].sBottom);
         }
       } else if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVE_Z) {
         if (gBackSaves[uiCount].fZBuffer) {
-          Blt16BPPTo16BPP((UINT16 *)gpZBuffer, uiDestPitchBYTES, (UINT16 *)gBackSaves[uiCount].pZSaveArea, gBackSaves[uiCount].sWidth * 2, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, 0, 0, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
+          Blt16BPPTo16BPP(gpZBuffer, uiDestPitchBYTES, gBackSaves[uiCount].pZSaveArea, gBackSaves[uiCount].sWidth * 2, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, 0, 0, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
         }
       } else {
-        Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
+        Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
 
         AddBaseDirtyRect(gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sRight, gBackSaves[uiCount].sBottom);
       }
@@ -324,10 +324,10 @@ function SaveBackgroundRects(): BOOLEAN {
     if (gBackSaves[uiCount].fAllocated && (!gBackSaves[uiCount].fDisabled)) {
       if (gBackSaves[uiCount].uiFlags & BGND_FLAG_SAVERECT) {
         if (gBackSaves[uiCount].pSaveArea != NULL) {
-          Blt16BPPTo16BPP((UINT16 *)gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, (UINT16 *)pSrcBuf, uiDestPitchBYTES, 0, 0, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
+          Blt16BPPTo16BPP(gBackSaves[uiCount].pSaveArea, gBackSaves[uiCount].sWidth * 2, pSrcBuf, uiDestPitchBYTES, 0, 0, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
         }
       } else if (gBackSaves[uiCount].fZBuffer) {
-        Blt16BPPTo16BPP(gBackSaves[uiCount].pZSaveArea, gBackSaves[uiCount].sWidth * 2, (UINT16 *)gpZBuffer, uiDestPitchBYTES, 0, 0, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
+        Blt16BPPTo16BPP(gBackSaves[uiCount].pZSaveArea, gBackSaves[uiCount].sWidth * 2, gpZBuffer, uiDestPitchBYTES, 0, 0, gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sWidth, gBackSaves[uiCount].sHeight);
       } else {
         AddBaseDirtyRect(gBackSaves[uiCount].sLeft, gBackSaves[uiCount].sTop, gBackSaves[uiCount].sRight, gBackSaves[uiCount].sBottom);
       }
@@ -418,7 +418,7 @@ function ShutdownBackgroundRects(): BOOLEAN {
 
   for (uiCount = 0; uiCount < guiNumBackSaves; uiCount++) {
     if (gBackSaves[uiCount].fAllocated)
-      FreeBackgroundRectNow((INT32)uiCount);
+      FreeBackgroundRectNow(uiCount);
   }
 
   return TRUE;
@@ -445,7 +445,7 @@ function UpdateSaveBuffer(): BOOLEAN {
 
   if (gbPixelDepth == 16) {
     // BLIT HERE
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 0, gsVIEWPORT_WINDOW_START_Y, usWidth, (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y));
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 0, gsVIEWPORT_WINDOW_START_Y, usWidth, (gsVIEWPORT_WINDOW_END_Y - gsVIEWPORT_WINDOW_START_Y));
   } else if (gbPixelDepth == 8) {
     // BLIT HERE
     Blt8BPPTo8BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, 0, gsVIEWPORT_WINDOW_START_Y, 0, gsVIEWPORT_WINDOW_START_Y, usWidth, gsVIEWPORT_WINDOW_END_Y);
@@ -469,7 +469,7 @@ function RestoreExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, s
   pSrcBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
 
   if (gbPixelDepth == 16) {
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   } else if (gbPixelDepth == 8) {
     Blt8BPPTo8BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   }
@@ -507,7 +507,7 @@ function RestoreExternBackgroundRectGivenID(iBack: INT32): BOOLEAN {
   pSrcBuf = LockVideoSurface(guiSAVEBUFFER, &uiSrcPitchBYTES);
 
   if (gbPixelDepth == 16) {
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   } else if (gbPixelDepth == 8) {
     Blt8BPPTo8BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   }
@@ -532,7 +532,7 @@ function CopyExternBackgroundRect(sLeft: INT16, sTop: INT16, sWidth: INT16, sHei
   pSrcBuf = LockVideoSurface(guiRENDERBUFFER, &uiSrcPitchBYTES);
 
   if (gbPixelDepth == 16) {
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   } else if (gbPixelDepth == 8) {
     Blt8BPPTo8BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, sLeft, sTop, sLeft, sTop, sWidth, sHeight);
   }
@@ -573,7 +573,7 @@ function gprintfdirty(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args:
   }
 
   if (uiStringLength > 0) {
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, x, y, (INT16)(x + uiStringLength), (INT16)(y + uiStringHeight));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, x, y, (x + uiStringLength), (y + uiStringHeight));
 
     if (iBack != -1) {
       SetBackgroundRectFilled(iBack);
@@ -599,7 +599,7 @@ function gprintfinvalidate(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...
   uiStringHeight = GetFontHeight(FontDefault);
 
   if (uiStringLength > 0) {
-    InvalidateRegionEx(x, y, (INT16)(x + uiStringLength), (INT16)(y + uiStringHeight), 0);
+    InvalidateRegionEx(x, y, (x + uiStringLength), (y + uiStringHeight), 0);
   }
   return uiStringLength;
 }
@@ -632,11 +632,11 @@ function GetFreeVideoOverlay(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumVideoOverlays; uiCount++) {
     if ((gVideoOverlays[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumVideoOverlays < BACKGROUND_BUFFERS)
-    return (INT32)guiNumVideoOverlays++;
+    return guiNumVideoOverlays++;
 
   return -1;
 }
@@ -646,7 +646,7 @@ function RecountVideoOverlays(): void {
 
   for (uiCount = guiNumVideoOverlays - 1; (uiCount >= 0); uiCount--) {
     if ((gVideoOverlays[uiCount].fAllocated)) {
-      guiNumVideoOverlays = (UINT32)(uiCount + 1);
+      guiNumVideoOverlays = (uiCount + 1);
       break;
     }
   }
@@ -667,7 +667,7 @@ function RegisterVideoOverlay(uiFlags: UINT32, pTopmostDesc: Pointer<VIDEO_OVERL
     uiStringLength = StringPixLength(pTopmostDesc->pzText, pTopmostDesc->uiFontID);
     uiStringHeight = GetFontHeight(pTopmostDesc->uiFontID);
 
-    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (INT16)(pTopmostDesc->sLeft + uiStringLength), (INT16)(pTopmostDesc->sTop + uiStringHeight));
+    iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (pTopmostDesc->sLeft + uiStringLength), (pTopmostDesc->sTop + uiStringHeight));
   } else {
     // Register background
     iBackIndex = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, pTopmostDesc->sRight, pTopmostDesc->sBottom);
@@ -790,7 +790,7 @@ function UpdateVideoOverlay(pTopmostDesc: Pointer<VIDEO_OVERLAY_DESC>, iBlitterI
           // Remove background
           FreeBackgroundRectPending(gVideoOverlays[iBlitterIndex].uiBackground);
 
-          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (INT16)(pTopmostDesc->sLeft + uiStringLength), (INT16)(pTopmostDesc->sTop + uiStringHeight));
+          gVideoOverlays[iBlitterIndex].uiBackground = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, pTopmostDesc->sLeft, pTopmostDesc->sTop, (pTopmostDesc->sLeft + uiStringLength), (pTopmostDesc->sTop + uiStringHeight));
           gVideoOverlays[iBlitterIndex].sX = pTopmostDesc->sX;
           gVideoOverlays[iBlitterIndex].sY = pTopmostDesc->sY;
         }
@@ -913,7 +913,7 @@ function SaveVideoOverlaysArea(uiSrcBuffer: UINT32): void {
         iBackIndex = gVideoOverlays[uiCount].uiBackground;
 
         // Save data from frame buffer!
-        Blt16BPPTo16BPP((UINT16 *)gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 0, 0, gBackSaves[iBackIndex].sLeft, gBackSaves[iBackIndex].sTop, gBackSaves[iBackIndex].sWidth, gBackSaves[iBackIndex].sHeight);
+        Blt16BPPTo16BPP(gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, pSrcBuf, uiSrcPitchBYTES, 0, 0, gBackSaves[iBackIndex].sLeft, gBackSaves[iBackIndex].sTop, gBackSaves[iBackIndex].sWidth, gBackSaves[iBackIndex].sHeight);
       }
     }
   }
@@ -938,7 +938,7 @@ function SaveVideoOverlayArea(uiSrcBuffer: UINT32, uiCount: UINT32): void {
       iBackIndex = gVideoOverlays[uiCount].uiBackground;
 
       // Save data from frame buffer!
-      Blt16BPPTo16BPP((UINT16 *)gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, 0, 0, gBackSaves[iBackIndex].sLeft, gBackSaves[iBackIndex].sTop, gBackSaves[iBackIndex].sWidth, gBackSaves[iBackIndex].sHeight);
+      Blt16BPPTo16BPP(gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, pSrcBuf, uiSrcPitchBYTES, 0, 0, gBackSaves[iBackIndex].sLeft, gBackSaves[iBackIndex].sTop, gBackSaves[iBackIndex].sWidth, gBackSaves[iBackIndex].sHeight);
     }
   }
 
@@ -1016,30 +1016,30 @@ function RestoreShiftedVideoOverlays(sShiftX: INT16, sShiftY: INT16): BOOLEAN {
         iTempY = sTop + sShiftY;
 
         // Clip to rect
-        uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), (INT32)usWidth);
-        uiRightSkip = __min(max(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-        uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
-        uiBottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+        uiLeftSkip = __min(ClipX1 - min(ClipX1, iTempX), usWidth);
+        uiRightSkip = __min(max(ClipX2, (iTempX + usWidth)) - ClipX2, usWidth);
+        uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), usHeight);
+        uiBottomSkip = __min(__max(ClipY2, (iTempY + usHeight)) - ClipY2, usHeight);
 
         // check if whole thing is clipped
-        if ((uiLeftSkip >= (INT32)usWidth) || (uiRightSkip >= (INT32)usWidth))
+        if ((uiLeftSkip >= usWidth) || (uiRightSkip >= usWidth))
           continue;
 
         // check if whole thing is clipped
-        if ((uiTopSkip >= (INT32)usHeight) || (uiBottomSkip >= (INT32)usHeight))
+        if ((uiTopSkip >= usHeight) || (uiBottomSkip >= usHeight))
           continue;
 
         // Set re-set values given based on clipping
-        sLeft = iTempX + (INT16)uiLeftSkip;
-        sTop = iTempY + (INT16)uiTopSkip;
-        sRight = sRight + sShiftX - (INT16)uiRightSkip;
-        sBottom = sBottom + sShiftY - (INT16)uiBottomSkip;
+        sLeft = iTempX + uiLeftSkip;
+        sTop = iTempY + uiTopSkip;
+        sRight = sRight + sShiftX - uiRightSkip;
+        sBottom = sBottom + sShiftY - uiBottomSkip;
 
         usHeight = sBottom - sTop;
         usWidth = sRight - sLeft;
 
         if (gbPixelDepth == 16) {
-          Blt16BPPTo16BPP((UINT16 *)(UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, sLeft, sTop, uiLeftSkip, uiTopSkip, usWidth, usHeight);
+          Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, gVideoOverlays[uiCount].pSaveArea, gBackSaves[iBackIndex].sWidth * 2, sLeft, sTop, uiLeftSkip, uiTopSkip, usWidth, usHeight);
         } else if (gbPixelDepth == 8) {
         }
 
@@ -1096,7 +1096,7 @@ function BlitBufferToBuffer(uiSrcBuffer: UINT32, uiDestBuffer: UINT32, usSrcX: U
   pDestBuf = LockVideoSurface(uiDestBuffer, &uiDestPitchBYTES);
   pSrcBuf = LockVideoSurface(uiSrcBuffer, &uiSrcPitchBYTES);
 
-  fRetVal = Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, usSrcX, usSrcY, usSrcX, usSrcY, usWidth, usHeight);
+  fRetVal = Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, usSrcX, usSrcY, usSrcX, usSrcY, usWidth, usHeight);
 
   UnLockVideoSurface(uiDestBuffer);
   UnLockVideoSurface(uiSrcBuffer);

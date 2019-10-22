@@ -114,7 +114,7 @@ function InitTacticalPlacementGUI(): void {
     }
   }
   // Allocate the array based on how many mercs there are.
-  gMercPlacement = (MERCPLACEMENT *)MemAlloc(sizeof(MERCPLACEMENT) * giPlacements);
+  gMercPlacement = MemAlloc(sizeof(MERCPLACEMENT) * giPlacements);
   Assert(gMercPlacement);
   // Second pass:  Assign the mercs to their respective slots.
   giPlacements = 0;
@@ -128,7 +128,7 @@ function InitTacticalPlacementGUI(): void {
       //}
 
       if (MercPtrs[i]->ubStrategicInsertionCode == INSERTION_CODE_PRIMARY_EDGEINDEX || MercPtrs[i]->ubStrategicInsertionCode == INSERTION_CODE_SECONDARY_EDGEINDEX) {
-        MercPtrs[i]->ubStrategicInsertionCode = (UINT8)MercPtrs[i]->usStrategicInsertionData;
+        MercPtrs[i]->ubStrategicInsertionCode = MercPtrs[i]->usStrategicInsertionData;
       }
       gMercPlacement[giPlacements].pSoldier = MercPtrs[i];
       gMercPlacement[giPlacements].ubStrategicInsertionCode = MercPtrs[i]->ubStrategicInsertionCode;
@@ -171,7 +171,7 @@ function InitTacticalPlacementGUI(): void {
     }
     xp = 91 + (i / 2) * 54;
     yp = (i % 2) ? 412 : 361;
-    MSYS_DefineRegion(&gMercPlacement[i].region, (UINT16)xp, (UINT16)yp, (UINT16)(xp + 54), (UINT16)(yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
+    MSYS_DefineRegion(&gMercPlacement[i].region, xp, yp, (xp + 54), (yp + 62), MSYS_PRIORITY_HIGH, 0, MercMoveCallback, MercClickCallback);
   }
 
   PlaceMercs();
@@ -182,11 +182,11 @@ function InitTacticalPlacementGUI(): void {
       // go from the currently selected soldier to the end
       if (!gMercPlacement[i].fPlaced) {
         // Found an unplaced merc.  Select him.
-        gbSelectedMercID = (INT8)i;
+        gbSelectedMercID = i;
         if (gubDefaultButton == GROUP_BUTTON)
           gubSelectedGroupID = gMercPlacement[i].pSoldier->ubGroupID;
         gfTacticalPlacementGUIDirty = TRUE;
-        SetCursorMerc((INT8)i);
+        SetCursorMerc(i);
         gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
         break;
       }
@@ -312,7 +312,7 @@ function RenderTacticalPlacementGUI(): void {
       }
     }
     pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
-    Blt16BPPBufferLooseHatchRectWithColor((UINT16 *)pDestBuf, uiDestPitchBYTES, &gTPClipRect, usHatchColor);
+    Blt16BPPBufferLooseHatchRectWithColor(pDestBuf, uiDestPitchBYTES, &gTPClipRect, usHatchColor);
     SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
     RectangleDraw(TRUE, gTPClipRect.iLeft, gTPClipRect.iTop, gTPClipRect.iRight, gTPClipRect.iBottom, usHatchColor, pDestBuf);
     UnLockVideoSurface(FRAME_BUFFER);
@@ -335,7 +335,7 @@ function RenderTacticalPlacementGUI(): void {
     SetFontShadow(141);
     // Render the question mark over the face if the merc hasn't yet been placed.
     if (gMercPlacement[i].fPlaced) {
-      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (INT16)(xp + 16), (INT16)(yp + 14), (INT16)(xp + 24), (INT16)(yp + 22));
+      RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, (xp + 16), (yp + 14), (xp + 24), (yp + 22));
     } else {
       mprintf(xp + 16, yp + 14, L"?");
       InvalidateRegion(xp + 16, yp + 14, xp + 24, yp + 22);
@@ -483,7 +483,7 @@ function KillTacticalPlacementGUI(): void {
   if (gsCurInterfacePanel < 0 || gsCurInterfacePanel >= NUM_UI_PANELS)
     gsCurInterfacePanel = TEAM_PANEL;
 
-  SetCurrentInterfacePanel((UINT8)gsCurInterfacePanel);
+  SetCurrentInterfacePanel(gsCurInterfacePanel);
 
   // Leave the overhead map.
   KillOverheadMap();
@@ -629,11 +629,11 @@ function SelectNextUnplacedUnit(): void {
     // go from the currently selected soldier to the end
     if (!gMercPlacement[i].fPlaced) {
       // Found an unplaced merc.  Select him.
-      gbSelectedMercID = (INT8)i;
+      gbSelectedMercID = i;
       if (gubDefaultButton == GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier->ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
-      SetCursorMerc((INT8)i);
+      SetCursorMerc(i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
     }
@@ -642,11 +642,11 @@ function SelectNextUnplacedUnit(): void {
     // go from the beginning to the currently selected soldier
     if (!gMercPlacement[i].fPlaced) {
       // Found an unplaced merc.  Select him.
-      gbSelectedMercID = (INT8)i;
+      gbSelectedMercID = i;
       if (gubDefaultButton == GROUP_BUTTON)
         gubSelectedGroupID = gMercPlacement[i].pSoldier->ubGroupID;
       gfTacticalPlacementGUIDirty = TRUE;
-      SetCursorMerc((INT8)i);
+      SetCursorMerc(i);
       gpTacticalPlacementSelectedSoldier = gMercPlacement[i].pSoldier;
       return;
     }
@@ -779,7 +779,7 @@ function PutDownMercPiece(iPlacement: INT32): void {
   sGridNo = FindGridNoFromSweetSpot(pSoldier, pSoldier->sInsertionGridNo, 4, &ubDirection);
   if (sGridNo != NOWHERE) {
     ConvertGridNoToCellXY(sGridNo, &sCellX, &sCellY);
-    EVENT_SetSoldierPosition(pSoldier, (FLOAT)sCellX, (FLOAT)sCellY);
+    EVENT_SetSoldierPosition(pSoldier, sCellX, sCellY);
     EVENT_SetSoldierDirection(pSoldier, ubDirection);
     pSoldier->ubInsertionDirection = pSoldier->bDirection;
     gMercPlacement[iPlacement].fPlaced = TRUE;

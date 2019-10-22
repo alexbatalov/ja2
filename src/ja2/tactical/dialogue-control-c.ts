@@ -178,7 +178,7 @@ function InitalizeStaticExternalNPCFaces(): void {
   fExternFacesLoaded = TRUE;
 
   for (iCounter = 0; iCounter < NUMBER_OF_EXTERNAL_NPC_FACES; iCounter++) {
-    uiExternalStaticNPCFaces[iCounter] = (UINT32)InitFace((UINT8)(uiExternalFaceProfileIds[iCounter]), NOBODY, FACE_FORCE_SMALL);
+    uiExternalStaticNPCFaces[iCounter] = InitFace((uiExternalFaceProfileIds[iCounter]), NOBODY, FACE_FORCE_SMALL);
   }
 
   return;
@@ -429,7 +429,7 @@ function HandleDialogue(): void {
         // Decrement refrence count...
         giNPCReferenceCount--;
 
-        TriggerNPCRecord((UINT8)gpCurrentTalkingFace->uiUserData1, (UINT8)gpCurrentTalkingFace->uiUserData2);
+        TriggerNPCRecord(gpCurrentTalkingFace->uiUserData1, gpCurrentTalkingFace->uiUserData2);
         // Reset flag!
         gpCurrentTalkingFace->uiFlags &= (~FACE_PCTRIGGER_NPC);
       }
@@ -444,7 +444,7 @@ function HandleDialogue(): void {
 
       if (gpCurrentTalkingFace->uiFlags & FACE_TRIGGER_PREBATTLE_INT) {
         UnLockPauseState();
-        InitPreBattleInterface((GROUP *)gpCurrentTalkingFace->uiUserData1, TRUE);
+        InitPreBattleInterface(gpCurrentTalkingFace->uiUserData1, TRUE);
         // Reset flag!
         gpCurrentTalkingFace->uiFlags &= (~FACE_TRIGGER_PREBATTLE_INT);
       }
@@ -579,8 +579,8 @@ function HandleDialogue(): void {
       }
     }
 
-    gTacticalStatus.ubLastQuoteSaid = (UINT8)QItem->usQuoteNum;
-    gTacticalStatus.ubLastQuoteProfileNUm = (UINT8)QItem->ubCharacterNum;
+    gTacticalStatus.ubLastQuoteSaid = QItem->usQuoteNum;
+    gTacticalStatus.ubLastQuoteProfileNUm = QItem->ubCharacterNum;
 
     // Setup face pointer
     gpCurrentTalkingFace = &gFacesData[QItem->iFaceIndex];
@@ -604,13 +604,13 @@ function HandleDialogue(): void {
       }
     }
   } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_REMOVE_EPC) {
-    gMercProfiles[(UINT8)QItem->uiSpecialEventData].ubMiscFlags &= ~PROFILE_MISC_FLAG_FORCENPCQUOTE;
-    UnRecruitEPC((UINT8)QItem->uiSpecialEventData);
+    gMercProfiles[QItem->uiSpecialEventData].ubMiscFlags &= ~PROFILE_MISC_FLAG_FORCENPCQUOTE;
+    UnRecruitEPC(QItem->uiSpecialEventData);
     ReBuildCharactersList();
   } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTRACT_WANTS_TO_RENEW) {
-    HandleMercIsWillingToRenew((UINT8)QItem->uiSpecialEventData);
+    HandleMercIsWillingToRenew(QItem->uiSpecialEventData);
   } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTRACT_NOGO_TO_RENEW) {
-    HandleMercIsNotWillingToRenew((UINT8)QItem->uiSpecialEventData);
+    HandleMercIsNotWillingToRenew(QItem->uiSpecialEventData);
   } else {
     if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES) {
       gfUseAlternateDialogueFile = TRUE;
@@ -652,7 +652,7 @@ function HandleDialogue(): void {
 
       // Do battle snounds......
       if (pSoldier) {
-        InternalDoMercBattleSound(pSoldier, (UINT8)QItem->uiSpecialEventData, 0);
+        InternalDoMercBattleSound(pSoldier, QItem->uiSpecialEventData, 0);
       }
     }
 
@@ -661,7 +661,7 @@ function HandleDialogue(): void {
       gTacticalStatus.fLockItemLocators = FALSE;
 
       // Slide to location!
-      SlideToLocation(0, (UINT16)QItem->uiSpecialEventData);
+      SlideToLocation(0, QItem->uiSpecialEventData);
 
       gpCurrentTalkingFace = &gFacesData[QItem->iFaceIndex];
       gubCurrentTalkingID = QItem->ubCharacterNum;
@@ -676,7 +676,7 @@ function HandleDialogue(): void {
 
     if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_TRIGGERPREBATTLEINTERFACE) {
       UnLockPauseState();
-      InitPreBattleInterface((GROUP *)QItem->uiSpecialEventData, TRUE);
+      InitPreBattleInterface(QItem->uiSpecialEventData, TRUE);
     }
     if (QItem->uiSpecialEventFlag & DIALOGUE_ADD_EVENT_FOR_SOLDIER_UPDATE_BOX) {
       let iReason: INT32 = 0;
@@ -769,7 +769,7 @@ function HandleDialogue(): void {
 
     if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_EXIT_MAP_SCREEN) {
       // select sector
-      ChangeSelectedMapSector((INT16)QItem->uiSpecialEventData, (INT16)QItem->uiSpecialEventData2, (INT8)QItem->uiSpecialEventData3);
+      ChangeSelectedMapSector(QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3);
       RequestTriggerExitFromMapscreen(MAP_EXIT_TO_TACTICAL);
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_DISPLAY_STAT_CHANGE) {
       // grab soldier ptr from profile ID
@@ -779,7 +779,7 @@ function HandleDialogue(): void {
         let wTempString: CHAR16[] /* [128] */;
 
         // tell player about stat increase
-        BuildStatChangeString(wTempString, pSoldier->name, (BOOLEAN)QItem->uiSpecialEventData, (INT16)QItem->uiSpecialEventData2, (UINT8)QItem->uiSpecialEventData3);
+        BuildStatChangeString(wTempString, pSoldier->name, QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3);
         ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, wTempString);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_UNSET_ARRIVES_FLAG) {
@@ -813,19 +813,19 @@ function HandleDialogue(): void {
     // Switch on our special events
     if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_GIVE_ITEM) {
       if (QItem->bUIHandlerID == DIALOGUE_NPC_UI) {
-        HandleNPCItemGiven((UINT8)QItem->uiSpecialEventData, (OBJECTTYPE *)QItem->uiSpecialEventData2, (INT8)QItem->uiSpecialEventData3);
+        HandleNPCItemGiven(QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_TRIGGER_NPC) {
       if (QItem->bUIHandlerID == DIALOGUE_NPC_UI) {
-        HandleNPCTriggerNPC((UINT8)QItem->uiSpecialEventData, (UINT8)QItem->uiSpecialEventData2, (BOOLEAN)QItem->uiSpecialEventData3, (UINT8)QItem->uiSpecialEventData4);
+        HandleNPCTriggerNPC(QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3, QItem->uiSpecialEventData4);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_GOTO_GRIDNO) {
       if (QItem->bUIHandlerID == DIALOGUE_NPC_UI) {
-        HandleNPCGotoGridNo((UINT8)QItem->uiSpecialEventData, (UINT16)QItem->uiSpecialEventData2, (UINT8)QItem->uiSpecialEventData3);
+        HandleNPCGotoGridNo(QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_DO_ACTION) {
       if (QItem->bUIHandlerID == DIALOGUE_NPC_UI) {
-        HandleNPCDoAction((UINT8)QItem->uiSpecialEventData, (UINT16)QItem->uiSpecialEventData2, (UINT8)QItem->uiSpecialEventData3);
+        HandleNPCDoAction(QItem->uiSpecialEventData, QItem->uiSpecialEventData2, QItem->uiSpecialEventData3);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CLOSE_PANEL) {
       if (QItem->bUIHandlerID == DIALOGUE_NPC_UI) {
@@ -835,7 +835,7 @@ function HandleDialogue(): void {
       SetUpdateBoxFlag(TRUE);
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTINUE_TRAINING_MILITIA) {
       // grab soldier ptr from profile ID
-      pSoldier = FindSoldierByProfileID((UINT8)(QItem->uiSpecialEventData), FALSE);
+      pSoldier = FindSoldierByProfileID((QItem->uiSpecialEventData), FALSE);
 
       // if soldier valid...
       if (pSoldier != NULL) {
@@ -853,7 +853,7 @@ function HandleDialogue(): void {
       // if soldier valid...
       if (pSoldier != NULL) {
         // .. remove the fired soldier again
-        BeginStrategicRemoveMerc(pSoldier, (UINT8)QItem->uiSpecialEventData);
+        BeginStrategicRemoveMerc(pSoldier, QItem->uiSpecialEventData);
       }
     } else if (QItem->uiSpecialEventFlag & DIALOGUE_SPECIAL_EVENT_CONTRACT_ENDING_NO_ASK_EQUIP) {
       // grab soldier ptr from profile ID
@@ -1844,7 +1844,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       // reset the font dest buffer
       SetFontDestBuffer(pBlitter->uiDestBuff, 0, 0, 640, 480, FALSE);
 
-      VarFindFontCenterCoordinates((INT16)(pBlitter->sX + 12), (INT16)(pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", pSoldier->name);
+      VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", pSoldier->name);
       mprintf(sFontX, sFontY, L"%s", pSoldier->name);
 
       // What sector are we in, ( and is it the same as ours? )
@@ -1853,7 +1853,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
 
         ReduceStringLength(zTownIDString, 64, BLOCKFONT2);
 
-        VarFindFontCenterCoordinates((INT16)(pBlitter->sX + 12), (INT16)(pBlitter->sY + 68), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", zTownIDString);
+        VarFindFontCenterCoordinates((pBlitter->sX + 12), (pBlitter->sY + 68), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", zTownIDString);
         mprintf(sFontX, sFontY, L"%s", zTownIDString);
       }
 
@@ -1861,11 +1861,11 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
       SetFontDestBuffer(FRAME_BUFFER, 0, 0, 640, 480, FALSE);
 
       // Display bars
-      DrawLifeUIBarEx(pSoldier, (INT16)(pBlitter->sX + 69), (INT16)(pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
-      DrawBreathUIBarEx(pSoldier, (INT16)(pBlitter->sX + 75), (INT16)(pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
-      DrawMoraleUIBarEx(pSoldier, (INT16)(pBlitter->sX + 81), (INT16)(pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
+      DrawLifeUIBarEx(pSoldier, (pBlitter->sX + 69), (pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
+      DrawBreathUIBarEx(pSoldier, (pBlitter->sX + 75), (pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
+      DrawMoraleUIBarEx(pSoldier, (pBlitter->sX + 81), (pBlitter->sY + 47), 3, 42, FALSE, pBlitter->uiDestBuff);
     } else {
-      VarFindFontCenterCoordinates((INT16)(pBlitter->sX + 9), (INT16)(pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
+      VarFindFontCenterCoordinates((pBlitter->sX + 9), (pBlitter->sY + 55), 73, 9, BLOCKFONT2, &sFontX, &sFontY, L"%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
       mprintf(sFontX, sFontY, L"%s", gMercProfiles[gpCurrentTalkingFace->ubCharacterNum].zNickname);
     }
 
@@ -1876,7 +1876,7 @@ function RenderFaceOverlay(pBlitter: Pointer<VIDEO_OVERLAY>): void {
     pDestBuf = LockVideoSurface(pBlitter->uiDestBuff, &uiDestPitchBYTES);
     pSrcBuf = LockVideoSurface(gpCurrentTalkingFace->uiAutoDisplayBuffer, &uiSrcPitchBYTES);
 
-    Blt16BPPTo16BPP((UINT16 *)pDestBuf, uiDestPitchBYTES, (UINT16 *)pSrcBuf, uiSrcPitchBYTES, (INT16)(pBlitter->sX + 14), (INT16)(pBlitter->sY + 6), 0, 0, gpCurrentTalkingFace->usFaceWidth, gpCurrentTalkingFace->usFaceHeight);
+    Blt16BPPTo16BPP(pDestBuf, uiDestPitchBYTES, pSrcBuf, uiSrcPitchBYTES, (pBlitter->sX + 14), (pBlitter->sY + 6), 0, 0, gpCurrentTalkingFace->usFaceWidth, gpCurrentTalkingFace->usFaceHeight);
 
     UnLockVideoSurface(pBlitter->uiDestBuff);
     UnLockVideoSurface(gpCurrentTalkingFace->uiAutoDisplayBuffer);
@@ -1919,20 +1919,20 @@ function SayQuoteFromAnyBodyInSector(usQuoteNum: UINT16): void {
         }
       }
 
-      ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+      ubMercsInSector[ubNumMercs] = cnt;
       ubNumMercs++;
     }
   }
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     // If we are air raid, AND red exists somewhere...
     if (usQuoteNum == QUOTE_AIR_RAID) {
       for (cnt = 0; cnt < ubNumMercs; cnt++) {
         if (ubMercsInSector[cnt] == 11) {
-          ubChosenMerc = (UINT8)cnt;
+          ubChosenMerc = cnt;
           break;
         }
       }
@@ -1959,7 +1959,7 @@ function SayQuoteFromAnyBodyInThisSector(sSectorX: INT16, sSectorY: INT16, bSect
     if (pTeamSoldier->bActive) {
       // Add guy if he's a candidate...
       if (pTeamSoldier->sSectorX == sSectorX && pTeamSoldier->sSectorY == sSectorY && pTeamSoldier->bSectorZ == bSectorZ && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier->fMercAsleep) {
-        ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+        ubMercsInSector[ubNumMercs] = cnt;
         ubNumMercs++;
       }
     }
@@ -1967,13 +1967,13 @@ function SayQuoteFromAnyBodyInThisSector(sSectorX: INT16, sSectorY: INT16, bSect
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     // If we are air raid, AND red exists somewhere...
     if (usQuoteNum == QUOTE_AIR_RAID) {
       for (cnt = 0; cnt < ubNumMercs; cnt++) {
         if (ubMercsInSector[cnt] == 11) {
-          ubChosenMerc = (UINT8)cnt;
+          ubChosenMerc = cnt;
           break;
         }
       }
@@ -1998,18 +1998,18 @@ function SayQuoteFromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuote
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
-    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier->sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier->fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, (UINT8)MaxDistanceVisible(), TRUE)) {
-      if (usQuoteNum == 66 && (INT8)Random(100) > EffectiveWisdom(pTeamSoldier)) {
+    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier->sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier->fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), TRUE)) {
+      if (usQuoteNum == 66 && Random(100) > EffectiveWisdom(pTeamSoldier)) {
         continue;
       }
-      ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+      ubMercsInSector[ubNumMercs] = cnt;
       ubNumMercs++;
     }
   }
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     if (usQuoteNum == 66) {
       SetFactTrue(FACT_PLAYER_FOUND_ITEMS_MISSING);
@@ -2033,7 +2033,7 @@ function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuo
   // run through list
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
-    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier->sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier->fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, (UINT8)MaxDistanceVisible(), TRUE)) {
+    if (OK_INSECTOR_MERC(pTeamSoldier) && PythSpacesAway(sGridNo, pTeamSoldier->sGridNo) < bDistance && !AM_AN_EPC(pTeamSoldier) && !(pTeamSoldier->uiStatusFlags & SOLDIER_GASSED) && !(AM_A_ROBOT(pTeamSoldier)) && !pTeamSoldier->fMercAsleep && SoldierTo3DLocationLineOfSightTest(pTeamSoldier, sGridNo, 0, 0, MaxDistanceVisible(), TRUE)) {
       // ATE: This is to check gedner for this quote...
       if (QuoteExp_GenderCode[pTeamSoldier->ubProfile] == 0 && bSex == FEMALE) {
         continue;
@@ -2043,14 +2043,14 @@ function SayQuote58FromNearbyMercInSector(sGridNo: INT16, bDistance: INT8, usQuo
         continue;
       }
 
-      ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+      ubMercsInSector[ubNumMercs] = cnt;
       ubNumMercs++;
     }
   }
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
     TacticalCharacterDialogue(MercPtrs[ubMercsInSector[ubChosenMerc]], usQuoteNum);
   }
 }

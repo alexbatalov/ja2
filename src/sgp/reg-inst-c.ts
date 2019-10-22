@@ -119,12 +119,12 @@ function GetProfileInteger(lpszSection: STR, lpszEntry: STR, nDefault: int): UIN
     let hSecKey: HKEY = GetSectionKey(lpszSection);
     if (hSecKey == NULL)
       return nDefault;
-    lResult = RegQueryValueEx(hSecKey, (LPTSTR)lpszEntry, NULL, &dwType, (LPBYTE)&dwValue, &dwCount);
+    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, &dwValue, &dwCount);
     RegCloseKey(hSecKey);
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_DWORD);
       assert(dwCount == sizeof(dwValue));
-      return (UINT)dwValue;
+      return dwValue;
     }
     return nDefault;
   } else {
@@ -150,10 +150,10 @@ function GetProfileChar(lpszSection: STR, lpszEntry: STR, lpszDefault: STR, lpsz
       strcpy(lpszValue, lpszDefault);
       return TRUE;
     }
-    lResult = RegQueryValueEx(hSecKey, (LPTSTR)lpszEntry, NULL, &dwType, NULL, &dwCount);
+    lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, NULL, &dwCount);
     if (lResult == ERROR_SUCCESS) {
       assert(dwType == REG_SZ);
-      lResult = RegQueryValueEx(hSecKey, (LPTSTR)lpszEntry, NULL, &dwType, (LPBYTE)strValue, &dwCount);
+      lResult = RegQueryValueEx(hSecKey, lpszEntry, NULL, &dwType, strValue, &dwCount);
     }
     RegCloseKey(hSecKey);
     if (lResult == ERROR_SUCCESS) {
@@ -287,13 +287,13 @@ function WriteProfileChar(lpszSection: STR, lpszEntry: STR, lpszValue: STR): BOO
       if (hSecKey == NULL)
         return FALSE;
       // necessary to cast away const below
-      lResult = RegDeleteValue(hSecKey, (LPTSTR)lpszEntry);
+      lResult = RegDeleteValue(hSecKey, lpszEntry);
       RegCloseKey(hSecKey);
     } else {
       let hSecKey: HKEY = GetSectionKey(lpszSection);
       if (hSecKey == NULL)
         return FALSE;
-      lResult = RegSetValueEx(hSecKey, lpszEntry, 0, REG_SZ, (LPBYTE)lpszValue, (lstrlen(lpszValue) + 1) * sizeof(TCHAR));
+      lResult = RegSetValueEx(hSecKey, lpszEntry, 0, REG_SZ, lpszValue, (lstrlen(lpszValue) + 1) * sizeof(TCHAR));
       RegCloseKey(hSecKey);
     }
     return lResult == ERROR_SUCCESS;

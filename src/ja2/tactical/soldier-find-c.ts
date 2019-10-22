@@ -153,7 +153,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 
         // If we want same level, skip if buggy's not on the same level!
         if (uiFlags & FIND_SOLDIER_SAMELEVEL) {
-          if (pSoldier->bLevel != (UINT8)(uiFlags >> 16)) {
+          if (pSoldier->bLevel != (uiFlags >> 16)) {
             continue;
           }
         }
@@ -225,8 +225,8 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
               usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
               if (usAnimSurface != INVALID_ANIMATION_SURFACE) {
-                iMercScreenX = (INT32)(sScreenX - aRect.iLeft);
-                iMercScreenY = (INT32)(-1 * (sScreenY - aRect.iBottom));
+                iMercScreenX = (sScreenX - aRect.iLeft);
+                iMercScreenY = (-1 * (sScreenY - aRect.iBottom));
 
                 if (!CheckVideoObjectScreenCoordinateInData(gAnimSurfaceDatabase[usAnimSurface].hVideoObject, pSoldier->usAniFrame, iMercScreenX, iMercScreenY)) {
                   continue;
@@ -248,7 +248,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
 
               // Determine if it's the current
               if (aRect.iBottom > sHeighestMercScreenY) {
-                sMaxScreenMercY = (UINT16)aRect.iBottom;
+                sMaxScreenMercY = aRect.iBottom;
                 sHeighestMercScreenY = sMaxScreenMercY;
 
                 gSoldierStack.bCur = gSoldierStack.bNum - 1;
@@ -270,7 +270,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
             } else {
               // Determine if it's the best one
               if (aRect.iBottom > sHeighestMercScreenY) {
-                sMaxScreenMercY = (UINT16)aRect.iBottom;
+                sMaxScreenMercY = aRect.iBottom;
                 sHeighestMercScreenY = sMaxScreenMercY;
 
                 // Set it!
@@ -286,7 +286,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
           // Selective means don't give out enemy mercs if they are not visible
 
           ///&& !NewOKDestination( pSoldier, sGridNo, TRUE, (INT8)gsInterfaceLevel )
-          if (pSoldier->sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, TRUE, (INT8)gsInterfaceLevel)) {
+          if (pSoldier->sGridNo == sGridNo && !NewOKDestination(pSoldier, sGridNo, TRUE, gsInterfaceLevel)) {
             // Set it!
             ubBestMerc = pSoldier->ubID;
 
@@ -299,7 +299,7 @@ function FindSoldier(sGridNo: INT16, pusSoldierIndex: Pointer<UINT16>, pMercFlag
   }
 
   if (fSoldierFound && ubBestMerc != NOBODY) {
-    *pusSoldierIndex = (UINT16)ubBestMerc;
+    *pusSoldierIndex = ubBestMerc;
 
     (*pMercFlags) = GetSoldierFindFlags(ubBestMerc);
 
@@ -408,7 +408,7 @@ function IsGridNoInScreenRect(sGridNo: INT16, pRect: Pointer<SGPRect>): BOOLEAN 
 
   do {
     do {
-      GetScreenXYGridNo((INT16)iXTrav, (INT16)iYTrav, &sMapPos);
+      GetScreenXYGridNo(iXTrav, iYTrav, &sMapPos);
 
       if (sMapPos == sGridNo) {
         return TRUE;
@@ -459,8 +459,8 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *psHeight = (INT16)5;
-    *psWidth = (INT16)5;
+    *psHeight = 5;
+    *psWidth = 5;
 
     return;
   }
@@ -473,8 +473,8 @@ function GetSoldierAnimDims(pSoldier: Pointer<SOLDIERTYPE>, psHeight: Pointer<IN
     let i: int = 0;
   }
 
-  *psHeight = (INT16)pSoldier->sBoundingBoxHeight;
-  *psWidth = (INT16)pSoldier->sBoundingBoxWidth;
+  *psHeight = pSoldier->sBoundingBoxHeight;
+  *psWidth = pSoldier->sBoundingBoxWidth;
 }
 
 function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer<INT16>, sOffsetY: Pointer<INT16>): void {
@@ -483,14 +483,14 @@ function GetSoldierAnimOffsets(pSoldier: Pointer<SOLDIERTYPE>, sOffsetX: Pointer
   usAnimSurface = GetSoldierAnimationSurface(pSoldier, pSoldier->usAnimState);
 
   if (usAnimSurface == INVALID_ANIMATION_SURFACE) {
-    *sOffsetX = (INT16)0;
-    *sOffsetY = (INT16)0;
+    *sOffsetX = 0;
+    *sOffsetY = 0;
 
     return;
   }
 
-  *sOffsetX = (INT16)pSoldier->sBoundingBoxOffsetX;
-  *sOffsetY = (INT16)pSoldier->sBoundingBoxOffsetY;
+  *sOffsetX = pSoldier->sBoundingBoxOffsetX;
+  *sOffsetY = pSoldier->sBoundingBoxOffsetY;
 }
 
 function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<INT16>, psScreenY: Pointer<INT16>): void {
@@ -519,8 +519,8 @@ function GetSoldierScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Pointer<
 
   // pTrav = &(gAnimSurfaceDatabase[ usAnimSurface ].hVideoObject->pETRLEObject[ pSoldier->usAniFrame ] );
 
-  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S;
+  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
 
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
@@ -566,8 +566,8 @@ function GetSoldierTRUEScreenPos(pSoldier: Pointer<SOLDIERTYPE>, psScreenX: Poin
 
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S;
+  sMercScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+  sMercScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
 
   // Adjust starting screen coordinates
   sMercScreenX -= gsRenderWorldOffsetX;
@@ -597,7 +597,7 @@ function GridNoOnScreen(sGridNo: INT16): BOOLEAN {
   ConvertGridNoToXY(sGridNo, &sNewCenterWorldX, &sNewCenterWorldY);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sNewCenterWorldX), (INT16)(sNewCenterWorldY), &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY((sNewCenterWorldX), (sNewCenterWorldY), &sWorldX, &sWorldY);
 
   // ATE: OK, here, adjust the top value so that it's a tile and a bit over, because of our mercs!
   if (sWorldX >= gsTopLeftWorldX && sWorldX <= gsBottomRightWorldX && sWorldY >= (gsTopLeftWorldY + sAllowance) && sWorldY <= (gsBottomRightWorldY + 20)) {
@@ -636,7 +636,7 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
   sY = CenterY(sGridNo);
 
   // Get screen coordinates for current position of soldier
-  GetWorldXYAbsoluteScreenXY((INT16)(sX / CELL_X_SIZE), (INT16)(sY / CELL_Y_SIZE), &sWorldX, &sWorldY);
+  GetWorldXYAbsoluteScreenXY((sX / CELL_X_SIZE), (sY / CELL_Y_SIZE), &sWorldX, &sWorldY);
 
   // Find the diustance from render center to true world center
   sDistToCenterX = gsRenderCenterX - gCenterWorldX;
@@ -655,7 +655,7 @@ function SoldierLocationRelativeToScreen(sGridNo: INT16, usReasonID: UINT16, pbD
 
   // Get direction
   //*pbDirection = atan8( sScreenCenterX, sScreenCenterY, sWorldX, sWorldY );
-  *pbDirection = atan8(gsRenderCenterX, gsRenderCenterY, (INT16)(sX), (INT16)(sY));
+  *pbDirection = atan8(gsRenderCenterX, gsRenderCenterY, (sX), (sY));
 
   // Check values!
   if (sWorldX > (sScreenCenterX + 20)) {
@@ -708,7 +708,7 @@ function FindRelativeSoldierPosition(pSoldier: Pointer<SOLDIERTYPE>, usFlags: Po
   GetSoldierScreenRect(pSoldier, &aRect);
 
   if (IsPointInScreenRectWithRelative(sX, sY, &aRect, &sRelX, &sRelY)) {
-    dRelPer = (FLOAT)sRelY / (aRect.iBottom - aRect.iTop);
+    dRelPer = sRelY / (aRect.iBottom - aRect.iTop);
 
     // Determine relative positions
     switch (gAnimControl[pSoldier->usAnimState].ubHeight) {
@@ -756,7 +756,7 @@ function QuickFindSoldier(sGridNo: INT16): UINT8 {
 
     if (pSoldier != NULL) {
       if (pSoldier->sGridNo == sGridNo && pSoldier->bVisible != -1) {
-        return (UINT8)cnt;
+        return cnt;
       }
     }
   }
@@ -773,16 +773,16 @@ function GetGridNoScreenPos(sGridNo: INT16, ubLevel: UINT8, psScreenX: Pointer<I
   let dTempY_S: FLOAT;
 
   // Get 'TRUE' merc position
-  dOffsetX = (FLOAT)(CenterX(sGridNo) - gsRenderCenterX);
-  dOffsetY = (FLOAT)(CenterY(sGridNo) - gsRenderCenterY);
+  dOffsetX = (CenterX(sGridNo) - gsRenderCenterX);
+  dOffsetY = (CenterY(sGridNo) - gsRenderCenterY);
 
   // OK, DONT'T ASK... CONVERSION TO PROPER Y NEEDS THIS...
   dOffsetX -= CELL_Y_SIZE;
 
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S;
+  sScreenX = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+  sScreenY = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S;
 
   // Adjust starting screen coordinates
   sScreenX -= gsRenderWorldOffsetX;

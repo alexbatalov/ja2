@@ -432,7 +432,7 @@ function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
     iEffectiveLeadership = CalcThreateningEffectiveness(ubMerc) * pMercProfile->usApproachFactor[bApproach - 1] / 100;
     iApproachVal = pNPCProfile->ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50;
   } else {
-    iEffectiveLeadership = ((INT32)pMercProfile->bLeadership) * pMercProfile->usApproachFactor[bApproach - 1] / 100;
+    iEffectiveLeadership = (pMercProfile->bLeadership) * pMercProfile->usApproachFactor[bApproach - 1] / 100;
     iApproachVal = pNPCProfile->ubApproachVal[bApproach - 1] * iEffectiveLeadership / 50;
   }
   // NB if town attachment is less than 100% then we should make personal value proportionately more important!
@@ -449,7 +449,7 @@ function CalcDesireToTalk(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8): UINT8 {
     iWillingness = 0;
   }
 
-  return (UINT8)iWillingness;
+  return iWillingness;
 }
 
 function ApproachedForFirstTime(pNPCProfile: Pointer<MERCPROFILESTRUCT>, bApproach: INT8): void {
@@ -458,11 +458,11 @@ function ApproachedForFirstTime(pNPCProfile: Pointer<MERCPROFILESTRUCT>, bApproa
 
   pNPCProfile->bApproached |= gbFirstApproachFlags[bApproach - 1];
   for (ubLoop = 1; ubLoop <= NUM_REAL_APPROACHES; ubLoop++) {
-    uiTemp = (UINT32)pNPCProfile->ubApproachVal[ubLoop - 1] * (UINT32)pNPCProfile->ubApproachMod[bApproach - 1][ubLoop - 1] / 100;
+    uiTemp = pNPCProfile->ubApproachVal[ubLoop - 1] * pNPCProfile->ubApproachMod[bApproach - 1][ubLoop - 1] / 100;
     if (uiTemp > 255) {
       uiTemp = 255;
     }
-    pNPCProfile->ubApproachVal[ubLoop - 1] = (UINT8)uiTemp;
+    pNPCProfile->ubApproachVal[ubLoop - 1] = uiTemp;
   }
 }
 
@@ -766,7 +766,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 case 100:
                 case 200: // Carla
                   if (CheckFact(FACT_CARLA_AVAILABLE, 0)) {
-                    gMercProfiles[MADAME].bNPCData += (INT8)(pObj->uiMoneyAmount / 100);
+                    gMercProfiles[MADAME].bNPCData += (pObj->uiMoneyAmount / 100);
                     TriggerNPCRecord(MADAME, 16);
                   } else {
                     // see default case
@@ -778,7 +778,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 case 500:
                 case 1000: // Cindy
                   if (CheckFact(FACT_CINDY_AVAILABLE, 0)) {
-                    gMercProfiles[MADAME].bNPCData += (INT8)(pObj->uiMoneyAmount / 500);
+                    gMercProfiles[MADAME].bNPCData += (pObj->uiMoneyAmount / 500);
                     TriggerNPCRecord(MADAME, 17);
                   } else {
                     // see default case
@@ -790,7 +790,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 case 300:
                 case 600: // Bambi
                   if (CheckFact(FACT_BAMBI_AVAILABLE, 0)) {
-                    gMercProfiles[MADAME].bNPCData += (INT8)(pObj->uiMoneyAmount / 300);
+                    gMercProfiles[MADAME].bNPCData += (pObj->uiMoneyAmount / 300);
                     TriggerNPCRecord(MADAME, 18);
                   } else {
                     // see default case
@@ -802,7 +802,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
                 case 400:
                 case 800: // Maria?
                   if (gubQuest[QUEST_RESCUE_MARIA] == QUESTINPROGRESS) {
-                    gMercProfiles[MADAME].bNPCData += (INT8)(pObj->uiMoneyAmount / 400);
+                    gMercProfiles[MADAME].bNPCData += (pObj->uiMoneyAmount / 400);
                     TriggerNPCRecord(MADAME, 19);
                     break;
                   } else {
@@ -839,7 +839,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
               if (ubNPC == VINCE || ubNPC == STEVE) {
                 if (CheckFact(FACT_VINCE_EXPECTING_MONEY, ubNPC) == FALSE && gMercProfiles[ubNPC].iBalance < 0 && pNPCQuoteInfo->sActionData != NPC_ACTION_DONT_ACCEPT_ITEM) {
                   // increment balance
-                  gMercProfiles[ubNPC].iBalance += (INT32)pObj->uiMoneyAmount;
+                  gMercProfiles[ubNPC].iBalance += pObj->uiMoneyAmount;
                   gMercProfiles[ubNPC].uiTotalCostToDate += pObj->uiMoneyAmount;
                   if (gMercProfiles[ubNPC].iBalance > 0) {
                     gMercProfiles[ubNPC].iBalance = 0;
@@ -878,7 +878,7 @@ function NPCConsiderReceivingItemFromMerc(ubNPC: UINT8, ubMerc: UINT8, pObj: Poi
             if (usItemToConsider == MONEY && (ubNPC == SKYRIDER || (ubNPC >= FIRST_RPC && ubNPC < FIRST_NPC))) {
               if (gMercProfiles[ubNPC].iBalance < 0 && pNPCQuoteInfo->sActionData != NPC_ACTION_DONT_ACCEPT_ITEM) {
                 // increment balance
-                gMercProfiles[ubNPC].iBalance += (INT32)pObj->uiMoneyAmount;
+                gMercProfiles[ubNPC].iBalance += pObj->uiMoneyAmount;
                 gMercProfiles[ubNPC].uiTotalCostToDate += pObj->uiMoneyAmount;
                 if (gMercProfiles[ubNPC].iBalance > 0) {
                   gMercProfiles[ubNPC].iBalance = 0;
@@ -908,10 +908,10 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
     case VINCE: {
       let iCost: INT32;
 
-      iCost = (INT32)CalcMedicalCost(ubNPC);
+      iCost = CalcMedicalCost(ubNPC);
 
       // check amount of money
-      if ((INT32)uiMoneyAmount + giHospitalTempBalance + giHospitalRefund >= iCost) {
+      if (uiMoneyAmount + giHospitalTempBalance + giHospitalRefund >= iCost) {
         // enough cash, check how much help is needed
         if (CheckFact(FACT_WOUNDED_MERCS_NEARBY, ubNPC)) {
           *pQuoteValue = 26;
@@ -936,12 +936,12 @@ function HandleNPCBeingGivenMoneyByPlayer(ubNPC: UINT8, uiMoneyAmount: UINT32, p
       }
     } break;
     case KINGPIN:
-      if ((INT32)uiMoneyAmount < -gMercProfiles[KINGPIN].iBalance) {
+      if (uiMoneyAmount < -gMercProfiles[KINGPIN].iBalance) {
         *pQuoteValue = 9;
       } else {
         *pQuoteValue = 10;
       }
-      gMercProfiles[KINGPIN].iBalance += (INT32)uiMoneyAmount;
+      gMercProfiles[KINGPIN].iBalance += uiMoneyAmount;
       break;
     case WALTER:
       if (gMercProfiles[WALTER].iBalance == 0) {
@@ -1148,7 +1148,7 @@ function ReturnItemToPlayerIfNecessary(ubMerc: UINT8, bApproach: INT8, uiApproac
   // if the approach was changed, always return the item
   // otherwise check to see if the record in question specified refusal
   if (bApproach != APPROACH_GIVINGITEM || (pQuotePtr == NULL) || (pQuotePtr->sActionData == NPC_ACTION_DONT_ACCEPT_ITEM)) {
-    pObj = (OBJECTTYPE *)uiApproachData;
+    pObj = uiApproachData;
 
     // Find the merc
     pSoldier = FindSoldierByProfileID(ubMerc, FALSE);
@@ -1291,7 +1291,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
           // say quote and following consecutive quotes
           for (ubLoop = 0; ubLoop < pQuotePtr->ubNumQuotes; ubLoop++) {
             // say quote #(pQuotePtr->ubQuoteNum + ubLoop)
-            TalkingMenuDialogue((UINT8)(pQuotePtr->ubQuoteNum + ubLoop));
+            TalkingMenuDialogue((pQuotePtr->ubQuoteNum + ubLoop));
           }
         } else {
           TalkingMenuDialogue(pProfile->ubLastQuoteSaid);
@@ -1326,13 +1326,13 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
           }
 
           // If we are approaching because we want to give an item, do something different
-          pObj = (OBJECTTYPE *)uiApproachData;
+          pObj = uiApproachData;
           NPCConsiderReceivingItemFromMerc(ubNPC, ubMerc, pObj, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
           break;
         case TRIGGER_NPC:
           // if triggering, pass in the approach data as the record to consider
-          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, (UINT8)uiApproachData, GetJA2Clock()));
-          NPCConsiderTalking(ubNPC, ubMerc, bApproach, (UINT8)uiApproachData, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
+          DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Handling trigger %S/%d at %ld", gMercProfiles[ubNPC].zNickname, uiApproachData, GetJA2Clock()));
+          NPCConsiderTalking(ubNPC, ubMerc, bApproach, uiApproachData, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
           break;
         default:
           NPCConsiderTalking(ubNPC, ubMerc, bApproach, 0, pNPCQuoteInfoArray, &pQuotePtr, &ubRecordNum);
@@ -1346,7 +1346,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
             if (pProfile->bFriendlyOrDirectDefaultResponseUsedRecently) {
               ubQuoteNum = QUOTE_GETLOST;
             } else {
-              ubQuoteNum = QUOTE_FRIENDLY_DEFAULT1 + (UINT8)Random(2);
+              ubQuoteNum = QUOTE_FRIENDLY_DEFAULT1 + Random(2);
               pProfile->bFriendlyOrDirectDefaultResponseUsedRecently = TRUE;
             }
             break;
@@ -1426,12 +1426,12 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
             pSoldier->bNextAction = AI_ACTION_NONE;
             pSoldier->usNextActionData = 0;
           }
-          NPCDoAction(ubNPC, (UINT16) - (pQuotePtr->sActionData), ubRecordNum);
+          NPCDoAction(ubNPC,  - (pQuotePtr->sActionData), ubRecordNum);
         }
         if (pQuotePtr->ubQuoteNum != NO_QUOTE) {
           // say quote and following consecutive quotes
           for (ubLoop = 0; ubLoop < pQuotePtr->ubNumQuotes; ubLoop++) {
-            TalkingMenuDialogue((UINT8)(pQuotePtr->ubQuoteNum + ubLoop));
+            TalkingMenuDialogue((pQuotePtr->ubQuoteNum + ubLoop));
           }
           pProfile->ubLastQuoteSaid = ubRecordNum;
           pProfile->bLastQuoteSaidWasSpecial = TRUE;
@@ -1565,7 +1565,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
             pSoldier->bNextAction = AI_ACTION_NONE;
             pSoldier->usNextActionData = 0;
           }
-          NPCDoAction(ubNPC, (UINT16) - (pQuotePtr->sActionData), ubRecordNum);
+          NPCDoAction(ubNPC,  - (pQuotePtr->sActionData), ubRecordNum);
         } else if (pQuotePtr->usGoToGridno == NO_MOVE && pQuotePtr->sActionData > 0) {
           pSoldier = FindSoldierByProfileID(ubNPC, FALSE);
           ZEROTIMECOUNTER(pSoldier->AICounter);
@@ -1573,7 +1573,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
             pSoldier->bNextAction = AI_ACTION_NONE;
             pSoldier->usNextActionData = 0;
           }
-          NPCDoAction(ubNPC, (UINT16)(pQuotePtr->sActionData), ubRecordNum);
+          NPCDoAction(ubNPC, (pQuotePtr->sActionData), ubRecordNum);
         }
 
         // Movement?
@@ -1646,7 +1646,7 @@ function Converse(ubNPC: UINT8, ubMerc: UINT8, bApproach: INT8, uiApproachData: 
     case APPROACH_DECLARATION_OF_HOSTILITY:
     case APPROACH_INITIAL_QUOTE:
     case APPROACH_GIVINGITEM:
-      pProfile->ubLastDateSpokenTo = (UINT8)GetWorldDay();
+      pProfile->ubLastDateSpokenTo = GetWorldDay();
       break;
     default:
       break;
@@ -1786,7 +1786,7 @@ function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: BOOLEA
   if (pNPC->ubQuoteRecord == 0) {
     ubQuoteRecord = 0;
   } else {
-    ubQuoteRecord = (UINT8)(pNPC->ubQuoteRecord - 1);
+    ubQuoteRecord = (pNPC->ubQuoteRecord - 1);
   }
 
   // Clear values!
@@ -1813,7 +1813,7 @@ function NPCReachedDestination(pNPC: Pointer<SOLDIERTYPE>, fAlreadyThere: BOOLEA
   if (pNPC->sGridNo == pQuotePtr->usGoToGridno) {
     // check for an after-move action
     if (pQuotePtr->sActionData > 0) {
-      NPCDoAction(ubNPC, (UINT16)pQuotePtr->sActionData, ubQuoteRecord);
+      NPCDoAction(ubNPC, pQuotePtr->sActionData, ubQuoteRecord);
     }
   }
 
@@ -1967,14 +1967,14 @@ function TriggerClosestMercWhoCanSeeNPC(ubNPC: UINT8, pQuotePtr: Pointer<NPCQuot
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
     if (OK_INSECTOR_MERC(pTeamSoldier) && pTeamSoldier->bOppList[pSoldier->ubID] == SEEN_CURRENTLY) {
-      ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+      ubMercsInSector[ubNumMercs] = cnt;
       ubNumMercs++;
     }
   }
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     // Post action to close panel
     NPCClosePanel();
@@ -2465,7 +2465,7 @@ function TriggerFriendWithHostileQuote(ubNPC: UINT8): void {
 
   if (ubNumMercsAvailable > 0) {
     PauseAITemporarily();
-    ubChosenMerc = (UINT8)Random(ubNumMercsAvailable);
+    ubChosenMerc = Random(ubNumMercsAvailable);
     TriggerNPCWithIHateYouQuote(ubMercsAvailable[ubChosenMerc]);
   } else {
     // done... we should enter combat mode with this soldier's team starting,

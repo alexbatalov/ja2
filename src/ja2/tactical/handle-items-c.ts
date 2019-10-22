@@ -26,7 +26,7 @@ function HandleCheckForBadChangeToGetThrough(pSoldier: Pointer<SOLDIERTYPE>, pTa
       fBadChangeToGetThrough = TRUE;
     }
   } else {
-    if (SoldierToLocationChanceToGetThrough(pSoldier, sTargetGridNo, (INT8)bLevel, 0, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
+    if (SoldierToLocationChanceToGetThrough(pSoldier, sTargetGridNo, bLevel, 0, NOBODY) < OK_CHANCE_TO_GET_THROUGH) {
       fBadChangeToGetThrough = TRUE;
     }
   }
@@ -282,7 +282,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       //		EVENT_FireSoldierWeapon( pSoldier, sTargetGridNo );
       if (fFromUI) {
         // set the target level; if the AI calls this it will have set the level already...
-        pSoldier->bTargetLevel = (INT8)gsInterfaceLevel;
+        pSoldier->bTargetLevel = gsInterfaceLevel;
       }
 
       if (Item[usHandItem].usItemClass != IC_THROWING_KNIFE) {
@@ -306,7 +306,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // Start knife throw attack
 
         // Get direction
-        ubDirection = (UINT8)GetDirectionFromGridNo(sTargetGridNo, pSoldier);
+        ubDirection = GetDirectionFromGridNo(sTargetGridNo, pSoldier);
 
         EVENT_SoldierBeginKnifeThrowAttack(pSoldier, sTargetGridNo, ubDirection);
       }
@@ -366,7 +366,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
         // Who is the one we want......
         sGotLocation = sSpot;
         sAdjustedGridNo = pTargetSoldier->sGridNo;
-        ubDirection = (UINT8)sCnt;
+        ubDirection = sCnt;
         break;
       }
     }
@@ -442,7 +442,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Calculate AP costs...
     sAPCost = GetAPsToBeginFirstAid(pSoldier);
-    sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+    sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
     if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
       // OK, set UI
@@ -487,7 +487,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToCutFence(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -547,7 +547,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToBeginRepair(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -609,7 +609,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToRefuelVehicle(pSoldier);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -650,7 +650,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
     if (sActionGridNo != -1) {
       // Calculate AP costs...
       sAPCost = GetAPsToUseJar(pSoldier, sActionGridNo);
-      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+      sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
       if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
         // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -697,7 +697,7 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
       if (sActionGridNo != -1) {
         // Calculate AP costs...
         sAPCost = AP_ATTACH_CAN;
-        sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, (UINT16)pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
+        sAPCost += PlotPath(pSoldier, sActionGridNo, NO_COPYROUTE, FALSE, TEMPORARY, pSoldier->usUIMovementMode, NOT_STEALTH, FORWARD, pSoldier->bActionPoints);
 
         if (EnoughPoints(pSoldier, sAPCost, 0, fFromUI)) {
           // CHECK IF WE ARE AT THIS GRIDNO NOW
@@ -884,10 +884,10 @@ function HandleItem(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16, bLevel: IN
 
     // Check if these is room to place mortar!
     if (usHandItem == MORTAR) {
-      ubDirection = (UINT8)GetDirectionFromGridNo(sTargetGridNo, pSoldier);
+      ubDirection = GetDirectionFromGridNo(sTargetGridNo, pSoldier);
 
       // Get new gridno!
-      sCheckGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)DirectionInc(ubDirection));
+      sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(ubDirection));
 
       if (!OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, ubDirection, pSoldier->usAnimState)) {
         return ITEM_HANDLE_NOROOM;
@@ -1018,7 +1018,7 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
         PickDropItemAnimation(pSoldier);
       } else {
         // CHANGE DIRECTION AT LEAST
-        ubDirection = (UINT8)GetDirectionFromGridNo(sGridNo, pSoldier);
+        ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
 
         SoldierGotoStationaryStance(pSoldier);
 
@@ -1049,7 +1049,7 @@ function HandleSoldierThrowItem(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16):
         }
       } else {
         // OK, go from prone/crouch to stand first!
-        ubDirection = (UINT8)GetDirectionFromGridNo(sGridNo, pSoldier);
+        ubDirection = GetDirectionFromGridNo(sGridNo, pSoldier);
         EVENT_SetSoldierDesiredDirection(pSoldier, ubDirection);
 
         ChangeSoldierState(pSoldier, THROW_ITEM, 0, FALSE);
@@ -1149,7 +1149,7 @@ function SoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT32, sG
     }
   } else {
     // DO ANIMATION OF PICKUP NOW!
-    PickPickupAnimation(pSoldier, pSoldier->uiPendingActionData1, (INT16)(pSoldier->uiPendingActionData4), pSoldier->bPendingActionData3);
+    PickPickupAnimation(pSoldier, pSoldier->uiPendingActionData1, (pSoldier->uiPendingActionData4), pSoldier->bPendingActionData3);
   }
 }
 
@@ -1215,7 +1215,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
               // ask about activating the switch!
               bTempFrequency = Object.bFrequency;
               gpTempSoldier = pSoldier;
-              DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+              DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
               pItemPool = pItemPool->pNext;
             } else {
               if (!AutoPlaceObject(pSoldier, &Object, TRUE)) {
@@ -1289,7 +1289,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
           // handle switch
           bTempFrequency = Object.bFrequency;
           gpTempSoldier = pSoldier;
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
+          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[ACTIVATE_SWITCH_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, SwitchMessageBoxCallBack, NULL);
         } else {
           /*
                                                   // handle theft.. will return true if theft has failed ( if soldier was caught )
@@ -1349,7 +1349,7 @@ function SoldierGetItemFromWorld(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
     StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
     // We've found something!
-    TacticalCharacterDialogue(pSoldier, (UINT16)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+    TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
   }
 
   gpTempSoldier = pSoldier;
@@ -1381,7 +1381,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
         gfDisarmingBuriedBomb = TRUE;
         gbTrapDifficulty = gWorldItems[iItemIndex].o.bTrap;
 
-        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_TRAP_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_TRAP_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
       } else {
         // OK, only hidden items exist...
         if (pSoldier->bTeam == gbPlayerNum && DoesItemPoolContainAllHiddenItems(pItemPool)) {
@@ -1391,7 +1391,7 @@ function HandleSoldierPickupItem(pSoldier: Pointer<SOLDIERTYPE>, iItemIndex: INT
             StatChange(pSoldier, WISDOMAMT, 5, FALSE);
 
             // We've found something!
-            TacticalCharacterDialogue(pSoldier, (UINT16)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
+            TacticalCharacterDialogue(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)));
           } else {
             // Say NOTHING quote...
             DoMercBattleSound(pSoldier, BATTLE_SOUND_NOTHING);
@@ -2320,7 +2320,7 @@ function GetNumOkForDisplayItemsInPool(pItemPool: Pointer<ITEM_POOL>, bZLevel: I
     pItemPool = pItemPool->pNext;
   }
 
-  return (UINT16)cnt;
+  return cnt;
 }
 
 function AnyItemsVisibleOnLevel(pItemPool: Pointer<ITEM_POOL>, bZLevel: INT8): BOOLEAN {
@@ -2443,7 +2443,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
   while (pTempItemPool != NULL) {
     // ATE: Put some conditions on this....
     if (ItemPoolOKForDisplay(pTempItemPool, bZLevel)) {
-      HandleAnyMercInSquadHasCompatibleStuff((INT8)CurrentSquad(), &(gWorldItems[pTempItemPool->iItemIndex].o), FALSE);
+      HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), &(gWorldItems[pTempItemPool->iItemIndex].o), FALSE);
     }
 
     pTempItemPool = pTempItemPool->pNext;
@@ -2454,7 +2454,7 @@ function DrawItemPoolList(pItemPool: Pointer<ITEM_POOL>, sGridNo: INT16, bComman
     cnt++;
   }
 
-  bNumItemsListed = (INT8)cnt;
+  bNumItemsListed = cnt;
 
   // RENDER LIST!
   // Determine max length
@@ -2611,7 +2611,7 @@ function GetListMouseHotSpot(sLargestLineWidth: INT16, bNumItemsListed: INT8, sF
       sTestY2 = sFontY + (sLineHeight * (cnt + 1));
 
       if (gusMouseYPos > sTestY1 && gusMouseYPos < sTestY2) {
-        gbCurrentItemSel = (INT8)cnt;
+        gbCurrentItemSel = cnt;
         break;
       }
     }
@@ -2642,11 +2642,11 @@ function GetFreeFlashItemSlot(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumFlashItemSlots; uiCount++) {
     if ((FlashItemSlots[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumFlashItemSlots < NUM_ITEM_FLASH_SLOTS)
-    return (INT32)guiNumFlashItemSlots++;
+    return guiNumFlashItemSlots++;
 
   return -1;
 }
@@ -2656,7 +2656,7 @@ function RecountFlashItemSlots(): void {
 
   for (uiCount = guiNumFlashItemSlots - 1; (uiCount >= 0); uiCount--) {
     if ((FlashItemSlots[uiCount].fAllocated)) {
-      guiNumFlashItemSlots = (UINT32)(uiCount + 1);
+      guiNumFlashItemSlots = (uiCount + 1);
       break;
     }
   }
@@ -2816,14 +2816,14 @@ function RenderTopmostFlashingItems(): void {
 
           ConvertGridNoToCenterCellXY(pItemPool->sGridNo, &sX, &sY);
 
-          dOffsetX = (FLOAT)(sX - gsRenderCenterX);
-          dOffsetY = (FLOAT)(sY - gsRenderCenterY);
+          dOffsetX = (sX - gsRenderCenterX);
+          dOffsetY = (sY - gsRenderCenterY);
 
           // Calculate guy's position
           FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-          sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-          sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S - gpWorldLevelData[pItemPool->sGridNo].sHeight;
+          sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+          sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[pItemPool->sGridNo].sHeight;
 
           // Adjust for offset position on screen
           sXPos -= gsRenderWorldOffsetX;
@@ -2842,7 +2842,7 @@ function RenderTopmostFlashingItems(): void {
           sXPos -= 20;
           sYPos -= 20;
 
-          iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 40), (INT16)(sYPos + 40));
+          iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
           if (iBack != -1) {
             SetBackgroundRectFilled(iBack);
           }
@@ -2872,7 +2872,7 @@ function VerifyGiveItem(pSoldier: Pointer<SOLDIERTYPE>, ppTargetSoldier: Pointer
 
   sGridNo = pSoldier->sPendingActionData2;
   ubDirection = pSoldier->bPendingActionData3;
-  ubTargetMercID = (UINT8)pSoldier->uiPendingActionData4;
+  ubTargetMercID = pSoldier->uiPendingActionData4;
 
   usSoldierIndex = WhoIsThere2(sGridNo, pSoldier->bLevel);
 
@@ -2948,7 +2948,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
 
   sGridNo = pSoldier->sPendingActionData2;
   ubDirection = pSoldier->bPendingActionData3;
-  ubTargetMercID = (UINT8)pSoldier->uiPendingActionData4;
+  ubTargetMercID = pSoldier->uiPendingActionData4;
 
   // ATE: Deduct APs!
   DeductPoints(pSoldier, AP_PICKUP_ITEM, 0);
@@ -3078,7 +3078,7 @@ function SoldierGiveItemFromAnimation(pSoldier: Pointer<SOLDIERTYPE>): void {
       }
 
       // Now intiate conv
-      InitiateConversation(pTSoldier, pSoldier, APPROACH_GIVINGITEM, (INT32)&TempObject);
+      InitiateConversation(pTSoldier, pSoldier, APPROACH_GIVINGITEM, &TempObject);
     }
   }
 
@@ -3102,7 +3102,7 @@ function AdjustGridNoForItemPlacement(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: I
   if (gpWorldLevelData[sGridNo].pStructureHead) {
     // Something is here, check obstruction in future
     sDesiredLevel = pSoldier->bLevel ? STRUCTURE_ON_ROOF : STRUCTURE_ON_GROUND;
-    pStructure = FindStructure((INT16)sGridNo, STRUCTURE_BLOCKSMOVES);
+    pStructure = FindStructure(sGridNo, STRUCTURE_BLOCKSMOVES);
     while (pStructure) {
       if (!(pStructure->fFlags & STRUCTURE_PASSABLE) && pStructure->sCubeOffset == sDesiredLevel) {
         // Check for openable flag....
@@ -3137,7 +3137,7 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
   gpTempSoldier = pSoldier;
   gsTempGridno = sGridNo;
   if (pSoldier->inv[HANDPOS].usItem == REMOTEBOMBTRIGGER) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_BOMB_FREQUENCY_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_BOMB_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   } else if (pSoldier->inv[HANDPOS].usItem == REMOTETRIGGER) {
     // ATE ignore the commented-out code and add stuff to open the secret passage here
     /*
@@ -3165,9 +3165,9 @@ function StartBombMessageBox(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16): vo
       DoMercBattleSound(pSoldier, BATTLE_SOUND_CURSE1);
     }
   } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), DETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_TIMER_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_TIMER_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   } else if (FindAttachment(&(pSoldier->inv[HANDPOS]), REMDETONATOR) != ITEM_NOT_FOUND) {
-    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_REMOTE_FREQUENCY_STR], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
+    DoMessageBox(MSG_BOX_BASIC_SMALL_BUTTONS, TacticalStr[CHOOSE_REMOTE_FREQUENCY_STR], GAME_SCREEN, MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS, BombMessageBoxCallBack, NULL);
   }
 }
 
@@ -3198,12 +3198,12 @@ function BombMessageBoxCallBack(ubExitValue: UINT8): void {
             ubExitValue = 1;
           } else {
             // change up/down by 1
-            ubExitValue = (UINT8)(ubExitValue + Random(3) - 1);
+            ubExitValue = (ubExitValue + Random(3) - 1);
           }
           // and continue
         } else {
           // OOPS! ... BOOM!
-          IgniteExplosion(NOBODY, gpTempSoldier->sX, gpTempSoldier->sY, (INT16)(gpWorldLevelData[gpTempSoldier->sGridNo].sHeight), gpTempSoldier->sGridNo, gpTempSoldier->inv[HANDPOS].usItem, gpTempSoldier->bLevel);
+          IgniteExplosion(NOBODY, gpTempSoldier->sX, gpTempSoldier->sY, (gpWorldLevelData[gpTempSoldier->sGridNo].sHeight), gpTempSoldier->sGridNo, gpTempSoldier->inv[HANDPOS].usItem, gpTempSoldier->bLevel);
           return;
         }
       }
@@ -3235,13 +3235,13 @@ function HandItemWorks(pSoldier: Pointer<SOLDIERTYPE>, bSlot: INT8): BOOLEAN {
     // if it's still usable, check whether it breaks
     if (pObj->bStatus[0] >= USABLE) {
       // if a dice roll is greater than the item's status
-      if ((Random(80) + 20) >= (UINT32)(pObj->bStatus[0] + 50)) {
+      if ((Random(80) + 20) >= (pObj->bStatus[0] + 50)) {
         fItemJustBroke = TRUE;
         fItemWorks = FALSE;
 
         // item breaks, and becomes unusable...  so its status is reduced
         // to somewhere between 1 and the 1 less than USABLE
-        pObj->bStatus[0] = (INT8)(1 + Random(USABLE - 1));
+        pObj->bStatus[0] = (1 + Random(USABLE - 1));
       }
     } else // it's already unusable
     {
@@ -3293,7 +3293,7 @@ function SetOffBoobyTrap(pItemPool: Pointer<ITEM_POOL>): void {
     let sY: INT16;
     sX = CenterX(pItemPool->sGridNo);
     sY = CenterY(pItemPool->sGridNo);
-    IgniteExplosion(NOBODY, sX, sY, (INT16)(gpWorldLevelData[pItemPool->sGridNo].sHeight + pItemPool->bRenderZHeightAboveLevel), pItemPool->sGridNo, MINI_GRENADE, 0);
+    IgniteExplosion(NOBODY, sX, sY, (gpWorldLevelData[pItemPool->sGridNo].sHeight + pItemPool->bRenderZHeightAboveLevel), pItemPool->sGridNo, MINI_GRENADE, 0);
     RemoveItemFromPool(pItemPool->sGridNo, pItemPool->iItemIndex, pItemPool->ubLevel);
   }
 }
@@ -3353,9 +3353,9 @@ function ContinuePastBoobyTrap(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, b
         gbTrapDifficulty = pObj->bTrap;
 
         if (fInStrategic) {
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
         } else {
-          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
+          DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack, NULL);
         }
       } else {
         // oops!
@@ -3375,9 +3375,9 @@ function BoobyTrapDialogueCallBack(): void {
 
   // now prompt the user...
   if (guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN) {
-    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack);
+    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack);
   } else {
-    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack);
+    DoScreenIndependantMessageBox(TacticalStr[DISARM_BOOBYTRAP_PROMPT], MSG_BOX_FLAG_YESNO, BoobyTrapMessageBoxCallBack);
   }
 }
 
@@ -3385,9 +3385,9 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
   if (gfJustFoundBoobyTrap) {
     // NOW award for finding boobytrap
     // WISDOM GAIN:  Detected a booby-trap
-    StatChange(gpBoobyTrapSoldier, WISDOMAMT, (UINT16)(3 * gbTrapDifficulty), FALSE);
+    StatChange(gpBoobyTrapSoldier, WISDOMAMT, (3 * gbTrapDifficulty), FALSE);
     // EXPLOSIVES GAIN:  Detected a booby-trap
-    StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (UINT16)(3 * gbTrapDifficulty), FALSE);
+    StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FALSE);
     gfJustFoundBoobyTrap = FALSE;
   }
 
@@ -3404,11 +3404,11 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       // NB owner grossness... bombs 'owned' by the enemy are stored with side value 1 in
       // the map. So if we want to detect a bomb placed by the player, owner is > 1, and
       // owner - 2 gives the ID of the character who planted it
-      if (Object.ubBombOwner > 1 && ((INT32)Object.ubBombOwner - 2 >= gTacticalStatus.Team[OUR_TEAM].bFirstID && Object.ubBombOwner - 2 <= gTacticalStatus.Team[OUR_TEAM].bLastID)) {
+      if (Object.ubBombOwner > 1 && (Object.ubBombOwner - 2 >= gTacticalStatus.Team[OUR_TEAM].bFirstID && Object.ubBombOwner - 2 <= gTacticalStatus.Team[OUR_TEAM].bLastID)) {
         // our own bomb! no exp
       } else {
         // disarmed a boobytrap!
-        StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (UINT16)(6 * gbTrapDifficulty), FALSE);
+        StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (6 * gbTrapDifficulty), FALSE);
         // have merc say this is good
         DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_COOL1);
       }
@@ -3416,10 +3416,10 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       if (gfDisarmingBuriedBomb) {
         if (Object.usItem == SWITCH) {
           // give the player a remote trigger instead
-          CreateItem(REMOTEBOMBTRIGGER, (INT8)(1 + Random(9)), &Object);
+          CreateItem(REMOTEBOMBTRIGGER, (1 + Random(9)), &Object);
         } else if (Object.usItem == ACTION_ITEM && Object.bActionValue != ACTION_ITEM_BLOW_UP) {
           // give the player a detonator instead
-          CreateItem(DETONATOR, (INT8)(1 + Random(9)), &Object);
+          CreateItem(DETONATOR, (1 + Random(9)), &Object);
         } else {
           // switch action item to the real item type
           CreateItem(Object.usBombItem, Object.bBombStatus, &Object);
@@ -3448,7 +3448,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
       }
     } else {
       // oops! trap goes off
-      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (INT8)(3 * gbTrapDifficulty), FROM_FAILURE);
+      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FROM_FAILURE);
 
       DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
 
@@ -3460,7 +3460,7 @@ function BoobyTrapMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
     }
     // otherwise do nothing
   }
@@ -3471,9 +3471,9 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
     // NOW award for finding boobytrap
 
     // WISDOM GAIN:  Detected a booby-trap
-    StatChange(gpBoobyTrapSoldier, WISDOMAMT, (UINT16)(3 * gbTrapDifficulty), FALSE);
+    StatChange(gpBoobyTrapSoldier, WISDOMAMT, (3 * gbTrapDifficulty), FALSE);
     // EXPLOSIVES GAIN:  Detected a booby-trap
-    StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (UINT16)(3 * gbTrapDifficulty), FALSE);
+    StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FALSE);
     gfJustFoundBoobyTrap = FALSE;
   }
 
@@ -3485,7 +3485,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
 
     if (iCheckResult >= 0) {
       // disarmed a boobytrap!
-      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (UINT16)(6 * gbTrapDifficulty), FALSE);
+      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (6 * gbTrapDifficulty), FALSE);
 
       // have merc say this is good
       DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_COOL1);
@@ -3496,10 +3496,10 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
       if (gfDisarmingBuriedBomb) {
         if (Object.usItem == SWITCH) {
           // give the player a remote trigger instead
-          CreateItem(REMOTEBOMBTRIGGER, (INT8)(1 + Random(9)), &Object);
+          CreateItem(REMOTEBOMBTRIGGER, (1 + Random(9)), &Object);
         } else if (Object.usItem == ACTION_ITEM && Object.bActionValue != ACTION_ITEM_BLOW_UP) {
           // give the player a detonator instead
-          CreateItem(DETONATOR, (INT8)(1 + Random(9)), &Object);
+          CreateItem(DETONATOR, (1 + Random(9)), &Object);
         } else {
           // switch action item to the real item type
           CreateItem(Object.usBombItem, Object.bBombStatus, &Object);
@@ -3519,7 +3519,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
       HandleButtonStatesWhileMapInventoryActive();
     } else {
       // oops! trap goes off
-      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (INT8)(3 * gbTrapDifficulty), FROM_FAILURE);
+      StatChange(gpBoobyTrapSoldier, EXPLODEAMT, (3 * gbTrapDifficulty), FROM_FAILURE);
 
       DoMercBattleSound(gpBoobyTrapSoldier, BATTLE_SOUND_CURSE1);
 
@@ -3531,7 +3531,7 @@ function BoobyTrapInMapScreenMessageBoxCallBack(ubExitValue: UINT8): void {
     }
   } else {
     if (gfDisarmingBuriedBomb) {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[REMOVE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, RemoveBlueFlagDialogueCallBack, NULL);
     }
     // otherwise do nothing
   }
@@ -3599,7 +3599,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
   for (ubDirection = 0; ubDirection < 8; ubDirection++) {
     if (fCheckAroundGridno) {
       // get the gridno of the next spot adjacent to lastGridno in that direction
-      sNextGridNo = NewGridNo(sGridNo, (INT16)DirectionInc((UINT8)ubDirection));
+      sNextGridNo = NewGridNo(sGridNo, DirectionInc(ubDirection));
 
       // don't check directions that are impassable!
       ubMovementCost = gubWorldMovementCosts[sNextGridNo][ubDirection][pSoldier->bLevel];
@@ -3636,7 +3636,7 @@ function NearbyGroundSeemsWrong(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, 
           } else if (ubDetectLevel >= pObj->bTrap) {
             if (pSoldier->uiStatusFlags & SOLDIER_PC) {
               // detected exposives buried nearby...
-              StatChange(pSoldier, EXPLODEAMT, (UINT16)(pObj->bTrap), FALSE);
+              StatChange(pSoldier, EXPLODEAMT, (pObj->bTrap), FALSE);
 
               // set item as known
               pObj->fFlags |= OBJECT_KNOWN_TO_BE_TRAPPED;
@@ -3716,7 +3716,7 @@ function MineSpottedLocatorCallback(): void {
   guiPendingOverrideEvent = LU_ENDUILOCK;
 
   // now ask the player if he wants to place a blue flag.
-  DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[PLACE_BLUE_FLAG_PROMPT], GAME_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, NULL);
+  DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[PLACE_BLUE_FLAG_PROMPT], GAME_SCREEN, MSG_BOX_FLAG_YESNO, MineSpottedMessageBoxCallBack, NULL);
 }
 
 function MineSpottedMessageBoxCallBack(ubExitValue: UINT8): void {
@@ -3800,7 +3800,7 @@ function MakeNPCGrumpyForMinorOffense(pSoldier: Pointer<SOLDIERTYPE>, pOffending
 
 function TestPotentialOwner(pSoldier: Pointer<SOLDIERTYPE>): void {
   if (pSoldier->bActive && pSoldier->bInSector && pSoldier->bLife >= OKLIFE) {
-    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, (UINT8)DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, gpTempSoldier->sGridNo, gpTempSoldier->bLevel), TRUE)) {
+    if (SoldierToSoldierLineOfSightTest(pSoldier, gpTempSoldier, DistanceVisible(pSoldier, DIRECTION_IRRELEVANT, 0, gpTempSoldier->sGridNo, gpTempSoldier->bLevel), TRUE)) {
       MakeNPCGrumpyForMinorOffense(pSoldier, gpTempSoldier);
     }
   }
@@ -3873,8 +3873,8 @@ function ToggleItemGlow(fOn: BOOLEAN): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-    HandleItemGlowFlag((INT16)cnt, 0, fOn);
-    HandleItemGlowFlag((INT16)cnt, 1, fOn);
+    HandleItemGlowFlag(cnt, 0, fOn);
+    HandleItemGlowFlag(cnt, 1, fOn);
   }
 
   if (!fOn) {
@@ -3921,7 +3921,7 @@ function ContinuePastBoobyTrapInMapScreen(pObject: Pointer<OBJECTTYPE>, pSoldier
         // have the computer ask us if we want to proceed
         gpBoobyTrapSoldier = pSoldier;
         gbTrapDifficulty = pObject->bTrap;
-        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, (UINT8)MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
+        DoMessageBox(MSG_BOX_BASIC_STYLE, TacticalStr[DISARM_BOOBYTRAP_PROMPT], MAP_SCREEN, MSG_BOX_FLAG_YESNO, BoobyTrapInMapScreenMessageBoxCallBack, NULL);
       } else {
         // oops!
         SetOffBoobyTrapInMapScreen(pSoldier, pObject);
@@ -3940,8 +3940,8 @@ function ClearAllItemPools(): void {
   let cnt: UINT32;
 
   for (cnt = 0; cnt < WORLD_MAX; cnt++) {
-    RemoveItemPool((INT16)cnt, 0);
-    RemoveItemPool((INT16)cnt, 1);
+    RemoveItemPool(cnt, 0);
+    RemoveItemPool(cnt, 1);
   }
 }
 

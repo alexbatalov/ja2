@@ -33,7 +33,7 @@ let gsOldCliffsSubIndex: INT16 = 1;
 let gfSwitchScreen: BOOLEAN = FALSE;
 let gDoTest: BOOLEAN = FALSE;
 let gDoTest2: BOOLEAN = FALSE;
-let gShadePercent: FLOAT = (FLOAT)0.65;
+let gShadePercent: FLOAT = 0.65;
 let gusCurrentRoofType: INT16 = ONELEVELTYPEONEROOF;
 
 let gusLightLevel: UINT16 = 0;
@@ -238,7 +238,7 @@ function EditModeInit(): BOOLEAN {
   if (!gfBasement && !gfCaves)
     gusLightLevel = 12; // EDITOR_LIGHT_MAX - (UINT16)LightGetAmbient();
   else
-    gusLightLevel = EDITOR_LIGHT_MAX - (UINT16)LightGetAmbient();
+    gusLightLevel = EDITOR_LIGHT_MAX - LightGetAmbient();
 
   if (gfFakeLights) {
     gusSavedLightLevel = gusLightLevel;
@@ -286,7 +286,7 @@ function EditModeInit(): BOOLEAN {
       AddAllPits();
     }
 
-    LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+    LightSetBaseLevel((EDITOR_LIGHT_MAX - gusLightLevel));
     ShowLightPositionHandles();
     LightSpriteRenderAll();
   } else {
@@ -403,7 +403,7 @@ function EditModeShutdown(): BOOLEAN {
     gfNeedToInitGame = FALSE;
   } else {
     if (!gfBasement && !gfCaves)
-      LightSetBaseLevel((UINT8)gusGameLightLevel);
+      LightSetBaseLevel(gusGameLightLevel);
     UpdateMercsInSector(gWorldSectorX, gWorldSectorY, gbWorldSectorZ);
   }
 
@@ -433,7 +433,7 @@ function SetBackgroundTexture(): void {
     RemoveAllLandsOfTypeRange(cnt, FIRSTTEXTURE, DEEPWATERTEXTURE);
 
     // Add level
-    usIndex = (UINT16)(rand() % 10);
+    usIndex = (rand() % 10);
 
     // Adjust for type
     usIndex += gTileTypeStartIndex[gCurrentBackground];
@@ -596,9 +596,9 @@ function DrawTempMouseCursorObject(): BOOLEAN {
         }
       } else {
         usUseIndex = pSelList[iCurBank].usIndex;
-        usUseObjIndex = (UINT16)pSelList[iCurBank].uiObject;
+        usUseObjIndex = pSelList[iCurBank].uiObject;
       }
-      gCursorNode = ForceStructToTail(iCurBankMapIndex, (UINT16)(gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
+      gCursorNode = ForceStructToTail(iCurBankMapIndex, (gTileTypeStartIndex[usUseObjIndex] + usUseIndex));
       // ATE: Set this levelnode as dynamic!
       gCursorNode->uiFlags |= LEVELNODE_DYNAMIC;
       return TRUE;
@@ -656,7 +656,7 @@ function ShowCurrentDrawingMode(): void {
     case DRAW_MODE_SLANTED_ROOF:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelRoom[0].usIndex;
-        usObjIndex = (UINT16)SelRoom[0].uiObject;
+        usObjIndex = SelRoom[0].uiObject;
       }
       break;
 
@@ -669,103 +669,103 @@ function ShowCurrentDrawingMode(): void {
     case DRAW_MODE_OSTRUCTS:
       if (iNumOStructsSelected > 0) {
         usUseIndex = SelOStructs[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs[iIndexToUse].uiObject;
+        usObjIndex = SelOStructs[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_OSTRUCTS1:
       if (iNumOStructs1Selected > 0) {
         usUseIndex = SelOStructs1[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs1[iIndexToUse].uiObject;
+        usObjIndex = SelOStructs1[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_OSTRUCTS2:
       if (iNumOStructs2Selected > 0) {
         usUseIndex = SelOStructs2[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelOStructs2[iIndexToUse].uiObject;
+        usObjIndex = SelOStructs2[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_DEBRIS:
       if (iNumDebrisSelected > 0) {
         usUseIndex = SelDebris[iIndexToUse].usIndex;
-        usObjIndex = (UINT16)SelDebris[iIndexToUse].uiObject;
+        usObjIndex = SelDebris[iIndexToUse].uiObject;
       }
       break;
 
     case DRAW_MODE_BANKS:
       if (iNumBanksSelected > 0) {
         usUseIndex = SelBanks[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelBanks[iCurBank].uiObject;
+        usObjIndex = SelBanks[iCurBank].uiObject;
       }
       break;
 
     case DRAW_MODE_ROADS:
       if (iNumRoadsSelected > 0) {
         usUseIndex = SelRoads[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelRoads[iCurBank].uiObject;
+        usObjIndex = SelRoads[iCurBank].uiObject;
       }
       break;
 
     case DRAW_MODE_WALLS:
       if (iNumWallsSelected > 0) {
         usUseIndex = SelSingleWall[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleWall[iCurBank].uiObject;
+        usObjIndex = SelSingleWall[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DOORS:
       if (iNumDoorsSelected > 0) {
         usUseIndex = SelSingleDoor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDoor[iCurBank].uiObject;
+        usObjIndex = SelSingleDoor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_WINDOWS:
       if (iNumWindowsSelected > 0) {
         usUseIndex = SelSingleWindow[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleWindow[iCurBank].uiObject;
+        usObjIndex = SelSingleWindow[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_ROOFS:
       if (iNumRoofsSelected > 0) {
         usUseIndex = SelSingleRoof[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleRoof[iCurBank].uiObject;
+        usObjIndex = SelSingleRoof[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_NEWROOF:
       if (iNumNewRoofsSelected > 0) {
         usUseIndex = SelSingleNewRoof[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleNewRoof[iCurBank].uiObject;
+        usObjIndex = SelSingleNewRoof[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_BROKEN_WALLS:
       if (iNumBrokenWallsSelected > 0) {
         usUseIndex = SelSingleBrokenWall[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleBrokenWall[iCurBank].uiObject;
+        usObjIndex = SelSingleBrokenWall[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DECOR:
       if (iNumDecorSelected > 0) {
         usUseIndex = SelSingleDecor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDecor[iCurBank].uiObject;
+        usObjIndex = SelSingleDecor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_DECALS:
       if (iNumDecalsSelected > 0) {
         usUseIndex = SelSingleDecal[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleDecal[iCurBank].uiObject;
+        usObjIndex = SelSingleDecal[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_FLOORS:
       if (iNumFloorsSelected > 0) {
         usUseIndex = SelSingleFloor[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleFloor[iCurBank].uiObject;
+        usObjIndex = SelSingleFloor[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_TOILET:
       if (iNumToiletsSelected > 0) {
         usUseIndex = SelSingleToilet[iCurBank].usIndex;
-        usObjIndex = (UINT16)SelSingleToilet[iCurBank].uiObject;
+        usObjIndex = SelSingleToilet[iCurBank].uiObject;
       }
       break;
     case DRAW_MODE_SMART_WALLS:
@@ -810,8 +810,8 @@ function ShowCurrentDrawingMode(): void {
   if ((usUseIndex != 0xffff) && (usObjIndex != 0xffff)) {
     pETRLEObject = &(gTileDatabase[gTileTypeStartIndex[usObjIndex]].hTileSurface->pETRLEObject[usUseIndex]);
 
-    iPicWidth = (INT32)pETRLEObject->usWidth;
-    iPicHeight = (INT32)pETRLEObject->usHeight;
+    iPicWidth = pETRLEObject->usWidth;
+    iPicHeight = pETRLEObject->usHeight;
 
     // Center the picture in the display window.
     iStartX = (100 - iPicWidth) / 2;
@@ -895,7 +895,7 @@ function HandleJA2ToolbarSelection(): void {
         gusLightLevel = EDITOR_LIGHT_FAKE;
       } else
         gusLightLevel = gusSavedLightLevel;
-      LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+      LightSetBaseLevel((EDITOR_LIGHT_MAX - gusLightLevel));
       LightSpriteRenderAll();
       break;
 
@@ -1148,7 +1148,7 @@ function HandleKeyboardShortcuts(): void {
               gusLightLevel = gusSavedLightLevel;
               UnclickEditorButton(MAPINFO_TOGGLE_FAKE_LIGHTS);
             }
-            LightSetBaseLevel((UINT8)(EDITOR_LIGHT_MAX - gusLightLevel));
+            LightSetBaseLevel((EDITOR_LIGHT_MAX - gusLightLevel));
             LightSpriteRenderAll();
             break;
 
@@ -1493,7 +1493,7 @@ function HandleKeyboardShortcuts(): void {
             break;
           case 'f':
             gbFPSDisplay = !gbFPSDisplay;
-            DisableFPSOverlay((BOOLEAN)!gbFPSDisplay);
+            DisableFPSOverlay(!gbFPSDisplay);
             break;
           case 'g': // ground
             if (EditorInputEvent.usKeyState & CTRL_DOWN) {
@@ -1981,26 +1981,26 @@ function PerformSelectedAction(): UINT32 {
 
     case ACTION_SHADE_UP:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
-        gShadePercent += (FLOAT).05;
+        gShadePercent += .05;
       } else {
-        gShadePercent += (FLOAT).01;
+        gShadePercent += .01;
       }
 
       if (gShadePercent > 1) {
-        gShadePercent = (FLOAT)0;
+        gShadePercent = 0;
       }
       SetShadeTablePercent(gShadePercent);
       break;
 
     case ACTION_SHADE_DWN:
       if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
-        gShadePercent -= (FLOAT).05;
+        gShadePercent -= .05;
       } else {
-        gShadePercent -= (FLOAT).01;
+        gShadePercent -= .01;
       }
 
       if (gShadePercent < 0) {
-        gShadePercent = (FLOAT)1;
+        gShadePercent = 1;
       }
       SetShadeTablePercent(gShadePercent);
       break;
@@ -2058,7 +2058,7 @@ function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set land index 9 + 3 variants
-      GetTileIndexFromTypeSubIndex(FIRSTROOF, (UINT16)(9 + Random(3)), &usIndex);
+      GetTileIndexFromTypeSubIndex(FIRSTROOF, (9 + Random(3)), &usIndex);
       AddRoofToHead(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_BASEMENT);
@@ -2067,7 +2067,7 @@ function CreateNewMap(): void {
     let usIndex: UINT16;
     for (i = 0; i < WORLD_MAX; i++) {
       // Set up the default cave here.
-      GetTileIndexFromTypeSubIndex(FIRSTWALL, (UINT16)(60 + Random(6)), &usIndex);
+      GetTileIndexFromTypeSubIndex(FIRSTWALL, (60 + Random(6)), &usIndex);
       AddCave(i, usIndex);
     }
     SetEditorSmoothingMode(SMOOTHING_CAVES);
@@ -2106,7 +2106,7 @@ function ProcessEditscreenMessageBoxResponse(): UINT32 {
       RemoveAllObjectsOfTypeRange(i, GOODRING, GOODRING);
     }
     MarkWorldDirty();
-    LightSetBaseLevel((UINT8)(15 - ubAmbientLightLevel));
+    LightSetBaseLevel((15 - ubAmbientLightLevel));
     gfRemoveLightsPending = FALSE;
   }
   if (gfScheduleReversalPending) {
@@ -2343,8 +2343,8 @@ function ShowCurrentSlotSurface(vSurface: UINT32, iWindow: INT32): void {
 
   GetVideoSurface(&hvSurface, vSurface);
 
-  iPicWidth = (INT32)hvSurface->usWidth;
-  iPicHeight = (INT32)hvSurface->usHeight;
+  iPicWidth = hvSurface->usWidth;
+  iPicHeight = hvSurface->usHeight;
 
   if (iPicWidth > iWinWidth) {
     ClipRect.iLeft = (iPicWidth - iWinWidth) / 2;
@@ -2402,8 +2402,8 @@ function ShowCurrentSlotImage(hVObj: HVOBJECT, iWindow: INT32): void {
 
   pETRLEObject = &(hVObj->pETRLEObject[0]);
 
-  iPicWidth = (INT32)pETRLEObject->usWidth;
-  iPicHeight = (INT32)pETRLEObject->usHeight;
+  iPicWidth = pETRLEObject->usWidth;
+  iPicHeight = pETRLEObject->usHeight;
 
   iStartX = ((iWinWidth - iPicWidth) / 2) + NewRect.iLeft;
   iStartY = ((iWinHeight - iPicHeight) / 2) + NewRect.iTop;
@@ -2442,7 +2442,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
   // Attempt to create light
   if ((iLightHandle = LightSpriteCreate(Filename, sType)) == (-1)) {
     // Couldn't load file because it doesn't exist. So let's make the file
-    ubIntensity = (UINT8)((float)sRadius / LIGHT_DECAY);
+    ubIntensity = (sRadius / LIGHT_DECAY);
     if ((iLightHandle = LightCreateOmni(ubIntensity, sRadius)) == (-1)) {
       // Can't create light template
       DebugMsg(TOPIC_GAME, DBG_LEVEL_1, String("PlaceLight: Can't create light template for radius %d", sRadius));
@@ -2483,7 +2483,7 @@ function PlaceLight(sRadius: INT16, iMapX: INT16, iMapY: INT16, sType: INT16): B
       break;
   }
 
-  iMapIndex = ((INT32)iMapY * WORLD_COLS) + (INT32)iMapX;
+  iMapIndex = (iMapY * WORLD_COLS) + iMapX;
   if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
     AddObjectToHead(iMapIndex, GOODRING1);
     gpWorldLevelData[iMapIndex].pObjectHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -2535,7 +2535,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
           LightSpritePower(iCount, FALSE);
           LightSpriteDestroy(iCount);
           fRemovedLight = TRUE;
-          iMapIndex = ((INT32)iMapY * WORLD_COLS) + (INT32)iMapX;
+          iMapIndex = (iMapY * WORLD_COLS) + iMapX;
           RemoveAllObjectsOfTypeRange(iMapIndex, GOODRING, GOODRING);
         }
       }
@@ -2547,7 +2547,7 @@ function RemoveLight(iMapX: INT16, iMapY: INT16): BOOLEAN {
     // should work.  Basically, the radius values aren't stored in the lights, so I have pull
     // the radius out of the filename.  Ex:  L-RO5.LHT
     usRadius = pLastLightName[4] - 0x30;
-    AddLightToUndoList(iMapIndex, usRadius, (UINT8)uiLastLightType);
+    AddLightToUndoList(iMapIndex, usRadius, uiLastLightType);
   }
 
   return fRemovedLight;
@@ -2580,7 +2580,7 @@ function ShowLightPositionHandles(): void {
       }
 
       if (!fSoldierLight) {
-        iMapIndex = ((INT32)LightSprites[iCount].iY * WORLD_COLS) + (INT32)LightSprites[iCount].iX;
+        iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
         if (!TypeExistsInObjectLayer(iMapIndex, GOODRING, &usTmpIndex)) {
           AddObjectToHead(iMapIndex, GOODRING1);
           gpWorldLevelData[iMapIndex].pObjectHead->ubShadeLevel = DEFAULT_SHADE_LEVEL;
@@ -2615,7 +2615,7 @@ function RemoveLightPositionHandles(): void {
       }
 
       if (!fSoldierLight) {
-        iMapIndex = ((INT32)LightSprites[iCount].iY * WORLD_COLS) + (INT32)LightSprites[iCount].iX;
+        iMapIndex = (LightSprites[iCount].iY * WORLD_COLS) + LightSprites[iCount].iX;
         RemoveAllObjectsOfTypeRange(iMapIndex, GOODRING, GOODRING);
       }
     }
@@ -2751,8 +2751,8 @@ function HandleMouseClicksInGameScreen(): void {
     // Are we trying to erase something?
     if (iDrawMode >= DRAW_MODE_ERASE) {
       // Erasing can have a brush size larger than 1 tile
-      for (sY = (INT16)gSelectRegion.iTop; sY <= (INT16)gSelectRegion.iBottom; sY++) {
-        for (sX = (INT16)gSelectRegion.iLeft; sX <= (INT16)gSelectRegion.iRight; sX++) {
+      for (sY = gSelectRegion.iTop; sY <= gSelectRegion.iBottom; sY++) {
+        for (sX = gSelectRegion.iLeft; sX <= gSelectRegion.iRight; sX++) {
           if (iDrawMode == (DRAW_MODE_LIGHT + DRAW_MODE_ERASE)) {
             RemoveLight(sX, sY);
           } else
@@ -2885,7 +2885,7 @@ function HandleMouseClicksInGameScreen(): void {
         break;
       case DRAW_MODE_PLACE_ITEM:
         if (gfFirstPlacement) {
-          AddSelectedItemToWorld((UINT16)iMapIndex);
+          AddSelectedItemToWorld(iMapIndex);
           gfFirstPlacement = FALSE;
         }
         break;
@@ -2904,7 +2904,7 @@ function HandleMouseClicksInGameScreen(): void {
         HandleRightClickOnMerc(iMapIndex);
         break;
       case DRAW_MODE_PLACE_ITEM:
-        HandleRightClickOnItem((UINT16)iMapIndex);
+        HandleRightClickOnItem(iMapIndex);
         break;
 
       // Handle the right clicks in the main window to bring up the appropriate selection window
@@ -2978,7 +2978,7 @@ function HandleMouseClicksInGameScreen(): void {
         RestoreWalls(iMapIndex);
         break;
       case DRAW_MODE_EXITGRID:
-        if (GetExitGrid((UINT16)iMapIndex, &gExitGrid))
+        if (GetExitGrid(iMapIndex, &gExitGrid))
           ApplyNewExitGridValuesToTextFields();
         break;
       default:
@@ -3180,14 +3180,14 @@ function DrawObjectsBasedOnSelectionRegion(): void {
   // Process the cursor area
   for (x = gSelectRegion.iLeft; x <= gSelectRegion.iRight; x++) {
     // process the region from
-    for (y = gSelectRegion.iTop; y <= (INT16)gSelectRegion.iBottom; y++) {
+    for (y = gSelectRegion.iTop; y <= gSelectRegion.iBottom; y++) {
       if (fSkipTest || PerformDensityTest()) {
         iMapIndex = MAPROWCOLTOPOS(y, x);
         switch (iDrawMode) {
           case DRAW_MODE_EXITGRID:
             AddToUndoList(iMapIndex);
             AddExitGridToWorld(iMapIndex, &gExitGrid);
-            AddTopmostToTail((UINT16)iMapIndex, FIRSTPOINTERS8);
+            AddTopmostToTail(iMapIndex, FIRSTPOINTERS8);
             break;
           case DRAW_MODE_DEBRIS:
             PasteDebris(iMapIndex);

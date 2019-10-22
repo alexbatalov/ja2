@@ -529,7 +529,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
 
   GetLibraryAndFileIDFromLibraryFileHandle(hFile, &sLibraryID, &uiFileNum);
 
-  dwNumBytesToRead = (DWORD)uiBytesToRead;
+  dwNumBytesToRead = uiBytesToRead;
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
@@ -547,7 +547,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
       }
 
       if (puiBytesRead)
-        *puiBytesRead = (UINT32)dwNumBytesRead;
+        *puiBytesRead = dwNumBytesRead;
     }
   } else {
     // if the database is initialized
@@ -559,7 +559,7 @@ function FileRead(hFile: HWFILE, pDest: PTR, uiBytesToRead: UINT32, puiBytesRead
           // read the data from the library
           fRet = LoadDataFromLibrary(sLibraryID, uiFileNum, pDest, dwNumBytesToRead, &dwNumBytesRead);
           if (puiBytesRead) {
-            *puiBytesRead = (UINT32)dwNumBytesRead;
+            *puiBytesRead = dwNumBytesRead;
           }
         }
       }
@@ -608,7 +608,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
 
   // if its a real file, read the data from the file
   if (sLibraryID == REAL_FILE_LIBRARY_ID) {
-    dwNumBytesToWrite = (DWORD)uiBytesToWrite;
+    dwNumBytesToWrite = uiBytesToWrite;
 
     // get the real file handle to the file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
@@ -619,7 +619,7 @@ function FileWrite(hFile: HWFILE, pDest: PTR, uiBytesToWrite: UINT32, puiBytesWr
       fRet = FALSE;
 
     if (puiBytesWritten)
-      *puiBytesWritten = (UINT32)dwNumBytesWritten;
+      *puiBytesWritten = dwNumBytesWritten;
   } else {
     // we cannot write to a library file
     if (puiBytesWritten)
@@ -764,7 +764,7 @@ function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
     // Get the handle to the real file
     hRealFile = gFileDataBase.RealFiles.pRealFilesOpen[uiFileNum].hRealFileHandle;
 
-    iDistance = (INT32)uiDistance;
+    iDistance = uiDistance;
 
     if (uiHow == FILE_SEEK_FROM_START)
       dwMoveMethod = FILE_BEGIN;
@@ -775,7 +775,7 @@ function FileSeek(hFile: HWFILE, uiDistance: UINT32, uiHow: UINT8): BOOLEAN {
     } else
       dwMoveMethod = FILE_CURRENT;
 
-    lDistanceToMove = (LONG)uiDistance;
+    lDistanceToMove = uiDistance;
 
     if (SetFilePointer(hRealFile, iDistance, NULL, dwMoveMethod) == 0xFFFFFFFF)
       return FALSE;
@@ -942,7 +942,7 @@ function GetHandleToRealFile(hFile: HWFILE, pfDatabaseFile: Pointer<BOOLEAN>): H
     *pfDatabaseFile = FALSE;
   } else {
     *pfDatabaseFile = TRUE;
-    hRealFile = (HANDLE)hFile;
+    hRealFile = hFile;
   }
 
   return hRealFile;
@@ -1643,7 +1643,7 @@ function FileCheckEndOfFile(hFile: HWFILE): BOOLEAN {
     uiEndOfFilePtrLoc = SetFilePointer(hRealFile, 0, NULL, FILE_END);
 
     // reset back to the original location
-    temp = SetFilePointer(hRealFile, -((INT32)(uiEndOfFilePtrLoc - uiOldFilePtrLoc)), NULL, FILE_END);
+    temp = SetFilePointer(hRealFile, -((uiEndOfFilePtrLoc - uiOldFilePtrLoc)), NULL, FILE_END);
 
     // if the 2 pointers are the same, we are at the end of a file
     if (uiEndOfFilePtrLoc <= uiOldFilePtrLoc) {
@@ -1795,12 +1795,12 @@ function AddSubdirectoryToPath(pDirectory: Pointer<CHAR8>): BOOLEAN {
   if (!strlen(pDirectory))
     return FALSE;
 
-  if ((pSystemPath = (CHAR8 *)MemAlloc(_MAX_PATH)) == NULL)
+  if ((pSystemPath = MemAlloc(_MAX_PATH)) == NULL)
     return FALSE;
 
   memset(pSystemPath, 0, _MAX_PATH);
 
-  if ((pPath = (CHAR8 *)MemAlloc(_MAX_PATH)) == NULL) {
+  if ((pPath = MemAlloc(_MAX_PATH)) == NULL) {
     MemFree(pSystemPath);
     return FALSE;
   }

@@ -22,7 +22,7 @@ function Convert16BitStringTo8BitChineseBig5String(dst: Pointer<UINT8>, src: Poi
   let ptr: Pointer<char>;
 
   i = j = 0;
-  ptr = (char *)src;
+  ptr = src;
   while (ptr[j] || ptr[j + 1]) {
     if (ptr[j]) {
       dst[i] = ptr[j];
@@ -192,7 +192,7 @@ function WinFontStringPixLength(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
   ReleaseDC(NULL, hdc);
 
-  return (INT16)RectSize.cx;
+  return RectSize.cx;
 }
 
 function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
@@ -214,7 +214,7 @@ function GetWinFontHeight(string2: Pointer<UINT16>, iFont: INT32): INT16 {
   GetTextExtentPoint32(hdc, string, strlen(string), &RectSize);
   ReleaseDC(NULL, hdc);
 
-  return (INT16)RectSize.cy;
+  return RectSize.cy;
 }
 
 function WinFont_mprintf(iFont: INT32, x: INT32, y: INT32, pFontString: Pointer<UINT16>, ...args: any[]): UINT32 {
@@ -260,7 +260,7 @@ function DoesWinFontExistOnSystem(pTypeFaceName: STR16, iCharSet: INT32): BOOLEA
 
   memset(&LogFont, 0, sizeof(LOGFONT));
   LogFont.lfCharSet = iCharSet;
-  lstrcpy((LPSTR)&LogFont.lfFaceName, string);
+  lstrcpy(&LogFont.lfFaceName, string);
 
   EnumFontFamiliesEx(hdc, &LogFont, EnumFontFamExProc, 0, 0);
 

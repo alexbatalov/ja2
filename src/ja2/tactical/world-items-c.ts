@@ -12,13 +12,13 @@ function GetFreeWorldBombIndex(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumWorldBombs; uiCount++) {
     if (gWorldBombs[uiCount].fExists == FALSE)
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   uiOldNumWorldBombs = guiNumWorldBombs;
   guiNumWorldBombs += 10;
   // Allocate new table with max+10 items.
-  newWorldBombs = (WORLDBOMB *)MemRealloc(gWorldBombs, sizeof(WORLDBOMB) * guiNumWorldBombs);
+  newWorldBombs = MemRealloc(gWorldBombs, sizeof(WORLDBOMB) * guiNumWorldBombs);
   if (newWorldBombs == NULL) {
     return -1;
   }
@@ -165,13 +165,13 @@ function GetFreeWorldItemIndex(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumWorldItems; uiCount++) {
     if (gWorldItems[uiCount].fExists == FALSE)
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   uiOldNumWorldItems = guiNumWorldItems;
   guiNumWorldItems += 10;
   // Allocate new table with max+10 items.
-  newWorldItems = (WORLDITEM *)MemRealloc(gWorldItems, sizeof(WORLDITEM) * guiNumWorldItems);
+  newWorldItems = MemRealloc(gWorldItems, sizeof(WORLDITEM) * guiNumWorldItems);
   if (newWorldItems == NULL) {
     return -1;
   }

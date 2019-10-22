@@ -95,7 +95,7 @@ function CreatureCall(pCaller: Pointer<SOLDIERTYPE>): void {
     if (pReceiver->bActive && pReceiver->bInSector && (pReceiver->bLife >= OKLIFE) && (pReceiver != pCaller) && (pReceiver->bAlertStatus < STATUS_BLACK)) {
       if (pReceiver->ubBodyType != LARVAE_MONSTER && pReceiver->ubBodyType != INFANT_MONSTER && pReceiver->ubBodyType != QUEENMONSTER) {
         usDistToCaller = PythSpacesAway(pReceiver->sGridNo, pCaller->sGridNo);
-        bPriority = bFullPriority - (INT8)(usDistToCaller / PRIORITY_DECR_DISTANCE);
+        bPriority = bFullPriority - (usDistToCaller / PRIORITY_DECR_DISTANCE);
         if (bPriority > pReceiver->bCallPriority) {
           pReceiver->bCallPriority = bPriority;
           pReceiver->bAlertStatus = STATUS_RED; // our status can't be more than red to begin with
@@ -145,7 +145,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier->bNextAction = AI_ACTION_WAIT;
-          pSoldier->usNextActionData = (UINT16)REALTIME_CREATURE_AI_DELAY;
+          pSoldier->usNextActionData = REALTIME_CREATURE_AI_DELAY;
         }
 
         return AI_ACTION_POINT_PATROL;
@@ -157,7 +157,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier->bNextAction = AI_ACTION_WAIT;
-          pSoldier->usNextActionData = (UINT16)REALTIME_CREATURE_AI_DELAY;
+          pSoldier->usNextActionData = REALTIME_CREATURE_AI_DELAY;
         }
 
         return AI_ACTION_POINT_PATROL;
@@ -251,14 +251,14 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // if we're in water with land miles (> 25 tiles) away,
     // OR if we roll under the chance calculated
-    if (/*bInWater ||*/ ((INT16)PreRandom(100) < iChance)) {
+    if (/*bInWater ||*/ (PreRandom(100) < iChance)) {
       pSoldier->usActionData = RandDestWithinRange(pSoldier);
 
       if (pSoldier->usActionData != NOWHERE) {
         if (!gfTurnBasedAI) {
           // pause at the end of the walk!
           pSoldier->bNextAction = AI_ACTION_WAIT;
-          pSoldier->usNextActionData = (UINT16)REALTIME_CREATURE_AI_DELAY;
+          pSoldier->usNextActionData = REALTIME_CREATURE_AI_DELAY;
           if (pSoldier->bMobility == CREATURE_CRAWLER) {
             pSoldier->usNextActionData *= 2;
           }
@@ -346,7 +346,7 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (pSoldier->bAttitude == DEFENSIVE)
         iChance += 25;
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         // roll random directions (stored in actionData) until different from current
         do {
           // if man has a LEGAL dominant facing, and isn't facing it, he will turn
@@ -354,18 +354,18 @@ function CreatureDecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           if ((pSoldier->bDominantDir >= 0) && (pSoldier->bDominantDir <= 8) && (pSoldier->bDirection != pSoldier->bDominantDir) && PreRandom(2)) {
             pSoldier->usActionData = pSoldier->bDominantDir;
           } else {
-            pSoldier->usActionData = (UINT16)PreRandom(8);
+            pSoldier->usActionData = PreRandom(8);
           }
         } while (pSoldier->usActionData == pSoldier->bDirection);
 
-        if (ValidCreatureTurn(pSoldier, (INT8)pSoldier->usActionData))
+        if (ValidCreatureTurn(pSoldier, pSoldier->usActionData))
 
         // InternalIsValidStance( pSoldier, (INT8) pSoldier->usActionData, ANIM_STAND ) )
         {
           if (!gfTurnBasedAI) {
             // pause at the end of the turn!
             pSoldier->bNextAction = AI_ACTION_WAIT;
-            pSoldier->usNextActionData = (UINT16)REALTIME_CREATURE_AI_DELAY;
+            pSoldier->usNextActionData = REALTIME_CREATURE_AI_DELAY;
           }
 
           return AI_ACTION_CHANGE_FACING;
@@ -429,10 +429,10 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (pSoldier->bAttitude == DEFENSIVE)
         iChance += 15;
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         pSoldier->usActionData = ubNoiseDir;
         // if ( InternalIsValidStance( pSoldier, (INT8) pSoldier->usActionData, ANIM_STAND ) )
-        if (ValidCreatureTurn(pSoldier, (INT8)pSoldier->usActionData)) {
+        if (ValidCreatureTurn(pSoldier, pSoldier->usActionData)) {
           return AI_ACTION_CHANGE_FACING;
         }
       }
@@ -511,7 +511,7 @@ function CreatureDecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // reduce chance if breath is down, less likely to wander around when tired
     iChance -= (100 - pSoldier->bBreath);
 
-    if ((INT16)PreRandom(100) < iChance) {
+    if (PreRandom(100) < iChance) {
       pSoldier->usActionData = GoAsFarAsPossibleTowards(pSoldier, sNoiseGridNo, AI_ACTION_SEEK_NOISE);
 
       if (pSoldier->usActionData != NOWHERE) {
@@ -627,7 +627,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
       iChance = 20;
 
       if (iChance) {
-        if ((INT16)PreRandom(100) < iChance) {
+        if (PreRandom(100) < iChance) {
           pSoldier->usActionData = CALL_1_PREY;
           return AI_ACTION_CREATURE_CALL;
         }
@@ -732,7 +732,7 @@ function CreatureDecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK
             iChance += 25;
 
           // if ( (INT16)PreRandom(100) < iChance && InternalIsValidStance( pSoldier, ubOpponentDir, ANIM_STAND ) )
-          if ((INT16)PreRandom(100) < iChance && ValidCreatureTurn(pSoldier, ubOpponentDir)) {
+          if (PreRandom(100) < iChance && ValidCreatureTurn(pSoldier, ubOpponentDir)) {
             pSoldier->usActionData = ubOpponentDir;
 
             return AI_ACTION_CHANGE_FACING;

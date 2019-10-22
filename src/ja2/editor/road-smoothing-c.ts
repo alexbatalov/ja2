@@ -385,7 +385,7 @@ function PlaceRoadMacroAtGridNo(iMapIndex: INT32, iMacroID: INT32): void {
   while (gRoadMacros[i].sMacroID == iMacroID) {
     AddToUndoList(iMapIndex + gRoadMacros[i].sOffset);
     RemoveAllObjectsOfTypeRange(i, ROADPIECES, ROADPIECES);
-    GetTileIndexFromTypeSubIndex(ROADPIECES, (UINT16)(i + 1), &usTileIndex);
+    GetTileIndexFromTypeSubIndex(ROADPIECES, (i + 1), &usTileIndex);
     AddObjectToHead(iMapIndex + gRoadMacros[i].sOffset, usTileIndex);
     i++;
   }

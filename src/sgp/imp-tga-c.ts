@@ -217,7 +217,7 @@ function ReadUncompRGBImage(hImage: HIMAGE, hFile: HWFILE, uiImgID: UINT8, uiCol
         goto end;
 
       // Get data pointer
-      pBMData = (UINT8 *)hImage->p8BPPData;
+      pBMData = hImage->p8BPPData;
 
       // Start at end
       pBMPtr = pBMData + uiWidth * (uiHeight - 1) * 3;

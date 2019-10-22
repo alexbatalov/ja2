@@ -746,7 +746,7 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // if we're in water with land miles (> 25 tiles) away,
     // OR if we roll under the chance calculated
-    if (bInWater || ((INT16)PreRandom(100) < iChance)) {
+    if (bInWater || (PreRandom(100) < iChance)) {
       pSoldier->usActionData = RandDestWithinRange(pSoldier);
 
       if (pSoldier->usActionData != NOWHERE) {
@@ -825,13 +825,13 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     // reduce chance if breath is down
     iChance -= (100 - pSoldier->bBreath); // very likely to wait when exhausted
 
-    if ((INT16)PreRandom(100) < iChance) {
+    if (PreRandom(100) < iChance) {
       if (RandomFriendWithin(pSoldier)) {
         if (pSoldier->usActionData == GoAsFarAsPossibleTowards(pSoldier, pSoldier->usActionData, AI_ACTION_SEEK_FRIEND)) {
           if (fCivilianOrMilitia && !gfTurnBasedAI) {
             // pause at the end of the walk!
             pSoldier->bNextAction = AI_ACTION_WAIT;
-            pSoldier->usNextActionData = (UINT16)REALTIME_CIV_AI_DELAY;
+            pSoldier->usNextActionData = REALTIME_CIV_AI_DELAY;
           }
 
           return AI_ACTION_SEEK_FRIEND;
@@ -859,7 +859,7 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (pSoldier->bAttitude == DEFENSIVE)
         iChance += 25;
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         // roll random directions (stored in actionData) until different from current
         do {
           // if man has a LEGAL dominant facing, and isn't facing it, he will turn
@@ -867,11 +867,11 @@ function DecideActionGreen(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           if ((pSoldier->bDominantDir >= 0) && (pSoldier->bDominantDir <= 8) && (pSoldier->bDirection != pSoldier->bDominantDir) && PreRandom(2)) {
             pSoldier->usActionData = pSoldier->bDominantDir;
           } else {
-            pSoldier->usActionData = (UINT16)PreRandom(8);
+            pSoldier->usActionData = PreRandom(8);
           }
         } while (pSoldier->usActionData == pSoldier->bDirection);
 
-        if (InternalIsValidStance(pSoldier, (INT8)pSoldier->usActionData, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
+        if (InternalIsValidStance(pSoldier, pSoldier->usActionData, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
           if (!gfTurnBasedAI) {
             // wait after this...
             pSoldier->bNextAction = AI_ACTION_WAIT;
@@ -955,7 +955,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (pSoldier->bAttitude == DEFENSIVE)
         iChance += 15;
 
-      if ((INT16)PreRandom(100) < iChance && InternalIsValidStance(pSoldier, ubNoiseDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
+      if (PreRandom(100) < iChance && InternalIsValidStance(pSoldier, ubNoiseDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
         pSoldier->usActionData = ubNoiseDir;
 
         return AI_ACTION_CHANGE_FACING;
@@ -1028,7 +1028,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           break;
       }
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         return AI_ACTION_YELLOW_ALERT;
       }
     }
@@ -1128,7 +1128,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // reduce chance if breath is down, less likely to wander around when tired
       iChance -= (100 - pSoldier->bBreath);
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         pSoldier->usActionData = GoAsFarAsPossibleTowards(pSoldier, sNoiseGridNo, AI_ACTION_SEEK_NOISE);
 
         if (pSoldier->usActionData != NOWHERE) {
@@ -1211,7 +1211,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // reduce chance if breath is down, less likely to wander around when tired
       iChance -= (100 - pSoldier->bBreath);
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         pSoldier->usActionData = GoAsFarAsPossibleTowards(pSoldier, sClosestFriend, AI_ACTION_SEEK_FRIEND);
 
         if (pSoldier->usActionData != NOWHERE) {
@@ -1294,7 +1294,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // reduce chance if breath is down, less likely to wander around when tired
       iChance -= (100 - pSoldier->bBreath);
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         pSoldier->bAIMorale = CalcMorale(pSoldier);
         pSoldier->usActionData = FindBestNearbyCover(pSoldier, pSoldier->bAIMorale, &iDummy);
 
@@ -1308,7 +1308,7 @@ function DecideActionYellow(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
   ////////////////////////////////////////////////////////////////////////////
   // SWITCH TO GREEN: determine if soldier acts as if nothing at all was wrong
   ////////////////////////////////////////////////////////////////////////////
-  if ((INT16)PreRandom(100) < 50) {
+  if (PreRandom(100) < 50) {
     // Skip YELLOW until new situation, 15% extra chance to do GREEN actions
     pSoldier->bBypassToGreen = 15;
     return DecideActionGreen(pSoldier);
@@ -1463,7 +1463,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
         } else // not in battle, cower for a certain length of time
         {
           pSoldier->bNextAction = AI_ACTION_WAIT;
-          pSoldier->usNextActionData = (UINT16)REALTIME_CIV_AI_DELAY;
+          pSoldier->usNextActionData = REALTIME_CIV_AI_DELAY;
           pSoldier->usActionData = ANIM_CROUCH;
           return AI_ACTION_COWER;
         }
@@ -1522,7 +1522,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
         } else // not in battle, cower for a certain length of time
         {
           pSoldier->bNextAction = AI_ACTION_WAIT;
-          pSoldier->usNextActionData = (UINT16)REALTIME_CIV_AI_DELAY;
+          pSoldier->usNextActionData = REALTIME_CIV_AI_DELAY;
           pSoldier->usActionData = ANIM_CROUCH;
           return AI_ACTION_COWER;
         }
@@ -1543,17 +1543,17 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
     if (BestThrow.ubPossible) {
       // if firing mortar make sure we have room
       if (pSoldier->inv[BestThrow.bWeaponIn].usItem == MORTAR) {
-        ubOpponentDir = (UINT8)GetDirectionFromGridNo(BestThrow.sTarget, pSoldier);
+        ubOpponentDir = GetDirectionFromGridNo(BestThrow.sTarget, pSoldier);
 
         // Get new gridno!
-        sCheckGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)DirectionInc(ubOpponentDir));
+        sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(ubOpponentDir));
 
         if (!OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, ubOpponentDir, pSoldier->usAnimState)) {
           // can't fire!
           BestThrow.ubPossible = FALSE;
 
           // try behind us, see if there's room to move back
-          sCheckGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)DirectionInc(gOppositeDirection[ubOpponentDir]));
+          sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(gOppositeDirection[ubOpponentDir]));
           if (OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, gOppositeDirection[ubOpponentDir], pSoldier->usAnimState)) {
             pSoldier->usActionData = sCheckGridNo;
 
@@ -1713,7 +1713,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
         }
       }
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         return AI_ACTION_RED_ALERT;
       }
     }
@@ -1918,9 +1918,9 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
                 case DEFENSIVE:
                 case CUNNINGSOLO:
                 case CUNNINGAID:
-                  if (PythSpacesAway(pSoldier->usActionData, sClosestDisturbance) < 5 || LocationToLocationLineOfSightTest(pSoldier->usActionData, pSoldier->bLevel, sClosestDisturbance, pSoldier->bLevel, (UINT8)MaxDistanceVisible(), TRUE)) {
+                  if (PythSpacesAway(pSoldier->usActionData, sClosestDisturbance) < 5 || LocationToLocationLineOfSightTest(pSoldier->usActionData, pSoldier->bLevel, sClosestDisturbance, pSoldier->bLevel, MaxDistanceVisible(), TRUE)) {
                     // reserve APs for a possible crouch plus a shot
-                    pSoldier->usActionData = InternalGoAsFarAsPossibleTowards(pSoldier, sClosestDisturbance, (INT8)(MinAPsToAttack(pSoldier, sClosestDisturbance, ADDTURNCOST) + AP_CROUCH), AI_ACTION_SEEK_OPPONENT, FLAG_CAUTIOUS);
+                    pSoldier->usActionData = InternalGoAsFarAsPossibleTowards(pSoldier, sClosestDisturbance, (MinAPsToAttack(pSoldier, sClosestDisturbance, ADDTURNCOST) + AP_CROUCH), AI_ACTION_SEEK_OPPONENT, FLAG_CAUTIOUS);
                     if (pSoldier->usActionData != NOWHERE) {
                       pSoldier->fAIFlags |= AI_CAUTIOUS;
                       pSoldier->bNextAction = AI_ACTION_END_TURN;
@@ -2017,7 +2017,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
               if (sClosestDisturbance != NOWHERE && (SpacesAway(pSoldier->usActionData, sClosestDisturbance) < 5 || SpacesAway(pSoldier->usActionData, sClosestDisturbance) + 5 < SpacesAway(pSoldier->sGridNo, sClosestDisturbance))) {
                 // either moving significantly closer or into very close range
                 // ensure will we have enough APs for a possible crouch plus a shot
-                if (InternalGoAsFarAsPossibleTowards(pSoldier, pSoldier->usActionData, (INT8)(MinAPsToAttack(pSoldier, sClosestOpponent, ADDTURNCOST) + AP_CROUCH), AI_ACTION_TAKE_COVER, 0) == pSoldier->usActionData) {
+                if (InternalGoAsFarAsPossibleTowards(pSoldier, pSoldier->usActionData, (MinAPsToAttack(pSoldier, sClosestOpponent, ADDTURNCOST) + AP_CROUCH), AI_ACTION_TAKE_COVER, 0) == pSoldier->usActionData) {
                   return AI_ACTION_TAKE_COVER;
                 }
               } else {
@@ -2104,7 +2104,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
           iChance += 50;
         }
 
-        if ((INT16)PreRandom(100) < iChance && InternalIsValidStance(pSoldier, ubOpponentDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
+        if (PreRandom(100) < iChance && InternalIsValidStance(pSoldier, ubOpponentDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
           pSoldier->usActionData = ubOpponentDir;
 
           return AI_ACTION_CHANGE_FACING;
@@ -2120,14 +2120,14 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
       if (sClosestDisturbance != NOWHERE) {
         ubOpponentDir = atan8(CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), CenterX(sClosestDisturbance), CenterY(sClosestDisturbance));
         if (pSoldier->bDirection == ubOpponentDir) {
-          ubOpponentDir = (UINT8)PreRandom(NUM_WORLD_DIRECTIONS);
+          ubOpponentDir = PreRandom(NUM_WORLD_DIRECTIONS);
         }
       } else {
-        ubOpponentDir = (UINT8)PreRandom(NUM_WORLD_DIRECTIONS);
+        ubOpponentDir = PreRandom(NUM_WORLD_DIRECTIONS);
       }
 
       if ((pSoldier->bDirection != ubOpponentDir)) {
-        if ((pSoldier->bActionPoints == pSoldier->bInitialActionPoints || (INT16)PreRandom(100) < 60) && InternalIsValidStance(pSoldier, ubOpponentDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
+        if ((pSoldier->bActionPoints == pSoldier->bInitialActionPoints || PreRandom(100) < 60) && InternalIsValidStance(pSoldier, ubOpponentDir, gAnimControl[pSoldier->usAnimState].ubEndHeight)) {
           pSoldier->usActionData = ubOpponentDir;
 
           // limit turning a bit... if the last thing we did was also a turn, add a 60% chance of this being our last turn
@@ -2136,7 +2136,7 @@ function DecideActionRed(pSoldier: Pointer<SOLDIERTYPE>, ubUnconsciousOK: UINT8)
               pSoldier->bNextAction = AI_ACTION_END_TURN;
             } else {
               pSoldier->bNextAction = AI_ACTION_WAIT;
-              pSoldier->usNextActionData = (UINT16)REALTIME_AI_DELAY;
+              pSoldier->usNextActionData = REALTIME_AI_DELAY;
             }
           }
 
@@ -2588,17 +2588,17 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
       if (BestThrow.ubPossible) {
         if (pSoldier->inv[BestThrow.bWeaponIn].usItem == MORTAR) {
-          ubOpponentDir = (UINT8)GetDirectionFromGridNo(BestThrow.sTarget, pSoldier);
+          ubOpponentDir = GetDirectionFromGridNo(BestThrow.sTarget, pSoldier);
 
           // Get new gridno!
-          sCheckGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)DirectionInc(ubOpponentDir));
+          sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(ubOpponentDir));
 
           if (!OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, ubOpponentDir, pSoldier->usAnimState)) {
             // can't fire!
             BestThrow.ubPossible = FALSE;
 
             // try behind us, see if there's room to move back
-            sCheckGridNo = NewGridNo((UINT16)pSoldier->sGridNo, (UINT16)DirectionInc(gOppositeDirection[ubOpponentDir]));
+            sCheckGridNo = NewGridNo(pSoldier->sGridNo, DirectionInc(gOppositeDirection[ubOpponentDir]));
             if (OKFallDirection(pSoldier, sCheckGridNo, pSoldier->bLevel, gOppositeDirection[ubOpponentDir], pSoldier->usAnimState)) {
               pSoldier->usActionData = sCheckGridNo;
 
@@ -2893,7 +2893,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
           }
         }
 
-        if ((INT32)PreRandom(100) < iChance || GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, BestAttack.sTarget) <= MIN_PRONE_RANGE) {
+        if (PreRandom(100) < iChance || GetRangeInCellCoordsFromGridNoDiff(pSoldier->sGridNo, BestAttack.sTarget) <= MIN_PRONE_RANGE) {
           // first get the direction, as we will need to pass that in to ShootingStanceChange
           bDirection = atan8(CenterX(pSoldier->sGridNo), CenterY(pSoldier->sGridNo), CenterX(BestAttack.sTarget), CenterY(BestAttack.sTarget));
 
@@ -2915,7 +2915,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
             fChangeStanceFirst = TRUE;
 
             // account for increased AP cost
-            ubStanceCost = (UINT8)GetAPsToChangeStance(pSoldier, ubBestStance);
+            ubStanceCost = GetAPsToChangeStance(pSoldier, ubBestStance);
             if (BestAttack.ubAPCost + ubStanceCost > pSoldier->bActionPoints) {
               // AP cost would balance (plus X, minus X) but aim time is reduced
               BestAttack.ubAimTime -= (BestAttack.ubAimTime - ubStanceCost);
@@ -2973,7 +2973,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
             }
           }
 
-          if ((INT32)PreRandom(100) < iChance) {
+          if (PreRandom(100) < iChance) {
             BestAttack.ubAimTime = BURSTING;
             BestAttack.ubAPCost = BestAttack.ubAPCost - BestAttack.ubAimTime + CalcAPsToBurst(CalcActionPoints(pSoldier), &(pSoldier->inv[HANDPOS]));
             // check for spread burst possibilities
@@ -3109,7 +3109,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
     // if I actually know something they don't
     if (iChance) {
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         return AI_ACTION_RED_ALERT;
       }
     }
@@ -3126,7 +3126,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       if (pSoldier->usActionData != 0) {
         if (pSoldier->usActionData == ANIM_PRONE) {
           // we might want to turn before lying down!
-          if ((!gfTurnBasedAI || GetAPsToLook(pSoldier) <= pSoldier->bActionPoints - GetAPsToChangeStance(pSoldier, (INT8)pSoldier->usActionData)) && (((pSoldier->bAIMorale > MORALE_HOPELESS) || ubCanMove) && !AimingGun(pSoldier))) {
+          if ((!gfTurnBasedAI || GetAPsToLook(pSoldier) <= pSoldier->bActionPoints - GetAPsToChangeStance(pSoldier, pSoldier->usActionData)) && (((pSoldier->bAIMorale > MORALE_HOPELESS) || ubCanMove) && !AimingGun(pSoldier))) {
             // determine the location of the known closest opponent
             // (don't care if he's conscious, don't care if he's reachable at all)
 
@@ -3137,7 +3137,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
 
               // if we're not facing towards him
               if (pSoldier->bDirection != bDirection) {
-                if (InternalIsValidStance(pSoldier, bDirection, (INT8)pSoldier->usActionData)) {
+                if (InternalIsValidStance(pSoldier, bDirection, pSoldier->usActionData)) {
                   // change direction, THEN change stance!
                   pSoldier->bNextAction = AI_ACTION_CHANGE_STANCE;
                   pSoldier->usNextActionData = pSoldier->usActionData;
@@ -3279,7 +3279,7 @@ function DecideActionBlack(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
       // reduce chance because we're in combat
       iChance /= 2;
 
-      if ((INT16)PreRandom(100) < iChance) {
+      if (PreRandom(100) < iChance) {
         return AI_ACTION_RED_ALERT;
       }
     }

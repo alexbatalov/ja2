@@ -300,7 +300,7 @@ function MercContractHandling(pSoldier: Pointer<SOLDIERTYPE>, ubDesiredAction: U
       }
     } else {
       // can afford ask if they want it
-      HandleNotifyPlayerCanAffordInsurance(pSoldier, (UINT8)(iContractLength), iCostOfInsurance);
+      HandleNotifyPlayerCanAffordInsurance(pSoldier, (iContractLength), iCostOfInsurance);
     }
   } else {
     // no need to query for life insurance
@@ -371,7 +371,7 @@ function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN): BOOL
       continue;
 
     // is this buddy on the team?
-    if (IsMercOnTeamAndAlive((UINT8)bMercID)) {
+    if (IsMercOnTeamAndAlive(bMercID)) {
       fBuddyAround = TRUE;
 
       if (i == 0)
@@ -397,7 +397,7 @@ function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN): BOOL
     if (bMercID < 0)
       continue;
 
-    if (IsMercOnTeamAndInOmertaAlreadyAndAlive((UINT8)bMercID)) {
+    if (IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) {
       if (gMercProfiles[pSoldier->ubProfile].bHatedCount[i] == 0) {
         // our tolerance has run out!
         fUnhappy = TRUE;
@@ -426,7 +426,7 @@ function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN): BOOL
     bMercID = gMercProfiles[pSoldier->ubProfile].bLearnToHate;
 
     if (bMercID >= 0) {
-      if (IsMercOnTeamAndInOmertaAlreadyAndAlive((UINT8)bMercID)) {
+      if (IsMercOnTeamAndInOmertaAlreadyAndAlive(bMercID)) {
         if (gMercProfiles[pSoldier->ubProfile].bLearnToHateCount == 0) {
           // our tolerance has run out!
           fUnhappy = TRUE;
@@ -467,16 +467,16 @@ function WillMercRenew(pSoldier: Pointer<SOLDIERTYPE>, fSayQuote: BOOLEAN): BOOL
   if (fSayQuote) {
     if (fUnhappy) {
       if (fBuddyAround) {
-        if (GetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((UINT32)(usBuddyQuote))) == TRUE) {
+        if (GetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote))) == TRUE) {
           fSayPrecedent = TRUE;
         } else {
-          SetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((UINT32)(usBuddyQuote)));
+          SetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((usBuddyQuote)));
         }
       } else {
-        if (GetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((UINT32)(usReasonQuote))) == TRUE) {
+        if (GetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote))) == TRUE) {
           fSayPrecedent = TRUE;
         } else {
-          SetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((UINT32)(usReasonQuote)));
+          SetMercPrecedentQuoteBitStatus(pSoldier->ubProfile, GetQuoteBitNumberFromQuoteID((usReasonQuote)));
         }
       }
     }
@@ -531,7 +531,7 @@ function HandleSoldierLeavingWithLowMorale(pSoldier: Pointer<SOLDIERTYPE>): void
   if (MercThinksHisMoraleIsTooLow(pSoldier)) {
     // this will cause him give us lame excuses for a while until he gets over it
     // 3-6 days (but the first 1-2 days of that are spent "returning" home)
-    gMercProfiles[pSoldier->ubProfile].ubDaysOfMoraleHangover = (UINT8)(3 + Random(4));
+    gMercProfiles[pSoldier->ubProfile].ubDaysOfMoraleHangover = (3 + Random(4));
   }
 }
 
@@ -598,7 +598,7 @@ function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
     return;
 
   // ATE: check time we have and see if we can accept new contracts....
-  if (GetWorldTotalMin() <= (UINT32)pSoldier->iTimeCanSignElsewhere) {
+  if (GetWorldTotalMin() <= pSoldier->iTimeCanSignElsewhere) {
     return;
   }
 
@@ -625,7 +625,7 @@ function CheckIfMercGetsAnotherContract(pSoldier: Pointer<SOLDIERTYPE>): void {
     // multiply by experience level
     iChance *= pSoldier->bExpLevel;
 
-    if ((INT32)Random(100) < iChance) {
+    if (Random(100) < iChance) {
       // B'bye!
       pSoldier->fSignedAnotherContract = TRUE;
     }
@@ -781,7 +781,7 @@ function CalculateMedicalDepositRefund(pSoldier: Pointer<SOLDIERTYPE>): void {
   // else the player is injured, refund a partial amount
   else {
     // use the medical deposit in pSoldier, not in profile, which goes up with leveling
-    iRefundAmount = (INT32)((pSoldier->bLife / (FLOAT)pSoldier->bLifeMax) * pSoldier->usMedicalDeposit + 0.5);
+    iRefundAmount = ((pSoldier->bLife / pSoldier->bLifeMax) * pSoldier->usMedicalDeposit + 0.5);
 
     // add an entry in the finacial page for a PARTIAL refund of the medical deposit
     AddTransactionToPlayersBook(PARTIAL_MEDICAL_REFUND, pSoldier->ubProfile, GetWorldTotalMin(), iRefundAmount);
@@ -875,16 +875,16 @@ function NotifyPlayerOfMercDepartureAndPromptEquipmentPlacement(pSoldier: Pointe
   if ((guiTacticalInterfaceFlags & INTERFACE_MAPSCREEN)) {
     if (fInSector == FALSE) {
       // set up for mapscreen
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, (UINT16)((fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack);
+      DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, ((fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack);
     } else {
-      DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, (UINT16)((fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack);
+      DoMapMessageBox(MSG_BOX_BASIC_STYLE, sString, MAP_SCREEN, ((fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack);
     }
   } else {
     if (fInSector == FALSE) {
       // set up for all otherscreens
-      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (UINT16)(MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_GENERICCONTRACT : MSG_BOX_FLAG_GENERIC)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
     } else {
-      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (UINT16)(MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
+      DoMessageBox(MSG_BOX_BASIC_STYLE, sString, guiCurrentScreen, (MSG_BOX_FLAG_USE_CENTERING_RECT | (fAddRehireButton ? MSG_BOX_FLAG_OKCONTRACT : MSG_BOX_FLAG_OK)), MercDepartEquipmentBoxCallBack, &pCenteringRect);
     }
   }
 
@@ -1036,7 +1036,7 @@ function FindOutIfAnyMercAboutToLeaveIsGonnaRenew(): void {
   } else {
     // OK, pick one....
     if (ubNumMercs > 0) {
-      ubChosenMerc = (UINT8)Random(ubNumMercs);
+      ubChosenMerc = Random(ubNumMercs);
 
       SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_LOCK_INTERFACE, 1, MAP_SCREEN, 0, 0, 0);
       HandleImportantMercQuote(MercPtrs[ubPotentialMercs[ubChosenMerc]], QUOTE_CONTRACTS_OVER);
@@ -1119,7 +1119,7 @@ function ContractIsExpiring(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier->iEndofContractTime / 1440) <= (INT32)GetWorldDay()) {
+  if ((pSoldier->iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // See if the hour we are on is the same....
@@ -1137,7 +1137,7 @@ function ContractIsGoingToExpireSoon(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
   let uiCheckHour: UINT32;
 
   // First at least make sure same day....
-  if ((pSoldier->iEndofContractTime / 1440) <= (INT32)GetWorldDay()) {
+  if ((pSoldier->iEndofContractTime / 1440) <= GetWorldDay()) {
     uiCheckHour = GetHourWhenContractDone(pSoldier);
 
     // If we are <= 2 hours from expiry.

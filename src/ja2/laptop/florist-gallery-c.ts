@@ -189,7 +189,7 @@ function BtnGalleryFlowerButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
-      guiCurrentlySelectedFlower = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      guiCurrentlySelectedFlower = MSYS_GetBtnUserData(btn, 0);
       guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
 
       gfShowBookmarks = FALSE;
@@ -235,7 +235,7 @@ function InitFlowerButtons(): BOOLEAN {
   count = gubCurFlowerIndex;
   guiGalleryButtonImage = LoadButtonImage("LAPTOP\\GalleryButtons.sti", -1, 0, -1, 1, -1);
   for (j = 0; j < gubCurNumberOfFlowers; j++) {
-    guiGalleryButton[j] = QuickCreateButton(guiGalleryButtonImage, FLOR_GALLERY_FLOWER_BUTTON_X, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnGalleryFlowerButtonCallback);
+    guiGalleryButton[j] = QuickCreateButton(guiGalleryButtonImage, FLOR_GALLERY_FLOWER_BUTTON_X, usPosY, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, DEFAULT_MOVE_CALLBACK, BtnGalleryFlowerButtonCallback);
     SetButtonCursor(guiGalleryButton[j], CURSOR_WWW);
     MSYS_SetBtnUserData(guiGalleryButton[j], 0, count);
 
@@ -290,19 +290,19 @@ function DisplayFloralDescriptions(): BOOLEAN {
     // Display Flower title
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex);
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_TITLE_SIZE);
-    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (UINT16)(usPosY + FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_TITLE_FONT, FLOR_GALLERY_FLOWER_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_TITLE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_TITLE_FONT, FLOR_GALLERY_FLOWER_TITLE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     // Display Flower Price
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_PRICE_SIZE);
     swscanf(sTemp, L"%hu", &usPrice);
     swprintf(sTemp, L"$%d.00 %s", usPrice, pMessageStrings[MSG_USDOLLAR_ABBREVIATION]);
-    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (UINT16)(usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT, FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sTemp, FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_PRICE_OFFSET_Y), 0, FLOR_GALLERY_FLOWER_PRICE_FONT, FLOR_GALLERY_FLOWER_PRICE_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     // Display Flower Desc
     uiStartLoc = FLOR_GALLERY_TEXT_TOTAL_SIZE * (i + gubCurFlowerIndex) + FLOR_GALLERY_TEXT_TITLE_SIZE + FLOR_GALLERY_TEXT_PRICE_SIZE;
     LoadEncryptedDataFromFile(FLOR_GALLERY_TEXT_FILE, sTemp, uiStartLoc, FLOR_GALLERY_TEXT_DESC_SIZE);
-    DisplayWrappedString(FLOR_GALLERY_FLOWER_TITLE_X, (UINT16)(usPosY + FLOR_GALLERY_FLOWER_DESC_OFFSET_Y), FLOR_GALLERY_DESC_WIDTH, 2, FLOR_GALLERY_FLOWER_DESC_FONT, FLOR_GALLERY_FLOWER_DESC_COLOR, sTemp, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DisplayWrappedString(FLOR_GALLERY_FLOWER_TITLE_X, (usPosY + FLOR_GALLERY_FLOWER_DESC_OFFSET_Y), FLOR_GALLERY_DESC_WIDTH, 2, FLOR_GALLERY_FLOWER_DESC_FONT, FLOR_GALLERY_FLOWER_DESC_COLOR, sTemp, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     usPosY += FLOR_GALLERY_FLOWER_BUTTON_OFFSET_Y;
   }

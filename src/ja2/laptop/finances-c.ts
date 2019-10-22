@@ -187,7 +187,7 @@ function GetTotalDebits(): UINT32 {
   while (pFinance) {
     // if a debit, add to debit total
     if (pFinance->iAmount > 0)
-      uiDebits += ((UINT32)(pFinance->iAmount));
+      uiDebits += ((pFinance->iAmount));
 
     // next finance record
     pFinance = pFinance->Next;
@@ -205,7 +205,7 @@ function GetTotalCredits(): UINT32 {
   while (pFinance) {
     // if a credit, add to credit total
     if (pFinance->iAmount < 0)
-      uiCredits += ((UINT32)(pFinance->iAmount));
+      uiCredits += ((pFinance->iAmount));
 
     // next finance record
     pFinance = pFinance->Next;
@@ -222,7 +222,7 @@ function GetDayCredits(usDayNumber: UINT32): UINT32 {
   while (pFinance) {
     // if a credit and it occurs on day passed
     if ((pFinance->iAmount < 0) && ((pFinance->uiDate / (60 * 24)) == usDayNumber))
-      uiCredits += ((UINT32)(pFinance->iAmount));
+      uiCredits += ((pFinance->iAmount));
 
     // next finance record
     pFinance = pFinance->Next;
@@ -238,7 +238,7 @@ function GetDayDebits(usDayNumber: UINT32): UINT32 {
 
   while (pFinance) {
     if ((pFinance->iAmount > 0) && ((pFinance->uiDate / (60 * 24)) == usDayNumber))
-      uiDebits += ((UINT32)(pFinance->iAmount));
+      uiDebits += ((pFinance->iAmount));
 
     // next finance record
     pFinance = pFinance->Next;
@@ -253,8 +253,8 @@ function GetTotalToDay(sTimeInMins: INT32): INT32 {
   let pFinance: FinanceUnitPtr = pFinanceListHead;
 
   while (pFinance) {
-    if (((INT32)(pFinance->uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
-      uiTotal += ((UINT32)(pFinance->iAmount));
+    if (((pFinance->uiDate / (60 * 24)) <= sTimeInMins / (24 * 60)))
+      uiTotal += ((pFinance->iAmount));
 
     // next finance record
     pFinance = pFinance->Next;
@@ -264,7 +264,7 @@ function GetTotalToDay(sTimeInMins: INT32): INT32 {
 }
 function GetYesterdaysIncome(): INT32 {
   // get income for yesterday
-  return GetDayDebits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(((UINT32)(GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
+  return GetDayDebits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60))) + GetDayCredits(((GetWorldTotalMin() - (24 * 60)) / (24 * 60)));
 }
 
 function GetCurrentBalance(): INT32 {
@@ -1037,20 +1037,20 @@ function ProcessAndEnterAFinacialRecord(ubCode: UINT8, uiDate: UINT32, iAmount: 
 
 function CreateFinanceButtons(): void {
   giFinanceButtonImage[PREV_PAGE_BUTTON] = LoadButtonImage("LAPTOP\\arrows.sti", -1, 0, -1, 1, -1);
-  giFinanceButton[PREV_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnFinanceDisplayPrevPageCallBack);
+  giFinanceButton[PREV_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[PREV_PAGE_BUTTON], PREV_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayPrevPageCallBack);
 
   giFinanceButtonImage[NEXT_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 6, -1, 7, -1);
-  giFinanceButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnFinanceDisplayNextPageCallBack);
+  giFinanceButton[NEXT_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[NEXT_PAGE_BUTTON], NEXT_BTN_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceDisplayNextPageCallBack);
 
   // button to go to the first page
   giFinanceButtonImage[FIRST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 3, -1, 4, -1);
-  giFinanceButton[FIRST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[FIRST_PAGE_BUTTON], FIRST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnFinanceFirstLastPageCallBack);
+  giFinanceButton[FIRST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[FIRST_PAGE_BUTTON], FIRST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
 
   MSYS_SetBtnUserData(giFinanceButton[FIRST_PAGE_BUTTON], 0, 0);
 
   // button to go to the last page
   giFinanceButtonImage[LAST_PAGE_BUTTON] = UseLoadedButtonImage(giFinanceButtonImage[PREV_PAGE_BUTTON], -1, 9, -1, 10, -1);
-  giFinanceButton[LAST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[LAST_PAGE_BUTTON], LAST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnFinanceFirstLastPageCallBack);
+  giFinanceButton[LAST_PAGE_BUTTON] = QuickCreateButton(giFinanceButtonImage[LAST_PAGE_BUTTON], LAST_PAGE_X, BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, BtnFinanceFirstLastPageCallBack);
   MSYS_SetBtnUserData(giFinanceButton[LAST_PAGE_BUTTON], 0, 1);
 
   SetButtonCursor(giFinanceButton[0], CURSOR_LAPTOP_SCREEN);
@@ -1267,8 +1267,8 @@ function ProcessTransactionString(pString: STR16, pFinance: FinanceUnitPtr): voi
       let str: UINT16[] /* [128] */;
       let ubSectorX: UINT8;
       let ubSectorY: UINT8;
-      ubSectorX = (UINT8)SECTORX(pFinance->ubSecondCode);
-      ubSectorY = (UINT8)SECTORY(pFinance->ubSecondCode);
+      ubSectorX = SECTORX(pFinance->ubSecondCode);
+      ubSectorY = SECTORY(pFinance->ubSecondCode);
       GetSectorIDString(ubSectorX, ubSectorY, 0, str, TRUE);
       swprintf(pString, pTransactionText[TRAIN_TOWN_MILITIA], str);
     } break;

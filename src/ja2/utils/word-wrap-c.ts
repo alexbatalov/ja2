@@ -404,7 +404,7 @@ function DrawTextToScreen(pStr: STR16, usLocX: UINT16, usLocY: UINT16, usWidth: 
   }
 
   if (ulFlags & TEXT_SHADOWED)
-    ShadowText(FRAME_BUFFER, pStr, ulFont, (UINT16)(usPosX - 1), (UINT16)(usPosY - 1));
+    ShadowText(FRAME_BUFFER, pStr, ulFont, (usPosX - 1), (usPosY - 1));
 
   if (USE_WINFONTS()) {
     if (fDirty) {
@@ -691,7 +691,7 @@ function IanDisplayWrappedString(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16
 
             // the new color value is the next character in the word
             if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = (UINT8)zWordString[1];
+              ubLocalColor = zWordString[1];
 
             ubLocalColor = 184;
             ;
@@ -1103,7 +1103,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
 
             // the new color value is the next character in the word
             if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = (UINT8)zWordString[1];
+              ubLocalColor = zWordString[1];
 
             ubLocalColor = 184;
             ;
@@ -1219,7 +1219,7 @@ function IanDisplayWrappedStringToPages(usPosX: UINT16, usPosY: UINT16, usWidth:
   DrawTextToScreen(zLineString, usLocalPosX, usPosY, usLocalWidth, uiLocalFont, ubLocalColor, ubBackGroundColor, fDirty, usJustification);
 
   // return how many Y pixels we used
-  return (usLinesUsed * (WFGetFontHeight(uiFont) + (UINT16)ubGap)); // +ubGap
+  return (usLinesUsed * (WFGetFontHeight(uiFont) + ubGap)); // +ubGap
 }
 
 // now variant for grabbing height
@@ -1385,7 +1385,7 @@ function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16,
 
             // the new color value is the next character in the word
             if (zWordString[1] != TEXT_SPACE && zWordString[1] < 256)
-              ubLocalColor = (UINT8)zWordString[1];
+              ubLocalColor = zWordString[1];
 
             ubLocalColor = 184;
             ;
@@ -1493,7 +1493,7 @@ function IanWrappedStringHeight(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16,
   SetFontShadow(DEFAULT_SHADOW);
 
   // return how many Y pixels we used
-  return (usLinesUsed * (WFGetFontHeight(uiFont) + (UINT16)ubGap)); // +ubGap
+  return (usLinesUsed * (WFGetFontHeight(uiFont) + ubGap)); // +ubGap
 }
 
 function WillThisStringGetCutOff(iTotalYPosition: INT32, iBottomOfPage: INT32, iWrapWidth: INT32, uiFont: UINT32, pString: STR16, iGap: INT32, iPage: INT32): BOOLEAN {
@@ -1501,7 +1501,7 @@ function WillThisStringGetCutOff(iTotalYPosition: INT32, iBottomOfPage: INT32, i
   let iHeight: INT32;
   // Will return if this string will get cut off
 
-  iHeight = IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0);
+  iHeight = IanWrappedStringHeight(0, 0, iWrapWidth, (iGap), uiFont, 0, pString, 0, FALSE, 0);
 
   if (iHeight + iTotalYPosition >= ((iPage + 1) * iBottomOfPage)) {
     fGetCutOff = TRUE;
@@ -1514,7 +1514,7 @@ function IsThisStringBeforeTheCurrentPage(iTotalYPosition: INT32, iPageSize: INT
   // check to see if the current string will appear on the current page
   let fBeforeCurrentPage: BOOLEAN = FALSE;
 
-  if (iTotalYPosition + IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0) > (iPageSize * iCurrentPage)) {
+  if (iTotalYPosition + IanWrappedStringHeight(0, 0, iWrapWidth, (iGap), uiFont, 0, pString, 0, FALSE, 0) > (iPageSize * iCurrentPage)) {
     fBeforeCurrentPage = FALSE;
   } else if (iTotalYPosition <= (iPageSize * iCurrentPage)) {
     fBeforeCurrentPage = TRUE;
@@ -1527,7 +1527,7 @@ function GetNewTotalYPositionOfThisString(iTotalYPosition: INT32, iPageSize: INT
   let iNewYPosition: INT32 = 0;
   // will returnt he new total y value of this string
 
-  iNewYPosition = iTotalYPosition + IanWrappedStringHeight(0, 0, (INT16)iWrapWidth, (UINT8)(iGap), uiFont, 0, pString, 0, FALSE, 0);
+  iNewYPosition = iTotalYPosition + IanWrappedStringHeight(0, 0, iWrapWidth, (iGap), uiFont, 0, pString, 0, FALSE, 0);
 
   return iNewYPosition;
 }
@@ -1607,7 +1607,7 @@ function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usW
 
     while (pWidthList) {
       if (iCounter == pWidthList->iRecordNumber) {
-        usCurrentWidth = (INT16)pWidthList->iRecordWidth;
+        usCurrentWidth = pWidthList->iRecordWidth;
         //				iCurrentPositionOnThisPage += pWidthList->iRecordHeightAdjustment;
 
         if (pWidthList->iRecordHeightAdjustment == iPageSize) {
@@ -1632,7 +1632,7 @@ function GetFirstStringOnThisPage(RecordList: FileStringPtr, uiFont: UINT32, usW
       pWidthList = WidthList;
       while (pWidthList) {
         if (iCounter == pWidthList->iRecordNumber) {
-          usCurrentWidth = (INT16)pWidthList->iRecordWidth;
+          usCurrentWidth = pWidthList->iRecordWidth;
 
           if (pWidthList->iRecordHeightAdjustment == iPageSize) {
             if (iCurrentPositionOnThisPage != 0)

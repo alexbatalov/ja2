@@ -154,14 +154,14 @@ function CreateTileDatabase(): void {
 
     if (TileSurf != NULL) {
       // Build start index list
-      gTileTypeStartIndex[cnt1] = (UINT16)gTileDatabaseSize;
+      gTileTypeStartIndex[cnt1] = gTileDatabaseSize;
 
       NumRegions = TileSurf->vo->usNumberOfObjects;
 
       // Check for overflow
       if (NumRegions > gNumTilesPerType[cnt1]) {
         // Display warning
-        gfWarning = (UINT8)cnt1;
+        gfWarning = cnt1;
 
         // Cutof
         NumRegions = gNumTilesPerType[cnt1];
@@ -171,7 +171,7 @@ function CreateTileDatabase(): void {
 
       for (cnt2 = 0; cnt2 < NumRegions; cnt2++) {
         memset(&TileElement, 0, sizeof(TileElement));
-        TileElement.usRegionIndex = (UINT16)cnt2;
+        TileElement.usRegionIndex = cnt2;
         TileElement.hTileSurface = TileSurf->vo;
         TileElement.sBuddyNum = -1;
 
@@ -200,7 +200,7 @@ function CreateTileDatabase(): void {
           }
         }
 
-        TileElement.fType = (UINT16)TileSurf->fType;
+        TileElement.fType = TileSurf->fType;
         TileElement.ubTerrainID = TileSurf->ubTerrainID;
         TileElement.usWallOrientation = NO_ORIENTATION;
 
@@ -245,7 +245,7 @@ function CreateTileDatabase(): void {
           }
         }
 
-        SetSpecificDatabaseValues((UINT16)cnt1, gTileDatabaseSize, &TileElement, TileSurf->bRaisedObjectType);
+        SetSpecificDatabaseValues(cnt1, gTileDatabaseSize, &TileElement, TileSurf->bRaisedObjectType);
 
         gTileDatabase[gTileDatabaseSize] = TileElement;
         gTileDatabaseSize++;
@@ -254,14 +254,14 @@ function CreateTileDatabase(): void {
       // Check if data matches what should be there
       if (NumRegions < gNumTilesPerType[cnt1]) {
         // Display warning here
-        gfWarning = (UINT8)cnt1;
+        gfWarning = cnt1;
 
         // Do underflows here
         for (cnt2 = NumRegions; cnt2 < gNumTilesPerType[cnt1]; cnt2++) {
           memset(&TileElement, 0, sizeof(TileElement));
           TileElement.usRegionIndex = 0;
           TileElement.hTileSurface = TileSurf->vo;
-          TileElement.fType = (UINT16)TileSurf->fType;
+          TileElement.fType = TileSurf->fType;
           TileElement.ubFullTile = FALSE;
           TileElement.sOffsetHeight = 0;
           TileElement.ubFullTile = 0;
@@ -326,7 +326,7 @@ function SetLandIndex(iMapIndex: INT32, usIndex: UINT16, uiNewType: UINT32, fDel
       // Replace with new index
       return ReplaceLandIndex(iMapIndex, usTempIndex, usIndex);
     } else {
-      return InsertLandIndexAtLevel(iMapIndex, usIndex, (UINT8)(ubLastHighLevel + 1));
+      return InsertLandIndexAtLevel(iMapIndex, usIndex, (ubLastHighLevel + 1));
     }
   } else {
     // Check if type exists and get it's index if so
@@ -449,7 +449,7 @@ function GetTypeSubIndexFromTileIndexChar(uiCheckType: UINT32, usIndex: UINT16, 
 
   CHECKF(uiCheckType < NUMBEROFTILETYPES);
 
-  *pubSubIndex = (UINT8)(usIndex - gTileTypeStartIndex[uiCheckType] + 1);
+  *pubSubIndex = (usIndex - gTileTypeStartIndex[uiCheckType] + 1);
 
   return TRUE;
 }
@@ -654,7 +654,7 @@ function CalculateWallOrientationsAtGridNo(iMapIndex: INT32): UINT8 {
     GetWallOrientation(pStruct->usIndex, &usCheckWallOrientation);
     if (ubFinalWallOrientation == NO_ORIENTATION) {
       // Get the first valid orientation.
-      ubFinalWallOrientation = (UINT8)usCheckWallOrientation;
+      ubFinalWallOrientation = usCheckWallOrientation;
     } else
       switch (ubFinalWallOrientation) {
         // If the first valid orientation has the key counterpart orientation,

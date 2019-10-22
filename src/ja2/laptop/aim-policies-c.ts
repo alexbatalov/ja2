@@ -153,7 +153,7 @@ function EnterAimPolicies(): BOOLEAN {
 
   InitAimDefaults();
 
-  gubCurPageNum = (UINT8)giCurrentSubPage;
+  gubCurPageNum = giCurrentSubPage;
 
   gfAimPolicyMenuBarLoaded = FALSE;
   gfExitingAimPolicy = FALSE;
@@ -237,89 +237,89 @@ function RenderAimPolicies(): void {
 
     case 2:
       // Display the Definitions title
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, DEFINITIONS, (FLOAT)1.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, DEFINITIONS, 1.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_1, (FLOAT)1.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_2, (FLOAT)1.2) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_3, (FLOAT)1.3) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_4, (FLOAT)1.4);
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_1, 1.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_2, 1.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_3, 1.3) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, DEFINITIONS_4, 1.4);
       break;
 
     case 3:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, LENGTH_OF_ENGAGEMENT, (FLOAT)2.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, LENGTH_OF_ENGAGEMENT, 2.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1, (FLOAT)2.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_1, (FLOAT)2.11) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_2, (FLOAT)2.12) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_3, (FLOAT)2.13) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_2, (FLOAT)2.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1, 2.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_1, 2.11) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_2, 2.12) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_1_3, 2.13) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LENGTH_OF_ENGAGEMENT_2, 2.2) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 4:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, LOCATION_0F_ENGAGEMENT, (FLOAT)3.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, LOCATION_0F_ENGAGEMENT, 3.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_1, (FLOAT)3.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2, (FLOAT)3.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_1, 3.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2, 3.2) + AIM_POLICY_PARAGRAPH_GAP;
 
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_1, (FLOAT)3.21) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_2, (FLOAT)3.22) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_3, (FLOAT)3.23) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_1, 3.21) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_2, 3.22) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_3, 3.23) + AIM_POLICY_PARAGRAPH_GAP;
       //			usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_4, (FLOAT)3.24) + AIM_POLICY_PARAGRAPH_GAP;
 
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_4, (FLOAT)3.3) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_2_4, 3.3) + AIM_POLICY_PARAGRAPH_GAP;
 
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_3, (FLOAT)3.4) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, LOCATION_0F_ENGAGEMENT_3, 3.4) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 5:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, CONTRACT_EXTENSIONS, (FLOAT)4.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, CONTRACT_EXTENSIONS, 4.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_1, (FLOAT)4.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_2, (FLOAT)4.2) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_3, (FLOAT)4.3) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_1, 4.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_2, 4.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, CONTRACT_EXTENSIONS_3, 4.3) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 6:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, TERMS_OF_PAYMENT, (FLOAT)5.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, TERMS_OF_PAYMENT, 5.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_PAYMENT_1, (FLOAT)5.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_PAYMENT_1, 5.1) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 7:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, TERMS_OF_ENGAGEMENT, (FLOAT)6.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, TERMS_OF_ENGAGEMENT, 6.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_1, (FLOAT)6.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_2A, (FLOAT)6.2) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_2B, (FLOAT)0.0) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_1, 6.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_2A, 6.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, TERMS_OF_ENGAGEMENT_2B, 0.0) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 8:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, ENGAGEMENT_TERMINATION, (FLOAT)7.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, ENGAGEMENT_TERMINATION, 7.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1, (FLOAT)7.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1, 7.1) + AIM_POLICY_PARAGRAPH_GAP;
 
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_1, (FLOAT)7.11) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_2, (FLOAT)7.12) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_3, (FLOAT)7.13) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_1, 7.11) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_2, 7.12) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicySubParagraph(usNumPixles, ENGAGEMENT_TERMINATION_1_3, 7.13) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 9:
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, EQUIPMENT_AND_INVENTORY, (FLOAT)8.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, EQUIPMENT_AND_INVENTORY, 8.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, EQUIPMENT_AND_INVENTORY_1, (FLOAT)8.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, EQUIPMENT_AND_INVENTORY_2, (FLOAT)8.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, EQUIPMENT_AND_INVENTORY_1, 8.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, EQUIPMENT_AND_INVENTORY_2, 8.2) + AIM_POLICY_PARAGRAPH_GAP;
       break;
 
     case 10:
       DisableAimPolicyButton();
 
-      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, POLICY_MEDICAL, (FLOAT)9.0);
+      DisplayAimPolicyTitle(AIM_POLICY_SUBTITLE_Y, POLICY_MEDICAL, 9.0);
       usNumPixles = AIM_POLICY_PARAGRAPH_Y;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_1, (FLOAT)9.1) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_2, (FLOAT)9.2) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_3A, (FLOAT)9.3) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_3B, (FLOAT)0.0) + AIM_POLICY_PARAGRAPH_GAP;
-      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_4, (FLOAT)9.4) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_1, 9.1) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_2, 9.2) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_3A, 9.3) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_3B, 0.0) + AIM_POLICY_PARAGRAPH_GAP;
+      usNumPixles += DisplayAimPolicyParagraph(usNumPixles, POLICY_MEDICAL_4, 9.4) + AIM_POLICY_PARAGRAPH_GAP;
       break;
   }
 
@@ -404,7 +404,7 @@ function DrawAimPolicyMenu(): BOOLEAN {
 
     uiStartLoc = AIM_POLICY_LINE_SIZE * ubLocInFile[i];
     LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_HISTORY_LINE_SIZE);
-    DrawTextToScreen(sText, AIM_POLICY_TOC_X + AIM_POLICY_TOC_TEXT_OFFSET_X, (UINT16)(usPosY + AIM_POLICY_TOC_TEXT_OFFSET_Y), AIM_CONTENTBUTTON_WIDTH, AIM_POLICY_TOC_FONT, AIM_POLICY_TOC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(sText, AIM_POLICY_TOC_X + AIM_POLICY_TOC_TEXT_OFFSET_X, (usPosY + AIM_POLICY_TOC_TEXT_OFFSET_Y), AIM_CONTENTBUTTON_WIDTH, AIM_POLICY_TOC_FONT, AIM_POLICY_TOC_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     usPosY += AIM_POLICY_TOC_GAP_Y;
   }
@@ -426,7 +426,7 @@ function InitAimPolicyTocMenu(): BOOLEAN {
   usPosY = AIM_POLICY_TOC_Y;
   for (i = 0; i < NUM_AIM_POLICY_TOC_BUTTONS; i++) {
     // Mouse region for the toc buttons
-    MSYS_DefineRegion(&gSelectedPolicyTocMenuRegion[i], AIM_POLICY_TOC_X, usPosY, (UINT16)(AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (UINT16)(usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
+    MSYS_DefineRegion(&gSelectedPolicyTocMenuRegion[i], AIM_POLICY_TOC_X, usPosY, (AIM_POLICY_TOC_X + AIM_CONTENTBUTTON_WIDTH), (usPosY + AIM_CONTENTBUTTON_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectPolicyTocMenuRegionCallBack);
     MSYS_AddRegion(&gSelectedPolicyTocMenuRegion[i]);
     MSYS_SetRegionUserData(&gSelectedPolicyTocMenuRegion[i], 0, i + 2);
 
@@ -451,7 +451,7 @@ function SelectPolicyTocMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
   if (gfInPolicyToc) {
     if (iReason & MSYS_CALLBACK_REASON_INIT) {
     } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      gubCurPageNum = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+      gubCurPageNum = MSYS_GetRegionUserData(pRegion, 0);
 
       ChangingAimPoliciesSubPage(gubCurPageNum);
 
@@ -492,7 +492,7 @@ function DisplayAimPolicyStatement(): BOOLEAN {
   // load and display the statment of policies
   uiStartLoc = AIM_POLICY_LINE_SIZE * AIM_STATEMENT_OF_POLICY_2;
   LoadEncryptedDataFromFile(AIMPOLICYFILE, sText, uiStartLoc, AIM_POLICY_LINE_SIZE);
-  DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, (UINT16)(AIM_POLICY_TITLE_STATEMENT_Y + usNumPixels + 15), AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT, AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+  DisplayWrappedString(AIM_POLICY_TITLE_STATEMENT_X, (AIM_POLICY_TITLE_STATEMENT_Y + usNumPixels + 15), AIM_POLICY_TITLE_STATEMENT_WIDTH, 2, AIM_POLICY_TEXT_FONT, AIM_POLICY_TEXT_COLOR, sText, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
   return TRUE;
 }
@@ -595,7 +595,7 @@ function BtnPoliciesAgreeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32)
   let ubRetValue: UINT8;
   /* static */ let fOnPage: BOOLEAN = TRUE;
   if (fOnPage) {
-    ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       btn->uiFlags |= BUTTON_CLICKED_ON;
       InvalidateRegion(LAPTOP_SCREEN_UL_X, LAPTOP_SCREEN_WEB_UL_Y, LAPTOP_SCREEN_LR_X, LAPTOP_SCREEN_WEB_LR_Y);
@@ -634,7 +634,7 @@ function BtnPoliciesMenuButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   let ubRetValue: UINT8;
   /* static */ let fOnPage: BOOLEAN = TRUE;
   if (fOnPage) {
-    ubRetValue = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    ubRetValue = MSYS_GetBtnUserData(btn, 0);
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
       btn->uiFlags |= BUTTON_CLICKED_ON;
       gubAimPolicyMenuButtonDown = ubRetValue;

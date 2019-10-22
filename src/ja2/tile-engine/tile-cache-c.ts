@@ -88,7 +88,7 @@ function FindCacheStructDataIndex(cFilename: Pointer<INT8>): INT16 {
 
   for (cnt = 0; cnt < guiNumTileCacheStructs; cnt++) {
     if (_stricmp(gpTileCacheStructInfo[cnt].zRootName, cFilename) == 0) {
-      return (INT16)cnt;
+      return cnt;
     }
   }
 
@@ -98,7 +98,7 @@ function FindCacheStructDataIndex(cFilename: Pointer<INT8>): INT16 {
 function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
   let cnt: UINT32;
   let ubLowestIndex: UINT32 = 0;
-  let sMostHits: INT16 = (INT16)15000;
+  let sMostHits: INT16 = 15000;
 
   // Check to see if surface exists already
   for (cnt = 0; cnt < guiCurTileCacheSize; cnt++) {
@@ -106,7 +106,7 @@ function GetCachedTile(cFilename: Pointer<INT8>): INT32 {
       if (_stricmp(gpTileCache[cnt].zName, cFilename) == 0) {
         // Found surface, return
         gpTileCache[cnt].sHits++;
-        return (INT32)cnt;
+        return cnt;
       }
     }
   }
@@ -180,7 +180,7 @@ function RemoveCachedTile(iCachedTile: INT32): BOOLEAN {
   // Find tile
   for (cnt = 0; cnt < guiCurTileCacheSize; cnt++) {
     if (gpTileCache[cnt].pImagery != NULL) {
-      if (cnt == (UINT32)iCachedTile) {
+      if (cnt == iCachedTile) {
         // Found surface, decrement hits
         gpTileCache[cnt].sHits--;
 

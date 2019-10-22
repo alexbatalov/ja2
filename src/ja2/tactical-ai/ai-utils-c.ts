@@ -297,7 +297,7 @@ function NewDest(pSoldier: Pointer<SOLDIERTYPE>, usGridNo: UINT16): void {
                 break;*/
         default:
           if (PreRandom(5 - SoldierDifficultyLevel(pSoldier)) == 0) {
-            let sClosestNoise: INT16 = (INT16)MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
+            let sClosestNoise: INT16 = MostImportantNoiseHeard(pSoldier, NULL, NULL, NULL);
             if (sClosestNoise != NOWHERE && PythSpacesAway(pSoldier->sGridNo, sClosestNoise) < MaxDistanceVisible() + 10) {
               pSoldier->usUIMovementMode = SWATTING;
               fSet = TRUE;
@@ -337,7 +337,7 @@ function IsActionAffordable(pSoldier: Pointer<SOLDIERTYPE>): BOOLEAN {
       break;
 
     case AI_ACTION_CHANGE_FACING: // turn to face another direction
-      bMinPointsNeeded = (INT8)GetAPsToLook(pSoldier);
+      bMinPointsNeeded = GetAPsToLook(pSoldier);
       break;
 
     case AI_ACTION_RANDOM_PATROL: // move towards a particular location
@@ -518,13 +518,13 @@ function RandomFriendWithin(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
       while ((ubDirsLeft--) && !fFound) {
         // randomly select a direction which hasn't been 'checked' yet
         do {
-          usDirection = (UINT16)Random(8);
+          usDirection = Random(8);
         } while (fDirChecked[usDirection]);
 
         fDirChecked[usDirection] = TRUE;
 
         // determine the gridno 1 tile away from current friend in this direction
-        usDest = NewGridNo(Menptr[ubFriendID].sGridNo, DirectionInc((INT16)(usDirection + 1)));
+        usDest = NewGridNo(Menptr[ubFriendID].sGridNo, DirectionInc((usDirection + 1)));
 
         // if that's out of bounds, ignore it & check next direction
         if (usDest == Menptr[ubFriendID].sGridNo) {
@@ -621,8 +621,8 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   if (pSoldier->ubBodyType == LARVAE_MONSTER) {
     // only crawl 1 tile, within our roaming range
     while ((ubTriesLeft--) && !fFound) {
-      sXOffset = (INT16)Random(3) - 1; // generates -1 to +1
-      sYOffset = (INT16)Random(3) - 1;
+      sXOffset = Random(3) - 1; // generates -1 to +1
+      sYOffset = Random(3) - 1;
 
       if (fLimited) {
         sX = pSoldier->sGridNo % MAXCOL + sXOffset;
@@ -651,12 +651,12 @@ function RandDestWithinRange(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // keep rolling random ->sDestinations until one's satisfactory or retries used
     while ((ubTriesLeft--) && !fFound) {
       if (fLimited) {
-        sXOffset = ((INT16)Random(sXRange)) - sMaxLeft;
-        sYOffset = ((INT16)Random(sYRange)) - sMaxUp;
+        sXOffset = (Random(sXRange)) - sMaxLeft;
+        sYOffset = (Random(sYRange)) - sMaxUp;
 
         sRandDest = usOrigin + sXOffset + (MAXCOL * sYOffset);
       } else {
-        sRandDest = (INT16)PreRandom(GRIDSIZE);
+        sRandDest = PreRandom(GRIDSIZE);
       }
 
       if (ubRoom && InARoom(sRandDest, &ubTempRoom) && ubTempRoom != ubRoom) {
@@ -830,7 +830,7 @@ function ClosestReachableDisturbance(pSoldier: Pointer<SOLDIERTYPE>, ubUnconscio
     bLevel = *pbNoiseLevel;
 
     // if we are not NEAR the noise gridno...
-    if (pSoldier->bLevel != bLevel || PythSpacesAway(pSoldier->sGridNo, sGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, (UINT8)MaxDistanceVisible(), FALSE) == 0)
+    if (pSoldier->bLevel != bLevel || PythSpacesAway(pSoldier->sGridNo, sGridNo) >= 6 || SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, MaxDistanceVisible(), FALSE) == 0)
     // if we are NOT there (at the noise gridno)
     //	if (sGridNo != pSoldier->sGridNo)
     {
@@ -1031,7 +1031,7 @@ function ClosestPC(pSoldier: Pointer<SOLDIERTYPE>, psDistance: Pointer<INT16>): 
 
   let ubLoop: UINT8;
   let pTargetSoldier: Pointer<SOLDIERTYPE>;
-  let sMinDist: INT16 = (INT16)WORLD_MAX;
+  let sMinDist: INT16 = WORLD_MAX;
   let sDist: INT16;
   let sGridNo: INT16 = NOWHERE;
 
@@ -1602,7 +1602,7 @@ function CalcMorale(pSoldier: Pointer<SOLDIERTYPE>): INT8 {
     iOurTotalThreat /= iTheirTotalThreat;
 
     // calculate the morale (100 is even, < 100 is us losing, > 100 is good)
-    sMorale = (INT16)((100 * iOurTotalThreat) / iTheirTotalThreat);
+    sMorale = ((100 * iOurTotalThreat) / iTheirTotalThreat);
   }
 
   if (sMorale <= 25) // odds 1:4 or worse
@@ -1948,7 +1948,7 @@ function SoldierDifficultyLevel(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   bDifficulty = __max(bDifficulty, 0);
   bDifficulty = __min(bDifficulty, 4);
 
-  return (UINT8)bDifficulty;
+  return bDifficulty;
 }
 
 function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8): BOOLEAN {
@@ -1957,7 +1957,7 @@ function ValidCreatureTurn(pCreature: Pointer<SOLDIERTYPE>, bNewDirection: INT8)
   let bLoop: INT8;
   let fFound: BOOLEAN;
 
-  bDirChange = (INT8)QuickestDirection(pCreature->bDirection, bNewDirection);
+  bDirChange = QuickestDirection(pCreature->bDirection, bNewDirection);
 
   for (bLoop = 0; bLoop < 2; bLoop++) {
     fFound = TRUE;

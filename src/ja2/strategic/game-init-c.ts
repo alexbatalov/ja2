@@ -415,24 +415,24 @@ function QuickStartGame(): void {
 
   for (cnt = 0; cnt < 3; cnt++) {
     if (cnt == 0) {
-      usVal = (UINT16)Random(40);
+      usVal = Random(40);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, usVal);
+      QuickGameMemberHireMerc(usVal);
     } else if (cnt == 1) {
       do {
-        usVal = (UINT16)Random(40);
+        usVal = Random(40);
       } while (usVal != ub1);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, usVal);
+      QuickGameMemberHireMerc(usVal);
     } else if (cnt == 2) {
       do {
-        usVal = (UINT16)Random(40);
+        usVal = Random(40);
       } while (usVal != ub1 && usVal != ub2);
 
-      QuickSetupOfMercProfileItems(cnt, (UINT8)usVal);
-      QuickGameMemberHireMerc((UINT8)usVal);
+      QuickSetupOfMercProfileItems(cnt, usVal);
+      QuickGameMemberHireMerc(usVal);
     }
   }
 }
@@ -512,7 +512,7 @@ function QuickSetupOfMercProfileItems(uiCount: UINT32, ubProfileIndex: UINT8): v
     gMercProfiles[ubProfileIndex].bInvStatus[SMALLPOCK6POS] = 100;
     gMercProfiles[ubProfileIndex].bInvNumber[SMALLPOCK6POS] = 1;
   } else {
-    gMercProfiles[ubProfileIndex].inv[HANDPOS] = (UINT8)Random(30);
+    gMercProfiles[ubProfileIndex].inv[HANDPOS] = Random(30);
     gMercProfiles[ubProfileIndex].bInvNumber[HANDPOS] = 1;
   }
 
@@ -563,7 +563,7 @@ function QuickGameMemberHireMerc(ubCurrentSoldier: UINT8): BOOLEAN {
   }
 
   // add an entry in the finacial page for the hiring of the merc
-  AddTransactionToPlayersBook(HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(), -(INT32)gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
+  AddTransactionToPlayersBook(HIRED_MERC, ubCurrentSoldier, GetWorldTotalMin(), -gMercProfiles[ubCurrentSoldier].uiWeeklySalary);
 
   if (gMercProfiles[ubCurrentSoldier].bMedicalDeposit) {
     // add an entry in the finacial page for the medical deposit

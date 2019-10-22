@@ -52,7 +52,7 @@ function EnterFloristCards(): BOOLEAN {
   for (j = 0; j < 3; j++) {
     usPosX = FLORIST_CARD_FIRST_POS_X;
     for (i = 0; i < 3; i++) {
-      MSYS_DefineRegion(&gSelectedFloristCardsRegion[ubCount], usPosX, usPosY, (UINT16)(usPosX + FLORIST_CARD_CARD_WIDTH), (UINT16)(usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
+      MSYS_DefineRegion(&gSelectedFloristCardsRegion[ubCount], usPosX, usPosY, (usPosX + FLORIST_CARD_CARD_WIDTH), (usPosY + FLORIST_CARD_CARD_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFloristCardsRegionCallBack);
       MSYS_AddRegion(&gSelectedFloristCardsRegion[ubCount]);
       MSYS_SetRegionUserData(&gSelectedFloristCardsRegion[ubCount], 0, ubCount);
       ubCount++;
@@ -119,11 +119,11 @@ function RenderFloristCards(): void {
       LoadEncryptedDataFromFile(FLOR_CARD_TEXT_FILE, sTemp, uiStartLoc, FLOR_CARD_TEXT_TITLE_SIZE);
 
       //			DisplayWrappedString((UINT16)(usPosX+7), (UINT16)(usPosY+15), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR,  sTemp, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
-      usHeightOffset = IanWrappedStringHeight((UINT16)(usPosX + 7), (UINT16)(usPosY), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
+      usHeightOffset = IanWrappedStringHeight((usPosX + 7), (usPosY), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
 
       usHeightOffset = (FLORIST_CARD_TEXT_HEIGHT - usHeightOffset) / 2;
 
-      IanDisplayWrappedString((UINT16)(usPosX + 7), (UINT16)(usPosY + 10 + usHeightOffset), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
+      IanDisplayWrappedString((usPosX + 7), (usPosY + 10 + usHeightOffset), FLORIST_CARD_TEXT_WIDTH, 2, FLORIST_CARDS_SENTENCE_FONT, FLORIST_CARDS_SENTENCE_COLOR, sTemp, 0, FALSE, 0);
 
       ubCount++;
       usPosX += FLORIST_CARD_FIRST_OFFSET_X;
@@ -139,7 +139,7 @@ function RenderFloristCards(): void {
 function SelectFloristCardsRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    gbCurrentlySelectedCard = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gbCurrentlySelectedCard = MSYS_GetRegionUserData(pRegion, 0);
 
     guiCurrentLaptopMode = LAPTOP_MODE_FLORIST_ORDERFORM;
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {

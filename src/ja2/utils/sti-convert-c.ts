@@ -120,9 +120,9 @@ function WriteSTIFile(pData: Pointer<INT8>, pPalette: Pointer<SGPPaletteEntry>, 
   }
 
   if ((Header.fFlags & STCI_INDEXED) && (fFlags & CONVERT_ETRLE_COMPRESS)) {
-    if (!ConvertToETRLE(&pOutputBuffer, &uiCompressedSize, (UINT8 **)&pSubImageBuffer, &usNumberOfSubImages, pData, sWidth, sHeight, fFlags)) {
+    if (!ConvertToETRLE(&pOutputBuffer, &uiCompressedSize, &pSubImageBuffer, &usNumberOfSubImages, pData, sWidth, sHeight, fFlags)) {
     }
-    uiSubImageBufferSize = (UINT32)usNumberOfSubImages * STCI_SUBIMAGE_SIZE;
+    uiSubImageBufferSize = usNumberOfSubImages * STCI_SUBIMAGE_SIZE;
 
     Header.Indexed.usNumberOfSubImages = usNumberOfSubImages;
     Header.uiStoredSize = uiCompressedSize;
@@ -206,7 +206,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
   let uiSpaceLeft: UINT32;
 
   // worst-case situation	estimate
-  uiSpaceLeft = (UINT32)usWidth * (UINT32)usHeight * 3;
+  uiSpaceLeft = usWidth * usHeight * 3;
   *ppDest = MemAlloc(uiSpaceLeft);
   CHECKF(*ppDest);
   *puiDestLen = uiSpaceLeft;
@@ -225,7 +225,7 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
       MemFree(*ppDest);
       return FALSE;
     }
-    pCurrSubImage = (STCISubImage *)*ppSubImageBuffer;
+    pCurrSubImage = *ppSubImageBuffer;
     pCurrSubImage->sOffsetX = 0;
     pCurrSubImage->sOffsetY = 0;
     pCurrSubImage->usWidth = usWidth;
@@ -258,14 +258,14 @@ function ConvertToETRLE(ppDest: Pointer<Pointer<UINT8>>, puiDestLen: Pointer<UIN
 
     while (fContinue) {
       // allocate more memory for SubImage structures, and set the current pointer to the last one
-      pTemp = (UINT8 *)MemRealloc(*ppSubImageBuffer, (*pusNumberOfSubImages + 1) * STCI_SUBIMAGE_SIZE);
+      pTemp = MemRealloc(*ppSubImageBuffer, (*pusNumberOfSubImages + 1) * STCI_SUBIMAGE_SIZE);
       if (pTemp == NULL) {
         fOk = FALSE;
         break;
       } else {
         *ppSubImageBuffer = pTemp;
       }
-      pCurrSubImage = (STCISubImage *)(*ppSubImageBuffer + (*pusNumberOfSubImages) * STCI_SUBIMAGE_SIZE);
+      pCurrSubImage = (*ppSubImageBuffer + (*pusNumberOfSubImages) * STCI_SUBIMAGE_SIZE);
 
       pCurrSubImage->sOffsetX = sCurrX;
       pCurrSubImage->sOffsetY = sCurrY;
@@ -427,8 +427,8 @@ function DetermineOffset(puiOffset: Pointer<UINT32>, usWidth: UINT16, usHeight: 
   if (sX < 0 || sY < 0) {
     return FALSE;
   }
-  *puiOffset = (UINT32)sY * (UINT32)usWidth + (UINT32)sX;
-  if (*puiOffset >= (UINT32)usWidth * (UINT32)usHeight) {
+  *puiOffset = sY * usWidth + sX;
+  if (*puiOffset >= usWidth * usHeight) {
     return FALSE;
   }
   return TRUE;
@@ -570,7 +570,7 @@ function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16,
   }
   // shrink from the bottom
   if (CheckForDataInRows(&sNewValue, -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
-    usNewHeight = (UINT16)sNewValue - usNewY + 1;
+    usNewHeight = sNewValue - usNewY + 1;
   } else {
     return FALSE;
   }
@@ -582,7 +582,7 @@ function DetermineSubImageUsedSize(p8BPPBuffer: Pointer<UINT8>, usWidth: UINT16,
   }
   // shrink from the right
   if (CheckForDataInCols(&sNewValue, -1, p8BPPBuffer, usWidth, usHeight, pSubImage)) {
-    usNewWidth = (UINT16)sNewValue - usNewX + 1;
+    usNewWidth = sNewValue - usNewX + 1;
   } else {
     return FALSE;
   }
@@ -602,13 +602,13 @@ function CheckForDataInRows(psYValue: Pointer<INT16>, sYIncrement: INT16, p8BPPB
   if (sYIncrement == 1) {
     sCurrY = pSubImage->sOffsetY;
   } else if (sYIncrement == -1) {
-    sCurrY = pSubImage->sOffsetY + (INT16)pSubImage->usHeight - 1;
+    sCurrY = pSubImage->sOffsetY + pSubImage->usHeight - 1;
   } else {
     // invalid value!
     return FALSE;
   }
   for (usLoop = 0; usLoop < pSubImage->usHeight; usLoop++) {
-    if (!DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, (INT16)sCurrY)) {
+    if (!DetermineOffset(&uiOffset, usWidth, usHeight, pSubImage->sOffsetX, sCurrY)) {
       return FALSE;
     }
     pCurrent = p8BPPBuffer + uiOffset;
@@ -632,13 +632,13 @@ function CheckForDataInCols(psXValue: Pointer<INT16>, sXIncrement: INT16, p8BPPB
   if (sXIncrement == 1) {
     sCurrX = pSubImage->sOffsetX;
   } else if (sXIncrement == -1) {
-    sCurrX = pSubImage->sOffsetX + (INT16)pSubImage->usWidth - 1;
+    sCurrX = pSubImage->sOffsetX + pSubImage->usWidth - 1;
   } else {
     // invalid value!
     return FALSE;
   }
   for (usLoop = 0; usLoop < pSubImage->usWidth; usLoop++) {
-    if (!DetermineOffset(&uiOffset, usWidth, usHeight, (UINT16)sCurrX, pSubImage->sOffsetY)) {
+    if (!DetermineOffset(&uiOffset, usWidth, usHeight, sCurrX, pSubImage->sOffsetY)) {
       return FALSE;
     }
     pCurrent = p8BPPBuffer + uiOffset;

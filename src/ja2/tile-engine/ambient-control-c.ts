@@ -282,7 +282,7 @@ function SetSteadyStateAmbience(ubAmbience: UINT8): BOOLEAN {
   }
 
   // Pick one
-  ubChosenSound = (UINT8)Random(ubNumSounds);
+  ubChosenSound = Random(ubNumSounds);
 
   // Set!
   gubCurrentSteadyStateAmbience = ubAmbience;

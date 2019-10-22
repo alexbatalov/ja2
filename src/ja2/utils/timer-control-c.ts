@@ -135,7 +135,7 @@ function InitializeJA2Clock(): BOOLEAN {
   }
 
   // Set timer at lowest resolution. Could use middle of lowest/highest, we'll see how this performs first
-  gTimerID = timeSetEvent(BASETIMESLICE, BASETIMESLICE, TimeProc, (DWORD)0, TIME_PERIODIC);
+  gTimerID = timeSetEvent(BASETIMESLICE, BASETIMESLICE, TimeProc, 0, TIME_PERIODIC);
 
   if (!gTimerID) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
@@ -163,13 +163,13 @@ function InitializeJA2TimerCallback(uiDelay: UINT32, TimerProc: LPTIMECALLBACK, 
   }
 
   // Set timer at lowest resolution. Could use middle of lowest/highest, we'll see how this performs first
-  TimerID = timeSetEvent((UINT)uiDelay, (UINT)uiDelay, TimerProc, (DWORD)uiUser, TIME_PERIODIC);
+  TimerID = timeSetEvent(uiDelay, uiDelay, TimerProc, uiUser, TIME_PERIODIC);
 
   if (!TimerID) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Could not create timer callback");
   }
 
-  return (UINT32)TimerID;
+  return TimerID;
 }
 
 function RemoveJA2TimerCallback(uiTimer: UINT32): void {

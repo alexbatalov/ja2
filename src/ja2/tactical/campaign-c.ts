@@ -577,12 +577,12 @@ function ChangeStat(pProfile: Pointer<MERCPROFILESTRUCT>, pSoldier: Pointer<SOLD
 
       if (fChangeSalary) {
         // increase all salaries and medical deposits, once for each level gained
-        for (uiLevelCnt = 0; uiLevelCnt < (UINT32)sPtsChanged; uiLevelCnt++) {
-          pProfile->sSalary = (INT16)CalcNewSalary(pProfile->sSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
+        for (uiLevelCnt = 0; uiLevelCnt < sPtsChanged; uiLevelCnt++) {
+          pProfile->sSalary = CalcNewSalary(pProfile->sSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
           pProfile->uiWeeklySalary = CalcNewSalary(pProfile->uiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
           pProfile->uiBiWeeklySalary = CalcNewSalary(pProfile->uiBiWeeklySalary, fChangeTypeIncrease, MAX_LARGE_SALARY);
-          pProfile->sTrueSalary = (INT16)CalcNewSalary(pProfile->sTrueSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
-          pProfile->sMedicalDepositAmount = (INT16)CalcNewSalary(pProfile->sMedicalDepositAmount, fChangeTypeIncrease, MAX_DAILY_SALARY);
+          pProfile->sTrueSalary = CalcNewSalary(pProfile->sTrueSalary, fChangeTypeIncrease, MAX_DAILY_SALARY);
+          pProfile->sMedicalDepositAmount = CalcNewSalary(pProfile->sMedicalDepositAmount, fChangeTypeIncrease, MAX_DAILY_SALARY);
 
           // if (pSoldier != NULL)
           // DON'T increase the *effective* medical deposit, it's already been paid out
@@ -818,9 +818,9 @@ function CalcNewSalary(uiOldSalary: UINT32, fIncrease: BOOLEAN, uiMaxLimit: UINT
   }
 
   if (fIncrease) {
-    uiNewSalary = (UINT32)(uiOldSalary * SALARY_CHANGE_PER_LEVEL);
+    uiNewSalary = (uiOldSalary * SALARY_CHANGE_PER_LEVEL);
   } else {
-    uiNewSalary = (UINT32)(uiOldSalary / SALARY_CHANGE_PER_LEVEL);
+    uiNewSalary = (uiOldSalary / SALARY_CHANGE_PER_LEVEL);
   }
 
   // round it off to a reasonable multiple
@@ -933,7 +933,7 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
     }
   } else {
     // if the merc just takes it easy (high level or stupid mercs are more likely to)
-    if (((INT8)Random(10) < pProfile->bExpLevel) || ((INT8)Random(100) > pProfile->bWisdom)) {
+    if ((Random(10) < pProfile->bExpLevel) || (Random(100) > pProfile->bWisdom)) {
       // no chance to change today
       return;
     }
@@ -941,12 +941,12 @@ function HandleUnhiredMercImprovement(pProfile: Pointer<MERCPROFILESTRUCT>): voi
     // it's just practise/training back home
     do {
       // pick ONE stat at random to focus on (it may be beyond training cap, but so what, too hard to weed those out)
-      ubStat = (UINT8)(FIRST_CHANGEABLE_STAT + Random(ubNumStats));
+      ubStat = (FIRST_CHANGEABLE_STAT + Random(ubNumStats));
       // except experience - can't practise that!
     } while (ubStat == EXPERAMT);
 
     // try to improve that one stat
-    ProfileStatChange(pProfile, ubStat, (UINT16)(pProfile->bWisdom / 2), FROM_TRAINING);
+    ProfileStatChange(pProfile, ubStat, (pProfile->bWisdom / 2), FROM_TRAINING);
   }
 
   ProfileUpdateStats(pProfile);
@@ -1006,7 +1006,7 @@ function HandleUnhiredMercDeaths(iProfileID: INT32): void {
     sChance -= 1;
   }
 
-  if ((INT16)PreRandom(1000) < sChance) {
+  if (PreRandom(1000) < sChance) {
     // this merc gets Killed In Action!!!
     pProfile->bMercStatus = MERC_IS_DEAD;
     pProfile->uiDayBecomesAvailable = 0;
@@ -1054,7 +1054,7 @@ function CurrentPlayerProgressPercentage(): UINT8 {
 
   // Kris:  Make sure you don't divide by zero!!!
   if (uiPossibleIncome > 0) {
-    ubCurrentProgress = (UINT8)((uiCurrentIncome * PROGRESS_PORTION_INCOME) / uiPossibleIncome);
+    ubCurrentProgress = ((uiCurrentIncome * PROGRESS_PORTION_INCOME) / uiPossibleIncome);
   } else {
     ubCurrentProgress = 0;
   }

@@ -678,14 +678,14 @@ function RenderPersonnelFace(iId: INT32, iSlot: INT32, fDead: BOOLEAN, fFired: B
   if (!fCurrentTeamMode) {
     let iHeightOfText: INT32;
 
-    iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+    iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
     // if the string will rap
     if ((iHeightOfText - 2) > GetFontHeight(PERS_FONT)) {
       // raise where we display it, and rap it
-      DisplayWrappedString(IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT)), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT)), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[iId].zName, 0, FALSE, CENTER_JUSTIFIED);
     } else {
-      DrawTextToScreen(gMercProfiles[iId].zName, IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT, PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(gMercProfiles[iId].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT, PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
     }
     //		DrawTextToScreen(gMercProfiles[ iId  ].zName, ( INT16 ) ( IMAGE_BOX_X+(iSlot*IMAGE_BOX_WIDTH) ), ( INT16 ) ( IMAGE_BOX_Y + 107 ), IMAGE_BOX_WITH_NO_BORDERS, PERS_FONT, PERS_FONT_COLOR, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED	);
   }
@@ -800,11 +800,11 @@ function PrevPersonnelFace(): BOOLEAN {
 function CreatePersonnelButtons(): void {
   // left button
   giPersonnelButtonImage[0] = LoadButtonImage("LAPTOP\\personnelbuttons.sti", -1, 0, -1, 1, -1);
-  giPersonnelButton[0] = QuickCreateButton(giPersonnelButtonImage[0], PREV_MERC_FACE_X, MERC_FACE_SCROLL_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)LeftButtonCallBack);
+  giPersonnelButton[0] = QuickCreateButton(giPersonnelButtonImage[0], PREV_MERC_FACE_X, MERC_FACE_SCROLL_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, LeftButtonCallBack);
 
   // right button
   giPersonnelButtonImage[1] = LoadButtonImage("LAPTOP\\personnelbuttons.sti", -1, 2, -1, 3, -1);
-  giPersonnelButton[1] = QuickCreateButton(giPersonnelButtonImage[1], NEXT_MERC_FACE_X, MERC_FACE_SCROLL_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)RightButtonCallBack);
+  giPersonnelButton[1] = QuickCreateButton(giPersonnelButtonImage[1], NEXT_MERC_FACE_X, MERC_FACE_SCROLL_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, RightButtonCallBack);
 
   /*
   // left button
@@ -997,7 +997,7 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
 
   // check to see if we are going to go off the left edge
   if (sX < pPersonnelScreenPoints[0].x) {
-    sX = (INT16)pPersonnelScreenPoints[0].x;
+    sX = pPersonnelScreenPoints[0].x;
   }
 
   // Display the mercs name
@@ -1010,7 +1010,7 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
 
   // check to see if we are going to go off the left edge
   if (sX < pPersonnelScreenPoints[0].x) {
-    sX = (INT16)pPersonnelScreenPoints[0].x;
+    sX = pPersonnelScreenPoints[0].x;
   }
 
   mprintf(sX + iSlot * IMAGE_BOX_WIDTH, CHAR_LOC_Y, sString);
@@ -1020,14 +1020,14 @@ function DisplayCharName(iId: INT32, iSlot: INT32): void {
   //
 
   // first get height of text to be displayed
-  iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
+  iHeightOfText = DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT);
 
   // if the string will rap
   if ((iHeightOfText - 2) > GetFontHeight(PERS_FONT)) {
     // raise where we display it, and rap it
-    DisplayWrappedString(IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT)), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString(IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y - GetFontHeight(PERS_FONT)), IMAGE_NAME_WIDTH, 1, PERS_FONT, PERS_FONT_COLOR, gMercProfiles[Menptr[iId].ubProfile].zName, 0, FALSE, CENTER_JUSTIFIED);
   } else {
-    DrawTextToScreen(gMercProfiles[Menptr[iId].ubProfile].zName, IMAGE_BOX_X, (UINT16)(IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT, PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
+    DrawTextToScreen(gMercProfiles[Menptr[iId].ubProfile].zName, IMAGE_BOX_X, (IMAGE_BOX_Y + IMAGE_FULL_NAME_OFFSET_Y), IMAGE_NAME_WIDTH, PERS_FONT, PERS_FONT_COLOR, 0, FALSE, CENTER_JUSTIFIED);
   }
 
   /*
@@ -1081,7 +1081,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (Menptr[iId].bAssignment != ASSIGNMENT_POW) {
           if (gMercProfiles[Menptr[iId].ubProfile].bLifeDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bLifeDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
 
@@ -1093,8 +1093,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, pPOWStrings[1]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_HEALTH]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_HEALTH]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 1:
@@ -1102,7 +1102,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bAgilityDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bAgilityDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1113,8 +1113,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 2:
@@ -1122,7 +1122,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bDexterityDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bDexterityDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1133,8 +1133,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 3:
@@ -1142,7 +1142,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bStrengthDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bStrengthDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1153,8 +1153,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 4:
@@ -1162,7 +1162,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bLeadershipDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bLeadershipDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1173,8 +1173,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 5:
@@ -1182,7 +1182,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bWisdomDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bWisdomDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1193,8 +1193,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 6:
@@ -1202,7 +1202,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bExpLevelDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bExpLevelDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1213,8 +1213,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 7:
@@ -1222,7 +1222,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bMarksmanshipDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bMarksmanshipDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1233,8 +1233,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 8:
@@ -1242,7 +1242,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bMechanicDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bMechanicDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1253,8 +1253,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 9:
@@ -1262,7 +1262,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bExplosivesDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bExplosivesDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1273,8 +1273,8 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 10:
@@ -1282,7 +1282,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         if (!fAmIaRobot) {
           if (gMercProfiles[Menptr[iId].ubProfile].bMedicalDelta > 0) {
             swprintf(sString, L"( %+d )", gMercProfiles[Menptr[iId].ubProfile].bMedicalDelta);
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
             mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
           }
           // else
@@ -1293,56 +1293,56 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
 
       case 14:
         // kills
-        mprintf((INT16)(pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
+        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
         swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].usKills);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[21].y, sString);
         break;
       case 15:
         // assists
-        mprintf((INT16)(pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
+        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
         swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].usAssists);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[22].y, sString);
         break;
       case 16:
         // shots/hits
-        mprintf((INT16)(pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
-        uiHits = (UINT32)gMercProfiles[Menptr[iId].ubProfile].usShotsHit;
+        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
+        uiHits = gMercProfiles[Menptr[iId].ubProfile].usShotsHit;
         uiHits *= 100;
 
         // check we have shot at least once
         if (gMercProfiles[Menptr[iId].ubProfile].usShotsFired > 0) {
-          uiHits /= (UINT32)gMercProfiles[Menptr[iId].ubProfile].usShotsFired;
+          uiHits /= gMercProfiles[Menptr[iId].ubProfile].usShotsFired;
         } else {
           // no, set hit % to 0
           uiHits = 0;
         }
 
         swprintf(sString, L"%d %%%%", uiHits);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         sX += StringPixLength(L"%", PERS_FONT);
         mprintf(sX, pPersonnelScreenPoints[23].y, sString);
         break;
       case 17:
         // battles
-        mprintf((INT16)(pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
+        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
         swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].usBattlesFought);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[24].y, sString);
         break;
       case 18:
         // wounds
-        mprintf((INT16)(pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
+        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
         swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].usTimesWounded);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[25].y, sString);
         break;
 
@@ -1353,7 +1353,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
         let bScreenLocIndex: INT8 = 19; // if you change the '19', change it below in the if statement
 
         // Display the 'Skills' text
-        mprintf((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[bScreenLocIndex].y, pPersonnelScreenStrings[PRSNL_TXT_SKILLS]);
+        mprintf((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[bScreenLocIndex].y, pPersonnelScreenStrings[PRSNL_TXT_SKILLS]);
 
         // KM: April 16, 1999
         // Added support for the German version, which has potential string overrun problems.  For example, the text "Skills:" can
@@ -1370,13 +1370,13 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
           if (bSkill1 == bSkill2 && bSkill1 != NO_SKILLTRAIT) {
             swprintf(sString, L"%s %s", gzMercSkillText[bSkill1], gzMercSkillText[NUM_SKILLTRAITS]);
 
-            FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+            FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
 
             // KM: April 16, 1999
             // Perform the potential overrun check
             if (sX <= iMinimumX) {
-              FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
-              sX = (INT16)max(sX, iMinimumX);
+              FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + TEXT_BOX_WIDTH - 20 + TEXT_DELTA_OFFSET), 0, 30, 0, sString, PERS_FONT, &sX, &sY);
+              sX = max(sX, iMinimumX);
             }
 
             mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
@@ -1385,11 +1385,11 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             if (bSkill1 != NO_SKILLTRAIT) {
               swprintf(sString, L"%s", gzMercSkillText[bSkill1]);
 
-              FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+              FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
 
               // KM: April 16, 1999
               // Perform the potential overrun check
-              sX = (INT16)max(sX, iMinimumX);
+              sX = max(sX, iMinimumX);
 
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
 
@@ -1400,11 +1400,11 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             if (bSkill2 != NO_SKILLTRAIT) {
               swprintf(sString, L"%s", gzMercSkillText[bSkill2]);
 
-              FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+              FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
 
               // KM: April 16, 1999
               // Perform the potential overrun check
-              sX = (INT16)max(sX, iMinimumX);
+              sX = max(sX, iMinimumX);
 
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
 
@@ -1415,7 +1415,7 @@ function DisplayCharStats(iId: INT32, iSlot: INT32): void {
             if (bScreenLocIndex == 19) {
               swprintf(sString, L"%s", pPersonnelScreenStrings[PRSNL_TXT_NOSKILLS]);
 
-              FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+              FindFontRightCoordinates((pPersonnelScreenPoints[bScreenLocIndex].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
               mprintf(sX, pPersonnelScreenPoints[bScreenLocIndex].y, sString);
             }
           }
@@ -1632,7 +1632,7 @@ function CreateDestroyMouseRegionsForPersonnelPortraits(): void {
   if ((fCreated == FALSE) && (fCreatePersonnelPortraitMouseRegions == TRUE)) {
     // create regions
     for (sCounter = 0; sCounter < PERSONNEL_PORTRAIT_NUMBER; sCounter++) {
-      MSYS_DefineRegion(&gPortraitMouseRegions[sCounter], (INT16)(SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (INT16)(SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), (INT16)((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (INT16)(SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
+      MSYS_DefineRegion(&gPortraitMouseRegions[sCounter], (SMALL_PORTRAIT_START_X + (sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), ((SMALL_PORTRAIT_START_X) + ((sCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH) + SMALL_PORTRAIT_WIDTH), (SMALL_PORTRAIT_START_Y + (sCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORTRAIT_HEIGHT), MSYS_PRIORITY_HIGHEST, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, PersonnelPortraitCallback);
       MSYS_SetRegionUserData(&gPortraitMouseRegions[sCounter], 0, sCounter);
       MSYS_AddRegion(&gPortraitMouseRegions[sCounter]);
     }
@@ -1701,11 +1701,11 @@ function DisplayPicturesOfCurrentTeam(): BOOLEAN {
         SetObjectHandleShade(guiFACE, 0);
       }
 
-      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (INT16)(SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (INT16)(SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
 
       if (Menptr[iId + iCnt].bLife <= 0) {
         // if the merc is dead, display it
-        DrawTextToScreen(AimPopUpText[AIM_MEMBER_DEAD], (INT16)(SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (INT16)(SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL, 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DrawTextToScreen(AimPopUpText[AIM_MEMBER_DEAD], (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT + SMALL_PORT_HEIGHT / 2), SMALL_PORTRAIT_WIDTH_NO_BORDERS, FONT10ARIAL, 145, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       }
 
       DeleteVideoObjectFromIndex(guiFACE);
@@ -1862,7 +1862,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
   let iTotalAmmo: INT32 = 0;
 
   GetVideoObject(&hHandle, guiPersonnelInventory);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(397), (INT16)(200), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, (397), (200), VO_BLT_SRCTRANSPARENCY, NULL);
 
   if (fCurrentTeamMode == FALSE) {
     return;
@@ -1897,8 +1897,8 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         GetVideoObject(&hHandle, GetInterfaceGraphicForItem(pItem));
         pTrav = &(hHandle->pETRLEObject[pItem->ubGraphicNum]);
 
-        usHeight = (UINT32)pTrav->usHeight;
-        usWidth = (UINT32)pTrav->usWidth;
+        usHeight = pTrav->usHeight;
+        usWidth = pTrav->usWidth;
 
         sCenX = PosX + (abs(57 - usWidth) / 2) - pTrav->sOffsetX;
         sCenY = PosY + (abs(22 - usHeight) / 2) - pTrav->sOffsetY;
@@ -1939,10 +1939,10 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
           }
 
           swprintf(sString, L"%d/%d", iTotalAmmo, (pSoldier->inv[ubCounter].ubNumberOfObjects * Magazine[Item[pSoldier->inv[ubCounter].usItem].ubClassIndex].ubMagSize));
-          FindFontRightCoordinates((INT16)(PosX + 65), (INT16)(PosY + 15), (INT16)(171 - 75), (INT16)(GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
+          FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
         } else {
           swprintf(sString, L"%2d%%%%", pSoldier->inv[ubCounter].bStatus[0]);
-          FindFontRightCoordinates((INT16)(PosX + 65), (INT16)(PosY + 15), (INT16)(171 - 75), (INT16)(GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
+          FindFontRightCoordinates((PosX + 65), (PosY + 15), (171 - 75), (GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
 
           sX += StringPixLength(L"%", FONT10ARIAL);
         }
@@ -1964,7 +1964,7 @@ function RenderInventoryForCharacter(iId: INT32, iSlot: INT32): void {
         // if more than 1?
         if (pSoldier->inv[ubCounter].ubNumberOfObjects > 1) {
           swprintf(sString, L"x%d", pSoldier->inv[ubCounter].ubNumberOfObjects);
-          FindFontRightCoordinates((INT16)(PosX), (INT16)(PosY + 15), (INT16)(58), (INT16)(GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
+          FindFontRightCoordinates((PosX), (PosY + 15), (58), (GetFontHeight(FONT10ARIAL)), sString, FONT10ARIAL, &sX, &sY);
           mprintf(sX, sY, sString);
         }
 
@@ -2029,7 +2029,7 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT) {
-    if ((INT32)uiCurrentInventoryIndex >= (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
+    if (uiCurrentInventoryIndex >= (GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
       return;
     }
 
@@ -2043,7 +2043,7 @@ function InventoryDownButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): v
     if (btn->uiFlags & (BUTTON_CLICKED_ON)) {
       btn->uiFlags &= ~(BUTTON_CLICKED_ON);
 
-      if ((INT32)uiCurrentInventoryIndex >= (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
+      if (uiCurrentInventoryIndex >= (GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
         return;
       }
 
@@ -2070,7 +2070,7 @@ function EnableDisableInventoryScrollButtons(): void {
     EnableButton(giPersonnelInventoryButtons[0]);
   }
 
-  if ((INT32)uiCurrentInventoryIndex >= (INT32)(GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
+  if (uiCurrentInventoryIndex >= (GetNumberOfInventoryItemsOnCurrentMerc() - NUMBER_OF_INVENTORY_PERSONNEL)) {
     ButtonList[giPersonnelInventoryButtons[1]]->uiFlags &= ~(BUTTON_CLICKED_ON);
     DisableButton(giPersonnelInventoryButtons[1]);
   } else {
@@ -2111,10 +2111,10 @@ function CreateDestroyPersonnelInventoryScrollButtons(): void {
   if ((gubPersonnelInfoState == PRSNL_INV) && (fCreated == FALSE)) {
     // create buttons
     giPersonnelInventoryButtonsImages[0] = LoadButtonImage("LAPTOP\\personnel_inventory.sti", -1, 1, -1, 2, -1);
-    giPersonnelInventoryButtons[0] = QuickCreateButton(giPersonnelInventoryButtonsImages[0], 176 + 397, 2 + 200, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)InventoryUpButtonCallback);
+    giPersonnelInventoryButtons[0] = QuickCreateButton(giPersonnelInventoryButtonsImages[0], 176 + 397, 2 + 200, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryUpButtonCallback);
 
     giPersonnelInventoryButtonsImages[1] = LoadButtonImage("LAPTOP\\personnel_inventory.sti", -1, 3, -1, 4, -1);
-    giPersonnelInventoryButtons[1] = QuickCreateButton(giPersonnelInventoryButtonsImages[1], 397 + 176, 200 + 223, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)InventoryDownButtonCallback);
+    giPersonnelInventoryButtons[1] = QuickCreateButton(giPersonnelInventoryButtonsImages[1], 397 + 176, 200 + 223, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, InventoryDownButtonCallback);
 
     // set up cursors for these buttons
     SetButtonCursor(giPersonnelInventoryButtons[0], CURSOR_LAPTOP_SCREEN);
@@ -2352,7 +2352,7 @@ function DisplayCostOfCurrentTeam(): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_COST_Y, sString);
 
@@ -2363,7 +2363,7 @@ function DisplayCostOfCurrentTeam(): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_HIGHEST_Y, sString);
 
@@ -2374,7 +2374,7 @@ function DisplayCostOfCurrentTeam(): void {
     InsertCommasForDollarFigure(sString);
     InsertDollarSignInToString(sString);
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_CURR_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_LOWEST_Y, sString);
   } else {
@@ -2445,7 +2445,7 @@ function GetIdOfDepartedMercWithHighestStat(iStat: INT32): INT32 {
         // health
 
         // if the soldier is a pow, dont use the health cause it aint known
-        pSoldier = FindSoldierByProfileID((UINT8)cnt, FALSE);
+        pSoldier = FindSoldierByProfileID(cnt, FALSE);
         if (pSoldier && pSoldier->bAssignment == ASSIGNMENT_POW) {
           continue;
         }
@@ -2596,7 +2596,7 @@ function GetIdOfDepartedMercWithLowestStat(iStat: INT32): INT32 {
       case 0:
         // health
 
-        pSoldier = FindSoldierByProfileID((UINT8)cnt, FALSE);
+        pSoldier = FindSoldierByProfileID(cnt, FALSE);
         if (pSoldier && pSoldier->bAssignment == ASSIGNMENT_POW) {
           continue;
         }
@@ -3636,7 +3636,7 @@ function DisplayStateOfPastTeamMembers(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_COST_Y, pPersonelTeamStrings[5]);
     swprintf(sString, L"%d", GetNumberOfDeadOnPastTeam());
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_COST_Y, sString);
 
@@ -3644,7 +3644,7 @@ function DisplayStateOfPastTeamMembers(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_HIGHEST_Y, pPersonelTeamStrings[6]);
     swprintf(sString, L"%d", GetNumberOfLeftOnPastTeam());
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_HIGHEST_Y, sString);
 
@@ -3652,7 +3652,7 @@ function DisplayStateOfPastTeamMembers(): void {
     mprintf(PERS_CURR_TEAM_COST_X, PERS_CURR_TEAM_LOWEST_Y, pPersonelTeamStrings[7]);
     swprintf(sString, L"%d", GetNumberOfOtherOnPastTeam());
 
-    FindFontRightCoordinates((INT16)(PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
+    FindFontRightCoordinates((PERS_CURR_TEAM_COST_X), 0, PERS_DEPART_TEAM_WIDTH, 0, sString, PERS_FONT, &sX, &sY);
 
     mprintf(sX, PERS_CURR_TEAM_LOWEST_Y, sString);
   } else {
@@ -3735,11 +3735,11 @@ function CreateDestroyButtonsForDepartedTeamList(): void {
   if ((fCurrentTeamMode == FALSE) && (fCreated == FALSE)) {
     // not created. create
     giPersonnelButtonImage[4] = LoadButtonImage("LAPTOP\\departuresbuttons.sti", -1, 0, -1, 2, -1);
-    giPersonnelButton[4] = QuickCreateButton(giPersonnelButtonImage[4], PERS_DEPARTED_UP_X, PERS_DEPARTED_UP_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)DepartedUpCallBack);
+    giPersonnelButton[4] = QuickCreateButton(giPersonnelButtonImage[4], PERS_DEPARTED_UP_X, PERS_DEPARTED_UP_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DepartedUpCallBack);
 
     // right button
     giPersonnelButtonImage[5] = LoadButtonImage("LAPTOP\\departuresbuttons.sti", -1, 1, -1, 3, -1);
-    giPersonnelButton[5] = QuickCreateButton(giPersonnelButtonImage[5], PERS_DEPARTED_UP_X, PERS_DEPARTED_DOWN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)DepartedDownCallBack);
+    giPersonnelButton[5] = QuickCreateButton(giPersonnelButtonImage[5], PERS_DEPARTED_UP_X, PERS_DEPARTED_DOWN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, BtnGenericMouseMoveButtonCallback, DepartedDownCallBack);
 
     // set up cursors for these buttons
     SetButtonCursor(giPersonnelButton[4], CURSOR_LAPTOP_SCREEN);
@@ -3973,7 +3973,7 @@ function DisplayPortraitOfPastMerc(iId: INT32, iCounter: INT32, fDead: BOOLEAN, 
     SetObjectHandleShade(guiFACE, 0);
   }
 
-  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (INT16)(SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (INT16)(SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hFaceHandle, 0, (SMALL_PORTRAIT_START_X + (iCounter % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH), (SMALL_PORTRAIT_START_Y + (iCounter / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT), VO_BLT_SRCTRANSPARENCY, NULL);
 
   /*
    text on the Small portrait
@@ -4023,128 +4023,128 @@ function DisplayDepartedCharStats(iId: INT32, iSlot: INT32, iState: INT32): void
           swprintf(sString, L"%d/%d", gMercProfiles[iId].bLife, gMercProfiles[iId].bLife);
         }
 
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 1:
         // agility
         swprintf(sString, L"%d", gMercProfiles[iId].bAgility);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 2:
         // dexterity
         swprintf(sString, L"%d", gMercProfiles[iId].bDexterity);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 3:
         // strength
         swprintf(sString, L"%d", gMercProfiles[iId].bStrength);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 4:
         // leadership
         swprintf(sString, L"%d", gMercProfiles[iId].bLeadership);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 5:
         // wisdom
         swprintf(sString, L"%d", gMercProfiles[iId].bWisdom);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 6:
         // exper
         swprintf(sString, L"%d", gMercProfiles[iId].bExpLevel);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 7:
         // mrkmanship
         swprintf(sString, L"%d", gMercProfiles[iId].bMarksmanship);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 8:
         // mech
         swprintf(sString, L"%d", gMercProfiles[iId].bMechanical);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 9:
         // exp
         swprintf(sString, L"%d", gMercProfiles[iId].bExplosive);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
       case 10:
         // med
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[iCounter]);
 
         swprintf(sString, L"%d", gMercProfiles[iId].bMedical);
 
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
 
       case 14:
         // kills
-        mprintf((INT16)(pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
+        mprintf((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[21].y, pPersonnelScreenStrings[PRSNL_TXT_KILLS]);
         swprintf(sString, L"%d", gMercProfiles[iId].usKills);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[21].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[21].y, sString);
         break;
       case 15:
         // assists
-        mprintf((INT16)(pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
+        mprintf((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[22].y, pPersonnelScreenStrings[PRSNL_TXT_ASSISTS]);
         swprintf(sString, L"%d", gMercProfiles[iId].usAssists);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[22].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[22].y, sString);
         break;
       case 16:
         // shots/hits
-        mprintf((INT16)(pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
-        uiHits = (UINT32)gMercProfiles[iId].usShotsHit;
+        mprintf((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[23].y, pPersonnelScreenStrings[PRSNL_TXT_HIT_PERCENTAGE]);
+        uiHits = gMercProfiles[iId].usShotsHit;
         uiHits *= 100;
 
         // check we have shot at least once
         if (gMercProfiles[iId].usShotsFired > 0) {
-          uiHits /= (UINT32)gMercProfiles[iId].usShotsFired;
+          uiHits /= gMercProfiles[iId].usShotsFired;
         } else {
           // no, set hit % to 0
           uiHits = 0;
         }
 
         swprintf(sString, L"%d %%%%", uiHits);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[23].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         sX += StringPixLength(L"%", PERS_FONT);
         mprintf(sX, pPersonnelScreenPoints[23].y, sString);
         break;
       case 17:
         // battles
-        mprintf((INT16)(pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
+        mprintf((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[24].y, pPersonnelScreenStrings[PRSNL_TXT_BATTLES]);
         swprintf(sString, L"%d", gMercProfiles[iId].usBattlesFought);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[24].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[24].y, sString);
         break;
       case 18:
         // wounds
-        mprintf((INT16)(pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
+        mprintf((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[25].y, pPersonnelScreenStrings[PRSNL_TXT_TIMES_WOUNDED]);
         swprintf(sString, L"%d", gMercProfiles[iId].usTimesWounded);
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[25].x + (iSlot * TEXT_BOX_WIDTH)), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[25].y, sString);
         break;
     }
@@ -4196,7 +4196,7 @@ function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void 
 
   // cehck to se eif we are going to go off the left edge
   if (sX < pPersonnelScreenPoints[0].x) {
-    sX = (INT16)pPersonnelScreenPoints[0].x;
+    sX = pPersonnelScreenPoints[0].x;
   }
 
   mprintf(sX + iSlot * IMAGE_BOX_WIDTH, CHAR_NAME_Y, sString);
@@ -4240,7 +4240,7 @@ function DisplayDepartedCharName(iId: INT32, iSlot: INT32, iState: INT32): void 
 
   // cehck to se eif we are going to go off the left edge
   if (sX < pPersonnelScreenPoints[0].x) {
-    sX = (INT16)pPersonnelScreenPoints[0].x;
+    sX = pPersonnelScreenPoints[0].x;
   }
 
   mprintf(sX + iSlot * IMAGE_BOX_WIDTH, CHAR_NAME_Y + 10, sString);
@@ -4308,7 +4308,7 @@ function DisplayHighLightBox(): BOOLEAN {
 
   // blit it
   GetVideoObject(&hHandle, uiBox);
-  BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (INT16)(SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 0, (SMALL_PORTRAIT_START_X + (iCurrentPersonSelectedId % PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_WIDTH - 2), (SMALL_PORTRAIT_START_Y + (iCurrentPersonSelectedId / PERSONNEL_PORTRAIT_NUMBER_WIDTH) * SMALL_PORT_HEIGHT - 3), VO_BLT_SRCTRANSPARENCY, NULL);
 
   // deleteit
   DeleteVideoObjectFromIndex(uiBox);
@@ -4473,7 +4473,7 @@ function RenderAtmPanel(): BOOLEAN {
 
     // blit it
     GetVideoObject(&hHandle, uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(ATM_UL_X), (INT16)(ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
 
     DeleteVideoObjectFromIndex(uiBox);
 
@@ -4500,11 +4500,11 @@ function RenderAtmPanel(): BOOLEAN {
     CHECKF(AddVideoObject(&VObjectDesc, &uiBox));
 
     GetVideoObject(&hHandle, uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 0, (INT16)(ATM_UL_X), (INT16)(ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 0, (ATM_UL_X), (ATM_UL_Y), VO_BLT_SRCTRANSPARENCY, NULL);
 
     // blit it
     GetVideoObject(&hHandle, uiBox);
-    BltVideoObject(FRAME_BUFFER, hHandle, 1, (INT16)(ATM_UL_X + 1), (INT16)(ATM_UL_Y + 18), VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hHandle, 1, (ATM_UL_X + 1), (ATM_UL_Y + 18), VO_BLT_SRCTRANSPARENCY, NULL);
 
     DeleteVideoObjectFromIndex(uiBox);
 
@@ -4542,7 +4542,7 @@ function CreateDestroyStartATMButton(): void {
 */
     // the stats button
     giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_STAT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN], 519, 80, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, (GUI_CALLBACK)PersonnelStatStartButtonCallback);
+    giPersonnelATMStartButton[PERSONNEL_STAT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_STAT_BTN], 519, 80, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelStatStartButtonCallback);
 
     // set text and what not
     SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_STAT_BTN], gsAtmStartButtonText[1]);
@@ -4552,7 +4552,7 @@ function CreateDestroyStartATMButton(): void {
 
     // the Employment selection button
     giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN], 519, 110, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, (GUI_CALLBACK)EmployementInfoButtonCallback);
+    giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_EMPLOYMENT_BTN], 519, 110, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, EmployementInfoButtonCallback);
 
     // set text and what not
     SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_EMPLOYMENT_BTN], gsAtmStartButtonText[3]);
@@ -4562,7 +4562,7 @@ function CreateDestroyStartATMButton(): void {
 
     // the inventory selection button
     giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN] = LoadButtonImage("LAPTOP\\AtmButtons.sti", -1, 2, -1, 3, -1);
-    giPersonnelATMStartButton[PERSONNEL_INV_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN], 519, 140, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, (GUI_CALLBACK)PersonnelINVStartButtonCallback);
+    giPersonnelATMStartButton[PERSONNEL_INV_BTN] = QuickCreateButton(giPersonnelATMStartButtonImage[PERSONNEL_INV_BTN], 519, 140, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, MSYS_NO_CALLBACK, PersonnelINVStartButtonCallback);
 
     // set text and what not
     SpecifyButtonText(giPersonnelATMStartButton[PERSONNEL_INV_BTN], gsAtmStartButtonText[2]);
@@ -4596,7 +4596,7 @@ function FindPositionOfPersInvSlider(): void {
   let iCurrentItemValue: INT16 = 0;
 
   // find out how many there are
-  iValue = (INT32)(GetNumberOfInventoryItemsOnCurrentMerc());
+  iValue = (GetNumberOfInventoryItemsOnCurrentMerc());
 
   // otherwise there are more than one item
   iNumberOfItems = iValue - NUMBER_OF_INVENTORY_PERSONNEL;
@@ -4606,7 +4606,7 @@ function FindPositionOfPersInvSlider(): void {
   }
 
   // get the subregion sizes
-  sSizeOfEachSubRegion = (INT16)((INT32)(Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (INT32)(iNumberOfItems));
+  sSizeOfEachSubRegion = ((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
 
   // get slider position
   guiSliderPosition = uiCurrentInventoryIndex * sSizeOfEachSubRegion;
@@ -4622,10 +4622,10 @@ function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
 
   if ((iReason & MSYS_CALLBACK_REASON_LBUTTON_DWN) || (iReason & MSYS_CALLBACK_REASON_LBUTTON_REPEAT)) {
     // find out how many there are
-    iValue = (INT32)(GetNumberOfInventoryItemsOnCurrentMerc());
+    iValue = (GetNumberOfInventoryItemsOnCurrentMerc());
 
     // make sure there are more than one page
-    if ((INT32)uiCurrentInventoryIndex >= iValue - NUMBER_OF_INVENTORY_PERSONNEL + 1) {
+    if (uiCurrentInventoryIndex >= iValue - NUMBER_OF_INVENTORY_PERSONNEL + 1) {
       return;
     }
 
@@ -4641,7 +4641,7 @@ function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
     GetCursorPos(&MousePos);
 
     // get the subregion sizes
-    sSizeOfEachSubRegion = (INT16)((INT32)(Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (INT32)(iNumberOfItems));
+    sSizeOfEachSubRegion = ((Y_SIZE_OF_PERSONNEL_SCROLL_REGION - SIZE_OF_PERSONNEL_CURSOR) / (iNumberOfItems));
 
     // get the cursor placement
     sYPositionOnBar = MousePos.y - Y_OF_PERSONNEL_SCROLL_REGION;
@@ -4658,7 +4658,7 @@ function HandleSliderBarClickCallback(pRegion: Pointer<MOUSE_REGION>, iReason: I
       guiSliderPosition = iCurrentItemValue * sSizeOfEachSubRegion;
 
       // set current inventory value
-      uiCurrentInventoryIndex = (UINT8)iCurrentItemValue;
+      uiCurrentInventoryIndex = iCurrentItemValue;
 
       // force update
       fReDrawScreenFlag = TRUE;
@@ -4671,7 +4671,7 @@ function RenderSliderBarForPersonnelInventory(): void {
 
   // render slider bar for personnel
   GetVideoObject(&hHandle, guiPersonnelInventory);
-  BltVideoObject(FRAME_BUFFER, hHandle, 5, (INT16)(X_OF_PERSONNEL_SCROLL_REGION), (INT16)(guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, NULL);
+  BltVideoObject(FRAME_BUFFER, hHandle, 5, (X_OF_PERSONNEL_SCROLL_REGION), (guiSliderPosition + Y_OF_PERSONNEL_SCROLL_REGION), VO_BLT_SRCTRANSPARENCY, NULL);
 }
 
 function CreateDestroyATMButton(): void {
@@ -5009,9 +5009,9 @@ function ATMNumberButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void 
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
       btn->uiFlags &= ~(BUTTON_CLICKED_ON);
       // find position in value string, append character at end
-      for (iCounter = 0; iCounter < (INT32)wcslen(sTransferString); iCounter++)
+      for (iCounter = 0; iCounter < wcslen(sTransferString); iCounter++)
         ;
-      sTransferString[iCounter] = (sZero[0] + (UINT16)iValue);
+      sTransferString[iCounter] = (sZero[0] + iValue);
       sTransferString[iCounter + 1] = 0;
       fReDrawScreenFlag = TRUE;
 
@@ -5038,7 +5038,7 @@ function DisplayATMAmount(): void {
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < (INT32)wcslen(sTempString); iCounter++) {
+    for (iCounter = 1; iCounter < wcslen(sTempString); iCounter++) {
       sTempString[iCounter - 1] = sTempString[iCounter];
     }
   }
@@ -5123,7 +5123,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
   for (iCurrentPocket = 0; iCurrentPocket < NUM_INV_SLOTS; iCurrentPocket++) {
     if (Item[pSoldier->inv[iCurrentPocket].usItem].usItemClass == IC_MONEY) {
       // is there more left to go, or does this pocket finish it off?
-      if (pSoldier->inv[iCurrentPocket].uiMoneyAmount > (UINT32)iAmountLeftToTake) {
+      if (pSoldier->inv[iCurrentPocket].uiMoneyAmount > iAmountLeftToTake) {
         pSoldier->inv[iCurrentPocket].uiMoneyAmount -= iAmountLeftToTake;
         iAmountLeftToTake = 0;
       } else {
@@ -5131,7 +5131,7 @@ function TransferFundsFromMercToBank(pSoldier: Pointer<SOLDIERTYPE>, iCurrentBal
         pSoldier->inv[iCurrentPocket].uiMoneyAmount = 0;
 
         // Remove the item out off the merc
-        RemoveObjectFromSlot(pSoldier, (INT8)iCurrentPocket, &ObjectToRemove);
+        RemoveObjectFromSlot(pSoldier, iCurrentPocket, &ObjectToRemove);
       }
     }
   }
@@ -5193,7 +5193,7 @@ function DisplayATMStrings(): void {
   switch (fATMFlags) {
     case (0):
       if (fShowAtmPanelStartButton == FALSE) {
-        DisplayWrappedString(509, (INT16)(80), 81, 2, ATM_FONT, FONT_WHITE, sATMText[3], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(509, (80), 81, 2, ATM_FONT, FONT_WHITE, sATMText[3], FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       }
       break;
     case (2):
@@ -5347,11 +5347,11 @@ function HandlePersonnelKeyboard(): void {
   while (DequeueEvent(&InputEvent) == TRUE) {
     if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam >= '0') && (InputEvent.usParam <= '9')) {
       if ((fShowAtmPanel) && (fATMFlags != 0)) {
-        iValue = (INT32)(InputEvent.usParam - '0');
+        iValue = (InputEvent.usParam - '0');
 
-        for (iCounter = 0; iCounter < (INT32)wcslen(sTransferString); iCounter++)
+        for (iCounter = 0; iCounter < wcslen(sTransferString); iCounter++)
           ;
-        sTransferString[iCounter] = (sZero[0] + (UINT16)iValue);
+        sTransferString[iCounter] = (sZero[0] + iValue);
         sTransferString[iCounter + 1] = 0;
         fPausedReDrawScreenFlag = TRUE;
 
@@ -5379,7 +5379,7 @@ function RenderRectangleForPersonnelTransactionAmount(): void {
 
   if ((sTempString[0] == 48) && (sTempString[1] != 0)) {
     // strip the zero from the beginning
-    for (iCounter = 1; iCounter < (INT32)wcslen(sTempString); iCounter++) {
+    for (iCounter = 1; iCounter < wcslen(sTempString); iCounter++) {
       sTempString[iCounter - 1] = sTempString[iCounter];
     }
   }
@@ -5481,33 +5481,33 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           // if the merc is in transit
           if (Menptr[iId].bAssignment == IN_TRANSIT) {
             // and if the ttime left on the cotract is greater then the contract time
-            if (iTimeLeftOnContract > (INT32)(Menptr[iId].iTotalContractLength * uiMinutesInDay)) {
+            if (iTimeLeftOnContract > (Menptr[iId].iTotalContractLength * uiMinutesInDay)) {
               iTimeLeftOnContract = (Menptr[iId].iTotalContractLength * uiMinutesInDay);
             }
           }
           // if there is going to be a both days and hours left on the contract
           if (iTimeLeftOnContract / uiMinutesInDay) {
             swprintf(sString, L"%d%s %d%s / %d%s", (iTimeLeftOnContract / uiMinutesInDay), gpStrategicString[STR_PB_DAYS_ABBREVIATION], (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
-            mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
           }
 
           // else there is under a day left
           else {
             // DEF: removed 2/7/99
             swprintf(sString, L"%d%s / %d%s", (iTimeLeftOnContract % uiMinutesInDay) / 60, gpStrategicString[STR_PB_HOURS_ABBREVIATION], Menptr[iId].iTotalContractLength, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
-            mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+            mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
           }
         } else if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
           //					swprintf(sString, L"%d%s / %d%s",Menptr[iId].iTotalContractLength, gpStrategicString[ STR_PB_DAYS_ABBREVIATION ], ( GetWorldTotalMin( ) -Menptr[iId].iStartContractTime ) / ( 24 * 60 ), gpStrategicString[ STR_PB_DAYS_ABBREVIATION ] );
 
           wcscpy(sString, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
-          mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
         } else {
           wcscpy(sString, gpStrategicString[STR_PB_NOTAPPLICABLE_ABBREVIATION]);
-          mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
+          mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_CURRENT_CONTRACT]);
         }
 
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
       } break;
 
@@ -5516,13 +5516,13 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
       case 1:
 
         // total contract time served
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_TOTAL_SERVICE]);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, pPersonnelScreenStrings[PRSNL_TXT_TOTAL_SERVICE]);
 
         //./DEF 2/4/99: total service days used to be calced as 'days -1'
 
         swprintf(sString, L"%d %s", gMercProfiles[Menptr[iId].ubProfile].usTotalDaysServed, gpStrategicString[STR_PB_DAYS_ABBREVIATION]);
 
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
         mprintf(sX, pPersonnelScreenPoints[iCounter].y, sString);
         break;
 
@@ -5582,11 +5582,11 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
         */
         { swprintf(sStringA, L"%s", pPersonnelScreenStrings[PRSNL_TXT_TOTAL_COST]); }
 
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, sStringA);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        mprintf((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter].y, sStringA);
 
         // print contract cost
-        mprintf((INT16)(sX), pPersonnelScreenPoints[iCounter].y, sString);
+        mprintf((sX), pPersonnelScreenPoints[iCounter].y, sString);
 
         if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__AIM_MERC) {
           // daily rate
@@ -5627,14 +5627,14 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           swprintf(sString, L"%s", sStringA);
         }
 
-        FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+        FindFontRightCoordinates((pPersonnelScreenPoints[iCounter].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
 
         //			 iCounter++;
         iCounter++;
 
         // now print daily rate
-        mprintf((INT16)(sX), pPersonnelScreenPoints[iCounter + 1].y, sString);
-        mprintf((INT16)(pPersonnelScreenPoints[iCounter + 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter + 1].y, pPersonnelScreenStrings[PRSNL_TXT_DAILY_COST]);
+        mprintf((sX), pPersonnelScreenPoints[iCounter + 1].y, sString);
+        mprintf((pPersonnelScreenPoints[iCounter + 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter + 1].y, pPersonnelScreenStrings[PRSNL_TXT_DAILY_COST]);
 
         break;
 
@@ -5643,16 +5643,16 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
 
         // if its a merc merc, display the salary oweing
         if (Menptr[iId].ubWhatKindOfMercAmI == MERC_TYPE__MERC) {
-          mprintf((INT16)(pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_UNPAID_AMOUNT]);
+          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_UNPAID_AMOUNT]);
 
           swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].sSalary * gMercProfiles[Menptr[iId].ubProfile].iMercMercContractLength);
           InsertCommasForDollarFigure(sString);
           InsertDollarSignInToString(sString);
 
-          FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+          FindFontRightCoordinates((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
           mprintf(sX, pPersonnelScreenPoints[iCounter - 1].y, sString);
         } else {
-          mprintf((INT16)(pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_MED_DEPOSIT]);
+          mprintf((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH)), pPersonnelScreenPoints[iCounter - 1].y, pPersonnelScreenStrings[PRSNL_TXT_MED_DEPOSIT]);
 
           swprintf(sString, L"%d", gMercProfiles[Menptr[iId].ubProfile].sMedicalDepositAmount);
 
@@ -5660,7 +5660,7 @@ function DisplayEmploymentinformation(iId: INT32, iSlot: INT32): void {
           InsertCommasForDollarFigure(sString);
           InsertDollarSignInToString(sString);
 
-          FindFontRightCoordinates((INT16)(pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
+          FindFontRightCoordinates((pPersonnelScreenPoints[iCounter - 1].x + (iSlot * TEXT_BOX_WIDTH) + Prsnl_DATA_OffSetX), 0, TEXT_BOX_WIDTH - 20, 0, sString, PERS_FONT, &sX, &sY);
           mprintf(sX, pPersonnelScreenPoints[iCounter - 1].y, sString);
         }
 

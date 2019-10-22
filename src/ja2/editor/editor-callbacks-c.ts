@@ -691,7 +691,7 @@ function MercsInventorySlotCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
 function MercsSetEnemyColorCodeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     let ubColorCode: UINT8;
-    ubColorCode = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    ubColorCode = MSYS_GetBtnUserData(btn, 0);
     SetEnemyColorCode(ubColorCode);
   }
 }
@@ -932,19 +932,19 @@ function MercsScheduleModeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
 // multiple orders buttons
 function MercsSetOrdersCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    SetMercOrders((UINT8)MSYS_GetBtnUserData(btn, 0));
+    SetMercOrders(MSYS_GetBtnUserData(btn, 0));
 }
 
 // multiple attitude buttons
 function MercsSetAttitudeCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    SetMercAttitude((UINT8)MSYS_GetBtnUserData(btn, 0));
+    SetMercAttitude(MSYS_GetBtnUserData(btn, 0));
 }
 
 // multiple direction buttons
 function MercsDirectionSetCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    SetMercDirection((UINT8)MSYS_GetBtnUserData(btn, 0));
+    SetMercDirection(MSYS_GetBtnUserData(btn, 0));
 }
 
 function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
@@ -961,12 +961,12 @@ function MercsFindSelectedMercCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
 function MercsSetRelativeEquipmentCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    SetMercRelativeEquipment((INT8)MSYS_GetBtnUserData(btn, 0));
+    SetMercRelativeEquipment(MSYS_GetBtnUserData(btn, 0));
 }
 
 function MercsSetRelativeAttributesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP)
-    SetMercRelativeAttributes((INT8)MSYS_GetBtnUserData(btn, 0));
+    SetMercRelativeAttributes(MSYS_GetBtnUserData(btn, 0));
 }
 
 function MouseMovedInMercRegion(reg: Pointer<MOUSE_REGION>, reason: INT32): void {

@@ -115,7 +115,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
       if ((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS)) {
         // don't do these for takeovers of Omerta sectors at the beginning of the game
         if ((bTownId != OMERTA) || (GetWorldDay() != 1)) {
-          ubSectorID = (UINT8)SECTOR(sMapX, sMapY);
+          ubSectorID = SECTOR(sMapX, sMapY);
           if (!bMapZ && ubSectorID != SEC_J9 && ubSectorID != SEC_K4) {
             HandleMoraleEvent(NULL, MORALE_TOWN_LIBERATED, sMapX, sMapY, bMapZ);
             HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_GAIN_TOWN_SECTOR, sMapX, sMapY, bMapZ);
@@ -153,9 +153,9 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
         if (!SectorInfo[SECTOR(sMapX, sMapY)].fSurfaceWasEverPlayerControlled) {
           // grant grace period
           if (gGameOptions.ubDifficultyLevel >= DIF_LEVEL_HARD) {
-            UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 2));
+            UpdateLastDayOfPlayerActivity((GetWorldDay() + 2));
           } else {
-            UpdateLastDayOfPlayerActivity((UINT16)(GetWorldDay() + 1));
+            UpdateLastDayOfPlayerActivity((GetWorldDay() + 1));
           }
         }
       }
@@ -172,7 +172,7 @@ function SetThisSectorAsPlayerControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8
     }
 
     if (fContested) {
-      StrategicHandleQueenLosingControlOfSector((UINT8)sMapX, (UINT8)sMapY, (UINT8)bMapZ);
+      StrategicHandleQueenLosingControlOfSector(sMapX, sMapY, bMapZ);
     }
   } else {
     if (sMapX == 3 && sMapY == 16 && bMapZ == 1) {
@@ -224,7 +224,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
 
     // if player lost control to the enemy
     if (fWasPlayerControlled) {
-      if (PlayerMercsInSector((UINT8)sMapX, (UINT8)sMapY, (UINT8)bMapZ)) {
+      if (PlayerMercsInSector(sMapX, sMapY, bMapZ)) {
         // too premature:  Player mercs still in sector.
         return FALSE;
       }
@@ -236,7 +236,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
 
       // and it's a town
       if ((bTownId >= FIRST_TOWN) && (bTownId < NUM_TOWNS)) {
-        ubSectorID = (UINT8)SECTOR(sMapX, sMapY);
+        ubSectorID = SECTOR(sMapX, sMapY);
         if (!bMapZ && ubSectorID != SEC_J9 && ubSectorID != SEC_K4) {
           HandleMoraleEvent(NULL, MORALE_TOWN_LOST, sMapX, sMapY, bMapZ);
           HandleGlobalLoyaltyEvent(GLOBAL_LOYALTY_LOSE_TOWN_SECTOR, sMapX, sMapY, bMapZ);
@@ -274,7 +274,7 @@ function SetThisSectorAsEnemyControlled(sMapX: INT16, sMapY: INT16, bMapZ: INT8,
     // enemy reinforcements arrive, and they deserve another crack at stealing what the first group missed! :-)
 
     // stealing should fail anyway 'cause there shouldn't be a temp file for unvisited sectors, but let's check anyway
-    if (GetSectorFlagStatus(sMapX, sMapY, (UINT8)bMapZ, SF_ALREADY_VISITED) == TRUE) {
+    if (GetSectorFlagStatus(sMapX, sMapY, bMapZ, SF_ALREADY_VISITED) == TRUE) {
       // enemies can steal items left lying about (random chance).  The more there are, the more they take!
       ubTheftChance = 5 * NumEnemiesInAnySector(sMapX, sMapY, bMapZ);
       // max 90%, some stuff may just simply not get found

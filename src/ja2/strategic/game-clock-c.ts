@@ -235,7 +235,7 @@ function ToggleSuperCompression(): void {
     return;
   }
 
-  fSuperCompression = (BOOLEAN)(!fSuperCompression);
+  fSuperCompression = (!fSuperCompression);
 
   if (fSuperCompression) {
     uiOldTimeCompressMode = giTimeCompressMode;
@@ -394,7 +394,7 @@ function SetClockResolutionToCompressMode(iCompressMode: INT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond((UINT8)max(1, (UINT8)(guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(max(1, (guiGameSecondsPerRealSecond / 60)));
   }
 
   // if the compress mode is X0 or X1
@@ -423,7 +423,7 @@ function SetGameHoursPerSecond(uiGameHoursPerSecond: UINT32): void {
 function SetGameMinutesPerSecond(uiGameMinutesPerSecond: UINT32): void {
   giTimeCompressMode = NOT_USING_TIME_COMPRESSION;
   guiGameSecondsPerRealSecond = uiGameMinutesPerSecond * 60;
-  SetClockResolutionPerSecond((UINT8)uiGameMinutesPerSecond);
+  SetClockResolutionPerSecond(uiGameMinutesPerSecond);
 }
 
 function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
@@ -433,7 +433,7 @@ function SetGameSecondsPerSecond(uiGameSecondsPerSecond: UINT32): void {
   if (guiGameSecondsPerRealSecond == 0) {
     SetClockResolutionPerSecond(0);
   } else {
-    SetClockResolutionPerSecond((UINT8)max(1, (UINT8)(guiGameSecondsPerRealSecond / 60)));
+    SetClockResolutionPerSecond(max(1, (guiGameSecondsPerRealSecond / 60)));
   }
 }
 
@@ -511,7 +511,7 @@ function SetClockResolutionToDefault(): void {
 
 // Valid range is 0 - 60 times per second.
 function SetClockResolutionPerSecond(ubNumTimesPerSecond: UINT8): void {
-  ubNumTimesPerSecond = (UINT8)(max(0, min(60, ubNumTimesPerSecond)));
+  ubNumTimesPerSecond = (max(0, min(60, ubNumTimesPerSecond)));
   gubClockResolution = ubNumTimesPerSecond;
 }
 
@@ -779,7 +779,7 @@ function LoadGameClock(hFile: HWFILE): BOOLEAN {
 function CreateMouseRegionForPauseOfClock(sX: INT16, sY: INT16): void {
   if (fClockMouseRegionCreated == FALSE) {
     // create a mouse region for pausing of game clock
-    MSYS_DefineRegion(&gClockMouseRegion, (UINT16)(sX), (UINT16)(sY), (UINT16)(sX + CLOCK_REGION_WIDTH), (UINT16)(sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
+    MSYS_DefineRegion(&gClockMouseRegion, (sX), (sY), (sX + CLOCK_REGION_WIDTH), (sY + CLOCK_REGION_HEIGHT), MSYS_PRIORITY_HIGHEST, MSYS_NO_CURSOR, MSYS_NO_CALLBACK, PauseOfClockBtnCallback);
 
     fClockMouseRegionCreated = TRUE;
 
@@ -887,8 +887,8 @@ function ScreenMaskForGamePauseBtnCallBack(pRegion: Pointer<MOUSE_REGION>, iReas
 
 function RenderPausedGameBox(): void {
   if ((gfPauseDueToPlayerGamePause == TRUE) && (gfGamePaused == TRUE) && (iPausedPopUpBox != -1)) {
-    RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (INT16)(320 - usPausedActualWidth / 2), (INT16)(200 - usPausedActualHeight / 2), FRAME_BUFFER);
-    InvalidateRegion((INT16)(320 - usPausedActualWidth / 2), (INT16)(200 - usPausedActualHeight / 2), (INT16)(320 - usPausedActualWidth / 2 + usPausedActualWidth), (INT16)(200 - usPausedActualHeight / 2 + usPausedActualHeight));
+    RenderMercPopUpBoxFromIndex(iPausedPopUpBox, (320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), FRAME_BUFFER);
+    InvalidateRegion((320 - usPausedActualWidth / 2), (200 - usPausedActualHeight / 2), (320 - usPausedActualWidth / 2 + usPausedActualWidth), (200 - usPausedActualHeight / 2 + usPausedActualHeight));
   }
 
   // reset we've just finished a pause by the player

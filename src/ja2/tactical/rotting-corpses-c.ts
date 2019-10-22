@@ -289,11 +289,11 @@ function GetFreeRottingCorpse(): INT32 {
 
   for (iCount = 0; iCount < giNumRottingCorpse; iCount++) {
     if ((gRottingCorpse[iCount].fActivated == FALSE))
-      return (INT32)iCount;
+      return iCount;
   }
 
   if (giNumRottingCorpse < MAX_ROTTING_CORPSES)
-    return (INT32)giNumRottingCorpse++;
+    return giNumRottingCorpse++;
 
   return -1;
 }
@@ -304,7 +304,7 @@ function RecountRottingCorpses(): void {
   if (giNumRottingCorpse > 0) {
     for (uiCount = giNumRottingCorpse - 1; (uiCount >= 0); uiCount--) {
       if ((gRottingCorpse[uiCount].fActivated == FALSE)) {
-        giNumRottingCorpse = (UINT32)(uiCount + 1);
+        giNumRottingCorpse = (uiCount + 1);
         break;
       }
     }
@@ -431,12 +431,12 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
   AniParams.sGridNo = pCorpse->def.sGridNo;
   AniParams.ubLevelID = ubLevelID;
-  AniParams.sDelay = (INT16)(150);
+  AniParams.sDelay = (150);
   AniParams.sStartFrame = 0;
   AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_PAUSED | ANITILE_OPTIMIZEFORSLOWMOVING | ANITILE_ANIMATE_Z | ANITILE_ERASEITEMFROMSAVEBUFFFER | uiDirectionUseFlag;
   AniParams.sX = CenterX(pCorpse->def.sGridNo);
   AniParams.sY = CenterY(pCorpse->def.sGridNo);
-  AniParams.sZ = (INT16)pCorpse->def.sHeightAdjustment;
+  AniParams.sZ = pCorpse->def.sHeightAdjustment;
   AniParams.uiUserData3 = pCorpse->def.bDirection;
 
   if (!gGameSettings.fOptions[TOPTION_BLOOD_N_GORE]) {
@@ -504,7 +504,7 @@ function AddRottingCorpse(pCorpseDef: Pointer<ROTTING_CORPSE_DEFINITION>): INT32
   GetRootName(zFilename, AniParams.zCachedFile);
 
   // Add structure data.....
-  CheckForAndAddTileCacheStructInfo(pCorpse->pAniTile->pLevelNode, pCorpse->def.sGridNo, (UINT16)(pCorpse->iCachedTileID), GetCorpseStructIndex(pCorpseDef, TRUE));
+  CheckForAndAddTileCacheStructInfo(pCorpse->pAniTile->pLevelNode, pCorpse->def.sGridNo, (pCorpse->iCachedTileID), GetCorpseStructIndex(pCorpseDef, TRUE));
 
   pStructureFileRef = GetCachedTileStructureRefFromFilename(zFilename);
 
@@ -644,7 +644,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   Corpse.ubProfile = pSoldier->ubProfile;
 
   if (Corpse.bLevel > 0) {
-    Corpse.sHeightAdjustment = (INT16)(pSoldier->sHeightAdjustment - WALL_HEIGHT);
+    Corpse.sHeightAdjustment = (pSoldier->sHeightAdjustment - WALL_HEIGHT);
   }
 
   SET_PALETTEREP_ID(Corpse.HeadPal, pSoldier->HeadPal);
@@ -657,7 +657,7 @@ function TurnSoldierIntoCorpse(pSoldier: Pointer<SOLDIERTYPE>, fRemoveMerc: BOOL
   }
 
   // Determine corpse type!
-  ubType = (UINT8)gubAnimSurfaceCorpseID[pSoldier->ubBodyType][pSoldier->usAnimState];
+  ubType = gubAnimSurfaceCorpseID[pSoldier->ubBodyType][pSoldier->usAnimState];
 
   Corpse.bDirection = pSoldier->bDirection;
 
@@ -995,7 +995,7 @@ function AllMercsOnTeamLookForCorpse(pCorpse: Pointer<ROTTING_CORPSE>, bTeam: IN
       if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates?
         // (taking into account we are definitely aware of this guy now)
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, sDistVisible, TRUE)) {
           MakeCorpseVisible(pSoldier, pCorpse);
           return;
         }
@@ -1047,7 +1047,7 @@ function MercLooksForCorpses(pSoldier: Pointer<SOLDIERTYPE>): void {
         if (PythSpacesAway(pSoldier->sGridNo, sGridNo) <= sDistVisible) {
           // and we can trace a line of sight to his x,y coordinates?
           // (taking into account we are definitely aware of this guy now)
-          if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, (UINT8)sDistVisible, TRUE)) {
+          if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, pCorpse->def.bLevel, 3, sDistVisible, TRUE)) {
             TacticalCharacterDialogue(pSoldier, QUOTE_HEADSHOT);
 
             pSoldier->usQuoteSaidFlags |= SOLDIER_QUOTE_SAID_ROTTINGCORPSE;
@@ -1093,9 +1093,9 @@ function CreateCorpsePaletteTables(pCorpse: Pointer<ROTTING_CORPSE>): UINT16 {
   // create the basic shade table
   for (uiCount = 0; uiCount < 256; uiCount++) {
     // combine the rgb of the light color with the object's palette
-    LightPal[uiCount].peRed = (UINT8)(__min((UINT16)pCorpse->p8BPPPalette[uiCount].peRed + (UINT16)gpLightColors[0].peRed, 255));
-    LightPal[uiCount].peGreen = (UINT8)(__min((UINT16)pCorpse->p8BPPPalette[uiCount].peGreen + (UINT16)gpLightColors[0].peGreen, 255));
-    LightPal[uiCount].peBlue = (UINT8)(__min((UINT16)pCorpse->p8BPPPalette[uiCount].peBlue + (UINT16)gpLightColors[0].peBlue, 255));
+    LightPal[uiCount].peRed = (__min(pCorpse->p8BPPPalette[uiCount].peRed + gpLightColors[0].peRed, 255));
+    LightPal[uiCount].peGreen = (__min(pCorpse->p8BPPPalette[uiCount].peGreen + gpLightColors[0].peGreen, 255));
+    LightPal[uiCount].peBlue = (__min(pCorpse->p8BPPPalette[uiCount].peBlue + gpLightColors[0].peBlue, 255));
   }
   // build the shade tables
   CreateCorpseShadedPalette(pCorpse, 0, LightPal);
@@ -1172,12 +1172,12 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
     memset(&AniParams, 0, sizeof(ANITILE_PARAMS));
     AniParams.sGridNo = sBaseGridNo;
     AniParams.ubLevelID = ANI_STRUCT_LEVEL;
-    AniParams.sDelay = (INT16)(80);
+    AniParams.sDelay = (80);
     AniParams.sStartFrame = 0;
     AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD;
     AniParams.sX = CenterX(sBaseGridNo);
     AniParams.sY = CenterY(sBaseGridNo);
-    AniParams.sZ = (INT16)pCorpse->def.sHeightAdjustment;
+    AniParams.sZ = pCorpse->def.sHeightAdjustment;
 
     strcpy(AniParams.zCachedFile, "TILECACHE\\GEN_BLOW.STI");
     CreateAnimationTile(&AniParams);
@@ -1188,12 +1188,12 @@ function VaporizeCorpse(sGridNo: INT16, usStructureID: UINT16): void {
 
     if (pCorpse->def.bLevel == 0) {
       // Set some blood......
-      SpreadEffect(sBaseGridNo, (UINT8)((2)), 0, NOBODY, BLOOD_SPREAD_EFFECT, 0, -1);
+      SpreadEffect(sBaseGridNo, ((2)), 0, NOBODY, BLOOD_SPREAD_EFFECT, 0, -1);
     }
   }
 
   // PLay a sound....
-  PlayJA2Sample((UINT32)(BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
+  PlayJA2Sample((BODY_EXPLODE_1), RATE_11025, SoundVolume(HIGHVOLUME, sGridNo), 1, SoundDir(sGridNo));
 }
 
 function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINITION>, ubRadius: INT8): INT16 {
@@ -1280,7 +1280,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
             fDirectionFound = TRUE;
           } else {
             for (cnt3 = 0; cnt3 < 8; cnt3++) {
-              if (OkayToAddStructureToWorld((INT16)sGridNo, pDef->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
+              if (OkayToAddStructureToWorld(sGridNo, pDef->bLevel, &(pStructureFileRef->pDBStructureRef[gOneCDirection[cnt3]]), INVALID_STRUCTURE_ID)) {
                 fDirectionFound = TRUE;
                 fCanSetDirection = TRUE;
                 break;
@@ -1293,7 +1293,7 @@ function FindNearestAvailableGridNoForCorpse(pDef: Pointer<ROTTING_CORPSE_DEFINI
 
             if (uiRange < uiLowestRange) {
               if (fCanSetDirection) {
-                ubBestDirection = (UINT8)cnt3;
+                ubBestDirection = cnt3;
                 fSetDirection = TRUE;
               }
               sLowestGridNo = sGridNo;
@@ -1460,7 +1460,7 @@ function ReduceAmmoDroppedByNonPlayerSoldiers(pSoldier: Pointer<SOLDIERTYPE>, iI
     // if it's ammo
     if (Item[pObj->usItem].usItemClass == IC_AMMO) {
       // don't drop all the clips, just a random # of them between 1 and how many there are
-      pObj->ubNumberOfObjects = (UINT8)(1 + Random(pObj->ubNumberOfObjects));
+      pObj->ubNumberOfObjects = (1 + Random(pObj->ubNumberOfObjects));
       // recalculate the weight
       pObj->ubWeight = CalculateObjectWeight(pObj);
     }
@@ -1500,7 +1500,7 @@ function LookForAndMayCommentOnSeeingCorpse(pSoldier: Pointer<SOLDIERTYPE>, sGri
     BeginMultiPurposeLocator(sGridNo, ubLevel, FALSE);
 
     // Reset values....
-    pSoldier->bCorpseQuoteTolerance = (INT8)(Random(3) + 1);
+    pSoldier->bCorpseQuoteTolerance = (Random(3) + 1);
 
     // 50% chance of adding 1 to other mercs....
     if (Random(2) == 1) {

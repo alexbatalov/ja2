@@ -77,14 +77,14 @@ function InitEditorRegions(): void {
 
   // Create the regions for the terrain tile selections
   for (x = 0; x < NUM_TERRAIN_TILE_REGIONS; x++) {
-    MSYS_DefineRegion(&TerrainTileButtonRegion[x], (INT16)(261 + x * 42), 369, (INT16)(303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, (MOUSE_CALLBACK)TerrainTileButtonRegionCallback);
+    MSYS_DefineRegion(&TerrainTileButtonRegion[x], (261 + x * 42), 369, (303 + x * 42), 391, MSYS_PRIORITY_NORMAL, 0, MSYS_NO_CALLBACK, TerrainTileButtonRegionCallback);
     MSYS_SetRegionUserData(&TerrainTileButtonRegion[x], 0, x);
     MSYS_DisableRegion(&TerrainTileButtonRegion[x]);
   }
   gfShowTerrainTileButtons = FALSE;
 
   // Create the region for the items selection window.
-  MSYS_DefineRegion(&ItemsRegion, 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, (MOUSE_CALLBACK)MouseMovedInItemsRegion, (MOUSE_CALLBACK)MouseClickedInItemsRegion);
+  MSYS_DefineRegion(&ItemsRegion, 100, 360, 540, 440, MSYS_PRIORITY_NORMAL, 0, MouseMovedInItemsRegion, MouseClickedInItemsRegion);
   MSYS_DisableRegion(&ItemsRegion);
 
   // Create the region for the merc inventory panel.
@@ -124,8 +124,8 @@ function DeleteEditorImages(): void {
   DeleteVideoObjectFromIndex(guiMercInventoryPanel);
   DeleteVideoObjectFromIndex(guiOmertaMap);
   // The merc directional buttons
-  UnloadGenericButtonIcon((INT16)giEditMercDirectionIcons[0]);
-  UnloadGenericButtonIcon((INT16)giEditMercDirectionIcons[1]);
+  UnloadGenericButtonIcon(giEditMercDirectionIcons[0]);
+  UnloadGenericButtonIcon(giEditMercDirectionIcons[1]);
 
   UnloadButtonImage(giEditMercImage[0]);
   UnloadButtonImage(giEditMercImage[1]);
@@ -401,7 +401,7 @@ function mprintfEditor(x: INT16, y: INT16, pFontString: Pointer<UINT16>, ...args
   uiStringLength = StringPixLength(string, FontDefault);
   uiStringHeight = GetFontHeight(FontDefault);
 
-  ClearTaskbarRegion(x, y, (INT16)(x + uiStringLength), (INT16)(y + uiStringHeight));
+  ClearTaskbarRegion(x, y, (x + uiStringLength), (y + uiStringHeight));
   mprintf(x, y, string);
 }
 
@@ -458,8 +458,8 @@ function DrawEditorInfoBox(str: Pointer<UINT16>, uiFont: UINT32, x: UINT16, y: U
   SetFont(uiFont);
   SetFontForeground(FONT_BLACK);
   SetFontShadow(FONT_BLACK);
-  x += (w - (UINT16)StringPixLength(str, uiFont)) / 2;
-  y += (h - (UINT16)GetFontHeight(uiFont)) / 2;
+  x += (w - StringPixLength(str, uiFont)) / 2;
+  y += (h - GetFontHeight(uiFont)) / 2;
   mprintf(x, y, L"%s", str);
   InvalidateRegion(x, y, x2, y2);
 }
@@ -562,42 +562,42 @@ function RenderMapEntryPointsAndLights(): void {
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"North Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"North Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sWestGridNo;
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"West Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"West Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sEastGridNo;
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"East Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"East Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sSouthGridNo;
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"South Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"South Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sCenterGridNo;
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"Center Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"Center Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   sGridNo = gMapInformation.sIsolatedGridNo;
   if (sGridNo != -1) {
     GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
     if (sScreenY >= -20 && sScreenY < 340 && sScreenX >= -40 && sScreenX < 640) {
-      DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"Isolated Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+      DisplayWrappedString(sScreenX, (sScreenY - 5), 40, 2, FONT10ARIAL, FONT_YELLOW, L"Isolated Entry Point", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
     }
   }
   // Do the lights now.
@@ -607,11 +607,11 @@ function RenderMapEntryPointsAndLights(): void {
       GetGridNoScreenPos(sGridNo, 0, &sScreenX, &sScreenY);
       if (sScreenY >= -50 && sScreenY < 300 && sScreenX >= -40 && sScreenX < 640) {
         if (LightSprites[i].uiFlags & LIGHT_PRIMETIME)
-          DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 50, 2, FONT10ARIAL, FONT_ORANGE, L"Prime", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(sScreenX, (sScreenY - 5), 50, 2, FONT10ARIAL, FONT_ORANGE, L"Prime", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
         else if (LightSprites[i].uiFlags & LIGHT_NIGHTTIME)
-          DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 50, 2, FONT10ARIAL, FONT_RED, L"Night", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(sScreenX, (sScreenY - 5), 50, 2, FONT10ARIAL, FONT_RED, L"Night", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
         else
-          DisplayWrappedString(sScreenX, (INT16)(sScreenY - 5), 50, 2, FONT10ARIAL, FONT_YELLOW, L"24Hour", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
+          DisplayWrappedString(sScreenX, (sScreenY - 5), 50, 2, FONT10ARIAL, FONT_YELLOW, L"24Hour", FONT_BLACK, TRUE, CENTER_JUSTIFIED);
       }
     }
   }
@@ -788,7 +788,7 @@ function RenderEditorInfo(): void {
     swprintf(FPSText, L"   (%d)   ", iMapIndex);
   else
     swprintf(FPSText, L"          ");
-  mprintfEditor((UINT16)(50 - StringPixLength(FPSText, FONT12POINT1) / 2), 463, FPSText);
+  mprintfEditor((50 - StringPixLength(FPSText, FONT12POINT1) / 2), 463, FPSText);
 
   switch (iCurrentTaskbar) {
     case TASK_OPTIONS:

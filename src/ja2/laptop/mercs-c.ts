@@ -589,7 +589,7 @@ function DailyUpdateOfMercSite(usDate: UINT16): void {
 
   // loop through all of the hired mercs from M.E.R.C.
   for (i = 0; i < NUMBER_OF_MERCS; i++) {
-    ubMercID = GetMercIDFromMERCArray((UINT8)i);
+    ubMercID = GetMercIDFromMERCArray(i);
     if (IsMercOnTeam(ubMercID)) {
       // if it larry Roach burn advance.  ( cause larry is in twice, a sober larry and a stoned larry )
       if (i == MERC_LARRY_ROACHBURN)
@@ -936,10 +936,10 @@ function HandleCurrentMercDistortion(): void {
   if (ubCurrentMercDistortionMode == MERC_DISTORTION_NO_DISTORTION) {
     let ubRandom: UINT8;
 
-    ubRandom = (UINT8)Random(200);
+    ubRandom = Random(200);
 
     if (ubRandom < 40) {
-      ubRandom = (UINT8)Random(100);
+      ubRandom = Random(100);
       if (ubRandom < 10)
         ubCurrentMercDistortionMode = MERC_DISRTORTION_DISTORT_IMAGE;
       else if (ubRandom < 30)
@@ -988,7 +988,7 @@ function PixelateVideoMercImage(fUp: BOOLEAN, usPosX: UINT16, usPosY: UINT16, us
   let fReturnStatus: BOOLEAN = FALSE;
   i = 0;
 
-  pBuffer = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiPitch);
+  pBuffer = LockVideoSurface(FRAME_BUFFER, &uiPitch);
   Assert(pBuffer);
 
   if (ubPixelationAmount == 255) {
@@ -1063,7 +1063,7 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
   let uiReturnValue: UINT8;
   let usEndOnLine: UINT16 = 0;
 
-  pBuffer = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiPitch);
+  pBuffer = LockVideoSurface(FRAME_BUFFER, &uiPitch);
   Assert(pBuffer);
 
   uiPitch /= 2;
@@ -1091,9 +1091,9 @@ function DistortVideoMercImage(usPosX: UINT16, usPosY: UINT16, usWidth: UINT16, 
 
         uiColor = GetRGBColor(DestColor);
 
-        red = (UINT8)uiColor;
-        green = (UINT8)(uiColor >> 8);
-        blue = (UINT8)(uiColor >> 16);
+        red = uiColor;
+        green = (uiColor >> 8);
+        blue = (uiColor >> 16);
 
         DestColor = Get16BPPColor(FROMRGB(255 - red, 250 - green, 250 - blue));
 
@@ -1312,7 +1312,7 @@ function DisplayTextForSpeckVideoPopUp(pString: STR16): void {
 
   // check to make sure the region is not already initialized
   if (!(gMercSiteSubTitleMouseRegion.uiFlags & MSYS_REGION_EXISTS)) {
-    MSYS_DefineRegion(&gMercSiteSubTitleMouseRegion, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (INT16)(gusSpeckDialogueX + gusSpeckDialogueActualWidth), (INT16)(MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
+    MSYS_DefineRegion(&gMercSiteSubTitleMouseRegion, gusSpeckDialogueX, MERC_TEXT_BOX_POS_Y, (gusSpeckDialogueX + gusSpeckDialogueActualWidth), (MERC_TEXT_BOX_POS_Y + usActualHeight), MSYS_PRIORITY_HIGH, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, MercSiteSubTitleRegionCallBack);
     MSYS_AddRegion(&gMercSiteSubTitleMouseRegion);
   }
 }
@@ -1413,7 +1413,7 @@ function GetSpeckConditionalOpening(fJustEnteredScreen: BOOLEAN): BOOLEAN {
 
     else {
       let ubNumMercsDead: UINT8 = NumberOfMercMercsDead();
-      let ubRandom: UINT8 = (UINT8)Random(100);
+      let ubRandom: UINT8 = Random(100);
 
       // if business is good
       //			if( ubRandom < 40 && ubNumMercsDead < 2 && CountNumberOfMercMercsHired() > 1 )
@@ -1812,13 +1812,13 @@ function HandleSpeckIdleConversation(fReset: BOOLEAN): void {
       sLeastSaidQuote = GetRandomQuoteThatHasBeenSaidTheLeast();
 
       if (sLeastSaidQuote != -1)
-        gusMercVideoSpeckSpeech = (UINT8)sLeastSaidQuote;
+        gusMercVideoSpeckSpeech = sLeastSaidQuote;
 
       // Say the aim slander quotes the least
       if (sLeastSaidQuote >= 47 && sLeastSaidQuote <= 57) {
-        IncreaseMercRandomQuoteValue((UINT8)sLeastSaidQuote, 1);
+        IncreaseMercRandomQuoteValue(sLeastSaidQuote, 1);
       } else if (sLeastSaidQuote != -1)
-        IncreaseMercRandomQuoteValue((UINT8)sLeastSaidQuote, 3);
+        IncreaseMercRandomQuoteValue(sLeastSaidQuote, 3);
     }
 
     uiLastTime = GetJA2Clock();

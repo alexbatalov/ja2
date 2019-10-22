@@ -294,10 +294,10 @@ function RenderRubberBanding(): void {
   if (!gRubberBandActive)
     return;
 
-  iLeft = (INT16)gRubberBandRect.iLeft;
-  iRight = (INT16)gRubberBandRect.iRight;
-  iTop = (INT16)gRubberBandRect.iTop;
-  iBottom = (INT16)gRubberBandRect.iBottom;
+  iLeft = gRubberBandRect.iLeft;
+  iRight = gRubberBandRect.iRight;
+  iTop = gRubberBandRect.iTop;
+  iBottom = gRubberBandRect.iBottom;
 
   if (iLeft == iRight && iTop == iBottom) {
     return;
@@ -320,10 +320,10 @@ function RenderRubberBanding(): void {
 
   if ((iRight - iLeft) > 0) {
     LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (INT16)(iRight + 1), (INT16)(iTop + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (iRight + 1), (iTop + 1));
   } else if ((iRight - iLeft) < 0) {
     LineDraw(TRUE, iLeft, iTop, iRight, iTop, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (INT16)(iLeft + 1), (INT16)(iTop + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (iLeft + 1), (iTop + 1));
   }
 
   if (iBack != -1) {
@@ -334,10 +334,10 @@ function RenderRubberBanding(): void {
 
   if ((iRight - iLeft) > 0) {
     LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (INT16)(iRight + 1), (INT16)(iBottom + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (iRight + 1), (iBottom + 1));
   } else if ((iRight - iLeft) < 0) {
     LineDraw(TRUE, iLeft, iBottom, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (INT16)(iLeft + 1), (INT16)(iBottom + 1));
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (iLeft + 1), (iBottom + 1));
   }
 
   if (iBack != -1) {
@@ -348,10 +348,10 @@ function RenderRubberBanding(): void {
 
   if ((iBottom - iTop) > 0) {
     LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (INT16)(iLeft + 1), iBottom);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iTop, (iLeft + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
     LineDraw(TRUE, iLeft, iTop, iLeft, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (INT16)(iLeft + 1), iTop);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iLeft, iBottom, (iLeft + 1), iTop);
   }
 
   if (iBack != -1) {
@@ -362,10 +362,10 @@ function RenderRubberBanding(): void {
 
   if ((iBottom - iTop) > 0) {
     LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (INT16)(iRight + 1), iBottom);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iTop, (iRight + 1), iBottom);
   } else if ((iBottom - iTop) < 0) {
     LineDraw(TRUE, iRight, iTop, iRight, iBottom, usLineColor, pDestBuf);
-    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (INT16)(iRight + 1), iTop);
+    iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, iRight, iBottom, (iRight + 1), iTop);
   }
 
   if (iBack != -1) {
@@ -426,7 +426,7 @@ function RenderTopmostTacticalInterface(): void {
   }
 
   if ((InKeyRingPopup()) && (!InItemDescriptionBox())) {
-    RenderKeyRingPopup((BOOLEAN)(fInterfacePanelDirty == DIRTYLEVEL2));
+    RenderKeyRingPopup((fInterfacePanelDirty == DIRTYLEVEL2));
   }
 
   if (gfInMovementMenu) {
@@ -447,7 +447,7 @@ function RenderTopmostTacticalInterface(): void {
             AddVideoObject(&VObjectDesc, &uiBogTarget);
           }
 
-          if (GridNoOnScreen((INT16)MAPROWCOLTOPOS((MercPtrs[cnt]->sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt]->sPlannedTargetX / CELL_X_SIZE)))) {
+          if (GridNoOnScreen(MAPROWCOLTOPOS((MercPtrs[cnt]->sPlannedTargetY / CELL_Y_SIZE), (MercPtrs[cnt]->sPlannedTargetX / CELL_X_SIZE)))) {
             // GET SCREEN COORDINATES
             sOffsetX = (MercPtrs[cnt]->sPlannedTargetX - gsRenderCenterX);
             sOffsetY = (MercPtrs[cnt]->sPlannedTargetY - gsRenderCenterY);
@@ -499,7 +499,7 @@ function RenderTopmostTacticalInterface(): void {
     if (pSoldier != NULL) {
       if (pSoldier->ubID == gsSelectedGuy && gfUIHandleSelectionAboveGuy) {
       } else {
-        DrawSelectedUIAboveGuy((UINT16)pSoldier->ubID);
+        DrawSelectedUIAboveGuy(pSoldier->ubID);
       }
 
       if (pSoldier->fDisplayDamage) {
@@ -524,8 +524,8 @@ function RenderTopmostTacticalInterface(): void {
             sDamageX += 25;
             sDamageY += 10;
           } else {
-            sDamageX = pSoldier->sDamageX + (INT16)(sMercScreenX + (2 * 30 / 3));
-            sDamageY = pSoldier->sDamageY + (INT16)(sMercScreenY - 5);
+            sDamageX = pSoldier->sDamageX + (sMercScreenX + (2 * 30 / 3));
+            sDamageY = pSoldier->sDamageY + (sMercScreenY - 5);
 
             sDamageX -= sOffsetX;
             sDamageY -= sOffsetY;
@@ -551,7 +551,7 @@ function RenderTopmostTacticalInterface(): void {
   }
 
   if (gfUIHandleSelectionAboveGuy && gsSelectedGuy != NOBODY) {
-    DrawSelectedUIAboveGuy((UINT16)gsSelectedGuy);
+    DrawSelectedUIAboveGuy(gsSelectedGuy);
   }
 
   // FOR THE MOST PART, DISABLE INTERFACE STUFF WHEN IT'S ENEMY'S TURN
@@ -566,7 +566,7 @@ function RenderTopmostTacticalInterface(): void {
   RenderRubberBanding();
 
   if (!gfInItemPickupMenu && gpItemPointer == NULL) {
-    HandleAnyMercInSquadHasCompatibleStuff((INT8)CurrentSquad(), NULL, TRUE);
+    HandleAnyMercInSquadHasCompatibleStuff(CurrentSquad(), NULL, TRUE);
   }
 
   // CHECK IF OUR CURSOR IS OVER AN INV POOL

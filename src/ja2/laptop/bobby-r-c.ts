@@ -390,7 +390,7 @@ function RemoveBobbiesMouseRegion(ubNumberRegions: UINT8, Mouse_Region: Pointer<
 function SelectBobbiesSignMenuRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let ubNewPage: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let ubNewPage: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
     guiCurrentLaptopMode = ubNewPage;
     //		FindLastItemIndex(ubNewPage);
   } else if (iReason & MSYS_CALLBACK_REASON_RBUTTON_UP) {
@@ -614,7 +614,7 @@ function DailyUpdateOfBobbyRaysUsedInventory(): void {
             // This is just a way to reward the player right away for making progress without the reordering lag...
             AddFreshBobbyRayInventory(usItemIndex);
           } else {
-            OrderBobbyRItem((INT16)(usItemIndex + BOBBY_R_USED_PURCHASE_OFFSET));
+            OrderBobbyRItem((usItemIndex + BOBBY_R_USED_PURCHASE_OFFSET));
           }
         }
       }
@@ -666,7 +666,7 @@ function AddFreshBobbyRayInventory(usItemIndex: UINT16): void {
     usItemIndex -= BOBBY_R_USED_PURCHASE_OFFSET;
     pInventoryArray = LaptopSaveInfo.BobbyRayUsedInventory;
     fUsed = BOBBY_RAY_USED;
-    ubItemQuality = 20 + (UINT8)Random(60);
+    ubItemQuality = 20 + Random(60);
   } else {
     pInventoryArray = LaptopSaveInfo.BobbyRayInventory;
     fUsed = BOBBY_RAY_NEW;

@@ -89,29 +89,29 @@ function GameLoop(): void {
 
   GetCursorPos(&MousePos);
   // Hook into mouse stuff for MOVEMENT MESSAGES
-  MouseSystemHook(MOUSE_POS, (UINT16)MousePos.x, (UINT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+  MouseSystemHook(MOUSE_POS, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
   MusicPoll(FALSE);
 
   while (DequeueSpecificEvent(&InputEvent, LEFT_BUTTON_REPEAT | RIGHT_BUTTON_REPEAT | LEFT_BUTTON_DOWN | LEFT_BUTTON_UP | RIGHT_BUTTON_DOWN | RIGHT_BUTTON_UP) == TRUE) {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
   }
@@ -139,7 +139,7 @@ function GameLoop(): void {
 
           uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
-          swprintf(zSpaceOnDrive, L"%.2f", uiSpaceOnDrive / (FLOAT)BYTESINMEGABYTE);
+          swprintf(zSpaceOnDrive, L"%.2f", uiSpaceOnDrive / BYTESINMEGABYTE);
 
           swprintf(zText, pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive, zSizeNeeded);
 
@@ -230,7 +230,7 @@ function HandleShortCutExitState(): void {
   }
 
   if (guiCurrentScreen == AUTORESOLVE_SCREEN) {
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (UINT8)(MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
     return;
   }
 
@@ -253,7 +253,7 @@ function HandleShortCutExitState(): void {
     }
 
     // set up for all otherscreens
-    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (UINT8)(MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
+    DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen, (MSG_BOX_FLAG_YESNO | MSG_BOX_FLAG_USE_CENTERING_RECT), EndGameMessageBoxCallBack, &pCenteringRect);
   }
 }
 

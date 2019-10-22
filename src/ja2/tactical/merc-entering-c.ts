@@ -565,25 +565,25 @@ function HandleHeliDrop(): void {
         case HELI_MOVE_DOWN:
 
           gdHeliZPos -= 1;
-          gpHeli->pLevelNode->sRelativeZ = (INT16)gdHeliZPos;
+          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVE_UP:
 
           gdHeliZPos += 1;
-          gpHeli->pLevelNode->sRelativeZ = (INT16)gdHeliZPos;
+          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVESMALL_DOWN:
 
           gdHeliZPos -= 0.25;
-          gpHeli->pLevelNode->sRelativeZ = (INT16)gdHeliZPos;
+          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVESMALL_UP:
 
           gdHeliZPos += 0.25;
-          gpHeli->pLevelNode->sRelativeZ = (INT16)gdHeliZPos;
+          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
           break;
 
         case HELI_MOVEY:
@@ -613,7 +613,7 @@ function HandleHeliDrop(): void {
           AniParams.uiFlags = ANITILE_CACHEDTILE | ANITILE_FORWARD | ANITILE_LOOPING;
           AniParams.sX = gsHeliXPos;
           AniParams.sY = gsHeliYPos;
-          AniParams.sZ = (INT16)gdHeliZPos;
+          AniParams.sZ = gdHeliZPos;
           strcpy(AniParams.zCachedFile, "TILECACHE\\HELI_SH.STI");
 
           gpHeli = CreateAnimationTile(&AniParams);
@@ -623,7 +623,7 @@ function HandleHeliDrop(): void {
 
           // Goto drop animation
           gdHeliZPos -= 0.25;
-          gpHeli->pLevelNode->sRelativeZ = (INT16)gdHeliZPos;
+          gpHeli->pLevelNode->sRelativeZ = gdHeliZPos;
           gsHeliScript = -1;
           gubHeliState = HELI_DROP;
           break;

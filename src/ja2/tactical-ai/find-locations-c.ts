@@ -32,8 +32,8 @@ function AICenterXY(sGridNo: INT16, pdX: Pointer<FLOAT>, pdY: Pointer<FLOAT>): v
   sXPos = sGridNo % WORLD_COLS;
   sYPos = sGridNo / WORLD_COLS;
 
-  *pdX = (FLOAT)(sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
-  *pdY = (FLOAT)(sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
+  *pdX = (sXPos * CELL_X_SIZE + CELL_X_SIZE / 2);
+  *pdY = (sYPos * CELL_Y_SIZE + CELL_Y_SIZE / 2);
 }
 
 function CalcWorstCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
@@ -98,7 +98,7 @@ function CalcAverageCTGTForPosition(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UIN
     bValidCubeLevels++;
   }
   iTotalCTGT /= bValidCubeLevels;
-  return (INT8)iTotalCTGT;
+  return iTotalCTGT;
 }
 
 function CalcBestCTGT(pSoldier: Pointer<SOLDIERTYPE>, ubOppID: UINT8, sOppGridNo: INT16, bLevel: INT8, iMyAPsLeft: INT32): INT8 {
@@ -221,8 +221,8 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
 
     pMe->sGridNo = sMyGridNo; // but pretend I'm standing at sMyGridNo
     ConvertGridNoToCenterCellXY(sMyGridNo, &sTempX, &sTempY);
-    pMe->dXPos = (FLOAT)sTempX;
-    pMe->dYPos = (FLOAT)sTempY;
+    pMe->dXPos = sTempX;
+    pMe->dYPos = sTempY;
   }
 
   // if this is theoretical, and he's not actually at hisGrid right now
@@ -233,8 +233,8 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
 
     pHim->sGridNo = sHisGridNo; // but pretend he's standing at sHisGridNo
     ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
-    pHim->dXPos = (FLOAT)sTempX;
-    pHim->dYPos = (FLOAT)sTempY;
+    pHim->dXPos = sTempX;
+    pHim->dYPos = sTempY;
   }
 
   if (InWaterOrGas(pHim, sHisGridNo)) {
@@ -278,8 +278,8 @@ function CalcCoverValue(pMe: Pointer<SOLDIERTYPE>, sMyGridNo: INT16, iMyThreat: 
     if (pHim->sGridNo != sHisGridNo) {
       pHim->sGridNo = sHisGridNo;
       ConvertGridNoToCenterCellXY(sHisGridNo, &sTempX, &sTempY);
-      pHim->dXPos = (FLOAT)sTempX;
-      pHim->dYPos = (FLOAT)sTempY;
+      pHim->dXPos = sTempX;
+      pHim->dYPos = sTempY;
     }
     // bMyCTGT = ChanceToGetThrough(pMe,sHisGridNo,FAKE,ACTUAL,TESTWALLS,9999,M9PISTOL,NOT_FOR_LOS); // assume a gunshot
     // bMyCTGT = SoldierToLocationChanceToGetThrough( pMe, sHisGridNo, pMe->bTargetLevel, pMe->bTargetCubeLevel );
@@ -681,7 +681,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
   // walk into within range.  We have to set some things up first...
 
   // set the distance limit of the square region
-  gubNPCDistLimit = (UINT8)iSearchRange;
+  gubNPCDistLimit = iSearchRange;
   gusNPCMovementMode = usMovementMode;
 
   // reset the "reachable" flags in the region we're looking at
@@ -846,7 +846,7 @@ function FindBestNearbyCover(pSoldier: Pointer<SOLDIERTYPE>, morale: INT32, piPe
 
     // if best cover value found was at least 5% better than our current cover
     if (*piPercentBetter >= MIN_PERCENT_BETTER) {
-      return ((INT16)sBestCover); // return the gridno of that cover
+      return (sBestCover); // return the gridno of that cover
     }
   }
   return (NOWHERE); // return that no suitable cover was found
@@ -1013,7 +1013,7 @@ function FindSpotMaxDistFromOpponents(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
   // walk into within range.  We have to set some things up first...
 
   // set the distance limit of the square region
-  gubNPCDistLimit = (UINT8)iSearchRange;
+  gubNPCDistLimit = iSearchRange;
 
   // reset the "reachable" flags in the region we're looking at
   for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1156,7 +1156,7 @@ function FindNearestUngassedLand(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // walk into within range.  We have to set some things up first...
 
     // set the distance limit of the square region
-    gubNPCDistLimit = (UINT8)iSearchRange;
+    gubNPCDistLimit = iSearchRange;
 
     // reset the "reachable" flags in the region we're looking at
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1267,7 +1267,7 @@ function FindNearbyDarkerSpot(pSoldier: Pointer<SOLDIERTYPE>): INT16 {
     // walk into within range.  We have to set some things up first...
 
     // set the distance limit of the square region
-    gubNPCDistLimit = (UINT8)iSearchRange;
+    gubNPCDistLimit = iSearchRange;
 
     // reset the "reachable" flags in the region we're looking at
     for (sYOffset = -sMaxUp; sYOffset <= sMaxDown; sYOffset++) {
@@ -1438,7 +1438,7 @@ function SearchForItems(pSoldier: Pointer<SOLDIERTYPE>, bReason: INT8, usItem: U
   // walk into within range.  We have to set some things up first...
 
   // set the distance limit of the square region
-  gubNPCDistLimit = (UINT8)iSearchRange;
+  gubNPCDistLimit = iSearchRange;
 
   // set an AP limit too, to our APs less the cost of picking up an item
   // and less the cost of dropping an item since we might need to do that
@@ -1756,7 +1756,7 @@ function FindNearestEdgePoint(sGridNo: INT16): INT16 {
   for (iLoop = 1; iLoop < 5; iLoop++) {
     if (sDist[iLoop] < sMinDist) {
       sMinDist = sDist[iLoop];
-      bMinIndex = (INT8)iLoop;
+      bMinIndex = iLoop;
     }
   }
 

@@ -141,7 +141,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
         let bDir: INT8;
 
         // must make sure that structure data can be added in the direction of the target
-        bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pOpponent->sGridNo);
+        bDir = GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, pOpponent->sGridNo);
 
         // ATE: Only if we have a levelnode...
         if (pSoldier->pLevelNode != NULL && pSoldier->pLevelNode->pStructureData != NULL) {
@@ -189,7 +189,7 @@ function CalcBestShot(pSoldier: Pointer<SOLDIERTYPE>, pBestShot: Pointer<ATTACKT
 
       // NumMessage("ubAimTime = ",ubAimTime);
 
-      ubChanceToHit = (UINT8)AICalcChanceToHitGun(pSoldier, pOpponent->sGridNo, ubAimTime, AIM_SHOT_TORSO);
+      ubChanceToHit = AICalcChanceToHitGun(pSoldier, pOpponent->sGridNo, ubAimTime, AIM_SHOT_TORSO);
       // ExtMen[pOpponent->ubID].haveStats = TRUE;
       // NumMessage("chance to Hit = ",ubChanceToHit);
 
@@ -803,7 +803,7 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
               // to penalize being far from the target
               uiPenalty = 100 * PythSpacesAway(sGridNo, sEndGridNo) / (ubSafetyMargin - 1);
               if (uiPenalty < 100) {
-                ubChanceToGetThrough = 100 - (UINT8)uiPenalty;
+                ubChanceToGetThrough = 100 - uiPenalty;
               } else {
                 continue;
               }
@@ -833,11 +833,11 @@ function CalcBestThrow(pSoldier: Pointer<SOLDIERTYPE>, pBestThrow: Pointer<ATTAC
 
         if (EXPLOSIVE_GUN(usInHand)) {
           ubRawAPCost = MinAPsToShootOrStab(pSoldier, sGridNo, FALSE);
-          ubChanceToHit = (UINT8)AICalcChanceToHitGun(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
+          ubChanceToHit = AICalcChanceToHitGun(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
         } else {
           // NB grenade launcher is NOT a direct fire weapon!
-          ubRawAPCost = (UINT8)MinAPsToThrow(pSoldier, sGridNo, FALSE);
-          ubChanceToHit = (UINT8)CalcThrownChanceToHit(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
+          ubRawAPCost = MinAPsToThrow(pSoldier, sGridNo, FALSE);
+          ubChanceToHit = CalcThrownChanceToHit(pSoldier, sGridNo, ubMaxPossibleAimTime, AIM_SHOT_TORSO);
         }
 
         // mortars are inherently quite inaccurate, don't get proximity bonus
@@ -1022,9 +1022,9 @@ function CalcBestStab(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<ATTACKT
 
       if (!fSurpriseStab) {
         if (fBladeAttack) {
-          ubChanceToHit = (UINT8)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
+          ubChanceToHit = CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
         } else {
-          ubChanceToHit = (UINT8)CalcChanceToPunch(pSoldier, pOpponent, ubAimTime);
+          ubChanceToHit = CalcChanceToPunch(pSoldier, pOpponent, ubAimTime);
         }
       } else
         ubChanceToHit = MAXCHANCETOHIT;
@@ -1184,7 +1184,7 @@ function CalcTentacleAttack(pSoldier: Pointer<SOLDIERTYPE>, pBestStab: Pointer<A
       // NumMessage("ubAimTime = ",ubAimTime);
 
       if (!fSurpriseStab) {
-        ubChanceToHit = (UINT8)CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
+        ubChanceToHit = CalcChanceToStab(pSoldier, pOpponent, ubAimTime);
       } else
         ubChanceToHit = MAXCHANCETOHIT;
       // NumMessage("chance to Hit = ",ubChanceToHit);
@@ -1305,28 +1305,28 @@ function EstimateShotDamage(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<S
 
   // if opponent is wearing a helmet
   if (pOpponent->inv[HELMETPOS].usItem) {
-    iHeadProt += (INT32)Armour[Item[pOpponent->inv[HELMETPOS].usItem].ubClassIndex].ubProtection * (INT32)pOpponent->inv[HELMETPOS].bStatus[0] / 100;
+    iHeadProt += Armour[Item[pOpponent->inv[HELMETPOS].usItem].ubClassIndex].ubProtection * pOpponent->inv[HELMETPOS].bStatus[0] / 100;
   }
 
   // if opponent is wearing a protective vest
   if (ubAmmoType != AMMO_MONSTER && ubAmmoType != AMMO_KNIFE) {
     // monster spit and knives ignore kevlar vests
     if (pOpponent->inv[VESTPOS].usItem) {
-      iTorsoProt += (INT32)Armour[Item[pOpponent->inv[VESTPOS].usItem].ubClassIndex].ubProtection * (INT32)pOpponent->inv[VESTPOS].bStatus[0] / 100;
+      iTorsoProt += Armour[Item[pOpponent->inv[VESTPOS].usItem].ubClassIndex].ubProtection * pOpponent->inv[VESTPOS].bStatus[0] / 100;
     }
   }
 
   // check for ceramic plates; these do affect monster spit
   bPlatePos = FindAttachment(&(pOpponent->inv[VESTPOS]), CERAMIC_PLATES);
   if (bPlatePos != -1) {
-    iTorsoProt += (INT32)Armour[Item[pOpponent->inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * (INT32)pOpponent->inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
+    iTorsoProt += Armour[Item[pOpponent->inv[VESTPOS].usAttachItem[bPlatePos]].ubClassIndex].ubProtection * pOpponent->inv[VESTPOS].bAttachStatus[bPlatePos] / 100;
   }
 
   // if opponent is wearing armoured leggings (LEGPOS)
   if (ubAmmoType != AMMO_MONSTER && ubAmmoType != AMMO_KNIFE) {
     // monster spit and knives ignore kevlar leggings
     if (pOpponent->inv[LEGPOS].usItem) {
-      iLegProt += (INT32)Armour[Item[pOpponent->inv[LEGPOS].usItem].ubClassIndex].ubProtection * (INT32)pOpponent->inv[LEGPOS].bStatus[0] / 100;
+      iLegProt += Armour[Item[pOpponent->inv[LEGPOS].usItem].ubClassIndex].ubProtection * pOpponent->inv[LEGPOS].bStatus[0] / 100;
     }
   }
 
@@ -1407,8 +1407,8 @@ function EstimateThrowDamage(pSoldier: Pointer<SOLDIERTYPE>, ubItemPos: UINT8, p
     return 5 * (LightTrueLevel(pOpponent->sGridNo, pOpponent->bLevel) - NORMAL_LIGHTLEVEL_DAY);
   }
 
-  iExplosDamage = (((INT32)Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
-  iBreathDamage = (((INT32)Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
+  iExplosDamage = ((Explosive[ubExplosiveIndex].ubDamage) * 3) / 2;
+  iBreathDamage = ((Explosive[ubExplosiveIndex].ubStunDamage) * 5) / 4;
 
   if (Explosive[ubExplosiveIndex].ubType == EXPLOSV_TEARGAS || Explosive[ubExplosiveIndex].ubType == EXPLOSV_MUSTGAS) {
     // if target gridno is outdoors (where tear gas lasts only 1-2 turns)
@@ -1652,7 +1652,7 @@ function CountAdjacentSpreadTargets(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget
   }
   bTargets = 1;
 
-  bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
+  bDir = GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
 
   for (bDirLoop = 0; bDirLoop < 8; bDirLoop++) {
     if (bDir % 2) {
@@ -1773,7 +1773,7 @@ function CalcSpreadBurst(pSoldier: Pointer<SOLDIERTYPE>, sFirstTarget: INT16, bT
   bTargets = 1;
   bAdjacents = CountAdjacentSpreadTargets(pSoldier, sFirstTarget, bTargetLevel);
 
-  bDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
+  bDir = GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sFirstTarget);
 
   for (bDirLoop = 0; bDirLoop < 8; bDirLoop++) {
     if (bDir % 2) {

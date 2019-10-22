@@ -46,12 +46,12 @@ function PickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>): void {
   ubShotsPerBurst = Weapon[pSoldier->inv[HANDPOS].usItem].ubShotsPerBurst;
 
   // Use # gridnos accululated and # burst shots to determine accululator
-  dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
+  dStep = gbNumBurstLocations / ubShotsPerBurst;
 
   // Loop through our shots!
   for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
     // Get index into list
-    ubLocationNum = (UINT8)(dAccululator);
+    ubLocationNum = (dAccululator);
 
     // Add to merc location
     pSoldier->sSpreadLocations[cnt] = gsBurstLocations[ubLocationNum].sGridNo;
@@ -78,12 +78,12 @@ function AIPickBurstLocations(pSoldier: Pointer<SOLDIERTYPE>, bTargets: INT8, pT
   // Use # gridnos accululated and # burst shots to determine accululator
   // dStep = gbNumBurstLocations / (FLOAT)ubShotsPerBurst;
   // CJC: tweak!
-  dStep = bTargets / (FLOAT)ubShotsPerBurst;
+  dStep = bTargets / ubShotsPerBurst;
 
   // Loop through our shots!
   for (cnt = 0; cnt < ubShotsPerBurst; cnt++) {
     // Get index into list
-    ubLocationNum = (UINT8)(dAccululator);
+    ubLocationNum = (dAccululator);
 
     // Add to merc location
     pSoldier->sSpreadLocations[cnt] = pTargets[ubLocationNum]->sGridNo;
@@ -126,14 +126,14 @@ function RenderAccumulatedBurstLocations(): void {
       let sYPos: INT16;
       let iBack: INT32;
 
-      dOffsetX = (FLOAT)(gsBurstLocations[cnt].sX - gsRenderCenterX);
-      dOffsetY = (FLOAT)(gsBurstLocations[cnt].sY - gsRenderCenterY);
+      dOffsetX = (gsBurstLocations[cnt].sX - gsRenderCenterX);
+      dOffsetY = (gsBurstLocations[cnt].sY - gsRenderCenterY);
 
       // Calculate guy's position
       FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S - gpWorldLevelData[sGridNo].sHeight;
+      sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+      sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[sGridNo].sHeight;
 
       // Adjust for offset position on screen
       sXPos -= gsRenderWorldOffsetX;
@@ -148,7 +148,7 @@ function RenderAccumulatedBurstLocations(): void {
       // sXPos -= 10;
       // sYPos -= 10;
 
-      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 40), (INT16)(sYPos + 40));
+      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
       if (iBack != -1) {
         SetBackgroundRectFilled(iBack);
       }

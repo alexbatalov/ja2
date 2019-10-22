@@ -80,7 +80,7 @@ function STCILoadRGB(hImage: HIMAGE, fContents: UINT16, hFile: HWFILE, pHeader: 
     if (pHeader->ubDepth == 16) {
       // ASSUMPTION: file data is 565 R,G,B
 
-      if (gusRedMask != (UINT16)pHeader->RGB.uiRedMask || gusGreenMask != (UINT16)pHeader->RGB.uiGreenMask || gusBlueMask != (UINT16)pHeader->RGB.uiBlueMask) {
+      if (gusRedMask != pHeader->RGB.uiRedMask || gusGreenMask != pHeader->RGB.uiGreenMask || gusBlueMask != pHeader->RGB.uiBlueMask) {
         // colour distribution of the file is different from hardware!  We have to change it!
         DbgMessage(TOPIC_HIMAGE, DBG_LEVEL_3, "Converting to current RGB distribution!");
         // Convert the image to the current hardware's specifications
@@ -267,7 +267,7 @@ function STCISetPalette(pSTCIPalette: PTR, hImage: HIMAGE): BOOLEAN {
   let usIndex: UINT16;
   let pubPalette: Pointer<STCIPaletteElement>;
 
-  pubPalette = (STCIPaletteElement *)pSTCIPalette;
+  pubPalette = pSTCIPalette;
 
   // Allocate memory for palette
   hImage->pPalette = MemAlloc(sizeof(SGPPaletteEntry) * 256);

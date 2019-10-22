@@ -537,7 +537,7 @@ function ValidateGameEvents(): void {
   curr = gpEventList;
   while (curr) {
     curr = curr->next;
-    if (curr == (STRATEGICEVENT *)0xdddddddd) {
+    if (curr == 0xdddddddd) {
       return;
     }
   }

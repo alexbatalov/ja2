@@ -318,12 +318,12 @@ function EnterOptionsScreen(): BOOLEAN {
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (UINT16)(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (UINT16)(usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
       MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
     } else {
       // Create mouse regions for the option toggle text
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (UINT16)(OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (UINT16)(usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_FIRST_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_FIRST_COL_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
       MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
     }
@@ -353,11 +353,11 @@ function EnterOptionsScreen(): BOOLEAN {
 
       usTextWidth = OPT_TOGGLE_BOX_TEXT_WIDTH;
 
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (UINT16)(OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (UINT16)(usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight * ubNumLines), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
       MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
     } else {
-      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (UINT16)(OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (UINT16)(usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
+      MSYS_DefineRegion(&gSelectedOptionTextRegion[cnt], OPT_TOGGLE_BOX_SECOND_COLUMN_X + 13, usPosY, (OPT_TOGGLE_BOX_SECOND_TEXT_X + usTextWidth), (usPosY + usTextHeight), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedOptionTextRegionMovementCallBack, SelectedOptionTextRegionCallBack);
       MSYS_AddRegion(&gSelectedOptionTextRegion[cnt]);
       MSYS_SetRegionUserData(&gSelectedOptionTextRegion[cnt], 0, cnt);
     }
@@ -579,22 +579,22 @@ function GetOptionsScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -708,7 +708,7 @@ function BtnDoneCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 }
 
 function BtnOptionsTogglesCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
-  let ubButton: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+  let ubButton: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
@@ -806,7 +806,7 @@ function DoOptionsMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, ui
   gfExitOptionsDueToMessageBox = TRUE;
 
   // do message box and return
-  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT16)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
+  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
   // send back return state
   return giOptionsMessageBox != -1;
@@ -819,7 +819,7 @@ function DoOptionsMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScre
   gfExitOptionsDueToMessageBox = TRUE;
 
   // do message box and return
-  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT16)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  giOptionsMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
 
   // send back return state
   return giOptionsMessageBox != -1;
@@ -891,10 +891,10 @@ function HandleSliderBarMovementSounds(): void {
 }
 
 function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): void {
-  let ubButton: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+  let ubButton: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    HandleOptionToggle(ubButton, (BOOLEAN)(!gGameSettings.fOptions[ubButton]), FALSE, TRUE);
+    HandleOptionToggle(ubButton, (!gGameSettings.fOptions[ubButton]), FALSE, TRUE);
 
     InvalidateRegion(pRegion->RegionTopLeftX, pRegion->RegionTopLeftY, pRegion->RegionBottomRightX, pRegion->RegionBottomRightY);
   }
@@ -910,7 +910,7 @@ function SelectedOptionTextRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReaso
 }
 
 function SelectedOptionTextRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reason: INT32): void {
-  let bButton: INT8 = (INT8)MSYS_GetRegionUserData(pRegion, 0);
+  let bButton: INT8 = MSYS_GetRegionUserData(pRegion, 0);
 
   if (reason & MSYS_CALLBACK_REASON_LOST_MOUSE) {
     HandleHighLightedText(FALSE);

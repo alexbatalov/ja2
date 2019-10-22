@@ -91,8 +91,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
 
   switch (wParam) {
     case WM_LBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).x;
-      gusMouseYPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).y;
+      gusMouseXPos = ((lParam)->pt).x;
+      gusMouseYPos = ((lParam)->pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -104,8 +104,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_LBUTTONUP: // Update the current mouse position
-      gusMouseXPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).x;
-      gusMouseYPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).y;
+      gusMouseXPos = ((lParam)->pt).x;
+      gusMouseYPos = ((lParam)->pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -117,8 +117,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(LEFT_BUTTON_UP, 0, uiParam);
       break;
     case WM_RBUTTONDOWN: // Update the current mouse position
-      gusMouseXPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).x;
-      gusMouseYPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).y;
+      gusMouseXPos = ((lParam)->pt).x;
+      gusMouseYPos = ((lParam)->pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -130,8 +130,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_DOWN, 0, uiParam);
       break;
     case WM_RBUTTONUP: // Update the current mouse position
-      gusMouseXPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).x;
-      gusMouseYPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).y;
+      gusMouseXPos = ((lParam)->pt).x;
+      gusMouseYPos = ((lParam)->pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -143,8 +143,8 @@ function MouseHandler(Code: int, wParam: WPARAM, lParam: LPARAM): LRESULT {
       QueueEvent(RIGHT_BUTTON_UP, 0, uiParam);
       break;
     case WM_MOUSEMOVE: // Update the current mouse position
-      gusMouseXPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).x;
-      gusMouseYPos = (UINT16)(((MOUSEHOOKSTRUCT *)lParam)->pt).y;
+      gusMouseXPos = ((lParam)->pt).x;
+      gusMouseYPos = ((lParam)->pt).y;
       uiParam = gusMouseYPos;
       uiParam = uiParam << 16;
       uiParam = uiParam | gusMouseXPos;
@@ -192,10 +192,10 @@ function InitializeInputManager(): BOOLEAN {
   gfCurrentStringInputState = FALSE;
   gpCurrentStringDescriptor = NULL;
   // Activate the hook functions for both keyboard and Mouse
-  ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, (HOOKPROC)KeyboardHandler, (HINSTANCE)0, GetCurrentThreadId());
+  ghKeyboardHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardHandler, 0, GetCurrentThreadId());
   DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set keyboard hook returned %d", ghKeyboardHook));
 
-  ghMouseHook = SetWindowsHookEx(WH_MOUSE, (HOOKPROC)MouseHandler, (HINSTANCE)0, GetCurrentThreadId());
+  ghMouseHook = SetWindowsHookEx(WH_MOUSE, MouseHandler, 0, GetCurrentThreadId());
   DbgMessage(TOPIC_INPUT, DBG_LEVEL_2, String("Set mouse hook returned %d", ghMouseHook));
   return TRUE;
 }
@@ -828,8 +828,8 @@ function GetMousePos(Point: Pointer<SGPPoint>): void {
 
   GetCursorPos(&MousePos);
 
-  Point->iX = (UINT32)MousePos.x;
-  Point->iY = (UINT32)MousePos.y;
+  Point->iX = MousePos.x;
+  Point->iY = MousePos.y;
 
   return;
 }
@@ -1204,7 +1204,7 @@ function RestrictMouseToXYXY(usX1: UINT16, usY1: UINT16, usX2: UINT16, usY2: UIN
 function RestrictMouseCursor(pRectangle: Pointer<SGPRect>): void {
   // Make a copy of our rect....
   memcpy(&gCursorClipRect, pRectangle, sizeof(gCursorClipRect));
-  ClipCursor((RECT *)pRectangle);
+  ClipCursor(pRectangle);
   fCursorWasClipped = TRUE;
 }
 
@@ -1220,7 +1220,7 @@ function RestoreCursorClipRect(): void {
 }
 
 function GetRestrictedClipCursor(pRectangle: Pointer<SGPRect>): void {
-  GetClipCursor((RECT *)pRectangle);
+  GetClipCursor(pRectangle);
 }
 
 function IsCursorRestricted(): BOOLEAN {
@@ -1242,10 +1242,10 @@ function SimulateMouseMovement(uiNewXPos: UINT32, uiNewYPos: UINT32): void {
   // Alex Meduna, Dec. 3, 1997
 
   // Adjust coords based on our resolution
-  flNewXPos = ((FLOAT)uiNewXPos / SCREEN_WIDTH) * 65536;
-  flNewYPos = ((FLOAT)uiNewYPos / SCREEN_HEIGHT) * 65536;
+  flNewXPos = (uiNewXPos / SCREEN_WIDTH) * 65536;
+  flNewYPos = (uiNewYPos / SCREEN_HEIGHT) * 65536;
 
-  mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, (UINT32)flNewXPos, (UINT32)flNewYPos, 0, 0);
+  mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, flNewXPos, flNewYPos, 0, 0);
 }
 
 function InputEventInside(Event: Pointer<InputAtom>, uiX1: UINT32, uiY1: UINT32, uiX2: UINT32, uiY2: UINT32): BOOLEAN {

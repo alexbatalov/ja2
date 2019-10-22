@@ -50,7 +50,7 @@ function HandleRPCDescription(): void {
       if (RPC_RECRUITED(pTeamSoldier)) {
         if (pTeamSoldier->bLife >= OKLIFE && pTeamSoldier->bActive && pTeamSoldier->sSectorX == gTacticalStatus.bGuideDescriptionSectorX && pTeamSoldier->sSectorY == gTacticalStatus.bGuideDescriptionSectorY && pTeamSoldier->bSectorZ == gbWorldSectorZ && !pTeamSoldier->fBetweenSectors) {
           if (pTeamSoldier->ubProfile == IRA || pTeamSoldier->ubProfile == MIGUEL || pTeamSoldier->ubProfile == CARLOS || pTeamSoldier->ubProfile == DIMITRI) {
-            ubMercsInSector[ubNumMercs] = (UINT8)cnt2;
+            ubMercsInSector[ubNumMercs] = cnt2;
             ubNumMercs++;
           }
         }
@@ -59,7 +59,7 @@ function HandleRPCDescription(): void {
 
     // If we are > 0
     if (ubNumMercs > 0) {
-      ubChosenMerc = (UINT8)Random(ubNumMercs);
+      ubChosenMerc = Random(ubNumMercs);
 
       TacticalCharacterDialogueWithSpecialEvent(MercPtrs[ubMercsInSector[ubChosenMerc]], gTacticalStatus.ubGuideDescriptionToUse, DIALOGUE_SPECIAL_EVENT_USE_ALTERNATE_FILES, 0, 0);
     }

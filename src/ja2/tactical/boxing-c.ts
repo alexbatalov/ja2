@@ -60,7 +60,7 @@ function ExitBoxing(): void {
             pSoldier->bLife = __max(OKLIFE * 2, pSoldier->bLife);
             if (pSoldier->bBreath < 100) {
               // deduct -ve BPs to grant some BPs back (properly)
-              DeductPoints(pSoldier, 0, (INT16) - ((100 - pSoldier->bBreath) * 100));
+              DeductPoints(pSoldier, 0,  - ((100 - pSoldier->bBreath) * 100));
             }
             BeginSoldierGetup(pSoldier);
           }

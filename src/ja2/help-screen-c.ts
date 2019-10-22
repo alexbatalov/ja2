@@ -480,7 +480,7 @@ function EnterHelpScreen(): BOOLEAN {
   usPosY = gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight - HELP_SCREEN_SHOW_HELP_AGAIN_REGION_OFFSET_Y;
 
   if (!gHelpScreen.fForceHelpScreenToComeUp) {
-    gHelpScreenDontShowHelpAgainToggle = CreateCheckBoxButton(usPosX, (UINT16)(usPosY - 3), "INTERFACE\\OptionsCheckBoxes.sti", MSYS_PRIORITY_HIGHEST, BtnHelpScreenDontShowHelpAgainCallback);
+    gHelpScreenDontShowHelpAgainToggle = CreateCheckBoxButton(usPosX, (usPosY - 3), "INTERFACE\\OptionsCheckBoxes.sti", MSYS_PRIORITY_HIGHEST, BtnHelpScreenDontShowHelpAgainCallback);
 
     SetButtonCursor(gHelpScreenDontShowHelpAgainToggle, gHelpScreen.usCursor);
 
@@ -591,7 +591,7 @@ function RenderHelpScreen(): void {
     gfHaveRenderedFirstFrameToSaveBuffer = TRUE;
 
     // blit everything to the save buffer ( cause the save buffer can bleed through )
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, (UINT16)(gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth), (UINT16)(gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight));
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, gHelpScreen.usScreenLocX, gHelpScreen.usScreenLocY, (gHelpScreen.usScreenLocX + gHelpScreen.usScreenWidth), (gHelpScreen.usScreenLocY + gHelpScreen.usScreenHeight));
 
     UnmarkButtonsDirty();
   }
@@ -805,22 +805,22 @@ function GetHelpScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -846,11 +846,11 @@ function GetHelpScreenUserInput(): void {
         } break;
 
         case LEFTARROW:
-          ChangeToHelpScreenSubPage((INT8)(gHelpScreen.bCurrentHelpScreenActiveSubPage - 1));
+          ChangeToHelpScreenSubPage((gHelpScreen.bCurrentHelpScreenActiveSubPage - 1));
           break;
 
         case RIGHTARROW:
-          ChangeToHelpScreenSubPage((INT8)(gHelpScreen.bCurrentHelpScreenActiveSubPage + 1));
+          ChangeToHelpScreenSubPage((gHelpScreen.bCurrentHelpScreenActiveSubPage + 1));
           break;
 
           /*
@@ -1072,7 +1072,7 @@ function DisplayCurrentScreenTitleAndFooter(): void {
     //									 HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, HELP_SCREEN_TEXT_BACKGROUND, FALSE, CENTER_JUSTIFIED );
 
     // Display the Title
-    IanDisplayWrappedString(usPosX, (UINT16)(gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
+    IanDisplayWrappedString(usPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TITLE_OFFSET_Y), usWidth, HELP_SCREEN_GAP_BTN_LINES, HELP_SCREEN_TITLE_BODY_FONT, HELP_SCREEN_TITLE_BODY_COLOR, zText, HELP_SCREEN_TEXT_BACKGROUND, FALSE, 0);
   }
 
   // Display the '( press H to get help... )'
@@ -1110,7 +1110,7 @@ function BtnHelpScreenBtnsCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): voi
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     // Get the btn id
-    let bRetValue: INT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let bRetValue: INT8 = MSYS_GetBtnUserData(btn, 0);
 
     ChangeToHelpScreenSubPage(bRetValue);
     /*
@@ -1800,7 +1800,7 @@ function RenderTextBufferToScreen(): void {
   SrcRect.iRight = HLP_SCRN__WIDTH_OF_TEXT_BUFFER;
   SrcRect.iBottom = SrcRect.iTop + HLP_SCRN__HEIGHT_OF_TEXT_AREA - (2 * 8);
 
-  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), (RECT *)&SrcRect);
+  BltVSurfaceUsingDD(hDestVSurface, hSrcVSurface, VO_BLT_SRCTRANSPARENCY, gHelpScreen.usLeftMarginPosX, (gHelpScreen.usScreenLocY + HELP_SCREEN_TEXT_OFFSET_Y), &SrcRect);
 
   DisplayHelpScreenTextBufferScrollBox();
 }
@@ -1933,7 +1933,7 @@ function CreateScrollAreaButtons(): void {
   CalculateHeightAndPositionForHelpScreenScrollBox(&iHeight, &iPosY);
 
   // Create a mouse region 'mask' the entrire screen
-  MSYS_DefineRegion(&gHelpScreenScrollArea, usPosX, (UINT16)iPosY, (UINT16)(usPosX + usWidth), (UINT16)(iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
+  MSYS_DefineRegion(&gHelpScreenScrollArea, usPosX, iPosY, (usPosX + usWidth), (iPosY + HLP_SCRN__HEIGHT_OF_SCROLL_AREA), MSYS_PRIORITY_HIGHEST, gHelpScreen.usCursor, SelectHelpScrollAreaMovementCallBack, SelectHelpScrollAreaCallBack);
   MSYS_AddRegion(&gHelpScreenScrollArea);
 
   guiHelpScreenScrollArrowImage[0] = LoadButtonImage("INTERFACE\\HelpScreen.sti", 14, 10, 11, 12, 13);
@@ -1976,7 +1976,7 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
   let dPercentSizeOfBox: FLOAT = 0;
   let dTemp: FLOAT = 0;
 
-  dPercentSizeOfBox = HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER / (FLOAT)gHelpScreen.usTotalNumberOfLinesInBuffer;
+  dPercentSizeOfBox = HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER / gHelpScreen.usTotalNumberOfLinesInBuffer;
 
   // if the # is >= 1 then the box is the full size of the scroll area
   if (dPercentSizeOfBox >= 1.0) {
@@ -1985,14 +1985,14 @@ function CalculateHeightAndPositionForHelpScreenScrollBox(piHeightOfScrollBox: P
     // no need to calc the top spot for the box
     iTopPosScrollBox = HLP_SCRN__SCROLL_POSY;
   } else {
-    iSizeOfBox = (INT32)(dPercentSizeOfBox * HLP_SCRN__HEIGHT_OF_SCROLL_AREA + 0.5);
+    iSizeOfBox = (dPercentSizeOfBox * HLP_SCRN__HEIGHT_OF_SCROLL_AREA + 0.5);
 
     //
     // next, calculate the top position of the box
     //
-    dTemp = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / (FLOAT)gHelpScreen.usTotalNumberOfLinesInBuffer) * gHelpScreen.iLineAtTopOfTextBuffer;
+    dTemp = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / gHelpScreen.usTotalNumberOfLinesInBuffer) * gHelpScreen.iLineAtTopOfTextBuffer;
 
-    iTopPosScrollBox = (INT32)(dTemp + .5) + HLP_SCRN__SCROLL_POSY;
+    iTopPosScrollBox = (dTemp + .5) + HLP_SCRN__SCROLL_POSY;
   }
 
   if (piHeightOfScrollBox != NULL)
@@ -2029,7 +2029,7 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
   let iPosY: INT32;
   let iHeight: INT32;
   let iNumberOfIncrements: INT32 = 0;
-  let dSizeOfIncrement: FLOAT = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / (FLOAT)gHelpScreen.usTotalNumberOfLinesInBuffer);
+  let dSizeOfIncrement: FLOAT = (HLP_SCRN__HEIGHT_OF_SCROLL_AREA / gHelpScreen.usTotalNumberOfLinesInBuffer);
   let dTemp: FLOAT;
   let iNewPosition: INT32;
 
@@ -2052,9 +2052,9 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
     dTemp = (iNewPosition - iPosY) / dSizeOfIncrement;
 
     if (dTemp < 0)
-      iNumberOfIncrements = (INT32)(dTemp - 0.5);
+      iNumberOfIncrements = (dTemp - 0.5);
     else
-      iNumberOfIncrements = (INT32)(dTemp + 0.5);
+      iNumberOfIncrements = (dTemp + 0.5);
 
     gHelpScreen.iLastMouseClickY = usMousePosY;
 
@@ -2067,9 +2067,9 @@ function HelpScreenMouseMoveScrollBox(usMousePosY: INT32): void {
     dTemp = (usMousePosY - iPosY) / dSizeOfIncrement;
 
     if (dTemp < 0)
-      iNumberOfIncrements = (INT32)(dTemp - 0.5);
+      iNumberOfIncrements = (dTemp - 0.5);
     else
-      iNumberOfIncrements = (INT32)(dTemp + 0.5);
+      iNumberOfIncrements = (dTemp + 0.5);
   }
 
   // if there has been a change

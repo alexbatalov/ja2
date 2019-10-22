@@ -994,7 +994,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
             return;
           } else {
             if (gfUIFullTargetFound) {
-              if (IsValidTalkableNPC((UINT8)gusUIFullTargetID, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && MercPtrs[gusUIFullTargetID]->bTeam != ENEMY_TEAM && !ValidQuickExchangePosition()) {
+              if (IsValidTalkableNPC(gusUIFullTargetID, FALSE, FALSE, FALSE) && !_KeyDown(SHIFT) && !AM_AN_EPC(pSoldier) && MercPtrs[gusUIFullTargetID]->bTeam != ENEMY_TEAM && !ValidQuickExchangePosition()) {
                 uiMoveTargetSoldierId = gusUIFullTargetID;
                 *puiNewEvent = T_CHANGE_TO_TALKING;
                 return;
@@ -1030,7 +1030,7 @@ function GetRTMousePositionInput(puiNewEvent: Pointer<UINT32>): void {
         if (gfUIFullTargetFound)
         // if ( gfUIFullTargetFound )
         {
-          if (IsValidTargetMerc((UINT8)gusUIFullTargetID)) {
+          if (IsValidTargetMerc(gusUIFullTargetID)) {
             guiUITargetSoldierId = gusUIFullTargetID;
 
             if (MercPtrs[gusUIFullTargetID]->bTeam != gbPlayerNum) {

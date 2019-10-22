@@ -48,7 +48,7 @@ function DeleteAnimationCache(usSoldierID: UINT16, pAnimCache: Pointer<Animation
 function GetCachedAnimationSurface(usSoldierID: UINT16, pAnimCache: Pointer<AnimationSurfaceCacheType>, usSurfaceIndex: UINT16, usCurrentAnimation: UINT16): BOOLEAN {
   let cnt: UINT8;
   let ubLowestIndex: UINT8 = 0;
-  let sMostHits: INT16 = (INT16)32000;
+  let sMostHits: INT16 = 32000;
   let usCurrentAnimSurface: UINT16;
 
   // Check to see if surface exists already

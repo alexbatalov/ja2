@@ -253,9 +253,9 @@ function CreateFontPaletteTables(pObj: HVOBJECT): UINT16 {
 
   // Build white palette
   for (count = 0; count < 256; count++) {
-    Pal[count].peRed = (UINT8)255;
-    Pal[count].peGreen = (UINT8)255;
-    Pal[count].peBlue = (UINT8)255;
+    Pal[count].peRed = 255;
+    Pal[count].peGreen = 255;
+    Pal[count].peBlue = 255;
   }
 
   pObj->pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pObj->pPaletteEntry, 255, 0, 0, TRUE);

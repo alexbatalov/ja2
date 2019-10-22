@@ -288,7 +288,7 @@ function MercDailyUpdate(): void {
     pProfile->uiPrecedentQuoteSaid = 0;
 
     // skip anyone currently on the player's team
-    if (IsMercOnTeam((UINT8)cnt)) {
+    if (IsMercOnTeam(cnt)) {
       continue;
     }
 
@@ -326,7 +326,7 @@ function MercDailyUpdate(): void {
             pProfile->ubMiscFlags3 &= ~PROFILE_MISC_FLAG3_PLAYER_LEFT_MSG_FOR_MERC_AT_AIM;
 
             // TO DO: send E-mail to player telling him the merc has returned from an assignment
-            AddEmail((UINT8)(iOffset + (cnt * AIM_REPLY_LENGTH_BARRY)), AIM_REPLY_LENGTH_BARRY, (UINT8)(6 + cnt), GetWorldTotalMin());
+            AddEmail((iOffset + (cnt * AIM_REPLY_LENGTH_BARRY)), AIM_REPLY_LENGTH_BARRY, (6 + cnt), GetWorldTotalMin());
           }
         }
       }
@@ -564,7 +564,7 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
       // Check if it's a gun
       if (Item[usItem].usItemClass & IC_GUN) {
         if (Weapon[usItem].ubDeadliness > bBestGun) {
-          bBestGunIndex = (INT8)cnt;
+          bBestGunIndex = cnt;
           bBestGun = Weapon[usItem].ubDeadliness;
         }
       }
@@ -572,7 +572,7 @@ function SoldierHasWorseEquipmentThanUsedTo(pSoldier: Pointer<SOLDIERTYPE>): BOO
       // If it's armour
       if (Item[usItem].usItemClass & IC_ARMOUR) {
         if (Armour[Item[usItem].ubClassIndex].ubProtection > bBestArmour) {
-          bBestArmourIndex = (INT8)cnt;
+          bBestArmourIndex = cnt;
           bBestArmour = Armour[Item[usItem].ubClassIndex].ubProtection;
         }
       }

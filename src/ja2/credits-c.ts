@@ -383,7 +383,7 @@ function EnterCreditsScreen(): BOOLEAN {
 
   for (uiCnt = 0; uiCnt < NUM_PEOPLE_IN_CREDITS; uiCnt++) {
     // Make a mouse region
-    MSYS_DefineRegion(&gCrdtMouseRegions[uiCnt], gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (INT16)(gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (INT16)(gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
+    MSYS_DefineRegion(&gCrdtMouseRegions[uiCnt], gCreditFaces[uiCnt].sX, gCreditFaces[uiCnt].sY, (gCreditFaces[uiCnt].sX + gCreditFaces[uiCnt].sWidth), (gCreditFaces[uiCnt].sY + gCreditFaces[uiCnt].sHeight), MSYS_PRIORITY_NORMAL, CURSOR_WWW, SelectCreditFaceMovementRegionCallBack, SelectCreditFaceRegionCallBack);
 
     // Add region
     MSYS_AddRegion(&gCrdtMouseRegions[uiCnt]);
@@ -454,14 +454,14 @@ function HandleCreditScreen(): void {
   HandleCreditEyeBlinking();
 
   // is it time to get a new node
-  if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode->sPosY + gCrdtLastAddedNode->sHeightOfString - 16)) >= (INT16)guiGapTillReadNextCredit) {
+  if (gCrdtLastAddedNode == NULL || (CRDT_START_POS_Y - (gCrdtLastAddedNode->sPosY + gCrdtLastAddedNode->sHeightOfString - 16)) >= guiGapTillReadNextCredit) {
     // if there are no more credits in the file
     if (!GetNextCreditFromTextFile() && gCrdtLastAddedNode == NULL) {
       SetCreditsExitScreen(MAINMENU_SCREEN);
     }
   }
 
-  RestoreExternBackgroundRect(CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, (INT16)CRDT_NAME_LOC_HEIGHT);
+  RestoreExternBackgroundRect(CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_LOC_HEIGHT);
 
   if (giCurrentlySelectedFace != -1) {
     DrawTextToScreen(gzCreditNames[giCurrentlySelectedFace], CRDT_NAME_LOC_X, CRDT_NAME_LOC_Y, CRDT_NAME_LOC_WIDTH, CRDT_NAME_FONT, FONT_MCOLOR_WHITE, 0, FALSE, INVALIDATE_TEXT | CENTER_JUSTIFIED);
@@ -1128,8 +1128,8 @@ function HandleCreditEyeBlinking(): void {
   GetVideoObject(&hPixHandle, guiCreditFaces);
 
   for (ubCnt = 0; ubCnt < NUM_PEOPLE_IN_CREDITS; ubCnt++) {
-    if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > (UINT32)gCreditFaces[ubCnt].sBlinkFreq) {
-      BltVideoObject(FRAME_BUFFER, hPixHandle, (UINT8)(ubCnt * 3), gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, VO_BLT_SRCTRANSPARENCY, NULL);
+    if ((GetJA2Clock() - gCreditFaces[ubCnt].uiLastBlinkTime) > gCreditFaces[ubCnt].sBlinkFreq) {
+      BltVideoObject(FRAME_BUFFER, hPixHandle, (ubCnt * 3), gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, VO_BLT_SRCTRANSPARENCY, NULL);
       InvalidateRegion(gCreditFaces[ubCnt].sEyeX, gCreditFaces[ubCnt].sEyeY, gCreditFaces[ubCnt].sEyeX + CRDT_EYE_WIDTH, gCreditFaces[ubCnt].sEyeY + CRDT_EYE_HEIGHT);
 
       gCreditFaces[ubCnt].uiLastBlinkTime = GetJA2Clock();

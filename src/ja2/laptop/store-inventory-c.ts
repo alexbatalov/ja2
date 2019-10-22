@@ -526,7 +526,7 @@ function SetupStoreInventory(pInventoryArray: Pointer<STORE_INVENTORY>, fUsed: B
       if (fUsed) {
         // then there should only be 1 of them, and it's damaged
         pInventoryArray[i].ubQtyOnHand = 1;
-        pInventoryArray[i].ubItemQuality = 20 + (UINT8)Random(60);
+        pInventoryArray[i].ubItemQuality = 20 + Random(60);
       } else // new
       {
         pInventoryArray[i].ubQtyOnHand = ubNumBought;

@@ -537,7 +537,7 @@ function EnterAIMMembers(): BOOLEAN {
   gbCurrentSoldier = AimMercArray[gbCurrentIndex];
 
   gfStopMercFromTalking = FALSE;
-  gubVideoConferencingMode = (UINT8)giCurrentSubPage;
+  gubVideoConferencingMode = giCurrentSubPage;
   gubVideoConferencingPreviousMode = AIM_VIDEO_NOT_DISPLAYED_MODE;
 
   gfRenderTopLevel = FALSE;
@@ -849,7 +849,7 @@ function UpdateMercInfo(): BOOLEAN {
 
     // If the string will be displayed in more then 2 lines, recenter the string
     if ((DisplayWrappedString(0, 0, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL, AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_FONT12ARIAL)) > 2) {
-      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, (UINT16)(AIM_MEDICAL_DEPOSIT_Y - GetFontHeight(AIM_FONT12ARIAL)), AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL, AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, (AIM_MEDICAL_DEPOSIT_Y - GetFontHeight(AIM_FONT12ARIAL)), AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL, AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     } else
       DisplayWrappedString(AIM_MEDICAL_DEPOSIT_X, AIM_MEDICAL_DEPOSIT_Y, AIM_MEDICAL_DEPOSIT_WIDTH, 2, AIM_FONT12ARIAL, AIM_M_COLOR_DYNAMIC_TEXT, sMedicalString, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
   }
@@ -1070,8 +1070,8 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
       GetVideoObject(&hVObject, GetInterfaceGraphicForItem(pItem));
       pTrav = &(hVObject->pETRLEObject[pItem->ubGraphicNum]);
 
-      usHeight = (UINT32)pTrav->usHeight;
-      usWidth = (UINT32)pTrav->usWidth;
+      usHeight = pTrav->usHeight;
+      usWidth = pTrav->usWidth;
 
       sCenX = PosX + (abs(WEAPONBOX_SIZE_X - 3 - usWidth) / 2) - pTrav->sOffsetX;
       sCenY = PosY + (abs(WEAPONBOX_SIZE_Y - usHeight) / 2) - pTrav->sOffsetY;
@@ -1088,17 +1088,17 @@ function DisplayMercsInventory(ubMercID: UINT8): BOOLEAN {
 
         swprintf(zTempStr, L"x%d", gMercProfiles[ubMercID].bInvNumber[i]);
 
-        DrawTextToScreen(zTempStr, (UINT16)(PosX - 1), (UINT16)(PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT, AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
+        DrawTextToScreen(zTempStr, (PosX - 1), (PosY + 20), AIM_MEMBER_WEAPON_NAME_WIDTH, AIM_M_FONT_DYNAMIC_TEXT, AIM_M_WEAPON_TEXT_COLOR, FONT_MCOLOR_BLACK, FALSE, RIGHT_JUSTIFIED);
       } else {
       }
 
       wcscpy(gzItemName, ShortItemNames[usItem]);
 
       // if this will only be a single line, center it in the box
-      if ((DisplayWrappedString((UINT16)(PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT)) == 1)
-        DisplayWrappedString((UINT16)(PosX - 1), (UINT16)(AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      if ((DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED | DONT_DISPLAY_TEXT) / GetFontHeight(AIM_M_WEAPON_TEXT_FONT)) == 1)
+        DisplayWrappedString((PosX - 1), (AIM_MEMBER_WEAPON_NAME_Y + GetFontHeight(AIM_M_WEAPON_TEXT_FONT) / 2), AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       else
-        DisplayWrappedString((UINT16)(PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString((PosX - 1), AIM_MEMBER_WEAPON_NAME_Y, AIM_MEMBER_WEAPON_NAME_WIDTH, 2, AIM_M_WEAPON_TEXT_FONT, AIM_M_WEAPON_TEXT_COLOR, gzItemName, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       PosX += WEAPONBOX_SIZE_X;
     }
@@ -1367,7 +1367,7 @@ function DisplayDots(usNameX: UINT16, usNameY: UINT16, usStatX: UINT16, pString:
 
   usPosX = usStatX;
   for (i = usNameX + usStringLength; i <= usPosX; usPosX -= 7) {
-    DrawTextToScreen(L".", (UINT16)usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+    DrawTextToScreen(L".", usPosX, usNameY, 0, AIM_M_FONT_STATIC_TEXT, AIM_M_COLOR_STATIC_TEXT, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
   }
 }
 
@@ -1376,7 +1376,7 @@ function BtnContractLengthButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32
     return;
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-    let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
     btn->uiFlags |= BUTTON_CLICKED_ON;
 
@@ -1408,7 +1408,7 @@ function BtnBuyEquipmentButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
 
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_DWN) {
     btn->uiFlags |= BUTTON_CLICKED_ON;
-    gfBuyEquipment = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    gfBuyEquipment = MSYS_GetBtnUserData(btn, 0);
     DisplaySelectLights(FALSE, TRUE);
 
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
@@ -1440,7 +1440,7 @@ function BtnAuthorizeButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): vo
     InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+    let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
     btn->uiFlags &= (~BUTTON_CLICKED_ON);
 
     gfStopMercFromTalking = TRUE;
@@ -1787,7 +1787,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
 
       // Create the popup boxes button
       guiPopUpImage = LoadButtonImage("LAPTOP\\VideoConfButtons.sti", -1, 2, -1, 3, -1);
-      guiPopUpOkButton = CreateIconAndTextButton(guiPopUpImage, VideoConfercingText[AIM_MEMBER_OK], FONT14ARIAL, AIM_POPUP_BOX_COLOR, AIM_M_VIDEO_NAME_SHADOWCOLOR, AIM_POPUP_BOX_COLOR, AIM_M_VIDEO_NAME_SHADOWCOLOR, TEXT_CJUSTIFIED, (UINT16)(usPosX + AIM_POPUP_BOX_BUTTON_OFFSET_X), (UINT16)(usPosY + AIM_POPUP_BOX_BUTTON_OFFSET_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 5, DEFAULT_MOVE_CALLBACK, BtnPopUpOkButtonCallback);
+      guiPopUpOkButton = CreateIconAndTextButton(guiPopUpImage, VideoConfercingText[AIM_MEMBER_OK], FONT14ARIAL, AIM_POPUP_BOX_COLOR, AIM_M_VIDEO_NAME_SHADOWCOLOR, AIM_POPUP_BOX_COLOR, AIM_M_VIDEO_NAME_SHADOWCOLOR, TEXT_CJUSTIFIED, (usPosX + AIM_POPUP_BOX_BUTTON_OFFSET_X), (usPosY + AIM_POPUP_BOX_BUTTON_OFFSET_Y), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH + 5, DEFAULT_MOVE_CALLBACK, BtnPopUpOkButtonCallback);
       SetButtonCursor(guiPopUpOkButton, CURSOR_LAPTOP_SCREEN);
       MSYS_SetBtnUserData(guiPopUpOkButton, 0, ubData);
 
@@ -1824,7 +1824,7 @@ function InitCreateDeleteAimPopUpBox(ubFlag: UINT8, sString1: STR16, sString2: S
       if (sPopUpString1[0] != L'\0')
         usTempPosY += DisplayWrappedString(usPopUpBoxPosX, usTempPosY, AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT, AIM_POPUP_BOX_COLOR, sPopUpString1, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
       if (sPopUpString2[0] != L'\0')
-        DisplayWrappedString(usPopUpBoxPosX, (UINT16)(usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT, AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+        DisplayWrappedString(usPopUpBoxPosX, (usTempPosY + 4), AIM_POPUP_BOX_WIDTH, 2, AIM_POPUP_BOX_FONT, AIM_POPUP_BOX_COLOR, sPopUpString2, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
 
       SetFontShadow(DEFAULT_SHADOW);
 
@@ -1869,7 +1869,7 @@ function BtnPopUpOkButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void
       InvalidateRegion(btn->Area.RegionTopLeftX, btn->Area.RegionTopLeftY, btn->Area.RegionBottomRightX, btn->Area.RegionBottomRightY);
     }
     if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-      let ubCurPageNum: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubCurPageNum: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       btn->uiFlags &= (~BUTTON_CLICKED_ON);
       fInCallback = FALSE;
@@ -1903,7 +1903,7 @@ function BtnFirstContactButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT32):
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       //			gfStopMercFromTalking = TRUE;
       StopMercTalking();
@@ -1936,7 +1936,7 @@ function BtnAnsweringMachineButtonCallback(btn: Pointer<GUI_BUTTON>, reason: INT
   }
   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
     if (btn->uiFlags & BUTTON_CLICKED_ON) {
-      let ubRetValue: UINT8 = (UINT8)MSYS_GetBtnUserData(btn, 0);
+      let ubRetValue: UINT8 = MSYS_GetBtnUserData(btn, 0);
 
       if (ubRetValue == 0) {
         // Set a flag indicating that the merc has a message
@@ -2332,7 +2332,7 @@ function HandleVideoDistortion(): void {
 
         // DECIDE WHICH ONE TO BLIT NEXT
         if ((GetJA2Clock() - uiCurTime) > 2500) {
-          ubNum = (UINT8)Random(200); // 125;
+          ubNum = Random(200); // 125;
 
           if (ubNum < 15)
             gubCurrentStaticMode = VC_FUZZY_LINE;
@@ -3257,28 +3257,28 @@ function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
     if (fInit)
       ubCount = 1;
 
-    usTemp = (331 - 125) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosX = (UINT16)(331 - usTemp * ubCount);
+    usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosX = (331 - usTemp * ubCount);
 
-    usTemp = (490 - 405) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosRightX = (UINT16)(405 + usTemp * ubCount);
+    usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosRightX = (405 + usTemp * ubCount);
 
-    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosY = (UINT16)(AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
+    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
   } else {
     if (fInit)
       ubCount = AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1;
 
-    usTemp = (331 - 125) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosX = (UINT16)(331 - usTemp * ubCount);
+    usTemp = (331 - 125) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosX = (331 - usTemp * ubCount);
 
-    usTemp = (490 - 405) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosRightX = (UINT16)(405 + usTemp * ubCount);
+    usTemp = (490 - 405) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosRightX = (405 + usTemp * ubCount);
 
-    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / (FLOAT)AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
-    usPosY = (UINT16)(AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
+    usTemp = (AIM_MEMBER_VIDEO_TITLE_START_Y - 96) / AIM_MEMBER_VIDEO_TITLE_ITERATIONS;
+    usPosY = (AIM_MEMBER_VIDEO_TITLE_START_Y - usTemp * ubCount);
 
     usPosBottomY = AIM_MEMBER_VIDEO_TITLE_BAR_HEIGHT;
   }
@@ -3296,30 +3296,30 @@ function DisplayMovingTitleBar(fForward: BOOLEAN, fInit: BOOLEAN): BOOLEAN {
   if (fForward) {
     // Restore the old rect
     if (ubCount > 2) {
-      usWidth = (UINT16)(LastRect.iRight - LastRect.iLeft);
-      usHeight = (UINT16)(LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)LastRect.iLeft, (UINT16)LastRect.iTop, usWidth, usHeight);
+      usWidth = (LastRect.iRight - LastRect.iLeft);
+      usHeight = (LastRect.iBottom - LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
     if (ubCount > 1) {
-      usWidth = (UINT16)(DestRect.iRight - DestRect.iLeft);
-      usHeight = (UINT16)(DestRect.iBottom - DestRect.iTop);
-      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, usWidth, usHeight);
+      usWidth = (DestRect.iRight - DestRect.iLeft);
+      usHeight = (DestRect.iBottom - DestRect.iTop);
+      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, usWidth, usHeight);
     }
   } else {
     // Restore the old rect
     if (ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 2) {
-      usWidth = (UINT16)(LastRect.iRight - LastRect.iLeft);
-      usHeight = (UINT16)(LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)LastRect.iLeft, (UINT16)LastRect.iTop, usWidth, usHeight);
+      usWidth = (LastRect.iRight - LastRect.iLeft);
+      usHeight = (LastRect.iBottom - LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, usWidth, usHeight);
     }
 
     // Save rectangle
     if (ubCount < AIM_MEMBER_VIDEO_TITLE_ITERATIONS - 1) {
-      usWidth = (UINT16)(DestRect.iRight - DestRect.iLeft);
-      usHeight = (UINT16)(DestRect.iBottom - DestRect.iTop);
-      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, usWidth, usHeight);
+      usWidth = (DestRect.iRight - DestRect.iLeft);
+      usHeight = (DestRect.iBottom - DestRect.iTop);
+      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, usWidth, usHeight);
     }
   }
 
@@ -3448,7 +3448,7 @@ function DisplayPopUpBoxExplainingMercArrivalLocationAndTime(): void {
   if (LaptopSaveInfo.sLastHiredMerc.fHaveDisplayedPopUpInLaptop)
     return;
 
-  pSoldier = FindSoldierByProfileID((UINT8)LaptopSaveInfo.sLastHiredMerc.iIdOfMerc, TRUE);
+  pSoldier = FindSoldierByProfileID(LaptopSaveInfo.sLastHiredMerc.iIdOfMerc, TRUE);
 
   if (pSoldier == NULL)
     return;

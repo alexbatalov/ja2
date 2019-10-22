@@ -143,11 +143,11 @@ function GetFreeSlantRoof(): INT32 {
 
   for (uiCount = 0; uiCount < guiNumSlantRoofs; uiCount++) {
     if ((gSlantRoofData[uiCount].fAllocated == FALSE))
-      return (INT32)uiCount;
+      return uiCount;
   }
 
   if (guiNumSlantRoofs < NUM_SLANT_ROOF_SLOTS)
-    return (INT32)guiNumSlantRoofs++;
+    return guiNumSlantRoofs++;
 
   return -1;
 }
@@ -157,7 +157,7 @@ function RecountSlantRoofs(): void {
 
   for (uiCount = guiNumSlantRoofs - 1; (uiCount >= 0); uiCount--) {
     if ((gSlantRoofData[uiCount].fAllocated)) {
-      guiNumSlantRoofs = (UINT32)(uiCount + 1);
+      guiNumSlantRoofs = (uiCount + 1);
       break;
     }
   }
@@ -302,7 +302,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
 
   BuildSightDir(dir, &Dir[0], &Dir[1], &Dir[2], &Dir[3], &Dir[4]);
   for (cnt = 0; cnt < 5; cnt++)
-    Inc[cnt] = DirectionInc((INT16)Dir[cnt]);
+    Inc[cnt] = DirectionInc(Dir[cnt]);
 
   // create gridno increment for NOVIEW - in other words, no increment!
   Inc[5] = 0;
@@ -379,7 +379,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
         nextDir = 99;
       }
 
-      marker = NewGridNo((INT16)marker, (INT16)Inc[markerDir]);
+      marker = NewGridNo(marker, Inc[markerDir]);
 
       if (marker == 12426) {
         let i: int = 0;
@@ -399,8 +399,8 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
       }
 
       if (IS_TRAVELCOST_DOOR(ubMovementCost)) {
-        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (BOOLEAN)(pSoldier->bTeam == gbPlayerNum), &iDoorGridNo);
-        pStructure = FindStructure((INT16)iDoorGridNo, STRUCTURE_ANYDOOR);
+        ubMovementCost = DoorTravelCost(pSoldier, marker, ubMovementCost, (pSoldier->bTeam == gbPlayerNum), &iDoorGridNo);
+        pStructure = FindStructure(iDoorGridNo, STRUCTURE_ANYDOOR);
         if (pStructure != NULL && pStructure->fFlags & STRUCTURE_TRANSPARENT) {
           // cell door or somehow otherwise transparent; allow merc to see through
           ubMovementCost = TRAVELCOST_FLAT;
@@ -423,7 +423,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           fRevealItems = FALSE;
         } else {
           // walls are handled above, so the blocking object is guaranteed not to be a wall
-          bTallestStructureHeight = GetTallestStructureHeight((INT16)marker, FALSE);
+          bTallestStructureHeight = GetTallestStructureHeight(marker, FALSE);
           if (bTallestStructureHeight >= 3) {
             fTravelCostObs = TRUE;
             fStopRevealingItemsAfterThisTile = TRUE;
@@ -439,7 +439,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // cheap hack... don't reveal items
           fRevealItems = FALSE;
         } else {
-          bTallestStructureHeight = GetTallestStructureHeight((INT16)marker, FALSE);
+          bTallestStructureHeight = GetTallestStructureHeight(marker, FALSE);
           if (bTallestStructureHeight >= 3) {
             fTravelCostObs = TRUE;
             fStopRevealingItemsAfterThisTile = TRUE;
@@ -471,11 +471,11 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // GET INDEX FOR ITEM HERE
           // if there IS a direction after this one, nextdir WILL NOT be 99
           if (nextDir != 99) {
-            Blocking = GetBlockingStructureInfo((INT16)marker, (INT8)Dir[markerDir], (INT8)Dir[nextDir], ubLevel, &bStructHeight, &pDummy, FALSE);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], Dir[nextDir], ubLevel, &bStructHeight, &pDummy, FALSE);
           } else // no "next" direction, so pass in a NOWHERE so that
           // "SpecialViewObstruction" will know not to take it UINT32o consideration
           {
-            Blocking = GetBlockingStructureInfo((INT16)marker, (INT8)Dir[markerDir], (INT8)30, ubLevel, &bStructHeight, &pDummy, FALSE);
+            Blocking = GetBlockingStructureInfo(marker, Dir[markerDir], 30, ubLevel, &bStructHeight, &pDummy, FALSE);
           }
 
           if (gfCaves) {
@@ -489,7 +489,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               if (markercnt <= 1) // Are we right beside it?
               {
                 fThroughWindow = TRUE;
-                bThroughWindowDirection = (INT8)Dir[markerDir];
+                bThroughWindowDirection = Dir[markerDir];
               }
             }
           }
@@ -499,7 +499,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
               if (markercnt <= 1) // Are we right beside it?
               {
                 fThroughWindow = TRUE;
-                bThroughWindowDirection = (INT8)Dir[markerDir];
+                bThroughWindowDirection = Dir[markerDir];
               }
             }
           }
@@ -525,9 +525,9 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
             if (itemsToo && fRevealItems) // && itemIndex < MAXOBJECTLIST)
             {
               // OK, look for corpses...
-              LookForAndMayCommentOnSeeingCorpse(pSoldier, (INT16)marker, ubLevel);
+              LookForAndMayCommentOnSeeingCorpse(pSoldier, marker, ubLevel);
 
-              if (GetItemPool((INT16)marker, &pItemPool, ubLevel)) {
+              if (GetItemPool(marker, &pItemPool, ubLevel)) {
                 itemVisible = pItemPool->bVisible;
 
                 if (SetItemPoolVisibilityOn(pItemPool, INVISIBLE, fShowLocators)) {
@@ -556,16 +556,16 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
                       if (gTacticalStatus.ubAttackBusyCount > 0 && (gTacticalStatus.uiFlags & INCOMBAT)) {
                         gTacticalStatus.fItemsSeenOnAttack = TRUE;
                         gTacticalStatus.ubItemsSeenOnAttackSoldier = pSoldier->ubID;
-                        gTacticalStatus.usItemsSeenOnAttackGridNo = (INT16)(marker);
+                        gTacticalStatus.usItemsSeenOnAttackGridNo = (marker);
                       } else {
                         // Display quote!
                         if (!AM_AN_EPC(pSoldier)) {
-                          TacticalCharacterDialogueWithSpecialEvent(pSoldier, (UINT16)(QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, (INT16)(marker), 0);
+                          TacticalCharacterDialogueWithSpecialEvent(pSoldier, (QUOTE_SPOTTED_SOMETHING_ONE + Random(2)), DIALOGUE_SPECIAL_EVENT_SIGNAL_ITEM_LOCATOR_START, (marker), 0);
                         } else {
                           // Turn off item lock for locators...
                           gTacticalStatus.fLockItemLocators = FALSE;
                           // Slide to location!
-                          SlideToLocation(0, (INT16)(marker));
+                          SlideToLocation(0, (marker));
                         }
                       }
                       fItemsQuoteSaid = TRUE;
@@ -587,11 +587,11 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           // CHECK FOR HIDDEN STRUCTS
           // IF we had a hidden struct here that is not visible ( which will still be true because
           // we set it revealed below...
-          if (DoesGridnoContainHiddenStruct((UINT16)marker, &fHiddenStructVisible)) {
+          if (DoesGridnoContainHiddenStruct(marker, &fHiddenStructVisible)) {
             if (!fHiddenStructVisible) {
               gpWorldLevelData[marker].uiFlags |= MAPELEMENT_REDRAW;
               SetRenderFlags(RENDER_FLAG_MARKED);
-              RecompileLocalMovementCosts((UINT16)marker);
+              RecompileLocalMovementCosts(marker);
             }
           }
 
@@ -616,13 +616,13 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
             let pStructure: Pointer<STRUCTURE>;
             let pBase: Pointer<STRUCTURE>;
 
-            pStructure = FindStructure((INT16)marker, STRUCTURE_SLANTED_ROOF);
+            pStructure = FindStructure(marker, STRUCTURE_SLANTED_ROOF);
 
             if (pStructure != NULL) {
               pBase = FindBaseStructure(pStructure);
 
               // ADD TO SLANTED ROOF LIST!
-              AddSlantRoofFOVSlot((INT16)marker);
+              AddSlantRoofFOVSlot(marker);
             }
           }
 
@@ -647,11 +647,11 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
             // CHECK FOR ROOMS
             // if ( fCheckForRooms )
             {
-              if (InAHiddenRoom((INT16)marker, &ubRoomNo)) {
-                RemoveRoomRoof((INT16)marker, ubRoomNo, pSoldier);
+              if (InAHiddenRoom(marker, &ubRoomNo)) {
+                RemoveRoomRoof(marker, ubRoomNo, pSoldier);
                 if (ubRoomNo == ROOM_SURROUNDING_BOXING_RING && gWorldSectorX == BOXING_SECTOR_X && gWorldSectorY == BOXING_SECTOR_Y && gbWorldSectorZ == BOXING_SECTOR_Z) {
                   // reveal boxing ring at same time
-                  RemoveRoomRoof((INT16)marker, BOXING_RING, pSoldier);
+                  RemoveRoomRoof(marker, BOXING_RING, pSoldier);
                 }
               }
             }
@@ -660,7 +660,7 @@ function RevealRoofsAndItems(pSoldier: Pointer<SOLDIERTYPE>, itemsToo: UINT32, f
           }
 
           // Check for blood....
-          UpdateBloodGraphics((INT16)marker, ubLevel);
+          UpdateBloodGraphics(marker, ubLevel);
 
           if (Blocking != NOTHING_BLOCKING && Blocking != BLOCKING_TOPLEFT_DOOR && Blocking != BLOCKING_TOPRIGHT_DOOR && Blocking != BLOCKING_TOPLEFT_WINDOW && Blocking != BLOCKING_TOPRIGHT_WINDOW && Blocking != BLOCKING_TOPRIGHT_OPEN_WINDOW && Blocking != BLOCKING_TOPLEFT_OPEN_WINDOW) {
             break;

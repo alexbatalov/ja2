@@ -157,10 +157,10 @@ function UpdateCursorAreas(): void {
           RemoveBadMarker();
           if (gfRoofPlacement && FlatRoofAboveGridNo(iMapIndex)) {
             AddTopmostToTail(iMapIndex + ROOF_OFFSET, BADMARKER1);
-            sBadMarker = (INT16)(iMapIndex + ROOF_OFFSET);
+            sBadMarker = (iMapIndex + ROOF_OFFSET);
           } else {
             AddTopmostToTail((iMapIndex), BADMARKER1);
-            sBadMarker = (INT16)(iMapIndex);
+            sBadMarker = (iMapIndex);
           }
         }
       } else {
@@ -222,7 +222,7 @@ function HandleAreaSelection(): BOOLEAN {
   if (fAnchored) {
     if (!gfLeftButtonState && !gfCurrentSelectionWithRightButton || !gfRightButtonState && gfCurrentSelectionWithRightButton) {
       fAnchored = FALSE;
-      ProcessAreaSelection((BOOLEAN)!gfCurrentSelectionWithRightButton);
+      ProcessAreaSelection(!gfCurrentSelectionWithRightButton);
       gfCurrentSelectionWithRightButton = FALSE;
       return FALSE;
     }

@@ -98,7 +98,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
   let curr: Pointer<MapIndexBinaryTree>;
   let parent: Pointer<MapIndexBinaryTree>;
   if (!top) {
-    top = (MapIndexBinaryTree *)MemAlloc(sizeof(MapIndexBinaryTree));
+    top = MemAlloc(sizeof(MapIndexBinaryTree));
     Assert(top);
     top->usMapIndex = usMapIndex;
     top->left = NULL;
@@ -120,7 +120,7 @@ function AddMapIndexToTree(usMapIndex: UINT16): BOOLEAN {
   // if we made it this far, then curr is null and parent is pointing
   // directly above.
   // Create the new node and fill in the information.
-  curr = (MapIndexBinaryTree *)MemAlloc(sizeof(MapIndexBinaryTree));
+  curr = MemAlloc(sizeof(MapIndexBinaryTree));
   Assert(curr);
   curr->usMapIndex = usMapIndex;
   curr->left = NULL;
@@ -308,11 +308,11 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
   if (gfIgnoreUndoCmdsForLights)
     return;
 
-  pNode = (undo_stack *)MemAlloc(sizeof(undo_stack));
+  pNode = MemAlloc(sizeof(undo_stack));
   if (!pNode)
     return;
 
-  pUndoInfo = (undo_struct *)MemAlloc(sizeof(undo_struct));
+  pUndoInfo = MemAlloc(sizeof(undo_struct));
   if (!pUndoInfo) {
     MemFree(pNode);
     return;
@@ -321,7 +321,7 @@ function AddLightToUndoList(iMapIndex: INT32, iLightRadius: INT32, ubLightID: UI
   pUndoInfo->fLightSaved = TRUE;
   // if ubLightRadius is 0, then we don't need to save the light information because we
   // will erase it when it comes time to execute the undo command.
-  pUndoInfo->ubLightRadius = (UINT8)iLightRadius;
+  pUndoInfo->ubLightRadius = iLightRadius;
   pUndoInfo->ubLightID = ubLightID;
   pUndoInfo->iMapIndex = iMapIndex;
   pUndoInfo->pMapTile = NULL;
@@ -348,7 +348,7 @@ function AddToUndoList(iMapIndex: INT32): BOOLEAN {
   // Check to see if the tile in question is even on the visible map, then
   // if that is true, then check to make sure we don't already have the mapindex
   // saved in the new binary tree (which only holds unique mapindex values).
-  if (GridNoOnVisibleWorldTile((INT16)iMapIndex) && AddMapIndexToTree((UINT16)iMapIndex))
+  if (GridNoOnVisibleWorldTile(iMapIndex) && AddMapIndexToTree(iMapIndex))
 
   {
     if (AddToUndoListCmd(iMapIndex, ++iCount))
@@ -366,16 +366,16 @@ function AddToUndoListCmd(iMapIndex: INT32, iCmdCount: INT32): BOOLEAN {
   let iCoveredMapIndex: INT32;
   let ubLoop: UINT8;
 
-  if ((pNode = (undo_stack *)MemAlloc(sizeof(undo_stack))) == NULL) {
+  if ((pNode = MemAlloc(sizeof(undo_stack))) == NULL) {
     return FALSE;
   }
 
-  if ((pUndoInfo = (undo_struct *)MemAlloc(sizeof(undo_struct))) == NULL) {
+  if ((pUndoInfo = MemAlloc(sizeof(undo_struct))) == NULL) {
     MemFree(pNode);
     return FALSE;
   }
 
-  if ((pData = (MAP_ELEMENT *)MemAlloc(sizeof(MAP_ELEMENT))) == NULL) {
+  if ((pData = MemAlloc(sizeof(MAP_ELEMENT))) == NULL) {
     MemFree(pNode);
     MemFree(pUndoInfo);
     return FALSE;
@@ -505,7 +505,7 @@ function ExecuteUndoList(): BOOLEAN {
       // Turn on this flag so that the following code, when executed, doesn't attempt to
       // add lights to the undo list.  That would cause problems...
       gfIgnoreUndoCmdsForLights = TRUE;
-      ConvertGridNoToXY((INT16)iUndoMapIndex, &sX, &sY);
+      ConvertGridNoToXY(iUndoMapIndex, &sX, &sY);
       if (!gpTileUndoStack->pData->ubLightRadius)
         RemoveLight(sX, sY);
       else
@@ -515,7 +515,7 @@ function ExecuteUndoList(): BOOLEAN {
     } else {
       // We execute the undo command node by simply swapping the contents
       // of the undo's MAP_ELEMENT with the world's element.
-      fExitGrid = ExitGridAtGridNo((UINT16)iUndoMapIndex);
+      fExitGrid = ExitGridAtGridNo(iUndoMapIndex);
       SwapMapElementWithWorld(iUndoMapIndex, gpTileUndoStack->pData->pMapTile);
 
       // copy the room number information back
@@ -538,12 +538,12 @@ function ExecuteUndoList(): BOOLEAN {
     // hacking around this by erasing all cursors here.
     RemoveAllTopmostsOfTypeRange(iUndoMapIndex, FIRSTPOINTERS, FIRSTPOINTERS);
 
-    if (fExitGrid && !ExitGridAtGridNo((UINT16)iUndoMapIndex)) {
+    if (fExitGrid && !ExitGridAtGridNo(iUndoMapIndex)) {
       // An exitgrid has been removed, so get rid of the associated indicator.
-      RemoveTopmost((UINT16)iUndoMapIndex, FIRSTPOINTERS8);
-    } else if (!fExitGrid && ExitGridAtGridNo((UINT16)iUndoMapIndex)) {
+      RemoveTopmost(iUndoMapIndex, FIRSTPOINTERS8);
+    } else if (!fExitGrid && ExitGridAtGridNo(iUndoMapIndex)) {
       // An exitgrid has been added, so add the associated indicator
-      AddTopmostToTail((UINT16)iUndoMapIndex, FIRSTPOINTERS8);
+      AddTopmostToTail(iUndoMapIndex, FIRSTPOINTERS8);
     }
   }
 
@@ -694,7 +694,7 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
     tail = NULL;
     pNewStructure = NULL;
     while (pOldStructure) {
-      pStructure = (STRUCTURE *)MemAlloc(sizeof(STRUCTURE));
+      pStructure = MemAlloc(sizeof(STRUCTURE));
       if (!pStructure) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
         return FALSE;
@@ -738,7 +738,7 @@ function CopyMapElementFromWorld(pNewMapElement: Pointer<MAP_ELEMENT>, iMapIndex
     pNewLevelNode = NULL;
     while (pOldLevelNode) {
       // copy the level node
-      pLevelNode = (LEVELNODE *)MemAlloc(sizeof(LEVELNODE));
+      pLevelNode = MemAlloc(sizeof(LEVELNODE));
       if (!pLevelNode) {
         DeleteMapElementContentsAfterCreationFail(pNewMapElement);
         return FALSE;

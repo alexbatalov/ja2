@@ -401,22 +401,22 @@ function GetLaptopKeyboardInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (InputEvent.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -1448,9 +1448,9 @@ function LaptopScreenHandle(): UINT32 {
       // Factor the percentage so that it is modified by a gravity falling acceleration effect.
       iFactor = (iPercentage - 50) * 2;
       if (iPercentage < 50)
-        iPercentage = (UINT32)(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+        iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
       else
-        iPercentage = (UINT32)(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
+        iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
 
       // Mapscreen source rect
       SrcRect1.iLeft = 464 * iPercentage / 100;
@@ -1820,7 +1820,7 @@ function CreateLaptopButtons(): UINT32 {
   // the program buttons
 
   gLaptopButtonImage[0] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 0, -1, 8, -1);
-  gLaptopButton[0] = QuickCreateButton(gLaptopButtonImage[0], 29, 66, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)EmailRegionButtonCallback);
+  gLaptopButton[0] = QuickCreateButton(gLaptopButtonImage[0], 29, 66, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, EmailRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[0], LAPTOP_BN_HLP_TXT_VIEW_EMAIL);
 
   SpecifyButtonText(gLaptopButton[0], pLaptopIcons[0]);
@@ -1830,7 +1830,7 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonUpTextColors(gLaptopButton[0], 2, 0);
 
   gLaptopButtonImage[1] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 1, -1, 9, -1);
-  gLaptopButton[1] = QuickCreateButton(gLaptopButtonImage[1], 29, 98, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)WWWRegionButtonCallback);
+  gLaptopButton[1] = QuickCreateButton(gLaptopButtonImage[1], 29, 98, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, WWWRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[1], LAPTOP_BN_HLP_TXT_BROWSE_VARIOUS_WEB_SITES);
 
   SpecifyButtonText(gLaptopButton[1], pLaptopIcons[1]);
@@ -1840,7 +1840,7 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonDownTextColors(gLaptopButton[1], 2, 0);
 
   gLaptopButtonImage[2] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 2, -1, 10, -1);
-  gLaptopButton[2] = QuickCreateButton(gLaptopButtonImage[2], 29, 130, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)FilesRegionButtonCallback);
+  gLaptopButton[2] = QuickCreateButton(gLaptopButtonImage[2], 29, 130, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, FilesRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[2], LAPTOP_BN_HLP_TXT_VIEW_FILES_AND_EMAIL_ATTACHMENTS);
 
   SpecifyButtonText(gLaptopButton[2], pLaptopIcons[5]);
@@ -1850,7 +1850,7 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonDownTextColors(gLaptopButton[2], 2, 0);
 
   gLaptopButtonImage[3] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 3, -1, 11, -1);
-  gLaptopButton[3] = QuickCreateButton(gLaptopButtonImage[3], 29, 194, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)PersonnelRegionButtonCallback);
+  gLaptopButton[3] = QuickCreateButton(gLaptopButtonImage[3], 29, 194, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, PersonnelRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[3], LAPTOP_BN_HLP_TXT_VIEW_TEAM_INFO);
 
   SpecifyButtonText(gLaptopButton[3], pLaptopIcons[3]);
@@ -1860,7 +1860,7 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonDownTextColors(gLaptopButton[3], 2, 0);
 
   gLaptopButtonImage[4] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 4, -1, 12, -1);
-  gLaptopButton[4] = QuickCreateButton(gLaptopButtonImage[4], 29, 162, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)HistoryRegionButtonCallback);
+  gLaptopButton[4] = QuickCreateButton(gLaptopButtonImage[4], 29, 162, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, HistoryRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[4], LAPTOP_BN_HLP_TXT_READ_LOG_OF_EVENTS);
 
   SpecifyButtonText(gLaptopButton[4], pLaptopIcons[4]);
@@ -1870,7 +1870,7 @@ function CreateLaptopButtons(): UINT32 {
   SpecifyButtonDownTextColors(gLaptopButton[4], 2, 0);
 
   gLaptopButtonImage[5] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 5, -1, 13, -1);
-  gLaptopButton[5] = QuickCreateButton(gLaptopButtonImage[5], 29, 226 + 15, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)FinancialRegionButtonCallback);
+  gLaptopButton[5] = QuickCreateButton(gLaptopButtonImage[5], 29, 226 + 15, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, FinancialRegionButtonCallback);
   CreateLaptopButtonHelpText(gLaptopButton[5], LAPTOP_BN_HLP_TXT_VIEW_FINANCIAL_SUMMARY_AND_HISTORY);
 
   SpecifyButtonText(gLaptopButton[5], pLaptopIcons[2]);
@@ -1881,7 +1881,7 @@ function CreateLaptopButtons(): UINT32 {
 
   gLaptopButtonImage[6] = LoadButtonImage("LAPTOP\\buttonsforlaptop.sti", -1, 6, -1, 14, -1);
   gLaptopButton[6] = QuickCreateButton(gLaptopButtonImage[6], 29, 371 + 7, // DEF: was 19
-                                       BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnOnCallback);
+                                       BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnOnCallback);
   CreateLaptopButtonHelpText(gLaptopButton[6], LAPTOP_BN_HLP_TXT_CLOSE_LAPTOP);
 
   SpecifyButtonText(gLaptopButton[6], pLaptopIcons[6]);
@@ -2027,9 +2027,9 @@ function LeaveLapTopScreen(): BOOLEAN {
         // Factor the percentage so that it is modified by a gravity falling acceleration effect.
         iFactor = (iPercentage - 50) * 2;
         if (iPercentage < 50)
-          iPercentage = (UINT32)(iPercentage + iPercentage * iFactor * 0.01 + 0.5);
+          iPercentage = (iPercentage + iPercentage * iFactor * 0.01 + 0.5);
         else
-          iPercentage = (UINT32)(iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
+          iPercentage = (iPercentage + (100 - iPercentage) * iFactor * 0.01 + 0.5);
 
         // Mapscreen source rect
         SrcRect1.iLeft = 464 * iPercentage / 100;
@@ -2122,7 +2122,7 @@ function CreateLapTopMouseRegions(): BOOLEAN {
   // define regions
 
   // the entire laptop display region
-  MSYS_DefineRegion(&gLapTopScreenRegion, (UINT16)(LaptopScreenRect.iLeft), (UINT16)(LaptopScreenRect.iTop), (UINT16)(LaptopScreenRect.iRight), (UINT16)(LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
+  MSYS_DefineRegion(&gLapTopScreenRegion, (LaptopScreenRect.iLeft), (LaptopScreenRect.iTop), (LaptopScreenRect.iRight), (LaptopScreenRect.iBottom), MSYS_PRIORITY_NORMAL + 1, CURSOR_LAPTOP_SCREEN, ScreenRegionMvtCallback, LapTopScreenCallBack);
 
   // MSYS_AddRegion(&gLapTopScreenRegion);
   return TRUE;
@@ -2428,7 +2428,7 @@ function WWWRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32): v
     iBaseTime = 0;
     iFrame = 0;
     GetVideoObject(&hLapTopIconHandle, guiWWWICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_WWW_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_WWW_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2445,7 +2445,7 @@ function EmailRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
     iFrame = 0;
     DrawLapTopText();
     GetVideoObject(&hLapTopIconHandle, guiMAILICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_MAIL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_MAIL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     if (fUnReadMailFlag) {
       GetVideoObject(&hLapTopIconHandle, guiUNREAD);
       BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, 0, LAPTOP_ICONS_X + CHECK_X, LAPTOP_ICONS_MAIL_Y + CHECK_Y, VO_BLT_SRCTRANSPARENCY, NULL);
@@ -2465,7 +2465,7 @@ function FinancialRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     iBaseTime = 0;
     iFrame = 0;
     GetVideoObject(&hLapTopIconHandle, guiFINANCIALICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X - 4, LAPTOP_ICONS_FINANCIAL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X - 4, LAPTOP_ICONS_FINANCIAL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2482,7 +2482,7 @@ function HistoryRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32
     iFrame = 0;
 
     GetVideoObject(&hLapTopIconHandle, guiHISTORYICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_HISTORY_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_HISTORY_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2498,7 +2498,7 @@ function FilesRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT32):
     iBaseTime = 0;
     iFrame = 0;
     GetVideoObject(&hLapTopIconHandle, guiFILESICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_FILES_Y + 7, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_FILES_Y + 7, VO_BLT_SRCTRANSPARENCY, NULL);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2515,7 +2515,7 @@ function PersonnelRegionMvtCallback(pRegion: Pointer<MOUSE_REGION>, iReason: INT
     iFrame = 0;
 
     GetVideoObject(&hLapTopIconHandle, guiPERSICON);
-    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, (UINT16)iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_PERSONNEL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+    BltVideoObject(FRAME_BUFFER, hLapTopIconHandle, iFrame, LAPTOP_ICONS_X, LAPTOP_ICONS_PERSONNEL_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     DrawLapTopText();
     HighLightRegion(giCurrentRegion);
     InvalidateRegion(0, 0, 640, 480);
@@ -2690,7 +2690,7 @@ function DisplayBookMarks(): void {
       SetFontBackground(FONT_BLACK);
     }
 
-    FindFontCenterCoordinates(BOOK_X + 3, (UINT16)(BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT, &sX, &sY);
+    FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]], BOOK_FONT, &sX, &sY);
 
     mprintf(sX, sY, pBookMarkStrings[LaptopSaveInfo.iBookMarkList[iCounter - 1]]);
     iCounter++;
@@ -2715,7 +2715,7 @@ function DisplayBookMarks(): void {
     SetFontForeground(FONT_BLACK);
     SetFontBackground(FONT_BLACK);
   }
-  FindFontCenterCoordinates(BOOK_X + 3, (UINT16)(BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[CANCEL_STRING], BOOK_FONT, &sX, &sY);
+  FindFontCenterCoordinates(BOOK_X + 3, (BOOK_TOP_Y + 2 + (iCounter * (BOOK_HEIGHT + 6)) + 6), BOOK_WIDTH - 3, BOOK_HEIGHT + 6, pBookMarkStrings[CANCEL_STRING], BOOK_FONT, &sX, &sY);
   mprintf(sX, sY, pBookMarkStrings[CANCEL_STRING]);
   iCounter++;
 
@@ -2766,7 +2766,7 @@ function DeleteBookmark(): void {
 function ScrollDisplayText(iY: INT32): void {
   /* static */ let iBaseTime: INT32 = 0;
   /* static */ let sCurX: INT16;
-  let sY: INT16 = (INT16)iY;
+  let sY: INT16 = iY;
 
   // if we are just enetering, set basetime to current clock value
   if (iBaseTime == 0)
@@ -2802,7 +2802,7 @@ function CreateBookMarkMouseRegions(): void {
   let iCounter: INT32 = 0;
   // creates regions based on number of entries
   while (LaptopSaveInfo.iBookMarkList[iCounter] != -1) {
-    MSYS_DefineRegion(&gBookmarkMouseRegions[iCounter], (INT16)BOOK_X, (UINT16)(BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (INT16)(BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+    MSYS_DefineRegion(&gBookmarkMouseRegions[iCounter], BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
     // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
     MSYS_SetRegionUserData(&gBookmarkMouseRegions[iCounter], 0, iCounter);
     MSYS_SetRegionUserData(&gBookmarkMouseRegions[iCounter], 1, 0);
@@ -2814,7 +2814,7 @@ function CreateBookMarkMouseRegions(): void {
   }
   // now add one more
   // for the cancel button
-  MSYS_DefineRegion(&gBookmarkMouseRegions[iCounter], (INT16)BOOK_X, (UINT16)(BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (INT16)(BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
+  MSYS_DefineRegion(&gBookmarkMouseRegions[iCounter], BOOK_X, (BOOK_TOP_Y + ((iCounter + 1) * (BOOK_HEIGHT + 6)) + 6), BOOK_X + BOOK_WIDTH, (BOOK_TOP_Y + ((iCounter + 2) * (BOOK_HEIGHT + 6)) + 6), MSYS_PRIORITY_HIGHEST - 2, CURSOR_LAPTOP_SCREEN, BookmarkMvtCallBack, BookmarkCallBack);
   // MSYS_AddRegion(&gBookmarkMouseRegions[iCounter]);
   MSYS_SetRegionUserData(&gBookmarkMouseRegions[iCounter], 0, iCounter);
   MSYS_SetRegionUserData(&gBookmarkMouseRegions[iCounter], 1, CANCEL_STRING);
@@ -3215,7 +3215,7 @@ function CreateDestroyErrorButton(): void {
 
     // load image and create error confirm button
     giErrorButtonImage[0] = LoadButtonImage("LAPTOP\\errorbutton.sti", -1, 0, -1, 1, -1);
-    giErrorButton[0] = QuickCreateButton(giErrorButtonImage[0], ERROR_X + ERROR_BTN_X, ERROR_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnErrorCallback);
+    giErrorButton[0] = QuickCreateButton(giErrorButtonImage[0], ERROR_X + ERROR_BTN_X, ERROR_BTN_Y, BUTTON_TOGGLE, MSYS_PRIORITY_HIGHEST, BtnGenericMouseMoveButtonCallback, BtnErrorCallback);
 
     // define the cursor
     SetButtonCursor(giErrorButton[0], CURSOR_LAPTOP_SCREEN);
@@ -3282,7 +3282,7 @@ function DisplayErrorBox(): void {
   SetFont(ERROR_FONT);
 
   // display error string
-  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (UINT16)(ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[2], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+  DisplayWrappedString(ERROR_X + ERROR_TEXT_X, (ERROR_Y + ERROR_TEXT_Y + DisplayWrappedString(ERROR_X + ERROR_TEXT_X, ERROR_Y + ERROR_TEXT_Y, BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED)), BOOK_WIDTH, 2, ERROR_FONT, FONT_BLACK, pErrorStrings[2], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
 
   SetFontShadow(DEFAULT_SHADOW);
 
@@ -3383,7 +3383,7 @@ function DisplayPlayersBalanceToDate(): void {
   InsertDollarSignInToString(sString);
 
   // get center
-  FindFontCenterCoordinates((INT16)LAPTOP_ICON_TEXT_X, 0, (INT16)(LAPTOP_ICON_TEXT_WIDTH), (INT16)(LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT, &sX, &sY);
+  FindFontCenterCoordinates(LAPTOP_ICON_TEXT_X, 0, (LAPTOP_ICON_TEXT_WIDTH), (LAPTOP_ICON_TEXT_HEIGHT), sString, LAPTOPICONFONT, &sX, &sY);
   //	gprintfdirty( sX , LAPTOP_ICON_TEXT_FINANCIAL_Y + 10, sString );
   // printf it!
   if (ButtonList[gLaptopButton[5]]->uiFlags & BUTTON_CLICKED_ON) {
@@ -3544,7 +3544,7 @@ function DoLapTopMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScree
   fExitDueToMessageBox = TRUE;
 
   // do message box and return
-  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT8)(ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &pCenteringRect);
+  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (ubFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &pCenteringRect);
 
   // send back return state
   return iLaptopMessageBox != -1;
@@ -3555,7 +3555,7 @@ function DoLapTopSystemMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16
   fExitDueToMessageBox = TRUE;
 
   // do message box and return
-  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT16)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
+  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
   // send back return state
   return iLaptopMessageBox != -1;
@@ -3567,7 +3567,7 @@ function DoLapTopSystemMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExi
   fExitDueToMessageBox = TRUE;
 
   // do message box and return
-  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT16)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  iLaptopMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
 
   // send back return state
   return iLaptopMessageBox != -1;
@@ -3649,14 +3649,14 @@ function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTop
     }
   }
 
-  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosX = (INT16)(usTopLeftX + dTemp * ubCount);
+  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_X - usTopLeftX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  sPosX = (usTopLeftX + dTemp * ubCount);
 
-  dTemp = (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosRightX = (INT16)(usTopRightX + dTemp * ubCount);
+  dTemp = (LAPTOP_TITLE_BAR_TOP_RIGHT_X - usTopRightX) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  sPosRightX = (usTopRightX + dTemp * ubCount);
 
-  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / (FLOAT)NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
-  sPosY = (INT16)(usTopLeftY + dTemp * ubCount);
+  dTemp = (LAPTOP_TITLE_BAR_TOP_LEFT_Y - usTopLeftY) / NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS;
+  sPosY = (usTopLeftY + dTemp * ubCount);
 
   sPosBottomY = LAPTOP_TITLE_BAR_HEIGHT;
 
@@ -3681,30 +3681,30 @@ function DisplayTitleBarMaximizeGraphic(fForward: BOOLEAN, fInit: BOOLEAN, usTop
   if (fForward) {
     // Restore the old rect
     if (ubCount > 1) {
-      sWidth = (UINT16)(LastRect.iRight - LastRect.iLeft);
-      sHeight = (UINT16)(LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)LastRect.iLeft, (UINT16)LastRect.iTop, sWidth, sHeight);
+      sWidth = (LastRect.iRight - LastRect.iLeft);
+      sHeight = (LastRect.iBottom - LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, sWidth, sHeight);
     }
 
     // Save rectangle
     if (ubCount > 0) {
-      sWidth = (UINT16)(DestRect.iRight - DestRect.iLeft);
-      sHeight = (UINT16)(DestRect.iBottom - DestRect.iTop);
-      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, sWidth, sHeight);
+      sWidth = (DestRect.iRight - DestRect.iLeft);
+      sHeight = (DestRect.iBottom - DestRect.iTop);
+      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, sWidth, sHeight);
     }
   } else {
     // Restore the old rect
     if (ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS - 1) {
-      sWidth = (UINT16)(LastRect.iRight - LastRect.iLeft);
-      sHeight = (UINT16)(LastRect.iBottom - LastRect.iTop);
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)LastRect.iLeft, (UINT16)LastRect.iTop, sWidth, sHeight);
+      sWidth = (LastRect.iRight - LastRect.iLeft);
+      sHeight = (LastRect.iBottom - LastRect.iTop);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, LastRect.iLeft, LastRect.iTop, sWidth, sHeight);
     }
 
     // Save rectangle
     if (ubCount < NUMBER_OF_LAPTOP_TITLEBAR_ITERATIONS) {
-      sWidth = (UINT16)(DestRect.iRight - DestRect.iLeft);
-      sHeight = (UINT16)(DestRect.iBottom - DestRect.iTop);
-      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, sWidth, sHeight);
+      sWidth = (DestRect.iRight - DestRect.iLeft);
+      sHeight = (DestRect.iBottom - DestRect.iTop);
+      BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, sWidth, sHeight);
     }
   }
 
@@ -4014,7 +4014,7 @@ function CreateDestroyMinimizeButtonForCurrentMode(): void {
 function CreateMinimizeButtonForCurrentMode(): void {
   // create minimize button
   gLaptopMinButtonImage[0] = LoadButtonImage("LAPTOP\\x.sti", -1, 0, -1, 1, -1);
-  gLaptopMinButton[0] = QuickCreateButton(gLaptopMinButtonImage[0], 590, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, (GUI_CALLBACK)BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)LaptopMinimizeProgramButtonCallback);
+  gLaptopMinButton[0] = QuickCreateButton(gLaptopMinButtonImage[0], 590, 30, BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, LaptopMinimizeProgramButtonCallback);
 
   SetButtonCursor(gLaptopMinButton[0], CURSOR_LAPTOP_SCREEN);
   return;
@@ -4215,7 +4215,7 @@ function DrawDeskTopBackground(): BOOLEAN {
   clip.iTop = 0;
   clip.iBottom = 408 + 19;
   // get surfaces
-  pDestBuf = (UINT16 *)LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
+  pDestBuf = LockVideoSurface(FRAME_BUFFER, &uiDestPitchBYTES);
   CHECKF(GetVideoSurface(&hSrcVSurface, guiDESKTOP));
   pSrcBuf = LockVideoSurface(guiDESKTOP, &uiSrcPitchBYTES);
 
@@ -4610,10 +4610,10 @@ function CreateDestroyMouseRegionForNewMailIcon(): void {
   if (fCreated == FALSE) {
     fCreated = TRUE;
     MSYS_DefineRegion(&gNewMailIconRegion, LAPTOP__NEW_EMAIL_ICON_X, LAPTOP__NEW_EMAIL_ICON_Y + 5, LAPTOP__NEW_EMAIL_ICON_X + 16, LAPTOP__NEW_EMAIL_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewEmailIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (BOOLEAN)(fUnReadMailFlag == 0));
+    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_MAIL, (fUnReadMailFlag == 0));
 
     MSYS_DefineRegion(&gNewFileIconRegion, LAPTOP__NEW_FILE_ICON_X, LAPTOP__NEW_FILE_ICON_Y + 5, LAPTOP__NEW_FILE_ICON_X + 16, LAPTOP__NEW_FILE_ICON_Y + 16, MSYS_PRIORITY_HIGHEST - 3, CURSOR_LAPTOP_SCREEN, MSYS_NO_CALLBACK, NewFileIconCallback);
-    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (BOOLEAN)(fNewFilesInFileViewer == 0));
+    CreateFileAndNewEmailIconFastHelpText(LAPTOP_BN_HLP_TXT_YOU_HAVE_NEW_FILE, (fNewFilesInFileViewer == 0));
   } else {
     fCreated = FALSE;
     MSYS_RemoveRegion(&gNewMailIconRegion);
@@ -4815,7 +4815,7 @@ function DisplayWebBookMarkNotify(): void {
     SetFontShadow(NO_SHADOW);
 
     // now draw the message
-    DisplayWrappedString((INT16)(DOWN_STRING_X - 42), (UINT16)(DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT, FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
+    DisplayWrappedString((DOWN_STRING_X - 42), (DOWN_STRING_Y + 20), BOOK_WIDTH + 45, 2, BOOK_FONT, FONT_BLACK, pShowBookmarkString[1], FONT_BLACK, FALSE, CENTER_JUSTIFIED);
 
     // invalidate region
     InvalidateRegion(DOWNLOAD_X, DOWNLOAD_Y, DOWNLOAD_X + 150, DOWNLOAD_Y + 100);
@@ -5025,9 +5025,9 @@ function WWaitDelayIncreasedIfRaining(iUnitTime: INT32): INT32 {
   let iRetVal: INT32 = 0;
 
   if (guiEnvWeather & WEATHER_FORECAST_THUNDERSHOWERS) {
-    iRetVal = (INT32)(iUnitTime * (FLOAT)0.80);
+    iRetVal = (iUnitTime * 0.80);
   } else if (guiEnvWeather & WEATHER_FORECAST_SHOWERS) {
-    iRetVal = (INT32)(iUnitTime * (FLOAT)0.6);
+    iRetVal = (iUnitTime * 0.6);
   }
 
   return iRetVal;

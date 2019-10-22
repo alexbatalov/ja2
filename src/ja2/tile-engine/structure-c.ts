@@ -300,8 +300,8 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
       // freeing of memory will occur outside of the function
       return FALSE;
     }
-    usIndex = ((DB_STRUCTURE *)pCurrent)->usStructureNumber;
-    pDBStructureRef[usIndex].pDBStructure = (DB_STRUCTURE *)pCurrent;
+    usIndex = (pCurrent)->usStructureNumber;
+    pDBStructureRef[usIndex].pDBStructure = pCurrent;
     ppTileArray = MemAlloc(pDBStructureRef[usIndex].pDBStructure->ubNumberOfTiles * sizeof(DB_STRUCTURE_TILE *));
     if (ppTileArray == NULL) {
       // freeing of memory will occur outside of the function
@@ -317,7 +317,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
         // freeing of memory will occur outside of the function
         return FALSE;
       }
-      ppTileArray[usTileLoop] = (DB_STRUCTURE_TILE *)pCurrent;
+      ppTileArray[usTileLoop] = pCurrent;
       // set the single-value relative position between this tile and the base tile
       ppTileArray[usTileLoop]->sPosRelToBase = ppTileArray[usTileLoop]->bXPosRelToBase + ppTileArray[usTileLoop]->bYPosRelToBase * WORLD_COLS;
       uiHitPoints += FilledTilePositions(ppTileArray[usTileLoop]);
@@ -331,7 +331,7 @@ function CreateFileStructureArrays(pFileRef: Pointer<STRUCTURE_FILE_REF>, uiData
             uiHitPoints = 255;
     }
     */
-    pDBStructureRef[usIndex].pDBStructure->ubHitPoints = (UINT8)uiHitPoints;
+    pDBStructureRef[usIndex].pDBStructure->ubHitPoints = uiHitPoints;
     /*
     if (pDBStructureRef[usIndex].pDBStructure->usStructureNumber + 1 == pFileRef->usNumberOfStructures)
     {
@@ -506,7 +506,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
               switch (pExistingStructure->ubWallOrientation) {
                 case OUTSIDE_TOP_LEFT:
                 case INSIDE_TOP_LEFT:
-                  sOtherGridNo = NewGridNo(sGridNo, DirectionInc((INT8)(bLoop + 2)));
+                  sOtherGridNo = NewGridNo(sGridNo, DirectionInc((bLoop + 2)));
                   break;
                 case OUTSIDE_TOP_RIGHT:
                 case INSIDE_TOP_RIGHT:
@@ -535,7 +535,7 @@ function OkayToAddStructureToTile(sBaseGridNo: INT16, sCubeOffset: INT16, pDBStr
             switch (pDBStructure->ubWallOrientation) {
               case OUTSIDE_TOP_LEFT:
               case INSIDE_TOP_LEFT:
-                sOtherGridNo = NewGridNo(sGridNo, DirectionInc((INT8)(bLoop + 2)));
+                sOtherGridNo = NewGridNo(sGridNo, DirectionInc((bLoop + 2)));
                 break;
               case OUTSIDE_TOP_RIGHT:
               case INSIDE_TOP_RIGHT:
@@ -646,7 +646,7 @@ function InternalOkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDB
 }
 
 function OkayToAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, sExclusionID: INT16): BOOLEAN {
-  return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID, (BOOLEAN)(sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID));
+  return InternalOkayToAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, sExclusionID, (sExclusionID == IGNORE_PEOPLE_STRUCTURE_ID));
 }
 
 function AddStructureToTile(pMapElement: Pointer<MAP_ELEMENT>, pStructure: Pointer<STRUCTURE>, usStructureID: UINT16): BOOLEAN {
@@ -764,7 +764,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
     usStructureID = pLevelNode->pSoldier->ubID;
   } else if (pLevelNode->uiFlags & LEVELNODE_ROTTINGCORPSE) {
     // ATE: Offset IDs so they don't collide with soldiers
-    usStructureID = (UINT16)(TOTAL_SOLDIERS + pLevelNode->pAniTile->uiUserData);
+    usStructureID = (TOTAL_SOLDIERS + pLevelNode->pAniTile->uiUserData);
   } else {
     gusNextAvailableStructureID++;
     if (gusNextAvailableStructureID == 0) {
@@ -810,7 +810,7 @@ function InternalAddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStruct
 function AddStructureToWorld(sBaseGridNo: INT16, bLevel: INT8, pDBStructureRef: Pointer<DB_STRUCTURE_REF>, pLevelN: PTR): BOOLEAN {
   let pStructure: Pointer<STRUCTURE>;
 
-  pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, (LEVELNODE *)pLevelN);
+  pStructure = InternalAddStructureToWorld(sBaseGridNo, bLevel, pDBStructureRef, pLevelN);
   if (pStructure == NULL) {
     return FALSE;
   }
@@ -953,7 +953,7 @@ function InternalSwapStructureForPartner(sGridNo: INT16, pStructure: Pointer<STR
   if (DeleteStructureFromWorld(pBaseStructure) == FALSE) {
     return NULL;
   }
-  pNewBaseStructure = InternalAddStructureToWorld(sGridNo, (INT8)(sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
+  pNewBaseStructure = InternalAddStructureToWorld(sGridNo, (sCubeOffset / PROFILE_Z_SIZE), pPartnerDBStructure, pLevelNode);
   if (pNewBaseStructure == NULL) {
     return NULL;
   }
@@ -1523,13 +1523,13 @@ function AddZStripInfoToVObject(hVObject: HVOBJECT, pStructureFileRef: Pointer<S
   sNext = sSTIStartIndex + sSTIStep;
   fFirstTime = TRUE;
 
-  for (uiLoop = (UINT8)sSTIStartIndex; uiLoop < hVObject->usNumberOfObjects; uiLoop++) {
+  for (uiLoop = sSTIStartIndex; uiLoop < hVObject->usNumberOfObjects; uiLoop++) {
     // Defualt to true
     fCopyIntoVo = TRUE;
 
     // Increment struct index....
-    if (uiLoop == (UINT32)sNext) {
-      sNext = (UINT16)(uiLoop + sSTIStep);
+    if (uiLoop == sNext) {
+      sNext = (uiLoop + sSTIStep);
       sStructIndex++;
     } else {
       if (fFirstTime) {

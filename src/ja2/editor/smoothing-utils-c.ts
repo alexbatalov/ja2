@@ -22,7 +22,7 @@ function SearchForWallType(iMapIndex: UINT32): UINT16 {
       for (x = -sRadius; x <= sRadius; x++) {
         if (abs(x) == abs(sRadius) || abs(y) == abs(sRadius)) {
           sOffset = y * WORLD_COLS + x;
-          if (!GridNoOnVisibleWorldTile((INT16)(iMapIndex + sOffset))) {
+          if (!GridNoOnVisibleWorldTile((iMapIndex + sOffset))) {
             continue;
           }
           pWall = gpWorldLevelData[iMapIndex + sOffset].pStructHead;
@@ -30,7 +30,7 @@ function SearchForWallType(iMapIndex: UINT32): UINT16 {
             GetTileType(pWall->usIndex, &uiTileType);
             if (uiTileType >= FIRSTWALL && uiTileType <= LASTWALL) {
               // found a roof, so return its type.
-              return (UINT16)uiTileType;
+              return uiTileType;
             }
             // if( uiTileType >= FIRSTWINDOW && uiTileType <= LASTWINDOW )
             //{	//Window types can be converted to a wall type.
@@ -60,7 +60,7 @@ function SearchForRoofType(iMapIndex: UINT32): UINT16 {
       for (x = -sRadius; x <= sRadius; x++) {
         if (abs(x) == abs(sRadius) || abs(y) == abs(sRadius)) {
           sOffset = y * WORLD_COLS + x;
-          if (!GridNoOnVisibleWorldTile((INT16)(iMapIndex + sOffset))) {
+          if (!GridNoOnVisibleWorldTile((iMapIndex + sOffset))) {
             continue;
           }
           pRoof = gpWorldLevelData[iMapIndex + sOffset].pRoofHead;
@@ -68,7 +68,7 @@ function SearchForRoofType(iMapIndex: UINT32): UINT16 {
             GetTileType(pRoof->usIndex, &uiTileType);
             if (uiTileType >= FIRSTROOF && uiTileType <= LASTROOF) {
               // found a roof, so return its type.
-              return (UINT16)uiTileType;
+              return uiTileType;
             }
             pRoof = pRoof->pNext;
           }
@@ -157,7 +157,7 @@ function GetVerticalWallType(iMapIndex: UINT32): UINT16 {
     GetTileType(pWall->usIndex, &uiTileType);
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)
       uiTileType = SearchForWallType(iMapIndex);
-    return (UINT16)uiTileType;
+    return uiTileType;
   }
   return 0;
 }
@@ -170,7 +170,7 @@ function GetHorizontalWallType(iMapIndex: UINT32): UINT16 {
     GetTileType(pWall->usIndex, &uiTileType);
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)
       uiTileType = SearchForWallType(iMapIndex);
-    return (UINT16)uiTileType;
+    return uiTileType;
   }
   return 0;
 }
@@ -282,7 +282,7 @@ function RestoreWalls(iMapIndex: UINT32): void {
   pWall = GetHorizontalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
-    usWallType = (UINT16)uiTileType;
+    usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
     GetWallOrientation(pWall->usIndex, &usWallOrientation);
@@ -302,7 +302,7 @@ function RestoreWalls(iMapIndex: UINT32): void {
   pWall = GetVerticalWall(iMapIndex);
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
-    usWallType = (UINT16)uiTileType;
+    usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
     GetWallOrientation(pWall->usIndex, &usWallOrientation);
@@ -339,12 +339,12 @@ function RestoreWalls(iMapIndex: UINT32): void {
   // found a wall.  Let's back up the current wall value, and restore it after pasting a smart wall.
   if (pWall) {
     GetTileType(pWall->usIndex, &uiTileType);
-    usWallType = (UINT16)uiTileType;
+    usWallType = uiTileType;
     if (uiTileType >= FIRSTDOOR && uiTileType <= LASTDOOR)
       usWallType = SearchForWallType(iMapIndex);
     if (usWallType != 0xffff) {
       ubSaveWallUIValue = gubWallUIValue; // save the wall UI value.
-      gubWallUIValue = (UINT8)usWallType; // trick the UI value
+      gubWallUIValue = usWallType; // trick the UI value
       PasteSmartWall(iMapIndex); // paste smart wall with fake UI value
       gubWallUIValue = ubSaveWallUIValue; // restore the real UI value.
     }

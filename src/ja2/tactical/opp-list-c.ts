@@ -235,7 +235,7 @@ function ReevaluateBestSightingPosition(pSoldier: Pointer<SOLDIERTYPE>, bInterru
       // must percolate him down
       for (ubLoop2 = ubLoop + 1; ubLoop2 < gubBestToMakeSightingSize; ubLoop2++) {
         if (gubBestToMakeSighting[ubLoop2] != NOBODY && MercPtrs[gubBestToMakeSighting[ubLoop2 - 1]]->bInterruptDuelPts < MercPtrs[gubBestToMakeSighting[ubLoop2]]->bInterruptDuelPts) {
-          SwapBestSightingPositions((UINT8)(ubLoop2 - 1), ubLoop2);
+          SwapBestSightingPositions((ubLoop2 - 1), ubLoop2);
         } else {
           break;
         }
@@ -648,7 +648,7 @@ function OurTeamRadiosRandomlyAbout(ubAbout: UINT8): void {
     // if this merc is active, in this sector, and well enough to look
     if (pSoldier->bActive && pSoldier->bInSector && (pSoldier->bLife >= OKLIFE))
       // put him on our list, and increment the counter
-      radioMan[radioCnt++] = (INT8)iLoop;
+      radioMan[radioCnt++] = iLoop;
   }
 
   // now RANDOMLY handle each of the mercs on our list, until none remain
@@ -765,7 +765,7 @@ function DistanceVisible(pSoldier: Pointer<SOLDIERTYPE>, bFacingDir: INT8, bSubj
   if (bFacingDir == DIRECTION_IRRELEVANT && TANK(pSoldier)) {
     // always calculate direction for tanks so we have something to work with
     bFacingDir = pSoldier->bDesiredDirection;
-    bSubjectDir = (INT8)GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sSubjectGridNo);
+    bSubjectDir = GetDirectionToGridNoFromGridNo(pSoldier->sGridNo, sSubjectGridNo);
     // bSubjectDir = atan8(pSoldier->sX,pSoldier->sY,pOpponent->sX,pOpponent->sY);
   }
 
@@ -1329,7 +1329,7 @@ function ManLooksForMan(pSoldier: Pointer<SOLDIERTYPE>, pOpponent: Pointer<SOLDI
   if (sDistAway <= sDistVisible) {
     // and we can trace a line of sight to his x,y coordinates
     // must use the REAL opplist value here since we may or may not know of him
-    if (SoldierToSoldierLineOfSightTest(pSoldier, pOpponent, (UINT8)sDistVisible, bAware)) {
+    if (SoldierToSoldierLineOfSightTest(pSoldier, pOpponent, sDistVisible, bAware)) {
       ManSeesMan(pSoldier, pOpponent, pOpponent->sGridNo, pOpponent->bLevel, MANLOOKSFORMAN, ubCaller);
       bSuccess = TRUE;
     }
@@ -3656,7 +3656,7 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
   let bInWater: INT8 = FALSE;
 
   if (pSoldier->bTeam == ENEMY_TEAM) {
-    return (UINT8)(MAX_MOVEMENT_NOISE - PreRandom(2));
+    return (MAX_MOVEMENT_NOISE - PreRandom(2));
   }
 
   iStealthSkill = 20 + 4 * EffectiveExpLevel(pSoldier) + ((EffectiveDexterity(pSoldier) * 4) / 10); // 24-100
@@ -3730,15 +3730,15 @@ function MovementNoise(pSoldier: Pointer<SOLDIERTYPE>): UINT8 {
     if (ubMaxVolume < 2) {
       ubVolume = ubMaxVolume;
     } else {
-      ubVolume = 1 + (UINT8)PreRandom(ubMaxVolume); // actual volume is 1 to max volume
+      ubVolume = 1 + PreRandom(ubMaxVolume); // actual volume is 1 to max volume
     }
   } else // in STEALTH mode
   {
-    iRoll = (INT32)PreRandom(100); // roll them bones!
+    iRoll = PreRandom(100); // roll them bones!
 
     if (iRoll >= iStealthSkill) // v1.13 modification: give a second chance!
     {
-      iRoll = (INT32)PreRandom(100);
+      iRoll = PreRandom(100);
     }
 
     if (iRoll < iStealthSkill) {
@@ -4285,14 +4285,14 @@ function CalcEffVolume(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: I
   // PopMessage(tempstr);
 
   // adjust default noise volume by listener's hearing capability
-  iEffVolume = (INT32)ubBaseVolume + (INT32)DecideHearing(pSoldier);
+  iEffVolume = ubBaseVolume + DecideHearing(pSoldier);
 
   // effective volume reduced by listener's number of opponents in sight
   iEffVolume -= pSoldier->bOppCnt;
 
   // calculate the distance (in adjusted pixels) between the source of the
   // noise (gridno) and the location of the would-be listener (pSoldier->gridno)
-  iDistance = (INT32)PythSpacesAway(pSoldier->sGridNo, sGridNo);
+  iDistance = PythSpacesAway(pSoldier->sGridNo, sGridNo);
   /*
   distance = AdjPixelsAway(pSoldier->x,pSoldier->y,CenterX(sGridNo),CenterY(sGridNo));
 
@@ -4379,7 +4379,7 @@ function CalcEffVolume(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, bLevel: I
 
   // NumMessage("effVolume = ",ubEffVolume);
   if (iEffVolume > 0) {
-    return (UINT8)iEffVolume;
+    return iEffVolume;
   } else {
     return 0;
   }
@@ -4448,7 +4448,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
 
     // skip LOS check if we had to turn and we're a tank.  sorry Mr Tank, no looking out of the sides for you!
     if (!(bHadToTurn && TANK(pSoldier))) {
-      if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, (UINT8)sDistVisible, TRUE)) {
+      if (SoldierTo3DLocationLineOfSightTest(pSoldier, sGridNo, bLevel, 0, sDistVisible, TRUE)) {
         // he can actually see the spot where the noise came from!
         bSourceSeen = TRUE;
 
@@ -4560,7 +4560,7 @@ function HearNoise(pSoldier: Pointer<SOLDIERTYPE>, ubNoiseMaker: UINT8, sGridNo:
             // require the enemy not to be dying if we are the sighter; in other words,
             // always add for AI guys, and always add for people with life >= OKLIFE
             if (pSoldier->bTeam != gbPlayerNum || MercPtrs[ubNoiseMaker]->bLife >= OKLIFE) {
-              ReevaluateBestSightingPosition(pSoldier, (UINT8)(ubPoints + (ubVolume / 2)));
+              ReevaluateBestSightingPosition(pSoldier, (ubPoints + (ubVolume / 2)));
             }
           }
         }
@@ -4913,7 +4913,7 @@ function DecayPublicOpplist(bTeam: INT8): void {
   // used to be -1 per turn but that's not fast enough!
   if (gubPublicNoiseVolume[bTeam] > 0) {
     if (gTacticalStatus.uiFlags & INCOMBAT) {
-      gubPublicNoiseVolume[bTeam] = (UINT8)((UINT32)(gubPublicNoiseVolume[bTeam] * 7) / 10);
+      gubPublicNoiseVolume[bTeam] = ((gubPublicNoiseVolume[bTeam] * 7) / 10);
     } else {
       gubPublicNoiseVolume[bTeam] = gubPublicNoiseVolume[bTeam] / 2;
     }
@@ -4985,7 +4985,7 @@ function NonCombatDecayPublicOpplist(uiTime: UINT32): void {
     for (cnt = 0; cnt < MAXTEAMS; cnt++) {
       if (gTacticalStatus.Team[cnt].bMenInSector > 0) {
         // decay team's public opplist
-        DecayPublicOpplist((INT8)cnt);
+        DecayPublicOpplist(cnt);
       }
     }
     // update time
@@ -5075,7 +5075,7 @@ function NoticeUnseenAttacker(pAttacker: Pointer<SOLDIERTYPE>, pDefender: Pointe
       }
     }
 
-    ubTileSightLimit = (UINT8)DistanceVisible(pDefender, DIRECTION_IRRELEVANT, 0, pAttacker->sGridNo, pAttacker->bLevel);
+    ubTileSightLimit = DistanceVisible(pDefender, DIRECTION_IRRELEVANT, 0, pAttacker->sGridNo, pAttacker->bLevel);
     if (SoldierToSoldierLineOfSightTest(pDefender, pAttacker, ubTileSightLimit, TRUE) != 0) {
       fSeesAttacker = TRUE;
     }
@@ -5176,7 +5176,7 @@ function CheckForAlertWhenEnemyDies(pDyingSoldier: Pointer<SOLDIERTYPE>): void {
       if (sDistAway <= sDistVisible) {
         // and we can trace a line of sight to his x,y coordinates
         // assume enemies are always aware of their buddies...
-        if (SoldierTo3DLocationLineOfSightTest(pSoldier, pDyingSoldier->sGridNo, pDyingSoldier->bLevel, 0, (UINT8)sDistVisible, TRUE)) {
+        if (SoldierTo3DLocationLineOfSightTest(pSoldier, pDyingSoldier->sGridNo, pDyingSoldier->bLevel, 0, sDistVisible, TRUE)) {
           pSoldier->bAlertStatus = STATUS_RED;
           CheckForChangingOrders(pSoldier);
         }
@@ -5275,7 +5275,7 @@ function GetHighestVisibleWatchedLoc(ubID: UINT8): INT8 {
     if (gsWatchedLoc[ubID][bLoop] != NOWHERE && gubWatchedLocPoints[ubID][bLoop] > bHighestPoints) {
       sDistVisible = DistanceVisible(MercPtrs[ubID], DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop]);
       // look at standing height
-      if (SoldierTo3DLocationLineOfSightTest(MercPtrs[ubID], gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop], 3, (UINT8)sDistVisible, TRUE)) {
+      if (SoldierTo3DLocationLineOfSightTest(MercPtrs[ubID], gsWatchedLoc[ubID][bLoop], gbWatchedLocLevel[ubID][bLoop], 3, sDistVisible, TRUE)) {
         bHighestLoc = bLoop;
         bHighestPoints = gubWatchedLocPoints[ubID][bLoop];
       }

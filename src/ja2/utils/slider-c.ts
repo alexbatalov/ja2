@@ -162,7 +162,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
       pNewSlider->ubSliderWidth = STEEL_SLIDER_WIDTH;
       pNewSlider->ubSliderHeight = STEEL_SLIDER_HEIGHT;
 
-      MSYS_DefineRegion(&pNewSlider->ScrollAreaMouseRegion, (UINT16)(usPosX - pNewSlider->usWidth / 2), usPosY, (UINT16)(usPosX + pNewSlider->usWidth / 2), (UINT16)(pNewSlider->usPosY + pNewSlider->usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_DefineRegion(&pNewSlider->ScrollAreaMouseRegion, (usPosX - pNewSlider->usWidth / 2), usPosY, (usPosX + pNewSlider->usWidth / 2), (pNewSlider->usPosY + pNewSlider->usHeight), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
       MSYS_SetRegionUserData(&pNewSlider->ScrollAreaMouseRegion, 1, pNewSlider->uiSliderID);
       break;
 
@@ -173,7 +173,7 @@ function AddSlider(ubStyle: UINT8, usCursor: UINT16, usPosX: UINT16, usPosY: UIN
       pNewSlider->usWidth = usWidth;
       pNewSlider->usHeight = DEFUALT_SLIDER_SIZE;
 
-      MSYS_DefineRegion(&pNewSlider->ScrollAreaMouseRegion, usPosX, (UINT16)(usPosY - DEFUALT_SLIDER_SIZE), (UINT16)(pNewSlider->usPosX + pNewSlider->usWidth), (UINT16)(usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
+      MSYS_DefineRegion(&pNewSlider->ScrollAreaMouseRegion, usPosX, (usPosY - DEFUALT_SLIDER_SIZE), (pNewSlider->usPosX + pNewSlider->usWidth), (usPosY + DEFUALT_SLIDER_SIZE), sPriority, usCursor, SelectedSliderMovementCallBack, SelectedSliderButtonCallBack);
       MSYS_SetRegionUserData(&pNewSlider->ScrollAreaMouseRegion, 1, pNewSlider->uiSliderID);
       break;
   }
@@ -235,9 +235,9 @@ function RenderSelectedSliderBar(pSlider: Pointer<SLIDER>): void {
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
   } else {
     // display the background ( the bar )
-    OptDisplayLine((UINT16)(pSlider->usPosX + 1), (UINT16)(pSlider->usPosY - 1), (UINT16)(pSlider->usPosX + pSlider->usWidth - 1), (UINT16)(pSlider->usPosY - 1), pSlider->usBackGroundColor);
-    OptDisplayLine(pSlider->usPosX, pSlider->usPosY, (UINT16)(pSlider->usPosX + pSlider->usWidth), pSlider->usPosY, pSlider->usBackGroundColor);
-    OptDisplayLine((UINT16)(pSlider->usPosX + 1), (UINT16)(pSlider->usPosY + 1), (UINT16)(pSlider->usPosX + pSlider->usWidth - 1), (UINT16)(pSlider->usPosY + 1), pSlider->usBackGroundColor);
+    OptDisplayLine((pSlider->usPosX + 1), (pSlider->usPosY - 1), (pSlider->usPosX + pSlider->usWidth - 1), (pSlider->usPosY - 1), pSlider->usBackGroundColor);
+    OptDisplayLine(pSlider->usPosX, pSlider->usPosY, (pSlider->usPosX + pSlider->usWidth), pSlider->usPosY, pSlider->usBackGroundColor);
+    OptDisplayLine((pSlider->usPosX + 1), (pSlider->usPosY + 1), (pSlider->usPosX + pSlider->usWidth - 1), (pSlider->usPosY + 1), pSlider->usBackGroundColor);
 
     // invalidate the area
     InvalidateRegion(pSlider->usPosX, pSlider->usPosY - 2, pSlider->usPosX + pSlider->usWidth + 1, pSlider->usPosY + 2);
@@ -266,14 +266,14 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
     // If it is not the first time to render the slider
     if (!(pSlider->LastRect.iLeft == 0 && pSlider->LastRect.iRight == 0)) {
       // Restore the old rect
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)pSlider->LastRect.iLeft, (UINT16)pSlider->LastRect.iTop, pSlider->ubSliderWidth, pSlider->ubSliderHeight);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider->LastRect.iLeft, pSlider->LastRect.iTop, pSlider->ubSliderWidth, pSlider->ubSliderHeight);
 
       // invalidate the old area
       InvalidateRegion(pSlider->LastRect.iLeft, pSlider->LastRect.iTop, pSlider->LastRect.iRight, pSlider->LastRect.iBottom);
     }
 
     // Blit the new rect
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, pSlider->ubSliderWidth, pSlider->ubSliderHeight);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, pSlider->ubSliderWidth, pSlider->ubSliderHeight);
   } else {
     // fill out the settings for the current dest and source rects
     SrcRect.iLeft = 0;
@@ -289,11 +289,11 @@ function RenderSliderBox(pSlider: Pointer<SLIDER>): void {
     // If it is not the first time to render the slider
     if (!(pSlider->LastRect.iLeft == 0 && pSlider->LastRect.iRight == 0)) {
       // Restore the old rect
-      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, (UINT16)pSlider->LastRect.iLeft, (UINT16)pSlider->LastRect.iTop, 8, 15);
+      BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, pSlider->LastRect.iLeft, pSlider->LastRect.iTop, 8, 15);
     }
 
     // save the new rect
-    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, (UINT16)DestRect.iLeft, (UINT16)DestRect.iTop, 8, 15);
+    BlitBufferToBuffer(guiRENDERBUFFER, guiSAVEBUFFER, DestRect.iLeft, DestRect.iTop, 8, 15);
   }
 
   // Save the new rect location
@@ -493,10 +493,10 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
   usOldIncrement = pSlider->usCurrentIncrement;
 
   if (pSlider->uiFlags & SLIDER_VERTICAL) {
-    if (usPos >= (UINT16)(pSlider->usHeight * (FLOAT).99))
+    if (usPos >= (pSlider->usHeight * .99))
       fLastSpot = TRUE;
 
-    if (usPos <= (UINT16)(pSlider->usHeight * (FLOAT).01))
+    if (usPos <= (pSlider->usHeight * .01))
       fFirstSpot = TRUE;
 
     // pSlider->usNumberOfIncrements
@@ -505,12 +505,12 @@ function CalculateNewSliderIncrement(uiSliderID: UINT32, usPos: UINT16): void {
     else if (fLastSpot)
       dNewIncrement = pSlider->usNumberOfIncrements;
     else
-      dNewIncrement = (usPos / (FLOAT)pSlider->usHeight) * pSlider->usNumberOfIncrements;
+      dNewIncrement = (usPos / pSlider->usHeight) * pSlider->usNumberOfIncrements;
   } else {
-    dNewIncrement = (usPos / (FLOAT)pSlider->usWidth) * pSlider->usNumberOfIncrements;
+    dNewIncrement = (usPos / pSlider->usWidth) * pSlider->usNumberOfIncrements;
   }
 
-  pSlider->usCurrentIncrement = (UINT16)(dNewIncrement + .5);
+  pSlider->usCurrentIncrement = (dNewIncrement + .5);
 
   CalculateNewSliderBoxPosition(pSlider);
 
@@ -554,7 +554,7 @@ function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
     else if (pSlider->usCurrentIncrement == 0) {
       pSlider->usCurrentSliderBoxPosition = pSlider->usPosY; // - pSlider->ubSliderHeight / 2;
     } else {
-      pSlider->usCurrentSliderBoxPosition = pSlider->usPosY + (UINT16)((pSlider->usHeight / (FLOAT)pSlider->usNumberOfIncrements) * pSlider->usCurrentIncrement);
+      pSlider->usCurrentSliderBoxPosition = pSlider->usPosY + ((pSlider->usHeight / pSlider->usNumberOfIncrements) * pSlider->usCurrentIncrement);
     }
 
     usMaxPos = pSlider->usPosY + pSlider->usHeight; // - pSlider->ubSliderHeight//2 + 1;
@@ -567,7 +567,7 @@ function CalculateNewSliderBoxPosition(pSlider: Pointer<SLIDER>): void {
     if (pSlider->usCurrentIncrement == (pSlider->usNumberOfIncrements)) {
       pSlider->usCurrentSliderBoxPosition = pSlider->usPosX + pSlider->usWidth - 8 + 1; // - minus box width
     } else {
-      pSlider->usCurrentSliderBoxPosition = pSlider->usPosX + (UINT16)((pSlider->usWidth / (FLOAT)pSlider->usNumberOfIncrements) * pSlider->usCurrentIncrement);
+      pSlider->usCurrentSliderBoxPosition = pSlider->usPosX + ((pSlider->usWidth / pSlider->usNumberOfIncrements) * pSlider->usCurrentIncrement);
     }
     usMaxPos = pSlider->usPosX + pSlider->usWidth - 8 + 1;
 
@@ -605,9 +605,9 @@ function SetSliderValue(uiSliderID: UINT32, uiNewValue: UINT32): void {
     return;
 
   if (pSlider->uiFlags & SLIDER_VERTICAL)
-    pSlider->usCurrentIncrement = pSlider->usNumberOfIncrements - (UINT16)uiNewValue;
+    pSlider->usCurrentIncrement = pSlider->usNumberOfIncrements - uiNewValue;
   else
-    pSlider->usCurrentIncrement = (UINT16)uiNewValue;
+    pSlider->usCurrentIncrement = uiNewValue;
 
   CalculateNewSliderBoxPosition(pSlider);
 }

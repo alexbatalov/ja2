@@ -166,14 +166,14 @@ function BeginAirRaid(): BOOLEAN {
     return FALSE;
   }
 
-  ChangeSelectedMapSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, (INT8)gAirRaidDef.sSectorZ);
+  ChangeSelectedMapSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
 
   if (gAirRaidDef.sSectorX != gWorldSectorX || gAirRaidDef.sSectorY != gWorldSectorY || gAirRaidDef.sSectorZ != gbWorldSectorZ || guiCurrentScreen == MAP_SCREEN) {
     // sector not loaded
     // Set flag for handling raid....
     gubAirRaidMode = AIR_RAID_TRYING_TO_START;
     gfQuoteSaid = TRUE;
-    SayQuoteFromAnyBodyInThisSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, (INT8)gAirRaidDef.sSectorZ, QUOTE_AIR_RAID);
+    SayQuoteFromAnyBodyInThisSector(gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, QUOTE_AIR_RAID);
     SpecialCharacterDialogueEvent(DIALOGUE_SPECIAL_EVENT_EXIT_MAP_SCREEN, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ, 0, 0);
   } else {
     gubAirRaidMode = AIR_RAID_TRYING_TO_START;
@@ -200,7 +200,7 @@ function BeginAirRaid(): BOOLEAN {
   gpRaidSoldier->inv[HANDPOS].usItem = HK21E;
 
   // Determine how many dives this one will be....
-  gbMaxDives = (INT8)(gAirRaidDef.bIntensity + Random(gAirRaidDef.bIntensity - 1));
+  gbMaxDives = (gAirRaidDef.bIntensity + Random(gAirRaidDef.bIntensity - 1));
 
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Begin Air Raid.");
 
@@ -223,14 +223,14 @@ function PickLocationNearAnyMercInSector(): INT16 {
   for (pTeamSoldier = MercPtrs[cnt]; cnt <= gTacticalStatus.Team[gbPlayerNum].bLastID; cnt++, pTeamSoldier++) {
     // Add guy if he's a candidate...
     if (OK_INSECTOR_MERC(pTeamSoldier)) {
-      ubMercsInSector[ubNumMercs] = (UINT8)cnt;
+      ubMercsInSector[ubNumMercs] = cnt;
       ubNumMercs++;
     }
   }
 
   // If we are > 0
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     return MercPtrs[ubMercsInSector[ubChosenMerc]]->sGridNo;
   }
@@ -250,8 +250,8 @@ function PickRandomLocationAtMinSpacesAway(sGridNo: INT16, sMinValue: INT16, sRa
   sY = CenterY(sGridNo);
 
   while (sNewGridNo == NOWHERE) {
-    sNewX = sX + sMinValue + (INT16)Random(sRandomVar);
-    sNewY = sY + sMinValue + (INT16)Random(sRandomVar);
+    sNewX = sX + sMinValue + Random(sRandomVar);
+    sNewY = sY + sMinValue + Random(sRandomVar);
 
     if (Random(2)) {
       sNewX = -1 * sNewX;
@@ -342,7 +342,7 @@ function AirRaidLookForDive(): void {
     giNumTurnsSinceLastDive = 0;
 
     // Do morale hit on our guys
-    HandleMoraleEvent(NULL, MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, (INT8)gAirRaidDef.sSectorZ);
+    HandleMoraleEvent(NULL, MORALE_AIRSTRIKE, gAirRaidDef.sSectorX, gAirRaidDef.sSectorY, gAirRaidDef.sSectorZ);
   }
 
   // If NOT in combat....
@@ -358,7 +358,7 @@ function AirRaidLookForDive(): void {
     }
   } else {
     // How many turns have gone by?
-    if ((UINT32)giNumTurnsSinceLastDive > (Random(2) + 1)) {
+    if (giNumTurnsSinceLastDive > (Random(2) + 1)) {
       fDoDive = TRUE;
     }
   }
@@ -442,7 +442,7 @@ function BeginBombing(): void {
   giNumTurnsSinceDiveStarted = 0;
 
   // Get direction....
-  gubDiveDirection = (INT8)GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
+  gubDiveDirection = GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
 
   gsNumGridNosMoved = 0;
   gsNotLocatedYet = TRUE;
@@ -486,7 +486,7 @@ function BeginDive(): void {
   RESETTIMECOUNTER(giTimerAirRaidDiveStarted, iSoundStartDelay);
 
   // Get direction....
-  gubDiveDirection = (INT8)GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
+  gubDiveDirection = GetDirectionToGridNoFromGridNo(sGridNo, gsDiveTargetLocation);
 
   gsNumGridNosMoved = 0;
   gsNotLocatedYet = TRUE;
@@ -496,16 +496,16 @@ function MoveDiveAirplane(dAngle: FLOAT): void {
   let dDeltaPos: FLOAT;
 
   // Find delta Movement for X pos
-  dDeltaPos = MOVE_X * (FLOAT)sin(dAngle);
+  dDeltaPos = MOVE_X * sin(dAngle);
 
   // Find new position
-  gsDiveX = (INT16)(gsDiveX + dDeltaPos);
+  gsDiveX = (gsDiveX + dDeltaPos);
 
   // Find delta Movement for Y pos
-  dDeltaPos = MOVE_X * (FLOAT)cos(dAngle);
+  dDeltaPos = MOVE_X * cos(dAngle);
 
   // Find new pos
-  gsDiveY = (INT16)(gsDiveY + dDeltaPos);
+  gsDiveY = (gsDiveY + dDeltaPos);
 }
 
 function DoDive(): void {
@@ -561,11 +561,11 @@ function DoDive(): void {
       sTargetY = CenterY(gsDiveTargetLocation);
 
       // Determine deltas
-      dDeltaX = (FLOAT)(sTargetX - gsDiveX);
-      dDeltaY = (FLOAT)(sTargetY - gsDiveY);
+      dDeltaX = (sTargetX - gsDiveX);
+      dDeltaY = (sTargetY - gsDiveY);
 
       // Determine angle
-      dAngle = (FLOAT)atan2(dDeltaX, dDeltaY);
+      dAngle = atan2(dDeltaX, dDeltaY);
 
       MoveDiveAirplane(dAngle);
 
@@ -587,18 +587,18 @@ function DoDive(): void {
         // Get positions of guns...
 
         // Get target.....
-        dDeltaXPos = STRAFE_DIST * (FLOAT)sin(dAngle);
-        sStrafeX = (INT16)(gsDiveX + dDeltaXPos);
+        dDeltaXPos = STRAFE_DIST * sin(dAngle);
+        sStrafeX = (gsDiveX + dDeltaXPos);
 
         // Find delta Movement for Y pos
-        dDeltaYPos = STRAFE_DIST * (FLOAT)cos(dAngle);
-        sStrafeY = (INT16)(gsDiveY + dDeltaYPos);
+        dDeltaYPos = STRAFE_DIST * cos(dAngle);
+        sStrafeY = (gsDiveY + dDeltaYPos);
 
         if ((gTacticalStatus.uiFlags & INCOMBAT)) {
           LocateGridNo(sGridNo);
         }
 
-        if (GridNoOnVisibleWorldTile((INT16)(GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
+        if (GridNoOnVisibleWorldTile((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
           // if ( gsNotLocatedYet && !( gTacticalStatus.uiFlags & INCOMBAT ) )
           //	{
           //	gsNotLocatedYet = FALSE;
@@ -622,8 +622,8 @@ function DoDive(): void {
         }
 
         // Do second one.... ( ll )
-        sX = (INT16)(gsDiveX + ((FLOAT)sin(dAngle + (PI / 2)) * 40));
-        sY = (INT16)(gsDiveY + ((FLOAT)cos(dAngle + (PI / 2)) * 40));
+        sX = (gsDiveX + (sin(dAngle + (PI / 2)) * 40));
+        sY = (gsDiveY + (cos(dAngle + (PI / 2)) * 40));
 
         gpRaidSoldier->dXPos = sX;
         gpRaidSoldier->sX = sX;
@@ -632,12 +632,12 @@ function DoDive(): void {
         gpRaidSoldier->sGridNo = GETWORLDINDEXFROMWORLDCOORDS(sY, sX);
 
         // Get target.....
-        sStrafeX = (INT16)(sX + dDeltaXPos);
+        sStrafeX = (sX + dDeltaXPos);
 
         // Find delta Movement for Y pos
-        sStrafeY = (INT16)(sY + dDeltaYPos);
+        sStrafeY = (sY + dDeltaYPos);
 
-        if (GridNoOnVisibleWorldTile((INT16)(GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
+        if (GridNoOnVisibleWorldTile((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
           // if ( ( gTacticalStatus.uiFlags & INCOMBAT ) )
           {
             // Increase attacker busy...
@@ -718,11 +718,11 @@ function DoBombing(): void {
       sTargetY = CenterY(gsDiveTargetLocation);
 
       // Determine deltas
-      dDeltaX = (FLOAT)(sTargetX - gsDiveX);
-      dDeltaY = (FLOAT)(sTargetY - gsDiveY);
+      dDeltaX = (sTargetX - gsDiveX);
+      dDeltaY = (sTargetY - gsDiveY);
 
       // Determine angle
-      dAngle = (FLOAT)atan2(dDeltaX, dDeltaY);
+      dAngle = atan2(dDeltaX, dDeltaY);
 
       MoveDiveAirplane(dAngle);
 
@@ -743,14 +743,14 @@ function DoBombing(): void {
 
         if ((gsNumGridNosMoved % 4) == 0) {
           // Get target.....
-          dDeltaXPos = BOMB_DIST * (FLOAT)sin(dAngle);
-          sStrafeX = (INT16)(gsDiveX + dDeltaXPos);
+          dDeltaXPos = BOMB_DIST * sin(dAngle);
+          sStrafeX = (gsDiveX + dDeltaXPos);
 
           // Find delta Movement for Y pos
-          dDeltaYPos = BOMB_DIST * (FLOAT)cos(dAngle);
-          sStrafeY = (INT16)(gsDiveY + dDeltaYPos);
+          dDeltaYPos = BOMB_DIST * cos(dAngle);
+          sStrafeY = (gsDiveY + dDeltaYPos);
 
-          if (GridNoOnVisibleWorldTile((INT16)(GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
+          if (GridNoOnVisibleWorldTile((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)))) {
             // if ( gsNotLocatedYet && !( gTacticalStatus.uiFlags & INCOMBAT ) )
             //{
             //	gsNotLocatedYet = FALSE;
@@ -764,7 +764,7 @@ function DoBombing(): void {
             }
 
             // Pick random gridno....
-            sBombGridNo = PickRandomLocationAtMinSpacesAway((INT16)(GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)), 40, 40);
+            sBombGridNo = PickRandomLocationAtMinSpacesAway((GETWORLDINDEXFROMWORLDCOORDS(sStrafeY, sStrafeX)), 40, 40);
 
             if ((gTacticalStatus.uiFlags & INCOMBAT)) {
               fLocate = TRUE;
@@ -774,7 +774,7 @@ function DoBombing(): void {
             }
 
             // Drop bombs...
-            InternalIgniteExplosion(NOBODY, CenterX(sBombGridNo), CenterY(sBombGridNo), 0, sBombGridNo, usItem, fLocate, (UINT8)IsRoofPresentAtGridno(sBombGridNo));
+            InternalIgniteExplosion(NOBODY, CenterX(sBombGridNo), CenterY(sBombGridNo), 0, sBombGridNo, usItem, fLocate, IsRoofPresentAtGridno(sBombGridNo));
           }
         }
 

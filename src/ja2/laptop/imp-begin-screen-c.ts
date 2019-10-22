@@ -205,7 +205,7 @@ function CreateIMPBeginScreenButtons(): void {
                                                                                   BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPBeginScreenDoneCallback);
     */
 
-  giIMPBeginScreenButton[0] = CreateIconAndTextButton(giIMPBeginScreenButtonImage[0], pImpButtonText[6], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (134), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPBeginScreenDoneCallback);
+  giIMPBeginScreenButton[0] = CreateIconAndTextButton(giIMPBeginScreenButtonImage[0], pImpButtonText[6], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (134), LAPTOP_SCREEN_WEB_UL_Y + (314), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPBeginScreenDoneCallback);
 
   SetButtonCursor(giIMPBeginScreenButton[0], CURSOR_WWW);
   return;
@@ -411,12 +411,12 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
                 uiFullNameCharacterPosition = 0;
               }
               // make sure we haven't moved too far
-              if ((uiFullNameCursorPosition + StringPixLength(&((CHAR16)uiKey), FONT14ARIAL)) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiFullNameCursorPosition + StringPixLength(&(uiKey), FONT14ARIAL)) > FULL_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
               // valid char, capture and convert to CHAR16
-              pFullNameString[uiFullNameCharacterPosition] = (CHAR16)uiKey;
+              pFullNameString[uiFullNameCharacterPosition] = uiKey;
 
               // null out next char position
               pFullNameString[uiFullNameCharacterPosition + 1] = 0;
@@ -440,13 +440,13 @@ function HandleBeginScreenTextEvent(uiKey: UINT32): void {
               }
 
               // make sure we haven't moved too far
-              if ((uiNickNameCursorPosition + StringPixLength(&((CHAR16)uiKey), FONT14ARIAL)) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
+              if ((uiNickNameCursorPosition + StringPixLength(&(uiKey), FONT14ARIAL)) > NICK_NAME_REGION_WIDTH + 196 + LAPTOP_SCREEN_UL_X) {
                 // do nothing for now, when pop up is in place, display
                 break;
               }
 
               // valid char, capture and convert to CHAR16
-              pNickNameString[uiNickNameCharacterPosition] = (CHAR16)uiKey;
+              pNickNameString[uiNickNameCharacterPosition] = uiKey;
 
               // null out next char position
               pNickNameString[uiNickNameCharacterPosition + 1] = 0;
@@ -510,9 +510,9 @@ function DisplayFullNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, (UINT16)uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, (UINT16)uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT - 2, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion((UINT16)uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, (UINT16)uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT + 1 - 2);
+  InvalidateRegion(uiFullNameCursorPosition, FULL_NAME_CURSOR_Y - 3, uiFullNameCursorPosition + 1, FULL_NAME_CURSOR_Y + CURSOR_HEIGHT + 1 - 2);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -560,9 +560,9 @@ function DisplayNickNameStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, (UINT16)uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, (UINT16)uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion((UINT16)uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, (UINT16)uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT + 1);
+  InvalidateRegion(uiNickNameCursorPosition, NICK_NAME_CURSOR_Y, uiNickNameCursorPosition + 1, NICK_NAME_CURSOR_Y + CURSOR_HEIGHT + 1);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -664,7 +664,7 @@ function DisplayMaleGlowCursor(): void {
   // draw rectangle
   RectangleDraw(TRUE, MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion((UINT16)MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
+  InvalidateRegion(MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -714,7 +714,7 @@ function DisplayFemaleGlowCursor(): void {
   // draw rectangle
   RectangleDraw(TRUE, FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
-  InvalidateRegion((UINT16)FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
+  InvalidateRegion(FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH + 1, MALE_BOX_Y + MALE_BOX_HEIGHT + 1);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
@@ -789,16 +789,16 @@ function CreateIMPBeginScreenMouseRegions(): void {
     return;
 
   // full name region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[0], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, (MOUSE_CALLBACK)SelectFullNameRegionCallBack);
+  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[0], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 135, LAPTOP_SCREEN_UL_X + 196 + FULL_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 135 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectFullNameRegionCallBack);
 
   // nick name region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[1], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, (MOUSE_CALLBACK)SelectNickNameRegionCallBack);
+  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[1], LAPTOP_SCREEN_UL_X + 196, LAPTOP_SCREEN_WEB_UL_Y + 195, LAPTOP_SCREEN_UL_X + 196 + NICK_NAME_REGION_WIDTH, LAPTOP_SCREEN_WEB_UL_Y + 195 + 24, MSYS_PRIORITY_HIGH, CURSOR_WWW, MSYS_NO_CALLBACK, SelectNickNameRegionCallBack);
 
   // IMP_MALE gender area
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[2], MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, (MOUSE_CALLBACK)MvtOnMaleRegionCallBack, (MOUSE_CALLBACK)SelectMaleRegionCallBack);
+  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[2], MALE_BOX_X, MALE_BOX_Y, MALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnMaleRegionCallBack, SelectMaleRegionCallBack);
 
   // IMP_FEMALE gender region
-  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[3], FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, (MOUSE_CALLBACK)MvtOnFemaleRegionCallBack, (MOUSE_CALLBACK)SelectFemaleRegionCallBack);
+  MSYS_DefineRegion(&gIMPBeginScreenMouseRegions[3], FEMALE_BOX_X, MALE_BOX_Y, FEMALE_BOX_X + MALE_BOX_WIDTH, MALE_BOX_Y + MALE_BOX_HEIGHT, MSYS_PRIORITY_HIGH, CURSOR_WWW, MvtOnFemaleRegionCallBack, SelectFemaleRegionCallBack);
 
   // add regions
   MSYS_AddRegion(&gIMPBeginScreenMouseRegions[0]);

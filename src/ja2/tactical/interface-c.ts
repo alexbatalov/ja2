@@ -398,7 +398,7 @@ function SetCurrentTacticalPanelCurrentMerc(ubID: UINT8): void {
       break;
 
     case TEAM_PANEL:
-      SetTEAMPanelCurrentMerc((UINT8)gusSelectedSoldier);
+      SetTEAMPanelCurrentMerc(gusSelectedSoldier);
       break;
   }
 }
@@ -426,7 +426,7 @@ function SetCurrentInterfacePanel(ubNewPanel: UINT8): void {
 
 function ToggleTacticalPanels(): void {
   gfSwitchPanel = TRUE;
-  gubNewPanelParam = (UINT8)gusSelectedSoldier;
+  gubNewPanelParam = gusSelectedSoldier;
 
   if (gsCurInterfacePanel == SM_PANEL) {
     gbNewPanel = TEAM_PANEL;
@@ -520,20 +520,20 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
   iMenuAnchorX = giMenuAnchorX + 9;
   iMenuAnchorY = giMenuAnchorY + 8;
 
-  iActionIcons[RUN_ICON] = QuickCreateButton(iIconImages[RUN_IMAGES], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[RUN_ICON] = QuickCreateButton(iIconImages[RUN_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[RUN_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   SetButtonFastHelpText(iActionIcons[RUN_ICON], pTacticalPopupButtonStrings[RUN_ICON]);
   // SetButtonSavedRect( iActionIcons[ RUN_ICON ] );
-  ButtonList[iActionIcons[RUN_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[RUN_ICON]]->UserData[0] = pUIEvent;
 
   if (MercInWater(pSoldier) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) || (pSoldier->uiStatusFlags & SOLDIER_ROBOT)) {
     DisableButton(iActionIcons[RUN_ICON]);
   }
 
-  iActionIcons[WALK_ICON] = QuickCreateButton(iIconImages[WALK_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[WALK_ICON] = QuickCreateButton(iIconImages[WALK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[WALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -546,7 +546,7 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     SetButtonFastHelpText(iActionIcons[WALK_ICON], pTacticalPopupButtonStrings[WALK_ICON]);
   }
 
-  ButtonList[iActionIcons[WALK_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[WALK_ICON]]->UserData[0] = pUIEvent;
 
   if (pSoldier->uiStatusFlags & SOLDIER_ROBOT) {
     if (!CanRobotBeControlled(pSoldier)) {
@@ -554,42 +554,42 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     }
   }
 
-  iActionIcons[SNEAK_ICON] = QuickCreateButton(iIconImages[SNEAK_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[SNEAK_ICON] = QuickCreateButton(iIconImages[SNEAK_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[SNEAK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   SetButtonFastHelpText(iActionIcons[SNEAK_ICON], pTacticalPopupButtonStrings[SNEAK_ICON]);
   // SetButtonSavedRect( iActionIcons[ SNEAK_ICON ] );
-  ButtonList[iActionIcons[SNEAK_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[SNEAK_ICON]]->UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_CROUCH)) {
     DisableButton(iActionIcons[SNEAK_ICON]);
   }
 
-  iActionIcons[CRAWL_ICON] = QuickCreateButton(iIconImages[CRAWL_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[CRAWL_ICON] = QuickCreateButton(iIconImages[CRAWL_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[CRAWL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   SetButtonFastHelpText(iActionIcons[CRAWL_ICON], pTacticalPopupButtonStrings[CRAWL_ICON]);
   // SetButtonSavedRect( iActionIcons[ CRAWL_ICON ] );
-  ButtonList[iActionIcons[CRAWL_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[CRAWL_ICON]]->UserData[0] = pUIEvent;
 
   // Check if this is a valid stance, diable if not!
   if (!IsValidStance(pSoldier, ANIM_PRONE)) {
     DisableButton(iActionIcons[CRAWL_ICON]);
   }
 
-  iActionIcons[LOOK_ICON] = QuickCreateButton(iIconImages[LOOK_IMAGES], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[LOOK_ICON] = QuickCreateButton(iIconImages[LOOK_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[LOOK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   SetButtonFastHelpText(iActionIcons[LOOK_ICON], TacticalStr[LOOK_CURSOR_POPUPTEXT]);
   // SetButtonSavedRect( iActionIcons[ LOOK_ICON ] );
-  ButtonList[iActionIcons[LOOK_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[LOOK_ICON]]->UserData[0] = pUIEvent;
 
   if (pSoldier->uiStatusFlags & SOLDIER_VEHICLE) {
     DisableButton(iActionIcons[LOOK_ICON]);
@@ -661,53 +661,53 @@ function PopupMovementMenu(pUIEvent: Pointer<UI_EVENT>): void {
     fDisableAction = TRUE;
   }
 
-  iActionIcons[ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[ACTIONC_ICON] = QuickCreateButton(iIconImages[uiActionImages], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[ACTIONC_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ ACTIONC_ICON ] );
   SetButtonFastHelpText(iActionIcons[ACTIONC_ICON], zActionString);
-  ButtonList[iActionIcons[ACTIONC_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[ACTIONC_ICON]]->UserData[0] = pUIEvent;
 
   if (fDisableAction) {
     DisableButton(iActionIcons[ACTIONC_ICON]);
   }
 
-  iActionIcons[TALK_ICON] = QuickCreateButton(iIconImages[TALK_IMAGES], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[TALK_ICON] = QuickCreateButton(iIconImages[TALK_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[TALK_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ TALK_ICON ] );
   SetButtonFastHelpText(iActionIcons[TALK_ICON], pTacticalPopupButtonStrings[TALK_ICON]);
-  ButtonList[iActionIcons[TALK_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[TALK_ICON]]->UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[TALK_ICON]);
   }
 
-  iActionIcons[HAND_ICON] = QuickCreateButton(iIconImages[HAND_IMAGES], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[HAND_ICON] = QuickCreateButton(iIconImages[HAND_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[HAND_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ HAND_ICON ] );
   SetButtonFastHelpText(iActionIcons[HAND_ICON], pTacticalPopupButtonStrings[HAND_ICON]);
-  ButtonList[iActionIcons[HAND_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[HAND_ICON]]->UserData[0] = pUIEvent;
 
   if (AM_AN_EPC(pSoldier) || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
     DisableButton(iActionIcons[HAND_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnMovementCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnMovementCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
   }
   // SetButtonSavedRect( iActionIcons[ CANCEL_ICON ] );
   SetButtonFastHelpText(iActionIcons[CANCEL_ICON], pTacticalPopupButtonStrings[CANCEL_ICON]);
-  ButtonList[iActionIcons[CANCEL_ICON]]->UserData[0] = (UINT32)pUIEvent;
+  ButtonList[iActionIcons[CANCEL_ICON]]->UserData[0] = pUIEvent;
 
   // LockTacticalInterface( );
 
@@ -778,7 +778,7 @@ function BtnMovementCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
 
     uiBtnID = btn->IDNum;
 
-    pUIEvent = (UI_EVENT *)(btn->UserData[0]);
+    pUIEvent = (btn->UserData[0]);
 
     if (uiBtnID == iActionIcons[WALK_ICON]) {
       pUIEvent->uiParams[0] = MOVEMENT_MENU_WALK;
@@ -1032,8 +1032,8 @@ function GetArrowsBackground(): void {
     EraseRenderArrows();
 
     // Register dirty rects
-    giDownArrowRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, gsDownArrowX, gsDownArrowY, (INT16)(gsDownArrowX + sArrowWidth), (INT16)(gsDownArrowY + sArrowHeight));
-    giUpArrowRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, gsUpArrowX, gsUpArrowY, (INT16)(gsUpArrowX + sArrowWidth), (INT16)(gsUpArrowY + sArrowHeight));
+    giDownArrowRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, gsDownArrowX, gsDownArrowY, (gsDownArrowX + sArrowWidth), (gsDownArrowY + sArrowHeight));
+    giUpArrowRect = RegisterBackgroundRect(BGND_FLAG_PERMANENT, NULL, gsUpArrowX, gsUpArrowY, (gsUpArrowX + sArrowWidth), (gsUpArrowY + sArrowHeight));
   }
 }
 
@@ -1195,7 +1195,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
         // Add bars
         // iBack = RegisterBackgroundRect( BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 55 ), (INT16)(sYPos + 80 ) );
-        iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 40), (INT16)(sYPos + 40));
+        iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
 
         if (iBack != -1) {
           SetBackgroundRectFilled(iBack);
@@ -1254,32 +1254,32 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
   if (pSoldier->ubProfile != NO_PROFILE || (pSoldier->uiStatusFlags & SOLDIER_VEHICLE)) {
     if (gfUIMouseOnValidCatcher == 1 && pSoldier->ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[CATCH_STR]);
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 3 && pSoldier->ubID == gubUIValidCatcherID) {
       swprintf(NameStr, TacticalStr[RELOAD_STR]);
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (gfUIMouseOnValidCatcher == 4 && pSoldier->ubID == gubUIValidCatcherID) {
       swprintf(NameStr, pMessageStrings[MSG_PASS]);
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier->bAssignment >= ON_DUTY) {
       SetFontForeground(FONT_YELLOW);
       swprintf(NameStr, L"(%s)", pAssignmentStrings[pSoldier->bAssignment]);
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
     } else if (pSoldier->bTeam == gbPlayerNum && pSoldier->bAssignment < ON_DUTY && pSoldier->bAssignment != CurrentSquad() && !(pSoldier->uiStatusFlags & SOLDIER_MULTI_SELECTED)) {
       swprintf(NameStr, gzLateLocalizedString[34], (pSoldier->bAssignment + 1));
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
       fRaiseName = TRUE;
@@ -1299,12 +1299,12 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     if (fDoName) {
       if (fRaiseName) {
         swprintf(NameStr, L"%s", pSoldier->name);
-        FindFontCenterCoordinates(sXPos, (INT16)(sYPos - 10), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos - 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
         swprintf(NameStr, L"%s", pSoldier->name);
-        FindFontCenterCoordinates(sXPos, sYPos, (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, sYPos, (80), 1, NameStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       }
@@ -1322,7 +1322,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       }
 
       // Add bars
-      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 34), (INT16)(sYPos + 11));
+      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 34), (sYPos + 11));
 
       if (iBack != -1) {
         SetBackgroundRectFilled(iBack);
@@ -1333,9 +1333,9 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       // Draw life, breath
       // Only do this when we are a vehicle but on our team
       if (pSoldier->ubID == gusSelectedSoldier) {
-        DrawBarsInUIBox(pSoldier, (INT16)(sXPos + 1), (INT16)(sYPos + 2), 16, 1);
+        DrawBarsInUIBox(pSoldier, (sXPos + 1), (sYPos + 2), 16, 1);
       } else {
-        DrawBarsInUIBox(pSoldier, (INT16)(sXPos), (INT16)(sYPos), 16, 1);
+        DrawBarsInUIBox(pSoldier, (sXPos), (sYPos), 16, 1);
       }
     } else {
       if (gfUIMouseOnValidCatcher == 2 && pSoldier->ubID == gubUIValidCatcherID) {
@@ -1344,7 +1344,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
         SetFontForeground(FONT_MCOLOR_WHITE);
 
         swprintf(NameStr, TacticalStr[GIVE_STR]);
-        FindFontCenterCoordinates(sXPos, (INT16)(sYPos + 10), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, NameStr);
         mprintf(sX, sY, NameStr);
       } else {
@@ -1354,7 +1354,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
 
         pStr = GetSoldierHealthString(pSoldier);
 
-        FindFontCenterCoordinates(sXPos, (INT16)(sYPos + 10), (INT16)(80), 1, pStr, TINYFONT1, &sX, &sY);
+        FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, pStr, TINYFONT1, &sX, &sY);
         gprintfdirty(sX, sY, pStr);
         mprintf(sX, sY, pStr);
       }
@@ -1367,7 +1367,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
       SetFontForeground(FONT_YELLOW);
 
       swprintf(NameStr, gzLateLocalizedString[15]);
-      FindFontCenterCoordinates(sXPos, (INT16)(sYPos + 10), (INT16)(80), 1, NameStr, TINYFONT1, &sX, &sY);
+      FindFontCenterCoordinates(sXPos, (sYPos + 10), (80), 1, NameStr, TINYFONT1, &sX, &sY);
       gprintfdirty(sX, sY, NameStr);
       mprintf(sX, sY, NameStr);
     }
@@ -1378,7 +1378,7 @@ function DrawSelectedUIAboveGuy(usSoldierID: UINT16): void {
     SetFontBackground(FONT_MCOLOR_BLACK);
     SetFontForeground(FONT_MCOLOR_DKRED);
 
-    FindFontCenterCoordinates(sXPos, sYPos, (INT16)(80), 1, pStr, TINYFONT1, &sX, &sY);
+    FindFontCenterCoordinates(sXPos, sYPos, (80), 1, pStr, TINYFONT1, &sX, &sY);
     gprintfdirty(sX, sY, pStr);
     mprintf(sX, sY, pStr);
   }
@@ -1461,62 +1461,62 @@ function DrawBarsInUIBox(pSoldier: Pointer<SOLDIERTYPE>, sXPos: INT16, sYPos: IN
 
   // NOW DO BLEEDING
   if (pSoldier->bBleeding) {
-    dPercentage = (FLOAT)(pSoldier->bBleeding + pSoldier->bLife + bBandage) / (FLOAT)100;
+    dPercentage = (pSoldier->bBleeding + pSoldier->bLife + bBandage) / 100;
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(240, 240, 20));
-      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
   if (bBandage) {
-    dPercentage = (FLOAT)(pSoldier->bLife + bBandage) / (FLOAT)100;
+    dPercentage = (pSoldier->bLife + bBandage) / 100;
     dWidth = dPercentage * sWidth;
     if (gbPixelDepth == 16) {
       usLineColor = Get16BPPColor(FROMRGB(222, 132, 132));
-      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     } else if (gbPixelDepth == 8) {
       // DB Need to change this to a color from the 8-bit standard palette
       usLineColor = COLOR_RED;
-      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+      RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
     }
   }
 
-  dPercentage = (FLOAT)pSoldier->bLife / (FLOAT)100;
+  dPercentage = pSoldier->bLife / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(200, 0, 0));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_RED;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (INT32)(sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
+    RectangleDraw8(TRUE, sXPos + 3, sYPos + 1, (sXPos + dWidth + 3), sYPos + 1, usLineColor, pDestBuf);
   }
 
-  dPercentage = (FLOAT)(pSoldier->bBreathMax) / (FLOAT)100;
+  dPercentage = (pSoldier->bBreathMax) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(20, 20, 150));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
-  dPercentage = (FLOAT)(pSoldier->bBreath) / (FLOAT)100;
+  dPercentage = (pSoldier->bBreath) / 100;
   dWidth = dPercentage * sWidth;
   if (gbPixelDepth == 16) {
     usLineColor = Get16BPPColor(FROMRGB(100, 100, 220));
-    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   } else if (gbPixelDepth == 8) {
     // DB Need to change this to a color from the 8-bit standard palette
     usLineColor = COLOR_BLUE;
-    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (INT32)(sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
+    RectangleDraw8(TRUE, sXPos + 3, sYPos + 4, (sXPos + dWidth + 3), sYPos + 4, usLineColor, pDestBuf);
   }
 
   /*
@@ -1724,7 +1724,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   // Add region
   MSYS_AddRegion(&gMenuOverlayRegion);
 
-  iActionIcons[USE_KEYRING_ICON] = QuickCreateButton(iIconImages[USE_KEYRING_IMAGES], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[USE_KEYRING_ICON] = QuickCreateButton(iIconImages[USE_KEYRING_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[USE_KEYRING_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1746,7 +1746,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[USE_KEYRING_ICON]);
   }
 
-  iActionIcons[USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[CROWBAR_DOOR_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[USE_CROWBAR_ICON] = QuickCreateButton(iIconImages[CROWBAR_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[USE_CROWBAR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1768,7 +1768,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[USE_CROWBAR_ICON]);
   }
 
-  iActionIcons[LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[LOCKPICK_DOOR_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[LOCKPICK_DOOR_ICON] = QuickCreateButton(iIconImages[LOCKPICK_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[LOCKPICK_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1790,7 +1790,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[LOCKPICK_DOOR_ICON]);
   }
 
-  iActionIcons[EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[EXPLOSIVE_DOOR_IMAGES], (INT16)(iMenuAnchorX + 40), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[EXPLOSIVE_DOOR_ICON] = QuickCreateButton(iIconImages[EXPLOSIVE_DOOR_IMAGES], (iMenuAnchorX + 40), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[EXPLOSIVE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1813,7 +1813,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[EXPLOSIVE_DOOR_ICON]);
   }
 
-  iActionIcons[OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[OPEN_DOOR_IMAGES], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[OPEN_DOOR_ICON] = QuickCreateButton(iIconImages[OPEN_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[OPEN_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1839,7 +1839,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
   }
 
   // Create button based on what is in our hands at the moment!
-  iActionIcons[EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[EXAMINE_DOOR_IMAGES], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[EXAMINE_DOOR_ICON] = QuickCreateButton(iIconImages[EXAMINE_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[EXAMINE_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1856,7 +1856,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[EXAMINE_DOOR_ICON]);
   }
 
-  iActionIcons[BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[BOOT_DOOR_IMAGES], (INT16)(iMenuAnchorX), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[BOOT_DOOR_ICON] = QuickCreateButton(iIconImages[BOOT_DOOR_IMAGES], (iMenuAnchorX), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[BOOT_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1873,7 +1873,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[BOOT_DOOR_ICON]);
   }
 
-  iActionIcons[UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[UNTRAP_DOOR_ICON], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[UNTRAP_DOOR_ICON] = QuickCreateButton(iIconImages[UNTRAP_DOOR_ICON], (iMenuAnchorX + 20), (iMenuAnchorY + 40), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[UNTRAP_DOOR_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1890,7 +1890,7 @@ function PopupDoorOpenMenu(fClosingDoor: BOOLEAN): void {
     DisableButton(iActionIcons[UNTRAP_DOOR_ICON]);
   }
 
-  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (INT16)(iMenuAnchorX + 20), (INT16)(iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, (GUI_CALLBACK)BtnDoorMenuCallback);
+  iActionIcons[CANCEL_ICON] = QuickCreateButton(iIconImages[CANCEL_IMAGES], (iMenuAnchorX + 20), (iMenuAnchorY + 20), BUTTON_NO_TOGGLE, MSYS_PRIORITY_HIGHEST - 1, DEFAULT_MOVE_CALLBACK, BtnDoorMenuCallback);
   if (iActionIcons[CANCEL_ICON] == -1) {
     DebugMsg(TOPIC_JA2, DBG_LEVEL_3, "Cannot create Interface button");
     return;
@@ -1988,7 +1988,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Check APs
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_OPEN_DOOR, BP_OPEN_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         if (gOpenDoorMenu.fClosingDoor) {
           ChangeSoldierState(gOpenDoorMenu.pSoldier, GetAnimStateForInteraction(gOpenDoorMenu.pSoldier, TRUE, CLOSE_DOOR), 0, FALSE);
@@ -2005,7 +2005,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Boot door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_BOOT_DOOR, BP_BOOT_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_FORCE);
       } else {
@@ -2018,7 +2018,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Unlock door
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNLOCK_DOOR, BP_UNLOCK_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_UNLOCK);
       } else {
@@ -2031,7 +2031,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_PICKLOCK, BP_PICKLOCK, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_LOCKPICK);
       } else {
@@ -2044,7 +2044,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Lockpick
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXAMINE_DOOR, BP_EXAMINE_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_EXAMINE);
       } else {
@@ -2057,7 +2057,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_EXPLODE_DOOR, BP_EXPLODE_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_EXPLODE);
       } else {
@@ -2070,7 +2070,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_UNTRAP_DOOR, BP_UNTRAP_DOOR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_UNTRAP);
       } else {
@@ -2083,7 +2083,7 @@ function BtnDoorMenuCallback(btn: Pointer<GUI_BUTTON>, reason: INT32): void {
       // Explode
       if (EnoughPoints(gOpenDoorMenu.pSoldier, AP_USE_CROWBAR, BP_USE_CROWBAR, FALSE)) {
         // Set UI
-        SetUIBusy((UINT8)gOpenDoorMenu.pSoldier->ubID);
+        SetUIBusy(gOpenDoorMenu.pSoldier->ubID);
 
         InteractWithClosedDoor(gOpenDoorMenu.pSoldier, HANDLE_DOOR_CROWBAR);
       } else {
@@ -2278,7 +2278,7 @@ function AddTopMessage(ubType: UINT8, pzString: Pointer<UINT16>): BOOLEAN {
   cnt = 0;
 
   if (fFound) {
-    gTopMessage.bCurrentMessage = (INT8)cnt;
+    gTopMessage.bCurrentMessage = cnt;
 
     gTacticalStatus.ubTopMessageType = ubType;
     gTacticalStatus.fInTopMessage = TRUE;
@@ -2380,7 +2380,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
   }
 
   if (fDoLimitBar) {
-    dNumStepsPerEnemy = (FLOAT)((FLOAT)PROG_BAR_LENGTH / (FLOAT)gTacticalStatus.usTactialTurnLimitMax);
+    dNumStepsPerEnemy = (PROG_BAR_LENGTH / gTacticalStatus.usTactialTurnLimitMax);
 
     // Alrighty, do some fun stuff!
 
@@ -2402,7 +2402,7 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
         break;
       }
 
-      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (INT16)(2 + cnt2), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (2 + cnt2), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
 
       dCurSize++;
       cnt2++;
@@ -2415,9 +2415,9 @@ function CreateTopMessage(uiSurface: UINT32, ubType: UINT8, psString: Pointer<UI
     // Do end...
     if (gTacticalStatus.usTactialTurnLimitCounter == gTacticalStatus.usTactialTurnLimitMax) {
       sBarX++;
-      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (INT16)(2 + cnt2), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (2 + cnt2), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
       sBarX++;
-      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (INT16)(12), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
+      BltVideoObjectFromIndex(uiSurface, uiBarToUseInUpDate, (12), sBarX, PROG_BAR_START_Y, VO_BLT_SRCTRANSPARENCY, NULL);
     }
   }
 
@@ -2790,18 +2790,18 @@ function CalculateAimCubeUIPhysics(): void {
   if (gCubeUIData.fActiveHeightBar) {
     // OK, determine which power to use.....
     // TODO this: take force / max force * 10....
-    gCubeUIData.ubPowerIndex = (UINT8)(gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
+    gCubeUIData.ubPowerIndex = (gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
   }
 
   if (gCubeUIData.fActivePowerBar) {
-    gCubeUIData.dForce = (gCubeUIData.dMaxForce * ((FLOAT)gCubeUIData.ubPowerIndex / (FLOAT)10));
+    gCubeUIData.dForce = (gCubeUIData.dMaxForce * (gCubeUIData.ubPowerIndex / 10));
 
     // Limit to the max force...
     if (gCubeUIData.dForce > gCubeUIData.dMaxForce) {
       gCubeUIData.dForce = gCubeUIData.dMaxForce;
     }
 
-    gCubeUIData.dDegrees = (FLOAT)CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, &(gCubeUIData.pSoldier->inv[HANDPOS]), &(gCubeUIData.sTargetGridNo));
+    gCubeUIData.dDegrees = CalculateLaunchItemAngle(gCubeUIData.pSoldier, gCubeUIData.sGridNo, ubHeight, gCubeUIData.dForce, &(gCubeUIData.pSoldier->inv[HANDPOS]), &(gCubeUIData.sTargetGridNo));
   }
 }
 
@@ -2843,7 +2843,7 @@ function BeginAimCubeUI(pSoldier: Pointer<SOLDIERTYPE>, sGridNo: INT16, ubLevel:
   gCubeUIData.fActivePowerBar = FALSE;
   gCubeUIData.fActiveHeightBar = TRUE;
   gCubeUIData.fAtEndHeight = FALSE;
-  gCubeUIData.dDegrees = (float)PI / 4;
+  gCubeUIData.dDegrees = PI / 4;
 
   // Calculate Iniital force....
   CalculateAimCubeUIPhysics();
@@ -2877,12 +2877,12 @@ function IncrementAimCubeUI(): void {
       ubHeight = GET_CUBES_HEIGHT_FROM_UIHEIGHT(gCubeUIData.bHeight);
 
       // Start back to basic7
-      gCubeUIData.dDegrees = (FLOAT)(PI / 4);
+      gCubeUIData.dDegrees = (PI / 4);
       gCubeUIData.dInitialForce = gCubeUIData.dForce;
 
       // OK, determine which power to use.....
       // TODO this: take force / max force * 10....
-      gCubeUIData.ubPowerIndex = (UINT8)(gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
+      gCubeUIData.ubPowerIndex = (gCubeUIData.dForce / gCubeUIData.dMaxForce * 10);
     }
 
     // Cycle the last height yellow once
@@ -2926,7 +2926,7 @@ function RenderAimCubeUI(): void {
       GetGridNoScreenPos(gCubeUIData.sGridNo, gCubeUIData.ubLevel, &sScreenX, &sScreenY);
 
       // Save background
-      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sScreenX, (INT16)(sScreenY - 70), (INT16)(sScreenX + 40), (INT16)(sScreenY + 50));
+      iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sScreenX, (sScreenY - 70), (sScreenX + 40), (sScreenY + 50));
       if (iBack != -1) {
         SetBackgroundRectFilled(iBack);
       }
@@ -3099,14 +3099,14 @@ function RenderTopmostMultiPurposeLocator(): void {
 
   ConvertGridNoToCenterCellXY(gsMultiPurposeLocatorGridNo, &sX, &sY);
 
-  dOffsetX = (FLOAT)(sX - gsRenderCenterX);
-  dOffsetY = (FLOAT)(sY - gsRenderCenterY);
+  dOffsetX = (sX - gsRenderCenterX);
+  dOffsetY = (sY - gsRenderCenterY);
 
   // Calculate guy's position
   FloatFromCellToScreenCoordinates(dOffsetX, dOffsetY, &dTempX_S, &dTempY_S);
 
-  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + (INT16)dTempX_S;
-  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + (INT16)dTempY_S - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;
+  sXPos = ((gsVIEWPORT_END_X - gsVIEWPORT_START_X) / 2) + dTempX_S;
+  sYPos = ((gsVIEWPORT_END_Y - gsVIEWPORT_START_Y) / 2) + dTempY_S - gpWorldLevelData[gsMultiPurposeLocatorGridNo].sHeight;
 
   // Adjust for offset position on screen
   sXPos -= gsRenderWorldOffsetX;
@@ -3124,7 +3124,7 @@ function RenderTopmostMultiPurposeLocator(): void {
   sXPos -= 20;
   sYPos -= 20;
 
-  iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (INT16)(sXPos + 40), (INT16)(sYPos + 40));
+  iBack = RegisterBackgroundRect(BGND_FLAG_SINGLE, NULL, sXPos, sYPos, (sXPos + 40), (sYPos + 40));
   if (iBack != -1) {
     SetBackgroundRectFilled(iBack);
   }

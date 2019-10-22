@@ -35,12 +35,12 @@ function DecompressInit(pCompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   // set up our parameters
   pZStream->next_in = pCompressedData;
   pZStream->avail_in = uiDataSize;
-  return (PTR)pZStream;
+  return pZStream;
 }
 
 function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
   let iZRetCode: int;
-  let pZStream: Pointer<z_stream> = (z_stream *)pDecompPtr;
+  let pZStream: Pointer<z_stream> = pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -63,7 +63,7 @@ function Decompress(pDecompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32
 }
 
 function DecompressFini(pDecompPtr: PTR): void {
-  let pZStream: Pointer<z_stream> = (z_stream *)pDecompPtr;
+  let pZStream: Pointer<z_stream> = pDecompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -107,12 +107,12 @@ function CompressInit(pUncompressedData: Pointer<BYTE>, uiDataSize: UINT32): PTR
   // set up our parameters
   pZStream->next_in = pUncompressedData;
   pZStream->avail_in = uiDataSize;
-  return (PTR)pZStream;
+  return pZStream;
 }
 
 function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): UINT32 {
   let iZRetCode: int;
-  let pZStream: Pointer<z_stream> = (z_stream *)pCompPtr;
+  let pZStream: Pointer<z_stream> = pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);
@@ -135,7 +135,7 @@ function Compress(pCompPtr: PTR, pBuffer: Pointer<BYTE>, uiBufferLen: UINT32): U
 }
 
 function CompressFini(pCompPtr: PTR): void {
-  let pZStream: Pointer<z_stream> = (z_stream *)pCompPtr;
+  let pZStream: Pointer<z_stream> = pCompPtr;
 
   // these assertions is in here to ensure that we get passed a proper z_stream pointer
   Assert(pZStream != NULL);

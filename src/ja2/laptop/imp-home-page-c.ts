@@ -168,12 +168,12 @@ function DisplayActivationStringCursor(): void {
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, 640, 480);
 
   // draw line in current state
-  LineDraw(TRUE, (UINT16)uiCursorPosition, CURSOR_Y, (UINT16)uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
+  LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT, Get16BPPColor(FROMRGB(GlowColorsList[iCurrentState][0], GlowColorsList[iCurrentState][1], GlowColorsList[iCurrentState][2])), pDestBuf);
 
   // unlock frame buffer
   UnLockVideoSurface(FRAME_BUFFER);
 
-  InvalidateRegion((UINT16)uiCursorPosition, CURSOR_Y, (UINT16)uiCursorPosition + 1, CURSOR_Y + CURSOR_HEIGHT + 1);
+  InvalidateRegion(uiCursorPosition, CURSOR_Y, uiCursorPosition + 1, CURSOR_Y + CURSOR_HEIGHT + 1);
 
   return;
 }
@@ -263,7 +263,7 @@ function HandleTextEvent(uiKey: UINT32): void {
             iStringPos = 0;
           }
           // valid char, capture and convert to CHAR16
-          pPlayerActivationString[iStringPos] = (CHAR16)uiKey;
+          pPlayerActivationString[iStringPos] = uiKey;
 
           // null out next char position
           pPlayerActivationString[iStringPos + 1] = 0;
@@ -316,7 +316,7 @@ function CreateIMPHomePageButtons(): void {
                                                                           BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAboutUsCallback);
 */
 
-  giIMPHomePageButton[0] = CreateIconAndTextButton(giIMPHomePageButtonImage[0], pImpButtonText[0], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (286 - 106), LAPTOP_SCREEN_WEB_UL_Y + (248 - 48), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, (GUI_CALLBACK)BtnIMPAboutUsCallback);
+  giIMPHomePageButton[0] = CreateIconAndTextButton(giIMPHomePageButtonImage[0], pImpButtonText[0], FONT12ARIAL, FONT_WHITE, DEFAULT_SHADOW, FONT_WHITE, DEFAULT_SHADOW, TEXT_CJUSTIFIED, LAPTOP_SCREEN_UL_X + (286 - 106), LAPTOP_SCREEN_WEB_UL_Y + (248 - 48), BUTTON_TOGGLE, MSYS_PRIORITY_HIGH, BtnGenericMouseMoveButtonCallback, BtnIMPAboutUsCallback);
 
   SetButtonCursor(giIMPHomePageButton[0], CURSOR_WWW);
 

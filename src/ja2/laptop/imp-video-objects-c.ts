@@ -564,7 +564,7 @@ function RenderAttributeFrameForIndex(sX: INT16, sY: INT16, iIndex: INT32): void
     return;
   }
 
-  sCurrentY = (INT16)(10 + (iIndex * 20));
+  sCurrentY = (10 + (iIndex * 20));
 
   // get the video object
   GetVideoObject(&hHandle, guiATTRIBUTEFRAME);

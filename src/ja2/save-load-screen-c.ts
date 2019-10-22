@@ -381,7 +381,7 @@ function EnterSaveLoadScreen(): BOOLEAN {
   usPosX = SLG_FIRST_SAVED_SPOT_X;
   usPosY = SLG_FIRST_SAVED_SPOT_Y;
   for (i = 0; i < NUM_SAVE_GAMES; i++) {
-    MSYS_DefineRegion(&gSelectedSaveRegion[i], usPosX, usPosY, (UINT16)(usPosX + SLG_SAVELOCATION_WIDTH), (UINT16)(usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
+    MSYS_DefineRegion(&gSelectedSaveRegion[i], usPosX, usPosY, (usPosX + SLG_SAVELOCATION_WIDTH), (usPosY + SLG_SAVELOCATION_HEIGHT), MSYS_PRIORITY_HIGH, CURSOR_NORMAL, SelectedSaveRegionMovementCallBack, SelectedSaveRegionCallBack);
     MSYS_AddRegion(&gSelectedSaveRegion[i]);
     MSYS_SetRegionUserData(&gSelectedSaveRegion[i], 0, i);
 
@@ -643,22 +643,22 @@ function GetSaveLoadScreenUserInput(): void {
     // HOOK INTO MOUSE HOOKS
     switch (Event.usEvent) {
       case LEFT_BUTTON_DOWN:
-        MouseSystemHook(LEFT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_UP:
-        MouseSystemHook(LEFT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_DOWN:
-        MouseSystemHook(RIGHT_BUTTON_DOWN, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_DOWN, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_UP:
-        MouseSystemHook(RIGHT_BUTTON_UP, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_UP, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case RIGHT_BUTTON_REPEAT:
-        MouseSystemHook(RIGHT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(RIGHT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
       case LEFT_BUTTON_REPEAT:
-        MouseSystemHook(LEFT_BUTTON_REPEAT, (INT16)MousePos.x, (INT16)MousePos.y, _LeftButtonDown, _RightButtonDown);
+        MouseSystemHook(LEFT_BUTTON_REPEAT, MousePos.x, MousePos.y, _LeftButtonDown, _RightButtonDown);
         break;
     }
 
@@ -763,9 +763,9 @@ function GetSaveLoadScreenUserInput(): void {
         case ENTER:
 
           if (gfSaveGame) {
-            bActiveTextField = (INT8)GetActiveFieldID();
+            bActiveTextField = GetActiveFieldID();
             if (bActiveTextField && bActiveTextField != -1) {
-              Get16BitStringFromField((UINT8)bActiveTextField, gzGameDescTextField);
+              Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
               SetActiveField(0);
 
               DestroySaveLoadTextInputBoxes();
@@ -804,9 +804,9 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
   if (gfSaveGame) {
     let bActiveTextField: INT8;
 
-    bActiveTextField = (INT8)GetActiveFieldID();
+    bActiveTextField = GetActiveFieldID();
     if (bActiveTextField && bActiveTextField != -1) {
-      Get16BitStringFromField((UINT8)bActiveTextField, gzGameDescTextField);
+      Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
     }
 
     // if there is save game in the slot, ask for confirmation before overwriting
@@ -850,7 +850,7 @@ function SaveLoadGameNumber(bSaveGameID: INT8): void {
 
 function DoSaveLoadMessageBoxWithRect(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScreen: UINT32, usFlags: UINT16, ReturnCallback: MSGBOX_CALLBACK, pCenteringRect: Pointer<SGPRect>): BOOLEAN {
   // do message box and return
-  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT8)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
+  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, pCenteringRect);
 
   // send back return state
   return giSaveLoadMessageBox != -1;
@@ -860,7 +860,7 @@ function DoSaveLoadMessageBox(ubStyle: UINT8, zString: Pointer<INT16>, uiExitScr
   let CenteringRect: SGPRect = { 0, 0, 639, 479 };
 
   // do message box and return
-  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (UINT8)(usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
+  giSaveLoadMessageBox = DoMessageBox(ubStyle, zString, uiExitScreen, (usFlags | MSG_BOX_FLAG_USE_CENTERING_RECT), ReturnCallback, &CenteringRect);
 
   // send back return state
   return giSaveLoadMessageBox != -1;
@@ -991,8 +991,8 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
     if (gfSaveGame && gbSelectedSaveLocation == bEntryID) {
       // the user has selected a spot to save.  Fill out all the required information
       SaveGameHeader.uiDay = GetWorldDay();
-      SaveGameHeader.ubHour = (UINT8)GetWorldHour();
-      SaveGameHeader.ubMin = (UINT8)guiMin;
+      SaveGameHeader.ubHour = GetWorldHour();
+      SaveGameHeader.ubMin = guiMin;
 
       // Get the sector value to save.
       GetBestPossibleSectorXYZValues(&SaveGameHeader.sSectorX, &SaveGameHeader.sSectorY, &SaveGameHeader.bSectorZ);
@@ -1039,7 +1039,7 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
                SaveGameHeader.sInitialGameOptions.fSciFi ? zSaveLoadText[SLG_SCIFI] : zSaveLoadText[SLG_REALISTIC]);
 
       // The date
-      DrawTextToScreen(zMouseHelpTextString, (UINT16)(usPosX + SLG_DATE_OFFSET_X), (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zMouseHelpTextString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
     } else {
       // Create the string for the Data
       swprintf(zDateString, L"%s %d, %02d:%02d", pMessageStrings[MSG_DAY], SaveGameHeader.uiDay, SaveGameHeader.ubHour, SaveGameHeader.ubMin);
@@ -1081,33 +1081,33 @@ function DisplaySaveGameEntry(bEntryID: INT8): BOOLEAN //, UINT16 usPosY )
       //
 
       // The date
-      DrawTextToScreen(zDateString, (UINT16)(usPosX + SLG_DATE_OFFSET_X), (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zDateString, (usPosX + SLG_DATE_OFFSET_X), (usPosY + SLG_DATE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
       // if the sector string exceeds the width, and the ...
       ReduceStringLength(zLocationString, SLG_SECTOR_WIDTH, uiFont);
 
       // The Sector
-      DrawTextToScreen(zLocationString, (UINT16)(usPosX + SLG_SECTOR_OFFSET_X), (UINT16)(usPosY + SLG_SECTOR_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zLocationString, (usPosX + SLG_SECTOR_OFFSET_X), (usPosY + SLG_SECTOR_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
       // The Num of mercs
-      DrawTextToScreen(zNumMercsString, (UINT16)(usPosX + SLG_NUM_MERCS_OFFSET_X), (UINT16)(usPosY + SLG_NUM_MERCS_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zNumMercsString, (usPosX + SLG_NUM_MERCS_OFFSET_X), (usPosY + SLG_NUM_MERCS_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
       // The balance
-      DrawTextToScreen(zBalanceString, (UINT16)(usPosX + SLG_BALANCE_OFFSET_X), (UINT16)(usPosY + SLG_BALANCE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zBalanceString, (usPosX + SLG_BALANCE_OFFSET_X), (usPosY + SLG_BALANCE_OFFSET_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
       if (gbSaveGameArray[bEntryID] || (gfSaveGame && !gfUserInTextInputMode && (gbSelectedSaveLocation == bEntryID))) {
         // The Saved Game description
-        DrawTextToScreen(SaveGameHeader.sSavedGameDesc, (UINT16)(usPosX + SLG_SAVE_GAME_DESC_X), (UINT16)(usPosY + SLG_SAVE_GAME_DESC_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+        DrawTextToScreen(SaveGameHeader.sSavedGameDesc, (usPosX + SLG_SAVE_GAME_DESC_X), (usPosY + SLG_SAVE_GAME_DESC_Y), 0, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
       }
     }
   } else {
     // if this is the quick save slot
     if (bEntryID == 0) {
       // display the empty spot
-      DrawTextToScreen(pMessageStrings[MSG_EMPTY_QUICK_SAVE_SLOT], usPosX, (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(pMessageStrings[MSG_EMPTY_QUICK_SAVE_SLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     } else {
       // display the empty spot
-      DrawTextToScreen(pMessageStrings[MSG_EMPTYSLOT], usPosX, (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
+      DrawTextToScreen(pMessageStrings[MSG_EMPTYSLOT], usPosX, (usPosY + SLG_DATE_OFFSET_Y), 609, uiFont, ubFontColor, FONT_MCOLOR_BLACK, FALSE, CENTER_JUSTIFIED);
     }
   }
 
@@ -1252,7 +1252,7 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
   if (iReason & MSYS_CALLBACK_REASON_INIT) {
   } else if (iReason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
-    let bSelected: UINT8 = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    let bSelected: UINT8 = MSYS_GetRegionUserData(pRegion, 0);
     /* static */ let uiLastTime: UINT32 = 0;
     let uiCurTime: UINT32 = GetJA2Clock();
     let i: INT32;
@@ -1339,9 +1339,9 @@ function SelectedSaveRegionCallBack(pRegion: Pointer<MOUSE_REGION>, iReason: INT
 
           gfRedrawSaveLoadScreen = TRUE;
         } else {
-          bActiveTextField = (INT8)GetActiveFieldID();
+          bActiveTextField = GetActiveFieldID();
           if (bActiveTextField && bActiveTextField != -1) {
-            Get16BitStringFromField((UINT8)bActiveTextField, gzGameDescTextField);
+            Get16BitStringFromField(bActiveTextField, gzGameDescTextField);
             SetActiveField(0);
 
             DestroySaveLoadTextInputBoxes();
@@ -1401,7 +1401,7 @@ function SelectedSaveRegionMovementCallBack(pRegion: Pointer<MOUSE_REGION>, reas
     }
 
     gbLastHighLightedLocation = gbHighLightedLocation;
-    gbHighLightedLocation = (UINT8)MSYS_GetRegionUserData(pRegion, 0);
+    gbHighLightedLocation = MSYS_GetRegionUserData(pRegion, 0);
 
     DisplaySaveGameEntry(gbLastHighLightedLocation);
     DisplaySaveGameEntry(gbHighLightedLocation); //, usPosY );
@@ -1428,7 +1428,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
   InitTextInputMode();
 
   SetTextInputCursor(CUROSR_IBEAM_WHITE);
-  SetTextInputFont((UINT16)FONT12ARIALFIXEDWIDTH); // FONT12ARIAL //FONT12ARIALFIXEDWIDTH
+  SetTextInputFont(FONT12ARIALFIXEDWIDTH); // FONT12ARIAL //FONT12ARIALFIXEDWIDTH
   Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(0, 0, 0)));
   SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(FONT_WHITE, 2);
@@ -1452,7 +1452,7 @@ function InitSaveLoadScreenTextInputBoxes(): void {
     gzGameDescTextField[0] = '\0';
 
   // Game Desc Field
-  AddTextInputField(SLG_FIRST_SAVED_SPOT_X + SLG_SAVE_GAME_DESC_X, (INT16)(usPosY + SLG_SAVE_GAME_DESC_Y - 5), SLG_SAVELOCATION_WIDTH - SLG_SAVE_GAME_DESC_X - 7, 17, MSYS_PRIORITY_HIGH + 2, gzGameDescTextField, 46, INPUTTYPE_ASCII); // 23
+  AddTextInputField(SLG_FIRST_SAVED_SPOT_X + SLG_SAVE_GAME_DESC_X, (usPosY + SLG_SAVE_GAME_DESC_Y - 5), SLG_SAVELOCATION_WIDTH - SLG_SAVE_GAME_DESC_X - 7, 17, MSYS_PRIORITY_HIGH + 2, gzGameDescTextField, 46, INPUTTYPE_ASCII); // 23
 
   SetActiveField(1);
 
@@ -1640,7 +1640,7 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
       continue;
     }
 
-    BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, usPosX, (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 10, 10);
+    BlitBufferToBuffer(guiSAVEBUFFER, guiRENDERBUFFER, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 10, 10);
 
     if (bLoopNum != 10) {
       bNum = bLoopNum;
@@ -1651,7 +1651,7 @@ function DisplayOnScreenNumber(fErase: BOOLEAN): void {
     }
 
     if (!fErase)
-      DrawTextToScreen(zTempString, usPosX, (UINT16)(usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT, SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
+      DrawTextToScreen(zTempString, usPosX, (usPosY + SLG_DATE_OFFSET_Y), 0, SAVE_LOAD_NUMBER_FONT, SAVE_LOAD_NUMBER_COLOR, FONT_MCOLOR_BLACK, FALSE, LEFT_JUSTIFIED);
 
     InvalidateRegion(usPosX, usPosY + SLG_DATE_OFFSET_Y, usPosX + 10, usPosY + SLG_DATE_OFFSET_Y + 10);
 
@@ -1914,7 +1914,7 @@ function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
 
       // if the selected slot is above the first slot
       if (gbSelectedSaveLocation > 1) {
-        SetSelection((UINT8)(gbSelectedSaveLocation - 1));
+        SetSelection((gbSelectedSaveLocation - 1));
       }
     } else {
       // if the selected slot is invalid
@@ -1922,7 +1922,7 @@ function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
         SetSelection(1);
       } else {
         if (gbSelectedSaveLocation >= 1 && gbSelectedSaveLocation < NUM_SAVE_GAMES - 1) {
-          SetSelection((UINT8)(gbSelectedSaveLocation + 1));
+          SetSelection((gbSelectedSaveLocation + 1));
         }
       }
     }
@@ -1934,7 +1934,7 @@ function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
         if (gbSaveGameArray[i]) {
           ClearSelectedSaveSlot();
 
-          SetSelection((UINT8)i);
+          SetSelection(i);
           break;
         }
       }
@@ -1949,7 +1949,7 @@ function MoveSelectionUpOrDown(fUp: BOOLEAN): void {
           if (gbSaveGameArray[i]) {
             ClearSelectedSaveSlot();
 
-            SetSelection((UINT8)i);
+            SetSelection(i);
             break;
           }
         }

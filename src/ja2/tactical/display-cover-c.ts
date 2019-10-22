@@ -337,7 +337,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
       continue; // next merc
     }
 
-    usRange = (UINT16)GetRangeInCellCoordsFromGridNoDiff(pOpponent->sGridNo, sTargetGridNo);
+    usRange = GetRangeInCellCoordsFromGridNoDiff(pOpponent->sGridNo, sTargetGridNo);
     usSightLimit = DistanceVisible(pOpponent, DIRECTION_IRRELEVANT, DIRECTION_IRRELEVANT, sTargetGridNo, pSoldier->bLevel);
 
     if (usRange > (usSightLimit * CELL_X_SIZE)) {
@@ -345,7 +345,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
     }
 
     // if actual LOS check fails, then chance to hit is 0, ignore this guy
-    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, (UINT8)usSightLimit, TRUE) == 0) {
+    if (SoldierToVirtualSoldierLineOfSightTest(pOpponent, sTargetGridNo, pSoldier->bLevel, bStance, usSightLimit, TRUE) == 0) {
       continue;
     }
 
@@ -358,7 +358,7 @@ function CalcCoverForGridNoBasedOnTeamKnownEnemies(pSoldier: Pointer<SOLDIERTYPE
       usMaxRange = Weapon[GLOCK_18].usRange;
     }
 
-    iBulletGetThrough = __min(__max((INT32)(((((usMaxRange - usRange) / (FLOAT)(usMaxRange)) + .3) * 100)), 0), 100);
+    iBulletGetThrough = __min(__max((((((usMaxRange - usRange) / (usMaxRange)) + .3) * 100)), 0), 100);
 
     if (iBulletGetThrough > 5 && iGetThrough > 0) {
       iCover = (iGetThrough * iBulletGetThrough / 100);
@@ -754,7 +754,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   //
   // Prone
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_PRONE, (UINT8)usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_PRONE, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -762,7 +762,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   //
   // Crouch
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_CROUCH, (UINT8)usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_CROUCH, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -770,7 +770,7 @@ function CalcIfSoldierCanSeeGridNo(pSoldier: Pointer<SOLDIERTYPE>, sTargetGridNo
   //
   // Standing
   //
-  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_STAND, (UINT8)usSightLimit, bAware);
+  iLosForGridNo = SoldierToVirtualSoldierLineOfSightTest(pSoldier, sTargetGridNo, fRoof, ANIM_STAND, usSightLimit, bAware);
   if (iLosForGridNo != 0) {
     bRetVal++;
   }
@@ -804,7 +804,7 @@ function ChangeSizeOfDisplayCover(iNewSize: INT32): void {
   }
 
   // Set new size
-  gGameSettings.ubSizeOfDisplayCover = (UINT8)iNewSize;
+  gGameSettings.ubSizeOfDisplayCover = iNewSize;
 
   // redisplay the cover
   RemoveCoverOfSelectedGridNo();
@@ -820,7 +820,7 @@ function ChangeSizeOfLOS(iNewSize: INT32): void {
   }
 
   // Set new size
-  gGameSettings.ubSizeOfLOS = (UINT8)iNewSize;
+  gGameSettings.ubSizeOfLOS = iNewSize;
 
   // ReDisplay the los
   RemoveVisibleGridNoAtSelectedGridNo();

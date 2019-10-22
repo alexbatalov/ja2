@@ -230,17 +230,17 @@ function AddVehicleToList(sMapX: INT16, sMapY: INT16, sGridNo: INT16, ubType: UI
     Assert(0);
   }
 
-  pGroup->ubTransportationMask = (UINT8)iMvtTypes[ubType];
+  pGroup->ubTransportationMask = iMvtTypes[ubType];
 
   // ARM: setup group movement defaults
-  pGroup->ubSectorX = (UINT8)sMapX;
-  pGroup->ubNextX = (UINT8)sMapX;
-  pGroup->ubSectorY = (UINT8)sMapY;
-  pGroup->ubNextY = (UINT8)sMapY;
+  pGroup->ubSectorX = sMapX;
+  pGroup->ubNextX = sMapX;
+  pGroup->ubSectorY = sMapY;
+  pGroup->ubNextY = sMapY;
   pGroup->uiTraverseTime = 0;
   pGroup->uiArrivalTime = 0;
 
-  SetUpArmorForVehicle((UINT8)iCount);
+  SetUpArmorForVehicle(iCount);
 
   return iVehicleIdValue;
 }
@@ -501,7 +501,7 @@ function RemoveSoldierFromVehicle(pSoldier: Pointer<SOLDIERTYPE>, iId: INT32): B
       pVehicleList[iId].pPassengers[iCounter]->ubGroupID = 0;
       pVehicleList[iId].pPassengers[iCounter]->sSectorY = pVehicleList[iId].sSectorY;
       pVehicleList[iId].pPassengers[iCounter]->sSectorX = pVehicleList[iId].sSectorX;
-      pVehicleList[iId].pPassengers[iCounter]->bSectorZ = (INT8)pVehicleList[iId].sSectorZ;
+      pVehicleList[iId].pPassengers[iCounter]->bSectorZ = pVehicleList[iId].sSectorZ;
       pVehicleList[iId].pPassengers[iCounter] = NULL;
 
       pSoldier->uiStatusFlags &= (~(SOLDIER_DRIVER | SOLDIER_PASSENGER));
@@ -1268,7 +1268,7 @@ function VehicleTakeDamage(ubID: UINT8, ubReason: UINT8, sDamage: INT16, sGridNo
   let sOldDmgValue: INT16 = 0;
 
   if (ubReason != TAKE_DAMAGE_GAS) {
-    PlayJA2Sample((UINT32)(S_METAL_IMPACT3), RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 1, SoundDir(sGridNo));
+    PlayJA2Sample((S_METAL_IMPACT3), RATE_11025, SoundVolume(MIDVOLUME, sGridNo), 1, SoundDir(sGridNo));
   }
 
   // check if there was in fact damage done to the vehicle
@@ -1541,7 +1541,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
 
       // loop through the passengers
       for (ubPassengerCnt = 0; ubPassengerCnt < 10; ubPassengerCnt++) {
-        TempVehicle.pPassengers[ubPassengerCnt] = (SOLDIERTYPE *)NO_PROFILE;
+        TempVehicle.pPassengers[ubPassengerCnt] = NO_PROFILE;
 
         // if there is a passenger here
         if (pVehicleList[cnt].pPassengers[ubPassengerCnt]) {
@@ -1550,7 +1550,7 @@ function SaveVehicleInformationToSaveGameFile(hFile: HWFILE): BOOLEAN {
           // ! This means that the pointer contains a bogus pointer, but a real ID for the soldier.
           // ! When reloading, this bogus pointer is converted to a byte to contain the id of the soldier so
           // ! we can get the REAL pointer to the soldier
-          TempVehicle.pPassengers[ubPassengerCnt] = (SOLDIERTYPE *)pVehicleList[cnt].pPassengers[ubPassengerCnt]->ubProfile;
+          TempVehicle.pPassengers[ubPassengerCnt] = pVehicleList[cnt].pPassengers[ubPassengerCnt]->ubProfile;
         }
       }
 
@@ -1640,13 +1640,13 @@ function LoadVehicleInformationFromSavedGameFile(hFile: HWFILE, uiSavedGameVersi
             if (pVehicleList[cnt].pPassengers[ubPassengerCnt] != 0) {
               // ! The id of the soldier was saved in the passenger pointer.  The passenger pointer is converted back
               // ! to a UINT8 so we can get the REAL pointer to the soldier.
-              pVehicleList[cnt].pPassengers[ubPassengerCnt] = FindSoldierByProfileID((UINT8)pVehicleList[cnt].pPassengers[ubPassengerCnt], FALSE);
+              pVehicleList[cnt].pPassengers[ubPassengerCnt] = FindSoldierByProfileID(pVehicleList[cnt].pPassengers[ubPassengerCnt], FALSE);
             }
           } else {
-            if (pVehicleList[cnt].pPassengers[ubPassengerCnt] != (SOLDIERTYPE *)NO_PROFILE) {
+            if (pVehicleList[cnt].pPassengers[ubPassengerCnt] != NO_PROFILE) {
               // ! The id of the soldier was saved in the passenger pointer.  The passenger pointer is converted back
               // ! to a UINT8 so we can get the REAL pointer to the soldier.
-              pVehicleList[cnt].pPassengers[ubPassengerCnt] = FindSoldierByProfileID((UINT8)pVehicleList[cnt].pPassengers[ubPassengerCnt], FALSE);
+              pVehicleList[cnt].pPassengers[ubPassengerCnt] = FindSoldierByProfileID(pVehicleList[cnt].pPassengers[ubPassengerCnt], FALSE);
             } else {
               pVehicleList[cnt].pPassengers[ubPassengerCnt] = NULL;
             }
@@ -2020,13 +2020,13 @@ function PickRandomPassengerFromVehicle(pSoldier: Pointer<SOLDIERTYPE>): Pointer
   // Loop through passengers and update each guy's position
   for (iCounter = 0; iCounter < iSeatingCapacities[pVehicleList[iId].ubVehicleType]; iCounter++) {
     if (pVehicleList[iId].pPassengers[iCounter] != NULL) {
-      ubMercsInSector[ubNumMercs] = (UINT8)iCounter;
+      ubMercsInSector[ubNumMercs] = iCounter;
       ubNumMercs++;
     }
   }
 
   if (ubNumMercs > 0) {
-    ubChosenMerc = (UINT8)Random(ubNumMercs);
+    ubChosenMerc = Random(ubNumMercs);
 
     // If we are air raid, AND red exists somewhere...
     return pVehicleList[iId].pPassengers[ubChosenMerc];

@@ -306,7 +306,7 @@ function GetWeightBasedOnMetricOption(uiObjectWeight: UINT32): FLOAT {
   // if the user is smart and wants things displayed in 'metric'
   if (gGameSettings.fOptions[TOPTION_USE_METRIC_SYSTEM]) // metric
   {
-    fWeight = (FLOAT)uiObjectWeight;
+    fWeight = uiObjectWeight;
   }
 
   // else the user is a caveman and display it in pounds
