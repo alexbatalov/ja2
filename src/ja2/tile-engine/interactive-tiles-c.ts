@@ -714,7 +714,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
 
   SrcPtr = hSrcVObject.value.pPixData + uiOffset;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, iStartPos
     xor eax, eax
@@ -818,7 +818,7 @@ function CheckVideoObjectScreenCoordinateInData(hSrcVObject: HVOBJECT, usIndex: 
     mov fDataFound, 1
 
     BlitDone:
-  }
+  `);
 
   return fDataFound;
 }

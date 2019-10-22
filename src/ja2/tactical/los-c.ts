@@ -18,7 +18,7 @@ const FIXEDPT_MULTIPLY = (a, b) => ((a / 256) * (b / 256));
 function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
   let uiResult: UINT32;
 
-  __asm {
+  asm(`
     // Load the 32-bit registers with the two values
     mov eax, uiA
     mov ebx, uiB
@@ -39,7 +39,7 @@ function FPMult32(uiA: UINT32, uiB: UINT32): UINT32 {
 
     // Put the result into a returnable variable
     mov uiResult, eax
-  }
+  `);
 
   return uiResult;
 }

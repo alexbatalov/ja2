@@ -96,7 +96,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -272,7 +272,7 @@ function Blt16BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPit
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -368,7 +368,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     // mov edx, p16BPPPalette
@@ -529,7 +529,7 @@ function Blt16BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -625,7 +625,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -795,7 +795,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipTranslucent(pBuffer: Pointer<UINT16
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -851,7 +851,7 @@ function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiD
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -920,7 +920,7 @@ function Blt8BPPDataTo16BPPBufferTransZTranslucent(pBuffer: Pointer<UINT16>, uiD
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1014,7 +1014,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -1187,7 +1187,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipTranslucent(pBuffer: Pointer<UINT16>,
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1243,7 +1243,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, u
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -1309,7 +1309,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBTranslucent(pBuffer: Pointer<UINT16>, u
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1403,7 +1403,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
   usZLevel = usZValue;
   //	usZLinesToGo=WORLD_TILE_Y;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -1579,7 +1579,7 @@ function Blt8BPPDataTo8BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestPi
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1635,7 +1635,7 @@ function BlitZRect(pZBuffer: Pointer<UINT16>, uiPitch: UINT32, sLeft: INT16, sTo
   if ((usHeight == 0) || (usWidth == 0))
     return FALSE;
 
-  __asm {
+  asm(`
     mov edi, pZPtr
     xor eax, eax
     mov ax, usZValue
@@ -1649,7 +1649,7 @@ function BlitZRect(pZBuffer: Pointer<UINT16>, uiPitch: UINT32, sLeft: INT16, sTo
 
     dec edx
     jnz BZR1
-  }
+  `);
 
   return TRUE;
 }
@@ -1699,7 +1699,7 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX);
   LineSkip = (uiDestPitchBYTES - (usWidth));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -1758,7 +1758,7 @@ function Blt8BPPDataTo8BPPBuffer(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1811,7 +1811,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -1886,7 +1886,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -1975,7 +1975,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -2153,7 +2153,7 @@ function Blt8BPPDataTo8BPPBufferMonoShadowClip(pBuffer: Pointer<UINT8>, uiDestPi
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -2209,7 +2209,7 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
   LineSkipZ = LineSkip * 2;
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -2280,7 +2280,7 @@ function Blt8BPPDataTo8BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDestP
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -2337,7 +2337,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
 
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -2404,7 +2404,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDes
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -2499,7 +2499,7 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
 
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, pPal8BPP
@@ -2677,7 +2677,7 @@ function Blt8BPPDataTo8BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, uiD
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -2772,7 +2772,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
 
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, pPal8BPP
@@ -2947,7 +2947,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, u
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3031,7 +3031,7 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, pPal8BPP
@@ -3221,7 +3221,7 @@ function Blt8BPPDataTo8BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDest
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3268,7 +3268,7 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
   LineSkip = (uiDestPitchBYTES - (usWidth));
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -3363,7 +3363,7 @@ function Blt8BPPDataTo8BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3419,7 +3419,7 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   LineSkipZ = LineSkip * 2;
   uiZComp = usZValue;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -3590,7 +3590,7 @@ function Blt8BPPDataTo8BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3644,7 +3644,7 @@ function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBY
   LineSkip = (uiDestPitchBYTES - (usWidth));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -3702,7 +3702,7 @@ function Blt8BPPDataTo8BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchBY
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3757,7 +3757,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
   LineSkip = (uiDestPitchBYTES - (usWidth));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -3822,7 +3822,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestPi
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3914,7 +3914,7 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -4078,7 +4078,7 @@ function Blt8BPPDataTo8BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4170,7 +4170,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -4331,7 +4331,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPit
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4423,7 +4423,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -4592,7 +4592,7 @@ function Blt8BPPDataTo8BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiDe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4644,7 +4644,7 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   LineSkip = (uiDestPitchBYTES - (usWidth));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -4703,7 +4703,7 @@ function Blt8BPPDataTo8BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4755,7 +4755,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   LineSkip = (uiDestPitchBYTES - (usWidth));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -4811,7 +4811,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4903,7 +4903,7 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5066,7 +5066,7 @@ function Blt8BPPDataTo8BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5158,7 +5158,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   LineSkip = (uiDestPitchBYTES - (BlitLength));
   LineSkipZ = LineSkip * 2;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5318,7 +5318,7 @@ function Blt8BPPDataTo8BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5373,7 +5373,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5441,7 +5441,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPit
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5496,7 +5496,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5561,7 +5561,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDestP
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5654,7 +5654,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5826,7 +5826,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDes
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5919,7 +5919,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
   LineSkipZ = LineSkip * 2;
   pPal8BPP = hSrcVObject.value.pShade8;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -6088,7 +6088,7 @@ function Blt8BPPDataTo8BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, uiD
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6135,7 +6135,7 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
   pPal8BPP = hSrcVObject.value.pShade8;
   LineSkip = (uiDestPitchBYTES - (usWidth));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -6227,7 +6227,7 @@ function Blt8BPPDataTo8BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYTE
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6312,7 +6312,7 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
   pPal8BPP = hSrcVObject.value.pShade8;
   LineSkip = (uiDestPitchBYTES - (BlitLength));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, pPal8BPP
@@ -6502,7 +6502,7 @@ function Blt8BPPDataTo8BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6592,7 +6592,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -6776,7 +6776,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadowClip(pBuffer: Pointer<UINT16>, uiDest
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6803,7 +6803,7 @@ function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Poin
   uiLineSkipDest = uiDestPitch - (uiWidth * 2);
   uiLineSkipSrc = uiSrcPitch - (uiWidth * 2);
 
-  __asm {
+  asm(`
     mov esi, pSrcPtr
     mov edi, pDestPtr
     mov ebx, uiHeight
@@ -6841,7 +6841,7 @@ function Blt16BPPTo16BPP(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc: Poin
     jnz BlitDwords
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6869,7 +6869,7 @@ function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc:
   uiLineSkipDest = uiDestPitch - (uiWidth * 2);
   uiLineSkipSrc = uiSrcPitch - (uiWidth * 2);
 
-  __asm {
+  asm(`
     mov esi, pSrcPtr
     mov edi, pDestPtr
     mov ebx, uiHeight
@@ -6895,7 +6895,7 @@ function Blt16BPPTo16BPPTrans(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc:
     add esi, uiLineSkipSrc
     dec ebx
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -6972,7 +6972,7 @@ function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc
   uiLineSkipDest = uiDestPitch; //+((BlitLength-1)*2);
   uiLineSkipSrc = uiSrcPitch - (BlitLength * 2);
 
-  __asm {
+  asm(`
     mov esi, pSrcPtr
     mov edi, pDestPtr
     mov ebx, BlitHeight
@@ -7000,7 +7000,7 @@ function Blt16BPPTo16BPPMirror(pDest: Pointer<UINT16>, uiDestPitch: UINT32, pSrc
     add edi, uiLineSkipDest
     dec ebx
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -7027,7 +7027,7 @@ function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer
   uiLineSkipDest = uiDestPitch - (uiWidth);
   uiLineSkipSrc = uiSrcPitch - (uiWidth);
 
-  __asm {
+  asm(`
     mov esi, pSrcPtr
     mov edi, pDestPtr
     mov ebx, uiHeight
@@ -7060,7 +7060,7 @@ function Blt8BPPTo8BPP(pDest: Pointer<UINT8>, uiDestPitch: UINT32, pSrc: Pointer
     add esi, uiLineSkipSrc
     dec ebx
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -7116,7 +7116,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -7188,7 +7188,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelate(pBuffer: Pointer<UINT16>, uiDest
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -7246,7 +7246,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -7335,7 +7335,7 @@ function Blt8BPPDataTo16BPPBufferTransZPixelateObscured(pBuffer: Pointer<UINT16>
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -7429,7 +7429,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -7606,7 +7606,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelate(pBuffer: Pointer<UINT16>, ui
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -7662,7 +7662,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -7735,7 +7735,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBPixelate(pBuffer: Pointer<UINT16>, uiDe
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -7829,7 +7829,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8006,7 +8006,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipPixelate(pBuffer: Pointer<UINT16>, 
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8058,7 +8058,7 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8121,7 +8121,7 @@ function Blt8BPPDataTo16BPPBufferTransZ(pBuffer: Pointer<UINT16>, uiDestPitchBYT
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8173,7 +8173,7 @@ function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8233,7 +8233,7 @@ function Blt8BPPDataTo16BPPBufferTransZNB(pBuffer: Pointer<UINT16>, uiDestPitchB
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8286,7 +8286,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8351,7 +8351,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBColor(pBuffer: Pointer<UINT16>, uiDestP
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8400,7 +8400,7 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8457,7 +8457,7 @@ function Blt8BPPDataTo16BPPBufferTransShadow(pBuffer: Pointer<UINT16>, uiDestPit
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8508,7 +8508,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
   ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8576,7 +8576,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZ(pBuffer: Pointer<UINT16>, uiDestPi
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8627,7 +8627,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
   ZPtr = pZBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8696,7 +8696,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNB(pBuffer: Pointer<UINT16>, uiDest
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8749,7 +8749,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -8841,7 +8841,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscured(pBuffer: Pointer<UINT16>
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -8930,7 +8930,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -9103,7 +9103,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZClip(pBuffer: Pointer<UINT16>, uiDe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -9190,7 +9190,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
   DestPtr = pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -9351,7 +9351,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowClip(pBuffer: Pointer<UINT16>, uiDes
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -9440,7 +9440,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -9614,7 +9614,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBClip(pBuffer: Pointer<UINT16>, ui
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -9704,7 +9704,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -9901,7 +9901,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowZNBObscuredClip(pBuffer: Pointer<UIN
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -9990,7 +9990,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
   ZPtr = pZBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -10164,7 +10164,7 @@ function Blt8BPPDataTo16BPPBufferTransShadowBelowOrEqualZNBClip(pBuffer: Pointer
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -10214,7 +10214,7 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -10272,7 +10272,7 @@ function Blt8BPPDataTo16BPPBufferShadowZ(pBuffer: Pointer<UINT16>, uiDestPitchBY
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -10362,7 +10362,7 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -10526,7 +10526,7 @@ function Blt8BPPDataTo16BPPBufferShadowZClip(pBuffer: Pointer<UINT16>, uiDestPit
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -10576,7 +10576,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -10632,7 +10632,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNB(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -10722,7 +10722,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -10883,7 +10883,7 @@ function Blt8BPPDataTo16BPPBufferShadowZNBClip(pBuffer: Pointer<UINT16>, uiDestP
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -10973,7 +10973,7 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -11137,7 +11137,7 @@ function Blt8BPPDataTo16BPPBufferTransZClip(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -11226,7 +11226,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -11387,7 +11387,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClip(pBuffer: Pointer<UINT16>, uiDestPi
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -11478,7 +11478,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -11647,7 +11647,7 @@ function Blt8BPPDataTo16BPPBufferTransZNBClipColor(pBuffer: Pointer<UINT16>, uiD
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -11703,7 +11703,7 @@ function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES:
   p16BPPPalette = hSrcVSurface.value.p16BPPPalette;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr // pointer to current line start address in source
     mov edi, DestPtr // pointer to current line start address in destination
     mov ebx, BlitHeight // line counter (goes top to bottom)
@@ -11736,7 +11736,7 @@ function Blt8BPPDataSubTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES:
     jnz NewRow // done blitting, exit
 
     // DoneBlit: // finished blit
-  }
+  `);
 
   return TRUE;
 }
@@ -11782,7 +11782,7 @@ function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
   p16BPPPalette = hSrcVSurface.value.p16BPPPalette;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr // pointer to current line start address in source
     mov edi, DestPtr // pointer to current line start address in destination
     mov ecx, usHeight // line counter (goes top to bottom)
@@ -11871,7 +11871,7 @@ function Blt8BPPDataTo16BPPBuffer(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
     jmp ReadMask
 
     DoneBlit: // finished blit
-  }
+  `);
 
   return TRUE;
 }
@@ -11917,7 +11917,7 @@ function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   LineSkip = (uiDestPitchBYTES - (usWidth & 0xfffffffe));
   uiSrcSkip = (uiSrcPitch * 2) - (usWidth & 0xfffffffe);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr // pointer to current line start address in source
     mov edi, DestPtr // pointer to current line start address in destination
     mov ebx, usHeight // line counter (goes top to bottom)
@@ -11954,7 +11954,7 @@ function Blt8BPPDataTo16BPPBufferHalf(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
     jnz BlitSetup // done blitting, exit
 
     // DoneBlit: // finished blit
-  }
+  `);
 
   return TRUE;
 }
@@ -12010,7 +12010,7 @@ function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchB
   LineSkip = (uiDestPitchBYTES - (usWidth & 0xfffffffe));
   uiSrcSkip = (uiSrcPitch * 2) - (usWidth & 0xfffffffe);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr // pointer to current line start address in source
     mov edi, DestPtr // pointer to current line start address in destination
     mov ebx, usHeight // line counter (goes top to bottom)
@@ -12047,7 +12047,7 @@ function Blt8BPPDataTo16BPPBufferHalfRect(pBuffer: Pointer<UINT16>, uiDestPitchB
     jnz BlitSetup // done blitting, exit
 
     // DoneBlit: // finished blit
-  }
+  `);
 
   return TRUE;
 }
@@ -12107,7 +12107,7 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -12200,7 +12200,7 @@ function Blt8BPPDataTo16BPPBufferMask(pBuffer: Pointer<UINT16>, uiDestPitchBYTES
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -12266,7 +12266,7 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
   CHECKF(width >= 1);
   CHECKF(height >= 1);
 
-  __asm {
+  asm(`
     mov esi, Pattern // Pointer to pixel pattern
     mov edi, DestPtr // Pointer to top left of rect area
     mov ax, usColor // color of pixel
@@ -12296,7 +12296,7 @@ function Blt16BPPBufferPixelateRectWithColor(pBuffer: Pointer<UINT16>, uiDestPit
     and edx, 38H
     dec height
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -12415,7 +12415,7 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -12507,7 +12507,7 @@ function Blt8BPPDataTo16BPPBufferShadow(pBuffer: Pointer<UINT16>, uiDestPitchBYT
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -12555,7 +12555,7 @@ function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPit
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -12648,7 +12648,7 @@ function Blt8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPit
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -12705,7 +12705,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   uiDestSkip = (uiDestPitchBYTES + (usWidth * 2));
 
-  __asm {
+  asm(`
     // esi = pointer to source data
     // edi = pointer to destination buffer
     // eax = 16bpp pixel
@@ -12812,7 +12812,7 @@ function Blt8BPPDataTo16BPPBufferTransMirror(pBuffer: Pointer<UINT16>, uiDestPit
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -12896,7 +12896,7 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -13094,7 +13094,7 @@ function Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer: Pointer<UINT16>, uiDes
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -13236,7 +13236,7 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -13426,7 +13426,7 @@ function Blt8BPPDataTo16BPPBufferShadowClip(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -13472,7 +13472,7 @@ function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
   CHECKF(width >= 1);
   CHECKF(height >= 1);
 
-  __asm {
+  asm(`
     mov esi, OFFSET ShadeTable
     mov edi, DestPtr
     xor eax, eax
@@ -13493,7 +13493,7 @@ function Blt16BPPBufferShadowRect(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UI
     add edi, ebx
     dec edx
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -13539,7 +13539,7 @@ function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDest
   CHECKF(width >= 1);
   CHECKF(height >= 1);
 
-  __asm {
+  asm(`
     mov esi, OFFSET IntensityTable
     mov edi, DestPtr
     xor eax, eax
@@ -13560,7 +13560,7 @@ function Blt16BPPBufferShadowRectAlternateTable(pBuffer: Pointer<UINT16>, uiDest
     add edi, ebx
     dec edx
     jnz BlitNewLine
-  }
+  `);
 
   return TRUE;
 }
@@ -13609,7 +13609,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -13699,7 +13699,7 @@ function Blt8BPPDataTo16BPPBufferMonoShadow(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -14070,7 +14070,7 @@ function FillRect8BPP(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, x1: INT
   linelength = x2real - x1real + 1;
   lineskip = uiDestPitchBYTES - linelength;
 
-  __asm {
+  asm(`
     mov edi, startoffset
     mov al, color
     mov ah, al
@@ -14114,7 +14114,7 @@ function FillRect8BPP(pBuffer: Pointer<UINT8>, uiDestPitchBYTES: UINT32, x1: INT
     add edi, lineskip
     dec edx
     jnz LineLoop
-  }
+  `);
   return TRUE;
 }
 
@@ -14146,7 +14146,7 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
   linelength = x2real - x1real + 1;
   lineskip = uiDestPitchBYTES - (linelength * 2);
 
-  __asm {
+  asm(`
     mov edi, startoffset
     mov ax, color
     shl eax, 16
@@ -14180,7 +14180,7 @@ function FillRect16BPP(pBuffer: Pointer<UINT16>, uiDestPitchBYTES: UINT32, x1: I
     add edi, lineskip
     dec edx
     jnz LineLoop
-  }
+  `);
   return TRUE;
 }
 
@@ -14293,7 +14293,7 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -14355,7 +14355,7 @@ function Blt8BPPDataTo16BPPBufferOutline(pBuffer: Pointer<UINT16>, uiDestPitchBY
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -14434,7 +14434,7 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -14600,7 +14600,7 @@ function Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer: Pointer<UINT16>, uiDestPit
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -14681,7 +14681,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -14863,7 +14863,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZClip(pBuffer: Pointer<UINT16>, uiDestPi
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -14946,7 +14946,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -15152,7 +15152,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscuredClip(pBuffer: Pointer<U
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15192,7 +15192,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -15244,7 +15244,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadow(pBuffer: Pointer<UINT16>, uiDestP
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15321,7 +15321,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET ShadeTable
@@ -15517,7 +15517,7 @@ function Blt8BPPDataTo16BPPBufferOutlineShadowClip(pBuffer: Pointer<UINT16>, uiD
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15559,7 +15559,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -15640,7 +15640,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZ(pBuffer: Pointer<UINT16>, uiDestPitchB
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15684,7 +15684,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -15786,7 +15786,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZPixelateObscured(pBuffer: Pointer<UINT1
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15829,7 +15829,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -15910,7 +15910,7 @@ function Blt8BPPDataTo16BPPBufferOutlineZNB(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -15960,7 +15960,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET IntensityTable
@@ -16018,7 +16018,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZ(pBuffer: Pointer<UINT16>, uiDestPitc
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -16108,7 +16108,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET IntensityTable
@@ -16272,7 +16272,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZClip(pBuffer: Pointer<UINT16>, uiDest
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -16322,7 +16322,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPi
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET IntensityTable
@@ -16378,7 +16378,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNB(pBuffer: Pointer<UINT16>, uiDestPi
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -16468,7 +16468,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET IntensityTable
@@ -16629,7 +16629,7 @@ function Blt8BPPDataTo16BPPBufferIntensityZNBClip(pBuffer: Pointer<UINT16>, uiDe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -16714,7 +16714,7 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, OFFSET IntensityTable
@@ -16904,7 +16904,7 @@ function Blt8BPPDataTo16BPPBufferIntensityClip(pBuffer: Pointer<UINT16>, uiDestP
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -16951,7 +16951,7 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -17043,7 +17043,7 @@ function Blt8BPPDataTo16BPPBufferIntensity(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -17137,7 +17137,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UIN
   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
   uiLineFlag = (iTempY & 1);
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -17320,7 +17320,7 @@ function Blt8BPPDataTo16BPPBufferTransZClipPixelateObscured(pBuffer: Pointer<UIN
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }

@@ -3558,7 +3558,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -3805,7 +3805,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClip(pBuffer: Pointer<UINT16>, uiDestP
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -3955,7 +3955,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -4202,7 +4202,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncClipZSameZBurnsThrough(pBuffer: Pointe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4358,7 +4358,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -4625,7 +4625,7 @@ function Blt8BPPDataTo16BPPBufferTransZIncObscureClip(pBuffer: Pointer<UINT16>, 
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -4772,7 +4772,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -5051,7 +5051,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncObscureClip(pBuffer: Pointe
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5228,7 +5228,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
   usZLevel = usZStartLevel;
   usZIndex = usZStartIndex;
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -5487,7 +5487,7 @@ function Blt8BPPDataTo16BPPBufferTransZTransShadowIncClip(pBuffer: Pointer<UINT1
     jmp LeftSkipSetup
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5866,7 +5866,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
   DestPtr = pBuffer + (uiDestPitchBYTES * iTempY) + (iTempX * 2);
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     xor eax, eax
@@ -5944,7 +5944,7 @@ function Zero8BPPDataTo16BPPBufferTransparent(pBuffer: Pointer<UINT16>, uiDestPi
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -5986,7 +5986,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (uiDestPitchBYTES - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edi, DestPtr
     mov edx, p16BPPPalette
@@ -6049,7 +6049,7 @@ function Blt8BPPDataTo16BPPBufferTransInvZ(pBuffer: Pointer<UINT16>, uiDestPitch
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return TRUE;
 }
@@ -6089,7 +6089,7 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
   p16BPPPalette = hSrcVObject.value.pShadeCurrent;
   LineSkip = (1280 - (usWidth * 2));
 
-  __asm {
+  asm(`
     mov esi, SrcPtr
     mov edx, p16BPPPalette
     xor eax, eax
@@ -6144,7 +6144,7 @@ function IsTileRedundent(pZBuffer: Pointer<UINT16>, usZValue: UINT16, hSrcVObjec
     jmp BlitDispatch
 
     BlitDone:
-  }
+  `);
 
   return fHidden;
 }

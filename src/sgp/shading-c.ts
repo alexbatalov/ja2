@@ -85,7 +85,7 @@ function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointe
   let usCurCount: UINT16;
   let pSavedPtr: Pointer<UINT32>;
 
-  __asm {
+  asm(`
     // Assumes:
     // ESI = Pointer to source palette (shaded values)
     // EDI = Pointer to original palette (palette we'll end up using!)
@@ -158,7 +158,7 @@ function FindIndecies(pSrcPalette: Pointer<SGPPaletteEntry>, pMapPalette: Pointe
     add esi,4                         ; for the other cols in shade pal
     dec usCurCount
     jnz DoNextIndex
-  }
+  `);
 }
 
 /**********************************************************************************************
